@@ -1,0 +1,8 @@
+CMakeCache.txt
+CMakeFiles
+cmake_install.cmake
+detect_cuda*
+*.swp
+Makefile
+*.a
+src/test
