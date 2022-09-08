@@ -1,6 +1,5 @@
 # Add all the source files
 add_library(batchedmat
-      LabeledTensor.cxx
       Scalar.cxx
       SymR2.cxx
       SymSymR4.cxx

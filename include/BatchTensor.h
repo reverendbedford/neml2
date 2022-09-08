@@ -3,6 +3,7 @@
 #include "types.h"
 
 #include <stdexcept>
+#include <array>
 
 #include <torch/torch.h>
 
@@ -27,6 +28,14 @@ class BatchTensor : public torch::Tensor {
 
   /// Return the base size
   TorchShape base_sizes() const;
+
+  /// Return an index sliced on the batch dimensions
+  BatchTensor<N> base_index(TorchSlice indices);
+
+ private:
+  /// Add a slice on the batch dimensions to an index
+  TorchSlice make_slice(TorchSlice base) const;
+
 };
 
 template <TorchSize N>
@@ -63,3 +72,21 @@ TorchShape BatchTensor<N>::base_sizes() const
 {
   return TorchShape(sizes().begin() + N, sizes().end());
 }
+
+template <TorchSize N>
+BatchTensor<N> BatchTensor<N>::base_index(TorchSlice indices)
+{
+  return BatchTensor<N>(torch::Tensor::index(make_slice(indices)));
+}
+
+template <TorchSize N>
+TorchSlice BatchTensor<N>::make_slice(TorchSlice base) const
+{
+  std::vector<at::indexing::TensorIndex> front(N, torch::indexing::None);
+  front.insert(front.end(), base.begin(), base.end());
+  return TorchSlice(front);
+}
+
+// Standard BatchTensor types
+typedef BatchTensor<0> StandardTensor;
+typedef BatchTensor<1> BatchedTensor;

@@ -6,3 +6,4 @@
 typedef size_t TorchSize;
 typedef torch::IntArrayRef TorchShape;
 typedef torch::ArrayRef<at::indexing::TensorIndex> TorchSlice;
+
