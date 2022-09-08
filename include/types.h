@@ -3,7 +3,8 @@
 #include <cstddef>
 #include <torch/torch.h>
 
-typedef size_t TorchSize;
-typedef torch::IntArrayRef TorchShape;
+typedef int64_t TorchSize;
+typedef std::vector<TorchSize> TorchShape;
+typedef torch::IntArrayRef TorchShapeRef;
 typedef torch::ArrayRef<at::indexing::TensorIndex> TorchSlice;
 

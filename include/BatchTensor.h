@@ -17,20 +17,17 @@ class BatchTensor : public torch::Tensor {
   /// Construct from existing tensor, no batch dimensions
   BatchTensor(const torch::Tensor & tensor);
 
-  /// Construct from existing tensor, specify batch dimensions
-  BatchTensor(const torch::Tensor & tensor, TorchSize nbatch);
-
   /// Return the number of batch dimensions
-  TorchSize nbatch() const;
+  virtual TorchSize nbatch() const;
 
   /// Return the batch size
-  TorchShape batch_sizes() const;
+  virtual TorchShape batch_sizes() const;
 
   /// Return the base size
-  TorchShape base_sizes() const;
+  virtual TorchShape base_sizes() const;
 
   /// Return an index sliced on the batch dimensions
-  BatchTensor<N> base_index(TorchSlice indices);
+  virtual BatchTensor<N> base_index(TorchSlice indices);
 
  private:
   /// Add a slice on the batch dimensions to an index
@@ -86,7 +83,3 @@ TorchSlice BatchTensor<N>::make_slice(TorchSlice base) const
   front.insert(front.end(), base.begin(), base.end());
   return TorchSlice(front);
 }
-
-// Standard BatchTensor types
-typedef BatchTensor<0> StandardTensor;
-typedef BatchTensor<1> BatchedTensor;
