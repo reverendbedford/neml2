@@ -1,6 +1,10 @@
 #include <torch/torch.h>
 #include <iostream>
 
+#include "State.h"
+#include "BatchedScalar.h"
+#include "BatchedSymR2.h"
+
 #include "LabeledTensor.h"
 #include "BatchTensor.h"
 #include "FixedDimTensor.h"
@@ -10,34 +14,15 @@ using namespace torch::indexing;
 
 int main()
 {
-  LabeledTensor<0> ten(torch::zeros({5,6}));
-  std::cout << ten << std::endl;
-
-  ten.add_label("blah", {Slice(), 1});
+  TorchSize nbatch = 10;
+  // A scalar, a SymR2, and a scalar
+  State state(torch::zeros({nbatch, 8}));
+  state.add_label("one", {0});
+  state.add_label("two", {Slice(1,7)});
+  state.add_label("three", {7});
   
-  auto sect = ten.get("blah");
-
-  sect.fill_(1.0);
-  std::cout << sect << std::endl;
-  std::cout << ten << std::endl;
-
-  BatchTensor<0> b0(torch::zeros({10,5}));
-  std::cout << b0.nbatch() << std::endl;
-  std::cout << b0.batch_sizes() << std::endl;
-  std::cout << b0.base_sizes() << std::endl;
-
-  BatchTensor<1> b1(torch::zeros({10,5}));
-  std::cout << b1.nbatch() << std::endl;
-  std::cout << b1.batch_sizes() << std::endl;
-  std::cout << b1.base_sizes() << std::endl;
-  
-  FixedDimTensor<2, 3, 4, 5> test(torch::zeros({10,9,3,4,5}));
-  std::cout << test.nbatch() << std::endl;
-  std::cout << test.batch_sizes() << std::endl;
-  std::cout << test.base_sizes() << std::endl;
-
-  FixedDimTensor<2, 3, 4, 5> test2({10,9});
-  std::cout << test2.nbatch() << std::endl;
-  std::cout << test2.batch_sizes() << std::endl;
-  std::cout << test2.base_sizes() << std::endl;
+  std::cout << state.sizes() << std::endl;
+  std::cout << state.view("one").sizes() << std::endl;
+  std::cout << state.view("two").sizes() << std::endl;
+  std::cout << state.view("three").sizes() << std::endl;
 }

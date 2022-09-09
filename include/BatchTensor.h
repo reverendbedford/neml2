@@ -79,7 +79,7 @@ BatchTensor<N> BatchTensor<N>::base_index(TorchSlice indices)
 template <TorchSize N>
 TorchSlice BatchTensor<N>::make_slice(TorchSlice base) const
 {
-  std::vector<at::indexing::TensorIndex> front(N, torch::indexing::None);
+  TorchSlice front(N, torch::indexing::Slice());
   front.insert(front.end(), base.begin(), base.end());
-  return TorchSlice(front);
+  return front;
 }

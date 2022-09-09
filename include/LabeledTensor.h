@@ -9,9 +9,6 @@
 template <TorchSize N>
 class LabeledTensor : public BatchTensor<N> {
  public:
-  /// Default constructor
-  LabeledTensor();
-  
   /// Construct from a tensor without labels
   LabeledTensor(const torch::Tensor & tensor);
 
@@ -20,21 +17,14 @@ class LabeledTensor : public BatchTensor<N> {
                 std::map<std::string,TorchSlice> labels);
   
   /// Associate a label with a slice of the tensor
-  void add_label(std::string label, TorchSlice indices);
+  virtual void add_label(std::string label, TorchSlice indices);
 
   /// Return a labeled view into the tensor
-  BatchTensor<N> get(std::string label);
+  virtual BatchTensor<N> view(std::string label);
 
  protected:
   std::map<std::string,TorchSlice> labels_; 
 };
-
-template <TorchSize N>
-LabeledTensor<N>::LabeledTensor() :
-    BatchTensor<N>()
-{
-
-}
 
 template <TorchSize N>
 LabeledTensor<N>::LabeledTensor(const torch::Tensor & tensor) :
@@ -59,7 +49,7 @@ void LabeledTensor<N>::add_label(std::string label, TorchSlice indices)
 
 
 template <TorchSize N>
-BatchTensor<N> LabeledTensor<N>::get(std::string label)
+BatchTensor<N> LabeledTensor<N>::view(std::string label)
 {
   return BatchTensor<N>::base_index(labels_.at(label));
 }
