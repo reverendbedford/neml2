@@ -18,11 +18,12 @@ class FixedDimTensor : public BatchTensor<N> {
   /// Make from another tensor
   FixedDimTensor(const torch::Tensor & tensor);
 
+  /// The actual (static) base shape 
+  static inline const TorchShape base_shape{ {D...} };
+
  protected:
   /// Return what the full shape of the tensor should be, given the batch size
   std::vector<TorchSize> construct_sizes(TorchShapeRef batch_size) const;
-  /// The actual (static) base shape 
-  static inline const TorchShape base_shape{ {D...} };
 };
 
 template <TorchSize N, TorchSize ... D>

@@ -15,6 +15,9 @@ class StandardBatchedTensor: public StandardBatchedTensorBase<D...> {
  public:
   StandardBatchedTensor(TorchSize nbatch);
   StandardBatchedTensor(const torch::Tensor & tensor);
+  
+  /// Helper to return the (now scalar) batch size
+  TorchSize batch_size() const;
 };
 
 template <TorchSize ... D>
@@ -30,4 +33,10 @@ StandardBatchedTensor<D...>::StandardBatchedTensor(
     StandardBatchedTensorBase<D...>(tensor)
 {
 
+}
+
+template <TorchSize ... D>
+TorchSize StandardBatchedTensor<D...>::batch_size() const
+{
+  return torch::Tensor::sizes()[0];
 }

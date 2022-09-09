@@ -7,6 +7,7 @@ add_library(batchedmat
       SymR2.cxx
       SymSymR4.cxx
       State.cxx
+      StateInfo.cxx
       )
 
 # My headers

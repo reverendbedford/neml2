@@ -4,25 +4,27 @@
 #include "State.h"
 #include "BatchedScalar.h"
 #include "BatchedSymR2.h"
-
-#include "LabeledTensor.h"
-#include "BatchTensor.h"
-#include "FixedDimTensor.h"
-#include "BatchedScalar.h"
+#include "BatchedSymSymR4.h"
+#include "StateInfo.h"
 
 using namespace torch::indexing;
 
 int main()
 {
   TorchSize nbatch = 10;
-  // A scalar, a SymR2, and a scalar
-  State state(torch::zeros({nbatch, 8}));
-  state.add_label("one", {0});
-  state.add_label("two", {Slice(1,7)});
-  state.add_label("three", {7});
+
+  StateInfo stop;
+  stop.add<BatchedScalar>("s1");
+  stop.add<BatchedSymR2>("sym1");
   
-  std::cout << state.sizes() << std::endl;
-  std::cout << state.view("one").sizes() << std::endl;
-  std::cout << state.view("two").sizes() << std::endl;
-  std::cout << state.view("three").sizes() << std::endl;
+  StateInfo bottom;
+  bottom.add<BatchedSymR2>("sym2");
+  bottom.add<BatchedScalar>("s2");
+  bottom.add<BatchedScalar>("s3");
+
+  stop.add_substate("substate", bottom);
+  
+  State state(stop, nbatch);
+
+  std::cout << state.get<BatchedScalar>("s2") << std::endl;
 }

@@ -4,6 +4,7 @@
 
 #include <stdexcept>
 #include <array>
+#include <numeric>
 
 #include <torch/torch.h>
 
@@ -17,6 +18,9 @@ class BatchTensor : public torch::Tensor {
   /// Construct from existing tensor, no batch dimensions
   BatchTensor(const torch::Tensor & tensor);
 
+  /// Return the number of base dimensions
+  virtual TorchSize nbase() const;
+
   /// Return the number of batch dimensions
   virtual TorchSize nbatch() const;
 
@@ -27,7 +31,7 @@ class BatchTensor : public torch::Tensor {
   virtual TorchShape base_sizes() const;
 
   /// Return an index sliced on the batch dimensions
-  virtual BatchTensor<N> base_index(TorchSlice indices);
+  virtual torch::Tensor base_index(TorchSlice indices);
 
  private:
   /// Add a slice on the batch dimensions to an index
@@ -53,6 +57,12 @@ BatchTensor<N>::BatchTensor(const torch::Tensor & tensor) :
 }
 
 template <TorchSize N>
+TorchSize BatchTensor<N>::nbase() const
+{
+  return sizes().size() - nbatch();
+}
+
+template <TorchSize N>
 TorchSize BatchTensor<N>::nbatch() const
 {
   return N;
@@ -71,9 +81,9 @@ TorchShape BatchTensor<N>::base_sizes() const
 }
 
 template <TorchSize N>
-BatchTensor<N> BatchTensor<N>::base_index(TorchSlice indices)
+torch::Tensor BatchTensor<N>::base_index(TorchSlice indices)
 {
-  return BatchTensor<N>(torch::Tensor::index(make_slice(indices)));
+  return torch::Tensor::index(make_slice(indices));
 }
 
 template <TorchSize N>
@@ -82,4 +92,12 @@ TorchSlice BatchTensor<N>::make_slice(TorchSlice base) const
   TorchSlice front(N, torch::indexing::Slice());
   front.insert(front.end(), base.begin(), base.end());
   return front;
+}
+
+/// Helper to get the total storage required from a TorchShape
+inline TorchSize storage(const TorchShape & shape)
+{
+  TorchSize sz = 1;
+  return std::accumulate(shape.begin(), shape.end(), sz,
+                         std::multiplies<TorchSize>());
 }
