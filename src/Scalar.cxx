@@ -1,13 +1,13 @@
 #include "Scalar.h"
 
 Scalar::Scalar() :
-    torch::Tensor(torch::zeros({1}))
+    ScalarBase()
 {
 
 }
 
 Scalar::Scalar(const torch::Tensor & tensor) :
-    torch::Tensor(tensor)
+    ScalarBase(tensor)
 {
-  assert(tensor.sizes() == (torch::IntArrayRef{1}));
+
 }

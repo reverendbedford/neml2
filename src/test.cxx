@@ -4,6 +4,7 @@
 #include "LabeledTensor.h"
 #include "BatchTensor.h"
 #include "FixedDimTensor.h"
+#include "BatchedScalar.h"
 
 using namespace torch::indexing;
 

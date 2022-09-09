@@ -1,5 +1,8 @@
 # Add all the source files
 add_library(batchedmat
+      BatchedScalar.cxx
+      BatchedSymR2.cxx
+      BatchedSymSymR4.cxx
       Scalar.cxx
       SymR2.cxx
       SymSymR4.cxx

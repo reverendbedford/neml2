@@ -1,13 +1,13 @@
 #include "SymSymR4.h"
 
 SymSymR4::SymSymR4() :
-    torch::Tensor(torch::zeros({1}))
+    SymSymR4Base()
 {
 
 }
 
 SymSymR4::SymSymR4(const torch::Tensor & tensor) :
-    torch::Tensor(tensor)
+    SymSymR4Base(tensor)
 {
-  assert(tensor.sizes() == (torch::IntArrayRef{6,6}));
+
 }
