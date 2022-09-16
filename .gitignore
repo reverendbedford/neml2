@@ -6,3 +6,9 @@ detect_cuda*
 Makefile
 *.a
 src/test
+CTestTestfile.cmake
+DartConfiguration.tcl
+Testing
+*.cmake
+tests/unit_tests
+
