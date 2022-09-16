@@ -46,6 +46,12 @@ class StateInfo {
   /// Number of substate items
   size_t nsubstates() const;
 
+  /// Getter for substate locations
+  const std::map<std::string, size_t> & substate_locations() const {return _substate_locations;}
+
+  /// Getter for substate objects
+  const std::map<std::string, StateInfo> & substates() const {return _substates;}
+
   /// Helper to report the shape of the tensor needed, given the batch size
   TorchShape required_shape(TorchSize nbatch) const;
 

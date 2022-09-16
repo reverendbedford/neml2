@@ -101,3 +101,12 @@ inline TorchSize storage(const TorchShape & shape)
   return std::accumulate(shape.begin(), shape.end(), sz,
                          std::multiplies<TorchSize>());
 }
+
+/// Generically useful helper function that inserts a batch size into a shape
+inline TorchShape add_shapes(const TorchShape & A, 
+                             const TorchShape & B)
+{
+  TorchShape net(A);
+  net.insert(net.end(), B.begin(), B.end());
+  return net;
+}
