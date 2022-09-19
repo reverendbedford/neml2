@@ -50,7 +50,7 @@ StateDerivative StateDerivative::get_substate(std::string name_A,
 {
   return StateDerivative(_A.substates().at(name_A), 
                          _B.substates().at(name_B),
-                         view(derivative_name(name_A, name_B)));
+                         get_view(derivative_name(name_A, name_B)));
 }
 
 std::string StateDerivative::derivative_name(std::string name_A, 

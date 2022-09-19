@@ -2,7 +2,11 @@
 add_executable(unit_tests 
       test.cxx
       test_BatchTensor.cxx
-      test_FixedDimTensor.cxx)
+      test_FixedDimTensor.cxx
+      test_StandardUnbatchedTensor.cxx
+      test_StandardBatchedTensor.cxx
+      test_LabeledTensor.cxx
+      )
 
 # Libraries and headers
 target_link_libraries(unit_tests Catch2::Catch2)

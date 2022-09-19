@@ -31,7 +31,7 @@ class StateDerivative : public StateBase
   typename item_type<T>::type get(std::string name_A, std::string name_B)
   {
     // Could partly be transferred to base class
-    return T(view(derivative_name(name_A, name_B)).view(
+    return T(get_view(derivative_name(name_A, name_B)).view(
             add_shapes({batch_size()}, T::base_shape)));
   }
 

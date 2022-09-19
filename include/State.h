@@ -22,7 +22,7 @@ class State : public StateBase
   {
     // Ugh have to do the shape dynamically because the batch
     // size is not yet fixed
-    return T(view(name).view(add_shapes({batch_size()}, T::base_shape)));
+    return T(get_view(name).view(add_shapes({batch_size()}, T::base_shape)));
   }
 
   /// No reshape required and special logic to setup

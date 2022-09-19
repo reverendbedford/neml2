@@ -23,7 +23,7 @@ State State::get_substate(std::string name)
 {
   // No reshaping is needed, but we do need to grab the 
   // appropriate StateInfo
-  return State(_info.substates().at(name), view(name));
+  return State(_info.substates().at(name), get_view(name));
 }
 
 const StateInfo & State::info() const
