@@ -47,7 +47,10 @@ LabeledTensor<N>::LabeledTensor(const torch::Tensor & tensor,
 template <TorchSize N>
 void LabeledTensor<N>::add_label(std::string label, TorchSlice indices)
 {
-  labels_.insert({label, indices});
+  auto p = labels_.insert({label, indices});
+  if (!p.second)
+    throw std::runtime_error("Attempted to insert duplicate key " + label + 
+                             " into a LabeledTensor");
 }
 
 
