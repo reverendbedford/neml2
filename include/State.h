@@ -3,6 +3,8 @@
 #include "StateBase.h"
 #include "StateInfo.h"
 
+using namespace torch::indexing;
+
 /// A state object providing flat tensor storage and easy access for model state
 class State : public StateBase
 {
@@ -16,13 +18,21 @@ class State : public StateBase
   template<typename T>
   struct item_type{ typedef T type; };
 
-  /// As view but also interpret the view as an object
+  /// As get_view but also interpret the view as an object
   template <typename T>
   typename item_type<T>::type get(std::string name)
   {
     // Ugh have to do the shape dynamically because the batch
     // size is not yet fixed
     return T(get_view(name).view(add_shapes({batch_size()}, T::base_shape)));
+  }
+
+  /// As set_view but also interpret the input as an object
+  template <typename T>
+  typename item_type<T>::type set(std::string name, const T & value)
+  {
+    // Need to flatten for the same reason as in get
+    set_view(name, value.view({nbatch(), -1}));
   }
 
   /// No reshape required and special logic to setup

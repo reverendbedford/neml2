@@ -11,4 +11,5 @@ DartConfiguration.tcl
 Testing
 *.cmake
 tests/unit_tests
-
+.cache
+compile_commands.json
