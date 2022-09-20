@@ -10,6 +10,8 @@ add_executable(unit_tests
       test_StateInfo.cxx
       test_State.cxx
       test_StateDerivative.cxx
+      test_Scalar.cxx
+      test_ElasticityTensors.cxx
       )
 
 # Libraries and headers

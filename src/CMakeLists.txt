@@ -10,6 +10,10 @@ add_library(batchedmat
       State.cxx
       StateDerivative.cxx
       StateInfo.cxx
+      ConstitutiveModel.cxx
+      SmallStrainMechanicalModel.cxx
+      SmallStrainIsotropicLinearElasticModel.cxx
+      ElasticityTensors.cxx
       )
 
 # My headers

@@ -1,7 +1,7 @@
 #include "SymSymR4.h"
 
 SymSymR4::SymSymR4() :
-    SymSymR4Base()
+    SymSymR4Base(torch::zeros({6,6}))
 {
 
 }
