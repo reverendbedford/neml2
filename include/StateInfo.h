@@ -23,7 +23,7 @@ class StateInfo {
   void add(std::string name)
   {
     // The storage is *flat* -- will need to reshape when we return!
-    auto sz = storage(T::base_shape);
+    auto sz = storage_size(T::base_shape);
     _item_locations.insert({name, nitems()});
     _item_offsets.push_back(size_storage() + sz);
   }
@@ -54,6 +54,9 @@ class StateInfo {
 
   /// Helper to report the shape of the tensor needed, given the batch size
   TorchShape required_shape(TorchSize nbatch) const;
+
+  /// Base storage (ignoring batch) needed for an object
+  TorchSize base_storage(std::string object) const;
 
  protected:
   // Location of each item in the vector of offsets

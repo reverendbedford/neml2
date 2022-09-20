@@ -35,6 +35,18 @@ class StateDerivative : public StateBase
             add_shapes({batch_size()}, T::base_shape)));
   }
 
+  /// Set a object value into a spot in the object
+  template <typename T>
+  void set(std::string name_A, std::string name_B, const T & value)
+  {
+    // Shape should be (batch,storage_A,storage_B)
+    set_view(derivative_name(name_A, name_B), 
+             value.reshape({
+                           batch_size(),
+                           _A.base_storage(name_A),
+                           _B.base_storage(name_B)}));
+  }
+
   /// No reshape required and special logic to setup
   StateDerivative get_substate(std::string name_A, std::string name_B);
 

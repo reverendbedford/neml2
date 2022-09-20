@@ -29,10 +29,10 @@ class State : public StateBase
 
   /// As set_view but also interpret the input as an object
   template <typename T>
-  typename item_type<T>::type set(std::string name, const T & value)
+  void set(std::string name, const T & value)
   {
     // Need to flatten for the same reason as in get
-    set_view(name, value.view({nbatch(), -1}));
+    set_view(name, value.flatten(1));
   }
 
   /// No reshape required and special logic to setup

@@ -8,6 +8,23 @@
 
 #include <torch/torch.h>
 
+/// Helper to get the total storage required from a TorchShape
+inline TorchSize storage_size(const TorchShape & shape)
+{
+  TorchSize sz = 1;
+  return std::accumulate(shape.begin(), shape.end(), sz,
+                         std::multiplies<TorchSize>());
+}
+
+/// Generically useful helper function that inserts a batch size into a shape
+inline TorchShape add_shapes(const TorchShape & A, 
+                             const TorchShape & B)
+{
+  TorchShape net(A);
+  net.insert(net.end(), B.begin(), B.end());
+  return net;
+}
+
 /// Tensor where the first index is a batch dimension
 template <TorchSize N>
 class BatchTensor : public torch::Tensor {
@@ -29,6 +46,9 @@ class BatchTensor : public torch::Tensor {
 
   /// Return the base size
   virtual TorchShape base_sizes() const;
+
+  /// Return the flattened storage needed just for the base indices
+  virtual TorchSize base_storage() const;
 
   /// Return an index sliced on the batch dimensions
   virtual torch::Tensor base_index(TorchSlice indices);
@@ -85,6 +105,12 @@ TorchShape BatchTensor<N>::base_sizes() const
 }
 
 template <TorchSize N>
+TorchSize BatchTensor<N>::base_storage() const
+{
+  return storage_size(base_sizes());
+}
+
+template <TorchSize N>
 torch::Tensor BatchTensor<N>::base_index(TorchSlice indices)
 {
   return torch::Tensor::index(make_slice(indices));
@@ -103,21 +129,4 @@ TorchSlice BatchTensor<N>::make_slice(TorchSlice base) const
   TorchSlice front(N, torch::indexing::Slice());
   front.insert(front.end(), base.begin(), base.end());
   return front;
-}
-
-/// Helper to get the total storage required from a TorchShape
-inline TorchSize storage(const TorchShape & shape)
-{
-  TorchSize sz = 1;
-  return std::accumulate(shape.begin(), shape.end(), sz,
-                         std::multiplies<TorchSize>());
-}
-
-/// Generically useful helper function that inserts a batch size into a shape
-inline TorchShape add_shapes(const TorchShape & A, 
-                             const TorchShape & B)
-{
-  TorchShape net(A);
-  net.insert(net.end(), B.begin(), B.end());
-  return net;
 }

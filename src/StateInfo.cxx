@@ -45,3 +45,9 @@ TorchShape StateInfo::required_shape(TorchSize nbatch) const
 {
   return TorchShape({nbatch, size_storage()});
 }
+
+TorchSize StateInfo::base_storage(std::string item) const
+{
+  size_t loc = _item_locations.at(item);
+  return _item_offsets[loc+1] - _item_offsets[loc];
+}

@@ -1,6 +1,7 @@
 #include <catch2/catch.hpp>
 
 #include "BatchedSymR2.h"
+#include "Scalar.h"
 #include "StateInfo.h"
 
 TEST_CASE("Test that we can add all the required objects to StateInfo "

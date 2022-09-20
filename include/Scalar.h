@@ -2,7 +2,7 @@
 
 #include "StandardUnbatchedTensor.h"
 
-/// A scalar stored as a (1,)
+/// A scalar stored as a (1,) tensor
 using ScalarBase = StandardUnbatchedTensor<1>;
 
 /// A single scalar stored as a (1,) tensor

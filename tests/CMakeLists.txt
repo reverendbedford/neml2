@@ -8,6 +8,8 @@ add_executable(unit_tests
       test_LabeledTensor.cxx
       test_StandardBatchedLabeledTensor.cxx
       test_StateInfo.cxx
+      test_State.cxx
+      test_StateDerivative.cxx
       )
 
 # Libraries and headers
