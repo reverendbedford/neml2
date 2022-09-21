@@ -2,6 +2,8 @@
 
 #include "StandardUnbatchedTensor.h"
 
+#include "SymR2.h"
+
 /// A rank 4 tensor with both minor symmetries
 using SymSymR4Base = StandardUnbatchedTensor<6,6>;
 

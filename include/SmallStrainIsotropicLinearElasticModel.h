@@ -2,6 +2,7 @@
 
 #include "SmallStrainMechanicalModel.h"
 
+#include "SymSymR4.h"
 #include "Scalar.h"
 
 /// Simplest test model...
@@ -19,4 +20,5 @@ class SmallStrainIsotropicLinearElasticModel: public SmallStrainMechanicalModel 
 
  protected:
   Scalar _E, _nu;
+  SymSymR4 _C;
 };

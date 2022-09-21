@@ -3,7 +3,7 @@
 using namespace torch::indexing;
 
 State::State(const StateInfo & info, TorchSize nbatch) :
-    StateBase(torch::empty(info.required_shape(nbatch))), 
+    StateBase(torch::empty(info.required_shape(nbatch), TorchDefaults)), 
     _info(info)
 {
   setup_views();

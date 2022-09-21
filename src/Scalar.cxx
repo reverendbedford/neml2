@@ -1,7 +1,7 @@
 #include "Scalar.h"
 
 Scalar::Scalar() :
-    ScalarBase(torch::zeros({1}))
+    ScalarBase(torch::zeros({1}, TorchDefaults))
 {
 
 }
@@ -13,7 +13,7 @@ Scalar::Scalar(const torch::Tensor & tensor) :
 }
 
 Scalar::Scalar(const double & other) :
-    ScalarBase(torch::empty({1}))
+    ScalarBase(torch::empty({1}, TorchDefaults))
 {
   index_put_({0}, other);
 }

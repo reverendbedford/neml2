@@ -24,7 +24,7 @@ TEST_CASE("Correctly fill isotropic tensor",
         {z, z, z, C4,z, z },
         {z, z, z, z, C4,z },
         {z, z, z, z, z, C4}
-        });
+        }, TorchDefaults);
     REQUIRE(torch::allclose(C, right));
   }
 }

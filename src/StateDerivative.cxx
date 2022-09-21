@@ -4,7 +4,8 @@ using namespace torch::indexing;
 
 StateDerivative::StateDerivative(const StateInfo & A, const StateInfo & B,
                                  TorchSize nbatch) :
-    StateBase(torch::empty(add_shapes({nbatch}, make_shape(A,B)))), 
+    StateBase(torch::empty(add_shapes({nbatch}, make_shape(A,B)), 
+                           TorchDefaults)), 
     _A(A), _B(B)
 {
   setup_views();
@@ -24,7 +25,8 @@ StateDerivative::StateDerivative(const StateInfo & A, const StateInfo & B,
 
 StateDerivative::StateDerivative(const State & A, const State & B) :
     StateBase(torch::empty(add_shapes({A.batch_size()}, 
-                                      make_shape(A.info(), B.info())))),
+                                      make_shape(A.info(), B.info())),
+                           TorchDefaults)),
     _A(A.info()), _B(B.info())
 {
   // Check that the two batch sizes were consistent

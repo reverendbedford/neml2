@@ -35,7 +35,8 @@ FixedDimTensor<N, D...>::FixedDimTensor() :
 
 template <TorchSize N, TorchSize ... D>
 FixedDimTensor<N, D...>::FixedDimTensor(TorchShapeRef batch_size) :
-    BatchTensor<N>(std::move(torch::empty(construct_sizes(batch_size))))
+    BatchTensor<N>(std::move(torch::empty(construct_sizes(batch_size),
+                                          TorchDefaults)))
 {
 }
 
