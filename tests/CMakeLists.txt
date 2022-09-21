@@ -12,6 +12,8 @@ add_executable(unit_tests
       test_StateDerivative.cxx
       test_Scalar.cxx
       test_ElasticityTensors.cxx
+      test_SymSymR4.cxx
+      test_SmallStrainIsotropicLinearElasticModel.cxx
       )
 
 # Libraries and headers

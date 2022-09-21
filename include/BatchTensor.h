@@ -51,7 +51,7 @@ class BatchTensor : public torch::Tensor {
   virtual TorchSize base_storage() const;
 
   /// Return an index sliced on the batch dimensions
-  virtual torch::Tensor base_index(TorchSlice indices);
+  virtual torch::Tensor base_index(TorchSlice indices) const;
   
   /// Set a index sliced on the batch dimensions to a value
   virtual void base_index_put(TorchSlice indices, 
@@ -111,7 +111,7 @@ TorchSize BatchTensor<N>::base_storage() const
 }
 
 template <TorchSize N>
-torch::Tensor BatchTensor<N>::base_index(TorchSlice indices)
+torch::Tensor BatchTensor<N>::base_index(TorchSlice indices) const
 {
   return torch::Tensor::index(make_slice(indices));
 }

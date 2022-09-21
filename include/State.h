@@ -20,7 +20,7 @@ class State : public StateBase
 
   /// As get_view but also interpret the view as an object
   template <typename T>
-  typename item_type<T>::type get(std::string name)
+  typename item_type<T>::type get(std::string name) const
   {
     // Ugh have to do the shape dynamically because the batch
     // size is not yet fixed
