@@ -15,6 +15,10 @@ find_package(Torch REQUIRED)
 # Catch2, for testing
 find_package(Catch2 REQUIRED)
 
+# MKL
+message(STATUS "MKL_ROOT=${MKL_ROOT}")
+LINK_DIRECTORIES(${MKL_ROOT}/lib)
+
 # base library
 add_subdirectory(src)
 
