@@ -42,12 +42,12 @@ TEST_CASE("FixedDimTensors can't be created with fewer than the number of "
           "required dimensions",
           "[FixedDimTensor]")
 {
-  // Can't make this guy, as it won't have enough dimensions for the batch
+  // Can't make this guy, as it won't have enough dimensions for the logical dimensions
   REQUIRE_THROWS(FixedDimTensor<2, 3, 4>(torch::zeros({10, 3, 4}, TorchDefaults)));
 }
 
 TEST_CASE("FixedDimTensors can't be created with the wrong base dimensions", "[FixedDimTensor]")
 {
-  // Batch is okay, base is not
+  // Batch is okay, base dimension (5, 4) isn't what we expected (3, 4)
   REQUIRE_THROWS(FixedDimTensor<2, 3, 4>(torch::zeros({10, 2, 5, 4}, TorchDefaults)));
 }

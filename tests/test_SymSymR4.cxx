@@ -11,7 +11,7 @@ TEST_CASE("SymSymR4 dotted with SymR2", "[SymSymR4]")
   // I'm suffering from a lack of setup functions
   SymSymR4 C = fill_isotropic(100.0, 0.3);
 
-  SECTION("SymR2")
+  SECTION("unbatched")
   {
     SymR2 other(torch::tensor({1.0, 2.0, 3.0, 4.0, 5.0, 6.0}, TorchDefaults));
     SymR2 result = C.dot(other);
@@ -22,7 +22,7 @@ TEST_CASE("SymSymR4 dotted with SymR2", "[SymSymR4]")
     REQUIRE(torch::allclose(result, correct));
   }
 
-  SECTION("BatchedSymR2")
+  SECTION("batched")
   {
     int nbatch = 10;
     BatchedSymR2 other(torch::repeat_interleave(
