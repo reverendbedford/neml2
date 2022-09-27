@@ -14,13 +14,13 @@ be a pain.
 To build and test:
 
 ```
-cmake -DCMAKE_PREFIX_PATH=/path/to/torch/share/cmake .
+cmake -DCMAKE_PREFIX_PATH=/path/to/torch/share/cmake -DMKL_INTERFACE_FULL=intel_lp64 .
 make
 make test
 ```
 
 where `/path/to/torch/share/cmake` is the path to the `share/cmake`
-folder for your torch install.
+folder for your torch install. `MKL_INTERFACE_FULL` is set to `intel_lp64` to ensure consistency with the MKL library shipped with torch (from conda).
 
 ## Things to take a look at
 
