@@ -3,9 +3,9 @@
 #include "StandardBatchedLabeledTensor.h"
 
 /// Common class for defining state vectors and state derivative matrices
-class StateBase: public StandardBatchedLabeledTensor
+class StateBase : public StandardBatchedLabeledTensor
 {
- public:
+public:
   StateBase(const torch::Tensor & tensor);
 
   /// Return the batch size

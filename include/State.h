@@ -8,15 +8,18 @@ using namespace torch::indexing;
 /// A state object providing flat tensor storage and easy access for model state
 class State : public StateBase
 {
- public:
+public:
   /// Setup with new storage
   State(const StateInfo & info, TorchSize nbatch);
 
   /// Setup with existing storage
   State(const StateInfo & info, const torch::Tensor & tensor);
 
-  template<typename T>
-  struct item_type{ typedef T type; };
+  template <typename T>
+  struct item_type
+  {
+    typedef T type;
+  };
 
   /// As get_view but also interpret the view as an object
   template <typename T>
@@ -41,10 +44,10 @@ class State : public StateBase
   /// Getter for the information object
   const StateInfo & info() const;
 
- protected:
+protected:
   /// Actually do the work of setting up all the required views
   virtual void setup_views();
 
- protected:
+protected:
   StateInfo _info;
 };

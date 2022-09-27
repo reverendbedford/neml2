@@ -8,8 +8,9 @@
 using BatchedScalarBase = StandardBatchedTensor<1>;
 
 /// A batch of scalars stored as a (nbatch,1)
-class BatchedScalar: public BatchedScalarBase {
- public:
+class BatchedScalar : public BatchedScalarBase
+{
+public:
   BatchedScalar(TorchSize nbatch);
   BatchedScalar(const torch::Tensor & tensor);
 };

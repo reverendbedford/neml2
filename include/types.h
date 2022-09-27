@@ -9,4 +9,7 @@ typedef torch::IntArrayRef TorchShapeRef;
 typedef std::vector<at::indexing::TensorIndex> TorchSlice;
 
 // Find a better way to handle this...
-#define TorchDefaults {torch::kFloat64}
+#define TorchDefaults                                                                              \
+  {                                                                                                \
+    torch::kFloat64                                                                                \
+  }

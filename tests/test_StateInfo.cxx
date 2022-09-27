@@ -5,7 +5,9 @@
 #include "StateInfo.h"
 
 TEST_CASE("Test that we can add all the required objects to StateInfo "
-          "and that the sizes are correct as we do so", "[StateInfo]") {
+          "and that the sizes are correct as we do so",
+          "[StateInfo]")
+{
   // Empty
   StateInfo test;
 
@@ -22,10 +24,11 @@ TEST_CASE("Test that we can add all the required objects to StateInfo "
   REQUIRE(test.nsubstates() == 0);
 
   // Check the actual size
-  REQUIRE(test.required_shape(10) == TorchShape({10,7}));
+  REQUIRE(test.required_shape(10) == TorchShape({10, 7}));
 }
 
-TEST_CASE("Test that we can add objects through substate", "[StateInfo]") {
+TEST_CASE("Test that we can add objects through substate", "[StateInfo]")
+{
   // Empty
   StateInfo test;
 

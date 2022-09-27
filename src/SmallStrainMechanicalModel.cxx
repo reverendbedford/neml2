@@ -1,6 +1,7 @@
 #include "SmallStrainMechanicalModel.h"
 
-StateInfo SmallStrainMechanicalModel::state() const
+StateInfo
+SmallStrainMechanicalModel::state() const
 {
   StateInfo state;
   state.add<BatchedSymR2>("stress");
@@ -8,7 +9,8 @@ StateInfo SmallStrainMechanicalModel::state() const
   return state;
 }
 
-StateInfo SmallStrainMechanicalModel::forces() const
+StateInfo
+SmallStrainMechanicalModel::forces() const
 {
   StateInfo forces;
   forces.add<BatchedSymR2>("strain");
