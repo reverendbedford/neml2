@@ -58,3 +58,11 @@ A lot of stuff:
 I haven't tried this yet, but changing `TorchDefaults` in `types.h`
 should let you run on the GPU without any other changes.  
 We may need to think more about this in the future.
+
+## Coupling with MOOSE
+So I've experimented this a little bit. At least on Ubuntu this is pretty straightforward. The easiest route is probably:
+1. Get a somewhat modern compiler with ldd version greater than 2.35.
+2. Compile petsc and libmesh manually, i.e. not from conda (as the ones provided by conda are linked to old GLIBC).
+3. Configure moose to use libtorch. For example `./scripts/setup_libtorch.sh` followed by `./configure --with-libtorch`.
+4. It's also necessary to exclude the files that includes neml2 from the UNITY build system, otherwise there will be namespace clashes.
+5. Compile the application. That's it.
