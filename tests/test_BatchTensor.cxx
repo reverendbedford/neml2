@@ -9,13 +9,13 @@ TEST_CASE("BatchTensors have the correct shapes", "[BatchTensors]")
 
   SECTION(" batch sizes are correct")
   {
-    REQUIRE(A.nbatch() == 2);
+    REQUIRE(A.batch_dim() == 2);
     REQUIRE(A.batch_sizes() == TorchShape({10, 5}));
   }
 
   SECTION(" base sizes are correct")
   {
-    REQUIRE(A.nbase() == 3);
+    REQUIRE(A.base_dim() == 3);
     REQUIRE(A.base_sizes() == TorchShape({4, 11, 2}));
   }
 }

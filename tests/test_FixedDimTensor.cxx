@@ -5,17 +5,18 @@
 TEST_CASE("FixedDimTensors have the right shapes, construct blank", "[FixedDimTensors]")
 {
   // 2 batch dimensions with sizes (10,2), base dimension (3,4)
-  FixedDimTensor<2, 3, 4> A({10, 2});
+  FixedDimTensor<2, 3, 4> A;
+  A = A.expand_batch({10, 2});
 
   SECTION(" batch sizes are correct")
   {
-    REQUIRE(A.nbatch() == 2);
+    REQUIRE(A.batch_dim() == 2);
     REQUIRE(A.batch_sizes() == TorchShape({10, 2}));
   }
 
   SECTION(" base sizes are correct")
   {
-    REQUIRE(A.nbase() == 2);
+    REQUIRE(A.base_dim() == 2);
     REQUIRE(A.base_sizes() == TorchShape({3, 4}));
   }
 }
@@ -27,20 +28,18 @@ TEST_CASE("FixedDimTensors have the right shapes, construct with tensor", "[Fixe
 
   SECTION(" batch sizes are correct")
   {
-    REQUIRE(A.nbatch() == 2);
+    REQUIRE(A.batch_dim() == 2);
     REQUIRE(A.batch_sizes() == TorchShape({10, 2}));
   }
 
   SECTION(" base sizes are correct")
   {
-    REQUIRE(A.nbase() == 2);
+    REQUIRE(A.base_dim() == 2);
     REQUIRE(A.base_sizes() == TorchShape({3, 4}));
   }
 }
 
-TEST_CASE("FixedDimTensors can't be created with fewer than the number of "
-          "required dimensions",
-          "[FixedDimTensor]")
+TEST_CASE("Not enough required dimensions", "[FixedDimTensor]")
 {
   // Can't make this guy, as it won't have enough dimensions for the logical dimensions
   REQUIRE_THROWS(FixedDimTensor<2, 3, 4>(torch::zeros({10, 3, 4}, TorchDefaults)));

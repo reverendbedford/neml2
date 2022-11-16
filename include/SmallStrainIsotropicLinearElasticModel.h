@@ -11,20 +11,10 @@ class SmallStrainIsotropicLinearElasticModel : public SmallStrainMechanicalModel
 public:
   SmallStrainIsotropicLinearElasticModel(const Scalar & E, const Scalar & nu);
 
-  /// Update the state to next time step
-  virtual void update(State & state_np1,
-                      const State & forces_np1,
-                      const State & state_n,
-                      const State & forces_n);
-
-  /// Provide the simple linearization of the state update
-  virtual void update_linearized(StateDerivative & tangent,
-                                 const State & forces_np1,
-                                 const State & state_n,
-                                 const State & forces_n);
-
-  /// Trivial implementation of internal_state (nothing)
-  virtual StateInfo internal_state() const;
+  /// Stress update
+  virtual State value(StateInput input);
+  /// Derivative of stress update
+  virtual StateDerivativeOutput dvalue(StateInput input);
 
 protected:
   Scalar _E, _nu;

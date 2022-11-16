@@ -1,11 +1,10 @@
 # Add all the source files
 add_library(batchedmat
-      BatchedScalar.cxx
-      BatchedSymR2.cxx
-      BatchedSymSymR4.cxx
+      utils.cxx
       Scalar.cxx
       SymR2.cxx
       SymSymR4.cxx
+      StateFunction.cxx
       StateBase.cxx
       State.cxx
       StateDerivative.cxx
@@ -13,8 +12,24 @@ add_library(batchedmat
       ConstitutiveModel.cxx
       SmallStrainMechanicalModel.cxx
       SmallStrainIsotropicLinearElasticModel.cxx
-      ElasticityTensors.cxx
-      )
+      YieldSurface.cxx
+      J2IsotropicYieldSurface.cxx
+      HardeningMap.cxx
+      IsotropicHardeningMap.cxx
+      LinearIsotropicHardening.cxx
+      InelasticFlowRate.cxx
+      PerzynaInelasticFlowRate.cxx
+      InelasticFlowDirection.cxx
+      AssociativeInelasticFlowDirection.cxx
+      AssociativeInelasticHardening.cxx
+      RateForm.cxx
+      InelasticModel.cxx
+      ImplicitFunctionModel.cxx
+      IntegratedRateFormModel.cxx
+      NonlinearSolver.cxx
+      NewtonNonlinearSolver.cxx
+      SolveImplicitFunctionModel.cxx
+)
 
 # My headers
 target_include_directories(batchedmat PRIVATE "../include")
