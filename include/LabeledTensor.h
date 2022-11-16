@@ -4,48 +4,55 @@
 #include "BatchTensor.h"
 
 #include <string>
-#include <map>
+#include <unordered_map>
 
 template <TorchSize N>
-class LabeledTensor : public BatchTensor<N>
+class LabeledTensor
 {
 public:
   /// Construct from a tensor without labels
   LabeledTensor(const torch::Tensor & tensor);
 
   /// Construct from a tensor with labels
-  LabeledTensor(const torch::Tensor & tensor, std::map<std::string, TorchSlice> labels);
+  LabeledTensor(const torch::Tensor & tensor,
+                const std::unordered_map<std::string, TorchSlice> & labels);
 
   /// Associate a label with a slice of the tensor
-  virtual void add_label(std::string label, TorchSlice indices);
+  void add_label(const std::string & label, const TorchSlice & indices);
 
   /// Return a labeled view into the tensor
-  virtual BatchTensor<N> get_view(std::string label) const;
+  BatchTensor<N> operator[](const std::string & label) const;
 
-  /// Set a labeled view into the tensor
-  virtual void set_view(std::string label, const torch::Tensor & tensor);
+  const BatchTensor<N> & tensor() const { return tensor_; }
+  BatchTensor<N> & tensor() { return tensor_; }
+
+  const std::unordered_map<std::string, TorchSlice> & labels() const { return labels_; }
 
 protected:
-  std::map<std::string, TorchSlice> labels_;
+  /// The underlying tensor (without the labels)
+  BatchTensor<N> tensor_;
+
+  /// The label-to-view map
+  std::unordered_map<std::string, TorchSlice> labels_;
 };
 
 template <TorchSize N>
 LabeledTensor<N>::LabeledTensor(const torch::Tensor & tensor)
-  : BatchTensor<N>(tensor)
+  : tensor_(tensor)
 {
 }
 
 template <TorchSize N>
 LabeledTensor<N>::LabeledTensor(const torch::Tensor & tensor,
-                                std::map<std::string, TorchSlice> labels)
-  : BatchTensor<N>(tensor),
+                                const std::unordered_map<std::string, TorchSlice> & labels)
+  : tensor_(tensor),
     labels_(labels)
 {
 }
 
 template <TorchSize N>
 void
-LabeledTensor<N>::add_label(std::string label, TorchSlice indices)
+LabeledTensor<N>::add_label(const std::string & label, const TorchSlice & indices)
 {
   auto p = labels_.insert({label, indices});
   if (!p.second)
@@ -55,14 +62,7 @@ LabeledTensor<N>::add_label(std::string label, TorchSlice indices)
 
 template <TorchSize N>
 BatchTensor<N>
-LabeledTensor<N>::get_view(std::string label) const
+LabeledTensor<N>::operator[](const std::string & label) const
 {
-  return BatchTensor<N>::base_index(labels_.at(label));
-}
-
-template <TorchSize N>
-void
-LabeledTensor<N>::set_view(std::string label, const torch::Tensor & tensor)
-{
-  BatchTensor<N>::base_index_put(labels_.at(label), tensor);
+  return tensor_.base_index(labels_.at(label));
 }

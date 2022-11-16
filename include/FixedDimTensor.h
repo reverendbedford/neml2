@@ -13,29 +13,19 @@ public:
   /// Default constructor
   FixedDimTensor();
 
-  /// Make an empty tensor with given batch size
-  FixedDimTensor(TorchShapeRef batch_size);
-
   /// Make from another tensor
   FixedDimTensor(const torch::Tensor & tensor);
 
-  /// The actual (static) base shape
-  static inline const TorchShape base_shape{{D...}};
+  /// Make a batched tensor filled with default base tensor
+  FixedDimTensor(const torch::Tensor & tensor, TorchShapeRef batch_size);
 
-protected:
-  /// Return what the full shape of the tensor should be, given the batch size
-  std::vector<TorchSize> construct_sizes(TorchShapeRef batch_size) const;
+  /// The actual (static) base shape
+  static inline const TorchShape _base_sizes = TorchShape({D...});
 };
 
 template <TorchSize N, TorchSize... D>
 FixedDimTensor<N, D...>::FixedDimTensor()
-  : BatchTensor<N>()
-{
-}
-
-template <TorchSize N, TorchSize... D>
-FixedDimTensor<N, D...>::FixedDimTensor(TorchShapeRef batch_size)
-  : BatchTensor<N>(std::move(torch::empty(construct_sizes(batch_size), TorchDefaults)))
+  : BatchTensor<N>(TorchShapeRef{std::vector<TorchSize>(N, 1)}, TorchShapeRef({D...}))
 {
 }
 
@@ -44,23 +34,19 @@ FixedDimTensor<N, D...>::FixedDimTensor(const torch::Tensor & tensor)
   : BatchTensor<N>(tensor)
 {
   // Check to make sure we got the correct base_sizes()
-  if (base_shape != BatchTensor<N>::base_sizes())
+  if (_base_sizes != this->base_sizes())
     throw std::runtime_error("Base size of the supplied tensor "
                              "does not match the templated "
                              "base size");
 }
 
 template <TorchSize N, TorchSize... D>
-TorchShape
-FixedDimTensor<N, D...>::construct_sizes(TorchShapeRef batch_size) const
+FixedDimTensor<N, D...>::FixedDimTensor(const torch::Tensor & tensor, TorchShapeRef batch_size)
+  : BatchTensor<N>(tensor, batch_size)
 {
-  // Quick check to make sure batch_size is consistent with N, this could become
-  // a static assertion
-  if (batch_size.size() != N)
-    throw std::runtime_error("Proposed batch shape does not match "
-                             "the number of templated batch dimensions");
-
-  TorchShape total(batch_size.vec());
-  total.insert(total.end(), base_shape.begin(), base_shape.end());
-  return total;
+  // Check to make sure we got the correct base_sizes()
+  if (_base_sizes != this->base_sizes())
+    throw std::runtime_error("Base size of the supplied tensor "
+                             "does not match the templated "
+                             "base size");
 }

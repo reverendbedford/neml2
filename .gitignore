@@ -1,6 +1,7 @@
 CMakeCache.txt
 CMakeFiles
 cmake_install.cmake
+CMakeDoxyfile.in
 detect_cuda*
 *.swp
 Makefile
@@ -13,3 +14,6 @@ Testing
 tests/unit_tests
 .cache
 compile_commands.json
+coverage
+doc/class-doc
+*.html

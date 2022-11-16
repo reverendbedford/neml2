@@ -1,6 +1,26 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
 
-project (BATCHEDMAT LANGUAGES CXX)
+project(BATCHEDMAT LANGUAGES CXX)
+
+# Let's be very careful
+add_compile_options(-Wall -Wextra -pedantic -Werror)
+
+# For debugging
+option(DEBUG "include debugging information" OFF)
+
+if(DEBUG)
+  message(STATUS "Configure to include debugging information")
+  add_compile_options(-g -O0)
+endif()
+
+# For coverage
+option(COVERAGE "include coverage information" OFF)
+
+if(COVERAGE)
+  message(STATUS "Configure to include coverage information")
+  add_compile_options(-O0 -fprofile-arcs -ftest-coverage)
+  add_link_options(--coverage)
+endif()
 
 # Enable testing
 enable_testing()
@@ -24,3 +44,10 @@ add_subdirectory(src)
 
 # tests
 add_subdirectory(tests)
+
+# Doxygen
+option(DOCUMENTATION "Build documentation: doxygen" OFF)
+
+if(DOCUMENTATION)
+  add_subdirectory(doc)
+endif()

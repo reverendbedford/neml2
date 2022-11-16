@@ -1,4 +1,5 @@
 #include "ConstitutiveModel.h"
+#include "StateInfo.h"
 
 State
 ConstitutiveModel::state_update(const State & forces_np1,
@@ -10,14 +11,10 @@ ConstitutiveModel::state_update(const State & forces_np1,
       (state_n.batch_size() != forces_n.batch_size()))
     throw std::runtime_error("Input batch sizes do not agree");
 
-  State state_np1(state(), forces_np1.batch_size());
-
-  update(state_np1, forces_np1, state_n, forces_n);
-
-  return state_np1;
+  return value({forces_np1, state_n, forces_n});
 }
 
-StateDerivative
+StateDerivativeOutput
 ConstitutiveModel::linearized_state_update(const State & forces_np1,
                                            const State & state_n,
                                            const State & forces_n)
@@ -27,9 +24,11 @@ ConstitutiveModel::linearized_state_update(const State & forces_np1,
       (state_n.batch_size() != forces_n.batch_size()))
     throw std::runtime_error("Input batch sizes do not agree");
 
-  StateDerivative jac(state(), forces(), forces_np1.batch_size());
+  return dvalue({forces_np1, state_n, forces_n});
+}
 
-  update_linearized(jac, forces_np1, state_n, forces_n);
-
-  return jac;
+StateInfo
+ConstitutiveModel::output() const
+{
+  return state();
 }
