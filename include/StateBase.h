@@ -1,13 +1,14 @@
 #pragma once
 
-#include "StandardBatchedLabeledTensor.h"
+#include "LabeledTensor.h"
 
 /// Common class for defining state vectors and state derivative matrices
-class StateBase : public StandardBatchedLabeledTensor
+class StateBase : public LabeledTensor<1>
 {
 public:
-  StateBase(const torch::Tensor & tensor);
+  /// Forward all the constructors
+  using LabeledTensor<1>::LabeledTensor;
 
   /// Return the batch size
-  virtual TorchSize batch_size() const;
+  TorchSize batch_size() const;
 };

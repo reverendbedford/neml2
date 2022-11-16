@@ -2,9 +2,9 @@
 
 #include <map>
 #include <type_traits>
-
-#include "BatchedScalar.h"
-#include "BatchedSymR2.h"
+#include "types.h"
+#include "Scalar.h"
+#include "SymR2.h"
 
 /// The list of all objects currently allowed in a state object
 template <typename T>
@@ -12,11 +12,11 @@ struct is_state : std::false_type
 {
 };
 template <>
-struct is_state<BatchedScalar> : std::true_type
+struct is_state<Scalar> : std::true_type
 {
 };
 template <>
-struct is_state<BatchedSymR2> : std::true_type
+struct is_state<SymR2> : std::true_type
 {
 };
 
@@ -27,15 +27,15 @@ class StateInfo
 {
 public:
   StateInfo();
+  StateInfo(std::map<std::string, size_t> locations, std::vector<TorchSize> offsets);
 
   /// Add any tensor that can be stored in a State object
   template <typename T, typename = std::enable_if_t<is_state<T>::value>>
   void add(std::string name)
   {
     // The storage is *flat* -- will need to reshape when we return!
-    auto sz = storage_size(T::base_shape);
-    _item_locations.insert({name, nitems()});
-    _item_offsets.push_back(size_storage() + sz);
+    auto sz = storage_size(T::_base_sizes);
+    add(name, sz);
   }
 
   /// Add some substate defined by another StateInfo object
@@ -68,6 +68,30 @@ public:
   /// Base storage (ignoring batch) needed for an object
   TorchSize base_storage(std::string object) const;
 
+  /// Add a prefix to the names of the items
+  StateInfo & add_prefix(std::string prefix);
+
+  /// Add a suffix to the names of the items
+  StateInfo & add_suffix(std::string suffix);
+
+  /// Check to see if two StateInfo objects are equivalent
+  bool equals(const StateInfo & other) const;
+
+  /// Just get the names of the variables
+  std::vector<std::string> items() const;
+
+  /// Just get the names of the substate objects
+  std::vector<std::string> substate_names() const;
+
+  /// Rename a particular item
+  StateInfo & rename(std::string original, std::string rename);
+
+  /// Return StateInfo with one item removed
+  StateInfo remove(std::string name) const;
+
+  /// Add an item from raw name/storage information
+  void add(std::string name, size_t sz);
+
 protected:
   // Location of each item in the vector of offsets
   std::map<std::string, size_t> _item_locations;
@@ -81,3 +105,9 @@ protected:
   // The full substate items, stored for convenience in reconstructing
   std::map<std::string, StateInfo> _substates;
 };
+
+/// Equality between StateInfo objects, expressed via the equals method
+bool operator==(const StateInfo & a, const StateInfo & b);
+
+/// Inequality between StateInfo objects
+bool operator!=(const StateInfo & a, const StateInfo & b);
