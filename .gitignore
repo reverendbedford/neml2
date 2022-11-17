@@ -11,7 +11,7 @@ CTestTestfile.cmake
 DartConfiguration.tcl
 Testing
 *.cmake
-tests/unit_tests
+tests/tests
 .cache
 compile_commands.json
 coverage

@@ -1,7 +1,7 @@
 #include "utils.h"
-#include "Scalar.h"
-#include "State.h"
-#include "StateDerivative.h"
+#include "tensors/Scalar.h"
+#include "state/State.h"
+#include "state/StateDerivative.h"
 
 using namespace torch::indexing;
 
