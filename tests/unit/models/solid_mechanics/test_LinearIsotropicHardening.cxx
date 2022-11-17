@@ -1,4 +1,4 @@
-#include "utils.h"
+#include "TestUtils.h"
 #include <catch2/catch.hpp>
 
 #include "models/solid_mechanics/LinearIsotropicHardening.h"
@@ -24,7 +24,7 @@ TEST_CASE("Derivative of map is correct", "[LinearIsotropicHardening]")
   SECTION("test derivative")
   {
     auto direct = model.dvalue(state);
-    auto numerical = utils::state_derivative(
+    auto numerical = state_derivative(
         std::bind(&LinearIsotropicHardening::value, model, std::placeholders::_1), state);
     REQUIRE(torch::allclose(direct.tensor(), numerical.tensor()));
   }

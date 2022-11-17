@@ -1,4 +1,4 @@
-#include "utils.h"
+#include "TestUtils.h"
 #include <catch2/catch.hpp>
 
 #include "models/solid_mechanics/AssociativeInelasticFlowDirection.h"
@@ -33,7 +33,7 @@ TEST_CASE("AssociativeInelasticFlowDirection defined correctly",
   SECTION("derivative")
   {
     auto direct = model.dvalue(state);
-    auto numerical = utils::state_derivative(
+    auto numerical = state_derivative(
         std::bind(&AssociativeInelasticFlowDirection::value, model, std::placeholders::_1), state);
     REQUIRE(torch::allclose(direct.tensor(), numerical.tensor()));
   }

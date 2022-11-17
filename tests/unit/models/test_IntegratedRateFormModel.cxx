@@ -1,6 +1,6 @@
 #include <catch2/catch.hpp>
 
-#include "utils.h"
+#include "TestUtils.h"
 
 #include "models/solid_mechanics/AssociativeInelasticFlowDirection.h"
 #include "models/solid_mechanics/AssociativeInelasticHardening.h"
@@ -59,15 +59,12 @@ TEST_CASE("IntegratedRateFormModel defined correctly", "[IntegratedRateFormModel
     auto R = model.value({state_np1, force_np1, state_n, force_n});
     REQUIRE(R.info().items() == std::vector<std::string>({"equivalent_plastic_strain", "stress"}));
     REQUIRE(R.tensor().sizes() == TorchShape({batch, 7}));
-
-    std::cout << R.tensor().batch_index({0}) << std::endl;
-    exit(0);
   }
 
   auto exact_derivs = model.dvalue({state_np1, force_np1, state_n, force_n});
-  auto num_derivs = utils::state_derivatives(
-      std::bind(&IntegratedRateFormModel::value, model, std::placeholders::_1),
-      {state_np1, force_np1, state_n, force_n});
+  auto num_derivs =
+      state_derivatives(std::bind(&IntegratedRateFormModel::value, model, std::placeholders::_1),
+                        {state_np1, force_np1, state_n, force_n});
 
   SECTION(" derivative with respect to current state is correct")
   {
