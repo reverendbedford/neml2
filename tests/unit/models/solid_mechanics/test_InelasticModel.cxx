@@ -1,6 +1,6 @@
 #include <catch2/catch.hpp>
 
-#include "utils.h"
+#include "TestUtils.h"
 
 #include "models/solid_mechanics/AssociativeInelasticFlowDirection.h"
 #include "models/solid_mechanics/AssociativeInelasticHardening.h"
@@ -55,7 +55,7 @@ TEST_CASE("InelasticModel defined correctly", "[InelasticModel]")
   }
 
   // Get all the derivatives
-  auto num_derivs = utils::state_derivatives(
+  auto num_derivs = state_derivatives(
       std::bind(&InelasticModel::value, model, std::placeholders::_1), {state, force, force_rate});
   auto exact_derivs = model.dvalue({state, force, force_rate});
 

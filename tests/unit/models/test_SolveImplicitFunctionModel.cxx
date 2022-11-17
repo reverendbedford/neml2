@@ -1,6 +1,6 @@
 #include <catch2/catch.hpp>
 
-#include "utils.h"
+#include "TestUtils.h"
 
 #include "models/solid_mechanics/AssociativeInelasticFlowDirection.h"
 #include "models/solid_mechanics/AssociativeInelasticHardening.h"
@@ -62,11 +62,11 @@ TEST_CASE("SolveImplicitFunctionModel defined correctly", "[SolveImplicitFunctio
   // Now I can get the tangents
   auto tangents = model.dvalue({force_np1, state_n, force_n});
   // Need to wrap this in a lambda because of the update...
-  auto num_tangents = utils::state_derivatives(
-      std::bind(&SolveImplicitFunctionModel::value, model, std::placeholders::_1),
-      {force_np1, state_n, force_n},
-      1e-6,
-      1e-12);
+  auto num_tangents =
+      state_derivatives(std::bind(&SolveImplicitFunctionModel::value, model, std::placeholders::_1),
+                        {force_np1, state_n, force_n},
+                        1e-6,
+                        1e-12);
 
   SECTION(" dstate_np1/dforce_np1 correct")
   {

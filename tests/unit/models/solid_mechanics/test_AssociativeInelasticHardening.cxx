@@ -1,4 +1,4 @@
-#include "utils.h"
+#include "TestUtils.h"
 #include <catch2/catch.hpp>
 
 #include "models/solid_mechanics/AssociativeInelasticHardening.h"
@@ -36,7 +36,7 @@ TEST_CASE("AssociativeInelasticHardening defined correctly", "[AssociativeInelas
   SECTION(" derivative is correct and has the correct names")
   {
     auto exact = model.dvalue(state);
-    auto numerical = utils::state_derivative(
+    auto numerical = state_derivative(
         std::bind(&AssociativeInelasticHardening::value, model, std::placeholders::_1), state);
 
     // Check on the names of everything
