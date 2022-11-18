@@ -2,25 +2,20 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
 
 project(BATCHEDMAT LANGUAGES CXX)
 
-# Let's be very careful
+# Werror, etc 
 add_compile_options(-Wall -Wextra -pedantic -Werror)
 
-# For debugging
-option(DEBUG "include debugging information" OFF)
+# Accept Release, Debug, and RelWithDebInfo, add Coverage build types 
+set(CMAKE_CXX_FLAGS_COVERAGE
+      "-O0 -fprofile-arcs -ftest-coverage"
+      CACHE STRING "Flags used by C++ compiler during coverage builds."
+      FORCE )
 
-if(DEBUG)
-  message(STATUS "Configure to include debugging information")
-  add_compile_options(-g -O0)
-endif()
-
-# For coverage
-option(COVERAGE "include coverage information" OFF)
-
-if(COVERAGE)
-  message(STATUS "Configure to include coverage information")
-  add_compile_options(-O0 -fprofile-arcs -ftest-coverage)
-  add_link_options(--coverage)
-endif()
+if (NOT CMAKE_BUILD_TYPE)
+      SET(CMAKE_BUILD_TYPE Debug
+            CACHE STRING "Choose the type of build : None Debug Release RelWithDebInfo MinSizeRel Coverage."
+            FORCE)
+ENDIF(NOT CMAKE_BUILD_TYPE)
 
 # Enable testing
 enable_testing()
@@ -33,9 +28,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Torch REQUIRED)
 
 # Catch2, for testing
-find_package(Catch2 REQUIRED)
+add_subdirectory("${PROJECT_SOURCE_DIR}/extern/Catch2")
+list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/extern/Catch2/contrib")
 
-# MKL
+# MKL (I don't think this should be here)
 message(STATUS "MKL_ROOT=${MKL_ROOT}")
 LINK_DIRECTORIES(${MKL_ROOT}/lib)
 
