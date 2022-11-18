@@ -7,7 +7,7 @@ jobs:
       matrix:
         btype: [Release, Debug]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
       - uses: actions/setup-python@v4
@@ -17,3 +17,12 @@ jobs:
       - run: cmake -DCMAKE_PREFIX_PATH="`pip show torch | grep -oP '(?<=Location:\ ).*'`/torch/share/cmake" -DCMAKE_BUILD_TYPE=${{ matrix.btype }} .
       - run: make -j 2
       - run: make test
+  clang-format:
+    name: Formatting check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run clang-format to check style
+        uses: jidicula/clang-format-action@v4.9.0
+        with:
+          clang-format-version: '14'

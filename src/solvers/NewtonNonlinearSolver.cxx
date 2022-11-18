@@ -28,11 +28,11 @@ NewtonNonlinearSolver::solve(const torch::Tensor & x0, NonlinearSystem & system)
   {
     // Get the new value of x by Newton's method
     auto J = system.jacobian(x);
-    #if (TORCH_VERSION_MINOR > 12)
+#if (TORCH_VERSION_MINOR > 12)
     x -= torch::linalg::solve(J, R, true);
-    #else
+#else
     x -= torch::linalg::solve(J, R);
-    #endif
+#endif
 
     // Update R and the norm of R
     R = system.residual(x);
