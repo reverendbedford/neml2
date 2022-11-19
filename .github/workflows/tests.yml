@@ -1,0 +1,49 @@
+name: tests
+on: [pull_request]
+jobs:
+  clang-format:
+    name: Formatting check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run clang-format to check style
+        uses: jidicula/clang-format-action@v4.9.0
+        with:
+          clang-format-version: '14'
+  build-test-linux:
+    needs: clang-format
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        btype: [Release, Debug]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - run: pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cpu
+      - run: cmake -DCMAKE_PREFIX_PATH="`pip show torch | grep -oP '(?<=Location:\ ).*'`/torch/share/cmake" -DCMAKE_BUILD_TYPE=${{ matrix.btype }} .
+      - run: make -j 2
+      - run: make test
+  coverage:
+    name: Code coverage check
+    needs: build-test-linux
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - run: sudo apt install lcov
+      - run: pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cpu
+      - run: cmake -DCMAKE_PREFIX_PATH="`pip show torch | grep -oP '(?<=Location:\ ).*'`/torch/share/cmake" -DCMAKE_BUILD_TYPE=Coverage .
+      - run: make -j 2
+      - run: ./scripts/coverage.sh
+      - uses: romeovs/lcov-reporter-action@v0.2.16
+        with:
+          lcov-file: ./coverage/coverage.info
+          github-token: ${{ secrets.PR_ACTION }}

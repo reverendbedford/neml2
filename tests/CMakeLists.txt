@@ -1,8 +1,9 @@
-file(GLOB_RECURSE TEST_UTILS src/*.cxx)
-
 # Register with CTest
 include(CTest)
 include(Catch)
+
+# Test utilities
+add_subdirectory(src)
 
 # ###################################################
 # Unit tests
@@ -16,7 +17,7 @@ if(UNIT)
             ${UNIT_TESTS}
       )
       target_link_libraries(unit_tests Catch2::Catch2)
-      target_link_libraries(unit_tests batchedmat)
+      target_link_libraries(unit_tests batchedmat testutils)
       target_include_directories(unit_tests PUBLIC
             "${CMAKE_SOURCE_DIR}/include"
             "${CMAKE_SOURCE_DIR}/tests/include")
@@ -35,7 +36,7 @@ if(REGRESSION)
             ${REGRESSION_TESTS}
       )
       target_link_libraries(regression_tests Catch2::Catch2)
-      target_link_libraries(regression_tests batchedmat)
+      target_link_libraries(regression_tests batchedmat testutils)
       target_include_directories(regression_tests PUBLIC
             "${CMAKE_SOURCE_DIR}/include"
             "${CMAKE_SOURCE_DIR}/tests/include")
@@ -54,7 +55,7 @@ if(PROFILING)
             ${PROFILING_TESTS}
       )
       target_link_libraries(profiling_tests Catch2::Catch2)
-      target_link_libraries(profiling_tests batchedmat)
+      target_link_libraries(profiling_tests batchedmat testutils)
       target_include_directories(profiling_tests PUBLIC
             "${CMAKE_SOURCE_DIR}/include"
             "${CMAKE_SOURCE_DIR}/tests/include")
