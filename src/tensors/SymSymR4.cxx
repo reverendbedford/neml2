@@ -66,14 +66,56 @@ SymSymR4::init_isotropic_E_nu(const Scalar & E, const Scalar & nu)
   return C;
 }
 
-SymR2
-SymSymR4::operator*(const SymR2 & b)
+SymSymR4
+SymSymR4::operator-() const
 {
-  return torch::matmul(*this, b.unsqueeze(2)).squeeze(2);
+  return -torch::Tensor(*this);
 }
 
 SymSymR4
-SymSymR4::operator*(const SymSymR4 & b)
+operator+(const SymSymR4 & a, const SymSymR4 & b)
 {
-  return torch::matmul(*this, b);
+  return torch::operator+(a, b);
+}
+
+SymSymR4
+operator-(const SymSymR4 & a, const SymSymR4 & b)
+{
+  return torch::operator-(a, b);
+}
+
+SymSymR4
+operator*(const SymSymR4 & a, const Scalar & b)
+{
+  return torch::operator*(a, b.unsqueeze(-1));
+}
+
+SymSymR4
+operator*(const Scalar & a, const SymSymR4 & b)
+{
+  return b * a;
+}
+
+SymR2
+operator*(const SymSymR4 & a, const SymR2 & b)
+{
+  return torch::matmul(a, b.unsqueeze(2)).squeeze(2);
+}
+
+SymR2
+operator*(const SymR2 & a, const SymSymR4 & b)
+{
+  return torch::matmul(a.unsqueeze(2), b).squeeze(2);
+}
+
+SymSymR4
+operator*(const SymSymR4 & a, const SymSymR4 & b)
+{
+  return torch::matmul(a, b);
+}
+
+SymSymR4
+operator/(const SymSymR4 & a, const Scalar & b)
+{
+  return torch::operator/(a, b.unsqueeze(-1));
 }

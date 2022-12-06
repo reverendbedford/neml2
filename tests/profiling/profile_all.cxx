@@ -10,8 +10,6 @@
 #include "tensor/Scalar.h"
 #include "tensor/SymR2.h"
 #include "tensor/SymSymR4.h"
-#include "models/solid_mechanics/SmallStrainIsotropicLinearElasticModel.h"
-#include "dispatching/WorkDispatcher.h"
 
 class BenchmarkCommon
 {
@@ -84,74 +82,6 @@ TEST_CASE_METHOD(BenchmarkCommon, "Benchmark SymSymR4", "[BENCHMARK][SymSymR4]")
     BENCHMARK(bname("(USymSymR4)_ijkl(BSymR2)_kl", nbatch)) { return C_unbatched * A_batched; };
     BENCHMARK(bname("(BSymSymR4)_ijkl(BSymR2)_kl", nbatch)) { return C_batched * A_batched; };
     // clang-format on
-  }
-}
-
-TEST_CASE_METHOD(BenchmarkCommon,
-                 "Benchmark linear elasticity",
-                 "[BENCHMARK][SmallStrainIsotropicLinearElasticModel]")
-{
-  SmallStrainIsotropicLinearElasticModel model(100, 0.3);
-  for (TorchSize nbatch : nbatches)
-  {
-    // Fairly arbitrary strains and previous stress...
-    SymR2 strain_np1(torch::tensor({0.25, 0.0, -0.05, 0.15, 0.1, -0.5}, TorchDefaults), nbatch);
-    SymR2 strain_n(torch::tensor({0.1, 0.05, 0.5, -0.075, 0.7, -0.1}, TorchDefaults), nbatch);
-    SymR2 stress_n(torch::tensor({0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, TorchDefaults), nbatch);
-
-    // Actual state objects
-    State state_n(model.state(), stress_n);
-    State forces_np1(model.forces(), strain_np1);
-    State forces_n(model.forces(), strain_n);
-
-    // clang-format off
-    BENCHMARK(bname("update", nbatch)) { return model.state_update(forces_np1, state_n, forces_n); };
-    BENCHMARK(bname("tangent", nbatch)) { return model.linearized_state_update(forces_np1, state_n, forces_n); };
-    BENCHMARK(bname("AD tangent", nbatch)) { return model.linearized_state_update(forces_np1, state_n, forces_n, /*AD=*/true); };
-    // clang-format on
-  }
-}
-
-TEST_CASE_METHOD(BenchmarkCommon,
-                 "Benchmark WorkDispatcher",
-                 "[BENCHMARK][WorkDispatcher][SmallStrainIsotropicLinearElasticModel]")
-{
-  SmallStrainIsotropicLinearElasticModel model(100, 0.3);
-  for (TorchSize nbatch : nbatches)
-  {
-    // Fairly arbitrary strains and previous stress...
-    SymR2 strain_np1(torch::tensor({0.25, 0.0, -0.05, 0.15, 0.1, -0.5}, TorchDefaults), nbatch);
-    SymR2 strain_n(torch::tensor({0.1, 0.05, 0.5, -0.075, 0.7, -0.1}, TorchDefaults), nbatch);
-    SymR2 stress_n(torch::tensor({0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, TorchDefaults), nbatch);
-
-    // Actual state objects
-    State state_n(model.state(), stress_n);
-    State forces_np1(model.forces(), strain_np1);
-    State forces_n(model.forces(), strain_n);
-
-    std::vector<TorchSize> chunk_sizes = {
-        128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072, 262144, -1};
-    for (TorchSize chunk_size : chunk_sizes)
-      BENCHMARK(bname("update", nbatch, chunk_size))
-      {
-        if (chunk_size == -1)
-          chunk_size = std::numeric_limits<TorchSize>::max();
-        Progress progress(nbatch);
-        std::vector<State> state_np1_chunks;
-        chunked_map(
-            [&](TorchSize begin, TorchSize end)
-            {
-              const auto range = Slice(begin, end);
-              State forces_np1_chunk(forces_np1.info(), forces_np1.batch_index({range}));
-              State state_n_chunk(state_n.info(), state_n.batch_index({range}));
-              State forces_n_chunk(forces_n.info(), forces_n.batch_index({range}));
-              State state_np1_chunk =
-                  model.state_update(forces_np1_chunk, state_n_chunk, forces_n_chunk);
-              state_np1_chunks.push_back(state_np1_chunk);
-            },
-            chunk_size,
-            progress);
-      };
   }
 }
 #endif // ENABLE_BENCHMARK

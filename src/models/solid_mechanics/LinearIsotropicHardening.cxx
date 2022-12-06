@@ -1,30 +1,34 @@
 #include "models/solid_mechanics/LinearIsotropicHardening.h"
-#include "tensors/SymSymR4.h"
 
-LinearIsotropicHardening::LinearIsotropicHardening(Scalar s0, Scalar K)
-  : _s0(s0),
+LinearIsotropicHardening::LinearIsotropicHardening(const std::string & name, Scalar s0, Scalar K)
+  : IsotropicHardening(name),
+    _s0(s0),
     _K(K)
 {
 }
 
-State
-LinearIsotropicHardening::value(State input)
+void
+LinearIsotropicHardening::set_value(LabeledVector in,
+                                    LabeledVector out,
+                                    LabeledMatrix * dout_din) const
 {
-  State res = State::same_batch(output(), input);
-  res.set<SymR2>("stress", input.get<SymR2>("stress"));
-  res.set<Scalar>("isotropic_hardening", _s0 + _K * input.get<Scalar>("equivalent_plastic_strain"));
-  return res;
-}
+  // Retrieve whatever we need from the input,
+  // Here we need the equivalent plastic strain
+  auto ep = in.slice(0, "state").get<Scalar>("equivalent_plastic_strain");
 
-StateDerivative
-LinearIsotropicHardening::dvalue(State input)
-{
-  StateDerivative res = StateDerivative::same_batch(output(), input);
-  res.set<SymSymR4>(
-      "stress",
-      "stress",
-      SymSymR4::init(SymSymR4::FillMethod::identity_sym).expand_batch(input.batch_size()));
-  res.set<Scalar>(
-      "isotropic_hardening", "equivalent_plastic_strain", _K.expand_batch(input.batch_size()));
-  return res;
+  // Map from equivalent plastic strain --> isotropic hardening
+  auto h = _s0 + _K * ep;
+
+  // Set the output
+  out.slice(0, "state").set(h, "isotropic_hardening");
+
+  if (dout_din)
+  {
+    // Derivative of the map equivalent plastic strain --> isotropic hardening
+    auto dh_dep = _K.expand_batch(in.batch_size());
+
+    // Set the output
+    dout_din->block("state", "state")
+        .set(dh_dep, "isotropic_hardening", "equivalent_plastic_strain");
+  }
 }

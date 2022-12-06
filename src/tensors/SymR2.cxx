@@ -1,6 +1,12 @@
 #include "tensors/SymR2.h"
 #include "tensors/SymSymR4.h"
 
+SymSymR4
+SymR2::identity_map()
+{
+  return SymSymR4::init(SymSymR4::FillMethod::identity_sym);
+}
+
 SymR2
 SymR2::zeros()
 {
@@ -47,9 +53,9 @@ SymR2::operator()(TorchSize i, TorchSize j) const
 }
 
 SymR2
-SymR2::operator-(const SymR2 & other) const
+SymR2::operator-() const
 {
-  return static_cast<torch::Tensor>(*this) - other;
+  return -torch::Tensor(*this);
 }
 
 Scalar
@@ -100,4 +106,76 @@ SymSymR4
 SymR2::outer(const SymR2 & other) const
 {
   return einsum({*this, other}, {"i", "j"});
+}
+
+SymR2
+operator+(const SymR2 & a, const Scalar & b)
+{
+  return torch::operator+(a, b);
+}
+
+SymR2
+operator+(const Scalar & a, const SymR2 & b)
+{
+  return torch::operator+(a, b);
+}
+
+SymR2
+operator+(const SymR2 & a, const SymR2 & b)
+{
+  return torch::operator+(a, b);
+}
+
+SymR2
+operator-(const SymR2 & a, const Scalar & b)
+{
+  return torch::operator-(a, b);
+}
+
+SymR2
+operator-(const Scalar & a, const SymR2 & b)
+{
+  return torch::operator-(a, b);
+}
+
+SymR2
+operator-(const SymR2 & a, const SymR2 & b)
+{
+  return torch::operator-(a, b);
+}
+
+SymR2
+operator*(const SymR2 & a, const Scalar & b)
+{
+  return torch::operator*(a, b);
+}
+
+SymR2
+operator*(const Scalar & a, const SymR2 & b)
+{
+  return torch::operator*(a, b);
+}
+
+SymR2
+operator*(const SymR2 & a, const SymR2 & b)
+{
+  return torch::operator*(a, b);
+}
+
+SymR2
+operator/(const SymR2 & a, const Scalar & b)
+{
+  return torch::operator/(a, b);
+}
+
+SymR2
+operator/(const Scalar & a, const SymR2 & b)
+{
+  return torch::operator/(a, b);
+}
+
+SymR2
+operator/(const SymR2 & a, const SymR2 & b)
+{
+  return torch::operator/(a, b);
 }

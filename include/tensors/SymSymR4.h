@@ -23,11 +23,8 @@ public:
   static SymSymR4 init(FillMethod method, const std::vector<Scalar> & vals = {});
   /// @}
 
-  /// Tensor product ijkl,kl->ij
-  SymR2 operator*(const SymR2 & b);
-
-  /// Tensor product ijkl,klmn->ijmn
-  SymSymR4 operator*(const SymSymR4 & b);
+  // Negation
+  SymSymR4 operator-() const;
 
 private:
   /// Helpers for the fill method
@@ -37,3 +34,20 @@ private:
   static SymSymR4 init_isotropic_E_nu(const Scalar & E, const Scalar & nu);
   /// @}
 };
+
+// We would like to have exact match for the basic operators to avoid ambiguity, and also to keep
+// the return type as one of our supported primitive tensor types. All we need to do is to forward
+// the calls to torch :)
+/// @{
+SymSymR4 operator+(const SymSymR4 & a, const SymSymR4 & b);
+
+SymSymR4 operator-(const SymSymR4 & a, const SymSymR4 & b);
+
+SymSymR4 operator*(const SymSymR4 & a, const Scalar & b);
+SymSymR4 operator*(const Scalar & a, const SymSymR4 & b);
+SymR2 operator*(const SymSymR4 & a, const SymR2 & b);
+SymR2 operator*(const SymR2 & a, const SymSymR4 & b);
+SymSymR4 operator*(const SymSymR4 & a, const SymSymR4 & b);
+
+SymSymR4 operator/(const SymSymR4 & a, const Scalar & b);
+/// @}

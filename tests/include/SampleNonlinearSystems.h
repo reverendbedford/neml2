@@ -1,28 +1,24 @@
 #pragma once
 
 #include "solvers/NonlinearSystem.h"
-#include "types.h"
 
 /// Test system of equations, just also gives you the exact solution
 class TestNonlinearSystem : public NonlinearSystem
 {
 public:
-  virtual torch::Tensor exact_solution() const = 0;
-  virtual torch::Tensor guess() const = 0;
+  virtual BatchTensor<1> exact_solution(BatchTensor<1> x) const = 0;
+  virtual BatchTensor<1> guess(BatchTensor<1> x) const = 0;
 };
 
 /// Batched x**n for arbitrary n
 class PowerTestSystem : public TestNonlinearSystem
 {
 public:
-  PowerTestSystem(TorchSize nbatch, TorchSize n);
+  PowerTestSystem();
 
-  virtual torch::Tensor residual(torch::Tensor x);
-  virtual torch::Tensor jacobian(torch::Tensor x);
-  virtual torch::Tensor exact_solution() const;
-  virtual torch::Tensor guess() const;
-
-private:
-  TorchSize _nbatch;
-  TorchSize _n;
+  virtual void set_residual(BatchTensor<1> x,
+                            BatchTensor<1> residual,
+                            BatchTensor<1> * Jacobian = nullptr) const;
+  virtual BatchTensor<1> exact_solution(BatchTensor<1> x) const;
+  virtual BatchTensor<1> guess(BatchTensor<1> x) const;
 };

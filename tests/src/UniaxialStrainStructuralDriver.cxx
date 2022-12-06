@@ -1,106 +1,75 @@
 #include "UniaxialStrainStructuralDriver.h"
-#include "models/ConstitutiveModel.h"
 
-UniaxialStrainStructuralDriver::UniaxialStrainStructuralDriver(ConstitutiveModel & model,
-                                                               torch::Tensor max_strain,
-                                                               torch::Tensor strain_rate)
+UniaxialStrainStructuralDriver::UniaxialStrainStructuralDriver(Model & model,
+                                                               Scalar max_strain,
+                                                               Scalar end_time,
+                                                               TorchSize nsteps)
   : _model(model),
     _max_strain(max_strain),
-    _strain_rate(strain_rate)
+    _end_time(end_time),
+    _nsteps(nsteps),
+    _nbatch(end_time.batch_sizes()[0])
 {
-  // Check that the shapes were correct
-  if ((_max_strain.sizes().size() != 1) || (_strain_rate.sizes().size() != 1))
-    throw std::runtime_error("max_strain and strain_rate must be 1D");
-
-  if (_max_strain.sizes()[0] != _strain_rate.sizes()[0])
-    throw std::runtime_error("max_strain and strain_rate must have the "
-                             "same size, equal to the batch size");
 }
 
-TorchSize
-UniaxialStrainStructuralDriver::batch_size() const
+std::tuple<std::vector<LabeledVector>, std::vector<LabeledVector>>
+UniaxialStrainStructuralDriver::run()
 {
-  return _max_strain.sizes()[0];
+  // Create 2 LabeledMatrix to store the inputs and outputs
+  std::vector<LabeledVector> all_inputs(_nsteps + 1);
+  std::vector<LabeledVector> all_outputs(_nsteps + 1);
+
+  // strain increment and time increment
+  Scalar delta_strain_x = _max_strain / _nsteps;
+  Scalar delta_strain_y = -0.5 * delta_strain_x;
+  Scalar delta_strain_z = -0.5 * delta_strain_x;
+  SymR2 delta_strain = SymR2::init(delta_strain_x, delta_strain_y, delta_strain_z);
+  Scalar dt = _end_time / _nsteps;
+
+  // Initialize
+  auto in = LabeledVector(_nbatch, _model.input());
+  auto out = LabeledVector(_nbatch, _model.output());
+
+  // Initialize the old state it if necessary
+  // For example _model.init_state(in);
+
+  // Initialize the old forces
+  Scalar current_time = Scalar(0, _nbatch);
+  SymR2 current_strain = SymR2::zeros().expand_batch(_nbatch);
+  in.slice(0, "old_forces").set(current_time, "time");
+  in.slice(0, "old_forces").set(current_strain, "total_strain");
+
+  for (TorchSize i = 0; i < _nsteps + 1; i++)
+  {
+    // Advance the step
+    current_time = current_time + dt;
+    current_strain = current_strain + delta_strain;
+    in.slice(0, "forces").set(current_strain, "total_strain");
+    in.slice(0, "forces").set(current_time, "time");
+
+    // Perform the constitutive update
+    out = solve_step(in, i, all_inputs, all_outputs);
+
+    // Propagate the forces and state in time
+    // current --> old
+    in.slice(0, "old_state").copy(out.slice(0, "state"));
+    in.slice(0, "old_forces").copy(in.slice(0, "forces"));
+  }
+
+  return {all_inputs, all_outputs};
 }
 
-void
-UniaxialStrainStructuralDriver::run(TorchSize nsteps)
+LabeledVector
+UniaxialStrainStructuralDriver::solve_step(LabeledVector in,
+                                           TorchSize i,
+                                           std::vector<LabeledVector> & all_inputs,
+                                           std::vector<LabeledVector> & all_outputs) const
 {
-  // Setup storage for the forces and states arrays
-  TorchShape forces_shape = _model.forces().required_shape(batch_size());
-  forces_shape.insert(forces_shape.begin(), nsteps);
-  _forces = torch::zeros(forces_shape, TorchDefaults);
-  TorchShape states_shape = _model.state().required_shape(batch_size());
-  states_shape.insert(states_shape.begin(), nsteps);
-  _states = torch::zeros(states_shape, TorchDefaults);
+  auto out = _model.value(in);
 
-  // Figure out where to insert the uniaxial strain and time
-  TorchSize strain_index =
-      _model.forces().item_offsets()[_model.forces().item_locations().at("strain")];
-  TorchSize time_index =
-      _model.forces().item_offsets()[_model.forces().item_locations().at("time")];
+  // Store the results
+  all_inputs[i] = in.clone();
+  all_outputs[i] = out.clone();
 
-  // Setup time and strain in the forces array
-  for (TorchSize i = 0; i < batch_size(); i++)
-  {
-    // 1st entry in strain: linspace between 0 and max_strain
-    _forces.index_put_({Slice(), i, strain_index},
-                       torch::linspace(0, _max_strain[i].item<Real>(), nsteps, TorchDefaults));
-    // 2nd and 3rd entries: -0.5 * first
-    _forces.index_put_({Slice(), i, strain_index + 1},
-                       torch::linspace(0, _max_strain[i].item<Real>(), nsteps, TorchDefaults) *
-                           -0.5);
-    _forces.index_put_({Slice(), i, strain_index + 2},
-                       torch::linspace(0, _max_strain[i].item<Real>(), nsteps, TorchDefaults) *
-                           -0.5);
-
-    // time: strain / strain_rate
-    _forces.index_put_(
-        {Slice(), i, time_index},
-        torch::linspace(
-            0, _max_strain[i].item<Real>() / _strain_rate[i].item<Real>(), nsteps, TorchDefaults));
-  }
-
-  // Setup initial state
-  State state_n(_model.state(), _states.index({0}));
-  _model.initial_state(state_n);
-
-  // Loop through time to run the model
-  for (TorchSize i = 1; i < nsteps; i++)
-  {
-    State forces_n(_model.forces(), _forces.index({i - 1}));
-    State forces_np1(_model.forces(), _forces.index({i}));
-    State state_n(_model.state(), _states.index({i - 1}));
-
-    State state_np1 = _model.state_update(forces_np1, state_n, forces_n);
-
-    _states.index_put_({i}, state_np1.tensor());
-  }
-}
-
-void
-write_csv(torch::Tensor tensor, std::string fname, std::string delimiter)
-{
-  std::ofstream buffer(fname);
-
-  // First line is shape
-  for (size_t i = 0; i < tensor.sizes().size(); i++)
-  {
-    buffer << tensor.sizes()[i];
-    if (i != tensor.sizes().size() - 1)
-      buffer << delimiter;
-  }
-  buffer << std::endl;
-
-  // Flatten and write array
-  tensor = tensor.flatten().contiguous().cpu();
-
-  Real * ptr = tensor.data_ptr<Real>();
-
-  for (TorchSize i = 0; i < tensor.sizes()[0]; i++)
-  {
-    buffer << *ptr++;
-    if (i != tensor.sizes()[0] - 1)
-      buffer << delimiter;
-  }
+  return out;
 }
