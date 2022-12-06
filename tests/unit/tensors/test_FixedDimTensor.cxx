@@ -41,12 +41,16 @@ TEST_CASE("FixedDimTensors have the right shapes, construct with tensor", "[Fixe
 
 TEST_CASE("Not enough required dimensions", "[FixedDimTensor]")
 {
+#ifndef NDEBUG
   // Can't make this guy, as it won't have enough dimensions for the logical dimensions
   REQUIRE_THROWS(FixedDimTensor<2, 3, 4>(torch::zeros({10, 3, 4}, TorchDefaults)));
+#endif
 }
 
 TEST_CASE("FixedDimTensors can't be created with the wrong base dimensions", "[FixedDimTensor]")
 {
+#ifndef NDEBUG
   // Batch is okay, base dimension (5, 4) isn't what we expected (3, 4)
   REQUIRE_THROWS(FixedDimTensor<2, 3, 4>(torch::zeros({10, 2, 5, 4}, TorchDefaults)));
+#endif
 }
