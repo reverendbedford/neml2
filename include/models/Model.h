@@ -31,10 +31,10 @@ public:
   set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const = 0;
 
   /// Convenient shortcut to construct and return the model value
-  virtual LabeledVector value(LabeledVector in) const final;
+  virtual LabeledVector value(LabeledVector in) const;
 
   /// Convenient shortcut to construct and return the model derivative
-  virtual LabeledMatrix dvalue(LabeledVector in) const final;
+  virtual LabeledMatrix dvalue(LabeledVector in) const;
 
   const std::vector<Model *> & registered_models() const { return _registered_models; }
 

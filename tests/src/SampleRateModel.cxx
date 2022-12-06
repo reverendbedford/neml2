@@ -1,27 +1,31 @@
 #include "SampleRateModel.h"
 #include "tensors/SymSymR4.h"
 
-SampleRateModel::SampleRateModel(const std::string & name)
-  : Model(name)
+template <bool is_ad>
+SampleRateModelTempl<is_ad>::SampleRateModelTempl(const std::string & name)
+  : SampleRateModelBase<is_ad>(name)
 {
-  input().add<LabeledAxis>("state");
-  input().subaxis("state").add<Scalar>("foo");
-  input().subaxis("state").add<Scalar>("bar");
-  input().subaxis("state").add<SymR2>("baz");
+  this->input().template add<LabeledAxis>("state");
+  this->input().subaxis("state").template add<Scalar>("foo");
+  this->input().subaxis("state").template add<Scalar>("bar");
+  this->input().subaxis("state").template add<SymR2>("baz");
 
-  input().add<LabeledAxis>("forces");
-  input().subaxis("forces").add<Scalar>("temperature");
+  this->input().template add<LabeledAxis>("forces");
+  this->input().subaxis("forces").template add<Scalar>("temperature");
 
-  output().add<LabeledAxis>("state");
-  output().subaxis("state").add<Scalar>("foo_rate");
-  output().subaxis("state").add<Scalar>("bar_rate");
-  output().subaxis("state").add<SymR2>("baz_rate");
+  this->output().template add<LabeledAxis>("state");
+  this->output().subaxis("state").template add<Scalar>("foo_rate");
+  this->output().subaxis("state").template add<Scalar>("bar_rate");
+  this->output().subaxis("state").template add<SymR2>("baz_rate");
 
-  setup();
+  this->setup();
 }
 
+template <bool is_ad>
 void
-SampleRateModel::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din) const
+SampleRateModelTempl<is_ad>::set_value(LabeledVector in,
+                                       LabeledVector out,
+                                       LabeledMatrix * dout_din) const
 {
   // Grab the trial states
   auto foo = in.slice(0, "state").get<Scalar>("foo");
@@ -73,3 +77,6 @@ SampleRateModel::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * 
     dout_din->block("state", "forces").set(dbaz_dot_dT, "baz_rate", "temperature");
   }
 }
+
+template class SampleRateModelTempl<true>;
+template class SampleRateModelTempl<false>;
