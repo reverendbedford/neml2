@@ -19,7 +19,7 @@ public:
   /// Make a batched tensor filled with default base tensor
   FixedDimTensor(const torch::Tensor & tensor, TorchShapeRef batch_size);
 
-  /// The actual (static) base shape
+  /// The base shape
   static inline const TorchShape _base_sizes = TorchShape({D...});
 };
 

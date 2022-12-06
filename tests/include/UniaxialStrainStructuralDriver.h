@@ -1,36 +1,29 @@
 #pragma once
 
-#include "models/ConstitutiveModel.h"
+#include "models/Model.h"
 
 /// Drive a model under uniaxial strain conditions
-class UniaxialStrainStructuralDriver
+class UniaxialStrainStructuralDriver : public LabeledAxisInterface
 {
 public:
   // TODO: add temperature here and elsewhere
-  UniaxialStrainStructuralDriver(ConstitutiveModel & model,
-                                 torch::Tensor max_strain,
-                                 torch::Tensor strain_rate);
+  UniaxialStrainStructuralDriver(Model & model,
+                                 Scalar max_strain,
+                                 Scalar end_time,
+                                 TorchSize nsteps);
 
   /// Actually run the model and store the results
-  void run(TorchSize nsteps);
-
-  /// Getter for the model forces
-  const torch::Tensor & forces() const { return _forces; };
-
-  /// Getter for the model state
-  const torch::Tensor & states() const { return _states; };
+  std::tuple<std::vector<LabeledVector>, std::vector<LabeledVector>> run();
 
 protected:
-  TorchSize batch_size() const;
+  LabeledVector solve_step(LabeledVector in,
+                           TorchSize i,
+                           std::vector<LabeledVector> & all_inputs,
+                           std::vector<LabeledVector> & all_outputs) const;
 
-protected:
-  ConstitutiveModel & _model;
-  torch::Tensor _max_strain;
-  torch::Tensor _strain_rate;
-
-  torch::Tensor _forces;
-  torch::Tensor _states;
+  Model & _model;
+  Scalar _max_strain;
+  Scalar _end_time;
+  TorchSize _nsteps;
+  TorchSize _nbatch;
 };
-
-/// Really simple torch csv writer
-void write_csv(torch::Tensor tensor, std::string fname, std::string delimiter = ",");

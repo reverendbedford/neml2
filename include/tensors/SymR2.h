@@ -12,6 +12,9 @@ class SymR2 : public FixedDimTensor<1, 6>
 public:
   using FixedDimTensor<1, 6>::FixedDimTensor;
 
+  /// The derivative of a SymR2 with respect to itself
+  [[nodiscard]] static SymSymR4 identity_map();
+
   /// Named constructors
   /// @{
   /// Make zero with some batch size
@@ -34,7 +37,8 @@ public:
   /// Accessor
   Scalar operator()(TorchSize i, TorchSize j) const;
 
-  SymR2 operator-(const SymR2 & other) const;
+  /// Negation
+  SymR2 operator-() const;
 
   /// Trace
   Scalar tr() const;
@@ -63,3 +67,24 @@ public:
 private:
   static constexpr TorchSize reverse_index[3][3] = {{0, 5, 4}, {5, 1, 3}, {4, 3, 2}};
 };
+
+// We would like to have exact match for the basic operators to avoid ambiguity, and also to keep
+// the return type as one of our supported primitive tensor types. All we need to do is to forward
+// the calls to torch :)
+/// @{
+SymR2 operator+(const SymR2 & a, const Scalar & b);
+SymR2 operator+(const Scalar & a, const SymR2 & b);
+SymR2 operator+(const SymR2 & a, const SymR2 & b);
+
+SymR2 operator-(const SymR2 & a, const Scalar & b);
+SymR2 operator-(const Scalar & a, const SymR2 & b);
+SymR2 operator-(const SymR2 & a, const SymR2 & b);
+
+SymR2 operator*(const SymR2 & a, const Scalar & b);
+SymR2 operator*(const Scalar & a, const SymR2 & b);
+SymR2 operator*(const SymR2 & a, const SymR2 & b);
+
+SymR2 operator/(const SymR2 & a, const Scalar & b);
+SymR2 operator/(const Scalar & a, const SymR2 & b);
+SymR2 operator/(const SymR2 & a, const SymR2 & b);
+/// @}

@@ -20,4 +20,37 @@ public:
   /// Scalar c(2.3, 1000);
   /// ~~~~~~~~~~~~~~~~~~~~
   Scalar(double init, TorchSize batch_size = 1);
+
+  /// Negation
+  Scalar operator-() const;
+
+  /// The derivative of a Scalar with respect to itself
+  [[nodiscard]] static Scalar identity_map() { return 1; }
 };
+
+// We would like to have exact match for the basic operators to avoid ambiguity, and also to keep
+// the return type as one of our supported primitive tensor types. All we need to do is to forward
+// the calls to torch :)
+/// @{
+Scalar operator+(const Scalar & a, const Scalar & b);
+BatchTensor<1> operator+(const BatchTensor<1> & a, const Scalar & b);
+BatchTensor<1> operator+(const Scalar & a, const BatchTensor<1> & b);
+
+Scalar operator-(const Scalar & a, const Scalar & b);
+BatchTensor<1> operator-(const BatchTensor<1> & a, const Scalar & b);
+BatchTensor<1> operator-(const Scalar & a, const BatchTensor<1> & b);
+
+Scalar operator*(const Scalar & a, const Scalar & b);
+BatchTensor<1> operator*(const BatchTensor<1> & a, const Scalar & b);
+BatchTensor<1> operator*(const Scalar & a, const BatchTensor<1> & b);
+
+Scalar operator/(const Scalar & a, const Scalar & b);
+BatchTensor<1> operator/(const BatchTensor<1> & a, const Scalar & b);
+BatchTensor<1> operator/(const Scalar & a, const BatchTensor<1> & b);
+/// @}
+
+/// Macaulay bracket and its derivative
+/// @{
+Scalar macaulay(const Scalar & a, const Scalar & a0);
+Scalar dmacaulay(const Scalar & a, const Scalar & a0);
+/// @}

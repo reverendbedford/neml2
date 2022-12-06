@@ -68,7 +68,7 @@
 
 ## [Things we are not happy with](#neml2-)
 
-1. The `State` and `StateDerivative` classes should share more code.
+1. The `State` and `LabeledMatrix` classes should share more code.
 2. ~~The `Batched` and `Unbatched` classes should share more code.~~
 3. I'm not content with the interface in `ConstitutiveModel`.  I want to
   - Think a bit about return by value and return by reference.
@@ -187,7 +187,7 @@
                      torch::autograd::grad({state_np1}, {forces_np1}, {grad_outputs}, true)[0]);
     }
 
-    return StateDerivative(state(), forces(), jac);
+    return LabeledMatrix(state(), forces(), jac);
   ```
 
 ### [Try linking with an external package, e.g. MOOSE.](#neml2-)

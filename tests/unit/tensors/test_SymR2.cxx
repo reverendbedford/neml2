@@ -9,7 +9,7 @@ TEST_CASE("SymR2", "[SymR2]")
   {
     SECTION("unbatched")
     {
-      Scalar a = 2.3;
+      Scalar a(2.3);
       SymR2 result = SymR2::init(a);
       SymR2 correct(torch::tensor({{2.3, 2.3, 2.3, 0.0, 0.0, 0.0}}, TorchDefaults));
       REQUIRE(torch::allclose(result, correct));
@@ -28,9 +28,9 @@ TEST_CASE("SymR2", "[SymR2]")
   {
     SECTION("unbatched")
     {
-      Scalar a11 = 2.3;
-      Scalar a22 = -1.3;
-      Scalar a33 = 5.6;
+      Scalar a11(2.3);
+      Scalar a22(-1.3);
+      Scalar a33(5.6);
       SymR2 result = SymR2::init(a11, a22, a33);
       SymR2 correct(torch::tensor({{2.3, -1.3, 5.6, 0.0, 0.0, 0.0}}, TorchDefaults));
       REQUIRE(torch::allclose(result, correct));
@@ -51,12 +51,12 @@ TEST_CASE("SymR2", "[SymR2]")
   {
     SECTION("unbatched")
     {
-      Scalar a11 = 2.3;
-      Scalar a22 = -1.3;
-      Scalar a33 = 5.6;
-      Scalar a23 = 3.8;
-      Scalar a13 = 1.1;
-      Scalar a12 = -9.1;
+      Scalar a11(2.3);
+      Scalar a22(-1.3);
+      Scalar a33(5.6);
+      Scalar a23(3.8);
+      Scalar a13(1.1);
+      Scalar a12(-9.1);
       SymR2 result = SymR2::init(a11, a22, a33, a23, a13, a12);
       SymR2 correct(torch::tensor(
           {{2.3, -1.3, 5.6, utils::sqrt2 * 3.8, utils::sqrt2 * 1.1, utils::sqrt2 * -9.1}},
@@ -91,7 +91,7 @@ TEST_CASE("SymR2", "[SymR2]")
     SECTION("unbatched")
     {
       Scalar result = A_unbatched(1, 2);
-      Scalar correct = 3 / utils::sqrt2;
+      Scalar correct(3 / utils::sqrt2);
       REQUIRE(torch::allclose(result, correct));
     }
     SECTION("batched")
@@ -107,7 +107,7 @@ TEST_CASE("SymR2", "[SymR2]")
     SECTION("unbatched")
     {
       Scalar result = A_unbatched.tr();
-      Scalar correct = 3;
+      Scalar correct(3);
       REQUIRE(torch::allclose(result, correct));
     }
     SECTION("batched")
@@ -155,7 +155,7 @@ TEST_CASE("SymR2", "[SymR2]")
     SECTION("unbatched")
     {
       Scalar result = A_unbatched.det();
-      Scalar correct = 9.4264049530;
+      Scalar correct(9.4264049530);
       REQUIRE(torch::allclose(result, correct));
     }
     SECTION("batched")
@@ -171,7 +171,7 @@ TEST_CASE("SymR2", "[SymR2]")
     SECTION("unbatched")
     {
       Scalar result = A_unbatched.norm_sq();
-      Scalar correct = 55;
+      Scalar correct(55);
       REQUIRE(torch::allclose(result, correct));
     }
     SECTION("batched")
@@ -187,7 +187,7 @@ TEST_CASE("SymR2", "[SymR2]")
     SECTION("unbatched")
     {
       Scalar result = A_unbatched.norm();
-      Scalar correct = std::sqrt(55);
+      Scalar correct(std::sqrt(55));
       REQUIRE(torch::allclose(result, correct));
     }
     SECTION("batched")
@@ -203,7 +203,7 @@ TEST_CASE("SymR2", "[SymR2]")
     SECTION("unbatched,unbatched")
     {
       Scalar result = A_unbatched.inner(B_unbatched);
-      Scalar correct = 70;
+      Scalar correct(70);
       REQUIRE(torch::allclose(result, correct));
     }
     SECTION("unbatched,batched")

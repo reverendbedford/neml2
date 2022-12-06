@@ -6,24 +6,24 @@ TEST_CASE("Unbatched Scalar", "[Scalar]")
 {
   SECTION("construct from plain data type")
   {
-    Scalar a = 2.5;
+    Scalar a(2.5);
     torch::Tensor correct(torch::tensor({2.5}, TorchDefaults));
     REQUIRE(torch::allclose(a, correct));
   }
 
   SECTION("+ unbatched Scalar")
   {
-    Scalar a = 2.5;
-    Scalar b = 3.1;
+    Scalar a(2.5);
+    Scalar b(3.1);
     Scalar result = a + b;
-    Scalar correct = 5.6;
+    Scalar correct(5.6);
     REQUIRE(torch::allclose(result, correct));
   }
 
   SECTION("+ batched Scalar")
   {
     int nbatch = 5;
-    Scalar a = 2.5;
+    Scalar a(2.5);
     Scalar b(3.1, nbatch);
     Scalar result = a + b;
     Scalar correct(5.6, nbatch);
@@ -32,17 +32,17 @@ TEST_CASE("Unbatched Scalar", "[Scalar]")
 
   SECTION("- unbatched Scalar")
   {
-    Scalar a = 2.5;
-    Scalar b = 3.1;
+    Scalar a(2.5);
+    Scalar b(3.1);
     Scalar result = a - b;
-    Scalar correct = -0.6;
+    Scalar correct(-0.6);
     REQUIRE(torch::allclose(result, correct));
   }
 
   SECTION("- batched Scalar")
   {
     int nbatch = 5;
-    Scalar a = 2.5;
+    Scalar a(2.5);
     Scalar b(3.1, nbatch);
     Scalar result = a - b;
     Scalar correct(-0.6, nbatch);
@@ -51,17 +51,17 @@ TEST_CASE("Unbatched Scalar", "[Scalar]")
 
   SECTION("* unbatched Scalar")
   {
-    Scalar a = 2.5;
-    Scalar b = 3.1;
+    Scalar a(2.5);
+    Scalar b(3.1);
     Scalar result = a * b;
-    Scalar correct = 2.5 * 3.1;
+    Scalar correct(2.5 * 3.1);
     REQUIRE(torch::allclose(result, correct));
   }
 
   SECTION("* batched Scalar")
   {
     int nbatch = 5;
-    Scalar a = 2.5;
+    Scalar a(2.5);
     Scalar b(3.1, nbatch);
     Scalar result = a * b;
     Scalar correct(2.5 * 3.1, nbatch);
@@ -70,17 +70,17 @@ TEST_CASE("Unbatched Scalar", "[Scalar]")
 
   SECTION("/ unbatched Scalar")
   {
-    Scalar a = 2.5;
-    Scalar b = 3.1;
+    Scalar a(2.5);
+    Scalar b(3.1);
     Scalar result = a / b;
-    Scalar correct = 2.5 / 3.1;
+    Scalar correct(2.5 / 3.1);
     REQUIRE(torch::allclose(result, correct));
   }
 
   SECTION("/ batched Scalar")
   {
     int nbatch = 5;
-    Scalar a = 2.5;
+    Scalar a(2.5);
     Scalar b(3.1, nbatch);
     Scalar result = a / b;
     Scalar correct(2.5 / 3.1, nbatch);
@@ -102,7 +102,7 @@ TEST_CASE("Batched Scalar", "[Scalar]")
   SECTION("+ unbatched Scalar")
   {
     Scalar a(2.5, nbatch);
-    Scalar b = 3.1;
+    Scalar b(3.1);
     Scalar result = a + b;
     Scalar correct(5.6, nbatch);
     REQUIRE(torch::allclose(result, correct));
@@ -120,7 +120,7 @@ TEST_CASE("Batched Scalar", "[Scalar]")
   SECTION("- unbatched Scalar")
   {
     Scalar a(2.5, nbatch);
-    Scalar b = 3.1;
+    Scalar b(3.1);
     Scalar result = a - b;
     Scalar correct(-0.6, nbatch);
     REQUIRE(torch::allclose(result, correct));
@@ -138,7 +138,7 @@ TEST_CASE("Batched Scalar", "[Scalar]")
   SECTION("* unbatched Scalar")
   {
     Scalar a(2.5, nbatch);
-    Scalar b = 3.1;
+    Scalar b(3.1);
     Scalar result = a * b;
     Scalar correct(2.5 * 3.1, nbatch);
     REQUIRE(torch::allclose(result, correct));
@@ -156,7 +156,7 @@ TEST_CASE("Batched Scalar", "[Scalar]")
   SECTION("/ unbatched Scalar")
   {
     Scalar a(2.5, nbatch);
-    Scalar b = 3.1;
+    Scalar b(3.1);
     Scalar result = a / b;
     Scalar correct(2.5 / 3.1, nbatch);
     REQUIRE(torch::allclose(result, correct));

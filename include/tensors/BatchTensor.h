@@ -1,6 +1,7 @@
 #pragma once
 
 #include "types.h"
+#include "utils.h"
 
 #include <stdexcept>
 #include <array>
@@ -29,23 +30,6 @@ einsum(const std::initializer_list<torch::Tensor> & tensors,
     equation += "->..." + std::string(out_indices);
 
   return torch::einsum(equation, tensors);
-}
-
-/// Helper to get the total storage required from a TorchShape
-inline TorchSize
-storage_size(const TorchShape & shape)
-{
-  TorchSize sz = 1;
-  return std::accumulate(shape.begin(), shape.end(), sz, std::multiplies<TorchSize>());
-}
-
-/// Generically useful helper function that inserts a batch size into a shape
-inline TorchShape
-add_shapes(TorchShapeRef A, TorchShapeRef B)
-{
-  TorchShape net(A.vec());
-  net.insert(net.end(), B.begin(), B.end());
-  return net;
 }
 
 /// Tensor where the first index is a batch dimension
@@ -95,6 +79,12 @@ public:
   /// Return a new view with values broadcast along the batch dimensions.
   BatchTensor<N> expand_batch(TorchShapeRef batch_size) const;
 
+  /// Negation
+  BatchTensor<N> operator-() const;
+
+  /// Identity
+  static BatchTensor<N> identity(TorchSize n);
+
 private:
   /// Add a slice on the batch dimensions to an index
   TorchSlice make_slice(TorchSlice base) const;
@@ -102,7 +92,7 @@ private:
 
 template <TorchSize N>
 BatchTensor<N>::BatchTensor()
-  : BatchTensor<N>(TorchShapeRef(std::vector<int>(N, 1)), TorchShapeRef({}))
+  : BatchTensor<N>(TorchShapeRef(std::vector<TorchSize>(N, 1)), TorchShapeRef({}))
 {
 }
 
@@ -118,7 +108,7 @@ BatchTensor<N>::BatchTensor(const torch::Tensor & tensor)
 
 template <TorchSize N>
 BatchTensor<N>::BatchTensor(TorchShapeRef batch_size, TorchShapeRef base_size)
-  : torch::Tensor(std::move(torch::zeros(add_shapes(batch_size, base_size), TorchDefaults)))
+  : torch::Tensor(std::move(torch::zeros(utils::add_shapes(batch_size, base_size), TorchDefaults)))
 {
   // Quick check to make sure batch_size is consistent with N, this could become
   // a static assertion
@@ -217,3 +207,36 @@ BatchTensor<N>::expand_batch(TorchShapeRef batch_size) const
   net.insert(net.end(), base_dim(), -1);
   return torch::expand_copy(*this, net);
 }
+
+template <TorchSize N>
+BatchTensor<N>
+BatchTensor<N>::operator-() const
+{
+  return -torch::Tensor(*this);
+}
+
+template <TorchSize N>
+BatchTensor<N>
+BatchTensor<N>::identity(TorchSize n)
+{
+  return torch::eye(n, TorchDefaults).index(TorchSlice(N, torch::indexing::None));
+}
+
+// We would like to have exact match for the basic operators to avoid ambiguity, and also to keep
+// the return type as one of our supported primitive tensor types. All we need to do is to forward
+// the calls to torch :)
+/// @{
+template <TorchSize N>
+BatchTensor<N>
+operator+(const BatchTensor<N> & a, const BatchTensor<N> & b)
+{
+  return torch::operator+(a, b);
+}
+
+template <TorchSize N>
+BatchTensor<N>
+operator-(const BatchTensor<N> & a, const BatchTensor<N> & b)
+{
+  return torch::operator-(a, b);
+}
+/// @}

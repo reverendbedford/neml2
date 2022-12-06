@@ -2,45 +2,30 @@
 
 using namespace torch::indexing;
 
-PowerTestSystem::PowerTestSystem(TorchSize nbatch, TorchSize n)
-  : _nbatch(nbatch),
-    _n(n)
+PowerTestSystem::PowerTestSystem() {}
+
+void
+PowerTestSystem::set_residual(BatchTensor<1> x,
+                              BatchTensor<1> residual,
+                              BatchTensor<1> * Jacobian) const
 {
+  TorchSize n = x.base_sizes()[0];
+  for (TorchSize i = 0; i < n; i++)
+    residual.base_index_put({i}, x.base_index({i}).pow(i + 1) - 1.0);
+
+  if (Jacobian)
+    for (TorchSize i = 0; i < n; i++)
+      Jacobian->base_index_put({i, i}, (i + 1) * x.base_index({i}).pow(i));
 }
 
-torch::Tensor
-PowerTestSystem::residual(torch::Tensor x)
+BatchTensor<1>
+PowerTestSystem::exact_solution(BatchTensor<1> x) const
 {
-  torch::Tensor result = torch::zeros({_nbatch, _n});
-  for (TorchSize i = 0; i < _n; i++)
-  {
-    result.index_put_({Ellipsis, i}, x.index({Ellipsis, i}).pow(i + 1) - 1.0);
-  }
-
-  return result;
+  return torch::ones_like(x, TorchDefaults);
 }
 
-torch::Tensor
-PowerTestSystem::jacobian(torch::Tensor x)
+BatchTensor<1>
+PowerTestSystem::guess(BatchTensor<1> x) const
 {
-  torch::Tensor result = torch::zeros({_nbatch, _n, _n});
-
-  for (TorchSize i = 0; i < _n; i++)
-  {
-    result.index_put_({Ellipsis, i, i}, (i + 1) * x.index({Ellipsis, i}).pow(i));
-  }
-
-  return result;
-}
-
-torch::Tensor
-PowerTestSystem::exact_solution() const
-{
-  return torch::ones({_nbatch, _n});
-}
-
-torch::Tensor
-PowerTestSystem::guess() const
-{
-  return torch::ones({_nbatch, _n}) * 2.0;
+  return torch::ones_like(x, TorchDefaults) * 2;
 }
