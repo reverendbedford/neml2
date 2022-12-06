@@ -174,6 +174,8 @@ TEST_CASE("Batched Scalar", "[Scalar]")
 
 TEST_CASE("Scalar can't be created with semantically non-scalar tensors", "[Scalar]")
 {
+#ifndef NDEBUG
   // This can't happen as the tensor dimension is not (1,)
   REQUIRE_THROWS(Scalar(torch::zeros({2, 2}, TorchDefaults)));
+#endif
 }

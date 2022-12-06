@@ -2,6 +2,7 @@
 
 #include "types.h"
 #include "utils.h"
+#include "miscellaneous/error.h"
 
 #include <stdexcept>
 #include <array>
@@ -15,10 +16,14 @@ einsum(const std::initializer_list<torch::Tensor> & tensors,
        const std::initializer_list<c10::string_view> & indices,
        c10::string_view out_indices = "")
 {
-  if (tensors.size() == 0)
-    throw std::runtime_error("You must provide tensors in einsum.");
-  if (indices.size() != tensors.size())
-    throw std::runtime_error("Number of tensor indices must match number of tensors in einsum.");
+  neml_assert_dbg(tensors.size() != 0, "You must provide tensors in einsum.");
+  neml_assert_dbg(indices.size() == tensors.size(),
+                  "Number of tensor indices must match number of tensors in einsum.\n",
+                  "You provided ",
+                  indices.size(),
+                  " indices, and ",
+                  tensors.size(),
+                  " tensors.");
 
   std::string equation = "";
 
@@ -100,21 +105,22 @@ template <TorchSize N>
 BatchTensor<N>::BatchTensor(const torch::Tensor & tensor)
   : torch::Tensor(tensor)
 {
-  // Check to make sure we can actually do this
-  if (sizes().size() < N)
-    throw std::runtime_error("Tensor dimension is smaller than the requested "
-                             "number of batch dimensions");
+  neml_assert_dbg(sizes().size() >= N,
+                  "Tensor dimension ",
+                  sizes().size(),
+                  " is smaller than the requested number of batch dimensions ",
+                  N);
 }
 
 template <TorchSize N>
 BatchTensor<N>::BatchTensor(TorchShapeRef batch_size, TorchShapeRef base_size)
   : torch::Tensor(std::move(torch::zeros(utils::add_shapes(batch_size, base_size), TorchDefaults)))
 {
-  // Quick check to make sure batch_size is consistent with N, this could become
-  // a static assertion
-  if (batch_size.size() != N)
-    throw std::runtime_error("Proposed batch shape does not match "
-                             "the number of templated batch dimensions");
+  neml_assert_dbg(batch_size.size() == N,
+                  "Proposed batch shape has dimension ",
+                  batch_size.size(),
+                  ". It does not match the number of templated batch dimensions ",
+                  N);
 }
 
 template <TorchSize N>
@@ -196,11 +202,11 @@ template <TorchSize N>
 BatchTensor<N>
 BatchTensor<N>::expand_batch(TorchShapeRef batch_size) const
 {
-  // Quick check to make sure batch_size is consistent with N, this could become
-  // a static assertion
-  if (batch_size.size() != N)
-    throw std::runtime_error("Proposed batch shape does not match "
-                             "the number of templated batch dimensions");
+  neml_assert_dbg(batch_size.size() == N,
+                  "Proposed batch shape has dimension ",
+                  batch_size.size(),
+                  ". It does not match the number of templated batch dimensions ",
+                  N);
 
   // We don't want to touch the base dimensions, so put -1 for them.
   TorchShape net(batch_size.vec());

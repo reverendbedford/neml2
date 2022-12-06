@@ -25,6 +25,8 @@ TEST_CASE("BatchTensors have the correct shapes", "[BatchTensors]")
 TEST_CASE("BatchTensors can't be created with few than the number of "
           "batch dimensions")
 {
-  // Can't make this guy, as it won't have enough dimensions for the batch
+// Can't make this guy, as it won't have enough dimensions for the batch
+#ifndef NDEBUG
   REQUIRE_THROWS(BatchTensor<2>(torch::zeros({10}, TorchDefaults)));
+#endif
 }
