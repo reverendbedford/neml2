@@ -2,4 +2,4 @@
 ##### pip requirements ######
 #
 breathe
-sphinx-material
+furo
