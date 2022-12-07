@@ -20,3 +20,4 @@ doc/class-doc
 .vscode
 doc/doctrees
 doc/html
+!cmake/Modules/*

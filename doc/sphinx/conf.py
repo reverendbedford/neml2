@@ -87,7 +87,7 @@ pygments_style = None
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = "press"
+html_theme = "furo"
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -191,7 +191,7 @@ epub_title = project
 epub_exclude_files = ["search.html"]
 
 # -- Options for breathe -------------------------------------------------
-breathe_projects = {"neml2": "../class-doc/xml"}
+breathe_projects = {"neml2": "/home/gary/projects/batchedmat/doc/class-doc/xml"}
 breathe_default_project = "neml2"
 
 # -- Options for napoleon ------------------------------------------------

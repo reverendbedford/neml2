@@ -1,0 +1,4 @@
+LabeledAxisInterface
+=========================================================================
+
+.. doxygenfile:: LabeledAxisInterface.h

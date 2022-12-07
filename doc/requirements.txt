@@ -2,4 +2,4 @@
 ##### pip requirements ######
 #
 breathe
-sphinx-press-theme
+sphinx-material

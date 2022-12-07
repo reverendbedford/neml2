@@ -1,0 +1,4 @@
+AssociativePlasticHardening
+=========================================================================
+
+.. doxygenfile:: AssociativePlasticHardening.h

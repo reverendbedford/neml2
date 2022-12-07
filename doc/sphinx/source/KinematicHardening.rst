@@ -1,0 +1,4 @@
+KinematicHardening
+=========================================================================
+
+.. doxygenfile:: KinematicHardening.h
