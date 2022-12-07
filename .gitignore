@@ -17,3 +17,7 @@ compile_commands.json
 coverage
 doc/class-doc
 *.html
+.vscode
+doc/doctrees
+doc/html
+!cmake/Modules/*

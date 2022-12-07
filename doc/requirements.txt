@@ -1,0 +1,5 @@
+#
+##### pip requirements ######
+#
+breathe
+furo
