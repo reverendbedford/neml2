@@ -10,6 +10,7 @@ jobs:
         uses: jidicula/clang-format-action@v4.9.0
         with:
           clang-format-version: '14'
+          exclude-regex: '(extern/hit)'
   build-test-linux:
     needs: clang-format
     runs-on: ubuntu-latest

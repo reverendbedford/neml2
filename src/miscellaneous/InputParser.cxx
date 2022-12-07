@@ -2,16 +2,21 @@
 
 InputParser::InputParser(int argc, const char * argv[])
 {
-  readInput(argv[1]);
+  // Parse the file into the root node
+  parse(argv[1]);
 
+  // Get the cliargs for overriding
   std::vector<std::string> cliargs(argv + 1, argv + argc);
-  replaceCLIArgs(cliargs);
 
-  expandInput();
+  // "Apply" the cliargs
+  replace_cliargs(cliargs);
+
+  // Expand the input for brace expressions and env variables.
+  expand_input();
 }
 
 void
-InputParser::readInput(const char * filename)
+InputParser::parse(const char * filename)
 {
   std::ifstream file(filename);
   std::stringstream buffer;
@@ -21,9 +26,9 @@ InputParser::readInput(const char * filename)
 }
 
 void
-InputParser::replaceCLIArgs(const std::vector<std::string> & cliargs)
+InputParser::replace_cliargs(const std::vector<std::string> & cliargs)
 {
-  std::string cli_input = hitCLIFilter(cliargs);
+  std::string cli_input = filter_hit_cliargs(cliargs);
   _cli_root.reset(hit::parse("Hit cliargs", cli_input));
   hit::explode(_cli_root.get());
   hit::explode(_root.get());
@@ -31,7 +36,7 @@ InputParser::replaceCLIArgs(const std::vector<std::string> & cliargs)
 }
 
 void
-InputParser::expandInput()
+InputParser::expand_input()
 {
   hit::BraceExpander expander;
   hit::EnvEvaler env;
@@ -42,7 +47,7 @@ InputParser::expandInput()
 }
 
 std::string
-InputParser::hitCLIFilter(const std::vector<std::string> & cliargs) const
+InputParser::filter_hit_cliargs(const std::vector<std::string> & cliargs) const
 {
   std::string hit_text;
   bool afterDoubleDash = false;
