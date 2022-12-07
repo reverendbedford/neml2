@@ -29,7 +29,7 @@ NewtonNonlinearSolver::solve(const NonlinearSystem & system, const BatchTensor<1
   for (size_t i = 1; i < params.miters; i++)
   {
     // Update R and the norm of R
-    system.set_residual(x, R, &J);
+    std::tie(R, J) = system.residual_and_Jacobian(x);
     BatchTensor<1> nR = torch::linalg::vector_norm(R, 2, -1, false, c10::nullopt);
 
     // Check for initial convergence

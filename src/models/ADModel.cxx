@@ -1,7 +1,7 @@
 #include "models/ADModel.h"
 
-LabeledMatrix
-ADModel::dvalue(LabeledVector in) const
+std::tuple<LabeledVector, LabeledMatrix>
+ADModel::value_and_dvalue(LabeledVector in) const
 {
   bool was_ad = true;
   if (!in.tensor().requires_grad())
@@ -14,7 +14,7 @@ ADModel::dvalue(LabeledVector in) const
   auto out = Model::value(in);
 
   // Allocate space for Jacobian
-  LabeledMatrix dout_din(in.batch_size(), output(), input());
+  LabeledMatrix dout_din(out, in);
 
   // Loop over rows of the state to retrieve the derivatives
   for (TorchSize i = 0; i < out.tensor().base_sizes()[0]; i++)
@@ -27,5 +27,5 @@ ADModel::dvalue(LabeledVector in) const
 
   in.tensor().requires_grad_(was_ad);
 
-  return dout_din;
+  return {out, dout_din};
 }

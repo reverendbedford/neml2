@@ -18,9 +18,6 @@ public:
   /// Return dependencies of a registered model
   const std::vector<Model *> & dependent_models(const std::string & name) const;
 
-  /// Evaluate the model graph all the way up from the leaf models
-  void set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const;
-
   /// Stringify the evaluation order
   std::string evaluation_order() const;
 
@@ -28,6 +25,10 @@ public:
   void to_dot(std::ostream & os) const;
 
 protected:
+  /// Evaluate the model graph all the way up from the leaf models
+  virtual void
+  set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const;
+
   virtual void setup();
 
   /// Resolve dependency using topological traversal of the dependent models

@@ -26,19 +26,24 @@ public:
   const LabeledAxis & output() const { return _output; }
   /// @}
 
-  /// The map between input -> output, and optionally its derivatives
-  virtual void
-  set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const = 0;
-
   /// Convenient shortcut to construct and return the model value
   virtual LabeledVector value(LabeledVector in) const;
 
   /// Convenient shortcut to construct and return the model derivative
+  /// NOTE: this method is inefficient and not recommended for use.
+  /// Consider using `value` or `value_and_dvalue` if possible.
   virtual LabeledMatrix dvalue(LabeledVector in) const;
+
+  /// Convenient shortcut to construct and return the model value and its derivative
+  virtual std::tuple<LabeledVector, LabeledMatrix> value_and_dvalue(LabeledVector in) const;
 
   const std::vector<Model *> & registered_models() const { return _registered_models; }
 
 protected:
+  /// The map between input -> output, and optionally its derivatives
+  virtual void
+  set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const = 0;
+
   virtual void setup() { setup_layout(); }
 
   /// Register a model that the current model may use during its evaluation

@@ -19,8 +19,15 @@ Model::value(LabeledVector in) const
 LabeledMatrix
 Model::dvalue(LabeledVector in) const
 {
-  LabeledVector out(in.batch_size(), output());
-  LabeledMatrix dout_din(in.batch_size(), output(), input());
-  set_value(in, out, &dout_din);
+  auto [out, dout_din] = value_and_dvalue(in);
   return dout_din;
+}
+
+std::tuple<LabeledVector, LabeledMatrix>
+Model::value_and_dvalue(LabeledVector in) const
+{
+  LabeledVector out(in.batch_size(), output());
+  LabeledMatrix dout_din(out, in);
+  set_value(in, out, &dout_din);
+  return {out, dout_din};
 }

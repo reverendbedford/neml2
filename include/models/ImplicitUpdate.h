@@ -9,10 +9,10 @@ class ImplicitUpdate : public Model
 public:
   ImplicitUpdate(const std::string & name, ImplicitModel & model, NonlinearSolver & solver);
 
+protected:
   virtual void
   set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const;
 
-protected:
   /// The implicit model to be updated
   ImplicitModel & _model;
 

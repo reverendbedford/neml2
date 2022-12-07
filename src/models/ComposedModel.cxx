@@ -86,8 +86,6 @@ ComposedModel::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * do
   for (auto i : _evaluation_order)
   {
     LabeledVector pin(nbatch, i->input());
-    LabeledVector pout(nbatch, i->output());
-    LabeledMatrix dpout_dpin(nbatch, i->output(), i->input());
     const auto & deps = dependent_models(i->name());
 
     // If this is a leaf model, the total input is its input
@@ -108,13 +106,13 @@ ComposedModel::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * do
     }
     if (dout_din)
     {
-      i->set_value(pin, pout, &dpout_dpin);
+      auto [pout, dpout_dpin] = i->value_and_dvalue(pin);
       cached_pout.emplace(i->name(), pout);
       cached_dpout_dpin.emplace(i->name(), dpout_dpin);
     }
     else
     {
-      i->set_value(pin, pout);
+      auto pout = i->value(pin);
       cached_pout.emplace(i->name(), pout);
     }
   }

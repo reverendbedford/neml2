@@ -7,6 +7,7 @@ class J2IsotropicYieldFunction : public YieldFunction
 public:
   J2IsotropicYieldFunction(const std::string & name);
 
+protected:
   /// The value of the yield function
   virtual void
   set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const;

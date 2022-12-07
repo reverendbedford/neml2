@@ -21,9 +21,9 @@ AssociativePlasticFlowDirection::set_value(LabeledVector in,
       nbatch, yield_function.output(), yield_function.input(), yield_function.input());
 
   if (dout_din)
-    yield_function.set_dvalue(in, df_din, &d2f_din2);
+    std::tie(df_din, d2f_din2) = yield_function.dvalue_and_d2value(in);
   else
-    yield_function.set_dvalue(in, df_din);
+    df_din = yield_function.dvalue(in);
 
   auto df_dmandel = df_din.block("state", "state").get<SymR2>("yield_function", "mandel_stress");
 
