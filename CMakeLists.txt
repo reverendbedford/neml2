@@ -8,6 +8,11 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 # Werror, etc
 add_compile_options(-Wall -Wextra -pedantic -Werror)
 
+# This is aggravating but occurs because pre-packaged torch uses
+# _GLIBCXX_USE_CXX11_ABI=0.  If you roll your own torch this may 
+# not occur, so this flag could be dangerous in the future
+add_compile_definitions(_GLIBCXX_USE_CXX11_ABI=0)
+
 # Accept Release, Debug, and RelWithDebInfo, add Coverage build types
 set(CMAKE_CXX_FLAGS_COVERAGE
       "-O0 -fprofile-arcs -ftest-coverage"
@@ -19,6 +24,9 @@ if(NOT CMAKE_BUILD_TYPE)
             CACHE STRING "Choose the type of build : None Debug Release RelWithDebInfo MinSizeRel Coverage."
             FORCE)
 ENDIF(NOT CMAKE_BUILD_TYPE)
+
+# Provide option for shared libraries
+option(BUILD_SHARED_LIBS "Build shared libraries" ON) 
 
 # Enable testing
 enable_testing()
@@ -33,6 +41,9 @@ find_package(Torch REQUIRED)
 # Catch2, for testing
 add_subdirectory("${PROJECT_SOURCE_DIR}/extern/Catch2")
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/extern/Catch2/contrib")
+
+# hit for parsing
+add_subdirectory("${PROJECT_SOURCE_DIR}/extern/hit")
 
 # MKL (I don't think this should be here)
 message(STATUS "MKL_ROOT=${MKL_ROOT}")
