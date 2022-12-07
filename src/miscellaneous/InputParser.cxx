@@ -1,18 +1,20 @@
 #include "miscellaneous/InputParser.h"
 
-InputParser::InputParser(int argc, const char * argv[])
+InputParser::InputParser(const char * fname, const std::vector<std::string> & cliargs)
 {
   // Parse the file into the root node
-  parse(argv[1]);
-
-  // Get the cliargs for overriding
-  std::vector<std::string> cliargs(argv + 1, argv + argc);
+  parse(fname);
 
   // "Apply" the cliargs
   replace_cliargs(cliargs);
 
   // Expand the input for brace expressions and env variables.
   expand_input();
+}
+
+InputParser::InputParser(int argc, const char * argv[])
+  : InputParser(argv[0], std::vector<std::string>(argv + 1, argv + argc))
+{
 }
 
 void

@@ -7,6 +7,10 @@
 class InputParser
 {
 public:
+  /// Construct an `InputParser` from a string
+  InputParser(const char * fname, const std::vector<std::string> & cliargs = {});
+
+  /// Construct an `InputParser` from commandline
   InputParser(int argc, const char * argv[]);
 
   hit::Node * root() { return _root.get(); }
