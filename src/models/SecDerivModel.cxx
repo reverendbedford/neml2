@@ -1,5 +1,13 @@
 #include "models/SecDerivModel.h"
 
+LabeledMatrix
+SecDerivModel::dvalue(LabeledVector in) const
+{
+  LabeledMatrix dout_din(in.batch_size(), output(), in.axis(0));
+  set_dvalue(in, dout_din);
+  return dout_din;
+}
+
 LabeledTensor<1, 3>
 SecDerivModel::d2value(LabeledVector in) const
 {

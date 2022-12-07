@@ -8,6 +8,9 @@ class SecDerivModel : public Model
 public:
   using Model::Model;
 
+  /// Convenient shortcut to construct and return the model's first derivative
+  virtual LabeledMatrix dvalue(LabeledVector in) const;
+
   /// Convenient shortcut to construct and return the model's second derivative
   virtual LabeledTensor<1, 3> d2value(LabeledVector in) const;
 
