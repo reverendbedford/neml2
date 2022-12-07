@@ -39,9 +39,9 @@ ImplicitTimeIntegration::set_value(LabeledVector in,
   LabeledVector rate(nbatch, _rate.output());
   LabeledMatrix drate_din(nbatch, _rate.output(), input());
   if (dout_din)
-    _rate.set_value(in, rate, &drate_din);
+    std::tie(rate, drate_din) = _rate.value_and_dvalue(in);
   else
-    _rate.set_value(in, rate);
+    rate = _rate.value(in);
 
   // r = s_np1 - s_n - s_dot * (t_np1 - t_n)
   auto s_np1 = in("state");
@@ -98,7 +98,7 @@ ImplicitTimeIntegration::set_residual(BatchTensor<1> x, BatchTensor<1> r, BatchT
 
   if (J)
   {
-    LabeledMatrix dout_din(nbatch, output(), input());
+    LabeledMatrix dout_din(out, in);
     set_value(in, out, &dout_din);
     J->copy_(dout_din("residual", "state"));
   }

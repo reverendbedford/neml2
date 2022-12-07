@@ -8,5 +8,5 @@ class ADModel : public Model
 public:
   using Model::Model;
 
-  virtual LabeledMatrix dvalue(LabeledVector in) const;
+  virtual std::tuple<LabeledVector, LabeledMatrix> value_and_dvalue(LabeledVector in) const;
 };

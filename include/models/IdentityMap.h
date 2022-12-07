@@ -21,6 +21,7 @@ public:
     setup();
   }
 
+protected:
   virtual void
   set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const
   {
@@ -32,7 +33,6 @@ public:
     }
   }
 
-protected:
   std::string _axis_name;
   std::string _var_name;
 };

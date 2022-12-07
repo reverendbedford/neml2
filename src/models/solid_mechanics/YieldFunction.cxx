@@ -14,8 +14,15 @@ YieldFunction::YieldFunction(const std::string & name)
 LabeledTensor<1, 3>
 YieldFunction::d2value(LabeledVector in) const
 {
-  LabeledMatrix dout_din(in.batch_size(), output(), input());
-  LabeledTensor<1, 3> d2out_din2(in.batch_size(), output(), input(), input());
-  set_dvalue(in, dout_din, &d2out_din2);
+  auto [dout_din, d2out_din2] = dvalue_and_d2value(in);
   return d2out_din2;
+}
+
+std::tuple<LabeledMatrix, LabeledTensor<1, 3>>
+YieldFunction::dvalue_and_d2value(LabeledVector in) const
+{
+  LabeledMatrix dout_din(in.batch_size(), output(), in.axis(0));
+  LabeledTensor<1, 3> d2out_din2(in.batch_size(), output(), in.axis(0), in.axis(0));
+  set_dvalue(in, dout_din, &d2out_din2);
+  return {dout_din, d2out_din2};
 }
