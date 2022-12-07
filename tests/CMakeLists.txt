@@ -17,7 +17,7 @@ if(UNIT)
             ${UNIT_TESTS}
       )
       target_link_libraries(unit_tests Catch2::Catch2)
-      target_link_libraries(unit_tests batchedmat testutils hit)
+      target_link_libraries(unit_tests batchedmat testutils)
       target_include_directories(unit_tests PUBLIC
             "${CMAKE_SOURCE_DIR}/include"
             "${CMAKE_SOURCE_DIR}/tests/include")
