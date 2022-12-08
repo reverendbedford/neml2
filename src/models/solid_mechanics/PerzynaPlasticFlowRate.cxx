@@ -2,8 +2,8 @@
 
 PerzynaPlasticFlowRate::PerzynaPlasticFlowRate(const std::string & name, Scalar eta, Scalar n)
   : PlasticFlowRate(name),
-    _eta(eta),
-    _n(n)
+    _eta(register_parameter("reference_flow_stress", eta)),
+    _n(register_parameter("flow_rate_exponent", n))
 {
 }
 

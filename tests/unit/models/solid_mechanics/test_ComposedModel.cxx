@@ -21,19 +21,14 @@ TEST_CASE("Linear DAG", "[ComposedModel]")
   TorchSize nbatch = 10;
   Scalar E(100, nbatch);
   Scalar nu(0.3, nbatch);
-  auto estrain = ElasticStrain("elastic_strain");
-  auto elasticity = LinearIsotropicElasticity<false>("elasticity", E, nu);
-  auto kinharden = NoKinematicHardening("kinematic_hardening");
+  auto estrain = std::make_shared<ElasticStrain>("elastic_strain");
+  auto elasticity = std::make_shared<LinearIsotropicElasticity>("elasticity", E, nu);
+  auto kinharden = std::make_shared<NoKinematicHardening>("kinematic_hardening");
 
   // inputs --> "elastic_strain" --> "elasticity" --> "kinharden" --> outputs
   // inputs: total strain, plastic strain
   // outputs: mandel stress
-  auto model = ComposedModel("foo");
-  model.registerModel(estrain);
-  model.registerModel(elasticity);
-  model.registerModel(kinharden);
-  model.registerDependency("elastic_strain", "elasticity");
-  model.registerDependency("elasticity", "kinematic_hardening");
+  auto model = ComposedModel("foo", {{estrain, elasticity}, {elasticity, kinharden}});
 
   SECTION("model definition")
   {
@@ -67,9 +62,9 @@ TEST_CASE("Y-junction DAG", "[ComposedModel]")
   TorchSize nbatch = 10;
   Scalar s0 = 100.0;
   Scalar K = 1000.0;
-  auto isoharden = LinearIsotropicHardening("isotropic_hardening", s0, K);
-  auto kinharden = NoKinematicHardening("kinematic_hardening");
-  auto yield = J2IsotropicYieldFunction("yield_function");
+  auto isoharden = std::make_shared<LinearIsotropicHardening>("isotropic_hardening", s0, K);
+  auto kinharden = std::make_shared<NoKinematicHardening>("kinematic_hardening");
+  auto yield = std::make_shared<J2IsotropicYieldFunction>("yield_function");
 
   // inputs --> "isotropic_hardening" --
   //                                    `
@@ -80,12 +75,7 @@ TEST_CASE("Y-junction DAG", "[ComposedModel]")
   //
   // inputs: cauchy stress, equivalent plastic strain
   // outputs: yield function
-  auto model = ComposedModel("foo");
-  model.registerModel(isoharden);
-  model.registerModel(kinharden);
-  model.registerModel(yield);
-  model.registerDependency("isotropic_hardening", "yield_function");
-  model.registerDependency("kinematic_hardening", "yield_function");
+  auto model = ComposedModel("foo", {{isoharden, yield}, {kinharden, yield}});
 
   SECTION("model definition")
   {
@@ -118,19 +108,13 @@ TEST_CASE("diamond pattern", "[ComposedModel]")
   TorchSize nbatch = 10;
   Scalar eta = 150;
   Scalar n = 6;
-  auto yield = J2IsotropicYieldFunction("yield_function");
-  auto direction = AssociativePlasticFlowDirection("plastic_flow_direction", yield);
-  auto eprate = PerzynaPlasticFlowRate("plastic_flow_rate", eta, n);
-  auto Eprate = PlasticStrainRate("plastic_strain_rate");
+  auto yield = std::make_shared<J2IsotropicYieldFunction>("yield_function");
+  auto direction =
+      std::make_shared<AssociativePlasticFlowDirection>("plastic_flow_direction", yield);
+  auto eprate = std::make_shared<PerzynaPlasticFlowRate>("plastic_flow_rate", eta, n);
+  auto Eprate = std::make_shared<PlasticStrainRate>("plastic_strain_rate");
 
-  auto model = ComposedModel("foo");
-  model.registerModel(yield);
-  model.registerModel(direction);
-  model.registerModel(eprate);
-  model.registerModel(Eprate);
-  model.registerDependency("yield_function", "plastic_flow_rate");
-  model.registerDependency("plastic_flow_rate", "plastic_strain_rate");
-  model.registerDependency("plastic_flow_direction", "plastic_strain_rate");
+  auto model = ComposedModel("foo", {{yield, eprate}, {eprate, Eprate}, {direction, Eprate}});
 
   SECTION("model definition")
   {

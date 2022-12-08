@@ -235,8 +235,8 @@ TEST_CASE("Miscellaneous modifiers", "[LabeledAxis]")
     test.add<Scalar>("scalar4")
         .remove("r2t1")
         .prefix("foo")
-        .rename("scalar4", "scalar5")
-        .remove("scalar2")
+        .rename("foo_scalar4", "scalar5")
+        .remove("foo_scalar2")
         .suffix("heh");
     test.setup_layout();
 
@@ -246,7 +246,7 @@ TEST_CASE("Miscellaneous modifiers", "[LabeledAxis]")
     REQUIRE(test.storage_size() == 9);
     REQUIRE(test.storage_size("foo_scalar1_heh") == 1);
     REQUIRE(test.storage_size("foo_scalar3_heh") == 1);
-    REQUIRE(test.storage_size("foo_scalar5_heh") == 1);
+    REQUIRE(test.storage_size("scalar5_heh") == 1);
     REQUIRE(test.storage_size("foo_r2t2_heh") == 6);
   }
 }

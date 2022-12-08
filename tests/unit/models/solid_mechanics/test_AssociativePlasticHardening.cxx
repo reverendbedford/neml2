@@ -7,7 +7,7 @@
 TEST_CASE("AssociativePlasticHardening", "[AssociativePlasticHardening]")
 {
   TorchSize nbatch = 1;
-  auto yield = J2IsotropicYieldFunction("yield_function");
+  auto yield = std::make_shared<J2IsotropicYieldFunction>("yield_function");
   auto eprate = AssociativePlasticHardening("ep_rate", yield);
 
   SECTION("model definition")

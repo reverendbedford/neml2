@@ -1,12 +1,13 @@
 #include "models/ImplicitUpdate.h"
 
 ImplicitUpdate::ImplicitUpdate(const std::string & name,
-                               ImplicitModel & model,
-                               NonlinearSolver & solver)
+                               std::shared_ptr<ImplicitModel> model,
+                               std::shared_ptr<NonlinearSolver> solver)
   : Model(name),
-    _model(registerModel<ImplicitModel>(model)),
-    _solver(solver)
+    _model(*model),
+    _solver(*solver)
 {
+  registerModel(model);
   // Now that the implicit model has been registered, the input of this ImplicitUpdate model should
   // be the same as the implicit model's input. The input subaxes of the implicit model looks
   // something like
@@ -26,7 +27,7 @@ ImplicitUpdate::ImplicitUpdate(const std::string & name,
   // as we have eliminated the trial state by solving the nonlinear system.
   // So, we need to remove the "state" subaxis from the input
   output().add<LabeledAxis>("state");
-  output().subaxis("state").merge(model.input().subaxis("state"));
+  output().subaxis("state").merge(model->input().subaxis("state"));
   input().remove("state");
   setup();
 }

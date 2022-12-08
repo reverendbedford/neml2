@@ -7,7 +7,7 @@
 TEST_CASE("ImplicitTimeIntegration", "[ImplicitTimeIntegration]")
 {
   TorchSize nbatch = 10;
-  auto rate = SampleRateModel("sample_rate");
+  auto rate = std::make_shared<SampleRateModel>("sample_rate");
   auto implicit_rate = ImplicitTimeIntegration("implicit_time_integration", rate);
 
   SECTION("model definition")

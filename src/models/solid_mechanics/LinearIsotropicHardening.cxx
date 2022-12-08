@@ -2,8 +2,8 @@
 
 LinearIsotropicHardening::LinearIsotropicHardening(const std::string & name, Scalar s0, Scalar K)
   : IsotropicHardening(name),
-    _s0(s0),
-    _K(K)
+    _s0(register_parameter("yield_stress", s0)),
+    _K(register_parameter("hardening_modulus", K))
 {
 }
 

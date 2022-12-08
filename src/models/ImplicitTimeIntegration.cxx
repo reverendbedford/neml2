@@ -1,9 +1,12 @@
 #include "models/ImplicitTimeIntegration.h"
 
-ImplicitTimeIntegration::ImplicitTimeIntegration(const std::string & name, Model & rate)
+ImplicitTimeIntegration::ImplicitTimeIntegration(const std::string & name,
+                                                 std::shared_ptr<Model> rate)
   : ImplicitModel(name),
-    _rate(registerModel<Model>(rate))
+    _rate(*rate)
 {
+  registerModel(rate);
+
   // Does the implicit constitutive model already requires time and old time?
   // Probably not, so we add time and old time here anyways, since we need them to perform time
   // integration.

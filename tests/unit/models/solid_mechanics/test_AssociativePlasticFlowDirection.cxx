@@ -7,13 +7,13 @@
 TEST_CASE("AssociativePlasticFlowDirection", "[AssociativePlasticFlowDirection]")
 {
   TorchSize nbatch = 10;
-  auto yield = J2IsotropicYieldFunction("yield_function");
+  auto yield = std::make_shared<J2IsotropicYieldFunction>("yield_function");
   auto direction = AssociativePlasticFlowDirection("plastic_flow_direction", yield);
 
   SECTION("model definition")
   {
     // My input should be sufficient for me to evaluate the yield function, hence
-    REQUIRE(direction.input() == yield.input());
+    REQUIRE(direction.input() == yield->input());
 
     REQUIRE(direction.output().has_subaxis("state"));
     REQUIRE(direction.output().subaxis("state").has_variable<SymR2>("plastic_flow_direction"));

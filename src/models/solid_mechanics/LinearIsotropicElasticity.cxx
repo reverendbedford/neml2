@@ -2,12 +2,12 @@
 #include "tensors/SymSymR4.h"
 
 template <bool rate>
-LinearIsotropicElasticity<rate>::LinearIsotropicElasticity(const std::string & name,
-                                                           Scalar E,
-                                                           Scalar nu)
+LinearIsotropicElasticityTempl<rate>::LinearIsotropicElasticityTempl(const std::string & name,
+                                                                     Scalar E,
+                                                                     Scalar nu)
   : Model(name),
-    _E(E),
-    _nu(nu)
+    _E(register_parameter("youngs_modulus", E)),
+    _nu(register_parameter("poissons_ratio", nu))
 {
   input().add<LabeledAxis>("state");
   input().subaxis("state").add<SymR2>(rate ? "elastic_strain_rate" : "elastic_strain");
@@ -20,9 +20,9 @@ LinearIsotropicElasticity<rate>::LinearIsotropicElasticity(const std::string & n
 
 template <bool rate>
 void
-LinearIsotropicElasticity<rate>::set_value(LabeledVector in,
-                                           LabeledVector out,
-                                           LabeledMatrix * dout_din) const
+LinearIsotropicElasticityTempl<rate>::set_value(LabeledVector in,
+                                                LabeledVector out,
+                                                LabeledMatrix * dout_din) const
 {
   // Retrieve whatever we need from the input,
   // Here we need the elastic strain
@@ -45,5 +45,5 @@ LinearIsotropicElasticity<rate>::set_value(LabeledVector in,
   }
 }
 
-template class LinearIsotropicElasticity<true>;
-template class LinearIsotropicElasticity<false>;
+template class LinearIsotropicElasticityTempl<true>;
+template class LinearIsotropicElasticityTempl<false>;

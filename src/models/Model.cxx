@@ -1,7 +1,7 @@
 #include "models/Model.h"
 
 Model::Model(const std::string & name)
-  : _name(name),
+  : torch::nn::Module(name),
     _input(declareAxis()),
     _output(declareAxis())
 {
@@ -30,4 +30,12 @@ Model::value_and_dvalue(LabeledVector in) const
   LabeledMatrix dout_din(out, in);
   set_value(in, out, &dout_din);
   return {out, dout_din};
+}
+
+void
+Model::registerModel(const std::shared_ptr<Model> & model)
+{
+  input().merge(model->input());
+  _registered_models.push_back(model);
+  register_module(model->name(), model);
 }

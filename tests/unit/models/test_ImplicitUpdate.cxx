@@ -8,13 +8,14 @@
 
 TEST_CASE("ImplicitUpdate", "[ImplicitUpdate]")
 {
+  NonlinearSolverParameters params = {/*atol =*/1e-10,
+                                      /*rtol =*/1e-8,
+                                      /*miters =*/100,
+                                      /*verbose=*/false};
   TorchSize nbatch = 10;
-  auto rate = SampleRateModel("sample_rate");
-  auto implicit_rate = ImplicitTimeIntegration("implicit_time_integration", rate);
-  auto solver = NewtonNonlinearSolver({/*atol =*/1e-10,
-                                       /*rtol =*/1e-8,
-                                       /*miters =*/20,
-                                       /*verbose=*/false});
+  auto rate = std::make_shared<SampleRateModel>("sample_rate");
+  auto implicit_rate = std::make_shared<ImplicitTimeIntegration>("implicit_time_integration", rate);
+  auto solver = std::make_shared<NewtonNonlinearSolver>(params);
   auto integrate_rate = ImplicitUpdate("time_integration", implicit_rate, solver);
 
   SECTION("model definition")
@@ -50,13 +51,13 @@ TEST_CASE("ImplicitUpdate", "[ImplicitUpdate]")
   {
     auto value = integrate_rate.value(in);
 
-    LabeledVector rate_in(nbatch, rate.input());
+    LabeledVector rate_in(nbatch, rate->input());
     rate_in.set(value("state"), "state");
     rate_in.slice(0, "forces").set(in.slice(0, "forces")("temperature"), "temperature");
 
     auto s_np1 = value("state");
     auto s_n = in("old_state");
-    auto s_dot = rate.value(rate_in)("state");
+    auto s_dot = rate->value(rate_in)("state");
 
     auto t_np1 = in.slice(0, "forces").get<Scalar>("time");
     auto t_n = in.slice(0, "old_forces").get<Scalar>("time");

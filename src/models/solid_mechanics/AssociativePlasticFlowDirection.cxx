@@ -2,10 +2,11 @@
 #include "tensors/SymSymR4.h"
 
 AssociativePlasticFlowDirection::AssociativePlasticFlowDirection(const std::string & name,
-                                                                 YieldFunction & f)
+                                                                 std::shared_ptr<YieldFunction> f)
   : PlasticFlowDirection(name),
-    yield_function(registerModel<YieldFunction>(f))
+    yield_function(*f)
 {
+  registerModel(f);
   setup();
 }
 
