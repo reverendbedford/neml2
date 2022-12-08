@@ -2,4 +2,8 @@
 
 #include "miscellaneous/InputParser.h"
 
-TEST_CASE("HIT parser", "[HIT]") { InputParser parser("unit/miscellaneous/test_hit.i"); }
+TEST_CASE("HIT parser", "[HIT]")
+{
+  InputParser parser("unit/miscellaneous/test_hit.i");
+  std::cout << parser.root()->render() << std::endl;
+}
