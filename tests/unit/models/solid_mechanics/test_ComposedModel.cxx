@@ -141,3 +141,34 @@ TEST_CASE("diamond pattern", "[ComposedModel]")
     REQUIRE(torch::allclose(exact.tensor(), numerical.tensor()));
   }
 }
+
+TEST_CASE("send to different device", "[ComposedModel]")
+{
+  Scalar eta = 150;
+  Scalar n = 6;
+  auto yield = std::make_shared<J2IsotropicYieldFunction>("yield_function");
+  auto direction =
+      std::make_shared<AssociativePlasticFlowDirection>("plastic_flow_direction", yield);
+  auto eprate = std::make_shared<PerzynaPlasticFlowRate>("plastic_flow_rate", eta, n);
+  auto Eprate = std::make_shared<PlasticStrainRate>("plastic_strain_rate");
+
+  auto model = ComposedModel("foo", {{yield, eprate}, {eprate, Eprate}, {direction, Eprate}});
+  auto params = model.named_parameters();
+
+  SECTION("send to CPU")
+  {
+    model.to(torch::kCPU);
+    for (const auto param : params)
+      REQUIRE(param.value().device().type() == torch::kCPU);
+  }
+
+  SECTION("send to CUDA")
+  {
+    if (torch::cuda::is_available())
+    {
+      model.to(torch::kCUDA);
+      for (const auto param : params)
+        REQUIRE(param.value().device().type() == torch::kCUDA);
+    }
+  }
+}
