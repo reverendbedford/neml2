@@ -2,7 +2,7 @@
 #include "tensors/SymSymR4.h"
 
 AssociativePlasticHardening::AssociativePlasticHardening(const std::string & name,
-                                                         std::shared_ptr<YieldFunction> f)
+                                                         const std::shared_ptr<YieldFunction> & f)
   : PlasticHardening(name),
     yield_function(*f)
 {

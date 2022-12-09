@@ -1,8 +1,8 @@
 #include "models/solid_mechanics/AssociativePlasticFlowDirection.h"
 #include "tensors/SymSymR4.h"
 
-AssociativePlasticFlowDirection::AssociativePlasticFlowDirection(const std::string & name,
-                                                                 std::shared_ptr<YieldFunction> f)
+AssociativePlasticFlowDirection::AssociativePlasticFlowDirection(
+    const std::string & name, const std::shared_ptr<YieldFunction> & f)
   : PlasticFlowDirection(name),
     yield_function(*f)
 {

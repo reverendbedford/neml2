@@ -7,7 +7,8 @@
 class AssociativePlasticFlowDirection : public PlasticFlowDirection
 {
 public:
-  AssociativePlasticFlowDirection(const std::string & name, std::shared_ptr<YieldFunction> f);
+  AssociativePlasticFlowDirection(const std::string & name,
+                                  const std::shared_ptr<YieldFunction> & f);
 
   const YieldFunction & yield_function;
 

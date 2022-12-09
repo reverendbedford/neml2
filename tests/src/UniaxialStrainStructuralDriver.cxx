@@ -1,6 +1,6 @@
 #include "UniaxialStrainStructuralDriver.h"
 
-UniaxialStrainStructuralDriver::UniaxialStrainStructuralDriver(std::shared_ptr<Model> model,
+UniaxialStrainStructuralDriver::UniaxialStrainStructuralDriver(const std::shared_ptr<Model> & model,
                                                                Scalar max_strain,
                                                                Scalar end_time,
                                                                TorchSize nsteps)

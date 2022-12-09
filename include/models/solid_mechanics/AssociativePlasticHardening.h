@@ -7,7 +7,7 @@
 class AssociativePlasticHardening : public PlasticHardening
 {
 public:
-  AssociativePlasticHardening(const std::string & name, std::shared_ptr<YieldFunction> f);
+  AssociativePlasticHardening(const std::string & name, const std::shared_ptr<YieldFunction> & f);
 
   const YieldFunction & yield_function;
 

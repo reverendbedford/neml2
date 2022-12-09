@@ -18,7 +18,7 @@ ComposedModel::ComposedModel(
 }
 
 void
-ComposedModel::add_node(std::shared_ptr<Model> model)
+ComposedModel::add_node(const std::shared_ptr<Model> & model)
 {
   _models[model->name()] = model;
   if (_dependecies.count(model->name()) == 0)
@@ -26,7 +26,8 @@ ComposedModel::add_node(std::shared_ptr<Model> model)
 }
 
 void
-ComposedModel::register_dependency(std::shared_ptr<Model> from, std::shared_ptr<Model> to)
+ComposedModel::register_dependency(const std::shared_ptr<Model> & from,
+                                   const std::shared_ptr<Model> & to)
 {
   add_node(from);
   add_node(to);
@@ -166,7 +167,7 @@ ComposedModel::resolve_dependency()
 }
 
 void
-ComposedModel::resolve_dependency(std::shared_ptr<Model> i,
+ComposedModel::resolve_dependency(const std::shared_ptr<Model> & i,
                                   std::vector<std::shared_ptr<Model>> & order,
                                   std::unordered_map<std::string, bool> & visited)
 {
