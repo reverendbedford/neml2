@@ -2,6 +2,8 @@
 
 #include "tensors/LabeledAxis.h"
 
+using namespace neml2;
+
 TEST_CASE("Add", "[LabeledAxis]")
 {
   // Empty

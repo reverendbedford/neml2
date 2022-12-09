@@ -1,6 +1,8 @@
 #include "tensors/SymR2.h"
 #include "tensors/SymSymR4.h"
 
+namespace neml2
+{
 SymSymR4
 SymR2::identity_map()
 {
@@ -179,3 +181,4 @@ operator/(const SymR2 & a, const SymR2 & b)
 {
   return torch::operator/(a, b);
 }
+} // namespace neml2

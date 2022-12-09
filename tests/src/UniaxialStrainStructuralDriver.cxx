@@ -1,5 +1,7 @@
 #include "UniaxialStrainStructuralDriver.h"
 
+using namespace neml2;
+
 UniaxialStrainStructuralDriver::UniaxialStrainStructuralDriver(const Model & model,
                                                                Scalar max_strain,
                                                                Scalar end_time,

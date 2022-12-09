@@ -1,5 +1,7 @@
 #include "models/ImplicitTimeIntegration.h"
 
+namespace neml2
+{
 ImplicitTimeIntegration::ImplicitTimeIntegration(const std::string & name,
                                                  std::shared_ptr<Model> rate)
   : ImplicitModel(name),
@@ -110,3 +112,4 @@ ImplicitTimeIntegration::set_residual(BatchTensor<1> x, BatchTensor<1> r, BatchT
 
   r.copy_(out("residual"));
 }
+} // namespace neml2

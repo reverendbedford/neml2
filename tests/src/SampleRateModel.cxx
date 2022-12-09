@@ -1,6 +1,8 @@
 #include "SampleRateModel.h"
 #include "tensors/SymSymR4.h"
 
+using namespace neml2;
+
 template <bool is_ad>
 SampleRateModelTempl<is_ad>::SampleRateModelTempl(const std::string & name)
   : SampleRateModelBase<is_ad>(name)

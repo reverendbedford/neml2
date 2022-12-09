@@ -20,6 +20,8 @@
 #include "solvers/NewtonNonlinearSolver.h"
 #include "UniaxialStrainStructuralDriver.h"
 
+using namespace neml2;
+
 TEST_CASE("Uniaxial strain regression test", "[StructuralRegressionTests]")
 {
   NonlinearSolverParameters params = {/*atol =*/1e-10,

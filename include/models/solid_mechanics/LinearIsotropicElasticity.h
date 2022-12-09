@@ -2,6 +2,8 @@
 
 #include "models/Model.h"
 
+namespace neml2
+{
 template <bool rate>
 class LinearIsotropicElasticityTempl : public Model
 {
@@ -18,3 +20,4 @@ protected:
 
 typedef LinearIsotropicElasticityTempl<true> LinearIsotropicElasticityRate;
 typedef LinearIsotropicElasticityTempl<false> LinearIsotropicElasticity;
+} // namespace neml2

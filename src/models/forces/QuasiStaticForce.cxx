@@ -1,5 +1,7 @@
 #include "models/forces/QuasiStaticForce.h"
 
+namespace neml2
+{
 template <typename T, bool stateful>
 QuasiStaticForce<T, stateful>::QuasiStaticForce(const std::string & name)
   : Force<T, stateful>(name)
@@ -41,3 +43,4 @@ template class QuasiStaticForce<Scalar, true>;
 template class QuasiStaticForce<Scalar, false>;
 template class QuasiStaticForce<SymR2, true>;
 template class QuasiStaticForce<SymR2, false>;
+} // namespace neml2

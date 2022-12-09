@@ -1,5 +1,7 @@
 #include "models/solid_mechanics/PlasticFlowRate.h"
 
+namespace neml2
+{
 PlasticFlowRate::PlasticFlowRate(const std::string & name)
   : Model(name)
 {
@@ -10,3 +12,4 @@ PlasticFlowRate::PlasticFlowRate(const std::string & name)
   output().subaxis("state").add<Scalar>("hardening_rate");
   setup();
 }
+} // namespace neml2

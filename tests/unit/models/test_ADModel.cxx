@@ -3,6 +3,8 @@
 #include "TestUtils.h"
 #include "SampleRateModel.h"
 
+using namespace neml2;
+
 TEST_CASE("ADModel", "[ADModel]")
 {
   TorchSize nbatch = 10;

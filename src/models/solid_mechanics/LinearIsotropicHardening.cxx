@@ -1,5 +1,7 @@
 #include "models/solid_mechanics/LinearIsotropicHardening.h"
 
+namespace neml2
+{
 LinearIsotropicHardening::LinearIsotropicHardening(const std::string & name, Scalar s0, Scalar K)
   : IsotropicHardening(name),
     _s0(register_parameter("yield_stress", s0)),
@@ -32,3 +34,4 @@ LinearIsotropicHardening::set_value(LabeledVector in,
         .set(dh_dep, "isotropic_hardening", "equivalent_plastic_strain");
   }
 }
+} // namespace neml2

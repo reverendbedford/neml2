@@ -3,6 +3,8 @@
 #include "TestUtils.h"
 #include "models/solid_mechanics/LinearIsotropicElasticity.h"
 
+using namespace neml2;
+
 TEST_CASE("LinearIsotropicElasticity", "[LinearIsotropicElasticity]")
 {
   TorchSize nbatch = 10;

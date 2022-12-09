@@ -1,6 +1,8 @@
 #include "models/solid_mechanics/ElasticStrain.h"
 #include "tensors/SymSymR4.h"
 
+namespace neml2
+{
 template <bool rate>
 ElasticStrainTempl<rate>::ElasticStrainTempl(const std::string & name)
   : Model(name)
@@ -54,3 +56,4 @@ ElasticStrainTempl<rate>::set_value(LabeledVector in,
 
 template class ElasticStrainTempl<true>;
 template class ElasticStrainTempl<false>;
+} // namespace neml2

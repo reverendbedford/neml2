@@ -4,6 +4,8 @@
 
 #include "tensors/SymR2.h"
 
+namespace neml2
+{
 /// A rank 4 tensor with minor symmetry stored in Mandel notation as a (6,6)
 class SymSymR4 : public FixedDimTensor<1, 6, 6>
 {
@@ -51,3 +53,4 @@ SymSymR4 operator*(const SymSymR4 & a, const SymSymR4 & b);
 
 SymSymR4 operator/(const SymSymR4 & a, const Scalar & b);
 /// @}
+} // namespace neml2

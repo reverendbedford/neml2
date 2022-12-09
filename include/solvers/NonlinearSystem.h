@@ -2,6 +2,8 @@
 
 #include "tensors/BatchTensor.h"
 
+namespace neml2
+{
 /// Abstract base class for a nonlinear system of equations
 class NonlinearSystem
 {
@@ -20,3 +22,4 @@ public:
   virtual std::tuple<BatchTensor<1>, BatchTensor<1>>
   residual_and_Jacobian(BatchTensor<1> in) const final;
 };
+} // namespace neml2

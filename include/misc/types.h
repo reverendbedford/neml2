@@ -3,6 +3,8 @@
 #include <cstddef>
 #include <torch/torch.h>
 
+namespace neml2
+{
 typedef int64_t TorchSize;
 typedef std::vector<TorchSize> TorchShape;
 typedef torch::IntArrayRef TorchShapeRef;
@@ -36,3 +38,4 @@ using all_true = std::is_same<bool_pack<bs..., true>, bool_pack<true, bs...>>;
 // If the parameters in a pack are all convertible to R
 template <class R, class... Ts>
 using are_all_convertible = all_true<std::is_convertible<Ts, R>::value...>;
+} // namespace neml2

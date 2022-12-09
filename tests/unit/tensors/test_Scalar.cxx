@@ -2,6 +2,8 @@
 
 #include "tensors/Scalar.h"
 
+using namespace neml2;
+
 TEST_CASE("Unbatched Scalar", "[Scalar]")
 {
   SECTION("construct from plain data type")

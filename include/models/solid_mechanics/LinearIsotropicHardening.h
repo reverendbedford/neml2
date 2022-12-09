@@ -2,6 +2,8 @@
 
 #include "models/solid_mechanics/IsotropicHardening.h"
 
+namespace neml2
+{
 class LinearIsotropicHardening : public IsotropicHardening
 {
 public:
@@ -14,3 +16,4 @@ protected:
 
   Scalar _s0, _K;
 };
+} // namespace neml2

@@ -1,5 +1,7 @@
 #include "models/solid_mechanics/PerzynaPlasticFlowRate.h"
 
+namespace neml2
+{
 PerzynaPlasticFlowRate::PerzynaPlasticFlowRate(const std::string & name, Scalar eta, Scalar n)
   : PlasticFlowRate(name),
     _eta(register_parameter("reference_flow_stress", eta)),
@@ -33,3 +35,4 @@ PerzynaPlasticFlowRate::set_value(LabeledVector in,
     dout_din->block("state", "state").set(dep_dot_df, "hardening_rate", "yield_function");
   }
 }
+} // namespace neml2

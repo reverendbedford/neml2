@@ -3,6 +3,8 @@
 #include "TestUtils.h"
 #include "SampleSecDerivModel.h"
 
+using namespace neml2;
+
 TEST_CASE("ADSecDerivModel", "[ADSecDerivModel]")
 {
   TorchSize nbatch = 10;

@@ -4,10 +4,12 @@
 #include "tensors/LabeledMatrix.h"
 #include "models/LabeledAxisInterface.h"
 
+namespace neml2
+{
 /**
 Class that maps some input -> output, which is also the broader definition of constitutive model.
 */
-class Model : public torch::nn::Module, public LabeledAxisInterface
+class Model : public LabeledAxisInterface
 {
 public:
   Model(const std::string & name);
@@ -63,3 +65,4 @@ private:
   LabeledAxis & _input;
   LabeledAxis & _output;
 };
+} // namespace neml2

@@ -1,5 +1,7 @@
 #include "solvers/NonlinearSystem.h"
 
+namespace neml2
+{
 BatchTensor<1>
 NonlinearSystem::residual(BatchTensor<1> x) const
 {
@@ -24,3 +26,4 @@ NonlinearSystem::residual_and_Jacobian(BatchTensor<1> x) const
   set_residual(x, r, &J);
   return {r, J};
 }
+} // namespace neml2

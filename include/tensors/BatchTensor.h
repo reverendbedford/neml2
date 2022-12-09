@@ -1,8 +1,8 @@
 #pragma once
 
-#include "types.h"
-#include "utils.h"
-#include "miscellaneous/error.h"
+#include "misc/types.h"
+#include "misc/utils.h"
+#include "misc/error.h"
 
 #include <stdexcept>
 #include <array>
@@ -10,6 +10,8 @@
 
 #include <torch/torch.h>
 
+namespace neml2
+{
 /// The very general batched einsum
 inline torch::Tensor
 einsum(const std::initializer_list<torch::Tensor> & tensors,
@@ -246,3 +248,4 @@ operator-(const BatchTensor<N> & a, const BatchTensor<N> & b)
   return torch::operator-(a, b);
 }
 /// @}
+} // namespace neml2

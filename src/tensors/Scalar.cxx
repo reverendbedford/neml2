@@ -1,5 +1,7 @@
 #include "tensors/Scalar.h"
 
+namespace neml2
+{
 Scalar::Scalar(double init, TorchSize batch_size)
   : FixedDimTensor<1, 1>(torch::tensor(init, TorchDefaults), batch_size)
 {
@@ -110,3 +112,4 @@ dmacaulay(const Scalar & a, const Scalar & a0)
 {
   return torch::heaviside(a, a0);
 }
+} // namespace neml2

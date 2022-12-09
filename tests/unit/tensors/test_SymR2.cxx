@@ -3,6 +3,8 @@
 #include "tensors/SymR2.h"
 #include "tensors/SymSymR4.h"
 
+using namespace neml2;
+
 TEST_CASE("SymR2", "[SymR2]")
 {
   SECTION("construct from one scalar")

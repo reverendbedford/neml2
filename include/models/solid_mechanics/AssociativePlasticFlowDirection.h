@@ -3,6 +3,8 @@
 #include "models/solid_mechanics/PlasticFlowDirection.h"
 #include "models/solid_mechanics/YieldFunction.h"
 
+namespace neml2
+{
 /// Flow direction associated with a yield surface
 class AssociativePlasticFlowDirection : public PlasticFlowDirection
 {
@@ -17,3 +19,4 @@ protected:
   virtual void
   set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const;
 };
+} // namespace neml2

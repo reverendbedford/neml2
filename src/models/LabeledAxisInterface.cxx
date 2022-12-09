@@ -1,5 +1,7 @@
 #include "models/LabeledAxisInterface.h"
 
+namespace neml2
+{
 LabeledAxis &
 LabeledAxisInterface::declareAxis()
 {
@@ -13,3 +15,4 @@ LabeledAxisInterface::setup_layout()
   for (auto & axis : _axes)
     axis->setup_layout();
 }
+} // namespace neml2

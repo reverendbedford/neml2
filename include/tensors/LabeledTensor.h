@@ -1,9 +1,11 @@
 #pragma once
 
-#include "types.h"
+#include "misc/types.h"
 #include "tensors/LabeledAxis.h"
 #include "tensors/BatchTensor.h"
 
+namespace neml2
+{
 template <TorchSize N, TorchSize D>
 class LabeledTensor
 {
@@ -340,3 +342,4 @@ operator-(const LabeledTensor<N, D> & tensor1, const LabeledTensor<N, D> & tenso
 {
   return tensor1.subtract(tensor2);
 }
+} // namespace neml2

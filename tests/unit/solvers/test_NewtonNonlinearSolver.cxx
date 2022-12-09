@@ -3,6 +3,8 @@
 #include "SampleNonlinearSystems.h"
 #include "solvers/NewtonNonlinearSolver.h"
 
+using namespace neml2;
+
 // Loop over a number of tests, at least at some point
 TEST_CASE("Solve system correctly", "[NewtonNonlinearSolver]")
 {

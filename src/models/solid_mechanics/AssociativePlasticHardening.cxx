@@ -1,6 +1,8 @@
 #include "models/solid_mechanics/AssociativePlasticHardening.h"
 #include "tensors/SymSymR4.h"
 
+namespace neml2
+{
 AssociativePlasticHardening::AssociativePlasticHardening(const std::string & name,
                                                          const std::shared_ptr<YieldFunction> & f)
   : PlasticHardening(name),
@@ -47,3 +49,4 @@ AssociativePlasticHardening::set_value(LabeledVector in,
         .set(-gamma_dot * d2f_dh2, "equivalent_plastic_strain_rate", "isotropic_hardening");
   }
 }
+} // namespace neml2

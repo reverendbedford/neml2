@@ -2,6 +2,8 @@
 
 #include "models/SecDerivModel.h"
 
+namespace neml2
+{
 /// Similar to `SecDerivModel`, but uses automatic differention to get the model's second derivative.
 class ADSecDerivModel : public SecDerivModel
 {
@@ -12,3 +14,4 @@ public:
 
   virtual std::tuple<LabeledMatrix, LabeledTensor<1, 3>> dvalue_and_d2value(LabeledVector in) const;
 };
+} // namespace neml2

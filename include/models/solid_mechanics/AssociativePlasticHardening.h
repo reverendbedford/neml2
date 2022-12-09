@@ -3,6 +3,8 @@
 #include "models/solid_mechanics/PlasticHardening.h"
 #include "models/solid_mechanics/YieldFunction.h"
 
+namespace neml2
+{
 /// Equivalent plastic rate associated with a yield surface
 class AssociativePlasticHardening : public PlasticHardening
 {
@@ -16,3 +18,4 @@ protected:
   virtual void
   set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const;
 };
+} // namespace neml2

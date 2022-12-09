@@ -1,5 +1,7 @@
 #include "models/forces/ForceRate.h"
 
+namespace neml2
+{
 template <typename T>
 ForceRate<T>::ForceRate(const std::string & name)
   : Force<T, false>(name)
@@ -47,3 +49,4 @@ ForceRate<T>::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dou
 
 template class ForceRate<Scalar>;
 template class ForceRate<SymR2>;
+} // namespace neml2

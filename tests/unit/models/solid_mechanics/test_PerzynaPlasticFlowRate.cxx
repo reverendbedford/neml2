@@ -3,6 +3,8 @@
 #include "TestUtils.h"
 #include "models/solid_mechanics/PerzynaPlasticFlowRate.h"
 
+using namespace neml2;
+
 TEST_CASE("PerzynaPlasticFlowRate", "[PerzynaPlasticFlowRate]")
 {
   TorchSize nbatch = 10;

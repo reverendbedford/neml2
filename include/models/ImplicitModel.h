@@ -3,6 +3,8 @@
 #include "models/Model.h"
 #include "solvers/NonlinearSystem.h"
 
+namespace neml2
+{
 /// Base class for all implicit models defined in terms of residual
 class ImplicitModel : public Model, public NonlinearSystem
 {
@@ -24,3 +26,4 @@ protected:
   /// Cached input while solving this implicit model
   LabeledVector _cached_in;
 };
+} // namespace neml2

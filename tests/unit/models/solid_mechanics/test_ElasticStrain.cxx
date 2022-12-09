@@ -3,6 +3,8 @@
 #include "TestUtils.h"
 #include "models/solid_mechanics/ElasticStrain.h"
 
+using namespace neml2;
+
 TEST_CASE("ElasticStrain", "[ElasticStrain]")
 {
   TorchSize nbatch = 10;

@@ -11,6 +11,8 @@
 #include "tensor/SymR2.h"
 #include "tensor/SymSymR4.h"
 
+using namespace neml2;
+
 class BenchmarkCommon
 {
 public:

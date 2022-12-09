@@ -2,6 +2,8 @@
 
 #include "tensors/LabeledTensor.h"
 
+namespace neml2
+{
 class LabeledVector;
 
 /// A labeled matrix
@@ -32,3 +34,4 @@ public:
   /// Write to a stream
   void write(std::ostream & os, std::string delimiter, TorchSize batch, bool header = false) const;
 };
+} // namespace neml2

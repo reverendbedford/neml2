@@ -1,6 +1,8 @@
 #include "models/solid_mechanics/NoKinematicHardening.h"
 #include "tensors/SymSymR4.h"
 
+namespace neml2
+{
 void
 NoKinematicHardening::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din) const
 {
@@ -24,3 +26,4 @@ NoKinematicHardening::set_value(LabeledVector in, LabeledVector out, LabeledMatr
     dout_din->block("state", "state").set(dmandel_dcauchy, "mandel_stress", "cauchy_stress");
   }
 }
+} // namespace neml2

@@ -1,5 +1,7 @@
 #include "models/solid_mechanics/IsotropicHardening.h"
 
+namespace neml2
+{
 IsotropicHardening::IsotropicHardening(const std::string & name)
   : Model(name)
 {
@@ -11,3 +13,4 @@ IsotropicHardening::IsotropicHardening(const std::string & name)
 
   setup();
 }
+} // namespace neml2

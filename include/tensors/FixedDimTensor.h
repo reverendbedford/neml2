@@ -1,10 +1,12 @@
 #pragma once
 
-#include "types.h"
+#include "misc/types.h"
 #include "tensors/BatchTensor.h"
 
 #include <array>
 
+namespace neml2
+{
 /// Tensor with a dynamic batch dimension and fixed logical dimensions
 template <TorchSize N, TorchSize... D>
 class FixedDimTensor : public BatchTensor<N>
@@ -50,3 +52,4 @@ FixedDimTensor<N, D...>::FixedDimTensor(const torch::Tensor & tensor, TorchShape
                              "does not match the templated "
                              "base size");
 }
+} // namespace neml2

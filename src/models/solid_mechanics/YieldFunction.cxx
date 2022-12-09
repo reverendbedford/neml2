@@ -1,5 +1,7 @@
 #include "models/solid_mechanics/YieldFunction.h"
 
+namespace neml2
+{
 YieldFunction::YieldFunction(const std::string & name)
   : SecDerivModel(name)
 {
@@ -10,3 +12,4 @@ YieldFunction::YieldFunction(const std::string & name)
   output().subaxis("state").add<Scalar>("yield_function");
   setup();
 }
+} // namespace neml2

@@ -2,6 +2,8 @@
 
 #include "tensors/FixedDimTensor.h"
 
+using namespace neml2;
+
 TEST_CASE("FixedDimTensors have the right shapes, construct blank", "[FixedDimTensors]")
 {
   // 2 batch dimensions with sizes (10,2), base dimension (3,4)
