@@ -73,7 +73,7 @@ TEST_CASE("Uniaxial strain regression test", "[StructuralRegressionTests]")
   Real max_time = 5;
   Scalar max_strains = torch::full({nbatch}, max_strain, TorchDefaults).unsqueeze(-1);
   Scalar end_times = torch::logspace(min_time, max_time, nbatch, 10, TorchDefaults).unsqueeze(-1);
-  UniaxialStrainStructuralDriver driver(model, max_strains, end_times, nsteps);
+  UniaxialStrainStructuralDriver driver(*model, max_strains, end_times, nsteps);
   auto [all_inputs, all_outputs] = driver.run();
 
   std::ofstream ofile;
