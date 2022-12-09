@@ -158,7 +158,7 @@ TEST_CASE("send to different device", "[ComposedModel]")
   SECTION("send to CPU")
   {
     model.to(torch::kCPU);
-    for (const auto param : params)
+    for (const auto & param : params)
       REQUIRE(param.value().device().type() == torch::kCPU);
   }
 
@@ -167,7 +167,7 @@ TEST_CASE("send to different device", "[ComposedModel]")
     if (torch::cuda::is_available())
     {
       model.to(torch::kCUDA);
-      for (const auto param : params)
+      for (const auto & param : params)
         REQUIRE(param.value().device().type() == torch::kCUDA);
     }
   }
