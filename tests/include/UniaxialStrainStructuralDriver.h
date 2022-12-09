@@ -7,7 +7,7 @@ class UniaxialStrainStructuralDriver : public LabeledAxisInterface
 {
 public:
   // TODO: add temperature here and elsewhere
-  UniaxialStrainStructuralDriver(const std::shared_ptr<Model> & model,
+  UniaxialStrainStructuralDriver(std::shared_ptr<Model> model,
                                  Scalar max_strain,
                                  Scalar end_time,
                                  TorchSize nsteps);

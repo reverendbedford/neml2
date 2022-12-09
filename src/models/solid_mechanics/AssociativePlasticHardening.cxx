@@ -6,7 +6,7 @@ AssociativePlasticHardening::AssociativePlasticHardening(const std::string & nam
   : PlasticHardening(name),
     yield_function(*f)
 {
-  registerModel(f);
+  register_model(f);
   setup();
 }
 

@@ -18,7 +18,7 @@ ComposedModel::ComposedModel(
 }
 
 void
-ComposedModel::add_node(const std::shared_ptr<Model> & model)
+ComposedModel::add_node(std::shared_ptr<Model> model)
 {
   _models[model->name()] = model;
   if (_dependecies.count(model->name()) == 0)
@@ -26,8 +26,7 @@ ComposedModel::add_node(const std::shared_ptr<Model> & model)
 }
 
 void
-ComposedModel::register_dependency(const std::shared_ptr<Model> & from,
-                                   const std::shared_ptr<Model> & to)
+ComposedModel::register_dependency(std::shared_ptr<Model> from, std::shared_ptr<Model> to)
 {
   add_node(from);
   add_node(to);
@@ -97,33 +96,33 @@ ComposedModel::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * do
 
     // Optionally compute the derivatives
     if (dout_din)
-      chain_rule(i, cached_dpout_dpin, *dout_din);
+      chain_rule(*i, cached_dpout_dpin, *dout_din);
   }
 }
 
 void
-ComposedModel::chain_rule(const std::shared_ptr<Model> & i,
+ComposedModel::chain_rule(const Model & i,
                           const std::unordered_map<std::string, LabeledMatrix> & cached_dpout_dpin,
                           LabeledMatrix dout_din) const
 {
-  const auto & deps = dependent_models(i->name());
+  const auto & deps = dependent_models(i.name());
 
   // Base case: If I am a leaf model, the total derivative is just my partial derivative
   if (deps.empty())
   {
-    dout_din.assemble(cached_dpout_dpin.at(i->name()));
+    dout_din.assemble(cached_dpout_dpin.at(i.name()));
     return;
   }
 
   TorchSize nbatch = dout_din.batch_size();
 
   // The partial derivatives of output() w.r.t. input()
-  LabeledMatrix dpout_dpin = cached_dpout_dpin.at(i->name());
+  LabeledMatrix dpout_dpin = cached_dpout_dpin.at(i.name());
 
   // The partial derivatives of the registered model's inputs w.r.t. the total inputs
-  LabeledMatrix dpin_din(nbatch, i->input(), input());
+  LabeledMatrix dpin_din(nbatch, i.input(), input());
   for (auto dep : deps)
-    chain_rule(dep, cached_dpout_dpin, dpin_din);
+    chain_rule(*dep, cached_dpout_dpin, dpin_din);
 
   // Chain rule
   dout_din.assemble(dpout_dpin.chain(dpin_din));
@@ -167,7 +166,7 @@ ComposedModel::resolve_dependency()
 }
 
 void
-ComposedModel::resolve_dependency(const std::shared_ptr<Model> & i,
+ComposedModel::resolve_dependency(std::shared_ptr<Model> i,
                                   std::vector<std::shared_ptr<Model>> & order,
                                   std::unordered_map<std::string, bool> & visited)
 {
@@ -205,14 +204,14 @@ ComposedModel::to_dot(std::ostream & os) const
 
   // Write all the models
   for (auto i : _evaluation_order)
-    to_dot(os, i, id, io_ids);
+    to_dot(os, *i, id, io_ids);
 
   os << "}\n";
 }
 
 void
 ComposedModel::to_dot(std::ostream & os,
-                      const std::shared_ptr<Model> & model,
+                      const Model & model,
                       int & id,
                       std::unordered_map<std::string, int> & io_ids) const
 {
@@ -220,20 +219,20 @@ ComposedModel::to_dot(std::ostream & os,
   os << "subgraph ";
   os << "cluster_" << id++ << " ";
   os << "{\n";
-  os << "label = \"" << model->name() << "\"\n";
+  os << "label = \"" << model.name() << "\"\n";
 
-  io_ids.emplace(model->name() + " input", id);
-  input().to_dot(os, id, model->name() + " input", true, true);
-  io_ids.emplace(model->name() + " output", id);
-  output().to_dot(os, id, model->name() + " output", true, true);
+  io_ids.emplace(model.name() + " input", id);
+  input().to_dot(os, id, model.name() + " input", true, true);
+  io_ids.emplace(model.name() + " output", id);
+  output().to_dot(os, id, model.name() + " output", true, true);
 
-  for (auto i : dependent_models(model->name()))
+  for (auto i : dependent_models(model.name()))
   {
     os << "\"" << i->name() + " output\"";
     os << " -> ";
-    os << "\"" << model->name() << " input\"";
+    os << "\"" << model.name() << " input\"";
     os << "[ltail = cluster_" << io_ids[i->name() + " output"] << ", ";
-    os << "lhead = cluster_" << io_ids[model->name() + " input"] << ", penwidth = 2]\n";
+    os << "lhead = cluster_" << io_ids[model.name() + " input"] << ", penwidth = 2]\n";
   }
 
   os << "}\n";

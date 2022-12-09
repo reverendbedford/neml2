@@ -7,7 +7,7 @@ ImplicitUpdate::ImplicitUpdate(const std::string & name,
     _model(*model),
     _solver(*solver)
 {
-  registerModel(model);
+  register_model(model);
   // Now that the implicit model has been registered, the input of this ImplicitUpdate model should
   // be the same as the implicit model's input. The input subaxes of the implicit model looks
   // something like

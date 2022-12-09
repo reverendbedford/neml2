@@ -5,7 +5,7 @@ ImplicitTimeIntegration::ImplicitTimeIntegration(const std::string & name,
   : ImplicitModel(name),
     _rate(*rate)
 {
-  registerModel(rate);
+  register_model(rate);
 
   // Does the implicit constitutive model already requires time and old time?
   // Probably not, so we add time and old time here anyways, since we need them to perform time

@@ -54,7 +54,7 @@ protected:
   NOTE: We also register this model as a submodule (in torch's language), so that when *this*
   `Model` is send to another device, the registered `Model` is also sent to that device.
   */
-  void registerModel(const std::shared_ptr<Model> & model);
+  void register_model(std::shared_ptr<Model> model);
 
   /// Models *this* model may use during its evaluation
   std::vector<std::shared_ptr<Model>> _registered_models;

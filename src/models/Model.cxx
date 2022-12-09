@@ -33,7 +33,7 @@ Model::value_and_dvalue(LabeledVector in) const
 }
 
 void
-Model::registerModel(const std::shared_ptr<Model> & model)
+Model::register_model(std::shared_ptr<Model> model)
 {
   input().merge(model->input());
   _registered_models.push_back(model);

@@ -26,10 +26,10 @@ protected:
   set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const;
 
   /// Add a node in the DAG
-  void add_node(const std::shared_ptr<Model> & model);
+  void add_node(std::shared_ptr<Model> model);
 
   /// Register a dependency, e.g., adding a directed edge in the DAG
-  void register_dependency(const std::shared_ptr<Model> & from, const std::shared_ptr<Model> & to);
+  void register_dependency(std::shared_ptr<Model> from, std::shared_ptr<Model> to);
 
   /// Resolve dependency using topological traversal of the dependent models
   void resolve_dependency();
@@ -52,18 +52,18 @@ protected:
 
 private:
   /// Helper function to recurse the model graph to evaluate the total derivative
-  void chain_rule(const std::shared_ptr<Model> & i,
+  void chain_rule(const Model & i,
                   const std::unordered_map<std::string, LabeledMatrix> & cached_dpout_dpin,
                   LabeledMatrix dout_din) const;
 
   /// Dependency resolution helper
-  void resolve_dependency(const std::shared_ptr<Model> & i,
+  void resolve_dependency(std::shared_ptr<Model> i,
                           std::vector<std::shared_ptr<Model>> & dep,
                           std::unordered_map<std::string, bool> & visited);
 
   /// Helper function to write this model only
   void to_dot(std::ostream & os,
-              const std::shared_ptr<Model> & model,
+              const Model & model,
               int & id,
               std::unordered_map<std::string, int> & io_ids) const;
 };

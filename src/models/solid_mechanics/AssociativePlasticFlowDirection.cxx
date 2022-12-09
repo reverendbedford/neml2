@@ -6,7 +6,7 @@ AssociativePlasticFlowDirection::AssociativePlasticFlowDirection(const std::stri
   : PlasticFlowDirection(name),
     yield_function(*f)
 {
-  registerModel(f);
+  register_model(f);
   setup();
 }
 
