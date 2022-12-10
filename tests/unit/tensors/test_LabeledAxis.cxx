@@ -252,3 +252,39 @@ TEST_CASE("Miscellaneous modifiers", "[LabeledAxis]")
     REQUIRE(test.storage_size("foo_r2t2_heh") == 6);
   }
 }
+
+TEST_CASE("Indices of items", "[LabeledAxis]")
+{
+  LabeledAxis test;
+  test.add<Scalar>("scalar");
+  test.add<SymR2>("r2t");
+  test.add<LabeledAxis>("sub1");
+  test.subaxis("sub1").add<Scalar>("sub1/scalar");
+  test.subaxis("sub1").add<SymR2>("sub1/r2t");
+  test.subaxis("sub1").add<LabeledAxis>("sub2");
+  test.subaxis("sub1").subaxis("sub2").add<Scalar>("sub1/sub2/scalar");
+  test.subaxis("sub1").subaxis("sub2").add<SymR2>("sub1/sub2/r2t");
+  test.setup_layout();
+
+  /// The sorted layout is
+  ///  0 1 2 3 4 5   6          7 8 9 10 11 12   13              14 15 16 17 18 19    20
+  /// |----r2t----| |-scalar-| |---sub1/r2t---| |-sub1/scalar-| |--sub1/sub2/r2t--| |-sub1/sub2/scalar-|
+
+  auto idx = torch::arange(test.storage_size());
+
+  SECTION("index by a variable name")
+  {
+    REQUIRE(torch::allclose(idx.index(test.indices("r2t")), torch::arange(0, 6)));
+  }
+
+  SECTION("index by a sub-axis name")
+  {
+    REQUIRE(torch::allclose(idx.index(test.indices("sub1")), torch::arange(7, 21)));
+  }
+
+  SECTION("index by a LabeledAxisAccessor")
+  {
+    LabeledAxisAccessor i({{"sub1", "sub2", "sub1/sub2/r2t"}});
+    REQUIRE(torch::allclose(idx.index(test.indices(i)), torch::arange(14, 20)));
+  }
+}

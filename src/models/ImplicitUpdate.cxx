@@ -54,7 +54,7 @@ ImplicitUpdate::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * d
   if (dout_din)
   {
     LabeledVector implicit_in(nbatch, _model.input());
-    implicit_in.assemble(in);
+    implicit_in.fill(in);
     implicit_in.set(sol, "state");
 
     auto partials = _model.dvalue(implicit_in);

@@ -23,8 +23,8 @@ TEST_CASE("ElasticStrain", "[ElasticStrain]")
   SECTION("model derivatives")
   {
     LabeledVector in(nbatch, estrain.input());
-    auto E = SymR2::init(0.1, 0.05, 0).expand_batch(nbatch);
-    auto Ep = SymR2::init(0.01, 0.01, 0).expand_batch(nbatch);
+    auto E = SymR2::init(0.1, 0.05, 0).batch_expand(nbatch);
+    auto Ep = SymR2::init(0.01, 0.01, 0).batch_expand(nbatch);
     in.slice(0, "forces").set(E, "total_strain");
     in.slice(0, "state").set(Ep, "plastic_strain");
 

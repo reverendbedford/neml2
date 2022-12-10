@@ -53,13 +53,13 @@ SampleRateModelTempl<is_ad>::set_value(LabeledVector in,
       TorchSize nbatch = in.batch_size();
       auto dfoo_dot_dfoo = 2 * foo * T;
       auto dfoo_dot_dbar = T;
-      auto dfoo_dot_dbaz = SymR2::identity().expand_batch(nbatch);
+      auto dfoo_dot_dbaz = SymR2::identity().batch_expand(nbatch);
       auto dbar_dot_dfoo = Scalar(-0.5, nbatch);
       auto dbar_dot_dbar = Scalar(-0.01, nbatch);
-      auto dbar_dot_dbaz = SymR2::identity().expand_batch(nbatch);
+      auto dbar_dot_dbaz = SymR2::identity().batch_expand(nbatch);
       auto dbaz_dot_dfoo = baz * (T - 3);
       auto dbaz_dot_dbar = baz * (T - 3);
-      auto dbaz_dot_dbaz = (foo + bar) * (T - 3) * SymR2::identity_map().expand_batch(nbatch);
+      auto dbaz_dot_dbaz = (foo + bar) * (T - 3) * SymR2::identity_map().batch_expand(nbatch);
 
       dout_din->block("state", "state").set(dfoo_dot_dfoo, "foo_rate", "foo");
       dout_din->block("state", "state").set(dfoo_dot_dbar, "foo_rate", "bar");

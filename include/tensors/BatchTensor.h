@@ -78,13 +78,16 @@ public:
   void batch_index_put(TorchSlice indices, const torch::Tensor & other);
 
   /// Return an index sliced on the batch dimensions
-  torch::Tensor base_index(TorchSlice indices) const;
+  BatchTensor<N> base_index(TorchSlice indices) const;
 
   /// Set a index sliced on the batch dimensions to a value
   void base_index_put(TorchSlice indices, const torch::Tensor & other);
 
-  /// Return a new view with values broadcast along the batch dimensions.
-  BatchTensor<N> expand_batch(TorchShapeRef batch_size) const;
+  /// Return a new view of the tensor with values broadcast along the batch dimensions.
+  BatchTensor<N> batch_expand(TorchShapeRef batch_size) const;
+
+  /// Return a new tensor with values broadcast along the batch dimensions.
+  BatchTensor<N> batch_expand_copy(TorchShapeRef batch_size) const;
 
   /// Negation
   BatchTensor<N> operator-() const;
@@ -185,7 +188,7 @@ BatchTensor<N>::batch_index_put(TorchSlice indices, const torch::Tensor & other)
 }
 
 template <TorchSize N>
-torch::Tensor
+BatchTensor<N>
 BatchTensor<N>::base_index(TorchSlice indices) const
 {
   indices.insert(indices.begin(), torch::indexing::Ellipsis);
@@ -202,7 +205,23 @@ BatchTensor<N>::base_index_put(TorchSlice indices, const torch::Tensor & other)
 
 template <TorchSize N>
 BatchTensor<N>
-BatchTensor<N>::expand_batch(TorchShapeRef batch_size) const
+BatchTensor<N>::batch_expand(TorchShapeRef batch_size) const
+{
+  neml_assert_dbg(batch_size.size() == N,
+                  "Proposed batch shape has dimension ",
+                  batch_size.size(),
+                  ". It does not match the number of templated batch dimensions ",
+                  N);
+
+  // We don't want to touch the base dimensions, so put -1 for them.
+  TorchShape net(batch_size.vec());
+  net.insert(net.end(), base_dim(), -1);
+  return expand(net);
+}
+
+template <TorchSize N>
+BatchTensor<N>
+BatchTensor<N>::batch_expand_copy(TorchShapeRef batch_size) const
 {
   neml_assert_dbg(batch_size.size() == N,
                   "Proposed batch shape has dimension ",

@@ -185,14 +185,16 @@ LabeledTensor<N, D>::slice_indices(S... names) const
 {
   static_assert(sizeof...(names) == D, "Wrong labaled dimesion in LabeledTensor::slice_indices");
 
-  std::vector<std::string> names_vec = {names...};
+  using T = std::common_type_t<S...>;
+
+  std::vector<T> names_vec = {names...};
   TorchSlice s;
   s.reserve(_axes.size());
   std::transform(_axes.begin(),
                  _axes.end(),
                  names_vec.begin(),
                  std::back_inserter(s),
-                 [](const LabeledAxis * axis, std::string name) { return axis->indices(name); });
+                 [](const LabeledAxis * axis, T name) { return axis->indices(name); });
   return s;
 }
 
@@ -203,15 +205,16 @@ LabeledTensor<N, D>::storage_size(S... names) const
 {
   static_assert(sizeof...(names) == D, "Wrong labaled dimesion in LabeledTensor::storage_size");
 
-  std::vector<std::string> names_vec = {names...};
+  using T = std::common_type_t<S...>;
+
+  std::vector<T> names_vec = {names...};
   TorchShape s;
   s.reserve(_axes.size());
   std::transform(_axes.begin(),
                  _axes.end(),
                  names_vec.begin(),
                  std::back_inserter(s),
-                 [](const LabeledAxis * axis, std::string name)
-                 { return axis->storage_size(name); });
+                 [](const LabeledAxis * axis, T name) { return axis->storage_size(name); });
   return s;
 }
 

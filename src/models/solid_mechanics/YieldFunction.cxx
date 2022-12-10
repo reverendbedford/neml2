@@ -3,13 +3,10 @@
 namespace neml2
 {
 YieldFunction::YieldFunction(const std::string & name)
-  : SecDerivModel(name)
+  : SecDerivModel(name),
+    _mandel_idx(declareVariable<SymR2>(input(), "state", "mandel_stress")),
+    _f_idx(declareVariable<Scalar>(output(), "state", "yield_function"))
 {
-  input().add<LabeledAxis>("state");
-  input().subaxis("state").add<SymR2>("mandel_stress");
-
-  output().add<LabeledAxis>("state");
-  output().subaxis("state").add<Scalar>("yield_function");
   setup();
 }
 } // namespace neml2

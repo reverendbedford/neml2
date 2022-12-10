@@ -8,7 +8,7 @@ TEST_CASE("FixedDimTensors have the right shapes, construct blank", "[FixedDimTe
 {
   // 2 batch dimensions with sizes (10,2), base dimension (3,4)
   FixedDimTensor<2, 3, 4> A;
-  A = A.expand_batch({10, 2});
+  A = A.batch_expand({10, 2});
 
   SECTION(" batch sizes are correct")
   {

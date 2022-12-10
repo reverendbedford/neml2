@@ -3,14 +3,10 @@
 namespace neml2
 {
 IsotropicHardening::IsotropicHardening(const std::string & name)
-  : Model(name)
+  : Model(name),
+    _ep_idx(declareVariable<Scalar>(input(), "state", "equivalent_plastic_strain")),
+    _g_idx(declareVariable<Scalar>(output(), "state", "isotropic_hardening"))
 {
-  input().add<LabeledAxis>("state");
-  input().subaxis("state").add<Scalar>("equivalent_plastic_strain");
-
-  output().add<LabeledAxis>("state");
-  output().subaxis("state").add<Scalar>("isotropic_hardening");
-
   setup();
 }
 } // namespace neml2

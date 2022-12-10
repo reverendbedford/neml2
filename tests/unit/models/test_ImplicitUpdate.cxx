@@ -41,7 +41,7 @@ TEST_CASE("ImplicitUpdate", "[ImplicitUpdate]")
   }
 
   LabeledVector in(nbatch, integrate_rate.input());
-  auto baz_old = SymR2::init(0, 0, 0, 0, 0, 0).expand_batch(nbatch);
+  auto baz_old = SymR2::init(0, 0, 0, 0, 0, 0).batch_expand(nbatch);
   in.slice(0, "old_state").set(Scalar(0, nbatch), "foo");
   in.slice(0, "old_state").set(Scalar(0, nbatch), "bar");
   in.slice(0, "old_state").set(baz_old, "baz");

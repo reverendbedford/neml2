@@ -9,17 +9,17 @@ LabeledVector::LabeledVector(const LabeledTensor<1, 1> & other)
 }
 
 void
-LabeledVector::assemble(const LabeledVector & other)
+LabeledVector::accumulate(const LabeledVector & other, bool recursive)
 {
-  // First fill in all the variables
-  for (auto var_itr : other.axis(0).variables())
-    if (axis(0).has_variable(var_itr.first))
-      (*this)(var_itr.first) += other(var_itr.first);
+  auto [idx, idx_other] = LabeledAxis::common_indices(axis(0), other.axis(0), recursive);
+  _tensor.base_index_put({idx}, _tensor.base_index({idx}) + other.tensor().base_index({idx_other}));
+}
 
-  // Then recursively fill the subaxis
-  for (auto subaxis_itr : other.axis(0).subaxes())
-    if (axis(0).has_subaxis(subaxis_itr.first))
-      LabeledVector(slice(0, subaxis_itr.first)).assemble(other.slice(0, subaxis_itr.first));
+void
+LabeledVector::fill(const LabeledVector & other, bool recursive)
+{
+  auto [idx, idx_other] = LabeledAxis::common_indices(axis(0), other.axis(0), recursive);
+  _tensor.base_index_put({idx}, other.tensor().base_index({idx_other}));
 }
 
 LabeledMatrix

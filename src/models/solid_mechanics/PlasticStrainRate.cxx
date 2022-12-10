@@ -32,7 +32,7 @@ PlasticStrainRate::set_value(LabeledVector in, LabeledVector out, LabeledMatrix 
   if (dout_din)
   {
     TorchSize nbatch = in.batch_size();
-    auto I = SymR2::identity_map().expand_batch(nbatch);
+    auto I = SymR2::identity_map().batch_expand(nbatch);
 
     dout_din->block("state", "state")
         .set(gamma_dot * I, "plastic_strain_rate", "plastic_flow_direction");

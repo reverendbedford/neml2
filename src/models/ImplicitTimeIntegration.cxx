@@ -61,7 +61,7 @@ ImplicitTimeIntegration::set_value(LabeledVector in,
   if (dout_din)
   {
     auto n_state = output().storage_size("residual");
-    auto I = BatchTensor<1>::identity(n_state).expand_batch(nbatch);
+    auto I = BatchTensor<1>::identity(n_state).batch_expand(nbatch);
     auto ds_dot_ds_np1 = drate_din("state", "state");
     auto dr_ds_np1 = I - ds_dot_ds_np1 * dt;
     dout_din->set(dr_ds_np1, "residual", "state");
@@ -98,7 +98,7 @@ ImplicitTimeIntegration::set_residual(BatchTensor<1> x, BatchTensor<1> r, BatchT
   LabeledVector out(nbatch, output());
 
   // Fill in the current trial state and cached (fixed) forces, old forces, old state
-  in.assemble(_cached_in);
+  in.fill(_cached_in);
   in.set(x, "state");
 
   if (J)

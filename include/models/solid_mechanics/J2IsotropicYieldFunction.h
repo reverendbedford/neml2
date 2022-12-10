@@ -18,5 +18,7 @@ protected:
   virtual void set_dvalue(LabeledVector in,
                           LabeledMatrix dout_din,
                           LabeledTensor<1, 3> * d2out_din2 = nullptr) const;
+
+  const LabeledAxisAccessor _g_idx;
 };
 } // namespace neml2

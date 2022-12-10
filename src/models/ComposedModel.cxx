@@ -2,9 +2,7 @@
 
 namespace neml2
 {
-ComposedModel::ComposedModel(
-    const std::string & name,
-    const std::vector<std::pair<std::shared_ptr<Model>, std::shared_ptr<Model>>> & dependencies)
+ComposedModel::ComposedModel(const std::string & name, const ModelDependency & dependencies)
   : Model(name)
 {
   for (const auto & [from, to] : dependencies)
@@ -73,7 +71,7 @@ ComposedModel::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * do
       {
         if (cached_pout.count(dep->name()) == 0)
           throw std::runtime_error("Internal error, incorrect evaluation order");
-        pin.assemble(cached_pout.at(dep->name()));
+        pin.fill(cached_pout.at(dep->name()));
       }
     }
     if (dout_din)
@@ -95,7 +93,7 @@ ComposedModel::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * do
     if (cached_pout.count(i->name()) == 0)
       throw std::runtime_error("Internal error, incorrect dependency resolution");
 
-    out.assemble(cached_pout.at(i->name()));
+    out.fill(cached_pout.at(i->name()));
 
     // Optionally compute the derivatives
     if (dout_din)
@@ -113,7 +111,7 @@ ComposedModel::chain_rule(const Model & i,
   // Base case: If I am a leaf model, the total derivative is just my partial derivative
   if (deps.empty())
   {
-    dout_din.assemble(cached_dpout_dpin.at(i.name()));
+    dout_din.fill(cached_dpout_dpin.at(i.name()));
     return;
   }
 
@@ -128,7 +126,7 @@ ComposedModel::chain_rule(const Model & i,
     chain_rule(*dep, cached_dpout_dpin, dpin_din);
 
   // Chain rule
-  dout_din.assemble(dpout_dpin.chain(dpin_din));
+  dout_din.fill(dpout_dpin.chain(dpin_din));
 }
 
 void

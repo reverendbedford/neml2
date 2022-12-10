@@ -12,7 +12,7 @@ TEST_CASE("ADModel", "[ADModel]")
   auto ad_rate = ADSampleRateModel("sample_rate");
 
   LabeledVector in(nbatch, rate.input());
-  auto baz = SymR2::init(0.5, 1.1, 3.2, -1.2, 1.1, 5.9).expand_batch(nbatch);
+  auto baz = SymR2::init(0.5, 1.1, 3.2, -1.2, 1.1, 5.9).batch_expand(nbatch);
   in.slice(0, "state").set(Scalar(1.1, nbatch), "foo");
   in.slice(0, "state").set(Scalar(0.01, nbatch), "bar");
   in.slice(0, "state").set(baz, "baz");

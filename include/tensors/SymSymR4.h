@@ -28,6 +28,9 @@ public:
   // Negation
   SymSymR4 operator-() const;
 
+  // Inversion
+  SymSymR4 inverse() const;
+
 private:
   /// Helpers for the fill method
   /// @{

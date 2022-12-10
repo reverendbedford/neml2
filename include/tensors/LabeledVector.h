@@ -21,7 +21,11 @@ public:
 
   /// Add another vector into this vector.
   /// The item set of the other vector must be a subset of this vector's item set.
-  void assemble(const LabeledVector & other);
+  void accumulate(const LabeledVector & other, bool recursive = true);
+
+  /// Fill (override) another vector into this vector.
+  /// The item set of the other vector must be a subset of this vector's item set.
+  void fill(const LabeledVector & other, bool recursive = true);
 
   /// Promote to LabeledMatrix with arbitrary outer product
   LabeledMatrix outer(const LabeledVector & other) const;

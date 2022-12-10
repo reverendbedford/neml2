@@ -40,7 +40,7 @@ ElasticStrainTempl<rate>::set_value(LabeledVector in,
 
   if (dout_din)
   {
-    auto I = SymR2::identity_map().expand_batch(in.batch_size());
+    auto I = SymR2::identity_map().batch_expand(in.batch_size());
 
     // Set the output
     dout_din->block("state", "forces")

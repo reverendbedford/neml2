@@ -14,6 +14,7 @@
 #include "models/solid_mechanics/PlasticStrainRate.h"
 #include "models/ImplicitTimeIntegration.h"
 #include "models/ImplicitUpdate.h"
+#include "models/TimeIntegration.h"
 #include "models/IdentityMap.h"
 #include "models/forces/ForceRate.h"
 #include "solvers/NewtonNonlinearSolver.h"
@@ -22,12 +23,12 @@
 
 using namespace neml2;
 
-TEST_CASE("Uniaxial strain regression test", "[viscoplasticity]")
+TEST_CASE("Alternative composition of viscoplasticity", "[viscoplasticity2]")
 {
   NonlinearSolverParameters params = {/*atol =*/1e-10,
                                       /*rtol =*/1e-8,
                                       /*miters =*/100,
-                                      /*verbose=*/true};
+                                      /*verbose=*/false};
 
   Scalar E = 1e5;
   Scalar nu = 0.3;
@@ -36,39 +37,48 @@ TEST_CASE("Uniaxial strain regression test", "[viscoplasticity]")
   Scalar K = 1000;
   Scalar eta = 100;
   Scalar n = 2;
-  auto Erate = std::make_shared<ForceRate<SymR2>>("total_strain");
-  auto Eerate = std::make_shared<ElasticStrainRate>("elastic_strain_rate");
-  auto elasticity = std::make_shared<CauchyStressRateFromElasticStrainRate>("elasticity", C);
-  auto kinharden = std::make_shared<NoKinematicHardening>("kinematic_hardening");
-  auto isoharden = std::make_shared<LinearIsotropicHardening>("isotropic_hardening", s0, K);
-  auto yield = std::make_shared<J2IsotropicYieldFunction>("yield_function");
-  auto direction =
-      std::make_shared<AssociativePlasticFlowDirection>("plastic_flow_direction", yield);
-  auto eprate = std::make_shared<AssociativePlasticHardening>("ep_rate", yield);
-  auto hrate = std::make_shared<PerzynaPlasticFlowRate>("hardening_rate", eta, n);
+  auto Ee = std::make_shared<ElasticStrain>("elastic_strain");
+  auto S = std::make_shared<CauchyStressFromElasticStrain>("cauchy_stress", C);
+  auto M = std::make_shared<NoKinematicHardening>("mandel_stress");
+  auto gamma = std::make_shared<LinearIsotropicHardening>("isotropic_hardening", s0, K);
+  auto f = std::make_shared<J2IsotropicYieldFunction>("yield_function");
+  auto gammarate = std::make_shared<PerzynaPlasticFlowRate>("hardening_rate", eta, n);
+  auto Np = std::make_shared<AssociativePlasticFlowDirection>("plastic_flow_direction", f);
+  auto eprate = std::make_shared<AssociativePlasticHardening>("ep_rate", f);
   auto Eprate = std::make_shared<PlasticStrainRate>("plastic_strain_rate");
 
   // All these dependency registration thingy can be predefined.
-  ModelDependency dependencies = {{Erate, Eerate},
-                                  {kinharden, yield},
-                                  {isoharden, yield},
-                                  {kinharden, direction},
-                                  {isoharden, direction},
-                                  {kinharden, eprate},
-                                  {isoharden, eprate},
-                                  {hrate, eprate},
-                                  {yield, hrate},
-                                  {hrate, Eprate},
-                                  {direction, Eprate},
-                                  {Eprate, Eerate},
-                                  {Eerate, elasticity}};
-  auto rate = std::make_shared<ComposedModel>("rate", dependencies);
+  ModelDependency rate_deps = {{Ee, S},
+                               {S, M},
+                               {M, f},
+                               {gamma, f},
+                               {f, gammarate},
+                               {M, Np},
+                               {gamma, Np},
+                               {M, eprate},
+                               {gamma, eprate},
+                               {gammarate, eprate},
+                               {gammarate, Eprate},
+                               {Np, Eprate}};
+  auto rate = std::make_shared<ComposedModel>("rate", rate_deps);
 
-  auto implicit_rate = std::make_shared<ImplicitTimeIntegration>("implicit_time_integration", rate);
+  auto surface = std::make_shared<ImplicitTimeIntegration>("yield_surface", rate);
   auto solver = std::make_shared<NewtonNonlinearSolver>(params);
-  auto model = std::make_shared<ImplicitUpdate>("viscoplasticity", implicit_rate, solver);
+  auto return_map = std::make_shared<ImplicitUpdate>("viscoplasticity", surface, solver);
+  auto strain = std::make_shared<IdentityMap<SymR2>>(
+      "total_strain", "forces", "total_strain", "forces", "total_strain");
+  auto output_Ep = std::make_shared<IdentityMap<SymR2>>(
+      "output_plastic_strain", "state", "plastic_strain", "state", "plastic_strain");
+  auto output_ep = std::make_shared<IdentityMap<Scalar>>("output_equivalent_plastic_strain",
+                                                         "state",
+                                                         "equivalent_plastic_strain",
+                                                         "state",
+                                                         "equivalent_plastic_strain");
+  ModelDependency dependencies = {
+      {return_map, Ee}, {strain, Ee}, {Ee, S}, {return_map, output_Ep}, {return_map, output_ep}};
+  auto model = std::make_shared<ComposedModel>("viscoplasticity", dependencies);
 
-  TorchSize nbatch = 20;
+  TorchSize nbatch = 1;
   TorchSize nsteps = 100;
   Real max_strain = 0.10;
   Real min_time = -1;
@@ -85,7 +95,7 @@ TEST_CASE("Uniaxial strain regression test", "[viscoplasticity]")
   auto [all_inputs, all_outputs] = driver.run();
 
   std::ofstream ofile;
-  std::string fname = "regression/models/solid_mechanics/viscoplasticity";
+  std::string fname = "regression/models/solid_mechanics/viscoplasticity2";
 
   // I use this to write csv for visualization purposes.
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -116,8 +126,8 @@ TEST_CASE("Uniaxial strain regression test", "[viscoplasticity]")
 
   // Below is what I used to save the results
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // torch::save(inputs, fname + "_inputs.pt");
-  // torch::save(outputs, fname + "_outputs.pt");
+  //   torch::save(inputs, fname + "_inputs.pt");
+  //   torch::save(outputs, fname + "_outputs.pt");
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   // Load it back

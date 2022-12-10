@@ -48,8 +48,8 @@ TEST_CASE_METHOD(BenchmarkCommon, "Benchmark SymR2", "[BENCHMARK][SymR2]")
   for (TorchSize nbatch : nbatches)
   {
     Scalar a(1, nbatch);
-    SymR2 A_batched = SymR2::init(1, 2, 3, 4, 5, 6).expand_batch(nbatch);
-    SymR2 B_batched = SymR2::init(5, 6, 7, 8, 9, 10).expand_batch(nbatch);
+    SymR2 A_batched = SymR2::init(1, 2, 3, 4, 5, 6).batch_expand(nbatch);
+    SymR2 B_batched = SymR2::init(5, 6, 7, 8, 9, 10).batch_expand(nbatch);
     BENCHMARK(bname("USymR2+BSymR2", nbatch)) { return A_unbatched + B_batched; };
     BENCHMARK(bname("BSymR2+BSymR2", nbatch)) { return A_batched + B_batched; };
     BENCHMARK(bname("tr(BSymR2)", nbatch)) { return A_batched.tr(); };
@@ -71,11 +71,11 @@ TEST_CASE_METHOD(BenchmarkCommon, "Benchmark SymSymR4", "[BENCHMARK][SymSymR4]")
   {
     Scalar E = 100;
     Scalar nu = 0.25;
-    SymR2 A_batched = SymR2::init(1, 2, 3, 4, 5, 6).expand_batch(nbatch);
+    SymR2 A_batched = SymR2::init(1, 2, 3, 4, 5, 6).batch_expand(nbatch);
     SymSymR4 C_batched =
-        SymSymR4::init(SymSymR4::FillMethod::isotropic_E_nu, {100, 0.25}).expand_batch(nbatch);
+        SymSymR4::init(SymSymR4::FillMethod::isotropic_E_nu, {100, 0.25}).batch_expand(nbatch);
     SymSymR4 D_batched =
-        SymSymR4::init(SymSymR4::FillMethod::isotropic_E_nu, {200, 0.3}).expand_batch(nbatch);
+        SymSymR4::init(SymSymR4::FillMethod::isotropic_E_nu, {200, 0.3}).batch_expand(nbatch);
     // clang-format off
     BENCHMARK(bname("USymSymR4+BSymSymR4", nbatch)) { return C_unbatched + D_batched; };
     BENCHMARK(bname("BSymSymR4+BSymSymR4", nbatch)) { return C_batched + D_batched; };

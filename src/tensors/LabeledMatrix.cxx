@@ -1,6 +1,8 @@
 #include "tensors/LabeledMatrix.h"
 #include "tensors/LabeledVector.h"
 
+using namespace torch::indexing;
+
 namespace neml2
 {
 LabeledMatrix::LabeledMatrix(const LabeledVector & A, const LabeledVector & B)
@@ -22,22 +24,35 @@ LabeledMatrix::LabeledMatrix(const LabeledTensor<1, 2> & other)
 }
 
 void
-LabeledMatrix::assemble(const LabeledMatrix & other)
+LabeledMatrix::accumulate(const LabeledMatrix & other, bool recursive)
 {
-  // First fill in all the variables
-  for (auto var_itr_i : other.axis(0).variables())
-    if (axis(0).has_variable(var_itr_i.first))
-      for (auto var_itr_j : other.axis(1).variables())
-        if (axis(1).has_variable(var_itr_j.first))
-          (*this)(var_itr_i.first, var_itr_j.first) += other(var_itr_i.first, var_itr_j.first);
+  auto [idx0, idx0_other] = LabeledAxis::common_indices(axis(0), other.axis(0), recursive);
+  auto [idx1, idx1_other] = LabeledAxis::common_indices(axis(1), other.axis(1), recursive);
 
-  // Then recursively fill the subaxis
-  for (auto subaxis_itr_i : other.axis(0).subaxes())
-    if (axis(0).has_subaxis(subaxis_itr_i.first))
-      for (auto subaxis_itr_j : other.axis(1).subaxes())
-        if (axis(1).has_subaxis(subaxis_itr_j.first))
-          LabeledMatrix(block(subaxis_itr_i.first, subaxis_itr_j.first))
-              .assemble(other.block(subaxis_itr_i.first, subaxis_itr_j.first));
+  // This is annoying -- since we are using advanced indexing, torch actually creates a copy of the
+  // indexed view (and so it's not a view anymore).
+  auto temp = _tensor.base_index({idx0, Slice()});
+  auto temp_other = other.tensor().base_index({idx0_other, Slice()});
+  temp.base_index_put({Slice(), idx1},
+                      temp.base_index({Slice(), idx1}) +
+                          temp_other.base_index({Slice(), idx1_other}));
+
+  _tensor.base_index_put({idx0, Slice()}, temp);
+}
+
+void
+LabeledMatrix::fill(const LabeledMatrix & other, bool recursive)
+{
+  auto [idx0, idx0_other] = LabeledAxis::common_indices(axis(0), other.axis(0), recursive);
+  auto [idx1, idx1_other] = LabeledAxis::common_indices(axis(1), other.axis(1), recursive);
+
+  // This is annoying -- since we are using advanced indexing, torch actually creates a copy of the
+  // indexed view (and so it's not a view anymore).
+  auto temp = _tensor.base_index({idx0, Slice()});
+  auto temp_other = other.tensor().base_index({idx0_other, Slice()});
+  temp.base_index_put({Slice(), idx1}, temp_other.base_index({Slice(), idx1_other}));
+
+  _tensor.base_index_put({idx0, Slice()}, temp);
 }
 
 LabeledMatrix

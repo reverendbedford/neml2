@@ -31,7 +31,7 @@ QuasiStaticForce<T, stateful>::set_value(LabeledVector in,
 
   if (dout_din)
   {
-    auto I = T::identity_map().expand_batch(in.batch_size());
+    auto I = T::identity_map().batch_expand(in.batch_size());
     dout_din->block("forces", "forces").set(I, this->name(), this->name());
 
     if constexpr (stateful)

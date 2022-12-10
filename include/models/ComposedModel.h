@@ -4,14 +4,14 @@
 
 namespace neml2
 {
+typedef std::vector<std::pair<std::shared_ptr<Model>, std::shared_ptr<Model>>> ModelDependency;
+
 /// A model composed of other models. Users will have to specify the dependencies among all the
 /// models. The dependencies will be maintained and sorted as a directed-acyclic graph (DAG).
 class ComposedModel : public Model
 {
 public:
-  ComposedModel(
-      const std::string & name,
-      const std::vector<std::pair<std::shared_ptr<Model>, std::shared_ptr<Model>>> & dependencies);
+  ComposedModel(const std::string & name, const ModelDependency & dependencies);
 
   /// Return dependencies of a registered model
   const std::vector<std::shared_ptr<Model>> & dependent_models(const std::string & name) const;
