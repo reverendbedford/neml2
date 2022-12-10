@@ -7,7 +7,9 @@
 class ImplicitUpdate : public Model
 {
 public:
-  ImplicitUpdate(const std::string & name, ImplicitModel & model, NonlinearSolver & solver);
+  ImplicitUpdate(const std::string & name,
+                 std::shared_ptr<ImplicitModel> model,
+                 std::shared_ptr<NonlinearSolver> solver);
 
 protected:
   virtual void
@@ -17,5 +19,5 @@ protected:
   ImplicitModel & _model;
 
   /// The nonlinear solver used to solve the nonlinear system
-  NonlinearSolver & _solver;
+  const NonlinearSolver & _solver;
 };

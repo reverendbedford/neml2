@@ -8,7 +8,7 @@ TEST_CASE("LinearIsotropicElasticity", "[LinearIsotropicElasticity]")
   TorchSize nbatch = 10;
   Scalar E = 100;
   Scalar nu = 0.3;
-  auto elasticity = LinearIsotropicElasticity<false>("elasticity", E, nu);
+  auto elasticity = LinearIsotropicElasticity("elasticity", E, nu);
 
   SECTION("model definition")
   {

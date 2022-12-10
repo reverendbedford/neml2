@@ -7,7 +7,7 @@
 class ImplicitTimeIntegration : public ImplicitModel
 {
 public:
-  ImplicitTimeIntegration(const std::string & name, Model & rate);
+  ImplicitTimeIntegration(const std::string & name, std::shared_ptr<Model> rate);
 
   // Define the nonlinear system we are solving for
   virtual void set_residual(BatchTensor<1> x, BatchTensor<1> r, BatchTensor<1> * J = nullptr) const;
@@ -16,5 +16,5 @@ protected:
   virtual void
   set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const;
 
-  Model & _rate;
+  const Model & _rate;
 };

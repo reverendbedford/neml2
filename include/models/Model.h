@@ -4,15 +4,13 @@
 #include "tensors/LabeledMatrix.h"
 #include "models/LabeledAxisInterface.h"
 
-/// Class that maps some input -> output,
-/// which is also the broader definition of a constitutive model :)
-class Model : public LabeledAxisInterface
+/**
+Class that maps some input -> output, which is also the broader definition of constitutive model.
+*/
+class Model : public torch::nn::Module, public LabeledAxisInterface
 {
 public:
   Model(const std::string & name);
-
-  /// Get the name of the model
-  std::string name() const { return _name; }
 
   /// Definition of the input variables
   /// @{
@@ -37,7 +35,10 @@ public:
   /// Convenient shortcut to construct and return the model value and its derivative
   virtual std::tuple<LabeledVector, LabeledMatrix> value_and_dvalue(LabeledVector in) const;
 
-  const std::vector<Model *> & registered_models() const { return _registered_models; }
+  const std::vector<std::shared_ptr<Model>> & registered_models() const
+  {
+    return _registered_models;
+  }
 
 protected:
   /// The map between input -> output, and optionally its derivatives
@@ -46,21 +47,19 @@ protected:
 
   virtual void setup() { setup_layout(); }
 
-  /// Register a model that the current model may use during its evaluation
-  /// No dependency information is added
-  template <class T>
-  T & registerModel(Model & model)
-  {
-    input().merge(model.input());
-    _registered_models.push_back(&model);
-    return dynamic_cast<T &>(model);
-  }
+  /**
+  Register a model that the current model may use during its evaluation. No dependency information
+  is added.
+
+  NOTE: We also register this model as a submodule (in torch's language), so that when *this*
+  `Model` is send to another device, the registered `Model` is also sent to that device.
+  */
+  void register_model(std::shared_ptr<Model> model);
 
   /// Models *this* model may use during its evaluation
-  std::vector<Model *> _registered_models;
+  std::vector<std::shared_ptr<Model>> _registered_models;
 
 private:
-  std::string _name;
   LabeledAxis & _input;
   LabeledAxis & _output;
 };

@@ -9,8 +9,7 @@ LabeledAxis::LabeledAxis()
 
 LabeledAxis::LabeledAxis(const LabeledAxis & other)
   : _variables(other._variables),
-    _prefixes(other._prefixes),
-    _suffixes(other._suffixes),
+    _layout(other._layout),
     _offset(0)
 {
   // Deep copy the subaxis
@@ -48,14 +47,36 @@ LabeledAxis::merge(LabeledAxis & other)
 LabeledAxis &
 LabeledAxis::prefix(const std::string & s, const std::string & delimiter)
 {
-  _prefixes.push_back(s + delimiter);
+  // Prefix all the variable names
+  std::unordered_map<std::string, TorchSize> new_variables;
+  for (const auto & [name, sz] : _variables)
+    new_variables.emplace(s + delimiter + name, sz);
+  _variables = new_variables;
+
+  // Prefix all the subaxes
+  std::unordered_map<std::string, std::shared_ptr<LabeledAxis>> new_subaxes;
+  for (const auto & [name, subaxis] : _subaxes)
+    new_subaxes.emplace(s + delimiter + name, subaxis);
+  _subaxes = new_subaxes;
+
   return *this;
 }
 
 LabeledAxis &
 LabeledAxis::suffix(const std::string & s, const std::string & delimiter)
 {
-  _suffixes.push_back(delimiter + s);
+  // Suffix all the variable names
+  std::unordered_map<std::string, TorchSize> new_variables;
+  for (const auto & [name, sz] : _variables)
+    new_variables.emplace(name + delimiter + s, sz);
+  _variables = new_variables;
+
+  // Suffix all the subaxes
+  std::unordered_map<std::string, std::shared_ptr<LabeledAxis>> new_subaxes;
+  for (const auto & [name, subaxis] : _subaxes)
+    new_subaxes.emplace(name + delimiter + s, subaxis);
+  _subaxes = new_subaxes;
+
   return *this;
 }
 
@@ -113,49 +134,17 @@ LabeledAxis::clear()
 {
   _variables.clear();
   _subaxes.clear();
-  _prefixes.clear();
-  _suffixes.clear();
   _layout.clear();
   _offset = 0;
 
   return *this;
 }
 
-std::string
-LabeledAxis::infix(const std::string & name) const
-{
-  std::string new_name = name;
-
-  for (auto prefix : _prefixes)
-    new_name = prefix + new_name;
-
-  for (auto suffix : _suffixes)
-    new_name = new_name + suffix;
-
-  return new_name;
-}
-
 void
 LabeledAxis::setup_layout()
 {
-  // Add prefixes and suffixes to variables
-  std::unordered_map<std::string, TorchSize> new_variables;
-  for (auto & [name, sz] : _variables)
-    new_variables.emplace(infix(name), sz);
-  _variables = new_variables;
-
-  // Add prefixes and suffixes to subaxes
-  std::unordered_map<std::string, std::shared_ptr<LabeledAxis>> new_subaxes;
-  for (auto & [name, subaxis] : _subaxes)
-    new_subaxes.emplace(infix(name), subaxis);
-  _subaxes = new_subaxes;
-
   _offset = 0;
   _layout.clear();
-
-  // NOTE: Since we are using unordered_map to store the variables and subaxes, it is possible that
-  // two logically same LabeledAxis objects result in different layouts.
-  // Let's try to avoid that by sorting the variables and subaxes before generating the layout.
 
   // First emplace all the variables
   std::map<std::string, TorchSize> sorted_variables(_variables.begin(), _variables.end());
@@ -175,10 +164,6 @@ LabeledAxis::setup_layout()
     _layout.emplace(name, torch::indexing::Slice(_offset, _offset + axis->storage_size()));
     _offset += axis->storage_size();
   }
-
-  // Clear all prefixes and suffixes now that they have been "consumed"
-  _prefixes.clear();
-  _suffixes.clear();
 }
 
 TorchSize

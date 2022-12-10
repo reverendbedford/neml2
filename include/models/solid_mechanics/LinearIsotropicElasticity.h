@@ -3,10 +3,10 @@
 #include "models/Model.h"
 
 template <bool rate>
-class LinearIsotropicElasticity : public Model
+class LinearIsotropicElasticityTempl : public Model
 {
 public:
-  LinearIsotropicElasticity(const std::string & name, Scalar E, Scalar nu);
+  LinearIsotropicElasticityTempl(const std::string & name, Scalar E, Scalar nu);
 
 protected:
   virtual void
@@ -15,3 +15,6 @@ protected:
   Scalar _E;
   Scalar _nu;
 };
+
+typedef LinearIsotropicElasticityTempl<true> LinearIsotropicElasticityRate;
+typedef LinearIsotropicElasticityTempl<false> LinearIsotropicElasticity;

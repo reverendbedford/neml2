@@ -22,6 +22,11 @@
 
 TEST_CASE("Uniaxial strain regression test", "[StructuralRegressionTests]")
 {
+  NonlinearSolverParameters params = {/*atol =*/1e-10,
+                                      /*rtol =*/1e-8,
+                                      /*miters =*/100,
+                                      /*verbose=*/false};
+
   TorchSize nbatch = 20;
   Scalar E = 1e5;
   Scalar nu = 0.3;
@@ -29,49 +34,38 @@ TEST_CASE("Uniaxial strain regression test", "[StructuralRegressionTests]")
   Scalar K = 1000;
   Scalar eta = 100;
   Scalar n = 2;
-  auto Erate = ForceRate<SymR2>("total_strain");
-  auto Eerate = ElasticStrainRate("elastic_strain_rate");
-  auto elasticity = LinearIsotropicElasticity<true>("elasticity", E, nu);
-  auto kinharden = NoKinematicHardening("kinematic_hardening");
-  auto isoharden = LinearIsotropicHardening("isotropic_hardening", s0, K);
-  auto yield = J2IsotropicYieldFunction("yield_function");
-  auto direction = AssociativePlasticFlowDirection("plastic_flow_direction", yield);
-  auto eprate = AssociativePlasticHardening("ep_rate", yield);
-  auto hrate = PerzynaPlasticFlowRate("hardening_rate", eta, n);
-  auto Eprate = PlasticStrainRate("plastic_strain_rate");
+  auto Erate = std::make_shared<ForceRate<SymR2>>("total_strain");
+  auto Eerate = std::make_shared<ElasticStrainRate>("elastic_strain_rate");
+  auto elasticity = std::make_shared<LinearIsotropicElasticityRate>("elasticity", E, nu);
+  auto kinharden = std::make_shared<NoKinematicHardening>("kinematic_hardening");
+  auto isoharden = std::make_shared<LinearIsotropicHardening>("isotropic_hardening", s0, K);
+  auto yield = std::make_shared<J2IsotropicYieldFunction>("yield_function");
+  auto direction =
+      std::make_shared<AssociativePlasticFlowDirection>("plastic_flow_direction", yield);
+  auto eprate = std::make_shared<AssociativePlasticHardening>("ep_rate", yield);
+  auto hrate = std::make_shared<PerzynaPlasticFlowRate>("hardening_rate", eta, n);
+  auto Eprate = std::make_shared<PlasticStrainRate>("plastic_strain_rate");
 
   // All these dependency registration thingy can be predefined.
-  auto rate = ComposedModel("rate");
-  rate.registerModel(Erate);
-  rate.registerModel(Eerate);
-  rate.registerModel(elasticity);
-  rate.registerModel(kinharden);
-  rate.registerModel(isoharden);
-  rate.registerModel(yield);
-  rate.registerModel(direction);
-  rate.registerModel(hrate);
-  rate.registerModel(eprate);
-  rate.registerModel(Eprate);
-  rate.registerDependency("total_strain", "elastic_strain_rate");
-  rate.registerDependency("kinematic_hardening", "yield_function");
-  rate.registerDependency("isotropic_hardening", "yield_function");
-  rate.registerDependency("kinematic_hardening", "plastic_flow_direction");
-  rate.registerDependency("isotropic_hardening", "plastic_flow_direction");
-  rate.registerDependency("kinematic_hardening", "ep_rate");
-  rate.registerDependency("isotropic_hardening", "ep_rate");
-  rate.registerDependency("hardening_rate", "ep_rate");
-  rate.registerDependency("yield_function", "hardening_rate");
-  rate.registerDependency("hardening_rate", "plastic_strain_rate");
-  rate.registerDependency("plastic_flow_direction", "plastic_strain_rate");
-  rate.registerDependency("plastic_strain_rate", "elastic_strain_rate");
-  rate.registerDependency("elastic_strain_rate", "elasticity");
+  std::vector<std::pair<std::shared_ptr<Model>, std::shared_ptr<Model>>> dependencies = {
+      {Erate, Eerate},
+      {kinharden, yield},
+      {isoharden, yield},
+      {kinharden, direction},
+      {isoharden, direction},
+      {kinharden, eprate},
+      {isoharden, eprate},
+      {hrate, eprate},
+      {yield, hrate},
+      {hrate, Eprate},
+      {direction, Eprate},
+      {Eprate, Eerate},
+      {Eerate, elasticity}};
+  auto rate = std::make_shared<ComposedModel>("rate", dependencies);
 
-  auto implicit_rate = ImplicitTimeIntegration("implicit_time_integration", rate);
-  auto solver = NewtonNonlinearSolver({/*atol =*/1e-10,
-                                       /*rtol =*/1e-8,
-                                       /*miters =*/100,
-                                       /*verbose=*/false});
-  auto model = ImplicitUpdate("viscoplasticity", implicit_rate, solver);
+  auto implicit_rate = std::make_shared<ImplicitTimeIntegration>("implicit_time_integration", rate);
+  auto solver = std::make_shared<NewtonNonlinearSolver>(params);
+  auto model = std::make_shared<ImplicitUpdate>("viscoplasticity", implicit_rate, solver);
 
   TorchSize nsteps = 100;
   Real max_strain = 0.10;
@@ -79,11 +73,11 @@ TEST_CASE("Uniaxial strain regression test", "[StructuralRegressionTests]")
   Real max_time = 5;
   Scalar max_strains = torch::full({nbatch}, max_strain, TorchDefaults).unsqueeze(-1);
   Scalar end_times = torch::logspace(min_time, max_time, nbatch, 10, TorchDefaults).unsqueeze(-1);
-  UniaxialStrainStructuralDriver driver(model, max_strains, end_times, nsteps);
+  UniaxialStrainStructuralDriver driver(*model, max_strains, end_times, nsteps);
   auto [all_inputs, all_outputs] = driver.run();
 
   std::ofstream ofile;
-  std::string fname = "regression/models/solid_mechanics/" + model.name();
+  std::string fname = "regression/models/solid_mechanics/" + model->name();
 
   // I use this to write csv for visualization purposes.
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -22,7 +22,7 @@ struct is_labelable<SymR2> : std::true_type
 {
 };
 
-// Forward declaration
+// Forward declarations
 class LabeledAxis;
 
 typedef std::unordered_map<std::string, TorchIndex> AxisLayout;
@@ -55,7 +55,6 @@ public:
   LabeledAxis();
 
   /// (Deep) copy constructor
-  /// Important: the cloned LabeledAxis is NOT yet setup
   LabeledAxis(const LabeledAxis & other);
 
   /**
@@ -118,8 +117,15 @@ public:
   LabeledAxis & clear();
   /// @}
 
-  /// Setup the layout of all items recursively.
-  /// Make sure the layout is contiguous in memory.
+  /**
+  Setup the layout of all items recursively. The layout of each item is contiguous in memory.
+
+  NOTE: Since we are using `std::unordered_map` to store the variables and subaxes, it is possible
+  that two logically same `LabeledAxis`s result in different layouts. Let's try to avoid that
+  by sorting the variables and subaxes before generating the layout. Yes, the sorting will slow
+  things down. But since we make sure all setup_layout() calls happen at the model construction
+  phase, it is okay to be slow :)
+  */
   void setup_layout();
 
   /// Number of items
@@ -201,21 +207,12 @@ public:
   static int level;
 
 private:
-  /// Helper method to prepend/append all prefixes/suffixes to a string
-  std::string infix(const std::string & name) const;
-
   /// Variables and their sizes
   std::unordered_map<std::string, TorchSize> _variables;
 
   /// Sub-axes
   // Each sub-axis can contain its own variables and sub-axes
   std::unordered_map<std::string, std::shared_ptr<LabeledAxis>> _subaxes;
-
-  /// All the prefixes. This is a reusable FIFO queue.
-  std::vector<std::string> _prefixes;
-
-  /// All the suffixes. This is a reusable FIFO queue.
-  std::vector<std::string> _suffixes;
 
   /// The layout of this `LabeledAxis`, i.e. the name-to-TorchSlice map
   // After all the `LabeledAxis`s are setup, we need to setup the layout once and only once. This is

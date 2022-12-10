@@ -24,7 +24,7 @@
 #include "models/forces/ForceRate.h"
 #include "solvers/NewtonNonlinearSolver.h"
 
-TEST_CASE("A Model can output the function graph in DOT format", "[Model]")
+TEST_CASE("A Model can output the function graph in DOT format", "[DOT]")
 {
   Scalar E = 1e5;
   Scalar nu = 0.3;
@@ -32,42 +32,33 @@ TEST_CASE("A Model can output the function graph in DOT format", "[Model]")
   Scalar K = 1000;
   Scalar eta = 100;
   Scalar n = 2;
-  auto Erate = ForceRate<SymR2>("total_strain");
-  auto Eerate = ElasticStrainRate("elastic_strain_rate");
-  auto elasticity = LinearIsotropicElasticity<true>("elasticity", E, nu);
-  auto kinharden = NoKinematicHardening("kinematic_hardening");
-  auto isoharden = LinearIsotropicHardening("isotropic_hardening", s0, K);
-  auto yield = J2IsotropicYieldFunction("yield_function");
-  auto direction = AssociativePlasticFlowDirection("plastic_flow_direction", yield);
-  auto eprate = AssociativePlasticHardening("ep_rate", yield);
-  auto hrate = PerzynaPlasticFlowRate("hardening_rate", eta, n);
-  auto Eprate = PlasticStrainRate("plastic_strain_rate");
+  auto Erate = std::make_shared<ForceRate<SymR2>>("total_strain");
+  auto Eerate = std::make_shared<ElasticStrainRate>("elastic_strain_rate");
+  auto elasticity = std::make_shared<LinearIsotropicElasticityRate>("elasticity", E, nu);
+  auto kinharden = std::make_shared<NoKinematicHardening>("kinematic_hardening");
+  auto isoharden = std::make_shared<LinearIsotropicHardening>("isotropic_hardening", s0, K);
+  auto yield = std::make_shared<J2IsotropicYieldFunction>("yield_function");
+  auto direction =
+      std::make_shared<AssociativePlasticFlowDirection>("plastic_flow_direction", yield);
+  auto eprate = std::make_shared<AssociativePlasticHardening>("ep_rate", yield);
+  auto hrate = std::make_shared<PerzynaPlasticFlowRate>("hardening_rate", eta, n);
+  auto Eprate = std::make_shared<PlasticStrainRate>("plastic_strain_rate");
 
   // All these dependency registration thingy can be predefined.
-  auto rate = ComposedModel("rate");
-  rate.registerModel(Erate);
-  rate.registerModel(Eerate);
-  rate.registerModel(elasticity);
-  rate.registerModel(kinharden);
-  rate.registerModel(isoharden);
-  rate.registerModel(yield);
-  rate.registerModel(direction);
-  rate.registerModel(hrate);
-  rate.registerModel(eprate);
-  rate.registerModel(Eprate);
-  rate.registerDependency("total_strain", "elastic_strain_rate");
-  rate.registerDependency("kinematic_hardening", "yield_function");
-  rate.registerDependency("isotropic_hardening", "yield_function");
-  rate.registerDependency("kinematic_hardening", "plastic_flow_direction");
-  rate.registerDependency("isotropic_hardening", "plastic_flow_direction");
-  rate.registerDependency("kinematic_hardening", "ep_rate");
-  rate.registerDependency("isotropic_hardening", "ep_rate");
-  rate.registerDependency("hardening_rate", "ep_rate");
-  rate.registerDependency("yield_function", "hardening_rate");
-  rate.registerDependency("hardening_rate", "plastic_strain_rate");
-  rate.registerDependency("plastic_flow_direction", "plastic_strain_rate");
-  rate.registerDependency("plastic_strain_rate", "elastic_strain_rate");
-  rate.registerDependency("elastic_strain_rate", "elasticity");
+  auto rate = ComposedModel("rate",
+                            {{Erate, Eerate},
+                             {kinharden, yield},
+                             {isoharden, yield},
+                             {kinharden, direction},
+                             {isoharden, direction},
+                             {kinharden, eprate},
+                             {isoharden, eprate},
+                             {hrate, eprate},
+                             {yield, hrate},
+                             {hrate, Eprate},
+                             {direction, Eprate},
+                             {Eprate, Eerate},
+                             {Eerate, elasticity}});
 
   // Read the gold file
   std::ifstream gold("regression/models/regression_dot.txt");
