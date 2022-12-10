@@ -9,7 +9,7 @@ namespace neml2
 /**
 Class that maps some input -> output, which is also the broader definition of constitutive model.
 */
-class Model : public LabeledAxisInterface
+class Model : public torch::nn::Module, public LabeledAxisInterface
 {
 public:
   Model(const std::string & name);
