@@ -16,6 +16,8 @@
 #include "models/forces/QuasiStaticForce.h"
 #include "solvers/NewtonNonlinearSolver.h"
 
+using namespace neml2;
+
 TEST_CASE("Linear DAG", "[ComposedModel]")
 {
   TorchSize nbatch = 10;

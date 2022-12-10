@@ -1,5 +1,7 @@
 #include "SampleSecDerivModel.h"
 
+using namespace neml2;
+
 template <bool is_ad>
 SampleSecDerivModelTempl<is_ad>::SampleSecDerivModelTempl(const std::string & name)
   : SampleSecDerivModelBase<is_ad>(name)

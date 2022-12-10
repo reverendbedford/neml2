@@ -1,6 +1,7 @@
 #include "SampleNonlinearSystems.h"
 
 using namespace torch::indexing;
+using namespace neml2;
 
 PowerTestSystem::PowerTestSystem() {}
 

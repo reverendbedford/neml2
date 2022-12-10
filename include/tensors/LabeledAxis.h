@@ -3,11 +3,13 @@
 #include <unordered_map>
 #include <type_traits>
 
-#include "types.h"
+#include "misc/types.h"
 
 #include "tensors/Scalar.h"
 #include "tensors/SymR2.h"
 
+namespace neml2
+{
 /// The list of all NEML2 primitive data types that can be labeled
 template <typename T>
 struct is_labelable : std::false_type
@@ -235,3 +237,4 @@ bool operator==(const LabeledAxis & a, const LabeledAxis & b);
 
 /// Inequality between LabeledAxis objects
 bool operator!=(const LabeledAxis & a, const LabeledAxis & b);
+} // namespace neml2

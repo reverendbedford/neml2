@@ -1,8 +1,10 @@
 #pragma once
 
 #include "tensors/Scalar.h"
-#include "utils.h"
+#include "misc/utils.h"
 
+namespace neml2
+{
 /// Forward decl
 class SymSymR4;
 
@@ -88,3 +90,4 @@ SymR2 operator/(const SymR2 & a, const Scalar & b);
 SymR2 operator/(const Scalar & a, const SymR2 & b);
 SymR2 operator/(const SymR2 & a, const SymR2 & b);
 /// @}
+} // namespace neml2

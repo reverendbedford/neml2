@@ -2,6 +2,8 @@
 
 #include "models/Model.h"
 
+namespace neml2
+{
 template <bool rate>
 class ElasticStrainTempl : public Model
 {
@@ -15,3 +17,4 @@ protected:
 
 typedef ElasticStrainTempl<true> ElasticStrainRate;
 typedef ElasticStrainTempl<false> ElasticStrain;
+} // namespace neml2

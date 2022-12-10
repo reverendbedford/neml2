@@ -1,5 +1,7 @@
 #include "models/solid_mechanics/PlasticHardening.h"
 
+namespace neml2
+{
 PlasticHardening::PlasticHardening(const std::string & name)
   : Model(name)
 {
@@ -11,3 +13,4 @@ PlasticHardening::PlasticHardening(const std::string & name)
 
   setup();
 }
+} // namespace neml2

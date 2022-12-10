@@ -4,6 +4,8 @@
 #include "models/solid_mechanics/J2IsotropicYieldFunction.h"
 #include "models/solid_mechanics/AssociativePlasticFlowDirection.h"
 
+using namespace neml2;
+
 TEST_CASE("AssociativePlasticFlowDirection", "[AssociativePlasticFlowDirection]")
 {
   TorchSize nbatch = 10;

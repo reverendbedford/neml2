@@ -1,5 +1,7 @@
 #include "models/solid_mechanics/KinematicHardening.h"
 
+namespace neml2
+{
 KinematicHardening::KinematicHardening(const std::string & name)
   : Model(name)
 {
@@ -11,3 +13,4 @@ KinematicHardening::KinematicHardening(const std::string & name)
 
   setup();
 }
+} // namespace neml2

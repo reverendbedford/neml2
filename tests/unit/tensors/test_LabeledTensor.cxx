@@ -2,6 +2,8 @@
 
 #include "tensors/LabeledTensor.h"
 
+using namespace neml2;
+
 TEST_CASE("operator()", "[LabeledTensor]")
 {
   TorchSize nbatch = 10;

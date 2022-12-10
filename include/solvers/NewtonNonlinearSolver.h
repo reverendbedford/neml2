@@ -2,6 +2,8 @@
 
 #include "solvers/NonlinearSolver.h"
 
+namespace neml2
+{
 /// Direct torch implementation of Newton-Raphson
 class NewtonNonlinearSolver : public NonlinearSolver
 {
@@ -15,3 +17,4 @@ protected:
 
   virtual bool converged(size_t itr, BatchTensor<1> nR, BatchTensor<1> nR0) const;
 };
+} // namespace neml2

@@ -2,6 +2,8 @@
 
 #include "models/Model.h"
 
+namespace neml2
+{
 // input -> output identity map
 template <typename T>
 class IdentityMap : public Model
@@ -36,3 +38,4 @@ protected:
   std::string _axis_name;
   std::string _var_name;
 };
+} // namespace neml2

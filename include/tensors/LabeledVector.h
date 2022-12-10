@@ -2,6 +2,8 @@
 
 #include "tensors/LabeledTensor.h"
 
+namespace neml2
+{
 // Forward declaration
 class LabeledMatrix;
 
@@ -27,3 +29,4 @@ public:
   /// Write to a stream
   void write(std::ostream & os, std::string delimiter, TorchSize batch, bool header = false) const;
 };
+} // namespace neml2

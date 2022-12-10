@@ -1,6 +1,8 @@
 #include "models/solid_mechanics/AssociativePlasticFlowDirection.h"
 #include "tensors/SymSymR4.h"
 
+namespace neml2
+{
 AssociativePlasticFlowDirection::AssociativePlasticFlowDirection(
     const std::string & name, const std::shared_ptr<YieldFunction> & f)
   : PlasticFlowDirection(name),
@@ -40,3 +42,4 @@ AssociativePlasticFlowDirection::set_value(LabeledVector in,
     dout_din->block("state", "state").set(d2f_dmandel2, "plastic_flow_direction", "mandel_stress");
   }
 }
+} // namespace neml2

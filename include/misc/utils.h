@@ -1,7 +1,9 @@
 #pragma once
 
-#include "types.h"
+#include "misc/types.h"
 
+namespace neml2
+{
 namespace utils
 {
 constexpr double sqrt2 = 1.4142135623730951;
@@ -40,4 +42,5 @@ stringify(const T & t)
   os << t;
   return os.str();
 }
-}
+} // namespace utils
+} // namespace neml2

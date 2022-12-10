@@ -2,6 +2,8 @@
 
 #include "models/solid_mechanics/YieldFunction.h"
 
+namespace neml2
+{
 class J2IsotropicYieldFunction : public YieldFunction
 {
 public:
@@ -17,3 +19,4 @@ protected:
                           LabeledMatrix dout_din,
                           LabeledTensor<1, 3> * d2out_din2 = nullptr) const;
 };
+} // namespace neml2

@@ -1,5 +1,7 @@
 #include "models/ImplicitModel.h"
 
+namespace neml2
+{
 ImplicitModel::Stage ImplicitModel::stage = UPDATING;
 
 BatchTensor<1>
@@ -14,3 +16,4 @@ ImplicitModel::cache_input(LabeledVector in)
 {
   _cached_in = in.clone();
 }
+} // namespace neml2

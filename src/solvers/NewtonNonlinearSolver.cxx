@@ -1,6 +1,8 @@
 #include "solvers/NewtonNonlinearSolver.h"
 #include <iomanip>
 
+namespace neml2
+{
 NewtonNonlinearSolver::NewtonNonlinearSolver(const NonlinearSolverParameters & params)
   : NonlinearSolver(params)
 {
@@ -66,3 +68,4 @@ NewtonNonlinearSolver::converged(size_t itr, BatchTensor<1> nR, BatchTensor<1> n
   return torch::all(nR < params.atol).item<bool>() ||
          torch::all(nR / nR0 < params.rtol).item<bool>();
 }
+} // namespace neml2

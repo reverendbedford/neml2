@@ -2,6 +2,8 @@
 
 #include "solvers/NonlinearSystem.h"
 
+namespace neml2
+{
 /// Parameter set provided to nonlinear solvers
 struct NonlinearSolverParameters
 {
@@ -21,3 +23,4 @@ public:
 
   NonlinearSolverParameters params;
 };
+} // namespace neml2

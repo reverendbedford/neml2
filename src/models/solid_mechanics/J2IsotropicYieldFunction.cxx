@@ -1,6 +1,8 @@
 #include "models/solid_mechanics/J2IsotropicYieldFunction.h"
 #include "tensors/SymSymR4.h"
 
+namespace neml2
+{
 J2IsotropicYieldFunction::J2IsotropicYieldFunction(const std::string & name)
   : YieldFunction(name)
 {
@@ -71,3 +73,4 @@ J2IsotropicYieldFunction::set_dvalue(LabeledVector in,
         .set(d2f_dmandel2, "yield_function", "mandel_stress", "mandel_stress");
   }
 }
+} // namespace neml2

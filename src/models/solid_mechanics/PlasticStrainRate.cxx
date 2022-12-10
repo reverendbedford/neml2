@@ -1,6 +1,8 @@
 #include "models/solid_mechanics/PlasticStrainRate.h"
 #include "tensors/SymSymR4.h"
 
+namespace neml2
+{
 PlasticStrainRate::PlasticStrainRate(const std::string & name)
   : Model(name)
 {
@@ -37,3 +39,4 @@ PlasticStrainRate::set_value(LabeledVector in, LabeledVector out, LabeledMatrix 
     dout_din->block("state", "state").set(Np, "plastic_strain_rate", "hardening_rate");
   }
 }
+} // namespace neml2

@@ -1,5 +1,7 @@
 #include "models/Model.h"
 
+namespace neml2
+{
 Model::Model(const std::string & name)
   : torch::nn::Module(name),
     _input(declareAxis()),
@@ -39,3 +41,4 @@ Model::register_model(std::shared_ptr<Model> model)
   _registered_models.push_back(model);
   register_module(model->name(), model);
 }
+} // namespace neml2

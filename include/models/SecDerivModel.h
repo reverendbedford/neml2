@@ -2,6 +2,8 @@
 
 #include "models/Model.h"
 
+namespace neml2
+{
 /// Similar to `Model`, but provides an additional method `set_dvalue` that should be implemented.
 class SecDerivModel : public Model
 {
@@ -23,3 +25,4 @@ protected:
                           LabeledMatrix dout_din,
                           LabeledTensor<1, 3> * d2out_din2 = nullptr) const = 0;
 };
+} // namespace neml2

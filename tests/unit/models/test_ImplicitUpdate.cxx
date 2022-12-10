@@ -6,6 +6,8 @@
 #include "models/ImplicitUpdate.h"
 #include "solvers/NewtonNonlinearSolver.h"
 
+using namespace neml2;
+
 TEST_CASE("ImplicitUpdate", "[ImplicitUpdate]")
 {
   NonlinearSolverParameters params = {/*atol =*/1e-10,

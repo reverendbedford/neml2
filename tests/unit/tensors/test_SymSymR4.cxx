@@ -5,6 +5,8 @@
 
 using namespace torch::indexing;
 
+using namespace neml2;
+
 TEST_CASE("SymSymR4", "[SymSymR4]")
 {
   SECTION("initialize symmetric identity")

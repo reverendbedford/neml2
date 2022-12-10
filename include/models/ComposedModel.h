@@ -2,6 +2,8 @@
 
 #include "models/Model.h"
 
+namespace neml2
+{
 /// A model composed of other models. Users will have to specify the dependencies among all the
 /// models. The dependencies will be maintained and sorted as a directed-acyclic graph (DAG).
 class ComposedModel : public Model
@@ -67,3 +69,4 @@ private:
               int & id,
               std::unordered_map<std::string, int> & io_ids) const;
 };
+} // namespace neml2

@@ -3,6 +3,8 @@
 #include "TestUtils.h"
 #include "models/solid_mechanics/J2IsotropicYieldFunction.h"
 
+using namespace neml2;
+
 TEST_CASE("J2IsotropicYieldFunction", "[J2IsotropicYieldFunction]")
 {
   TorchSize nbatch = 10;

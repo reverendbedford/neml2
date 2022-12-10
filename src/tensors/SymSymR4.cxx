@@ -1,5 +1,7 @@
 #include "tensors/SymSymR4.h"
 
+namespace neml2
+{
 SymSymR4
 SymSymR4::init(SymSymR4::FillMethod method, const std::vector<Scalar> & vals)
 {
@@ -119,3 +121,4 @@ operator/(const SymSymR4 & a, const Scalar & b)
 {
   return torch::operator/(a, b.unsqueeze(-1));
 }
+} // namespace neml2

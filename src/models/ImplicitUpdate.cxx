@@ -1,5 +1,7 @@
 #include "models/ImplicitUpdate.h"
 
+namespace neml2
+{
 ImplicitUpdate::ImplicitUpdate(const std::string & name,
                                std::shared_ptr<ImplicitModel> model,
                                std::shared_ptr<NonlinearSolver> solver)
@@ -63,3 +65,4 @@ ImplicitUpdate::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * d
     dout_din->block("state", "old_forces").copy(-Jinv.chain(partials.slice(1, "old_forces")));
   }
 }
+} // namespace neml2

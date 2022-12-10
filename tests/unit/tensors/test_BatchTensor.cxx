@@ -4,6 +4,8 @@
 
 #include "tensors/BatchTensor.h"
 
+using namespace neml2;
+
 TEST_CASE("BatchTensors have the correct shapes", "[BatchTensors]")
 {
   // Should have 2 batch dimensions and 3 base dimensions

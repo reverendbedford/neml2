@@ -1,6 +1,8 @@
 #include "tensors/LabeledMatrix.h"
 #include "tensors/LabeledVector.h"
 
+namespace neml2
+{
 LabeledMatrix::LabeledMatrix(const LabeledVector & A, const LabeledVector & B)
   : LabeledTensor<1, 2>(
         torch::zeros(
@@ -100,3 +102,4 @@ LabeledMatrix::write(std::ostream & os, std::string delimiter, TorchSize batch, 
   }
   os << std::endl;
 }
+} // namespace neml2

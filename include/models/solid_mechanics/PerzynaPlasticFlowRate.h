@@ -2,6 +2,8 @@
 
 #include "models/solid_mechanics/PlasticFlowRate.h"
 
+namespace neml2
+{
 class PerzynaPlasticFlowRate : public PlasticFlowRate
 {
 public:
@@ -15,3 +17,4 @@ protected:
 
   Scalar _eta, _n;
 };
+} // namespace neml2

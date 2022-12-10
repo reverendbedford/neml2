@@ -1,6 +1,8 @@
 #include "models/solid_mechanics/LinearIsotropicElasticity.h"
 #include "tensors/SymSymR4.h"
 
+namespace neml2
+{
 template <bool rate>
 LinearIsotropicElasticityTempl<rate>::LinearIsotropicElasticityTempl(const std::string & name,
                                                                      Scalar E,
@@ -47,3 +49,4 @@ LinearIsotropicElasticityTempl<rate>::set_value(LabeledVector in,
 
 template class LinearIsotropicElasticityTempl<true>;
 template class LinearIsotropicElasticityTempl<false>;
+} // namespace neml2

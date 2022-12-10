@@ -3,9 +3,10 @@
 #include <sstream>
 #include <iostream>
 
+namespace neml2
+{
 class NEMLException : public std::exception
 {
-
 public:
   NEMLException(char * msg)
     : _message(msg)
@@ -70,3 +71,4 @@ stream_all(std::ostringstream & ss, T && val, Args &&... args)
   stream_all(ss, std::forward<Args>(args)...);
 }
 } // namespace internal
+} // namespace neml2

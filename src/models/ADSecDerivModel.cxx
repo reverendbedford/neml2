@@ -1,5 +1,7 @@
 #include "models/ADSecDerivModel.h"
 
+namespace neml2
+{
 std::tuple<LabeledVector, LabeledMatrix>
 ADSecDerivModel::value_and_dvalue(LabeledVector in) const
 {
@@ -61,3 +63,4 @@ ADSecDerivModel::dvalue_and_d2value(LabeledVector in) const
 
   return {dout_din, d2out_din2};
 }
+} // namespace neml2

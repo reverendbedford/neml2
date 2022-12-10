@@ -2,6 +2,8 @@
 
 #include "tensors/LabeledAxis.h"
 
+namespace neml2
+{
 /// Interface for an object that defines LabeledAxis
 class LabeledAxisInterface
 {
@@ -15,3 +17,4 @@ public:
 private:
   std::vector<std::shared_ptr<LabeledAxis>> _axes;
 };
+} // namespace neml2

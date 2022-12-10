@@ -1,5 +1,7 @@
 #include "models/SecDerivModel.h"
 
+namespace neml2
+{
 LabeledMatrix
 SecDerivModel::dvalue(LabeledVector in) const
 {
@@ -23,3 +25,4 @@ SecDerivModel::dvalue_and_d2value(LabeledVector in) const
   set_dvalue(in, dout_din, &d2out_din2);
   return {dout_din, d2out_din2};
 }
+} // namespace neml2

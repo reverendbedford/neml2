@@ -4,6 +4,8 @@
 #include "tensors/LabeledMatrix.h"
 #include "models/LabeledAxisInterface.h"
 
+namespace neml2
+{
 /**
 Class that maps some input -> output, which is also the broader definition of constitutive model.
 */
@@ -63,3 +65,4 @@ private:
   LabeledAxis & _input;
   LabeledAxis & _output;
 };
+} // namespace neml2

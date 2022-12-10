@@ -3,6 +3,8 @@
 #include "TestUtils.h"
 #include "models/solid_mechanics/NoKinematicHardening.h"
 
+using namespace neml2;
+
 TEST_CASE("NoKinematicHardening", "[NoKinematicHardening]")
 {
   TorchSize nbatch = 10;

@@ -1,5 +1,7 @@
 #include "models/ADModel.h"
 
+namespace neml2
+{
 std::tuple<LabeledVector, LabeledMatrix>
 ADModel::value_and_dvalue(LabeledVector in) const
 {
@@ -29,3 +31,4 @@ ADModel::value_and_dvalue(LabeledVector in) const
 
   return {out, dout_din};
 }
+} // namespace neml2

@@ -1,5 +1,7 @@
 #include "tensors/LabeledAxis.h"
 
+namespace neml2
+{
 int LabeledAxis::level = 0;
 
 LabeledAxis::LabeledAxis()
@@ -314,3 +316,4 @@ operator!=(const LabeledAxis & a, const LabeledAxis & b)
 {
   return !a.equals(b);
 }
+} // namespace neml2

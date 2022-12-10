@@ -2,6 +2,8 @@
 
 #include "tensors/FixedDimTensor.h"
 
+namespace neml2
+{
 /// A single scalar stored as a (B,) tensor
 ///  Consider a typedef on the scalar type...
 //
@@ -54,3 +56,4 @@ BatchTensor<1> operator/(const Scalar & a, const BatchTensor<1> & b);
 Scalar macaulay(const Scalar & a, const Scalar & a0);
 Scalar dmacaulay(const Scalar & a, const Scalar & a0);
 /// @}
+} // namespace neml2

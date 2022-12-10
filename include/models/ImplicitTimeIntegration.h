@@ -2,6 +2,8 @@
 
 #include "models/ImplicitModel.h"
 
+namespace neml2
+{
 /// Defines the residual as
 /// r = s_np1 - s_n - s_dot * (t_np1 - t_n)
 class ImplicitTimeIntegration : public ImplicitModel
@@ -18,3 +20,4 @@ protected:
 
   const Model & _rate;
 };
+} // namespace neml2

@@ -24,6 +24,8 @@
 #include "models/forces/ForceRate.h"
 #include "solvers/NewtonNonlinearSolver.h"
 
+using namespace neml2;
+
 TEST_CASE("A Model can output the function graph in DOT format", "[DOT]")
 {
   Scalar E = 1e5;

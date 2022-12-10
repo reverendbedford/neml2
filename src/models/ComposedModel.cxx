@@ -1,5 +1,7 @@
 #include "models/ComposedModel.h"
 
+namespace neml2
+{
 ComposedModel::ComposedModel(
     const std::string & name,
     const std::vector<std::pair<std::shared_ptr<Model>, std::shared_ptr<Model>>> & dependencies)
@@ -238,3 +240,4 @@ ComposedModel::to_dot(std::ostream & os,
 
   os << "}\n";
 }
+} // namespace neml2
