@@ -1,9 +1,9 @@
 #pragma once
 
-#include "models/Model.h"
+#include "StructuralStrainControlDriver.h"
 
 /// Drive a model under uniaxial strain conditions
-class UniaxialStrainStructuralDriver
+class UniaxialStrainStructuralDriver: public StructuralStrainControlDriver
 {
 public:
   // TODO: add temperature here and elsewhere
@@ -12,18 +12,10 @@ public:
                                  neml2::Scalar end_time,
                                  neml2::TorchSize nsteps);
 
-  /// Actually run the model and store the results
-  std::tuple<std::vector<neml2::LabeledVector>, std::vector<neml2::LabeledVector>> run();
-
 protected:
-  neml2::LabeledVector solve_step(neml2::LabeledVector in,
-                                  neml2::TorchSize i,
-                                  std::vector<neml2::LabeledVector> & all_inputs,
-                                  std::vector<neml2::LabeledVector> & all_outputs) const;
-
-  const neml2::Model & _model;
   neml2::Scalar _max_strain;
   neml2::Scalar _end_time;
-  neml2::TorchSize _nsteps;
-  neml2::TorchSize _nbatch;
 };
+
+/// A batched version of torch::linspace
+torch::Tensor batched_linspace(torch::Tensor start, torch::Tensor stop, neml2::TorchSize nsteps);

@@ -62,6 +62,7 @@ VerificationTest::parse()
   }
 
   // Convert buffers to tensors
+  _time = torch::tensor(time_buffer, TorchDefaults);
   _strain = torch::tensor(strain_buffer, TorchDefaults).view({ntime, 6});
   _stress = torch::tensor(stress_buffer, TorchDefaults).view({ntime, 6});
   _temperature = torch::tensor(temperature_buffer, TorchDefaults);
