@@ -38,6 +38,9 @@ StructuralStrainControlDriver::run()
   SymR2 current_strain = SymR2(_strain.index({0}));
   in.slice(0, "old_forces").set(current_time, "time");
   in.slice(0, "old_forces").set(current_strain, "total_strain");
+  
+  all_inputs[0] = in.clone();
+  all_outputs[0] = out.clone();
 
   for (TorchSize i = 1; i < _nsteps; i++)
   {
@@ -55,8 +58,6 @@ StructuralStrainControlDriver::run()
     in.slice(0, "old_state").copy(out.slice(0, "state"));
     in.slice(0, "old_forces").copy(in.slice(0, "forces"));
   }
-
-  std::cout << "end" << std::endl;
 
   return {all_inputs, all_outputs};
 }

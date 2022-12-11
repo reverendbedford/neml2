@@ -101,11 +101,7 @@ TEST_CASE("Uniaxial strain regression test", "[StructuralRegressionTests]")
       torch::zeros(utils::add_shapes(TorchShape({nsteps}), all_inputs[0].tensor().sizes()));
   auto outputs =
       torch::zeros(utils::add_shapes(TorchShape({nsteps}), all_outputs[0].tensor().sizes()));
-  std::cout << "ARG" << std::endl;
-  std::cout << inputs.sizes() << std::endl;
-  std::cout << outputs.sizes() << std::endl;
-  std::cout << all_inputs.size() << std::endl;
-  std::cout << all_outputs.size() << std::endl;
+
   for (TorchSize i = 0; i < nsteps; i++)
   {
     inputs.index_put_({i, torch::indexing::Ellipsis}, all_inputs[i].tensor());
@@ -125,9 +121,6 @@ TEST_CASE("Uniaxial strain regression test", "[StructuralRegressionTests]")
       torch::zeros(utils::add_shapes(TorchShape({nsteps}), all_outputs[0].tensor().sizes()));
   torch::load(inputs_ref, fname + "_inputs.pt");
   torch::load(outputs_ref, fname + "_outputs.pt");
-
-  std::cout << inputs_ref.sizes() << std::endl;
-  std::cout << outputs_ref.sizes() << std::endl;
 
   REQUIRE(torch::allclose(inputs, inputs_ref));
   REQUIRE(torch::allclose(outputs, outputs_ref));

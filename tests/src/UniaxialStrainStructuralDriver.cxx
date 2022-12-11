@@ -11,7 +11,10 @@ UniaxialStrainStructuralDriver::UniaxialStrainStructuralDriver(const Model & mod
   : StructuralStrainControlDriver(
       model,
       batched_linspace(torch::zeros_like(end_time), end_time, nsteps),
-      torch::zeros({nsteps,max_strain.sizes()[0],6})
+      batched_linspace(
+          torch::zeros({max_strain.sizes()[0],6}),
+          torch::hstack({max_strain,-0.5*max_strain,-0.5*max_strain,torch::zeros({max_strain.sizes()[0],3})}),
+          nsteps)
       ),
     _max_strain(max_strain),
     _end_time(end_time)
@@ -25,10 +28,8 @@ batched_linspace(torch::Tensor start, torch::Tensor stop, neml2::TorchSize nstep
   
   auto steps = torch::arange(nsteps) / (nsteps - 1);
 
-  for (int i; i < start.dim(); i++)
-    steps.unsqueeze(-1);
+  for (int i = 0; i < start.dim(); i++)
+    steps = steps.unsqueeze(-1);
 
-  auto res = (start.index({None}) + steps * (stop - start).index({None})).transpose(-1,0);
-  
-  return res;
+  return start.index({None}) + steps * (stop - start).index({None});
 }
