@@ -7,6 +7,8 @@ using namespace neml2;
 
 TEST_CASE("ADSecDerivModel", "[ADSecDerivModel]")
 {
+  torch::cuda::is_available();
+
   TorchSize nbatch = 10;
   auto model = SampleSecDerivModel("sample_model");
   auto ad_model = ADSampleSecDerivModel("ad_sample_model");
