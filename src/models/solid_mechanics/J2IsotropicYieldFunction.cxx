@@ -21,7 +21,7 @@ J2IsotropicYieldFunction::set_value(LabeledVector in,
 
   // Compute the yield function
   auto s = mandel.dev();
-  auto J2 = sqrt(3.0 / 2.0) * s.norm();
+  auto J2 = s.norm();
   auto H = sqrt(2.0 / 3.0) * h;
   auto f = J2 - H;
 
@@ -31,7 +31,7 @@ J2IsotropicYieldFunction::set_value(LabeledVector in,
   if (dout_din)
   {
     // Compute the yield function derivative
-    auto df_dmandel = sqrt(3.0 / 2.0) * s / (s.norm() + EPS);
+    auto df_dmandel = s / (s.norm() + EPS);
     auto df_dh = Scalar(-sqrt(2.0 / 3.0), in.batch_size());
 
     // Set the output
@@ -53,7 +53,7 @@ J2IsotropicYieldFunction::set_dvalue(LabeledVector in,
   auto s = mandel.dev();
 
   // Compute the yield function derivative
-  auto df_dmandel = sqrt(3.0 / 2.0) * s / (s.norm() + EPS);
+  auto df_dmandel = s / (s.norm() + EPS);
   auto df_dh = Scalar(-sqrt(2.0 / 3.0), in.batch_size());
 
   // Set the output
@@ -66,7 +66,7 @@ J2IsotropicYieldFunction::set_dvalue(LabeledVector in,
     auto n = s / (s.norm() + EPS);
     auto I = SymSymR4::init(SymSymR4::FillMethod::identity_sym);
     auto J = SymSymR4::init(SymSymR4::FillMethod::identity_dev);
-    auto d2f_dmandel2 = sqrt(3.0 / 2.0) * (I - n.outer(n)) * J / (s.norm() + EPS);
+    auto d2f_dmandel2 = (I - n.outer(n)) * J / (s.norm() + EPS);
 
     // Set the output
     d2out_din2->block("state", "state", "state")

@@ -2,18 +2,22 @@
 
 using namespace neml2;
 
-StructuralStrainControlDriver::StructuralStrainControlDriver(
-    const neml2::Model & model,
-    torch::Tensor time,
-    torch::Tensor strain) :
-    _model(model), _time(time), _strain(strain), _nsteps(strain.sizes()[0]),
+StructuralStrainControlDriver::StructuralStrainControlDriver(const neml2::Model & model,
+                                                             torch::Tensor time,
+                                                             torch::Tensor strain)
+  : _model(model),
+    _time(time),
+    _strain(strain),
+    _nsteps(strain.sizes()[0]),
     _nbatch(strain.sizes()[1])
 {
   neml_assert(time.dim() == 3, "time should have shape (ntime,nbatch,1)");
   neml_assert(strain.dim() == 3, "strain should have shape (ntime,nbatch,6)");
-  neml_assert(time.sizes()[0] == strain.sizes()[0], "strain and time should have the "
+  neml_assert(time.sizes()[0] == strain.sizes()[0],
+              "strain and time should have the "
               "same number of time steps");
-  neml_assert(time.sizes()[1] == strain.sizes()[1], "strain and time should have the "
+  neml_assert(time.sizes()[1] == strain.sizes()[1],
+              "strain and time should have the "
               "same batch size");
   neml_assert(time.sizes()[2] == 1, "Time should have final dimension 1");
   neml_assert(strain.sizes()[2] == 6, "Strain should have final dimension 6");
@@ -38,7 +42,7 @@ StructuralStrainControlDriver::run()
   SymR2 current_strain = SymR2(_strain.index({0}));
   in.slice(0, "old_forces").set(current_time, "time");
   in.slice(0, "old_forces").set(current_strain, "total_strain");
-  
+
   all_inputs[0] = in.clone();
   all_outputs[0] = out.clone();
 
@@ -76,4 +80,3 @@ StructuralStrainControlDriver::solve_step(LabeledVector in,
 
   return out;
 }
-

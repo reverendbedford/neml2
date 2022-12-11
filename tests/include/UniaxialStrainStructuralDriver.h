@@ -3,7 +3,7 @@
 #include "StructuralStrainControlDriver.h"
 
 /// Drive a model under uniaxial strain conditions
-class UniaxialStrainStructuralDriver: public StructuralStrainControlDriver
+class UniaxialStrainStructuralDriver : public StructuralStrainControlDriver
 {
 public:
   // TODO: add temperature here and elsewhere

@@ -3,8 +3,9 @@
 #include "models/Model.h"
 
 /// Drive a model in strain control
-class StructuralStrainControlDriver {
- public:
+class StructuralStrainControlDriver
+{
+public:
   // TODO: Add temperature as an input
   StructuralStrainControlDriver(const neml2::Model & model,
                                 torch::Tensor time,
@@ -24,5 +25,4 @@ protected:
   torch::Tensor _strain;
   neml2::TorchSize _nsteps;
   neml2::TorchSize _nbatch;
-
 };
