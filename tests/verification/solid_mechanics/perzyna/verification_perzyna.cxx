@@ -71,10 +71,17 @@ TEST_CASE("Perzyna viscoplasticity verification tests", "[StructuralVerification
 
   SECTION("Linear isotropic hardening, uniaxial")
   {
-    // Load the test
+    // Load and run the test
     std::string fname = "verification/solid_mechanics/perzyna/isolinear_uniaxial.vtest";
     VerificationTest test(fname);
+    REQUIRE(test.compare(*model));
+  }
 
+  SECTION("Linear isotropic hardening, multiaxial")
+  {
+    // Load and run the test
+    std::string fname = "verification/solid_mechanics/perzyna/isolinear_multiaxial.vtest";
+    VerificationTest test(fname);
     REQUIRE(test.compare(*model));
   }
 }
