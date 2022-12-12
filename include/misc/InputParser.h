@@ -1,7 +1,20 @@
 #pragma once
 
 #include "hit.h"
+#include "misc/error.h"
 #include <memory>
+
+namespace neml2
+{
+using InputParameters = hit::Section;
+
+template <class T>
+InputParameters
+input_params()
+{
+  auto params = T::input_params();
+  return params;
+}
 
 /// A helper class to deserialize a file written in HIT format
 class InputParser
@@ -13,7 +26,7 @@ public:
   /// Construct an `InputParser` from commandline
   InputParser(int argc, const char * argv[]);
 
-  hit::Node * root() { return _root.get(); }
+  hit::Node & root() { return *_root; }
 
 protected:
 private:
@@ -35,3 +48,4 @@ private:
   /// The root node of the parsed cliargs. This will be merged into the `_root` node.
   std::unique_ptr<hit::Node> _cli_root;
 };
+} // namespace neml2

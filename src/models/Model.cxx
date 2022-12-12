@@ -10,6 +10,14 @@ Model::Model(const std::string & name)
   setup();
 }
 
+Model::Model(InputParameters & params)
+  : torch::nn::Module(params.path()),
+    _input(declareAxis()),
+    _output(declareAxis())
+{
+  setup();
+}
+
 LabeledVector
 Model::value(LabeledVector in) const
 {

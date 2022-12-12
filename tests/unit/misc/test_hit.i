@@ -7,7 +7,6 @@
     valval = whatever
   []
 []
-
 [bar]
   type = baz
   hello = world

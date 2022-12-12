@@ -1,5 +1,7 @@
-#include "miscellaneous/InputParser.h"
+#include "misc/InputParser.h"
 
+namespace neml2
+{
 InputParser::InputParser(const char * fname, const std::vector<std::string> & cliargs)
 {
   // Parse the file into the root node
@@ -24,14 +26,14 @@ InputParser::parse(const char * filename)
   std::stringstream buffer;
   buffer << file.rdbuf();
   std::string input = buffer.str();
-  _root.reset(hit::parse("Hit parser", input));
+  _root.reset(dynamic_cast<InputParameters *>(hit::parse("Hit parser", input)));
 }
 
 void
 InputParser::replace_cliargs(const std::vector<std::string> & cliargs)
 {
   std::string cli_input = filter_hit_cliargs(cliargs);
-  _cli_root.reset(hit::parse("Hit cliargs", cli_input));
+  _cli_root.reset(dynamic_cast<InputParameters *>(hit::parse("Hit cliargs", cli_input)));
   hit::explode(_cli_root.get());
   hit::explode(_root.get());
   hit::merge(_cli_root.get(), _root.get());
@@ -90,3 +92,4 @@ InputParser::filter_hit_cliargs(const std::vector<std::string> & cliargs) const
   }
   return hit_text;
 }
+} // namespace neml2

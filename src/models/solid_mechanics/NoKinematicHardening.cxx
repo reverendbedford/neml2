@@ -3,6 +3,8 @@
 
 namespace neml2
 {
+register_NEML2_object(NoKinematicHardening);
+
 void
 NoKinematicHardening::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din) const
 {
