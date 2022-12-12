@@ -101,6 +101,7 @@ TEST_CASE("Uniaxial strain regression test", "[StructuralRegressionTests]")
       torch::zeros(utils::add_shapes(TorchShape({nsteps}), all_inputs[0].tensor().sizes()));
   auto outputs =
       torch::zeros(utils::add_shapes(TorchShape({nsteps}), all_outputs[0].tensor().sizes()));
+
   for (TorchSize i = 0; i < nsteps; i++)
   {
     inputs.index_put_({i, torch::indexing::Ellipsis}, all_inputs[i].tensor());

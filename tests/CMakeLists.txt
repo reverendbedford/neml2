@@ -61,3 +61,22 @@ if(PROFILING)
             "${CMAKE_SOURCE_DIR}/tests/include")
       catch_discover_tests(profiling_tests)
 endif()
+
+# ###################################################
+# Verification tests
+# ###################################################
+option(VERIFICATION "build verification tests" ON)
+
+if(VERIFICATION)
+      file(GLOB_RECURSE VERIFICATION_TESTS verification/verification_*.cxx)
+      add_executable(verification_tests
+            ${TEST_UTILS}
+            ${VERIFICATION_TESTS}
+      )
+      target_link_libraries(verification_tests Catch2::Catch2)
+      target_link_libraries(verification_tests batchedmat testutils)
+      target_include_directories(verification_tests PUBLIC
+            "${CMAKE_SOURCE_DIR}/include"
+            "${CMAKE_SOURCE_DIR}/tests/include")
+      catch_discover_tests(verification_tests)
+endif()
