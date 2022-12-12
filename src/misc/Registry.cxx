@@ -1,5 +1,5 @@
 #include "misc/Registry.h"
-#include "misc/NEML2Object.h"
+#include "models/Model.h"
 
 namespace neml2
 {

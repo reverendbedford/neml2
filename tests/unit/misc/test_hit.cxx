@@ -21,7 +21,7 @@ TEST_CASE("HIT parser", "[HIT]")
     std::string correct((std::istreambuf_iterator<char>(gold)), std::istreambuf_iterator<char>());
 
     std::ostringstream oss;
-    oss << parser.root().render() << std::endl;
+    oss << parser.root()->render() << std::endl;
     std::string mine = oss.str();
 
     REQUIRE(mine == correct);

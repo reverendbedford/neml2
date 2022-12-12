@@ -9,6 +9,8 @@ class LinearIsotropicHardening : public IsotropicHardening
 public:
   LinearIsotropicHardening(const std::string & name, Scalar s0, Scalar K);
 
+  LinearIsotropicHardening(InputParameters & params);
+
 protected:
   /// Simple linear map between equivalent strain and hardening
   virtual void

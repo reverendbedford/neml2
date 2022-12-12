@@ -26,7 +26,7 @@ public:
   /// Construct an `InputParser` from commandline
   InputParser(int argc, const char * argv[]);
 
-  hit::Node & root() { return *_root; }
+  hit::Node * root() { return _root.get(); }
 
 protected:
 private:

@@ -2,10 +2,19 @@
 
 namespace neml2
 {
+register_NEML2_object(LinearIsotropicHardening);
+
 LinearIsotropicHardening::LinearIsotropicHardening(const std::string & name, Scalar s0, Scalar K)
   : IsotropicHardening(name),
     _s0(register_parameter("yield_stress", s0)),
     _K(register_parameter("hardening_modulus", K))
+{
+}
+
+LinearIsotropicHardening::LinearIsotropicHardening(InputParameters & params)
+  : IsotropicHardening(params),
+    _s0(register_parameter("yield_stress", Scalar(params.param<Real>("s0")))),
+    _K(register_parameter("hardening_modulus", Scalar(params.param<Real>("K"))))
 {
 }
 
