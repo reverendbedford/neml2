@@ -55,5 +55,5 @@ private:
   torch::Tensor _stress;
 };
 
-/// Split a string by spaces
+/// Split a string separated by some delimiter character
 std::vector<std::string> split_string(const std::string & input, const char * delimiter = " ");

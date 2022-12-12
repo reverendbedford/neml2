@@ -25,7 +25,12 @@ UniaxialStrainStructuralDriver::UniaxialStrainStructuralDriver(const Model & mod
 torch::Tensor
 batched_linspace(torch::Tensor start, torch::Tensor stop, neml2::TorchSize nsteps)
 {
-  neml_assert(start.sizes() == stop.sizes(), "start and stop tensors need the same shape");
+  neml_assert(start.sizes() == stop.sizes(),
+              "start and stop tensors need the same shape in "
+              "batched_linspace. The start tensor has shape ",
+              start.sizes(),
+              " while the stop tensor has shape ",
+              stop.sizes());
 
   auto steps = torch::arange(nsteps) / (nsteps - 1);
 

@@ -11,16 +11,38 @@ StructuralStrainControlDriver::StructuralStrainControlDriver(const neml2::Model 
     _nsteps(strain.sizes()[0]),
     _nbatch(strain.sizes()[1])
 {
-  neml_assert(time.dim() == 3, "time should have shape (ntime,nbatch,1)");
-  neml_assert(strain.dim() == 3, "strain should have shape (ntime,nbatch,6)");
+  neml_assert(time.dim() == 3,
+              "time should have dimension 3 "
+              "but instead has dimension ",
+              time.dim());
+  neml_assert(strain.dim() == 3,
+              "strain should have dimension 3 "
+              "but instead has dimension",
+              strain.dim());
   neml_assert(time.sizes()[0] == strain.sizes()[0],
               "strain and time should have the "
-              "same number of time steps");
+              "same number of time steps. "
+              "The input time has ",
+              time.sizes()[0],
+              " time steps, "
+              "while the input strain has ",
+              strain.sizes()[0],
+              " time steps");
   neml_assert(time.sizes()[1] == strain.sizes()[1],
               "strain and time should have the "
-              "same batch size");
-  neml_assert(time.sizes()[2] == 1, "Time should have final dimension 1");
-  neml_assert(strain.sizes()[2] == 6, "Strain should have final dimension 6");
+              "same batch size.  The input time has a batch size of ",
+              time.sizes()[1],
+              " while the input strain has a batch "
+              "size of ",
+              strain.sizes()[1]);
+  neml_assert(time.sizes()[2] == 1,
+              "Input time should have final "
+              "dimension 1 but instead has final dimension ",
+              time.sizes()[2]);
+  neml_assert(strain.sizes()[2] == 6,
+              "Input strain should have final "
+              "dimension 6 but instead has final dimension ",
+              strain.sizes()[2]);
 }
 
 std::tuple<std::vector<LabeledVector>, std::vector<LabeledVector>>
