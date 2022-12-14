@@ -17,6 +17,32 @@ ComposedModel::ComposedModel(const std::string & name, const ModelDependency & d
   setup();
 }
 
+ComposedModel::ComposedModel(const std::string & name,
+                             const std::vector<std::shared_ptr<Model>> & models,
+                             bool /*wtf*/)
+  : Model(name)
+{
+  for (const auto & modeli : models)
+    for (const auto & consumed_var : modeli->consumed_variables())
+      for (const auto & modelj : models)
+      {
+        if (modeli == modelj)
+          continue;
+        const auto & provided_vars = modelj->provided_variables();
+        if (std::find(provided_vars.begin(), provided_vars.end(), consumed_var) !=
+            provided_vars.end())
+          register_dependency(modelj, modeli);
+      }
+
+  resolve_dependency();
+
+  // Registered the models that are needed for evaluation as submodules
+  for (auto i : _evaluation_order)
+    register_module(i->name(), i);
+
+  setup();
+}
+
 void
 ComposedModel::add_node(const std::shared_ptr<Model> & model)
 {

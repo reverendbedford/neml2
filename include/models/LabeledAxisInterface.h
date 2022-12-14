@@ -8,6 +8,10 @@ namespace neml2
 class LabeledAxisInterface
 {
 public:
+  /// Setup the layouts of all the registered axes
+  virtual void setup_layout();
+
+protected:
   /// Declare an axis
   [[nodiscard]] LabeledAxis & declareAxis();
 
@@ -19,9 +23,6 @@ public:
     declareVariableHelper<T>(axis, names.begin(), names.end());
     return LabeledAxisAccessor({names});
   }
-
-  /// Setup the layouts of all the registered axes
-  virtual void setup_layout();
 
 private:
   /// Helper method to declare a variable recursively
@@ -39,6 +40,7 @@ private:
     }
   }
 
+  /// All the declared axes
   std::vector<std::shared_ptr<LabeledAxis>> _axes;
 };
 } // namespace neml2

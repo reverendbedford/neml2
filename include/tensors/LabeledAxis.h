@@ -33,6 +33,11 @@ All the other item names are considered to be sub-axis names.
 struct LabeledAxisAccessor
 {
   std::vector<std::string> item_names;
+
+  bool operator==(const LabeledAxisAccessor & other) const
+  {
+    return item_names == other.item_names;
+  }
 };
 
 // Forward declarations

@@ -42,10 +42,31 @@ public:
     return _registered_models;
   }
 
+  const std::vector<LabeledAxisAccessor> & consumed_variables() const { return _consumed_vars; }
+  const std::vector<LabeledAxisAccessor> & provided_variables() const { return _provided_vars; }
+
 protected:
   /// The map between input -> output, and optionally its derivatives
   virtual void
   set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const = 0;
+
+  /// Declare an input variable
+  template <typename T, typename... S>
+  [[nodiscard]] LabeledAxisAccessor declareInputVariable(S &&... name) const
+  {
+    auto accessor = declareVariable<T>(input(), std::forward<S>(name)...);
+    _consumed_vars.push_back(accessor);
+    return accessor;
+  }
+
+  /// Declare an output variable
+  template <typename T, typename... S>
+  [[nodiscard]] LabeledAxisAccessor declareOutputVariable(S &&... name) const
+  {
+    auto accessor = declareVariable<T>(output(), std::forward<S>(name)...);
+    _provided_vars.push_back(accessor);
+    return accessor;
+  }
 
   virtual void setup() { setup_layout(); }
 
@@ -64,5 +85,8 @@ protected:
 private:
   LabeledAxis & _input;
   LabeledAxis & _output;
+
+  std::vector<LabeledAxisAccessor> _consumed_vars;
+  std::vector<LabeledAxisAccessor> _provided_vars;
 };
 } // namespace neml2

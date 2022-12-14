@@ -13,6 +13,10 @@ class ComposedModel : public Model
 public:
   ComposedModel(const std::string & name, const ModelDependency & dependencies);
 
+  ComposedModel(const std::string & name,
+                const std::vector<std::shared_ptr<Model>> & models,
+                bool wtf);
+
   /// Return dependencies of a registered model
   const std::vector<std::shared_ptr<Model>> & dependent_models(const std::string & name) const;
 
