@@ -49,8 +49,8 @@ TEST_CASE("Linear DAG", "[ComposedModel][Linear DAG]")
     LabeledVector in(nbatch, model.input());
     auto E = SymR2::init(0.1, 0.05, 0).batch_expand(nbatch);
     auto Ep = SymR2::init(0.01, 0.01, 0).batch_expand(nbatch);
-    in.slice(0, "forces").set(E, "total_strain");
-    in.slice(0, "state").set(Ep, "plastic_strain");
+    in.slice("forces").set(E, "total_strain");
+    in.slice("state").set(Ep, "plastic_strain");
 
     auto exact = model.dvalue(in);
     auto numerical = LabeledMatrix(nbatch, model.output(), model.input());
@@ -96,8 +96,8 @@ TEST_CASE("Y-junction DAG", "[ComposedModel][Y-junction DAG]")
     std::cout << "===========================\n";
     LabeledVector in(nbatch, model.input());
     auto S = SymR2::init(100, 110, 100, 100, 100, 100).batch_expand(nbatch);
-    in.slice(0, "state").set(S, "cauchy_stress");
-    in.slice(0, "state").set(Scalar(0.1, nbatch), "equivalent_plastic_strain");
+    in.slice("state").set(S, "cauchy_stress");
+    in.slice("state").set(Scalar(0.1, nbatch), "equivalent_plastic_strain");
 
     auto exact = model.dvalue(in);
     auto numerical = LabeledMatrix(nbatch, model.output(), model.input());
@@ -135,8 +135,8 @@ TEST_CASE("diamond pattern", "[ComposedModel]")
   {
     LabeledVector in(nbatch, model.input());
     auto M = SymR2::init(100, 110, 100, 100, 100, 100).batch_expand(nbatch);
-    in.slice(0, "state").set(M, "mandel_stress");
-    in.slice(0, "state").set(Scalar(200, nbatch), "isotropic_hardening");
+    in.slice("state").set(M, "mandel_stress");
+    in.slice("state").set(Scalar(200, nbatch), "isotropic_hardening");
 
     auto exact = model.dvalue(in);
     auto numerical = LabeledMatrix(nbatch, model.output(), model.input());
@@ -198,8 +198,8 @@ TEST_CASE("A model with sub-sub-axis", "[ComposedModel][Sub-sub-axis]")
   {
     TorchSize nbatch = 10;
     LabeledVector in(nbatch, model.input());
-    in.slice(0, "state").set(Scalar(5.6, nbatch), "foo");
-    in.slice(0, "state").slice(0, "substate").set(Scalar(-111, nbatch), "bar");
+    in.slice("state").set(Scalar(5.6, nbatch), "foo");
+    in.slice("state").slice("substate").set(Scalar(-111, nbatch), "bar");
 
     auto exact = model.dvalue(in);
     auto numerical = LabeledMatrix(nbatch, model.output(), model.input());

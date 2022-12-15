@@ -186,17 +186,7 @@ LabeledAxis::storage_size(const std::string & name) const
 TorchSize
 LabeledAxis::storage_size(const LabeledAxisAccessor & accessor) const
 {
-  return storage_size(accessor.item_names.begin(), accessor.item_names.end());
-}
-
-TorchSize
-LabeledAxis::storage_size(const std::vector<std::string>::const_iterator & cur,
-                          const std::vector<std::string>::const_iterator & end) const
-{
-  if (cur == end - 1)
-    return storage_size(*cur);
-
-  return subaxis(*cur).storage_size(cur + 1, end);
+  return accessor.storage_size;
 }
 
 TorchIndex

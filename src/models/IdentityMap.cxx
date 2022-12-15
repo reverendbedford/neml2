@@ -28,7 +28,7 @@ template <typename T>
 void
 IdentityMap<T>::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din) const
 {
-  out.slice(0, _to_axis_name).set(in.slice(0, _from_axis_name)(_from_var_name), _to_var_name);
+  out.slice(_to_axis_name).set(in.slice(_from_axis_name)(_from_var_name), _to_var_name);
   if (dout_din)
   {
     auto I = T::identity_map().batch_expand(in.batch_size());

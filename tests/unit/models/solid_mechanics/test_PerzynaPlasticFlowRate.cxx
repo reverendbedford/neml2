@@ -23,7 +23,7 @@ TEST_CASE("PerzynaPlasticFlowRate", "[PerzynaPlasticFlowRate]")
   SECTION("model derivatives")
   {
     LabeledVector in(nbatch, eprate.input());
-    in.slice(0, "state").set(Scalar(1.3, nbatch), "yield_function");
+    in.slice("state").set(Scalar(1.3, nbatch), "yield_function");
 
     auto exact = eprate.dvalue(in);
     auto numerical = LabeledMatrix(nbatch, eprate.output(), eprate.input());

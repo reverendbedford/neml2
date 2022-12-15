@@ -14,8 +14,8 @@ TEST_CASE("ADSecDerivModel", "[ADSecDerivModel]")
   auto ad_model = ADSampleSecDerivModel("ad_sample_model");
 
   LabeledVector in(nbatch, model.input());
-  in.slice(0, "state").set(Scalar(1.1, nbatch), "x1");
-  in.slice(0, "state").set(Scalar(0.01, nbatch), "x2");
+  in.slice("state").set(Scalar(1.1, nbatch), "x1");
+  in.slice("state").set(Scalar(0.01, nbatch), "x2");
 
   SECTION("model derivatives")
   {

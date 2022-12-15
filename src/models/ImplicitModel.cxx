@@ -8,7 +8,7 @@ BatchTensor<1>
 ImplicitModel::initial_guess(LabeledVector in) const
 {
   LabeledVector guess(in.batch_size(), input().subaxis("old_state"));
-  guess.fill(in.slice(0, "old_state"));
+  guess.fill(in.slice("old_state"));
   return guess.tensor();
 }
 

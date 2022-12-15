@@ -29,9 +29,9 @@ TEST_CASE("AssociativePlasticHardening", "[AssociativePlasticHardening]")
   {
     LabeledVector in(nbatch, eprate.input());
     auto M = SymR2::init(100, 110, 100, 100, 100, 100).batch_expand(nbatch);
-    in.slice(0, "state").set(Scalar(0.01, nbatch), "hardening_rate");
-    in.slice(0, "state").set(Scalar(200, nbatch), "isotropic_hardening");
-    in.slice(0, "state").set(M, "mandel_stress");
+    in.slice("state").set(Scalar(0.01, nbatch), "hardening_rate");
+    in.slice("state").set(Scalar(200, nbatch), "isotropic_hardening");
+    in.slice("state").set(M, "mandel_stress");
 
     auto exact = eprate.dvalue(in);
     auto numerical = LabeledMatrix(nbatch, eprate.output(), eprate.input());

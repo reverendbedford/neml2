@@ -24,8 +24,8 @@ TEST_CASE("J2IsotropicYieldFunction", "[J2IsotropicYieldFunction]")
   {
     LabeledVector in(nbatch, yield.input());
     auto M = SymR2::init(100, 110, 100, 100, 100, 100).batch_expand(nbatch);
-    in.slice(0, "state").set(Scalar(200, nbatch), "isotropic_hardening");
-    in.slice(0, "state").set(M, "mandel_stress");
+    in.slice("state").set(Scalar(200, nbatch), "isotropic_hardening");
+    in.slice("state").set(M, "mandel_stress");
 
     auto exact = yield.dvalue(in);
     auto numerical = LabeledMatrix(nbatch, yield.output(), yield.input());

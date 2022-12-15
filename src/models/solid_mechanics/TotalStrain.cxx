@@ -28,14 +28,14 @@ TotalStrainTempl<rate>::set_value(LabeledVector in,
   // Retrieve whatever we need from the input,
   // Here we need the elastic/plastic strains
   auto elastic_strain =
-      in.slice(0, "state").get<SymR2>(rate ? "elastic_strain_rate" : "elastic_strain");
+      in.slice("state").get<SymR2>(rate ? "elastic_strain_rate" : "elastic_strain");
   auto plastic_strain =
-      in.slice(0, "state").get<SymR2>(rate ? "plastic_strain_rate" : "plastic_strain");
+      in.slice("state").get<SymR2>(rate ? "plastic_strain_rate" : "plastic_strain");
 
   auto total_strain = elastic_strain + plastic_strain;
 
   // Set the output
-  out.slice(0, "state").set(total_strain, rate ? "total_strain_rate" : "total_strain");
+  out.slice("state").set(total_strain, rate ? "total_strain_rate" : "total_strain");
 
   if (dout_din)
   {

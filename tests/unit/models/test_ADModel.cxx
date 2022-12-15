@@ -13,10 +13,10 @@ TEST_CASE("ADModel", "[ADModel]")
 
   LabeledVector in(nbatch, rate.input());
   auto baz = SymR2::init(0.5, 1.1, 3.2, -1.2, 1.1, 5.9).batch_expand(nbatch);
-  in.slice(0, "state").set(Scalar(1.1, nbatch), "foo");
-  in.slice(0, "state").set(Scalar(0.01, nbatch), "bar");
-  in.slice(0, "state").set(baz, "baz");
-  in.slice(0, "forces").set(Scalar(15, nbatch), "temperature");
+  in.slice("state").set(Scalar(1.1, nbatch), "foo");
+  in.slice("state").set(Scalar(0.01, nbatch), "bar");
+  in.slice("state").set(baz, "baz");
+  in.slice("forces").set(Scalar(15, nbatch), "temperature");
 
   SECTION("model derivatives")
   {

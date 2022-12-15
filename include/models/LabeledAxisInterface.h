@@ -21,7 +21,7 @@ protected:
   {
     std::vector<std::string> names({name...});
     declareVariableHelper<T>(axis, names.begin(), names.end());
-    return LabeledAxisAccessor({names});
+    return LabeledAxisAccessor({names, utils::storage_size(T::_base_sizes)});
   }
 
 private:

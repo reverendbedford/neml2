@@ -25,7 +25,7 @@ TEST_CASE("Elasticity", "[Elasticity]")
   {
     LabeledVector in(nbatch, elasticity.input());
     auto Ee = SymR2::init(0.09, 0.04, 0).batch_expand(nbatch);
-    in.slice(0, "state").set(Ee, "elastic_strain");
+    in.slice("state").set(Ee, "elastic_strain");
 
     auto exact = elasticity.dvalue(in);
     auto numerical = LabeledMatrix(nbatch, elasticity.output(), elasticity.input());

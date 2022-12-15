@@ -30,7 +30,7 @@ AssociativePlasticFlowDirection::set_value(LabeledVector in,
 
   auto df_dmandel = df_din.block("state", "state").get<SymR2>("yield_function", "mandel_stress");
 
-  out.slice(0, "state").set(df_dmandel, "plastic_flow_direction");
+  out.slice("state").set(df_dmandel, "plastic_flow_direction");
 
   if (dout_din)
   {

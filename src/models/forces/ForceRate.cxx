@@ -22,16 +22,16 @@ template <typename T>
 void
 ForceRate<T>::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din) const
 {
-  auto f_np1 = in.slice(0, "forces").get<T>(this->name());
-  auto t_np1 = in.slice(0, "forces").get<Scalar>("time");
-  auto f_n = in.slice(0, "old_forces").get<T>(this->name());
-  auto t_n = in.slice(0, "old_forces").get<Scalar>("time");
+  auto f_np1 = in.slice("forces").get<T>(this->name());
+  auto t_np1 = in.slice("forces").get<Scalar>("time");
+  auto f_n = in.slice("old_forces").get<T>(this->name());
+  auto t_n = in.slice("old_forces").get<Scalar>("time");
 
   auto df = f_np1 - f_n;
   auto dt = t_np1 - t_n;
   auto f_dot = df / dt;
 
-  out.slice(0, "forces").set(f_dot, this->name() + "_rate");
+  out.slice("forces").set(f_dot, this->name() + "_rate");
 
   if (dout_din)
   {

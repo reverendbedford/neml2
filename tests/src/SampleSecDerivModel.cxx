@@ -23,14 +23,14 @@ SampleSecDerivModelTempl<is_ad>::set_value(LabeledVector in,
                                            LabeledMatrix * dout_din) const
 {
   // Grab the inputs
-  auto x1 = in.slice(0, "state").get<Scalar>("x1");
-  auto x2 = in.slice(0, "state").get<Scalar>("x2");
+  auto x1 = in.slice("state").get<Scalar>("x1");
+  auto x2 = in.slice("state").get<Scalar>("x2");
 
   // y = x1^3 + x2^4
   auto y = x1 * x1 * x1 + x2 * x2 * x2 * x2;
 
   // Set the output
-  out.slice(0, "state").set(y, "y");
+  out.slice("state").set(y, "y");
 
   if constexpr (!is_ad)
     if (dout_din)
@@ -50,8 +50,8 @@ SampleSecDerivModelTempl<is_ad>::set_dvalue(LabeledVector in,
                                             LabeledTensor<1, 3> * d2out_din2) const
 {
   // Grab the inputs
-  auto x1 = in.slice(0, "state").get<Scalar>("x1");
-  auto x2 = in.slice(0, "state").get<Scalar>("x2");
+  auto x1 = in.slice("state").get<Scalar>("x1");
+  auto x2 = in.slice("state").get<Scalar>("x2");
 
   // y = x1^3 + x2^4
   auto dy_dx1 = 3 * x1 * x1;

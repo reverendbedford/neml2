@@ -8,6 +8,12 @@ LabeledVector::LabeledVector(const LabeledTensor<1, 1> & other)
 {
 }
 
+LabeledVector
+LabeledVector::slice(const std::string & name) const
+{
+  return LabeledVector(_tensor.base_index({_axes[0]->indices(name)}), _axes[0]->subaxis(name));
+}
+
 void
 LabeledVector::accumulate(const LabeledVector & other, bool recursive)
 {

@@ -284,7 +284,7 @@ TEST_CASE("Indices of items", "[LabeledAxis]")
 
   SECTION("index by a LabeledAxisAccessor")
   {
-    LabeledAxisAccessor i({{"sub1", "sub2", "sub1/sub2/r2t"}});
+    LabeledAxisAccessor i({{"sub1", "sub2", "sub1/sub2/r2t"}, 6});
     REQUIRE(torch::allclose(idx.index(test.indices(i)), torch::arange(14, 20)));
   }
 }

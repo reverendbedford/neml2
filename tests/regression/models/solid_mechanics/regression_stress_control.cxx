@@ -127,12 +127,12 @@ TEST_CASE("Uniaxial stress regression test", "[stress_control]")
   //   {
   //     ofile.open(fname + "_forces_batch_" + utils::stringify(batch) + ".csv");
   //     for (size_t i = 0; i < all_inputs.size(); i++)
-  //       LabeledVector(all_inputs[i].slice(0, "forces")).write(ofile, ",", batch, i == 0);
+  //       LabeledVector(all_inputs[i].slice("forces")).write(ofile, ",", batch, i == 0);
   //     ofile.close();
 
   //     ofile.open(fname + "_state_batch_" + utils::stringify(batch) + ".csv");
   //     for (size_t i = 0; i < all_outputs.size(); i++)
-  //       LabeledVector(all_outputs[i].slice(0, "state")).write(ofile, ",", batch, i == 0);
+  //       LabeledVector(all_outputs[i].slice("state")).write(ofile, ",", batch, i == 0);
   //     ofile.close();
   //   }
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

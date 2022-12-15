@@ -29,11 +29,11 @@ AssociativePlasticHardening::set_value(LabeledVector in,
   else
     df_din = yield_function.dvalue(in);
 
-  auto gamma_dot = in.slice(0, "state").get<Scalar>("hardening_rate");
+  auto gamma_dot = in.slice("state").get<Scalar>("hardening_rate");
   auto df_dh = df_din.block("state", "state").get<Scalar>("yield_function", "isotropic_hardening");
   auto ep_dot = -gamma_dot * df_dh;
 
-  out.slice(0, "state").set(ep_dot, "equivalent_plastic_strain_rate");
+  out.slice("state").set(ep_dot, "equivalent_plastic_strain_rate");
 
   if (dout_din)
   {

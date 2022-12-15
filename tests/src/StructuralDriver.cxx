@@ -73,7 +73,7 @@ StructuralDriver::run()
   // Initialize the old forces
   Scalar current_time = Scalar(_time.index({0}));
   SymR2 current_driving_force = SymR2(_driving_force.index({0}));
-  LabeledVector(in.slice(0, "old_forces")).fill(in.slice(0, "forces"));
+  LabeledVector(in.slice("old_forces")).fill(in.slice("forces"));
 
   all_inputs[0] = in.clone();
   all_outputs[0] = out.clone();
@@ -83,16 +83,16 @@ StructuralDriver::run()
     // Advance the step
     current_time = Scalar(_time.index({i}));
     current_driving_force = SymR2(_driving_force.index({i}));
-    in.slice(0, "forces").set(current_driving_force, _driving_force_name);
-    in.slice(0, "forces").set(current_time, "time");
+    in.slice("forces").set(current_driving_force, _driving_force_name);
+    in.slice("forces").set(current_time, "time");
 
     // Perform the constitutive update
     out = solve_step(in, i, all_inputs, all_outputs);
 
     // Propagate the forces and state in time
     // current --> old
-    LabeledVector(in.slice(0, "old_state")).fill(out.slice(0, "state"));
-    LabeledVector(in.slice(0, "old_forces")).fill(in.slice(0, "forces"));
+    LabeledVector(in.slice("old_state")).fill(out.slice("state"));
+    LabeledVector(in.slice("old_forces")).fill(in.slice("forces"));
   }
 
   return {all_inputs, all_outputs};

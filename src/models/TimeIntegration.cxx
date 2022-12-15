@@ -30,10 +30,10 @@ template <typename T>
 void
 TimeIntegration<T>::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din) const
 {
-  auto s_dot = in.slice(0, "state").get<T>(this->name() + "_rate");
-  auto s_n = in.slice(0, "old_state").get<T>(this->name());
-  auto t_np1 = in.slice(0, "forces").get<Scalar>("time");
-  auto t_n = in.slice(0, "old_forces").get<Scalar>("time");
+  auto s_dot = in.slice("state").get<T>(this->name() + "_rate");
+  auto s_n = in.slice("old_state").get<T>(this->name());
+  auto t_np1 = in.slice("forces").get<Scalar>("time");
+  auto t_n = in.slice("old_forces").get<Scalar>("time");
   auto dt = t_np1 - t_n;
 
   // s_np1 = s_n + s_dot * (t_np1 - t_n)

@@ -34,9 +34,11 @@ struct LabeledAxisAccessor
 {
   std::vector<std::string> item_names;
 
+  TorchSize storage_size;
+
   bool operator==(const LabeledAxisAccessor & other) const
   {
-    return item_names == other.item_names;
+    return item_names == other.item_names && storage_size == other.storage_size;
   }
 };
 
@@ -227,11 +229,6 @@ public:
   static int level;
 
 private:
-  /// Helper method to recursively consume the sub-axis names of a `LabeledAxisAccessor` to get the
-  /// storage size of a variable.
-  TorchSize storage_size(const std::vector<std::string>::const_iterator & cur,
-                         const std::vector<std::string>::const_iterator & end) const;
-
   /// Helper method to recursively consume the sub-axis names of a `LabeledAxisAccessor` to get the
   /// indices of a variable.
   TorchIndex indices(TorchSize offset,

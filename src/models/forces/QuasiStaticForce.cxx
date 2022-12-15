@@ -24,10 +24,10 @@ QuasiStaticForce<T, stateful>::set_value(LabeledVector in,
                                          LabeledVector out,
                                          LabeledMatrix * dout_din) const
 {
-  out.slice(0, "forces").set(in.slice(0, "forces")(this->name()), this->name());
+  out.slice("forces").set(in.slice("forces")(this->name()), this->name());
 
   if constexpr (stateful)
-    out.slice(0, "old_forces").set(in.slice(0, "old_forces")(this->name()), this->name());
+    out.slice("old_forces").set(in.slice("old_forces")(this->name()), this->name());
 
   if (dout_din)
   {

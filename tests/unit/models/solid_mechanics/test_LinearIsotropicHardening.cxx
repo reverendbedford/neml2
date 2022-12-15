@@ -23,7 +23,7 @@ TEST_CASE("LinearIsotropicHardening", "[LinearIsotropicHardening]")
   SECTION("model derivatives")
   {
     LabeledVector in(nbatch, isoharden.input());
-    in.slice(0, "state").set(Scalar(0.1, nbatch), "equivalent_plastic_strain");
+    in.slice("state").set(Scalar(0.1, nbatch), "equivalent_plastic_strain");
 
     auto exact = isoharden.dvalue(in);
     auto numerical = LabeledMatrix(nbatch, isoharden.output(), isoharden.input());

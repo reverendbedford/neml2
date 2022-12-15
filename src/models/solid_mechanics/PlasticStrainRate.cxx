@@ -20,14 +20,14 @@ void
 PlasticStrainRate::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din) const
 {
   // Grab the consistency parameters
-  auto gamma_dot = in.slice(0, "state").get<Scalar>("hardening_rate");
-  auto Np = in.slice(0, "state").get<SymR2>("plastic_flow_direction");
+  auto gamma_dot = in.slice("state").get<Scalar>("hardening_rate");
+  auto Np = in.slice("state").get<SymR2>("plastic_flow_direction");
 
   // Ep_dot = ep_dot * Np
   auto Ep_dot = gamma_dot * Np;
 
   // Set the output
-  out.slice(0, "state").set(Ep_dot, "plastic_strain_rate");
+  out.slice("state").set(Ep_dot, "plastic_strain_rate");
 
   if (dout_din)
   {

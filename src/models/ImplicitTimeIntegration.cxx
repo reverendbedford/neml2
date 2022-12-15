@@ -36,8 +36,8 @@ ImplicitTimeIntegration::set_value(LabeledVector in,
 {
   TorchSize nbatch = in.batch_size();
 
-  auto t_np1 = in.slice(0, "forces").get<Scalar>("time");
-  auto t_n = in.slice(0, "old_forces").get<Scalar>("time");
+  auto t_np1 = in.slice("forces").get<Scalar>("time");
+  auto t_n = in.slice("old_forces").get<Scalar>("time");
   auto dt = t_np1 - t_n;
 
   // First evaluate the rate model AND optionally its derivatives

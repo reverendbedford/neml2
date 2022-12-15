@@ -42,12 +42,12 @@ TEST_CASE("ImplicitUpdate", "[ImplicitUpdate]")
 
   LabeledVector in(nbatch, integrate_rate.input());
   auto baz_old = SymR2::init(0, 0, 0, 0, 0, 0).batch_expand(nbatch);
-  in.slice(0, "old_state").set(Scalar(0, nbatch), "foo");
-  in.slice(0, "old_state").set(Scalar(0, nbatch), "bar");
-  in.slice(0, "old_state").set(baz_old, "baz");
-  in.slice(0, "forces").set(Scalar(15, nbatch), "temperature");
-  in.slice(0, "forces").set(Scalar(1.3, nbatch), "time");
-  in.slice(0, "old_forces").set(Scalar(1.1, nbatch), "time");
+  in.slice("old_state").set(Scalar(0, nbatch), "foo");
+  in.slice("old_state").set(Scalar(0, nbatch), "bar");
+  in.slice("old_state").set(baz_old, "baz");
+  in.slice("forces").set(Scalar(15, nbatch), "temperature");
+  in.slice("forces").set(Scalar(1.3, nbatch), "time");
+  in.slice("old_forces").set(Scalar(1.1, nbatch), "time");
 
   SECTION("model values")
   {
@@ -55,14 +55,14 @@ TEST_CASE("ImplicitUpdate", "[ImplicitUpdate]")
 
     LabeledVector rate_in(nbatch, rate->input());
     rate_in.set(value("state"), "state");
-    rate_in.slice(0, "forces").set(in.slice(0, "forces")("temperature"), "temperature");
+    rate_in.slice("forces").set(in.slice("forces")("temperature"), "temperature");
 
     auto s_np1 = value("state");
     auto s_n = in("old_state");
     auto s_dot = rate->value(rate_in)("state");
 
-    auto t_np1 = in.slice(0, "forces").get<Scalar>("time");
-    auto t_n = in.slice(0, "old_forces").get<Scalar>("time");
+    auto t_np1 = in.slice("forces").get<Scalar>("time");
+    auto t_n = in.slice("old_forces").get<Scalar>("time");
     auto dt = t_np1 - t_n;
     REQUIRE(torch::allclose(s_n + s_dot * dt, value("state")));
   }

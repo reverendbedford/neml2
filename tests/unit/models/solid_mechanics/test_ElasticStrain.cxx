@@ -25,8 +25,8 @@ TEST_CASE("ElasticStrain", "[ElasticStrain]")
     LabeledVector in(nbatch, estrain.input());
     auto E = SymR2::init(0.1, 0.05, 0).batch_expand(nbatch);
     auto Ep = SymR2::init(0.01, 0.01, 0).batch_expand(nbatch);
-    in.slice(0, "forces").set(E, "total_strain");
-    in.slice(0, "state").set(Ep, "plastic_strain");
+    in.slice("forces").set(E, "total_strain");
+    in.slice("state").set(Ep, "plastic_strain");
 
     auto exact = estrain.dvalue(in);
     auto numerical = LabeledMatrix(nbatch, estrain.output(), estrain.input());
