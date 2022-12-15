@@ -23,7 +23,7 @@
 
 using namespace neml2;
 
-TEST_CASE("Alternative composition of viscoplasticity", "[viscoplasticity2]")
+TEST_CASE("Alternative composition of viscoplasticity", "[viscoplasticity alternative]")
 {
   NonlinearSolverParameters params = {/*atol =*/1e-10,
                                       /*rtol =*/1e-8,
@@ -90,7 +90,7 @@ TEST_CASE("Alternative composition of viscoplasticity", "[viscoplasticity2]")
   auto [all_inputs, all_outputs] = driver.run();
 
   std::ofstream ofile;
-  std::string fname = "regression/models/solid_mechanics/viscoplasticity2";
+  std::string fname = "regression/models/solid_mechanics/viscoplasticity_alternative";
 
   // I use this to write csv for visualization purposes.
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
