@@ -1,10 +1,10 @@
 #pragma once
 
-#include "models/solid_mechanics/YieldFunction.h"
+#include "models/solid_mechanics/IsotropicYieldFunction.h"
 
 namespace neml2
 {
-class J2IsotropicYieldFunction : public YieldFunction
+class J2IsotropicYieldFunction : public IsotropicYieldFunction
 {
 public:
   J2IsotropicYieldFunction(const std::string & name);

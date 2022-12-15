@@ -44,7 +44,7 @@ SymSymR4
 SymSymR4::init_isotropic_E_nu(const Scalar & E, const Scalar & nu)
 {
   SymSymR4 C;
-  C = C.expand_batch(E.batch_sizes());
+  C = C.batch_expand_copy(E.batch_sizes());
 
   Scalar pf = E / ((1 + nu) * (1 - 2 * nu));
   Scalar C1 = (1 - nu) * pf;
@@ -72,6 +72,12 @@ SymSymR4
 SymSymR4::operator-() const
 {
   return -torch::Tensor(*this);
+}
+
+SymSymR4
+SymSymR4::inverse() const
+{
+  return torch::linalg::inv(*this);
 }
 
 SymSymR4

@@ -1,6 +1,6 @@
 #include "VerificationTest.h"
 
-#include "StructuralStrainControlDriver.h"
+#include "StructuralDriver.h"
 
 #include "misc/types.h"
 
@@ -21,8 +21,8 @@ bool
 VerificationTest::compare(const neml2::Model & model) const
 {
   // Temperature needs to be added
-  auto driver = StructuralStrainControlDriver(
-      model, time().unsqueeze(1).unsqueeze(-1), strain().unsqueeze(1));
+  auto driver = StructuralDriver(
+      model, time().unsqueeze(1).unsqueeze(-1), strain().unsqueeze(1), "total_strain");
   auto [all_inputs, all_outputs] = driver.run();
 
   // Form stress into a big tensor
@@ -32,7 +32,7 @@ VerificationTest::compare(const neml2::Model & model) const
   auto stress = torch::empty({nsteps, nbatch, 6}, TorchDefaults);
   for (TorchSize i = 0; i < nsteps; i++)
   {
-    stress.index_put_({i}, all_outputs[i].slice(0, "state").get<SymR2>("cauchy_stress"));
+    stress.index_put_({i}, all_outputs[i].slice("state").get<SymR2>("cauchy_stress"));
   }
 
   return torch::allclose(this->stress(), stress.index({Slice(), 0}), rtol(), atol());

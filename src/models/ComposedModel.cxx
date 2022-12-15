@@ -2,13 +2,33 @@
 
 namespace neml2
 {
-ComposedModel::ComposedModel(
-    const std::string & name,
-    const std::vector<std::pair<std::shared_ptr<Model>, std::shared_ptr<Model>>> & dependencies)
+ComposedModel::ComposedModel(const std::string & name,
+                             const std::vector<std::shared_ptr<Model>> & models,
+                             const std::vector<std::shared_ptr<Model>> & input_models,
+                             const std::vector<std::shared_ptr<Model>> & output_models)
   : Model(name)
 {
-  for (const auto & [from, to] : dependencies)
-    register_dependency(from, to);
+  for (const auto & modeli : models)
+  {
+    // input models don't consume anything
+    if (std::find(input_models.begin(), input_models.end(), modeli) != input_models.end())
+      continue;
+
+    // see which model _provides_ the consumed variables
+    for (const auto & consumed_var : modeli->consumed_variables())
+      for (const auto & modelj : models)
+      {
+        if (modeli == modelj)
+          continue;
+        // output models don't provide anything
+        if (std::find(output_models.begin(), output_models.end(), modelj) != output_models.end())
+          continue;
+        const auto & provided_vars = modelj->provided_variables();
+        if (std::find(provided_vars.begin(), provided_vars.end(), consumed_var) !=
+            provided_vars.end())
+          register_dependency(modelj, modeli);
+      }
+  }
 
   resolve_dependency();
 
@@ -51,8 +71,8 @@ ComposedModel::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * do
   // pin stands for partial input
   // pout stands for partial output
   TorchSize nbatch = in.batch_size();
-  std::unordered_map<std::string, LabeledVector> cached_pout;
-  std::unordered_map<std::string, LabeledMatrix> cached_dpout_dpin;
+  std::map<std::string, LabeledVector> cached_pout;
+  std::map<std::string, LabeledMatrix> cached_dpout_dpin;
 
   // Follow the (sorted) evaluation order to evaluate all the models
   for (auto i : _evaluation_order)
@@ -73,7 +93,7 @@ ComposedModel::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * do
       {
         if (cached_pout.count(dep->name()) == 0)
           throw std::runtime_error("Internal error, incorrect evaluation order");
-        pin.assemble(cached_pout.at(dep->name()));
+        pin.fill(cached_pout.at(dep->name()));
       }
     }
     if (dout_din)
@@ -95,7 +115,7 @@ ComposedModel::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * do
     if (cached_pout.count(i->name()) == 0)
       throw std::runtime_error("Internal error, incorrect dependency resolution");
 
-    out.assemble(cached_pout.at(i->name()));
+    out.fill(cached_pout.at(i->name()));
 
     // Optionally compute the derivatives
     if (dout_din)
@@ -105,7 +125,7 @@ ComposedModel::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * do
 
 void
 ComposedModel::chain_rule(const Model & i,
-                          const std::unordered_map<std::string, LabeledMatrix> & cached_dpout_dpin,
+                          const std::map<std::string, LabeledMatrix> & cached_dpout_dpin,
                           LabeledMatrix dout_din) const
 {
   const auto & deps = dependent_models(i.name());
@@ -113,7 +133,7 @@ ComposedModel::chain_rule(const Model & i,
   // Base case: If I am a leaf model, the total derivative is just my partial derivative
   if (deps.empty())
   {
-    dout_din.assemble(cached_dpout_dpin.at(i.name()));
+    dout_din.fill(cached_dpout_dpin.at(i.name()));
     return;
   }
 
@@ -128,7 +148,7 @@ ComposedModel::chain_rule(const Model & i,
     chain_rule(*dep, cached_dpout_dpin, dpin_din);
 
   // Chain rule
-  dout_din.assemble(dpout_dpin.chain(dpin_din));
+  dout_din.fill(dpout_dpin.chain(dpin_din));
 }
 
 void
@@ -148,7 +168,7 @@ ComposedModel::resolve_dependency()
   // Find the root model(s)
   // Basic idea: if a model is not needed by any other model, then it must be a root model
   _output_models.clear();
-  std::unordered_map<std::string, bool> visited;
+  std::map<std::string, bool> visited;
   for (const auto & [name, deps] : _dependecies)
     for (auto dep : deps)
       visited[dep->name()] = true;
@@ -171,7 +191,7 @@ ComposedModel::resolve_dependency()
 void
 ComposedModel::resolve_dependency(const std::shared_ptr<Model> & i,
                                   std::vector<std::shared_ptr<Model>> & order,
-                                  std::unordered_map<std::string, bool> & visited)
+                                  std::map<std::string, bool> & visited)
 {
   // Mark the current node as visited
   visited[i->name()] = true;
@@ -197,7 +217,7 @@ void
 ComposedModel::to_dot(std::ostream & os) const
 {
   // Keep track of input output IDs so that I can connect them later
-  std::unordered_map<std::string, int> io_ids;
+  std::map<std::string, int> io_ids;
 
   // Preemble
   int id = 0;
@@ -216,7 +236,7 @@ void
 ComposedModel::to_dot(std::ostream & os,
                       const Model & model,
                       int & id,
-                      std::unordered_map<std::string, int> & io_ids) const
+                      std::map<std::string, int> & io_ids) const
 {
   // Preemble
   os << "subgraph ";
@@ -239,5 +259,19 @@ ComposedModel::to_dot(std::ostream & os,
   }
 
   os << "}\n";
+}
+
+void
+ComposedModel::print_dependency(std::ostream & os) const
+{
+  for (const auto & [name, deps] : _dependecies)
+  {
+    os << name << " depends on {";
+    for (const auto & dep : deps)
+      os << dep->name() << ", ";
+    os << "}" << std::endl;
+  }
+  if (_dependecies.empty())
+    os << std::endl;
 }
 } // namespace neml2

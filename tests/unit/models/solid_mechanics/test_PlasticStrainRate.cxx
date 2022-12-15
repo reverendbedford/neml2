@@ -24,9 +24,9 @@ TEST_CASE("PlasticStrainRate", "[PlasticStrainRate]")
   {
     LabeledVector in(nbatch, pstrainrate.input());
     // Well, in principle we should give Np:Np = 3/2, but whatever
-    auto Np = SymR2::init(0, 0, 0, 1, 0.3, 0.8).expand_batch(nbatch);
-    in.slice(0, "state").set(Np, "plastic_flow_direction");
-    in.slice(0, "state").set(Scalar(0.01, nbatch), "hardening_rate");
+    auto Np = SymR2::init(0, 0, 0, 1, 0.3, 0.8).batch_expand(nbatch);
+    in.slice("state").set(Np, "plastic_flow_direction");
+    in.slice("state").set(Scalar(0.01, nbatch), "hardening_rate");
 
     auto exact = pstrainrate.dvalue(in);
     auto numerical = LabeledMatrix(nbatch, pstrainrate.output(), pstrainrate.input());

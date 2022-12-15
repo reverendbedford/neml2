@@ -7,8 +7,9 @@ ImplicitModel::Stage ImplicitModel::stage = UPDATING;
 BatchTensor<1>
 ImplicitModel::initial_guess(LabeledVector in) const
 {
-  // By default use the old state as the initial guess
-  return in("old_state");
+  LabeledVector guess(in.batch_size(), input().subaxis("old_state"));
+  guess.fill(in.slice("old_state"));
+  return guess.tensor();
 }
 
 void

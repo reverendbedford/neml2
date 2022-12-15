@@ -24,10 +24,33 @@ struct is_labelable<SymR2> : std::true_type
 {
 };
 
+/**
+The accessor containing all the information needed to access an item in a `LabeledAxis`. The
+accessor consists of an arbitrary number of item names.
+The last item name can be either a variable name or a sub-axis name.
+All the other item names are considered to be sub-axis names.
+*/
+struct LabeledAxisAccessor
+{
+  std::vector<std::string> item_names;
+
+  TorchSize storage_size;
+
+  bool operator==(const LabeledAxisAccessor & other) const
+  {
+    return item_names == other.item_names && storage_size == other.storage_size;
+  }
+
+  friend std::ostream & operator<<(std::ostream & os, const LabeledAxisAccessor & accessor);
+};
+
+/// Print LabeledAxisAccessor to the ostream
+std::ostream & operator<<(std::ostream & os, const LabeledAxisAccessor & accessor);
+
 // Forward declarations
 class LabeledAxis;
 
-typedef std::unordered_map<std::string, TorchIndex> AxisLayout;
+typedef std::unordered_map<std::string, std::pair<TorchSize, TorchSize>> AxisLayout;
 
 /// The LabeledAxis contains all information regarding how an axis of a LabeledTensor is labeled.
 /// **This class doesn't actually store data.**
@@ -56,7 +79,7 @@ class LabeledAxis
 public:
   LabeledAxis();
 
-  /// (Deep) copy constructor
+  /// (Shallow) copy constructor
   LabeledAxis(const LabeledAxis & other);
 
   /**
@@ -98,9 +121,6 @@ public:
   /// Add an arbitrary variable with known storage size.
   LabeledAxis & add(const std::string & name, TorchSize sz);
 
-  /// Merge with another `LabeledAxis`. Note that the prefixes and suffixes of the merged axis won't carry over.
-  LabeledAxis & merge(LabeledAxis & other);
-
   /// Add prefix to the labels.
   /// Note that this method doesn't recurse through sub-axes.
   LabeledAxis & prefix(const std::string & prefix, const std::string & delimiter = "_");
@@ -119,14 +139,11 @@ public:
   LabeledAxis & clear();
   /// @}
 
+  /// Merge with another `LabeledAxis`.
+  std::vector<LabeledAxisAccessor> merge(LabeledAxis & other);
+
   /**
   Setup the layout of all items recursively. The layout of each item is contiguous in memory.
-
-  NOTE: Since we are using `std::unordered_map` to store the variables and subaxes, it is possible
-  that two logically same `LabeledAxis`s result in different layouts. Let's try to avoid that
-  by sorting the variables and subaxes before generating the layout. Yes, the sorting will slow
-  things down. But since we make sure all setup_layout() calls happen at the model construction
-  phase, it is okay to be slow :)
   */
   void setup_layout();
 
@@ -167,25 +184,33 @@ public:
   /// @{
   TorchSize storage_size() const { return _offset; }
   TorchSize storage_size(const std::string &) const;
+  TorchSize storage_size(const LabeledAxisAccessor & accessor) const;
   /// @}
 
   /// Get the layout
   const AxisLayout & layout() const { return _layout; }
 
-  /// Get the indices of a specific item
-  const TorchIndex & indices(const std::string & name) const;
+  /// @{
+  /// Get the indices of a specific item by its name
+  TorchIndex indices(const std::string & name) const;
+  /// Get the indices of a specific item by a `LabeledAxisAccessor`
+  TorchIndex indices(const LabeledAxisAccessor & accessor) const;
+  /// Get the indices using another `LabeledAxis`.
+  TorchIndex indices(const LabeledAxis & other, bool recursive = true, bool inclusive = true) const;
+  /// @}
+
+  /// Get the common indices of two `LabeledAxis`s
+  static std::pair<TorchIndex, TorchIndex>
+  common_indices(const LabeledAxis & a, const LabeledAxis & b, bool recursive = true);
 
   /// Get the item names
   std::vector<std::string> item_names() const;
 
   /// Get the variables
-  const std::unordered_map<std::string, TorchSize> & variables() const { return _variables; }
+  const std::map<std::string, TorchSize> & variables() const { return _variables; }
 
   /// Get the subaxes
-  const std::unordered_map<std::string, std::shared_ptr<LabeledAxis>> & subaxes() const
-  {
-    return _subaxes;
-  }
+  const std::map<std::string, std::shared_ptr<LabeledAxis>> & subaxes() const { return _subaxes; }
 
   /// Get a sub-axis
   /// @{
@@ -209,12 +234,38 @@ public:
   static int level;
 
 private:
+  void merge(LabeledAxis & other,
+             std::vector<std::string> subaxes,
+             std::vector<LabeledAxisAccessor> & merged_vars);
+
+  /// Helper method to recursively consume the sub-axis names of a `LabeledAxisAccessor` to get the
+  /// indices of a variable.
+  TorchIndex indices(TorchSize offset,
+                     const std::vector<std::string>::const_iterator & cur,
+                     const std::vector<std::string>::const_iterator & end) const;
+
+  /// Helper method to (recursively) index this axis using another axis
+  void indices(const LabeledAxis & other,
+               bool recursive,
+               bool inclusive,
+               std::vector<TorchSize> & idx,
+               TorchSize offset) const;
+
+  /// Get the common indices of two `LabeledAxis`s
+  static void common_indices(const LabeledAxis & a,
+                             const LabeledAxis & b,
+                             bool recursive,
+                             std::vector<TorchSize> & idx_a,
+                             std::vector<TorchSize> & idx_b,
+                             TorchSize offset_a,
+                             TorchSize offset_b);
+
   /// Variables and their sizes
-  std::unordered_map<std::string, TorchSize> _variables;
+  std::map<std::string, TorchSize> _variables;
 
   /// Sub-axes
   // Each sub-axis can contain its own variables and sub-axes
-  std::unordered_map<std::string, std::shared_ptr<LabeledAxis>> _subaxes;
+  std::map<std::string, std::shared_ptr<LabeledAxis>> _subaxes;
 
   /// The layout of this `LabeledAxis`, i.e. the name-to-TorchSlice map
   // After all the `LabeledAxis`s are setup, we need to setup the layout once and only once. This is

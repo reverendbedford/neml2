@@ -5,26 +5,23 @@ namespace neml2
 ImplicitTimeIntegration::ImplicitTimeIntegration(const std::string & name,
                                                  std::shared_ptr<Model> rate)
   : ImplicitModel(name),
+    time(declareInputVariable<Scalar>({"forces", "time"})),
+    time_n(declareInputVariable<Scalar>({"old_forces", "time"})),
+    resid(declareOutputVariable(rate->output().storage_size(), {"residual"})),
     _rate(*rate)
 {
   register_model(rate);
 
-  // Does the implicit constitutive model already requires time and old time?
-  // Probably not, so we add time and old time here anyways, since we need them to perform time
-  // integration.
-  input().add<LabeledAxis>("forces");
-  input().subaxis("forces").add<Scalar>("time");
-
-  input().add<LabeledAxis>("old_forces");
-  input().subaxis("old_forces").add<Scalar>("time");
-
   // Since we are integrating the state in time, we need the old state.
   // The items in old_state should just mirror the state
+  // TODO: simplify the following code
   input().add<LabeledAxis>("old_state");
-  input().subaxis("old_state").merge(input().subaxis("state"));
-
-  // How do we setup the residual so that we can do automatic scaling??
-  output().add("residual", _rate.output().storage_size());
+  auto merged_vars = input().subaxis("old_state").merge(input().subaxis("state"));
+  for (auto & merged_var : merged_vars)
+  {
+    merged_var.item_names.insert(merged_var.item_names.begin(), "old_state");
+    _consumed_vars.push_back(merged_var);
+  }
 
   setup();
 }
@@ -35,10 +32,7 @@ ImplicitTimeIntegration::set_value(LabeledVector in,
                                    LabeledMatrix * dout_din) const
 {
   TorchSize nbatch = in.batch_size();
-
-  auto t_np1 = in.slice(0, "forces").get<Scalar>("time");
-  auto t_n = in.slice(0, "old_forces").get<Scalar>("time");
-  auto dt = t_np1 - t_n;
+  auto dt = in.get<Scalar>(time) - in.get<Scalar>(time_n);
 
   // First evaluate the rate model AND optionally its derivatives
   LabeledVector rate(nbatch, _rate.output());
@@ -55,16 +49,16 @@ ImplicitTimeIntegration::set_value(LabeledVector in,
 
   // Finally, the residual
   auto r = s_np1 - s_n - s_dot * dt;
-  out.set(r, "residual");
+  out.set(r, resid);
 
   // Finally finally, compute the Jacobian since we have all the information needed anyways
   if (dout_din)
   {
-    auto n_state = output().storage_size("residual");
-    auto I = BatchTensor<1>::identity(n_state).expand_batch(nbatch);
+    auto n_state = resid.storage_size;
+    auto I = BatchTensor<1>::identity(n_state).batch_expand(nbatch);
     auto ds_dot_ds_np1 = drate_din("state", "state");
     auto dr_ds_np1 = I - ds_dot_ds_np1 * dt;
-    dout_din->set(dr_ds_np1, "residual", "state");
+    dout_din->set(dr_ds_np1, resid, "state");
 
     // While solving the implicit model we only care about dresidual/dstate
     if (ImplicitModel::stage == ImplicitModel::Stage::SOLVING)
@@ -79,14 +73,14 @@ ImplicitTimeIntegration::set_value(LabeledVector in,
     auto dr_df_np1 = -ds_dot_df_np1 * dt;
     auto dr_df_n = -ds_dot_df_n * dt;
 
-    dout_din->set(dr_ds_n, "residual", "old_state");
-    dout_din->set(dr_df_np1, "residual", "forces");
-    dout_din->set(dr_df_n, "residual", "old_forces");
+    dout_din->set(dr_ds_n, resid, "old_state");
+    dout_din->set(dr_df_np1, resid, "forces");
+    dout_din->set(dr_df_n, resid, "old_forces");
 
     // The other part of the Jacobian goes into the time column
     // as the residual includes the annoying dt
-    dout_din->slice(1, "forces")("residual", "time") -= s_dot.unsqueeze(-1);
-    dout_din->slice(1, "old_forces")("residual", "time") += s_dot.unsqueeze(-1);
+    (*dout_din)(resid, time) -= s_dot.unsqueeze(-1);
+    (*dout_din)(resid, time_n) += s_dot.unsqueeze(-1);
   }
 }
 
@@ -98,18 +92,18 @@ ImplicitTimeIntegration::set_residual(BatchTensor<1> x, BatchTensor<1> r, BatchT
   LabeledVector out(nbatch, output());
 
   // Fill in the current trial state and cached (fixed) forces, old forces, old state
-  in.assemble(_cached_in);
+  in.fill(_cached_in);
   in.set(x, "state");
 
   if (J)
   {
     LabeledMatrix dout_din(out, in);
     set_value(in, out, &dout_din);
-    J->copy_(dout_din("residual", "state"));
+    J->copy_(dout_din(resid, "state"));
   }
   else
     set_value(in, out);
 
-  r.copy_(out("residual"));
+  r.copy_(out(resid));
 }
 } // namespace neml2

@@ -106,8 +106,8 @@ TEST_CASE("SymSymR4", "[SymSymR4]")
     SymSymR4 C_unbatched =
         SymSymR4::init(SymSymR4::FillMethod::isotropic_E_nu, {Scalar(100), Scalar(0.25)});
     SymSymR4 I_unbatched = SymSymR4::init(SymSymR4::FillMethod::identity_sym);
-    SymSymR4 C_batched = C_unbatched.expand_batch(2);
-    SymSymR4 I_batched = I_unbatched.expand_batch(2);
+    SymSymR4 C_batched = C_unbatched.batch_expand(2);
+    SymSymR4 I_batched = I_unbatched.batch_expand(2);
     SECTION("unbatched,unbatched")
     {
       SymSymR4 result = C_unbatched * I_unbatched;

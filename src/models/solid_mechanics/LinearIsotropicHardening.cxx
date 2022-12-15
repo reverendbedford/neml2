@@ -14,24 +14,19 @@ LinearIsotropicHardening::set_value(LabeledVector in,
                                     LabeledVector out,
                                     LabeledMatrix * dout_din) const
 {
-  // Retrieve whatever we need from the input,
-  // Here we need the equivalent plastic strain
-  auto ep = in.slice(0, "state").get<Scalar>("equivalent_plastic_strain");
-
   // Map from equivalent plastic strain --> isotropic hardening
-  auto h = _s0 + _K * ep;
+  auto g = _s0 + _K * in.get<Scalar>(equivalent_plastic_strain);
 
   // Set the output
-  out.slice(0, "state").set(h, "isotropic_hardening");
+  out.set(g, isotropic_hardening);
 
   if (dout_din)
   {
     // Derivative of the map equivalent plastic strain --> isotropic hardening
-    auto dh_dep = _K.expand_batch(in.batch_size());
+    auto dg_dep = _K.batch_expand(in.batch_size());
 
     // Set the output
-    dout_din->block("state", "state")
-        .set(dh_dep, "isotropic_hardening", "equivalent_plastic_strain");
+    dout_din->set(dg_dep, isotropic_hardening, equivalent_plastic_strain);
   }
 }
 } // namespace neml2

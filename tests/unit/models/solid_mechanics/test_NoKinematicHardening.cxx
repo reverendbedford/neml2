@@ -21,8 +21,8 @@ TEST_CASE("NoKinematicHardening", "[NoKinematicHardening]")
   SECTION("model derivatives")
   {
     LabeledVector in(nbatch, kinharden.input());
-    auto S = SymR2::init(100, 110, 100, 100, 100, 100).expand_batch(nbatch);
-    in.slice(0, "state").set(S, "cauchy_stress");
+    auto S = SymR2::init(100, 110, 100, 100, 100, 100).batch_expand(nbatch);
+    in.slice("state").set(S, "cauchy_stress");
 
     auto exact = kinharden.dvalue(in);
     auto numerical = LabeledMatrix(nbatch, kinharden.output(), kinharden.input());

@@ -42,10 +42,50 @@ public:
     return _registered_models;
   }
 
+  const std::vector<LabeledAxisAccessor> & consumed_variables() const { return _consumed_vars; }
+  const std::vector<LabeledAxisAccessor> & provided_variables() const { return _provided_vars; }
+
 protected:
   /// The map between input -> output, and optionally its derivatives
   virtual void
   set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const = 0;
+
+  /// Declare an input variable
+  template <typename T>
+  [[nodiscard]] LabeledAxisAccessor declareInputVariable(const std::vector<std::string> & names)
+  {
+    auto accessor = declareVariable<T>(_input, names);
+    _consumed_vars.push_back(accessor);
+    return accessor;
+  }
+
+  /// Declare an input variable with known storage size
+  [[nodiscard]] LabeledAxisAccessor declareInputVariable(TorchSize sz,
+                                                         const std::vector<std::string> & names)
+  {
+    auto accessor = declareVariable(_input, sz, names);
+    _consumed_vars.push_back(accessor);
+    return accessor;
+  }
+
+  /// Declare an output variable
+  template <typename T>
+  [[nodiscard]] LabeledAxisAccessor declareOutputVariable(const std::vector<std::string> & names)
+  {
+    auto accessor = declareVariable<T>(_output, names);
+    _provided_vars.push_back(accessor);
+    return accessor;
+  }
+
+  /// Declare an output variable with known storage size
+  template <typename... S>
+  [[nodiscard]] LabeledAxisAccessor declareOutputVariable(TorchSize sz,
+                                                          const std::vector<std::string> & names)
+  {
+    auto accessor = declareVariable(_output, sz, names);
+    _provided_vars.push_back(accessor);
+    return accessor;
+  }
 
   virtual void setup() { setup_layout(); }
 
@@ -60,6 +100,9 @@ protected:
 
   /// Models *this* model may use during its evaluation
   std::vector<std::shared_ptr<Model>> _registered_models;
+
+  std::vector<LabeledAxisAccessor> _consumed_vars;
+  std::vector<LabeledAxisAccessor> _provided_vars;
 
 private:
   LabeledAxis & _input;

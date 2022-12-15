@@ -36,17 +36,17 @@ TEST_CASE("ImplicitTimeIntegration", "[ImplicitTimeIntegration]")
   }
 
   LabeledVector in(nbatch, implicit_rate.input());
-  auto baz = SymR2::init(0.5, 1.1, 3.2, -1.2, 1.1, 5.9).expand_batch(nbatch);
-  auto baz_old = SymR2::init(0, 0, 0, 0, 0, 0).expand_batch(nbatch);
-  in.slice(0, "state").set(Scalar(1.1, nbatch), "foo");
-  in.slice(0, "state").set(Scalar(0.01, nbatch), "bar");
-  in.slice(0, "state").set(baz, "baz");
-  in.slice(0, "old_state").set(Scalar(0, nbatch), "foo");
-  in.slice(0, "old_state").set(Scalar(0, nbatch), "bar");
-  in.slice(0, "old_state").set(baz_old, "baz");
-  in.slice(0, "forces").set(Scalar(15, nbatch), "temperature");
-  in.slice(0, "forces").set(Scalar(1.3, nbatch), "time");
-  in.slice(0, "old_forces").set(Scalar(1.1, nbatch), "time");
+  auto baz = SymR2::init(0.5, 1.1, 3.2, -1.2, 1.1, 5.9).batch_expand(nbatch);
+  auto baz_old = SymR2::init(0, 0, 0, 0, 0, 0).batch_expand(nbatch);
+  in.slice("state").set(Scalar(1.1, nbatch), "foo");
+  in.slice("state").set(Scalar(0.01, nbatch), "bar");
+  in.slice("state").set(baz, "baz");
+  in.slice("old_state").set(Scalar(0, nbatch), "foo");
+  in.slice("old_state").set(Scalar(0, nbatch), "bar");
+  in.slice("old_state").set(baz_old, "baz");
+  in.slice("forces").set(Scalar(15, nbatch), "temperature");
+  in.slice("forces").set(Scalar(1.3, nbatch), "time");
+  in.slice("old_forces").set(Scalar(1.1, nbatch), "time");
 
   SECTION("model derivatives")
   {
@@ -63,8 +63,8 @@ TEST_CASE("ImplicitTimeIntegration", "[ImplicitTimeIntegration]")
     ImplicitModel::stage = ImplicitModel::Stage::SOLVING;
     implicit_rate.cache_input(in);
     auto x = in("state");
-    auto [r, J1] = implicit_rate.residual_and_Jacobian(x);
 
+    auto [r, J1] = implicit_rate.residual_and_Jacobian(x);
     auto value = implicit_rate.value(in);
     REQUIRE(torch::allclose(r, value("residual")));
 

@@ -28,18 +28,17 @@ AssociativePlasticFlowDirection::set_value(LabeledVector in,
   else
     df_din = yield_function.dvalue(in);
 
-  auto df_dmandel = df_din.block("state", "state").get<SymR2>("yield_function", "mandel_stress");
+  auto df_dmandel = df_din.get<SymR2>(yield_function.yield_function, yield_function.mandel_stress);
 
-  out.slice(0, "state").set(df_dmandel, "plastic_flow_direction");
+  out.set(df_dmandel, plastic_flow_direction);
 
   if (dout_din)
   {
-    // For associative flow, the flow direction is Np = df/dM
-    // so dNp/dM = d2f/dM2
-    auto d2f_dmandel2 = d2f_din2.block("state", "state", "state")
-                            .get<SymSymR4>("yield_function", "mandel_stress", "mandel_stress");
+    // dNp/dM = d2f/dM2
+    auto d2f_dmandel2 = d2f_din2.get<SymSymR4>(
+        yield_function.yield_function, yield_function.mandel_stress, yield_function.mandel_stress);
 
-    dout_din->block("state", "state").set(d2f_dmandel2, "plastic_flow_direction", "mandel_stress");
+    dout_din->set(d2f_dmandel2, plastic_flow_direction, yield_function.mandel_stress);
   }
 }
 } // namespace neml2

@@ -27,10 +27,21 @@ ImplicitUpdate::ImplicitUpdate(const std::string & name,
   //         old forces
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // as we have eliminated the trial state by solving the nonlinear system.
-  // So, we need to remove the "state" subaxis from the input
+  // So, we need to remove the "state" subaxis from the input and add it to the output
   output().add<LabeledAxis>("state");
   output().subaxis("state").merge(model->input().subaxis("state"));
   input().remove("state");
+
+  // The consumed vars from "state" become provided vars
+  // TODO: generalize and simplify the followng code
+  for (auto consumed_var_it = _consumed_vars.begin(); consumed_var_it != _consumed_vars.end();
+       consumed_var_it++)
+    if (consumed_var_it->item_names[0] == "state")
+    {
+      _provided_vars.push_back(*consumed_var_it);
+      _consumed_vars.erase(consumed_var_it--);
+    }
+
   setup();
 }
 
@@ -54,7 +65,7 @@ ImplicitUpdate::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * d
   if (dout_din)
   {
     LabeledVector implicit_in(nbatch, _model.input());
-    implicit_in.assemble(in);
+    implicit_in.fill(in);
     implicit_in.set(sol, "state");
 
     auto partials = _model.dvalue(implicit_in);
