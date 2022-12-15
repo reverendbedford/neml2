@@ -54,15 +54,18 @@ TEST_CASE("Alternative composition of viscoplasticity", "[viscoplasticity2]")
   auto surface = std::make_shared<ImplicitTimeIntegration>("yield_surface", rate);
   auto solver = std::make_shared<NewtonNonlinearSolver>(params);
   auto return_map = std::make_shared<ImplicitUpdate>("return_map", surface, solver);
-  auto strain = std::make_shared<IdentityMap<SymR2>>(
-      "total_strain", "forces", "total_strain", "forces", "total_strain");
-  auto output_Ep = std::make_shared<IdentityMap<SymR2>>(
-      "output_plastic_strain", "state", "plastic_strain", "state", "plastic_strain");
-  auto output_ep = std::make_shared<IdentityMap<Scalar>>("output_equivalent_plastic_strain",
-                                                         "state",
-                                                         "equivalent_plastic_strain",
-                                                         "state",
-                                                         "equivalent_plastic_strain");
+  auto strain =
+      std::make_shared<IdentityMap<SymR2>>("total_strain",
+                                           std::vector<std::string>{"forces", "total_strain"},
+                                           std::vector<std::string>{"forces", "total_strain"});
+  auto output_Ep =
+      std::make_shared<IdentityMap<SymR2>>("output_plastic_strain",
+                                           std::vector<std::string>{"state", "plastic_strain"},
+                                           std::vector<std::string>{"state", "plastic_strain"});
+  auto output_ep = std::make_shared<IdentityMap<Scalar>>(
+      "output_equivalent_plastic_strain",
+      std::vector<std::string>{"state", "equivalent_plastic_strain"},
+      std::vector<std::string>{"state", "equivalent_plastic_strain"});
 
   auto model = std::make_shared<ComposedModel>(
       "viscoplasticity",

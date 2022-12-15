@@ -42,8 +42,10 @@ TEST_CASE("Uniaxial stress regression test", "[stress control]")
   // Imput:  [force] cauchy stress
   //         [state] equivalent plastic strain
   // Output: [state] equivalent plastic strain rate
-  auto input_stress = std::make_shared<IdentityMap<SymR2>>(
-      "input_stress", "forces", "cauchy_stress", "state", "cauchy_stress");
+  auto input_stress =
+      std::make_shared<IdentityMap<SymR2>>("input_stress",
+                                           std::vector<std::string>{"forces", "cauchy_stress"},
+                                           std::vector<std::string>{"state", "cauchy_stress"});
   auto kinharden = std::make_shared<NoKinematicHardening>("kinematic_hardening");
   auto isoharden = std::make_shared<LinearIsotropicHardening>("isotropic_hardening", s0, K);
   auto yieldfunc = std::make_shared<J2IsotropicYieldFunction>("yield_function");
@@ -68,19 +70,29 @@ TEST_CASE("Uniaxial stress regression test", "[stress control]")
   auto direction = std::make_shared<AssociativePlasticFlowDirection>("flow_direction", yieldfunc);
   auto Eprate = std::make_shared<PlasticStrainRate>("plastic_strain_rate");
   auto stressrate = std::make_shared<ForceRate<SymR2>>("cauchy_stress");
-  auto map_stressrate = std::make_shared<IdentityMap<SymR2>>(
-      "map_stressrate", "forces", "cauchy_stress_rate", "state", "cauchy_stress_rate");
+  auto map_stressrate =
+      std::make_shared<IdentityMap<SymR2>>("map_stressrate",
+                                           std::vector<std::string>{"forces", "cauchy_stress_rate"},
+                                           std::vector<std::string>{"state", "cauchy_stress_rate"});
   auto Eerate = std::make_shared<ElasticStrainRateFromCauchyStressRate>("elastic_strain_rate", S);
   auto Erate = std::make_shared<TotalStrainRate>("total_strain_rate");
   auto strain = std::make_shared<TimeIntegration<SymR2>>("total_strain");
   auto output_ep = std::make_shared<IdentityMap<Scalar>>(
-      "output_ep", "state", "equivalent_plastic_strain", "state", "equivalent_plastic_strain");
-  auto input_strain_n = std::make_shared<IdentityMap<SymR2>>(
-      "input_strain_n", "old_state", "total_strain", "old_state", "total_strain");
+      "output_ep",
+      std::vector<std::string>{"state", "equivalent_plastic_strain"},
+      std::vector<std::string>{"state", "equivalent_plastic_strain"});
+  auto input_strain_n =
+      std::make_shared<IdentityMap<SymR2>>("input_strain_n",
+                                           std::vector<std::string>{"old_state", "total_strain"},
+                                           std::vector<std::string>{"old_state", "total_strain"});
   auto input_t_np1 =
-      std::make_shared<IdentityMap<Scalar>>("input_t_np1", "forces", "time", "forces", "time");
-  auto input_t_n = std::make_shared<IdentityMap<Scalar>>(
-      "input_t_n", "old_forces", "time", "old_forces", "time");
+      std::make_shared<IdentityMap<Scalar>>("input_t_np1",
+                                            std::vector<std::string>{"forces", "time"},
+                                            std::vector<std::string>{"forces", "time"});
+  auto input_t_n =
+      std::make_shared<IdentityMap<Scalar>>("input_t_n",
+                                            std::vector<std::string>{"old_forces", "time"},
+                                            std::vector<std::string>{"old_forces", "time"});
 
   auto model = std::make_shared<ComposedModel>(
       "viscoplasticity",

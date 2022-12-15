@@ -5,9 +5,9 @@ namespace neml2
 {
 PlasticStrainRate::PlasticStrainRate(const std::string & name)
   : Model(name),
-    hardening_rate(declareInputVariable<Scalar>("state", "hardening_rate")),
-    plastic_flow_direction(declareInputVariable<SymR2>("state", "plastic_flow_direction")),
-    plastic_strain_rate(declareOutputVariable<SymR2>("state", "plastic_strain_rate"))
+    hardening_rate(declareInputVariable<Scalar>({"state", "hardening_rate"})),
+    plastic_flow_direction(declareInputVariable<SymR2>({"state", "plastic_flow_direction"})),
+    plastic_strain_rate(declareOutputVariable<SymR2>({"state", "plastic_strain_rate"}))
 {
   setup();
 }

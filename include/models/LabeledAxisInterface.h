@@ -16,19 +16,17 @@ protected:
   [[nodiscard]] LabeledAxis & declareAxis();
 
   /// Declare an item recursively on an axis
-  template <typename T,
-            typename... S,
-            typename = std::enable_if_t<are_all_convertible<std::string, S...>::value>>
-  LabeledAxisAccessor declareVariable(LabeledAxis & axis, S &&... name) const
+  template <typename T>
+  LabeledAxisAccessor declareVariable(LabeledAxis & axis,
+                                      const std::vector<std::string> & names) const
   {
-    return declareVariable(axis, utils::storage_size(T::_base_sizes), std::forward<S>(name)...);
+    return declareVariable(axis, utils::storage_size(T::_base_sizes), names);
   }
 
   /// Declare an item (with known storage size) recursively on an axis
-  template <typename... S>
-  LabeledAxisAccessor declareVariable(LabeledAxis & axis, TorchSize sz, S &&... name) const
+  LabeledAxisAccessor
+  declareVariable(LabeledAxis & axis, TorchSize sz, const std::vector<std::string> & names) const
   {
-    std::vector<std::string> names({name...});
     declareVariableHelper(axis, sz, names.begin(), names.end());
     return LabeledAxisAccessor({names, sz});
   }

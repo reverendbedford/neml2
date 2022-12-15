@@ -10,10 +10,8 @@ class IdentityMap : public Model
 {
 public:
   IdentityMap(const std::string & name,
-              const std::string & from_axis_name,
-              const std::string & from_var_name,
-              const std::string & to_axis_name,
-              const std::string & to_var_name);
+              const std::vector<std::string> & from_var,
+              const std::vector<std::string> & to_var);
 
   const LabeledAxisAccessor from;
   const LabeledAxisAccessor to;

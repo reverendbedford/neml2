@@ -19,7 +19,6 @@
 #include "models/solid_mechanics/PlasticStrainRate.h"
 #include "models/ImplicitTimeIntegration.h"
 #include "models/ImplicitUpdate.h"
-#include "models/IdentityMap.h"
 #include "models/ForceRate.h"
 #include "solvers/NewtonNonlinearSolver.h"
 

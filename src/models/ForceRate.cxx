@@ -6,11 +6,11 @@ namespace neml2
 template <typename T>
 ForceRate<T>::ForceRate(const std::string & name)
   : Model(name),
-    force(declareInputVariable<T>("forces", name)),
-    force_n(declareInputVariable<T>("old_forces", name)),
-    time(declareInputVariable<Scalar>("forces", "time")),
-    time_n(declareInputVariable<Scalar>("old_forces", "time")),
-    force_rate(declareOutputVariable<T>("forces", name + "_rate"))
+    force(declareInputVariable<T>({"forces", name})),
+    force_n(declareInputVariable<T>({"old_forces", name})),
+    time(declareInputVariable<Scalar>({"forces", "time"})),
+    time_n(declareInputVariable<Scalar>({"old_forces", "time"})),
+    force_rate(declareOutputVariable<T>({"forces", name + "_rate"}))
 {
   this->setup();
 }

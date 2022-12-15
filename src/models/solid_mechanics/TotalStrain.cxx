@@ -7,10 +7,11 @@ template <bool rate>
 TotalStrainTempl<rate>::TotalStrainTempl(const std::string & name)
   : Model(name),
     elastic_strain(
-        declareInputVariable<SymR2>("state", rate ? "elastic_strain_rate" : "elastic_strain")),
+        declareInputVariable<SymR2>({"state", rate ? "elastic_strain_rate" : "elastic_strain"})),
     plastic_strain(
-        declareInputVariable<SymR2>("state", rate ? "plastic_strain_rate" : "plastic_strain")),
-    total_strain(declareOutputVariable<SymR2>("state", rate ? "total_strain_rate" : "total_strain"))
+        declareInputVariable<SymR2>({"state", rate ? "plastic_strain_rate" : "plastic_strain"})),
+    total_strain(
+        declareOutputVariable<SymR2>({"state", rate ? "total_strain_rate" : "total_strain"}))
 {
   this->setup();
 }

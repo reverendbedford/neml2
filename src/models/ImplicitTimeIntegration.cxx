@@ -5,9 +5,9 @@ namespace neml2
 ImplicitTimeIntegration::ImplicitTimeIntegration(const std::string & name,
                                                  std::shared_ptr<Model> rate)
   : ImplicitModel(name),
-    time(declareInputVariable<Scalar>("forces", "time")),
-    time_n(declareInputVariable<Scalar>("old_forces", "time")),
-    resid(declareOutputVariable(rate->output().storage_size(), "residual")),
+    time(declareInputVariable<Scalar>({"forces", "time"})),
+    time_n(declareInputVariable<Scalar>({"old_forces", "time"})),
+    resid(declareOutputVariable(rate->output().storage_size(), {"residual"})),
     _rate(*rate)
 {
   register_model(rate);

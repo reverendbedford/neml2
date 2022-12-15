@@ -6,11 +6,11 @@ namespace neml2
 template <typename T>
 TimeIntegration<T>::TimeIntegration(const std::string & name)
   : Model(name),
-    var_rate(declareInputVariable<T>("state", name + "_rate")),
-    var_n(declareInputVariable<T>("old_state", name)),
-    time(declareInputVariable<Scalar>("forces", "time")),
-    time_n(declareInputVariable<Scalar>("old_forces", "time")),
-    var(declareOutputVariable<T>("state", name))
+    var_rate(declareInputVariable<T>({"state", name + "_rate"})),
+    var_n(declareInputVariable<T>({"old_state", name})),
+    time(declareInputVariable<Scalar>({"forces", "time"})),
+    time_n(declareInputVariable<Scalar>({"old_forces", "time"})),
+    var(declareOutputVariable<T>({"state", name}))
 {
   this->setup();
 }

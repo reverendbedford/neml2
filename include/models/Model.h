@@ -51,41 +51,38 @@ protected:
   set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const = 0;
 
   /// Declare an input variable
-  template <typename T,
-            typename... S,
-            typename = std::enable_if_t<are_all_convertible<std::string, S...>::value>>
-  [[nodiscard]] LabeledAxisAccessor declareInputVariable(S &&... name)
+  template <typename T>
+  [[nodiscard]] LabeledAxisAccessor declareInputVariable(const std::vector<std::string> & names)
   {
-    auto accessor = declareVariable<T>(_input, std::forward<S>(name)...);
+    auto accessor = declareVariable<T>(_input, names);
     _consumed_vars.push_back(accessor);
     return accessor;
   }
 
   /// Declare an input variable with known storage size
-  template <typename... S>
-  [[nodiscard]] LabeledAxisAccessor declareInputVariable(TorchSize sz, S &&... name)
+  [[nodiscard]] LabeledAxisAccessor declareInputVariable(TorchSize sz,
+                                                         const std::vector<std::string> & names)
   {
-    auto accessor = declareVariable(_input, sz, std::forward<S>(name)...);
+    auto accessor = declareVariable(_input, sz, names);
     _consumed_vars.push_back(accessor);
     return accessor;
   }
 
   /// Declare an output variable
-  template <typename T,
-            typename... S,
-            typename = std::enable_if_t<are_all_convertible<std::string, S...>::value>>
-  [[nodiscard]] LabeledAxisAccessor declareOutputVariable(S &&... name)
+  template <typename T>
+  [[nodiscard]] LabeledAxisAccessor declareOutputVariable(const std::vector<std::string> & names)
   {
-    auto accessor = declareVariable<T>(_output, std::forward<S>(name)...);
+    auto accessor = declareVariable<T>(_output, names);
     _provided_vars.push_back(accessor);
     return accessor;
   }
 
   /// Declare an output variable with known storage size
   template <typename... S>
-  [[nodiscard]] LabeledAxisAccessor declareOutputVariable(TorchSize sz, S &&... name)
+  [[nodiscard]] LabeledAxisAccessor declareOutputVariable(TorchSize sz,
+                                                          const std::vector<std::string> & names)
   {
-    auto accessor = declareVariable(_output, sz, std::forward<S>(name)...);
+    auto accessor = declareVariable(_output, sz, names);
     _provided_vars.push_back(accessor);
     return accessor;
   }

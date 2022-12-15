@@ -5,13 +5,11 @@ namespace neml2
 {
 template <typename T>
 IdentityMap<T>::IdentityMap(const std::string & name,
-                            const std::string & from_axis_name,
-                            const std::string & from_var_name,
-                            const std::string & to_axis_name,
-                            const std::string & to_var_name)
+                            const std::vector<std::string> & from_var,
+                            const std::vector<std::string> & to_var)
   : Model(name),
-    from(declareInputVariable<T>(from_axis_name, from_var_name)),
-    to(declareOutputVariable<T>(to_axis_name, to_var_name))
+    from(declareInputVariable<T>(from_var)),
+    to(declareOutputVariable<T>(to_var))
 {
   this->setup();
 }

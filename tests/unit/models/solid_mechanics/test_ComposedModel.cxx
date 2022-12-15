@@ -179,7 +179,8 @@ TEST_CASE("send to different device", "[ComposedModel]")
 TEST_CASE("A model with sub-sub-axis", "[ComposedModel][Sub-sub-axis]")
 {
   auto sample = std::make_shared<SampleSubsubaxisModel>("saple");
-  auto out = std::make_shared<IdentityMap<Scalar>>("o1", "state", "baz", "state", "wow");
+  auto out = std::make_shared<IdentityMap<Scalar>>(
+      "o1", std::vector<std::string>{"state", "baz"}, std::vector<std::string>{"state", "wow"});
   auto model = ComposedModel("whatever", {sample, out});
 
   SECTION("model definition")

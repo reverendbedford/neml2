@@ -4,9 +4,9 @@ using namespace neml2;
 
 SampleSubsubaxisModel::SampleSubsubaxisModel(const std::string & name)
   : Model(name),
-    foo(declareInputVariable<Scalar>("state", "foo")),
-    bar(declareInputVariable<Scalar>("state", "substate", "bar")),
-    baz(declareOutputVariable<Scalar>("state", "baz"))
+    foo(declareInputVariable<Scalar>({"state", "foo"})),
+    bar(declareInputVariable<Scalar>({"state", "substate", "bar"})),
+    baz(declareOutputVariable<Scalar>({"state", "baz"}))
 {
   setup();
 }
