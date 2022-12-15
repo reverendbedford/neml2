@@ -13,7 +13,6 @@
 #include "models/ImplicitTimeIntegration.h"
 #include "models/ImplicitUpdate.h"
 #include "models/IdentityMap.h"
-#include "models/forces/QuasiStaticForce.h"
 #include "solvers/NewtonNonlinearSolver.h"
 #include "SampleSubsubaxisModel.h"
 
@@ -32,7 +31,7 @@ TEST_CASE("Linear DAG", "[ComposedModel][Linear DAG]")
   // inputs --> "elastic_strain" --> "elasticity" --> "kinharden" --> outputs
   // inputs: total strain, plastic strain
   // outputs: mandel stress
-  auto model = ComposedModel("foo", {{estrain, elasticity}, {elasticity, kinharden}});
+  auto model = ComposedModel("foo", {estrain, elasticity, kinharden});
 
   SECTION("model definition")
   {
@@ -79,7 +78,7 @@ TEST_CASE("Y-junction DAG", "[ComposedModel][Y-junction DAG]")
   //
   // inputs: cauchy stress, equivalent plastic strain
   // outputs: yield function
-  auto model = ComposedModel("foo", {{isoharden, yield}, {kinharden, yield}});
+  auto model = ComposedModel("foo", {isoharden, kinharden, yield});
 
   SECTION("model definition")
   {
@@ -93,7 +92,6 @@ TEST_CASE("Y-junction DAG", "[ComposedModel][Y-junction DAG]")
 
   SECTION("model derivatives")
   {
-    std::cout << "===========================\n";
     LabeledVector in(nbatch, model.input());
     auto S = SymR2::init(100, 110, 100, 100, 100, 100).batch_expand(nbatch);
     in.slice("state").set(S, "cauchy_stress");
@@ -119,7 +117,7 @@ TEST_CASE("diamond pattern", "[ComposedModel]")
   auto eprate = std::make_shared<PerzynaPlasticFlowRate>("plastic_flow_rate", eta, n);
   auto Eprate = std::make_shared<PlasticStrainRate>("plastic_strain_rate");
 
-  auto model = ComposedModel("foo", {{yield, eprate}, {eprate, Eprate}, {direction, Eprate}});
+  auto model = ComposedModel("foo", {yield, direction, eprate, Eprate});
 
   SECTION("model definition")
   {
@@ -157,7 +155,7 @@ TEST_CASE("send to different device", "[ComposedModel]")
   auto eprate = std::make_shared<PerzynaPlasticFlowRate>("plastic_flow_rate", eta, n);
   auto Eprate = std::make_shared<PlasticStrainRate>("plastic_strain_rate");
 
-  auto model = ComposedModel("foo", {{yield, eprate}, {eprate, Eprate}, {direction, Eprate}});
+  auto model = ComposedModel("foo", {yield, direction, eprate, Eprate});
   auto params = model.named_parameters();
 
   SECTION("send to CPU")
@@ -182,7 +180,7 @@ TEST_CASE("A model with sub-sub-axis", "[ComposedModel][Sub-sub-axis]")
 {
   auto sample = std::make_shared<SampleSubsubaxisModel>("saple");
   auto out = std::make_shared<IdentityMap<Scalar>>("o1", "state", "baz", "state", "wow");
-  auto model = ComposedModel("whatever", {{sample, out}});
+  auto model = ComposedModel("whatever", {sample, out});
 
   SECTION("model definition")
   {

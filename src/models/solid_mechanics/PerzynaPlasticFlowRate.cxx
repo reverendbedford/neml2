@@ -15,7 +15,7 @@ PerzynaPlasticFlowRate::set_value(LabeledVector in,
                                   LabeledMatrix * dout_din) const
 {
   // Grab the yield function
-  auto f = in.slice("state").get<Scalar>("yield_function");
+  auto f = in.get<Scalar>(yield_function);
 
   // Compute the Perzyna approximation of the yield surface
   Scalar Hf = torch::heaviside(f, torch::zeros_like(f));
@@ -24,7 +24,7 @@ PerzynaPlasticFlowRate::set_value(LabeledVector in,
   Scalar gamma_dot = gamma_dot_m * Hf;
 
   // Set output
-  out.slice("state").set(gamma_dot, "hardening_rate");
+  out.set(gamma_dot, hardening_rate);
 
   if (dout_din)
   {
@@ -32,7 +32,7 @@ PerzynaPlasticFlowRate::set_value(LabeledVector in,
     Scalar dgamma_dot_df = _n / f_abs * gamma_dot * Hf;
 
     // Set output
-    dout_din->block("state", "state").set(dgamma_dot_df, "hardening_rate", "yield_function");
+    dout_din->set(dgamma_dot_df, hardening_rate, yield_function);
   }
 }
 } // namespace neml2

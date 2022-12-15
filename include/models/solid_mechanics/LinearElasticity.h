@@ -20,6 +20,9 @@ public:
   static constexpr std::string in_name();
   static constexpr std::string out_name();
 
+  const LabeledAxisAccessor from;
+  const LabeledAxisAccessor to;
+
 protected:
   virtual void
   set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const;
@@ -29,9 +32,6 @@ protected:
   when `etype == COMPLIANCE`, this is the compliance tensor.
   */
   SymSymR4 _T;
-
-  const LabeledAxisAccessor _from;
-  const LabeledAxisAccessor _to;
 };
 
 typedef LinearElasticity<false, ElasticityType::STIFFNESS> CauchyStressFromElasticStrain;

@@ -3,8 +3,8 @@
 
 namespace neml2
 {
-AssociativePlasticHardening::AssociativePlasticHardening(const std::string & name,
-                                                         const std::shared_ptr<YieldFunction> & f)
+AssociativePlasticHardening::AssociativePlasticHardening(
+    const std::string & name, const std::shared_ptr<IsotropicYieldFunction> & f)
   : PlasticHardening(name),
     yield_function(*f)
 {
@@ -29,24 +29,23 @@ AssociativePlasticHardening::set_value(LabeledVector in,
   else
     df_din = yield_function.dvalue(in);
 
-  auto gamma_dot = in.slice("state").get<Scalar>("hardening_rate");
-  auto df_dh = df_din.block("state", "state").get<Scalar>("yield_function", "isotropic_hardening");
+  auto gamma_dot = in.get<Scalar>(hardening_rate);
+  auto df_dh =
+      df_din.get<Scalar>(yield_function.yield_function, yield_function.isotropic_hardening);
   auto ep_dot = -gamma_dot * df_dh;
 
-  out.slice("state").set(ep_dot, "equivalent_plastic_strain_rate");
+  out.set(ep_dot, equivalent_plastic_strain_rate);
 
   if (dout_din)
   {
-    // For associative flow,
-    // ep_dot = -gamma_dot * df/dh
-    // So dep_dot/dh = -gamma_dot * d2f/dh2
-    auto d2f_dh2 = d2f_din2.block("state", "state", "state")
-                       .get<Scalar>("yield_function", "isotropic_hardening", "isotropic_hardening");
+    // dep_dot/dh = -gamma_dot * d2f/dh2
+    auto d2f_dh2 = d2f_din2.get<Scalar>(yield_function.yield_function,
+                                        yield_function.isotropic_hardening,
+                                        yield_function.isotropic_hardening);
 
-    dout_din->block("state", "state")
-        .set(-df_dh, "equivalent_plastic_strain_rate", "hardening_rate");
-    dout_din->block("state", "state")
-        .set(-gamma_dot * d2f_dh2, "equivalent_plastic_strain_rate", "isotropic_hardening");
+    dout_din->set(-df_dh, equivalent_plastic_strain_rate, hardening_rate);
+    dout_din->set(
+        -gamma_dot * d2f_dh2, equivalent_plastic_strain_rate, yield_function.isotropic_hardening);
   }
 }
 } // namespace neml2

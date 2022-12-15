@@ -16,7 +16,7 @@
 #include "models/ImplicitUpdate.h"
 #include "models/TimeIntegration.h"
 #include "models/IdentityMap.h"
-#include "models/forces/ForceRate.h"
+#include "models/ForceRate.h"
 #include "solvers/NewtonNonlinearSolver.h"
 #include "StructuralDriver.h"
 #include "misc/math.h"
@@ -47,24 +47,13 @@ TEST_CASE("Alternative composition of viscoplasticity", "[viscoplasticity2]")
   auto eprate = std::make_shared<AssociativePlasticHardening>("ep_rate", f);
   auto Eprate = std::make_shared<PlasticStrainRate>("plastic_strain_rate");
 
-  // All these dependency registration thingy can be predefined.
-  ModelDependency rate_deps = {{Ee, S},
-                               {S, M},
-                               {M, f},
-                               {gamma, f},
-                               {f, gammarate},
-                               {M, Np},
-                               {gamma, Np},
-                               {M, eprate},
-                               {gamma, eprate},
-                               {gammarate, eprate},
-                               {gammarate, Eprate},
-                               {Np, Eprate}};
-  auto rate = std::make_shared<ComposedModel>("rate", rate_deps);
+  auto rate = std::make_shared<ComposedModel>(
+      "rate",
+      std::vector<std::shared_ptr<Model>>{Ee, S, M, gamma, f, gammarate, Np, eprate, Eprate});
 
   auto surface = std::make_shared<ImplicitTimeIntegration>("yield_surface", rate);
   auto solver = std::make_shared<NewtonNonlinearSolver>(params);
-  auto return_map = std::make_shared<ImplicitUpdate>("viscoplasticity", surface, solver);
+  auto return_map = std::make_shared<ImplicitUpdate>("return_map", surface, solver);
   auto strain = std::make_shared<IdentityMap<SymR2>>(
       "total_strain", "forces", "total_strain", "forces", "total_strain");
   auto output_Ep = std::make_shared<IdentityMap<SymR2>>(
@@ -74,9 +63,12 @@ TEST_CASE("Alternative composition of viscoplasticity", "[viscoplasticity2]")
                                                          "equivalent_plastic_strain",
                                                          "state",
                                                          "equivalent_plastic_strain");
-  ModelDependency dependencies = {
-      {return_map, Ee}, {strain, Ee}, {Ee, S}, {return_map, output_Ep}, {return_map, output_ep}};
-  auto model = std::make_shared<ComposedModel>("viscoplasticity", dependencies);
+
+  auto model = std::make_shared<ComposedModel>(
+      "viscoplasticity",
+      std::vector<std::shared_ptr<Model>>{return_map, strain, Ee, S, output_Ep, output_ep},
+      std::vector<std::shared_ptr<Model>>{return_map, strain},
+      std::vector<std::shared_ptr<Model>>{output_Ep, output_ep});
 
   TorchSize nbatch = 1;
   TorchSize nsteps = 100;

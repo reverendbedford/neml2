@@ -4,8 +4,7 @@
 namespace neml2
 {
 J2IsotropicYieldFunction::J2IsotropicYieldFunction(const std::string & name)
-  : YieldFunction(name),
-    _g_idx(declareVariable<Scalar>(input(), "state", "isotropic_hardening"))
+  : IsotropicYieldFunction(name)
 {
   setup();
 }
@@ -16,8 +15,8 @@ J2IsotropicYieldFunction::set_value(LabeledVector in,
                                     LabeledMatrix * dout_din) const
 {
   // First retrieve the hardening variables
-  auto mandel = in.get<SymR2>(_mandel_idx);
-  auto g = in.get<Scalar>(_g_idx);
+  auto mandel = in.get<SymR2>(mandel_stress);
+  auto g = in.get<Scalar>(isotropic_hardening);
 
   // Compute the yield function
   auto s = mandel.dev();
@@ -26,7 +25,7 @@ J2IsotropicYieldFunction::set_value(LabeledVector in,
   auto f = J2 - H;
 
   // Set the output
-  out.set(f, _f_idx);
+  out.set(f, yield_function);
 
   if (dout_din)
   {
@@ -35,8 +34,8 @@ J2IsotropicYieldFunction::set_value(LabeledVector in,
     auto df_dg = Scalar(-sqrt(2.0 / 3.0), in.batch_size());
 
     // Set the output
-    dout_din->set(df_dmandel, _f_idx, _mandel_idx);
-    dout_din->set(df_dg, _f_idx, _g_idx);
+    dout_din->set(df_dmandel, yield_function, mandel_stress);
+    dout_din->set(df_dg, yield_function, isotropic_hardening);
   }
 }
 
@@ -46,8 +45,8 @@ J2IsotropicYieldFunction::set_dvalue(LabeledVector in,
                                      LabeledTensor<1, 3> * d2out_din2) const
 {
   // First retrieve the hardening variables
-  auto mandel = in.get<SymR2>(_mandel_idx);
-  auto g = in.get<Scalar>(_g_idx);
+  auto mandel = in.get<SymR2>(mandel_stress);
+  auto g = in.get<Scalar>(isotropic_hardening);
 
   // Compute the yield function
   auto s = mandel.dev();
@@ -57,8 +56,8 @@ J2IsotropicYieldFunction::set_dvalue(LabeledVector in,
   auto df_dg = Scalar(-sqrt(2.0 / 3.0), in.batch_size());
 
   // Set the output
-  dout_din.set(df_dmandel, _f_idx, _mandel_idx);
-  dout_din.set(df_dg, _f_idx, _g_idx);
+  dout_din.set(df_dmandel, yield_function, mandel_stress);
+  dout_din.set(df_dg, yield_function, isotropic_hardening);
 
   if (d2out_din2)
   {
@@ -69,7 +68,7 @@ J2IsotropicYieldFunction::set_dvalue(LabeledVector in,
     auto d2f_dmandel2 = (I - n.outer(n)) * J / (s.norm() + EPS);
 
     // Set the output
-    d2out_din2->set(d2f_dmandel2, _f_idx, _mandel_idx, _mandel_idx);
+    d2out_din2->set(d2f_dmandel2, yield_function, mandel_stress, mandel_stress);
   }
 }
 } // namespace neml2

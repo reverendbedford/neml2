@@ -5,20 +5,15 @@ namespace neml2
 {
 template <bool rate>
 ElasticStrainTempl<rate>::ElasticStrainTempl(const std::string & name)
-  : Model(name)
+  : Model(name),
+    total_strain(
+        declareInputVariable<SymR2>("forces", rate ? "total_strain_rate" : "total_strain")),
+    plastic_strain(
+        declareInputVariable<SymR2>("state", rate ? "plastic_strain_rate" : "plastic_strain")),
+    elastic_strain(
+        declareOutputVariable<SymR2>("state", rate ? "elastic_strain_rate" : "elastic_strain"))
 {
-  this->input().template add<LabeledAxis>("forces");
-  this->input().subaxis("forces").template add<SymR2>(rate ? "total_strain_rate" : "total_strain");
-
-  this->input().template add<LabeledAxis>("state");
-  this->input().subaxis("state").template add<SymR2>(rate ? "plastic_strain_rate"
-                                                          : "plastic_strain");
-
-  this->output().template add<LabeledAxis>("state");
-  this->output().subaxis("state").template add<SymR2>(rate ? "elastic_strain_rate"
-                                                           : "elastic_strain");
-
-  this->setup();
+  setup();
 }
 
 template <bool rate>
@@ -27,30 +22,15 @@ ElasticStrainTempl<rate>::set_value(LabeledVector in,
                                     LabeledVector out,
                                     LabeledMatrix * dout_din) const
 {
-  // Retrieve whatever we need from the input,
-  // Here we need the total strain
-  auto total_strain = in.slice("forces").get<SymR2>(rate ? "total_strain_rate" : "total_strain");
-  auto plastic_strain =
-      in.slice("state").get<SymR2>(rate ? "plastic_strain_rate" : "plastic_strain");
-
-  auto elastic_strain = total_strain - plastic_strain;
-
-  // Set the output
-  out.slice("state").set(elastic_strain, rate ? "elastic_strain_rate" : "elastic_strain");
+  // Simple additive decomposition:
+  // elastic strain = total strain - plastic strain
+  out.set(in.get<SymR2>(total_strain) - in.get<SymR2>(plastic_strain), elastic_strain);
 
   if (dout_din)
   {
     auto I = SymR2::identity_map().batch_expand(in.batch_size());
-
-    // Set the output
-    dout_din->block("state", "forces")
-        .set(I,
-             rate ? "elastic_strain_rate" : "elastic_strain",
-             rate ? "total_strain_rate" : "total_strain");
-    dout_din->block("state", "state")
-        .set(-I,
-             rate ? "elastic_strain_rate" : "elastic_strain",
-             rate ? "plastic_strain_rate" : "plastic_strain");
+    dout_din->set(I, elastic_strain, total_strain);
+    dout_din->set(-I, elastic_strain, plastic_strain);
   }
 }
 

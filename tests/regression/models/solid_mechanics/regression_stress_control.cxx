@@ -16,15 +16,14 @@
 #include "models/ImplicitUpdate.h"
 #include "models/IdentityMap.h"
 #include "models/TimeIntegration.h"
-#include "models/forces/QuasiStaticForce.h"
-#include "models/forces/ForceRate.h"
+#include "models/ForceRate.h"
 #include "solvers/NewtonNonlinearSolver.h"
 #include "StructuralDriver.h"
 #include "misc/math.h"
 
 using namespace neml2;
 
-TEST_CASE("Uniaxial stress regression test", "[stress_control]")
+TEST_CASE("Uniaxial stress regression test", "[stress control]")
 {
   NonlinearSolverParameters params = {/*atol =*/1e-10,
                                       /*rtol =*/1e-8,
@@ -50,14 +49,10 @@ TEST_CASE("Uniaxial stress regression test", "[stress_control]")
   auto yieldfunc = std::make_shared<J2IsotropicYieldFunction>("yield_function");
   auto hrate = std::make_shared<PerzynaPlasticFlowRate>("hrate", eta, n);
   auto eprate = std::make_shared<AssociativePlasticHardening>("ep_rate", yieldfunc);
-  ModelDependency rate_dependencies = {{input_stress, kinharden},
-                                       {kinharden, yieldfunc},
-                                       {isoharden, yieldfunc},
-                                       {kinharden, eprate},
-                                       {isoharden, eprate},
-                                       {yieldfunc, hrate},
-                                       {hrate, eprate}};
-  auto rate = std::make_shared<ComposedModel>("rate", rate_dependencies);
+  auto rate = std::make_shared<ComposedModel>(
+      "viscoplasticity",
+      std::vector<std::shared_ptr<Model>>{
+          input_stress, kinharden, isoharden, yieldfunc, hrate, eprate});
 
   // The second part:
   // Imput:  [force] cauchy stress
@@ -73,6 +68,8 @@ TEST_CASE("Uniaxial stress regression test", "[stress_control]")
   auto direction = std::make_shared<AssociativePlasticFlowDirection>("flow_direction", yieldfunc);
   auto Eprate = std::make_shared<PlasticStrainRate>("plastic_strain_rate");
   auto stressrate = std::make_shared<ForceRate<SymR2>>("cauchy_stress");
+  auto map_stressrate = std::make_shared<IdentityMap<SymR2>>(
+      "map_stressrate", "forces", "cauchy_stress_rate", "state", "cauchy_stress_rate");
   auto Eerate = std::make_shared<ElasticStrainRateFromCauchyStressRate>("elastic_strain_rate", S);
   auto Erate = std::make_shared<TotalStrainRate>("total_strain_rate");
   auto strain = std::make_shared<TimeIntegration<SymR2>>("total_strain");
@@ -84,24 +81,29 @@ TEST_CASE("Uniaxial stress regression test", "[stress_control]")
       std::make_shared<IdentityMap<Scalar>>("input_t_np1", "forces", "time", "forces", "time");
   auto input_t_n = std::make_shared<IdentityMap<Scalar>>(
       "input_t_n", "old_forces", "time", "old_forces", "time");
-  ModelDependency dependencies = {{input_stress, kinharden},
-                                  {return_map, isoharden},
-                                  {kinharden, yieldfunc},
-                                  {isoharden, yieldfunc},
-                                  {kinharden, direction},
-                                  {isoharden, direction},
-                                  {yieldfunc, hrate},
-                                  {direction, Eprate},
-                                  {hrate, Eprate},
-                                  {stressrate, Eerate},
-                                  {Eprate, Erate},
-                                  {Eerate, Erate},
-                                  {Erate, strain},
-                                  {input_strain_n, strain},
-                                  {input_t_np1, strain},
-                                  {input_t_n, strain},
-                                  {return_map, output_ep}};
-  auto model = std::make_shared<ComposedModel>("viscoplasticity", dependencies);
+
+  auto model = std::make_shared<ComposedModel>(
+      "viscoplasticity",
+      std::vector<std::shared_ptr<Model>>{input_stress,
+                                          return_map,
+                                          isoharden,
+                                          kinharden,
+                                          yieldfunc,
+                                          direction,
+                                          hrate,
+                                          Eprate,
+                                          stressrate,
+                                          map_stressrate,
+                                          Eerate,
+                                          Erate,
+                                          strain,
+                                          input_strain_n,
+                                          input_t_np1,
+                                          input_t_n,
+                                          output_ep},
+      std::vector<std::shared_ptr<Model>>{
+          return_map, input_stress, stressrate, input_strain_n, input_t_np1, input_t_n},
+      std::vector<std::shared_ptr<Model>>{output_ep});
 
   TorchSize nbatch = 20;
   TorchSize nsteps = 100;

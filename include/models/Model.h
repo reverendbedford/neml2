@@ -51,19 +51,41 @@ protected:
   set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const = 0;
 
   /// Declare an input variable
-  template <typename T, typename... S>
-  [[nodiscard]] LabeledAxisAccessor declareInputVariable(S &&... name) const
+  template <typename T,
+            typename... S,
+            typename = std::enable_if_t<are_all_convertible<std::string, S...>::value>>
+  [[nodiscard]] LabeledAxisAccessor declareInputVariable(S &&... name)
   {
-    auto accessor = declareVariable<T>(input(), std::forward<S>(name)...);
+    auto accessor = declareVariable<T>(_input, std::forward<S>(name)...);
+    _consumed_vars.push_back(accessor);
+    return accessor;
+  }
+
+  /// Declare an input variable with known storage size
+  template <typename... S>
+  [[nodiscard]] LabeledAxisAccessor declareInputVariable(TorchSize sz, S &&... name)
+  {
+    auto accessor = declareVariable(_input, sz, std::forward<S>(name)...);
     _consumed_vars.push_back(accessor);
     return accessor;
   }
 
   /// Declare an output variable
-  template <typename T, typename... S>
-  [[nodiscard]] LabeledAxisAccessor declareOutputVariable(S &&... name) const
+  template <typename T,
+            typename... S,
+            typename = std::enable_if_t<are_all_convertible<std::string, S...>::value>>
+  [[nodiscard]] LabeledAxisAccessor declareOutputVariable(S &&... name)
   {
-    auto accessor = declareVariable<T>(output(), std::forward<S>(name)...);
+    auto accessor = declareVariable<T>(_output, std::forward<S>(name)...);
+    _provided_vars.push_back(accessor);
+    return accessor;
+  }
+
+  /// Declare an output variable with known storage size
+  template <typename... S>
+  [[nodiscard]] LabeledAxisAccessor declareOutputVariable(TorchSize sz, S &&... name)
+  {
+    auto accessor = declareVariable(_output, sz, std::forward<S>(name)...);
     _provided_vars.push_back(accessor);
     return accessor;
   }
@@ -82,11 +104,11 @@ protected:
   /// Models *this* model may use during its evaluation
   std::vector<std::shared_ptr<Model>> _registered_models;
 
+  std::vector<LabeledAxisAccessor> _consumed_vars;
+  std::vector<LabeledAxisAccessor> _provided_vars;
+
 private:
   LabeledAxis & _input;
   LabeledAxis & _output;
-
-  std::vector<LabeledAxisAccessor> _consumed_vars;
-  std::vector<LabeledAxisAccessor> _provided_vars;
 };
 } // namespace neml2

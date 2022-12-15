@@ -13,8 +13,7 @@
 #include "models/ImplicitTimeIntegration.h"
 #include "models/ImplicitUpdate.h"
 #include "models/IdentityMap.h"
-#include "models/forces/QuasiStaticForce.h"
-#include "models/forces/ForceRate.h"
+#include "models/ForceRate.h"
 #include "solvers/NewtonNonlinearSolver.h"
 
 #include "VerificationTest.h"
@@ -50,21 +49,17 @@ TEST_CASE("Perzyna viscoplasticity verification tests", "[StructuralVerification
   auto Eprate = std::make_shared<PlasticStrainRate>("plastic_strain_rate");
 
   // All these dependency registration thingy can be predefined.
-  std::vector<std::pair<std::shared_ptr<Model>, std::shared_ptr<Model>>> dependencies = {
-      {Erate, Eerate},
-      {kinharden, yield},
-      {isoharden, yield},
-      {kinharden, direction},
-      {isoharden, direction},
-      {kinharden, eprate},
-      {isoharden, eprate},
-      {hrate, eprate},
-      {yield, hrate},
-      {hrate, Eprate},
-      {direction, Eprate},
-      {Eprate, Eerate},
-      {Eerate, elasticity}};
-  auto rate = std::make_shared<ComposedModel>("rate", dependencies);
+  auto rate = std::make_shared<ComposedModel>("rate",
+                                              std::vector<std::shared_ptr<Model>>{Erate,
+                                                                                  Eerate,
+                                                                                  elasticity,
+                                                                                  kinharden,
+                                                                                  isoharden,
+                                                                                  yield,
+                                                                                  direction,
+                                                                                  eprate,
+                                                                                  hrate,
+                                                                                  Eprate});
 
   auto implicit_rate = std::make_shared<ImplicitTimeIntegration>("implicit_time_integration", rate);
   auto solver = std::make_shared<NewtonNonlinearSolver>(params);

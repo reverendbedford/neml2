@@ -5,9 +5,9 @@ namespace neml2
 template <bool rate, ElasticityType etype>
 LinearElasticity<rate, etype>::LinearElasticity(const std::string & name, SymSymR4 T)
   : Model(name),
-    _T(register_parameter("elasticity_tensor", T)),
-    _from(declareVariable<SymR2>(input(), "state", in_name())),
-    _to(declareVariable<SymR2>(output(), "state", out_name()))
+    from(declareInputVariable<SymR2>("state", in_name())),
+    to(declareOutputVariable<SymR2>("state", out_name())),
+    _T(register_parameter("elasticity_tensor", T))
 {
   setup();
 }
@@ -58,10 +58,10 @@ LinearElasticity<rate, etype>::set_value(LabeledVector in,
                                          LabeledVector out,
                                          LabeledMatrix * dout_din) const
 {
-  out.set(_T * in.get<SymR2>(_from), _to);
+  out.set(_T * in.get<SymR2>(from), to);
 
   if (dout_din)
-    dout_din->set(_T.batch_expand(in.batch_size()), _to, _from);
+    dout_din->set(_T.batch_expand(in.batch_size()), to, from);
 }
 
 template class LinearElasticity<false, ElasticityType::STIFFNESS>;

@@ -2,6 +2,19 @@
 
 namespace neml2
 {
+std::ostream &
+operator<<(std::ostream & os, const LabeledAxisAccessor & accessor)
+{
+  for (size_t i = 0; i < accessor.item_names.size(); i++)
+  {
+    if (i != 0)
+      os << "/";
+    os << accessor.item_names[i];
+  }
+  os << "[" << accessor.storage_size << "]";
+  return os;
+}
+
 int LabeledAxis::level = 0;
 
 LabeledAxis::LabeledAxis()
@@ -22,25 +35,6 @@ LabeledAxis::add(const std::string & name, TorchSize sz)
 {
   if (!has_variable(name))
     _variables.emplace(name, sz);
-  return *this;
-}
-
-LabeledAxis &
-LabeledAxis::merge(LabeledAxis & other)
-{
-  // First merge the variables
-  _variables.insert(other._variables.begin(), other._variables.end());
-
-  // Then merge the subaxes
-  for (auto & [name, subaxis] : other._subaxes)
-  {
-    auto found = _subaxes.find(name);
-    if (found == _subaxes.end())
-      _subaxes.emplace(name, std::make_shared<LabeledAxis>(*subaxis));
-    else
-      found->second->merge(*subaxis);
-  }
-
   return *this;
 }
 
@@ -138,6 +132,42 @@ LabeledAxis::clear()
   _offset = 0;
 
   return *this;
+}
+
+std::vector<LabeledAxisAccessor>
+LabeledAxis::merge(LabeledAxis & other)
+{
+  std::vector<LabeledAxisAccessor> merged_vars;
+  merge(other, {}, merged_vars);
+  return merged_vars;
+}
+
+void
+LabeledAxis::merge(LabeledAxis & other,
+                   std::vector<std::string> subaxes,
+                   std::vector<LabeledAxisAccessor> & merged_vars)
+{
+  // First merge the variables
+  for (const auto & [name, sz] : other._variables)
+    if (!has_variable(name))
+    {
+      _variables.emplace(name, sz);
+      auto new_var = subaxes;
+      new_var.push_back(name);
+      merged_vars.push_back({new_var, sz});
+    }
+
+  // Then merge the subaxes
+  for (auto & [name, subaxis] : other._subaxes)
+  {
+    auto found = _subaxes.find(name);
+    if (found == _subaxes.end())
+      _subaxes.emplace(name, std::make_shared<LabeledAxis>());
+
+    auto new_subaxes = subaxes;
+    new_subaxes.push_back(name);
+    _subaxes[name]->merge(*subaxis, new_subaxes, merged_vars);
+  }
 }
 
 void

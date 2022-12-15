@@ -5,24 +5,13 @@ namespace neml2
 {
 template <typename T>
 TimeIntegration<T>::TimeIntegration(const std::string & name)
-  : Model(name)
+  : Model(name),
+    var_rate(declareInputVariable<T>("state", name + "_rate")),
+    var_n(declareInputVariable<T>("old_state", name)),
+    time(declareInputVariable<Scalar>("forces", "time")),
+    time_n(declareInputVariable<Scalar>("old_forces", "time")),
+    var(declareOutputVariable<T>("state", name))
 {
-  this->input().template add<LabeledAxis>("state");
-  this->input().subaxis("state").template add<T>(name + "_rate");
-
-  this->input().template add<LabeledAxis>("old_state");
-  this->input().subaxis("old_state").template add<T>(name);
-
-  // We need time to perform time integration
-  this->input().template add<LabeledAxis>("forces");
-  this->input().subaxis("forces").template add<Scalar>("time");
-
-  this->input().template add<LabeledAxis>("old_forces");
-  this->input().subaxis("old_forces").template add<Scalar>("time");
-
-  this->output().template add<LabeledAxis>("state");
-  this->output().subaxis("state").template add<T>(name);
-
   this->setup();
 }
 
@@ -30,15 +19,15 @@ template <typename T>
 void
 TimeIntegration<T>::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din) const
 {
-  auto s_dot = in.slice("state").get<T>(this->name() + "_rate");
-  auto s_n = in.slice("old_state").get<T>(this->name());
-  auto t_np1 = in.slice("forces").get<Scalar>("time");
-  auto t_n = in.slice("old_forces").get<Scalar>("time");
+  auto s_dot = in.get<T>(var_rate);
+  auto s_n = in.get<T>(var_n);
+  auto t_np1 = in.get<Scalar>(time);
+  auto t_n = in.get<Scalar>(time_n);
   auto dt = t_np1 - t_n;
 
   // s_np1 = s_n + s_dot * (t_np1 - t_n)
   auto s_np1 = s_n + s_dot * dt;
-  out.set(s_np1, "state");
+  out.set(s_np1, var);
 
   // Finally, compute the Jacobian since we have all the information needed anyways
   if (dout_din)
@@ -48,10 +37,10 @@ TimeIntegration<T>::set_value(LabeledVector in, LabeledVector out, LabeledMatrix
     auto ds_np1_dt_np1 = s_dot;
     auto ds_np1_dt_n = -s_dot;
 
-    dout_din->block("state", "state").set(ds_np1_ds_dot, this->name(), this->name() + "_rate");
-    dout_din->block("state", "old_state").set(ds_np1_ds_n, this->name(), this->name());
-    dout_din->block("state", "forces").set(ds_np1_dt_np1, this->name(), "time");
-    dout_din->block("state", "old_forces").set(ds_np1_dt_n, this->name(), "time");
+    dout_din->set(ds_np1_ds_dot, var, var_rate);
+    dout_din->set(ds_np1_ds_n, var, var_n);
+    dout_din->set(ds_np1_dt_np1, var, time);
+    dout_din->set(ds_np1_dt_n, var, time_n);
   }
 }
 

@@ -3,10 +3,9 @@
 namespace neml2
 {
 PlasticFlowDirection::PlasticFlowDirection(const std::string & name)
-  : Model(name)
+  : Model(name),
+    plastic_flow_direction(declareOutputVariable<SymR2>("state", "plastic_flow_direction"))
 {
-  output().add<LabeledAxis>("state");
-  output().subaxis("state").add<SymR2>("plastic_flow_direction");
   setup();
 }
 } // namespace neml2

@@ -37,8 +37,13 @@ Model::value_and_dvalue(LabeledVector in) const
 void
 Model::register_model(std::shared_ptr<Model> model)
 {
-  input().merge(model->input());
+  // Additional inputs from the the registered model
+  auto merged_vars = input().merge(model->input());
+  _consumed_vars.insert(_consumed_vars.end(), merged_vars.begin(), merged_vars.end());
+
   _registered_models.push_back(model);
+
+  // torch bookkeeping
   register_module(model->name(), model);
 }
 } // namespace neml2

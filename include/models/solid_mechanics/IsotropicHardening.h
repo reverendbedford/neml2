@@ -9,8 +9,7 @@ class IsotropicHardening : public Model
 public:
   IsotropicHardening(const std::string & name);
 
-protected:
-  const LabeledAxisAccessor _ep_idx;
-  const LabeledAxisAccessor _g_idx;
+  const LabeledAxisAccessor equivalent_plastic_strain;
+  const LabeledAxisAccessor isotropic_hardening;
 };
 } // namespace neml2

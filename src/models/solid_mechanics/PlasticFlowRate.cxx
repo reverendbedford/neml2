@@ -3,13 +3,10 @@
 namespace neml2
 {
 PlasticFlowRate::PlasticFlowRate(const std::string & name)
-  : Model(name)
+  : Model(name),
+    yield_function(declareInputVariable<Scalar>("state", "yield_function")),
+    hardening_rate(declareOutputVariable<Scalar>("state", "hardening_rate"))
 {
-  input().add<LabeledAxis>("state");
-  input().subaxis("state").add<Scalar>("yield_function");
-
-  output().add<LabeledAxis>("state");
-  output().subaxis("state").add<Scalar>("hardening_rate");
   setup();
 }
 } // namespace neml2

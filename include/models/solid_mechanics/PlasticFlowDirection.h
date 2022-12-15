@@ -9,5 +9,7 @@ class PlasticFlowDirection : public Model
 {
 public:
   PlasticFlowDirection(const std::string & name);
+
+  const LabeledAxisAccessor plastic_flow_direction;
 };
 } // namespace neml2

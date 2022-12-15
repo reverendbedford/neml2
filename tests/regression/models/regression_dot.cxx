@@ -20,8 +20,7 @@
 #include "models/ImplicitTimeIntegration.h"
 #include "models/ImplicitUpdate.h"
 #include "models/IdentityMap.h"
-#include "models/forces/QuasiStaticForce.h"
-#include "models/forces/ForceRate.h"
+#include "models/ForceRate.h"
 #include "solvers/NewtonNonlinearSolver.h"
 
 using namespace neml2;
@@ -47,21 +46,9 @@ TEST_CASE("A Model can output the function graph in DOT format", "[DOT]")
   auto hrate = std::make_shared<PerzynaPlasticFlowRate>("hardening_rate", eta, n);
   auto Eprate = std::make_shared<PlasticStrainRate>("plastic_strain_rate");
 
-  // All these dependency registration thingy can be predefined.
-  auto rate = ComposedModel("rate",
-                            {{Erate, Eerate},
-                             {kinharden, yield},
-                             {isoharden, yield},
-                             {kinharden, direction},
-                             {isoharden, direction},
-                             {kinharden, eprate},
-                             {isoharden, eprate},
-                             {hrate, eprate},
-                             {yield, hrate},
-                             {hrate, Eprate},
-                             {direction, Eprate},
-                             {Eprate, Eerate},
-                             {Eerate, elasticity}});
+  auto rate = ComposedModel(
+      "rate",
+      {Erate, Eerate, elasticity, kinharden, isoharden, yield, direction, eprate, hrate, Eprate});
 
   // Read the gold file
   std::ifstream gold("regression/models/regression_dot.txt");

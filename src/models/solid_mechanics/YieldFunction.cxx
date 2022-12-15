@@ -4,8 +4,8 @@ namespace neml2
 {
 YieldFunction::YieldFunction(const std::string & name)
   : SecDerivModel(name),
-    _mandel_idx(declareVariable<SymR2>(input(), "state", "mandel_stress")),
-    _f_idx(declareVariable<Scalar>(output(), "state", "yield_function"))
+    mandel_stress(declareInputVariable<SymR2>("state", "mandel_stress")),
+    yield_function(declareOutputVariable<Scalar>("state", "yield_function"))
 {
   setup();
 }

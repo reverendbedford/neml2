@@ -40,7 +40,12 @@ struct LabeledAxisAccessor
   {
     return item_names == other.item_names && storage_size == other.storage_size;
   }
+
+  friend std::ostream & operator<<(std::ostream & os, const LabeledAxisAccessor & accessor);
 };
+
+/// Print LabeledAxisAccessor to the ostream
+std::ostream & operator<<(std::ostream & os, const LabeledAxisAccessor & accessor);
 
 // Forward declarations
 class LabeledAxis;
@@ -116,9 +121,6 @@ public:
   /// Add an arbitrary variable with known storage size.
   LabeledAxis & add(const std::string & name, TorchSize sz);
 
-  /// Merge with another `LabeledAxis`. Note that the prefixes and suffixes of the merged axis won't carry over.
-  LabeledAxis & merge(LabeledAxis & other);
-
   /// Add prefix to the labels.
   /// Note that this method doesn't recurse through sub-axes.
   LabeledAxis & prefix(const std::string & prefix, const std::string & delimiter = "_");
@@ -136,6 +138,9 @@ public:
   /// Clear everything
   LabeledAxis & clear();
   /// @}
+
+  /// Merge with another `LabeledAxis`.
+  std::vector<LabeledAxisAccessor> merge(LabeledAxis & other);
 
   /**
   Setup the layout of all items recursively. The layout of each item is contiguous in memory.
@@ -229,6 +234,10 @@ public:
   static int level;
 
 private:
+  void merge(LabeledAxis & other,
+             std::vector<std::string> subaxes,
+             std::vector<LabeledAxisAccessor> & merged_vars);
+
   /// Helper method to recursively consume the sub-axis names of a `LabeledAxisAccessor` to get the
   /// indices of a variable.
   TorchIndex indices(TorchSize offset,

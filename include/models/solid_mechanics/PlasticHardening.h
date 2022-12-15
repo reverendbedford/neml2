@@ -9,5 +9,8 @@ class PlasticHardening : public Model
 {
 public:
   PlasticHardening(const std::string & name);
+
+  const LabeledAxisAccessor hardening_rate;
+  const LabeledAxisAccessor equivalent_plastic_strain_rate;
 };
 } // namespace neml2

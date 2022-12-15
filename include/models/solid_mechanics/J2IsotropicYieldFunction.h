@@ -1,10 +1,10 @@
 #pragma once
 
-#include "models/solid_mechanics/YieldFunction.h"
+#include "models/solid_mechanics/IsotropicYieldFunction.h"
 
 namespace neml2
 {
-class J2IsotropicYieldFunction : public YieldFunction
+class J2IsotropicYieldFunction : public IsotropicYieldFunction
 {
 public:
   J2IsotropicYieldFunction(const std::string & name);
@@ -18,7 +18,5 @@ protected:
   virtual void set_dvalue(LabeledVector in,
                           LabeledMatrix dout_din,
                           LabeledTensor<1, 3> * d2out_din2 = nullptr) const;
-
-  const LabeledAxisAccessor _g_idx;
 };
 } // namespace neml2
