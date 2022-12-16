@@ -1,4 +1,0 @@
-AssociativePlasticFlowDirection
-=========================================================================
-
-.. doxygenfile:: AssociativePlasticFlowDirection.h

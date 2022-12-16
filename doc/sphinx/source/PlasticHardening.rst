@@ -1,4 +1,0 @@
-PlasticHardening
-=========================================================================
-
-.. doxygenfile:: PlasticHardening.h

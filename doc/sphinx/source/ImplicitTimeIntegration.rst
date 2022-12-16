@@ -1,4 +1,0 @@
-ImplicitTimeIntegration
-=========================================================================
-
-.. doxygenfile:: ImplicitTimeIntegration.h

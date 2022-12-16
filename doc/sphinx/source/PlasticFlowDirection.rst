@@ -1,4 +1,0 @@
-PlasticFlowDirection
-=========================================================================
-
-.. doxygenfile:: PlasticFlowDirection.h
