@@ -1,4 +1,0 @@
-PlasticFlowRate
-=========================================================================
-
-.. doxygenfile:: PlasticFlowRate.h

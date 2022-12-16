@@ -1,4 +1,0 @@
-NonlinearSolver
-=========================================================================
-
-.. doxygenfile:: NonlinearSolver.h

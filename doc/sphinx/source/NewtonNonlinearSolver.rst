@@ -1,4 +1,0 @@
-NewtonNonlinearSolver
-=========================================================================
-
-.. doxygenfile:: NewtonNonlinearSolver.h

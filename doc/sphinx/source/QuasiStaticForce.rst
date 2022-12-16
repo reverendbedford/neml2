@@ -1,4 +1,0 @@
-QuasiStaticForce
-=========================================================================
-
-.. doxygenfile:: QuasiStaticForce.h
