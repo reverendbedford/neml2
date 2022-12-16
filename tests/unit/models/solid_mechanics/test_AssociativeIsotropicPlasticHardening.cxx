@@ -2,16 +2,16 @@
 
 #include "TestUtils.h"
 #include "models/solid_mechanics/J2IsotropicYieldFunction.h"
-#include "models/solid_mechanics/AssociativePlasticHardening.h"
+#include "models/solid_mechanics/AssociativeIsotropicPlasticHardening.h"
 
 using namespace neml2;
 
-TEST_CASE("AssociativePlasticHardening", "[AssociativePlasticHardening]")
+TEST_CASE("AssociativeIsotropicPlasticHardening", "[AssociativeIsotropicPlasticHardening]")
 {
   TorchSize nbatch = 10;
   Scalar s0 = 100.0;
   auto yield = std::make_shared<J2IsotropicYieldFunction>("yield_function", s0);
-  auto eprate = AssociativePlasticHardening("ep_rate", yield);
+  auto eprate = AssociativeIsotropicPlasticHardening("ep_rate", yield);
 
   SECTION("model definition")
   {

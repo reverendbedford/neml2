@@ -9,7 +9,7 @@
 #include "models/solid_mechanics/LinearIsotropicHardening.h"
 #include "models/solid_mechanics/J2IsotropicYieldFunction.h"
 #include "models/solid_mechanics/AssociativePlasticFlowDirection.h"
-#include "models/solid_mechanics/AssociativePlasticHardening.h"
+#include "models/solid_mechanics/AssociativeIsotropicPlasticHardening.h"
 #include "models/solid_mechanics/PerzynaPlasticFlowRate.h"
 #include "models/solid_mechanics/PlasticStrainRate.h"
 #include "models/ImplicitTimeIntegration.h"
@@ -50,7 +50,7 @@ TEST_CASE("Uniaxial stress regression test", "[stress control]")
   auto isoharden = std::make_shared<LinearIsotropicHardening>("isotropic_hardening", K);
   auto yieldfunc = std::make_shared<J2IsotropicYieldFunction>("yield_function", s0);
   auto hrate = std::make_shared<PerzynaPlasticFlowRate>("hrate", eta, n);
-  auto eprate = std::make_shared<AssociativePlasticHardening>("ep_rate", yieldfunc);
+  auto eprate = std::make_shared<AssociativeIsotropicPlasticHardening>("ep_rate", yieldfunc);
   auto rate = std::make_shared<ComposedModel>(
       "viscoplasticity",
       std::vector<std::shared_ptr<Model>>{

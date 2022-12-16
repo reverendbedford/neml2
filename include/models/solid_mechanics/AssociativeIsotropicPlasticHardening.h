@@ -6,11 +6,11 @@
 namespace neml2
 {
 /// Equivalent plastic rate associated with a yield surface
-class AssociativePlasticHardening : public PlasticHardening
+class AssociativeIsotropicPlasticHardening : public PlasticHardening
 {
 public:
-  AssociativePlasticHardening(const std::string & name,
-                              const std::shared_ptr<IsotropicYieldFunction> & f);
+  AssociativeIsotropicPlasticHardening(const std::string & name,
+                                       const std::shared_ptr<IsotropicYieldFunction> & f);
 
   const IsotropicYieldFunction & yield_function;
 
@@ -18,5 +18,9 @@ protected:
   /// The flow direction
   virtual void
   set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const;
+
+protected:
+  /// Accessor for the plastic strain rate
+  const LabeledAxisAccessor equivalent_plastic_strain_rate;
 };
 } // namespace neml2

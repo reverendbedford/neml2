@@ -7,7 +7,7 @@
 #include "models/solid_mechanics/LinearIsotropicHardening.h"
 #include "models/solid_mechanics/J2IsotropicYieldFunction.h"
 #include "models/solid_mechanics/AssociativePlasticFlowDirection.h"
-#include "models/solid_mechanics/AssociativePlasticHardening.h"
+#include "models/solid_mechanics/AssociativeIsotropicPlasticHardening.h"
 #include "models/solid_mechanics/PerzynaPlasticFlowRate.h"
 #include "models/solid_mechanics/PlasticStrainRate.h"
 #include "models/ImplicitTimeIntegration.h"
@@ -43,7 +43,7 @@ TEST_CASE("Perzyna viscoplasticity verification tests", "[StructuralVerification
   auto yield = std::make_shared<J2IsotropicYieldFunction>("yield_function", s0);
   auto direction =
       std::make_shared<AssociativePlasticFlowDirection>("plastic_flow_direction", yield);
-  auto eprate = std::make_shared<AssociativePlasticHardening>("ep_rate", yield);
+  auto eprate = std::make_shared<AssociativeIsotropicPlasticHardening>("ep_rate", yield);
   auto hrate = std::make_shared<PerzynaPlasticFlowRate>("hardening_rate", eta, n);
   auto Eprate = std::make_shared<PlasticStrainRate>("plastic_strain_rate");
 

@@ -9,7 +9,7 @@
 #include "models/solid_mechanics/LinearIsotropicHardening.h"
 #include "models/solid_mechanics/J2IsotropicYieldFunction.h"
 #include "models/solid_mechanics/AssociativePlasticFlowDirection.h"
-#include "models/solid_mechanics/AssociativePlasticHardening.h"
+#include "models/solid_mechanics/AssociativeIsotropicPlasticHardening.h"
 #include "models/solid_mechanics/PerzynaPlasticFlowRate.h"
 #include "models/solid_mechanics/PlasticStrainRate.h"
 #include "models/ImplicitTimeIntegration.h"
@@ -44,7 +44,7 @@ TEST_CASE("Alternative composition of viscoplasticity", "[viscoplasticity altern
   auto f = std::make_shared<J2IsotropicYieldFunction>("yield_function", s0);
   auto gammarate = std::make_shared<PerzynaPlasticFlowRate>("hardening_rate", eta, n);
   auto Np = std::make_shared<AssociativePlasticFlowDirection>("plastic_flow_direction", f);
-  auto eprate = std::make_shared<AssociativePlasticHardening>("ep_rate", f);
+  auto eprate = std::make_shared<AssociativeIsotropicPlasticHardening>("ep_rate", f);
   auto Eprate = std::make_shared<PlasticStrainRate>("plastic_strain_rate");
 
   auto rate = std::make_shared<ComposedModel>(
