@@ -64,8 +64,8 @@ TEST_CASE("Alternative composition of viscoplasticity", "[viscoplasticity altern
                                            std::vector<std::string>{"state", "plastic_strain"});
   auto output_ep = std::make_shared<IdentityMap<Scalar>>(
       "output_equivalent_plastic_strain",
-      std::vector<std::string>{"state", "equivalent_plastic_strain"},
-      std::vector<std::string>{"state", "equivalent_plastic_strain"});
+      std::vector<std::string>{"state", "internal_state", "equivalent_plastic_strain"},
+      std::vector<std::string>{"state", "internal_state", "equivalent_plastic_strain"});
 
   auto model = std::make_shared<ComposedModel>(
       "viscoplasticity",

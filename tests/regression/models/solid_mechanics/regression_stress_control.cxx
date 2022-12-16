@@ -79,8 +79,8 @@ TEST_CASE("Uniaxial stress regression test", "[stress control]")
   auto strain = std::make_shared<TimeIntegration<SymR2>>("total_strain");
   auto output_ep = std::make_shared<IdentityMap<Scalar>>(
       "output_ep",
-      std::vector<std::string>{"state", "equivalent_plastic_strain"},
-      std::vector<std::string>{"state", "equivalent_plastic_strain"});
+      std::vector<std::string>{"state", "internal_state", "equivalent_plastic_strain"},
+      std::vector<std::string>{"state", "internal_state", "equivalent_plastic_strain"});
   auto input_strain_n =
       std::make_shared<IdentityMap<SymR2>>("input_strain_n",
                                            std::vector<std::string>{"old_state", "total_strain"},
@@ -174,7 +174,7 @@ TEST_CASE("Uniaxial stress regression test", "[stress control]")
       torch::zeros(utils::add_shapes(TorchShape({nsteps}), all_outputs[0].tensor().sizes()));
   torch::load(inputs_ref, fname + "_inputs.pt");
   torch::load(outputs_ref, fname + "_outputs.pt");
-
+  
   REQUIRE(torch::allclose(inputs, inputs_ref));
   REQUIRE(torch::allclose(outputs, outputs_ref));
 }

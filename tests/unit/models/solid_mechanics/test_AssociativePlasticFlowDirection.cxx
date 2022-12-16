@@ -26,7 +26,7 @@ TEST_CASE("AssociativePlasticFlowDirection", "[AssociativePlasticFlowDirection]"
   {
     LabeledVector in(nbatch, direction.input());
     auto M = SymR2::init(100, 110, 100, 100, 100, 100).batch_expand(nbatch);
-    in.slice("state").set(Scalar(200, nbatch), "isotropic_hardening");
+    in.slice("state").slice("hardening_interface").set(Scalar(200, nbatch), "isotropic_hardening");
     in.slice("state").set(M, "mandel_stress");
 
     auto exact = direction.dvalue(in);

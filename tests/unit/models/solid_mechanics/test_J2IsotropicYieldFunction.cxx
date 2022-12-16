@@ -16,7 +16,8 @@ TEST_CASE("J2IsotropicYieldFunction", "[J2IsotropicYieldFunction]")
     REQUIRE(yield.input().has_subaxis("state"));
     REQUIRE(yield.input().subaxis("state").has_variable<SymR2>("mandel_stress"));
     REQUIRE(yield.input().has_subaxis("state"));
-    REQUIRE(yield.input().subaxis("state").has_variable<Scalar>("isotropic_hardening"));
+    REQUIRE(yield.input().subaxis("state").has_subaxis("hardening_interface"));
+    REQUIRE(yield.input().subaxis("state").subaxis("hardening_interface").has_variable<Scalar>("isotropic_hardening"));
     REQUIRE(yield.output().has_subaxis("state"));
     REQUIRE(yield.output().subaxis("state").has_variable<Scalar>("yield_function"));
   }
@@ -25,7 +26,7 @@ TEST_CASE("J2IsotropicYieldFunction", "[J2IsotropicYieldFunction]")
   {
     LabeledVector in(nbatch, yield.input());
     auto M = SymR2::init(100, 110, 100, 100, 100, 100).batch_expand(nbatch);
-    in.slice("state").set(Scalar(200, nbatch), "isotropic_hardening");
+    in.slice("state").slice("hardening_interface").set(Scalar(200, nbatch), "isotropic_hardening");
     in.slice("state").set(M, "mandel_stress");
 
     auto exact = yield.dvalue(in);

@@ -4,7 +4,7 @@ namespace neml2
 {
 IsotropicYieldFunction::IsotropicYieldFunction(const std::string & name, Scalar s0)
   : YieldFunction(name, s0),
-    isotropic_hardening(declareInputVariable<Scalar>({"state", "isotropic_hardening"}))
+    isotropic_hardening(declareInputVariable<Scalar>({"state", "hardening_interface", "isotropic_hardening"}))
 {
   setup();
 }
