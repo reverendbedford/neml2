@@ -3,8 +3,8 @@
 
 namespace neml2
 {
-J2IsotropicYieldFunction::J2IsotropicYieldFunction(const std::string & name)
-  : IsotropicYieldFunction(name)
+J2IsotropicYieldFunction::J2IsotropicYieldFunction(const std::string & name, Scalar s0)
+  : IsotropicYieldFunction(name, s0)
 {
   setup();
 }
@@ -21,7 +21,7 @@ J2IsotropicYieldFunction::set_value(LabeledVector in,
   // Compute the yield function
   auto s = mandel.dev();
   auto J2 = s.norm();
-  auto H = sqrt(2.0 / 3.0) * g;
+  auto H = sqrt(2.0 / 3.0) * (g + _s0);
   auto f = J2 - H;
 
   // Set the output

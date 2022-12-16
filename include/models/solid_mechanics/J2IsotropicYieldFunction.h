@@ -7,7 +7,7 @@ namespace neml2
 class J2IsotropicYieldFunction : public IsotropicYieldFunction
 {
 public:
-  J2IsotropicYieldFunction(const std::string & name);
+  J2IsotropicYieldFunction(const std::string & name, Scalar s0);
 
 protected:
   /// The value of the yield function

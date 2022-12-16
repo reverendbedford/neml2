@@ -47,8 +47,8 @@ TEST_CASE("Uniaxial stress regression test", "[stress control]")
                                            std::vector<std::string>{"forces", "cauchy_stress"},
                                            std::vector<std::string>{"state", "cauchy_stress"});
   auto mandel_stress = std::make_shared<IsotropicMandelStress>("mandel_stress");
-  auto isoharden = std::make_shared<LinearIsotropicHardening>("isotropic_hardening", s0, K);
-  auto yieldfunc = std::make_shared<J2IsotropicYieldFunction>("yield_function");
+  auto isoharden = std::make_shared<LinearIsotropicHardening>("isotropic_hardening", K);
+  auto yieldfunc = std::make_shared<J2IsotropicYieldFunction>("yield_function", s0);
   auto hrate = std::make_shared<PerzynaPlasticFlowRate>("hrate", eta, n);
   auto eprate = std::make_shared<AssociativePlasticHardening>("ep_rate", yieldfunc);
   auto rate = std::make_shared<ComposedModel>(

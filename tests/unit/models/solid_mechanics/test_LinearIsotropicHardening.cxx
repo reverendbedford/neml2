@@ -8,9 +8,8 @@ using namespace neml2;
 TEST_CASE("LinearIsotropicHardening", "[LinearIsotropicHardening]")
 {
   TorchSize nbatch = 10;
-  Scalar s0 = 100.0;
   Scalar K = 1000.0;
-  auto isoharden = LinearIsotropicHardening("hardening", s0, K);
+  auto isoharden = LinearIsotropicHardening("hardening", K);
 
   SECTION("model definition")
   {

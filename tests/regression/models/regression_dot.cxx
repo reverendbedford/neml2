@@ -37,8 +37,8 @@ TEST_CASE("A Model can output the function graph in DOT format", "[DOT]")
   auto Eerate = std::make_shared<ElasticStrainRate>("elastic_strain_rate");
   auto elasticity = std::make_shared<CauchyStressRateFromElasticStrainRate>("elasticity", C);
   auto mandel_stress = std::make_shared<IsotropicMandelStress>("mandel_stress");
-  auto isoharden = std::make_shared<LinearIsotropicHardening>("isotropic_hardening", s0, K);
-  auto yield = std::make_shared<J2IsotropicYieldFunction>("yield_function");
+  auto isoharden = std::make_shared<LinearIsotropicHardening>("isotropic_hardening", K);
+  auto yield = std::make_shared<J2IsotropicYieldFunction>("yield_function", s0);
   auto direction =
       std::make_shared<AssociativePlasticFlowDirection>("plastic_flow_direction", yield);
   auto eprate = std::make_shared<AssociativePlasticHardening>("ep_rate", yield);

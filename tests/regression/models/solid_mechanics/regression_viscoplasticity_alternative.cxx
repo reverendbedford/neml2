@@ -40,8 +40,8 @@ TEST_CASE("Alternative composition of viscoplasticity", "[viscoplasticity altern
   auto Ee = std::make_shared<ElasticStrain>("elastic_strain");
   auto S = std::make_shared<CauchyStressFromElasticStrain>("cauchy_stress", C);
   auto M = std::make_shared<IsotropicMandelStress>("mandel_stress");
-  auto gamma = std::make_shared<LinearIsotropicHardening>("isotropic_hardening", s0, K);
-  auto f = std::make_shared<J2IsotropicYieldFunction>("yield_function");
+  auto gamma = std::make_shared<LinearIsotropicHardening>("isotropic_hardening", K);
+  auto f = std::make_shared<J2IsotropicYieldFunction>("yield_function", s0);
   auto gammarate = std::make_shared<PerzynaPlasticFlowRate>("hardening_rate", eta, n);
   auto Np = std::make_shared<AssociativePlasticFlowDirection>("plastic_flow_direction", f);
   auto eprate = std::make_shared<AssociativePlasticHardening>("ep_rate", f);

@@ -9,7 +9,8 @@ using namespace neml2;
 TEST_CASE("AssociativePlasticHardening", "[AssociativePlasticHardening]")
 {
   TorchSize nbatch = 10;
-  auto yield = std::make_shared<J2IsotropicYieldFunction>("yield_function");
+  Scalar s0 = 100.0;
+  auto yield = std::make_shared<J2IsotropicYieldFunction>("yield_function", s0);
   auto eprate = AssociativePlasticHardening("ep_rate", yield);
 
   SECTION("model definition")

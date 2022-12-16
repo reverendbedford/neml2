@@ -8,7 +8,8 @@ using namespace neml2;
 TEST_CASE("J2IsotropicYieldFunction", "[J2IsotropicYieldFunction]")
 {
   TorchSize nbatch = 10;
-  auto yield = J2IsotropicYieldFunction("yield_function");
+  Scalar s0 = 50.0;
+  auto yield = J2IsotropicYieldFunction("yield_function", s0);
 
   SECTION("model definition")
   {

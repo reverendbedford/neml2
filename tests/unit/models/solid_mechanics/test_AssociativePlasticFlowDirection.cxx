@@ -9,7 +9,8 @@ using namespace neml2;
 TEST_CASE("AssociativePlasticFlowDirection", "[AssociativePlasticFlowDirection]")
 {
   TorchSize nbatch = 10;
-  auto yield = std::make_shared<J2IsotropicYieldFunction>("yield_function");
+  Scalar s0 = 10.0;
+  auto yield = std::make_shared<J2IsotropicYieldFunction>("yield_function", s0);
   auto direction = AssociativePlasticFlowDirection("plastic_flow_direction", yield);
 
   SECTION("model definition")
