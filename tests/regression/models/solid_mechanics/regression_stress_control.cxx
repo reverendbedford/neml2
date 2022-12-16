@@ -5,7 +5,7 @@
 #include "models/ComposedModel.h"
 #include "models/solid_mechanics/TotalStrain.h"
 #include "models/solid_mechanics/LinearElasticity.h"
-#include "models/solid_mechanics/NoKinematicHardening.h"
+#include "models/solid_mechanics/IsotropicMandelStress.h"
 #include "models/solid_mechanics/LinearIsotropicHardening.h"
 #include "models/solid_mechanics/J2IsotropicYieldFunction.h"
 #include "models/solid_mechanics/AssociativePlasticFlowDirection.h"
@@ -46,7 +46,7 @@ TEST_CASE("Uniaxial stress regression test", "[stress control]")
       std::make_shared<IdentityMap<SymR2>>("input_stress",
                                            std::vector<std::string>{"forces", "cauchy_stress"},
                                            std::vector<std::string>{"state", "cauchy_stress"});
-  auto kinharden = std::make_shared<NoKinematicHardening>("kinematic_hardening");
+  auto mandel_stress = std::make_shared<IsotropicMandelStress>("mandel_stress");
   auto isoharden = std::make_shared<LinearIsotropicHardening>("isotropic_hardening", s0, K);
   auto yieldfunc = std::make_shared<J2IsotropicYieldFunction>("yield_function");
   auto hrate = std::make_shared<PerzynaPlasticFlowRate>("hrate", eta, n);
@@ -54,7 +54,7 @@ TEST_CASE("Uniaxial stress regression test", "[stress control]")
   auto rate = std::make_shared<ComposedModel>(
       "viscoplasticity",
       std::vector<std::shared_ptr<Model>>{
-          input_stress, kinharden, isoharden, yieldfunc, hrate, eprate});
+          input_stress, mandel_stress, isoharden, yieldfunc, hrate, eprate});
 
   // The second part:
   // Imput:  [force] cauchy stress
@@ -99,7 +99,7 @@ TEST_CASE("Uniaxial stress regression test", "[stress control]")
       std::vector<std::shared_ptr<Model>>{input_stress,
                                           return_map,
                                           isoharden,
-                                          kinharden,
+                                          mandel_stress,
                                           yieldfunc,
                                           direction,
                                           hrate,

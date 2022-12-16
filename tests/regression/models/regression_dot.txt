@@ -39,39 +39,39 @@ bgcolor = lightgrey
 }
 }
 subgraph cluster_7 {
-label = "kinematic_hardening"
+label = "mandel_stress"
 subgraph cluster_8 {
-label = "kinematic_hardening input"
+label = "mandel_stress input"
 bgcolor = lightgrey
-"kinematic_hardening input" [label = "", style = invis]
+"mandel_stress input" [label = "", style = invis]
 subgraph cluster_9 {
-label = "kinematic_hardening input forces"
+label = "mandel_stress input forces"
 bgcolor = lightgrey
-"kinematic_hardening input forces time" [style = filled, color = white, shape = Square, label = "time [1]"]
-"kinematic_hardening input forces total_strain" [style = filled, color = white, shape = Square, label = "total_strain [6]"]
+"mandel_stress input forces time" [style = filled, color = white, shape = Square, label = "time [1]"]
+"mandel_stress input forces total_strain" [style = filled, color = white, shape = Square, label = "total_strain [6]"]
 }
 subgraph cluster_10 {
-label = "kinematic_hardening input old_forces"
+label = "mandel_stress input old_forces"
 bgcolor = lightgrey
-"kinematic_hardening input old_forces time" [style = filled, color = white, shape = Square, label = "time [1]"]
-"kinematic_hardening input old_forces total_strain" [style = filled, color = white, shape = Square, label = "total_strain [6]"]
+"mandel_stress input old_forces time" [style = filled, color = white, shape = Square, label = "time [1]"]
+"mandel_stress input old_forces total_strain" [style = filled, color = white, shape = Square, label = "total_strain [6]"]
 }
 subgraph cluster_11 {
-label = "kinematic_hardening input state"
+label = "mandel_stress input state"
 bgcolor = lightgrey
-"kinematic_hardening input state cauchy_stress" [style = filled, color = white, shape = Square, label = "cauchy_stress [6]"]
-"kinematic_hardening input state equivalent_plastic_strain" [style = filled, color = white, shape = Square, label = "equivalent_plastic_strain [1]"]
+"mandel_stress input state cauchy_stress" [style = filled, color = white, shape = Square, label = "cauchy_stress [6]"]
+"mandel_stress input state equivalent_plastic_strain" [style = filled, color = white, shape = Square, label = "equivalent_plastic_strain [1]"]
 }
 }
 subgraph cluster_12 {
-label = "kinematic_hardening output"
+label = "mandel_stress output"
 bgcolor = lightgrey
-"kinematic_hardening output" [label = "", style = invis]
+"mandel_stress output" [label = "", style = invis]
 subgraph cluster_13 {
-label = "kinematic_hardening output state"
+label = "mandel_stress output state"
 bgcolor = lightgrey
-"kinematic_hardening output state cauchy_stress_rate" [style = filled, color = white, shape = Square, label = "cauchy_stress_rate [6]"]
-"kinematic_hardening output state equivalent_plastic_strain_rate" [style = filled, color = white, shape = Square, label = "equivalent_plastic_strain_rate [1]"]
+"mandel_stress output state cauchy_stress_rate" [style = filled, color = white, shape = Square, label = "cauchy_stress_rate [6]"]
+"mandel_stress output state equivalent_plastic_strain_rate" [style = filled, color = white, shape = Square, label = "equivalent_plastic_strain_rate [1]"]
 }
 }
 }
@@ -148,7 +148,7 @@ bgcolor = lightgrey
 "yield_function output state equivalent_plastic_strain_rate" [style = filled, color = white, shape = Square, label = "equivalent_plastic_strain_rate [1]"]
 }
 }
-"kinematic_hardening output" -> "yield_function input"[ltail = cluster_12, lhead = cluster_22, penwidth = 2]
+"mandel_stress output" -> "yield_function input"[ltail = cluster_12, lhead = cluster_22, penwidth = 2]
 "isotropic_hardening output" -> "yield_function input"[ltail = cluster_19, lhead = cluster_22, penwidth = 2]
 }
 subgraph cluster_28 {
@@ -226,7 +226,7 @@ bgcolor = lightgrey
 }
 }
 "isotropic_hardening output" -> "plastic_flow_direction input"[ltail = cluster_19, lhead = cluster_36, penwidth = 2]
-"kinematic_hardening output" -> "plastic_flow_direction input"[ltail = cluster_12, lhead = cluster_36, penwidth = 2]
+"mandel_stress output" -> "plastic_flow_direction input"[ltail = cluster_12, lhead = cluster_36, penwidth = 2]
 }
 subgraph cluster_42 {
 label = "plastic_strain_rate"
@@ -382,6 +382,6 @@ bgcolor = lightgrey
 }
 "hardening_rate output" -> "ep_rate input"[ltail = cluster_33, lhead = cluster_64, penwidth = 2]
 "isotropic_hardening output" -> "ep_rate input"[ltail = cluster_19, lhead = cluster_64, penwidth = 2]
-"kinematic_hardening output" -> "ep_rate input"[ltail = cluster_12, lhead = cluster_64, penwidth = 2]
+"mandel_stress output" -> "ep_rate input"[ltail = cluster_12, lhead = cluster_64, penwidth = 2]
 }
 }

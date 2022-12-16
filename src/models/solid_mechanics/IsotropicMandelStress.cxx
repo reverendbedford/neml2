@@ -1,10 +1,10 @@
-#include "models/solid_mechanics/NoKinematicHardening.h"
+#include "models/solid_mechanics/IsotropicMandelStress.h"
 #include "tensors/SymSymR4.h"
 
 namespace neml2
 {
 void
-NoKinematicHardening::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din) const
+IsotropicMandelStress::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din) const
 {
   // Without kinematic hardening mandel stress and cauchy stress coincide
   out.set(in.get<SymR2>(cauchy_stress), mandel_stress);

@@ -1,13 +1,13 @@
 #pragma once
 
-#include "models/solid_mechanics/KinematicHardening.h"
+#include "models/solid_mechanics/MandelStress.h"
 
 namespace neml2
 {
-class NoKinematicHardening : public KinematicHardening
+class IsotropicMandelStress : public MandelStress
 {
 public:
-  using KinematicHardening::KinematicHardening;
+  using MandelStress::MandelStress;
 
 protected:
   /// No kinematic hardening

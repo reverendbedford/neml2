@@ -10,7 +10,7 @@
 #include "models/ComposedModel.h"
 #include "models/solid_mechanics/ElasticStrain.h"
 #include "models/solid_mechanics/LinearElasticity.h"
-#include "models/solid_mechanics/NoKinematicHardening.h"
+#include "models/solid_mechanics/IsotropicMandelStress.h"
 #include "models/solid_mechanics/LinearIsotropicHardening.h"
 #include "models/solid_mechanics/J2IsotropicYieldFunction.h"
 #include "models/solid_mechanics/AssociativePlasticFlowDirection.h"
@@ -36,7 +36,7 @@ TEST_CASE("A Model can output the function graph in DOT format", "[DOT]")
   auto Erate = std::make_shared<ForceRate<SymR2>>("total_strain");
   auto Eerate = std::make_shared<ElasticStrainRate>("elastic_strain_rate");
   auto elasticity = std::make_shared<CauchyStressRateFromElasticStrainRate>("elasticity", C);
-  auto kinharden = std::make_shared<NoKinematicHardening>("kinematic_hardening");
+  auto mandel_stress = std::make_shared<IsotropicMandelStress>("mandel_stress");
   auto isoharden = std::make_shared<LinearIsotropicHardening>("isotropic_hardening", s0, K);
   auto yield = std::make_shared<J2IsotropicYieldFunction>("yield_function");
   auto direction =
@@ -47,7 +47,11 @@ TEST_CASE("A Model can output the function graph in DOT format", "[DOT]")
 
   auto rate = ComposedModel(
       "rate",
-      {Erate, Eerate, elasticity, kinharden, isoharden, yield, direction, eprate, hrate, Eprate});
+      {Erate, Eerate, elasticity, mandel_stress, isoharden, yield, direction, eprate, hrate, Eprate});
+
+  // Write the gold file
+  // std::ofstream ogold("regression/models/regression_dot.txt");;
+  // rate.to_dot(ogold);
 
   // Read the gold file
   std::ifstream gold("regression/models/regression_dot.txt");

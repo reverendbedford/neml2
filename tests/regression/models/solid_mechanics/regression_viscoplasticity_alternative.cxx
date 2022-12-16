@@ -5,7 +5,7 @@
 #include "models/ComposedModel.h"
 #include "models/solid_mechanics/ElasticStrain.h"
 #include "models/solid_mechanics/LinearElasticity.h"
-#include "models/solid_mechanics/NoKinematicHardening.h"
+#include "models/solid_mechanics/IsotropicMandelStress.h"
 #include "models/solid_mechanics/LinearIsotropicHardening.h"
 #include "models/solid_mechanics/J2IsotropicYieldFunction.h"
 #include "models/solid_mechanics/AssociativePlasticFlowDirection.h"
@@ -39,7 +39,7 @@ TEST_CASE("Alternative composition of viscoplasticity", "[viscoplasticity altern
   Scalar n = 2;
   auto Ee = std::make_shared<ElasticStrain>("elastic_strain");
   auto S = std::make_shared<CauchyStressFromElasticStrain>("cauchy_stress", C);
-  auto M = std::make_shared<NoKinematicHardening>("mandel_stress");
+  auto M = std::make_shared<IsotropicMandelStress>("mandel_stress");
   auto gamma = std::make_shared<LinearIsotropicHardening>("isotropic_hardening", s0, K);
   auto f = std::make_shared<J2IsotropicYieldFunction>("yield_function");
   auto gammarate = std::make_shared<PerzynaPlasticFlowRate>("hardening_rate", eta, n);

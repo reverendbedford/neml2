@@ -3,7 +3,7 @@
 #include "models/ComposedModel.h"
 #include "models/solid_mechanics/ElasticStrain.h"
 #include "models/solid_mechanics/LinearElasticity.h"
-#include "models/solid_mechanics/NoKinematicHardening.h"
+#include "models/solid_mechanics/IsotropicMandelStress.h"
 #include "models/solid_mechanics/LinearIsotropicHardening.h"
 #include "models/solid_mechanics/J2IsotropicYieldFunction.h"
 #include "models/solid_mechanics/AssociativePlasticFlowDirection.h"
@@ -38,7 +38,7 @@ TEST_CASE("Perzyna viscoplasticity verification tests", "[StructuralVerification
   auto Erate = std::make_shared<ForceRate<SymR2>>("total_strain");
   auto Eerate = std::make_shared<ElasticStrainRate>("elastic_strain_rate");
   auto elasticity = std::make_shared<CauchyStressRateFromElasticStrainRate>("elasticity", C);
-  auto kinharden = std::make_shared<NoKinematicHardening>("kinematic_hardening");
+  auto mandel_stress = std::make_shared<IsotropicMandelStress>("mandel_stress");
   auto isoharden = std::make_shared<LinearIsotropicHardening>("isotropic_hardening", s0, K);
   auto yield = std::make_shared<J2IsotropicYieldFunction>("yield_function");
   auto direction =
@@ -52,7 +52,7 @@ TEST_CASE("Perzyna viscoplasticity verification tests", "[StructuralVerification
                                               std::vector<std::shared_ptr<Model>>{Erate,
                                                                                   Eerate,
                                                                                   elasticity,
-                                                                                  kinharden,
+                                                                                  mandel_stress,
                                                                                   isoharden,
                                                                                   yield,
                                                                                   direction,
