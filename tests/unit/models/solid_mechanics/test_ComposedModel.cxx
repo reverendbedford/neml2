@@ -1,4 +1,5 @@
 #include <catch2/catch.hpp>
+#include <memory>
 
 #include "TestUtils.h"
 #include "models/ComposedModel.h"
@@ -6,7 +7,8 @@
 #include "models/solid_mechanics/LinearElasticity.h"
 #include "models/solid_mechanics/IsotropicMandelStress.h"
 #include "models/solid_mechanics/LinearIsotropicHardening.h"
-#include "models/solid_mechanics/J2IsotropicYieldFunction.h"
+#include "models/solid_mechanics/J2StressMeasure.h"
+#include "models/solid_mechanics/YieldFunction.h"
 #include "models/solid_mechanics/AssociativePlasticFlowDirection.h"
 #include "models/solid_mechanics/PerzynaPlasticFlowRate.h"
 #include "models/solid_mechanics/PlasticStrainRate.h"
@@ -67,7 +69,8 @@ TEST_CASE("Y-junction DAG", "[ComposedModel][Y-junction DAG]")
   Scalar K = 1000.0;
   auto isoharden = std::make_shared<LinearIsotropicHardening>("isotropic_hardening", K);
   auto mandel_stress = std::make_shared<IsotropicMandelStress>("mandel_stress");
-  auto yield = std::make_shared<J2IsotropicYieldFunction>("yield_function", s0);
+  auto sm = std::make_shared<J2StressMeasure>("stress_measure");
+  auto yield = std::make_shared<YieldFunction>("yield_function", sm, s0, true, false);
 
   // inputs --> "isotropic_hardening" --
   //                                    `
@@ -113,7 +116,8 @@ TEST_CASE("diamond pattern", "[ComposedModel]")
   Scalar eta = 150;
   Scalar n = 6;
   Scalar s0 = 10.0;
-  auto yield = std::make_shared<J2IsotropicYieldFunction>("yield_function", s0);
+  auto sm = std::make_shared<J2StressMeasure>("stress_measure");
+  auto yield = std::make_shared<YieldFunction>("yield_function", sm, s0, true, false);
   auto direction =
       std::make_shared<AssociativePlasticFlowDirection>("plastic_flow_direction", yield);
   auto eprate = std::make_shared<PerzynaPlasticFlowRate>("plastic_flow_rate", eta, n);
@@ -153,7 +157,8 @@ TEST_CASE("send to different device", "[ComposedModel]")
   Scalar eta = 150;
   Scalar n = 6;
   Scalar s0 = 15.0;
-  auto yield = std::make_shared<J2IsotropicYieldFunction>("yield_function", s0);
+  auto sm = std::make_shared<J2StressMeasure>("stress_measure");
+  auto yield = std::make_shared<YieldFunction>("yield_function", sm, s0, true, false);
   auto direction =
       std::make_shared<AssociativePlasticFlowDirection>("plastic_flow_direction", yield);
   auto eprate = std::make_shared<PerzynaPlasticFlowRate>("plastic_flow_rate", eta, n);

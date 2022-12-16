@@ -6,7 +6,7 @@ namespace neml2
 void
 IsotropicMandelStress::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din) const
 {
-  // Without kinematic hardening mandel stress and cauchy stress coincide
+  // Isotropic mandel stress is just the Cauchy stress 
   out.set(in.get<SymR2>(cauchy_stress), mandel_stress);
 
   if (dout_din)

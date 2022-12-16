@@ -7,7 +7,8 @@
 #include "models/solid_mechanics/LinearElasticity.h"
 #include "models/solid_mechanics/IsotropicMandelStress.h"
 #include "models/solid_mechanics/LinearIsotropicHardening.h"
-#include "models/solid_mechanics/J2IsotropicYieldFunction.h"
+#include "models/solid_mechanics/J2StressMeasure.h"
+#include "models/solid_mechanics/YieldFunction.h"
 #include "models/solid_mechanics/AssociativePlasticFlowDirection.h"
 #include "models/solid_mechanics/AssociativeIsotropicPlasticHardening.h"
 #include "models/solid_mechanics/PerzynaPlasticFlowRate.h"
@@ -48,7 +49,8 @@ TEST_CASE("Uniaxial stress regression test", "[stress control]")
                                            std::vector<std::string>{"state", "cauchy_stress"});
   auto mandel_stress = std::make_shared<IsotropicMandelStress>("mandel_stress");
   auto isoharden = std::make_shared<LinearIsotropicHardening>("isotropic_hardening", K);
-  auto yieldfunc = std::make_shared<J2IsotropicYieldFunction>("yield_function", s0);
+  auto sm = std::make_shared<J2StressMeasure>("stress_measure");
+  auto yieldfunc = std::make_shared<YieldFunction>("yield_function", sm, s0, true, false);
   auto hrate = std::make_shared<PerzynaPlasticFlowRate>("hrate", eta, n);
   auto eprate = std::make_shared<AssociativeIsotropicPlasticHardening>("ep_rate", yieldfunc);
   auto rate = std::make_shared<ComposedModel>(

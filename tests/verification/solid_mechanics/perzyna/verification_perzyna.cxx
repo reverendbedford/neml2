@@ -5,7 +5,8 @@
 #include "models/solid_mechanics/LinearElasticity.h"
 #include "models/solid_mechanics/IsotropicMandelStress.h"
 #include "models/solid_mechanics/LinearIsotropicHardening.h"
-#include "models/solid_mechanics/J2IsotropicYieldFunction.h"
+#include "models/solid_mechanics/J2StressMeasure.h"
+#include "models/solid_mechanics/YieldFunction.h"
 #include "models/solid_mechanics/AssociativePlasticFlowDirection.h"
 #include "models/solid_mechanics/AssociativeIsotropicPlasticHardening.h"
 #include "models/solid_mechanics/PerzynaPlasticFlowRate.h"
@@ -40,7 +41,8 @@ TEST_CASE("Perzyna viscoplasticity verification tests", "[StructuralVerification
   auto elasticity = std::make_shared<CauchyStressRateFromElasticStrainRate>("elasticity", C);
   auto mandel_stress = std::make_shared<IsotropicMandelStress>("mandel_stress");
   auto isoharden = std::make_shared<LinearIsotropicHardening>("isotropic_hardening", K);
-  auto yield = std::make_shared<J2IsotropicYieldFunction>("yield_function", s0);
+  auto sm = std::make_shared<J2StressMeasure>("stress_measure");
+  auto yield = std::make_shared<YieldFunction>("yield_function", sm, s0, true, false);
   auto direction =
       std::make_shared<AssociativePlasticFlowDirection>("plastic_flow_direction", yield);
   auto eprate = std::make_shared<AssociativeIsotropicPlasticHardening>("ep_rate", yield);

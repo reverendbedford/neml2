@@ -4,7 +4,7 @@
 namespace neml2
 {
 AssociativeIsotropicPlasticHardening::AssociativeIsotropicPlasticHardening(
-    const std::string & name, const std::shared_ptr<IsotropicYieldFunction> & f)
+    const std::string & name, const std::shared_ptr<YieldFunction> & f)
   : PlasticHardening(name),
     yield_function(*f),
     equivalent_plastic_strain_rate(

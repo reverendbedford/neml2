@@ -1,7 +1,8 @@
 #include <catch2/catch.hpp>
 
 #include "TestUtils.h"
-#include "models/solid_mechanics/J2IsotropicYieldFunction.h"
+#include "models/solid_mechanics/J2StressMeasure.h"
+#include "models/solid_mechanics/YieldFunction.h"
 #include "models/solid_mechanics/AssociativeIsotropicPlasticHardening.h"
 
 using namespace neml2;
@@ -10,7 +11,8 @@ TEST_CASE("AssociativeIsotropicPlasticHardening", "[AssociativeIsotropicPlasticH
 {
   TorchSize nbatch = 10;
   Scalar s0 = 100.0;
-  auto yield = std::make_shared<J2IsotropicYieldFunction>("yield_function", s0);
+  auto sm = std::make_shared<J2StressMeasure>("stress_measure");
+  auto yield = std::make_shared<YieldFunction>("yield_function", sm, s0, true, false);
   auto eprate = AssociativeIsotropicPlasticHardening("ep_rate", yield);
 
   SECTION("model definition")

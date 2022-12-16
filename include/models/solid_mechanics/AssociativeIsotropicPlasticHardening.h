@@ -1,7 +1,7 @@
 #pragma once
 
 #include "models/solid_mechanics/PlasticHardening.h"
-#include "models/solid_mechanics/IsotropicYieldFunction.h"
+#include "models/solid_mechanics/YieldFunction.h"
 
 namespace neml2
 {
@@ -10,9 +10,9 @@ class AssociativeIsotropicPlasticHardening : public PlasticHardening
 {
 public:
   AssociativeIsotropicPlasticHardening(const std::string & name,
-                                       const std::shared_ptr<IsotropicYieldFunction> & f);
+                                       const std::shared_ptr<YieldFunction> & f);
 
-  const IsotropicYieldFunction & yield_function;
+  const YieldFunction & yield_function;
 
 protected:
   /// The flow direction

@@ -7,7 +7,8 @@
 #include "models/solid_mechanics/LinearElasticity.h"
 #include "models/solid_mechanics/IsotropicMandelStress.h"
 #include "models/solid_mechanics/LinearIsotropicHardening.h"
-#include "models/solid_mechanics/J2IsotropicYieldFunction.h"
+#include "models/solid_mechanics/J2StressMeasure.h"
+#include "models/solid_mechanics/YieldFunction.h"
 #include "models/solid_mechanics/AssociativePlasticFlowDirection.h"
 #include "models/solid_mechanics/AssociativeIsotropicPlasticHardening.h"
 #include "models/solid_mechanics/PerzynaPlasticFlowRate.h"
@@ -41,7 +42,8 @@ TEST_CASE("Alternative composition of viscoplasticity", "[viscoplasticity altern
   auto S = std::make_shared<CauchyStressFromElasticStrain>("cauchy_stress", C);
   auto M = std::make_shared<IsotropicMandelStress>("mandel_stress");
   auto gamma = std::make_shared<LinearIsotropicHardening>("isotropic_hardening", K);
-  auto f = std::make_shared<J2IsotropicYieldFunction>("yield_function", s0);
+  auto sm = std::make_shared<J2StressMeasure>("stress_measure");
+  auto f = std::make_shared<YieldFunction>("yield_function", sm, s0, true, false);
   auto gammarate = std::make_shared<PerzynaPlasticFlowRate>("hardening_rate", eta, n);
   auto Np = std::make_shared<AssociativePlasticFlowDirection>("plastic_flow_direction", f);
   auto eprate = std::make_shared<AssociativeIsotropicPlasticHardening>("ep_rate", f);
