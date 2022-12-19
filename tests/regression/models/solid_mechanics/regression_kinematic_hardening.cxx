@@ -8,7 +8,7 @@
 #include "models/solid_mechanics/IsotropicMandelStress.h"
 #include "models/solid_mechanics/LinearKinematicHardening.h"
 #include "models/solid_mechanics/J2StressMeasure.h"
-#include "models/solid_mechanics/YieldFunction.h"
+#include "models/solid_mechanics/KinematicHardeningYieldFunction.h"
 #include "models/solid_mechanics/AssociativePlasticFlowDirection.h"
 #include "models/solid_mechanics/AssociativeKinematicPlasticHardening.h"
 #include "models/solid_mechanics/PerzynaPlasticFlowRate.h"
@@ -42,7 +42,7 @@ TEST_CASE("Regression test on kinematic hardening ", "[kinematic_hardening]")
   auto mandel_stress = std::make_shared<IsotropicMandelStress>("mandel_stress");
   auto isoharden = std::make_shared<LinearKinematicHardening>("kinematic_hardening", H);
   auto sm = std::make_shared<J2StressMeasure>("stress_measure");
-  auto yield = std::make_shared<YieldFunction>("yield_function", sm, s0, false, true);
+  auto yield = std::make_shared<KinematicHardeningYieldFunction>("yield_function", sm, s0);
   auto direction =
       std::make_shared<AssociativePlasticFlowDirection>("plastic_flow_direction", yield);
   auto eprate = std::make_shared<AssociativeKinematicPlasticHardening>("ep_rate", yield);

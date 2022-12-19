@@ -8,7 +8,7 @@
 #include "models/solid_mechanics/IsotropicMandelStress.h"
 #include "models/solid_mechanics/LinearKinematicHardening.h"
 #include "models/solid_mechanics/J2StressMeasure.h"
-#include "models/solid_mechanics/YieldFunction.h"
+#include "models/solid_mechanics/PerfectlyPlasticYieldFunction.h"
 #include "models/solid_mechanics/AssociativePlasticFlowDirection.h"
 #include "models/solid_mechanics/AssociativeKinematicPlasticHardening.h"
 #include "models/solid_mechanics/PerzynaPlasticFlowRate.h"
@@ -40,7 +40,7 @@ TEST_CASE("Regression test on perfect viscoplasticity", "[perfect_viscoplasticit
   auto elasticity = std::make_shared<CauchyStressRateFromElasticStrainRate>("elasticity", C);
   auto mandel_stress = std::make_shared<IsotropicMandelStress>("mandel_stress");
   auto sm = std::make_shared<J2StressMeasure>("stress_measure");
-  auto yield = std::make_shared<YieldFunction>("yield_function", sm, s0, false, false);
+  auto yield = std::make_shared<PerfectlyPlasticYieldFunction>("yield_function", sm, s0);
   auto direction =
       std::make_shared<AssociativePlasticFlowDirection>("plastic_flow_direction", yield);
   auto hrate = std::make_shared<PerzynaPlasticFlowRate>("hardening_rate", eta, n);

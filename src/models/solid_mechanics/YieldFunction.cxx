@@ -1,5 +1,6 @@
 #include "models/solid_mechanics/YieldFunction.h"
 #include "tensors/LabeledAxis.h"
+#include "tensors/LabeledVector.h"
 #include "tensors/SymSymR4.h"
 
 namespace neml2
@@ -34,18 +35,10 @@ YieldFunction::set_value(LabeledVector in,
                          LabeledVector out,
                          LabeledMatrix * dout_din) const
 {
-  // First retrieve the hardening variables
-  auto mandel = in.get<SymR2>(mandel_stress);
+  // Make input for the stress measure
+  auto sm_input = make_stress_measure_input(in);
   
-  // Calculate the overstress
-  auto overstress = mandel.clone();
-  if (_with_kinematic_hardening)
-    overstress -= in.get<SymR2>(kinematic_hardening);
-  
-  // Get the input to the stress measure
-  TorchSize nbatch = in.batch_size();
-  LabeledVector sm_input(nbatch, _stress_measure.input());
-  sm_input.slice("state").set(overstress, "overstress");
+  // Actually calculate the stress measure
   auto m = _stress_measure.value(sm_input).slice("state").get<Scalar>("stress_measure");
   
   // Calculate the perfectly plastic part
@@ -83,20 +76,9 @@ YieldFunction::set_dvalue(LabeledVector in,
                           LabeledMatrix dout_din,
                           LabeledTensor<1, 3> * d2out_din2) const
 {
-  // First retrieve the hardening variables
-  auto mandel = in.get<SymR2>(mandel_stress);
+  // Make input for the stress measure
+  auto sm_input = make_stress_measure_input(in);
 
-  // Calculate the overstress
-  auto overstress = mandel.clone();
-  if (_with_kinematic_hardening)
-    overstress -= in.get<SymR2>(kinematic_hardening);
-
-  // Get the input to the stress measure
-  TorchSize nbatch = in.batch_size();
-  LabeledVector sm_input(nbatch, _stress_measure.input());
-  sm_input.slice("state").set(overstress, "overstress");
-  auto m = _stress_measure.value(sm_input).slice("state").get<Scalar>("stress_measure");
-  
   // Get the derivative of the stress measure wrt Mandel stress
   SymR2 dm;
   LabeledMatrix DM;
@@ -141,6 +123,25 @@ YieldFunction::set_dvalue(LabeledVector in,
       d2out_din2->set(-ymm, yield_function, kinematic_hardening, mandel_stress);
     }
   }
+}
+
+LabeledVector
+YieldFunction::make_stress_measure_input(LabeledVector in) const
+{
+  // First retrieve the hardening variables
+  auto mandel = in.get<SymR2>(mandel_stress);
+
+  // Calculate the overstress
+  auto overstress = mandel.clone();
+  if (_with_kinematic_hardening)
+    overstress -= in.get<SymR2>(kinematic_hardening);
+  
+  // Get the input to the stress measure
+  TorchSize nbatch = in.batch_size();
+  LabeledVector sm_input(nbatch, _stress_measure.input());
+  sm_input.slice("state").set(overstress, "overstress");
+
+  return sm_input;
 }
 
 } // namespace neml2

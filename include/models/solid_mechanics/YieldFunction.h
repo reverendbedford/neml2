@@ -32,6 +32,9 @@ protected:
                           LabeledMatrix dout_din,
                           LabeledTensor<1, 3> * d2out_din2 = nullptr) const;
 
+private:
+  LabeledVector make_stress_measure_input(LabeledVector in) const;
+
 protected:
   /// Stress measure
   const StressMeasure & _stress_measure;
