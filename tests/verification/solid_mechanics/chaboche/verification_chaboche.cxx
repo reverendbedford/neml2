@@ -41,20 +41,20 @@ TEST_CASE("Chaboche verification", "[StructuralVerificationTests]")
   Scalar s0 = 10.0;
   Scalar R = 50.0;
   Scalar d = 1.2;
-  
+
   // Note the factors on g and A
   Scalar C1 = 5000.0;
-  Scalar g1 = 10.1 * sqrt(2.0/3.0);
-  Scalar A1 = 1.0e-6 * sqrt(3.0/2.0);
+  Scalar g1 = 10.1 * sqrt(2.0 / 3.0);
+  Scalar A1 = 1.0e-6 * sqrt(3.0 / 2.0);
   Scalar a1 = 1.2;
 
   Scalar C2 = 1000.0;
-  Scalar g2 = 5.2 * sqrt(2.0/3.0);
-  Scalar A2 = 1.0e-10 * sqrt(3.0/2.0);
+  Scalar g2 = 5.2 * sqrt(2.0 / 3.0);
+  Scalar A2 = 1.0e-10 * sqrt(3.0 / 2.0);
   Scalar a2 = 3.2;
-  
+
   // NEML has a different definition of eta...
-  Scalar eta = 200 * std::pow(sqrt(2.0/3.0), 1.0/4.0) * sqrt(2.0/3.0);
+  Scalar eta = 200 * std::pow(sqrt(2.0 / 3.0), 1.0 / 4.0) * sqrt(2.0 / 3.0);
   Scalar n = 4.0;
 
   auto Erate = std::make_shared<ForceRate<SymR2>>("total_strain");
@@ -64,7 +64,8 @@ TEST_CASE("Chaboche verification", "[StructuralVerificationTests]")
   auto isoharden = std::make_shared<VoceIsotropicHardening>("isotropic_hardening", R, d);
 
   auto sm = std::make_shared<J2StressMeasure>("stress_measure");
-  auto yield = std::make_shared<IsotropicAndKinematicHardeningYieldFunction>("yield_function", sm, s0);
+  auto yield =
+      std::make_shared<IsotropicAndKinematicHardeningYieldFunction>("yield_function", sm, s0);
 
   std::vector<std::string> bs_name_1({"state", "internal_state", "backstress_1"});
   std::vector<std::string> bs_name_2({"state", "internal_state", "backstress_2"});
@@ -74,11 +75,11 @@ TEST_CASE("Chaboche verification", "[StructuralVerificationTests]")
 
   auto bs1 = std::make_shared<ChabochePlasticHardening>("chaboche_1", C1, g1, A1, a1, yield, "_1");
   auto bs2 = std::make_shared<ChabochePlasticHardening>("chaboche_2", C2, g2, A2, a2, yield, "_2");
-  
+
   std::vector<std::vector<std::string>> bs_names({bs_name_1, bs_name_2});
   std::vector<std::string> kinname({"state", "hardening_interface", "kinematic_hardening"});
 
-  auto kinharden = std::make_shared<SumModel<SymR2>>("kinharden", bs_names, kinname); 
+  auto kinharden = std::make_shared<SumModel<SymR2>>("kinharden", bs_names, kinname);
 
   auto direction =
       std::make_shared<AssociativePlasticFlowDirection>("plastic_flow_direction", yield);
@@ -86,23 +87,25 @@ TEST_CASE("Chaboche verification", "[StructuralVerificationTests]")
   auto hrate = std::make_shared<PerzynaPlasticFlowRate>("hardening_rate", eta, n);
   auto Eprate = std::make_shared<PlasticStrainRate>("plastic_strain_rate");
 
-  auto rate = std::make_shared<ComposedModel>("rate",
-                                              std::vector<std::shared_ptr<Model>>{Erate,
-                                                                                  Eerate,
-                                                                                  elasticity,
-                                                                                  mandel_stress,
-                                                                                  isoharden,
-                                                                                  bs1_value,
-                                                                                  bs2_value,
-                                                                                  bs1,
-                                                                                  bs2,
-                                                                                  kinharden,
-                                                                                  yield,
-                                                                                  direction,
-                                                                                  eeprate,
-                                                                                  hrate,
-                                                                                  Eprate},
-                                             std::vector<std::shared_ptr<Model>>{Erate, bs1_value, bs2_value, kinharden, mandel_stress, isoharden});
+  auto rate = std::make_shared<ComposedModel>(
+      "rate",
+      std::vector<std::shared_ptr<Model>>{Erate,
+                                          Eerate,
+                                          elasticity,
+                                          mandel_stress,
+                                          isoharden,
+                                          bs1_value,
+                                          bs2_value,
+                                          bs1,
+                                          bs2,
+                                          kinharden,
+                                          yield,
+                                          direction,
+                                          eeprate,
+                                          hrate,
+                                          Eprate},
+      std::vector<std::shared_ptr<Model>>{
+          Erate, bs1_value, bs2_value, kinharden, mandel_stress, isoharden});
 
   auto implicit_rate = std::make_shared<ImplicitTimeIntegration>("implicit_time_integration", rate);
   auto solver = std::make_shared<NewtonNonlinearSolver>(params);
@@ -116,4 +119,3 @@ TEST_CASE("Chaboche verification", "[StructuralVerificationTests]")
     REQUIRE(test.compare(*model));
   }
 }
-

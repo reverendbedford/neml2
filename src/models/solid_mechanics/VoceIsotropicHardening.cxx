@@ -2,8 +2,7 @@
 
 namespace neml2
 {
-VoceIsotropicHardening::VoceIsotropicHardening(const std::string & name, 
-                                               Scalar R, Scalar d)
+VoceIsotropicHardening::VoceIsotropicHardening(const std::string & name, Scalar R, Scalar d)
   : IsotropicHardening(name),
     _R(register_parameter("saturated_hardening", R)),
     _d(register_parameter("saturation_rate", d))

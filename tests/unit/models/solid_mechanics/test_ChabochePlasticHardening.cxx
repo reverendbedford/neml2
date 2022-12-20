@@ -26,20 +26,28 @@ TEST_CASE("Chaboche model definition", "[Chaboche]")
     REQUIRE(chaboche.input().subaxis("state").has_variable<Scalar>("hardening_rate"));
     REQUIRE(chaboche.input().subaxis("state").has_variable<SymR2>("mandel_stress"));
     REQUIRE(chaboche.input().subaxis("state").has_subaxis("hardening_interface"));
-    REQUIRE(chaboche.input().subaxis("state").subaxis("hardening_interface").has_variable<SymR2>("kinematic_hardening"));
+    REQUIRE(chaboche.input()
+                .subaxis("state")
+                .subaxis("hardening_interface")
+                .has_variable<SymR2>("kinematic_hardening"));
     REQUIRE(chaboche.input().subaxis("state").has_subaxis("internal_state"));
-    REQUIRE(chaboche.input().subaxis("state").subaxis("internal_state").has_variable<SymR2>("backstress"));
+    REQUIRE(chaboche.input()
+                .subaxis("state")
+                .subaxis("internal_state")
+                .has_variable<SymR2>("backstress"));
 
     REQUIRE(chaboche.output().has_subaxis("state"));
-    REQUIRE(
-        chaboche.output().subaxis("state").subaxis("internal_state").has_variable<SymR2>("backstress_rate"));
+    REQUIRE(chaboche.output()
+                .subaxis("state")
+                .subaxis("internal_state")
+                .has_variable<SymR2>("backstress_rate"));
   }
 
   SECTION("model derivatives")
   {
     LabeledVector in(nbatch, chaboche.input());
     auto M = SymR2::init(100, 110, 100, 100, 100, 100).batch_expand(nbatch);
-    auto X = SymR2::init(-25,30,10,-15,20,25).batch_expand(nbatch);
+    auto X = SymR2::init(-25, 30, 10, -15, 20, 25).batch_expand(nbatch);
     auto Xi = SymR2::init(-10, 15, 5, -7, 15, 20).batch_expand(nbatch);
     in.slice("state").set(Scalar(0.01, nbatch), "hardening_rate");
     in.slice("state").slice("hardening_interface").set(X, "kinematic_hardening");

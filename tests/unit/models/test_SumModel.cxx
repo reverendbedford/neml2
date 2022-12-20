@@ -8,8 +8,8 @@ using namespace neml2;
 TEST_CASE("SumModel, Scalar", "[SumModel]")
 {
   TorchSize nbatch = 10;
-  auto summodel = SumModel<Scalar>("example", {{"state", "A"},{"state", "substate", "B"}}, 
-                                   {"state", "outsub", "C"});
+  auto summodel = SumModel<Scalar>(
+      "example", {{"state", "A"}, {"state", "substate", "B"}}, {"state", "outsub", "C"});
 
   SECTION("model definition")
   {
@@ -47,8 +47,8 @@ TEST_CASE("SumModel, Scalar", "[SumModel]")
 TEST_CASE("SumModel, SymR2", "[SumModel]")
 {
   TorchSize nbatch = 10;
-  auto summodel = SumModel<SymR2>("example", {{"state", "A"},{"state", "substate", "B"}}, 
-                                   {"state", "outsub", "C"});
+  auto summodel = SumModel<SymR2>(
+      "example", {{"state", "A"}, {"state", "substate", "B"}}, {"state", "outsub", "C"});
 
   SECTION("model definition")
   {

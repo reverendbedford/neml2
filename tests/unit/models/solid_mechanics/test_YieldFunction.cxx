@@ -23,7 +23,10 @@ TEST_CASE("J2IsotropicYieldFunction", "[J2IsotropicYieldFunction]")
     REQUIRE(yield.input().subaxis("state").has_variable<SymR2>("mandel_stress"));
     REQUIRE(yield.input().has_subaxis("state"));
     REQUIRE(yield.input().subaxis("state").has_subaxis("hardening_interface"));
-    REQUIRE(yield.input().subaxis("state").subaxis("hardening_interface").has_variable<Scalar>("isotropic_hardening"));
+    REQUIRE(yield.input()
+                .subaxis("state")
+                .subaxis("hardening_interface")
+                .has_variable<Scalar>("isotropic_hardening"));
     REQUIRE(yield.output().has_subaxis("state"));
     REQUIRE(yield.output().subaxis("state").has_variable<Scalar>("yield_function"));
   }
@@ -46,7 +49,7 @@ TEST_CASE("J2IsotropicYieldFunction", "[J2IsotropicYieldFunction]")
     auto numericald2 = LabeledTensor<1, 3>(nbatch, yield.output(), yield.input(), yield.input());
     finite_differencing_derivative(
         [yield](const LabeledVector & x) { return yield.dvalue(x); }, in, numericald2);
-    
+
     REQUIRE(torch::allclose(exactd2.tensor(), numericald2.tensor()));
   }
 }
@@ -83,7 +86,7 @@ TEST_CASE("J2PerfectYieldFunction", "[J2PerfectYieldFunction]")
     auto numericald2 = LabeledTensor<1, 3>(nbatch, yield.output(), yield.input(), yield.input());
     finite_differencing_derivative(
         [yield](const LabeledVector & x) { return yield.dvalue(x); }, in, numericald2);
-    
+
     REQUIRE(torch::allclose(exactd2.tensor(), numericald2.tensor()));
   }
 }
@@ -101,7 +104,10 @@ TEST_CASE("J2KinematicYieldFunction", "[J2KinematicYieldFunction]")
     REQUIRE(yield.input().subaxis("state").has_variable<SymR2>("mandel_stress"));
     REQUIRE(yield.input().has_subaxis("state"));
     REQUIRE(yield.input().subaxis("state").has_subaxis("hardening_interface"));
-    REQUIRE(yield.input().subaxis("state").subaxis("hardening_interface").has_variable<SymR2>("kinematic_hardening"));
+    REQUIRE(yield.input()
+                .subaxis("state")
+                .subaxis("hardening_interface")
+                .has_variable<SymR2>("kinematic_hardening"));
     REQUIRE(yield.output().has_subaxis("state"));
     REQUIRE(yield.output().subaxis("state").has_variable<Scalar>("yield_function"));
   }
@@ -118,14 +124,14 @@ TEST_CASE("J2KinematicYieldFunction", "[J2KinematicYieldFunction]")
     auto numerical = LabeledMatrix(nbatch, yield.output(), yield.input());
     finite_differencing_derivative(
         [yield](const LabeledVector & x) { return yield.value(x); }, in, numerical);
-    
+
     REQUIRE(torch::allclose(exact.tensor(), numerical.tensor(), 2e-5));
 
     auto exactd2 = yield.d2value(in);
     auto numericald2 = LabeledTensor<1, 3>(nbatch, yield.output(), yield.input(), yield.input());
     finite_differencing_derivative(
         [yield](const LabeledVector & x) { return yield.dvalue(x); }, in, numericald2);
-    
+
     REQUIRE(torch::allclose(exactd2.tensor(), numericald2.tensor()));
   }
 }
@@ -143,8 +149,14 @@ TEST_CASE("J2IsotropicAndKinematicYieldFunction", "[J2IsotropicAndKinematicYield
     REQUIRE(yield.input().subaxis("state").has_variable<SymR2>("mandel_stress"));
     REQUIRE(yield.input().has_subaxis("state"));
     REQUIRE(yield.input().subaxis("state").has_subaxis("hardening_interface"));
-    REQUIRE(yield.input().subaxis("state").subaxis("hardening_interface").has_variable<Scalar>("isotropic_hardening"));
-    REQUIRE(yield.input().subaxis("state").subaxis("hardening_interface").has_variable<SymR2>("kinematic_hardening"));
+    REQUIRE(yield.input()
+                .subaxis("state")
+                .subaxis("hardening_interface")
+                .has_variable<Scalar>("isotropic_hardening"));
+    REQUIRE(yield.input()
+                .subaxis("state")
+                .subaxis("hardening_interface")
+                .has_variable<SymR2>("kinematic_hardening"));
     REQUIRE(yield.output().has_subaxis("state"));
     REQUIRE(yield.output().subaxis("state").has_variable<Scalar>("yield_function"));
   }
@@ -162,14 +174,14 @@ TEST_CASE("J2IsotropicAndKinematicYieldFunction", "[J2IsotropicAndKinematicYield
     auto numerical = LabeledMatrix(nbatch, yield.output(), yield.input());
     finite_differencing_derivative(
         [yield](const LabeledVector & x) { return yield.value(x); }, in, numerical);
-    
+
     REQUIRE(torch::allclose(exact.tensor(), numerical.tensor(), 2e-5));
 
     auto exactd2 = yield.d2value(in);
     auto numericald2 = LabeledTensor<1, 3>(nbatch, yield.output(), yield.input(), yield.input());
     finite_differencing_derivative(
         [yield](const LabeledVector & x) { return yield.dvalue(x); }, in, numericald2);
-    
+
     REQUIRE(torch::allclose(exactd2.tensor(), numericald2.tensor()));
   }
 }

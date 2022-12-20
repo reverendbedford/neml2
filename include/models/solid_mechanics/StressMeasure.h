@@ -12,6 +12,5 @@ public:
 
   const LabeledAxisAccessor overstress;
   const LabeledAxisAccessor stress_measure;
-
 };
 } // namespace neml2

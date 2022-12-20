@@ -47,9 +47,17 @@ TEST_CASE("A Model can output the function graph in DOT format", "[DOT]")
   auto hrate = std::make_shared<PerzynaPlasticFlowRate>("hardening_rate", eta, n);
   auto Eprate = std::make_shared<PlasticStrainRate>("plastic_strain_rate");
 
-  auto rate = ComposedModel(
-      "rate",
-      {Erate, Eerate, elasticity, mandel_stress, isoharden, yield, direction, eprate, hrate, Eprate});
+  auto rate = ComposedModel("rate",
+                            {Erate,
+                             Eerate,
+                             elasticity,
+                             mandel_stress,
+                             isoharden,
+                             yield,
+                             direction,
+                             eprate,
+                             hrate,
+                             Eprate});
 
   // Write the gold file
   // std::ofstream ogold("regression/models/regression_dot.txt");;

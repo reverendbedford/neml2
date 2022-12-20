@@ -3,16 +3,14 @@
 
 namespace neml2
 {
-J2StressMeasure::J2StressMeasure(const std::string & name) :
-    StressMeasure(name)
+J2StressMeasure::J2StressMeasure(const std::string & name)
+  : StressMeasure(name)
 {
   setup();
 }
 
 void
-J2StressMeasure::set_value(LabeledVector in,
-                           LabeledVector out,
-                           LabeledMatrix * dout_din) const
+J2StressMeasure::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din) const
 {
   // First retrieve the over stress
   auto stress = in.get<SymR2>(overstress);
@@ -39,7 +37,7 @@ J2StressMeasure::set_dvalue(LabeledVector in,
 {
   // First retrieve the Mandel stress
   auto stress = in.get<SymR2>(overstress);
-  
+
   // Calculate current value...
   auto s = stress.dev();
   auto J2 = s.norm();

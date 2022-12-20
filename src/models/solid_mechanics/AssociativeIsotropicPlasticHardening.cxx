@@ -7,8 +7,8 @@ AssociativeIsotropicPlasticHardening::AssociativeIsotropicPlasticHardening(
     const std::string & name, const std::shared_ptr<YieldFunction> & f)
   : PlasticHardening(name),
     yield_function(*f),
-    equivalent_plastic_strain_rate(
-        declareOutputVariable<Scalar>({"state", "internal_state", "equivalent_plastic_strain_rate"}))
+    equivalent_plastic_strain_rate(declareOutputVariable<Scalar>(
+        {"state", "internal_state", "equivalent_plastic_strain_rate"}))
 {
   register_model(f);
   setup();
@@ -16,8 +16,8 @@ AssociativeIsotropicPlasticHardening::AssociativeIsotropicPlasticHardening(
 
 void
 AssociativeIsotropicPlasticHardening::set_value(LabeledVector in,
-                                       LabeledVector out,
-                                       LabeledMatrix * dout_din) const
+                                                LabeledVector out,
+                                                LabeledMatrix * dout_din) const
 {
   // For associative flow,
   // ep_dot = - gamma_dot * df/dh

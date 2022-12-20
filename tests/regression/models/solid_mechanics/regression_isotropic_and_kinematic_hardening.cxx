@@ -46,7 +46,8 @@ TEST_CASE("Regression test on combined hardening", "[isotropic_and_kinematic_har
   auto isoharden = std::make_shared<LinearIsotropicHardening>("isotropic_hardening", K);
   auto kinharden = std::make_shared<LinearKinematicHardening>("kinematic_hardening", H);
   auto sm = std::make_shared<J2StressMeasure>("stress_measure");
-  auto yield = std::make_shared<IsotropicAndKinematicHardeningYieldFunction>("yield_function", sm, s0);
+  auto yield =
+      std::make_shared<IsotropicAndKinematicHardeningYieldFunction>("yield_function", sm, s0);
   auto direction =
       std::make_shared<AssociativePlasticFlowDirection>("plastic_flow_direction", yield);
   auto eeprate = std::make_shared<AssociativeIsotropicPlasticHardening>("eeprate", yield);

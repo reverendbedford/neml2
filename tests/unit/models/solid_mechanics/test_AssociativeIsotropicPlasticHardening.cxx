@@ -22,11 +22,16 @@ TEST_CASE("AssociativeIsotropicPlasticHardening", "[AssociativeIsotropicPlasticH
     REQUIRE(eprate.input().subaxis("state").has_variable<Scalar>("hardening_rate"));
     REQUIRE(eprate.input().subaxis("state").has_variable<SymR2>("mandel_stress"));
     REQUIRE(eprate.input().subaxis("state").has_subaxis("hardening_interface"));
-    REQUIRE(eprate.input().subaxis("state").subaxis("hardening_interface").has_variable<Scalar>("isotropic_hardening"));
+    REQUIRE(eprate.input()
+                .subaxis("state")
+                .subaxis("hardening_interface")
+                .has_variable<Scalar>("isotropic_hardening"));
 
     REQUIRE(eprate.output().has_subaxis("state"));
-    REQUIRE(
-        eprate.output().subaxis("state").subaxis("internal_state").has_variable<Scalar>("equivalent_plastic_strain_rate"));
+    REQUIRE(eprate.output()
+                .subaxis("state")
+                .subaxis("internal_state")
+                .has_variable<Scalar>("equivalent_plastic_strain_rate"));
   }
 
   SECTION("model derivatives")

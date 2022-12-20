@@ -176,7 +176,7 @@ TEST_CASE("Uniaxial stress regression test", "[stress control]")
       torch::zeros(utils::add_shapes(TorchShape({nsteps}), all_outputs[0].tensor().sizes()));
   torch::load(inputs_ref, fname + "_inputs.pt");
   torch::load(outputs_ref, fname + "_outputs.pt");
-  
+
   REQUIRE(torch::allclose(inputs, inputs_ref));
   REQUIRE(torch::allclose(outputs, outputs_ref));
 }

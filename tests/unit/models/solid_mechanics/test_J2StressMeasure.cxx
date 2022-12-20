@@ -36,7 +36,7 @@ TEST_CASE("J2StressMeasure", "[J2StressMeasure]")
     auto numericald2 = LabeledTensor<1, 3>(nbatch, sm.output(), sm.input(), sm.input());
     finite_differencing_derivative(
         [sm](const LabeledVector & x) { return sm.dvalue(x); }, in, numericald2);
-    
+
     REQUIRE(torch::allclose(exactd2.tensor(), numericald2.tensor()));
   }
 }

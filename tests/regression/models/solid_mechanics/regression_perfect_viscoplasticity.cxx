@@ -46,15 +46,10 @@ TEST_CASE("Regression test on perfect viscoplasticity", "[perfect_viscoplasticit
   auto hrate = std::make_shared<PerzynaPlasticFlowRate>("hardening_rate", eta, n);
   auto Eprate = std::make_shared<PlasticStrainRate>("plastic_strain_rate");
 
-  auto rate = std::make_shared<ComposedModel>("rate",
-                                              std::vector<std::shared_ptr<Model>>{Erate,
-                                                                                  Eerate,
-                                                                                  elasticity,
-                                                                                  mandel_stress,
-                                                                                  yield,
-                                                                                  direction,
-                                                                                  hrate,
-                                                                                  Eprate});
+  auto rate = std::make_shared<ComposedModel>(
+      "rate",
+      std::vector<std::shared_ptr<Model>>{
+          Erate, Eerate, elasticity, mandel_stress, yield, direction, hrate, Eprate});
 
   auto implicit_rate = std::make_shared<ImplicitTimeIntegration>("implicit_time_integration", rate);
   auto solver = std::make_shared<NewtonNonlinearSolver>(params);

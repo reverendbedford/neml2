@@ -22,18 +22,23 @@ TEST_CASE("AssociativeKinematicPlasticHardening", "[AssociativeKinematicPlasticH
     REQUIRE(eprate.input().subaxis("state").has_variable<Scalar>("hardening_rate"));
     REQUIRE(eprate.input().subaxis("state").has_variable<SymR2>("mandel_stress"));
     REQUIRE(eprate.input().subaxis("state").has_subaxis("hardening_interface"));
-    REQUIRE(eprate.input().subaxis("state").subaxis("hardening_interface").has_variable<SymR2>("kinematic_hardening"));
+    REQUIRE(eprate.input()
+                .subaxis("state")
+                .subaxis("hardening_interface")
+                .has_variable<SymR2>("kinematic_hardening"));
 
     REQUIRE(eprate.output().has_subaxis("state"));
-    REQUIRE(
-        eprate.output().subaxis("state").subaxis("internal_state").has_variable<SymR2>("plastic_strain_rate"));
+    REQUIRE(eprate.output()
+                .subaxis("state")
+                .subaxis("internal_state")
+                .has_variable<SymR2>("plastic_strain_rate"));
   }
 
   SECTION("model derivatives")
   {
     LabeledVector in(nbatch, eprate.input());
     auto M = SymR2::init(100, 110, 100, 100, 100, 100).batch_expand(nbatch);
-    auto X = SymR2::init(-25,30,10,-15,20,25).batch_expand(nbatch);
+    auto X = SymR2::init(-25, 30, 10, -15, 20, 25).batch_expand(nbatch);
     in.slice("state").set(Scalar(0.01, nbatch), "hardening_rate");
     in.slice("state").slice("hardening_interface").set(X, "kinematic_hardening");
     in.slice("state").set(M, "mandel_stress");

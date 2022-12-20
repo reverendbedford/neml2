@@ -88,7 +88,10 @@ TEST_CASE("Y-junction DAG", "[ComposedModel][Y-junction DAG]")
     REQUIRE(model.input().has_subaxis("state"));
     REQUIRE(model.input().subaxis("state").has_variable<SymR2>("cauchy_stress"));
     REQUIRE(model.input().subaxis("state").has_subaxis("internal_state"));
-    REQUIRE(model.input().subaxis("state").subaxis("internal_state").has_variable<Scalar>("equivalent_plastic_strain"));
+    REQUIRE(model.input()
+                .subaxis("state")
+                .subaxis("internal_state")
+                .has_variable<Scalar>("equivalent_plastic_strain"));
 
     REQUIRE(model.output().has_subaxis("state"));
     REQUIRE(model.output().subaxis("state").has_variable<Scalar>("yield_function"));
@@ -130,7 +133,10 @@ TEST_CASE("diamond pattern", "[ComposedModel]")
     REQUIRE(model.input().has_subaxis("state"));
     REQUIRE(model.input().subaxis("state").has_variable<SymR2>("mandel_stress"));
     REQUIRE(model.input().subaxis("state").has_subaxis("hardening_interface"));
-    REQUIRE(model.input().subaxis("state").subaxis("hardening_interface").has_variable<Scalar>("isotropic_hardening"));
+    REQUIRE(model.input()
+                .subaxis("state")
+                .subaxis("hardening_interface")
+                .has_variable<Scalar>("isotropic_hardening"));
 
     REQUIRE(model.output().has_subaxis("state"));
     REQUIRE(model.output().subaxis("state").has_variable<SymR2>("plastic_strain_rate"));
