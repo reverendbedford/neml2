@@ -35,6 +35,12 @@ VerificationTest::compare(const neml2::Model & model) const
     stress.index_put_({i}, all_outputs[i].slice("state").get<SymR2>("cauchy_stress"));
   }
 
+  std::cout << this->stress().index({-1}) << std::endl;
+  std::cout << stress.index({Slice(), 0}).index({-1}) << std::endl; 
+
+  std::cout << torch::max(torch::abs(this->stress() - stress.index({Slice(), 0}))) << std::endl;
+  std::cout << torch::max(torch::abs(this->stress() - stress.index({Slice(), 0}))/torch::abs(this->stress() + 1.0e-15)) << std::endl;
+
   return torch::allclose(this->stress(), stress.index({Slice(), 0}), rtol(), atol());
 }
 

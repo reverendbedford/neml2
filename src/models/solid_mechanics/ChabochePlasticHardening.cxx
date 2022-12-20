@@ -28,7 +28,7 @@ ChabochePlasticHardening::set_value(LabeledVector in,
 {
   // Our backstress
   SymR2 X = in.get<SymR2>(backstress);
-  
+
   // gamma_dot
   Scalar g = in.get<Scalar>(hardening_rate);
 
@@ -59,8 +59,9 @@ ChabochePlasticHardening::set_value(LabeledVector in,
   auto n = df_din.get<SymR2>(yield_function.yield_function,
                              yield_function.mandel_stress);
   auto eff = sm_value.slice("state").get<Scalar>("stress_measure");
-  auto g_term = 2.0 / 3.0 * _C * n - sqrt(2.0/3.0) * _g * X; 
-  auto s_term = -sqrt(3.0/2.0) * _A * eff.pow(_a - 1.0) * X;
+  auto g_term = 2.0 / 3.0 * _C * n - _g * X; 
+
+  auto s_term = -_A * eff.pow(_a - 1.0) * X;
   auto v = g_term * g + s_term;
   out.set(v, backstress_rate);
 
@@ -80,16 +81,16 @@ ChabochePlasticHardening::set_value(LabeledVector in,
     // Mandel stress derivative
     dout_din->set(2.0 / 3.0 * _C * d2f_ds2 * g, backstress_rate, 
                   yield_function.mandel_stress);
-
+    
     // Kinematic hardening derivative
-    dout_din->set(2.0/3.0 * _C * d2f_dk2 * g, backstress_rate,
+    dout_din->set(2.0 / 3.0 * _C * d2f_dk2 * g, backstress_rate,
                   yield_function.kinematic_hardening);
 
     // Backstress derivative
     dout_din->set(
-        -torch::Tensor(sqrt(2.0/3.0) * _g * SymSymR4::init(SymSymR4::identity_sym).batch_expand(nbatch) * g)
-        -torch::Tensor(sqrt(3.0/2.0) * _A * (_a - 1.0) * eff.pow(_a - 2.0) * X.outer(Y))
-        -torch::Tensor(sqrt(3.0/2.0) * _A * eff.pow(_a - 1.0) * SymSymR4::init(SymSymR4::identity_sym).batch_expand(nbatch)),
+        -torch::Tensor(_g * SymSymR4::init(SymSymR4::identity_sym).batch_expand(nbatch) * g)
+        -torch::Tensor(_A * (_a - 1.0) * (eff + EPS).pow(_a - 2.0) * X.outer(Y))
+        -torch::Tensor(_A * eff.pow(_a - 1.0) * SymSymR4::init(SymSymR4::identity_sym).batch_expand(nbatch)),
                   backstress_rate, backstress);
   }
 
