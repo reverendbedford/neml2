@@ -8,6 +8,12 @@ Scalar::Scalar(double init, TorchSize batch_size)
 }
 
 Scalar
+Scalar::zeros(TorchSize batch_size)
+{
+  return Scalar(0.0, batch_size);
+}
+
+Scalar
 Scalar::operator-() const
 {
   return -torch::Tensor(*this);

@@ -19,8 +19,10 @@ public:
 
   /// Named constructors
   /// @{
-  /// Make zero with some batch size
+  /// Make zero with batch size 1
   static SymR2 zeros();
+  /// Make zero with some batch size
+  static SymR2 zeros(TorchSize batch_size);
   /// Fill the diagonals with a11 = a22 = a33 = a
   static SymR2 init(const Scalar & a);
   /// Fill the diagonals with a11, a22, a33

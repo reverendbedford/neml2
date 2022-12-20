@@ -23,6 +23,9 @@ public:
   /// ~~~~~~~~~~~~~~~~~~~~
   Scalar(double init, TorchSize batch_size = 1);
 
+  /// Fill with zeros
+  static Scalar zeros(TorchSize batch_size);
+
   /// Negation
   Scalar operator-() const;
 
