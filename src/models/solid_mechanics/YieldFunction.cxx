@@ -21,7 +21,7 @@ YieldFunction::YieldFunction(const std::string & name,
         with_kinematic_hardening ? 
         declareInputVariable<SymR2>({"state", "hardening_interface", "kinematic_hardening"}) : 
         LabeledAxisAccessor({})),
-    _stress_measure(*sm),
+    stress_measure(*sm),
     _s0(register_parameter("yield_stress", s0)),
     _with_isotropic_hardening(with_isotropic_hardening),
     _with_kinematic_hardening(with_kinematic_hardening)
@@ -39,7 +39,7 @@ YieldFunction::set_value(LabeledVector in,
   auto sm_input = make_stress_measure_input(in);
   
   // Actually calculate the stress measure
-  auto m = _stress_measure.value(sm_input).slice("state").get<Scalar>("stress_measure");
+  auto m = stress_measure.value(sm_input).slice("state").get<Scalar>("stress_measure");
   
   // Calculate the perfectly plastic part
   auto f = m - sqrt(2.0 / 3.0) * _s0;
@@ -53,7 +53,7 @@ YieldFunction::set_value(LabeledVector in,
 
   if (dout_din)
   {
-    auto dm = _stress_measure.dvalue(sm_input).slice(0,"state").slice(1,"state").get<SymR2>("stress_measure",
+    auto dm = stress_measure.dvalue(sm_input).slice(0,"state").slice(1,"state").get<SymR2>("stress_measure",
                                                                                             "overstress");
     // Derivative wrt. mandel stress
     dout_din->set(dm, yield_function, mandel_stress);
@@ -84,11 +84,11 @@ YieldFunction::set_dvalue(LabeledVector in,
   LabeledMatrix DM;
   LabeledTensor<1,3> DM2;
   if (d2out_din2) {
-    std::tie(DM, DM2) = _stress_measure.dvalue_and_d2value(sm_input);
+    std::tie(DM, DM2) = stress_measure.dvalue_and_d2value(sm_input);
     dm = DM.slice(0,"state").slice(1,"state").get<SymR2>("stress_measure", "overstress");
   }
   else {
-    dm = _stress_measure.dvalue(sm_input).slice(0,"state").slice(1,"state").get<SymR2>("stress_measure",
+    dm = stress_measure.dvalue(sm_input).slice(0,"state").slice(1,"state").get<SymR2>("stress_measure",
                                                                                        "overstress");
   }
 
@@ -138,7 +138,7 @@ YieldFunction::make_stress_measure_input(LabeledVector in) const
   
   // Get the input to the stress measure
   TorchSize nbatch = in.batch_size();
-  LabeledVector sm_input(nbatch, _stress_measure.input());
+  LabeledVector sm_input(nbatch, stress_measure.input());
   sm_input.slice("state").set(overstress, "overstress");
 
   return sm_input;

@@ -21,6 +21,8 @@ public:
   const LabeledAxisAccessor yield_function;
   const LabeledAxisAccessor isotropic_hardening;
   const LabeledAxisAccessor kinematic_hardening;
+  /// Stress measure
+  const StressMeasure & stress_measure;
 
 protected:
   /// The value of the yield function
@@ -36,9 +38,6 @@ private:
   LabeledVector make_stress_measure_input(LabeledVector in) const;
 
 protected:
-  /// Stress measure
-  const StressMeasure & _stress_measure;
-
   /// Yield stress
   Scalar _s0;
 

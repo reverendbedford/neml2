@@ -20,6 +20,12 @@ Scalar::operator-() const
 }
 
 Scalar
+Scalar::pow(Scalar n) const
+{
+  return torch::pow(*this, n);
+}
+
+Scalar
 operator+(const Scalar & a, const Scalar & b)
 {
   return torch::operator+(a, b);

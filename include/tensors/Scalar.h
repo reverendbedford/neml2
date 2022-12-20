@@ -29,6 +29,9 @@ public:
   /// Negation
   Scalar operator-() const;
 
+  /// Exponentiation
+  Scalar pow(Scalar n) const;
+
   /// The derivative of a Scalar with respect to itself
   [[nodiscard]] static Scalar identity_map() { return 1; }
 };
@@ -60,6 +63,7 @@ Scalar macaulay(const Scalar & a, const Scalar & a0);
 Scalar dmacaulay(const Scalar & a, const Scalar & a0);
 /// @}
 
-/// Exponentiation
+/// Exponential function
 Scalar exp(const Scalar & a);
+
 } // namespace neml2
