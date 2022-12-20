@@ -56,4 +56,7 @@ BatchTensor<1> operator/(const Scalar & a, const BatchTensor<1> & b);
 Scalar macaulay(const Scalar & a, const Scalar & a0);
 Scalar dmacaulay(const Scalar & a, const Scalar & a0);
 /// @}
+
+/// Exponentiation
+Scalar exp(const Scalar & a);
 } // namespace neml2

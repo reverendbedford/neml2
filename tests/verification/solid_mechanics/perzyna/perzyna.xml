@@ -28,6 +28,36 @@
       </flow>
     </rule>
   </isolinear>
+  <isovoce type="GeneralIntegrator">
+    <elastic type="IsotropicLinearElasticModel">
+      <m1>124000.0</m1>
+      <m1_type>youngs</m1_type>
+      <m2>0.32</m2>
+      <m2_type>poissons</m2_type>
+    </elastic>
+
+    <rule type="TVPFlowRule">
+      <elastic type="IsotropicLinearElasticModel">
+        <m1>124000.0</m1>
+        <m1_type>youngs</m1_type>
+        <m2>0.32</m2>
+        <m2_type>poissons</m2_type>
+      </elastic>
+
+      <flow type="PerzynaFlowRule">
+        <surface type="IsoJ2"/>
+        <hardening type="VoceIsotropicHardeningRule">
+          <s0>10.0</s0>
+          <R>100.0</R>
+          <d>1.1</d>
+        </hardening>
+        <g type="GPowerLaw">
+          <n>5.0</n>
+          <eta>500.0</eta>
+        </g>
+      </flow>
+    </rule>
+  </isovoce>
   <combined type="GeneralIntegrator">
     <elastic type="IsotropicLinearElasticModel">
       <m1>124000.0</m1>

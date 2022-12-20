@@ -112,4 +112,11 @@ dmacaulay(const Scalar & a, const Scalar & a0)
 {
   return torch::heaviside(a, a0);
 }
+
+Scalar
+exp(const Scalar & a)
+{
+  return Scalar(torch::exp(a));
+}
+
 } // namespace neml2
