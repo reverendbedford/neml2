@@ -1,7 +1,7 @@
 #pragma once
 
-#include "tensors/Scalar.h"
-#include "tensors/LabeledVector.h"
+#include "neml2/tensors/Scalar.h"
+#include "neml2/tensors/LabeledVector.h"
 
 /// Derivative of a LabeledVector(LabeledVector) function
 template <typename F, neml2::TorchSize D>

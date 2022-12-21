@@ -1,7 +1,7 @@
 #pragma once
 
-#include "models/Model.h"
-#include "models/ADModel.h"
+#include "neml2/models/Model.h"
+#include "neml2/models/ADModel.h"
 
 template <bool is_ad>
 using SampleRateModelBase = std::conditional_t<is_ad, neml2::ADModel, neml2::Model>;

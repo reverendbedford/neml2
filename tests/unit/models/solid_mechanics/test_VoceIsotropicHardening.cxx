@@ -1,7 +1,7 @@
 #include <catch2/catch.hpp>
 
 #include "TestUtils.h"
-#include "models/solid_mechanics/VoceIsotropicHardening.h"
+#include "neml2/models/solid_mechanics/VoceIsotropicHardening.h"
 
 using namespace neml2;
 

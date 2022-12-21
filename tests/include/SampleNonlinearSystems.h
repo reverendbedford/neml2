@@ -1,6 +1,6 @@
 #pragma once
 
-#include "solvers/NonlinearSystem.h"
+#include "neml2/solvers/NonlinearSystem.h"
 
 /// Test system of equations, just also gives you the exact solution
 class TestNonlinearSystem : public neml2::NonlinearSystem

@@ -1,7 +1,7 @@
 #include <catch2/catch.hpp>
 
-#include "tensors/SymR2.h"
-#include "tensors/SymSymR4.h"
+#include "neml2/tensors/SymR2.h"
+#include "neml2/tensors/SymSymR4.h"
 
 using namespace neml2;
 

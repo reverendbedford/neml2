@@ -2,7 +2,7 @@
 
 #include "StructuralDriver.h"
 
-#include "misc/types.h"
+#include "neml2/misc/types.h"
 
 #include <iostream>
 #include <fstream>

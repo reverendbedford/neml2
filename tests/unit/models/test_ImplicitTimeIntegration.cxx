@@ -2,7 +2,7 @@
 
 #include "TestUtils.h"
 #include "SampleRateModel.h"
-#include "models/ImplicitTimeIntegration.h"
+#include "neml2/models/ImplicitTimeIntegration.h"
 
 using namespace neml2;
 

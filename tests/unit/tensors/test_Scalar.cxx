@@ -1,6 +1,6 @@
 #include <catch2/catch.hpp>
 
-#include "tensors/Scalar.h"
+#include "neml2/tensors/Scalar.h"
 
 using namespace neml2;
 

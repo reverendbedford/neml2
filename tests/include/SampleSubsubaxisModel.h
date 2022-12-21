@@ -1,6 +1,6 @@
 #pragma once
 
-#include "models/Model.h"
+#include "neml2/models/Model.h"
 
 // A dummy model containing a sub-sub-axis for testing purposes
 class SampleSubsubaxisModel : public neml2::Model

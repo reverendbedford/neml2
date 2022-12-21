@@ -1,9 +1,9 @@
 #include <catch2/catch.hpp>
 
 #include "TestUtils.h"
-#include "models/solid_mechanics/J2StressMeasure.h"
-#include "models/solid_mechanics/YieldFunction.h"
-#include "models/solid_mechanics/ChabochePlasticHardening.h"
+#include "neml2/models/solid_mechanics/J2StressMeasure.h"
+#include "neml2/models/solid_mechanics/YieldFunction.h"
+#include "neml2/models/solid_mechanics/ChabochePlasticHardening.h"
 
 using namespace neml2;
 

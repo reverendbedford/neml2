@@ -1,6 +1,6 @@
 #include <catch2/catch.hpp>
 
-#include "tensors/LabeledAxis.h"
+#include "neml2/tensors/LabeledAxis.h"
 
 using namespace neml2;
 

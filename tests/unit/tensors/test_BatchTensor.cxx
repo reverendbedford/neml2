@@ -2,7 +2,7 @@
 
 #include <catch2/catch.hpp>
 
-#include "tensors/BatchTensor.h"
+#include "neml2/tensors/BatchTensor.h"
 
 using namespace neml2;
 

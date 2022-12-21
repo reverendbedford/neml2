@@ -1,7 +1,7 @@
 #include <catch2/catch.hpp>
 
 #include "TestUtils.h"
-#include "models/SumModel.h"
+#include "neml2/models/SumModel.h"
 
 using namespace neml2;
 
