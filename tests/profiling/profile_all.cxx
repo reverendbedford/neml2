@@ -7,9 +7,9 @@
 #include <catch2/catch.hpp>
 
 #ifdef ENABLE_BENCHMARK
-#include "tensor/Scalar.h"
-#include "tensor/SymR2.h"
-#include "tensor/SymSymR4.h"
+#include "neml2/tensor/Scalar.h"
+#include "neml2/tensor/SymR2.h"
+#include "neml2/tensor/SymSymR4.h"
 
 using namespace neml2;
 

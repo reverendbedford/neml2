@@ -4,7 +4,7 @@
 
 #include <torch/torch.h>
 
-#include "models/Model.h"
+#include "neml2/models/Model.h"
 
 /// Simple object to read in a verification test
 class VerificationTest

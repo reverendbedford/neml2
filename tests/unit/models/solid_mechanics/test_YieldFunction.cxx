@@ -1,12 +1,12 @@
 #include <catch2/catch.hpp>
 
 #include "TestUtils.h"
-#include "models/solid_mechanics/J2StressMeasure.h"
-#include "models/solid_mechanics/YieldFunction.h"
-#include "models/solid_mechanics/IsotropicHardeningYieldFunction.h"
-#include "models/solid_mechanics/KinematicHardeningYieldFunction.h"
-#include "models/solid_mechanics/IsotropicAndKinematicHardeningYieldFunction.h"
-#include "models/solid_mechanics/PerfectlyPlasticYieldFunction.h"
+#include "neml2/models/solid_mechanics/J2StressMeasure.h"
+#include "neml2/models/solid_mechanics/YieldFunction.h"
+#include "neml2/models/solid_mechanics/IsotropicHardeningYieldFunction.h"
+#include "neml2/models/solid_mechanics/KinematicHardeningYieldFunction.h"
+#include "neml2/models/solid_mechanics/IsotropicAndKinematicHardeningYieldFunction.h"
+#include "neml2/models/solid_mechanics/PerfectlyPlasticYieldFunction.h"
 
 using namespace neml2;
 

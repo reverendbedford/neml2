@@ -1,7 +1,7 @@
 #include <catch2/catch.hpp>
 
 #include "SampleNonlinearSystems.h"
-#include "solvers/NewtonNonlinearSolver.h"
+#include "neml2/solvers/NewtonNonlinearSolver.h"
 
 using namespace neml2;
 

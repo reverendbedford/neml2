@@ -1,5 +1,5 @@
 #include "SampleRateModel.h"
-#include "tensors/SymSymR4.h"
+#include "neml2/tensors/SymSymR4.h"
 
 using namespace neml2;
 

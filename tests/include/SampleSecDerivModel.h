@@ -1,7 +1,7 @@
 #pragma once
 
-#include "models/SecDerivModel.h"
-#include "models/ADSecDerivModel.h"
+#include "neml2/models/SecDerivModel.h"
+#include "neml2/models/ADSecDerivModel.h"
 
 template <bool is_ad>
 using SampleSecDerivModelBase =

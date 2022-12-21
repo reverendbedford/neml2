@@ -1,6 +1,6 @@
 #pragma once
 
-#include "models/Model.h"
+#include "neml2/models/Model.h"
 
 /// Drive a structural model
 class StructuralDriver

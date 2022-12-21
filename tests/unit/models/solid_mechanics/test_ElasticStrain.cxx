@@ -1,7 +1,7 @@
 #include <catch2/catch.hpp>
 
 #include "TestUtils.h"
-#include "models/solid_mechanics/ElasticStrain.h"
+#include "neml2/models/solid_mechanics/ElasticStrain.h"
 
 using namespace neml2;
 

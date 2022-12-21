@@ -1,6 +1,6 @@
 #include <catch2/catch.hpp>
 
-#include "tensors/FixedDimTensor.h"
+#include "neml2/tensors/FixedDimTensor.h"
 
 using namespace neml2;
 

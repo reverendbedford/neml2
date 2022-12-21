@@ -2,9 +2,9 @@
 
 #include "TestUtils.h"
 #include "SampleRateModel.h"
-#include "models/ImplicitTimeIntegration.h"
-#include "models/ImplicitUpdate.h"
-#include "solvers/NewtonNonlinearSolver.h"
+#include "neml2/models/ImplicitTimeIntegration.h"
+#include "neml2/models/ImplicitUpdate.h"
+#include "neml2/solvers/NewtonNonlinearSolver.h"
 
 using namespace neml2;
 

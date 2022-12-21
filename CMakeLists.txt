@@ -39,7 +39,7 @@ message(STATUS "MKL_ROOT=${MKL_ROOT}")
 LINK_DIRECTORIES(${MKL_ROOT}/lib)
 
 # base library
-add_subdirectory(src)
+add_subdirectory(src/neml2)
 
 # tests
 add_subdirectory(tests)
