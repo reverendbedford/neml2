@@ -4,8 +4,9 @@ namespace neml2
 {
 KinematicHardening::KinematicHardening(const std::string & name)
   : Model(name),
-    cauchy_stress(declareInputVariable<SymR2>({"state", "cauchy_stress"})),
-    mandel_stress(declareOutputVariable<SymR2>({"state", "mandel_stress"}))
+    plastic_strain(declareInputVariable<SymR2>({"state", "internal_state", "plastic_strain"})),
+    kinematic_hardening(
+        declareOutputVariable<SymR2>({"state", "hardening_interface", "kinematic_hardening"}))
 {
   setup();
 }

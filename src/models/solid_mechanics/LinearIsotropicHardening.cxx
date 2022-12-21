@@ -2,9 +2,8 @@
 
 namespace neml2
 {
-LinearIsotropicHardening::LinearIsotropicHardening(const std::string & name, Scalar s0, Scalar K)
+LinearIsotropicHardening::LinearIsotropicHardening(const std::string & name, Scalar K)
   : IsotropicHardening(name),
-    _s0(register_parameter("yield_stress", s0)),
     _K(register_parameter("hardening_modulus", K))
 {
 }
@@ -15,7 +14,7 @@ LinearIsotropicHardening::set_value(LabeledVector in,
                                     LabeledMatrix * dout_din) const
 {
   // Map from equivalent plastic strain --> isotropic hardening
-  auto g = _s0 + _K * in.get<Scalar>(equivalent_plastic_strain);
+  auto g = _K * in.get<Scalar>(equivalent_plastic_strain);
 
   // Set the output
   out.set(g, isotropic_hardening);

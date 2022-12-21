@@ -5,11 +5,12 @@
 #include "models/ComposedModel.h"
 #include "models/solid_mechanics/TotalStrain.h"
 #include "models/solid_mechanics/LinearElasticity.h"
-#include "models/solid_mechanics/NoKinematicHardening.h"
+#include "models/solid_mechanics/IsotropicMandelStress.h"
 #include "models/solid_mechanics/LinearIsotropicHardening.h"
-#include "models/solid_mechanics/J2IsotropicYieldFunction.h"
+#include "models/solid_mechanics/J2StressMeasure.h"
+#include "models/solid_mechanics/YieldFunction.h"
 #include "models/solid_mechanics/AssociativePlasticFlowDirection.h"
-#include "models/solid_mechanics/AssociativePlasticHardening.h"
+#include "models/solid_mechanics/AssociativeIsotropicPlasticHardening.h"
 #include "models/solid_mechanics/PerzynaPlasticFlowRate.h"
 #include "models/solid_mechanics/PlasticStrainRate.h"
 #include "models/ImplicitTimeIntegration.h"
@@ -46,15 +47,16 @@ TEST_CASE("Uniaxial stress regression test", "[stress control]")
       std::make_shared<IdentityMap<SymR2>>("input_stress",
                                            std::vector<std::string>{"forces", "cauchy_stress"},
                                            std::vector<std::string>{"state", "cauchy_stress"});
-  auto kinharden = std::make_shared<NoKinematicHardening>("kinematic_hardening");
-  auto isoharden = std::make_shared<LinearIsotropicHardening>("isotropic_hardening", s0, K);
-  auto yieldfunc = std::make_shared<J2IsotropicYieldFunction>("yield_function");
+  auto mandel_stress = std::make_shared<IsotropicMandelStress>("mandel_stress");
+  auto isoharden = std::make_shared<LinearIsotropicHardening>("isotropic_hardening", K);
+  auto sm = std::make_shared<J2StressMeasure>("stress_measure");
+  auto yieldfunc = std::make_shared<YieldFunction>("yield_function", sm, s0, true, false);
   auto hrate = std::make_shared<PerzynaPlasticFlowRate>("hrate", eta, n);
-  auto eprate = std::make_shared<AssociativePlasticHardening>("ep_rate", yieldfunc);
+  auto eprate = std::make_shared<AssociativeIsotropicPlasticHardening>("ep_rate", yieldfunc);
   auto rate = std::make_shared<ComposedModel>(
       "viscoplasticity",
       std::vector<std::shared_ptr<Model>>{
-          input_stress, kinharden, isoharden, yieldfunc, hrate, eprate});
+          input_stress, mandel_stress, isoharden, yieldfunc, hrate, eprate});
 
   // The second part:
   // Imput:  [force] cauchy stress
@@ -79,8 +81,8 @@ TEST_CASE("Uniaxial stress regression test", "[stress control]")
   auto strain = std::make_shared<TimeIntegration<SymR2>>("total_strain");
   auto output_ep = std::make_shared<IdentityMap<Scalar>>(
       "output_ep",
-      std::vector<std::string>{"state", "equivalent_plastic_strain"},
-      std::vector<std::string>{"state", "equivalent_plastic_strain"});
+      std::vector<std::string>{"state", "internal_state", "equivalent_plastic_strain"},
+      std::vector<std::string>{"state", "internal_state", "equivalent_plastic_strain"});
   auto input_strain_n =
       std::make_shared<IdentityMap<SymR2>>("input_strain_n",
                                            std::vector<std::string>{"old_state", "total_strain"},
@@ -99,7 +101,7 @@ TEST_CASE("Uniaxial stress regression test", "[stress control]")
       std::vector<std::shared_ptr<Model>>{input_stress,
                                           return_map,
                                           isoharden,
-                                          kinharden,
+                                          mandel_stress,
                                           yieldfunc,
                                           direction,
                                           hrate,

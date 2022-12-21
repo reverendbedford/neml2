@@ -5,11 +5,12 @@
 #include "models/ComposedModel.h"
 #include "models/solid_mechanics/ElasticStrain.h"
 #include "models/solid_mechanics/LinearElasticity.h"
-#include "models/solid_mechanics/NoKinematicHardening.h"
+#include "models/solid_mechanics/IsotropicMandelStress.h"
 #include "models/solid_mechanics/LinearIsotropicHardening.h"
-#include "models/solid_mechanics/J2IsotropicYieldFunction.h"
+#include "models/solid_mechanics/J2StressMeasure.h"
+#include "models/solid_mechanics/YieldFunction.h"
 #include "models/solid_mechanics/AssociativePlasticFlowDirection.h"
-#include "models/solid_mechanics/AssociativePlasticHardening.h"
+#include "models/solid_mechanics/AssociativeIsotropicPlasticHardening.h"
 #include "models/solid_mechanics/PerzynaPlasticFlowRate.h"
 #include "models/solid_mechanics/PlasticStrainRate.h"
 #include "models/ImplicitTimeIntegration.h"
@@ -39,12 +40,13 @@ TEST_CASE("Alternative composition of viscoplasticity", "[viscoplasticity altern
   Scalar n = 2;
   auto Ee = std::make_shared<ElasticStrain>("elastic_strain");
   auto S = std::make_shared<CauchyStressFromElasticStrain>("cauchy_stress", C);
-  auto M = std::make_shared<NoKinematicHardening>("mandel_stress");
-  auto gamma = std::make_shared<LinearIsotropicHardening>("isotropic_hardening", s0, K);
-  auto f = std::make_shared<J2IsotropicYieldFunction>("yield_function");
+  auto M = std::make_shared<IsotropicMandelStress>("mandel_stress");
+  auto gamma = std::make_shared<LinearIsotropicHardening>("isotropic_hardening", K);
+  auto sm = std::make_shared<J2StressMeasure>("stress_measure");
+  auto f = std::make_shared<YieldFunction>("yield_function", sm, s0, true, false);
   auto gammarate = std::make_shared<PerzynaPlasticFlowRate>("hardening_rate", eta, n);
   auto Np = std::make_shared<AssociativePlasticFlowDirection>("plastic_flow_direction", f);
-  auto eprate = std::make_shared<AssociativePlasticHardening>("ep_rate", f);
+  auto eprate = std::make_shared<AssociativeIsotropicPlasticHardening>("ep_rate", f);
   auto Eprate = std::make_shared<PlasticStrainRate>("plastic_strain_rate");
 
   auto rate = std::make_shared<ComposedModel>(
@@ -64,8 +66,8 @@ TEST_CASE("Alternative composition of viscoplasticity", "[viscoplasticity altern
                                            std::vector<std::string>{"state", "plastic_strain"});
   auto output_ep = std::make_shared<IdentityMap<Scalar>>(
       "output_equivalent_plastic_strain",
-      std::vector<std::string>{"state", "equivalent_plastic_strain"},
-      std::vector<std::string>{"state", "equivalent_plastic_strain"});
+      std::vector<std::string>{"state", "internal_state", "equivalent_plastic_strain"},
+      std::vector<std::string>{"state", "internal_state", "equivalent_plastic_strain"});
 
   auto model = std::make_shared<ComposedModel>(
       "viscoplasticity",

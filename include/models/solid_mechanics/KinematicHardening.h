@@ -9,7 +9,7 @@ class KinematicHardening : public Model
 public:
   KinematicHardening(const std::string & name);
 
-  const LabeledAxisAccessor cauchy_stress;
-  const LabeledAxisAccessor mandel_stress;
+  const LabeledAxisAccessor plastic_strain;
+  const LabeledAxisAccessor kinematic_hardening;
 };
 } // namespace neml2

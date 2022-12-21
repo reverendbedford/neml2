@@ -4,14 +4,16 @@
 
 namespace neml2
 {
-class NoKinematicHardening : public KinematicHardening
+class LinearKinematicHardening : public KinematicHardening
 {
 public:
-  using KinematicHardening::KinematicHardening;
+  LinearKinematicHardening(const std::string & name, Scalar H);
 
 protected:
-  /// No kinematic hardening
+  /// Simple linear map between equivalent strain and hardening
   virtual void
   set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const;
+
+  Scalar _H;
 };
 } // namespace neml2

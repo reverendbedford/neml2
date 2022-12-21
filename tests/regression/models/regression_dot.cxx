@@ -10,11 +10,12 @@
 #include "models/ComposedModel.h"
 #include "models/solid_mechanics/ElasticStrain.h"
 #include "models/solid_mechanics/LinearElasticity.h"
-#include "models/solid_mechanics/NoKinematicHardening.h"
+#include "models/solid_mechanics/IsotropicMandelStress.h"
 #include "models/solid_mechanics/LinearIsotropicHardening.h"
-#include "models/solid_mechanics/J2IsotropicYieldFunction.h"
+#include "models/solid_mechanics/J2StressMeasure.h"
+#include "models/solid_mechanics/YieldFunction.h"
 #include "models/solid_mechanics/AssociativePlasticFlowDirection.h"
-#include "models/solid_mechanics/AssociativePlasticHardening.h"
+#include "models/solid_mechanics/AssociativeIsotropicPlasticHardening.h"
 #include "models/solid_mechanics/PerzynaPlasticFlowRate.h"
 #include "models/solid_mechanics/PlasticStrainRate.h"
 #include "models/ImplicitTimeIntegration.h"
@@ -36,18 +37,31 @@ TEST_CASE("A Model can output the function graph in DOT format", "[DOT]")
   auto Erate = std::make_shared<ForceRate<SymR2>>("total_strain");
   auto Eerate = std::make_shared<ElasticStrainRate>("elastic_strain_rate");
   auto elasticity = std::make_shared<CauchyStressRateFromElasticStrainRate>("elasticity", C);
-  auto kinharden = std::make_shared<NoKinematicHardening>("kinematic_hardening");
-  auto isoharden = std::make_shared<LinearIsotropicHardening>("isotropic_hardening", s0, K);
-  auto yield = std::make_shared<J2IsotropicYieldFunction>("yield_function");
+  auto mandel_stress = std::make_shared<IsotropicMandelStress>("mandel_stress");
+  auto isoharden = std::make_shared<LinearIsotropicHardening>("isotropic_hardening", K);
+  auto sm = std::make_shared<J2StressMeasure>("stress_measure");
+  auto yield = std::make_shared<YieldFunction>("yield_function", sm, s0, true, false);
   auto direction =
       std::make_shared<AssociativePlasticFlowDirection>("plastic_flow_direction", yield);
-  auto eprate = std::make_shared<AssociativePlasticHardening>("ep_rate", yield);
+  auto eprate = std::make_shared<AssociativeIsotropicPlasticHardening>("ep_rate", yield);
   auto hrate = std::make_shared<PerzynaPlasticFlowRate>("hardening_rate", eta, n);
   auto Eprate = std::make_shared<PlasticStrainRate>("plastic_strain_rate");
 
-  auto rate = ComposedModel(
-      "rate",
-      {Erate, Eerate, elasticity, kinharden, isoharden, yield, direction, eprate, hrate, Eprate});
+  auto rate = ComposedModel("rate",
+                            {Erate,
+                             Eerate,
+                             elasticity,
+                             mandel_stress,
+                             isoharden,
+                             yield,
+                             direction,
+                             eprate,
+                             hrate,
+                             Eprate});
+
+  // Write the gold file
+  // std::ofstream ogold("regression/models/regression_dot.txt");;
+  // rate.to_dot(ogold);
 
   // Read the gold file
   std::ifstream gold("regression/models/regression_dot.txt");

@@ -1,7 +1,8 @@
 #include <catch2/catch.hpp>
 
 #include "TestUtils.h"
-#include "models/solid_mechanics/J2IsotropicYieldFunction.h"
+#include "models/solid_mechanics/YieldFunction.h"
+#include "models/solid_mechanics/J2StressMeasure.h"
 #include "models/solid_mechanics/AssociativePlasticFlowDirection.h"
 
 using namespace neml2;
@@ -9,7 +10,9 @@ using namespace neml2;
 TEST_CASE("AssociativePlasticFlowDirection", "[AssociativePlasticFlowDirection]")
 {
   TorchSize nbatch = 10;
-  auto yield = std::make_shared<J2IsotropicYieldFunction>("yield_function");
+  Scalar s0 = 10.0;
+  auto sm = std::make_shared<J2StressMeasure>("stress_measure");
+  auto yield = std::make_shared<YieldFunction>("yield_function", sm, s0, true, false);
   auto direction = AssociativePlasticFlowDirection("plastic_flow_direction", yield);
 
   SECTION("model definition")
@@ -25,7 +28,7 @@ TEST_CASE("AssociativePlasticFlowDirection", "[AssociativePlasticFlowDirection]"
   {
     LabeledVector in(nbatch, direction.input());
     auto M = SymR2::init(100, 110, 100, 100, 100, 100).batch_expand(nbatch);
-    in.slice("state").set(Scalar(200, nbatch), "isotropic_hardening");
+    in.slice("state").slice("hardening_interface").set(Scalar(200, nbatch), "isotropic_hardening");
     in.slice("state").set(M, "mandel_stress");
 
     auto exact = direction.dvalue(in);

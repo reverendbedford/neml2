@@ -1,21 +1,23 @@
-#include "models/solid_mechanics/AssociativePlasticHardening.h"
+#include "models/solid_mechanics/AssociativeIsotropicPlasticHardening.h"
 #include "tensors/SymSymR4.h"
 
 namespace neml2
 {
-AssociativePlasticHardening::AssociativePlasticHardening(
-    const std::string & name, const std::shared_ptr<IsotropicYieldFunction> & f)
+AssociativeIsotropicPlasticHardening::AssociativeIsotropicPlasticHardening(
+    const std::string & name, const std::shared_ptr<YieldFunction> & f)
   : PlasticHardening(name),
-    yield_function(*f)
+    yield_function(*f),
+    equivalent_plastic_strain_rate(declareOutputVariable<Scalar>(
+        {"state", "internal_state", "equivalent_plastic_strain_rate"}))
 {
   register_model(f);
   setup();
 }
 
 void
-AssociativePlasticHardening::set_value(LabeledVector in,
-                                       LabeledVector out,
-                                       LabeledMatrix * dout_din) const
+AssociativeIsotropicPlasticHardening::set_value(LabeledVector in,
+                                                LabeledVector out,
+                                                LabeledMatrix * dout_din) const
 {
   // For associative flow,
   // ep_dot = - gamma_dot * df/dh

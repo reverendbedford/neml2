@@ -8,9 +8,21 @@ Scalar::Scalar(double init, TorchSize batch_size)
 }
 
 Scalar
+Scalar::zeros(TorchSize batch_size)
+{
+  return Scalar(0.0, batch_size);
+}
+
+Scalar
 Scalar::operator-() const
 {
   return -torch::Tensor(*this);
+}
+
+Scalar
+Scalar::pow(Scalar n) const
+{
+  return torch::pow(*this, n);
 }
 
 Scalar
@@ -112,4 +124,11 @@ dmacaulay(const Scalar & a, const Scalar & a0)
 {
   return torch::heaviside(a, a0);
 }
+
+Scalar
+exp(const Scalar & a)
+{
+  return Scalar(torch::exp(a));
+}
+
 } // namespace neml2

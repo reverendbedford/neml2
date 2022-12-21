@@ -16,6 +16,12 @@ SymR2::zeros()
 }
 
 SymR2
+SymR2::zeros(TorchSize batch_size)
+{
+  return torch::zeros({batch_size, 6}, TorchDefaults);
+}
+
+SymR2
 SymR2::init(const Scalar & a)
 {
   torch::Tensor zero = torch::zeros_like(a, TorchDefaults);

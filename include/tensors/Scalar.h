@@ -23,8 +23,14 @@ public:
   /// ~~~~~~~~~~~~~~~~~~~~
   Scalar(double init, TorchSize batch_size = 1);
 
+  /// Fill with zeros
+  static Scalar zeros(TorchSize batch_size);
+
   /// Negation
   Scalar operator-() const;
+
+  /// Exponentiation
+  Scalar pow(Scalar n) const;
 
   /// The derivative of a Scalar with respect to itself
   [[nodiscard]] static Scalar identity_map() { return 1; }
@@ -56,4 +62,8 @@ BatchTensor<1> operator/(const Scalar & a, const BatchTensor<1> & b);
 Scalar macaulay(const Scalar & a, const Scalar & a0);
 Scalar dmacaulay(const Scalar & a, const Scalar & a0);
 /// @}
+
+/// Exponential function
+Scalar exp(const Scalar & a);
+
 } // namespace neml2
