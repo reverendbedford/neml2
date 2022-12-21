@@ -69,8 +69,8 @@ TEST_CASE("Chaboche regression", "[Chaboche]")
   auto bs1_value = std::make_shared<IdentityMap<SymR2>>("bs1_value", bs_name_1, bs_name_1);
   auto bs2_value = std::make_shared<IdentityMap<SymR2>>("bs2_value", bs_name_2, bs_name_2);
 
-  auto bs1 = std::make_shared<ChabochePlasticHardening>("chaboche_1", C1, g1, A1, a1, yield, "_1");
-  auto bs2 = std::make_shared<ChabochePlasticHardening>("chaboche_2", C2, g2, A2, a2, yield, "_2");
+  auto bs1 = std::make_shared<ChabochePlasticHardening>("chaboche_1", C1, g1, A1, a1, "_1");
+  auto bs2 = std::make_shared<ChabochePlasticHardening>("chaboche_2", C2, g2, A2, a2, "_2");
 
   std::vector<std::vector<std::string>> bs_names({bs_name_1, bs_name_2});
   std::vector<std::string> kinname({"state", "hardening_interface", "kinematic_hardening"});
