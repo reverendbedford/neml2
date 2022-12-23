@@ -23,6 +23,13 @@ LabeledMatrix::LabeledMatrix(const LabeledTensor<1, 2> & other)
 {
 }
 
+LabeledMatrix
+LabeledMatrix::identity(TorchSize nbatch, const LabeledAxis & axis)
+{
+  return LabeledTensor<1, 2>(
+      BatchTensor<1>::identity(axis.storage_size()).batch_expand_copy({nbatch}), axis, axis);
+}
+
 void
 LabeledMatrix::accumulate(const LabeledMatrix & other, bool recursive)
 {

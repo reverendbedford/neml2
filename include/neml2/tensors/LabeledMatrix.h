@@ -18,6 +18,9 @@ public:
   /// Construct from two already-setup `LabeledVector`s (can infer batch)
   LabeledMatrix(const LabeledVector & A, const LabeledVector & B);
 
+  /// Construct an identity
+  static LabeledMatrix identity(TorchSize nbatch, const LabeledAxis & axis);
+
   /// Since we assume a flat batch for now, we can define this convenient method to retrive the single batch size.
   TorchSize batch_size() const { return tensor().batch_sizes()[0]; }
 

@@ -13,8 +13,7 @@ class ComposedModel : public Model
 public:
   ComposedModel(const std::string & name,
                 const std::vector<std::shared_ptr<Model>> & models,
-                const std::vector<std::shared_ptr<Model>> & input_models = {},
-                const std::vector<std::shared_ptr<Model>> & output_models = {});
+                const std::vector<LabeledAxisAccessor> & additional_outputs = {});
 
   /// Return dependencies of a registered model
   const std::vector<std::shared_ptr<Model>> & dependent_models(const std::string & name) const;
@@ -33,11 +32,13 @@ protected:
   virtual void
   set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const;
 
-  /// Add a node in the DAG
-  void add_node(const std::shared_ptr<Model> & model);
+  void register_dependency(const std::vector<std::shared_ptr<Model>> & models);
 
   /// Register a dependency, e.g., adding a directed edge in the DAG
-  void register_dependency(const std::shared_ptr<Model> & from, const std::shared_ptr<Model> & to);
+  void add_edge(const std::shared_ptr<Model> & from, const std::shared_ptr<Model> & to);
+
+  /// Add a node in the DAG
+  void add_node(const std::shared_ptr<Model> & model);
 
   /// Resolve dependency using topological traversal of the dependent models
   void resolve_dependency();
@@ -49,9 +50,6 @@ protected:
   /// This is also referred to as the adjacency matrix of a graph
   std::map<std::string, std::vector<std::shared_ptr<Model>>> _dependecies;
 
-  /// Leaf nodes in the DAG -- they define the inputs of this composed model graph
-  std::vector<std::shared_ptr<Model>> _input_models;
-
   /// Root node(s) in the DAG -- they define the outputs of this composed model graph
   std::vector<std::shared_ptr<Model>> _output_models;
 
@@ -59,11 +57,6 @@ protected:
   std::vector<std::shared_ptr<Model>> _evaluation_order;
 
 private:
-  /// Helper function to recurse the model graph to evaluate the total derivative
-  void chain_rule(const Model & i,
-                  const std::map<std::string, LabeledMatrix> & cached_dpout_dpin,
-                  LabeledMatrix dout_din) const;
-
   /// Dependency resolution helper
   void resolve_dependency(const std::shared_ptr<Model> & i,
                           std::vector<std::shared_ptr<Model>> & dep,

@@ -1,7 +1,6 @@
 #include <catch2/catch.hpp>
 
 #include "neml2/models/ComposedModel.h"
-#include "neml2/models/IdentityMap.h"
 #include "neml2/models/solid_mechanics/AssociativeIsotropicPlasticHardening.h"
 #include "neml2/models/solid_mechanics/ElasticStrain.h"
 #include "neml2/models/solid_mechanics/LinearElasticity.h"
@@ -70,9 +69,6 @@ TEST_CASE("Chaboche verification", "[StructuralVerificationTests]")
   std::vector<std::string> bs_name_1({"state", "internal_state", "backstress_1"});
   std::vector<std::string> bs_name_2({"state", "internal_state", "backstress_2"});
 
-  auto bs1_value = std::make_shared<IdentityMap<SymR2>>("bs1_value", bs_name_1, bs_name_1);
-  auto bs2_value = std::make_shared<IdentityMap<SymR2>>("bs2_value", bs_name_2, bs_name_2);
-
   auto bs1 = std::make_shared<ChabochePlasticHardening>("chaboche_1", C1, g1, A1, a1, "_1");
   auto bs2 = std::make_shared<ChabochePlasticHardening>("chaboche_2", C2, g2, A2, a2, "_2");
 
@@ -87,25 +83,20 @@ TEST_CASE("Chaboche verification", "[StructuralVerificationTests]")
   auto hrate = std::make_shared<PerzynaPlasticFlowRate>("hardening_rate", eta, n);
   auto Eprate = std::make_shared<PlasticStrainRate>("plastic_strain_rate");
 
-  auto rate = std::make_shared<ComposedModel>(
-      "rate",
-      std::vector<std::shared_ptr<Model>>{Erate,
-                                          Eerate,
-                                          elasticity,
-                                          mandel_stress,
-                                          isoharden,
-                                          bs1_value,
-                                          bs2_value,
-                                          bs1,
-                                          bs2,
-                                          kinharden,
-                                          yield,
-                                          direction,
-                                          eeprate,
-                                          hrate,
-                                          Eprate},
-      std::vector<std::shared_ptr<Model>>{
-          Erate, bs1_value, bs2_value, kinharden, mandel_stress, isoharden});
+  auto rate = std::make_shared<ComposedModel>("rate",
+                                              std::vector<std::shared_ptr<Model>>{Erate,
+                                                                                  Eerate,
+                                                                                  elasticity,
+                                                                                  mandel_stress,
+                                                                                  isoharden,
+                                                                                  bs1,
+                                                                                  bs2,
+                                                                                  kinharden,
+                                                                                  yield,
+                                                                                  direction,
+                                                                                  eeprate,
+                                                                                  hrate,
+                                                                                  Eprate});
 
   auto implicit_rate = std::make_shared<ImplicitTimeIntegration>("implicit_time_integration", rate);
   auto solver = std::make_shared<NewtonNonlinearSolver>(params);

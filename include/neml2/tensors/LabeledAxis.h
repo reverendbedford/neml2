@@ -38,8 +38,10 @@ struct LabeledAxisAccessor
 
   bool operator==(const LabeledAxisAccessor & other) const
   {
-    return item_names == other.item_names && storage_size == other.storage_size;
+    return item_names == other.item_names;
   }
+
+  bool operator<(const LabeledAxisAccessor & other) const { return item_names < other.item_names; }
 
   friend std::ostream & operator<<(std::ostream & os, const LabeledAxisAccessor & accessor);
 };
@@ -120,6 +122,9 @@ public:
 
   /// Add an arbitrary variable with known storage size.
   LabeledAxis & add(const std::string & name, TorchSize sz);
+
+  /// Add an arbitrary variable using a `LabeledAxisAccessor`
+  LabeledAxis & add(const LabeledAxisAccessor & accessor);
 
   /// Add prefix to the labels.
   /// Note that this method doesn't recurse through sub-axes.
@@ -234,6 +239,11 @@ public:
   static int level;
 
 private:
+  void add(LabeledAxis & axis,
+           TorchSize sz,
+           const std::vector<std::string>::const_iterator & cur,
+           const std::vector<std::string>::const_iterator & end) const;
+
   void merge(LabeledAxis & other,
              std::vector<std::string> subaxes,
              std::vector<LabeledAxisAccessor> & merged_vars);

@@ -16,7 +16,6 @@
 #include "neml2/models/ImplicitTimeIntegration.h"
 #include "neml2/models/ImplicitUpdate.h"
 #include "neml2/models/TimeIntegration.h"
-#include "neml2/models/IdentityMap.h"
 #include "neml2/models/ForceRate.h"
 #include "neml2/solvers/NewtonNonlinearSolver.h"
 #include "StructuralDriver.h"
@@ -56,24 +55,11 @@ TEST_CASE("Alternative composition of viscoplasticity", "[viscoplasticity altern
   auto surface = std::make_shared<ImplicitTimeIntegration>("yield_surface", rate);
   auto solver = std::make_shared<NewtonNonlinearSolver>(params);
   auto return_map = std::make_shared<ImplicitUpdate>("return_map", surface, solver);
-  auto strain =
-      std::make_shared<IdentityMap<SymR2>>("total_strain",
-                                           std::vector<std::string>{"forces", "total_strain"},
-                                           std::vector<std::string>{"forces", "total_strain"});
-  auto output_Ep =
-      std::make_shared<IdentityMap<SymR2>>("output_plastic_strain",
-                                           std::vector<std::string>{"state", "plastic_strain"},
-                                           std::vector<std::string>{"state", "plastic_strain"});
-  auto output_ep = std::make_shared<IdentityMap<Scalar>>(
-      "output_equivalent_plastic_strain",
-      std::vector<std::string>{"state", "internal_state", "equivalent_plastic_strain"},
-      std::vector<std::string>{"state", "internal_state", "equivalent_plastic_strain"});
 
   auto model = std::make_shared<ComposedModel>(
       "viscoplasticity",
-      std::vector<std::shared_ptr<Model>>{return_map, strain, Ee, S, output_Ep, output_ep},
-      std::vector<std::shared_ptr<Model>>{return_map, strain},
-      std::vector<std::shared_ptr<Model>>{output_Ep, output_ep});
+      std::vector<std::shared_ptr<Model>>{return_map, Ee, S},
+      std::vector<LabeledAxisAccessor>{Ee->plastic_strain, gamma->equivalent_plastic_strain});
 
   TorchSize nbatch = 1;
   TorchSize nsteps = 100;

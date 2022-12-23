@@ -27,26 +27,12 @@ protected:
   LabeledAxisAccessor
   declareVariable(LabeledAxis & axis, TorchSize sz, const std::vector<std::string> & names) const
   {
-    declareVariableHelper(axis, sz, names.begin(), names.end());
-    return LabeledAxisAccessor({names, sz});
+    LabeledAxisAccessor accessor({names, sz});
+    axis.add(accessor);
+    return accessor;
   }
 
 private:
-  /// Helper method to declare a variable recursively
-  void declareVariableHelper(LabeledAxis & axis,
-                             TorchSize sz,
-                             const std::vector<std::string>::const_iterator & cur,
-                             const std::vector<std::string>::const_iterator & end) const
-  {
-    if (cur == end - 1)
-      axis.add(*cur, sz);
-    else
-    {
-      axis.add<LabeledAxis>(*cur);
-      declareVariableHelper(axis.subaxis(*cur), sz, cur + 1, end);
-    }
-  }
-
   /// All the declared axes
   std::vector<std::shared_ptr<LabeledAxis>> _axes;
 };
