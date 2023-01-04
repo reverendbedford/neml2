@@ -20,7 +20,7 @@ ImplicitTimeIntegration::ImplicitTimeIntegration(const std::string & name,
   for (auto & merged_var : merged_vars)
   {
     merged_var.item_names.insert(merged_var.item_names.begin(), "old_state");
-    _consumed_vars.push_back(merged_var);
+    _consumed_vars.insert(merged_var);
   }
 
   setup();

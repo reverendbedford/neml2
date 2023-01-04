@@ -38,7 +38,7 @@ ImplicitUpdate::ImplicitUpdate(const std::string & name,
        consumed_var_it++)
     if (consumed_var_it->item_names[0] == "state")
     {
-      _provided_vars.push_back(*consumed_var_it);
+      _provided_vars.insert(*consumed_var_it);
       _consumed_vars.erase(consumed_var_it--);
     }
 

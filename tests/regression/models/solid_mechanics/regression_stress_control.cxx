@@ -71,30 +71,9 @@ TEST_CASE("Uniaxial stress regression test", "[stress control]")
   auto return_map = std::make_shared<ImplicitUpdate>("return_map", yield_surface, solver);
   auto direction = std::make_shared<AssociativePlasticFlowDirection>("flow_direction", yieldfunc);
   auto Eprate = std::make_shared<PlasticStrainRate>("plastic_strain_rate");
-  auto stressrate = std::make_shared<ForceRate<SymR2>>("cauchy_stress");
-  auto map_stressrate =
-      std::make_shared<IdentityMap<SymR2>>("map_stressrate",
-                                           std::vector<std::string>{"forces", "cauchy_stress_rate"},
-                                           std::vector<std::string>{"state", "cauchy_stress_rate"});
-  auto Eerate = std::make_shared<ElasticStrainRateFromCauchyStressRate>("elastic_strain_rate", S);
-  auto Erate = std::make_shared<TotalStrainRate>("total_strain_rate");
-  auto strain = std::make_shared<TimeIntegration<SymR2>>("total_strain");
-  auto output_ep = std::make_shared<IdentityMap<Scalar>>(
-      "output_ep",
-      std::vector<std::string>{"state", "internal_state", "equivalent_plastic_strain"},
-      std::vector<std::string>{"state", "internal_state", "equivalent_plastic_strain"});
-  auto input_strain_n =
-      std::make_shared<IdentityMap<SymR2>>("input_strain_n",
-                                           std::vector<std::string>{"old_state", "total_strain"},
-                                           std::vector<std::string>{"old_state", "total_strain"});
-  auto input_t_np1 =
-      std::make_shared<IdentityMap<Scalar>>("input_t_np1",
-                                            std::vector<std::string>{"forces", "time"},
-                                            std::vector<std::string>{"forces", "time"});
-  auto input_t_n =
-      std::make_shared<IdentityMap<Scalar>>("input_t_n",
-                                            std::vector<std::string>{"old_forces", "time"},
-                                            std::vector<std::string>{"old_forces", "time"});
+  auto Ep = std::make_shared<TimeIntegration<SymR2>>("plastic_strain");
+  auto Ee = std::make_shared<ElasticStrainFromCauchyStress>("elastic_strain", S);
+  auto strain = std::make_shared<TotalStrain>("total_strain");
 
   auto model = std::make_shared<ComposedModel>(
       "viscoplasticity",
@@ -106,18 +85,10 @@ TEST_CASE("Uniaxial stress regression test", "[stress control]")
                                           direction,
                                           hrate,
                                           Eprate,
-                                          stressrate,
-                                          map_stressrate,
-                                          Eerate,
-                                          Erate,
-                                          strain,
-                                          input_strain_n,
-                                          input_t_np1,
-                                          input_t_n,
-                                          output_ep},
-      std::vector<std::shared_ptr<Model>>{
-          return_map, input_stress, stressrate, input_strain_n, input_t_np1, input_t_n},
-      std::vector<std::shared_ptr<Model>>{output_ep});
+                                          Ep,
+                                          Ee,
+                                          strain},
+      std::vector<LabeledAxisAccessor>{Ep->var, isoharden->equivalent_plastic_strain});
 
   TorchSize nbatch = 20;
   TorchSize nsteps = 100;

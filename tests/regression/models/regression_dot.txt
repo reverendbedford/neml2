@@ -47,91 +47,91 @@ bgcolor = lightgrey
 }
 }
 subgraph cluster_9 {
-label = "mandel_stress"
-subgraph cluster_10 {
-label = "mandel_stress input"
-bgcolor = lightgrey
-"mandel_stress input" [label = "", style = invis]
-subgraph cluster_11 {
-label = "mandel_stress input forces"
-bgcolor = lightgrey
-"mandel_stress input forces time" [style = filled, color = white, shape = Square, label = "time [1]"]
-"mandel_stress input forces total_strain" [style = filled, color = white, shape = Square, label = "total_strain [6]"]
-}
-subgraph cluster_12 {
-label = "mandel_stress input old_forces"
-bgcolor = lightgrey
-"mandel_stress input old_forces time" [style = filled, color = white, shape = Square, label = "time [1]"]
-"mandel_stress input old_forces total_strain" [style = filled, color = white, shape = Square, label = "total_strain [6]"]
-}
-subgraph cluster_13 {
-label = "mandel_stress input state"
-bgcolor = lightgrey
-"mandel_stress input state cauchy_stress" [style = filled, color = white, shape = Square, label = "cauchy_stress [6]"]
-subgraph cluster_14 {
-label = "mandel_stress input state internal_state"
-bgcolor = lightgrey
-"mandel_stress input state internal_state equivalent_plastic_strain" [style = filled, color = white, shape = Square, label = "equivalent_plastic_strain [1]"]
-}
-}
-}
-subgraph cluster_15 {
-label = "mandel_stress output"
-bgcolor = lightgrey
-"mandel_stress output" [label = "", style = invis]
-subgraph cluster_16 {
-label = "mandel_stress output state"
-bgcolor = lightgrey
-"mandel_stress output state cauchy_stress_rate" [style = filled, color = white, shape = Square, label = "cauchy_stress_rate [6]"]
-subgraph cluster_17 {
-label = "mandel_stress output state internal_state"
-bgcolor = lightgrey
-"mandel_stress output state internal_state equivalent_plastic_strain_rate" [style = filled, color = white, shape = Square, label = "equivalent_plastic_strain_rate [1]"]
-}
-}
-}
-}
-subgraph cluster_18 {
 label = "isotropic_hardening"
-subgraph cluster_19 {
+subgraph cluster_10 {
 label = "isotropic_hardening input"
 bgcolor = lightgrey
 "isotropic_hardening input" [label = "", style = invis]
-subgraph cluster_20 {
+subgraph cluster_11 {
 label = "isotropic_hardening input forces"
 bgcolor = lightgrey
 "isotropic_hardening input forces time" [style = filled, color = white, shape = Square, label = "time [1]"]
 "isotropic_hardening input forces total_strain" [style = filled, color = white, shape = Square, label = "total_strain [6]"]
 }
-subgraph cluster_21 {
+subgraph cluster_12 {
 label = "isotropic_hardening input old_forces"
 bgcolor = lightgrey
 "isotropic_hardening input old_forces time" [style = filled, color = white, shape = Square, label = "time [1]"]
 "isotropic_hardening input old_forces total_strain" [style = filled, color = white, shape = Square, label = "total_strain [6]"]
 }
-subgraph cluster_22 {
+subgraph cluster_13 {
 label = "isotropic_hardening input state"
 bgcolor = lightgrey
 "isotropic_hardening input state cauchy_stress" [style = filled, color = white, shape = Square, label = "cauchy_stress [6]"]
-subgraph cluster_23 {
+subgraph cluster_14 {
 label = "isotropic_hardening input state internal_state"
 bgcolor = lightgrey
 "isotropic_hardening input state internal_state equivalent_plastic_strain" [style = filled, color = white, shape = Square, label = "equivalent_plastic_strain [1]"]
 }
 }
 }
-subgraph cluster_24 {
+subgraph cluster_15 {
 label = "isotropic_hardening output"
 bgcolor = lightgrey
 "isotropic_hardening output" [label = "", style = invis]
-subgraph cluster_25 {
+subgraph cluster_16 {
 label = "isotropic_hardening output state"
 bgcolor = lightgrey
 "isotropic_hardening output state cauchy_stress_rate" [style = filled, color = white, shape = Square, label = "cauchy_stress_rate [6]"]
-subgraph cluster_26 {
+subgraph cluster_17 {
 label = "isotropic_hardening output state internal_state"
 bgcolor = lightgrey
 "isotropic_hardening output state internal_state equivalent_plastic_strain_rate" [style = filled, color = white, shape = Square, label = "equivalent_plastic_strain_rate [1]"]
+}
+}
+}
+}
+subgraph cluster_18 {
+label = "mandel_stress"
+subgraph cluster_19 {
+label = "mandel_stress input"
+bgcolor = lightgrey
+"mandel_stress input" [label = "", style = invis]
+subgraph cluster_20 {
+label = "mandel_stress input forces"
+bgcolor = lightgrey
+"mandel_stress input forces time" [style = filled, color = white, shape = Square, label = "time [1]"]
+"mandel_stress input forces total_strain" [style = filled, color = white, shape = Square, label = "total_strain [6]"]
+}
+subgraph cluster_21 {
+label = "mandel_stress input old_forces"
+bgcolor = lightgrey
+"mandel_stress input old_forces time" [style = filled, color = white, shape = Square, label = "time [1]"]
+"mandel_stress input old_forces total_strain" [style = filled, color = white, shape = Square, label = "total_strain [6]"]
+}
+subgraph cluster_22 {
+label = "mandel_stress input state"
+bgcolor = lightgrey
+"mandel_stress input state cauchy_stress" [style = filled, color = white, shape = Square, label = "cauchy_stress [6]"]
+subgraph cluster_23 {
+label = "mandel_stress input state internal_state"
+bgcolor = lightgrey
+"mandel_stress input state internal_state equivalent_plastic_strain" [style = filled, color = white, shape = Square, label = "equivalent_plastic_strain [1]"]
+}
+}
+}
+subgraph cluster_24 {
+label = "mandel_stress output"
+bgcolor = lightgrey
+"mandel_stress output" [label = "", style = invis]
+subgraph cluster_25 {
+label = "mandel_stress output state"
+bgcolor = lightgrey
+"mandel_stress output state cauchy_stress_rate" [style = filled, color = white, shape = Square, label = "cauchy_stress_rate [6]"]
+subgraph cluster_26 {
+label = "mandel_stress output state internal_state"
+bgcolor = lightgrey
+"mandel_stress output state internal_state equivalent_plastic_strain_rate" [style = filled, color = white, shape = Square, label = "equivalent_plastic_strain_rate [1]"]
 }
 }
 }
@@ -180,8 +180,8 @@ bgcolor = lightgrey
 }
 }
 }
-"mandel_stress output" -> "yield_function input"[ltail = cluster_15, lhead = cluster_28, penwidth = 2]
-"isotropic_hardening output" -> "yield_function input"[ltail = cluster_24, lhead = cluster_28, penwidth = 2]
+"isotropic_hardening output" -> "yield_function input"[ltail = cluster_15, lhead = cluster_28, penwidth = 2]
+"mandel_stress output" -> "yield_function input"[ltail = cluster_24, lhead = cluster_28, penwidth = 2]
 }
 subgraph cluster_36 {
 label = "hardening_rate"
@@ -273,8 +273,8 @@ bgcolor = lightgrey
 }
 }
 }
-"mandel_stress output" -> "plastic_flow_direction input"[ltail = cluster_15, lhead = cluster_46, penwidth = 2]
-"isotropic_hardening output" -> "plastic_flow_direction input"[ltail = cluster_24, lhead = cluster_46, penwidth = 2]
+"isotropic_hardening output" -> "plastic_flow_direction input"[ltail = cluster_15, lhead = cluster_46, penwidth = 2]
+"mandel_stress output" -> "plastic_flow_direction input"[ltail = cluster_24, lhead = cluster_46, penwidth = 2]
 }
 subgraph cluster_54 {
 label = "plastic_strain_rate"
@@ -460,8 +460,8 @@ bgcolor = lightgrey
 }
 }
 }
+"isotropic_hardening output" -> "ep_rate input"[ltail = cluster_15, lhead = cluster_82, penwidth = 2]
 "hardening_rate output" -> "ep_rate input"[ltail = cluster_42, lhead = cluster_82, penwidth = 2]
-"mandel_stress output" -> "ep_rate input"[ltail = cluster_15, lhead = cluster_82, penwidth = 2]
-"isotropic_hardening output" -> "ep_rate input"[ltail = cluster_24, lhead = cluster_82, penwidth = 2]
+"mandel_stress output" -> "ep_rate input"[ltail = cluster_24, lhead = cluster_82, penwidth = 2]
 }
 }

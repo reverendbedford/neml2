@@ -42,8 +42,8 @@ public:
     return _registered_models;
   }
 
-  const std::vector<LabeledAxisAccessor> & consumed_variables() const { return _consumed_vars; }
-  const std::vector<LabeledAxisAccessor> & provided_variables() const { return _provided_vars; }
+  const std::set<LabeledAxisAccessor> & consumed_variables() const { return _consumed_vars; }
+  const std::set<LabeledAxisAccessor> & provided_variables() const { return _provided_vars; }
 
 protected:
   /// The map between input -> output, and optionally its derivatives
@@ -55,7 +55,7 @@ protected:
   [[nodiscard]] LabeledAxisAccessor declareInputVariable(const std::vector<std::string> & names)
   {
     auto accessor = declareVariable<T>(_input, names);
-    _consumed_vars.push_back(accessor);
+    _consumed_vars.insert(accessor);
     return accessor;
   }
 
@@ -64,7 +64,7 @@ protected:
                                                          const std::vector<std::string> & names)
   {
     auto accessor = declareVariable(_input, sz, names);
-    _consumed_vars.push_back(accessor);
+    _consumed_vars.insert(accessor);
     return accessor;
   }
 
@@ -73,7 +73,7 @@ protected:
   [[nodiscard]] LabeledAxisAccessor declareOutputVariable(const std::vector<std::string> & names)
   {
     auto accessor = declareVariable<T>(_output, names);
-    _provided_vars.push_back(accessor);
+    _provided_vars.insert(accessor);
     return accessor;
   }
 
@@ -83,7 +83,7 @@ protected:
                                                           const std::vector<std::string> & names)
   {
     auto accessor = declareVariable(_output, sz, names);
-    _provided_vars.push_back(accessor);
+    _provided_vars.insert(accessor);
     return accessor;
   }
 
@@ -101,8 +101,8 @@ protected:
   /// Models *this* model may use during its evaluation
   std::vector<std::shared_ptr<Model>> _registered_models;
 
-  std::vector<LabeledAxisAccessor> _consumed_vars;
-  std::vector<LabeledAxisAccessor> _provided_vars;
+  std::set<LabeledAxisAccessor> _consumed_vars;
+  std::set<LabeledAxisAccessor> _provided_vars;
 
 private:
   LabeledAxis & _input;

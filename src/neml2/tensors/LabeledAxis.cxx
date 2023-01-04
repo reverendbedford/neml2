@@ -39,6 +39,28 @@ LabeledAxis::add(const std::string & name, TorchSize sz)
 }
 
 LabeledAxis &
+LabeledAxis::add(const LabeledAxisAccessor & accessor)
+{
+  add(*this, accessor.storage_size, accessor.item_names.begin(), accessor.item_names.end());
+  return *this;
+}
+
+void
+LabeledAxis::add(LabeledAxis & axis,
+                 TorchSize sz,
+                 const std::vector<std::string>::const_iterator & cur,
+                 const std::vector<std::string>::const_iterator & end) const
+{
+  if (cur == end - 1)
+    axis.add(*cur, sz);
+  else
+  {
+    axis.add<LabeledAxis>(*cur);
+    add(axis.subaxis(*cur), sz, cur + 1, end);
+  }
+}
+
+LabeledAxis &
 LabeledAxis::prefix(const std::string & s, const std::string & delimiter)
 {
   // Prefix all the variable names
