@@ -1,13 +1,3 @@
-# This file is part of NEML2
-# https://github.com/reverendbedford/batchedmat.git
-# 
-# All rights reserved, see COPYRIGHT for full restrictions
-# https://github.com/reverendbedford/batchedmat/blob/main/COPYRIGHT
-# 
-# Licensed under LGPL 2.1, please see LICENSE for details
-# https://www.gnu.org/licenses/lgpl-2.1.html
-
-
 from pathlib import Path
 import subprocess
 import sys
@@ -22,7 +12,7 @@ parser.add_argument(
 )
 args = parser.parse_args()
 
-extensions = {".h": "//", ".cxx": "//", ".py": "#", ".sh": "#", ".rst": ".. "}
+extensions = {".h": "//", ".cxx": "//", ".py": "#", ".sh": "#"}
 additional_files = {}
 
 exclude_dirs = ["extern"]
@@ -80,7 +70,7 @@ files = subprocess.run(
     ["git", "ls-tree", "-r", "HEAD", "--name-only"], capture_output=True, text=True
 ).stdout
 
-copyright = Path(rootdir / "scripts" / "copyright").with_suffix(".txt").read_text()
+copyright = Path(rootdir / "LICENSE").read_text()
 print("The copyright statement is")
 print(copyright)
 

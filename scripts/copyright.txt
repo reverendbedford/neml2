@@ -1,8 +1,0 @@
-This file is part of NEML2
-https://github.com/reverendbedford/batchedmat.git
-
-All rights reserved, see COPYRIGHT for full restrictions
-https://github.com/reverendbedford/batchedmat/blob/main/COPYRIGHT
-
-Licensed under LGPL 2.1, please see LICENSE for details
-https://www.gnu.org/licenses/lgpl-2.1.html
