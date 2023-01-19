@@ -3,23 +3,23 @@
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
 // OPEN SOURCE LICENSE (MIT)
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy 
-// of this software and associated documentation files (the "Software"), to deal 
-// in the Software without restriction, including without limitation the rights 
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
-// copies of the Software, and to permit persons to whom the Software is 
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in 
+//
+// The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN 
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
 #include "neml2/tensors/LabeledMatrix.h"
@@ -38,8 +38,8 @@ LabeledMatrix::LabeledMatrix(const LabeledVector & A, const LabeledVector & B)
         B.axis(0))
 {
   // Check that the two batch sizes were consistent
-  if (A.batch_size() != B.batch_size())
-    throw std::runtime_error("The batch sizes of the LabeledVectors are not consistent.");
+  neml_assert_dbg(A.batch_size() == B.batch_size(),
+                  "The batch sizes of the LabeledVectors are not consistent.");
 }
 
 LabeledMatrix::LabeledMatrix(const LabeledTensor<1, 2> & other)
@@ -93,11 +93,8 @@ LabeledMatrix::chain(const LabeledMatrix & other) const
   // and the values of the input The main annoyance is just getting the names correct
 
   // Check that we are conformal
-  if (batch_size() != other.batch_size())
-    throw std::runtime_error("LabeledMatrix batch sizes are "
-                             "not the same");
-  if (axis(1) != other.axis(0))
-    throw std::runtime_error("Label objects are not conformal");
+  neml_assert_dbg(batch_size() == other.batch_size(), "LabeledMatrix batch sizes are not the same");
+  neml_assert_dbg(axis(1) == other.axis(0), "Labels are not conformal");
 
   // If all the sizes are correct then executing the chain rule is pretty easy
   return LabeledMatrix(torch::bmm(tensor(), other.tensor()), axis(0), other.axis(1));
@@ -106,9 +103,8 @@ LabeledMatrix::chain(const LabeledMatrix & other) const
 LabeledMatrix
 LabeledMatrix::inverse() const
 {
-  // Make debug
-  if (axis(0).storage_size() != axis(1).storage_size())
-    throw std::runtime_error("Can only invert square derivatives");
+  neml_assert_dbg(axis(0).storage_size() == axis(1).storage_size(),
+                  "Can only invert square derivatives");
 
   return LabeledMatrix(torch::linalg::inv(tensor()), axis(1), axis(0));
 }

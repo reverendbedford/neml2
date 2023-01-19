@@ -3,23 +3,23 @@
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
 // OPEN SOURCE LICENSE (MIT)
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy 
-// of this software and associated documentation files (the "Software"), to deal 
-// in the Software without restriction, including without limitation the rights 
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
-// copies of the Software, and to permit persons to whom the Software is 
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in 
+//
+// The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN 
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
 #pragma once
@@ -52,8 +52,8 @@ public:
     static_assert(sizeof...(axis) == D, "Wrong labeled dimension");
 
     // Check that the size of the tensor was compatible
-    if (tensor.sizes() != utils::add_shapes(tensor.batch_sizes(), storage_size()))
-      throw std::runtime_error("Tensor does not have the right size to hold the State");
+    neml_assert_dbg(tensor.sizes() == utils::add_shapes(tensor.batch_sizes(), storage_size()),
+                    "LabeledTensor does not have the right storage size");
   }
 
   /// Setup new storage with zeros
@@ -169,12 +169,11 @@ LabeledTensor<N, D>::LabeledTensor(const BatchTensor<N> & tensor,
   : _tensor(tensor),
     _axes(axes)
 {
-  if (axes.size() != D)
-    throw std::runtime_error("Wrong labeled dimension");
+  neml_assert_dbg(axes.size() == D, "Wrong labeled dimension");
 
   // Check that the size of the tensor was compatible
-  if (tensor.sizes() != utils::add_shapes(tensor.batch_sizes(), storage_size()))
-    throw std::runtime_error("Tensor does not have the right size to hold the State");
+  neml_assert_dbg(tensor.sizes() == utils::add_shapes(tensor.batch_sizes(), storage_size()),
+                  "LabeledTensor does not have the right size");
 }
 
 template <TorchSize N, TorchSize D>

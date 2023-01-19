@@ -44,22 +44,22 @@ if(REGRESSION)
 endif()
 
 # ###################################################
-# Profiling tests
+# Benchmarks
 # ###################################################
-option(PROFILING "build profiling tests" OFF)
+option(BENCHMARK "build benchmark tests" OFF)
 
-if(PROFILING)
-      file(GLOB_RECURSE PROFILING_TESTS profiling/profile_*.cxx)
-      add_executable(profiling_tests
+if(BENCHMARK)
+      file(GLOB_RECURSE BENCHMARK_TESTS benchmark/benchmark_*.cxx)
+      add_executable(benchmark_tests
             ${TEST_UTILS}
-            ${PROFILING_TESTS}
+            ${BENCHMARK_TESTS}
       )
-      target_link_libraries(profiling_tests Catch2::Catch2)
-      target_link_libraries(profiling_tests batchedmat testutils)
-      target_include_directories(profiling_tests PUBLIC
+      target_link_libraries(benchmark_tests Catch2::Catch2)
+      target_link_libraries(benchmark_tests batchedmat testutils)
+      target_include_directories(benchmark_tests PUBLIC
             "${CMAKE_SOURCE_DIR}/include"
             "${CMAKE_SOURCE_DIR}/tests/include")
-      catch_discover_tests(profiling_tests)
+      catch_discover_tests(benchmark_tests)
 endif()
 
 # ###################################################

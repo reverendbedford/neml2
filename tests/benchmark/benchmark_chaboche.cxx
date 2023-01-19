@@ -22,6 +22,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#define CATCH_CONFIG_ENABLE_BENCHMARKING
+
 #include <catch2/catch.hpp>
 
 #include "neml2/models/ComposedModel.h"
@@ -45,41 +47,53 @@
 #include "StructuralDriver.h"
 #include "neml2/misc/math.h"
 
-#include "VerificationTest.h"
-
 using namespace neml2;
 
-TEST_CASE("Chaboche verification", "[StructuralVerificationTests][Chaboche]")
+class BenchmarkCommon
 {
-  // NL solver parameters
+public:
+  BenchmarkCommon()
+    : nbatches({1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192})
+  {
+  }
+
+  std::string bname(const std::string method_name, TorchSize nbatch) const
+  {
+    return "{" + std::to_string(nbatch) + "} " + method_name;
+  }
+
+  std::vector<TorchSize> nbatches;
+};
+
+TEST_CASE_METHOD(BenchmarkCommon, "Benchmark Chaboche", "[BENCHMARK][Chaboche]")
+{
   NonlinearSolverParameters params = {/*atol =*/1e-10,
                                       /*rtol =*/1e-8,
                                       /*miters =*/100,
                                       /*verbose=*/false};
 
-  // Make the model -- we need serialization...
+  // Model parameters
   Scalar E = 1e5;
   Scalar nu = 0.3;
   SymSymR4 C = SymSymR4::init(SymSymR4::FillMethod::isotropic_E_nu, {E, nu});
-  Scalar s0 = 10.0;
-  Scalar R = 50.0;
+  Scalar s0 = 5;
+  Scalar R = 100;
   Scalar d = 1.2;
 
-  // Note the factors on g and A
-  Scalar C1 = 5000.0;
-  Scalar g1 = 10.1 * sqrt(2.0 / 3.0);
-  Scalar A1 = 1.0e-6 * sqrt(3.0 / 2.0);
+  Scalar C1 = 10000.0;
+  Scalar g1 = 100.0;
+  Scalar A1 = 1.0e-8;
   Scalar a1 = 1.2;
 
   Scalar C2 = 1000.0;
-  Scalar g2 = 5.2 * sqrt(2.0 / 3.0);
-  Scalar A2 = 1.0e-10 * sqrt(3.0 / 2.0);
+  Scalar g2 = 9.0;
+  Scalar A2 = 1.0e-10;
   Scalar a2 = 3.2;
 
-  // NEML has a different definition of eta...
-  Scalar eta = 200 * std::pow(sqrt(2.0 / 3.0), 1.0 / 4.0) * sqrt(2.0 / 3.0);
+  Scalar eta = 100;
   Scalar n = 4.0;
 
+  // Model composition
   auto Erate = std::make_shared<ForceRate<SymR2>>("total_strain");
   auto Eerate = std::make_shared<ElasticStrainRate>("elastic_strain_rate");
   auto elasticity = std::make_shared<CauchyStressRateFromElasticStrainRate>("elasticity", C);
@@ -90,8 +104,8 @@ TEST_CASE("Chaboche verification", "[StructuralVerificationTests][Chaboche]")
   auto yield =
       std::make_shared<IsotropicAndKinematicHardeningYieldFunction>("yield_function", sm, s0);
 
-  std::vector<std::string> bs_name_1({"state", "internal_state", "backstress_1"});
-  std::vector<std::string> bs_name_2({"state", "internal_state", "backstress_2"});
+  std::vector<std::string> bs_name_1{"state", "internal_state", "backstress_1"};
+  std::vector<std::string> bs_name_2{"state", "internal_state", "backstress_2"};
 
   auto bs1 = std::make_shared<ChabochePlasticHardening>("chaboche_1", C1, g1, A1, a1, "_1");
   auto bs2 = std::make_shared<ChabochePlasticHardening>("chaboche_2", C2, g2, A2, a2, "_2");
@@ -126,11 +140,22 @@ TEST_CASE("Chaboche verification", "[StructuralVerificationTests][Chaboche]")
   auto solver = std::make_shared<NewtonNonlinearSolver>(params);
   auto model = std::make_shared<ImplicitUpdate>("viscoplasticity", implicit_rate, solver);
 
-  SECTION("Uniaxial slow deformation")
+  // Time stepping
+  TorchSize nsteps = 100;
+  Real max_strain = 0.10;
+  Real min_time = -1;
+  Real max_time = 5;
+
+  for (TorchSize nbatch : nbatches)
   {
-    // Load and run the test
-    std::string fname = "verification/solid_mechanics/chaboche/chaboche.vtest";
-    VerificationTest test(fname);
-    REQUIRE(test.compare(*model));
+    Scalar end_time = torch::logspace(min_time, max_time, nbatch, 10, TorchDefaults).unsqueeze(-1);
+    SymR2 end_strain =
+        SymR2::init(max_strain, -0.5 * max_strain, -0.5 * max_strain).batch_expand(nbatch);
+
+    BatchTensor<1> times = math::linspace<1>(torch::zeros_like(end_time), end_time, nsteps);
+    BatchTensor<1> strains = math::linspace<1>(torch::zeros_like(end_strain), end_strain, nsteps);
+
+    StructuralDriver driver(*model, times, strains, "total_strain");
+    BENCHMARK(bname("Chaboche", nbatch)) { driver.run(); };
   }
 }
