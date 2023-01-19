@@ -31,13 +31,13 @@ import math
 
 def time_conversion(unit):
     if unit == "s":
-        return 1e6
-    elif unit == "ms":
-        return 1e3
-    elif unit == "us":
         return 1
-    elif unit == "ns":
+    elif unit == "ms":
         return 1e-3
+    elif unit == "us":
+        return 1e-6
+    elif unit == "ns":
+        return 1e-9
     else:
         return math.nan
 
