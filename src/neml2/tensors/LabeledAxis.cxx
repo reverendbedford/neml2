@@ -158,11 +158,7 @@ LabeledAxis::remove(const std::string & name)
   count += _subaxes.erase(name);
 
   // If nothing has been removed, we should probably notify the user.
-  neml_assert(count,
-              *this,
-              std::endl,
-              "Nothing removed in LabeledAxis::remove, did you mispelled the name? The LabeledAxis "
-              "is print above if that helps.");
+  neml_assert_dbg(count, "Nothing removed in LabeledAxis::remove, did you mispell the name?");
 
   return *this;
 }

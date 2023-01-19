@@ -158,4 +158,6 @@ TEST_CASE_METHOD(BenchmarkCommon, "Benchmark Chaboche", "[BENCHMARK][Chaboche]")
     StructuralDriver driver(*model, times, strains, "total_strain");
     BENCHMARK(bname("Chaboche", nbatch)) { driver.run(); };
   }
+
+  std::cout << std::flush;
 }
