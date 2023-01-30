@@ -71,7 +71,7 @@ def generate_copyright_heading(copyright, prefix):
         + (prefix + " ").join(
             line.strip() + "\n" for line in copyright.splitlines(True)
         )
-    )
+    ).replace(prefix + " \n", prefix + "\n")
 
 
 def has_correct_heading(path, copyright, prefix, modify):
@@ -84,10 +84,12 @@ def has_correct_heading(path, copyright, prefix, modify):
     if not modify:
         return correct
 
+    if correct:
+        return True
+
     # Correct the heading
     with path.open("w", encoding="utf-8") as file:
         file.write(heading)
-        file.write("\n")
         for line in content.splitlines(True):
             if not line.startswith(prefix):
                 file.write(line)
