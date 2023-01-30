@@ -65,7 +65,13 @@ def should_check(path):
 
 
 def generate_copyright_heading(copyright, prefix):
-    return prefix + " " + (prefix + " ").join(copyright.splitlines(True))
+    return (
+        prefix
+        + " "
+        + (prefix + " ").join(
+            line.strip() + "\n" for line in copyright.splitlines(True)
+        )
+    )
 
 
 def has_correct_heading(path, copyright, prefix, modify):
