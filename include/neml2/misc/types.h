@@ -44,7 +44,7 @@ typedef double Real;
     torch::TensorOptions()                                                                         \
         .dtype(torch::kFloat64)                                                                    \
         .layout(torch::kStrided)                                                                   \
-        .device(torch::kCUDA)                                                                      \
+        .device(torch::kCPU)                                                                       \
         .requires_grad(false)                                                                      \
   }
 
