@@ -1,9 +1,16 @@
 # NEML2
 
-### Nuclear Engineering Material model Library v2
+### Nuclear Engineering Material model Library, version 2
 
-> **NEML2 is the offshoot of [NEML](https://neml.readthedocs.io/en/latest/), an earlier code developed at the Argonne National Laboratory.**
-> **Similar to its predecessor, NEML2 features**
+NEML2 is an offshoort of [NEML](https://github.com/Argonne-National-Laboratory/neml), an earlier constitutive modeling code developed at Argonne National Laboratory.
+Like NEML, NEML2 provides a flexible, modular way to build constitutive models from smaller blocks.
+Unlike NEML, NEML2 vectorizes the constitutive update to efficiently run on GPUs.  NEML2 is built on top of [pytorch](https://pytorch.org/cppdocs/)
+to provide GPU support, but this also means that NEML2 models have all the features of a pytorch module.  So, for example, users can take derivatives of the model
+with respect to parameters using pytorch AD.
+
+NEML2 is provided as open source software under a MIT [license](LICENSE).
+
+**NEML2 aims to provide:**
 
 ### Modular consitutive models
 
@@ -20,8 +27,6 @@ There are two general ways to create and interface with NEML2 material models: t
 ### Strict quality assurance
 
 NEML2 is developed under a strict quality assurance program. Because the NEML distribution does not provide models for any actual materials, ensuring the quality of the library is a verification problem – testing to make sure that NEML is correctly implementing the mathematical models – rather than a validation problem of comparing the results of a model to an actual test. This verification is done with extensive unit testing. This unit testing verifies every mathematical function and every derivative in the library is correctly implemented.
-
-> **In addition to all the above features, NEML2 provides**
 
 ### CPU/GPU Vectorization
 
@@ -41,4 +46,4 @@ NEML2 offers a general interface for defining implicit models, unlike NEML which
 
 - - -
 
-> NEML2 does not provide a database of models for any particular class of materials. There are many example materials contained in the library release, these models are included entirely for illustrative purposes and do not represent the response of any actual material.
+NEML2 does not provide a database of models for any particular class of materials. There are many example materials contained in the library release, these models are included entirely for illustrative purposes and do not represent the response of any actual material.  Right now these models are solid mechanics constitutive models, providing the stress/strain response of materials.  However, NEML2 is general enough to build models of any type.

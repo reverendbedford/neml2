@@ -7,9 +7,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Run clang-format to check style
-        uses: jidicula/clang-format-action@v4.9.0
+        uses: jidicula/clang-format-action@v4.10.1
         with:
-          clang-format-version: '14'
+          clang-format-version: '15'
   copyright:
     name: Copyright check
     runs-on: ubuntu-latest
@@ -18,8 +18,8 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-      - name: Check if source files contain the correct copyright heading
-      - run: python scripts/check_copyright.py
+      - name: Check to see if source files have the correct copyright header
+        run: python scripts/check_copyright.py
   build-test-linux:
     needs: clang-format
     runs-on: ubuntu-latest
