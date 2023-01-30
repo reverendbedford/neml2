@@ -22,6 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN 
 # THE SOFTWARE.
 
+
 mkdir -p coverage
 export ROOT=$(pwd)
 export SRC_DIR=$ROOT/src

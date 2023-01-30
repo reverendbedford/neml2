@@ -22,6 +22,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN 
 // THE SOFTWARE.
 
+
 #pragma once
 
 #include "neml2/models/solid_mechanics/PlasticHardening.h"
