@@ -286,32 +286,28 @@ LabeledAxis::indices(TorchSize offset,
   return subaxis(*cur).indices(offset + rbegin, cur + 1, end);
 }
 
-std::pair<TorchIndex, TorchIndex>
+std::vector<std::pair<TorchIndex, TorchIndex>>
 LabeledAxis::common_indices(const LabeledAxis & a, const LabeledAxis & b, bool recursive)
 {
-  std::vector<TorchSize> idx_a;
-  std::vector<TorchSize> idx_b;
-  LabeledAxis::common_indices(a, b, recursive, idx_a, idx_b, 0, 0);
-  return {torch::tensor(idx_a), torch::tensor(idx_b)};
+  std::vector<std::pair<TorchIndex, TorchIndex>> indices;
+  LabeledAxis::common_indices(a, b, recursive, indices, 0, 0);
+  return indices;
 }
 
 void
 LabeledAxis::common_indices(const LabeledAxis & a,
                             const LabeledAxis & b,
                             bool recursive,
-                            std::vector<TorchSize> & idx_a,
-                            std::vector<TorchSize> & idx_b,
+                            std::vector<std::pair<TorchIndex, TorchIndex>> & indices,
                             TorchSize offset_a,
                             TorchSize offset_b)
 {
   for (const auto & [name, sz] : a._variables)
     if (b.has_variable(name))
-    {
-      idx_a.resize(idx_a.size() + sz);
-      idx_b.resize(idx_b.size() + sz);
-      std::iota(idx_a.end() - sz, idx_a.end(), offset_a + a._layout.at(name).first);
-      std::iota(idx_b.end() - sz, idx_b.end(), offset_b + b._layout.at(name).first);
-    }
+      indices.push_back({at::indexing::Slice(offset_a + a._layout.at(name).first,
+                                             offset_a + a._layout.at(name).second),
+                         at::indexing::Slice(offset_b + b._layout.at(name).first,
+                                             offset_b + b._layout.at(name).second)});
 
   if (recursive)
     for (const auto & [name, axis] : a._subaxes)
@@ -319,8 +315,7 @@ LabeledAxis::common_indices(const LabeledAxis & a,
         LabeledAxis::common_indices(*axis,
                                     b.subaxis(name),
                                     true,
-                                    idx_a,
-                                    idx_b,
+                                    indices,
                                     offset_a + a._layout.at(name).first,
                                     offset_b + b._layout.at(name).first);
 }

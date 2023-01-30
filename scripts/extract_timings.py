@@ -30,7 +30,9 @@ import math
 
 
 def time_conversion(unit):
-    if unit == "s":
+    if unit == "m":
+        return 60
+    elif unit == "s":
         return 1
     elif unit == "ms":
         return 1e-3

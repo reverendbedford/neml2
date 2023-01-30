@@ -3,23 +3,23 @@
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
 // OPEN SOURCE LICENSE (MIT)
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy 
-// of this software and associated documentation files (the "Software"), to deal 
-// in the Software without restriction, including without limitation the rights 
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
-// copies of the Software, and to permit persons to whom the Software is 
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in 
+//
+// The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN 
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
 #include "neml2/tensors/LabeledVector.h"
@@ -41,15 +41,15 @@ LabeledVector::slice(const std::string & name) const
 void
 LabeledVector::accumulate(const LabeledVector & other, bool recursive)
 {
-  auto [idx, idx_other] = LabeledAxis::common_indices(axis(0), other.axis(0), recursive);
-  _tensor.base_index_put({idx}, _tensor.base_index({idx}) + other.tensor().base_index({idx_other}));
+  for (auto [idx, idx_other] : LabeledAxis::common_indices(axis(0), other.axis(0), recursive))
+    _tensor.base_index({idx}) += other.tensor().base_index({idx_other});
 }
 
 void
 LabeledVector::fill(const LabeledVector & other, bool recursive)
 {
-  auto [idx, idx_other] = LabeledAxis::common_indices(axis(0), other.axis(0), recursive);
-  _tensor.base_index_put({idx}, other.tensor().base_index({idx_other}));
+  for (auto [idx, idx_other] : LabeledAxis::common_indices(axis(0), other.axis(0), recursive))
+    _tensor.base_index({idx}).copy_(other.tensor().base_index({idx_other}));
 }
 
 LabeledMatrix

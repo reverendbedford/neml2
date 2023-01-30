@@ -57,33 +57,17 @@ LabeledMatrix::identity(TorchSize nbatch, const LabeledAxis & axis)
 void
 LabeledMatrix::accumulate(const LabeledMatrix & other, bool recursive)
 {
-  auto [idx0, idx0_other] = LabeledAxis::common_indices(axis(0), other.axis(0), recursive);
-  auto [idx1, idx1_other] = LabeledAxis::common_indices(axis(1), other.axis(1), recursive);
-
-  // This is annoying -- since we are using advanced indexing, torch actually creates a copy of the
-  // indexed view (and so it's not a view anymore).
-  auto temp = _tensor.base_index({idx0, Slice()});
-  auto temp_other = other.tensor().base_index({idx0_other, Slice()});
-  temp.base_index_put({Slice(), idx1},
-                      temp.base_index({Slice(), idx1}) +
-                          temp_other.base_index({Slice(), idx1_other}));
-
-  _tensor.base_index_put({idx0, Slice()}, temp);
+  for (auto [idxi, idxi_other] : LabeledAxis::common_indices(axis(0), other.axis(0), recursive))
+    for (auto [idxj, idxj_other] : LabeledAxis::common_indices(axis(1), other.axis(1), recursive))
+      _tensor.base_index({idxi, idxj}) += other.tensor().base_index({idxi_other, idxj_other});
 }
 
 void
 LabeledMatrix::fill(const LabeledMatrix & other, bool recursive)
 {
-  auto [idx0, idx0_other] = LabeledAxis::common_indices(axis(0), other.axis(0), recursive);
-  auto [idx1, idx1_other] = LabeledAxis::common_indices(axis(1), other.axis(1), recursive);
-
-  // This is annoying -- since we are using advanced indexing, torch actually creates a copy of the
-  // indexed view (and so it's not a view anymore).
-  auto temp = _tensor.base_index({idx0, Slice()});
-  auto temp_other = other.tensor().base_index({idx0_other, Slice()});
-  temp.base_index_put({Slice(), idx1}, temp_other.base_index({Slice(), idx1_other}));
-
-  _tensor.base_index_put({idx0, Slice()}, temp);
+  for (auto [idxi, idxi_other] : LabeledAxis::common_indices(axis(0), other.axis(0), recursive))
+    for (auto [idxj, idxj_other] : LabeledAxis::common_indices(axis(1), other.axis(1), recursive))
+      _tensor.base_index({idxi, idxj}).copy_(other.tensor().base_index({idxi_other, idxj_other}));
 }
 
 LabeledMatrix
