@@ -2,7 +2,7 @@
 
 ### Nuclear Engineering Material model Library, version 2
 
-NEML2 is an offshoort of [NEML](https://github.com/Argonne-National-Laboratory/neml), an earlier constitutive modeling code developed at Argonne National Laboratory.
+NEML2 is an offshoot of [NEML](https://github.com/Argonne-National-Laboratory/neml), an earlier constitutive modeling code developed at Argonne National Laboratory.
 Like NEML, NEML2 provides a flexible, modular way to build constitutive models from smaller blocks.
 Unlike NEML, NEML2 vectorizes the constitutive update to efficiently run on GPUs.  NEML2 is built on top of [pytorch](https://pytorch.org/cppdocs/)
 to provide GPU support, but this also means that NEML2 models have all the features of a pytorch module.  So, for example, users can take derivatives of the model
@@ -10,15 +10,17 @@ with respect to parameters using pytorch AD.
 
 NEML2 is provided as open source software under a MIT [license](LICENSE).
 
+- - -
+
 **NEML2 aims to provide:**
 
-### Modular consitutive models
+### Modular constitutive models
 
-NEML material models are modular – they are built up from smaller pieces into a complete model. For example, a model might piece together a temperature-dependent elasticity model, a yield surface, a flow rule, and several hardening rules. Each of these submodels is independent of the other objects so that, for example, switching from conventional \f$J_2\f$ plasticity to a non-\f$J_2\f$ theory requires only a one line change in an input file, if the model is already implemented, or a relatively small amount of coding to add the new yield surface if it has not been implemented. All of these objects are interchangeable. For example, the damage, viscoplastic, and rate-independent plasticity models all use the same yield (flow) surfaces, hardening rules, elasticity models, and so on.
+NEML material models are modular – they are built up from smaller pieces into a complete model. For example, a model might piece together a temperature-dependent elasticity model, a yield surface, a flow rule, and several hardening rules. Each of these submodels is independent of the other objects so that, for example, switching from conventional $J_2$ plasticity to a non $J_2$ theory requires only a one line change in an input file, if the model is already implemented, or a relatively small amount of coding to add the new yield surface if it has not been implemented. All of these objects are interchangeable. For example, the damage, viscoplastic, and rate-independent plasticity models all use the same yield (flow) surfaces, hardening rules, elasticity models, and so on.
 
 ### Extensible constitutive models
 
-The library is structured so that adding a new feature to an existing material model should be as simple as possible and require as little code as possible. As part of this philosophy, the library only requires new components provide a few partial derivatives and NEML uses this information to assemble the Jacobian needed to do a fully implement, backward Euler integration of the ordinary differential equations comprising the model form and to provide the algorithmic tangent needed to integrate the model into an implicit finite element framework.
+The library is structured so that adding a new feature to an existing material model should be as simple as possible and require as little code as possible. As part of this philosophy, the library only requires new components provide a few partial derivatives and NEML uses this information to assemble the Jacobian needed to do a fully implement, backward Euler integration of the ordinary differential equations comprising the model form and to provide the algorithmic tangent needed to integrate the model into an implicit finite element framework.  Moreover, in NEML2 implementations can forgo providing these partial derivatives and NEML2 will calculate them with automatic differentiation -- albeit at a significant performance cost.
 
 ### Friendly user interfaces
 
@@ -26,7 +28,7 @@ There are two general ways to create and interface with NEML2 material models: t
 
 ### Strict quality assurance
 
-NEML2 is developed under a strict quality assurance program. Because the NEML distribution does not provide models for any actual materials, ensuring the quality of the library is a verification problem – testing to make sure that NEML is correctly implementing the mathematical models – rather than a validation problem of comparing the results of a model to an actual test. This verification is done with extensive unit testing. This unit testing verifies every mathematical function and every derivative in the library is correctly implemented.
+NEML2 is developed under a strict quality assurance program. Because the NEML distribution does not provide full, parameterized models for any actual materials, ensuring the quality of the library is a verification problem – testing to make sure that NEML is correctly implementing the mathematical models – rather than a validation problem of comparing the results of a model to an actual test. This verification is done with extensive unit testing. This unit testing verifies every mathematical function and every derivative in the library is correctly implemented.
 
 ### CPU/GPU Vectorization
 
