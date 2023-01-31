@@ -1,5 +1,7 @@
 # NEML2
 
+[![Documentation](https://github.com/reverendbedford/neml2/actions/workflows/build_docs.yml/badge.svg?branch=main)](https://github.com/reverendbedford/neml2/actions/workflows/build_docs.yml) [![tests](https://github.com/reverendbedford/neml2/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/reverendbedford/neml2/actions/workflows/tests.yml)
+
 ### Nuclear Engineering Material model Library, version 2
 
 NEML2 is an offshoot of [NEML](https://github.com/Argonne-National-Laboratory/neml), an earlier constitutive modeling code developed at Argonne National Laboratory.
@@ -8,7 +10,7 @@ Unlike NEML, NEML2 vectorizes the constitutive update to efficiently run on GPUs
 to provide GPU support, but this also means that NEML2 models have all the features of a pytorch module.  So, for example, users can take derivatives of the model
 with respect to parameters using pytorch AD.
 
-NEML2 is provided as open source software under a MIT [license](LICENSE).
+NEML2 is provided as open source software under a MIT [license](https://raw.githubusercontent.com/reverendbedford/neml2/main/LICENSE).
 
 - - -
 
@@ -16,7 +18,7 @@ NEML2 is provided as open source software under a MIT [license](LICENSE).
 
 ### Modular constitutive models
 
-NEML material models are modular – they are built up from smaller pieces into a complete model. For example, a model might piece together a temperature-dependent elasticity model, a yield surface, a flow rule, and several hardening rules. Each of these submodels is independent of the other objects so that, for example, switching from conventional $J_2$ plasticity to a non $J_2$ theory requires only a one line change in an input file, if the model is already implemented, or a relatively small amount of coding to add the new yield surface if it has not been implemented. All of these objects are interchangeable. For example, the damage, viscoplastic, and rate-independent plasticity models all use the same yield (flow) surfaces, hardening rules, elasticity models, and so on.
+NEML material models are modular – they are built up from smaller pieces into a complete model. For example, a model might piece together a temperature-dependent elasticity model, a yield surface, a flow rule, and several hardening rules. Each of these submodels is independent of the other objects so that, for example, switching from conventional J2 plasticity to a non J2 theory requires only a one line change in an input file, if the model is already implemented, or a relatively small amount of coding to add the new yield surface if it has not been implemented. All of these objects are interchangeable. For example, the damage, viscoplastic, and rate-independent plasticity models all use the same yield (flow) surfaces, hardening rules, elasticity models, and so on.
 
 ### Extensible constitutive models
 
