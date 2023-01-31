@@ -1,3 +1,27 @@
+// Copyright 2023, UChicago Argonne, LLC
+// All Rights Reserved
+// Software Name: NEML2 -- the New Engineering material Model Library, version 2
+// By: Argonne National Laboratory
+// OPEN SOURCE LICENSE (MIT)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
 #pragma once
 
 #include <unordered_map>
@@ -10,7 +34,6 @@
 
 namespace neml2
 {
-/// The list of all NEML2 primitive data types that can be labeled
 template <typename T>
 struct is_labelable : std::false_type
 {
@@ -46,36 +69,12 @@ struct LabeledAxisAccessor
   friend std::ostream & operator<<(std::ostream & os, const LabeledAxisAccessor & accessor);
 };
 
-/// Print LabeledAxisAccessor to the ostream
 std::ostream & operator<<(std::ostream & os, const LabeledAxisAccessor & accessor);
 
-// Forward declarations
 class LabeledAxis;
 
 typedef std::unordered_map<std::string, std::pair<TorchSize, TorchSize>> AxisLayout;
 
-/// The LabeledAxis contains all information regarding how an axis of a LabeledTensor is labeled.
-/// **This class doesn't actually store data.**
-///
-/// Some naming conventions:
-///   - Item: A labelable chunk of data
-///   - Variable: An item that is also of a NEML2 primitive data type
-///   - Sub-axis: An item of type LabeledAxis
-///
-/// So yes, an axis can be labeled recursively, e.g.
-/// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-///  0 1 2 3 4 5     6     7 8 9 10 11 12   13   14
-/// |-----------| |-----| |              | |  | |  |
-///    sub a       sub b  |              | |  | |  |
-/// |-------------------| |--------------| |--| |--|
-///          sub                  a          b    c
-/// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/// The above example represents an axis of size 15.
-/// This LabeledAxis has 4 items: `a`, `b`, `c`, `sub`
-/// `a` is a variable of type `SymR2`, `b` and `c` are variables of type `Scalar`, and
-/// `sub` is a sub-axis of type `LabeledAxis`.
-/// `sub` by itself represents an axis of size 7, containing 2 items:
-/// `sub a` is a variable of type `SymR2` and `sub b` is a variable of type `Scalar`.
 class LabeledAxis
 {
 public:
@@ -205,7 +204,7 @@ public:
   /// @}
 
   /// Get the common indices of two `LabeledAxis`s
-  static std::pair<TorchIndex, TorchIndex>
+  static std::vector<std::pair<TorchIndex, TorchIndex>>
   common_indices(const LabeledAxis & a, const LabeledAxis & b, bool recursive = true);
 
   /// Get the item names
@@ -265,8 +264,7 @@ private:
   static void common_indices(const LabeledAxis & a,
                              const LabeledAxis & b,
                              bool recursive,
-                             std::vector<TorchSize> & idx_a,
-                             std::vector<TorchSize> & idx_b,
+                             std::vector<std::pair<TorchIndex, TorchIndex>> & indices,
                              TorchSize offset_a,
                              TorchSize offset_b);
 
@@ -290,12 +288,9 @@ private:
   TorchSize _offset;
 };
 
-/// Print LabeledAxis to the ostream
 std::ostream & operator<<(std::ostream & os, const LabeledAxis & info);
 
-/// Equality between LabeledAxis objects, expressed via the equals method
 bool operator==(const LabeledAxis & a, const LabeledAxis & b);
 
-/// Inequality between LabeledAxis objects
 bool operator!=(const LabeledAxis & a, const LabeledAxis & b);
 } // namespace neml2

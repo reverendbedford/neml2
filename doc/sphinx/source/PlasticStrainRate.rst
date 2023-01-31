@@ -1,4 +1,0 @@
-PlasticStrainRate
-=========================================================================
-
-.. doxygenfile:: PlasticStrainRate.h

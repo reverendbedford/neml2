@@ -2,14 +2,31 @@ name: tests
 on: [pull_request]
 jobs:
   clang-format:
-    name: Formatting check
+    name: Formatting Check
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        path:
+          - 'src'
+          - 'include'
+          - 'tests'
+    steps:
+    - uses: actions/checkout@v3
+    - name: Run clang-format style check
+      uses: jidicula/clang-format-action@v4.10.1
+      with:
+        clang-format-version: '14'
+        check-path: ${{ matrix.path }}
+  copyright:
+    name: Copyright check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Run clang-format to check style
-        uses: jidicula/clang-format-action@v4.9.0
+      - uses: actions/setup-python@v4
         with:
-          clang-format-version: '14'
+          python-version: '3.10'
+      - name: Check to see if source files have the correct copyright header
+        run: python scripts/check_copyright.py
   build-test-linux:
     needs: clang-format
     runs-on: ubuntu-latest

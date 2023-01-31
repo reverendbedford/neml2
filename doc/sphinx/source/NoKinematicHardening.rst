@@ -1,4 +1,0 @@
-NoKinematicHardening
-=========================================================================
-
-.. doxygenfile:: NoKinematicHardening.h

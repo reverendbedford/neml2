@@ -1,282 +1,51 @@
-# NEML2 <!-- omit in toc -->
+# NEML2
 
-- [Promises of NEML2](#promises-of-neml2)
-- [Tasks](#tasks)
-- [Things we are not happy with](#things-we-are-not-happy-with)
-- [Updates Oct. 7, 2022](#updates-oct-7-2022)
-  - [Unifying batched and unbatched tensors](#unifying-batched-and-unbatched-tensors)
-  - [Batched tensor (base of everything)](#batched-tensor-base-of-everything)
-  - [A batched tensor with static base size](#a-batched-tensor-with-static-base-size)
-  - [Scalar](#scalar)
-  - [Symmetric second order tensor](#symmetric-second-order-tensor)
-  - [Symmetric (minor) fourth order tensor](#symmetric-minor-fourth-order-tensor)
-  - [Batch dimension of the primitive data types](#batch-dimension-of-the-primitive-data-types)
-  - [Use AD to get the partials.](#use-ad-to-get-the-partials)
-  - [Try linking with an external package, e.g. MOOSE.](#try-linking-with-an-external-package-eg-moose)
-  - [Set up unit tests (CPU and GPU).](#set-up-unit-tests-cpu-and-gpu)
-  - [Set up documentation.](#set-up-documentation)
-  - [Set up coverage report.](#set-up-coverage-report)
-  - [Set up benchmarks.](#set-up-benchmarks)
-    - [Scalar](#scalar-1)
-    - [SymR2](#symr2)
-    - [SymSymR4](#symsymr4)
-    - [Constitutive update](#constitutive-update)
-- [Updates Oct. 7, 2022](#updates-oct-7-2022-1)
-  - [State vs Force](#state-vs-force)
-  - [Chunked map and parallel coordination](#chunked-map-and-parallel-coordination)
-  - [The new benchmark](#the-new-benchmark)
+### Nuclear Engineering Material model Library, version 2
 
-## [Promises of NEML2](#neml2-)
+NEML2 is an offshoot of [NEML](https://github.com/Argonne-National-Laboratory/neml), an earlier constitutive modeling code developed at Argonne National Laboratory.
+Like NEML, NEML2 provides a flexible, modular way to build constitutive models from smaller blocks.
+Unlike NEML, NEML2 vectorizes the constitutive update to efficiently run on GPUs.  NEML2 is built on top of [pytorch](https://pytorch.org/cppdocs/)
+to provide GPU support, but this also means that NEML2 models have all the features of a pytorch module.  So, for example, users can take derivatives of the model
+with respect to parameters using pytorch AD.
 
-1. Users focus on the actual constitutive updates, while NEML2 takes care of everything else.
-2. User models can run in two modes: batched and unbatched.
-3. User models can run both on CPU and on GPU.
-4. NEML2 predefines commonly used constitutive models.
+NEML2 is provided as open source software under a MIT [license](LICENSE).
 
-## [Tasks](#neml2-)
+- - -
 
-- [ ] Setup "primitive" data types.
-  - [x] Batched tensor (base of everything)
-  - [x] A batched tensor with static base size
-  - [x] A batched tensor with named views
-  - [x] Scalar
-  - [x] Symmetric second order tensor
-  - [x] Symmetric (minor) fourth order tensor
-  - [ ] (?) Second order tensor
-  - [ ] (?) Fourth order tensor (with other symmetries)
-  - [ ] (?) Quaternion
-- [ ] Setup a class structure for history-dependent models based on the user providing the implicit function definition of the model update.
-- [x] Use AD to get the partials.
-- [ ] Use AD to get the second derivatives (for return mapping).
-- [x] Set up unit tests (CPU and GPU).
-- [x] Set up documentation.
-- [x] Set up coverage report.
-- [x] Set up benchmarks.
-- [ ] Migrate models from NEML to NEML2
-  - [x] Linear elasticity
-  - [ ] Hypoelasticity
-  - [ ] (?) Hyperelasticity
-  - [ ] Hypoelasticity-(perzyna/consistent)plasticity
-  - [ ] (?) Hyperelasticity-(perzyna/consistent)plasticity
-  - [ ] Damage
-  - [ ] (?) Gradient damage
-  - [ ] Utilities, e.g. interpolation,
-- [ ] Play around with making the model parameters as Torch `Variables` and getting parameter partials.
-- [ ] Write python bindings.
-- [ ] Support model definition using input files.
-- [x] Try linking with an external package, e.g. MOOSE.
+**NEML2 aims to provide:**
 
-## [Things we are not happy with](#neml2-)
+### Modular constitutive models
 
-1. The `State` and `LabeledMatrix` classes should share more code.
-2. ~~The `Batched` and `Unbatched` classes should share more code.~~
-3. I'm not content with the interface in `ConstitutiveModel`.  I want to
-  - Think a bit about return by value and return by reference.
-  - Think about how to provide the "tangent" and update with options
-    for separate or simultaneous evaluation.
-  - Expand the API to let people ask for the dot product of the
-    tangent with some state (i.e. the actual linearized update).
-4. We need some finite difference test classes to check derivatives of models and bits of models.
-5. We probably want to typedef the scalar type.
-6. For torch `TensorOptions`, we should be able to configure it with cmake and modify it at runtime.
-7. Let's namespace everything.
-8. A lot of runtime exceptions should be static.
+NEML material models are modular – they are built up from smaller pieces into a complete model. For example, a model might piece together a temperature-dependent elasticity model, a yield surface, a flow rule, and several hardening rules. Each of these submodels is independent of the other objects so that, for example, switching from conventional $J_2$ plasticity to a non $J_2$ theory requires only a one line change in an input file, if the model is already implemented, or a relatively small amount of coding to add the new yield surface if it has not been implemented. All of these objects are interchangeable. For example, the damage, viscoplastic, and rate-independent plasticity models all use the same yield (flow) surfaces, hardening rules, elasticity models, and so on.
 
-## [Updates Oct. 7, 2022](#neml2-)
+### Extensible constitutive models
 
-### [Unifying batched and unbatched tensors](#neml2-)
+The library is structured so that adding a new feature to an existing material model should be as simple as possible and require as little code as possible. As part of this philosophy, the library only requires new components provide a few partial derivatives and NEML uses this information to assemble the Jacobian needed to do a fully implement, backward Euler integration of the ordinary differential equations comprising the model form and to provide the algorithmic tangent needed to integrate the model into an implicit finite element framework.  Moreover, in NEML2 implementations can forgo providing these partial derivatives and NEML2 will calculate them with automatic differentiation -- albeit at a significant performance cost.
 
-- Design choice: I no longer distinguish between batched and unbatched tensors. Instead, I insist that the size of each batch dimension is either 1 or Bn, where Bn is the batch size of the n-th batch dimension.
-- Advantages:
-  - We don't need to keep two specializations for every primitive data type.
-  - This appears to be much more conformant with libtorch.
-  - This has no influence on speed (I have benchmarked).
-- Disadvantages:
-  - I am not sure if this will affect locality, but who cares about the locality of a single batch tensor anyways?
-  - An additional layer of indirection when constructing from a `torch::Tensor`, e.g. previously a single batch tensor (of size `(6,)`) can be constructed as
+### Friendly user interfaces
 
-    ```cpp
-    SymR2 a(torch::tensor({1, 2, 3, 4, 5, 6}));
-    ```
-    now we have to construct a single batch tensor (of size `(1, 6,)`) as
-    ```cpp
-    SymR2 a(torch::tensor({{1, 2, 3, 4, 5, 6}}));
-    ```
+There are two general ways to create and interface with NEML2 material models: the python bindings and the compiled library with [HIT](https://github.com/idaholab/moose/tree/next/framework/contrib/hit) input. The python bindings are generally used for creating, fitting, and debugging new material models. In python, a material model is built up object-by-object and assembled into a complete mathematical constitutive relation. NEML2 provides several python drivers for exercising these material models in simple loading configurations. These drivers include common test types, like uniaxial tension tests and strain-controlled cyclic fatigue tests along with more esoteric drivers supporting simplified models of high temperature pressure vessels, like n-bar models and generalized plane-strain axisymmetry. NEML2 provides a full Abaqus UMAT interface and examples of how to link the compiled library into C, C++, or Fortran codes. These interfaces can be used to call NEML2 models from finite element codes. When using the compiled library, NEML2 models can be created and archived using a hierarchical HIT format.
 
-### [Batched tensor (base of everything)](#neml2-)
+### Strict quality assurance
 
-- [`BatchTensor<N>`](doc/class-doc/html/classBatchTensor.html)
-- Some additional getters and setters
-- `batch_dim()` is now `constexpr`.
-- `expand_batch(B)` expands a single batch tensor into shape `B`. This also claims ownership. We could implement another version that simply returns an expanded view.
-- A very general [`einsum`](doc/class-doc/html/BatchTensor_8h.html)
-  - Example
-    ```cpp
-    einsum({A, B, C}, {"ij", "jk", "klmn"}, "ilmn")
-    ```
-  - This is equivalent to
-    ```cpp
-    torch::einsum("...ij,...jk,...klmn->...ilmn", {A, B, C});
-    ```
-  - If we implement it carefully (which is, embarrassingly, not the case right now), the dispatch should be static (as `string_view` is `constexpr`), i.e. the correct CUDA program is selected at compile-time, if we are using GPU.
+NEML2 is developed under a strict quality assurance program. Because the NEML distribution does not provide full, parameterized models for any actual materials, ensuring the quality of the library is a verification problem – testing to make sure that NEML is correctly implementing the mathematical models – rather than a validation problem of comparing the results of a model to an actual test. This verification is done with extensive unit testing. This unit testing verifies every mathematical function and every derivative in the library is correctly implemented.
 
-### [A batched tensor with static base size](#neml2-)
+### CPU/GPU Vectorization
 
-- [`FixedDimTensor`](doc/class-doc/html/classFixedDimTensor.html)
-- All of the methods have been refactored into `BatchTensor`.
-- `base_sizes` -> `_base_sizes` to avoid name conflict with the base method.
+NEML2 models can be vectorized, meaning that a large batch of constitutive models can be evaluated simultaneously. The vectorized model can be evaluated both on CPU and on GPU, with a unified, intuitive user interface.
 
-### [Scalar](#neml2-)
+### Flexible model composition
 
-- [`Scalar`](doc/class-doc/html/classScalar.html)
-- I kept the convenient conversion constructor from `double` with an optional batch size, e.g.
-    ```cpp
-    Scalar a = 1.5;
-    Scalar b(1.5, 1000);
-    ```
-- Design choice: The base dim of the `Scalar` is `0` instead of `1`. Again, this is more conformant with libtorch, as almost all tensor operations automatically squeeze out the trailing dimension with size 1. To "unsqueeze" it we can simply do
-    ```cpp
-    Scalar a(1.5, 1000); // size (1000,)
-    a = a.unsqueeze(1); // size (1000, 1,)
-    ```
+NEML2 offers a more flexible way of composing models. Each individual model only defines the forward operator (and optionally its derivative) with a given set of inputs and outputs, without knowing anything a priori about how it is going to be used. When a set of models are *composed* together to form a composite model, dependencies among different models are automatically detected, registered, and resolved. The user has *complete control* over how NEML2 evaluates a set of models.
 
-### [Symmetric second order tensor](#neml2-)
+### Faster evaluation of chained models
 
-- [`SymR2`](doc/class-doc/html/classSymR2.html)
-- As promised, all methods are implemented in a batch-agnostic way.
+As a result the dependency resolution mentioned above, an optimal order of evaluating the composed model is used to perform the forward operation -- every model in the dependency graph is evaluated once and only once, avoiding any redundant calculations.
 
-### [Symmetric (minor) fourth order tensor](#neml2-)
+### General implicit update
 
-- [`SymSymR4`](doc/class-doc/html/classSymSymR4.html)
-- As promised, all methods are implemented in a batch-agnostic way.
+NEML2 offers a general interface for defining implicit models, unlike NEML which requires the implicit function to be in the form of an ODE.
 
-### [Batch dimension of the primitive data types](#neml2-)
+- - -
 
-- Right now I am assuming `Scalar`, `SymR2` and `SymSymR4` all have a batch dimension of `1`.
-- Alternatively, we could template them on batch dimension `N`.
-
-### [Use AD to get the partials.](#neml2-)
-
-- [`ConstitutiveModel::linearized_state_update`](doc/class-doc/html/classConstitutiveModel.html)
-  - Using hand-coded Jacobian
-    ```cpp
-    auto state = model.linearized_state_update(forces_np1, state_n, forces_n);
-    ```
-  - Using reverse-AD
-    ```cpp
-    auto state = model.linearized_state_update(forces_np1, state_n, forces_n, true);
-    ```
-- This assumes that states and forces are flattened (logically 1D).
-- Mark probably has a different interface now.
-- I am concerned about the performance:
-  ```cpp
-    forces_np1.requires_grad_();
-    State state_np1(state(), forces_np1.batch_size());
-    update(state_np1, forces_np1, state_n, forces_n);
-
-    // Allocate space for Jacobian
-    torch::Tensor jac =
-        torch::zeros(add_shapes(state_np1.sizes(), forces_np1.base_sizes()), TorchDefaults);
-
-    // Loop over components of the state to retrieve the derivatives
-    for (TorchSize i = 0; i < state_np1.base_sizes()[0]; i++)
-    {
-      torch::Tensor grad_outputs = torch::zeros_like(state_np1);
-      grad_outputs.index_put_({torch::indexing::Ellipsis, i}, 1);
-      jac.index_put_({torch::indexing::Ellipsis, i, torch::indexing::Ellipsis},
-                     torch::autograd::grad({state_np1}, {forces_np1}, {grad_outputs}, true)[0]);
-    }
-
-    return LabeledMatrix(state(), forces(), jac);
-  ```
-
-### [Try linking with an external package, e.g. MOOSE.](#neml2-)
-
-So I've experimented this a little bit. At least on Ubuntu this is pretty straightforward. The easiest route is probably:
-1. Get a somewhat modern compiler with ldd version greater than 2.35.
-2. Compile petsc and libmesh manually, i.e. not from conda (as the ones provided by conda are linked to old GLIBC).
-3. Configure moose to use libtorch. For example `./scripts/setup_libtorch.sh` followed by `./configure --with-libtorch`.
-4. It's also necessary to exclude the files that includes neml2 from the UNITY build system, otherwise there will be namespace clashes.
-5. Compile the application. That's it.
-
-### [Set up unit tests (CPU and GPU).](#neml2-)
-
-- Turns out Catch2 is pretty easy to use :-)
-- Catch2 has very nice integration into VSCode.
-- **All tests pass on CPU as well as on GPU.**
-
-### [Set up documentation.](#neml2-)
-
-1. Configure with `-DDOCUMENTATION=ON`.
-2. Run `make doc`.
-3. Doxygen is in `doc/doc/class-doc/html/`.
-
-### [Set up coverage report.](#neml2-)
-
-1. Configure with `-DCOVERAGE=ON`. This defines compile and linking options for `lcov`.
-2. Recompile application with `make`.
-3. Run `./scripts/coverage.sh`.
-4. The coverage data will be generated in the `coverage/` directory.
-
-- [Current coverage](coverage/index.html)
-
-### [Set up benchmarks.](#neml2-)
-
-1. Configure with `-DBENCHMARK=ON`.
-2. Recompile application with `make`.
-3. Run `./scripts/benchmark.sh out.csv` to write the benchmark timings into `out.csv`.
-4. Optionally run `python scripts/analyze_timings.py cpu.csv gpu.csv` to compare the timings on CPU and GPU.
-
-Before we look at timings, here are some details about the benchmark setup:
-- my CPU: `Intel(R) Xeon(R) CPU E5-2698 v4 @ 2.20GHz`
-- my GPU: [`Quadro M6000 24GB`](https://images.nvidia.com/content/pdf/quadro/data-sheets/NV-DS-Quadro-M6000-24GB-US-NV-fnl-HR.pdf)
-- I am NOT comparing CPU for-loops vs GPU vectorization. Instead, this is a comparison of CPU vectorization vs GPU vectorization.
-- Catch2 [`benchmark`](https://github.com/catchorg/Catch2/blob/v2.x/docs/benchmarks.md). The results should be fairly accurate and reproducible (with the same device).
-
-#### [Scalar](#neml2-)
-
-![](benchmark_22_10_07/Benchmark%20Scalar/UScalar+BScalar.png)
-![](benchmark_22_10_07/Benchmark%20Scalar/BScalar+BScalar.png)
-
-#### [SymR2](#neml2-)
-
-![](benchmark_22_10_07/Benchmark%20SymR2/USymR2+BSymR2.png)
-![](benchmark_22_10_07/Benchmark%20SymR2/BSymR2+BSymR2.png)
-![](benchmark_22_10_07/Benchmark%20SymR2/tr(BSymR2).png)
-![](benchmark_22_10_07/Benchmark%20SymR2/vol(BSymR2).png)
-![](benchmark_22_10_07/Benchmark%20SymR2/dev(BSymR2).png)
-![](benchmark_22_10_07/Benchmark%20SymR2/det(BSymR2).png)
-![](benchmark_22_10_07/Benchmark%20SymR2/norm(BSymR2).png)
-![](benchmark_22_10_07/Benchmark%20SymR2/(USymR2)_ij(BSymR2)_ij.png)
-![](benchmark_22_10_07/Benchmark%20SymR2/(BSymR2)_ij(BSymR2)_ij.png)
-![](benchmark_22_10_07/Benchmark%20SymR2/(USymR2)_ij(BSymR2)_kl.png)
-![](benchmark_22_10_07/Benchmark%20SymR2/(BSymR2)_ij(BSymR2)_kl.png)
-
-#### [SymSymR4](#neml2-)
-
-![](benchmark_22_10_07/Benchmark%20SymSymR4/USymSymR4+BSymSymR4.png)
-![](benchmark_22_10_07/Benchmark%20SymSymR4/BSymSymR4+BSymSymR4.png)
-![](benchmark_22_10_07/Benchmark%20SymSymR4/(USymSymR4)_ijkl(BSymSymR4)_klmn.png)
-![](benchmark_22_10_07/Benchmark%20SymSymR4/(BSymSymR4)_ijkl(BSymSymR4)_klmn.png)
-![](benchmark_22_10_07/Benchmark%20SymSymR4/(USymSymR4)_ijkl(BSymR2)_kl.png)
-![](benchmark_22_10_07/Benchmark%20SymSymR4/(BSymSymR4)_ijkl(BSymR2)_kl.png)
-
-#### [Constitutive update](#neml2-)
-
-![](benchmark_22_10_07/Benchmark%20linear%20elasticity/update.png)
-![](benchmark_22_10_07/Benchmark%20linear%20elasticity/tangent.png)
-![](benchmark_22_10_07/Benchmark%20linear%20elasticity/ADtangent.png)
-
-## [Updates Oct. 7, 2022](#neml2-)
-
-### [State vs Force](#neml2-)
-
-- [poll?](https://github.com/reverendbedford/batchedmat/issues/3)
-
-### [Chunked map and parallel coordination](#neml2-)
-
-I'll explain using some slides...
-
-### [The new benchmark](#neml2-)
-
-![](benchmark_22_10_14/Benchmark%20WorkDispatcher/update.png)
+NEML2 does not provide a database of models for any particular class of materials. There are many example materials contained in the library release, these models are included entirely for illustrative purposes and do not represent the response of any actual material.  Right now these models are solid mechanics constitutive models, providing the stress/strain response of materials.  However, NEML2 is general enough to build models of any type.

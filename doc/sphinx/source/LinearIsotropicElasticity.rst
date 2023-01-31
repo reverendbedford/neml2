@@ -1,4 +1,0 @@
-LinearIsotropicElasticity
-=========================================================================
-
-.. doxygenfile:: LinearIsotropicElasticity.h

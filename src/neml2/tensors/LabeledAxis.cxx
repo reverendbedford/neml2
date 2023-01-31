@@ -1,3 +1,27 @@
+// Copyright 2023, UChicago Argonne, LLC
+// All Rights Reserved
+// Software Name: NEML2 -- the New Engineering material Model Library, version 2
+// By: Argonne National Laboratory
+// OPEN SOURCE LICENSE (MIT)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
 #include "neml2/tensors/LabeledAxis.h"
 
 namespace neml2
@@ -134,13 +158,7 @@ LabeledAxis::remove(const std::string & name)
   count += _subaxes.erase(name);
 
   // If nothing has been removed, we should probably notify the user.
-  // Only do this in DEBUG, of course...
-  if (count == 0)
-  {
-    std::cout << *this << std::endl;
-    throw std::runtime_error("Nothing removed in LabeledAxis::remove, did you mispelled the name? "
-                             "The LabeledAxis is print above if that helps.");
-  }
+  neml_assert_dbg(count, "Nothing removed in LabeledAxis::remove, did you mispell the name?");
 
   return *this;
 }
@@ -230,7 +248,6 @@ LabeledAxis::storage_size(const std::string & name) const
   if (subaxis != _subaxes.end())
     return subaxis->second->storage_size();
 
-  // Only do this in DEBUG I guess
   throw std::runtime_error("In LabeledAxis::storage_size, no item matches given name " + name);
   return 0;
 }
@@ -244,8 +261,8 @@ LabeledAxis::storage_size(const LabeledAxisAccessor & accessor) const
 TorchIndex
 LabeledAxis::indices(const std::string & name) const
 {
-  if (_layout.count(name) == 0)
-    throw std::runtime_error("In LabeledAxis::indices, no item matches given name " + name);
+  neml_assert_dbg(
+      _layout.count(name), "In LabeledAxis::indices, no item matches given name ", name);
 
   const auto & [rbegin, rend] = _layout.at(name);
   return torch::indexing::Slice(rbegin, rend);
@@ -269,32 +286,28 @@ LabeledAxis::indices(TorchSize offset,
   return subaxis(*cur).indices(offset + rbegin, cur + 1, end);
 }
 
-std::pair<TorchIndex, TorchIndex>
+std::vector<std::pair<TorchIndex, TorchIndex>>
 LabeledAxis::common_indices(const LabeledAxis & a, const LabeledAxis & b, bool recursive)
 {
-  std::vector<TorchSize> idx_a;
-  std::vector<TorchSize> idx_b;
-  LabeledAxis::common_indices(a, b, recursive, idx_a, idx_b, 0, 0);
-  return {torch::tensor(idx_a), torch::tensor(idx_b)};
+  std::vector<std::pair<TorchIndex, TorchIndex>> indices;
+  LabeledAxis::common_indices(a, b, recursive, indices, 0, 0);
+  return indices;
 }
 
 void
 LabeledAxis::common_indices(const LabeledAxis & a,
                             const LabeledAxis & b,
                             bool recursive,
-                            std::vector<TorchSize> & idx_a,
-                            std::vector<TorchSize> & idx_b,
+                            std::vector<std::pair<TorchIndex, TorchIndex>> & indices,
                             TorchSize offset_a,
                             TorchSize offset_b)
 {
   for (const auto & [name, sz] : a._variables)
     if (b.has_variable(name))
-    {
-      idx_a.resize(idx_a.size() + sz);
-      idx_b.resize(idx_b.size() + sz);
-      std::iota(idx_a.end() - sz, idx_a.end(), offset_a + a._layout.at(name).first);
-      std::iota(idx_b.end() - sz, idx_b.end(), offset_b + b._layout.at(name).first);
-    }
+      indices.push_back({at::indexing::Slice(offset_a + a._layout.at(name).first,
+                                             offset_a + a._layout.at(name).second),
+                         at::indexing::Slice(offset_b + b._layout.at(name).first,
+                                             offset_b + b._layout.at(name).second)});
 
   if (recursive)
     for (const auto & [name, axis] : a._subaxes)
@@ -302,8 +315,7 @@ LabeledAxis::common_indices(const LabeledAxis & a,
         LabeledAxis::common_indices(*axis,
                                     b.subaxis(name),
                                     true,
-                                    idx_a,
-                                    idx_b,
+                                    indices,
                                     offset_a + a._layout.at(name).first,
                                     offset_b + b._layout.at(name).first);
 }
@@ -320,8 +332,8 @@ LabeledAxis::item_names() const
 const LabeledAxis &
 LabeledAxis::subaxis(const std::string & name) const
 {
-  if (_subaxes.count(name) == 0)
-    throw std::runtime_error("In LabeledAxis::subaxis, no subaxis matches given name " + name);
+  neml_assert_dbg(
+      _subaxes.count(name), "In LabeledAxis::subaxis, no subaxis matches given name ", name);
 
   return *_subaxes.at(name);
 }
@@ -329,8 +341,8 @@ LabeledAxis::subaxis(const std::string & name) const
 LabeledAxis &
 LabeledAxis::subaxis(const std::string & name)
 {
-  if (_subaxes.count(name) == 0)
-    throw std::runtime_error("In LabeledAxis::subaxis, no subaxis matches given name " + name);
+  neml_assert_dbg(
+      _subaxes.count(name), "In LabeledAxis::subaxis, no subaxis matches given name ", name);
 
   return *_subaxes.at(name);
 }

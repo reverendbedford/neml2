@@ -1,4 +1,0 @@
-PerzynaPlasticFlowRate
-=========================================================================
-
-.. doxygenfile:: PerzynaPlasticFlowRate.h

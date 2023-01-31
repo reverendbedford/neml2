@@ -1,4 +1,0 @@
-LinearIsotropicHardening
-=========================================================================
-
-.. doxygenfile:: LinearIsotropicHardening.h

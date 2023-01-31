@@ -2,3 +2,6 @@
 	path = extern/Catch2
 	url = https://github.com/catchorg/Catch2.git
 	ignore = dirty
+[submodule "extern/doxygen-awesome-css"]
+	path = extern/doxygen-awesome-css
+	url = https://github.com/jothepro/doxygen-awesome-css.git

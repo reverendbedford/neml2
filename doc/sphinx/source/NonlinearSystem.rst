@@ -1,4 +1,0 @@
-NonlinearSystem
-=========================================================================
-
-.. doxygenfile:: NonlinearSystem.h
