@@ -1,5 +1,7 @@
 # NEML2
 
+[![Documentation](https://github.com/reverendbedford/neml2/actions/workflows/build_docs.yml/badge.svg?branch=main)](https://github.com/reverendbedford/neml2/actions/workflows/build_docs.yml) [![tests](https://github.com/reverendbedford/neml2/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/reverendbedford/neml2/actions/workflows/tests.yml)
+
 ### Nuclear Engineering Material model Library, version 2
 
 NEML2 is an offshoot of [NEML](https://github.com/Argonne-National-Laboratory/neml), an earlier constitutive modeling code developed at Argonne National Laboratory.
