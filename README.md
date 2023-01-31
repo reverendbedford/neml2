@@ -8,7 +8,7 @@ Unlike NEML, NEML2 vectorizes the constitutive update to efficiently run on GPUs
 to provide GPU support, but this also means that NEML2 models have all the features of a pytorch module.  So, for example, users can take derivatives of the model
 with respect to parameters using pytorch AD.
 
-NEML2 is provided as open source software under a MIT [license](LICENSE).
+NEML2 is provided as open source software under a MIT [license](https://raw.githubusercontent.com/reverendbedford/neml2/main/LICENSE).
 
 - - -
 
