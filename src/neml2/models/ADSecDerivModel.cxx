@@ -26,6 +26,13 @@
 
 namespace neml2
 {
+ParameterSet
+ADSecDerivModel::expected_params()
+{
+  ParameterSet params = SecDerivModel::expected_params();
+  return params;
+}
+
 std::tuple<LabeledVector, LabeledMatrix>
 ADSecDerivModel::value_and_dvalue(LabeledVector in) const
 {

@@ -27,14 +27,26 @@
 
 namespace neml2
 {
+register_NEML2_object(ScalarTimeIntegration);
+register_NEML2_object(SymR2TimeIntegration);
+
 template <typename T>
-TimeIntegration<T>::TimeIntegration(const std::string & name)
-  : Model(name),
-    var_rate(declareInputVariable<T>({"state", name + "_rate"})),
-    var_n(declareInputVariable<T>({"old_state", name})),
+ParameterSet
+TimeIntegration<T>::expected_params()
+{
+  ParameterSet params = Model::expected_params();
+  params.set<std::string>("variable");
+  return params;
+}
+
+template <typename T>
+TimeIntegration<T>::TimeIntegration(const ParameterSet & params)
+  : Model(params),
+    var_rate(declareInputVariable<T>({"state", params.get<std::string>("variable") + "_rate"})),
+    var_n(declareInputVariable<T>({"old_state", params.get<std::string>("variable")})),
     time(declareInputVariable<Scalar>({"forces", "time"})),
     time_n(declareInputVariable<Scalar>({"old_forces", "time"})),
-    var(declareOutputVariable<T>({"state", name}))
+    var(declareOutputVariable<T>({"state", params.get<std::string>("variable")}))
 {
   this->setup();
 }

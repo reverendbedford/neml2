@@ -26,8 +26,15 @@
 
 namespace neml2
 {
-PlasticFlowRate::PlasticFlowRate(const std::string & name)
-  : Model(name),
+ParameterSet
+PlasticFlowRate::expected_params()
+{
+  ParameterSet params = Model::expected_params();
+  return params;
+}
+
+PlasticFlowRate::PlasticFlowRate(const ParameterSet & params)
+  : Model(params),
     yield_function(declareInputVariable<Scalar>({"state", "yield_function"})),
     hardening_rate(declareOutputVariable<Scalar>({"state", "hardening_rate"}))
 {

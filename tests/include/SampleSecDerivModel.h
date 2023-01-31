@@ -35,7 +35,7 @@ template <bool is_ad>
 class SampleSecDerivModelTempl : public SampleSecDerivModelBase<is_ad>
 {
 public:
-  SampleSecDerivModelTempl(const std::string & name);
+  SampleSecDerivModelTempl(const neml2::ParameterSet & params);
 
 protected:
   virtual void set_value(neml2::LabeledVector in,

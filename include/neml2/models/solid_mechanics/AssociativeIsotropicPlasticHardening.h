@@ -32,8 +32,9 @@ namespace neml2
 class AssociativeIsotropicPlasticHardening : public PlasticHardening
 {
 public:
-  AssociativeIsotropicPlasticHardening(const std::string & name,
-                                       const std::shared_ptr<YieldFunction> & f);
+  static ParameterSet expected_params();
+
+  AssociativeIsotropicPlasticHardening(const ParameterSet & params);
 
   /// Yield function used to define the hardening rule
   const YieldFunction & yield_function;

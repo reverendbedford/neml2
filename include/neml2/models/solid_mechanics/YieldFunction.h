@@ -33,13 +33,18 @@ namespace neml2
 class YieldFunction : public SecDerivModel
 {
 public:
-  /// Calculate yield function knowing the corresponding hardening model
-  YieldFunction(const std::string & name,
-                const std::shared_ptr<StressMeasure> & sm,
-                Scalar s0,
-                bool with_isotropic_hardening,
-                bool with_kinematic_hardening);
+  static ParameterSet expected_params();
 
+  YieldFunction(const ParameterSet & params);
+
+protected:
+  /// @{
+  /// Whether we include isotropic and/or kinematic hardening
+  const bool _with_isotropic_hardening;
+  const bool _with_kinematic_hardening;
+  /// @}
+
+public:
   const LabeledAxisAccessor mandel_stress;
   const LabeledAxisAccessor yield_function;
   const LabeledAxisAccessor isotropic_hardening;
@@ -63,11 +68,5 @@ private:
 protected:
   /// Yield stress
   Scalar _s0;
-
-  /// @{
-  /// Whether we include isotropic and/or kinematic hardening
-  const bool _with_isotropic_hardening;
-  const bool _with_kinematic_hardening;
-  /// @}
 };
 } // namespace neml2

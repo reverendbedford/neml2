@@ -31,7 +31,9 @@ namespace neml2
 class PlasticHardening : public Model
 {
 public:
-  PlasticHardening(const std::string & name);
+  static ParameterSet expected_params();
+
+  PlasticHardening(const ParameterSet & params);
 
   const LabeledAxisAccessor hardening_rate;
 };

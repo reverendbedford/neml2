@@ -34,15 +34,34 @@ using namespace neml2;
 
 TEST_CASE("ImplicitUpdate", "[ImplicitUpdate]")
 {
-  NonlinearSolverParameters params = {/*atol =*/1e-10,
-                                      /*rtol =*/1e-8,
-                                      /*miters =*/100,
-                                      /*verbose=*/false};
-  TorchSize nbatch = 10;
-  auto rate = std::make_shared<SampleRateModel>("sample_rate");
-  auto implicit_rate = std::make_shared<ImplicitTimeIntegration>("implicit_time_integration", rate);
-  auto solver = std::make_shared<NewtonNonlinearSolver>(params);
-  auto integrate_rate = ImplicitUpdate("time_integration", implicit_rate, solver);
+  auto & factory = Factory::get_factory();
+  factory.clear();
+
+  factory.create_object("Solvers",
+                        NewtonNonlinearSolver::expected_params() +
+                            ParameterSet(KS{"name", "newton"},
+                                         KS{"type", "NewtonNonlinearSolver"},
+                                         KR{"abs_tol", 1e-10},
+                                         KR{"rel_tol", 1e-8},
+                                         KU{"max_its", 100},
+                                         KB{"verbose", false}));
+  factory.create_object("Models",
+                        SampleRateModel::expected_params() +
+                            ParameterSet(KS{"name", "rate"}, KS{"type", "SampleRateModel"}));
+  factory.create_object("Models",
+                        ImplicitTimeIntegration::expected_params() +
+                            ParameterSet(KS{"name", "implicit_rate"},
+                                         KS{"type", "ImplicitTimeIntegration"},
+                                         KS{"rate", "rate"}));
+  factory.create_object("Models",
+                        ImplicitUpdate::expected_params() +
+                            ParameterSet(KS{"name", "integrate_rate"},
+                                         KS{"type", "ImplicitUpdate"},
+                                         KS{"implicit_model", "implicit_rate"},
+                                         KS{"solver", "newton"}));
+
+  auto & rate = Factory::get_object<SampleRateModel>("Models", "rate");
+  auto & integrate_rate = Factory::get_object<ImplicitUpdate>("Models", "integrate_rate");
 
   SECTION("model definition")
   {
@@ -64,6 +83,7 @@ TEST_CASE("ImplicitUpdate", "[ImplicitUpdate]")
     REQUIRE(integrate_rate.output().subaxis("state").has_variable<SymR2>("baz"));
   }
 
+  TorchSize nbatch = 10;
   LabeledVector in(nbatch, integrate_rate.input());
   auto baz_old = SymR2::init(0, 0, 0, 0, 0, 0).batch_expand(nbatch);
   in.slice("old_state").set(Scalar(0, nbatch), "foo");
@@ -77,13 +97,13 @@ TEST_CASE("ImplicitUpdate", "[ImplicitUpdate]")
   {
     auto value = integrate_rate.value(in);
 
-    LabeledVector rate_in(nbatch, rate->input());
+    LabeledVector rate_in(nbatch, rate.input());
     rate_in.set(value("state"), "state");
     rate_in.slice("forces").set(in.slice("forces")("temperature"), "temperature");
 
     auto s_np1 = value("state");
     auto s_n = in("old_state");
-    auto s_dot = rate->value(rate_in)("state");
+    auto s_dot = rate.value(rate_in)("state");
 
     auto t_np1 = in.slice("forces").get<Scalar>("time");
     auto t_n = in.slice("old_forces").get<Scalar>("time");

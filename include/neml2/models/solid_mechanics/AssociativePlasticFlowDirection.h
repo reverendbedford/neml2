@@ -32,8 +32,9 @@ namespace neml2
 class AssociativePlasticFlowDirection : public PlasticFlowDirection
 {
 public:
-  AssociativePlasticFlowDirection(const std::string & name,
-                                  const std::shared_ptr<YieldFunction> & f);
+  static ParameterSet expected_params();
+
+  AssociativePlasticFlowDirection(const ParameterSet & params);
 
   const YieldFunction & yield_function;
 

@@ -26,8 +26,15 @@
 
 namespace neml2
 {
-StressMeasure::StressMeasure(const std::string & name)
-  : SecDerivModel(name),
+ParameterSet
+StressMeasure::expected_params()
+{
+  ParameterSet params = SecDerivModel::expected_params();
+  return params;
+}
+
+StressMeasure::StressMeasure(const ParameterSet & params)
+  : SecDerivModel(params),
     overstress(declareInputVariable<SymR2>({"state", "overstress"})),
     stress_measure(declareOutputVariable<Scalar>({"state", "stress_measure"}))
 {

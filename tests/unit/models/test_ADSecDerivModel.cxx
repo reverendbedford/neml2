@@ -33,10 +33,21 @@ TEST_CASE("ADSecDerivModel", "[ADSecDerivModel]")
 {
   torch::cuda::is_available();
 
-  TorchSize nbatch = 10;
-  auto model = SampleSecDerivModel("sample_model");
-  auto ad_model = ADSampleSecDerivModel("ad_sample_model");
+  auto & factory = Factory::get_factory();
+  factory.clear();
 
+  factory.create_object("Models",
+                        SampleSecDerivModel::expected_params() +
+                            ParameterSet(KS{"name", "model"}, KS{"type", "SampleSecDerivModel"}));
+  factory.create_object(
+      "Models",
+      ADSampleSecDerivModel::expected_params() +
+          ParameterSet(KS{"name", "ad_model"}, KS{"type", "ADSampleSecDerivModel"}));
+
+  auto & model = Factory::get_object<SampleSecDerivModel>("Models", "model");
+  auto & ad_model = Factory::get_object<ADSampleSecDerivModel>("Models", "ad_model");
+
+  TorchSize nbatch = 10;
   LabeledVector in(nbatch, model.input());
   in.slice("state").set(Scalar(1.1, nbatch), "x1");
   in.slice("state").set(Scalar(0.01, nbatch), "x2");

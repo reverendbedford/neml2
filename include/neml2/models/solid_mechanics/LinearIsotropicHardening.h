@@ -31,7 +31,9 @@ namespace neml2
 class LinearIsotropicHardening : public IsotropicHardening
 {
 public:
-  LinearIsotropicHardening(const std::string & name, Scalar K);
+  static ParameterSet expected_params();
+
+  LinearIsotropicHardening(const ParameterSet & params);
 
 protected:
   /// Simple linear map between equivalent strain and hardening

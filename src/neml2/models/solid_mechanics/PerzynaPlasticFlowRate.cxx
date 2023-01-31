@@ -26,10 +26,21 @@
 
 namespace neml2
 {
-PerzynaPlasticFlowRate::PerzynaPlasticFlowRate(const std::string & name, Scalar eta, Scalar n)
-  : PlasticFlowRate(name),
-    _eta(register_parameter("reference_flow_stress", eta)),
-    _n(register_parameter("flow_rate_exponent", n))
+register_NEML2_object(PerzynaPlasticFlowRate);
+
+ParameterSet
+PerzynaPlasticFlowRate::expected_params()
+{
+  ParameterSet params = PlasticFlowRate::expected_params();
+  params.set<Real>("eta");
+  params.set<Real>("n");
+  return params;
+}
+
+PerzynaPlasticFlowRate::PerzynaPlasticFlowRate(const ParameterSet & params)
+  : PlasticFlowRate(params),
+    _eta(register_parameter("reference_flow_stress", Scalar(params.get<Real>("eta")))),
+    _n(register_parameter("flow_rate_exponent", Scalar(params.get<Real>("n"))))
 {
 }
 

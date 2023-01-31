@@ -26,8 +26,21 @@
 
 namespace neml2
 {
-NonlinearSolver::NonlinearSolver(const NonlinearSolverParameters & p)
-  : params(p)
+ParameterSet
+NonlinearSolver::expected_params()
+{
+  ParameterSet params = Solver::expected_params();
+  params.set<Real>("abs_tol") = 1e-10;
+  params.set<Real>("rel_tol") = 1e-8;
+  params.set<unsigned int>("max_its") = 100;
+  return params;
+}
+
+NonlinearSolver::NonlinearSolver(const ParameterSet & params)
+  : Solver(params),
+    atol(params.get<Real>("abs_tol")),
+    rtol(params.get<Real>("rel_tol")),
+    miters(params.get<unsigned int>("max_its"))
 {
 }
 } // namespace neml2

@@ -27,14 +27,25 @@
 
 namespace neml2
 {
+register_NEML2_object(ScalarSumModel);
+register_NEML2_object(SymR2SumModel);
+
 template <typename T>
-SumModel<T>::SumModel(const std::string & name,
-                      const std::vector<std::vector<std::string>> & from_var,
-                      const std::vector<std::string> & to_var)
-  : Model(name),
-    to(declareOutputVariable<T>(to_var))
+ParameterSet
+SumModel<T>::expected_params()
 {
-  for (auto fv : from_var)
+  ParameterSet params = Model::expected_params();
+  params.set<std::vector<std::vector<std::string>>>("from_var");
+  params.set<std::vector<std::string>>("to_var");
+  return params;
+}
+
+template <typename T>
+SumModel<T>::SumModel(const ParameterSet & params)
+  : Model(params),
+    to(declareOutputVariable<T>(params.get<std::vector<std::string>>("to_var")))
+{
+  for (auto fv : params.get<std::vector<std::vector<std::string>>>("from_var"))
     from.push_back(declareInputVariable<T>(fv));
 
   this->setup();

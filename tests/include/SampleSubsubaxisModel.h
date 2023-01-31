@@ -29,7 +29,7 @@
 class SampleSubsubaxisModel : public neml2::Model
 {
 public:
-  SampleSubsubaxisModel(const std::string & name);
+  SampleSubsubaxisModel(const neml2::ParameterSet & params);
 
   const neml2::LabeledAxisAccessor foo;
   const neml2::LabeledAxisAccessor bar;

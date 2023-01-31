@@ -26,6 +26,13 @@
 
 namespace neml2
 {
+ParameterSet
+SecDerivModel::expected_params()
+{
+  ParameterSet params = Model::expected_params();
+  return params;
+}
+
 LabeledMatrix
 SecDerivModel::dvalue(LabeledVector in) const
 {

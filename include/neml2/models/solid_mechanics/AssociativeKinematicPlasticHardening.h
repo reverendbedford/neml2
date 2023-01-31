@@ -32,8 +32,9 @@ namespace neml2
 class AssociativeKinematicPlasticHardening : public PlasticHardening
 {
 public:
-  AssociativeKinematicPlasticHardening(const std::string & name,
-                                       const std::shared_ptr<YieldFunction> & f);
+  static ParameterSet expected_params();
+
+  AssociativeKinematicPlasticHardening(const ParameterSet & params);
 
   const YieldFunction & yield_function;
 

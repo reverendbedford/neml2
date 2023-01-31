@@ -31,9 +31,14 @@ using namespace neml2;
 
 TEST_CASE("J2StressMeasure", "[J2StressMeasure]")
 {
-  TorchSize nbatch = 10;
-  Scalar s0 = 50.0;
-  auto sm = J2StressMeasure("stress_measure");
+  auto & factory = Factory::get_factory();
+  factory.clear();
+
+  factory.create_object("Models",
+                        J2StressMeasure::expected_params() +
+                            ParameterSet(KS{"name", "j2"}, KS{"type", "J2StressMeasure"}));
+
+  auto & sm = Factory::get_object<J2StressMeasure>("Models", "j2");
 
   SECTION("model definition")
   {
@@ -45,6 +50,7 @@ TEST_CASE("J2StressMeasure", "[J2StressMeasure]")
 
   SECTION("model derivatives")
   {
+    TorchSize nbatch = 10;
     LabeledVector in(nbatch, sm.input());
     auto M = SymR2::init(100, 110, 100, 100, 100, 100).batch_expand(nbatch);
     in.slice("state").set(M, "overstress");

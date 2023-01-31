@@ -25,11 +25,14 @@
 #pragma once
 
 #include "neml2/misc/types.h"
+#include "neml2/misc/error.h"
 
 namespace neml2
 {
 namespace utils
 {
+std::string demangle(const char * name);
+
 constexpr double sqrt2 = 1.4142135623730951;
 
 inline constexpr double
@@ -63,6 +66,56 @@ stringify(const T & t)
   std::ostringstream os;
   os << t;
   return os.str();
+}
+
+std::vector<std::string> split(const std::string & str, const std::string & delims);
+
+std::string trim(const std::string & str, const std::string & white_space = " \t\n\v\f\r");
+
+template <typename T>
+inline T
+parse(const std::string & raw_str)
+{
+  T val;
+  std::stringstream ss(utils::trim(raw_str));
+  ss >> val;
+  neml_assert(!ss.fail() && ss.eof(), "parameter parsing failed");
+  return val;
+}
+
+template <>
+inline bool
+parse<bool>(const std::string & raw_str)
+{
+  std::string val = parse<std::string>(raw_str);
+  if (val == "true")
+    return true;
+  if (val == "false")
+    return false;
+
+  throw NEMLException("Failed to parse boolean value. Only 'true' and 'false' are recognized.");
+}
+
+template <typename T>
+inline std::vector<T>
+parse_vector(const std::string & raw_str)
+{
+  auto tokens = utils::split(raw_str, " \t\n\v\f\r");
+  std::vector<T> ret(tokens.size());
+  for (size_t i = 0; i < tokens.size(); i++)
+    ret[i] = parse<T>(tokens[i]);
+  return ret;
+}
+
+template <typename T>
+inline std::vector<std::vector<T>>
+parse_vector_vector(const std::string & raw_str)
+{
+  auto token_vecs = utils::split(raw_str, ";");
+  std::vector<std::vector<T>> ret(token_vecs.size());
+  for (size_t i = 0; i < token_vecs.size(); i++)
+    ret[i] = parse_vector<T>(token_vecs[i]);
+  return ret;
 }
 } // namespace utils
 } // namespace neml2

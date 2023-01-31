@@ -33,11 +33,27 @@ using namespace neml2;
 
 TEST_CASE("AssociativeKinematicPlasticHardening", "[AssociativeKinematicPlasticHardening]")
 {
-  TorchSize nbatch = 10;
-  Scalar s0 = 100.0;
-  auto sm = std::make_shared<J2StressMeasure>("stress_measure");
-  auto yield = std::make_shared<YieldFunction>("yield_function", sm, s0, false, true);
-  auto eprate = AssociativeKinematicPlasticHardening("ep_rate", yield);
+  auto & factory = Factory::get_factory();
+  factory.clear();
+
+  factory.create_object("Models",
+                        J2StressMeasure::expected_params() +
+                            ParameterSet(KS{"name", "j2"}, KS{"type", "J2StressMeasure"}));
+  factory.create_object("Models",
+                        YieldFunction::expected_params() +
+                            ParameterSet(KS{"name", "yield"},
+                                         KS{"type", "YieldFunction"},
+                                         KS{"stress_measure", "j2"},
+                                         KR{"yield_stress", 100},
+                                         KB{"with_isotropic_hardening", false},
+                                         KB{"with_kinematic_hardening", true}));
+  factory.create_object("Models",
+                        AssociativeKinematicPlasticHardening::expected_params() +
+                            ParameterSet(KS{"name", "eprate"},
+                                         KS{"type", "AssociativeKinematicPlasticHardening"},
+                                         KS{"yield_function", "yield"}));
+
+  auto & eprate = Factory::get_object<AssociativeKinematicPlasticHardening>("Models", "eprate");
 
   SECTION("model definition")
   {
@@ -60,6 +76,7 @@ TEST_CASE("AssociativeKinematicPlasticHardening", "[AssociativeKinematicPlasticH
 
   SECTION("model derivatives")
   {
+    TorchSize nbatch = 10;
     LabeledVector in(nbatch, eprate.input());
     auto M = SymR2::init(100, 110, 100, 100, 100, 100).batch_expand(nbatch);
     auto X = SymR2::init(-25, 30, 10, -15, 20, 25).batch_expand(nbatch);

@@ -26,93 +26,17 @@
 
 #include <fstream>
 
-#include "neml2/models/ComposedModel.h"
-#include "neml2/models/solid_mechanics/TotalStrain.h"
-#include "neml2/models/solid_mechanics/LinearElasticity.h"
-#include "neml2/models/solid_mechanics/IsotropicMandelStress.h"
-#include "neml2/models/solid_mechanics/LinearIsotropicHardening.h"
-#include "neml2/models/solid_mechanics/J2StressMeasure.h"
-#include "neml2/models/solid_mechanics/YieldFunction.h"
-#include "neml2/models/solid_mechanics/AssociativePlasticFlowDirection.h"
-#include "neml2/models/solid_mechanics/AssociativeIsotropicPlasticHardening.h"
-#include "neml2/models/solid_mechanics/PerzynaPlasticFlowRate.h"
-#include "neml2/models/solid_mechanics/PlasticStrainRate.h"
-#include "neml2/models/ImplicitTimeIntegration.h"
-#include "neml2/models/ImplicitUpdate.h"
-#include "neml2/models/IdentityMap.h"
-#include "neml2/models/TimeIntegration.h"
-#include "neml2/models/ForceRate.h"
-#include "neml2/solvers/NewtonNonlinearSolver.h"
 #include "StructuralDriver.h"
 #include "neml2/misc/math.h"
+#include "neml2/base/HITParser.h"
 
 using namespace neml2;
 
 TEST_CASE("Uniaxial stress regression test", "[stress control]")
 {
-  NonlinearSolverParameters params = {/*atol =*/1e-10,
-                                      /*rtol =*/1e-8,
-                                      /*miters =*/100,
-                                      /*verbose=*/false};
-
-  Scalar E = 1e5;
-  Scalar nu = 0.3;
-  SymSymR4 S = SymSymR4::init(SymSymR4::FillMethod::isotropic_E_nu, {E, nu}).inverse();
-  Scalar s0 = 5;
-  Scalar K = 1000;
-  Scalar eta = 100;
-  Scalar n = 2;
-
-  // The first part:
-  // Imput:  [force] cauchy stress
-  //         [state] equivalent plastic strain
-  // Output: [state] equivalent plastic strain rate
-  auto input_stress =
-      std::make_shared<IdentityMap<SymR2>>("input_stress",
-                                           std::vector<std::string>{"forces", "cauchy_stress"},
-                                           std::vector<std::string>{"state", "cauchy_stress"});
-  auto mandel_stress = std::make_shared<IsotropicMandelStress>("mandel_stress");
-  auto isoharden = std::make_shared<LinearIsotropicHardening>("isotropic_hardening", K);
-  auto sm = std::make_shared<J2StressMeasure>("stress_measure");
-  auto yieldfunc = std::make_shared<YieldFunction>("yield_function", sm, s0, true, false);
-  auto hrate = std::make_shared<PerzynaPlasticFlowRate>("hrate", eta, n);
-  auto eprate = std::make_shared<AssociativeIsotropicPlasticHardening>("ep_rate", yieldfunc);
-  auto rate = std::make_shared<ComposedModel>(
-      "viscoplasticity",
-      std::vector<std::shared_ptr<Model>>{
-          input_stress, mandel_stress, isoharden, yieldfunc, hrate, eprate});
-
-  // The second part:
-  // Imput:  [force] cauchy stress
-  //         [force] time
-  //         [state] equivalent plastic strain
-  //         [old force] cauchy stress
-  //         [old force] time
-  //         [old state] equivalent plastic strain
-  // Output: [state] total strain
-  auto yield_surface = std::make_shared<ImplicitTimeIntegration>("yield_surface", rate);
-  auto solver = std::make_shared<NewtonNonlinearSolver>(params);
-  auto return_map = std::make_shared<ImplicitUpdate>("return_map", yield_surface, solver);
-  auto direction = std::make_shared<AssociativePlasticFlowDirection>("flow_direction", yieldfunc);
-  auto Eprate = std::make_shared<PlasticStrainRate>("plastic_strain_rate");
-  auto Ep = std::make_shared<TimeIntegration<SymR2>>("plastic_strain");
-  auto Ee = std::make_shared<ElasticStrainFromCauchyStress>("elastic_strain", S);
-  auto strain = std::make_shared<TotalStrain>("total_strain");
-
-  auto model = std::make_shared<ComposedModel>(
-      "viscoplasticity",
-      std::vector<std::shared_ptr<Model>>{input_stress,
-                                          return_map,
-                                          isoharden,
-                                          mandel_stress,
-                                          yieldfunc,
-                                          direction,
-                                          hrate,
-                                          Eprate,
-                                          Ep,
-                                          Ee,
-                                          strain},
-      std::vector<LabeledAxisAccessor>{Ep->var, isoharden->equivalent_plastic_strain});
+  HITParser parser;
+  parser.parse_and_manufacture("regression/models/solid_mechanics/regression_stress_control.i");
+  auto & model = Factory::get_object<Model>("Models", "model");
 
   TorchSize nbatch = 20;
   TorchSize nsteps = 100;
@@ -126,7 +50,8 @@ TEST_CASE("Uniaxial stress regression test", "[stress control]")
   BatchTensor<1> times = math::linspace<1>(torch::zeros_like(end_time), end_time, nsteps);
   BatchTensor<1> stresses = math::linspace<1>(torch::zeros_like(end_stress), end_stress, nsteps);
 
-  StructuralDriver driver(*model, times, stresses, "cauchy_stress");
+  StructuralDriver driver(model, times, stresses, "cauchy_stress");
+  torch::NoGradGuard no_grad_guard;
   auto [all_inputs, all_outputs] = driver.run();
 
   std::ofstream ofile;

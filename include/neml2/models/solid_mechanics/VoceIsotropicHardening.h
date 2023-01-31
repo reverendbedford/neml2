@@ -31,7 +31,9 @@ namespace neml2
 class VoceIsotropicHardening : public IsotropicHardening
 {
 public:
-  VoceIsotropicHardening(const std::string & name, Scalar R, Scalar d);
+  static ParameterSet expected_params();
+
+  VoceIsotropicHardening(const ParameterSet & params);
 
 protected:
   /// Voce saturating hardening map

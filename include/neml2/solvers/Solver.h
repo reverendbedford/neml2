@@ -24,17 +24,18 @@
 
 #pragma once
 
-#include "neml2/models/solid_mechanics/YieldFunction.h"
+#include "neml2/base/NEML2Object.h"
+#include "neml2/base/Registry.h"
 
 namespace neml2
 {
-
-class KinematicHardeningYieldFunction : public YieldFunction
+class Solver : public NEML2Object
 {
 public:
-  KinematicHardeningYieldFunction(const std::string & name,
-                                  const std::shared_ptr<StressMeasure> & sm,
-                                  Scalar s0);
-};
+  static ParameterSet expected_params();
 
+  Solver(const ParameterSet & params);
+
+  const bool verbose;
+};
 } // namespace neml2

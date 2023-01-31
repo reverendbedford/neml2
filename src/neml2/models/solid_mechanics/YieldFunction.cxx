@@ -29,28 +29,40 @@
 
 namespace neml2
 {
-YieldFunction::YieldFunction(const std::string & name,
-                             const std::shared_ptr<StressMeasure> & sm,
-                             Scalar s0,
-                             bool with_isotropic_hardening,
-                             bool with_kinematic_hardening)
-  : SecDerivModel(name),
+register_NEML2_object(YieldFunction);
+
+ParameterSet
+YieldFunction::expected_params()
+{
+  ParameterSet params = SecDerivModel::expected_params();
+  params.set<std::string>("stress_measure");
+  params.set<Real>("yield_stress");
+  params.set<bool>("with_isotropic_hardening");
+  params.set<bool>("with_kinematic_hardening");
+  return params;
+}
+
+YieldFunction::YieldFunction(const ParameterSet & params)
+  : SecDerivModel(params),
+    _with_isotropic_hardening(params.get<bool>("with_isotropic_hardening")),
+    _with_kinematic_hardening(params.get<bool>("with_kinematic_hardening")),
     mandel_stress(declareInputVariable<SymR2>({"state", "mandel_stress"})),
     yield_function(declareOutputVariable<Scalar>({"state", "yield_function"})),
     isotropic_hardening(
-        with_isotropic_hardening
+        _with_isotropic_hardening
             ? declareInputVariable<Scalar>({"state", "hardening_interface", "isotropic_hardening"})
             : LabeledAxisAccessor({})),
     kinematic_hardening(
-        with_kinematic_hardening
+        _with_kinematic_hardening
             ? declareInputVariable<SymR2>({"state", "hardening_interface", "kinematic_hardening"})
             : LabeledAxisAccessor({})),
-    stress_measure(*sm),
-    _s0(register_parameter("yield_stress", s0)),
-    _with_isotropic_hardening(with_isotropic_hardening),
-    _with_kinematic_hardening(with_kinematic_hardening)
+    stress_measure(
+        Factory::get_object<StressMeasure>("Models", params.get<std::string>("stress_measure"))),
+    _s0(register_parameter("yield_stress", Scalar(params.get<Real>("yield_stress"))))
 {
-  register_model(sm, false);
+  register_model(
+      Factory::get_object_ptr<StressMeasure>("Models", params.get<std::string>("stress_measure")),
+      false);
   setup();
 }
 

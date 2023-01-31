@@ -27,19 +27,27 @@
 #include "TestUtils.h"
 #include "neml2/models/solid_mechanics/J2StressMeasure.h"
 #include "neml2/models/solid_mechanics/YieldFunction.h"
-#include "neml2/models/solid_mechanics/IsotropicHardeningYieldFunction.h"
-#include "neml2/models/solid_mechanics/KinematicHardeningYieldFunction.h"
-#include "neml2/models/solid_mechanics/IsotropicAndKinematicHardeningYieldFunction.h"
-#include "neml2/models/solid_mechanics/PerfectlyPlasticYieldFunction.h"
 
 using namespace neml2;
 
 TEST_CASE("J2IsotropicYieldFunction", "[J2IsotropicYieldFunction]")
 {
-  TorchSize nbatch = 10;
-  Scalar s0 = 50.0;
-  auto sm = std::make_shared<J2StressMeasure>("stress_measure");
-  auto yield = IsotropicHardeningYieldFunction("yield_function", sm, s0);
+  auto & factory = Factory::get_factory();
+  factory.clear();
+
+  factory.create_object("Models",
+                        J2StressMeasure::expected_params() +
+                            ParameterSet(KS{"name", "j2"}, KS{"type", "J2StressMeasure"}));
+  factory.create_object("Models",
+                        YieldFunction::expected_params() +
+                            ParameterSet(KS{"name", "yield"},
+                                         KS{"type", "YieldFunction"},
+                                         KS{"stress_measure", "j2"},
+                                         KR{"yield_stress", 50},
+                                         KB{"with_isotropic_hardening", true},
+                                         KB{"with_kinematic_hardening", false}));
+
+  auto & yield = Factory::get_object<YieldFunction>("Models", "yield");
 
   SECTION("model definition")
   {
@@ -57,6 +65,7 @@ TEST_CASE("J2IsotropicYieldFunction", "[J2IsotropicYieldFunction]")
 
   SECTION("model derivatives")
   {
+    TorchSize nbatch = 10;
     LabeledVector in(nbatch, yield.input());
     auto M = SymR2::init(100, 110, 100, 100, 100, 100).batch_expand(nbatch);
     in.slice("state").slice("hardening_interface").set(Scalar(200, nbatch), "isotropic_hardening");
@@ -80,10 +89,22 @@ TEST_CASE("J2IsotropicYieldFunction", "[J2IsotropicYieldFunction]")
 
 TEST_CASE("J2PerfectYieldFunction", "[J2PerfectYieldFunction]")
 {
-  TorchSize nbatch = 10;
-  Scalar s0 = 50.0;
-  auto sm = std::make_shared<J2StressMeasure>("stress_measure");
-  auto yield = PerfectlyPlasticYieldFunction("yield_function", sm, s0);
+  auto & factory = Factory::get_factory();
+  factory.clear();
+
+  factory.create_object("Models",
+                        J2StressMeasure::expected_params() +
+                            ParameterSet(KS{"name", "j2"}, KS{"type", "J2StressMeasure"}));
+  factory.create_object("Models",
+                        YieldFunction::expected_params() +
+                            ParameterSet(KS{"name", "yield"},
+                                         KS{"type", "YieldFunction"},
+                                         KS{"stress_measure", "j2"},
+                                         KR{"yield_stress", 50},
+                                         KB{"with_isotropic_hardening", false},
+                                         KB{"with_kinematic_hardening", false}));
+
+  auto & yield = Factory::get_object<YieldFunction>("Models", "yield");
 
   SECTION("model definition")
   {
@@ -95,6 +116,7 @@ TEST_CASE("J2PerfectYieldFunction", "[J2PerfectYieldFunction]")
 
   SECTION("model derivatives")
   {
+    TorchSize nbatch = 10;
     LabeledVector in(nbatch, yield.input());
     auto M = SymR2::init(100, 110, 100, 100, 100, 100).batch_expand(nbatch);
     in.slice("state").set(M, "mandel_stress");
@@ -117,10 +139,22 @@ TEST_CASE("J2PerfectYieldFunction", "[J2PerfectYieldFunction]")
 
 TEST_CASE("J2KinematicYieldFunction", "[J2KinematicYieldFunction]")
 {
-  TorchSize nbatch = 10;
-  Scalar s0 = 50.0;
-  auto sm = std::make_shared<J2StressMeasure>("stress_measure");
-  auto yield = KinematicHardeningYieldFunction("yield_function", sm, s0);
+  auto & factory = Factory::get_factory();
+  factory.clear();
+
+  factory.create_object("Models",
+                        J2StressMeasure::expected_params() +
+                            ParameterSet(KS{"name", "j2"}, KS{"type", "J2StressMeasure"}));
+  factory.create_object("Models",
+                        YieldFunction::expected_params() +
+                            ParameterSet(KS{"name", "yield"},
+                                         KS{"type", "YieldFunction"},
+                                         KS{"stress_measure", "j2"},
+                                         KR{"yield_stress", 50},
+                                         KB{"with_isotropic_hardening", false},
+                                         KB{"with_kinematic_hardening", true}));
+
+  auto & yield = Factory::get_object<YieldFunction>("Models", "yield");
 
   SECTION("model definition")
   {
@@ -138,6 +172,7 @@ TEST_CASE("J2KinematicYieldFunction", "[J2KinematicYieldFunction]")
 
   SECTION("model derivatives")
   {
+    TorchSize nbatch = 10;
     LabeledVector in(nbatch, yield.input());
     auto M = SymR2::init(100, 110, 100, 100, 100, 100).batch_expand(nbatch);
     in.slice("state").set(M, "mandel_stress");
@@ -162,10 +197,22 @@ TEST_CASE("J2KinematicYieldFunction", "[J2KinematicYieldFunction]")
 
 TEST_CASE("J2IsotropicAndKinematicYieldFunction", "[J2IsotropicAndKinematicYieldFunction]")
 {
-  TorchSize nbatch = 10;
-  Scalar s0 = 50.0;
-  auto sm = std::make_shared<J2StressMeasure>("stress_measure");
-  auto yield = IsotropicAndKinematicHardeningYieldFunction("yield_function", sm, s0);
+  auto & factory = Factory::get_factory();
+  factory.clear();
+
+  factory.create_object("Models",
+                        J2StressMeasure::expected_params() +
+                            ParameterSet(KS{"name", "j2"}, KS{"type", "J2StressMeasure"}));
+  factory.create_object("Models",
+                        YieldFunction::expected_params() +
+                            ParameterSet(KS{"name", "yield"},
+                                         KS{"type", "YieldFunction"},
+                                         KS{"stress_measure", "j2"},
+                                         KR{"yield_stress", 50},
+                                         KB{"with_isotropic_hardening", true},
+                                         KB{"with_kinematic_hardening", true}));
+
+  auto & yield = Factory::get_object<YieldFunction>("Models", "yield");
 
   SECTION("model definition")
   {
@@ -187,6 +234,7 @@ TEST_CASE("J2IsotropicAndKinematicYieldFunction", "[J2IsotropicAndKinematicYield
 
   SECTION("model derivatives")
   {
+    TorchSize nbatch = 10;
     LabeledVector in(nbatch, yield.input());
     auto M = SymR2::init(100, 110, 100, 100, 100, 100).batch_expand(nbatch);
     in.slice("state").set(M, "mandel_stress");

@@ -27,9 +27,20 @@
 
 namespace neml2
 {
+register_NEML2_object(TotalStrain);
+register_NEML2_object(TotalStrainRate);
+
 template <bool rate>
-TotalStrainTempl<rate>::TotalStrainTempl(const std::string & name)
-  : Model(name),
+ParameterSet
+TotalStrainTempl<rate>::expected_params()
+{
+  ParameterSet params = Model::expected_params();
+  return params;
+}
+
+template <bool rate>
+TotalStrainTempl<rate>::TotalStrainTempl(const ParameterSet & params)
+  : Model(params),
     elastic_strain(
         declareInputVariable<SymR2>({"state", rate ? "elastic_strain_rate" : "elastic_strain"})),
     plastic_strain(

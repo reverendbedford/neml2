@@ -31,8 +31,9 @@ namespace neml2
 class PerzynaPlasticFlowRate : public PlasticFlowRate
 {
 public:
-  /// Construct given the value of eta and n
-  PerzynaPlasticFlowRate(const std::string & name, Scalar eta, Scalar n);
+  static ParameterSet expected_params();
+
+  PerzynaPlasticFlowRate(const ParameterSet & params);
 
 protected:
   /// The flow rate

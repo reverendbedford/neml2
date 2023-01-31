@@ -31,9 +31,16 @@ using namespace neml2;
 
 TEST_CASE("LinearKinematicHardening", "[LinearKinematicHardening]")
 {
-  TorchSize nbatch = 10;
-  Scalar H = 1000.0;
-  auto kinharden = LinearKinematicHardening("hardening", H);
+  auto & factory = Factory::get_factory();
+  factory.clear();
+
+  factory.create_object("Models",
+                        LinearKinematicHardening::expected_params() +
+                            ParameterSet(KS{"name", "kinharden"},
+                                         KS{"type", "LinearKinematicHardening"},
+                                         KR{"H", 1000}));
+
+  auto & kinharden = Factory::get_object<LinearKinematicHardening>("Models", "kinharden");
 
   SECTION("model definition")
   {
@@ -53,6 +60,7 @@ TEST_CASE("LinearKinematicHardening", "[LinearKinematicHardening]")
 
   SECTION("model derivatives")
   {
+    TorchSize nbatch = 10;
     LabeledVector in(nbatch, kinharden.input());
     auto ep = SymR2::init(0.05, -0.01, 0.02, 0.04, 0.03, -0.06).batch_expand(nbatch);
     in.slice("state").slice("internal_state").set(ep, "plastic_strain");

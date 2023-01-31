@@ -32,7 +32,9 @@ template <typename T>
 class TimeIntegration : public Model
 {
 public:
-  TimeIntegration(const std::string & name);
+  static ParameterSet expected_params();
+
+  TimeIntegration(const ParameterSet & params);
 
   const LabeledAxisAccessor var_rate;
   const LabeledAxisAccessor var_n;
@@ -44,4 +46,7 @@ protected:
   virtual void
   set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const;
 };
+
+typedef TimeIntegration<Scalar> ScalarTimeIntegration;
+typedef TimeIntegration<SymR2> SymR2TimeIntegration;
 } // namespace neml2

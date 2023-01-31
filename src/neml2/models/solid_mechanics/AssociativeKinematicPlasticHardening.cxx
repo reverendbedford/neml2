@@ -27,14 +27,26 @@
 
 namespace neml2
 {
+register_NEML2_object(AssociativeKinematicPlasticHardening);
+
+ParameterSet
+AssociativeKinematicPlasticHardening::expected_params()
+{
+  ParameterSet params = PlasticHardening::expected_params();
+  params.set<std::string>("yield_function");
+  return params;
+}
+
 AssociativeKinematicPlasticHardening::AssociativeKinematicPlasticHardening(
-    const std::string & name, const std::shared_ptr<YieldFunction> & f)
-  : PlasticHardening(name),
-    yield_function(*f),
+    const ParameterSet & params)
+  : PlasticHardening(params),
+    yield_function(
+        Factory::get_object<YieldFunction>("Models", params.get<std::string>("yield_function"))),
     plastic_strain_rate(
         declareOutputVariable<SymR2>({"state", "internal_state", "plastic_strain_rate"}))
 {
-  register_model(f);
+  register_model(
+      Factory::get_object_ptr<YieldFunction>("Models", params.get<std::string>("yield_function")));
   setup();
 }
 
