@@ -21,3 +21,4 @@ doc/class-doc
 doc/doctrees
 doc/html
 !cmake/Modules/*
+*.log
