@@ -141,7 +141,7 @@ BatchTensor<N>::BatchTensor(const torch::Tensor & tensor)
 
 template <TorchSize N>
 BatchTensor<N>::BatchTensor(TorchShapeRef batch_size, TorchShapeRef base_size)
-  : torch::Tensor(std::move(torch::zeros(utils::add_shapes(batch_size, base_size), TorchDefaults)))
+  : torch::Tensor(torch::zeros(utils::add_shapes(batch_size, base_size), TorchDefaults))
 {
   neml_assert_dbg(batch_size.size() == N,
                   "Proposed batch shape has dimension ",

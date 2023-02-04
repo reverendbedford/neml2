@@ -24,10 +24,6 @@
 
 #pragma once
 
-#include <string>
-
-#include <torch/torch.h>
-
 #include "neml2/models/Model.h"
 
 class VerificationTest
