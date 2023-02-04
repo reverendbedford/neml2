@@ -11,7 +11,7 @@ add_compile_options(-Wall -Wextra -pedantic -Werror)
 # This is aggravating but occurs because pre-packaged torch uses
 # _GLIBCXX_USE_CXX11_ABI=0.  If you roll your own torch this may
 # not occur, so this flag could be dangerous in the future
-option(CXX11ABI "Whether to let GLIBCXX use cxx11 ABI" ON)
+option(CXX11ABI "Whether to let GLIBCXX use cxx11 ABI" OFF)
 
 if(NOT CXX11ABI)
       add_compile_definitions(_GLIBCXX_USE_CXX11_ABI=0)
