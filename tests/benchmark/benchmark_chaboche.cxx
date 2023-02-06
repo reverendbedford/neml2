@@ -90,7 +90,8 @@ TEST_CASE("Benchmark Chaboche", "[BENCHMARK][Chaboche]")
       auto mandel_stress = std::make_shared<IsotropicMandelStress>("mandel_stress");
       auto isoharden = std::make_shared<VoceIsotropicHardening>("isotropic_hardening", R, d);
       auto sm = std::make_shared<J2StressMeasure>("stress_measure");
-      auto yield = std::make_shared<YieldFunction>("yield_function", sm, s0, true, true);
+      auto yield =
+          std::make_shared<IsotropicAndKinematicHardeningYieldFunction>("yield_function", sm, s0);
       auto direction =
           std::make_shared<AssociativePlasticFlowDirection>("plastic_flow_direction", yield);
       auto eeprate = std::make_shared<AssociativeIsotropicPlasticHardening>("eeprate", yield);

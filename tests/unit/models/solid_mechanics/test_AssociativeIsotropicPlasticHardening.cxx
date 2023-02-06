@@ -40,13 +40,11 @@ TEST_CASE("AssociativeIsotropicPlasticHardening", "[AssociativeIsotropicPlasticH
                         J2StressMeasure::expected_params() +
                             ParameterSet(KS{"name", "j2"}, KS{"type", "J2StressMeasure"}));
   factory.create_object("Models",
-                        YieldFunction::expected_params() +
+                        IsotropicHardeningYieldFunction::expected_params() +
                             ParameterSet(KS{"name", "yield"},
-                                         KS{"type", "YieldFunction"},
+                                         KS{"type", "IsotropicHardeningYieldFunction"},
                                          KS{"stress_measure", "j2"},
-                                         KR{"yield_stress", 100},
-                                         KB{"with_isotropic_hardening", true},
-                                         KB{"with_kinematic_hardening", false}));
+                                         KR{"yield_stress", 100}));
   factory.create_object("Models",
                         AssociativeIsotropicPlasticHardening::expected_params() +
                             ParameterSet(KS{"name", "eprate"},

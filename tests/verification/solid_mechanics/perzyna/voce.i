@@ -29,11 +29,9 @@
     type = J2StressMeasure
   []
   [yield]
-    type = YieldFunction
+    type = IsotropicHardeningYieldFunction
     stress_measure = j2
     yield_stress = 10
-    with_isotropic_hardening = true
-    with_kinematic_hardening = false
   []
   [direction]
     type = AssociativePlasticFlowDirection

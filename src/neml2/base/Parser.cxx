@@ -31,7 +31,7 @@ Parser::parse_and_manufacture(const std::string & filename)
   parse(filename);
   auto & factory = Factory::get_factory();
   factory.clear();
-  factory.manufacture(parameter_collection());
+  factory.manufacture(parameters());
 }
 
 } // namespace neml2

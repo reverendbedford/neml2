@@ -21,26 +21,45 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-#pragma once
 
-#include "neml2/base/Factory.h"
+#include "SampleParserTestingModel.h"
 
-namespace neml2
+using namespace neml2;
+
+register_NEML2_object(SampleParserTestingModel);
+
+ParameterSet
+SampleParserTestingModel::expected_params()
 {
-/// The base class for all parsers
-class Parser
-{
-public:
-  Parser() = default;
+  ParameterSet params = Model::expected_params();
 
-  /// Deserialize a file, extract parameter collection, and manufacture all objects
-  virtual void parse_and_manufacture(const std::string & filename);
+  // Integral types we support:
+  //   bool
+  //   int
+  //   unsigned int
+  //   Real
+  //   string
+  //
+  // We also support vector of and vector of vector of each integral type.
+  params.set<bool>("bool");
+  params.set<std::vector<bool>>("bool_vec");
+  params.set<std::vector<std::vector<bool>>>("bool_vec_vec");
 
-  /// Deserialize a file given filename
-  virtual void parse(const std::string & filename) = 0;
+  params.set<int>("int");
+  params.set<std::vector<int>>("int_vec");
+  params.set<std::vector<std::vector<int>>>("int_vec_vec");
 
-  /// Set and override the default parameters with the extracted parameters
-  virtual ParameterCollection parameters() const = 0;
-};
+  params.set<unsigned int>("uint");
+  params.set<std::vector<unsigned int>>("uint_vec");
+  params.set<std::vector<std::vector<unsigned int>>>("uint_vec_vec");
 
-} // namespace neml2
+  params.set<Real>("Real");
+  params.set<std::vector<Real>>("Real_vec");
+  params.set<std::vector<std::vector<Real>>>("Real_vec_vec");
+
+  params.set<std::string>("string");
+  params.set<std::vector<std::string>>("string_vec");
+  params.set<std::vector<std::vector<std::string>>>("string_vec_vec");
+
+  return params;
+}

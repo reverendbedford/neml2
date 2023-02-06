@@ -24,11 +24,9 @@
     type = J2StressMeasure
   []
   [f]
-    type = YieldFunction
+    type = IsotropicHardeningYieldFunction
     stress_measure = j2
     yield_stress = 5
-    with_isotropic_hardening = true
-    with_kinematic_hardening = false
   []
   [gammarate]
     type = PerzynaPlasticFlowRate

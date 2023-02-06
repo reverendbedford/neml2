@@ -30,13 +30,10 @@
 
 namespace neml2
 {
-#define combineNames(X, Y) X##Y
-
 /// Add a NEML2Object to the registry.  classname is the (unquoted)
 /// c++ class.  Each object/class should only be registered once.
 #define register_NEML2_object(classname)                                                           \
-  static char combineNames(dummyvar_for_registering_obj_##classname, __COUNTER__) =                \
-      Registry::add<classname>(#classname)
+  static char dummyvar_for_registering_obj_##classname = Registry::add<classname>(#classname)
 
 class NEML2Object;
 

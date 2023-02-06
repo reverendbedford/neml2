@@ -36,8 +36,14 @@ Registry::get_registry()
 void
 Registry::add_inner(const std::string & name, const ParameterSet & params, BuildPtr build_ptr)
 {
-  get_registry()._expected_params[name] = params;
-  get_registry()._objects[name] = build_ptr;
+  auto & reg = get_registry();
+  neml_assert(reg._expected_params.count(name) == 0 && reg._objects.count(name) == 0,
+              "Duplicate registration found. Object named ",
+              name,
+              " is being registered multiple times.");
+
+  reg._expected_params[name] = params;
+  reg._objects[name] = build_ptr;
 }
 
 void

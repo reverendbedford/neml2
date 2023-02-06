@@ -40,11 +40,8 @@ public:
   /// Get the root of the parsed input file
   hit::Node * root() { return _root.get(); }
 
-  virtual const ParameterCollection & parameter_collection() const { return _all_params; }
-
-protected:
   /// Extract (and cast) parameters into the parameter collection
-  void extract_params();
+  virtual ParameterCollection parameters() const;
 
 private:
   class ExtractParamsWalker : public hit::Walker
@@ -63,9 +60,6 @@ private:
 
   /// The root node of the parsed input file
   std::unique_ptr<hit::Node> _root;
-
-  /// Collection of parameters of the parsed input file
-  ParameterCollection _all_params;
 };
 
 } // namespace neml2

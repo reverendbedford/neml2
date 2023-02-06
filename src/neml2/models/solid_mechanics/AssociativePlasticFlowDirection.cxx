@@ -40,10 +40,10 @@ AssociativePlasticFlowDirection::expected_params()
 AssociativePlasticFlowDirection::AssociativePlasticFlowDirection(const ParameterSet & params)
   : PlasticFlowDirection(params),
     yield_function(
-        Factory::get_object<YieldFunction>("Models", params.get<std::string>("yield_function")))
+        Factory::get_object<YieldFunctionBase>("Models", params.get<std::string>("yield_function")))
 {
-  register_model(
-      Factory::get_object_ptr<YieldFunction>("Models", params.get<std::string>("yield_function")));
+  register_model(Factory::get_object_ptr<YieldFunctionBase>(
+      "Models", params.get<std::string>("yield_function")));
   setup();
 }
 

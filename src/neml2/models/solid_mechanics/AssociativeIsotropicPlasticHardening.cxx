@@ -40,13 +40,13 @@ AssociativeIsotropicPlasticHardening::expected_params()
 AssociativeIsotropicPlasticHardening::AssociativeIsotropicPlasticHardening(
     const ParameterSet & params)
   : PlasticHardening(params),
-    yield_function(
-        Factory::get_object<YieldFunction>("Models", params.get<std::string>("yield_function"))),
+    yield_function(Factory::get_object<YieldFunctionBase>(
+        "Models", params.get<std::string>("yield_function"))),
     equivalent_plastic_strain_rate(declareOutputVariable<Scalar>(
         {"state", "internal_state", "equivalent_plastic_strain_rate"}))
 {
-  register_model(
-      Factory::get_object_ptr<YieldFunction>("Models", params.get<std::string>("yield_function")));
+  register_model(Factory::get_object_ptr<YieldFunctionBase>(
+      "Models", params.get<std::string>("yield_function")));
   setup();
 }
 

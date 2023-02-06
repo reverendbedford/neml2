@@ -21,26 +21,21 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+
 #pragma once
 
-#include "neml2/base/Factory.h"
+#include "neml2/models/Model.h"
 
-namespace neml2
-{
-/// The base class for all parsers
-class Parser
+/// This is a sample model to test the parsers
+class SampleParserTestingModel : public neml2::Model
 {
 public:
-  Parser() = default;
+  static neml2::ParameterSet expected_params();
 
-  /// Deserialize a file, extract parameter collection, and manufacture all objects
-  virtual void parse_and_manufacture(const std::string & filename);
+  using neml2::Model::Model;
 
-  /// Deserialize a file given filename
-  virtual void parse(const std::string & filename) = 0;
-
-  /// Set and override the default parameters with the extracted parameters
-  virtual ParameterCollection parameters() const = 0;
+protected:
+  virtual void set_value(neml2::LabeledVector, neml2::LabeledVector, neml2::LabeledMatrix *) const
+  {
+  }
 };
-
-} // namespace neml2

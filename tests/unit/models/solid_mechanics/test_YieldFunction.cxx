@@ -39,15 +39,13 @@ TEST_CASE("J2IsotropicYieldFunction", "[J2IsotropicYieldFunction]")
                         J2StressMeasure::expected_params() +
                             ParameterSet(KS{"name", "j2"}, KS{"type", "J2StressMeasure"}));
   factory.create_object("Models",
-                        YieldFunction::expected_params() +
+                        IsotropicHardeningYieldFunction::expected_params() +
                             ParameterSet(KS{"name", "yield"},
-                                         KS{"type", "YieldFunction"},
+                                         KS{"type", "IsotropicHardeningYieldFunction"},
                                          KS{"stress_measure", "j2"},
-                                         KR{"yield_stress", 50},
-                                         KB{"with_isotropic_hardening", true},
-                                         KB{"with_kinematic_hardening", false}));
+                                         KR{"yield_stress", 50}));
 
-  auto & yield = Factory::get_object<YieldFunction>("Models", "yield");
+  auto & yield = Factory::get_object<IsotropicHardeningYieldFunction>("Models", "yield");
 
   SECTION("model definition")
   {
@@ -96,15 +94,13 @@ TEST_CASE("J2PerfectYieldFunction", "[J2PerfectYieldFunction]")
                         J2StressMeasure::expected_params() +
                             ParameterSet(KS{"name", "j2"}, KS{"type", "J2StressMeasure"}));
   factory.create_object("Models",
-                        YieldFunction::expected_params() +
+                        PerfectlyPlasticYieldFunction::expected_params() +
                             ParameterSet(KS{"name", "yield"},
-                                         KS{"type", "YieldFunction"},
+                                         KS{"type", "PerfectlyPlasticYieldFunction"},
                                          KS{"stress_measure", "j2"},
-                                         KR{"yield_stress", 50},
-                                         KB{"with_isotropic_hardening", false},
-                                         KB{"with_kinematic_hardening", false}));
+                                         KR{"yield_stress", 50}));
 
-  auto & yield = Factory::get_object<YieldFunction>("Models", "yield");
+  auto & yield = Factory::get_object<PerfectlyPlasticYieldFunction>("Models", "yield");
 
   SECTION("model definition")
   {
@@ -146,15 +142,13 @@ TEST_CASE("J2KinematicYieldFunction", "[J2KinematicYieldFunction]")
                         J2StressMeasure::expected_params() +
                             ParameterSet(KS{"name", "j2"}, KS{"type", "J2StressMeasure"}));
   factory.create_object("Models",
-                        YieldFunction::expected_params() +
+                        KinematicHardeningYieldFunction::expected_params() +
                             ParameterSet(KS{"name", "yield"},
-                                         KS{"type", "YieldFunction"},
+                                         KS{"type", "KinematicHardeningYieldFunction"},
                                          KS{"stress_measure", "j2"},
-                                         KR{"yield_stress", 50},
-                                         KB{"with_isotropic_hardening", false},
-                                         KB{"with_kinematic_hardening", true}));
+                                         KR{"yield_stress", 50}));
 
-  auto & yield = Factory::get_object<YieldFunction>("Models", "yield");
+  auto & yield = Factory::get_object<KinematicHardeningYieldFunction>("Models", "yield");
 
   SECTION("model definition")
   {
@@ -204,15 +198,14 @@ TEST_CASE("J2IsotropicAndKinematicYieldFunction", "[J2IsotropicAndKinematicYield
                         J2StressMeasure::expected_params() +
                             ParameterSet(KS{"name", "j2"}, KS{"type", "J2StressMeasure"}));
   factory.create_object("Models",
-                        YieldFunction::expected_params() +
+                        IsotropicAndKinematicHardeningYieldFunction::expected_params() +
                             ParameterSet(KS{"name", "yield"},
-                                         KS{"type", "YieldFunction"},
+                                         KS{"type", "IsotropicAndKinematicHardeningYieldFunction"},
                                          KS{"stress_measure", "j2"},
-                                         KR{"yield_stress", 50},
-                                         KB{"with_isotropic_hardening", true},
-                                         KB{"with_kinematic_hardening", true}));
+                                         KR{"yield_stress", 50}));
 
-  auto & yield = Factory::get_object<YieldFunction>("Models", "yield");
+  auto & yield =
+      Factory::get_object<IsotropicAndKinematicHardeningYieldFunction>("Models", "yield");
 
   SECTION("model definition")
   {

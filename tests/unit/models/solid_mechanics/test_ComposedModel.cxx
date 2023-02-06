@@ -129,13 +129,11 @@ TEST_CASE("Y-junction DAG", "[ComposedModel][Y-junction DAG]")
                         J2StressMeasure::expected_params() +
                             ParameterSet(KS{"name", "j2"}, KS{"type", "J2StressMeasure"}));
   factory.create_object("Models",
-                        YieldFunction::expected_params() +
+                        IsotropicHardeningYieldFunction::expected_params() +
                             ParameterSet(KS{"name", "yield"},
-                                         KS{"type", "YieldFunction"},
+                                         KS{"type", "IsotropicHardeningYieldFunction"},
                                          KS{"stress_measure", "j2"},
-                                         KR{"yield_stress", 100},
-                                         KB{"with_isotropic_hardening", true},
-                                         KB{"with_kinematic_hardening", false}));
+                                         KR{"yield_stress", 100}));
   factory.create_object("Models",
                         ComposedModel::expected_params() +
                             ParameterSet(KS{"name", "foo"},
@@ -184,13 +182,11 @@ TEST_CASE("diamond pattern", "[ComposedModel]")
                         J2StressMeasure::expected_params() +
                             ParameterSet(KS{"name", "j2"}, KS{"type", "J2StressMeasure"}));
   factory.create_object("Models",
-                        YieldFunction::expected_params() +
+                        IsotropicHardeningYieldFunction::expected_params() +
                             ParameterSet(KS{"name", "yield"},
-                                         KS{"type", "YieldFunction"},
+                                         KS{"type", "IsotropicHardeningYieldFunction"},
                                          KS{"stress_measure", "j2"},
-                                         KR{"yield_stress", 10},
-                                         KB{"with_isotropic_hardening", true},
-                                         KB{"with_kinematic_hardening", false}));
+                                         KR{"yield_stress", 10}));
   factory.create_object("Models",
                         AssociativePlasticFlowDirection::expected_params() +
                             ParameterSet(KS{"name", "direction"},
@@ -254,13 +250,11 @@ TEST_CASE("send to different device", "[ComposedModel]")
                         J2StressMeasure::expected_params() +
                             ParameterSet(KS{"name", "j2"}, KS{"type", "J2StressMeasure"}));
   factory.create_object("Models",
-                        YieldFunction::expected_params() +
+                        IsotropicHardeningYieldFunction::expected_params() +
                             ParameterSet(KS{"name", "yield"},
-                                         KS{"type", "YieldFunction"},
+                                         KS{"type", "IsotropicHardeningYieldFunction"},
                                          KS{"stress_measure", "j2"},
-                                         KR{"yield_stress", 10},
-                                         KB{"with_isotropic_hardening", true},
-                                         KB{"with_kinematic_hardening", false}));
+                                         KR{"yield_stress", 10}));
   factory.create_object("Models",
                         AssociativePlasticFlowDirection::expected_params() +
                             ParameterSet(KS{"name", "direction"},

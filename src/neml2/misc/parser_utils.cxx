@@ -21,26 +21,52 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-#pragma once
 
-#include "neml2/base/Factory.h"
+#include "neml2/misc/utils.h"
+#include <cxxabi.h>
 
 namespace neml2
 {
-/// The base class for all parsers
-class Parser
+namespace utils
 {
-public:
-  Parser() = default;
+std::string
+demangle(const char * name)
+{
+  int status = -4;
+  std::unique_ptr<char, void (*)(void *)> res{abi::__cxa_demangle(name, NULL, NULL, &status),
+                                              std::free};
+  return (status == 0) ? res.get() : name;
+}
 
-  /// Deserialize a file, extract parameter collection, and manufacture all objects
-  virtual void parse_and_manufacture(const std::string & filename);
+std::vector<std::string>
+split(const std::string & str, const std::string & delims)
+{
+  std::vector<std::string> tokens;
 
-  /// Deserialize a file given filename
-  virtual void parse(const std::string & filename) = 0;
+  std::string::size_type last_pos = str.find_first_not_of(delims, 0);
+  std::string::size_type pos = str.find_first_of(delims, std::min(last_pos + 1, str.size()));
 
-  /// Set and override the default parameters with the extracted parameters
-  virtual ParameterCollection parameters() const = 0;
-};
+  while (last_pos != std::string::npos)
+  {
+    tokens.push_back(str.substr(last_pos, pos - last_pos));
+    // skip delims between tokens
+    last_pos = str.find_first_not_of(delims, pos);
+    if (last_pos == std::string::npos)
+      break;
+    pos = str.find_first_of(delims, std::min(last_pos + 1, str.size()));
+  }
 
+  return tokens;
+}
+
+std::string
+trim(const std::string & str, const std::string & white_space)
+{
+  const auto begin = str.find_first_not_of(white_space);
+  if (begin == std::string::npos)
+    return ""; // no content
+  const auto end = str.find_last_not_of(white_space);
+  return str.substr(begin, end - begin + 1);
+}
+} // namespace utils
 } // namespace neml2

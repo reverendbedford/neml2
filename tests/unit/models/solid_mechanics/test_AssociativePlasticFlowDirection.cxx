@@ -40,20 +40,18 @@ TEST_CASE("AssociativePlasticFlowDirection", "[AssociativePlasticFlowDirection]"
                         J2StressMeasure::expected_params() +
                             ParameterSet(KS{"name", "j2"}, KS{"type", "J2StressMeasure"}));
   factory.create_object("Models",
-                        YieldFunction::expected_params() +
+                        IsotropicHardeningYieldFunction::expected_params() +
                             ParameterSet(KS{"name", "yield"},
-                                         KS{"type", "YieldFunction"},
+                                         KS{"type", "IsotropicHardeningYieldFunction"},
                                          KS{"stress_measure", "j2"},
-                                         KR{"yield_stress", 10},
-                                         KB{"with_isotropic_hardening", true},
-                                         KB{"with_kinematic_hardening", false}));
+                                         KR{"yield_stress", 10}));
   factory.create_object("Models",
                         AssociativePlasticFlowDirection::expected_params() +
                             ParameterSet(KS{"name", "direction"},
                                          KS{"type", "AssociativePlasticFlowDirection"},
                                          KS{"yield_function", "yield"}));
 
-  auto & yield = Factory::get_object<YieldFunction>("Models", "yield");
+  auto & yield = Factory::get_object<IsotropicHardeningYieldFunction>("Models", "yield");
   auto & direction = Factory::get_object<AssociativePlasticFlowDirection>("Models", "direction");
 
   SECTION("model definition")

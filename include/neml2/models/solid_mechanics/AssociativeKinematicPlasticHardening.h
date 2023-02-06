@@ -25,7 +25,7 @@
 #pragma once
 
 #include "neml2/models/solid_mechanics/PlasticHardening.h"
-#include "neml2/models/solid_mechanics/YieldFunction.h"
+#include "neml2/models/solid_mechanics/YieldFunctionBase.h"
 
 namespace neml2
 {
@@ -36,7 +36,7 @@ public:
 
   AssociativeKinematicPlasticHardening(const ParameterSet & params);
 
-  const YieldFunction & yield_function;
+  const YieldFunctionBase & yield_function;
 
 protected:
   /// The flow direction

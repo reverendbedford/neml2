@@ -36,13 +36,13 @@ HITParser::parse(const std::string & filename)
   std::string input = buffer.str();
 
   _root.reset(dynamic_cast<hit::Section *>(hit::parse("Hit parser", input)));
-
-  extract_params();
 }
 
-void
-HITParser::extract_params()
+ParameterCollection
+HITParser::parameters() const
 {
+  ParameterCollection all_params;
+
   for (const auto & section : Factory::pipeline)
   {
     auto section_node = _root->find(section);
@@ -57,7 +57,7 @@ HITParser::extract_params()
         // There is a special field reserved for object type
         std::string type = object->param<std::string>("type");
 
-        // Retrieve the expected parameters for this type
+        // Retrieve the expected parameters of this object
         ParameterSet params = Registry::expected_params(type);
         params.set<std::string>("name") = name;
         params.set<std::string>("type") = type;
@@ -66,10 +66,12 @@ HITParser::extract_params()
         ExtractParamsWalker epw(params);
         object->walk(&epw);
 
-        _all_params[section][name] = params;
+        all_params[section][name] = params;
       }
     }
   }
+
+  return all_params;
 }
 
 void
@@ -103,6 +105,7 @@ HITParser::ExtractParamsWalker::walk(const std::string & fullpath,
         extract_param_t(unsigned int);
         extract_param_t(Real);
         extract_param_t(std::string);
+        else neml_assert(false, "Unsupported parameter type for parameter ", fullpath);
 
         break;
       }
