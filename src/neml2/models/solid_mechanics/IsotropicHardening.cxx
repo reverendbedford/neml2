@@ -26,8 +26,15 @@
 
 namespace neml2
 {
-IsotropicHardening::IsotropicHardening(const std::string & name)
-  : Model(name),
+ParameterSet
+IsotropicHardening::expected_params()
+{
+  ParameterSet params = Model::expected_params();
+  return params;
+}
+
+IsotropicHardening::IsotropicHardening(const ParameterSet & params)
+  : Model(params),
     equivalent_plastic_strain(
         declareInputVariable<Scalar>({"state", "internal_state", "equivalent_plastic_strain"})),
     isotropic_hardening(

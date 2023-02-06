@@ -31,6 +31,8 @@ namespace neml2
 class SecDerivModel : public Model
 {
 public:
+  static ParameterSet expected_params();
+
   using Model::Model;
 
   /// Convenient shortcut to construct and return the model's first derivative

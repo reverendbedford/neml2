@@ -31,6 +31,8 @@ namespace neml2
 class IsotropicMandelStress : public MandelStress
 {
 public:
+  static ParameterSet expected_params();
+
   using MandelStress::MandelStress;
 
 protected:

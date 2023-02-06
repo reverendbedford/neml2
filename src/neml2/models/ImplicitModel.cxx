@@ -28,6 +28,13 @@ namespace neml2
 {
 ImplicitModel::Stage ImplicitModel::stage = UPDATING;
 
+ParameterSet
+ImplicitModel::expected_params()
+{
+  ParameterSet params = Model::expected_params();
+  return params;
+}
+
 BatchTensor<1>
 ImplicitModel::initial_guess(LabeledVector in) const
 {

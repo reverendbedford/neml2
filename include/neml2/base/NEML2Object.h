@@ -21,16 +21,21 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+#pragma once
 
-#include "neml2/models/solid_mechanics/KinematicHardeningYieldFunction.h"
+#include <torch/torch.h>
+
+#include "neml2/base/ParameterSet.h"
 
 namespace neml2
 {
-
-KinematicHardeningYieldFunction::KinematicHardeningYieldFunction(
-    const std::string & name, const std::shared_ptr<StressMeasure> & sm, Scalar s0)
-  : YieldFunction(name, sm, s0, false, true)
+class NEML2Object : public torch::nn::Module
 {
-}
+public:
+  static ParameterSet expected_params();
 
+  NEML2Object(const std::string & name);
+
+  NEML2Object(const ParameterSet & params);
+};
 } // namespace neml2

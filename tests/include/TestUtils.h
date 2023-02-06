@@ -24,8 +24,19 @@
 
 #pragma once
 
+#include "neml2/base/HITParser.h"
 #include "neml2/tensors/Scalar.h"
 #include "neml2/tensors/LabeledVector.h"
+
+enum ParserType
+{
+  HIT,
+  XML,
+  YAML,
+  AUTO
+};
+
+void load_model(const std::string & path, ParserType ptype = ParserType::AUTO);
 
 template <typename F, neml2::TorchSize D>
 void

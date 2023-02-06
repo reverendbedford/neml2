@@ -26,6 +26,13 @@
 
 namespace neml2
 {
+ParameterSet
+ADModel::expected_params()
+{
+  ParameterSet params = Model::expected_params();
+  return params;
+}
+
 std::tuple<LabeledVector, LabeledMatrix>
 ADModel::value_and_dvalue(LabeledVector in) const
 {

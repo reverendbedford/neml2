@@ -26,14 +26,24 @@
 
 namespace neml2
 {
-ImplicitUpdate::ImplicitUpdate(const std::string & name,
-                               std::shared_ptr<ImplicitModel> model,
-                               std::shared_ptr<NonlinearSolver> solver)
-  : Model(name),
-    _model(*model),
-    _solver(*solver)
+register_NEML2_object(ImplicitUpdate);
+
+ParameterSet
+ImplicitUpdate::expected_params()
 {
-  register_model(model);
+  ParameterSet params = Model::expected_params();
+  params.set<std::string>("implicit_model");
+  params.set<std::string>("solver");
+  return params;
+}
+
+ImplicitUpdate::ImplicitUpdate(const ParameterSet & params)
+  : Model(params),
+    _model(Factory::get_object<ImplicitModel>("Models", params.get<std::string>("implicit_model"))),
+    _solver(Factory::get_object<NonlinearSolver>("Solvers", params.get<std::string>("solver")))
+{
+  register_model(
+      Factory::get_object_ptr<ImplicitModel>("Models", params.get<std::string>("implicit_model")));
   // Now that the implicit model has been registered, the input of this ImplicitUpdate model should
   // be the same as the implicit model's input. The input subaxes of the implicit model looks
   // something like
@@ -53,7 +63,7 @@ ImplicitUpdate::ImplicitUpdate(const std::string & name,
   // as we have eliminated the trial state by solving the nonlinear system.
   // So, we need to remove the "state" subaxis from the input and add it to the output
   output().add<LabeledAxis>("state");
-  output().subaxis("state").merge(model->input().subaxis("state"));
+  output().subaxis("state").merge(_model.input().subaxis("state"));
   input().remove("state");
 
   // The consumed vars from "state" become provided vars

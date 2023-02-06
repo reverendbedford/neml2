@@ -26,25 +26,24 @@
 
 namespace neml2
 {
-ComposedModel::ComposedModel(const std::string & name,
-                             const std::vector<std::shared_ptr<Model>> & models,
-                             const std::vector<LabeledAxisAccessor> & additional_outputs)
-  : Model(name)
+register_NEML2_object(ComposedModel);
+
+ParameterSet
+ComposedModel::expected_params()
 {
+  ParameterSet params = Model::expected_params();
+  params.set<std::vector<std::string>>("models");
+  return params;
+}
+
+ComposedModel::ComposedModel(const ParameterSet & params)
+  : Model(params)
+{
+  std::vector<std::shared_ptr<Model>> models;
+  for (const auto & model_name : params.get<std::vector<std::string>>("models"))
+    models.push_back(Factory::get_object_ptr<Model>("Models", model_name));
+
   register_dependency(models);
-
-  for (const auto & var : additional_outputs)
-    _provided_vars.insert(var);
-
-  // Set up the input axis
-  input().clear();
-  for (const auto & var : _consumed_vars)
-    input().add(var);
-
-  // Set up the output axis
-  output().clear();
-  for (const auto & var : _provided_vars)
-    output().add(var);
 
   // Find the root model(s)
   // Basic idea: if a model is not needed by any other model, then it must be a root model
@@ -89,7 +88,10 @@ ComposedModel::register_dependency(const std::vector<std::shared_ptr<Model>> & m
         }
       }
       if (!provided)
+      {
         _consumed_vars.insert(consumed_var);
+        input().add(consumed_var, modeli->input().storage_size(consumed_var));
+      }
     }
 
     // see which model _consumes_ the provided variables
@@ -110,8 +112,15 @@ ComposedModel::register_dependency(const std::vector<std::shared_ptr<Model>> & m
         }
       }
       if (!consumed)
+      {
         _provided_vars.insert(provided_var);
+        output().add(provided_var, modeli->output().storage_size(provided_var));
+      }
     }
+
+    // Each model may request additional outputs
+    for (const auto & var : modeli->additional_outputs())
+      output().add(var, modeli->output().storage_size(var));
   }
 }
 

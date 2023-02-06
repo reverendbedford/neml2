@@ -50,8 +50,8 @@ protected:
   LabeledAxisAccessor
   declareVariable(LabeledAxis & axis, TorchSize sz, const std::vector<std::string> & names) const
   {
-    LabeledAxisAccessor accessor({names, sz});
-    axis.add(accessor);
+    LabeledAxisAccessor accessor{names};
+    axis.add(accessor, sz);
     return accessor;
   }
 

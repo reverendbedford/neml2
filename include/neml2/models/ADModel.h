@@ -31,6 +31,8 @@ namespace neml2
 class ADModel : public Model
 {
 public:
+  static ParameterSet expected_params();
+
   using Model::Model;
 
   virtual std::tuple<LabeledVector, LabeledMatrix> value_and_dvalue(LabeledVector in) const;

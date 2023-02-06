@@ -57,8 +57,6 @@ struct LabeledAxisAccessor
 {
   std::vector<std::string> item_names;
 
-  TorchSize storage_size;
-
   bool operator==(const LabeledAxisAccessor & other) const
   {
     return item_names == other.item_names;
@@ -123,7 +121,7 @@ public:
   LabeledAxis & add(const std::string & name, TorchSize sz);
 
   /// Add an arbitrary variable using a `LabeledAxisAccessor`
-  LabeledAxis & add(const LabeledAxisAccessor & accessor);
+  LabeledAxis & add(const LabeledAxisAccessor & accessor, TorchSize sz);
 
   /// Add prefix to the labels.
   /// Note that this method doesn't recurse through sub-axes.
@@ -246,6 +244,10 @@ private:
   void merge(LabeledAxis & other,
              std::vector<std::string> subaxes,
              std::vector<LabeledAxisAccessor> & merged_vars);
+
+  /// Helper method to recursively find the storage size of a variable
+  TorchSize storage_size(const std::vector<std::string>::const_iterator & cur,
+                         const std::vector<std::string>::const_iterator & end) const;
 
   /// Helper method to recursively consume the sub-axis names of a `LabeledAxisAccessor` to get the
   /// indices of a variable.

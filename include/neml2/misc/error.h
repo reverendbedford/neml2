@@ -32,15 +32,15 @@ namespace neml2
 class NEMLException : public std::exception
 {
 public:
-  NEMLException(char * msg)
-    : _message(msg)
+  NEMLException(const std::string & msg)
+    : _msg(msg)
   {
   }
 
-  char * what() { return _message; }
+  virtual const char * what() const noexcept;
 
 private:
-  char * _message;
+  std::string _msg;
 };
 
 template <typename... Args>

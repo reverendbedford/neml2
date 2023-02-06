@@ -27,9 +27,19 @@
 
 namespace neml2
 {
-LinearKinematicHardening::LinearKinematicHardening(const std::string & name, Scalar H)
-  : KinematicHardening(name),
-    _H(register_parameter("kinematic_hardening_modulus", H))
+register_NEML2_object(LinearKinematicHardening);
+
+ParameterSet
+LinearKinematicHardening::expected_params()
+{
+  ParameterSet params = KinematicHardening::expected_params();
+  params.set<Real>("H");
+  return params;
+}
+
+LinearKinematicHardening::LinearKinematicHardening(const ParameterSet & params)
+  : KinematicHardening(params),
+    _H(register_parameter("kinematic_hardening_modulus", Scalar(params.get<Real>("H"))))
 {
 }
 

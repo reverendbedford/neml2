@@ -25,18 +25,19 @@
 #pragma once
 
 #include "neml2/models/solid_mechanics/PlasticHardening.h"
-#include "neml2/models/solid_mechanics/YieldFunction.h"
+#include "neml2/models/solid_mechanics/YieldFunctionBase.h"
 
 namespace neml2
 {
 class AssociativeIsotropicPlasticHardening : public PlasticHardening
 {
 public:
-  AssociativeIsotropicPlasticHardening(const std::string & name,
-                                       const std::shared_ptr<YieldFunction> & f);
+  static ParameterSet expected_params();
+
+  AssociativeIsotropicPlasticHardening(const ParameterSet & params);
 
   /// Yield function used to define the hardening rule
-  const YieldFunction & yield_function;
+  const YieldFunctionBase & yield_function;
 
   /// Accessor for the plastic strain rate
   const LabeledAxisAccessor equivalent_plastic_strain_rate;

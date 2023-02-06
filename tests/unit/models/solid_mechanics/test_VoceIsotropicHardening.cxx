@@ -31,10 +31,17 @@ using namespace neml2;
 
 TEST_CASE("VoceIsotropicHardening", "[VoceIsotropicHardening]")
 {
-  TorchSize nbatch = 10;
-  Scalar R = 100.0;
-  Scalar d = 1.1;
-  auto isoharden = VoceIsotropicHardening("hardening", R, d);
+  auto & factory = Factory::get_factory();
+  factory.clear();
+
+  factory.create_object("Models",
+                        VoceIsotropicHardening::expected_params() +
+                            ParameterSet(KS{"name", "isoharden"},
+                                         KS{"type", "VoceIsotropicHardening"},
+                                         KR{"saturated_hardening", 100},
+                                         KR{"saturation_rate", 1.1}));
+
+  auto & isoharden = Factory::get_object<VoceIsotropicHardening>("Models", "isoharden");
 
   SECTION("model definition")
   {
@@ -54,6 +61,7 @@ TEST_CASE("VoceIsotropicHardening", "[VoceIsotropicHardening]")
 
   SECTION("model derivatives")
   {
+    TorchSize nbatch = 10;
     LabeledVector in(nbatch, isoharden.input());
     in.slice("state").slice("internal_state").set(Scalar(0.1, nbatch), "equivalent_plastic_strain");
 

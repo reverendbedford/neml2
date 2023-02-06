@@ -31,10 +31,17 @@ using namespace neml2;
 
 TEST_CASE("PerzynaPlasticFlowRate", "[PerzynaPlasticFlowRate]")
 {
-  TorchSize nbatch = 10;
-  Scalar eta = 150;
-  Scalar n = 6;
-  auto eprate = PerzynaPlasticFlowRate("plastic_flow_rate", eta, n);
+  auto & factory = Factory::get_factory();
+  factory.clear();
+
+  factory.create_object("Models",
+                        PerzynaPlasticFlowRate::expected_params() +
+                            ParameterSet(KS{"name", "eprate"},
+                                         KS{"type", "PerzynaPlasticFlowRate"},
+                                         KR{"eta", 150},
+                                         KR{"n", 6}));
+
+  auto & eprate = Factory::get_object<PerzynaPlasticFlowRate>("Models", "eprate");
 
   SECTION("model definition")
   {
@@ -46,6 +53,7 @@ TEST_CASE("PerzynaPlasticFlowRate", "[PerzynaPlasticFlowRate]")
 
   SECTION("model derivatives")
   {
+    TorchSize nbatch = 10;
     LabeledVector in(nbatch, eprate.input());
     in.slice("state").set(Scalar(1.3, nbatch), "yield_function");
 

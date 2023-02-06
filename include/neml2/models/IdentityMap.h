@@ -32,9 +32,9 @@ template <typename T>
 class IdentityMap : public Model
 {
 public:
-  IdentityMap(const std::string & name,
-              const std::vector<std::string> & from_var,
-              const std::vector<std::string> & to_var);
+  static ParameterSet expected_params();
+
+  IdentityMap(const ParameterSet & params);
 
   const LabeledAxisAccessor from;
   const LabeledAxisAccessor to;
@@ -43,4 +43,7 @@ protected:
   virtual void
   set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const;
 };
+
+typedef IdentityMap<Scalar> ScalarIdentityMap;
+typedef IdentityMap<SymR2> SymR2IdentityMap;
 } // namespace neml2

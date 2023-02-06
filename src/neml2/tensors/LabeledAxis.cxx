@@ -35,7 +35,6 @@ operator<<(std::ostream & os, const LabeledAxisAccessor & accessor)
       os << "/";
     os << accessor.item_names[i];
   }
-  os << "[" << accessor.storage_size << "]";
   return os;
 }
 
@@ -63,9 +62,9 @@ LabeledAxis::add(const std::string & name, TorchSize sz)
 }
 
 LabeledAxis &
-LabeledAxis::add(const LabeledAxisAccessor & accessor)
+LabeledAxis::add(const LabeledAxisAccessor & accessor, TorchSize sz)
 {
-  add(*this, accessor.storage_size, accessor.item_names.begin(), accessor.item_names.end());
+  add(*this, sz, accessor.item_names.begin(), accessor.item_names.end());
   return *this;
 }
 
@@ -194,7 +193,7 @@ LabeledAxis::merge(LabeledAxis & other,
       _variables.emplace(name, sz);
       auto new_var = subaxes;
       new_var.push_back(name);
-      merged_vars.push_back({new_var, sz});
+      merged_vars.push_back({new_var});
     }
 
   // Then merge the subaxes
@@ -255,7 +254,17 @@ LabeledAxis::storage_size(const std::string & name) const
 TorchSize
 LabeledAxis::storage_size(const LabeledAxisAccessor & accessor) const
 {
-  return accessor.storage_size;
+  return storage_size(accessor.item_names.begin(), accessor.item_names.end());
+}
+
+TorchSize
+LabeledAxis::storage_size(const std::vector<std::string>::const_iterator & cur,
+                          const std::vector<std::string>::const_iterator & end) const
+{
+  if (cur == end - 1)
+    return _variables.at(*cur);
+
+  return subaxis(*cur).storage_size(cur + 1, end);
 }
 
 TorchIndex

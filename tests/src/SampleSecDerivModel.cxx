@@ -26,9 +26,12 @@
 
 using namespace neml2;
 
+register_NEML2_object(SampleSecDerivModel);
+register_NEML2_object(ADSampleSecDerivModel);
+
 template <bool is_ad>
-SampleSecDerivModelTempl<is_ad>::SampleSecDerivModelTempl(const std::string & name)
-  : SampleSecDerivModelBase<is_ad>(name)
+SampleSecDerivModelTempl<is_ad>::SampleSecDerivModelTempl(const ParameterSet & params)
+  : SampleSecDerivModelBase<is_ad>(params)
 {
   this->input().template add<LabeledAxis>("state");
   this->input().subaxis("state").template add<Scalar>("x1");

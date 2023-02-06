@@ -26,14 +26,39 @@
 
 namespace neml2
 {
+register_NEML2_object(CauchyStressFromElasticStrain);
+register_NEML2_object(CauchyStressRateFromElasticStrainRate);
+register_NEML2_object(ElasticStrainFromCauchyStress);
+register_NEML2_object(ElasticStrainRateFromCauchyStressRate);
+
 template <bool rate, ElasticityType etype>
-LinearElasticity<rate, etype>::LinearElasticity(const std::string & name, SymSymR4 T)
-  : Model(name),
+ParameterSet
+LinearElasticity<rate, etype>::expected_params()
+{
+  ParameterSet params = Model::expected_params();
+  params.set<Real>("E");
+  params.set<Real>("nu");
+  return params;
+}
+
+template <bool rate, ElasticityType etype>
+LinearElasticity<rate, etype>::LinearElasticity(const ParameterSet & params)
+  : Model(params),
     from(declareInputVariable<SymR2>({"state", in_name()})),
     to(declareOutputVariable<SymR2>({"state", out_name()})),
-    _T(register_parameter("elasticity_tensor", T))
+    _T(register_parameter("elasticity_tensor", T(params.get<Real>("E"), params.get<Real>("nu"))))
 {
   setup();
+}
+
+template <bool rate, ElasticityType etype>
+SymSymR4
+LinearElasticity<rate, etype>::T(Scalar E, Scalar nu) const
+{
+  if constexpr (etype == ElasticityType::STIFFNESS)
+    return SymSymR4::init(SymSymR4::isotropic_E_nu, {E, nu});
+  if constexpr (etype == ElasticityType::COMPLIANCE)
+    return SymSymR4::init(SymSymR4::isotropic_E_nu, {E, nu}).inverse();
 }
 
 template <bool rate, ElasticityType etype>

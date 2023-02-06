@@ -27,16 +27,21 @@
 #include "neml2/tensors/LabeledVector.h"
 #include "neml2/tensors/LabeledMatrix.h"
 #include "neml2/models/LabeledAxisInterface.h"
+#include "neml2/base/Registry.h"
+#include "neml2/base/NEML2Object.h"
+#include "neml2/base/Factory.h"
 
 namespace neml2
 {
 /**
 Class that maps some input -> output, which is also the broader definition of constitutive model.
 */
-class Model : public torch::nn::Module, public LabeledAxisInterface
+class Model : public NEML2Object, public LabeledAxisInterface
 {
 public:
-  Model(const std::string & name);
+  static ParameterSet expected_params();
+
+  Model(const ParameterSet & params);
 
   /// Definition of the input variables
   /// @{
@@ -68,6 +73,7 @@ public:
 
   const std::set<LabeledAxisAccessor> & consumed_variables() const { return _consumed_vars; }
   const std::set<LabeledAxisAccessor> & provided_variables() const { return _provided_vars; }
+  const std::set<LabeledAxisAccessor> & additional_outputs() const { return _additional_outputs; }
 
 protected:
   /// The map between input -> output, and optionally its derivatives
@@ -127,6 +133,7 @@ protected:
 
   std::set<LabeledAxisAccessor> _consumed_vars;
   std::set<LabeledAxisAccessor> _provided_vars;
+  std::set<LabeledAxisAccessor> _additional_outputs;
 
 private:
   LabeledAxis & _input;

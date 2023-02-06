@@ -34,7 +34,7 @@ template <bool is_ad>
 class SampleRateModelTempl : public SampleRateModelBase<is_ad>
 {
 public:
-  SampleRateModelTempl(const std::string & name);
+  SampleRateModelTempl(const neml2::ParameterSet & params);
 
 protected:
   virtual void set_value(neml2::LabeledVector in,

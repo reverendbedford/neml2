@@ -27,12 +27,23 @@
 
 namespace neml2
 {
-AssociativePlasticFlowDirection::AssociativePlasticFlowDirection(
-    const std::string & name, const std::shared_ptr<YieldFunction> & f)
-  : PlasticFlowDirection(name),
-    yield_function(*f)
+register_NEML2_object(AssociativePlasticFlowDirection);
+
+ParameterSet
+AssociativePlasticFlowDirection::expected_params()
 {
-  register_model(f);
+  ParameterSet params = PlasticFlowDirection::expected_params();
+  params.set<std::string>("yield_function");
+  return params;
+}
+
+AssociativePlasticFlowDirection::AssociativePlasticFlowDirection(const ParameterSet & params)
+  : PlasticFlowDirection(params),
+    yield_function(
+        Factory::get_object<YieldFunctionBase>("Models", params.get<std::string>("yield_function")))
+{
+  register_model(Factory::get_object_ptr<YieldFunctionBase>(
+      "Models", params.get<std::string>("yield_function")));
   setup();
 }
 

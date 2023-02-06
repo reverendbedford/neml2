@@ -31,11 +31,17 @@ using namespace neml2;
 
 TEST_CASE("Elasticity", "[Elasticity]")
 {
-  TorchSize nbatch = 10;
-  Scalar E = 100;
-  Scalar nu = 0.3;
-  SymSymR4 C = SymSymR4::init(SymSymR4::FillMethod::isotropic_E_nu, {E, nu});
-  auto elasticity = CauchyStressFromElasticStrain("elasticity", C);
+  auto & factory = Factory::get_factory();
+  factory.clear();
+
+  factory.create_object("Models",
+                        CauchyStressFromElasticStrain::expected_params() +
+                            ParameterSet(KS{"name", "elasticity"},
+                                         KS{"type", "CauchyStressFromElasticStrain"},
+                                         KR{"E", 100},
+                                         KR{"nu", 0.3}));
+
+  auto & elasticity = Factory::get_object<CauchyStressFromElasticStrain>("Models", "elasticity");
 
   SECTION("model definition")
   {
@@ -47,6 +53,7 @@ TEST_CASE("Elasticity", "[Elasticity]")
 
   SECTION("model derivatives")
   {
+    TorchSize nbatch = 10;
     LabeledVector in(nbatch, elasticity.input());
     auto Ee = SymR2::init(0.09, 0.04, 0).batch_expand(nbatch);
     in.slice("state").set(Ee, "elastic_strain");

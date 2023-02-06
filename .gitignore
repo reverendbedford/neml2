@@ -22,3 +22,4 @@ doc/doctrees
 doc/html
 !cmake/Modules/*
 *.log
+*.so

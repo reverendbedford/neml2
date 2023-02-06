@@ -26,8 +26,15 @@
 
 namespace neml2
 {
-MandelStress::MandelStress(const std::string & name)
-  : Model(name),
+ParameterSet
+MandelStress::expected_params()
+{
+  ParameterSet params = Model::expected_params();
+  return params;
+}
+
+MandelStress::MandelStress(const ParameterSet & params)
+  : Model(params),
     cauchy_stress(declareInputVariable<SymR2>({"state", "cauchy_stress"})),
     mandel_stress(declareOutputVariable<SymR2>({"state", "mandel_stress"}))
 {

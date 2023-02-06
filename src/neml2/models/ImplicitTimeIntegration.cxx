@@ -26,15 +26,24 @@
 
 namespace neml2
 {
-ImplicitTimeIntegration::ImplicitTimeIntegration(const std::string & name,
-                                                 std::shared_ptr<Model> rate)
-  : ImplicitModel(name),
+register_NEML2_object(ImplicitTimeIntegration);
+
+ParameterSet
+ImplicitTimeIntegration::expected_params()
+{
+  ParameterSet params = ImplicitModel::expected_params();
+  params.set<std::string>("rate");
+  return params;
+}
+
+ImplicitTimeIntegration::ImplicitTimeIntegration(const ParameterSet & params)
+  : ImplicitModel(params),
+    _rate(Factory::get_object<Model>("Models", params.get<std::string>("rate"))),
     time(declareInputVariable<Scalar>({"forces", "time"})),
     time_n(declareInputVariable<Scalar>({"old_forces", "time"})),
-    resid(declareOutputVariable(rate->output().storage_size(), {"residual"})),
-    _rate(*rate)
+    resid(declareOutputVariable(_rate.output().storage_size(), {"residual"}))
 {
-  register_model(rate);
+  register_model(Factory::get_object_ptr<Model>("Models", params.get<std::string>("rate")));
 
   // Since we are integrating the state in time, we need the old state.
   // The items in old_state should just mirror the state
@@ -78,7 +87,7 @@ ImplicitTimeIntegration::set_value(LabeledVector in,
   // Finally finally, compute the Jacobian since we have all the information needed anyways
   if (dout_din)
   {
-    auto n_state = resid.storage_size;
+    auto n_state = output().storage_size(resid);
     auto I = BatchTensor<1>::identity(n_state).batch_expand(nbatch);
     auto ds_dot_ds_np1 = drate_din("state", "state");
     auto dr_ds_np1 = I - ds_dot_ds_np1 * dt;

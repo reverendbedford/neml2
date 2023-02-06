@@ -26,8 +26,15 @@
 
 namespace neml2
 {
-PlasticFlowDirection::PlasticFlowDirection(const std::string & name)
-  : Model(name),
+ParameterSet
+PlasticFlowDirection::expected_params()
+{
+  ParameterSet params = Model::expected_params();
+  return params;
+}
+
+PlasticFlowDirection::PlasticFlowDirection(const ParameterSet & params)
+  : Model(params),
     plastic_flow_direction(declareOutputVariable<SymR2>({"state", "plastic_flow_direction"}))
 {
   setup();

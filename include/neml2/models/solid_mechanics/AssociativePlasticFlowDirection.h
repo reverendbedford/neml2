@@ -25,17 +25,18 @@
 #pragma once
 
 #include "neml2/models/solid_mechanics/PlasticFlowDirection.h"
-#include "neml2/models/solid_mechanics/YieldFunction.h"
+#include "neml2/models/solid_mechanics/YieldFunctionBase.h"
 
 namespace neml2
 {
 class AssociativePlasticFlowDirection : public PlasticFlowDirection
 {
 public:
-  AssociativePlasticFlowDirection(const std::string & name,
-                                  const std::shared_ptr<YieldFunction> & f);
+  static ParameterSet expected_params();
 
-  const YieldFunction & yield_function;
+  AssociativePlasticFlowDirection(const ParameterSet & params);
+
+  const YieldFunctionBase & yield_function;
 
 protected:
   /// The flow direction

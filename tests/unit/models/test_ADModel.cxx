@@ -31,10 +31,20 @@ using namespace neml2;
 
 TEST_CASE("ADModel", "[ADModel]")
 {
-  TorchSize nbatch = 10;
-  auto rate = SampleRateModel("sample_rate");
-  auto ad_rate = ADSampleRateModel("sample_rate");
+  auto & factory = Factory::get_factory();
+  factory.clear();
 
+  factory.create_object("Models",
+                        SampleRateModel::expected_params() +
+                            ParameterSet(KS{"name", "rate"}, KS{"type", "SampleRateModel"}));
+  factory.create_object("Models",
+                        ADSampleRateModel::expected_params() +
+                            ParameterSet(KS{"name", "ad_rate"}, KS{"type", "ADSampleRateModel"}));
+
+  auto & rate = Factory::get_object<SampleRateModel>("Models", "rate");
+  auto & ad_rate = Factory::get_object<ADSampleRateModel>("Models", "ad_rate");
+
+  TorchSize nbatch = 10;
   LabeledVector in(nbatch, rate.input());
   auto baz = SymR2::init(0.5, 1.1, 3.2, -1.2, 1.1, 5.9).batch_expand(nbatch);
   in.slice("state").set(Scalar(1.1, nbatch), "foo");

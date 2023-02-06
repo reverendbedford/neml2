@@ -31,7 +31,9 @@ namespace neml2
 class PlasticFlowDirection : public Model
 {
 public:
-  PlasticFlowDirection(const std::string & name);
+  static ParameterSet expected_params();
+
+  PlasticFlowDirection(const ParameterSet & params);
 
   const LabeledAxisAccessor plastic_flow_direction;
 };

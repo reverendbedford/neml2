@@ -27,6 +27,15 @@
 
 namespace neml2
 {
+register_NEML2_object(IsotropicMandelStress);
+
+ParameterSet
+IsotropicMandelStress::expected_params()
+{
+  ParameterSet params = MandelStress::expected_params();
+  return params;
+}
+
 void
 IsotropicMandelStress::set_value(LabeledVector in,
                                  LabeledVector out,

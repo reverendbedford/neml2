@@ -32,6 +32,8 @@ namespace neml2
 class ImplicitModel : public Model, public NonlinearSystem
 {
 public:
+  static ParameterSet expected_params();
+
   using Model::Model;
 
   enum Stage
