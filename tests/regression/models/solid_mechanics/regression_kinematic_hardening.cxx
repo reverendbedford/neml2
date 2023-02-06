@@ -26,68 +26,16 @@
 
 #include <fstream>
 
-#include "neml2/models/ComposedModel.h"
-#include "neml2/models/solid_mechanics/ElasticStrain.h"
-#include "neml2/models/solid_mechanics/LinearElasticity.h"
-#include "neml2/models/solid_mechanics/IsotropicMandelStress.h"
-#include "neml2/models/solid_mechanics/LinearKinematicHardening.h"
-#include "neml2/models/solid_mechanics/J2StressMeasure.h"
-#include "neml2/models/solid_mechanics/KinematicHardeningYieldFunction.h"
-#include "neml2/models/solid_mechanics/AssociativePlasticFlowDirection.h"
-#include "neml2/models/solid_mechanics/AssociativeKinematicPlasticHardening.h"
-#include "neml2/models/solid_mechanics/PerzynaPlasticFlowRate.h"
-#include "neml2/models/solid_mechanics/PlasticStrainRate.h"
-#include "neml2/models/ImplicitTimeIntegration.h"
-#include "neml2/models/ImplicitUpdate.h"
-#include "neml2/models/ForceRate.h"
-#include "neml2/solvers/NewtonNonlinearSolver.h"
 #include "StructuralDriver.h"
 #include "neml2/misc/math.h"
+#include "TestUtils.h"
 
 using namespace neml2;
 
-TEST_CASE("Regression test on kinematic hardening ", "[kinematic_hardening]")
+TEST_CASE("Regression test on kinematic hardening ", "[kinematic hardening]")
 {
-  NonlinearSolverParameters params = {/*atol =*/1e-10,
-                                      /*rtol =*/1e-8,
-                                      /*miters =*/100,
-                                      /*verbose=*/false};
-
-  Scalar E = 1e5;
-  Scalar nu = 0.3;
-  SymSymR4 C = SymSymR4::init(SymSymR4::FillMethod::isotropic_E_nu, {E, nu});
-  Scalar s0 = 5;
-  Scalar H = 1000;
-  Scalar eta = 100;
-  Scalar n = 2;
-  auto Erate = std::make_shared<ForceRate<SymR2>>("total_strain");
-  auto Eerate = std::make_shared<ElasticStrainRate>("elastic_strain_rate");
-  auto elasticity = std::make_shared<CauchyStressRateFromElasticStrainRate>("elasticity", C);
-  auto mandel_stress = std::make_shared<IsotropicMandelStress>("mandel_stress");
-  auto isoharden = std::make_shared<LinearKinematicHardening>("kinematic_hardening", H);
-  auto sm = std::make_shared<J2StressMeasure>("stress_measure");
-  auto yield = std::make_shared<KinematicHardeningYieldFunction>("yield_function", sm, s0);
-  auto direction =
-      std::make_shared<AssociativePlasticFlowDirection>("plastic_flow_direction", yield);
-  auto eprate = std::make_shared<AssociativeKinematicPlasticHardening>("ep_rate", yield);
-  auto hrate = std::make_shared<PerzynaPlasticFlowRate>("hardening_rate", eta, n);
-  auto Eprate = std::make_shared<PlasticStrainRate>("plastic_strain_rate");
-
-  auto rate = std::make_shared<ComposedModel>("rate",
-                                              std::vector<std::shared_ptr<Model>>{Erate,
-                                                                                  Eerate,
-                                                                                  elasticity,
-                                                                                  mandel_stress,
-                                                                                  isoharden,
-                                                                                  yield,
-                                                                                  direction,
-                                                                                  eprate,
-                                                                                  hrate,
-                                                                                  Eprate});
-
-  auto implicit_rate = std::make_shared<ImplicitTimeIntegration>("implicit_time_integration", rate);
-  auto solver = std::make_shared<NewtonNonlinearSolver>(params);
-  auto model = std::make_shared<ImplicitUpdate>("viscoplasticity", implicit_rate, solver);
+  load_model("regression/models/solid_mechanics/regression_kinematic_hardening.i");
+  auto & model = Factory::get_object<Model>("Models", "model");
 
   TorchSize nbatch = 20;
   TorchSize nsteps = 100;
@@ -102,7 +50,8 @@ TEST_CASE("Regression test on kinematic hardening ", "[kinematic_hardening]")
   BatchTensor<1> times = math::linspace<1>(torch::zeros_like(end_time), end_time, nsteps);
   BatchTensor<1> strains = math::linspace<1>(torch::zeros_like(end_strain), end_strain, nsteps);
 
-  StructuralDriver driver(*model, times, strains, "total_strain");
+  StructuralDriver driver(model, times, strains, "total_strain");
+  torch::NoGradGuard no_grad_guard;
   auto [all_inputs, all_outputs] = driver.run();
 
   std::ofstream ofile;

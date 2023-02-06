@@ -26,8 +26,10 @@
 
 using namespace neml2;
 
-SampleSubsubaxisModel::SampleSubsubaxisModel(const std::string & name)
-  : Model(name),
+register_NEML2_object(SampleSubsubaxisModel);
+
+SampleSubsubaxisModel::SampleSubsubaxisModel(const ParameterSet & params)
+  : Model(params),
     foo(declareInputVariable<Scalar>({"state", "foo"})),
     bar(declareInputVariable<Scalar>({"state", "substate", "bar"})),
     baz(declareOutputVariable<Scalar>({"state", "baz"}))

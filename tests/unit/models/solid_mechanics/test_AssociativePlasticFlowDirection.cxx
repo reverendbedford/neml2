@@ -33,16 +33,31 @@ using namespace neml2;
 
 TEST_CASE("AssociativePlasticFlowDirection", "[AssociativePlasticFlowDirection]")
 {
-  TorchSize nbatch = 10;
-  Scalar s0 = 10.0;
-  auto sm = std::make_shared<J2StressMeasure>("stress_measure");
-  auto yield = std::make_shared<YieldFunction>("yield_function", sm, s0, true, false);
-  auto direction = AssociativePlasticFlowDirection("plastic_flow_direction", yield);
+  auto & factory = Factory::get_factory();
+  factory.clear();
+
+  factory.create_object("Models",
+                        J2StressMeasure::expected_params() +
+                            ParameterSet(KS{"name", "j2"}, KS{"type", "J2StressMeasure"}));
+  factory.create_object("Models",
+                        IsotropicHardeningYieldFunction::expected_params() +
+                            ParameterSet(KS{"name", "yield"},
+                                         KS{"type", "IsotropicHardeningYieldFunction"},
+                                         KS{"stress_measure", "j2"},
+                                         KR{"yield_stress", 10}));
+  factory.create_object("Models",
+                        AssociativePlasticFlowDirection::expected_params() +
+                            ParameterSet(KS{"name", "direction"},
+                                         KS{"type", "AssociativePlasticFlowDirection"},
+                                         KS{"yield_function", "yield"}));
+
+  auto & yield = Factory::get_object<IsotropicHardeningYieldFunction>("Models", "yield");
+  auto & direction = Factory::get_object<AssociativePlasticFlowDirection>("Models", "direction");
 
   SECTION("model definition")
   {
     // My input should be sufficient for me to evaluate the yield function, hence
-    REQUIRE(direction.input() == yield->input());
+    REQUIRE(direction.input() == yield.input());
 
     REQUIRE(direction.output().has_subaxis("state"));
     REQUIRE(direction.output().subaxis("state").has_variable<SymR2>("plastic_flow_direction"));
@@ -50,6 +65,7 @@ TEST_CASE("AssociativePlasticFlowDirection", "[AssociativePlasticFlowDirection]"
 
   SECTION("model derivatives")
   {
+    TorchSize nbatch = 10;
     LabeledVector in(nbatch, direction.input());
     auto M = SymR2::init(100, 110, 100, 100, 100, 100).batch_expand(nbatch);
     in.slice("state").slice("hardening_interface").set(Scalar(200, nbatch), "isotropic_hardening");

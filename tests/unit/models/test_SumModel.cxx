@@ -31,9 +31,18 @@ using namespace neml2;
 
 TEST_CASE("SumModel, Scalar", "[SumModel]")
 {
-  TorchSize nbatch = 10;
-  auto summodel = SumModel<Scalar>(
-      "example", {{"state", "A"}, {"state", "substate", "B"}}, {"state", "outsub", "C"});
+  auto & factory = Factory::get_factory();
+  factory.clear();
+
+  factory.create_object(
+      "Models",
+      ScalarSumModel::expected_params() +
+          ParameterSet(KS{"name", "example"},
+                       KS{"type", "ScalarSumModel"},
+                       KVVS{"from_var", {{"state", "A"}, {"state", "substate", "B"}}},
+                       KVS{"to_var", {"state", "outsub", "C"}}));
+
+  auto & summodel = Factory::get_object<ScalarSumModel>("Models", "example");
 
   SECTION("model definition")
   {
@@ -47,6 +56,7 @@ TEST_CASE("SumModel, Scalar", "[SumModel]")
     REQUIRE(summodel.output().subaxis("state").subaxis("outsub").has_variable<Scalar>("C"));
   }
 
+  TorchSize nbatch = 10;
   LabeledVector in(nbatch, summodel.input());
   in.slice("state").slice("substate").set(Scalar(2.0, nbatch), "B");
   in.slice("state").set(Scalar(3.0, nbatch), "A");
@@ -70,9 +80,18 @@ TEST_CASE("SumModel, Scalar", "[SumModel]")
 
 TEST_CASE("SumModel, SymR2", "[SumModel]")
 {
-  TorchSize nbatch = 10;
-  auto summodel = SumModel<SymR2>(
-      "example", {{"state", "A"}, {"state", "substate", "B"}}, {"state", "outsub", "C"});
+  auto & factory = Factory::get_factory();
+  factory.clear();
+
+  factory.create_object(
+      "Models",
+      SymR2SumModel::expected_params() +
+          ParameterSet(KS{"name", "example"},
+                       KS{"type", "SymR2SumModel"},
+                       KVVS{"from_var", {{"state", "A"}, {"state", "substate", "B"}}},
+                       KVS{"to_var", {"state", "outsub", "C"}}));
+
+  auto & summodel = Factory::get_object<SymR2SumModel>("Models", "example");
 
   SECTION("model definition")
   {
@@ -86,6 +105,7 @@ TEST_CASE("SumModel, SymR2", "[SumModel]")
     REQUIRE(summodel.output().subaxis("state").subaxis("outsub").has_variable<SymR2>("C"));
   }
 
+  TorchSize nbatch = 10;
   LabeledVector in(nbatch, summodel.input());
   in.slice("state").slice("substate").set(SymR2::init(2.0, 3.0, 4.0).batch_expand(nbatch), "B");
   in.slice("state").set(SymR2::init(1.0, 2.0, 3.0).batch_expand(nbatch), "A");

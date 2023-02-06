@@ -38,7 +38,8 @@ TEST_CASE("Solve system correctly", "[NewtonNonlinearSolver]")
   PowerTestSystem system;
   x0 = system.guess(x0);
 
-  NonlinearSolverParameters params;
+  ParameterSet params = NewtonNonlinearSolver::expected_params();
+  params.set<std::string>("name") = "solver";
   NewtonNonlinearSolver solver(params);
 
   auto x_res = solver.solve(system, x0);

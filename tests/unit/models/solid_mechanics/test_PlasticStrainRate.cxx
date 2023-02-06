@@ -31,8 +31,15 @@ using namespace neml2;
 
 TEST_CASE("PlasticStrainRate", "[PlasticStrainRate]")
 {
-  TorchSize nbatch = 10;
-  auto pstrainrate = PlasticStrainRate("plastic_strain_rate");
+  auto & factory = Factory::get_factory();
+  factory.clear();
+
+  factory.create_object(
+      "Models",
+      PlasticStrainRate::expected_params() +
+          ParameterSet(KS{"name", "pstrainrate"}, KS{"type", "PlasticStrainRate"}));
+
+  auto & pstrainrate = Factory::get_object<PlasticStrainRate>("Models", "pstrainrate");
 
   SECTION("model definition")
   {
@@ -46,6 +53,7 @@ TEST_CASE("PlasticStrainRate", "[PlasticStrainRate]")
 
   SECTION("model derivatives")
   {
+    TorchSize nbatch = 10;
     LabeledVector in(nbatch, pstrainrate.input());
     // Well, in principle we should give Np:Np = 3/2, but whatever
     auto Np = SymR2::init(0, 0, 0, 1, 0.3, 0.8).batch_expand(nbatch);

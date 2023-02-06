@@ -27,9 +27,12 @@
 
 using namespace neml2;
 
+register_NEML2_object(SampleRateModel);
+register_NEML2_object(ADSampleRateModel);
+
 template <bool is_ad>
-SampleRateModelTempl<is_ad>::SampleRateModelTempl(const std::string & name)
-  : SampleRateModelBase<is_ad>(name)
+SampleRateModelTempl<is_ad>::SampleRateModelTempl(const ParameterSet & params)
+  : SampleRateModelBase<is_ad>(params)
 {
   this->input().template add<LabeledAxis>("state");
   this->input().subaxis("state").template add<Scalar>("foo");

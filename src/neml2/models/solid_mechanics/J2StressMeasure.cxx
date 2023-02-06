@@ -27,10 +27,13 @@
 
 namespace neml2
 {
-J2StressMeasure::J2StressMeasure(const std::string & name)
-  : StressMeasure(name)
+register_NEML2_object(J2StressMeasure);
+
+ParameterSet
+J2StressMeasure::expected_params()
 {
-  setup();
+  ParameterSet params = StressMeasure::expected_params();
+  return params;
 }
 
 void

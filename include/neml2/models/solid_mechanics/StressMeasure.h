@@ -31,7 +31,9 @@ namespace neml2
 class StressMeasure : public SecDerivModel
 {
 public:
-  StressMeasure(const std::string & name);
+  static ParameterSet expected_params();
+
+  StressMeasure(const ParameterSet & params);
 
   const LabeledAxisAccessor overstress;
   const LabeledAxisAccessor stress_measure;

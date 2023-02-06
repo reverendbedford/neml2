@@ -27,14 +27,26 @@
 
 namespace neml2
 {
+register_NEML2_object(ScalarForceRate);
+register_NEML2_object(SymR2ForceRate);
+
 template <typename T>
-ForceRate<T>::ForceRate(const std::string & name)
-  : Model(name),
-    force(declareInputVariable<T>({"forces", name})),
-    force_n(declareInputVariable<T>({"old_forces", name})),
+ParameterSet
+ForceRate<T>::expected_params()
+{
+  ParameterSet params = Model::expected_params();
+  params.set<std::string>("force");
+  return params;
+}
+
+template <typename T>
+ForceRate<T>::ForceRate(const ParameterSet & params)
+  : Model(params),
+    force(declareInputVariable<T>({"forces", params.get<std::string>("force")})),
+    force_n(declareInputVariable<T>({"old_forces", params.get<std::string>("force")})),
     time(declareInputVariable<Scalar>({"forces", "time"})),
     time_n(declareInputVariable<Scalar>({"old_forces", "time"})),
-    force_rate(declareOutputVariable<T>({"forces", name + "_rate"}))
+    force_rate(declareOutputVariable<T>({"forces", params.get<std::string>("force") + "_rate"}))
 {
   this->setup();
 }

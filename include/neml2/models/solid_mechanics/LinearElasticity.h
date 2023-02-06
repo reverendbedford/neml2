@@ -39,7 +39,9 @@ template <bool rate, ElasticityType etype>
 class LinearElasticity : public Model
 {
 public:
-  LinearElasticity(const std::string & name, SymSymR4 T);
+  static ParameterSet expected_params();
+
+  LinearElasticity(const ParameterSet & params);
 
   static constexpr std::string in_name();
   static constexpr std::string out_name();
@@ -50,6 +52,8 @@ public:
 protected:
   virtual void
   set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const;
+
+  SymSymR4 T(Scalar E, Scalar nu) const;
 
   /**
   The fourth order transformation tensor. When `etype == STIFFNESS`, this is the stiffness tensor;

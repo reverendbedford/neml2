@@ -31,7 +31,9 @@ namespace neml2
 class NewtonNonlinearSolver : public NonlinearSolver
 {
 public:
-  NewtonNonlinearSolver(const NonlinearSolverParameters & params);
+  static ParameterSet expected_params();
+
+  using NonlinearSolver::NonlinearSolver;
 
   virtual BatchTensor<1> solve(const NonlinearSystem & system, const BatchTensor<1> & x0) const;
 

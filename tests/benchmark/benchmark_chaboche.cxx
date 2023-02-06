@@ -34,7 +34,7 @@
 #include "neml2/models/solid_mechanics/VoceIsotropicHardening.h"
 #include "neml2/models/solid_mechanics/ChabochePlasticHardening.h"
 #include "neml2/models/solid_mechanics/J2StressMeasure.h"
-#include "neml2/models/solid_mechanics/IsotropicAndKinematicHardeningYieldFunction.h"
+#include "neml2/models/solid_mechanics/YieldFunction.h"
 #include "neml2/models/solid_mechanics/AssociativePlasticFlowDirection.h"
 #include "neml2/models/solid_mechanics/AssociativeKinematicPlasticHardening.h"
 #include "neml2/models/solid_mechanics/PerzynaPlasticFlowRate.h"
@@ -71,10 +71,7 @@ TEST_CASE("Benchmark Chaboche", "[BENCHMARK][Chaboche]")
 
     for (TorchSize nbackstress : nbackstresses)
     {
-      NonlinearSolverParameters params = {/*atol =*/1e-10,
-                                          /*rtol =*/1e-8,
-                                          /*miters =*/100,
-                                          /*verbose=*/false};
+      ParameterSet params;
 
       // Model parameters
       Scalar E = 1e5;
@@ -136,7 +133,11 @@ TEST_CASE("Benchmark Chaboche", "[BENCHMARK][Chaboche]")
       auto rate = std::make_shared<ComposedModel>("rate", models);
       auto implicit_rate =
           std::make_shared<ImplicitTimeIntegration>("implicit_time_integration", rate);
+
+      params.clear();
+      params.set<std::string>("name") = "solver";
       auto solver = std::make_shared<NewtonNonlinearSolver>(params);
+
       auto model = std::make_shared<ImplicitUpdate>("viscoplasticity", implicit_rate, solver);
 
       StructuralDriver driver(*model, times, strains, "total_strain");

@@ -27,9 +27,13 @@
 
 namespace neml2
 {
-NewtonNonlinearSolver::NewtonNonlinearSolver(const NonlinearSolverParameters & params)
-  : NonlinearSolver(params)
+register_NEML2_object(NewtonNonlinearSolver);
+
+ParameterSet
+NewtonNonlinearSolver::expected_params()
 {
+  ParameterSet params = NonlinearSolver::expected_params();
+  return params;
 }
 
 BatchTensor<1>
@@ -52,7 +56,7 @@ NewtonNonlinearSolver::solve(const NonlinearSystem & system, const BatchTensor<1
   // 1. nR < atol (success)
   // 2. nR / nR0 < rtol (success)
   // 3. i > miters (failure)
-  for (size_t i = 1; i < params.miters; i++)
+  for (size_t i = 1; i < miters; i++)
   {
     // Update R and the norm of R
     std::tie(R, J) = system.residual_and_Jacobian(x);
@@ -84,12 +88,11 @@ NewtonNonlinearSolver::update(BatchTensor<1> x, BatchTensor<1> R, BatchTensor<1>
 bool
 NewtonNonlinearSolver::converged(size_t itr, BatchTensor<1> nR, BatchTensor<1> nR0) const
 {
-  if (params.verbose)
+  if (verbose)
     std::cout << "ITERATION " << std::setw(3) << itr << ", |R| = " << std::scientific
               << torch::mean(nR).item<double>() << ", |R0| = " << std::scientific
               << torch::mean(nR0).item<double>() << std::endl;
 
-  return torch::all(nR < params.atol).item<bool>() ||
-         torch::all(nR / nR0 < params.rtol).item<bool>();
+  return torch::all(nR < atol).item<bool>() || torch::all(nR / nR0 < rtol).item<bool>();
 }
 } // namespace neml2

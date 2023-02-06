@@ -25,20 +25,26 @@
 #include <catch2/catch.hpp>
 
 #include "TestUtils.h"
-#include "neml2/models/solid_mechanics/J2StressMeasure.h"
-#include "neml2/models/solid_mechanics/YieldFunction.h"
 #include "neml2/models/solid_mechanics/ChabochePlasticHardening.h"
 
 using namespace neml2;
 
 TEST_CASE("Chaboche model definition", "[Chaboche]")
 {
-  TorchSize nbatch = 10;
-  Scalar C = 1000.0;
-  Scalar g = 10.0;
-  Scalar A = 1.0e-6;
-  Scalar a = 2.1;
-  auto chaboche = ChabochePlasticHardening("backstress_1", C, g, A, a);
+  auto & factory = Factory::get_factory();
+  factory.clear();
+
+  factory.create_object("Models",
+                        ChabochePlasticHardening::expected_params() +
+                            ParameterSet(KS{"name", "chaboche"},
+                                         KS{"type", "ChabochePlasticHardening"},
+                                         KR{"C", 1000},
+                                         KR{"g", 10},
+                                         KR{"A", 1e-6},
+                                         KR{"a", 2.1},
+                                         KS{"backstress_suffix", ""}));
+
+  auto & chaboche = Factory::get_object<ChabochePlasticHardening>("Models", "chaboche");
 
   SECTION("model definition")
   {
@@ -61,6 +67,7 @@ TEST_CASE("Chaboche model definition", "[Chaboche]")
 
   SECTION("model derivatives")
   {
+    TorchSize nbatch = 10;
     LabeledVector in(nbatch, chaboche.input());
     SymR2 n = SymR2::init(1.1, 1.2, -1.4, 0.05, 0.5, -0.1).batch_expand(nbatch);
     n = n.dev();

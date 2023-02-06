@@ -31,7 +31,9 @@ namespace neml2
 class PlasticFlowRate : public Model
 {
 public:
-  PlasticFlowRate(const std::string & name);
+  static ParameterSet expected_params();
+
+  PlasticFlowRate(const ParameterSet & params);
 
   const LabeledAxisAccessor yield_function;
   const LabeledAxisAccessor hardening_rate;

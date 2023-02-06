@@ -17,7 +17,7 @@ if(UNIT)
             ${UNIT_TESTS}
       )
       target_link_libraries(unit_tests Catch2::Catch2)
-      target_link_libraries(unit_tests batchedmat testutils)
+      target_link_libraries(unit_tests neml2 testutils)
       target_include_directories(unit_tests PUBLIC
             "${CMAKE_SOURCE_DIR}/include"
             "${CMAKE_SOURCE_DIR}/tests/include")
@@ -36,7 +36,7 @@ if(REGRESSION)
             ${REGRESSION_TESTS}
       )
       target_link_libraries(regression_tests Catch2::Catch2)
-      target_link_libraries(regression_tests batchedmat testutils)
+      target_link_libraries(regression_tests neml2 testutils)
       target_include_directories(regression_tests PUBLIC
             "${CMAKE_SOURCE_DIR}/include"
             "${CMAKE_SOURCE_DIR}/tests/include")
@@ -55,7 +55,7 @@ if(BENCHMARK)
             ${BENCHMARK_TESTS}
       )
       target_link_libraries(benchmark_tests Catch2::Catch2)
-      target_link_libraries(benchmark_tests batchedmat testutils)
+      target_link_libraries(benchmark_tests neml2 testutils)
       target_include_directories(benchmark_tests PUBLIC
             "${CMAKE_SOURCE_DIR}/include"
             "${CMAKE_SOURCE_DIR}/tests/include")
@@ -74,7 +74,7 @@ if(VERIFICATION)
             ${VERIFICATION_TESTS}
       )
       target_link_libraries(verification_tests Catch2::Catch2)
-      target_link_libraries(verification_tests batchedmat testutils)
+      target_link_libraries(verification_tests neml2 testutils)
       target_include_directories(verification_tests PUBLIC
             "${CMAKE_SOURCE_DIR}/include"
             "${CMAKE_SOURCE_DIR}/tests/include")

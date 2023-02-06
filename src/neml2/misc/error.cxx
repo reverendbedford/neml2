@@ -26,6 +26,12 @@
 
 namespace neml2
 {
+const char *
+NEMLException::what() const throw()
+{
+  return _msg.c_str();
+}
+
 namespace internal
 {
 void

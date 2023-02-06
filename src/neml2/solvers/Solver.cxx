@@ -22,15 +22,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/models/solid_mechanics/IsotropicHardeningYieldFunction.h"
+#include "neml2/solvers/Solver.h"
 
 namespace neml2
 {
-
-IsotropicHardeningYieldFunction::IsotropicHardeningYieldFunction(
-    const std::string & name, const std::shared_ptr<StressMeasure> & sm, Scalar s0)
-  : YieldFunction(name, sm, s0, true, false)
+ParameterSet
+Solver::expected_params()
 {
+  ParameterSet params = NEML2Object::expected_params();
+  params.set<bool>("verbose");
+  return params;
 }
 
+Solver::Solver(const ParameterSet & params)
+  : NEML2Object(params),
+    verbose(params.get<bool>("verbose"))
+{
+}
 } // namespace neml2

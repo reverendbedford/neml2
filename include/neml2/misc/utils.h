@@ -25,6 +25,7 @@
 #pragma once
 
 #include "neml2/misc/types.h"
+#include "neml2/misc/error.h"
 
 namespace neml2
 {

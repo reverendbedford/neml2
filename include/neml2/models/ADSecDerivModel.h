@@ -31,6 +31,8 @@ namespace neml2
 class ADSecDerivModel : public SecDerivModel
 {
 public:
+  static ParameterSet expected_params();
+
   using SecDerivModel::SecDerivModel;
 
   virtual std::tuple<LabeledVector, LabeledMatrix> value_and_dvalue(LabeledVector in) const;

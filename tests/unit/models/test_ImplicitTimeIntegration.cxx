@@ -32,9 +32,19 @@ using namespace neml2;
 
 TEST_CASE("ImplicitTimeIntegration", "[ImplicitTimeIntegration]")
 {
-  TorchSize nbatch = 10;
-  auto rate = std::make_shared<SampleRateModel>("sample_rate");
-  auto implicit_rate = ImplicitTimeIntegration("implicit_time_integration", rate);
+  auto & factory = Factory::get_factory();
+  factory.clear();
+
+  factory.create_object("Models",
+                        SampleRateModel::expected_params() +
+                            ParameterSet(KS{"name", "rate"}, KS{"type", "SampleRateModel"}));
+  factory.create_object("Models",
+                        ImplicitTimeIntegration::expected_params() +
+                            ParameterSet(KS{"name", "implicit_rate"},
+                                         KS{"type", "ImplicitTimeIntegration"},
+                                         KS{"rate", "rate"}));
+
+  auto & implicit_rate = Factory::get_object<ImplicitTimeIntegration>("Models", "implicit_rate");
 
   SECTION("model definition")
   {
@@ -59,6 +69,7 @@ TEST_CASE("ImplicitTimeIntegration", "[ImplicitTimeIntegration]")
     REQUIRE(implicit_rate.output().storage_size() == 8);
   }
 
+  TorchSize nbatch = 10;
   LabeledVector in(nbatch, implicit_rate.input());
   auto baz = SymR2::init(0.5, 1.1, 3.2, -1.2, 1.1, 5.9).batch_expand(nbatch);
   auto baz_old = SymR2::init(0, 0, 0, 0, 0, 0).batch_expand(nbatch);

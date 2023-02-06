@@ -32,7 +32,9 @@ template <bool rate>
 class ElasticStrainTempl : public Model
 {
 public:
-  ElasticStrainTempl(const std::string & name);
+  static ParameterSet expected_params();
+
+  ElasticStrainTempl(const ParameterSet & params);
 
   const LabeledAxisAccessor total_strain;
   const LabeledAxisAccessor plastic_strain;

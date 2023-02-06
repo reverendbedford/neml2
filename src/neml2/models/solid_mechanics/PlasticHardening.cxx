@@ -26,8 +26,15 @@
 
 namespace neml2
 {
-PlasticHardening::PlasticHardening(const std::string & name)
-  : Model(name),
+ParameterSet
+PlasticHardening::expected_params()
+{
+  ParameterSet params = Model::expected_params();
+  return params;
+}
+
+PlasticHardening::PlasticHardening(const ParameterSet & params)
+  : Model(params),
     hardening_rate(declareInputVariable<Scalar>({"state", "hardening_rate"}))
 {
   setup();

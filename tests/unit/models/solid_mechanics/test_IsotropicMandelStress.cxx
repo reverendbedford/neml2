@@ -31,8 +31,15 @@ using namespace neml2;
 
 TEST_CASE("IsotropicMandelStress", "[IsotropicMandelStress]")
 {
-  TorchSize nbatch = 10;
-  auto mandel_stress = IsotropicMandelStress("mandel_stress");
+  auto & factory = Factory::get_factory();
+  factory.clear();
+
+  factory.create_object(
+      "Models",
+      IsotropicMandelStress::expected_params() +
+          ParameterSet(KS{"name", "mandel"}, KS{"type", "IsotropicMandelStress"}));
+
+  auto & mandel_stress = Factory::get_object<IsotropicMandelStress>("Models", "mandel");
 
   SECTION("model definition")
   {
@@ -44,6 +51,7 @@ TEST_CASE("IsotropicMandelStress", "[IsotropicMandelStress]")
 
   SECTION("model derivatives")
   {
+    TorchSize nbatch = 10;
     LabeledVector in(nbatch, mandel_stress.input());
     auto S = SymR2::init(100, 110, 100, 100, 100, 100).batch_expand(nbatch);
     in.slice("state").set(S, "cauchy_stress");

@@ -21,16 +21,35 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-
-#include "neml2/models/solid_mechanics/IsotropicAndKinematicHardeningYieldFunction.h"
+#include "neml2/base/Registry.h"
+#include "neml2/models/Model.h"
 
 namespace neml2
 {
-
-IsotropicAndKinematicHardeningYieldFunction::IsotropicAndKinematicHardeningYieldFunction(
-    const std::string & name, const std::shared_ptr<StressMeasure> & sm, Scalar s0)
-  : YieldFunction(name, sm, s0, true, true)
+Registry &
+Registry::get_registry()
 {
+  static Registry registry_singleton;
+  return registry_singleton;
 }
 
+void
+Registry::add_inner(const std::string & name, const ParameterSet & params, BuildPtr build_ptr)
+{
+  auto & reg = get_registry();
+  neml_assert(reg._expected_params.count(name) == 0 && reg._objects.count(name) == 0,
+              "Duplicate registration found. Object named ",
+              name,
+              " is being registered multiple times.");
+
+  reg._expected_params[name] = params;
+  reg._objects[name] = build_ptr;
+}
+
+void
+Registry::print(std::ostream & os) const
+{
+  for (auto & object : _objects)
+    os << object.first << std::endl;
+}
 } // namespace neml2

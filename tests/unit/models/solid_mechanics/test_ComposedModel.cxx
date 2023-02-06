@@ -46,18 +46,32 @@ using namespace neml2;
 
 TEST_CASE("Linear DAG", "[ComposedModel][Linear DAG]")
 {
-  TorchSize nbatch = 10;
-  Scalar E(100, nbatch);
-  Scalar nu(0.3, nbatch);
-  SymSymR4 C = SymSymR4::init(SymSymR4::FillMethod::isotropic_E_nu, {E, nu});
-  auto estrain = std::make_shared<ElasticStrain>("elastic_strain");
-  auto elasticity = std::make_shared<CauchyStressFromElasticStrain>("elasticity", C);
-  auto mandel_stress = std::make_shared<IsotropicMandelStress>("mandel_stress");
+  auto & factory = Factory::get_factory();
+  factory.clear();
 
   // inputs --> "elastic_strain" --> "elasticity" --> "mandel_stress" --> outputs
   // inputs: total strain, plastic strain
   // outputs: mandel stress
-  auto model = ComposedModel("foo", {estrain, elasticity, mandel_stress});
+  factory.create_object("Models",
+                        ElasticStrain::expected_params() +
+                            ParameterSet(KS{"name", "estrain"}, KS{"type", "ElasticStrain"}));
+  factory.create_object("Models",
+                        CauchyStressFromElasticStrain::expected_params() +
+                            ParameterSet(KS{"name", "elasticity"},
+                                         KS{"type", "CauchyStressFromElasticStrain"},
+                                         KR{"E", 100},
+                                         KR{"nu", 0.3}));
+  factory.create_object(
+      "Models",
+      IsotropicMandelStress::expected_params() +
+          ParameterSet(KS{"name", "mandel"}, KS{"type", "IsotropicMandelStress"}));
+  factory.create_object("Models",
+                        ComposedModel::expected_params() +
+                            ParameterSet(KS{"name", "foo"},
+                                         KS{"type", "ComposedModel"},
+                                         KVS{"models", {"estrain", "elasticity", "mandel"}}));
+
+  auto & model = Factory::get_object<ComposedModel>("Models", "foo");
 
   SECTION("model definition")
   {
@@ -71,6 +85,7 @@ TEST_CASE("Linear DAG", "[ComposedModel][Linear DAG]")
 
   SECTION("model derivatives")
   {
+    TorchSize nbatch = 10;
     LabeledVector in(nbatch, model.input());
     auto E = SymR2::init(0.1, 0.05, 0).batch_expand(nbatch);
     auto Ep = SymR2::init(0.01, 0.01, 0).batch_expand(nbatch);
@@ -88,24 +103,44 @@ TEST_CASE("Linear DAG", "[ComposedModel][Linear DAG]")
 
 TEST_CASE("Y-junction DAG", "[ComposedModel][Y-junction DAG]")
 {
-  TorchSize nbatch = 10;
-  Scalar s0 = 100.0;
-  Scalar K = 1000.0;
-  auto isoharden = std::make_shared<LinearIsotropicHardening>("isotropic_hardening", K);
-  auto mandel_stress = std::make_shared<IsotropicMandelStress>("mandel_stress");
-  auto sm = std::make_shared<J2StressMeasure>("stress_measure");
-  auto yield = std::make_shared<YieldFunction>("yield_function", sm, s0, true, false);
+  auto & factory = Factory::get_factory();
+  factory.clear();
 
   // inputs --> "isotropic_hardening" --
   //                                    `
-  //                                     `--> "yield_function" --> outputs
-  //                                     '
-  //                                    '
-  // inputs -> "mandel_stress" ---
+  //                                     `
+  //                                      ----> "yield_function" ----> outputs
+  //                                     /
+  //                                    /
+  // inputs --> "mandel_stress" --------
   //
   // inputs: cauchy stress, equivalent plastic strain
   // outputs: yield function
-  auto model = ComposedModel("foo", {isoharden, mandel_stress, yield});
+  factory.create_object("Models",
+                        LinearIsotropicHardening::expected_params() +
+                            ParameterSet(KS{"name", "isoharden"},
+                                         KS{"type", "LinearIsotropicHardening"},
+                                         KR{"K", 1000}));
+  factory.create_object(
+      "Models",
+      IsotropicMandelStress::expected_params() +
+          ParameterSet(KS{"name", "mandel"}, KS{"type", "IsotropicMandelStress"}));
+  factory.create_object("Models",
+                        J2StressMeasure::expected_params() +
+                            ParameterSet(KS{"name", "j2"}, KS{"type", "J2StressMeasure"}));
+  factory.create_object("Models",
+                        IsotropicHardeningYieldFunction::expected_params() +
+                            ParameterSet(KS{"name", "yield"},
+                                         KS{"type", "IsotropicHardeningYieldFunction"},
+                                         KS{"stress_measure", "j2"},
+                                         KR{"yield_stress", 100}));
+  factory.create_object("Models",
+                        ComposedModel::expected_params() +
+                            ParameterSet(KS{"name", "foo"},
+                                         KS{"type", "ComposedModel"},
+                                         KVS{"models", {"isoharden", "mandel", "yield"}}));
+
+  auto & model = Factory::get_object<ComposedModel>("Models", "foo");
 
   SECTION("model definition")
   {
@@ -123,6 +158,7 @@ TEST_CASE("Y-junction DAG", "[ComposedModel][Y-junction DAG]")
 
   SECTION("model derivatives")
   {
+    TorchSize nbatch = 10;
     LabeledVector in(nbatch, model.input());
     auto S = SymR2::init(100, 110, 100, 100, 100, 100).batch_expand(nbatch);
     in.slice("state").set(S, "cauchy_stress");
@@ -139,18 +175,40 @@ TEST_CASE("Y-junction DAG", "[ComposedModel][Y-junction DAG]")
 
 TEST_CASE("diamond pattern", "[ComposedModel]")
 {
-  TorchSize nbatch = 10;
-  Scalar eta = 150;
-  Scalar n = 6;
-  Scalar s0 = 10.0;
-  auto sm = std::make_shared<J2StressMeasure>("stress_measure");
-  auto yield = std::make_shared<YieldFunction>("yield_function", sm, s0, true, false);
-  auto direction =
-      std::make_shared<AssociativePlasticFlowDirection>("plastic_flow_direction", yield);
-  auto eprate = std::make_shared<PerzynaPlasticFlowRate>("plastic_flow_rate", eta, n);
-  auto Eprate = std::make_shared<PlasticStrainRate>("plastic_strain_rate");
+  auto & factory = Factory::get_factory();
+  factory.clear();
 
-  auto model = ComposedModel("foo", {yield, direction, eprate, Eprate});
+  factory.create_object("Models",
+                        J2StressMeasure::expected_params() +
+                            ParameterSet(KS{"name", "j2"}, KS{"type", "J2StressMeasure"}));
+  factory.create_object("Models",
+                        IsotropicHardeningYieldFunction::expected_params() +
+                            ParameterSet(KS{"name", "yield"},
+                                         KS{"type", "IsotropicHardeningYieldFunction"},
+                                         KS{"stress_measure", "j2"},
+                                         KR{"yield_stress", 10}));
+  factory.create_object("Models",
+                        AssociativePlasticFlowDirection::expected_params() +
+                            ParameterSet(KS{"name", "direction"},
+                                         KS{"type", "AssociativePlasticFlowDirection"},
+                                         KS{"yield_function", "yield"}));
+  factory.create_object("Models",
+                        PerzynaPlasticFlowRate::expected_params() +
+                            ParameterSet(KS{"name", "eprate"},
+                                         KS{"type", "PerzynaPlasticFlowRate"},
+                                         KR{"eta", 150},
+                                         KR{"n", 6}));
+  factory.create_object("Models",
+                        PlasticStrainRate::expected_params() +
+                            ParameterSet(KS{"name", "Eprate"}, KS{"type", "PlasticStrainRate"}));
+  factory.create_object(
+      "Models",
+      ComposedModel::expected_params() +
+          ParameterSet(KS{"name", "foo"},
+                       KS{"type", "ComposedModel"},
+                       KVS{"models", {"yield", "direction", "eprate", "Eprate"}}));
+
+  auto & model = Factory::get_object<ComposedModel>("Models", "foo");
 
   SECTION("model definition")
   {
@@ -168,6 +226,7 @@ TEST_CASE("diamond pattern", "[ComposedModel]")
 
   SECTION("model derivatives")
   {
+    TorchSize nbatch = 10;
     LabeledVector in(nbatch, model.input());
     auto M = SymR2::init(100, 110, 100, 100, 100, 100).batch_expand(nbatch);
     in.slice("state").set(M, "mandel_stress");
@@ -184,17 +243,40 @@ TEST_CASE("diamond pattern", "[ComposedModel]")
 
 TEST_CASE("send to different device", "[ComposedModel]")
 {
-  Scalar eta = 150;
-  Scalar n = 6;
-  Scalar s0 = 15.0;
-  auto sm = std::make_shared<J2StressMeasure>("stress_measure");
-  auto yield = std::make_shared<YieldFunction>("yield_function", sm, s0, true, false);
-  auto direction =
-      std::make_shared<AssociativePlasticFlowDirection>("plastic_flow_direction", yield);
-  auto eprate = std::make_shared<PerzynaPlasticFlowRate>("plastic_flow_rate", eta, n);
-  auto Eprate = std::make_shared<PlasticStrainRate>("plastic_strain_rate");
+  auto & factory = Factory::get_factory();
+  factory.clear();
 
-  auto model = ComposedModel("foo", {yield, direction, eprate, Eprate});
+  factory.create_object("Models",
+                        J2StressMeasure::expected_params() +
+                            ParameterSet(KS{"name", "j2"}, KS{"type", "J2StressMeasure"}));
+  factory.create_object("Models",
+                        IsotropicHardeningYieldFunction::expected_params() +
+                            ParameterSet(KS{"name", "yield"},
+                                         KS{"type", "IsotropicHardeningYieldFunction"},
+                                         KS{"stress_measure", "j2"},
+                                         KR{"yield_stress", 10}));
+  factory.create_object("Models",
+                        AssociativePlasticFlowDirection::expected_params() +
+                            ParameterSet(KS{"name", "direction"},
+                                         KS{"type", "AssociativePlasticFlowDirection"},
+                                         KS{"yield_function", "yield"}));
+  factory.create_object("Models",
+                        PerzynaPlasticFlowRate::expected_params() +
+                            ParameterSet(KS{"name", "eprate"},
+                                         KS{"type", "PerzynaPlasticFlowRate"},
+                                         KR{"eta", 150},
+                                         KR{"n", 6}));
+  factory.create_object("Models",
+                        PlasticStrainRate::expected_params() +
+                            ParameterSet(KS{"name", "Eprate"}, KS{"type", "PlasticStrainRate"}));
+  factory.create_object(
+      "Models",
+      ComposedModel::expected_params() +
+          ParameterSet(KS{"name", "foo"},
+                       KS{"type", "ComposedModel"},
+                       KVS{"models", {"yield", "direction", "eprate", "Eprate"}}));
+
+  auto & model = Factory::get_object<ComposedModel>("Models", "foo");
   auto params = model.named_parameters();
 
   SECTION("send to CPU")
@@ -217,10 +299,26 @@ TEST_CASE("send to different device", "[ComposedModel]")
 
 TEST_CASE("A model with sub-sub-axis", "[ComposedModel][Sub-sub-axis]")
 {
-  auto sample = std::make_shared<SampleSubsubaxisModel>("saple");
-  auto out = std::make_shared<IdentityMap<Scalar>>(
-      "o1", std::vector<std::string>{"state", "baz"}, std::vector<std::string>{"state", "wow"});
-  auto model = ComposedModel("whatever", {sample, out});
+  auto & factory = Factory::get_factory();
+  factory.clear();
+
+  factory.create_object(
+      "Models",
+      SampleSubsubaxisModel::expected_params() +
+          ParameterSet(KS{"name", "sample"}, KS{"type", "SampleSubsubaxisModel"}));
+  factory.create_object("Models",
+                        ScalarIdentityMap::expected_params() +
+                            ParameterSet(KS{"name", "out"},
+                                         KS{"type", "ScalarIdentityMap"},
+                                         KVS{"from_var", {"state", "baz"}},
+                                         KVS{"to_var", {"state", "wow"}}));
+  factory.create_object("Models",
+                        ComposedModel::expected_params() +
+                            ParameterSet(KS{"name", "whatever"},
+                                         KS{"type", "ComposedModel"},
+                                         KVS{"models", {"sample", "out"}}));
+
+  auto & model = Factory::get_object<ComposedModel>("Models", "whatever");
 
   SECTION("model definition")
   {

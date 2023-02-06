@@ -21,20 +21,26 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-
 #pragma once
 
-#include "neml2/models/solid_mechanics/YieldFunction.h"
+#include "neml2/base/Factory.h"
 
 namespace neml2
 {
-
-class IsotropicAndKinematicHardeningYieldFunction : public YieldFunction
+/// The base class for all parsers
+class Parser
 {
 public:
-  IsotropicAndKinematicHardeningYieldFunction(const std::string & name,
-                                              const std::shared_ptr<StressMeasure> & sm,
-                                              Scalar s0);
+  Parser() = default;
+
+  /// Deserialize a file, extract parameter collection, and manufacture all objects
+  virtual void parse_and_manufacture(const std::string & filename);
+
+  /// Deserialize a file given filename
+  virtual void parse(const std::string & filename) = 0;
+
+  /// Set and override the default parameters with the extracted parameters
+  virtual ParameterCollection parameters() const = 0;
 };
 
 } // namespace neml2

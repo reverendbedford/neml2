@@ -26,11 +26,22 @@
 
 namespace neml2
 {
-Model::Model(const std::string & name)
-  : torch::nn::Module(name),
+ParameterSet
+Model::expected_params()
+{
+  ParameterSet params = NEML2Object::expected_params();
+  params.set<std::vector<std::vector<std::string>>>("additional_outputs") =
+      std::vector<std::vector<std::string>>();
+  return params;
+}
+
+Model::Model(const ParameterSet & params)
+  : NEML2Object(params),
     _input(declareAxis()),
     _output(declareAxis())
 {
+  for (const auto & var : params.get<std::vector<std::vector<std::string>>>("additional_outputs"))
+    _additional_outputs.insert(LabeledAxisAccessor{var});
   setup();
 }
 

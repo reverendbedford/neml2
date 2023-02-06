@@ -91,8 +91,7 @@ def has_correct_heading(path, copyright, prefix, modify):
     with path.open("w", encoding="utf-8") as file:
         file.write(heading)
         for line in content.splitlines(True):
-            if not line.startswith(prefix):
-                file.write(line)
+            file.write(line)
 
     print("Corrected copyright heading for " + str(path))
 

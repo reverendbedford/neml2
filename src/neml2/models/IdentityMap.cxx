@@ -27,13 +27,24 @@
 
 namespace neml2
 {
+register_NEML2_object(ScalarIdentityMap);
+register_NEML2_object(SymR2IdentityMap);
+
 template <typename T>
-IdentityMap<T>::IdentityMap(const std::string & name,
-                            const std::vector<std::string> & from_var,
-                            const std::vector<std::string> & to_var)
-  : Model(name),
-    from(declareInputVariable<T>(from_var)),
-    to(declareOutputVariable<T>(to_var))
+ParameterSet
+IdentityMap<T>::expected_params()
+{
+  ParameterSet params = Model::expected_params();
+  params.set<std::vector<std::string>>("from_var");
+  params.set<std::vector<std::string>>("to_var");
+  return params;
+}
+
+template <typename T>
+IdentityMap<T>::IdentityMap(const ParameterSet & params)
+  : Model(params),
+    from(declareInputVariable<T>(params.get<std::vector<std::string>>("from_var"))),
+    to(declareOutputVariable<T>(params.get<std::vector<std::string>>("to_var")))
 {
   this->setup();
 }

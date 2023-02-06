@@ -32,7 +32,9 @@ template <typename T>
 class ForceRate : public Model
 {
 public:
-  ForceRate(const std::string & name);
+  static ParameterSet expected_params();
+
+  ForceRate(const ParameterSet & params);
 
   const LabeledAxisAccessor force;
   const LabeledAxisAccessor force_n;
@@ -44,4 +46,7 @@ protected:
   virtual void
   set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const;
 };
+
+typedef ForceRate<Scalar> ScalarForceRate;
+typedef ForceRate<SymR2> SymR2ForceRate;
 } // namespace neml2

@@ -26,10 +26,21 @@
 
 namespace neml2
 {
-VoceIsotropicHardening::VoceIsotropicHardening(const std::string & name, Scalar R, Scalar d)
-  : IsotropicHardening(name),
-    _R(register_parameter("saturated_hardening", R)),
-    _d(register_parameter("saturation_rate", d))
+register_NEML2_object(VoceIsotropicHardening);
+
+ParameterSet
+VoceIsotropicHardening::expected_params()
+{
+  ParameterSet params = IsotropicHardening::expected_params();
+  params.set<Real>("saturated_hardening");
+  params.set<Real>("saturation_rate");
+  return params;
+}
+
+VoceIsotropicHardening::VoceIsotropicHardening(const ParameterSet & params)
+  : IsotropicHardening(params),
+    _R(register_parameter("saturated_hardening", Scalar(params.get<Real>("saturated_hardening")))),
+    _d(register_parameter("saturation_rate", Scalar(params.get<Real>("saturation_rate"))))
 {
 }
 

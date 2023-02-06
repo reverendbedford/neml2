@@ -21,20 +21,25 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-
-#pragma once
-
-#include "neml2/models/solid_mechanics/YieldFunction.h"
+#include "neml2/base/NEML2Object.h"
 
 namespace neml2
 {
-
-class PerfectlyPlasticYieldFunction : public YieldFunction
+ParameterSet
+NEML2Object::expected_params()
 {
-public:
-  PerfectlyPlasticYieldFunction(const std::string & name,
-                                const std::shared_ptr<StressMeasure> & sm,
-                                Scalar s0);
-};
+  ParameterSet params;
+  params.set<std::string>("name");
+  return params;
+}
 
+NEML2Object::NEML2Object(const std::string & name)
+  : torch::nn::Module(name)
+{
+}
+
+NEML2Object::NEML2Object(const ParameterSet & params)
+  : torch::nn::Module(params.get<std::string>("name"))
+{
+}
 } // namespace neml2

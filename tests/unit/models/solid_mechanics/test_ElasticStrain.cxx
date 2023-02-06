@@ -31,8 +31,14 @@ using namespace neml2;
 
 TEST_CASE("ElasticStrain", "[ElasticStrain]")
 {
-  TorchSize nbatch = 10;
-  auto estrain = ElasticStrain("elastic_strain");
+  auto & factory = Factory::get_factory();
+  factory.clear();
+
+  factory.create_object("Models",
+                        ElasticStrain::expected_params() +
+                            ParameterSet(KS{"name", "estrain"}, KS{"type", "ElasticStrain"}));
+
+  auto & estrain = Factory::get_object<ElasticStrain>("Models", "estrain");
 
   SECTION("model definition")
   {
@@ -46,6 +52,7 @@ TEST_CASE("ElasticStrain", "[ElasticStrain]")
 
   SECTION("model derivatives")
   {
+    TorchSize nbatch = 10;
     LabeledVector in(nbatch, estrain.input());
     auto E = SymR2::init(0.1, 0.05, 0).batch_expand(nbatch);
     auto Ep = SymR2::init(0.01, 0.01, 0).batch_expand(nbatch);

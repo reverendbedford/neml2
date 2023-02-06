@@ -26,64 +26,16 @@
 
 #include <fstream>
 
-#include "neml2/models/ComposedModel.h"
-#include "neml2/models/solid_mechanics/ElasticStrain.h"
-#include "neml2/models/solid_mechanics/LinearElasticity.h"
-#include "neml2/models/solid_mechanics/IsotropicMandelStress.h"
-#include "neml2/models/solid_mechanics/LinearIsotropicHardening.h"
-#include "neml2/models/solid_mechanics/J2StressMeasure.h"
-#include "neml2/models/solid_mechanics/YieldFunction.h"
-#include "neml2/models/solid_mechanics/AssociativePlasticFlowDirection.h"
-#include "neml2/models/solid_mechanics/AssociativeIsotropicPlasticHardening.h"
-#include "neml2/models/solid_mechanics/PerzynaPlasticFlowRate.h"
-#include "neml2/models/solid_mechanics/PlasticStrainRate.h"
-#include "neml2/models/ImplicitTimeIntegration.h"
-#include "neml2/models/ImplicitUpdate.h"
-#include "neml2/models/TimeIntegration.h"
-#include "neml2/models/ForceRate.h"
-#include "neml2/solvers/NewtonNonlinearSolver.h"
 #include "StructuralDriver.h"
 #include "neml2/misc/math.h"
+#include "TestUtils.h"
 
 using namespace neml2;
 
 TEST_CASE("Alternative composition of viscoplasticity", "[viscoplasticity alternative]")
 {
-  NonlinearSolverParameters params = {/*atol =*/1e-10,
-                                      /*rtol =*/1e-8,
-                                      /*miters =*/100,
-                                      /*verbose=*/false};
-
-  Scalar E = 1e5;
-  Scalar nu = 0.3;
-  SymSymR4 C = SymSymR4::init(SymSymR4::FillMethod::isotropic_E_nu, {E, nu});
-  Scalar s0 = 5;
-  Scalar K = 1000;
-  Scalar eta = 100;
-  Scalar n = 2;
-  auto Ee = std::make_shared<ElasticStrain>("elastic_strain");
-  auto S = std::make_shared<CauchyStressFromElasticStrain>("cauchy_stress", C);
-  auto M = std::make_shared<IsotropicMandelStress>("mandel_stress");
-  auto gamma = std::make_shared<LinearIsotropicHardening>("isotropic_hardening", K);
-  auto sm = std::make_shared<J2StressMeasure>("stress_measure");
-  auto f = std::make_shared<YieldFunction>("yield_function", sm, s0, true, false);
-  auto gammarate = std::make_shared<PerzynaPlasticFlowRate>("hardening_rate", eta, n);
-  auto Np = std::make_shared<AssociativePlasticFlowDirection>("plastic_flow_direction", f);
-  auto eprate = std::make_shared<AssociativeIsotropicPlasticHardening>("ep_rate", f);
-  auto Eprate = std::make_shared<PlasticStrainRate>("plastic_strain_rate");
-
-  auto rate = std::make_shared<ComposedModel>(
-      "rate",
-      std::vector<std::shared_ptr<Model>>{Ee, S, M, gamma, f, gammarate, Np, eprate, Eprate});
-
-  auto surface = std::make_shared<ImplicitTimeIntegration>("yield_surface", rate);
-  auto solver = std::make_shared<NewtonNonlinearSolver>(params);
-  auto return_map = std::make_shared<ImplicitUpdate>("return_map", surface, solver);
-
-  auto model = std::make_shared<ComposedModel>(
-      "viscoplasticity",
-      std::vector<std::shared_ptr<Model>>{return_map, Ee, S},
-      std::vector<LabeledAxisAccessor>{Ee->plastic_strain, gamma->equivalent_plastic_strain});
+  load_model("regression/models/solid_mechanics/regression_viscoplasticity_alternative.i");
+  auto & model = Factory::get_object<Model>("Models", "model");
 
   TorchSize nbatch = 1;
   TorchSize nsteps = 100;
@@ -98,7 +50,8 @@ TEST_CASE("Alternative composition of viscoplasticity", "[viscoplasticity altern
   BatchTensor<1> times = math::linspace<1>(torch::zeros_like(end_time), end_time, nsteps);
   BatchTensor<1> strains = math::linspace<1>(torch::zeros_like(end_strain), end_strain, nsteps);
 
-  StructuralDriver driver(*model, times, strains, "total_strain");
+  StructuralDriver driver(model, times, strains, "total_strain");
+  torch::NoGradGuard no_grad_guard;
   auto [all_inputs, all_outputs] = driver.run();
 
   std::ofstream ofile;

@@ -24,25 +24,22 @@
 
 #pragma once
 
+#include "neml2/solvers/Solver.h"
 #include "neml2/solvers/NonlinearSystem.h"
 
 namespace neml2
 {
-struct NonlinearSolverParameters
-{
-  Real atol = 1e-8;
-  Real rtol = 1e-6;
-  size_t miters = 100;
-  bool verbose = false;
-};
-
-class NonlinearSolver
+class NonlinearSolver : public Solver
 {
 public:
-  NonlinearSolver(const NonlinearSolverParameters & p);
+  static ParameterSet expected_params();
+
+  NonlinearSolver(const ParameterSet & params);
 
   virtual BatchTensor<1> solve(const NonlinearSystem & system, const BatchTensor<1> & x0) const = 0;
 
-  NonlinearSolverParameters params;
+  Real atol;
+  Real rtol;
+  unsigned int miters;
 };
 } // namespace neml2

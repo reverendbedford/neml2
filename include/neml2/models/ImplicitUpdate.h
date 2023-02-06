@@ -32,9 +32,9 @@ namespace neml2
 class ImplicitUpdate : public Model
 {
 public:
-  ImplicitUpdate(const std::string & name,
-                 std::shared_ptr<ImplicitModel> model,
-                 std::shared_ptr<NonlinearSolver> solver);
+  static ParameterSet expected_params();
+
+  ImplicitUpdate(const ParameterSet & name);
 
 protected:
   virtual void

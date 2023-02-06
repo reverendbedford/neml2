@@ -27,22 +27,39 @@
 
 namespace neml2
 {
-ChabochePlasticHardening::ChabochePlasticHardening(const std::string & name,
-                                                   Scalar C,
-                                                   Scalar g,
-                                                   Scalar A,
-                                                   Scalar a,
-                                                   const std::string backstress_suffix)
-  : PlasticHardening(name),
-    backstress(
-        declareInputVariable<SymR2>({"state", "internal_state", "backstress" + backstress_suffix})),
+register_NEML2_object(ChabochePlasticHardening);
+
+ParameterSet
+ChabochePlasticHardening::expected_params()
+{
+  ParameterSet params = PlasticHardening::expected_params();
+  params.set<Real>("C");
+  params.set<Real>("g");
+  params.set<Real>("A");
+  params.set<Real>("a");
+  params.set<std::string>("backstress_suffix") = "";
+  return params;
+}
+
+ChabochePlasticHardening::ChabochePlasticHardening(const ParameterSet & params)
+  : PlasticHardening(params),
+    backstress(declareInputVariable<SymR2>(
+        {"state", "internal_state", "backstress" + params.get<std::string>("backstress_suffix")})),
     flow_direction(declareInputVariable<SymR2>({"state", "plastic_flow_direction"})),
     backstress_rate(declareOutputVariable<SymR2>(
-        {"state", "internal_state", "backstress" + backstress_suffix + "_rate"})),
-    _C(register_parameter("chaboche_C" + backstress_suffix, C)),
-    _g(register_parameter("chaboche_gamma" + backstress_suffix, g)),
-    _A(register_parameter("chaboche_recovery_prefactor" + backstress_suffix, A)),
-    _a(register_parameter("chaboche_recovery_exponent" + backstress_suffix, a))
+        {"state",
+         "internal_state",
+         "backstress" + params.get<std::string>("backstress_suffix") + "_rate"})),
+    _C(register_parameter("chaboche_C" + params.get<std::string>("backstress_suffix"),
+                          Scalar(params.get<Real>("C")))),
+    _g(register_parameter("chaboche_gamma" + params.get<std::string>("backstress_suffix"),
+                          Scalar(params.get<Real>("g")))),
+    _A(register_parameter("chaboche_recovery_prefactor" +
+                              params.get<std::string>("backstress_suffix"),
+                          Scalar(params.get<Real>("A")))),
+    _a(register_parameter("chaboche_recovery_exponent" +
+                              params.get<std::string>("backstress_suffix"),
+                          Scalar(params.get<Real>("a"))))
 {
   setup();
 }

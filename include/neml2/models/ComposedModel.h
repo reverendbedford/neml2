@@ -25,6 +25,7 @@
 #pragma once
 
 #include "neml2/models/Model.h"
+#include "neml2/base/Factory.h"
 
 namespace neml2
 {
@@ -33,9 +34,9 @@ typedef std::vector<std::pair<std::shared_ptr<Model>, std::shared_ptr<Model>>> M
 class ComposedModel : public Model
 {
 public:
-  ComposedModel(const std::string & name,
-                const std::vector<std::shared_ptr<Model>> & models,
-                const std::vector<LabeledAxisAccessor> & additional_outputs = {});
+  static ParameterSet expected_params();
+
+  ComposedModel(const ParameterSet & params);
 
   /// Return dependencies of a registered model
   const std::vector<std::shared_ptr<Model>> & dependent_models(const std::string & name) const;

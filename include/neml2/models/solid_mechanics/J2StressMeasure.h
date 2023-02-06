@@ -31,7 +31,9 @@ namespace neml2
 class J2StressMeasure : public StressMeasure
 {
 public:
-  J2StressMeasure(const std::string & name);
+  static ParameterSet expected_params();
+
+  using StressMeasure::StressMeasure;
 
 protected:
   /// The value of the stress measure

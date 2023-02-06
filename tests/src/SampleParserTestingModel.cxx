@@ -22,19 +22,44 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
+#include "SampleParserTestingModel.h"
 
-#include "neml2/models/solid_mechanics/YieldFunction.h"
+using namespace neml2;
 
-namespace neml2
+register_NEML2_object(SampleParserTestingModel);
+
+ParameterSet
+SampleParserTestingModel::expected_params()
 {
+  ParameterSet params = Model::expected_params();
 
-class KinematicHardeningYieldFunction : public YieldFunction
-{
-public:
-  KinematicHardeningYieldFunction(const std::string & name,
-                                  const std::shared_ptr<StressMeasure> & sm,
-                                  Scalar s0);
-};
+  // Integral types we support:
+  //   bool
+  //   int
+  //   unsigned int
+  //   Real
+  //   string
+  //
+  // We also support vector of and vector of vector of each integral type.
+  params.set<bool>("bool");
+  params.set<std::vector<bool>>("bool_vec");
+  params.set<std::vector<std::vector<bool>>>("bool_vec_vec");
 
-} // namespace neml2
+  params.set<int>("int");
+  params.set<std::vector<int>>("int_vec");
+  params.set<std::vector<std::vector<int>>>("int_vec_vec");
+
+  params.set<unsigned int>("uint");
+  params.set<std::vector<unsigned int>>("uint_vec");
+  params.set<std::vector<std::vector<unsigned int>>>("uint_vec_vec");
+
+  params.set<Real>("Real");
+  params.set<std::vector<Real>>("Real_vec");
+  params.set<std::vector<std::vector<Real>>>("Real_vec_vec");
+
+  params.set<std::string>("string");
+  params.set<std::vector<std::string>>("string_vec");
+  params.set<std::vector<std::vector<std::string>>>("string_vec_vec");
+
+  return params;
+}

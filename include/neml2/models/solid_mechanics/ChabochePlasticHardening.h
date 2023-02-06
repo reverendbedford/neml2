@@ -31,12 +31,9 @@ namespace neml2
 class ChabochePlasticHardening : public PlasticHardening
 {
 public:
-  ChabochePlasticHardening(const std::string & name,
-                           Scalar C,
-                           Scalar g,
-                           Scalar A,
-                           Scalar a,
-                           const std::string backstress_suffix = "");
+  static ParameterSet expected_params();
+
+  ChabochePlasticHardening(const ParameterSet & params);
 
   /// Input: the current value of this backstress
   const LabeledAxisAccessor backstress;
