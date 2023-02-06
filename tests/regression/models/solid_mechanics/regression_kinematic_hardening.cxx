@@ -28,15 +28,13 @@
 
 #include "StructuralDriver.h"
 #include "neml2/misc/math.h"
-#include "neml2/base/HITParser.h"
+#include "TestUtils.h"
 
 using namespace neml2;
 
 TEST_CASE("Regression test on kinematic hardening ", "[kinematic hardening]")
 {
-  HITParser parser;
-  parser.parse_and_manufacture(
-      "regression/models/solid_mechanics/regression_kinematic_hardening.i");
+  load_model("regression/models/solid_mechanics/regression_kinematic_hardening.i");
   auto & model = Factory::get_object<Model>("Models", "model");
 
   TorchSize nbatch = 20;

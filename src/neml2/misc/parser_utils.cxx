@@ -22,7 +22,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/misc/utils.h"
+#include "neml2/misc/parser_utils.h"
 #include <cxxabi.h>
 
 namespace neml2
@@ -67,6 +67,19 @@ trim(const std::string & str, const std::string & white_space)
     return ""; // no content
   const auto end = str.find_last_not_of(white_space);
   return str.substr(begin, end - begin + 1);
+}
+
+bool
+ends_with(std::string_view str, std::string_view suffix)
+{
+  return str.size() >= suffix.size() &&
+         0 == str.compare(str.size() - suffix.size(), suffix.size(), suffix);
+}
+
+bool
+starts_with(std::string_view str, std::string_view prefix)
+{
+  return str.size() >= prefix.size() && 0 == str.compare(0, prefix.size(), prefix);
 }
 } // namespace utils
 } // namespace neml2

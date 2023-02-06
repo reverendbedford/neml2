@@ -32,14 +32,12 @@
 
 #include "TestUtils.h"
 #include "neml2/models/ComposedModel.h"
-#include "neml2/base/HITParser.h"
 
 using namespace neml2;
 
 TEST_CASE("A Model can output the function graph in DOT format", "[DOT]")
 {
-  HITParser parser;
-  parser.parse_and_manufacture("regression/models/regression_dot.i");
+  load_model("regression/models/regression_dot.i");
   auto & rate = Factory::get_object<ComposedModel>("Models", "rate");
 
   // Write the gold file

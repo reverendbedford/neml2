@@ -26,7 +26,7 @@
 
 #include "StructuralDriver.h"
 #include "neml2/misc/math.h"
-#include "neml2/base/HITParser.h"
+#include "TestUtils.h"
 
 #include "VerificationTest.h"
 
@@ -34,8 +34,7 @@ using namespace neml2;
 
 TEST_CASE("Perzyna viscoplasticity verification tests", "[StructuralVerificationTests][Perzyna]")
 {
-  HITParser parser;
-  parser.parse_and_manufacture("verification/solid_mechanics/perzyna/isolinear.i");
+  load_model("verification/solid_mechanics/perzyna/isolinear.i");
   auto & model = Factory::get_object<Model>("Models", "model");
 
   SECTION("Linear isotropic hardening, uniaxial")
@@ -59,8 +58,7 @@ TEST_CASE("Perzyna viscoplasticity verification tests", "[StructuralVerification
 
 TEST_CASE("Perzyna viscoplasticity with Voce hardening", "[StructuralVerificationTests]")
 {
-  HITParser parser;
-  parser.parse_and_manufacture("verification/solid_mechanics/perzyna/voce.i");
+  load_model("verification/solid_mechanics/perzyna/voce.i");
   auto & model = Factory::get_object<Model>("Models", "model");
 
   SECTION("Voce isotropic hardening, uniaxial")
@@ -75,8 +73,7 @@ TEST_CASE("Perzyna viscoplasticity with Voce hardening", "[StructuralVerificatio
 
 TEST_CASE("Perzyna viscoplasticity with combined hardening", "[StructuralVerificationTests]")
 {
-  HITParser parser;
-  parser.parse_and_manufacture("verification/solid_mechanics/perzyna/combined.i");
+  load_model("verification/solid_mechanics/perzyna/combined.i");
   auto & model = Factory::get_object<Model>("Models", "model");
 
   SECTION("Uniaxial load")

@@ -23,3 +23,29 @@
 // THE SOFTWARE.
 
 #include "TestUtils.h"
+
+using namespace neml2;
+
+void
+load_model(const std::string & path, ParserType ptype)
+{
+  // We are being forward looking here
+  if (ptype == ParserType::AUTO)
+  {
+    if (utils::ends_with(path, ".i"))
+      ptype = ParserType::HIT;
+    else if (utils::ends_with(path, ".xml"))
+      ptype = ParserType::XML;
+    else if (utils::ends_with(path, ".yml"))
+      ptype = ParserType::YAML;
+  }
+
+  // but for now we only support HIT
+  if (ptype == ParserType::HIT)
+  {
+    HITParser parser;
+    parser.parse_and_manufacture(path);
+  }
+  else
+    neml_assert(false, "Unsupported parser type");
+}

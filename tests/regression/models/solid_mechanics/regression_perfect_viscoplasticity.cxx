@@ -28,15 +28,13 @@
 
 #include "StructuralDriver.h"
 #include "neml2/misc/math.h"
-#include "neml2/base/HITParser.h"
+#include "TestUtils.h"
 
 using namespace neml2;
 
 TEST_CASE("Regression test on perfect viscoplasticity", "[perfect viscoplasticity]")
 {
-  HITParser parser;
-  parser.parse_and_manufacture(
-      "regression/models/solid_mechanics/regression_perfect_viscoplasticity.i");
+  load_model("regression/models/solid_mechanics/regression_perfect_viscoplasticity.i");
   auto & model = Factory::get_object<Model>("Models", "model");
 
   TorchSize nbatch = 20;

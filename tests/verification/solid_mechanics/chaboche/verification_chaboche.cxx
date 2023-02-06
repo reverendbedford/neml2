@@ -26,7 +26,7 @@
 
 #include "StructuralDriver.h"
 #include "neml2/misc/math.h"
-#include "neml2/base/HITParser.h"
+#include "TestUtils.h"
 
 #include "VerificationTest.h"
 
@@ -34,8 +34,7 @@ using namespace neml2;
 
 TEST_CASE("Chaboche verification", "[StructuralVerificationTests][Chaboche]")
 {
-  HITParser parser;
-  parser.parse_and_manufacture("verification/solid_mechanics/chaboche/chaboche.i");
+  load_model("verification/solid_mechanics/chaboche/chaboche.i");
   auto & model = Factory::get_object<Model>("Models", "model");
 
   SECTION("Uniaxial slow deformation")

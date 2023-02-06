@@ -82,5 +82,9 @@ parse_vector_vector(const std::string & raw_str)
     ret[i] = parse_vector<T>(token_vecs[i]);
   return ret;
 }
+
+bool ends_with(std::string_view str, std::string_view suffix);
+
+bool starts_with(std::string_view str, std::string_view prefix);
 } // namespace utils
 } // namespace neml2
