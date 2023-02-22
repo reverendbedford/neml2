@@ -4,4 +4,4 @@ add_library(hit SHARED
   hit/lex.cc
   hit/braceexpr.cc
 )
-target_include_directories(hit PUBLIC .)
+target_include_directories(hit PUBLIC hit)

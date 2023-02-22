@@ -37,7 +37,7 @@ typedef std::vector<at::indexing::TensorIndex> TorchSlice;
 
 typedef double Real;
 
-#define EPS 1e-15
+static constexpr Real EPS = 1e-15;
 
 #define TorchDefaults                                                                              \
   {                                                                                                \

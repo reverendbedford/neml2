@@ -24,7 +24,7 @@
 #pragma once
 
 #include "neml2/base/Parser.h"
-#include "hit/hit.h"
+#include "hit.h"
 #include <memory>
 
 namespace neml2
