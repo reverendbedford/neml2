@@ -48,7 +48,7 @@
   []
   [consistent_model]
     type = ComposedModel
-    models = 'rate ri_constraint'
+    models = 'implicit_rate ri_constraint'
   []
   [model]
     type = ImplicitUpdate
