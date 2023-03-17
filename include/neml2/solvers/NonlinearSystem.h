@@ -31,10 +31,6 @@ namespace neml2
 class NonlinearSystem
 {
 public:
-  virtual void set_residual(BatchTensor<1> x,
-                            BatchTensor<1> residual,
-                            BatchTensor<1> * Jacobian = nullptr) const = 0;
-
   /// Convenient shortcut to construct and return the system residual
   virtual BatchTensor<1> residual(BatchTensor<1> in) const final;
 
@@ -44,5 +40,10 @@ public:
   /// Convenient shortcut to construct and return the system residual and Jacobian
   virtual std::tuple<BatchTensor<1>, BatchTensor<1>>
   residual_and_Jacobian(BatchTensor<1> in) const final;
+
+protected:
+  virtual void set_residual(BatchTensor<1> x,
+                            BatchTensor<1> residual,
+                            BatchTensor<1> * Jacobian = nullptr) const = 0;
 };
 } // namespace neml2

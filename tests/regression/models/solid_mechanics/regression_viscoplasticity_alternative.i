@@ -44,13 +44,19 @@
   [Eprate]
     type = PlasticStrainRate
   []
-  [rate]
-    type = ComposedModel
-    models = 'Ee S M gamma f gammarate Np eprate Eprate'
+  [integrate_ep]
+    type = ScalarImplicitTimeIntegration
+    rate_variable = 'internal_state equivalent_plastic_strain_rate'
+    variable = 'internal_state equivalent_plastic_strain'
+  []
+  [integrate_Ep]
+    type = SymR2ImplicitTimeIntegration
+    rate_variable = plastic_strain_rate
+    variable = plastic_strain
   []
   [surface]
-    type = ImplicitTimeIntegration
-    rate = rate
+    type = ComposedModel
+    models = 'Ee S M gamma f gammarate Np eprate Eprate integrate_ep integrate_Ep'
   []
   [return_map]
     type = ImplicitUpdate

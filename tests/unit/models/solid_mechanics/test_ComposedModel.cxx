@@ -36,10 +36,7 @@
 #include "neml2/models/solid_mechanics/AssociativePlasticFlowDirection.h"
 #include "neml2/models/solid_mechanics/PerzynaPlasticFlowRate.h"
 #include "neml2/models/solid_mechanics/PlasticStrainRate.h"
-#include "neml2/models/ImplicitTimeIntegration.h"
-#include "neml2/models/ImplicitUpdate.h"
 #include "neml2/models/IdentityMap.h"
-#include "neml2/solvers/NewtonNonlinearSolver.h"
 #include "SampleSubsubaxisModel.h"
 
 using namespace neml2;

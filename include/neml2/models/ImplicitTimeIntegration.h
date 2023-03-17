@@ -24,30 +24,35 @@
 
 #pragma once
 
-#include "neml2/models/ImplicitModel.h"
+#include "neml2/models/Model.h"
 
 namespace neml2
 {
-class ImplicitTimeIntegration : public ImplicitModel
+template <typename T>
+class ImplicitTimeIntegration : public Model
 {
 public:
   static ParameterSet expected_params();
 
   ImplicitTimeIntegration(const ParameterSet & params);
 
-  // Define the nonlinear system we are solving for
-  virtual void set_residual(BatchTensor<1> x, BatchTensor<1> r, BatchTensor<1> * J = nullptr) const;
-
-protected:
-  const Model & _rate;
+private:
+  const std::vector<std::string> _var_rate_name;
+  const std::vector<std::string> _var_name;
 
 public:
+  const LabeledAxisAccessor res;
+  const LabeledAxisAccessor var_rate;
+  const LabeledAxisAccessor var;
+  const LabeledAxisAccessor var_n;
   const LabeledAxisAccessor time;
   const LabeledAxisAccessor time_n;
-  const LabeledAxisAccessor resid;
 
 protected:
   virtual void
   set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const;
 };
+
+typedef ImplicitTimeIntegration<Scalar> ScalarImplicitTimeIntegration;
+typedef ImplicitTimeIntegration<SymR2> SymR2ImplicitTimeIntegration;
 } // namespace neml2

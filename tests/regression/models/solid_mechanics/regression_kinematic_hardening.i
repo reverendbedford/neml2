@@ -48,13 +48,19 @@
   [Eprate]
     type = PlasticStrainRate
   []
-  [rate]
-    type = ComposedModel
-    models = 'Erate Eerate elasticity mandel_stress kinharden yield direction eprate hrate Eprate'
+  [integrate_Ep]
+    type = SymR2ImplicitTimeIntegration
+    rate_variable = 'internal_state plastic_strain_rate'
+    variable = 'internal_state plastic_strain'
+  []
+  [integrate_stress]
+    type = SymR2ImplicitTimeIntegration
+    rate_variable = cauchy_stress_rate
+    variable = cauchy_stress
   []
   [implicit_rate]
-    type = ImplicitTimeIntegration
-    rate = rate
+    type = ComposedModel
+    models = 'Erate Eerate elasticity mandel_stress kinharden yield direction eprate hrate Eprate integrate_Ep integrate_stress'
   []
   [model]
     type = ImplicitUpdate

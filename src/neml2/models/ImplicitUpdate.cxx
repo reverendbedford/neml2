@@ -39,16 +39,16 @@ ImplicitUpdate::expected_params()
 
 ImplicitUpdate::ImplicitUpdate(const ParameterSet & params)
   : Model(params),
-    _model(Factory::get_object<ImplicitModel>("Models", params.get<std::string>("implicit_model"))),
+    _model(Factory::get_object<Model>("Models", params.get<std::string>("implicit_model"))),
     _solver(Factory::get_object<NonlinearSolver>("Solvers", params.get<std::string>("solver")))
 {
   register_model(
-      Factory::get_object_ptr<ImplicitModel>("Models", params.get<std::string>("implicit_model")));
+      Factory::get_object_ptr<Model>("Models", params.get<std::string>("implicit_model")));
   // Now that the implicit model has been registered, the input of this ImplicitUpdate model should
   // be the same as the implicit model's input. The input subaxes of the implicit model looks
   // something like
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // inputs: state (this is actually the trial state)
+  // inputs: state (trial state) ---> outputs: residual
   //         old state
   //         forces
   //         old forces
@@ -89,9 +89,9 @@ ImplicitUpdate::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * d
   _model.cache_input(in);
 
   // Solve for the next state
-  ImplicitModel::stage = ImplicitModel::Stage::SOLVING;
+  Model::stage = Model::Stage::SOLVING;
   BatchTensor<1> sol = _solver.solve(_model, _model.initial_guess(in));
-  ImplicitModel::stage = ImplicitModel::Stage::UPDATING;
+  Model::stage = Model::Stage::UPDATING;
 
   out.set(sol, "state");
 
