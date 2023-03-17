@@ -90,7 +90,7 @@ ImplicitUpdate::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * d
 
   // Solve for the next state
   Model::stage = Model::Stage::SOLVING;
-  BatchTensor<1> sol = _solver.solve(_model, _model.initial_guess(in));
+  BatchTensor<1> sol = _solver.solve(_model, _model.initial_guess(in, out.slice("state")));
   Model::stage = Model::Stage::UPDATING;
 
   out.set(sol, "state");

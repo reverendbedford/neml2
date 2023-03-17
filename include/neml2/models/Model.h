@@ -80,7 +80,7 @@ public:
    * To iteratively update the state to solve the model, we need to start from some initial guess.
    * By default, we use the old state as the initial guess.
    */
-  virtual BatchTensor<1> initial_guess(LabeledVector in) const;
+  virtual BatchTensor<1> initial_guess(LabeledVector in, LabeledVector guess) const;
 
   /**
    * During the SOLVING stage, we update the state with \emph fixed forces, old forces, and old

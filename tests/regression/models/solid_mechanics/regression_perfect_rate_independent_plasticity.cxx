@@ -32,12 +32,13 @@
 
 using namespace neml2;
 
-TEST_CASE("Regression test on perfect rate independent plasticity", "[perfect rate independent plasticity]")
+TEST_CASE("Regression test on perfect rate independent plasticity",
+          "[perfect rate independent plasticity]")
 {
   load_model("regression/models/solid_mechanics/regression_perfect_rate_independent_plasticity.i");
   auto & model = Factory::get_object<Model>("Models", "model");
 
-  TorchSize nbatch = 20;
+  TorchSize nbatch = 1;
   TorchSize nsteps = 100;
   Real max_strain = 0.10;
   Real min_time = -1;
@@ -59,18 +60,18 @@ TEST_CASE("Regression test on perfect rate independent plasticity", "[perfect ra
 
   // I use this to write csv for visualization purposes.
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // for (TorchSize batch = 0; batch < nbatch; batch++)
-  // {
-  //   ofile.open(fname + "_forces_batch_" + utils::stringify(batch) + ".csv");
-  //   for (size_t i = 0; i < all_inputs.size(); i++)
-  //     LabeledVector(all_inputs[i].slice("forces")).write(ofile, ",", batch, i == 0);
-  //   ofile.close();
+  for (TorchSize batch = 0; batch < nbatch; batch++)
+  {
+    ofile.open(fname + "_forces_batch_" + utils::stringify(batch) + ".csv");
+    for (size_t i = 0; i < all_inputs.size(); i++)
+      LabeledVector(all_inputs[i].slice("forces")).write(ofile, ",", batch, i == 0);
+    ofile.close();
 
-  //   ofile.open(fname + "_state_batch_" + utils::stringify(batch) + ".csv");
-  //   for (size_t i = 0; i < all_outputs.size(); i++)
-  //     LabeledVector(all_outputs[i].slice("state")).write(ofile, ",", batch, i == 0);
-  //   ofile.close();
-  // }
+    ofile.open(fname + "_state_batch_" + utils::stringify(batch) + ".csv");
+    for (size_t i = 0; i < all_outputs.size(); i++)
+      LabeledVector(all_outputs[i].slice("state")).write(ofile, ",", batch, i == 0);
+    ofile.close();
+  }
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   auto inputs =

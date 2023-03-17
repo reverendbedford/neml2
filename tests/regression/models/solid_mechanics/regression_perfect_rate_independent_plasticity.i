@@ -32,27 +32,24 @@
     type = AssociativePlasticFlowDirection
     yield_function = yield
   []
-  [ri_constraint]
-    type = RateIndependentPlasticFlowConstraint
-  []
   [Eprate]
     type = PlasticStrainRate
   []
-  [rate]
-    type = ComposedModel
-    models = 'Erate Eerate elasticity mandel_stress yield direction Eprate'
+  [integrate_stress]
+    type = SymR2ImplicitTimeIntegration
+    rate_variable = cauchy_stress_rate
+    variable = cauchy_stress
+  []
+  [consistency]
+    type = RateIndependentPlasticFlowConstraint
   []
   [implicit_rate]
-    type = ImplicitTimeIntegration
-    rate = rate
-  []
-  [consistent_model]
     type = ComposedModel
-    models = 'implicit_rate ri_constraint'
+    models = 'Erate Eerate elasticity mandel_stress direction Eprate integrate_stress yield consistency'
   []
   [model]
     type = ImplicitUpdate
-    implicit_model = consistent_model
+    implicit_model = implicit_rate
     solver = newton
   []
 []
