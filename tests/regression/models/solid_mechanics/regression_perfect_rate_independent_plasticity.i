@@ -5,51 +5,51 @@
 []
 
 [Models]
-  [Erate]
-    type = SymR2ForceRate
-    force = total_strain
+  [Ee]
+    type = ElasticStrain
   []
-  [Eerate]
-    type = ElasticStrainRate
-  []
-  [elasticity]
-    type = CauchyStressRateFromElasticStrainRate
+  [S]
+    type = CauchyStressFromElasticStrain
     E = 1e5
     nu = 0.3
   []
-  [mandel_stress]
+  [M]
     type = IsotropicMandelStress
   []
   [j2]
     type = J2StressMeasure
   []
-  [yield]
+  [f]
     type = PerfectlyPlasticYieldFunction
     stress_measure = j2
-    yield_stress = 5
+    yield_stress = 1000
   []
-  [direction]
+  [Np]
     type = AssociativePlasticFlowDirection
-    yield_function = yield
+    yield_function = f
   []
   [Eprate]
     type = PlasticStrainRate
   []
-  [integrate_stress]
+  [integrate_Ep]
     type = SymR2ImplicitTimeIntegration
-    rate_variable = cauchy_stress_rate
-    variable = cauchy_stress
+    rate_variable = plastic_strain_rate
+    variable = plastic_strain
   []
   [consistency]
     type = RateIndependentPlasticFlowConstraint
   []
-  [implicit_rate]
+  [surface]
     type = ComposedModel
-    models = 'Erate Eerate elasticity mandel_stress direction Eprate integrate_stress yield consistency'
+    models = 'Ee S M Np Eprate integrate_Ep f consistency'
+  []
+  [return_map]
+    type = ImplicitUpdate
+    implicit_model = surface
+    solver = newton
   []
   [model]
-    type = ImplicitUpdate
-    implicit_model = implicit_rate
-    solver = newton
+    type = ComposedModel
+    models = 'return_map Ee S'
   []
 []

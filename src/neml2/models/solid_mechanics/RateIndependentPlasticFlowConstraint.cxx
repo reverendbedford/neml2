@@ -38,7 +38,6 @@ RateIndependentPlasticFlowConstraint::expected_params()
 RateIndependentPlasticFlowConstraint::RateIndependentPlasticFlowConstraint(
     const ParameterSet & params)
   : Model(params),
-    hardening_rate(declareInputVariable<Scalar>({"state", "hardening_rate"})),
     yield_function(declareInputVariable<Scalar>({"state", "yield_function"})),
     consistency_condition(declareOutputVariable<Scalar>({"residual", "consistency_condition"}))
 {
@@ -50,15 +49,13 @@ RateIndependentPlasticFlowConstraint::set_value(LabeledVector in,
                                                 LabeledVector out,
                                                 LabeledMatrix * dout_din) const
 {
-  // Grab the yield function
-  auto gamma_dot = in.get<Scalar>(hardening_rate);
   auto f = in.get<Scalar>(yield_function);
-  out.set(gamma_dot * f, consistency_condition);
+  out.set(f, consistency_condition);
 
   if (dout_din)
   {
-    dout_din->set(f, consistency_condition, hardening_rate);
-    dout_din->set(gamma_dot, consistency_condition, yield_function);
+    Scalar df_dc(1, in.batch_size());
+    dout_din->set(df_dc, consistency_condition, yield_function);
   }
 }
 
