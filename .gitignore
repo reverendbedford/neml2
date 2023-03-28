@@ -23,3 +23,4 @@ doc/html
 !cmake/Modules/*
 *.log
 *.so
+*.dylib
