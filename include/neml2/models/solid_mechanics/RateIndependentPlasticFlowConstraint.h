@@ -38,6 +38,7 @@ public:
   void set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_dint) const;
 
   const LabeledAxisAccessor yield_function;
+  const LabeledAxisAccessor hardening_rate;
   const LabeledAxisAccessor consistency_condition;
 };
 

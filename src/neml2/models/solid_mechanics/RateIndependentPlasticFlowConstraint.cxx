@@ -39,6 +39,7 @@ RateIndependentPlasticFlowConstraint::RateIndependentPlasticFlowConstraint(
     const ParameterSet & params)
   : Model(params),
     yield_function(declareInputVariable<Scalar>({"state", "yield_function"})),
+    hardening_rate(declareInputVariable<Scalar>({"state", "hardening_rate"})),
     consistency_condition(declareOutputVariable<Scalar>({"residual", "consistency_condition"}))
 {
   setup();
@@ -50,12 +51,27 @@ RateIndependentPlasticFlowConstraint::set_value(LabeledVector in,
                                                 LabeledMatrix * dout_din) const
 {
   auto f = in.get<Scalar>(yield_function);
-  out.set(f, consistency_condition);
+  auto gamma_dot = in.get<Scalar>(hardening_rate);
+
+  // The residual is the yield function itself when the stress state is "outside" the yield surface,
+  // also called return mapping. The residual is the hardening rate when the stress state is
+  // "inside" the yield surface, as the hardening rate is by definition zero.
+  Scalar r(0, in.batch_size());
+  r.index_put_({f < 0}, gamma_dot);
+  r.index_put_({f >= 0}, f);
+
+  out.set(r, consistency_condition);
 
   if (dout_din)
   {
-    Scalar df_dc(1, in.batch_size());
-    dout_din->set(df_dc, consistency_condition, yield_function);
+    Scalar dr_dgamma_dot(0, in.batch_size());
+    dr_dgamma_dot.index_put_({f < 0}, 1);
+
+    Scalar dr_df(0, in.batch_size());
+    dr_df.index_put_({f >= 0}, 1);
+
+    dout_din->set(dr_dgamma_dot, consistency_condition, hardening_rate);
+    dout_din->set(dr_df, consistency_condition, yield_function);
   }
 }
 
