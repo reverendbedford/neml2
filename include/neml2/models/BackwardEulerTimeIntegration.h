@@ -29,12 +29,12 @@
 namespace neml2
 {
 template <typename T>
-class ImplicitTimeIntegration : public Model
+class BackwardEulerTimeIntegration : public Model
 {
 public:
   static ParameterSet expected_params();
 
-  ImplicitTimeIntegration(const ParameterSet & params);
+  BackwardEulerTimeIntegration(const ParameterSet & params);
 
 private:
   const std::vector<std::string> _var_rate_name;
@@ -53,6 +53,6 @@ protected:
   set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const;
 };
 
-typedef ImplicitTimeIntegration<Scalar> ScalarImplicitTimeIntegration;
-typedef ImplicitTimeIntegration<SymR2> SymR2ImplicitTimeIntegration;
+typedef BackwardEulerTimeIntegration<Scalar> ScalarBackwardEulerTimeIntegration;
+typedef BackwardEulerTimeIntegration<SymR2> SymR2BackwardEulerTimeIntegration;
 } // namespace neml2

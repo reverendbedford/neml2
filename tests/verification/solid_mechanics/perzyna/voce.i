@@ -50,12 +50,12 @@
     type = PlasticStrainRate
   []
   [integrate_ep]
-    type = ScalarImplicitTimeIntegration
+    type = ScalarBackwardEulerTimeIntegration
     rate_variable = 'internal_state equivalent_plastic_strain_rate'
     variable = 'internal_state equivalent_plastic_strain'
   []
   [integrate_stress]
-    type = SymR2ImplicitTimeIntegration
+    type = SymR2BackwardEulerTimeIntegration
     rate_variable = cauchy_stress_rate
     variable = cauchy_stress
   []

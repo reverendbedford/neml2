@@ -39,7 +39,7 @@
 #include "neml2/models/solid_mechanics/AssociativeKinematicPlasticHardening.h"
 #include "neml2/models/solid_mechanics/PerzynaPlasticFlowRate.h"
 #include "neml2/models/solid_mechanics/PlasticStrainRate.h"
-#include "neml2/models/ImplicitTimeIntegration.h"
+#include "neml2/models/BackwardEulerTimeIntegration.h"
 #include "neml2/models/ImplicitUpdate.h"
 #include "neml2/models/ForceRate.h"
 #include "neml2/models/SumModel.h"
@@ -132,7 +132,7 @@ TEST_CASE("Benchmark Chaboche", "[BENCHMARK][Chaboche]")
       // Composition
       auto rate = std::make_shared<ComposedModel>("rate", models);
       auto implicit_rate =
-          std::make_shared<ImplicitTimeIntegration>("implicit_time_integration", rate);
+          std::make_shared<BackwardEulerTimeIntegration>("implicit_time_integration", rate);
 
       params.clear();
       params.set<std::string>("name") = "solver";

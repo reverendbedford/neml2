@@ -32,7 +32,7 @@
     type = PlasticStrainRate
   []
   [integrate_Ep]
-    type = SymR2ImplicitTimeIntegration
+    type = SymR2BackwardEulerTimeIntegration
     rate_variable = plastic_strain_rate
     variable = plastic_strain
   []

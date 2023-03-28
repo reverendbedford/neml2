@@ -26,23 +26,23 @@
 
 #include "TestUtils.h"
 #include "SampleRateModel.h"
-#include "neml2/models/ImplicitTimeIntegration.h"
+#include "neml2/models/BackwardEulerTimeIntegration.h"
 
 using namespace neml2;
 
-TEST_CASE("ImplicitTimeIntegration", "[ImplicitTimeIntegration]")
+TEST_CASE("BackwardEulerTimeIntegration", "[BackwardEulerTimeIntegration]")
 {
   auto & factory = Factory::get_factory();
   factory.clear();
 
   factory.create_object("Models",
-                        ScalarImplicitTimeIntegration::expected_params() +
+                        ScalarBackwardEulerTimeIntegration::expected_params() +
                             ParameterSet(KS{"name", "integrate_foo"},
-                                         KS{"type", "ScalarImplicitTimeIntegration"},
+                                         KS{"type", "ScalarBackwardEulerTimeIntegration"},
                                          KVS{"rate_variable", {"foo_rate"}},
                                          KVS{"variable", {"foo"}}));
 
-  auto & model = Factory::get_object<ScalarImplicitTimeIntegration>("Models", "integrate_foo");
+  auto & model = Factory::get_object<ScalarBackwardEulerTimeIntegration>("Models", "integrate_foo");
 
   SECTION("model definition")
   {

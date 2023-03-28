@@ -35,7 +35,7 @@
     yield_function = f
   []
   [integrate_ep]
-    type = ScalarImplicitTimeIntegration
+    type = ScalarBackwardEulerTimeIntegration
     rate_variable = 'internal_state equivalent_plastic_strain_rate'
     variable = 'internal_state equivalent_plastic_strain'
   []

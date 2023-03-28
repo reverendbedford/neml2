@@ -26,7 +26,7 @@
 
 #include "TestUtils.h"
 #include "SampleRateModel.h"
-#include "neml2/models/ImplicitTimeIntegration.h"
+#include "neml2/models/BackwardEulerTimeIntegration.h"
 #include "neml2/models/ImplicitUpdate.h"
 #include "neml2/models/ComposedModel.h"
 #include "neml2/solvers/NewtonNonlinearSolver.h"
@@ -50,21 +50,21 @@ TEST_CASE("ImplicitUpdate", "[ImplicitUpdate]")
                         SampleRateModel::expected_params() +
                             ParameterSet(KS{"name", "rate"}, KS{"type", "SampleRateModel"}));
   factory.create_object("Models",
-                        ScalarImplicitTimeIntegration::expected_params() +
+                        ScalarBackwardEulerTimeIntegration::expected_params() +
                             ParameterSet(KS{"name", "integrate_foo"},
-                                         KS{"type", "ScalarImplicitTimeIntegration"},
+                                         KS{"type", "ScalarBackwardEulerTimeIntegration"},
                                          KVS{"rate_variable", {"foo_rate"}},
                                          KVS{"variable", {"foo"}}));
   factory.create_object("Models",
-                        ScalarImplicitTimeIntegration::expected_params() +
+                        ScalarBackwardEulerTimeIntegration::expected_params() +
                             ParameterSet(KS{"name", "integrate_bar"},
-                                         KS{"type", "ScalarImplicitTimeIntegration"},
+                                         KS{"type", "ScalarBackwardEulerTimeIntegration"},
                                          KVS{"rate_variable", {"bar_rate"}},
                                          KVS{"variable", {"bar"}}));
   factory.create_object("Models",
-                        SymR2ImplicitTimeIntegration::expected_params() +
+                        SymR2BackwardEulerTimeIntegration::expected_params() +
                             ParameterSet(KS{"name", "integrate_baz"},
-                                         KS{"type", "SymR2ImplicitTimeIntegration"},
+                                         KS{"type", "SymR2BackwardEulerTimeIntegration"},
                                          KVS{"rate_variable", {"baz_rate"}},
                                          KVS{"variable", {"baz"}}));
   factory.create_object(

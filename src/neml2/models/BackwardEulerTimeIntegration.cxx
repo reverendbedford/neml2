@@ -22,16 +22,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/models/ImplicitTimeIntegration.h"
+#include "neml2/models/BackwardEulerTimeIntegration.h"
 
 namespace neml2
 {
-register_NEML2_object(ScalarImplicitTimeIntegration);
-register_NEML2_object(SymR2ImplicitTimeIntegration);
+register_NEML2_object(ScalarBackwardEulerTimeIntegration);
+register_NEML2_object(SymR2BackwardEulerTimeIntegration);
 
 template <typename T>
 ParameterSet
-ImplicitTimeIntegration<T>::expected_params()
+BackwardEulerTimeIntegration<T>::expected_params()
 {
   ParameterSet params = Model::expected_params();
   params.set<std::vector<std::string>>("rate_variable");
@@ -40,7 +40,7 @@ ImplicitTimeIntegration<T>::expected_params()
 }
 
 template <typename T>
-ImplicitTimeIntegration<T>::ImplicitTimeIntegration(const ParameterSet & params)
+BackwardEulerTimeIntegration<T>::BackwardEulerTimeIntegration(const ParameterSet & params)
   : Model(params),
     _var_rate_name(params.get<std::vector<std::string>>("rate_variable")),
     _var_name(params.get<std::vector<std::string>>("variable")),
@@ -56,9 +56,9 @@ ImplicitTimeIntegration<T>::ImplicitTimeIntegration(const ParameterSet & params)
 
 template <typename T>
 void
-ImplicitTimeIntegration<T>::set_value(LabeledVector in,
-                                      LabeledVector out,
-                                      LabeledMatrix * dout_din) const
+BackwardEulerTimeIntegration<T>::set_value(LabeledVector in,
+                                           LabeledVector out,
+                                           LabeledMatrix * dout_din) const
 {
   TorchSize nbatch = in.batch_size();
   auto dt = in.get<Scalar>(time) - in.get<Scalar>(time_n);
@@ -86,6 +86,6 @@ ImplicitTimeIntegration<T>::set_value(LabeledVector in,
   }
 }
 
-template class ImplicitTimeIntegration<Scalar>;
-template class ImplicitTimeIntegration<SymR2>;
+template class BackwardEulerTimeIntegration<Scalar>;
+template class BackwardEulerTimeIntegration<SymR2>;
 } // namespace neml2
