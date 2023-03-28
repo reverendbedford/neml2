@@ -43,15 +43,16 @@ public:
 
   LinearElasticity(const ParameterSet & params);
 
-  static constexpr std::string in_name();
-  static constexpr std::string out_name();
-
   const LabeledAxisAccessor from;
   const LabeledAxisAccessor to;
 
 protected:
   virtual void
   set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const;
+
+  std::string in_name() const;
+
+  std::string out_name() const;
 
   SymSymR4 T(Scalar E, Scalar nu) const;
 
