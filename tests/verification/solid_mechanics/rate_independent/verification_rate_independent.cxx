@@ -47,3 +47,35 @@ TEST_CASE("Rate independent perfect plasticity verification",
     REQUIRE(test.compare(model));
   }
 }
+
+TEST_CASE("Rate independent Voce isotropic hardening verification",
+          "[StructuralVerificationTests][RIVoce]")
+{
+  load_model("verification/solid_mechanics/rate_independent/voceiso.i");
+  auto & model = Factory::get_object<Model>("Models", "model");
+
+  SECTION("Rate independent Voce hardening, uniaxial")
+  {
+    // Load and run the test
+    std::string fname = "verification/solid_mechanics/rate_independent/voceiso.vtest";
+    VerificationTest test(fname);
+    torch::NoGradGuard no_grad_guard;
+    REQUIRE(test.compare(model));
+  }
+}
+
+TEST_CASE("Rate independent isotropic + kinematic hardening verification",
+          "[StructuralVerificationTests][RIVoceLinKin]")
+{
+  load_model("verification/solid_mechanics/rate_independent/voceisolinkin.i");
+  auto & model = Factory::get_object<Model>("Models", "model");
+
+  SECTION("Rate independent Voce + linear kinematic hardening, uniaxial")
+  {
+    // Load and run the test
+    std::string fname = "verification/solid_mechanics/rate_independent/voceisolinkin.vtest";
+    VerificationTest test(fname);
+    torch::NoGradGuard no_grad_guard;
+    REQUIRE(test.compare(model));
+  }
+}
