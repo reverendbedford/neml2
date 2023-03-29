@@ -1,13 +1,6 @@
 [Solvers]
   [newton]
     type = NewtonNonlinearSolver
-    verbose = true
-  []
-[]
-
-[Predictors]
-  [predictor]
-    type = LinearExtrapolationPredictor
   []
 []
 
@@ -54,7 +47,6 @@
     type = ImplicitUpdate
     implicit_model = surface
     solver = newton
-    predictor = predictor
     additional_outputs = 'state plastic_strain'
   []
   [model]

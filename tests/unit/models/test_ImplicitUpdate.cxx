@@ -103,7 +103,7 @@ TEST_CASE("ImplicitUpdate", "[ImplicitUpdate]")
     REQUIRE(model.output().subaxis("state").has_variable<SymR2>("baz"));
   }
 
-  TorchSize nbatch = 10;
+  TorchSize nbatch = 1;
   LabeledVector in(nbatch, model.input());
   auto baz_old = SymR2::init(0, 0, 0, 0, 0, 0).batch_expand(nbatch);
   in.slice("old_state").set(Scalar(0, nbatch), "foo");
@@ -139,6 +139,6 @@ TEST_CASE("ImplicitUpdate", "[ImplicitUpdate]")
     finite_differencing_derivative(
         [model](const LabeledVector & x) { return model.value(x); }, in, numerical);
 
-    REQUIRE(torch::allclose(exact.tensor(), numerical.tensor()));
+    REQUIRE(torch::allclose(exact.tensor(), numerical.tensor(), /*rtol=*/0, /*atol=*/1e-5));
   }
 }

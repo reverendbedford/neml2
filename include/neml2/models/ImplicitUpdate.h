@@ -50,6 +50,6 @@ protected:
   const NonlinearSolver & _solver;
 
   /// The predictor used to set the initial guess
-  Predictor & _predictor;
+  Predictor * _predictor;
 };
 } // namespace neml2

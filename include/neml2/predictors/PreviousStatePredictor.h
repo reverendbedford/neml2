@@ -28,12 +28,12 @@
 
 namespace neml2
 {
-class FlatPredictor : public Predictor
+class PreviousStatePredictor : public Predictor
 {
 public:
   static ParameterSet expected_params();
 
-  FlatPredictor(const ParameterSet & params);
+  PreviousStatePredictor(const ParameterSet & params);
 
   /**
    * Use the old state as the initial guess

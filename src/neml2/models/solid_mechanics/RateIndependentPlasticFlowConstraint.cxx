@@ -57,18 +57,18 @@ RateIndependentPlasticFlowConstraint::set_value(LabeledVector in,
   // also called return mapping. The residual is the hardening rate when the stress state is
   // "inside" the yield surface, as the hardening rate is by definition zero.
   Scalar r(0, in.batch_size());
-  r.index_put_({f < 0}, gamma_dot.index({f < 0}));
-  r.index_put_({f >= 0}, f.index({f >= 0}));
+  r.index_put_({f < -EPS}, gamma_dot.index({f < -EPS}));
+  r.index_put_({f >= -EPS}, f.index({f >= -EPS}));
 
   out.set(r, consistency_condition);
 
   if (dout_din)
   {
     Scalar dr_dgamma_dot(0, in.batch_size());
-    dr_dgamma_dot.index_put_({f < 0}, 1);
+    dr_dgamma_dot.index_put_({f < -EPS}, 1);
 
     Scalar dr_df(0, in.batch_size());
-    dr_df.index_put_({f >= 0}, 1);
+    dr_df.index_put_({f >= -EPS}, 1);
 
     dout_din->set(dr_dgamma_dot, consistency_condition, hardening_rate);
     dout_din->set(dr_df, consistency_condition, yield_function);

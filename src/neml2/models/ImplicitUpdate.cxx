@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 #include "neml2/models/ImplicitUpdate.h"
+#include "neml2/predictors/PreviousStatePredictor.h"
 
 namespace neml2
 {
@@ -41,8 +42,7 @@ ImplicitUpdate::expected_params()
 ImplicitUpdate::ImplicitUpdate(const ParameterSet & params)
   : Model(params),
     _model(Factory::get_object<Model>("Models", params.get<std::string>("implicit_model"))),
-    _solver(Factory::get_object<NonlinearSolver>("Solvers", params.get<std::string>("solver"))),
-    _predictor(Factory::get_object<Predictor>("Predictors", params.get<std::string>("predictor")))
+    _solver(Factory::get_object<NonlinearSolver>("Solvers", params.get<std::string>("solver")))
 {
   register_model(
       Factory::get_object_ptr<Model>("Models", params.get<std::string>("implicit_model")));
@@ -78,6 +78,19 @@ ImplicitUpdate::ImplicitUpdate(const ParameterSet & params)
       _consumed_vars.erase(consumed_var_it--);
     }
 
+  // Add predictor. If no predictor is specified by the user, default to PreviousStatePredictor
+  const auto predictor_name = params.get<std::string>("predictor");
+  if (predictor_name.empty())
+  {
+    Factory::get_factory().create_object(
+        "Predictors",
+        PreviousStatePredictor::expected_params() +
+            ParameterSet(KS{"name", "_default_predictor"}, KS{"type", "PreviousStatePredictor"}));
+    _predictor = Factory::get_object_ptr<Predictor>("Predictors", "_default_predictor").get();
+  }
+  else
+    _predictor = Factory::get_object_ptr<Predictor>("Predictors", predictor_name).get();
+
   setup();
 }
 
@@ -91,7 +104,7 @@ ImplicitUpdate::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * d
   _model.cache_input(in);
 
   // Set the initial guess
-  _predictor.set_initial_guess(in, out);
+  _predictor->set_initial_guess(in, out);
 
   // Solve for the next state
   Model::stage = Model::Stage::SOLVING;
@@ -101,7 +114,7 @@ ImplicitUpdate::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * d
   out.set(sol, "state");
 
   // post-solve
-  _predictor.post_solve(in, out);
+  _predictor->post_solve(in, out);
 
   // Use the implicit function theorem to calculate the other derivatives
   if (dout_din)

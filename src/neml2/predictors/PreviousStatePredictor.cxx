@@ -22,33 +22,33 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/predictors/FlatPredictor.h"
+#include "neml2/predictors/PreviousStatePredictor.h"
 
 namespace neml2
 {
-register_NEML2_object(FlatPredictor);
+register_NEML2_object(PreviousStatePredictor);
 
 ParameterSet
-FlatPredictor::expected_params()
+PreviousStatePredictor::expected_params()
 {
   ParameterSet params = Predictor::expected_params();
   return params;
 }
 
-FlatPredictor::FlatPredictor(const ParameterSet & params)
+PreviousStatePredictor::PreviousStatePredictor(const ParameterSet & params)
   : Predictor(params)
 {
 }
 
 void
-FlatPredictor::set_initial_guess(LabeledVector /*in*/, LabeledVector guess) const
+PreviousStatePredictor::set_initial_guess(LabeledVector /*in*/, LabeledVector guess) const
 {
   if (!_state_n.axes().empty())
     guess.slice("state").fill(_state_n);
 }
 
 void
-FlatPredictor::post_solve(LabeledVector /*in*/, LabeledVector out)
+PreviousStatePredictor::post_solve(LabeledVector /*in*/, LabeledVector out)
 {
   _state_n = out.slice("state").clone();
 }
