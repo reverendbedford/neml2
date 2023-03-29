@@ -87,13 +87,6 @@ Model::register_model(std::shared_ptr<Model> model, bool merge_input)
   register_module(model->name(), model);
 }
 
-BatchTensor<1>
-Model::initial_guess(LabeledVector in, LabeledVector guess) const
-{
-  guess.fill(in.slice("old_state"));
-  return guess.tensor();
-}
-
 void
 Model::cache_input(LabeledVector in)
 {

@@ -26,6 +26,7 @@
 
 #include "neml2/models/Model.h"
 #include "neml2/solvers/NonlinearSolver.h"
+#include "neml2/predictors/Predictor.h"
 
 namespace neml2
 {
@@ -47,5 +48,8 @@ protected:
 
   /// The nonlinear solver used to solve the nonlinear system
   const NonlinearSolver & _solver;
+
+  /// The predictor used to set the initial guess
+  Predictor & _predictor;
 };
 } // namespace neml2

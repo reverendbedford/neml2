@@ -77,7 +77,7 @@ Factory::get_object_ptr(const std::string & section, const std::string & name)
   auto & factory = Factory::get_factory();
 
   // Easy if it already exists
-  if (factory._objects.at(section).count(name))
+  if (factory._objects.count(section) && factory._objects.at(section).count(name))
     return std::dynamic_pointer_cast<T>(factory._objects[section][name]);
 
   // Otherwise try to create it
@@ -88,7 +88,7 @@ Factory::get_object_ptr(const std::string & section, const std::string & name)
       break;
     }
 
-  neml_assert(factory._objects.at(section).count(name),
+  neml_assert(factory._objects.count(section) && factory._objects.at(section).count(name),
               "Failed to get object named ",
               name,
               " under section ",

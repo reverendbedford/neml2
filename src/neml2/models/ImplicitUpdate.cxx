@@ -34,13 +34,15 @@ ImplicitUpdate::expected_params()
   ParameterSet params = Model::expected_params();
   params.set<std::string>("implicit_model");
   params.set<std::string>("solver");
+  params.set<std::string>("predictor");
   return params;
 }
 
 ImplicitUpdate::ImplicitUpdate(const ParameterSet & params)
   : Model(params),
     _model(Factory::get_object<Model>("Models", params.get<std::string>("implicit_model"))),
-    _solver(Factory::get_object<NonlinearSolver>("Solvers", params.get<std::string>("solver")))
+    _solver(Factory::get_object<NonlinearSolver>("Solvers", params.get<std::string>("solver"))),
+    _predictor(Factory::get_object<Predictor>("Predictors", params.get<std::string>("predictor")))
 {
   register_model(
       Factory::get_object_ptr<Model>("Models", params.get<std::string>("implicit_model")));
@@ -88,12 +90,18 @@ ImplicitUpdate::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * d
   // state
   _model.cache_input(in);
 
+  // Set the initial guess
+  _predictor.set_initial_guess(in, out);
+
   // Solve for the next state
   Model::stage = Model::Stage::SOLVING;
-  BatchTensor<1> sol = _solver.solve(_model, _model.initial_guess(in, out.slice("state")));
+  BatchTensor<1> sol = _solver.solve(_model, out("state"));
   Model::stage = Model::Stage::UPDATING;
 
   out.set(sol, "state");
+
+  // post-solve
+  _predictor.post_solve(in, out);
 
   // Use the implicit function theorem to calculate the other derivatives
   if (dout_din)
