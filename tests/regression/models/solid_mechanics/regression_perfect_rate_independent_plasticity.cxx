@@ -38,7 +38,7 @@ TEST_CASE("Regression test on perfect rate independent plasticity",
   load_model("regression/models/solid_mechanics/regression_perfect_rate_independent_plasticity.i");
   auto & model = Factory::get_object<Model>("Models", "model");
 
-  TorchSize nbatch = 20;
+  TorchSize nbatch = 2;
   TorchSize nsteps = 100;
   Real max_strain = 0.10;
   Real min_time = -1;

@@ -104,6 +104,8 @@ StructuralDriver::run()
 
   for (TorchSize i = 1; i < _nsteps; i++)
   {
+    std::cout << "Step " << i << std::endl;
+
     // Advance the step
     current_time = Scalar(_time.index({i}));
     current_driving_force = SymR2(_driving_force.index({i}));
@@ -117,6 +119,8 @@ StructuralDriver::run()
     // current --> old
     LabeledVector(in.slice("old_state")).fill(out.slice("state"));
     LabeledVector(in.slice("old_forces")).fill(in.slice("forces"));
+
+    std::cout << std::endl;
   }
 
   return {all_inputs, all_outputs};
