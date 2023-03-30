@@ -30,13 +30,14 @@
 #include "neml2/base/Registry.h"
 #include "neml2/base/NEML2Object.h"
 #include "neml2/base/Factory.h"
+#include "neml2/solvers/NonlinearSystem.h"
 
 namespace neml2
 {
 /**
 Class that maps some input -> output, which is also the broader definition of constitutive model.
 */
-class Model : public NEML2Object, public LabeledAxisInterface
+class Model : public NEML2Object, public LabeledAxisInterface, public NonlinearSystem
 {
 public:
   static ParameterSet expected_params();
@@ -75,6 +76,27 @@ public:
   const std::set<LabeledAxisAccessor> & provided_variables() const { return _provided_vars; }
   const std::set<LabeledAxisAccessor> & additional_outputs() const { return _additional_outputs; }
 
+  /**
+   * During the SOLVING stage, we update the state with \emph fixed forces, old forces, and old
+   * state. This function caches those fixed values.
+   */
+  void cache_input(LabeledVector in);
+
+  /**
+   * A model can be treated as an implicit model. An implicit model need to be "solved": the state
+   * variables should be iteratively updated until the residual becomes zero. During the SOLVING
+   * stage, we only need the derivative of output with respect to the input state. During the
+   * UPDATING stage, we only need the derivative of output with respect to the input forces, old
+   * forces, and old state. Therefore, the model can/should avoid unnecessary computations by
+   * examining the current `stage`.
+   */
+  enum Stage
+  {
+    SOLVING,
+    UPDATING
+  };
+  static Model::Stage stage;
+
 protected:
   /// The map between input -> output, and optionally its derivatives
   virtual void
@@ -87,6 +109,16 @@ protected:
     auto accessor = declareVariable<T>(_input, names);
     _consumed_vars.insert(accessor);
     return accessor;
+  }
+
+  /// Declare an input variable on a subaxis
+  template <typename T>
+  [[nodiscard]] LabeledAxisAccessor declareInputVariable(const std::string & subaxis,
+                                                         const std::vector<std::string> & names)
+  {
+    auto new_names = names;
+    new_names.insert(new_names.begin(), subaxis);
+    return declareInputVariable<T>(new_names);
   }
 
   /// Declare an input variable with known storage size
@@ -107,8 +139,17 @@ protected:
     return accessor;
   }
 
+  /// Declare an output variable on a subaxis
+  template <typename T>
+  [[nodiscard]] LabeledAxisAccessor declareOutputVariable(const std::string & subaxis,
+                                                          const std::vector<std::string> & names)
+  {
+    auto new_names = names;
+    new_names.insert(new_names.begin(), subaxis);
+    return declareOutputVariable<T>(new_names);
+  }
+
   /// Declare an output variable with known storage size
-  template <typename... S>
   [[nodiscard]] LabeledAxisAccessor declareOutputVariable(TorchSize sz,
                                                           const std::vector<std::string> & names)
   {
@@ -128,6 +169,8 @@ protected:
   */
   void register_model(std::shared_ptr<Model> model, bool merge_input = true);
 
+  virtual void set_residual(BatchTensor<1> x, BatchTensor<1> r, BatchTensor<1> * J = nullptr) const;
+
   /// Models *this* model may use during its evaluation
   std::vector<std::shared_ptr<Model>> _registered_models;
 
@@ -138,5 +181,8 @@ protected:
 private:
   LabeledAxis & _input;
   LabeledAxis & _output;
+
+  /// Cached input while solving this implicit model
+  LabeledVector _cached_in;
 };
 } // namespace neml2

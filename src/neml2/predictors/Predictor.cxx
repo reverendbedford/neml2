@@ -22,28 +22,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
-
-#include "neml2/tensors/BatchTensor.h"
+#include "neml2/predictors/Predictor.h"
 
 namespace neml2
 {
-class NonlinearSystem
+ParameterSet
+Predictor::expected_params()
 {
-public:
-  /// Convenient shortcut to construct and return the system residual
-  virtual BatchTensor<1> residual(BatchTensor<1> in) const final;
+  ParameterSet params = NEML2Object::expected_params();
+  return params;
+}
 
-  /// Convenient shortcut to construct and return the system Jacobian
-  virtual BatchTensor<1> Jacobian(BatchTensor<1> in) const final;
-
-  /// Convenient shortcut to construct and return the system residual and Jacobian
-  virtual std::tuple<BatchTensor<1>, BatchTensor<1>>
-  residual_and_Jacobian(BatchTensor<1> in) const final;
-
-protected:
-  virtual void set_residual(BatchTensor<1> x,
-                            BatchTensor<1> residual,
-                            BatchTensor<1> * Jacobian = nullptr) const = 0;
-};
+Predictor::Predictor(const ParameterSet & params)
+  : NEML2Object(params)
+{
+}
 } // namespace neml2

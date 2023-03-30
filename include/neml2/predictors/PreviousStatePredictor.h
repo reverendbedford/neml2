@@ -22,30 +22,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/models/ImplicitModel.h"
+#pragma once
+
+#include "neml2/predictors/Predictor.h"
 
 namespace neml2
 {
-ImplicitModel::Stage ImplicitModel::stage = UPDATING;
-
-ParameterSet
-ImplicitModel::expected_params()
+class PreviousStatePredictor : public Predictor
 {
-  ParameterSet params = Model::expected_params();
-  return params;
-}
+public:
+  static ParameterSet expected_params();
 
-BatchTensor<1>
-ImplicitModel::initial_guess(LabeledVector in) const
-{
-  LabeledVector guess(in.batch_size(), input().subaxis("old_state"));
-  guess.fill(in.slice("old_state"));
-  return guess.tensor();
-}
+  PreviousStatePredictor(const ParameterSet & params);
 
-void
-ImplicitModel::cache_input(LabeledVector in)
-{
-  _cached_in = in.clone();
-}
+  /**
+   * Use the old state as the initial guess
+   */
+  virtual void set_initial_guess(LabeledVector in, LabeledVector guess) const override;
+
+  /**
+   * Cache the old state
+   */
+  virtual void post_solve(LabeledVector in, LabeledVector out) override;
+
+protected:
+  LabeledVector _state_n;
+};
 } // namespace neml2

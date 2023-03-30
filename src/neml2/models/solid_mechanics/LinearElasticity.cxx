@@ -62,8 +62,8 @@ LinearElasticity<rate, etype>::T(Scalar E, Scalar nu) const
 }
 
 template <bool rate, ElasticityType etype>
-constexpr std::string
-LinearElasticity<rate, etype>::in_name()
+std::string
+LinearElasticity<rate, etype>::in_name() const
 {
   if constexpr (rate)
   {
@@ -82,8 +82,8 @@ LinearElasticity<rate, etype>::in_name()
 }
 
 template <bool rate, ElasticityType etype>
-constexpr std::string
-LinearElasticity<rate, etype>::out_name()
+std::string
+LinearElasticity<rate, etype>::out_name() const
 {
   if constexpr (rate)
   {

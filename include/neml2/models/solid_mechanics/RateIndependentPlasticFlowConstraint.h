@@ -24,26 +24,22 @@
 
 #pragma once
 
-#include "neml2/tensors/BatchTensor.h"
+#include "neml2/models/Model.h"
 
 namespace neml2
 {
-class NonlinearSystem
+class RateIndependentPlasticFlowConstraint : public Model
 {
 public:
-  /// Convenient shortcut to construct and return the system residual
-  virtual BatchTensor<1> residual(BatchTensor<1> in) const final;
+  static ParameterSet expected_params();
 
-  /// Convenient shortcut to construct and return the system Jacobian
-  virtual BatchTensor<1> Jacobian(BatchTensor<1> in) const final;
+  RateIndependentPlasticFlowConstraint(const ParameterSet & params);
 
-  /// Convenient shortcut to construct and return the system residual and Jacobian
-  virtual std::tuple<BatchTensor<1>, BatchTensor<1>>
-  residual_and_Jacobian(BatchTensor<1> in) const final;
+  void set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_dint) const;
 
-protected:
-  virtual void set_residual(BatchTensor<1> x,
-                            BatchTensor<1> residual,
-                            BatchTensor<1> * Jacobian = nullptr) const = 0;
+  const LabeledAxisAccessor yield_function;
+  const LabeledAxisAccessor hardening_rate;
+  const LabeledAxisAccessor consistency_condition;
 };
+
 } // namespace neml2

@@ -13,7 +13,7 @@
   [M]
     type = IsotropicMandelStress
   []
-  [gamma]
+  [h]
     type = LinearIsotropicHardening
     K = 1000
   []
@@ -25,7 +25,7 @@
     stress_measure = j2
     yield_stress = 5
   []
-  [gammarate]
+  [hrate]
     type = PerzynaPlasticFlowRate
     eta = 100
     n = 2
@@ -34,13 +34,14 @@
     type = AssociativeIsotropicPlasticHardening
     yield_function = f
   []
-  [rate]
-    type = ComposedModel
-    models = 'load M gamma f gammarate eprate'
+  [integrate_ep]
+    type = ScalarBackwardEulerTimeIntegration
+    rate_variable = 'internal_state equivalent_plastic_strain_rate'
+    variable = 'internal_state equivalent_plastic_strain'
   []
   [surface]
-    type = ImplicitTimeIntegration
-    rate = rate
+    type = ComposedModel
+    models = 'load M h f hrate eprate integrate_ep'
   []
   [return_map]
     type = ImplicitUpdate
@@ -70,6 +71,6 @@
   []
   [model]
     type = ComposedModel
-    models = 'load return_map gamma M f Np gammarate Eprate Ep Ee strain'
+    models = 'load return_map h M f Np hrate Eprate Ep Ee strain'
   []
 []

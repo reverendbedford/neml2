@@ -49,14 +49,14 @@ SymR2
 SymR2::init(const Scalar & a)
 {
   torch::Tensor zero = torch::zeros_like(a, TorchDefaults);
-  return torch::cat({a, a, a, zero, zero, zero}, {-1});
+  return torch::cat({a, a, a, zero, zero, zero}, -1);
 }
 
 SymR2
 SymR2::init(const Scalar & a11, const Scalar & a22, const Scalar & a33)
 {
   torch::Tensor zero = torch::zeros_like(a11, TorchDefaults);
-  return torch::cat({a11, a22, a33, zero, zero, zero}, {-1});
+  return torch::cat({a11, a22, a33, zero, zero, zero}, -1);
 }
 
 SymR2
@@ -68,7 +68,7 @@ SymR2::init(const Scalar & a11,
             const Scalar & a12)
 {
   return torch::cat({a11, a22, a33, utils::sqrt2 * a23, utils::sqrt2 * a13, utils::sqrt2 * a12},
-                    {-1});
+                    -1);
 }
 
 SymR2

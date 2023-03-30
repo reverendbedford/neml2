@@ -40,13 +40,14 @@
   [Eprate]
     type = PlasticStrainRate
   []
-  [rate]
-    type = ComposedModel
-    models = 'Erate Eerate elasticity mandel_stress yield direction hrate Eprate'
+  [integrate_stress]
+    type = SymR2BackwardEulerTimeIntegration
+    rate_variable = cauchy_stress_rate
+    variable = cauchy_stress
   []
   [implicit_rate]
-    type = ImplicitTimeIntegration
-    rate = rate
+    type = ComposedModel
+    models = 'Erate Eerate elasticity mandel_stress yield direction hrate Eprate integrate_stress'
   []
   [model]
     type = ImplicitUpdate

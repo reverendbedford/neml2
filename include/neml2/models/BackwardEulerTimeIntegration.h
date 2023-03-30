@@ -25,30 +25,34 @@
 #pragma once
 
 #include "neml2/models/Model.h"
-#include "neml2/solvers/NonlinearSystem.h"
 
 namespace neml2
 {
-class ImplicitModel : public Model, public NonlinearSystem
+template <typename T>
+class BackwardEulerTimeIntegration : public Model
 {
 public:
   static ParameterSet expected_params();
 
-  using Model::Model;
+  BackwardEulerTimeIntegration(const ParameterSet & params);
 
-  enum Stage
-  {
-    SOLVING,
-    UPDATING
-  };
-  static ImplicitModel::Stage stage;
+private:
+  const std::vector<std::string> _var_rate_name;
+  const std::vector<std::string> _var_name;
 
-  virtual BatchTensor<1> initial_guess(LabeledVector in) const;
-
-  void cache_input(LabeledVector in);
+public:
+  const LabeledAxisAccessor res;
+  const LabeledAxisAccessor var_rate;
+  const LabeledAxisAccessor var;
+  const LabeledAxisAccessor var_n;
+  const LabeledAxisAccessor time;
+  const LabeledAxisAccessor time_n;
 
 protected:
-  /// Cached input while solving this implicit model
-  LabeledVector _cached_in;
+  virtual void
+  set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const;
 };
+
+typedef BackwardEulerTimeIntegration<Scalar> ScalarBackwardEulerTimeIntegration;
+typedef BackwardEulerTimeIntegration<SymR2> SymR2BackwardEulerTimeIntegration;
 } // namespace neml2

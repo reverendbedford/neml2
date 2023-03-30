@@ -32,21 +32,15 @@ register_NEML2_object(ADSampleRateModel);
 
 template <bool is_ad>
 SampleRateModelTempl<is_ad>::SampleRateModelTempl(const ParameterSet & params)
-  : SampleRateModelBase<is_ad>(params)
+  : SampleRateModelBase<is_ad>(params),
+    _foo(this->template declareInputVariable<Scalar>({"state", "foo"})),
+    _bar(this->template declareInputVariable<Scalar>({"state", "bar"})),
+    _baz(this->template declareInputVariable<SymR2>({"state", "baz"})),
+    _temperature(this->template declareInputVariable<Scalar>({"forces", "temperature"})),
+    _foo_rate(this->template declareOutputVariable<Scalar>({"state", "foo_rate"})),
+    _bar_rate(this->template declareOutputVariable<Scalar>({"state", "bar_rate"})),
+    _baz_rate(this->template declareOutputVariable<SymR2>({"state", "baz_rate"}))
 {
-  this->input().template add<LabeledAxis>("state");
-  this->input().subaxis("state").template add<Scalar>("foo");
-  this->input().subaxis("state").template add<Scalar>("bar");
-  this->input().subaxis("state").template add<SymR2>("baz");
-
-  this->input().template add<LabeledAxis>("forces");
-  this->input().subaxis("forces").template add<Scalar>("temperature");
-
-  this->output().template add<LabeledAxis>("state");
-  this->output().subaxis("state").template add<Scalar>("foo_rate");
-  this->output().subaxis("state").template add<Scalar>("bar_rate");
-  this->output().subaxis("state").template add<SymR2>("baz_rate");
-
   this->setup();
 }
 
@@ -57,12 +51,12 @@ SampleRateModelTempl<is_ad>::set_value(LabeledVector in,
                                        LabeledMatrix * dout_din) const
 {
   // Grab the trial states
-  auto foo = in.slice("state").get<Scalar>("foo");
-  auto bar = in.slice("state").get<Scalar>("bar");
-  auto baz = in.slice("state").get<SymR2>("baz");
+  auto foo = in.get<Scalar>(_foo);
+  auto bar = in.get<Scalar>(_bar);
+  auto baz = in.get<SymR2>(_baz);
 
   // Say the rates depend on temperature, for fun
-  auto T = in.slice("forces").get<Scalar>("temperature");
+  auto T = in.get<Scalar>(_temperature);
 
   // Some made up rates
   auto foo_dot = (foo * foo + bar) * T + baz.tr();
@@ -70,9 +64,9 @@ SampleRateModelTempl<is_ad>::set_value(LabeledVector in,
   auto baz_dot = (foo + bar) * baz * (T - 3);
 
   // Set the output
-  out.slice("state").set(foo_dot, "foo_rate");
-  out.slice("state").set(bar_dot, "bar_rate");
-  out.slice("state").set(baz_dot, "baz_rate");
+  out.set(foo_dot, _foo_rate);
+  out.set(bar_dot, _bar_rate);
+  out.set(baz_dot, _baz_rate);
 
   if constexpr (!is_ad)
     if (dout_din)
@@ -88,23 +82,23 @@ SampleRateModelTempl<is_ad>::set_value(LabeledVector in,
       auto dbaz_dot_dbar = baz * (T - 3);
       auto dbaz_dot_dbaz = (foo + bar) * (T - 3) * SymR2::identity_map().batch_expand(nbatch);
 
-      dout_din->block("state", "state").set(dfoo_dot_dfoo, "foo_rate", "foo");
-      dout_din->block("state", "state").set(dfoo_dot_dbar, "foo_rate", "bar");
-      dout_din->block("state", "state").set(dfoo_dot_dbaz, "foo_rate", "baz");
-      dout_din->block("state", "state").set(dbar_dot_dfoo, "bar_rate", "foo");
-      dout_din->block("state", "state").set(dbar_dot_dbar, "bar_rate", "bar");
-      dout_din->block("state", "state").set(dfoo_dot_dbaz, "bar_rate", "baz");
-      dout_din->block("state", "state").set(dbaz_dot_dfoo, "baz_rate", "foo");
-      dout_din->block("state", "state").set(dbaz_dot_dbar, "baz_rate", "bar");
-      dout_din->block("state", "state").set(dbaz_dot_dbaz, "baz_rate", "baz");
+      dout_din->set(dfoo_dot_dfoo, _foo_rate, _foo);
+      dout_din->set(dfoo_dot_dbar, _foo_rate, _bar);
+      dout_din->set(dfoo_dot_dbaz, _foo_rate, _baz);
+      dout_din->set(dbar_dot_dfoo, _bar_rate, _foo);
+      dout_din->set(dbar_dot_dbar, _bar_rate, _bar);
+      dout_din->set(dfoo_dot_dbaz, _bar_rate, _baz);
+      dout_din->set(dbaz_dot_dfoo, _baz_rate, _foo);
+      dout_din->set(dbaz_dot_dbar, _baz_rate, _bar);
+      dout_din->set(dbaz_dot_dbaz, _baz_rate, _baz);
 
       auto dfoo_dot_dT = foo * foo + bar;
       auto dbar_dot_dT = Scalar(-0.9, nbatch);
       auto dbaz_dot_dT = (foo + bar) * baz;
 
-      dout_din->block("state", "forces").set(dfoo_dot_dT, "foo_rate", "temperature");
-      dout_din->block("state", "forces").set(dbar_dot_dT, "bar_rate", "temperature");
-      dout_din->block("state", "forces").set(dbaz_dot_dT, "baz_rate", "temperature");
+      dout_din->set(dfoo_dot_dT, _foo_rate, _temperature);
+      dout_din->set(dbar_dot_dT, _bar_rate, _temperature);
+      dout_din->set(dbaz_dot_dT, _baz_rate, _temperature);
     }
 }
 

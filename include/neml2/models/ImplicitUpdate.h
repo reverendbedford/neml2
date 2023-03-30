@@ -24,8 +24,9 @@
 
 #pragma once
 
-#include "neml2/models/ImplicitModel.h"
+#include "neml2/models/Model.h"
 #include "neml2/solvers/NonlinearSolver.h"
+#include "neml2/predictors/Predictor.h"
 
 namespace neml2
 {
@@ -36,14 +37,19 @@ public:
 
   ImplicitUpdate(const ParameterSet & name);
 
+  const Model & implicit_model() const { return _model; }
+
 protected:
   virtual void
   set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const;
 
   /// The implicit model to be updated
-  ImplicitModel & _model;
+  Model & _model;
 
   /// The nonlinear solver used to solve the nonlinear system
   const NonlinearSolver & _solver;
+
+  /// The predictor used to set the initial guess
+  Predictor * _predictor;
 };
 } // namespace neml2

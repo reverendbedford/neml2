@@ -26,8 +26,9 @@
 
 #include "TestUtils.h"
 #include "SampleRateModel.h"
-#include "neml2/models/ImplicitTimeIntegration.h"
+#include "neml2/models/BackwardEulerTimeIntegration.h"
 #include "neml2/models/ImplicitUpdate.h"
+#include "neml2/models/ComposedModel.h"
 #include "neml2/solvers/NewtonNonlinearSolver.h"
 
 using namespace neml2;
@@ -49,42 +50,61 @@ TEST_CASE("ImplicitUpdate", "[ImplicitUpdate]")
                         SampleRateModel::expected_params() +
                             ParameterSet(KS{"name", "rate"}, KS{"type", "SampleRateModel"}));
   factory.create_object("Models",
-                        ImplicitTimeIntegration::expected_params() +
-                            ParameterSet(KS{"name", "implicit_rate"},
-                                         KS{"type", "ImplicitTimeIntegration"},
-                                         KS{"rate", "rate"}));
+                        ScalarBackwardEulerTimeIntegration::expected_params() +
+                            ParameterSet(KS{"name", "integrate_foo"},
+                                         KS{"type", "ScalarBackwardEulerTimeIntegration"},
+                                         KVS{"rate_variable", {"foo_rate"}},
+                                         KVS{"variable", {"foo"}}));
+  factory.create_object("Models",
+                        ScalarBackwardEulerTimeIntegration::expected_params() +
+                            ParameterSet(KS{"name", "integrate_bar"},
+                                         KS{"type", "ScalarBackwardEulerTimeIntegration"},
+                                         KVS{"rate_variable", {"bar_rate"}},
+                                         KVS{"variable", {"bar"}}));
+  factory.create_object("Models",
+                        SymR2BackwardEulerTimeIntegration::expected_params() +
+                            ParameterSet(KS{"name", "integrate_baz"},
+                                         KS{"type", "SymR2BackwardEulerTimeIntegration"},
+                                         KVS{"rate_variable", {"baz_rate"}},
+                                         KVS{"variable", {"baz"}}));
+  factory.create_object(
+      "Models",
+      ComposedModel::expected_params() +
+          ParameterSet(KS{"name", "implicit_rate"},
+                       KS{"type", "ComposedModel"},
+                       KVS{"models", {"rate", "integrate_foo", "integrate_bar", "integrate_baz"}}));
   factory.create_object("Models",
                         ImplicitUpdate::expected_params() +
-                            ParameterSet(KS{"name", "integrate_rate"},
+                            ParameterSet(KS{"name", "model"},
                                          KS{"type", "ImplicitUpdate"},
                                          KS{"implicit_model", "implicit_rate"},
                                          KS{"solver", "newton"}));
 
   auto & rate = Factory::get_object<SampleRateModel>("Models", "rate");
-  auto & integrate_rate = Factory::get_object<ImplicitUpdate>("Models", "integrate_rate");
+  auto & model = Factory::get_object<ImplicitUpdate>("Models", "model");
 
   SECTION("model definition")
   {
-    REQUIRE(integrate_rate.input().has_subaxis("old_state"));
-    REQUIRE(integrate_rate.input().subaxis("old_state").has_variable<Scalar>("foo"));
-    REQUIRE(integrate_rate.input().subaxis("old_state").has_variable<Scalar>("bar"));
-    REQUIRE(integrate_rate.input().subaxis("old_state").has_variable<SymR2>("baz"));
+    REQUIRE(model.input().has_subaxis("old_state"));
+    REQUIRE(model.input().subaxis("old_state").has_variable<Scalar>("foo"));
+    REQUIRE(model.input().subaxis("old_state").has_variable<Scalar>("bar"));
+    REQUIRE(model.input().subaxis("old_state").has_variable<SymR2>("baz"));
 
-    REQUIRE(integrate_rate.input().has_subaxis("forces"));
-    REQUIRE(integrate_rate.input().subaxis("forces").has_variable<Scalar>("temperature"));
-    REQUIRE(integrate_rate.input().subaxis("forces").has_variable<Scalar>("time"));
+    REQUIRE(model.input().has_subaxis("forces"));
+    REQUIRE(model.input().subaxis("forces").has_variable<Scalar>("temperature"));
+    REQUIRE(model.input().subaxis("forces").has_variable<Scalar>("time"));
 
-    REQUIRE(integrate_rate.input().has_subaxis("old_forces"));
-    REQUIRE(integrate_rate.input().subaxis("forces").has_variable<Scalar>("time"));
+    REQUIRE(model.input().has_subaxis("old_forces"));
+    REQUIRE(model.input().subaxis("forces").has_variable<Scalar>("time"));
 
-    REQUIRE(integrate_rate.output().has_subaxis("state"));
-    REQUIRE(integrate_rate.output().subaxis("state").has_variable<Scalar>("foo"));
-    REQUIRE(integrate_rate.output().subaxis("state").has_variable<Scalar>("bar"));
-    REQUIRE(integrate_rate.output().subaxis("state").has_variable<SymR2>("baz"));
+    REQUIRE(model.output().has_subaxis("state"));
+    REQUIRE(model.output().subaxis("state").has_variable<Scalar>("foo"));
+    REQUIRE(model.output().subaxis("state").has_variable<Scalar>("bar"));
+    REQUIRE(model.output().subaxis("state").has_variable<SymR2>("baz"));
   }
 
-  TorchSize nbatch = 10;
-  LabeledVector in(nbatch, integrate_rate.input());
+  TorchSize nbatch = 1;
+  LabeledVector in(nbatch, model.input());
   auto baz_old = SymR2::init(0, 0, 0, 0, 0, 0).batch_expand(nbatch);
   in.slice("old_state").set(Scalar(0, nbatch), "foo");
   in.slice("old_state").set(Scalar(0, nbatch), "bar");
@@ -95,7 +115,7 @@ TEST_CASE("ImplicitUpdate", "[ImplicitUpdate]")
 
   SECTION("model values")
   {
-    auto value = integrate_rate.value(in);
+    auto value = model.value(in);
 
     LabeledVector rate_in(nbatch, rate.input());
     rate_in.set(value("state"), "state");
@@ -113,14 +133,12 @@ TEST_CASE("ImplicitUpdate", "[ImplicitUpdate]")
 
   SECTION("model derivatives")
   {
-    auto exact = integrate_rate.dvalue(in);
+    auto exact = model.dvalue(in);
 
-    auto numerical = LabeledMatrix(nbatch, integrate_rate.output(), integrate_rate.input());
-    finite_differencing_derivative([integrate_rate](const LabeledVector & x)
-                                   { return integrate_rate.value(x); },
-                                   in,
-                                   numerical);
+    auto numerical = LabeledMatrix(nbatch, model.output(), model.input());
+    finite_differencing_derivative(
+        [model](const LabeledVector & x) { return model.value(x); }, in, numerical);
 
-    REQUIRE(torch::allclose(exact.tensor(), numerical.tensor()));
+    REQUIRE(torch::allclose(exact.tensor(), numerical.tensor(), /*rtol=*/0, /*atol=*/1e-5));
   }
 }

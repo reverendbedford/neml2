@@ -24,26 +24,31 @@
 
 #pragma once
 
-#include "neml2/tensors/BatchTensor.h"
+#include "neml2/predictors/Predictor.h"
 
 namespace neml2
 {
-class NonlinearSystem
+class LinearExtrapolationPredictor : public Predictor
 {
 public:
-  /// Convenient shortcut to construct and return the system residual
-  virtual BatchTensor<1> residual(BatchTensor<1> in) const final;
+  static ParameterSet expected_params();
 
-  /// Convenient shortcut to construct and return the system Jacobian
-  virtual BatchTensor<1> Jacobian(BatchTensor<1> in) const final;
+  LinearExtrapolationPredictor(const ParameterSet & params);
 
-  /// Convenient shortcut to construct and return the system residual and Jacobian
-  virtual std::tuple<BatchTensor<1>, BatchTensor<1>>
-  residual_and_Jacobian(BatchTensor<1> in) const final;
+  /**
+   * Linearly extrapolate the old and older state in time to get the initial guess for the current
+   * state.
+   */
+  virtual void set_initial_guess(LabeledVector in, LabeledVector guess) const override;
+
+  /**
+   * Prolong and cache the state.
+   */
+  virtual void post_solve(LabeledVector in, LabeledVector out) override;
 
 protected:
-  virtual void set_residual(BatchTensor<1> x,
-                            BatchTensor<1> residual,
-                            BatchTensor<1> * Jacobian = nullptr) const = 0;
+  LabeledVector _state_nm1;
+  LabeledVector _state_n;
+  Scalar _dt_n;
 };
 } // namespace neml2

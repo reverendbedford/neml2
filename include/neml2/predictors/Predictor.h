@@ -24,26 +24,29 @@
 
 #pragma once
 
-#include "neml2/tensors/BatchTensor.h"
+#include "neml2/base/NEML2Object.h"
+#include "neml2/base/Registry.h"
+#include "neml2/tensors/LabeledVector.h"
 
 namespace neml2
 {
-class NonlinearSystem
+class Predictor : public NEML2Object
 {
 public:
-  /// Convenient shortcut to construct and return the system residual
-  virtual BatchTensor<1> residual(BatchTensor<1> in) const final;
+  static ParameterSet expected_params();
 
-  /// Convenient shortcut to construct and return the system Jacobian
-  virtual BatchTensor<1> Jacobian(BatchTensor<1> in) const final;
+  Predictor(const ParameterSet & params);
 
-  /// Convenient shortcut to construct and return the system residual and Jacobian
-  virtual std::tuple<BatchTensor<1>, BatchTensor<1>>
-  residual_and_Jacobian(BatchTensor<1> in) const final;
+  /**
+   * To iteratively update the state to solve the model, we need to start from some initial guess.
+   * This method sets the initial guess of an implicit model.
+   */
+  virtual void set_initial_guess(LabeledVector in, LabeledVector guess) const = 0;
 
-protected:
-  virtual void set_residual(BatchTensor<1> x,
-                            BatchTensor<1> residual,
-                            BatchTensor<1> * Jacobian = nullptr) const = 0;
+  /**
+   * This method gets called after the implicit model is solved. Here is the chance to cache the old
+   * and/or older states in preparation for the next guess.
+   */
+  virtual void post_solve(LabeledVector in, LabeledVector out) = 0;
 };
 } // namespace neml2

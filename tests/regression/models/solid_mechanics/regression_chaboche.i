@@ -70,13 +70,29 @@
   [Eprate]
     type = PlasticStrainRate
   []
-  [rate]
-    type = ComposedModel
-    models = 'Erate Eerate elasticity mandel_stress isoharden chaboche1 chaboche2 kinharden yield direction eeprate hrate Eprate'
+  [integrate_ep]
+    type = ScalarBackwardEulerTimeIntegration
+    rate_variable = 'internal_state equivalent_plastic_strain_rate'
+    variable = 'internal_state equivalent_plastic_strain'
+  []
+  [integrate_X1]
+    type = SymR2BackwardEulerTimeIntegration
+    rate_variable = 'internal_state backstress_1_rate'
+    variable = 'internal_state backstress_1'
+  []
+  [integrate_X2]
+    type = SymR2BackwardEulerTimeIntegration
+    rate_variable = 'internal_state backstress_2_rate'
+    variable = 'internal_state backstress_2'
+  []
+  [integrate_stress]
+    type = SymR2BackwardEulerTimeIntegration
+    rate_variable = cauchy_stress_rate
+    variable = cauchy_stress
   []
   [implicit_rate]
-    type = ImplicitTimeIntegration
-    rate = rate
+    type = ComposedModel
+    models = 'Erate Eerate elasticity mandel_stress isoharden chaboche1 chaboche2 kinharden yield direction eeprate hrate Eprate integrate_ep integrate_X1 integrate_X2 integrate_stress'
   []
   [model]
     type = ImplicitUpdate

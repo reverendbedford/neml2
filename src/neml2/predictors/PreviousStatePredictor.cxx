@@ -22,32 +22,34 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
-
-#include "neml2/models/ImplicitModel.h"
+#include "neml2/predictors/PreviousStatePredictor.h"
 
 namespace neml2
 {
-class ImplicitTimeIntegration : public ImplicitModel
+register_NEML2_object(PreviousStatePredictor);
+
+ParameterSet
+PreviousStatePredictor::expected_params()
 {
-public:
-  static ParameterSet expected_params();
+  ParameterSet params = Predictor::expected_params();
+  return params;
+}
 
-  ImplicitTimeIntegration(const ParameterSet & params);
+PreviousStatePredictor::PreviousStatePredictor(const ParameterSet & params)
+  : Predictor(params)
+{
+}
 
-  // Define the nonlinear system we are solving for
-  virtual void set_residual(BatchTensor<1> x, BatchTensor<1> r, BatchTensor<1> * J = nullptr) const;
+void
+PreviousStatePredictor::set_initial_guess(LabeledVector /*in*/, LabeledVector guess) const
+{
+  if (!_state_n.axes().empty())
+    guess.slice("state").fill(_state_n);
+}
 
-protected:
-  const Model & _rate;
-
-public:
-  const LabeledAxisAccessor time;
-  const LabeledAxisAccessor time_n;
-  const LabeledAxisAccessor resid;
-
-protected:
-  virtual void
-  set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const;
-};
+void
+PreviousStatePredictor::post_solve(LabeledVector /*in*/, LabeledVector out)
+{
+  _state_n = out.slice("state").clone();
+}
 } // namespace neml2

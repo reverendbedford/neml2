@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 #include "neml2/models/ImplicitUpdate.h"
+#include "neml2/predictors/PreviousStatePredictor.h"
 
 namespace neml2
 {
@@ -34,21 +35,22 @@ ImplicitUpdate::expected_params()
   ParameterSet params = Model::expected_params();
   params.set<std::string>("implicit_model");
   params.set<std::string>("solver");
+  params.set<std::string>("predictor");
   return params;
 }
 
 ImplicitUpdate::ImplicitUpdate(const ParameterSet & params)
   : Model(params),
-    _model(Factory::get_object<ImplicitModel>("Models", params.get<std::string>("implicit_model"))),
+    _model(Factory::get_object<Model>("Models", params.get<std::string>("implicit_model"))),
     _solver(Factory::get_object<NonlinearSolver>("Solvers", params.get<std::string>("solver")))
 {
   register_model(
-      Factory::get_object_ptr<ImplicitModel>("Models", params.get<std::string>("implicit_model")));
+      Factory::get_object_ptr<Model>("Models", params.get<std::string>("implicit_model")));
   // Now that the implicit model has been registered, the input of this ImplicitUpdate model should
   // be the same as the implicit model's input. The input subaxes of the implicit model looks
   // something like
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // inputs: state (this is actually the trial state)
+  // inputs: state (trial state) ---> outputs: residual
   //         old state
   //         forces
   //         old forces
@@ -76,6 +78,19 @@ ImplicitUpdate::ImplicitUpdate(const ParameterSet & params)
       _consumed_vars.erase(consumed_var_it--);
     }
 
+  // Add predictor. If no predictor is specified by the user, default to PreviousStatePredictor
+  const auto predictor_name = params.get<std::string>("predictor");
+  if (predictor_name.empty())
+  {
+    Factory::get_factory().create_object(
+        "Predictors",
+        PreviousStatePredictor::expected_params() +
+            ParameterSet(KS{"name", "_default_predictor"}, KS{"type", "PreviousStatePredictor"}));
+    _predictor = Factory::get_object_ptr<Predictor>("Predictors", "_default_predictor").get();
+  }
+  else
+    _predictor = Factory::get_object_ptr<Predictor>("Predictors", predictor_name).get();
+
   setup();
 }
 
@@ -88,12 +103,18 @@ ImplicitUpdate::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * d
   // state
   _model.cache_input(in);
 
+  // Set the initial guess
+  _predictor->set_initial_guess(in, out);
+
   // Solve for the next state
-  ImplicitModel::stage = ImplicitModel::Stage::SOLVING;
-  BatchTensor<1> sol = _solver.solve(_model, _model.initial_guess(in));
-  ImplicitModel::stage = ImplicitModel::Stage::UPDATING;
+  Model::stage = Model::Stage::SOLVING;
+  BatchTensor<1> sol = _solver.solve(_model, out("state"));
+  Model::stage = Model::Stage::UPDATING;
 
   out.set(sol, "state");
+
+  // post-solve
+  _predictor->post_solve(in, out);
 
   // Use the implicit function theorem to calculate the other derivatives
   if (dout_din)

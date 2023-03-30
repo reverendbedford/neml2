@@ -35,8 +35,6 @@ TEST_CASE("parse", "[HITParser]")
 
   ParameterSet params = parser.parameters()["Models"]["foo"];
 
-  std::cout << params << std::endl;
-
   // name, type, additional_outputs, and 15 parameters
   REQUIRE(params.size() == 3 + 15);
 

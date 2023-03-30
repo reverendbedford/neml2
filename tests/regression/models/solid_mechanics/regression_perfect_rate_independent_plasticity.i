@@ -16,53 +16,38 @@
   [M]
     type = IsotropicMandelStress
   []
-  [gamma]
-    type = LinearIsotropicHardening
-    K = 1000
-  []
   [j2]
     type = J2StressMeasure
   []
   [f]
-    type = IsotropicHardeningYieldFunction
+    type = PerfectlyPlasticYieldFunction
     stress_measure = j2
-    yield_stress = 5
-  []
-  [gammarate]
-    type = PerzynaPlasticFlowRate
-    eta = 100
-    n = 2
+    yield_stress = 1000
   []
   [Np]
     type = AssociativePlasticFlowDirection
     yield_function = f
   []
-  [eprate]
-    type = AssociativeIsotropicPlasticHardening
-    yield_function = f
-  []
   [Eprate]
     type = PlasticStrainRate
-  []
-  [integrate_ep]
-    type = ScalarBackwardEulerTimeIntegration
-    rate_variable = 'internal_state equivalent_plastic_strain_rate'
-    variable = 'internal_state equivalent_plastic_strain'
   []
   [integrate_Ep]
     type = SymR2BackwardEulerTimeIntegration
     rate_variable = plastic_strain_rate
     variable = plastic_strain
   []
+  [consistency]
+    type = RateIndependentPlasticFlowConstraint
+  []
   [surface]
     type = ComposedModel
-    models = 'Ee S M gamma f gammarate Np eprate Eprate integrate_ep integrate_Ep'
+    models = 'Ee S M Np Eprate integrate_Ep f consistency'
   []
   [return_map]
     type = ImplicitUpdate
     implicit_model = surface
     solver = newton
-    additional_outputs = 'state plastic_strain; state internal_state equivalent_plastic_strain'
+    additional_outputs = 'state plastic_strain'
   []
   [model]
     type = ComposedModel

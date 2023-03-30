@@ -40,6 +40,14 @@ protected:
   virtual void set_value(neml2::LabeledVector in,
                          neml2::LabeledVector out,
                          neml2::LabeledMatrix * dout_din = nullptr) const;
+
+  const neml2::LabeledAxisAccessor _foo;
+  const neml2::LabeledAxisAccessor _bar;
+  const neml2::LabeledAxisAccessor _baz;
+  const neml2::LabeledAxisAccessor _temperature;
+  const neml2::LabeledAxisAccessor _foo_rate;
+  const neml2::LabeledAxisAccessor _bar_rate;
+  const neml2::LabeledAxisAccessor _baz_rate;
 };
 
 typedef SampleRateModelTempl<true> ADSampleRateModel;

@@ -78,7 +78,7 @@ NewtonNonlinearSolver::solve(const NonlinearSystem & system, const BatchTensor<1
 void
 NewtonNonlinearSolver::update(BatchTensor<1> x, BatchTensor<1> R, BatchTensor<1> J) const
 {
-#if (TORCH_VERSION_MINOR > 12)
+#if (TORCH_VERSION_MAJOR > 1 || TORCH_VERSION_MINOR > 12)
   x -= torch::linalg::solve(J, R, true);
 #else
   x -= torch::linalg::solve(J, R);
