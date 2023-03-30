@@ -29,7 +29,7 @@
     type = J2StressMeasure
   []
   [f]
-    type = IsotropicHardeningYieldFunction
+    type = IsotropicAndKinematicHardeningYieldFunction
     stress_measure = j2
     yield_stress = 100
   []
@@ -37,8 +37,26 @@
     type = AssociativePlasticFlowDirection
     yield_function = f
   []
+  [eprate]
+    type = AssociativeIsotropicPlasticHardening
+    yield_function = f
+  []
+  [Hprate]
+    type = AssociativeKinematicPlasticHardening
+    yield_function = f
+  []
   [Eprate]
     type = PlasticStrainRate
+  []
+  [integrate_ep]
+    type = ScalarBackwardEulerTimeIntegration
+    rate_variable = 'internal_state equivalent_plastic_strain_rate'
+    variable = 'internal_state equivalent_plastic_strain'
+  []
+  [integrate_Hp]
+    type = SymR2BackwardEulerTimeIntegration
+    rate_variable = 'internal_state plastic_strain_rate'
+    variable = 'internal_state plastic_strain'
   []
   [integrate_Ep]
     type = SymR2BackwardEulerTimeIntegration
@@ -50,12 +68,13 @@
   []
   [surface]
     type = ComposedModel
-    models = 'Ee S M Np Eprate integrate_Ep isoharden f consistency'
+    models = 'Ee S M Np eprate Hprate Eprate integrate_ep integrate_Hp integrate_Ep isoharden kinharden f consistency'
   []
   [return_map]
     type = ImplicitUpdate
     implicit_model = surface
     solver = newton
+    additional_outputs = 'state plastic_strain; state internal_state equivalent_plastic_strain; state internal_state plastic_strain'
   []
   [model]
     type = ComposedModel
