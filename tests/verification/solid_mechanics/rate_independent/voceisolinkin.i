@@ -4,6 +4,12 @@
   []
 []
 
+[Predictors]
+  [simple]
+    type = LinearExtrapolationPredictor
+  []
+[]
+
 [Models]
   [Ee]
     type = ElasticStrain
@@ -74,6 +80,7 @@
     type = ImplicitUpdate
     implicit_model = surface
     solver = newton
+    predictor = simple
     additional_outputs = 'state plastic_strain; state internal_state equivalent_plastic_strain; state internal_state plastic_strain'
   []
   [model]
