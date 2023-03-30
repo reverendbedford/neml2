@@ -41,9 +41,9 @@ typedef double Real;
  * TODO: make the following constants configurable
  */
 /// The machine precision
-static constexpr Real EPS = 1e-15;
+static constexpr Real EPS = 1E-15;
 /// The tolerance used in various algorithms
-static constexpr Real TOL = TOL;
+static constexpr Real TOL = 1E-6;
 /// A tighter tolerance used in various algorithms
 static constexpr Real TOL2 = TOL * TOL;
 
