@@ -31,13 +31,17 @@
 #include "neml2/base/NEML2Object.h"
 #include "neml2/base/Factory.h"
 #include "neml2/solvers/NonlinearSystem.h"
+#include "neml2/base/TransientInterface.h"
 
 namespace neml2
 {
 /**
 Class that maps some input -> output, which is also the broader definition of constitutive model.
 */
-class Model : public NEML2Object, public LabeledAxisInterface, public NonlinearSystem
+class Model : public NEML2Object,
+              public LabeledAxisInterface,
+              public NonlinearSystem,
+              public TransientInterface
 {
 public:
   static ParameterSet expected_params();
@@ -67,10 +71,7 @@ public:
   /// Convenient shortcut to construct and return the model value and its derivative
   virtual std::tuple<LabeledVector, LabeledMatrix> value_and_dvalue(LabeledVector in) const;
 
-  const std::vector<std::shared_ptr<Model>> & registered_models() const
-  {
-    return _registered_models;
-  }
+  const std::vector<Model *> & registered_models() const { return _registered_models; }
 
   const std::set<LabeledAxisAccessor> & consumed_variables() const { return _consumed_vars; }
   const std::set<LabeledAxisAccessor> & provided_variables() const { return _provided_vars; }
@@ -81,6 +82,11 @@ public:
    * state. This function caches those fixed values.
    */
   void cache_input(LabeledVector in);
+
+  /**
+   * Advance the states of *this* model and all the registered models in time.
+   */
+  virtual void advance_step() override;
 
   /**
    * A model can be treated as an implicit model. An implicit model need to be "solved": the state
@@ -165,14 +171,14 @@ protected:
   is added.
 
   NOTE: We also register this model as a submodule (in torch's language), so that when *this*
-  `Model` is send to another device, the registered `Model` is also sent to that device.
+  `Model` is sent to another device, the registered `Model` is also sent to that device.
   */
   void register_model(std::shared_ptr<Model> model, bool merge_input = true);
 
   virtual void set_residual(BatchTensor<1> x, BatchTensor<1> r, BatchTensor<1> * J = nullptr) const;
 
   /// Models *this* model may use during its evaluation
-  std::vector<std::shared_ptr<Model>> _registered_models;
+  std::vector<Model *> _registered_models;
 
   std::set<LabeledAxisAccessor> _consumed_vars;
   std::set<LabeledAxisAccessor> _provided_vars;

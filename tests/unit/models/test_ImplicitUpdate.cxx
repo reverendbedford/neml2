@@ -139,6 +139,6 @@ TEST_CASE("ImplicitUpdate", "[ImplicitUpdate]")
     finite_differencing_derivative(
         [model](const LabeledVector & x) { return model.value(x); }, in, numerical);
 
-    REQUIRE(torch::allclose(exact.tensor(), numerical.tensor(), /*rtol=*/0, /*atol=*/1e-5));
+    REQUIRE(torch::allclose(exact.tensor(), numerical.tensor()));
   }
 }

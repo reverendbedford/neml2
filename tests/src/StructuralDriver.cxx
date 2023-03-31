@@ -26,7 +26,7 @@
 
 using namespace neml2;
 
-StructuralDriver::StructuralDriver(const neml2::Model & model,
+StructuralDriver::StructuralDriver(neml2::Model & model,
                                    torch::Tensor time,
                                    torch::Tensor driving_force,
                                    std::string driving_force_name)
@@ -117,6 +117,8 @@ StructuralDriver::run()
     // current --> old
     LabeledVector(in.slice("old_state")).fill(out.slice("state"));
     LabeledVector(in.slice("old_forces")).fill(in.slice("forces"));
+
+    _model.advance_step();
   }
 
   return {all_inputs, all_outputs};

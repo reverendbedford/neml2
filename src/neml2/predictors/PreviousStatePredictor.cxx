@@ -50,6 +50,12 @@ PreviousStatePredictor::set_initial_guess(LabeledVector /*in*/, LabeledVector gu
 void
 PreviousStatePredictor::post_solve(LabeledVector /*in*/, LabeledVector out)
 {
-  _state_n = out.slice("state").clone();
+  _state = out.slice("state").clone();
+}
+
+void
+PreviousStatePredictor::advance_step()
+{
+  _state_n = _state.clone();
 }
 } // namespace neml2

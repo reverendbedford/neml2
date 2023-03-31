@@ -32,7 +32,7 @@ public:
   VerificationTest(std::string fname);
 
   /// Evaluate the comparison between the two models
-  bool compare(const neml2::Model & model) const;
+  bool compare(neml2::Model & model) const;
 
   /// Driving time data
   torch::Tensor time() const { return _time; };

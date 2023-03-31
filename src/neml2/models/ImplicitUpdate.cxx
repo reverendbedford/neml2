@@ -131,4 +131,11 @@ ImplicitUpdate::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * d
     dout_din->block("state", "old_forces").copy(-Jinv.chain(partials.slice(1, "old_forces")));
   }
 }
+
+void
+ImplicitUpdate::advance_step()
+{
+  Model::advance_step();
+  _predictor->advance_step();
+}
 } // namespace neml2

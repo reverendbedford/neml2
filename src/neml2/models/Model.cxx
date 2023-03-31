@@ -81,7 +81,7 @@ Model::register_model(std::shared_ptr<Model> model, bool merge_input)
     _consumed_vars.insert(merged_vars.begin(), merged_vars.end());
   }
 
-  _registered_models.push_back(model);
+  _registered_models.push_back(model.get());
 
   // torch bookkeeping
   register_module(model->name(), model);
@@ -91,6 +91,13 @@ void
 Model::cache_input(LabeledVector in)
 {
   _cached_in = in.clone();
+}
+
+void
+Model::advance_step()
+{
+  for (auto model : registered_models())
+    model->advance_step();
 }
 
 void

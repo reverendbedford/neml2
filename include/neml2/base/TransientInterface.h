@@ -24,38 +24,16 @@
 
 #pragma once
 
-#include "neml2/predictors/Predictor.h"
-
 namespace neml2
 {
-class LinearExtrapolationPredictor : public Predictor
+class TransientInterface
 {
 public:
-  static ParameterSet expected_params();
-
-  LinearExtrapolationPredictor(const ParameterSet & params);
-
   /**
-   * Linearly extrapolate the old and older state in time to get the initial guess for the current
-   * state.
+   * Advance to the next step in time. If the object maintains the history of state or force, this
+   * is the opportunity to shift them back in time, i.e., the current state becomes the previous
+   * (old) state.
    */
-  virtual void set_initial_guess(LabeledVector in, LabeledVector guess) const override;
-
-  /**
-   * Cache the current state and time step size
-   */
-  virtual void post_solve(LabeledVector in, LabeledVector out) override;
-
-  /**
-   * Shift the state back in time
-   */
-  virtual void advance_step() override;
-
-protected:
-  LabeledVector _state;
-  LabeledVector _state_n;
-  LabeledVector _state_nm1;
-  Scalar _dt;
-  Scalar _dt_n;
+  virtual void advance_step() {}
 };
 } // namespace neml2
