@@ -42,7 +42,7 @@ VerificationTest::VerificationTest(std::string fname)
 }
 
 bool
-VerificationTest::compare(const neml2::Model & model) const
+VerificationTest::compare(neml2::Model & model) const
 {
   // Temperature needs to be added
   auto driver = StructuralDriver(

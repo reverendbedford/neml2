@@ -42,13 +42,20 @@ public:
   virtual void set_initial_guess(LabeledVector in, LabeledVector guess) const override;
 
   /**
-   * Prolong and cache the state.
+   * Cache the current state and time step size
    */
   virtual void post_solve(LabeledVector in, LabeledVector out) override;
 
+  /**
+   * Shift the state back in time
+   */
+  virtual void advance_step() override;
+
 protected:
-  LabeledVector _state_nm1;
+  LabeledVector _state;
   LabeledVector _state_n;
+  LabeledVector _state_nm1;
+  Scalar _dt;
   Scalar _dt_n;
 };
 } // namespace neml2

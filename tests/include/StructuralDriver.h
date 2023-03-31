@@ -30,7 +30,7 @@ class StructuralDriver
 {
 public:
   // TODO: Add temperature as an input
-  StructuralDriver(const neml2::Model & model,
+  StructuralDriver(neml2::Model & model,
                    torch::Tensor time,
                    torch::Tensor driving_force,
                    std::string driving_force_name);
@@ -44,7 +44,7 @@ protected:
                                           std::vector<neml2::LabeledVector> & all_inputs,
                                           std::vector<neml2::LabeledVector> & all_outputs) const;
 
-  const neml2::Model & _model;
+  neml2::Model & _model;
   torch::Tensor _time;
   torch::Tensor _driving_force;
   std::string _driving_force_name;

@@ -45,21 +45,11 @@ ComposedModel::ComposedModel(const ParameterSet & params)
 
   register_dependency(models);
 
-  // Find the root model(s)
-  // Basic idea: if a model is not needed by any other model, then it must be a root model
-  std::map<std::string, bool> visited;
-  for (const auto & [name, deps] : _dependecies)
-    for (auto dep : deps)
-      visited[dep->name()] = true;
-  for (const auto & [name, i] : _models)
-    if (!visited[name])
-      _output_models.push_back(i);
-
   resolve_dependency();
 
   // Register the models that are needed for evaluation as submodules
   for (auto i : _evaluation_order)
-    register_module(i->name(), i);
+    register_model(i, /*merge_input=*/false);
 
   setup();
 }
@@ -143,8 +133,18 @@ ComposedModel::add_node(const std::shared_ptr<Model> & model)
 void
 ComposedModel::resolve_dependency()
 {
-  // Figure out the evaluation order
+  // Find the root model(s)
+  // Basic idea: if a model is not needed by any other model, then it must be a root model
   std::map<std::string, bool> visited;
+  for (const auto & [name, deps] : _dependecies)
+    for (auto dep : deps)
+      visited[dep->name()] = true;
+  for (const auto & [name, i] : _models)
+    if (!visited[name])
+      _output_models.push_back(i);
+
+  // Figure out the evaluation order
+  visited.clear();
   _evaluation_order.clear();
   for (auto i : _output_models)
     resolve_dependency(i, _evaluation_order, visited);

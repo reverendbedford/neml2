@@ -26,7 +26,7 @@
 
 using namespace neml2;
 
-StructuralDriver::StructuralDriver(const neml2::Model & model,
+StructuralDriver::StructuralDriver(neml2::Model & model,
                                    torch::Tensor time,
                                    torch::Tensor driving_force,
                                    std::string driving_force_name)
@@ -105,6 +105,7 @@ StructuralDriver::run()
   for (TorchSize i = 1; i < _nsteps; i++)
   {
     // Advance the step
+    _model.advance_step();
     current_time = Scalar(_time.index({i}));
     current_driving_force = SymR2(_driving_force.index({i}));
     in.slice("forces").set(current_driving_force, _driving_force_name);

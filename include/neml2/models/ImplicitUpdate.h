@@ -39,6 +39,8 @@ public:
 
   const Model & implicit_model() const { return _model; }
 
+  virtual void advance_step() override;
+
 protected:
   virtual void
   set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const;

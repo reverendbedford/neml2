@@ -22,43 +22,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/predictors/PreviousStatePredictor.h"
+#pragma once
 
 namespace neml2
 {
-register_NEML2_object(PreviousStatePredictor);
-
-ParameterSet
-PreviousStatePredictor::expected_params()
+class TransientInterface
 {
-  ParameterSet params = Predictor::expected_params();
-  return params;
-}
-
-PreviousStatePredictor::PreviousStatePredictor(const ParameterSet & params)
-  : Predictor(params)
-{
-}
-
-void
-PreviousStatePredictor::set_initial_guess(LabeledVector /*in*/, LabeledVector guess) const
-{
-  if (!_state_n.axes().empty())
-    guess.slice("state").fill(_state_n);
-}
-
-void
-PreviousStatePredictor::post_solve(LabeledVector /*in*/, LabeledVector out)
-{
-  _state = out.slice("state").clone();
-}
-
-void
-PreviousStatePredictor::advance_step()
-{
-  if (!_state.axes().empty())
-    _state_n = _state.clone();
-
-  _state = LabeledVector();
-}
+public:
+  /**
+   * Advance to the next step in time. If the object maintains the history of state or force, this
+   * is the opportunity to shift them back in time, i.e., the current state becomes the previous
+   * (old) state.
+   */
+  virtual void advance_step() {}
+};
 } // namespace neml2

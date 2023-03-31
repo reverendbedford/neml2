@@ -67,9 +67,21 @@ LinearExtrapolationPredictor::set_initial_guess(LabeledVector in, LabeledVector 
 void
 LinearExtrapolationPredictor::post_solve(LabeledVector in, LabeledVector out)
 {
+  _state = out.slice("state").clone();
+  _dt = in.slice("forces").get<Scalar>("time") - in.slice("old_forces").get<Scalar>("time");
+}
+
+void
+LinearExtrapolationPredictor::advance_step()
+{
   if (!_state_n.axes().empty())
     _state_nm1 = _state_n.clone();
-  _state_n = out.slice("state").clone();
-  _dt_n = in.slice("forces").get<Scalar>("time") - in.slice("old_forces").get<Scalar>("time");
+
+  if (!_state.axes().empty())
+    _state_n = _state.clone();
+
+  _state = LabeledVector();
+
+  _dt_n = _dt.clone();
 }
 } // namespace neml2

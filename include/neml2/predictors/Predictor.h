@@ -27,10 +27,11 @@
 #include "neml2/base/NEML2Object.h"
 #include "neml2/base/Registry.h"
 #include "neml2/tensors/LabeledVector.h"
+#include "neml2/base/TransientInterface.h"
 
 namespace neml2
 {
-class Predictor : public NEML2Object
+class Predictor : public NEML2Object, public TransientInterface
 {
 public:
   static ParameterSet expected_params();
