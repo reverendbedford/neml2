@@ -105,6 +105,7 @@ StructuralDriver::run()
   for (TorchSize i = 1; i < _nsteps; i++)
   {
     // Advance the step
+    _model.advance_step();
     current_time = Scalar(_time.index({i}));
     current_driving_force = SymR2(_driving_force.index({i}));
     in.slice("forces").set(current_driving_force, _driving_force_name);
@@ -117,8 +118,6 @@ StructuralDriver::run()
     // current --> old
     LabeledVector(in.slice("old_state")).fill(out.slice("state"));
     LabeledVector(in.slice("old_forces")).fill(in.slice("forces"));
-
-    _model.advance_step();
   }
 
   return {all_inputs, all_outputs};

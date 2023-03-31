@@ -56,6 +56,9 @@ PreviousStatePredictor::post_solve(LabeledVector /*in*/, LabeledVector out)
 void
 PreviousStatePredictor::advance_step()
 {
-  _state_n = _state.clone();
+  if (!_state_n.axes().empty())
+    _state_n = _state.clone();
+
+  _state = LabeledVector();
 }
 } // namespace neml2

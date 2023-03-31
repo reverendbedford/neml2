@@ -76,7 +76,12 @@ LinearExtrapolationPredictor::advance_step()
 {
   if (!_state_n.axes().empty())
     _state_nm1 = _state_n.clone();
-  _state_n = _state.clone();
+
+  if (!_state.axes().empty())
+    _state_n = _state.clone();
+
+  _state = LabeledVector();
+
   _dt_n = _dt.clone();
 }
 } // namespace neml2
