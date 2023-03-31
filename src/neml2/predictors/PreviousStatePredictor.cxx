@@ -56,7 +56,7 @@ PreviousStatePredictor::post_solve(LabeledVector /*in*/, LabeledVector out)
 void
 PreviousStatePredictor::advance_step()
 {
-  if (!_state_n.axes().empty())
+  if (!_state.axes().empty())
     _state_n = _state.clone();
 
   _state = LabeledVector();
