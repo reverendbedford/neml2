@@ -27,6 +27,12 @@
 
 namespace neml2
 {
+const char *
+ParserException::what() const throw()
+{
+  return _msg.c_str();
+}
+
 namespace utils
 {
 std::string
@@ -81,5 +87,53 @@ starts_with(std::string_view str, std::string_view prefix)
 {
   return str.size() >= prefix.size() && 0 == str.compare(0, prefix.size(), prefix);
 }
+
+template <>
+bool
+parse<bool>(const std::string & raw_str)
+{
+  std::string val = parse<std::string>(raw_str);
+  if (val == "true")
+    return true;
+  if (val == "false")
+    return false;
+
+  throw ParserException("Failed to parse boolean value. Only 'true' and 'false' are recognized.");
+}
+
+template <>
+LabeledAxisAccessor
+parse<LabeledAxisAccessor>(const std::string & raw_str)
+{
+  auto tokens = split(raw_str, "/");
+  return LabeledAxisAccessor{tokens};
+}
+
+template <>
+CrossRef<torch::Tensor>
+parse<CrossRef<torch::Tensor>>(const std::string & raw_str)
+{
+  return CrossRef<torch::Tensor>(raw_str);
+}
+
+template <>
+CrossRef<Scalar>
+parse<CrossRef<Scalar>>(const std::string & raw_str)
+{
+  return CrossRef<Scalar>(raw_str);
+}
+
+template <>
+CrossRef<SymR2>
+parse<CrossRef<SymR2>>(const std::string & raw_str)
+{
+  return CrossRef<SymR2>(raw_str);
+}
+
+template bool parse<bool>(const std::string &);
+template LabeledAxisAccessor parse<LabeledAxisAccessor>(const std::string &);
+template CrossRef<torch::Tensor> parse<CrossRef<torch::Tensor>>(const std::string &);
+template CrossRef<Scalar> parse<CrossRef<Scalar>>(const std::string &);
+template CrossRef<SymR2> parse<CrossRef<SymR2>>(const std::string &);
 } // namespace utils
 } // namespace neml2

@@ -23,7 +23,6 @@
 // THE SOFTWARE.
 
 #include "neml2/models/solid_mechanics/AssociativeIsotropicPlasticHardening.h"
-#include "neml2/tensors/SymSymR4.h"
 
 namespace neml2
 {
@@ -32,58 +31,51 @@ register_NEML2_object(AssociativeIsotropicPlasticHardening);
 ParameterSet
 AssociativeIsotropicPlasticHardening::expected_params()
 {
-  ParameterSet params = PlasticHardening::expected_params();
-  params.set<std::string>("yield_function");
+  ParameterSet params = FlowRule::expected_params();
+  params.set<LabeledAxisAccessor>("isotropic_hardening_direction") = {{"state", "internal", "Nk"}};
+  params.set<LabeledAxisAccessor>("equivalent_plastic_strain_rate") = {
+      {"state", "internal", "ep_rate"}};
   return params;
 }
 
 AssociativeIsotropicPlasticHardening::AssociativeIsotropicPlasticHardening(
     const ParameterSet & params)
-  : PlasticHardening(params),
-    yield_function(Factory::get_object<YieldFunctionBase>(
-        "Models", params.get<std::string>("yield_function"))),
-    equivalent_plastic_strain_rate(declareOutputVariable<Scalar>(
-        {"state", "internal_state", "equivalent_plastic_strain_rate"}))
+  : FlowRule(params),
+    isotropic_hardening_direction(declare_input_variable<Scalar>(
+        params.get<LabeledAxisAccessor>("isotropic_hardening_direction"))),
+    equivalent_plastic_strain_rate(declare_output_variable<Scalar>(
+        params.get<LabeledAxisAccessor>("equivalent_plastic_strain_rate")))
 {
-  register_model(Factory::get_object_ptr<YieldFunctionBase>(
-      "Models", params.get<std::string>("yield_function")));
   setup();
 }
 
 void
 AssociativeIsotropicPlasticHardening::set_value(LabeledVector in,
-                                                LabeledVector out,
-                                                LabeledMatrix * dout_din) const
+                                                LabeledVector * out,
+                                                LabeledMatrix * dout_din,
+                                                LabeledTensor3D * d2out_din2) const
 {
   // For associative flow,
-  // ep_dot = - gamma_dot * df/dh
-  TorchSize nbatch = in.batch_size();
-  LabeledMatrix df_din(nbatch, yield_function.output(), yield_function.input());
-  LabeledTensor<1, 3> d2f_din2(
-      nbatch, yield_function.output(), yield_function.input(), yield_function.input());
+  // ep_dot = - gamma_dot * Nk
+  //     Nk = df/dk
+  auto gamma_dot = in.get<Scalar>(flow_rate);
+  auto Nk = in.get<Scalar>(isotropic_hardening_direction);
 
-  if (dout_din)
-    std::tie(df_din, d2f_din2) = yield_function.dvalue_and_d2value(in);
-  else
-    df_din = yield_function.dvalue(in);
-
-  auto gamma_dot = in.get<Scalar>(hardening_rate);
-  auto df_dh =
-      df_din.get<Scalar>(yield_function.yield_function, yield_function.isotropic_hardening);
-  auto ep_dot = -gamma_dot * df_dh;
-
-  out.set(ep_dot, equivalent_plastic_strain_rate);
+  if (out)
+    out->set(-gamma_dot * Nk, equivalent_plastic_strain_rate);
 
   if (dout_din)
   {
-    // dep_dot/dh = -gamma_dot * d2f/dh2
-    auto d2f_dh2 = d2f_din2.get<Scalar>(yield_function.yield_function,
-                                        yield_function.isotropic_hardening,
-                                        yield_function.isotropic_hardening);
+    dout_din->set(-Nk, equivalent_plastic_strain_rate, flow_rate);
+    dout_din->set(-gamma_dot, equivalent_plastic_strain_rate, isotropic_hardening_direction);
+  }
 
-    dout_din->set(-df_dh, equivalent_plastic_strain_rate, hardening_rate);
-    dout_din->set(
-        -gamma_dot * d2f_dh2, equivalent_plastic_strain_rate, yield_function.isotropic_hardening);
+  if (d2out_din2)
+  {
+    auto I = Scalar::identity_map(in.options());
+    // I don't know when this will be useful, but since it's easy...
+    d2out_din2->set(-I, equivalent_plastic_strain_rate, flow_rate, isotropic_hardening_direction);
+    d2out_din2->set(-I, equivalent_plastic_strain_rate, isotropic_hardening_direction, flow_rate);
   }
 }
 } // namespace neml2

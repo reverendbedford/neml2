@@ -30,14 +30,16 @@ ParameterSet
 KinematicHardening::expected_params()
 {
   ParameterSet params = Model::expected_params();
+  params.set<LabeledAxisAccessor>("kinematic_plastic_strain") = {{"state", "internal", "Kp"}};
+  params.set<LabeledAxisAccessor>("back_stress") = {{"state", "internal", "X"}};
   return params;
 }
 
 KinematicHardening::KinematicHardening(const ParameterSet & params)
   : Model(params),
-    plastic_strain(declareInputVariable<SymR2>({"state", "internal_state", "plastic_strain"})),
-    kinematic_hardening(
-        declareOutputVariable<SymR2>({"state", "hardening_interface", "kinematic_hardening"}))
+    kinematic_plastic_strain(
+        declare_input_variable<SymR2>(params.get<LabeledAxisAccessor>("kinematic_plastic_strain"))),
+    back_stress(declare_output_variable<SymR2>(params.get<LabeledAxisAccessor>("back_stress")))
 {
   setup();
 }

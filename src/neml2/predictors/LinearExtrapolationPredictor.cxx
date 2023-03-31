@@ -32,11 +32,14 @@ ParameterSet
 LinearExtrapolationPredictor::expected_params()
 {
   ParameterSet params = Predictor::expected_params();
+  params.set<LabeledAxisAccessor>("time") = LabeledAxisAccessor{{"t"}};
   return params;
 }
 
 LinearExtrapolationPredictor::LinearExtrapolationPredictor(const ParameterSet & params)
-  : Predictor(params)
+  : Predictor(params),
+    _time_name(params.get<LabeledAxisAccessor>("time").on("forces")),
+    _old_time_name(params.get<LabeledAxisAccessor>("time").on("old_forces"))
 {
 }
 
@@ -47,7 +50,7 @@ LinearExtrapolationPredictor::set_initial_guess(LabeledVector in, LabeledVector 
   if (_state_n.axes().empty())
     return;
 
-  auto dt = in.slice("forces").get<Scalar>("time") - in.slice("old_forces").get<Scalar>("time");
+  auto dt = in.get<Scalar>(_time_name) - in.get<Scalar>(_old_time_name);
 
   // At the second step we can extrapolate from the first step and "zero"
   if (_state_nm1.axes().empty())
@@ -68,7 +71,7 @@ void
 LinearExtrapolationPredictor::post_solve(LabeledVector in, LabeledVector out)
 {
   _state = out.slice("state").clone();
-  _dt = in.slice("forces").get<Scalar>("time") - in.slice("old_forces").get<Scalar>("time");
+  _dt = in.get<Scalar>(_time_name) - in.get<Scalar>(_old_time_name);
 }
 
 void

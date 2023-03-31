@@ -38,21 +38,21 @@ public:
   /// ~~~~~~~~~~~~~~~~~~~~cpp
   /// Scalar a = 1.0;
   /// Scalar b(5.6);
-  /// Scalar c(2.3, 1000);
   /// ~~~~~~~~~~~~~~~~~~~~
-  Scalar(double init, TorchSize batch_size = 1);
+  Scalar(Real init, const torch::TensorOptions & options = default_tensor_options);
 
-  /// Fill with zeros
-  static Scalar zeros(TorchSize batch_size);
+  /// Zero constructor
+  [[nodiscard]] static Scalar zero(const torch::TensorOptions & options = default_tensor_options);
 
   /// Negation
   Scalar operator-() const;
 
-  /// Exponentiation
+  /// Raise to a power
   Scalar pow(Scalar n) const;
 
   /// The derivative of a Scalar with respect to itself
-  [[nodiscard]] static Scalar identity_map() { return 1; }
+  [[nodiscard]] static Scalar
+  identity_map(const torch::TensorOptions & options = default_tensor_options);
 };
 
 Scalar operator+(const Scalar & a, const Scalar & b);

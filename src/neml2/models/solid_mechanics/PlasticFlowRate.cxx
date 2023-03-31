@@ -30,13 +30,16 @@ ParameterSet
 PlasticFlowRate::expected_params()
 {
   ParameterSet params = Model::expected_params();
+  params.set<LabeledAxisAccessor>("yield_function") = {{"state", "internal", "fp"}};
+  params.set<LabeledAxisAccessor>("flow_rate") = {{"state", "internal", "gamma_rate"}};
   return params;
 }
 
 PlasticFlowRate::PlasticFlowRate(const ParameterSet & params)
   : Model(params),
-    yield_function(declareInputVariable<Scalar>({"state", "yield_function"})),
-    hardening_rate(declareOutputVariable<Scalar>({"state", "hardening_rate"}))
+    yield_function(
+        declare_input_variable<Scalar>(params.get<LabeledAxisAccessor>("yield_function"))),
+    flow_rate(declare_output_variable<Scalar>(params.get<LabeledAxisAccessor>("flow_rate")))
 {
   setup();
 }

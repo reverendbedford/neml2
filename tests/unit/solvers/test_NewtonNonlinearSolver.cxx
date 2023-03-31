@@ -33,7 +33,7 @@ TEST_CASE("Solve system correctly", "[NewtonNonlinearSolver]")
 {
   TorchSize nbatch = 2;
   TorchSize n = 4;
-  BatchTensor<1> x0(nbatch, n);
+  auto x0 = BatchTensor<1>(n).batch_expand_copy(nbatch);
 
   PowerTestSystem system;
   x0 = system.guess(x0);

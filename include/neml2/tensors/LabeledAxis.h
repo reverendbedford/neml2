@@ -57,6 +57,31 @@ struct LabeledAxisAccessor
 {
   std::vector<std::string> item_names;
 
+  operator std::vector<std::string>() const { return item_names; }
+
+  bool empty() const { return item_names.empty(); }
+
+  LabeledAxisAccessor with_suffix(const std::string & suffix) const
+  {
+    auto new_names = item_names;
+    new_names.back() += suffix;
+    return LabeledAxisAccessor{new_names};
+  }
+
+  LabeledAxisAccessor on(const std::string & axis) const
+  {
+    auto new_names = item_names;
+    new_names.insert(new_names.begin(), axis);
+    return LabeledAxisAccessor{new_names};
+  }
+
+  LabeledAxisAccessor on(const LabeledAxisAccessor & axis) const
+  {
+    auto new_names = axis.item_names;
+    new_names.insert(new_names.end(), item_names.begin(), item_names.end());
+    return LabeledAxisAccessor{new_names};
+  }
+
   bool operator==(const LabeledAxisAccessor & other) const
   {
     return item_names == other.item_names;
@@ -214,6 +239,9 @@ public:
   /// Get the subaxes
   const std::map<std::string, std::shared_ptr<LabeledAxis>> & subaxes() const { return _subaxes; }
 
+  /// Get the variable accessors
+  std::vector<LabeledAxisAccessor> variable_accessors(bool recursive = false) const;
+
   /// Get a sub-axis
   /// @{
   const LabeledAxis & subaxis(const std::string & name) const;
@@ -269,6 +297,10 @@ private:
                              std::vector<std::pair<TorchIndex, TorchIndex>> & indices,
                              TorchSize offset_a,
                              TorchSize offset_b);
+
+  void variable_accessors(std::vector<LabeledAxisAccessor> & accessors,
+                          LabeledAxisAccessor cur,
+                          bool recursive) const;
 
   /// Variables and their sizes
   std::map<std::string, TorchSize> _variables;

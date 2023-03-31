@@ -167,24 +167,60 @@ ComposedModel::resolve_dependency(const std::shared_ptr<Model> & i,
 }
 
 void
-ComposedModel::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din) const
+ComposedModel::set_value(LabeledVector in,
+                         LabeledVector * out,
+                         LabeledMatrix * dout_din,
+                         LabeledTensor3D * d2out_din2) const
 {
   // pin stands for partial input
   // pout stands for partial output
-  TorchSize nbatch = in.batch_size();
+  const auto nbatch = in.batch_size();
+  const auto options = in.options();
 
-  if (dout_din)
+  // If only out is requested, we just evaluate all the models following the sorted evaluation
+  // order. That's it!
+  if (out && !dout_din && !d2out_din2)
   {
     std::map<std::string, LabeledVector> cached_pout;
-    std::map<std::string, LabeledMatrix> cached_dpout_din;
-
-    auto din_din = LabeledMatrix::identity(nbatch, input());
 
     // Follow the (sorted) evaluation order to evaluate all the models
     for (auto i : _evaluation_order)
     {
-      LabeledVector pin(nbatch, i->input());
-      LabeledMatrix dpin_din(nbatch, i->input(), input());
+      LabeledVector pin(nbatch, {&i->input()}, options);
+      pin.fill(in);
+
+      // All the dependencies must have been cached, as we have sorted out the evaluation order
+      // according to the dependecies. If a dependency's output hasn't been cached, we screwed up
+      // the dependency resolution.
+      const auto & deps = dependent_models(i->name());
+      for (auto dep : deps)
+      {
+        neml_assert_dbg(cached_pout.count(dep->name()) > 0,
+                        "Internal error, incorrect evaluation order");
+        pin.fill(cached_pout.at(dep->name()));
+      }
+
+      auto pout = i->value(pin);
+      out->fill(pout);
+
+      cached_pout.emplace(i->name(), pout);
+    }
+    return;
+  }
+  // If dout_din is requested, we will need to evaluate both the models' value and derivatives, as
+  // well as apply first order chain rule to compute the first order total derivatives.
+  else if (dout_din && !d2out_din2)
+  {
+    std::map<std::string, LabeledVector> cached_pout;
+    std::map<std::string, LabeledMatrix> cached_dpout_din;
+
+    auto din_din = LabeledMatrix::identity(nbatch, input(), options);
+
+    // Follow the (sorted) evaluation order to evaluate all the models
+    for (auto i : _evaluation_order)
+    {
+      LabeledVector pin(nbatch, {&i->input()}, options);
+      LabeledMatrix dpin_din(nbatch, {&i->input(), &input()}, options);
       pin.fill(in);
       dpin_din.fill(din_din);
 
@@ -203,22 +239,36 @@ ComposedModel::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * do
       auto [pout, dpout_dpin] = i->value_and_dvalue(pin);
       auto dpout_din = dpout_dpin.chain(dpin_din);
 
-      out.fill(pout);
+      if (out)
+        out->fill(pout);
+
       dout_din->fill(dpout_din);
 
       cached_pout.emplace(i->name(), pout);
       cached_dpout_din.emplace(i->name(), dpout_din);
     }
+    return;
   }
-  else
+  // Here's the most sophisticated case: d2out_din2 is requested. In this case each model's value,
+  // first and second derivatives are necessary. We need to apply the first order chain rule to
+  // compute the first order total derivatives, and the second order chain rule to compute the
+  // second order total derivatives.
+  else if (d2out_din2)
   {
     std::map<std::string, LabeledVector> cached_pout;
+    std::map<std::string, LabeledMatrix> cached_dpout_din;
+    std::map<std::string, LabeledTensor3D> cached_d2pout_din2;
+
+    auto din_din = LabeledMatrix::identity(nbatch, input(), options);
 
     // Follow the (sorted) evaluation order to evaluate all the models
     for (auto i : _evaluation_order)
     {
-      LabeledVector pin(nbatch, i->input());
+      LabeledVector pin(nbatch, {&i->input()}, options);
+      LabeledMatrix dpin_din(nbatch, {&i->input(), &input()}, options);
+      LabeledTensor3D d2pin_din2(nbatch, {&i->input(), &input(), &input()}, options);
       pin.fill(in);
+      dpin_din.fill(din_din);
 
       // All the dependencies must have been cached, as we have sorted out the evaluation order
       // according to the dependecies. If a dependency's output hasn't been cached, we screwed up
@@ -229,14 +279,29 @@ ComposedModel::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * do
         neml_assert_dbg(cached_pout.count(dep->name()) > 0,
                         "Internal error, incorrect evaluation order");
         pin.fill(cached_pout.at(dep->name()));
+        dpin_din.fill(cached_dpout_din.at(dep->name()));
+        d2pin_din2.fill(cached_d2pout_din2.at(dep->name()));
       }
 
-      auto pout = i->value(pin);
-      out.fill(pout);
+      auto [pout, dpout_dpin, d2pout_dpin2] = i->value_and_dvalue_and_d2value(pin);
+      auto dpout_din = dpout_dpin.chain(dpin_din);
+      auto d2pout_din2 = d2pout_dpin2.chain(d2pin_din2, dpout_dpin, dpin_din);
+
+      if (out)
+        out->fill(pout);
+
+      if (dout_din)
+        dout_din->fill(dpout_din);
+
+      d2out_din2->fill(d2pout_din2);
 
       cached_pout.emplace(i->name(), pout);
+      cached_dpout_din.emplace(i->name(), dpout_din);
+      cached_d2pout_din2.emplace(i->name(), d2pout_din2);
     }
   }
+  else
+    throw NEMLException("Logic error");
 }
 
 const std::vector<std::shared_ptr<Model>> &

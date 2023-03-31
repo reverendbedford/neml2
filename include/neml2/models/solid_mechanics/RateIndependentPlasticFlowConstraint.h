@@ -35,11 +35,15 @@ public:
 
   RateIndependentPlasticFlowConstraint(const ParameterSet & params);
 
-  void set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_dint) const;
-
   const LabeledAxisAccessor yield_function;
-  const LabeledAxisAccessor hardening_rate;
+  const LabeledAxisAccessor flow_rate;
   const LabeledAxisAccessor consistency_condition;
+
+protected:
+  void set_value(LabeledVector in,
+                 LabeledVector * out,
+                 LabeledMatrix * dout_din = nullptr,
+                 LabeledTensor3D * d2out_din2 = nullptr) const;
 };
 
 } // namespace neml2

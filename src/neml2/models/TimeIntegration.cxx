@@ -35,48 +35,66 @@ ParameterSet
 TimeIntegration<T>::expected_params()
 {
   ParameterSet params = Model::expected_params();
-  params.set<std::string>("variable");
+  params.set<LabeledAxisAccessor>("variable");
+  params.set<LabeledAxisAccessor>("time") = {{"t"}};
   return params;
 }
 
 template <typename T>
 TimeIntegration<T>::TimeIntegration(const ParameterSet & params)
   : Model(params),
-    var_rate(declareInputVariable<T>({"state", params.get<std::string>("variable") + "_rate"})),
-    var_n(declareInputVariable<T>({"old_state", params.get<std::string>("variable")})),
-    time(declareInputVariable<Scalar>({"forces", "time"})),
-    time_n(declareInputVariable<Scalar>({"old_forces", "time"})),
-    var(declareOutputVariable<T>({"state", params.get<std::string>("variable")}))
+    _var_name(params.get<LabeledAxisAccessor>("variable")),
+    _var_rate_name(_var_name.with_suffix("_rate")),
+    var_rate(declare_input_variable<T>(_var_rate_name.on("state"))),
+    var(declare_output_variable<T>(_var_name.on("state"))),
+    var_n(declare_input_variable<T>(_var_name.on("old_state"))),
+    time(declare_input_variable<Scalar>(params.get<LabeledAxisAccessor>("time").on("forces"))),
+    time_n(declare_input_variable<Scalar>(params.get<LabeledAxisAccessor>("time").on("old_forces")))
 {
   this->setup();
 }
 
 template <typename T>
 void
-TimeIntegration<T>::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din) const
+TimeIntegration<T>::set_value(LabeledVector in,
+                              LabeledVector * out,
+                              LabeledMatrix * dout_din,
+                              LabeledTensor3D * d2out_din2) const
 {
-  auto s_dot = in.get<T>(var_rate);
+  const auto options = in.options();
+
   auto s_n = in.get<T>(var_n);
   auto t_np1 = in.get<Scalar>(time);
   auto t_n = in.get<Scalar>(time_n);
+  auto s_dot = in.get<T>(var_rate);
   auto dt = t_np1 - t_n;
 
-  // s_np1 = s_n + s_dot * (t_np1 - t_n)
-  auto s_np1 = s_n + s_dot * dt;
-  out.set(s_np1, var);
+  if (out)
+    out->set(s_n + s_dot * dt, var);
 
-  // Finally, compute the Jacobian since we have all the information needed anyways
-  if (dout_din)
+  if (dout_din || d2out_din2)
   {
-    auto ds_np1_ds_dot = T::identity_map() / dt;
-    auto ds_np1_ds_n = T::identity_map();
-    auto ds_np1_dt_np1 = s_dot;
-    auto ds_np1_dt_n = -s_dot;
+    auto I = T::identity_map(options);
 
-    dout_din->set(ds_np1_ds_dot, var, var_rate);
-    dout_din->set(ds_np1_ds_n, var, var_n);
-    dout_din->set(ds_np1_dt_np1, var, time);
-    dout_din->set(ds_np1_dt_n, var, time_n);
+    if (dout_din)
+    {
+      dout_din->set(I * dt, var, var_rate);
+      if (Model::stage == Model::Stage::UPDATING)
+      {
+        dout_din->set(I, var, var_n);
+        dout_din->set(s_dot, var, time);
+        dout_din->set(-s_dot, var, time_n);
+      }
+    }
+
+    if (d2out_din2)
+      if (Model::stage == Model::Stage::UPDATING)
+      {
+        d2out_din2->set(I, var, var_rate, time);
+        d2out_din2->set(-I, var, var_rate, time_n);
+        d2out_din2->set(I, var, time, var_rate);
+        d2out_din2->set(-I, var, time_n, var_rate);
+      }
   }
 }
 

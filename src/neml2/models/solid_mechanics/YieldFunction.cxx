@@ -26,23 +26,59 @@
 
 namespace neml2
 {
-register_NEML2_object(PerfectlyPlasticYieldFunction);
-register_NEML2_object(IsotropicHardeningYieldFunction);
-register_NEML2_object(KinematicHardeningYieldFunction);
-register_NEML2_object(IsotropicAndKinematicHardeningYieldFunction);
+register_NEML2_object(YieldFunction);
 
-template <bool isoharden, bool kinharden>
 ParameterSet
-YieldFunction<isoharden, kinharden>::expected_params()
+YieldFunction::expected_params()
 {
-  ParameterSet params = YieldFunctionBase::expected_params();
-  params.set<bool>("with_isotropic_hardening") = isoharden;
-  params.set<bool>("with_kinematic_hardening") = kinharden;
+  ParameterSet params = Model::expected_params();
+  params.set<Real>("yield_stress");
+  params.set<LabeledAxisAccessor>("stress_measure") = {{"state", "internal", "sm"}};
+  params.set<LabeledAxisAccessor>("isotropic_hardening");
+  params.set<LabeledAxisAccessor>("yield_function") = {{"state", "internal", "fp"}};
   return params;
 }
 
-template class YieldFunction<false, false>;
-template class YieldFunction<true, false>;
-template class YieldFunction<false, true>;
-template class YieldFunction<true, true>;
+YieldFunction::YieldFunction(const ParameterSet & params)
+  : Model(params),
+    stress_measure(
+        declare_input_variable<Scalar>(params.get<LabeledAxisAccessor>("stress_measure"))),
+    isotropic_hardening(params.get<LabeledAxisAccessor>("isotropic_hardening")),
+    yield_function(
+        declare_output_variable<Scalar>(params.get<LabeledAxisAccessor>("yield_function"))),
+    _s0(register_parameter("yield_stress", Scalar(params.get<Real>("yield_stress"))))
+{
+  if (!isotropic_hardening.empty())
+    declare_input_variable<Scalar>(isotropic_hardening);
+  setup();
+}
+
+void
+YieldFunction::set_value(LabeledVector in,
+                         LabeledVector * out,
+                         LabeledMatrix * dout_din,
+                         LabeledTensor3D * d2out_din2) const
+{
+  if (out)
+  {
+    auto sm = in.get<Scalar>(stress_measure);
+    auto f = sm - _s0;
+    if (!isotropic_hardening.empty())
+      f -= in.get<Scalar>(isotropic_hardening);
+    out->set(std::sqrt(2.0 / 3.0) * f, yield_function);
+  }
+
+  if (dout_din)
+  {
+    auto I = Scalar::identity_map(in.options());
+    dout_din->set(std::sqrt(2.0 / 3.0) * I, yield_function, stress_measure);
+    if (!isotropic_hardening.empty())
+      dout_din->set(-std::sqrt(2.0 / 3.0) * I, yield_function, isotropic_hardening);
+  }
+
+  if (d2out_din2)
+  {
+    // zero
+  }
+}
 } // namespace neml2

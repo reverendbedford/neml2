@@ -41,7 +41,7 @@ TEST_CASE("parse", "[HITParser]")
   // meta data
   REQUIRE(params.get<std::string>("name") == "foo");
   REQUIRE(params.get<std::string>("type") == "SampleParserTestingModel");
-  REQUIRE(params.get<std::vector<std::vector<std::string>>>("additional_outputs").empty());
+  REQUIRE(params.get<std::vector<LabeledAxisAccessor>>("additional_outputs").empty());
 
   // booleans
   REQUIRE(params.get<bool>("bool") == true);

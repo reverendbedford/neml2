@@ -1,3 +1,41 @@
+[Tensors]
+  [times]
+    type = VTestTimeSeries
+    vtest = 'voceiso.vtest'
+    variable = 'time'
+    variable_type = 'SCALAR'
+  []
+  [strains]
+    type = VTestTimeSeries
+    vtest = 'voceiso.vtest'
+    variable = 'strain'
+    variable_type = 'SYMR2'
+  []
+  [stresses]
+    type = VTestTimeSeries
+    vtest = 'voceiso.vtest'
+    variable = 'stress'
+    variable_type = 'SYMR2'
+  []
+[]
+
+[Drivers]
+  [driver]
+    type = SolidMechanicsDriver
+    model = 'model'
+    times = 'times'
+    prescribed_strains = 'strains'
+  []
+  [verification]
+    type = VTestVerification
+    driver = 'driver'
+    variables = 'output.state/S'
+    references = 'stresses'
+    rtol = 1e-5
+    atol = 1e-8
+  []
+[]
+
 [Solvers]
   [newton]
     type = NewtonNonlinearSolver
@@ -11,67 +49,76 @@
 []
 
 [Models]
-  [Ee]
-    type = ElasticStrain
-  []
-  [S]
-    type = CauchyStressFromElasticStrain
-    E = 120000
-    nu = 0.3
-  []
-  [M]
-    type = IsotropicMandelStress
-  []
   [isoharden]
     type = VoceIsotropicHardening
     saturated_hardening = 100
     saturation_rate = 10.0
   []
-  [j2]
-    type = J2StressMeasure
+  [elastic_strain]
+    type = ElasticStrain
   []
-  [f]
-    type = IsotropicHardeningYieldFunction
-    stress_measure = j2
+  [elasticity]
+    type = CauchyStressFromElasticStrain
+    E = 120000
+    nu = 0.3
+  []
+  [mandel_stress]
+    type = IsotropicMandelStress
+  []
+  [vonmises]
+    type = SymR2Invariant
+    invariant_type = 'VONMISES'
+    tensor = 'state/internal/M'
+    invariant = 'state/internal/sm'
+  []
+  [yield]
+    type = YieldFunction
     yield_stress = 100
+    isotropic_hardening = 'state/internal/k'
   []
-  [Np]
-    type = AssociativePlasticFlowDirection
-    yield_function = f
+  [flow]
+    type = ComposedModel
+    models = 'vonmises yield'
+  []
+  [normality]
+    type = Normality
+    model = 'flow'
+    function = 'state/internal/fp'
+    from = 'state/internal/M state/internal/k'
+    to = 'state/internal/NM state/internal/Nk'
   []
   [eprate]
     type = AssociativeIsotropicPlasticHardening
-    yield_function = f
   []
   [Eprate]
-    type = PlasticStrainRate
+    type = AssociativePlasticFlow
   []
   [integrate_ep]
     type = ScalarBackwardEulerTimeIntegration
-    rate_variable = 'internal_state equivalent_plastic_strain_rate'
-    variable = 'internal_state equivalent_plastic_strain'
+    variable = 'internal/ep'
   []
   [integrate_Ep]
     type = SymR2BackwardEulerTimeIntegration
-    rate_variable = plastic_strain_rate
-    variable = plastic_strain
+    variable = 'internal/Ep'
   []
   [consistency]
     type = RateIndependentPlasticFlowConstraint
   []
   [surface]
     type = ComposedModel
-    models = 'Ee S M Np eprate Eprate integrate_ep integrate_Ep isoharden f consistency'
+    models = "isoharden elastic_strain elasticity
+              mandel_stress vonmises
+              yield normality eprate Eprate
+              consistency integrate_ep integrate_Ep"
   []
   [return_map]
     type = ImplicitUpdate
-    implicit_model = surface
-    solver = newton
-    predictor = simple
-    additional_outputs = 'state plastic_strain; state internal_state equivalent_plastic_strain'
+    implicit_model = 'surface'
+    solver = 'newton'
+    additional_outputs = 'state/internal/Ep state/internal/ep'
   []
   [model]
     type = ComposedModel
-    models = 'return_map Ee S'
+    models = 'return_map elastic_strain elasticity'
   []
 []

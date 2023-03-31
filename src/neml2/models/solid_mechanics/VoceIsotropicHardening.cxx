@@ -46,22 +46,22 @@ VoceIsotropicHardening::VoceIsotropicHardening(const ParameterSet & params)
 
 void
 VoceIsotropicHardening::set_value(LabeledVector in,
-                                  LabeledVector out,
-                                  LabeledMatrix * dout_din) const
+                                  LabeledVector * out,
+                                  LabeledMatrix * dout_din,
+                                  LabeledTensor3D * d2out_din2) const
 {
-  // Map from equivalent plastic strain --> isotropic hardening
-  auto g = _R * (1.0 - exp(-_d * in.get<Scalar>(equivalent_plastic_strain)));
+  auto ep = in.get<Scalar>(equivalent_plastic_strain);
 
-  // Set the output
-  out.set(g, isotropic_hardening);
+  if (out)
+    out->set(_R * (1.0 - exp(-_d * ep)), isotropic_hardening);
 
   if (dout_din)
-  {
-    // Derivative of the map equivalent plastic strain --> isotropic hardening
-    auto dg_dep = _R * _d * exp(-_d * in.get<Scalar>(equivalent_plastic_strain));
+    dout_din->set(_R * _d * exp(-_d * ep), isotropic_hardening, equivalent_plastic_strain);
 
-    // Set the output
-    dout_din->set(dg_dep, isotropic_hardening, equivalent_plastic_strain);
-  }
+  if (d2out_din2)
+    d2out_din2->set(-_R * _d * _d * exp(-_d * ep),
+                    isotropic_hardening,
+                    equivalent_plastic_strain,
+                    equivalent_plastic_strain);
 }
 } // namespace neml2

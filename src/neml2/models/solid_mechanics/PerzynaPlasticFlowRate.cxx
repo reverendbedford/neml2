@@ -46,8 +46,9 @@ PerzynaPlasticFlowRate::PerzynaPlasticFlowRate(const ParameterSet & params)
 
 void
 PerzynaPlasticFlowRate::set_value(LabeledVector in,
-                                  LabeledVector out,
-                                  LabeledMatrix * dout_din) const
+                                  LabeledVector * out,
+                                  LabeledMatrix * dout_din,
+                                  LabeledTensor3D * d2out_din2) const
 {
   // Grab the yield function
   auto f = in.get<Scalar>(yield_function);
@@ -58,16 +59,16 @@ PerzynaPlasticFlowRate::set_value(LabeledVector in,
   Scalar gamma_dot_m = torch::pow(f_abs / _eta, _n);
   Scalar gamma_dot = gamma_dot_m * Hf;
 
-  // Set output
-  out.set(gamma_dot, hardening_rate);
+  if (out)
+    out->set(gamma_dot, flow_rate);
 
-  if (dout_din)
+  if (dout_din || d2out_din2)
   {
-    // Compute the Perzyna approximation of the yield surface
-    Scalar dgamma_dot_df = _n / f_abs * gamma_dot * Hf;
-
-    // Set output
-    dout_din->set(dgamma_dot_df, hardening_rate, yield_function);
+    auto dgamma_dot_df = _n / f_abs * gamma_dot;
+    if (dout_din)
+      dout_din->set(dgamma_dot_df, flow_rate, yield_function);
+    if (d2out_din2)
+      d2out_din2->set((1 - 1 / f_abs) * dgamma_dot_df, flow_rate, yield_function, yield_function);
   }
 }
 } // namespace neml2

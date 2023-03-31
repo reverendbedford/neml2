@@ -1,3 +1,41 @@
+[Tensors]
+  [times]
+    type = VTestTimeSeries
+    vtest = 'perfect.vtest'
+    variable = 'time'
+    variable_type = 'SCALAR'
+  []
+  [strains]
+    type = VTestTimeSeries
+    vtest = 'perfect.vtest'
+    variable = 'strain'
+    variable_type = 'SYMR2'
+  []
+  [stresses]
+    type = VTestTimeSeries
+    vtest = 'perfect.vtest'
+    variable = 'stress'
+    variable_type = 'SYMR2'
+  []
+[]
+
+[Drivers]
+  [driver]
+    type = SolidMechanicsDriver
+    model = 'model'
+    times = 'times'
+    prescribed_strains = 'strains'
+  []
+  [verification]
+    type = VTestVerification
+    driver = 'driver'
+    variables = 'output.state/S'
+    references = 'stresses'
+    rtol = 1e-5
+    atol = 1e-8
+  []
+[]
+
 [Solvers]
   [newton]
     type = NewtonNonlinearSolver
@@ -5,51 +43,63 @@
 []
 
 [Models]
-  [Ee]
+  [elastic_strain]
     type = ElasticStrain
   []
-  [S]
+  [elasticity]
     type = CauchyStressFromElasticStrain
     E = 120000
     nu = 0.3
   []
-  [M]
+  [mandel_stress]
     type = IsotropicMandelStress
   []
-  [j2]
-    type = J2StressMeasure
+  [vonmises]
+    type = SymR2Invariant
+    invariant_type = 'VONMISES'
+    tensor = 'state/internal/M'
+    invariant = 'state/internal/sm'
   []
-  [f]
-    type = PerfectlyPlasticYieldFunction
-    stress_measure = j2
+  [yield]
+    type = YieldFunction
     yield_stress = 100
   []
-  [Np]
-    type = AssociativePlasticFlowDirection
-    yield_function = f
+  [flow]
+    type = ComposedModel
+    models = 'vonmises yield'
+  []
+  [normality]
+    type = Normality
+    model = 'flow'
+    function = 'state/internal/fp'
+    from = 'state/internal/M'
+    to = 'state/internal/NM'
   []
   [Eprate]
-    type = PlasticStrainRate
+    type = AssociativePlasticFlow
   []
   [integrate_Ep]
     type = SymR2BackwardEulerTimeIntegration
-    rate_variable = plastic_strain_rate
-    variable = plastic_strain
+    variable = 'internal/Ep'
   []
   [consistency]
     type = RateIndependentPlasticFlowConstraint
   []
   [surface]
     type = ComposedModel
-    models = 'Ee S M Np Eprate integrate_Ep f consistency'
+    models = "elastic_strain elasticity
+              mandel_stress vonmises
+              yield normality Eprate
+              consistency integrate_Ep"
   []
   [return_map]
     type = ImplicitUpdate
-    implicit_model = surface
-    solver = newton
+    implicit_model = 'surface'
+    solver = 'newton'
+    additional_outputs = 'state/internal/Ep'
   []
   [model]
     type = ComposedModel
-    models = 'return_map Ee S'
+    models = 'return_map elastic_strain elasticity'
   []
 []

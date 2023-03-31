@@ -47,12 +47,10 @@ public:
   const LabeledAxisAccessor to;
 
 protected:
-  virtual void
-  set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const;
-
-  std::string in_name() const;
-
-  std::string out_name() const;
+  virtual void set_value(LabeledVector in,
+                         LabeledVector * out,
+                         LabeledMatrix * dout_din = nullptr,
+                         LabeledTensor3D * d2out_din2 = nullptr) const;
 
   SymSymR4 T(Scalar E, Scalar nu) const;
 

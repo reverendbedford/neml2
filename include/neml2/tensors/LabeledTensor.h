@@ -35,37 +35,28 @@ class LabeledTensor
 {
 public:
   /// Empty constructor
-  LabeledTensor();
+  LabeledTensor(const torch::TensorOptions & options = default_tensor_options);
 
   /// Construct from a `BatchTensor` with vector of `LabeledAxis`
   /// This constructor is useful when the size of the LabeledAxis vector is unknown at compile time.
   LabeledTensor(const BatchTensor<N> & tensor, const std::vector<const LabeledAxis *> & axes);
 
-  /// Construct from a tensor with variable number of LabeledAxis
-  /// This constructor is preferred as it provides a nicer syntax with a static check.
-  template <typename... I,
-            typename = std::enable_if_t<are_all_convertible<LabeledAxis, I...>::value>>
-  LabeledTensor(const BatchTensor<N> & tensor, I &&... axis)
-    : _tensor(tensor),
-      _axes({&axis...})
-  {
-    static_assert(sizeof...(axis) == D, "Wrong labeled dimension");
-
-    // Check that the size of the tensor was compatible
-    neml_assert_dbg(tensor.sizes() == utils::add_shapes(tensor.batch_sizes(), storage_size()),
-                    "LabeledTensor does not have the right storage size");
-  }
-
   /// Setup new storage with zeros
-  template <typename... I,
-            typename = std::enable_if_t<are_all_convertible<LabeledAxis, I...>::value>>
-  LabeledTensor(TorchSize nbatch, I &&... axis)
-    : LabeledTensor<N, D>(torch::zeros({nbatch, axis.storage_size()...}, TorchDefaults), axis...)
-  {
-  }
+  LabeledTensor(TorchShapeRef batch_size,
+                const std::vector<const LabeledAxis *> & axes,
+                const torch::TensorOptions & options = default_tensor_options);
 
   /// Copy constructor
   LabeledTensor(const LabeledTensor & other);
+
+  /// A potentially dangerous implicit conversion
+  // Should we mark it explicit?
+  operator torch::Tensor() const { return _tensor; }
+
+  /// Return the configuration of the underlying tensor
+  torch::TensorOptions options() const { return _tensor.options(); }
+
+  [[nodiscard]] LabeledTensor<N, D> to(const torch::TensorOptions & options) const;
 
   /// Assignment operator
   LabeledTensor<N, D> & operator=(const LabeledTensor<N, D> & other);
@@ -132,7 +123,7 @@ public:
   {
     (*this)(names...).index_put_(
         {torch::indexing::None},
-        value.reshape(utils::add_shapes(_tensor.batch_sizes(), storage_size(names...))));
+        value.reshape(utils::add_shapes(value.batch_sizes(), storage_size(names...))));
   }
 
   /// Unary minus = additive inverse
@@ -158,8 +149,8 @@ private:
 };
 
 template <TorchSize N, TorchSize D>
-LabeledTensor<N, D>::LabeledTensor()
-  : _tensor()
+LabeledTensor<N, D>::LabeledTensor(const torch::TensorOptions & options)
+  : _tensor(options)
 {
 }
 
@@ -177,10 +168,28 @@ LabeledTensor<N, D>::LabeledTensor(const BatchTensor<N> & tensor,
 }
 
 template <TorchSize N, TorchSize D>
+LabeledTensor<N, D>::LabeledTensor(TorchShapeRef batch_size,
+                                   const std::vector<const LabeledAxis *> & axes,
+                                   const torch::TensorOptions & options)
+  : _axes(axes)
+{
+  _tensor = torch::zeros(utils::add_shapes(batch_size, storage_size()), options);
+}
+
+template <TorchSize N, TorchSize D>
 LabeledTensor<N, D>::LabeledTensor(const LabeledTensor<N, D> & other)
   : _tensor(other._tensor)
 {
   _axes = other._axes;
+}
+
+template <TorchSize N, TorchSize D>
+LabeledTensor<N, D>
+LabeledTensor<N, D>::to(const torch::TensorOptions & options) const
+{
+  auto res = clone();
+  res._tensor = res._tensor.to(options);
+  return res;
 }
 
 template <TorchSize N, TorchSize D>

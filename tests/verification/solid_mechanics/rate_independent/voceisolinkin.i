@@ -1,3 +1,41 @@
+[Tensors]
+  [times]
+    type = VTestTimeSeries
+    vtest = 'voceisolinkin.vtest'
+    variable = 'time'
+    variable_type = 'SCALAR'
+  []
+  [strains]
+    type = VTestTimeSeries
+    vtest = 'voceisolinkin.vtest'
+    variable = 'strain'
+    variable_type = 'SYMR2'
+  []
+  [stresses]
+    type = VTestTimeSeries
+    vtest = 'voceisolinkin.vtest'
+    variable = 'stress'
+    variable_type = 'SYMR2'
+  []
+[]
+
+[Drivers]
+  [driver]
+    type = SolidMechanicsDriver
+    model = 'model'
+    times = 'times'
+    prescribed_strains = 'strains'
+  []
+  [verification]
+    type = VTestVerification
+    driver = 'driver'
+    variables = 'output.state/S'
+    references = 'stresses'
+    rtol = 1e-5
+    atol = 1e-8
+  []
+[]
+
 [Solvers]
   [newton]
     type = NewtonNonlinearSolver
@@ -11,17 +49,6 @@
 []
 
 [Models]
-  [Ee]
-    type = ElasticStrain
-  []
-  [S]
-    type = CauchyStressFromElasticStrain
-    E = 120000
-    nu = 0.3
-  []
-  [M]
-    type = IsotropicMandelStress
-  []
   [isoharden]
     type = VoceIsotropicHardening
     saturated_hardening = 100
@@ -29,62 +56,83 @@
   []
   [kinharden]
     type = LinearKinematicHardening
-    H = 1000.0
+    H = 1000
   []
-  [j2]
-    type = J2StressMeasure
+  [elastic_strain]
+    type = ElasticStrain
   []
-  [f]
-    type = IsotropicAndKinematicHardeningYieldFunction
-    stress_measure = j2
+  [elasticity]
+    type = CauchyStressFromElasticStrain
+    E = 120000
+    nu = 0.3
+  []
+  [mandel_stress]
+    type = IsotropicMandelStress
+  []
+  [overstress]
+    type = OverStress
+  []
+  [vonmises]
+    type = SymR2Invariant
+    invariant_type = 'VONMISES'
+    tensor = 'state/internal/O'
+    invariant = 'state/internal/sm'
+  []
+  [yield]
+    type = YieldFunction
     yield_stress = 100
+    isotropic_hardening = 'state/internal/k'
   []
-  [Np]
-    type = AssociativePlasticFlowDirection
-    yield_function = f
+  [flow]
+    type = ComposedModel
+    models = 'overstress vonmises yield'
+  []
+  [normality]
+    type = Normality
+    model = 'flow'
+    function = 'state/internal/fp'
+    from = 'state/internal/M state/internal/X state/internal/k'
+    to = 'state/internal/NM state/internal/NX state/internal/Nk'
   []
   [eprate]
     type = AssociativeIsotropicPlasticHardening
-    yield_function = f
   []
-  [Hprate]
+  [Kprate]
     type = AssociativeKinematicPlasticHardening
-    yield_function = f
   []
   [Eprate]
-    type = PlasticStrainRate
+    type = AssociativePlasticFlow
   []
   [integrate_ep]
     type = ScalarBackwardEulerTimeIntegration
-    rate_variable = 'internal_state equivalent_plastic_strain_rate'
-    variable = 'internal_state equivalent_plastic_strain'
+    variable = 'internal/ep'
   []
-  [integrate_Hp]
+  [integrate_Kp]
     type = SymR2BackwardEulerTimeIntegration
-    rate_variable = 'internal_state plastic_strain_rate'
-    variable = 'internal_state plastic_strain'
+    variable = 'internal/Kp'
   []
   [integrate_Ep]
     type = SymR2BackwardEulerTimeIntegration
-    rate_variable = plastic_strain_rate
-    variable = plastic_strain
+    variable = 'internal/Ep'
   []
   [consistency]
     type = RateIndependentPlasticFlowConstraint
   []
   [surface]
     type = ComposedModel
-    models = 'Ee S M Np eprate Hprate Eprate integrate_ep integrate_Hp integrate_Ep isoharden kinharden f consistency'
+    models = "isoharden kinharden elastic_strain elasticity
+              mandel_stress overstress vonmises
+              yield normality eprate Kprate Eprate
+              consistency integrate_ep integrate_Kp integrate_Ep"
   []
   [return_map]
     type = ImplicitUpdate
-    implicit_model = surface
-    solver = newton
-    predictor = simple
-    additional_outputs = 'state plastic_strain; state internal_state equivalent_plastic_strain; state internal_state plastic_strain'
+    implicit_model = 'surface'
+    solver = 'newton'
+    additional_outputs = 'state/internal/Ep state/internal/Kp state/internal/ep'
   []
   [model]
     type = ComposedModel
-    models = 'return_map Ee S'
+    models = 'return_map elastic_strain elasticity'
   []
 []

@@ -30,13 +30,16 @@ ParameterSet
 MandelStress::expected_params()
 {
   ParameterSet params = Model::expected_params();
+  params.set<LabeledAxisAccessor>("cauchy_stress") = LabeledAxisAccessor{{"state", "S"}};
+  params.set<LabeledAxisAccessor>("mandel_stress") =
+      LabeledAxisAccessor{{"state", "internal", "M"}};
   return params;
 }
 
 MandelStress::MandelStress(const ParameterSet & params)
   : Model(params),
-    cauchy_stress(declareInputVariable<SymR2>({"state", "cauchy_stress"})),
-    mandel_stress(declareOutputVariable<SymR2>({"state", "mandel_stress"}))
+    cauchy_stress(declare_input_variable<SymR2>(params.get<LabeledAxisAccessor>("cauchy_stress"))),
+    mandel_stress(declare_output_variable<SymR2>(params.get<LabeledAxisAccessor>("mandel_stress")))
 {
   setup();
 }

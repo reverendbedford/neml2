@@ -28,46 +28,47 @@
 namespace neml2
 {
 register_NEML2_object(TotalStrain);
-register_NEML2_object(TotalStrainRate);
 
-template <bool rate>
 ParameterSet
-TotalStrainTempl<rate>::expected_params()
+TotalStrain::expected_params()
 {
   ParameterSet params = Model::expected_params();
+  params.set<LabeledAxisAccessor>("elastic_strain") = {{"state", "internal", "Ee"}};
+  params.set<LabeledAxisAccessor>("plastic_strain") = {{"state", "internal", "Ep"}};
+  params.set<LabeledAxisAccessor>("total_strain") = {{"state", "E"}};
   return params;
 }
 
-template <bool rate>
-TotalStrainTempl<rate>::TotalStrainTempl(const ParameterSet & params)
+TotalStrain::TotalStrain(const ParameterSet & params)
   : Model(params),
     elastic_strain(
-        declareInputVariable<SymR2>({"state", rate ? "elastic_strain_rate" : "elastic_strain"})),
+        declare_input_variable<SymR2>(params.get<LabeledAxisAccessor>("elastic_strain"))),
     plastic_strain(
-        declareInputVariable<SymR2>({"state", rate ? "plastic_strain_rate" : "plastic_strain"})),
-    total_strain(
-        declareOutputVariable<SymR2>({"state", rate ? "total_strain_rate" : "total_strain"}))
+        declare_input_variable<SymR2>(params.get<LabeledAxisAccessor>("plastic_strain"))),
+    total_strain(declare_output_variable<SymR2>(params.get<LabeledAxisAccessor>("total_strain")))
 {
   this->setup();
 }
 
-template <bool rate>
 void
-TotalStrainTempl<rate>::set_value(LabeledVector in,
-                                  LabeledVector out,
-                                  LabeledMatrix * dout_din) const
+TotalStrain::set_value(LabeledVector in,
+                       LabeledVector * out,
+                       LabeledMatrix * dout_din,
+                       LabeledTensor3D * d2out_din2) const
 {
-  // total strain = elastic strain + plastic strain
-  out.set(in.get<SymR2>(elastic_strain) + in.get<SymR2>(plastic_strain), total_strain);
+  if (out)
+    out->set(in.get<SymR2>(elastic_strain) + in.get<SymR2>(plastic_strain), total_strain);
 
   if (dout_din)
   {
-    auto I = SymR2::identity_map().batch_expand(in.batch_size());
+    auto I = SymR2::identity_map(in.options());
     dout_din->set(I, total_strain, elastic_strain);
     dout_din->set(I, total_strain, plastic_strain);
   }
-}
 
-template class TotalStrainTempl<true>;
-template class TotalStrainTempl<false>;
+  if (d2out_din2)
+  {
+    // zero
+  }
+}
 } // namespace neml2

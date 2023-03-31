@@ -11,7 +11,7 @@ add_subdirectory(src)
 option(UNIT "build unit tests" ON)
 
 if(UNIT)
-      file(GLOB_RECURSE UNIT_TESTS unit/test_*.cxx)
+      file(GLOB_RECURSE UNIT_TESTS unit/*.cxx)
       add_executable(unit_tests
             ${TEST_UTILS}
             ${UNIT_TESTS}
@@ -30,7 +30,7 @@ endif()
 option(REGRESSION "build regression tests" ON)
 
 if(REGRESSION)
-      file(GLOB_RECURSE REGRESSION_TESTS regression/regression_*.cxx)
+      file(GLOB_RECURSE REGRESSION_TESTS regression/*.cxx)
       add_executable(regression_tests
             ${TEST_UTILS}
             ${REGRESSION_TESTS}
@@ -68,7 +68,7 @@ endif()
 option(VERIFICATION "build verification tests" ON)
 
 if(VERIFICATION)
-      file(GLOB_RECURSE VERIFICATION_TESTS verification/verification_*.cxx)
+      file(GLOB_RECURSE VERIFICATION_TESTS verification/*.cxx)
       add_executable(verification_tests
             ${TEST_UTILS}
             ${VERIFICATION_TESTS}

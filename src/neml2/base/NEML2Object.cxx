@@ -33,13 +33,14 @@ NEML2Object::expected_params()
   return params;
 }
 
-NEML2Object::NEML2Object(const std::string & name)
-  : torch::nn::Module(name)
-{
-}
+// NEML2Object::NEML2Object(const std::string & name)
+//   : torch::nn::Module(name)
+// {
+// }
 
 NEML2Object::NEML2Object(const ParameterSet & params)
-  : torch::nn::Module(params.get<std::string>("name"))
+  : torch::nn::Module(params.get<std::string>("name")),
+    ParameterInterface(params)
 {
 }
 } // namespace neml2

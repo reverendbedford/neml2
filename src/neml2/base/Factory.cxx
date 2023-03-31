@@ -25,7 +25,8 @@
 
 namespace neml2
 {
-std::vector<std::string> Factory::pipeline = {"Solvers", "Predictors", "Models"};
+std::vector<std::string> Factory::pipeline = {
+    "Tensors", "Solvers", "Predictors", "Models", "Drivers"};
 
 Factory &
 Factory::get_factory()

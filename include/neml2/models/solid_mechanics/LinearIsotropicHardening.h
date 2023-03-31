@@ -37,8 +37,10 @@ public:
 
 protected:
   /// Simple linear map between equivalent strain and hardening
-  virtual void
-  set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const;
+  virtual void set_value(LabeledVector in,
+                         LabeledVector * out,
+                         LabeledMatrix * dout_din = nullptr,
+                         LabeledTensor3D * d2out_din2 = nullptr) const;
 
   Scalar _K;
 };

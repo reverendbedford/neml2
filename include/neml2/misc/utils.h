@@ -29,6 +29,8 @@
 
 namespace neml2
 {
+struct LabeledAxisAccessor;
+
 namespace utils
 {
 constexpr double sqrt2 = 1.4142135623730951;
@@ -46,12 +48,15 @@ storage_size(const TorchShape & shape)
   return std::accumulate(shape.begin(), shape.end(), sz, std::multiplies<TorchSize>());
 }
 
-template <typename... TorchShapeRef>
+template <typename... S>
 inline TorchShape
-add_shapes(TorchShapeRef... shapes)
+add_shapes(S... shape)
 {
   TorchShape net;
-  (net.insert(net.end(), shapes.begin(), shapes.end()), ...);
+  (net.insert(net.end(),
+              static_cast<TorchShapeRef>(shape).begin(),
+              static_cast<TorchShapeRef>(shape).end()),
+   ...);
   return net;
 }
 
@@ -65,5 +70,10 @@ stringify(const T & t)
   os << t;
   return os.str();
 }
+
+bool allclose(const torch::jit::named_buffer_list & a,
+              const torch::jit::named_buffer_list & b,
+              Real rtol = 1e-5,
+              Real atol = 1e-8);
 } // namespace utils
 } // namespace neml2

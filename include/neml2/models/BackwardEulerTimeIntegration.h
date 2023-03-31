@@ -37,8 +37,8 @@ public:
   BackwardEulerTimeIntegration(const ParameterSet & params);
 
 private:
-  const std::vector<std::string> _var_rate_name;
-  const std::vector<std::string> _var_name;
+  const LabeledAxisAccessor _var_name;
+  const LabeledAxisAccessor _var_rate_name;
 
 public:
   const LabeledAxisAccessor res;
@@ -49,8 +49,10 @@ public:
   const LabeledAxisAccessor time_n;
 
 protected:
-  virtual void
-  set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const;
+  virtual void set_value(LabeledVector in,
+                         LabeledVector * out,
+                         LabeledMatrix * dout_din = nullptr,
+                         LabeledTensor3D * d2out_din2 = nullptr) const;
 };
 
 typedef BackwardEulerTimeIntegration<Scalar> ScalarBackwardEulerTimeIntegration;

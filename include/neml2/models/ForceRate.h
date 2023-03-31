@@ -43,8 +43,10 @@ public:
   const LabeledAxisAccessor force_rate;
 
 protected:
-  virtual void
-  set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const;
+  virtual void set_value(LabeledVector in,
+                         LabeledVector * out,
+                         LabeledMatrix * dout_din = nullptr,
+                         LabeledTensor3D * d2out_din2 = nullptr) const;
 };
 
 typedef ForceRate<Scalar> ScalarForceRate;

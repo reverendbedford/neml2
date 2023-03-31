@@ -8,15 +8,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 # Werror, etc
 add_compile_options(-Wall -Wextra -pedantic -Werror)
 
-# This is aggravating but occurs because pre-packaged torch uses
-# _GLIBCXX_USE_CXX11_ABI=0.  If you roll your own torch this may
-# not occur, so this flag could be dangerous in the future
-option(CXX11ABI "Whether to let GLIBCXX use cxx11 ABI" OFF)
-
-if(NOT CXX11ABI)
-      add_compile_definitions(_GLIBCXX_USE_CXX11_ABI=0)
-endif()
-
 # Accept Release, Debug, and RelWithDebInfo, add Coverage build types
 set(CMAKE_CXX_FLAGS_COVERAGE
       "-O0 -fprofile-arcs -ftest-coverage"
@@ -39,16 +30,23 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # torch, for which we are going to rely on the system for now
 find_package(Torch REQUIRED)
 
+# This is aggravating but occurs because pre-packaged torch uses
+# _GLIBCXX_USE_CXX11_ABI=0.  If you roll your own torch this may
+# not occur, so this flag could be dangerous in the future
+if(TORCH_CXX_FLAGS MATCHES "-D_GLIBCXX_USE_CXX11_ABI=1")
+      add_compile_definitions(_GLIBCXX_USE_CXX11_ABI=1)
+      message(STATUS "NEML2 is using CXX11 ABI to be consistent with libTorch")
+else()
+      add_compile_definitions(_GLIBCXX_USE_CXX11_ABI=0)
+      message(STATUS "NEML2 is using pre-CXX11 ABI to be consistent with libTorch")
+endif()
+
 # Catch2, for testing
 add_subdirectory("${PROJECT_SOURCE_DIR}/extern/Catch2")
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/extern/Catch2/contrib")
 
 # hit for parsing
 add_subdirectory("${PROJECT_SOURCE_DIR}/extern/hit")
-
-# MKL (I don't think this should be here)
-message(STATUS "MKL_ROOT=${MKL_ROOT}")
-LINK_DIRECTORIES(${MKL_ROOT}/lib)
 
 # base library
 add_subdirectory(src/neml2)

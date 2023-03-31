@@ -24,21 +24,30 @@
 
 #pragma once
 
-#include "neml2/models/solid_mechanics/YieldFunctionBase.h"
+#include "neml2/models/Model.h"
 
 namespace neml2
 {
-template <bool isoharden, bool kinharden>
-class YieldFunction : public YieldFunctionBase
+class YieldFunction : public Model
 {
 public:
   static ParameterSet expected_params();
 
-  using YieldFunctionBase::YieldFunctionBase;
-};
+  YieldFunction(const ParameterSet & params);
 
-typedef YieldFunction<false, false> PerfectlyPlasticYieldFunction;
-typedef YieldFunction<true, false> IsotropicHardeningYieldFunction;
-typedef YieldFunction<false, true> KinematicHardeningYieldFunction;
-typedef YieldFunction<true, true> IsotropicAndKinematicHardeningYieldFunction;
+public:
+  const LabeledAxisAccessor stress_measure;
+  const LabeledAxisAccessor isotropic_hardening;
+  const LabeledAxisAccessor yield_function;
+
+protected:
+  /// The value of the yield function
+  virtual void set_value(LabeledVector in,
+                         LabeledVector * out,
+                         LabeledMatrix * dout_din = nullptr,
+                         LabeledTensor3D * d2out_din2 = nullptr) const;
+
+  /// Yield stress
+  Scalar _s0;
+};
 } // namespace neml2

@@ -67,16 +67,19 @@ class BatchTensor : public torch::Tensor
 {
 public:
   /// Default constructor, empty with no batch dimensions
-  BatchTensor();
+  BatchTensor(const torch::TensorOptions & options = default_tensor_options);
 
   /// Construct from existing tensor, no batch dimensions
   BatchTensor(const torch::Tensor & tensor);
 
   /// Make an empty batched tensor given batch size and base size
-  BatchTensor(TorchShapeRef batch_size, TorchShapeRef base_size);
+  BatchTensor(TorchShapeRef batch_size,
+              TorchShapeRef base_size,
+              const torch::TensorOptions & options = default_tensor_options);
 
-  /// Make a batched tensor filled with default base tensor
-  BatchTensor(const torch::Tensor & tensor, TorchShapeRef batch_size);
+  /// Make an empty single-batch tensor given base size
+  BatchTensor(TorchShapeRef base_size,
+              const torch::TensorOptions & options = default_tensor_options);
 
   /// Return the number of base dimensions
   TorchSize base_dim() const;
@@ -115,16 +118,13 @@ public:
   BatchTensor<N> operator-() const;
 
   /// Identity
-  static BatchTensor<N> identity(TorchSize n);
-
-private:
-  /// Add a slice on the batch dimensions to an index
-  TorchSlice make_slice(TorchSlice base) const;
+  static BatchTensor<N> identity(TorchSize n,
+                                 const torch::TensorOptions & options = default_tensor_options);
 };
 
 template <TorchSize N>
-BatchTensor<N>::BatchTensor()
-  : BatchTensor<N>(TorchShapeRef(std::vector<TorchSize>(N, 1)), TorchShapeRef({}))
+BatchTensor<N>::BatchTensor(const torch::TensorOptions & options)
+  : BatchTensor<N>(TorchShapeRef({}), options)
 {
 }
 
@@ -140,8 +140,10 @@ BatchTensor<N>::BatchTensor(const torch::Tensor & tensor)
 }
 
 template <TorchSize N>
-BatchTensor<N>::BatchTensor(TorchShapeRef batch_size, TorchShapeRef base_size)
-  : torch::Tensor(torch::zeros(utils::add_shapes(batch_size, base_size), TorchDefaults))
+BatchTensor<N>::BatchTensor(TorchShapeRef batch_size,
+                            TorchShapeRef base_size,
+                            const torch::TensorOptions & options)
+  : torch::Tensor(torch::zeros(utils::add_shapes(batch_size, base_size), options))
 {
   neml_assert_dbg(batch_size.size() == N,
                   "Proposed batch shape has dimension ",
@@ -151,11 +153,10 @@ BatchTensor<N>::BatchTensor(TorchShapeRef batch_size, TorchShapeRef base_size)
 }
 
 template <TorchSize N>
-BatchTensor<N>::BatchTensor(const torch::Tensor & tensor, TorchShapeRef batch_size)
-  : BatchTensor<N>(batch_size, tensor.dim() > 0 ? tensor.sizes() : 1)
+BatchTensor<N>::BatchTensor(TorchShapeRef base_size, const torch::TensorOptions & options)
+  : torch::Tensor(torch::zeros(
+        utils::add_shapes(TorchShapeRef{std::vector<TorchSize>(N, 1)}, base_size), options))
 {
-  TorchSlice indices(tensor.sizes().size(), torch::indexing::Slice());
-  base_index_put(indices, tensor);
 }
 
 template <TorchSize N>
@@ -266,9 +267,9 @@ BatchTensor<N>::operator-() const
 
 template <TorchSize N>
 BatchTensor<N>
-BatchTensor<N>::identity(TorchSize n)
+BatchTensor<N>::identity(TorchSize n, const torch::TensorOptions & options)
 {
-  return torch::eye(n, TorchDefaults).index(TorchSlice(N, torch::indexing::None));
+  return torch::eye(n, options).index(TorchSlice(N, torch::indexing::None));
 }
 
 template <TorchSize N>
@@ -283,5 +284,19 @@ BatchTensor<N>
 operator-(const BatchTensor<N> & a, const BatchTensor<N> & b)
 {
   return torch::operator-(a, b);
+}
+
+template <TorchSize N>
+BatchTensor<N>
+operator*(const BatchTensor<N> & a, const BatchTensor<N> & b)
+{
+  return torch::operator*(a, b);
+}
+
+template <TorchSize N>
+BatchTensor<N>
+operator/(const BatchTensor<N> & a, const BatchTensor<N> & b)
+{
+  return torch::operator/(a, b);
 }
 } // namespace neml2

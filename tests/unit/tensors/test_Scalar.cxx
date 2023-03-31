@@ -30,86 +30,79 @@ using namespace neml2;
 
 TEST_CASE("Unbatched Scalar", "[Scalar]")
 {
+  auto a = Scalar(2.5);
+
   SECTION("construct from plain data type")
   {
-    Scalar a(2.5);
-    torch::Tensor correct(torch::tensor({2.5}, TorchDefaults));
+    torch::Tensor correct(torch::tensor({{2.5}}, default_tensor_options));
     REQUIRE(torch::allclose(a, correct));
   }
 
   SECTION("+ unbatched Scalar")
   {
-    Scalar a(2.5);
-    Scalar b(3.1);
-    Scalar result = a + b;
-    Scalar correct(5.6);
+    auto b = Scalar(3.1);
+    auto result = a + b;
+    auto correct = Scalar(5.6);
     REQUIRE(torch::allclose(result, correct));
   }
 
   SECTION("+ batched Scalar")
   {
-    int nbatch = 5;
-    Scalar a(2.5);
-    Scalar b(3.1, nbatch);
-    Scalar result = a + b;
-    Scalar correct(5.6, nbatch);
+    TorchSize nbatch = 5;
+    auto b = Scalar(3.1).batch_expand(nbatch);
+    auto result = a + b;
+    auto correct = Scalar(5.6).batch_expand(nbatch);
     REQUIRE(torch::allclose(result, correct));
   }
 
   SECTION("- unbatched Scalar")
   {
-    Scalar a(2.5);
-    Scalar b(3.1);
-    Scalar result = a - b;
-    Scalar correct(-0.6);
+    auto b = Scalar(3.1);
+    auto result = a - b;
+    auto correct = Scalar(-0.6);
     REQUIRE(torch::allclose(result, correct));
   }
 
   SECTION("- batched Scalar")
   {
     int nbatch = 5;
-    Scalar a(2.5);
-    Scalar b(3.1, nbatch);
-    Scalar result = a - b;
-    Scalar correct(-0.6, nbatch);
+    auto b = Scalar(3.1).batch_expand(nbatch);
+    auto result = a - b;
+    auto correct = Scalar(-0.6).batch_expand(nbatch);
     REQUIRE(torch::allclose(result, correct));
   }
 
   SECTION("* unbatched Scalar")
   {
-    Scalar a(2.5);
-    Scalar b(3.1);
-    Scalar result = a * b;
-    Scalar correct(2.5 * 3.1);
+    auto b = Scalar(3.1);
+    auto result = a * b;
+    auto correct = Scalar(2.5 * 3.1);
     REQUIRE(torch::allclose(result, correct));
   }
 
   SECTION("* batched Scalar")
   {
     int nbatch = 5;
-    Scalar a(2.5);
-    Scalar b(3.1, nbatch);
-    Scalar result = a * b;
-    Scalar correct(2.5 * 3.1, nbatch);
+    auto b = Scalar(3.1).batch_expand(nbatch);
+    auto result = a * b;
+    auto correct = Scalar(2.5 * 3.1).batch_expand(nbatch);
     REQUIRE(torch::allclose(result, correct));
   }
 
   SECTION("/ unbatched Scalar")
   {
-    Scalar a(2.5);
-    Scalar b(3.1);
-    Scalar result = a / b;
-    Scalar correct(2.5 / 3.1);
+    auto b = Scalar(3.1);
+    auto result = a / b;
+    auto correct = Scalar(2.5 / 3.1);
     REQUIRE(torch::allclose(result, correct));
   }
 
   SECTION("/ batched Scalar")
   {
     int nbatch = 5;
-    Scalar a(2.5);
-    Scalar b(3.1, nbatch);
-    Scalar result = a / b;
-    Scalar correct(2.5 / 3.1, nbatch);
+    auto b = Scalar(3.1).batch_expand(nbatch);
+    auto result = a / b;
+    auto correct = Scalar(2.5 / 3.1).batch_expand(nbatch);
     REQUIRE(torch::allclose(result, correct));
   }
 }
@@ -117,83 +110,69 @@ TEST_CASE("Unbatched Scalar", "[Scalar]")
 TEST_CASE("Batched Scalar", "[Scalar]")
 {
   int nbatch = 5;
-
-  SECTION("construct from plain data type")
-  {
-    Scalar a(2.5, nbatch);
-    torch::Tensor correct(torch::tensor({2.5, 2.5, 2.5, 2.5, 2.5}, TorchDefaults));
-    REQUIRE(torch::allclose(a, correct));
-  }
+  Scalar a = Scalar(2.5).batch_expand(nbatch);
 
   SECTION("+ unbatched Scalar")
   {
-    Scalar a(2.5, nbatch);
-    Scalar b(3.1);
-    Scalar result = a + b;
-    Scalar correct(5.6, nbatch);
+    auto b = Scalar(3.1);
+    auto result = a + b;
+    auto correct = Scalar(5.6).batch_expand(nbatch);
     REQUIRE(torch::allclose(result, correct));
   }
 
   SECTION("+ batched Scalar")
   {
-    Scalar a(2.5, nbatch);
-    Scalar b(3.1, nbatch);
-    Scalar result = a + b;
-    Scalar correct(5.6, nbatch);
+    Scalar b = Scalar(3.1).batch_expand(nbatch);
+    auto result = a + b;
+    auto correct = Scalar(5.6).batch_expand(nbatch);
     REQUIRE(torch::allclose(result, correct));
   }
 
   SECTION("- unbatched Scalar")
   {
-    Scalar a(2.5, nbatch);
-    Scalar b(3.1);
-    Scalar result = a - b;
-    Scalar correct(-0.6, nbatch);
+    auto b = Scalar(3.1);
+    auto result = a - b;
+    auto correct = Scalar(-0.6).batch_expand(nbatch);
     REQUIRE(torch::allclose(result, correct));
   }
 
   SECTION("- batched Scalar")
   {
-    Scalar a(2.5, nbatch);
-    Scalar b(3.1, nbatch);
-    Scalar result = a - b;
-    Scalar correct(-0.6, nbatch);
+    Scalar b = Scalar(3.1).batch_expand(nbatch);
+    auto result = a - b;
+    auto correct = Scalar(-0.6).batch_expand(nbatch);
     REQUIRE(torch::allclose(result, correct));
   }
 
   SECTION("* unbatched Scalar")
   {
-    Scalar a(2.5, nbatch);
-    Scalar b(3.1);
-    Scalar result = a * b;
-    Scalar correct(2.5 * 3.1, nbatch);
+    auto b = Scalar(3.1);
+    auto result = a * b;
+    auto correct = Scalar(2.5 * 3.1).batch_expand(nbatch);
     REQUIRE(torch::allclose(result, correct));
   }
 
   SECTION("* batched Scalar")
   {
-    Scalar a(2.5, nbatch);
-    Scalar b(3.1, nbatch);
-    Scalar result = a * b;
-    Scalar correct(2.5 * 3.1, nbatch);
+    Scalar b = Scalar(3.1).batch_expand(nbatch);
+    auto result = a * b;
+    auto correct = Scalar(2.5 * 3.1).batch_expand(nbatch);
     REQUIRE(torch::allclose(result, correct));
   }
 
   SECTION("/ unbatched Scalar")
   {
-    Scalar a(2.5, nbatch);
-    Scalar b(3.1);
-    Scalar result = a / b;
-    Scalar correct(2.5 / 3.1, nbatch);
+    auto b = Scalar(3.1);
+    auto result = a / b;
+    auto correct = Scalar(2.5 / 3.1).batch_expand(nbatch);
     REQUIRE(torch::allclose(result, correct));
   }
 
   SECTION("/ batched Scalar")
   {
-    Scalar a(2.5, nbatch);
-    Scalar b(3.1, nbatch);
-    Scalar result = a / b;
-    Scalar correct(2.5 / 3.1, nbatch);
+    auto b = Scalar(3.1).batch_expand(nbatch);
+    auto result = a / b;
+    auto correct = Scalar(2.5 / 3.1).batch_expand(nbatch);
     REQUIRE(torch::allclose(result, correct));
   }
 }
@@ -202,6 +181,6 @@ TEST_CASE("Scalar can't be created with semantically non-scalar tensors", "[Scal
 {
 #ifndef NDEBUG
   // This can't happen as the tensor dimension is not (1,)
-  REQUIRE_THROWS(Scalar(torch::zeros({2, 2}, TorchDefaults)));
+  REQUIRE_THROWS(Scalar(torch::zeros({2, 2})));
 #endif
 }

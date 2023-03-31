@@ -52,6 +52,9 @@ public:
   virtual void advance_step() override;
 
 protected:
+  const LabeledAxisAccessor _time_name;
+  const LabeledAxisAccessor _old_time_name;
+
   LabeledVector _state;
   LabeledVector _state_n;
   LabeledVector _state_nm1;

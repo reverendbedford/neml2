@@ -29,29 +29,19 @@ using namespace torch::indexing;
 
 namespace neml2
 {
-LabeledMatrix::LabeledMatrix(const LabeledVector & A, const LabeledVector & B)
-  : LabeledTensor<1, 2>(
-        torch::zeros(
-            utils::add_shapes(A.tensor().batch_sizes(), A.storage_size(), B.storage_size()),
-            TorchDefaults),
-        A.axis(0),
-        B.axis(0))
-{
-  // Check that the two batch sizes were consistent
-  neml_assert_dbg(A.batch_size() == B.batch_size(),
-                  "The batch sizes of the LabeledVectors are not consistent.");
-}
-
 LabeledMatrix::LabeledMatrix(const LabeledTensor<1, 2> & other)
   : LabeledTensor<1, 2>(other)
 {
 }
 
 LabeledMatrix
-LabeledMatrix::identity(TorchSize nbatch, const LabeledAxis & axis)
+LabeledMatrix::identity(TorchSize nbatch,
+                        const LabeledAxis & axis,
+                        const torch::TensorOptions & options)
 {
   return LabeledTensor<1, 2>(
-      BatchTensor<1>::identity(axis.storage_size()).batch_expand_copy({nbatch}), axis, axis);
+      BatchTensor<1>::identity(axis.storage_size(), options).batch_expand_copy({nbatch}),
+      {&axis, &axis});
 }
 
 void
@@ -81,7 +71,7 @@ LabeledMatrix::chain(const LabeledMatrix & other) const
   neml_assert_dbg(axis(1) == other.axis(0), "Labels are not conformal");
 
   // If all the sizes are correct then executing the chain rule is pretty easy
-  return LabeledMatrix(torch::bmm(tensor(), other.tensor()), axis(0), other.axis(1));
+  return LabeledMatrix(torch::bmm(tensor(), other.tensor()), {&axis(0), &other.axis(1)});
 }
 
 LabeledMatrix
@@ -90,42 +80,6 @@ LabeledMatrix::inverse() const
   neml_assert_dbg(axis(0).storage_size() == axis(1).storage_size(),
                   "Can only invert square derivatives");
 
-  return LabeledMatrix(torch::linalg::inv(tensor()), axis(1), axis(0));
-}
-
-void
-LabeledMatrix::write(std::ostream & os, std::string delimiter, TorchSize batch, bool header) const
-{
-  if (header)
-  {
-    for (auto name : axis(0).item_names())
-    {
-      TorchSize sz = axis(0).storage_size(name);
-      if (sz == 0)
-        continue;
-      else if (sz == 1)
-        os << delimiter << name;
-      else
-        for (TorchSize i = 0; i < sz; i++)
-          os << delimiter << name << "_" << i;
-    }
-    os << std::endl;
-  }
-
-  for (auto row_name : axis(1).item_names())
-  {
-    os << row_name;
-    for (auto col_name : axis(0).item_names())
-    {
-      TorchSize sz = axis(0).storage_size(col_name);
-      if (sz == 0)
-        continue;
-      else
-        for (TorchSize i = 0; i < sz; i++)
-          os << delimiter << (*this)(col_name, row_name).index({batch, i}).item<double>();
-    }
-    os << std::endl;
-  }
-  os << std::endl;
+  return LabeledMatrix(torch::linalg::inv(tensor()), {&axis(1), &axis(0)});
 }
 } // namespace neml2

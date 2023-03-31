@@ -37,6 +37,7 @@
 
 namespace neml2
 {
+// We should eventually get rid of all of these
 typedef std::pair<std::string, std::string> KS;
 typedef std::pair<std::string, std::vector<std::string>> KVS;
 typedef std::pair<std::string, std::vector<std::vector<std::string>>> KVVS;
@@ -49,9 +50,15 @@ typedef std::pair<std::string, std::vector<std::vector<bool>>> KVVB;
 typedef std::pair<std::string, unsigned int> KU;
 typedef std::pair<std::string, std::vector<unsigned int>> KVU;
 typedef std::pair<std::string, std::vector<std::vector<unsigned int>>> KVVU;
+typedef std::pair<std::string, TorchSize> KT;
+typedef std::pair<std::string, std::vector<TorchSize>> KVT;
+typedef std::pair<std::string, std::vector<std::vector<TorchSize>>> KVVT;
 typedef std::pair<std::string, int> KI;
 typedef std::pair<std::string, std::vector<int>> KVI;
 typedef std::pair<std::string, std::vector<std::vector<int>>> KVVI;
+typedef std::pair<std::string, LabeledAxisAccessor> KL;
+typedef std::pair<std::string, std::vector<LabeledAxisAccessor>> KVL;
+typedef std::pair<std::string, std::vector<std::vector<LabeledAxisAccessor>>> KVVL;
 
 /**
  * Helper functions for printing scalar, vector, vector<vector>. Called from

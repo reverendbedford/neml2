@@ -24,27 +24,28 @@
 
 #pragma once
 
-#include "neml2/models/solid_mechanics/PlasticHardening.h"
-#include "neml2/models/solid_mechanics/YieldFunctionBase.h"
+#include "neml2/models/solid_mechanics/FlowRule.h"
 
 namespace neml2
 {
-class AssociativeKinematicPlasticHardening : public PlasticHardening
+class AssociativeKinematicPlasticHardening : public FlowRule
 {
 public:
   static ParameterSet expected_params();
 
   AssociativeKinematicPlasticHardening(const ParameterSet & params);
 
-  const YieldFunctionBase & yield_function;
+  /// Accessor for the kinematic hardening direction
+  const LabeledAxisAccessor kinematic_hardening_direction;
+
+  /// Accessor for the kinematic plastic strain rate
+  const LabeledAxisAccessor kinematic_plastic_strain_rate;
 
 protected:
   /// The flow direction
-  virtual void
-  set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const;
-
-protected:
-  /// Accessor for the plastic strain rate
-  const LabeledAxisAccessor plastic_strain_rate;
+  virtual void set_value(LabeledVector in,
+                         LabeledVector * out,
+                         LabeledMatrix * dout_din = nullptr,
+                         LabeledTensor3D * d2out_din2 = nullptr) const;
 };
 } // namespace neml2

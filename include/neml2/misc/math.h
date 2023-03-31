@@ -30,24 +30,15 @@ namespace neml2
 {
 namespace math
 {
-template <TorchSize N>
-BatchTensor<N>
-linspace(BatchTensor<N> start, BatchTensor<N> stop, TorchSize nsteps)
-{
-  neml_assert_dbg(start.sizes() == stop.sizes(),
-                  "start and stop tensors need the same shape in "
-                  "linspace. The start tensor has shape ",
-                  start.sizes(),
-                  " while the stop tensor has shape ",
-                  stop.sizes());
+torch::Tensor linspace(torch::Tensor start,
+                       torch::Tensor end,
+                       TorchSize nstep,
+                       const torch::TensorOptions & options = default_tensor_options);
 
-  auto steps = torch::arange(nsteps, TorchDefaults) / (nsteps - 1);
-
-  for (int i = 0; i < start.dim(); i++)
-    steps = steps.unsqueeze(-1);
-
-  return start.index({torch::indexing::None}) +
-         steps * (stop - start).index({torch::indexing::None});
-}
+torch::Tensor logspace(torch::Tensor start,
+                       torch::Tensor end,
+                       TorchSize nstep,
+                       Real base = 10,
+                       const torch::TensorOptions & options = default_tensor_options);
 } // namespace math
 } // namespace neml2

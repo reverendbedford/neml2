@@ -22,6 +22,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 #include "neml2/base/HITParser.h"
+#include "neml2/tensors/LabeledAxis.h"
+#include "neml2/base/CrossRef.h"
 
 namespace neml2
 {
@@ -103,8 +105,13 @@ HITParser::ExtractParamsWalker::walk(const std::string & fullpath,
         extract_param_t(bool);
         extract_param_t(int);
         extract_param_t(unsigned int);
+        extract_param_t(TorchSize);
         extract_param_t(Real);
         extract_param_t(std::string);
+        extract_param_t(LabeledAxisAccessor);
+        extract_param_t(CrossRef<torch::Tensor>);
+        extract_param_t(CrossRef<Scalar>);
+        extract_param_t(CrossRef<SymR2>);
         else neml_assert(false, "Unsupported parameter type for parameter ", fullpath);
 
         break;

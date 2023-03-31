@@ -32,8 +32,7 @@ ParameterSet
 Model::expected_params()
 {
   ParameterSet params = NEML2Object::expected_params();
-  params.set<std::vector<std::vector<std::string>>>("additional_outputs") =
-      std::vector<std::vector<std::string>>();
+  params.set<std::vector<LabeledAxisAccessor>>("additional_outputs");
   return params;
 }
 
@@ -42,33 +41,61 @@ Model::Model(const ParameterSet & params)
     _input(declareAxis()),
     _output(declareAxis())
 {
-  for (const auto & var : params.get<std::vector<std::vector<std::string>>>("additional_outputs"))
-    _additional_outputs.insert(LabeledAxisAccessor{var});
+  for (const auto & var : params.get<std::vector<LabeledAxisAccessor>>("additional_outputs"))
+    _additional_outputs.insert(var);
   setup();
 }
 
 LabeledVector
 Model::value(LabeledVector in) const
 {
-  LabeledVector out(in.batch_size(), output());
-  set_value(in, out);
+  LabeledVector out(in.batch_size(), {&output()}, in.options());
+  set_value(in, &out);
   return out;
 }
 
 LabeledMatrix
 Model::dvalue(LabeledVector in) const
 {
-  auto [out, dout_din] = value_and_dvalue(in);
+  LabeledMatrix dout_din(in.batch_size(), {&output(), &input()}, in.options());
+  set_value(in, nullptr, &dout_din);
   return dout_din;
+}
+
+LabeledTensor3D
+Model::d2value(LabeledVector in) const
+{
+  LabeledTensor3D d2out_din2(in.batch_size(), {&output(), &input(), &input()}, in.options());
+  set_value(in, nullptr, nullptr, &d2out_din2);
+  return d2out_din2;
 }
 
 std::tuple<LabeledVector, LabeledMatrix>
 Model::value_and_dvalue(LabeledVector in) const
 {
-  LabeledVector out(in.batch_size(), output());
-  LabeledMatrix dout_din(out, in);
-  set_value(in, out, &dout_din);
+  LabeledVector out(in.batch_size(), {&output()}, in.options());
+  LabeledMatrix dout_din(in.batch_size(), {&output(), &input()}, in.options());
+  set_value(in, &out, &dout_din);
   return {out, dout_din};
+}
+
+std::tuple<LabeledMatrix, LabeledTensor3D>
+Model::dvalue_and_d2value(LabeledVector in) const
+{
+  LabeledMatrix dout_din(in.batch_size(), {&output(), &input()}, in.options());
+  LabeledTensor3D d2out_din2(in.batch_size(), {&output(), &input(), &input()}, in.options());
+  set_value(in, nullptr, &dout_din, &d2out_din2);
+  return {dout_din, d2out_din2};
+}
+
+std::tuple<LabeledVector, LabeledMatrix, LabeledTensor3D>
+Model::value_and_dvalue_and_d2value(LabeledVector in) const
+{
+  LabeledVector out(in.batch_size(), {&output()}, in.options());
+  LabeledMatrix dout_din(in.batch_size(), {&output(), &input()}, in.options());
+  LabeledTensor3D d2out_din2(in.batch_size(), {&output(), &input(), &input()}, in.options());
+  set_value(in, &out, &dout_din, &d2out_din2);
+  return {out, dout_din, d2out_din2};
 }
 
 void
@@ -101,25 +128,33 @@ Model::advance_step()
 }
 
 void
-Model::set_residual(BatchTensor<1> x, BatchTensor<1> r, BatchTensor<1> * J) const
+Model::set_residual(BatchTensor<1> x, BatchTensor<1> * r, BatchTensor<1> * J) const
 {
-  TorchSize nbatch = x.batch_sizes()[0];
-  LabeledVector in(nbatch, input());
-  LabeledVector out(nbatch, output());
+  const auto options = x.options();
+  const auto nbatch = x.batch_sizes()[0];
+
+  LabeledVector in(nbatch, {&input()}, options);
 
   // Fill in the current trial state and cached (fixed) forces, old forces, old state
   in.fill(_cached_in);
   in.set(x, "state");
 
-  if (J)
+  // Let's try to be as efficient as possible by considering all the cases!
+  if (r && !J)
   {
-    LabeledMatrix dout_din(out, in);
-    set_value(in, out, &dout_din);
+    auto out = value(in);
+    r->copy_(out("residual"));
+  }
+  else if (!r && J)
+  {
+    auto dout_din = dvalue(in);
     J->copy_(dout_din("residual", "state"));
   }
-  else
-    set_value(in, out);
-
-  r.copy_(out("residual"));
+  else if (r && J)
+  {
+    auto [out, dout_din] = value_and_dvalue(in);
+    r->copy_(out("residual"));
+    J->copy_(dout_din("residual", "state"));
+  }
 }
 } // namespace neml2

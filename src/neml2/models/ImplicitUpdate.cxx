@@ -94,32 +94,46 @@ ImplicitUpdate::ImplicitUpdate(const ParameterSet & params)
   setup();
 }
 
-void
-ImplicitUpdate::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din) const
+LabeledMatrix
+ImplicitUpdate::dvalue(LabeledVector in) const
 {
-  TorchSize nbatch = in.batch_size();
+  auto [out, dout_din] = Model::value_and_dvalue(in);
+  return dout_din;
+}
+
+void
+ImplicitUpdate::set_value(LabeledVector in,
+                          LabeledVector * out,
+                          LabeledMatrix * dout_din,
+                          LabeledTensor3D * d2out_din2) const
+{
+  neml_assert_dbg(!d2out_din2, "This model does not define the second derivatives.");
+
+  const auto options = in.options();
+  const auto nbatch = in.batch_size();
 
   // Cache the input as we are solving the implicit model with FIXED forces, old forces, and old
   // state
   _model.cache_input(in);
 
   // Set the initial guess
-  _predictor->set_initial_guess(in, out);
+  _predictor->set_initial_guess(in, *out);
 
   // Solve for the next state
   Model::stage = Model::Stage::SOLVING;
-  BatchTensor<1> sol = _solver.solve(_model, out("state"));
+  BatchTensor<1> sol = _solver.solve(_model, (*out)("state"));
   Model::stage = Model::Stage::UPDATING;
 
-  out.set(sol, "state");
-
-  // post-solve
-  _predictor->post_solve(in, out);
+  if (out)
+  {
+    out->set(sol, "state");
+    _predictor->post_solve(in, *out);
+  }
 
   // Use the implicit function theorem to calculate the other derivatives
   if (dout_din)
   {
-    LabeledVector implicit_in(nbatch, _model.input());
+    LabeledVector implicit_in(nbatch, {&_model.input()}, options);
     implicit_in.fill(in);
     implicit_in.set(sol, "state");
 

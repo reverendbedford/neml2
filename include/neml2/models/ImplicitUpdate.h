@@ -41,9 +41,15 @@ public:
 
   virtual void advance_step() override;
 
+  // dvalue is overriden because we rely on the implicit function theorem to compute the
+  // derivatives, and so the value has to be evaluated even if only the derivatives are requested.
+  virtual LabeledMatrix dvalue(LabeledVector in) const override;
+
 protected:
-  virtual void
-  set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const;
+  virtual void set_value(LabeledVector in,
+                         LabeledVector * out,
+                         LabeledMatrix * dout_din = nullptr,
+                         LabeledTensor3D * d2out_din2 = nullptr) const;
 
   /// The implicit model to be updated
   Model & _model;

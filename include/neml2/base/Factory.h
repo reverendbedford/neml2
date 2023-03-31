@@ -25,6 +25,7 @@
 
 #include "neml2/base/Registry.h"
 #include "neml2/base/NEML2Object.h"
+#include "neml2/misc/error.h"
 
 namespace neml2
 {
@@ -78,7 +79,16 @@ Factory::get_object_ptr(const std::string & section, const std::string & name)
 
   // Easy if it already exists
   if (factory._objects.count(section) && factory._objects.at(section).count(name))
-    return std::dynamic_pointer_cast<T>(factory._objects[section][name]);
+  {
+    auto obj = std::dynamic_pointer_cast<T>(factory._objects[section][name]);
+    neml_assert(obj != nullptr,
+                "Found object named ",
+                name,
+                " under section ",
+                section,
+                ". But dynamic cast failed. Did you specify the correct object type?");
+    return obj;
+  }
 
   // Otherwise try to create it
   for (const auto & params : factory._all_params[section])

@@ -29,6 +29,7 @@
 #include "neml2/models/ComposedModel.h"
 #include "neml2/models/solid_mechanics/AssociativeIsotropicPlasticHardening.h"
 #include "neml2/models/solid_mechanics/ElasticStrain.h"
+#include "neml2/models/solid_mechanics/ElasticStrainRate.h"
 #include "neml2/models/solid_mechanics/LinearElasticity.h"
 #include "neml2/models/solid_mechanics/IsotropicMandelStress.h"
 #include "neml2/models/solid_mechanics/VoceIsotropicHardening.h"
@@ -62,12 +63,13 @@ TEST_CASE("Benchmark Chaboche", "[BENCHMARK][Chaboche]")
 
   for (TorchSize nbatch : nbatches)
   {
-    Scalar end_time = torch::logspace(min_time, max_time, nbatch, 10, TorchDefaults).unsqueeze(-1);
+    Scalar end_time =
+        torch::logspace(min_time, max_time, nbatch, 10, default_tensor_options).unsqueeze(-1);
     SymR2 end_strain =
         SymR2::init(max_strain, -0.5 * max_strain, -0.5 * max_strain).batch_expand(nbatch);
 
-    BatchTensor<1> times = math::linspace<1>(torch::zeros_like(end_time), end_time, nsteps);
-    BatchTensor<1> strains = math::linspace<1>(torch::zeros_like(end_strain), end_strain, nsteps);
+    auto times = math::linspace(torch::zeros_like(end_time), end_time, nsteps);
+    auto strains = math::linspace(torch::zeros_like(end_strain), end_strain, nsteps);
 
     for (TorchSize nbackstress : nbackstresses)
     {
@@ -126,7 +128,7 @@ TEST_CASE("Benchmark Chaboche", "[BENCHMARK][Chaboche]")
       auto kinharden = std::make_shared<SumModel<SymR2>>(
           "kinharden",
           bs_names,
-          std::vector<std::string>{"state", "hardening_interface", "kinematic_hardening"});
+          std::vector<std::string>{"state", "hardening", "kinematic_hardening"});
       models.push_back(kinharden);
 
       // Composition
