@@ -43,7 +43,7 @@ public:
 
 protected:
   virtual void
-  set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const;
+  set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const override;
 
   /// The implicit model to be updated
   Model & _model;

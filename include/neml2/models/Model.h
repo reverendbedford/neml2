@@ -175,7 +175,8 @@ protected:
   */
   void register_model(std::shared_ptr<Model> model, bool merge_input = true);
 
-  virtual void set_residual(BatchTensor<1> x, BatchTensor<1> r, BatchTensor<1> * J = nullptr) const;
+  virtual void
+  set_residual(BatchTensor<1> x, BatchTensor<1> r, BatchTensor<1> * J = nullptr) const override;
 
   /// Models *this* model may use during its evaluation
   std::vector<Model *> _registered_models;

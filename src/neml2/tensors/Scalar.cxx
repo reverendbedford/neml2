@@ -154,4 +154,22 @@ exp(const Scalar & a)
   return Scalar(torch::exp(a));
 }
 
+Scalar
+log(const Scalar & a)
+{
+  return torch::log(a);
+}
+
+Scalar
+sin(const Scalar & a)
+{
+  return torch::sin(a);
+}
+
+Scalar
+cos(const Scalar & a)
+{
+  return torch::cos(a);
+}
+
 } // namespace neml2

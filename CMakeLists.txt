@@ -5,6 +5,9 @@ project(NEML2 LANGUAGES CXX)
 # ## Setup modules ###
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 
+# By default export compile commands for IDE purposes
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 # Werror, etc
 add_compile_options(-Wall -Wextra -pedantic -Werror)
 
