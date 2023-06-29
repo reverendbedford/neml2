@@ -39,7 +39,7 @@ Rotation::init(const Scalar & r0, const Scalar & r1, const Scalar & r2)
 Rotation
 Rotation::identity()
 {
-  return Rotation(torch::tensor({0.0, 0.0, 0.0}, TorchDefaults));
+  return torch::zeros({1, 3}, TorchDefaults);
 }
 
 Scalar
@@ -54,12 +54,34 @@ Rotation::inverse() const
   return -torch::Tensor(*this);
 }
 
+Scalar
+Rotation::dot(const Rotation & other) const
+{
+  return einsum({*this, other}, {"i", "i"}).unsqueeze(-1);
+}
+
+R2
+Rotation::to_R2() const
+{
+  // We use the dot product several times
+  auto rr = torch::Tensor(this->dot(*this));
+
+  return 1.0 / (1.0 + rr) *
+         ((1 - rr) * torch::eye(3, TorchDefaults) + 2.0 * einsum({*this, *this}, {"i", "j"}) -
+          2.0 * einsum({R3::init(R3::levi_civita), *this}, {"ijk", "k"}));
+}
+
+Vector
+Rotation::apply(const Vector & v) const
+{
+  return (this->to_R2()) * v;
+}
+
 Rotation
 operator*(const Rotation & r1, const Rotation & r2)
 {
-  return (torch::Tensor(r1) + torch::Tensor(r2) +
-          einsum({R3::init(R3::levi_civita), r1, r2}, {"ijk", "j", "k"})) /
-         (1.0 - einsum({r1, r2}, {"i", "i"}).unsqueeze(-1));
+  return (torch::Tensor(r1) + torch::Tensor(r2) + torch::linalg_cross(r1, r2)) /
+         torch::Tensor((1.0 - r1.dot(r2)));
 }
 
 } // namemspace neml2

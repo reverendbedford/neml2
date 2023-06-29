@@ -27,48 +27,24 @@
 #include "neml2/tensors/FixedDimTensor.h"
 #include "neml2/tensors/Scalar.h"
 #include "neml2/tensors/Vector.h"
-#include "neml2/tensors/R2.h"
 
 namespace neml2
 {
-class Rotation : public FixedDimTensor<1, 3>
+class R2 : public FixedDimTensor<1, 3, 3>
 {
 public:
-  using FixedDimTensor<1, 3>::FixedDimTensor;
+  using FixedDimTensor<1, 3, 3>::FixedDimTensor;
 
   /// Named constructors
   /// @{
-  /// Construct from three scalar components
-  static Rotation init(const Scalar & r0, const Scalar & r1, const Scalar & r2);
-  /// The identity rotation, helpfully the zero vector
-  static Rotation identity();
-  /// @}
-
-  /// Accessor
-  Scalar operator()(TorchSize i) const;
-
-  /// Inversion
-  Rotation inverse() const;
-
-  /// Dot product
-  // Useful in constructing other things
-  Scalar dot(const Rotation & other) const;
-
-  /// Generate a rotation matrix
-  // Using the Euler-Rodrigues formula
-  R2 to_R2() const;
-
-  /// Apply a rotation to various things
-  /// @{
-  /// A vector
-  Vector apply(const Vector &) const;
+  /// Identity
+  static R2 identity();
+  /// All zeros
+  static R2 zero();
   /// @}
 };
 
-/// Composition of rotations r3 = r1 * r2 (r2 first, then r1)
-//  So this follows the "matrix" convention where it's exactly the same
-//  as the standard matrix product R1 * R2 where R1 and R2 are the
-//  matrix representations of r1 and r2
-Rotation operator*(const Rotation & r1, const Rotation & r2);
+/// Matrix-vector product
+Vector operator*(const R2 & A, const Vector & b);
 
 } // namespace neml2
