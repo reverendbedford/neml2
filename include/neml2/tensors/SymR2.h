@@ -25,11 +25,13 @@
 #pragma once
 
 #include "neml2/tensors/Scalar.h"
+#include "neml2/tensors/R2.h"
 #include "neml2/misc/utils.h"
 
 namespace neml2
 {
 class SymSymR4;
+class R2;
 
 class SymR2 : public FixedDimTensor<1, 6>
 {
@@ -56,6 +58,8 @@ public:
                     const Scalar & a23,
                     const Scalar & a13,
                     const Scalar & a12);
+  /// Symmetrize an R2 then fill
+  static SymR2 init(const R2 & T);
   /// Identity
   static SymR2 identity();
   /// @}
@@ -90,8 +94,8 @@ public:
   /// Outer product ij,kl -> ijkl
   SymSymR4 outer(const SymR2 & other) const;
 
-private:
-  static constexpr TorchSize reverse_index[3][3] = {{0, 5, 4}, {5, 1, 3}, {4, 3, 2}};
+  /// Convert to a full R2
+  R2 to_full() const;
 };
 
 SymR2 operator+(const SymR2 & a, const Scalar & b);

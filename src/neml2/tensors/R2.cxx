@@ -28,9 +28,18 @@ namespace neml2
 {
 
 R2
+R2::init(const SymR2 & sym)
+{
+  return torch::cat({
+                    sym(0,0), sym(0,1), sym(0,2),
+                    sym(1,0), sym(1,1), sym(1,2),
+                    sym(2,0), sym(2,1), sym(2,2)}, -1).reshape({-1,3,3});
+}
+
+R2
 R2::identity()
 {
-  return torch::eye(3, TorchDefaults);
+  return torch::eye(3, TorchDefaults).unsqueeze(0);
 }
 
 R2
@@ -39,10 +48,40 @@ R2::zero()
   return torch::zeros({3, 3}, TorchDefaults);
 }
 
+Scalar
+R2::operator()(TorchSize i, TorchSize j) const
+{
+  return base_index({i,j}).unsqueeze(-1);
+}
+
+R2
+R2::transpose() const
+{
+  return torch::transpose(*this, -2, -1);
+}
+
+R2
+operator*(const R2 & A, const R2 & B)
+{
+  return torch::bmm(A, B);
+}
+
 Vector
 operator*(const R2 & A, const Vector & b)
 {
   return torch::bmm(A, b.unsqueeze(-1)).squeeze(-1);
+}
+
+R2
+operator*(const R2 & A, const Scalar & b)
+{
+  return torch::operator*(A, b);
+}
+
+R2
+operator*(const Scalar & a, const R2 & B)
+{
+  return B * a;
 }
 
 } // namespace neml2

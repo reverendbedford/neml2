@@ -54,21 +54,19 @@ Rotation::inverse() const
   return -torch::Tensor(*this);
 }
 
-Scalar
-Rotation::dot(const Rotation & other) const
-{
-  return einsum({*this, other}, {"i", "i"}).unsqueeze(-1);
-}
-
 R2
 Rotation::to_R2() const
 {
-  // We use the dot product several times
-  auto rr = torch::Tensor(this->dot(*this));
+  // We use the dot product twice
+  auto rr = this->dot(*this);
 
-  return 1.0 / (1.0 + rr) *
-         ((1 - rr) * torch::eye(3, TorchDefaults) + 2.0 * einsum({*this, *this}, {"i", "j"}) -
-          2.0 * einsum({R3::init(R3::levi_civita), *this}, {"ijk", "k"}));
+  return ((1 - rr) * R2::identity() + 2.0 * this->outer(*this) - 2.0 * R3::levi_civita().contract_k(*this)) / (1.0 + rr);
+}
+
+Rotation
+Rotation::apply(const Rotation & R) const
+{
+  return *this * R;
 }
 
 Vector
@@ -77,11 +75,36 @@ Rotation::apply(const Vector & v) const
   return (this->to_R2()) * v;
 }
 
+R2
+Rotation::apply(const R2 & T) const
+{
+  R2 R = this->to_R2();
+  return R * T * R.transpose();
+}
+
+SymR2
+Rotation::apply(const SymR2 & T) const
+{
+  return SymR2::init(this->apply(T.to_full()));
+}
+
+R4
+Rotation::apply(const R4 & T) const
+{
+  R2 R = this->to_R2();
+  return einsum({R, R, R, R, T}, {"im", "jn", "ko", "lp", "mnop"});
+}
+
+SymSymR4
+Rotation::apply(const SymSymR4 & T) const
+{
+  return SymSymR4::init_R4(this->apply(T.to_full()));
+}
+
 Rotation
 operator*(const Rotation & r1, const Rotation & r2)
 {
-  return (torch::Tensor(r1) + torch::Tensor(r2) + torch::linalg_cross(r1, r2)) /
-         torch::Tensor((1.0 - r1.dot(r2)));
+  return (r1 + r2 + r1.cross(r2)) / (1.0 - r1.dot(r2));
 }
 
 } // namemspace neml2

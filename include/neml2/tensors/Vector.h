@@ -25,9 +25,12 @@
 #pragma once
 
 #include "neml2/tensors/Scalar.h"
+#include "neml2/tensors/R2.h"
 
 namespace neml2
 {
+class R2;
+
 class Vector : public FixedDimTensor<1, 3>
 {
 public:
@@ -38,5 +41,14 @@ public:
   /// Setup from scalar components
   static Vector init(const Scalar & v1, const Scalar & v2, const Scalar & v3);
   /// @}
+
+  /// dot product
+  Scalar dot(const Vector & v) const;
+
+  /// cross product
+  Vector cross(const Vector & v) const;
+
+  /// outer product
+  R2 outer(const Vector & v) const;
 };
 } // namespace neml2

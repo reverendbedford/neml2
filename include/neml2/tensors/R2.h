@@ -27,9 +27,13 @@
 #include "neml2/tensors/FixedDimTensor.h"
 #include "neml2/tensors/Scalar.h"
 #include "neml2/tensors/Vector.h"
+#include "neml2/tensors/SymR2.h"
 
 namespace neml2
 {
+class Vector;
+class SymR2;
+
 class R2 : public FixedDimTensor<1, 3, 3>
 {
 public:
@@ -37,14 +41,30 @@ public:
 
   /// Named constructors
   /// @{
+  static R2 init(const SymR2 & sym);
   /// Identity
   static R2 identity();
   /// All zeros
   static R2 zero();
   /// @}
+
+  /// Accessor
+  Scalar operator()(TorchSize i, TorchSize j) const;
+
+  /// transpose
+  R2 transpose() const;
 };
+
+/// Matrix-matrix product
+R2 operator*(const R2 & A, const R2 & B);
 
 /// Matrix-vector product
 Vector operator*(const R2 & A, const Vector & b);
+
+/// Matrix-scalar product
+R2 operator*(const R2 & A, const Scalar & b);
+
+/// Matrix-scalar product
+R2 operator*(const Scalar & a, const R2 & B);
 
 } // namespace neml2

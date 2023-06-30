@@ -72,6 +72,13 @@ SymR2::init(const Scalar & a11,
 }
 
 SymR2
+SymR2::init(const R2 & T)
+{
+  R2 S = 0.5*(T + T.transpose());
+  return SymR2::init(S(0,0), S(1,1), S(2,2), S(1,2), S(0,2), S(0,1));
+}
+
+SymR2
 SymR2::identity()
 {
   return SymR2(torch::tensor({{1, 1, 1, 0, 0, 0}}, TorchDefaults));
@@ -80,7 +87,7 @@ SymR2::identity()
 Scalar
 SymR2::operator()(TorchSize i, TorchSize j) const
 {
-  TorchSize a = reverse_index[i][j];
+  TorchSize a = utils::mandel_reverse_index[i][j];
   return base_index({a}).unsqueeze(-1) / utils::mandelFactor(a);
 }
 
@@ -138,6 +145,12 @@ SymSymR4
 SymR2::outer(const SymR2 & other) const
 {
   return einsum({*this, other}, {"i", "j"});
+}
+
+R2
+SymR2::to_full() const
+{
+  return R2::init(*this);
 }
 
 SymR2

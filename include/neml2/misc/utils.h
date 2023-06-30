@@ -33,6 +33,10 @@ namespace utils
 {
 constexpr double sqrt2 = 1.4142135623730951;
 
+constexpr TorchSize mandel_reverse_index[3][3] = {{0, 5, 4}, {5, 1, 3}, {4, 3, 2}};
+
+constexpr TorchSize mandel_index[6][2] = {{0, 0}, {1, 1}, {2, 2}, {1, 2}, {0, 2}, {0, 1}};
+
 inline constexpr double
 mandelFactor(TorchSize i)
 {

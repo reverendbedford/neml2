@@ -26,9 +26,15 @@
 
 #include "neml2/tensors/FixedDimTensor.h"
 #include "neml2/tensors/Scalar.h"
+#include "neml2/tensors/Vector.h"
+#include "neml2/tensors/R2.h"
 
 namespace neml2
 {
+
+class Vector;
+class R2;
+
 class R3 : public FixedDimTensor<1, 3, 3, 3>
 {
 public:
@@ -36,19 +42,12 @@ public:
 
   /// Named constructors
   /// @{
-  enum FillMethod
-  {
-    levi_civita
-  };
-
-  static R3 init(FillMethod method);
+  /// Alternating symbol
+  static R3 levi_civita();
   /// @}
 
-private:
-  /// Helpers for the fill method
-  /// @{
-  static R3 init_levi_civita();
-  /// @}
+  /// R3,Vector->R2 product ijk,k->ij
+  R2 contract_k(const Vector & v) const;
 };
 
 } // namespace neml2

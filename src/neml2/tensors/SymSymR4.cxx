@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 #include "neml2/tensors/SymSymR4.h"
+#include "neml2/misc/utils.h"
 
 namespace neml2
 {
@@ -31,6 +32,8 @@ SymSymR4::init(SymSymR4::FillMethod method, const std::vector<Scalar> & vals)
 {
   switch (method)
   {
+    case SymSymR4::FillMethod::zero:
+      return SymSymR4::init_zero();
     case SymSymR4::FillMethod::identity_sym:
       return SymSymR4::init_identity_sym();
     case SymSymR4::FillMethod::identity_vol:
@@ -56,6 +59,12 @@ SymSymR4::init_identity()
                                  {0, 0, 0, 0, 0, 0}},
                                 TorchDefaults),
                   1);
+}
+
+SymSymR4
+SymSymR4::init_zero()
+{
+  return torch::zeros({6, 6}, TorchDefaults);
 }
 
 SymSymR4
@@ -90,6 +99,46 @@ SymSymR4::init_isotropic_E_nu(const Scalar & E, const Scalar & nu)
     C.base_index_put({i, i}, C4.squeeze(-1));
 
   return C;
+}
+
+SymSymR4
+SymSymR4::init_R4(const R4 & T)
+{
+  SymSymR4 C;
+  C = C.batch_expand_copy(T.batch_sizes());
+
+  for (TorchSize a = 0; a < 6; a++)
+  {
+    for (TorchSize b = 0; b < 6; b++)
+    {
+      auto ij = utils::mandel_index[a];
+      auto kl = utils::mandel_index[b];
+      auto ij_f = utils::mandelFactor(a);
+      auto kl_f = utils::mandelFactor(b);
+
+      C.base_index_put({a, b},
+                       ij_f * kl_f * 0.25 *
+                           (T(ij[0], ij[1], kl[0], kl[1]) + T(ij[1], ij[0], kl[0], kl[1]) +
+                            T(ij[0], ij[1], kl[1], kl[0]) + T(ij[1], ij[0], kl[1], kl[0])));
+    }
+  }
+
+  return C;
+}
+
+R4
+SymSymR4::to_full() const
+{
+  return R4::init(*this);
+}
+
+Scalar
+SymSymR4::operator()(TorchSize i, TorchSize j, TorchSize k, TorchSize l) const
+{
+  TorchSize a = utils::mandel_reverse_index[i][j];
+  TorchSize b = utils::mandel_reverse_index[k][l];
+
+  return base_index({a, b}).unsqueeze(-1) / (utils::mandelFactor(a) * utils::mandelFactor(b));
 }
 
 SymSymR4

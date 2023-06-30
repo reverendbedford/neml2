@@ -28,26 +28,19 @@ namespace neml2
 {
 
 R3
-R3::init(R3::FillMethod method)
-{
-  switch (method)
-  {
-    case R3::FillMethod::levi_civita:
-      return R3::init_levi_civita();
-    default:
-      std::runtime_error("Unsupported fill method");
-      return R3();
-  }
-}
-
-R3
-R3::init_levi_civita()
+R3::levi_civita()
 {
   return R3(torch::tensor({{{0, 0, 0}, {0, 0, 1}, {0, -1, 0}},
                            {{0, 0, -1}, {0, 0, 0}, {1, 0, 0}},
                            {{0, 1, 0}, {-1, 0, 0}, {0, 0, 0}}},
                           TorchDefaults),
             1);
+}
+
+R2
+R3::contract_k(const Vector & v) const
+{
+  return einsum({*this,v},{"ijk","k"});
 }
 
 } // namespace neml2

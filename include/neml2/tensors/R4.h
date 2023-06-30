@@ -1,9 +1,3 @@
-// Copyright 2023, UChicago Argonne, LLC
-// All Rights Reserved
-// Software Name: NEML2 -- the New Engineering material Model Library, version 2
-// By: Argonne National Laboratory
-// OPEN SOURCE LICENSE (MIT)
-//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
@@ -22,33 +16,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/tensors/Vector.h"
-#include "neml2/misc/utils.h"
+#pragma once
 
-namespace neml2 {
+#include "neml2/tensors/FixedDimTensor.h"
+#include "neml2/tensors/SymSymR4.h"
 
-Vector
-Vector::init(const Scalar & v1, const Scalar & v2, const Scalar & v3)
+namespace neml2
 {
-  return torch::cat({v1, v2, v3}, -1);
-}
+class SymSymR4;
 
-Scalar
-Vector::dot(const Vector & v) const
+class R4 : public FixedDimTensor<1, 3, 3, 3, 3>
 {
-  return torch::linalg_vecdot(*this, v).unsqueeze(-1);
-}
+public:
+  using FixedDimTensor<1, 3, 3, 3, 3>::FixedDimTensor;
 
-Vector
-Vector::cross(const Vector & v) const
-{
-  return torch::linalg_cross(*this, v);
-}
+  /// Named constructors
+  /// @{
+  static R4 init(const SymSymR4 & T);
+  /// @}
 
-R2
-Vector::outer(const Vector & v) const
-{
-  return einsum({*this,v}, {"i","j"}); 
-}
+  /// Accessor
+  Scalar operator()(TorchSize i, TorchSize j, TorchSize k, TorchSize l) const;
+};
 
 } // namespace neml2

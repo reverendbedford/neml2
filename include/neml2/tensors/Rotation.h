@@ -24,17 +24,19 @@
 
 #pragma once
 
-#include "neml2/tensors/FixedDimTensor.h"
-#include "neml2/tensors/Scalar.h"
 #include "neml2/tensors/Vector.h"
+#include "neml2/tensors/Scalar.h"
 #include "neml2/tensors/R2.h"
+#include "neml2/tensors/SymR2.h"
+#include "neml2/tensors/R4.h"
+#include "neml2/tensors/SymSymR4.h"
 
 namespace neml2
 {
-class Rotation : public FixedDimTensor<1, 3>
+class Rotation : public Vector
 {
 public:
-  using FixedDimTensor<1, 3>::FixedDimTensor;
+  using Vector::Vector;
 
   /// Named constructors
   /// @{
@@ -51,8 +53,10 @@ public:
   Rotation inverse() const;
 
   /// Dot product
-  // Useful in constructing other things
-  Scalar dot(const Rotation & other) const;
+  using Vector::dot;
+
+  /// Cross product
+  using Vector::cross;
 
   /// Generate a rotation matrix
   // Using the Euler-Rodrigues formula
@@ -60,8 +64,18 @@ public:
 
   /// Apply a rotation to various things
   /// @{
-  /// A vector
-  Vector apply(const Vector &) const;
+  /// Compose rotations in matrix convention: first R then this
+  Rotation apply(const Rotation & R) const;
+  /// Rotate a vector
+  Vector apply(const Vector & v) const;
+  /// Rotate a R2
+  R2 apply(const R2 & T) const;
+  /// Rotate a SymR2
+  SymR2 apply(const SymR2 & T) const;
+  /// Rotate a R4
+  R4 apply(const R4 & T) const;
+  /// Rotate a SymSymR4
+  SymSymR4 apply(const SymSymR4 & T) const;
   /// @}
 };
 

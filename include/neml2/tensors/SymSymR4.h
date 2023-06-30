@@ -26,9 +26,13 @@
 
 #include "neml2/tensors/FixedDimTensor.h"
 #include "neml2/tensors/SymR2.h"
+#include "neml2/tensors/R4.h"
 
 namespace neml2
 {
+// Forward declarations
+class R4;
+
 class SymSymR4 : public FixedDimTensor<1, 6, 6>
 {
 public:
@@ -38,6 +42,7 @@ public:
   /// @{
   enum FillMethod
   {
+    zero,         // zeros...
     identity_sym, // (dik,djl + dil,djk) / 2
     identity_vol, // dij,dkl / 3
     identity_dev, // dik,djl - dij,dkl / 3
@@ -47,19 +52,27 @@ public:
   static SymSymR4 init(FillMethod method, const std::vector<Scalar> & vals = {});
   /// @}
 
-  // Negation
-  SymSymR4 operator-() const;
-
-  // Inversion
-  SymSymR4 inverse() const;
-
-private:
   /// Helpers for the fill method
   /// @{
   static SymSymR4 init_identity();
+  static SymSymR4 init_zero();
   static SymSymR4 init_identity_sym();
   static SymSymR4 init_isotropic_E_nu(const Scalar & E, const Scalar & nu);
+  /// Symmetrize R4 and init this
+  static SymSymR4 init_R4(const R4 & T);
   /// @}
+
+  /// Shortcut to get the full tensor
+  R4 to_full() const;
+
+  /// Accessor
+  Scalar operator()(TorchSize i, TorchSize j, TorchSize k, TorchSize l) const;
+
+  /// Negation
+  SymSymR4 operator-() const;
+
+  /// Inversion
+  SymSymR4 inverse() const;
 };
 
 SymSymR4 operator+(const SymSymR4 & a, const SymSymR4 & b);
