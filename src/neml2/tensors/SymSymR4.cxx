@@ -119,7 +119,8 @@ SymSymR4::init_R4(const R4 & T)
       C.base_index_put({a, b},
                        ij_f * kl_f * 0.25 *
                            (T(ij[0], ij[1], kl[0], kl[1]) + T(ij[1], ij[0], kl[0], kl[1]) +
-                            T(ij[0], ij[1], kl[1], kl[0]) + T(ij[1], ij[0], kl[1], kl[0])));
+                            T(ij[0], ij[1], kl[1], kl[0]) + T(ij[1], ij[0], kl[1], kl[0]))
+                               .squeeze(-1));
     }
   }
 

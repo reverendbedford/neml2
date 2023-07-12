@@ -60,7 +60,11 @@ Rotation::to_R2() const
   // We use the dot product twice
   auto rr = this->dot(*this);
 
-  return ((1 - rr) * R2::identity() + 2.0 * this->outer(*this) - 2.0 * R3::levi_civita().contract_k(*this)) / (1.0 + rr);
+  // Hopefully the compiler  is smart enough here...
+  R2 I = R2::identity();
+  R3 lc = R3::levi_civita();
+
+  return ((1 - rr) * I + 2.0 * this->outer(*this) - 2.0 * lc.contract_k(*this)) / (1.0 + rr);
 }
 
 Rotation

@@ -37,6 +37,12 @@ R3::levi_civita()
             1);
 }
 
+Scalar
+R3::operator()(TorchSize i, TorchSize j, TorchSize k) const
+{
+  return base_index({i, j, k}).unsqueeze(-1);
+}
+
 R2
 R3::contract_k(const Vector & v) const
 {

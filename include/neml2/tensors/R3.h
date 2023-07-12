@@ -46,6 +46,9 @@ public:
   static R3 levi_civita();
   /// @}
 
+  /// Accessor
+  Scalar operator()(TorchSize i, TorchSize j, TorchSize k) const;
+
   /// R3,Vector->R2 product ijk,k->ij
   R2 contract_k(const Vector & v) const;
 };
