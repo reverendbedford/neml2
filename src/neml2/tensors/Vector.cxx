@@ -34,6 +34,12 @@ Vector::init(const Scalar & v1, const Scalar & v2, const Scalar & v3)
 }
 
 Scalar
+Vector::operator()(TorchSize i) const
+{
+  return base_index({i}).unsqueeze(-1);
+}
+
+Scalar
 Vector::dot(const Vector & v) const
 {
   return torch::linalg_vecdot(*this, v).unsqueeze(-1);

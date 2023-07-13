@@ -42,6 +42,9 @@ public:
   static Vector init(const Scalar & v1, const Scalar & v2, const Scalar & v3);
   /// @}
 
+  /// Accessor
+  Scalar operator()(TorchSize i) const;
+
   /// dot product
   Scalar dot(const Vector & v) const;
 

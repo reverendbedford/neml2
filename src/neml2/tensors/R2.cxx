@@ -60,6 +60,12 @@ R2::transpose() const
   return torch::transpose(*this, -2, -1);
 }
 
+SymR2
+R2::to_symmetric() const
+{
+  return SymR2::init(*this);
+}
+
 R2
 operator*(const R2 & A, const R2 & B)
 {

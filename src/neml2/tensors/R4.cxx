@@ -54,4 +54,10 @@ R4::operator()(TorchSize i, TorchSize j, TorchSize k, TorchSize l) const
   return base_index({i, j, k, l}).unsqueeze(-1);
 }
 
+SymSymR4
+R4::to_symmetric() const
+{
+  return SymSymR4::init(*this);
+}
+
 } // namespace neml2

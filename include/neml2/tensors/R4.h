@@ -37,6 +37,9 @@ public:
 
   /// Accessor
   Scalar operator()(TorchSize i, TorchSize j, TorchSize k, TorchSize l) const;
+
+  /// Convert to a SymSymR4
+  SymSymR4 to_symmetric() const;
 };
 
 } // namespace neml2

@@ -46,9 +46,6 @@ public:
   static Rotation identity();
   /// @}
 
-  /// Accessor
-  Scalar operator()(TorchSize i) const;
-
   /// Inversion
   Rotation inverse() const;
 

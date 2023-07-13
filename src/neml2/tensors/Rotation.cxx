@@ -42,12 +42,6 @@ Rotation::identity()
   return torch::zeros({1, 3}, TorchDefaults);
 }
 
-Scalar
-Rotation::operator()(TorchSize i) const
-{
-  return base_index({i}).unsqueeze(-1);
-}
-
 Rotation
 Rotation::inverse() const
 {
@@ -60,11 +54,9 @@ Rotation::to_R2() const
   // We use the dot product twice
   auto rr = this->dot(*this);
 
-  // Hopefully the compiler  is smart enough here...
-  R2 I = R2::identity();
-  R3 lc = R3::levi_civita();
-
-  return ((1 - rr) * I + 2.0 * this->outer(*this) - 2.0 * lc.contract_k(*this)) / (1.0 + rr);
+  return ((1 - rr) * R2::identity() + 2.0 * this->outer(*this) -
+          2.0 * R3::levi_civita().contract_k(*this)) /
+         (1.0 + rr);
 }
 
 Rotation
@@ -89,7 +81,7 @@ Rotation::apply(const R2 & T) const
 SymR2
 Rotation::apply(const SymR2 & T) const
 {
-  return SymR2::init(this->apply(T.to_full()));
+  return this->apply(T.to_full()).to_symmetric();
 }
 
 R4
@@ -102,7 +94,7 @@ Rotation::apply(const R4 & T) const
 SymSymR4
 Rotation::apply(const SymSymR4 & T) const
 {
-  return SymSymR4::init_R4(this->apply(T.to_full()));
+  return this->apply(T.to_full()).to_symmetric();
 }
 
 Rotation

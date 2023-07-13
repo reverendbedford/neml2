@@ -59,7 +59,7 @@ public:
   static SymSymR4 init_identity_sym();
   static SymSymR4 init_isotropic_E_nu(const Scalar & E, const Scalar & nu);
   /// Symmetrize R4 and init this
-  static SymSymR4 init_R4(const R4 & T);
+  static SymSymR4 init(const R4 & T);
   /// @}
 
   /// Shortcut to get the full tensor

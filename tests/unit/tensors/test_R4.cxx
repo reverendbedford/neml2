@@ -49,4 +49,9 @@ TEST_CASE("R4", "[R4]")
           for (TorchSize l = 0; l < 3; l++)
             REQUIRE(torch::allclose(s(i, j, k, l), u(i, j, k, l)));
   }
+  SECTION("to_symmetric")
+  {
+    R4 u(torch::rand({1, 3, 3, 3, 3}, TorchDefaults));
+    REQUIRE(torch::allclose(SymSymR4::init(u), u.to_symmetric()));
+  }
 }

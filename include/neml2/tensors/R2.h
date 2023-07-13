@@ -53,6 +53,9 @@ public:
 
   /// transpose
   R2 transpose() const;
+
+  /// symmetrize
+  SymR2 to_symmetric() const;
 };
 
 /// Matrix-matrix product

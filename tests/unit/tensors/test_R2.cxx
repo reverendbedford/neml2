@@ -49,6 +49,12 @@ TEST_CASE("R2", "[R2]")
     REQUIRE(torch::allclose(R2::init(s), torch::ones({3, 3}, TorchDefaults)));
   }
 
+  SECTION("to_symmetric")
+  {
+    R2 u(torch::rand({1, 3, 3}, TorchDefaults));
+    REQUIRE(torch::allclose(SymR2::init(u), u.to_symmetric()));
+  }
+
   SECTION("math operations")
   {
     R2 A(torch::tensor({{{0.89072077, 0.82632195, 0.04234413},

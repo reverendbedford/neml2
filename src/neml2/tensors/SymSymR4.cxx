@@ -102,7 +102,7 @@ SymSymR4::init_isotropic_E_nu(const Scalar & E, const Scalar & nu)
 }
 
 SymSymR4
-SymSymR4::init_R4(const R4 & T)
+SymSymR4::init(const R4 & T)
 {
   SymSymR4 C;
   C = C.batch_expand_copy(T.batch_sizes());
