@@ -41,7 +41,10 @@ public:
 
   /// Named constructors
   /// @{
+  /// From a SymR2
   static R2 init(const SymR2 & sym);
+  /// Skew matrix from vector
+  static R2 init(const Vector & v);
   /// Identity
   static R2 identity();
   /// All zeros

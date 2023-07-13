@@ -42,6 +42,12 @@ Rotation::identity()
   return torch::zeros({1, 3}, TorchDefaults);
 }
 
+RotRot
+Rotation::identity_map()
+{
+  return RotRot::identity();
+}
+
 Rotation
 Rotation::inverse() const
 {
@@ -95,6 +101,12 @@ SymSymR4
 Rotation::apply(const SymSymR4 & T) const
 {
   return this->apply(T.to_full()).to_symmetric();
+}
+
+RotRot
+Rotation::dapply(const Rotation & R) const
+{
+  return RotRot::dRdR(*this, R);
 }
 
 Rotation

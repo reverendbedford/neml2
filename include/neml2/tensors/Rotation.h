@@ -30,9 +30,13 @@
 #include "neml2/tensors/SymR2.h"
 #include "neml2/tensors/R4.h"
 #include "neml2/tensors/SymSymR4.h"
+#include "neml2/tensors/RotRot.h"
 
 namespace neml2
 {
+// Forward declarations
+class RotRot;
+
 class Rotation : public Vector
 {
 public:
@@ -46,6 +50,9 @@ public:
   static Rotation identity();
   /// @}
 
+  /// The derivative of a rotation with respect to itself
+  [[nodiscard]] static RotRot identity_map();
+
   /// Inversion
   Rotation inverse() const;
 
@@ -54,6 +61,9 @@ public:
 
   /// Cross product
   using Vector::cross;
+
+  /// Outer product
+  using Vector::outer;
 
   /// Generate a rotation matrix
   // Using the Euler-Rodrigues formula
@@ -73,6 +83,12 @@ public:
   R4 apply(const R4 & T) const;
   /// Rotate a SymSymR4
   SymSymR4 apply(const SymSymR4 & T) const;
+  /// @}
+
+  /// Derivatives of the apply functions
+  /// @{
+  /// Composition of rotations
+  RotRot dapply(const Rotation & R) const;
   /// @}
 };
 

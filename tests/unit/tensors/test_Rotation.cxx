@@ -24,6 +24,7 @@
 
 #include <catch2/catch.hpp>
 
+#include "TestUtils.h"
 #include "neml2/tensors/Rotation.h"
 #include "neml2/tensors/Scalar.h"
 
@@ -530,5 +531,26 @@ TEST_CASE("Rotation", "[Rotation]")
 
       REQUIRE(torch::allclose(a.apply(T), U));
     }
+  }
+}
+
+TEST_CASE("Rotation derivatives", "[Rotation]")
+{
+  Rotation a = Rotation::init(Scalar(torch::tensor({{1.2496889}, {-2.74440729}}, TorchDefaults)),
+                              Scalar(torch::tensor({{1.62862628}, {-1.10086082}}, TorchDefaults)),
+                              Scalar(torch::tensor({{7.59575411}, {-14.83201462}}, TorchDefaults)));
+  SECTION("Rotation")
+  {
+    Rotation b =
+        Rotation::init(Scalar(torch::tensor({{-5.68010824}, {0.97525904}}, TorchDefaults)),
+                       Scalar(torch::tensor({{-2.8011194}, {0.05227498}}, TorchDefaults)),
+                       Scalar(torch::tensor({{15.25705169}, {-2.83462851}}, TorchDefaults)));
+
+    auto deriv = a.dapply(b);
+
+    RotRot nderiv(torch::zeros({2, 3, 3}, TorchDefaults));
+    finite_differencing_derivative([b](const Rotation & x) { return x.apply(b); }, a, nderiv);
+
+    REQUIRE(torch::allclose(deriv, nderiv));
   }
 }
