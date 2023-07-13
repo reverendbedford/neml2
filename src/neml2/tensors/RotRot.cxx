@@ -28,7 +28,7 @@ namespace neml2
 {
 
 RotRot
-RotRot::dRdR(const Rotation & a, const Rotation & b)
+RotRot::derivative(const Rotation & a, const Rotation & b)
 {
   return 1.0 / (1.0 - a.dot(b)) * (R2::identity() - R2::init(b) + a.apply(b).outer(b));
 }

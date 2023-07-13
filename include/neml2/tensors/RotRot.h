@@ -39,7 +39,7 @@ public:
   using R2::R2;
 
   /// init providing dR1/dR2
-  static RotRot dRdR(const Rotation & a, const Rotation & b);
+  static RotRot derivative(const Rotation & a, const Rotation & b);
 };
 
 } // namespace neml2

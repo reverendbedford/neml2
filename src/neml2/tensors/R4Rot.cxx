@@ -22,51 +22,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/tensors/Vector.h"
-#include "neml2/misc/utils.h"
+#include "neml2/tensors/R4Rot.h"
 
-namespace neml2 {
-
-Vector
-Vector::init(const Scalar & v1, const Scalar & v2, const Scalar & v3)
+namespace neml2
 {
-  return torch::cat({v1, v2, v3}, -1);
-}
 
-Scalar
-Vector::operator()(TorchSize i) const
+R4Rot
+R4Rot::derivative(const Rotation & r, const R4 & T)
 {
-  return base_index({i}).unsqueeze(-1);
-}
+  R2 R = r.to_R2();
+  R3 F = r.dR2();
 
-Scalar
-Vector::dot(const Vector & v) const
-{
-  return torch::linalg_vecdot(*this, v).unsqueeze(-1);
-}
-
-Vector
-Vector::cross(const Vector & v) const
-{
-  return torch::linalg_cross(*this, v);
-}
-
-R2
-Vector::outer(const Vector & v) const
-{
-  return einsum({*this,v}, {"i","j"}); 
-}
-
-Vector
-operator*(const Vector & a, const Scalar & b)
-{
-  return torch::operator*(a, b);
-}
-
-Vector
-operator*(const Scalar & a, const Vector & b)
-{
-  return b * a;
+  return (einsum({R, R, R, T, F}, {"jn", "ko", "lp", "mnop", "imt"}, "ijklt") +
+          einsum({R, R, R, T, F}, {"im", "ko", "lp", "mnop", "jnt"}, "ijklt") +
+          einsum({R, R, R, T, F}, {"im", "jn", "lp", "mnop", "kot"}, "ijklt") +
+          einsum({R, R, R, T, F}, {"im", "jn", "ko", "mnop", "lpt"}, "ijklt"));
 }
 
 } // namespace neml2

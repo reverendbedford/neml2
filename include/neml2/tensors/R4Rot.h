@@ -22,51 +22,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/tensors/Vector.h"
-#include "neml2/misc/utils.h"
+#pragma once
 
-namespace neml2 {
+#include "neml2/tensors/FixedDimTensor.h"
+#include "neml2/tensors/R4.h"
+#include "neml2/tensors/Rotation.h"
 
-Vector
-Vector::init(const Scalar & v1, const Scalar & v2, const Scalar & v3)
+namespace neml2
 {
-  return torch::cat({v1, v2, v3}, -1);
-}
+// Forward declarations
+class Rotation;
+class R4;
 
-Scalar
-Vector::operator()(TorchSize i) const
+class R4Rot : public FixedDimTensor<1, 3, 3, 3, 3, 3>
 {
-  return base_index({i}).unsqueeze(-1);
-}
+public:
+  using FixedDimTensor<1, 3, 3, 3, 3, 3>::FixedDimTensor;
 
-Scalar
-Vector::dot(const Vector & v) const
-{
-  return torch::linalg_vecdot(*this, v).unsqueeze(-1);
-}
-
-Vector
-Vector::cross(const Vector & v) const
-{
-  return torch::linalg_cross(*this, v);
-}
-
-R2
-Vector::outer(const Vector & v) const
-{
-  return einsum({*this,v}, {"i","j"}); 
-}
-
-Vector
-operator*(const Vector & a, const Scalar & b)
-{
-  return torch::operator*(a, b);
-}
-
-Vector
-operator*(const Scalar & a, const Vector & b)
-{
-  return b * a;
-}
+  /// init providing d(rT)/d(r)
+  static R4Rot derivative(const Rotation & r, const R4 & T);
+};
 
 } // namespace neml2

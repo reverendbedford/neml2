@@ -54,4 +54,11 @@ public:
   /// outer product
   R2 outer(const Vector & v) const;
 };
+
+/// Vector-scalar product
+Vector operator*(const Vector & a, const Scalar & b);
+
+/// Scalar-vector product
+Vector operator*(const Scalar & a, const Vector & b);
+
 } // namespace neml2

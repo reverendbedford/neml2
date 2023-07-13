@@ -31,11 +31,18 @@
 #include "neml2/tensors/R4.h"
 #include "neml2/tensors/SymSymR4.h"
 #include "neml2/tensors/RotRot.h"
+#include "neml2/tensors/VecRot.h"
+#include "neml2/tensors/R2Rot.h"
+#include "neml2/tensors/R4Rot.h"
+#include "neml2/tensors/R3.h"
 
 namespace neml2
 {
 // Forward declarations
 class RotRot;
+class VecRot;
+class R2Rot;
+class R4Rot;
 
 class Rotation : public Vector
 {
@@ -65,9 +72,14 @@ public:
   /// Outer product
   using Vector::outer;
 
-  /// Generate a rotation matrix
-  // Using the Euler-Rodrigues formula
+  /// Norm squared
+  Scalar n2() const;
+
+  /// Generate a rotation matrix using the Euler-Rodrigues formula
   R2 to_R2() const;
+
+  /// d(to_R2)/d(r) -- useful in constructing other derivatives
+  R3 dR2() const;
 
   /// Apply a rotation to various things
   /// @{
@@ -89,6 +101,12 @@ public:
   /// @{
   /// Composition of rotations
   RotRot dapply(const Rotation & R) const;
+  /// Vector rotation
+  VecRot dapply(const Vector & v) const;
+  /// R2 rotation
+  R2Rot dapply(const R2 & T) const;
+  /// R4 rotation
+  R4Rot dapply(const R4 & T) const;
   /// @}
 };
 

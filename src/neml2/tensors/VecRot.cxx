@@ -22,51 +22,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/tensors/Vector.h"
-#include "neml2/misc/utils.h"
+#include "neml2/tensors/VecRot.h"
 
-namespace neml2 {
-
-Vector
-Vector::init(const Scalar & v1, const Scalar & v2, const Scalar & v3)
+namespace neml2
 {
-  return torch::cat({v1, v2, v3}, -1);
-}
 
-Scalar
-Vector::operator()(TorchSize i) const
+VecRot
+VecRot::derivative(const Rotation & r, const Vector & v)
 {
-  return base_index({i}).unsqueeze(-1);
-}
+  auto rr = r.n2();
+  auto rv = r.apply(v);
 
-Scalar
-Vector::dot(const Vector & v) const
-{
-  return torch::linalg_vecdot(*this, v).unsqueeze(-1);
-}
-
-Vector
-Vector::cross(const Vector & v) const
-{
-  return torch::linalg_cross(*this, v);
-}
-
-R2
-Vector::outer(const Vector & v) const
-{
-  return einsum({*this,v}, {"i","j"}); 
-}
-
-Vector
-operator*(const Vector & a, const Scalar & b)
-{
-  return torch::operator*(a, b);
-}
-
-Vector
-operator*(const Scalar & a, const Vector & b)
-{
-  return b * a;
+  return 2 * (-rv.outer(r) - v.outer(r) + r.outer(v) + r.dot(v) * R2::identity() - R2::init(v)) /
+         (1 + rr);
 }
 
 } // namespace neml2

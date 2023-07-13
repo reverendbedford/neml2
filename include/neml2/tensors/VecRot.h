@@ -22,51 +22,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#pragma once
+
+#include "neml2/tensors/R2.h"
+#include "neml2/tensors/Rotation.h"
 #include "neml2/tensors/Vector.h"
-#include "neml2/misc/utils.h"
 
-namespace neml2 {
-
-Vector
-Vector::init(const Scalar & v1, const Scalar & v2, const Scalar & v3)
+namespace neml2
 {
-  return torch::cat({v1, v2, v3}, -1);
-}
+// Forward declarations
+class Rotation;
 
-Scalar
-Vector::operator()(TorchSize i) const
+class VecRot : public R2
 {
-  return base_index({i}).unsqueeze(-1);
-}
+public:
+  using R2::identity;
+  using R2::R2;
 
-Scalar
-Vector::dot(const Vector & v) const
-{
-  return torch::linalg_vecdot(*this, v).unsqueeze(-1);
-}
-
-Vector
-Vector::cross(const Vector & v) const
-{
-  return torch::linalg_cross(*this, v);
-}
-
-R2
-Vector::outer(const Vector & v) const
-{
-  return einsum({*this,v}, {"i","j"}); 
-}
-
-Vector
-operator*(const Vector & a, const Scalar & b)
-{
-  return torch::operator*(a, b);
-}
-
-Vector
-operator*(const Scalar & a, const Vector & b)
-{
-  return b * a;
-}
+  /// init providing d(Rv) / d(R)
+  static VecRot derivative(const Rotation & r, const Vector & v);
+};
 
 } // namespace neml2

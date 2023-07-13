@@ -54,15 +54,31 @@ Rotation::inverse() const
   return -torch::Tensor(*this);
 }
 
+Scalar
+Rotation::n2() const
+{
+  return this->dot(*this);
+}
+
 R2
 Rotation::to_R2() const
 {
   // We use the dot product twice
-  auto rr = this->dot(*this);
+  auto rr = this->n2();
 
   return ((1 - rr) * R2::identity() + 2.0 * this->outer(*this) -
           2.0 * R3::levi_civita().contract_k(*this)) /
          (1.0 + rr);
+}
+
+R3
+Rotation::dR2() const
+{
+  return torch::Tensor(2.0 / (1 + this->n2())).unsqueeze(-1).unsqueeze(-1) *
+         (-einsum({this->to_R2(), *this}, {"ij", "m"}) -
+          einsum({R2::identity(), *this}, {"ij", "m"}) +
+          einsum({R2::identity(), *this}, {"im", "j"}) +
+          einsum({R2::identity(), *this}, {"jm", "i"}) - torch::Tensor(R3::levi_civita()));
 }
 
 Rotation
@@ -74,7 +90,10 @@ Rotation::apply(const Rotation & R) const
 Vector
 Rotation::apply(const Vector & v) const
 {
-  return (this->to_R2()) * v;
+  // Use twice...
+  auto rr = this->n2();
+
+  return ((1 - rr) * v + 2 * this->dot(v) * Vector(*this) - 2 * v.cross(*this)) / (1 + rr);
 }
 
 R2
@@ -106,7 +125,25 @@ Rotation::apply(const SymSymR4 & T) const
 RotRot
 Rotation::dapply(const Rotation & R) const
 {
-  return RotRot::dRdR(*this, R);
+  return RotRot::derivative(*this, R);
+}
+
+VecRot
+Rotation::dapply(const Vector & v) const
+{
+  return VecRot::derivative(*this, v);
+}
+
+R2Rot
+Rotation::dapply(const R2 & T) const
+{
+  return R2Rot::derivative(*this, T);
+}
+
+R4Rot
+Rotation::dapply(const R4 & T) const
+{
+  return R4Rot::derivative(*this, T);
 }
 
 Rotation
