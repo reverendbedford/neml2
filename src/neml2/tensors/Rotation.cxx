@@ -140,10 +140,22 @@ Rotation::dapply(const R2 & T) const
   return R2Rot::derivative(*this, T);
 }
 
+SymR2Rot
+Rotation::dapply(const SymR2 & T) const
+{
+  return SymR2Rot::derivative(*this, T);
+}
+
 R4Rot
 Rotation::dapply(const R4 & T) const
 {
   return R4Rot::derivative(*this, T);
+}
+
+SymSymR4Rot
+Rotation::dapply(const SymSymR4 & T) const
+{
+  return SymSymR4Rot::derivative(*this, T);
 }
 
 Rotation

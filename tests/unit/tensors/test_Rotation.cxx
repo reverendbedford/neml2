@@ -594,6 +594,22 @@ TEST_CASE("Rotation derivatives", "[Rotation]")
     REQUIRE(torch::allclose(deriv, nderiv));
   }
 
+  SECTION("SymR2")
+  {
+    SymR2 T = SymR2(
+        torch::tensor({{1.0, 5.0, 9.0, 9.89949494, 7.07106781, 4.24264069},
+                       {0.75358893, 0.02714332, 0.32255212, 0.0489869, 0.57781672, 1.19529574}},
+                      TorchDefaults));
+
+    auto deriv = a.dapply(T);
+
+    SymR2Rot nderiv(torch::zeros({2, 6, 3}, TorchDefaults));
+
+    finite_differencing_derivative([T](const Rotation & x) { return x.apply(T); }, a, nderiv);
+
+    REQUIRE(torch::allclose(deriv, nderiv));
+  }
+
   SECTION("R4")
   {
     R4 T = R4(torch::tensor({{{{{0.66112296, 0.67364277, 0.52908828},
@@ -655,6 +671,31 @@ TEST_CASE("Rotation derivatives", "[Rotation]")
     auto deriv = a.dapply(T);
 
     R4Rot nderiv(torch::zeros({2, 3, 3, 3, 3, 3}, TorchDefaults));
+    finite_differencing_derivative([T](const Rotation & x) { return x.apply(T); }, a, nderiv);
+
+    REQUIRE(torch::allclose(deriv, nderiv, 1.0e-5, 1.0e-6));
+  }
+
+  SECTION("SymSymR4")
+  {
+    SymSymR4 T = SymSymR4(
+        torch::tensor({{{0.66086749, 0.26509302, 0.55764353, 0.27368709, 0.16527339, 0.18229984},
+                        {0.2164092, 0.7357522, 0.29142165, 0.64753131, 0.96644071, 0.7476113},
+                        {0.49247497, 0.8989371, 0.56977659, 0.45106647, 0.07075565, 0.20201865},
+                        {0.83117451, 0.4132504, 0.92118474, 0.81776138, 0.16917866, 0.85560904},
+                        {0.63618107, 0.80588965, 0.53258787, 0.45440311, 0.7853135, 0.1011699},
+                        {0.78730947, 0.38979234, 0.61653301, 0.98293833, 0.90139196, 0.08489829}},
+                       {{0.58211988, 0.56829733, 0.43238483, 0.46453731, 0.55171921, 0.17102725},
+                        {0.82011537, 0.41480093, 0.21082344, 0.95489709, 0.913773, 0.00713299},
+                        {0.31059774, 0.6545394, 0.3989269, 0.20001392, 0.16379315, 0.81503173},
+                        {0.75936217, 0.35572537, 0.93633873, 0.44523008, 0.4224959, 0.04536747},
+                        {0.10988032, 0.61270372, 0.18945179, 0.57744553, 0.13433775, 0.12427013},
+                        {0.40457772, 0.51711479, 0.01738209, 0.05842261, 0.53167335, 0.48339826}}},
+                      TorchDefaults));
+
+    auto deriv = a.dapply(T);
+
+    SymSymR4Rot nderiv(torch::zeros({2, 6, 6, 3}, TorchDefaults));
     finite_differencing_derivative([T](const Rotation & x) { return x.apply(T); }, a, nderiv);
 
     REQUIRE(torch::allclose(deriv, nderiv, 1.0e-5, 1.0e-6));

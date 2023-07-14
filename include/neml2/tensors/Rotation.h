@@ -35,6 +35,8 @@
 #include "neml2/tensors/R2Rot.h"
 #include "neml2/tensors/R4Rot.h"
 #include "neml2/tensors/R3.h"
+#include "neml2/tensors/SymR2Rot.h"
+#include "neml2/tensors/SymSymR4Rot.h"
 
 namespace neml2
 {
@@ -43,6 +45,8 @@ class RotRot;
 class VecRot;
 class R2Rot;
 class R4Rot;
+class SymR2Rot;
+class SymSymR4Rot;
 
 class Rotation : public Vector
 {
@@ -105,8 +109,12 @@ public:
   VecRot dapply(const Vector & v) const;
   /// R2 rotation
   R2Rot dapply(const R2 & T) const;
+  /// SymR2 rotation
+  SymR2Rot dapply(const SymR2 & T) const;
   /// R4 rotation
   R4Rot dapply(const R4 & T) const;
+  /// SymSymR4 rotation
+  SymSymR4Rot dapply(const SymSymR4 & T) const;
   /// @}
 };
 
