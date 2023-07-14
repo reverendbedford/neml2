@@ -25,7 +25,8 @@
 #include "neml2/tensors/Vector.h"
 #include "neml2/misc/utils.h"
 
-namespace neml2 {
+namespace neml2
+{
 
 Vector
 Vector::init(const Scalar & v1, const Scalar & v2, const Scalar & v3)
@@ -54,7 +55,7 @@ Vector::cross(const Vector & v) const
 R2
 Vector::outer(const Vector & v) const
 {
-  return einsum({*this,v}, {"i","j"}); 
+  return einsum({*this, v}, {"i", "j"});
 }
 
 Vector

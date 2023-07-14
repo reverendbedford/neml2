@@ -46,7 +46,7 @@ R3::operator()(TorchSize i, TorchSize j, TorchSize k) const
 R2
 R3::contract_k(const Vector & v) const
 {
-  return einsum({*this,v},{"ijk","k"});
+  return einsum({*this, v}, {"ijk", "k"});
 }
 
 } // namespace neml2

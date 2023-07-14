@@ -1,3 +1,9 @@
+// Copyright 2023, UChicago Argonne, LLC
+// All Rights Reserved
+// Software Name: NEML2 -- the New Engineering material Model Library, version 2
+// By: Argonne National Laboratory
+// OPEN SOURCE LICENSE (MIT)
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights

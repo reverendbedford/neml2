@@ -74,8 +74,8 @@ SymR2::init(const Scalar & a11,
 SymR2
 SymR2::init(const R2 & T)
 {
-  R2 S = 0.5*(T + T.transpose());
-  return SymR2::init(S(0,0), S(1,1), S(2,2), S(1,2), S(0,2), S(0,1));
+  R2 S = 0.5 * (T + T.transpose());
+  return SymR2::init(S(0, 0), S(1, 1), S(2, 2), S(1, 2), S(0, 2), S(0, 1));
 }
 
 SymR2

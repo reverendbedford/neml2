@@ -167,15 +167,13 @@ TEST_CASE("Rotation", "[Rotation]")
   {
     SECTION("unbatched")
     {
-      Rotation a = Rotation::init(Scalar(1.2496889), Scalar(1.62862628), Scalar(7.59575411)); 
-      R2 T = R2(torch::tensor({{
-                              {1.0,2.0,3.0},
-                              {4.0,5.0,6.0},
-                              {7.0,8.0,9.0}}}, TorchDefaults));
-      R2 U = R2(torch::tensor({{
-                              {-1.02332, -0.0592151, -0.290549},
-                              {0.440785, 0.208734, -1.65399},
-                              {-5.14556, -2.0769, 15.8146}}}, TorchDefaults));
+      Rotation a = Rotation::init(Scalar(1.2496889), Scalar(1.62862628), Scalar(7.59575411));
+      R2 T =
+          R2(torch::tensor({{{1.0, 2.0, 3.0}, {4.0, 5.0, 6.0}, {7.0, 8.0, 9.0}}}, TorchDefaults));
+      R2 U = R2(torch::tensor({{{-1.02332, -0.0592151, -0.290549},
+                                {0.440785, 0.208734, -1.65399},
+                                {-5.14556, -2.0769, 15.8146}}},
+                              TorchDefaults));
       REQUIRE(torch::allclose(a.apply(T), U));
     }
 
@@ -203,11 +201,9 @@ TEST_CASE("Rotation", "[Rotation]")
   {
     SECTION("unbatched")
     {
-      Rotation a = Rotation::init(Scalar(1.2496889), Scalar(1.62862628), Scalar(7.59575411)); 
-      SymR2 T = SymR2::init(R2(torch::tensor({{
-                              {1.0,2.0,3.0},
-                              {4.0,5.0,6.0},
-                              {7.0,8.0,9.0}}}, TorchDefaults)));
+      Rotation a = Rotation::init(Scalar(1.2496889), Scalar(1.62862628), Scalar(7.59575411));
+      SymR2 T = SymR2::init(
+          R2(torch::tensor({{{1.0, 2.0, 3.0}, {4.0, 5.0, 6.0}, {7.0, 8.0, 9.0}}}, TorchDefaults)));
       SymR2 U = SymR2::init(-1.02332, 0.208734, 15.8146, -1.86545, -2.71806, 0.190785);
       REQUIRE(torch::allclose(a.apply(T), U));
     }
