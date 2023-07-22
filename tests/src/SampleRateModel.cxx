@@ -74,17 +74,16 @@ SampleRateModel::set_value(const LabeledVector & in,
   if (dout_din)
   {
     const auto options = in.options();
-    const auto nbatch = in.batch_size();
 
     auto dfoo_dot_dfoo = 2 * foo * T;
     auto dfoo_dot_dbar = T;
-    auto dfoo_dot_dbaz = SymR2::identity(options).batch_expand(nbatch);
-    auto dbar_dot_dfoo = Scalar(-0.5, options).batch_expand(nbatch);
-    auto dbar_dot_dbar = Scalar(-0.01, options).batch_expand(nbatch);
-    auto dbar_dot_dbaz = SymR2::identity(options).batch_expand(nbatch);
+    auto dfoo_dot_dbaz = SymR2::identity(options);
+    auto dbar_dot_dfoo = Scalar(-0.5, options);
+    auto dbar_dot_dbar = Scalar(-0.01, options);
+    auto dbar_dot_dbaz = SymR2::identity(options);
     auto dbaz_dot_dfoo = baz * (T - 3);
     auto dbaz_dot_dbar = baz * (T - 3);
-    auto dbaz_dot_dbaz = (foo + bar) * (T - 3) * SymR2::identity_map(options).batch_expand(nbatch);
+    auto dbaz_dot_dbaz = (foo + bar) * (T - 3) * SymR2::identity_map(options);
 
     dout_din->set(dfoo_dot_dfoo, _foo_rate, _foo);
     dout_din->set(dfoo_dot_dbar, _foo_rate, _bar);
@@ -97,7 +96,7 @@ SampleRateModel::set_value(const LabeledVector & in,
     dout_din->set(dbaz_dot_dbaz, _baz_rate, _baz);
 
     auto dfoo_dot_dT = foo * foo + bar;
-    auto dbar_dot_dT = Scalar(-0.9, options).batch_expand(nbatch);
+    auto dbar_dot_dT = Scalar(-0.9, options);
     auto dbaz_dot_dT = (foo + bar) * baz;
 
     dout_din->set(dfoo_dot_dT, _foo_rate, _temperature);

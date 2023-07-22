@@ -35,7 +35,7 @@ protected:
   virtual void set_value(const neml2::LabeledVector & in,
                          neml2::LabeledVector * out,
                          neml2::LabeledMatrix * dout_din = nullptr,
-                         neml2::LabeledTensor3D * d2out_din2 = nullptr) const;
+                         neml2::LabeledTensor3D * d2out_din2 = nullptr) const override;
 
   const neml2::LabeledAxisAccessor _foo;
   const neml2::LabeledAxisAccessor _bar;

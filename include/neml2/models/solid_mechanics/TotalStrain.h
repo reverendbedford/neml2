@@ -35,14 +35,17 @@ public:
 
   TotalStrain(const ParameterSet & params);
 
-  const LabeledAxisAccessor elastic_strain;
-  const LabeledAxisAccessor plastic_strain;
-  const LabeledAxisAccessor total_strain;
-
 protected:
   void set_value(const LabeledVector & in,
                  LabeledVector * out,
                  LabeledMatrix * dout_din = nullptr,
-                 LabeledTensor3D * d2out_din2 = nullptr) const;
+                 LabeledTensor3D * d2out_din2 = nullptr) const override;
+
+  const bool _rate_form;
+
+public:
+  const LabeledAxisAccessor elastic_strain;
+  const LabeledAxisAccessor plastic_strain;
+  const LabeledAxisAccessor total_strain;
 };
 } // namespace neml2

@@ -89,12 +89,14 @@
     force = 'E'
   []
   [Eerate]
-    type = ElasticStrainRate
+    type = ElasticStrain
+    rate_form = true
   []
   [elasticity]
-    type = CauchyStressRateFromElasticStrainRate
+    type = LinearElasticity
     E = 124000
     nu = 0.32
+    rate_form = true
   []
   [integrate_stress]
     type = SymR2BackwardEulerTimeIntegration

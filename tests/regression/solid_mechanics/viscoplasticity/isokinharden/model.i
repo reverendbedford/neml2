@@ -99,12 +99,14 @@
     force = 'E'
   []
   [Eerate]
-    type = ElasticStrainRate
+    type = ElasticStrain
+    rate_form = true
   []
   [elasticity]
-    type = CauchyStressRateFromElasticStrainRate
+    type = LinearElasticity
     E = 1e5
     nu = 0.3
+    rate_form = true
   []
   [integrate_ep]
     type = ScalarBackwardEulerTimeIntegration

@@ -53,7 +53,7 @@
     type = ElasticStrain
   []
   [elasticity]
-    type = CauchyStressFromElasticStrain
+    type = LinearElasticity
     E = 1e5
     nu = 0.3
   []

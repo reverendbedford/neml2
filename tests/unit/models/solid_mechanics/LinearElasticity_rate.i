@@ -3,10 +3,10 @@
     type = ModelUnitTest
     model = 'model'
     nbatch = 10
-    input_symr2_names = 'state/S_rate'
-    input_symr2_values = 'S_rate'
-    output_symr2_names = 'state/internal/Ee_rate'
-    output_symr2_values = 'Ee_rate'
+    input_symr2_names = 'state/internal/Ee_rate'
+    input_symr2_values = 'Ee_rate'
+    output_symr2_names = 'state/S_rate'
+    output_symr2_values = 'S_rate'
   []
 []
 
@@ -23,8 +23,9 @@
 
 [Models]
   [model]
-    type = ElasticStrainRateFromCauchyStressRate
+    type = LinearElasticity
     E = 100
     nu = 0.3
+    rate_form = true
   []
 []

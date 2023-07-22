@@ -27,6 +27,7 @@
 
 [Models]
   [model]
-    type = TotalStrainRate
+    type = TotalStrain
+    rate_form = true
   []
 []

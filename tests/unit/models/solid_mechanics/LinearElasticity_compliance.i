@@ -23,8 +23,9 @@
 
 [Models]
   [model]
-    type = ElasticStrainFromCauchyStress
+    type = LinearElasticity
     E = 100
     nu = 0.3
+    compliance = true
   []
 []

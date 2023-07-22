@@ -45,7 +45,7 @@ protected:
   virtual void set_value(const LabeledVector & in,
                          LabeledVector * out,
                          LabeledMatrix * dout_din = nullptr,
-                         LabeledTensor3D * d2out_din2 = nullptr) const;
+                         LabeledTensor3D * d2out_din2 = nullptr) const override;
 
   /// Yield stress
   Scalar _s0;

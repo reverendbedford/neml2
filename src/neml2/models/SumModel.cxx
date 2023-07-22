@@ -72,7 +72,7 @@ SumModel<T>::set_value(const LabeledVector & in,
   if (dout_din)
   {
     for (auto fv : from)
-      dout_din->set(T::identity_map(options).batch_expand(nbatch), to, fv);
+      dout_din->set(T::identity_map(options), to, fv);
   }
 
   if (d2out_din2)

@@ -54,7 +54,7 @@
     total_strain = 'state/E'
   []
   [elasticity]
-    type = CauchyStressFromElasticStrain
+    type = LinearElasticity
     E = 1e5
     nu = 0.3
   []
@@ -99,13 +99,16 @@
     force = 'S'
   []
   [Eerate]
-    type = ElasticStrainRateFromCauchyStressRate
-    from = 'forces/S_rate'
+    type = LinearElasticity
+    stress = 'forces/S'
     E = 1e5
     nu = 0.3
+    rate_form = true
+    compliance = true
   []
   [Erate]
-    type = TotalStrainRate
+    type = TotalStrain
+    rate_form = true
   []
 
   [integrate_ep]

@@ -62,7 +62,6 @@ BackwardEulerTimeIntegration<T>::set_value(const LabeledVector & in,
                                            LabeledTensor3D * d2out_din2) const
 {
   const auto options = in.options();
-  TorchSize nbatch = in.batch_size();
 
   auto s_dot = in(var_rate);
   auto dt = in.get<Scalar>(time) - in.get<Scalar>(time_n);
@@ -78,7 +77,7 @@ BackwardEulerTimeIntegration<T>::set_value(const LabeledVector & in,
   if (dout_din || d2out_din2)
   {
     auto n_state = output().storage_size(res);
-    auto I = BatchTensor<1>::identity(n_state, options).batch_expand(nbatch);
+    auto I = BatchTensor<1>::identity(n_state, options);
 
     if (dout_din)
     {

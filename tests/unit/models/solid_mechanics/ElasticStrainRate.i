@@ -27,6 +27,7 @@
 
 [Models]
   [model]
-    type = ElasticStrainRate
+    type = ElasticStrain
+    rate_form = true
   []
 []

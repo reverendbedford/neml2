@@ -61,7 +61,7 @@ IdentityMap<T>::set_value(const LabeledVector & in,
 
   if (dout_din)
   {
-    auto I = T::identity_map(in.options()).batch_expand(in.batch_size());
+    auto I = T::identity_map(in.options());
     dout_din->set(I, to, from);
   }
 

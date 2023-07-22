@@ -36,16 +36,19 @@ TotalStrain::expected_params()
   params.set<LabeledAxisAccessor>("elastic_strain") = {{"state", "internal", "Ee"}};
   params.set<LabeledAxisAccessor>("plastic_strain") = {{"state", "internal", "Ep"}};
   params.set<LabeledAxisAccessor>("total_strain") = {{"state", "E"}};
+  params.set<bool>("rate_form") = false;
   return params;
 }
 
 TotalStrain::TotalStrain(const ParameterSet & params)
   : Model(params),
-    elastic_strain(
-        declare_input_variable<SymR2>(params.get<LabeledAxisAccessor>("elastic_strain"))),
-    plastic_strain(
-        declare_input_variable<SymR2>(params.get<LabeledAxisAccessor>("plastic_strain"))),
-    total_strain(declare_output_variable<SymR2>(params.get<LabeledAxisAccessor>("total_strain")))
+    _rate_form(params.get<bool>("rate_form")),
+    elastic_strain(declare_input_variable<SymR2>(
+        params.get<LabeledAxisAccessor>("elastic_strain").with_suffix(_rate_form ? "_rate" : ""))),
+    plastic_strain(declare_input_variable<SymR2>(
+        params.get<LabeledAxisAccessor>("plastic_strain").with_suffix(_rate_form ? "_rate" : ""))),
+    total_strain(declare_output_variable<SymR2>(
+        params.get<LabeledAxisAccessor>("total_strain").with_suffix(_rate_form ? "_rate" : "")))
 {
   this->setup();
 }

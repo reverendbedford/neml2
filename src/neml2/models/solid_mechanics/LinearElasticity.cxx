@@ -26,79 +26,59 @@
 
 namespace neml2
 {
-register_NEML2_object(CauchyStressFromElasticStrain);
-register_NEML2_object(CauchyStressRateFromElasticStrainRate);
-register_NEML2_object(ElasticStrainFromCauchyStress);
-register_NEML2_object(ElasticStrainRateFromCauchyStressRate);
+register_NEML2_object(LinearElasticity);
 
-template <bool rate, ElasticityType etype>
 ParameterSet
-LinearElasticity<rate, etype>::expected_params()
+LinearElasticity::expected_params()
 {
   ParameterSet params = Model::expected_params();
-  params.set<Real>("E");
-  params.set<Real>("nu");
-  if constexpr (etype == ElasticityType::STIFFNESS)
-  {
-    params.set<LabeledAxisAccessor>("from") = {{"state", "internal", "Ee"}};
-    params.set<LabeledAxisAccessor>("to") = {{"state", "S"}};
-  }
-  if constexpr (etype == ElasticityType::COMPLIANCE)
-  {
-    params.set<LabeledAxisAccessor>("from") = {{"state", "S"}};
-    params.set<LabeledAxisAccessor>("to") = {{"state", "internal", "Ee"}};
-  }
-  if constexpr (rate)
-  {
-    params.set<LabeledAxisAccessor>("from") =
-        params.get<LabeledAxisAccessor>("from").with_suffix("_rate");
-    params.set<LabeledAxisAccessor>("to") =
-        params.get<LabeledAxisAccessor>("to").with_suffix("_rate");
-  }
+  params.set<CrossRef<Scalar>>("E");
+  params.set<CrossRef<Scalar>>("nu");
+  params.set<LabeledAxisAccessor>("strain") = {{"state", "internal", "Ee"}};
+  params.set<LabeledAxisAccessor>("stress") = {{"state", "S"}};
+  params.set<bool>("compliance") = false;
+  params.set<bool>("rate_form") = false;
   return params;
 }
 
-template <bool rate, ElasticityType etype>
-LinearElasticity<rate, etype>::LinearElasticity(const ParameterSet & params)
+LinearElasticity::LinearElasticity(const ParameterSet & params)
   : Model(params),
-    from(declare_input_variable<SymR2>(params.get<LabeledAxisAccessor>("from"))),
-    to(declare_output_variable<SymR2>(params.get<LabeledAxisAccessor>("to"))),
-    _T(register_parameter("elasticity_tensor", T(params.get<Real>("E"), params.get<Real>("nu"))))
+    _E(register_parameter(name() + "_E", params.get<CrossRef<Scalar>>("E"))),
+    _nu(register_parameter(name() + "_nu", params.get<CrossRef<Scalar>>("nu"))),
+    _compliance(params.get<bool>("compliance")),
+    _rate_form(params.get<bool>("rate_form")),
+    _strain(params.get<LabeledAxisAccessor>("strain").with_suffix(_rate_form ? "_rate" : "")),
+    _stress(params.get<LabeledAxisAccessor>("stress").with_suffix(_rate_form ? "_rate" : "")),
+    from(declare_input_variable<SymR2>(_compliance ? _stress : _strain)),
+    to(declare_output_variable<SymR2>(_compliance ? _strain : _stress))
 {
   setup();
+
+  _T = transformation_tensor();
 }
 
-template <bool rate, ElasticityType etype>
 SymSymR4
-LinearElasticity<rate, etype>::T(Scalar E, Scalar nu) const
+LinearElasticity::transformation_tensor() const
 {
-  if constexpr (etype == ElasticityType::STIFFNESS)
-    return SymSymR4::init_isotropic_E_nu(E, nu);
-  if constexpr (etype == ElasticityType::COMPLIANCE)
-    return SymSymR4::init_isotropic_E_nu(E, nu).inverse();
+  auto T = SymSymR4::init_isotropic_E_nu(_E, _nu);
+  return _compliance ? T.inverse() : T;
 }
 
-template <bool rate, ElasticityType etype>
 void
-LinearElasticity<rate, etype>::set_value(const LabeledVector & in,
-                                         LabeledVector * out,
-                                         LabeledMatrix * dout_din,
-                                         LabeledTensor3D * d2out_din2) const
+LinearElasticity::set_value(const LabeledVector & in,
+                            LabeledVector * out,
+                            LabeledMatrix * dout_din,
+                            LabeledTensor3D * d2out_din2) const
 {
   if (out)
     out->set(_T * in.get<SymR2>(from), to);
 
   if (dout_din)
-    dout_din->set(_T.batch_expand(in.batch_size()), to, from);
+    dout_din->set(_T, to, from);
 
   if (d2out_din2)
   {
     // zero
   }
 }
-
-template class LinearElasticity<false, ElasticityType::STIFFNESS>;
-template class LinearElasticity<false, ElasticityType::COMPLIANCE>;
-template class LinearElasticity<true, ElasticityType::STIFFNESS>;
-template class LinearElasticity<true, ElasticityType::COMPLIANCE>;
 } // namespace neml2
