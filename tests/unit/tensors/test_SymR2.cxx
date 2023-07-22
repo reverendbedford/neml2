@@ -85,7 +85,7 @@ TEST_CASE("SymR2", "[SymR2]")
       Scalar a12(-9.1);
       SymR2 result = SymR2::init(a11, a22, a33, a23, a13, a12);
       SymR2 correct(torch::tensor(
-          {{2.3, -1.3, 5.6, utils::sqrt2 * 3.8, utils::sqrt2 * 1.1, utils::sqrt2 * -9.1}},
+          {{2.3, -1.3, 5.6, math::sqrt2 * 3.8, math::sqrt2 * 1.1, math::sqrt2 * -9.1}},
           default_tensor_options));
       REQUIRE(torch::allclose(result, correct));
     }
@@ -98,10 +98,10 @@ TEST_CASE("SymR2", "[SymR2]")
       Scalar a13(torch::tensor({{1.1}, {5.5}}, default_tensor_options));
       Scalar a12(torch::tensor({{-9.1}, {3.1}}, default_tensor_options));
       SymR2 result = SymR2::init(a11, a22, a33, a23, a13, a12);
-      SymR2 correct(torch::tensor(
-          {{2.3, -1.3, 5.6, utils::sqrt2 * 3.8, utils::sqrt2 * 1.1, utils::sqrt2 * -9.1},
-           {3.4, 6.4, -1.1, utils::sqrt2 * 1.2, utils::sqrt2 * 5.5, utils::sqrt2 * 3.1}},
-          default_tensor_options));
+      SymR2 correct(
+          torch::tensor({{2.3, -1.3, 5.6, math::sqrt2 * 3.8, math::sqrt2 * 1.1, math::sqrt2 * -9.1},
+                         {3.4, 6.4, -1.1, math::sqrt2 * 1.2, math::sqrt2 * 5.5, math::sqrt2 * 3.1}},
+                        default_tensor_options));
       REQUIRE(torch::allclose(result, correct));
     }
   }
@@ -117,14 +117,13 @@ TEST_CASE("SymR2", "[SymR2]")
     SECTION("unbatched")
     {
       Scalar result = A_unbatched(1, 2);
-      Scalar correct(3 / utils::sqrt2);
+      Scalar correct(3 / math::sqrt2);
       REQUIRE(torch::allclose(result, correct));
     }
     SECTION("batched")
     {
       Scalar result = A_batched(1, 2);
-      Scalar correct(
-          torch::tensor({{3 / utils::sqrt2}, {9 / utils::sqrt2}}, default_tensor_options));
+      Scalar correct(torch::tensor({{3 / math::sqrt2}, {9 / math::sqrt2}}, default_tensor_options));
       REQUIRE(torch::allclose(result, correct));
     }
   }

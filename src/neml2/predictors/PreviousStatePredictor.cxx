@@ -41,14 +41,15 @@ PreviousStatePredictor::PreviousStatePredictor(const ParameterSet & params)
 }
 
 void
-PreviousStatePredictor::set_initial_guess(LabeledVector /*in*/, LabeledVector guess) const
+PreviousStatePredictor::set_initial_guess(const LabeledVector & /*in*/,
+                                          const LabeledVector & guess) const
 {
   if (!_state_n.axes().empty())
     guess.slice("state").fill(_state_n);
 }
 
 void
-PreviousStatePredictor::post_solve(LabeledVector /*in*/, LabeledVector out)
+PreviousStatePredictor::post_solve(const LabeledVector & /*in*/, const LabeledVector & out)
 {
   _state = out.slice("state").clone();
 }

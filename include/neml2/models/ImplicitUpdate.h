@@ -43,10 +43,10 @@ public:
 
   // dvalue is overriden because we rely on the implicit function theorem to compute the
   // derivatives, and so the value has to be evaluated even if only the derivatives are requested.
-  virtual LabeledMatrix dvalue(LabeledVector in) const override;
+  virtual LabeledMatrix dvalue(const LabeledVector & in) const override;
 
 protected:
-  virtual void set_value(LabeledVector in,
+  virtual void set_value(const LabeledVector & in,
                          LabeledVector * out,
                          LabeledMatrix * dout_din = nullptr,
                          LabeledTensor3D * d2out_din2 = nullptr) const;

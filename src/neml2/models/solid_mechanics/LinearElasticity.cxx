@@ -80,7 +80,7 @@ LinearElasticity<rate, etype>::T(Scalar E, Scalar nu) const
 
 template <bool rate, ElasticityType etype>
 void
-LinearElasticity<rate, etype>::set_value(LabeledVector in,
+LinearElasticity<rate, etype>::set_value(const LabeledVector & in,
                                          LabeledVector * out,
                                          LabeledMatrix * dout_din,
                                          LabeledTensor3D * d2out_din2) const

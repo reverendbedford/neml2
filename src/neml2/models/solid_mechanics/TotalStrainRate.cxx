@@ -52,7 +52,7 @@ TotalStrainRate::TotalStrainRate(const ParameterSet & params)
 }
 
 void
-TotalStrainRate::set_value(LabeledVector in,
+TotalStrainRate::set_value(const LabeledVector & in,
                            LabeledVector * out,
                            LabeledMatrix * dout_din,
                            LabeledTensor3D * d2out_din2) const

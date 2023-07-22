@@ -44,7 +44,7 @@ LinearKinematicHardening::LinearKinematicHardening(const ParameterSet & params)
 }
 
 void
-LinearKinematicHardening::set_value(LabeledVector in,
+LinearKinematicHardening::set_value(const LabeledVector & in,
                                     LabeledVector * out,
                                     LabeledMatrix * dout_din,
                                     LabeledTensor3D * d2out_din2) const

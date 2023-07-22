@@ -91,9 +91,6 @@ public:
 
   /// Inversion
   SymR2 inverse() const;
-
-private:
-  static constexpr TorchSize reverse_index[3][3] = {{0, 5, 4}, {5, 1, 3}, {4, 3, 2}};
 };
 
 SymR2 operator+(const SymR2 & a, const Scalar & b);

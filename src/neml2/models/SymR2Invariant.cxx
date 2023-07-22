@@ -49,7 +49,7 @@ SymR2Invariant::SymR2Invariant(const ParameterSet & params)
 }
 
 void
-SymR2Invariant::set_value(LabeledVector in,
+SymR2Invariant::set_value(const LabeledVector & in,
                           LabeledVector * out,
                           LabeledMatrix * dout_din,
                           LabeledTensor3D * d2out_din2) const

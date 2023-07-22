@@ -42,12 +42,12 @@ public:
    * To iteratively update the state to solve the model, we need to start from some initial guess.
    * This method sets the initial guess of an implicit model.
    */
-  virtual void set_initial_guess(LabeledVector in, LabeledVector guess) const = 0;
+  virtual void set_initial_guess(const LabeledVector & in, const LabeledVector & guess) const = 0;
 
   /**
    * This method gets called after the implicit model is solved. Here is the chance to cache the old
    * and/or older states in preparation for the next guess.
    */
-  virtual void post_solve(LabeledVector in, LabeledVector out) = 0;
+  virtual void post_solve(const LabeledVector & in, const LabeledVector & out) = 0;
 };
 } // namespace neml2

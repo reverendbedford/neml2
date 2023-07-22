@@ -43,7 +43,7 @@ LinearIsotropicHardening::LinearIsotropicHardening(const ParameterSet & params)
 }
 
 void
-LinearIsotropicHardening::set_value(LabeledVector in,
+LinearIsotropicHardening::set_value(const LabeledVector & in,
                                     LabeledVector * out,
                                     LabeledMatrix * dout_din,
                                     LabeledTensor3D * d2out_din2) const

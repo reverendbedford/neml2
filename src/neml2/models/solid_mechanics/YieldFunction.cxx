@@ -54,7 +54,7 @@ YieldFunction::YieldFunction(const ParameterSet & params)
 }
 
 void
-YieldFunction::set_value(LabeledVector in,
+YieldFunction::set_value(const LabeledVector & in,
                          LabeledVector * out,
                          LabeledMatrix * dout_din,
                          LabeledTensor3D * d2out_din2) const

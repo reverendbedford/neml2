@@ -95,14 +95,14 @@ ImplicitUpdate::ImplicitUpdate(const ParameterSet & params)
 }
 
 LabeledMatrix
-ImplicitUpdate::dvalue(LabeledVector in) const
+ImplicitUpdate::dvalue(const LabeledVector & in) const
 {
   auto [out, dout_din] = Model::value_and_dvalue(in);
   return dout_din;
 }
 
 void
-ImplicitUpdate::set_value(LabeledVector in,
+ImplicitUpdate::set_value(const LabeledVector & in,
                           LabeledVector * out,
                           LabeledMatrix * dout_din,
                           LabeledTensor3D * d2out_din2) const

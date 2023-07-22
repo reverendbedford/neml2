@@ -43,7 +43,7 @@ SampleRateModel::SampleRateModel(const ParameterSet & params)
 }
 
 void
-SampleRateModel::set_value(LabeledVector in,
+SampleRateModel::set_value(const LabeledVector & in,
                            LabeledVector * out,
                            LabeledMatrix * dout_din,
                            LabeledTensor3D * d2out_din2) const

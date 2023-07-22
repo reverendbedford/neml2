@@ -45,7 +45,7 @@ PerzynaPlasticFlowRate::PerzynaPlasticFlowRate(const ParameterSet & params)
 }
 
 void
-PerzynaPlasticFlowRate::set_value(LabeledVector in,
+PerzynaPlasticFlowRate::set_value(const LabeledVector & in,
                                   LabeledVector * out,
                                   LabeledMatrix * dout_din,
                                   LabeledTensor3D * d2out_din2) const

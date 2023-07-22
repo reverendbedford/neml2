@@ -32,7 +32,7 @@ public:
   SampleRateModel(const neml2::ParameterSet & params);
 
 protected:
-  virtual void set_value(neml2::LabeledVector in,
+  virtual void set_value(const neml2::LabeledVector & in,
                          neml2::LabeledVector * out,
                          neml2::LabeledMatrix * dout_din = nullptr,
                          neml2::LabeledTensor3D * d2out_din2 = nullptr) const;

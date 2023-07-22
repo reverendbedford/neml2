@@ -52,7 +52,7 @@ ElasticStrainRate::ElasticStrainRate(const ParameterSet & params)
 }
 
 void
-ElasticStrainRate::set_value(LabeledVector in,
+ElasticStrainRate::set_value(const LabeledVector & in,
                              LabeledVector * out,
                              LabeledMatrix * dout_din,
                              LabeledTensor3D * d2out_din2) const

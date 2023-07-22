@@ -53,7 +53,7 @@ SumModel<T>::SumModel(const ParameterSet & params)
 
 template <typename T>
 void
-SumModel<T>::set_value(LabeledVector in,
+SumModel<T>::set_value(const LabeledVector & in,
                        LabeledVector * out,
                        LabeledMatrix * dout_din,
                        LabeledTensor3D * d2out_din2) const

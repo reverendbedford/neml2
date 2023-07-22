@@ -57,7 +57,7 @@ ChabochePlasticHardening::ChabochePlasticHardening(const ParameterSet & params)
 }
 
 void
-ChabochePlasticHardening::set_value(LabeledVector in,
+ChabochePlasticHardening::set_value(const LabeledVector & in,
                                     LabeledVector * out,
                                     LabeledMatrix * dout_din,
                                     LabeledTensor3D * d2out_din2) const

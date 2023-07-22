@@ -30,6 +30,17 @@ namespace neml2
 {
 namespace math
 {
+constexpr Real sqrt2 = 1.4142135623730951;
+
+constexpr TorchSize mandel_reverse_index[3][3] = {{0, 5, 4}, {5, 1, 3}, {4, 3, 2}};
+constexpr TorchSize mandel_index[6][2] = {{0, 0}, {1, 1}, {2, 2}, {1, 2}, {0, 2}, {0, 1}};
+
+inline constexpr Real
+mandel_factor(TorchSize i)
+{
+  return i < 3 ? 1.0 : sqrt2;
+}
+
 torch::Tensor linspace(torch::Tensor start,
                        torch::Tensor end,
                        TorchSize nstep,

@@ -35,7 +35,7 @@ public:
   using neml2::Model::Model;
 
 protected:
-  virtual void set_value(neml2::LabeledVector,
+  virtual void set_value(const neml2::LabeledVector &,
                          neml2::LabeledVector *,
                          neml2::LabeledMatrix *,
                          neml2::LabeledTensor3D *) const

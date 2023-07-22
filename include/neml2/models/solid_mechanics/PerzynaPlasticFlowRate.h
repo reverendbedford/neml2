@@ -37,7 +37,7 @@ public:
 
 protected:
   /// The flow rate
-  virtual void set_value(LabeledVector in,
+  virtual void set_value(const LabeledVector & in,
                          LabeledVector * out,
                          LabeledMatrix * dout_din = nullptr,
                          LabeledTensor3D * d2out_din2 = nullptr) const;

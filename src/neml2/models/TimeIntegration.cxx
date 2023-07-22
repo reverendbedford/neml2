@@ -56,7 +56,7 @@ TimeIntegration<T>::TimeIntegration(const ParameterSet & params)
 
 template <typename T>
 void
-TimeIntegration<T>::set_value(LabeledVector in,
+TimeIntegration<T>::set_value(const LabeledVector & in,
                               LabeledVector * out,
                               LabeledMatrix * dout_din,
                               LabeledTensor3D * d2out_din2) const

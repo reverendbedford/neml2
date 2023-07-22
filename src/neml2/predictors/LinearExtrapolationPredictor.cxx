@@ -44,7 +44,8 @@ LinearExtrapolationPredictor::LinearExtrapolationPredictor(const ParameterSet & 
 }
 
 void
-LinearExtrapolationPredictor::set_initial_guess(LabeledVector in, LabeledVector guess) const
+LinearExtrapolationPredictor::set_initial_guess(const LabeledVector & in,
+                                                const LabeledVector & guess) const
 {
   // At the first step there's nothing we can do
   if (_state_n.axes().empty())
@@ -68,7 +69,7 @@ LinearExtrapolationPredictor::set_initial_guess(LabeledVector in, LabeledVector 
 }
 
 void
-LinearExtrapolationPredictor::post_solve(LabeledVector in, LabeledVector out)
+LinearExtrapolationPredictor::post_solve(const LabeledVector & in, const LabeledVector & out)
 {
   _state = out.slice("state").clone();
   _dt = in.get<Scalar>(_time_name) - in.get<Scalar>(_old_time_name);

@@ -67,7 +67,7 @@ Normality::Normality(const ParameterSet & params)
 }
 
 void
-Normality::set_value(LabeledVector in,
+Normality::set_value(const LabeledVector & in,
                      LabeledVector * out,
                      LabeledMatrix * dout_din,
                      LabeledTensor3D * d2out_din2) const

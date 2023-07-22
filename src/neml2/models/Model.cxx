@@ -47,7 +47,7 @@ Model::Model(const ParameterSet & params)
 }
 
 LabeledVector
-Model::value(LabeledVector in) const
+Model::value(const LabeledVector & in) const
 {
   LabeledVector out(in.batch_size(), {&output()}, in.options());
   set_value(in, &out);
@@ -55,7 +55,7 @@ Model::value(LabeledVector in) const
 }
 
 LabeledMatrix
-Model::dvalue(LabeledVector in) const
+Model::dvalue(const LabeledVector & in) const
 {
   LabeledMatrix dout_din(in.batch_size(), {&output(), &input()}, in.options());
   set_value(in, nullptr, &dout_din);
@@ -63,7 +63,7 @@ Model::dvalue(LabeledVector in) const
 }
 
 LabeledTensor3D
-Model::d2value(LabeledVector in) const
+Model::d2value(const LabeledVector & in) const
 {
   LabeledTensor3D d2out_din2(in.batch_size(), {&output(), &input(), &input()}, in.options());
   set_value(in, nullptr, nullptr, &d2out_din2);
@@ -71,7 +71,7 @@ Model::d2value(LabeledVector in) const
 }
 
 std::tuple<LabeledVector, LabeledMatrix>
-Model::value_and_dvalue(LabeledVector in) const
+Model::value_and_dvalue(const LabeledVector & in) const
 {
   LabeledVector out(in.batch_size(), {&output()}, in.options());
   LabeledMatrix dout_din(in.batch_size(), {&output(), &input()}, in.options());
@@ -80,7 +80,7 @@ Model::value_and_dvalue(LabeledVector in) const
 }
 
 std::tuple<LabeledMatrix, LabeledTensor3D>
-Model::dvalue_and_d2value(LabeledVector in) const
+Model::dvalue_and_d2value(const LabeledVector & in) const
 {
   LabeledMatrix dout_din(in.batch_size(), {&output(), &input()}, in.options());
   LabeledTensor3D d2out_din2(in.batch_size(), {&output(), &input(), &input()}, in.options());
@@ -89,7 +89,7 @@ Model::dvalue_and_d2value(LabeledVector in) const
 }
 
 std::tuple<LabeledVector, LabeledMatrix, LabeledTensor3D>
-Model::value_and_dvalue_and_d2value(LabeledVector in) const
+Model::value_and_dvalue_and_d2value(const LabeledVector & in) const
 {
   LabeledVector out(in.batch_size(), {&output()}, in.options());
   LabeledMatrix dout_din(in.batch_size(), {&output(), &input()}, in.options());
@@ -115,7 +115,7 @@ Model::register_model(std::shared_ptr<Model> model, bool merge_input)
 }
 
 void
-Model::cache_input(LabeledVector in)
+Model::cache_input(const LabeledVector & in)
 {
   _cached_in = in.clone();
 }

@@ -62,23 +62,24 @@ public:
   /// @}
 
   /// Convenient shortcut to construct and return the model value
-  virtual LabeledVector value(LabeledVector in) const;
+  virtual LabeledVector value(const LabeledVector & in) const;
 
   /// Convenient shortcut to construct and return the model derivative
-  virtual LabeledMatrix dvalue(LabeledVector in) const;
+  virtual LabeledMatrix dvalue(const LabeledVector & in) const;
 
   /// Convenient shortcut to construct and return the model's second derivative
-  virtual LabeledTensor3D d2value(LabeledVector in) const;
+  virtual LabeledTensor3D d2value(const LabeledVector & in) const;
 
   /// Convenient shortcut to construct and return the model value and its derivative
-  virtual std::tuple<LabeledVector, LabeledMatrix> value_and_dvalue(LabeledVector in) const;
+  virtual std::tuple<LabeledVector, LabeledMatrix> value_and_dvalue(const LabeledVector & in) const;
 
   /// Convenient shortcut to construct and return the model's first and second derivative
-  virtual std::tuple<LabeledMatrix, LabeledTensor3D> dvalue_and_d2value(LabeledVector in) const;
+  virtual std::tuple<LabeledMatrix, LabeledTensor3D>
+  dvalue_and_d2value(const LabeledVector & in) const;
 
   /// Convenient shortcut to construct and return the model's value, first and second derivative
   virtual std::tuple<LabeledVector, LabeledMatrix, LabeledTensor3D>
-  value_and_dvalue_and_d2value(LabeledVector in) const;
+  value_and_dvalue_and_d2value(const LabeledVector & in) const;
 
   const std::vector<Model *> & registered_models() const { return _registered_models; }
 
@@ -90,7 +91,7 @@ public:
    * During the SOLVING stage, we update the state with \emph fixed forces, old forces, and old
    * state. This function caches those fixed values.
    */
-  void cache_input(LabeledVector in);
+  void cache_input(const LabeledVector & in);
 
   /**
    * Advance the states of *this* model and all the registered models in time.
@@ -114,7 +115,7 @@ public:
 
 protected:
   /// The map between input -> output, and optionally its derivatives
-  virtual void set_value(LabeledVector in,
+  virtual void set_value(const LabeledVector & in,
                          LabeledVector * out,
                          LabeledMatrix * dout_din = nullptr,
                          LabeledTensor3D * d2out_din2 = nullptr) const = 0;

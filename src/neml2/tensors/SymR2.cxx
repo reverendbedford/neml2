@@ -61,8 +61,7 @@ SymR2::init(const Scalar & a11,
             const Scalar & a13,
             const Scalar & a12)
 {
-  return torch::cat({a11, a22, a33, utils::sqrt2 * a23, utils::sqrt2 * a13, utils::sqrt2 * a12},
-                    -1);
+  return torch::cat({a11, a22, a33, math::sqrt2 * a23, math::sqrt2 * a13, math::sqrt2 * a12}, -1);
 }
 
 SymR2
@@ -74,8 +73,8 @@ SymR2::identity(const torch::TensorOptions & options)
 Scalar
 SymR2::operator()(TorchSize i, TorchSize j) const
 {
-  TorchSize a = reverse_index[i][j];
-  return base_index({a}).unsqueeze(-1) / utils::mandelFactor(a);
+  TorchSize a = math::mandel_reverse_index[i][j];
+  return base_index({a}).unsqueeze(-1) / math::mandel_factor(a);
 }
 
 SymR2

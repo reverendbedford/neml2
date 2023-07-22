@@ -56,7 +56,7 @@ BackwardEulerTimeIntegration<T>::BackwardEulerTimeIntegration(const ParameterSet
 
 template <typename T>
 void
-BackwardEulerTimeIntegration<T>::set_value(LabeledVector in,
+BackwardEulerTimeIntegration<T>::set_value(const LabeledVector & in,
                                            LabeledVector * out,
                                            LabeledMatrix * dout_din,
                                            LabeledTensor3D * d2out_din2) const

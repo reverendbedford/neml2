@@ -36,7 +36,7 @@ public:
   VoceIsotropicHardening(const ParameterSet & params);
 
 protected:
-  void set_value(LabeledVector in,
+  void set_value(const LabeledVector & in,
                  LabeledVector * out,
                  LabeledMatrix * dout_din = nullptr,
                  LabeledTensor3D * d2out_din2 = nullptr) const;
