@@ -1,55 +1,22 @@
-[Tensors]
-  [end_time]
-    type = LogSpaceTensor
-    start = -1
-    end = 5
-    steps = 20
-  []
-  [times]
-    type = LinSpaceTensor
-    end = end_time
-    steps = 100
-  []
-  [max_strain]
-    type = InitializedSymR2
-    values = '0.1 -0.05 -0.05'
-    nbatch = 20
-  []
-  [strains]
-    type = LinSpaceTensor
-    end = max_strain
-    steps = 100
-  []
-[]
-
-[Drivers]
-  [driver]
-    type = SolidMechanicsDriver
-    model = 'model'
-    times = 'times'
-    prescribed_strains = 'strains'
-    save_as = 'result.pt'
-  []
-  [regression]
-    type = TransientRegression
-    driver = 'driver'
-    reference = 'gold/result.pt'
-  []
-[]
-
 [Solvers]
   [newton]
     type = NewtonNonlinearSolver
   []
 []
 
+[Predictors]
+  [simple]
+    type = LinearExtrapolationPredictor
+  []
+[]
+
 [SolidMechanics]
   [Elasticity]
-    type = CauchyStressFromElasticStrain
+    type = LinearElasticity
     E = 1e5
     nu = 0.3
   []
-  [ViscoPlasticity]
+  [Viscoplasticity]
     solver = 'newton'
     predictor = 'simple'
     [FlowRate]

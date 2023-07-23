@@ -21,9 +21,11 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+
 #include "neml2/base/HITParser.h"
 #include "neml2/tensors/LabeledAxis.h"
 #include "neml2/base/CrossRef.h"
+#include "neml2/generators/Generator.h"
 
 namespace neml2
 {
@@ -44,6 +46,17 @@ ParameterCollection
 HITParser::parameters() const
 {
   ParameterCollection all_params;
+
+  for (auto [syntax, builder] : GeneratorRegistry::generators())
+  {
+    auto section_node = _root->find(syntax);
+    if (section_node)
+    {
+      auto generator = builder(section_node);
+      auto generated_params = generator->generate();
+      all_params.merge(generated_params);
+    }
+  }
 
   for (const auto & section : Factory::pipeline)
   {
@@ -76,47 +89,4 @@ HITParser::parameters() const
   return all_params;
 }
 
-void
-HITParser::ExtractParamsWalker::walk(const std::string & fullpath,
-                                     const std::string & nodepath,
-                                     hit::Node * n)
-{
-#define extract_param_base(ptype, method)                                                          \
-  else if (param->type() ==                                                                        \
-           utils::demangle(                                                                        \
-               typeid(ptype).name())) dynamic_cast<ParameterSet::Parameter<ptype> *>(param.get())  \
-      ->set() = method(n->strVal())
-
-#define extract_param_t(ptype)                                                                     \
-  extract_param_base(ptype, utils::parse<ptype>);                                                  \
-  extract_param_base(std::vector<ptype>, utils::parse_vector<ptype>);                              \
-  extract_param_base(std::vector<std::vector<ptype>>, utils::parse_vector_vector<ptype>)
-
-  if (n->type() == hit::NodeType::Field)
-  {
-    bool found = false;
-    for (auto & [name, param] : _params)
-      if (name == nodepath)
-      {
-        found = true;
-
-        if (false)
-          ;
-        extract_param_t(bool);
-        extract_param_t(int);
-        extract_param_t(unsigned int);
-        extract_param_t(TorchSize);
-        extract_param_t(Real);
-        extract_param_t(std::string);
-        extract_param_t(LabeledAxisAccessor);
-        extract_param_t(CrossRef<torch::Tensor>);
-        extract_param_t(CrossRef<Scalar>);
-        extract_param_t(CrossRef<SymR2>);
-        else neml_assert(false, "Unsupported parameter type for parameter ", fullpath);
-
-        break;
-      }
-    neml_assert(found, "Unused parameter ", fullpath);
-  }
-}
 } // namespace neml2

@@ -21,33 +21,23 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-#pragma once
 
-#include "neml2/base/Parser.h"
-#include "neml2/base/GeneratorRegistry.h"
-#include "neml2/base/ExtractParametersWalker.h"
+#include "neml2/base/ParameterSet.h"
 #include "hit.h"
-#include <memory>
 
 namespace neml2
 {
-/// A helper class to deserialize a file written in HIT format
-class HITParser : public Parser
+class ExtractParamsWalker : public hit::Walker
 {
 public:
-  HITParser() = default;
+  ExtractParamsWalker(ParameterSet & params)
+    : _params(params)
+  {
+  }
 
-  virtual void parse(const std::string & filename);
-
-  /// Get the root of the parsed input file
-  hit::Node * root() { return _root.get(); }
-
-  /// Extract (and cast) parameters into the parameter collection
-  virtual ParameterCollection parameters() const;
+  void walk(const std::string & fullpath, const std::string & nodepath, hit::Node * n) override;
 
 private:
-  /// The root node of the parsed input file
-  std::unique_ptr<hit::Node> _root;
+  ParameterSet & _params;
 };
-
 } // namespace neml2

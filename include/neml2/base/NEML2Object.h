@@ -34,8 +34,6 @@ class NEML2Object : public torch::nn::Module, public ParameterInterface
 public:
   static ParameterSet expected_params();
 
-  NEML2Object(const std::string & name);
-
   NEML2Object(const ParameterSet & params);
 };
 } // namespace neml2

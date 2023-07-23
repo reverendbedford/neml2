@@ -26,11 +26,10 @@
 #include "neml2/base/Registry.h"
 #include "neml2/base/NEML2Object.h"
 #include "neml2/misc/error.h"
+#include "neml2/base/ParameterCollection.h"
 
 namespace neml2
 {
-using ParameterCollection = std::map<std::string, std::map<std::string, ParameterSet>>;
-
 /**
 The factory is responsible for:
 1. retriving a NEML2Object given the object name as a `std::string`

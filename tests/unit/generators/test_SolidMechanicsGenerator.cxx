@@ -21,33 +21,19 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-#pragma once
 
-#include "neml2/base/Parser.h"
+#include <catch2/catch.hpp>
+
+#include "neml2/base/HITParser.h"
 #include "neml2/base/GeneratorRegistry.h"
-#include "neml2/base/ExtractParametersWalker.h"
-#include "hit.h"
-#include <memory>
 
-namespace neml2
+using namespace neml2;
+
+TEST_CASE("SolidMechanicsGenerator generates the correct parameters", "[SolidMechanicsGenerator]")
 {
-/// A helper class to deserialize a file written in HIT format
-class HITParser : public Parser
-{
-public:
-  HITParser() = default;
+  HITParser parser;
+  parser.parse("unit/generators/test_SolidMechanicsGenerator.i");
+  auto params = parser.parameters();
 
-  virtual void parse(const std::string & filename);
-
-  /// Get the root of the parsed input file
-  hit::Node * root() { return _root.get(); }
-
-  /// Extract (and cast) parameters into the parameter collection
-  virtual ParameterCollection parameters() const;
-
-private:
-  /// The root node of the parsed input file
-  std::unique_ptr<hit::Node> _root;
-};
-
-} // namespace neml2
+  std::cout << params << std::endl;
+}

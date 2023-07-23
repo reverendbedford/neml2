@@ -21,22 +21,53 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+
 #include "neml2/base/Registry.h"
-#include "neml2/models/Model.h"
+#include "neml2/base/NEML2Object.h"
 
 namespace neml2
 {
 Registry &
-Registry::get_registry()
+Registry::get()
 {
   static Registry registry_singleton;
   return registry_singleton;
 }
 
+ParameterSet
+Registry::expected_params(const std::string & name)
+{
+  auto & reg = get();
+  neml_assert(
+      reg._expected_params.count(name) > 0,
+      name,
+      " is not a registered object. Did you forget to register it with register_NEML2_object?");
+  return reg._expected_params.at(name);
+}
+
+BuildPtr
+Registry::builder(const std::string & name)
+{
+  auto & reg = get();
+  neml_assert(
+      reg._objects.count(name) > 0,
+      name,
+      " is not a registered object. Did you forget to register it with register_NEML2_object?");
+  return reg._objects.at(name);
+}
+
+void
+Registry::print(std::ostream & os)
+{
+  auto & reg = get();
+  for (auto & object : reg._objects)
+    os << object.first << std::endl;
+}
+
 void
 Registry::add_inner(const std::string & name, const ParameterSet & params, BuildPtr build_ptr)
 {
-  auto & reg = get_registry();
+  auto & reg = get();
   neml_assert(reg._expected_params.count(name) == 0 && reg._objects.count(name) == 0,
               "Duplicate registration found. Object named ",
               name,
@@ -44,12 +75,5 @@ Registry::add_inner(const std::string & name, const ParameterSet & params, Build
 
   reg._expected_params[name] = params;
   reg._objects[name] = build_ptr;
-}
-
-void
-Registry::print(std::ostream & os) const
-{
-  for (auto & object : _objects)
-    os << object.first << std::endl;
 }
 } // namespace neml2

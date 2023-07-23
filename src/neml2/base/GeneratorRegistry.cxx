@@ -21,33 +21,48 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-#pragma once
 
-#include "neml2/base/Parser.h"
 #include "neml2/base/GeneratorRegistry.h"
-#include "neml2/base/ExtractParametersWalker.h"
-#include "hit.h"
-#include <memory>
+#include "neml2/generators/Generator.h"
 
 namespace neml2
 {
-/// A helper class to deserialize a file written in HIT format
-class HITParser : public Parser
+GeneratorRegistry &
+GeneratorRegistry::get()
 {
-public:
-  HITParser() = default;
+  static GeneratorRegistry registry_singleton;
+  return registry_singleton;
+}
 
-  virtual void parse(const std::string & filename);
+const std::map<std::string, GeneratorBuildPtr> &
+GeneratorRegistry::generators()
+{
+  return get()._objects;
+}
 
-  /// Get the root of the parsed input file
-  hit::Node * root() { return _root.get(); }
+GeneratorBuildPtr
+GeneratorRegistry::builder(const std::string & name)
+{
+  auto & reg = get();
+  neml_assert(reg._objects.count(name) > 0,
+              name,
+              " is not a registered generator. Did you forget to register it with "
+              "register_NEML2_generator?");
+  return reg._objects.at(name);
+}
 
-  /// Extract (and cast) parameters into the parameter collection
-  virtual ParameterCollection parameters() const;
+void
+GeneratorRegistry::print(std::ostream & os)
+{
+  auto & reg = get();
+  for (auto & object : reg._objects)
+    os << object.first << std::endl;
+}
 
-private:
-  /// The root node of the parsed input file
-  std::unique_ptr<hit::Node> _root;
-};
-
+void
+GeneratorRegistry::add_inner(const std::string & syntax, GeneratorBuildPtr build_ptr)
+{
+  auto & reg = get();
+  reg._objects[syntax] = build_ptr;
+}
 } // namespace neml2

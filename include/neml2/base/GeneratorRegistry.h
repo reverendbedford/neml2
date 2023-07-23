@@ -24,63 +24,58 @@
 #pragma once
 
 #include "neml2/base/ParameterSet.h"
+#include "hit.h"
 
 namespace neml2
 {
-/// Add a NEML2Object to the registry.  classname is the (unquoted)
-/// c++ class.  Each object/class should only be registered once.
-#define register_NEML2_object(classname)                                                           \
-  static char dummyvar_for_registering_obj_##classname = Registry::add<classname>(#classname)
-
-/// Add a NEML2Object to the registry and associate it with a given name.  classname is the
+/// Add a Generator to the registry and associate it with a syntax.  classname is the
 /// (unquoted) c++ class.  Each object/class should only be registered once.
-#define register_NEML2_object_alt(classname, registryname)                                         \
-  static char dummyvar_for_registering_obj_##classname = Registry::add<classname>(registryname)
+#define register_NEML2_generator(syntax, classname)                                                \
+  static char dummyvar_for_registering_generator_##classname =                                     \
+      GeneratorRegistry::add<classname>(syntax)
 
-class NEML2Object;
+class Generator;
 
-using BuildPtr = std::shared_ptr<NEML2Object> (*)(const ParameterSet & params);
+using GeneratorBuildPtr = std::shared_ptr<Generator> (*)(hit::Node * root);
 
 /**
-The registry is used as a global singleton to collect information on all available NEML2Object for
-use in a simulation.
+The generator registry is used as a global singleton to collect information on all available Genetor
+for use during input file parsing
 */
-class Registry
+class GeneratorRegistry
 {
 public:
-  /// Get the global Registry singleton.
-  static Registry & get();
+  /// Get the global GeneratorRegistry singleton.
+  static GeneratorRegistry & get();
 
-  /// Add information on a NEML2Object to the registry.
+  /// Add information on a Generator to the registry.
   template <typename T>
   static char add(std::string name)
   {
-    add_inner(name, T::expected_params(), &build<T>);
+    add_inner(name, &build<T>);
     return 0;
   }
 
-  /// Return the expected parameters of a specific registered class
-  static ParameterSet expected_params(const std::string & name);
+  /// Return the registered generators
+  static const std::map<std::string, GeneratorBuildPtr> & generators();
 
   /// Return the build method pointer of a specific registered class
-  static BuildPtr builder(const std::string & name);
+  static GeneratorBuildPtr builder(const std::string & name);
 
   /// List all registered objects
   static void print(std::ostream & os = std::cout);
 
 private:
-  Registry() {}
+  GeneratorRegistry() {}
 
-  static void add_inner(const std::string &, const ParameterSet &, BuildPtr);
+  static void add_inner(const std::string &, GeneratorBuildPtr);
 
   template <typename T>
-  static std::shared_ptr<NEML2Object> build(const ParameterSet & params)
+  static std::shared_ptr<Generator> build(hit::Node * root)
   {
-    return std::make_shared<T>(params);
+    return std::make_shared<T>(root);
   }
 
-  std::map<std::string, ParameterSet> _expected_params;
-
-  std::map<std::string, BuildPtr> _objects;
+  std::map<std::string, GeneratorBuildPtr> _objects;
 };
 } // namespace neml2

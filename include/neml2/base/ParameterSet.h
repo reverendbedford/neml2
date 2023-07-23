@@ -304,8 +304,8 @@ ParameterSet::print(std::ostream & os) const
   {
     os << it->first << "\t ";
     it->second->print(os);
-    os << '\n';
-    ++it;
+    if (++it != _values.end())
+      os << '\n';
   }
 }
 
