@@ -129,11 +129,5 @@ parse<CrossRef<SymR2>>(const std::string & raw_str)
 {
   return CrossRef<SymR2>(raw_str);
 }
-
-template bool parse<bool>(const std::string &);
-template LabeledAxisAccessor parse<LabeledAxisAccessor>(const std::string &);
-template CrossRef<torch::Tensor> parse<CrossRef<torch::Tensor>>(const std::string &);
-template CrossRef<Scalar> parse<CrossRef<Scalar>>(const std::string &);
-template CrossRef<SymR2> parse<CrossRef<SymR2>>(const std::string &);
 } // namespace utils
 } // namespace neml2

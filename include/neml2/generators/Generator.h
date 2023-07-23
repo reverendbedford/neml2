@@ -39,6 +39,8 @@ public:
 
   Generator(hit::Node * root);
 
+  virtual ~Generator() {}
+
   virtual ParameterCollection generate() = 0;
 
 protected:
