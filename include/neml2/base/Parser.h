@@ -37,10 +37,7 @@ public:
   virtual void parse_and_manufacture(const std::string & filename);
 
   /// Deserialize a file given filename
-  virtual void parse(const std::string & filename) = 0;
-
-  /// Set and override the default parameters with the extracted parameters
-  virtual ParameterCollection parameters() const = 0;
+  virtual ParameterCollection parse(const std::string & filename) const = 0;
 };
 
 } // namespace neml2

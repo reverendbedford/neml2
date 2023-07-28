@@ -22,29 +22,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/generators/solid_mechanics/SolidMechanicsGenerator.h"
-#include "neml2/tensors/LabeledAxis.h"
+#include "neml2/generators/solid_mechanics/FlowRateGenerator.h"
 
 namespace neml2
 {
-register_NEML2_generator("SolidMechanics", SolidMechanicsGenerator);
+register_NEML2_generator("SolidMechanics/Viscoplasticity/FlowRate", FlowRateGenerator);
 
 ParameterSet
-SolidMechanicsGenerator::expected_params()
+FlowRateGenerator::expected_params()
 {
   ParameterSet params = Generator::expected_params();
   return params;
 }
 
-SolidMechanicsGenerator::SolidMechanicsGenerator(const ParameterSet & params, hit::Node * root)
+FlowRateGenerator::FlowRateGenerator(const ParameterSet & params, hit::Node * root)
   : Generator(params, root)
 {
 }
 
 ParameterCollection
-SolidMechanicsGenerator::generate() const
+FlowRateGenerator::generate() const
 {
-  ParameterCollection all_params;
+  ParameterCollection all_params = extract_object_parameters("Models");
   return all_params;
 }
 } // namespace neml2

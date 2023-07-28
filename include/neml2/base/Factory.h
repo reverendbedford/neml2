@@ -42,7 +42,7 @@ public:
   static std::vector<std::string> pipeline;
 
   /// Get the global Registry singleton.
-  static Factory & get_factory();
+  static Factory & get();
 
   /// Retrive an object in the given section with the given object name
   template <class T>
@@ -74,7 +74,7 @@ template <class T>
 inline std::shared_ptr<T>
 Factory::get_object_ptr(const std::string & section, const std::string & name)
 {
-  auto & factory = Factory::get_factory();
+  auto & factory = Factory::get();
 
   // Easy if it already exists
   if (factory._objects.count(section) && factory._objects.at(section).count(name))
@@ -103,13 +103,13 @@ Factory::get_object_ptr(const std::string & section, const std::string & name)
               " under section ",
               section);
 
-  return factory.get_object_ptr<T>(section, name);
+  return Factory::get_object_ptr<T>(section, name);
 }
 
 template <class T>
 inline T &
 Factory::get_object(const std::string & section, const std::string & name)
 {
-  return *Factory::get_factory().get_object_ptr<T>(section, name);
+  return *Factory::get_object_ptr<T>(section, name);
 }
 } // namespace neml2

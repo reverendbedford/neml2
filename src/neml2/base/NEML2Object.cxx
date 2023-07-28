@@ -30,6 +30,7 @@ NEML2Object::expected_params()
 {
   ParameterSet params;
   params.set<std::string>("name");
+  params.set<std::string>("type");
   return params;
 }
 

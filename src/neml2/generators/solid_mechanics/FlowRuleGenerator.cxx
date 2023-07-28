@@ -22,22 +22,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/base/ParameterSet.h"
-#include "hit.h"
+#include "neml2/generators/solid_mechanics/FlowRuleGenerator.h"
 
 namespace neml2
 {
-class ExtractParamsWalker : public hit::Walker
+register_NEML2_generator("SolidMechanics/Viscoplasticity/FlowRule", FlowRuleGenerator);
+
+ParameterSet
+FlowRuleGenerator::expected_params()
 {
-public:
-  ExtractParamsWalker(ParameterSet & params)
-    : _params(params)
-  {
-  }
+  ParameterSet params = Generator::expected_params();
+  return params;
+}
 
-  void walk(const std::string & fullpath, const std::string & nodepath, hit::Node * n) override;
+FlowRuleGenerator::FlowRuleGenerator(const ParameterSet & params, hit::Node * root)
+  : Generator(params, root)
+{
+}
 
-private:
-  ParameterSet & _params;
-};
+ParameterCollection
+FlowRuleGenerator::generate() const
+{
+  ParameterCollection all_params = extract_object_parameters("Models");
+  return all_params;
+}
 } // namespace neml2

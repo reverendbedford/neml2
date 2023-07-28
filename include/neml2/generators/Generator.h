@@ -24,11 +24,9 @@
 
 #pragma once
 
-#include "neml2/base/Registry.h"
-#include "neml2/base/GeneratorRegistry.h"
 #include "neml2/base/ParameterCollection.h"
-#include "neml2/misc/parser_utils.h"
-#include "hit.h"
+#include "neml2/base/GeneratorRegistry.h"
+#include "neml2/base/HITParser.h"
 
 namespace neml2
 {
@@ -37,13 +35,20 @@ class Generator
 public:
   static ParameterSet expected_params();
 
-  Generator(hit::Node * root);
+  Generator(const ParameterSet & params, hit::Node * root);
 
   virtual ~Generator() {}
 
-  virtual ParameterCollection generate() = 0;
+  virtual ParameterCollection generate() const = 0;
 
 protected:
-  std::unique_ptr<hit::Node> _root;
+  virtual ParameterCollection extract_object_parameters(const std::string & section) const;
+
+private:
+  HITParser _parser;
+
+  const ParameterSet _params;
+
+  hit::Node * _root;
 };
 } // namespace neml2

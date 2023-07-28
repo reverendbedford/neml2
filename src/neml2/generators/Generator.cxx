@@ -33,5 +33,22 @@ Generator::expected_params()
   return params;
 }
 
-Generator::Generator(hit::Node * root) { _root.reset(dynamic_cast<hit::Section *>(root)); }
+Generator::Generator(const ParameterSet & params, hit::Node * root)
+  : _parser(),
+    _params(params),
+    _root(root)
+{
+}
+
+ParameterCollection
+Generator::extract_object_parameters(const std::string & section) const
+{
+  ParameterCollection all_params;
+  for (auto node : _root->children(hit::NodeType::Section))
+  {
+    auto params = _parser.extract_object_parameters(node);
+    all_params[section][node->path()] = params;
+  }
+  return all_params;
+}
 } // namespace neml2

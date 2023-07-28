@@ -37,32 +37,46 @@ GeneratorRegistry::get()
 const std::map<std::string, GeneratorBuildPtr> &
 GeneratorRegistry::generators()
 {
-  return get()._objects;
+  return get()._generators;
 }
 
 GeneratorBuildPtr
 GeneratorRegistry::builder(const std::string & name)
 {
   auto & reg = get();
-  neml_assert(reg._objects.count(name) > 0,
+  neml_assert(reg._generators.count(name) > 0,
               name,
               " is not a registered generator. Did you forget to register it with "
               "register_NEML2_generator?");
-  return reg._objects.at(name);
+  return reg._generators.at(name);
+}
+
+ParameterSet
+GeneratorRegistry::expected_params(const std::string & name)
+{
+  auto & reg = get();
+  neml_assert(reg._generators.count(name) > 0,
+              name,
+              " is not a registered generator. Did you forget to register it with "
+              "register_NEML2_generator?");
+  return reg._expected_params.at(name);
 }
 
 void
 GeneratorRegistry::print(std::ostream & os)
 {
   auto & reg = get();
-  for (auto & object : reg._objects)
+  for (auto & object : reg._generators)
     os << object.first << std::endl;
 }
 
 void
-GeneratorRegistry::add_inner(const std::string & syntax, GeneratorBuildPtr build_ptr)
+GeneratorRegistry::add_inner(const std::string & syntax,
+                             const ParameterSet & expected_params,
+                             GeneratorBuildPtr build_ptr)
 {
   auto & reg = get();
-  reg._objects[syntax] = build_ptr;
+  reg._generators[syntax] = build_ptr;
+  reg._expected_params[syntax] = expected_params;
 }
 } // namespace neml2

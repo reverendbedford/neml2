@@ -22,29 +22,44 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/generators/solid_mechanics/SolidMechanicsGenerator.h"
-#include "neml2/tensors/LabeledAxis.h"
+#include "neml2/base/GeneratorFactory.h"
 
 namespace neml2
 {
-register_NEML2_generator("SolidMechanics", SolidMechanicsGenerator);
-
-ParameterSet
-SolidMechanicsGenerator::expected_params()
+GeneratorFactory &
+GeneratorFactory::get()
 {
-  ParameterSet params = Generator::expected_params();
-  return params;
-}
-
-SolidMechanicsGenerator::SolidMechanicsGenerator(const ParameterSet & params, hit::Node * root)
-  : Generator(params, root)
-{
+  static GeneratorFactory factory_singleton;
+  return factory_singleton;
 }
 
 ParameterCollection
-SolidMechanicsGenerator::generate() const
+GeneratorFactory::generate(hit::Node * root)
 {
+  _root.reset(root);
+  HITParser parser;
+
   ParameterCollection all_params;
+
+  for (auto [syntax, builder] : GeneratorRegistry::generators())
+  {
+    // Some other generator may already requested this generator, and so it may have already been
+    // created (and executed).
+    if (_generators.count(syntax))
+      all_params.merge(_generators[syntax]->generate());
+    else
+    {
+      auto section_node = root->find(syntax);
+      if (section_node)
+      {
+        auto params = parser.extract_generator_parameters(section_node);
+        auto generator = builder(params, section_node);
+        _generators[syntax] = generator;
+        all_params.merge(_generators[syntax]->generate());
+      }
+    }
+  }
+
   return all_params;
 }
 } // namespace neml2

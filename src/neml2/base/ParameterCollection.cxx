@@ -26,23 +26,44 @@
 
 namespace neml2
 {
+void
+ParameterCollection::merge(ParameterCollection && other)
+{
+  for (auto & [section, objects] : other._data)
+    if (_data.count(section))
+      _data[section].merge(other[section]);
+    else
+      _data[section] = other[section];
+}
+
+std::map<std::string, ParameterSet> &
+ParameterCollection::operator[](const std::string & section)
+{
+  return _data[section];
+}
+
+const std::map<std::string, ParameterSet> &
+ParameterCollection::operator[](const std::string & section) const
+{
+  return _data.at(section);
+}
+
 std::ostream &
 operator<<(std::ostream & os, const ParameterCollection & p)
 {
-  size_t width = 80;
+  size_t width = 79;
   auto toprule = std::string(width, '=');
   auto midrule = std::string(width, '-');
   auto bottomrule = toprule;
 
-  for (auto && [section, obj_params] : p)
+  for (auto && [section, obj_params] : p.data())
   {
     os << toprule << std::endl;
     os << section << std::endl;
     os << toprule << std::endl;
     for (auto && [obj, params] : obj_params)
-      os << obj << std::endl << midrule << std::endl << params << std::endl;
+      os << obj << std::endl << midrule << std::endl << params << std::endl << midrule << std::endl;
   }
-  os << bottomrule;
   return os;
 }
 } // namespace neml2

@@ -30,7 +30,7 @@ std::vector<std::string> Factory::pipeline = {
     "Tensors", "Solvers", "Predictors", "Models", "Drivers"};
 
 Factory &
-Factory::get_factory()
+Factory::get()
 {
   static Factory factory_singleton;
   return factory_singleton;

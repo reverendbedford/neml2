@@ -22,11 +22,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#pragma once
+
 #include "neml2/base/ParameterSet.h"
 
 namespace neml2
 {
-using ParameterCollection = std::map<std::string, std::map<std::string, ParameterSet>>;
+class ParameterCollection
+{
+public:
+  ParameterCollection() = default;
+
+  operator std::map<std::string, std::map<std::string, ParameterSet>>() const { return _data; }
+
+  void merge(ParameterCollection && other);
+
+  std::map<std::string, ParameterSet> & operator[](const std::string & section);
+
+  const std::map<std::string, ParameterSet> & operator[](const std::string & section) const;
+
+  const std::map<std::string, std::map<std::string, ParameterSet>> & data() const { return _data; }
+
+private:
+  std::map<std::string, std::map<std::string, ParameterSet>> _data;
+};
 
 std::ostream & operator<<(std::ostream & os, const ParameterCollection & p);
 } // namespace neml2

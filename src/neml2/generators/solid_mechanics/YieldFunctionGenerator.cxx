@@ -22,29 +22,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/generators/solid_mechanics/SolidMechanicsGenerator.h"
-#include "neml2/tensors/LabeledAxis.h"
+#include "neml2/generators/solid_mechanics/YieldFunctionGenerator.h"
 
 namespace neml2
 {
-register_NEML2_generator("SolidMechanics", SolidMechanicsGenerator);
+register_NEML2_generator("SolidMechanics/Viscoplasticity/YieldFunction", YieldFunctionGenerator);
 
 ParameterSet
-SolidMechanicsGenerator::expected_params()
+YieldFunctionGenerator::expected_params()
 {
   ParameterSet params = Generator::expected_params();
+  params.set<std::string>("stress_measure");
   return params;
 }
 
-SolidMechanicsGenerator::SolidMechanicsGenerator(const ParameterSet & params, hit::Node * root)
+YieldFunctionGenerator::YieldFunctionGenerator(const ParameterSet & params, hit::Node * root)
   : Generator(params, root)
 {
 }
 
 ParameterCollection
-SolidMechanicsGenerator::generate() const
+YieldFunctionGenerator::generate() const
 {
-  ParameterCollection all_params;
+  ParameterCollection all_params = extract_object_parameters("Models");
   return all_params;
 }
 } // namespace neml2

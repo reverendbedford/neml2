@@ -12,39 +12,21 @@
 
 [SolidMechanics]
   [Elasticity]
-    type = LinearElasticity
-    E = 1e5
-    nu = 0.3
+    [linear]
+      type = LinearElasticity
+      E = 1e5
+      nu = 0.3
+    []
   []
-  # [Viscoplasticity]
-  #   solver = 'newton'
-  #   predictor = 'simple'
-  #   [FlowRate]
-  #     type = PerzynaPlasticFlowRate
-  #     eta = 100
-  #     n = 2
-  #   []
-  #   [YieldSurface]
-  #     type = IsotropicMandelStress
-  #     measure = 'VONMISES'
-  #     [KinematicHardening]
-  #       type = LinearKinematicHardening
-  #       K = 1000
-  #     []
-  #     [IsotropicHardening]
-  #       type = VoceIsotropicHardening
-  #       saturated_hardening = 100
-  #       saturation_rate = 1.2
-  #     []
-  #   []
-  #   [FlowRule]
-  #     type = AssociativePlasticFlow
-  #     [KinematicHardening]
-  #       type = AssociativeKinematicPlasticHardening
-  #     []
-  #     [IsotropicHardening]
-  #       type = AssociativeLinearPlasticHardening
-  #     []
-  #   []
-  # []
+  [Viscoplasticity]
+    solver = 'newton'
+    predictor = 'simple'
+    [FlowRate]
+      [perzyna]
+        type = PerzynaPlasticFlowRate
+        eta = 100
+        n = 2
+      []
+    []
+  []
 []

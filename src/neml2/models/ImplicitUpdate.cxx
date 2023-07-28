@@ -82,7 +82,7 @@ ImplicitUpdate::ImplicitUpdate(const ParameterSet & params)
   const auto predictor_name = params.get<std::string>("predictor");
   if (predictor_name.empty())
   {
-    Factory::get_factory().create_object(
+    Factory::get().create_object(
         "Predictors",
         PreviousStatePredictor::expected_params() +
             ParameterSet(KS{"name", "_default_predictor"}, KS{"type", "PreviousStatePredictor"}));

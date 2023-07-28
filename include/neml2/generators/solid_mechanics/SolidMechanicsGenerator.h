@@ -25,7 +25,6 @@
 #pragma once
 
 #include "neml2/generators/Generator.h"
-#include "neml2/base/ExtractParametersWalker.h"
 
 namespace neml2
 {
@@ -34,16 +33,8 @@ class SolidMechanicsGenerator : public Generator
 public:
   static ParameterSet expected_params();
 
-  SolidMechanicsGenerator(hit::Node * root);
+  SolidMechanicsGenerator(const ParameterSet & params, hit::Node * root);
 
-  virtual ParameterCollection generate() override;
-
-private:
-  ParameterCollection generate_elasticity();
-
-  // The mechanisms that we currently support
-  const std::set<std::string> _known_mechanisms;
-
-  std::map<std::string, hit::Node *> _mechanisms;
+  virtual ParameterCollection generate() const override;
 };
 } // namespace neml2

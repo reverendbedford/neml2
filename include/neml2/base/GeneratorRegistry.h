@@ -36,7 +36,7 @@ namespace neml2
 
 class Generator;
 
-using GeneratorBuildPtr = std::shared_ptr<Generator> (*)(hit::Node * root);
+using GeneratorBuildPtr = std::shared_ptr<Generator> (*)(const ParameterSet &, hit::Node *);
 
 /**
 The generator registry is used as a global singleton to collect information on all available Genetor
@@ -52,15 +52,18 @@ public:
   template <typename T>
   static char add(std::string name)
   {
-    add_inner(name, &build<T>);
+    add_inner(name, T::expected_params(), &build<T>);
     return 0;
   }
 
   /// Return the registered generators
   static const std::map<std::string, GeneratorBuildPtr> & generators();
 
-  /// Return the build method pointer of a specific registered class
+  /// Return the build method pointer of a specific registered generator
   static GeneratorBuildPtr builder(const std::string & name);
+
+  /// Return the expected parameters of a specific registered generator
+  static ParameterSet expected_params(const std::string & name);
 
   /// List all registered objects
   static void print(std::ostream & os = std::cout);
@@ -68,14 +71,15 @@ public:
 private:
   GeneratorRegistry() {}
 
-  static void add_inner(const std::string &, GeneratorBuildPtr);
+  static void add_inner(const std::string &, const ParameterSet &, GeneratorBuildPtr);
 
   template <typename T>
-  static std::shared_ptr<Generator> build(hit::Node * root)
+  static std::shared_ptr<Generator> build(const ParameterSet & params, hit::Node * root)
   {
-    return std::make_shared<T>(root);
+    return std::make_shared<T>(params, root);
   }
 
-  std::map<std::string, GeneratorBuildPtr> _objects;
+  std::map<std::string, GeneratorBuildPtr> _generators;
+  std::map<std::string, ParameterSet> _expected_params;
 };
 } // namespace neml2

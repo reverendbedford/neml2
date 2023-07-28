@@ -22,27 +22,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/generators/solid_mechanics/SolidMechanicsGenerator.h"
-#include "neml2/tensors/LabeledAxis.h"
+#include "neml2/generators/solid_mechanics/ViscoplasticityGenerator.h"
 
 namespace neml2
 {
-register_NEML2_generator("SolidMechanics", SolidMechanicsGenerator);
+register_NEML2_generator("SolidMechanics/Viscoplasticity", ViscoplasticityGenerator);
 
 ParameterSet
-SolidMechanicsGenerator::expected_params()
+ViscoplasticityGenerator::expected_params()
 {
   ParameterSet params = Generator::expected_params();
+  params.set<std::string>("solver");
+  params.set<std::string>("predictor");
   return params;
 }
 
-SolidMechanicsGenerator::SolidMechanicsGenerator(const ParameterSet & params, hit::Node * root)
+ViscoplasticityGenerator::ViscoplasticityGenerator(const ParameterSet & params, hit::Node * root)
   : Generator(params, root)
 {
 }
 
 ParameterCollection
-SolidMechanicsGenerator::generate() const
+ViscoplasticityGenerator::generate() const
 {
   ParameterCollection all_params;
   return all_params;

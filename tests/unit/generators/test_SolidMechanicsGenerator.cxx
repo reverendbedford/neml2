@@ -32,8 +32,7 @@ using namespace neml2;
 TEST_CASE("SolidMechanicsGenerator generates the correct parameters", "[SolidMechanicsGenerator]")
 {
   HITParser parser;
-  parser.parse("unit/generators/test_SolidMechanicsGenerator.i");
-  auto params = parser.parameters();
+  auto params = parser.parse("unit/generators/test_SolidMechanicsGenerator.i");
 
-  std::cout << params << std::endl;
+  // std::cout << params << std::endl;
 }

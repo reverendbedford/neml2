@@ -31,9 +31,8 @@ using namespace neml2;
 TEST_CASE("parse", "[HITParser]")
 {
   HITParser parser;
-  parser.parse("unit/base/test_HITParser.i");
-
-  ParameterSet params = parser.parameters()["Models"]["foo"];
+  auto all_params = parser.parse("unit/base/test_HITParser.i");
+  ParameterSet params = all_params["Models"]["foo"];
 
   // name, type, additional_outputs, and 15 parameters
   REQUIRE(params.size() == 3 + 15);

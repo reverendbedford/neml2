@@ -23,14 +23,13 @@
 // THE SOFTWARE.
 #include <catch2/catch.hpp>
 
-#include "neml2/base/HITParser.h"
 #include "neml2/models/SumModel.h"
 
 using namespace neml2;
 
 TEST_CASE("manufacture", "[Factory]")
 {
-  auto & factory = Factory::get_factory();
+  auto & factory = Factory::get();
   factory.clear();
 
   ParameterCollection all_params;
