@@ -32,20 +32,46 @@ ParameterSet
 TransientDriver::expected_params()
 {
   ParameterSet params = Driver::expected_params();
+  params.set<std::string>("model");
+  params.set<CrossRef<torch::Tensor>>("times");
+  params.set<LabeledAxisAccessor>("time") = LabeledAxisAccessor{{"forces", "t"}};
   params.set<std::string>("save_as");
+  params.set<bool>("show_parameters") = false;
   return params;
 }
 
 TransientDriver::TransientDriver(const ParameterSet & params)
   : Driver(params),
+    _model(Factory::get_object<Model>("Models", params.get<std::string>("model"))),
+    _time(params.get<CrossRef<torch::Tensor>>("times")),
+    _step_count(0),
+    _time_name(params.get<LabeledAxisAccessor>("time")),
+    _nsteps(_time.sizes()[0]),
+    _nbatch(_time.sizes()[1]),
+    _in(_nbatch, {&_model.input()}),
+    _out(_nbatch, {&_model.output()}),
     _save_as(params.get<std::string>("save_as")),
+    _show_params(params.get<bool>("show_parameters")),
     _result(std::make_shared<ResultSeriesContainer>())
 {
+}
+
+void
+TransientDriver::check_integrity() const
+{
+  Driver::check_integrity();
+  neml_assert(_time.dim() == 2,
+              "Input time should have dimension 2 but instead has dimension ",
+              _time.dim());
 }
 
 bool
 TransientDriver::run()
 {
+  if (_show_params)
+    for (auto & item : _model.named_parameters(true))
+      std::cout << item.key() << std::endl;
+
   auto status = solve();
 
   if (!save_as_path().empty())

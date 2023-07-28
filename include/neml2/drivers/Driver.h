@@ -43,6 +43,7 @@ public:
   virtual bool run() = 0;
 
 protected:
+  virtual void check_integrity() const {}
   bool _verbose;
 };
 } // namespace neml2

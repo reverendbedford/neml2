@@ -37,23 +37,11 @@ public:
 
 protected:
   bool solve() override;
-
   virtual void solve_step(bool init);
+  void check_integrity() const override;
 
-  void check_integrity() const;
-
-  Model & _model;
-  torch::Tensor _time;
   std::string _control;
-  TorchSize _step_count;
-
   torch::Tensor _driving_force;
   LabeledAxisAccessor _driving_force_name;
-  LabeledAxisAccessor _time_name;
-  TorchSize _nsteps;
-  TorchSize _nbatch;
-
-  LabeledVector _in;
-  LabeledVector _out;
 };
 }

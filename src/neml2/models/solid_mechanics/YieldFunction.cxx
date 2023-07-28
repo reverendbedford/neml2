@@ -46,7 +46,7 @@ YieldFunction::YieldFunction(const ParameterSet & params)
     isotropic_hardening(params.get<LabeledAxisAccessor>("isotropic_hardening")),
     yield_function(
         declare_output_variable<Scalar>(params.get<LabeledAxisAccessor>("yield_function"))),
-    _s0(register_parameter("yield_stress", Scalar(params.get<Real>("yield_stress"))))
+    _s0(register_parameter("sy", Scalar(params.get<Real>("yield_stress")), false))
 {
   if (!isotropic_hardening.empty())
     declare_input_variable<Scalar>(isotropic_hardening);

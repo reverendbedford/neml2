@@ -83,8 +83,8 @@
   []
   [flow_rate]
     type = PerzynaPlasticFlowRate
-    eta = 155.22903539478642 # 200 * (2/3)^(5/8)
-    n = 4
+    reference_stress = 155.22903539478642 # 200 * (2/3)^(5/8)
+    exponent = 4
   []
   [eprate]
     type = AssociativeIsotropicPlasticHardening
@@ -118,8 +118,8 @@
   []
   [elasticity]
     type = LinearElasticity
-    E = 1e5
-    nu = 0.3
+    youngs_modulus = 1e5
+    poisson_ratio = 0.3
     rate_form = true
   []
   [integrate_ep]

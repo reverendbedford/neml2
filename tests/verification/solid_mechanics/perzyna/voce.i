@@ -75,8 +75,8 @@
   []
   [flow_rate]
     type = PerzynaPlasticFlowRate
-    eta = 500
-    n = 5
+    reference_stress = 500
+    exponent = 5
   []
   [Eprate]
     type = AssociativePlasticFlow
@@ -94,8 +94,8 @@
   []
   [elasticity]
     type = LinearElasticity
-    E = 124000
-    nu = 0.32
+    youngs_modulus = 124000
+    poisson_ratio = 0.32
     rate_form = true
   []
   [integrate_stress]

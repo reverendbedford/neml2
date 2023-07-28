@@ -24,6 +24,6 @@
 [Models]
   [model]
     type = LinearKinematicHardening
-    H = 1000
+    hardening_modulus = 1000
   []
 []

@@ -32,12 +32,9 @@ ParameterSet
 SolidMechanicsDriver::expected_params()
 {
   ParameterSet params = TransientDriver::expected_params();
-  params.set<std::string>("model");
-  params.set<CrossRef<torch::Tensor>>("times");
   params.set<std::string>("control") = "STRAIN";
   params.set<LabeledAxisAccessor>("total_strain") = LabeledAxisAccessor{{"forces", "E"}};
   params.set<LabeledAxisAccessor>("cauchy_stress") = LabeledAxisAccessor{{"forces", "S"}};
-  params.set<LabeledAxisAccessor>("time") = LabeledAxisAccessor{{"forces", "t"}};
   params.set<CrossRef<torch::Tensor>>("prescribed_strains");
   params.set<CrossRef<torch::Tensor>>("prescribed_stresses");
   return params;
@@ -45,10 +42,7 @@ SolidMechanicsDriver::expected_params()
 
 SolidMechanicsDriver::SolidMechanicsDriver(const ParameterSet & params)
   : TransientDriver(params),
-    _model(Factory::get_object<Model>("Models", params.get<std::string>("model"))),
-    _time(params.get<CrossRef<torch::Tensor>>("times")),
-    _control(params.get<std::string>("control")),
-    _step_count(0)
+    _control(params.get<std::string>("control"))
 {
   if (_control == "STRAIN")
   {
@@ -63,22 +57,13 @@ SolidMechanicsDriver::SolidMechanicsDriver(const ParameterSet & params)
   else
     neml_assert(false, "Unsupported control type.");
 
-  _time_name = params.get<LabeledAxisAccessor>("time");
-  _nsteps = _driving_force.sizes()[0];
-  _nbatch = _driving_force.sizes()[1];
-
-  _in = LabeledVector(_nbatch, {&_model.input()});
-  _out = LabeledVector(_nbatch, {&_model.output()});
-
   check_integrity();
 }
 
 void
 SolidMechanicsDriver::check_integrity() const
 {
-  neml_assert(_time.dim() == 2,
-              "Input time should have dimension 2 but instead has dimension ",
-              _time.dim());
+  TransientDriver::check_integrity();
   neml_assert(_driving_force.dim() == 3,
               "Input strain/stress should have dimension 3 but instead has dimension",
               _driving_force.dim());
@@ -104,7 +89,7 @@ bool
 SolidMechanicsDriver::solve()
 {
   // We don't need parameter gradients
-  torch::NoGradGuard no_grad_guard;
+  // torch::NoGradGuard no_grad_guard;
 
   for (_step_count = 0; _step_count < _nsteps; _step_count++)
     solve_step(_step_count == 0);

@@ -44,12 +44,23 @@ public:
   virtual std::shared_ptr<ResultSeriesContainer> result() const { return _result; }
 
 protected:
+  virtual void check_integrity() const override;
   virtual bool solve() = 0;
-
   virtual void output() const;
   void output_pt(const std::filesystem::path & out) const;
 
+  Model & _model;
+
+  torch::Tensor _time;
+  TorchSize _step_count;
+  LabeledAxisAccessor _time_name;
+  TorchSize _nsteps;
+  TorchSize _nbatch;
+  LabeledVector _in;
+  LabeledVector _out;
+
   std::string _save_as;
+  const bool _show_params;
   std::shared_ptr<ResultSeriesContainer> _result;
 };
 } // namespace neml2

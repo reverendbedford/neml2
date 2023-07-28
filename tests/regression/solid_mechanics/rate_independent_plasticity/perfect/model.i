@@ -49,8 +49,8 @@
   []
   [elasticity]
     type = LinearElasticity
-    E = 1e5
-    nu = 0.3
+    youngs_modulus = 1e5
+    poisson_ratio = 0.3
   []
   [mandel_stress]
     type = IsotropicMandelStress

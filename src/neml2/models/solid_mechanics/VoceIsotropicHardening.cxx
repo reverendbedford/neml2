@@ -39,8 +39,8 @@ VoceIsotropicHardening::expected_params()
 
 VoceIsotropicHardening::VoceIsotropicHardening(const ParameterSet & params)
   : IsotropicHardening(params),
-    _R(register_parameter("saturated_hardening", Scalar(params.get<Real>("saturated_hardening")))),
-    _d(register_parameter("saturation_rate", Scalar(params.get<Real>("saturation_rate"))))
+    _R(register_parameter("R", Scalar(params.get<Real>("saturated_hardening")), false)),
+    _d(register_parameter("d", Scalar(params.get<Real>("saturation_rate")), false))
 {
 }
 

@@ -13,6 +13,6 @@
 [Models]
   [model]
     type = LinearIsotropicHardening
-    K = 1000
+    hardening_modulus = 1000
   []
 []

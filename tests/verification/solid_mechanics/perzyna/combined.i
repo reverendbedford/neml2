@@ -45,11 +45,11 @@
 [Models]
   [isoharden]
     type = LinearIsotropicHardening
-    K = 2500
+    hardening_modulus = 2500
   []
   [kinharden]
     type = LinearKinematicHardening
-    H = 1000
+    hardening_modulus = 1000
   []
   [mandel_stress]
     type = IsotropicMandelStress
@@ -81,8 +81,8 @@
   []
   [flow_rate]
     type = PerzynaPlasticFlowRate
-    eta = 500
-    n = 5
+    reference_stress = 500
+    exponent = 5
   []
   [eprate]
     type = AssociativeIsotropicPlasticHardening
@@ -103,8 +103,8 @@
   []
   [elasticity]
     type = LinearElasticity
-    E = 124000
-    nu = 0.32
+    youngs_modulus = 124000
+    poisson_ratio = 0.32
     rate_form = true
   []
   [integrate_ep]

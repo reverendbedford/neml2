@@ -32,15 +32,15 @@ ParameterSet
 PerzynaPlasticFlowRate::expected_params()
 {
   ParameterSet params = PlasticFlowRate::expected_params();
-  params.set<Real>("eta");
-  params.set<Real>("n");
+  params.set<Real>("reference_stress");
+  params.set<Real>("exponent");
   return params;
 }
 
 PerzynaPlasticFlowRate::PerzynaPlasticFlowRate(const ParameterSet & params)
   : PlasticFlowRate(params),
-    _eta(register_parameter("reference_flow_stress", Scalar(params.get<Real>("eta")))),
-    _n(register_parameter("flow_rate_exponent", Scalar(params.get<Real>("n"))))
+    _eta(register_parameter("eta", Scalar(params.get<Real>("reference_stress")), false)),
+    _n(register_parameter("n", Scalar(params.get<Real>("exponent")), false))
 {
 }
 

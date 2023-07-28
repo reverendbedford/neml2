@@ -24,8 +24,8 @@
 [Models]
   [model]
     type = LinearElasticity
-    E = 100
-    nu = 0.3
+    youngs_modulus = 100
+    poisson_ratio = 0.3
     compliance = true
   []
 []

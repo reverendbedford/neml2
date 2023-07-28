@@ -56,15 +56,15 @@
   []
   [kinharden]
     type = LinearKinematicHardening
-    H = 1000
+    hardening_modulus = 1000
   []
   [elastic_strain]
     type = ElasticStrain
   []
   [elasticity]
     type = LinearElasticity
-    E = 120000
-    nu = 0.3
+    youngs_modulus = 120000
+    poisson_ratio = 0.3
   []
   [mandel_stress]
     type = IsotropicMandelStress

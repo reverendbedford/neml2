@@ -32,8 +32,8 @@ ParameterSet
 LinearElasticity::expected_params()
 {
   ParameterSet params = Model::expected_params();
-  params.set<CrossRef<Scalar>>("E");
-  params.set<CrossRef<Scalar>>("nu");
+  params.set<CrossRef<Scalar>>("youngs_modulus");
+  params.set<CrossRef<Scalar>>("poisson_ratio");
   params.set<LabeledAxisAccessor>("strain") = {{"state", "internal", "Ee"}};
   params.set<LabeledAxisAccessor>("stress") = {{"state", "S"}};
   params.set<bool>("compliance") = false;
@@ -43,8 +43,8 @@ LinearElasticity::expected_params()
 
 LinearElasticity::LinearElasticity(const ParameterSet & params)
   : Model(params),
-    _E(register_parameter(name() + "_E", params.get<CrossRef<Scalar>>("E"))),
-    _nu(register_parameter(name() + "_nu", params.get<CrossRef<Scalar>>("nu"))),
+    _E(register_parameter("E", params.get<CrossRef<Scalar>>("youngs_modulus"), false)),
+    _nu(register_parameter("nu", params.get<CrossRef<Scalar>>("poisson_ratio"), false)),
     _compliance(params.get<bool>("compliance")),
     _rate_form(params.get<bool>("rate_form")),
     _strain(params.get<LabeledAxisAccessor>("strain").with_suffix(_rate_form ? "_rate" : "")),

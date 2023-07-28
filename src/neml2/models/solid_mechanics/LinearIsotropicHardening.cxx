@@ -32,13 +32,13 @@ ParameterSet
 LinearIsotropicHardening::expected_params()
 {
   ParameterSet params = IsotropicHardening::expected_params();
-  params.set<Real>("K");
+  params.set<Real>("hardening_modulus");
   return params;
 }
 
 LinearIsotropicHardening::LinearIsotropicHardening(const ParameterSet & params)
   : IsotropicHardening(params),
-    _K(register_parameter("hardening_modulus", Scalar(params.get<Real>("K"))))
+    _K(register_parameter("K", Scalar(params.get<Real>("hardening_modulus")), false))
 {
 }
 

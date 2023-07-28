@@ -13,7 +13,7 @@
 [Models]
   [model]
     type = PerzynaPlasticFlowRate
-    eta = 150
-    n = 6
+    reference_stress = 150
+    exponent = 6
   []
 []
