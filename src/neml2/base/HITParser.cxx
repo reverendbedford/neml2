@@ -25,8 +25,6 @@
 #include "neml2/base/HITParser.h"
 #include "neml2/tensors/LabeledAxis.h"
 #include "neml2/base/CrossRef.h"
-#include "neml2/generators/Generator.h"
-#include "neml2/base/GeneratorFactory.h"
 #include <memory>
 
 namespace neml2
@@ -47,11 +45,8 @@ HITParser::parse(const std::string & filename) const
   auto root = dynamic_cast<hit::Section *>(hit::parse("Hit parser", input));
   neml_assert(root, "HIT failed to lex the input file: ", filename);
 
-  // First run the generators to generate parameters
-  auto all_params = GeneratorFactory::get().generate(root);
-  std::cout << all_params << std::endl;
-
   // Loop over each known section and extract parameters for each object
+  ParameterCollection all_params;
   for (const auto & section : Factory::pipeline)
   {
     auto section_node = root->find(section);
@@ -83,15 +78,6 @@ HITParser::extract_object_parameters(hit::Node * object) const
   params.set<std::string>("name") = name;
   params.set<std::string>("type") = type;
 
-  return params;
-}
-
-ParameterSet
-HITParser::extract_generator_parameters(hit::Node * object) const
-{
-  auto params = GeneratorRegistry::expected_params(object->fullpath());
-  for (auto node : object->children(hit::NodeType::Field))
-    extract_parameter(node, params);
   return params;
 }
 

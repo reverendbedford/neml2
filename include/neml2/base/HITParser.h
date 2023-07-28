@@ -36,7 +36,6 @@ public:
 
   virtual ParameterCollection parse(const std::string & filename) const;
   virtual ParameterSet extract_object_parameters(hit::Node * object) const;
-  virtual ParameterSet extract_generator_parameters(hit::Node * object) const;
 
 private:
   void extract_parameters(hit::Node * object, ParameterSet & params) const;
