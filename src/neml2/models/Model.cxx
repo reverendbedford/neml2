@@ -71,6 +71,76 @@ Model::use_AD_derivatives(bool first, bool second)
   check_AD_limitation();
 }
 
+void
+Model::trace_parameters(const std::map<std::string, bool> & params)
+{
+  const auto & model_params = named_parameters(true);
+  for (auto && [name, requires_grad] : params)
+    model_params[name].requires_grad_(requires_grad);
+}
+
+void
+Model::set_parameters(const std::map<std::string, torch::Tensor> & params)
+{
+  const auto & model_params = named_parameters(true);
+  for (auto && [name, val] : params)
+  {
+    auto req_grad = model_params[name].requires_grad();
+    model_params[name].requires_grad_(false);
+    model_params[name].copy_(val);
+    model_params[name].requires_grad_(req_grad);
+  }
+}
+
+BatchTensor<1>
+Model::dparam(const LabeledVector & out, const std::string & param) const
+{
+  const auto & outval = out.tensor();
+  BatchTensor<1> pval = named_parameters(true)[param];
+
+  BatchTensor<1> dout_dp(
+      out.batch_size(), utils::add_shapes(outval.base_sizes(), pval.base_sizes()), out.options());
+
+  if (pval.batch_sizes()[0] == 1)
+  {
+    for (TorchSize b = 0; b < outval.batch_sizes()[0]; b++)
+      for (TorchSize i = 0; i < outval.base_sizes()[0]; i++)
+      {
+        BatchTensor<1> grad_outputs = torch::zeros_like(outval.index({b}));
+        grad_outputs.index_put_({i}, 1.0);
+        try
+        {
+          auto jac_row =
+              torch::autograd::grad({outval.index({b})}, {pval}, {grad_outputs}, true)[0];
+          dout_dp.index_put_({b, i, torch::indexing::Slice()}, jac_row);
+        }
+        catch (c10::Error &)
+        {
+          // This is aggravating: libTorch throws if the derivative is zero... but why?!
+        }
+      }
+  }
+  else
+  {
+    for (TorchSize i = 0; i < outval.base_sizes()[0]; i++)
+    {
+      BatchTensor<1> grad_outputs = torch::zeros_like(outval);
+      grad_outputs.index_put_({torch::indexing::Ellipsis, i}, 1.0);
+      try
+      {
+        auto jac_row = torch::autograd::grad({outval}, {pval}, {grad_outputs}, true)[0];
+        dout_dp.base_index_put({i, torch::indexing::Slice()}, jac_row);
+      }
+      catch (c10::Error &)
+      {
+        // This is aggravating: libTorch throws if the derivative is zero... but why?!
+      }
+    }
+  }
+
+  return dout_dp;
+}
+
 LabeledVector
 Model::value(const LabeledVector & in) const
 {

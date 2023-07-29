@@ -22,29 +22,41 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
+#include <catch2/catch.hpp>
 
-#include "neml2/models/Model.h"
+#include "utils.h"
+#include "ModelUnitTest.h"
 
-class SampleRateModel : public neml2::Model
+using namespace neml2;
+
+TEST_CASE("Use AD to get parameter partials")
 {
-public:
-  SampleRateModel(const neml2::ParameterSet & params);
+  load_model("unit/models/ImplicitUpdate.i");
+  auto & driver = Factory::get_object<ModelUnitTest>("Drivers", "unit");
+  auto & model = driver.model();
 
-protected:
-  virtual void set_value(const neml2::LabeledVector & in,
-                         neml2::LabeledVector * out,
-                         neml2::LabeledMatrix * dout_din = nullptr,
-                         neml2::LabeledTensor3D * d2out_din2 = nullptr) const override;
+  // There are three parameters:
+  auto param_a = "implicit_rate.rate.a";
+  auto param_b = "implicit_rate.rate.b";
+  auto param_c = "implicit_rate.rate.c";
+  // Let's track the derivatives of a
+  model.trace_parameters({{param_a, true}, {param_b, false}, {param_c, false}});
 
-  const neml2::Scalar _a;
-  const neml2::Scalar _b;
-  const neml2::Scalar _c;
-  const neml2::LabeledAxisAccessor _foo;
-  const neml2::LabeledAxisAccessor _bar;
-  const neml2::LabeledAxisAccessor _baz;
-  const neml2::LabeledAxisAccessor _temperature;
-  const neml2::LabeledAxisAccessor _foo_rate;
-  const neml2::LabeledAxisAccessor _bar_rate;
-  const neml2::LabeledAxisAccessor _baz_rate;
-};
+  // Evaluate the model value
+  auto out = model.value(driver.in());
+
+  // dout/da
+  auto dout_da = model.dparam(out, param_a);
+
+  // Use FD to check the parameter derivatives
+  BatchTensor<1> dout_da_FD = torch::empty_like(dout_da);
+  finite_differencing_derivative(
+      [&](const BatchTensor<1> & x)
+      {
+        model.set_parameters({{param_a, x}});
+        return model.value(driver.in()).tensor();
+      },
+      model.named_parameters(true)[param_a].detach().clone(),
+      dout_da_FD);
+  REQUIRE(torch::allclose(dout_da, dout_da_FD));
+}

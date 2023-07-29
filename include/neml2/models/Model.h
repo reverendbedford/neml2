@@ -66,6 +66,15 @@ public:
   /// Tell this model to use AD to get derivatives
   void use_AD_derivatives(bool first = true, bool second = true);
 
+  /// Tell this model which parameters require grad
+  void trace_parameters(const std::map<std::string, bool> &);
+
+  /// Set this model's parameters
+  void set_parameters(const std::map<std::string, torch::Tensor> &);
+
+  /// Get the derivatives w.r.t. to the parameter
+  BatchTensor<1> dparam(const LabeledVector & out, const std::string & param) const;
+
   /// Convenient shortcut to construct and return the model value
   virtual LabeledVector value(const LabeledVector & in) const;
 

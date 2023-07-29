@@ -38,6 +38,15 @@ public:
 
   bool run() override;
 
+  Model & model() { return _model; }
+  const Model & model() const { return _model; }
+
+  LabeledVector & in() { return _in; }
+  const LabeledVector & in() const { return _in; }
+
+  LabeledVector & out() { return _out; }
+  const LabeledVector & out() const { return _out; }
+
 private:
   template <typename T>
   void fill_vector(LabeledVector & vec,

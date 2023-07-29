@@ -31,6 +31,9 @@ register_NEML2_object(SampleRateModel);
 
 SampleRateModel::SampleRateModel(const ParameterSet & params)
   : Model(params),
+    _a(register_parameter("a", Scalar(-0.01), false)),
+    _b(register_parameter("b", Scalar(-0.5), false)),
+    _c(register_parameter("c", Scalar(-0.9), false)),
     _foo(declare_input_variable<Scalar>({"state", "foo"})),
     _bar(declare_input_variable<Scalar>({"state", "bar"})),
     _baz(declare_input_variable<SymR2>({"state", "baz"})),
@@ -60,7 +63,7 @@ SampleRateModel::set_value(const LabeledVector & in,
 
   // Some made up rates
   auto foo_dot = (foo * foo + bar) * T + baz.tr();
-  auto bar_dot = -bar / 100 - 0.5 * foo - 0.9 * T + baz.tr();
+  auto bar_dot = _a * bar + _b * foo + _c * T + baz.tr();
   auto baz_dot = (foo + bar) * baz * (T - 3);
 
   // Set the output
@@ -78,8 +81,8 @@ SampleRateModel::set_value(const LabeledVector & in,
     auto dfoo_dot_dfoo = 2 * foo * T;
     auto dfoo_dot_dbar = T;
     auto dfoo_dot_dbaz = SymR2::identity(options);
-    auto dbar_dot_dfoo = Scalar(-0.5, options);
-    auto dbar_dot_dbar = Scalar(-0.01, options);
+    auto dbar_dot_dfoo = _b;
+    auto dbar_dot_dbar = _a;
     auto dbar_dot_dbaz = SymR2::identity(options);
     auto dbaz_dot_dfoo = baz * (T - 3);
     auto dbaz_dot_dbar = baz * (T - 3);
@@ -96,7 +99,7 @@ SampleRateModel::set_value(const LabeledVector & in,
     dout_din->set(dbaz_dot_dbaz, _baz_rate, _baz);
 
     auto dfoo_dot_dT = foo * foo + bar;
-    auto dbar_dot_dT = Scalar(-0.9, options);
+    auto dbar_dot_dT = _c;
     auto dbaz_dot_dT = (foo + bar) * baz;
 
     dout_din->set(dfoo_dot_dT, _foo_rate, _temperature);
