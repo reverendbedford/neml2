@@ -45,6 +45,17 @@ HITParser::parse(const std::string & filename) const
   auto root = dynamic_cast<hit::Section *>(hit::parse("Hit parser", input));
   neml_assert(root, "HIT failed to lex the input file: ", filename);
 
+  // Explode the tree
+  hit::explode(root);
+
+  // Preevaluate the input
+  hit::BraceExpander expander;
+  hit::EnvEvaler env;
+  hit::RawEvaler raw;
+  expander.registerEvaler("env", env);
+  expander.registerEvaler("raw", raw);
+  root->walk(&expander);
+
   // Loop over each known section and extract parameters for each object
   ParameterCollection all_params;
   for (const auto & section : Factory::pipeline)
