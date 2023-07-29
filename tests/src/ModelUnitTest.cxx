@@ -35,10 +35,11 @@ ModelUnitTest::expected_params()
   ParameterSet params = Driver::expected_params();
   params.set<std::string>("model");
   params.set<TorchSize>("nbatch") = 1;
-  params.set<bool>("check_derivatives") = true;
+  params.set<bool>("check_first_derivatives") = true;
   params.set<bool>("check_second_derivatives") = false;
+  params.set<bool>("check_AD_first_derivatives") = true;
+  params.set<bool>("check_AD_second_derivatives") = true;
   params.set<bool>("check_AD_derivatives") = true;
-  params.set<bool>("check_AD_second_derivatives") = false;
   params.set<std::vector<LabeledAxisAccessor>>("input_scalar_names");
   params.set<std::vector<CrossRef<Scalar>>>("input_scalar_values");
   params.set<std::vector<LabeledAxisAccessor>>("input_symr2_names");
@@ -60,10 +61,11 @@ ModelUnitTest::ModelUnitTest(const ParameterSet & params)
   : Driver(params),
     _model(Factory::get_object<Model>("Models", params.get<std::string>("model"))),
     _nbatch(params.get<TorchSize>("nbatch")),
-    _check_deriv(params.get<bool>("check_derivatives")),
-    _check_secderiv(params.get<bool>("check_second_derivatives")),
-    _check_AD_deriv(params.get<bool>("check_AD_derivatives")),
-    _check_AD_secderiv(params.get<bool>("check_AD_second_derivatives")),
+    _check_1st_deriv(params.get<bool>("check_first_derivatives")),
+    _check_2nd_deriv(params.get<bool>("check_second_derivatives")),
+    _check_AD_1st_deriv(params.get<bool>("check_AD_first_derivatives")),
+    _check_AD_2nd_deriv(params.get<bool>("check_AD_second_derivatives")),
+    _check_AD_derivs(params.get<bool>("check_AD_derivatives")),
     _out_rtol(params.get<Real>("output_rel_tol")),
     _out_atol(params.get<Real>("output_abs_tol")),
     _deriv_rtol(params.get<Real>("derivatives_rel_tol")),
@@ -85,31 +87,20 @@ ModelUnitTest::run()
 {
   check_values();
 
-  if (_check_deriv)
-  {
-    _model.use_AD_derivative(false);
-    check_derivatives();
-  }
+  if (_check_1st_deriv)
+    check_derivatives(false, false);
 
-  if (_check_secderiv)
-  {
-    _model.use_AD_derivative(false);
-    _model.use_AD_second_derivative(false);
-    check_second_derivatives();
-  }
+  if (_check_2nd_deriv)
+    check_second_derivatives(false, false);
 
-  if (_check_AD_deriv)
-  {
-    _model.use_AD_derivative(true);
-    check_derivatives();
-  }
+  if (_check_AD_1st_deriv)
+    check_derivatives(true, true);
 
-  if (_check_AD_secderiv)
-  {
-    _model.use_AD_derivative(false);
-    _model.use_AD_second_derivative(true);
-    check_second_derivatives();
-  }
+  if (_check_AD_2nd_deriv)
+    check_second_derivatives(false, true);
+
+  if (_check_AD_derivs)
+    check_second_derivatives(true, true);
 
   return true;
 }
@@ -130,8 +121,9 @@ ModelUnitTest::check_values()
 }
 
 void
-ModelUnitTest::check_derivatives()
+ModelUnitTest::check_derivatives(bool first, bool second)
 {
+  _model.use_AD_derivatives(first, second);
   auto exact = _model.dvalue(_in);
   auto numerical = LabeledMatrix(_nbatch, {&_model.output(), &_model.input()});
   finite_differencing_derivative(
@@ -145,8 +137,9 @@ ModelUnitTest::check_derivatives()
 }
 
 void
-ModelUnitTest::check_second_derivatives()
+ModelUnitTest::check_second_derivatives(bool first, bool second)
 {
+  _model.use_AD_derivatives(first, second);
   auto exact = _model.d2value(_in);
   auto numerical = LabeledTensor3D(_nbatch, {&_model.output(), &_model.input(), &_model.input()});
   finite_differencing_derivative(

@@ -58,15 +58,16 @@ private:
   }
 
   void check_values();
-  void check_derivatives();
-  void check_second_derivatives();
+  void check_derivatives(bool first, bool second);
+  void check_second_derivatives(bool first, bool second);
 
   Model & _model;
   const TorchSize _nbatch;
-  const bool _check_deriv;
-  const bool _check_secderiv;
-  const bool _check_AD_deriv;
-  const bool _check_AD_secderiv;
+  const bool _check_1st_deriv;
+  const bool _check_2nd_deriv;
+  const bool _check_AD_1st_deriv;
+  const bool _check_AD_2nd_deriv;
+  const bool _check_AD_derivs;
 
   LabeledVector _in;
   LabeledVector _out;

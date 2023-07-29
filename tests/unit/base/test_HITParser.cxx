@@ -38,7 +38,7 @@ TEST_CASE("parse", "[HITParser]")
   REQUIRE(params.get<std::string>("name") == "foo");
   REQUIRE(params.get<std::string>("type") == "SampleParserTestingModel");
   REQUIRE(params.get<std::vector<LabeledAxisAccessor>>("additional_outputs").empty());
-  REQUIRE(params.get<bool>("use_AD_derivative") == false);
+  REQUIRE(params.get<bool>("use_AD_first_derivative") == false);
   REQUIRE(params.get<bool>("use_AD_second_derivative") == false);
 
   // booleans

@@ -33,7 +33,7 @@ Model::expected_params()
 {
   ParameterSet params = NEML2Object::expected_params();
   params.set<std::vector<LabeledAxisAccessor>>("additional_outputs");
-  params.set<bool>("use_AD_derivative") = false;
+  params.set<bool>("use_AD_first_derivative") = false;
   params.set<bool>("use_AD_second_derivative") = false;
   return params;
 }
@@ -42,15 +42,33 @@ Model::Model(const ParameterSet & params)
   : NEML2Object(params),
     _input(declareAxis()),
     _output(declareAxis()),
-    _AD_deriv(params.get<bool>("use_AD_derivative")),
-    _AD_secderiv(params.get<bool>("use_AD_second_derivative"))
+    _AD_1st_deriv(params.get<bool>("use_AD_first_derivative")),
+    _AD_2nd_deriv(params.get<bool>("use_AD_second_derivative"))
 {
-  neml_assert(!_AD_deriv || !_AD_secderiv,
-              "Cannot use AD for both the derivatives and the second derivatives.");
-
+  check_AD_limitation();
   for (const auto & var : params.get<std::vector<LabeledAxisAccessor>>("additional_outputs"))
     _additional_outputs.insert(var);
   setup();
+}
+
+void
+Model::check_AD_limitation() const
+{
+  // AD_1st_deriv   AD_2nd_deriv   comment
+  // true           true           okay, just slow
+  // true           false          error, this is a weird case
+  // false          true           okay
+  // false          false          great, everything handcoded
+  if (_AD_1st_deriv && !_AD_2nd_deriv)
+    throw NEMLException("AD derivative is requested, but AD second derivative is not requested.");
+}
+
+void
+Model::use_AD_derivatives(bool first, bool second)
+{
+  _AD_1st_deriv = first;
+  _AD_2nd_deriv = second;
+  check_AD_limitation();
 }
 
 LabeledVector
@@ -64,7 +82,7 @@ Model::value(const LabeledVector & in) const
 LabeledMatrix
 Model::dvalue(const LabeledVector & in) const
 {
-  if (_AD_deriv)
+  if (_AD_1st_deriv)
     return std::get<1>(value_and_dvalue(in));
 
   LabeledMatrix dout_din(in.batch_size(), {&output(), &in.axis()}, in.options());
@@ -75,8 +93,8 @@ Model::dvalue(const LabeledVector & in) const
 LabeledTensor3D
 Model::d2value(const LabeledVector & in) const
 {
-  if (_AD_secderiv)
-    return std::get<1>(dvalue_and_d2value(in));
+  if (_AD_2nd_deriv)
+    return std::get<2>(value_and_dvalue_and_d2value(in));
 
   LabeledTensor3D d2out_din2(in.batch_size(), {&output(), &in.axis(), &in.axis()}, in.options());
   set_value(in, nullptr, nullptr, &d2out_din2);
@@ -89,7 +107,7 @@ Model::value_and_dvalue(const LabeledVector & in) const
   LabeledVector out(in.batch_size(), {&output()}, in.options());
   LabeledMatrix dout_din(in.batch_size(), {&output(), &in.axis()}, in.options());
 
-  if (_AD_deriv)
+  if (_AD_1st_deriv)
   {
     // Set requires_grad to true if not already
     bool req_grad = in.tensor().requires_grad();
@@ -100,10 +118,17 @@ Model::value_and_dvalue(const LabeledVector & in) const
     for (TorchSize i = 0; i < out.tensor().base_sizes()[0]; i++)
     {
       BatchTensor<1> grad_outputs = torch::zeros_like(out.tensor());
-      grad_outputs.index_put_({torch::indexing::Ellipsis, i}, 1);
-      out.tensor().backward({grad_outputs}, true);
-      auto jac_row = torch::autograd::grad({out.tensor()}, {in.tensor()}, {grad_outputs}, true)[0];
-      dout_din.tensor().base_index_put({i, torch::indexing::Slice()}, jac_row);
+      grad_outputs.index_put_({torch::indexing::Ellipsis, i}, 1.0);
+      try
+      {
+        auto jac_row =
+            torch::autograd::grad({out.tensor()}, {in.tensor()}, {grad_outputs}, true, true)[0];
+        dout_din.tensor().base_index_put({i, torch::indexing::Slice()}, jac_row);
+      }
+      catch (c10::Error &)
+      {
+        // This is aggravating: libTorch throws if the derivative is zero... but why?!
+      }
     }
     in.tensor().requires_grad_(req_grad);
   }
@@ -116,31 +141,13 @@ Model::value_and_dvalue(const LabeledVector & in) const
 std::tuple<LabeledMatrix, LabeledTensor3D>
 Model::dvalue_and_d2value(const LabeledVector & in) const
 {
+  if (_AD_1st_deriv || _AD_2nd_deriv)
+    return {std::get<1>(value_and_dvalue_and_d2value(in)),
+            std::get<2>(value_and_dvalue_and_d2value(in))};
+
   LabeledMatrix dout_din(in.batch_size(), {&output(), &in.axis()}, in.options());
   LabeledTensor3D d2out_din2(in.batch_size(), {&output(), &in.axis(), &in.axis()}, in.options());
-
-  if (_AD_secderiv)
-  {
-    // Set requires_grad to true if not already
-    bool req_grad = in.tensor().requires_grad();
-    in.tensor().requires_grad_();
-    // Evaluate the model value
-    set_value(in, nullptr, &dout_din);
-    // Loop over rows to retrieve the derivatives
-    for (TorchSize i = 0; i < dout_din.tensor().base_sizes()[0]; i++)
-      for (TorchSize j = 0; j < dout_din.tensor().base_sizes()[1]; j++)
-      {
-        BatchTensor<1> grad_outputs = torch::zeros_like(dout_din.tensor());
-        grad_outputs.index_put_({torch::indexing::Ellipsis, i, j}, 1);
-        auto jac_row =
-            torch::autograd::grad({dout_din.tensor()}, {in.tensor()}, {grad_outputs}, true)[0];
-        d2out_din2.tensor().base_index_put({i, j, torch::indexing::Slice()}, jac_row);
-      }
-    in.tensor().requires_grad_(req_grad);
-  }
-  else
-    set_value(in, nullptr, &dout_din, &d2out_din2);
-
+  set_value(in, nullptr, &dout_din, &d2out_din2);
   return {dout_din, d2out_din2};
 }
 
@@ -151,22 +158,49 @@ Model::value_and_dvalue_and_d2value(const LabeledVector & in) const
   LabeledMatrix dout_din(in.batch_size(), {&output(), &in.axis()}, in.options());
   LabeledTensor3D d2out_din2(in.batch_size(), {&output(), &in.axis(), &in.axis()}, in.options());
 
-  if (_AD_secderiv)
+  if (_AD_2nd_deriv)
   {
     // Set requires_grad to true if not already
     bool req_grad = in.tensor().requires_grad();
     in.tensor().requires_grad_();
-    // Evaluate the model value
-    set_value(in, &out, &dout_din);
-    // Loop over rows to retrieve the derivatives
+    if (_AD_1st_deriv)
+    {
+      set_value(in, &out);
+      // Loop over rows to retrieve the derivatives
+      for (TorchSize i = 0; i < out.tensor().base_sizes()[0]; i++)
+      {
+        BatchTensor<1> grad_outputs = torch::zeros_like(out.tensor());
+        grad_outputs.index_put_({torch::indexing::Ellipsis, i}, 1.0);
+        try
+        {
+          auto jac_row =
+              torch::autograd::grad({out.tensor()}, {in.tensor()}, {grad_outputs}, true, true)[0];
+          dout_din.tensor().base_index_put({i, torch::indexing::Slice()}, jac_row);
+        }
+        catch (c10::Error &)
+        {
+          // This is aggravating: libTorch throws if the derivative is zero... but why?!
+        }
+      }
+    }
+    else
+      set_value(in, &out, &dout_din);
+    // Loop over rows to retrieve the second derivatives
     for (TorchSize i = 0; i < dout_din.tensor().base_sizes()[0]; i++)
       for (TorchSize j = 0; j < dout_din.tensor().base_sizes()[1]; j++)
       {
         BatchTensor<1> grad_outputs = torch::zeros_like(dout_din.tensor());
-        grad_outputs.index_put_({torch::indexing::Ellipsis, i, j}, 1);
-        auto jac_row =
-            torch::autograd::grad({dout_din.tensor()}, {in.tensor()}, {grad_outputs}, true)[0];
-        d2out_din2.tensor().base_index_put({i, j, torch::indexing::Slice()}, jac_row);
+        grad_outputs.index_put_({torch::indexing::Ellipsis, i, j}, 1.0);
+        try
+        {
+          auto jac_row =
+              torch::autograd::grad({dout_din.tensor()}, {in.tensor()}, {grad_outputs}, true)[0];
+          d2out_din2.tensor().base_index_put({i, j, torch::indexing::Slice()}, jac_row);
+        }
+        catch (c10::Error &)
+        {
+          // This is aggravating: libTorch throws if the derivative is zero... but why?!
+        }
       }
     in.tensor().requires_grad_(req_grad);
   }

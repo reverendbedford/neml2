@@ -61,21 +61,10 @@ public:
   const LabeledAxis & output() const { return _output; }
   /// @}
 
-  /// Tell this model to use AD to get derivatives
-  void use_AD_derivative(bool use = true)
-  {
-    _AD_deriv = use;
-    neml_assert(!_AD_deriv || !_AD_secderiv,
-                "Cannot use AD for both the derivatives and the second derivatives.");
-  }
+  void check_AD_limitation() const;
 
-  /// Tell this model to use AD to get second derivatives
-  void use_AD_second_derivative(bool use = true)
-  {
-    _AD_secderiv = use;
-    neml_assert(!_AD_deriv || !_AD_secderiv,
-                "Cannot use AD for both the derivatives and the second derivatives.");
-  }
+  /// Tell this model to use AD to get derivatives
+  void use_AD_derivatives(bool first = true, bool second = true);
 
   /// Convenient shortcut to construct and return the model value
   virtual LabeledVector value(const LabeledVector & in) const;
@@ -215,8 +204,8 @@ private:
   LabeledAxis & _input;
   LabeledAxis & _output;
 
-  bool _AD_deriv;
-  bool _AD_secderiv;
+  bool _AD_1st_deriv;
+  bool _AD_2nd_deriv;
 
   /// Cached input while solving this implicit model
   LabeledVector _cached_in;
