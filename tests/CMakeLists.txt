@@ -16,6 +16,7 @@ if(UNIT)
             ${TEST_UTILS}
             ${UNIT_TESTS}
       )
+      set_target_properties(unit_tests PROPERTIES UNITY_BUILD OFF)
       target_link_libraries(unit_tests Catch2::Catch2)
       target_link_libraries(unit_tests neml2 testutils)
       target_include_directories(unit_tests PUBLIC
@@ -35,6 +36,7 @@ if(REGRESSION)
             ${TEST_UTILS}
             ${REGRESSION_TESTS}
       )
+      set_target_properties(regression_tests PROPERTIES UNITY_BUILD OFF)
       target_link_libraries(regression_tests Catch2::Catch2)
       target_link_libraries(regression_tests neml2 testutils)
       target_include_directories(regression_tests PUBLIC
@@ -54,6 +56,7 @@ if(BENCHMARK)
             ${TEST_UTILS}
             ${BENCHMARK_TESTS}
       )
+      set_target_properties(benchmark_tests PROPERTIES UNITY_BUILD OFF)
       target_link_libraries(benchmark_tests Catch2::Catch2)
       target_link_libraries(benchmark_tests neml2 testutils)
       target_include_directories(benchmark_tests PUBLIC
@@ -73,6 +76,7 @@ if(VERIFICATION)
             ${TEST_UTILS}
             ${VERIFICATION_TESTS}
       )
+      set_target_properties(verification_tests PROPERTIES UNITY_BUILD OFF)
       target_link_libraries(verification_tests Catch2::Catch2)
       target_link_libraries(verification_tests neml2 testutils)
       target_include_directories(verification_tests PUBLIC
