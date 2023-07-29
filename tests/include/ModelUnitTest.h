@@ -57,10 +57,16 @@ private:
       vec.set(vals[i], vars[i]);
   }
 
-  const Model & _model;
+  void check_values();
+  void check_derivatives();
+  void check_second_derivatives();
+
+  Model & _model;
   const TorchSize _nbatch;
   const bool _check_deriv;
   const bool _check_secderiv;
+  const bool _check_AD_deriv;
+  const bool _check_AD_secderiv;
 
   LabeledVector _in;
   LabeledVector _out;

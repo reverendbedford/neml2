@@ -78,7 +78,7 @@ public:
   const std::vector<const LabeledAxis *> & axes() const { return _axes; }
 
   /// Get a specific labeled axis
-  const LabeledAxis & axis(TorchSize i) const { return *_axes[i]; }
+  const LabeledAxis & axis(TorchSize i = 0) const { return *_axes[i]; }
 
   /// How to slice the tensor given the names on each axis
   template <typename... S>

@@ -37,6 +37,8 @@ ModelUnitTest::expected_params()
   params.set<TorchSize>("nbatch") = 1;
   params.set<bool>("check_derivatives") = true;
   params.set<bool>("check_second_derivatives") = false;
+  params.set<bool>("check_AD_derivatives") = true;
+  params.set<bool>("check_AD_second_derivatives") = false;
   params.set<std::vector<LabeledAxisAccessor>>("input_scalar_names");
   params.set<std::vector<CrossRef<Scalar>>>("input_scalar_values");
   params.set<std::vector<LabeledAxisAccessor>>("input_symr2_names");
@@ -60,6 +62,8 @@ ModelUnitTest::ModelUnitTest(const ParameterSet & params)
     _nbatch(params.get<TorchSize>("nbatch")),
     _check_deriv(params.get<bool>("check_derivatives")),
     _check_secderiv(params.get<bool>("check_second_derivatives")),
+    _check_AD_deriv(params.get<bool>("check_AD_derivatives")),
+    _check_AD_secderiv(params.get<bool>("check_AD_second_derivatives")),
     _out_rtol(params.get<Real>("output_rel_tol")),
     _out_atol(params.get<Real>("output_abs_tol")),
     _deriv_rtol(params.get<Real>("derivatives_rel_tol")),
@@ -79,7 +83,40 @@ ModelUnitTest::ModelUnitTest(const ParameterSet & params)
 bool
 ModelUnitTest::run()
 {
-  // Check value
+  check_values();
+
+  if (_check_deriv)
+  {
+    _model.use_AD_derivative(false);
+    check_derivatives();
+  }
+
+  if (_check_secderiv)
+  {
+    _model.use_AD_derivative(false);
+    _model.use_AD_second_derivative(false);
+    check_second_derivatives();
+  }
+
+  if (_check_AD_deriv)
+  {
+    _model.use_AD_derivative(true);
+    check_derivatives();
+  }
+
+  if (_check_AD_secderiv)
+  {
+    _model.use_AD_derivative(false);
+    _model.use_AD_second_derivative(true);
+    check_second_derivatives();
+  }
+
+  return true;
+}
+
+void
+ModelUnitTest::check_values()
+{
   auto out = _model.value(_in);
   neml_assert(utils::allclose(out, _out, _out_rtol, _out_atol),
               "The model gives values that are different from expected. The expected labels are:\n",
@@ -90,37 +127,35 @@ ModelUnitTest::run()
               _out.tensor(),
               "\nThe model gives the following values:\n",
               out.tensor());
+}
 
-  // Check derivatives
-  if (_check_deriv)
-  {
-    auto exact = _model.dvalue(_in);
-    auto numerical = LabeledMatrix(_nbatch, {&_model.output(), &_model.input()});
-    finite_differencing_derivative(
-        [this](const LabeledVector & x) { return _model.value(x); }, _in, numerical);
-    neml_assert(torch::allclose(exact.tensor(), numerical.tensor(), _deriv_rtol, _deriv_atol),
-                "The model gives derivatives that are different from those given by finite "
-                "differencing. The model gives:\n",
-                exact.tensor(),
-                "\nFinite differencing gives:\n",
-                numerical.tensor());
-  }
+void
+ModelUnitTest::check_derivatives()
+{
+  auto exact = _model.dvalue(_in);
+  auto numerical = LabeledMatrix(_nbatch, {&_model.output(), &_model.input()});
+  finite_differencing_derivative(
+      [this](const LabeledVector & x) { return _model.value(x); }, _in, numerical);
+  neml_assert(torch::allclose(exact.tensor(), numerical.tensor(), _deriv_rtol, _deriv_atol),
+              "The model gives derivatives that are different from those given by finite "
+              "differencing. The model gives:\n",
+              exact.tensor(),
+              "\nFinite differencing gives:\n",
+              numerical.tensor());
+}
 
-  // Check second derivatives
-  if (_check_secderiv)
-  {
-    auto exact = _model.d2value(_in);
-    auto numerical = LabeledTensor3D(_nbatch, {&_model.output(), &_model.input(), &_model.input()});
-    finite_differencing_derivative(
-        [this](const LabeledVector & x) { return _model.dvalue(x); }, _in, numerical);
-    neml_assert(torch::allclose(exact.tensor(), numerical.tensor(), _secderiv_rtol, _secderiv_atol),
-                "The model gives second derivatives that are different from those given by finite "
-                "differencing. The model gives:\n",
-                exact.tensor(),
-                "\nFinite differencing gives:\n",
-                numerical.tensor());
-  }
-
-  return true;
+void
+ModelUnitTest::check_second_derivatives()
+{
+  auto exact = _model.d2value(_in);
+  auto numerical = LabeledTensor3D(_nbatch, {&_model.output(), &_model.input(), &_model.input()});
+  finite_differencing_derivative(
+      [this](const LabeledVector & x) { return _model.dvalue(x); }, _in, numerical);
+  neml_assert(torch::allclose(exact.tensor(), numerical.tensor(), _secderiv_rtol, _secderiv_atol),
+              "The model gives second derivatives that are different from those given by finite "
+              "differencing. The model gives:\n",
+              exact.tensor(),
+              "\nFinite differencing gives:\n",
+              numerical.tensor());
 }
 }

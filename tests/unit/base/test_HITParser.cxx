@@ -34,13 +34,12 @@ TEST_CASE("parse", "[HITParser]")
   auto all_params = parser.parse("unit/base/test_HITParser.i");
   ParameterSet params = all_params["Models"]["foo"];
 
-  // name, type, additional_outputs, and 15 parameters
-  REQUIRE(params.size() == 3 + 15);
-
   // meta data
   REQUIRE(params.get<std::string>("name") == "foo");
   REQUIRE(params.get<std::string>("type") == "SampleParserTestingModel");
   REQUIRE(params.get<std::vector<LabeledAxisAccessor>>("additional_outputs").empty());
+  REQUIRE(params.get<bool>("use_AD_derivative") == false);
+  REQUIRE(params.get<bool>("use_AD_second_derivative") == false);
 
   // booleans
   REQUIRE(params.get<bool>("bool") == true);
