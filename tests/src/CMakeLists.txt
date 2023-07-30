@@ -1,5 +1,4 @@
 file(GLOB_RECURSE TEST_UTILS *.cxx)
-
 add_library(testutils SHARED ${TEST_UTILS})
 
 # Main library

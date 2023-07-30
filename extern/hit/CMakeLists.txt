@@ -4,4 +4,5 @@ add_library(hit SHARED
   hit/lex.cc
   hit/braceexpr.cc
 )
+set_target_properties(hit PROPERTIES UNITY_BUILD OFF)
 target_include_directories(hit PUBLIC hit)
