@@ -1,5 +1,5 @@
 # ###################################################
-# MACRO to find all source subdirectories
+# MACROs for registering UNITY groups
 # ###################################################
 MACRO(SUBDIRLIST result curdir)
       FILE(GLOB_RECURSE children ${curdir}/*.cxx)
@@ -27,5 +27,20 @@ MACRO(SETUNITYGROUP name root subdir)
                         message(STATUS "${name}: group unity for ${UNITY_NAME}")
                   endif()
             endif()
+      endif()
+ENDMACRO()
+
+MACRO(REGISTERUNITYGROUP target name rel_root)
+      get_target_property(UNITY_ENABLED ${target} UNITY_BUILD)
+
+      if(UNITY_ENABLED)
+            get_filename_component(ABS_ROOT ${rel_root} ABSOLUTE)
+            SUBDIRLIST(SUBDIRS ${ABS_ROOT})
+
+            FOREACH(subdir ${SUBDIRS})
+                  SETUNITYGROUP(${name} ${ABS_ROOT} ${subdir})
+            ENDFOREACH()
+
+            set_target_properties(${target} PROPERTIES UNITY_BUILD_MODE GROUP)
       endif()
 ENDMACRO()
