@@ -56,8 +56,12 @@ static constexpr Real TOL2 = TOL * TOL;
  * See https://pytorch.org/cppdocs/notes/tensor_creation.html#configuring-properties-of-the-tensor
  * for more details.
  */
+#define _CONCAT(x, y) x##y
+#define CONCAT(x, y) _CONCAT(x, y)
+#define TORCH_ENUM_PREFIX torch::k
+#define TORCH_DTYPE CONCAT(TORCH_ENUM_PREFIX, DTYPE)
 static const torch::TensorOptions default_tensor_options = torch::TensorOptions()
-                                                               .dtype(torch::kFloat64)
+                                                               .dtype(TORCH_DTYPE)
                                                                .layout(torch::kStrided)
                                                                .device(torch::kCPU)
                                                                .requires_grad(false);

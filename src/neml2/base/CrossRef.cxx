@@ -42,9 +42,7 @@ CrossRef<T>::operator=(const std::string & other)
 template <>
 CrossRef<torch::Tensor>::operator torch::Tensor() const
 {
-  // If it is empty, return an empty tensor
-  if (_raw_str.empty())
-    return torch::Tensor();
+  neml_assert(!_raw_str.empty(), "Trying to retrieve a torch::Tensor before it is being set.");
   try
   {
     // If it is just a number, we can still create a tensor out of it
@@ -60,9 +58,7 @@ CrossRef<torch::Tensor>::operator torch::Tensor() const
 template <>
 CrossRef<Scalar>::operator Scalar() const
 {
-  // If it is empty, return an empty Scalar
-  if (_raw_str.empty())
-    return Scalar();
+  neml_assert(!_raw_str.empty(), "Trying to retrieve a Scalar before it is being set.");
   try
   {
     // If it is just a number, we can still create a Scalar out of it
@@ -78,9 +74,7 @@ CrossRef<Scalar>::operator Scalar() const
 template <>
 CrossRef<SymR2>::operator SymR2() const
 {
-  // If it is empty, return an empty SymR2
-  if (_raw_str.empty())
-    return SymR2();
+  neml_assert(!_raw_str.empty(), "Trying to retrieve a SymR2 before it is being set.");
   try
   {
     // If it is just a number, we can still create a SymR2 out of it:

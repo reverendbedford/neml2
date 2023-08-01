@@ -35,9 +35,6 @@ public:
 
   const ParameterSet & input_parameters() const { return _params; }
 
-protected:
-  Scalar get_scalar(const std::string & param_name) const;
-
 private:
   const ParameterSet & _params;
 };

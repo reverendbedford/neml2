@@ -30,10 +30,4 @@ ParameterInterface::ParameterInterface(const ParameterSet & params)
   : _params(params)
 {
 }
-
-Scalar
-ParameterInterface::get_scalar(const std::string & param_name) const
-{
-  return Scalar(_params.get<Real>(param_name));
-}
 } // namespace neml2

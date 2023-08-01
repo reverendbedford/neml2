@@ -61,6 +61,16 @@ public:
   const LabeledAxis & output() const { return _output; }
   /// @}
 
+  /**
+   * Validate the currently requested AD settings.
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    AD_1st_deriv   AD_2nd_deriv   comment
+            true           true   okay, just slow
+            true          false   error, this is a weird case
+          false           true   okay
+          false          false   great, everything handcoded
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   */
   void check_AD_limitation() const;
 
   /// Tell this model to use AD to get derivatives

@@ -54,11 +54,6 @@ Model::Model(const ParameterSet & params)
 void
 Model::check_AD_limitation() const
 {
-  // AD_1st_deriv   AD_2nd_deriv   comment
-  // true           true           okay, just slow
-  // true           false          error, this is a weird case
-  // false          true           okay
-  // false          false          great, everything handcoded
   if (_AD_1st_deriv && !_AD_2nd_deriv)
     throw NEMLException("AD derivative is requested, but AD second derivative is not requested.");
 }
@@ -108,16 +103,15 @@ Model::dparam(const LabeledVector & out, const std::string & param) const
       {
         BatchTensor<1> grad_outputs = torch::zeros_like(outval.index({b}));
         grad_outputs.index_put_({i}, 1.0);
-        try
-        {
-          auto jac_row =
-              torch::autograd::grad({outval.index({b})}, {pval}, {grad_outputs}, true)[0];
+        outval.requires_grad_();
+        auto jac_row = torch::autograd::grad({outval.index({b})},
+                                             {pval},
+                                             {grad_outputs},
+                                             /*retain_graph=*/true,
+                                             /*create_graph=*/false,
+                                             /*allow_unused=*/true)[0];
+        if (jac_row.defined())
           dout_dp.index_put_({b, i, torch::indexing::Slice()}, jac_row);
-        }
-        catch (c10::Error &)
-        {
-          // This is aggravating: libTorch throws if the derivative is zero... but why?!
-        }
       }
   }
   else
@@ -126,15 +120,15 @@ Model::dparam(const LabeledVector & out, const std::string & param) const
     {
       BatchTensor<1> grad_outputs = torch::zeros_like(outval);
       grad_outputs.index_put_({torch::indexing::Ellipsis, i}, 1.0);
-      try
-      {
-        auto jac_row = torch::autograd::grad({outval}, {pval}, {grad_outputs}, true)[0];
+      outval.requires_grad_();
+      auto jac_row = torch::autograd::grad({outval},
+                                           {pval},
+                                           {grad_outputs},
+                                           /*retain_graph=*/true,
+                                           /*create_graph=*/false,
+                                           /*allow_unused=*/true)[0];
+      if (jac_row.defined())
         dout_dp.base_index_put({i, torch::indexing::Slice()}, jac_row);
-      }
-      catch (c10::Error &)
-      {
-        // This is aggravating: libTorch throws if the derivative is zero... but why?!
-      }
     }
   }
 
@@ -189,16 +183,15 @@ Model::value_and_dvalue(const LabeledVector & in) const
     {
       BatchTensor<1> grad_outputs = torch::zeros_like(out.tensor());
       grad_outputs.index_put_({torch::indexing::Ellipsis, i}, 1.0);
-      try
-      {
-        auto jac_row =
-            torch::autograd::grad({out.tensor()}, {in.tensor()}, {grad_outputs}, true, true)[0];
+      out.tensor().requires_grad_();
+      auto jac_row = torch::autograd::grad({out.tensor()},
+                                           {in.tensor()},
+                                           {grad_outputs},
+                                           /*retain_graph=*/true,
+                                           /*create_graph=*/false,
+                                           /*allow_unused=*/true)[0];
+      if (jac_row.defined())
         dout_din.tensor().base_index_put({i, torch::indexing::Slice()}, jac_row);
-      }
-      catch (c10::Error &)
-      {
-        // This is aggravating: libTorch throws if the derivative is zero... but why?!
-      }
     }
     in.tensor().requires_grad_(req_grad);
   }
@@ -241,16 +234,15 @@ Model::value_and_dvalue_and_d2value(const LabeledVector & in) const
       {
         BatchTensor<1> grad_outputs = torch::zeros_like(out.tensor());
         grad_outputs.index_put_({torch::indexing::Ellipsis, i}, 1.0);
-        try
-        {
-          auto jac_row =
-              torch::autograd::grad({out.tensor()}, {in.tensor()}, {grad_outputs}, true, true)[0];
+        out.tensor().requires_grad_();
+        auto jac_row = torch::autograd::grad({out.tensor()},
+                                             {in.tensor()},
+                                             {grad_outputs},
+                                             /*retain_graph=*/true,
+                                             /*create_graph=*/true,
+                                             /*allow_unused=*/true)[0];
+        if (jac_row.defined())
           dout_din.tensor().base_index_put({i, torch::indexing::Slice()}, jac_row);
-        }
-        catch (c10::Error &)
-        {
-          // This is aggravating: libTorch throws if the derivative is zero... but why?!
-        }
       }
     }
     else
@@ -261,16 +253,15 @@ Model::value_and_dvalue_and_d2value(const LabeledVector & in) const
       {
         BatchTensor<1> grad_outputs = torch::zeros_like(dout_din.tensor());
         grad_outputs.index_put_({torch::indexing::Ellipsis, i, j}, 1.0);
-        try
-        {
-          auto jac_row =
-              torch::autograd::grad({dout_din.tensor()}, {in.tensor()}, {grad_outputs}, true)[0];
+        dout_din.tensor().requires_grad_();
+        auto jac_row = torch::autograd::grad({dout_din.tensor()},
+                                             {in.tensor()},
+                                             {grad_outputs},
+                                             /*retain_graph=*/true,
+                                             /*create_graph=*/false,
+                                             /*allow_unused=*/true)[0];
+        if (jac_row.defined())
           d2out_din2.tensor().base_index_put({i, j, torch::indexing::Slice()}, jac_row);
-        }
-        catch (c10::Error &)
-        {
-          // This is aggravating: libTorch throws if the derivative is zero... but why?!
-        }
       }
     in.tensor().requires_grad_(req_grad);
   }

@@ -30,9 +30,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # torch, for which we are going to rely on the system for now
 find_package(Torch REQUIRED)
 
-# This is aggravating but occurs because pre-packaged torch uses
-# _GLIBCXX_USE_CXX11_ABI=0.  If you roll your own torch this may
-# not occur, so this flag could be dangerous in the future
+# libTorch comes with two flavors: one with cxx11 abi, one without.
+# We should be consistent with whatever is detected from the libTorch.
 if(TORCH_CXX_FLAGS MATCHES "-D_GLIBCXX_USE_CXX11_ABI=1")
       add_compile_definitions(_GLIBCXX_USE_CXX11_ABI=1)
       message(STATUS "NEML2 is using CXX11 ABI to be consistent with libTorch")

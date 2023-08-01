@@ -58,13 +58,15 @@ make test
 
 ## Notes on obtaining the dependencies {#NotesOnObtainingTheDependencies}
 
-There's no unique way of installing the dependencies. If you are unfamiliar with this process, instructions/suggestions can be found by googling "How to install X on Y" where X is the dependency you want to install, and Y is your operating system.
+Feel free to create a ticket at [https://github.com/reverendbedford/neml2/issues](https://github.com/reverendbedford/neml2/issues) if you run into issues about installing the dependencies.
 
 Typically, the C++ compiler, a reasonably modern CMake, Doxygen, and clang-format can be obtained via the system package manager.
 
 libTorch can be downloaded from the official PyTorch website: [https://pytorch.org/get-started/locally/](https://pytorch.org/get-started/locally/). Choose the compute platform in consistency with the NEML2 compute platform. Also take a note of the version of the libTorch-compatible CUDA if you chose CUDA as the compute platform. Note that there are two versions of libTorch: "Pre-cxx11 ABI" and "cxx11 ABI". Both versions are supported by NEML2. If you are unsure, we recommend the one with "cxx11 ABI".
 
-There are many ways of installing the Nvidia driver and the CUDA toolkit. We will not try to make a recommendation here. However, do make sure the Nvidia driver is compatible with your GPU. It is also recommended to install a CUDA toolkit with the same version number as the libTorch CUDA version. 
+> In the future we may provide an option to automatically install a compatible version of libTorch.
+
+There are many ways of installing the Nvidia driver and the CUDA toolkit. We will not try to make a recommendation here. However, do make sure the Nvidia driver is compatible with your GPU. It is also recommended to install a CUDA toolkit with the same version number as the libTorch CUDA version.
 
 ## Next steps
 
