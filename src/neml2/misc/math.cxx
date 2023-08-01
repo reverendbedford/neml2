@@ -30,8 +30,8 @@ namespace neml2
 namespace math
 {
 torch::Tensor
-linspace(torch::Tensor start,
-         torch::Tensor end,
+linspace(const torch::Tensor & start,
+         const torch::Tensor & end,
          TorchSize nstep,
          const torch::TensorOptions & options)
 {
@@ -52,14 +52,20 @@ linspace(torch::Tensor start,
 }
 
 torch::Tensor
-logspace(torch::Tensor start,
-         torch::Tensor end,
+logspace(const torch::Tensor & start,
+         const torch::Tensor & end,
          TorchSize nstep,
          Real base,
          const torch::TensorOptions & options)
 {
   auto exponent = linspace(start, end, nstep, options);
   return torch::pow(base, exponent);
+}
+
+torch::Tensor
+heaviside(const torch::Tensor & self)
+{
+  return (torch::sign(self) + 1) / 2;
 }
 } // namespace math
 } // namespace neml2

@@ -41,15 +41,23 @@ mandel_factor(TorchSize i)
   return i < 3 ? 1.0 : sqrt2;
 }
 
-torch::Tensor linspace(torch::Tensor start,
-                       torch::Tensor end,
+torch::Tensor linspace(const at::Tensor & start,
+                       const at::Tensor & end,
                        TorchSize nstep,
                        const torch::TensorOptions & options = default_tensor_options);
 
-torch::Tensor logspace(torch::Tensor start,
-                       torch::Tensor end,
+torch::Tensor logspace(const at::Tensor & start,
+                       const at::Tensor & end,
                        TorchSize nstep,
                        Real base = 10,
                        const torch::TensorOptions & options = default_tensor_options);
+
+/**
+ * This is (almost) equivalent to Torch's heaviside, except that the Torch's version is not
+ * differentiable (back-propagatable). I said "almost" because torch::heaviside allows you to set
+ * the return value in the case of input == 0. Our implementation always return 0.5 when the input
+ * == 0.
+ */
+torch::Tensor heaviside(const torch::Tensor & self);
 } // namespace math
 } // namespace neml2

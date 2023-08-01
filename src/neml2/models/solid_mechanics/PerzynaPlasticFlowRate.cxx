@@ -50,15 +50,11 @@ PerzynaPlasticFlowRate::set_value(const LabeledVector & in,
                                   LabeledMatrix * dout_din,
                                   LabeledTensor3D * d2out_din2) const
 {
-  const auto options = in.options();
-  const auto nbatch = in.batch_size();
-
   // Grab the yield function
   auto f = in.get<Scalar>(yield_function);
 
   // Compute the Perzyna approximation of the yield surface
-  auto Hf = Scalar(0, options).batch_expand_copy(nbatch);
-  Hf.index_put_({f >= -TOL2}, 1);
+  Scalar Hf = math::heaviside(f);
   Scalar f_abs = torch::abs(f);
   Scalar gamma_dot_m = torch::pow(f_abs / _eta, _n);
   Scalar gamma_dot = gamma_dot_m * Hf;
