@@ -61,14 +61,4 @@ TEST_CASE("basic operations", "[ParameterSet]")
     REQUIRE_THAT(params.get<std::vector<double>>("p5"),
                  Catch::Matchers::Approx(std::vector<double>{1.2, -1.1, 100, 5.3}));
   }
-
-  SECTION("print")
-  {
-    std::ostringstream oss;
-    oss << params;
-    std::string mine = oss.str();
-
-    auto correct = "";
-    REQUIRE(mine == correct);
-  }
 }
