@@ -29,12 +29,12 @@
 namespace neml2
 {
 template <typename T>
-class TimeIntegration : public Model
+class ForwardEulerTimeIntegration : public Model
 {
 public:
   static ParameterSet expected_params();
 
-  TimeIntegration(const ParameterSet & params);
+  ForwardEulerTimeIntegration(const ParameterSet & params);
 
 private:
   const LabeledAxisAccessor _var_name;
@@ -54,6 +54,6 @@ protected:
                          LabeledTensor3D * d2out_din2 = nullptr) const override;
 };
 
-typedef TimeIntegration<Scalar> ScalarTimeIntegration;
-typedef TimeIntegration<SymR2> SymR2TimeIntegration;
+typedef ForwardEulerTimeIntegration<Scalar> ScalarForwardEulerTimeIntegration;
+typedef ForwardEulerTimeIntegration<SymR2> SymR2ForwardEulerTimeIntegration;
 } // namespace neml2

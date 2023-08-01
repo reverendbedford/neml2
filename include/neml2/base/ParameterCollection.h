@@ -35,8 +35,6 @@ public:
 
   operator std::map<std::string, std::map<std::string, ParameterSet>>() const { return _data; }
 
-  void merge(ParameterCollection && other);
-
   std::map<std::string, ParameterSet> & operator[](const std::string & section);
 
   const std::map<std::string, ParameterSet> & operator[](const std::string & section) const;

@@ -22,17 +22,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/models/TimeIntegration.h"
+#include "neml2/models/ForwardEulerTimeIntegration.h"
 #include "neml2/tensors/SymSymR4.h"
 
 namespace neml2
 {
-register_NEML2_object(ScalarTimeIntegration);
-register_NEML2_object(SymR2TimeIntegration);
+register_NEML2_object(ScalarForwardEulerTimeIntegration);
+register_NEML2_object(SymR2ForwardEulerTimeIntegration);
 
 template <typename T>
 ParameterSet
-TimeIntegration<T>::expected_params()
+ForwardEulerTimeIntegration<T>::expected_params()
 {
   ParameterSet params = Model::expected_params();
   params.set<LabeledAxisAccessor>("variable");
@@ -41,7 +41,7 @@ TimeIntegration<T>::expected_params()
 }
 
 template <typename T>
-TimeIntegration<T>::TimeIntegration(const ParameterSet & params)
+ForwardEulerTimeIntegration<T>::ForwardEulerTimeIntegration(const ParameterSet & params)
   : Model(params),
     _var_name(params.get<LabeledAxisAccessor>("variable")),
     _var_rate_name(_var_name.with_suffix("_rate")),
@@ -56,10 +56,10 @@ TimeIntegration<T>::TimeIntegration(const ParameterSet & params)
 
 template <typename T>
 void
-TimeIntegration<T>::set_value(const LabeledVector & in,
-                              LabeledVector * out,
-                              LabeledMatrix * dout_din,
-                              LabeledTensor3D * d2out_din2) const
+ForwardEulerTimeIntegration<T>::set_value(const LabeledVector & in,
+                                          LabeledVector * out,
+                                          LabeledMatrix * dout_din,
+                                          LabeledTensor3D * d2out_din2) const
 {
   const auto options = in.options();
 
@@ -98,6 +98,6 @@ TimeIntegration<T>::set_value(const LabeledVector & in,
   }
 }
 
-template class TimeIntegration<Scalar>;
-template class TimeIntegration<SymR2>;
+template class ForwardEulerTimeIntegration<Scalar>;
+template class ForwardEulerTimeIntegration<SymR2>;
 } // namespace neml2

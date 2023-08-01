@@ -61,6 +61,7 @@ Factory::create_object(const std::string & section, const ParameterSet & params)
   _objects[section].emplace(name, (*builder)(params));
 }
 
+// LCOV_EXCL_START
 void
 Factory::print(std::ostream & os) const
 {
@@ -71,4 +72,5 @@ Factory::print(std::ostream & os) const
       os << " " << object.first << std::endl;
   }
 }
+// LCOV_EXCL_STOP
 } // namespace neml2

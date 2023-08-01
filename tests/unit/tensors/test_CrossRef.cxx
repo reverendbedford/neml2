@@ -43,3 +43,16 @@ TEST_CASE("cross-referencing Scalar", "[CrossRef]")
 
   REQUIRE(torch::allclose(auto_3, auto_3_correct));
 }
+
+TEST_CASE("empty cross reference", "[CrossRef]")
+{
+  SECTION("empty scalar")
+  {
+    REQUIRE_THROWS(load_model("unit/tensors/test_CrossRef_empty_Scalar.i"));
+  }
+
+  SECTION("empty tensor")
+  {
+    REQUIRE_THROWS(load_model("unit/tensors/test_CrossRef_empty_Tensor.i"));
+  }
+}

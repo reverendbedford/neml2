@@ -247,12 +247,14 @@ ParameterSet::Parameter<T>::type() const
   return utils::demangle(typeid(T).name());
 }
 
+// LCOV_EXCL_START
 template <typename T>
 inline void
 ParameterSet::Parameter<T>::print(std::ostream & os) const
 {
   print_helper(os, static_cast<const T *>(&_value));
 }
+// LCOV_EXCL_STOP
 
 template <typename T>
 inline std::unique_ptr<ParameterSet::Value>
@@ -295,6 +297,7 @@ ParameterSet::operator+(const ParameterSet & source)
 
 inline ParameterSet::ParameterSet(const ParameterSet & p) { *this = p; }
 
+// LCOV_EXCL_START
 inline void
 ParameterSet::print(std::ostream & os) const
 {
@@ -315,6 +318,7 @@ operator<<(std::ostream & os, const ParameterSet & p)
   p.print(os);
   return os;
 }
+// LCOV_EXCL_STOP
 
 template <typename T>
 inline bool
@@ -375,6 +379,7 @@ ParameterSet::end() const
   return _values.end();
 }
 
+// LCOV_EXCL_START
 template <typename P>
 void
 print_helper(std::ostream & os, const P * param)
@@ -414,5 +419,5 @@ print_helper(std::ostream & os, const std::vector<std::vector<P>> * param)
     for (const auto & p : pv)
       os << p << " ";
 }
-
+// LCOV_EXCL_STOP
 } // namespace neml2

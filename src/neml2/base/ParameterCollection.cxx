@@ -26,16 +26,6 @@
 
 namespace neml2
 {
-void
-ParameterCollection::merge(ParameterCollection && other)
-{
-  for (auto & [section, objects] : other._data)
-    if (_data.count(section))
-      _data[section].merge(other[section]);
-    else
-      _data[section] = other[section];
-}
-
 std::map<std::string, ParameterSet> &
 ParameterCollection::operator[](const std::string & section)
 {
@@ -48,6 +38,7 @@ ParameterCollection::operator[](const std::string & section) const
   return _data.at(section);
 }
 
+// LCOV_EXCL_START
 std::ostream &
 operator<<(std::ostream & os, const ParameterCollection & p)
 {
@@ -66,4 +57,5 @@ operator<<(std::ostream & os, const ParameterCollection & p)
   }
   return os;
 }
+// LCOV_EXCL_STOP
 } // namespace neml2
