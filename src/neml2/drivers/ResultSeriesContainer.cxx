@@ -26,11 +26,11 @@
 
 namespace neml2
 {
-void
-ResultSeriesContainer::push_back(std::shared_ptr<ResultContainer> res)
-{
-  torch::nn::ModuleListImpl::push_back(res);
-}
+// void
+// ResultSeriesContainer::push_back(std::shared_ptr<ResultContainer> res)
+// {
+//   torch::nn::ModuleListImpl::push_back(res);
+// }
 
 void
 ResultSeriesContainer::push_back(const std::vector<std::pair<std::string, LabeledVector>> & data)

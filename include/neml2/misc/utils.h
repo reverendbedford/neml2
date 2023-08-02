@@ -62,10 +62,5 @@ stringify(const T & t)
   os << t;
   return os.str();
 }
-
-bool allclose(const torch::jit::named_buffer_list & a,
-              const torch::jit::named_buffer_list & b,
-              Real rtol = 1e-5,
-              Real atol = 1e-8);
 } // namespace utils
 } // namespace neml2

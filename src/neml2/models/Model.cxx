@@ -96,7 +96,7 @@ Model::dparam(const LabeledVector & out, const std::string & param) const
   BatchTensor<1> dout_dp(
       out.batch_size(), utils::add_shapes(outval.base_sizes(), pval.base_sizes()), out.options());
 
-  if (pval.batch_sizes()[0] == 1)
+  if (pval.batch_sizes() != outval.batch_sizes())
   {
     for (TorchSize b = 0; b < outval.batch_sizes()[0]; b++)
       for (TorchSize i = 0; i < outval.base_sizes()[0]; i++)

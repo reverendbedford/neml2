@@ -37,8 +37,6 @@ public:
 
   std::map<std::string, ParameterSet> & operator[](const std::string & section);
 
-  const std::map<std::string, ParameterSet> & operator[](const std::string & section) const;
-
   const std::map<std::string, std::map<std::string, ParameterSet>> & data() const { return _data; }
 
 private:

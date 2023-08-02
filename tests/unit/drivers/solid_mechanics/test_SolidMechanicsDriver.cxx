@@ -22,37 +22,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
+#include <catch2/catch.hpp>
 
-#include "neml2/drivers/Driver.h"
-#include <filesystem>
+#include "utils.h"
+#include "neml2/drivers/solid_mechanics/SolidMechanicsDriver.h"
 
-namespace neml2
+using namespace neml2;
+
+TEST_CASE("SolidMechanicsDriver", "[SolidMechanicsDriver]")
 {
-class TransientDriver;
+  SECTION("strain control")
+  {
+    load_model("unit/drivers/solid_mechanics/test_SolidMechanicsDriver_strain.i");
+    auto & driver = Factory::get_object<SolidMechanicsDriver>("Drivers", "driver");
+    REQUIRE(driver.run());
+  }
 
-class TransientRegression : public Driver
-{
-public:
-  static ParameterSet expected_params();
-
-  TransientRegression(const ParameterSet & params);
-
-  bool run() override;
-
-private:
-  /// The driver that will run the NEML2 model
-  TransientDriver & _driver;
-
-  /// The reference file to be diff'ed against
-  std::filesystem::path _reference;
-
-  Real _rtol;
-  Real _atol;
-};
-
-bool allclose(const torch::jit::named_buffer_list & a,
-              const torch::jit::named_buffer_list & b,
-              Real rtol = 1e-5,
-              Real atol = 1e-8);
-} // namespace neml2
+  SECTION("stress control")
+  {
+    load_model("unit/drivers/solid_mechanics/test_SolidMechanicsDriver_stress.i");
+    auto & driver = Factory::get_object<SolidMechanicsDriver>("Drivers", "driver");
+    REQUIRE(driver.run());
+  }
+}

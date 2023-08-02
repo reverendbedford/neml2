@@ -33,7 +33,7 @@ class ResultSeriesContainer : public torch::nn::ModuleListImpl
 public:
   ResultSeriesContainer() = default;
 
-  void push_back(std::shared_ptr<ResultContainer> res);
+  // void push_back(std::shared_ptr<ResultContainer> res);
   void push_back(const std::vector<std::pair<std::string, LabeledVector>> & data);
 };
 

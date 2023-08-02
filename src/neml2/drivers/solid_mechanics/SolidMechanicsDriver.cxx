@@ -55,7 +55,9 @@ SolidMechanicsDriver::SolidMechanicsDriver(const ParameterSet & params)
     _driving_force_name = params.get<LabeledAxisAccessor>("cauchy_stress");
   }
   else
+    // LCOV_EXCL_START
     neml_assert(false, "Unsupported control type.");
+  // LCOV_EXCL_STOP
 
   check_integrity();
 }
@@ -101,7 +103,9 @@ void
 SolidMechanicsDriver::solve_step(bool init)
 {
   if (_verbose)
+    // LCOV_EXCL_START
     std::cout << "Step " << _step_count << std::endl;
+  // LCOV_EXCL_STOP
 
   // Advance the step
   if (!init)
@@ -132,6 +136,8 @@ SolidMechanicsDriver::solve_step(bool init)
   _result->push_back({{"input", _in}, {"output", _out}});
 
   if (_verbose)
+    // LCOV_EXCL_START
     std::cout << std::endl;
+  // LCOV_EXCL_STOP
 }
 }

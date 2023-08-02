@@ -82,12 +82,6 @@ ends_with(std::string_view str, std::string_view suffix)
          0 == str.compare(str.size() - suffix.size(), suffix.size(), suffix);
 }
 
-bool
-starts_with(std::string_view str, std::string_view prefix)
-{
-  return str.size() >= prefix.size() && 0 == str.compare(0, prefix.size(), prefix);
-}
-
 template <>
 bool
 parse<bool>(const std::string & raw_str)

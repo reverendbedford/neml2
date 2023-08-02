@@ -34,7 +34,6 @@ export COVERAGE_DIR=$ROOT/coverage
 lcov --gcov-tool gcov --capture --initial --directory $SRC_DIR --output-file $COVERAGE_DIR/initialize.info
 cd tests
 ./unit_tests || true
-./regression_tests || true
 cd ..
 lcov --gcov-tool gcov --capture --ignore-errors gcov,source --directory $SRC_DIR --output-file $COVERAGE_DIR/covered.info
 lcov --gcov-tool gcov --add-tracefile $COVERAGE_DIR/initialize.info --add-tracefile $COVERAGE_DIR/covered.info --output-file $COVERAGE_DIR/final.info

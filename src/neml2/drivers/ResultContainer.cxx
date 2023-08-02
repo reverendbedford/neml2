@@ -29,10 +29,7 @@ namespace neml2
 void
 ResultContainer::emplace(const std::string & key, const LabeledVector & value)
 {
-  if (!contains(key))
-    update({{key, std::make_shared<LabeledVectorContainer>(value)}});
-  else
-    (*this)[key] = std::make_shared<LabeledVectorContainer>(value);
+  update({{key, std::make_shared<LabeledVectorContainer>(value)}});
 }
 
 namespace math

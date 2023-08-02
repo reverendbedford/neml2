@@ -32,12 +32,6 @@ ParameterCollection::operator[](const std::string & section)
   return _data[section];
 }
 
-const std::map<std::string, ParameterSet> &
-ParameterCollection::operator[](const std::string & section) const
-{
-  return _data.at(section);
-}
-
 // LCOV_EXCL_START
 std::ostream &
 operator<<(std::ostream & os, const ParameterCollection & p)

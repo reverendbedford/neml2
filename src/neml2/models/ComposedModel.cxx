@@ -312,6 +312,7 @@ ComposedModel::dependent_models(const std::string & n) const
   return _dependecies.at(n);
 }
 
+// LCOV_EXCL_START
 std::string
 ComposedModel::evaluation_order() const
 {
@@ -320,6 +321,7 @@ ComposedModel::evaluation_order() const
     ss << i->name() << " ";
   return ss.str();
 }
+// LCOV_EXCL_STOP
 
 void
 ComposedModel::to_dot(std::ostream & os) const
@@ -369,6 +371,7 @@ ComposedModel::to_dot(std::ostream & os,
   os << "}\n";
 }
 
+// LCOV_EXCL_START
 void
 ComposedModel::print_dependency(std::ostream & os) const
 {
@@ -382,4 +385,5 @@ ComposedModel::print_dependency(std::ostream & os) const
   if (_dependecies.empty())
     os << std::endl;
 }
+// LCOV_EXCL_STOP
 } // namespace neml2

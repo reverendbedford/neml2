@@ -133,7 +133,9 @@ HITParser::extract_parameter(hit::Node * n, ParameterSet & params) const
         extract_param_t(CrossRef<torch::Tensor>);
         extract_param_t(CrossRef<Scalar>);
         extract_param_t(CrossRef<SymR2>);
+        // LCOV_EXCL_START
         else neml_assert(false, "Unsupported parameter type for parameter ", n->fullpath());
+        // LCOV_EXCL_STOP
 
         break;
       }

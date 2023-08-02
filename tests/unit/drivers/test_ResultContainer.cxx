@@ -22,37 +22,41 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
+#include <catch2/catch.hpp>
 
-#include "neml2/drivers/Driver.h"
-#include <filesystem>
+#include "neml2/drivers/ResultContainer.h"
 
-namespace neml2
+using namespace neml2;
+
+TEST_CASE("ResultContainer", "[ResultContainer]")
 {
-class TransientDriver;
+  TorchSize nbatch = 10;
+  LabeledAxis info;
+  info.add<SymR2>("first").add<Scalar>("second").add<Scalar>("third");
+  info.setup_layout();
+  LabeledVector A(nbatch, {&info});
+  A.set(torch::ones({nbatch, 6}), "first");
+  LabeledVector B(nbatch, {&info});
+  B.set(torch::ones({nbatch, 6}) * 3, "first");
+  ResultContainer rc;
+  rc.emplace("A", A);
+  rc.emplace("B", A);
+  rc.emplace("B", B);
 
-class TransientRegression : public Driver
-{
-public:
-  static ParameterSet expected_params();
+  REQUIRE(math::allclose(rc, rc));
 
-  TransientRegression(const ParameterSet & params);
+  SECTION("Keys do not match")
+  {
+    ResultContainer rc2;
+    rc2.emplace("C", A);
+    REQUIRE(!math::allclose(rc, rc2));
+  }
 
-  bool run() override;
-
-private:
-  /// The driver that will run the NEML2 model
-  TransientDriver & _driver;
-
-  /// The reference file to be diff'ed against
-  std::filesystem::path _reference;
-
-  Real _rtol;
-  Real _atol;
-};
-
-bool allclose(const torch::jit::named_buffer_list & a,
-              const torch::jit::named_buffer_list & b,
-              Real rtol = 1e-5,
-              Real atol = 1e-8);
-} // namespace neml2
+  SECTION("Values do not match")
+  {
+    ResultContainer rc2;
+    rc2.emplace("A", A);
+    rc2.emplace("B", A);
+    REQUIRE(!math::allclose(rc, rc2));
+  }
+}

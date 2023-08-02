@@ -9,6 +9,7 @@
     input_symr2_values = 'NX'
     output_symr2_names = 'state/internal/Kp_rate'
     output_symr2_values = 'Kp_rate'
+    check_second_derivatives = true
   []
 []
 

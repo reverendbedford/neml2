@@ -55,8 +55,6 @@ std::string trim(const std::string & str, const std::string & white_space = " \t
 
 bool ends_with(std::string_view str, std::string_view suffix);
 
-bool starts_with(std::string_view str, std::string_view prefix);
-
 template <typename T>
 T
 parse(const std::string & raw_str)

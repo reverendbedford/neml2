@@ -56,6 +56,7 @@ Registry::builder(const std::string & name)
   return reg._objects.at(name);
 }
 
+// LCOV_EXCL_START
 void
 Registry::print(std::ostream & os)
 {
@@ -63,6 +64,7 @@ Registry::print(std::ostream & os)
   for (auto & object : reg._objects)
     os << object.first << std::endl;
 }
+// LCOV_EXCL_STOP
 
 void
 Registry::add_inner(const std::string & name, const ParameterSet & params, BuildPtr build_ptr)

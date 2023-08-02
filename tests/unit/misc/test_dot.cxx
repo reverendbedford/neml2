@@ -35,15 +35,15 @@ using namespace neml2;
 
 TEST_CASE("A Model can output the function graph in DOT format", "[DOT]")
 {
-  load_model("regression/misc/DOT/dot.i");
+  load_model("unit/misc/test_dot.i");
   auto & model = Factory::get_object<ComposedModel>("Models", "model");
 
   // Write the gold file
-  // std::ofstream ogold("regression/misc/DOT/dot.txt");;
+  // std::ofstream ogold("unit/misc/test_dot.txt");;
   // model.to_dot(ogold);
 
   // Read the gold file
-  std::ifstream gold("regression/misc/DOT/dot.txt");
+  std::ifstream gold("unit/misc/test_dot.txt");
   REQUIRE(gold.is_open());
   std::string correct((std::istreambuf_iterator<char>(gold)), std::istreambuf_iterator<char>());
 

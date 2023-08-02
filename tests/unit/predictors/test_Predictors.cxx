@@ -25,40 +25,42 @@
 #include <catch2/catch.hpp>
 
 #include "utils.h"
-#include "ModelUnitTest.h"
+#include "neml2/models/ImplicitUpdate.h"
 
 using namespace neml2;
 
-TEST_CASE("Use AD to get parameter partials")
+TEST_CASE("Predictors")
 {
-  SECTION("Batched") { load_model("unit/models/test_parameter_partials_batched.i"); }
-  SECTION("Unbatched") { load_model("unit/models/test_parameter_partials_unbatched.i"); }
+  SECTION("PreviousStatePredictor") { load_model("unit/predictors/test_PreviousStatePredictor.i"); }
+  SECTION("LinearExtrapolationPredictor")
+  {
+    load_model("unit/predictors/test_LinearExtrapolationPredictor.i");
+  }
 
-  auto & driver = Factory::get_object<ModelUnitTest>("Drivers", "unit");
-  auto & model = driver.model();
+  auto & model = Factory::get_object<ImplicitUpdate>("Models", "model");
 
-  // There are three parameters:
-  auto param_a = "implicit_rate.rate.a";
-  auto param_b = "implicit_rate.rate.b";
-  auto param_c = "implicit_rate.rate.c";
-  // Let's track the derivatives of a
-  model.trace_parameters({{param_a, true}, {param_b, false}, {param_c, false}});
+  TorchSize nbatch = 1;
+  LabeledVector in(nbatch, {&model.input()});
+  in.set(Scalar(15.0), LabeledAxisAccessor{{"forces", "temperature"}});
+  in.set(Scalar(1.3), LabeledAxisAccessor{{"forces", "t"}});
+  in.set(Scalar(1.1), LabeledAxisAccessor{{"old_forces", "t"}});
 
-  // Evaluate the model value
-  auto out = model.value(driver.in());
+  // Take one step
+  auto out = model.value(in);
+  LabeledVector(in.slice("old_state")).fill(out.slice("state"));
+  LabeledVector(in.slice("old_forces")).fill(in.slice("forces"));
 
-  // dout/da
-  auto dout_da = model.dparam(out, param_a);
+  // Take next step
+  model.advance_step();
+  in.set(Scalar(20.0), LabeledAxisAccessor{{"forces", "temperature"}});
+  in.set(Scalar(1.5), LabeledAxisAccessor{{"forces", "t"}});
+  out = model.value(in);
+  LabeledVector(in.slice("old_state")).fill(out.slice("state"));
+  LabeledVector(in.slice("old_forces")).fill(in.slice("forces"));
 
-  // Use FD to check the parameter derivatives
-  BatchTensor<1> dout_da_FD = torch::empty_like(dout_da);
-  finite_differencing_derivative(
-      [&](const BatchTensor<1> & x)
-      {
-        model.set_parameters({{param_a, x}});
-        return model.value(driver.in()).tensor();
-      },
-      model.named_parameters(true)[param_a].detach().clone(),
-      dout_da_FD);
-  REQUIRE(torch::allclose(dout_da, dout_da_FD));
+  // Take another step
+  model.advance_step();
+  in.set(Scalar(25.0), LabeledAxisAccessor{{"forces", "temperature"}});
+  in.set(Scalar(1.6), LabeledAxisAccessor{{"forces", "t"}});
+  out = model.value(in);
 }

@@ -21,38 +21,19 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+#include <catch2/catch.hpp>
 
-#pragma once
+#include "neml2/misc/parser_utils.h"
 
-#include "neml2/drivers/Driver.h"
-#include <filesystem>
+using namespace neml2;
 
-namespace neml2
+TEST_CASE("parser utilities", "[parser_utils]")
 {
-class TransientDriver;
+  SECTION("trim empty string") { REQUIRE(utils::trim("", "") == ""); }
 
-class TransientRegression : public Driver
-{
-public:
-  static ParameterSet expected_params();
-
-  TransientRegression(const ParameterSet & params);
-
-  bool run() override;
-
-private:
-  /// The driver that will run the NEML2 model
-  TransientDriver & _driver;
-
-  /// The reference file to be diff'ed against
-  std::filesystem::path _reference;
-
-  Real _rtol;
-  Real _atol;
-};
-
-bool allclose(const torch::jit::named_buffer_list & a,
-              const torch::jit::named_buffer_list & b,
-              Real rtol = 1e-5,
-              Real atol = 1e-8);
-} // namespace neml2
+  SECTION("unrecognized boolean")
+  {
+    REQUIRE_THROWS_WITH(utils::parse<bool>("foo"),
+                        Catch::Matchers::Contains("Failed to parse boolean value"));
+  }
+}

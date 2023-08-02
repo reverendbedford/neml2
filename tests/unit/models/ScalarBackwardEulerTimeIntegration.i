@@ -7,6 +7,7 @@
     input_scalar_values = '-0.3 1.1 0 1.3 1.1'
     output_scalar_names = 'residual/foo'
     output_scalar_values = '1.16'
+    check_second_derivatives = true
   []
 []
 

@@ -61,6 +61,31 @@ TransientRegression::run()
   // Verify the result
   auto res = torch::jit::load(_driver.save_as_path());
   auto res_ref = torch::jit::load(_reference);
-  return utils::allclose(res.named_buffers(true), res_ref.named_buffers(true));
+  return allclose(res.named_buffers(true), res_ref.named_buffers(true));
+}
+
+bool
+allclose(const torch::jit::named_buffer_list & a,
+         const torch::jit::named_buffer_list & b,
+         Real rtol,
+         Real atol)
+{
+  std::map<std::string, torch::Tensor> a_map;
+  for (auto item : a)
+    a_map.emplace(item.name, item.value);
+
+  std::map<std::string, torch::Tensor> b_map;
+  for (auto item : b)
+    b_map.emplace(item.name, item.value);
+
+  for (auto && [key, value] : a_map)
+  {
+    if (b_map.count(key) == 0)
+      return false;
+    if (!torch::allclose(value, b_map[key], rtol, atol))
+      return false;
+  }
+
+  return true;
 }
 }

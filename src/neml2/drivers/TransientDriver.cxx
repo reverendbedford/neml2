@@ -69,8 +69,10 @@ bool
 TransientDriver::run()
 {
   if (_show_params)
+    // LCOV_EXCL_START
     for (auto & item : _model.named_parameters(true))
       std::cout << item.key() << std::endl;
+  // LCOV_EXCL_STOP
 
   auto status = solve();
 
@@ -90,7 +92,9 @@ void
 TransientDriver::output() const
 {
   if (_verbose)
+    // LCOV_EXCL_START
     std::cout << "Saving results..." << std::endl;
+  // LCOV_EXCL_STOP
 
   auto cwd = fs::current_path();
   auto out = cwd / save_as_path();
@@ -98,10 +102,14 @@ TransientDriver::output() const
   if (out.extension() == ".pt")
     output_pt(out);
   else
+    // LCOV_EXCL_START
     neml_assert(false, "Unsupported output format: ", out.extension());
+  // LCOV_EXCL_STOP
 
   if (_verbose)
+    // LCOV_EXCL_START
     std::cout << "Results saved to " << save_as_path() << std::endl;
+  // LCOV_EXCL_STOP
 }
 
 void
