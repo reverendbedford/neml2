@@ -65,7 +65,7 @@ jobs:
       - run: cmake -DCMAKE_PREFIX_PATH="`pip show torch | grep -oP '(?<=Location:\ ).*'`/torch/share/cmake" -DCMAKE_BUILD_TYPE=Coverage .
       - run: make -j 2
       - run: ./scripts/coverage.sh
-      - uses: romeovs/lcov-reporter-action@v0.2.16
+      - uses: romeovs/lcov-reporter-action@v0.2.19
         with:
           lcov-file: ./coverage/coverage.info
           github-token: ${{ secrets.PR_ACTION }}
