@@ -20,6 +20,9 @@ if(NOT CMAKE_BUILD_TYPE)
             FORCE)
 ENDIF(NOT CMAKE_BUILD_TYPE)
 
+# Add the unity option to the cache
+option(CMAKE_UNITY_BUILD "Use a unity build" OFF)
+
 # Enable testing
 enable_testing()
 
