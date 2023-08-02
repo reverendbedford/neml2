@@ -29,6 +29,7 @@
 
 #include "neml2/misc/types.h"
 
+#include "neml2/tensors/LabeledAxisAccessor.h"
 #include "neml2/tensors/Scalar.h"
 #include "neml2/tensors/SymR2.h"
 
@@ -47,60 +48,11 @@ struct is_labelable<SymR2> : std::true_type
 {
 };
 
-/**
-The accessor containing all the information needed to access an item in a `LabeledAxis`. The
-accessor consists of an arbitrary number of item names.
-The last item name can be either a variable name or a sub-axis name.
-All the other item names are considered to be sub-axis names.
-*/
-struct LabeledAxisAccessor
-{
-  std::vector<std::string> item_names;
-
-  operator std::vector<std::string>() const { return item_names; }
-
-  bool empty() const { return item_names.empty(); }
-
-  LabeledAxisAccessor with_suffix(const std::string & suffix) const
-  {
-    auto new_names = item_names;
-    new_names.back() += suffix;
-    return LabeledAxisAccessor{new_names};
-  }
-
-  LabeledAxisAccessor on(const std::string & axis) const
-  {
-    auto new_names = item_names;
-    new_names.insert(new_names.begin(), axis);
-    return LabeledAxisAccessor{new_names};
-  }
-
-  LabeledAxisAccessor on(const LabeledAxisAccessor & axis) const
-  {
-    auto new_names = axis.item_names;
-    new_names.insert(new_names.end(), item_names.begin(), item_names.end());
-    return LabeledAxisAccessor{new_names};
-  }
-
-  bool operator==(const LabeledAxisAccessor & other) const
-  {
-    return item_names == other.item_names;
-  }
-
-  bool operator<(const LabeledAxisAccessor & other) const { return item_names < other.item_names; }
-
-  friend std::ostream & operator<<(std::ostream & os, const LabeledAxisAccessor & accessor);
-};
-
-std::ostream & operator<<(std::ostream & os, const LabeledAxisAccessor & accessor);
-
-class LabeledAxis;
-
-typedef std::unordered_map<std::string, std::pair<TorchSize, TorchSize>> AxisLayout;
-
 class LabeledAxis
 {
 public:
+  typedef std::unordered_map<std::string, std::pair<TorchSize, TorchSize>> AxisLayout;
+
   LabeledAxis();
 
   /// (Shallow) copy constructor
@@ -203,6 +155,7 @@ public:
 
   /// Does the variable exist?
   bool has_variable(const std::string & name) const { return _variables.count(name); }
+  bool has_variable(const LabeledAxisAccessor & var) const;
 
   /// Does the item exist?
   bool has_subaxis(const std::string & name) const { return _subaxes.count(name); }

@@ -26,18 +26,6 @@
 
 namespace neml2
 {
-std::ostream &
-operator<<(std::ostream & os, const LabeledAxisAccessor & accessor)
-{
-  for (size_t i = 0; i < accessor.item_names.size(); i++)
-  {
-    if (i != 0)
-      os << "/";
-    os << accessor.item_names[i];
-  }
-  return os;
-}
-
 int LabeledAxis::level = 0;
 
 LabeledAxis::LabeledAxis()
@@ -232,6 +220,18 @@ LabeledAxis::setup_layout()
     _layout.emplace(name, range);
     _offset += axis->storage_size();
   }
+}
+
+bool
+LabeledAxis::has_variable(const LabeledAxisAccessor & var) const
+{
+  if (var.empty())
+    return false;
+
+  if (var.item_names.size() > 1)
+    return subaxis(var.item_names[0]).has_variable(var.peel());
+  else
+    return has_variable(var.item_names[0]);
 }
 
 TorchSize

@@ -312,3 +312,37 @@ TEST_CASE("Indices of items", "[LabeledAxis]")
     REQUIRE(torch::allclose(idx.index(test.indices(i)), torch::arange(14, 20)));
   }
 }
+
+TEST_CASE("Queries", "[LabeledAxis]")
+{
+  LabeledAxis test;
+  test.add<Scalar>("scalar");
+  test.add<SymR2>("r2t");
+  test.add<LabeledAxis>("sub1");
+  test.subaxis("sub1").add<Scalar>("sub1/scalar");
+  test.subaxis("sub1").add<SymR2>("sub1/r2t");
+  test.subaxis("sub1").add<LabeledAxis>("sub2");
+  test.subaxis("sub1").subaxis("sub2").add<Scalar>("sub1/sub2/scalar");
+  test.subaxis("sub1").subaxis("sub2").add<SymR2>("sub1/sub2/r2t");
+  test.setup_layout();
+
+  SECTION("query the existence of an item")
+  {
+    REQUIRE(test.has_item("scalar"));
+    REQUIRE(test.has_item("r2t"));
+    REQUIRE(test.has_item("sub1"));
+    REQUIRE(!test.has_item("blah"));
+  }
+
+  SECTION("query the existence of a variable")
+  {
+    REQUIRE(test.has_variable("scalar"));
+    REQUIRE(test.has_variable("r2t"));
+    REQUIRE(!test.has_variable("r2t2"));
+
+    LabeledAxisAccessor var{{"sub1", "sub2", "sub1/sub2/r2t"}};
+    LabeledAxisAccessor none;
+    REQUIRE(test.has_variable(var));
+    REQUIRE(!test.has_variable(none));
+  }
+}
