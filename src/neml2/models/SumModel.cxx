@@ -35,35 +35,49 @@ ParameterSet
 SumModel<T>::expected_params()
 {
   ParameterSet params = Model::expected_params();
-  params.set<std::vector<std::vector<std::string>>>("from_var");
-  params.set<std::vector<std::string>>("to_var");
+  params.set<std::vector<LabeledAxisAccessor>>("from_var");
+  params.set<LabeledAxisAccessor>("to_var");
   return params;
 }
 
 template <typename T>
 SumModel<T>::SumModel(const ParameterSet & params)
   : Model(params),
-    to(declareOutputVariable<T>(params.get<std::vector<std::string>>("to_var")))
+    to(declare_output_variable<T>(params.get<LabeledAxisAccessor>("to_var")))
 {
-  for (auto fv : params.get<std::vector<std::vector<std::string>>>("from_var"))
-    from.push_back(declareInputVariable<T>(fv));
+  for (auto fv : params.get<std::vector<LabeledAxisAccessor>>("from_var"))
+    from.push_back(declare_input_variable<T>(fv));
 
   this->setup();
 }
 
 template <typename T>
 void
-SumModel<T>::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din) const
+SumModel<T>::set_value(const LabeledVector & in,
+                       LabeledVector * out,
+                       LabeledMatrix * dout_din,
+                       LabeledTensor3D * d2out_din2) const
 {
-  auto sum = T::zeros(in.batch_size());
-  for (auto fv : from)
-    sum += in(fv);
-  out.set(sum, to);
+  const auto options = in.options();
+  const auto nbatch = in.batch_size();
+
+  if (out)
+  {
+    auto sum = T::zero(options).batch_expand_copy(nbatch);
+    for (auto fv : from)
+      sum += in(fv);
+    out->set(sum, to);
+  }
 
   if (dout_din)
   {
     for (auto fv : from)
-      dout_din->set(T::identity_map().batch_expand(in.batch_size()), to, fv);
+      dout_din->set(T::identity_map(options), to, fv);
+  }
+
+  if (d2out_din2)
+  {
+    // zero
   }
 }
 

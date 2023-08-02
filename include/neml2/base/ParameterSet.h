@@ -37,6 +37,7 @@
 
 namespace neml2
 {
+// We should eventually get rid of all of these
 typedef std::pair<std::string, std::string> KS;
 typedef std::pair<std::string, std::vector<std::string>> KVS;
 typedef std::pair<std::string, std::vector<std::vector<std::string>>> KVVS;
@@ -49,9 +50,15 @@ typedef std::pair<std::string, std::vector<std::vector<bool>>> KVVB;
 typedef std::pair<std::string, unsigned int> KU;
 typedef std::pair<std::string, std::vector<unsigned int>> KVU;
 typedef std::pair<std::string, std::vector<std::vector<unsigned int>>> KVVU;
+typedef std::pair<std::string, TorchSize> KT;
+typedef std::pair<std::string, std::vector<TorchSize>> KVT;
+typedef std::pair<std::string, std::vector<std::vector<TorchSize>>> KVVT;
 typedef std::pair<std::string, int> KI;
 typedef std::pair<std::string, std::vector<int>> KVI;
 typedef std::pair<std::string, std::vector<std::vector<int>>> KVVI;
+typedef std::pair<std::string, LabeledAxisAccessor> KL;
+typedef std::pair<std::string, std::vector<LabeledAxisAccessor>> KVL;
+typedef std::pair<std::string, std::vector<std::vector<LabeledAxisAccessor>>> KVVL;
 
 /**
  * Helper functions for printing scalar, vector, vector<vector>. Called from
@@ -240,12 +247,14 @@ ParameterSet::Parameter<T>::type() const
   return utils::demangle(typeid(T).name());
 }
 
+// LCOV_EXCL_START
 template <typename T>
 inline void
 ParameterSet::Parameter<T>::print(std::ostream & os) const
 {
   print_helper(os, static_cast<const T *>(&_value));
 }
+// LCOV_EXCL_STOP
 
 template <typename T>
 inline std::unique_ptr<ParameterSet::Value>
@@ -288,6 +297,7 @@ ParameterSet::operator+(const ParameterSet & source)
 
 inline ParameterSet::ParameterSet(const ParameterSet & p) { *this = p; }
 
+// LCOV_EXCL_START
 inline void
 ParameterSet::print(std::ostream & os) const
 {
@@ -297,8 +307,8 @@ ParameterSet::print(std::ostream & os) const
   {
     os << it->first << "\t ";
     it->second->print(os);
-    os << '\n';
-    ++it;
+    if (++it != _values.end())
+      os << '\n';
   }
 }
 
@@ -308,6 +318,7 @@ operator<<(std::ostream & os, const ParameterSet & p)
   p.print(os);
   return os;
 }
+// LCOV_EXCL_STOP
 
 template <typename T>
 inline bool
@@ -368,6 +379,7 @@ ParameterSet::end() const
   return _values.end();
 }
 
+// LCOV_EXCL_START
 template <typename P>
 void
 print_helper(std::ostream & os, const P * param)
@@ -407,5 +419,5 @@ print_helper(std::ostream & os, const std::vector<std::vector<P>> * param)
     for (const auto & p : pv)
       os << p << " ";
 }
-
+// LCOV_EXCL_STOP
 } // namespace neml2

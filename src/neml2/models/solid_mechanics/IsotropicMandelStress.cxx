@@ -37,20 +37,25 @@ IsotropicMandelStress::expected_params()
 }
 
 void
-IsotropicMandelStress::set_value(LabeledVector in,
-                                 LabeledVector out,
-                                 LabeledMatrix * dout_din) const
+IsotropicMandelStress::set_value(const LabeledVector & in,
+                                 LabeledVector * out,
+                                 LabeledMatrix * dout_din,
+                                 LabeledTensor3D * d2out_din2) const
 {
   // Isotropic mandel stress is just the Cauchy stress
-  out.set(in.get<SymR2>(cauchy_stress), mandel_stress);
+
+  if (out)
+    out->set(in.get<SymR2>(cauchy_stress), mandel_stress);
 
   if (dout_din)
   {
-    // Derivative of the map cauchy stress --> mandel stress
-    auto dmandel_dcauchy = SymR2::identity_map().batch_expand(in.batch_size());
+    auto I = SymR2::identity_map(in.options());
+    dout_din->set(I, mandel_stress, cauchy_stress);
+  }
 
-    // Set the derivative
-    dout_din->set(dmandel_dcauchy, mandel_stress, cauchy_stress);
+  if (d2out_din2)
+  {
+    // zero
   }
 }
 } // namespace neml2

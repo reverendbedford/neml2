@@ -25,22 +25,21 @@
 #pragma once
 
 #include "neml2/models/Model.h"
-#include "neml2/models/ADModel.h"
 
-template <bool is_ad>
-using SampleRateModelBase = std::conditional_t<is_ad, neml2::ADModel, neml2::Model>;
-
-template <bool is_ad>
-class SampleRateModelTempl : public SampleRateModelBase<is_ad>
+class SampleRateModel : public neml2::Model
 {
 public:
-  SampleRateModelTempl(const neml2::ParameterSet & params);
+  SampleRateModel(const neml2::ParameterSet & params);
 
 protected:
-  virtual void set_value(neml2::LabeledVector in,
-                         neml2::LabeledVector out,
-                         neml2::LabeledMatrix * dout_din = nullptr) const;
+  virtual void set_value(const neml2::LabeledVector & in,
+                         neml2::LabeledVector * out,
+                         neml2::LabeledMatrix * dout_din = nullptr,
+                         neml2::LabeledTensor3D * d2out_din2 = nullptr) const override;
 
+  const neml2::Scalar _a;
+  const neml2::Scalar _b;
+  const neml2::Scalar _c;
   const neml2::LabeledAxisAccessor _foo;
   const neml2::LabeledAxisAccessor _bar;
   const neml2::LabeledAxisAccessor _baz;
@@ -49,6 +48,3 @@ protected:
   const neml2::LabeledAxisAccessor _bar_rate;
   const neml2::LabeledAxisAccessor _baz_rate;
 };
-
-typedef SampleRateModelTempl<true> ADSampleRateModel;
-typedef SampleRateModelTempl<false> SampleRateModel;

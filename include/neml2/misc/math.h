@@ -30,24 +30,34 @@ namespace neml2
 {
 namespace math
 {
-template <TorchSize N>
-BatchTensor<N>
-linspace(BatchTensor<N> start, BatchTensor<N> stop, TorchSize nsteps)
+constexpr Real sqrt2 = 1.4142135623730951;
+
+constexpr TorchSize mandel_reverse_index[3][3] = {{0, 5, 4}, {5, 1, 3}, {4, 3, 2}};
+constexpr TorchSize mandel_index[6][2] = {{0, 0}, {1, 1}, {2, 2}, {1, 2}, {0, 2}, {0, 1}};
+
+inline constexpr Real
+mandel_factor(TorchSize i)
 {
-  neml_assert_dbg(start.sizes() == stop.sizes(),
-                  "start and stop tensors need the same shape in "
-                  "linspace. The start tensor has shape ",
-                  start.sizes(),
-                  " while the stop tensor has shape ",
-                  stop.sizes());
-
-  auto steps = torch::arange(nsteps, TorchDefaults) / (nsteps - 1);
-
-  for (int i = 0; i < start.dim(); i++)
-    steps = steps.unsqueeze(-1);
-
-  return start.index({torch::indexing::None}) +
-         steps * (stop - start).index({torch::indexing::None});
+  return i < 3 ? 1.0 : sqrt2;
 }
+
+torch::Tensor linspace(const at::Tensor & start,
+                       const at::Tensor & end,
+                       TorchSize nstep,
+                       const torch::TensorOptions & options = default_tensor_options);
+
+torch::Tensor logspace(const at::Tensor & start,
+                       const at::Tensor & end,
+                       TorchSize nstep,
+                       Real base = 10,
+                       const torch::TensorOptions & options = default_tensor_options);
+
+/**
+ * This is (almost) equivalent to Torch's heaviside, except that the Torch's version is not
+ * differentiable (back-propagatable). I said "almost" because torch::heaviside allows you to set
+ * the return value in the case of input == 0. Our implementation always return 0.5 when the input
+ * == 0.
+ */
+torch::Tensor heaviside(const torch::Tensor & self);
 } // namespace math
 } // namespace neml2

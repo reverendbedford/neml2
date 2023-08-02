@@ -25,7 +25,6 @@
 
 #include "neml2/base/Parser.h"
 #include "hit.h"
-#include <memory>
 
 namespace neml2
 {
@@ -35,31 +34,12 @@ class HITParser : public Parser
 public:
   HITParser() = default;
 
-  virtual void parse(const std::string & filename);
-
-  /// Get the root of the parsed input file
-  hit::Node * root() { return _root.get(); }
-
-  /// Extract (and cast) parameters into the parameter collection
-  virtual ParameterCollection parameters() const;
+  virtual ParameterCollection parse(const std::string & filename) const;
+  virtual ParameterSet extract_object_parameters(hit::Node * object) const;
 
 private:
-  class ExtractParamsWalker : public hit::Walker
-  {
-  public:
-    ExtractParamsWalker(ParameterSet & params)
-      : _params(params)
-    {
-    }
-
-    void walk(const std::string & fullpath, const std::string & nodepath, hit::Node * n) override;
-
-  private:
-    ParameterSet & _params;
-  };
-
-  /// The root node of the parsed input file
-  std::unique_ptr<hit::Node> _root;
+  void extract_parameters(hit::Node * object, ParameterSet & params) const;
+  void extract_parameter(hit::Node * node, ParameterSet & params) const;
 };
 
 } // namespace neml2

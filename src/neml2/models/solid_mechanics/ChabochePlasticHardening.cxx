@@ -32,83 +32,65 @@ register_NEML2_object(ChabochePlasticHardening);
 ParameterSet
 ChabochePlasticHardening::expected_params()
 {
-  ParameterSet params = PlasticHardening::expected_params();
+  ParameterSet params = FlowRule::expected_params();
+  params.set<LabeledAxisAccessor>("back_stress") = {{"state", "internal", "X"}};
+  params.set<LabeledAxisAccessor>("flow_direction") = {{"state", "internal", "NM"}};
   params.set<Real>("C");
   params.set<Real>("g");
   params.set<Real>("A");
   params.set<Real>("a");
-  params.set<std::string>("backstress_suffix") = "";
   return params;
 }
 
 ChabochePlasticHardening::ChabochePlasticHardening(const ParameterSet & params)
-  : PlasticHardening(params),
-    backstress(declareInputVariable<SymR2>(
-        {"state", "internal_state", "backstress" + params.get<std::string>("backstress_suffix")})),
-    flow_direction(declareInputVariable<SymR2>({"state", "plastic_flow_direction"})),
-    backstress_rate(declareOutputVariable<SymR2>(
-        {"state",
-         "internal_state",
-         "backstress" + params.get<std::string>("backstress_suffix") + "_rate"})),
-    _C(register_parameter("chaboche_C" + params.get<std::string>("backstress_suffix"),
-                          Scalar(params.get<Real>("C")))),
-    _g(register_parameter("chaboche_gamma" + params.get<std::string>("backstress_suffix"),
-                          Scalar(params.get<Real>("g")))),
-    _A(register_parameter("chaboche_recovery_prefactor" +
-                              params.get<std::string>("backstress_suffix"),
-                          Scalar(params.get<Real>("A")))),
-    _a(register_parameter("chaboche_recovery_exponent" +
-                              params.get<std::string>("backstress_suffix"),
-                          Scalar(params.get<Real>("a"))))
+  : FlowRule(params),
+    back_stress(declare_input_variable<SymR2>(params.get<LabeledAxisAccessor>("back_stress"))),
+    flow_direction(
+        declare_input_variable<SymR2>(params.get<LabeledAxisAccessor>("flow_direction"))),
+    back_stress_rate(declare_output_variable<SymR2>(back_stress.with_suffix("_rate"))),
+    _C(register_parameter("C", Scalar(params.get<Real>("C")), false)),
+    _g(register_parameter("g", Scalar(params.get<Real>("g")), false)),
+    _A(register_parameter("A", Scalar(params.get<Real>("A")), false)),
+    _a(register_parameter("a", Scalar(params.get<Real>("a")), false))
 {
   setup();
 }
 
 void
-ChabochePlasticHardening::set_value(LabeledVector in,
-                                    LabeledVector out,
-                                    LabeledMatrix * dout_din) const
+ChabochePlasticHardening::set_value(const LabeledVector & in,
+                                    LabeledVector * out,
+                                    LabeledMatrix * dout_din,
+                                    LabeledTensor3D * d2out_din2) const
 {
-  // Our backstress
-  SymR2 X = in.get<SymR2>(backstress);
+  neml_assert_dbg(!d2out_din2, "Chaboche model doesn't implement second derivatives.");
 
-  // gamma_dot
-  Scalar g = in.get<Scalar>(hardening_rate);
+  SymR2 X = in.get<SymR2>(back_stress);
+  Scalar gamma_dot = in.get<Scalar>(flow_rate);
+  SymR2 NM = in.get<SymR2>(flow_direction);
 
-  // Current flow direction
-  SymR2 n = in.get<SymR2>(flow_direction);
+  // The effective stress
+  Scalar eff = X.norm(EPS);
+  // The part that's proportional to the plastic strain rate
+  auto g_term = 2.0 / 3.0 * _C * NM - _g * X;
 
-  // Value of the effective stress for recovery
-  auto eff = X.norm(); // Should already be deviatoric
-
-  // Finally we can start assembling the model
-  // Proportional to plastic strain rate
-  auto g_term = 2.0 / 3.0 * _C * n - _g * X;
-  // Static recovery
-  auto s_term = -_A * eff.pow(_a - 1.0) * X;
-  // Sum and set total
-  auto total = g_term * g + s_term;
-  out.set(total, backstress_rate);
+  if (out)
+  {
+    // The static recovery term
+    auto s_term = -_A * eff.pow(_a - 1) * X;
+    auto X_dot = g_term * gamma_dot + s_term;
+    out->set(X_dot, back_stress_rate);
+  }
 
   if (dout_din)
   {
-    auto Y = X / (eff + EPS);
+    auto I = SymR2::identity_map(in.options());
 
-    // Plastic strain rate derivative
-    dout_din->set(g_term, backstress_rate, hardening_rate);
-
-    // Useful identity...
-    auto I = SymSymR4::init(SymSymR4::identity_sym).batch_expand(in.batch_size());
-
-    // Flow direction derivative
-    dout_din->set(2.0 / 3.0 * _C * I * g, backstress_rate, flow_direction);
-
-    // Backstress derivative
-    dout_din->set(-torch::Tensor(_g * I * g) -
-                      torch::Tensor(_A * (_a - 1.0) * (eff + EPS).pow(_a - 2.0) * X.outer(Y)) -
-                      torch::Tensor(_A * eff.pow(_a - 1.0) * I),
-                  backstress_rate,
-                  backstress);
+    dout_din->set(g_term, back_stress_rate, flow_rate);
+    dout_din->set(2.0 / 3.0 * _C * gamma_dot * I, back_stress_rate, flow_direction);
+    dout_din->set(-_g * gamma_dot * I -
+                      _A * eff.pow(_a - 3) * ((_a - 1) * X.outer(X) + eff * eff * I),
+                  back_stress_rate,
+                  back_stress);
   }
 }
 

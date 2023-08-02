@@ -35,26 +35,34 @@ ParameterSet
 ForceRate<T>::expected_params()
 {
   ParameterSet params = Model::expected_params();
-  params.set<std::string>("force");
+  params.set<LabeledAxisAccessor>("force");
+  params.set<LabeledAxisAccessor>("time") = LabeledAxisAccessor{{"t"}};
   return params;
 }
 
 template <typename T>
 ForceRate<T>::ForceRate(const ParameterSet & params)
   : Model(params),
-    force(declareInputVariable<T>({"forces", params.get<std::string>("force")})),
-    force_n(declareInputVariable<T>({"old_forces", params.get<std::string>("force")})),
-    time(declareInputVariable<Scalar>({"forces", "time"})),
-    time_n(declareInputVariable<Scalar>({"old_forces", "time"})),
-    force_rate(declareOutputVariable<T>({"forces", params.get<std::string>("force") + "_rate"}))
+    force(declare_input_variable<T>(params.get<LabeledAxisAccessor>("force").on("forces"))),
+    force_n(declare_input_variable<T>(params.get<LabeledAxisAccessor>("force").on("old_forces"))),
+    time(declare_input_variable<Scalar>(params.get<LabeledAxisAccessor>("time").on("forces"))),
+    time_n(
+        declare_input_variable<Scalar>(params.get<LabeledAxisAccessor>("time").on("old_forces"))),
+    force_rate(declare_output_variable<T>(
+        params.get<LabeledAxisAccessor>("force").with_suffix("_rate").on("forces")))
 {
   this->setup();
 }
 
 template <typename T>
 void
-ForceRate<T>::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din) const
+ForceRate<T>::set_value(const LabeledVector & in,
+                        LabeledVector * out,
+                        LabeledMatrix * dout_din,
+                        LabeledTensor3D * d2out_din2) const
 {
+  const auto options = in.options();
+
   auto f_np1 = in.get<T>(force);
   auto f_n = in.get<T>(force_n);
   auto t_np1 = in.get<Scalar>(time);
@@ -62,21 +70,40 @@ ForceRate<T>::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dou
 
   auto df = f_np1 - f_n;
   auto dt = t_np1 - t_n;
-  auto f_dot = df / dt;
 
-  out.set(f_dot, force_rate);
-
-  if (dout_din)
+  if (out)
   {
-    auto df_dot_df_np1 = T::identity_map() / dt;
-    auto df_dot_df_n = -T::identity_map() / dt;
-    auto df_dot_dt_np1 = -df / dt / dt;
-    auto df_dot_dt_n = df / dt / dt;
+    auto f_dot = df / dt;
+    out->set(f_dot, force_rate);
+  }
 
-    dout_din->set(df_dot_df_np1, force_rate, force);
-    dout_din->set(df_dot_df_n, force_rate, force_n);
-    dout_din->set(df_dot_dt_np1, force_rate, time);
-    dout_din->set(df_dot_dt_n, force_rate, time_n);
+  if (dout_din || d2out_din2)
+  {
+    auto I = T::identity_map(options);
+
+    if (dout_din)
+    {
+      dout_din->set(I / dt, force_rate, force);
+      dout_din->set(-I / dt, force_rate, force_n);
+      dout_din->set(-df / dt / dt, force_rate, time);
+      dout_din->set(df / dt / dt, force_rate, time_n);
+    }
+
+    if (d2out_din2)
+    {
+      d2out_din2->set(-I / dt / dt, force_rate, force, time);
+      d2out_din2->set(I / dt / dt, force_rate, force, time_n);
+      d2out_din2->set(I / dt / dt, force_rate, force_n, time);
+      d2out_din2->set(-I / dt / dt, force_rate, force_n, time_n);
+      d2out_din2->set(-I / dt / dt, force_rate, time, force);
+      d2out_din2->set(I / dt / dt, force_rate, time, force_n);
+      d2out_din2->set(2 * df / dt / dt / dt, force_rate, time, time);
+      d2out_din2->set(-2 * df / dt / dt / dt, force_rate, time, time_n);
+      d2out_din2->set(I / dt / dt, force_rate, time_n, force);
+      d2out_din2->set(-I / dt / dt, force_rate, time_n, force_n);
+      d2out_din2->set(-2 * df / dt / dt / dt, force_rate, time_n, time);
+      d2out_din2->set(2 * df / dt / dt / dt, force_rate, time_n, time_n);
+    }
   }
 }
 

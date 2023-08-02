@@ -43,7 +43,7 @@ public:
 
 protected:
   virtual void set_residual(BatchTensor<1> x,
-                            BatchTensor<1> residual,
+                            BatchTensor<1> * residual,
                             BatchTensor<1> * Jacobian = nullptr) const = 0;
 };
 } // namespace neml2

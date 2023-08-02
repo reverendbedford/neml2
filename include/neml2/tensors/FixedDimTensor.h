@@ -36,36 +36,35 @@ class FixedDimTensor : public BatchTensor<N>
 {
 public:
   /// Default constructor
-  FixedDimTensor();
+  FixedDimTensor(const torch::TensorOptions & options = default_tensor_options);
+
+  /// Make an empty batched tensor given batch size
+  FixedDimTensor(TorchShapeRef batch_size,
+                 const torch::TensorOptions & options = default_tensor_options);
 
   /// Make from another tensor
   FixedDimTensor(const torch::Tensor & tensor);
-
-  /// Make a batched tensor filled with default base tensor
-  FixedDimTensor(const torch::Tensor & tensor, TorchShapeRef batch_size);
 
   /// The base shape
   static inline const TorchShape _base_sizes = TorchShape({D...});
 };
 
 template <TorchSize N, TorchSize... D>
-FixedDimTensor<N, D...>::FixedDimTensor()
-  : BatchTensor<N>(TorchShapeRef{std::vector<TorchSize>(N, 1)}, TorchShapeRef({D...}))
+FixedDimTensor<N, D...>::FixedDimTensor(const torch::TensorOptions & options)
+  : BatchTensor<N>(TorchShapeRef({D...}), options)
+{
+}
+
+template <TorchSize N, TorchSize... D>
+FixedDimTensor<N, D...>::FixedDimTensor(TorchShapeRef batch_size,
+                                        const torch::TensorOptions & options)
+  : BatchTensor<N>(batch_size, _base_sizes, options)
 {
 }
 
 template <TorchSize N, TorchSize... D>
 FixedDimTensor<N, D...>::FixedDimTensor(const torch::Tensor & tensor)
   : BatchTensor<N>(tensor)
-{
-  // Check to make sure we got the correct base_sizes()
-  neml_assert_dbg(_base_sizes == this->base_sizes(),
-                  "Base size of the supplied tensor does not match the templated base size");
-}
-
-template <TorchSize N, TorchSize... D>
-FixedDimTensor<N, D...>::FixedDimTensor(const torch::Tensor & tensor, TorchShapeRef batch_size)
-  : BatchTensor<N>(tensor, batch_size)
 {
   // Check to make sure we got the correct base_sizes()
   neml_assert_dbg(_base_sizes == this->base_sizes(),

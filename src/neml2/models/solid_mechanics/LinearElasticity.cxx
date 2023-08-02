@@ -26,95 +26,59 @@
 
 namespace neml2
 {
-register_NEML2_object(CauchyStressFromElasticStrain);
-register_NEML2_object(CauchyStressRateFromElasticStrainRate);
-register_NEML2_object(ElasticStrainFromCauchyStress);
-register_NEML2_object(ElasticStrainRateFromCauchyStressRate);
+register_NEML2_object(LinearElasticity);
 
-template <bool rate, ElasticityType etype>
 ParameterSet
-LinearElasticity<rate, etype>::expected_params()
+LinearElasticity::expected_params()
 {
   ParameterSet params = Model::expected_params();
-  params.set<Real>("E");
-  params.set<Real>("nu");
+  params.set<CrossRef<Scalar>>("youngs_modulus");
+  params.set<CrossRef<Scalar>>("poisson_ratio");
+  params.set<LabeledAxisAccessor>("strain") = {{"state", "internal", "Ee"}};
+  params.set<LabeledAxisAccessor>("stress") = {{"state", "S"}};
+  params.set<bool>("compliance") = false;
+  params.set<bool>("rate_form") = false;
   return params;
 }
 
-template <bool rate, ElasticityType etype>
-LinearElasticity<rate, etype>::LinearElasticity(const ParameterSet & params)
+LinearElasticity::LinearElasticity(const ParameterSet & params)
   : Model(params),
-    from(declareInputVariable<SymR2>({"state", in_name()})),
-    to(declareOutputVariable<SymR2>({"state", out_name()})),
-    _T(register_parameter("elasticity_tensor", T(params.get<Real>("E"), params.get<Real>("nu"))))
+    _E(register_parameter("E", params.get<CrossRef<Scalar>>("youngs_modulus"), false)),
+    _nu(register_parameter("nu", params.get<CrossRef<Scalar>>("poisson_ratio"), false)),
+    _compliance(params.get<bool>("compliance")),
+    _rate_form(params.get<bool>("rate_form")),
+    _strain(params.get<LabeledAxisAccessor>("strain").with_suffix(_rate_form ? "_rate" : "")),
+    _stress(params.get<LabeledAxisAccessor>("stress").with_suffix(_rate_form ? "_rate" : "")),
+    from(declare_input_variable<SymR2>(_compliance ? _stress : _strain)),
+    to(declare_output_variable<SymR2>(_compliance ? _strain : _stress))
 {
   setup();
+
+  _T = transformation_tensor();
 }
 
-template <bool rate, ElasticityType etype>
 SymSymR4
-LinearElasticity<rate, etype>::T(Scalar E, Scalar nu) const
+LinearElasticity::transformation_tensor() const
 {
-  if constexpr (etype == ElasticityType::STIFFNESS)
-    return SymSymR4::init(SymSymR4::isotropic_E_nu, {E, nu});
-  if constexpr (etype == ElasticityType::COMPLIANCE)
-    return SymSymR4::init(SymSymR4::isotropic_E_nu, {E, nu}).inverse();
+  auto T = SymSymR4::init_isotropic_E_nu(_E, _nu);
+  return _compliance ? T.inverse() : T;
 }
 
-template <bool rate, ElasticityType etype>
-std::string
-LinearElasticity<rate, etype>::in_name() const
-{
-  if constexpr (rate)
-  {
-    if constexpr (etype == ElasticityType::STIFFNESS)
-      return "elastic_strain_rate";
-    if constexpr (etype == ElasticityType::COMPLIANCE)
-      return "cauchy_stress_rate";
-  }
-  else
-  {
-    if constexpr (etype == ElasticityType::STIFFNESS)
-      return "elastic_strain";
-    if constexpr (etype == ElasticityType::COMPLIANCE)
-      return "cauchy_stress";
-  }
-}
-
-template <bool rate, ElasticityType etype>
-std::string
-LinearElasticity<rate, etype>::out_name() const
-{
-  if constexpr (rate)
-  {
-    if constexpr (etype == ElasticityType::STIFFNESS)
-      return "cauchy_stress_rate";
-    if constexpr (etype == ElasticityType::COMPLIANCE)
-      return "elastic_strain_rate";
-  }
-  else
-  {
-    if constexpr (etype == ElasticityType::STIFFNESS)
-      return "cauchy_stress";
-    if constexpr (etype == ElasticityType::COMPLIANCE)
-      return "elastic_strain";
-  }
-}
-
-template <bool rate, ElasticityType etype>
 void
-LinearElasticity<rate, etype>::set_value(LabeledVector in,
-                                         LabeledVector out,
-                                         LabeledMatrix * dout_din) const
+LinearElasticity::set_value(const LabeledVector & in,
+                            LabeledVector * out,
+                            LabeledMatrix * dout_din,
+                            LabeledTensor3D * d2out_din2) const
 {
-  out.set(_T * in.get<SymR2>(from), to);
+  if (out)
+    out->set(_T * in.get<SymR2>(from), to);
 
   if (dout_din)
-    dout_din->set(_T.batch_expand(in.batch_size()), to, from);
-}
+    dout_din->set(_T, to, from);
 
-template class LinearElasticity<false, ElasticityType::STIFFNESS>;
-template class LinearElasticity<false, ElasticityType::COMPLIANCE>;
-template class LinearElasticity<true, ElasticityType::STIFFNESS>;
-template class LinearElasticity<true, ElasticityType::COMPLIANCE>;
+  if (d2out_din2)
+  {
+    // zero
+  }
+}
 } // namespace neml2

@@ -24,3 +24,5 @@ doc/html
 *.log
 *.so
 *.dylib
+*.pt
+!**/gold/*.pt

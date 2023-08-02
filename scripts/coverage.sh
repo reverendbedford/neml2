@@ -25,17 +25,17 @@
 
 mkdir -p coverage
 export ROOT=$(pwd)
-export SRC_DIR=$ROOT/src
-export TEST_SRC_DIR=$ROOT/tests/src
 export INCLUDE_DIR=$ROOT/include
-export TEST_INCLUDE_DIR=$ROOT/tests/include
+export SRC_DIR=$ROOT/src
+# Let's not worry about the coverage of test utils for now
+# export TEST_INCLUDE_DIR=$ROOT/tests/include
+# export TEST_SRC_DIR=$ROOT/tests/src
 export COVERAGE_DIR=$ROOT/coverage
-lcov --gcov-tool gcov --capture --initial --directory $SRC_DIR --directory $TEST_SRC_DIR --output-file $COVERAGE_DIR/initialize.info
+lcov --gcov-tool gcov --capture --initial --directory $SRC_DIR --output-file $COVERAGE_DIR/initialize.info
 cd tests
 ./unit_tests || true
-./regression_tests || true
 cd ..
-lcov --gcov-tool gcov --capture --ignore-errors gcov,source --directory $SRC_DIR --directory $TEST_SRC_DIR --output-file $COVERAGE_DIR/covered.info
+lcov --gcov-tool gcov --capture --ignore-errors gcov,source --directory $SRC_DIR --output-file $COVERAGE_DIR/covered.info
 lcov --gcov-tool gcov --add-tracefile $COVERAGE_DIR/initialize.info --add-tracefile $COVERAGE_DIR/covered.info --output-file $COVERAGE_DIR/final.info
-lcov --gcov-tool gcov --extract $COVERAGE_DIR/final.info \*$SRC_DIR/\* --extract $COVERAGE_DIR/final.info \*$INCLUDE_DIR/\* --extract $COVERAGE_DIR/final.info \*$TEST_SRC_DIR/\* --extract $COVERAGE_DIR/final.info \*$TEST_INCLUDE_DIR/\* --output-file $COVERAGE_DIR/coverage.info
+lcov --gcov-tool gcov --extract $COVERAGE_DIR/final.info \*$SRC_DIR/\* --extract $COVERAGE_DIR/final.info \*$INCLUDE_DIR/\* --output-file $COVERAGE_DIR/coverage.info
 genhtml $COVERAGE_DIR/coverage.info --output-directory $COVERAGE_DIR > $COVERAGE_DIR/genhtml.out

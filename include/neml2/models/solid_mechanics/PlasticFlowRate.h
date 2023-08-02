@@ -36,6 +36,6 @@ public:
   PlasticFlowRate(const ParameterSet & params);
 
   const LabeledAxisAccessor yield_function;
-  const LabeledAxisAccessor hardening_rate;
+  const LabeledAxisAccessor flow_rate;
 };
 } // namespace neml2

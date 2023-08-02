@@ -25,11 +25,11 @@
 
 #include "neml2/base/Registry.h"
 #include "neml2/base/NEML2Object.h"
+#include "neml2/misc/error.h"
+#include "neml2/base/ParameterCollection.h"
 
 namespace neml2
 {
-using ParameterCollection = std::map<std::string, std::map<std::string, ParameterSet>>;
-
 /**
 The factory is responsible for:
 1. retriving a NEML2Object given the object name as a `std::string`
@@ -42,7 +42,7 @@ public:
   static std::vector<std::string> pipeline;
 
   /// Get the global Registry singleton.
-  static Factory & get_factory();
+  static Factory & get();
 
   /// Retrive an object in the given section with the given object name
   template <class T>
@@ -74,11 +74,20 @@ template <class T>
 inline std::shared_ptr<T>
 Factory::get_object_ptr(const std::string & section, const std::string & name)
 {
-  auto & factory = Factory::get_factory();
+  auto & factory = Factory::get();
 
   // Easy if it already exists
   if (factory._objects.count(section) && factory._objects.at(section).count(name))
-    return std::dynamic_pointer_cast<T>(factory._objects[section][name]);
+  {
+    auto obj = std::dynamic_pointer_cast<T>(factory._objects[section][name]);
+    neml_assert(obj != nullptr,
+                "Found object named ",
+                name,
+                " under section ",
+                section,
+                ". But dynamic cast failed. Did you specify the correct object type?");
+    return obj;
+  }
 
   // Otherwise try to create it
   for (const auto & params : factory._all_params[section])
@@ -94,13 +103,13 @@ Factory::get_object_ptr(const std::string & section, const std::string & name)
               " under section ",
               section);
 
-  return factory.get_object_ptr<T>(section, name);
+  return Factory::get_object_ptr<T>(section, name);
 }
 
 template <class T>
 inline T &
 Factory::get_object(const std::string & section, const std::string & name)
 {
-  return *Factory::get_factory().get_object_ptr<T>(section, name);
+  return *Factory::get_object_ptr<T>(section, name);
 }
 } // namespace neml2

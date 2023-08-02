@@ -38,12 +38,13 @@ public:
   /**
    * Use the old state as the initial guess
    */
-  virtual void set_initial_guess(LabeledVector in, LabeledVector guess) const override;
+  virtual void set_initial_guess(const LabeledVector & in,
+                                 const LabeledVector & guess) const override;
 
   /**
    * Cache the current state
    */
-  virtual void post_solve(LabeledVector in, LabeledVector out) override;
+  virtual void post_solve(const LabeledVector & in, const LabeledVector & out) override;
 
   /**
    * Shift the state back in time

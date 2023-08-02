@@ -28,10 +28,10 @@ namespace neml2
 void
 Parser::parse_and_manufacture(const std::string & filename)
 {
-  parse(filename);
-  auto & factory = Factory::get_factory();
+  auto params = parse(filename);
+  auto & factory = Factory::get();
   factory.clear();
-  factory.manufacture(parameters());
+  factory.manufacture(params);
 }
 
 } // namespace neml2

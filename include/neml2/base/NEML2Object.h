@@ -25,16 +25,14 @@
 
 #include <torch/torch.h>
 
-#include "neml2/base/ParameterSet.h"
+#include "neml2/base/ParameterInterface.h"
 
 namespace neml2
 {
-class NEML2Object : public torch::nn::Module
+class NEML2Object : public torch::nn::Module, public ParameterInterface
 {
 public:
   static ParameterSet expected_params();
-
-  NEML2Object(const std::string & name);
 
   NEML2Object(const ParameterSet & params);
 };

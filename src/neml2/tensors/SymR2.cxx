@@ -28,34 +28,28 @@
 namespace neml2
 {
 SymSymR4
-SymR2::identity_map()
+SymR2::identity_map(const torch::TensorOptions & options)
 {
-  return SymSymR4::init(SymSymR4::FillMethod::identity_sym);
+  return SymSymR4::init_identity_sym(options);
 }
 
 SymR2
-SymR2::zeros()
+SymR2::zero(const torch::TensorOptions & options)
 {
-  return torch::zeros({1, 6}, TorchDefaults);
-}
-
-SymR2
-SymR2::zeros(TorchSize batch_size)
-{
-  return torch::zeros({batch_size, 6}, TorchDefaults);
+  return torch::zeros({1, 6}, options);
 }
 
 SymR2
 SymR2::init(const Scalar & a)
 {
-  torch::Tensor zero = torch::zeros_like(a, TorchDefaults);
+  const auto zero = torch::zeros_like(a);
   return torch::cat({a, a, a, zero, zero, zero}, -1);
 }
 
 SymR2
 SymR2::init(const Scalar & a11, const Scalar & a22, const Scalar & a33)
 {
-  torch::Tensor zero = torch::zeros_like(a11, TorchDefaults);
+  const auto zero = torch::zeros_like(a11);
   return torch::cat({a11, a22, a33, zero, zero, zero}, -1);
 }
 
@@ -67,21 +61,20 @@ SymR2::init(const Scalar & a11,
             const Scalar & a13,
             const Scalar & a12)
 {
-  return torch::cat({a11, a22, a33, utils::sqrt2 * a23, utils::sqrt2 * a13, utils::sqrt2 * a12},
-                    -1);
+  return torch::cat({a11, a22, a33, math::sqrt2 * a23, math::sqrt2 * a13, math::sqrt2 * a12}, -1);
 }
 
 SymR2
-SymR2::identity()
+SymR2::identity(const torch::TensorOptions & options)
 {
-  return SymR2(torch::tensor({{1, 1, 1, 0, 0, 0}}, TorchDefaults));
+  return torch::tensor({{1, 1, 1, 0, 0, 0}}, options);
 }
 
 Scalar
 SymR2::operator()(TorchSize i, TorchSize j) const
 {
-  TorchSize a = reverse_index[i][j];
-  return base_index({a}).unsqueeze(-1) / utils::mandelFactor(a);
+  TorchSize a = math::mandel_reverse_index[i][j];
+  return base_index({a}).unsqueeze(-1) / math::mandel_factor(a);
 }
 
 SymR2
@@ -129,9 +122,9 @@ SymR2::norm_sq() const
 }
 
 Scalar
-SymR2::norm() const
+SymR2::norm(Real eps) const
 {
-  return torch::sqrt(norm_sq());
+  return torch::sqrt(norm_sq() + eps);
 }
 
 SymSymR4
@@ -141,15 +134,21 @@ SymR2::outer(const SymR2 & other) const
 }
 
 SymR2
+SymR2::inverse() const
+{
+  return torch::linalg::inv(*this);
+}
+
+SymR2
 operator+(const SymR2 & a, const Scalar & b)
 {
-  return torch::operator+(a, b);
+  return torch::operator+(a, b.to(a));
 }
 
 SymR2
 operator+(const Scalar & a, const SymR2 & b)
 {
-  return torch::operator+(a, b);
+  return b + a;
 }
 
 SymR2
@@ -161,13 +160,13 @@ operator+(const SymR2 & a, const SymR2 & b)
 SymR2
 operator-(const SymR2 & a, const Scalar & b)
 {
-  return torch::operator-(a, b);
+  return torch::operator-(a, b.to(a));
 }
 
 SymR2
 operator-(const Scalar & a, const SymR2 & b)
 {
-  return torch::operator-(a, b);
+  return torch::operator-(a.to(b), b);
 }
 
 SymR2
@@ -179,31 +178,25 @@ operator-(const SymR2 & a, const SymR2 & b)
 SymR2
 operator*(const SymR2 & a, const Scalar & b)
 {
-  return torch::operator*(a, b);
+  return torch::operator*(a, b.to(a));
 }
 
 SymR2
 operator*(const Scalar & a, const SymR2 & b)
 {
-  return torch::operator*(a, b);
-}
-
-SymR2
-operator*(const SymR2 & a, const SymR2 & b)
-{
-  return torch::operator*(a, b);
+  return b * a;
 }
 
 SymR2
 operator/(const SymR2 & a, const Scalar & b)
 {
-  return torch::operator/(a, b);
+  return torch::operator/(a, b.to(a));
 }
 
 SymR2
 operator/(const Scalar & a, const SymR2 & b)
 {
-  return torch::operator/(a, b);
+  return torch::operator/(a.to(b), b);
 }
 
 SymR2

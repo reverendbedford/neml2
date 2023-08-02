@@ -33,34 +33,34 @@ ParameterSet
 LinearKinematicHardening::expected_params()
 {
   ParameterSet params = KinematicHardening::expected_params();
-  params.set<Real>("H");
+  params.set<Real>("hardening_modulus");
   return params;
 }
 
 LinearKinematicHardening::LinearKinematicHardening(const ParameterSet & params)
   : KinematicHardening(params),
-    _H(register_parameter("kinematic_hardening_modulus", Scalar(params.get<Real>("H"))))
+    _H(register_parameter("H", Scalar(params.get<Real>("hardening_modulus")), false))
 {
 }
 
 void
-LinearKinematicHardening::set_value(LabeledVector in,
-                                    LabeledVector out,
-                                    LabeledMatrix * dout_din) const
+LinearKinematicHardening::set_value(const LabeledVector & in,
+                                    LabeledVector * out,
+                                    LabeledMatrix * dout_din,
+                                    LabeledTensor3D * d2out_din2) const
 {
-  // Map from equivalent plastic strain --> isotropic hardening
-  auto g = _H * in.get<SymR2>(plastic_strain);
-
-  // Set the output
-  out.set(g, kinematic_hardening);
+  if (out)
+    out->set(_H * in(kinematic_plastic_strain), back_stress);
 
   if (dout_din)
   {
-    // Derivative of the map equivalent plastic strain --> isotropic hardening
-    auto dg_dep = _H * SymSymR4::init(SymSymR4::identity_sym).batch_expand(in.batch_size());
+    auto I = SymR2::identity_map(in.options());
+    dout_din->set(_H * I, back_stress, kinematic_plastic_strain);
+  }
 
-    // Set the output
-    dout_din->set(dg_dep, kinematic_hardening, plastic_strain);
+  if (d2out_din2)
+  {
+    // zero
   }
 }
 } // namespace neml2

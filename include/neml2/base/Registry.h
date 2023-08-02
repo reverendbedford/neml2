@@ -25,15 +25,17 @@
 
 #include "neml2/base/ParameterSet.h"
 
-#include <string>
-#include <map>
-
 namespace neml2
 {
 /// Add a NEML2Object to the registry.  classname is the (unquoted)
 /// c++ class.  Each object/class should only be registered once.
 #define register_NEML2_object(classname)                                                           \
   static char dummyvar_for_registering_obj_##classname = Registry::add<classname>(#classname)
+
+/// Add a NEML2Object to the registry and associate it with a given name.  classname is the
+/// (unquoted) c++ class.  Each object/class should only be registered once.
+#define register_NEML2_object_alt(classname, registryname)                                         \
+  static char dummyvar_for_registering_obj_##classname = Registry::add<classname>(registryname)
 
 class NEML2Object;
 
@@ -47,7 +49,7 @@ class Registry
 {
 public:
   /// Get the global Registry singleton.
-  static Registry & get_registry();
+  static Registry & get();
 
   /// Add information on a NEML2Object to the registry.
   template <typename T>
@@ -58,30 +60,16 @@ public:
   }
 
   /// Return the expected parameters of a specific registered class
-  static ParameterSet expected_params(const std::string & name)
-  {
-    neml_assert(
-        get_registry()._expected_params.count(name) > 0,
-        name,
-        " is not a registered object. Did you forget to register it with register_NEML2_object?");
-    return get_registry()._expected_params.at(name);
-  }
+  static ParameterSet expected_params(const std::string & name);
 
   /// Return the build method pointer of a specific registered class
-  static BuildPtr builder(const std::string & name)
-  {
-    neml_assert(
-        get_registry()._objects.count(name) > 0,
-        name,
-        " is not a registered object. Did you forget to register it with register_NEML2_object?");
-    return get_registry()._objects.at(name);
-  }
+  static BuildPtr builder(const std::string & name);
 
   /// List all registered objects
-  void print(std::ostream & os = std::cout) const;
+  static void print(std::ostream & os = std::cout);
 
 private:
-  Registry(){};
+  Registry() {}
 
   static void add_inner(const std::string &, const ParameterSet &, BuildPtr);
 

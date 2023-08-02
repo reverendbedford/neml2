@@ -262,7 +262,12 @@ LabeledAxis::storage_size(const std::vector<std::string>::const_iterator & cur,
                           const std::vector<std::string>::const_iterator & end) const
 {
   if (cur == end - 1)
+  {
+    neml_assert_dbg(_variables.count(*cur),
+                    "Trying to find the storage size of a non-existent variable named ",
+                    *cur);
     return _variables.at(*cur);
+  }
 
   return subaxis(*cur).storage_size(cur + 1, end);
 }
@@ -288,6 +293,7 @@ LabeledAxis::indices(TorchSize offset,
                      const std::vector<std::string>::const_iterator & cur,
                      const std::vector<std::string>::const_iterator & end) const
 {
+  neml_assert_dbg(_layout.count(*cur), "Axis/variable named ", *cur, " does not exist.");
   const auto & [rbegin, rend] = _layout.at(*cur);
   if (cur == end - 1)
     return torch::indexing::Slice(offset + rbegin, offset + rend);
@@ -336,6 +342,34 @@ LabeledAxis::item_names() const
   for (const auto & item : _layout)
     names.push_back(item.first);
   return names;
+}
+
+std::vector<LabeledAxisAccessor>
+LabeledAxis::variable_accessors(bool recursive) const
+{
+  std::vector<LabeledAxisAccessor> accessors;
+  variable_accessors(accessors, {}, recursive);
+  return accessors;
+}
+
+void
+LabeledAxis::variable_accessors(std::vector<LabeledAxisAccessor> & accessors,
+                                LabeledAxisAccessor cur,
+                                bool recursive) const
+{
+  for (auto & var : _variables)
+  {
+    LabeledAxisAccessor var_accessor{{var.first}};
+    accessors.push_back(var_accessor.on(cur));
+  }
+
+  if (recursive)
+    for (auto & [name, axis] : _subaxes)
+    {
+      auto next = cur;
+      next.item_names.push_back(name);
+      axis->variable_accessors(accessors, next, recursive);
+    }
 }
 
 const LabeledAxis &

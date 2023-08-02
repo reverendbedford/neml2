@@ -35,7 +35,7 @@ LabeledVector::LabeledVector(const LabeledTensor<1, 1> & other)
 LabeledVector
 LabeledVector::slice(const std::string & name) const
 {
-  return LabeledVector(_tensor.base_index({_axes[0]->indices(name)}), _axes[0]->subaxis(name));
+  return LabeledVector(_tensor.base_index({_axes[0]->indices(name)}), {&_axes[0]->subaxis(name)});
 }
 
 void
@@ -55,38 +55,23 @@ LabeledVector::fill(const LabeledVector & other, bool recursive)
 LabeledMatrix
 LabeledVector::outer(const LabeledVector & other) const
 {
-  return LabeledMatrix(
-      torch::bmm(tensor().unsqueeze(2), other.tensor().unsqueeze(1)), axis(0), other.axis(0));
+  return LabeledMatrix(torch::bmm(tensor().unsqueeze(2), other.tensor().unsqueeze(1)),
+                       {&axis(0), &other.axis(0)});
 }
 
-void
-LabeledVector::write(std::ostream & os, std::string delimiter, TorchSize batch, bool header) const
+namespace utils
 {
-  if (header)
-  {
-    for (auto name : axis(0).item_names())
-    {
-      TorchSize sz = axis(0).storage_size(name);
-      if (sz == 0)
-        continue;
-      else if (sz == 1)
-        os << delimiter << name;
-      else
-        for (TorchSize i = 0; i < sz; i++)
-          os << delimiter << name << "_" << i;
-    }
-    os << std::endl;
-  }
+bool
+allclose(const LabeledVector & a, const LabeledVector & b, Real rtol, Real atol)
+{
+  if (a.axis(0) != b.axis(0))
+    return false;
 
-  for (auto name : axis(0).item_names())
-  {
-    TorchSize sz = axis(0).storage_size(name);
-    if (sz == 0)
-      continue;
-    else
-      for (TorchSize i = 0; i < sz; i++)
-        os << delimiter << (*this)(name).index({batch, i}).item<double>();
-  }
-  os << std::endl;
+  for (auto var : a.axis(0).variable_accessors(true))
+    if (!torch::allclose(a(var), b(var), rtol, atol))
+      return false;
+
+  return true;
+}
 }
 } // namespace neml2

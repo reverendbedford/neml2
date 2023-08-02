@@ -27,69 +27,51 @@
 namespace neml2
 {
 SymSymR4
-SymSymR4::init(SymSymR4::FillMethod method, const std::vector<Scalar> & vals)
+SymSymR4::init_identity(const torch::TensorOptions & options)
 {
-  switch (method)
-  {
-    case SymSymR4::FillMethod::identity_sym:
-      return SymSymR4::init_identity_sym();
-    case SymSymR4::FillMethod::identity_vol:
-      return SymSymR4::init_identity() / 3;
-    case SymSymR4::FillMethod::identity_dev:
-      return SymSymR4::init_identity_sym() - SymSymR4::init_identity() / 3;
-    case SymSymR4::FillMethod::isotropic_E_nu:
-      return SymSymR4::init_isotropic_E_nu(vals[0], vals[1]);
-    default:
-      std::runtime_error("Unsupported fill method");
-      return SymSymR4();
-  }
+  return torch::tensor({{{1, 1, 1, 0, 0, 0},
+                         {1, 1, 1, 0, 0, 0},
+                         {1, 1, 1, 0, 0, 0},
+                         {0, 0, 0, 0, 0, 0},
+                         {0, 0, 0, 0, 0, 0},
+                         {0, 0, 0, 0, 0, 0}}},
+                       options);
 }
 
 SymSymR4
-SymSymR4::init_identity()
+SymSymR4::init_identity_sym(const torch::TensorOptions & options)
 {
-  return SymSymR4(torch::tensor({{1, 1, 1, 0, 0, 0},
-                                 {1, 1, 1, 0, 0, 0},
-                                 {1, 1, 1, 0, 0, 0},
-                                 {0, 0, 0, 0, 0, 0},
-                                 {0, 0, 0, 0, 0, 0},
-                                 {0, 0, 0, 0, 0, 0}},
-                                TorchDefaults),
-                  1);
+  return torch::eye(6, options).unsqueeze(0);
 }
 
 SymSymR4
-SymSymR4::init_identity_sym()
+SymSymR4::init_identity_vol(const torch::TensorOptions & options)
 {
-  return SymSymR4(torch::eye(6), 1);
+  return SymSymR4::init_identity(options) / 3;
+}
+
+SymSymR4
+SymSymR4::init_identity_dev(const torch::TensorOptions & options)
+{
+  return SymSymR4::init_identity_sym(options) - SymSymR4::init_identity(options) / 3;
 }
 
 SymSymR4
 SymSymR4::init_isotropic_E_nu(const Scalar & E, const Scalar & nu)
 {
-  SymSymR4 C;
-  C = C.batch_expand_copy(E.batch_sizes());
+  const Scalar zero = torch::zeros_like(E);
+  const Scalar pf = E / ((1 + nu) * (1 - 2 * nu));
+  const Scalar C1 = (1 - nu) * pf;
+  const Scalar C2 = nu * pf;
+  const Scalar C4 = (1 - 2 * nu) * pf;
 
-  Scalar pf = E / ((1 + nu) * (1 - 2 * nu));
-  Scalar C1 = (1 - nu) * pf;
-  Scalar C2 = nu * pf;
-  Scalar C4 = (1 - 2 * nu) * pf;
-
-  for (TorchSize i = 0; i < 3; i++)
-  {
-    for (TorchSize j = 0; j < 3; j++)
-    {
-      if (i == j)
-        C.base_index_put({i, j}, C1.squeeze(-1));
-      else
-        C.base_index_put({i, j}, C2.squeeze(-1));
-    }
-  }
-
-  for (TorchSize i = 3; i < 6; i++)
-    C.base_index_put({i, i}, C4.squeeze(-1));
-
-  return C;
+  return torch::stack({torch::cat({C1, C2, C2, zero, zero, zero}, -1),
+                       torch::cat({C2, C1, C2, zero, zero, zero}, -1),
+                       torch::cat({C2, C2, C1, zero, zero, zero}, -1),
+                       torch::cat({zero, zero, zero, C4, zero, zero}, -1),
+                       torch::cat({zero, zero, zero, zero, C4, zero}, -1),
+                       torch::cat({zero, zero, zero, zero, zero, C4}, -1)},
+                      -1);
 }
 
 SymSymR4
@@ -119,7 +101,7 @@ operator-(const SymSymR4 & a, const SymSymR4 & b)
 SymSymR4
 operator*(const SymSymR4 & a, const Scalar & b)
 {
-  return torch::operator*(a, b.unsqueeze(-1));
+  return torch::operator*(a, b.to(a).unsqueeze(-1));
 }
 
 SymSymR4
@@ -149,6 +131,6 @@ operator*(const SymSymR4 & a, const SymSymR4 & b)
 SymSymR4
 operator/(const SymSymR4 & a, const Scalar & b)
 {
-  return torch::operator/(a, b.unsqueeze(-1));
+  return torch::operator/(a, b.to(a).unsqueeze(-1));
 }
 } // namespace neml2

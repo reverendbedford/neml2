@@ -35,29 +35,39 @@ ParameterSet
 IdentityMap<T>::expected_params()
 {
   ParameterSet params = Model::expected_params();
-  params.set<std::vector<std::string>>("from_var");
-  params.set<std::vector<std::string>>("to_var");
+  params.set<LabeledAxisAccessor>("from_var");
+  params.set<LabeledAxisAccessor>("to_var");
   return params;
 }
 
 template <typename T>
 IdentityMap<T>::IdentityMap(const ParameterSet & params)
   : Model(params),
-    from(declareInputVariable<T>(params.get<std::vector<std::string>>("from_var"))),
-    to(declareOutputVariable<T>(params.get<std::vector<std::string>>("to_var")))
+    from(declare_input_variable<T>(params.get<LabeledAxisAccessor>("from_var"))),
+    to(declare_output_variable<T>(params.get<LabeledAxisAccessor>("to_var")))
 {
   this->setup();
 }
 
 template <typename T>
 void
-IdentityMap<T>::set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din) const
+IdentityMap<T>::set_value(const LabeledVector & in,
+                          LabeledVector * out,
+                          LabeledMatrix * dout_din,
+                          LabeledTensor3D * d2out_din2) const
 {
-  out.set(in(from), to);
+  if (out)
+    out->set(in(from), to);
+
   if (dout_din)
   {
-    auto I = T::identity_map().batch_expand(in.batch_size());
+    auto I = T::identity_map(in.options());
     dout_din->set(I, to, from);
+  }
+
+  if (d2out_din2)
+  {
+    // zero
   }
 }
 

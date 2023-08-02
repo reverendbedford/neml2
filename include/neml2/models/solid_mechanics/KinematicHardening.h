@@ -35,7 +35,7 @@ public:
 
   KinematicHardening(const ParameterSet & params);
 
-  const LabeledAxisAccessor plastic_strain;
-  const LabeledAxisAccessor kinematic_hardening;
+  const LabeledAxisAccessor kinematic_plastic_strain;
+  const LabeledAxisAccessor back_stress;
 };
 } // namespace neml2

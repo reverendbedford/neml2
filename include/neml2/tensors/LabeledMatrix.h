@@ -38,11 +38,10 @@ public:
   /// Conversion from LabeledTensor
   LabeledMatrix(const LabeledTensor<1, 2> & other);
 
-  /// Construct from two already-setup `LabeledVector`s (can infer batch)
-  LabeledMatrix(const LabeledVector & A, const LabeledVector & B);
-
   /// Construct an identity
-  static LabeledMatrix identity(TorchSize nbatch, const LabeledAxis & axis);
+  static LabeledMatrix identity(TorchSize nbatch,
+                                const LabeledAxis & axis,
+                                const torch::TensorOptions & options = default_tensor_options);
 
   /// Since we assume a flat batch for now, we can define this convenient method to retrive the single batch size.
   TorchSize batch_size() const { return tensor().batch_sizes()[0]; }
@@ -60,8 +59,5 @@ public:
 
   /// Invert a LabeledMatrix for use in an implicit function derivative
   LabeledMatrix inverse() const;
-
-  /// Write to a stream
-  void write(std::ostream & os, std::string delimiter, TorchSize batch, bool header = false) const;
 };
 } // namespace neml2

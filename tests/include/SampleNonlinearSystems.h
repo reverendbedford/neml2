@@ -39,7 +39,7 @@ public:
   PowerTestSystem();
 
   virtual void set_residual(neml2::BatchTensor<1> x,
-                            neml2::BatchTensor<1> residual,
+                            neml2::BatchTensor<1> * residual,
                             neml2::BatchTensor<1> * Jacobian = nullptr) const;
   virtual neml2::BatchTensor<1> exact_solution(neml2::BatchTensor<1> x) const;
   virtual neml2::BatchTensor<1> guess(neml2::BatchTensor<1> x) const;

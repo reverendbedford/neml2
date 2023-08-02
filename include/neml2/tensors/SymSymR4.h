@@ -36,15 +36,11 @@ public:
 
   /// Named constructors
   /// @{
-  enum FillMethod
-  {
-    identity_sym, // (dik,djl + dil,djk) / 2
-    identity_vol, // dij,dkl / 3
-    identity_dev, // dik,djl - dij,dkl / 3
-    isotropic_E_nu
-  };
-
-  static SymSymR4 init(FillMethod method, const std::vector<Scalar> & vals = {});
+  static SymSymR4 init_identity(const torch::TensorOptions & options = default_tensor_options);
+  static SymSymR4 init_identity_sym(const torch::TensorOptions & options = default_tensor_options);
+  static SymSymR4 init_identity_vol(const torch::TensorOptions & options = default_tensor_options);
+  static SymSymR4 init_identity_dev(const torch::TensorOptions & options = default_tensor_options);
+  static SymSymR4 init_isotropic_E_nu(const Scalar & E, const Scalar & nu);
   /// @}
 
   // Negation
@@ -52,14 +48,6 @@ public:
 
   // Inversion
   SymSymR4 inverse() const;
-
-private:
-  /// Helpers for the fill method
-  /// @{
-  static SymSymR4 init_identity();
-  static SymSymR4 init_identity_sym();
-  static SymSymR4 init_isotropic_E_nu(const Scalar & E, const Scalar & nu);
-  /// @}
 };
 
 SymSymR4 operator+(const SymSymR4 & a, const SymSymR4 & b);

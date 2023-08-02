@@ -28,23 +28,24 @@
 
 namespace neml2
 {
-template <bool rate>
-class TotalStrainTempl : public Model
+class TotalStrain : public Model
 {
 public:
   static ParameterSet expected_params();
 
-  TotalStrainTempl(const ParameterSet & params);
+  TotalStrain(const ParameterSet & params);
 
+protected:
+  void set_value(const LabeledVector & in,
+                 LabeledVector * out,
+                 LabeledMatrix * dout_din = nullptr,
+                 LabeledTensor3D * d2out_din2 = nullptr) const override;
+
+  const bool _rate_form;
+
+public:
   const LabeledAxisAccessor elastic_strain;
   const LabeledAxisAccessor plastic_strain;
   const LabeledAxisAccessor total_strain;
-
-protected:
-  virtual void
-  set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const;
 };
-
-typedef TotalStrainTempl<true> TotalStrainRate;
-typedef TotalStrainTempl<false> TotalStrain;
 } // namespace neml2

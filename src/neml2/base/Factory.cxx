@@ -21,14 +21,16 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+
 #include "neml2/base/Factory.h"
 
 namespace neml2
 {
-std::vector<std::string> Factory::pipeline = {"Solvers", "Predictors", "Models"};
+std::vector<std::string> Factory::pipeline = {
+    "Tensors", "Solvers", "Predictors", "Models", "Drivers"};
 
 Factory &
-Factory::get_factory()
+Factory::get()
 {
   static Factory factory_singleton;
   return factory_singleton;
@@ -59,6 +61,7 @@ Factory::create_object(const std::string & section, const ParameterSet & params)
   _objects[section].emplace(name, (*builder)(params));
 }
 
+// LCOV_EXCL_START
 void
 Factory::print(std::ostream & os) const
 {
@@ -69,4 +72,5 @@ Factory::print(std::ostream & os) const
       os << " " << object.first << std::endl;
   }
 }
+// LCOV_EXCL_STOP
 } // namespace neml2

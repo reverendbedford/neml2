@@ -28,6 +28,7 @@ namespace neml2
 {
 namespace utils
 {
+// LCOV_EXCL_START
 std::string
 indentation(int level, int indent)
 {
@@ -37,5 +38,6 @@ indentation(int level, int indent)
     ss << space;
   return ss.str();
 }
+// LCOV_EXCL_STOP
 } // namespace utils
 } // namespace neml2

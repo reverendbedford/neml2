@@ -54,8 +54,10 @@ public:
 
   /// Promote to LabeledMatrix with arbitrary outer product
   LabeledMatrix outer(const LabeledVector & other) const;
-
-  /// Write to a stream
-  void write(std::ostream & os, std::string delimiter, TorchSize batch, bool header = false) const;
 };
+
+namespace utils
+{
+bool allclose(const LabeledVector & a, const LabeledVector & b, Real rtol = 1e-5, Real atol = 1e-8);
+} // namespaca utils
 } // namespace neml2

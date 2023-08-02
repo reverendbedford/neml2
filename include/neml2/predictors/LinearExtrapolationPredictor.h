@@ -39,12 +39,13 @@ public:
    * Linearly extrapolate the old and older state in time to get the initial guess for the current
    * state.
    */
-  virtual void set_initial_guess(LabeledVector in, LabeledVector guess) const override;
+  virtual void set_initial_guess(const LabeledVector & in,
+                                 const LabeledVector & guess) const override;
 
   /**
    * Cache the current state and time step size
    */
-  virtual void post_solve(LabeledVector in, LabeledVector out) override;
+  virtual void post_solve(const LabeledVector & in, const LabeledVector & out) override;
 
   /**
    * Shift the state back in time
@@ -52,6 +53,9 @@ public:
   virtual void advance_step() override;
 
 protected:
+  const LabeledAxisAccessor _time_name;
+  const LabeledAxisAccessor _old_time_name;
+
   LabeledVector _state;
   LabeledVector _state_n;
   LabeledVector _state_nm1;

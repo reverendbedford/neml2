@@ -26,6 +26,7 @@
 
 #include "neml2/tensors/LabeledVector.h"
 #include "neml2/tensors/LabeledMatrix.h"
+#include "neml2/tensors/LabeledTensor3D.h"
 #include "neml2/models/LabeledAxisInterface.h"
 #include "neml2/base/Registry.h"
 #include "neml2/base/NEML2Object.h"
@@ -60,16 +61,49 @@ public:
   const LabeledAxis & output() const { return _output; }
   /// @}
 
+  /**
+   * Validate the currently requested AD settings.
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    AD_1st_deriv   AD_2nd_deriv   comment
+            true           true   okay, just slow
+            true          false   error, this is a weird case
+          false           true   okay
+          false          false   great, everything handcoded
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   */
+  void check_AD_limitation() const;
+
+  /// Tell this model to use AD to get derivatives
+  void use_AD_derivatives(bool first = true, bool second = true);
+
+  /// Tell this model which parameters require grad
+  void trace_parameters(const std::map<std::string, bool> &);
+
+  /// Set this model's parameters
+  void set_parameters(const std::map<std::string, torch::Tensor> &);
+
+  /// Get the derivatives w.r.t. to the parameter
+  BatchTensor<1> dparam(const LabeledVector & out, const std::string & param) const;
+
   /// Convenient shortcut to construct and return the model value
-  virtual LabeledVector value(LabeledVector in) const;
+  virtual LabeledVector value(const LabeledVector & in) const;
 
   /// Convenient shortcut to construct and return the model derivative
-  /// NOTE: this method is inefficient and not recommended for use.
-  /// Consider using `value` or `value_and_dvalue` if possible.
-  virtual LabeledMatrix dvalue(LabeledVector in) const;
+  virtual LabeledMatrix dvalue(const LabeledVector & in) const;
+
+  /// Convenient shortcut to construct and return the model's second derivative
+  virtual LabeledTensor3D d2value(const LabeledVector & in) const;
 
   /// Convenient shortcut to construct and return the model value and its derivative
-  virtual std::tuple<LabeledVector, LabeledMatrix> value_and_dvalue(LabeledVector in) const;
+  virtual std::tuple<LabeledVector, LabeledMatrix> value_and_dvalue(const LabeledVector & in) const;
+
+  /// Convenient shortcut to construct and return the model's first and second derivative
+  virtual std::tuple<LabeledMatrix, LabeledTensor3D>
+  dvalue_and_d2value(const LabeledVector & in) const;
+
+  /// Convenient shortcut to construct and return the model's value, first and second derivative
+  virtual std::tuple<LabeledVector, LabeledMatrix, LabeledTensor3D>
+  value_and_dvalue_and_d2value(const LabeledVector & in) const;
 
   const std::vector<Model *> & registered_models() const { return _registered_models; }
 
@@ -81,7 +115,7 @@ public:
    * During the SOLVING stage, we update the state with \emph fixed forces, old forces, and old
    * state. This function caches those fixed values.
    */
-  void cache_input(LabeledVector in);
+  void cache_input(const LabeledVector & in);
 
   /**
    * Advance the states of *this* model and all the registered models in time.
@@ -105,61 +139,61 @@ public:
 
 protected:
   /// The map between input -> output, and optionally its derivatives
-  virtual void
-  set_value(LabeledVector in, LabeledVector out, LabeledMatrix * dout_din = nullptr) const = 0;
+  virtual void set_value(const LabeledVector & in,
+                         LabeledVector * out,
+                         LabeledMatrix * dout_din = nullptr,
+                         LabeledTensor3D * d2out_din2 = nullptr) const = 0;
 
   /// Declare an input variable
   template <typename T>
-  [[nodiscard]] LabeledAxisAccessor declareInputVariable(const std::vector<std::string> & names)
+  LabeledAxisAccessor declare_input_variable(const std::vector<std::string> & names)
   {
-    auto accessor = declareVariable<T>(_input, names);
+    auto accessor = declare_variable<T>(_input, names);
     _consumed_vars.insert(accessor);
     return accessor;
   }
 
   /// Declare an input variable on a subaxis
   template <typename T>
-  [[nodiscard]] LabeledAxisAccessor declareInputVariable(const std::string & subaxis,
-                                                         const std::vector<std::string> & names)
+  LabeledAxisAccessor declare_input_variable(const std::string & subaxis,
+                                             const std::vector<std::string> & names)
   {
     auto new_names = names;
     new_names.insert(new_names.begin(), subaxis);
-    return declareInputVariable<T>(new_names);
+    return declare_input_variable<T>(new_names);
   }
 
   /// Declare an input variable with known storage size
-  [[nodiscard]] LabeledAxisAccessor declareInputVariable(TorchSize sz,
-                                                         const std::vector<std::string> & names)
+  LabeledAxisAccessor declare_input_variable(TorchSize sz, const std::vector<std::string> & names)
   {
-    auto accessor = declareVariable(_input, sz, names);
+    auto accessor = declare_variable(_input, sz, names);
     _consumed_vars.insert(accessor);
     return accessor;
   }
 
   /// Declare an output variable
   template <typename T>
-  [[nodiscard]] LabeledAxisAccessor declareOutputVariable(const std::vector<std::string> & names)
+  LabeledAxisAccessor declare_output_variable(const std::vector<std::string> & names)
   {
-    auto accessor = declareVariable<T>(_output, names);
+    auto accessor = declare_variable<T>(_output, names);
     _provided_vars.insert(accessor);
     return accessor;
   }
 
   /// Declare an output variable on a subaxis
   template <typename T>
-  [[nodiscard]] LabeledAxisAccessor declareOutputVariable(const std::string & subaxis,
-                                                          const std::vector<std::string> & names)
+  LabeledAxisAccessor declare_output_variable(const std::string & subaxis,
+                                              const std::vector<std::string> & names)
   {
     auto new_names = names;
     new_names.insert(new_names.begin(), subaxis);
-    return declareOutputVariable<T>(new_names);
+    return declare_output_variable<T>(new_names);
   }
 
   /// Declare an output variable with known storage size
-  [[nodiscard]] LabeledAxisAccessor declareOutputVariable(TorchSize sz,
-                                                          const std::vector<std::string> & names)
+  LabeledAxisAccessor declare_output_variable(TorchSize sz, const std::vector<std::string> & names)
   {
-    auto accessor = declareVariable(_output, sz, names);
+    auto accessor = declare_variable(_output, sz, names);
     _provided_vars.insert(accessor);
     return accessor;
   }
@@ -175,7 +209,8 @@ protected:
   */
   void register_model(std::shared_ptr<Model> model, bool merge_input = true);
 
-  virtual void set_residual(BatchTensor<1> x, BatchTensor<1> r, BatchTensor<1> * J = nullptr) const;
+  virtual void
+  set_residual(BatchTensor<1> x, BatchTensor<1> * r, BatchTensor<1> * J = nullptr) const override;
 
   /// Models *this* model may use during its evaluation
   std::vector<Model *> _registered_models;
@@ -187,6 +222,9 @@ protected:
 private:
   LabeledAxis & _input;
   LabeledAxis & _output;
+
+  bool _AD_1st_deriv;
+  bool _AD_2nd_deriv;
 
   /// Cached input while solving this implicit model
   LabeledVector _cached_in;

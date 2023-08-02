@@ -47,14 +47,24 @@ static constexpr Real TOL = 1E-6;
 /// A tighter tolerance used in various algorithms
 static constexpr Real TOL2 = TOL * TOL;
 
-#define TorchDefaults                                                                              \
-  {                                                                                                \
-    torch::TensorOptions()                                                                         \
-        .dtype(torch::kFloat64)                                                                    \
-        .layout(torch::kStrided)                                                                   \
-        .device(torch::kCPU)                                                                       \
-        .requires_grad(false)                                                                      \
-  }
+/**
+ * The factory methods like `torch::arange`, `torch::ones`, `torch::zeros`, `torch::rand` etc.
+ * accept a common argument to configure the properties of the tensor being created. We predefine a
+ * default tensor configuration in NEML2. This default configuration is consistently used throughout
+ * NEML2. This default can be configured by CMake.
+ *
+ * See https://pytorch.org/cppdocs/notes/tensor_creation.html#configuring-properties-of-the-tensor
+ * for more details.
+ */
+#define _CONCAT(x, y) x##y
+#define CONCAT(x, y) _CONCAT(x, y)
+#define TORCH_ENUM_PREFIX torch::k
+#define TORCH_DTYPE CONCAT(TORCH_ENUM_PREFIX, DTYPE)
+static const torch::TensorOptions default_tensor_options = torch::TensorOptions()
+                                                               .dtype(TORCH_DTYPE)
+                                                               .layout(torch::kStrided)
+                                                               .device(torch::kCPU)
+                                                               .requires_grad(false);
 
 template <bool...>
 struct bool_pack;

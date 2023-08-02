@@ -1,3 +1,41 @@
+[Tensors]
+  [times]
+    type = VTestTimeSeries
+    vtest = 'combined.vtest'
+    variable = 'time'
+    variable_type = 'SCALAR'
+  []
+  [strains]
+    type = VTestTimeSeries
+    vtest = 'combined.vtest'
+    variable = 'strain'
+    variable_type = 'SYMR2'
+  []
+  [stresses]
+    type = VTestTimeSeries
+    vtest = 'combined.vtest'
+    variable = 'stress'
+    variable_type = 'SYMR2'
+  []
+[]
+
+[Drivers]
+  [driver]
+    type = SolidMechanicsDriver
+    model = 'model'
+    times = 'times'
+    prescribed_strains = 'strains'
+  []
+  [verification]
+    type = VTestVerification
+    driver = 'driver'
+    variables = 'output.state/S'
+    references = 'stresses'
+    rtol = 1e-5
+    atol = 1e-8
+  []
+[]
+
 [Solvers]
   [newton]
     type = NewtonNonlinearSolver
@@ -5,79 +43,89 @@
 []
 
 [Models]
-  [Erate]
-    type = SymR2ForceRate
-    force = total_strain
+  [isoharden]
+    type = LinearIsotropicHardening
+    hardening_modulus = 2500
   []
-  [Eerate]
-    type = ElasticStrainRate
-  []
-  [elasticity]
-    type = CauchyStressRateFromElasticStrainRate
-    E = 124000
-    nu = 0.32
+  [kinharden]
+    type = LinearKinematicHardening
+    hardening_modulus = 1000
   []
   [mandel_stress]
     type = IsotropicMandelStress
   []
-  [isoharden]
-    type = LinearIsotropicHardening
-    K = 2500
+  [overstress]
+    type = OverStress
   []
-  [kinharden]
-    type = LinearKinematicHardening
-    H = 1000
-  []
-  [j2]
-    type = J2StressMeasure
+  [vonmises]
+    type = SymR2Invariant
+    invariant_type = 'VONMISES'
+    tensor = 'state/internal/O'
+    invariant = 'state/internal/sm'
   []
   [yield]
-    type = IsotropicAndKinematicHardeningYieldFunction
-    stress_measure = j2
+    type = YieldFunction
     yield_stress = 10
+    isotropic_hardening = 'state/internal/k'
   []
-  [direction]
-    type = AssociativePlasticFlowDirection
-    yield_function = yield
+  [flow]
+    type = ComposedModel
+    models = 'overstress vonmises yield'
   []
-  [eeprate]
-    type = AssociativeIsotropicPlasticHardening
-    yield_function = yield
+  [normality]
+    type = Normality
+    model = 'flow'
+    function = 'state/internal/fp'
+    from = 'state/internal/M state/internal/k state/internal/X'
+    to = 'state/internal/NM state/internal/Nk state/internal/NX'
+  []
+  [flow_rate]
+    type = PerzynaPlasticFlowRate
+    reference_stress = 500
+    exponent = 5
   []
   [eprate]
-    type = AssociativeKinematicPlasticHardening
-    yield_function = yield
+    type = AssociativeIsotropicPlasticHardening
   []
-  [hrate]
-    type = PerzynaPlasticFlowRate
-    eta = 500
-    n = 5
+  [Kprate]
+    type = AssociativeKinematicPlasticHardening
   []
   [Eprate]
-    type = PlasticStrainRate
+    type = AssociativePlasticFlow
+  []
+  [Erate]
+    type = SymR2ForceRate
+    force = 'E'
+  []
+  [Eerate]
+    type = ElasticStrain
+    rate_form = true
+  []
+  [elasticity]
+    type = LinearElasticity
+    youngs_modulus = 124000
+    poisson_ratio = 0.32
+    rate_form = true
   []
   [integrate_ep]
     type = ScalarBackwardEulerTimeIntegration
-    rate_variable = 'internal_state equivalent_plastic_strain_rate'
-    variable = 'internal_state equivalent_plastic_strain'
+    variable = 'internal/ep'
   []
-  [integrate_Ep]
+  [integrate_Kp]
     type = SymR2BackwardEulerTimeIntegration
-    rate_variable = 'internal_state plastic_strain_rate'
-    variable = 'internal_state plastic_strain'
+    variable = 'internal/Kp'
   []
   [integrate_stress]
     type = SymR2BackwardEulerTimeIntegration
-    rate_variable = cauchy_stress_rate
-    variable = cauchy_stress
+    variable = 'S'
   []
   [implicit_rate]
     type = ComposedModel
-    models = 'Erate Eerate elasticity mandel_stress isoharden kinharden yield direction eeprate eprate hrate Eprate integrate_ep integrate_Ep integrate_stress'
+    models = 'isoharden kinharden mandel_stress overstress vonmises yield normality flow_rate eprate Eprate Kprate Erate Eerate elasticity integrate_stress integrate_ep integrate_Kp'
   []
   [model]
     type = ImplicitUpdate
-    implicit_model = implicit_rate
-    solver = newton
+    implicit_model = 'implicit_rate'
+    solver = 'newton'
   []
 []

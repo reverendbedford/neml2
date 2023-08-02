@@ -2,76 +2,71 @@
 
 [TOC]
 
-Compiling NEML2 requires 
-- NEML2 source code
-- a C++(>=17) compiler
-- CMake
-- libTorch
+## Choose the compute platform
 
-## Install dependencies
+NEML2 can be compiled to support two compute platforms:
+- CPU
+- CUDA
 
-libTorch is currently the only supported backend tensor library. Follow the instructions [on this page](https://pytorch.org/get-started/locally/) to download/install the latest version of libTorch that is compatible with your system driver.
+Choose the CPU compute platform if you only need to run NEML2 using CPUs. Choose the CUDA compute platform if you plan to take advantage of the GPU(s) of the computer.
 
-CMake is required to configure NEML2. CMake is usually available via the system package manager. Alternatively, follow [these instructions](https://cmake.org/install/) to obtain the latest version of CMake.
+## Dependencies
 
-## Obtain NEML2 source
+NEML2 depends on the following drivers/packages/libraries:
+|  CPU  | CUDA  | Dependency   | Version |
+| :---: | :---: | :----------- | :------ |
+|   x   |   x   | C++ compiler | >=17    |
+|   x   |   x   | CMake        | >=3.1   |
+|   x   |   x   | libTorch     |         |
+|       |   x   | CUDA toolkit |         |
 
-To clone the NEML2 source, run
+See [notes on obtaining the dependencies](@ref NotesOnObtainingTheDependencies) for some guidance.
+
+For developers, some additional dependencies are recommended (regardless of the compute platform):
+- [Doxygen](https://www.doxygen.nl/), the documentation generator
+- [clang-format](https://clang.llvm.org/docs/ClangFormat.html), the C++ code formatter
+
+## Install NEML2
+
+First, obtain the NEML2 source code.
 
 ```
-git clone https://github.com/Argonne-National-Laboratory/neml2.git
+git clone https://github.com/reverendbedford/neml2.git
 cd neml2
 git checkout main
-```
-
-The above commands will obtain a copy of the NEML2 source and switch to the stable branch named `main`. Alternatively, you can switch to the development branch `dev` to experiment with new features.
-
-Next, to initialize all the submodules, run
-
-```
 git submodule update --recursive --init
 ```
 
-The above command will initialize the following submodules:
-- [Catch2](https://github.com/catchorg/Catch2/tree/v2.x), the testing framework NEML2 uses for unit and regression tests
-- [HIT](https://github.com/idaholab/moose/tree/next/framework/contrib/hit), the input file parser
-- [doxygen-awesome-css](https://github.com/jothepro/doxygen-awesome-css), the stylesheet used for generating NEML2 documentation
-
-## Configure NEML2
-
-Use CMake to configure NEML2, run
+Then, configure NEML2 and generate the Makefile.
 
 ```
 cmake -DCMAKE_PREFIX_PATH=/path/to/torch/share/cmake .
 ```
-where `/path/to/torch/share/cmake` is the path to the `share/cmake` directory of your torch installation. Optionally, to view all the available configure options, run
-```
-cmake -LA
-```
+where `/path/to/torch/share/cmake` is the path to the `share/cmake` directory of your libTorch installation.
 
-The most useful options are
+Finally, compile NEML2.
 
-|        Option | Description                                                   |
-| ------------: | :------------------------------------------------------------ |
-| BUILD_TESTING | Whether to build unit/regression/verification/profiling tests |
-|          UNIT | Whether to build unit tests                                   |
-|    REGRESSION | Whether to build regression tests                             |
-|  VERIFICATION | Whether to build verification tests                           |
-|     PROFILING | Whether to build profiling tests                              |
-| DOCUMENTATION | Whether to build documentation                                |
-
-## Compile NEML2
-
-To compile NEML2, simply run
 ```
 make -j N
 ```
 where `N` is the number of processors to use for parallel compilation.
 
-After the compilation finishes without errors, you can run the tests to make sure the compilation was successful:
+After the compilation finishes, you can run the tests to make sure the build was successful:
 ```
 make test
 ```
+
+## Notes on obtaining the dependencies {#NotesOnObtainingTheDependencies}
+
+Feel free to create a ticket at [https://github.com/reverendbedford/neml2/issues](https://github.com/reverendbedford/neml2/issues) if you run into issues about installing the dependencies.
+
+Typically, the C++ compiler, a reasonably modern CMake, Doxygen, and clang-format can be obtained via the system package manager.
+
+libTorch can be downloaded from the official PyTorch website: [https://pytorch.org/get-started/locally/](https://pytorch.org/get-started/locally/). Choose the compute platform in consistency with the NEML2 compute platform. Also take a note of the version of the libTorch-compatible CUDA if you chose CUDA as the compute platform. Note that there are two versions of libTorch: "Pre-cxx11 ABI" and "cxx11 ABI". Both versions are supported by NEML2. If you are unsure, we recommend the one with "cxx11 ABI".
+
+> In the future we may provide an option to automatically install a compatible version of libTorch.
+
+There are many ways of installing the Nvidia driver and the CUDA toolkit. We will not try to make a recommendation here. However, do make sure the Nvidia driver is compatible with your GPU. It is also recommended to install a CUDA toolkit with the same version number as the libTorch CUDA version.
 
 ## Next steps
 

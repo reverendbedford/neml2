@@ -28,47 +28,56 @@
 namespace neml2
 {
 register_NEML2_object(ElasticStrain);
-register_NEML2_object(ElasticStrainRate);
 
-template <bool rate>
 ParameterSet
-ElasticStrainTempl<rate>::expected_params()
+ElasticStrain::expected_params()
 {
   ParameterSet params = Model::expected_params();
+  params.set<LabeledAxisAccessor>("total_strain") = {{"forces", "E"}};
+  params.set<LabeledAxisAccessor>("plastic_strain") = {{"state", "internal", "Ep"}};
+  params.set<LabeledAxisAccessor>("elastic_strain") = {{"state", "internal", "Ee"}};
+  params.set<bool>("rate_form") = false;
   return params;
 }
 
-template <bool rate>
-ElasticStrainTempl<rate>::ElasticStrainTempl(const ParameterSet & params)
+ElasticStrain::ElasticStrain(const ParameterSet & params)
   : Model(params),
-    total_strain(
-        declareInputVariable<SymR2>({"forces", rate ? "total_strain_rate" : "total_strain"})),
-    plastic_strain(
-        declareInputVariable<SymR2>({"state", rate ? "plastic_strain_rate" : "plastic_strain"})),
-    elastic_strain(
-        declareOutputVariable<SymR2>({"state", rate ? "elastic_strain_rate" : "elastic_strain"}))
+    _rate_form(params.get<bool>("rate_form")),
+    total_strain(declare_input_variable<SymR2>(
+        params.get<LabeledAxisAccessor>("total_strain").with_suffix(_rate_form ? "_rate" : ""))),
+    plastic_strain(declare_input_variable<SymR2>(
+        params.get<LabeledAxisAccessor>("plastic_strain").with_suffix(_rate_form ? "_rate" : ""))),
+    elastic_strain(declare_output_variable<SymR2>(
+        params.get<LabeledAxisAccessor>("elastic_strain").with_suffix(_rate_form ? "_rate" : "")))
 {
   setup();
 }
 
-template <bool rate>
 void
-ElasticStrainTempl<rate>::set_value(LabeledVector in,
-                                    LabeledVector out,
-                                    LabeledMatrix * dout_din) const
+ElasticStrain::set_value(const LabeledVector & in,
+                         LabeledVector * out,
+                         LabeledMatrix * dout_din,
+                         LabeledTensor3D * d2out_din2) const
 {
   // Simple additive decomposition:
   // elastic strain = total strain - plastic strain
-  out.set(in.get<SymR2>(total_strain) - in.get<SymR2>(plastic_strain), elastic_strain);
+  if (out)
+  {
+    auto E = in.get<SymR2>(total_strain);
+    auto Ep = in.get<SymR2>(plastic_strain);
+    out->set(E - Ep, elastic_strain);
+  }
 
   if (dout_din)
   {
-    auto I = SymR2::identity_map().batch_expand(in.batch_size());
+    auto I = SymR2::identity_map(in.options());
     dout_din->set(I, elastic_strain, total_strain);
     dout_din->set(-I, elastic_strain, plastic_strain);
   }
-}
 
-template class ElasticStrainTempl<true>;
-template class ElasticStrainTempl<false>;
+  if (d2out_din2)
+  {
+    // zero
+  }
+}
 } // namespace neml2

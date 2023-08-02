@@ -26,15 +26,15 @@
 
 namespace neml2
 {
-Scalar::Scalar(double init, TorchSize batch_size)
-  : FixedDimTensor<1, 1>(torch::tensor(init, TorchDefaults), batch_size)
+Scalar::Scalar(Real init, const torch::TensorOptions & options)
+  : FixedDimTensor<1, 1>(torch::tensor({{init}}, options))
 {
 }
 
 Scalar
-Scalar::zeros(TorchSize batch_size)
+Scalar::zero(const torch::TensorOptions & options)
 {
-  return Scalar(0.0, batch_size);
+  return Scalar(0, options);
 }
 
 Scalar
@@ -50,15 +50,26 @@ Scalar::pow(Scalar n) const
 }
 
 Scalar
+Scalar::identity_map(const torch::TensorOptions & options)
+{
+  return Scalar(1, options);
+}
+
+Scalar
 operator+(const Scalar & a, const Scalar & b)
 {
-  return torch::operator+(a, b);
+  if (a.device() == torch::kCPU && b.device() != torch::kCPU)
+    return torch::operator+(a.to(b), b);
+  else if (a.device() != torch::kCPU && b.device() == torch::kCPU)
+    return torch::operator+(a, b.to(a));
+  else
+    return torch::operator+(a, b);
 }
 
 BatchTensor<1>
 operator+(const BatchTensor<1> & a, const Scalar & b)
 {
-  torch::Tensor tmp = b;
+  torch::Tensor tmp = b.to(a);
   for (TorchSize i = 1; i < a.base_dim(); i++)
     tmp = tmp.unsqueeze(-1);
   return torch::operator+(a, tmp);
@@ -73,13 +84,18 @@ operator+(const Scalar & a, const BatchTensor<1> & b)
 Scalar
 operator-(const Scalar & a, const Scalar & b)
 {
-  return torch::operator-(a, b);
+  if (a.device() == torch::kCPU && b.device() != torch::kCPU)
+    return torch::operator-(a.to(b), b);
+  else if (a.device() != torch::kCPU && b.device() == torch::kCPU)
+    return torch::operator-(a, b.to(a));
+  else
+    return torch::operator-(a, b);
 }
 
 BatchTensor<1>
 operator-(const BatchTensor<1> & a, const Scalar & b)
 {
-  torch::Tensor tmp = b;
+  torch::Tensor tmp = b.to(a);
   for (TorchSize i = 1; i < a.base_dim(); i++)
     tmp = tmp.unsqueeze(-1);
   return torch::operator-(a, tmp);
@@ -94,13 +110,18 @@ operator-(const Scalar & a, const BatchTensor<1> & b)
 Scalar
 operator*(const Scalar & a, const Scalar & b)
 {
-  return torch::operator*(a, b);
+  if (a.device() == torch::kCPU && b.device() != torch::kCPU)
+    return torch::operator*(a.to(b), b);
+  else if (a.device() != torch::kCPU && b.device() == torch::kCPU)
+    return torch::operator*(a, b.to(a));
+  else
+    return torch::operator*(a, b);
 }
 
 BatchTensor<1>
 operator*(const BatchTensor<1> & a, const Scalar & b)
 {
-  torch::Tensor tmp = b;
+  torch::Tensor tmp = b.to(a);
   for (TorchSize i = 1; i < a.base_dim(); i++)
     tmp = tmp.unsqueeze(-1);
   return torch::operator*(a, tmp);
@@ -115,13 +136,18 @@ operator*(const Scalar & a, const BatchTensor<1> & b)
 Scalar
 operator/(const Scalar & a, const Scalar & b)
 {
-  return torch::operator/(a, b);
+  if (a.device() == torch::kCPU && b.device() != torch::kCPU)
+    return torch::operator/(a.to(b), b);
+  else if (a.device() != torch::kCPU && b.device() == torch::kCPU)
+    return torch::operator/(a, b.to(a));
+  else
+    return torch::operator/(a, b);
 }
 
 BatchTensor<1>
 operator/(const BatchTensor<1> & a, const Scalar & b)
 {
-  torch::Tensor tmp = b;
+  torch::Tensor tmp = b.to(a);
   for (TorchSize i = 1; i < a.base_dim(); i++)
     tmp = tmp.unsqueeze(-1);
   return torch::operator/(a, tmp);
@@ -130,7 +156,7 @@ operator/(const BatchTensor<1> & a, const Scalar & b)
 BatchTensor<1>
 operator/(const Scalar & a, const BatchTensor<1> & b)
 {
-  torch::Tensor tmp = a;
+  torch::Tensor tmp = a.to(b);
   for (TorchSize i = 1; i < a.base_dim(); i++)
     tmp = tmp.unsqueeze(-1);
   return torch::operator/(tmp, b);

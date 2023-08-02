@@ -32,58 +32,57 @@ register_NEML2_object(AssociativeKinematicPlasticHardening);
 ParameterSet
 AssociativeKinematicPlasticHardening::expected_params()
 {
-  ParameterSet params = PlasticHardening::expected_params();
-  params.set<std::string>("yield_function");
+  ParameterSet params = FlowRule::expected_params();
+  params.set<LabeledAxisAccessor>("kinematic_hardening_direction") = {{"state", "internal", "NX"}};
+  params.set<LabeledAxisAccessor>("kinematic_plastic_strain_rate") = {
+      {"state", "internal", "Kp_rate"}};
   return params;
 }
 
 AssociativeKinematicPlasticHardening::AssociativeKinematicPlasticHardening(
     const ParameterSet & params)
-  : PlasticHardening(params),
-    yield_function(Factory::get_object<YieldFunctionBase>(
-        "Models", params.get<std::string>("yield_function"))),
-    plastic_strain_rate(
-        declareOutputVariable<SymR2>({"state", "internal_state", "plastic_strain_rate"}))
+  : FlowRule(params),
+    kinematic_hardening_direction(declare_input_variable<SymR2>(
+        params.get<LabeledAxisAccessor>("kinematic_hardening_direction"))),
+    kinematic_plastic_strain_rate(declare_output_variable<SymR2>(
+        params.get<LabeledAxisAccessor>("kinematic_plastic_strain_rate")))
 {
-  register_model(Factory::get_object_ptr<YieldFunctionBase>(
-      "Models", params.get<std::string>("yield_function")));
   setup();
 }
 
 void
-AssociativeKinematicPlasticHardening::set_value(LabeledVector in,
-                                                LabeledVector out,
-                                                LabeledMatrix * dout_din) const
+AssociativeKinematicPlasticHardening::set_value(const LabeledVector & in,
+                                                LabeledVector * out,
+                                                LabeledMatrix * dout_din,
+                                                LabeledTensor3D * d2out_din2) const
 {
+  const auto options = in.options();
+
   // For associative flow,
-  // ep_dot = - gamma_dot * df/dh
-  TorchSize nbatch = in.batch_size();
-  LabeledMatrix df_din(nbatch, yield_function.output(), yield_function.input());
-  LabeledTensor<1, 3> d2f_din2(
-      nbatch, yield_function.output(), yield_function.input(), yield_function.input());
+  // Kp_dot = - gamma_dot * NX
+  //     NX = df/dX
+  const auto gamma_dot = in.get<Scalar>(flow_rate);
+  const auto NX = in.get<SymR2>(kinematic_hardening_direction);
 
-  if (dout_din)
-    std::tie(df_din, d2f_din2) = yield_function.dvalue_and_d2value(in);
-  else
-    df_din = yield_function.dvalue(in);
+  if (out)
+    out->set(-gamma_dot * NX, kinematic_plastic_strain_rate);
 
-  auto gamma_dot = in.get<Scalar>(hardening_rate);
-  auto df_dh = df_din.get<SymR2>(yield_function.yield_function, yield_function.kinematic_hardening);
-  auto ep_dot = -gamma_dot * df_dh;
-
-  out.set(ep_dot, plastic_strain_rate);
-
-  if (dout_din)
+  if (dout_din || d2out_din2)
   {
-    // dep_dot/dh = -gamma_dot * d2f/dh2
-    auto d2f_dh2 = d2f_din2.get<SymSymR4>(yield_function.yield_function,
-                                          yield_function.kinematic_hardening,
-                                          yield_function.kinematic_hardening);
-    auto value = gamma_dot * d2f_dh2;
+    auto I = SymR2::identity_map(options);
 
-    dout_din->set(-df_dh, plastic_strain_rate, hardening_rate);
-    dout_din->set(value, plastic_strain_rate, yield_function.mandel_stress);
-    dout_din->set(-value, plastic_strain_rate, yield_function.kinematic_hardening);
+    if (dout_din)
+    {
+      dout_din->set(-NX, kinematic_plastic_strain_rate, flow_rate);
+      dout_din->set(-gamma_dot * I, kinematic_plastic_strain_rate, kinematic_hardening_direction);
+    }
+
+    if (d2out_din2)
+    {
+      // I don't know when this will be useful, but since it's easy...
+      d2out_din2->set(-I, kinematic_plastic_strain_rate, flow_rate, kinematic_hardening_direction);
+      d2out_din2->set(-I, kinematic_plastic_strain_rate, kinematic_hardening_direction, flow_rate);
+    }
   }
 }
 } // namespace neml2
