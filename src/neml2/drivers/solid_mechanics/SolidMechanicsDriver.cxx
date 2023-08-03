@@ -91,7 +91,7 @@ bool
 SolidMechanicsDriver::solve()
 {
   // We don't need parameter gradients
-  // torch::NoGradGuard no_grad_guard;
+  torch::NoGradGuard no_grad_guard;
 
   for (_step_count = 0; _step_count < _nsteps; _step_count++)
     solve_step(_step_count == 0);
@@ -107,9 +107,11 @@ SolidMechanicsDriver::solve_step(bool init)
     std::cout << "Step " << _step_count << std::endl;
   // LCOV_EXCL_STOP
 
+  // Propagate the forces and state in time
+  LabeledVector(_in.slice("old_state")).fill(_out.slice("state"));
+  LabeledVector(_in.slice("old_forces")).fill(_in.slice("forces"));
+
   // Advance the step
-  if (!init)
-    _model.advance_step();
   auto current_time = Scalar(_time.index({_step_count}).unsqueeze(-1));
   auto current_driving_force = SymR2(_driving_force.index({_step_count}));
 
@@ -120,17 +122,6 @@ SolidMechanicsDriver::solve_step(bool init)
   // Solve the step
   if (!init)
     _out = _model.value(_in);
-
-  // Propagate the forces and state in time
-  // current --> old
-  // Initialize the old state it if necessary
-  // if (init)
-  //   _model.init_state(in);
-  if (!init)
-  {
-    LabeledVector(_in.slice("old_state")).fill(_out.slice("state"));
-    LabeledVector(_in.slice("old_forces")).fill(_in.slice("forces"));
-  }
 
   // Store the results
   _result->push_back({{"input", _in}, {"output", _out}});

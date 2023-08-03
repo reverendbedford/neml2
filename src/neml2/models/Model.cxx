@@ -40,6 +40,7 @@ Model::expected_params()
 
 Model::Model(const ParameterSet & params)
   : NEML2Object(params),
+    _implicit(false),
     _input(declareAxis()),
     _output(declareAxis()),
     _AD_1st_deriv(params.get<bool>("use_AD_first_derivative")),
@@ -138,25 +139,21 @@ Model::dparam(const LabeledVector & out, const std::string & param) const
 LabeledVector
 Model::value(const LabeledVector & in) const
 {
-  LabeledVector out(in.batch_size(), {&output()}, in.options());
-  set_value(in, &out);
-  return out;
+  return value(in, [](LabeledVector &) {});
 }
 
 LabeledMatrix
 Model::dvalue(const LabeledVector & in) const
 {
-  if (_AD_1st_deriv)
-    return std::get<1>(value_and_dvalue(in));
-
-  LabeledMatrix dout_din(in.batch_size(), {&output(), &in.axis()}, in.options());
-  set_value(in, nullptr, &dout_din);
-  return dout_din;
+  return dvalue(in, [](LabeledVector &) {});
 }
 
 LabeledTensor3D
 Model::d2value(const LabeledVector & in) const
 {
+  neml_assert_dbg(
+      !implicit(), name(), " is an implicit model and does not provide second derivatives.");
+
   if (_AD_2nd_deriv)
     return std::get<2>(value_and_dvalue_and_d2value(in));
 
@@ -168,45 +165,20 @@ Model::d2value(const LabeledVector & in) const
 std::tuple<LabeledVector, LabeledMatrix>
 Model::value_and_dvalue(const LabeledVector & in) const
 {
-  LabeledVector out(in.batch_size(), {&output()}, in.options());
-  LabeledMatrix dout_din(in.batch_size(), {&output(), &in.axis()}, in.options());
-
-  if (_AD_1st_deriv)
-  {
-    // Set requires_grad to true if not already
-    bool req_grad = in.tensor().requires_grad();
-    in.tensor().requires_grad_();
-    // Evaluate the model value
-    set_value(in, &out);
-    // Loop over rows to retrieve the derivatives
-    for (TorchSize i = 0; i < out.tensor().base_sizes()[0]; i++)
-    {
-      BatchTensor<1> grad_outputs = torch::zeros_like(out.tensor());
-      grad_outputs.index_put_({torch::indexing::Ellipsis, i}, 1.0);
-      out.tensor().requires_grad_();
-      auto jac_row = torch::autograd::grad({out.tensor()},
-                                           {in.tensor()},
-                                           {grad_outputs},
-                                           /*retain_graph=*/true,
-                                           /*create_graph=*/false,
-                                           /*allow_unused=*/true)[0];
-      if (jac_row.defined())
-        dout_din.tensor().base_index_put({i, torch::indexing::Slice()}, jac_row);
-    }
-    in.tensor().requires_grad_(req_grad);
-  }
-  else
-    set_value(in, &out, &dout_din);
-
-  return {out, dout_din};
+  return value_and_dvalue(in, [](LabeledVector &) {});
 }
 
 std::tuple<LabeledMatrix, LabeledTensor3D>
 Model::dvalue_and_d2value(const LabeledVector & in) const
 {
+  neml_assert_dbg(
+      !implicit(), name(), " is an implicit model and does not provide second derivatives.");
+
   if (_AD_1st_deriv || _AD_2nd_deriv)
-    return {std::get<1>(value_and_dvalue_and_d2value(in)),
-            std::get<2>(value_and_dvalue_and_d2value(in))};
+  {
+    auto [val, dval, d2val] = value_and_dvalue_and_d2value(in);
+    return {dval, d2val};
+  }
 
   LabeledMatrix dout_din(in.batch_size(), {&output(), &in.axis()}, in.options());
   LabeledTensor3D d2out_din2(in.batch_size(), {&output(), &in.axis(), &in.axis()}, in.options());
@@ -217,6 +189,9 @@ Model::dvalue_and_d2value(const LabeledVector & in) const
 std::tuple<LabeledVector, LabeledMatrix, LabeledTensor3D>
 Model::value_and_dvalue_and_d2value(const LabeledVector & in) const
 {
+  neml_assert_dbg(
+      !implicit(), name(), " is an implicit model and does not provide second derivatives.");
+
   LabeledVector out(in.batch_size(), {&output()}, in.options());
   LabeledMatrix dout_din(in.batch_size(), {&output(), &in.axis()}, in.options());
   LabeledTensor3D d2out_din2(in.batch_size(), {&output(), &in.axis(), &in.axis()}, in.options());
@@ -283,6 +258,10 @@ Model::register_model(std::shared_ptr<Model> model, bool merge_input)
 
   _registered_models.push_back(model.get());
 
+  // If a registered model is implicit, then this model becomes implicit as well
+  if (model->implicit())
+    _implicit = true;
+
   // torch bookkeeping
   register_module(model->name(), model);
 }
@@ -291,13 +270,6 @@ void
 Model::cache_input(const LabeledVector & in)
 {
   _cached_in = in.clone();
-}
-
-void
-Model::advance_step()
-{
-  for (auto model : registered_models())
-    model->advance_step();
 }
 
 void

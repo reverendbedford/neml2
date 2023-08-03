@@ -23,7 +23,6 @@
 // THE SOFTWARE.
 
 #include "neml2/models/ImplicitUpdate.h"
-#include "neml2/predictors/PreviousStatePredictor.h"
 
 namespace neml2
 {
@@ -35,7 +34,6 @@ ImplicitUpdate::expected_params()
   ParameterSet params = Model::expected_params();
   params.set<std::string>("implicit_model");
   params.set<std::string>("solver");
-  params.set<std::string>("predictor");
   return params;
 }
 
@@ -78,27 +76,10 @@ ImplicitUpdate::ImplicitUpdate(const ParameterSet & params)
       _consumed_vars.erase(consumed_var_it--);
     }
 
-  // Add predictor. If no predictor is specified by the user, default to PreviousStatePredictor
-  const auto predictor_name = params.get<std::string>("predictor");
-  if (predictor_name.empty())
-  {
-    Factory::get().create_object(
-        "Predictors",
-        PreviousStatePredictor::expected_params() +
-            ParameterSet(KS{"name", "_default_predictor"}, KS{"type", "PreviousStatePredictor"}));
-    _predictor = Factory::get_object_ptr<Predictor>("Predictors", "_default_predictor").get();
-  }
-  else
-    _predictor = Factory::get_object_ptr<Predictor>("Predictors", predictor_name).get();
-
   setup();
-}
 
-LabeledMatrix
-ImplicitUpdate::dvalue(const LabeledVector & in) const
-{
-  auto [out, dout_din] = Model::value_and_dvalue(in);
-  return dout_din;
+  // This model requires an implicit solve, so
+  _implicit = true;
 }
 
 void
@@ -108,6 +89,9 @@ ImplicitUpdate::set_value(const LabeledVector & in,
                           LabeledTensor3D * d2out_din2) const
 {
   neml_assert_dbg(!d2out_din2, "This model does not define the second derivatives.");
+  neml_assert_dbg(
+      !dout_din || out,
+      "ImplicitUpdate: requires the value and the first derivatives to be computed together.");
 
   const auto options = in.options();
   const auto nbatch = in.batch_size();
@@ -116,40 +100,30 @@ ImplicitUpdate::set_value(const LabeledVector & in,
   // state
   _model.cache_input(in);
 
-  // Set the initial guess
-  _predictor->set_initial_guess(in, *out);
-
-  // Solve for the next state
-  Model::stage = Model::Stage::SOLVING;
-  BatchTensor<1> sol = _solver.solve(_model, (*out)("state"));
-  Model::stage = Model::Stage::UPDATING;
-
-  if (out)
+  if (out || dout_din)
   {
-    out->set(sol, "state");
-    _predictor->post_solve(in, *out);
+    // Solve for the next state
+    Model::stage = Model::Stage::SOLVING;
+    BatchTensor<1> sol = _solver.solve(_model, (*out)("state"));
+    Model::stage = Model::Stage::UPDATING;
+
+    if (out)
+      out->set(sol, "state");
+
+    // Use the implicit function theorem to calculate the other derivatives
+    if (dout_din)
+    {
+      LabeledVector implicit_in(nbatch, {&_model.input()}, options);
+      implicit_in.fill(in);
+      implicit_in.set(sol, "state");
+
+      auto partials = _model.dvalue(implicit_in);
+      LabeledMatrix J = partials.slice(1, "state");
+      LabeledMatrix Jinv = J.inverse();
+      dout_din->block("state", "old_state").copy(-Jinv.chain(partials.slice(1, "old_state")));
+      dout_din->block("state", "forces").copy(-Jinv.chain(partials.slice(1, "forces")));
+      dout_din->block("state", "old_forces").copy(-Jinv.chain(partials.slice(1, "old_forces")));
+    }
   }
-
-  // Use the implicit function theorem to calculate the other derivatives
-  if (dout_din)
-  {
-    LabeledVector implicit_in(nbatch, {&_model.input()}, options);
-    implicit_in.fill(in);
-    implicit_in.set(sol, "state");
-
-    auto partials = _model.dvalue(implicit_in);
-    LabeledMatrix J = partials.slice(1, "state");
-    LabeledMatrix Jinv = J.inverse();
-    dout_din->block("state", "old_state").copy(-Jinv.chain(partials.slice(1, "old_state")));
-    dout_din->block("state", "forces").copy(-Jinv.chain(partials.slice(1, "forces")));
-    dout_din->block("state", "old_forces").copy(-Jinv.chain(partials.slice(1, "old_forces")));
-  }
-}
-
-void
-ImplicitUpdate::advance_step()
-{
-  Model::advance_step();
-  _predictor->advance_step();
 }
 } // namespace neml2
