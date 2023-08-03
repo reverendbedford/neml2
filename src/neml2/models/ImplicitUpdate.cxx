@@ -48,38 +48,28 @@ ImplicitUpdate::ImplicitUpdate(const ParameterSet & params)
   // be the same as the implicit model's input. The input subaxes of the implicit model looks
   // something like
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // inputs: state (trial state) ---> outputs: residual
+  // inputs: state (trial) -------> outputs: residual
   //         old state
   //         forces
   //         old forces
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // However, the inputs and outputs of *this* model (ImplicitUpdate) should look like this after
+  // The inputs and outputs of *this* model (ImplicitUpdate) should look like this after
   // the update:
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // inputs: old state  ------> outputs: state
+  // inputs: state (trial)  ------> outputs: state
+  //         old state
   //         forces
   //         old forces
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // as we have eliminated the trial state by solving the nonlinear system.
-  // So, we need to remove the "state" subaxis from the input and add it to the output
+  // So, we need to add the state to the output
   output().add<LabeledAxis>("state");
-  output().subaxis("state").merge(_model.input().subaxis("state"));
-  input().remove("state");
-
-  // The consumed vars from "state" become provided vars
-  // TODO: generalize and simplify the followng code
-  for (auto consumed_var_it = _consumed_vars.begin(); consumed_var_it != _consumed_vars.end();
-       consumed_var_it++)
-    if (consumed_var_it->item_names[0] == "state")
-    {
-      _provided_vars.insert(*consumed_var_it);
-      _consumed_vars.erase(consumed_var_it--);
-    }
+  for (auto var : input().subaxis("state").variable_accessors(/*recursive=*/true))
+  {
+    auto sz = input().subaxis("state").storage_size(var);
+    declare_output_variable(sz, var.on("state"));
+  }
 
   setup();
-
-  // This model requires an implicit solve, so
-  _implicit = true;
 }
 
 void
@@ -100,11 +90,14 @@ ImplicitUpdate::set_value(const LabeledVector & in,
   // state
   _model.cache_input(in);
 
+  // The trial state is used as the initial guess
+  auto guess = in("state");
+
   if (out || dout_din)
   {
     // Solve for the next state
     Model::stage = Model::Stage::SOLVING;
-    BatchTensor<1> sol = _solver.solve(_model, (*out)("state"));
+    BatchTensor<1> sol = _solver.solve(_model, guess);
     Model::stage = Model::Stage::UPDATING;
 
     if (out)

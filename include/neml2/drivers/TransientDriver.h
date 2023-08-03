@@ -25,7 +25,6 @@
 #pragma once
 
 #include "neml2/drivers/Driver.h"
-#include "neml2/drivers/ResultSeriesContainer.h"
 #include <filesystem>
 
 namespace neml2
@@ -41,13 +40,22 @@ public:
 
   virtual std::string save_as_path() const;
 
-  virtual std::shared_ptr<ResultSeriesContainer> result() const { return _result; }
+  virtual torch::nn::ModuleDict result() const;
 
 protected:
   virtual void check_integrity() const override;
-  virtual bool solve() = 0;
+  virtual bool solve();
+
+  // @{ Routines that are called every step
+  virtual void advance_step();
+  virtual void update_forces();
+  virtual void apply_ic();
+  virtual void apply_predictor();
+  virtual void solve_step();
+  virtual void store_step();
+  // @}
+
   virtual void output() const;
-  void output_pt(const std::filesystem::path & out) const;
 
   Model & _model;
 
@@ -59,8 +67,13 @@ protected:
   LabeledVector _in;
   LabeledVector _out;
 
+  std::string _predictor;
   std::string _save_as;
   const bool _show_params;
-  std::shared_ptr<ResultSeriesContainer> _result;
+  LabeledTensor<2, 1> _result_in;
+  LabeledTensor<2, 1> _result_out;
+
+private:
+  void output_pt(const std::filesystem::path & out) const;
 };
 } // namespace neml2

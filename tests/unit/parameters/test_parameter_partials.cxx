@@ -24,38 +24,41 @@
 
 #include <catch2/catch.hpp>
 
-#include "neml2/drivers/ResultSeriesContainer.h"
+#include "utils.h"
+#include "ModelUnitTest.h"
 
 using namespace neml2;
 
-TEST_CASE("ResultSeriesContainer", "[ResultSeriesContainer]")
+TEST_CASE("Use AD to get parameter partials")
 {
-  TorchSize nbatch = 10;
-  LabeledAxis info;
-  info.add<SymR2>("first").add<Scalar>("second").add<Scalar>("third");
-  info.setup_layout();
-  LabeledVector A(nbatch, {&info});
-  A.set(torch::ones({nbatch, 6}), "first");
-  LabeledVector B(nbatch, {&info});
-  B.set(torch::ones({nbatch, 6}) * 3, "first");
-  ResultSeriesContainer rsc;
-  rsc.push_back({{"A", A}});
-  rsc.push_back({{"B", B}});
+  SECTION("Batched") { load_model("unit/parameters/test_parameter_partials_batched.i"); }
+  SECTION("Unbatched") { load_model("unit/parameters/test_parameter_partials_unbatched.i"); }
 
-  REQUIRE(math::allclose(rsc, rsc));
+  auto & driver = Factory::get_object<ModelUnitTest>("Drivers", "unit");
+  auto & model = driver.model();
 
-  SECTION("Sizes do not match")
-  {
-    ResultSeriesContainer rsc2;
-    rsc2.push_back({{"A", B}});
-    REQUIRE(!math::allclose(rsc, rsc2));
-  }
+  // There are three parameters:
+  auto param_a = "implicit_rate.rate.a";
+  auto param_b = "implicit_rate.rate.b";
+  auto param_c = "implicit_rate.rate.c";
+  // Let's track the derivatives of a
+  model.trace_parameters({{param_a, true}, {param_b, false}, {param_c, false}});
 
-  SECTION("Values do not match")
-  {
-    ResultSeriesContainer rsc2;
-    rsc2.push_back({{"A", A}});
-    rsc2.push_back({{"A", A}});
-    REQUIRE(!math::allclose(rsc, rsc2));
-  }
+  // Evaluate the model value
+  auto out = model.value(driver.in());
+
+  // dout/da
+  auto dout_da = model.dparam(out, param_a);
+
+  // Use FD to check the parameter derivatives
+  BatchTensor<1> dout_da_FD = torch::empty_like(dout_da);
+  finite_differencing_derivative(
+      [&](const BatchTensor<1> & x)
+      {
+        model.set_parameters({{param_a, x}});
+        return model.value(driver.in()).tensor();
+      },
+      model.named_parameters(true)[param_a].detach().clone(),
+      dout_da_FD);
+  REQUIRE(torch::allclose(dout_da, dout_da_FD));
 }

@@ -38,6 +38,8 @@ public:
 
   const Model & implicit_model() const { return _model; }
 
+  virtual bool implicit() const override { return true; }
+
 protected:
   virtual void set_value(const LabeledVector & in,
                          LabeledVector * out,

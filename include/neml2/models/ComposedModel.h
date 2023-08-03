@@ -38,6 +38,8 @@ public:
 
   ComposedModel(const ParameterSet & params);
 
+  virtual bool implicit() const override;
+
   /// Return dependencies of a registered model
   const std::vector<std::shared_ptr<Model>> & dependent_models(const std::string & name) const;
 

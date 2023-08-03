@@ -36,8 +36,7 @@ public:
   SolidMechanicsDriver(const ParameterSet & params);
 
 protected:
-  bool solve() override;
-  virtual void solve_step(bool init);
+  virtual void update_forces() override;
   void check_integrity() const override;
 
   std::string _control;

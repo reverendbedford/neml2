@@ -46,7 +46,7 @@ public:
   Model(const ParameterSet & params);
 
   /// Whether this model is implicit
-  bool implicit() const { return _implicit; }
+  virtual bool implicit() const { return false; }
 
   /// Definition of the input variables
   /// @{
@@ -85,29 +85,23 @@ public:
   BatchTensor<1> dparam(const LabeledVector & out, const std::string & param) const;
 
   /// Convenient shortcut to construct and return the model value
-  template <typename P>
-  LabeledVector value(const LabeledVector & in, P && predictor) const;
-  LabeledVector value(const LabeledVector & in) const;
+  virtual LabeledVector value(const LabeledVector & in) const;
 
   /// Convenient shortcut to construct and return the model derivative
-  template <typename P>
-  LabeledMatrix dvalue(const LabeledVector & in, P && predictor) const;
-  LabeledMatrix dvalue(const LabeledVector & in) const;
+  virtual LabeledMatrix dvalue(const LabeledVector & in) const;
 
   /// Convenient shortcut to construct and return the model's second derivative
-  LabeledTensor3D d2value(const LabeledVector & in) const;
+  virtual LabeledTensor3D d2value(const LabeledVector & in) const;
 
   /// Convenient shortcut to construct and return the model value and its derivative
-  template <typename P>
-  std::tuple<LabeledVector, LabeledMatrix> value_and_dvalue(const LabeledVector & in,
-                                                            P && predictor) const;
-  std::tuple<LabeledVector, LabeledMatrix> value_and_dvalue(const LabeledVector & in) const;
+  virtual std::tuple<LabeledVector, LabeledMatrix> value_and_dvalue(const LabeledVector & in) const;
 
   /// Convenient shortcut to construct and return the model's first and second derivative
-  std::tuple<LabeledMatrix, LabeledTensor3D> dvalue_and_d2value(const LabeledVector & in) const;
+  virtual std::tuple<LabeledMatrix, LabeledTensor3D>
+  dvalue_and_d2value(const LabeledVector & in) const;
 
   /// Convenient shortcut to construct and return the model's value, first and second derivative
-  std::tuple<LabeledVector, LabeledMatrix, LabeledTensor3D>
+  virtual std::tuple<LabeledVector, LabeledMatrix, LabeledTensor3D>
   value_and_dvalue_and_d2value(const LabeledVector & in) const;
 
   const std::vector<Model *> & registered_models() const { return _registered_models; }
@@ -219,8 +213,6 @@ protected:
   std::set<LabeledAxisAccessor> _provided_vars;
   std::set<LabeledAxisAccessor> _additional_outputs;
 
-  bool _implicit;
-
 private:
   LabeledAxis & _input;
   LabeledAxis & _output;
@@ -231,77 +223,4 @@ private:
   /// Cached input while solving this implicit model
   LabeledVector _cached_in;
 };
-
-template <typename P>
-LabeledVector
-Model::value(const LabeledVector & in, P && predictor) const
-{
-  LabeledVector out(in.batch_size(), {&output()}, in.options());
-
-  if (implicit())
-    predictor(out);
-
-  set_value(in, &out);
-
-  return out;
-}
-
-template <typename P>
-LabeledMatrix
-Model::dvalue(const LabeledVector & in, P && predictor) const
-{
-  if (_AD_1st_deriv)
-    return std::get<1>(value_and_dvalue(in, predictor));
-
-  LabeledMatrix dout_din(in.batch_size(), {&output(), &in.axis()}, in.options());
-  if (implicit())
-  {
-    LabeledVector out(in.batch_size(), {&output()}, in.options());
-    predictor(out);
-    set_value(in, &out, &dout_din);
-  }
-  else
-    set_value(in, nullptr, &dout_din);
-  return dout_din;
-}
-
-template <typename P>
-std::tuple<LabeledVector, LabeledMatrix>
-Model::value_and_dvalue(const LabeledVector & in, P && predictor) const
-{
-  LabeledVector out(in.batch_size(), {&output()}, in.options());
-  LabeledMatrix dout_din(in.batch_size(), {&output(), &in.axis()}, in.options());
-
-  if (implicit())
-    predictor(out);
-
-  if (_AD_1st_deriv)
-  {
-    // Set requires_grad to true if not already
-    bool req_grad = in.tensor().requires_grad();
-    in.tensor().requires_grad_();
-    // Evaluate the model value
-    set_value(in, &out);
-    // Loop over rows to retrieve the derivatives
-    for (TorchSize i = 0; i < out.tensor().base_sizes()[0]; i++)
-    {
-      BatchTensor<1> grad_outputs = torch::zeros_like(out.tensor());
-      grad_outputs.index_put_({torch::indexing::Ellipsis, i}, 1.0);
-      out.tensor().requires_grad_();
-      auto jac_row = torch::autograd::grad({out.tensor()},
-                                           {in.tensor()},
-                                           {grad_outputs},
-                                           /*retain_graph=*/true,
-                                           /*create_graph=*/false,
-                                           /*allow_unused=*/true)[0];
-      if (jac_row.defined())
-        dout_din.tensor().base_index_put({i, torch::indexing::Slice()}, jac_row);
-    }
-    in.tensor().requires_grad_(req_grad);
-  }
-  else
-    set_value(in, &out, &dout_din);
-
-  return {out, dout_din};
-}
 } // namespace neml2

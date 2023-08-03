@@ -80,16 +80,11 @@ VTestVerification::allclose(const std::string & var, torch::Tensor ref) const
   auto tokens = utils::split(var, ".");
   auto axis = tokens[0];
   auto name = tokens[1];
+  auto neml2_tensor = res->at<torch::nn::Module>(axis).named_buffers(true)[name];
 
-  TorchSize ntime = ref.sizes()[0];
-  for (TorchSize i = 0; i < ntime; i++)
-  {
-    auto neml2_tensor =
-        res->at<ResultContainer>(i).at<LabeledVectorContainer>(axis).named_buffers(true)[name];
-    auto vtest_tensor = ref.index({i});
-    if (!torch::allclose(neml2_tensor, vtest_tensor, _rtol, _atol))
-      return false;
-  }
+  // Check
+  if (!torch::allclose(neml2_tensor, ref, _rtol, _atol))
+    return false;
 
   return true;
 }

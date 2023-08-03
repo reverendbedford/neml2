@@ -29,6 +29,7 @@
     times = 'times'
     prescribed_strains = 'strains'
     save_as = 'result.pt'
+    predictor = 'LINEAR_EXTRAPOLATION'
   []
   [regression]
     type = TransientRegression
@@ -40,12 +41,6 @@
 [Solvers]
   [newton]
     type = NewtonNonlinearSolver
-  []
-[]
-
-[Predictors]
-  [simple]
-    type = LinearExtrapolationPredictor
   []
 []
 
@@ -117,7 +112,6 @@
     type = ImplicitUpdate
     implicit_model = 'implicit_rate'
     solver = 'newton'
-    predictor = 'simple'
     additional_outputs = 'state/internal/Ep state/internal/ep'
   []
   [model]

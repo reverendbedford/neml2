@@ -54,6 +54,15 @@ ComposedModel::ComposedModel(const ParameterSet & params)
   setup();
 }
 
+bool
+ComposedModel::implicit() const
+{
+  for (auto i : _evaluation_order)
+    if (i->implicit())
+      return true;
+  return false;
+}
+
 void
 ComposedModel::register_dependency(const std::vector<std::shared_ptr<Model>> & models)
 {

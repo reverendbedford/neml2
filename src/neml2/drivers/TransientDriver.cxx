@@ -23,6 +23,8 @@
 // THE SOFTWARE.
 
 #include "neml2/drivers/TransientDriver.h"
+#include "neml2/models/ComposedModel.h"
+#include "neml2/models/ImplicitUpdate.h"
 
 namespace fs = std::filesystem;
 
@@ -35,6 +37,7 @@ TransientDriver::expected_params()
   params.set<std::string>("model");
   params.set<CrossRef<torch::Tensor>>("times");
   params.set<LabeledAxisAccessor>("time") = LabeledAxisAccessor{{"forces", "t"}};
+  params.set<std::string>("predictor") = "PREVIOUS_STATE";
   params.set<std::string>("save_as");
   params.set<bool>("show_parameters") = false;
   return params;
@@ -50,9 +53,11 @@ TransientDriver::TransientDriver(const ParameterSet & params)
     _nbatch(_time.sizes()[1]),
     _in(_nbatch, {&_model.input()}),
     _out(_nbatch, {&_model.output()}),
+    _predictor(params.get<std::string>("predictor")),
     _save_as(params.get<std::string>("save_as")),
     _show_params(params.get<bool>("show_parameters")),
-    _result(std::make_shared<ResultSeriesContainer>())
+    _result_in(TorchShape{_nsteps, _nbatch}, {&_model.input()}),
+    _result_out(TorchShape{_nsteps, _nbatch}, {&_model.output()})
 {
 }
 
@@ -82,10 +87,126 @@ TransientDriver::run()
   return status;
 }
 
+bool
+TransientDriver::solve()
+{
+  // We don't need parameter gradients
+  torch::NoGradGuard no_grad_guard;
+
+  for (_step_count = 0; _step_count < _nsteps; _step_count++)
+  {
+    if (_verbose)
+      // LCOV_EXCL_START
+      std::cout << "Step " << _step_count << std::endl;
+    // LCOV_EXCL_STOP
+
+    if (_step_count > 0)
+      advance_step();
+    update_forces();
+    if (_step_count == 0)
+      apply_ic();
+    else
+    {
+      if (_model.implicit())
+        apply_predictor();
+      solve_step();
+    }
+    store_step();
+
+    if (_verbose)
+      // LCOV_EXCL_START
+      std::cout << std::endl;
+    // LCOV_EXCL_STOP
+  }
+
+  return true;
+}
+
+void
+TransientDriver::advance_step()
+{
+  LabeledVector(_in.slice("old_state")).fill(_out.slice("state"));
+  LabeledVector(_in.slice("old_forces")).fill(_in.slice("forces"));
+}
+
+void
+TransientDriver::update_forces()
+{
+  auto current_time = Scalar(_time.index({_step_count}).unsqueeze(-1));
+  _in.set(current_time, _time_name);
+}
+
+void
+TransientDriver::apply_ic()
+{
+}
+
+void
+TransientDriver::apply_predictor()
+{
+  if (_predictor == "PREVIOUS_STATE")
+    _in.slice("state").fill(_in.slice("old_state"));
+  else if (_predictor == "LINEAR_EXTRAPOLATION")
+  {
+    // Fall back to PREVIOUS_STATE predictor at the 1st time step
+    if (_step_count == 1)
+      _in.slice("state").fill(_in.slice("old_state"));
+    // Otherwise linearly extrapolate in time
+    else
+    {
+      Scalar t = _in.get<Scalar>(_time_name);
+      Scalar t_n = _result_in(_time_name).index({_step_count - 1});
+      Scalar t_nm1 = _result_in(_time_name).index({_step_count - 2});
+      Scalar dt = t - t_n;
+      Scalar dt_n = t_n - t_nm1;
+
+      auto states = _result_out.slice(0, "state");
+      BatchTensor<1> state_n = states.tensor().index({_step_count - 1});
+      BatchTensor<1> state_nm1 = states.tensor().index({_step_count - 2});
+      LabeledVector state(state_n + (state_n - state_nm1) / dt_n * dt, states.axes());
+      _in.slice("state").fill(state);
+    }
+  }
+  else
+    throw NEMLException("Unrecognized predictor type: " + _predictor);
+}
+
+void
+TransientDriver::solve_step()
+{
+  _out = _model.value(_in);
+}
+
+void
+TransientDriver::store_step()
+{
+  _result_in.tensor().index({_step_count}).copy_(_in.tensor());
+  _result_out.tensor().index({_step_count}).copy_(_out.tensor());
+}
+
 std::string
 TransientDriver::save_as_path() const
 {
   return _save_as;
+}
+
+torch::nn::ModuleDict
+TransientDriver::result() const
+{
+  // Dump input variables into a Module
+  auto res_in = std::make_shared<torch::nn::Module>();
+  for (auto var : _result_in.axis(0).variable_accessors(/*recursive=*/true))
+    res_in->register_buffer(utils::stringify(var), _result_in(var).clone());
+
+  // Dump output variables into a Module
+  auto res_out = std::make_shared<torch::nn::Module>();
+  for (auto var : _result_out.axis(0).variable_accessors(/*recursive=*/true))
+    res_out->register_buffer(utils::stringify(var), _result_out(var).clone());
+
+  // Combine input and output
+  torch::nn::ModuleDict res;
+  res->update({{"input", res_in}, {"output", res_out}});
+  return res;
 }
 
 void
