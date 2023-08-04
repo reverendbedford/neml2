@@ -24,7 +24,8 @@
 
 #pragma once
 
-#include <cstddef>
+#include <vector>
+#include <iostream>
 
 namespace neml2
 {
