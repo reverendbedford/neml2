@@ -229,7 +229,12 @@ LabeledAxis::has_variable(const LabeledAxisAccessor & var) const
     return false;
 
   if (var.item_names.size() > 1)
-    return subaxis(var.item_names[0]).has_variable(var.peel());
+  {
+    if (has_subaxis(var.item_names[0]))
+      return subaxis(var.item_names[0]).has_variable(var.peel());
+    else
+      return false;
+  }
   else
     return has_variable(var.item_names[0]);
 }
