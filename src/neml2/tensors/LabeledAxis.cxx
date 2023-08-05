@@ -268,10 +268,12 @@ LabeledAxis::storage_size(const std::vector<std::string>::const_iterator & cur,
 {
   if (cur == end - 1)
   {
-    neml_assert_dbg(_variables.count(*cur),
-                    "Trying to find the storage size of a non-existent variable named ",
-                    *cur);
-    return _variables.at(*cur);
+    if (_variables.count(*cur))
+      return _variables.at(*cur);
+    else if (_subaxes.count(*cur))
+      return _subaxes.at(*cur)->storage_size();
+
+    neml_assert_dbg(false, "Trying to find the storage size of a non-existent item named ", *cur);
   }
 
   return subaxis(*cur).storage_size(cur + 1, end);
