@@ -63,9 +63,9 @@ ImplicitUpdate::ImplicitUpdate(const ParameterSet & params)
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // So, we need to add the state to the output
   output().add<LabeledAxis>("state");
-  for (auto var : input().subaxis("state").variable_accessors(/*recursive=*/true))
+  for (auto var : _model.output().subaxis("residual").variable_accessors(/*recursive=*/true))
   {
-    auto sz = input().subaxis("state").storage_size(var);
+    auto sz = _model.output().subaxis("residual").storage_size(var);
     declare_output_variable(sz, var.on("state"));
   }
 
