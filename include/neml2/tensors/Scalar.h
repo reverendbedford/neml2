@@ -47,12 +47,13 @@ public:
   /// Negation
   Scalar operator-() const;
 
-  // @{ In-place operations
+  ///@{
+  /// In-place operations
   void operator+=(const Scalar & other);
   void operator-=(const Scalar & other);
   void operator*=(const Scalar & other);
   void operator/=(const Scalar & other);
-  // @}
+  ///@}
 
   /// Raise to a power
   Scalar pow(Scalar n) const;
