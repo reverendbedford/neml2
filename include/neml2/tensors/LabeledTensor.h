@@ -56,7 +56,7 @@ public:
   /// Return the configuration of the underlying tensor
   torch::TensorOptions options() const { return _tensor.options(); }
 
-  [[nodiscard]] LabeledTensor<N, D> to(const torch::TensorOptions & options) const;
+  LabeledTensor<N, D> to(const torch::TensorOptions & options) const;
 
   /// Assignment operator
   LabeledTensor<N, D> & operator=(const LabeledTensor<N, D> & other);
@@ -187,9 +187,8 @@ template <TorchSize N, TorchSize D>
 LabeledTensor<N, D>
 LabeledTensor<N, D>::to(const torch::TensorOptions & options) const
 {
-  auto res = clone();
-  res._tensor = res._tensor.to(options);
-  return res;
+  _tensor.to(options);
+  return *this;
 }
 
 template <TorchSize N, TorchSize D>
