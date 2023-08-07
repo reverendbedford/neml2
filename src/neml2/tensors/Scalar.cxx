@@ -43,10 +43,34 @@ Scalar::operator-() const
   return -torch::Tensor(*this);
 }
 
+void
+Scalar::operator+=(const Scalar & other)
+{
+  torch::Tensor::operator+=(other.to(*this));
+}
+
+void
+Scalar::operator-=(const Scalar & other)
+{
+  torch::Tensor::operator-=(other.to(*this));
+}
+
+void
+Scalar::operator*=(const Scalar & other)
+{
+  torch::Tensor::operator*=(other.to(*this));
+}
+
+void
+Scalar::operator/=(const Scalar & other)
+{
+  torch::Tensor::operator/=(other.to(*this));
+}
+
 Scalar
 Scalar::pow(Scalar n) const
 {
-  return torch::pow(*this, n);
+  return torch::pow(*this, n.to(*this));
 }
 
 Scalar

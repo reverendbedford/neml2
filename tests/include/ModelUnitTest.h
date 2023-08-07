@@ -66,6 +66,7 @@ private:
       vec.set(vals[i], vars[i]);
   }
 
+  void check_all();
   void check_values();
   void check_derivatives(bool first, bool second);
   void check_second_derivatives(bool first, bool second);
@@ -77,6 +78,7 @@ private:
   const bool _check_AD_1st_deriv;
   const bool _check_AD_2nd_deriv;
   const bool _check_AD_derivs;
+  const bool _check_cuda;
 
   LabeledVector _in;
   LabeledVector _out;

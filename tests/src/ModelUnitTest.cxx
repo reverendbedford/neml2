@@ -40,6 +40,7 @@ ModelUnitTest::expected_params()
   params.set<bool>("check_AD_first_derivatives") = true;
   params.set<bool>("check_AD_second_derivatives") = true;
   params.set<bool>("check_AD_derivatives") = true;
+  params.set<bool>("check_cuda") = true;
   params.set<std::vector<LabeledAxisAccessor>>("input_scalar_names");
   params.set<std::vector<CrossRef<Scalar>>>("input_scalar_values");
   params.set<std::vector<LabeledAxisAccessor>>("input_symr2_names");
@@ -66,6 +67,7 @@ ModelUnitTest::ModelUnitTest(const ParameterSet & params)
     _check_AD_1st_deriv(params.get<bool>("check_AD_first_derivatives")),
     _check_AD_2nd_deriv(params.get<bool>("check_AD_second_derivatives")),
     _check_AD_derivs(params.get<bool>("check_AD_derivatives")),
+    _check_cuda(params.get<bool>("check_cuda")),
     _out_rtol(params.get<Real>("output_rel_tol")),
     _out_atol(params.get<Real>("output_abs_tol")),
     _deriv_rtol(params.get<Real>("derivatives_rel_tol")),
@@ -85,6 +87,20 @@ ModelUnitTest::ModelUnitTest(const ParameterSet & params)
 bool
 ModelUnitTest::run()
 {
+  check_all();
+
+  if (_check_cuda && torch::cuda::is_available())
+  {
+    _model.to(torch::kCUDA);
+    check_all();
+  }
+
+  return true;
+}
+
+void
+ModelUnitTest::check_all()
+{
   check_values();
 
   if (_check_1st_deriv)
@@ -101,8 +117,6 @@ ModelUnitTest::run()
 
   if (_check_AD_derivs)
     check_second_derivatives(true, true);
-
-  return true;
 }
 
 void
