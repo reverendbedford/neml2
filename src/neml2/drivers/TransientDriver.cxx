@@ -40,25 +40,31 @@ TransientDriver::expected_params()
   params.set<std::string>("predictor") = "PREVIOUS_STATE";
   params.set<std::string>("save_as");
   params.set<bool>("show_parameters") = false;
+  params.set<std::string>("device") = "cpu";
   return params;
 }
 
 TransientDriver::TransientDriver(const ParameterSet & params)
   : Driver(params),
     _model(Factory::get_object<Model>("Models", params.get<std::string>("model"))),
+    _device(params.get<std::string>("device")),
     _time(params.get<CrossRef<torch::Tensor>>("times")),
     _step_count(0),
     _time_name(params.get<LabeledAxisAccessor>("time")),
     _nsteps(_time.sizes()[0]),
     _nbatch(_time.sizes()[1]),
-    _in(_nbatch, {&_model.input()}),
-    _out(_nbatch, {&_model.output()}),
+    _in(LabeledVector::zeros(_nbatch, {&_model.input()})),
+    _out(LabeledVector::zeros(_nbatch, {&_model.output()})),
     _predictor(params.get<std::string>("predictor")),
     _save_as(params.get<std::string>("save_as")),
     _show_params(params.get<bool>("show_parameters")),
-    _result_in(TorchShape{_nsteps, _nbatch}, {&_model.input()}),
-    _result_out(TorchShape{_nsteps, _nbatch}, {&_model.output()})
+    _result_in(LabeledTensor<2, 1>::zeros({_nsteps, _nbatch}, {&_model.input()})),
+    _result_out(LabeledTensor<2, 1>::zeros({_nsteps, _nbatch}, {&_model.output()}))
 {
+  _model.to(_device);
+  _in = _in.to(_device);
+  _out = _out.to(_device);
+  _time = _time.to(_device);
 }
 
 void

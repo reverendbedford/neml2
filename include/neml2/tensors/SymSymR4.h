@@ -41,6 +41,10 @@ public:
   static SymSymR4 init_identity_vol(const torch::TensorOptions & options = default_tensor_options);
   static SymSymR4 init_identity_dev(const torch::TensorOptions & options = default_tensor_options);
   static SymSymR4 init_isotropic_E_nu(const Scalar & E, const Scalar & nu);
+  static SymSymR4
+  init_isotropic_E_nu(const Real & E,
+                      const Real & nu,
+                      const torch::TensorOptions & options = default_tensor_options);
   /// @}
 
   // Negation
@@ -50,15 +54,23 @@ public:
   SymSymR4 inverse() const;
 };
 
+SymSymR4 operator+(const SymSymR4 & a, const Real & b);
+SymSymR4 operator+(const Real & a, const SymSymR4 & b);
 SymSymR4 operator+(const SymSymR4 & a, const SymSymR4 & b);
 
+SymSymR4 operator-(const SymSymR4 & a, const Real & b);
+SymSymR4 operator-(const Real & a, const SymSymR4 & b);
 SymSymR4 operator-(const SymSymR4 & a, const SymSymR4 & b);
 
+SymSymR4 operator*(const SymSymR4 & a, const Real & b);
+SymSymR4 operator*(const Real & a, const SymSymR4 & b);
 SymSymR4 operator*(const SymSymR4 & a, const Scalar & b);
 SymSymR4 operator*(const Scalar & a, const SymSymR4 & b);
 SymR2 operator*(const SymSymR4 & a, const SymR2 & b);
 SymR2 operator*(const SymR2 & a, const SymSymR4 & b);
 SymSymR4 operator*(const SymSymR4 & a, const SymSymR4 & b);
 
+SymSymR4 operator/(const SymSymR4 & a, const Real & b);
+SymSymR4 operator/(const Real & a, const SymSymR4 & b);
 SymSymR4 operator/(const SymSymR4 & a, const Scalar & b);
 } // namespace neml2

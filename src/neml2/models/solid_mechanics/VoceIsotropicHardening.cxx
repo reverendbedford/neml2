@@ -39,8 +39,10 @@ VoceIsotropicHardening::expected_params()
 
 VoceIsotropicHardening::VoceIsotropicHardening(const ParameterSet & params)
   : IsotropicHardening(params),
-    _R(register_parameter("R", Scalar(params.get<Real>("saturated_hardening")), false)),
-    _d(register_parameter("d", Scalar(params.get<Real>("saturation_rate")), false))
+    _R(register_parameter(
+        "R", Scalar(params.get<Real>("saturated_hardening"), default_tensor_options), false)),
+    _d(register_parameter(
+        "d", Scalar(params.get<Real>("saturation_rate"), default_tensor_options), false))
 {
 }
 
@@ -53,7 +55,7 @@ VoceIsotropicHardening::set_value(const LabeledVector & in,
   auto ep = in.get<Scalar>(equivalent_plastic_strain);
 
   if (out)
-    out->set(_R * (1.0 - exp(-_d * ep)), isotropic_hardening);
+    out->set(_R * (-exp(-_d * ep) + 1.0), isotropic_hardening);
 
   if (dout_din)
     dout_din->set(_R * _d * exp(-_d * ep), isotropic_hardening, equivalent_plastic_strain);

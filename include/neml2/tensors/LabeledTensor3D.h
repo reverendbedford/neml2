@@ -38,6 +38,10 @@ public:
   /// Conversion from LabeledTensor
   LabeledTensor3D(const LabeledTensor<1, 3> & other);
 
+  static LabeledTensor3D zeros(TorchShapeRef batch_size,
+                               const std::vector<const LabeledAxis *> & axes,
+                               const torch::TensorOptions & options = default_tensor_options);
+
   /// Since we assume a flat batch for now, we can define this convenient method to retrive the single batch size.
   TorchSize batch_size() const { return tensor().batch_sizes()[0]; }
 

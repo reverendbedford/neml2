@@ -106,7 +106,7 @@ ImplicitUpdate::set_value(const LabeledVector & in,
     // Use the implicit function theorem to calculate the other derivatives
     if (dout_din)
     {
-      LabeledVector implicit_in(nbatch, {&_model.input()}, options);
+      auto implicit_in = LabeledVector::zeros(nbatch, {&_model.input()}, options);
       implicit_in.fill(in);
       implicit_in.set(sol, "state");
 

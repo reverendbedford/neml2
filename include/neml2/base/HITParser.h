@@ -34,7 +34,8 @@ class HITParser : public Parser
 public:
   HITParser() = default;
 
-  virtual ParameterCollection parse(const std::string & filename) const;
+  virtual ParameterCollection parse(const std::string & filename,
+                                    const std::string & additional_input = "") const;
   virtual ParameterSet extract_object_parameters(hit::Node * object) const;
 
 private:

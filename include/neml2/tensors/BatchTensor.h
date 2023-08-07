@@ -73,6 +73,8 @@ public:
   /// Construct from existing tensor, no batch dimensions
   BatchTensor(const torch::Tensor & tensor);
 
+  BatchTensor(Real) = delete;
+
   /// Make an empty batched tensor given batch size and base size
   BatchTensor(TorchShapeRef batch_size,
               TorchShapeRef base_size,
@@ -117,6 +119,9 @@ public:
 
   /// Negation
   BatchTensor<N> operator-() const;
+
+  /// Raise to a power
+  BatchTensor<N> pow(const BatchTensor<N> & n) const;
 
   /// Identity
   static BatchTensor<N> identity(TorchSize n,
@@ -268,9 +273,30 @@ BatchTensor<N>::operator-() const
 
 template <TorchSize N>
 BatchTensor<N>
+BatchTensor<N>::pow(const BatchTensor<N> & n) const
+{
+  return torch::pow(*this, n);
+}
+
+template <TorchSize N>
+BatchTensor<N>
 BatchTensor<N>::identity(TorchSize n, const torch::TensorOptions & options)
 {
   return torch::eye(n, options).index(TorchSlice(N, torch::indexing::None));
+}
+
+template <TorchSize N>
+BatchTensor<N>
+operator+(const BatchTensor<N> & a, const Real & b)
+{
+  return torch::operator+(a, b);
+}
+
+template <TorchSize N>
+BatchTensor<N>
+operator+(const Real & a, const BatchTensor<N> & b)
+{
+  return torch::operator+(a, b);
 }
 
 template <TorchSize N>
@@ -282,6 +308,20 @@ operator+(const BatchTensor<N> & a, const BatchTensor<N> & b)
 
 template <TorchSize N>
 BatchTensor<N>
+operator-(const BatchTensor<N> & a, const Real & b)
+{
+  return torch::operator-(a, b);
+}
+
+template <TorchSize N>
+BatchTensor<N>
+operator-(const Real & a, const BatchTensor<N> & b)
+{
+  return torch::operator-(a, b);
+}
+
+template <TorchSize N>
+BatchTensor<N>
 operator-(const BatchTensor<N> & a, const BatchTensor<N> & b)
 {
   return torch::operator-(a, b);
@@ -289,9 +329,37 @@ operator-(const BatchTensor<N> & a, const BatchTensor<N> & b)
 
 template <TorchSize N>
 BatchTensor<N>
+operator*(const BatchTensor<N> & a, const Real & b)
+{
+  return torch::operator*(a, b);
+}
+
+template <TorchSize N>
+BatchTensor<N>
+operator*(const Real & a, const BatchTensor<N> & b)
+{
+  return torch::operator*(a, b);
+}
+
+template <TorchSize N>
+BatchTensor<N>
 operator*(const BatchTensor<N> & a, const BatchTensor<N> & b)
 {
   return torch::operator*(a, b);
+}
+
+template <TorchSize N>
+BatchTensor<N>
+operator/(const BatchTensor<N> & a, const Real & b)
+{
+  return torch::operator/(a, b);
+}
+
+template <TorchSize N>
+BatchTensor<N>
+operator/(const Real & a, const BatchTensor<N> & b)
+{
+  return torch::operator/(a, b);
 }
 
 template <TorchSize N>

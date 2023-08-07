@@ -49,11 +49,32 @@ LinearElasticity::LinearElasticity(const ParameterSet & params)
     _rate_form(params.get<bool>("rate_form")),
     _strain(params.get<LabeledAxisAccessor>("strain").with_suffix(_rate_form ? "_rate" : "")),
     _stress(params.get<LabeledAxisAccessor>("stress").with_suffix(_rate_form ? "_rate" : "")),
-    from(declare_input_variable<SymR2>(_compliance ? _stress : _strain)),
-    to(declare_output_variable<SymR2>(_compliance ? _strain : _stress))
+    from_var(declare_input_variable<SymR2>(_compliance ? _stress : _strain)),
+    to_var(declare_output_variable<SymR2>(_compliance ? _strain : _stress))
 {
   setup();
 
+  _T = transformation_tensor();
+}
+
+void
+LinearElasticity::to(torch::Device device, torch::Dtype dtype, bool non_blocking)
+{
+  torch::nn::Module::to(device, dtype, non_blocking);
+  _T = transformation_tensor();
+}
+
+void
+LinearElasticity::to(torch::Dtype dtype, bool non_blocking)
+{
+  torch::nn::Module::to(dtype, non_blocking);
+  _T = transformation_tensor();
+}
+
+void
+LinearElasticity::to(torch::Device device, bool non_blocking)
+{
+  torch::nn::Module::to(device, non_blocking);
   _T = transformation_tensor();
 }
 
@@ -71,10 +92,10 @@ LinearElasticity::set_value(const LabeledVector & in,
                             LabeledTensor3D * d2out_din2) const
 {
   if (out)
-    out->set(_T * in.get<SymR2>(from), to);
+    out->set(_T * in.get<SymR2>(from_var), to_var);
 
   if (dout_din)
-    dout_din->set(_T, to, from);
+    dout_din->set(_T, to_var, from_var);
 
   if (d2out_din2)
   {

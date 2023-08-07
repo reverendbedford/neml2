@@ -36,6 +36,10 @@ public:
 
   LinearElasticity(const ParameterSet & params);
 
+  virtual void to(torch::Device device, torch::Dtype dtype, bool non_blocking = false) override;
+  virtual void to(torch::Dtype dtype, bool non_blocking = false) override;
+  virtual void to(torch::Device device, bool non_blocking = false) override;
+
 protected:
   virtual void set_value(const LabeledVector & in,
                          LabeledVector * out,
@@ -55,7 +59,7 @@ protected:
   SymSymR4 _T;
 
 public:
-  const LabeledAxisAccessor from;
-  const LabeledAxisAccessor to;
+  const LabeledAxisAccessor from_var;
+  const LabeledAxisAccessor to_var;
 };
 } // namespace neml2

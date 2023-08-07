@@ -59,6 +59,8 @@ SolidMechanicsDriver::SolidMechanicsDriver(const ParameterSet & params)
     throw NEMLException("Unsupported control type.");
   // LCOV_EXCL_STOP
 
+  _driving_force = _driving_force.to(_device);
+
   check_integrity();
 }
 

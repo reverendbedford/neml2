@@ -35,6 +35,14 @@ LabeledMatrix::LabeledMatrix(const LabeledTensor<1, 2> & other)
 }
 
 LabeledMatrix
+LabeledMatrix::zeros(TorchShapeRef batch_size,
+                     const std::vector<const LabeledAxis *> & axes,
+                     const torch::TensorOptions & options)
+{
+  return LabeledTensor<1, 2>::zeros(batch_size, axes, options);
+}
+
+LabeledMatrix
 LabeledMatrix::identity(TorchSize nbatch,
                         const LabeledAxis & axis,
                         const torch::TensorOptions & options)

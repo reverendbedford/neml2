@@ -62,7 +62,7 @@ CrossRef<Scalar>::operator Scalar() const
   try
   {
     // If it is just a number, we can still create a Scalar out of it
-    return Scalar(utils::parse<Real>(_raw_str));
+    return Scalar(utils::parse<Real>(_raw_str), default_tensor_options);
   }
   catch (const ParserException & e)
   {

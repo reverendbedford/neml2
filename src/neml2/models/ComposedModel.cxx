@@ -195,7 +195,7 @@ ComposedModel::set_value(const LabeledVector & in,
     // Follow the (sorted) evaluation order to evaluate all the models
     for (auto i : _evaluation_order)
     {
-      LabeledVector pin(nbatch, {&i->input()}, options);
+      auto pin = LabeledVector::zeros(nbatch, {&i->input()}, options);
       pin.fill(in);
 
       // All the dependencies must have been cached, as we have sorted out the evaluation order
@@ -228,8 +228,8 @@ ComposedModel::set_value(const LabeledVector & in,
     // Follow the (sorted) evaluation order to evaluate all the models
     for (auto i : _evaluation_order)
     {
-      LabeledVector pin(nbatch, {&i->input()}, options);
-      LabeledMatrix dpin_din(nbatch, {&i->input(), &input()}, options);
+      auto pin = LabeledVector::zeros(nbatch, {&i->input()}, options);
+      auto dpin_din = LabeledMatrix::zeros(nbatch, {&i->input(), &input()}, options);
       pin.fill(in);
       dpin_din.fill(din_din);
 
@@ -273,9 +273,9 @@ ComposedModel::set_value(const LabeledVector & in,
     // Follow the (sorted) evaluation order to evaluate all the models
     for (auto i : _evaluation_order)
     {
-      LabeledVector pin(nbatch, {&i->input()}, options);
-      LabeledMatrix dpin_din(nbatch, {&i->input(), &input()}, options);
-      LabeledTensor3D d2pin_din2(nbatch, {&i->input(), &input(), &input()}, options);
+      auto pin = LabeledVector::zeros(nbatch, {&i->input()}, options);
+      auto dpin_din = LabeledMatrix::zeros(nbatch, {&i->input(), &input()}, options);
+      auto d2pin_din2 = LabeledTensor3D::zeros(nbatch, {&i->input(), &input(), &input()}, options);
       pin.fill(in);
       dpin_din.fill(din_din);
 

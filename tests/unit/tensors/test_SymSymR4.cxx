@@ -51,20 +51,20 @@ TEST_CASE("SymSymR4", "[SymSymR4]")
   SECTION("initialize volumetric identity")
   {
     SymSymR4 result = SymSymR4::init_identity_vol();
-    SymSymR4 correct(torch::tensor({{{1, 1, 1, 0, 0, 0},
-                                     {1, 1, 1, 0, 0, 0},
-                                     {1, 1, 1, 0, 0, 0},
-                                     {0, 0, 0, 0, 0, 0},
-                                     {0, 0, 0, 0, 0, 0},
-                                     {0, 0, 0, 0, 0, 0}}},
-                                   default_tensor_options) /
-                     3);
+    SymSymR4 correct(BatchTensor<1>(torch::tensor({{{1, 1, 1, 0, 0, 0},
+                                                    {1, 1, 1, 0, 0, 0},
+                                                    {1, 1, 1, 0, 0, 0},
+                                                    {0, 0, 0, 0, 0, 0},
+                                                    {0, 0, 0, 0, 0, 0},
+                                                    {0, 0, 0, 0, 0, 0}}},
+                                                  default_tensor_options)) /
+                     3.0);
     REQUIRE(torch::allclose(result, correct));
     // An additional sanity check: the volumetric identity tensor is a projector, hence
     REQUIRE(torch::allclose(result * result, result));
     // Yet another sanity check: the volumetric identity tensor should project a second order tensor
     // onto its volumetric part, hence
-    SymR2 A = SymR2::init(Scalar(3), Scalar(2), Scalar(1), Scalar(5), Scalar(6), Scalar(7));
+    SymR2 A = SymR2::init(3, 2, 1, 5, 6, 7);
     REQUIRE(torch::allclose(result * A, A.vol()));
   }
 
@@ -83,7 +83,7 @@ TEST_CASE("SymSymR4", "[SymSymR4]")
     REQUIRE(torch::allclose(result * result, result));
     // Yet another sanity check: the deviatoric identity tensor should project a second order tensor
     // onto its deviatoric part, hence
-    SymR2 A = SymR2::init(Scalar(3), Scalar(2), Scalar(1), Scalar(5), Scalar(6), Scalar(7));
+    SymR2 A = SymR2::init(3, 2, 1, 5, 6, 7);
     REQUIRE(torch::allclose(result * A, A.dev()));
   }
 
@@ -91,8 +91,8 @@ TEST_CASE("SymSymR4", "[SymSymR4]")
   {
     SECTION("unbatched")
     {
-      Scalar E(100);
-      Scalar nu(0.3);
+      Scalar E(100, default_tensor_options);
+      Scalar nu(0.3, default_tensor_options);
       SymSymR4 result = SymSymR4::init_isotropic_E_nu(E, nu);
       SymSymR4 correct(torch::tensor({{{134.6154, 57.6923, 57.6923, 0.0000, 0.0000, 0.0000},
                                        {57.6923, 134.6154, 57.6923, 0.0000, 0.0000, 0.0000},
@@ -105,8 +105,8 @@ TEST_CASE("SymSymR4", "[SymSymR4]")
     }
     SECTION("batched")
     {
-      Scalar E(torch::tensor({{100}, {200}}));
-      Scalar nu(torch::tensor({{0.3}, {0.25}}));
+      Scalar E(torch::tensor({{100}, {200}}, default_tensor_options));
+      Scalar nu(torch::tensor({{0.3}, {0.25}}, default_tensor_options));
       SymSymR4 result = SymSymR4::init_isotropic_E_nu(E, nu);
       SymSymR4 correct(torch::tensor({{{134.6154, 57.6923, 57.6923, 0.0000, 0.0000, 0.0000},
                                        {57.6923, 134.6154, 57.6923, 0.0000, 0.0000, 0.0000},
@@ -127,7 +127,7 @@ TEST_CASE("SymSymR4", "[SymSymR4]")
 
   SECTION("ijkl,kl->ij")
   {
-    SymSymR4 C_unbatched = SymSymR4::init_isotropic_E_nu(Scalar(100), Scalar(0.25));
+    SymSymR4 C_unbatched = SymSymR4::init_isotropic_E_nu(100, 0.25);
     SymSymR4 I_unbatched = SymSymR4::init_identity_sym();
     SymSymR4 C_batched = C_unbatched.batch_expand(2);
     SymSymR4 I_batched = I_unbatched.batch_expand(2);

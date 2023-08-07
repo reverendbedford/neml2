@@ -22,30 +22,37 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#define CATCH_CONFIG_ENABLE_BENCHMARKING
+
+#include <catch2/catch.hpp>
+
 #include "utils.h"
+#include "neml2/drivers/Driver.h"
 
 using namespace neml2;
 
-void
-load_model(const std::string & path, const std::string & additional_input, ParserType ptype)
+TEST_CASE("Chaboche CPU")
 {
-  // We are being forward looking here
-  if (ptype == ParserType::AUTO)
-  {
-    if (utils::ends_with(path, ".i"))
-      ptype = ParserType::HIT;
-    else if (utils::ends_with(path, ".xml"))
-      ptype = ParserType::XML;
-    else if (utils::ends_with(path, ".yml"))
-      ptype = ParserType::YAML;
-  }
+  std::vector<TorchSize> nbatches = {1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192};
 
-  // but for now we only support HIT
-  if (ptype == ParserType::HIT)
+  for (TorchSize nbatch : nbatches)
   {
-    HITParser parser;
-    parser.parse_and_manufacture(path, additional_input);
+    const auto config = "nbatch=" + utils::stringify(nbatch) + " device=cpu";
+    load_model("benchmark/chaboche.i", config);
+    auto & driver = Factory::get_object<Driver>("Drivers", "driver");
+    BENCHMARK("{" + config + "}") { return driver.run(); };
   }
-  else
-    neml_assert(false, "Unsupported parser type");
+}
+
+TEST_CASE("Chaboche CUDA")
+{
+  std::vector<TorchSize> nbatches = {1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192};
+
+  for (TorchSize nbatch : nbatches)
+  {
+    const auto config = "nbatch=" + utils::stringify(nbatch) + " device=cuda";
+    load_model("benchmark/chaboche.i", config);
+    auto & driver = Factory::get_object<Driver>("Drivers", "driver");
+    BENCHMARK("{" + config + "}") { return driver.run(); };
+  }
 }

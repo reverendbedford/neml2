@@ -138,7 +138,7 @@ Model::dparam(const LabeledVector & out, const std::string & param) const
 LabeledVector
 Model::value(const LabeledVector & in) const
 {
-  LabeledVector out(in.batch_size(), {&output()}, in.options());
+  auto out = LabeledVector::zeros(in.batch_size(), {&output()}, in.options());
   set_value(in, &out);
   return out;
 }
@@ -149,10 +149,10 @@ Model::dvalue(const LabeledVector & in) const
   if (_AD_1st_deriv)
     return std::get<1>(value_and_dvalue(in));
 
-  LabeledMatrix dout_din(in.batch_size(), {&output(), &in.axis()}, in.options());
+  auto dout_din = LabeledMatrix::zeros(in.batch_size(), {&output(), &in.axis()}, in.options());
   if (implicit())
   {
-    LabeledVector out(in.batch_size(), {&output()}, in.options());
+    auto out = LabeledVector::zeros(in.batch_size(), {&output()}, in.options());
     set_value(in, &out, &dout_din);
   }
   else
@@ -169,7 +169,8 @@ Model::d2value(const LabeledVector & in) const
   if (_AD_2nd_deriv)
     return std::get<2>(value_and_dvalue_and_d2value(in));
 
-  LabeledTensor3D d2out_din2(in.batch_size(), {&output(), &in.axis(), &in.axis()}, in.options());
+  auto d2out_din2 =
+      LabeledTensor3D::zeros(in.batch_size(), {&output(), &in.axis(), &in.axis()}, in.options());
   set_value(in, nullptr, nullptr, &d2out_din2);
   return d2out_din2;
 }
@@ -177,8 +178,8 @@ Model::d2value(const LabeledVector & in) const
 std::tuple<LabeledVector, LabeledMatrix>
 Model::value_and_dvalue(const LabeledVector & in) const
 {
-  LabeledVector out(in.batch_size(), {&output()}, in.options());
-  LabeledMatrix dout_din(in.batch_size(), {&output(), &in.axis()}, in.options());
+  auto out = LabeledVector::zeros(in.batch_size(), {&output()}, in.options());
+  auto dout_din = LabeledMatrix::zeros(in.batch_size(), {&output(), &in.axis()}, in.options());
 
   if (_AD_1st_deriv)
   {
@@ -222,8 +223,9 @@ Model::dvalue_and_d2value(const LabeledVector & in) const
     return {dval, d2val};
   }
 
-  LabeledMatrix dout_din(in.batch_size(), {&output(), &in.axis()}, in.options());
-  LabeledTensor3D d2out_din2(in.batch_size(), {&output(), &in.axis(), &in.axis()}, in.options());
+  auto dout_din = LabeledMatrix::zeros(in.batch_size(), {&output(), &in.axis()}, in.options());
+  auto d2out_din2 =
+      LabeledTensor3D::zeros(in.batch_size(), {&output(), &in.axis(), &in.axis()}, in.options());
   set_value(in, nullptr, &dout_din, &d2out_din2);
   return {dout_din, d2out_din2};
 }
@@ -234,9 +236,10 @@ Model::value_and_dvalue_and_d2value(const LabeledVector & in) const
   neml_assert_dbg(
       !implicit(), name(), " is an implicit model and does not provide second derivatives.");
 
-  LabeledVector out(in.batch_size(), {&output()}, in.options());
-  LabeledMatrix dout_din(in.batch_size(), {&output(), &in.axis()}, in.options());
-  LabeledTensor3D d2out_din2(in.batch_size(), {&output(), &in.axis(), &in.axis()}, in.options());
+  auto out = LabeledVector::zeros(in.batch_size(), {&output()}, in.options());
+  auto dout_din = LabeledMatrix::zeros(in.batch_size(), {&output(), &in.axis()}, in.options());
+  auto d2out_din2 =
+      LabeledTensor3D::zeros(in.batch_size(), {&output(), &in.axis(), &in.axis()}, in.options());
 
   if (_AD_2nd_deriv)
   {
@@ -316,7 +319,7 @@ Model::set_residual(BatchTensor<1> x, BatchTensor<1> * r, BatchTensor<1> * J) co
   const auto options = x.options();
   const auto nbatch = x.batch_sizes()[0];
 
-  LabeledVector in(nbatch, {&input()}, options);
+  auto in = LabeledVector::zeros(nbatch, {&input()}, options);
 
   // Fill in the current trial state and cached (fixed) forces, old forces, old state
   in.fill(_cached_in);

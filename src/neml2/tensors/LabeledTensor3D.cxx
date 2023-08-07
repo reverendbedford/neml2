@@ -34,6 +34,14 @@ LabeledTensor3D::LabeledTensor3D(const LabeledTensor<1, 3> & other)
 {
 }
 
+LabeledTensor3D
+LabeledTensor3D::zeros(TorchShapeRef batch_size,
+                       const std::vector<const LabeledAxis *> & axes,
+                       const torch::TensorOptions & options)
+{
+  return LabeledTensor<1, 3>::zeros(batch_size, axes, options);
+}
+
 void
 LabeledTensor3D::accumulate(const LabeledTensor3D & other, bool recursive)
 {

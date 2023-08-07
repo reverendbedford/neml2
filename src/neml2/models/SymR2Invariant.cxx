@@ -71,7 +71,7 @@ SymR2Invariant::set_value(const LabeledVector & in,
   else if (_type == "I2")
   {
     if (out)
-      out->set((A.tr() * A.tr() - A.inner(A)) / 2, invariant);
+      out->set((A.tr() * A.tr() - A.inner(A)) / 2.0, invariant);
     if (dout_din || d2out_din2)
     {
       auto I2 = SymR2::identity(options);

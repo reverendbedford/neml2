@@ -48,10 +48,10 @@ ChabochePlasticHardening::ChabochePlasticHardening(const ParameterSet & params)
     flow_direction(
         declare_input_variable<SymR2>(params.get<LabeledAxisAccessor>("flow_direction"))),
     back_stress_rate(declare_output_variable<SymR2>(back_stress.with_suffix("_rate"))),
-    _C(register_parameter("C", Scalar(params.get<Real>("C")), false)),
-    _g(register_parameter("g", Scalar(params.get<Real>("g")), false)),
-    _A(register_parameter("A", Scalar(params.get<Real>("A")), false)),
-    _a(register_parameter("a", Scalar(params.get<Real>("a")), false))
+    _C(register_parameter("C", Scalar(params.get<Real>("C"), default_tensor_options), false)),
+    _g(register_parameter("g", Scalar(params.get<Real>("g"), default_tensor_options), false)),
+    _A(register_parameter("A", Scalar(params.get<Real>("A"), default_tensor_options), false)),
+    _a(register_parameter("a", Scalar(params.get<Real>("a"), default_tensor_options), false))
 {
   setup();
 }

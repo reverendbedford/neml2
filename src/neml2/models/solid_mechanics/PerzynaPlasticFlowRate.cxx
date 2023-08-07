@@ -39,8 +39,9 @@ PerzynaPlasticFlowRate::expected_params()
 
 PerzynaPlasticFlowRate::PerzynaPlasticFlowRate(const ParameterSet & params)
   : PlasticFlowRate(params),
-    _eta(register_parameter("eta", Scalar(params.get<Real>("reference_stress")), false)),
-    _n(register_parameter("n", Scalar(params.get<Real>("exponent")), false))
+    _eta(register_parameter(
+        "eta", Scalar(params.get<Real>("reference_stress"), default_tensor_options), false)),
+    _n(register_parameter("n", Scalar(params.get<Real>("exponent"), default_tensor_options), false))
 {
 }
 

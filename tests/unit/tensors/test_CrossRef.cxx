@@ -49,7 +49,7 @@ TEST_CASE("Cross-reference other tensors", "[CrossRef]")
   {
     CrossRef<Scalar> a;
     a = "3";
-    REQUIRE(torch::allclose(Scalar(a), Scalar(3)));
+    REQUIRE(torch::allclose(Scalar(a), Scalar(3.0, default_tensor_options)));
   }
 
   SECTION("empty scalar")

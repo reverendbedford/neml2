@@ -34,10 +34,12 @@ public:
   Parser() = default;
 
   /// Deserialize a file, extract parameter collection, and manufacture all objects
-  virtual void parse_and_manufacture(const std::string & filename);
+  virtual void parse_and_manufacture(const std::string & filename,
+                                     const std::string & additional_input = "");
 
   /// Deserialize a file given filename
-  virtual ParameterCollection parse(const std::string & filename) const = 0;
+  virtual ParameterCollection parse(const std::string & filename,
+                                    const std::string & additional_input = "") const = 0;
 };
 
 } // namespace neml2

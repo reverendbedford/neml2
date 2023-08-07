@@ -38,6 +38,10 @@ public:
   /// Conversion from LabeledTensor
   LabeledMatrix(const LabeledTensor<1, 2> & other);
 
+  static LabeledMatrix zeros(TorchShapeRef batch_size,
+                             const std::vector<const LabeledAxis *> & axes,
+                             const torch::TensorOptions & options = default_tensor_options);
+
   /// Construct an identity
   static LabeledMatrix identity(TorchSize nbatch,
                                 const LabeledAxis & axis,

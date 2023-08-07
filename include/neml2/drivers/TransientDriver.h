@@ -58,6 +58,7 @@ protected:
   virtual void output() const;
 
   Model & _model;
+  const torch::Device _device;
 
   torch::Tensor _time;
   TorchSize _step_count;

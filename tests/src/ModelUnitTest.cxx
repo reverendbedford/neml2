@@ -75,11 +75,11 @@ ModelUnitTest::ModelUnitTest(const ParameterSet & params)
     _secderiv_rtol(params.get<Real>("second_derivatives_rel_tol")),
     _secderiv_atol(params.get<Real>("second_derivatives_abs_tol"))
 {
-  _in = LabeledVector(_nbatch, {&_model.input()});
+  _in = LabeledVector::zeros(_nbatch, {&_model.input()});
   fill_vector<Scalar>(_in, params, "input_scalar_names", "input_scalar_values");
   fill_vector<SymR2>(_in, params, "input_symr2_names", "input_symr2_values");
 
-  _out = LabeledVector(_nbatch, {&_model.output()});
+  _out = LabeledVector::zeros(_nbatch, {&_model.output()});
   fill_vector<Scalar>(_out, params, "output_scalar_names", "output_scalar_values");
   fill_vector<SymR2>(_out, params, "output_symr2_names", "output_symr2_values");
 }
@@ -139,7 +139,7 @@ ModelUnitTest::check_derivatives(bool first, bool second)
 {
   _model.use_AD_derivatives(first, second);
   auto exact = _model.dvalue(_in);
-  auto numerical = LabeledMatrix(_nbatch, {&_model.output(), &_model.input()});
+  auto numerical = LabeledMatrix::zeros(_nbatch, {&_model.output(), &_model.input()});
   finite_differencing_derivative(
       [this](const LabeledVector & x) { return _model.value(x); }, _in, numerical);
   neml_assert(torch::allclose(exact.tensor(), numerical.tensor(), _deriv_rtol, _deriv_atol),
@@ -155,7 +155,8 @@ ModelUnitTest::check_second_derivatives(bool first, bool second)
 {
   _model.use_AD_derivatives(first, second);
   auto exact = _model.d2value(_in);
-  auto numerical = LabeledTensor3D(_nbatch, {&_model.output(), &_model.input(), &_model.input()});
+  auto numerical =
+      LabeledTensor3D::zeros(_nbatch, {&_model.output(), &_model.input(), &_model.input()});
   finite_differencing_derivative(
       [this](const LabeledVector & x) { return _model.dvalue(x); }, _in, numerical);
   neml_assert(torch::allclose(exact.tensor(), numerical.tensor(), _secderiv_rtol, _secderiv_atol),

@@ -39,7 +39,8 @@ LinearKinematicHardening::expected_params()
 
 LinearKinematicHardening::LinearKinematicHardening(const ParameterSet & params)
   : KinematicHardening(params),
-    _H(register_parameter("H", Scalar(params.get<Real>("hardening_modulus")), false))
+    _H(register_parameter(
+        "H", Scalar(params.get<Real>("hardening_modulus"), default_tensor_options), false))
 {
 }
 
