@@ -42,6 +42,12 @@ LabeledTensor3D::zeros(TorchShapeRef batch_size,
   return LabeledTensor<1, 3>::zeros(batch_size, axes, options);
 }
 
+LabeledTensor3D
+LabeledTensor3D::zeros_like(const LabeledTensor3D & other)
+{
+  return LabeledTensor<1, 3>::zeros_like(other);
+}
+
 void
 LabeledTensor3D::accumulate(const LabeledTensor3D & other, bool recursive)
 {

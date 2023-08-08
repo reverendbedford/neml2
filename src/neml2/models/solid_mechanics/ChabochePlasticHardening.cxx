@@ -35,10 +35,10 @@ ChabochePlasticHardening::expected_params()
   ParameterSet params = FlowRule::expected_params();
   params.set<LabeledAxisAccessor>("back_stress") = {{"state", "internal", "X"}};
   params.set<LabeledAxisAccessor>("flow_direction") = {{"state", "internal", "NM"}};
-  params.set<Real>("C");
-  params.set<Real>("g");
-  params.set<Real>("A");
-  params.set<Real>("a");
+  params.set<CrossRef<Scalar>>("C");
+  params.set<CrossRef<Scalar>>("g");
+  params.set<CrossRef<Scalar>>("A");
+  params.set<CrossRef<Scalar>>("a");
   return params;
 }
 
@@ -48,10 +48,10 @@ ChabochePlasticHardening::ChabochePlasticHardening(const ParameterSet & params)
     flow_direction(
         declare_input_variable<SymR2>(params.get<LabeledAxisAccessor>("flow_direction"))),
     back_stress_rate(declare_output_variable<SymR2>(back_stress.with_suffix("_rate"))),
-    _C(register_parameter("C", Scalar(params.get<Real>("C"), default_tensor_options), false)),
-    _g(register_parameter("g", Scalar(params.get<Real>("g"), default_tensor_options), false)),
-    _A(register_parameter("A", Scalar(params.get<Real>("A"), default_tensor_options), false)),
-    _a(register_parameter("a", Scalar(params.get<Real>("a"), default_tensor_options), false))
+    _C(register_crossref_model_parameter<Scalar>("C", "C")),
+    _g(register_crossref_model_parameter<Scalar>("g", "g")),
+    _A(register_crossref_model_parameter<Scalar>("A", "A")),
+    _a(register_crossref_model_parameter<Scalar>("a", "a"))
 {
   setup();
 }

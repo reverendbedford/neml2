@@ -36,7 +36,7 @@ NEML2Object::expected_params()
 
 NEML2Object::NEML2Object(const ParameterSet & params)
   : torch::nn::Module(params.get<std::string>("name")),
-    ParameterInterface(params)
+    ParameterInterface(params, this)
 {
 }
 } // namespace neml2

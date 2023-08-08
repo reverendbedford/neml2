@@ -49,6 +49,9 @@ public:
                                    const std::vector<const LabeledAxis *> & axes,
                                    const torch::TensorOptions & options = default_tensor_options);
 
+  /// Setup new storage with zeros like another LabeledTensor
+  static LabeledTensor<N, D> zeros_like(const LabeledTensor & other);
+
   /// A potentially dangerous implicit conversion
   // Should we mark it explicit?
   operator torch::Tensor() const { return _tensor; }
@@ -187,6 +190,13 @@ LabeledTensor<N, D>::zeros(TorchShapeRef batch_size,
                  std::back_inserter(s),
                  [](const LabeledAxis * axis) { return axis->storage_size(); });
   return LabeledTensor<N, D>(torch::zeros(utils::add_shapes(batch_size, s), options), axes);
+}
+
+template <TorchSize N, TorchSize D>
+LabeledTensor<N, D>
+LabeledTensor<N, D>::zeros_like(const LabeledTensor<N, D> & other)
+{
+  return LabeledTensor<N, D>(torch::zeros_like(other.tensor()), other.axes());
 }
 
 template <TorchSize N, TorchSize D>

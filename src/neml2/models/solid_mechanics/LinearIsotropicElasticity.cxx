@@ -22,40 +22,54 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/models/solid_mechanics/LinearKinematicHardening.h"
+#include "neml2/models/solid_mechanics/LinearIsotropicElasticity.h"
 #include "neml2/tensors/SymSymR4.h"
 
 namespace neml2
 {
-register_NEML2_object(LinearKinematicHardening);
+register_NEML2_object(LinearIsotropicElasticity);
 
 ParameterSet
-LinearKinematicHardening::expected_params()
+LinearIsotropicElasticity::expected_params()
 {
-  ParameterSet params = KinematicHardening::expected_params();
-  params.set<CrossRef<Scalar>>("hardening_modulus");
+  ParameterSet params = Elasticity::expected_params();
+  params.set<CrossRef<Scalar>>("youngs_modulus");
+  params.set<CrossRef<Scalar>>("poisson_ratio");
   return params;
 }
 
-LinearKinematicHardening::LinearKinematicHardening(const ParameterSet & params)
-  : KinematicHardening(params),
-    _H(register_crossref_model_parameter<Scalar>("H", "hardening_modulus"))
+LinearIsotropicElasticity::LinearIsotropicElasticity(const ParameterSet & params)
+  : Elasticity(params),
+    _E(register_crossref_model_parameter<Scalar>("E", "youngs_modulus")),
+    _nu(register_crossref_model_parameter<Scalar>("nu", "poisson_ratio"))
 {
+  setup();
 }
 
 void
-LinearKinematicHardening::set_value(const LabeledVector & in,
-                                    LabeledVector * out,
-                                    LabeledMatrix * dout_din,
-                                    LabeledTensor3D * d2out_din2) const
+LinearIsotropicElasticity::set_value(const LabeledVector & in,
+                                     LabeledVector * out,
+                                     LabeledMatrix * dout_din,
+                                     LabeledTensor3D * d2out_din2) const
 {
+  // We need to work with the bulk modulus K and the shear modulus G so that the expression for
+  // stiffness and compliance can be unified...
+  auto K = _E / 3 / (1 - 2 * _nu);
+  auto G = _E / 2 / (1 + _nu);
+  auto vol_factor = _compliance ? 1 / (3 * K) : 3 * K;
+  auto dev_factor = _compliance ? 1 / (2 * G) : 2 * G;
+
   if (out)
-    out->set(_H * in(kinematic_plastic_strain), back_stress);
+  {
+    auto from = in.get<SymR2>(from_var);
+    out->set(vol_factor * from.vol() + dev_factor * from.dev(), to_var);
+  }
 
   if (dout_din)
   {
-    auto I = SymR2::identity_map(in.options());
-    dout_din->set(_H * I, back_stress, kinematic_plastic_strain);
+    auto I = SymSymR4::init_identity_vol(in.options());
+    auto J = SymSymR4::init_identity_dev(in.options());
+    dout_din->set(vol_factor * I + dev_factor * J, to_var, from_var);
   }
 
   if (d2out_din2)

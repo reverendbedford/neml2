@@ -93,7 +93,7 @@
     rate_form = true
   []
   [elasticity]
-    type = LinearElasticity
+    type = LinearIsotropicElasticity
     youngs_modulus = 1e5
     poisson_ratio = 0.3
     rate_form = true

@@ -42,6 +42,8 @@ public:
                              const std::vector<const LabeledAxis *> & axes,
                              const torch::TensorOptions & options = default_tensor_options);
 
+  static LabeledMatrix zeros_like(const LabeledMatrix & other);
+
   /// Construct an identity
   static LabeledMatrix identity(TorchSize nbatch,
                                 const LabeledAxis & axis,

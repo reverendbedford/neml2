@@ -1,6 +1,6 @@
 [Models]
   [model]
-    type = LinearElasticity
+    type = LinearIsotropicElasticity
     youngs_modulus = ''
     poisson_ratio = 0.3
   []

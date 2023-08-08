@@ -24,21 +24,16 @@
 
 #pragma once
 
-#include "neml2/models/Model.h"
-#include "neml2/tensors/SymSymR4.h"
+#include "neml2/models/solid_mechanics/Elasticity.h"
 
 namespace neml2
 {
-class LinearElasticity : public Model
+class LinearIsotropicElasticity : public Elasticity
 {
 public:
   static ParameterSet expected_params();
 
-  LinearElasticity(const ParameterSet & params);
-
-  virtual void to(torch::Device device, torch::Dtype dtype, bool non_blocking = false) override;
-  virtual void to(torch::Dtype dtype, bool non_blocking = false) override;
-  virtual void to(torch::Device device, bool non_blocking = false) override;
+  LinearIsotropicElasticity(const ParameterSet & params);
 
 protected:
   virtual void set_value(const LabeledVector & in,
@@ -46,20 +41,6 @@ protected:
                          LabeledMatrix * dout_din = nullptr,
                          LabeledTensor3D * d2out_din2 = nullptr) const override;
 
-  SymSymR4 transformation_tensor() const;
-
   Scalar _E, _nu;
-  const bool _compliance, _rate_form;
-  const LabeledAxisAccessor _strain, _stress;
-
-  /**
-  The fourth order transformation tensor. When `etype == STIFFNESS`, this is the stiffness tensor;
-  when `etype == COMPLIANCE`, this is the compliance tensor.
-  */
-  SymSymR4 _T;
-
-public:
-  const LabeledAxisAccessor from_var;
-  const LabeledAxisAccessor to_var;
 };
 } // namespace neml2

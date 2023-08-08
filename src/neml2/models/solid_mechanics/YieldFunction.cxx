@@ -32,7 +32,7 @@ ParameterSet
 YieldFunction::expected_params()
 {
   ParameterSet params = Model::expected_params();
-  params.set<Real>("yield_stress");
+  params.set<CrossRef<Scalar>>("yield_stress");
   params.set<LabeledAxisAccessor>("stress_measure") = {{"state", "internal", "sm"}};
   params.set<LabeledAxisAccessor>("isotropic_hardening");
   params.set<LabeledAxisAccessor>("yield_function") = {{"state", "internal", "fp"}};
@@ -46,8 +46,7 @@ YieldFunction::YieldFunction(const ParameterSet & params)
     isotropic_hardening(params.get<LabeledAxisAccessor>("isotropic_hardening")),
     yield_function(
         declare_output_variable<Scalar>(params.get<LabeledAxisAccessor>("yield_function"))),
-    _s0(register_parameter(
-        "sy", Scalar(params.get<Real>("yield_stress"), default_tensor_options), false))
+    _s0(register_crossref_model_parameter<Scalar>("sy", "yield_stress"))
 {
   if (!isotropic_hardening.empty())
     declare_input_variable<Scalar>(isotropic_hardening);

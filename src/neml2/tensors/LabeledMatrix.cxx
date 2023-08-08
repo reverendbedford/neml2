@@ -43,6 +43,12 @@ LabeledMatrix::zeros(TorchShapeRef batch_size,
 }
 
 LabeledMatrix
+LabeledMatrix::zeros_like(const LabeledMatrix & other)
+{
+  return LabeledTensor<1, 2>::zeros_like(other);
+}
+
+LabeledMatrix
 LabeledMatrix::identity(TorchSize nbatch,
                         const LabeledAxis & axis,
                         const torch::TensorOptions & options)

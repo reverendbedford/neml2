@@ -58,7 +58,7 @@
     type = ElasticStrain
   []
   [elasticity]
-    type = LinearElasticity
+    type = LinearIsotropicElasticity
     youngs_modulus = 120000
     poisson_ratio = 0.3
   []

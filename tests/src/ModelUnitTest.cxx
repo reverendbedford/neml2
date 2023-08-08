@@ -92,6 +92,7 @@ ModelUnitTest::run()
   if (_check_cuda && torch::cuda::is_available())
   {
     _model.to(torch::kCUDA);
+    _in = _in.to(torch::kCUDA);
     check_all();
   }
 
@@ -123,7 +124,7 @@ void
 ModelUnitTest::check_values()
 {
   auto out = _model.value(_in);
-  neml_assert(utils::allclose(out, _out, _out_rtol, _out_atol),
+  neml_assert(utils::allclose(out, _out.to(out.options()), _out_rtol, _out_atol),
               "The model gives values that are different from expected. The expected labels are:\n",
               _out.axis(0),
               "\nThe model gives the following labels:\n",
@@ -139,7 +140,7 @@ ModelUnitTest::check_derivatives(bool first, bool second)
 {
   _model.use_AD_derivatives(first, second);
   auto exact = _model.dvalue(_in);
-  auto numerical = LabeledMatrix::zeros(_nbatch, {&_model.output(), &_model.input()});
+  auto numerical = LabeledMatrix::zeros_like(exact);
   finite_differencing_derivative(
       [this](const LabeledVector & x) { return _model.value(x); }, _in, numerical);
   neml_assert(torch::allclose(exact.tensor(), numerical.tensor(), _deriv_rtol, _deriv_atol),
@@ -155,8 +156,7 @@ ModelUnitTest::check_second_derivatives(bool first, bool second)
 {
   _model.use_AD_derivatives(first, second);
   auto exact = _model.d2value(_in);
-  auto numerical =
-      LabeledTensor3D::zeros(_nbatch, {&_model.output(), &_model.input(), &_model.input()});
+  auto numerical = LabeledTensor3D::zeros_like(exact);
   finite_differencing_derivative(
       [this](const LabeledVector & x) { return _model.dvalue(x); }, _in, numerical);
   neml_assert(torch::allclose(exact.tensor(), numerical.tensor(), _secderiv_rtol, _secderiv_atol),

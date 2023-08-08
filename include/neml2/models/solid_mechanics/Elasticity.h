@@ -24,48 +24,45 @@
 
 #pragma once
 
-#include <torch/torch.h>
-#include "neml2/base/ParameterSet.h"
-#include "neml2/base/CrossRef.h"
+#include "neml2/models/Model.h"
+#include "neml2/tensors/SymR2.h"
 
 namespace neml2
 {
-class ParameterInterface
+class Elasticity : public Model
 {
 public:
-  ParameterInterface(const ParameterSet & params, torch::nn::Module * object);
+  static ParameterSet expected_params();
 
-  const ParameterSet & input_parameters() const { return _params; }
+  Elasticity(const ParameterSet & params);
 
 protected:
-  template <typename T>
-  T register_model_parameter(const std::string & name, const std::string & input_param_name);
+  /**
+   * Whether this model describes compliance. When set to true, we compute stress (rate) from strain
+   * (rate). When set to false, we compute strain (rate) from stress (rate).
+   */
+  const bool _compliance;
 
-  template <typename T>
-  T register_crossref_model_parameter(const std::string & name,
-                                      const std::string & input_param_name);
+  /// Whether this model is in rate form. If true, a "_rate" suffix is appended to the variables.
+  const bool _rate_form;
 
-private:
-  const ParameterSet & _params;
+  /// The strain (rate) variable accessor
+  const LabeledAxisAccessor _strain;
 
-  torch::nn::Module * _object;
+  /// The stress (rate) variable accessor
+  const LabeledAxisAccessor _stress;
+
+public:
+  /**
+   * The variable accessor for the input. If _compliance == true, this is the stress (rate).
+   * Otherwise this is the strain (rate).
+   */
+  const LabeledAxisAccessor from_var;
+
+  /**
+   * The variable accessor for the output. If _compliance == true, this is the strain (rate).
+   * Otherwise this is the stress (rate).
+   */
+  const LabeledAxisAccessor to_var;
 };
-
-template <typename T>
-T
-ParameterInterface::register_model_parameter(const std::string & name,
-                                             const std::string & input_param_name)
-{
-  return _object->register_parameter(
-      name, _params.get<T>(input_param_name), /*requires_grad=*/false);
-}
-
-template <typename T>
-T
-ParameterInterface::register_crossref_model_parameter(const std::string & name,
-                                                      const std::string & input_param_name)
-{
-  return _object->register_parameter(
-      name, _params.get<CrossRef<T>>(input_param_name), /*requires_grad=*/false);
-}
 } // namespace neml2

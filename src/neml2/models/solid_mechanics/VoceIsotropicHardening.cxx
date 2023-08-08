@@ -32,17 +32,15 @@ ParameterSet
 VoceIsotropicHardening::expected_params()
 {
   ParameterSet params = IsotropicHardening::expected_params();
-  params.set<Real>("saturated_hardening");
-  params.set<Real>("saturation_rate");
+  params.set<CrossRef<Scalar>>("saturated_hardening");
+  params.set<CrossRef<Scalar>>("saturation_rate");
   return params;
 }
 
 VoceIsotropicHardening::VoceIsotropicHardening(const ParameterSet & params)
   : IsotropicHardening(params),
-    _R(register_parameter(
-        "R", Scalar(params.get<Real>("saturated_hardening"), default_tensor_options), false)),
-    _d(register_parameter(
-        "d", Scalar(params.get<Real>("saturation_rate"), default_tensor_options), false))
+    _R(register_crossref_model_parameter<Scalar>("R", "saturated_hardening")),
+    _d(register_crossref_model_parameter<Scalar>("d", "saturation_rate"))
 {
 }
 
