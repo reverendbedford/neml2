@@ -45,7 +45,7 @@ data = pd.read_csv(sys.argv[1]).filter(["device", "nbatch", "mean", "std"])
 
 devices = data["device"].unique()
 
-fig, ax = plt.subplots(figsize=(4, 4))
+fig, ax = plt.subplots(figsize=(6, 4))
 
 for device in devices:
     timings = data.loc[data["device"] == device]
@@ -67,19 +67,12 @@ timing_cuda = data.loc[(data["nbatch"] == max_nbatch) & (data["device"] == "cuda
     "mean"
 ].iloc[0]
 speedup = timing_cpu / timing_cuda
-ax.annotate(
-    "speedup = {:.0f}".format(speedup),
-    (max_nbatch / 2, timing_cuda),
-    xytext=(max_nbatch / 2, timing_cpu / 2),
-    ha="center",
-    va="center",
-    arrowprops=dict(arrowstyle="<->"),
-)
 
 ax.set_xscale("log")
 ax.set_yscale("log")
 ax.set_xlabel("Number of batches")
 ax.set_ylabel(r"Time per iteration ($s$)")
 ax.legend()
+fig.suptitle("Speed up = {:.0f} @ batch size = {:d}".format(speedup, max_nbatch))
 fig.tight_layout()
 fig.savefig(sys.argv[2])

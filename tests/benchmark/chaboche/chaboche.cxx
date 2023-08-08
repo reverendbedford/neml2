@@ -40,7 +40,7 @@ TEST_CASE("Chaboche")
     for (TorchSize nbatch : nbatches)
     {
       const auto config = "nbatch=" + utils::stringify(nbatch) + " device=" + device;
-      load_model("benchmark/chaboche.i", config);
+      load_model("benchmark/chaboche/model.i", config);
       auto & driver = Factory::get_object<Driver>("Drivers", "driver");
       BENCHMARK("{" + config + "}") { return driver.run(); };
     }

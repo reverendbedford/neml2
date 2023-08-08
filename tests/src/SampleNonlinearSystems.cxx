@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 #include "SampleNonlinearSystems.h"
+#include "neml2/tensors/Scalar.h"
 
 using namespace torch::indexing;
 using namespace neml2;
