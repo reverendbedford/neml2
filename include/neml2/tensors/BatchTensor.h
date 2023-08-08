@@ -258,10 +258,16 @@ BatchTensor<N>::batch_expand_copy(TorchShapeRef batch_size) const
                   ". It does not match the number of templated batch dimensions ",
                   N);
 
+#if (TORCH_VERSION_MAJOR > 1 || TORCH_VERSION_MINOR > 10)
   // We don't want to touch the base dimensions, so put -1 for them.
   TorchShape net(batch_size.vec());
   net.insert(net.end(), base_dim(), -1);
   return torch::expand_copy(*this, net);
+#else
+  auto res = torch::empty(utils::add_shapes(batch_size, base_sizes()), options());
+  res.copy_(batch_expand(batch_size));
+  return res;
+#endif
 }
 
 template <TorchSize N>
