@@ -31,28 +31,17 @@
 
 using namespace neml2;
 
-TEST_CASE("Chaboche CPU")
+TEST_CASE("Chaboche")
 {
   std::vector<TorchSize> nbatches = {1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192};
+  std::vector<std::string> devices = {"cpu", "cuda"};
 
-  for (TorchSize nbatch : nbatches)
-  {
-    const auto config = "nbatch=" + utils::stringify(nbatch) + " device=cpu";
-    load_model("benchmark/chaboche.i", config);
-    auto & driver = Factory::get_object<Driver>("Drivers", "driver");
-    BENCHMARK("{" + config + "}") { return driver.run(); };
-  }
-}
-
-TEST_CASE("Chaboche CUDA")
-{
-  std::vector<TorchSize> nbatches = {1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192};
-
-  for (TorchSize nbatch : nbatches)
-  {
-    const auto config = "nbatch=" + utils::stringify(nbatch) + " device=cuda";
-    load_model("benchmark/chaboche.i", config);
-    auto & driver = Factory::get_object<Driver>("Drivers", "driver");
-    BENCHMARK("{" + config + "}") { return driver.run(); };
-  }
+  for (auto && device : devices)
+    for (TorchSize nbatch : nbatches)
+    {
+      const auto config = "nbatch=" + utils::stringify(nbatch) + " device=" + device;
+      load_model("benchmark/chaboche.i", config);
+      auto & driver = Factory::get_object<Driver>("Drivers", "driver");
+      BENCHMARK("{" + config + "}") { return driver.run(); };
+    }
 }
