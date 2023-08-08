@@ -24,34 +24,62 @@
 
 
 import sys
-from pathlib import Path
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 
-data = pd.read_csv(sys.argv[1]).filter(
-    ["test_case", "benchmark", "nbatch", "mean", "low_mean", "high_mean"]
+SMALL_SIZE = 12
+MEDIUM_SIZE = 14
+BIGGER_SIZE = 16
+
+plt.rcParams["text.usetex"] = True
+plt.rc("font", size=SMALL_SIZE)  # controls default text sizes
+plt.rc("axes", titlesize=SMALL_SIZE)  # fontsize of the axes title
+plt.rc("axes", labelsize=MEDIUM_SIZE)  # fontsize of the x and y labels
+plt.rc("xtick", labelsize=SMALL_SIZE)  # fontsize of the tick labels
+plt.rc("ytick", labelsize=SMALL_SIZE)  # fontsize of the tick labels
+plt.rc("legend", fontsize=SMALL_SIZE)  # legend fontsize
+plt.rc("figure", titlesize=BIGGER_SIZE)  # fontsize of the figure title
+
+data = pd.read_csv(sys.argv[1]).filter(["device", "nbatch", "mean", "std"])
+
+devices = data["device"].unique()
+
+fig, ax = plt.subplots(figsize=(4, 4))
+
+for device in devices:
+    timings = data.loc[data["device"] == device]
+    timings = timings.sort_values("nbatch")
+    ax.errorbar(
+        timings["nbatch"],
+        timings["mean"],
+        marker="o",
+        yerr=timings["std"],
+        label=device,
+    )
+
+# Draw an arrow between cpu and cuda to indicate speedup
+max_nbatch = np.max(data["nbatch"])
+timing_cpu = data.loc[(data["nbatch"] == max_nbatch) & (data["device"] == "cpu")][
+    "mean"
+].iloc[0]
+timing_cuda = data.loc[(data["nbatch"] == max_nbatch) & (data["device"] == "cuda")][
+    "mean"
+].iloc[0]
+speedup = timing_cpu / timing_cuda
+ax.annotate(
+    "speedup = {:.0f}".format(speedup),
+    (max_nbatch / 2, timing_cuda),
+    xytext=(max_nbatch / 2, timing_cpu / 2),
+    ha="center",
+    va="center",
+    arrowprops=dict(arrowstyle="<->"),
 )
 
-test_cases = set(data["test_case"])
-
-for test_case in test_cases:
-    print("test case: " + test_case)
-    benchmarks = set(data.loc[(data["test_case"] == test_case)]["benchmark"])
-    for benchmark in benchmarks:
-        print("     benchmark: " + benchmark)
-        fig, ax = plt.subplots(1, 1)
-        fig.suptitle(test_case + "\n" + benchmark)
-        select = data.loc[
-            (data["test_case"] == test_case) & (data["benchmark"] == benchmark)
-        ]
-        ax.plot(select["nbatch"], select["mean"], "o-")
-        ax.set_xscale("log")
-        ax.set_yscale("log")
-        ax.set_xlabel("Number of batches")
-        ax.set_ylabel("Time per iteration [s]")
-        ax.set_aspect("equal", adjustable="datalim")
-        fig.tight_layout()
-        path = Path(sys.argv[2]) / test_case
-        path.mkdir(parents=True, exist_ok=True)
-        plt.savefig(path / (benchmark + ".png"), dpi=300)
-        plt.close()
+ax.set_xscale("log")
+ax.set_yscale("log")
+ax.set_xlabel("Number of batches")
+ax.set_ylabel(r"Time per iteration ($s$)")
+ax.legend()
+fig.tight_layout()
+fig.savefig(sys.argv[2])

@@ -27,5 +27,5 @@
 cd tests
 mkdir -p $3
 ./benchmark_tests $1 --benchmark-samples $2 --use-colour no -o $3/log.txt
-# python ../scripts/extract_timings.py $3/log.txt $3/timings.csv
-# python scripts/analyze_timings.py Testing/Temporary/benchmark_$3.csv benchmark_$3
+python ../scripts/extract_timings.py $3/log.txt $3/timings.csv
+python ../scripts/analyze_timings.py $3/timings.csv $3/timings.png
