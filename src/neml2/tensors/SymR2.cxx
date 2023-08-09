@@ -106,7 +106,7 @@ Scalar
 SymR2::operator()(TorchSize i, TorchSize j) const
 {
   TorchSize a = math::mandel_reverse_index[i][j];
-  return (base_index({a}) / math::mandel_factor(a)).unsqueeze(-1);
+  return base_index({a}) / math::mandel_factor(a);
 }
 
 SymR2

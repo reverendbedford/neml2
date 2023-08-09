@@ -76,10 +76,9 @@ operator+(const Scalar & a, const Scalar & b)
 BatchTensor<1>
 operator+(const BatchTensor<1> & a, const Scalar & b)
 {
-  torch::Tensor tmp = b;
-  for (TorchSize i = 1; i < a.base_dim(); i++)
-    tmp = tmp.unsqueeze(-1);
-  return torch::operator+(a, tmp);
+  TorchSlice net(a.base_dim() - b.base_dim(), torch::indexing::None);
+  net.insert(net.begin(), torch::indexing::Ellipsis);
+  return torch::operator+(a, b.index(net));
 }
 
 BatchTensor<1>
@@ -109,10 +108,9 @@ operator-(const Scalar & a, const Scalar & b)
 BatchTensor<1>
 operator-(const BatchTensor<1> & a, const Scalar & b)
 {
-  torch::Tensor tmp = b;
-  for (TorchSize i = 1; i < a.base_dim(); i++)
-    tmp = tmp.unsqueeze(-1);
-  return torch::operator-(a, tmp);
+  TorchSlice net(a.base_dim() - b.base_dim(), torch::indexing::None);
+  net.insert(net.begin(), torch::indexing::Ellipsis);
+  return torch::operator-(a, b.index(net));
 }
 
 BatchTensor<1>
@@ -142,10 +140,9 @@ operator*(const Scalar & a, const Scalar & b)
 BatchTensor<1>
 operator*(const BatchTensor<1> & a, const Scalar & b)
 {
-  torch::Tensor tmp = b;
-  for (TorchSize i = 1; i < a.base_dim(); i++)
-    tmp = tmp.unsqueeze(-1);
-  return torch::operator*(a, tmp);
+  TorchSlice net(a.base_dim() - b.base_dim(), torch::indexing::None);
+  net.insert(net.begin(), torch::indexing::Ellipsis);
+  return torch::operator*(a, b.index(net));
 }
 
 BatchTensor<1>
@@ -175,19 +172,17 @@ operator/(const Scalar & a, const Scalar & b)
 BatchTensor<1>
 operator/(const BatchTensor<1> & a, const Scalar & b)
 {
-  torch::Tensor tmp = b;
-  for (TorchSize i = 1; i < a.base_dim(); i++)
-    tmp = tmp.unsqueeze(-1);
-  return torch::operator/(a, tmp);
+  TorchSlice net(a.base_dim() - b.base_dim(), torch::indexing::None);
+  net.insert(net.begin(), torch::indexing::Ellipsis);
+  return torch::operator/(a, b.index(net));
 }
 
 BatchTensor<1>
 operator/(const Scalar & a, const BatchTensor<1> & b)
 {
-  torch::Tensor tmp = a;
-  for (TorchSize i = 1; i < a.base_dim(); i++)
-    tmp = tmp.unsqueeze(-1);
-  return torch::operator/(tmp, b);
+  TorchSlice net(b.base_dim() - a.base_dim(), torch::indexing::None);
+  net.insert(net.begin(), torch::indexing::Ellipsis);
+  return torch::operator/(a.index(net), b);
 }
 
 Scalar

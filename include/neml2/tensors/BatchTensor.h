@@ -205,7 +205,9 @@ torch::Tensor
 BatchTensor<N>::batch_index(TorchSlice indices) const
 {
   indices.insert(indices.end(), torch::indexing::Ellipsis);
-  return this->index(indices);
+  indices.insert(indices.end(), base_dim(), torch::indexing::Slice());
+  auto res = this->index(indices);
+  return res.dim() == base_dim() ? res.unsqueeze(0) : res;
 }
 
 template <TorchSize N>
@@ -213,15 +215,16 @@ void
 BatchTensor<N>::batch_index_put(TorchSlice indices, const torch::Tensor & other)
 {
   indices.insert(indices.end(), torch::indexing::Ellipsis);
-  this->index_put_(indices, other);
+  batch_index(indices).copy_(other);
 }
 
 template <TorchSize N>
 BatchTensor<N>
 BatchTensor<N>::base_index(TorchSlice indices) const
 {
-  indices.insert(indices.begin(), torch::indexing::Ellipsis);
-  return this->index(indices);
+  indices.insert(indices.begin(), batch_dim(), torch::indexing::Slice());
+  auto res = this->index(indices);
+  return res.dim() == batch_dim() ? res.unsqueeze(-1) : res;
 }
 
 template <TorchSize N>
@@ -229,7 +232,7 @@ void
 BatchTensor<N>::base_index_put(TorchSlice indices, const torch::Tensor & other)
 {
   indices.insert(indices.begin(), torch::indexing::Ellipsis);
-  this->index_put_(indices, other);
+  base_index(indices).copy_(other);
 }
 
 template <TorchSize N>
@@ -258,16 +261,10 @@ BatchTensor<N>::batch_expand_copy(TorchShapeRef batch_size) const
                   ". It does not match the number of templated batch dimensions ",
                   N);
 
-#if (TORCH_VERSION_MAJOR > 1 || TORCH_VERSION_MINOR > 10)
   // We don't want to touch the base dimensions, so put -1 for them.
-  TorchShape net(batch_size.vec());
-  net.insert(net.end(), base_dim(), -1);
-  return torch::expand_copy(*this, net);
-#else
   auto res = torch::empty(utils::add_shapes(batch_size, base_sizes()), options());
   res.copy_(batch_expand(batch_size));
   return res;
-#endif
 }
 
 template <TorchSize N>
