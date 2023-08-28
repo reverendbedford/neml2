@@ -30,17 +30,40 @@
 
 namespace neml2
 {
+/**
+ * @brief A convenient interface for NEML2Object to work with input parameters.
+ *
+ */
 class ParameterInterface
 {
 public:
   ParameterInterface(const ParameterSet & params, torch::nn::Module * object);
 
+  /// Get the parameters used to generate *this* object.
   const ParameterSet & input_parameters() const { return _params; }
 
 protected:
+  /**
+   * @brief Register a model parameter.
+   *
+   * @tparam T Parameter type. See @ref primitive for supported types.
+   * @param name Name of the model parameter.
+   * @param input_param_name Name of the input parameter that defines the value of the model
+   * parameter.
+   * @return T The value of the registered model parameter.
+   */
   template <typename T>
   T register_model_parameter(const std::string & name, const std::string & input_param_name);
 
+  /**
+   * @brief Register a cross-referenced model parameter.
+   *
+   * @tparam T Parameter type. See @ref primitive for supported types.
+   * @param name Name of the model parameter.
+   * @param input_param_name Name of the input parameter that defines the value of the model
+   * parameter.
+   * @return T The value of the registered model parameter.
+   */
   template <typename T>
   T register_crossref_model_parameter(const std::string & name,
                                       const std::string & input_param_name);

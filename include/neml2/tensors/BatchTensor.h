@@ -63,6 +63,15 @@ einsum(const std::initializer_list<torch::Tensor> & tensors,
   return torch::einsum(equation, tensors);
 }
 
+/**
+ * @brief NEML2's enhanced tensor type.
+ *
+ * BatchTensor derives from torch::Tensor and clearly distinguishes between "batched" dimensions
+ * from other dimensions. The shape of the "batched" dimensions is called the batch size, and the
+ * shape of the rest dimensions is called the base size.
+ *
+ * @tparam N The number of batch dimensions.
+ */
 template <TorchSize N>
 class BatchTensor : public torch::Tensor
 {
@@ -70,17 +79,28 @@ public:
   /// Default constructor, empty with no batch dimensions
   BatchTensor(const torch::TensorOptions & options = default_tensor_options);
 
-  /// Construct from existing tensor, no batch dimensions
+  /// Construct from existing tensor
   BatchTensor(const torch::Tensor & tensor);
 
   BatchTensor(Real) = delete;
 
-  /// Make an empty batched tensor given batch size and base size
+  /**
+   * @brief Make an empty batched tensor given batch size and base size
+   *
+   * @param batch_size Batch size
+   * @param base_size Base size
+   * @param options Tensor options
+   */
   BatchTensor(TorchShapeRef batch_size,
               TorchShapeRef base_size,
               const torch::TensorOptions & options = default_tensor_options);
 
-  /// Make an empty single-batch tensor given base size
+  /**
+   * @brief Make an empty single-batch tensor given base size
+   *
+   * @param base_size Base size
+   * @param options Tensor options
+   */
   BatchTensor(TorchShapeRef base_size,
               const torch::TensorOptions & options = default_tensor_options);
 

@@ -31,6 +31,10 @@ namespace neml2
 {
 class SymSymR4;
 
+/**
+ * @brief The logical symmetric second order tensor with a single batch dimension.
+ *
+ */
 class SymR2 : public FixedDimTensor<1, 6>
 {
 public:
@@ -40,8 +44,6 @@ public:
   [[nodiscard]] static SymSymR4
   identity_map(const torch::TensorOptions & options = default_tensor_options);
 
-  /// Named constructors
-  /// @{
   /// Make zero with batch size 1
   static SymR2 zero(const torch::TensorOptions & options = default_tensor_options);
   /// Fill the diagonals with a11 = a22 = a33 = a
@@ -72,7 +74,6 @@ public:
                     const torch::TensorOptions & options = default_tensor_options);
   /// Identity
   static SymR2 identity(const torch::TensorOptions & options = default_tensor_options);
-  /// @}
 
   /// Accessor
   Scalar operator()(TorchSize i, TorchSize j) const;

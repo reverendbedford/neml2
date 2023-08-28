@@ -37,29 +37,6 @@
 
 namespace neml2
 {
-// We should eventually get rid of all of these
-typedef std::pair<std::string, std::string> KS;
-typedef std::pair<std::string, std::vector<std::string>> KVS;
-typedef std::pair<std::string, std::vector<std::vector<std::string>>> KVVS;
-typedef std::pair<std::string, Real> KR;
-typedef std::pair<std::string, std::vector<Real>> KVR;
-typedef std::pair<std::string, std::vector<std::vector<Real>>> KVVR;
-typedef std::pair<std::string, bool> KB;
-typedef std::pair<std::string, std::vector<bool>> KVB;
-typedef std::pair<std::string, std::vector<std::vector<bool>>> KVVB;
-typedef std::pair<std::string, unsigned int> KU;
-typedef std::pair<std::string, std::vector<unsigned int>> KVU;
-typedef std::pair<std::string, std::vector<std::vector<unsigned int>>> KVVU;
-typedef std::pair<std::string, TorchSize> KT;
-typedef std::pair<std::string, std::vector<TorchSize>> KVT;
-typedef std::pair<std::string, std::vector<std::vector<TorchSize>>> KVVT;
-typedef std::pair<std::string, int> KI;
-typedef std::pair<std::string, std::vector<int>> KVI;
-typedef std::pair<std::string, std::vector<std::vector<int>>> KVVI;
-typedef std::pair<std::string, LabeledAxisAccessor> KL;
-typedef std::pair<std::string, std::vector<LabeledAxisAccessor>> KVL;
-typedef std::pair<std::string, std::vector<std::vector<LabeledAxisAccessor>>> KVVL;
-
 /**
  * Helper functions for printing scalar, vector, vector<vector>. Called from
  * ParameterSet::Parameter<T>::print(...).
@@ -73,6 +50,11 @@ void print_helper(std::ostream & os, const std::vector<P> * param);
 template <typename P>
 void print_helper(std::ostream & os, const std::vector<std::vector<P>> * param);
 
+/**
+ * @brief A custom map-like data structure. The keys are strings, and the values can be
+ * nonhomogeneously typed.
+ *
+ */
 class ParameterSet
 {
 public:
@@ -305,7 +287,9 @@ ParameterSet::print(std::ostream & os) const
 
   while (it != _values.end())
   {
-    os << it->first << "\t ";
+    os << "    - " << it->first << ":\n";
+    os << "        type: " << it->second->type() << '\n';
+    os << "        value: ";
     it->second->print(os);
     if (++it != _values.end())
       os << '\n';

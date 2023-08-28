@@ -1,4 +1,4 @@
-# Mathematical conventions {#math}
+# Mathematical Conventions {#math}
 
 [TOC]
 
@@ -75,5 +75,5 @@ When describing collections of objects the manual uses square brackets. For exam
 \f[
    \left[ \begin{array}{ccc} s & \mathbf{X} & \mathbf{v} \end{array}\right]
 \f]
-indicates a collection of a scalar \f$s\f$, a vector representing a second order tensor \f$\mathbf{x}\f$ in Mandel notation, and a vector \f$\mathbf{v}\f$. These collections are ordered. This notation indicates the implementation is concatenating the quantities into a flat, 1D array (in this case with length \f$1 + 6 + 3 = 10\f$).
+indicates a collection of a scalar \f$s\f$, a vector representing a second order tensor \f$\mathbf{X}\f$ in Mandel notation, and a vector \f$\mathbf{v}\f$. This notation indicates the implementation is concatenating the quantities into a flat, 1D array (in this case with length \f$1 + 6 + 3 = 10\f$) preserving the original order.
 

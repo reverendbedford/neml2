@@ -30,6 +30,16 @@
 
 namespace neml2
 {
+/**
+ * @brief The primary data structure in NEML2 for working with labeled tensor views.
+ *
+ * Each LabeledTensor consists of one BatchTensor and one or more LabeledAxis. The `LabeledTensor<N,
+ * D>` is templated on the batch dimension \f$N\f$ and the base dimension \f$D\f$. LabeledTensor
+ * handles the creation, modification, and accessing of labeled tensors.
+ *
+ * @tparam N The number of batch dimensions
+ * @tparam D The number of base dimensions
+ */
 template <TorchSize N, TorchSize D>
 class LabeledTensor
 {

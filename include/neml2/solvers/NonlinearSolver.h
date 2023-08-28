@@ -29,17 +29,36 @@
 
 namespace neml2
 {
+/**
+ * @brief The nonlinear solver solves a nonlinear system of equations.
+ *
+ */
 class NonlinearSolver : public Solver
 {
 public:
   static ParameterSet expected_params();
 
+  /**
+   * @brief Construct a new NonlinearSolver object
+   *
+   * @param params The parameters extracted from the input file
+   */
   NonlinearSolver(const ParameterSet & params);
 
+  /**
+   * @brief Solve the given nonlinear system.
+   *
+   * @param system The nonlinear system of equations.
+   * @param x0 The initial guess.
+   * @return BatchTensor<1> The solution to the nonlinear system of equations.
+   */
   virtual BatchTensor<1> solve(const NonlinearSystem & system, const BatchTensor<1> & x0) const = 0;
 
+  /// Absolute tolerance
   Real atol;
+  /// Relative tolerance
   Real rtol;
+  /// Maximum number of iterations
   unsigned int miters;
 };
 } // namespace neml2

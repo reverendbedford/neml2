@@ -47,7 +47,7 @@ PROJECT_NAME           = NEML2
 # could be handy for archiving the generated documentation or if some version
 # control system is used.
 
-PROJECT_NUMBER         =
+PROJECT_NUMBER         = 1.2.0
 
 # Using the PROJECT_BRIEF tag one can provide an optional one line description
 # for a project that appears at the top of each page and should give viewer a
@@ -762,14 +762,14 @@ SHOW_USED_FILES        = NO
 # (if specified).
 # The default value is: YES.
 
-SHOW_FILES             = YES
+SHOW_FILES             = NO
 
 # Set the SHOW_NAMESPACES tag to NO to disable the generation of the Namespaces
 # page. This will remove the Namespaces entry from the Quick Index and from the
 # Folder Tree View (if specified).
 # The default value is: YES.
 
-SHOW_NAMESPACES        = YES
+SHOW_NAMESPACES        = NO
 
 # The FILE_VERSION_FILTER tag can be used to specify a program or script that
 # doxygen should invoke to get the current version for each file (typically from
@@ -1023,7 +1023,7 @@ EXCLUDE_PATTERNS       =
 # Note that the wildcards are matched against the file with absolute path, so to
 # exclude all test directories use the pattern */test/*
 
-EXCLUDE_SYMBOLS        =
+EXCLUDE_SYMBOLS        = neml2::internal
 
 # The EXAMPLE_PATH tag can be used to specify one or more files or directories
 # that contain example code fragments that are included (see the \include
@@ -1202,7 +1202,7 @@ VERBATIM_HEADERS       = YES
 # classes, structs, unions or interfaces.
 # The default value is: YES.
 
-ALPHABETICAL_INDEX     = YES
+ALPHABETICAL_INDEX     = NO
 
 # In case all classes in a project start with a common prefix, all classes will
 # be put under the same header in the alphabetical index. The IGNORE_PREFIX tag
@@ -1219,7 +1219,7 @@ IGNORE_PREFIX          =
 # If the GENERATE_HTML tag is set to YES, doxygen will generate HTML output
 # The default value is: YES.
 
-GENERATE_HTML          = YES
+GENERATE_HTML          = NO
 
 # The HTML_OUTPUT tag is used to specify where the HTML docs will be put. If a
 # relative path is entered the value of OUTPUT_DIRECTORY will be put in front of
@@ -1680,7 +1680,7 @@ FORMULA_TRANSPARENT    = YES
 # to create new LaTeX commands to be used in formulas as building blocks. See
 # the section "Including formulas" for details.
 
-FORMULA_MACROFILE      = FormulaMacro
+FORMULA_MACROFILE      =
 
 # Enable the USE_MATHJAX option to render LaTeX formulas using MathJax (see
 # https://www.mathjax.org) which uses client side JavaScript for the rendering
@@ -1852,7 +1852,7 @@ EXTRA_SEARCH_MAPPINGS  =
 # If the GENERATE_LATEX tag is set to YES, doxygen will generate LaTeX output.
 # The default value is: YES.
 
-GENERATE_LATEX         = NO
+GENERATE_LATEX         = YES
 
 # The LATEX_OUTPUT tag is used to specify where the LaTeX docs will be put. If a
 # relative path is entered the value of OUTPUT_DIRECTORY will be put in front of
@@ -1872,7 +1872,7 @@ LATEX_OUTPUT           = latex
 # the output language.
 # This tag requires that the tag GENERATE_LATEX is set to YES.
 
-LATEX_CMD_NAME         = latex
+LATEX_CMD_NAME         = pdflatex
 
 # The MAKEINDEX_CMD_NAME tag can be used to specify the command name to generate
 # index for LaTeX.
@@ -1921,7 +1921,7 @@ PAPER_TYPE             = a4
 # If left blank no extra packages will be included.
 # This tag requires that the tag GENERATE_LATEX is set to YES.
 
-EXTRA_PACKAGES         =
+EXTRA_PACKAGES         = {amsmath},{lmodern},{physics}
 
 # The LATEX_HEADER tag can be used to specify a user-defined LaTeX header for
 # the generated LaTeX document. The header should contain everything until the
@@ -1938,7 +1938,7 @@ EXTRA_PACKAGES         =
 # description of the possible markers and block names see the documentation.
 # This tag requires that the tag GENERATE_LATEX is set to YES.
 
-LATEX_HEADER           =
+LATEX_HEADER           = ANLReportHeader.tex
 
 # The LATEX_FOOTER tag can be used to specify a user-defined LaTeX footer for
 # the generated LaTeX document. The footer should contain everything after the
@@ -1950,7 +1950,7 @@ LATEX_HEADER           =
 # doing!
 # This tag requires that the tag GENERATE_LATEX is set to YES.
 
-LATEX_FOOTER           =
+LATEX_FOOTER           = ANLReportFooter.tex
 
 # The LATEX_EXTRA_STYLESHEET tag can be used to specify additional user-defined
 # LaTeX style sheets that are included after the standard style sheets created
@@ -1961,7 +1961,7 @@ LATEX_FOOTER           =
 # list).
 # This tag requires that the tag GENERATE_LATEX is set to YES.
 
-LATEX_EXTRA_STYLESHEET =
+LATEX_EXTRA_STYLESHEET = ANLReportExtra.sty
 
 # The LATEX_EXTRA_FILES tag can be used to specify one or more extra images or
 # other source files which should be copied to the LATEX_OUTPUT output
@@ -2003,7 +2003,7 @@ LATEX_BATCHMODE        = NO
 # The default value is: NO.
 # This tag requires that the tag GENERATE_LATEX is set to YES.
 
-LATEX_HIDE_INDICES     = NO
+LATEX_HIDE_INDICES     = YES
 
 # The LATEX_BIB_STYLE tag can be used to specify the style to use for the
 # bibliography, e.g. plainnat, or ieeetr. See
@@ -2652,7 +2652,7 @@ DOT_GRAPH_MAX_NODES    = 50
 # Minimum value: 0, maximum value: 1000, default value: 0.
 # This tag requires that the tag HAVE_DOT is set to YES.
 
-MAX_DOT_GRAPH_DEPTH    = 0
+MAX_DOT_GRAPH_DEPTH    = 2
 
 # Set the DOT_TRANSPARENT tag to YES to generate images with a transparent
 # background. This is disabled by default, because dot on Windows does not seem

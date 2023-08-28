@@ -36,13 +36,22 @@
 namespace neml2
 {
 /**
-Class that maps some input -> output, which is also the broader definition of constitutive model.
-*/
+ * @brief The base class for all constitutive models.
+ *
+ * A model maps some input to output. The forward operator (and its derivative) is defined in the
+ * method \p set_value. All concrete models must provide the implementation of the forward operator
+ * by overriding the \p set_value method.
+ */
 class Model : public NEML2Object, public LabeledAxisInterface, public NonlinearSystem
 {
 public:
   static ParameterSet expected_params();
 
+  /**
+   * @brief Construct a new Model object
+   *
+   * @param params The parameters extracted from the input file
+   */
   Model(const ParameterSet & params);
 
   /// Whether this model is implicit
@@ -62,13 +71,13 @@ public:
 
   /**
    * Validate the currently requested AD settings.
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    AD_1st_deriv   AD_2nd_deriv   comment
-            true           true   okay, just slow
-            true          false   error, this is a weird case
-          false           true   okay
-          false          false   great, everything handcoded
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   *  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   *  AD_1st_deriv   AD_2nd_deriv   comment
+   *          true           true   okay, just slow
+   *          true          false   error, this is a weird case
+   *         false           true   okay
+   *         false          false   great, everything handcoded
+   *  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
    */
   void check_AD_limitation() const;
 

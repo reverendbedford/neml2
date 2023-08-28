@@ -21,31 +21,18 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+#include <catch2/catch.hpp>
+#include <fstream>
 
-#pragma once
-
-#include "neml2/base/NEML2Object.h"
 #include "neml2/base/Registry.h"
 
-namespace neml2
-{
-/**
- * @brief The solver solves a system of equations.
- *
- */
-class Solver : public NEML2Object
-{
-public:
-  static ParameterSet expected_params();
+using namespace neml2;
 
-  /**
-   * @brief Construct a new Solver object
-   *
-   * @param params The parameters extracted from the input file
-   */
-  Solver(const ParameterSet & params);
-
-  /// Whether to print additional (debugging) information during the solve
-  const bool verbose;
-};
-} // namespace neml2
+TEST_CASE("registry", "[Registry]")
+{
+  SECTION("syntax")
+  {
+    std::ofstream out("syntax.yml");
+    Registry::print(out);
+  }
+}

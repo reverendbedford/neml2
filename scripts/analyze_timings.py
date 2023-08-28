@@ -32,7 +32,6 @@ SMALL_SIZE = 12
 MEDIUM_SIZE = 14
 BIGGER_SIZE = 16
 
-plt.rcParams["text.usetex"] = True
 plt.rc("font", size=SMALL_SIZE)  # controls default text sizes
 plt.rc("axes", titlesize=SMALL_SIZE)  # fontsize of the axes title
 plt.rc("axes", labelsize=MEDIUM_SIZE)  # fontsize of the x and y labels
@@ -71,7 +70,7 @@ speedup = timing_cpu / timing_cuda
 ax.set_xscale("log")
 ax.set_yscale("log")
 ax.set_xlabel("Number of batches")
-ax.set_ylabel(r"Time per iteration ($s$)")
+ax.set_ylabel("Time per iteration (s)")
 ax.legend()
 fig.suptitle("Speed up = {:.0f} @ batch size = {:d}".format(speedup, max_nbatch))
 fig.tight_layout()

@@ -31,11 +31,20 @@
 
 namespace neml2
 {
+/**
+ * @brief The manufacturer object that corresponds to neml2::math::linspace.
+ *
+ */
 class LinSpaceTensor : public NEML2Object, public torch::Tensor
 {
 public:
   static ParameterSet expected_params();
 
+  /**
+   * @brief Construct a new LinSpaceTensor object
+   *
+   * @param params The parameters extracted from the input file.
+   */
   LinSpaceTensor(const ParameterSet & params);
 };
 } // namespace neml2

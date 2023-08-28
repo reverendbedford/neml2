@@ -1,4 +1,4 @@
-# Getting started {#install}
+# Getting Started {#install}
 
 [TOC]
 
@@ -68,11 +68,85 @@ libTorch can be downloaded from the official PyTorch website: [https://pytorch.o
 
 There are many ways of installing the Nvidia driver and the CUDA toolkit. We will not try to make a recommendation here. However, do make sure the Nvidia driver is compatible with your GPU. It is also recommended to install a CUDA toolkit with the same version number as the libTorch CUDA version.
 
+## Quick Start {#user}
+
+NEML2 uses the [HIT](https://github.com/idaholab/hit) format, a simple hierarchical text language, for model specification. More generally speaking, HIT is the canonical language used in NEML2 for serialization, deserialization, and archival purposes.
+
+The NEML2 input files have extension `.i`. An example input file is shown below
+```python
+[Tensors]
+  [end_time]
+    type = LogSpaceTensor
+    start = -1
+    end = 5
+    steps = 20
+  []
+  [times]
+    type = LinSpaceTensor
+    end = end_time
+    steps = 100
+  []
+  [max_strain]
+    type = InitializedSymR2
+    values = '0.1 -0.05 -0.05'
+    nbatch = 20
+  []
+  [strains]
+    type = LinSpaceTensor
+    end = max_strain
+    steps = 100
+  []
+[]
+
+[Drivers]
+  [driver]
+    type = SolidMechanicsDriver
+    model = 'model'
+    times = 'times'
+    prescribed_strains = 'strains'
+    save_as = 'result.pt'
+  []
+  [regression]
+    type = TransientRegression
+    driver = 'driver'
+    reference = 'gold/result.pt'
+  []
+[]
+
+[Solvers]
+  [newton]
+    type = NewtonNonlinearSolver
+  []
+[]
+
+[Models]
+  [implicit_rate]
+    type = ComposedModel
+    models = 'mandel_stress vonmises yield normality flow_rate Eprate Erate Eerate elasticity integrate_stress'
+  []
+  [model]
+    type = ImplicitUpdate
+    implicit_model = 'implicit_rate'
+    solver = 'newton'
+  []
+[]
+```
+There are four top-level sections:
+- `[Tensors]`: Tensors specified from within the input file.
+- `[Solvers]`: Solvers for solving an implicit model.
+- `[Models]`: NEML2 constitutive models.
+- `[Drivers]`: Drivers used to evaluate/test models.
+
+The user has full control over the sub-sections under the top-level sections, called _objects_. The sub-section name is used as the name of the object. Each object reserves a special field named "type". NEML2 parses the value in the "type" field and constructs the corresponding object at run time. The syntax and options for all objects are listed in the [syntax documentation](@ref syntax).
+
+Currently, NEML2 does not maintain a set of examples. However, the regression tests shall serve as decent input file templates. The regression tests are located in `/tests/regression` in the repository.
+
+
 ## Next steps
 
 Depending on your specific use case, the following resources might be useful:
 
-- [Mathematical conventions](math.md) introduces the common mathematical notations used throughout this documentation.
-- [Tutorials](tutorials/index.md) walks you through steps required for building a constitutive model. It uses the small deformation \f$J_2\f$ isotropic viscoplasticity as an example.
-- [Developer notes](@ref primitive) describes the basics of the library architecture and design philosophy. They can be a good starting point if you want to create your own material model within the NEML2 framework.
-- [Class list](annotated.html) is a complete list of class doxygen documentations.
+- [Mathematical conventions](@ref math) introduces the common mathematical notations used throughout this documentation.
+- [Implementation](@ref impl) describes the basics of the library architecture and design philosophy. They can be a good starting point if you want to create your own material model within the NEML2 framework.
+- [Model development](@ref devel) is a step-by-step guide for building a constitutive model. It uses the small deformation \f$J_2\f$ isotropic viscoplasticity as an example.
+- [Class list](https://reverendbedford.github.io/neml2/annotated.html) is a complete list of class doxygen documentations.

@@ -42,9 +42,12 @@ class NEML2Object;
 using BuildPtr = std::shared_ptr<NEML2Object> (*)(const ParameterSet & params);
 
 /**
-The registry is used as a global singleton to collect information on all available NEML2Object for
-use in a simulation.
-*/
+ * The Registry is used as a global singleton to collect information on all available NEML2Object
+ * that can manufactured from the input file.
+ *
+ * To register a concrete class to the registry, use the macro `register_NEML2_object` or
+ * `register_NEML2_object_alt`. Each object/class should only be registered once.
+ */
 class Registry
 {
 public:
@@ -55,7 +58,7 @@ public:
   template <typename T>
   static char add(std::string name)
   {
-    add_inner(name, T::expected_params(), &build<T>);
+    add_inner(name, utils::demangle(typeid(T).name()), T::expected_params(), &build<T>);
     return 0;
   }
 
@@ -71,7 +74,7 @@ public:
 private:
   Registry() {}
 
-  static void add_inner(const std::string &, const ParameterSet &, BuildPtr);
+  static void add_inner(const std::string &, const std::string &, const ParameterSet &, BuildPtr);
 
   template <typename T>
   static std::shared_ptr<NEML2Object> build(const ParameterSet & params)
@@ -82,5 +85,7 @@ private:
   std::map<std::string, ParameterSet> _expected_params;
 
   std::map<std::string, BuildPtr> _objects;
+
+  std::map<std::string, std::string> _syntax_type;
 };
 } // namespace neml2

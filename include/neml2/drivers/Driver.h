@@ -32,17 +32,30 @@
 
 namespace neml2
 {
+/**
+ * @brief The Driver drives the execution of a NEML2 Model.
+ *
+ */
 class Driver : public NEML2Object
 {
 public:
   static ParameterSet expected_params();
 
+  /**
+   * @brief Construct a new Driver object
+   *
+   * @param params The parameters extracted from the input file
+   */
   Driver(const ParameterSet & params);
 
+  /// Let the driver run, return \p true upon successful completion, and return \p false otherwise.
   virtual bool run() = 0;
 
 protected:
+  /// Check the integrity of the set up.
   virtual void check_integrity() const {}
+
+  /// Whether to print out additional (debugging) information during the execution.
   bool _verbose;
 };
 } // namespace neml2

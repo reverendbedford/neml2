@@ -3,16 +3,11 @@
   <!-- Navigation index tabs for HTML output -->
   <navindex>
     <tab type="mainpage" visible="yes" title="About NEML2"/>
-    <tab type="user" url="@ref install" title="Getting started"/>
-    <tab type="user" url="@ref math" title="Mathematical conventions"/>
-    <tab type="usergroup" url="@ref tutorials" title="Tutorials">
-    </tab>
-    <tab type="usergroup" title="Developer notes">
-      <tab type="user" url="@ref primitive" title="NEML2 tensor types"/>
-      <tab type="user" url="@ref labeledview" title="Tensor view and labeled tensor view"/>
-      <tab type="user" url="@ref modeldefinition" title="Model definition"/>
-      <tab type="user" url="@ref modelcomposition" title="Model composition"/>
-    </tab>
+    <tab type="user" url="@ref install" title="Getting Started"/>
+    <tab type="user" url="@ref math" title="Mathematical Conventions"/>
+    <tab type="user" url="@ref impl" title="Implementation"/>
+    <tab type="user" url="@ref devel" title="Model Development"/>
+    <tab type="user" url="@ref syntax" title="Syntax Documentation"/>
     <tab type="classlist" visible="yes" title="" intro=""/>
   </navindex>
 

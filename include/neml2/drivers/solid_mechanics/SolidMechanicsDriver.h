@@ -28,19 +28,44 @@
 
 namespace neml2
 {
+/**
+ * @brief The transient driver specialized for solid mechanics problems.
+ *
+ */
 class SolidMechanicsDriver : public TransientDriver
 {
 public:
   static ParameterSet expected_params();
 
+  /**
+   * @brief Construct a new SolidMechanicsDriver object
+   *
+   * @param params The parameters extracted from the input file
+   */
   SolidMechanicsDriver(const ParameterSet & params);
 
 protected:
   virtual void update_forces() override;
   void check_integrity() const override;
 
+  /**
+   * @brief The control method to drive the constitutive update.
+   *
+   * STRAIN: Use strain control to drive the update.
+   * STRESS: Use stress control to drive the update.
+   */
   std::string _control;
+
+  /**
+   * The value of the driving force, depending on `_control` this is either the prescribed strain or
+   * the prescribed stress.
+   */
   torch::Tensor _driving_force;
+
+  /**
+   * The name of the driving force, depending on `_control` this is either the prescribed strain or
+   * the prescribed stress.
+   */
   LabeledAxisAccessor _driving_force_name;
 };
 }

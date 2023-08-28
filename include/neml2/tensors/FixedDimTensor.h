@@ -31,6 +31,12 @@
 
 namespace neml2
 {
+/**
+ * @brief FixedDimTensor inherits from BatchTensor and additionally templates on the base size.
+ *
+ * @tparam N The number of batch dimensions.
+ * @tparam D Base size
+ */
 template <TorchSize N, TorchSize... D>
 class FixedDimTensor : public BatchTensor<N>
 {

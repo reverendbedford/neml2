@@ -30,11 +30,14 @@
 namespace neml2
 {
 /**
-The accessor containing all the information needed to access an item in a `LabeledAxis`. The
-accessor consists of an arbitrary number of item names.
-The last item name can be either a variable name or a sub-axis name.
-All the other item names are considered to be sub-axis names.
-*/
+ * @brief The accessor containing all the information needed to access an item in a `LabeledAxis`.
+ *
+ * The accessor consists of an arbitrary number of item names. The last item name can be either a
+ * variable name or a sub-axis name. All the other item names are considered to be sub-axis names.
+ *
+ * The LabeledAxisAccessor stores the item labels and does not resolve the actual layout of the
+ * item. This way an accessor can be used access the same variable from different tensor layouts.
+ */
 class LabeledAxisAccessor
 {
 public:
@@ -44,16 +47,25 @@ public:
 
   bool empty() const;
 
+  /// Append a suffix to the item name.
   LabeledAxisAccessor with_suffix(const std::string & suffix) const;
 
+  /// Re-mount the LabeledAxisAccessor on an axis by the axis name
   LabeledAxisAccessor on(const std::string & axis) const;
 
+  /// Re-mount the LabeledAxisAccessor on an axis by the axis accessor
   LabeledAxisAccessor on(const LabeledAxisAccessor & axis) const;
 
+  /// Remove the leading \p n items from the labels.
   LabeledAxisAccessor peel(size_t n = 1) const;
 
+  /// Compare for equality between two LabeledAxisAccessor
   bool operator==(const LabeledAxisAccessor & other) const;
 
+  /**
+   * @brief The (strict) smaller than operator is created so as to use LabeledAxisAccessor in sorted
+   * data structures.
+   */
   bool operator<(const LabeledAxisAccessor & other) const;
 
   friend std::ostream & operator<<(std::ostream & os, const LabeledAxisAccessor & accessor);

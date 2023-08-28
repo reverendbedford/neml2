@@ -28,19 +28,19 @@
 
 namespace neml2
 {
+/**
+ * @brief The logical scalar with a single batch dimension.
+ *
+ */
 class Scalar : public FixedDimTensor<1, 1>
 {
 public:
-  /// Forward all the constructors
+  // Forward all the constructors
   using FixedDimTensor<1, 1>::FixedDimTensor;
 
   Scalar(Real) = delete;
 
-  /// A convenient conversion to allow people to do
-  /// ~~~~~~~~~~~~~~~~~~~~cpp
-  /// Scalar a = 1.0;
-  /// Scalar b(5.6);
-  /// ~~~~~~~~~~~~~~~~~~~~
+  /// Create an unbatched Scalar from a Real
   Scalar(Real init, const torch::TensorOptions & options);
 
   /// Zero constructor
