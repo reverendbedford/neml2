@@ -24,6 +24,7 @@
 
 #include "neml2/tensors/SymR2.h"
 #include "neml2/tensors/SymSymR4.h"
+#include "neml2/tensors/R2.h"
 
 namespace neml2
 {
@@ -94,6 +95,13 @@ SymR2::init(const Real & a11,
                      Scalar(a23, options),
                      Scalar(a13, options),
                      Scalar(a12, options));
+}
+
+SymR2
+SymR2::init(const R2 & T)
+{
+  R2 S = 0.5 * (T + T.transpose());
+  return SymR2::init(S(0, 0), S(1, 1), S(2, 2), S(1, 2), S(0, 2), S(0, 1));
 }
 
 SymR2
@@ -169,6 +177,12 @@ SymR2
 SymR2::inverse() const
 {
   return torch::linalg::inv(*this);
+}
+
+R2
+SymR2::to_full() const
+{
+  return R2::init_sym(*this);
 }
 
 SymR2
