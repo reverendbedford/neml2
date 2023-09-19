@@ -30,6 +30,7 @@
 namespace neml2
 {
 class SymSymR4;
+class R2;
 
 /**
  * @brief The logical symmetric second order tensor with a single batch dimension.
@@ -72,6 +73,8 @@ public:
                     const Real & a13,
                     const Real & a12,
                     const torch::TensorOptions & options = default_tensor_options);
+  /// Symmetrize an R2 then fill
+  static SymR2 init(const R2 & T);
   /// Identity
   static SymR2 identity(const torch::TensorOptions & options = default_tensor_options);
 
@@ -107,6 +110,9 @@ public:
 
   /// Inversion
   SymR2 inverse() const;
+
+  /// Convert to a full R2
+  R2 to_full() const;
 };
 
 SymR2 operator+(const SymR2 & a, const Real & b);

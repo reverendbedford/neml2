@@ -1,0 +1,1103 @@
+- neml2::AssociativeIsotropicPlasticHardening:
+    - additional_outputs:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - equivalent_plastic_strain_rate:
+        type: neml2::LabeledAxisAccessor
+        value: state/internal/ep_rate
+    - flow_rate:
+        type: neml2::LabeledAxisAccessor
+        value: state/internal/gamma_rate
+    - isotropic_hardening_direction:
+        type: neml2::LabeledAxisAccessor
+        value: state/internal/Nk
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: AssociativeIsotropicPlasticHardening
+    - use_AD_first_derivative:
+        type: bool
+        value: 0
+    - use_AD_second_derivative:
+        type: bool
+        value: 0
+- neml2::AssociativeKinematicPlasticHardening:
+    - additional_outputs:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - flow_rate:
+        type: neml2::LabeledAxisAccessor
+        value: state/internal/gamma_rate
+    - kinematic_hardening_direction:
+        type: neml2::LabeledAxisAccessor
+        value: state/internal/NX
+    - kinematic_plastic_strain_rate:
+        type: neml2::LabeledAxisAccessor
+        value: state/internal/Kp_rate
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: AssociativeKinematicPlasticHardening
+    - use_AD_first_derivative:
+        type: bool
+        value: 0
+    - use_AD_second_derivative:
+        type: bool
+        value: 0
+- neml2::AssociativePlasticFlow:
+    - additional_outputs:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - flow_direction:
+        type: neml2::LabeledAxisAccessor
+        value: state/internal/NM
+    - flow_rate:
+        type: neml2::LabeledAxisAccessor
+        value: state/internal/gamma_rate
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - plastic_strain_rate:
+        type: neml2::LabeledAxisAccessor
+        value: state/internal/Ep_rate
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: AssociativePlasticFlow
+    - use_AD_first_derivative:
+        type: bool
+        value: 0
+    - use_AD_second_derivative:
+        type: bool
+        value: 0
+- neml2::ChabochePlasticHardening:
+    - A:
+        type: neml2::CrossRef<neml2::Scalar>
+        value: 
+    - C:
+        type: neml2::CrossRef<neml2::Scalar>
+        value: 
+    - a:
+        type: neml2::CrossRef<neml2::Scalar>
+        value: 
+    - additional_outputs:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - back_stress:
+        type: neml2::LabeledAxisAccessor
+        value: state/internal/X
+    - flow_direction:
+        type: neml2::LabeledAxisAccessor
+        value: state/internal/NM
+    - flow_rate:
+        type: neml2::LabeledAxisAccessor
+        value: state/internal/gamma_rate
+    - g:
+        type: neml2::CrossRef<neml2::Scalar>
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: ChabochePlasticHardening
+    - use_AD_first_derivative:
+        type: bool
+        value: 0
+    - use_AD_second_derivative:
+        type: bool
+        value: 0
+- neml2::ComposedModel:
+    - additional_outputs:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - models:
+        type: std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: ComposedModel
+    - use_AD_first_derivative:
+        type: bool
+        value: 0
+    - use_AD_second_derivative:
+        type: bool
+        value: 0
+- neml2::ElasticStrain:
+    - additional_outputs:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - elastic_strain:
+        type: neml2::LabeledAxisAccessor
+        value: state/internal/Ee
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - plastic_strain:
+        type: neml2::LabeledAxisAccessor
+        value: state/internal/Ep
+    - rate_form:
+        type: bool
+        value: 0
+    - total_strain:
+        type: neml2::LabeledAxisAccessor
+        value: forces/E
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: ElasticStrain
+    - use_AD_first_derivative:
+        type: bool
+        value: 0
+    - use_AD_second_derivative:
+        type: bool
+        value: 0
+- neml2::ImplicitUpdate:
+    - additional_outputs:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - implicit_model:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - solver:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: ImplicitUpdate
+    - use_AD_first_derivative:
+        type: bool
+        value: 0
+    - use_AD_second_derivative:
+        type: bool
+        value: 0
+- neml2::InitializedSymR2:
+    - method:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: AUTO
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - nbatch:
+        type: long
+        value: -1
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: InitializedSymR2
+    - values:
+        type: std::vector<neml2::CrossRef<neml2::Scalar>, std::allocator<neml2::CrossRef<neml2::Scalar> > >
+        value: 
+- neml2::IsotropicMandelStress:
+    - additional_outputs:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - cauchy_stress:
+        type: neml2::LabeledAxisAccessor
+        value: state/S
+    - mandel_stress:
+        type: neml2::LabeledAxisAccessor
+        value: state/internal/M
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: IsotropicMandelStress
+    - use_AD_first_derivative:
+        type: bool
+        value: 0
+    - use_AD_second_derivative:
+        type: bool
+        value: 0
+- neml2::LinSpaceTensor:
+    - end:
+        type: neml2::CrossRef<at::Tensor>
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - start:
+        type: neml2::CrossRef<at::Tensor>
+        value: 0
+    - steps:
+        type: long
+        value: 0
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: LinSpaceTensor
+- neml2::LinearIsotropicElasticity:
+    - additional_outputs:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - compliance:
+        type: bool
+        value: 0
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - poisson_ratio:
+        type: neml2::CrossRef<neml2::Scalar>
+        value: 
+    - rate_form:
+        type: bool
+        value: 0
+    - strain:
+        type: neml2::LabeledAxisAccessor
+        value: state/internal/Ee
+    - stress:
+        type: neml2::LabeledAxisAccessor
+        value: state/S
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: LinearIsotropicElasticity
+    - use_AD_first_derivative:
+        type: bool
+        value: 0
+    - use_AD_second_derivative:
+        type: bool
+        value: 0
+    - youngs_modulus:
+        type: neml2::CrossRef<neml2::Scalar>
+        value: 
+- neml2::LinearIsotropicHardening:
+    - additional_outputs:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - equivalent_plastic_strain:
+        type: neml2::LabeledAxisAccessor
+        value: state/internal/ep
+    - hardening_modulus:
+        type: neml2::CrossRef<neml2::Scalar>
+        value: 
+    - isotropic_hardening:
+        type: neml2::LabeledAxisAccessor
+        value: state/internal/k
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: LinearIsotropicHardening
+    - use_AD_first_derivative:
+        type: bool
+        value: 0
+    - use_AD_second_derivative:
+        type: bool
+        value: 0
+- neml2::LinearKinematicHardening:
+    - additional_outputs:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - back_stress:
+        type: neml2::LabeledAxisAccessor
+        value: state/internal/X
+    - hardening_modulus:
+        type: neml2::CrossRef<neml2::Scalar>
+        value: 
+    - kinematic_plastic_strain:
+        type: neml2::LabeledAxisAccessor
+        value: state/internal/Kp
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: LinearKinematicHardening
+    - use_AD_first_derivative:
+        type: bool
+        value: 0
+    - use_AD_second_derivative:
+        type: bool
+        value: 0
+- neml2::LogSpaceTensor:
+    - base:
+        type: double
+        value: 10
+    - end:
+        type: neml2::CrossRef<at::Tensor>
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - start:
+        type: neml2::CrossRef<at::Tensor>
+        value: 0
+    - steps:
+        type: long
+        value: 0
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: LogSpaceTensor
+- neml2::ModelUnitTest:
+    - check_AD_derivatives:
+        type: bool
+        value: 1
+    - check_AD_first_derivatives:
+        type: bool
+        value: 1
+    - check_AD_second_derivatives:
+        type: bool
+        value: 1
+    - check_cuda:
+        type: bool
+        value: 1
+    - check_first_derivatives:
+        type: bool
+        value: 1
+    - check_second_derivatives:
+        type: bool
+        value: 0
+    - derivatives_abs_tol:
+        type: double
+        value: 1e-08
+    - derivatives_rel_tol:
+        type: double
+        value: 1e-05
+    - input_scalar_names:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - input_scalar_values:
+        type: std::vector<neml2::CrossRef<neml2::Scalar>, std::allocator<neml2::CrossRef<neml2::Scalar> > >
+        value: 
+    - input_symr2_names:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - input_symr2_values:
+        type: std::vector<neml2::CrossRef<neml2::SymR2>, std::allocator<neml2::CrossRef<neml2::SymR2> > >
+        value: 
+    - model:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - nbatch:
+        type: long
+        value: 1
+    - output_abs_tol:
+        type: double
+        value: 1e-08
+    - output_rel_tol:
+        type: double
+        value: 1e-05
+    - output_scalar_names:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - output_scalar_values:
+        type: std::vector<neml2::CrossRef<neml2::Scalar>, std::allocator<neml2::CrossRef<neml2::Scalar> > >
+        value: 
+    - output_symr2_names:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - output_symr2_values:
+        type: std::vector<neml2::CrossRef<neml2::SymR2>, std::allocator<neml2::CrossRef<neml2::SymR2> > >
+        value: 
+    - second_derivatives_abs_tol:
+        type: double
+        value: 1e-08
+    - second_derivatives_rel_tol:
+        type: double
+        value: 1e-05
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: ModelUnitTest
+    - verbose:
+        type: bool
+        value: 0
+- neml2::NewtonNonlinearSolver:
+    - abs_tol:
+        type: double
+        value: 1e-10
+    - max_its:
+        type: unsigned int
+        value: 100
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - rel_tol:
+        type: double
+        value: 1e-08
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: NewtonNonlinearSolver
+    - verbose:
+        type: bool
+        value: 0
+- neml2::Normality:
+    - additional_outputs:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - from:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - function:
+        type: neml2::LabeledAxisAccessor
+        value: 
+    - model:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - to:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: Normality
+    - use_AD_first_derivative:
+        type: bool
+        value: 0
+    - use_AD_second_derivative:
+        type: bool
+        value: 0
+- neml2::OverStress:
+    - additional_outputs:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - back_stress:
+        type: neml2::LabeledAxisAccessor
+        value: state/internal/X
+    - mandel_stress:
+        type: neml2::LabeledAxisAccessor
+        value: state/internal/M
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - over_stress:
+        type: neml2::LabeledAxisAccessor
+        value: state/internal/O
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: OverStress
+    - use_AD_first_derivative:
+        type: bool
+        value: 0
+    - use_AD_second_derivative:
+        type: bool
+        value: 0
+- neml2::PerzynaPlasticFlowRate:
+    - additional_outputs:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - exponent:
+        type: neml2::CrossRef<neml2::Scalar>
+        value: 
+    - flow_rate:
+        type: neml2::LabeledAxisAccessor
+        value: state/internal/gamma_rate
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - reference_stress:
+        type: neml2::CrossRef<neml2::Scalar>
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: PerzynaPlasticFlowRate
+    - use_AD_first_derivative:
+        type: bool
+        value: 0
+    - use_AD_second_derivative:
+        type: bool
+        value: 0
+    - yield_function:
+        type: neml2::LabeledAxisAccessor
+        value: state/internal/fp
+- neml2::RateIndependentPlasticFlowConstraint:
+    - additional_outputs:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - flow_rate:
+        type: neml2::LabeledAxisAccessor
+        value: state/gamma_rate
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: RateIndependentPlasticFlowConstraint
+    - use_AD_first_derivative:
+        type: bool
+        value: 0
+    - use_AD_second_derivative:
+        type: bool
+        value: 0
+    - yield_function:
+        type: neml2::LabeledAxisAccessor
+        value: state/internal/fp
+- SampleParserTestingModel:
+    - Real:
+        type: double
+        value: 0
+    - Real_vec:
+        type: std::vector<double, std::allocator<double> >
+        value: 
+    - Real_vec_vec:
+        type: std::vector<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >
+        value: 
+    - additional_outputs:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - bool:
+        type: bool
+        value: 0
+    - bool_vec:
+        type: std::vector<bool, std::allocator<bool> >
+        value: 
+    - bool_vec_vec:
+        type: std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > >
+        value: 
+    - int:
+        type: int
+        value: 0
+    - int_vec:
+        type: std::vector<int, std::allocator<int> >
+        value: 
+    - int_vec_vec:
+        type: std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - string:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - string_vec:
+        type: std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >
+        value: 
+    - string_vec_vec:
+        type: std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: SampleParserTestingModel
+    - uint:
+        type: unsigned int
+        value: 0
+    - uint_vec:
+        type: std::vector<unsigned int, std::allocator<unsigned int> >
+        value: 
+    - uint_vec_vec:
+        type: std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >
+        value: 
+    - use_AD_first_derivative:
+        type: bool
+        value: 0
+    - use_AD_second_derivative:
+        type: bool
+        value: 0
+- SampleRateModel:
+    - additional_outputs:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: SampleRateModel
+    - use_AD_first_derivative:
+        type: bool
+        value: 0
+    - use_AD_second_derivative:
+        type: bool
+        value: 0
+- neml2::UserFixedDimTensor<neml2::Scalar>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 1 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: Scalar
+    - values:
+        type: std::vector<double, std::allocator<double> >
+        value: 
+- neml2::BackwardEulerTimeIntegration<neml2::Scalar>:
+    - additional_outputs:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - time:
+        type: neml2::LabeledAxisAccessor
+        value: t
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: ScalarBackwardEulerTimeIntegration
+    - use_AD_first_derivative:
+        type: bool
+        value: 0
+    - use_AD_second_derivative:
+        type: bool
+        value: 0
+    - variable:
+        type: neml2::LabeledAxisAccessor
+        value: 
+- neml2::ForceRate<neml2::Scalar>:
+    - additional_outputs:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - force:
+        type: neml2::LabeledAxisAccessor
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - time:
+        type: neml2::LabeledAxisAccessor
+        value: t
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: ScalarForceRate
+    - use_AD_first_derivative:
+        type: bool
+        value: 0
+    - use_AD_second_derivative:
+        type: bool
+        value: 0
+- neml2::ForwardEulerTimeIntegration<neml2::Scalar>:
+    - additional_outputs:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - time:
+        type: neml2::LabeledAxisAccessor
+        value: t
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: ScalarForwardEulerTimeIntegration
+    - use_AD_first_derivative:
+        type: bool
+        value: 0
+    - use_AD_second_derivative:
+        type: bool
+        value: 0
+    - variable:
+        type: neml2::LabeledAxisAccessor
+        value: 
+- neml2::IdentityMap<neml2::Scalar>:
+    - additional_outputs:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - from_var:
+        type: neml2::LabeledAxisAccessor
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - to_var:
+        type: neml2::LabeledAxisAccessor
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: ScalarIdentityMap
+    - use_AD_first_derivative:
+        type: bool
+        value: 0
+    - use_AD_second_derivative:
+        type: bool
+        value: 0
+- neml2::SumModel<neml2::Scalar>:
+    - additional_outputs:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - from_var:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - to_var:
+        type: neml2::LabeledAxisAccessor
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: ScalarSumModel
+    - use_AD_first_derivative:
+        type: bool
+        value: 0
+    - use_AD_second_derivative:
+        type: bool
+        value: 0
+- neml2::SolidMechanicsDriver:
+    - cauchy_stress:
+        type: neml2::LabeledAxisAccessor
+        value: forces/S
+    - control:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: STRAIN
+    - device:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: cpu
+    - model:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - predictor:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: PREVIOUS_STATE
+    - prescribed_strains:
+        type: neml2::CrossRef<at::Tensor>
+        value: 
+    - prescribed_stresses:
+        type: neml2::CrossRef<at::Tensor>
+        value: 
+    - save_as:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - show_parameters:
+        type: bool
+        value: 0
+    - time:
+        type: neml2::LabeledAxisAccessor
+        value: forces/t
+    - times:
+        type: neml2::CrossRef<at::Tensor>
+        value: 
+    - total_strain:
+        type: neml2::LabeledAxisAccessor
+        value: forces/E
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: SolidMechanicsDriver
+    - verbose:
+        type: bool
+        value: 0
+- neml2::UserFixedDimTensor<neml2::SymR2>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 1 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: SymR2
+    - values:
+        type: std::vector<double, std::allocator<double> >
+        value: 
+- neml2::BackwardEulerTimeIntegration<neml2::SymR2>:
+    - additional_outputs:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - time:
+        type: neml2::LabeledAxisAccessor
+        value: t
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: SymR2BackwardEulerTimeIntegration
+    - use_AD_first_derivative:
+        type: bool
+        value: 0
+    - use_AD_second_derivative:
+        type: bool
+        value: 0
+    - variable:
+        type: neml2::LabeledAxisAccessor
+        value: 
+- neml2::ForceRate<neml2::SymR2>:
+    - additional_outputs:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - force:
+        type: neml2::LabeledAxisAccessor
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - time:
+        type: neml2::LabeledAxisAccessor
+        value: t
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: SymR2ForceRate
+    - use_AD_first_derivative:
+        type: bool
+        value: 0
+    - use_AD_second_derivative:
+        type: bool
+        value: 0
+- neml2::ForwardEulerTimeIntegration<neml2::SymR2>:
+    - additional_outputs:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - time:
+        type: neml2::LabeledAxisAccessor
+        value: t
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: SymR2ForwardEulerTimeIntegration
+    - use_AD_first_derivative:
+        type: bool
+        value: 0
+    - use_AD_second_derivative:
+        type: bool
+        value: 0
+    - variable:
+        type: neml2::LabeledAxisAccessor
+        value: 
+- neml2::IdentityMap<neml2::SymR2>:
+    - additional_outputs:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - from_var:
+        type: neml2::LabeledAxisAccessor
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - to_var:
+        type: neml2::LabeledAxisAccessor
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: SymR2IdentityMap
+    - use_AD_first_derivative:
+        type: bool
+        value: 0
+    - use_AD_second_derivative:
+        type: bool
+        value: 0
+- neml2::SymR2Invariant:
+    - additional_outputs:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - invariant:
+        type: neml2::LabeledAxisAccessor
+        value: 
+    - invariant_type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - tensor:
+        type: neml2::LabeledAxisAccessor
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: SymR2Invariant
+    - use_AD_first_derivative:
+        type: bool
+        value: 0
+    - use_AD_second_derivative:
+        type: bool
+        value: 0
+- neml2::SumModel<neml2::SymR2>:
+    - additional_outputs:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - from_var:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - to_var:
+        type: neml2::LabeledAxisAccessor
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: SymR2SumModel
+    - use_AD_first_derivative:
+        type: bool
+        value: 0
+    - use_AD_second_derivative:
+        type: bool
+        value: 0
+- neml2::UserFixedDimTensor<neml2::SymSymR4>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 1 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: SymSymR4
+    - values:
+        type: std::vector<double, std::allocator<double> >
+        value: 
+- neml2::UserTensor:
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: Tensor
+    - values:
+        type: std::vector<double, std::allocator<double> >
+        value: 
+- neml2::TotalStrain:
+    - additional_outputs:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - elastic_strain:
+        type: neml2::LabeledAxisAccessor
+        value: state/internal/Ee
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - plastic_strain:
+        type: neml2::LabeledAxisAccessor
+        value: state/internal/Ep
+    - rate_form:
+        type: bool
+        value: 0
+    - total_strain:
+        type: neml2::LabeledAxisAccessor
+        value: state/E
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: TotalStrain
+    - use_AD_first_derivative:
+        type: bool
+        value: 0
+    - use_AD_second_derivative:
+        type: bool
+        value: 0
+- neml2::TransientRegression:
+    - atol:
+        type: double
+        value: 1e-08
+    - driver:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - reference:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - rtol:
+        type: double
+        value: 1e-05
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: TransientRegression
+    - verbose:
+        type: bool
+        value: 0
+- neml2::VTestTimeSeries:
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: VTestTimeSeries
+    - variable:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - variable_type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - vtest:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+- neml2::VTestVerification:
+    - atol:
+        type: double
+        value: 1e-08
+    - driver:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - references:
+        type: std::vector<neml2::CrossRef<at::Tensor>, std::allocator<neml2::CrossRef<at::Tensor> > >
+        value: 
+    - rtol:
+        type: double
+        value: 1e-05
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: VTestVerification
+    - variables:
+        type: std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >
+        value: 
+    - verbose:
+        type: bool
+        value: 0
+- neml2::VoceIsotropicHardening:
+    - additional_outputs:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - equivalent_plastic_strain:
+        type: neml2::LabeledAxisAccessor
+        value: state/internal/ep
+    - isotropic_hardening:
+        type: neml2::LabeledAxisAccessor
+        value: state/internal/k
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - saturated_hardening:
+        type: neml2::CrossRef<neml2::Scalar>
+        value: 
+    - saturation_rate:
+        type: neml2::CrossRef<neml2::Scalar>
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: VoceIsotropicHardening
+    - use_AD_first_derivative:
+        type: bool
+        value: 0
+    - use_AD_second_derivative:
+        type: bool
+        value: 0
+- neml2::YieldFunction:
+    - additional_outputs:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - isotropic_hardening:
+        type: neml2::LabeledAxisAccessor
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - stress_measure:
+        type: neml2::LabeledAxisAccessor
+        value: state/internal/sm
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: YieldFunction
+    - use_AD_first_derivative:
+        type: bool
+        value: 0
+    - use_AD_second_derivative:
+        type: bool
+        value: 0
+    - yield_function:
+        type: neml2::LabeledAxisAccessor
+        value: state/internal/fp
+    - yield_stress:
+        type: neml2::CrossRef<neml2::Scalar>
+        value: 

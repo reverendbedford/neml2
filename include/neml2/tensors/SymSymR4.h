@@ -29,6 +29,8 @@
 
 namespace neml2
 {
+class R4;
+
 /**
  * @brief The logical symmetric fourth order tensor with a single batch dimension.
  *
@@ -53,12 +55,20 @@ public:
   init_isotropic_E_nu(const Real & E,
                       const Real & nu,
                       const torch::TensorOptions & options = default_tensor_options);
+  /// Initialize with the symmetrized fourth order tensor
+  static SymSymR4 init_sym(const R4 & T);
+
+  /// Accessor
+  Scalar operator()(TorchSize i, TorchSize j, TorchSize k, TorchSize l) const;
 
   // Negation
   SymSymR4 operator-() const;
 
   // Inversion
   SymSymR4 inverse() const;
+
+  /// Shortcut to get the full tensor
+  R4 to_full() const;
 };
 
 SymSymR4 operator+(const SymSymR4 & a, const Real & b);

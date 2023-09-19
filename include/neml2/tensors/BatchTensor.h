@@ -234,7 +234,6 @@ template <TorchSize N>
 void
 BatchTensor<N>::batch_index_put(TorchSlice indices, const torch::Tensor & other)
 {
-  indices.insert(indices.end(), torch::indexing::Ellipsis);
   batch_index(indices).copy_(other);
 }
 
@@ -251,7 +250,6 @@ template <TorchSize N>
 void
 BatchTensor<N>::base_index_put(TorchSlice indices, const torch::Tensor & other)
 {
-  indices.insert(indices.begin(), torch::indexing::Ellipsis);
   base_index(indices).copy_(other);
 }
 

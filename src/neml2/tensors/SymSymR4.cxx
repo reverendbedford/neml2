@@ -23,9 +23,11 @@
 // THE SOFTWARE.
 
 #include "neml2/tensors/SymSymR4.h"
+#include "neml2/tensors/R4.h"
 
 namespace neml2
 {
+
 SymSymR4
 SymSymR4::init_identity(const torch::TensorOptions & options)
 {
@@ -81,6 +83,38 @@ SymSymR4::init_isotropic_E_nu(const Real & E, const Real & nu, const torch::Tens
 }
 
 SymSymR4
+SymSymR4::init_sym(const R4 & T)
+{
+  SymSymR4 C = BatchTensor(T.batch_sizes(), _base_sizes, T.options());
+
+  for (TorchSize a = 0; a < 6; a++)
+    for (TorchSize b = 0; b < 6; b++)
+    {
+      const auto ij = math::mandel_index[a];
+      const auto kl = math::mandel_index[b];
+      const auto ij_f = math::mandel_factor(a);
+      const auto kl_f = math::mandel_factor(b);
+
+      C.base_index_put({a, b},
+                       ij_f * kl_f * 0.25 *
+                           (T(ij[0], ij[1], kl[0], kl[1]) + T(ij[1], ij[0], kl[0], kl[1]) +
+                            T(ij[0], ij[1], kl[1], kl[0]) + T(ij[1], ij[0], kl[1], kl[0])));
+    }
+
+  return C;
+}
+
+Scalar
+SymSymR4::operator()(TorchSize i, TorchSize j, TorchSize k, TorchSize l) const
+{
+  TorchSize a = math::mandel_reverse_index[i][j];
+  TorchSize b = math::mandel_reverse_index[k][l];
+  Scalar val = base_index({a, b});
+
+  return val / (math::mandel_factor(a) * math::mandel_factor(b));
+}
+
+SymSymR4
 SymSymR4::operator-() const
 {
   return -torch::Tensor(*this);
@@ -90,6 +124,12 @@ SymSymR4
 SymSymR4::inverse() const
 {
   return torch::linalg::inv(*this);
+}
+
+R4
+SymSymR4::to_full() const
+{
+  return R4::init(*this);
 }
 
 SymSymR4
