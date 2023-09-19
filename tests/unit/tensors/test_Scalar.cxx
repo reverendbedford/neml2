@@ -30,7 +30,7 @@ using namespace neml2;
 
 TEST_CASE("Unbatched Scalar", "[Scalar]")
 {
-  auto a = Scalar(2.5);
+  auto a = Scalar(2.5, default_tensor_options);
 
   SECTION("construct from plain data type")
   {
@@ -40,69 +40,69 @@ TEST_CASE("Unbatched Scalar", "[Scalar]")
 
   SECTION("+ unbatched Scalar")
   {
-    auto b = Scalar(3.1);
+    auto b = Scalar(3.1, default_tensor_options);
     auto result = a + b;
-    auto correct = Scalar(5.6);
+    auto correct = Scalar(5.6, default_tensor_options);
     REQUIRE(torch::allclose(result, correct));
   }
 
   SECTION("+ batched Scalar")
   {
     TorchSize nbatch = 5;
-    auto b = Scalar(3.1).batch_expand(nbatch);
+    auto b = Scalar(3.1, default_tensor_options).batch_expand(nbatch);
     auto result = a + b;
-    auto correct = Scalar(5.6).batch_expand(nbatch);
+    auto correct = Scalar(5.6, default_tensor_options).batch_expand(nbatch);
     REQUIRE(torch::allclose(result, correct));
   }
 
   SECTION("- unbatched Scalar")
   {
-    auto b = Scalar(3.1);
+    auto b = Scalar(3.1, default_tensor_options);
     auto result = a - b;
-    auto correct = Scalar(-0.6);
+    auto correct = Scalar(-0.6, default_tensor_options);
     REQUIRE(torch::allclose(result, correct));
   }
 
   SECTION("- batched Scalar")
   {
     int nbatch = 5;
-    auto b = Scalar(3.1).batch_expand(nbatch);
+    auto b = Scalar(3.1, default_tensor_options).batch_expand(nbatch);
     auto result = a - b;
-    auto correct = Scalar(-0.6).batch_expand(nbatch);
+    auto correct = Scalar(-0.6, default_tensor_options).batch_expand(nbatch);
     REQUIRE(torch::allclose(result, correct));
   }
 
   SECTION("* unbatched Scalar")
   {
-    auto b = Scalar(3.1);
+    auto b = Scalar(3.1, default_tensor_options);
     auto result = a * b;
-    auto correct = Scalar(2.5 * 3.1);
+    auto correct = Scalar(2.5 * 3.1, default_tensor_options);
     REQUIRE(torch::allclose(result, correct));
   }
 
   SECTION("* batched Scalar")
   {
     int nbatch = 5;
-    auto b = Scalar(3.1).batch_expand(nbatch);
+    auto b = Scalar(3.1, default_tensor_options).batch_expand(nbatch);
     auto result = a * b;
-    auto correct = Scalar(2.5 * 3.1).batch_expand(nbatch);
+    auto correct = Scalar(2.5 * 3.1, default_tensor_options).batch_expand(nbatch);
     REQUIRE(torch::allclose(result, correct));
   }
 
   SECTION("/ unbatched Scalar")
   {
-    auto b = Scalar(3.1);
+    auto b = Scalar(3.1, default_tensor_options);
     auto result = a / b;
-    auto correct = Scalar(2.5 / 3.1);
+    auto correct = Scalar(2.5 / 3.1, default_tensor_options);
     REQUIRE(torch::allclose(result, correct));
   }
 
   SECTION("/ batched Scalar")
   {
     int nbatch = 5;
-    auto b = Scalar(3.1).batch_expand(nbatch);
+    auto b = Scalar(3.1, default_tensor_options).batch_expand(nbatch);
     auto result = a / b;
-    auto correct = Scalar(2.5 / 3.1).batch_expand(nbatch);
+    auto correct = Scalar(2.5 / 3.1, default_tensor_options).batch_expand(nbatch);
     REQUIRE(torch::allclose(result, correct));
   }
 }
@@ -110,69 +110,69 @@ TEST_CASE("Unbatched Scalar", "[Scalar]")
 TEST_CASE("Batched Scalar", "[Scalar]")
 {
   int nbatch = 5;
-  Scalar a = Scalar(2.5).batch_expand(nbatch);
+  Scalar a = Scalar(2.5, default_tensor_options).batch_expand(nbatch);
 
   SECTION("+ unbatched Scalar")
   {
-    auto b = Scalar(3.1);
+    auto b = Scalar(3.1, default_tensor_options);
     auto result = a + b;
-    auto correct = Scalar(5.6).batch_expand(nbatch);
+    auto correct = Scalar(5.6, default_tensor_options).batch_expand(nbatch);
     REQUIRE(torch::allclose(result, correct));
   }
 
   SECTION("+ batched Scalar")
   {
-    Scalar b = Scalar(3.1).batch_expand(nbatch);
+    Scalar b = Scalar(3.1, default_tensor_options).batch_expand(nbatch);
     auto result = a + b;
-    auto correct = Scalar(5.6).batch_expand(nbatch);
+    auto correct = Scalar(5.6, default_tensor_options).batch_expand(nbatch);
     REQUIRE(torch::allclose(result, correct));
   }
 
   SECTION("- unbatched Scalar")
   {
-    auto b = Scalar(3.1);
+    auto b = Scalar(3.1, default_tensor_options);
     auto result = a - b;
-    auto correct = Scalar(-0.6).batch_expand(nbatch);
+    auto correct = Scalar(-0.6, default_tensor_options).batch_expand(nbatch);
     REQUIRE(torch::allclose(result, correct));
   }
 
   SECTION("- batched Scalar")
   {
-    Scalar b = Scalar(3.1).batch_expand(nbatch);
+    Scalar b = Scalar(3.1, default_tensor_options).batch_expand(nbatch);
     auto result = a - b;
-    auto correct = Scalar(-0.6).batch_expand(nbatch);
+    auto correct = Scalar(-0.6, default_tensor_options).batch_expand(nbatch);
     REQUIRE(torch::allclose(result, correct));
   }
 
   SECTION("* unbatched Scalar")
   {
-    auto b = Scalar(3.1);
+    auto b = Scalar(3.1, default_tensor_options);
     auto result = a * b;
-    auto correct = Scalar(2.5 * 3.1).batch_expand(nbatch);
+    auto correct = Scalar(2.5 * 3.1, default_tensor_options).batch_expand(nbatch);
     REQUIRE(torch::allclose(result, correct));
   }
 
   SECTION("* batched Scalar")
   {
-    Scalar b = Scalar(3.1).batch_expand(nbatch);
+    Scalar b = Scalar(3.1, default_tensor_options).batch_expand(nbatch);
     auto result = a * b;
-    auto correct = Scalar(2.5 * 3.1).batch_expand(nbatch);
+    auto correct = Scalar(2.5 * 3.1, default_tensor_options).batch_expand(nbatch);
     REQUIRE(torch::allclose(result, correct));
   }
 
   SECTION("/ unbatched Scalar")
   {
-    auto b = Scalar(3.1);
+    auto b = Scalar(3.1, default_tensor_options);
     auto result = a / b;
-    auto correct = Scalar(2.5 / 3.1).batch_expand(nbatch);
+    auto correct = Scalar(2.5 / 3.1, default_tensor_options).batch_expand(nbatch);
     REQUIRE(torch::allclose(result, correct));
   }
 
   SECTION("/ batched Scalar")
   {
-    auto b = Scalar(3.1).batch_expand(nbatch);
+    auto b = Scalar(3.1, default_tensor_options).batch_expand(nbatch);
     auto result = a / b;
-    auto correct = Scalar(2.5 / 3.1).batch_expand(nbatch);
+    auto correct = Scalar(2.5 / 3.1, default_tensor_options).batch_expand(nbatch);
     REQUIRE(torch::allclose(result, correct));
   }
 }

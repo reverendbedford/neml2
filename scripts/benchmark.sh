@@ -22,8 +22,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+#!/usr/bin/env bash
 
-mkdir -p Testing/Temporary
-./tests/benchmark_tests $1 --benchmark-samples $2 --use-colour no -o Testing/Temporary/benchmark_$3.out
-python scripts/extract_timings.py Testing/Temporary/benchmark_$3.out Testing/Temporary/benchmark_$3.csv
-python scripts/analyze_timings.py Testing/Temporary/benchmark_$3.csv benchmark_$3
+cd tests
+mkdir -p $3
+./benchmark_tests $1 --benchmark-samples $2 --use-colour no -o $3/log.txt
+python ../scripts/extract_timings.py $3/log.txt $3/timings.csv
+python ../scripts/analyze_timings.py $3/timings.csv $3/timings.png

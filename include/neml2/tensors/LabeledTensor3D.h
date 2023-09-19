@@ -30,6 +30,10 @@ namespace neml2
 {
 class LabeledMatrix;
 
+/**
+ * @brief A single-batched, logically 3D LabeledTensor.
+ *
+ */
 class LabeledTensor3D : public LabeledTensor<1, 3>
 {
 public:
@@ -37,6 +41,14 @@ public:
 
   /// Conversion from LabeledTensor
   LabeledTensor3D(const LabeledTensor<1, 3> & other);
+
+  /// Create a batched, labeled zero tensor
+  static LabeledTensor3D zeros(TorchShapeRef batch_size,
+                               const std::vector<const LabeledAxis *> & axes,
+                               const torch::TensorOptions & options = default_tensor_options);
+
+  /// Create a zero tensor with the same shape and labels as the other tensor
+  static LabeledTensor3D zeros_like(const LabeledTensor3D & other);
 
   /// Since we assume a flat batch for now, we can define this convenient method to retrive the single batch size.
   TorchSize batch_size() const { return tensor().batch_sizes()[0]; }

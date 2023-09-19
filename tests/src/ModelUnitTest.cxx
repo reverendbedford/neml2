@@ -40,6 +40,7 @@ ModelUnitTest::expected_params()
   params.set<bool>("check_AD_first_derivatives") = true;
   params.set<bool>("check_AD_second_derivatives") = true;
   params.set<bool>("check_AD_derivatives") = true;
+  params.set<bool>("check_cuda") = true;
   params.set<std::vector<LabeledAxisAccessor>>("input_scalar_names");
   params.set<std::vector<CrossRef<Scalar>>>("input_scalar_values");
   params.set<std::vector<LabeledAxisAccessor>>("input_symr2_names");
@@ -66,6 +67,7 @@ ModelUnitTest::ModelUnitTest(const ParameterSet & params)
     _check_AD_1st_deriv(params.get<bool>("check_AD_first_derivatives")),
     _check_AD_2nd_deriv(params.get<bool>("check_AD_second_derivatives")),
     _check_AD_derivs(params.get<bool>("check_AD_derivatives")),
+    _check_cuda(params.get<bool>("check_cuda")),
     _out_rtol(params.get<Real>("output_rel_tol")),
     _out_atol(params.get<Real>("output_abs_tol")),
     _deriv_rtol(params.get<Real>("derivatives_rel_tol")),
@@ -73,17 +75,32 @@ ModelUnitTest::ModelUnitTest(const ParameterSet & params)
     _secderiv_rtol(params.get<Real>("second_derivatives_rel_tol")),
     _secderiv_atol(params.get<Real>("second_derivatives_abs_tol"))
 {
-  _in = LabeledVector(_nbatch, {&_model.input()});
+  _in = LabeledVector::zeros(_nbatch, {&_model.input()});
   fill_vector<Scalar>(_in, params, "input_scalar_names", "input_scalar_values");
   fill_vector<SymR2>(_in, params, "input_symr2_names", "input_symr2_values");
 
-  _out = LabeledVector(_nbatch, {&_model.output()});
+  _out = LabeledVector::zeros(_nbatch, {&_model.output()});
   fill_vector<Scalar>(_out, params, "output_scalar_names", "output_scalar_values");
   fill_vector<SymR2>(_out, params, "output_symr2_names", "output_symr2_values");
 }
 
 bool
 ModelUnitTest::run()
+{
+  check_all();
+
+  if (_check_cuda && torch::cuda::is_available())
+  {
+    _model.to(torch::kCUDA);
+    _in = _in.to(torch::kCUDA);
+    check_all();
+  }
+
+  return true;
+}
+
+void
+ModelUnitTest::check_all()
 {
   check_values();
 
@@ -101,15 +118,13 @@ ModelUnitTest::run()
 
   if (_check_AD_derivs)
     check_second_derivatives(true, true);
-
-  return true;
 }
 
 void
 ModelUnitTest::check_values()
 {
   auto out = _model.value(_in);
-  neml_assert(utils::allclose(out, _out, _out_rtol, _out_atol),
+  neml_assert(utils::allclose(out, _out.to(out.options()), _out_rtol, _out_atol),
               "The model gives values that are different from expected. The expected labels are:\n",
               _out.axis(0),
               "\nThe model gives the following labels:\n",
@@ -125,7 +140,7 @@ ModelUnitTest::check_derivatives(bool first, bool second)
 {
   _model.use_AD_derivatives(first, second);
   auto exact = _model.dvalue(_in);
-  auto numerical = LabeledMatrix(_nbatch, {&_model.output(), &_model.input()});
+  auto numerical = LabeledMatrix::zeros_like(exact);
   finite_differencing_derivative(
       [this](const LabeledVector & x) { return _model.value(x); }, _in, numerical);
   neml_assert(torch::allclose(exact.tensor(), numerical.tensor(), _deriv_rtol, _deriv_atol),
@@ -141,7 +156,7 @@ ModelUnitTest::check_second_derivatives(bool first, bool second)
 {
   _model.use_AD_derivatives(first, second);
   auto exact = _model.d2value(_in);
-  auto numerical = LabeledTensor3D(_nbatch, {&_model.output(), &_model.input(), &_model.input()});
+  auto numerical = LabeledTensor3D::zeros_like(exact);
   finite_differencing_derivative(
       [this](const LabeledVector & x) { return _model.dvalue(x); }, _in, numerical);
   neml_assert(torch::allclose(exact.tensor(), numerical.tensor(), _secderiv_rtol, _secderiv_atol),

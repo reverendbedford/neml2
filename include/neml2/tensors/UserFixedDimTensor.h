@@ -33,12 +33,20 @@
 
 namespace neml2
 {
+/**
+ * @brief Create raw FixedDimTensor from the input file.
+ */
 template <typename T>
 class UserFixedDimTensor : public NEML2Object, public T
 {
 public:
   static ParameterSet expected_params();
 
+  /**
+   * @brief Construct a new UserFixedDimTensor object
+   *
+   * @param params The parameters extracted from the input file.
+   */
   UserFixedDimTensor(const ParameterSet & params);
 };
 

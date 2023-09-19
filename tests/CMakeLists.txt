@@ -53,7 +53,7 @@ endif()
 option(BENCHMARK "build benchmark tests" OFF)
 
 if(BENCHMARK)
-      file(GLOB_RECURSE BENCHMARK_TESTS benchmark/benchmark_*.cxx)
+      file(GLOB_RECURSE BENCHMARK_TESTS benchmark/*.cxx)
       add_executable(benchmark_tests
             ${TEST_UTILS}
             ${BENCHMARK_TESTS}

@@ -36,7 +36,9 @@ enum ParserType
   AUTO
 };
 
-void load_model(const std::string & path, ParserType ptype = ParserType::AUTO);
+void load_model(const std::string & path,
+                const std::string & additional_input = "",
+                ParserType ptype = ParserType::AUTO);
 
 template <typename F, neml2::TorchSize D>
 void
@@ -52,11 +54,11 @@ finite_differencing_derivative(F && f,
 
   for (neml2::TorchSize i = 0; i < x.tensor().base_sizes()[0]; i++)
   {
-    neml2::Scalar dx = eps * torch::abs(x.tensor().base_index({i})).unsqueeze(-1);
+    auto dx = eps * neml2::Scalar(torch::abs(x.tensor().base_index({i})));
     dx.index_put_({dx < aeps}, aeps);
 
     auto x1 = x.clone();
-    neml2::Scalar x1i = x1.tensor().base_index({i}).unsqueeze(-1);
+    auto x1i = neml2::Scalar(x1.tensor().base_index({i}));
     x1i.index_put_({None}, x1i + dx);
 
     auto y1 = f(x1);
@@ -78,11 +80,11 @@ finite_differencing_derivative(F && f,
 
   for (neml2::TorchSize i = 0; i < x.base_sizes()[0]; i++)
   {
-    neml2::Scalar dx = eps * torch::abs(x.base_index({i})).unsqueeze(-1);
+    auto dx = eps * neml2::Scalar(torch::abs(x.base_index({i})));
     dx.index_put_({dx < aeps}, aeps);
 
     neml2::BatchTensor<1> x1 = x.clone();
-    neml2::Scalar x1i = x1.base_index({i}).unsqueeze(-1);
+    auto x1i = neml2::Scalar(x1.base_index({i}));
     x1i.index_put_({None}, x1i + dx);
 
     neml2::BatchTensor<1> y1 = f(x1);

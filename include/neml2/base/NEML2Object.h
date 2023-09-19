@@ -29,11 +29,23 @@
 
 namespace neml2
 {
+/**
+ * @brief The base class of all "manufacturable" objects in the NEML2 library.
+ *
+ * NEML2 uses the standard registry-factory pattern for automatic object registration and creation.
+ * The registry and the factory relies on polymophism to collect and resolve all types at run-time.
+ * See `Registry` and `Factory` for more details.
+ */
 class NEML2Object : public torch::nn::Module, public ParameterInterface
 {
 public:
   static ParameterSet expected_params();
 
+  /**
+   * @brief Construct a new NEML2Object object
+   *
+   * @param params The set of parameters extracted from the input file
+   */
   NEML2Object(const ParameterSet & params);
 };
 } // namespace neml2

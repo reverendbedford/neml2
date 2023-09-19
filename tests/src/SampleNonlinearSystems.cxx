@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 #include "SampleNonlinearSystems.h"
+#include "neml2/tensors/Scalar.h"
 
 using namespace torch::indexing;
 using namespace neml2;
@@ -37,11 +38,11 @@ PowerTestSystem::set_residual(BatchTensor<1> x,
   TorchSize n = x.base_sizes()[0];
   if (residual)
     for (TorchSize i = 0; i < n; i++)
-      residual->base_index_put({i}, x.base_index({i}).pow(i + 1) - 1.0);
+      residual->base_index_put({i}, x.base_index({i}).pow(Scalar(i + 1, x.options())) - 1.0);
 
   if (Jacobian)
     for (TorchSize i = 0; i < n; i++)
-      Jacobian->base_index_put({i, i}, (i + 1) * x.base_index({i}).pow(i));
+      Jacobian->base_index_put({i, i}, (i + 1) * x.base_index({i}).pow(Scalar(i, x.options())));
 }
 
 BatchTensor<1>
@@ -53,5 +54,5 @@ PowerTestSystem::exact_solution(BatchTensor<1> x) const
 BatchTensor<1>
 PowerTestSystem::guess(BatchTensor<1> x) const
 {
-  return torch::ones_like(x) * 2;
+  return BatchTensor<1>(torch::ones_like(x)) * 2.0;
 }

@@ -30,6 +30,10 @@ namespace neml2
 {
 class LabeledVector;
 
+/**
+ * @brief A single-batched, logically 2D LabeledTensor.
+ *
+ */
 class LabeledMatrix : public LabeledTensor<1, 2>
 {
 public:
@@ -38,7 +42,15 @@ public:
   /// Conversion from LabeledTensor
   LabeledMatrix(const LabeledTensor<1, 2> & other);
 
-  /// Construct an identity
+  /// Create a batched zero tensor.
+  static LabeledMatrix zeros(TorchShapeRef batch_size,
+                             const std::vector<const LabeledAxis *> & axes,
+                             const torch::TensorOptions & options = default_tensor_options);
+
+  /// Create a zero tensor with the same shape, tensor options, and labels as the other tensor.
+  static LabeledMatrix zeros_like(const LabeledMatrix & other);
+
+  /// Create a labeled identity tensor
   static LabeledMatrix identity(TorchSize nbatch,
                                 const LabeledAxis & axis,
                                 const torch::TensorOptions & options = default_tensor_options);

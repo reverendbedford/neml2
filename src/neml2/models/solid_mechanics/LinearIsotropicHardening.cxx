@@ -32,13 +32,13 @@ ParameterSet
 LinearIsotropicHardening::expected_params()
 {
   ParameterSet params = IsotropicHardening::expected_params();
-  params.set<Real>("hardening_modulus");
+  params.set<CrossRef<Scalar>>("hardening_modulus");
   return params;
 }
 
 LinearIsotropicHardening::LinearIsotropicHardening(const ParameterSet & params)
   : IsotropicHardening(params),
-    _K(register_parameter("K", Scalar(params.get<Real>("hardening_modulus")), false))
+    _K(register_crossref_model_parameter<Scalar>("K", "hardening_modulus"))
 {
 }
 

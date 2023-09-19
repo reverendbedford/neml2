@@ -26,8 +26,9 @@
 
 namespace neml2
 {
-ParameterInterface::ParameterInterface(const ParameterSet & params)
-  : _params(params)
+ParameterInterface::ParameterInterface(const ParameterSet & params, torch::nn::Module * object)
+  : _params(params),
+    _object(object)
 {
 }
 } // namespace neml2

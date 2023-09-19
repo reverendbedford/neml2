@@ -33,8 +33,7 @@ RateIndependentPlasticFlowConstraint::expected_params()
 {
   ParameterSet params = Model::expected_params();
   params.set<LabeledAxisAccessor>("yield_function") = {{"state", "internal", "fp"}};
-  params.set<LabeledAxisAccessor>("flow_rate") = {{"state", "internal", "gamma_rate"}};
-  params.set<LabeledAxisAccessor>("consistency_condition") = {{"residual", "rp"}};
+  params.set<LabeledAxisAccessor>("flow_rate") = {{"state", "gamma_rate"}};
   return params;
 }
 
@@ -44,8 +43,8 @@ RateIndependentPlasticFlowConstraint::RateIndependentPlasticFlowConstraint(
     yield_function(
         declare_input_variable<Scalar>(params.get<LabeledAxisAccessor>("yield_function"))),
     flow_rate(declare_input_variable<Scalar>(params.get<LabeledAxisAccessor>("flow_rate"))),
-    consistency_condition(
-        declare_output_variable<Scalar>(params.get<LabeledAxisAccessor>("consistency_condition")))
+    consistency_condition(declare_output_variable<Scalar>(
+        params.get<LabeledAxisAccessor>("flow_rate").peel().on("residual")))
 {
   setup();
 }

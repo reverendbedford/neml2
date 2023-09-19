@@ -26,7 +26,6 @@
 
 #include "neml2/models/Model.h"
 #include "neml2/solvers/NonlinearSolver.h"
-#include "neml2/predictors/Predictor.h"
 
 namespace neml2
 {
@@ -39,11 +38,7 @@ public:
 
   const Model & implicit_model() const { return _model; }
 
-  virtual void advance_step() override;
-
-  // dvalue is overriden because we rely on the implicit function theorem to compute the
-  // derivatives, and so the value has to be evaluated even if only the derivatives are requested.
-  virtual LabeledMatrix dvalue(const LabeledVector & in) const override;
+  virtual bool implicit() const override { return true; }
 
 protected:
   virtual void set_value(const LabeledVector & in,
@@ -56,8 +51,5 @@ protected:
 
   /// The nonlinear solver used to solve the nonlinear system
   const NonlinearSolver & _solver;
-
-  /// The predictor used to set the initial guess
-  Predictor * _predictor;
 };
 } // namespace neml2

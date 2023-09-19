@@ -45,78 +45,66 @@ def time_conversion(unit):
         return math.nan
 
 
-def get_multilines(lines, i):
+def get_test_case(lines, i):
     multilines = lines[i]
     for line in lines[i + 1 :]:
         if line.strip() != "":
             multilines += line
         else:
             return multilines
+    return multilines
 
 
-def pop_size(tokens):
-    token = tokens.pop(0)
-    return int(token[1:-1])
+def to_time(token):
+    args = token.split()
+    number = float(args[0])
+    unit = args[1]
+    return number * time_conversion(unit)
 
 
-def pop_name(tokens):
-    name = tokens.pop(0)
-    while not tokens[0].isnumeric():
-        name += tokens.pop(0)
-    return name
+def append_config(data, token):
+    config_pairs = token[1:-1].split(" ")
+    for config_pair in config_pairs:
+        args = config_pair.split("=")
+        data.setdefault(args[0], []).append(args[1])
 
 
-def pop_time(tokens):
-    number = tokens.pop(0)
-    unit = tokens.pop(0)
-    return float(number) * time_conversion(unit)
+if __name__ == "__main__":
+    test_case_lines = []
 
+    with open(sys.argv[1]) as file:
+        lines = file.readlines()
+        test_case = []
+        for i, line in enumerate(lines):
+            if line.startswith("{"):
+                test_case_lines.append(i)
 
-benchmarks = {}
+    data = {
+        "samples": [],
+        "iterations": [],
+        "estimated": [],
+        "mean": [],
+        "low_mean": [],
+        "high_mean": [],
+        "std": [],
+        "low_std": [],
+        "high_std": [],
+    }
 
-with open(sys.argv[1]) as file:
-    lines = file.readlines()
-    test_case = []
-    for i, line in enumerate(lines):
-        if line.startswith("-") and lines[i + 4].startswith("."):
-            test_case_name = lines[i + 1].strip()
-            benchmarks[test_case_name] = []
-            continue
-        if re.match("\\{[0-9]+\\}", line):
-            benchmarks[test_case_name].append(i)
+    for i in test_case_lines:
+        case = get_test_case(lines, i)
+        tokens = re.split(r"\s{2,}", case.strip())
+        append_config(data, tokens.pop(0))
+        data["samples"].append(tokens.pop(0))
+        data["iterations"].append(tokens.pop(0))
+        data["estimated"].append(to_time(tokens.pop(0)))
+        data["mean"].append(to_time(tokens.pop(0)))
+        data["low_mean"].append(to_time(tokens.pop(0)))
+        data["high_mean"].append(to_time(tokens.pop(0)))
+        data["std"].append(to_time(tokens.pop(0)))
+        data["low_std"].append(to_time(tokens.pop(0)))
+        data["high_std"].append(to_time(tokens.pop(0)))
 
-data = {
-    "test_case": [],
-    "benchmark": [],
-    "nbatch": [],
-    "samples": [],
-    "iterations": [],
-    "estimated": [],
-    "mean": [],
-    "low_mean": [],
-    "high_mean": [],
-    "std": [],
-    "low_std": [],
-    "high_std": [],
-}
+    df = pd.DataFrame(data)
 
-for test_case_name, indices in benchmarks.items():
-    for i in indices:
-        multilines = get_multilines(lines, i)
-        tokens = multilines.split()
-        data["test_case"].append(test_case_name)
-        data["nbatch"].append(pop_size(tokens))
-        data["benchmark"].append(pop_name(tokens))
-        data["samples"].append(int(tokens.pop(0)))
-        data["iterations"].append(int(tokens.pop(0)))
-        data["estimated"].append(pop_time(tokens))
-        data["mean"].append(pop_time(tokens))
-        data["low_mean"].append(pop_time(tokens))
-        data["high_mean"].append(pop_time(tokens))
-        data["std"].append(pop_time(tokens))
-        data["low_std"].append(pop_time(tokens))
-        data["high_std"].append(pop_time(tokens))
-
-df = pd.DataFrame(data)
-
-df.to_csv(sys.argv[2])
+    df.to_csv(sys.argv[2], index=False)

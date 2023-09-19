@@ -31,11 +31,20 @@
 
 namespace neml2
 {
+/**
+ * @brief Create a torch::Tensor from a user-provided vector and reshape into the target shape.
+ *
+ */
 class UserTensor : public torch::Tensor, public NEML2Object
 {
 public:
   static ParameterSet expected_params();
 
+  /**
+   * @brief Construct a new UserTensor object
+   *
+   * @param params The parameters extracted from the input file.
+   */
   UserTensor(const ParameterSet & params);
 };
 } // namespace neml2

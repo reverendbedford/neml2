@@ -61,13 +61,20 @@ void
 Registry::print(std::ostream & os)
 {
   auto & reg = get();
-  for (auto & object : reg._objects)
-    os << object.first << std::endl;
+  for (auto [type, params] : reg._expected_params)
+  {
+    params.set<std::string>("type") = type;
+    os << "- " << reg._syntax_type[type] << ":\n";
+    os << params << "\n";
+  }
 }
 // LCOV_EXCL_STOP
 
 void
-Registry::add_inner(const std::string & name, const ParameterSet & params, BuildPtr build_ptr)
+Registry::add_inner(const std::string & name,
+                    const std::string & type,
+                    const ParameterSet & params,
+                    BuildPtr build_ptr)
 {
   auto & reg = get();
   neml_assert(reg._expected_params.count(name) == 0 && reg._objects.count(name) == 0,
@@ -77,5 +84,6 @@ Registry::add_inner(const std::string & name, const ParameterSet & params, Build
 
   reg._expected_params[name] = params;
   reg._objects[name] = build_ptr;
+  reg._syntax_type[name] = type;
 }
 } // namespace neml2

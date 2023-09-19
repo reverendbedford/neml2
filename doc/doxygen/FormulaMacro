@@ -1,1 +1,0 @@
-\newcommand{\operatorname}[1]{\mathop{\rm #1}\nolimits}

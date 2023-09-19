@@ -28,18 +28,20 @@
 
 namespace neml2
 {
+/**
+ * @brief The logical scalar with a single batch dimension.
+ *
+ */
 class Scalar : public FixedDimTensor<1, 1>
 {
 public:
-  /// Forward all the constructors
+  // Forward all the constructors
   using FixedDimTensor<1, 1>::FixedDimTensor;
 
-  /// A convenient conversion to allow people to do
-  /// ~~~~~~~~~~~~~~~~~~~~cpp
-  /// Scalar a = 1.0;
-  /// Scalar b(5.6);
-  /// ~~~~~~~~~~~~~~~~~~~~
-  Scalar(Real init, const torch::TensorOptions & options = default_tensor_options);
+  Scalar(Real) = delete;
+
+  /// Create an unbatched Scalar from a Real
+  Scalar(Real init, const torch::TensorOptions & options);
 
   /// Zero constructor
   [[nodiscard]] static Scalar zero(const torch::TensorOptions & options = default_tensor_options);
@@ -55,24 +57,32 @@ public:
   identity_map(const torch::TensorOptions & options = default_tensor_options);
 };
 
+Scalar operator+(const Scalar & a, const Real & b);
+Scalar operator+(const Real & a, const Scalar & b);
 Scalar operator+(const Scalar & a, const Scalar & b);
 BatchTensor<1> operator+(const BatchTensor<1> & a, const Scalar & b);
 BatchTensor<1> operator+(const Scalar & a, const BatchTensor<1> & b);
 
+Scalar operator-(const Scalar & a, const Real & b);
+Scalar operator-(const Real & a, const Scalar & b);
 Scalar operator-(const Scalar & a, const Scalar & b);
 BatchTensor<1> operator-(const BatchTensor<1> & a, const Scalar & b);
 BatchTensor<1> operator-(const Scalar & a, const BatchTensor<1> & b);
 
+Scalar operator*(const Scalar & a, const Real & b);
+Scalar operator*(const Real & a, const Scalar & b);
 Scalar operator*(const Scalar & a, const Scalar & b);
 BatchTensor<1> operator*(const BatchTensor<1> & a, const Scalar & b);
 BatchTensor<1> operator*(const Scalar & a, const BatchTensor<1> & b);
 
+Scalar operator/(const Scalar & a, const Real & b);
+Scalar operator/(const Real & a, const Scalar & b);
 Scalar operator/(const Scalar & a, const Scalar & b);
 BatchTensor<1> operator/(const BatchTensor<1> & a, const Scalar & b);
 BatchTensor<1> operator/(const Scalar & a, const BatchTensor<1> & b);
 
-Scalar macaulay(const Scalar & a, const Scalar & a0);
-Scalar dmacaulay(const Scalar & a, const Scalar & a0);
+Scalar macaulay(const Scalar & a);
+Scalar dmacaulay(const Scalar & a);
 
 Scalar exp(const Scalar & a);
 

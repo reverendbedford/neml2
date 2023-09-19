@@ -52,7 +52,7 @@
     type = ElasticStrain
   []
   [elasticity]
-    type = LinearElasticity
+    type = LinearIsotropicElasticity
     youngs_modulus = 1e5
     poisson_ratio = 0.3
   []
@@ -85,9 +85,11 @@
   []
   [Kprate]
     type = AssociativeKinematicPlasticHardening
+    flow_rate = 'state/gamma_rate'
   []
   [Eprate]
     type = AssociativePlasticFlow
+    flow_rate = 'state/gamma_rate'
   []
   [integrate_Kp]
     type = SymR2BackwardEulerTimeIntegration

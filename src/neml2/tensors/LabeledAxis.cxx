@@ -26,18 +26,6 @@
 
 namespace neml2
 {
-std::ostream &
-operator<<(std::ostream & os, const LabeledAxisAccessor & accessor)
-{
-  for (size_t i = 0; i < accessor.item_names.size(); i++)
-  {
-    if (i != 0)
-      os << "/";
-    os << accessor.item_names[i];
-  }
-  return os;
-}
-
 int LabeledAxis::level = 0;
 
 LabeledAxis::LabeledAxis()
@@ -234,6 +222,23 @@ LabeledAxis::setup_layout()
   }
 }
 
+bool
+LabeledAxis::has_variable(const LabeledAxisAccessor & var) const
+{
+  if (var.empty())
+    return false;
+
+  if (var.item_names.size() > 1)
+  {
+    if (has_subaxis(var.item_names[0]))
+      return subaxis(var.item_names[0]).has_variable(var.peel());
+    else
+      return false;
+  }
+  else
+    return has_variable(var.item_names[0]);
+}
+
 TorchSize
 LabeledAxis::storage_size(const std::string & name) const
 {
@@ -263,10 +268,12 @@ LabeledAxis::storage_size(const std::vector<std::string>::const_iterator & cur,
 {
   if (cur == end - 1)
   {
-    neml_assert_dbg(_variables.count(*cur),
-                    "Trying to find the storage size of a non-existent variable named ",
-                    *cur);
-    return _variables.at(*cur);
+    if (_variables.count(*cur))
+      return _variables.at(*cur);
+    else if (_subaxes.count(*cur))
+      return _subaxes.at(*cur)->storage_size();
+
+    neml_assert_dbg(false, "Trying to find the storage size of a non-existent item named ", *cur);
   }
 
   return subaxis(*cur).storage_size(cur + 1, end);

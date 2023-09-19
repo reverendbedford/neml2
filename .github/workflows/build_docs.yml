@@ -21,8 +21,10 @@ jobs:
           python-version: "3.10"
       - run: sudo apt install doxygen graphviz
       - run: pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cpu
+      - run: pip install -r requirements.txt
       - run: cmake -DCMAKE_PREFIX_PATH="`pip show torch | grep -oP '(?<=Location:\ ).*'`/torch/share/cmake" -DDOCUMENTATION=ON .
-      - run: make doc-doxygen
+      - run: make doc-syntax -j 2
+      - run: make doc-html
       - run: cat doc/doxygen/doxygen.log
       - name: Deploy to GitHub Pages
         if: ${{ github.event_name == 'push' }}

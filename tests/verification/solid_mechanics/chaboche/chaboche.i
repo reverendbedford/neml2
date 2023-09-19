@@ -78,8 +78,8 @@
     type = Normality
     model = 'flow'
     function = 'state/internal/fp'
-    from = 'state/internal/M state/internal/k state/internal/X'
-    to = 'state/internal/NM state/internal/Nk state/internal/NX'
+    from = 'state/internal/M state/internal/k'
+    to = 'state/internal/NM state/internal/Nk'
   []
   [flow_rate]
     type = PerzynaPlasticFlowRate
@@ -117,7 +117,7 @@
     rate_form = true
   []
   [elasticity]
-    type = LinearElasticity
+    type = LinearIsotropicElasticity
     youngs_modulus = 1e5
     poisson_ratio = 0.3
     rate_form = true

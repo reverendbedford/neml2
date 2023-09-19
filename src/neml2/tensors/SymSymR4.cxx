@@ -75,6 +75,12 @@ SymSymR4::init_isotropic_E_nu(const Scalar & E, const Scalar & nu)
 }
 
 SymSymR4
+SymSymR4::init_isotropic_E_nu(const Real & E, const Real & nu, const torch::TensorOptions & options)
+{
+  return SymSymR4::init_isotropic_E_nu(Scalar(E, options), Scalar(nu, options));
+}
+
+SymSymR4
 SymSymR4::operator-() const
 {
   return -torch::Tensor(*this);
@@ -87,7 +93,31 @@ SymSymR4::inverse() const
 }
 
 SymSymR4
+operator+(const SymSymR4 & a, const Real & b)
+{
+  return torch::operator+(a, b);
+}
+
+SymSymR4
+operator+(const Real & a, const SymSymR4 & b)
+{
+  return torch::operator+(a, b);
+}
+
+SymSymR4
 operator+(const SymSymR4 & a, const SymSymR4 & b)
+{
+  return torch::operator+(a, b);
+}
+
+SymSymR4
+operator-(const SymSymR4 & a, const Real & b)
+{
+  return torch::operator+(a, b);
+}
+
+SymSymR4
+operator-(const Real & a, const SymSymR4 & b)
 {
   return torch::operator+(a, b);
 }
@@ -99,9 +129,21 @@ operator-(const SymSymR4 & a, const SymSymR4 & b)
 }
 
 SymSymR4
+operator*(const SymSymR4 & a, const Real & b)
+{
+  return torch::operator*(a, b);
+}
+
+SymSymR4
+operator*(const Real & a, const SymSymR4 & b)
+{
+  return torch::operator*(a, b);
+}
+
+SymSymR4
 operator*(const SymSymR4 & a, const Scalar & b)
 {
-  return torch::operator*(a, b.to(a).unsqueeze(-1));
+  return torch::operator*(a, b.unsqueeze(-1));
 }
 
 SymSymR4
@@ -129,8 +171,20 @@ operator*(const SymSymR4 & a, const SymSymR4 & b)
 }
 
 SymSymR4
+operator/(const SymSymR4 & a, const Real & b)
+{
+  return torch::operator/(a, b);
+}
+
+SymSymR4
+operator/(const Real & a, const SymSymR4 & b)
+{
+  return torch::operator/(a, b);
+}
+
+SymSymR4
 operator/(const SymSymR4 & a, const Scalar & b)
 {
-  return torch::operator/(a, b.to(a).unsqueeze(-1));
+  return torch::operator/(a, b.unsqueeze(-1));
 }
 } // namespace neml2

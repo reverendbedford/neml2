@@ -36,12 +36,14 @@ TEST_CASE("manufacture", "[Factory]")
   all_params["Models"]["example"] =
       ScalarSumModel::expected_params() +
       ParameterSet(
-          KS{"name", "example"},
-          KS{"type", "ScalarSumModel"},
-          KVL{"from_var",
+          std::pair<std::string, std::string>{"name", "example"},
+          std::pair<std::string, std::string>{"type", "ScalarSumModel"},
+          std::pair<std::string, std::vector<LabeledAxisAccessor>>{
+              "from_var",
               std::vector<LabeledAxisAccessor>{LabeledAxisAccessor{{"state", "A"}},
                                                LabeledAxisAccessor{{"state", "substate", "B"}}}},
-          KL{"to_var", LabeledAxisAccessor{{"state", "outsub", "C"}}});
+          std::pair<std::string, LabeledAxisAccessor>{
+              "to_var", LabeledAxisAccessor{{"state", "outsub", "C"}}});
 
   factory.manufacture(all_params);
   auto & summodel = Factory::get_object<ScalarSumModel>("Models", "example");

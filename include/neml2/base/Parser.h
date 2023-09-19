@@ -27,17 +27,36 @@
 
 namespace neml2
 {
-/// The base class for all parsers
+/**
+ * @brief A parser is responsible for parsing an input file into a collection of parameters which
+ * can be used by the `Factory` to manufacture corresponding objects.
+ *
+ */
 class Parser
 {
 public:
   Parser() = default;
 
-  /// Deserialize a file, extract parameter collection, and manufacture all objects
-  virtual void parse_and_manufacture(const std::string & filename);
+  /**
+   * @brief Deserialize a file and manufacture all objects.
+   *
+   * @param filename Name/path of the input file.
+   * @param additional_input  Additional content of the input file not included in the input file
+   * itself, e.g., from command line.
+   */
+  virtual void parse_and_manufacture(const std::string & filename,
+                                     const std::string & additional_input = "");
 
-  /// Deserialize a file given filename
-  virtual ParameterCollection parse(const std::string & filename) const = 0;
+  /**
+   * @brief Deserialize a file.
+   *
+   * @param filename Name/path of the input file.
+   * @param additional_input  Additional content of the input file not included in the input file
+   * itself, e.g., from command line.
+   * @return ParameterCollection The extracted object parameters.
+   */
+  virtual ParameterCollection parse(const std::string & filename,
+                                    const std::string & additional_input = "") const = 0;
 };
 
 } // namespace neml2

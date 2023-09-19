@@ -28,15 +28,24 @@
 
 namespace neml2
 {
+/**
+ * @brief A data structure that holds parameters of multiple objects.
+ *
+ * The ParameterCollection is a two layer map, where the first layer key is the section name, e.g.
+ * Models, Tensors, Drivers, etc., and the second layer key is the object name.
+ */
 class ParameterCollection
 {
 public:
   ParameterCollection() = default;
 
+  /// Implicit conversion to an STL map.
   operator std::map<std::string, std::map<std::string, ParameterSet>>() const { return _data; }
 
+  /// Get all the object parameters under a specific section.
   std::map<std::string, ParameterSet> & operator[](const std::string & section);
 
+  /// Get a read-only reference to the underlying data structure.
   const std::map<std::string, std::map<std::string, ParameterSet>> & data() const { return _data; }
 
 private:

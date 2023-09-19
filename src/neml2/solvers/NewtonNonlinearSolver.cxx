@@ -42,7 +42,12 @@ NewtonNonlinearSolver::solve(const NonlinearSystem & system, const BatchTensor<1
   // Setup initial guess and initial residual
   BatchTensor<1> x = x0.clone();
   BatchTensor<1> R = system.residual(x);
+#if (TORCH_VERSION_MAJOR > 1 || TORCH_VERSION_MINOR > 10)
   BatchTensor<1> nR0 = torch::linalg::vector_norm(R, 2, -1, false, c10::nullopt);
+#else
+  // This is a bug in older libTorch
+  BatchTensor<1> nR0 = torch::linalg::vector_norm(R, 2, R.dim() - 1, false, c10::nullopt);
+#endif
 
   // Check for initial convergence
   if (converged(0, nR0, nR0))
@@ -60,7 +65,12 @@ NewtonNonlinearSolver::solve(const NonlinearSystem & system, const BatchTensor<1
   {
     // Update R and the norm of R
     std::tie(R, J) = system.residual_and_Jacobian(x);
+#if (TORCH_VERSION_MAJOR > 1 || TORCH_VERSION_MINOR > 10)
     BatchTensor<1> nR = torch::linalg::vector_norm(R, 2, -1, false, c10::nullopt);
+#else
+    // This is a bug in older libTorch
+    BatchTensor<1> nR = torch::linalg::vector_norm(R, 2, R.dim() - 1, false, c10::nullopt);
+#endif
 
     // Check for initial convergence
     if (converged(i, nR, nR0))

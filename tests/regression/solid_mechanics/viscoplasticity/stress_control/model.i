@@ -54,7 +54,7 @@
     total_strain = 'state/E'
   []
   [elasticity]
-    type = LinearElasticity
+    type = LinearIsotropicElasticity
     youngs_modulus = 1e5
     poisson_ratio = 0.3
   []
@@ -99,7 +99,7 @@
     force = 'S'
   []
   [Eerate]
-    type = LinearElasticity
+    type = LinearIsotropicElasticity
     stress = 'forces/S'
     youngs_modulus = 1e5
     poisson_ratio = 0.3

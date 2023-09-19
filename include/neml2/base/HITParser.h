@@ -28,13 +28,25 @@
 
 namespace neml2
 {
-/// A helper class to deserialize a file written in HIT format
+/**
+ * @copydoc neml2::Parser
+ *
+ * The HITParser parses input files written in the [HIT format](https://github.com/idaholab/hit).
+ */
 class HITParser : public Parser
 {
 public:
   HITParser() = default;
 
-  virtual ParameterCollection parse(const std::string & filename) const;
+  virtual ParameterCollection parse(const std::string & filename,
+                                    const std::string & additional_input = "") const override;
+
+  /**
+   * @brief Extract parameters for a specific object.
+   *
+   * @param object The object whose parameters are to be extracted.
+   * @return ParameterSet The parameters of the object.
+   */
   virtual ParameterSet extract_object_parameters(hit::Node * object) const;
 
 private:

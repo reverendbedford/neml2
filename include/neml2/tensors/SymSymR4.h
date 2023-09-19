@@ -29,19 +29,30 @@
 
 namespace neml2
 {
+/**
+ * @brief The logical symmetric fourth order tensor with a single batch dimension.
+ *
+ */
 class SymSymR4 : public FixedDimTensor<1, 6, 6>
 {
 public:
   using FixedDimTensor<1, 6, 6>::FixedDimTensor;
 
-  /// Named constructors
-  /// @{
+  /// Create the identity tensor \f$\delta_{ij}\delta_{kl}\f$
   static SymSymR4 init_identity(const torch::TensorOptions & options = default_tensor_options);
+  /// Create the symmetric identity tensor \f$\delta_{ik}\delta_{jl}/2 + \delta_{il}\delta_{jk}/2\f$
   static SymSymR4 init_identity_sym(const torch::TensorOptions & options = default_tensor_options);
+  /// Create the volumetric identity tensor \f$\delta_{ij}\delta_{kl}/3\f$
   static SymSymR4 init_identity_vol(const torch::TensorOptions & options = default_tensor_options);
+  /// Create the deviatoric identity tensor \f$\delta_{ik}\delta_{jl}/2 + \delta_{il}\delta_{jk}/2 - \delta_{ij}\delta_{kl}/3\f$
   static SymSymR4 init_identity_dev(const torch::TensorOptions & options = default_tensor_options);
+  /// Create the fourth order elasticity tensor given the Young's modulus and the Poisson's ratio.
   static SymSymR4 init_isotropic_E_nu(const Scalar & E, const Scalar & nu);
-  /// @}
+  /// Create the fourth order elasticity tensor given the Young's modulus and the Poisson's ratio.
+  static SymSymR4
+  init_isotropic_E_nu(const Real & E,
+                      const Real & nu,
+                      const torch::TensorOptions & options = default_tensor_options);
 
   // Negation
   SymSymR4 operator-() const;
@@ -50,15 +61,23 @@ public:
   SymSymR4 inverse() const;
 };
 
+SymSymR4 operator+(const SymSymR4 & a, const Real & b);
+SymSymR4 operator+(const Real & a, const SymSymR4 & b);
 SymSymR4 operator+(const SymSymR4 & a, const SymSymR4 & b);
 
+SymSymR4 operator-(const SymSymR4 & a, const Real & b);
+SymSymR4 operator-(const Real & a, const SymSymR4 & b);
 SymSymR4 operator-(const SymSymR4 & a, const SymSymR4 & b);
 
+SymSymR4 operator*(const SymSymR4 & a, const Real & b);
+SymSymR4 operator*(const Real & a, const SymSymR4 & b);
 SymSymR4 operator*(const SymSymR4 & a, const Scalar & b);
 SymSymR4 operator*(const Scalar & a, const SymSymR4 & b);
 SymR2 operator*(const SymSymR4 & a, const SymR2 & b);
 SymR2 operator*(const SymR2 & a, const SymSymR4 & b);
 SymSymR4 operator*(const SymSymR4 & a, const SymSymR4 & b);
 
+SymSymR4 operator/(const SymSymR4 & a, const Real & b);
+SymSymR4 operator/(const Real & a, const SymSymR4 & b);
 SymSymR4 operator/(const SymSymR4 & a, const Scalar & b);
 } // namespace neml2

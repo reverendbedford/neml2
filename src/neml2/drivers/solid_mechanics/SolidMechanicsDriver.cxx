@@ -56,8 +56,10 @@ SolidMechanicsDriver::SolidMechanicsDriver(const ParameterSet & params)
   }
   else
     // LCOV_EXCL_START
-    neml_assert(false, "Unsupported control type.");
+    throw NEMLException("Unsupported control type.");
   // LCOV_EXCL_STOP
+
+  _driving_force = _driving_force.to(_device);
 
   check_integrity();
 }
@@ -87,57 +89,11 @@ SolidMechanicsDriver::check_integrity() const
               _driving_force.sizes()[2]);
 }
 
-bool
-SolidMechanicsDriver::solve()
-{
-  // We don't need parameter gradients
-  // torch::NoGradGuard no_grad_guard;
-
-  for (_step_count = 0; _step_count < _nsteps; _step_count++)
-    solve_step(_step_count == 0);
-
-  return true;
-}
-
 void
-SolidMechanicsDriver::solve_step(bool init)
+SolidMechanicsDriver::update_forces()
 {
-  if (_verbose)
-    // LCOV_EXCL_START
-    std::cout << "Step " << _step_count << std::endl;
-  // LCOV_EXCL_STOP
-
-  // Advance the step
-  if (!init)
-    _model.advance_step();
-  auto current_time = Scalar(_time.index({_step_count}).unsqueeze(-1));
+  TransientDriver::update_forces();
   auto current_driving_force = SymR2(_driving_force.index({_step_count}));
-
-  // Prepare input
   _in.set(current_driving_force, _driving_force_name);
-  _in.set(current_time, _time_name);
-
-  // Solve the step
-  if (!init)
-    _out = _model.value(_in);
-
-  // Propagate the forces and state in time
-  // current --> old
-  // Initialize the old state it if necessary
-  // if (init)
-  //   _model.init_state(in);
-  if (!init)
-  {
-    LabeledVector(_in.slice("old_state")).fill(_out.slice("state"));
-    LabeledVector(_in.slice("old_forces")).fill(_in.slice("forces"));
-  }
-
-  // Store the results
-  _result->push_back({{"input", _in}, {"output", _out}});
-
-  if (_verbose)
-    // LCOV_EXCL_START
-    std::cout << std::endl;
-  // LCOV_EXCL_STOP
 }
 }

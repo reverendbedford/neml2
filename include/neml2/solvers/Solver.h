@@ -29,13 +29,23 @@
 
 namespace neml2
 {
+/**
+ * @brief The solver solves a system of equations.
+ *
+ */
 class Solver : public NEML2Object
 {
 public:
   static ParameterSet expected_params();
 
+  /**
+   * @brief Construct a new Solver object
+   *
+   * @param params The parameters extracted from the input file
+   */
   Solver(const ParameterSet & params);
 
+  /// Whether to print additional (debugging) information during the solve
   const bool verbose;
 };
 } // namespace neml2

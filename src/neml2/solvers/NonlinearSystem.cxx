@@ -38,7 +38,7 @@ BatchTensor<1>
 NonlinearSystem::Jacobian(BatchTensor<1> x) const
 {
   TorchSize n = x.base_sizes()[0];
-  auto J = BatchTensor<1>(x.batch_sizes(), {n, n});
+  auto J = BatchTensor<1>(x.batch_sizes(), {n, n}, x.options());
   set_residual(x, nullptr, &J);
   return J;
 }
@@ -48,7 +48,7 @@ NonlinearSystem::residual_and_Jacobian(BatchTensor<1> x) const
 {
   TorchSize n = x.base_sizes()[0];
   auto r = BatchTensor<1>(torch::empty_like(x));
-  auto J = BatchTensor<1>(x.batch_sizes(), {n, n});
+  auto J = BatchTensor<1>(x.batch_sizes(), {n, n}, x.options());
   set_residual(x, &r, &J);
   return {r, J};
 }

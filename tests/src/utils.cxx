@@ -27,7 +27,7 @@
 using namespace neml2;
 
 void
-load_model(const std::string & path, ParserType ptype)
+load_model(const std::string & path, const std::string & additional_input, ParserType ptype)
 {
   // We are being forward looking here
   if (ptype == ParserType::AUTO)
@@ -44,7 +44,7 @@ load_model(const std::string & path, ParserType ptype)
   if (ptype == ParserType::HIT)
   {
     HITParser parser;
-    parser.parse_and_manufacture(path);
+    parser.parse_and_manufacture(path, additional_input);
   }
   else
     neml_assert(false, "Unsupported parser type");

@@ -21,9 +21,9 @@
     type = ModelUnitTest
     model = 'model'
     nbatch = 5
-    input_scalar_names = 'state/internal/fp state/internal/gamma_rate'
+    input_scalar_names = 'state/internal/fp state/gamma_rate'
     input_scalar_values = 'fp gamma_rate'
-    output_scalar_names = 'residual/rp'
+    output_scalar_names = 'residual/gamma_rate'
     output_scalar_values = 'rp'
   []
 []

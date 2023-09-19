@@ -31,11 +31,20 @@
 
 namespace neml2
 {
+/**
+ * @brief A SymR2 *manufacturable* from the input file.
+ *
+ */
 class InitializedSymR2 : public NEML2Object, public SymR2
 {
 public:
   static ParameterSet expected_params();
 
+  /**
+   * @brief Construct a new InitializedSymR2object.
+   *
+   * @param params The set of parameters extracted from the input file.
+   */
   InitializedSymR2(const ParameterSet & params);
 
 private:

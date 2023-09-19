@@ -29,6 +29,7 @@
 
 #include "neml2/misc/types.h"
 
+#include "neml2/tensors/LabeledAxisAccessor.h"
 #include "neml2/tensors/Scalar.h"
 #include "neml2/tensors/SymR2.h"
 
@@ -48,78 +49,32 @@ struct is_labelable<SymR2> : std::true_type
 };
 
 /**
-The accessor containing all the information needed to access an item in a `LabeledAxis`. The
-accessor consists of an arbitrary number of item names.
-The last item name can be either a variable name or a sub-axis name.
-All the other item names are considered to be sub-axis names.
-*/
-struct LabeledAxisAccessor
-{
-  std::vector<std::string> item_names;
-
-  operator std::vector<std::string>() const { return item_names; }
-
-  bool empty() const { return item_names.empty(); }
-
-  LabeledAxisAccessor with_suffix(const std::string & suffix) const
-  {
-    auto new_names = item_names;
-    new_names.back() += suffix;
-    return LabeledAxisAccessor{new_names};
-  }
-
-  LabeledAxisAccessor on(const std::string & axis) const
-  {
-    auto new_names = item_names;
-    new_names.insert(new_names.begin(), axis);
-    return LabeledAxisAccessor{new_names};
-  }
-
-  LabeledAxisAccessor on(const LabeledAxisAccessor & axis) const
-  {
-    auto new_names = axis.item_names;
-    new_names.insert(new_names.end(), item_names.begin(), item_names.end());
-    return LabeledAxisAccessor{new_names};
-  }
-
-  bool operator==(const LabeledAxisAccessor & other) const
-  {
-    return item_names == other.item_names;
-  }
-
-  bool operator<(const LabeledAxisAccessor & other) const { return item_names < other.item_names; }
-
-  friend std::ostream & operator<<(std::ostream & os, const LabeledAxisAccessor & accessor);
-};
-
-std::ostream & operator<<(std::ostream & os, const LabeledAxisAccessor & accessor);
-
-class LabeledAxis;
-
-typedef std::unordered_map<std::string, std::pair<TorchSize, TorchSize>> AxisLayout;
-
+ * @brief A *labeled* axis used to associate layout of a tensor with human-interpretable names.
+ *
+ * A logically one-dimensional tensor requires one LabeledAxis, two-dimensional tensor requires two
+ * LabeledAxis, and so on. See @ref labeledview for a detailed explanation of tensor labeling.
+ *
+ * All the LabeledAxis modifiers can only be used during the setup stage. Calling any modifiers
+ * after the setup stage is forbidden and will result in a runtime error in Debug mode.
+ *
+ * All the modifiers return the modified LabeledAxis by reference, so modifiers can be chained.
+ * For example
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~{.cpp}
+ * LabeledAxis labels = input().clone();
+ * labels.add<SymR2>("stress").rename("stress", "stress1").remove("stress1");
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ */
 class LabeledAxis
 {
 public:
+  typedef std::unordered_map<std::string, std::pair<TorchSize, TorchSize>> AxisLayout;
+
+  /// Empty constructor
   LabeledAxis();
 
   /// (Shallow) copy constructor
   LabeledAxis(const LabeledAxis & other);
 
-  /**
-   * All the LabeledAxis modifiers. The modifiers can only be used during the setup stage. Calling
-   * any modifiers after the setup stage is forbidden and will result in a runtime error in Debug
-   * mode.
-   *
-   * All the modifiers return the modified LabeledAxis by reference, so modifiers can be chained.
-   For
-   * example
-   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~{.cpp}
-   LabeledAxis labels = input().clone();
-   labels.add<SymR2>("stress").rename("stress", "stress1").remove("stress1");
-   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   */
-  /// @{
   /// Add a variable or subaxis
   template <typename T>
   LabeledAxis & add(const std::string & name)
@@ -164,14 +119,13 @@ public:
 
   /// Clear everything
   LabeledAxis & clear();
-  /// @}
 
   /// Merge with another `LabeledAxis`.
   std::vector<LabeledAxisAccessor> merge(LabeledAxis & other);
 
   /**
-  Setup the layout of all items recursively. The layout of each item is contiguous in memory.
-  */
+   * Setup the layout of all items recursively. The layout of each item is contiguous in memory.
+   */
   void setup_layout();
 
   /// Number of items
@@ -201,30 +155,30 @@ public:
     }
   }
 
-  /// Does the variable exist?
+  /// Check the existence of a variable by name
   bool has_variable(const std::string & name) const { return _variables.count(name); }
+  /// Check the existence of a variable by its LabeledAxisAccessor
+  bool has_variable(const LabeledAxisAccessor & var) const;
 
   /// Does the item exist?
   bool has_subaxis(const std::string & name) const { return _subaxes.count(name); }
 
-  /// (total) storage size
-  /// @{
+  /// Get the (total) storage size of *this* axis
   TorchSize storage_size() const { return _offset; }
+  /// Get the storage size of an item by its name
   TorchSize storage_size(const std::string &) const;
+  /// Get the storage size of an item by its LabeledAxisAccessor
   TorchSize storage_size(const LabeledAxisAccessor & accessor) const;
-  /// @}
 
   /// Get the layout
   const AxisLayout & layout() const { return _layout; }
 
-  /// @{
   /// Get the indices of a specific item by its name
   TorchIndex indices(const std::string & name) const;
   /// Get the indices of a specific item by a `LabeledAxisAccessor`
   TorchIndex indices(const LabeledAxisAccessor & accessor) const;
   /// Get the indices using another `LabeledAxis`.
   TorchIndex indices(const LabeledAxis & other, bool recursive = true, bool inclusive = true) const;
-  /// @}
 
   /// Get the common indices of two `LabeledAxis`s
   static std::vector<std::pair<TorchIndex, TorchIndex>>
@@ -243,10 +197,9 @@ public:
   std::vector<LabeledAxisAccessor> variable_accessors(bool recursive = false) const;
 
   /// Get a sub-axis
-  /// @{
   const LabeledAxis & subaxis(const std::string & name) const;
+  /// Get a sub-axis
   LabeledAxis & subaxis(const std::string & name);
-  /// @}
 
   /// Check to see if two LabeledAxis objects are equivalent
   bool equals(const LabeledAxis & other) const;

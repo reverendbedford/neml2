@@ -26,9 +26,9 @@
 namespace neml2
 {
 void
-Parser::parse_and_manufacture(const std::string & filename)
+Parser::parse_and_manufacture(const std::string & filename, const std::string & additional_input)
 {
-  auto params = parse(filename);
+  auto params = parse(filename, additional_input);
   auto & factory = Factory::get();
   factory.clear();
   factory.manufacture(params);

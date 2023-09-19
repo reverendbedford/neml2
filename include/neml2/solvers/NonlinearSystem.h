@@ -28,6 +28,10 @@
 
 namespace neml2
 {
+/**
+ * @brief Definition of a nonlinear system of equations.
+ *
+ */
 class NonlinearSystem
 {
 public:
@@ -42,6 +46,15 @@ public:
   residual_and_Jacobian(BatchTensor<1> in) const final;
 
 protected:
+  /**
+   * @brief Compute the residual at the current guess \f$x\f$
+   *
+   * @param x The current guess of the solution
+   * @param residual The current residual. The residual calculation is *requested* if it is *not* a
+   * nullptr.
+   * @param Jacobian The current Jacobian. The Jacobian calculation is *requested* if it is *not* a
+   * nullptr.
+   */
   virtual void set_residual(BatchTensor<1> x,
                             BatchTensor<1> * residual,
                             BatchTensor<1> * Jacobian = nullptr) const = 0;

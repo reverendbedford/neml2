@@ -29,6 +29,7 @@
     times = 'times'
     prescribed_strains = 'strains'
     save_as = 'result.pt'
+    predictor = 'LINEAR_EXTRAPOLATION'
   []
   [regression]
     type = TransientRegression
@@ -43,12 +44,6 @@
   []
 []
 
-[Predictors]
-  [simple]
-    type = LinearExtrapolationPredictor
-  []
-[]
-
 [Models]
   [isoharden]
     type = VoceIsotropicHardening
@@ -59,7 +54,7 @@
     type = ElasticStrain
   []
   [elasticity]
-    type = LinearElasticity
+    type = LinearIsotropicElasticity
     youngs_modulus = 1e5
     poisson_ratio = 0.3
   []
@@ -117,7 +112,6 @@
     type = ImplicitUpdate
     implicit_model = 'implicit_rate'
     solver = 'newton'
-    predictor = 'simple'
     additional_outputs = 'state/internal/Ep state/internal/ep'
   []
   [model]

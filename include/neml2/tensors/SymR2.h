@@ -31,6 +31,10 @@ namespace neml2
 {
 class SymSymR4;
 
+/**
+ * @brief The logical symmetric second order tensor with a single batch dimension.
+ *
+ */
 class SymR2 : public FixedDimTensor<1, 6>
 {
 public:
@@ -40,8 +44,6 @@ public:
   [[nodiscard]] static SymSymR4
   identity_map(const torch::TensorOptions & options = default_tensor_options);
 
-  /// Named constructors
-  /// @{
   /// Make zero with batch size 1
   static SymR2 zero(const torch::TensorOptions & options = default_tensor_options);
   /// Fill the diagonals with a11 = a22 = a33 = a
@@ -55,9 +57,23 @@ public:
                     const Scalar & a23,
                     const Scalar & a13,
                     const Scalar & a12);
+  /// Fill the diagonals with a11 = a22 = a33 = a
+  static SymR2 init(const Real & a, const torch::TensorOptions & options = default_tensor_options);
+  /// Fill the diagonals with a11, a22, a33
+  static SymR2 init(const Real & a11,
+                    const Real & a22,
+                    const Real & a33,
+                    const torch::TensorOptions & options = default_tensor_options);
+  /// Fill all entries
+  static SymR2 init(const Real & a11,
+                    const Real & a22,
+                    const Real & a33,
+                    const Real & a23,
+                    const Real & a13,
+                    const Real & a12,
+                    const torch::TensorOptions & options = default_tensor_options);
   /// Identity
   static SymR2 identity(const torch::TensorOptions & options = default_tensor_options);
-  /// @}
 
   /// Accessor
   Scalar operator()(TorchSize i, TorchSize j) const;
@@ -93,17 +109,25 @@ public:
   SymR2 inverse() const;
 };
 
+SymR2 operator+(const SymR2 & a, const Real & b);
+SymR2 operator+(const Real & a, const SymR2 & b);
 SymR2 operator+(const SymR2 & a, const Scalar & b);
 SymR2 operator+(const Scalar & a, const SymR2 & b);
 SymR2 operator+(const SymR2 & a, const SymR2 & b);
 
+SymR2 operator-(const SymR2 & a, const Real & b);
+SymR2 operator-(const Real & a, const SymR2 & b);
 SymR2 operator-(const SymR2 & a, const Scalar & b);
 SymR2 operator-(const Scalar & a, const SymR2 & b);
 SymR2 operator-(const SymR2 & a, const SymR2 & b);
 
+SymR2 operator*(const SymR2 & a, const Real & b);
+SymR2 operator*(const Real & a, const SymR2 & b);
 SymR2 operator*(const SymR2 & a, const Scalar & b);
 SymR2 operator*(const Scalar & a, const SymR2 & b);
 
+SymR2 operator/(const SymR2 & a, const Real & b);
+SymR2 operator/(const Real & a, const SymR2 & b);
 SymR2 operator/(const SymR2 & a, const Scalar & b);
 SymR2 operator/(const Scalar & a, const SymR2 & b);
 } // namespace neml2

@@ -33,13 +33,13 @@ ParameterSet
 LinearKinematicHardening::expected_params()
 {
   ParameterSet params = KinematicHardening::expected_params();
-  params.set<Real>("hardening_modulus");
+  params.set<CrossRef<Scalar>>("hardening_modulus");
   return params;
 }
 
 LinearKinematicHardening::LinearKinematicHardening(const ParameterSet & params)
   : KinematicHardening(params),
-    _H(register_parameter("H", Scalar(params.get<Real>("hardening_modulus")), false))
+    _H(register_crossref_model_parameter<Scalar>("H", "hardening_modulus"))
 {
 }
 

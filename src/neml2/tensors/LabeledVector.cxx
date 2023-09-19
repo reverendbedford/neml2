@@ -33,6 +33,20 @@ LabeledVector::LabeledVector(const LabeledTensor<1, 1> & other)
 }
 
 LabeledVector
+LabeledVector::zeros(TorchShapeRef batch_size,
+                     const std::vector<const LabeledAxis *> & axes,
+                     const torch::TensorOptions & options)
+{
+  return LabeledTensor<1, 1>::zeros(batch_size, axes, options);
+}
+
+LabeledVector
+LabeledVector::zeros_like(const LabeledVector & other)
+{
+  return LabeledTensor<1, 1>::zeros_like(other);
+}
+
+LabeledVector
 LabeledVector::slice(const std::string & name) const
 {
   return LabeledVector(_tensor.base_index({_axes[0]->indices(name)}), {&_axes[0]->subaxis(name)});

@@ -11,6 +11,8 @@
     output_scalar_values = '-1.43918 -2.55098'
     output_symr2_names = 'state/baz'
     output_symr2_values = '0'
+    check_second_derivatives = false
+    check_AD_second_derivatives = false
     check_AD_derivatives = false
   []
 []

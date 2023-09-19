@@ -65,6 +65,38 @@ SymR2::init(const Scalar & a11,
 }
 
 SymR2
+SymR2::init(const Real & a, const torch::TensorOptions & options)
+{
+  return SymR2::init(Scalar(a, options));
+}
+
+SymR2
+SymR2::init(const Real & a11,
+            const Real & a22,
+            const Real & a33,
+            const torch::TensorOptions & options)
+{
+  return SymR2::init(Scalar(a11, options), Scalar(a22, options), Scalar(a33, options));
+}
+
+SymR2
+SymR2::init(const Real & a11,
+            const Real & a22,
+            const Real & a33,
+            const Real & a23,
+            const Real & a13,
+            const Real & a12,
+            const torch::TensorOptions & options)
+{
+  return SymR2::init(Scalar(a11, options),
+                     Scalar(a22, options),
+                     Scalar(a33, options),
+                     Scalar(a23, options),
+                     Scalar(a13, options),
+                     Scalar(a12, options));
+}
+
+SymR2
 SymR2::identity(const torch::TensorOptions & options)
 {
   return torch::tensor({{1, 1, 1, 0, 0, 0}}, options);
@@ -74,7 +106,7 @@ Scalar
 SymR2::operator()(TorchSize i, TorchSize j) const
 {
   TorchSize a = math::mandel_reverse_index[i][j];
-  return base_index({a}).unsqueeze(-1) / math::mandel_factor(a);
+  return base_index({a}) / math::mandel_factor(a);
 }
 
 SymR2
@@ -140,9 +172,21 @@ SymR2::inverse() const
 }
 
 SymR2
+operator+(const SymR2 & a, const Real & b)
+{
+  return torch::operator+(a, b);
+}
+
+SymR2
+operator+(const Real & a, const SymR2 & b)
+{
+  return torch::operator+(a, b);
+}
+
+SymR2
 operator+(const SymR2 & a, const Scalar & b)
 {
-  return torch::operator+(a, b.to(a));
+  return torch::operator+(a, b);
 }
 
 SymR2
@@ -158,15 +202,27 @@ operator+(const SymR2 & a, const SymR2 & b)
 }
 
 SymR2
+operator-(const SymR2 & a, const Real & b)
+{
+  return torch::operator-(a, b);
+}
+
+SymR2
+operator-(const Real & a, const SymR2 & b)
+{
+  return torch::operator-(a, b);
+}
+
+SymR2
 operator-(const SymR2 & a, const Scalar & b)
 {
-  return torch::operator-(a, b.to(a));
+  return torch::operator-(a, b);
 }
 
 SymR2
 operator-(const Scalar & a, const SymR2 & b)
 {
-  return torch::operator-(a.to(b), b);
+  return torch::operator-(a, b);
 }
 
 SymR2
@@ -176,9 +232,21 @@ operator-(const SymR2 & a, const SymR2 & b)
 }
 
 SymR2
+operator*(const SymR2 & a, const Real & b)
+{
+  return torch::operator*(a, b);
+}
+
+SymR2
+operator*(const Real & a, const SymR2 & b)
+{
+  return torch::operator*(a, b);
+}
+
+SymR2
 operator*(const SymR2 & a, const Scalar & b)
 {
-  return torch::operator*(a, b.to(a));
+  return torch::operator*(a, b);
 }
 
 SymR2
@@ -188,15 +256,27 @@ operator*(const Scalar & a, const SymR2 & b)
 }
 
 SymR2
+operator/(const SymR2 & a, const Real & b)
+{
+  return torch::operator/(a, b);
+}
+
+SymR2
+operator/(const Real & a, const SymR2 & b)
+{
+  return torch::operator/(a, b);
+}
+
+SymR2
 operator/(const SymR2 & a, const Scalar & b)
 {
-  return torch::operator/(a, b.to(a));
+  return torch::operator/(a, b);
 }
 
 SymR2
 operator/(const Scalar & a, const SymR2 & b)
 {
-  return torch::operator/(a.to(b), b);
+  return torch::operator/(a, b);
 }
 
 SymR2

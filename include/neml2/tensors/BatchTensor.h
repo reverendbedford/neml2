@@ -63,6 +63,15 @@ einsum(const std::initializer_list<torch::Tensor> & tensors,
   return torch::einsum(equation, tensors);
 }
 
+/**
+ * @brief NEML2's enhanced tensor type.
+ *
+ * BatchTensor derives from torch::Tensor and clearly distinguishes between "batched" dimensions
+ * from other dimensions. The shape of the "batched" dimensions is called the batch size, and the
+ * shape of the rest dimensions is called the base size.
+ *
+ * @tparam N The number of batch dimensions.
+ */
 template <TorchSize N>
 class BatchTensor : public torch::Tensor
 {
@@ -70,15 +79,28 @@ public:
   /// Default constructor, empty with no batch dimensions
   BatchTensor(const torch::TensorOptions & options = default_tensor_options);
 
-  /// Construct from existing tensor, no batch dimensions
+  /// Construct from existing tensor
   BatchTensor(const torch::Tensor & tensor);
 
-  /// Make an empty batched tensor given batch size and base size
+  BatchTensor(Real) = delete;
+
+  /**
+   * @brief Make an empty batched tensor given batch size and base size
+   *
+   * @param batch_size Batch size
+   * @param base_size Base size
+   * @param options Tensor options
+   */
   BatchTensor(TorchShapeRef batch_size,
               TorchShapeRef base_size,
               const torch::TensorOptions & options = default_tensor_options);
 
-  /// Make an empty single-batch tensor given base size
+  /**
+   * @brief Make an empty single-batch tensor given base size
+   *
+   * @param base_size Base size
+   * @param options Tensor options
+   */
   BatchTensor(TorchShapeRef base_size,
               const torch::TensorOptions & options = default_tensor_options);
 
@@ -117,6 +139,9 @@ public:
 
   /// Negation
   BatchTensor<N> operator-() const;
+
+  /// Raise to a power
+  BatchTensor<N> pow(const BatchTensor<N> & n) const;
 
   /// Identity
   static BatchTensor<N> identity(TorchSize n,
@@ -200,7 +225,9 @@ torch::Tensor
 BatchTensor<N>::batch_index(TorchSlice indices) const
 {
   indices.insert(indices.end(), torch::indexing::Ellipsis);
-  return this->index(indices);
+  indices.insert(indices.end(), base_dim(), torch::indexing::Slice());
+  auto res = this->index(indices);
+  return res.dim() == base_dim() ? res.unsqueeze(0) : res;
 }
 
 template <TorchSize N>
@@ -208,15 +235,16 @@ void
 BatchTensor<N>::batch_index_put(TorchSlice indices, const torch::Tensor & other)
 {
   indices.insert(indices.end(), torch::indexing::Ellipsis);
-  this->index_put_(indices, other);
+  batch_index(indices).copy_(other);
 }
 
 template <TorchSize N>
 BatchTensor<N>
 BatchTensor<N>::base_index(TorchSlice indices) const
 {
-  indices.insert(indices.begin(), torch::indexing::Ellipsis);
-  return this->index(indices);
+  indices.insert(indices.begin(), batch_dim(), torch::indexing::Slice());
+  auto res = this->index(indices);
+  return res.dim() == batch_dim() ? res.unsqueeze(-1) : res;
 }
 
 template <TorchSize N>
@@ -224,7 +252,7 @@ void
 BatchTensor<N>::base_index_put(TorchSlice indices, const torch::Tensor & other)
 {
   indices.insert(indices.begin(), torch::indexing::Ellipsis);
-  this->index_put_(indices, other);
+  base_index(indices).copy_(other);
 }
 
 template <TorchSize N>
@@ -254,9 +282,9 @@ BatchTensor<N>::batch_expand_copy(TorchShapeRef batch_size) const
                   N);
 
   // We don't want to touch the base dimensions, so put -1 for them.
-  TorchShape net(batch_size.vec());
-  net.insert(net.end(), base_dim(), -1);
-  return torch::expand_copy(*this, net);
+  auto res = torch::empty(utils::add_shapes(batch_size, base_sizes()), options());
+  res.copy_(batch_expand(batch_size));
+  return res;
 }
 
 template <TorchSize N>
@@ -268,9 +296,30 @@ BatchTensor<N>::operator-() const
 
 template <TorchSize N>
 BatchTensor<N>
+BatchTensor<N>::pow(const BatchTensor<N> & n) const
+{
+  return torch::pow(*this, n);
+}
+
+template <TorchSize N>
+BatchTensor<N>
 BatchTensor<N>::identity(TorchSize n, const torch::TensorOptions & options)
 {
   return torch::eye(n, options).index(TorchSlice(N, torch::indexing::None));
+}
+
+template <TorchSize N>
+BatchTensor<N>
+operator+(const BatchTensor<N> & a, const Real & b)
+{
+  return torch::operator+(a, b);
+}
+
+template <TorchSize N>
+BatchTensor<N>
+operator+(const Real & a, const BatchTensor<N> & b)
+{
+  return torch::operator+(a, b);
 }
 
 template <TorchSize N>
@@ -282,6 +331,20 @@ operator+(const BatchTensor<N> & a, const BatchTensor<N> & b)
 
 template <TorchSize N>
 BatchTensor<N>
+operator-(const BatchTensor<N> & a, const Real & b)
+{
+  return torch::operator-(a, b);
+}
+
+template <TorchSize N>
+BatchTensor<N>
+operator-(const Real & a, const BatchTensor<N> & b)
+{
+  return torch::operator-(a, b);
+}
+
+template <TorchSize N>
+BatchTensor<N>
 operator-(const BatchTensor<N> & a, const BatchTensor<N> & b)
 {
   return torch::operator-(a, b);
@@ -289,9 +352,37 @@ operator-(const BatchTensor<N> & a, const BatchTensor<N> & b)
 
 template <TorchSize N>
 BatchTensor<N>
+operator*(const BatchTensor<N> & a, const Real & b)
+{
+  return torch::operator*(a, b);
+}
+
+template <TorchSize N>
+BatchTensor<N>
+operator*(const Real & a, const BatchTensor<N> & b)
+{
+  return torch::operator*(a, b);
+}
+
+template <TorchSize N>
+BatchTensor<N>
 operator*(const BatchTensor<N> & a, const BatchTensor<N> & b)
 {
   return torch::operator*(a, b);
+}
+
+template <TorchSize N>
+BatchTensor<N>
+operator/(const BatchTensor<N> & a, const Real & b)
+{
+  return torch::operator/(a, b);
+}
+
+template <TorchSize N>
+BatchTensor<N>
+operator/(const Real & a, const BatchTensor<N> & b)
+{
+  return torch::operator/(a, b);
 }
 
 template <TorchSize N>

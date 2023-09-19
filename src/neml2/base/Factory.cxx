@@ -26,8 +26,7 @@
 
 namespace neml2
 {
-std::vector<std::string> Factory::pipeline = {
-    "Tensors", "Solvers", "Predictors", "Models", "Drivers"};
+std::vector<std::string> Factory::pipeline = {"Tensors", "Solvers", "Models", "Drivers"};
 
 Factory &
 Factory::get()
@@ -67,9 +66,10 @@ Factory::print(std::ostream & os) const
 {
   for (auto & [section, objects] : _objects)
   {
-    os << section << ":" << std::endl;
+    os << "- " << section << ":" << std::endl;
     for (auto & object : objects)
-      os << " " << object.first << std::endl;
+      os << "   " << object.first << ": " << utils::demangle(typeid(*object.second).name())
+         << std::endl;
   }
 }
 // LCOV_EXCL_STOP

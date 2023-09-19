@@ -30,7 +30,7 @@
 namespace neml2
 {
 ParameterCollection
-HITParser::parse(const std::string & filename) const
+HITParser::parse(const std::string & filename, const std::string & additional_input) const
 {
   // Open and read the file
   std::ifstream file(filename);
@@ -47,6 +47,11 @@ HITParser::parse(const std::string & filename) const
 
   // Explode the tree
   hit::explode(root);
+
+  // Handle additional input (they could be coming from cli args)
+  auto cli_root = hit::parse("Hit cliargs", additional_input);
+  hit::explode(cli_root);
+  hit::merge(cli_root, root);
 
   // Preevaluate the input
   hit::BraceExpander expander;
