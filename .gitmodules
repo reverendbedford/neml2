@@ -11,3 +11,4 @@
 [submodule "extern/gperftools"]
 	path = extern/gperftools
 	url = git@github.com:gperftools/gperftools.git
+	ignore = dirty

@@ -90,6 +90,7 @@ if(BENCHMARK)
             ${TEST_UTILS}
             ${BENCHMARK_TESTS}
       )
+
       # compile options
       target_compile_options(benchmark_tests PUBLIC -Wall -Wextra -pedantic -Werror)
 
@@ -108,16 +109,23 @@ endif()
 option(PROFILING "build profiling tests" OFF)
 
 if(PROFILING)
+      # gperftools for profiling
+      SET(BUILD_TESTING OFF CACHE BOOL "Build gperftools tests" FORCE)
+      add_subdirectory(${PROJECT_SOURCE_DIR}/extern/gperftools ${PROJECT_SOURCE_DIR}/extern/gperftools)
+
+      set_target_properties(tcmalloc_internal_object PROPERTIES UNITY_BUILD OFF)
+      set_target_properties(tcmalloc_and_profiler PROPERTIES UNITY_BUILD OFF)
+      set_target_properties(tcmalloc_and_profiler_static PROPERTIES UNITY_BUILD OFF)
+
       file(GLOB_RECURSE PROFILING_TESTS profiling/*.cxx)
       add_executable(profiling_tests
             ${TEST_UTILS}
             ${PROFILING_TESTS}
       )
-      # compile options
-      target_compile_options(profiling_tests PUBLIC -Wall -Wextra -pedantic -Werror)
       REGISTERUNITYGROUP(profiling_tests "Profiling test" profiling)
 
-      # target_link_libraries(profiling_tests profiler)
+      # compile options
+      target_compile_options(profiling_tests PUBLIC -Wall -Wextra -pedantic -Werror)
       target_link_options(profiling_tests PRIVATE "-Wl,-no-as-needed")
       target_link_libraries(profiling_tests neml2 testutils profiler)
       target_include_directories(profiling_tests PUBLIC
