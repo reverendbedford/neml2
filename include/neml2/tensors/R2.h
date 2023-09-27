@@ -34,6 +34,11 @@ class SR2;
 class R3;
 class Rot;
 
+/**
+ * @brief The (logical) full second order tensor.
+ *
+ * The logical storage space is (3, 3).
+ */
 class R2 : public FixedDimTensor<R2, 3, 3>
 {
 public:

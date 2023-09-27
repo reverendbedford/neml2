@@ -32,6 +32,11 @@ class Scalar;
 class Vec;
 class R2;
 
+/**
+ * @brief The (logical) full third order tensor.
+ *
+ * The logical storage space is (3, 3, 3).
+ */
 class R3 : public FixedDimTensor<R3, 3, 3, 3>
 {
 public:

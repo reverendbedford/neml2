@@ -32,6 +32,11 @@ class Scalar;
 class R2;
 class Rot;
 
+/**
+ * @brief The (logical) vector.
+ *
+ * The logical storage space is (3).
+ */
 class Vec : public VecBase<Vec>
 {
 public:

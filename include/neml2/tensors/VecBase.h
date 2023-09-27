@@ -30,6 +30,11 @@
 
 namespace neml2
 {
+/**
+ * @brief Base class for the (logical) vector.
+ *
+ * The logical storage space is (3). This class provides common operations for vector.
+ */
 template <class Derived>
 class VecBase : public FixedDimTensor<Derived, 3>
 {

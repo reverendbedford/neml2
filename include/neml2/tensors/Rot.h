@@ -37,6 +37,7 @@ class R3;
 /**
  * @brief Rotation stored in the Rodriguez format.
  *
+ * The logical storage space is (3).
  */
 class Rot : public VecBase<Rot>
 {

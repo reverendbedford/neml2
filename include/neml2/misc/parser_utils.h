@@ -60,11 +60,6 @@ bool start_with(std::string_view str, std::string_view prefix);
 
 bool end_with(std::string_view str, std::string_view suffix);
 
-static std::string parser_help_message = R""""(
-Option parsing failed. Typical reasons of failure are
-1. A genuinely invalid conversion, e.g., trying to
-)"""";
-
 template <typename T>
 T
 parse(const std::string & raw_str)

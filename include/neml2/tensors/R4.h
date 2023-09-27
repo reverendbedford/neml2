@@ -33,6 +33,11 @@ class SSR4;
 class R5;
 class Rot;
 
+/**
+ * @brief The (logical) full fourth order tensor.
+ *
+ * The logical storage space is (3, 3, 3, 3).
+ */
 class R4 : public FixedDimTensor<R4, 3, 3, 3, 3>
 {
 public:

@@ -28,6 +28,11 @@
 
 namespace neml2
 {
+/**
+ * @brief The (logical) full fifth order tensor.
+ *
+ * The logical storage space is (3, 3, 3, 3, 3).
+ */
 class R5 : public FixedDimTensor<R5, 3, 3, 3, 3, 3>
 {
 public:

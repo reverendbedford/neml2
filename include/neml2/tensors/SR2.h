@@ -35,8 +35,9 @@ class SSR4;
 class Rot;
 
 /**
- * @brief The logical symmetric second order tensor with a single batch dimension.
+ * @brief The (logical) symmetric second order tensor.
  *
+ * Mandel notation is used, and so the logical storage space is (6).
  */
 class SR2 : public FixedDimTensor<SR2, 6>
 {

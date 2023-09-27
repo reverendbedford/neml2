@@ -29,7 +29,9 @@
 namespace neml2
 {
 /**
- * @brief The logical scalar with a single batch dimension.
+ * @brief The (logical) scalar
+ *
+ * The logical storage space is (), i.e., scalar.
  *
  */
 class Scalar : public FixedDimTensor<Scalar>
