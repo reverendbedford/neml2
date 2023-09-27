@@ -31,9 +31,9 @@ namespace neml2
 class AssociativePlasticFlow : public FlowRule
 {
 public:
-  static ParameterSet expected_params();
+  static OptionSet expected_options();
 
-  AssociativePlasticFlow(const ParameterSet & params);
+  AssociativePlasticFlow(const OptionSet & options);
 
   /// Accessor for the flow direction
   const LabeledAxisAccessor flow_direction;

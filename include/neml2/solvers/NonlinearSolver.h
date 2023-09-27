@@ -36,23 +36,23 @@ namespace neml2
 class NonlinearSolver : public Solver
 {
 public:
-  static ParameterSet expected_params();
+  static OptionSet expected_options();
 
   /**
    * @brief Construct a new NonlinearSolver object
    *
-   * @param params The parameters extracted from the input file
+   * @param options The options extracted from the input file
    */
-  NonlinearSolver(const ParameterSet & params);
+  NonlinearSolver(const OptionSet & options);
 
   /**
    * @brief Solve the given nonlinear system.
    *
    * @param system The nonlinear system of equations.
    * @param x0 The initial guess.
-   * @return BatchTensor<1> The solution to the nonlinear system of equations.
+   * @return BatchTensor The solution to the nonlinear system of equations.
    */
-  virtual BatchTensor<1> solve(const NonlinearSystem & system, const BatchTensor<1> & x0) const = 0;
+  virtual BatchTensor solve(const NonlinearSystem & system, const BatchTensor & x0) const = 0;
 
   /// Absolute tolerance
   Real atol;

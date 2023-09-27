@@ -27,8 +27,8 @@
 
 namespace neml2
 {
-LabeledVector::LabeledVector(const LabeledTensor<1, 1> & other)
-  : LabeledTensor<1, 1>(other)
+LabeledVector::LabeledVector(const LabeledTensor<1> & other)
+  : LabeledTensor<1>(other)
 {
 }
 
@@ -37,13 +37,13 @@ LabeledVector::zeros(TorchShapeRef batch_size,
                      const std::vector<const LabeledAxis *> & axes,
                      const torch::TensorOptions & options)
 {
-  return LabeledTensor<1, 1>::zeros(batch_size, axes, options);
+  return LabeledTensor<1>::zeros(batch_size, axes, options);
 }
 
 LabeledVector
 LabeledVector::zeros_like(const LabeledVector & other)
 {
-  return LabeledTensor<1, 1>::zeros_like(other);
+  return LabeledTensor<1>::zeros_like(other);
 }
 
 LabeledVector
@@ -55,21 +55,23 @@ LabeledVector::slice(const std::string & name) const
 void
 LabeledVector::accumulate(const LabeledVector & other, bool recursive)
 {
-  for (auto [idx, idx_other] : LabeledAxis::common_indices(axis(0), other.axis(0), recursive))
-    _tensor.base_index({idx}) += other.tensor().base_index({idx_other});
+  const auto indices = LabeledAxis::common_indices(axis(0), other.axis(0), recursive);
+  for (const auto & [idx, idx_other] : indices)
+    _tensor.base_index({idx}) += other.base_index({idx_other});
 }
 
 void
 LabeledVector::fill(const LabeledVector & other, bool recursive)
 {
-  for (auto [idx, idx_other] : LabeledAxis::common_indices(axis(0), other.axis(0), recursive))
-    _tensor.base_index({idx}).copy_(other.tensor().base_index({idx_other}));
+  const auto indices = LabeledAxis::common_indices(axis(0), other.axis(0), recursive);
+  for (const auto & [idx, idx_other] : indices)
+    _tensor.base_index({idx}).copy_(other.base_index({idx_other}));
 }
 
 LabeledMatrix
 LabeledVector::outer(const LabeledVector & other) const
 {
-  return LabeledMatrix(torch::bmm(tensor().unsqueeze(2), other.tensor().unsqueeze(1)),
+  return LabeledMatrix(math::bmm(tensor().base_unsqueeze(-1), other.tensor().base_unsqueeze(-2)),
                        {&axis(0), &other.axis(0)});
 }
 

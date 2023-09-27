@@ -30,7 +30,7 @@
 class SampleParserTestingModel : public neml2::Model
 {
 public:
-  static neml2::ParameterSet expected_params();
+  static neml2::OptionSet expected_options();
 
   using neml2::Model::Model;
 

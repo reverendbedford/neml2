@@ -29,8 +29,8 @@ using namespace torch::indexing;
 
 namespace neml2
 {
-LabeledMatrix::LabeledMatrix(const LabeledTensor<1, 2> & other)
-  : LabeledTensor<1, 2>(other)
+LabeledMatrix::LabeledMatrix(const LabeledTensor<2> & other)
+  : LabeledTensor<2>(other)
 {
 }
 
@@ -39,39 +39,42 @@ LabeledMatrix::zeros(TorchShapeRef batch_size,
                      const std::vector<const LabeledAxis *> & axes,
                      const torch::TensorOptions & options)
 {
-  return LabeledTensor<1, 2>::zeros(batch_size, axes, options);
+  return LabeledTensor<2>::zeros(batch_size, axes, options);
 }
 
 LabeledMatrix
 LabeledMatrix::zeros_like(const LabeledMatrix & other)
 {
-  return LabeledTensor<1, 2>::zeros_like(other);
+  return LabeledTensor<2>::zeros_like(other);
 }
 
 LabeledMatrix
-LabeledMatrix::identity(TorchSize nbatch,
+LabeledMatrix::identity(TorchShapeRef batch_size,
                         const LabeledAxis & axis,
                         const torch::TensorOptions & options)
 {
-  return LabeledTensor<1, 2>(
-      BatchTensor<1>::identity(axis.storage_size(), options).batch_expand_copy({nbatch}),
-      {&axis, &axis});
+  return LabeledTensor<2>(BatchTensor::identity(batch_size, axis.storage_size(), options),
+                          {&axis, &axis});
 }
 
 void
 LabeledMatrix::accumulate(const LabeledMatrix & other, bool recursive)
 {
-  for (auto [idxi, idxi_other] : LabeledAxis::common_indices(axis(0), other.axis(0), recursive))
-    for (auto [idxj, idxj_other] : LabeledAxis::common_indices(axis(1), other.axis(1), recursive))
-      _tensor.base_index({idxi, idxj}) += other.tensor().base_index({idxi_other, idxj_other});
+  const auto indices0 = LabeledAxis::common_indices(axis(0), other.axis(0), recursive);
+  const auto indices1 = LabeledAxis::common_indices(axis(1), other.axis(1), recursive);
+  for (const auto & [idxi, idxi_other] : indices0)
+    for (const auto & [idxj, idxj_other] : indices1)
+      _tensor.base_index({idxi, idxj}) += other.base_index({idxi_other, idxj_other});
 }
 
 void
 LabeledMatrix::fill(const LabeledMatrix & other, bool recursive)
 {
-  for (auto [idxi, idxi_other] : LabeledAxis::common_indices(axis(0), other.axis(0), recursive))
-    for (auto [idxj, idxj_other] : LabeledAxis::common_indices(axis(1), other.axis(1), recursive))
-      _tensor.base_index({idxi, idxj}).copy_(other.tensor().base_index({idxi_other, idxj_other}));
+  const auto indices0 = LabeledAxis::common_indices(axis(0), other.axis(0), recursive);
+  const auto indices1 = LabeledAxis::common_indices(axis(1), other.axis(1), recursive);
+  for (const auto & [idxi, idxi_other] : indices0)
+    for (const auto & [idxj, idxj_other] : indices1)
+      _tensor.base_index({idxi, idxj}).copy_(other.base_index({idxi_other, idxj_other}));
 }
 
 LabeledMatrix
@@ -81,11 +84,12 @@ LabeledMatrix::chain(const LabeledMatrix & other) const
   // and the values of the input The main annoyance is just getting the names correct
 
   // Check that we are conformal
-  neml_assert_dbg(batch_size() == other.batch_size(), "LabeledMatrix batch sizes are not the same");
+  neml_assert_dbg(batch_sizes() == other.batch_sizes(),
+                  "LabeledMatrix batch sizes are not the same");
   neml_assert_dbg(axis(1) == other.axis(0), "Labels are not conformal");
 
   // If all the sizes are correct then executing the chain rule is pretty easy
-  return LabeledMatrix(torch::bmm(tensor(), other.tensor()), {&axis(0), &other.axis(1)});
+  return LabeledMatrix(math::bmm(*this, other), {&axis(0), &other.axis(1)});
 }
 
 LabeledMatrix
@@ -94,6 +98,7 @@ LabeledMatrix::inverse() const
   neml_assert_dbg(axis(0).storage_size() == axis(1).storage_size(),
                   "Can only invert square derivatives");
 
-  return LabeledMatrix(torch::linalg::inv(tensor()), {&axis(1), &axis(0)});
+  return LabeledMatrix(BatchTensor(torch::linalg::inv(tensor()), batch_dim()),
+                       {&axis(1), &axis(0)});
 }
 } // namespace neml2

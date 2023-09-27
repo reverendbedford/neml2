@@ -32,9 +32,9 @@ template <typename T>
 class ForceRate : public Model
 {
 public:
-  static ParameterSet expected_params();
+  static OptionSet expected_options();
 
-  ForceRate(const ParameterSet & params);
+  ForceRate(const OptionSet & options);
 
   const LabeledAxisAccessor force;
   const LabeledAxisAccessor force_n;
@@ -50,5 +50,5 @@ protected:
 };
 
 typedef ForceRate<Scalar> ScalarForceRate;
-typedef ForceRate<SymR2> SymR2ForceRate;
+typedef ForceRate<SR2> SR2ForceRate;
 } // namespace neml2

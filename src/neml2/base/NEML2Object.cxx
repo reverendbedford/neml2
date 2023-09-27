@@ -25,18 +25,18 @@
 
 namespace neml2
 {
-ParameterSet
-NEML2Object::expected_params()
+OptionSet
+NEML2Object::expected_options()
 {
-  ParameterSet params;
-  params.set<std::string>("name");
-  params.set<std::string>("type");
-  return params;
+  OptionSet options;
+  options.set<std::string>("name");
+  options.set<std::string>("type");
+  return options;
 }
 
-NEML2Object::NEML2Object(const ParameterSet & params)
-  : torch::nn::Module(params.get<std::string>("name")),
-    ParameterInterface(params, this)
+NEML2Object::NEML2Object(const OptionSet & options)
+  : torch::nn::Module(options.get<std::string>("name")),
+    OptionInterface(options, this)
 {
 }
 } // namespace neml2

@@ -23,27 +23,26 @@
 // THE SOFTWARE.
 
 #include "neml2/models/solid_mechanics/AssociativePlasticFlow.h"
-#include "neml2/tensors/SymSymR4.h"
+#include "neml2/tensors/SSR4.h"
 
 namespace neml2
 {
 register_NEML2_object(AssociativePlasticFlow);
 
-ParameterSet
-AssociativePlasticFlow::expected_params()
+OptionSet
+AssociativePlasticFlow::expected_options()
 {
-  ParameterSet params = FlowRule::expected_params();
-  params.set<LabeledAxisAccessor>("flow_direction") = {{"state", "internal", "NM"}};
-  params.set<LabeledAxisAccessor>("plastic_strain_rate") = {{"state", "internal", "Ep_rate"}};
-  return params;
+  OptionSet options = FlowRule::expected_options();
+  options.set<LabeledAxisAccessor>("flow_direction") = {{"state", "internal", "NM"}};
+  options.set<LabeledAxisAccessor>("plastic_strain_rate") = {{"state", "internal", "Ep_rate"}};
+  return options;
 }
 
-AssociativePlasticFlow::AssociativePlasticFlow(const ParameterSet & params)
-  : FlowRule(params),
-    flow_direction(
-        declare_input_variable<SymR2>(params.get<LabeledAxisAccessor>("flow_direction"))),
+AssociativePlasticFlow::AssociativePlasticFlow(const OptionSet & options)
+  : FlowRule(options),
+    flow_direction(declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("flow_direction"))),
     plastic_strain_rate(
-        declare_output_variable<SymR2>(params.get<LabeledAxisAccessor>("plastic_strain_rate")))
+        declare_output_variable<SR2>(options.get<LabeledAxisAccessor>("plastic_strain_rate")))
 {
   setup();
 }
@@ -60,14 +59,14 @@ AssociativePlasticFlow::set_value(const LabeledVector & in,
   // Ep_dot = gamma_dot * NM
   //     NM = df/dM
   const auto gamma_dot = in.get<Scalar>(flow_rate);
-  const auto NM = in.get<SymR2>(flow_direction);
+  const auto NM = in.get<SR2>(flow_direction);
 
   if (out)
     out->set(gamma_dot * NM, plastic_strain_rate);
 
   if (dout_din || d2out_din2)
   {
-    auto I = SymR2::identity_map(options);
+    auto I = SR2::identity_map(options);
 
     if (dout_din)
     {

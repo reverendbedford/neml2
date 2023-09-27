@@ -31,9 +31,9 @@ namespace neml2
 class VoceIsotropicHardening : public IsotropicHardening
 {
 public:
-  static ParameterSet expected_params();
+  static OptionSet expected_options();
 
-  VoceIsotropicHardening(const ParameterSet & params);
+  VoceIsotropicHardening(const OptionSet & options);
 
 protected:
   void set_value(const LabeledVector & in,

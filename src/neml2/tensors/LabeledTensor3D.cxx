@@ -29,8 +29,8 @@ using namespace torch::indexing;
 
 namespace neml2
 {
-LabeledTensor3D::LabeledTensor3D(const LabeledTensor<1, 3> & other)
-  : LabeledTensor<1, 3>(other)
+LabeledTensor3D::LabeledTensor3D(const LabeledTensor<3> & other)
+  : LabeledTensor<3>(other)
 {
 }
 
@@ -39,21 +39,24 @@ LabeledTensor3D::zeros(TorchShapeRef batch_size,
                        const std::vector<const LabeledAxis *> & axes,
                        const torch::TensorOptions & options)
 {
-  return LabeledTensor<1, 3>::zeros(batch_size, axes, options);
+  return LabeledTensor<3>::zeros(batch_size, axes, options);
 }
 
 LabeledTensor3D
 LabeledTensor3D::zeros_like(const LabeledTensor3D & other)
 {
-  return LabeledTensor<1, 3>::zeros_like(other);
+  return LabeledTensor<3>::zeros_like(other);
 }
 
 void
 LabeledTensor3D::accumulate(const LabeledTensor3D & other, bool recursive)
 {
-  for (auto [idxi, idxi_other] : LabeledAxis::common_indices(axis(0), other.axis(0), recursive))
-    for (auto [idxj, idxj_other] : LabeledAxis::common_indices(axis(1), other.axis(1), recursive))
-      for (auto [idxk, idxk_other] : LabeledAxis::common_indices(axis(2), other.axis(2), recursive))
+  const auto indices0 = LabeledAxis::common_indices(axis(0), other.axis(0), recursive);
+  const auto indices1 = LabeledAxis::common_indices(axis(1), other.axis(1), recursive);
+  const auto indices2 = LabeledAxis::common_indices(axis(2), other.axis(2), recursive);
+  for (const auto & [idxi, idxi_other] : indices0)
+    for (const auto & [idxj, idxj_other] : indices1)
+      for (const auto & [idxk, idxk_other] : indices2)
         _tensor.base_index({idxi, idxj, idxk}) +=
             other.tensor().base_index({idxi_other, idxj_other, idxk_other});
 }
@@ -61,9 +64,12 @@ LabeledTensor3D::accumulate(const LabeledTensor3D & other, bool recursive)
 void
 LabeledTensor3D::fill(const LabeledTensor3D & other, bool recursive)
 {
-  for (auto [idxi, idxi_other] : LabeledAxis::common_indices(axis(0), other.axis(0), recursive))
-    for (auto [idxj, idxj_other] : LabeledAxis::common_indices(axis(1), other.axis(1), recursive))
-      for (auto [idxk, idxk_other] : LabeledAxis::common_indices(axis(2), other.axis(2), recursive))
+  const auto indices0 = LabeledAxis::common_indices(axis(0), other.axis(0), recursive);
+  const auto indices1 = LabeledAxis::common_indices(axis(1), other.axis(1), recursive);
+  const auto indices2 = LabeledAxis::common_indices(axis(2), other.axis(2), recursive);
+  for (const auto & [idxi, idxi_other] : indices0)
+    for (const auto & [idxj, idxj_other] : indices1)
+      for (const auto & [idxk, idxk_other] : indices2)
         _tensor.base_index({idxi, idxj, idxk})
             .copy_(other.tensor().base_index({idxi_other, idxj_other, idxk_other}));
 }
@@ -79,16 +85,17 @@ LabeledTensor3D::chain(const LabeledTensor3D & other,
   // (d2y/dx2)_{ijk} = (d2y/du2)_{ipq} (du/dx)_{pj} (du/dx)_{qk} + (dy/du)_{ip} (d2u/dx2)_{pjk}
 
   // Make sure we are conformal
-  neml_assert_dbg(batch_size() == other.batch_size(), "Batch sizes are not the same");
-  neml_assert_dbg(batch_size() == dself.batch_size(), "Batch sizes are not the same");
-  neml_assert_dbg(batch_size() == dother.batch_size(), "Batch sizes are not the same");
+  neml_assert_dbg(batch_sizes() == other.batch_sizes(), "Batch sizes are not the same");
+  neml_assert_dbg(batch_sizes() == dself.batch_sizes(), "Batch sizes are not the same");
+  neml_assert_dbg(batch_sizes() == dother.batch_sizes(), "Batch sizes are not the same");
   neml_assert_dbg(axis(1) == axis(2), "Self labels are not conformal");
   neml_assert_dbg(other.axis(1) == other.axis(2), "Other labels are not conformal");
   neml_assert_dbg(axis(2) == other.axis(0), "Self and other labels are not conformal");
 
   // If all the sizes are correct then executing the chain rule is pretty easy
-  return LabeledTensor3D(einsum({tensor(), dother.tensor(), dother.tensor()}, {"ipq", "pj", "qk"}) +
-                             einsum({dself.tensor(), other.tensor()}, {"ip", "pjk"}),
+  return LabeledTensor3D(torch::einsum("...ipq,...pj,...qk", {*this, dother, dother}) +
+                             torch::einsum("...ip,...pjk", {dself, other}),
+                         broadcast_batch_dim(*this, other, dself, dother),
                          {&axis(0), &other.axis(1), &other.axis(2)});
 }
 } // namespace neml2

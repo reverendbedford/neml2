@@ -15,11 +15,11 @@
 
 [Tensors]
   [NX]
-    type = InitializedSymR2
+    type = FillSR2
     values = '0.3482 -0.3482 0 -0.087045 -0.087045 -0.78333'
   []
   [Kp_rate]
-    type = InitializedSymR2
+    type = FillSR2
     values = '-0.0005223 0.0005223 0 0.0001305675 0.0001305675 0.001174995'
   []
 []

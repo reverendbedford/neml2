@@ -31,9 +31,9 @@ namespace neml2
 class ChabochePlasticHardening : public FlowRule
 {
 public:
-  static ParameterSet expected_params();
+  static OptionSet expected_options();
 
-  ChabochePlasticHardening(const ParameterSet & params);
+  ChabochePlasticHardening(const OptionSet & options);
 
 public:
   /// Input: the current value of this backstress

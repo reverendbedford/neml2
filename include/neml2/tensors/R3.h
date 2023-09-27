@@ -25,25 +25,21 @@
 #pragma once
 
 #include "neml2/tensors/FixedDimTensor.h"
-#include "neml2/tensors/Scalar.h"
-#include "neml2/tensors/Vec.h"
-#include "neml2/tensors/R2.h"
 
 namespace neml2
 {
+class Scalar;
 class Vec;
 class R2;
 
-class R3 : public FixedDimTensor<1, 3, 3, 3>
+class R3 : public FixedDimTensor<R3, 3, 3, 3>
 {
 public:
-  using FixedDimTensor<1, 3, 3, 3>::FixedDimTensor;
+  using FixedDimTensor<R3, 3, 3, 3>::FixedDimTensor;
 
-  /// Named constructors
-  /// @{
   /// Alternating symbol
-  static R3 levi_civita(const torch::TensorOptions & options = default_tensor_options);
-  /// @}
+  [[nodiscard]] static R3
+  levi_civita(const torch::TensorOptions & options = default_tensor_options);
 
   /// Accessor
   Scalar operator()(TorchSize i, TorchSize j, TorchSize k) const;

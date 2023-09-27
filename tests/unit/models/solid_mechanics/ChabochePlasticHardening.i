@@ -15,15 +15,15 @@
 
 [Tensors]
   [NM]
-    type = InitializedSymR2
+    type = FillSR2
     values = '-0.3482 0.3482 0 0.087045 0.087045 0.78333'
   []
   [X]
-    type = InitializedSymR2
+    type = FillSR2
     values = '-10 15 5 -7 15 20'
   []
   [X_rate]
-    type = InitializedSymR2
+    type = FillSR2
     values = '-1.3207 0.8204 -0.5003 1.2807 -0.9206 3.2210'
   []
 []

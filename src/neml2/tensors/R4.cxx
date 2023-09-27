@@ -22,34 +22,46 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#include "neml2/misc/math.h"
 #include "neml2/tensors/R4.h"
-#include "neml2/tensors/SymSymR4.h"
+#include "neml2/tensors/Scalar.h"
+#include "neml2/tensors/R2.h"
+#include "neml2/tensors/R3.h"
+#include "neml2/tensors/SSR4.h"
+#include "neml2/tensors/R5.h"
+#include "neml2/tensors/Rot.h"
 
 namespace neml2
 {
+R4::R4(const SSR4 & T)
+  : R4(math::mandel_to_full(math::mandel_to_full(T, 1)))
+{
+}
 
 R4
-R4::init(const SymSymR4 & T)
+R4::rotate(const Rot & r) const
 {
-  return torch::cat({T(0, 0, 0, 0), T(0, 0, 0, 1), T(0, 0, 0, 2), T(0, 0, 1, 0), T(0, 0, 1, 1),
-                     T(0, 0, 1, 2), T(0, 0, 2, 0), T(0, 0, 2, 1), T(0, 0, 2, 2), T(0, 1, 0, 0),
-                     T(0, 1, 0, 1), T(0, 1, 0, 2), T(0, 1, 1, 0), T(0, 1, 1, 1), T(0, 1, 1, 2),
-                     T(0, 1, 2, 0), T(0, 1, 2, 1), T(0, 1, 2, 2), T(0, 2, 0, 0), T(0, 2, 0, 1),
-                     T(0, 2, 0, 2), T(0, 2, 1, 0), T(0, 2, 1, 1), T(0, 2, 1, 2), T(0, 2, 2, 0),
-                     T(0, 2, 2, 1), T(0, 2, 2, 2), T(1, 0, 0, 0), T(1, 0, 0, 1), T(1, 0, 0, 2),
-                     T(1, 0, 1, 0), T(1, 0, 1, 1), T(1, 0, 1, 2), T(1, 0, 2, 0), T(1, 0, 2, 1),
-                     T(1, 0, 2, 2), T(1, 1, 0, 0), T(1, 1, 0, 1), T(1, 1, 0, 2), T(1, 1, 1, 0),
-                     T(1, 1, 1, 1), T(1, 1, 1, 2), T(1, 1, 2, 0), T(1, 1, 2, 1), T(1, 1, 2, 2),
-                     T(1, 2, 0, 0), T(1, 2, 0, 1), T(1, 2, 0, 2), T(1, 2, 1, 0), T(1, 2, 1, 1),
-                     T(1, 2, 1, 2), T(1, 2, 2, 0), T(1, 2, 2, 1), T(1, 2, 2, 2), T(2, 0, 0, 0),
-                     T(2, 0, 0, 1), T(2, 0, 0, 2), T(2, 0, 1, 0), T(2, 0, 1, 1), T(2, 0, 1, 2),
-                     T(2, 0, 2, 0), T(2, 0, 2, 1), T(2, 0, 2, 2), T(2, 1, 0, 0), T(2, 1, 0, 1),
-                     T(2, 1, 0, 2), T(2, 1, 1, 0), T(2, 1, 1, 1), T(2, 1, 1, 2), T(2, 1, 2, 0),
-                     T(2, 1, 2, 1), T(2, 1, 2, 2), T(2, 2, 0, 0), T(2, 2, 0, 1), T(2, 2, 0, 2),
-                     T(2, 2, 1, 0), T(2, 2, 1, 1), T(2, 2, 1, 2), T(2, 2, 2, 0), T(2, 2, 2, 1),
-                     T(2, 2, 2, 2)},
-                    -1)
-      .reshape({-1, 3, 3, 3, 3});
+  R2 R = r.euler_rodrigues();
+  neml_assert_batch_broadcastable_dbg(*this, R);
+
+  auto res = torch::einsum("...im,...jn,...ko,...lp,...mnop", {R, R, R, R, *this});
+  return R4(res, broadcast_batch_dim(*this, R));
+}
+
+R5
+R4::drotate(const Rot & r) const
+{
+  R2 R = r.euler_rodrigues();
+  R3 F = r.deuler_rodrigues();
+  neml_assert_batch_broadcastable_dbg(*this, R, F);
+
+  auto res1 = torch::einsum("...jn,...ko,...lp,...mnop,...imt->...ijklt", {R, R, R, *this, F});
+  auto res2 = torch::einsum("...im,...ko,...lp,...mnop,...jnt->...ijklt", {R, R, R, *this, F});
+  auto res3 = torch::einsum("...im,...jn,...lp,...mnop,...kot->...ijklt", {R, R, R, *this, F});
+  auto res4 = torch::einsum("...im,...jn,...ko,...mnop,...lpt->...ijklt", {R, R, R, *this, F});
+  auto res = res1 + res2 + res3 + res4;
+
+  return R5(res, broadcast_batch_dim(*this, R, F));
 }
 
 Scalar
@@ -58,10 +70,15 @@ R4::operator()(TorchSize i, TorchSize j, TorchSize k, TorchSize l) const
   return base_index({i, j, k, l});
 }
 
-SymSymR4
-R4::sym() const
+R4
+R4::transpose_minor() const
 {
-  return SymSymR4::init_sym(*this);
+  return BatchTensorBase<R4>::base_transpose(0, 1).base_transpose(2, 3);
 }
 
+R4
+R4::transpose_major() const
+{
+  return BatchTensorBase<R4>::base_transpose(0, 2).base_transpose(1, 3);
+}
 } // namespace neml2

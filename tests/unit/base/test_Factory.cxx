@@ -27,15 +27,12 @@
 
 using namespace neml2;
 
-TEST_CASE("manufacture", "[Factory]")
+TEST_CASE("Factory", "[base]")
 {
-  auto & factory = Factory::get();
-  factory.clear();
-
-  ParameterCollection all_params;
-  all_params["Models"]["example"] =
-      ScalarSumModel::expected_params() +
-      ParameterSet(
+  OptionCollection all_options;
+  all_options["Models"]["example"] =
+      ScalarSumModel::expected_options() +
+      OptionSet(
           std::pair<std::string, std::string>{"name", "example"},
           std::pair<std::string, std::string>{"type", "ScalarSumModel"},
           std::pair<std::string, std::vector<LabeledAxisAccessor>>{
@@ -45,18 +42,16 @@ TEST_CASE("manufacture", "[Factory]")
           std::pair<std::string, LabeledAxisAccessor>{
               "to_var", LabeledAxisAccessor{{"state", "outsub", "C"}}});
 
-  factory.manufacture(all_params);
+  Factory::clear();
+  Factory::load(all_options);
   auto & summodel = Factory::get_object<ScalarSumModel>("Models", "example");
 
-  SECTION("model definition")
-  {
-    REQUIRE(summodel.input().has_subaxis("state"));
-    REQUIRE(summodel.input().subaxis("state").has_subaxis("substate"));
-    REQUIRE(summodel.input().subaxis("state").has_variable<Scalar>("A"));
-    REQUIRE(summodel.input().subaxis("state").subaxis("substate").has_variable<Scalar>("B"));
+  REQUIRE(summodel.input().has_subaxis("state"));
+  REQUIRE(summodel.input().subaxis("state").has_subaxis("substate"));
+  REQUIRE(summodel.input().subaxis("state").has_variable<Scalar>("A"));
+  REQUIRE(summodel.input().subaxis("state").subaxis("substate").has_variable<Scalar>("B"));
 
-    REQUIRE(summodel.output().has_subaxis("state"));
-    REQUIRE(summodel.output().subaxis("state").has_subaxis("outsub"));
-    REQUIRE(summodel.output().subaxis("state").subaxis("outsub").has_variable<Scalar>("C"));
-  }
+  REQUIRE(summodel.output().has_subaxis("state"));
+  REQUIRE(summodel.output().subaxis("state").has_subaxis("outsub"));
+  REQUIRE(summodel.output().subaxis("state").subaxis("outsub").has_variable<Scalar>("C"));
 }

@@ -27,13 +27,68 @@
 
 using namespace neml2;
 
-TEST_CASE("parser utilities", "[parser_utils]")
+TEST_CASE("parser_utils", "[misc]")
 {
-  SECTION("trim empty string") { REQUIRE(utils::trim("", "") == ""); }
-
-  SECTION("unrecognized boolean")
+  SECTION("demangle")
   {
-    REQUIRE_THROWS_WITH(utils::parse<bool>("foo"),
-                        Catch::Matchers::Contains("Failed to parse boolean value"));
+    REQUIRE(utils::demangle(typeid(std::vector<unsigned int>).name()) ==
+            "std::vector<unsigned int, std::allocator<unsigned int> >");
+  }
+
+  SECTION("split")
+  {
+    REQUIRE(utils::split("a/b/c", "/") == std::vector<std::string>{"a", "b", "c"});
+    REQUIRE(utils::split("/b/c", "/") == std::vector<std::string>{"b", "c"});
+    REQUIRE(utils::split("a/b/", "/") == std::vector<std::string>{"a", "b"});
+    REQUIRE(utils::split("/", "/") == std::vector<std::string>{});
+  }
+
+  SECTION("trim")
+  {
+    REQUIRE(utils::trim("a b cde   ") == "a b cde");
+    REQUIRE(utils::trim("(123)", "()") == "123");
+  }
+
+  SECTION("start_with")
+  {
+    REQUIRE(utils::start_with("a b cde   ", "a b"));
+    REQUIRE(!utils::start_with("abcde", "a b"));
+  }
+
+  SECTION("end_with")
+  {
+    REQUIRE(utils::end_with("a b cde   ", "e   "));
+    REQUIRE(!utils::end_with("abcde", "e   "));
+  }
+
+  SECTION("parse")
+  {
+    SECTION("torch::Tensor")
+    {
+      REQUIRE_THROWS_WITH(utils::parse<torch::Tensor>("1"),
+                          Catch::Matchers::Contains("Cannot parse torch::Tensor"));
+    }
+
+    SECTION("TorchShape")
+    {
+      REQUIRE(utils::parse<TorchShape>("(1,2,3,4,5,6)") == TorchShape{1, 2, 3, 4, 5, 6});
+      REQUIRE(utils::parse<TorchShape>("(1,2,3)") == TorchShape{1, 2, 3});
+      REQUIRE(utils::parse<TorchShape>("(1,2,3,)") == TorchShape{1, 2, 3});
+      REQUIRE(utils::parse<TorchShape>("(,1,2,3)") == TorchShape{1, 2, 3});
+      REQUIRE(utils::parse<TorchShape>("(,1,2,3,)") == TorchShape{1, 2, 3});
+      REQUIRE(utils::parse<TorchShape>("( ,  1, 2, 3 , )") == TorchShape{1, 2, 3});
+      REQUIRE(utils::parse<TorchShape>("()") == TorchShape{});
+      REQUIRE_THROWS_WITH(
+          utils::parse<TorchShape>("1"),
+          Catch::Matchers::Contains("a shape must start with '(' and end with ')'"));
+    }
+
+    SECTION("bool")
+    {
+      REQUIRE(utils::parse<bool>("true"));
+      REQUIRE(!utils::parse<bool>("false"));
+      REQUIRE_THROWS_WITH(utils::parse<bool>("off"),
+                          Catch::Matchers::Contains("Failed to parse boolean value"));
+    }
   }
 }

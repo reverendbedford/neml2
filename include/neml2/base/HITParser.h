@@ -38,20 +38,20 @@ class HITParser : public Parser
 public:
   HITParser() = default;
 
-  virtual ParameterCollection parse(const std::string & filename,
-                                    const std::string & additional_input = "") const override;
+  virtual OptionCollection parse(const std::string & filename,
+                                 const std::string & additional_input = "") const override;
 
   /**
-   * @brief Extract parameters for a specific object.
+   * @brief Extract options for a specific object.
    *
-   * @param object The object whose parameters are to be extracted.
-   * @return ParameterSet The parameters of the object.
+   * @param object The object whose options are to be extracted.
+   * @return OptionSet The options of the object.
    */
-  virtual ParameterSet extract_object_parameters(hit::Node * object) const;
+  virtual OptionSet extract_object_options(hit::Node * object) const;
 
 private:
-  void extract_parameters(hit::Node * object, ParameterSet & params) const;
-  void extract_parameter(hit::Node * node, ParameterSet & params) const;
+  void extract_options(hit::Node * object, OptionSet & options) const;
+  void extract_option(hit::Node * node, OptionSet & options) const;
 };
 
 } // namespace neml2

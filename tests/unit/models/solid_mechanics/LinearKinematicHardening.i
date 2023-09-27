@@ -12,11 +12,11 @@
 
 [Tensors]
   [Kp]
-    type = InitializedSymR2
+    type = FillSR2
     values = '0.05 -0.01 0.02 0.04 0.03 -0.06'
   []
   [X]
-    type = InitializedSymR2
+    type = FillSR2
     values = '50 -10 20 40 30 -60'
   []
 []

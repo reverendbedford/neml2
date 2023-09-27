@@ -73,6 +73,22 @@
     - use_AD_second_derivative:
         type: bool
         value: 0
+- neml2::UserBatchTensor:
+    - base_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: BatchTensor
+    - values:
+        type: std::vector<double, std::allocator<double> >
+        value: 
 - neml2::ChabochePlasticHardening:
     - A:
         type: neml2::CrossRef<neml2::Scalar>
@@ -157,6 +173,321 @@
     - use_AD_second_derivative:
         type: bool
         value: 0
+- neml2::EmptyBatchTensor:
+    - base_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: EmptyBatchTensor
+- neml2::EmptyFixedDimTensor<neml2::R2>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: EmptyR2
+- neml2::EmptyFixedDimTensor<neml2::R3>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: EmptyR3
+- neml2::EmptyFixedDimTensor<neml2::R4>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: EmptyR4
+- neml2::EmptyFixedDimTensor<neml2::R5>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: EmptyR5
+- neml2::EmptyFixedDimTensor<neml2::Rot>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: EmptyRot
+- neml2::EmptyFixedDimTensor<neml2::SFR3>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: EmptySFR3
+- neml2::EmptyFixedDimTensor<neml2::SR2>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: EmptySR2
+- neml2::EmptyFixedDimTensor<neml2::SSFR5>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: EmptySSFR5
+- neml2::EmptyFixedDimTensor<neml2::SSR4>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: EmptySSR4
+- neml2::EmptyFixedDimTensor<neml2::Scalar>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: EmptyScalar
+- neml2::EmptyFixedDimTensor<neml2::Vec>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: EmptyVec
+- neml2::FillR2:
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: FillR2
+    - values:
+        type: std::vector<neml2::CrossRef<neml2::Scalar>, std::allocator<neml2::CrossRef<neml2::Scalar> > >
+        value: 
+- neml2::FillSR2:
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: FillSR2
+    - values:
+        type: std::vector<neml2::CrossRef<neml2::Scalar>, std::allocator<neml2::CrossRef<neml2::Scalar> > >
+        value: 
+- neml2::FullBatchTensor:
+    - base_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: FullBatchTensor
+    - value:
+        type: double
+        value: 0
+- neml2::FullFixedDimTensor<neml2::R2>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: FullR2
+    - value:
+        type: double
+        value: 0
+- neml2::FullFixedDimTensor<neml2::R3>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: FullR3
+    - value:
+        type: double
+        value: 0
+- neml2::FullFixedDimTensor<neml2::R4>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: FullR4
+    - value:
+        type: double
+        value: 0
+- neml2::FullFixedDimTensor<neml2::R5>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: FullR5
+    - value:
+        type: double
+        value: 0
+- neml2::FullFixedDimTensor<neml2::Rot>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: FullRot
+    - value:
+        type: double
+        value: 0
+- neml2::FullFixedDimTensor<neml2::SFR3>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: FullSFR3
+    - value:
+        type: double
+        value: 0
+- neml2::FullFixedDimTensor<neml2::SR2>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: FullSR2
+    - value:
+        type: double
+        value: 0
+- neml2::FullFixedDimTensor<neml2::SSFR5>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: FullSSFR5
+    - value:
+        type: double
+        value: 0
+- neml2::FullFixedDimTensor<neml2::SSR4>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: FullSSR4
+    - value:
+        type: double
+        value: 0
+- neml2::FullFixedDimTensor<neml2::Scalar>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: FullScalar
+    - value:
+        type: double
+        value: 0
+- neml2::FullFixedDimTensor<neml2::Vec>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: FullVec
+    - value:
+        type: double
+        value: 0
+- neml2::IdentityBatchTensor:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - n:
+        type: long
+        value: 0
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: IdentityBatchTensor
 - neml2::ImplicitUpdate:
     - additional_outputs:
         type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
@@ -179,22 +510,6 @@
     - use_AD_second_derivative:
         type: bool
         value: 0
-- neml2::InitializedSymR2:
-    - method:
-        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
-        value: AUTO
-    - name:
-        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
-        value: 
-    - nbatch:
-        type: long
-        value: -1
-    - type:
-        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
-        value: InitializedSymR2
-    - values:
-        type: std::vector<neml2::CrossRef<neml2::Scalar>, std::allocator<neml2::CrossRef<neml2::Scalar> > >
-        value: 
 - neml2::IsotropicMandelStress:
     - additional_outputs:
         type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
@@ -217,22 +532,6 @@
     - use_AD_second_derivative:
         type: bool
         value: 0
-- neml2::LinSpaceTensor:
-    - end:
-        type: neml2::CrossRef<at::Tensor>
-        value: 
-    - name:
-        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
-        value: 
-    - start:
-        type: neml2::CrossRef<at::Tensor>
-        value: 0
-    - steps:
-        type: long
-        value: 0
-    - type:
-        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
-        value: LinSpaceTensor
 - neml2::LinearIsotropicElasticity:
     - additional_outputs:
         type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
@@ -317,25 +616,498 @@
     - use_AD_second_derivative:
         type: bool
         value: 0
-- neml2::LogSpaceTensor:
-    - base:
-        type: double
-        value: 10
+- neml2::LinspaceBatchTensor:
+    - dim:
+        type: long
+        value: 0
     - end:
-        type: neml2::CrossRef<at::Tensor>
+        type: neml2::CrossRef<neml2::BatchTensor>
         value: 
     - name:
         type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
         value: 
-    - start:
-        type: neml2::CrossRef<at::Tensor>
-        value: 0
-    - steps:
+    - nstep:
         type: long
         value: 0
+    - start:
+        type: neml2::CrossRef<neml2::BatchTensor>
+        value: 
     - type:
         type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
-        value: LogSpaceTensor
+        value: LinspaceBatchTensor
+- neml2::LinspaceFixedDimTensor<neml2::R2>:
+    - dim:
+        type: long
+        value: 0
+    - end:
+        type: neml2::CrossRef<neml2::R2>
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - nstep:
+        type: long
+        value: 0
+    - start:
+        type: neml2::CrossRef<neml2::R2>
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: LinspaceR2
+- neml2::LinspaceFixedDimTensor<neml2::R3>:
+    - dim:
+        type: long
+        value: 0
+    - end:
+        type: neml2::CrossRef<neml2::R3>
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - nstep:
+        type: long
+        value: 0
+    - start:
+        type: neml2::CrossRef<neml2::R3>
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: LinspaceR3
+- neml2::LinspaceFixedDimTensor<neml2::R4>:
+    - dim:
+        type: long
+        value: 0
+    - end:
+        type: neml2::CrossRef<neml2::R4>
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - nstep:
+        type: long
+        value: 0
+    - start:
+        type: neml2::CrossRef<neml2::R4>
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: LinspaceR4
+- neml2::LinspaceFixedDimTensor<neml2::R5>:
+    - dim:
+        type: long
+        value: 0
+    - end:
+        type: neml2::CrossRef<neml2::R5>
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - nstep:
+        type: long
+        value: 0
+    - start:
+        type: neml2::CrossRef<neml2::R5>
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: LinspaceR5
+- neml2::LinspaceFixedDimTensor<neml2::Rot>:
+    - dim:
+        type: long
+        value: 0
+    - end:
+        type: neml2::CrossRef<neml2::Rot>
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - nstep:
+        type: long
+        value: 0
+    - start:
+        type: neml2::CrossRef<neml2::Rot>
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: LinspaceRot
+- neml2::LinspaceFixedDimTensor<neml2::SFR3>:
+    - dim:
+        type: long
+        value: 0
+    - end:
+        type: neml2::CrossRef<neml2::SFR3>
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - nstep:
+        type: long
+        value: 0
+    - start:
+        type: neml2::CrossRef<neml2::SFR3>
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: LinspaceSFR3
+- neml2::LinspaceFixedDimTensor<neml2::SR2>:
+    - dim:
+        type: long
+        value: 0
+    - end:
+        type: neml2::CrossRef<neml2::SR2>
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - nstep:
+        type: long
+        value: 0
+    - start:
+        type: neml2::CrossRef<neml2::SR2>
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: LinspaceSR2
+- neml2::LinspaceFixedDimTensor<neml2::SSFR5>:
+    - dim:
+        type: long
+        value: 0
+    - end:
+        type: neml2::CrossRef<neml2::SSFR5>
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - nstep:
+        type: long
+        value: 0
+    - start:
+        type: neml2::CrossRef<neml2::SSFR5>
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: LinspaceSSFR5
+- neml2::LinspaceFixedDimTensor<neml2::SSR4>:
+    - dim:
+        type: long
+        value: 0
+    - end:
+        type: neml2::CrossRef<neml2::SSR4>
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - nstep:
+        type: long
+        value: 0
+    - start:
+        type: neml2::CrossRef<neml2::SSR4>
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: LinspaceSSR4
+- neml2::LinspaceFixedDimTensor<neml2::Scalar>:
+    - dim:
+        type: long
+        value: 0
+    - end:
+        type: neml2::CrossRef<neml2::Scalar>
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - nstep:
+        type: long
+        value: 0
+    - start:
+        type: neml2::CrossRef<neml2::Scalar>
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: LinspaceScalar
+- neml2::LinspaceFixedDimTensor<neml2::Vec>:
+    - dim:
+        type: long
+        value: 0
+    - end:
+        type: neml2::CrossRef<neml2::Vec>
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - nstep:
+        type: long
+        value: 0
+    - start:
+        type: neml2::CrossRef<neml2::Vec>
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: LinspaceVec
+- neml2::LogspaceBatchTensor:
+    - base:
+        type: double
+        value: 10
+    - dim:
+        type: long
+        value: 0
+    - end:
+        type: neml2::CrossRef<neml2::BatchTensor>
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - nstep:
+        type: long
+        value: 0
+    - start:
+        type: neml2::CrossRef<neml2::BatchTensor>
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: LogspaceBatchTensor
+- neml2::LogspaceFixedDimTensor<neml2::R2>:
+    - base:
+        type: double
+        value: 10
+    - dim:
+        type: long
+        value: 0
+    - end:
+        type: neml2::CrossRef<neml2::R2>
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - nstep:
+        type: long
+        value: 0
+    - start:
+        type: neml2::CrossRef<neml2::R2>
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: LogspaceR2
+- neml2::LogspaceFixedDimTensor<neml2::R3>:
+    - base:
+        type: double
+        value: 10
+    - dim:
+        type: long
+        value: 0
+    - end:
+        type: neml2::CrossRef<neml2::R3>
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - nstep:
+        type: long
+        value: 0
+    - start:
+        type: neml2::CrossRef<neml2::R3>
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: LogspaceR3
+- neml2::LogspaceFixedDimTensor<neml2::R4>:
+    - base:
+        type: double
+        value: 10
+    - dim:
+        type: long
+        value: 0
+    - end:
+        type: neml2::CrossRef<neml2::R4>
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - nstep:
+        type: long
+        value: 0
+    - start:
+        type: neml2::CrossRef<neml2::R4>
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: LogspaceR4
+- neml2::LogspaceFixedDimTensor<neml2::R5>:
+    - base:
+        type: double
+        value: 10
+    - dim:
+        type: long
+        value: 0
+    - end:
+        type: neml2::CrossRef<neml2::R5>
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - nstep:
+        type: long
+        value: 0
+    - start:
+        type: neml2::CrossRef<neml2::R5>
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: LogspaceR5
+- neml2::LogspaceFixedDimTensor<neml2::Rot>:
+    - base:
+        type: double
+        value: 10
+    - dim:
+        type: long
+        value: 0
+    - end:
+        type: neml2::CrossRef<neml2::Rot>
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - nstep:
+        type: long
+        value: 0
+    - start:
+        type: neml2::CrossRef<neml2::Rot>
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: LogspaceRot
+- neml2::LogspaceFixedDimTensor<neml2::SFR3>:
+    - base:
+        type: double
+        value: 10
+    - dim:
+        type: long
+        value: 0
+    - end:
+        type: neml2::CrossRef<neml2::SFR3>
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - nstep:
+        type: long
+        value: 0
+    - start:
+        type: neml2::CrossRef<neml2::SFR3>
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: LogspaceSFR3
+- neml2::LogspaceFixedDimTensor<neml2::SR2>:
+    - base:
+        type: double
+        value: 10
+    - dim:
+        type: long
+        value: 0
+    - end:
+        type: neml2::CrossRef<neml2::SR2>
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - nstep:
+        type: long
+        value: 0
+    - start:
+        type: neml2::CrossRef<neml2::SR2>
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: LogspaceSR2
+- neml2::LogspaceFixedDimTensor<neml2::SSFR5>:
+    - base:
+        type: double
+        value: 10
+    - dim:
+        type: long
+        value: 0
+    - end:
+        type: neml2::CrossRef<neml2::SSFR5>
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - nstep:
+        type: long
+        value: 0
+    - start:
+        type: neml2::CrossRef<neml2::SSFR5>
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: LogspaceSSFR5
+- neml2::LogspaceFixedDimTensor<neml2::SSR4>:
+    - base:
+        type: double
+        value: 10
+    - dim:
+        type: long
+        value: 0
+    - end:
+        type: neml2::CrossRef<neml2::SSR4>
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - nstep:
+        type: long
+        value: 0
+    - start:
+        type: neml2::CrossRef<neml2::SSR4>
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: LogspaceSSR4
+- neml2::LogspaceFixedDimTensor<neml2::Scalar>:
+    - base:
+        type: double
+        value: 10
+    - dim:
+        type: long
+        value: 0
+    - end:
+        type: neml2::CrossRef<neml2::Scalar>
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - nstep:
+        type: long
+        value: 0
+    - start:
+        type: neml2::CrossRef<neml2::Scalar>
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: LogspaceScalar
+- neml2::LogspaceFixedDimTensor<neml2::Vec>:
+    - base:
+        type: double
+        value: 10
+    - dim:
+        type: long
+        value: 0
+    - end:
+        type: neml2::CrossRef<neml2::Vec>
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - nstep:
+        type: long
+        value: 0
+    - start:
+        type: neml2::CrossRef<neml2::Vec>
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: LogspaceVec
 - neml2::ModelUnitTest:
     - check_AD_derivatives:
         type: bool
@@ -371,7 +1143,7 @@
         type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
         value: 
     - input_symr2_values:
-        type: std::vector<neml2::CrossRef<neml2::SymR2>, std::allocator<neml2::CrossRef<neml2::SymR2> > >
+        type: std::vector<neml2::CrossRef<neml2::SR2>, std::allocator<neml2::CrossRef<neml2::SR2> > >
         value: 
     - model:
         type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
@@ -398,7 +1170,7 @@
         type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
         value: 
     - output_symr2_values:
-        type: std::vector<neml2::CrossRef<neml2::SymR2>, std::allocator<neml2::CrossRef<neml2::SymR2> > >
+        type: std::vector<neml2::CrossRef<neml2::SR2>, std::allocator<neml2::CrossRef<neml2::SR2> > >
         value: 
     - second_derivatives_abs_tol:
         type: double
@@ -459,6 +1231,129 @@
     - use_AD_second_derivative:
         type: bool
         value: 0
+- neml2::OnesBatchTensor:
+    - base_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: OnesBatchTensor
+- neml2::OnesFixedDimTensor<neml2::R2>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: OnesR2
+- neml2::OnesFixedDimTensor<neml2::R3>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: OnesR3
+- neml2::OnesFixedDimTensor<neml2::R4>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: OnesR4
+- neml2::OnesFixedDimTensor<neml2::R5>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: OnesR5
+- neml2::OnesFixedDimTensor<neml2::Rot>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: OnesRot
+- neml2::OnesFixedDimTensor<neml2::SFR3>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: OnesSFR3
+- neml2::OnesFixedDimTensor<neml2::SR2>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: OnesSR2
+- neml2::OnesFixedDimTensor<neml2::SSFR5>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: OnesSSFR5
+- neml2::OnesFixedDimTensor<neml2::SSR4>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: OnesSSR4
+- neml2::OnesFixedDimTensor<neml2::Scalar>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: OnesScalar
+- neml2::OnesFixedDimTensor<neml2::Vec>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: OnesVec
 - neml2::OverStress:
     - additional_outputs:
         type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
@@ -512,6 +1407,58 @@
     - yield_function:
         type: neml2::LabeledAxisAccessor
         value: state/internal/fp
+- neml2::UserFixedDimTensor<neml2::R2>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: R2
+    - values:
+        type: std::vector<double, std::allocator<double> >
+        value: 
+- neml2::UserFixedDimTensor<neml2::R3>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: R3
+    - values:
+        type: std::vector<double, std::allocator<double> >
+        value: 
+- neml2::UserFixedDimTensor<neml2::R4>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: R4
+    - values:
+        type: std::vector<double, std::allocator<double> >
+        value: 
+- neml2::UserFixedDimTensor<neml2::R5>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: R5
+    - values:
+        type: std::vector<double, std::allocator<double> >
+        value: 
 - neml2::RateIndependentPlasticFlowConstraint:
     - additional_outputs:
         type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
@@ -534,6 +1481,206 @@
     - yield_function:
         type: neml2::LabeledAxisAccessor
         value: state/internal/fp
+- neml2::UserFixedDimTensor<neml2::Rot>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: Rot
+    - values:
+        type: std::vector<double, std::allocator<double> >
+        value: 
+- neml2::UserFixedDimTensor<neml2::SFR3>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: SFR3
+    - values:
+        type: std::vector<double, std::allocator<double> >
+        value: 
+- neml2::UserFixedDimTensor<neml2::SR2>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: SR2
+    - values:
+        type: std::vector<double, std::allocator<double> >
+        value: 
+- neml2::BackwardEulerTimeIntegration<neml2::SR2>:
+    - additional_outputs:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - time:
+        type: neml2::LabeledAxisAccessor
+        value: t
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: SR2BackwardEulerTimeIntegration
+    - use_AD_first_derivative:
+        type: bool
+        value: 0
+    - use_AD_second_derivative:
+        type: bool
+        value: 0
+    - variable:
+        type: neml2::LabeledAxisAccessor
+        value: 
+- neml2::ForceRate<neml2::SR2>:
+    - additional_outputs:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - force:
+        type: neml2::LabeledAxisAccessor
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - time:
+        type: neml2::LabeledAxisAccessor
+        value: t
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: SR2ForceRate
+    - use_AD_first_derivative:
+        type: bool
+        value: 0
+    - use_AD_second_derivative:
+        type: bool
+        value: 0
+- neml2::ForwardEulerTimeIntegration<neml2::SR2>:
+    - additional_outputs:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - time:
+        type: neml2::LabeledAxisAccessor
+        value: t
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: SR2ForwardEulerTimeIntegration
+    - use_AD_first_derivative:
+        type: bool
+        value: 0
+    - use_AD_second_derivative:
+        type: bool
+        value: 0
+    - variable:
+        type: neml2::LabeledAxisAccessor
+        value: 
+- neml2::IdentityMap<neml2::SR2>:
+    - additional_outputs:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - from_var:
+        type: neml2::LabeledAxisAccessor
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - to_var:
+        type: neml2::LabeledAxisAccessor
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: SR2IdentityMap
+    - use_AD_first_derivative:
+        type: bool
+        value: 0
+    - use_AD_second_derivative:
+        type: bool
+        value: 0
+- neml2::SR2Invariant:
+    - additional_outputs:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - invariant:
+        type: neml2::LabeledAxisAccessor
+        value: 
+    - invariant_type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - tensor:
+        type: neml2::LabeledAxisAccessor
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: SR2Invariant
+    - use_AD_first_derivative:
+        type: bool
+        value: 0
+    - use_AD_second_derivative:
+        type: bool
+        value: 0
+- neml2::SumModel<neml2::SR2>:
+    - additional_outputs:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - from_var:
+        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - to_var:
+        type: neml2::LabeledAxisAccessor
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: SR2SumModel
+    - use_AD_first_derivative:
+        type: bool
+        value: 0
+    - use_AD_second_derivative:
+        type: bool
+        value: 0
+- neml2::UserFixedDimTensor<neml2::SSFR5>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: SSFR5
+    - values:
+        type: std::vector<double, std::allocator<double> >
+        value: 
+- neml2::UserFixedDimTensor<neml2::SSR4>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: SSR4
+    - values:
+        type: std::vector<double, std::allocator<double> >
+        value: 
 - SampleParserTestingModel:
     - Real:
         type: double
@@ -567,6 +1714,15 @@
         value: 
     - name:
         type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - shape_vec:
+        type: std::vector<std::vector<long, std::allocator<long> >, std::allocator<std::vector<long, std::allocator<long> > > >
+        value: 
+    - shape_vec_vec:
+        type: std::vector<std::vector<std::vector<long, std::allocator<long> >, std::allocator<std::vector<long, std::allocator<long> > > >, std::allocator<std::vector<std::vector<long, std::allocator<long> >, std::allocator<std::vector<long, std::allocator<long> > > > > >
         value: 
     - string:
         type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
@@ -614,7 +1770,7 @@
 - neml2::UserFixedDimTensor<neml2::Scalar>:
     - batch_shape:
         type: std::vector<long, std::allocator<long> >
-        value: 1 
+        value: 
     - name:
         type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
         value: 
@@ -780,180 +1936,6 @@
     - verbose:
         type: bool
         value: 0
-- neml2::UserFixedDimTensor<neml2::SymR2>:
-    - batch_shape:
-        type: std::vector<long, std::allocator<long> >
-        value: 1 
-    - name:
-        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
-        value: 
-    - type:
-        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
-        value: SymR2
-    - values:
-        type: std::vector<double, std::allocator<double> >
-        value: 
-- neml2::BackwardEulerTimeIntegration<neml2::SymR2>:
-    - additional_outputs:
-        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
-        value: 
-    - name:
-        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
-        value: 
-    - time:
-        type: neml2::LabeledAxisAccessor
-        value: t
-    - type:
-        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
-        value: SymR2BackwardEulerTimeIntegration
-    - use_AD_first_derivative:
-        type: bool
-        value: 0
-    - use_AD_second_derivative:
-        type: bool
-        value: 0
-    - variable:
-        type: neml2::LabeledAxisAccessor
-        value: 
-- neml2::ForceRate<neml2::SymR2>:
-    - additional_outputs:
-        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
-        value: 
-    - force:
-        type: neml2::LabeledAxisAccessor
-        value: 
-    - name:
-        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
-        value: 
-    - time:
-        type: neml2::LabeledAxisAccessor
-        value: t
-    - type:
-        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
-        value: SymR2ForceRate
-    - use_AD_first_derivative:
-        type: bool
-        value: 0
-    - use_AD_second_derivative:
-        type: bool
-        value: 0
-- neml2::ForwardEulerTimeIntegration<neml2::SymR2>:
-    - additional_outputs:
-        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
-        value: 
-    - name:
-        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
-        value: 
-    - time:
-        type: neml2::LabeledAxisAccessor
-        value: t
-    - type:
-        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
-        value: SymR2ForwardEulerTimeIntegration
-    - use_AD_first_derivative:
-        type: bool
-        value: 0
-    - use_AD_second_derivative:
-        type: bool
-        value: 0
-    - variable:
-        type: neml2::LabeledAxisAccessor
-        value: 
-- neml2::IdentityMap<neml2::SymR2>:
-    - additional_outputs:
-        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
-        value: 
-    - from_var:
-        type: neml2::LabeledAxisAccessor
-        value: 
-    - name:
-        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
-        value: 
-    - to_var:
-        type: neml2::LabeledAxisAccessor
-        value: 
-    - type:
-        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
-        value: SymR2IdentityMap
-    - use_AD_first_derivative:
-        type: bool
-        value: 0
-    - use_AD_second_derivative:
-        type: bool
-        value: 0
-- neml2::SymR2Invariant:
-    - additional_outputs:
-        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
-        value: 
-    - invariant:
-        type: neml2::LabeledAxisAccessor
-        value: 
-    - invariant_type:
-        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
-        value: 
-    - name:
-        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
-        value: 
-    - tensor:
-        type: neml2::LabeledAxisAccessor
-        value: 
-    - type:
-        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
-        value: SymR2Invariant
-    - use_AD_first_derivative:
-        type: bool
-        value: 0
-    - use_AD_second_derivative:
-        type: bool
-        value: 0
-- neml2::SumModel<neml2::SymR2>:
-    - additional_outputs:
-        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
-        value: 
-    - from_var:
-        type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
-        value: 
-    - name:
-        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
-        value: 
-    - to_var:
-        type: neml2::LabeledAxisAccessor
-        value: 
-    - type:
-        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
-        value: SymR2SumModel
-    - use_AD_first_derivative:
-        type: bool
-        value: 0
-    - use_AD_second_derivative:
-        type: bool
-        value: 0
-- neml2::UserFixedDimTensor<neml2::SymSymR4>:
-    - batch_shape:
-        type: std::vector<long, std::allocator<long> >
-        value: 1 
-    - name:
-        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
-        value: 
-    - type:
-        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
-        value: SymSymR4
-    - values:
-        type: std::vector<double, std::allocator<double> >
-        value: 
-- neml2::UserTensor:
-    - name:
-        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
-        value: 
-    - shape:
-        type: std::vector<long, std::allocator<long> >
-        value: 
-    - type:
-        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
-        value: Tensor
-    - values:
-        type: std::vector<double, std::allocator<double> >
-        value: 
 - neml2::TotalStrain:
     - additional_outputs:
         type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
@@ -1045,6 +2027,19 @@
     - verbose:
         type: bool
         value: 0
+- neml2::UserFixedDimTensor<neml2::Vec>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: Vec
+    - values:
+        type: std::vector<double, std::allocator<double> >
+        value: 
 - neml2::VoceIsotropicHardening:
     - additional_outputs:
         type: std::vector<neml2::LabeledAxisAccessor, std::allocator<neml2::LabeledAxisAccessor> >
@@ -1101,3 +2096,126 @@
     - yield_stress:
         type: neml2::CrossRef<neml2::Scalar>
         value: 
+- neml2::ZerosBatchTensor:
+    - base_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: ZerosBatchTensor
+- neml2::ZerosFixedDimTensor<neml2::R2>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: ZerosR2
+- neml2::ZerosFixedDimTensor<neml2::R3>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: ZerosR3
+- neml2::ZerosFixedDimTensor<neml2::R4>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: ZerosR4
+- neml2::ZerosFixedDimTensor<neml2::R5>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: ZerosR5
+- neml2::ZerosFixedDimTensor<neml2::Rot>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: ZerosRot
+- neml2::ZerosFixedDimTensor<neml2::SFR3>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: ZerosSFR3
+- neml2::ZerosFixedDimTensor<neml2::SR2>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: ZerosSR2
+- neml2::ZerosFixedDimTensor<neml2::SSFR5>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: ZerosSSFR5
+- neml2::ZerosFixedDimTensor<neml2::SSR4>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: ZerosSSR4
+- neml2::ZerosFixedDimTensor<neml2::Scalar>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: ZerosScalar
+- neml2::ZerosFixedDimTensor<neml2::Vec>:
+    - batch_shape:
+        type: std::vector<long, std::allocator<long> >
+        value: 
+    - name:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: 
+    - type:
+        type: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+        value: ZerosVec

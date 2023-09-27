@@ -37,18 +37,27 @@ namespace neml2
  *
  * The LabeledAxisAccessor stores the item labels and does not resolve the actual layout of the
  * item. This way an accessor can be used access the same variable from different tensor layouts.
+ *
+ * The item names cannot contain whitespace, ".", ",", ";", or "/".
  */
 class LabeledAxisAccessor
 {
 public:
-  std::vector<std::string> item_names;
+  LabeledAxisAccessor() = default;
+
+  LabeledAxisAccessor(const std::vector<std::string> & names);
 
   operator std::vector<std::string>() const;
+
+  const std::vector<std::string> & vec() const { return _item_names; }
 
   bool empty() const;
 
   /// Append a suffix to the item name.
   LabeledAxisAccessor with_suffix(const std::string & suffix) const;
+
+  /// Add a new item
+  LabeledAxisAccessor append(const std::string & name) const;
 
   /// Re-mount the LabeledAxisAccessor on an axis by the axis name
   LabeledAxisAccessor on(const std::string & axis) const;
@@ -57,19 +66,30 @@ public:
   LabeledAxisAccessor on(const LabeledAxisAccessor & axis) const;
 
   /// Remove the leading \p n items from the labels.
-  LabeledAxisAccessor peel(size_t n = 1) const;
+  LabeledAxisAccessor slice(size_t n) const;
 
-  /// Compare for equality between two LabeledAxisAccessor
-  bool operator==(const LabeledAxisAccessor & other) const;
+  /// Extract out the labels from \p n1 to \p n2
+  LabeledAxisAccessor slice(size_t n1, size_t n2) const;
 
-  /**
-   * @brief The (strict) smaller than operator is created so as to use LabeledAxisAccessor in sorted
-   * data structures.
-   */
-  bool operator<(const LabeledAxisAccessor & other) const;
-
-  friend std::ostream & operator<<(std::ostream & os, const LabeledAxisAccessor & accessor);
+private:
+  std::vector<std::string> _item_names;
 };
 
+/// Compare for equality between two LabeledAxisAccessor
+bool operator==(const LabeledAxisAccessor & a, const LabeledAxisAccessor & b);
+
+/// Compare for equality between two LabeledAxisAccessor
+bool operator!=(const LabeledAxisAccessor & a, const LabeledAxisAccessor & b);
+
+/**
+ * @brief The (strict) smaller than operator is created so as to use LabeledAxisAccessor in sorted
+ * data structures.
+ */
+bool operator<(const LabeledAxisAccessor & a, const LabeledAxisAccessor & b);
+
+/**
+ * @brief Serialize the \p accessor into a string. The format is simply the concatenation of all the
+ * item names delimited by "/".
+ */
 std::ostream & operator<<(std::ostream & os, const LabeledAxisAccessor & accessor);
 } // namespace neml2

@@ -23,24 +23,24 @@
 // THE SOFTWARE.
 
 #include "SampleRateModel.h"
-#include "neml2/tensors/SymSymR4.h"
+#include "neml2/tensors/SSR4.h"
 
 using namespace neml2;
 
 register_NEML2_object(SampleRateModel);
 
-SampleRateModel::SampleRateModel(const ParameterSet & params)
-  : Model(params),
-    _a(register_parameter("a", Scalar(-0.01, default_tensor_options), false)),
-    _b(register_parameter("b", Scalar(-0.5, default_tensor_options), false)),
-    _c(register_parameter("c", Scalar(-0.9, default_tensor_options), false)),
+SampleRateModel::SampleRateModel(const OptionSet & options)
+  : Model(options),
+    _a(register_parameter("a", Scalar(-0.01, default_tensor_options), false), 0),
+    _b(register_parameter("b", Scalar(-0.5, default_tensor_options), false), 0),
+    _c(register_parameter("c", Scalar(-0.9, default_tensor_options), false), 0),
     _foo(declare_input_variable<Scalar>({"state", "foo"})),
     _bar(declare_input_variable<Scalar>({"state", "bar"})),
-    _baz(declare_input_variable<SymR2>({"state", "baz"})),
+    _baz(declare_input_variable<SR2>({"state", "baz"})),
     _temperature(declare_input_variable<Scalar>({"forces", "temperature"})),
     _foo_rate(declare_output_variable<Scalar>({"state", "foo_rate"})),
     _bar_rate(declare_output_variable<Scalar>({"state", "bar_rate"})),
-    _baz_rate(declare_output_variable<SymR2>({"state", "baz_rate"}))
+    _baz_rate(declare_output_variable<SR2>({"state", "baz_rate"}))
 {
   setup();
 }
@@ -56,7 +56,7 @@ SampleRateModel::set_value(const LabeledVector & in,
   // Grab the trial states
   auto foo = in.get<Scalar>(_foo);
   auto bar = in.get<Scalar>(_bar);
-  auto baz = in.get<SymR2>(_baz);
+  auto baz = in.get<SR2>(_baz);
 
   // Say the rates depend on temperature, for fun
   auto T = in.get<Scalar>(_temperature);
@@ -80,13 +80,13 @@ SampleRateModel::set_value(const LabeledVector & in,
 
     auto dfoo_dot_dfoo = 2 * foo * T;
     auto dfoo_dot_dbar = T;
-    auto dfoo_dot_dbaz = SymR2::identity(options);
+    auto dfoo_dot_dbaz = SR2::identity(options);
     auto dbar_dot_dfoo = _b;
     auto dbar_dot_dbar = _a;
-    auto dbar_dot_dbaz = SymR2::identity(options);
+    auto dbar_dot_dbaz = SR2::identity(options);
     auto dbaz_dot_dfoo = baz * (T - 3);
     auto dbaz_dot_dbar = baz * (T - 3);
-    auto dbaz_dot_dbaz = (foo + bar) * (T - 3) * SymR2::identity_map(options);
+    auto dbaz_dot_dbaz = (foo + bar) * (T - 3) * SR2::identity_map(options);
 
     dout_din->set(dfoo_dot_dfoo, _foo_rate, _foo);
     dout_din->set(dfoo_dot_dbar, _foo_rate, _bar);

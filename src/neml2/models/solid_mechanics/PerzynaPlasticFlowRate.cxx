@@ -28,17 +28,17 @@ namespace neml2
 {
 register_NEML2_object(PerzynaPlasticFlowRate);
 
-ParameterSet
-PerzynaPlasticFlowRate::expected_params()
+OptionSet
+PerzynaPlasticFlowRate::expected_options()
 {
-  ParameterSet params = PlasticFlowRate::expected_params();
-  params.set<CrossRef<Scalar>>("reference_stress");
-  params.set<CrossRef<Scalar>>("exponent");
-  return params;
+  OptionSet options = PlasticFlowRate::expected_options();
+  options.set<CrossRef<Scalar>>("reference_stress");
+  options.set<CrossRef<Scalar>>("exponent");
+  return options;
 }
 
-PerzynaPlasticFlowRate::PerzynaPlasticFlowRate(const ParameterSet & params)
-  : PlasticFlowRate(params),
+PerzynaPlasticFlowRate::PerzynaPlasticFlowRate(const OptionSet & options)
+  : PlasticFlowRate(options),
     _eta(register_crossref_model_parameter<Scalar>("eta", "reference_stress")),
     _n(register_crossref_model_parameter<Scalar>("n", "exponent"))
 {
@@ -54,10 +54,10 @@ PerzynaPlasticFlowRate::set_value(const LabeledVector & in,
   auto f = in.get<Scalar>(yield_function);
 
   // Compute the Perzyna approximation of the yield surface
-  Scalar Hf = math::heaviside(f);
-  Scalar f_abs = torch::abs(f);
-  Scalar gamma_dot_m = torch::pow(f_abs / _eta, _n);
-  Scalar gamma_dot = gamma_dot_m * Hf;
+  auto Hf = math::heaviside(f);
+  auto f_abs = math::abs(f);
+  auto gamma_dot_m = math::pow(f_abs / _eta, _n);
+  auto gamma_dot = gamma_dot_m * Hf;
 
   if (out)
     out->set(gamma_dot, flow_rate);

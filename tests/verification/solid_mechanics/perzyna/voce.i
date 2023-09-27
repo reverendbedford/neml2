@@ -47,7 +47,7 @@
     type = IsotropicMandelStress
   []
   [vonmises]
-    type = SymR2Invariant
+    type = SR2Invariant
     invariant_type = 'VONMISES'
     tensor = 'state/internal/M'
     invariant = 'state/internal/sm'
@@ -85,7 +85,7 @@
     type = AssociativeIsotropicPlasticHardening
   []
   [Erate]
-    type = SymR2ForceRate
+    type = SR2ForceRate
     force = 'E'
   []
   [Eerate]
@@ -99,7 +99,7 @@
     rate_form = true
   []
   [integrate_stress]
-    type = SymR2BackwardEulerTimeIntegration
+    type = SR2BackwardEulerTimeIntegration
     variable = 'S'
   []
   [integrate_ep]

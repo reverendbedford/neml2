@@ -28,19 +28,19 @@ namespace neml2
 {
 register_NEML2_object(ComposedModel);
 
-ParameterSet
-ComposedModel::expected_params()
+OptionSet
+ComposedModel::expected_options()
 {
-  ParameterSet params = Model::expected_params();
-  params.set<std::vector<std::string>>("models");
-  return params;
+  OptionSet options = Model::expected_options();
+  options.set<std::vector<std::string>>("models");
+  return options;
 }
 
-ComposedModel::ComposedModel(const ParameterSet & params)
-  : Model(params)
+ComposedModel::ComposedModel(const OptionSet & options)
+  : Model(options)
 {
   std::vector<std::shared_ptr<Model>> models;
-  for (const auto & model_name : params.get<std::vector<std::string>>("models"))
+  for (const auto & model_name : options.get<std::vector<std::string>>("models"))
     models.push_back(Factory::get_object_ptr<Model>("Models", model_name));
 
   register_dependency(models);
@@ -183,7 +183,7 @@ ComposedModel::set_value(const LabeledVector & in,
 {
   // pin stands for partial input
   // pout stands for partial output
-  const auto nbatch = in.batch_size();
+  const auto batch_sz = in.batch_sizes();
   const auto options = in.options();
 
   // If only out is requested, we just evaluate all the models following the sorted evaluation
@@ -195,7 +195,7 @@ ComposedModel::set_value(const LabeledVector & in,
     // Follow the (sorted) evaluation order to evaluate all the models
     for (auto i : _evaluation_order)
     {
-      auto pin = LabeledVector::zeros(nbatch, {&i->input()}, options);
+      auto pin = LabeledVector::zeros(batch_sz, {&i->input()}, options);
       pin.fill(in);
 
       // All the dependencies must have been cached, as we have sorted out the evaluation order
@@ -223,13 +223,13 @@ ComposedModel::set_value(const LabeledVector & in,
     std::map<std::string, LabeledVector> cached_pout;
     std::map<std::string, LabeledMatrix> cached_dpout_din;
 
-    auto din_din = LabeledMatrix::identity(nbatch, input(), options);
+    auto din_din = LabeledMatrix::identity(batch_sz, input(), options);
 
     // Follow the (sorted) evaluation order to evaluate all the models
     for (auto i : _evaluation_order)
     {
-      auto pin = LabeledVector::zeros(nbatch, {&i->input()}, options);
-      auto dpin_din = LabeledMatrix::zeros(nbatch, {&i->input(), &input()}, options);
+      auto pin = LabeledVector::zeros(batch_sz, {&i->input()}, options);
+      auto dpin_din = LabeledMatrix::zeros(batch_sz, {&i->input(), &input()}, options);
       pin.fill(in);
       dpin_din.fill(din_din);
 
@@ -268,14 +268,15 @@ ComposedModel::set_value(const LabeledVector & in,
     std::map<std::string, LabeledMatrix> cached_dpout_din;
     std::map<std::string, LabeledTensor3D> cached_d2pout_din2;
 
-    auto din_din = LabeledMatrix::identity(nbatch, input(), options);
+    auto din_din = LabeledMatrix::identity(batch_sz, input(), options);
 
     // Follow the (sorted) evaluation order to evaluate all the models
     for (auto i : _evaluation_order)
     {
-      auto pin = LabeledVector::zeros(nbatch, {&i->input()}, options);
-      auto dpin_din = LabeledMatrix::zeros(nbatch, {&i->input(), &input()}, options);
-      auto d2pin_din2 = LabeledTensor3D::zeros(nbatch, {&i->input(), &input(), &input()}, options);
+      auto pin = LabeledVector::zeros(batch_sz, {&i->input()}, options);
+      auto dpin_din = LabeledMatrix::zeros(batch_sz, {&i->input(), &input()}, options);
+      auto d2pin_din2 =
+          LabeledTensor3D::zeros(batch_sz, {&i->input(), &input(), &input()}, options);
       pin.fill(in);
       dpin_din.fill(din_din);
 

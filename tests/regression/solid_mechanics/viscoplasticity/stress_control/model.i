@@ -1,24 +1,40 @@
 [Tensors]
   [end_time]
-    type = LogSpaceTensor
+    type = LogspaceScalar
     start = -1
     end = 5
-    steps = 20
+    nstep = 20
   []
   [times]
-    type = LinSpaceTensor
+    type = LinspaceScalar
+    start = 0
     end = end_time
-    steps = 100
+    nstep = 100
+  []
+  [sxx]
+    type = FullScalar
+    batch_shape = '(20)'
+    value = 120
+  []
+  [syy]
+    type = FullScalar
+    batch_shape = '(20)'
+    value = 0
+  []
+  [szz]
+    type = FullScalar
+    batch_shape = '(20)'
+    value = 0
   []
   [max_stress]
-    type = InitializedSymR2
-    values = '120 0 0'
-    nbatch = 20
+    type = FillSR2
+    values = 'sxx syy szz'
   []
   [stresses]
-    type = LinSpaceTensor
+    type = LinspaceSR2
+    start = 0
     end = max_stress
-    steps = 100
+    nstep = 100
   []
 []
 
@@ -62,7 +78,7 @@
     type = IsotropicMandelStress
   []
   [vonmises]
-    type = SymR2Invariant
+    type = SR2Invariant
     invariant_type = 'VONMISES'
     tensor = 'state/internal/M'
     invariant = 'state/internal/sm'
@@ -95,7 +111,7 @@
     type = AssociativePlasticFlow
   []
   [Srate]
-    type = SymR2ForceRate
+    type = SR2ForceRate
     force = 'S'
   []
   [Eerate]
@@ -116,11 +132,11 @@
     variable = 'internal/ep'
   []
   [integrate_Ep]
-    type = SymR2BackwardEulerTimeIntegration
+    type = SR2BackwardEulerTimeIntegration
     variable = 'internal/Ep'
   []
   [integrate_E]
-    type = SymR2BackwardEulerTimeIntegration
+    type = SR2BackwardEulerTimeIntegration
     variable = 'E'
   []
   [implicit_rate]

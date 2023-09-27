@@ -52,7 +52,7 @@ LabeledAxis::add(const std::string & name, TorchSize sz)
 LabeledAxis &
 LabeledAxis::add(const LabeledAxisAccessor & accessor, TorchSize sz)
 {
-  add(*this, sz, accessor.item_names.begin(), accessor.item_names.end());
+  add(*this, sz, accessor.vec().begin(), accessor.vec().end());
   return *this;
 }
 
@@ -69,42 +69,6 @@ LabeledAxis::add(LabeledAxis & axis,
     axis.add<LabeledAxis>(*cur);
     add(axis.subaxis(*cur), sz, cur + 1, end);
   }
-}
-
-LabeledAxis &
-LabeledAxis::prefix(const std::string & s, const std::string & delimiter)
-{
-  // Prefix all the variable names
-  std::map<std::string, TorchSize> new_variables;
-  for (const auto & [name, sz] : _variables)
-    new_variables.emplace(s + delimiter + name, sz);
-  _variables = new_variables;
-
-  // Prefix all the subaxes
-  std::map<std::string, std::shared_ptr<LabeledAxis>> new_subaxes;
-  for (const auto & [name, subaxis] : _subaxes)
-    new_subaxes.emplace(s + delimiter + name, subaxis);
-  _subaxes = new_subaxes;
-
-  return *this;
-}
-
-LabeledAxis &
-LabeledAxis::suffix(const std::string & s, const std::string & delimiter)
-{
-  // Suffix all the variable names
-  std::map<std::string, TorchSize> new_variables;
-  for (const auto & [name, sz] : _variables)
-    new_variables.emplace(name + delimiter + s, sz);
-  _variables = new_variables;
-
-  // Suffix all the subaxes
-  std::map<std::string, std::shared_ptr<LabeledAxis>> new_subaxes;
-  for (const auto & [name, subaxis] : _subaxes)
-    new_subaxes.emplace(name + delimiter + s, subaxis);
-  _subaxes = new_subaxes;
-
-  return *this;
 }
 
 LabeledAxis &
@@ -228,15 +192,15 @@ LabeledAxis::has_variable(const LabeledAxisAccessor & var) const
   if (var.empty())
     return false;
 
-  if (var.item_names.size() > 1)
+  if (var.vec().size() > 1)
   {
-    if (has_subaxis(var.item_names[0]))
-      return subaxis(var.item_names[0]).has_variable(var.peel());
+    if (has_subaxis(var.vec()[0]))
+      return subaxis(var.vec()[0]).has_variable(var.slice(1));
     else
       return false;
   }
   else
-    return has_variable(var.item_names[0]);
+    return has_variable(var.vec()[0]);
 }
 
 TorchSize
@@ -259,7 +223,7 @@ LabeledAxis::storage_size(const std::string & name) const
 TorchSize
 LabeledAxis::storage_size(const LabeledAxisAccessor & accessor) const
 {
-  return storage_size(accessor.item_names.begin(), accessor.item_names.end());
+  return storage_size(accessor.vec().begin(), accessor.vec().end());
 }
 
 TorchSize
@@ -292,7 +256,7 @@ LabeledAxis::indices(const std::string & name) const
 TorchIndex
 LabeledAxis::indices(const LabeledAxisAccessor & accessor) const
 {
-  return indices(0, accessor.item_names.begin(), accessor.item_names.end());
+  return indices(0, accessor.vec().begin(), accessor.vec().end());
 }
 
 TorchIndex
@@ -373,8 +337,7 @@ LabeledAxis::variable_accessors(std::vector<LabeledAxisAccessor> & accessors,
   if (recursive)
     for (auto & [name, axis] : _subaxes)
     {
-      auto next = cur;
-      next.item_names.push_back(name);
+      auto next = cur.append(name);
       axis->variable_accessors(accessors, next, recursive);
     }
 }

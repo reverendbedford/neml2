@@ -31,9 +31,9 @@ namespace neml2
 class LinearKinematicHardening : public KinematicHardening
 {
 public:
-  static ParameterSet expected_params();
+  static OptionSet expected_options();
 
-  LinearKinematicHardening(const ParameterSet & params);
+  LinearKinematicHardening(const OptionSet & options);
 
 protected:
   /// Simple linear map between equivalent strain and hardening

@@ -29,13 +29,12 @@
 
 namespace neml2
 {
+typedef double Real;
 typedef int64_t TorchSize;
 typedef std::vector<TorchSize> TorchShape;
 typedef torch::IntArrayRef TorchShapeRef;
 typedef at::indexing::TensorIndex TorchIndex;
 typedef std::vector<at::indexing::TensorIndex> TorchSlice;
-
-typedef double Real;
 
 /**
  * TODO: make the following constants configurable

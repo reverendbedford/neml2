@@ -25,9 +25,15 @@
 #pragma once
 
 #include <cstddef>
+#include <sstream>
 
 namespace neml2
 {
+template <typename T>
+class CrossRef;
+template <typename T>
+std::stringstream & operator>>(std::stringstream &, CrossRef<T> &);
+
 /**
  * @brief The wrapper (decorator) for cross-referencing unresolved values at parse time.
  *
@@ -46,16 +52,6 @@ class CrossRef
 {
 public:
   CrossRef() = default;
-
-  /**
-   * @brief Construct a new CrossRef object
-   *
-   * @param raw_str The raw string literal extracted from the input file
-   */
-  CrossRef(const std::string & raw_str)
-    : _raw_str(raw_str)
-  {
-  }
 
   /**
    * @brief Assignment operator
@@ -78,6 +74,8 @@ public:
    */
   const std::string & raw() const { return _raw_str; }
 
+  friend std::stringstream & operator>><>(std::stringstream & in, CrossRef<T> &);
+
 private:
   /// The raw string literal.
   std::string _raw_str;
@@ -89,5 +87,13 @@ operator<<(std::ostream & os, const CrossRef<T> & cr)
 {
   os << cr.raw();
   return os;
+}
+
+template <typename T>
+std::stringstream &
+operator>>(std::stringstream & ss, CrossRef<T> & cr)
+{
+  ss >> cr._raw_str;
+  return ss;
 }
 } // namespace neml2

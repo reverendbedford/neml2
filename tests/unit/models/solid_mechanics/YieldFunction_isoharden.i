@@ -16,14 +16,14 @@
 
 [Tensors]
   [M]
-    type = InitializedSymR2
+    type = FillSR2
     values = '40 120 80 10 10 90'
   []
 []
 
 [Models]
   [vonmises]
-    type = SymR2Invariant
+    type = SR2Invariant
     invariant_type = 'VONMISES'
     tensor = 'state/internal/M'
     invariant = 'state/internal/sm'

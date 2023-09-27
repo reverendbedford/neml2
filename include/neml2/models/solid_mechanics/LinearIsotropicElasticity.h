@@ -31,9 +31,9 @@ namespace neml2
 class LinearIsotropicElasticity : public Elasticity
 {
 public:
-  static ParameterSet expected_params();
+  static OptionSet expected_options();
 
-  LinearIsotropicElasticity(const ParameterSet & params);
+  LinearIsotropicElasticity(const OptionSet & options);
 
 protected:
   virtual void set_value(const LabeledVector & in,

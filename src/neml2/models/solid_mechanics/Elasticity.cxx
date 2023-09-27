@@ -26,25 +26,25 @@
 
 namespace neml2
 {
-ParameterSet
-Elasticity::expected_params()
+OptionSet
+Elasticity::expected_options()
 {
-  ParameterSet params = Model::expected_params();
-  params.set<LabeledAxisAccessor>("strain") = {{"state", "internal", "Ee"}};
-  params.set<LabeledAxisAccessor>("stress") = {{"state", "S"}};
-  params.set<bool>("compliance") = false;
-  params.set<bool>("rate_form") = false;
-  return params;
+  OptionSet options = Model::expected_options();
+  options.set<LabeledAxisAccessor>("strain") = {{"state", "internal", "Ee"}};
+  options.set<LabeledAxisAccessor>("stress") = {{"state", "S"}};
+  options.set<bool>("compliance") = false;
+  options.set<bool>("rate_form") = false;
+  return options;
 }
 
-Elasticity::Elasticity(const ParameterSet & params)
-  : Model(params),
-    _compliance(params.get<bool>("compliance")),
-    _rate_form(params.get<bool>("rate_form")),
-    _strain(params.get<LabeledAxisAccessor>("strain").with_suffix(_rate_form ? "_rate" : "")),
-    _stress(params.get<LabeledAxisAccessor>("stress").with_suffix(_rate_form ? "_rate" : "")),
-    from_var(declare_input_variable<SymR2>(_compliance ? _stress : _strain)),
-    to_var(declare_output_variable<SymR2>(_compliance ? _strain : _stress))
+Elasticity::Elasticity(const OptionSet & options)
+  : Model(options),
+    _compliance(options.get<bool>("compliance")),
+    _rate_form(options.get<bool>("rate_form")),
+    _strain(options.get<LabeledAxisAccessor>("strain").with_suffix(_rate_form ? "_rate" : "")),
+    _stress(options.get<LabeledAxisAccessor>("stress").with_suffix(_rate_form ? "_rate" : "")),
+    from_var(declare_input_variable<SR2>(_compliance ? _stress : _strain)),
+    to_var(declare_output_variable<SR2>(_compliance ? _strain : _stress))
 {
   setup();
 }

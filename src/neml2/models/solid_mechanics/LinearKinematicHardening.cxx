@@ -23,22 +23,22 @@
 // THE SOFTWARE.
 
 #include "neml2/models/solid_mechanics/LinearKinematicHardening.h"
-#include "neml2/tensors/SymSymR4.h"
+#include "neml2/tensors/SSR4.h"
 
 namespace neml2
 {
 register_NEML2_object(LinearKinematicHardening);
 
-ParameterSet
-LinearKinematicHardening::expected_params()
+OptionSet
+LinearKinematicHardening::expected_options()
 {
-  ParameterSet params = KinematicHardening::expected_params();
-  params.set<CrossRef<Scalar>>("hardening_modulus");
-  return params;
+  OptionSet options = KinematicHardening::expected_options();
+  options.set<CrossRef<Scalar>>("hardening_modulus");
+  return options;
 }
 
-LinearKinematicHardening::LinearKinematicHardening(const ParameterSet & params)
-  : KinematicHardening(params),
+LinearKinematicHardening::LinearKinematicHardening(const OptionSet & options)
+  : KinematicHardening(options),
     _H(register_crossref_model_parameter<Scalar>("H", "hardening_modulus"))
 {
 }
@@ -54,7 +54,7 @@ LinearKinematicHardening::set_value(const LabeledVector & in,
 
   if (dout_din)
   {
-    auto I = SymR2::identity_map(in.options());
+    auto I = SR2::identity_map(in.options());
     dout_din->set(_H * I, back_stress, kinematic_plastic_strain);
   }
 

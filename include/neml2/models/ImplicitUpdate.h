@@ -32,9 +32,9 @@ namespace neml2
 class ImplicitUpdate : public Model
 {
 public:
-  static ParameterSet expected_params();
+  static OptionSet expected_options();
 
-  ImplicitUpdate(const ParameterSet & name);
+  ImplicitUpdate(const OptionSet & name);
 
   const Model & implicit_model() const { return _model; }
 

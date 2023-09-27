@@ -23,23 +23,23 @@
 // THE SOFTWARE.
 
 #include "neml2/models/solid_mechanics/LinearIsotropicElasticity.h"
-#include "neml2/tensors/SymSymR4.h"
+#include "neml2/tensors/SSR4.h"
 
 namespace neml2
 {
 register_NEML2_object(LinearIsotropicElasticity);
 
-ParameterSet
-LinearIsotropicElasticity::expected_params()
+OptionSet
+LinearIsotropicElasticity::expected_options()
 {
-  ParameterSet params = Elasticity::expected_params();
-  params.set<CrossRef<Scalar>>("youngs_modulus");
-  params.set<CrossRef<Scalar>>("poisson_ratio");
-  return params;
+  OptionSet options = Elasticity::expected_options();
+  options.set<CrossRef<Scalar>>("youngs_modulus");
+  options.set<CrossRef<Scalar>>("poisson_ratio");
+  return options;
 }
 
-LinearIsotropicElasticity::LinearIsotropicElasticity(const ParameterSet & params)
-  : Elasticity(params),
+LinearIsotropicElasticity::LinearIsotropicElasticity(const OptionSet & options)
+  : Elasticity(options),
     _E(register_crossref_model_parameter<Scalar>("E", "youngs_modulus")),
     _nu(register_crossref_model_parameter<Scalar>("nu", "poisson_ratio"))
 {
@@ -61,14 +61,14 @@ LinearIsotropicElasticity::set_value(const LabeledVector & in,
 
   if (out)
   {
-    auto from = in.get<SymR2>(from_var);
+    auto from = in.get<SR2>(from_var);
     out->set(vol_factor * from.vol() + dev_factor * from.dev(), to_var);
   }
 
   if (dout_din)
   {
-    auto I = SymSymR4::init_identity_vol(in.options());
-    auto J = SymSymR4::init_identity_dev(in.options());
+    auto I = SSR4::identity_vol(in.options());
+    auto J = SSR4::identity_dev(in.options());
     dout_din->set(vol_factor * I + dev_factor * J, to_var, from_var);
   }
 

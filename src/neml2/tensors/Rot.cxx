@@ -23,154 +23,69 @@
 // THE SOFTWARE.
 
 #include "neml2/tensors/Rot.h"
+#include "neml2/tensors/Scalar.h"
+#include "neml2/tensors/Vec.h"
 #include "neml2/tensors/R2.h"
-#include "neml2/tensors/SymR2.h"
+#include "neml2/tensors/SR2.h"
 #include "neml2/tensors/R3.h"
 #include "neml2/tensors/R4.h"
-#include "neml2/tensors/SymSymR4.h"
-
-#include "neml2/tensors/RotRot.h"
-#include "neml2/tensors/VecRot.h"
-#include "neml2/tensors/R2Rot.h"
-#include "neml2/tensors/SymR2Rot.h"
-#include "neml2/tensors/R4Rot.h"
-#include "neml2/tensors/SymSymR4Rot.h"
+#include "neml2/tensors/SSR4.h"
 
 namespace neml2
 {
-
-Rot
-Rot::init(const Scalar & r0, const Scalar & r1, const Scalar & r2)
+Rot::Rot(const Vec & v)
+  : Rot(BatchTensor(v))
 {
-  return torch::cat({r0, r1, r2}, -1);
-}
-
-Rot
-Rot::init(const Real & r0, const Real & r1, const Real & r2, const torch::TensorOptions & options)
-{
-  return torch::tensor({{r0, r1, r2}}, options);
 }
 
 Rot
 Rot::identity(const torch::TensorOptions & options)
 {
-  return torch::zeros({1, 3}, options);
-}
-
-RotRot
-Rot::identity_map(const torch::TensorOptions & options)
-{
-  return RotRot::identity(options);
+  return Rot::zeros(options);
 }
 
 Rot
 Rot::inverse() const
 {
-  return -torch::Tensor(*this);
-}
-
-Scalar
-Rot::n2() const
-{
-  return this->dot(*this);
+  return -(*this);
 }
 
 R2
-Rot::to_R2() const
+Rot::euler_rodrigues() const
 {
   // We use the dot product twice
-  auto rr = this->n2();
+  auto rr = norm_sq();
 
-  return ((1 - rr) * R2::identity() + 2.0 * this->outer(*this) -
+  return ((1.0 - rr) * R2::identity() + 2.0 * outer(*this) -
           2.0 * R3::levi_civita().contract_k(*this)) /
          (1.0 + rr);
 }
 
 R3
-Rot::dR2() const
+Rot::deuler_rodrigues() const
 {
-  return torch::Tensor(2.0 / (1 + this->n2())).unsqueeze(-1).unsqueeze(-1) *
-         (-einsum({this->to_R2(), *this}, {"ij", "m"}) -
-          einsum({R2::identity(), *this}, {"ij", "m"}) +
-          einsum({R2::identity(), *this}, {"im", "j"}) +
-          einsum({R2::identity(), *this}, {"jm", "i"}) - torch::Tensor(R3::levi_civita()));
+  auto rr = norm_sq();
+  auto R = euler_rodrigues();
+  auto I = R2::identity();
+  neml_assert_batch_broadcastable_dbg(*this, rr, R, I);
+
+  return 2.0 / (1.0 + rr) *
+         (R3(-torch::einsum("...ij,...m", {R, *this}) - torch::einsum("...ij,...m", {I, *this}) +
+                 torch::einsum("...im,...j", {I, *this}) + torch::einsum("...jm,...i", {I, *this}),
+             batch_dim()) -
+          R3::levi_civita());
 }
 
 Rot
-Rot::apply(const Rot & R) const
+Rot::rotate(const Rot & r) const
 {
-  return *this * R;
-}
-
-Vec
-Rot::apply(const Vec & v) const
-{
-  // Use twice...
-  auto rr = this->n2();
-
-  return ((1 - rr) * v + 2 * this->dot(v) * Vec(*this) - 2 * v.cross(*this)) / (1 + rr);
+  return r * (*this);
 }
 
 R2
-Rot::apply(const R2 & T) const
+Rot::drotate(const Rot & r) const
 {
-  R2 R = this->to_R2();
-  return R * T * R.transpose();
-}
-
-SymR2
-Rot::apply(const SymR2 & T) const
-{
-  return this->apply(T.to_full()).sym();
-}
-
-R4
-Rot::apply(const R4 & T) const
-{
-  R2 R = this->to_R2();
-  return einsum({R, R, R, R, T}, {"im", "jn", "ko", "lp", "mnop"});
-}
-
-SymSymR4
-Rot::apply(const SymSymR4 & T) const
-{
-  return this->apply(T.to_full()).sym();
-}
-
-RotRot
-Rot::dapply(const Rot & R) const
-{
-  return RotRot::derivative(*this, R);
-}
-
-VecRot
-Rot::dapply(const Vec & v) const
-{
-  return VecRot::derivative(*this, v);
-}
-
-R2Rot
-Rot::dapply(const R2 & T) const
-{
-  return R2Rot::derivative(*this, T);
-}
-
-SymR2Rot
-Rot::dapply(const SymR2 & T) const
-{
-  return SymR2Rot::derivative(*this, T);
-}
-
-R4Rot
-Rot::dapply(const R4 & T) const
-{
-  return R4Rot::derivative(*this, T);
-}
-
-SymSymR4Rot
-Rot::dapply(const SymSymR4 & T) const
-{
-  return SymSymR4Rot::derivative(*this, T);
+  return 1.0 / (1.0 - r.dot(*this)) * (R2::identity() - R2::skew(*this) + rotate(r).outer(*this));
 }
 
 Rot
@@ -178,5 +93,4 @@ operator*(const Rot & r1, const Rot & r2)
 {
   return (r1 + r2 + r1.cross(r2)) / (1.0 - r1.dot(r2));
 }
-
 } // namemspace neml2

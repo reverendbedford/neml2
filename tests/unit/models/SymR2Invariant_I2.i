@@ -1,6 +1,6 @@
 [Tensors]
   [foo]
-    type = InitializedSymR2
+    type = FillSR2
     values = '1 2 3 4 5 6'
     # This tensor reads
     # A = [ 1 6 5
@@ -25,7 +25,7 @@
 
 [Models]
   [model]
-    type = SymR2Invariant
+    type = SR2Invariant
     invariant_type = 'I2'
     tensor = 'state/internal/O'
     invariant = 'state/internal/I2'

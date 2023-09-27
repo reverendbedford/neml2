@@ -24,59 +24,203 @@
 
 #include <catch2/catch.hpp>
 
-#include "neml2/tensors/FixedDimTensor.h"
+#include "neml2/tensors/Scalar.h"
+#include "neml2/tensors/Vec.h"
+#include "neml2/tensors/R2.h"
+#include "neml2/tensors/SR2.h"
+#include "neml2/tensors/R3.h"
+#include "neml2/tensors/SFR3.h"
+#include "neml2/tensors/R4.h"
+#include "neml2/tensors/SSR4.h"
+#include "neml2/tensors/R5.h"
+#include "neml2/tensors/SSFR5.h"
 
 using namespace neml2;
 
-TEST_CASE("FixedDimTensors have the right shapes, construct blank", "[FixedDimTensors]")
+TEST_CASE("FixedDimTensor", "[tensors]")
 {
-  // 2 batch dimensions with sizes (10,2), base dimension (3,4)
-  FixedDimTensor<2, 3, 4> A;
-  A = A.batch_expand({10, 2});
+  const auto & DTO = default_tensor_options;
 
-  SECTION(" batch sizes are correct")
+  TorchShape B = {5, 3, 1, 2}; // batch shape
+  TorchSize Bn = B.size();     // batch dimension
+
+  SECTION("class FixedDimTensor")
   {
-    REQUIRE(A.batch_dim() == 2);
-    REQUIRE(A.batch_sizes() == TorchShape({10, 2}));
-  }
+    SECTION("const_base_sizes")
+    {
+      REQUIRE(Scalar::const_base_sizes == TorchShape{});
+      REQUIRE(Vec::const_base_sizes == TorchShape{3});
+      REQUIRE(R2::const_base_sizes == TorchShape{3, 3});
+      REQUIRE(SR2::const_base_sizes == TorchShape{6});
+      REQUIRE(R3::const_base_sizes == TorchShape{3, 3, 3});
+      REQUIRE(SFR3::const_base_sizes == TorchShape{6, 3});
+      REQUIRE(R4::const_base_sizes == TorchShape{3, 3, 3, 3});
+      REQUIRE(SSR4::const_base_sizes == TorchShape{6, 6});
+      REQUIRE(R5::const_base_sizes == TorchShape{3, 3, 3, 3, 3});
+      REQUIRE(SSFR5::const_base_sizes == TorchShape{6, 6, 3});
+    }
 
-  SECTION(" base sizes are correct")
-  {
-    REQUIRE(A.base_dim() == 2);
-    REQUIRE(A.base_sizes() == TorchShape({3, 4}));
-  }
-}
+    SECTION("const_base_dim")
+    {
+      REQUIRE(Scalar::const_base_dim == 0);
+      REQUIRE(Vec::const_base_dim == 1);
+      REQUIRE(R2::const_base_dim == 2);
+      REQUIRE(SR2::const_base_dim == 1);
+      REQUIRE(R3::const_base_dim == 3);
+      REQUIRE(SFR3::const_base_dim == 2);
+      REQUIRE(R4::const_base_dim == 4);
+      REQUIRE(SSR4::const_base_dim == 2);
+      REQUIRE(R5::const_base_dim == 5);
+      REQUIRE(SSFR5::const_base_dim == 3);
+    }
 
-TEST_CASE("FixedDimTensors have the right shapes, construct with tensor", "[FixedDimTensors]")
-{
-  // 2 batch dimensions with sizes (10,2), base dimension (3,4)
-  FixedDimTensor<2, 3, 4> A(torch::zeros({10, 2, 3, 4}));
+    SECTION("FixedDimTensor")
+    {
+      SECTION("default")
+      {
+        R5 a;
+        REQUIRE(!a.defined());
+      }
 
-  SECTION(" batch sizes are correct")
-  {
-    REQUIRE(A.batch_dim() == 2);
-    REQUIRE(A.batch_sizes() == TorchShape({10, 2}));
-  }
+      SECTION("from Tensor and batch dimension")
+      {
+        auto a = torch::full(utils::add_shapes(B, R5::const_base_sizes), 3.1231, DTO);
+        auto b = R5(a, Bn);
+        REQUIRE(b.batch_dim() == Bn);
+        REQUIRE(b.base_dim() == R5::const_base_dim);
+        REQUIRE(b.batch_sizes() == B);
+        REQUIRE(b.base_sizes() == R5::const_base_sizes);
+        REQUIRE(b.base_storage() == R5::const_base_storage);
 
-  SECTION(" base sizes are correct")
-  {
-    REQUIRE(A.base_dim() == 2);
-    REQUIRE(A.base_sizes() == TorchShape({3, 4}));
-  }
-}
-
-TEST_CASE("Not enough required dimensions", "[FixedDimTensor]")
-{
 #ifndef NDEBUG
-  // Can't make this guy, as it won't have enough dimensions for the logical dimensions
-  REQUIRE_THROWS(FixedDimTensor<2, 3, 4>(torch::zeros({10, 3, 4})));
+        // Calling .defined() to make sure this doesn't get optimized away...
+        REQUIRE_THROWS_WITH(SR2(a, Bn).defined(), Catch::Matchers::Contains("Base shape mismatch"));
 #endif
-}
+      }
 
-TEST_CASE("FixedDimTensors can't be created with the wrong base dimensions", "[FixedDimTensor]")
-{
+      SECTION("from Tensor")
+      {
+        auto a = torch::full(utils::add_shapes(B, R5::const_base_sizes), 3.1231, DTO);
+        auto b = R5(a);
+        REQUIRE(b.batch_dim() == Bn);
+        REQUIRE(b.base_dim() == R5::const_base_dim);
+        REQUIRE(b.batch_sizes() == B);
+        REQUIRE(b.base_sizes() == R5::const_base_sizes);
+        REQUIRE(b.base_storage() == R5::const_base_storage);
+
 #ifndef NDEBUG
-  // Batch is okay, base dimension (5, 4) isn't what we expected (3, 4)
-  REQUIRE_THROWS(FixedDimTensor<2, 3, 4>(torch::zeros({10, 2, 5, 4})));
+        // Calling .defined() to make sure this doesn't get optimized away...
+        REQUIRE_THROWS_WITH(SR2(a).defined(), Catch::Matchers::Contains("Base shape mismatch"));
 #endif
+      }
+    }
+
+    SECTION("empty")
+    {
+      SECTION("unbatched")
+      {
+        auto a = R5::empty(DTO);
+        REQUIRE(!a.batched());
+        REQUIRE(a.batch_dim() == 0);
+        REQUIRE(a.base_dim() == R5::const_base_dim);
+        REQUIRE(a.batch_sizes() == TorchShape{});
+        REQUIRE(a.base_sizes() == R5::const_base_sizes);
+        REQUIRE(a.base_storage() == R5::const_base_storage);
+      }
+
+      SECTION("batched")
+      {
+        auto a = R5::empty(B, DTO);
+        REQUIRE(a.batched());
+        REQUIRE(a.batch_dim() == Bn);
+        REQUIRE(a.base_dim() == R5::const_base_dim);
+        REQUIRE(a.batch_sizes() == B);
+        REQUIRE(a.base_sizes() == R5::const_base_sizes);
+        REQUIRE(a.base_storage() == R5::const_base_storage);
+      }
+    }
+
+    SECTION("zeros")
+    {
+      SECTION("unbatched")
+      {
+        auto a = R5::zeros(DTO);
+        REQUIRE(!a.batched());
+        REQUIRE(a.batch_dim() == 0);
+        REQUIRE(a.base_dim() == R5::const_base_dim);
+        REQUIRE(a.batch_sizes() == TorchShape{});
+        REQUIRE(a.base_sizes() == R5::const_base_sizes);
+        REQUIRE(a.base_storage() == R5::const_base_storage);
+        REQUIRE(torch::allclose(a, torch::zeros_like(a)));
+      }
+
+      SECTION("batched")
+      {
+        auto a = R5::zeros(B, DTO);
+        REQUIRE(a.batched());
+        REQUIRE(a.batch_dim() == Bn);
+        REQUIRE(a.base_dim() == R5::const_base_dim);
+        REQUIRE(a.batch_sizes() == B);
+        REQUIRE(a.base_sizes() == R5::const_base_sizes);
+        REQUIRE(a.base_storage() == R5::const_base_storage);
+        REQUIRE(torch::allclose(a, torch::zeros_like(a)));
+      }
+    }
+
+    SECTION("ones")
+    {
+      SECTION("unbatched")
+      {
+        auto a = R5::ones(DTO);
+        REQUIRE(!a.batched());
+        REQUIRE(a.batch_dim() == 0);
+        REQUIRE(a.base_dim() == R5::const_base_dim);
+        REQUIRE(a.batch_sizes() == TorchShape{});
+        REQUIRE(a.base_sizes() == R5::const_base_sizes);
+        REQUIRE(a.base_storage() == R5::const_base_storage);
+        REQUIRE(torch::allclose(a, torch::ones_like(a)));
+      }
+
+      SECTION("batched")
+      {
+        auto a = R5::ones(B, DTO);
+        REQUIRE(a.batched());
+        REQUIRE(a.batch_dim() == Bn);
+        REQUIRE(a.base_dim() == R5::const_base_dim);
+        REQUIRE(a.batch_sizes() == B);
+        REQUIRE(a.base_sizes() == R5::const_base_sizes);
+        REQUIRE(a.base_storage() == R5::const_base_storage);
+        REQUIRE(torch::allclose(a, torch::ones_like(a)));
+      }
+    }
+
+    SECTION("full")
+    {
+      SECTION("unbatched")
+      {
+        Real init = 3.3;
+        auto a = R5::full(init, DTO);
+        REQUIRE(!a.batched());
+        REQUIRE(a.batch_dim() == 0);
+        REQUIRE(a.base_dim() == R5::const_base_dim);
+        REQUIRE(a.batch_sizes() == TorchShape{});
+        REQUIRE(a.base_sizes() == R5::const_base_sizes);
+        REQUIRE(a.base_storage() == R5::const_base_storage);
+        REQUIRE(torch::allclose(a, torch::full_like(a, init)));
+      }
+
+      SECTION("batched")
+      {
+        Real init = 2.22;
+        auto a = R5::full(B, init, DTO);
+        REQUIRE(a.batched());
+        REQUIRE(a.batch_dim() == Bn);
+        REQUIRE(a.base_dim() == R5::const_base_dim);
+        REQUIRE(a.batch_sizes() == B);
+        REQUIRE(a.base_sizes() == R5::const_base_sizes);
+        REQUIRE(a.base_storage() == R5::const_base_storage);
+        REQUIRE(torch::allclose(a, torch::full_like(a, init)));
+      }
+    }
+  }
 }

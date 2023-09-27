@@ -43,7 +43,7 @@ protected:
   LabeledAxisAccessor declare_variable(LabeledAxis & axis,
                                        const std::vector<std::string> & names) const
   {
-    return declare_variable(axis, utils::storage_size(T::_base_sizes), names);
+    return declare_variable(axis, utils::storage_size(T::const_base_sizes), names);
   }
 
   /// Declare an item (with known storage size) recursively on an axis

@@ -1,14 +1,14 @@
 [Tensors]
   [foo]
-    type = InitializedSymR2
+    type = FillSR2
     values = '1 2 3 4 5 6'
   []
   [bar]
-    type = InitializedSymR2
+    type = FillSR2
     values = '-1 -4 7 -1 9 1'
   []
   [baz]
-    type = InitializedSymR2
+    type = FillSR2
     values = '0 -2 10 3 14 7'
   []
 []
@@ -27,7 +27,7 @@
 
 [Models]
   [model]
-    type = SymR2SumModel
+    type = SR2SumModel
     from_var = 'state/A state/substate/B'
     to_var = 'state/outsub/C'
   []

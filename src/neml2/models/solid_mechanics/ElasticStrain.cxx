@@ -23,32 +23,32 @@
 // THE SOFTWARE.
 
 #include "neml2/models/solid_mechanics/ElasticStrain.h"
-#include "neml2/tensors/SymSymR4.h"
+#include "neml2/tensors/SSR4.h"
 
 namespace neml2
 {
 register_NEML2_object(ElasticStrain);
 
-ParameterSet
-ElasticStrain::expected_params()
+OptionSet
+ElasticStrain::expected_options()
 {
-  ParameterSet params = Model::expected_params();
-  params.set<LabeledAxisAccessor>("total_strain") = {{"forces", "E"}};
-  params.set<LabeledAxisAccessor>("plastic_strain") = {{"state", "internal", "Ep"}};
-  params.set<LabeledAxisAccessor>("elastic_strain") = {{"state", "internal", "Ee"}};
-  params.set<bool>("rate_form") = false;
-  return params;
+  OptionSet options = Model::expected_options();
+  options.set<LabeledAxisAccessor>("total_strain") = {{"forces", "E"}};
+  options.set<LabeledAxisAccessor>("plastic_strain") = {{"state", "internal", "Ep"}};
+  options.set<LabeledAxisAccessor>("elastic_strain") = {{"state", "internal", "Ee"}};
+  options.set<bool>("rate_form") = false;
+  return options;
 }
 
-ElasticStrain::ElasticStrain(const ParameterSet & params)
-  : Model(params),
-    _rate_form(params.get<bool>("rate_form")),
-    total_strain(declare_input_variable<SymR2>(
-        params.get<LabeledAxisAccessor>("total_strain").with_suffix(_rate_form ? "_rate" : ""))),
-    plastic_strain(declare_input_variable<SymR2>(
-        params.get<LabeledAxisAccessor>("plastic_strain").with_suffix(_rate_form ? "_rate" : ""))),
-    elastic_strain(declare_output_variable<SymR2>(
-        params.get<LabeledAxisAccessor>("elastic_strain").with_suffix(_rate_form ? "_rate" : "")))
+ElasticStrain::ElasticStrain(const OptionSet & options)
+  : Model(options),
+    _rate_form(options.get<bool>("rate_form")),
+    total_strain(declare_input_variable<SR2>(
+        options.get<LabeledAxisAccessor>("total_strain").with_suffix(_rate_form ? "_rate" : ""))),
+    plastic_strain(declare_input_variable<SR2>(
+        options.get<LabeledAxisAccessor>("plastic_strain").with_suffix(_rate_form ? "_rate" : ""))),
+    elastic_strain(declare_output_variable<SR2>(
+        options.get<LabeledAxisAccessor>("elastic_strain").with_suffix(_rate_form ? "_rate" : "")))
 {
   setup();
 }
@@ -63,14 +63,14 @@ ElasticStrain::set_value(const LabeledVector & in,
   // elastic strain = total strain - plastic strain
   if (out)
   {
-    auto E = in.get<SymR2>(total_strain);
-    auto Ep = in.get<SymR2>(plastic_strain);
+    auto E = in.get<SR2>(total_strain);
+    auto Ep = in.get<SR2>(plastic_strain);
     out->set(E - Ep, elastic_strain);
   }
 
   if (dout_din)
   {
-    auto I = SymR2::identity_map(in.options());
+    auto I = SR2::identity_map(in.options());
     dout_din->set(I, elastic_strain, total_strain);
     dout_din->set(-I, elastic_strain, plastic_strain);
   }

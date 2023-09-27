@@ -30,36 +30,36 @@ namespace fs = std::filesystem;
 
 namespace neml2
 {
-ParameterSet
-TransientDriver::expected_params()
+OptionSet
+TransientDriver::expected_options()
 {
-  ParameterSet params = Driver::expected_params();
-  params.set<std::string>("model");
-  params.set<CrossRef<torch::Tensor>>("times");
-  params.set<LabeledAxisAccessor>("time") = LabeledAxisAccessor{{"forces", "t"}};
-  params.set<std::string>("predictor") = "PREVIOUS_STATE";
-  params.set<std::string>("save_as");
-  params.set<bool>("show_parameters") = false;
-  params.set<std::string>("device") = "cpu";
-  return params;
+  OptionSet options = Driver::expected_options();
+  options.set<std::string>("model");
+  options.set<CrossRef<torch::Tensor>>("times");
+  options.set<LabeledAxisAccessor>("time") = LabeledAxisAccessor{{"forces", "t"}};
+  options.set<std::string>("predictor") = "PREVIOUS_STATE";
+  options.set<std::string>("save_as");
+  options.set<bool>("show_parameters") = false;
+  options.set<std::string>("device") = "cpu";
+  return options;
 }
 
-TransientDriver::TransientDriver(const ParameterSet & params)
-  : Driver(params),
-    _model(Factory::get_object<Model>("Models", params.get<std::string>("model"))),
-    _device(params.get<std::string>("device")),
-    _time(params.get<CrossRef<torch::Tensor>>("times")),
+TransientDriver::TransientDriver(const OptionSet & options)
+  : Driver(options),
+    _model(Factory::get_object<Model>("Models", options.get<std::string>("model"))),
+    _device(options.get<std::string>("device")),
+    _time(options.get<CrossRef<torch::Tensor>>("times"), 2),
     _step_count(0),
-    _time_name(params.get<LabeledAxisAccessor>("time")),
-    _nsteps(_time.sizes()[0]),
-    _nbatch(_time.sizes()[1]),
+    _time_name(options.get<LabeledAxisAccessor>("time")),
+    _nsteps(_time.batch_sizes()[0]),
+    _nbatch(_time.batch_sizes()[1]),
     _in(LabeledVector::zeros(_nbatch, {&_model.input()})),
     _out(LabeledVector::zeros(_nbatch, {&_model.output()})),
-    _predictor(params.get<std::string>("predictor")),
-    _save_as(params.get<std::string>("save_as")),
-    _show_params(params.get<bool>("show_parameters")),
-    _result_in(LabeledTensor<2, 1>::zeros({_nsteps, _nbatch}, {&_model.input()})),
-    _result_out(LabeledTensor<2, 1>::zeros({_nsteps, _nbatch}, {&_model.output()}))
+    _predictor(options.get<std::string>("predictor")),
+    _save_as(options.get<std::string>("save_as")),
+    _show_params(options.get<bool>("show_parameters")),
+    _result_in(LabeledVector::zeros({_nsteps, _nbatch}, {&_model.input()})),
+    _result_out(LabeledVector::zeros({_nsteps, _nbatch}, {&_model.output()}))
 {
   _model.to(_device);
   _in = _in.to(_device);
@@ -138,7 +138,7 @@ TransientDriver::advance_step()
 void
 TransientDriver::update_forces()
 {
-  auto current_time = Scalar(_time.index({_step_count}).unsqueeze(-1));
+  auto current_time = _time.batch_index({_step_count});
   _in.set(current_time, _time_name);
 }
 
@@ -160,15 +160,15 @@ TransientDriver::apply_predictor()
     // Otherwise linearly extrapolate in time
     else
     {
-      Scalar t = _in.get<Scalar>(_time_name);
-      Scalar t_n = _result_in(_time_name).index({_step_count - 1});
-      Scalar t_nm1 = _result_in(_time_name).index({_step_count - 2});
-      Scalar dt = t - t_n;
-      Scalar dt_n = t_n - t_nm1;
+      auto t = _in.get<Scalar>(_time_name);
+      auto t_n = _result_in.get<Scalar>(_time_name).batch_index({_step_count - 1});
+      auto t_nm1 = _result_in.get<Scalar>(_time_name).batch_index({_step_count - 2});
+      auto dt = t - t_n;
+      auto dt_n = t_n - t_nm1;
 
-      auto states = _result_out.slice(0, "state");
-      BatchTensor<1> state_n = states.tensor().index({_step_count - 1});
-      BatchTensor<1> state_nm1 = states.tensor().index({_step_count - 2});
+      auto states = _result_out.slice("state");
+      auto state_n = states.tensor().batch_index({_step_count - 1});
+      auto state_nm1 = states.tensor().batch_index({_step_count - 2});
       LabeledVector state(state_n + (state_n - state_nm1) / dt_n * dt, states.axes());
       _in.slice("state").fill(state);
     }
@@ -186,8 +186,8 @@ TransientDriver::solve_step()
 void
 TransientDriver::store_step()
 {
-  _result_in.tensor().index({_step_count}).copy_(_in.tensor());
-  _result_out.tensor().index({_step_count}).copy_(_out.tensor());
+  _result_in.batch_index_put({_step_count}, _in);
+  _result_out.batch_index_put({_step_count}, _out);
 }
 
 std::string

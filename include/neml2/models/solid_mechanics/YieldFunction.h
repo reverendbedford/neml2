@@ -31,9 +31,9 @@ namespace neml2
 class YieldFunction : public Model
 {
 public:
-  static ParameterSet expected_params();
+  static OptionSet expected_options();
 
-  YieldFunction(const ParameterSet & params);
+  YieldFunction(const OptionSet & options);
 
 public:
   const LabeledAxisAccessor stress_measure;

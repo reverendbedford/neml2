@@ -23,33 +23,33 @@
 // THE SOFTWARE.
 
 #include "neml2/models/ForceRate.h"
-#include "neml2/tensors/SymSymR4.h"
+#include "neml2/tensors/SSR4.h"
 
 namespace neml2
 {
 register_NEML2_object(ScalarForceRate);
-register_NEML2_object(SymR2ForceRate);
+register_NEML2_object(SR2ForceRate);
 
 template <typename T>
-ParameterSet
-ForceRate<T>::expected_params()
+OptionSet
+ForceRate<T>::expected_options()
 {
-  ParameterSet params = Model::expected_params();
-  params.set<LabeledAxisAccessor>("force");
-  params.set<LabeledAxisAccessor>("time") = LabeledAxisAccessor{{"t"}};
-  return params;
+  OptionSet options = Model::expected_options();
+  options.set<LabeledAxisAccessor>("force");
+  options.set<LabeledAxisAccessor>("time") = LabeledAxisAccessor{{"t"}};
+  return options;
 }
 
 template <typename T>
-ForceRate<T>::ForceRate(const ParameterSet & params)
-  : Model(params),
-    force(declare_input_variable<T>(params.get<LabeledAxisAccessor>("force").on("forces"))),
-    force_n(declare_input_variable<T>(params.get<LabeledAxisAccessor>("force").on("old_forces"))),
-    time(declare_input_variable<Scalar>(params.get<LabeledAxisAccessor>("time").on("forces"))),
+ForceRate<T>::ForceRate(const OptionSet & options)
+  : Model(options),
+    force(declare_input_variable<T>(options.get<LabeledAxisAccessor>("force").on("forces"))),
+    force_n(declare_input_variable<T>(options.get<LabeledAxisAccessor>("force").on("old_forces"))),
+    time(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("time").on("forces"))),
     time_n(
-        declare_input_variable<Scalar>(params.get<LabeledAxisAccessor>("time").on("old_forces"))),
+        declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("time").on("old_forces"))),
     force_rate(declare_output_variable<T>(
-        params.get<LabeledAxisAccessor>("force").with_suffix("_rate").on("forces")))
+        options.get<LabeledAxisAccessor>("force").with_suffix("_rate").on("forces")))
 {
   this->setup();
 }
@@ -108,5 +108,5 @@ ForceRate<T>::set_value(const LabeledVector & in,
 }
 
 template class ForceRate<Scalar>;
-template class ForceRate<SymR2>;
+template class ForceRate<SR2>;
 } // namespace neml2

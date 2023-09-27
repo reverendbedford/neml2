@@ -34,15 +34,15 @@ Registry::get()
   return registry_singleton;
 }
 
-ParameterSet
-Registry::expected_params(const std::string & name)
+OptionSet
+Registry::expected_options(const std::string & name)
 {
   auto & reg = get();
   neml_assert(
-      reg._expected_params.count(name) > 0,
+      reg._expected_options.count(name) > 0,
       name,
       " is not a registered object. Did you forget to register it with register_NEML2_object?");
-  return reg._expected_params.at(name);
+  return reg._expected_options.at(name);
 }
 
 BuildPtr
@@ -61,11 +61,11 @@ void
 Registry::print(std::ostream & os)
 {
   auto & reg = get();
-  for (auto [type, params] : reg._expected_params)
+  for (auto [type, options] : reg._expected_options)
   {
-    params.set<std::string>("type") = type;
+    options.set<std::string>("type") = type;
     os << "- " << reg._syntax_type[type] << ":\n";
-    os << params << "\n";
+    os << options << "\n";
   }
 }
 // LCOV_EXCL_STOP
@@ -73,16 +73,16 @@ Registry::print(std::ostream & os)
 void
 Registry::add_inner(const std::string & name,
                     const std::string & type,
-                    const ParameterSet & params,
+                    const OptionSet & options,
                     BuildPtr build_ptr)
 {
   auto & reg = get();
-  neml_assert(reg._expected_params.count(name) == 0 && reg._objects.count(name) == 0,
+  neml_assert(reg._expected_options.count(name) == 0 && reg._objects.count(name) == 0,
               "Duplicate registration found. Object named ",
               name,
               " is being registered multiple times.");
 
-  reg._expected_params[name] = params;
+  reg._expected_options[name] = options;
   reg._objects[name] = build_ptr;
   reg._syntax_type[name] = type;
 }

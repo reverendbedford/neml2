@@ -36,20 +36,25 @@ Factory::get()
 }
 
 void
-Factory::manufacture(const ParameterCollection & all_params)
+Factory::load(const OptionCollection & all_options)
 {
-  _all_params = all_params;
-
-  for (const auto & section : Factory::pipeline)
-    for (const auto & params : _all_params[section])
-      create_object(section, params.second);
+  get()._all_options = all_options;
 }
 
 void
-Factory::create_object(const std::string & section, const ParameterSet & params)
+Factory::manufacture()
 {
-  const std::string & name = params.get<std::string>("name");
-  const std::string & type = params.get<std::string>("type");
+  auto f = get();
+  for (const auto & section : Factory::pipeline)
+    for (const auto & options : _all_options[section])
+      f.create_object(section, options.second);
+}
+
+void
+Factory::create_object(const std::string & section, const OptionSet & options)
+{
+  const std::string & name = options.get<std::string>("name");
+  const std::string & type = options.get<std::string>("type");
 
   // Some other object might have already requested the existence of this object, at which time we
   // have already created it. So don't bother doing anything again.
@@ -57,14 +62,15 @@ Factory::create_object(const std::string & section, const ParameterSet & params)
     return;
 
   auto builder = Registry::builder(type);
-  _objects[section].emplace(name, (*builder)(params));
+  _objects[section].emplace(name, (*builder)(options));
 }
 
 // LCOV_EXCL_START
 void
-Factory::print(std::ostream & os) const
+Factory::print(std::ostream & os)
 {
-  for (auto & [section, objects] : _objects)
+  const auto & all_objects = get()._objects;
+  for (auto & [section, objects] : all_objects)
   {
     os << "- " << section << ":" << std::endl;
     for (auto & object : objects)
@@ -73,4 +79,10 @@ Factory::print(std::ostream & os) const
   }
 }
 // LCOV_EXCL_STOP
+
+void
+Factory::clear()
+{
+  get()._objects.clear();
+}
 } // namespace neml2

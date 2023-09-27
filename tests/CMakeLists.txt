@@ -48,6 +48,26 @@ if(REGRESSION)
 endif()
 
 # ###################################################
+# Verification tests
+# ###################################################
+option(VERIFICATION "build verification tests" ON)
+
+if(VERIFICATION)
+      file(GLOB_RECURSE VERIFICATION_TESTS verification/*.cxx)
+      add_executable(verification_tests
+            ${TEST_UTILS}
+            ${VERIFICATION_TESTS}
+      )
+      REGISTERUNITYGROUP(verification_tests "Verification test" verification)
+      target_link_libraries(verification_tests Catch2::Catch2)
+      target_link_libraries(verification_tests neml2 testutils)
+      target_include_directories(verification_tests PUBLIC
+            "${CMAKE_SOURCE_DIR}/include"
+            "${CMAKE_SOURCE_DIR}/tests/include")
+      catch_discover_tests(verification_tests)
+endif()
+
+# ###################################################
 # Benchmarks
 # ###################################################
 option(BENCHMARK "build benchmark tests" OFF)
@@ -68,21 +88,29 @@ if(BENCHMARK)
 endif()
 
 # ###################################################
-# Verification tests
+# Profiling
 # ###################################################
-option(VERIFICATION "build verification tests" ON)
+option(PROFILING "build profiling tests" OFF)
 
-if(VERIFICATION)
-      file(GLOB_RECURSE VERIFICATION_TESTS verification/*.cxx)
-      add_executable(verification_tests
+if(PROFILING)
+      if(DEFINED ENV{GPERFTOOLS_DIR})
+            set(GPERFTOOLS_ROOT_DIR $ENV{GPERFTOOLS_DIR})
+      else()
+            message(FATAL_ERROR "Environment variable GPERFTOOLS_DIR must be set if profiling tests are turned on. GPERFTOOLS_DIR should point to the gperftools directory such that GPERFTOOLS_DIR/lib/libprofiler.* exist.")
+      endif()
+
+      file(GLOB_RECURSE PROFILING_TESTS profiling/*.cxx)
+      add_executable(profiling_tests
             ${TEST_UTILS}
-            ${VERIFICATION_TESTS}
+            ${PROFILING_TESTS}
       )
-      REGISTERUNITYGROUP(verification_tests "Verification test" verification)
-      target_link_libraries(verification_tests Catch2::Catch2)
-      target_link_libraries(verification_tests neml2 testutils)
-      target_include_directories(verification_tests PUBLIC
+      REGISTERUNITYGROUP(profiling_tests "Profiling test" profiling)
+      target_link_options(profiling_tests PUBLIC -Wl,--no-as-needed,-lprofiler,--as-needed)
+      target_link_directories(profiling_tests PUBLIC ${GPERFTOOLS_ROOT_DIR}/lib)
+
+      # target_link_libraries(profiling_tests profiler)
+      target_link_libraries(profiling_tests neml2 testutils)
+      target_include_directories(profiling_tests PUBLIC
             "${CMAKE_SOURCE_DIR}/include"
             "${CMAKE_SOURCE_DIR}/tests/include")
-      catch_discover_tests(verification_tests)
 endif()

@@ -31,9 +31,9 @@ namespace neml2
 class ElasticStrain : public Model
 {
 public:
-  static ParameterSet expected_params();
+  static OptionSet expected_options();
 
-  ElasticStrain(const ParameterSet & params);
+  ElasticStrain(const OptionSet & options);
 
 protected:
   virtual void set_value(const LabeledVector & in,

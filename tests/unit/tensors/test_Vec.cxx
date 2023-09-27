@@ -24,101 +24,53 @@
 
 #include <catch2/catch.hpp>
 
-#include "neml2/tensors/Vec.h"
-#include "neml2/tensors/Scalar.h"
-#include "neml2/tensors/R2.h"
+#include "utils.h"
+#include "neml2/tensors/tensors.h"
 
 using namespace neml2;
 
-TEST_CASE("Vec", "[Vec]")
+TEST_CASE("Vec", "[tensors]")
 {
-  SECTION("Init from scalars")
+  const auto & DTO = default_tensor_options;
+
+  TorchShape B = {5, 3, 1, 2}; // batch shape
+
+  SECTION("class Vec")
   {
-    Scalar s1 = Scalar(torch::tensor({{1.0}, {2.0}}, default_tensor_options));
-    Scalar s2 = Scalar(torch::tensor({{3.0}, {4.0}}, default_tensor_options));
-    Scalar s3 = Scalar(torch::tensor({{5.0}, {6.0}}, default_tensor_options));
-
-    Vec v = Vec::init(s1, s2, s3);
-
-    REQUIRE(torch::allclose(
-        v, torch::tensor({{1.0, 3.0, 5.0}, {2.0, 4.0, 6.0}}, default_tensor_options)));
-  }
-
-  SECTION("math operations")
-  {
-    Vec v1 = Vec(torch::tensor({{0.04217105, 0.02973695, 0.69650092}}, default_tensor_options));
-    Vec v2 = Vec(torch::tensor({{0.72223278, 0.06074174, 0.40130468}}, default_tensor_options));
-
-    SECTION("Dot product")
+    SECTION("rotate")
     {
-      Scalar res = Scalar(torch::tensor({{0.3117726719999968}}, default_tensor_options));
+      auto r = Rot::fill(1.2496889, 1.62862628, 7.59575411, DTO);
+      auto v = Vec::fill(1.0, -2.0, 3.0, DTO);
+      auto vp = Vec::fill(0.495655, 3.13461, 1.98205, DTO);
 
-      SECTION("unbatched unbatched") { REQUIRE(torch::allclose(v1.dot(v2), res)); }
+      auto rb = r.batch_expand(B);
+      auto vb = v.batch_expand(B);
+      auto vpb = vp.batch_expand(B);
 
-      SECTION("batched batched")
-      {
-        REQUIRE(torch::allclose(Vec(v1.batch_expand({10})).dot(Vec(v2.batch_expand({10}))),
-                                res.batch_expand({10})));
-      }
-
-      SECTION("unbatched batched")
-      {
-        REQUIRE(torch::allclose(v1.dot(Vec(v2.batch_expand({10}))), res.batch_expand({10})));
-      }
-
-      SECTION("batched unbatched")
-      {
-        REQUIRE(torch::allclose(Vec(v1.batch_expand({10})).dot(v2), res.batch_expand({10})));
-      }
+      REQUIRE(torch::allclose(v.rotate(r), vp));
+      REQUIRE(torch::allclose(vb.rotate(rb), vpb));
+      REQUIRE(torch::allclose(v.rotate(rb), vpb));
+      REQUIRE(torch::allclose(vb.rotate(r), vpb));
     }
 
-    SECTION("Cross product")
+    SECTION("drotate")
     {
-      Vec res = Vec(torch::tensor({{-0.0303731, 0.48611236, -0.01891545}}, default_tensor_options));
+      auto r = Rot::fill(1.2496889, 1.62862628, 7.59575411);
+      auto v = Vec::fill(1.0, -2.0, 3.0);
+      auto vp = Vec::fill(0.495655, 3.13461, 1.98205);
 
-      SECTION("unbatched unbatched") { REQUIRE(torch::allclose(v1.cross(v2), res)); }
+      auto rb = r.batch_expand(B);
+      auto vb = v.batch_expand(B);
+      auto vpb = vp.batch_expand(B);
 
-      SECTION("batched batched")
-      {
-        REQUIRE(torch::allclose(Vec(v1.batch_expand({10})).cross(Vec(v2.batch_expand({10}))),
-                                res.batch_expand({10})));
-      }
+      auto apply = [v](const BatchTensor & x) { return v.rotate(Rot(x)); };
+      auto dvp_dr = finite_differencing_derivative(apply, r);
+      auto dvp_drb = dvp_dr.batch_expand(B);
 
-      SECTION("unbatched batched")
-      {
-        REQUIRE(torch::allclose(v1.cross(Vec(v2.batch_expand({10}))), res.batch_expand({10})));
-      }
-
-      SECTION("batched unbatched")
-      {
-        REQUIRE(torch::allclose(Vec(v1.batch_expand({10})).cross(v2), res.batch_expand({10})));
-      }
-    }
-
-    SECTION("Outer product")
-    {
-      R2 res = R2(torch::tensor({{{0.03045732, 0.00256154, 0.01692344},
-                                  {0.021477, 0.00180627, 0.01193358},
-                                  {0.5030358, 0.04230668, 0.27950908}}},
-                                default_tensor_options));
-
-      SECTION("unbatched unbatched") { REQUIRE(torch::allclose(v1.outer(v2), res)); }
-
-      SECTION("batched batched")
-      {
-        REQUIRE(torch::allclose(Vec(v1.batch_expand({10})).outer(Vec(v2.batch_expand({10}))),
-                                res.batch_expand({10})));
-      }
-
-      SECTION("unbatched batched")
-      {
-        REQUIRE(torch::allclose(v1.outer(Vec(v2.batch_expand({10}))), res.batch_expand({10})));
-      }
-
-      SECTION("batched unbatched")
-      {
-        REQUIRE(torch::allclose(Vec(v1.batch_expand({10})).outer(v2), res.batch_expand({10})));
-      }
+      REQUIRE(torch::allclose(v.drotate(r), dvp_dr));
+      REQUIRE(torch::allclose(vb.drotate(rb), dvp_drb));
+      REQUIRE(torch::allclose(v.drotate(rb), dvp_drb));
+      REQUIRE(torch::allclose(vb.drotate(r), dvp_drb));
     }
   }
 }

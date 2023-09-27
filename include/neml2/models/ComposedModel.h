@@ -34,9 +34,9 @@ typedef std::vector<std::pair<std::shared_ptr<Model>, std::shared_ptr<Model>>> M
 class ComposedModel : public Model
 {
 public:
-  static ParameterSet expected_params();
+  static OptionSet expected_options();
 
-  ComposedModel(const ParameterSet & params);
+  ComposedModel(const OptionSet & options);
 
   virtual bool implicit() const override;
 

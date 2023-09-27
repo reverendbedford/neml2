@@ -22,12 +22,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <torch/torch.h>
-
 #include "neml2/base/CrossRef.h"
 #include "neml2/base/Factory.h"
 #include "neml2/misc/parser_utils.h"
-#include "neml2/tensors/Scalar.h"
+#include "neml2/tensors/tensors.h"
+
+#define specialize_crossref_FixedDimTensor(tensor_type)                                            \
+  template <>                                                                                      \
+  CrossRef<tensor_type>::operator tensor_type() const                                              \
+  {                                                                                                \
+    try                                                                                            \
+    {                                                                                              \
+      return tensor_type::full(utils::parse<Real>(_raw_str));                                      \
+    }                                                                                              \
+    catch (const ParserException & e)                                                              \
+    {                                                                                              \
+      return Factory::get_object<tensor_type>("Tensors", _raw_str);                                \
+    }                                                                                              \
+  }                                                                                                \
+  template class CrossRef<tensor_type>
 
 namespace neml2
 {
@@ -42,11 +55,10 @@ CrossRef<T>::operator=(const std::string & other)
 template <>
 CrossRef<torch::Tensor>::operator torch::Tensor() const
 {
-  neml_assert(!_raw_str.empty(), "Trying to retrieve a torch::Tensor before it is being set.");
   try
   {
     // If it is just a number, we can still create a tensor out of it
-    return torch::tensor(utils::parse<Real>(_raw_str));
+    return torch::tensor(utils::parse<Real>(_raw_str), default_tensor_options);
   }
   catch (const ParserException & e)
   {
@@ -56,39 +68,32 @@ CrossRef<torch::Tensor>::operator torch::Tensor() const
 }
 
 template <>
-CrossRef<Scalar>::operator Scalar() const
+CrossRef<BatchTensor>::operator BatchTensor() const
 {
-  neml_assert(!_raw_str.empty(), "Trying to retrieve a Scalar before it is being set.");
   try
   {
     // If it is just a number, we can still create a Scalar out of it
-    return Scalar(utils::parse<Real>(_raw_str), default_tensor_options);
+    return BatchTensor::full({}, {}, utils::parse<Real>(_raw_str), default_tensor_options);
   }
   catch (const ParserException & e)
   {
-    // Conversion to a number failed, so it might be the name of another Scalar
-    return Factory::get_object<Scalar>("Tensors", _raw_str);
-  }
-}
-
-template <>
-CrossRef<SymR2>::operator SymR2() const
-{
-  neml_assert(!_raw_str.empty(), "Trying to retrieve a SymR2 before it is being set.");
-  try
-  {
-    // If it is just a number, we can still create a SymR2 out of it:
-    // This will be a SymR2 with diagonals equal to the number.
-    return SymR2::init(utils::parse<Real>(_raw_str));
-  }
-  catch (const ParserException & e)
-  {
-    // Conversion to a number failed, so it might be the name of another SymR2
-    return Factory::get_object<SymR2>("Tensors", _raw_str);
+    // Conversion to a number failed, so it might be the name of another BatchTensor
+    return Factory::get_object<BatchTensor>("Tensors", _raw_str);
   }
 }
 
 template class CrossRef<torch::Tensor>;
-template class CrossRef<Scalar>;
-template class CrossRef<SymR2>;
+template class CrossRef<BatchTensor>;
+
+specialize_crossref_FixedDimTensor(Scalar);
+specialize_crossref_FixedDimTensor(Vec);
+specialize_crossref_FixedDimTensor(Rot);
+specialize_crossref_FixedDimTensor(R2);
+specialize_crossref_FixedDimTensor(SR2);
+specialize_crossref_FixedDimTensor(R3);
+specialize_crossref_FixedDimTensor(SFR3);
+specialize_crossref_FixedDimTensor(R4);
+specialize_crossref_FixedDimTensor(SSR4);
+specialize_crossref_FixedDimTensor(R5);
+specialize_crossref_FixedDimTensor(SSFR5);
 } // namesace neml2

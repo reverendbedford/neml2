@@ -31,9 +31,9 @@ namespace neml2
 class AssociativeKinematicPlasticHardening : public FlowRule
 {
 public:
-  static ParameterSet expected_params();
+  static OptionSet expected_options();
 
-  AssociativeKinematicPlasticHardening(const ParameterSet & params);
+  AssociativeKinematicPlasticHardening(const OptionSet & options);
 
   /// Accessor for the kinematic hardening direction
   const LabeledAxisAccessor kinematic_hardening_direction;

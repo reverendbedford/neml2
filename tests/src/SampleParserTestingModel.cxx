@@ -28,12 +28,12 @@ using namespace neml2;
 
 register_NEML2_object(SampleParserTestingModel);
 
-ParameterSet
-SampleParserTestingModel::expected_params()
+OptionSet
+SampleParserTestingModel::expected_options()
 {
-  ParameterSet params = Model::expected_params();
+  OptionSet options = Model::expected_options();
 
-  // Integral types we support:
+  // Types we support:
   //   bool
   //   int
   //   unsigned int
@@ -41,25 +41,29 @@ SampleParserTestingModel::expected_params()
   //   string
   //
   // We also support vector of and vector of vector of each integral type.
-  params.set<bool>("bool");
-  params.set<std::vector<bool>>("bool_vec");
-  params.set<std::vector<std::vector<bool>>>("bool_vec_vec");
+  options.set<bool>("bool");
+  options.set<std::vector<bool>>("bool_vec");
+  options.set<std::vector<std::vector<bool>>>("bool_vec_vec");
 
-  params.set<int>("int");
-  params.set<std::vector<int>>("int_vec");
-  params.set<std::vector<std::vector<int>>>("int_vec_vec");
+  options.set<int>("int");
+  options.set<std::vector<int>>("int_vec");
+  options.set<std::vector<std::vector<int>>>("int_vec_vec");
 
-  params.set<unsigned int>("uint");
-  params.set<std::vector<unsigned int>>("uint_vec");
-  params.set<std::vector<std::vector<unsigned int>>>("uint_vec_vec");
+  options.set<unsigned int>("uint");
+  options.set<std::vector<unsigned int>>("uint_vec");
+  options.set<std::vector<std::vector<unsigned int>>>("uint_vec_vec");
 
-  params.set<Real>("Real");
-  params.set<std::vector<Real>>("Real_vec");
-  params.set<std::vector<std::vector<Real>>>("Real_vec_vec");
+  options.set<Real>("Real");
+  options.set<std::vector<Real>>("Real_vec");
+  options.set<std::vector<std::vector<Real>>>("Real_vec_vec");
 
-  params.set<std::string>("string");
-  params.set<std::vector<std::string>>("string_vec");
-  params.set<std::vector<std::vector<std::string>>>("string_vec_vec");
+  options.set<std::string>("string");
+  options.set<std::vector<std::string>>("string_vec");
+  options.set<std::vector<std::vector<std::string>>>("string_vec_vec");
 
-  return params;
+  options.set<TorchShape>("shape");
+  options.set<std::vector<TorchShape>>("shape_vec");
+  options.set<std::vector<std::vector<TorchShape>>>("shape_vec_vec");
+
+  return options;
 }

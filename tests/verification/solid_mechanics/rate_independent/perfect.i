@@ -55,7 +55,7 @@
     type = IsotropicMandelStress
   []
   [vonmises]
-    type = SymR2Invariant
+    type = SR2Invariant
     invariant_type = 'VONMISES'
     tensor = 'state/internal/M'
     invariant = 'state/internal/sm'
@@ -80,7 +80,7 @@
     flow_rate = 'state/gamma_rate'
   []
   [integrate_Ep]
-    type = SymR2BackwardEulerTimeIntegration
+    type = SR2BackwardEulerTimeIntegration
     variable = 'internal/Ep'
   []
   [consistency]

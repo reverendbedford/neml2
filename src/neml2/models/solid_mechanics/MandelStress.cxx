@@ -26,20 +26,20 @@
 
 namespace neml2
 {
-ParameterSet
-MandelStress::expected_params()
+OptionSet
+MandelStress::expected_options()
 {
-  ParameterSet params = Model::expected_params();
-  params.set<LabeledAxisAccessor>("cauchy_stress") = LabeledAxisAccessor{{"state", "S"}};
-  params.set<LabeledAxisAccessor>("mandel_stress") =
+  OptionSet options = Model::expected_options();
+  options.set<LabeledAxisAccessor>("cauchy_stress") = LabeledAxisAccessor{{"state", "S"}};
+  options.set<LabeledAxisAccessor>("mandel_stress") =
       LabeledAxisAccessor{{"state", "internal", "M"}};
-  return params;
+  return options;
 }
 
-MandelStress::MandelStress(const ParameterSet & params)
-  : Model(params),
-    cauchy_stress(declare_input_variable<SymR2>(params.get<LabeledAxisAccessor>("cauchy_stress"))),
-    mandel_stress(declare_output_variable<SymR2>(params.get<LabeledAxisAccessor>("mandel_stress")))
+MandelStress::MandelStress(const OptionSet & options)
+  : Model(options),
+    cauchy_stress(declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("cauchy_stress"))),
+    mandel_stress(declare_output_variable<SR2>(options.get<LabeledAxisAccessor>("mandel_stress")))
 {
   setup();
 }

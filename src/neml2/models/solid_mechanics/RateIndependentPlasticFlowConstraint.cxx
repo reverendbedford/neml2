@@ -28,23 +28,23 @@ namespace neml2
 {
 register_NEML2_object(RateIndependentPlasticFlowConstraint);
 
-ParameterSet
-RateIndependentPlasticFlowConstraint::expected_params()
+OptionSet
+RateIndependentPlasticFlowConstraint::expected_options()
 {
-  ParameterSet params = Model::expected_params();
-  params.set<LabeledAxisAccessor>("yield_function") = {{"state", "internal", "fp"}};
-  params.set<LabeledAxisAccessor>("flow_rate") = {{"state", "gamma_rate"}};
-  return params;
+  OptionSet options = Model::expected_options();
+  options.set<LabeledAxisAccessor>("yield_function") = {{"state", "internal", "fp"}};
+  options.set<LabeledAxisAccessor>("flow_rate") = {{"state", "gamma_rate"}};
+  return options;
 }
 
 RateIndependentPlasticFlowConstraint::RateIndependentPlasticFlowConstraint(
-    const ParameterSet & params)
-  : Model(params),
+    const OptionSet & options)
+  : Model(options),
     yield_function(
-        declare_input_variable<Scalar>(params.get<LabeledAxisAccessor>("yield_function"))),
-    flow_rate(declare_input_variable<Scalar>(params.get<LabeledAxisAccessor>("flow_rate"))),
+        declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("yield_function"))),
+    flow_rate(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("flow_rate"))),
     consistency_condition(declare_output_variable<Scalar>(
-        params.get<LabeledAxisAccessor>("flow_rate").peel().on("residual")))
+        options.get<LabeledAxisAccessor>("flow_rate").slice(1).on("residual")))
 {
   setup();
 }
@@ -58,7 +58,7 @@ RateIndependentPlasticFlowConstraint::set_value(const LabeledVector & in,
   neml_assert_dbg(!d2out_din2, "Second derivative not implemented.");
 
   const auto options = in.options();
-  const auto nbatch = in.batch_size();
+  const auto batch_sz = in.batch_sizes();
 
   auto f = in.get<Scalar>(yield_function);
   auto gamma_dot = in.get<Scalar>(flow_rate);
@@ -66,7 +66,7 @@ RateIndependentPlasticFlowConstraint::set_value(const LabeledVector & in,
   // The residual is the yield function itself when the stress state is "outside" the yield surface,
   // also called return mapping. The residual is the hardening rate when the stress state is
   // "inside" the yield surface, as the hardening rate is by definition zero.
-  auto r = Scalar(0, options).batch_expand_copy(nbatch);
+  auto r = Scalar::zeros(batch_sz, options);
   r.index_put_({f < -TOL2}, gamma_dot.index({f < -TOL2}));
   r.index_put_({f >= -TOL2}, f.index({f >= -TOL2}));
 
@@ -75,10 +75,10 @@ RateIndependentPlasticFlowConstraint::set_value(const LabeledVector & in,
 
   if (dout_din)
   {
-    auto dr_dgamma_dot = Scalar(0, options).batch_expand_copy(nbatch);
+    auto dr_dgamma_dot = Scalar::zeros(batch_sz, options);
     dr_dgamma_dot.index_put_({f < -TOL2}, 1);
 
-    auto dr_df = Scalar(0, options).batch_expand_copy(nbatch);
+    auto dr_df = Scalar::zeros(batch_sz, options);
     dr_df.index_put_({f >= -TOL2}, 1);
 
     dout_din->set(dr_dgamma_dot, consistency_condition, flow_rate);

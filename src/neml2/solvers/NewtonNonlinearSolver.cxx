@@ -29,32 +29,27 @@ namespace neml2
 {
 register_NEML2_object(NewtonNonlinearSolver);
 
-ParameterSet
-NewtonNonlinearSolver::expected_params()
+OptionSet
+NewtonNonlinearSolver::expected_options()
 {
-  ParameterSet params = NonlinearSolver::expected_params();
-  return params;
+  OptionSet options = NonlinearSolver::expected_options();
+  return options;
 }
 
-BatchTensor<1>
-NewtonNonlinearSolver::solve(const NonlinearSystem & system, const BatchTensor<1> & x0) const
+BatchTensor
+NewtonNonlinearSolver::solve(const NonlinearSystem & system, const BatchTensor & x0) const
 {
   // Setup initial guess and initial residual
-  BatchTensor<1> x = x0.clone();
-  BatchTensor<1> R = system.residual(x);
-#if (TORCH_VERSION_MAJOR > 1 || TORCH_VERSION_MINOR > 10)
-  BatchTensor<1> nR0 = torch::linalg::vector_norm(R, 2, -1, false, c10::nullopt);
-#else
-  // This is a bug in older libTorch
-  BatchTensor<1> nR0 = torch::linalg::vector_norm(R, 2, R.dim() - 1, false, c10::nullopt);
-#endif
+  auto x = x0.clone();
+  auto R = system.residual(x);
+  auto nR0 = torch::linalg::vector_norm(R, 2, -1, false, c10::nullopt);
 
   // Check for initial convergence
   if (converged(0, nR0, nR0))
     return x;
 
   // Begin iterating
-  BatchTensor<1> J = system.Jacobian(x);
+  BatchTensor J = system.Jacobian(x);
   update(x, R, J);
 
   // Continuing iterating until one of:
@@ -65,12 +60,7 @@ NewtonNonlinearSolver::solve(const NonlinearSystem & system, const BatchTensor<1
   {
     // Update R and the norm of R
     std::tie(R, J) = system.residual_and_Jacobian(x);
-#if (TORCH_VERSION_MAJOR > 1 || TORCH_VERSION_MINOR > 10)
-    BatchTensor<1> nR = torch::linalg::vector_norm(R, 2, -1, false, c10::nullopt);
-#else
-    // This is a bug in older libTorch
-    BatchTensor<1> nR = torch::linalg::vector_norm(R, 2, R.dim() - 1, false, c10::nullopt);
-#endif
+    auto nR = torch::linalg::vector_norm(R, 2, -1, false, c10::nullopt);
 
     // Check for initial convergence
     if (converged(i, nR, nR0))
@@ -80,13 +70,13 @@ NewtonNonlinearSolver::solve(const NonlinearSystem & system, const BatchTensor<1
   }
 
   // Throw if we exceeded miters
-  throw std::runtime_error("Nonlinear solver exceeded miters!");
+  throw NEMLException("Nonlinear solver exceeded miters!");
 
   return x;
 }
 
 void
-NewtonNonlinearSolver::update(BatchTensor<1> x, BatchTensor<1> R, BatchTensor<1> J) const
+NewtonNonlinearSolver::update(BatchTensor & x, const BatchTensor & R, const BatchTensor & J) const
 {
 #if (TORCH_VERSION_MAJOR > 1 || TORCH_VERSION_MINOR > 12)
   x -= torch::linalg::solve(J, R, true);
@@ -96,12 +86,16 @@ NewtonNonlinearSolver::update(BatchTensor<1> x, BatchTensor<1> R, BatchTensor<1>
 }
 
 bool
-NewtonNonlinearSolver::converged(size_t itr, BatchTensor<1> nR, BatchTensor<1> nR0) const
+NewtonNonlinearSolver::converged(size_t itr,
+                                 const torch::Tensor & nR,
+                                 const torch::Tensor & nR0) const
 {
+  // LCOV_EXCL_START
   if (verbose)
     std::cout << "ITERATION " << std::setw(3) << itr << ", |R| = " << std::scientific
               << torch::mean(nR).item<double>() << ", |R0| = " << std::scientific
               << torch::mean(nR0).item<double>() << std::endl;
+  // LCOV_EXCL_STOP
 
   return torch::all(nR < atol).item<bool>() || torch::all(nR / nR0 < rtol).item<bool>();
 }

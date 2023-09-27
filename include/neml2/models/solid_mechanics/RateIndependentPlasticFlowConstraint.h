@@ -31,9 +31,9 @@ namespace neml2
 class RateIndependentPlasticFlowConstraint : public Model
 {
 public:
-  static ParameterSet expected_params();
+  static OptionSet expected_options();
 
-  RateIndependentPlasticFlowConstraint(const ParameterSet & params);
+  RateIndependentPlasticFlowConstraint(const OptionSet & options);
 
   const LabeledAxisAccessor yield_function;
   const LabeledAxisAccessor flow_rate;

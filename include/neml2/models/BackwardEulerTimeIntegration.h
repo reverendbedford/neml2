@@ -32,9 +32,9 @@ template <typename T>
 class BackwardEulerTimeIntegration : public Model
 {
 public:
-  static ParameterSet expected_params();
+  static OptionSet expected_options();
 
-  BackwardEulerTimeIntegration(const ParameterSet & params);
+  BackwardEulerTimeIntegration(const OptionSet & options);
 
 private:
   const LabeledAxisAccessor _var_name;
@@ -56,5 +56,5 @@ protected:
 };
 
 typedef BackwardEulerTimeIntegration<Scalar> ScalarBackwardEulerTimeIntegration;
-typedef BackwardEulerTimeIntegration<SymR2> SymR2BackwardEulerTimeIntegration;
+typedef BackwardEulerTimeIntegration<SR2> SR2BackwardEulerTimeIntegration;
 } // namespace neml2

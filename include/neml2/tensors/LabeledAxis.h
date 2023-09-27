@@ -31,23 +31,10 @@
 
 #include "neml2/tensors/LabeledAxisAccessor.h"
 #include "neml2/tensors/Scalar.h"
-#include "neml2/tensors/SymR2.h"
+#include "neml2/tensors/SR2.h"
 
 namespace neml2
 {
-template <typename T>
-struct is_labelable : std::false_type
-{
-};
-template <>
-struct is_labelable<Scalar> : std::true_type
-{
-};
-template <>
-struct is_labelable<SymR2> : std::true_type
-{
-};
-
 /**
  * @brief A *labeled* axis used to associate layout of a tensor with human-interpretable names.
  *
@@ -61,7 +48,7 @@ struct is_labelable<SymR2> : std::true_type
  * For example
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~{.cpp}
  * LabeledAxis labels = input().clone();
- * labels.add<SymR2>("stress").rename("stress", "stress1").remove("stress1");
+ * labels.add<SR2>("stress").rename("stress", "stress1").remove("stress1");
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
 class LabeledAxis
@@ -79,20 +66,19 @@ public:
   template <typename T>
   LabeledAxis & add(const std::string & name)
   {
-    // The storage is *flat* -- will need to reshape when we return!
-    // All NEML2 primitive data types will have the member _base_sizes
-    if constexpr (is_labelable<T>::value)
-    {
-      auto sz = utils::storage_size(T::_base_sizes);
-      add(name, sz);
-      return *this;
-    }
-
     // Add an empty subaxis
     if constexpr (std::is_same_v<LabeledAxis, T>)
     {
       if (!has_subaxis(name))
         _subaxes.emplace(name, std::make_shared<LabeledAxis>());
+      return *this;
+    }
+    else
+    {
+      // The storage is *flat* -- will need to reshape when we return!
+      // All NEML2 primitive data types will have the member const_base_sizes
+      auto sz = utils::storage_size(T::const_base_sizes);
+      add(name, sz);
       return *this;
     }
   }
@@ -102,14 +88,6 @@ public:
 
   /// Add an arbitrary variable using a `LabeledAxisAccessor`
   LabeledAxis & add(const LabeledAxisAccessor & accessor, TorchSize sz);
-
-  /// Add prefix to the labels.
-  /// Note that this method doesn't recurse through sub-axes.
-  LabeledAxis & prefix(const std::string & prefix, const std::string & delimiter = "_");
-
-  /// Add suffix to the labels.
-  /// Note that this method doesn't recurse through sub-axes.
-  LabeledAxis & suffix(const std::string & suffix, const std::string & delimiter = "_");
 
   /// Change the label of an item
   LabeledAxis & rename(const std::string & original, const std::string & rename);
@@ -144,15 +122,12 @@ public:
   template <typename T>
   bool has_variable(const std::string & name) const
   {
-    if constexpr (is_labelable<T>::value)
-    {
-      if (!has_variable(name))
-        return false;
+    if (!has_variable(name))
+      return false;
 
-      // also check size
-      auto sz = utils::storage_size(T::_base_sizes);
-      return _variables.at(name) == sz;
-    }
+    // also check size
+    auto sz = utils::storage_size(T::const_base_sizes);
+    return _variables.at(name) == sz;
   }
 
   /// Check the existence of a variable by name

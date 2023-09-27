@@ -28,31 +28,31 @@ namespace neml2
 {
 register_NEML2_object(SolidMechanicsDriver);
 
-ParameterSet
-SolidMechanicsDriver::expected_params()
+OptionSet
+SolidMechanicsDriver::expected_options()
 {
-  ParameterSet params = TransientDriver::expected_params();
-  params.set<std::string>("control") = "STRAIN";
-  params.set<LabeledAxisAccessor>("total_strain") = LabeledAxisAccessor{{"forces", "E"}};
-  params.set<LabeledAxisAccessor>("cauchy_stress") = LabeledAxisAccessor{{"forces", "S"}};
-  params.set<CrossRef<torch::Tensor>>("prescribed_strains");
-  params.set<CrossRef<torch::Tensor>>("prescribed_stresses");
-  return params;
+  OptionSet options = TransientDriver::expected_options();
+  options.set<std::string>("control") = "STRAIN";
+  options.set<LabeledAxisAccessor>("total_strain") = LabeledAxisAccessor{{"forces", "E"}};
+  options.set<LabeledAxisAccessor>("cauchy_stress") = LabeledAxisAccessor{{"forces", "S"}};
+  options.set<CrossRef<torch::Tensor>>("prescribed_strains");
+  options.set<CrossRef<torch::Tensor>>("prescribed_stresses");
+  return options;
 }
 
-SolidMechanicsDriver::SolidMechanicsDriver(const ParameterSet & params)
-  : TransientDriver(params),
-    _control(params.get<std::string>("control"))
+SolidMechanicsDriver::SolidMechanicsDriver(const OptionSet & options)
+  : TransientDriver(options),
+    _control(options.get<std::string>("control"))
 {
   if (_control == "STRAIN")
   {
-    _driving_force = params.get<CrossRef<torch::Tensor>>("prescribed_strains");
-    _driving_force_name = params.get<LabeledAxisAccessor>("total_strain");
+    _driving_force = SR2(options.get<CrossRef<torch::Tensor>>("prescribed_strains"), 2);
+    _driving_force_name = options.get<LabeledAxisAccessor>("total_strain");
   }
   else if (_control == "STRESS")
   {
-    _driving_force = params.get<CrossRef<torch::Tensor>>("prescribed_stresses");
-    _driving_force_name = params.get<LabeledAxisAccessor>("cauchy_stress");
+    _driving_force = SR2(options.get<CrossRef<torch::Tensor>>("prescribed_stresses"), 2);
+    _driving_force_name = options.get<LabeledAxisAccessor>("cauchy_stress");
   }
   else
     // LCOV_EXCL_START
@@ -93,7 +93,7 @@ void
 SolidMechanicsDriver::update_forces()
 {
   TransientDriver::update_forces();
-  auto current_driving_force = SymR2(_driving_force.index({_step_count}));
+  auto current_driving_force = _driving_force.batch_index({_step_count});
   _in.set(current_driving_force, _driving_force_name);
 }
 }

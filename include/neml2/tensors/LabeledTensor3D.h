@@ -34,13 +34,13 @@ class LabeledMatrix;
  * @brief A single-batched, logically 3D LabeledTensor.
  *
  */
-class LabeledTensor3D : public LabeledTensor<1, 3>
+class LabeledTensor3D : public LabeledTensor<3>
 {
 public:
-  using LabeledTensor<1, 3>::LabeledTensor;
+  using LabeledTensor<3>::LabeledTensor;
 
   /// Conversion from LabeledTensor
-  LabeledTensor3D(const LabeledTensor<1, 3> & other);
+  LabeledTensor3D(const LabeledTensor<3> & other);
 
   /// Create a batched, labeled zero tensor
   static LabeledTensor3D zeros(TorchShapeRef batch_size,
@@ -49,9 +49,6 @@ public:
 
   /// Create a zero tensor with the same shape and labels as the other tensor
   static LabeledTensor3D zeros_like(const LabeledTensor3D & other);
-
-  /// Since we assume a flat batch for now, we can define this convenient method to retrive the single batch size.
-  TorchSize batch_size() const { return tensor().batch_sizes()[0]; }
 
   /// Add another tensor into this tensor.
   /// The item set of the other tensor must be a subset of this tensor's item set.

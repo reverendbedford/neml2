@@ -23,33 +23,34 @@
 // THE SOFTWARE.
 
 #include "neml2/models/ForwardEulerTimeIntegration.h"
-#include "neml2/tensors/SymSymR4.h"
+#include "neml2/tensors/SSR4.h"
 
 namespace neml2
 {
 register_NEML2_object(ScalarForwardEulerTimeIntegration);
-register_NEML2_object(SymR2ForwardEulerTimeIntegration);
+register_NEML2_object(SR2ForwardEulerTimeIntegration);
 
 template <typename T>
-ParameterSet
-ForwardEulerTimeIntegration<T>::expected_params()
+OptionSet
+ForwardEulerTimeIntegration<T>::expected_options()
 {
-  ParameterSet params = Model::expected_params();
-  params.set<LabeledAxisAccessor>("variable");
-  params.set<LabeledAxisAccessor>("time") = {{"t"}};
-  return params;
+  OptionSet options = Model::expected_options();
+  options.set<LabeledAxisAccessor>("variable");
+  options.set<LabeledAxisAccessor>("time") = {{"t"}};
+  return options;
 }
 
 template <typename T>
-ForwardEulerTimeIntegration<T>::ForwardEulerTimeIntegration(const ParameterSet & params)
-  : Model(params),
-    _var_name(params.get<LabeledAxisAccessor>("variable")),
+ForwardEulerTimeIntegration<T>::ForwardEulerTimeIntegration(const OptionSet & options)
+  : Model(options),
+    _var_name(options.get<LabeledAxisAccessor>("variable")),
     _var_rate_name(_var_name.with_suffix("_rate")),
     var_rate(declare_input_variable<T>(_var_rate_name.on("state"))),
     var(declare_output_variable<T>(_var_name.on("state"))),
     var_n(declare_input_variable<T>(_var_name.on("old_state"))),
-    time(declare_input_variable<Scalar>(params.get<LabeledAxisAccessor>("time").on("forces"))),
-    time_n(declare_input_variable<Scalar>(params.get<LabeledAxisAccessor>("time").on("old_forces")))
+    time(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("time").on("forces"))),
+    time_n(
+        declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("time").on("old_forces")))
 {
   this->setup();
 }
@@ -99,5 +100,5 @@ ForwardEulerTimeIntegration<T>::set_value(const LabeledVector & in,
 }
 
 template class ForwardEulerTimeIntegration<Scalar>;
-template class ForwardEulerTimeIntegration<SymR2>;
+template class ForwardEulerTimeIntegration<SR2>;
 } // namespace neml2

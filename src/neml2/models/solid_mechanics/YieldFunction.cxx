@@ -28,24 +28,24 @@ namespace neml2
 {
 register_NEML2_object(YieldFunction);
 
-ParameterSet
-YieldFunction::expected_params()
+OptionSet
+YieldFunction::expected_options()
 {
-  ParameterSet params = Model::expected_params();
-  params.set<CrossRef<Scalar>>("yield_stress");
-  params.set<LabeledAxisAccessor>("stress_measure") = {{"state", "internal", "sm"}};
-  params.set<LabeledAxisAccessor>("isotropic_hardening");
-  params.set<LabeledAxisAccessor>("yield_function") = {{"state", "internal", "fp"}};
-  return params;
+  OptionSet options = Model::expected_options();
+  options.set<CrossRef<Scalar>>("yield_stress");
+  options.set<LabeledAxisAccessor>("stress_measure") = {{"state", "internal", "sm"}};
+  options.set<LabeledAxisAccessor>("isotropic_hardening");
+  options.set<LabeledAxisAccessor>("yield_function") = {{"state", "internal", "fp"}};
+  return options;
 }
 
-YieldFunction::YieldFunction(const ParameterSet & params)
-  : Model(params),
+YieldFunction::YieldFunction(const OptionSet & options)
+  : Model(options),
     stress_measure(
-        declare_input_variable<Scalar>(params.get<LabeledAxisAccessor>("stress_measure"))),
-    isotropic_hardening(params.get<LabeledAxisAccessor>("isotropic_hardening")),
+        declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("stress_measure"))),
+    isotropic_hardening(options.get<LabeledAxisAccessor>("isotropic_hardening")),
     yield_function(
-        declare_output_variable<Scalar>(params.get<LabeledAxisAccessor>("yield_function"))),
+        declare_output_variable<Scalar>(options.get<LabeledAxisAccessor>("yield_function"))),
     _s0(register_crossref_model_parameter<Scalar>("sy", "yield_stress"))
 {
   if (!isotropic_hardening.empty())

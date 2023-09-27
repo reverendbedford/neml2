@@ -25,8 +25,8 @@
 #pragma once
 
 #include "neml2/base/HITParser.h"
+#include "neml2/base/Factory.h"
 #include "neml2/tensors/Scalar.h"
-#include "neml2/tensors/LabeledVector.h"
 
 enum ParserType
 {
@@ -40,54 +40,71 @@ void load_model(const std::string & path,
                 const std::string & additional_input = "",
                 ParserType ptype = ParserType::AUTO);
 
-template <typename F, neml2::TorchSize D>
-void
-finite_differencing_derivative(F && f,
-                               const neml2::LabeledVector & x,
-                               neml2::LabeledTensor<1, D> & dy_dx,
-                               neml2::Real eps = 1e-6,
-                               neml2::Real aeps = 1e-6)
-{
-  using namespace torch::indexing;
-
-  auto y0 = f(x);
-
-  for (neml2::TorchSize i = 0; i < x.tensor().base_sizes()[0]; i++)
-  {
-    auto dx = eps * neml2::Scalar(torch::abs(x.tensor().base_index({i})));
-    dx.index_put_({dx < aeps}, aeps);
-
-    auto x1 = x.clone();
-    auto x1i = neml2::Scalar(x1.tensor().base_index({i}));
-    x1i.index_put_({None}, x1i + dx);
-
-    auto y1 = f(x1);
-    dy_dx.tensor().index_put_({Ellipsis, i}, (y1.tensor() - y0.tensor()) / dx);
-  }
-}
-
+/**
+ * @brief A simple finite-differencing helper to numerically approximate the derivative of the
+ * function at the given point.
+ *
+ * @tparam F The functor to differentiate
+ * @tparam T Type of the input variable, must be _batched_
+ * @param f The functor to differentiate, must accept the input of type `BatchTensor`
+ * @param x The point where the derivative is evaluated
+ * @param eps The relative perturbation (for each component in the case of non-Scalar input)
+ * @param aeps The minimum perturbation to improve numerical stability
+ * @return BatchTensor The derivative at the given point approximated using finite differencing
+ */
 template <typename F>
-void
+[[nodiscard]] neml2::BatchTensor
 finite_differencing_derivative(F && f,
-                               const neml2::BatchTensor<1> & x,
-                               neml2::BatchTensor<1> & dy_dx,
+                               const neml2::BatchTensor & x,
                                neml2::Real eps = 1e-6,
                                neml2::Real aeps = 1e-6)
 {
+  using namespace neml2;
   using namespace torch::indexing;
 
-  neml2::BatchTensor<1> y0 = f(x);
-
-  for (neml2::TorchSize i = 0; i < x.base_sizes()[0]; i++)
+  // The scalar case is trivial
+  if (x.base_dim() == 0)
   {
-    auto dx = eps * neml2::Scalar(torch::abs(x.base_index({i})));
+    auto y0 = BatchTensor(f(x));
+
+    auto dx = eps * Scalar(neml2::math::abs(x));
     dx.index_put_({dx < aeps}, aeps);
 
-    neml2::BatchTensor<1> x1 = x.clone();
-    auto x1i = neml2::Scalar(x1.base_index({i}));
-    x1i.index_put_({None}, x1i + dx);
+    auto x1 = x + dx;
 
-    neml2::BatchTensor<1> y1 = f(x1);
-    dy_dx.index_put_({Ellipsis, i}, (y1 - y0) / dx);
+    auto y1 = BatchTensor(f(x1));
+    auto dy_dx = (y1 - y0) / dx;
+
+    return dy_dx;
   }
+
+  // Flatten x to support arbitrarily shaped input
+  auto xf = BatchTensor(
+      x.reshape(utils::add_shapes(x.batch_sizes(), utils::storage_size(x.base_sizes()))),
+      x.batch_dim());
+
+  auto y0 = BatchTensor(f(x));
+
+  auto dy_dxf = BatchTensor::empty(
+      x.batch_sizes(), utils::add_shapes(y0.base_sizes(), xf.base_sizes()), x.options());
+
+  for (TorchSize i = 0; i < xf.base_sizes()[0]; i++)
+  {
+    auto dx = eps * Scalar(math::abs(xf.base_index({i})));
+    dx.index_put_({dx < aeps}, aeps);
+
+    auto xf1 = xf.clone();
+    xf1.base_index_put({i}, xf1.base_index({i}) + dx);
+    auto x1 = BatchTensor(xf1.reshape(x.sizes()), x.batch_dim());
+
+    auto y1 = BatchTensor(f(x1));
+    dy_dxf.base_index_put({Ellipsis, i}, (y1 - y0) / dx);
+  }
+
+  // Reshape the derivative back to the correct shape
+  auto dy_dx = BatchTensor(
+      dy_dxf.reshape(utils::add_shapes(x.batch_sizes(), y0.base_sizes(), x.base_sizes())),
+      x.batch_dim());
+
+  return dy_dx;
 }

@@ -29,25 +29,25 @@ namespace neml2
 {
 register_NEML2_object(VTestVerification);
 
-ParameterSet
-VTestVerification::expected_params()
+OptionSet
+VTestVerification::expected_options()
 {
-  ParameterSet params = Driver::expected_params();
-  params.set<std::string>("driver");
-  params.set<std::vector<std::string>>("variables");
-  params.set<std::vector<CrossRef<torch::Tensor>>>("references");
-  params.set<Real>("rtol") = 1e-5;
-  params.set<Real>("atol") = 1e-8;
-  return params;
+  OptionSet options = Driver::expected_options();
+  options.set<std::string>("driver");
+  options.set<std::vector<std::string>>("variables");
+  options.set<std::vector<CrossRef<torch::Tensor>>>("references");
+  options.set<Real>("rtol") = 1e-5;
+  options.set<Real>("atol") = 1e-8;
+  return options;
 }
 
-VTestVerification::VTestVerification(const ParameterSet & params)
-  : Driver(params),
-    _driver(Factory::get_object<TransientDriver>("Drivers", params.get<std::string>("driver"))),
-    _variables(params.get<std::vector<std::string>>("variables")),
-    _references(params.get<std::vector<CrossRef<torch::Tensor>>>("references")),
-    _rtol(params.get<Real>("rtol")),
-    _atol(params.get<Real>("atol"))
+VTestVerification::VTestVerification(const OptionSet & options)
+  : Driver(options),
+    _driver(Factory::get_object<TransientDriver>("Drivers", options.get<std::string>("driver"))),
+    _variables(options.get<std::vector<std::string>>("variables")),
+    _references(options.get<std::vector<CrossRef<torch::Tensor>>>("references")),
+    _rtol(options.get<Real>("rtol")),
+    _atol(options.get<Real>("atol"))
 {
   neml_assert(_variables.size() == _references.size(),
               "Must provide the same number of variables and reference variables. ",

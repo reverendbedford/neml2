@@ -23,69 +23,106 @@
 // THE SOFTWARE.
 
 #include "neml2/tensors/LabeledAxisAccessor.h"
+#include "neml2/misc/error.h"
 
 namespace neml2
 {
-LabeledAxisAccessor::operator std::vector<std::string>() const { return item_names; }
+LabeledAxisAccessor::LabeledAxisAccessor(const std::vector<std::string> & names)
+  : _item_names(names)
+{
+  for (const auto & name : names)
+  {
+    const auto x = name.find_first_of(" .,;/\t\n\v\f\r");
+    neml_assert(x == std::string::npos,
+                "Invalid item name: ",
+                name,
+                ". The item names cannot contain whitespace, '.', ',', ';', or '/'.");
+  }
+}
+
+LabeledAxisAccessor::operator std::vector<std::string>() const { return _item_names; }
 
 bool
 LabeledAxisAccessor::empty() const
 {
-  return item_names.empty();
+  return _item_names.empty();
 }
 
 LabeledAxisAccessor
 LabeledAxisAccessor::with_suffix(const std::string & suffix) const
 {
-  auto new_names = item_names;
+  auto new_names = _item_names;
   new_names.back() += suffix;
-  return {new_names};
+  return new_names;
+}
+
+LabeledAxisAccessor
+LabeledAxisAccessor::append(const std::string & name) const
+{
+  auto new_names = _item_names;
+  new_names.push_back(name);
+  return new_names;
 }
 
 LabeledAxisAccessor
 LabeledAxisAccessor::on(const std::string & axis) const
 {
-  auto new_names = item_names;
+  auto new_names = _item_names;
   new_names.insert(new_names.begin(), axis);
-  return {new_names};
+  return new_names;
 }
 
 LabeledAxisAccessor
 LabeledAxisAccessor::on(const LabeledAxisAccessor & axis) const
 {
-  auto new_names = axis.item_names;
-  new_names.insert(new_names.end(), item_names.begin(), item_names.end());
-  return {new_names};
+  auto new_names = axis._item_names;
+  new_names.insert(new_names.end(), _item_names.begin(), _item_names.end());
+  return new_names;
 }
 
 LabeledAxisAccessor
-LabeledAxisAccessor::peel(size_t n) const
+LabeledAxisAccessor::slice(size_t n) const
 {
-  auto new_names = item_names;
+  auto new_names = _item_names;
   new_names.erase(new_names.begin(), new_names.begin() + n);
-  return {new_names};
+  return new_names;
+}
+
+LabeledAxisAccessor
+LabeledAxisAccessor::slice(size_t n1, size_t n2) const
+{
+  auto new_names = _item_names;
+  new_names.erase(new_names.begin() + n2, new_names.end());
+  new_names.erase(new_names.begin(), new_names.begin() + n1);
+  return new_names;
 }
 
 bool
-LabeledAxisAccessor::operator==(const LabeledAxisAccessor & other) const
+operator!=(const LabeledAxisAccessor & a, const LabeledAxisAccessor & b)
 {
-  return item_names == other.item_names;
+  return a.vec() != b.vec();
 }
 
 bool
-LabeledAxisAccessor::operator<(const LabeledAxisAccessor & other) const
+operator==(const LabeledAxisAccessor & a, const LabeledAxisAccessor & b)
 {
-  return item_names < other.item_names;
+  return a.vec() == b.vec();
+}
+
+bool
+operator<(const LabeledAxisAccessor & a, const LabeledAxisAccessor & b)
+{
+  return a.vec() < b.vec();
 }
 
 std::ostream &
 operator<<(std::ostream & os, const LabeledAxisAccessor & accessor)
 {
-  for (size_t i = 0; i < accessor.item_names.size(); i++)
+  for (size_t i = 0; i < accessor.vec().size(); i++)
   {
     if (i != 0)
       os << "/";
-    os << accessor.item_names[i];
+    os << accessor.vec()[i];
   }
   return os;
 }

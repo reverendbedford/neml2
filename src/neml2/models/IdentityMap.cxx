@@ -23,28 +23,28 @@
 // THE SOFTWARE.
 
 #include "neml2/models/IdentityMap.h"
-#include "neml2/tensors/SymSymR4.h"
+#include "neml2/tensors/SSR4.h"
 
 namespace neml2
 {
 register_NEML2_object(ScalarIdentityMap);
-register_NEML2_object(SymR2IdentityMap);
+register_NEML2_object(SR2IdentityMap);
 
 template <typename T>
-ParameterSet
-IdentityMap<T>::expected_params()
+OptionSet
+IdentityMap<T>::expected_options()
 {
-  ParameterSet params = Model::expected_params();
-  params.set<LabeledAxisAccessor>("from_var");
-  params.set<LabeledAxisAccessor>("to_var");
-  return params;
+  OptionSet options = Model::expected_options();
+  options.set<LabeledAxisAccessor>("from_var");
+  options.set<LabeledAxisAccessor>("to_var");
+  return options;
 }
 
 template <typename T>
-IdentityMap<T>::IdentityMap(const ParameterSet & params)
-  : Model(params),
-    from(declare_input_variable<T>(params.get<LabeledAxisAccessor>("from_var"))),
-    to(declare_output_variable<T>(params.get<LabeledAxisAccessor>("to_var")))
+IdentityMap<T>::IdentityMap(const OptionSet & options)
+  : Model(options),
+    from(declare_input_variable<T>(options.get<LabeledAxisAccessor>("from_var"))),
+    to(declare_output_variable<T>(options.get<LabeledAxisAccessor>("to_var")))
 {
   this->setup();
 }
@@ -72,5 +72,5 @@ IdentityMap<T>::set_value(const LabeledVector & in,
 }
 
 template class IdentityMap<Scalar>;
-template class IdentityMap<SymR2>;
+template class IdentityMap<SR2>;
 } // namespace neml2

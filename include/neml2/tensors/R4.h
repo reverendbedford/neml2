@@ -25,27 +25,34 @@
 #pragma once
 
 #include "neml2/tensors/FixedDimTensor.h"
-#include "neml2/tensors/Scalar.h"
 
 namespace neml2
 {
-class SymSymR4;
+class Scalar;
+class SSR4;
+class R5;
+class Rot;
 
-class R4 : public FixedDimTensor<1, 3, 3, 3, 3>
+class R4 : public FixedDimTensor<R4, 3, 3, 3, 3>
 {
 public:
-  using FixedDimTensor<1, 3, 3, 3, 3>::FixedDimTensor;
+  using FixedDimTensor<R4, 3, 3, 3, 3>::FixedDimTensor;
 
-  /// Named constructors
-  /// @{
-  static R4 init(const SymSymR4 & T);
-  /// @}
+  R4(const SSR4 & T);
+
+  /// Rotate
+  R4 rotate(const Rot & r) const;
+
+  /// Derivative of the rotated tensor w.r.t. the Rodrigues vector
+  R5 drotate(const Rot & r) const;
 
   /// Accessor
   Scalar operator()(TorchSize i, TorchSize j, TorchSize k, TorchSize l) const;
 
-  /// Convert to a SymSymR4
-  SymSymR4 sym() const;
-};
+  /// Transpose minor axes
+  R4 transpose_minor() const;
 
+  /// Transpose major axes
+  R4 transpose_major() const;
+};
 } // namespace neml2

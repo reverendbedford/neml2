@@ -26,17 +26,17 @@
 
 namespace neml2
 {
-ParameterSet
-Solver::expected_params()
+OptionSet
+Solver::expected_options()
 {
-  ParameterSet params = NEML2Object::expected_params();
-  params.set<bool>("verbose");
-  return params;
+  OptionSet options = NEML2Object::expected_options();
+  options.set<bool>("verbose");
+  return options;
 }
 
-Solver::Solver(const ParameterSet & params)
-  : NEML2Object(params),
-    verbose(params.get<bool>("verbose"))
+Solver::Solver(const OptionSet & options)
+  : NEML2Object(options),
+    verbose(options.get<bool>("verbose"))
 {
 }
 } // namespace neml2

@@ -31,9 +31,9 @@ namespace neml2
 class TotalStrain : public Model
 {
 public:
-  static ParameterSet expected_params();
+  static OptionSet expected_options();
 
-  TotalStrain(const ParameterSet & params);
+  TotalStrain(const OptionSet & options);
 
 protected:
   void set_value(const LabeledVector & in,

@@ -14,11 +14,11 @@
 
 [Tensors]
   [M]
-    type = InitializedSymR2
+    type = FillSR2
     values = '100 110 100 50 40 30'
   []
   [X]
-    type = InitializedSymR2
+    type = FillSR2
     values = '60 -10 20 40 30 -60'
   []
 []
@@ -28,7 +28,7 @@
     type = OverStress
   []
   [vonmises]
-    type = SymR2Invariant
+    type = SR2Invariant
     invariant_type = 'VONMISES'
     tensor = 'state/internal/O'
     invariant = 'state/internal/sm'

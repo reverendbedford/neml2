@@ -34,9 +34,9 @@ class TransientDriver;
 class TransientRegression : public Driver
 {
 public:
-  static ParameterSet expected_params();
+  static OptionSet expected_options();
 
-  TransientRegression(const ParameterSet & params);
+  TransientRegression(const OptionSet & options);
 
   bool run() override;
 

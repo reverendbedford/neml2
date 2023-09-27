@@ -36,18 +36,18 @@ class NonlinearSystem
 {
 public:
   /// Convenient shortcut to construct and return the system residual
-  virtual BatchTensor<1> residual(BatchTensor<1> in) const final;
+  virtual BatchTensor residual(const BatchTensor & in) const final;
 
   /// Convenient shortcut to construct and return the system Jacobian
-  virtual BatchTensor<1> Jacobian(BatchTensor<1> in) const final;
+  virtual BatchTensor Jacobian(const BatchTensor & in) const final;
 
   /// Convenient shortcut to construct and return the system residual and Jacobian
-  virtual std::tuple<BatchTensor<1>, BatchTensor<1>>
-  residual_and_Jacobian(BatchTensor<1> in) const final;
+  virtual std::tuple<BatchTensor, BatchTensor>
+  residual_and_Jacobian(const BatchTensor & in) const final;
 
 protected:
   /**
-   * @brief Compute the residual at the current guess \f$x\f$
+   * @brief Compute the residual and Jacobian at the current guess \f$x\f$
    *
    * @param x The current guess of the solution
    * @param residual The current residual. The residual calculation is *requested* if it is *not* a
@@ -55,8 +55,8 @@ protected:
    * @param Jacobian The current Jacobian. The Jacobian calculation is *requested* if it is *not* a
    * nullptr.
    */
-  virtual void set_residual(BatchTensor<1> x,
-                            BatchTensor<1> * residual,
-                            BatchTensor<1> * Jacobian = nullptr) const = 0;
+  virtual void assemble(const BatchTensor & x,
+                        BatchTensor * residual,
+                        BatchTensor * Jacobian = nullptr) const = 0;
 };
 } // namespace neml2

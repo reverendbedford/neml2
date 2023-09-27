@@ -26,18 +26,18 @@
 
 namespace neml2
 {
-ParameterSet
-FlowRule::expected_params()
+OptionSet
+FlowRule::expected_options()
 {
-  ParameterSet params = Model::expected_params();
-  params.set<LabeledAxisAccessor>("flow_rate") =
+  OptionSet options = Model::expected_options();
+  options.set<LabeledAxisAccessor>("flow_rate") =
       LabeledAxisAccessor{{"state", "internal", "gamma_rate"}};
-  return params;
+  return options;
 }
 
-FlowRule::FlowRule(const ParameterSet & params)
-  : Model(params),
-    flow_rate(declare_input_variable<Scalar>(params.get<LabeledAxisAccessor>("flow_rate")))
+FlowRule::FlowRule(const OptionSet & options)
+  : Model(options),
+    flow_rate(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("flow_rate")))
 {
   setup();
 }

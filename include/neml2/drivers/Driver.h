@@ -39,14 +39,14 @@ namespace neml2
 class Driver : public NEML2Object
 {
 public:
-  static ParameterSet expected_params();
+  static OptionSet expected_options();
 
   /**
    * @brief Construct a new Driver object
    *
-   * @param params The parameters extracted from the input file
+   * @param options The options extracted from the input file
    */
-  Driver(const ParameterSet & params);
+  Driver(const OptionSet & options);
 
   /// Let the driver run, return \p true upon successful completion, and return \p false otherwise.
   virtual bool run() = 0;

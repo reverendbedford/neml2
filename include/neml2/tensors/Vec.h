@@ -24,43 +24,25 @@
 
 #pragma once
 
-#include "neml2/tensors/Scalar.h"
-#include "neml2/tensors/R2.h"
+#include "neml2/tensors/VecBase.h"
 
 namespace neml2
 {
+class Scalar;
 class R2;
+class Rot;
 
-class Vec : public FixedDimTensor<1, 3>
+class Vec : public VecBase<Vec>
 {
 public:
-  using FixedDimTensor<1, 3>::FixedDimTensor;
+  using VecBase<Vec>::VecBase;
 
-  /// Named constructors
-  /// @{
-  /// Setup from scalar components
-  static Vec init(const Scalar & v1, const Scalar & v2, const Scalar & v3);
-  /// @}
+  Vec(const Rot & r);
 
-  /// Accessor
-  Scalar operator()(TorchSize i) const;
+  /// Rotate
+  Vec rotate(const Rot & r) const;
 
-  /// dot product
-  Scalar dot(const Vec & v) const;
-
-  /// cross product
-  Vec cross(const Vec & v) const;
-
-  /// outer product
-  R2 outer(const Vec & v) const;
+  /// Derivative of the rotated vector w.r.t. the Rodrigues vector
+  R2 drotate(const Rot & r) const;
 };
-
-/// Vector-scalar product
-Vec operator*(const Vec & a, const Scalar & b);
-Vec operator*(const Vec & a, const Real & b);
-
-/// Scalar-vector product
-Vec operator*(const Scalar & a, const Vec & b);
-Vec operator*(const Real & a, const Vec & b);
-
 } // namespace neml2

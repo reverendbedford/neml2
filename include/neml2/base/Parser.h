@@ -23,12 +23,12 @@
 // THE SOFTWARE.
 #pragma once
 
-#include "neml2/base/Factory.h"
+#include "neml2/base/OptionCollection.h"
 
 namespace neml2
 {
 /**
- * @brief A parser is responsible for parsing an input file into a collection of parameters which
+ * @brief A parser is responsible for parsing an input file into a collection of options which
  * can be used by the `Factory` to manufacture corresponding objects.
  *
  */
@@ -38,25 +38,15 @@ public:
   Parser() = default;
 
   /**
-   * @brief Deserialize a file and manufacture all objects.
-   *
-   * @param filename Name/path of the input file.
-   * @param additional_input  Additional content of the input file not included in the input file
-   * itself, e.g., from command line.
-   */
-  virtual void parse_and_manufacture(const std::string & filename,
-                                     const std::string & additional_input = "");
-
-  /**
    * @brief Deserialize a file.
    *
    * @param filename Name/path of the input file.
    * @param additional_input  Additional content of the input file not included in the input file
    * itself, e.g., from command line.
-   * @return ParameterCollection The extracted object parameters.
+   * @return OptionCollection The extracted object options.
    */
-  virtual ParameterCollection parse(const std::string & filename,
-                                    const std::string & additional_input = "") const = 0;
+  virtual OptionCollection parse(const std::string & filename,
+                                 const std::string & additional_input = "") const = 0;
 };
 
 } // namespace neml2

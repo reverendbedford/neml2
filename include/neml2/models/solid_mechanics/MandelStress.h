@@ -31,9 +31,9 @@ namespace neml2
 class MandelStress : public Model
 {
 public:
-  static ParameterSet expected_params();
+  static OptionSet expected_options();
 
-  MandelStress(const ParameterSet & params);
+  MandelStress(const OptionSet & options);
 
   const LabeledAxisAccessor cauchy_stress;
   const LabeledAxisAccessor mandel_stress;

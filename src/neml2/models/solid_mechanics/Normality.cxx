@@ -29,27 +29,27 @@ namespace neml2
 {
 register_NEML2_object(Normality);
 
-ParameterSet
-Normality::expected_params()
+OptionSet
+Normality::expected_options()
 {
-  ParameterSet params = Model::expected_params();
-  params.set<std::string>("model");
-  params.set<LabeledAxisAccessor>("function");
-  params.set<std::vector<LabeledAxisAccessor>>("from");
-  params.set<std::vector<LabeledAxisAccessor>>("to");
-  return params;
+  OptionSet options = Model::expected_options();
+  options.set<std::string>("model");
+  options.set<LabeledAxisAccessor>("function");
+  options.set<std::vector<LabeledAxisAccessor>>("from");
+  options.set<std::vector<LabeledAxisAccessor>>("to");
+  return options;
 }
 
-Normality::Normality(const ParameterSet & params)
-  : Model(params),
-    function(params.get<LabeledAxisAccessor>("function")),
-    _model(Factory::get_object<Model>("Models", params.get<std::string>("model")))
+Normality::Normality(const OptionSet & options)
+  : Model(options),
+    function(options.get<LabeledAxisAccessor>("function")),
+    _model(Factory::get_object<Model>("Models", options.get<std::string>("model")))
 {
-  register_model(Factory::get_object_ptr<Model>("Models", params.get<std::string>("model")));
+  register_model(Factory::get_object_ptr<Model>("Models", options.get<std::string>("model")));
 
   // Set up the conjugate pairs
-  const auto from = params.get<std::vector<LabeledAxisAccessor>>("from");
-  const auto to = params.get<std::vector<LabeledAxisAccessor>>("to");
+  const auto from = options.get<std::vector<LabeledAxisAccessor>>("from");
+  const auto to = options.get<std::vector<LabeledAxisAccessor>>("to");
   neml_assert(from.size() == to.size(),
               "The conjugate pairs should have a one-to-one correspondance. ",
               from.size(),
