@@ -18,6 +18,10 @@ if(UNIT)
             ${TEST_UTILS}
             ${UNIT_TESTS}
       )
+
+      # compile options
+      target_compile_options(unit_tests PUBLIC -Wall -Wextra -pedantic -Werror)
+
       REGISTERUNITYGROUP(unit_tests "Unit test" unit)
       target_link_libraries(unit_tests Catch2::Catch2)
       target_link_libraries(unit_tests neml2 testutils)
@@ -38,6 +42,10 @@ if(REGRESSION)
             ${TEST_UTILS}
             ${REGRESSION_TESTS}
       )
+
+      # compile options
+      target_compile_options(regression_tests PUBLIC -Wall -Wextra -pedantic -Werror)
+
       REGISTERUNITYGROUP(regression_tests "Regression test" regression)
       target_link_libraries(regression_tests Catch2::Catch2)
       target_link_libraries(regression_tests neml2 testutils)
@@ -58,6 +66,10 @@ if(VERIFICATION)
             ${TEST_UTILS}
             ${VERIFICATION_TESTS}
       )
+
+      # compile options
+      target_compile_options(verification_tests PUBLIC -Wall -Wextra -pedantic -Werror)
+
       REGISTERUNITYGROUP(verification_tests "Verification test" verification)
       target_link_libraries(verification_tests Catch2::Catch2)
       target_link_libraries(verification_tests neml2 testutils)
@@ -78,6 +90,9 @@ if(BENCHMARK)
             ${TEST_UTILS}
             ${BENCHMARK_TESTS}
       )
+      # compile options
+      target_compile_options(benchmark_tests PUBLIC -Wall -Wextra -pedantic -Werror)
+
       REGISTERUNITYGROUP(benchmark_tests "Benchmark test" benchmark)
       target_link_libraries(benchmark_tests Catch2::Catch2)
       target_link_libraries(benchmark_tests neml2 testutils)
@@ -93,23 +108,18 @@ endif()
 option(PROFILING "build profiling tests" OFF)
 
 if(PROFILING)
-      if(DEFINED ENV{GPERFTOOLS_DIR})
-            set(GPERFTOOLS_ROOT_DIR $ENV{GPERFTOOLS_DIR})
-      else()
-            message(FATAL_ERROR "Environment variable GPERFTOOLS_DIR must be set if profiling tests are turned on. GPERFTOOLS_DIR should point to the gperftools directory such that GPERFTOOLS_DIR/lib/libprofiler.* exist.")
-      endif()
-
       file(GLOB_RECURSE PROFILING_TESTS profiling/*.cxx)
       add_executable(profiling_tests
             ${TEST_UTILS}
             ${PROFILING_TESTS}
       )
+      # compile options
+      target_compile_options(profiling_tests PUBLIC -Wall -Wextra -pedantic -Werror)
       REGISTERUNITYGROUP(profiling_tests "Profiling test" profiling)
-      target_link_options(profiling_tests PUBLIC -Wl,--no-as-needed,-lprofiler,--as-needed)
-      target_link_directories(profiling_tests PUBLIC ${GPERFTOOLS_ROOT_DIR}/lib)
 
       # target_link_libraries(profiling_tests profiler)
-      target_link_libraries(profiling_tests neml2 testutils)
+      target_link_options(profiling_tests PRIVATE "-Wl,-no-as-needed")
+      target_link_libraries(profiling_tests neml2 testutils profiler)
       target_include_directories(profiling_tests PUBLIC
             "${CMAKE_SOURCE_DIR}/include"
             "${CMAKE_SOURCE_DIR}/tests/include")

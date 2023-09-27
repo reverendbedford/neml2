@@ -5,9 +5,6 @@ project(NEML2 LANGUAGES CXX)
 # ## Setup modules ###
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 
-# Werror, etc
-add_compile_options(-Wall -Wextra -pedantic -Werror)
-
 # Accept Release, Debug, and RelWithDebInfo, add Coverage build types
 set(CMAKE_CXX_FLAGS_COVERAGE
       "-O0 -fprofile-arcs -ftest-coverage"
@@ -49,6 +46,10 @@ list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/extern/Catch2/contrib")
 
 # hit for parsing
 add_subdirectory("${PROJECT_SOURCE_DIR}/extern/hit")
+
+# gperftools for profiling
+SET(BUILD_TESTING OFF CACHE BOOL "Build gperftools tests" FORCE)
+add_subdirectory("${PROJECT_SOURCE_DIR}/extern/gperftools")
 
 # base library
 add_subdirectory(src/neml2)

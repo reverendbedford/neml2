@@ -3,6 +3,10 @@ include(Macros)
 # Add all the source files
 file(GLOB_RECURSE SRCS *.cxx)
 add_library(neml2 SHARED ${SRCS})
+
+# compile options
+target_compile_options(neml2 PUBLIC -Wall -Wextra -pedantic -Werror)
+
 REGISTERUNITYGROUP(neml2 "NEML2" .)
 
 # My headers

@@ -27,3 +27,4 @@ doc/html
 *.pt
 !**/gold/*.pt
 syntax.yml
+tests/syntax.yml
