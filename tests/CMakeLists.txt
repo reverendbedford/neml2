@@ -28,7 +28,7 @@ if(UNIT)
       target_include_directories(unit_tests PUBLIC
             "${CMAKE_SOURCE_DIR}/include"
             "${CMAKE_SOURCE_DIR}/tests/include")
-      catch_discover_tests(unit_tests)
+      catch_discover_tests(unit_tests WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/tests")
 endif()
 
 # ###################################################
@@ -52,7 +52,7 @@ if(REGRESSION)
       target_include_directories(regression_tests PUBLIC
             "${CMAKE_SOURCE_DIR}/include"
             "${CMAKE_SOURCE_DIR}/tests/include")
-      catch_discover_tests(regression_tests)
+      catch_discover_tests(regression_tests WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/tests")
 endif()
 
 # ###################################################
@@ -76,7 +76,7 @@ if(VERIFICATION)
       target_include_directories(verification_tests PUBLIC
             "${CMAKE_SOURCE_DIR}/include"
             "${CMAKE_SOURCE_DIR}/tests/include")
-      catch_discover_tests(verification_tests)
+      catch_discover_tests(verification_tests WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/tests")
 endif()
 
 # ###################################################
@@ -100,7 +100,7 @@ if(BENCHMARK)
       target_include_directories(benchmark_tests PUBLIC
             "${CMAKE_SOURCE_DIR}/include"
             "${CMAKE_SOURCE_DIR}/tests/include")
-      catch_discover_tests(benchmark_tests)
+      catch_discover_tests(benchmark_tests WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/tests")
 endif()
 
 # ###################################################
