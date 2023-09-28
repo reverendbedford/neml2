@@ -118,7 +118,7 @@ option(PROFILING "build profiling tests" OFF)
 
 if(PROFILING)
       # gperftools for profiling
-      add_subdirectory(${PROJECT_SOURCE_DIR}/extern/gperftools ${PROJECT_SOURCE_DIR}/extern/gperftools EXCLUDE_FROM_ALL)
+      add_subdirectory(${CMAKE_SOURCE_DIR}/extern/gperftools ${CMAKE_BINARY_DIR}/extern/gperftools EXCLUDE_FROM_ALL)
       file(GLOB_RECURSE PROFILING_TESTS profiling/*.cxx)
       add_executable(profiling_tests
             ${TEST_UTILS}

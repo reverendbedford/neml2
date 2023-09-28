@@ -45,7 +45,7 @@ if (DOWNLOAD_LIBTORCH)
       find_package(Torch REQUIRED HINTS "${torch_SOURCE_DIR}/share/cmake")
 else()
       set(LIBTORCH_DIR "" CACHE PATH "Path to a system installation of torch")
-      find_package(Torch REQUIRED HINTS "${LIBTORCH_DIR}/share/cmake")
+      find_package(Torch REQUIRED HINTS "${LIBTORCH_DIR}/share/cmake") 
 endif()
 
 # libTorch comes with two flavors: one with cxx11 abi, one without.
@@ -59,11 +59,11 @@ else()
 endif()
 
 # Catch2, for testing
-add_subdirectory("${PROJECT_SOURCE_DIR}/extern/Catch2")
+add_subdirectory("${PROJECT_SOURCE_DIR}/extern/Catch2" "${CMAKE_BINARY_DIR}/extern/Catch2")
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/extern/Catch2/contrib")
 
 # hit for parsing
-add_subdirectory("${PROJECT_SOURCE_DIR}/extern/hit")
+add_subdirectory("${PROJECT_SOURCE_DIR}/extern/hit" "${CMAKE_BINARY_DIR}/extern/hit")
 
 # base library
 add_subdirectory(src/neml2)
