@@ -27,8 +27,20 @@ enable_testing()
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# torch, for which we are going to rely on the system for now
-find_package(Torch REQUIRED)
+# Location of current CPU torch
+include(FetchContent)
+FetchContent_Declare(
+  torch
+  URL https://download.pytorch.org/libtorch/nightly/cpu/libtorch-shared-with-deps-latest.zip
+)
+
+# Select between system torch and the current (CPU) torch
+if (DEFINED LIBTORCH_DIR)
+      find_package(Torch REQUIRED HINTS "${LIBTORCH_DIR}/share/cmake") 
+else()
+      FetchContent_MakeAvailable(torch)
+      find_package(Torch REQUIRED HINTS "${torch_SOURCE_DIR}/share/cmake")
+endif()
 
 # libTorch comes with two flavors: one with cxx11 abi, one without.
 # We should be consistent with whatever is detected from the libTorch.
@@ -41,11 +53,11 @@ else()
 endif()
 
 # Catch2, for testing
-add_subdirectory("${PROJECT_SOURCE_DIR}/extern/Catch2")
+add_subdirectory("${PROJECT_SOURCE_DIR}/extern/Catch2" "${CMAKE_BINARY_DIR}/extern/Catch2")
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/extern/Catch2/contrib")
 
 # hit for parsing
-add_subdirectory("${PROJECT_SOURCE_DIR}/extern/hit")
+add_subdirectory("${PROJECT_SOURCE_DIR}/extern/hit" "${CMAKE_BINARY_DIR}/extern/hit")
 
 # base library
 add_subdirectory(src/neml2)

@@ -11,6 +11,12 @@ to provide GPU support, but this also means that NEML2 models have all the featu
 
 NEML2 is provided as open source software under a MIT [license](https://raw.githubusercontent.com/reverendbedford/neml2/main/LICENSE).
 
+### Build and installation
+
+Building should be as easy as cloning the repository, configuring with CMake, building with `make`, and testing with `make test`.
+
+By default NEML2 will download the current CPU-only version of torch.  To instead use a system torch set CMake options `-DLIBTORCH_DIR=/path/to/your/torch`.  If you use the default build you will get a CPU-only version of torch and performance might suffer compared to a CUDA version.
+
 ### NEML2 features and design philosophy
 
 - **Modular constitutive models**: NEML2 material models are modular – they are built up from smaller pieces into a complete model. For example, a model might piece together a temperature-dependent elasticity model, a yield surface, a flow rule, and several hardening rules. Each of these submodels is independent of the other objects so that, for example, switching from conventional J2 plasticity to a non J2 theory requires only a one line change in an input file, if the model is already implemented, or a relatively small amount of coding to add the new yield surface if it has not been implemented. All of these objects are interchangeable. For example, the damage, viscoplastic, and rate-independent plasticity models all use the same yield (flow) surfaces, hardening rules, elasticity models, and so on.

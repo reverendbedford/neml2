@@ -29,6 +29,9 @@ if(UNIT)
             "${CMAKE_SOURCE_DIR}/include"
             "${CMAKE_SOURCE_DIR}/tests/include")
       catch_discover_tests(unit_tests)
+
+      message(STATUS "Copying test files to build directory, may include large files...")
+      file(COPY ${CMAKE_SOURCE_DIR}/tests/unit DESTINATION ${CMAKE_BINARY_DIR}/tests PATTERN "*.cxx" EXCLUDE PATTERN "*.md" EXCLUDE)
 endif()
 
 # ###################################################
@@ -53,6 +56,9 @@ if(REGRESSION)
             "${CMAKE_SOURCE_DIR}/include"
             "${CMAKE_SOURCE_DIR}/tests/include")
       catch_discover_tests(regression_tests)
+
+      message(STATUS "Copying test files to build directory, may include large files...")
+      file(COPY ${CMAKE_SOURCE_DIR}/tests/regression DESTINATION ${CMAKE_BINARY_DIR}/tests PATTERN "*.cxx" EXCLUDE PATTERN "*.md" EXCLUDE)
 endif()
 
 # ###################################################
@@ -77,6 +83,9 @@ if(VERIFICATION)
             "${CMAKE_SOURCE_DIR}/include"
             "${CMAKE_SOURCE_DIR}/tests/include")
       catch_discover_tests(verification_tests)
+
+      message(STATUS "Copying test files to build directory, may include large files...")
+      file(COPY ${CMAKE_SOURCE_DIR}/tests/verification DESTINATION ${CMAKE_BINARY_DIR}/tests PATTERN "*.cxx" EXCLUDE PATTERN "*.md" EXCLUDE)
 endif()
 
 # ###################################################
@@ -101,6 +110,9 @@ if(BENCHMARK)
             "${CMAKE_SOURCE_DIR}/include"
             "${CMAKE_SOURCE_DIR}/tests/include")
       catch_discover_tests(benchmark_tests)
+
+      message(STATUS "Copying test files to build directory, may include large files...")
+      file(COPY ${CMAKE_SOURCE_DIR}/tests/benchmark DESTINATION ${CMAKE_BINARY_DIR}/tests PATTERN "*.cxx" EXCLUDE PATTERN "*.md" EXCLUDE)
 endif()
 
 # ###################################################
@@ -110,7 +122,7 @@ option(PROFILING "build profiling tests" OFF)
 
 if(PROFILING)
       # gperftools for profiling
-      add_subdirectory(${PROJECT_SOURCE_DIR}/extern/gperftools ${PROJECT_SOURCE_DIR}/extern/gperftools EXCLUDE_FROM_ALL)
+      add_subdirectory(${CMAKE_SOURCE_DIR}/extern/gperftools ${CMAKE_BINARY_DIR}/extern/gperftools EXCLUDE_FROM_ALL)
       file(GLOB_RECURSE PROFILING_TESTS profiling/*.cxx)
       add_executable(profiling_tests
             ${TEST_UTILS}
@@ -125,4 +137,7 @@ if(PROFILING)
       target_include_directories(profiling_tests PUBLIC
             "${CMAKE_SOURCE_DIR}/include"
             "${CMAKE_SOURCE_DIR}/tests/include")
+
+      message(STATUS "Copying test files to build directory, may include large files...")
+      file(COPY ${CMAKE_SOURCE_DIR}/tests/profiling DESTINATION ${CMAKE_BINARY_DIR}/tests PATTERN "*.cxx" EXCLUDE PATTERN "*.md" EXCLUDE)
 endif()

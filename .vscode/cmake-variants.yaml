@@ -1,0 +1,29 @@
+buildType:
+  default: debug
+  choices:
+    debug:
+      short: Debug
+      long: With debugging info
+      buildType: Debug
+    release:
+      short: Release
+      long: Optimize generated code
+      buildType: Release
+    relwithdebinfo:
+      short: RelWithDebInfo
+      long: Optimized code retaining debug symbols
+      buildType: RelWithDebInfo
+
+useUnity:
+  default: 'yes'
+  choices:
+    'yes':
+      short: Unity
+      long: Unity build
+      settings:
+        CMAKE_UNITY_BUILD: on
+    'no':
+      short: Nonunity
+      long: Standard, non-unity build
+      settings:
+        CMAKE_UNITY_BUILD: off

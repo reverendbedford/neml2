@@ -24,6 +24,8 @@
 
 #include "VTestParser.h"
 
+#include <fstream>
+
 using namespace neml2;
 
 VTestParser::VTestParser(const std::string & name)

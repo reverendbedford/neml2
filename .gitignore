@@ -18,6 +18,7 @@ coverage
 doc/class-doc
 *.html
 .vscode
+!.vscode/cmake-variants.yaml
 doc/doctrees
 doc/html
 !cmake/Modules/*
@@ -26,5 +27,6 @@ doc/html
 *.dylib
 *.pt
 !**/gold/*.pt
-syntax.yml
-tests/syntax.yml
+**/syntax.yml
+build
+_deps
