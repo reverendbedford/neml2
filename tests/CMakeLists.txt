@@ -30,6 +30,7 @@ if(UNIT)
             "${CMAKE_SOURCE_DIR}/tests/include")
       catch_discover_tests(unit_tests)
 
+      message(STATUS "Copying test files to build directory, may include large files...")
       file(COPY ${CMAKE_SOURCE_DIR}/tests/unit DESTINATION ${CMAKE_BINARY_DIR}/tests PATTERN "*.cxx" EXCLUDE PATTERN "*.md" EXCLUDE)
 endif()
 
@@ -56,6 +57,7 @@ if(REGRESSION)
             "${CMAKE_SOURCE_DIR}/tests/include")
       catch_discover_tests(regression_tests)
 
+      message(STATUS "Copying test files to build directory, may include large files...")
       file(COPY ${CMAKE_SOURCE_DIR}/tests/regression DESTINATION ${CMAKE_BINARY_DIR}/tests PATTERN "*.cxx" EXCLUDE PATTERN "*.md" EXCLUDE)
 endif()
 
@@ -82,6 +84,7 @@ if(VERIFICATION)
             "${CMAKE_SOURCE_DIR}/tests/include")
       catch_discover_tests(verification_tests)
 
+      message(STATUS "Copying test files to build directory, may include large files...")
       file(COPY ${CMAKE_SOURCE_DIR}/tests/verification DESTINATION ${CMAKE_BINARY_DIR}/tests PATTERN "*.cxx" EXCLUDE PATTERN "*.md" EXCLUDE)
 endif()
 
@@ -108,6 +111,7 @@ if(BENCHMARK)
             "${CMAKE_SOURCE_DIR}/tests/include")
       catch_discover_tests(benchmark_tests)
 
+      message(STATUS "Copying test files to build directory, may include large files...")
       file(COPY ${CMAKE_SOURCE_DIR}/tests/benchmark DESTINATION ${CMAKE_BINARY_DIR}/tests PATTERN "*.cxx" EXCLUDE PATTERN "*.md" EXCLUDE)
 endif()
 
@@ -134,5 +138,6 @@ if(PROFILING)
             "${CMAKE_SOURCE_DIR}/include"
             "${CMAKE_SOURCE_DIR}/tests/include")
 
+      message(STATUS "Copying test files to build directory, may include large files...")
       file(COPY ${CMAKE_SOURCE_DIR}/tests/profiling DESTINATION ${CMAKE_BINARY_DIR}/tests PATTERN "*.cxx" EXCLUDE PATTERN "*.md" EXCLUDE)
 endif()
