@@ -15,7 +15,7 @@ NEML2 is provided as open source software under a MIT [license](https://raw.gith
 
 Building should be as easy as cloning the repository, configuring with CMake, building with `make`, and testing with `make test`.
 
-By default NEML2 will download the current CPU-only version of torch.  To instead use a system torch set CMake options `-DSYSTEM_TORCH=ON -DTORCH_DIR=/path/to/your/torch`.  If you use the default build you will get a CPU-only version of torch and performance will suffer compared to a CUDA version.
+By default NEML2 will download the current CPU-only version of torch.  To instead use a system torch set CMake options `-DLIBTORCH_DIR=/path/to/your/torch`.  If you use the default build you will get a CPU-only version of torch and performance will suffer compared to a CUDA version.  You can explicitly control whether the build uses this system torch with the `-DDOWNLOAD_LIBTORCH` option.
 
 ### NEML2 features and design philosophy
 

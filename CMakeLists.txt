@@ -29,19 +29,23 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Location of current CPU torch
 include(FetchContent)
+cmake_policy(SET CMP0135 NEW)
 FetchContent_Declare(
   torch
   URL https://download.pytorch.org/libtorch/nightly/cpu/libtorch-shared-with-deps-latest.zip
 )
 
 # Select between system torch and the current (CPU) torch
-option(SYSTEM_TORCH "Whether to use the system torch or download the current CPU version" OFF)
-if (SYSTEM_TORCH)
-      set(TORCH_DIR "" CACHE PATH "Path to a system installation of torch")
-      find_package(Torch REQUIRED HINTS "${TORCH_DIR}/share/cmake")
-else()
+option(DOWNLOAD_LIBTORCH "Whether to download a current libtorch or a version installed on the system" ON)
+if (DEFINED LIBTORCH_DIR)
+      set(DOWNLOAD_LIBTORCH OFF)
+endif()
+if (DOWNLOAD_LIBTORCH)
       FetchContent_MakeAvailable(torch)
       find_package(Torch REQUIRED HINTS "${torch_SOURCE_DIR}/share/cmake")
+else()
+      set(LIBTORCH_DIR "" CACHE PATH "Path to a system installation of torch")
+      find_package(Torch REQUIRED HINTS "${LIBTORCH_DIR}/share/cmake")
 endif()
 
 # libTorch comes with two flavors: one with cxx11 abi, one without.
