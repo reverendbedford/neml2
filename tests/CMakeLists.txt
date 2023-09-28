@@ -28,7 +28,9 @@ if(UNIT)
       target_include_directories(unit_tests PUBLIC
             "${CMAKE_SOURCE_DIR}/include"
             "${CMAKE_SOURCE_DIR}/tests/include")
-      catch_discover_tests(unit_tests WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/tests")
+      catch_discover_tests(unit_tests)
+
+      file(COPY ${CMAKE_SOURCE_DIR}/tests/unit DESTINATION ${CMAKE_BINARY_DIR}/tests PATTERN "*.cxx" EXCLUDE PATTERN "*.md" EXCLUDE)
 endif()
 
 # ###################################################
@@ -52,7 +54,9 @@ if(REGRESSION)
       target_include_directories(regression_tests PUBLIC
             "${CMAKE_SOURCE_DIR}/include"
             "${CMAKE_SOURCE_DIR}/tests/include")
-      catch_discover_tests(regression_tests WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/tests")
+      catch_discover_tests(regression_tests)
+
+      file(COPY ${CMAKE_SOURCE_DIR}/tests/regression DESTINATION ${CMAKE_BINARY_DIR}/tests PATTERN "*.cxx" EXCLUDE PATTERN "*.md" EXCLUDE)
 endif()
 
 # ###################################################
@@ -76,7 +80,9 @@ if(VERIFICATION)
       target_include_directories(verification_tests PUBLIC
             "${CMAKE_SOURCE_DIR}/include"
             "${CMAKE_SOURCE_DIR}/tests/include")
-      catch_discover_tests(verification_tests WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/tests")
+      catch_discover_tests(verification_tests)
+
+      file(COPY ${CMAKE_SOURCE_DIR}/tests/verification DESTINATION ${CMAKE_BINARY_DIR}/tests PATTERN "*.cxx" EXCLUDE PATTERN "*.md" EXCLUDE)
 endif()
 
 # ###################################################
@@ -100,7 +106,9 @@ if(BENCHMARK)
       target_include_directories(benchmark_tests PUBLIC
             "${CMAKE_SOURCE_DIR}/include"
             "${CMAKE_SOURCE_DIR}/tests/include")
-      catch_discover_tests(benchmark_tests WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/tests")
+      catch_discover_tests(benchmark_tests)
+
+      file(COPY ${CMAKE_SOURCE_DIR}/tests/benchmark DESTINATION ${CMAKE_BINARY_DIR}/tests PATTERN "*.cxx" EXCLUDE PATTERN "*.md" EXCLUDE)
 endif()
 
 # ###################################################
@@ -125,4 +133,6 @@ if(PROFILING)
       target_include_directories(profiling_tests PUBLIC
             "${CMAKE_SOURCE_DIR}/include"
             "${CMAKE_SOURCE_DIR}/tests/include")
+
+      file(COPY ${CMAKE_SOURCE_DIR}/tests/profiling DESTINATION ${CMAKE_BINARY_DIR}/tests PATTERN "*.cxx" EXCLUDE PATTERN "*.md" EXCLUDE)
 endif()
