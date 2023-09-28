@@ -23,29 +23,29 @@
 // THE SOFTWARE.
 
 #include "neml2/models/SumModel.h"
-#include "neml2/tensors/SymSymR4.h"
+#include "neml2/tensors/SSR4.h"
 
 namespace neml2
 {
 register_NEML2_object(ScalarSumModel);
-register_NEML2_object(SymR2SumModel);
+register_NEML2_object(SR2SumModel);
 
 template <typename T>
-ParameterSet
-SumModel<T>::expected_params()
+OptionSet
+SumModel<T>::expected_options()
 {
-  ParameterSet params = Model::expected_params();
-  params.set<std::vector<LabeledAxisAccessor>>("from_var");
-  params.set<LabeledAxisAccessor>("to_var");
-  return params;
+  OptionSet options = Model::expected_options();
+  options.set<std::vector<LabeledAxisAccessor>>("from_var");
+  options.set<LabeledAxisAccessor>("to_var");
+  return options;
 }
 
 template <typename T>
-SumModel<T>::SumModel(const ParameterSet & params)
-  : Model(params),
-    to(declare_output_variable<T>(params.get<LabeledAxisAccessor>("to_var")))
+SumModel<T>::SumModel(const OptionSet & options)
+  : Model(options),
+    to(declare_output_variable<T>(options.get<LabeledAxisAccessor>("to_var")))
 {
-  for (auto fv : params.get<std::vector<LabeledAxisAccessor>>("from_var"))
+  for (auto fv : options.get<std::vector<LabeledAxisAccessor>>("from_var"))
     from.push_back(declare_input_variable<T>(fv));
 
   this->setup();
@@ -59,13 +59,12 @@ SumModel<T>::set_value(const LabeledVector & in,
                        LabeledTensor3D * d2out_din2) const
 {
   const auto options = in.options();
-  const auto nbatch = in.batch_size();
 
   if (out)
   {
-    auto sum = T::zero(options).batch_expand_copy(nbatch);
+    auto sum = T::zeros(in.batch_sizes(), options);
     for (auto fv : from)
-      sum += in(fv);
+      sum += in.get<T>(fv);
     out->set(sum, to);
   }
 
@@ -82,5 +81,5 @@ SumModel<T>::set_value(const LabeledVector & in,
 }
 
 template class SumModel<Scalar>;
-template class SumModel<SymR2>;
+template class SumModel<SR2>;
 } // namespace neml2

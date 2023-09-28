@@ -28,25 +28,25 @@ namespace neml2
 {
 Model::Stage Model::stage = UPDATING;
 
-ParameterSet
-Model::expected_params()
+OptionSet
+Model::expected_options()
 {
-  ParameterSet params = NEML2Object::expected_params();
-  params.set<std::vector<LabeledAxisAccessor>>("additional_outputs");
-  params.set<bool>("use_AD_first_derivative") = false;
-  params.set<bool>("use_AD_second_derivative") = false;
-  return params;
+  OptionSet options = NEML2Object::expected_options();
+  options.set<std::vector<LabeledAxisAccessor>>("additional_outputs");
+  options.set<bool>("use_AD_first_derivative") = false;
+  options.set<bool>("use_AD_second_derivative") = false;
+  return options;
 }
 
-Model::Model(const ParameterSet & params)
-  : NEML2Object(params),
+Model::Model(const OptionSet & options)
+  : NEML2Object(options),
     _input(declareAxis()),
     _output(declareAxis()),
-    _AD_1st_deriv(params.get<bool>("use_AD_first_derivative")),
-    _AD_2nd_deriv(params.get<bool>("use_AD_second_derivative"))
+    _AD_1st_deriv(options.get<bool>("use_AD_first_derivative")),
+    _AD_2nd_deriv(options.get<bool>("use_AD_second_derivative"))
 {
   check_AD_limitation();
-  for (const auto & var : params.get<std::vector<LabeledAxisAccessor>>("additional_outputs"))
+  for (const auto & var : options.get<std::vector<LabeledAxisAccessor>>("additional_outputs"))
     _additional_outputs.insert(var);
   setup();
 }
@@ -87,58 +87,55 @@ Model::set_parameters(const std::map<std::string, torch::Tensor> & params)
   }
 }
 
-BatchTensor<1>
-Model::dparam(const LabeledVector & out, const std::string & param) const
+BatchTensor
+Model::dparam(const BatchTensor & out, const BatchTensor & p) const
 {
-  const auto & outval = out.tensor();
-  BatchTensor<1> pval = named_parameters(true)[param];
+  neml_assert(p.batch_dim() == 0 || out.batch_sizes() == p.batch_sizes(),
+              "If the parameter is batched, its batch shape must be the same as the batch shape "
+              "of the output. However, the batch shape of the parameter is ",
+              p.batch_sizes(),
+              ", and the batch shape of the output is ",
+              out.batch_sizes());
 
-  BatchTensor<1> dout_dp(
-      out.batch_size(), utils::add_shapes(outval.base_sizes(), pval.base_sizes()), out.options());
+  // flatten out to handle arbitrarily shaped output
+  auto outf = BatchTensor(
+      out.reshape(utils::add_shapes(out.batch_sizes(), utils::storage_size(out.base_sizes()))),
+      out.batch_dim());
 
-  if (pval.batch_sizes() != outval.batch_sizes())
+  neml_assert_dbg(outf.base_dim() == 1, "Flattened output must be flat.");
+
+  auto doutf_dp = BatchTensor::empty(
+      outf.batch_sizes(), utils::add_shapes(outf.base_sizes(), p.base_sizes()), outf.options());
+
+  for (TorchSize i = 0; i < outf.base_sizes()[0]; i++)
   {
-    for (TorchSize b = 0; b < outval.batch_sizes()[0]; b++)
-      for (TorchSize i = 0; i < outval.base_sizes()[0]; i++)
-      {
-        BatchTensor<1> grad_outputs = torch::zeros_like(outval.index({b}));
-        grad_outputs.index_put_({i}, 1.0);
-        outval.requires_grad_();
-        auto jac_row = torch::autograd::grad({outval.index({b})},
-                                             {pval},
-                                             {grad_outputs},
-                                             /*retain_graph=*/true,
-                                             /*create_graph=*/false,
-                                             /*allow_unused=*/true)[0];
-        if (jac_row.defined())
-          dout_dp.index_put_({b, i, torch::indexing::Slice()}, jac_row);
-      }
-  }
-  else
-  {
-    for (TorchSize i = 0; i < outval.base_sizes()[0]; i++)
-    {
-      BatchTensor<1> grad_outputs = torch::zeros_like(outval);
-      grad_outputs.index_put_({torch::indexing::Ellipsis, i}, 1.0);
-      outval.requires_grad_();
-      auto jac_row = torch::autograd::grad({outval},
-                                           {pval},
-                                           {grad_outputs},
+    auto G = BatchTensor::zeros_like(outf);
+    G.index_put_({torch::indexing::Ellipsis, i}, 1.0);
+    auto doutfi_dp = torch::autograd::grad({outf},
+                                           {p},
+                                           {G},
                                            /*retain_graph=*/true,
                                            /*create_graph=*/false,
-                                           /*allow_unused=*/true)[0];
-      if (jac_row.defined())
-        dout_dp.base_index_put({i, torch::indexing::Slice()}, jac_row);
-    }
+                                           /*allow_unused=*/false)[0];
+    if (doutfi_dp.defined())
+      doutf_dp.base_index_put({i, torch::indexing::Ellipsis}, doutfi_dp);
   }
 
-  return dout_dp;
+  // reshape the derivative back to the correct shape
+  auto dout_dp = BatchTensor(
+      doutf_dp.reshape(utils::add_shapes(out.batch_sizes(), out.base_sizes(), p.base_sizes())),
+      out.batch_dim());
+
+  // factor to account for broadcasting
+  Real factor = p.batch_dim() == 0 ? utils::storage_size(out.batch_sizes()) : 1;
+
+  return dout_dp / factor;
 }
 
 LabeledVector
 Model::value(const LabeledVector & in) const
 {
-  auto out = LabeledVector::zeros(in.batch_size(), {&output()}, in.options());
+  auto out = LabeledVector::zeros(in.batch_sizes(), {&output()}, in.options());
   set_value(in, &out);
   return out;
 }
@@ -149,10 +146,10 @@ Model::dvalue(const LabeledVector & in) const
   if (_AD_1st_deriv)
     return std::get<1>(value_and_dvalue(in));
 
-  auto dout_din = LabeledMatrix::zeros(in.batch_size(), {&output(), &in.axis()}, in.options());
+  auto dout_din = LabeledMatrix::zeros(in.batch_sizes(), {&output(), &in.axis()}, in.options());
   if (implicit())
   {
-    auto out = LabeledVector::zeros(in.batch_size(), {&output()}, in.options());
+    auto out = LabeledVector::zeros(in.batch_sizes(), {&output()}, in.options());
     set_value(in, &out, &dout_din);
   }
   else
@@ -170,7 +167,7 @@ Model::d2value(const LabeledVector & in) const
     return std::get<2>(value_and_dvalue_and_d2value(in));
 
   auto d2out_din2 =
-      LabeledTensor3D::zeros(in.batch_size(), {&output(), &in.axis(), &in.axis()}, in.options());
+      LabeledTensor3D::zeros(in.batch_sizes(), {&output(), &in.axis(), &in.axis()}, in.options());
   set_value(in, nullptr, nullptr, &d2out_din2);
   return d2out_din2;
 }
@@ -178,8 +175,8 @@ Model::d2value(const LabeledVector & in) const
 std::tuple<LabeledVector, LabeledMatrix>
 Model::value_and_dvalue(const LabeledVector & in) const
 {
-  auto out = LabeledVector::zeros(in.batch_size(), {&output()}, in.options());
-  auto dout_din = LabeledMatrix::zeros(in.batch_size(), {&output(), &in.axis()}, in.options());
+  auto out = LabeledVector::zeros(in.batch_sizes(), {&output()}, in.options());
+  auto dout_din = LabeledMatrix::zeros(in.batch_sizes(), {&output(), &in.axis()}, in.options());
 
   if (_AD_1st_deriv)
   {
@@ -189,19 +186,19 @@ Model::value_and_dvalue(const LabeledVector & in) const
     // Evaluate the model value
     set_value(in, &out);
     // Loop over rows to retrieve the derivatives
-    for (TorchSize i = 0; i < out.tensor().base_sizes()[0]; i++)
+    for (TorchSize i = 0; i < out.base_sizes()[0]; i++)
     {
-      BatchTensor<1> grad_outputs = torch::zeros_like(out.tensor());
+      auto grad_outputs = BatchTensor::zeros_like(out);
       grad_outputs.index_put_({torch::indexing::Ellipsis, i}, 1.0);
       out.tensor().requires_grad_();
-      auto jac_row = torch::autograd::grad({out.tensor()},
-                                           {in.tensor()},
+      auto jac_row = torch::autograd::grad({out},
+                                           {in},
                                            {grad_outputs},
                                            /*retain_graph=*/true,
                                            /*create_graph=*/false,
                                            /*allow_unused=*/true)[0];
       if (jac_row.defined())
-        dout_din.tensor().base_index_put({i, torch::indexing::Slice()}, jac_row);
+        dout_din.base_index_put({i, torch::indexing::Slice()}, jac_row);
     }
     in.tensor().requires_grad_(req_grad);
   }
@@ -223,9 +220,9 @@ Model::dvalue_and_d2value(const LabeledVector & in) const
     return {dval, d2val};
   }
 
-  auto dout_din = LabeledMatrix::zeros(in.batch_size(), {&output(), &in.axis()}, in.options());
+  auto dout_din = LabeledMatrix::zeros(in.batch_sizes(), {&output(), &in.axis()}, in.options());
   auto d2out_din2 =
-      LabeledTensor3D::zeros(in.batch_size(), {&output(), &in.axis(), &in.axis()}, in.options());
+      LabeledTensor3D::zeros(in.batch_sizes(), {&output(), &in.axis(), &in.axis()}, in.options());
   set_value(in, nullptr, &dout_din, &d2out_din2);
   return {dout_din, d2out_din2};
 }
@@ -236,10 +233,10 @@ Model::value_and_dvalue_and_d2value(const LabeledVector & in) const
   neml_assert_dbg(
       !implicit(), name(), " is an implicit model and does not provide second derivatives.");
 
-  auto out = LabeledVector::zeros(in.batch_size(), {&output()}, in.options());
-  auto dout_din = LabeledMatrix::zeros(in.batch_size(), {&output(), &in.axis()}, in.options());
+  auto out = LabeledVector::zeros(in.batch_sizes(), {&output()}, in.options());
+  auto dout_din = LabeledMatrix::zeros(in.batch_sizes(), {&output(), &in.axis()}, in.options());
   auto d2out_din2 =
-      LabeledTensor3D::zeros(in.batch_size(), {&output(), &in.axis(), &in.axis()}, in.options());
+      LabeledTensor3D::zeros(in.batch_sizes(), {&output(), &in.axis(), &in.axis()}, in.options());
 
   if (_AD_2nd_deriv)
   {
@@ -250,38 +247,38 @@ Model::value_and_dvalue_and_d2value(const LabeledVector & in) const
     {
       set_value(in, &out);
       // Loop over rows to retrieve the derivatives
-      for (TorchSize i = 0; i < out.tensor().base_sizes()[0]; i++)
+      for (TorchSize i = 0; i < out.base_sizes()[0]; i++)
       {
-        BatchTensor<1> grad_outputs = torch::zeros_like(out.tensor());
+        auto grad_outputs = BatchTensor::zeros_like(out);
         grad_outputs.index_put_({torch::indexing::Ellipsis, i}, 1.0);
         out.tensor().requires_grad_();
-        auto jac_row = torch::autograd::grad({out.tensor()},
-                                             {in.tensor()},
+        auto jac_row = torch::autograd::grad({out},
+                                             {in},
                                              {grad_outputs},
                                              /*retain_graph=*/true,
                                              /*create_graph=*/true,
                                              /*allow_unused=*/true)[0];
         if (jac_row.defined())
-          dout_din.tensor().base_index_put({i, torch::indexing::Slice()}, jac_row);
+          dout_din.base_index_put({i, torch::indexing::Slice()}, jac_row);
       }
     }
     else
       set_value(in, &out, &dout_din);
     // Loop over rows to retrieve the second derivatives
-    for (TorchSize i = 0; i < dout_din.tensor().base_sizes()[0]; i++)
-      for (TorchSize j = 0; j < dout_din.tensor().base_sizes()[1]; j++)
+    for (TorchSize i = 0; i < dout_din.base_sizes()[0]; i++)
+      for (TorchSize j = 0; j < dout_din.base_sizes()[1]; j++)
       {
-        BatchTensor<1> grad_outputs = torch::zeros_like(dout_din.tensor());
+        auto grad_outputs = torch::zeros_like(dout_din);
         grad_outputs.index_put_({torch::indexing::Ellipsis, i, j}, 1.0);
         dout_din.tensor().requires_grad_();
-        auto jac_row = torch::autograd::grad({dout_din.tensor()},
-                                             {in.tensor()},
+        auto jac_row = torch::autograd::grad({dout_din},
+                                             {in},
                                              {grad_outputs},
                                              /*retain_graph=*/true,
                                              /*create_graph=*/false,
                                              /*allow_unused=*/true)[0];
         if (jac_row.defined())
-          d2out_din2.tensor().base_index_put({i, j, torch::indexing::Slice()}, jac_row);
+          d2out_din2.base_index_put({i, j, torch::indexing::Slice()}, jac_row);
       }
     in.tensor().requires_grad_(req_grad);
   }
@@ -314,12 +311,9 @@ Model::cache_input(const LabeledVector & in)
 }
 
 void
-Model::set_residual(BatchTensor<1> x, BatchTensor<1> * r, BatchTensor<1> * J) const
+Model::assemble(const BatchTensor & x, BatchTensor * r, BatchTensor * J) const
 {
-  const auto options = x.options();
-  const auto nbatch = x.batch_sizes()[0];
-
-  auto in = LabeledVector::zeros(nbatch, {&input()}, options);
+  auto in = LabeledVector::zeros(x.batch_sizes(), {&input()}, x.options());
 
   // Fill in the current trial state and cached (fixed) forces, old forces, old state
   in.fill(_cached_in);

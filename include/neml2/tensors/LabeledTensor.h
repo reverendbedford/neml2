@@ -33,59 +33,76 @@ namespace neml2
 /**
  * @brief The primary data structure in NEML2 for working with labeled tensor views.
  *
- * Each LabeledTensor consists of one BatchTensor and one or more LabeledAxis. The `LabeledTensor<N,
- * D>` is templated on the batch dimension \f$N\f$ and the base dimension \f$D\f$. LabeledTensor
- * handles the creation, modification, and accessing of labeled tensors.
+ * Each LabeledTensor consists of one BatchTensor and one or more LabeledAxis. The
+ * `LabeledTensor<D>` is templated on the base dimension \f$D\f$. LabeledTensor handles the
+ * creation, modification, and accessing of labeled tensors.
  *
- * @tparam N The number of batch dimensions
  * @tparam D The number of base dimensions
  */
-template <TorchSize N, TorchSize D>
+template <TorchSize D>
 class LabeledTensor
 {
 public:
-  /// Empty constructor
-  LabeledTensor(const torch::TensorOptions & options = default_tensor_options);
+  /// Default constructor
+  LabeledTensor() = default;
 
-  /// Construct from a `BatchTensor` with vector of `LabeledAxis`
-  /// This constructor is useful when the size of the LabeledAxis vector is unknown at compile time.
-  LabeledTensor(const BatchTensor<N> & tensor, const std::vector<const LabeledAxis *> & axes);
+  /// Construct from a Tensor with batch dim and vector of `LabeledAxis`
+  LabeledTensor(const torch::Tensor & tensor,
+                TorchSize batch_dim,
+                const std::vector<const LabeledAxis *> & axes);
+
+  /// Construct from a BatchTensor with vector of `LabeledAxis`
+  LabeledTensor(const BatchTensor & tensor, const std::vector<const LabeledAxis *> & axes);
 
   /// Copy constructor
   LabeledTensor(const LabeledTensor & other);
 
-  /// Setup new storage with zeros
-  static LabeledTensor<N, D> zeros(TorchShapeRef batch_size,
-                                   const std::vector<const LabeledAxis *> & axes,
-                                   const torch::TensorOptions & options = default_tensor_options);
-
-  /// Setup new storage with zeros like another LabeledTensor
-  static LabeledTensor<N, D> zeros_like(const LabeledTensor & other);
+  /// Assignment operator
+  LabeledTensor<D> & operator=(const LabeledTensor<D> & other);
 
   /// A potentially dangerous implicit conversion
   // Should we mark it explicit?
-  operator torch::Tensor() const { return _tensor; }
+  operator BatchTensor() const;
 
-  /// Return the configuration of the underlying tensor
-  torch::TensorOptions options() const { return _tensor.options(); }
+  /// A potentially dangerous implicit conversion
+  // Should we mark it explicit?
+  operator torch::Tensor() const;
 
-  LabeledTensor<N, D> to(const torch::TensorOptions & options) const;
+  /// Setup new storage with zeros
+  [[nodiscard]] static LabeledTensor<D>
+  zeros(TorchShapeRef batch_shape,
+        const std::vector<const LabeledAxis *> & axes,
+        const torch::TensorOptions & options = default_tensor_options);
 
-  /// Assignment operator
-  LabeledTensor<N, D> & operator=(const LabeledTensor<N, D> & other);
+  /// Setup new storage with zeros like another LabeledTensor
+  [[nodiscard]] static LabeledTensor<D> zeros_like(const LabeledTensor & other);
 
   /// Clone a this LabeledTensor
-  LabeledTensor<N, D> clone() const { return LabeledTensor<N, D>(_tensor.clone(), _axes); }
+  LabeledTensor<D> clone() const;
 
-  /// (Partially) deep copy another LabeledTensor, as we only copy the tensor,
-  /// and we never ever deep copy the LabeledAxis.
-  void copy(const LabeledTensor<N, D> & other);
+  template <typename T>
+  void copy_(const T & other);
 
   /// Get the underlying tensor
   /// @{
-  const BatchTensor<N> & tensor() const { return _tensor; }
-  BatchTensor<N> & tensor() { return _tensor; }
+  const BatchTensor & tensor() const { return _tensor; }
+  BatchTensor & tensor() { return _tensor; }
   /// @}
+
+  /// Get the tensor options
+  torch::TensorOptions options() const { return _tensor.options(); }
+
+  /// Return the number of batch dimensions
+  TorchSize batch_dim() const;
+
+  /// Return the number of base dimensions
+  TorchSize base_dim() const;
+
+  /// Return the batch size
+  TorchShapeRef batch_sizes() const;
+
+  /// Return the base size
+  TorchShapeRef base_sizes() const;
 
   /// Get all the labeled axes
   const std::vector<const LabeledAxis *> & axes() const { return _axes; }
@@ -98,7 +115,7 @@ public:
   TorchSlice slice_indices(S &&... names) const;
 
   /// The shape of the entire LabeledTensor
-  TorchShape storage_size() const;
+  TorchShapeRef storage_size() const;
 
   /// The shape of a sub-block specified by the names on each dimension
   template <typename... S>
@@ -107,14 +124,26 @@ public:
   /// Return a labeled view into the tensor.
   /// **No reshaping is done.**
   template <typename... S>
-  BatchTensor<N> operator()(S &&... names) const;
+  BatchTensor operator()(S &&... names) const;
 
   /// Slice the tensor on the given dimension by a single sub-axis
-  LabeledTensor<N, D> slice(TorchSize i, const std::string & name) const;
+  LabeledTensor<D> slice(TorchSize i, const std::string & name) const;
 
   /// Get the sub-block labeled by the given sub-axis names
   template <typename... S>
-  LabeledTensor<N, D> block(S &&... names) const;
+  LabeledTensor<D> block(S &&... names) const;
+
+  /// Get a batch
+  LabeledTensor<D> batch_index(TorchSlice indices) const;
+
+  /// Set a index sliced on the batch dimensions to a value
+  void batch_index_put(TorchSlice indices, const torch::Tensor & other);
+
+  /// Return an index sliced on the batch dimensions
+  BatchTensor base_index(TorchSlice indices) const;
+
+  /// Set a index sliced on the batch dimensions to a value
+  void base_index_put(TorchSlice indices, const torch::Tensor & other);
 
   /// Template setup for appropriate variable types
   template <typename T>
@@ -127,24 +156,28 @@ public:
   template <typename T, typename... S>
   typename variable_type<T>::type get(S &&... names) const
   {
-    return T((*this)(names...).view(utils::add_shapes(_tensor.batch_sizes(), T::_base_sizes)));
+    return T((*this)(names...).view(utils::add_shapes(batch_sizes(), T::const_base_sizes)),
+             batch_dim());
   }
 
   /// Set and interpret the input as an object
-  template <typename... S>
-  void set(const BatchTensor<N> & value, S &&... names)
+  template <typename T, typename... S>
+  void set(const BatchTensorBase<T> & value, S &&... names)
   {
     (*this)(names...).index_put_(
         {torch::indexing::None},
         value.reshape(utils::add_shapes(value.batch_sizes(), storage_size(names...))));
   }
 
-  /// Unary minus = additive inverse
-  LabeledTensor<N, D> operator-() const;
+  /// Negation
+  LabeledTensor<D> operator-() const;
+
+  /// Change tensor options
+  LabeledTensor<D> to(const torch::TensorOptions & options) const;
 
 protected:
-  /// The underlying raw tensor (without the labels)
-  BatchTensor<N> _tensor;
+  /// The tensor
+  BatchTensor _tensor;
 
   /// The labeled axes of this tensor
   // Urgh, I can't use const references here as the elements of a vector has to be "assignable".
@@ -158,173 +191,76 @@ private:
   TorchShape storage_size_impl(std::index_sequence<I...>, S &&... names) const;
 
   template <std::size_t... I, typename... S>
-  LabeledTensor<N, D> block_impl(std::index_sequence<I...>, S &&... names) const;
+  LabeledTensor<D> block_impl(std::index_sequence<I...>, S &&... names) const;
 };
 
-template <TorchSize N, TorchSize D>
-LabeledTensor<N, D>::LabeledTensor(const torch::TensorOptions & options)
-  : _tensor(options)
-{
-}
-
-template <TorchSize N, TorchSize D>
-LabeledTensor<N, D>::LabeledTensor(const BatchTensor<N> & tensor,
-                                   const std::vector<const LabeledAxis *> & axes)
-  : _tensor(tensor),
-    _axes(axes)
-{
-  neml_assert_dbg(axes.size() == D, "Wrong labeled dimension");
-
-  // Check that the size of the tensor was compatible
-  neml_assert_dbg(tensor.sizes() == utils::add_shapes(tensor.batch_sizes(), storage_size()),
-                  "LabeledTensor does not have the right size");
-}
-
-template <TorchSize N, TorchSize D>
-LabeledTensor<N, D>::LabeledTensor(const LabeledTensor<N, D> & other)
-  : _tensor(other._tensor)
-{
-  _axes = other._axes;
-}
-
-template <TorchSize N, TorchSize D>
-LabeledTensor<N, D>
-LabeledTensor<N, D>::zeros(TorchShapeRef batch_size,
-                           const std::vector<const LabeledAxis *> & axes,
-                           const torch::TensorOptions & options)
-{
-  TorchShape s;
-  s.reserve(axes.size());
-  std::transform(axes.begin(),
-                 axes.end(),
-                 std::back_inserter(s),
-                 [](const LabeledAxis * axis) { return axis->storage_size(); });
-  return LabeledTensor<N, D>(torch::zeros(utils::add_shapes(batch_size, s), options), axes);
-}
-
-template <TorchSize N, TorchSize D>
-LabeledTensor<N, D>
-LabeledTensor<N, D>::zeros_like(const LabeledTensor<N, D> & other)
-{
-  return LabeledTensor<N, D>(torch::zeros_like(other.tensor()), other.axes());
-}
-
-template <TorchSize N, TorchSize D>
-LabeledTensor<N, D>
-LabeledTensor<N, D>::to(const torch::TensorOptions & options) const
-{
-  return LabeledTensor<N, D>(_tensor.to(options), _axes);
-}
-
-template <TorchSize N, TorchSize D>
-LabeledTensor<N, D> &
-LabeledTensor<N, D>::operator=(const LabeledTensor<N, D> & other)
-{
-  _tensor = other._tensor;
-  _axes = other._axes;
-  return *this;
-}
-
-template <TorchSize N, TorchSize D>
+template <TorchSize D>
+template <typename T>
 void
-LabeledTensor<N, D>::copy(const LabeledTensor<N, D> & other)
+LabeledTensor<D>::copy_(const T & other)
 {
-  _tensor.copy_(other._tensor);
+  _tensor.copy_(other);
 }
 
-template <TorchSize N, TorchSize D>
+template <TorchSize D>
 template <typename... S>
 TorchSlice
-LabeledTensor<N, D>::slice_indices(S &&... names) const
+LabeledTensor<D>::slice_indices(S &&... names) const
 {
   static_assert(sizeof...(names) == D, "Wrong labaled dimesion in LabeledTensor::slice_indices");
   return slice_indices_impl(std::make_index_sequence<sizeof...(names)>(),
                             std::forward<S>(names)...);
 }
 
-template <TorchSize N, TorchSize D>
+template <TorchSize D>
 template <std::size_t... I, typename... S>
 TorchSlice
-LabeledTensor<N, D>::slice_indices_impl(std::index_sequence<I...>, S &&... names) const
+LabeledTensor<D>::slice_indices_impl(std::index_sequence<I...>, S &&... names) const
 {
   return {_axes[I]->indices(names)...};
 }
 
-template <TorchSize N, TorchSize D>
-TorchShape
-LabeledTensor<N, D>::storage_size() const
-{
-  TorchShape s;
-  s.reserve(_axes.size());
-  std::transform(_axes.begin(),
-                 _axes.end(),
-                 std::back_inserter(s),
-                 [](const LabeledAxis * axis) { return axis->storage_size(); });
-  return s;
-}
-
-template <TorchSize N, TorchSize D>
+template <TorchSize D>
 template <typename... S>
 TorchShape
-LabeledTensor<N, D>::storage_size(S &&... names) const
+LabeledTensor<D>::storage_size(S &&... names) const
 {
   static_assert(sizeof...(names) == D, "Wrong labaled dimesion in LabeledTensor::storage_size");
-  return storage_size_impl(std::make_index_sequence<sizeof...(names)>(), std::forward<S>(names)...);
+  return storage_size_impl(std::make_index_sequence<D>(), std::forward<S>(names)...);
 }
 
-template <TorchSize N, TorchSize D>
+template <TorchSize D>
 template <std::size_t... I, typename... S>
 TorchShape
-LabeledTensor<N, D>::storage_size_impl(std::index_sequence<I...>, S &&... names) const
+LabeledTensor<D>::storage_size_impl(std::index_sequence<I...>, S &&... names) const
 {
   return {_axes[I]->storage_size(names)...};
 }
 
-template <TorchSize N, TorchSize D>
+template <TorchSize D>
 template <typename... S>
-BatchTensor<N>
-LabeledTensor<N, D>::operator()(S &&... names) const
+BatchTensor
+LabeledTensor<D>::operator()(S &&... names) const
 {
   static_assert(sizeof...(names) == D, "Wrong labeled dimension in LabeledTensor::operator()");
-
-  return _tensor.base_index(slice_indices(names...));
+  return base_index(slice_indices(names...));
 }
 
-template <TorchSize N, TorchSize D>
-LabeledTensor<N, D>
-LabeledTensor<N, D>::slice(TorchSize i, const std::string & name) const
-{
-  TorchSlice idx(_tensor.base_dim(), torch::indexing::Slice());
-  idx[i] = _axes[i]->indices(name);
-
-  auto new_axes = _axes;
-  new_axes[i] = &_axes[i]->subaxis(name);
-
-  return LabeledTensor<N, D>(_tensor.base_index(idx), new_axes);
-}
-
-template <TorchSize N, TorchSize D>
+template <TorchSize D>
 template <typename... S>
-LabeledTensor<N, D>
-LabeledTensor<N, D>::block(S &&... names) const
+LabeledTensor<D>
+LabeledTensor<D>::block(S &&... names) const
 {
   return block_impl(std::make_index_sequence<sizeof...(names)>(), std::forward<S>(names)...);
 }
 
-template <TorchSize N, TorchSize D>
+template <TorchSize D>
 template <std::size_t... I, typename... S>
-LabeledTensor<N, D>
-LabeledTensor<N, D>::block_impl(std::index_sequence<I...>, S &&... names) const
+LabeledTensor<D>
+LabeledTensor<D>::block_impl(std::index_sequence<I...>, S &&... names) const
 {
   TorchSlice idx = {_axes[I]->indices(names)...};
   std::vector<const LabeledAxis *> new_axes = {&_axes[I]->subaxis(names)...};
-  return LabeledTensor<N, D>(_tensor.base_index(idx), new_axes);
-}
-
-template <TorchSize N, TorchSize D>
-LabeledTensor<N, D>
-LabeledTensor<N, D>::operator-() const
-{
-  return LabeledTensor<N, D>(-_tensor.clone(), _axes);
+  return LabeledTensor<D>(_tensor.base_index(idx), new_axes);
 }
 } // namespace neml2

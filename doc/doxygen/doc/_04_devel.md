@@ -73,16 +73,16 @@ namespace neml2
 class IsotropicHardening : public Model
 {
 public:
-  static ParameterSet expected_params();
+  static OptionSet expected_options();
 
-  IsotropicHardening(const ParameterSet & params);
+  IsotropicHardening(const OptionSet & options);
 
   const LabeledAxisAccessor equivalent_plastic_strain;
   const LabeledAxisAccessor isotropic_hardening;
 };
 } // namespace neml2
 ```
-Since isotropic hardening _is a_ model, the class inherits from `Model`. The user-facing expected parameters are defined by the static method `expected_params`. NEML2 handles the parsing of user parameters and pass them to the constructor. The input variable of the model is the equivalent plastic strain, and the output variable of the model is the isotropic hardening. Their corresponding variable accessors are stored as public member variables `equivalent_plastic_strain` and `isotropic_hardening`, respectively.
+Since isotropic hardening _is a_ model, the class inherits from `Model`. The user-facing expected parameters are defined by the static method `expected_options`. NEML2 handles the parsing of user parameters and pass them to the constructor. The input variable of the model is the equivalent plastic strain, and the output variable of the model is the isotropic hardening. Their corresponding variable accessors are stored as public member variables `equivalent_plastic_strain` and `isotropic_hardening`, respectively.
 
 The expected parameters and the constructor are defined as
 ```cpp
@@ -90,21 +90,21 @@ The expected parameters and the constructor are defined as
 
 namespace neml2
 {
-ParameterSet
-IsotropicHardening::expected_params()
+OptionSet
+IsotropicHardening::expected_options()
 {
-  ParameterSet params = Model::expected_params();
-  params.set<LabeledAxisAccessor>("equivalent_plastic_strain") = {{"state", "internal", "ep"}};
-  params.set<LabeledAxisAccessor>("isotropic_hardening") = {{"state", "internal", "k"}};
-  return params;
+  OptionSet options = Model::expected_options();
+  options.set<LabeledAxisAccessor>("equivalent_plastic_strain") = {{"state", "internal", "ep"}};
+  options.set<LabeledAxisAccessor>("isotropic_hardening") = {{"state", "internal", "k"}};
+  return options;
 }
 
-IsotropicHardening::IsotropicHardening(const ParameterSet & params)
-  : Model(params),
+IsotropicHardening::IsotropicHardening(const OptionSet & options)
+  : Model(options),
     equivalent_plastic_strain(declare_input_variable<Scalar>(
-        params.get<LabeledAxisAccessor>("equivalent_plastic_strain"))),
+        options.get<LabeledAxisAccessor>("equivalent_plastic_strain"))),
     isotropic_hardening(
-        declare_output_variable<Scalar>(params.get<LabeledAxisAccessor>("isotropic_hardening")))
+        declare_output_variable<Scalar>(options.get<LabeledAxisAccessor>("isotropic_hardening")))
 {
   setup();
 }
@@ -129,9 +129,9 @@ namespace neml2
 class LinearIsotropicHardening : public IsotropicHardening
 {
 public:
-  static ParameterSet expected_params();
+  static OptionSet expected_options();
 
-  LinearIsotropicHardening(const ParameterSet & params);
+  LinearIsotropicHardening(const OptionSet & options);
 
 protected:
   /// Simple linear map between equivalent strain and hardening
@@ -152,16 +152,16 @@ namespace neml2
 {
 register_NEML2_object(LinearIsotropicHardening);
 
-ParameterSet
-LinearIsotropicHardening::expected_params()
+OptionSet
+LinearIsotropicHardening::expected_options()
 {
-  ParameterSet params = IsotropicHardening::expected_params();
-  params.set<CrossRef<Scalar>>("hardening_modulus");
-  return params;
+  OptionSet options = IsotropicHardening::expected_options();
+  options.set<CrossRef<Scalar>>("hardening_modulus");
+  return options;
 }
 
-LinearIsotropicHardening::LinearIsotropicHardening(const ParameterSet & params)
-  : IsotropicHardening(params),
+LinearIsotropicHardening::LinearIsotropicHardening(const OptionSet & options)
+  : IsotropicHardening(options),
     _K(register_crossref_model_parameter<Scalar>("K", "hardening_modulus"))
 {
 }

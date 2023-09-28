@@ -31,9 +31,9 @@ namespace neml2
 class FlowRule : public Model
 {
 public:
-  static ParameterSet expected_params();
+  static OptionSet expected_options();
 
-  FlowRule(const ParameterSet & params);
+  FlowRule(const OptionSet & options);
 
   const LabeledAxisAccessor flow_rate;
 };

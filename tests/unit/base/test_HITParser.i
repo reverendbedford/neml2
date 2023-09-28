@@ -20,5 +20,8 @@ day = 'day'
     string = 'today'
     string_vec = 'is a good ${day}'
     string_vec_vec = 'neml2 is very; useful'
+    shape = '(1,2,3,5)'
+    shape_vec = '(1,2,3) (2,3) (5)'
+    shape_vec_vec = '(2,5) () (3,3); (2,2) (1) (22)'
   []
 []

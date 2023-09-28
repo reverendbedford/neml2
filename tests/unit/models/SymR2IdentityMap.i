@@ -1,6 +1,6 @@
 [Tensors]
   [foo]
-    type = InitializedSymR2
+    type = FillSR2
     values = '1 2 3'
   []
 []
@@ -19,7 +19,7 @@
 
 [Models]
   [model]
-    type = SymR2IdentityMap
+    type = SR2IdentityMap
     from_var = 'forces/A'
     to_var = 'state/internal/C'
   []

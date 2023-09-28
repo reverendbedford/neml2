@@ -5,9 +5,6 @@ project(NEML2 LANGUAGES CXX)
 # ## Setup modules ###
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 
-# Werror, etc
-add_compile_options(-Wall -Wextra -pedantic -Werror)
-
 # Accept Release, Debug, and RelWithDebInfo, add Coverage build types
 set(CMAKE_CXX_FLAGS_COVERAGE
       "-O0 -fprofile-arcs -ftest-coverage"

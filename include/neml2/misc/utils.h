@@ -29,30 +29,245 @@
 
 namespace neml2
 {
-struct LabeledAxisAccessor;
+/**
+ * Two tensors are said to be broadcastable if
+ * 1. Base shapes are the same
+ * 2. Batch shapes are broadcastable (see sizes_broadcastable)
+ */
+template <class... T>
+bool broadcastable(T &&... tensors);
+
+/**
+ * @brief The batch dimension after broadcasting
+ *
+ * This should be as simple as the maximum batch_dim() among all arguments.
+ */
+template <class... T>
+TorchSize broadcast_batch_dim(T &&...);
+
+/**
+ * @brief A helper function to assert that all tensors are broadcastable
+ *
+ * In most cases, this assertion is necessary as libTorch will raise runtime_errors if things go
+ * wrong. Therefore, this function is just so that we can detect errors before libTorch does and
+ * emit some more mearningful error messages within the NEML2 context.
+ */
+template <class... T>
+void neml_assert_broadcastable(T &&...);
+
+/**
+ * @brief A helper function to assert (in Debug mode) that all tensors are broadcastable
+ *
+ * In most cases, this assertion is necessary as libTorch will raise runtime_errors if things go
+ * wrong. Therefore, this function is just so that we can detect errors before libTorch does and
+ * emit some more mearningful error messages within the NEML2 context.
+ */
+template <class... T>
+void neml_assert_broadcastable_dbg(T &&...);
+
+/**
+ * @brief A helper function to assert that all tensors are batch-broadcastable
+ *
+ * In most cases, this assertion is necessary as libTorch will raise runtime_errors if things go
+ * wrong. Therefore, this function is just so that we can detect errors before libTorch does and
+ * emit some more mearningful error messages within the NEML2 context.
+ */
+template <class... T>
+void neml_assert_batch_broadcastable(T &&...);
+
+/**
+ * @brief A helper function to assert that (in Debug mode) all tensors are batch-broadcastable
+ *
+ * In most cases, this assertion is necessary as libTorch will raise runtime_errors if things go
+ * wrong. Therefore, this function is just so that we can detect errors before libTorch does and
+ * emit some more mearningful error messages within the NEML2 context.
+ */
+template <class... T>
+void neml_assert_batch_broadcastable_dbg(T &&...);
 
 namespace utils
 {
-inline TorchSize
-storage_size(const TorchShape & shape)
+/// Check if all shapes are the *same*.
+template <class... T>
+bool sizes_same(T &&... shapes);
+
+/**
+ * @brief Check if the shapes are broadcastable.
+ *
+ * Shapes are said to be broadcastable if, starting from the trailing dimension and
+ * iterating backward, the dimension sizes either are equal, one of them is 1, or one of them does
+ * not exist.
+ */
+template <class... T>
+bool sizes_broadcastable(T &&... shapes);
+
+/**
+ * @brief The flattened storage size of a tensor with given shape
+ *
+ * For example,
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~cpp
+ * storage_size({}) == 1;
+ * storage_size({0}) == 0;
+ * storage_size({1}) == 1;
+ * storage_size({1, 2, 3}) == 6;
+ * storage_size({5, 1, 1}) == 5;
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ */
+TorchSize storage_size(const TorchShapeRef & shape);
+
+template <typename... S>
+TorchShape add_shapes(S &&... shape);
+
+/**
+ * @brief Pad shape \p s to dimension \p dim by prepending sizes of \p pad.
+ *
+ * @param s The original shape to pad
+ * @param dim The resulting dimension
+ * @param pad The values used to pad the shape, default to 1
+ * @return TorchShape The padded shape with dimension \p dim
+ */
+TorchShape pad_prepend(const TorchShapeRef & s, TorchSize dim, TorchSize pad = 1);
+
+/**
+ * @brief Pad shape \p s to dimension \p dim by appending sizes of \p pad.
+ *
+ * @param s The original shape to pad
+ * @param dim The resulting dimension
+ * @param pad The values used to pad the shape, default to 1
+ * @return TorchShape The padded shape with dimension \p dim
+ */
+TorchShape pad_append(const TorchShapeRef & s, TorchSize dim, TorchSize pad = 1);
+
+std::string indentation(int level, int indent = 2);
+
+template <typename T>
+std::string stringify(const T & t);
+
+namespace details
 {
-  TorchSize sz = 1;
-  return std::accumulate(shape.begin(), shape.end(), sz, std::multiplies<TorchSize>());
+template <typename... S>
+TorchShape add_shapes_impl(TorchShape &, const TorchShapeRef &, S &&...);
+
+TorchShape add_shapes_impl(TorchShape &);
+} // namespace details
+} // namespace utils
+} // namespace neml2
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation
+///////////////////////////////////////////////////////////////////////////////
+
+namespace neml2
+{
+template <class... T>
+bool
+broadcastable(T &&... tensors)
+{
+  if (!utils::sizes_same(tensors.base_sizes()...))
+    return false;
+  return utils::sizes_broadcastable(tensors.batch_sizes()...);
+}
+
+template <class... T>
+TorchSize
+broadcast_batch_dim(T &&... tensor)
+{
+  return std::max({tensor.batch_dim()...});
+}
+
+template <class... T>
+void
+neml_assert_broadcastable(T &&... tensors)
+{
+  neml_assert(broadcastable(tensors...),
+              "The ",
+              sizeof...(tensors),
+              " operands are not broadcastable. The batch shapes are ",
+              tensors.batch_sizes()...,
+              ", and the base shapes are ",
+              tensors.base_sizes()...);
+}
+
+template <class... T>
+void
+neml_assert_broadcastable_dbg(T &&... tensors)
+{
+  neml_assert_dbg(broadcastable(tensors...),
+                  "The ",
+                  sizeof...(tensors),
+                  " operands are not broadcastable. The batch shapes are ",
+                  tensors.batch_sizes()...,
+                  ", and the base shapes are ",
+                  tensors.base_sizes()...);
+}
+
+template <class... T>
+void
+neml_assert_batch_broadcastable(T &&... tensors)
+{
+  neml_assert(utils::sizes_broadcastable(tensors.batch_sizes()...),
+              "The ",
+              sizeof...(tensors),
+              " operands are not batch-broadcastable. The batch shapes are ",
+              tensors.batch_sizes()...);
+}
+
+template <class... T>
+void
+neml_assert_batch_broadcastable_dbg(T &&... tensors)
+{
+  neml_assert_dbg(utils::sizes_broadcastable(tensors.batch_sizes()...),
+                  "The ",
+                  sizeof...(tensors),
+                  " operands are not batch-broadcastable. The batch shapes are ",
+                  tensors.batch_sizes()...);
+}
+namespace utils
+{
+template <class... T>
+bool
+sizes_same(T &&... shapes)
+{
+  auto all_shapes = std::vector<TorchShapeRef>{shapes...};
+  for (size_t i = 0; i < all_shapes.size() - 1; i++)
+    if (all_shapes[i] != all_shapes[i + 1])
+      return false;
+  return true;
+}
+
+template <class... T>
+bool
+sizes_broadcastable(T &&... shapes)
+{
+  auto dim = std::max({shapes.size()...});
+  auto all_shapes_padded = std::vector<TorchShape>{pad_prepend(shapes, dim)...};
+
+  for (size_t i = 0; i < dim; i++)
+  {
+    TorchSize max_sz = 1;
+    for (const auto & s : all_shapes_padded)
+    {
+      if (max_sz == 1)
+      {
+        neml_assert_dbg(s[i] > 0, "Found a size equal or less than 0.");
+        if (s[i] > 1)
+          max_sz = s[i];
+      }
+      else if (s[i] != 1 && s[i] != max_sz)
+        return false;
+    }
+  }
+
+  return true;
 }
 
 template <typename... S>
-inline TorchShape
-add_shapes(S... shape)
+TorchShape
+add_shapes(S &&... shape)
 {
   TorchShape net;
-  (net.insert(net.end(),
-              static_cast<TorchShapeRef>(shape).begin(),
-              static_cast<TorchShapeRef>(shape).end()),
-   ...);
-  return net;
+  return details::add_shapes_impl(net, std::forward<S>(shape)...);
 }
-
-std::string indentation(int level, int indent = 2);
 
 template <typename T>
 std::string
@@ -62,5 +277,16 @@ stringify(const T & t)
   os << t;
   return os.str();
 }
+
+namespace details
+{
+template <typename... S>
+TorchShape
+add_shapes_impl(TorchShape & net, const TorchShapeRef & s, S &&... rest)
+{
+  net.insert(net.end(), s.begin(), s.end());
+  return add_shapes_impl(net, std::forward<S>(rest)...);
+}
+} // namespace details
 } // namespace utils
 } // namespace neml2

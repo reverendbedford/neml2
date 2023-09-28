@@ -1,24 +1,40 @@
 [Tensors]
   [end_time]
-    type = LogSpaceTensor
+    type = LogspaceScalar
     start = -1
     end = 5
-    steps = 20
+    nstep = 20
   []
   [times]
-    type = LinSpaceTensor
+    type = LinspaceScalar
+    start = 0
     end = end_time
-    steps = 100
+    nstep = 100
+  []
+  [sxx]
+    type = FullScalar
+    batch_shape = '(20)'
+    value = 0.1
+  []
+  [syy]
+    type = FullScalar
+    batch_shape = '(20)'
+    value = -0.05
+  []
+  [szz]
+    type = FullScalar
+    batch_shape = '(20)'
+    value = -0.05
   []
   [max_stress]
-    type = InitializedSymR2
-    values = '0.1 -0.05 -0.05'
-    nbatch = 20
+    type = FillSR2
+    values = 'sxx syy szz'
   []
   [stresses]
-    type = LinSpaceTensor
+    type = LinspaceSR2
+    start = 0
     end = max_stress
-    steps = 100
+    nstep = 100
   []
 []
 
@@ -35,7 +51,7 @@
 
 [Models]
   [force_rate]
-    type = SymR2ForceRate
+    type = SR2ForceRate
     force = 'S'
   []
   [strain_rate]
@@ -48,7 +64,7 @@
     strain = 'state/E'
   []
   [integrate]
-    type = SymR2ForwardEulerTimeIntegration
+    type = SR2ForwardEulerTimeIntegration
     variable = 'E'
   []
   [model]

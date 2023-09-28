@@ -26,30 +26,33 @@
 
 namespace neml2
 {
-BatchTensor<1>
-NonlinearSystem::residual(BatchTensor<1> x) const
+BatchTensor
+NonlinearSystem::residual(const BatchTensor & x) const
 {
-  auto r = BatchTensor<1>(torch::empty_like(x));
-  set_residual(x, &r);
+  neml_assert_dbg(x.base_dim() == 1, "The residual must be a logical vector, i.e. base_dim() == 1");
+  auto r = BatchTensor::empty_like(x);
+  assemble(x, &r);
   return r;
 }
 
-BatchTensor<1>
-NonlinearSystem::Jacobian(BatchTensor<1> x) const
+BatchTensor
+NonlinearSystem::Jacobian(const BatchTensor & x) const
 {
-  TorchSize n = x.base_sizes()[0];
-  auto J = BatchTensor<1>(x.batch_sizes(), {n, n}, x.options());
-  set_residual(x, nullptr, &J);
+  neml_assert_dbg(x.base_dim() == 1, "The residual must be a logical vector, i.e. base_dim() == 1");
+  auto n = x.base_sizes()[0];
+  auto J = BatchTensor::zeros(x.batch_sizes(), {n, n}, x.options());
+  assemble(x, nullptr, &J);
   return J;
 }
 
-std::tuple<BatchTensor<1>, BatchTensor<1>>
-NonlinearSystem::residual_and_Jacobian(BatchTensor<1> x) const
+std::tuple<BatchTensor, BatchTensor>
+NonlinearSystem::residual_and_Jacobian(const BatchTensor & x) const
 {
-  TorchSize n = x.base_sizes()[0];
-  auto r = BatchTensor<1>(torch::empty_like(x));
-  auto J = BatchTensor<1>(x.batch_sizes(), {n, n}, x.options());
-  set_residual(x, &r, &J);
+  neml_assert_dbg(x.base_dim() == 1, "The residual must be a logical vector, i.e. base_dim() == 1");
+  auto n = x.base_sizes()[0];
+  auto r = BatchTensor::empty_like(x);
+  auto J = BatchTensor::zeros(x.batch_sizes(), {n, n}, x.options());
+  assemble(x, &r, &J);
   return {r, J};
 }
 } // namespace neml2

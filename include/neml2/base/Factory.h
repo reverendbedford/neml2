@@ -26,7 +26,7 @@
 #include "neml2/base/Registry.h"
 #include "neml2/base/NEML2Object.h"
 #include "neml2/misc/error.h"
-#include "neml2/base/ParameterCollection.h"
+#include "neml2/base/OptionCollection.h"
 
 namespace neml2
 {
@@ -77,36 +77,43 @@ public:
   static T & get_object(const std::string & section, const std::string & name);
 
   /**
-   * @brief Manufacture all recognized objects in a parameter collection.
+   * @brief Provide all objects' options to the factory. The factory is ready to manufacture
+   * objects after this call, e.g., through either manufacture, get_object, or get_object_ptr.
    *
-   * @param all_params The collection of all the parameters of the objects to be manufactured.
+   * @param all_options The collection of all the options of the objects to be manufactured.
    */
-  void manufacture(const ParameterCollection & all_params);
+  static void load(const OptionCollection & all_options);
 
   /**
-   * @brief Manufacture a single `NEML2Object`.
-   *
-   * @param section The section which the object to be manufactured belongs to.
-   * @param params The parameters of the object.
+   * @brief Manufacture all recognized objects from the loaded option collection.
    */
-  void create_object(const std::string & section, const ParameterSet & params);
+  void manufacture();
+
+  /**
+   * @brief Destruct all the objects.
+   *
+   */
+  static void clear();
 
   /**
    * @brief List all the manufactured objects.
    *
    * @param os The stream to write to.
    */
-  void print(std::ostream & os = std::cout) const;
+  static void print(std::ostream & os = std::cout);
 
+protected:
   /**
-   * @brief Destruct all the objects.
+   * @brief Manufacture a single `NEML2Object`.
    *
+   * @param section The section which the object to be manufactured belongs to.
+   * @param options The options of the object.
    */
-  void clear() { _objects.clear(); }
+  void create_object(const std::string & section, const OptionSet & options);
 
 private:
-  /// The collection of all the parameters of the objects to be manufactured.
-  ParameterCollection _all_params;
+  /// The collection of all the options of the objects to be manufactured.
+  OptionCollection _all_options;
 
   // Manufactured objects. The key of the outer map is the section name, and the key of the inner
   // map is the object name.
@@ -133,10 +140,10 @@ Factory::get_object_ptr(const std::string & section, const std::string & name)
   }
 
   // Otherwise try to create it
-  for (const auto & params : factory._all_params[section])
-    if (params.first == name)
+  for (const auto & options : factory._all_options[section])
+    if (options.first == name)
     {
-      factory.create_object(section, params.second);
+      factory.create_object(section, options.second);
       break;
     }
 

@@ -31,28 +31,29 @@ using namespace neml2;
 PowerTestSystem::PowerTestSystem() {}
 
 void
-PowerTestSystem::set_residual(BatchTensor<1> x,
-                              BatchTensor<1> * residual,
-                              BatchTensor<1> * Jacobian) const
+PowerTestSystem::assemble(const BatchTensor & x,
+                          BatchTensor * residual,
+                          BatchTensor * Jacobian) const
 {
   TorchSize n = x.base_sizes()[0];
   if (residual)
     for (TorchSize i = 0; i < n; i++)
-      residual->base_index_put({i}, x.base_index({i}).pow(Scalar(i + 1, x.options())) - 1.0);
+      residual->base_index_put({i}, math::pow(x.base_index({i}), Scalar(i + 1, x.options())) - 1.0);
 
   if (Jacobian)
     for (TorchSize i = 0; i < n; i++)
-      Jacobian->base_index_put({i, i}, (i + 1) * x.base_index({i}).pow(Scalar(i, x.options())));
+      Jacobian->base_index_put({i, i},
+                               (i + 1) * math::pow(x.base_index({i}), Scalar(i, x.options())));
 }
 
-BatchTensor<1>
-PowerTestSystem::exact_solution(BatchTensor<1> x) const
+BatchTensor
+PowerTestSystem::exact_solution(const BatchTensor & x) const
 {
-  return torch::ones_like(x);
+  return BatchTensor::ones_like(x);
 }
 
-BatchTensor<1>
-PowerTestSystem::guess(BatchTensor<1> x) const
+BatchTensor
+PowerTestSystem::guess(const BatchTensor & x) const
 {
-  return BatchTensor<1>(torch::ones_like(x)) * 2.0;
+  return BatchTensor::ones_like(x) * 2.0;
 }

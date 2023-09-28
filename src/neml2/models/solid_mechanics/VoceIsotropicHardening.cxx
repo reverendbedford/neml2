@@ -28,17 +28,17 @@ namespace neml2
 {
 register_NEML2_object(VoceIsotropicHardening);
 
-ParameterSet
-VoceIsotropicHardening::expected_params()
+OptionSet
+VoceIsotropicHardening::expected_options()
 {
-  ParameterSet params = IsotropicHardening::expected_params();
-  params.set<CrossRef<Scalar>>("saturated_hardening");
-  params.set<CrossRef<Scalar>>("saturation_rate");
-  return params;
+  OptionSet options = IsotropicHardening::expected_options();
+  options.set<CrossRef<Scalar>>("saturated_hardening");
+  options.set<CrossRef<Scalar>>("saturation_rate");
+  return options;
 }
 
-VoceIsotropicHardening::VoceIsotropicHardening(const ParameterSet & params)
-  : IsotropicHardening(params),
+VoceIsotropicHardening::VoceIsotropicHardening(const OptionSet & options)
+  : IsotropicHardening(options),
     _R(register_crossref_model_parameter<Scalar>("R", "saturated_hardening")),
     _d(register_crossref_model_parameter<Scalar>("d", "saturation_rate"))
 {
@@ -53,13 +53,13 @@ VoceIsotropicHardening::set_value(const LabeledVector & in,
   auto ep = in.get<Scalar>(equivalent_plastic_strain);
 
   if (out)
-    out->set(_R * (-exp(-_d * ep) + 1.0), isotropic_hardening);
+    out->set(_R * (-math::exp(-_d * ep) + 1.0), isotropic_hardening);
 
   if (dout_din)
-    dout_din->set(_R * _d * exp(-_d * ep), isotropic_hardening, equivalent_plastic_strain);
+    dout_din->set(_R * _d * math::exp(-_d * ep), isotropic_hardening, equivalent_plastic_strain);
 
   if (d2out_din2)
-    d2out_din2->set(-_R * _d * _d * exp(-_d * ep),
+    d2out_din2->set(-_R * _d * _d * math::exp(-_d * ep),
                     isotropic_hardening,
                     equivalent_plastic_strain,
                     equivalent_plastic_strain);

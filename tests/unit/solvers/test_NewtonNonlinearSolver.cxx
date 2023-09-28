@@ -29,18 +29,18 @@
 
 using namespace neml2;
 
-TEST_CASE("Solve system correctly", "[NewtonNonlinearSolver]")
+TEST_CASE("NewtonNonlinearSolver", "[solvers]")
 {
-  TorchSize nbatch = 2;
+  TorchShape batch_sz = {2};
   TorchSize nbase = 4;
-  BatchTensor<1> x0 = torch::zeros({nbatch, nbase}, default_tensor_options);
+  auto x0 = BatchTensor::zeros(batch_sz, nbase, default_tensor_options);
 
   PowerTestSystem system;
   x0 = system.guess(x0);
 
-  ParameterSet params = NewtonNonlinearSolver::expected_params();
-  params.set<std::string>("name") = "solver";
-  NewtonNonlinearSolver solver(params);
+  OptionSet options = NewtonNonlinearSolver::expected_options();
+  options.set<std::string>("name") = "solver";
+  NewtonNonlinearSolver solver(options);
 
   auto x_res = solver.solve(system, x0);
 

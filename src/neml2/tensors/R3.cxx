@@ -23,17 +23,20 @@
 // THE SOFTWARE.
 
 #include "neml2/tensors/R3.h"
+#include "neml2/tensors/Scalar.h"
+#include "neml2/tensors/Vec.h"
+#include "neml2/tensors/R2.h"
 
 namespace neml2
 {
-
 R3
 R3::levi_civita(const torch::TensorOptions & options)
 {
-  return R3(torch::tensor({{{{0, 0, 0}, {0, 0, 1}, {0, -1, 0}},
-                            {{0, 0, -1}, {0, 0, 0}, {1, 0, 0}},
-                            {{0, 1, 0}, {-1, 0, 0}, {0, 0, 0}}}},
-                          options));
+  return R3(torch::tensor({{{0, 0, 0}, {0, 0, 1}, {0, -1, 0}},
+                           {{0, 0, -1}, {0, 0, 0}, {1, 0, 0}},
+                           {{0, 1, 0}, {-1, 0, 0}, {0, 0, 0}}},
+                          options),
+            0);
 }
 
 Scalar
@@ -45,7 +48,7 @@ R3::operator()(TorchSize i, TorchSize j, TorchSize k) const
 R2
 R3::contract_k(const Vec & v) const
 {
-  return einsum({*this, v}, {"ijk", "k"});
+  neml_assert_batch_broadcastable_dbg(*this, v);
+  return R2(torch::einsum("...ijk,...k", {*this, v}), broadcast_batch_dim(*this, v));
 }
-
 } // namespace neml2

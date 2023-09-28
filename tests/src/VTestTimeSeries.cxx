@@ -29,28 +29,28 @@ namespace neml2
 {
 register_NEML2_object(VTestTimeSeries);
 
-ParameterSet
-VTestTimeSeries::expected_params()
+OptionSet
+VTestTimeSeries::expected_options()
 {
-  ParameterSet params = NEML2Object::expected_params();
-  params.set<std::string>("vtest");
-  params.set<std::string>("variable");
-  params.set<std::string>("variable_type");
-  return params;
+  OptionSet options = NEML2Object::expected_options();
+  options.set<std::string>("vtest");
+  options.set<std::string>("variable");
+  options.set<std::string>("variable_type");
+  return options;
 }
 
-VTestTimeSeries::VTestTimeSeries(const ParameterSet & params)
-  : NEML2Object(params),
-    torch::Tensor(init(params))
+VTestTimeSeries::VTestTimeSeries(const OptionSet & options)
+  : NEML2Object(options),
+    torch::Tensor(init(options))
 {
 }
 
 torch::Tensor
-VTestTimeSeries::init(const ParameterSet & params) const
+VTestTimeSeries::init(const OptionSet & options) const
 {
-  VTestParser table(params.get<std::string>("vtest"));
-  auto var = params.get<std::string>("variable");
-  auto var_type = params.get<std::string>("variable_type");
+  VTestParser table(options.get<std::string>("vtest"));
+  auto var = options.get<std::string>("variable");
+  auto var_type = options.get<std::string>("variable_type");
 
   if (var_type == "SCALAR")
     return table[var].unsqueeze(-1);
@@ -62,7 +62,7 @@ VTestTimeSeries::init(const ParameterSet & params) const
     auto val_yz = table[var + "_yz"].unsqueeze(-1);
     auto val_xz = table[var + "_xz"].unsqueeze(-1);
     auto val_xy = table[var + "_xy"].unsqueeze(-1);
-    // The vtest format provides SymR2 in Mandel notation already
+    // The vtest format provides SR2 in Mandel notation already
     return torch::stack({val_xx, val_yy, val_zz, val_yz, val_xz, val_xy}, -1);
   }
 

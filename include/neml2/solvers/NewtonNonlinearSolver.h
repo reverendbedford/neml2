@@ -37,16 +37,15 @@ namespace neml2
 class NewtonNonlinearSolver : public NonlinearSolver
 {
 public:
-  static ParameterSet expected_params();
+  static OptionSet expected_options();
 
   using NonlinearSolver::NonlinearSolver;
 
-  virtual BatchTensor<1> solve(const NonlinearSystem & system,
-                               const BatchTensor<1> & x0) const override;
+  virtual BatchTensor solve(const NonlinearSystem & system, const BatchTensor & x0) const override;
 
 protected:
   /// Update the guess given the current residual and Jacobian.
-  virtual void update(BatchTensor<1> x, BatchTensor<1> R, BatchTensor<1> J) const;
+  virtual void update(BatchTensor & x, const BatchTensor & R, const BatchTensor & J) const;
 
   /**
    * @brief Check for convergence. The current iteration is said to be converged if the residual
@@ -59,6 +58,6 @@ protected:
    * @return true Converged
    * @return false Not converged
    */
-  virtual bool converged(size_t itr, BatchTensor<1> nR, BatchTensor<1> nR0) const;
+  virtual bool converged(size_t itr, const torch::Tensor & nR, const torch::Tensor & nR0) const;
 };
 } // namespace neml2

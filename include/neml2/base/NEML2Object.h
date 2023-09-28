@@ -25,7 +25,7 @@
 
 #include <torch/torch.h>
 
-#include "neml2/base/ParameterInterface.h"
+#include "neml2/base/OptionInterface.h"
 
 namespace neml2
 {
@@ -36,16 +36,16 @@ namespace neml2
  * The registry and the factory relies on polymophism to collect and resolve all types at run-time.
  * See `Registry` and `Factory` for more details.
  */
-class NEML2Object : public torch::nn::Module, public ParameterInterface
+class NEML2Object : public torch::nn::Module, public OptionInterface
 {
 public:
-  static ParameterSet expected_params();
+  static OptionSet expected_options();
 
   /**
    * @brief Construct a new NEML2Object object
    *
-   * @param params The set of parameters extracted from the input file
+   * @param options The set of options extracted from the input file
    */
-  NEML2Object(const ParameterSet & params);
+  NEML2Object(const OptionSet & options);
 };
 } // namespace neml2

@@ -23,29 +23,29 @@
 // THE SOFTWARE.
 
 #include "neml2/models/solid_mechanics/AssociativeKinematicPlasticHardening.h"
-#include "neml2/tensors/SymSymR4.h"
+#include "neml2/tensors/SSR4.h"
 
 namespace neml2
 {
 register_NEML2_object(AssociativeKinematicPlasticHardening);
 
-ParameterSet
-AssociativeKinematicPlasticHardening::expected_params()
+OptionSet
+AssociativeKinematicPlasticHardening::expected_options()
 {
-  ParameterSet params = FlowRule::expected_params();
-  params.set<LabeledAxisAccessor>("kinematic_hardening_direction") = {{"state", "internal", "NX"}};
-  params.set<LabeledAxisAccessor>("kinematic_plastic_strain_rate") = {
+  OptionSet options = FlowRule::expected_options();
+  options.set<LabeledAxisAccessor>("kinematic_hardening_direction") = {{"state", "internal", "NX"}};
+  options.set<LabeledAxisAccessor>("kinematic_plastic_strain_rate") = {
       {"state", "internal", "Kp_rate"}};
-  return params;
+  return options;
 }
 
 AssociativeKinematicPlasticHardening::AssociativeKinematicPlasticHardening(
-    const ParameterSet & params)
-  : FlowRule(params),
-    kinematic_hardening_direction(declare_input_variable<SymR2>(
-        params.get<LabeledAxisAccessor>("kinematic_hardening_direction"))),
-    kinematic_plastic_strain_rate(declare_output_variable<SymR2>(
-        params.get<LabeledAxisAccessor>("kinematic_plastic_strain_rate")))
+    const OptionSet & options)
+  : FlowRule(options),
+    kinematic_hardening_direction(declare_input_variable<SR2>(
+        options.get<LabeledAxisAccessor>("kinematic_hardening_direction"))),
+    kinematic_plastic_strain_rate(declare_output_variable<SR2>(
+        options.get<LabeledAxisAccessor>("kinematic_plastic_strain_rate")))
 {
   setup();
 }
@@ -62,14 +62,14 @@ AssociativeKinematicPlasticHardening::set_value(const LabeledVector & in,
   // Kp_dot = - gamma_dot * NX
   //     NX = df/dX
   const auto gamma_dot = in.get<Scalar>(flow_rate);
-  const auto NX = in.get<SymR2>(kinematic_hardening_direction);
+  const auto NX = in.get<SR2>(kinematic_hardening_direction);
 
   if (out)
     out->set(-gamma_dot * NX, kinematic_plastic_strain_rate);
 
   if (dout_din || d2out_din2)
   {
-    auto I = SymR2::identity_map(options);
+    auto I = SR2::identity_map(options);
 
     if (dout_din)
     {

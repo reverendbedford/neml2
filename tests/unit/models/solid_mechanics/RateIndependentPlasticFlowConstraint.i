@@ -2,17 +2,17 @@
   [fp]
     type = Scalar
     values = '-2 -1 0 1 2'
-    batch_shape = '5'
+    batch_shape = '(5)'
   []
   [gamma_rate]
     type = Scalar
     values = '5 4 3 2 1'
-    batch_shape = '5'
+    batch_shape = '(5)'
   []
   [rp]
     type = Scalar
     values = '5 4 0 1 2'
-    batch_shape = '5'
+    batch_shape = '(5)'
   []
 []
 

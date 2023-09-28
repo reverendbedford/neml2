@@ -36,14 +36,14 @@ namespace neml2
 class TransientDriver : public Driver
 {
 public:
-  static ParameterSet expected_params();
+  static OptionSet expected_options();
 
   /**
    * @brief Construct a new TransientDriver object
    *
-   * @param params The parameters extracted from the input file
+   * @param options The options extracted from the input file
    */
-  TransientDriver(const ParameterSet & params);
+  TransientDriver(const OptionSet & options);
 
   bool run() override;
 
@@ -88,7 +88,7 @@ protected:
   const torch::Device _device;
 
   /// The current time
-  torch::Tensor _time;
+  Scalar _time;
   /// The current step count
   TorchSize _step_count;
   /// LabeledAxisAccessor for the time
@@ -110,9 +110,9 @@ protected:
   const bool _show_params;
 
   /// Inputs from all time steps
-  LabeledTensor<2, 1> _result_in;
+  LabeledVector _result_in;
   /// Outputs from all time steps
-  LabeledTensor<2, 1> _result_out;
+  LabeledVector _result_out;
 
 private:
   void output_pt(const std::filesystem::path & out) const;

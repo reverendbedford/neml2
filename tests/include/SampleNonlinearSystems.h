@@ -29,8 +29,8 @@
 class TestNonlinearSystem : public neml2::NonlinearSystem
 {
 public:
-  virtual neml2::BatchTensor<1> exact_solution(neml2::BatchTensor<1> x) const = 0;
-  virtual neml2::BatchTensor<1> guess(neml2::BatchTensor<1> x) const = 0;
+  virtual neml2::BatchTensor exact_solution(const neml2::BatchTensor & x) const = 0;
+  virtual neml2::BatchTensor guess(const neml2::BatchTensor & x) const = 0;
 };
 
 class PowerTestSystem : public TestNonlinearSystem
@@ -38,9 +38,9 @@ class PowerTestSystem : public TestNonlinearSystem
 public:
   PowerTestSystem();
 
-  virtual void set_residual(neml2::BatchTensor<1> x,
-                            neml2::BatchTensor<1> * residual,
-                            neml2::BatchTensor<1> * Jacobian = nullptr) const;
-  virtual neml2::BatchTensor<1> exact_solution(neml2::BatchTensor<1> x) const;
-  virtual neml2::BatchTensor<1> guess(neml2::BatchTensor<1> x) const;
+  virtual void assemble(const neml2::BatchTensor & x,
+                        neml2::BatchTensor * residual,
+                        neml2::BatchTensor * Jacobian = nullptr) const;
+  virtual neml2::BatchTensor exact_solution(const neml2::BatchTensor & x) const;
+  virtual neml2::BatchTensor guess(const neml2::BatchTensor & x) const;
 };

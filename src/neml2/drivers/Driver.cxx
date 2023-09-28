@@ -26,17 +26,17 @@
 
 namespace neml2
 {
-ParameterSet
-Driver::expected_params()
+OptionSet
+Driver::expected_options()
 {
-  ParameterSet params = NEML2Object::expected_params();
-  params.set<bool>("verbose") = false;
-  return params;
+  OptionSet options = NEML2Object::expected_options();
+  options.set<bool>("verbose") = false;
+  return options;
 }
 
-Driver::Driver(const ParameterSet & params)
-  : NEML2Object(params),
-    _verbose(params.get<bool>("verbose"))
+Driver::Driver(const OptionSet & options)
+  : NEML2Object(options),
+    _verbose(options.get<bool>("verbose"))
 {
 }
 } // namespace neml2

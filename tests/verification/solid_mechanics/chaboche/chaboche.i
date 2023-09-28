@@ -49,7 +49,7 @@
     saturation_rate = 1.2
   []
   [kinharden]
-    type = SymR2SumModel
+    type = SR2SumModel
     from_var = 'state/internal/X1 state/internal/X2'
     to_var = 'state/internal/X'
   []
@@ -60,7 +60,7 @@
     type = OverStress
   []
   [vonmises]
-    type = SymR2Invariant
+    type = SR2Invariant
     invariant_type = 'VONMISES'
     tensor = 'state/internal/O'
     invariant = 'state/internal/sm'
@@ -109,7 +109,7 @@
     type = AssociativePlasticFlow
   []
   [Erate]
-    type = SymR2ForceRate
+    type = SR2ForceRate
     force = 'E'
   []
   [Eerate]
@@ -127,15 +127,15 @@
     variable = 'internal/ep'
   []
   [integrate_X1]
-    type = SymR2BackwardEulerTimeIntegration
+    type = SR2BackwardEulerTimeIntegration
     variable = 'internal/X1'
   []
   [integrate_X2]
-    type = SymR2BackwardEulerTimeIntegration
+    type = SR2BackwardEulerTimeIntegration
     variable = 'internal/X2'
   []
   [integrate_stress]
-    type = SymR2BackwardEulerTimeIntegration
+    type = SR2BackwardEulerTimeIntegration
     variable = 'S'
   []
   [implicit_rate]

@@ -23,32 +23,32 @@
 // THE SOFTWARE.
 
 #include "neml2/models/solid_mechanics/TotalStrain.h"
-#include "neml2/tensors/SymSymR4.h"
+#include "neml2/tensors/SSR4.h"
 
 namespace neml2
 {
 register_NEML2_object(TotalStrain);
 
-ParameterSet
-TotalStrain::expected_params()
+OptionSet
+TotalStrain::expected_options()
 {
-  ParameterSet params = Model::expected_params();
-  params.set<LabeledAxisAccessor>("elastic_strain") = {{"state", "internal", "Ee"}};
-  params.set<LabeledAxisAccessor>("plastic_strain") = {{"state", "internal", "Ep"}};
-  params.set<LabeledAxisAccessor>("total_strain") = {{"state", "E"}};
-  params.set<bool>("rate_form") = false;
-  return params;
+  OptionSet options = Model::expected_options();
+  options.set<LabeledAxisAccessor>("elastic_strain") = {{"state", "internal", "Ee"}};
+  options.set<LabeledAxisAccessor>("plastic_strain") = {{"state", "internal", "Ep"}};
+  options.set<LabeledAxisAccessor>("total_strain") = {{"state", "E"}};
+  options.set<bool>("rate_form") = false;
+  return options;
 }
 
-TotalStrain::TotalStrain(const ParameterSet & params)
-  : Model(params),
-    _rate_form(params.get<bool>("rate_form")),
-    elastic_strain(declare_input_variable<SymR2>(
-        params.get<LabeledAxisAccessor>("elastic_strain").with_suffix(_rate_form ? "_rate" : ""))),
-    plastic_strain(declare_input_variable<SymR2>(
-        params.get<LabeledAxisAccessor>("plastic_strain").with_suffix(_rate_form ? "_rate" : ""))),
-    total_strain(declare_output_variable<SymR2>(
-        params.get<LabeledAxisAccessor>("total_strain").with_suffix(_rate_form ? "_rate" : "")))
+TotalStrain::TotalStrain(const OptionSet & options)
+  : Model(options),
+    _rate_form(options.get<bool>("rate_form")),
+    elastic_strain(declare_input_variable<SR2>(
+        options.get<LabeledAxisAccessor>("elastic_strain").with_suffix(_rate_form ? "_rate" : ""))),
+    plastic_strain(declare_input_variable<SR2>(
+        options.get<LabeledAxisAccessor>("plastic_strain").with_suffix(_rate_form ? "_rate" : ""))),
+    total_strain(declare_output_variable<SR2>(
+        options.get<LabeledAxisAccessor>("total_strain").with_suffix(_rate_form ? "_rate" : "")))
 {
   this->setup();
 }
@@ -60,11 +60,11 @@ TotalStrain::set_value(const LabeledVector & in,
                        LabeledTensor3D * d2out_din2) const
 {
   if (out)
-    out->set(in.get<SymR2>(elastic_strain) + in.get<SymR2>(plastic_strain), total_strain);
+    out->set(in.get<SR2>(elastic_strain) + in.get<SR2>(plastic_strain), total_strain);
 
   if (dout_din)
   {
-    auto I = SymR2::identity_map(in.options());
+    auto I = SR2::identity_map(in.options());
     dout_din->set(I, total_strain, elastic_strain);
     dout_din->set(I, total_strain, plastic_strain);
   }

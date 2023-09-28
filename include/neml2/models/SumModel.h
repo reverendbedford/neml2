@@ -32,9 +32,9 @@ template <typename T>
 class SumModel : public Model
 {
 public:
-  static ParameterSet expected_params();
+  static OptionSet expected_options();
 
-  SumModel(const ParameterSet & params);
+  SumModel(const OptionSet & options);
 
   const LabeledAxisAccessor to;
   std::vector<LabeledAxisAccessor> from;
@@ -47,5 +47,5 @@ protected:
 };
 
 typedef SumModel<Scalar> ScalarSumModel;
-typedef SumModel<SymR2> SymR2SumModel;
+typedef SumModel<SR2> SR2SumModel;
 } // namespace neml2

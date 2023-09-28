@@ -35,6 +35,13 @@ ParserException::what() const throw()
 
 namespace utils
 {
+std::stringstream &
+operator>>(std::stringstream & in, torch::Tensor & /**/)
+{
+  throw ParserException("Cannot parse torch::Tensor");
+  return in;
+}
+
 std::string
 demangle(const char * name)
 {
@@ -76,7 +83,13 @@ trim(const std::string & str, const std::string & white_space)
 }
 
 bool
-ends_with(std::string_view str, std::string_view suffix)
+start_with(std::string_view str, std::string_view prefix)
+{
+  return str.size() >= prefix.size() && 0 == str.compare(0, prefix.size(), prefix);
+}
+
+bool
+end_with(std::string_view str, std::string_view suffix)
 {
   return str.size() >= suffix.size() &&
          0 == str.compare(str.size() - suffix.size(), suffix.size(), suffix);
@@ -99,29 +112,26 @@ template <>
 LabeledAxisAccessor
 parse<LabeledAxisAccessor>(const std::string & raw_str)
 {
-  auto tokens = split(raw_str, "/");
+  auto tokens = split(raw_str, "/ \t\n\v\f\r");
   return LabeledAxisAccessor{tokens};
 }
 
 template <>
-CrossRef<torch::Tensor>
-parse<CrossRef<torch::Tensor>>(const std::string & raw_str)
+TorchShape
+parse<TorchShape>(const std::string & raw_str)
 {
-  return CrossRef<torch::Tensor>(raw_str);
-}
+  if (!start_with(raw_str, "(") || !end_with(raw_str, ")"))
+    throw ParserException("Trying to parse " + raw_str +
+                          " as a shape, but a shape must start with '(' and end with ')'");
 
-template <>
-CrossRef<Scalar>
-parse<CrossRef<Scalar>>(const std::string & raw_str)
-{
-  return CrossRef<Scalar>(raw_str);
-}
+  auto inner = trim(raw_str, "() \t\n\v\f\r");
+  auto tokens = split(inner, ", \t\n\v\f\r");
 
-template <>
-CrossRef<SymR2>
-parse<CrossRef<SymR2>>(const std::string & raw_str)
-{
-  return CrossRef<SymR2>(raw_str);
+  TorchShape shape;
+  for (auto & token : tokens)
+    shape.push_back(parse<TorchSize>(token));
+
+  return shape;
 }
 } // namespace utils
 } // namespace neml2

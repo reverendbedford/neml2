@@ -12,11 +12,11 @@
 
 [Tensors]
   [S]
-    type = InitializedSymR2
+    type = FillSR2
     values = '50 -10 20 40 30 -60'
   []
   [M]
-    type = InitializedSymR2
+    type = FillSR2
     values = '50 -10 20 40 30 -60'
   []
 []

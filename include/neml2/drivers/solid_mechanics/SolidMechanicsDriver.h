@@ -35,14 +35,14 @@ namespace neml2
 class SolidMechanicsDriver : public TransientDriver
 {
 public:
-  static ParameterSet expected_params();
+  static OptionSet expected_options();
 
   /**
    * @brief Construct a new SolidMechanicsDriver object
    *
-   * @param params The parameters extracted from the input file
+   * @param options The options extracted from the input file
    */
-  SolidMechanicsDriver(const ParameterSet & params);
+  SolidMechanicsDriver(const OptionSet & options);
 
 protected:
   virtual void update_forces() override;
@@ -60,7 +60,7 @@ protected:
    * The value of the driving force, depending on `_control` this is either the prescribed strain or
    * the prescribed stress.
    */
-  torch::Tensor _driving_force;
+  SR2 _driving_force;
 
   /**
    * The name of the driving force, depending on `_control` this is either the prescribed strain or

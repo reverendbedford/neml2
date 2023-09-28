@@ -29,7 +29,7 @@
 class SampleRateModel : public neml2::Model
 {
 public:
-  SampleRateModel(const neml2::ParameterSet & params);
+  SampleRateModel(const neml2::OptionSet & options);
 
 protected:
   virtual void set_value(const neml2::LabeledVector & in,

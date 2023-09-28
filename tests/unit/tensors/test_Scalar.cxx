@@ -24,163 +24,115 @@
 
 #include <catch2/catch.hpp>
 
-#include "neml2/tensors/Scalar.h"
+#include "utils.h"
+#include "neml2/tensors/tensors.h"
 
 using namespace neml2;
 
-TEST_CASE("Unbatched Scalar", "[Scalar]")
+TEST_CASE("Scalar", "[tensors]")
 {
-  auto a = Scalar(2.5, default_tensor_options);
+  torch::manual_seed(42);
+  const auto & DTO = default_tensor_options;
 
-  SECTION("construct from plain data type")
+  TorchShape B = {5, 3, 1, 2}; // batch shape
+
+  SECTION("class Scalar")
   {
-    torch::Tensor correct(torch::tensor({{2.5}}, default_tensor_options));
-    REQUIRE(torch::allclose(a, correct));
+    SECTION("Scalar")
+    {
+      Scalar a(3.3, DTO);
+      auto b = Scalar::full(3.3, DTO);
+      REQUIRE(torch::allclose(a, b));
+    }
+
+    SECTION("identity_map")
+    {
+      auto I = Scalar::identity_map(DTO);
+      auto a = Scalar(torch::rand(B, DTO));
+
+      auto apply = [](const BatchTensor & x) { return x; };
+      auto da_da = finite_differencing_derivative(apply, a);
+
+      REQUIRE(torch::allclose(I, da_da));
+    }
   }
 
-  SECTION("+ unbatched Scalar")
+  SECTION("operator+")
   {
-    auto b = Scalar(3.1, default_tensor_options);
-    auto result = a + b;
-    auto correct = Scalar(5.6, default_tensor_options);
-    REQUIRE(torch::allclose(result, correct));
+    Scalar a(3.3, DTO);
+    auto b = BatchTensor::full({3, 2, 1}, -5.2, DTO);
+    auto c = BatchTensor::full({3, 2, 1}, -1.9, DTO);
+
+    REQUIRE(torch::allclose(a + b, c));
+    REQUIRE(torch::allclose(a.batch_expand(B) + b, c.batch_expand(B)));
+    REQUIRE(torch::allclose(a + b.batch_expand(B), c.batch_expand(B)));
+    REQUIRE(torch::allclose(a.batch_expand(B) + b.batch_expand(B), c.batch_expand(B)));
+
+    REQUIRE(torch::allclose(b + a, c));
+    REQUIRE(torch::allclose(b.batch_expand(B) + a, c.batch_expand(B)));
+    REQUIRE(torch::allclose(b + a.batch_expand(B), c.batch_expand(B)));
+    REQUIRE(torch::allclose(b.batch_expand(B) + a.batch_expand(B), c.batch_expand(B)));
   }
 
-  SECTION("+ batched Scalar")
+  SECTION("operator-")
   {
-    TorchSize nbatch = 5;
-    auto b = Scalar(3.1, default_tensor_options).batch_expand(nbatch);
-    auto result = a + b;
-    auto correct = Scalar(5.6, default_tensor_options).batch_expand(nbatch);
-    REQUIRE(torch::allclose(result, correct));
+    Scalar a(3.3, DTO);
+    auto b = BatchTensor::full({3, 2, 1}, -5.2, DTO);
+    auto c = BatchTensor::full({3, 2, 1}, 8.5, DTO);
+
+    REQUIRE(torch::allclose(a - b, c));
+    REQUIRE(torch::allclose(a.batch_expand(B) - b, c.batch_expand(B)));
+    REQUIRE(torch::allclose(a - b.batch_expand(B), c.batch_expand(B)));
+    REQUIRE(torch::allclose(a.batch_expand(B) - b.batch_expand(B), c.batch_expand(B)));
+
+    REQUIRE(torch::allclose(b - a, -c));
+    REQUIRE(torch::allclose(b.batch_expand(B) - a, -c.batch_expand(B)));
+    REQUIRE(torch::allclose(b - a.batch_expand(B), -c.batch_expand(B)));
+    REQUIRE(torch::allclose(b.batch_expand(B) - a.batch_expand(B), -c.batch_expand(B)));
   }
 
-  SECTION("- unbatched Scalar")
+  SECTION("operator*")
   {
-    auto b = Scalar(3.1, default_tensor_options);
-    auto result = a - b;
-    auto correct = Scalar(-0.6, default_tensor_options);
-    REQUIRE(torch::allclose(result, correct));
+    Scalar a(3.3, DTO);
+    auto b = BatchTensor::full({3, 2, 1}, -5.2, DTO);
+    auto c = BatchTensor::full({3, 2, 1}, -17.16, DTO);
+
+    REQUIRE(torch::allclose(a * b, c));
+    REQUIRE(torch::allclose(a.batch_expand(B) * b, c.batch_expand(B)));
+    REQUIRE(torch::allclose(a * b.batch_expand(B), c.batch_expand(B)));
+    REQUIRE(torch::allclose(a.batch_expand(B) * b.batch_expand(B), c.batch_expand(B)));
+
+    REQUIRE(torch::allclose(b * a, c));
+    REQUIRE(torch::allclose(b.batch_expand(B) * a, c.batch_expand(B)));
+    REQUIRE(torch::allclose(b * a.batch_expand(B), c.batch_expand(B)));
+    REQUIRE(torch::allclose(b.batch_expand(B) * a.batch_expand(B), c.batch_expand(B)));
   }
 
-  SECTION("- batched Scalar")
+  SECTION("operator/")
   {
-    int nbatch = 5;
-    auto b = Scalar(3.1, default_tensor_options).batch_expand(nbatch);
-    auto result = a - b;
-    auto correct = Scalar(-0.6, default_tensor_options).batch_expand(nbatch);
-    REQUIRE(torch::allclose(result, correct));
+    Scalar a(3.3, DTO);
+    auto b = BatchTensor::full({3, 2, 1}, -5.2, DTO);
+    auto c = BatchTensor::full({3, 2, 1}, -0.6346153846153846, DTO);
+
+    REQUIRE(torch::allclose(a / b, c));
+    REQUIRE(torch::allclose(a.batch_expand(B) / b, c.batch_expand(B)));
+    REQUIRE(torch::allclose(a / b.batch_expand(B), c.batch_expand(B)));
+    REQUIRE(torch::allclose(a.batch_expand(B) / b.batch_expand(B), c.batch_expand(B)));
+
+    REQUIRE(torch::allclose(b / a, 1.0 / c));
+    REQUIRE(torch::allclose(b.batch_expand(B) / a, 1.0 / c.batch_expand(B)));
+    REQUIRE(torch::allclose(b / a.batch_expand(B), 1.0 / c.batch_expand(B)));
+    REQUIRE(torch::allclose(b.batch_expand(B) / a.batch_expand(B), 1.0 / c.batch_expand(B)));
   }
 
-  SECTION("* unbatched Scalar")
+  SECTION("pow")
   {
-    auto b = Scalar(3.1, default_tensor_options);
-    auto result = a * b;
-    auto correct = Scalar(2.5 * 3.1, default_tensor_options);
-    REQUIRE(torch::allclose(result, correct));
+    Scalar a(3.3, DTO);
+    auto b = BatchTensor::full({2, 2}, 2.0, DTO);
+    auto c = BatchTensor::full({2, 2}, 9.849155306759329, DTO);
+    REQUIRE(torch::allclose(math::pow(b, a), c));
+    REQUIRE(torch::allclose(math::pow(b.batch_expand(B), a), c.batch_expand(B)));
+    REQUIRE(torch::allclose(math::pow(b, a.batch_expand(B)), c.batch_expand(B)));
+    REQUIRE(torch::allclose(math::pow(b.batch_expand(B), a.batch_expand(B)), c.batch_expand(B)));
   }
-
-  SECTION("* batched Scalar")
-  {
-    int nbatch = 5;
-    auto b = Scalar(3.1, default_tensor_options).batch_expand(nbatch);
-    auto result = a * b;
-    auto correct = Scalar(2.5 * 3.1, default_tensor_options).batch_expand(nbatch);
-    REQUIRE(torch::allclose(result, correct));
-  }
-
-  SECTION("/ unbatched Scalar")
-  {
-    auto b = Scalar(3.1, default_tensor_options);
-    auto result = a / b;
-    auto correct = Scalar(2.5 / 3.1, default_tensor_options);
-    REQUIRE(torch::allclose(result, correct));
-  }
-
-  SECTION("/ batched Scalar")
-  {
-    int nbatch = 5;
-    auto b = Scalar(3.1, default_tensor_options).batch_expand(nbatch);
-    auto result = a / b;
-    auto correct = Scalar(2.5 / 3.1, default_tensor_options).batch_expand(nbatch);
-    REQUIRE(torch::allclose(result, correct));
-  }
-}
-
-TEST_CASE("Batched Scalar", "[Scalar]")
-{
-  int nbatch = 5;
-  Scalar a = Scalar(2.5, default_tensor_options).batch_expand(nbatch);
-
-  SECTION("+ unbatched Scalar")
-  {
-    auto b = Scalar(3.1, default_tensor_options);
-    auto result = a + b;
-    auto correct = Scalar(5.6, default_tensor_options).batch_expand(nbatch);
-    REQUIRE(torch::allclose(result, correct));
-  }
-
-  SECTION("+ batched Scalar")
-  {
-    Scalar b = Scalar(3.1, default_tensor_options).batch_expand(nbatch);
-    auto result = a + b;
-    auto correct = Scalar(5.6, default_tensor_options).batch_expand(nbatch);
-    REQUIRE(torch::allclose(result, correct));
-  }
-
-  SECTION("- unbatched Scalar")
-  {
-    auto b = Scalar(3.1, default_tensor_options);
-    auto result = a - b;
-    auto correct = Scalar(-0.6, default_tensor_options).batch_expand(nbatch);
-    REQUIRE(torch::allclose(result, correct));
-  }
-
-  SECTION("- batched Scalar")
-  {
-    Scalar b = Scalar(3.1, default_tensor_options).batch_expand(nbatch);
-    auto result = a - b;
-    auto correct = Scalar(-0.6, default_tensor_options).batch_expand(nbatch);
-    REQUIRE(torch::allclose(result, correct));
-  }
-
-  SECTION("* unbatched Scalar")
-  {
-    auto b = Scalar(3.1, default_tensor_options);
-    auto result = a * b;
-    auto correct = Scalar(2.5 * 3.1, default_tensor_options).batch_expand(nbatch);
-    REQUIRE(torch::allclose(result, correct));
-  }
-
-  SECTION("* batched Scalar")
-  {
-    Scalar b = Scalar(3.1, default_tensor_options).batch_expand(nbatch);
-    auto result = a * b;
-    auto correct = Scalar(2.5 * 3.1, default_tensor_options).batch_expand(nbatch);
-    REQUIRE(torch::allclose(result, correct));
-  }
-
-  SECTION("/ unbatched Scalar")
-  {
-    auto b = Scalar(3.1, default_tensor_options);
-    auto result = a / b;
-    auto correct = Scalar(2.5 / 3.1, default_tensor_options).batch_expand(nbatch);
-    REQUIRE(torch::allclose(result, correct));
-  }
-
-  SECTION("/ batched Scalar")
-  {
-    auto b = Scalar(3.1, default_tensor_options).batch_expand(nbatch);
-    auto result = a / b;
-    auto correct = Scalar(2.5 / 3.1, default_tensor_options).batch_expand(nbatch);
-    REQUIRE(torch::allclose(result, correct));
-  }
-}
-
-TEST_CASE("Scalar can't be created with semantically non-scalar tensors", "[Scalar]")
-{
-#ifndef NDEBUG
-  // This can't happen as the tensor dimension is not (1,)
-  REQUIRE_THROWS(Scalar(torch::zeros({2, 2})));
-#endif
 }

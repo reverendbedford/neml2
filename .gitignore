@@ -26,3 +26,5 @@ doc/html
 *.dylib
 *.pt
 !**/gold/*.pt
+syntax.yml
+tests/syntax.yml

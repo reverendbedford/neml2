@@ -47,13 +47,18 @@ private:
 
 namespace utils
 {
+/// This is a dummy to prevent compilers whining about not know how to >> torch::Tensor
+std::stringstream & operator>>(std::stringstream & in, torch::Tensor &);
+
 std::string demangle(const char * name);
 
 std::vector<std::string> split(const std::string & str, const std::string & delims);
 
 std::string trim(const std::string & str, const std::string & white_space = " \t\n\v\f\r");
 
-bool ends_with(std::string_view str, std::string_view suffix);
+bool start_with(std::string_view str, std::string_view prefix);
+
+bool end_with(std::string_view str, std::string_view suffix);
 
 template <typename T>
 T
@@ -63,7 +68,7 @@ parse(const std::string & raw_str)
   std::stringstream ss(trim(raw_str));
   ss >> val;
   if (ss.fail() || !ss.eof())
-    throw ParserException("parameter parsing failed");
+    throw ParserException("Failed to parse '" + raw_str + "' as a " + demangle(typeid(T).name()));
   return val;
 }
 
@@ -93,13 +98,9 @@ parse_vector_vector(const std::string & raw_str)
 template <>
 bool parse<bool>(const std::string & raw_str);
 template <>
+TorchShape parse<TorchShape>(const std::string & raw_str);
+template <>
 LabeledAxisAccessor parse<LabeledAxisAccessor>(const std::string & raw_str);
-template <>
-CrossRef<torch::Tensor> parse<CrossRef<torch::Tensor>>(const std::string & raw_str);
-template <>
-CrossRef<Scalar> parse<CrossRef<Scalar>>(const std::string & raw_str);
-template <>
-CrossRef<SymR2> parse<CrossRef<SymR2>>(const std::string & raw_str);
 // @}
 } // namespace utils
 } // namespace neml2

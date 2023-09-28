@@ -27,29 +27,30 @@
 namespace neml2
 {
 register_NEML2_object(ScalarBackwardEulerTimeIntegration);
-register_NEML2_object(SymR2BackwardEulerTimeIntegration);
+register_NEML2_object(SR2BackwardEulerTimeIntegration);
 
 template <typename T>
-ParameterSet
-BackwardEulerTimeIntegration<T>::expected_params()
+OptionSet
+BackwardEulerTimeIntegration<T>::expected_options()
 {
-  ParameterSet params = Model::expected_params();
-  params.set<LabeledAxisAccessor>("variable");
-  params.set<LabeledAxisAccessor>("time") = {{"t"}};
-  return params;
+  OptionSet options = Model::expected_options();
+  options.set<LabeledAxisAccessor>("variable");
+  options.set<LabeledAxisAccessor>("time") = {{"t"}};
+  return options;
 }
 
 template <typename T>
-BackwardEulerTimeIntegration<T>::BackwardEulerTimeIntegration(const ParameterSet & params)
-  : Model(params),
-    _var_name(params.get<LabeledAxisAccessor>("variable")),
+BackwardEulerTimeIntegration<T>::BackwardEulerTimeIntegration(const OptionSet & options)
+  : Model(options),
+    _var_name(options.get<LabeledAxisAccessor>("variable")),
     _var_rate_name(_var_name.with_suffix("_rate")),
     res(declare_output_variable<T>(_var_name.on("residual"))),
     var_rate(declare_input_variable<T>(_var_rate_name.on("state"))),
     var(declare_input_variable<T>(_var_name.on("state"))),
     var_n(declare_input_variable<T>(_var_name.on("old_state"))),
-    time(declare_input_variable<Scalar>(params.get<LabeledAxisAccessor>("time").on("forces"))),
-    time_n(declare_input_variable<Scalar>(params.get<LabeledAxisAccessor>("time").on("old_forces")))
+    time(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("time").on("forces"))),
+    time_n(
+        declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("time").on("old_forces")))
 {
   setup();
 }
@@ -77,11 +78,10 @@ BackwardEulerTimeIntegration<T>::set_value(const LabeledVector & in,
   if (dout_din || d2out_din2)
   {
     auto n_state = output().storage_size(res);
-    auto I = BatchTensor<1>::identity(n_state, options);
+    auto I = BatchTensor::identity(n_state, options);
 
     if (dout_din)
     {
-
       dout_din->set(I, res, var);
       dout_din->set(-I * dt, res, var_rate);
       if (Model::stage == Model::Stage::UPDATING)
@@ -106,5 +106,5 @@ BackwardEulerTimeIntegration<T>::set_value(const LabeledVector & in,
 }
 
 template class BackwardEulerTimeIntegration<Scalar>;
-template class BackwardEulerTimeIntegration<SymR2>;
+template class BackwardEulerTimeIntegration<SR2>;
 } // namespace neml2

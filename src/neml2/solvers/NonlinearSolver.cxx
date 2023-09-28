@@ -26,21 +26,21 @@
 
 namespace neml2
 {
-ParameterSet
-NonlinearSolver::expected_params()
+OptionSet
+NonlinearSolver::expected_options()
 {
-  ParameterSet params = Solver::expected_params();
-  params.set<Real>("abs_tol") = 1e-10;
-  params.set<Real>("rel_tol") = 1e-8;
-  params.set<unsigned int>("max_its") = 100;
-  return params;
+  OptionSet options = Solver::expected_options();
+  options.set<Real>("abs_tol") = 1e-10;
+  options.set<Real>("rel_tol") = 1e-8;
+  options.set<unsigned int>("max_its") = 100;
+  return options;
 }
 
-NonlinearSolver::NonlinearSolver(const ParameterSet & params)
-  : Solver(params),
-    atol(params.get<Real>("abs_tol")),
-    rtol(params.get<Real>("rel_tol")),
-    miters(params.get<unsigned int>("max_its"))
+NonlinearSolver::NonlinearSolver(const OptionSet & options)
+  : Solver(options),
+    atol(options.get<Real>("abs_tol")),
+    rtol(options.get<Real>("rel_tol")),
+    miters(options.get<unsigned int>("max_its"))
 {
 }
 } // namespace neml2

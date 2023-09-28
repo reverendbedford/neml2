@@ -33,9 +33,9 @@ class TransientDriver;
 class VTestVerification : public Driver
 {
 public:
-  static ParameterSet expected_params();
+  static OptionSet expected_options();
 
-  VTestVerification(const ParameterSet & params);
+  VTestVerification(const OptionSet & options);
 
   bool run() override;
 

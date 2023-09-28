@@ -45,14 +45,14 @@ namespace neml2
 class Model : public NEML2Object, public LabeledAxisInterface, public NonlinearSystem
 {
 public:
-  static ParameterSet expected_params();
+  static OptionSet expected_options();
 
   /**
    * @brief Construct a new Model object
    *
-   * @param params The parameters extracted from the input file
+   * @param options The options extracted from the input file
    */
-  Model(const ParameterSet & params);
+  Model(const OptionSet & options);
 
   /// Whether this model is implicit
   virtual bool implicit() const { return false; }
@@ -90,8 +90,24 @@ public:
   /// Set this model's parameters
   void set_parameters(const std::map<std::string, torch::Tensor> &);
 
-  /// Get the derivatives w.r.t. to the parameter
-  BatchTensor<1> dparam(const LabeledVector & out, const std::string & param) const;
+  /// Get a parameter's value
+  template <typename T>
+  T get_parameter(const std::string & name, bool recurse = false) const
+  {
+    return T(named_parameters(recurse)[name]);
+  }
+
+  /**
+   * @brief Use automatic differentiation to calculate the derivatives w.r.t. to the parameter
+   *
+   * If the parameter is batched, the batch shape must be the _same_ with the batch shape of the
+   * output \p o.
+   *
+   * @param o The `BatchTensor` to to be differentiated
+   * @param p The parameter to take derivatives with respect to
+   * @return BatchTensor $\partial o/\partial p$
+   */
+  BatchTensor dparam(const BatchTensor & o, const BatchTensor & p) const;
 
   /// Convenient shortcut to construct and return the model value
   virtual LabeledVector value(const LabeledVector & in) const;
@@ -213,7 +229,7 @@ protected:
   void register_model(std::shared_ptr<Model> model, bool merge_input = true);
 
   virtual void
-  set_residual(BatchTensor<1> x, BatchTensor<1> * r, BatchTensor<1> * J = nullptr) const override;
+  assemble(const BatchTensor & x, BatchTensor * r, BatchTensor * J = nullptr) const override;
 
   /// Models *this* model may use during its evaluation
   std::vector<Model *> _registered_models;
@@ -232,4 +248,5 @@ private:
   /// Cached input while solving this implicit model
   LabeledVector _cached_in;
 };
+
 } // namespace neml2

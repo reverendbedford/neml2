@@ -28,28 +28,35 @@
 
 using namespace neml2;
 
-TEST_CASE("BatchTensors have the correct shapes", "[BatchTensors]")
+TEST_CASE("BatchTensor", "[tensors]")
 {
-  // Should have 2 batch dimensions and 3 base dimensions
-  BatchTensor<2> A(torch::zeros({10, 5, 4, 11, 2}));
+  const auto & DTO = default_tensor_options;
 
-  SECTION(" batch sizes are correct")
+  SECTION("bmm")
   {
-    REQUIRE(A.batch_dim() == 2);
-    REQUIRE(A.batch_sizes() == TorchShape({10, 5}));
+    // A has shape (1, 2; 3, 5)
+    auto A = BatchTensor(
+        torch::tensor({{{{8.7205e-01, 3.5226e-01, 2.3191e-01, 4.3637e-01, 7.5373e-01},
+                         {1.0045e-01, 9.7506e-01, 3.2655e-01, 9.6713e-01, 7.6809e-01},
+                         {7.1273e-01, 5.0373e-01, 1.3844e-01, 3.0433e-01, 8.3720e-01}},
+                        {{2.8995e-01, 5.7084e-01, 4.2301e-01, 2.9878e-01, 3.3778e-04},
+                         {2.0580e-02, 3.7664e-01, 9.9539e-01, 9.0972e-01, 9.9746e-01},
+                         {7.7913e-01, 6.6575e-01, 2.3632e-01, 3.1841e-01, 3.6544e-01}}}},
+                      DTO),
+        2);
+    // B has shape (1; 5, 2)
+    auto B = BatchTensor(torch::tensor({{{0.7480, 0.2192},
+                                         {0.0742, 0.5324},
+                                         {0.6179, 0.0834},
+                                         {0.6298, 0.0578},
+                                         {0.0945, 0.8719}}},
+                                       DTO),
+                         1);
+    // C = math::bmm(A, B) should have shape (1, 2; 3, 2)
+    auto C = BatchTensor(torch::tensor({{{{1.1678, 1.0804}, {1.0310, 1.2939}, {0.9269, 1.1835}},
+                                         {{0.7088, 0.4203}, {1.3256, 1.2103}, {1.0133, 0.8819}}}},
+                                       DTO),
+                         2);
+    REQUIRE(torch::allclose(math::bmm(A, B), C, /*rtol=*/0, /*atol=*/1e-4));
   }
-
-  SECTION(" base sizes are correct")
-  {
-    REQUIRE(A.base_dim() == 3);
-    REQUIRE(A.base_sizes() == TorchShape({4, 11, 2}));
-  }
-}
-
-TEST_CASE("BatchTensors can't be created with few than the number of "
-          "batch dimensions")
-{
-#ifndef NDEBUG
-  REQUIRE_THROWS(BatchTensor<2>(torch::zeros({10})));
-#endif
 }

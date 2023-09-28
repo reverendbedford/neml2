@@ -8,3 +8,7 @@
 [submodule "extern/hit/hit"]
 	path = extern/hit/hit
 	url = https://github.com/idaholab/hit.git
+[submodule "extern/gperftools"]
+	path = extern/gperftools
+	url = git@github.com:gperftools/gperftools.git
+	ignore = dirty

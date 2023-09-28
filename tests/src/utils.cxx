@@ -32,19 +32,21 @@ load_model(const std::string & path, const std::string & additional_input, Parse
   // We are being forward looking here
   if (ptype == ParserType::AUTO)
   {
-    if (utils::ends_with(path, ".i"))
+    if (utils::end_with(path, ".i"))
       ptype = ParserType::HIT;
-    else if (utils::ends_with(path, ".xml"))
+    else if (utils::end_with(path, ".xml"))
       ptype = ParserType::XML;
-    else if (utils::ends_with(path, ".yml"))
+    else if (utils::end_with(path, ".yml"))
       ptype = ParserType::YAML;
   }
 
   // but for now we only support HIT
   if (ptype == ParserType::HIT)
   {
+    Factory::clear();
     HITParser parser;
-    parser.parse_and_manufacture(path, additional_input);
+    const auto all_options = parser.parse(path, additional_input);
+    Factory::load(all_options);
   }
   else
     neml_assert(false, "Unsupported parser type");

@@ -31,9 +31,9 @@ namespace neml2
 class OverStress : public Model
 {
 public:
-  static ParameterSet expected_params();
+  static OptionSet expected_options();
 
-  OverStress(const ParameterSet & params);
+  OverStress(const OptionSet & options);
 
   const LabeledAxisAccessor mandel_stress;
   const LabeledAxisAccessor back_stress;

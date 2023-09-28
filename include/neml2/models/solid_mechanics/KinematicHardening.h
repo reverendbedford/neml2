@@ -31,9 +31,9 @@ namespace neml2
 class KinematicHardening : public Model
 {
 public:
-  static ParameterSet expected_params();
+  static OptionSet expected_options();
 
-  KinematicHardening(const ParameterSet & params);
+  KinematicHardening(const OptionSet & options);
 
   const LabeledAxisAccessor kinematic_plastic_strain;
   const LabeledAxisAccessor back_stress;

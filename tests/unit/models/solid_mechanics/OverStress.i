@@ -12,15 +12,15 @@
 
 [Tensors]
   [M]
-    type = InitializedSymR2
+    type = FillSR2
     values = '100 110 100 50 40 30'
   []
   [X]
-    type = InitializedSymR2
+    type = FillSR2
     values = '50 -10 20 40 30 -60'
   []
   [O]
-    type = InitializedSymR2
+    type = FillSR2
     values = '50 120 80 10 10 90'
   []
 []

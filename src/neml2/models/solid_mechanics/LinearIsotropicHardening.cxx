@@ -28,16 +28,16 @@ namespace neml2
 {
 register_NEML2_object(LinearIsotropicHardening);
 
-ParameterSet
-LinearIsotropicHardening::expected_params()
+OptionSet
+LinearIsotropicHardening::expected_options()
 {
-  ParameterSet params = IsotropicHardening::expected_params();
-  params.set<CrossRef<Scalar>>("hardening_modulus");
-  return params;
+  OptionSet options = IsotropicHardening::expected_options();
+  options.set<CrossRef<Scalar>>("hardening_modulus");
+  return options;
 }
 
-LinearIsotropicHardening::LinearIsotropicHardening(const ParameterSet & params)
-  : IsotropicHardening(params),
+LinearIsotropicHardening::LinearIsotropicHardening(const OptionSet & options)
+  : IsotropicHardening(options),
     _K(register_crossref_model_parameter<Scalar>("K", "hardening_modulus"))
 {
 }

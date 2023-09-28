@@ -26,21 +26,21 @@
 
 namespace neml2
 {
-ParameterSet
-IsotropicHardening::expected_params()
+OptionSet
+IsotropicHardening::expected_options()
 {
-  ParameterSet params = Model::expected_params();
-  params.set<LabeledAxisAccessor>("equivalent_plastic_strain") = {{"state", "internal", "ep"}};
-  params.set<LabeledAxisAccessor>("isotropic_hardening") = {{"state", "internal", "k"}};
-  return params;
+  OptionSet options = Model::expected_options();
+  options.set<LabeledAxisAccessor>("equivalent_plastic_strain") = {{"state", "internal", "ep"}};
+  options.set<LabeledAxisAccessor>("isotropic_hardening") = {{"state", "internal", "k"}};
+  return options;
 }
 
-IsotropicHardening::IsotropicHardening(const ParameterSet & params)
-  : Model(params),
+IsotropicHardening::IsotropicHardening(const OptionSet & options)
+  : Model(options),
     equivalent_plastic_strain(declare_input_variable<Scalar>(
-        params.get<LabeledAxisAccessor>("equivalent_plastic_strain"))),
+        options.get<LabeledAxisAccessor>("equivalent_plastic_strain"))),
     isotropic_hardening(
-        declare_output_variable<Scalar>(params.get<LabeledAxisAccessor>("isotropic_hardening")))
+        declare_output_variable<Scalar>(options.get<LabeledAxisAccessor>("isotropic_hardening")))
 {
   setup();
 }

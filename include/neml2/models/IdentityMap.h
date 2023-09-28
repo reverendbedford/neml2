@@ -32,9 +32,9 @@ template <typename T>
 class IdentityMap : public Model
 {
 public:
-  static ParameterSet expected_params();
+  static OptionSet expected_options();
 
-  IdentityMap(const ParameterSet & params);
+  IdentityMap(const OptionSet & options);
 
   const LabeledAxisAccessor from;
   const LabeledAxisAccessor to;
@@ -47,5 +47,5 @@ protected:
 };
 
 typedef IdentityMap<Scalar> ScalarIdentityMap;
-typedef IdentityMap<SymR2> SymR2IdentityMap;
+typedef IdentityMap<SR2> SR2IdentityMap;
 } // namespace neml2

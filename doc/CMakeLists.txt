@@ -5,7 +5,7 @@ if(DOXYGEN)
 
   add_custom_target(doc-syntax
     DEPENDS unit_tests
-    COMMAND ${CMAKE_BINARY_DIR}/tests/unit_tests "[Registry]" -c syntax
+    COMMAND ${CMAKE_BINARY_DIR}/tests/unit_tests Registry -c syntax
     COMMAND python TexSyntax.py doc/_05_syntax.md
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/doc/doxygen
   )

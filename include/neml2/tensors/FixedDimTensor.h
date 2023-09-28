@@ -24,56 +24,61 @@
 
 #pragma once
 
-#include "neml2/misc/types.h"
 #include "neml2/tensors/BatchTensor.h"
-
-#include <array>
 
 namespace neml2
 {
 /**
- * @brief FixedDimTensor inherits from BatchTensor and additionally templates on the base size.
+ * @brief FixedDimTensor inherits from BatchTensorBase and additionally templates on the base shape.
  *
- * @tparam N The number of batch dimensions.
- * @tparam D Base size
+ * @tparam S Base shape
  */
-template <TorchSize N, TorchSize... D>
-class FixedDimTensor : public BatchTensor<N>
+template <class Derived, TorchSize... S>
+class FixedDimTensor : public BatchTensorBase<Derived>
 {
 public:
+  /// The base shape
+  static inline const TorchShape const_base_sizes = {S...};
+
+  /// The base dim
+  static constexpr TorchSize const_base_dim = sizeof...(S);
+
+  /// The base storage
+  static inline const TorchSize const_base_storage = utils::storage_size({S...});
+
   /// Default constructor
-  FixedDimTensor(const torch::TensorOptions & options = default_tensor_options);
+  FixedDimTensor() = default;
 
-  /// Make an empty batched tensor given batch size
-  FixedDimTensor(TorchShapeRef batch_size,
-                 const torch::TensorOptions & options = default_tensor_options);
+  /// Construct from another torch::Tensor given batch dimension
+  explicit FixedDimTensor(const torch::Tensor & tensor, TorchSize batch_dim);
 
-  /// Make from another tensor
+  /// Construct from another torch::Tensor and infer batch dimension
   FixedDimTensor(const torch::Tensor & tensor);
 
-  /// The base shape
-  static inline const TorchShape _base_sizes = TorchShape({D...});
+  /// Implicit conversion to a BatchTensor and loses information on the fixed base shape
+  operator BatchTensor() const;
+
+  /// Unbatched empty tensor
+  [[nodiscard]] static Derived empty(const torch::TensorOptions & options = default_tensor_options);
+  /// Empty tensor given batch shape
+  [[nodiscard]] static Derived empty(const TorchShapeRef & batch_shape,
+                                     const torch::TensorOptions & options = default_tensor_options);
+  /// Unbatched zero tensor
+  [[nodiscard]] static Derived zeros(const torch::TensorOptions & options = default_tensor_options);
+  /// Zero tensor given batch shape
+  [[nodiscard]] static Derived zeros(const TorchShapeRef & batch_shape,
+                                     const torch::TensorOptions & options = default_tensor_options);
+  /// Unbatched unit tensor
+  [[nodiscard]] static Derived ones(const torch::TensorOptions & options = default_tensor_options);
+  /// Unit tensor given batch shape
+  [[nodiscard]] static Derived ones(const TorchShapeRef & batch_shape,
+                                    const torch::TensorOptions & options = default_tensor_options);
+  /// Unbatched tensor filled with a given value given base shape
+  [[nodiscard]] static Derived full(Real init,
+                                    const torch::TensorOptions & options = default_tensor_options);
+  /// Full tensor given batch shape
+  [[nodiscard]] static Derived full(const TorchShapeRef & batch_shape,
+                                    Real init,
+                                    const torch::TensorOptions & options = default_tensor_options);
 };
-
-template <TorchSize N, TorchSize... D>
-FixedDimTensor<N, D...>::FixedDimTensor(const torch::TensorOptions & options)
-  : BatchTensor<N>(TorchShapeRef({D...}), options)
-{
-}
-
-template <TorchSize N, TorchSize... D>
-FixedDimTensor<N, D...>::FixedDimTensor(TorchShapeRef batch_size,
-                                        const torch::TensorOptions & options)
-  : BatchTensor<N>(batch_size, _base_sizes, options)
-{
-}
-
-template <TorchSize N, TorchSize... D>
-FixedDimTensor<N, D...>::FixedDimTensor(const torch::Tensor & tensor)
-  : BatchTensor<N>(tensor)
-{
-  // Check to make sure we got the correct base_sizes()
-  neml_assert_dbg(_base_sizes == this->base_sizes(),
-                  "Base size of the supplied tensor does not match the templated base size");
-}
 } // namespace neml2

@@ -25,324 +25,319 @@
 #include <catch2/catch.hpp>
 
 #include "neml2/tensors/LabeledAxis.h"
+#include "neml2/tensors/tensors.h"
 
 using namespace neml2;
 
-TEST_CASE("Add", "[LabeledAxis]")
+TEST_CASE("LabeledAxis", "[tensors]")
 {
-  // Empty
-  LabeledAxis test;
-
-  SECTION("Scalar")
+  SECTION("class LabeledAxis")
   {
-    test.add<Scalar>("scalar");
-    test.setup_layout();
+    SECTION("LabeledAxis")
+    {
+      SECTION("default constructor")
+      {
+        LabeledAxis a;
+        a.setup_layout();
+        REQUIRE(a.nitem() == 0);
+        REQUIRE(a.nvariable() == 0);
+        REQUIRE(a.nsubaxis() == 0);
+        REQUIRE(a.storage_size() == 0);
+      }
 
-    REQUIRE(test.nitem() == 1);
-    REQUIRE(test.nvariable() == 1);
-    REQUIRE(test.nsubaxis() == 0);
-    REQUIRE(test.storage_size() == 1);
-    REQUIRE(test.storage_size("scalar") == 1);
+      SECTION("copy constructor")
+      {
+        LabeledAxis a;
+        a.add<Scalar>("scalar");
+        a.add<SR2>("r2t");
+        a.add<LabeledAxis>("sub");
+        a.subaxis("sub").add<Scalar>("scalar");
+        a.subaxis("sub").add<SR2>("r2t");
+
+        LabeledAxis b(a);
+        b.setup_layout();
+        REQUIRE(b.nitem() == 3);
+        REQUIRE(b.nvariable() == 2);
+        REQUIRE(b.nsubaxis() == 1);
+        REQUIRE(b.storage_size() == 14);
+      }
+    }
+
+    SECTION("add")
+    {
+      LabeledAxis a;
+      LabeledAxisAccessor i({"a", "b", "c"});
+      a.add("foo", 13);
+      a.add(i, 3);
+      a.setup_layout();
+      REQUIRE(a.nitem() == 2);
+      REQUIRE(a.nvariable() == 1);
+      REQUIRE(a.nsubaxis() == 1);
+      REQUIRE(a.storage_size() == 16);
+    }
+
+    SECTION("rename")
+    {
+      LabeledAxis a;
+      LabeledAxisAccessor i({"a", "b"});
+      LabeledAxisAccessor j({"a", "c"});
+      a.add(i, 2);
+      a.add(j, 3);
+      a.rename("a", "d");
+      a.subaxis("d").rename("b", "a");
+      a.setup_layout();
+      REQUIRE(a.has_subaxis("d"));
+      REQUIRE(a.subaxis("d").has_variable("a"));
+      REQUIRE(a.subaxis("d").has_variable("c"));
+    }
+
+    SECTION("remove")
+    {
+      LabeledAxis a;
+      a.add<Scalar>("scalar1");
+      a.add<Scalar>("scalar2");
+      a.add<Scalar>("scalar3");
+      a.add<SR2>("r2t1");
+      a.add<SR2>("r2t2");
+      a.remove("r2t1");
+      a.remove("scalar1");
+      a.setup_layout();
+      REQUIRE(a.nitem() == 3);
+      REQUIRE(a.nvariable() == 3);
+      REQUIRE(a.nsubaxis() == 0);
+      REQUIRE(a.storage_size() == 8);
+      REQUIRE(a.storage_size("scalar2") == 1);
+      REQUIRE(a.storage_size("scalar3") == 1);
+      REQUIRE(a.storage_size("r2t2") == 6);
+    }
+
+    SECTION("clear")
+    {
+      LabeledAxis a;
+      LabeledAxisAccessor i({"a", "b"});
+      LabeledAxisAccessor j({"c"});
+      a.add(i, 2);
+      a.add(j, 3);
+      a.clear();
+      a.setup_layout();
+      REQUIRE(a.nitem() == 0);
+      REQUIRE(a.nvariable() == 0);
+      REQUIRE(a.nsubaxis() == 0);
+      REQUIRE(a.storage_size() == 0);
+    }
+
+    SECTION("merge")
+    {
+      LabeledAxis a;
+      LabeledAxisAccessor i({"a", "b"});
+      LabeledAxisAccessor j({"c"});
+      a.add(i, 2);
+      a.add(j, 3);
+
+      LabeledAxis b;
+      LabeledAxisAccessor k({"a", "d"});
+      LabeledAxisAccessor l({"c"});
+      b.add(k, 2);
+      b.add(l, 3);
+
+      a.merge(b);
+
+      a.setup_layout();
+      b.setup_layout();
+      REQUIRE(a.has_variable("c"));
+      REQUIRE(a.subaxis("a").has_variable("b"));
+      REQUIRE(a.subaxis("a").has_variable("d"));
+    }
+
+    SECTION("has_item")
+    {
+      LabeledAxis a;
+      LabeledAxisAccessor i({"a", "b"});
+      LabeledAxisAccessor j({"c"});
+      a.add(i, 2);
+      a.add(j, 3);
+      a.setup_layout();
+      REQUIRE(a.has_item("a"));
+      REQUIRE(a.has_item("c"));
+      REQUIRE(!a.has_item("b"));
+    }
+
+    SECTION("has_variable")
+    {
+      LabeledAxis a;
+      LabeledAxisAccessor i({"a", "b"});
+      LabeledAxisAccessor j({"c"});
+      a.add(i, 2);
+      a.add(j, 3);
+      a.setup_layout();
+      REQUIRE(!a.has_variable("a"));
+      REQUIRE(!a.has_variable("b"));
+      REQUIRE(a.has_variable("c"));
+      REQUIRE(a.has_variable<Vec>("c"));
+      REQUIRE(a.has_variable<Rot>("c"));
+      REQUIRE(!a.has_variable<SR2>("c"));
+      REQUIRE(a.has_variable(i));
+      REQUIRE(a.has_variable(j));
+      REQUIRE(!a.has_variable(j.with_suffix("baz")));
+    }
+
+    SECTION("storage_size")
+    {
+      LabeledAxis a;
+      LabeledAxisAccessor i({"a", "b"});
+      LabeledAxisAccessor j({"c"});
+      LabeledAxisAccessor k({"a", "d"});
+      a.add(i, 2);
+      a.add(j, 3);
+      a.add(k, 3);
+      a.setup_layout();
+      REQUIRE(a.storage_size() == 8);
+      REQUIRE(a.storage_size("a") == 5);
+      REQUIRE(a.storage_size("c") == 3);
+      REQUIRE(a.storage_size(i) == 2);
+      REQUIRE(a.storage_size(j) == 3);
+      REQUIRE(a.storage_size(k) == 3);
+    }
+
+    SECTION("nested subaxis")
+    {
+      LabeledAxis a;
+      a.add<Scalar>("scalar");
+      a.add<SR2>("r2t");
+      a.add<LabeledAxis>("sub1");
+      a.subaxis("sub1").add<Scalar>("scalar");
+      a.subaxis("sub1").add<SR2>("r2t");
+      a.subaxis("sub1").add<LabeledAxis>("sub2");
+      a.subaxis("sub1").subaxis("sub2").add<Scalar>("scalar");
+      a.subaxis("sub1").subaxis("sub2").add<SR2>("r2t");
+      a.setup_layout();
+
+      REQUIRE(a.nitem() == 3);
+      REQUIRE(a.nvariable() == 2);
+      REQUIRE(a.nsubaxis() == 1);
+      REQUIRE(a.storage_size() == 21);
+      REQUIRE(a.storage_size("scalar") == 1);
+      REQUIRE(a.storage_size("r2t") == 6);
+
+      REQUIRE(a.subaxis("sub1").nitem() == 3);
+      REQUIRE(a.subaxis("sub1").nvariable() == 2);
+      REQUIRE(a.subaxis("sub1").nsubaxis() == 1);
+      REQUIRE(a.subaxis("sub1").storage_size() == 14);
+      REQUIRE(a.subaxis("sub1").storage_size("scalar") == 1);
+      REQUIRE(a.subaxis("sub1").storage_size("r2t") == 6);
+
+      REQUIRE(a.subaxis("sub1").subaxis("sub2").nitem() == 2);
+      REQUIRE(a.subaxis("sub1").subaxis("sub2").nvariable() == 2);
+      REQUIRE(a.subaxis("sub1").subaxis("sub2").nsubaxis() == 0);
+      REQUIRE(a.subaxis("sub1").subaxis("sub2").storage_size() == 7);
+      REQUIRE(a.subaxis("sub1").subaxis("sub2").storage_size("scalar") == 1);
+      REQUIRE(a.subaxis("sub1").subaxis("sub2").storage_size("r2t") == 6);
+    }
+
+    SECTION("chained modifiers")
+    {
+      LabeledAxis a;
+      a.add<Scalar>("scalar1");
+      a.add<Scalar>("scalar2");
+      a.add<Scalar>("scalar3");
+      a.add<SR2>("r2t1");
+      a.add<SR2>("r2t2");
+      a.add<Scalar>("scalar4").remove("r2t1").rename("scalar4", "scalar5").remove("scalar2");
+      a.setup_layout();
+
+      // scalar1
+      // scalar3
+      // scalar5
+      // r2t2
+
+      REQUIRE(a.nitem() == 4);
+      REQUIRE(a.nvariable() == 4);
+      REQUIRE(a.nsubaxis() == 0);
+      REQUIRE(a.storage_size() == 9);
+      REQUIRE(a.storage_size("scalar1") == 1);
+      REQUIRE(a.storage_size("scalar3") == 1);
+      REQUIRE(a.storage_size("scalar5") == 1);
+      REQUIRE(a.storage_size("r2t2") == 6);
+    }
+
+    SECTION("indices")
+    {
+      LabeledAxis a;
+      a.add<Scalar>("scalar");
+      a.add<SR2>("r2t");
+      a.add<LabeledAxis>("sub1");
+      a.subaxis("sub1").add<Scalar>("scalar");
+      a.subaxis("sub1").add<SR2>("r2t");
+      a.subaxis("sub1").add<LabeledAxis>("sub2");
+      a.subaxis("sub1").subaxis("sub2").add<Scalar>("scalar");
+      a.subaxis("sub1").subaxis("sub2").add<SR2>("r2t");
+      a.setup_layout();
+
+      /// The sorted layout is
+      ///  0 1 2 3 4 5   6          7 8 9 10 11 12   13              14 15 16 17 18 19    20
+      /// |----r2t----| |-scalar-| |---sub1/r2t---| |-sub1/scalar-| |--sub1/sub2/r2t--| |-sub1/sub2/scalar-|
+
+      auto idx = torch::arange(a.storage_size());
+
+      REQUIRE(torch::allclose(idx.index(a.indices("r2t")), torch::arange(0, 6)));
+      REQUIRE(torch::allclose(idx.index(a.indices("sub1")), torch::arange(7, 21)));
+
+      LabeledAxisAccessor i{{"sub1", "sub2", "r2t"}};
+      REQUIRE(torch::allclose(idx.index(a.indices(i)), torch::arange(14, 20)));
+    }
   }
 
-  SECTION("SymR2")
+  SECTION("operator==")
   {
-    test.add<SymR2>("r2t");
-    test.setup_layout();
+    // test1 and test2 are equal:
+    // They have the same set of items with same names and storage sizes.
+    LabeledAxis test1;
+    test1.add<Scalar>("scalar1");
+    test1.add<SR2>("r2t1");
+    test1.add<Scalar>("scalar2");
+    test1.add<SR2>("r2t2");
+    test1.add<Scalar>("scalar3");
+    test1.setup_layout();
 
-    REQUIRE(test.nitem() == 1);
-    REQUIRE(test.nvariable() == 1);
-    REQUIRE(test.nsubaxis() == 0);
-    REQUIRE(test.storage_size() == 6);
-    REQUIRE(test.storage_size("r2t") == 6);
+    LabeledAxis test2;
+    test2.add<SR2>("r2t1");
+    test2.add<Scalar>("scalar3");
+    test2.add<SR2>("r2t2");
+    test2.add<Scalar>("scalar2");
+    test2.add<Scalar>("scalar1");
+    test2.setup_layout();
+
+    REQUIRE(test1 == test2);
   }
 
-  SECTION("subaxis")
+  SECTION("operator!=")
   {
-    test.add<LabeledAxis>("sub");
-    test.subaxis("sub").add<Scalar>("scalar");
-    test.subaxis("sub").add<SymR2>("r2t");
-    test.setup_layout();
+    // test1 and test2 are equal:
+    // They have the same set of items with same names and storage sizes.
+    LabeledAxis test1;
+    test1.add<Scalar>("scalar1");
+    test1.add<SR2>("r2t1");
+    test1.add<Scalar>("scalar2");
+    test1.add<SR2>("r2t2");
+    test1.add<Scalar>("scalar3");
+    test1.setup_layout();
 
-    REQUIRE(test.nitem() == 1);
-    REQUIRE(test.nvariable() == 0);
-    REQUIRE(test.nsubaxis() == 1);
-    REQUIRE(test.storage_size() == 7);
+    LabeledAxis test2;
+    test2.add<SR2>("r2t1");
+    test2.add<Scalar>("scalar3");
+    test2.add<SR2>("r2t2");
+    test2.add<Scalar>("scalar2");
+    test2.add<Scalar>("scalar1");
+    test2.setup_layout();
 
-    REQUIRE(test.subaxis("sub").nitem() == 2);
-    REQUIRE(test.subaxis("sub").nvariable() == 2);
-    REQUIRE(test.subaxis("sub").nsubaxis() == 0);
-    REQUIRE(test.subaxis("sub").storage_size() == 7);
-  }
+    // test3 is NOT equal to test1 nor test2
+    LabeledAxis test3;
+    test3.add<SR2>("r2t1");
+    test3.add<Scalar>("scalar3");
+    test3.add<SR2>("r2t2");
+    test3.setup_layout();
 
-  SECTION("mixed")
-  {
-    test.add<Scalar>("scalar1");
-    test.add<SymR2>("r2t1");
-    test.add<SymR2>("r2t2");
-    test.add<Scalar>("scalar2");
-    test.add<Scalar>("scalar3");
-
-    test.add<LabeledAxis>("sub1");
-    test.subaxis("sub1").add<Scalar>("scalar");
-    test.subaxis("sub1").add<SymR2>("r2t");
-    test.subaxis("sub1").prefix("sub1");
-
-    test.add<LabeledAxis>("sub2");
-    test.subaxis("sub2").add<Scalar>("scalar1");
-    test.subaxis("sub2").add<Scalar>("scalar2");
-    test.subaxis("sub2").add<SymR2>("r2t");
-    test.subaxis("sub2").prefix("sub2");
-
-    test.setup_layout();
-
-    REQUIRE(test.nitem() == 7);
-    REQUIRE(test.nvariable() == 5);
-    REQUIRE(test.nsubaxis() == 2);
-    REQUIRE(test.storage_size() == 30);
-    REQUIRE(test.storage_size("scalar1") == 1);
-    REQUIRE(test.storage_size("scalar2") == 1);
-    REQUIRE(test.storage_size("scalar3") == 1);
-    REQUIRE(test.storage_size("r2t1") == 6);
-    REQUIRE(test.storage_size("r2t2") == 6);
-    REQUIRE(test.storage_size("sub1") == 7);
-    REQUIRE(test.storage_size("sub2") == 8);
-  }
-
-  SECTION("nested subaxis")
-  {
-    // State n
-    test.add<Scalar>("scalar");
-    test.add<SymR2>("r2t");
-    test.add<LabeledAxis>("sub1");
-    test.subaxis("sub1").add<Scalar>("scalar");
-    test.subaxis("sub1").add<SymR2>("r2t");
-    test.subaxis("sub1").add<LabeledAxis>("sub2");
-    test.subaxis("sub1").subaxis("sub2").add<Scalar>("scalar");
-    test.subaxis("sub1").subaxis("sub2").add<SymR2>("r2t");
-
-    test.setup_layout();
-
-    REQUIRE(test.nitem() == 3);
-    REQUIRE(test.nvariable() == 2);
-    REQUIRE(test.nsubaxis() == 1);
-    REQUIRE(test.storage_size() == 21);
-    REQUIRE(test.storage_size("scalar") == 1);
-    REQUIRE(test.storage_size("r2t") == 6);
-
-    REQUIRE(test.subaxis("sub1").nitem() == 3);
-    REQUIRE(test.subaxis("sub1").nvariable() == 2);
-    REQUIRE(test.subaxis("sub1").nsubaxis() == 1);
-    REQUIRE(test.subaxis("sub1").storage_size() == 14);
-    REQUIRE(test.subaxis("sub1").storage_size("scalar") == 1);
-    REQUIRE(test.subaxis("sub1").storage_size("r2t") == 6);
-
-    REQUIRE(test.subaxis("sub1").subaxis("sub2").nitem() == 2);
-    REQUIRE(test.subaxis("sub1").subaxis("sub2").nvariable() == 2);
-    REQUIRE(test.subaxis("sub1").subaxis("sub2").nsubaxis() == 0);
-    REQUIRE(test.subaxis("sub1").subaxis("sub2").storage_size() == 7);
-    REQUIRE(test.subaxis("sub1").subaxis("sub2").storage_size("scalar") == 1);
-    REQUIRE(test.subaxis("sub1").subaxis("sub2").storage_size("r2t") == 6);
-  }
-}
-
-TEST_CASE("Equality", "[LabeledAxis]")
-{
-  // test1 and test2 are equal:
-  // They have the same set of items with same names and storage sizes.
-  LabeledAxis test1;
-  test1.add<Scalar>("scalar1");
-  test1.add<SymR2>("r2t1");
-  test1.add<Scalar>("scalar2");
-  test1.add<SymR2>("r2t2");
-  test1.add<Scalar>("scalar3");
-  test1.setup_layout();
-
-  LabeledAxis test2;
-  test2.add<SymR2>("r2t1");
-  test2.add<Scalar>("scalar3");
-  test2.add<SymR2>("r2t2");
-  test2.add<Scalar>("scalar2");
-  test2.add<Scalar>("scalar1");
-  test2.setup_layout();
-
-  // test3 is NOT equal to test1 nor test2
-  LabeledAxis test3;
-  test3.add<SymR2>("r2t1");
-  test3.add<Scalar>("scalar3");
-  test3.add<SymR2>("r2t2");
-  test3.setup_layout();
-
-  REQUIRE(test1 == test2);
-  REQUIRE(test1 != test3);
-  REQUIRE(test2 != test3);
-}
-
-TEST_CASE("Miscellaneous modifiers", "[LabeledAxis]")
-{
-  // Empty
-  LabeledAxis test;
-  test.add<Scalar>("scalar1");
-  test.add<Scalar>("scalar2");
-  test.add<Scalar>("scalar3");
-  test.add<SymR2>("r2t1");
-  test.add<SymR2>("r2t2");
-
-  SECTION("rename")
-  {
-    test.rename("scalar1", "foo");
-    test.setup_layout();
-
-    REQUIRE(test.nitem() == 5);
-    REQUIRE(test.nvariable() == 5);
-    REQUIRE(test.nsubaxis() == 0);
-    REQUIRE(test.storage_size() == 15);
-    REQUIRE(test.storage_size("foo") == 1);
-    REQUIRE(test.storage_size("scalar2") == 1);
-    REQUIRE(test.storage_size("scalar3") == 1);
-    REQUIRE(test.storage_size("r2t1") == 6);
-    REQUIRE(test.storage_size("r2t2") == 6);
-  }
-
-  SECTION("add prefix")
-  {
-    test.prefix("bar");
-    test.setup_layout();
-
-    REQUIRE(test.nitem() == 5);
-    REQUIRE(test.nvariable() == 5);
-    REQUIRE(test.nsubaxis() == 0);
-    REQUIRE(test.storage_size() == 15);
-    REQUIRE(test.storage_size("bar_scalar1") == 1);
-    REQUIRE(test.storage_size("bar_scalar2") == 1);
-    REQUIRE(test.storage_size("bar_scalar3") == 1);
-    REQUIRE(test.storage_size("bar_r2t1") == 6);
-    REQUIRE(test.storage_size("bar_r2t2") == 6);
-  }
-
-  SECTION("add suffix")
-  {
-    test.suffix("baz");
-    test.setup_layout();
-
-    REQUIRE(test.nitem() == 5);
-    REQUIRE(test.nvariable() == 5);
-    REQUIRE(test.nsubaxis() == 0);
-    REQUIRE(test.storage_size() == 15);
-    REQUIRE(test.storage_size("scalar1_baz") == 1);
-    REQUIRE(test.storage_size("scalar2_baz") == 1);
-    REQUIRE(test.storage_size("scalar3_baz") == 1);
-    REQUIRE(test.storage_size("r2t1_baz") == 6);
-    REQUIRE(test.storage_size("r2t2_baz") == 6);
-  }
-
-  SECTION("remove")
-  {
-    test.remove("r2t1");
-    test.remove("scalar1");
-    test.setup_layout();
-
-    REQUIRE(test.nitem() == 3);
-    REQUIRE(test.nvariable() == 3);
-    REQUIRE(test.nsubaxis() == 0);
-    REQUIRE(test.storage_size() == 8);
-    REQUIRE(test.storage_size("scalar2") == 1);
-    REQUIRE(test.storage_size("scalar3") == 1);
-    REQUIRE(test.storage_size("r2t2") == 6);
-  }
-
-  SECTION("chained modifiers")
-  {
-    // I'm having fun keeping track of it...
-    // foo_scalar1_heh
-    // foo_scalar3_heh
-    // foo_scalar5_heh
-    // foo_r2t2_heh
-    test.add<Scalar>("scalar4")
-        .remove("r2t1")
-        .prefix("foo")
-        .rename("foo_scalar4", "scalar5")
-        .remove("foo_scalar2")
-        .suffix("heh");
-    test.setup_layout();
-
-    REQUIRE(test.nitem() == 4);
-    REQUIRE(test.nvariable() == 4);
-    REQUIRE(test.nsubaxis() == 0);
-    REQUIRE(test.storage_size() == 9);
-    REQUIRE(test.storage_size("foo_scalar1_heh") == 1);
-    REQUIRE(test.storage_size("foo_scalar3_heh") == 1);
-    REQUIRE(test.storage_size("scalar5_heh") == 1);
-    REQUIRE(test.storage_size("foo_r2t2_heh") == 6);
-  }
-}
-
-TEST_CASE("Indices of items", "[LabeledAxis]")
-{
-  LabeledAxis test;
-  test.add<Scalar>("scalar");
-  test.add<SymR2>("r2t");
-  test.add<LabeledAxis>("sub1");
-  test.subaxis("sub1").add<Scalar>("sub1/scalar");
-  test.subaxis("sub1").add<SymR2>("sub1/r2t");
-  test.subaxis("sub1").add<LabeledAxis>("sub2");
-  test.subaxis("sub1").subaxis("sub2").add<Scalar>("sub1/sub2/scalar");
-  test.subaxis("sub1").subaxis("sub2").add<SymR2>("sub1/sub2/r2t");
-  test.setup_layout();
-
-  /// The sorted layout is
-  ///  0 1 2 3 4 5   6          7 8 9 10 11 12   13              14 15 16 17 18 19    20
-  /// |----r2t----| |-scalar-| |---sub1/r2t---| |-sub1/scalar-| |--sub1/sub2/r2t--| |-sub1/sub2/scalar-|
-
-  auto idx = torch::arange(test.storage_size());
-
-  SECTION("index by a variable name")
-  {
-    REQUIRE(torch::allclose(idx.index(test.indices("r2t")), torch::arange(0, 6)));
-  }
-
-  SECTION("index by a sub-axis name")
-  {
-    REQUIRE(torch::allclose(idx.index(test.indices("sub1")), torch::arange(7, 21)));
-  }
-
-  SECTION("index by a LabeledAxisAccessor")
-  {
-    LabeledAxisAccessor i{{"sub1", "sub2", "sub1/sub2/r2t"}};
-    REQUIRE(torch::allclose(idx.index(test.indices(i)), torch::arange(14, 20)));
-  }
-}
-
-TEST_CASE("Queries", "[LabeledAxis]")
-{
-  LabeledAxis test;
-  test.add<Scalar>("scalar");
-  test.add<SymR2>("r2t");
-  test.add<LabeledAxis>("sub1");
-  test.subaxis("sub1").add<Scalar>("sub1/scalar");
-  test.subaxis("sub1").add<SymR2>("sub1/r2t");
-  test.subaxis("sub1").add<LabeledAxis>("sub2");
-  test.subaxis("sub1").subaxis("sub2").add<Scalar>("sub1/sub2/scalar");
-  test.subaxis("sub1").subaxis("sub2").add<SymR2>("sub1/sub2/r2t");
-  test.setup_layout();
-
-  SECTION("query the existence of an item")
-  {
-    REQUIRE(test.has_item("scalar"));
-    REQUIRE(test.has_item("r2t"));
-    REQUIRE(test.has_item("sub1"));
-    REQUIRE(!test.has_item("blah"));
-  }
-
-  SECTION("query the existence of a variable")
-  {
-    REQUIRE(test.has_variable("scalar"));
-    REQUIRE(test.has_variable("r2t"));
-    REQUIRE(!test.has_variable("r2t2"));
-
-    LabeledAxisAccessor var{{"sub1", "sub2", "sub1/sub2/r2t"}};
-    LabeledAxisAccessor none;
-    REQUIRE(test.has_variable(var));
-    REQUIRE(!test.has_variable(none));
+    REQUIRE(test1 != test3);
+    REQUIRE(test2 != test3);
   }
 }

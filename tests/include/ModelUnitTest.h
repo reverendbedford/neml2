@@ -32,9 +32,9 @@ namespace neml2
 class ModelUnitTest : public Driver
 {
 public:
-  static ParameterSet expected_params();
+  static OptionSet expected_options();
 
-  ModelUnitTest(const ParameterSet & params);
+  ModelUnitTest(const OptionSet & options);
 
   bool run() override;
 
@@ -49,13 +49,11 @@ public:
 
 private:
   template <typename T>
-  void fill_vector(LabeledVector & vec,
-                   const ParameterSet & params,
-                   const std::string & param_vars,
-                   const std::string & param_vals)
+  void
+  fill_vector(LabeledVector & vec, const std::string & option_vars, const std::string & option_vals)
   {
-    const auto vars = params.get<std::vector<LabeledAxisAccessor>>(param_vars);
-    const auto vals = params.get<std::vector<CrossRef<T>>>(param_vals);
+    const auto vars = input_options().get<std::vector<LabeledAxisAccessor>>(option_vars);
+    const auto vals = input_options().get<std::vector<CrossRef<T>>>(option_vals);
     neml_assert(vars.size() == vals.size(),
                 "Trying to assign ",
                 vals.size(),
@@ -63,7 +61,7 @@ private:
                 vars.size(),
                 " variables.");
     for (size_t i = 0; i < vars.size(); i++)
-      vec.set(vals[i], vars[i]);
+      vec.set(T(vals[i]), vars[i]);
   }
 
   void check_all();

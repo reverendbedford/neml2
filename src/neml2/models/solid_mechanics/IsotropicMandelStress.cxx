@@ -23,17 +23,17 @@
 // THE SOFTWARE.
 
 #include "neml2/models/solid_mechanics/IsotropicMandelStress.h"
-#include "neml2/tensors/SymSymR4.h"
+#include "neml2/tensors/SSR4.h"
 
 namespace neml2
 {
 register_NEML2_object(IsotropicMandelStress);
 
-ParameterSet
-IsotropicMandelStress::expected_params()
+OptionSet
+IsotropicMandelStress::expected_options()
 {
-  ParameterSet params = MandelStress::expected_params();
-  return params;
+  OptionSet options = MandelStress::expected_options();
+  return options;
 }
 
 void
@@ -45,11 +45,11 @@ IsotropicMandelStress::set_value(const LabeledVector & in,
   // Isotropic mandel stress is just the Cauchy stress
 
   if (out)
-    out->set(in.get<SymR2>(cauchy_stress), mandel_stress);
+    out->set(in.get<SR2>(cauchy_stress), mandel_stress);
 
   if (dout_din)
   {
-    auto I = SymR2::identity_map(in.options());
+    auto I = SR2::identity_map(in.options());
     dout_din->set(I, mandel_stress, cauchy_stress);
   }
 

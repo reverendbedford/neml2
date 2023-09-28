@@ -32,11 +32,11 @@ namespace neml2
 class VTestTimeSeries : public NEML2Object, public torch::Tensor
 {
 public:
-  static ParameterSet expected_params();
+  static OptionSet expected_options();
 
-  VTestTimeSeries(const ParameterSet & params);
+  VTestTimeSeries(const OptionSet & options);
 
 private:
-  torch::Tensor init(const ParameterSet & params) const;
+  torch::Tensor init(const OptionSet & options) const;
 };
 } // namespace neml2

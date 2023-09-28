@@ -31,9 +31,9 @@ namespace neml2
 class PerzynaPlasticFlowRate : public PlasticFlowRate
 {
 public:
-  static ParameterSet expected_params();
+  static OptionSet expected_options();
 
-  PerzynaPlasticFlowRate(const ParameterSet & params);
+  PerzynaPlasticFlowRate(const OptionSet & options);
 
 protected:
   /// The flow rate

@@ -31,9 +31,9 @@ namespace neml2
 class PlasticFlowRate : public Model
 {
 public:
-  static ParameterSet expected_params();
+  static OptionSet expected_options();
 
-  PlasticFlowRate(const ParameterSet & params);
+  PlasticFlowRate(const OptionSet & options);
 
   const LabeledAxisAccessor yield_function;
   const LabeledAxisAccessor flow_rate;

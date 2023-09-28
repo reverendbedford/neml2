@@ -23,13 +23,15 @@
 // THE SOFTWARE.
 
 #include "neml2/base/HITParser.h"
-#include "neml2/tensors/LabeledAxis.h"
+#include "neml2/base/Factory.h"
 #include "neml2/base/CrossRef.h"
+#include "neml2/tensors/LabeledAxis.h"
+#include "neml2/tensors/tensors.h"
 #include <memory>
 
 namespace neml2
 {
-ParameterCollection
+OptionCollection
 HITParser::parse(const std::string & filename, const std::string & additional_input) const
 {
   // Open and read the file
@@ -61,8 +63,8 @@ HITParser::parse(const std::string & filename, const std::string & additional_in
   expander.registerEvaler("raw", raw);
   root->walk(&expander);
 
-  // Loop over each known section and extract parameters for each object
-  ParameterCollection all_params;
+  // Loop over each known section and extract options for each object
+  OptionCollection all_options;
   for (const auto & section : Factory::pipeline)
   {
     auto section_node = root->find(section);
@@ -71,80 +73,91 @@ HITParser::parse(const std::string & filename, const std::string & additional_in
       auto objects = section_node->children(hit::NodeType::Section);
       for (auto object : objects)
       {
-        auto params = extract_object_parameters(object);
-        all_params[section][params.get<std::string>("name")] = params;
+        auto options = extract_object_options(object);
+        all_options[section][options.get<std::string>("name")] = options;
       }
     }
   }
 
-  return all_params;
+  return all_options;
 }
 
-ParameterSet
-HITParser::extract_object_parameters(hit::Node * object) const
+OptionSet
+HITParser::extract_object_options(hit::Node * object) const
 {
   // The object name is its node path
   std::string name = object->path();
   // There is a special field reserved for object type
   std::string type = object->param<std::string>("type");
-  // Extract the parameters
-  auto params = Registry::expected_params(type);
-  extract_parameters(object, params);
+  // Extract the options
+  auto options = Registry::expected_options(type);
+  extract_options(object, options);
   // Also fill in the special fields, e.g., name, type
-  params.set<std::string>("name") = name;
-  params.set<std::string>("type") = type;
+  options.set<std::string>("name") = name;
+  options.set<std::string>("type") = type;
 
-  return params;
+  return options;
 }
 
 void
-HITParser::extract_parameters(hit::Node * object, ParameterSet & params) const
+HITParser::extract_options(hit::Node * object, OptionSet & options) const
 {
   for (auto node : object->children(hit::NodeType::Field))
-    extract_parameter(node, params);
+    extract_option(node, options);
 }
 
 void
-HITParser::extract_parameter(hit::Node * n, ParameterSet & params) const
+HITParser::extract_option(hit::Node * n, OptionSet & options) const
 {
-#define extract_param_base(ptype, method)                                                          \
-  else if (param->type() ==                                                                        \
+#define extract_option_base(ptype, method)                                                         \
+  else if (option->type() ==                                                                       \
            utils::demangle(                                                                        \
-               typeid(ptype).name())) dynamic_cast<ParameterSet::Parameter<ptype> *>(param.get())  \
+               typeid(ptype).name())) dynamic_cast<OptionSet::Option<ptype> *>(option.get())       \
       ->set() = method(n->strVal())
 
-#define extract_param_t(ptype)                                                                     \
-  extract_param_base(ptype, utils::parse<ptype>);                                                  \
-  extract_param_base(std::vector<ptype>, utils::parse_vector<ptype>);                              \
-  extract_param_base(std::vector<std::vector<ptype>>, utils::parse_vector_vector<ptype>)
+#define extract_option_t(ptype)                                                                    \
+  extract_option_base(ptype, utils::parse<ptype>);                                                 \
+  extract_option_base(std::vector<ptype>, utils::parse_vector<ptype>);                             \
+  extract_option_base(std::vector<std::vector<ptype>>, utils::parse_vector_vector<ptype>)
 
   if (n->type() == hit::NodeType::Field)
   {
     bool found = false;
-    for (auto & [name, param] : params)
+    for (auto & [name, option] : options)
       if (name == n->path())
       {
         found = true;
 
         if (false)
           ;
-        extract_param_t(bool);
-        extract_param_t(int);
-        extract_param_t(unsigned int);
-        extract_param_t(TorchSize);
-        extract_param_t(Real);
-        extract_param_t(std::string);
-        extract_param_t(LabeledAxisAccessor);
-        extract_param_t(CrossRef<torch::Tensor>);
-        extract_param_t(CrossRef<Scalar>);
-        extract_param_t(CrossRef<SymR2>);
+        extract_option_t(TorchShape);
+        extract_option_t(bool);
+        extract_option_t(int);
+        extract_option_t(unsigned int);
+        extract_option_t(TorchSize);
+        extract_option_t(Real);
+        extract_option_t(std::string);
+        extract_option_t(LabeledAxisAccessor);
+        extract_option_t(CrossRef<torch::Tensor>);
+        extract_option_t(CrossRef<BatchTensor>);
+        extract_option_t(CrossRef<Scalar>);
+        extract_option_t(CrossRef<Vec>);
+        extract_option_t(CrossRef<Rot>);
+        extract_option_t(CrossRef<R2>);
+        extract_option_t(CrossRef<SR2>);
+        extract_option_t(CrossRef<R3>);
+        extract_option_t(CrossRef<SFR3>);
+        extract_option_t(CrossRef<R4>);
+        extract_option_t(CrossRef<SSR4>);
+        extract_option_t(CrossRef<R5>);
+        extract_option_t(CrossRef<SSFR5>);
         // LCOV_EXCL_START
-        else neml_assert(false, "Unsupported parameter type for parameter ", n->fullpath());
+        else neml_assert(false, "Unsupported option type for option ", n->fullpath());
         // LCOV_EXCL_STOP
 
         break;
       }
-    neml_assert(found, "Unused parameter ", n->fullpath());
+    neml_assert(found, "Unused option ", n->fullpath());
   }
 }
 } // namespace neml2

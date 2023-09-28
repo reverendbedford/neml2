@@ -29,59 +29,59 @@ namespace neml2
 {
 register_NEML2_object(ModelUnitTest);
 
-ParameterSet
-ModelUnitTest::expected_params()
+OptionSet
+ModelUnitTest::expected_options()
 {
-  ParameterSet params = Driver::expected_params();
-  params.set<std::string>("model");
-  params.set<TorchSize>("nbatch") = 1;
-  params.set<bool>("check_first_derivatives") = true;
-  params.set<bool>("check_second_derivatives") = false;
-  params.set<bool>("check_AD_first_derivatives") = true;
-  params.set<bool>("check_AD_second_derivatives") = true;
-  params.set<bool>("check_AD_derivatives") = true;
-  params.set<bool>("check_cuda") = true;
-  params.set<std::vector<LabeledAxisAccessor>>("input_scalar_names");
-  params.set<std::vector<CrossRef<Scalar>>>("input_scalar_values");
-  params.set<std::vector<LabeledAxisAccessor>>("input_symr2_names");
-  params.set<std::vector<CrossRef<SymR2>>>("input_symr2_values");
-  params.set<std::vector<LabeledAxisAccessor>>("output_scalar_names");
-  params.set<std::vector<CrossRef<Scalar>>>("output_scalar_values");
-  params.set<std::vector<LabeledAxisAccessor>>("output_symr2_names");
-  params.set<std::vector<CrossRef<SymR2>>>("output_symr2_values");
-  params.set<Real>("output_rel_tol") = 1e-5;
-  params.set<Real>("output_abs_tol") = 1e-8;
-  params.set<Real>("derivatives_rel_tol") = 1e-5;
-  params.set<Real>("derivatives_abs_tol") = 1e-8;
-  params.set<Real>("second_derivatives_rel_tol") = 1e-5;
-  params.set<Real>("second_derivatives_abs_tol") = 1e-8;
-  return params;
+  OptionSet options = Driver::expected_options();
+  options.set<std::string>("model");
+  options.set<TorchSize>("nbatch") = 1;
+  options.set<bool>("check_first_derivatives") = true;
+  options.set<bool>("check_second_derivatives") = false;
+  options.set<bool>("check_AD_first_derivatives") = true;
+  options.set<bool>("check_AD_second_derivatives") = true;
+  options.set<bool>("check_AD_derivatives") = true;
+  options.set<bool>("check_cuda") = true;
+  options.set<std::vector<LabeledAxisAccessor>>("input_scalar_names");
+  options.set<std::vector<CrossRef<Scalar>>>("input_scalar_values");
+  options.set<std::vector<LabeledAxisAccessor>>("input_symr2_names");
+  options.set<std::vector<CrossRef<SR2>>>("input_symr2_values");
+  options.set<std::vector<LabeledAxisAccessor>>("output_scalar_names");
+  options.set<std::vector<CrossRef<Scalar>>>("output_scalar_values");
+  options.set<std::vector<LabeledAxisAccessor>>("output_symr2_names");
+  options.set<std::vector<CrossRef<SR2>>>("output_symr2_values");
+  options.set<Real>("output_rel_tol") = 1e-5;
+  options.set<Real>("output_abs_tol") = 1e-8;
+  options.set<Real>("derivatives_rel_tol") = 1e-5;
+  options.set<Real>("derivatives_abs_tol") = 1e-8;
+  options.set<Real>("second_derivatives_rel_tol") = 1e-5;
+  options.set<Real>("second_derivatives_abs_tol") = 1e-8;
+  return options;
 }
 
-ModelUnitTest::ModelUnitTest(const ParameterSet & params)
-  : Driver(params),
-    _model(Factory::get_object<Model>("Models", params.get<std::string>("model"))),
-    _nbatch(params.get<TorchSize>("nbatch")),
-    _check_1st_deriv(params.get<bool>("check_first_derivatives")),
-    _check_2nd_deriv(params.get<bool>("check_second_derivatives")),
-    _check_AD_1st_deriv(params.get<bool>("check_AD_first_derivatives")),
-    _check_AD_2nd_deriv(params.get<bool>("check_AD_second_derivatives")),
-    _check_AD_derivs(params.get<bool>("check_AD_derivatives")),
-    _check_cuda(params.get<bool>("check_cuda")),
-    _out_rtol(params.get<Real>("output_rel_tol")),
-    _out_atol(params.get<Real>("output_abs_tol")),
-    _deriv_rtol(params.get<Real>("derivatives_rel_tol")),
-    _deriv_atol(params.get<Real>("derivatives_abs_tol")),
-    _secderiv_rtol(params.get<Real>("second_derivatives_rel_tol")),
-    _secderiv_atol(params.get<Real>("second_derivatives_abs_tol"))
+ModelUnitTest::ModelUnitTest(const OptionSet & options)
+  : Driver(options),
+    _model(Factory::get_object<Model>("Models", options.get<std::string>("model"))),
+    _nbatch(options.get<TorchSize>("nbatch")),
+    _check_1st_deriv(options.get<bool>("check_first_derivatives")),
+    _check_2nd_deriv(options.get<bool>("check_second_derivatives")),
+    _check_AD_1st_deriv(options.get<bool>("check_AD_first_derivatives")),
+    _check_AD_2nd_deriv(options.get<bool>("check_AD_second_derivatives")),
+    _check_AD_derivs(options.get<bool>("check_AD_derivatives")),
+    _check_cuda(options.get<bool>("check_cuda")),
+    _out_rtol(options.get<Real>("output_rel_tol")),
+    _out_atol(options.get<Real>("output_abs_tol")),
+    _deriv_rtol(options.get<Real>("derivatives_rel_tol")),
+    _deriv_atol(options.get<Real>("derivatives_abs_tol")),
+    _secderiv_rtol(options.get<Real>("second_derivatives_rel_tol")),
+    _secderiv_atol(options.get<Real>("second_derivatives_abs_tol"))
 {
   _in = LabeledVector::zeros(_nbatch, {&_model.input()});
-  fill_vector<Scalar>(_in, params, "input_scalar_names", "input_scalar_values");
-  fill_vector<SymR2>(_in, params, "input_symr2_names", "input_symr2_values");
+  fill_vector<Scalar>(_in, "input_scalar_names", "input_scalar_values");
+  fill_vector<SR2>(_in, "input_symr2_names", "input_symr2_values");
 
   _out = LabeledVector::zeros(_nbatch, {&_model.output()});
-  fill_vector<Scalar>(_out, params, "output_scalar_names", "output_scalar_values");
-  fill_vector<SymR2>(_out, params, "output_symr2_names", "output_symr2_values");
+  fill_vector<Scalar>(_out, "output_scalar_names", "output_scalar_values");
+  fill_vector<SR2>(_out, "output_symr2_names", "output_symr2_values");
 }
 
 bool
@@ -140,15 +140,14 @@ ModelUnitTest::check_derivatives(bool first, bool second)
 {
   _model.use_AD_derivatives(first, second);
   auto exact = _model.dvalue(_in);
-  auto numerical = LabeledMatrix::zeros_like(exact);
-  finite_differencing_derivative(
-      [this](const LabeledVector & x) { return _model.value(x); }, _in, numerical);
-  neml_assert(torch::allclose(exact.tensor(), numerical.tensor(), _deriv_rtol, _deriv_atol),
+  auto numerical = finite_differencing_derivative(
+      [this](const BatchTensor & x) { return _model.value(LabeledVector(x, _in.axes())); }, _in);
+  neml_assert(torch::allclose(exact.tensor(), numerical, _deriv_rtol, _deriv_atol),
               "The model gives derivatives that are different from those given by finite "
               "differencing. The model gives:\n",
               exact.tensor(),
               "\nFinite differencing gives:\n",
-              numerical.tensor());
+              numerical);
 }
 
 void
@@ -156,14 +155,13 @@ ModelUnitTest::check_second_derivatives(bool first, bool second)
 {
   _model.use_AD_derivatives(first, second);
   auto exact = _model.d2value(_in);
-  auto numerical = LabeledTensor3D::zeros_like(exact);
-  finite_differencing_derivative(
-      [this](const LabeledVector & x) { return _model.dvalue(x); }, _in, numerical);
-  neml_assert(torch::allclose(exact.tensor(), numerical.tensor(), _secderiv_rtol, _secderiv_atol),
+  auto numerical = finite_differencing_derivative(
+      [this](const BatchTensor & x) { return _model.dvalue(LabeledVector(x, _in.axes())); }, _in);
+  neml_assert(torch::allclose(exact.tensor(), numerical, _secderiv_rtol, _secderiv_atol),
               "The model gives second derivatives that are different from those given by finite "
               "differencing. The model gives:\n",
               exact.tensor(),
               "\nFinite differencing gives:\n",
-              numerical.tensor());
+              numerical);
 }
 }

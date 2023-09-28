@@ -31,9 +31,9 @@ namespace neml2
 class IsotropicHardening : public Model
 {
 public:
-  static ParameterSet expected_params();
+  static OptionSet expected_options();
 
-  IsotropicHardening(const ParameterSet & params);
+  IsotropicHardening(const OptionSet & options);
 
   const LabeledAxisAccessor equivalent_plastic_strain;
   const LabeledAxisAccessor isotropic_hardening;

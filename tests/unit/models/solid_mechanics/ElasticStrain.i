@@ -12,15 +12,15 @@
 
 [Tensors]
   [E]
-    type = InitializedSymR2
+    type = FillSR2
     values = '0.100 0.110 0.100 0.050 0.040 0.030'
   []
   [Ep]
-    type = InitializedSymR2
+    type = FillSR2
     values = '0.050 -0.010 0.020 0.040 0.030 -0.060'
   []
   [Ee]
-    type = InitializedSymR2
+    type = FillSR2
     values = '0.050 0.120 0.080 0.010 0.010 0.090'
   []
 []

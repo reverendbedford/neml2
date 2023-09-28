@@ -58,7 +58,7 @@
     type = OverStress
   []
   [vonmises]
-    type = SymR2Invariant
+    type = SR2Invariant
     invariant_type = 'VONMISES'
     tensor = 'state/internal/O'
     invariant = 'state/internal/sm'
@@ -94,7 +94,7 @@
     type = AssociativePlasticFlow
   []
   [Erate]
-    type = SymR2ForceRate
+    type = SR2ForceRate
     force = 'E'
   []
   [Eerate]
@@ -112,11 +112,11 @@
     variable = 'internal/ep'
   []
   [integrate_Kp]
-    type = SymR2BackwardEulerTimeIntegration
+    type = SR2BackwardEulerTimeIntegration
     variable = 'internal/Kp'
   []
   [integrate_stress]
-    type = SymR2BackwardEulerTimeIntegration
+    type = SR2BackwardEulerTimeIntegration
     variable = 'S'
   []
   [implicit_rate]

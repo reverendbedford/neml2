@@ -31,8 +31,8 @@ using namespace neml2;
 
 TEST_CASE("Use AD to get parameter partials")
 {
-  SECTION("Batched") { load_model("unit/parameters/test_parameter_partials_batched.i"); }
-  SECTION("Unbatched") { load_model("unit/parameters/test_parameter_partials_unbatched.i"); }
+  SECTION("batched") { load_model("unit/parameters/test_parameter_partials_batched.i"); }
+  SECTION("unbatched") { load_model("unit/parameters/test_parameter_partials_unbatched.i"); }
 
   auto & driver = Factory::get_object<ModelUnitTest>("Drivers", "unit");
   auto & model = driver.model();
@@ -48,17 +48,17 @@ TEST_CASE("Use AD to get parameter partials")
   auto out = model.value(driver.in());
 
   // dout/da
-  auto dout_da = model.dparam(out, param_a);
+  auto a = model.get_parameter<Scalar>(param_a, true);
+  auto dout_da = model.dparam(out, a);
 
   // Use FD to check the parameter derivatives
-  BatchTensor<1> dout_da_FD = torch::empty_like(dout_da);
-  finite_differencing_derivative(
-      [&](const BatchTensor<1> & x)
+  auto a0 = a.clone().detach();
+  auto dout_da0 = finite_differencing_derivative(
+      [&](const BatchTensor & x)
       {
         model.set_parameters({{param_a, x}});
-        return model.value(driver.in()).tensor();
+        return model.value(driver.in());
       },
-      model.named_parameters(true)[param_a].detach().clone(),
-      dout_da_FD);
-  REQUIRE(torch::allclose(dout_da, dout_da_FD));
+      a0);
+  REQUIRE(torch::allclose(dout_da, dout_da0));
 }

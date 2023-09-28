@@ -37,7 +37,7 @@
     variable = 'bar'
   []
   [integrate_baz]
-    type = SymR2BackwardEulerTimeIntegration
+    type = SR2BackwardEulerTimeIntegration
     variable = 'baz'
   []
   [implicit_rate]

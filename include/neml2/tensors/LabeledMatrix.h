@@ -34,13 +34,13 @@ class LabeledVector;
  * @brief A single-batched, logically 2D LabeledTensor.
  *
  */
-class LabeledMatrix : public LabeledTensor<1, 2>
+class LabeledMatrix : public LabeledTensor<2>
 {
 public:
-  using LabeledTensor<1, 2>::LabeledTensor;
+  using LabeledTensor<2>::LabeledTensor;
 
   /// Conversion from LabeledTensor
-  LabeledMatrix(const LabeledTensor<1, 2> & other);
+  LabeledMatrix(const LabeledTensor<2> & other);
 
   /// Create a batched zero tensor.
   static LabeledMatrix zeros(TorchShapeRef batch_size,
@@ -51,12 +51,9 @@ public:
   static LabeledMatrix zeros_like(const LabeledMatrix & other);
 
   /// Create a labeled identity tensor
-  static LabeledMatrix identity(TorchSize nbatch,
+  static LabeledMatrix identity(TorchShapeRef batch_size,
                                 const LabeledAxis & axis,
                                 const torch::TensorOptions & options = default_tensor_options);
-
-  /// Since we assume a flat batch for now, we can define this convenient method to retrive the single batch size.
-  TorchSize batch_size() const { return tensor().batch_sizes()[0]; }
 
   /// Add another matrix into this matrix.
   /// The item set of the other matrix must be a subset of this matrix's item set.

@@ -32,23 +32,23 @@ namespace neml2
 {
 register_NEML2_object(TransientRegression);
 
-ParameterSet
-TransientRegression::expected_params()
+OptionSet
+TransientRegression::expected_options()
 {
-  ParameterSet params = Driver::expected_params();
-  params.set<std::string>("driver");
-  params.set<std::string>("reference");
-  params.set<Real>("rtol") = 1e-5;
-  params.set<Real>("atol") = 1e-8;
-  return params;
+  OptionSet options = Driver::expected_options();
+  options.set<std::string>("driver");
+  options.set<std::string>("reference");
+  options.set<Real>("rtol") = 1e-5;
+  options.set<Real>("atol") = 1e-8;
+  return options;
 }
 
-TransientRegression::TransientRegression(const ParameterSet & params)
-  : Driver(params),
-    _driver(Factory::get_object<TransientDriver>("Drivers", params.get<std::string>("driver"))),
-    _reference(params.get<std::string>("reference")),
-    _rtol(params.get<Real>("rtol")),
-    _atol(params.get<Real>("atol"))
+TransientRegression::TransientRegression(const OptionSet & options)
+  : Driver(options),
+    _driver(Factory::get_object<TransientDriver>("Drivers", options.get<std::string>("driver"))),
+    _reference(options.get<std::string>("reference")),
+    _rtol(options.get<Real>("rtol")),
+    _atol(options.get<Real>("atol"))
 {
   neml_assert(fs::exists(_reference), "Reference file '", _reference.string(), "' does not exist.");
 }

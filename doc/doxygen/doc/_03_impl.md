@@ -37,7 +37,7 @@ auto new_batch_sz = B.batch_sizes();
 
 [FixedDimTensor](@ref neml2::FixedDimTensor) inherits from `BatchTensor`. It is additionally templated on the sizes of the base dimensions. For example,
 ```cpp
-static_assert(FixedDimTensor<2, 6>::_base_sizes == {6});
+static_assert(FixedDimTensor<2, 6>::const_base_sizes == {6});
 ```
 
 ### Primitive tensor types

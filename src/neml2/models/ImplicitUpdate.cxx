@@ -28,22 +28,22 @@ namespace neml2
 {
 register_NEML2_object(ImplicitUpdate);
 
-ParameterSet
-ImplicitUpdate::expected_params()
+OptionSet
+ImplicitUpdate::expected_options()
 {
-  ParameterSet params = Model::expected_params();
-  params.set<std::string>("implicit_model");
-  params.set<std::string>("solver");
-  return params;
+  OptionSet options = Model::expected_options();
+  options.set<std::string>("implicit_model");
+  options.set<std::string>("solver");
+  return options;
 }
 
-ImplicitUpdate::ImplicitUpdate(const ParameterSet & params)
-  : Model(params),
-    _model(Factory::get_object<Model>("Models", params.get<std::string>("implicit_model"))),
-    _solver(Factory::get_object<NonlinearSolver>("Solvers", params.get<std::string>("solver")))
+ImplicitUpdate::ImplicitUpdate(const OptionSet & options)
+  : Model(options),
+    _model(Factory::get_object<Model>("Models", options.get<std::string>("implicit_model"))),
+    _solver(Factory::get_object<NonlinearSolver>("Solvers", options.get<std::string>("solver")))
 {
   register_model(
-      Factory::get_object_ptr<Model>("Models", params.get<std::string>("implicit_model")));
+      Factory::get_object_ptr<Model>("Models", options.get<std::string>("implicit_model")));
   // Now that the implicit model has been registered, the input of this ImplicitUpdate model should
   // be the same as the implicit model's input. The input subaxes of the implicit model looks
   // something like
@@ -83,9 +83,6 @@ ImplicitUpdate::set_value(const LabeledVector & in,
       !dout_din || out,
       "ImplicitUpdate: requires the value and the first derivatives to be computed together.");
 
-  const auto options = in.options();
-  const auto nbatch = in.batch_size();
-
   // Cache the input as we are solving the implicit model with FIXED forces, old forces, and old
   // state
   _model.cache_input(in);
@@ -97,7 +94,7 @@ ImplicitUpdate::set_value(const LabeledVector & in,
   {
     // Solve for the next state
     Model::stage = Model::Stage::SOLVING;
-    BatchTensor<1> sol = _solver.solve(_model, guess);
+    BatchTensor sol = _solver.solve(_model, guess);
     Model::stage = Model::Stage::UPDATING;
 
     if (out)
@@ -106,16 +103,16 @@ ImplicitUpdate::set_value(const LabeledVector & in,
     // Use the implicit function theorem to calculate the other derivatives
     if (dout_din)
     {
-      auto implicit_in = LabeledVector::zeros(nbatch, {&_model.input()}, options);
+      auto implicit_in = LabeledVector::zeros(in.batch_sizes(), {&_model.input()}, in.options());
       implicit_in.fill(in);
       implicit_in.set(sol, "state");
 
       auto partials = _model.dvalue(implicit_in);
       LabeledMatrix J = partials.slice(1, "state");
       LabeledMatrix Jinv = J.inverse();
-      dout_din->block("state", "old_state").copy(-Jinv.chain(partials.slice(1, "old_state")));
-      dout_din->block("state", "forces").copy(-Jinv.chain(partials.slice(1, "forces")));
-      dout_din->block("state", "old_forces").copy(-Jinv.chain(partials.slice(1, "old_forces")));
+      dout_din->block("state", "old_state").copy_(-Jinv.chain(partials.slice(1, "old_state")));
+      dout_din->block("state", "forces").copy_(-Jinv.chain(partials.slice(1, "forces")));
+      dout_din->block("state", "old_forces").copy_(-Jinv.chain(partials.slice(1, "old_forces")));
     }
   }
 }

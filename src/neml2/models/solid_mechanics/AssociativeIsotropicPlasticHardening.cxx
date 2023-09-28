@@ -28,23 +28,23 @@ namespace neml2
 {
 register_NEML2_object(AssociativeIsotropicPlasticHardening);
 
-ParameterSet
-AssociativeIsotropicPlasticHardening::expected_params()
+OptionSet
+AssociativeIsotropicPlasticHardening::expected_options()
 {
-  ParameterSet params = FlowRule::expected_params();
-  params.set<LabeledAxisAccessor>("isotropic_hardening_direction") = {{"state", "internal", "Nk"}};
-  params.set<LabeledAxisAccessor>("equivalent_plastic_strain_rate") = {
+  OptionSet options = FlowRule::expected_options();
+  options.set<LabeledAxisAccessor>("isotropic_hardening_direction") = {{"state", "internal", "Nk"}};
+  options.set<LabeledAxisAccessor>("equivalent_plastic_strain_rate") = {
       {"state", "internal", "ep_rate"}};
-  return params;
+  return options;
 }
 
 AssociativeIsotropicPlasticHardening::AssociativeIsotropicPlasticHardening(
-    const ParameterSet & params)
-  : FlowRule(params),
+    const OptionSet & options)
+  : FlowRule(options),
     isotropic_hardening_direction(declare_input_variable<Scalar>(
-        params.get<LabeledAxisAccessor>("isotropic_hardening_direction"))),
+        options.get<LabeledAxisAccessor>("isotropic_hardening_direction"))),
     equivalent_plastic_strain_rate(declare_output_variable<Scalar>(
-        params.get<LabeledAxisAccessor>("equivalent_plastic_strain_rate")))
+        options.get<LabeledAxisAccessor>("equivalent_plastic_strain_rate")))
 {
   setup();
 }

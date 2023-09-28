@@ -28,7 +28,7 @@
 
 using namespace neml2;
 
-TEST_CASE("registry", "[Registry]")
+TEST_CASE("Registry", "[base]")
 {
   SECTION("syntax")
   {

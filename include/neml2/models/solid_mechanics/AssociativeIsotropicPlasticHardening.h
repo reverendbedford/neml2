@@ -31,9 +31,9 @@ namespace neml2
 class AssociativeIsotropicPlasticHardening : public FlowRule
 {
 public:
-  static ParameterSet expected_params();
+  static OptionSet expected_options();
 
-  AssociativeIsotropicPlasticHardening(const ParameterSet & params);
+  AssociativeIsotropicPlasticHardening(const OptionSet & options);
 
   /// Accessor for the isotropic hardening direction
   const LabeledAxisAccessor isotropic_hardening_direction;

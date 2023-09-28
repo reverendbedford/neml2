@@ -31,9 +31,9 @@ namespace neml2
 class Normality : public Model
 {
 public:
-  static ParameterSet expected_params();
+  static OptionSet expected_options();
 
-  Normality(const ParameterSet & params);
+  Normality(const OptionSet & options);
 
   const LabeledAxisAccessor function;
 
