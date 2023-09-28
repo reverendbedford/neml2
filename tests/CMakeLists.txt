@@ -110,13 +110,7 @@ option(PROFILING "build profiling tests" OFF)
 
 if(PROFILING)
       # gperftools for profiling
-      SET(BUILD_TESTING OFF CACHE BOOL "Build gperftools tests" FORCE)
-      add_subdirectory(${PROJECT_SOURCE_DIR}/extern/gperftools ${PROJECT_SOURCE_DIR}/extern/gperftools)
-
-      set_target_properties(tcmalloc_internal_object PROPERTIES UNITY_BUILD OFF)
-      set_target_properties(tcmalloc_and_profiler PROPERTIES UNITY_BUILD OFF)
-      set_target_properties(tcmalloc_and_profiler_static PROPERTIES UNITY_BUILD OFF)
-
+      add_subdirectory(${PROJECT_SOURCE_DIR}/extern/gperftools ${PROJECT_SOURCE_DIR}/extern/gperftools EXCLUDE_FROM_ALL)
       file(GLOB_RECURSE PROFILING_TESTS profiling/*.cxx)
       add_executable(profiling_tests
             ${TEST_UTILS}
