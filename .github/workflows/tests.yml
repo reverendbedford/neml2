@@ -45,8 +45,7 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: "3.10"
-      - run: pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cpu
-      - run: cmake -DCMAKE_PREFIX_PATH="`pip show torch | grep -oP '(?<=Location:\ ).*'`/torch/share/cmake" -DCMAKE_BUILD_TYPE=${{ matrix.btype }} -DCMAKE_UNITY_BUILD=${{ matrix.unity }} .
+      - run: cmake -DCMAKE_BUILD_TYPE=${{ matrix.btype }} -DCMAKE_UNITY_BUILD=${{ matrix.unity }} .
       - run: make -j 2
       - run: make test
   build-all-linux:
@@ -63,8 +62,7 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: "3.10"
-      - run: pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cpu
-      - run: cmake -DCMAKE_PREFIX_PATH="`pip show torch | grep -oP '(?<=Location:\ ).*'`/torch/share/cmake" -DCMAKE_BUILD_TYPE=${{ matrix.btype }} -DCMAKE_UNITY_BUILD=${{ matrix.unity }} -DUNIT=ON -DREGRESSION=ON -DVERIFICATION=ON -DBENCHMARK=ON -DPROFILING=ON .
+      - run: cmake -DCMAKE_BUILD_TYPE=${{ matrix.btype }} -DCMAKE_UNITY_BUILD=${{ matrix.unity }} -DUNIT=ON -DREGRESSION=ON -DVERIFICATION=ON -DBENCHMARK=ON -DPROFILING=ON .
       - run: make -j 2
   coverage:
     name: Code coverage check
@@ -78,8 +76,7 @@ jobs:
         with:
           python-version: "3.10"
       - run: sudo apt install lcov
-      - run: pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cpu
-      - run: cmake -DCMAKE_PREFIX_PATH="`pip show torch | grep -oP '(?<=Location:\ ).*'`/torch/share/cmake" -DCMAKE_BUILD_TYPE=Coverage .
+      - run: cmake -DCMAKE_BUILD_TYPE=Coverage .
       - run: make -j 2
       - run: ./scripts/coverage.sh
       - uses: romeovs/lcov-reporter-action@v0.2.19
