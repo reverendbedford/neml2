@@ -113,3 +113,11 @@ option(NEML2_DOC "Build NEML2 documentation: doxygen" OFF)
 if(NEML2_DOC)
       add_subdirectory(doc)
 endif()
+
+# Python bindings
+option(PYBIND "Build python bindings" OFF)
+
+if(PYBIND)
+      add_subdirectory(${PROJECT_SOURCE_DIR}/extern/pybind11)
+      add_subdirectory(python)
+endif()
