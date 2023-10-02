@@ -29,39 +29,20 @@ using namespace torch::indexing;
 
 namespace neml2
 {
-LabeledMatrix::LabeledMatrix(const LabeledTensor<2> & other)
-  : LabeledTensor<2>(other)
-{
-}
-
-LabeledMatrix
-LabeledMatrix::zeros(TorchShapeRef batch_size,
-                     const std::vector<const LabeledAxis *> & axes,
-                     const torch::TensorOptions & options)
-{
-  return LabeledTensor<2>::zeros(batch_size, axes, options);
-}
-
-LabeledMatrix
-LabeledMatrix::zeros_like(const LabeledMatrix & other)
-{
-  return LabeledTensor<2>::zeros_like(other);
-}
-
 LabeledMatrix
 LabeledMatrix::identity(TorchShapeRef batch_size,
                         const LabeledAxis & axis,
                         const torch::TensorOptions & options)
 {
-  return LabeledTensor<2>(BatchTensor::identity(batch_size, axis.storage_size(), options),
-                          {&axis, &axis});
+  return LabeledMatrix(BatchTensor::identity(batch_size, axis.storage_size(), options),
+                       {&axis, &axis});
 }
 
 void
 LabeledMatrix::accumulate(const LabeledMatrix & other, bool recursive)
 {
-  const auto indices0 = LabeledAxis::common_indices(axis(0), other.axis(0), recursive);
-  const auto indices1 = LabeledAxis::common_indices(axis(1), other.axis(1), recursive);
+  const auto indices0 = axis(0).common_indices(other.axis(0), recursive);
+  const auto indices1 = axis(1).common_indices(other.axis(1), recursive);
   for (const auto & [idxi, idxi_other] : indices0)
     for (const auto & [idxj, idxj_other] : indices1)
       _tensor.base_index({idxi, idxj}) += other.base_index({idxi_other, idxj_other});
@@ -70,8 +51,8 @@ LabeledMatrix::accumulate(const LabeledMatrix & other, bool recursive)
 void
 LabeledMatrix::fill(const LabeledMatrix & other, bool recursive)
 {
-  const auto indices0 = LabeledAxis::common_indices(axis(0), other.axis(0), recursive);
-  const auto indices1 = LabeledAxis::common_indices(axis(1), other.axis(1), recursive);
+  const auto indices0 = axis(0).common_indices(other.axis(0), recursive);
+  const auto indices1 = axis(1).common_indices(other.axis(1), recursive);
   for (const auto & [idxi, idxi_other] : indices0)
     for (const auto & [idxj, idxj_other] : indices1)
       _tensor.base_index({idxi, idxj}).copy_(other.base_index({idxi_other, idxj_other}));

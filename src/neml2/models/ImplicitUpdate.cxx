@@ -66,7 +66,7 @@ ImplicitUpdate::ImplicitUpdate(const OptionSet & options)
   for (auto var : _model.output().subaxis("residual").variable_accessors(/*recursive=*/true))
   {
     auto sz = _model.output().subaxis("residual").storage_size(var);
-    declare_output_variable(sz, var.on("state"));
+    declare_output_variable(var.on("state"), sz);
   }
 
   setup();
@@ -103,16 +103,19 @@ ImplicitUpdate::set_value(const LabeledVector & in,
     // Use the implicit function theorem to calculate the other derivatives
     if (dout_din)
     {
-      auto implicit_in = LabeledVector::zeros(in.batch_sizes(), {&_model.input()}, in.options());
+      auto implicit_in = LabeledVector::empty(in.batch_sizes(), {&_model.input()}, in.options());
       implicit_in.fill(in);
       implicit_in.set(sol, "state");
 
       auto partials = _model.dvalue(implicit_in);
       LabeledMatrix J = partials.slice(1, "state");
-      LabeledMatrix Jinv = J.inverse();
-      dout_din->block("state", "old_state").copy_(-Jinv.chain(partials.slice(1, "old_state")));
-      dout_din->block("state", "forces").copy_(-Jinv.chain(partials.slice(1, "forces")));
-      dout_din->block("state", "old_forces").copy_(-Jinv.chain(partials.slice(1, "old_forces")));
+      auto [LU, pivot] = torch::linalg_lu_factor(J);
+      dout_din->block("state", "old_state")
+          .copy_(-torch::linalg_lu_solve(LU, pivot, partials.slice(1, "old_state")));
+      dout_din->block("state", "forces")
+          .copy_(-torch::linalg_lu_solve(LU, pivot, partials.slice(1, "forces")));
+      dout_din->block("state", "old_forces")
+          .copy_(-torch::linalg_lu_solve(LU, pivot, partials.slice(1, "old_forces")));
     }
   }
 }

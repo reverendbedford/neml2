@@ -51,5 +51,5 @@ public:
   LinspaceFixedDimTensor(const OptionSet & options);
 };
 
-typedef_all_FixedDimTensor(LinspaceFixedDimTensor, Linspace);
+typedef_all_FixedDimTensor_prefix(LinspaceFixedDimTensor, Linspace);
 } // namespace neml2

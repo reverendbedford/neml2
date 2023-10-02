@@ -51,5 +51,5 @@ public:
   FullFixedDimTensor(const OptionSet & options);
 };
 
-typedef_all_FixedDimTensor(FullFixedDimTensor, Full);
+typedef_all_FixedDimTensor_prefix(FullFixedDimTensor, Full);
 } // namespace neml2

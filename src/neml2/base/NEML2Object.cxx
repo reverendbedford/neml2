@@ -35,8 +35,9 @@ NEML2Object::expected_options()
 }
 
 NEML2Object::NEML2Object(const OptionSet & options)
-  : torch::nn::Module(options.get<std::string>("name")),
-    OptionInterface(options, this)
+  : _options(options),
+    _name(options.get<std::string>("name")),
+    _type(options.get<std::string>("type"))
 {
 }
 } // namespace neml2

@@ -162,7 +162,7 @@ LinearIsotropicHardening::expected_options()
 
 LinearIsotropicHardening::LinearIsotropicHardening(const OptionSet & options)
   : IsotropicHardening(options),
-    _K(register_crossref_model_parameter<Scalar>("K", "hardening_modulus"))
+    _K(declare_parameter<Scalar>("K", "hardening_modulus"))
 {
 }
 
@@ -185,7 +185,7 @@ LinearIsotropicHardening::set_value(const LabeledVector & in,
 }
 } // namespace neml2
 ```
-Note that an additional option named "hardening_modulus" is requested from the user. The model parameter is registered using the API `register_crossref_model_parameter<Scalar>`. In the `set_value` method, the current value of the input variable equivalent plastic strain is queried by
+Note that an additional option named "hardening_modulus" is requested from the user. The model parameter is registered using the API `declare_parameter<Scalar>`. In the `set_value` method, the current value of the input variable equivalent plastic strain is queried by
 ```cpp
 in(equivalent_plastic_strain)
 ```

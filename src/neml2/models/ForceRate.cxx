@@ -36,7 +36,7 @@ ForceRate<T>::expected_options()
 {
   OptionSet options = Model::expected_options();
   options.set<LabeledAxisAccessor>("force");
-  options.set<LabeledAxisAccessor>("time") = LabeledAxisAccessor{{"t"}};
+  options.set<LabeledAxisAccessor>("time") = {"t"};
   return options;
 }
 

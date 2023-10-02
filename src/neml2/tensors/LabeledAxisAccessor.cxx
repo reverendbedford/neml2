@@ -27,17 +27,42 @@
 
 namespace neml2
 {
+LabeledAxisAccessor::LabeledAxisAccessor(const char * name)
+  : _item_names({std::string(name)})
+{
+  validate_item_name(_item_names[0]);
+}
+
+LabeledAxisAccessor::LabeledAxisAccessor(const std::string & name)
+  : _item_names({name})
+{
+  validate_item_name(name);
+}
+
 LabeledAxisAccessor::LabeledAxisAccessor(const std::vector<std::string> & names)
   : _item_names(names)
 {
   for (const auto & name : names)
-  {
-    const auto x = name.find_first_of(" .,;/\t\n\v\f\r");
-    neml_assert(x == std::string::npos,
-                "Invalid item name: ",
-                name,
-                ". The item names cannot contain whitespace, '.', ',', ';', or '/'.");
-  }
+    validate_item_name(name);
+}
+
+LabeledAxisAccessor::LabeledAxisAccessor(const std::initializer_list<std::string> & names)
+  : _item_names(names)
+{
+  for (const auto & name : _item_names)
+    validate_item_name(name);
+}
+
+LabeledAxisAccessor::LabeledAxisAccessor(const LabeledAxisAccessor & other)
+  : _item_names(other._item_names)
+{
+}
+
+LabeledAxisAccessor &
+LabeledAxisAccessor::operator=(const LabeledAxisAccessor & other)
+{
+  _item_names = other._item_names;
+  return *this;
 }
 
 LabeledAxisAccessor::operator std::vector<std::string>() const { return _item_names; }
@@ -57,19 +82,9 @@ LabeledAxisAccessor::with_suffix(const std::string & suffix) const
 }
 
 LabeledAxisAccessor
-LabeledAxisAccessor::append(const std::string & name) const
+LabeledAxisAccessor::append(const LabeledAxisAccessor & axis) const
 {
-  auto new_names = _item_names;
-  new_names.push_back(name);
-  return new_names;
-}
-
-LabeledAxisAccessor
-LabeledAxisAccessor::on(const std::string & axis) const
-{
-  auto new_names = _item_names;
-  new_names.insert(new_names.begin(), axis);
-  return new_names;
+  return axis.on(*this);
 }
 
 LabeledAxisAccessor
@@ -95,6 +110,16 @@ LabeledAxisAccessor::slice(size_t n1, size_t n2) const
   new_names.erase(new_names.begin() + n2, new_names.end());
   new_names.erase(new_names.begin(), new_names.begin() + n1);
   return new_names;
+}
+
+void
+LabeledAxisAccessor::validate_item_name(const std::string & name) const
+{
+  const auto x = name.find_first_of(" .,;/\t\n\v\f\r");
+  neml_assert(x == std::string::npos,
+              "Invalid item name: ",
+              name,
+              ". The item names cannot contain whitespace, '.', ',', ';', or '/'.");
 }
 
 bool

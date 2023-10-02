@@ -190,8 +190,9 @@ neml_assert_broadcastable(T &&... tensors)
 
 template <class... T>
 void
-neml_assert_broadcastable_dbg(T &&... tensors)
+neml_assert_broadcastable_dbg([[maybe_unused]] T &&... tensors)
 {
+#ifndef NDEBUG
   neml_assert_dbg(broadcastable(tensors...),
                   "The ",
                   sizeof...(tensors),
@@ -199,6 +200,7 @@ neml_assert_broadcastable_dbg(T &&... tensors)
                   tensors.batch_sizes()...,
                   ", and the base shapes are ",
                   tensors.base_sizes()...);
+#endif
 }
 
 template <class... T>
@@ -214,13 +216,15 @@ neml_assert_batch_broadcastable(T &&... tensors)
 
 template <class... T>
 void
-neml_assert_batch_broadcastable_dbg(T &&... tensors)
+neml_assert_batch_broadcastable_dbg([[maybe_unused]] T &&... tensors)
 {
+#ifndef NDEBUG
   neml_assert_dbg(utils::sizes_broadcastable(tensors.batch_sizes()...),
                   "The ",
                   sizeof...(tensors),
                   " operands are not batch-broadcastable. The batch shapes are ",
                   tensors.batch_sizes()...);
+#endif
 }
 namespace utils
 {

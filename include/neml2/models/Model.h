@@ -24,14 +24,16 @@
 
 #pragma once
 
+#include "neml2/base/Registry.h"
+#include "neml2/base/Factory.h"
+#include "neml2/base/UniqueVector.h"
+#include "neml2/base/NEML2Object.h"
+#include "neml2/models/LabeledAxisInterface.h"
+#include "neml2/solvers/NonlinearSystem.h"
+
 #include "neml2/tensors/LabeledVector.h"
 #include "neml2/tensors/LabeledMatrix.h"
 #include "neml2/tensors/LabeledTensor3D.h"
-#include "neml2/models/LabeledAxisInterface.h"
-#include "neml2/base/Registry.h"
-#include "neml2/base/NEML2Object.h"
-#include "neml2/base/Factory.h"
-#include "neml2/solvers/NonlinearSystem.h"
 
 namespace neml2
 {
@@ -54,8 +56,15 @@ public:
    */
   Model(const OptionSet & options);
 
-  /// Whether this model is implicit
-  virtual bool implicit() const { return false; }
+  /**
+   * @brief Recursively send this model and its sub-models to the target device.
+   *
+   * What this does behind the scenes is just sending all the model parameters to the target device.
+   * This operation is recursively applied on of the sub-models.
+   *
+   * @param device The target device
+   */
+  void to(const torch::Device & device);
 
   /// Definition of the input variables
   /// @{
@@ -68,6 +77,35 @@ public:
   LabeledAxis & output() { return _output; }
   const LabeledAxis & output() const { return _output; }
   /// @}
+
+  /**
+   * @brief (Recursively) get the names of the model parameters
+   *
+   * If \p recurse is set true, then each sub-model's parameters are prepended by the model name
+   * followed by a dot ".". This is consistent with torch::nn::Module's naming convention.
+   *
+   * @param recurse Whether to recursively retrieve parameter names of sub-models.
+   */
+  std::set<std::string> parameters(bool recurse = false) const;
+
+  /// Whether this model is implicit
+  virtual bool implicit() const { return false; }
+
+  /// The models that may be used during the evaluation of this model
+  const std::vector<Model *> & registered_models() const { return _registered_models; }
+
+  /// The variables that this model depends on
+  const std::set<LabeledAxisAccessor> & consumed_variables() const { return _consumed_vars; }
+
+  /// The variables that this model defines as part of its output
+  const std::set<LabeledAxisAccessor> & provided_variables() const { return _provided_vars; }
+
+  /**
+   * The additional variables that this model should provide. Typically these variables are not
+   * directly computed by this model, instead they come from other information that this model
+   * _knows_, e.g., directly from the input variables.
+   */
+  const std::set<LabeledAxisAccessor> & additional_outputs() const { return _additional_outputs; }
 
   /**
    * Validate the currently requested AD settings.
@@ -83,31 +121,6 @@ public:
 
   /// Tell this model to use AD to get derivatives
   void use_AD_derivatives(bool first = true, bool second = true);
-
-  /// Tell this model which parameters require grad
-  void trace_parameters(const std::map<std::string, bool> &);
-
-  /// Set this model's parameters
-  void set_parameters(const std::map<std::string, torch::Tensor> &);
-
-  /// Get a parameter's value
-  template <typename T>
-  T get_parameter(const std::string & name, bool recurse = false) const
-  {
-    return T(named_parameters(recurse)[name]);
-  }
-
-  /**
-   * @brief Use automatic differentiation to calculate the derivatives w.r.t. to the parameter
-   *
-   * If the parameter is batched, the batch shape must be the _same_ with the batch shape of the
-   * output \p o.
-   *
-   * @param o The `BatchTensor` to to be differentiated
-   * @param p The parameter to take derivatives with respect to
-   * @return BatchTensor $\partial o/\partial p$
-   */
-  BatchTensor dparam(const BatchTensor & o, const BatchTensor & p) const;
 
   /// Convenient shortcut to construct and return the model value
   virtual LabeledVector value(const LabeledVector & in) const;
@@ -129,11 +142,37 @@ public:
   virtual std::tuple<LabeledVector, LabeledMatrix, LabeledTensor3D>
   value_and_dvalue_and_d2value(const LabeledVector & in) const;
 
-  const std::vector<Model *> & registered_models() const { return _registered_models; }
+  bool has_parameter(const std::string & name) const { return _param_ids.count(name); }
 
-  const std::set<LabeledAxisAccessor> & consumed_variables() const { return _consumed_vars; }
-  const std::set<LabeledAxisAccessor> & provided_variables() const { return _provided_vars; }
-  const std::set<LabeledAxisAccessor> & additional_outputs() const { return _additional_outputs; }
+  bool has_nonlinear_parameter(const std::string & name) const { return _nl_params.count(name); }
+
+  // /// Tell this model which parameters require grad
+  // void trace_parameters(const std::map<std::string, bool> &);
+
+  // /// Set this model's parameters
+  // void set_parameters(const std::map<std::string, torch::Tensor> &);
+
+  /// Get a parameter's value
+  template <typename T,
+            typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<T>, T>>>
+  const T & get_parameter(const std::string & name) const;
+
+  /// Get a buffer's value
+  template <typename T,
+            typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<T>, T>>>
+  const T & get_buffer(const std::string & name) const;
+
+  // /**
+  //  * @brief Use automatic differentiation to calculate the derivatives w.r.t. to the parameter
+  //  *
+  //  * If the parameter is batched, the batch shape must be the _same_ with the batch shape of the
+  //  * output \p o.
+  //  *
+  //  * @param o The `BatchTensor` to to be differentiated
+  //  * @param p The parameter to take derivatives with respect to
+  //  * @return BatchTensor $\partial o/\partial p$
+  //  */
+  // BatchTensor dparam(const BatchTensor & o, const BatchTensor & p) const;
 
   /**
    * During the SOLVING stage, we update the state with \emph fixed forces, old forces, and old
@@ -163,59 +202,79 @@ protected:
                          LabeledMatrix * dout_din = nullptr,
                          LabeledTensor3D * d2out_din2 = nullptr) const = 0;
 
+  /// Get the accessor for a given nonlinear parameter
+  const LabeledAxisAccessor & nl_param(const std::string & name) const
+  {
+    return _nl_params.at(name);
+  }
+
   /// Declare an input variable
   template <typename T>
-  LabeledAxisAccessor declare_input_variable(const std::vector<std::string> & names)
+  LabeledAxisAccessor declare_input_variable(const LabeledAxisAccessor & var)
   {
-    auto accessor = declare_variable<T>(_input, names);
+    auto accessor = declare_variable<T>(_input, var);
     _consumed_vars.insert(accessor);
     return accessor;
   }
 
-  /// Declare an input variable on a subaxis
-  template <typename T>
-  LabeledAxisAccessor declare_input_variable(const std::string & subaxis,
-                                             const std::vector<std::string> & names)
-  {
-    auto new_names = names;
-    new_names.insert(new_names.begin(), subaxis);
-    return declare_input_variable<T>(new_names);
-  }
-
   /// Declare an input variable with known storage size
-  LabeledAxisAccessor declare_input_variable(TorchSize sz, const std::vector<std::string> & names)
+  LabeledAxisAccessor declare_input_variable(const LabeledAxisAccessor & var, TorchSize sz)
   {
-    auto accessor = declare_variable(_input, sz, names);
+    auto accessor = declare_variable(_input, var, sz);
     _consumed_vars.insert(accessor);
     return accessor;
   }
 
   /// Declare an output variable
   template <typename T>
-  LabeledAxisAccessor declare_output_variable(const std::vector<std::string> & names)
+  LabeledAxisAccessor declare_output_variable(const LabeledAxisAccessor & var)
   {
-    auto accessor = declare_variable<T>(_output, names);
+    auto accessor = declare_variable<T>(_output, var);
     _provided_vars.insert(accessor);
     return accessor;
-  }
-
-  /// Declare an output variable on a subaxis
-  template <typename T>
-  LabeledAxisAccessor declare_output_variable(const std::string & subaxis,
-                                              const std::vector<std::string> & names)
-  {
-    auto new_names = names;
-    new_names.insert(new_names.begin(), subaxis);
-    return declare_output_variable<T>(new_names);
   }
 
   /// Declare an output variable with known storage size
-  LabeledAxisAccessor declare_output_variable(TorchSize sz, const std::vector<std::string> & names)
+  LabeledAxisAccessor declare_output_variable(const LabeledAxisAccessor & var, TorchSize sz)
   {
-    auto accessor = declare_variable(_output, sz, names);
+    auto accessor = declare_variable(_output, var, sz);
     _provided_vars.insert(accessor);
     return accessor;
   }
+
+  template <typename T,
+            typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<T>, T>>>
+  const T & declare_parameter(const std::string & name, const T & rawval);
+
+  /**
+   * @brief Declare a model parameter.
+   *
+   * @tparam T Parameter type. See @ref primitive for supported types.
+   * @param name Name of the model parameter.
+   * @param input_option_name Name of the input option that defines the value of the model
+   * parameter.
+   * @return T The value of the registered model parameter.
+   */
+  template <typename T,
+            typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<T>, T>>>
+  const T & declare_parameter(const std::string & name, const std::string & input_option_name);
+
+  template <typename T,
+            typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<T>, T>>>
+  const T & declare_buffer(const std::string & name, const T & rawval);
+
+  /**
+   * @brief Declare a model buffer.
+   *
+   * @tparam T Buffer type. See @ref primitive for supported types.
+   * @param name Name of the model buffer.
+   * @param input_option_name Name of the input option that defines the value of the model
+   * buffer.
+   * @return T The value of the registered model buffer.
+   */
+  template <typename T,
+            typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<T>, T>>>
+  const T & declare_buffer(const std::string & name, const std::string & input_option_name);
 
   virtual void setup() { setup_layout(); }
 
@@ -239,8 +298,58 @@ protected:
   std::set<LabeledAxisAccessor> _additional_outputs;
 
 private:
+  class ParameterValueBase
+  {
+  public:
+    virtual ~ParameterValueBase() = default;
+
+    /**
+     * String identifying the type of parameter stored.
+     * Must be reimplemented in derived classes.
+     */
+    virtual std::string type() const = 0;
+
+    /// Send the value to the target device
+    virtual void to(const torch::Device &) = 0;
+  };
+
+  /// Concrete definition of a parameter value for a specified type
+  template <typename T>
+  class ParameterValue : public ParameterValueBase
+  {
+  public:
+    ParameterValue() = default;
+
+    ParameterValue(const T & value)
+      : _value(value)
+    {
+    }
+
+    const T & get() const { return _value; }
+
+    T & set() { return _value; }
+
+    virtual std::string type() const { return utils::demangle(typeid(T).name()); }
+
+    virtual void to(const torch::Device & device) { _value = _value.to(device); }
+
+  private:
+    /// Stored option value
+    T _value;
+  };
+
   LabeledAxis & _input;
   LabeledAxis & _output;
+
+  std::map<std::string, size_t> _param_ids;
+  std::vector<std::string> _param_names;
+  UniqueVector<ParameterValueBase> _param_values;
+
+  std::map<std::string, size_t> _buffer_ids;
+  std::vector<std::string> _buffer_names;
+  UniqueVector<ParameterValueBase> _buffer_values;
+
+  std::map<std::string, LabeledAxisAccessor> _nl_params;
 
   bool _AD_1st_deriv;
   bool _AD_2nd_deriv;
@@ -249,4 +358,82 @@ private:
   LabeledVector _cached_in;
 };
 
+template <typename T,
+          typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<T>, T>>>
+const T &
+Model::get_parameter(const std::string & name) const
+{
+  auto id = _param_ids.at(name);
+  const auto & base_prop = _param_values[id];
+  const auto prop = dynamic_cast<const ParameterValue<T> *>(&base_prop);
+  neml_assert_dbg(prop, "Internal error, parameter cast failure.");
+  return prop->get();
+}
+
+template <typename T,
+          typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<T>, T>>>
+const T &
+Model::get_buffer(const std::string & name) const
+{
+  auto id = _buffer_ids.at(name);
+  const auto & base_prop = _buffer_values[id];
+  const auto prop = dynamic_cast<const ParameterValue<T> *>(&base_prop);
+  neml_assert_dbg(prop, "Internal error, buffer cast failure.");
+  return prop->get();
+}
+
+template <typename T,
+          typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<T>, T>>>
+const T &
+Model::declare_parameter(const std::string & name, const T & rawval)
+{
+  neml_assert(std::find(_param_names.begin(), _param_names.end(), name) == _param_names.end(),
+              "Trying to declare a parameter named ",
+              name,
+              " that already exists.");
+
+  auto val = std::make_unique<ParameterValue<T>>(rawval);
+  _param_ids.emplace(name, _param_ids.size());
+  _param_names.push_back(name);
+  auto & base_prop = _param_values.add_pointer(std::move(val));
+  auto prop = dynamic_cast<ParameterValue<T> *>(&base_prop);
+  neml_assert(prop, "Internal error, parameter cast failure.");
+  return prop->get();
+}
+
+template <typename T,
+          typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<T>, T>>>
+const T &
+Model::declare_buffer(const std::string & name, const T & rawval)
+{
+  neml_assert(std::find(_buffer_names.begin(), _buffer_names.end(), name) == _buffer_names.end(),
+              "Trying to declare a buffer named ",
+              name,
+              " that already exists.");
+
+  auto val = std::make_unique<ParameterValue<T>>(rawval);
+  _buffer_ids.emplace(name, _buffer_ids.size());
+  _buffer_names.push_back(name);
+  auto & base_prop = _buffer_values.add_pointer(std::move(val));
+  auto prop = dynamic_cast<ParameterValue<T> *>(&base_prop);
+  neml_assert(prop, "Internal error, parameter cast failure.");
+  return prop->get();
+}
+
+template <typename T,
+          typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<T>, T>>>
+const T &
+Model::declare_buffer(const std::string & name, const std::string & input_option_name)
+{
+  if (options().contains<T>(input_option_name))
+    return declare_buffer(name, options().get<T>(input_option_name));
+  else if (options().contains<CrossRef<T>>(input_option_name))
+    return declare_buffer(name, T(options().get<CrossRef<T>>(input_option_name)));
+
+  throw NEMLException(
+      "Trying to register buffer named " + name + " from input option named " + input_option_name +
+      " of type " + utils::demangle(typeid(T).name()) +
+      ". Make sure you provided the correct buffer name, option name, and buffer type. Note that "
+      "the buffer type can either be a plain type, a cross-reference, or an interpolator.");
+}
 } // namespace neml2

@@ -22,45 +22,54 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/models/solid_mechanics/LinearKinematicHardening.h"
-#include "neml2/tensors/SSR4.h"
+#include "neml2/models/LinearInterpolation.h"
+
+using namespace torch::indexing;
 
 namespace neml2
 {
-register_NEML2_object(LinearKinematicHardening);
+register_all_FixedDimTensor_suffix(LinearInterpolation, "LinearInterpolation");
 
+template <typename T>
 OptionSet
-LinearKinematicHardening::expected_options()
+LinearInterpolation<T>::expected_options()
 {
-  OptionSet options = KinematicHardening::expected_options();
-  options.set<CrossRef<Scalar>>("hardening_modulus");
+  OptionSet options = Interpolation<T>::expected_options();
   return options;
 }
 
-LinearKinematicHardening::LinearKinematicHardening(const OptionSet & options)
-  : KinematicHardening(options),
-    _H(declare_parameter<Scalar>("H", "hardening_modulus"))
+template <typename T>
+LinearInterpolation<T>::LinearInterpolation(const OptionSet & options)
+  : Interpolation<T>(options),
+    _a0(this->template declare_buffer<Scalar>("A0", this->_abscissa.index({Slice(None, -1)}))),
+    _a1(this->template declare_buffer<Scalar>("A1", this->_abscissa.index({Slice(1, None)}))),
+    _o0(this->template declare_buffer<T>("O0", this->_ordinate.index({Slice(None, -1)}))),
+    _slope(this->template declare_buffer<T>(
+        "S", math::diff(this->_ordinate, 1, 0) / math::diff(this->_abscissa, 1, 0)))
 {
+  this->setup();
 }
 
+template <typename T>
 void
-LinearKinematicHardening::set_value(const LabeledVector & in,
-                                    LabeledVector * out,
-                                    LabeledMatrix * dout_din,
-                                    LabeledTensor3D * d2out_din2) const
+LinearInterpolation<T>::interpolate(const Scalar & x, T * y, T * dy_dx, T * d2y_dx2) const
 {
-  if (out)
-    out->set(_H * in(kinematic_plastic_strain), back_stress);
+  const auto loc = torch::logical_and(torch::gt(x, _a0), torch::le(x, _a1));
+  const auto si = mask<T>(_slope, loc);
 
-  if (dout_din)
+  if (y)
   {
-    auto I = SR2::identity_map(in.options());
-    dout_din->set(_H * I, back_stress, kinematic_plastic_strain);
+    const auto a0i = mask<Scalar>(_a0, loc);
+    const auto o0i = mask<T>(_o0, loc);
+    (*y) = o0i + si * (x - a0i);
   }
 
-  if (d2out_din2)
-  {
-    // zero
-  }
+  if (dy_dx)
+    (*dy_dx) = si;
+
+  if (d2y_dx2)
+    (*d2y_dx2) = T::zeros_like(si);
 }
+
+instantiate_all_FixedDimTensor(LinearInterpolation);
 } // namespace neml2

@@ -22,13 +22,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/base/OptionInterface.h"
+#pragma once
+
+#include "neml2/models/Model.h"
+#include "neml2/tensors/tensors.h"
+#include "neml2/tensors/macros.h"
 
 namespace neml2
 {
-OptionInterface::OptionInterface(const OptionSet & options, torch::nn::Module * object)
-  : _options(options),
-    _object(object)
+template <typename T>
+class NonlinearParameter : public Model
 {
-}
+public:
+  static OptionSet expected_options();
+
+  NonlinearParameter(const OptionSet & options);
+
+  const LabeledAxisAccessor p;
+
+  /// Get the nonlinear parameter value
+  const T & get_value() const { return _p[0]; }
+
+protected:
+  /// Manage memory for the nonlinear parameter $p$, and its derivatives.
+  UniqueVector<T> _p;
+};
 } // namespace neml2

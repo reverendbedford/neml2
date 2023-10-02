@@ -24,24 +24,39 @@
 
 #pragma once
 
-#include "neml2/models/solid_mechanics/IsotropicHardening.h"
+#include "neml2/models/NonlinearParameter.h"
 
 namespace neml2
 {
-class VoceIsotropicHardening : public IsotropicHardening
+template <typename T>
+class Interpolation : public NonlinearParameter<T>
 {
 public:
   static OptionSet expected_options();
 
-  VoceIsotropicHardening(const OptionSet & options);
+  Interpolation(const OptionSet & options);
+
+  const LabeledAxisAccessor x;
 
 protected:
-  void set_value(const LabeledVector & in,
-                 LabeledVector * out,
-                 LabeledMatrix * dout_din = nullptr,
-                 LabeledTensor3D * d2out_din2 = nullptr) const override;
+  virtual void set_value(const LabeledVector & in,
+                         LabeledVector * out,
+                         LabeledMatrix * dout_din = nullptr,
+                         LabeledTensor3D * d2out_din2 = nullptr) const override;
 
-  const Scalar & _R;
-  const Scalar & _d;
+  /**
+   * @brief Actually do the interpolation.
+   *
+   * The output (and its derivatives) are only "requested" if they are _not_ nullptrs.
+   *
+   * @param x input
+   * @param y output, i.e., the interpolated value
+   * @param dy_dx derivative
+   * @param d2y_dx2 second derivative
+   */
+  virtual void interpolate(const Scalar & x, T * y, T * dy_dx, T * d2y_dx2) const = 0;
+
+  const Scalar & _abscissa;
+  const T & _ordinate;
 };
 } // namespace neml2

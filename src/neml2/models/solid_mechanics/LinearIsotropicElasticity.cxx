@@ -40,8 +40,8 @@ LinearIsotropicElasticity::expected_options()
 
 LinearIsotropicElasticity::LinearIsotropicElasticity(const OptionSet & options)
   : Elasticity(options),
-    _E(register_crossref_model_parameter<Scalar>("E", "youngs_modulus")),
-    _nu(register_crossref_model_parameter<Scalar>("nu", "poisson_ratio"))
+    _E(declare_parameter<Scalar>("E", "youngs_modulus")),
+    _nu(declare_parameter<Scalar>("nu", "poisson_ratio"))
 {
   setup();
 }

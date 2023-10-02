@@ -22,26 +22,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
-
-#include "neml2/models/solid_mechanics/IsotropicHardening.h"
+#include "neml2/models/NonlinearParameter.h"
 
 namespace neml2
 {
-class VoceIsotropicHardening : public IsotropicHardening
+template <typename T>
+OptionSet
+NonlinearParameter<T>::expected_options()
 {
-public:
-  static OptionSet expected_options();
+  OptionSet options = Model::expected_options();
+  options.set<LabeledAxisAccessor>("parameter");
+  return options;
+}
 
-  VoceIsotropicHardening(const OptionSet & options);
+template <typename T>
+NonlinearParameter<T>::NonlinearParameter(const OptionSet & options)
+  : Model(options),
+    p(declare_output_variable<T>(options.get<LabeledAxisAccessor>("parameter")))
+{
+  // Resize y for the value
+  _p.resize(1);
+  _p.set_pointer(0, std::make_unique<T>());
 
-protected:
-  void set_value(const LabeledVector & in,
-                 LabeledVector * out,
-                 LabeledMatrix * dout_din = nullptr,
-                 LabeledTensor3D * d2out_din2 = nullptr) const override;
+  setup();
+}
 
-  const Scalar & _R;
-  const Scalar & _d;
-};
+instantiate_all_FixedDimTensor(NonlinearParameter);
 } // namespace neml2

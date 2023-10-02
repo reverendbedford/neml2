@@ -27,7 +27,7 @@
 namespace neml2
 {
 LabeledAxis &
-LabeledAxisInterface::declareAxis()
+LabeledAxisInterface::declare_axis()
 {
   _axes.push_back(std::make_shared<LabeledAxis>());
   return *_axes.back();

@@ -34,21 +34,10 @@ class LabeledMatrix;
  * @brief A single-batched, logically 3D LabeledTensor.
  *
  */
-class LabeledTensor3D : public LabeledTensor<3>
+class LabeledTensor3D : public LabeledTensor<LabeledTensor3D, 3>
 {
 public:
-  using LabeledTensor<3>::LabeledTensor;
-
-  /// Conversion from LabeledTensor
-  LabeledTensor3D(const LabeledTensor<3> & other);
-
-  /// Create a batched, labeled zero tensor
-  static LabeledTensor3D zeros(TorchShapeRef batch_size,
-                               const std::vector<const LabeledAxis *> & axes,
-                               const torch::TensorOptions & options = default_tensor_options);
-
-  /// Create a zero tensor with the same shape and labels as the other tensor
-  static LabeledTensor3D zeros_like(const LabeledTensor3D & other);
+  using LabeledTensor<LabeledTensor3D, 3>::LabeledTensor;
 
   /// Add another tensor into this tensor.
   /// The item set of the other tensor must be a subset of this tensor's item set.

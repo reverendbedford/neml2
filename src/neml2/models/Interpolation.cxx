@@ -22,34 +22,54 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
-
-#include "neml2/base/Registry.h"
-#include "neml2/base/NEML2Object.h"
-
-#include "neml2/tensors/macros.h"
-#include "neml2/tensors/tensors.h"
+#include "neml2/models/Interpolation.h"
 
 namespace neml2
 {
-/**
- * @brief Create a zeros FixedDimTensor of type T from the input file.
- *
- * @tparam T The concrete tensor derived from FixedDimTensor
- */
 template <typename T>
-class ZerosFixedDimTensor : public T, public NEML2Object
+OptionSet
+Interpolation<T>::expected_options()
 {
-public:
-  static OptionSet expected_options();
+  OptionSet options = NonlinearParameter<T>::expected_options();
+  options.set<LabeledAxisAccessor>("argument");
+  options.set<CrossRef<Scalar>>("abscissa");
+  options.set<CrossRef<T>>("ordinate");
+  return options;
+}
 
-  /**
-   * @brief Construct a new ZerosFixedDimTensor object
-   *
-   * @param options The options extracted from the input file.
-   */
-  ZerosFixedDimTensor(const OptionSet & options);
-};
+template <typename T>
+Interpolation<T>::Interpolation(const OptionSet & options)
+  : NonlinearParameter<T>(options),
+    x(this->template declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("argument"))),
+    _abscissa(this->template declare_parameter<Scalar>("A", "abscissa")),
+    _ordinate(this->template declare_parameter<T>("O", "ordinate"))
+{
+  this->setup();
+}
 
-typedef_all_FixedDimTensor_prefix(ZerosFixedDimTensor, Zeros);
+template <typename T>
+void
+Interpolation<T>::set_value(const LabeledVector & in,
+                            LabeledVector * out,
+                            LabeledMatrix * dout_din,
+                            LabeledTensor3D * d2out_din2) const
+{
+  auto xv = in.get<Scalar>(x);
+
+  auto & yv = this->_p[0];
+  T dyv_dxv, d2yv_dxv2;
+  interpolate(
+      xv, out ? &yv : nullptr, dout_din ? &dyv_dxv : nullptr, d2out_din2 ? &d2yv_dxv2 : nullptr);
+
+  if (out)
+    out->set(yv, this->p);
+
+  if (dout_din)
+    dout_din->set(dyv_dxv, this->p, x);
+
+  if (d2out_din2)
+    d2out_din2->set(d2yv_dxv2, this->p, x, x);
+}
+
+instantiate_all_FixedDimTensor(Interpolation);
 } // namespace neml2

@@ -25,6 +25,8 @@
 #include <catch2/catch.hpp>
 
 #include "neml2/tensors/LabeledTensor.h"
+#include "neml2/tensors/LabeledVector.h"
+#include "neml2/tensors/LabeledMatrix.h"
 
 using namespace neml2;
 
@@ -45,7 +47,7 @@ TEST_CASE("LabeledTensor", "[tensors]")
 
     SECTION("logically 1D LabeledTensor")
     {
-      auto A = LabeledTensor<1>::zeros(nbatch, {&info1});
+      auto A = LabeledVector::zeros(nbatch, {&info1});
       REQUIRE(A("first").sizes() == TorchShapeRef({nbatch, 6}));
       REQUIRE(A("second").sizes() == TorchShapeRef({nbatch, 1}));
       REQUIRE(A("third").sizes() == TorchShapeRef({nbatch, 1}));
@@ -53,7 +55,7 @@ TEST_CASE("LabeledTensor", "[tensors]")
 
     SECTION("logically 2D LabeledTensor")
     {
-      auto A = LabeledTensor<2>::zeros(nbatch, {&info1, &info2});
+      auto A = LabeledMatrix::zeros(nbatch, {&info1, &info2});
       REQUIRE(A("first", "first").sizes() == TorchShapeRef({nbatch, 6, 1}));
       REQUIRE(A("first", "second").sizes() == TorchShapeRef({nbatch, 6, 6}));
       REQUIRE(A("second", "first").sizes() == TorchShapeRef({nbatch, 1, 1}));
@@ -78,7 +80,7 @@ TEST_CASE("LabeledTensor", "[tensors]")
 
     SECTION("logically 1D LabeledTensor")
     {
-      auto A = LabeledTensor<1>::zeros(nbatch, {&info1});
+      auto A = LabeledVector::zeros(nbatch, {&info1});
       REQUIRE(A.get<SR2>("first").sizes() == TorchShapeRef({nbatch, 6}));
       REQUIRE(A.get<Scalar>("second").sizes() == TorchShapeRef({nbatch}));
       REQUIRE(A.get<Scalar>("third").sizes() == TorchShapeRef({nbatch}));
@@ -86,7 +88,7 @@ TEST_CASE("LabeledTensor", "[tensors]")
 
     SECTION("logically 2D LabeledTensor")
     {
-      auto A = LabeledTensor<2>::zeros(nbatch, {&info1, &info2});
+      auto A = LabeledMatrix::zeros(nbatch, {&info1, &info2});
       REQUIRE(A.get<SR2>("first", "first").sizes() == TorchShapeRef({nbatch, 6}));
       REQUIRE(A.get<Scalar>("second", "first").sizes() == TorchShapeRef({nbatch}));
       REQUIRE(A.get<SR2>("second", "second").sizes() == TorchShapeRef({nbatch, 6}));
@@ -110,7 +112,7 @@ TEST_CASE("LabeledTensor", "[tensors]")
 
     SECTION("logically 1D LabeledTensor")
     {
-      auto A = LabeledTensor<1>::zeros(nbatch, {&info1});
+      auto A = LabeledVector::zeros(nbatch, {&info1});
       A.set(BatchTensor::ones(6).batch_expand(nbatch), "first");
       REQUIRE(torch::sum(A("first")).item<double>() == Approx(nbatch * 6));
       REQUIRE(torch::sum(A("second")).item<double>() == Approx(0));
@@ -119,7 +121,7 @@ TEST_CASE("LabeledTensor", "[tensors]")
 
     SECTION("logically 2D LabeledTensor")
     {
-      auto A = LabeledTensor<2>::zeros(nbatch, {&info1, &info2});
+      auto A = LabeledMatrix::zeros(nbatch, {&info1, &info2});
       A.set(BatchTensor::ones({1, 6}).batch_expand(nbatch), "third", "second");
       REQUIRE(torch::sum(A("first", "first")).item<double>() == Approx(0));
       REQUIRE(torch::sum(A("first", "second")).item<double>() == Approx(0));
@@ -143,7 +145,7 @@ TEST_CASE("LabeledTensor", "[tensors]")
     info2.add<Scalar>("first").add<SR2>("second");
     info2.setup_layout();
 
-    auto A = LabeledTensor<2>::zeros(nbatch, {&info1, &info2});
+    auto A = LabeledMatrix::zeros(nbatch, {&info1, &info2});
     auto B = A.clone();
 
     REQUIRE(A.axis(0) == B.axis(0));
@@ -174,16 +176,16 @@ TEST_CASE("LabeledTensor", "[tensors]")
 
     SECTION("logically 1D LabeledTensor")
     {
-      auto A = LabeledTensor<1>::zeros(nbatch, {&info1});
+      auto A = LabeledVector::zeros(nbatch, {&info1});
       A.set(2.3 * BatchTensor::ones(7).batch_expand(nbatch), "sub1");
-      auto B = A.slice(0, "sub1");
+      auto B = A.slice("sub1");
       REQUIRE(torch::sum(B("first")).item<double>() == Approx(nbatch * 6 * 2.3));
       REQUIRE(torch::sum(B("second")).item<double>() == Approx(nbatch * 2.3));
     }
 
     SECTION("logically 2D LabeledTensor")
     {
-      auto A = LabeledTensor<2>::zeros(nbatch, {&info1, &info2});
+      auto A = LabeledMatrix::zeros(nbatch, {&info1, &info2});
       A.set(-1.9 * BatchTensor::ones({7, 6}).batch_expand(nbatch), "sub1", "second");
       auto B = A.slice(0, "sub1");
       REQUIRE(torch::sum(B("first", "first")).item<double>() == Approx(0));

@@ -27,6 +27,7 @@
 #include "neml2/models/ImplicitUpdate.h"
 
 namespace fs = std::filesystem;
+using namespace std::literals;
 
 namespace neml2
 {
@@ -36,7 +37,7 @@ TransientDriver::expected_options()
   OptionSet options = Driver::expected_options();
   options.set<std::string>("model");
   options.set<CrossRef<torch::Tensor>>("times");
-  options.set<LabeledAxisAccessor>("time") = LabeledAxisAccessor{{"forces", "t"}};
+  options.set<LabeledAxisAccessor>("time") = {{"forces"s, "t"s}};
   options.set<std::string>("predictor") = "PREVIOUS_STATE";
   options.set<std::string>("save_as");
   options.set<bool>("show_parameters") = false;
@@ -81,8 +82,8 @@ TransientDriver::run()
 {
   if (_show_params)
     // LCOV_EXCL_START
-    for (auto & item : _model.named_parameters(true))
-      std::cout << item.key() << std::endl;
+    for (auto pname : _model.parameters(true))
+      std::cout << pname << std::endl;
   // LCOV_EXCL_STOP
 
   auto status = solve();
@@ -96,9 +97,6 @@ TransientDriver::run()
 bool
 TransientDriver::solve()
 {
-  // We don't need parameter gradients
-  torch::NoGradGuard no_grad_guard;
-
   for (_step_count = 0; _step_count < _nsteps; _step_count++)
   {
     if (_verbose)

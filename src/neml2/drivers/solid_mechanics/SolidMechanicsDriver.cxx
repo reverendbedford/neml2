@@ -24,6 +24,8 @@
 
 #include "neml2/drivers/solid_mechanics/SolidMechanicsDriver.h"
 
+using namespace std::literals;
+
 namespace neml2
 {
 register_NEML2_object(SolidMechanicsDriver);
@@ -33,8 +35,8 @@ SolidMechanicsDriver::expected_options()
 {
   OptionSet options = TransientDriver::expected_options();
   options.set<std::string>("control") = "STRAIN";
-  options.set<LabeledAxisAccessor>("total_strain") = LabeledAxisAccessor{{"forces", "E"}};
-  options.set<LabeledAxisAccessor>("cauchy_stress") = LabeledAxisAccessor{{"forces", "S"}};
+  options.set<LabeledAxisAccessor>("total_strain") = {{"forces"s, "E"s}};
+  options.set<LabeledAxisAccessor>("cauchy_stress") = {{"forces"s, "S"s}};
   options.set<CrossRef<torch::Tensor>>("prescribed_strains");
   options.set<CrossRef<torch::Tensor>>("prescribed_stresses");
   return options;

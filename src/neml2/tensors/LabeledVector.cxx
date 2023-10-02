@@ -27,25 +27,6 @@
 
 namespace neml2
 {
-LabeledVector::LabeledVector(const LabeledTensor<1> & other)
-  : LabeledTensor<1>(other)
-{
-}
-
-LabeledVector
-LabeledVector::zeros(TorchShapeRef batch_size,
-                     const std::vector<const LabeledAxis *> & axes,
-                     const torch::TensorOptions & options)
-{
-  return LabeledTensor<1>::zeros(batch_size, axes, options);
-}
-
-LabeledVector
-LabeledVector::zeros_like(const LabeledVector & other)
-{
-  return LabeledTensor<1>::zeros_like(other);
-}
-
 LabeledVector
 LabeledVector::slice(const std::string & name) const
 {
@@ -55,7 +36,7 @@ LabeledVector::slice(const std::string & name) const
 void
 LabeledVector::accumulate(const LabeledVector & other, bool recursive)
 {
-  const auto indices = LabeledAxis::common_indices(axis(0), other.axis(0), recursive);
+  const auto indices = axis(0).common_indices(other.axis(0), recursive);
   for (const auto & [idx, idx_other] : indices)
     _tensor.base_index({idx}) += other.base_index({idx_other});
 }
@@ -63,7 +44,7 @@ LabeledVector::accumulate(const LabeledVector & other, bool recursive)
 void
 LabeledVector::fill(const LabeledVector & other, bool recursive)
 {
-  const auto indices = LabeledAxis::common_indices(axis(0), other.axis(0), recursive);
+  const auto indices = axis(0).common_indices(other.axis(0), recursive);
   for (const auto & [idx, idx_other] : indices)
     _tensor.base_index({idx}).copy_(other.base_index({idx_other}));
 }

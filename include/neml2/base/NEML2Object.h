@@ -24,8 +24,7 @@
 #pragma once
 
 #include <torch/torch.h>
-
-#include "neml2/base/OptionInterface.h"
+#include "neml2/base/OptionSet.h"
 
 namespace neml2
 {
@@ -36,7 +35,7 @@ namespace neml2
  * The registry and the factory relies on polymophism to collect and resolve all types at run-time.
  * See `Registry` and `Factory` for more details.
  */
-class NEML2Object : public torch::nn::Module, public OptionInterface
+class NEML2Object
 {
 public:
   static OptionSet expected_options();
@@ -47,5 +46,16 @@ public:
    * @param options The set of options extracted from the input file
    */
   NEML2Object(const OptionSet & options);
+
+  virtual ~NEML2Object() = default;
+
+  const OptionSet & options() const { return _options; }
+  const std::string & name() const { return _name; }
+  const std::string & type() const { return _type; }
+
+private:
+  const OptionSet & _options;
+  const std::string _name;
+  const std::string _type;
 };
 } // namespace neml2

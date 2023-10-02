@@ -36,23 +36,21 @@ public:
 
 protected:
   /// Declare an axis
-  [[nodiscard]] LabeledAxis & declareAxis();
+  [[nodiscard]] LabeledAxis & declare_axis();
 
   /// Declare an item recursively on an axis
   template <typename T>
-  LabeledAxisAccessor declare_variable(LabeledAxis & axis,
-                                       const std::vector<std::string> & names) const
+  LabeledAxisAccessor declare_variable(LabeledAxis & axis, const LabeledAxisAccessor & var) const
   {
-    return declare_variable(axis, utils::storage_size(T::const_base_sizes), names);
+    return declare_variable(axis, var, T::const_base_storage);
   }
 
   /// Declare an item (with known storage size) recursively on an axis
   LabeledAxisAccessor
-  declare_variable(LabeledAxis & axis, TorchSize sz, const std::vector<std::string> & names) const
+  declare_variable(LabeledAxis & axis, const LabeledAxisAccessor & var, TorchSize sz) const
   {
-    LabeledAxisAccessor accessor{names};
-    axis.add(accessor, sz);
-    return accessor;
+    axis.add(var, sz);
+    return var;
   }
 
 private:

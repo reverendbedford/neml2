@@ -42,6 +42,6 @@ protected:
                          LabeledMatrix * dout_din = nullptr,
                          LabeledTensor3D * d2out_din2 = nullptr) const override;
 
-  Scalar _K;
+  const Scalar & _K;
 };
 } // namespace neml2

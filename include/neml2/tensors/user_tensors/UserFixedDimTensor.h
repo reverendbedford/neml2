@@ -51,5 +51,5 @@ public:
   UserFixedDimTensor(const OptionSet & options);
 };
 
-typedef_all_FixedDimTensor(UserFixedDimTensor, User);
+typedef_all_FixedDimTensor_prefix(UserFixedDimTensor, User);
 } // namespace neml2

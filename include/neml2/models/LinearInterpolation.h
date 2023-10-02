@@ -24,24 +24,44 @@
 
 #pragma once
 
-#include "neml2/models/solid_mechanics/IsotropicHardening.h"
+#include "neml2/models/Interpolation.h"
 
 namespace neml2
 {
-class VoceIsotropicHardening : public IsotropicHardening
+template <typename T>
+class LinearInterpolation : public Interpolation<T>
 {
 public:
   static OptionSet expected_options();
 
-  VoceIsotropicHardening(const OptionSet & options);
+  LinearInterpolation(const OptionSet & options);
 
 protected:
-  void set_value(const LabeledVector & in,
-                 LabeledVector * out,
-                 LabeledMatrix * dout_din = nullptr,
-                 LabeledTensor3D * d2out_din2 = nullptr) const override;
+  virtual void interpolate(const Scalar & x, T * y, T * dy_dx, T * d2y_dx2) const override;
 
-  const Scalar & _R;
-  const Scalar & _d;
+private:
+  template <typename T2>
+  T2 mask(const T2 & in, const torch::Tensor & m) const;
+
+  /// Starting abscissa of each interval
+  const Scalar & _a0;
+  /// Ending abscissa of each interval
+  const Scalar & _a1;
+  /// Starting ordinate of each interval
+  const T & _o0;
+  /// Slope of each interval
+  const T & _slope;
 };
+
+template <typename T>
+template <typename T2>
+T2
+LinearInterpolation<T>::mask(const T2 & in, const torch::Tensor & m) const
+{
+  auto in_expand = in.expand(utils::add_shapes(m.sizes(), in.base_sizes()));
+  auto in_mask = in_expand.index({m});
+  return in_mask.reshape(in_expand.sizes().slice(1));
+}
+
+typedef_all_FixedDimTensor_suffix(LinearInterpolation, LinearInterpolation);
 } // namespace neml2

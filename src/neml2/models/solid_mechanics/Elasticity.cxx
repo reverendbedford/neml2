@@ -24,6 +24,8 @@
 
 #include "neml2/models/solid_mechanics/Elasticity.h"
 
+using namespace std::literals;
+
 namespace neml2
 {
 OptionSet
@@ -31,7 +33,7 @@ Elasticity::expected_options()
 {
   OptionSet options = Model::expected_options();
   options.set<LabeledAxisAccessor>("strain") = {{"state", "internal", "Ee"}};
-  options.set<LabeledAxisAccessor>("stress") = {{"state", "S"}};
+  options.set<LabeledAxisAccessor>("stress") = {{"state"s, "S"s}};
   options.set<bool>("compliance") = false;
   options.set<bool>("rate_form") = false;
   return options;

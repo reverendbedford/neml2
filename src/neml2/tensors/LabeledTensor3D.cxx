@@ -29,49 +29,30 @@ using namespace torch::indexing;
 
 namespace neml2
 {
-LabeledTensor3D::LabeledTensor3D(const LabeledTensor<3> & other)
-  : LabeledTensor<3>(other)
-{
-}
-
-LabeledTensor3D
-LabeledTensor3D::zeros(TorchShapeRef batch_size,
-                       const std::vector<const LabeledAxis *> & axes,
-                       const torch::TensorOptions & options)
-{
-  return LabeledTensor<3>::zeros(batch_size, axes, options);
-}
-
-LabeledTensor3D
-LabeledTensor3D::zeros_like(const LabeledTensor3D & other)
-{
-  return LabeledTensor<3>::zeros_like(other);
-}
-
 void
 LabeledTensor3D::accumulate(const LabeledTensor3D & other, bool recursive)
 {
-  const auto indices0 = LabeledAxis::common_indices(axis(0), other.axis(0), recursive);
-  const auto indices1 = LabeledAxis::common_indices(axis(1), other.axis(1), recursive);
-  const auto indices2 = LabeledAxis::common_indices(axis(2), other.axis(2), recursive);
+  const auto indices0 = axis(0).common_indices(other.axis(0), recursive);
+  const auto indices1 = axis(1).common_indices(other.axis(1), recursive);
+  const auto indices2 = axis(2).common_indices(other.axis(2), recursive);
   for (const auto & [idxi, idxi_other] : indices0)
     for (const auto & [idxj, idxj_other] : indices1)
       for (const auto & [idxk, idxk_other] : indices2)
         _tensor.base_index({idxi, idxj, idxk}) +=
-            other.tensor().base_index({idxi_other, idxj_other, idxk_other});
+            other.base_index({idxi_other, idxj_other, idxk_other});
 }
 
 void
 LabeledTensor3D::fill(const LabeledTensor3D & other, bool recursive)
 {
-  const auto indices0 = LabeledAxis::common_indices(axis(0), other.axis(0), recursive);
-  const auto indices1 = LabeledAxis::common_indices(axis(1), other.axis(1), recursive);
-  const auto indices2 = LabeledAxis::common_indices(axis(2), other.axis(2), recursive);
+  const auto indices0 = axis(0).common_indices(other.axis(0), recursive);
+  const auto indices1 = axis(1).common_indices(other.axis(1), recursive);
+  const auto indices2 = axis(2).common_indices(other.axis(2), recursive);
   for (const auto & [idxi, idxi_other] : indices0)
     for (const auto & [idxj, idxj_other] : indices1)
       for (const auto & [idxk, idxk_other] : indices2)
         _tensor.base_index({idxi, idxj, idxk})
-            .copy_(other.tensor().base_index({idxi_other, idxj_other, idxk_other}));
+            .copy_(other.base_index({idxi_other, idxj_other, idxk_other}));
 }
 
 LabeledTensor3D

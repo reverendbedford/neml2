@@ -26,21 +26,22 @@
 #include "neml2/tensors/SSR4.h"
 
 using namespace neml2;
+using namespace std::literals;
 
 register_NEML2_object(SampleRateModel);
 
 SampleRateModel::SampleRateModel(const OptionSet & options)
   : Model(options),
-    _a(register_parameter("a", Scalar(-0.01, default_tensor_options), false), 0),
-    _b(register_parameter("b", Scalar(-0.5, default_tensor_options), false), 0),
-    _c(register_parameter("c", Scalar(-0.9, default_tensor_options), false), 0),
-    _foo(declare_input_variable<Scalar>({"state", "foo"})),
-    _bar(declare_input_variable<Scalar>({"state", "bar"})),
-    _baz(declare_input_variable<SR2>({"state", "baz"})),
-    _temperature(declare_input_variable<Scalar>({"forces", "temperature"})),
-    _foo_rate(declare_output_variable<Scalar>({"state", "foo_rate"})),
-    _bar_rate(declare_output_variable<Scalar>({"state", "bar_rate"})),
-    _baz_rate(declare_output_variable<SR2>({"state", "baz_rate"}))
+    _a(declare_parameter("a", Scalar(-0.01, default_tensor_options))),
+    _b(declare_parameter("b", Scalar(-0.5, default_tensor_options))),
+    _c(declare_parameter("c", Scalar(-0.9, default_tensor_options))),
+    _foo(declare_input_variable<Scalar>({"state"s, "foo"s})),
+    _bar(declare_input_variable<Scalar>({"state"s, "bar"s})),
+    _baz(declare_input_variable<SR2>({"state"s, "baz"s})),
+    _temperature(declare_input_variable<Scalar>({"forces"s, "temperature"s})),
+    _foo_rate(declare_output_variable<Scalar>({"state"s, "foo_rate"s})),
+    _bar_rate(declare_output_variable<Scalar>({"state"s, "bar_rate"s})),
+    _baz_rate(declare_output_variable<SR2>({"state"s, "baz_rate"s}))
 {
   setup();
 }

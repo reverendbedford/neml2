@@ -48,6 +48,6 @@ protected:
                          LabeledTensor3D * d2out_din2 = nullptr) const override;
 
   /// Yield stress
-  Scalar _s0;
+  const Scalar & _s0;
 };
 } // namespace neml2

@@ -39,8 +39,8 @@ PerzynaPlasticFlowRate::expected_options()
 
 PerzynaPlasticFlowRate::PerzynaPlasticFlowRate(const OptionSet & options)
   : PlasticFlowRate(options),
-    _eta(register_crossref_model_parameter<Scalar>("eta", "reference_stress")),
-    _n(register_crossref_model_parameter<Scalar>("n", "exponent"))
+    _eta(declare_parameter<Scalar>("eta", "reference_stress")),
+    _n(declare_parameter<Scalar>("n", "exponent"))
 {
 }
 
