@@ -25,7 +25,7 @@
 #include "neml2/models/solid_mechanics/ElasticStrain.h"
 #include "neml2/tensors/SSR4.h"
 
-using namespace std::literals;
+using vecstr = std::vector<std::string>;
 
 namespace neml2
 {
@@ -35,7 +35,7 @@ OptionSet
 ElasticStrain::expected_options()
 {
   OptionSet options = Model::expected_options();
-  options.set<LabeledAxisAccessor>("total_strain") = {{"forces"s, "E"s}};
+  options.set<LabeledAxisAccessor>("total_strain") = vecstr{"forces", "E"};
   options.set<LabeledAxisAccessor>("plastic_strain") = {{"state", "internal", "Ep"}};
   options.set<LabeledAxisAccessor>("elastic_strain") = {{"state", "internal", "Ee"}};
   options.set<bool>("rate_form") = false;

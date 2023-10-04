@@ -26,7 +26,7 @@
 #include "neml2/models/SumModel.h"
 
 using namespace neml2;
-using namespace std::literals;
+using vecstr = std::vector<std::string>;
 
 TEST_CASE("Factory", "[base]")
 {
@@ -38,10 +38,9 @@ TEST_CASE("Factory", "[base]")
           std::pair<std::string, std::string>{"type", "ScalarSumModel"},
           std::pair<std::string, std::vector<LabeledAxisAccessor>>{
               "from_var",
-              std::vector<LabeledAxisAccessor>{LabeledAxisAccessor{{"state"s, "A"s}},
-                                               LabeledAxisAccessor{{"state", "substate", "B"}}}},
-          std::pair<std::string, LabeledAxisAccessor>{
-              "to_var", LabeledAxisAccessor{{"state", "outsub", "C"}}});
+              std::vector<LabeledAxisAccessor>{vecstr{"state", "A"},
+                                               vecstr{"state", "substate", "B"}}},
+          std::pair<std::string, LabeledAxisAccessor>{"to_var", vecstr{"state", "outsub", "C"}});
 
   Factory::clear();
   Factory::load(all_options);

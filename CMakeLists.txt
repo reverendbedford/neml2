@@ -43,6 +43,7 @@ FetchContent_Declare(
 if(DEFINED LIBTORCH_DIR)
       find_package(Torch REQUIRED HINTS "${LIBTORCH_DIR}/share/cmake")
 else()
+      Set(FETCHCONTENT_QUIET FALSE)
       FetchContent_MakeAvailable(torch)
       find_package(Torch REQUIRED HINTS "${torch_SOURCE_DIR}/share/cmake")
 endif()

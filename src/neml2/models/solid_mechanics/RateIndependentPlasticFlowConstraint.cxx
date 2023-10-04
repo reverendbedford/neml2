@@ -24,7 +24,7 @@
 
 #include "neml2/models/solid_mechanics/RateIndependentPlasticFlowConstraint.h"
 
-using namespace std::literals;
+using vecstr = std::vector<std::string>;
 
 namespace neml2
 {
@@ -35,7 +35,7 @@ RateIndependentPlasticFlowConstraint::expected_options()
 {
   OptionSet options = Model::expected_options();
   options.set<LabeledAxisAccessor>("yield_function") = {{"state", "internal", "fp"}};
-  options.set<LabeledAxisAccessor>("flow_rate") = {{"state"s, "gamma_rate"s}};
+  options.set<LabeledAxisAccessor>("flow_rate") = vecstr{"state", "gamma_rate"};
   return options;
 }
 

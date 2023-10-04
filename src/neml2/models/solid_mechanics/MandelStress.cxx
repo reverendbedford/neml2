@@ -24,7 +24,7 @@
 
 #include "neml2/models/solid_mechanics/MandelStress.h"
 
-using namespace std::literals;
+using vecstr = std::vector<std::string>;
 
 namespace neml2
 {
@@ -32,7 +32,7 @@ OptionSet
 MandelStress::expected_options()
 {
   OptionSet options = Model::expected_options();
-  options.set<LabeledAxisAccessor>("cauchy_stress") = {{"state"s, "S"s}};
+  options.set<LabeledAxisAccessor>("cauchy_stress") = vecstr{"state", "S"};
   options.set<LabeledAxisAccessor>("mandel_stress") = {{"state", "internal", "M"}};
   return options;
 }
