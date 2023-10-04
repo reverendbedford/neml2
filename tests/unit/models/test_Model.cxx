@@ -25,40 +25,38 @@
 #include <catch2/catch.hpp>
 
 #include "utils.h"
-#include "ModelUnitTest.h"
+#include "neml2/models/Model.h"
 
 using namespace neml2;
 
-TEST_CASE("Use AD to get parameter partials")
+TEST_CASE("Model", "[models]")
 {
-  // SECTION("batched") { load_model("unit/parameters/test_parameter_partials_batched.i"); }
-  // SECTION("unbatched") { load_model("unit/parameters/test_parameter_partials_unbatched.i"); }
+  SECTION("class Model")
+  {
+    SECTION("named_parameters")
+    {
+      load_model("unit/models/ImplicitUpdate.i");
+      auto & model = Factory::get_object<Model>("Models", "model");
+      auto params = model.named_parameters(/*recurse=*/true);
 
-  // auto & driver = Factory::get_object<ModelUnitTest>("Drivers", "unit");
-  // auto & model = driver.model();
+      // There are three parameters:
+      auto a = "implicit_rate.rate.a";
+      auto b = "implicit_rate.rate.b";
+      auto c = "implicit_rate.rate.c";
 
-  // // There are three parameters:
-  // auto param_a = "implicit_rate.rate.a";
-  // auto param_b = "implicit_rate.rate.b";
-  // auto param_c = "implicit_rate.rate.c";
-  // // Let's track the derivatives of a
-  // model.trace_parameters({{param_a, true}, {param_b, false}, {param_c, false}});
+      REQUIRE(params.size() == 3);
+      REQUIRE(params.count(a) == 1);
+      REQUIRE(params.count(b) == 1);
+      REQUIRE(params.count(c) == 1);
 
-  // // Evaluate the model value
-  // auto out = model.value(driver.in());
-
-  // // dout/da
-  // auto a = model.get_parameter<Scalar>(param_a, true);
-  // auto dout_da = model.dparam(out, a);
-
-  // // Use FD to check the parameter derivatives
-  // auto a0 = a.clone().detach();
-  // auto dout_da0 = finite_differencing_derivative(
-  //     [&](const BatchTensor & x)
-  //     {
-  //       model.set_parameters({{param_a, x}});
-  //       return model.value(driver.in());
-  //     },
-  //     a0);
-  // REQUIRE(torch::allclose(dout_da, dout_da0));
+      // Make sure modifying a parameter value _actually_ modifies its dereferenced value in the
+      // model. For example, the current value of a is
+      auto a_val_original = params[a].clone();
+      // Now add 0.02 to it
+      params[a] += 0.02;
+      // Check the actual value used in the model
+      auto new_params = model.named_parameters(/*recurse=*/true);
+      REQUIRE(torch::allclose(a_val_original + 0.02, new_params[a]));
+    }
+  }
 }

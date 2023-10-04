@@ -82,7 +82,7 @@ TransientDriver::run()
 {
   if (_show_params)
     // LCOV_EXCL_START
-    for (auto pname : _model.parameters(true))
+    for (auto && [pname, pval] : _model.named_parameters(true))
       std::cout << pname << std::endl;
   // LCOV_EXCL_STOP
 

@@ -65,21 +65,6 @@ Model::to(const torch::Device & device)
     model->to(device);
 }
 
-std::set<std::string>
-Model::parameters(bool recurse) const
-{
-  std::set<std::string> param_names;
-
-  for (const auto & n : _param_names)
-    param_names.insert(n);
-
-  for (auto & model : _registered_models)
-    for (const auto & n : model->parameters(recurse))
-      param_names.insert(model->name() + '.' + n);
-
-  return param_names;
-}
-
 void
 Model::check_AD_limitation() const
 {
@@ -251,71 +236,21 @@ Model::value_and_dvalue_and_d2value(const LabeledVector & in) const
   return {out, dout_din, d2out_din2};
 }
 
-// void
-// Model::trace_parameters(const std::map<std::string, bool> & params)
-// {
-//   const auto & model_params = named_parameters(true);
-//   for (auto && [name, requires_grad] : params)
-//     model_params[name].requires_grad_(requires_grad);
-// }
+std::map<std::string, BatchTensor>
+Model::named_parameters(bool recurse) const
+{
+  std::map<std::string, BatchTensor> params;
 
-// void
-// Model::set_parameters(const std::map<std::string, torch::Tensor> & params)
-// {
-//   const auto & model_params = named_parameters(true);
-//   for (auto && [name, val] : params)
-//   {
-//     auto req_grad = model_params[name].requires_grad();
-//     model_params[name].requires_grad_(false);
-//     model_params[name].copy_(val);
-//     model_params[name].requires_grad_(req_grad);
-//   }
-// }
+  for (const auto & n : _param_names)
+    params.emplace(n, _param_values[_param_ids.at(n)]);
 
-// BatchTensor
-// Model::dparam(const BatchTensor & out, const BatchTensor & p) const
-// {
-//   neml_assert(p.batch_dim() == 0 || out.batch_sizes() == p.batch_sizes(),
-//               "If the parameter is batched, its batch shape must be the same as the batch shape "
-//               "of the output. However, the batch shape of the parameter is ",
-//               p.batch_sizes(),
-//               ", and the batch shape of the output is ",
-//               out.batch_sizes());
+  if (recurse)
+    for (auto & model : _registered_models)
+      for (auto && [n, v] : model->named_parameters(true))
+        params.emplace(model->name() + "." + n, v);
 
-//   // flatten out to handle arbitrarily shaped output
-//   auto outf = BatchTensor(
-//       out.reshape(utils::add_shapes(out.batch_sizes(), utils::storage_size(out.base_sizes()))),
-//       out.batch_dim());
-
-//   neml_assert_dbg(outf.base_dim() == 1, "Flattened output must be flat.");
-
-//   auto doutf_dp = BatchTensor::empty(
-//       outf.batch_sizes(), utils::add_shapes(outf.base_sizes(), p.base_sizes()), outf.options());
-
-//   for (TorchSize i = 0; i < outf.base_sizes()[0]; i++)
-//   {
-//     auto G = BatchTensor::zeros_like(outf);
-//     G.index_put_({torch::indexing::Ellipsis, i}, 1.0);
-//     auto doutfi_dp = torch::autograd::grad({outf},
-//                                            {p},
-//                                            {G},
-//                                            /*retain_graph=*/true,
-//                                            /*create_graph=*/false,
-//                                            /*allow_unused=*/false)[0];
-//     if (doutfi_dp.defined())
-//       doutf_dp.base_index_put({i, torch::indexing::Ellipsis}, doutfi_dp);
-//   }
-
-//   // reshape the derivative back to the correct shape
-//   auto dout_dp = BatchTensor(
-//       doutf_dp.reshape(utils::add_shapes(out.batch_sizes(), out.base_sizes(), p.base_sizes())),
-//       out.batch_dim());
-
-//   // factor to account for broadcasting
-//   Real factor = p.batch_dim() == 0 ? utils::storage_size(out.batch_sizes()) : 1;
-
-//   return dout_dp / factor;
-// }
+  return params;
+}
 
 void
 Model::register_model(std::shared_ptr<Model> model, bool merge_input)

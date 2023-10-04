@@ -78,16 +78,6 @@ public:
   const LabeledAxis & output() const { return _output; }
   /// @}
 
-  /**
-   * @brief (Recursively) get the names of the model parameters
-   *
-   * If \p recurse is set true, then each sub-model's parameters are prepended by the model name
-   * followed by a dot ".". This is consistent with torch::nn::Module's naming convention.
-   *
-   * @param recurse Whether to recursively retrieve parameter names of sub-models.
-   */
-  std::set<std::string> parameters(bool recurse = false) const;
-
   /// Whether this model is implicit
   virtual bool implicit() const { return false; }
 
@@ -146,11 +136,16 @@ public:
 
   bool has_nonlinear_parameter(const std::string & name) const { return _nl_params.count(name); }
 
-  // /// Tell this model which parameters require grad
-  // void trace_parameters(const std::map<std::string, bool> &);
-
-  // /// Set this model's parameters
-  // void set_parameters(const std::map<std::string, torch::Tensor> &);
+  /**
+   * @brief (Recursively) get the named model parameters
+   *
+   * If \p recurse is set true, then each sub-model's parameters are prepended by the model name
+   * followed by a dot ".". This is consistent with torch::nn::Module's naming convention.
+   *
+   * @param recurse Whether to recursively retrieve parameter names of sub-models.
+   * @return A map from parameter name to parameter value
+   */
+  std::map<std::string, BatchTensor> named_parameters(bool recurse = false) const;
 
   /// Get a parameter's value
   template <typename T,
@@ -161,18 +156,6 @@ public:
   template <typename T,
             typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<T>, T>>>
   const T & get_buffer(const std::string & name) const;
-
-  // /**
-  //  * @brief Use automatic differentiation to calculate the derivatives w.r.t. to the parameter
-  //  *
-  //  * If the parameter is batched, the batch shape must be the _same_ with the batch shape of the
-  //  * output \p o.
-  //  *
-  //  * @param o The `BatchTensor` to to be differentiated
-  //  * @param p The parameter to take derivatives with respect to
-  //  * @return BatchTensor $\partial o/\partial p$
-  //  */
-  // BatchTensor dparam(const BatchTensor & o, const BatchTensor & p) const;
 
   /**
    * During the SOLVING stage, we update the state with \emph fixed forces, old forces, and old
@@ -311,6 +294,9 @@ private:
 
     /// Send the value to the target device
     virtual void to(const torch::Device &) = 0;
+
+    /// Convert the parameter value to a BatchTensor
+    virtual operator BatchTensor() const = 0;
   };
 
   /// Concrete definition of a parameter value for a specified type
@@ -325,13 +311,15 @@ private:
     {
     }
 
-    const T & get() const { return _value; }
-
-    T & set() { return _value; }
-
     virtual std::string type() const { return utils::demangle(typeid(T).name()); }
 
     virtual void to(const torch::Device & device) { _value = _value.to(device); }
+
+    virtual operator BatchTensor() const override { return BatchTensor(_value); }
+
+    const T & get() const { return _value; }
+
+    T & set() { return _value; }
 
   private:
     /// Stored option value
