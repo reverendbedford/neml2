@@ -24,6 +24,7 @@
 import yaml
 import sys
 import re
+from pathlib import Path
 
 
 def get_type(params):
@@ -52,30 +53,34 @@ def postprocess(value, type):
     return value
 
 
-with open("syntax.yml", "r") as stream:
-    syntax = yaml.safe_load(stream)
+if __name__ == "__main__":
+    outfile = Path(sys.argv[2])
+    outfile.parent.mkdir(parents=True, exist_ok=True)
 
-with open(sys.argv[1], "w") as stream:
-    stream.write("# Syntax Documentation {#syntax}\n\n")
-    stream.write("[TOC]\n\n")
-    for s in syntax:
-        for type, params in s.items():
-            input_type = get_type(params)
-            stream.write("## {}\n\n".format(input_type))
-            names = []
-            types = []
-            values = []
-            for param in params:
-                for param_name, info in param.items():
-                    if param_name == "name":
-                        continue
-                    if param_name == "type":
-                        continue
-                    param_type = demangle(info["type"])
-                    param_value = postprocess(info["value"], param_type)
-                    stream.write("- {}\n".format(param_name))
-                    stream.write("  - **Type**: {}\n".format(param_type))
-                    if param_value != None:
-                        stream.write("  - **Default**: {}\n".format(param_value))
-            stream.write("\n")
-            stream.write("Details: [{}](@ref {})\n\n".format(input_type, type))
+    with open(sys.argv[1], "r") as stream:
+        syntax = yaml.safe_load(stream)
+
+    with open(sys.argv[2], "w") as stream:
+        stream.write("# Syntax Documentation {#syntax}\n\n")
+        stream.write("[TOC]\n\n")
+        for s in syntax:
+            for type, params in s.items():
+                input_type = get_type(params)
+                stream.write("## {}\n\n".format(input_type))
+                names = []
+                types = []
+                values = []
+                for param in params:
+                    for param_name, info in param.items():
+                        if param_name == "name":
+                            continue
+                        if param_name == "type":
+                            continue
+                        param_type = demangle(info["type"])
+                        param_value = postprocess(info["value"], param_type)
+                        stream.write("- {}\n".format(param_name))
+                        stream.write("  - **Type**: {}\n".format(param_type))
+                        if param_value != None:
+                            stream.write("  - **Default**: {}\n".format(param_value))
+                stream.write("\n")
+                stream.write("Details: [{}](@ref {})\n\n".format(input_type, type))

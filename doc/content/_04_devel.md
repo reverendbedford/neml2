@@ -275,4 +275,4 @@ The first positional argument specifies the name of the benchmark test to run. T
 
 The Chaboche benchmark test is repeated with different batch sizes and on different devices (in this case CPU and GPU). The final benchmark results are summarized in the following figure.
 
-![Chaboche benchmark results](@ref asset/timings.png){html: width=50%, latex: width=10cm}
+![Chaboche benchmark results](@ref timings.png){html: width=50%, latex: width=10cm}

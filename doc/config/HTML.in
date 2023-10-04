@@ -1,0 +1,13 @@
+#---------------------------------------------------------------------------
+# Configuration options related to the HTML output
+#---------------------------------------------------------------------------
+GENERATE_HTML          = YES
+HTML_OUTPUT            = html
+HTML_EXTRA_STYLESHEET  = ${PROJECT_SOURCE_DIR}/extern/doxygen-awesome-css/doxygen-awesome.css \
+                         ${PROJECT_SOURCE_DIR}/extern/doxygen-awesome-css/doxygen-awesome-sidebar-only.css
+GENERATE_TREEVIEW      = YES
+USE_MATHJAX            = YES
+MATHJAX_VERSION        = MathJax_3
+MATHJAX_FORMAT         = HTML-CSS
+MATHJAX_RELPATH        = https://cdn.jsdelivr.net/npm/mathjax@3
+MATHJAX_EXTENSIONS     = ams physics
