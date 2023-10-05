@@ -2,6 +2,7 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
+    batch_shape = '(2,2)'
     input_symr2_names = 'state/internal/M'
     input_symr2_values = 'M'
     input_scalar_names = 'forces/T'
@@ -18,37 +19,17 @@
     type = FillSR2
     values = '40 120 80 10 10 90'
   []
-  [T0]
-    type = FullScalar
-    batch_shape = '(1)'
-    value = 273.15
-  []
-  [T1]
-    type = FullScalar
-    batch_shape = '(1)'
-    value = 2000
-  []
-  [T]
+  [T_data]
     type = LinspaceScalar
-    start = 'T0'
-    end = 'T1'
+    start = 273.15
+    end = 2000
     nstep = 10
     dim = 0
   []
-  [s0_T0]
-    type = FullScalar
-    batch_shape = '(1)'
-    value = 50
-  []
-  [s0_T1]
-    type = FullScalar
-    batch_shape = '(1)'
-    value = 30
-  []
   [s0_data]
     type = LinspaceScalar
-    start = 's0_T0'
-    end = 's0_T1'
+    start = 50
+    end = 30
     nstep = 10
     dim = 0
   []
@@ -65,7 +46,7 @@
     type = ScalarLinearInterpolation
     parameter = 's0'
     argument = 'forces/T'
-    abscissa = 'T'
+    abscissa = 'T_data'
     ordinate = 's0_data'
   []
   [yield]
