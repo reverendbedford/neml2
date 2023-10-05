@@ -30,6 +30,22 @@
 
 namespace neml2
 {
+/**
+ * @brief The base class for *nonlinear* parameters
+ *
+ * The word "nonlinear" refers to the fact that the parameter can change as a function of state or
+ * forces. In other words, in the context of updating an implicit model, the value of the parameter
+ * can change fron nonlinear iteration to nonlinear iteration, as the guess of the solution keeps
+ * updating.
+ *
+ * The output of a nonlinear parameter is not a "parameter" in our usual definition as one does not
+ * calibrate or optimize the nonlinear parameter in a training loop. However, the definition of the
+ * nonlinear parameter itself is oftentimes parameterized on a set of parameters (in the canonical
+ * definition). Those parameters can be calibrated or optimized.
+ *
+ * @tparam T The class is templated on the output tensor type which can be any NEML2 primitive
+ * tensor type.
+ */
 template <typename T>
 class NonlinearParameter : public Model
 {

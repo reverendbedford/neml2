@@ -28,6 +28,19 @@
 
 namespace neml2
 {
+/**
+ * @brief The base class for nonlinear parameters interpolated from one or multiple axes of data
+ *
+ * This model requires two parameters, namely the "abscissa" and the "ordinate". The ordinate is
+ * interpolated using an input (specified by the "argument" option) along the axes of abscissa.
+ *
+ * We handle broadcasting as much as possible. The general expectations are:
+ * 1. The batch shapes of abscissa and ordinate should be broadcastable. The abscissa should always
+ * be a Scalar. The ordinate can be of any primitive tensor type.
+ * 2. The input (specified by option "argument") must be a Scalar. The batch shape of the input
+ * should be broadcastable with the abscissa and the ordinate (excluding the dimensions on which the
+ * interpolation happens).
+ */
 template <typename T>
 class Interpolation : public NonlinearParameter<T>
 {

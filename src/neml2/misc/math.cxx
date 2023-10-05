@@ -80,12 +80,13 @@ mandel_to_full(const BatchTensor & mandel, TorchSize dim)
 BatchTensor
 jacrev(const BatchTensor & out, const BatchTensor & p)
 {
-  neml_assert(p.batch_dim() == 0 || out.batch_sizes() == p.batch_sizes(),
-              "If the parameter is batched, its batch shape must be the same as the batch shape "
-              "of the output. However, the batch shape of the parameter is ",
-              p.batch_sizes(),
-              ", and the batch shape of the output is ",
-              out.batch_sizes());
+  neml_assert_dbg(
+      p.batch_dim() == 0 || out.batch_sizes() == p.batch_sizes(),
+      "If the parameter is batched, its batch shape must be the same as the batch shape "
+      "of the output. However, the batch shape of the parameter is ",
+      p.batch_sizes(),
+      ", and the batch shape of the output is ",
+      out.batch_sizes());
 
   // flatten out to handle arbitrarily shaped output
   auto outf = BatchTensor(

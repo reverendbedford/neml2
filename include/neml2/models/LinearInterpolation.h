@@ -28,6 +28,60 @@
 
 namespace neml2
 {
+/**
+ * @brief Linearly interpolate the parameter along a single axis.
+ *
+ * Currently, this object is hard-coded to always interpolate along the first (0th) batch dimension.
+ * A few examples of tensor shapes are listed below to demonstrate how broadcasting is handled:
+ *
+ * Example 1: unbatched abscissa, unbatched ordinate (of type R2), unbatched input argument,
+ * interpolant size 100
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * abscissa shape: (100;     )
+ * ordinate shape: (100; 3, 3)
+ *    input shape: (   ;     )
+ *   output shape: (   ; 3, 3)
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ *
+ * Example 2: unbatched abscissa, batched ordinate (of type R2 and with batch shape `(5, 2)`),
+ * unbatched input argument, interpolant size 100
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * abscissa shape: (100      ;     )
+ * ordinate shape: (100, 5, 2; 3, 3)
+ *    input shape: (         ;     )
+ *   output shape: (     5, 2; 3, 3)
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ *
+ * Example 3: batched abscissa (with batch shape `(7, 8, 1)`), unbatched ordinate (of type R2),
+ * unbatched input argument, interpolant size 100
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * abscissa shape: (100, 7, 8, 1;     )
+ * ordinate shape: (100         ; 3, 3)
+ *    input shape: (            ;     )
+ *   output shape: (     7, 8, 1; 3, 3)
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ *
+ * Example 4: batched abscissa (with batch shape `(3, 1, 2)`), batched ordinate (of type R2 and
+ * with batch shape `(7, 2)`), unbatched input argument, interpolant size 100
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * abscissa shape: (100, 3, 1, 2;     )
+ * ordinate shape: (100,    7, 2; 3, 3)
+ *    input shape: (            ;     )
+ *   output shape: (     3, 7, 2; 3, 3)
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * Note the broadcasting along the batch dimensions.
+ *
+ * Example 5: batched abscissa (with batch shape `(3, 1, 2)`), batched ordinate (of type R2 and
+ * with batch shape `(7, 2)`), batched input argument (with batch shape `(7, 1)`), interpolant
+ * size 100
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * abscissa shape: (100, 3, 1, 2;     )
+ * ordinate shape: (100,    7, 2; 3, 3)
+ *    input shape: (        7, 1;     )
+ *   output shape: (     3, 7, 2; 3, 3)
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * Note the broadcasting along the batch dimensions.
+ */
 template <typename T>
 class LinearInterpolation : public Interpolation<T>
 {
