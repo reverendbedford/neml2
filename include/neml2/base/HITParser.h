@@ -24,7 +24,8 @@
 #pragma once
 
 #include "neml2/base/Parser.h"
-#include "hit.h"
+#include "neml2/misc/hit/parse.h"
+#include "neml2/misc/hit/braceexpr.h"
 
 namespace neml2
 {

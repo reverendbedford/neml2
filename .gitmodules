@@ -5,9 +5,9 @@
 [submodule "extern/doxygen-awesome-css"]
 	path = extern/doxygen-awesome-css
 	url = https://github.com/jothepro/doxygen-awesome-css.git
-[submodule "extern/hit/hit"]
-	path = extern/hit/hit
-	url = https://github.com/idaholab/hit.git
 [submodule "extern/gperftools"]
 	path = extern/gperftools
 	url = https://github.com/gperftools/gperftools.git
+[submodule "extern/wasp"]
+	path = extern/wasp
+	url = https://code.ornl.gov/neams-workbench/wasp

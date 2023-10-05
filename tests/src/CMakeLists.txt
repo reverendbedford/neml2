@@ -1,5 +1,5 @@
 file(GLOB_RECURSE TEST_UTILS *.cxx)
-add_library(testutils SHARED ${TEST_UTILS})
+add_library(testutils ${TEST_UTILS})
 
 # Main library
 target_link_libraries(testutils neml2)
