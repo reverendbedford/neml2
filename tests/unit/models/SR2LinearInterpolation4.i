@@ -2,7 +2,7 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    nbatch = 5
+    batch_shape = '(7,8,2)'
     input_scalar_names = 'forces/T'
     input_scalar_values = '300'
     output_symr2_names = 'D'
@@ -24,12 +24,12 @@
 [Tensors]
   [T0]
     type = FullScalar
-    batch_shape = '(5)'
+    batch_shape = '(7,8,1)'
     value = 273.15
   []
   [T1]
     type = FullScalar
-    batch_shape = '(5)'
+    batch_shape = '(7,8,1)'
     value = 2000
   []
   [T]
@@ -37,11 +37,10 @@
     start = 'T0'
     end = 'T1'
     nstep = 100
-    dim = 0
+    dim = 3
   []
   [d0]
     type = FullScalar
-    batch_shape = '(1)'
     value = 1
   []
   [D0]
@@ -50,7 +49,6 @@
   []
   [d1]
     type = FullScalar
-    batch_shape = '(1)'
     value = 30
   []
   [D1]
@@ -66,7 +64,6 @@
   []
   [dT]
     type = FullScalar
-    batch_shape = '(5)'
     value = 1.4509077221530537
   []
   [DT]

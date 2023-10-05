@@ -34,7 +34,7 @@ ModelUnitTest::expected_options()
 {
   OptionSet options = Driver::expected_options();
   options.set<std::string>("model");
-  options.set<TorchSize>("nbatch") = 1;
+  options.set<TorchShape>("batch_shape") = {1};
   options.set<bool>("check_first_derivatives") = true;
   options.set<bool>("check_second_derivatives") = false;
   options.set<bool>("check_AD_first_derivatives") = true;
@@ -61,7 +61,7 @@ ModelUnitTest::expected_options()
 ModelUnitTest::ModelUnitTest(const OptionSet & options)
   : Driver(options),
     _model(Factory::get_object<Model>("Models", options.get<std::string>("model"))),
-    _nbatch(options.get<TorchSize>("nbatch")),
+    _batch_shape(options.get<TorchShape>("batch_shape")),
     _check_1st_deriv(options.get<bool>("check_first_derivatives")),
     _check_2nd_deriv(options.get<bool>("check_second_derivatives")),
     _check_AD_1st_deriv(options.get<bool>("check_AD_first_derivatives")),
@@ -75,11 +75,11 @@ ModelUnitTest::ModelUnitTest(const OptionSet & options)
     _secderiv_rtol(options.get<Real>("second_derivatives_rel_tol")),
     _secderiv_atol(options.get<Real>("second_derivatives_abs_tol"))
 {
-  _in = LabeledVector::zeros(_nbatch, {&_model.input()});
+  _in = LabeledVector::zeros(_batch_shape, {&_model.input()});
   fill_vector<Scalar>(_in, "input_scalar_names", "input_scalar_values");
   fill_vector<SR2>(_in, "input_symr2_names", "input_symr2_values");
 
-  _out = LabeledVector::zeros(_nbatch, {&_model.output()});
+  _out = LabeledVector::zeros(_batch_shape, {&_model.output()});
   fill_vector<Scalar>(_out, "output_scalar_names", "output_scalar_values");
   fill_vector<SR2>(_out, "output_symr2_names", "output_symr2_values");
 }

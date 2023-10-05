@@ -70,7 +70,7 @@ private:
   void check_second_derivatives(bool first, bool second);
 
   Model & _model;
-  const TorchSize _nbatch;
+  const TorchShape _batch_shape;
   const bool _check_1st_deriv;
   const bool _check_2nd_deriv;
   const bool _check_AD_1st_deriv;

@@ -34,12 +34,15 @@ namespace neml2
  * This model requires two parameters, namely the "abscissa" and the "ordinate". The ordinate is
  * interpolated using an input (specified by the "argument" option) along the axes of abscissa.
  *
- * We handle broadcasting as much as possible. The general expectations are:
- * 1. The batch shapes of abscissa and ordinate should be broadcastable. The abscissa should always
- * be a Scalar. The ordinate can be of any primitive tensor type.
- * 2. The input (specified by option "argument") must be a Scalar. The batch shape of the input
- * should be broadcastable with the abscissa and the ordinate (excluding the dimensions on which the
- * interpolation happens).
+ * The interpolant's batch shape is defined as the broadcasted batch shapes of the abscissa and the
+ * ordinate, after excluding the dimensions on which the interpolation happens.
+ *
+ * The general expectations for the batch shapes are:
+ * 1. The abscissa and the ordinate should be batch-broadcastable.
+ * 2. The abscissa should always be a Scalar. The ordinate can be of any primitive tensor type.
+ * 3. The input (specified by option "argument") must be a Scalar.
+ * 4. The input and the interpolant should be batch-broadcastable.
+ * 5. Broadcasting the input with the interpolant should not alter its batch shape.
  */
 template <typename T>
 class Interpolation : public NonlinearParameter<T>

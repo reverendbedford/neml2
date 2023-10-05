@@ -31,7 +31,7 @@ namespace neml2
 /**
  * @brief Linearly interpolate the parameter along a single axis.
  *
- * Currently, this object is hard-coded to always interpolate along the first (0th) batch dimension.
+ * Currently, this object is hard-coded to always interpolate along the last batch dimension.
  * A few examples of tensor shapes are listed below to demonstrate how broadcasting is handled:
  *
  * Example 1: unbatched abscissa, unbatched ordinate (of type R2), unbatched input argument,
@@ -43,44 +43,33 @@ namespace neml2
  *   output shape: (   ; 3, 3)
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  *
- * Example 2: unbatched abscissa, batched ordinate (of type R2 and with batch shape `(5, 2)`),
- * unbatched input argument, interpolant size 100
+ * Example 2: unbatched abscissa, unbatched ordinate (of type R2), batched input argument (with
+ * batch shape `(2, 3)`), interpolant size 100
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- * abscissa shape: (100      ;     )
- * ordinate shape: (100, 5, 2; 3, 3)
- *    input shape: (         ;     )
- *   output shape: (     5, 2; 3, 3)
- * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- *
- * Example 3: batched abscissa (with batch shape `(7, 8, 1)`), unbatched ordinate (of type R2),
- * unbatched input argument, interpolant size 100
- * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- * abscissa shape: (100, 7, 8, 1;     )
- * ordinate shape: (100         ; 3, 3)
- *    input shape: (            ;     )
- *   output shape: (     7, 8, 1; 3, 3)
+ * abscissa shape: (     100;     )
+ * ordinate shape: (     100; 3, 3)
+ *    input shape: (2, 3    ;     )
+ *   output shape: (2, 3    ; 3, 3)
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  *
- * Example 4: batched abscissa (with batch shape `(3, 1, 2)`), batched ordinate (of type R2 and
- * with batch shape `(7, 2)`), unbatched input argument, interpolant size 100
+ * Example 3: unbatched abscissa, batched ordinate (of type R2 and with batch shape `(5, 1)`),
+ * batched input argument (with batch shape `(2, 5, 2)`), interpolant size 100
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- * abscissa shape: (100, 3, 1, 2;     )
- * ordinate shape: (100,    7, 2; 3, 3)
- *    input shape: (            ;     )
- *   output shape: (     3, 7, 2; 3, 3)
+ * abscissa shape: (         100;     )
+ * ordinate shape: (   5, 1, 100; 3, 3)
+ *    input shape: (2, 5, 2     ;     )
+ *   output shape: (2, 5, 2     ; 3, 3)
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- * Note the broadcasting along the batch dimensions.
  *
- * Example 5: batched abscissa (with batch shape `(3, 1, 2)`), batched ordinate (of type R2 and
- * with batch shape `(7, 2)`), batched input argument (with batch shape `(7, 1)`), interpolant
- * size 100
+ * Example 4: batched abscissa (with batch shape `(7, 8, 1)`), unbatched ordinate (of type R2),
+ * batched input argument (with batch shape `(7, 8, 5)`), interpolant size 100
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- * abscissa shape: (100, 3, 1, 2;     )
- * ordinate shape: (100,    7, 2; 3, 3)
- *    input shape: (        7, 1;     )
- *   output shape: (     3, 7, 2; 3, 3)
+ * abscissa shape: (7, 8, 1, 100;     )
+ * ordinate shape: (         100; 3, 3)
+ *    input shape: (7, 8, 5     ;     )
+ *   output shape: (7, 8, 5     ; 3, 3)
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- * Note the broadcasting along the batch dimensions.
+ *
  */
 template <typename T>
 class LinearInterpolation : public Interpolation<T>
@@ -94,9 +83,21 @@ protected:
   virtual void interpolate(const Scalar & x, T * y, T * dy_dx, T * d2y_dx2) const override;
 
 private:
+  /**
+   * @brief Apply the mask tensor \p m on the input \p in.
+   *
+   * This method additionally handles the necessary expanding and reshaping based on two
+   * assumptions:
+   * 1. The mask only selects 1 single batch along the interpolated dimension.
+   * 2. We are always interpolating along the last batch dimension.
+   *
+   * So if some day we relax the 2nd assumption, this method need to be adapted accordingly.
+   */
   template <typename T2>
   T2 mask(const T2 & in, const torch::Tensor & m) const;
 
+  /// Batch shape of the interpolant, excluding the 0th dimension which is the interpolation axis
+  const TorchShape _batch_shape;
   /// Starting abscissa of each interval
   const Scalar & _a0;
   /// Ending abscissa of each interval
@@ -112,9 +113,10 @@ template <typename T2>
 T2
 LinearInterpolation<T>::mask(const T2 & in, const torch::Tensor & m) const
 {
-  auto in_expand = in.expand(utils::add_shapes(m.sizes(), in.base_sizes()));
+  auto in_expand = in.batch_expand(m.sizes());
   auto in_mask = in_expand.index({m});
-  return in_mask.reshape(in_expand.sizes().slice(1));
+  return in_mask.reshape(utils::add_shapes(
+      in_expand.batch_sizes().slice(0, in_expand.batch_dim() - 1), in.base_sizes()));
 }
 
 typedef_all_FixedDimTensor_suffix(LinearInterpolation, LinearInterpolation);

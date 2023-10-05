@@ -2,7 +2,7 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    nbatch = 10
+    batch_shape = '(10)'
     input_scalar_names = 'old_state/foo old_state/bar forces/temperature forces/t old_forces/t'
     input_scalar_values = '0 0 15 1.3 1.1'
     input_symr2_names = 'old_state/baz'

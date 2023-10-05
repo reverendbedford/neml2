@@ -41,11 +41,19 @@ LinearInterpolation<T>::expected_options()
 template <typename T>
 LinearInterpolation<T>::LinearInterpolation(const OptionSet & options)
   : Interpolation<T>(options),
-    _a0(this->template declare_buffer<Scalar>("A0", this->_abscissa.index({Slice(None, -1)}))),
-    _a1(this->template declare_buffer<Scalar>("A1", this->_abscissa.index({Slice(1, None)}))),
-    _o0(this->template declare_buffer<T>("O0", this->_ordinate.index({Slice(None, -1)}))),
+    _batch_shape(utils::broadcast_sizes(
+        this->_abscissa.batch_sizes().slice(0, this->_abscissa.batch_dim() - 1),
+        this->_ordinate.batch_sizes().slice(0, this->_ordinate.batch_dim() - 1))),
+    _a0(this->template declare_buffer<Scalar>(
+        "A0", this->_abscissa.batch_index({Ellipsis, Slice(None, -1)}))),
+    _a1(this->template declare_buffer<Scalar>(
+        "A1", this->_abscissa.batch_index({Ellipsis, Slice(1, None)}))),
+    _o0(this->template declare_buffer<T>("O0",
+                                         this->_ordinate.batch_index({Ellipsis, Slice(None, -1)}))),
     _slope(this->template declare_buffer<T>(
-        "S", math::diff(this->_ordinate, 1, 0) / math::diff(this->_abscissa, 1, 0)))
+        "S",
+        math::diff(this->_ordinate, 1, this->_ordinate.batch_dim() - 1) /
+            math::diff(this->_abscissa, 1, this->_abscissa.batch_dim() - 1)))
 {
   this->setup();
 }
@@ -54,7 +62,8 @@ template <typename T>
 void
 LinearInterpolation<T>::interpolate(const Scalar & x, T * y, T * dy_dx, T * d2y_dx2) const
 {
-  const auto loc = torch::logical_and(torch::gt(x, _a0), torch::le(x, _a1));
+  const auto loc = torch::logical_and(torch::gt(x.batch_unsqueeze(-1), _a0),
+                                      torch::le(x.batch_unsqueeze(-1), _a1));
   const auto si = mask<T>(_slope, loc);
 
   if (y)

@@ -102,6 +102,12 @@ template <class... T>
 bool sizes_broadcastable(T &&... shapes);
 
 /**
+ * @brief Return the broadcast shape of all the shapes.
+ */
+template <class... T>
+TorchShape broadcast_sizes(T &&... shapes);
+
+/**
  * @brief The flattened storage size of a tensor with given shape
  *
  * For example,
@@ -263,6 +269,24 @@ sizes_broadcastable(T &&... shapes)
   }
 
   return true;
+}
+
+template <class... T>
+TorchShape
+broadcast_sizes(T &&... shapes)
+{
+  neml_assert_dbg(sizes_broadcastable(shapes...), "Shapes not broadcastable: ", shapes...);
+
+  auto dim = std::max({shapes.size()...});
+  auto all_shapes_padded = std::vector<TorchShape>{pad_prepend(shapes, dim)...};
+  auto bshape = TorchShape(dim, 1);
+
+  for (size_t i = 0; i < dim; i++)
+    for (const auto & s : all_shapes_padded)
+      if (s[i] > bshape[i])
+        bshape[i] = s[i];
+
+  return bshape;
 }
 
 template <typename... S>

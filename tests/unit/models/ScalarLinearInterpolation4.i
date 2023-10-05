@@ -2,7 +2,7 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    nbatch = 5
+    batch_shape = '(7,8,5)'
     input_scalar_names = 'forces/T'
     input_scalar_values = '300'
     output_scalar_names = 'E'
@@ -24,12 +24,12 @@
 [Tensors]
   [T0]
     type = FullScalar
-    batch_shape = '(5)'
+    batch_shape = '(7,8,1)'
     value = 273.15
   []
   [T1]
     type = FullScalar
-    batch_shape = '(5)'
+    batch_shape = '(7,8,1)'
     value = 2000
   []
   [T]
@@ -37,22 +37,12 @@
     start = 'T0'
     end = 'T1'
     nstep = 100
-    dim = 0
-  []
-  [E0]
-    type = FullScalar
-    batch_shape = '(1)'
-    value = 1.9e5
-  []
-  [E1]
-    type = FullScalar
-    batch_shape = '(1)'
-    value = 1.2e5
+    dim = 3
   []
   [E]
     type = LinspaceScalar
-    start = 'E0'
-    end = 'E1'
+    start = 1.9e5
+    end = 1.2e5
     nstep = 100
     dim = 0
   []

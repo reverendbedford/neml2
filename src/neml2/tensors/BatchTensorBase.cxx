@@ -262,7 +262,7 @@ template <class Derived>
 Derived
 BatchTensorBase<Derived>::batch_index(TorchSlice indices) const
 {
-  indices.push_back(torch::indexing::Ellipsis);
+  indices.insert(indices.end(), base_dim(), torch::indexing::Slice());
   auto res = this->index(indices);
   return Derived(res, res.dim() - base_dim());
 }
@@ -280,7 +280,7 @@ template <class Derived>
 void
 BatchTensorBase<Derived>::batch_index_put(TorchSlice indices, const torch::Tensor & other)
 {
-  indices.insert(indices.end(), torch::indexing::Ellipsis);
+  indices.insert(indices.end(), base_dim(), torch::indexing::Slice());
   this->index_put_(indices, other);
 }
 

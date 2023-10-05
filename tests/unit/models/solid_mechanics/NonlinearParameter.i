@@ -2,7 +2,6 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    nbatch = 1
     input_symr2_names = 'state/internal/M'
     input_symr2_values = 'M'
     input_scalar_names = 'forces/T'
