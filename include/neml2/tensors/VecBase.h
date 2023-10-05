@@ -30,6 +30,8 @@
 
 namespace neml2
 {
+class Rot;
+
 /**
  * @brief Base class for the (logical) vector.
  *
@@ -72,6 +74,12 @@ public:
 
   /// Norm
   Scalar norm() const;
+
+  /// Rotate
+  Derived rotate(const Rot & r) const;
+
+  /// Derivative of the rotated vector w.r.t. the Rodrigues vector
+  R2 drotate(const Rot & r) const;
 };
 
 template <class Derived>

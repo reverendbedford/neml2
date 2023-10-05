@@ -22,37 +22,57 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
-
-#include "neml2/tensors/R2Base.h"
+#include "neml2/models/crystallography/SymmetryOperator.h"
+#include "neml2/tensors/Rot.h"
+#include "neml2/tensors/Vec.h"
+#include "neml2/tensors/Quaternion.h"
 
 namespace neml2
 {
-class Rot;
-class SR2;
-class WR2;
-
-/**
- * @brief A basic R2
- *
- * The logical storage space is (3,3).
- */
-class R2 : public R2Base<R2>
+namespace crystallography
 {
-public:
-  using R2Base<R2>::R2Base;
 
-  /// @brief Form a full R2 from a symmetric tensor
-  /// @param S Mandel-convention symmetric tensor
-  R2(const SR2 & S);
+SymmetryOperator
+SymmetryOperator::from_quaternion(const Quaternion & q)
+{
+  return q.to_R2();
+}
 
-  /// @brief Form a full R2 from a skew-symmetric tensor
-  /// @param W skew-vector convention skew-symmetric tensor
-  R2(const WR2 & W);
+SymmetryOperator
+SymmetryOperator::Identity(const torch::TensorOptions & options)
+{
+  return identity(options);
+}
 
-  /// @brief Form rotation matrix from vector
-  /// @param r rotation vector
-  explicit R2(const Rot & r);
-};
+SymmetryOperator
+SymmetryOperator::ProperRotation(const Rot & rot)
+{
+  return rot.euler_rodrigues();
+}
 
+SymmetryOperator
+SymmetryOperator::ImproperRotation(const Rot & rot)
+{
+  return rot.euler_rodrigues() * (R2::identity(rot.options()) - 2 * rot.outer(rot));
+}
+
+SymmetryOperator
+SymmetryOperator::Reflection(const Vec & v)
+{
+  return R2::identity(v.options()) - 2 * v.outer(v);
+}
+
+SymmetryOperator
+SymmetryOperator::Inversion(const torch::TensorOptions & option)
+{
+  return R2::fill(-1.0, option);
+}
+
+SymmetryOperator
+operator*(const SymmetryOperator & A, const SymmetryOperator & B)
+{
+  return A * B;
+}
+
+} // namespace crystallography
 } // namespace neml2

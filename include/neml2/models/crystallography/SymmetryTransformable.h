@@ -24,35 +24,20 @@
 
 #pragma once
 
-#include "neml2/tensors/R2Base.h"
-
 namespace neml2
 {
-class Rot;
-class SR2;
-class WR2;
+namespace crystallography
+{
+class SymmetryOperator;
 
-/**
- * @brief A basic R2
- *
- * The logical storage space is (3,3).
- */
-class R2 : public R2Base<R2>
+/// @brief  Mixin class for things that can be transformed by a symmetry operator
+/// @tparam Derived type
+template <class Derived>
+class SymmetryTransformable
 {
 public:
-  using R2Base<R2>::R2Base;
-
-  /// @brief Form a full R2 from a symmetric tensor
-  /// @param S Mandel-convention symmetric tensor
-  R2(const SR2 & S);
-
-  /// @brief Form a full R2 from a skew-symmetric tensor
-  /// @param W skew-vector convention skew-symmetric tensor
-  R2(const WR2 & W);
-
-  /// @brief Form rotation matrix from vector
-  /// @param r rotation vector
-  explicit R2(const Rot & r);
+  virtual Derived transform(const SymmetryOperator & op) const = 0;
 };
 
+} // namespace crystallography
 } // namespace neml2

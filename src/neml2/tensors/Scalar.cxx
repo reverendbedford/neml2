@@ -36,4 +36,10 @@ Scalar::identity_map(const torch::TensorOptions & options)
 {
   return Scalar::ones(options);
 }
+
+Scalar
+operator*(const Scalar & a, const Scalar & b)
+{
+  return torch::operator*(a, b);
+}
 } // namespace neml2

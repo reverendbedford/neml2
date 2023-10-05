@@ -305,16 +305,6 @@ template <
     class Derived,
     typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<Derived>, Derived>>>
 Derived
-operator*(const Derived & a, const Derived & b)
-{
-  neml_assert_broadcastable_dbg(a, b);
-  return Derived(torch::operator*(a, b), broadcast_batch_dim(a, b));
-}
-
-template <
-    class Derived,
-    typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<Derived>, Derived>>>
-Derived
 operator/(const Derived & a, const Real & b)
 {
   return Derived(torch::operator/(a, b), a.batch_dim());
@@ -399,7 +389,7 @@ template <
 Derived
 macaulay(const Derived & a)
 {
-  return a * heaviside(a);
+  return Derived(a * heaviside(a), a.batch_dim());
 }
 
 template <

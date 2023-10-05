@@ -29,30 +29,32 @@
 namespace neml2
 {
 class Rot;
-class SR2;
-class WR2;
+class Quaternion;
 
-/**
- * @brief A basic R2
- *
- * The logical storage space is (3,3).
- */
-class R2 : public R2Base<R2>
+namespace crystallography
+{
+class SymmetryOperator : public R2Base<SymmetryOperator>
 {
 public:
-  using R2Base<R2>::R2Base;
+  using R2Base<SymmetryOperator>::R2Base;
 
-  /// @brief Form a full R2 from a symmetric tensor
-  /// @param S Mandel-convention symmetric tensor
-  R2(const SR2 & S);
+  /// Construct from quaternions, useful for comparison to old NEML
+  static SymmetryOperator from_quaternion(const Quaternion & q);
 
-  /// @brief Form a full R2 from a skew-symmetric tensor
-  /// @param W skew-vector convention skew-symmetric tensor
-  R2(const WR2 & W);
-
-  /// @brief Form rotation matrix from vector
-  /// @param r rotation vector
-  explicit R2(const Rot & r);
+  /// The identity transformation, i.e.e the Rank2 identity tensor
+  static SymmetryOperator Identity(const torch::TensorOptions & options = default_tensor_options);
+  /// A proper rotation, here provided by a Rot object
+  static SymmetryOperator ProperRotation(const Rot & rot);
+  /// An improper rotation (rotation + reflection), here provided by a rot object giving the rotation and reflection axis
+  static SymmetryOperator ImproperRotation(const Rot & rot);
+  /// A reflection, defined by the reflection plane
+  static SymmetryOperator Reflection(const Vec & v);
+  /// An inversion center
+  static SymmetryOperator Inversion(const torch::TensorOptions & options = default_tensor_options);
 };
 
+/// @brief Composition as the multiplication operator
+SymmetryOperator operator*(const SymmetryOperator & A, const SymmetryOperator & B);
+
+} // namespace crystallography
 } // namespace neml2

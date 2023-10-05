@@ -36,6 +36,9 @@
 #include "neml2/tensors/R5.h"
 #include "neml2/tensors/SSFR5.h"
 #include "neml2/tensors/Rot.h"
+#include "neml2/tensors/WR2.h"
+#include "neml2/tensors/Quaternion.h"
+#include "neml2/models/crystallography/SymmetryOperator.h"
 
 namespace neml2
 {
@@ -134,6 +137,8 @@ FixedDimTensor<Derived, S...>::full(const TorchShapeRef & batch_shape,
 
 template class FixedDimTensor<Scalar>;
 template class FixedDimTensor<Vec, 3>;
+template class FixedDimTensor<Rot, 3>;
+template class FixedDimTensor<WR2, 3>;
 template class FixedDimTensor<R2, 3, 3>;
 template class FixedDimTensor<SR2, 6>;
 template class FixedDimTensor<R3, 3, 3, 3>;
@@ -142,5 +147,8 @@ template class FixedDimTensor<R4, 3, 3, 3, 3>;
 template class FixedDimTensor<SSR4, 6, 6>;
 template class FixedDimTensor<R5, 3, 3, 3, 3, 3>;
 template class FixedDimTensor<SSFR5, 6, 6, 3>;
-template class FixedDimTensor<Rot, 3>;
+template class FixedDimTensor<Quaternion, 4>;
+using namespace crystallography;
+template class FixedDimTensor<crystallography::SymmetryOperator, 3, 3>;
+
 } // namespace neml2

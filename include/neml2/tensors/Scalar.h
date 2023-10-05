@@ -115,6 +115,8 @@ operator*(const Scalar & a, const Derived & b)
   return b * a;
 }
 
+Scalar operator*(const Scalar & a, const Scalar & b);
+
 template <
     class Derived,
     typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,

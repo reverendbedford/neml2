@@ -22,37 +22,44 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
+#include <catch2/catch.hpp>
 
-#include "neml2/tensors/R2Base.h"
+#include "neml2/models/crystallography/SymmetryOperator.h"
+#include "neml2/tensors/tensors.h"
 
-namespace neml2
+using namespace neml2;
+using namespace neml2::crystallography;
+
+TEST_CASE("SymmetryOperator", "[crystallography]")
 {
-class Rot;
-class SR2;
-class WR2;
+  torch::manual_seed(42);
+  const auto & DTO = default_tensor_options;
 
-/**
- * @brief A basic R2
- *
- * The logical storage space is (3,3).
- */
-class R2 : public R2Base<R2>
-{
-public:
-  using R2Base<R2>::R2Base;
-
-  /// @brief Form a full R2 from a symmetric tensor
-  /// @param S Mandel-convention symmetric tensor
-  R2(const SR2 & S);
-
-  /// @brief Form a full R2 from a skew-symmetric tensor
-  /// @param W skew-vector convention skew-symmetric tensor
-  R2(const WR2 & W);
-
-  /// @brief Form rotation matrix from vector
-  /// @param r rotation vector
-  explicit R2(const Rot & r);
-};
-
-} // namespace neml2
+  SECTION("definitions")
+  {
+    SECTION("Identity")
+    {
+      REQUIRE(torch::allclose(SymmetryOperator::Identity(DTO), R2::identity(DTO)));
+    }
+    auto r = Rot::fill(0.1, -0.15, 0.05, DTO);
+    SECTION("ProperRotation")
+    {
+      REQUIRE(torch::allclose(SymmetryOperator::ProperRotation(r), r.euler_rodrigues()));
+    }
+    SECTION("ImproperRotation")
+    {
+      R2 ref = R2::identity(DTO) - 2 * r.outer(r);
+      REQUIRE(torch::allclose(SymmetryOperator::ImproperRotation(r), r.euler_rodrigues() * ref));
+      REQUIRE(torch::allclose(SymmetryOperator::ImproperRotation(r), ref * r.euler_rodrigues()));
+    }
+    SECTION("Inversion")
+    {
+      REQUIRE(torch::allclose(SymmetryOperator::Inversion(DTO), R2::fill(-1.0, DTO)));
+    }
+    SECTION("Quaternion")
+    {
+      auto q = Quaternion::fill(-0.30411437, -0.15205718, 0.91234311, 0.22808578, DTO);
+      REQUIRE(torch::allclose(SymmetryOperator::from_quaternion(q), q.to_R2()));
+    }
+  }
+}

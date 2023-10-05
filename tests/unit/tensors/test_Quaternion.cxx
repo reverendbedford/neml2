@@ -22,37 +22,36 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
+#include <catch2/catch.hpp>
 
-#include "neml2/tensors/R2Base.h"
+#include "utils.h"
+#include "neml2/tensors/tensors.h"
 
-namespace neml2
+using namespace neml2;
+
+TEST_CASE("Quaternion", "[tensors]")
 {
-class Rot;
-class SR2;
-class WR2;
+  torch::manual_seed(42);
+  const auto & DTO = default_tensor_options;
 
-/**
- * @brief A basic R2
- *
- * The logical storage space is (3,3).
- */
-class R2 : public R2Base<R2>
-{
-public:
-  using R2Base<R2>::R2Base;
+  TorchShape B = {5, 3, 1, 2}; // batch shape
 
-  /// @brief Form a full R2 from a symmetric tensor
-  /// @param S Mandel-convention symmetric tensor
-  R2(const SR2 & S);
+  auto q = Quaternion::fill(-0.30411437, -0.15205718, 0.91234311, 0.22808578, DTO);
+  auto qb = q.batch_expand(B);
 
-  /// @brief Form a full R2 from a skew-symmetric tensor
-  /// @param W skew-vector convention skew-symmetric tensor
-  R2(const WR2 & W);
-
-  /// @brief Form rotation matrix from vector
-  /// @param r rotation vector
-  explicit R2(const Rot & r);
-};
-
-} // namespace neml2
+  SECTION("convert to matrix")
+  {
+    auto R2 = R2::fill(-0.76878613,
+                       -0.13872832,
+                       -0.62427746,
+                       -0.41618497,
+                       0.84971098,
+                       0.32369942,
+                       0.48554913,
+                       0.50867052,
+                       -0.71098266,
+                       DTO);
+    REQUIRE(torch::allclose(q.to_R2(), R2));
+    REQUIRE(torch::allclose(qb.to_R2(), R2.batch_expand(B)));
+  }
+}

@@ -24,35 +24,41 @@
 
 #pragma once
 
-#include "neml2/tensors/R2Base.h"
+#include "neml2/tensors/VecBase.h"
 
 namespace neml2
 {
+class Scalar;
+class R2;
 class Rot;
-class SR2;
-class WR2;
 
 /**
- * @brief A basic R2
+ * @brief A skew rank 2, represented as an axial vector
  *
- * The logical storage space is (3,3).
+ * The logical storage space is (3).
  */
-class R2 : public R2Base<R2>
+class WR2 : public VecBase<WR2>
 {
 public:
-  using R2Base<R2>::R2Base;
+  using VecBase<WR2>::VecBase;
 
-  /// @brief Form a full R2 from a symmetric tensor
-  /// @param S Mandel-convention symmetric tensor
-  R2(const SR2 & S);
+  /// Skew-symmetrize a R2 then fill
+  WR2(const R2 & T);
 
-  /// @brief Form a full R2 from a skew-symmetric tensor
-  /// @param W skew-vector convention skew-symmetric tensor
-  R2(const WR2 & W);
+  /// Fill all entries
+  [[nodiscard]] static WR2 fill(const Real & a21,
+                                const Real & a02,
+                                const Real & a10,
+                                const torch::TensorOptions & options = default_tensor_options);
+  [[nodiscard]] static WR2 fill(const Scalar & a21, const Scalar & a02, const Scalar & a10);
 
-  /// @brief Form rotation matrix from vector
-  /// @param r rotation vector
-  explicit R2(const Rot & r);
+  /// Accessor
+  Scalar operator()(TorchSize i, TorchSize j) const;
+
+  /// Exponential map to make this into a rotation (Rot)
+  Rot exp() const;
+
+  /// Derivative of the exponential map
+  R2 dexp() const;
 };
-
 } // namespace neml2

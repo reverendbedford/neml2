@@ -27,6 +27,7 @@
 // To be intantiated
 #include "neml2/tensors/Vec.h"
 #include "neml2/tensors/Rot.h"
+#include "neml2/tensors/WR2.h"
 
 namespace neml2
 {
@@ -75,6 +76,28 @@ VecBase<Derived>::norm() const
   return math::sqrt(dot(*this));
 }
 
+template <class Derived>
+Derived
+VecBase<Derived>::rotate(const Rot & r) const
+{
+  auto rr = r.norm_sq();
+  return ((1.0 - rr) * Derived(*this) + 2.0 * r.dot(*this) * Derived(r) - 2.0 * this->cross(r)) /
+         (1.0 + rr);
+}
+
+template <class Derived>
+R2
+VecBase<Derived>::drotate(const Rot & r) const
+{
+  auto rr = r.norm_sq();
+  auto rv = rotate(r);
+
+  return 2.0 *
+         (-rv.outer(r) - outer(r) + r.outer(*this) + R2::fill(r.dot(*this)) - R2::skew(*this)) /
+         (1.0 + rr);
+}
+
 template class VecBase<Vec>;
 template class VecBase<Rot>;
+template class VecBase<WR2>;
 } // namespace neml2

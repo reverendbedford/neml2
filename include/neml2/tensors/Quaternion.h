@@ -24,35 +24,41 @@
 
 #pragma once
 
-#include "neml2/tensors/R2Base.h"
+#include "neml2/tensors/FixedDimTensor.h"
 
 namespace neml2
 {
-class Rot;
-class SR2;
-class WR2;
-
+class R2;
+class Scalar;
 /**
- * @brief A basic R2
+ * @brief A batched quaternion
  *
- * The logical storage space is (3,3).
+ * Our convention is s q1 q2 q3, i.e. the scalar part first
+ *
+ * The logical storage space is (4,).
+ *
+ * Currently we only use this for data storage, so the only
+ * method needed is to convert it to an R2
  */
-class R2 : public R2Base<R2>
+class Quaternion : public FixedDimTensor<Quaternion, 4>
 {
 public:
-  using R2Base<R2>::R2Base;
+  using FixedDimTensor<Quaternion, 4>::FixedDimTensor;
 
-  /// @brief Form a full R2 from a symmetric tensor
-  /// @param S Mandel-convention symmetric tensor
-  R2(const SR2 & S);
+  /// fill with four scalars
+  static Quaternion fill(const Scalar & s, const Scalar & q1, const Scalar & q2, const Scalar & q3);
 
-  /// @brief Form a full R2 from a skew-symmetric tensor
-  /// @param W skew-vector convention skew-symmetric tensor
-  R2(const WR2 & W);
+  /// fill with four reals
+  static Quaternion fill(const Real & s,
+                         const Real & q1,
+                         const Real & q2,
+                         const Real & q3,
+                         const torch::TensorOptions & options = default_tensor_options);
 
-  /// @brief Form rotation matrix from vector
-  /// @param r rotation vector
-  explicit R2(const Rot & r);
+  /// Accessor
+  Scalar operator()(TorchSize i) const;
+
+  /// Convert to R2
+  R2 to_R2() const;
 };
-
 } // namespace neml2

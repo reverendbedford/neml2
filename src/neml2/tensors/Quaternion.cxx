@@ -22,34 +22,54 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
+#include "neml2/tensors/Quaternion.h"
 
-#include "neml2/tensors/VecBase.h"
-#include "neml2/models/crystallography/SymmetryTransformable.h"
+#include "neml2/tensors/R2.h"
+#include "neml2/tensors/Scalar.h"
 
 namespace neml2
 {
-class Scalar;
-class R2;
-class Rot;
-namespace crystallography
+
+Quaternion
+Quaternion::fill(const Real & s,
+                 const Real & q1,
+                 const Real & q2,
+                 const Real & q3,
+                 const torch::TensorOptions & options)
 {
-class SymmetryOperator;
+  return Quaternion::fill(
+      Scalar(s, options), Scalar(q1, options), Scalar(q2, options), Scalar(q3, options));
 }
 
-/**
- * @brief The (logical) vector.
- *
- * The logical storage space is (3).
- */
-class Vec : public VecBase<Vec>, public crystallography::SymmetryTransformable<Vec>
+Quaternion
+Quaternion::fill(const Scalar & s, const Scalar & q1, const Scalar & q2, const Scalar & q3)
 {
-public:
-  using VecBase<Vec>::VecBase;
+  return Quaternion(torch::stack({s, q1, q2, q3}, -1), s.batch_dim());
+}
 
-  Vec(const Rot & r);
+Scalar
+Quaternion::operator()(TorchSize i) const
+{
+  return FixedDimTensor<Quaternion, 4>::base_index({i});
+}
 
-  // Transform by a crystal symmetry operator
-  virtual Vec transform(const crystallography::SymmetryOperator & op) const;
-};
+R2
+Quaternion::to_R2() const
+{
+  const Quaternion & q = *this;
+
+  Scalar v1s = q(1) * q(1);
+  Scalar v2s = q(2) * q(2);
+  Scalar v3s = q(3) * q(3);
+
+  return R2::fill(1 - 2 * v2s - 2 * v3s,
+                  2 * (q(1) * q(2) - q(3) * q(0)),
+                  2 * (q(1) * q(3) + q(2) * q(0)),
+                  2 * (q(1) * q(2) + q(3) * q(0)),
+                  1 - 2 * v1s - 2 * v3s,
+                  2 * (q(2) * q(3) - q(1) * q(0)),
+                  2 * (q(1) * q(3) - q(2) * q(0)),
+                  2 * (q(2) * q(3) + q(1) * q(0)),
+                  1 - 2 * v1s - 2 * v2s);
+}
 } // namespace neml2

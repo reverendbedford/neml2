@@ -36,3 +36,5 @@
 #include "neml2/tensors/SSR4.h"
 #include "neml2/tensors/R5.h"
 #include "neml2/tensors/SSFR5.h"
+#include "neml2/tensors/WR2.h"
+#include "neml2/tensors/Quaternion.h"

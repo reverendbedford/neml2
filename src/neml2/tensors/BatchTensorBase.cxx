@@ -37,6 +37,9 @@
 #include "neml2/tensors/R5.h"
 #include "neml2/tensors/SSFR5.h"
 #include "neml2/tensors/Rot.h"
+#include "neml2/tensors/WR2.h"
+#include "neml2/tensors/Quaternion.h"
+#include "neml2/models/crystallography/SymmetryOperator.h"
 
 namespace neml2
 {
@@ -392,6 +395,8 @@ BatchTensorBase<Derived>::operator-() const
 template class BatchTensorBase<BatchTensor>;
 template class BatchTensorBase<Scalar>;
 template class BatchTensorBase<Vec>;
+template class BatchTensorBase<Rot>;
+template class BatchTensorBase<WR2>;
 template class BatchTensorBase<R2>;
 template class BatchTensorBase<SR2>;
 template class BatchTensorBase<R3>;
@@ -400,5 +405,7 @@ template class BatchTensorBase<R4>;
 template class BatchTensorBase<SSR4>;
 template class BatchTensorBase<R5>;
 template class BatchTensorBase<SSFR5>;
-template class BatchTensorBase<Rot>;
+template class BatchTensorBase<Quaternion>;
+using namespace crystallography;
+template class BatchTensorBase<crystallography::SymmetryOperator>;
 } // end namespace neml2
