@@ -23,6 +23,3 @@ set(DTYPE_LIST UInt8 Int8 Int16 Int32 Int64 Float16 Float32 Float64)
 set(DTYPE "Float64" CACHE STRING "default scalar type. Candidates are ${DTYPE_LIST}")
 target_compile_definitions(neml2 PUBLIC DTYPE=${DTYPE})
 message(STATUS "Configuring with default scalar type: ${DTYPE}")
-
-# For testing
-target_compile_definitions(neml2 PUBLIC WASP_ENABLED)
