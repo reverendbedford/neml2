@@ -24,3 +24,9 @@ set(DTYPE_LIST UInt8 Int8 Int16 Int32 Int64 Float16 Float32 Float64)
 set(DTYPE "Float64" CACHE STRING "default scalar type. Candidates are ${DTYPE_LIST}")
 target_compile_definitions(neml2 PUBLIC DTYPE=${DTYPE})
 message(STATUS "Configuring with default scalar type: ${DTYPE}")
+
+# Also want to configure an int type for specialized int tensors
+set(INT_DTYPE_LIST Int8 Int16 Int32 Int64)
+set(INT_DTYPE "Int64" CACHE STRING "default scalar integer type.  Candidates are ${INT_DTYPE_LIST}")
+target_compile_definitions(neml2 PUBLIC INT_DTYPE=${INT_DTYPE})
+message(STATUS "Configure with default integer scalar type: ${INT_DTYPE}")

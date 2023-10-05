@@ -40,6 +40,7 @@
 #include "neml2/tensors/WR2.h"
 #include "neml2/tensors/Quaternion.h"
 #include "neml2/models/crystallography/SymmetryOperator.h"
+#include "neml2/models/crystallography/MillerIndex.h"
 
 namespace neml2
 {
@@ -406,6 +407,6 @@ template class BatchTensorBase<SSR4>;
 template class BatchTensorBase<R5>;
 template class BatchTensorBase<SSFR5>;
 template class BatchTensorBase<Quaternion>;
-using namespace crystallography;
 template class BatchTensorBase<crystallography::SymmetryOperator>;
+template class BatchTensorBase<crystallography::MillerIndex>;
 } // end namespace neml2
