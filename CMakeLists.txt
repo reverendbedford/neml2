@@ -40,13 +40,14 @@ FetchContent_Declare(
 )
 
 # Select between system torch and the current (CPU) torch
-if(DEFINED LIBTORCH_DIR)
-      find_package(Torch REQUIRED HINTS "${LIBTORCH_DIR}/share/cmake")
-else()
+if(NOT DEFINED LIBTORCH_DIR)
       set(FETCHCONTENT_QUIET FALSE)
       FetchContent_MakeAvailable(torch)
-      find_package(Torch REQUIRED HINTS "${torch_SOURCE_DIR}/share/cmake")
+      set(FETCHCONTENT_QUIET TRUE)
+      set(LIBTORCH_DIR ${torch_SOURCE_DIR})
 endif()
+
+find_package(Torch REQUIRED HINTS "${LIBTORCH_DIR}/share/cmake")
 
 # libTorch comes with two flavors: one with cxx11 abi, one without.
 # We should be consistent with whatever is detected from the libTorch.
