@@ -69,24 +69,10 @@ OptionSet &
 OptionSet::operator=(const OptionSet & source)
 {
   this->OptionSet::clear();
-  *this += source;
-  return *this;
-}
-
-OptionSet &
-OptionSet::operator+=(const OptionSet & source)
-{
   for (const auto & [key, value] : source._values)
     _values[key] = value->clone();
+  this->_metadata = source._metadata;
   return *this;
-}
-
-OptionSet
-OptionSet::operator+(const OptionSet & source)
-{
-  OptionSet ret = *this;
-  ret += source;
-  return ret;
 }
 
 OptionSet::OptionSet(const OptionSet & p) { *this = p; }

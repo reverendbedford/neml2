@@ -53,8 +53,8 @@ Factory::manufacture()
 void
 Factory::create_object(const std::string & section, const OptionSet & options)
 {
-  const std::string & name = options.get<std::string>("name");
-  const std::string & type = options.get<std::string>("type");
+  const std::string & name = options.name();
+  const std::string & type = options.type();
 
   // Some other object might have already requested the existence of this object, at which time we
   // have already created it. So don't bother doing anything again.

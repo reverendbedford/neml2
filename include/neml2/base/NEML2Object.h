@@ -50,12 +50,17 @@ public:
   virtual ~NEML2Object() = default;
 
   const OptionSet & options() const { return _options; }
-  const std::string & name() const { return _name; }
-  const std::string & type() const { return _type; }
+
+  /// A readonly reference to the object's name
+  const std::string & name() const { return _options.name(); }
+  /// A readonly reference to the object's type
+  const std::string & type() const { return _options.type(); }
+  /// A readonly reference to the object's path
+  const std::string & path() const { return _options.path(); }
+  /// A readonly reference to the object's docstring
+  const std::string & doc() const { return _options.doc(); }
 
 private:
   const OptionSet & _options;
-  const std::string _name;
-  const std::string _type;
 };
 } // namespace neml2

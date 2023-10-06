@@ -31,8 +31,8 @@ using vecstr = std::vector<std::string>;
 TEST_CASE("Factory", "[base]")
 {
   auto options = ScalarSumModel::expected_options();
-  options.set<std::string>("name") = "example";
-  options.set<std::string>("type") = "ScalarSumModel";
+  options.name() = "example";
+  options.type() = "ScalarSumModel";
   options.set<std::vector<LabeledAxisAccessor>>("from_var") = {vecstr{"state", "A"},
                                                                vecstr{"state", "substate", "B"}};
   options.set<LabeledAxisAccessor>("to_var") = vecstr{"state", "outsub", "C"};

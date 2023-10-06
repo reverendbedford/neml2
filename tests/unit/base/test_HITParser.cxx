@@ -40,8 +40,10 @@ TEST_CASE("HITParser", "[base]")
 
       SECTION("metadata")
       {
-        REQUIRE(options.get<std::string>("name") == "foo");
-        REQUIRE(options.get<std::string>("type") == "SampleParserTestingModel");
+        REQUIRE(options.name() == "foo");
+        REQUIRE(options.type() == "SampleParserTestingModel");
+        REQUIRE(options.path() == "Models");
+        REQUIRE(options.doc() == "This model tests the correctness of parsed options.");
       }
 
       SECTION("default values")

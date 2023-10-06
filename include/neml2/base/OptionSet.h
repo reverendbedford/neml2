@@ -68,19 +68,22 @@ public:
   /// Assignment operator. Deep copy
   virtual OptionSet & operator=(const OptionSet & source);
 
-  /**
-   * Addition/Assignment operator.  Inserts copies of all options
-   * from \p source.  Any options of the same name already in \p
-   * this are replaced. Deep copy.
-   */
-  virtual OptionSet & operator+=(const OptionSet & source);
-
-  /**
-   * Addition operator.  Merge copies of all options
-   * from \p source into \p this.  Any options of the same name already in \p
-   * this are replaced. Deep copy. Non-commutative.
-   */
-  virtual OptionSet operator+(const OptionSet & source);
+  /// A readonly reference to the option set's name
+  const std::string & name() const { return _metadata.name; }
+  /// A writable reference to the option set's name
+  std::string & name() { return _metadata.name; }
+  /// A readonly reference to the option set's type
+  const std::string & type() const { return _metadata.type; }
+  /// A writable reference to the option set's type
+  std::string & type() { return _metadata.type; }
+  /// A readonly reference to the option set's path
+  const std::string & path() const { return _metadata.path; }
+  /// A writable reference to the option set's path
+  std::string & path() { return _metadata.path; }
+  /// A readonly reference to the option set's docstring
+  const std::string & doc() const { return _metadata.doc; }
+  /// A writable reference to the option set's docstring
+  std::string & doc() { return _metadata.doc; }
 
   /**
    * \returns \p true if an option of type \p T
@@ -270,6 +273,72 @@ public:
   const_iterator end() const;
 
 protected:
+  /**
+   * Metadata associated with this option set
+   */
+  struct Metadata
+  {
+    /**
+     * @brief Name of the option set
+     *
+     * For example, in a HIT input file, this is the subsection name that appears inside the
+     * square brackets
+     * ~~~~~~~~~~~~~~~~~python
+     * [foo]
+     *   type = SomeModel
+     *   bar = 123
+     * []
+     * ~~~~~~~~~~~~~~~~~
+     * where "foo" is the name of the option set
+     */
+    std::string name = "";
+    /**
+     * @brief Type of the option set
+     *
+     * For example, in a HIT input file, a special field is reserved for the type of the option
+     * set
+     * ~~~~~~~~~~~~~~~~~python
+     * [foo]
+     *   type = SomeModel
+     *   bar = 123
+     * []
+     * ~~~~~~~~~~~~~~~~~
+     * where "SomeModel" is the option name. The type is registered to the Registry using
+     * register_NEML2_object and its variants.
+     */
+    std::string type = "";
+    /**
+     * @brief Path to the option set
+     *
+     * The path to an option set describes its hierarchy inside the syntax tree parsed by the
+     * parser. For example, in a HIT input file, this is the full path to the current option set
+     * (excluding its local path contribution)
+     * ~~~~~~~~~~~~~~~~~python
+     * [foo]
+     *   [bar]
+     *     [baz]
+     *       type = SomeModel
+     *       goo = 123
+     *     []
+     *   []
+     * []
+     * ~~~~~~~~~~~~~~~~~
+     * The option set with name "baz" has path "foo/bar".
+     */
+    std::string path = "";
+    /**
+     * @brief Option set's doc string
+     *
+     * When we build the documentation for NEML2, we automatically extract the syntax and convert
+     * it to a markdown file. The syntax of NEML2 is just the collection of expected options of
+     * all the registered objects. Doxygen will then render the markdown syntax to the target
+     * output format, e.g., html, tex, etc. This implies that the docstring can contain anything
+     * that the Doxygen's markdown renderer can understand. For more information, see
+     * https://www.doxygen.nl/manual/markdown.html
+     */
+    std::string doc = "";
+  } _metadata;
+
   /// Data structure to map names with values
   map_type _values;
 };

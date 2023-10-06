@@ -32,6 +32,7 @@ OptionSet
 SampleParserTestingModel::expected_options()
 {
   OptionSet options = Model::expected_options();
+  options.doc() = "This model tests the correctness of parsed options.";
 
   // Types we support:
   //   bool
