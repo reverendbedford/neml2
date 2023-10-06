@@ -65,5 +65,8 @@ SampleParserTestingModel::expected_options()
   options.set<std::vector<TorchShape>>("shape_vec");
   options.set<std::vector<std::vector<TorchShape>>>("shape_vec_vec");
 
+  options.set<std::string>("suppressed_option") = "suppress me";
+  options.set("suppressed_option").suppressed() = true;
+
   return options;
 }

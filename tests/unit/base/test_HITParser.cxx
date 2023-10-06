@@ -32,10 +32,10 @@ TEST_CASE("HITParser", "[base]")
 {
   SECTION("class HITParser")
   {
+    HITParser parser;
     SECTION("parse")
     {
-      HITParser parser;
-      auto all_options = parser.parse("unit/base/test_HITParser.i");
+      auto all_options = parser.parse("unit/base/test_HITParser1.i");
       OptionSet options = all_options["Models"]["foo"];
 
       SECTION("metadata")
@@ -115,6 +115,17 @@ TEST_CASE("HITParser", "[base]")
         REQUIRE(shape_vec_vec[1][0] == TorchShape{2, 2});
         REQUIRE(shape_vec_vec[1][1] == TorchShape{1});
         REQUIRE(shape_vec_vec[1][2] == TorchShape{22});
+      }
+    }
+
+    SECTION("error")
+    {
+      SECTION("setting a suppressed option")
+      {
+        REQUIRE_THROWS_WITH(
+            parser.parse("unit/base/test_HITParser2.i"),
+            Catch::Matchers::Contains("Option named 'suppressed_option' is suppressed, and its "
+                                      "value cannot be modified."));
       }
     }
   }

@@ -126,6 +126,11 @@ HITParser::extract_option(hit::Node * n, OptionSet & options) const
     for (auto & [name, option] : options)
       if (name == n->path())
       {
+        neml_assert(!option->suppressed(),
+                    "Option named '",
+                    option->name(),
+                    "' is suppressed, and its value cannot be modified.");
+
         found = true;
 
         if (false)
