@@ -155,13 +155,13 @@ public:
   Derived batch_index(TorchSlice indices) const;
 
   /// Return an index sliced on the batch dimensions
-  BatchTensor base_index(TorchSlice indices) const;
+  BatchTensor base_index(const TorchSlice & indices) const;
 
   /// Set a index sliced on the batch dimensions to a value
   void batch_index_put(TorchSlice indices, const torch::Tensor & other);
 
   /// Set a index sliced on the batch dimensions to a value
-  void base_index_put(TorchSlice indices, const torch::Tensor & other);
+  void base_index_put(const TorchSlice & indices, const torch::Tensor & other);
 
   /// Return a new view of the tensor with values broadcast along the batch dimensions.
   Derived batch_expand(TorchShapeRef batch_size) const;
@@ -436,6 +436,15 @@ Derived
 abs(const Derived & a)
 {
   return Derived(torch::abs(a), a.batch_dim());
+}
+
+template <
+    class Derived,
+    typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<Derived>, Derived>>>
+Derived
+diff(const Derived & a, TorchSize n = 1, TorchSize dim = -1)
+{
+  return Derived(torch::diff(a, n, dim), a.batch_dim());
 }
 } // namespace math
 } // namespace neml2

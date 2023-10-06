@@ -76,5 +76,51 @@ mandel_to_full(const BatchTensor & mandel, TorchSize dim)
                          .reshape(utils::add_shapes(starting_shape, 3, 3, trailing_shape)),
                      batch_dim);
 }
+
+BatchTensor
+jacrev(const BatchTensor & out, const BatchTensor & p)
+{
+  neml_assert_dbg(
+      p.batch_dim() == 0 || out.batch_sizes() == p.batch_sizes(),
+      "If the parameter is batched, its batch shape must be the same as the batch shape "
+      "of the output. However, the batch shape of the parameter is ",
+      p.batch_sizes(),
+      ", and the batch shape of the output is ",
+      out.batch_sizes());
+
+  // flatten out to handle arbitrarily shaped output
+  auto outf = BatchTensor(
+      out.reshape(utils::add_shapes(out.batch_sizes(), utils::storage_size(out.base_sizes()))),
+      out.batch_dim());
+
+  neml_assert_dbg(outf.base_dim() == 1, "Flattened output must be flat.");
+
+  auto doutf_dp = BatchTensor::empty(
+      outf.batch_sizes(), utils::add_shapes(outf.base_sizes(), p.base_sizes()), outf.options());
+
+  for (TorchSize i = 0; i < outf.base_sizes()[0]; i++)
+  {
+    auto G = BatchTensor::zeros_like(outf);
+    G.index_put_({torch::indexing::Ellipsis, i}, 1.0);
+    auto doutfi_dp = torch::autograd::grad({outf},
+                                           {p},
+                                           {G},
+                                           /*retain_graph=*/true,
+                                           /*create_graph=*/false,
+                                           /*allow_unused=*/false)[0];
+    if (doutfi_dp.defined())
+      doutf_dp.base_index_put({i, torch::indexing::Ellipsis}, doutfi_dp);
+  }
+
+  // reshape the derivative back to the correct shape
+  auto dout_dp = BatchTensor(
+      doutf_dp.reshape(utils::add_shapes(out.batch_sizes(), out.base_sizes(), p.base_sizes())),
+      out.batch_dim());
+
+  // factor to account for broadcasting
+  Real factor = p.batch_dim() == 0 ? utils::storage_size(out.batch_sizes()) : 1;
+
+  return dout_dp / factor;
+}
 } // namespace math
 } // namespace neml2

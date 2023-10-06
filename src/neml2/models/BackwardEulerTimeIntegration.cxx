@@ -35,7 +35,7 @@ BackwardEulerTimeIntegration<T>::expected_options()
 {
   OptionSet options = Model::expected_options();
   options.set<LabeledAxisAccessor>("variable");
-  options.set<LabeledAxisAccessor>("time") = {{"t"}};
+  options.set<LabeledAxisAccessor>("time") = {"t"};
   return options;
 }
 

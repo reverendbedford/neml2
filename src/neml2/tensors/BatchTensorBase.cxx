@@ -262,33 +262,35 @@ template <class Derived>
 Derived
 BatchTensorBase<Derived>::batch_index(TorchSlice indices) const
 {
-  indices.insert(indices.end(), torch::indexing::Ellipsis);
+  indices.insert(indices.end(), base_dim(), torch::indexing::Slice());
   auto res = this->index(indices);
   return Derived(res, res.dim() - base_dim());
 }
 
 template <class Derived>
 BatchTensor
-BatchTensorBase<Derived>::base_index(TorchSlice indices) const
+BatchTensorBase<Derived>::base_index(const TorchSlice & indices) const
 {
-  indices.insert(indices.begin(), batch_dim(), torch::indexing::Slice());
-  return BatchTensor(this->index(indices), batch_dim());
+  TorchSlice indices2(batch_dim(), torch::indexing::Slice());
+  indices2.insert(indices2.end(), indices.begin(), indices.end());
+  return BatchTensor(this->index(indices2), batch_dim());
 }
 
 template <class Derived>
 void
 BatchTensorBase<Derived>::batch_index_put(TorchSlice indices, const torch::Tensor & other)
 {
-  indices.insert(indices.end(), torch::indexing::Ellipsis);
+  indices.insert(indices.end(), base_dim(), torch::indexing::Slice());
   this->index_put_(indices, other);
 }
 
 template <class Derived>
 void
-BatchTensorBase<Derived>::base_index_put(TorchSlice indices, const torch::Tensor & other)
+BatchTensorBase<Derived>::base_index_put(const TorchSlice & indices, const torch::Tensor & other)
 {
-  indices.insert(indices.begin(), batch_dim(), torch::indexing::Slice());
-  this->index_put_(indices, other);
+  TorchSlice indices2(batch_dim(), torch::indexing::Slice());
+  indices2.insert(indices2.end(), indices.begin(), indices.end());
+  this->index_put_(indices2, other);
 }
 
 template <class Derived>

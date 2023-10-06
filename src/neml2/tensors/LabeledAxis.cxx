@@ -42,14 +42,6 @@ LabeledAxis::LabeledAxis(const LabeledAxis & other)
 }
 
 LabeledAxis &
-LabeledAxis::add(const std::string & name, TorchSize sz)
-{
-  if (!has_variable(name))
-    _variables.emplace(name, sz);
-  return *this;
-}
-
-LabeledAxis &
 LabeledAxis::add(const LabeledAxisAccessor & accessor, TorchSize sz)
 {
   add(*this, sz, accessor.vec().begin(), accessor.vec().end());
@@ -63,7 +55,10 @@ LabeledAxis::add(LabeledAxis & axis,
                  const std::vector<std::string>::const_iterator & end) const
 {
   if (cur == end - 1)
-    axis.add(*cur, sz);
+  {
+    if (!axis.has_variable(*cur))
+      axis._variables.emplace(*cur, sz);
+  }
   else
   {
     axis.add<LabeledAxis>(*cur);
@@ -200,24 +195,24 @@ LabeledAxis::has_variable(const LabeledAxisAccessor & var) const
       return false;
   }
   else
-    return has_variable(var.vec()[0]);
+    return _variables.count(var.vec()[0]);
 }
 
-TorchSize
-LabeledAxis::storage_size(const std::string & name) const
+bool
+LabeledAxis::has_subaxis(const LabeledAxisAccessor & s) const
 {
-  // This could be a variable name
-  auto var = _variables.find(name);
-  if (var != _variables.end())
-    return var->second;
+  if (s.empty())
+    return false;
 
-  // or a sub-axis name
-  auto subaxis = _subaxes.find(name);
-  if (subaxis != _subaxes.end())
-    return subaxis->second->storage_size();
-
-  throw std::runtime_error("In LabeledAxis::storage_size, no item matches given name " + name);
-  return 0;
+  if (s.vec().size() > 1)
+  {
+    if (has_subaxis(s.vec()[0]))
+      return subaxis(s.vec()[0]).has_subaxis(s.slice(1));
+    else
+      return false;
+  }
+  else
+    return _subaxes.count(s.vec()[0]);
 }
 
 TorchSize
@@ -244,16 +239,6 @@ LabeledAxis::storage_size(const std::vector<std::string>::const_iterator & cur,
 }
 
 TorchIndex
-LabeledAxis::indices(const std::string & name) const
-{
-  neml_assert_dbg(
-      _layout.count(name), "In LabeledAxis::indices, no item matches given name ", name);
-
-  const auto & [rbegin, rend] = _layout.at(name);
-  return torch::indexing::Slice(rbegin, rend);
-}
-
-TorchIndex
 LabeledAxis::indices(const LabeledAxisAccessor & accessor) const
 {
   return indices(0, accessor.vec().begin(), accessor.vec().end());
@@ -273,37 +258,65 @@ LabeledAxis::indices(TorchSize offset,
 }
 
 std::vector<std::pair<TorchIndex, TorchIndex>>
-LabeledAxis::common_indices(const LabeledAxis & a, const LabeledAxis & b, bool recursive)
+LabeledAxis::common_indices(const LabeledAxis & other, bool recursive) const
 {
+  using namespace torch::indexing;
+
   std::vector<std::pair<TorchIndex, TorchIndex>> indices;
-  LabeledAxis::common_indices(a, b, recursive, indices, 0, 0);
+  std::vector<TorchSize> idxa;
+  std::vector<TorchSize> idxb;
+  common_indices(other, recursive, idxa, idxb, 0, 0);
+
+  if (idxa.empty())
+    return indices;
+
+  // We could be smart and merge contiguous indices
+  size_t i = 0;
+  size_t j = 1;
+  while (j < idxa.size() - 1)
+  {
+    if (idxa[j] == idxa[j + 1] && idxb[j] == idxb[j + 1])
+      j += 2;
+    else
+    {
+      indices.push_back({Slice(idxa[i], idxa[j]), Slice(idxb[i], idxb[j])});
+      i = j + 1;
+      j = i + 1;
+    }
+  }
+  indices.push_back({Slice(idxa[i], idxa[j]), Slice(idxb[i], idxb[j])});
+
   return indices;
 }
 
 void
-LabeledAxis::common_indices(const LabeledAxis & a,
-                            const LabeledAxis & b,
+LabeledAxis::common_indices(const LabeledAxis & other,
                             bool recursive,
-                            std::vector<std::pair<TorchIndex, TorchIndex>> & indices,
-                            TorchSize offset_a,
-                            TorchSize offset_b)
+                            std::vector<TorchSize> & idxa,
+                            std::vector<TorchSize> & idxb,
+                            TorchSize offseta,
+                            TorchSize offsetb) const
 {
-  for (const auto & [name, sz] : a._variables)
-    if (b.has_variable(name))
-      indices.push_back({at::indexing::Slice(offset_a + a._layout.at(name).first,
-                                             offset_a + a._layout.at(name).second),
-                         at::indexing::Slice(offset_b + b._layout.at(name).first,
-                                             offset_b + b._layout.at(name).second)});
+  for (const auto & [name, sz] : _variables)
+    if (other.has_variable(name))
+    {
+      auto && [begina, enda] = _layout.at(name);
+      idxa.push_back(offseta + begina);
+      idxa.push_back(offseta + enda);
+      auto && [beginb, endb] = other._layout.at(name);
+      idxb.push_back(offsetb + beginb);
+      idxb.push_back(offsetb + endb);
+    }
 
   if (recursive)
-    for (const auto & [name, axis] : a._subaxes)
-      if (b.has_subaxis(name))
-        LabeledAxis::common_indices(*axis,
-                                    b.subaxis(name),
-                                    true,
-                                    indices,
-                                    offset_a + a._layout.at(name).first,
-                                    offset_b + b._layout.at(name).first);
+    for (const auto & [name, axis] : _subaxes)
+      if (other.has_subaxis(name))
+        axis->common_indices(other.subaxis(name),
+                             true,
+                             idxa,
+                             idxb,
+                             offseta + _layout.at(name).first,
+                             offsetb + other._layout.at(name).first);
 }
 
 std::vector<std::string>

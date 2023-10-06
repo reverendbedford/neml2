@@ -45,7 +45,14 @@ class LabeledAxisAccessor
 public:
   LabeledAxisAccessor() = default;
 
+  LabeledAxisAccessor(const char * name);
+  LabeledAxisAccessor(const std::string & name);
   LabeledAxisAccessor(const std::vector<std::string> & names);
+  LabeledAxisAccessor(const std::initializer_list<std::string> & names);
+  LabeledAxisAccessor(const LabeledAxisAccessor & names);
+
+  /// Assignment operator
+  LabeledAxisAccessor & operator=(const LabeledAxisAccessor & other);
 
   operator std::vector<std::string>() const;
 
@@ -57,10 +64,7 @@ public:
   LabeledAxisAccessor with_suffix(const std::string & suffix) const;
 
   /// Add a new item
-  LabeledAxisAccessor append(const std::string & name) const;
-
-  /// Re-mount the LabeledAxisAccessor on an axis by the axis name
-  LabeledAxisAccessor on(const std::string & axis) const;
+  LabeledAxisAccessor append(const LabeledAxisAccessor & axis) const;
 
   /// Re-mount the LabeledAxisAccessor on an axis by the axis accessor
   LabeledAxisAccessor on(const LabeledAxisAccessor & axis) const;
@@ -72,6 +76,9 @@ public:
   LabeledAxisAccessor slice(size_t n1, size_t n2) const;
 
 private:
+  /// Throws if the item name has invalid format
+  void validate_item_name(const std::string &) const;
+
   std::vector<std::string> _item_names;
 };
 

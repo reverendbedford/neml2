@@ -47,10 +47,10 @@ ChabochePlasticHardening::ChabochePlasticHardening(const OptionSet & options)
     back_stress(declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("back_stress"))),
     flow_direction(declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("flow_direction"))),
     back_stress_rate(declare_output_variable<SR2>(back_stress.with_suffix("_rate"))),
-    _C(register_crossref_model_parameter<Scalar>("C", "C")),
-    _g(register_crossref_model_parameter<Scalar>("g", "g")),
-    _A(register_crossref_model_parameter<Scalar>("A", "A")),
-    _a(register_crossref_model_parameter<Scalar>("a", "a"))
+    _C(declare_parameter<Scalar>("C", "C")),
+    _g(declare_parameter<Scalar>("g", "g")),
+    _A(declare_parameter<Scalar>("A", "A")),
+    _a(declare_parameter<Scalar>("a", "a"))
 {
   setup();
 }

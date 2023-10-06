@@ -60,7 +60,7 @@ Normality::Normality(const OptionSet & options)
   {
     _conjugate_pairs.emplace(from[i], to[i]);
     auto sz = _model.output().storage_size(function) * _model.input().storage_size(from[i]);
-    declare_output_variable(sz, to[i]);
+    declare_output_variable(to[i], sz);
   }
 
   setup();

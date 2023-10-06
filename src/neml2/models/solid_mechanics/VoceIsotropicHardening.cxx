@@ -39,8 +39,8 @@ VoceIsotropicHardening::expected_options()
 
 VoceIsotropicHardening::VoceIsotropicHardening(const OptionSet & options)
   : IsotropicHardening(options),
-    _R(register_crossref_model_parameter<Scalar>("R", "saturated_hardening")),
-    _d(register_crossref_model_parameter<Scalar>("d", "saturation_rate"))
+    _R(declare_parameter<Scalar>("R", "saturated_hardening")),
+    _d(declare_parameter<Scalar>("d", "saturation_rate"))
 {
 }
 

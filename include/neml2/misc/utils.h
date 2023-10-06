@@ -102,6 +102,12 @@ template <class... T>
 bool sizes_broadcastable(T &&... shapes);
 
 /**
+ * @brief Return the broadcast shape of all the shapes.
+ */
+template <class... T>
+TorchShape broadcast_sizes(T &&... shapes);
+
+/**
  * @brief The flattened storage size of a tensor with given shape
  *
  * For example,
@@ -190,8 +196,9 @@ neml_assert_broadcastable(T &&... tensors)
 
 template <class... T>
 void
-neml_assert_broadcastable_dbg(T &&... tensors)
+neml_assert_broadcastable_dbg([[maybe_unused]] T &&... tensors)
 {
+#ifndef NDEBUG
   neml_assert_dbg(broadcastable(tensors...),
                   "The ",
                   sizeof...(tensors),
@@ -199,6 +206,7 @@ neml_assert_broadcastable_dbg(T &&... tensors)
                   tensors.batch_sizes()...,
                   ", and the base shapes are ",
                   tensors.base_sizes()...);
+#endif
 }
 
 template <class... T>
@@ -214,13 +222,15 @@ neml_assert_batch_broadcastable(T &&... tensors)
 
 template <class... T>
 void
-neml_assert_batch_broadcastable_dbg(T &&... tensors)
+neml_assert_batch_broadcastable_dbg([[maybe_unused]] T &&... tensors)
 {
+#ifndef NDEBUG
   neml_assert_dbg(utils::sizes_broadcastable(tensors.batch_sizes()...),
                   "The ",
                   sizeof...(tensors),
                   " operands are not batch-broadcastable. The batch shapes are ",
                   tensors.batch_sizes()...);
+#endif
 }
 namespace utils
 {
@@ -259,6 +269,24 @@ sizes_broadcastable(T &&... shapes)
   }
 
   return true;
+}
+
+template <class... T>
+TorchShape
+broadcast_sizes(T &&... shapes)
+{
+  neml_assert_dbg(sizes_broadcastable(shapes...), "Shapes not broadcastable: ", shapes...);
+
+  auto dim = std::max({shapes.size()...});
+  auto all_shapes_padded = std::vector<TorchShape>{pad_prepend(shapes, dim)...};
+  auto bshape = TorchShape(dim, 1);
+
+  for (size_t i = 0; i < dim; i++)
+    for (const auto & s : all_shapes_padded)
+      if (s[i] > bshape[i])
+        bshape[i] = s[i];
+
+  return bshape;
 }
 
 template <typename... S>

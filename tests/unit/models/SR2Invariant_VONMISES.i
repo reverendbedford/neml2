@@ -6,7 +6,7 @@
     # A = [ 1 6 5
     #       6 2 4
     #       5 4 3 ]
-    # I2(A) = 0.5*(36-168) = -66
+    # VONMISES(A) = sqrt(234) ~= 15.2970585408
   []
 []
 
@@ -14,11 +14,12 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    nbatch = 1
+    batch_shape = '(10)'
     input_symr2_names = 'state/internal/O'
     input_symr2_values = 'foo'
-    output_scalar_names = 'state/internal/I2'
-    output_scalar_values = '-66'
+    output_scalar_names = 'state/internal/VM'
+    output_scalar_values = '15.2970585408'
+    derivatives_abs_tol = 1e-6
     check_second_derivatives = true
   []
 []
@@ -26,8 +27,8 @@
 [Models]
   [model]
     type = SR2Invariant
-    invariant_type = 'I2'
+    invariant_type = 'VONMISES'
     tensor = 'state/internal/O'
-    invariant = 'state/internal/I2'
+    invariant = 'state/internal/VM'
   []
 []

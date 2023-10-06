@@ -2,7 +2,7 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    nbatch = 10
+    batch_shape = '(10)'
     input_symr2_names = 'state/internal/Ee state/internal/Ep'
     input_symr2_values = 'Ee Ep'
     output_symr2_names = 'state/E'

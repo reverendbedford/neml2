@@ -26,7 +26,7 @@
 
 namespace neml2
 {
-register_all_FixedDimTensor(Full, "Full");
+register_all_FixedDimTensor_prefix(Full, "Full");
 
 template <typename T>
 OptionSet

@@ -54,8 +54,8 @@ Derived
 operator+(const Derived & a, const Scalar & b)
 {
   neml_assert_batch_broadcastable_dbg(a, b);
-  TorchSlice net(a.base_dim(), torch::indexing::None);
-  net.insert(net.begin(), torch::indexing::Ellipsis);
+  TorchSlice net{torch::indexing::Ellipsis};
+  net.insert(net.end(), a.base_dim(), torch::indexing::None);
   return Derived(torch::operator+(a, b.index(net)), broadcast_batch_dim(a, b));
 }
 
@@ -77,8 +77,8 @@ Derived
 operator-(const Derived & a, const Scalar & b)
 {
   neml_assert_batch_broadcastable_dbg(a, b);
-  TorchSlice net(a.base_dim(), torch::indexing::None);
-  net.insert(net.begin(), torch::indexing::Ellipsis);
+  TorchSlice net{torch::indexing::Ellipsis};
+  net.insert(net.end(), a.base_dim(), torch::indexing::None);
   return Derived(torch::operator-(a, b.index(net)), broadcast_batch_dim(a, b));
 }
 
@@ -100,8 +100,8 @@ Derived
 operator*(const Derived & a, const Scalar & b)
 {
   neml_assert_batch_broadcastable_dbg(a, b);
-  TorchSlice net(a.base_dim(), torch::indexing::None);
-  net.insert(net.begin(), torch::indexing::Ellipsis);
+  TorchSlice net{torch::indexing::Ellipsis};
+  net.insert(net.end(), a.base_dim(), torch::indexing::None);
   return Derived(torch::operator*(a, b.index(net)), broadcast_batch_dim(a, b));
 }
 
@@ -123,8 +123,8 @@ Derived
 operator/(const Derived & a, const Scalar & b)
 {
   neml_assert_batch_broadcastable_dbg(a, b);
-  TorchSlice net(a.base_dim(), torch::indexing::None);
-  net.insert(net.begin(), torch::indexing::Ellipsis);
+  TorchSlice net{torch::indexing::Ellipsis};
+  net.insert(net.end(), a.base_dim(), torch::indexing::None);
   return Derived(torch::operator/(a, b.index(net)), broadcast_batch_dim(a, b));
 }
 
@@ -136,8 +136,8 @@ Derived
 operator/(const Scalar & a, const Derived & b)
 {
   neml_assert_batch_broadcastable_dbg(a, b);
-  TorchSlice net(b.base_dim(), torch::indexing::None);
-  net.insert(net.begin(), torch::indexing::Ellipsis);
+  TorchSlice net{torch::indexing::Ellipsis};
+  net.insert(net.end(), b.base_dim(), torch::indexing::None);
   return Derived(torch::operator/(a.index(net), b), broadcast_batch_dim(a, b));
 }
 
@@ -151,8 +151,8 @@ Derived
 pow(const Derived & a, const Scalar & n)
 {
   neml_assert_batch_broadcastable_dbg(a, n);
-  TorchSlice net(a.base_dim(), torch::indexing::None);
-  net.insert(net.begin(), torch::indexing::Ellipsis);
+  TorchSlice net{torch::indexing::Ellipsis};
+  net.insert(net.end(), a.base_dim(), torch::indexing::None);
   return Derived(torch::pow(a, n.index(net)), broadcast_batch_dim(a, n));
 }
 
@@ -164,8 +164,8 @@ Derived
 pow(const Scalar & a, const Derived & n)
 {
   neml_assert_batch_broadcastable_dbg(a, n);
-  TorchSlice net(n.base_dim(), torch::indexing::None);
-  net.insert(net.begin(), torch::indexing::Ellipsis);
+  TorchSlice net{torch::indexing::Ellipsis};
+  net.insert(net.end(), n.base_dim(), torch::indexing::None);
   return Derived(torch::pow(a.index(net), n), broadcast_batch_dim(a, n));
 }
 }

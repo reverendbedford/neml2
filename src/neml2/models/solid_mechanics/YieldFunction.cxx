@@ -46,7 +46,7 @@ YieldFunction::YieldFunction(const OptionSet & options)
     isotropic_hardening(options.get<LabeledAxisAccessor>("isotropic_hardening")),
     yield_function(
         declare_output_variable<Scalar>(options.get<LabeledAxisAccessor>("yield_function"))),
-    _s0(register_crossref_model_parameter<Scalar>("sy", "yield_stress"))
+    _s0(declare_parameter<Scalar>("sy", "yield_stress"))
 {
   if (!isotropic_hardening.empty())
     declare_input_variable<Scalar>(isotropic_hardening);
@@ -74,6 +74,8 @@ YieldFunction::set_value(const LabeledVector & in,
     dout_din->set(std::sqrt(2.0 / 3.0) * I, yield_function, stress_measure);
     if (!isotropic_hardening.empty())
       dout_din->set(-std::sqrt(2.0 / 3.0) * I, yield_function, isotropic_hardening);
+    if (has_nonlinear_parameter("sy"))
+      dout_din->set(-std::sqrt(2.0 / 3.0) * I, yield_function, nl_param("sy"));
   }
 
   if (d2out_din2)

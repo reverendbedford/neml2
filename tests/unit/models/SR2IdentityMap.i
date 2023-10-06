@@ -9,7 +9,7 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    nbatch = 10
+    batch_shape = '(10)'
     input_symr2_names = 'forces/A'
     input_symr2_values = 'foo'
     output_symr2_names = 'state/internal/C'

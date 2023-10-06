@@ -76,5 +76,19 @@ BatchTensor full_to_mandel(const BatchTensor & full, TorchSize dim = 0);
  * @return BatchTensor The resulting tensor in full notation.
  */
 BatchTensor mandel_to_full(const BatchTensor & mandel, TorchSize dim = 0);
+
+/**
+ * @brief Use automatic differentiation to calculate the derivatives w.r.t. to the parameter
+ * _component by component_
+ *
+ * If the parameter is batched, the batch shape must be the _same_ with the batch shape of the
+ * output \p o. Note that this is the poor-man's attempt at obtaining the Jacobian -- libTorch
+ * really isn't designed for this -- unless we have vmap...
+ *
+ * @param o The `BatchTensor` to to be differentiated
+ * @param p The parameter to take derivatives with respect to
+ * @return BatchTensor $\partial o/\partial p$
+ */
+BatchTensor jacrev(const BatchTensor & o, const BatchTensor & p);
 } // namespace math
 } // namespace neml2

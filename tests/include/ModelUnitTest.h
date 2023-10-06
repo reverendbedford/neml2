@@ -52,8 +52,8 @@ private:
   void
   fill_vector(LabeledVector & vec, const std::string & option_vars, const std::string & option_vals)
   {
-    const auto vars = input_options().get<std::vector<LabeledAxisAccessor>>(option_vars);
-    const auto vals = input_options().get<std::vector<CrossRef<T>>>(option_vals);
+    const auto vars = options().get<std::vector<LabeledAxisAccessor>>(option_vars);
+    const auto vals = options().get<std::vector<CrossRef<T>>>(option_vals);
     neml_assert(vars.size() == vals.size(),
                 "Trying to assign ",
                 vals.size(),
@@ -70,7 +70,7 @@ private:
   void check_second_derivatives(bool first, bool second);
 
   Model & _model;
-  const TorchSize _nbatch;
+  const TorchShape _batch_shape;
   const bool _check_1st_deriv;
   const bool _check_2nd_deriv;
   const bool _check_AD_1st_deriv;

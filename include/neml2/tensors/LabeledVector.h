@@ -34,21 +34,10 @@ class LabeledMatrix;
  * @brief A single-batched, logically 1D LabeledTensor.
  *
  */
-class LabeledVector : public LabeledTensor<1>
+class LabeledVector : public LabeledTensor<LabeledVector, 1>
 {
 public:
-  using LabeledTensor<1>::LabeledTensor;
-
-  /// Conversion from a LabeledTensor
-  LabeledVector(const LabeledTensor<1> & other);
-
-  /// Create a batched, labeled zero tensor
-  static LabeledVector zeros(TorchShapeRef batch_size,
-                             const std::vector<const LabeledAxis *> & axes,
-                             const torch::TensorOptions & options = default_tensor_options);
-
-  /// Create a zero tensor with the same shape and labels as the other tensor
-  static LabeledVector zeros_like(const LabeledVector & other);
+  using LabeledTensor<LabeledVector, 1>::LabeledTensor;
 
   /// Slice the logically 1D tensor by a single sub-axis
   LabeledVector slice(const std::string & name) const;

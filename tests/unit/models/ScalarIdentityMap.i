@@ -2,7 +2,7 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    nbatch = 10
+    batch_shape = '(10)'
     input_scalar_names = 'forces/A'
     input_scalar_values = '2'
     output_scalar_names = 'state/internal/C'

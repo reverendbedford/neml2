@@ -30,8 +30,7 @@ OptionSet
 FlowRule::expected_options()
 {
   OptionSet options = Model::expected_options();
-  options.set<LabeledAxisAccessor>("flow_rate") =
-      LabeledAxisAccessor{{"state", "internal", "gamma_rate"}};
+  options.set<LabeledAxisAccessor>("flow_rate") = {{"state", "internal", "gamma_rate"}};
   return options;
 }
 

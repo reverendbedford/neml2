@@ -40,7 +40,7 @@ NonlinearSystem::Jacobian(const BatchTensor & x) const
 {
   neml_assert_dbg(x.base_dim() == 1, "The residual must be a logical vector, i.e. base_dim() == 1");
   auto n = x.base_sizes()[0];
-  auto J = BatchTensor::zeros(x.batch_sizes(), {n, n}, x.options());
+  auto J = BatchTensor::empty(x.batch_sizes(), {n, n}, x.options());
   assemble(x, nullptr, &J);
   return J;
 }
@@ -51,7 +51,7 @@ NonlinearSystem::residual_and_Jacobian(const BatchTensor & x) const
   neml_assert_dbg(x.base_dim() == 1, "The residual must be a logical vector, i.e. base_dim() == 1");
   auto n = x.base_sizes()[0];
   auto r = BatchTensor::empty_like(x);
-  auto J = BatchTensor::zeros(x.batch_sizes(), {n, n}, x.options());
+  auto J = BatchTensor::empty(x.batch_sizes(), {n, n}, x.options());
   assemble(x, &r, &J);
   return {r, J};
 }

@@ -1,4 +1,4 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.5)
 
 project(NEML2 LANGUAGES CXX)
 
@@ -27,17 +27,23 @@ enable_testing()
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Suppress the warning related to the new policy on fetch content's timestamp
+if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.24.0")
+      cmake_policy(SET CMP0135 NEW)
+endif()
+
 # Location of current CPU torch
 include(FetchContent)
 FetchContent_Declare(
-  torch
-  URL https://download.pytorch.org/libtorch/nightly/cpu/libtorch-shared-with-deps-latest.zip
+      torch
+      URL https://download.pytorch.org/libtorch/nightly/cpu/libtorch-shared-with-deps-latest.zip
 )
 
 # Select between system torch and the current (CPU) torch
-if (DEFINED LIBTORCH_DIR)
-      find_package(Torch REQUIRED HINTS "${LIBTORCH_DIR}/share/cmake") 
+if(DEFINED LIBTORCH_DIR)
+      find_package(Torch REQUIRED HINTS "${LIBTORCH_DIR}/share/cmake")
 else()
+      set(FETCHCONTENT_QUIET FALSE)
       FetchContent_MakeAvailable(torch)
       find_package(Torch REQUIRED HINTS "${torch_SOURCE_DIR}/share/cmake")
 endif()

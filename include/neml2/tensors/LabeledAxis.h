@@ -83,9 +83,6 @@ public:
     }
   }
 
-  /// Add an arbitrary variable with known storage size.
-  LabeledAxis & add(const std::string & name, TorchSize sz);
-
   /// Add an arbitrary variable using a `LabeledAxisAccessor`
   LabeledAxis & add(const LabeledAxisAccessor & accessor, TorchSize sz);
 
@@ -116,48 +113,44 @@ public:
   size_t nsubaxis() const { return _subaxes.size(); }
 
   /// Does the item exist?
-  bool has_item(const std::string & name) const { return has_variable(name) || has_subaxis(name); }
+  bool has_item(const LabeledAxisAccessor & name) const
+  {
+    return has_variable(name) || has_subaxis(name);
+  }
 
   /// Does the variable of a given primitive type exist?
   template <typename T>
-  bool has_variable(const std::string & name) const
+  bool has_variable(const LabeledAxisAccessor & var) const
   {
-    if (!has_variable(name))
+    if (!has_variable(var))
       return false;
 
     // also check size
-    auto sz = utils::storage_size(T::const_base_sizes);
-    return _variables.at(name) == sz;
+    return storage_size(var) == utils::storage_size(T::const_base_sizes);
   }
 
-  /// Check the existence of a variable by name
-  bool has_variable(const std::string & name) const { return _variables.count(name); }
   /// Check the existence of a variable by its LabeledAxisAccessor
   bool has_variable(const LabeledAxisAccessor & var) const;
 
-  /// Does the item exist?
-  bool has_subaxis(const std::string & name) const { return _subaxes.count(name); }
+  /// Check the existence of a subaxis by its LabeledAxisAccessor
+  bool has_subaxis(const LabeledAxisAccessor & s) const;
 
   /// Get the (total) storage size of *this* axis
   TorchSize storage_size() const { return _offset; }
-  /// Get the storage size of an item by its name
-  TorchSize storage_size(const std::string &) const;
   /// Get the storage size of an item by its LabeledAxisAccessor
   TorchSize storage_size(const LabeledAxisAccessor & accessor) const;
 
   /// Get the layout
   const AxisLayout & layout() const { return _layout; }
 
-  /// Get the indices of a specific item by its name
-  TorchIndex indices(const std::string & name) const;
   /// Get the indices of a specific item by a `LabeledAxisAccessor`
   TorchIndex indices(const LabeledAxisAccessor & accessor) const;
   /// Get the indices using another `LabeledAxis`.
   TorchIndex indices(const LabeledAxis & other, bool recursive = true, bool inclusive = true) const;
 
   /// Get the common indices of two `LabeledAxis`s
-  static std::vector<std::pair<TorchIndex, TorchIndex>>
-  common_indices(const LabeledAxis & a, const LabeledAxis & b, bool recursive = true);
+  std::vector<std::pair<TorchIndex, TorchIndex>> common_indices(const LabeledAxis & other,
+                                                                bool recursive = true) const;
 
   /// Get the item names
   std::vector<std::string> item_names() const;
@@ -219,12 +212,12 @@ private:
                TorchSize offset) const;
 
   /// Get the common indices of two `LabeledAxis`s
-  static void common_indices(const LabeledAxis & a,
-                             const LabeledAxis & b,
-                             bool recursive,
-                             std::vector<std::pair<TorchIndex, TorchIndex>> & indices,
-                             TorchSize offset_a,
-                             TorchSize offset_b);
+  void common_indices(const LabeledAxis & other,
+                      bool recursive,
+                      std::vector<TorchSize> & idxa,
+                      std::vector<TorchSize> & idxb,
+                      TorchSize offseta,
+                      TorchSize offsetb) const;
 
   void variable_accessors(std::vector<LabeledAxisAccessor> & accessors,
                           LabeledAxisAccessor cur,

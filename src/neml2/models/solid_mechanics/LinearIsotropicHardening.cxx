@@ -38,7 +38,7 @@ LinearIsotropicHardening::expected_options()
 
 LinearIsotropicHardening::LinearIsotropicHardening(const OptionSet & options)
   : IsotropicHardening(options),
-    _K(register_crossref_model_parameter<Scalar>("K", "hardening_modulus"))
+    _K(declare_parameter<Scalar>("K", "hardening_modulus"))
 {
 }
 

@@ -22,13 +22,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/base/OptionInterface.h"
+#include "neml2/models/NonlinearParameter.h"
 
 namespace neml2
 {
-OptionInterface::OptionInterface(const OptionSet & options, torch::nn::Module * object)
-  : _options(options),
-    _object(object)
+template <typename T>
+OptionSet
+NonlinearParameter<T>::expected_options()
 {
+  OptionSet options = Model::expected_options();
+  options.set<LabeledAxisAccessor>("parameter");
+  return options;
 }
+
+template <typename T>
+NonlinearParameter<T>::NonlinearParameter(const OptionSet & options)
+  : Model(options),
+    p(declare_output_variable<T>(options.get<LabeledAxisAccessor>("parameter")))
+{
+  // Resize y for the value
+  _p.resize(1);
+  _p.set_pointer(0, std::make_unique<T>());
+
+  setup();
+}
+
+instantiate_all_FixedDimTensor(NonlinearParameter);
 } // namespace neml2

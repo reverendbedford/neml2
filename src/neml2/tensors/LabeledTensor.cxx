@@ -24,12 +24,16 @@
 
 #include "neml2/tensors/LabeledTensor.h"
 
+#include "neml2/tensors/LabeledVector.h"
+#include "neml2/tensors/LabeledMatrix.h"
+#include "neml2/tensors/LabeledTensor3D.h"
+
 namespace neml2
 {
-template <TorchSize D>
-LabeledTensor<D>::LabeledTensor(const torch::Tensor & tensor,
-                                TorchSize batch_dim,
-                                const std::vector<const LabeledAxis *> & axes)
+template <class Derived, TorchSize D>
+LabeledTensor<Derived, D>::LabeledTensor(const torch::Tensor & tensor,
+                                         TorchSize batch_dim,
+                                         const std::vector<const LabeledAxis *> & axes)
   : _tensor(tensor, batch_dim),
     _axes(axes)
 {
@@ -39,9 +43,9 @@ LabeledTensor<D>::LabeledTensor(const torch::Tensor & tensor,
   neml_assert_dbg(base_sizes() == storage_size(), "LabeledTensor does not have the right size");
 }
 
-template <TorchSize D>
-LabeledTensor<D>::LabeledTensor(const BatchTensor & tensor,
-                                const std::vector<const LabeledAxis *> & axes)
+template <class Derived, TorchSize D>
+LabeledTensor<Derived, D>::LabeledTensor(const BatchTensor & tensor,
+                                         const std::vector<const LabeledAxis *> & axes)
   : _tensor(tensor),
     _axes(axes)
 {
@@ -51,39 +55,30 @@ LabeledTensor<D>::LabeledTensor(const BatchTensor & tensor,
   neml_assert_dbg(base_sizes() == storage_size(), "LabeledTensor does not have the right size");
 }
 
-template <TorchSize D>
-LabeledTensor<D>::LabeledTensor(const LabeledTensor<D> & other)
+template <class Derived, TorchSize D>
+LabeledTensor<Derived, D>::LabeledTensor(const Derived & other)
   : _tensor(other),
     _axes(other.axes())
 {
 }
 
-template <TorchSize D>
-LabeledTensor<D> &
-LabeledTensor<D>::operator=(const LabeledTensor<D> & other)
-{
-  _tensor = other._tensor;
-  _axes = other._axes;
-  return *this;
-}
-
-template <TorchSize D>
-LabeledTensor<D>::operator BatchTensor() const
+template <class Derived, TorchSize D>
+LabeledTensor<Derived, D>::operator BatchTensor() const
 {
   return _tensor;
 }
 
-template <TorchSize D>
-LabeledTensor<D>::operator torch::Tensor() const
+template <class Derived, TorchSize D>
+LabeledTensor<Derived, D>::operator torch::Tensor() const
 {
   return _tensor;
 }
 
-template <TorchSize D>
-LabeledTensor<D>
-LabeledTensor<D>::zeros(TorchShapeRef batch_size,
-                        const std::vector<const LabeledAxis *> & axes,
-                        const torch::TensorOptions & options)
+template <class Derived, TorchSize D>
+Derived
+LabeledTensor<Derived, D>::empty(TorchShapeRef batch_size,
+                                 const std::vector<const LabeledAxis *> & axes,
+                                 const torch::TensorOptions & options)
 {
   TorchShape s;
   s.reserve(axes.size());
@@ -91,61 +86,83 @@ LabeledTensor<D>::zeros(TorchShapeRef batch_size,
                  axes.end(),
                  std::back_inserter(s),
                  [](const LabeledAxis * axis) { return axis->storage_size(); });
-  return LabeledTensor<D>(BatchTensor::zeros(batch_size, s, options), axes);
+  return Derived(BatchTensor::empty(batch_size, s, options), axes);
 }
 
-template <TorchSize D>
-LabeledTensor<D>
-LabeledTensor<D>::zeros_like(const LabeledTensor<D> & other)
+template <class Derived, TorchSize D>
+Derived
+LabeledTensor<Derived, D>::empty_like(const Derived & other)
 {
-  return LabeledTensor<D>(BatchTensor::zeros_like(other.tensor()), other.axes());
+  return Derived(BatchTensor::empty_like(other), other.axes());
 }
 
-template <TorchSize D>
-LabeledTensor<D>
-LabeledTensor<D>::clone() const
+template <class Derived, TorchSize D>
+Derived
+LabeledTensor<Derived, D>::zeros(TorchShapeRef batch_size,
+                                 const std::vector<const LabeledAxis *> & axes,
+                                 const torch::TensorOptions & options)
 {
-  return LabeledTensor<D>(_tensor.clone(), _axes);
+  TorchShape s;
+  s.reserve(axes.size());
+  std::transform(axes.begin(),
+                 axes.end(),
+                 std::back_inserter(s),
+                 [](const LabeledAxis * axis) { return axis->storage_size(); });
+  return Derived(BatchTensor::zeros(batch_size, s, options), axes);
 }
 
-template <TorchSize D>
+template <class Derived, TorchSize D>
+Derived
+LabeledTensor<Derived, D>::zeros_like(const Derived & other)
+{
+  return Derived(BatchTensor::zeros_like(other), other.axes());
+}
+
+template <class Derived, TorchSize D>
+Derived
+LabeledTensor<Derived, D>::clone() const
+{
+  return Derived(_tensor.clone(), _axes);
+}
+
+template <class Derived, TorchSize D>
 TorchSize
-LabeledTensor<D>::batch_dim() const
+LabeledTensor<Derived, D>::batch_dim() const
 {
   return _tensor.batch_dim();
 }
 
-template <TorchSize D>
+template <class Derived, TorchSize D>
 TorchSize
-LabeledTensor<D>::base_dim() const
+LabeledTensor<Derived, D>::base_dim() const
 {
   return D;
 }
 
-template <TorchSize D>
+template <class Derived, TorchSize D>
 TorchShapeRef
-LabeledTensor<D>::batch_sizes() const
+LabeledTensor<Derived, D>::batch_sizes() const
 {
   return _tensor.batch_sizes();
 }
 
-template <TorchSize D>
+template <class Derived, TorchSize D>
 TorchShapeRef
-LabeledTensor<D>::base_sizes() const
+LabeledTensor<Derived, D>::base_sizes() const
 {
   return _tensor.base_sizes();
 }
 
-template <TorchSize D>
+template <class Derived, TorchSize D>
 TorchShapeRef
-LabeledTensor<D>::storage_size() const
+LabeledTensor<Derived, D>::storage_size() const
 {
   return base_sizes();
 }
 
-template <TorchSize D>
-LabeledTensor<D>
-LabeledTensor<D>::slice(TorchSize i, const std::string & name) const
+template <class Derived, TorchSize D>
+Derived
+LabeledTensor<Derived, D>::slice(TorchSize i, const std::string & name) const
 {
   TorchSlice idx(base_dim(), torch::indexing::Slice());
   idx[i] = _axes[i]->indices(name);
@@ -153,52 +170,52 @@ LabeledTensor<D>::slice(TorchSize i, const std::string & name) const
   auto new_axes = _axes;
   new_axes[i] = &_axes[i]->subaxis(name);
 
-  return LabeledTensor<D>(_tensor.base_index(idx), new_axes);
+  return Derived(_tensor.base_index(idx), new_axes);
 }
 
-template <TorchSize D>
-LabeledTensor<D>
-LabeledTensor<D>::batch_index(TorchSlice indices) const
+template <class Derived, TorchSize D>
+Derived
+LabeledTensor<Derived, D>::batch_index(TorchSlice indices) const
 {
-  return LabeledTensor<D>(_tensor.batch_index(indices), _axes);
+  return Derived(_tensor.batch_index(indices), _axes);
 }
 
-template <TorchSize D>
+template <class Derived, TorchSize D>
 void
-LabeledTensor<D>::batch_index_put(TorchSlice indices, const torch::Tensor & other)
+LabeledTensor<Derived, D>::batch_index_put(TorchSlice indices, const torch::Tensor & other)
 {
   _tensor.batch_index_put(indices, other);
 }
 
-template <TorchSize D>
+template <class Derived, TorchSize D>
 BatchTensor
-LabeledTensor<D>::base_index(TorchSlice indices) const
+LabeledTensor<Derived, D>::base_index(TorchSlice indices) const
 {
   return _tensor.base_index(indices);
 }
 
-template <TorchSize D>
+template <class Derived, TorchSize D>
 void
-LabeledTensor<D>::base_index_put(TorchSlice indices, const torch::Tensor & other)
+LabeledTensor<Derived, D>::base_index_put(TorchSlice indices, const torch::Tensor & other)
 {
   _tensor.base_index_put(indices, other);
 }
 
-template <TorchSize D>
-LabeledTensor<D>
-LabeledTensor<D>::operator-() const
+template <class Derived, TorchSize D>
+Derived
+LabeledTensor<Derived, D>::operator-() const
 {
-  return LabeledTensor<D>(-_tensor, _axes);
+  return Derived(-_tensor, _axes);
 }
 
-template <TorchSize D>
-LabeledTensor<D>
-LabeledTensor<D>::to(const torch::TensorOptions & options) const
+template <class Derived, TorchSize D>
+Derived
+LabeledTensor<Derived, D>::to(const torch::TensorOptions & options) const
 {
-  return LabeledTensor<D>(_tensor.to(options), _axes);
+  return Derived(_tensor.to(options), _axes);
 }
 
-template class LabeledTensor<1>;
-template class LabeledTensor<2>;
-template class LabeledTensor<3>;
+template class LabeledTensor<LabeledVector, 1>;
+template class LabeledTensor<LabeledMatrix, 2>;
+template class LabeledTensor<LabeledTensor3D, 3>;
 }

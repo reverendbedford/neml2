@@ -39,7 +39,7 @@ LinearKinematicHardening::expected_options()
 
 LinearKinematicHardening::LinearKinematicHardening(const OptionSet & options)
   : KinematicHardening(options),
-    _H(register_crossref_model_parameter<Scalar>("H", "hardening_modulus"))
+    _H(declare_parameter<Scalar>("H", "hardening_modulus"))
 {
 }
 
