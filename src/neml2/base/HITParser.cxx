@@ -73,8 +73,8 @@ HITParser::parse(const std::string & filename, const std::string & additional_in
       auto objects = section_node->children(hit::NodeType::Section);
       for (auto object : objects)
       {
-        auto options = extract_object_options(object);
-        all_options[section][options.get<std::string>("name")] = options;
+        auto options = extract_object_options(object, section_node);
+        all_options[section][options.name()] = options;
       }
     }
   }
@@ -83,18 +83,18 @@ HITParser::parse(const std::string & filename, const std::string & additional_in
 }
 
 OptionSet
-HITParser::extract_object_options(hit::Node * object) const
+HITParser::extract_object_options(hit::Node * object, hit::Node * section) const
 {
-  // The object name is its node path
-  std::string name = object->path();
   // There is a special field reserved for object type
   std::string type = object->param<std::string>("type");
   // Extract the options
   auto options = Registry::expected_options(type);
   extract_options(object, options);
-  // Also fill in the special fields, e.g., name, type
-  options.set<std::string>("name") = name;
-  options.set<std::string>("type") = type;
+
+  // Also fill in the metadata
+  options.name() = object->path();
+  options.type() = type;
+  options.path() = section->fullpath();
 
   return options;
 }
@@ -103,7 +103,8 @@ void
 HITParser::extract_options(hit::Node * object, OptionSet & options) const
 {
   for (auto node : object->children(hit::NodeType::Field))
-    extract_option(node, options);
+    if (node->path() != "type")
+      extract_option(node, options);
 }
 
 void
@@ -126,6 +127,11 @@ HITParser::extract_option(hit::Node * n, OptionSet & options) const
     for (auto & [name, option] : options)
       if (name == n->path())
       {
+        neml_assert(!option->suppressed(),
+                    "Option named '",
+                    option->name(),
+                    "' is suppressed, and its value cannot be modified.");
+
         found = true;
 
         if (false)

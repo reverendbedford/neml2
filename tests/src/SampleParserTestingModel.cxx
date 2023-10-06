@@ -32,6 +32,7 @@ OptionSet
 SampleParserTestingModel::expected_options()
 {
   OptionSet options = Model::expected_options();
+  options.doc() = "This model tests the correctness of parsed options.";
 
   // Types we support:
   //   bool
@@ -64,6 +65,9 @@ SampleParserTestingModel::expected_options()
   options.set<TorchShape>("shape");
   options.set<std::vector<TorchShape>>("shape_vec");
   options.set<std::vector<std::vector<TorchShape>>>("shape_vec_vec");
+
+  options.set<std::string>("suppressed_option") = "suppress me";
+  options.set("suppressed_option").suppressed() = true;
 
   return options;
 }

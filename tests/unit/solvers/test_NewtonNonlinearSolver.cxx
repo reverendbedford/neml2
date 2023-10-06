@@ -39,7 +39,6 @@ TEST_CASE("NewtonNonlinearSolver", "[solvers]")
   x0 = system.guess(x0);
 
   OptionSet options = NewtonNonlinearSolver::expected_options();
-  options.set<std::string>("name") = "solver";
   NewtonNonlinearSolver solver(options);
 
   auto x_res = solver.solve(system, x0);

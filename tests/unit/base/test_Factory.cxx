@@ -30,17 +30,15 @@ using vecstr = std::vector<std::string>;
 
 TEST_CASE("Factory", "[base]")
 {
+  auto options = ScalarSumModel::expected_options();
+  options.name() = "example";
+  options.type() = "ScalarSumModel";
+  options.set<std::vector<LabeledAxisAccessor>>("from_var") = {vecstr{"state", "A"},
+                                                               vecstr{"state", "substate", "B"}};
+  options.set<LabeledAxisAccessor>("to_var") = vecstr{"state", "outsub", "C"};
+
   OptionCollection all_options;
-  all_options["Models"]["example"] =
-      ScalarSumModel::expected_options() +
-      OptionSet(
-          std::pair<std::string, std::string>{"name", "example"},
-          std::pair<std::string, std::string>{"type", "ScalarSumModel"},
-          std::pair<std::string, std::vector<LabeledAxisAccessor>>{
-              "from_var",
-              std::vector<LabeledAxisAccessor>{vecstr{"state", "A"},
-                                               vecstr{"state", "substate", "B"}}},
-          std::pair<std::string, LabeledAxisAccessor>{"to_var", vecstr{"state", "outsub", "C"}});
+  all_options["Models"]["example"] = options;
 
   Factory::clear();
   Factory::load(all_options);

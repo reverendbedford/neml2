@@ -45,9 +45,10 @@ public:
    * @brief Extract options for a specific object.
    *
    * @param object The object whose options are to be extracted.
+   * @param section The current section node.
    * @return OptionSet The options of the object.
    */
-  virtual OptionSet extract_object_options(hit::Node * object) const;
+  virtual OptionSet extract_object_options(hit::Node * object, hit::Node * section) const;
 
 private:
   void extract_options(hit::Node * object, OptionSet & options) const;

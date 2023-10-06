@@ -29,15 +29,11 @@ OptionSet
 NEML2Object::expected_options()
 {
   OptionSet options;
-  options.set<std::string>("name");
-  options.set<std::string>("type");
   return options;
 }
 
 NEML2Object::NEML2Object(const OptionSet & options)
-  : _options(options),
-    _name(options.get<std::string>("name")),
-    _type(options.get<std::string>("type"))
+  : _options(options)
 {
 }
 } // namespace neml2

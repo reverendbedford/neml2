@@ -41,9 +41,12 @@ PowerTestSystem::assemble(const BatchTensor & x,
       residual->base_index_put({i}, math::pow(x.base_index({i}), Scalar(i + 1, x.options())) - 1.0);
 
   if (Jacobian)
+  {
+    *Jacobian = BatchTensor::zeros_like(*Jacobian);
     for (TorchSize i = 0; i < n; i++)
       Jacobian->base_index_put({i, i},
                                (i + 1) * math::pow(x.base_index({i}), Scalar(i, x.options())));
+  }
 }
 
 BatchTensor

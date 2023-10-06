@@ -49,6 +49,22 @@ TEST_CASE("OptionSet", "[base]")
                    Catch::Matchers::Equals(std::vector<std::string>{"a", "b", "c", "d", "e"}));
       REQUIRE_THAT(options.get<std::vector<double>>("p5"),
                    Catch::Matchers::Approx(std::vector<double>{1.2, -1.1, 100, 5.3}));
+
+      // The non-template version should allow me to retrieve metadata
+      REQUIRE(options.get("p1").name() == "p1");
+      REQUIRE(options.get("p1").type() == utils::demangle(typeid(double).name()));
+      REQUIRE(options.get("p1").doc() == "");
+      REQUIRE(!options.get("p1").suppressed());
+    }
+
+    SECTION("set")
+    {
+      // The non-template version should allome to alter the metadata
+      std::string docstr = "This is an option named p1 with type double.";
+      options.set("p1").doc() = docstr;
+      options.set("p1").suppressed() = true;
+      REQUIRE(options.get("p1").doc() == docstr);
+      REQUIRE(options.get("p1").suppressed());
     }
 
     SECTION("copy")
@@ -61,6 +77,16 @@ TEST_CASE("OptionSet", "[base]")
                    Catch::Matchers::Equals(std::vector<std::string>{"a", "b", "c", "d", "e"}));
       REQUIRE_THAT(options.get<std::vector<double>>("p5"),
                    Catch::Matchers::Approx(std::vector<double>{1.2, -1.1, 100, 5.3}));
+    }
+
+    SECTION("contains")
+    {
+      REQUIRE(options.contains<double>("p1"));
+      REQUIRE(!options.contains<double>("p2"));
+      REQUIRE(options.contains<std::string>("p2"));
+      REQUIRE(!options.contains<std::string>("p1"));
+      REQUIRE(options.contains("p1"));
+      REQUIRE(options.contains("p2"));
     }
   }
 }

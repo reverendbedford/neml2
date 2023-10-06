@@ -26,6 +26,39 @@
 
 namespace neml2
 {
+bool
+OptionSet::contains(const std::string & name) const
+{
+  OptionSet::const_iterator it = _values.find(name);
+  if (it != _values.end())
+    return true;
+  return false;
+}
+
+const OptionSet::OptionBase &
+OptionSet::get(const std::string & name) const
+{
+  neml_assert(this->contains(name),
+              "ERROR: no option named \"",
+              name,
+              "\" found.\n\nKnown options:\n",
+              *this);
+
+  return *_values.at(name);
+}
+
+OptionSet::OptionBase &
+OptionSet::set(const std::string & name)
+{
+  neml_assert(this->contains(name),
+              "ERROR: no option named \"",
+              name,
+              "\" found.\n\nKnown options:\n",
+              *this);
+
+  return *_values[name];
+}
+
 void
 OptionSet::clear()
 {
@@ -36,24 +69,10 @@ OptionSet &
 OptionSet::operator=(const OptionSet & source)
 {
   this->OptionSet::clear();
-  *this += source;
-  return *this;
-}
-
-OptionSet &
-OptionSet::operator+=(const OptionSet & source)
-{
   for (const auto & [key, value] : source._values)
     _values[key] = value->clone();
+  this->_metadata = source._metadata;
   return *this;
-}
-
-OptionSet
-OptionSet::operator+(const OptionSet & source)
-{
-  OptionSet ret = *this;
-  ret += source;
-  return ret;
 }
 
 OptionSet::OptionSet(const OptionSet & p) { *this = p; }
