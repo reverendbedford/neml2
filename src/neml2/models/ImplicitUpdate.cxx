@@ -39,11 +39,9 @@ ImplicitUpdate::expected_options()
 
 ImplicitUpdate::ImplicitUpdate(const OptionSet & options)
   : Model(options),
-    _model(Factory::get_object<Model>("Models", options.get<std::string>("implicit_model"))),
+    _model(include_model<Model>(options.get<std::string>("implicit_model"))),
     _solver(Factory::get_object<NonlinearSolver>("Solvers", options.get<std::string>("solver")))
 {
-  register_model(
-      Factory::get_object_ptr<Model>("Models", options.get<std::string>("implicit_model")));
   // Now that the implicit model has been registered, the input of this ImplicitUpdate model should
   // be the same as the implicit model's input. The input subaxes of the implicit model looks
   // something like

@@ -270,6 +270,12 @@ protected:
   */
   void register_model(std::shared_ptr<Model> model, bool merge_input = true);
 
+  /**
+   * Both register a model and return a reference
+   */
+  template <typename T, typename = typename std::enable_if_t<std::is_base_of_v<Model, T>>>
+  T & include_model(const std::string & name);
+
   virtual void
   assemble(const BatchTensor & x, BatchTensor * r, BatchTensor * J = nullptr) const override;
 
@@ -419,4 +425,16 @@ Model::declare_buffer(const std::string & name, const std::string & input_option
       ". Make sure you provided the correct buffer name, option name, and buffer type. Note that "
       "the buffer type can either be a plain type, a cross-reference, or an interpolator.");
 }
+
+template <typename T, typename = typename std::enable_if_t<std::is_base_of_v<Model, T>>>
+T &
+Model::include_model(const std::string & name)
+{
+  std::shared_ptr<Model> model = Factory::get_object_ptr<Model>("Models", name);
+
+  register_model(model, true);
+
+  return *model;
+}
+
 } // namespace neml2

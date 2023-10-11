@@ -43,10 +43,8 @@ Normality::expected_options()
 Normality::Normality(const OptionSet & options)
   : Model(options),
     function(options.get<LabeledAxisAccessor>("function")),
-    _model(Factory::get_object<Model>("Models", options.get<std::string>("model")))
+    _model(include_model<Model>(options.get<std::string>("model")))
 {
-  register_model(Factory::get_object_ptr<Model>("Models", options.get<std::string>("model")));
-
   // Set up the conjugate pairs
   const auto from = options.get<std::vector<LabeledAxisAccessor>>("from");
   const auto to = options.get<std::vector<LabeledAxisAccessor>>("to");
