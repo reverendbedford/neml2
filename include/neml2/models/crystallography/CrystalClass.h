@@ -25,6 +25,7 @@
 #pragma once
 
 #include "neml2/models/crystallography/SymmetryOperator.h"
+#include "neml2/models/Model.h"
 #include "neml2/tensors/Quaternion.h"
 
 #include <string>
@@ -84,11 +85,20 @@ symmetry_operations_from_orbifold(std::string orbifold,
 
 /// Representation of a crystal class
 // This includes storing the relevant symmetry operations
-class CrystalClass
+class CrystalClass : public Model
 {
 public:
-  /// Construct from orbifold notation
-  CrystalClass(std::string orbifold, const torch::TensorOptions & options = default_tensor_options);
+  /// Setup from parameter set
+  CrystalClass(const OptionSet & options);
+
+  /// Input options
+  static OptionSet expected_options();
+
+  /// Dummy set_value (no operations)
+  virtual void set_value(const LabeledVector & in,
+                         LabeledVector * out,
+                         LabeledMatrix * dout_din,
+                         LabeledTensor3D * d2out_din2) const;
 
   /// Return the tensor of symmetry operations
   const SymmetryOperator & operations() const;
@@ -97,7 +107,7 @@ public:
   TorchSize size() const;
 
 private:
-  const SymmetryOperator operations_;
+  const SymmetryOperator & _operations;
 };
 
 } // namespace crystallography

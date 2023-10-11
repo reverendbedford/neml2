@@ -107,21 +107,46 @@ symmetry_operations_from_orbifold(std::string orbifold, const torch::TensorOptio
   }
 }
 
-CrystalClass::CrystalClass(std::string orbifold, const torch::TensorOptions & options)
-  : operations_(symmetry_operations_from_orbifold(orbifold, options))
+register_NEML2_object(CrystalClass);
+
+OptionSet
+CrystalClass::expected_options()
 {
+  OptionSet options = Model::expected_options();
+  options.set<std::string>("orbifold");
+  return options;
+}
+
+CrystalClass::CrystalClass(const OptionSet & options)
+  : Model(options),
+    _operations(declare_buffer<SymmetryOperator>(
+        "operations", symmetry_operations_from_orbifold(options.get<std::string>("orbifold"))))
+{
+}
+
+void
+CrystalClass::set_value(const LabeledVector & in,
+                        LabeledVector * out,
+                        LabeledMatrix * dout_din,
+                        LabeledTensor3D * d2out_din2) const
+{
+  (void)in;
+  (void)out;
+  (void)dout_din;
+  (void)d2out_din2;
+  return;
 }
 
 const SymmetryOperator &
 CrystalClass::operations() const
 {
-  return operations_;
+  return _operations;
 }
 
 TorchSize
 CrystalClass::size() const
 {
-  return operations_.batch_sizes()[0];
+  return _operations.batch_sizes()[0];
 }
 
 }

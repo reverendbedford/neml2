@@ -24,11 +24,16 @@
 
 #include <catch2/catch.hpp>
 
+#include <filesystem>
+
+#include "utils.h"
+#include "neml2/base/Factory.h"
 #include "neml2/models/crystallography/CrystalClass.h"
 #include "neml2/tensors/tensors.h"
 
 using namespace neml2;
 using namespace neml2::crystallography;
+namespace fs = std::filesystem;
 
 TEST_CASE("CrystalClass", "[crystallography]")
 {
@@ -111,10 +116,16 @@ TEST_CASE("CrystalClass", "[crystallography]")
   auto matrix_operations = [ops](std::string a)
   { return std::get<0>(ops.at(a)).index({torch::tensor(std::get<1>(ops.at(a)))}); };
 
+  // Load all the models in
+  Factory::clear();
+  load_model(fs::absolute("unit/crystallography/classes.i"));
+
+  auto fmt_name = [](std::string cls) { return "class_" + cls; };
+
   SECTION("check matrix operations")
   {
     auto cls = GENERATE("1", "2", "222", "42", "4", "3", "6", "32", "622", "23", "432");
-    auto grp = CrystalClass(cls, DTO);
+    auto & grp = Factory::get_object<CrystalClass>("Models", fmt_name(cls));
 
     REQUIRE(torch::allclose(grp.operations(), matrix_operations(cls)));
   }
@@ -122,7 +133,7 @@ TEST_CASE("CrystalClass", "[crystallography]")
   SECTION("check the group includes the identity")
   {
     auto cls = GENERATE("1", "2", "222", "42", "4", "3", "6", "32", "622", "23", "432");
-    auto grp = CrystalClass(cls, DTO);
+    auto & grp = Factory::get_object<CrystalClass>("Models", fmt_name(cls));
     REQUIRE(
         torch::any(torch::all(torch::isclose(grp.operations(), R2::identity(DTO)).flatten(1), 1))
             .item()
@@ -132,7 +143,7 @@ TEST_CASE("CrystalClass", "[crystallography]")
   SECTION("check the group is closed")
   {
     auto cls = GENERATE("1", "2", "222", "42", "4", "3", "6", "32", "622", "23", "432");
-    auto grp = CrystalClass(cls, DTO);
+    auto & grp = Factory::get_object<CrystalClass>("Models", fmt_name(cls));
     // A loop is forgivable here I hope...
     for (TorchSize i = 0; i < grp.size(); i++)
     {
@@ -151,7 +162,7 @@ TEST_CASE("CrystalClass", "[crystallography]")
   SECTION("check the group has each inverse operation")
   {
     auto cls = GENERATE("1", "2", "222", "42", "4", "3", "6", "32", "622", "23", "432");
-    auto grp = CrystalClass(cls, DTO);
+    auto & grp = Factory::get_object<CrystalClass>("Models", fmt_name(cls));
     // A loop is forgivable here I hope...
     for (TorchSize i = 0; i < grp.size(); i++)
     {

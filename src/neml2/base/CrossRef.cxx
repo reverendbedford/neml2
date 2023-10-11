@@ -26,6 +26,7 @@
 #include "neml2/base/Factory.h"
 #include "neml2/misc/parser_utils.h"
 #include "neml2/tensors/tensors.h"
+#include "neml2/models/crystallography/SymmetryOperator.h"
 
 #define specialize_crossref_FixedDimTensor(tensor_type)                                            \
   template <>                                                                                      \
@@ -96,4 +97,5 @@ specialize_crossref_FixedDimTensor(R4);
 specialize_crossref_FixedDimTensor(SSR4);
 specialize_crossref_FixedDimTensor(R5);
 specialize_crossref_FixedDimTensor(SSFR5);
+specialize_crossref_FixedDimTensor(crystallography::SymmetryOperator);
 } // namesace neml2
