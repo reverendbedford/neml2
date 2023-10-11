@@ -25,7 +25,7 @@
 #pragma once
 
 #include "neml2/models/crystallography/SymmetryOperator.h"
-#include "neml2/models/Model.h"
+#include "neml2/models/StaticModel.h"
 #include "neml2/tensors/Quaternion.h"
 
 #include <string>
@@ -85,7 +85,7 @@ symmetry_operations_from_orbifold(std::string orbifold,
 
 /// Representation of a crystal class
 // This includes storing the relevant symmetry operations
-class CrystalClass : public Model
+class CrystalClass : public StaticModel
 {
 public:
   /// Setup from parameter set
@@ -93,12 +93,6 @@ public:
 
   /// Input options
   static OptionSet expected_options();
-
-  /// Dummy set_value (no operations)
-  virtual void set_value(const LabeledVector & in,
-                         LabeledVector * out,
-                         LabeledMatrix * dout_din,
-                         LabeledTensor3D * d2out_din2) const;
 
   /// Return the tensor of symmetry operations
   const SymmetryOperator & operations() const;
