@@ -434,7 +434,7 @@ Model::include_model(const std::string & name)
 
   register_model(model, true);
 
-  return *model;
+  return *(std::dynamic_pointer_cast<T>(model));
 }
 
 } // namespace neml2
