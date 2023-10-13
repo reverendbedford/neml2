@@ -311,9 +311,9 @@ private:
     {
     }
 
-    virtual std::string type() const { return utils::demangle(typeid(T).name()); }
+    virtual std::string type() const override { return utils::demangle(typeid(T).name()); }
 
-    virtual void to(const torch::Device & device) { _value = _value.to(device); }
+    virtual void to(const torch::Device & device) override { _value = _value.to(device); }
 
     virtual operator BatchTensor() const override { return BatchTensor(_value); }
 
@@ -346,8 +346,7 @@ private:
   LabeledVector _cached_in;
 };
 
-template <typename T,
-          typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<T>, T>>>
+template <typename T, typename>
 const T &
 Model::get_parameter(const std::string & name) const
 {
@@ -358,8 +357,7 @@ Model::get_parameter(const std::string & name) const
   return prop->get();
 }
 
-template <typename T,
-          typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<T>, T>>>
+template <typename T, typename>
 const T &
 Model::get_buffer(const std::string & name) const
 {
@@ -370,8 +368,7 @@ Model::get_buffer(const std::string & name) const
   return prop->get();
 }
 
-template <typename T,
-          typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<T>, T>>>
+template <typename T, typename>
 const T &
 Model::declare_parameter(const std::string & name, const T & rawval)
 {
@@ -389,8 +386,7 @@ Model::declare_parameter(const std::string & name, const T & rawval)
   return prop->get();
 }
 
-template <typename T,
-          typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<T>, T>>>
+template <typename T, typename>
 const T &
 Model::declare_buffer(const std::string & name, const T & rawval)
 {
@@ -408,8 +404,7 @@ Model::declare_buffer(const std::string & name, const T & rawval)
   return prop->get();
 }
 
-template <typename T,
-          typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<T>, T>>>
+template <typename T, typename>
 const T &
 Model::declare_buffer(const std::string & name, const std::string & input_option_name)
 {
