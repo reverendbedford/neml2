@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 #include "neml2/models/crystallography/CrystalClass.h"
+#include "neml2/tensors/tensors.h"
 
 using namespace torch::indexing;
 
@@ -134,6 +135,34 @@ TorchSize
 CrystalClass::size() const
 {
   return _operations.batch_sizes()[0];
+}
+
+Vec
+CrystalClass::unique_bidirectional(const Vec & inp) const
+{
+  neml_assert_dbg(inp.batch_dim() == 0);
+  // Batched tensor with all possible answers
+  auto options = R2(_operations) * inp;
+  // I think we have to go one by one...
+  // Slightly annoying that while Vec and torch::Tensor are convertible a
+  // list of Vecs aren't convertable into a TensorList
+  std::vector<torch::Tensor> unique{torch::Tensor(options.batch_index({0}))};
+  Vec unique_vecs = Vec(torch::stack(unique));
+  for (TorchSize i = 1; i < options.batch_sizes()[0]; i++)
+  {
+    auto vi = options.batch_index({i});
+    // Ugh, you need a broadcasting type of thing, right now it's comparing bit by bit
+    std::cout << torch::isclose(unique_vecs, vi) << std::endl;
+    if (!(torch::any(torch::isclose(unique_vecs, vi)).item<bool>() ||
+          torch::any(torch::isclose(unique_vecs, -vi)).item<bool>()))
+    {
+      unique.push_back(torch::Tensor(vi));
+      unique_vecs = Vec(torch::stack(unique));
+    }
+  }
+
+  // Get the batch of all possible answers
+  return unique_vecs;
 }
 
 }

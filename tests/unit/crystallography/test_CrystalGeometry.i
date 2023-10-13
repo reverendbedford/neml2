@@ -1,0 +1,32 @@
+[Models]
+  [class_432]
+    type = CrystalClass
+    orbifold = "432"
+  []
+  [scgeom]
+    type = CrystalGeometry
+    crystal_class = "class_432"
+    lattice_vectors = "lvecs"
+    slip_directions = "sdirs"
+    slip_planes = "splanes"
+  []
+[]
+
+[Tensors]
+  [sdirs]
+    type = FillMillerIndex
+    values = '1 1 0'
+  []
+  [splanes]
+    type = FillMillerIndex
+    values = '1 1 1'
+  []
+  [lvecs]
+    type = Fill3DVec
+    values = '
+    1.2 0.0 0.0
+    0.0 1.2 0.0
+    0.0 0.0 1.2
+    '
+  []
+[]

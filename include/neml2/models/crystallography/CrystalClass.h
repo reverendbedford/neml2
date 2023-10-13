@@ -100,6 +100,10 @@ public:
   /// Return the number of symmetry operations
   TorchSize size() const;
 
+  /// Return unique vectors under symmetry
+  /// This version considers either direction (+-) equivalent
+  Vec unique_bidirectional(const Vec & inp) const;
+
 private:
   const SymmetryOperator & _operations;
 };

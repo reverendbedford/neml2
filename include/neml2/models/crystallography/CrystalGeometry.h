@@ -46,21 +46,45 @@ public:
   /// Input options
   static OptionSet expected_options();
 
+  /// accessor for the first lattice vector
+  Vec a1() const;
+  /// accessor for the second lattice vector
+  Vec a2() const;
+  /// accessor for the third lattice vector
+  Vec a3() const;
+
+  /// accessor for the first reciprocal lattice vector
+  Vec b1() const;
+  /// accessor for the second reciprocal lattice vector
+  Vec b2() const;
+  /// accessor for the third reciprocal lattice vector
+  Vec b3() const;
+
   /// Slice a BatchTensor to give a group of slip data
   // The slice happens along the last batch axis
   template <typename T>
-  T slip_slice(const T & tensor, TorchSize grp);
+  T slip_slice(const T & tensor, TorchSize grp) const;
 
 private:
-  /// Important helper to setup slip systems
-  static R2 setup_schmid_tensors(const MillerIndex & slip_directions,
-                                 const MillerIndex & slip_planes);
+  /// Delegated constructor to setup schmid tensors and slice indices at once
+  CrystalGeometry(const OptionSet & options, std::pair<R2, std::vector<TorchSize>> slip_res);
+
+  /// Helper to setup reciprocal lattice
+  static Vec make_reciprocal_lattice(const Vec & lattice_vectors);
+
+  /// Helper to setup slip systems
+  static std::pair<R2, std::vector<TorchSize>>
+  setup_schmid_tensors(const CrystalClass & cls,
+                       const MillerIndex & slip_directions,
+                       const MillerIndex & slip_planes);
 
 private:
   /// Crystal symmetry class with operators
   const CrystalClass & _class;
   /// Lattice vectors
   const Vec & _lattice_vectors;
+  /// Reciprocal lattice vectors
+  const Vec & _reciprocal_lattice_vectors;
   /// Slip directions
   const MillerIndex & _slip_directions;
   /// Slip planes
@@ -68,6 +92,8 @@ private:
 
   /// Output: full Schmid tensor for each slip system
   const R2 & _A;
+  /// Offsets into batch tensors for each slip group
+  const std::vector<TorchSize> _slip_offsets;
   /// Output: symmetric Schmid tensors for each slip system
   const SR2 & _M;
   /// Output: skew-symmetry Schmid tensors for each slip system
@@ -76,11 +102,15 @@ private:
 
 template <typename T>
 T
-CrystalGeometry::slip_slice(const T & tensor, TorchSize grp)
+CrystalGeometry::slip_slice(const T & tensor, TorchSize grp) const
 {
   (void)grp;
   return tensor;
 }
+
+/// Helper that reduces out equivalent cartesian directions, this version considers equivalence
+/// to be in either direction
+Vec unique_bidirectional(const Vec & inp);
 
 } // namespace crystallography
 } // namespace neml2
