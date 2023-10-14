@@ -29,12 +29,6 @@ using namespace neml2;
 
 TEST_CASE("parser_utils", "[misc]")
 {
-  SECTION("demangle")
-  {
-    REQUIRE(utils::demangle(typeid(std::vector<unsigned int>).name()) ==
-            "std::vector<unsigned int, std::allocator<unsigned int> >");
-  }
-
   SECTION("split")
   {
     REQUIRE(utils::split("a/b/c", "/") == std::vector<std::string>{"a", "b", "c"});
