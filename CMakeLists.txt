@@ -32,15 +32,19 @@ if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.24.0")
       cmake_policy(SET CMP0135 NEW)
 endif()
 
-# Location of current CPU torch
-include(FetchContent)
-FetchContent_Declare(
-      torch
-      URL https://download.pytorch.org/libtorch/nightly/cpu/libtorch-shared-with-deps-latest.zip
-)
-
 # Select between system torch and the current (CPU) torch
 if(NOT DEFINED LIBTORCH_DIR)
+      # Location of current CPU torch
+      include(FetchContent)
+      if (UNIX)
+            if (NOT APPLE)
+                  FetchContent_Declare(torch URL https://download.pytorch.org/libtorch/nightly/cpu/libtorch-shared-with-deps-latest.zip)
+            else()
+                  FetchContent_Declare(torch URL https://download.pytorch.org/libtorch/nightly/cpu/libtorch-macos-latest.zip)
+            endif()
+      else()
+            message(FATAL_ERROR "We only download a default libtorch on linux and macos. For other operating systems, please specify LIBTORCH_DIR.")
+      endif()
       set(FETCHCONTENT_QUIET FALSE)
       FetchContent_MakeAvailable(torch)
       set(FETCHCONTENT_QUIET TRUE)

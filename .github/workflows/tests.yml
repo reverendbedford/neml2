@@ -34,13 +34,14 @@ jobs:
           python-version: "3.10"
       - name: Check to see if source files have the correct copyright header
         run: python scripts/check_copyright.py
-  build-test-linux:
+  build-test:
     needs: clang-format
-    runs-on: ubuntu-latest
     strategy:
       matrix:
+        os: [ubuntu-latest, macos-latest]
         btype: [Release, Debug]
         unity: [ON, OFF]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -51,7 +52,7 @@ jobs:
       - run: cmake -DCMAKE_BUILD_TYPE=${{ matrix.btype }} -DCMAKE_UNITY_BUILD=${{ matrix.unity }} .
       - run: make -j 2
       - run: make test
-  build-all-linux:
+  build-all:
     needs: clang-format
     runs-on: ubuntu-latest
     strategy:
@@ -69,7 +70,7 @@ jobs:
       - run: make -j 2
   coverage:
     name: Code coverage check
-    needs: build-test-linux
+    needs: build-test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
