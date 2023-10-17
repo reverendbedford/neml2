@@ -77,7 +77,6 @@
   []
   [Eprate]
     type = AssociativePlasticFlow
-    flow_rate = 'state/gamma_rate'
   []
   [integrate_Ep]
     type = SR2BackwardEulerTimeIntegration
