@@ -87,10 +87,7 @@ ComposedModel::register_dependency(const std::vector<std::shared_ptr<Model>> & m
         }
       }
       if (!provided)
-      {
-        _consumed_vars.insert(consumed_var);
-        input().add(consumed_var, modeli->input().storage_size(consumed_var));
-      }
+        declare_input_variable(consumed_var, modeli->input().storage_size(consumed_var));
     }
 
     // see which model _consumes_ the provided variables
@@ -111,15 +108,12 @@ ComposedModel::register_dependency(const std::vector<std::shared_ptr<Model>> & m
         }
       }
       if (!consumed)
-      {
-        _provided_vars.insert(provided_var);
-        output().add(provided_var, modeli->output().storage_size(provided_var));
-      }
+        declare_output_variable(provided_var, modeli->output().storage_size(provided_var));
     }
 
     // Each model may request additional outputs
     for (const auto & var : modeli->additional_outputs())
-      output().add(var, modeli->output().storage_size(var));
+      declare_output_variable(var, modeli->output().storage_size(var));
   }
 }
 

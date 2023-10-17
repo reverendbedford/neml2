@@ -107,15 +107,12 @@
   []
   [eprate]
     type = AssociativeIsotropicPlasticHardening
-    flow_rate = 'state/gamma_rate'
   []
   [Kprate]
     type = AssociativeKinematicPlasticHardening
-    flow_rate = 'state/gamma_rate'
   []
   [Eprate]
     type = AssociativePlasticFlow
-    flow_rate = 'state/gamma_rate'
   []
   [integrate_ep]
     type = ScalarBackwardEulerTimeIntegration
