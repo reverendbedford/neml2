@@ -299,8 +299,7 @@ Model::assemble(const BatchTensor & x, BatchTensor * r, BatchTensor * J) const
   }
 }
 
-template <typename T,
-          typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<T>, T>>>
+template <typename T, typename>
 const T &
 Model::declare_parameter(const std::string & name, const std::string & input_option_name)
 {

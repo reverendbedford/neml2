@@ -1,5 +1,5 @@
 if(NOT DEFINED DOXYGEN_EXECUTABLE)
-  if(UNIX)
+  if(UNIX AND NOT APPLE)
     set(FETCHCONTENT_QUIET FALSE)
     FetchContent_Declare(
       doxygen

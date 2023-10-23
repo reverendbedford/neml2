@@ -115,7 +115,7 @@ TEST_CASE("LabeledAxis", "[tensors]")
     {
       LabeledAxis a;
       LabeledAxisAccessor i({"a", "b"});
-      LabeledAxisAccessor j({"c"});
+      LabeledAxisAccessor j("c");
       a.add(i, 2);
       a.add(j, 3);
       a.clear();
@@ -130,13 +130,13 @@ TEST_CASE("LabeledAxis", "[tensors]")
     {
       LabeledAxis a;
       LabeledAxisAccessor i({"a", "b"});
-      LabeledAxisAccessor j({"c"});
+      LabeledAxisAccessor j("c");
       a.add(i, 2);
       a.add(j, 3);
 
       LabeledAxis b;
       LabeledAxisAccessor k({"a", "d"});
-      LabeledAxisAccessor l({"c"});
+      LabeledAxisAccessor l("c");
       b.add(k, 2);
       b.add(l, 3);
 
@@ -153,7 +153,7 @@ TEST_CASE("LabeledAxis", "[tensors]")
     {
       LabeledAxis a;
       LabeledAxisAccessor i({"a", "b"});
-      LabeledAxisAccessor j({"c"});
+      LabeledAxisAccessor j("c");
       a.add(i, 2);
       a.add(j, 3);
       a.setup_layout();
@@ -166,7 +166,7 @@ TEST_CASE("LabeledAxis", "[tensors]")
     {
       LabeledAxis a;
       LabeledAxisAccessor i({"a", "b"});
-      LabeledAxisAccessor j({"c"});
+      LabeledAxisAccessor j("c");
       a.add(i, 2);
       a.add(j, 3);
       a.setup_layout();
@@ -185,7 +185,7 @@ TEST_CASE("LabeledAxis", "[tensors]")
     {
       LabeledAxis a;
       LabeledAxisAccessor i({"a", "b"});
-      LabeledAxisAccessor j({"c"});
+      LabeledAxisAccessor j("c");
       LabeledAxisAccessor k({"a", "d"});
       a.add(i, 2);
       a.add(j, 3);

@@ -73,9 +73,10 @@ Factory::print(std::ostream & os)
   for (auto & [section, objects] : all_objects)
   {
     os << "- " << section << ":" << std::endl;
-    for (auto & object : objects)
-      os << "   " << object.first << ": " << utils::demangle(typeid(*object.second).name())
-         << std::endl;
+    // for (auto & object : objects)
+    //   os << "   " << object.first << ": " <<
+    //   utils::demangle(typeid(*(object.second.get())).name())
+    //      << std::endl;
   }
 }
 // LCOV_EXCL_STOP
