@@ -84,12 +84,15 @@ symmetry_operations_from_orbifold(std::string orbifold,
                                   const torch::TensorOptions & options = default_tensor_options);
 
 /// Representation of a crystal class
-// This includes storing the relevant symmetry operations
+/// This includes storing the relevant symmetry operations
 class CrystalClass : public StaticModel
 {
 public:
   /// Setup from parameter set
   CrystalClass(const OptionSet & options);
+
+  /// Setup directly from orbifold notation
+  CrystalClass(std::string orbifold);
 
   /// Input options
   static OptionSet expected_options();

@@ -22,27 +22,38 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
+#include "neml2/models/crystallography/CubicCrystal.h"
+
+#include "neml2/models/crystallography/CrystalClass.h"
+#include "neml2/tensors/tensors.h"
 
 namespace neml2
 {
 namespace crystallography
 {
-class SymmetryOperator;
 
-/// @brief  Mixin class for things that can be transformed by a symmetry operator
-/// @tparam Derived type
-template <class Derived>
-class SymmetryTransformable
+register_NEML2_object(CubicCrystal);
+
+OptionSet
+CubicCrystal::expected_options()
 {
-public:
-  /// @brief dummy virtual destructor
-  virtual ~SymmetryTransformable(){};
-  /// @brief apply a transformation operator
-  /// @param op the transformation operator
-  /// @return an instance of the Derived type that has been transform
-  virtual Derived transform(const SymmetryOperator & op) const = 0;
-};
+  OptionSet options = CrystalGeometry::expected_options();
+
+  options.set("crystal_class").suppressed() = true;
+  options.set("lattice_vectors").suppressed() = true;
+
+  options.set<CrossRef<Scalar>>("lattice_parameter");
+
+  return options;
+}
+
+CubicCrystal::CubicCrystal(const OptionSet & options)
+  : CrystalGeometry(
+        options,
+        CrystalClass("432"),
+        Vec(torch::Tensor(R2::fill(options.get<CrossRef<Scalar>>("lattice_parameter")))))
+{
+}
 
 } // namespace crystallography
 } // namespace neml2

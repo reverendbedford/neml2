@@ -33,6 +33,11 @@ class Quaternion;
 
 namespace crystallography
 {
+/// @brief A generic symmetry operator
+/// This includes the identity, proper rotations, improper rotations,
+/// and inversion centers.  We also include reflections, even though
+/// they are not proper operators themselves as they are useful in
+/// defining others.
 class SymmetryOperator : public R2Base<SymmetryOperator>
 {
 public:

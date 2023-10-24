@@ -38,11 +38,21 @@ namespace crystallography
 class CrystalClass;
 class MillerIndex;
 
+/// @brief Defines the geometry of a crystal system
+/// This includes a basic definition of the crystal lattice,
+/// via Bravais vectors and a CrystalClass object defining the
+/// crystal symmetry as well as the definition of the geometry
+/// of each slip system.
 class CrystalGeometry : public StaticModel
 {
 public:
   /// Setup from parameter set
   CrystalGeometry(const OptionSet & options);
+
+  /// Alternate constructor not relying on options
+  CrystalGeometry(const OptionSet & options,
+                  const CrystalClass & cclass,
+                  const Vec & lattice_vectors);
 
   /// Input options
   static OptionSet expected_options();
@@ -82,7 +92,10 @@ public:
   /// Accessor for the skew-symmetric Schmid tensors
   const WR2 & W() const { return _W; };
 
-  /// Slice a BatchTensor to give a group of slip data
+  /// Accessor for the crystal class
+  const CrystalClass & crystal_class() const { return _class; };
+
+  /// Slice a BatchTensor to provide only the batch associated with a slip system
   // The slice happens along the last batch axis
   template <
       class Derived,
@@ -92,6 +105,8 @@ public:
 private:
   /// Delegated constructor to setup schmid tensors and slice indices at once
   CrystalGeometry(const OptionSet & options,
+                  const CrystalClass & cclass,
+                  const Vec & lattice_vectors,
                   std::tuple<Vec, Vec, Scalar, std::vector<TorchSize>> slip_data);
 
   /// Helper to setup reciprocal lattice

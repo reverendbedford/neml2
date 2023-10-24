@@ -50,10 +50,26 @@ CrystalGeometry::expected_options()
 }
 
 CrystalGeometry::CrystalGeometry(const OptionSet & options)
+  : CrystalGeometry(
+        options,
+        Factory::get_object<CrystalClass>("Models", options.get<std::string>("crystal_class")),
+        options.get<CrossRef<Vec>>("lattice_vectors"),
+        setup_schmid_tensors(
+            options.get<CrossRef<Vec>>("lattice_vectors"),
+            Factory::get_object<CrystalClass>("Models", options.get<std::string>("crystal_class")),
+            options.get<CrossRef<MillerIndex>>("slip_directions"),
+            options.get<CrossRef<MillerIndex>>("slip_planes")))
+{
+}
+
+CrystalGeometry::CrystalGeometry(const OptionSet & options,
+                                 const CrystalClass & cclass,
+                                 const Vec & lattice_vectors)
   : CrystalGeometry(options,
-                    setup_schmid_tensors(options.get<CrossRef<Vec>>("lattice_vectors"),
-                                         Factory::get_object<CrystalClass>(
-                                             "Models", options.get<std::string>("crystal_class")),
+                    cclass,
+                    lattice_vectors,
+                    setup_schmid_tensors(lattice_vectors,
+                                         cclass,
                                          options.get<CrossRef<MillerIndex>>("slip_directions"),
                                          options.get<CrossRef<MillerIndex>>("slip_planes")))
 {
@@ -115,10 +131,12 @@ CrystalGeometry::nslip_in_group(TorchSize i) const
 }
 
 CrystalGeometry::CrystalGeometry(const OptionSet & options,
+                                 const CrystalClass & cclass,
+                                 const Vec & lattice_vectors,
                                  std::tuple<Vec, Vec, Scalar, std::vector<TorchSize>> slip_data)
   : StaticModel(options),
-    _class(include_model<CrystalClass>(options.get<std::string>("crystal_class"))),
-    _lattice_vectors(declare_buffer<Vec>("lattice_vectors", "lattice_vectors")),
+    _class(cclass),
+    _lattice_vectors(declare_buffer<Vec>("lattice_vectors", lattice_vectors)),
     _reciprocal_lattice_vectors(declare_buffer<Vec>("reciprocal_lattice_vectors",
                                                     make_reciprocal_lattice(_lattice_vectors))),
     _slip_directions(declare_buffer<MillerIndex>("slip_directions", "slip_directions")),
@@ -134,6 +152,7 @@ CrystalGeometry::CrystalGeometry(const OptionSet & options,
     _M(declare_buffer<SR2>("symmetric_schmid_tensors", SR2(_A))),
     _W(declare_buffer<WR2>("skew_symmetric_schmid_tensors", WR2(_A)))
 {
+  // I'm worried we are not registering cclass...
 }
 
 Vec

@@ -125,6 +125,13 @@ CrystalClass::CrystalClass(const OptionSet & options)
 {
 }
 
+CrystalClass::CrystalClass(std::string orbifold)
+  : StaticModel(StaticModel::expected_options()),
+    _operations(
+        declare_buffer<SymmetryOperator>("operations", symmetry_operations_from_orbifold(orbifold)))
+{
+}
+
 const SymmetryOperator &
 CrystalClass::operations() const
 {

@@ -24,25 +24,22 @@
 
 #pragma once
 
+#include "neml2/models/crystallography/CrystalGeometry.h"
+
 namespace neml2
 {
 namespace crystallography
 {
-class SymmetryOperator;
 
-/// @brief  Mixin class for things that can be transformed by a symmetry operator
-/// @tparam Derived type
-template <class Derived>
-class SymmetryTransformable
+/// @brief Specialized crystal geometry for cubic crystals
+class CubicCrystal : public CrystalGeometry
 {
 public:
-  /// @brief dummy virtual destructor
-  virtual ~SymmetryTransformable(){};
-  /// @brief apply a transformation operator
-  /// @param op the transformation operator
-  /// @return an instance of the Derived type that has been transform
-  virtual Derived transform(const SymmetryOperator & op) const = 0;
-};
+  /// Setup from parameter set
+  CubicCrystal(const OptionSet & options);
 
+  /// Input options
+  static OptionSet expected_options();
+};
 } // namespace crystallography
 } // namespace neml2
