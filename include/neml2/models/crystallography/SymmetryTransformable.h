@@ -36,6 +36,7 @@ template <class Derived>
 class SymmetryTransformable
 {
 public:
+  virtual ~SymmetryTransformable(){};
   virtual Derived transform(const SymmetryOperator & op) const = 0;
 };
 

@@ -176,8 +176,8 @@ template <class Derived>
 Derived
 R2Base<Derived>::rotate(const Rot & r) const
 {
-  Derived R = r.euler_rodrigues();
-  return R * Derived(*this) * R.transpose();
+  R2 R = r.euler_rodrigues();
+  return Derived(R * R2(*this) * R.transpose());
 }
 
 template <class Derived>
@@ -213,10 +213,7 @@ R2Base<Derived>::transpose() const
   return BatchTensorBase<Derived>::base_transpose(0, 1);
 }
 
-template <class Derived1,
-          class Derived2,
-          typename = typename std::enable_if_t<std::is_base_of_v<R2Base<Derived1>, Derived1>>,
-          typename = typename std::enable_if_t<std::is_base_of_v<VecBase<Derived2>, Derived2>>>
+template <class Derived1, class Derived2>
 Vec
 operator*(const Derived1 & A, const Derived2 & b)
 {
@@ -224,10 +221,7 @@ operator*(const Derived1 & A, const Derived2 & b)
   return Vec(torch::einsum("...ik,...k", {A, b}), broadcast_batch_dim(A, b));
 }
 
-template <class Derived1,
-          class Derived2,
-          typename = typename std::enable_if_t<std::is_base_of_v<R2Base<Derived1>, Derived1>>,
-          typename = typename std::enable_if_t<std::is_base_of_v<R2Base<Derived2>, Derived2>>>
+template <class Derived1, class Derived2>
 R2
 operator*(const Derived1 & A, const Derived2 & B)
 {
@@ -239,7 +233,6 @@ operator*(const Derived1 & A, const Derived2 & B)
 
 // derived classes
 template class R2Base<R2>;
-using namespace crystallography;
 template class R2Base<crystallography::SymmetryOperator>;
 
 // products

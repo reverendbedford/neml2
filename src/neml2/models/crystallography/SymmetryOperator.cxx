@@ -71,7 +71,7 @@ SymmetryOperator::Inversion(const torch::TensorOptions & option)
 SymmetryOperator
 operator*(const SymmetryOperator & A, const SymmetryOperator & B)
 {
-  return A * B;
+  return R2Base<SymmetryOperator>(A) * R2Base<SymmetryOperator>(B);
 }
 
 } // namespace crystallography

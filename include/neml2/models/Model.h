@@ -274,7 +274,14 @@ protected:
    * Both register a model and return a reference
    */
   template <typename T, typename = typename std::enable_if_t<std::is_base_of_v<Model, T>>>
-  T & include_model(const std::string & name);
+  T & include_model(const std::string & name)
+  {
+    std::shared_ptr<Model> model = Factory::get_object_ptr<Model>("Models", name);
+
+    register_model(model, true);
+
+    return *(std::dynamic_pointer_cast<T>(model));
+  }
 
   virtual void
   assemble(const BatchTensor & x, BatchTensor * r, BatchTensor * J = nullptr) const override;
@@ -424,17 +431,6 @@ Model::declare_buffer(const std::string & name, const std::string & input_option
       " of type " + utils::demangle(typeid(T).name()) +
       ". Make sure you provided the correct buffer name, option name, and buffer type. Note that "
       "the buffer type can either be a plain type, a cross-reference, or an interpolator.");
-}
-
-template <typename T, typename = typename std::enable_if_t<std::is_base_of_v<Model, T>>>
-T &
-Model::include_model(const std::string & name)
-{
-  std::shared_ptr<Model> model = Factory::get_object_ptr<Model>("Models", name);
-
-  register_model(model, true);
-
-  return *(std::dynamic_pointer_cast<T>(model));
 }
 
 } // namespace neml2
