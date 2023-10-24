@@ -389,7 +389,7 @@ template <
 Derived
 macaulay(const Derived & a)
 {
-  return Derived(a * heaviside(a), a.batch_dim());
+  return Derived(torch::Tensor(a) * torch::Tensor(heaviside(a)), a.batch_dim());
 }
 
 template <
