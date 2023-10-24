@@ -213,7 +213,7 @@ R2Base<Derived>::transpose() const
   return BatchTensorBase<Derived>::base_transpose(0, 1);
 }
 
-template <class Derived1, class Derived2>
+template <class Derived1, class Derived2, typename, typename>
 Vec
 operator*(const Derived1 & A, const Derived2 & b)
 {
@@ -221,7 +221,7 @@ operator*(const Derived1 & A, const Derived2 & b)
   return Vec(torch::einsum("...ik,...k", {A, b}), broadcast_batch_dim(A, b));
 }
 
-template <class Derived1, class Derived2>
+template <class Derived1, class Derived2, typename, typename>
 R2
 operator*(const Derived1 & A, const Derived2 & B)
 {
