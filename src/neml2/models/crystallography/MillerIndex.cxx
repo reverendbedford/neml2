@@ -37,6 +37,16 @@ MillerIndex::fill(Integer a, Integer b, Integer c, const torch::TensorOptions & 
   return torch::tensor({a, b, c}, options);
 }
 
+MillerIndex
+MillerIndex::reduce() const
+{
+  // This probably could be vectorized...
+  Integer cf =
+      torch::gcd(torch::gcd(this->base_index({0}), this->base_index({1})), this->base_index({2}))
+          .item<Integer>();
+  return *this / cf;
+}
+
 Vec
 MillerIndex::to_vec(const torch::TensorOptions & options) const
 {

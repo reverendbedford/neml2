@@ -151,16 +151,15 @@ CrystalClass::unique_bidirectional(const Vec & inp) const
   for (TorchSize i = 1; i < options.batch_sizes()[0]; i++)
   {
     auto vi = options.batch_index({i});
-    // Ugh, you need a broadcasting type of thing, right now it's comparing bit by bit
-    std::cout << torch::isclose(unique_vecs, vi) << std::endl;
-    if (!(torch::any(torch::isclose(unique_vecs, vi)).item<bool>() ||
-          torch::any(torch::isclose(unique_vecs, -vi)).item<bool>()))
+    // Compares list of vectors to vector to figure out if any are the same
+    auto same = [](const torch::Tensor & a, const torch::Tensor & b)
+    { return torch::any(torch::all(torch::isclose(a, b), 1)); };
+    if (!(same(unique_vecs, vi).item<bool>() || same(unique_vecs, -vi).item<bool>()))
     {
       unique.push_back(torch::Tensor(vi));
       unique_vecs = Vec(torch::stack(unique));
     }
   }
-
   // Get the batch of all possible answers
   return unique_vecs;
 }

@@ -47,6 +47,9 @@ public:
                           Integer c,
                           const torch::TensorOptions & options = default_integer_tensor_options);
 
+  /// Reduce to the greatest common demoninator
+  MillerIndex reduce() const;
+
   /// Convert back to a (real) Vec
   Vec to_vec(const torch::TensorOptions & options = default_tensor_options) const;
 

@@ -25,6 +25,7 @@
 #pragma once
 
 #include "neml2/models/StaticModel.h"
+#include "neml2/tensors/BatchTensorBase.h"
 
 namespace neml2
 {
@@ -60,23 +61,51 @@ public:
   /// accessor for the third reciprocal lattice vector
   Vec b3() const;
 
+  /// Total number of slip systems
+  TorchSize nslip() const;
+  /// Number of slip groups
+  TorchSize nslip_groups() const;
+  /// Number of slip systems in a given group
+  TorchSize nslip_in_group(TorchSize i) const;
+
+  /// Accessor for the slip directions
+  const Vec & cartesian_slip_directions() const { return _cartesian_slip_directions; };
+  /// Accessor for the slip planes
+  const Vec & cartesian_slip_planes() const { return _cartesian_slip_planes; };
+  /// Accessor for the burgers vector
+  const Scalar & burgers() const { return _burgers; };
+
+  /// Accessor for the full Schmid tensors
+  const R2 & A() const { return _A; };
+  /// Accessor for the symmetric Schmid tensors
+  const SR2 & M() const { return _M; };
+  /// Accessor for the skew-symmetric Schmid tensors
+  const WR2 & W() const { return _W; };
+
   /// Slice a BatchTensor to give a group of slip data
   // The slice happens along the last batch axis
-  template <typename T>
-  T slip_slice(const T & tensor, TorchSize grp) const;
+  template <
+      class Derived,
+      typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<Derived>, Derived>>>
+  Derived slip_slice(const Derived & tensor, TorchSize grp) const;
 
 private:
   /// Delegated constructor to setup schmid tensors and slice indices at once
-  CrystalGeometry(const OptionSet & options, std::pair<R2, std::vector<TorchSize>> slip_res);
+  CrystalGeometry(const OptionSet & options,
+                  std::tuple<Vec, Vec, Scalar, std::vector<TorchSize>> slip_data);
 
   /// Helper to setup reciprocal lattice
   static Vec make_reciprocal_lattice(const Vec & lattice_vectors);
 
   /// Helper to setup slip systems
-  static std::pair<R2, std::vector<TorchSize>>
-  setup_schmid_tensors(const CrystalClass & cls,
+  static std::tuple<Vec, Vec, Scalar, std::vector<TorchSize>>
+  setup_schmid_tensors(const Vec & A,
+                       const CrystalClass & cls,
                        const MillerIndex & slip_directions,
                        const MillerIndex & slip_planes);
+
+  /// Helper to return Cartesian vector given miller indices
+  static Vec miller_to_cartesian(const Vec & A, const MillerIndex & d);
 
 private:
   /// Crystal symmetry class with operators
@@ -85,27 +114,35 @@ private:
   const Vec & _lattice_vectors;
   /// Reciprocal lattice vectors
   const Vec & _reciprocal_lattice_vectors;
-  /// Slip directions
+  /// Crystallographic slip directions
   const MillerIndex & _slip_directions;
-  /// Slip planes
+  /// Crystallographic slip planes
   const MillerIndex & _slip_planes;
+
+  /// Cartesian slip directions
+  const Vec & _cartesian_slip_directions;
+  /// Cartesian slip planes
+  const Vec & _cartesian_slip_planes;
+  /// Burgers vector lengths
+  const Scalar & _burgers;
+  /// Offsets into batch tensors for each slip group
+  const std::vector<TorchSize> _slip_offsets;
 
   /// Output: full Schmid tensor for each slip system
   const R2 & _A;
-  /// Offsets into batch tensors for each slip group
-  const std::vector<TorchSize> _slip_offsets;
   /// Output: symmetric Schmid tensors for each slip system
   const SR2 & _M;
   /// Output: skew-symmetry Schmid tensors for each slip system
   const WR2 & _W;
 };
 
-template <typename T>
-T
-CrystalGeometry::slip_slice(const T & tensor, TorchSize grp) const
+template <class Derived, typename>
+Derived
+CrystalGeometry::slip_slice(const Derived & tensor, TorchSize grp) const
 {
-  (void)grp;
-  return tensor;
+  neml_assert_dbg(grp < nslip_groups());
+  return tensor.batch_index({torch::indexing::Ellipsis,
+                             torch::indexing::Slice(_slip_offsets[grp], _slip_offsets[grp + 1])});
 }
 
 /// Helper that reduces out equivalent cartesian directions, this version considers equivalence

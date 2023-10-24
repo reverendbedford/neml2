@@ -44,7 +44,7 @@ TEST_CASE("CrystalGeometry", "[crystallography]")
   Factory::clear();
   load_model(fs::absolute("unit/crystallography/test_CrystalGeometry.i"));
 
-  SECTION("Simple cubic model")
+  SECTION("Simple FCC cubic model, but defined with the full input")
   {
     auto & model = Factory::get_object<CrystalGeometry>("Models", "scgeom");
 
@@ -60,6 +60,47 @@ TEST_CASE("CrystalGeometry", "[crystallography]")
       REQUIRE(torch::allclose(model.b1(), Vec::fill(1.0 / 1.2, 0.0, 0.0, DTO)));
       REQUIRE(torch::allclose(model.b2(), Vec::fill(0.0, 1.0 / 1.2, 0.0, DTO)));
       REQUIRE(torch::allclose(model.b3(), Vec::fill(0.0, 0.0, 1.0 / 1.2, DTO)));
+    }
+
+    SECTION("Slip slicing")
+    {
+      // Come back to this later when we have examples with more than one slip system
+      REQUIRE(torch::allclose(model.M(), model.slip_slice(model.M(), 0)));
+    }
+
+    SECTION("Slip crystallography")
+    {
+      SECTION("Number of systems correct")
+      {
+        REQUIRE(model.nslip() == 12);
+        REQUIRE(model.nslip_groups() == 1);
+        REQUIRE(model.nslip_in_group(0) == 12);
+      }
+      SECTION("Burgers vector lengths")
+      {
+        REQUIRE(torch::allclose(model.burgers(), torch::tensor(1.2 / std::sqrt(2) * 2, DTO)));
+      }
+      SECTION("Slip directions are unit vectors")
+      {
+        REQUIRE(torch::allclose(model.cartesian_slip_directions().norm(), torch::tensor(1.0, DTO)));
+      }
+      SECTION("Slip planes are unit vectors")
+      {
+        REQUIRE(torch::allclose(model.cartesian_slip_planes().norm(), torch::tensor(1.0, DTO)));
+      }
+      SECTION("Slip directions and planes are orthogonal")
+      {
+        REQUIRE(
+            torch::allclose(model.cartesian_slip_directions().dot(model.cartesian_slip_planes()),
+                            torch::tensor(0.0, DTO)));
+      }
+      SECTION("Schmid tensors")
+      {
+        R2 should = model.cartesian_slip_directions().outer(model.cartesian_slip_planes());
+        SECTION("Full tensors") { REQUIRE(torch::allclose(should, model.A())); }
+        SECTION("Symmetric tensors") { REQUIRE(torch::allclose(SR2(should), model.M())); }
+        SECTION("Skew symmetric tensors") { REQUIRE(torch::allclose(WR2(should), model.W())); }
+      }
     }
   }
 }
