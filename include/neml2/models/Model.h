@@ -274,11 +274,11 @@ protected:
    * Both register a model and return a reference
    */
   template <typename T, typename = typename std::enable_if_t<std::is_base_of_v<Model, T>>>
-  T & include_model(const std::string & name)
+  T & include_model(const std::string & name, bool merge_input = true)
   {
     std::shared_ptr<Model> model = Factory::get_object_ptr<Model>("Models", name);
 
-    register_model(model, true);
+    register_model(model, merge_input);
 
     return *(std::dynamic_pointer_cast<T>(model));
   }
