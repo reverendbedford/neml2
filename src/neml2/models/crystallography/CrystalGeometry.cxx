@@ -40,7 +40,7 @@ register_NEML2_object(CrystalGeometry);
 OptionSet
 CrystalGeometry::expected_options()
 {
-  OptionSet options = StaticModel::expected_options();
+  OptionSet options = Data::expected_options();
   options.set<std::string>("crystal_class");
   options.set<CrossRef<Vec>>("lattice_vectors");
   options.set<CrossRef<MillerIndex>>("slip_directions");
@@ -52,11 +52,11 @@ CrystalGeometry::expected_options()
 CrystalGeometry::CrystalGeometry(const OptionSet & options)
   : CrystalGeometry(
         options,
-        Factory::get_object<CrystalClass>("Models", options.get<std::string>("crystal_class")),
+        Factory::get_object<CrystalClass>("Data", options.get<std::string>("crystal_class")),
         options.get<CrossRef<Vec>>("lattice_vectors"),
         setup_schmid_tensors(
             options.get<CrossRef<Vec>>("lattice_vectors"),
-            Factory::get_object<CrystalClass>("Models", options.get<std::string>("crystal_class")),
+            Factory::get_object<CrystalClass>("Data", options.get<std::string>("crystal_class")),
             options.get<CrossRef<MillerIndex>>("slip_directions"),
             options.get<CrossRef<MillerIndex>>("slip_planes")))
 {
@@ -134,7 +134,7 @@ CrystalGeometry::CrystalGeometry(const OptionSet & options,
                                  const CrystalClass & cclass,
                                  const Vec & lattice_vectors,
                                  std::tuple<Vec, Vec, Scalar, std::vector<TorchSize>> slip_data)
-  : StaticModel(options),
+  : Data(options),
     _class(cclass),
     _lattice_vectors(declare_buffer<Vec>("lattice_vectors", lattice_vectors)),
     _reciprocal_lattice_vectors(declare_buffer<Vec>("reciprocal_lattice_vectors",

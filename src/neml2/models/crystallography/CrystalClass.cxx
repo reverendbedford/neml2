@@ -113,20 +113,20 @@ register_NEML2_object(CrystalClass);
 OptionSet
 CrystalClass::expected_options()
 {
-  OptionSet options = StaticModel::expected_options();
+  OptionSet options = Data::expected_options();
   options.set<std::string>("orbifold");
   return options;
 }
 
 CrystalClass::CrystalClass(const OptionSet & options)
-  : StaticModel(options),
+  : Data(options),
     _operations(declare_buffer<SymmetryOperator>(
         "operations", symmetry_operations_from_orbifold(options.get<std::string>("orbifold"))))
 {
 }
 
 CrystalClass::CrystalClass(std::string orbifold)
-  : StaticModel(StaticModel::expected_options()),
+  : Data(Data::expected_options()),
     _operations(
         declare_buffer<SymmetryOperator>("operations", symmetry_operations_from_orbifold(orbifold)))
 {

@@ -21,35 +21,30 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+#pragma once
 
-#include "neml2/models/StaticModel.h"
+#include <torch/torch.h>
+#include <string>
+
+#include "neml2/tensors/BatchTensor.h"
 
 namespace neml2
 {
-
-OptionSet
-StaticModel::expected_options()
+class ParameterValueBase
 {
-  OptionSet options = Model::expected_options();
-  return options;
-}
+public:
+  virtual ~ParameterValueBase() = default;
 
-StaticModel::StaticModel(const OptionSet & option)
-  : Model(option)
-{
-}
+  /**
+   * String identifying the type of parameter stored.
+   * Must be reimplemented in derived classes.
+   */
+  virtual std::string type() const = 0;
 
-void
-StaticModel::set_value(const LabeledVector & in,
-                       LabeledVector * out,
-                       LabeledMatrix * dout_din,
-                       LabeledTensor3D * d2out_din2) const
-{
-  // Yes compiler, I know we're not using them
-  (void)in;
-  (void)out;
-  (void)dout_din;
-  (void)d2out_din2;
-}
+  /// Send the value to the target device
+  virtual void to(const torch::Device &) = 0;
 
-} // neml2
+  /// Convert the parameter value to a BatchTensor
+  virtual operator BatchTensor() const = 0;
+};
+} // namespace neml2

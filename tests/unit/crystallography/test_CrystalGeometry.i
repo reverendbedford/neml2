@@ -1,4 +1,4 @@
-[Models]
+[Data]
   [class_432]
     type = CrystalClass
     orbifold = "432"

@@ -46,7 +46,7 @@ TEST_CASE("CrystalGeometry", "[crystallography]")
 
   SECTION("Simple FCC cubic model, but defined with the full input")
   {
-    auto & model = Factory::get_object<CrystalGeometry>("Models", "scgeom");
+    auto & model = Factory::get_object<CrystalGeometry>("Data", "scgeom");
 
     SECTION("Lattice vectors are okay")
     {

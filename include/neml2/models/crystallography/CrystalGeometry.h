@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/models/StaticModel.h"
+#include "neml2/models/DataStore.h"
 #include "neml2/tensors/BatchTensorBase.h"
 
 namespace neml2
@@ -43,7 +43,7 @@ class MillerIndex;
 /// via Bravais vectors and a CrystalClass object defining the
 /// crystal symmetry as well as the definition of the geometry
 /// of each slip system.
-class CrystalGeometry : public StaticModel
+class CrystalGeometry : public Data
 {
 public:
   /// Setup from parameter set

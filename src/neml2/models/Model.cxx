@@ -1,6 +1,6 @@
 // Copyright 2023, UChicago Argonne, LLC
 // All Rights Reserved
-// Software Name: NEML2 -- the New Engineering material Model Library, version 2
+// Software Name: NEML2 -- the New Engineering material ModelBase Library, version 2
 // By: Argonne National Laboratory
 // OPEN SOURCE LICENSE (MIT)
 //
@@ -27,20 +27,20 @@
 
 namespace neml2
 {
-Model::Stage Model::stage = UPDATING;
+ModelBase::Stage ModelBase::stage = UPDATING;
 
 OptionSet
-Model::expected_options()
+ModelBase::expected_options()
 {
-  OptionSet options = NEML2Object::expected_options();
+  OptionSet options = DataStore::expected_options();
   options.set<std::vector<LabeledAxisAccessor>>("additional_outputs");
   options.set<bool>("use_AD_first_derivative") = false;
   options.set<bool>("use_AD_second_derivative") = false;
   return options;
 }
 
-Model::Model(const OptionSet & options)
-  : NEML2Object(options),
+ModelBase::ModelBase(const OptionSet & options)
+  : DataStore(options),
     _input(declare_axis()),
     _output(declare_axis()),
     _AD_1st_deriv(options.get<bool>("use_AD_first_derivative")),
@@ -53,27 +53,14 @@ Model::Model(const OptionSet & options)
 }
 
 void
-Model::to(const torch::Device & device)
-{
-  for (auto && [name, id] : _param_ids)
-    _param_values[id].to(device);
-
-  for (auto && [name, id] : _buffer_ids)
-    _buffer_values[id].to(device);
-
-  for (auto & model : _registered_models)
-    model->to(device);
-}
-
-void
-Model::check_AD_limitation() const
+ModelBase::check_AD_limitation() const
 {
   if (_AD_1st_deriv && !_AD_2nd_deriv)
     throw NEMLException("AD derivative is requested, but AD second derivative is not requested.");
 }
 
 void
-Model::use_AD_derivatives(bool first, bool second)
+ModelBase::use_AD_derivatives(bool first, bool second)
 {
   _AD_1st_deriv = first;
   _AD_2nd_deriv = second;
@@ -81,7 +68,7 @@ Model::use_AD_derivatives(bool first, bool second)
 }
 
 LabeledVector
-Model::value(const LabeledVector & in) const
+ModelBase::value(const LabeledVector & in) const
 {
   auto out = LabeledVector::empty(in.batch_sizes(), {&output()}, in.options());
   set_value(in, &out);
@@ -89,7 +76,7 @@ Model::value(const LabeledVector & in) const
 }
 
 LabeledMatrix
-Model::dvalue(const LabeledVector & in) const
+ModelBase::dvalue(const LabeledVector & in) const
 {
   if (_AD_1st_deriv)
     return std::get<1>(value_and_dvalue(in));
@@ -106,7 +93,7 @@ Model::dvalue(const LabeledVector & in) const
 }
 
 LabeledTensor3D
-Model::d2value(const LabeledVector & in) const
+ModelBase::d2value(const LabeledVector & in) const
 {
   neml_assert_dbg(
       !implicit(), name(), " is an implicit model and does not provide second derivatives.");
@@ -121,7 +108,7 @@ Model::d2value(const LabeledVector & in) const
 }
 
 std::tuple<LabeledVector, LabeledMatrix>
-Model::value_and_dvalue(const LabeledVector & in) const
+ModelBase::value_and_dvalue(const LabeledVector & in) const
 {
   auto out = LabeledVector::empty(in.batch_sizes(), {&output()}, in.options());
   auto dout_din = LabeledMatrix::zeros(in.batch_sizes(), {&output(), &in.axis()}, in.options());
@@ -157,7 +144,7 @@ Model::value_and_dvalue(const LabeledVector & in) const
 }
 
 std::tuple<LabeledMatrix, LabeledTensor3D>
-Model::dvalue_and_d2value(const LabeledVector & in) const
+ModelBase::dvalue_and_d2value(const LabeledVector & in) const
 {
   neml_assert_dbg(
       !implicit(), name(), " is an implicit model and does not provide second derivatives.");
@@ -176,7 +163,7 @@ Model::dvalue_and_d2value(const LabeledVector & in) const
 }
 
 std::tuple<LabeledVector, LabeledMatrix, LabeledTensor3D>
-Model::value_and_dvalue_and_d2value(const LabeledVector & in) const
+ModelBase::value_and_dvalue_and_d2value(const LabeledVector & in) const
 {
   neml_assert_dbg(
       !implicit(), name(), " is an implicit model and does not provide second derivatives.");
@@ -236,24 +223,8 @@ Model::value_and_dvalue_and_d2value(const LabeledVector & in) const
   return {out, dout_din, d2out_din2};
 }
 
-std::map<std::string, BatchTensor>
-Model::named_parameters(bool recurse) const
-{
-  std::map<std::string, BatchTensor> params;
-
-  for (const auto & n : _param_names)
-    params.emplace(n, _param_values[_param_ids.at(n)]);
-
-  if (recurse)
-    for (auto & model : _registered_models)
-      for (auto && [n, v] : model->named_parameters(true))
-        params.emplace(model->name() + "." + n, v);
-
-  return params;
-}
-
 void
-Model::register_model(std::shared_ptr<Model> model, bool merge_input)
+ModelBase::register_model(std::shared_ptr<ModelBase> model, bool merge_input)
 {
   if (merge_input)
   {
@@ -262,17 +233,17 @@ Model::register_model(std::shared_ptr<Model> model, bool merge_input)
     _consumed_vars.insert(merged_vars.begin(), merged_vars.end());
   }
 
-  _registered_models.push_back(model.get());
+  register_data_store(model);
 }
 
 void
-Model::cache_input(const LabeledVector & in)
+ModelBase::cache_input(const LabeledVector & in)
 {
   _cached_in = in.clone();
 }
 
 void
-Model::assemble(const BatchTensor & x, BatchTensor * r, BatchTensor * J) const
+ModelBase::assemble(const BatchTensor & x, BatchTensor * r, BatchTensor * J) const
 {
   auto in = LabeledVector::empty(x.batch_sizes(), {&input()}, x.options());
 
@@ -298,54 +269,4 @@ Model::assemble(const BatchTensor & x, BatchTensor * r, BatchTensor * J) const
     J->copy_(dout_din("residual", "state"));
   }
 }
-
-template <typename T, typename>
-const T &
-Model::declare_parameter(const std::string & name, const std::string & input_option_name)
-{
-  if (options().contains<T>(input_option_name))
-    return declare_parameter(name, options().get<T>(input_option_name));
-  else if (options().contains<CrossRef<T>>(input_option_name))
-  {
-    try
-    {
-      return declare_parameter(name, T(options().get<CrossRef<T>>(input_option_name)));
-    }
-    catch (const NEMLException & e1)
-    {
-      try
-      {
-        auto & nl_param = Factory::get_object<NonlinearParameter<T>>(
-            "Models", options().get<CrossRef<T>>(input_option_name).raw());
-        declare_input_variable<T>(nl_param.p);
-        _nl_params.emplace(name, nl_param.p);
-        return nl_param.get_value();
-      }
-      catch (const NEMLException & e2)
-      {
-        std::cerr << e1.what() << std::endl;
-        std::cerr << e2.what() << std::endl;
-      }
-    }
-  }
-
-  throw NEMLException(
-      "Trying to register parameter named " + name + " from input option named " +
-      input_option_name + " of type " + utils::demangle(typeid(T).name()) +
-      ". Make sure you provided the correct parameter name, option name, and parameter type. Note "
-      "that the parameter type can either be a plain type, a cross-reference, or an "
-      "interpolation.");
-}
-
-template const Scalar & Model::declare_parameter<Scalar>(const std::string &, const std::string &);
-template const Vec & Model::declare_parameter<Vec>(const std::string &, const std::string &);
-template const Rot & Model::declare_parameter<Rot>(const std::string &, const std::string &);
-template const R2 & Model::declare_parameter<R2>(const std::string &, const std::string &);
-template const SR2 & Model::declare_parameter<SR2>(const std::string &, const std::string &);
-template const R3 & Model::declare_parameter<R3>(const std::string &, const std::string &);
-template const SFR3 & Model::declare_parameter<SFR3>(const std::string &, const std::string &);
-template const R4 & Model::declare_parameter<R4>(const std::string &, const std::string &);
-template const SSR4 & Model::declare_parameter<SSR4>(const std::string &, const std::string &);
-template const R5 & Model::declare_parameter<R5>(const std::string &, const std::string &);
-template const SSFR5 & Model::declare_parameter<SSFR5>(const std::string &, const std::string &);
 } // namespace neml2

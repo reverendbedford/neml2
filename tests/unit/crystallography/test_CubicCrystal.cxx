@@ -46,7 +46,7 @@ TEST_CASE("CubicCrystal", "[crystallography]")
 
   SECTION("Simple FCC cubic model, defined with the simple specialized CubicCrystal class")
   {
-    auto & model = Factory::get_object<CubicCrystal>("Models", "cube");
+    auto & model = Factory::get_object<CubicCrystal>("Data", "cube");
 
     SECTION("Lattice vectors are okay")
     {

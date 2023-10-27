@@ -22,28 +22,32 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
-
-#include "neml2/models/Model.h"
+#include "neml2/models/DataStore.h"
 
 namespace neml2
 {
-
-/// Model that only includes static data
-class StaticModel : public Model
+OptionSet
+DataStore::expected_options()
 {
-public:
-  /// Pass through constructor
-  StaticModel(const OptionSet & option);
+  OptionSet options = NEML2Object::expected_options();
+  return options;
+}
 
-  /// Default options
-  static OptionSet expected_options();
+DataStore::DataStore(const OptionSet & options)
+  : NEML2Object(options)
+{
+}
 
-  /// Dummy set_value (no operations)
-  virtual void set_value(const LabeledVector & in,
-                         LabeledVector * out,
-                         LabeledMatrix * dout_din,
-                         LabeledTensor3D * d2out_din2) const;
-};
+void
+DataStore::to(const torch::Device & device)
+{
+  for (auto & model : _registered_data_stores)
+    model->to(device);
+}
 
-} // namespace neml2
+void
+DataStore::register_data_store(std::shared_ptr<DataStore> model)
+{
+  _registered_data_stores.push_back(model.get());
+}
+}

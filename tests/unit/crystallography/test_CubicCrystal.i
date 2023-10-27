@@ -1,4 +1,4 @@
-[Models]
+[Data]
   [cube]
     type = CubicCrystal
     lattice_parameter = "a"
