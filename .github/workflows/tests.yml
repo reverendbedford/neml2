@@ -68,10 +68,12 @@ jobs:
             -DNEML2_VERIFICATION=ON \
             -DNEML2_BENCHMARK=OFF \
             -DNEML2_PROFILING=OFF \
+            -DNEML2_PYBIND=ON \
             -DNEML2_DOC=OFF \
             .
       - run: make -j 2
       - run: make test
+      - run: pytest
   build-all:
     needs: clang-format
     runs-on: ubuntu-latest
@@ -95,6 +97,7 @@ jobs:
             -DNEML2_VERIFICATION=ON \
             -DNEML2_BENCHMARK=ON \
             -DNEML2_PROFILING=ON \
+            -DNEML2_PYBIND=ON \
             -DNEML2_DOC=OFF \
             .
       - run: make -j 2
@@ -119,6 +122,7 @@ jobs:
             -DNEML2_VERIFICATION=ON \
             -DNEML2_BENCHMARK=OFF \
             -DNEML2_PROFILING=OFF \
+            -DNEML2_PYBIND=OFF \
             -DNEML2_DOC=OFF \
             .
       - run: make -j 2
@@ -161,4 +165,3 @@ jobs:
       - name: Compile
         run: cd build && make -j 2
       - run: cd build && ./foo
-

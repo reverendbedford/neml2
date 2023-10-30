@@ -88,7 +88,7 @@ SR2Invariant::set_value(const LabeledVector & in,
   else if (_type == "VONMISES")
   {
     auto S = A.dev();
-    Scalar vm = std::sqrt(3.0 / 2.0) * S.norm(EPS);
+    Scalar vm = std::sqrt(3.0 / 2.0) * S.norm(NEML2_EPS);
 
     if (out)
       out->set(vm, invariant);

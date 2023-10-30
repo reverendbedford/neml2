@@ -35,6 +35,7 @@ jobs:
             -DNEML2_VERIFICATION=OFF \
             -DNEML2_BENCHMARK=OFF \
             -DNEML2_PROFILING=OFF \
+            -DNEML2_PYBIND=OFF \
             -DNEML2_DOC=ON \
             .
       - run: make doc-syntax -j 2

@@ -1,6 +1,6 @@
 file(GLOB_RECURSE SRCS *.cxx)
 pybind11_add_module(pyneml2 ${SRCS})
-target_include_directories(pyneml2 PRIVATE ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(pyneml2 PRIVATE ${NEML2_SOURCE_DIR}/include)
 
 # Linking against libtorch_python is necessary because it defines necessary
 # type casters but is not inclulded in TORCH_LIBRARIES

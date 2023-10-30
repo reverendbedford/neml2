@@ -30,8 +30,19 @@
 namespace py = pybind11;
 using namespace neml2;
 
+template <class Derived>
 void
-EXPORT_BatchTensor(py::module & m)
+DEF_BatchTensorBase(py::class_<Derived> & c)
 {
-  py::class_<BatchTensor>(m, "BatchTensor").def(py::init<>());
+  c.def(py::init<>())
+      .def(py::init<const torch::Tensor &, TorchSize>())
+      .def(py::init<const Derived &>())
+      .def("to_torch", [](const Derived & t) { return torch::Tensor(t); });
+}
+
+void
+EXPORT_BatchTensor(py::module_ & m)
+{
+  auto c = py::class_<BatchTensor>(m, "BatchTensor");
+  DEF_BatchTensorBase<BatchTensor>(c);
 }

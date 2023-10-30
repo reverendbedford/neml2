@@ -29,3 +29,4 @@ doc/html
 **/syntax.yml
 build
 _deps
+__pycache__

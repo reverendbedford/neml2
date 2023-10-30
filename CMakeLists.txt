@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.14)
 
 project(NEML2 LANGUAGES CXX)
 
@@ -14,7 +14,7 @@ set(CMAKE_CXX_FLAGS_COVERAGE
 # Set a default build type if none was specified
 set(DEFAULT_BUILD_TYPE "Release")
 
-if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/.git")
+if(EXISTS "${NEML2_SOURCE_DIR}/.git")
       set(DEFAULT_BUILD_TYPE "Debug")
 endif()
 
@@ -43,6 +43,39 @@ if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.24.0")
       cmake_policy(SET CMP0135 NEW)
 endif()
 
+# Python bindings
+option(NEML2_PYBIND "Build python bindings" OFF)
+
+if(NEML2_PYBIND)
+      find_package(Python COMPONENTS Interpreter Development)
+
+      # Figure out the torch path
+      execute_process(
+            COMMAND "${Python_EXECUTABLE}" "-c" "import torch;print(torch.__path__[0])"
+            OUTPUT_VARIABLE PYTORCH_DIR
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+      )
+      message(STATUS "Autodetected PyTorch directory: ${PYTORCH_DIR}")
+
+      if(DEFINED LIBTORCH_DIR)
+            if(NOT LIBTORCH_DIR STREQUAL PYTORCH_DIR)
+                  message(WARNING "LIBTORCH_DIR is provided but is inconsistent with the PyTorch directory. This may lead to errors when importing the neml2 python bindings.")
+            endif()
+      else()
+            set(LIBTORCH_DIR ${PYTORCH_DIR})
+            message(STATUS "Using libTorch inside the autodected PyTorch direcotry")
+      endif()
+
+      # Suppress the warning related to the new policy on FindPythonXXX
+      if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.27.0")
+            cmake_policy(SET CMP0148 NEW)
+      endif()
+
+      add_subdirectory(${NEML2_SOURCE_DIR}/extern/pybind11)
+
+      add_subdirectory(python)
+endif()
+
 # Select between system torch and the current (CPU) torch
 if(NOT DEFINED LIBTORCH_DIR)
       # Location of current CPU torch
@@ -68,9 +101,8 @@ if(NOT DEFINED LIBTORCH_DIR)
             message(FATAL_ERROR "We only download a default libtorch on linux and macos. For other operating systems, please specify LIBTORCH_DIR.")
       endif()
 
-      set(FETCHCONTENT_QUIET FALSE)
+      message(STATUS "Downloading libTorch, this may take a few minutes.")
       FetchContent_MakeAvailable(torch)
-      set(FETCHCONTENT_QUIET TRUE)
 
       if(APPLE AND APPLE_SILICON)
             set(LIBTORCH_DIR ${torch_SOURCE_DIR}/torch)
@@ -112,12 +144,4 @@ option(NEML2_DOC "Build NEML2 documentation: doxygen" OFF)
 
 if(NEML2_DOC)
       add_subdirectory(doc)
-endif()
-
-# Python bindings
-option(PYBIND "Build python bindings" OFF)
-
-if(PYBIND)
-      add_subdirectory(${PROJECT_SOURCE_DIR}/extern/pybind11)
-      add_subdirectory(python)
 endif()

@@ -68,7 +68,7 @@ ChabochePlasticHardening::set_value(const LabeledVector & in,
   SR2 NM = in.get<SR2>(flow_direction);
 
   // The effective stress
-  Scalar eff = X.norm(EPS);
+  Scalar eff = X.norm(NEML2_EPS);
   // The part that's proportional to the plastic strain rate
   auto g_term = 2.0 / 3.0 * _C * NM - _g * X;
 

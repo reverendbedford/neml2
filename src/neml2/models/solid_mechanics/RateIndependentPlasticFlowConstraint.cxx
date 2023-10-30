@@ -69,8 +69,8 @@ RateIndependentPlasticFlowConstraint::set_value(const LabeledVector & in,
   // also called return mapping. The residual is the hardening rate when the stress state is
   // "inside" the yield surface, as the hardening rate is by definition zero.
   auto r = Scalar::empty(batch_sz, options);
-  r.index_put_({f < -TOL2}, gamma_dot.index({f < -TOL2}));
-  r.index_put_({f >= -TOL2}, f.index({f >= -TOL2}));
+  r.index_put_({f < -NEML2_TOL2}, gamma_dot.index({f < -NEML2_TOL2}));
+  r.index_put_({f >= -NEML2_TOL2}, f.index({f >= -NEML2_TOL2}));
 
   if (out)
     out->set(r, consistency_condition);
@@ -78,12 +78,12 @@ RateIndependentPlasticFlowConstraint::set_value(const LabeledVector & in,
   if (dout_din)
   {
     auto dr_dgamma_dot = Scalar::empty(batch_sz, options);
-    dr_dgamma_dot.index_put_({f < -TOL2}, 1);
-    dr_dgamma_dot.index_put_({f >= -TOL2}, 0);
+    dr_dgamma_dot.index_put_({f < -NEML2_TOL2}, 1);
+    dr_dgamma_dot.index_put_({f >= -NEML2_TOL2}, 0);
 
     auto dr_df = Scalar::empty(batch_sz, options);
-    dr_df.index_put_({f < -TOL2}, 0);
-    dr_df.index_put_({f >= -TOL2}, 1);
+    dr_df.index_put_({f < -NEML2_TOL2}, 0);
+    dr_df.index_put_({f >= -NEML2_TOL2}, 1);
 
     dout_din->set(dr_dgamma_dot, consistency_condition, flow_rate);
     dout_din->set(dr_df, consistency_condition, yield_function);

@@ -24,8 +24,7 @@
 
 #pragma once
 
-#include <cstddef>
-#include <torch/torch.h>
+#include "neml2/base/config.h"
 
 namespace neml2
 {
@@ -36,40 +35,6 @@ typedef std::vector<TorchSize> TorchShape;
 typedef torch::IntArrayRef TorchShapeRef;
 typedef at::indexing::TensorIndex TorchIndex;
 typedef std::vector<at::indexing::TensorIndex> TorchSlice;
-
-/**
- * TODO: make the following constants configurable
- */
-/// The machine precision
-static constexpr Real EPS = 1E-15;
-/// The tolerance used in various algorithms
-static constexpr Real TOL = 1E-6;
-/// A tighter tolerance used in various algorithms
-static constexpr Real TOL2 = TOL * TOL;
-
-/**
- * The factory methods like `torch::arange`, `torch::ones`, `torch::zeros`, `torch::rand` etc.
- * accept a common argument to configure the properties of the tensor being created. We predefine a
- * default tensor configuration in NEML2. This default configuration is consistently used throughout
- * NEML2. This default can be configured by CMake.
- *
- * See https://pytorch.org/cppdocs/notes/tensor_creation.html#configuring-properties-of-the-tensor
- * for more details.
- */
-#define _CONCAT(x, y) x##y
-#define CONCAT(x, y) _CONCAT(x, y)
-#define TORCH_ENUM_PREFIX torch::k
-#define TORCH_DTYPE CONCAT(TORCH_ENUM_PREFIX, DTYPE)
-static const torch::TensorOptions default_tensor_options = torch::TensorOptions()
-                                                               .dtype(TORCH_DTYPE)
-                                                               .layout(torch::kStrided)
-                                                               .device(torch::kCPU)
-                                                               .requires_grad(false);
-
-/// We similarly want to have a default integer scalar type for some types of tensors
-#define TORCH_INT_DTYPE CONCAT(TORCH_ENUM_PREFIX, INT_DTYPE)
-static const torch::TensorOptions default_integer_tensor_options =
-    default_tensor_options.dtype(TORCH_INT_DTYPE);
 
 template <bool...>
 struct bool_pack;

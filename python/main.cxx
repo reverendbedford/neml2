@@ -27,7 +27,7 @@
 namespace py = pybind11;
 
 // Forward declarations for submodules
-void EXPORT_tensors(py::module &);
+void EXPORT_tensors(py::module_ &);
 
 PYBIND11_MODULE(neml2, m)
 {

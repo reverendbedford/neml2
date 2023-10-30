@@ -1,4 +1,4 @@
-include(Macros)
+include(NEML2UnityGroup)
 
 # Add all the source files
 file(GLOB_RECURSE SRCS *.cxx)
@@ -7,10 +7,10 @@ add_library(neml2 SHARED ${SRCS})
 # compile options
 target_compile_options(neml2 PUBLIC -Wall -Wextra -pedantic -Werror)
 
-REGISTERUNITYGROUP(neml2 "NEML2" .)
+register_unity_group(neml2 "NEML2" .)
 
 # My headers
-target_include_directories(neml2 PUBLIC "${NEML2_SOURCE_DIR}/include")
+target_include_directories(neml2 PUBLIC ${NEML2_SOURCE_DIR}/include ${NEML2_BINARY_DIR}/include)
 
 # torch headers
 # torch libraries
@@ -27,7 +27,6 @@ if(NOT NEML2_DTYPE)
 endif()
 
 message(STATUS "Configuring with default scalar type: ${NEML2_DTYPE}")
-target_compile_definitions(neml2 PUBLIC DTYPE=${NEML2_DTYPE})
 
 # Also want to configure an int type for specialized int tensors
 if(NOT NEML2_INT_DTYPE)
@@ -37,4 +36,5 @@ if(NOT NEML2_INT_DTYPE)
 endif()
 
 message(STATUS "Configuring with default integer scalar type: ${NEML2_INT_DTYPE}")
-target_compile_definitions(neml2 PUBLIC INT_DTYPE=${NEML2_INT_DTYPE})
+configure_file(${NEML2_SOURCE_DIR}/include/neml2/base/config.h.in
+  ${NEML2_BINARY_DIR}/include/neml2/base/config.h)
