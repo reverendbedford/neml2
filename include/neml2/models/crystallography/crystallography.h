@@ -24,14 +24,12 @@
 
 #pragma once
 
-#include "neml2/models/crystallography/SymmetryOperator.h"
-#include "neml2/tensors/Quaternion.h"
-#include "neml2/models/DataStore.h"
-
-#include <string>
+#include <torch/torch.h>
+#include "neml2/tensors/R2.h"
 
 namespace neml2
 {
+class R2;
 namespace crystallography
 {
 namespace crystal_symmetry_operators
@@ -79,37 +77,11 @@ const static auto cubic = torch::tensor(
 } // namespace crystal_symmetry_operators
 
 /// Helper function to return the symmetry operators given the Orbifold notation
-SymmetryOperator
-symmetry_operations_from_orbifold(std::string orbifold,
-                                  const torch::TensorOptions & options = default_tensor_options);
+R2 symmetry_operations_from_orbifold(std::string orbifold,
+                                     const torch::TensorOptions & options = default_tensor_options);
 
-/// Representation of a crystal class
-/// This includes storing the relevant symmetry operations
-class CrystalClass : public Data
-{
-public:
-  /// Setup from parameter set
-  CrystalClass(const OptionSet & options);
-
-  /// Setup directly from orbifold notation
-  CrystalClass(std::string orbifold);
-
-  /// Input options
-  static OptionSet expected_options();
-
-  /// Return the tensor of symmetry operations
-  const SymmetryOperator & operations() const;
-
-  /// Return the number of symmetry operations
-  TorchSize size() const;
-
-  /// Return unique vectors under symmetry
-  /// This version considers either direction (+-) equivalent
-  Vec unique_bidirectional(const Vec & inp) const;
-
-private:
-  const SymmetryOperator & _operations;
-};
+/// Helper to return all symmetrically-equivalent directions from a cartesian vector
+Vec unique_bidirectional(const R2 & ops, const Vec & inp);
 
 } // namespace crystallography
 } // namespace neml2

@@ -38,7 +38,6 @@
 #include "neml2/tensors/Rot.h"
 #include "neml2/tensors/WR2.h"
 #include "neml2/tensors/Quaternion.h"
-#include "neml2/models/crystallography/SymmetryOperator.h"
 #include "neml2/models/crystallography/MillerIndex.h"
 
 namespace neml2
@@ -149,7 +148,6 @@ template class FixedDimTensor<SSR4, 6, 6>;
 template class FixedDimTensor<R5, 3, 3, 3, 3, 3>;
 template class FixedDimTensor<SSFR5, 6, 6, 3>;
 template class FixedDimTensor<Quaternion, 4>;
-template class FixedDimTensor<crystallography::SymmetryOperator, 3, 3>;
 template class FixedDimTensor<crystallography::MillerIndex, 3>;
 
 } // namespace neml2

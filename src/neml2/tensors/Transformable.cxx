@@ -22,57 +22,47 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/models/crystallography/SymmetryOperator.h"
-#include "neml2/tensors/Rot.h"
-#include "neml2/tensors/Vec.h"
-#include "neml2/tensors/Quaternion.h"
+#include "neml2/tensors/Transformable.h"
+
+#include "neml2/tensors/tensors.h"
 
 namespace neml2
 {
-namespace crystallography
-{
 
-SymmetryOperator
-SymmetryOperator::from_quaternion(const Quaternion & q)
+R2
+transform_from_quaternion(const Quaternion & q)
 {
   return q.to_R2();
 }
 
-SymmetryOperator
-SymmetryOperator::Identity(const torch::TensorOptions & options)
+R2
+identity_transform(const torch::TensorOptions & options)
 {
-  return identity(options);
+  return R2::identity(options);
 }
 
-SymmetryOperator
-SymmetryOperator::ProperRotation(const Rot & rot)
+R2
+proper_rotation_transform(const Rot & rot)
 {
   return rot.euler_rodrigues();
 }
 
-SymmetryOperator
-SymmetryOperator::ImproperRotation(const Rot & rot)
+R2
+improper_rotation_transform(const Rot & rot)
 {
   return rot.euler_rodrigues() * (R2::identity(rot.options()) - 2 * rot.outer(rot));
 }
 
-SymmetryOperator
-SymmetryOperator::Reflection(const Vec & v)
+R2
+reflection_transform(const Vec & v)
 {
   return R2::identity(v.options()) - 2 * v.outer(v);
 }
 
-SymmetryOperator
-SymmetryOperator::Inversion(const torch::TensorOptions & option)
+R2
+inversion_transform(const torch::TensorOptions & option)
 {
   return R2::fill(-1.0, option);
 }
 
-SymmetryOperator
-operator*(const SymmetryOperator & A, const SymmetryOperator & B)
-{
-  return R2Base<SymmetryOperator>(A) * R2Base<SymmetryOperator>(B);
-}
-
-} // namespace crystallography
 } // namespace neml2

@@ -24,28 +24,41 @@
 
 #pragma once
 
-#include "neml2/tensors/VecBase.h"
-#include "neml2/tensors/Transformable.h"
+#include <torch/torch.h>
+#include "neml2/misc/types.h"
 
 namespace neml2
 {
-class Scalar;
 class R2;
+class Quaternion;
 class Rot;
+class Vec;
 
-/**
- * @brief The (logical) vector.
- *
- * The logical storage space is (3).
- */
-class Vec : public VecBase<Vec>, public Transformable<Vec>
+/// @brief  Mixin class for things that can be transformed by a symmetry operator
+/// @tparam Derived type
+template <class Derived>
+class Transformable
 {
 public:
-  using VecBase<Vec>::VecBase;
-
-  Vec(const Rot & r);
-
-  // Transform by a crystal symmetry operator
-  virtual Vec transform(const R2 & op) const;
+  /// @brief dummy virtual destructor
+  virtual ~Transformable(){};
+  /// @brief apply a transformation operator
+  /// @param op the transformation operator
+  /// @return an instance of the Derived type that has been transform
+  virtual Derived transform(const R2 & op) const = 0;
 };
+
+/// Construct from quaternions, useful for comparison to old NEML
+R2 transform_from_quaternion(const Quaternion & q);
+
+/// The identity transformation, i.e.e the Rank2 identity tensor
+R2 identity_transform(const torch::TensorOptions & options = default_tensor_options);
+/// A proper rotation, here provided by a Rot object
+R2 proper_rotation_transform(const Rot & rot);
+/// An improper rotation (rotation + reflection), here provided by a rot object giving the rotation and reflection axis
+R2 improper_rotation_transform(const Rot & rot);
+/// A reflection, defined by the reflection plane
+R2 reflection_transform(const Vec & v);
+/// An inversion center
+R2 inversion_transform(const torch::TensorOptions & options = default_tensor_options);
 } // namespace neml2

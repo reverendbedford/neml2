@@ -24,15 +24,15 @@
 
 #include <catch2/catch.hpp>
 
-#include "neml2/models/crystallography/SymmetryOperator.h"
+#include "neml2/tensors/Transformable.h"
+
 #include "neml2/tensors/R2.h"
 #include "neml2/tensors/Rot.h"
 #include "neml2/tensors/Vec.h"
 
 using namespace neml2;
-using namespace neml2::crystallography;
 
-TEST_CASE("SymmetryTransformable", "[crystallography]")
+TEST_CASE("Symmetry transforms", "[crystallography]")
 {
   torch::manual_seed(42);
   const auto & DTO = default_tensor_options;
@@ -45,7 +45,7 @@ TEST_CASE("SymmetryTransformable", "[crystallography]")
     auto vb = v.batch_expand(B);
     SECTION("Identity")
     {
-      auto op = SymmetryOperator::Identity(DTO);
+      auto op = identity_transform(DTO);
       REQUIRE(torch::allclose(v.transform(op), v));
       REQUIRE(torch::allclose(vb.transform(op), vb));
     }
@@ -53,7 +53,7 @@ TEST_CASE("SymmetryTransformable", "[crystallography]")
     auto r = Rot::fill(0.0, 0, 1.0, DTO);
     SECTION("ProperRotation")
     {
-      auto op = SymmetryOperator::ProperRotation(r);
+      auto op = proper_rotation_transform(r);
       auto correct = Vec::fill(2.0, 1.0, 3.0, DTO);
       REQUIRE(torch::allclose(v.transform(op), correct));
       REQUIRE(torch::allclose(vb.transform(op), correct.batch_expand(B)));
@@ -61,14 +61,14 @@ TEST_CASE("SymmetryTransformable", "[crystallography]")
     // 90 about z
     SECTION("ImproperRotation")
     {
-      auto op = SymmetryOperator::ImproperRotation(r);
+      auto op = improper_rotation_transform(r);
       auto correct = Vec::fill(2.0, 1.0, -3.0, DTO);
       REQUIRE(torch::allclose(v.transform(op), correct));
       REQUIRE(torch::allclose(vb.transform(op), correct.batch_expand(B)));
     }
     SECTION("Inversion")
     {
-      auto op = SymmetryOperator::Inversion(DTO);
+      auto op = inversion_transform(DTO);
       auto correct = Vec::fill(-1.0, 2.0, -3.0, DTO);
       REQUIRE(torch::allclose(v.transform(op), correct));
       REQUIRE(torch::allclose(vb.transform(op), correct.batch_expand(B)));

@@ -22,27 +22,40 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
+#include <catch2/catch.hpp>
 
-namespace neml2
-{
-namespace crystallography
-{
-class SymmetryOperator;
+#include "neml2/tensors/tensors.h"
+#include "neml2/tensors/Transformable.h"
 
-/// @brief  Mixin class for things that can be transformed by a symmetry operator
-/// @tparam Derived type
-template <class Derived>
-class SymmetryTransformable
-{
-public:
-  /// @brief dummy virtual destructor
-  virtual ~SymmetryTransformable(){};
-  /// @brief apply a transformation operator
-  /// @param op the transformation operator
-  /// @return an instance of the Derived type that has been transform
-  virtual Derived transform(const SymmetryOperator & op) const = 0;
-};
+using namespace neml2;
 
-} // namespace crystallography
-} // namespace neml2
+TEST_CASE("Symmetry operator definitions", "[tensors]")
+{
+  torch::manual_seed(42);
+  const auto & DTO = default_tensor_options;
+
+  SECTION("definitions")
+  {
+    SECTION("identity") { REQUIRE(torch::allclose(identity_transform(DTO), R2::identity(DTO))); }
+    auto r = Rot::fill(0.1, -0.15, 0.05, DTO);
+    SECTION("proper rotation")
+    {
+      REQUIRE(torch::allclose(proper_rotation_transform(r), r.euler_rodrigues()));
+    }
+    SECTION("improper rotation")
+    {
+      R2 ref = R2::identity(DTO) - 2 * r.outer(r);
+      REQUIRE(torch::allclose(improper_rotation_transform(r), r.euler_rodrigues() * ref));
+      REQUIRE(torch::allclose(improper_rotation_transform(r), ref * r.euler_rodrigues()));
+    }
+    SECTION("inversion")
+    {
+      REQUIRE(torch::allclose(inversion_transform(DTO), R2::fill(-1.0, DTO)));
+    }
+    SECTION("quaternion")
+    {
+      auto q = Quaternion::fill(-0.30411437, -0.15205718, 0.91234311, 0.22808578, DTO);
+      REQUIRE(torch::allclose(transform_from_quaternion(q), q.to_R2()));
+    }
+  }
+}

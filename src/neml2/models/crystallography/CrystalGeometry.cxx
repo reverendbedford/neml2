@@ -24,7 +24,7 @@
 
 #include "neml2/models/crystallography/CrystalGeometry.h"
 
-#include "neml2/models/crystallography/CrystalClass.h"
+#include "neml2/models/crystallography/crystallography.h"
 #include "neml2/models/crystallography/MillerIndex.h"
 #include "neml2/tensors/tensors.h"
 
@@ -41,7 +41,7 @@ OptionSet
 CrystalGeometry::expected_options()
 {
   OptionSet options = Data::expected_options();
-  options.set<std::string>("crystal_class");
+  options.set<CrossRef<R2>>("crystal_class");
   options.set<CrossRef<Vec>>("lattice_vectors");
   options.set<CrossRef<MillerIndex>>("slip_directions");
   options.set<CrossRef<MillerIndex>>("slip_planes");
@@ -50,20 +50,18 @@ CrystalGeometry::expected_options()
 }
 
 CrystalGeometry::CrystalGeometry(const OptionSet & options)
-  : CrystalGeometry(
-        options,
-        Factory::get_object<CrystalClass>("Data", options.get<std::string>("crystal_class")),
-        options.get<CrossRef<Vec>>("lattice_vectors"),
-        setup_schmid_tensors(
-            options.get<CrossRef<Vec>>("lattice_vectors"),
-            Factory::get_object<CrystalClass>("Data", options.get<std::string>("crystal_class")),
-            options.get<CrossRef<MillerIndex>>("slip_directions"),
-            options.get<CrossRef<MillerIndex>>("slip_planes")))
+  : CrystalGeometry(options,
+                    options.get<CrossRef<R2>>("crystal_class"),
+                    options.get<CrossRef<Vec>>("lattice_vectors"),
+                    setup_schmid_tensors(options.get<CrossRef<Vec>>("lattice_vectors"),
+                                         options.get<CrossRef<R2>>("crystal_class"),
+                                         options.get<CrossRef<MillerIndex>>("slip_directions"),
+                                         options.get<CrossRef<MillerIndex>>("slip_planes")))
 {
 }
 
 CrystalGeometry::CrystalGeometry(const OptionSet & options,
-                                 const CrystalClass & cclass,
+                                 const R2 & cclass,
                                  const Vec & lattice_vectors)
   : CrystalGeometry(options,
                     cclass,
@@ -131,11 +129,11 @@ CrystalGeometry::nslip_in_group(TorchSize i) const
 }
 
 CrystalGeometry::CrystalGeometry(const OptionSet & options,
-                                 const CrystalClass & cclass,
+                                 const R2 & cclass,
                                  const Vec & lattice_vectors,
                                  std::tuple<Vec, Vec, Scalar, std::vector<TorchSize>> slip_data)
   : Data(options),
-    _class(cclass),
+    _sym_ops(cclass),
     _lattice_vectors(declare_buffer<Vec>("lattice_vectors", lattice_vectors)),
     _reciprocal_lattice_vectors(declare_buffer<Vec>("reciprocal_lattice_vectors",
                                                     make_reciprocal_lattice(_lattice_vectors))),
@@ -152,7 +150,6 @@ CrystalGeometry::CrystalGeometry(const OptionSet & options,
     _M(declare_buffer<SR2>("symmetric_schmid_tensors", SR2(_A))),
     _W(declare_buffer<WR2>("skew_symmetric_schmid_tensors", WR2(_A)))
 {
-  // I'm worried we are not registering cclass...
 }
 
 Vec
@@ -178,7 +175,7 @@ CrystalGeometry::miller_to_cartesian(const Vec & A, const MillerIndex & d)
 
 std::tuple<Vec, Vec, Scalar, std::vector<TorchSize>>
 CrystalGeometry::setup_schmid_tensors(const Vec & A,
-                                      const CrystalClass & cls,
+                                      const R2 & cls,
                                       const MillerIndex & slip_directions,
                                       const MillerIndex & slip_planes)
 {
@@ -205,8 +202,8 @@ CrystalGeometry::setup_schmid_tensors(const Vec & A,
     auto cmp = slip_planes.batch_index({torch::indexing::Ellipsis, i});
 
     // Get the families of symmetry-equivalent planes and directions
-    auto direction_options = cls.unique_bidirectional(miller_to_cartesian(A, cmd));
-    auto plane_options = cls.unique_bidirectional(miller_to_cartesian(B, cmp));
+    auto direction_options = unique_bidirectional(cls, miller_to_cartesian(A, cmd));
+    auto plane_options = unique_bidirectional(cls, miller_to_cartesian(B, cmp));
 
     // Accept the ones that are perpendicular
     // We could do this in a vectorized manner, but I don't think it's worth it as

@@ -1,50 +1,50 @@
-[Data]
+[Tensors]
   [class_1]
-    type = CrystalClass
+    type = SymmetryFromOrbifold
     orbifold = "1"
   []
   [class_2]
-    type = CrystalClass
+    type = SymmetryFromOrbifold
     orbifold = "2"
   []
   [class_222]
-    type = CrystalClass
+    type = SymmetryFromOrbifold
     orbifold = "222"
   []
   [class_42]
-    type = CrystalClass
+    type = SymmetryFromOrbifold
     orbifold = "42"
   []
   [class_4]
-    type = CrystalClass
+    type = SymmetryFromOrbifold
     orbifold = "4"
   []
   [class_3]
-    type = CrystalClass
+    type = SymmetryFromOrbifold
     orbifold = "3"
   []
   [class_6]
-    type = CrystalClass
+    type = SymmetryFromOrbifold
     orbifold = "6"
   []
   [class_32]
-    type = CrystalClass
+    type = SymmetryFromOrbifold
     orbifold = "32"
   []
   [class_622]
-    type = CrystalClass
+    type = SymmetryFromOrbifold
     orbifold = "622"
   []
   [class_23]
-    type = CrystalClass
+    type = SymmetryFromOrbifold
     orbifold = "23"
   []
   [class_432]
-    type = CrystalClass
+    type = SymmetryFromOrbifold
     orbifold = "432"
   []
   [class_invalid]
-    type = CrystalClass
+    type = SymmetryFromOrbifold
     orbifold = "idk"
   []
 []

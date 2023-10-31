@@ -31,7 +31,6 @@
 #include "neml2/tensors/R3.h"
 #include "neml2/tensors/Rot.h"
 #include "neml2/tensors/WR2.h"
-#include "neml2/models/crystallography/SymmetryOperator.h"
 
 namespace neml2
 {
@@ -233,7 +232,6 @@ operator*(const Derived1 & A, const Derived2 & B)
 
 // derived classes
 template class R2Base<R2>;
-template class R2Base<crystallography::SymmetryOperator>;
 
 // products
 template Vec operator*(const R2 & A, const Vec & b);

@@ -1,8 +1,4 @@
 [Data]
-  [class_432]
-    type = CrystalClass
-    orbifold = "432"
-  []
   [scgeom]
     type = CrystalGeometry
     crystal_class = "class_432"
@@ -28,5 +24,9 @@
     0.0 1.2 0.0
     0.0 0.0 1.2
     '
+  []
+  [class_432]
+    type = SymmetryFromOrbifold
+    orbifold = "432"
   []
 []

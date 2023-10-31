@@ -22,7 +22,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/models/crystallography/CrystalClass.h"
+#include "neml2/models/crystallography/crystallography.h"
+
+#include "neml2/tensors/Transformable.h"
 #include "neml2/tensors/tensors.h"
 
 using namespace torch::indexing;
@@ -32,28 +34,26 @@ namespace neml2
 namespace crystallography
 {
 
-SymmetryOperator
+R2
 symmetry_operations_from_orbifold(std::string orbifold, const torch::TensorOptions & options)
 {
   if (orbifold == "432")
   {
-    return SymmetryOperator::from_quaternion(Quaternion(crystal_symmetry_operators::cubic))
-        .to(options);
+    return transform_from_quaternion(Quaternion(crystal_symmetry_operators::cubic)).to(options);
   }
   else if (orbifold == "23")
   {
-    return SymmetryOperator::from_quaternion(
+    return transform_from_quaternion(
                Quaternion(crystal_symmetry_operators::cubic.index({Slice(0, 12)})))
         .to(options);
   }
   else if (orbifold == "622")
   {
-    return SymmetryOperator::from_quaternion(Quaternion(crystal_symmetry_operators::hexagonal))
-        .to(options);
+    return transform_from_quaternion(Quaternion(crystal_symmetry_operators::hexagonal)).to(options);
   }
   else if (orbifold == "32")
   {
-    return SymmetryOperator::from_quaternion(
+    return transform_from_quaternion(
                Quaternion(
                    torch::cat({crystal_symmetry_operators::hexagonal.index({Slice(0, 3)}),
                                crystal_symmetry_operators::hexagonal.index({Slice(9, 12)})})))
@@ -61,24 +61,24 @@ symmetry_operations_from_orbifold(std::string orbifold, const torch::TensorOptio
   }
   else if (orbifold == "6")
   {
-    return SymmetryOperator::from_quaternion(
+    return transform_from_quaternion(
                Quaternion(crystal_symmetry_operators::hexagonal.index({Slice(0, 6)})))
         .to(options);
   }
   else if (orbifold == "3")
   {
-    return SymmetryOperator::from_quaternion(
+    return transform_from_quaternion(
                Quaternion(crystal_symmetry_operators::hexagonal.index({Slice(0, 3)})))
         .to(options);
   }
   else if (orbifold == "42")
   {
-    return SymmetryOperator::from_quaternion(Quaternion(crystal_symmetry_operators::tetragonal))
+    return transform_from_quaternion(Quaternion(crystal_symmetry_operators::tetragonal))
         .to(options);
   }
   else if (orbifold == "4")
   {
-    return SymmetryOperator::from_quaternion(
+    return transform_from_quaternion(
                Quaternion(
                    torch::cat({crystal_symmetry_operators::tetragonal.index({Slice(0, 1)}),
                                crystal_symmetry_operators::tetragonal.index({Slice(3, 6)})})))
@@ -86,19 +86,19 @@ symmetry_operations_from_orbifold(std::string orbifold, const torch::TensorOptio
   }
   else if (orbifold == "222")
   {
-    return SymmetryOperator::from_quaternion(
+    return transform_from_quaternion(
                Quaternion(crystal_symmetry_operators::tetragonal.index({Slice(0, 4)})))
         .to(options);
   }
   else if (orbifold == "2")
   {
-    return SymmetryOperator::from_quaternion(
+    return transform_from_quaternion(
                Quaternion(crystal_symmetry_operators::tetragonal.index({Slice(0, 2)})))
         .to(options);
   }
   else if (orbifold == "1")
   {
-    return SymmetryOperator::from_quaternion(
+    return transform_from_quaternion(
                Quaternion(crystal_symmetry_operators::tetragonal.index({Slice(0, 1)})))
         .to(options);
   }
@@ -108,48 +108,12 @@ symmetry_operations_from_orbifold(std::string orbifold, const torch::TensorOptio
   }
 }
 
-register_NEML2_object(CrystalClass);
-
-OptionSet
-CrystalClass::expected_options()
-{
-  OptionSet options = Data::expected_options();
-  options.set<std::string>("orbifold");
-  return options;
-}
-
-CrystalClass::CrystalClass(const OptionSet & options)
-  : Data(options),
-    _operations(declare_buffer<SymmetryOperator>(
-        "operations", symmetry_operations_from_orbifold(options.get<std::string>("orbifold"))))
-{
-}
-
-CrystalClass::CrystalClass(std::string orbifold)
-  : Data(Data::expected_options()),
-    _operations(
-        declare_buffer<SymmetryOperator>("operations", symmetry_operations_from_orbifold(orbifold)))
-{
-}
-
-const SymmetryOperator &
-CrystalClass::operations() const
-{
-  return _operations;
-}
-
-TorchSize
-CrystalClass::size() const
-{
-  return _operations.batch_sizes()[0];
-}
-
 Vec
-CrystalClass::unique_bidirectional(const Vec & inp) const
+unique_bidirectional(const R2 & ops, const Vec & inp)
 {
   neml_assert_dbg(inp.batch_dim() == 0);
   // Batched tensor with all possible answers
-  auto options = R2(_operations) * inp;
+  auto options = ops * inp;
   // I think we have to go one by one...
   // Slightly annoying that while Vec and torch::Tensor are convertible a
   // list of Vecs aren't convertable into a TensorList
@@ -171,5 +135,5 @@ CrystalClass::unique_bidirectional(const Vec & inp) const
   return unique_vecs;
 }
 
-}
+} // namespace crystallography
 } // namespace neml2

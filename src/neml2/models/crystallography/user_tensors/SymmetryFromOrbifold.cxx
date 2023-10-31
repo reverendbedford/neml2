@@ -22,30 +22,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
+#include "neml2/models/crystallography/user_tensors/SymmetryFromOrbifold.h"
 
-#include "neml2/tensors/VecBase.h"
-#include "neml2/tensors/Transformable.h"
+#include "neml2/models/crystallography/crystallography.h"
 
 namespace neml2
 {
-class Scalar;
-class R2;
-class Rot;
-
-/**
- * @brief The (logical) vector.
- *
- * The logical storage space is (3).
- */
-class Vec : public VecBase<Vec>, public Transformable<Vec>
+namespace crystallography
 {
-public:
-  using VecBase<Vec>::VecBase;
+register_NEML2_object(SymmetryFromOrbifold);
 
-  Vec(const Rot & r);
+OptionSet
+SymmetryFromOrbifold::expected_options()
+{
+  OptionSet options = NEML2Object::expected_options();
+  options.set<std::string>("orbifold");
+  return options;
+}
 
-  // Transform by a crystal symmetry operator
-  virtual Vec transform(const R2 & op) const;
-};
+SymmetryFromOrbifold::SymmetryFromOrbifold(const OptionSet & options)
+  : R2(symmetry_operations_from_orbifold(options.get<std::string>("orbifold"))),
+    NEML2Object(options)
+{
+}
+}
 } // namespace neml2

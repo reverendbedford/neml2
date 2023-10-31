@@ -26,7 +26,6 @@
 #include "neml2/tensors/Scalar.h"
 #include "neml2/tensors/R2.h"
 #include "neml2/tensors/Rot.h"
-#include "neml2/models/crystallography/SymmetryOperator.h"
 
 namespace neml2
 {
@@ -36,9 +35,9 @@ Vec::Vec(const Rot & r)
 }
 
 Vec
-Vec::transform(const crystallography::SymmetryOperator & op) const
+Vec::transform(const R2 & op) const
 {
-  return R2(op) * (*this);
+  return op * (*this);
 }
 
 } // namespace neml2

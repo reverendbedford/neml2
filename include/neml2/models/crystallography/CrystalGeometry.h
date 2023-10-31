@@ -35,7 +35,6 @@ class SR2;
 class WR2;
 namespace crystallography
 {
-class CrystalClass;
 class MillerIndex;
 
 /// @brief Defines the geometry of a crystal system
@@ -50,9 +49,7 @@ public:
   CrystalGeometry(const OptionSet & options);
 
   /// Alternate constructor not relying on options
-  CrystalGeometry(const OptionSet & options,
-                  const CrystalClass & cclass,
-                  const Vec & lattice_vectors);
+  CrystalGeometry(const OptionSet & options, const R2 & cclass, const Vec & lattice_vectors);
 
   /// Input options
   static OptionSet expected_options();
@@ -92,8 +89,8 @@ public:
   /// Accessor for the skew-symmetric Schmid tensors
   const WR2 & W() const { return _W; };
 
-  /// Accessor for the crystal class
-  const CrystalClass & crystal_class() const { return _class; };
+  /// Accessor for the crystal class symmetry operators
+  const R2 & symmetry_operators() const { return _sym_ops; };
 
   /// Slice a BatchTensor to provide only the batch associated with a slip system
   // The slice happens along the last batch axis
@@ -105,7 +102,7 @@ public:
 private:
   /// Delegated constructor to setup schmid tensors and slice indices at once
   CrystalGeometry(const OptionSet & options,
-                  const CrystalClass & cclass,
+                  const R2 & cclass,
                   const Vec & lattice_vectors,
                   std::tuple<Vec, Vec, Scalar, std::vector<TorchSize>> slip_data);
 
@@ -115,7 +112,7 @@ private:
   /// Helper to setup slip systems
   static std::tuple<Vec, Vec, Scalar, std::vector<TorchSize>>
   setup_schmid_tensors(const Vec & A,
-                       const CrystalClass & cls,
+                       const R2 & cls,
                        const MillerIndex & slip_directions,
                        const MillerIndex & slip_planes);
 
@@ -124,7 +121,7 @@ private:
 
 private:
   /// Crystal symmetry class with operators
-  const CrystalClass & _class;
+  const R2 & _sym_ops;
   /// Lattice vectors
   const Vec & _lattice_vectors;
   /// Reciprocal lattice vectors
@@ -159,10 +156,6 @@ CrystalGeometry::slip_slice(const Derived & tensor, TorchSize grp) const
   return tensor.batch_index({torch::indexing::Ellipsis,
                              torch::indexing::Slice(_slip_offsets[grp], _slip_offsets[grp + 1])});
 }
-
-/// Helper that reduces out equivalent cartesian directions, this version considers equivalence
-/// to be in either direction
-Vec unique_bidirectional(const Vec & inp);
 
 } // namespace crystallography
 } // namespace neml2

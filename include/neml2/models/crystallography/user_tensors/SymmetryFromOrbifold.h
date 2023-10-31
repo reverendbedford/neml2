@@ -22,44 +22,31 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <catch2/catch.hpp>
+#pragma once
 
-#include "neml2/models/crystallography/SymmetryOperator.h"
-#include "neml2/tensors/tensors.h"
+#include "neml2/base/Registry.h"
+#include "neml2/base/NEML2Object.h"
 
-using namespace neml2;
-using namespace neml2::crystallography;
+#include "neml2/tensors/R2.h"
 
-TEST_CASE("SymmetryOperator", "[crystallography]")
+namespace neml2
 {
-  torch::manual_seed(42);
-  const auto & DTO = default_tensor_options;
+namespace crystallography
+{
+/**
+ * @brief Provide the correct symmetry operators for a given crystal class
+ */
+class SymmetryFromOrbifold : public R2, public NEML2Object
+{
+public:
+  static OptionSet expected_options();
 
-  SECTION("definitions")
-  {
-    SECTION("Identity")
-    {
-      REQUIRE(torch::allclose(SymmetryOperator::Identity(DTO), R2::identity(DTO)));
-    }
-    auto r = Rot::fill(0.1, -0.15, 0.05, DTO);
-    SECTION("ProperRotation")
-    {
-      REQUIRE(torch::allclose(SymmetryOperator::ProperRotation(r), r.euler_rodrigues()));
-    }
-    SECTION("ImproperRotation")
-    {
-      R2 ref = R2::identity(DTO) - 2 * r.outer(r);
-      REQUIRE(torch::allclose(SymmetryOperator::ImproperRotation(r), r.euler_rodrigues() * ref));
-      REQUIRE(torch::allclose(SymmetryOperator::ImproperRotation(r), ref * r.euler_rodrigues()));
-    }
-    SECTION("Inversion")
-    {
-      REQUIRE(torch::allclose(SymmetryOperator::Inversion(DTO), R2::fill(-1.0, DTO)));
-    }
-    SECTION("Quaternion")
-    {
-      auto q = Quaternion::fill(-0.30411437, -0.15205718, 0.91234311, 0.22808578, DTO);
-      REQUIRE(torch::allclose(SymmetryOperator::from_quaternion(q), q.to_R2()));
-    }
-  }
-}
+  /**
+   * @brief Setup the symmetry operators
+   *
+   * @param options The options extracted from the input file.
+   */
+  SymmetryFromOrbifold(const OptionSet & options);
+};
+} // namespace crystallography
+} // namespace neml2
