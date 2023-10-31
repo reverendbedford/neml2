@@ -35,7 +35,7 @@ RateIndependentPlasticFlowConstraint::expected_options()
 {
   OptionSet options = Model::expected_options();
   options.set<LabeledAxisAccessor>("yield_function") = {{"state", "internal", "fp"}};
-  options.set<LabeledAxisAccessor>("flow_rate") = vecstr{"state", "gamma_rate"};
+  options.set<LabeledAxisAccessor>("flow_rate") = {{"state", "internal", "gamma_rate"}};
   return options;
 }
 
