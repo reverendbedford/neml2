@@ -68,7 +68,8 @@ static const torch::TensorOptions default_tensor_options = torch::TensorOptions(
 
 /// We similarly want to have a default integer scalar type for some types of tensors
 #define TORCH_INT_DTYPE CONCAT(TORCH_ENUM_PREFIX, INT_DTYPE)
-static const torch::TensorOptions default_integer_tensor_options = default_tensor_options.dtype(TORCH_INT_DTYPE);
+static const torch::TensorOptions default_integer_tensor_options =
+    default_tensor_options.dtype(TORCH_INT_DTYPE);
 
 template <bool...>
 struct bool_pack;

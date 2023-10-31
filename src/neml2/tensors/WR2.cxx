@@ -81,7 +81,6 @@ WR2::exp() const
   auto gt = norm > thresh;
 
   // Insert the true expression
-  using namespace torch::indexing;
   res.index_put_({gt},
                  torch::Tensor(this->index({gt})) *
                      (torch::tan(norm.index({gt}) / 2.0) / norm.index({gt})).unsqueeze(-1));
