@@ -114,8 +114,6 @@ public:
   class OptionBase
   {
   public:
-    OptionBase() = default;
-
     virtual ~OptionBase() = default;
 
     /// A readonly reference to the option's name
@@ -209,9 +207,8 @@ public:
   class Option : public OptionBase
   {
   public:
-    Option() = default;
-
     Option(const std::string & name)
+      : _value()
     {
       _metadata.name = name;
       _metadata.type = utils::demangle(typeid(T).name());
