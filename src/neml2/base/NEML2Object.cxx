@@ -28,7 +28,7 @@ namespace neml2
 OptionSet
 NEML2Object::expected_options()
 {
-  OptionSet options;
+  auto options = OptionSet();
   return options;
 }
 
