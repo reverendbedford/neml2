@@ -212,6 +212,7 @@ public:
     Option() = default;
 
     Option(const std::string & name)
+      : _value()
     {
       _metadata.name = name;
       _metadata.type = utils::demangle(typeid(T).name());

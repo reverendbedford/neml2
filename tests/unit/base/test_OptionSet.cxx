@@ -31,7 +31,7 @@ TEST_CASE("OptionSet", "[base]")
 {
   SECTION("class OptionSet")
   {
-    OptionSet options;
+    auto options = OptionSet();
     options.set<double>("p1") = 1.5;
     options.set<std::string>("p2") = "foo";
     options.set<unsigned int>("p3") = 3;
