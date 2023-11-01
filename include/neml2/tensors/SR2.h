@@ -33,6 +33,8 @@ class R2;
 class SFR3;
 class SSR4;
 class Rot;
+class SWR4;
+class WR2;
 
 /**
  * @brief The (logical) symmetric second order tensor.
@@ -116,4 +118,14 @@ public:
   /// Transpose, no-op
   SR2 transpose() const;
 };
+
+/// Product w_ik e_kj - e_ik w_kj with e SR2 and w WR2
+SR2 product_wemew(const SR2 & e, const WR2 & w);
+
+/// Derivative of w_ik e_kj - e_ik w_kj wrt. e
+SSR4 d_product_wemew_de(const WR2 & w);
+
+/// Derivative of w_ik e_kj - e_ik w_kj wrt. w
+SWR4 d_product_wemew_dw(const SR2 & e);
+
 } // namespace neml2

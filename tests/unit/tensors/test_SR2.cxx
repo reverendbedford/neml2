@@ -229,5 +229,30 @@ TEST_CASE("SR2", "[tensors]")
       REQUIRE(torch::allclose(T.transpose(), res));
       REQUIRE(torch::allclose(T.batch_expand(B).transpose(), res.batch_expand(B)));
     }
+
+    SECTION("wemew")
+    {
+      auto w = WR2(torch::rand({3}, DTO));
+      SECTION("product")
+      {
+        REQUIRE(torch::allclose(R2(product_wemew(T, w)), R2(w) * R2(T) - R2(T) * R2(w)));
+      }
+      SECTION("derivatives")
+      {
+        SECTION("de")
+        {
+          auto apply1 = [w](const SR2 & x) { return product_wemew(x, w); };
+          auto d1 = finite_differencing_derivative(apply1, T);
+          REQUIRE(torch::allclose(d_product_wemew_de(w), d1));
+        }
+
+        SECTION("dw")
+        {
+          auto apply2 = [T](const WR2 & x) { return product_wemew(T, x); };
+          auto d2 = finite_differencing_derivative(apply2, w);
+          REQUIRE(torch::allclose(d_product_wemew_dw(T), d2));
+        }
+      }
+    }
   }
 }

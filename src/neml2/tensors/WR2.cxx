@@ -26,6 +26,9 @@
 #include "neml2/tensors/Scalar.h"
 #include "neml2/tensors/R2.h"
 #include "neml2/tensors/Rot.h"
+#include "neml2/tensors/SR2.h"
+#include "neml2/tensors/WSR4.h"
+#include "neml2/tensors/R4.h"
 
 #include "neml2/misc/math.h"
 
@@ -111,6 +114,33 @@ WR2::dexp() const
           gt_norm);
 
   return R2::identity(this->options()) * id_factor + this->outer(*this) * outer_factor;
+}
+
+WR2
+product_abmba(const SR2 & a, const SR2 & b)
+{
+  auto A = R2(a);
+  auto B = R2(b);
+
+  return WR2(A * B - B * A);
+}
+
+WSR4
+d_product_abmba_da(const SR2 & b)
+{
+  auto I = R2::identity(b.dtype());
+  auto B = R2(b);
+  return WSR4(R4(torch::einsum("...ia,...bj->...ijab", {I, B}) -
+                 torch::einsum("...ia,...jb->...ijab", {B, I})));
+}
+
+WSR4
+d_product_abmba_db(const SR2 & a)
+{
+  auto I = R2::identity(a.dtype());
+  auto A = R2(a);
+  return WSR4(R4(torch::einsum("...ia,...jb->...ijab", {A, I}) -
+                 torch::einsum("...ia,...bj->...ijab", {I, A})));
 }
 
 } // namespace neml2

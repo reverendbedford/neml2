@@ -166,4 +166,30 @@ TEST_CASE("WR2", "[tensors]")
           REQUIRE(torch::allclose(a(i, j), b(i, j)));
     }
   }
+
+  SECTION("abmba")
+  {
+    auto a = SR2(torch::rand({6}, DTO));
+    auto b = SR2(torch::rand({6}, DTO));
+    SECTION("product")
+    {
+      REQUIRE(torch::allclose(R2(product_abmba(a, b)), R2(a) * R2(b) - R2(b) * R2(a)));
+    }
+    SECTION("derivatives")
+    {
+      SECTION("da")
+      {
+        auto apply1 = [b](const SR2 & x) { return product_abmba(x, b); };
+        auto d1 = finite_differencing_derivative(apply1, a);
+        REQUIRE(torch::allclose(d_product_abmba_da(b), d1));
+      }
+
+      SECTION("db")
+      {
+        auto apply2 = [a](const SR2 & x) { return product_abmba(a, x); };
+        auto d2 = finite_differencing_derivative(apply2, b);
+        REQUIRE(torch::allclose(d_product_abmba_db(a), d2));
+      }
+    }
+  }
 }

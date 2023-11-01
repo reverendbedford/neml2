@@ -30,6 +30,9 @@
 #include "neml2/tensors/SFR3.h"
 #include "neml2/tensors/SSR4.h"
 #include "neml2/tensors/Rot.h"
+#include "neml2/tensors/SWR4.h"
+#include "neml2/tensors/WR2.h"
+#include "neml2/tensors/R4.h"
 
 namespace neml2
 {
@@ -202,4 +205,33 @@ SR2::transpose() const
 {
   return *this;
 }
+
+SR2
+product_wemew(const SR2 & e, const WR2 & w)
+{
+  // In NEML we used an unrolled form, I don't think I ever found
+  // a nice direct notation for this one
+  auto E = R2(e);
+  auto W = R2(w);
+  return SR2(W * E - E * W);
+}
+
+SSR4
+d_product_wemew_de(const WR2 & w)
+{
+  auto I = R2::identity(w.dtype());
+  auto W = R2(w);
+  return SSR4(R4(torch::einsum("...ia,...jb->...ijab", {W, I}) -
+                 torch::einsum("...ia,...bj->...ijab", {I, W})));
+}
+
+SWR4
+d_product_wemew_dw(const SR2 & e)
+{
+  auto I = R2::identity(e.dtype());
+  auto E = R2(e);
+  return SWR4(R4(torch::einsum("...ia,...bj->...ijab", {I, E}) -
+                 torch::einsum("...ia,...jb->...ijab", {E, I})));
+}
+
 } // namespace neml2

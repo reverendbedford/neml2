@@ -24,53 +24,23 @@
 
 #pragma once
 
-#include "neml2/tensors/VecBase.h"
+#include "neml2/tensors/FixedDimTensor.h"
 
 namespace neml2
 {
-class Scalar;
-class R2;
-class Rot;
-class SR2;
-class WSR4;
+class R4;
 
 /**
- * @brief A skew rank 2, represented as an axial vector
+ * @brief The (logical) symmetric fourth order tensor, with skew symmetry in the first two
+ * dimensionss and ssymmetry in the second two
  *
- * The logical storage space is (3).
+ * Mandel notation/reduced skew is used, and so the logical storage space is (3, 6).
  */
-class WR2 : public VecBase<WR2>
+class WSR4 : public FixedDimTensor<WSR4, 3, 6>
 {
 public:
-  using VecBase<WR2>::VecBase;
-
-  /// Skew-symmetrize a R2 then fill
-  WR2(const R2 & T);
-
-  /// Fill all entries
-  [[nodiscard]] static WR2 fill(const Real & a21,
-                                const Real & a02,
-                                const Real & a10,
-                                const torch::TensorOptions & options = default_tensor_options);
-  [[nodiscard]] static WR2 fill(const Scalar & a21, const Scalar & a02, const Scalar & a10);
-
-  /// Accessor
-  Scalar operator()(TorchSize i, TorchSize j) const;
-
-  /// Exponential map to make this into a rotation (Rot)
-  Rot exp() const;
-
-  /// Derivative of the exponential map
-  R2 dexp() const;
+  using FixedDimTensor<WSR4, 3, 6>::FixedDimTensor;
+  WSR4(const R4 & F);
 };
-
-/// Shortcut product a_ik b_kj - b_ik a_kj with both SR2
-WR2 product_abmba(const SR2 & a, const SR2 & b);
-
-/// Derivative of a_ik b_kj - b_ik a_kj wrt a
-WSR4 d_product_abmba_da(const SR2 & b);
-
-/// Derivative of a_ik b_kj - b_ik a_kj wrt b
-WSR4 d_product_abmba_db(const SR2 & a);
 
 } // namespace neml2
