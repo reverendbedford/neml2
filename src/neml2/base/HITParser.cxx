@@ -44,16 +44,16 @@ HITParser::parse(const std::string & filename, const std::string & additional_in
   std::string input = buffer.str();
 
   // Let HIT lex the string
-  auto root = dynamic_cast<hit::Section *>(hit::parse("Hit parser", input));
-  neml_assert(root, "HIT failed to lex the input file: ", filename);
+  std::unique_ptr<hit::Node> root(hit::parse(filename, input));
+  neml_assert(root.get(), "HIT failed to lex the input file: ", filename);
 
   // Explode the tree
-  hit::explode(root);
+  hit::explode(root.get());
 
   // Handle additional input (they could be coming from cli args)
-  auto cli_root = hit::parse("Hit cliargs", additional_input);
-  hit::explode(cli_root);
-  hit::merge(cli_root, root);
+  std::unique_ptr<hit::Node> cli_root(hit::parse("cliargs", additional_input));
+  hit::explode(cli_root.get());
+  hit::merge(cli_root.get(), root.get());
 
   // Preevaluate the input
   hit::BraceExpander expander;
