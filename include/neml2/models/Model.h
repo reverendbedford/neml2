@@ -25,7 +25,7 @@
 #pragma once
 
 #include "neml2/models/ParameterValue.h"
-#include "neml2/models/DataStore.h"
+#include "neml2/models/Data.h"
 #include "neml2/base/Registry.h"
 #include "neml2/base/Factory.h"
 #include "neml2/base/UniqueVector.h"
@@ -47,7 +47,7 @@ namespace neml2
  * method \p set_value. All concrete models must provide the implementation of the forward operator
  * by overriding the \p set_value method.
  */
-class ModelBase : public DataStore, public LabeledAxisInterface, public NonlinearSystem
+class ModelBase : public DataBase, public LabeledAxisInterface, public NonlinearSystem
 {
 public:
   static OptionSet expected_options();
@@ -58,6 +58,23 @@ public:
    * @param options The options extracted from the input file
    */
   ModelBase(const OptionSet & options);
+
+  /**
+   * @brief Recursively send this model and its sub-models to the target device.
+   *
+   * @param device The target device
+   */
+  virtual void to(const torch::Device & device);
+
+  // temp
+  virtual std::map<std::string, BatchTensor> named_parameters(bool recurse = false) const
+  {
+    (void)recurse;
+    return {};
+  };
+
+  /// Getter for registered models
+  const std::vector<ModelBase *> registered_models() const { return _registered_models; }
 
   /// Definition of the input variables
   /// @{
@@ -193,7 +210,7 @@ protected:
   NOTE: We also register this model as a submodule (in torch's language), so that when *this*
   `ModelBase` is sent to another device, the registered `ModelBase` is also sent to that device.
   */
-  void register_model(std::shared_ptr<ModelBase> model, bool merge_input = true);
+  virtual void register_model(std::shared_ptr<ModelBase> model, bool merge_input = true);
 
   /**
    * Both register a model and return a reference
@@ -214,6 +231,9 @@ protected:
   std::set<LabeledAxisAccessor> _consumed_vars;
   std::set<LabeledAxisAccessor> _provided_vars;
   std::set<LabeledAxisAccessor> _additional_outputs;
+
+  /// Models *this* model may use during its evaluation
+  std::vector<ModelBase *> _registered_models;
 
 private:
   LabeledAxis & _input;

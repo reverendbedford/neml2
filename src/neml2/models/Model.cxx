@@ -32,7 +32,7 @@ ModelBase::Stage ModelBase::stage = UPDATING;
 OptionSet
 ModelBase::expected_options()
 {
-  OptionSet options = DataStore::expected_options();
+  OptionSet options = DataBase::expected_options();
   options.set<std::vector<LabeledAxisAccessor>>("additional_outputs");
   options.set<bool>("use_AD_first_derivative") = false;
   options.set<bool>("use_AD_second_derivative") = false;
@@ -40,7 +40,7 @@ ModelBase::expected_options()
 }
 
 ModelBase::ModelBase(const OptionSet & options)
-  : DataStore(options),
+  : DataBase(options),
     _input(declare_axis()),
     _output(declare_axis()),
     _AD_1st_deriv(options.get<bool>("use_AD_first_derivative")),
@@ -50,6 +50,14 @@ ModelBase::ModelBase(const OptionSet & options)
   for (const auto & var : options.get<std::vector<LabeledAxisAccessor>>("additional_outputs"))
     _additional_outputs.insert(var);
   setup();
+}
+
+void
+ModelBase::to(const torch::Device & device)
+{
+  DataBase::to(device);
+  for (auto & model : _registered_models)
+    model->to(device);
 }
 
 void
@@ -233,7 +241,7 @@ ModelBase::register_model(std::shared_ptr<ModelBase> model, bool merge_input)
     _consumed_vars.insert(merged_vars.begin(), merged_vars.end());
   }
 
-  register_data_store(model);
+  _registered_models.push_back(model.get());
 }
 
 void

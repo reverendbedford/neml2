@@ -33,13 +33,13 @@ namespace neml2
 {
 
 /// @brief  Parent class for all models that store data and can be sent with .to
-class DataStore : public NEML2Object
+class DataBase : public NEML2Object
 {
 public:
   static OptionSet expected_options();
 
   /// Setup from options
-  DataStore(const OptionSet & options);
+  DataBase(const OptionSet & options);
 
   /**
    * @brief Recursively send this model and its sub-models to the target device.
@@ -48,18 +48,8 @@ public:
    */
   virtual void to(const torch::Device & device);
 
-  /// By default we have no parameters
-  virtual std::map<std::string, BatchTensor> named_parameters(bool recurse = false) const
-  {
-    (void)recurse;
-    return {};
-  };
-
   /// The models that may be used during the evaluation of this model
-  const std::vector<DataStore *> & registered_data_stores() const
-  {
-    return _registered_data_stores;
-  }
+  const std::vector<DataBase *> & registered_data() const { return _registered_data; }
 
 protected:
   /**
@@ -69,25 +59,26 @@ protected:
   NOTE: We also register this model as a submodule (in torch's language), so that when *this*
   `Model` is sent to another device, the registered `Model` is also sent to that device.
   */
-  void register_data_store(std::shared_ptr<DataStore> model);
+  void register_data(std::shared_ptr<DataBase> model);
 
   /**
    * Both register a model and return a reference
    */
-  template <typename T, typename = typename std::enable_if_t<std::is_base_of_v<DataStore, T>>>
-  T & register_data_store(const std::string & name)
+  template <typename T, typename = typename std::enable_if_t<std::is_base_of_v<DataBase, T>>>
+  T & register_data(const std::string & name)
   {
-    std::shared_ptr<DataStore> model = Factory::get_object_ptr<DataStore>("Data", name);
+    std::shared_ptr<DataBase> model = Factory::get_object_ptr<DataBase>("Data", name);
 
-    register_data_store(model);
+    register_data(model);
 
     return *(std::dynamic_pointer_cast<T>(model));
   }
 
   /// Models *this* model may use during its evaluation
-  std::vector<DataStore *> _registered_data_stores;
+  std::vector<DataBase *> _registered_data;
 };
 
-typedef ContainsBuffers<DataStore> Data;
+/// @brief typedef for class with only buffers
+typedef ContainsBuffers<DataBase> Data;
 
 } // namespace neml2

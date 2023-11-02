@@ -38,6 +38,6 @@ ContainsBuffers<Base>::to(const torch::Device & device)
 }
 
 template class ContainsBuffers<ModelBase>;
-template class ContainsBuffers<DataStore>;
+template class ContainsBuffers<DataBase>;
 
 } // namespace neml2

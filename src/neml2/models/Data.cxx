@@ -22,32 +22,32 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/models/DataStore.h"
+#include "neml2/models/Data.h"
 
 namespace neml2
 {
 OptionSet
-DataStore::expected_options()
+DataBase::expected_options()
 {
   OptionSet options = NEML2Object::expected_options();
   return options;
 }
 
-DataStore::DataStore(const OptionSet & options)
+DataBase::DataBase(const OptionSet & options)
   : NEML2Object(options)
 {
 }
 
 void
-DataStore::to(const torch::Device & device)
+DataBase::to(const torch::Device & device)
 {
-  for (auto & model : _registered_data_stores)
+  for (auto & model : _registered_data)
     model->to(device);
 }
 
 void
-DataStore::register_data_store(std::shared_ptr<DataStore> model)
+DataBase::register_data(std::shared_ptr<DataBase> model)
 {
-  _registered_data_stores.push_back(model.get());
+  _registered_data.push_back(model.get());
 }
 }

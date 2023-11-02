@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/models/DataStore.h"
+#include "neml2/models/Data.h"
 #include "neml2/tensors/BatchTensorBase.h"
 
 namespace neml2

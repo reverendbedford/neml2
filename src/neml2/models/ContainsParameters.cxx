@@ -54,7 +54,7 @@ ContainsParameters<Base>::named_parameters(bool recurse) const
     params.emplace(n, _param_values[_param_ids.at(n)]);
 
   if (recurse)
-    for (auto & model : Base::registered_data_stores())
+    for (auto & model : Base::registered_models())
       for (auto && [n, v] : model->named_parameters(true))
         params.emplace(model->name() + "." + n, v);
 
