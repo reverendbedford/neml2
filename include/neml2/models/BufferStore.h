@@ -24,23 +24,27 @@
 
 #pragma once
 
-#include <torch/torch.h>
+#include "neml2/base/OptionSet.h"
 #include "neml2/base/UniqueVector.h"
-#include "neml2/models/ParameterValue.h"
+#include "neml2/tensors/BatchTensorValue.h"
 
 namespace neml2
 {
 /// Interface for object which can store buffers
-template <typename Base>
-class ContainsBuffers
+class BufferStore
 {
 public:
+  BufferStore(const OptionSet & options)
+    : _options(options)
+  {
+  }
+
   /**
-   * @brief Send buffers to device
+   * @brief Get the named buffers
    *
-   * @param device The target device
+   * @return A map from buffer name to buffer value
    */
-  virtual void to(const torch::Device & device);
+  virtual std::map<std::string, BatchTensor> named_buffers() const;
 
   /// Get a buffer's value
   template <typename T,
@@ -48,15 +52,21 @@ public:
   const T & get_buffer(const std::string & name) const;
 
 protected:
-  std::map<std::string, size_t> _buffer_ids;
-  std::vector<std::string> _buffer_names;
-  UniqueVector<ParameterValueBase> _buffer_values;
+  /**
+   * @brief Send buffers to device
+   *
+   * @param device The target device
+   */
+  virtual void send_buffers_to(const torch::Device & device);
 
-  /// @brief  Declare a buffer
-  /// @tparam T type of buffer
-  /// @param name string name
-  /// @param rawval buffer value
-  /// @return reference to buffer
+  /**
+   * @brief Declare a model buffer.
+   *
+   * @tparam T Buffer type. See @ref primitive for supported types.
+   * @param name Buffer name
+   * @param rawval Buffer value
+   * @return Reference to buffer
+   */
   template <typename T,
             typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<T>, T>>>
   const T & declare_buffer(const std::string & name, const T & rawval);
@@ -65,57 +75,88 @@ protected:
    * @brief Declare a model buffer.
    *
    * @tparam T Buffer type. See @ref primitive for supported types.
-   * @param name Name of the model buffer.
+   * @param name Buffer name
    * @param input_option_name Name of the input option that defines the value of the model
    * buffer.
-   * @return T The value of the registered model buffer.
+   * @return T Reference to buffer
    */
   template <typename T,
             typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<T>, T>>>
   const T & declare_buffer(const std::string & name, const std::string & input_option_name);
+
+private:
+  /**
+   * @brief Parsed input file options. These options could be convenient when we look up a
+   * cross-referenced tensor value by its name.
+   *
+   */
+  const OptionSet & _options;
+
+  /// Map from buffer name to ID
+  std::map<std::string, size_t> _buffer_ids;
+
+  /// Map from buffer ID to name
+  std::vector<std::string> _buffer_names;
+
+  /// The actual storage for all the buffers
+  UniqueVector<BatchTensorValueBase> _buffer_values;
 };
 
-template <typename Base>
+inline std::map<std::string, BatchTensor>
+BufferStore::named_buffers() const
+{
+  std::map<std::string, BatchTensor> buffers;
+
+  for (const auto & n : _buffer_names)
+    buffers.emplace(n, _buffer_values[_buffer_ids.at(n)]);
+
+  return buffers;
+}
+
 template <typename T, typename>
 const T &
-ContainsBuffers<Base>::get_buffer(const std::string & name) const
+BufferStore::get_buffer(const std::string & name) const
 {
   auto id = _buffer_ids.at(name);
   const auto & base_prop = _buffer_values[id];
-  const auto prop = dynamic_cast<const ParameterValue<T> *>(&base_prop);
+  const auto prop = dynamic_cast<const BatchTensorValue<T> *>(&base_prop);
   neml_assert_dbg(prop, "Internal error, buffer cast failure.");
   return prop->get();
 }
 
-template <typename Base>
+inline void
+BufferStore::send_buffers_to(const torch::Device & device)
+{
+  for (auto && [name, id] : _buffer_ids)
+    _buffer_values[id].to(device);
+}
+
 template <typename T, typename>
 const T &
-ContainsBuffers<Base>::declare_buffer(const std::string & name, const T & rawval)
+BufferStore::declare_buffer(const std::string & name, const T & rawval)
 {
   neml_assert(std::find(_buffer_names.begin(), _buffer_names.end(), name) == _buffer_names.end(),
               "Trying to declare a buffer named ",
               name,
               " that already exists.");
 
-  auto val = std::make_unique<ParameterValue<T>>(rawval);
+  auto val = std::make_unique<BatchTensorValue<T>>(rawval);
   _buffer_ids.emplace(name, _buffer_ids.size());
   _buffer_names.push_back(name);
   auto & base_prop = _buffer_values.add_pointer(std::move(val));
-  auto prop = dynamic_cast<ParameterValue<T> *>(&base_prop);
+  auto prop = dynamic_cast<BatchTensorValue<T> *>(&base_prop);
   neml_assert(prop, "Internal error, parameter cast failure.");
   return prop->get();
 }
 
-template <typename Base>
 template <typename T, typename>
 const T &
-ContainsBuffers<Base>::declare_buffer(const std::string & name,
-                                      const std::string & input_option_name)
+BufferStore::declare_buffer(const std::string & name, const std::string & input_option_name)
 {
-  if (Base::options().template contains<T>(input_option_name))
-    return declare_buffer(name, Base::options().template get<T>(input_option_name));
-  else if (Base::options().template contains<CrossRef<T>>(input_option_name))
-    return declare_buffer(name, T(Base::options().template get<CrossRef<T>>(input_option_name)));
+  if (_options.contains<T>(input_option_name))
+    return declare_buffer(name, _options.get<T>(input_option_name));
+  else if (_options.contains<CrossRef<T>>(input_option_name))
+    return declare_buffer(name, T(_options.get<CrossRef<T>>(input_option_name)));
 
   throw NEMLException(
       "Trying to register buffer named " + name + " from input option named " + input_option_name +

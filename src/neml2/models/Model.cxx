@@ -23,7 +23,6 @@
 // THE SOFTWARE.
 
 #include "neml2/models/Model.h"
-#include "neml2/models/NonlinearParameter.h"
 
 namespace neml2
 {
@@ -32,8 +31,7 @@ Model::Stage Model::stage = UPDATING;
 OptionSet
 Model::expected_options()
 {
-  OptionSet options =
-      ContainsParameters<ContainsBuffers<ObjectContainer<Model, ModelSection>>>::expected_options();
+  OptionSet options = Data::expected_options();
   options.set<std::vector<LabeledAxisAccessor>>("additional_outputs");
   options.set<bool>("use_AD_first_derivative") = false;
   options.set<bool>("use_AD_second_derivative") = false;
@@ -41,7 +39,8 @@ Model::expected_options()
 }
 
 Model::Model(const OptionSet & options)
-  : ContainsParameters<ContainsBuffers<ObjectContainer<Model, ModelSection>>>(options),
+  : Data(options),
+    ParameterStore(options),
     _input(declare_axis()),
     _output(declare_axis()),
     _AD_1st_deriv(options.get<bool>("use_AD_first_derivative")),
@@ -56,7 +55,11 @@ Model::Model(const OptionSet & options)
 void
 Model::to(const torch::Device & device)
 {
-  ContainsParameters<ContainsBuffers<ObjectContainer<Model, ModelSection>>>::to(device);
+  send_buffers_to(device);
+  send_parameters_to(device);
+
+  for (auto & model : _registered_models)
+    model->to(device);
 }
 
 void
@@ -230,6 +233,19 @@ Model::value_and_dvalue_and_d2value(const LabeledVector & in) const
   return {out, dout_din, d2out_din2};
 }
 
+std::map<std::string, BatchTensor>
+Model::named_parameters(bool recurse) const
+{
+  auto params = ParameterStore::named_parameters();
+
+  if (recurse)
+    for (auto & model : _registered_models)
+      for (auto && [n, v] : model->named_parameters(true))
+        params.emplace(model->name() + "." + n, v);
+
+  return params;
+}
+
 void
 Model::register_model(std::shared_ptr<Model> model, bool merge_input)
 {
@@ -240,7 +256,7 @@ Model::register_model(std::shared_ptr<Model> model, bool merge_input)
     _consumed_vars.insert(merged_vars.begin(), merged_vars.end());
   }
 
-  ContainsParameters<ContainsBuffers<ObjectContainer<Model, ModelSection>>>::register_object(model);
+  _registered_models.push_back(model.get());
 }
 
 void

@@ -24,6 +24,7 @@
 
 #pragma once
 
+#include "neml2/base/Registry.h"
 #include "neml2/models/Data.h"
 #include "neml2/tensors/BatchTensorBase.h"
 
@@ -45,14 +46,14 @@ class MillerIndex;
 class CrystalGeometry : public Data
 {
 public:
+  /// Input options
+  static OptionSet expected_options();
+
   /// Setup from parameter set
   CrystalGeometry(const OptionSet & options);
 
   /// Alternate constructor not relying on options
   CrystalGeometry(const OptionSet & options, const R2 & cclass, const Vec & lattice_vectors);
-
-  /// Input options
-  static OptionSet expected_options();
 
   /// accessor for the first lattice vector
   Vec a1() const;

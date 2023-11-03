@@ -23,17 +23,21 @@
 // THE SOFTWARE.
 #pragma once
 
-#include <torch/torch.h>
-#include <string>
-
 #include "neml2/tensors/BatchTensor.h"
+#include "neml2/misc/parser_utils.h"
 
 namespace neml2
 {
-class ParameterValueBase
+/**
+ * @brief The base class to allow us set up a containers of BatchTensors while maintaining
+ * polymorphism. The concrete definition below `BatchTensorValue` will be templated on the actual
+ * tensor type.
+ *
+ */
+class BatchTensorValueBase
 {
 public:
-  virtual ~ParameterValueBase() = default;
+  virtual ~BatchTensorValueBase() = default;
 
   /**
    * String identifying the type of parameter stored.
@@ -46,5 +50,32 @@ public:
 
   /// Convert the parameter value to a BatchTensor
   virtual operator BatchTensor() const = 0;
+};
+
+/// Concrete definition of a BatchTensor value
+template <typename T>
+class BatchTensorValue : public BatchTensorValueBase
+{
+public:
+  BatchTensorValue() = default;
+
+  BatchTensorValue(const T & value)
+    : _value(value)
+  {
+  }
+
+  virtual std::string type() const override { return utils::demangle(typeid(T).name()); }
+
+  virtual void to(const torch::Device & device) override { _value = _value.to(device); }
+
+  virtual operator BatchTensor() const override { return BatchTensor(_value); }
+
+  const T & get() const { return _value; }
+
+  T & set() { return _value; }
+
+private:
+  /// Stored BatchTensor
+  T _value;
 };
 } // namespace neml2

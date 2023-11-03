@@ -24,39 +24,31 @@
 
 #pragma once
 
-#include <torch/torch.h>
+#include "neml2/base/OptionSet.h"
 #include "neml2/base/UniqueVector.h"
-#include "neml2/models/ParameterValue.h"
+#include "neml2/tensors/BatchTensorValue.h"
 
 namespace neml2
 {
-
-/// Interface for object which can store buffers
-template <typename Base>
-class ContainsParameters
+/// Interface for object which can store parameters
+class ParameterStore
 {
 public:
-  /**
-   * @brief Send buffers to device
-   *
-   * @param device The target device
-   */
-  virtual void to(const torch::Device & device);
+  ParameterStore(const OptionSet & options)
+    : _options(options)
+  {
+  }
 
   bool has_parameter(const std::string & name) const { return _param_ids.count(name); }
 
   bool has_nonlinear_parameter(const std::string & name) const { return _nl_params.count(name); }
 
   /**
-   * @brief (Recursively) get the named model parameters
+   * @brief Get the named parameters
    *
-   * If \p recurse is set true, then each sub-model's parameters are prepended by the model name
-   * followed by a dot ".". This is consistent with torch::nn::Module's naming convention.
-   *
-   * @param recurse Whether to recursively retrieve parameter names of sub-models.
    * @return A map from parameter name to parameter value
    */
-  virtual std::map<std::string, BatchTensor> named_parameters(bool recurse = false) const;
+  virtual std::map<std::string, BatchTensor> named_parameters() const;
 
   /// Get a parameter's value
   template <typename T,
@@ -64,6 +56,13 @@ public:
   const T & get_parameter(const std::string & name) const;
 
 protected:
+  /**
+   * @brief Send buffers to device
+   *
+   * @param device The target device
+   */
+  virtual void send_parameters_to(const torch::Device & device);
+
   /// Get the accessor for a given nonlinear parameter
   const LabeledAxisAccessor & nl_param(const std::string & name) const
   {
@@ -87,40 +86,70 @@ protected:
             typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<T>, T>>>
   const T & declare_parameter(const std::string & name, const std::string & input_option_name);
 
-  std::map<std::string, size_t> _param_ids;
-  std::vector<std::string> _param_names;
-  UniqueVector<ParameterValueBase> _param_values;
+private:
+  /**
+   * @brief Parsed input file options. These options could be convenient when we look up a
+   * cross-referenced tensor value by its name.
+   *
+   */
+  const OptionSet & _options;
 
+  /// Map from parameter name to ID
+  std::map<std::string, size_t> _param_ids;
+
+  /// Map from parameter ID to name
+  std::vector<std::string> _param_names;
+
+  /// The actual storage for all the parameters
+  UniqueVector<BatchTensorValueBase> _param_values;
+
+  /// Accessors for all the *nonlinear* parameters
   std::map<std::string, LabeledAxisAccessor> _nl_params;
 };
 
-template <typename Base>
+inline std::map<std::string, BatchTensor>
+ParameterStore::named_parameters() const
+{
+  std::map<std::string, BatchTensor> params;
+
+  for (const auto & n : _param_names)
+    params.emplace(n, _param_values[_param_ids.at(n)]);
+
+  return params;
+}
+
 template <typename T, typename>
 const T &
-ContainsParameters<Base>::get_parameter(const std::string & name) const
+ParameterStore::get_parameter(const std::string & name) const
 {
   auto id = _param_ids.at(name);
   const auto & base_prop = _param_values[id];
-  const auto prop = dynamic_cast<const ParameterValue<T> *>(&base_prop);
+  const auto prop = dynamic_cast<const BatchTensorValue<T> *>(&base_prop);
   neml_assert_dbg(prop, "Internal error, parameter cast failure.");
   return prop->get();
 }
 
-template <typename Base>
+inline void
+ParameterStore::send_parameters_to(const torch::Device & device)
+{
+  for (auto && [name, id] : _param_ids)
+    _param_values[id].to(device);
+}
+
 template <typename T, typename>
 const T &
-ContainsParameters<Base>::declare_parameter(const std::string & name, const T & rawval)
+ParameterStore::declare_parameter(const std::string & name, const T & rawval)
 {
   neml_assert(std::find(_param_names.begin(), _param_names.end(), name) == _param_names.end(),
               "Trying to declare a parameter named ",
               name,
               " that already exists.");
 
-  auto val = std::make_unique<ParameterValue<T>>(rawval);
+  auto val = std::make_unique<BatchTensorValue<T>>(rawval);
   _param_ids.emplace(name, _param_ids.size());
   _param_names.push_back(name);
   auto & base_prop = _param_values.add_pointer(std::move(val));
-  auto prop = dynamic_cast<ParameterValue<T> *>(&base_prop);
+  auto prop = dynamic_cast<BatchTensorValue<T> *>(&base_prop);
   neml_assert(prop, "Internal error, parameter cast failure.");
   return prop->get();
 }

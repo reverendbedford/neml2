@@ -24,16 +24,64 @@
 
 #pragma once
 
-#include "neml2/models/ContainsBuffers.h"
-#include "neml2/models/ObjectContainer.h"
+#include "neml2/base/NEML2Object.h"
+#include "neml2/models/BufferStore.h"
+
+#include "neml2/base/Registry.h"
+#include "neml2/base/Factory.h"
 
 namespace neml2
 {
-
-class Data : public ContainsBuffers<ObjectContainer<Data, DataSection>>
+class Data : public NEML2Object, public BufferStore
 {
 public:
-  using ContainsBuffers<ObjectContainer<Data, DataSection>>::ContainsBuffers;
-};
+  static OptionSet expected_options();
 
+  /**
+   * @brief Construct a new Data object
+   *
+   * @param options The set of options extracted from the input file
+   */
+  Data(const OptionSet & options);
+
+  /**
+   * @brief Recursively send this Data and all the registered Data to the target device.
+   *
+   * @param device The target device
+   */
+  virtual void to(const torch::Device & device);
+
+  /**
+   * @brief Get the named buffers
+   *
+   * @param recurse Whether to recursively retrieve buffers from registered Datas.
+   * @return A map from buffer name to buffer value
+   */
+  virtual std::map<std::string, BatchTensor> named_buffers(bool recurse) const;
+
+  /// All the registered data objects
+  const std::vector<Data *> & registered_data() const { return _registered_data; }
+
+protected:
+  /**
+   * @brief Register a data object
+   *
+   * @param data The Data to register
+   */
+  void register_data(std::shared_ptr<Data> data);
+
+  /**
+   * Both register a data and return a reference
+   */
+  template <typename T, typename = typename std::enable_if_t<std::is_base_of_v<Data, T>>>
+  T & include_data(const std::string & name)
+  {
+    auto data = Factory::get_object_ptr<Data>("Data", name);
+    register_data(data);
+    return *(std::dynamic_pointer_cast<T>(data));
+  }
+
+  /// Registered Data objects
+  std::vector<Data *> _registered_data;
+};
 } // namespace neml2

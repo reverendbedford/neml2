@@ -26,4 +26,44 @@
 
 namespace neml2
 {
+OptionSet
+Data::expected_options()
+{
+  auto options = NEML2Object::expected_options();
+  return options;
+}
+
+Data::Data(const OptionSet & options)
+  : NEML2Object(options),
+    BufferStore(options)
+{
+}
+
+void
+Data::to(const torch::Device & device)
+{
+  send_buffers_to(device);
+
+  for (auto & data : _registered_data)
+    data->to(device);
+}
+
+std::map<std::string, BatchTensor>
+Data::named_buffers(bool recurse) const
+{
+  auto buffers = BufferStore::named_buffers();
+
+  if (recurse)
+    for (auto & data : _registered_data)
+      for (auto && [n, v] : data->named_buffers(true))
+        buffers.emplace(data->name() + "." + n, v);
+
+  return buffers;
+}
+
+void
+Data::register_data(std::shared_ptr<Data> data)
+{
+  _registered_data.push_back(data.get());
+}
 }

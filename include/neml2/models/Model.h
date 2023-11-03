@@ -24,15 +24,10 @@
 
 #pragma once
 
-#include "neml2/models/ParameterValue.h"
 #include "neml2/models/Data.h"
-#include "neml2/base/Registry.h"
-#include "neml2/base/Factory.h"
-#include "neml2/base/UniqueVector.h"
+#include "neml2/models/ParameterStore.h"
 #include "neml2/models/LabeledAxisInterface.h"
 #include "neml2/solvers/NonlinearSystem.h"
-#include "neml2/models/ContainsBuffers.h"
-#include "neml2/models/ContainsParameters.h"
 
 #include "neml2/tensors/LabeledVector.h"
 #include "neml2/tensors/LabeledMatrix.h"
@@ -47,7 +42,8 @@ namespace neml2
  * method \p set_value. All concrete models must provide the implementation of the forward operator
  * by overriding the \p set_value method.
  */
-class Model : public ContainsParameters<ContainsBuffers<ObjectContainer<Model, ModelSection>>>,
+class Model : public Data,
+              public ParameterStore,
               public LabeledAxisInterface,
               public NonlinearSystem
 {
@@ -64,9 +60,12 @@ public:
   /**
    * @brief Recursively send this model and its sub-models to the target device.
    *
+   * What this does behind the scenes is just sending all the model parameters to the target device.
+   * This operation is recursively applied on of the sub-models.
+   *
    * @param device The target device
    */
-  virtual void to(const torch::Device & device);
+  virtual void to(const torch::Device & device) override;
 
   /// Definition of the input variables
   /// @{
@@ -82,6 +81,17 @@ public:
 
   /// Whether this model is implicit
   virtual bool implicit() const { return false; }
+
+  /**
+   * @brief Get the named parameters
+   *
+   * @param recurse Whether to recursively retrieve parameters from sub-models.
+   * @return A map from parameter name to parameter value
+   */
+  virtual std::map<std::string, BatchTensor> named_parameters(bool recurse) const;
+
+  /// The models that may be used during the evaluation of this model
+  const std::vector<Model *> & registered_models() const { return _registered_models; }
 
   /// The variables that this model depends on
   const std::set<LabeledAxisAccessor> & consumed_variables() const { return _consumed_vars; }
@@ -152,6 +162,9 @@ public:
   };
   static Model::Stage stage;
 
+  /// Declaration of nonlinear parameters may require manipulation of input
+  friend class ParameterStore;
+
 protected:
   /// The map between input -> output, and optionally its derivatives
   virtual void set_value(const LabeledVector & in,
@@ -196,13 +209,14 @@ protected:
   virtual void setup() { setup_layout(); }
 
   /**
-  Register a model that the current model may use during its evaluation. No dependency information
-  is added.
-
-  NOTE: We also register this model as a submodule (in torch's language), so that when *this*
-  `Model` is sent to another device, the registered `Model` is also sent to that device.
-  */
-  virtual void register_model(std::shared_ptr<Model> model, bool merge_input = true);
+   * @brief Register a model that the current model may use during its evaluation. No dependency
+   * information is added.
+   *
+   * @param model The model to register
+   * @param merge_input Whether to merge the input of the registered model into *this* model's
+   * input.
+   */
+  void register_model(std::shared_ptr<Model> model, bool merge_input = true);
 
   /**
    * Both register a model and return a reference
@@ -210,15 +224,16 @@ protected:
   template <typename T, typename = typename std::enable_if_t<std::is_base_of_v<Model, T>>>
   T & include_model(const std::string & name, bool merge_input = true)
   {
-    std::shared_ptr<Model> model = Factory::get_object_ptr<Model>("Models", name);
-
+    auto model = Factory::get_object_ptr<Model>("Models", name);
     register_model(model, merge_input);
-
     return *(std::dynamic_pointer_cast<T>(model));
   }
 
   virtual void
   assemble(const BatchTensor & x, BatchTensor * r, BatchTensor * J = nullptr) const override;
+
+  /// Models *this* model may use during its evaluation
+  std::vector<Model *> _registered_models;
 
   std::set<LabeledAxisAccessor> _consumed_vars;
   std::set<LabeledAxisAccessor> _provided_vars;
@@ -234,5 +249,4 @@ private:
   /// Cached input while solving this implicit model
   LabeledVector _cached_in;
 };
-
 } // namespace neml2
