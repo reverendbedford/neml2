@@ -25,6 +25,7 @@
 #pragma once
 
 #include "neml2/tensors/VecBase.h"
+#include "neml2/tensors/Transformable.h"
 
 namespace neml2
 {
@@ -37,17 +38,14 @@ class Rot;
  *
  * The logical storage space is (3).
  */
-class Vec : public VecBase<Vec>
+class Vec : public VecBase<Vec>, public Transformable<Vec>
 {
 public:
   using VecBase<Vec>::VecBase;
 
   Vec(const Rot & r);
 
-  /// Rotate
-  Vec rotate(const Rot & r) const;
-
-  /// Derivative of the rotated vector w.r.t. the Rodrigues vector
-  R2 drotate(const Rot & r) const;
+  // Transform by a crystal symmetry operator
+  virtual Vec transform(const R2 & op) const;
 };
 } // namespace neml2

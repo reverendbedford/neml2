@@ -535,10 +535,6 @@ TEST_CASE("BatchTensorBase", "[tensors]")
     REQUIRE(torch::allclose(a.batch_expand(B) * 2.0, c.batch_expand(B)));
     REQUIRE(torch::allclose(2.0 * a, c));
     REQUIRE(torch::allclose(2.0 * a.batch_expand(B), c.batch_expand(B)));
-    REQUIRE(torch::allclose(a * b, c));
-    REQUIRE(torch::allclose(a * b.batch_expand(B), c.batch_expand(B)));
-    REQUIRE(torch::allclose(a.batch_expand(B) * b, c.batch_expand(B)));
-    REQUIRE(torch::allclose(a.batch_expand(B) * b.batch_expand(B), c.batch_expand(B)));
   }
 
   SECTION("operator/")

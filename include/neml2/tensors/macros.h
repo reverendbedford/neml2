@@ -88,3 +88,16 @@
   register_NEML2_object_alias(SSR4##suffix1, "SSR4" suffix2);                                      \
   register_NEML2_object_alias(R5##suffix1, "R5" suffix2);                                          \
   register_NEML2_object_alias(SSFR5##suffix1, "SSFR5" suffix2)
+
+#define FOR_ALL_FIXEDDIMTENSOR(f)                                                                  \
+  f(Scalar);                                                                                       \
+  f(Vec);                                                                                          \
+  f(Rot);                                                                                          \
+  f(R2);                                                                                           \
+  f(SR2);                                                                                          \
+  f(R3);                                                                                           \
+  f(SFR3);                                                                                         \
+  f(R4);                                                                                           \
+  f(SSR4);                                                                                         \
+  f(R5);                                                                                           \
+  f(SSFR5)

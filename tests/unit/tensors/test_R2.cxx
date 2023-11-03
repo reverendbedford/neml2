@@ -46,6 +46,12 @@ TEST_CASE("R2", "[tensors]")
         auto s = SR2::fill(1.1, 2.2, 3.3, 2.3, 1.3, 1.2);
         REQUIRE(torch::allclose(R2(s), S));
       }
+      SECTION("from WR2")
+      {
+        auto W = R2::fill(0, -1.2, 0.8, 1.2, 0, -0.5, -0.8, 0.5, 0);
+        auto w = WR2::fill(0.5, 0.8, 1.2);
+        REQUIRE(torch::allclose(R2(w), W));
+      }
       SECTION("from Rot")
       {
         auto r = Rot(torch::rand(utils::add_shapes(B, 3), DTO));

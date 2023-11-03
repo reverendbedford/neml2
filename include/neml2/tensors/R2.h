@@ -24,98 +24,35 @@
 
 #pragma once
 
-#include "neml2/tensors/FixedDimTensor.h"
+#include "neml2/tensors/R2Base.h"
 
 namespace neml2
 {
-class Scalar;
-class Vec;
-class SR2;
-class R3;
 class Rot;
+class SR2;
+class WR2;
 
 /**
- * @brief The (logical) full second order tensor.
+ * @brief A basic R2
  *
- * The logical storage space is (3, 3).
+ * The logical storage space is (3,3).
  */
-class R2 : public FixedDimTensor<R2, 3, 3>
+class R2 : public R2Base<R2>
 {
 public:
-  using FixedDimTensor<R2, 3, 3>::FixedDimTensor;
+  using R2Base<R2>::R2Base;
 
+  /// @brief Form a full R2 from a symmetric tensor
+  /// @param S Mandel-convention symmetric tensor
   R2(const SR2 & S);
 
+  /// @brief Form a full R2 from a skew-symmetric tensor
+  /// @param W skew-vector convention skew-symmetric tensor
+  R2(const WR2 & W);
+
+  /// @brief Form rotation matrix from vector
+  /// @param r rotation vector
   explicit R2(const Rot & r);
-
-  /// Conversion operator to symmetric second order tensor
-  explicit operator SR2() const;
-
-  /// Fill the diagonals with a11 = a22 = a33 = a
-  [[nodiscard]] static R2 fill(const Real & a,
-                               const torch::TensorOptions & options = default_tensor_options);
-  [[nodiscard]] static R2 fill(const Scalar & a);
-  /// Fill the diagonals with a11, a22, a33
-  [[nodiscard]] static R2 fill(const Real & a11,
-                               const Real & a22,
-                               const Real & a33,
-                               const torch::TensorOptions & options = default_tensor_options);
-  [[nodiscard]] static R2 fill(const Scalar & a11, const Scalar & a22, const Scalar & a33);
-  /// Fill symmetric entries
-  [[nodiscard]] static R2 fill(const Real & a11,
-                               const Real & a22,
-                               const Real & a33,
-                               const Real & a23,
-                               const Real & a13,
-                               const Real & a12,
-                               const torch::TensorOptions & options = default_tensor_options);
-  [[nodiscard]] static R2 fill(const Scalar & a11,
-                               const Scalar & a22,
-                               const Scalar & a33,
-                               const Scalar & a23,
-                               const Scalar & a13,
-                               const Scalar & a12);
-  /// Fill all entries
-  [[nodiscard]] static R2 fill(const Real & a11,
-                               const Real & a12,
-                               const Real & a13,
-                               const Real & a21,
-                               const Real & a22,
-                               const Real & a23,
-                               const Real & a31,
-                               const Real & a32,
-                               const Real & a33,
-                               const torch::TensorOptions & options = default_tensor_options);
-  [[nodiscard]] static R2 fill(const Scalar & a11,
-                               const Scalar & a12,
-                               const Scalar & a13,
-                               const Scalar & a21,
-                               const Scalar & a22,
-                               const Scalar & a23,
-                               const Scalar & a31,
-                               const Scalar & a32,
-                               const Scalar & a33);
-  /// Skew matrix from Vec
-  [[nodiscard]] static R2 skew(const Vec & v);
-  /// Identity
-  [[nodiscard]] static R2 identity(const torch::TensorOptions & options = default_tensor_options);
-
-  /// Rotate
-  R2 rotate(const Rot & r) const;
-
-  /// Derivative of the rotated tensor w.r.t. the Rodrigues vector
-  R3 drotate(const Rot & r) const;
-
-  /// Accessor
-  Scalar operator()(TorchSize i, TorchSize j) const;
-
-  /// Inversion
-  R2 inverse() const;
-
-  /// transpose
-  R2 transpose() const;
 };
 
-R2 operator*(const R2 & A, const R2 & B);
-Vec operator*(const R2 & A, const Vec & b);
 } // namespace neml2

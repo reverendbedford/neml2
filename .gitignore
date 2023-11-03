@@ -18,7 +18,6 @@ coverage
 doc/class-doc
 *.html
 .vscode
-!.vscode/cmake-variants.yaml
 doc/doctrees
 doc/html
 !cmake/Modules/*

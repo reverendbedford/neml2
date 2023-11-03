@@ -23,7 +23,6 @@
 // THE SOFTWARE.
 
 #include "neml2/models/Model.h"
-#include "neml2/models/NonlinearParameter.h"
 
 namespace neml2
 {
@@ -32,7 +31,7 @@ Model::Stage Model::stage = UPDATING;
 OptionSet
 Model::expected_options()
 {
-  OptionSet options = NEML2Object::expected_options();
+  OptionSet options = Data::expected_options();
   options.set<std::vector<LabeledAxisAccessor>>("additional_outputs");
   options.set<bool>("use_AD_first_derivative") = false;
   options.set<bool>("use_AD_second_derivative") = false;
@@ -40,7 +39,8 @@ Model::expected_options()
 }
 
 Model::Model(const OptionSet & options)
-  : NEML2Object(options),
+  : Data(options),
+    ParameterStore(options),
     _input(declare_axis()),
     _output(declare_axis()),
     _AD_1st_deriv(options.get<bool>("use_AD_first_derivative")),
@@ -55,11 +55,8 @@ Model::Model(const OptionSet & options)
 void
 Model::to(const torch::Device & device)
 {
-  for (auto && [name, id] : _param_ids)
-    _param_values[id].to(device);
-
-  for (auto && [name, id] : _buffer_ids)
-    _buffer_values[id].to(device);
+  send_buffers_to(device);
+  send_parameters_to(device);
 
   for (auto & model : _registered_models)
     model->to(device);
@@ -239,10 +236,7 @@ Model::value_and_dvalue_and_d2value(const LabeledVector & in) const
 std::map<std::string, BatchTensor>
 Model::named_parameters(bool recurse) const
 {
-  std::map<std::string, BatchTensor> params;
-
-  for (const auto & n : _param_names)
-    params.emplace(n, _param_values[_param_ids.at(n)]);
+  auto params = ParameterStore::named_parameters();
 
   if (recurse)
     for (auto & model : _registered_models)
@@ -298,54 +292,4 @@ Model::assemble(const BatchTensor & x, BatchTensor * r, BatchTensor * J) const
     J->copy_(dout_din("residual", "state"));
   }
 }
-
-template <typename T, typename>
-const T &
-Model::declare_parameter(const std::string & name, const std::string & input_option_name)
-{
-  if (options().contains<T>(input_option_name))
-    return declare_parameter(name, options().get<T>(input_option_name));
-  else if (options().contains<CrossRef<T>>(input_option_name))
-  {
-    try
-    {
-      return declare_parameter(name, T(options().get<CrossRef<T>>(input_option_name)));
-    }
-    catch (const NEMLException & e1)
-    {
-      try
-      {
-        auto & nl_param = Factory::get_object<NonlinearParameter<T>>(
-            "Models", options().get<CrossRef<T>>(input_option_name).raw());
-        declare_input_variable<T>(nl_param.p);
-        _nl_params.emplace(name, nl_param.p);
-        return nl_param.get_value();
-      }
-      catch (const NEMLException & e2)
-      {
-        std::cerr << e1.what() << std::endl;
-        std::cerr << e2.what() << std::endl;
-      }
-    }
-  }
-
-  throw NEMLException(
-      "Trying to register parameter named " + name + " from input option named " +
-      input_option_name + " of type " + utils::demangle(typeid(T).name()) +
-      ". Make sure you provided the correct parameter name, option name, and parameter type. Note "
-      "that the parameter type can either be a plain type, a cross-reference, or an "
-      "interpolation.");
-}
-
-template const Scalar & Model::declare_parameter<Scalar>(const std::string &, const std::string &);
-template const Vec & Model::declare_parameter<Vec>(const std::string &, const std::string &);
-template const Rot & Model::declare_parameter<Rot>(const std::string &, const std::string &);
-template const R2 & Model::declare_parameter<R2>(const std::string &, const std::string &);
-template const SR2 & Model::declare_parameter<SR2>(const std::string &, const std::string &);
-template const R3 & Model::declare_parameter<R3>(const std::string &, const std::string &);
-template const SFR3 & Model::declare_parameter<SFR3>(const std::string &, const std::string &);
-template const R4 & Model::declare_parameter<R4>(const std::string &, const std::string &);
-template const SSR4 & Model::declare_parameter<SSR4>(const std::string &, const std::string &);
-template const R5 & Model::declare_parameter<R5>(const std::string &, const std::string &);
-template const SSFR5 & Model::declare_parameter<SSFR5>(const std::string &, const std::string &);
 } // namespace neml2

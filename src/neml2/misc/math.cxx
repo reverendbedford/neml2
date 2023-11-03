@@ -30,13 +30,16 @@ namespace neml2
 namespace math
 {
 BatchTensor
-full_to_mandel(const BatchTensor & full, TorchSize dim)
+full_to_reduced(const BatchTensor & full,
+                const torch::Tensor & rmap,
+                const torch::Tensor & rfactors,
+                TorchSize dim)
 {
   using namespace torch::indexing;
 
   auto batch_dim = full.batch_dim();
   auto starting_dim = batch_dim + dim;
-  auto trailing_dim = full.dim() - starting_dim - 2; // 2 comes from the symmetric axes (3,3)
+  auto trailing_dim = full.dim() - starting_dim - 2; // 2 comes from the reduced axes (3,3)
   auto starting_shape = full.sizes().slice(0, starting_dim);
   auto trailing_shape = full.sizes().slice(starting_dim + 2);
 
@@ -44,8 +47,8 @@ full_to_mandel(const BatchTensor & full, TorchSize dim)
   net.push_back(Ellipsis);
   net.insert(net.end(), trailing_dim, None);
   auto map =
-      full_to_mandel_map.index(net).expand(utils::add_shapes(starting_shape, 6, trailing_shape));
-  auto factor = full_to_mandel_factor.to(full).index(net);
+      rmap.index(net).expand(utils::add_shapes(starting_shape, rmap.sizes()[0], trailing_shape));
+  auto factor = rfactors.to(full).index(net);
 
   return BatchTensor(
       factor * torch::gather(full.reshape(utils::add_shapes(starting_shape, 9, trailing_shape)),
@@ -55,26 +58,52 @@ full_to_mandel(const BatchTensor & full, TorchSize dim)
 }
 
 BatchTensor
-mandel_to_full(const BatchTensor & mandel, TorchSize dim)
+reduced_to_full(const BatchTensor & reduced,
+                const torch::Tensor & rmap,
+                const torch::Tensor & rfactors,
+                TorchSize dim)
 {
   using namespace torch::indexing;
 
-  auto batch_dim = mandel.batch_dim();
+  auto batch_dim = reduced.batch_dim();
   auto starting_dim = batch_dim + dim;
-  auto trailing_dim = mandel.dim() - starting_dim - 1; // There's only 1 axis using Mandel
-  auto starting_shape = mandel.sizes().slice(0, starting_dim);
-  auto trailing_shape = mandel.sizes().slice(starting_dim + 1);
+  auto trailing_dim = reduced.dim() - starting_dim - 1; // There's only 1 axis to unsqueeze
+  auto starting_shape = reduced.sizes().slice(0, starting_dim);
+  auto trailing_shape = reduced.sizes().slice(starting_dim + 1);
 
   TorchSlice net(starting_dim, None);
   net.push_back(Ellipsis);
   net.insert(net.end(), trailing_dim, None);
-  auto map =
-      mandel_to_full_map.index(net).expand(utils::add_shapes(starting_shape, 9, trailing_shape));
-  auto factor = mandel_to_full_factor.to(mandel).index(net);
+  auto map = rmap.index(net).expand(utils::add_shapes(starting_shape, 9, trailing_shape));
+  auto factor = rfactors.to(reduced).index(net);
 
-  return BatchTensor((factor * torch::gather(mandel, starting_dim, map))
+  return BatchTensor((factor * torch::gather(reduced, starting_dim, map))
                          .reshape(utils::add_shapes(starting_shape, 3, 3, trailing_shape)),
                      batch_dim);
+}
+
+BatchTensor
+full_to_mandel(const BatchTensor & full, TorchSize dim)
+{
+  return full_to_reduced(full, full_to_mandel_map, full_to_mandel_factor, dim);
+}
+
+BatchTensor
+mandel_to_full(const BatchTensor & mandel, TorchSize dim)
+{
+  return reduced_to_full(mandel, mandel_to_full_map, mandel_to_full_factor, dim);
+}
+
+BatchTensor
+full_to_skew(const BatchTensor & full, TorchSize dim)
+{
+  return full_to_reduced(full, full_to_skew_map, full_to_skew_factor, dim);
+}
+
+BatchTensor
+skew_to_full(const BatchTensor & skew, TorchSize dim)
+{
+  return reduced_to_full(skew, skew_to_full_map, skew_to_full_factor, dim);
 }
 
 BatchTensor
@@ -122,5 +151,6 @@ jacrev(const BatchTensor & out, const BatchTensor & p)
 
   return dout_dp / factor;
 }
+
 } // namespace math
 } // namespace neml2

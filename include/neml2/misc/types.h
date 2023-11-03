@@ -30,6 +30,7 @@
 namespace neml2
 {
 typedef double Real;
+typedef int Integer;
 typedef int64_t TorchSize;
 typedef std::vector<TorchSize> TorchShape;
 typedef torch::IntArrayRef TorchShapeRef;
@@ -64,6 +65,11 @@ static const torch::TensorOptions default_tensor_options = torch::TensorOptions(
                                                                .layout(torch::kStrided)
                                                                .device(torch::kCPU)
                                                                .requires_grad(false);
+
+/// We similarly want to have a default integer scalar type for some types of tensors
+#define TORCH_INT_DTYPE CONCAT(TORCH_ENUM_PREFIX, INT_DTYPE)
+static const torch::TensorOptions default_integer_tensor_options =
+    default_tensor_options.dtype(TORCH_INT_DTYPE);
 
 template <bool...>
 struct bool_pack;

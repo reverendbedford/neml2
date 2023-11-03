@@ -27,6 +27,7 @@
 #include "neml2/base/CrossRef.h"
 #include "neml2/tensors/LabeledAxis.h"
 #include "neml2/tensors/tensors.h"
+#include "neml2/models/crystallography/MillerIndex.h"
 #include <memory>
 
 namespace neml2
@@ -157,6 +158,7 @@ HITParser::extract_option(hit::Node * n, OptionSet & options) const
         extract_option_t(CrossRef<SSR4>);
         extract_option_t(CrossRef<R5>);
         extract_option_t(CrossRef<SSFR5>);
+        extract_option_t(CrossRef<crystallography::MillerIndex>);
         // LCOV_EXCL_START
         else neml_assert(false, "Unsupported option type for option ", n->fullpath());
         // LCOV_EXCL_STOP
