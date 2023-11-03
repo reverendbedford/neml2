@@ -48,7 +48,7 @@ public:
    *
    * @return A map from parameter name to parameter value
    */
-  virtual std::map<std::string, BatchTensor> named_parameters() const;
+  std::map<std::string, BatchTensor> named_parameters() const;
 
   /// Get a parameter's value
   template <typename T,

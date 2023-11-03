@@ -57,7 +57,7 @@ public:
    * @param recurse Whether to recursively retrieve buffers from registered Datas.
    * @return A map from buffer name to buffer value
    */
-  virtual std::map<std::string, BatchTensor> named_buffers(bool recurse) const;
+  std::map<std::string, BatchTensor> named_buffers(bool recurse) const;
 
   /// All the registered data objects
   const std::vector<Data *> & registered_data() const { return _registered_data; }

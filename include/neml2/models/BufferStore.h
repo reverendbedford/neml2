@@ -44,7 +44,7 @@ public:
    *
    * @return A map from buffer name to buffer value
    */
-  virtual std::map<std::string, BatchTensor> named_buffers() const;
+  std::map<std::string, BatchTensor> named_buffers() const;
 
   /// Get a buffer's value
   template <typename T,
