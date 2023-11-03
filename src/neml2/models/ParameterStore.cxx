@@ -1,5 +1,30 @@
+// Copyright 2023, UChicago Argonne, LLC
+// All Rights Reserved
+// Software Name: NEML2 -- the New Engineering material Model Library, version 2
+// By: Argonne National Laboratory
+// OPEN SOURCE LICENSE (MIT)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
 #include "neml2/models/ParameterStore.h"
 #include "neml2/models/NonlinearParameter.h"
+#include "neml2/tensors/macros.h"
 
 namespace neml2
 {
@@ -48,22 +73,7 @@ ParameterStore::declare_parameter(const std::string & name, const std::string & 
       "interpolation.");
 }
 
-template const Scalar & ParameterStore::declare_parameter<Scalar>(const std::string &,
-                                                                  const std::string &);
-template const Vec & ParameterStore::declare_parameter<Vec>(const std::string &,
-                                                            const std::string &);
-template const Rot & ParameterStore::declare_parameter<Rot>(const std::string &,
-                                                            const std::string &);
-template const R2 & ParameterStore::declare_parameter<R2>(const std::string &, const std::string &);
-template const SR2 & ParameterStore::declare_parameter<SR2>(const std::string &,
-                                                            const std::string &);
-template const R3 & ParameterStore::declare_parameter<R3>(const std::string &, const std::string &);
-template const SFR3 & ParameterStore::declare_parameter<SFR3>(const std::string &,
-                                                              const std::string &);
-template const R4 & ParameterStore::declare_parameter<R4>(const std::string &, const std::string &);
-template const SSR4 & ParameterStore::declare_parameter<SSR4>(const std::string &,
-                                                              const std::string &);
-template const R5 & ParameterStore::declare_parameter<R5>(const std::string &, const std::string &);
-template const SSFR5 & ParameterStore::declare_parameter<SSFR5>(const std::string &,
-                                                                const std::string &);
+#define instantiate_declare_parameter(T)                                                           \
+  template const T & ParameterStore::declare_parameter<T>(const std::string &, const std::string &)
+FOR_ALL_FIXEDDIMTENSOR(instantiate_declare_parameter);
 } // namespace neml2

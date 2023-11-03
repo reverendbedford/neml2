@@ -89,6 +89,7 @@ public:
    * @return A map from parameter name to parameter value
    */
   virtual std::map<std::string, BatchTensor> named_parameters(bool recurse) const;
+  using ParameterStore::named_parameters;
 
   /// The models that may be used during the evaluation of this model
   const std::vector<Model *> & registered_models() const { return _registered_models; }
