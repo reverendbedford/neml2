@@ -54,7 +54,7 @@ ContainsParameters<Base>::named_parameters(bool recurse) const
     params.emplace(n, _param_values[_param_ids.at(n)]);
 
   if (recurse)
-    for (auto & model : Base::registered_models())
+    for (auto & model : Base::registered_objects())
       for (auto && [n, v] : model->named_parameters(true))
         params.emplace(model->name() + "." + n, v);
 
@@ -103,40 +103,40 @@ ContainsParameters<Base>::declare_parameter(const std::string & name,
       "interpolation.");
 }
 
-template class ContainsParameters<ContainsBuffers<ModelBase>>;
+template class ContainsParameters<ContainsBuffers<ObjectContainer<Model, ModelSection>>>;
 
 template const Scalar &
-ContainsParameters<ContainsBuffers<ModelBase>>::declare_parameter<Scalar>(const std::string &,
-                                                                          const std::string &);
+ContainsParameters<ContainsBuffers<ObjectContainer<Model, ModelSection>>>::declare_parameter<
+    Scalar>(const std::string &, const std::string &);
 template const Vec &
-ContainsParameters<ContainsBuffers<ModelBase>>::declare_parameter<Vec>(const std::string &,
-                                                                       const std::string &);
+ContainsParameters<ContainsBuffers<ObjectContainer<Model, ModelSection>>>::declare_parameter<Vec>(
+    const std::string &, const std::string &);
 template const Rot &
-ContainsParameters<ContainsBuffers<ModelBase>>::declare_parameter<Rot>(const std::string &,
-                                                                       const std::string &);
+ContainsParameters<ContainsBuffers<ObjectContainer<Model, ModelSection>>>::declare_parameter<Rot>(
+    const std::string &, const std::string &);
 template const R2 &
-ContainsParameters<ContainsBuffers<ModelBase>>::declare_parameter<R2>(const std::string &,
-                                                                      const std::string &);
+ContainsParameters<ContainsBuffers<ObjectContainer<Model, ModelSection>>>::declare_parameter<R2>(
+    const std::string &, const std::string &);
 template const SR2 &
-ContainsParameters<ContainsBuffers<ModelBase>>::declare_parameter<SR2>(const std::string &,
-                                                                       const std::string &);
+ContainsParameters<ContainsBuffers<ObjectContainer<Model, ModelSection>>>::declare_parameter<SR2>(
+    const std::string &, const std::string &);
 template const R3 &
-ContainsParameters<ContainsBuffers<ModelBase>>::declare_parameter<R3>(const std::string &,
-                                                                      const std::string &);
+ContainsParameters<ContainsBuffers<ObjectContainer<Model, ModelSection>>>::declare_parameter<R3>(
+    const std::string &, const std::string &);
 template const SFR3 &
-ContainsParameters<ContainsBuffers<ModelBase>>::declare_parameter<SFR3>(const std::string &,
-                                                                        const std::string &);
+ContainsParameters<ContainsBuffers<ObjectContainer<Model, ModelSection>>>::declare_parameter<SFR3>(
+    const std::string &, const std::string &);
 template const R4 &
-ContainsParameters<ContainsBuffers<ModelBase>>::declare_parameter<R4>(const std::string &,
-                                                                      const std::string &);
+ContainsParameters<ContainsBuffers<ObjectContainer<Model, ModelSection>>>::declare_parameter<R4>(
+    const std::string &, const std::string &);
 template const SSR4 &
-ContainsParameters<ContainsBuffers<ModelBase>>::declare_parameter<SSR4>(const std::string &,
-                                                                        const std::string &);
+ContainsParameters<ContainsBuffers<ObjectContainer<Model, ModelSection>>>::declare_parameter<SSR4>(
+    const std::string &, const std::string &);
 template const R5 &
-ContainsParameters<ContainsBuffers<ModelBase>>::declare_parameter<R5>(const std::string &,
-                                                                      const std::string &);
+ContainsParameters<ContainsBuffers<ObjectContainer<Model, ModelSection>>>::declare_parameter<R5>(
+    const std::string &, const std::string &);
 template const SSFR5 &
-ContainsParameters<ContainsBuffers<ModelBase>>::declare_parameter<SSFR5>(const std::string &,
-                                                                         const std::string &);
+ContainsParameters<ContainsBuffers<ObjectContainer<Model, ModelSection>>>::declare_parameter<SSFR5>(
+    const std::string &, const std::string &);
 
 } // namespace neml2

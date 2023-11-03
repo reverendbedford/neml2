@@ -24,6 +24,7 @@
 
 #include "neml2/models/ContainsBuffers.h"
 
+#include "neml2/models/Data.h"
 #include "neml2/models/Model.h"
 
 namespace neml2
@@ -37,7 +38,7 @@ ContainsBuffers<Base>::to(const torch::Device & device)
     _buffer_values[id].to(device);
 }
 
-template class ContainsBuffers<ModelBase>;
-template class ContainsBuffers<DataBase>;
+template class ContainsBuffers<ObjectContainer<Data, DataSection>>;
+template class ContainsBuffers<ObjectContainer<Model, ModelSection>>;
 
 } // namespace neml2

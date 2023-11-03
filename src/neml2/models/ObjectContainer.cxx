@@ -22,18 +22,44 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
-
-#include "neml2/models/ContainsBuffers.h"
 #include "neml2/models/ObjectContainer.h"
+
+#include "neml2/models/Data.h"
+#include "neml2/models/Model.h"
 
 namespace neml2
 {
 
-class Data : public ContainsBuffers<ObjectContainer<Data, DataSection>>
+template <typename T, InputSection I>
+OptionSet
+ObjectContainer<T, I>::expected_options()
 {
-public:
-  using ContainsBuffers<ObjectContainer<Data, DataSection>>::ContainsBuffers;
-};
+  OptionSet options = NEML2Object::expected_options();
+  return options;
+}
 
-} // namespace neml2
+template <typename T, InputSection I>
+ObjectContainer<T, I>::ObjectContainer(const OptionSet & options)
+  : NEML2Object(options)
+{
+}
+
+template <typename T, InputSection I>
+void
+ObjectContainer<T, I>::to(const torch::Device & device)
+{
+  for (auto & model : _registered_objects)
+    model->to(device);
+}
+
+template <typename T, InputSection I>
+void
+ObjectContainer<T, I>::register_object(std::shared_ptr<T> model)
+{
+  _registered_objects.push_back(model.get());
+}
+
+template class ObjectContainer<Data, DataSection>;
+template class ObjectContainer<Model, ModelSection>;
+
+}

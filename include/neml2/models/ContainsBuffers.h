@@ -32,10 +32,9 @@ namespace neml2
 {
 /// Interface for object which can store buffers
 template <typename Base>
-class ContainsBuffers : public Base
+class ContainsBuffers
 {
 public:
-  using Base::Base;
   /**
    * @brief Send buffers to device
    *

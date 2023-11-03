@@ -33,16 +33,15 @@ namespace neml2
 
 /// Interface for object which can store buffers
 template <typename Base>
-class ContainsParameters : public Base
+class ContainsParameters
 {
 public:
-  using Base::Base;
   /**
    * @brief Send buffers to device
    *
    * @param device The target device
    */
-  virtual void to(const torch::Device & device) override;
+  virtual void to(const torch::Device & device);
 
   bool has_parameter(const std::string & name) const { return _param_ids.count(name); }
 
@@ -57,7 +56,7 @@ public:
    * @param recurse Whether to recursively retrieve parameter names of sub-models.
    * @return A map from parameter name to parameter value
    */
-  virtual std::map<std::string, BatchTensor> named_parameters(bool recurse = false) const override;
+  virtual std::map<std::string, BatchTensor> named_parameters(bool recurse = false) const;
 
   /// Get a parameter's value
   template <typename T,

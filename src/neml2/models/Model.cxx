@@ -27,20 +27,21 @@
 
 namespace neml2
 {
-ModelBase::Stage ModelBase::stage = UPDATING;
+Model::Stage Model::stage = UPDATING;
 
 OptionSet
-ModelBase::expected_options()
+Model::expected_options()
 {
-  OptionSet options = DataBase::expected_options();
+  OptionSet options =
+      ContainsParameters<ContainsBuffers<ObjectContainer<Model, ModelSection>>>::expected_options();
   options.set<std::vector<LabeledAxisAccessor>>("additional_outputs");
   options.set<bool>("use_AD_first_derivative") = false;
   options.set<bool>("use_AD_second_derivative") = false;
   return options;
 }
 
-ModelBase::ModelBase(const OptionSet & options)
-  : DataBase(options),
+Model::Model(const OptionSet & options)
+  : ContainsParameters<ContainsBuffers<ObjectContainer<Model, ModelSection>>>(options),
     _input(declare_axis()),
     _output(declare_axis()),
     _AD_1st_deriv(options.get<bool>("use_AD_first_derivative")),
@@ -53,22 +54,20 @@ ModelBase::ModelBase(const OptionSet & options)
 }
 
 void
-ModelBase::to(const torch::Device & device)
+Model::to(const torch::Device & device)
 {
-  DataBase::to(device);
-  for (auto & model : _registered_models)
-    model->to(device);
+  ContainsParameters<ContainsBuffers<ObjectContainer<Model, ModelSection>>>::to(device);
 }
 
 void
-ModelBase::check_AD_limitation() const
+Model::check_AD_limitation() const
 {
   if (_AD_1st_deriv && !_AD_2nd_deriv)
     throw NEMLException("AD derivative is requested, but AD second derivative is not requested.");
 }
 
 void
-ModelBase::use_AD_derivatives(bool first, bool second)
+Model::use_AD_derivatives(bool first, bool second)
 {
   _AD_1st_deriv = first;
   _AD_2nd_deriv = second;
@@ -76,7 +75,7 @@ ModelBase::use_AD_derivatives(bool first, bool second)
 }
 
 LabeledVector
-ModelBase::value(const LabeledVector & in) const
+Model::value(const LabeledVector & in) const
 {
   auto out = LabeledVector::empty(in.batch_sizes(), {&output()}, in.options());
   set_value(in, &out);
@@ -84,7 +83,7 @@ ModelBase::value(const LabeledVector & in) const
 }
 
 LabeledMatrix
-ModelBase::dvalue(const LabeledVector & in) const
+Model::dvalue(const LabeledVector & in) const
 {
   if (_AD_1st_deriv)
     return std::get<1>(value_and_dvalue(in));
@@ -101,7 +100,7 @@ ModelBase::dvalue(const LabeledVector & in) const
 }
 
 LabeledTensor3D
-ModelBase::d2value(const LabeledVector & in) const
+Model::d2value(const LabeledVector & in) const
 {
   neml_assert_dbg(
       !implicit(), name(), " is an implicit model and does not provide second derivatives.");
@@ -116,7 +115,7 @@ ModelBase::d2value(const LabeledVector & in) const
 }
 
 std::tuple<LabeledVector, LabeledMatrix>
-ModelBase::value_and_dvalue(const LabeledVector & in) const
+Model::value_and_dvalue(const LabeledVector & in) const
 {
   auto out = LabeledVector::empty(in.batch_sizes(), {&output()}, in.options());
   auto dout_din = LabeledMatrix::zeros(in.batch_sizes(), {&output(), &in.axis()}, in.options());
@@ -152,7 +151,7 @@ ModelBase::value_and_dvalue(const LabeledVector & in) const
 }
 
 std::tuple<LabeledMatrix, LabeledTensor3D>
-ModelBase::dvalue_and_d2value(const LabeledVector & in) const
+Model::dvalue_and_d2value(const LabeledVector & in) const
 {
   neml_assert_dbg(
       !implicit(), name(), " is an implicit model and does not provide second derivatives.");
@@ -171,7 +170,7 @@ ModelBase::dvalue_and_d2value(const LabeledVector & in) const
 }
 
 std::tuple<LabeledVector, LabeledMatrix, LabeledTensor3D>
-ModelBase::value_and_dvalue_and_d2value(const LabeledVector & in) const
+Model::value_and_dvalue_and_d2value(const LabeledVector & in) const
 {
   neml_assert_dbg(
       !implicit(), name(), " is an implicit model and does not provide second derivatives.");
@@ -232,7 +231,7 @@ ModelBase::value_and_dvalue_and_d2value(const LabeledVector & in) const
 }
 
 void
-ModelBase::register_model(std::shared_ptr<ModelBase> model, bool merge_input)
+Model::register_model(std::shared_ptr<Model> model, bool merge_input)
 {
   if (merge_input)
   {
@@ -241,17 +240,17 @@ ModelBase::register_model(std::shared_ptr<ModelBase> model, bool merge_input)
     _consumed_vars.insert(merged_vars.begin(), merged_vars.end());
   }
 
-  _registered_models.push_back(model.get());
+  ContainsParameters<ContainsBuffers<ObjectContainer<Model, ModelSection>>>::register_object(model);
 }
 
 void
-ModelBase::cache_input(const LabeledVector & in)
+Model::cache_input(const LabeledVector & in)
 {
   _cached_in = in.clone();
 }
 
 void
-ModelBase::assemble(const BatchTensor & x, BatchTensor * r, BatchTensor * J) const
+Model::assemble(const BatchTensor & x, BatchTensor * r, BatchTensor * J) const
 {
   auto in = LabeledVector::empty(x.batch_sizes(), {&input()}, x.options());
 

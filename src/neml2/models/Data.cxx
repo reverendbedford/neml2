@@ -26,28 +26,4 @@
 
 namespace neml2
 {
-OptionSet
-DataBase::expected_options()
-{
-  OptionSet options = NEML2Object::expected_options();
-  return options;
-}
-
-DataBase::DataBase(const OptionSet & options)
-  : NEML2Object(options)
-{
-}
-
-void
-DataBase::to(const torch::Device & device)
-{
-  for (auto & model : _registered_data)
-    model->to(device);
-}
-
-void
-DataBase::register_data(std::shared_ptr<DataBase> model)
-{
-  _registered_data.push_back(model.get());
-}
 }
