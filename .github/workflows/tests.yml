@@ -12,6 +12,11 @@ permissions:
   contents: read  # Required when overriding permissions
   pull-requests: write  # For posting coverage report
 
+# Newer commits should cancel old runs
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   clang-format:
     name: Formatting Check
