@@ -132,19 +132,23 @@ jobs:
           path: neml2
       - name: Create a source file for testing purposes
         run: |
-          echo "#include \"neml2/base/Registry.h\"" > main.cxx
-          echo "using namespace neml2;" > main.cxx
-          echo "int main(int argc, char * argv[]) {" > main.cxx
-          echo "  std::cout << neml2::Registry::expected_options(\"ScalarSumModel\") << std::endl;" > main.cxx
-          echo "  return 0;" > main.cxx
-          echo "}" > main.cxx
+          echo -e "\
+            #include \"neml2/base/Registry.h\"\n\
+            using namespace neml2;\n\
+            int main(int argc, char * argv[]) {\n\
+              std::cout << neml2::Registry::expected_options(\"ScalarSumModel\") << std::endl;\n\
+              return 0;\n\
+            }\
+            " > main.cxx
       - run: cat main.cxx
       - name: Create a CMakeLists.txt file for testing purposes
         run: |
-          echo "project(FOO)" > CMakeLists.txt
-          echo "add_subdirectory(neml2)" > CMakeLists.txt
-          echo "add_executable(foo main.cxx)" > CMakeLists.txt
-          echo "target_link_libraries(foo neml2)" > CMakeLists.txt
+          echo -e "\
+            project(FOO)\n\
+            add_subdirectory(neml2)\n\
+            add_executable(foo main.cxx)\n\
+            target_link_libraries(foo neml2)\n\
+            " > CMakeLists.txt
       - run: cat CMakeLists.txt
       - run: cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF -B build .
       - run: cd build && ./foo
