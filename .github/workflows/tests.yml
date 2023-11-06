@@ -129,6 +129,7 @@ jobs:
           github-token: ${{ secrets.PR_ACTION }}
   cmake-integration:
     name: Test CMake integration as a subproject
+    needs: clang-format
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -139,7 +140,7 @@ jobs:
         run: |
           echo -e "\
             #include \"neml2/base/Registry.h\"\n\
-            int main(int argc, char * argv[]) {\n\
+            int main() {\n\
               std::cout << neml2::Registry::expected_options(\"ScalarSumModel\") << std::endl;\n\
               return 0;\n\
             }\
