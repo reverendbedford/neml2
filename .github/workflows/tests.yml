@@ -130,7 +130,8 @@ jobs:
         with:
           submodules: recursive
           path: neml2
-      - run: |
+      - name: Create a source file for testing purposes
+        run: |
           echo "#include \"neml2/base/Registry.h\"" > main.cxx
           echo "using namespace neml2;" > main.cxx
           echo "int main(int argc, char * argv[]) {" > main.cxx
@@ -138,7 +139,8 @@ jobs:
           echo "  return 0;" > main.cxx
           echo "}" > main.cxx
       - run: cat main.cxx
-      - run: |
+      - name: Create a CMakeLists.txt file for testing purposes
+        run: |
           echo "project(FOO)" > CMakeLists.txt
           echo "add_subdirectory(neml2)" > CMakeLists.txt
           echo "add_executable(foo main.cxx)" > CMakeLists.txt
