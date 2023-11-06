@@ -54,7 +54,17 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: "3.10"
-      - run: cmake -DCMAKE_BUILD_TYPE=${{ matrix.btype }} -DCMAKE_UNITY_BUILD=${{ matrix.unity }} .
+      - run: |
+          cmake \
+            -DCMAKE_BUILD_TYPE=${{ matrix.btype }} \
+            -DCMAKE_UNITY_BUILD=${{ matrix.unity }} \
+            -DNEML2_UNIT=ON \
+            -DNEML2_REGRESSION=ON \
+            -DNEML2_VERIFICATION=ON \
+            -DNEML2_BENCHMARK=OFF \
+            -DNEML2_PROFILING=OFF \
+            -DNEML2_DOC=OFF \
+            .
       - run: make -j 2
       - run: make test
   build-all:
@@ -71,7 +81,17 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: "3.10"
-      - run: cmake -DCMAKE_BUILD_TYPE=${{ matrix.btype }} -DCMAKE_UNITY_BUILD=${{ matrix.unity }} -DUNIT=ON -DREGRESSION=ON -DVERIFICATION=ON -DBENCHMARK=ON -DPROFILING=ON .
+      - run: |
+          cmake \
+            -DCMAKE_BUILD_TYPE=${{ matrix.btype }} \
+            -DCMAKE_UNITY_BUILD=${{ matrix.unity }} \
+            -DNEML2_UNIT=ON \
+            -DNEML2_REGRESSION=ON \
+            -DNEML2_VERIFICATION=ON \
+            -DNEML2_BENCHMARK=ON \
+            -DNEML2_PROFILING=ON \
+            -DNEML2_DOC=OFF \
+            .
       - run: make -j 2
   coverage:
     name: Code coverage check
@@ -85,10 +105,43 @@ jobs:
         with:
           python-version: "3.10"
       - run: sudo apt install lcov
-      - run: cmake -DCMAKE_BUILD_TYPE=Coverage .
+      - run: |
+          cmake \
+            -DCMAKE_BUILD_TYPE=Coverage \
+            -DCMAKE_UNITY_BUILD=OFF \
+            -DNEML2_UNIT=ON \
+            -DNEML2_REGRESSION=ON \
+            -DNEML2_VERIFICATION=ON \
+            -DNEML2_BENCHMARK=OFF \
+            -DNEML2_PROFILING=OFF \
+            -DNEML2_DOC=OFF \
+            .
       - run: make -j 2
       - run: ./scripts/coverage.sh
       - uses: romeovs/lcov-reporter-action@v0.2.19
         with:
           lcov-file: ./coverage/coverage.info
           github-token: ${{ secrets.PR_ACTION }}
+  cmake-integration:
+    name: Test CMake integration as a subproject
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+          path: neml2
+      - run: |
+          echo "#include \"neml2/base/Registry.h\"" > main.cxx
+          echo "using namespace neml2;" > main.cxx
+          echo "int main(int argc, char * argv[]) {" > main.cxx
+          echo "  std::cout << neml2::Registry::expected_options(\"ScalarSumModel\") << std::endl;" > main.cxx
+          echo "  return 0;" > main.cxx
+          echo "}"
+      - run: |
+          echo "PROJECT(FOO)" > CMakeLists.txt
+          echo "add_subdirectory(neml2)" > CMakeLists.txt
+          echo "add_executable(foo main.cxx)" > CMakeLists.txt
+          echo "target_link_libraries(foo neml2)" > CMakeLists.txt
+      - run: cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF -B build .
+      - run: cd build && ./foo
+

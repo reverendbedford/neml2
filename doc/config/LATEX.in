@@ -4,9 +4,9 @@
 GENERATE_LATEX         = YES
 LATEX_CMD_NAME         = pdflatex
 EXTRA_PACKAGES         = {amsmath},{lmodern},{physics}
-LATEX_HEADER           = ${PROJECT_SOURCE_DIR}/doc/config/ANLReportHeader.tex
-LATEX_FOOTER           = ${PROJECT_SOURCE_DIR}/doc/config/ANLReportFooter.tex
-LATEX_EXTRA_STYLESHEET = ${PROJECT_SOURCE_DIR}/doc/config/ANLReportExtra.sty
+LATEX_HEADER           = ${NEML2_SOURCE_DIR}/doc/config/ANLReportHeader.tex
+LATEX_FOOTER           = ${NEML2_SOURCE_DIR}/doc/config/ANLReportFooter.tex
+LATEX_EXTRA_STYLESHEET = ${NEML2_SOURCE_DIR}/doc/config/ANLReportExtra.sty
 LATEX_HIDE_INDICES     = YES
 
 #---------------------------------------------------------------------------

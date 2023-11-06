@@ -18,29 +18,29 @@ HIDE_SCOPE_NAMES       = YES
 SHOW_USED_FILES        = NO
 SHOW_FILES             = NO
 SHOW_NAMESPACES        = NO
-LAYOUT_FILE            = ${PROJECT_SOURCE_DIR}/doc/config/DoxygenLayout.xml
+LAYOUT_FILE            = ${NEML2_SOURCE_DIR}/doc/config/DoxygenLayout.xml
 
 #---------------------------------------------------------------------------
 # Configuration options related to warning and progress messages
 #---------------------------------------------------------------------------
 WARN_NO_PARAMDOC       = YES
-WARN_LOGFILE           = ${CMAKE_BINARY_DIR}/doc/doxygen.log
+WARN_LOGFILE           = ${NEML2_BINARY_DIR}/doc/doxygen.log
 
 #---------------------------------------------------------------------------
 # Configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = ${PROJECT_SOURCE_DIR}/README.md \
-                         ${PROJECT_SOURCE_DIR}/src \
-                         ${PROJECT_SOURCE_DIR}/include \
-                         ${PROJECT_SOURCE_DIR}/doc/content \
-                         ${CMAKE_BINARY_DIR}/doc/content
+INPUT                  = ${NEML2_SOURCE_DIR}/README.md \
+                         ${NEML2_SOURCE_DIR}/src \
+                         ${NEML2_SOURCE_DIR}/include \
+                         ${NEML2_SOURCE_DIR}/doc/content \
+                         ${NEML2_BINARY_DIR}/doc/content
 FILE_PATTERNS          = *.cxx \
                          *.h \
                          *.md
 RECURSIVE              = YES
-IMAGE_PATH             = ${PROJECT_SOURCE_DIR}/doc/content/asset
+IMAGE_PATH             = ${NEML2_SOURCE_DIR}/doc/content/asset
 EXCLUDE_SYMBOLS        = neml2::*internal neml2::*details
-USE_MDFILE_AS_MAINPAGE = ${PROJECT_SOURCE_DIR}/README.md
+USE_MDFILE_AS_MAINPAGE = ${NEML2_SOURCE_DIR}/README.md
 
 #---------------------------------------------------------------------------
 # Configuration options related to the alphabetical class index

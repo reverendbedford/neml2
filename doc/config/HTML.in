@@ -3,8 +3,8 @@
 #---------------------------------------------------------------------------
 GENERATE_HTML          = YES
 HTML_OUTPUT            = html
-HTML_EXTRA_STYLESHEET  = ${PROJECT_SOURCE_DIR}/extern/doxygen-awesome-css/doxygen-awesome.css \
-                         ${PROJECT_SOURCE_DIR}/extern/doxygen-awesome-css/doxygen-awesome-sidebar-only.css
+HTML_EXTRA_STYLESHEET  = ${NEML2_SOURCE_DIR}/extern/doxygen-awesome-css/doxygen-awesome.css \
+                         ${NEML2_SOURCE_DIR}/extern/doxygen-awesome-css/doxygen-awesome-sidebar-only.css
 GENERATE_TREEVIEW      = YES
 USE_MATHJAX            = YES
 MATHJAX_VERSION        = MathJax_3
