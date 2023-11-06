@@ -10,7 +10,7 @@ target_compile_options(neml2 PUBLIC -Wall -Wextra -pedantic -Werror)
 REGISTERUNITYGROUP(neml2 "NEML2" .)
 
 # My headers
-target_include_directories(neml2 PRIVATE "${CMAKE_SOURCE_DIR}/include")
+target_include_directories(neml2 PUBLIC "${NEML2_SOURCE_DIR}/include")
 
 # torch headers
 # torch libraries
@@ -20,13 +20,21 @@ target_link_libraries(neml2 ${TORCH_LIBRARIES})
 target_link_libraries(neml2 hit)
 
 # Make scalar type configurable:
-set(DTYPE_LIST UInt8 Int8 Int16 Int32 Int64 Float16 Float32 Float64)
-set(DTYPE "Float64" CACHE STRING "default scalar type. Candidates are ${DTYPE_LIST}")
-target_compile_definitions(neml2 PUBLIC DTYPE=${DTYPE})
-message(STATUS "Configuring with default scalar type: ${DTYPE}")
+if(NOT NEML2_DTYPE)
+  set(NEML2_DTYPE "Float64" CACHE STRING "Default NEML2 scalar type." FORCE)
+  set_property(CACHE NEML2_DTYPE PROPERTY STRINGS
+    "UInt8" "Int8" "Int16" "Int32" "Int64" "Float16" "Float32" "Float64")
+endif()
+
+message(STATUS "Configuring with default scalar type: ${NEML2_DTYPE}")
+target_compile_definitions(neml2 PUBLIC DTYPE=${NEML2_DTYPE})
 
 # Also want to configure an int type for specialized int tensors
-set(INT_DTYPE_LIST Int8 Int16 Int32 Int64)
-set(INT_DTYPE "Int64" CACHE STRING "default scalar integer type.  Candidates are ${INT_DTYPE_LIST}")
-target_compile_definitions(neml2 PUBLIC INT_DTYPE=${INT_DTYPE})
-message(STATUS "Configure with default integer scalar type: ${INT_DTYPE}")
+if(NOT NEML2_INT_DTYPE)
+  set(NEML2_INT_DTYPE "Int64" CACHE STRING "Default NEML2 integer scalar type." FORCE)
+  set_property(CACHE NEML2_INT_DTYPE PROPERTY STRINGS
+    "Int8" "Int16" "Int32" "Int64")
+endif()
+
+message(STATUS "Configuring with default integer scalar type: ${NEML2_INT_DTYPE}")
+target_compile_definitions(neml2 PUBLIC INT_DTYPE=${NEML2_INT_DTYPE})
