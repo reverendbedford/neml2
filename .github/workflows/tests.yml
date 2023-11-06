@@ -136,12 +136,14 @@ jobs:
           echo "int main(int argc, char * argv[]) {" > main.cxx
           echo "  std::cout << neml2::Registry::expected_options(\"ScalarSumModel\") << std::endl;" > main.cxx
           echo "  return 0;" > main.cxx
-          echo "}"
+          echo "}" > main.cxx
+      - run: cat main.cxx
       - run: |
-          echo "PROJECT(FOO)" > CMakeLists.txt
+          echo "project(FOO)" > CMakeLists.txt
           echo "add_subdirectory(neml2)" > CMakeLists.txt
           echo "add_executable(foo main.cxx)" > CMakeLists.txt
           echo "target_link_libraries(foo neml2)" > CMakeLists.txt
+      - run: cat CMakeLists.txt
       - run: cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF -B build .
       - run: cd build && ./foo
 
