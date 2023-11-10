@@ -30,3 +30,5 @@ doc/html
 build
 _deps
 __pycache__
+config.h
+conftest.py
