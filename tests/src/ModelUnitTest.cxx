@@ -45,10 +45,14 @@ ModelUnitTest::expected_options()
   options.set<std::vector<CrossRef<Scalar>>>("input_scalar_values");
   options.set<std::vector<LabeledAxisAccessor>>("input_symr2_names");
   options.set<std::vector<CrossRef<SR2>>>("input_symr2_values");
+  options.set<std::vector<LabeledAxisAccessor>>("input_skewr2_names");
+  options.set<std::vector<CrossRef<WR2>>>("input_skewr2_values");
   options.set<std::vector<LabeledAxisAccessor>>("output_scalar_names");
   options.set<std::vector<CrossRef<Scalar>>>("output_scalar_values");
   options.set<std::vector<LabeledAxisAccessor>>("output_symr2_names");
   options.set<std::vector<CrossRef<SR2>>>("output_symr2_values");
+  options.set<std::vector<LabeledAxisAccessor>>("output_skewr2_names");
+  options.set<std::vector<CrossRef<WR2>>>("output_skewr2_values");
   options.set<Real>("output_rel_tol") = 1e-5;
   options.set<Real>("output_abs_tol") = 1e-8;
   options.set<Real>("derivatives_rel_tol") = 1e-5;
@@ -78,10 +82,12 @@ ModelUnitTest::ModelUnitTest(const OptionSet & options)
   _in = LabeledVector::zeros(_batch_shape, {&_model.input()});
   fill_vector<Scalar>(_in, "input_scalar_names", "input_scalar_values");
   fill_vector<SR2>(_in, "input_symr2_names", "input_symr2_values");
+  fill_vector<WR2>(_in, "input_skewr2_names", "input_skewr2_values");
 
   _out = LabeledVector::zeros(_batch_shape, {&_model.output()});
   fill_vector<Scalar>(_out, "output_scalar_names", "output_scalar_values");
   fill_vector<SR2>(_out, "output_symr2_names", "output_symr2_values");
+  fill_vector<WR2>(_out, "output_skewr2_names", "output_skewr2_values");
 }
 
 bool

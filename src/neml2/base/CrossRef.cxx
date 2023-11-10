@@ -97,5 +97,6 @@ specialize_crossref_FixedDimTensor(R4);
 specialize_crossref_FixedDimTensor(SSR4);
 specialize_crossref_FixedDimTensor(R5);
 specialize_crossref_FixedDimTensor(SSFR5);
+specialize_crossref_FixedDimTensor(WR2);
 specialize_crossref_FixedDimTensor(crystallography::MillerIndex);
 } // namesace neml2
