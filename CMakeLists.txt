@@ -38,48 +38,46 @@ enable_testing()
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+include(FetchContent)
+
 # Suppress the warning related to the new policy on fetch content's timestamp
 if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.24.0")
       cmake_policy(SET CMP0135 NEW)
 endif()
 
-# Python bindings
-option(NEML2_PYBIND "Build python bindings" OFF)
-
-if(NEML2_PYBIND)
-      find_package(Python COMPONENTS Interpreter Development)
-
-      # Figure out the torch path
-      execute_process(
-            COMMAND "${Python_EXECUTABLE}" "-c" "import torch;print(torch.__path__[0])"
-            OUTPUT_VARIABLE PYTORCH_DIR
-            OUTPUT_STRIP_TRAILING_WHITESPACE
-      )
-      message(STATUS "Autodetected PyTorch directory: ${PYTORCH_DIR}")
-
-      if(DEFINED LIBTORCH_DIR)
-            if(NOT LIBTORCH_DIR STREQUAL PYTORCH_DIR)
-                  message(WARNING "LIBTORCH_DIR is provided but is inconsistent with the PyTorch directory. This may lead to errors when importing the neml2 python bindings.")
-            endif()
-      else()
-            set(LIBTORCH_DIR ${PYTORCH_DIR})
-            message(STATUS "Using libTorch inside the autodected PyTorch direcotry")
-      endif()
-
-      # Suppress the warning related to the new policy on FindPythonXXX
-      if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.27.0")
-            cmake_policy(SET CMP0148 NEW)
-      endif()
-
-      add_subdirectory(${NEML2_SOURCE_DIR}/extern/pybind11)
-
-      add_subdirectory(python)
+# Suppress the warning related to the new policy on FindPythonXXX
+if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.27.0")
+      cmake_policy(SET CMP0148 NEW)
 endif()
 
-# Select between system torch and the current (CPU) torch
+# If LIBTORCH_DIR is not defined, we should spend some effort to provide a sensible default.
+# Plan A: If we can find Python, and PyTorch is available as a python package,
+# we can just use the libTorch shipped together with the PyTorch package.
+# This is actually preferred when we build Python bindings for NEML2.
 if(NOT DEFINED LIBTORCH_DIR)
-      # Location of current CPU torch
-      include(FetchContent)
+      message(STATUS "LIBTORCH_DIR not set, try to find a PyTorch installation.")
+
+      find_package(Python COMPONENTS Interpreter)
+
+      if(Python_Interpreter_FOUND)
+            # Figure out the torch path
+            execute_process(
+                  COMMAND "${Python_EXECUTABLE}" "scripts/find_torch.py"
+                  OUTPUT_VARIABLE PYTORCH_DIR
+                  OUTPUT_STRIP_TRAILING_WHITESPACE
+            )
+
+            if(NOT ${PYTORCH_DIR} STREQUAL "")
+                  set(LIBTORCH_DIR ${PYTORCH_DIR})
+                  message(STATUS "Using libTorch inside the autodected PyTorch direcotry: ${LIBTORCH_DIR}")
+            endif()
+      endif()
+endif()
+
+# Plan B: If we are on Unix systems, we could default to downloading a CPU-only
+# libTorch.
+if(NOT DEFINED LIBTORCH_DIR)
+      message(STATUS "LIBTORCH_DIR not set, try to download a libTorch (CPU) from the official website.")
 
       if(UNIX)
             if(NOT APPLE)
@@ -97,18 +95,30 @@ if(NOT DEFINED LIBTORCH_DIR)
 
                   message(WARNING ${CMAKE_SYSTEM_PROCESSOR})
             endif()
-      else()
-            message(FATAL_ERROR "We only download a default libtorch on linux and macos. For other operating systems, please specify LIBTORCH_DIR.")
-      endif()
 
-      message(STATUS "Downloading libTorch, this may take a few minutes.")
-      FetchContent_MakeAvailable(torch)
+            message(STATUS "Downloading libTorch, this may take a few minutes.")
+            FetchContent_MakeAvailable(torch)
 
-      if(APPLE AND APPLE_SILICON)
-            set(LIBTORCH_DIR ${torch_SOURCE_DIR}/torch)
+            if(APPLE AND APPLE_SILICON)
+                  set(LIBTORCH_DIR ${torch_SOURCE_DIR}/torch)
+            else()
+                  set(LIBTORCH_DIR ${torch_SOURCE_DIR})
+            endif()
+
+            message(STATUS "Using downloaded libTorch: ${LIBTORCH_DIR}")
       else()
-            set(LIBTORCH_DIR ${torch_SOURCE_DIR})
+            message(STATUS "We only download a default libTorch (CPU) on Linux and macOS.")
       endif()
+endif()
+
+# At this point, if LIBTORCH_DIR is still not set, then both plan A and plan B have failed :(
+if(NOT DEFINED LIBTORCH_DIR)
+      message(FATAL_ERROR
+            "LIBTORCH_DIR is not set, and we could not find/download a compatible libTorch. "
+            "There are two ways to fix this error:\n"
+            "  1. Manually download libTorch and set LIBTORCH_DIR while running cmake.\n"
+            "  2. Install Python and the PyTorch package.\n"
+            "If you are on a Unix-based system and ran into this error, please submit a bug report.")
 endif()
 
 find_package(Torch REQUIRED HINTS "${LIBTORCH_DIR}/share/cmake")
@@ -144,4 +154,32 @@ option(NEML2_DOC "Build NEML2 documentation: doxygen" OFF)
 
 if(NEML2_DOC)
       add_subdirectory(doc)
+endif()
+
+# Python bindings
+option(NEML2_PYBIND "Build python bindings" OFF)
+
+if(NEML2_PYBIND)
+      find_package(Python COMPONENTS Interpreter Development)
+
+      # Figure out the torch path
+      execute_process(
+            COMMAND "${Python_EXECUTABLE}" "scripts/find_torch.py"
+            OUTPUT_VARIABLE PYTORCH_DIR
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+      )
+
+      if(NOT ${PYTORCH_DIR} STREQUAL "")
+            if(NOT LIBTORCH_DIR STREQUAL PYTORCH_DIR)
+                  message(WARNING
+                        "LIBTORCH_DIR and PYTORCH_DIR are different. "
+                        "This may lead to errors when importing neml2 in Python. \n"
+                        "  LIBTORCH_DIR=${LIBTORCH_DIR}\n"
+                        "  PYTORCH_DIR=${PYTORCH_DIR}")
+            endif()
+      endif()
+
+      add_subdirectory(${NEML2_SOURCE_DIR}/extern/pybind11)
+
+      add_subdirectory(python)
 endif()
