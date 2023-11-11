@@ -6,11 +6,11 @@ on:
   pull_request:
     branches: [main]
   schedule:
-    - cron: '0 0 * * 0'
+    - cron: "0 0 * * 0"
 
 permissions:
-  contents: read  # Required when overriding permissions
-  pull-requests: write  # For posting coverage report
+  contents: read # Required when overriding permissions
+  pull-requests: write # For posting coverage report
 
 # Newer commits should cancel old runs
 concurrency:
@@ -68,11 +68,39 @@ jobs:
             -DNEML2_VERIFICATION=ON \
             -DNEML2_BENCHMARK=OFF \
             -DNEML2_PROFILING=OFF \
-            -DNEML2_PYBIND=ON \
+            -DNEML2_PYBIND=OFF \
             -DNEML2_DOC=OFF \
             .
       - run: make -j 2
       - run: make test
+  pyneml2:
+    needs: clang-format
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+      - run: pip install -r requirements.txt
+      - run: pip install torch
+      - run: |
+          cmake \
+            -DCMAKE_BUILD_TYPE=Debug \
+            -DCMAKE_UNITY_BUILD=OFF \
+            -DNEML2_UNIT=OFF \
+            -DNEML2_REGRESSION=OFF \
+            -DNEML2_VERIFICATION=OFF \
+            -DNEML2_BENCHMARK=OFF \
+            -DNEML2_PROFILING=OFF \
+            -DNEML2_PYBIND=ON \
+            -DNEML2_DOC=OFF \
+            .
+      - run: make -j 2
       - run: pytest
   build-all:
     needs: clang-format
