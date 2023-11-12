@@ -24,20 +24,35 @@
 
 #pragma once
 
-#include "neml2/tensors/BatchTensor.h"
-#include "neml2/tensors/Scalar.h"
-#include "neml2/tensors/Vec.h"
-#include "neml2/tensors/Rot.h"
-#include "neml2/tensors/R2.h"
-#include "neml2/tensors/SR2.h"
-#include "neml2/tensors/R3.h"
-#include "neml2/tensors/SFR3.h"
-#include "neml2/tensors/R4.h"
-#include "neml2/tensors/SSR4.h"
-#include "neml2/tensors/R5.h"
-#include "neml2/tensors/SSFR5.h"
-#include "neml2/tensors/WR2.h"
-#include "neml2/tensors/Quaternion.h"
-#include "neml2/tensors/SWR4.h"
-#include "neml2/tensors/WSR4.h"
-#include "neml2/tensors/WWR4.h"
+#include "neml2/models/Model.h"
+
+namespace neml2
+{
+class OrientationRate : public Model
+{
+public:
+  static OptionSet expected_options();
+
+  OrientationRate(const OptionSet & options);
+
+  // Output
+  const LabeledAxisAccessor orientation_rate;
+
+  // Input, state variables
+  const LabeledAxisAccessor elastic_strain;
+
+  // Input, kinematic variables
+  const LabeledAxisAccessor vorticity;
+
+  // Input, internal variables
+  const LabeledAxisAccessor plastic_deformation_rate;
+  const LabeledAxisAccessor plastic_vorticity;
+
+protected:
+  /// The flow direction
+  virtual void set_value(const LabeledVector & in,
+                         LabeledVector * out,
+                         LabeledMatrix * dout_din = nullptr,
+                         LabeledTensor3D * d2out_din2 = nullptr) const override;
+};
+} // namespace neml2

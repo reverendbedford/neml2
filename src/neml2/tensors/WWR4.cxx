@@ -22,22 +22,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
-
-#include "neml2/tensors/BatchTensor.h"
-#include "neml2/tensors/Scalar.h"
-#include "neml2/tensors/Vec.h"
-#include "neml2/tensors/Rot.h"
-#include "neml2/tensors/R2.h"
-#include "neml2/tensors/SR2.h"
-#include "neml2/tensors/R3.h"
-#include "neml2/tensors/SFR3.h"
-#include "neml2/tensors/R4.h"
-#include "neml2/tensors/SSR4.h"
-#include "neml2/tensors/R5.h"
-#include "neml2/tensors/SSFR5.h"
-#include "neml2/tensors/WR2.h"
-#include "neml2/tensors/Quaternion.h"
-#include "neml2/tensors/SWR4.h"
-#include "neml2/tensors/WSR4.h"
 #include "neml2/tensors/WWR4.h"
+#include "neml2/tensors/R4.h"
+#include "neml2/misc/math.h"
+
+namespace neml2
+{
+
+WWR4::WWR4(const R4 & F)
+  : WWR4(math::full_to_skew(math::full_to_skew(F - F.base_transpose(0, 1) - F.base_transpose(2, 3) +
+                                                   F.base_transpose(0, 1).base_transpose(2, 3),
+                                               1)))
+{
+}
+
+WWR4
+WWR4::identity(const torch::TensorOptions & options)
+{
+  return WWR4(torch::eye(3, options), 0);
+}
+
+} // neml2

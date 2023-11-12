@@ -24,20 +24,26 @@
 
 #pragma once
 
-#include "neml2/tensors/BatchTensor.h"
-#include "neml2/tensors/Scalar.h"
-#include "neml2/tensors/Vec.h"
-#include "neml2/tensors/Rot.h"
-#include "neml2/tensors/R2.h"
-#include "neml2/tensors/SR2.h"
-#include "neml2/tensors/R3.h"
-#include "neml2/tensors/SFR3.h"
-#include "neml2/tensors/R4.h"
-#include "neml2/tensors/SSR4.h"
-#include "neml2/tensors/R5.h"
-#include "neml2/tensors/SSFR5.h"
-#include "neml2/tensors/WR2.h"
-#include "neml2/tensors/Quaternion.h"
-#include "neml2/tensors/SWR4.h"
-#include "neml2/tensors/WSR4.h"
-#include "neml2/tensors/WWR4.h"
+#include "neml2/tensors/FixedDimTensor.h"
+
+namespace neml2
+{
+class R4;
+
+/**
+ * @brief The (logical) symmetric fourth order tensor, with skew symmetry in the first two
+ * dimensions and last two dimensions
+ *
+ * Mandel notation/reduced skew is used, and so the logical storage space is (3, 3).
+ */
+class WWR4 : public FixedDimTensor<WWR4, 3, 3>
+{
+public:
+  using FixedDimTensor<WWR4, 3, 3>::FixedDimTensor;
+  WWR4(const R4 & F);
+
+  /// Create the identity tensor \f$\delta_{ij}\delta_{kl}\f$
+  static WWR4 identity(const torch::TensorOptions & options = default_tensor_options);
+};
+
+} // namespace neml2

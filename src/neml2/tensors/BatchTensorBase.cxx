@@ -40,6 +40,7 @@
 #include "neml2/tensors/WR2.h"
 #include "neml2/tensors/SWR4.h"
 #include "neml2/tensors/WSR4.h"
+#include "neml2/tensors/WWR4.h"
 #include "neml2/tensors/Quaternion.h"
 #include "neml2/models/crystallography/MillerIndex.h"
 
@@ -410,5 +411,6 @@ template class BatchTensorBase<SSFR5>;
 template class BatchTensorBase<Quaternion>;
 template class BatchTensorBase<SWR4>;
 template class BatchTensorBase<WSR4>;
+template class BatchTensorBase<WWR4>;
 template class BatchTensorBase<crystallography::MillerIndex>;
 } // end namespace neml2
