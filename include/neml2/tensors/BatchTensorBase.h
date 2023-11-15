@@ -207,6 +207,9 @@ public:
   /// Negation
   Derived operator-() const;
 
+  /// Sum on a batch index
+  Derived batch_sum(TorchSize d) const;
+
 private:
   /// Number of batch dimensions. The first `_batch_dim` dimensions are considered batch dimensions.
   TorchSize _batch_dim;

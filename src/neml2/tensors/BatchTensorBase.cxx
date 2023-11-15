@@ -395,6 +395,15 @@ BatchTensorBase<Derived>::operator-() const
   return Derived(-torch::Tensor(*this), _batch_dim);
 }
 
+template <class Derived>
+Derived
+BatchTensorBase<Derived>::batch_sum(TorchSize d) const
+{
+  neml_assert_dbg(_batch_dim > 0, "Must have a batch dimension to sum along");
+  auto d2 = d >= 0 ? d : d - base_dim();
+  return Derived(torch::sum(*this, d2), _batch_dim - 1);
+}
+
 template class BatchTensorBase<BatchTensor>;
 template class BatchTensorBase<Scalar>;
 template class BatchTensorBase<Vec>;
