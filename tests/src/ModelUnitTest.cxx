@@ -43,7 +43,7 @@ ModelUnitTest::expected_options()
   options.set<bool>("check_cuda") = true;
   options.set<std::vector<LabeledAxisAccessor>>("input_batch_tensor_names");
   options.set<std::vector<CrossRef<BatchTensor>>>("input_batch_tensor_values");
-  options.set<std::vector<LabeledAxisAccessor>>("output_batch_tensors");
+  options.set<std::vector<LabeledAxisAccessor>>("output_batch_tensor_names");
   options.set<std::vector<CrossRef<BatchTensor>>>("output_batch_tensor_values");
   options.set<std::vector<LabeledAxisAccessor>>("input_scalar_names");
   options.set<std::vector<CrossRef<Scalar>>>("input_scalar_values");

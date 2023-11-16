@@ -45,7 +45,7 @@ UserRot::UserRot(const OptionSet & options)
 Rot
 UserRot::fill(const std::vector<CrossRef<Scalar>> & values) const
 {
-  if (values.size() == 4)
+  if (values.size() == 3)
     return Rot::fill(values[0], values[1], values[2]);
   else
     neml_assert(false, "Number of values must be 3, but ", values.size(), " values are provided.");

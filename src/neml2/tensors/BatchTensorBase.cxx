@@ -185,10 +185,8 @@ BatchTensorBase<Derived>::identity(const TorchShapeRef & batch_shape,
 
 template <class Derived>
 Derived
-BatchTensorBase<Derived>::linspace(const Derived & start,
-                                   const Derived & end,
-                                   TorchSize nstep,
-                                   TorchSize dim)
+BatchTensorBase<Derived>::linspace(
+    const Derived & start, const Derived & end, TorchSize nstep, TorchSize dim, TorchSize batch_dim)
 {
   neml_assert_broadcastable_dbg(start, end);
   neml_assert_dbg(nstep > 0, "nstep must be positive.");
@@ -210,15 +208,19 @@ BatchTensorBase<Derived>::linspace(const Derived & start,
     res = res + steps * diff;
   }
 
-  return res;
+  return Derived(res, batch_dim >= 0 ? batch_dim : res.batch_dim());
 }
 
 template <class Derived>
 Derived
-BatchTensorBase<Derived>::logspace(
-    const Derived & start, const Derived & end, TorchSize nstep, TorchSize dim, Real base)
+BatchTensorBase<Derived>::logspace(const Derived & start,
+                                   const Derived & end,
+                                   TorchSize nstep,
+                                   TorchSize dim,
+                                   TorchSize batch_dim,
+                                   Real base)
 {
-  auto exponent = Derived::linspace(start, end, nstep, dim);
+  auto exponent = Derived::linspace(start, end, nstep, dim, batch_dim);
   return math::pow(base, exponent);
 }
 
@@ -232,6 +234,13 @@ BatchTensorBase<Derived>::batched() const
 template <class Derived>
 TorchSize
 BatchTensorBase<Derived>::batch_dim() const
+{
+  return _batch_dim;
+}
+
+template <class Derived>
+TorchSize &
+BatchTensorBase<Derived>::batch_dim()
 {
   return _batch_dim;
 }

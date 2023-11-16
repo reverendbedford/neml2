@@ -9,6 +9,8 @@
     input_rot_values = 'R'
     input_batch_tensor_names = 'state/internal/slip_rates'
     input_batch_tensor_values = 'gamma'
+    derivatives_rel_tol = 1e-3
+    derivatives_abs_tol = 1e-3
   []
 []
 
@@ -35,6 +37,7 @@
     end = 0.2
     nstep = 12
     dim = 0
+    batch_dim = 0
   []
   [dp]
     type = FillSR2

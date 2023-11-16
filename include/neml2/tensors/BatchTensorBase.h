@@ -121,16 +121,20 @@ public:
    * @param end The ending tensor
    * @param nstep The number of steps with even spacing along the new dimension
    * @param dim Where to insert the new dimension
-   * @param base Base of the log operator
+   * @param batch_dim Batch dimension of the output
    * @return BatchTensor Linearly spaced tensor
    */
-  [[nodiscard]] static Derived
-  linspace(const Derived & start, const Derived & end, TorchSize nstep, TorchSize dim = 0);
+  [[nodiscard]] static Derived linspace(const Derived & start,
+                                        const Derived & end,
+                                        TorchSize nstep,
+                                        TorchSize dim = 0,
+                                        TorchSize batch_dim = -1);
   /// log-space equivalent of the linspace named constructor
   [[nodiscard]] static Derived logspace(const Derived & start,
                                         const Derived & end,
                                         TorchSize nstep,
                                         TorchSize dim = 0,
+                                        TorchSize batch_dim = -1,
                                         Real base = 10);
 
   /// Whether the tensor is batched
@@ -138,6 +142,9 @@ public:
 
   /// Return the number of batch dimensions
   TorchSize batch_dim() const;
+
+  /// Return a writable reference to the batch dimension
+  TorchSize & batch_dim();
 
   /// Return the number of base dimensions
   TorchSize base_dim() const;

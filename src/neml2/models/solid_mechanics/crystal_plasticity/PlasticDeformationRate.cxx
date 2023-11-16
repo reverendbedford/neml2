@@ -55,7 +55,7 @@ PlasticDeformationRate::PlasticDeformationRate(const OptionSet & options)
     plastic_deformation_rate(
         declare_output_variable<SR2>(options.get<LabeledAxisAccessor>("plastic_deformation_rate"))),
     orientation(declare_input_variable<Rot>(options.get<LabeledAxisAccessor>("orientation"))),
-    slip_rates(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("slip_rates"))),
+    slip_rates(declare_input_variable(options.get<LabeledAxisAccessor>("slip_rates"), 12)),
     crystal_geometry(include_data<crystallography::CrystalGeometry>(
         options.get<std::string>("crystal_geometry_name")))
 {
@@ -72,7 +72,10 @@ PlasticDeformationRate::set_value(const LabeledVector & in,
 
   // Grab the input
   const auto R = in.get<Rot>(orientation);
-  const auto g = in.get<Scalar>(slip_rates);
+
+  // Retrieve g as a BatchTensor and reinterpret it as a Scalar
+  const auto g_raw = in(slip_rates);
+  const auto g = Scalar(g_raw, in.batch_dim() + 1); // + 1 for the slip system axis
 
   auto dp_crystal = (g * crystal_geometry.M()).batch_sum(-1);
 
@@ -81,7 +84,11 @@ PlasticDeformationRate::set_value(const LabeledVector & in,
 
   if (dout_din)
   {
-    dout_din->set(crystal_geometry.M().rotate(R), plastic_deformation_rate, slip_rates);
+    auto ddp_dg = crystal_geometry.M().rotate(R.batch_unsqueeze(-1));
+    // Now reinterpret that back to BatchTensor
+    auto ddp_dg_raw = BatchTensor(ddp_dg, in.batch_dim()).base_transpose(0, 1);
+
+    dout_din->set(ddp_dg_raw, plastic_deformation_rate, slip_rates);
     dout_din->set(dp_crystal.drotate(R), plastic_deformation_rate, orientation);
   }
 }
