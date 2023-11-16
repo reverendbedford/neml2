@@ -81,8 +81,8 @@ PlasticDeformationRate::set_value(const LabeledVector & in,
 
   if (dout_din)
   {
-    out->set(crystal_geometry.M().rotate(R), plastic_deformation_rate, slip_rates);
-    out->set(dp_crystal.drotate(R), plastic_deformation_rate, orientation);
+    dout_din->set(crystal_geometry.M().rotate(R), plastic_deformation_rate, slip_rates);
+    dout_din->set(dp_crystal.drotate(R), plastic_deformation_rate, orientation);
   }
 }
 } // namespace neml2
