@@ -9,8 +9,10 @@
     input_rot_values = 'R'
     input_batch_tensor_names = 'state/internal/slip_rates'
     input_batch_tensor_values = 'gamma'
-    derivatives_rel_tol = 1e-3
-    derivatives_abs_tol = 1e-3
+    derivatives_rel_tol = 0
+    derivatives_abs_tol = 5e-6
+    second_derivatives_rel_tol = 0
+    second_derivatives_abs_tol = 5e-6
   []
 []
 
