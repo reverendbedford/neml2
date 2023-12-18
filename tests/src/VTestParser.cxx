@@ -51,7 +51,7 @@ VTestParser::parse()
     auto tokens = utils::split(buffer, " \t\n\v\f\r");
 
     // Comments only allowed in the first position I guess
-    if (tokens[0] == "#")
+    if (!tokens.empty() && tokens[0] == "#")
       continue;
 
     // Meta
