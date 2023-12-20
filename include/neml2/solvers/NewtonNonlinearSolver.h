@@ -39,13 +39,23 @@ class NewtonNonlinearSolver : public NonlinearSolver
 public:
   static OptionSet expected_options();
 
-  using NonlinearSolver::NonlinearSolver;
+  NewtonNonlinearSolver(const OptionSet & options);
 
   virtual BatchTensor solve(const NonlinearSystem & system, const BatchTensor & x0) const override;
 
 protected:
-  /// Update the guess given the current residual and Jacobian.
-  virtual void update(BatchTensor & x, const BatchTensor & R, const BatchTensor & J) const;
+  /// Find the current update direction
+  virtual BatchTensor solve_direction(const NonlinearSystem & system,
+                                      const BatchTensor & R,
+                                      const BatchTensor & J) const;
+
+  /// Update without linesearch
+  virtual Real
+  update_no_linesearch(BatchTensor & x, BatchTensor & R, const NonlinearSystem & system) const;
+
+  /// Update with linesearch, backtrack until meeting the Armijo criteria
+  virtual Real
+  update_linesearch(BatchTensor & x, BatchTensor & R, const NonlinearSystem & system) const;
 
   /**
    * @brief Check for convergence. The current iteration is said to be converged if the residual
@@ -55,9 +65,23 @@ protected:
    * @param itr The current iteration number
    * @param nR The current residual norm
    * @param nR0 The initial residual norm
+   * @param alpha The linesearch parameter
    * @return true Converged
    * @return false Not converged
    */
-  virtual bool converged(size_t itr, const torch::Tensor & nR, const torch::Tensor & nR0) const;
+  virtual bool
+  converged(size_t itr, const torch::Tensor & nR, const torch::Tensor & nR0, Real alpha) const;
+
+  /// If true, do a linesearch
+  bool _linesearch;
+
+  /// Linesearch maximum iterations
+  unsigned int _linesearch_miter;
+
+  /// Decrease factor for linesearch
+  Real _linesearch_sigma;
+
+  /// Stopping criteria for linesearch
+  Real _linesearch_c;
 };
 } // namespace neml2

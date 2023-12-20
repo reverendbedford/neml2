@@ -38,6 +38,6 @@ TEST_CASE("FullBatchTensor", "[tensors/user_tensors]")
     const auto & a = Factory::get_object<BatchTensor>("Tensors", "a");
     REQUIRE(a.batch_sizes() == TorchShape{2, 1});
     REQUIRE(a.base_sizes() == TorchShape{2, 3});
-    REQUIRE(torch::allclose(a, BatchTensor::full({2, 1}, {2, 3}, 3.9, default_tensor_options)));
+    REQUIRE(torch::allclose(a, BatchTensor::full({2, 1}, {2, 3}, 3.9, default_tensor_options())));
   }
 }

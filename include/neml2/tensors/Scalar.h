@@ -43,8 +43,13 @@ public:
 
   /// The derivative of a Scalar with respect to itself
   [[nodiscard]] static Scalar
-  identity_map(const torch::TensorOptions & options = default_tensor_options);
+  identity_map(const torch::TensorOptions & options = default_tensor_options());
 };
+
+/// Absolute value
+// I don't understand why, but apparently without this the BatchTensor abs and aten::abs (i.e. the
+// torch native abs) are ambiguous
+Scalar abs(const Scalar & a);
 
 template <
     class Derived,

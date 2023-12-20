@@ -45,8 +45,8 @@ public:
    */
   virtual std::string type() const = 0;
 
-  /// Send the value to the target device
-  virtual void to(const torch::Device &) = 0;
+  /// Send the value to the target options
+  virtual void to(const torch::TensorOptions &) = 0;
 
   /// Convert the parameter value to a BatchTensor
   virtual operator BatchTensor() const = 0;
@@ -66,7 +66,7 @@ public:
 
   virtual std::string type() const override { return utils::demangle(typeid(T).name()); }
 
-  virtual void to(const torch::Device & device) override { _value = _value.to(device); }
+  virtual void to(const torch::TensorOptions & options) override { _value = _value.to(options); }
 
   virtual operator BatchTensor() const override { return BatchTensor(_value); }
 

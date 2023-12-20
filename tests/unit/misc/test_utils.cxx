@@ -31,7 +31,7 @@ using namespace neml2;
 
 TEST_CASE("utils", "[misc]")
 {
-  const auto & DTO = default_tensor_options;
+  const auto & DTO = default_tensor_options();
 
   SECTION("broadcast_batch_dim")
   {

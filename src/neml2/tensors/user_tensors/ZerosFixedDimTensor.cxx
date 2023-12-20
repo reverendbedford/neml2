@@ -39,7 +39,7 @@ ZerosFixedDimTensor<T>::expected_options()
 
 template <typename T>
 ZerosFixedDimTensor<T>::ZerosFixedDimTensor(const OptionSet & options)
-  : T(T::zeros(options.get<TorchShape>("batch_shape"), default_tensor_options)),
+  : T(T::zeros(options.get<TorchShape>("batch_shape"), default_tensor_options())),
     NEML2Object(options)
 {
 }

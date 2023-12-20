@@ -37,6 +37,7 @@ LinspaceFixedDimTensor<T>::expected_options()
   options.set<CrossRef<T>>("end");
   options.set<TorchSize>("nstep");
   options.set<TorchSize>("dim") = 0;
+  options.set<TorchSize>("batch_dim") = -1;
   return options;
 }
 
@@ -45,7 +46,8 @@ LinspaceFixedDimTensor<T>::LinspaceFixedDimTensor(const OptionSet & options)
   : T(T::linspace(options.get<CrossRef<T>>("start"),
                   options.get<CrossRef<T>>("end"),
                   options.get<TorchSize>("nstep"),
-                  options.get<TorchSize>("dim"))),
+                  options.get<TorchSize>("dim"),
+                  options.get<TorchSize>("batch_dim"))),
     NEML2Object(options)
 {
 }

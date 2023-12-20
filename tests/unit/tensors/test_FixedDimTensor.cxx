@@ -39,7 +39,7 @@ using namespace neml2;
 
 TEST_CASE("FixedDimTensor", "[tensors]")
 {
-  const auto & DTO = default_tensor_options;
+  const auto & DTO = default_tensor_options();
 
   TorchShape B = {5, 3, 1, 2}; // batch shape
   TorchSize Bn = B.size();     // batch dimension

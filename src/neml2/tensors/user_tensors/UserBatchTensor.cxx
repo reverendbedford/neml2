@@ -41,11 +41,11 @@ UserBatchTensor::expected_options()
 UserBatchTensor::UserBatchTensor(const OptionSet & options)
   : BatchTensor(BatchTensor::empty(options.get<TorchShape>("batch_shape"),
                                    options.get<TorchShape>("base_shape"),
-                                   default_tensor_options)),
+                                   default_tensor_options())),
     NEML2Object(options)
 {
   auto vals = options.get<std::vector<Real>>("values");
-  auto flat = torch::tensor(vals, default_tensor_options);
+  auto flat = torch::tensor(vals, default_tensor_options());
   if (vals.size() == size_t(this->base_storage()))
     this->index_put_({torch::indexing::Ellipsis}, flat.reshape(this->base_sizes()));
   else if (vals.size() == size_t(utils::storage_size(this->sizes())))

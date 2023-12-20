@@ -57,52 +57,57 @@ public:
   BatchTensorBase(Real) = delete;
 
   /// Unbatched empty tensor given base shape
-  [[nodiscard]] static Derived empty(const TorchShapeRef & base_shape,
-                                     const torch::TensorOptions & options = default_tensor_options);
+  [[nodiscard]] static Derived
+  empty(TorchShapeRef base_shape, const torch::TensorOptions & options = default_tensor_options());
   /// Empty tensor given batch and base shapes
-  [[nodiscard]] static Derived empty(const TorchShapeRef & batch_shape,
-                                     const TorchShapeRef & base_shape,
-                                     const torch::TensorOptions & options = default_tensor_options);
+  [[nodiscard]] static Derived
+  empty(TorchShapeRef batch_shape,
+        TorchShapeRef base_shape,
+        const torch::TensorOptions & options = default_tensor_options());
   /// Empty tensor like another, i.e. same batch and base shapes, same tensor options, etc.
   [[nodiscard]] static Derived empty_like(const BatchTensorBase<Derived> & other);
   /// Unbatched tensor filled with zeros given base shape
-  [[nodiscard]] static Derived zeros(const TorchShapeRef & base_shape,
-                                     const torch::TensorOptions & options = default_tensor_options);
+  [[nodiscard]] static Derived
+  zeros(TorchShapeRef base_shape, const torch::TensorOptions & options = default_tensor_options());
   /// Zero tensor given batch and base shapes
-  [[nodiscard]] static Derived zeros(const TorchShapeRef & batch_shape,
-                                     const TorchShapeRef & base_shape,
-                                     const torch::TensorOptions & options = default_tensor_options);
+  [[nodiscard]] static Derived
+  zeros(TorchShapeRef batch_shape,
+        TorchShapeRef base_shape,
+        const torch::TensorOptions & options = default_tensor_options());
   /// Zero tensor like another, i.e. same batch and base shapes, same tensor options, etc.
   [[nodiscard]] static Derived zeros_like(const BatchTensorBase<Derived> & other);
   /// Unbatched tensor filled with ones given base shape
-  [[nodiscard]] static Derived ones(const TorchShapeRef & base_shape,
-                                    const torch::TensorOptions & options = default_tensor_options);
+  [[nodiscard]] static Derived
+  ones(TorchShapeRef base_shape, const torch::TensorOptions & options = default_tensor_options());
   /// Unit tensor given batch and base shapes
-  [[nodiscard]] static Derived ones(const TorchShapeRef & batch_shape,
-                                    const TorchShapeRef & base_shape,
-                                    const torch::TensorOptions & options = default_tensor_options);
+  [[nodiscard]] static Derived
+  ones(TorchShapeRef batch_shape,
+       TorchShapeRef base_shape,
+       const torch::TensorOptions & options = default_tensor_options());
   /// Unit tensor like another, i.e. same batch and base shapes, same tensor options, etc.
   [[nodiscard]] static Derived ones_like(const BatchTensorBase<Derived> & other);
   /// Unbatched tensor filled with a given value given base shape
-  [[nodiscard]] static Derived full(const TorchShapeRef & base_shape,
-                                    Real init,
-                                    const torch::TensorOptions & options = default_tensor_options);
+  [[nodiscard]] static Derived
+  full(TorchShapeRef base_shape,
+       Real init,
+       const torch::TensorOptions & options = default_tensor_options());
   /// Full tensor given batch and base shapes
-  [[nodiscard]] static Derived full(const TorchShapeRef & batch_shape,
-                                    const TorchShapeRef & base_shape,
-                                    Real init,
-                                    const torch::TensorOptions & options = default_tensor_options);
+  [[nodiscard]] static Derived
+  full(TorchShapeRef batch_shape,
+       TorchShapeRef base_shape,
+       Real init,
+       const torch::TensorOptions & options = default_tensor_options());
   /// Full tensor like another, i.e. same batch and base shapes, same tensor options, etc.,
   /// but filled with a different value
   [[nodiscard]] static Derived full_like(const BatchTensorBase<Derived> & other, Real init);
   /// Unbatched identity tensor
   [[nodiscard]] static Derived
-  identity(TorchSize n, const torch::TensorOptions & options = default_tensor_options);
+  identity(TorchSize n, const torch::TensorOptions & options = default_tensor_options());
   /// Identity tensor given batch shape and base length
   [[nodiscard]] static Derived
-  identity(const TorchShapeRef & batch_shape,
+  identity(TorchShapeRef batch_shape,
            TorchSize n,
-           const torch::TensorOptions & options = default_tensor_options);
+           const torch::TensorOptions & options = default_tensor_options());
   /**
    * @brief Create a new tensor by adding a new batch dimension with linear spacing between \p
    * start and \p end.
@@ -121,16 +126,20 @@ public:
    * @param end The ending tensor
    * @param nstep The number of steps with even spacing along the new dimension
    * @param dim Where to insert the new dimension
-   * @param base Base of the log operator
+   * @param batch_dim Batch dimension of the output
    * @return BatchTensor Linearly spaced tensor
    */
-  [[nodiscard]] static Derived
-  linspace(const Derived & start, const Derived & end, TorchSize nstep, TorchSize dim = 0);
+  [[nodiscard]] static Derived linspace(const Derived & start,
+                                        const Derived & end,
+                                        TorchSize nstep,
+                                        TorchSize dim = 0,
+                                        TorchSize batch_dim = -1);
   /// log-space equivalent of the linspace named constructor
   [[nodiscard]] static Derived logspace(const Derived & start,
                                         const Derived & end,
                                         TorchSize nstep,
                                         TorchSize dim = 0,
+                                        TorchSize batch_dim = -1,
                                         Real base = 10);
 
   /// Whether the tensor is batched
@@ -139,14 +148,23 @@ public:
   /// Return the number of batch dimensions
   TorchSize batch_dim() const;
 
+  /// Return a writable reference to the batch dimension
+  TorchSize & batch_dim();
+
   /// Return the number of base dimensions
   TorchSize base_dim() const;
 
   /// Return the batch size
   TorchShapeRef batch_sizes() const;
 
+  /// Return the length of some batch axis
+  TorchSize batch_size(TorchSize index) const;
+
   /// Return the base size
   TorchShapeRef base_sizes() const;
+
+  /// Return the length of some base axis
+  TorchSize base_size(TorchSize index) const;
 
   /// Return the flattened storage needed just for the base indices
   TorchSize base_storage() const;
@@ -186,6 +204,9 @@ public:
   /// Unsqueeze a batch dimension
   Derived batch_unsqueeze(TorchSize d) const;
 
+  /// Unsqueeze on the special list batch dimension
+  Derived list_unsqueeze() const;
+
   /// Unsqueeze a base dimension
   Derived base_unsqueeze(TorchSize d) const;
 
@@ -195,17 +216,26 @@ public:
   /// Transpose two base dimensions
   Derived base_transpose(TorchSize d1, TorchSize d2) const;
 
+  /// Move two base dimensions
+  Derived base_movedim(TorchSize d1, TorchSize d2) const;
+
   /// Cone (take ownership)
-  Derived clone() const;
+  Derived clone(torch::MemoryFormat memory_format = torch::MemoryFormat::Contiguous) const;
 
   /// Discard function graph
   Derived detach() const;
 
-  /// Send to device
+  /// Send to options
   Derived to(const torch::TensorOptions & options) const;
 
   /// Negation
   Derived operator-() const;
+
+  /// Sum on a batch index
+  Derived batch_sum(TorchSize d) const;
+
+  /// Sum on the list index (TODO: replace with class)
+  Derived list_sum() const;
 
 private:
   /// Number of batch dimensions. The first `_batch_dim` dimensions are considered batch dimensions.
@@ -435,6 +465,17 @@ Derived
 diff(const Derived & a, TorchSize n = 1, TorchSize dim = -1)
 {
   return Derived(torch::diff(a, n, dim), a.batch_dim());
+}
+
+template <
+    class Derived,
+    typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<Derived>, Derived>>>
+Derived
+batch_diag_embed(const Derived & a, TorchSize offset = 0, TorchSize d1 = -2, TorchSize d2 = -1)
+{
+  return Derived(torch::diag_embed(
+                     a, offset, d1 < 0 ? d1 - a.base_dim() : d1, d2 < 0 ? d2 - a.base_dim() : d2),
+                 a.batch_dim() + 1);
 }
 } // namespace math
 } // namespace neml2

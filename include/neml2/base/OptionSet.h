@@ -68,6 +68,13 @@ public:
   /// Assignment operator. Deep copy
   virtual OptionSet & operator=(const OptionSet & source);
 
+  /**
+   * Addition/Assignment operator.  Inserts copies of all options
+   * from \p source.  Any options of the same name already in \p
+   * this are replaced.
+   */
+  virtual void operator+=(const OptionSet & source);
+
   /// A readonly reference to the option set's name
   const std::string & name() const { return _metadata.name; }
   /// A writable reference to the option set's name

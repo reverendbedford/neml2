@@ -39,16 +39,23 @@ TransientDriver::expected_options()
   options.set<CrossRef<torch::Tensor>>("times");
   options.set<LabeledAxisAccessor>("time") = vecstr{"forces", "t"};
   options.set<std::string>("predictor") = "PREVIOUS_STATE";
+  options.set<Real>("cp_elastic_scale") = 1.0;
   options.set<std::string>("save_as");
   options.set<bool>("show_parameters") = false;
   options.set<std::string>("device") = "cpu";
+
+  options.set<std::vector<LabeledAxisAccessor>>("ic_rot_names");
+  options.set<std::vector<CrossRef<Rot>>>("ic_rot_values");
+  options.set<std::vector<LabeledAxisAccessor>>("ic_sr2_names");
+  options.set<std::vector<CrossRef<SR2>>>("ic_sr2_values");
+
   return options;
 }
 
 TransientDriver::TransientDriver(const OptionSet & options)
   : Driver(options),
     _model(Factory::get_object<Model>("Models", options.get<std::string>("model"))),
-    _device(options.get<std::string>("device")),
+    _options(default_tensor_options().device(options.get<std::string>("device"))),
     _time(options.get<CrossRef<torch::Tensor>>("times"), 2),
     _step_count(0),
     _time_name(options.get<LabeledAxisAccessor>("time")),
@@ -60,12 +67,19 @@ TransientDriver::TransientDriver(const OptionSet & options)
     _save_as(options.get<std::string>("save_as")),
     _show_params(options.get<bool>("show_parameters")),
     _result_in(LabeledVector::zeros({_nsteps, _nbatch}, {&_model.input()})),
-    _result_out(LabeledVector::zeros({_nsteps, _nbatch}, {&_model.output()}))
+    _result_out(LabeledVector::zeros({_nsteps, _nbatch}, {&_model.output()})),
+    _ic_rot_names(options.get<std::vector<LabeledAxisAccessor>>("ic_rot_names")),
+    _ic_rot_values(options.get<std::vector<CrossRef<Rot>>>("ic_rot_values")),
+    _ic_sr2_names(options.get<std::vector<LabeledAxisAccessor>>("ic_sr2_names")),
+    _ic_sr2_values(options.get<std::vector<CrossRef<SR2>>>("ic_sr2_values")),
+    _cp_elastic_scale(options.get<Real>("cp_elastic_scale"))
 {
-  _model.to(_device);
-  _in = _in.to(_device);
-  _out = _out.to(_device);
-  _time = _time.to(_device);
+  _model.to(_options);
+  _in = _in.to(_options);
+  _out = _out.to(_options);
+  _time = _time.to(_options);
+  _result_in = _result_in.to(_options);
+  _result_out = _result_out.to(_options);
 }
 
 void
@@ -143,14 +157,24 @@ TransientDriver::update_forces()
 void
 TransientDriver::apply_ic()
 {
+  set_IC<Rot>(_ic_rot_names, _ic_rot_values);
+  set_IC<SR2>(_ic_sr2_names, _ic_sr2_values);
 }
 
 void
 TransientDriver::apply_predictor()
 {
-  if (_predictor == "PREVIOUS_STATE")
+  std::string predictor = _predictor;
+  bool cp = false;
+  if (predictor.substr(0, 3) == "CP_")
+  {
+    predictor = predictor.substr(3);
+    cp = true;
+  }
+
+  if (predictor == "PREVIOUS_STATE")
     _in.slice("state").fill(_in.slice("old_state"));
-  else if (_predictor == "LINEAR_EXTRAPOLATION")
+  else if (predictor == "LINEAR_EXTRAPOLATION")
   {
     // Fall back to PREVIOUS_STATE predictor at the 1st time step
     if (_step_count == 1)
@@ -173,6 +197,14 @@ TransientDriver::apply_predictor()
   }
   else
     throw NEMLException("Unrecognized predictor type: " + _predictor);
+
+  if (cp && (_step_count == 1))
+  {
+    SR2 D = _in.get<SR2>(std::vector<std::string>{"forces", "deformation_rate"});
+    auto t = _in.get<Scalar>(_time_name);
+    auto t_n = _result_in.get<Scalar>(_time_name).batch_index({_step_count - 1});
+    _in.set(D * (t - t_n) * _cp_elastic_scale, std::vector<std::string>{"state", "elastic_strain"});
+  }
 }
 
 void
@@ -197,15 +229,18 @@ TransientDriver::save_as_path() const
 torch::nn::ModuleDict
 TransientDriver::result() const
 {
+  auto result_in_cpu = _result_in.to(_options.device(torch::kCPU));
+  auto result_out_cpu = _result_out.to(_options.device(torch::kCPU));
+
   // Dump input variables into a Module
   auto res_in = std::make_shared<torch::nn::Module>();
-  for (auto var : _result_in.axis(0).variable_accessors(/*recursive=*/true))
-    res_in->register_buffer(utils::stringify(var), _result_in(var).clone());
+  for (auto var : result_in_cpu.axis(0).variable_accessors(/*recursive=*/true))
+    res_in->register_buffer(utils::stringify(var), result_in_cpu(var).clone());
 
   // Dump output variables into a Module
   auto res_out = std::make_shared<torch::nn::Module>();
-  for (auto var : _result_out.axis(0).variable_accessors(/*recursive=*/true))
-    res_out->register_buffer(utils::stringify(var), _result_out(var).clone());
+  for (auto var : result_out_cpu.axis(0).variable_accessors(/*recursive=*/true))
+    res_out->register_buffer(utils::stringify(var), result_out_cpu(var).clone());
 
   // Combine input and output
   torch::nn::ModuleDict res;

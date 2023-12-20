@@ -28,7 +28,27 @@
 using namespace torch::indexing;
 using namespace neml2;
 
-PowerTestSystem::PowerTestSystem() {}
+OptionSet
+TestNonlinearSystem::expected_options()
+{
+  return NonlinearSystem::expected_options();
+}
+
+TestNonlinearSystem::TestNonlinearSystem(const OptionSet & options)
+  : NonlinearSystem(options)
+{
+}
+
+OptionSet
+PowerTestSystem::expected_options()
+{
+  return TestNonlinearSystem::expected_options();
+}
+
+PowerTestSystem::PowerTestSystem(const OptionSet & options)
+  : TestNonlinearSystem(options)
+{
+}
 
 void
 PowerTestSystem::assemble(const BatchTensor & x,

@@ -33,7 +33,7 @@ using namespace neml2;
 TEST_CASE("WR2", "[tensors]")
 {
   torch::manual_seed(42);
-  const auto & DTO = default_tensor_options;
+  const auto & DTO = default_tensor_options();
 
   TorchShape B = {5, 3, 1, 2}; // batch shape
 
@@ -122,8 +122,8 @@ TEST_CASE("WR2", "[tensors]")
 
       SECTION("zero maps to zero")
       {
-        REQUIRE(torch::allclose(w0.exp(), Rot::identity()));
-        REQUIRE(torch::allclose(w0b.exp(), Rot::identity().batch_expand(B)));
+        REQUIRE(torch::allclose(w0.exp(), Rot::identity(DTO)));
+        REQUIRE(torch::allclose(w0b.exp(), Rot::identity(DTO).batch_expand(B)));
       }
     }
 
@@ -164,6 +164,33 @@ TEST_CASE("WR2", "[tensors]")
       for (TorchSize i = 0; i < 3; i++)
         for (TorchSize j = 0; j < 3; j++)
           REQUIRE(torch::allclose(a(i, j), b(i, j)));
+    }
+  }
+
+  SECTION("abmba")
+  {
+    auto a = SR2(torch::rand({6}, DTO));
+    auto b = SR2(torch::rand({6}, DTO));
+    SECTION("product")
+    {
+      REQUIRE(
+          torch::allclose(R2(math::multiply_and_make_skew(a, b)), R2(a) * R2(b) - R2(b) * R2(a)));
+    }
+    SECTION("derivatives")
+    {
+      SECTION("da")
+      {
+        auto apply1 = [b](const SR2 & x) { return math::multiply_and_make_skew(x, b); };
+        auto d1 = finite_differencing_derivative(apply1, a);
+        REQUIRE(torch::allclose(math::d_multiply_and_make_skew_d_first(b), d1));
+      }
+
+      SECTION("db")
+      {
+        auto apply2 = [a](const SR2 & x) { return math::multiply_and_make_skew(a, x); };
+        auto d2 = finite_differencing_derivative(apply2, b);
+        REQUIRE(torch::allclose(math::d_multiply_and_make_skew_d_second(a), d2));
+      }
     }
   }
 }

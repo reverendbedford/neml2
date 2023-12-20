@@ -24,6 +24,7 @@
 
 #include "neml2/solvers/NewtonNonlinearSolver.h"
 #include <iomanip>
+#include "neml2/misc/math.h"
 
 namespace neml2
 {
@@ -33,7 +34,20 @@ OptionSet
 NewtonNonlinearSolver::expected_options()
 {
   OptionSet options = NonlinearSolver::expected_options();
+  options.set<bool>("linesearch") = false;
+  options.set<unsigned int>("max_linesearch_iterations") = 10;
+  options.set<Real>("linesearch_cutback") = 2.0;
+  options.set<Real>("linesearch_stopping_criteria") = 1.0e-3;
   return options;
+}
+
+NewtonNonlinearSolver::NewtonNonlinearSolver(const OptionSet & options)
+  : NonlinearSolver(options),
+    _linesearch(options.get<bool>("linesearch")),
+    _linesearch_miter(options.get<unsigned int>("max_linesearch_iterations")),
+    _linesearch_sigma(options.get<Real>("linesearch_cutback")),
+    _linesearch_c(options.get<Real>("linesearch_stopping_criteria"))
+{
 }
 
 BatchTensor
@@ -45,12 +59,15 @@ NewtonNonlinearSolver::solve(const NonlinearSystem & system, const BatchTensor &
   auto nR0 = torch::linalg::vector_norm(R, 2, -1, false, c10::nullopt);
 
   // Check for initial convergence
-  if (converged(0, nR0, nR0))
+  if (converged(0, nR0, nR0, 1.0))
     return x;
 
+  Real alpha;
   // Begin iterating
-  BatchTensor J = system.Jacobian(x);
-  update(x, R, J);
+  if (_linesearch)
+    alpha = update_linesearch(x, R, system);
+  else
+    alpha = update_no_linesearch(x, R, system);
 
   // Continuing iterating until one of:
   // 1. nR < atol (success)
@@ -58,15 +75,17 @@ NewtonNonlinearSolver::solve(const NonlinearSystem & system, const BatchTensor &
   // 3. i > miters (failure)
   for (size_t i = 1; i < miters; i++)
   {
-    // Update R and the norm of R
-    std::tie(R, J) = system.residual_and_Jacobian(x);
     auto nR = torch::linalg::vector_norm(R, 2, -1, false, c10::nullopt);
 
     // Check for initial convergence
-    if (converged(i, nR, nR0))
+    if (converged(i, nR, nR0, alpha))
       return x;
 
-    update(x, R, J);
+    // Update R and the norm of R
+    if (_linesearch)
+      alpha = update_linesearch(x, R, system);
+    else
+      alpha = update_no_linesearch(x, R, system);
   }
 
   // Throw if we exceeded miters
@@ -75,28 +94,75 @@ NewtonNonlinearSolver::solve(const NonlinearSystem & system, const BatchTensor &
   return x;
 }
 
-void
-NewtonNonlinearSolver::update(BatchTensor & x, const BatchTensor & R, const BatchTensor & J) const
+BatchTensor
+NewtonNonlinearSolver::solve_direction(const NonlinearSystem & system,
+                                       const BatchTensor & R,
+                                       const BatchTensor & J) const
 {
-#if (TORCH_VERSION_MAJOR > 1 || TORCH_VERSION_MINOR > 12)
-  x -= torch::linalg::solve(J, R, true);
-#else
-  x -= torch::linalg::solve(J, R);
-#endif
+  auto p = BatchTensor(torch::linalg::solve(J, R, true), R.batch_dim());
+  return system.scale_direction(p);
 }
 
 bool
 NewtonNonlinearSolver::converged(size_t itr,
                                  const torch::Tensor & nR,
-                                 const torch::Tensor & nR0) const
+                                 const torch::Tensor & nR0,
+                                 Real alpha) const
 {
   // LCOV_EXCL_START
   if (verbose)
     std::cout << "ITERATION " << std::setw(3) << itr << ", |R| = " << std::scientific
-              << torch::mean(nR).item<double>() << ", |R0| = " << std::scientific
-              << torch::mean(nR0).item<double>() << std::endl;
+              << torch::max(nR).item<Real>() << ", |R0| = " << std::scientific
+              << torch::max(nR0).item<Real>() << ", alpha = " << std::scientific << alpha
+              << std::endl;
   // LCOV_EXCL_STOP
 
   return torch::all(nR < atol).item<bool>() || torch::all(nR / nR0 < rtol).item<bool>();
 }
+
+Real
+NewtonNonlinearSolver::update_no_linesearch(BatchTensor & x,
+                                            BatchTensor & R,
+                                            const NonlinearSystem & system) const
+{
+  BatchTensor J;
+  std::tie(R, J) = system.residual_and_Jacobian(x);
+  auto dx = solve_direction(system, R, J);
+  x -= dx;
+  return 1.0;
+}
+
+Real
+NewtonNonlinearSolver::update_linesearch(BatchTensor & x,
+                                         BatchTensor & R,
+                                         const NonlinearSystem & system) const
+{
+  BatchTensor J;
+  std::tie(R, J) = system.residual_and_Jacobian(x);
+
+  auto R0 = R.clone();
+  auto nR02 = torch::linalg_vecdot(R0, R0);
+  Real alpha = 1.0;
+
+  auto dx = solve_direction(system, R, J);
+
+  for (size_t i = 1; i < _linesearch_miter; i++)
+  {
+    R = system.residual(x - alpha * dx);
+    auto nR2 = torch::linalg_vecdot(R, R);
+    auto crit = nR02 + 2.0 * _linesearch_c * alpha * torch::linalg_vecdot(R0, dx);
+    if (verbose)
+      std::cout << "     LS ITERATION " << std::setw(3) << i << ", |R| = " << std::scientific
+                << torch::max(torch::sqrt(nR2)).item<Real>() << ", |Rc| = " << std::scientific
+                << torch::min(torch::sqrt(crit)).item<Real>() << std::endl;
+
+    if (torch::all(nR2 <= crit).item<bool>() || torch::all(nR2 <= std::pow(atol, 2)).item<bool>())
+      break;
+    alpha /= _linesearch_sigma;
+  }
+  x -= alpha * dx;
+
+  return alpha;
+}
+
 } // namespace neml2

@@ -25,9 +25,14 @@
 #include "VTestTimeSeries.h"
 #include "VTestParser.h"
 
+#include "utils.h"
+
 namespace neml2
 {
 register_NEML2_object(VTestTimeSeries);
+
+const std::map<std::string, TorchShape> VTestTimeSeries::shape_map = {
+    {"SCALAR", {}}, {"SYMR2", {-1}}, {"WR2", {-1}}};
 
 OptionSet
 VTestTimeSeries::expected_options()
@@ -36,12 +41,18 @@ VTestTimeSeries::expected_options()
   options.set<std::string>("vtest");
   options.set<std::string>("variable");
   options.set<std::string>("variable_type");
+
+  options.set<TorchSize>("expand_batch") = 1;
   return options;
 }
 
+// The last {-1} in the expand will be a problem eventually if we use non-logically 1D tensors,
+// but it works for now
 VTestTimeSeries::VTestTimeSeries(const OptionSet & options)
   : NEML2Object(options),
-    torch::Tensor(init(options))
+    torch::Tensor(init(options).expand(utils::add_shapes(
+        TorchShape{-1, options.get<TorchSize>("expand_batch")},
+        VTestTimeSeries::shape_map.at(options.get<std::string>("variable_type")))))
 {
 }
 
@@ -64,6 +75,13 @@ VTestTimeSeries::init(const OptionSet & options) const
     auto val_xy = table[var + "_xy"].unsqueeze(-1);
     // The vtest format provides SR2 in Mandel notation already
     return torch::stack({val_xx, val_yy, val_zz, val_yz, val_xz, val_xy}, -1);
+  }
+  else if (var_type == "WR2")
+  {
+    auto val_zy = table[var + "_zy"].unsqueeze(-1);
+    auto val_xz = table[var + "_xz"].unsqueeze(-1);
+    auto val_yx = table[var + "_yx"].unsqueeze(-1);
+    return torch::stack({val_zy, val_xz, val_yx}, -1);
   }
 
   neml_assert("Unrecognized variable_type: ", var_type);

@@ -41,44 +41,19 @@ constexpr Real o = 1.0;
 constexpr Real z = 0.0;
 
 /// @brief  tetragonal symmetry operators
-const static auto tetragonal = torch::tensor({{o, z, z, z},
-                                              {z, z, o, z},
-                                              {z, o, z, z},
-                                              {z, z, z, o},
-                                              {a, z, z, -a},
-                                              {a, z, z, a},
-                                              {z, a, a, z},
-                                              {z, -a, a, z}},
-                                             default_tensor_options);
+const torch::Tensor tetragonal(const torch::TensorOptions & options = default_tensor_options());
 
 /// @brief hexagonal symmetry operators
-const static auto hexagonal = torch::tensor({{o, z, z, z},
-                                             {-h, z, z, b},
-                                             {h, z, z, b},
-                                             {b, z, z, -h},
-                                             {z, z, z, o},
-                                             {b, z, z, h},
-                                             {z, -h, b, z},
-                                             {z, o, z, z},
-                                             {z, h, b, z},
-                                             {z, b, h, z},
-                                             {z, z, o, z},
-                                             {z, b, -h, z}},
-                                            default_tensor_options);
+const torch::Tensor hexagonal(const torch::TensorOptions & options = default_tensor_options());
 
 /// @brief cubic symmetry operators
-const static auto cubic = torch::tensor(
-    {{o, z, z, z},   {h, h, h, h},   {-h, h, h, h},  {h, -h, h, h}, {h, h, -h, h}, {-h, -h, -h, h},
-     {h, -h, -h, h}, {-h, -h, h, h}, {-h, h, -h, h}, {z, z, o, z},  {z, z, z, o},  {z, o, z, z},
-     {z, -a, z, a},  {z, a, z, a},   {a, z, a, z},   {a, z, -a, z}, {z, z, -a, a}, {a, a, z, z},
-     {a, -a, z, z},  {z, z, a, a},   {z, -a, a, z},  {a, z, z, -a}, {z, a, a, z},  {a, z, z, a}},
-    default_tensor_options);
-
+const torch::Tensor cubic(const torch::TensorOptions & options = default_tensor_options());
 } // namespace crystal_symmetry_operators
 
 /// Helper function to return the symmetry operators given the Orbifold notation
-R2 symmetry_operations_from_orbifold(std::string orbifold,
-                                     const torch::TensorOptions & options = default_tensor_options);
+R2
+symmetry_operations_from_orbifold(std::string orbifold,
+                                  const torch::TensorOptions & options = default_tensor_options());
 
 /// Helper to return all symmetrically-equivalent directions from a cartesian vector
 Vec unique_bidirectional(const R2 & ops, const Vec & inp);

@@ -40,7 +40,7 @@ EmptyBatchTensor::expected_options()
 EmptyBatchTensor::EmptyBatchTensor(const OptionSet & options)
   : BatchTensor(BatchTensor::empty(options.get<TorchShape>("batch_shape"),
                                    options.get<TorchShape>("base_shape"),
-                                   default_tensor_options)),
+                                   default_tensor_options())),
     NEML2Object(options)
 {
 }

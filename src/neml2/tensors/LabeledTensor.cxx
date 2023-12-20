@@ -120,9 +120,9 @@ LabeledTensor<Derived, D>::zeros_like(const Derived & other)
 
 template <class Derived, TorchSize D>
 Derived
-LabeledTensor<Derived, D>::clone() const
+LabeledTensor<Derived, D>::clone(torch::MemoryFormat memory_format) const
 {
-  return Derived(_tensor.clone(), _axes);
+  return Derived(_tensor.clone(memory_format), _axes);
 }
 
 template <class Derived, TorchSize D>

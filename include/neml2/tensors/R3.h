@@ -44,7 +44,7 @@ public:
 
   /// Alternating symbol
   [[nodiscard]] static R3
-  levi_civita(const torch::TensorOptions & options = default_tensor_options);
+  levi_civita(const torch::TensorOptions & options = default_tensor_options());
 
   /// Accessor
   Scalar operator()(TorchSize i, TorchSize j, TorchSize k) const;

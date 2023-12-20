@@ -53,7 +53,7 @@ public:
                          const Real & q1,
                          const Real & q2,
                          const Real & q3,
-                         const torch::TensorOptions & options = default_tensor_options);
+                         const torch::TensorOptions & options = default_tensor_options());
 
   /// Accessor
   Scalar operator()(TorchSize i) const;

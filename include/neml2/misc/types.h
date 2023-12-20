@@ -47,6 +47,12 @@ static constexpr Real TOL = 1E-6;
 /// A tighter tolerance used in various algorithms
 static constexpr Real TOL2 = TOL * TOL;
 
+#define _CONCAT(x, y) x##y
+#define CONCAT(x, y) _CONCAT(x, y)
+#define TORCH_ENUM_PREFIX torch::k
+#define TORCH_DTYPE CONCAT(TORCH_ENUM_PREFIX, DTYPE)
+#define TORCH_INT_DTYPE CONCAT(TORCH_ENUM_PREFIX, INT_DTYPE)
+
 /**
  * The factory methods like `torch::arange`, `torch::ones`, `torch::zeros`, `torch::rand` etc.
  * accept a common argument to configure the properties of the tensor being created. We predefine a
@@ -56,20 +62,10 @@ static constexpr Real TOL2 = TOL * TOL;
  * See https://pytorch.org/cppdocs/notes/tensor_creation.html#configuring-properties-of-the-tensor
  * for more details.
  */
-#define _CONCAT(x, y) x##y
-#define CONCAT(x, y) _CONCAT(x, y)
-#define TORCH_ENUM_PREFIX torch::k
-#define TORCH_DTYPE CONCAT(TORCH_ENUM_PREFIX, DTYPE)
-static const torch::TensorOptions default_tensor_options = torch::TensorOptions()
-                                                               .dtype(TORCH_DTYPE)
-                                                               .layout(torch::kStrided)
-                                                               .device(torch::kCPU)
-                                                               .requires_grad(false);
+const torch::TensorOptions default_tensor_options();
 
 /// We similarly want to have a default integer scalar type for some types of tensors
-#define TORCH_INT_DTYPE CONCAT(TORCH_ENUM_PREFIX, INT_DTYPE)
-static const torch::TensorOptions default_integer_tensor_options =
-    default_tensor_options.dtype(TORCH_INT_DTYPE);
+const torch::TensorOptions default_integer_tensor_options();
 
 template <bool...>
 struct bool_pack;

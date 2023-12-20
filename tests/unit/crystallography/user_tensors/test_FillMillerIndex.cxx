@@ -40,7 +40,7 @@ TEST_CASE("FillMillerIndex", "[crystallography/user_tensors]")
 
   const auto & valid_4 = Factory::get_object<MillerIndex>("Tensors", "v4");
   const auto correct_4 = MillerIndex(torch::tensor({{1, 2, 3}, {4, 5, 6}, {7, 8, 9}, {10, 11, 12}},
-                                                   default_integer_tensor_options));
+                                                   default_integer_tensor_options()));
   REQUIRE(torch::allclose(valid_4, correct_4));
 
   REQUIRE_THROWS(Factory::get_object<MillerIndex>("Tensors", "invalid"));

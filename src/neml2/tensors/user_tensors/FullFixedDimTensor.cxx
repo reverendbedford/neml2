@@ -42,7 +42,7 @@ template <typename T>
 FullFixedDimTensor<T>::FullFixedDimTensor(const OptionSet & options)
   : T(T::full(options.get<TorchShape>("batch_shape"),
               options.get<Real>("value"),
-              default_tensor_options)),
+              default_tensor_options())),
     NEML2Object(options)
 {
 }

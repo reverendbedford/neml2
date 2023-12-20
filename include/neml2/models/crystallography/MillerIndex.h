@@ -45,16 +45,16 @@ public:
   static MillerIndex fill(Integer a,
                           Integer b,
                           Integer c,
-                          const torch::TensorOptions & options = default_integer_tensor_options);
+                          const torch::TensorOptions & options = default_integer_tensor_options());
 
   /// Reduce to the greatest common demoninator
   MillerIndex reduce() const;
 
   /// Convert back to a (real) Vec
-  Vec to_vec(const torch::TensorOptions & options = default_tensor_options) const;
+  Vec to_vec(const torch::TensorOptions & options = default_tensor_options()) const;
 
   /// Convert back to a normalized real Vec
-  Vec to_normalized_vec(const torch::TensorOptions & options = default_tensor_options) const;
+  Vec to_normalized_vec(const torch::TensorOptions & options = default_tensor_options()) const;
 };
 
 } // namespace crystallography

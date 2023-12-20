@@ -44,6 +44,6 @@ TEST_CASE("LogspaceBatchTensor", "[tensors/user_tensors]")
     TorchSize nstep = 100;
     TorchSize dim = 0;
     Real base = 10;
-    REQUIRE(torch::allclose(a, BatchTensor::logspace(a0, a1, nstep, dim, base)));
+    REQUIRE(torch::allclose(a, BatchTensor::logspace(a0, a1, nstep, dim, -1, base)));
   }
 }

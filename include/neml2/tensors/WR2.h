@@ -31,6 +31,8 @@ namespace neml2
 class Scalar;
 class R2;
 class Rot;
+class SR2;
+class WSR4;
 
 /**
  * @brief A skew rank 2, represented as an axial vector
@@ -49,7 +51,7 @@ public:
   [[nodiscard]] static WR2 fill(const Real & a21,
                                 const Real & a02,
                                 const Real & a10,
-                                const torch::TensorOptions & options = default_tensor_options);
+                                const torch::TensorOptions & options = default_tensor_options());
   [[nodiscard]] static WR2 fill(const Scalar & a21, const Scalar & a02, const Scalar & a10);
 
   /// Accessor
@@ -61,4 +63,5 @@ public:
   /// Derivative of the exponential map
   R2 dexp() const;
 };
+
 } // namespace neml2

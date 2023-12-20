@@ -32,9 +32,9 @@ register_NEML2_object(SampleRateModel);
 
 SampleRateModel::SampleRateModel(const OptionSet & options)
   : Model(options),
-    _a(declare_parameter("a", Scalar(-0.01, default_tensor_options))),
-    _b(declare_parameter("b", Scalar(-0.5, default_tensor_options))),
-    _c(declare_parameter("c", Scalar(-0.9, default_tensor_options))),
+    _a(declare_parameter("a", Scalar(-0.01, default_tensor_options()))),
+    _b(declare_parameter("b", Scalar(-0.5, default_tensor_options()))),
+    _c(declare_parameter("c", Scalar(-0.9, default_tensor_options()))),
     _foo(declare_input_variable<Scalar>(vecstr{"state", "foo"})),
     _bar(declare_input_variable<Scalar>(vecstr{"state", "bar"})),
     _baz(declare_input_variable<SR2>(vecstr{"state", "baz"})),

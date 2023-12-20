@@ -41,14 +41,26 @@ ModelUnitTest::expected_options()
   options.set<bool>("check_AD_second_derivatives") = true;
   options.set<bool>("check_AD_derivatives") = true;
   options.set<bool>("check_cuda") = true;
+  options.set<std::vector<LabeledAxisAccessor>>("input_batch_tensor_names");
+  options.set<std::vector<CrossRef<BatchTensor>>>("input_batch_tensor_values");
+  options.set<std::vector<LabeledAxisAccessor>>("output_batch_tensor_names");
+  options.set<std::vector<CrossRef<BatchTensor>>>("output_batch_tensor_values");
   options.set<std::vector<LabeledAxisAccessor>>("input_scalar_names");
   options.set<std::vector<CrossRef<Scalar>>>("input_scalar_values");
   options.set<std::vector<LabeledAxisAccessor>>("input_symr2_names");
   options.set<std::vector<CrossRef<SR2>>>("input_symr2_values");
+  options.set<std::vector<LabeledAxisAccessor>>("input_skewr2_names");
+  options.set<std::vector<CrossRef<WR2>>>("input_skewr2_values");
   options.set<std::vector<LabeledAxisAccessor>>("output_scalar_names");
   options.set<std::vector<CrossRef<Scalar>>>("output_scalar_values");
   options.set<std::vector<LabeledAxisAccessor>>("output_symr2_names");
   options.set<std::vector<CrossRef<SR2>>>("output_symr2_values");
+  options.set<std::vector<LabeledAxisAccessor>>("output_skewr2_names");
+  options.set<std::vector<CrossRef<WR2>>>("output_skewr2_values");
+  options.set<std::vector<LabeledAxisAccessor>>("input_rot_names");
+  options.set<std::vector<CrossRef<Rot>>>("input_rot_values");
+  options.set<std::vector<LabeledAxisAccessor>>("output_rot_names");
+  options.set<std::vector<CrossRef<Rot>>>("output_rot_values");
   options.set<Real>("output_rel_tol") = 1e-5;
   options.set<Real>("output_abs_tol") = 1e-8;
   options.set<Real>("derivatives_rel_tol") = 1e-5;
@@ -76,12 +88,18 @@ ModelUnitTest::ModelUnitTest(const OptionSet & options)
     _secderiv_atol(options.get<Real>("second_derivatives_abs_tol"))
 {
   _in = LabeledVector::zeros(_batch_shape, {&_model.input()});
+  fill_vector<BatchTensor>(_in, "input_batch_tensor_names", "input_batch_tensor_values");
   fill_vector<Scalar>(_in, "input_scalar_names", "input_scalar_values");
   fill_vector<SR2>(_in, "input_symr2_names", "input_symr2_values");
+  fill_vector<WR2>(_in, "input_skewr2_names", "input_skewr2_values");
+  fill_vector<Rot>(_in, "input_rot_names", "input_rot_values");
 
   _out = LabeledVector::zeros(_batch_shape, {&_model.output()});
+  fill_vector<BatchTensor>(_out, "output_batch_tensor_names", "output_batch_tensor_values");
   fill_vector<Scalar>(_out, "output_scalar_names", "output_scalar_values");
   fill_vector<SR2>(_out, "output_symr2_names", "output_symr2_values");
+  fill_vector<WR2>(_out, "output_skewr2_names", "output_skewr2_values");
+  fill_vector<Rot>(_out, "output_rot_names", "output_rot_values");
 }
 
 bool
@@ -91,8 +109,8 @@ ModelUnitTest::run()
 
   if (_check_cuda && torch::cuda::is_available())
   {
-    _model.to(torch::kCUDA);
-    _in = _in.to(torch::kCUDA);
+    _model.to(default_tensor_options().device(torch::kCUDA));
+    _in = _in.to(default_tensor_options().device(torch::kCUDA));
     check_all();
   }
 

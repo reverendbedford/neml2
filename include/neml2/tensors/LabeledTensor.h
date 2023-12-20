@@ -66,23 +66,25 @@ public:
   operator torch::Tensor() const;
 
   /// Setup new empty storage
-  [[nodiscard]] static Derived empty(TorchShapeRef batch_shape,
-                                     const std::vector<const LabeledAxis *> & axes,
-                                     const torch::TensorOptions & options = default_tensor_options);
+  [[nodiscard]] static Derived
+  empty(TorchShapeRef batch_shape,
+        const std::vector<const LabeledAxis *> & axes,
+        const torch::TensorOptions & options = default_tensor_options());
 
   /// Setup new empty storage like another LabeledTensor
   [[nodiscard]] static Derived empty_like(const Derived & other);
 
   /// Setup new storage with zeros
-  [[nodiscard]] static Derived zeros(TorchShapeRef batch_shape,
-                                     const std::vector<const LabeledAxis *> & axes,
-                                     const torch::TensorOptions & options = default_tensor_options);
+  [[nodiscard]] static Derived
+  zeros(TorchShapeRef batch_shape,
+        const std::vector<const LabeledAxis *> & axes,
+        const torch::TensorOptions & options = default_tensor_options());
 
   /// Setup new storage with zeros like another LabeledTensor
   [[nodiscard]] static Derived zeros_like(const Derived & other);
 
   /// Clone this LabeledTensor
-  Derived clone() const;
+  Derived clone(torch::MemoryFormat memory_format = torch::MemoryFormat::Contiguous) const;
 
   template <typename T>
   void copy_(const T & other);
@@ -164,6 +166,15 @@ public:
              batch_dim());
   }
 
+  /// Get and interpret the view as a list of objects
+  template <typename T, typename... S>
+  typename variable_type<T>::type get_list(S &&... names) const
+  {
+    return T(((*this)(names...))
+                 .reshape(utils::add_shapes(this->batch_sizes(), -1, T::const_base_sizes)),
+             this->batch_dim() + sizeof...(names));
+  }
+
   /// Set and interpret the input as an object
   template <typename T, typename... S>
   void set(const BatchTensorBase<T> & value, S &&... names)
@@ -171,6 +182,13 @@ public:
     (*this)(names...).index_put_(
         {torch::indexing::None},
         value.reshape(utils::add_shapes(value.batch_sizes(), storage_size(names...))));
+  }
+
+  /// Set and interpret the input as a list of objects
+  template <typename T, typename... S>
+  void set_list(const BatchTensorBase<T> & value, S &&... names)
+  {
+    this->set(BatchTensor(value, value.batch_dim() - sizeof...(names)), names...);
   }
 
   /// Negation

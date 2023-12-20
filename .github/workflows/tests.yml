@@ -11,6 +11,7 @@ on:
 permissions:
   contents: read  # Required when overriding permissions
   pull-requests: write  # For posting coverage report
+  checks: write
 
 # Newer commits should cancel old runs
 concurrency:
@@ -71,7 +72,24 @@ jobs:
             -DNEML2_DOC=OFF \
             .
       - run: make -j 2
-      - run: make test
+      - run: cd tests && ./unit_tests -r junit > unit_tests.xml
+        continue-on-error: true
+      - run: cd tests && ./regression_tests -r junit > regression_tests.xml
+        continue-on-error: true
+      - run: cd tests && ./verification_tests -r junit > verification_tests.xml
+        continue-on-error: true
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: matrix.os == 'ubuntu-latest'
+        with:
+          files: tests/*.xml
+          check_name: Test Results (${{ matrix.os }}-${{ matrix.btype }}-${{ matrix.unity }})
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action/composite@v2
+        if: matrix.os == 'macos-latest'
+        with:
+          files: tests/*.xml
+          check_name: Test Results (${{ matrix.os }}-${{ matrix.btype }}-${{ matrix.unity }})
   build-all:
     needs: clang-format
     runs-on: ubuntu-latest

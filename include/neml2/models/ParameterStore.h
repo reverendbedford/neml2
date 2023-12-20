@@ -57,11 +57,11 @@ public:
 
 protected:
   /**
-   * @brief Send buffers to device
+   * @brief Send parameters to options
    *
-   * @param device The target device
+   * @param options The target options
    */
-  virtual void send_parameters_to(const torch::Device & device);
+  virtual void send_parameters_to(const torch::TensorOptions & options);
 
   /// Get the accessor for a given nonlinear parameter
   const LabeledAxisAccessor & nl_param(const std::string & name) const
@@ -130,10 +130,10 @@ ParameterStore::get_parameter(const std::string & name) const
 }
 
 inline void
-ParameterStore::send_parameters_to(const torch::Device & device)
+ParameterStore::send_parameters_to(const torch::TensorOptions & options)
 {
   for (auto && [name, id] : _param_ids)
-    _param_values[id].to(device);
+    _param_values[id].to(options);
 }
 
 template <typename T, typename>

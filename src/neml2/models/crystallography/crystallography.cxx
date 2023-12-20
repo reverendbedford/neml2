@@ -33,74 +33,109 @@ namespace neml2
 {
 namespace crystallography
 {
+namespace crystal_symmetry_operators
+{
+const torch::Tensor
+tetragonal(const torch::TensorOptions & options)
+{
+  return torch::tensor({{o, z, z, z},
+                        {z, z, o, z},
+                        {z, o, z, z},
+                        {z, z, z, o},
+                        {a, z, z, -a},
+                        {a, z, z, a},
+                        {z, a, a, z},
+                        {z, -a, a, z}},
+                       options);
+}
+
+const torch::Tensor
+hexagonal(const torch::TensorOptions & options)
+{
+  return torch::tensor({{o, z, z, z},
+                        {-h, z, z, b},
+                        {h, z, z, b},
+                        {b, z, z, -h},
+                        {z, z, z, o},
+                        {b, z, z, h},
+                        {z, -h, b, z},
+                        {z, o, z, z},
+                        {z, h, b, z},
+                        {z, b, h, z},
+                        {z, z, o, z},
+                        {z, b, -h, z}},
+                       options);
+}
+
+const torch::Tensor
+cubic(const torch::TensorOptions & options)
+{
+  return torch::tensor({{o, z, z, z},   {h, h, h, h},    {-h, h, h, h},  {h, -h, h, h},
+                        {h, h, -h, h},  {-h, -h, -h, h}, {h, -h, -h, h}, {-h, -h, h, h},
+                        {-h, h, -h, h}, {z, z, o, z},    {z, z, z, o},   {z, o, z, z},
+                        {z, -a, z, a},  {z, a, z, a},    {a, z, a, z},   {a, z, -a, z},
+                        {z, z, -a, a},  {a, a, z, z},    {a, -a, z, z},  {z, z, a, a},
+                        {z, -a, a, z},  {a, z, z, -a},   {z, a, a, z},   {a, z, z, a}},
+                       options);
+}
+} // namespace crystal_symmetry_operators
 
 R2
 symmetry_operations_from_orbifold(std::string orbifold, const torch::TensorOptions & options)
 {
   if (orbifold == "432")
   {
-    return transform_from_quaternion(Quaternion(crystal_symmetry_operators::cubic)).to(options);
+    return transform_from_quaternion(Quaternion(crystal_symmetry_operators::cubic(options)));
   }
   else if (orbifold == "23")
   {
     return transform_from_quaternion(
-               Quaternion(crystal_symmetry_operators::cubic.index({Slice(0, 12)})))
-        .to(options);
+        Quaternion(crystal_symmetry_operators::cubic(options).index({Slice(0, 12)})));
   }
   else if (orbifold == "622")
   {
-    return transform_from_quaternion(Quaternion(crystal_symmetry_operators::hexagonal)).to(options);
+    return transform_from_quaternion(Quaternion(crystal_symmetry_operators::hexagonal(options)));
   }
   else if (orbifold == "32")
   {
-    return transform_from_quaternion(
-               Quaternion(
-                   torch::cat({crystal_symmetry_operators::hexagonal.index({Slice(0, 3)}),
-                               crystal_symmetry_operators::hexagonal.index({Slice(9, 12)})})))
-        .to(options);
+    return transform_from_quaternion(Quaternion(
+        torch::cat({crystal_symmetry_operators::hexagonal(options).index({Slice(0, 3)}),
+                    crystal_symmetry_operators::hexagonal(options).index({Slice(9, 12)})})));
   }
   else if (orbifold == "6")
   {
     return transform_from_quaternion(
-               Quaternion(crystal_symmetry_operators::hexagonal.index({Slice(0, 6)})))
-        .to(options);
+        Quaternion(crystal_symmetry_operators::hexagonal(options).index({Slice(0, 6)})));
   }
   else if (orbifold == "3")
   {
     return transform_from_quaternion(
-               Quaternion(crystal_symmetry_operators::hexagonal.index({Slice(0, 3)})))
-        .to(options);
+        Quaternion(crystal_symmetry_operators::hexagonal(options).index({Slice(0, 3)})));
   }
   else if (orbifold == "42")
   {
-    return transform_from_quaternion(Quaternion(crystal_symmetry_operators::tetragonal))
-        .to(options);
+    return transform_from_quaternion(Quaternion(crystal_symmetry_operators::tetragonal(options)));
   }
   else if (orbifold == "4")
   {
-    return transform_from_quaternion(
-               Quaternion(
-                   torch::cat({crystal_symmetry_operators::tetragonal.index({Slice(0, 1)}),
-                               crystal_symmetry_operators::tetragonal.index({Slice(3, 6)})})))
-        .to(options);
+    return transform_from_quaternion(Quaternion(
+        torch::cat({crystal_symmetry_operators::tetragonal(options).index({Slice(0, 1)}),
+                    crystal_symmetry_operators::tetragonal(options).index({Slice(3, 6)})})));
   }
   else if (orbifold == "222")
   {
     return transform_from_quaternion(
-               Quaternion(crystal_symmetry_operators::tetragonal.index({Slice(0, 4)})))
-        .to(options);
+        Quaternion(crystal_symmetry_operators::tetragonal(options).index({Slice(0, 4)})));
   }
   else if (orbifold == "2")
   {
     return transform_from_quaternion(
-               Quaternion(crystal_symmetry_operators::tetragonal.index({Slice(0, 2)})))
-        .to(options);
+        Quaternion(crystal_symmetry_operators::tetragonal(options).index({Slice(0, 2)})));
   }
   else if (orbifold == "1")
   {
     return transform_from_quaternion(
-               Quaternion(crystal_symmetry_operators::tetragonal.index({Slice(0, 1)})))
-        .to(options);
+        Quaternion(crystal_symmetry_operators::tetragonal(options).index({Slice(0, 1)})));
   }
   else
   {

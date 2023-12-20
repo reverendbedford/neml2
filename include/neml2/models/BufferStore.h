@@ -53,11 +53,11 @@ public:
 
 protected:
   /**
-   * @brief Send buffers to device
+   * @brief Send buffers to options
    *
-   * @param device The target device
+   * @param options The target options
    */
-  virtual void send_buffers_to(const torch::Device & device);
+  virtual void send_buffers_to(const torch::TensorOptions & options);
 
   /**
    * @brief Declare a model buffer.
@@ -125,10 +125,10 @@ BufferStore::get_buffer(const std::string & name) const
 }
 
 inline void
-BufferStore::send_buffers_to(const torch::Device & device)
+BufferStore::send_buffers_to(const torch::TensorOptions & options)
 {
   for (auto && [name, id] : _buffer_ids)
-    _buffer_values[id].to(device);
+    _buffer_values[id].to(options);
 }
 
 template <typename T, typename>

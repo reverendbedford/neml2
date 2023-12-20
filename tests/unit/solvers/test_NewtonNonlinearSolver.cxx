@@ -33,15 +33,32 @@ TEST_CASE("NewtonNonlinearSolver", "[solvers]")
 {
   TorchShape batch_sz = {2};
   TorchSize nbase = 4;
-  auto x0 = BatchTensor::zeros(batch_sz, nbase, default_tensor_options);
-
-  PowerTestSystem system;
-  x0 = system.guess(x0);
+  auto x0 = BatchTensor::zeros(batch_sz, nbase, default_tensor_options());
 
   OptionSet options = NewtonNonlinearSolver::expected_options();
   NewtonNonlinearSolver solver(options);
 
-  auto x_res = solver.solve(system, x0);
+  SECTION("solve")
+  {
+    auto options = PowerTestSystem::expected_options();
+    PowerTestSystem system(options);
+    x0 = system.guess(x0);
 
-  REQUIRE(torch::allclose(x_res, system.exact_solution(x0)));
+    auto x_res = solver.solve(system, x0);
+
+    REQUIRE(torch::allclose(x_res, system.exact_solution(x0)));
+  }
+
+  SECTION("automatic scaling")
+  {
+    auto options = PowerTestSystem::expected_options();
+    options.set<bool>("automatic_scaling") = true;
+    PowerTestSystem system(options);
+    x0 = system.guess(x0);
+
+    system.init_scaling(x0, solver.verbose);
+    auto x_res = solver.solve(system, x0);
+
+    REQUIRE(torch::allclose(x_res, system.exact_solution(x0)));
+  }
 }
