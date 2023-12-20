@@ -117,7 +117,7 @@ NewtonNonlinearSolver::converged(size_t itr,
               << std::endl;
   // LCOV_EXCL_STOP
 
-  return torch::all(nR < atol).item<bool>() || torch::all(nR / nR0 < rtol).item<bool>();
+  return torch::all(torch::logical_or(nR < atol, nR / nR0 < rtol)).item<bool>();
 }
 
 Real
@@ -142,7 +142,7 @@ NewtonNonlinearSolver::update_linesearch(BatchTensor & x,
 
   auto R0 = R.clone();
   auto nR02 = torch::linalg_vecdot(R0, R0);
-  Real alpha = 1.0;
+  auto alpha = Scalar::ones(x.batch_sizes(), x.options());
 
   auto dx = solve_direction(system, R, J);
 
@@ -150,19 +150,22 @@ NewtonNonlinearSolver::update_linesearch(BatchTensor & x,
   {
     R = system.residual(x - alpha * dx);
     auto nR2 = torch::linalg_vecdot(R, R);
-    auto crit = nR02 + 2.0 * _linesearch_c * alpha * torch::linalg_vecdot(R0, dx);
+    auto crit =
+        nR02 + 2.0 * _linesearch_c * alpha * Scalar(torch::linalg_vecdot(R0, dx), x.batch_dim());
     if (verbose)
       std::cout << "     LS ITERATION " << std::setw(3) << i << ", |R| = " << std::scientific
                 << torch::max(torch::sqrt(nR2)).item<Real>() << ", |Rc| = " << std::scientific
                 << torch::min(torch::sqrt(crit)).item<Real>() << std::endl;
 
-    if (torch::all(nR2 <= crit).item<bool>() || torch::all(nR2 <= std::pow(atol, 2)).item<bool>())
+    auto stop = torch::logical_or(nR2 <= crit, nR2 <= std::pow(atol, 2));
+    if (torch::all(stop).item<bool>())
       break;
-    alpha /= _linesearch_sigma;
+    alpha.batch_index_put({torch::logical_not(stop)},
+                          alpha.batch_index({torch::logical_not(stop)}) / _linesearch_sigma);
   }
   x -= alpha * dx;
 
-  return alpha;
+  return torch::min(alpha).item<Real>();
 }
 
 } // namespace neml2
