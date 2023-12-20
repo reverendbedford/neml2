@@ -38,6 +38,7 @@ VTestVerification::expected_options()
   options.set<std::vector<CrossRef<torch::Tensor>>>("references");
   options.set<Real>("rtol") = 1e-5;
   options.set<Real>("atol") = 1e-8;
+  options.set<bool>("taylor_average") = false;
   return options;
 }
 
@@ -47,7 +48,8 @@ VTestVerification::VTestVerification(const OptionSet & options)
     _variables(options.get<std::vector<std::string>>("variables")),
     _references(options.get<std::vector<CrossRef<torch::Tensor>>>("references")),
     _rtol(options.get<Real>("rtol")),
-    _atol(options.get<Real>("atol"))
+    _atol(options.get<Real>("atol")),
+    _taylor_average(options.get<bool>("taylor_average"))
 {
   neml_assert(_variables.size() == _references.size(),
               "Must provide the same number of variables and reference variables. ",
@@ -82,8 +84,15 @@ VTestVerification::allclose(const std::string & var, torch::Tensor ref) const
   auto name = tokens[1];
   auto neml2_tensor = res->at<torch::nn::Module>(axis).named_buffers(true)[name];
 
+  // Average, if requested
+  torch::Tensor comp;
+  if (_taylor_average)
+    comp = torch::sum(neml2_tensor, 1).unsqueeze(1) / ((Real)neml2_tensor.sizes()[1]);
+  else
+    comp = neml2_tensor;
+
   // Check
-  if (!torch::allclose(neml2_tensor, ref, _rtol, _atol))
+  if (!torch::allclose(comp, ref, _rtol, _atol))
     return false;
 
   return true;

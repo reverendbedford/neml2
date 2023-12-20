@@ -27,6 +27,8 @@
 #include "neml2/base/Registry.h"
 #include "neml2/base/NEML2Object.h"
 
+#include <map>
+
 namespace neml2
 {
 class VTestTimeSeries : public NEML2Object, public torch::Tensor
@@ -35,6 +37,8 @@ public:
   static OptionSet expected_options();
 
   VTestTimeSeries(const OptionSet & options);
+
+  static const std::map<std::string, TorchShape> shape_map;
 
 private:
   torch::Tensor init(const OptionSet & options) const;

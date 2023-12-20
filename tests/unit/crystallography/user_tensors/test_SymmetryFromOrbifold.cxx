@@ -38,7 +38,7 @@ namespace fs = std::filesystem;
 TEST_CASE("SymmetryFromOrbifold", "[tensors]")
 {
   torch::manual_seed(42);
-  const auto & DTO = default_tensor_options;
+  const auto & DTO = default_tensor_options();
 
   Real a = std::sqrt(3.0) / 2.0;
   Real h = 0.5;

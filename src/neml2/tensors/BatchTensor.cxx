@@ -43,4 +43,11 @@ bmm(const BatchTensor & a, const BatchTensor & b)
   return BatchTensor(torch::einsum("...im,...mj", {a, b}), broadcast_batch_dim(a, b));
 }
 }
+
+BatchTensor
+operator*(const BatchTensor & a, const BatchTensor & b)
+{
+  neml_assert_broadcastable_dbg(a, b);
+  return BatchTensor(torch::operator*(a, b), broadcast_batch_dim(a, b));
+}
 } // end namespace neml2

@@ -58,14 +58,14 @@ public:
   Model(const OptionSet & options);
 
   /**
-   * @brief Recursively send this model and its sub-models to the target device.
+   * @brief Recursively convert this model and its sub-models to use the target options.
    *
-   * What this does behind the scenes is just sending all the model parameters to the target device.
-   * This operation is recursively applied on of the sub-models.
+   * What this does behind the scenes is just sending all the model parameters to the target
+   * options. This operation is recursively applied on of the sub-models.
    *
-   * @param device The target device
+   * @param options The target options
    */
-  virtual void to(const torch::Device & device) override;
+  virtual void to(const torch::TensorOptions & options) override;
 
   /// Definition of the input variables
   /// @{
@@ -189,6 +189,14 @@ protected:
     return accessor;
   }
 
+  /// Declare an input variable that is a list of tensors of fixed size
+  template <typename T>
+  LabeledAxisAccessor declare_input_variable_list(const LabeledAxisAccessor & var,
+                                                  TorchSize list_size)
+  {
+    return declare_input_variable(var, list_size * T::const_base_storage);
+  }
+
   /// Declare an output variable
   template <typename T>
   LabeledAxisAccessor declare_output_variable(const LabeledAxisAccessor & var)
@@ -204,6 +212,14 @@ protected:
     auto accessor = declare_variable(_output, var, sz);
     _provided_vars.insert(accessor);
     return accessor;
+  }
+
+  /// Declare an output variable that is a list of tensors with fixed size
+  template <typename T>
+  LabeledAxisAccessor declare_output_variable_list(const LabeledAxisAccessor & var,
+                                                   TorchSize list_sz)
+  {
+    return declare_output_variable(var, list_sz * T::const_base_storage);
   }
 
   virtual void setup() { setup_layout(); }

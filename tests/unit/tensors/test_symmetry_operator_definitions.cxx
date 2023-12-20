@@ -32,7 +32,7 @@ using namespace neml2;
 TEST_CASE("Symmetry operator definitions", "[tensors]")
 {
   torch::manual_seed(42);
-  const auto & DTO = default_tensor_options;
+  const auto & DTO = default_tensor_options();
 
   SECTION("definitions")
   {

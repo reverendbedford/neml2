@@ -27,6 +27,8 @@
 #include "neml2/drivers/Driver.h"
 #include <filesystem>
 
+#include "neml2/tensors/tensors.h"
+
 namespace neml2
 {
 /**
@@ -84,8 +86,8 @@ protected:
 
   /// The model which the driver uses to perform constitutive updates.
   Model & _model;
-  /// The device on which all the computation occurs
-  const torch::Device _device;
+  /// The tensor options for all the computations
+  const torch::TensorOptions _options;
 
   /// The current time
   Scalar _time;
@@ -114,7 +116,27 @@ protected:
   /// Outputs from all time steps
   LabeledVector _result_out;
 
+  /// Names for the Rot initial conditions
+  std::vector<LabeledAxisAccessor> _ic_rot_names;
+  /// Values for the Rot initial conditions
+  std::vector<CrossRef<Rot>> _ic_rot_values;
+  /// Names for the SR2 initial conditions
+  std::vector<LabeledAxisAccessor> _ic_sr2_names;
+  /// Values for the SR2 initial conditions
+  std::vector<CrossRef<SR2>> _ic_sr2_values;
+
+  /// Scale value for initial cp predictor
+  Real _cp_elastic_scale;
+
 private:
   void output_pt(const std::filesystem::path & out) const;
+
+  template <typename T>
+  void set_IC(const std::vector<LabeledAxisAccessor> & ic_names,
+              const std::vector<CrossRef<T>> & ic_values)
+  {
+    for (size_t i = 0; i < ic_names.size(); i++)
+      _out.set(T(ic_values[i]), ic_names[i]);
+  }
 };
 } // namespace neml2

@@ -45,11 +45,11 @@ public:
   Data(const OptionSet & options);
 
   /**
-   * @brief Recursively send this Data and all the registered Data to the target device.
+   * @brief Recursively send this Data and all the registered Data to the target options.
    *
-   * @param device The target device
+   * @param options The target options
    */
-  virtual void to(const torch::Device & device);
+  virtual void to(const torch::TensorOptions & options);
 
   /**
    * @brief Get the named buffers

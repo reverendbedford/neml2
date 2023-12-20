@@ -37,6 +37,7 @@ LogspaceFixedDimTensor<T>::expected_options()
   options.set<CrossRef<T>>("end");
   options.set<TorchSize>("nstep");
   options.set<TorchSize>("dim") = 0;
+  options.set<TorchSize>("batch_dim") = -1;
   options.set<Real>("base") = 10;
   return options;
 }
@@ -47,6 +48,7 @@ LogspaceFixedDimTensor<T>::LogspaceFixedDimTensor(const OptionSet & options)
                   options.get<CrossRef<T>>("end"),
                   options.get<TorchSize>("nstep"),
                   options.get<TorchSize>("dim"),
+                  options.get<TorchSize>("batch_dim"),
                   options.get<Real>("base"))),
     NEML2Object(options)
 {

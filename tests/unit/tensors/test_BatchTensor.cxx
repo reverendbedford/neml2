@@ -30,7 +30,7 @@ using namespace neml2;
 
 TEST_CASE("BatchTensor", "[tensors]")
 {
-  const auto & DTO = default_tensor_options;
+  const auto & DTO = default_tensor_options();
 
   SECTION("bmm")
   {

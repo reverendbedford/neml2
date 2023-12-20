@@ -48,6 +48,6 @@ Fill3DVec::fill(const std::vector<Real> & values) const
   if ((values.size() % 3) != 0)
     neml_assert(false, "Number of provided values must be a multiple of three!");
 
-  return Vec(torch::tensor(values, default_tensor_options).reshape({-1, 3}));
+  return Vec(torch::tensor(values, default_tensor_options()).reshape({-1, 3}));
 }
 } // namespace neml2

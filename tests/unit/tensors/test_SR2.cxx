@@ -33,7 +33,7 @@ using namespace neml2;
 TEST_CASE("SR2", "[tensors]")
 {
   torch::manual_seed(42);
-  const auto & DTO = default_tensor_options;
+  const auto & DTO = default_tensor_options();
 
   TorchShape B = {5, 3, 1, 2}; // batch shape
 
@@ -228,6 +228,32 @@ TEST_CASE("SR2", "[tensors]")
       auto res = SR2(R2(T).transpose());
       REQUIRE(torch::allclose(T.transpose(), res));
       REQUIRE(torch::allclose(T.batch_expand(B).transpose(), res.batch_expand(B)));
+    }
+
+    SECTION("wemew")
+    {
+      auto w = WR2(torch::rand({3}, DTO));
+      SECTION("product")
+      {
+        REQUIRE(
+            torch::allclose(R2(math::skew_and_sym_to_sym(T, w)), R2(w) * R2(T) - R2(T) * R2(w)));
+      }
+      SECTION("derivatives")
+      {
+        SECTION("de")
+        {
+          auto apply1 = [w](const SR2 & x) { return math::skew_and_sym_to_sym(x, w); };
+          auto d1 = finite_differencing_derivative(apply1, T);
+          REQUIRE(torch::allclose(math::d_skew_and_sym_to_sym_d_sym(w), d1));
+        }
+
+        SECTION("dw")
+        {
+          auto apply2 = [T](const WR2 & x) { return math::skew_and_sym_to_sym(T, x); };
+          auto d2 = finite_differencing_derivative(apply2, w);
+          REQUIRE(torch::allclose(math::d_skew_and_sym_to_sym_d_skew(T), d2));
+        }
+      }
     }
   }
 }

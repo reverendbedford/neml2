@@ -38,6 +38,9 @@
 #include "neml2/tensors/Rot.h"
 #include "neml2/tensors/WR2.h"
 #include "neml2/tensors/Quaternion.h"
+#include "neml2/tensors/SWR4.h"
+#include "neml2/tensors/WSR4.h"
+#include "neml2/tensors/WWR4.h"
 #include "neml2/models/crystallography/MillerIndex.h"
 
 namespace neml2
@@ -79,7 +82,7 @@ FixedDimTensor<Derived, S...>::empty(const torch::TensorOptions & options)
 
 template <class Derived, TorchSize... S>
 Derived
-FixedDimTensor<Derived, S...>::empty(const TorchShapeRef & batch_shape,
+FixedDimTensor<Derived, S...>::empty(TorchShapeRef batch_shape,
                                      const torch::TensorOptions & options)
 {
   return Derived(torch::empty(utils::add_shapes(batch_shape, const_base_sizes), options),
@@ -95,7 +98,7 @@ FixedDimTensor<Derived, S...>::zeros(const torch::TensorOptions & options)
 
 template <class Derived, TorchSize... S>
 Derived
-FixedDimTensor<Derived, S...>::zeros(const TorchShapeRef & batch_shape,
+FixedDimTensor<Derived, S...>::zeros(TorchShapeRef batch_shape,
                                      const torch::TensorOptions & options)
 {
   return Derived(torch::zeros(utils::add_shapes(batch_shape, const_base_sizes), options),
@@ -111,8 +114,7 @@ FixedDimTensor<Derived, S...>::ones(const torch::TensorOptions & options)
 
 template <class Derived, TorchSize... S>
 Derived
-FixedDimTensor<Derived, S...>::ones(const TorchShapeRef & batch_shape,
-                                    const torch::TensorOptions & options)
+FixedDimTensor<Derived, S...>::ones(TorchShapeRef batch_shape, const torch::TensorOptions & options)
 {
   return Derived(torch::ones(utils::add_shapes(batch_shape, const_base_sizes), options),
                  batch_shape.size());
@@ -127,7 +129,7 @@ FixedDimTensor<Derived, S...>::full(Real init, const torch::TensorOptions & opti
 
 template <class Derived, TorchSize... S>
 Derived
-FixedDimTensor<Derived, S...>::full(const TorchShapeRef & batch_shape,
+FixedDimTensor<Derived, S...>::full(TorchShapeRef batch_shape,
                                     Real init,
                                     const torch::TensorOptions & options)
 {
@@ -148,6 +150,9 @@ template class FixedDimTensor<SSR4, 6, 6>;
 template class FixedDimTensor<R5, 3, 3, 3, 3, 3>;
 template class FixedDimTensor<SSFR5, 6, 6, 3>;
 template class FixedDimTensor<Quaternion, 4>;
+template class FixedDimTensor<SWR4, 6, 3>;
+template class FixedDimTensor<WSR4, 3, 6>;
+template class FixedDimTensor<WWR4, 3, 3>;
 template class FixedDimTensor<crystallography::MillerIndex, 3>;
 
 } // namespace neml2

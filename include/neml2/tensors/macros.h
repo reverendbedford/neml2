@@ -35,7 +35,8 @@
   typedef classname<R4> prefix##R4;                                                                \
   typedef classname<SSR4> prefix##SSR4;                                                            \
   typedef classname<R5> prefix##R5;                                                                \
-  typedef classname<SSFR5> prefix##SSFR5
+  typedef classname<SSFR5> prefix##SSFR5;                                                          \
+  typedef classname<WR2> prefix##WR2
 
 #define typedef_all_FixedDimTensor_suffix(classname, suffix)                                       \
   typedef classname<Scalar> Scalar##suffix;                                                        \
@@ -48,7 +49,8 @@
   typedef classname<R4> R4##suffix;                                                                \
   typedef classname<SSR4> SSR4##suffix;                                                            \
   typedef classname<R5> R5##suffix;                                                                \
-  typedef classname<SSFR5> SSFR5##suffix
+  typedef classname<SSFR5> SSFR5##suffix;                                                          \
+  typedef classname<WR2> WR2##suffix
 
 #define instantiate_all_FixedDimTensor(classname)                                                  \
   template class classname<Scalar>;                                                                \
@@ -61,7 +63,8 @@
   template class classname<R4>;                                                                    \
   template class classname<SSR4>;                                                                  \
   template class classname<R5>;                                                                    \
-  template class classname<SSFR5>
+  template class classname<SSFR5>;                                                                 \
+  template class classname<WR2>
 
 #define register_all_FixedDimTensor_prefix(prefix1, prefix2)                                       \
   register_NEML2_object_alias(prefix1##Scalar, prefix2 "Scalar");                                  \
@@ -74,7 +77,8 @@
   register_NEML2_object_alias(prefix1##R4, prefix2 "R4");                                          \
   register_NEML2_object_alias(prefix1##SSR4, prefix2 "SSR4");                                      \
   register_NEML2_object_alias(prefix1##R5, prefix2 "R5");                                          \
-  register_NEML2_object_alias(prefix1##SSFR5, prefix2 "SSFR5")
+  register_NEML2_object_alias(prefix1##SSFR5, prefix2 "SSFR5");                                    \
+  register_NEML2_object_alias(prefix1##WR2, prefix2 "WR2")
 
 #define register_all_FixedDimTensor_suffix(suffix1, suffix2)                                       \
   register_NEML2_object_alias(Scalar##suffix1, "Scalar" suffix2);                                  \
@@ -87,7 +91,8 @@
   register_NEML2_object_alias(R4##suffix1, "R4" suffix2);                                          \
   register_NEML2_object_alias(SSR4##suffix1, "SSR4" suffix2);                                      \
   register_NEML2_object_alias(R5##suffix1, "R5" suffix2);                                          \
-  register_NEML2_object_alias(SSFR5##suffix1, "SSFR5" suffix2)
+  register_NEML2_object_alias(SSFR5##suffix1, "SSFR5" suffix2);                                    \
+  register_NEML2_object_alias(WR2##suffix1, "WR2" suffix2)
 
 #define FOR_ALL_FIXEDDIMTENSOR(f)                                                                  \
   f(Scalar);                                                                                       \
@@ -100,4 +105,5 @@
   f(R4);                                                                                           \
   f(SSR4);                                                                                         \
   f(R5);                                                                                           \
-  f(SSFR5)
+  f(SSFR5);                                                                                        \
+  f(WR2)

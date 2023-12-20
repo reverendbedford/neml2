@@ -26,6 +26,9 @@
 #include "neml2/tensors/Scalar.h"
 #include "neml2/tensors/R2.h"
 #include "neml2/tensors/Rot.h"
+#include "neml2/tensors/SR2.h"
+#include "neml2/tensors/WSR4.h"
+#include "neml2/tensors/R4.h"
 
 #include "neml2/misc/math.h"
 

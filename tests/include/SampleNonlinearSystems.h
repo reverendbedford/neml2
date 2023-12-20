@@ -29,6 +29,9 @@
 class TestNonlinearSystem : public neml2::NonlinearSystem
 {
 public:
+  static neml2::OptionSet expected_options();
+  TestNonlinearSystem(const neml2::OptionSet & options);
+
   virtual neml2::BatchTensor exact_solution(const neml2::BatchTensor & x) const = 0;
   virtual neml2::BatchTensor guess(const neml2::BatchTensor & x) const = 0;
 };
@@ -36,7 +39,8 @@ public:
 class PowerTestSystem : public TestNonlinearSystem
 {
 public:
-  PowerTestSystem();
+  static neml2::OptionSet expected_options();
+  PowerTestSystem(const neml2::OptionSet & options);
 
   virtual void assemble(const neml2::BatchTensor & x,
                         neml2::BatchTensor * residual,

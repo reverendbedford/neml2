@@ -40,7 +40,7 @@ ZerosBatchTensor::expected_options()
 ZerosBatchTensor::ZerosBatchTensor(const OptionSet & options)
   : BatchTensor(BatchTensor::zeros(options.get<TorchShape>("batch_shape"),
                                    options.get<TorchShape>("base_shape"),
-                                   default_tensor_options)),
+                                   default_tensor_options())),
     NEML2Object(options)
 {
 }

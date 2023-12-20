@@ -37,7 +37,7 @@ using namespace neml2;
     REQUIRE(tensor_name.batch_sizes() == batch_shape);                                             \
     REQUIRE(tensor_name.base_sizes() == tensor_type::const_base_sizes);                            \
     REQUIRE(                                                                                       \
-        torch::allclose(tensor_name, tensor_type::zeros(batch_shape, default_tensor_options)));    \
+        torch::allclose(tensor_name, tensor_type::zeros(batch_shape, default_tensor_options())));  \
   }                                                                                                \
   static_assert(true)
 

@@ -26,6 +26,7 @@
 
 #include "neml2/drivers/Driver.h"
 #include "neml2/models/Model.h"
+#include "neml2/tensors/tensors.h"
 
 namespace neml2
 {

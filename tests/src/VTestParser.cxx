@@ -81,5 +81,5 @@ VTestParser::parse()
 
   // Convert buffers to tensors
   for (size_t i = 0; i < _headers.size(); i++)
-    _data[_headers[i]] = torch::tensor(scalar_buffers[i], default_tensor_options);
+    _data[_headers[i]] = torch::tensor(scalar_buffers[i], default_tensor_options());
 }

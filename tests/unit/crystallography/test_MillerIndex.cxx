@@ -33,8 +33,8 @@ using namespace neml2::crystallography;
 TEST_CASE("MillerIndex", "[crystallography]")
 {
   torch::manual_seed(42);
-  const auto & DTO = default_tensor_options;
-  const auto & IDTO = default_integer_tensor_options;
+  const auto & DTO = default_tensor_options();
+  const auto & IDTO = default_integer_tensor_options();
 
   TorchShape B = {5, 3, 1, 2}; // batch shape
 

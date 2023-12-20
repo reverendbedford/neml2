@@ -59,26 +59,30 @@ public:
   operator BatchTensor() const;
 
   /// Unbatched empty tensor
-  [[nodiscard]] static Derived empty(const torch::TensorOptions & options = default_tensor_options);
+  [[nodiscard]] static Derived
+  empty(const torch::TensorOptions & options = default_tensor_options());
   /// Empty tensor given batch shape
-  [[nodiscard]] static Derived empty(const TorchShapeRef & batch_shape,
-                                     const torch::TensorOptions & options = default_tensor_options);
+  [[nodiscard]] static Derived
+  empty(TorchShapeRef batch_shape, const torch::TensorOptions & options = default_tensor_options());
   /// Unbatched zero tensor
-  [[nodiscard]] static Derived zeros(const torch::TensorOptions & options = default_tensor_options);
+  [[nodiscard]] static Derived
+  zeros(const torch::TensorOptions & options = default_tensor_options());
   /// Zero tensor given batch shape
-  [[nodiscard]] static Derived zeros(const TorchShapeRef & batch_shape,
-                                     const torch::TensorOptions & options = default_tensor_options);
+  [[nodiscard]] static Derived
+  zeros(TorchShapeRef batch_shape, const torch::TensorOptions & options = default_tensor_options());
   /// Unbatched unit tensor
-  [[nodiscard]] static Derived ones(const torch::TensorOptions & options = default_tensor_options);
+  [[nodiscard]] static Derived
+  ones(const torch::TensorOptions & options = default_tensor_options());
   /// Unit tensor given batch shape
-  [[nodiscard]] static Derived ones(const TorchShapeRef & batch_shape,
-                                    const torch::TensorOptions & options = default_tensor_options);
+  [[nodiscard]] static Derived
+  ones(TorchShapeRef batch_shape, const torch::TensorOptions & options = default_tensor_options());
   /// Unbatched tensor filled with a given value given base shape
-  [[nodiscard]] static Derived full(Real init,
-                                    const torch::TensorOptions & options = default_tensor_options);
+  [[nodiscard]] static Derived
+  full(Real init, const torch::TensorOptions & options = default_tensor_options());
   /// Full tensor given batch shape
-  [[nodiscard]] static Derived full(const TorchShapeRef & batch_shape,
-                                    Real init,
-                                    const torch::TensorOptions & options = default_tensor_options);
+  [[nodiscard]] static Derived
+  full(TorchShapeRef batch_shape,
+       Real init,
+       const torch::TensorOptions & options = default_tensor_options());
 };
 } // namespace neml2

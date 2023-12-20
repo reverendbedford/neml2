@@ -53,5 +53,8 @@ private:
 
   Real _rtol;
   Real _atol;
+
+  /// Check the average of the model output instead...
+  bool _taylor_average;
 };
 } // namespace neml2

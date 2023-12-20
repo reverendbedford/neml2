@@ -32,6 +32,7 @@ class Scalar;
 class SSR4;
 class R5;
 class Rot;
+class WWR4;
 
 /**
  * @brief The (logical) full fourth order tensor.
@@ -44,6 +45,8 @@ public:
   using FixedDimTensor<R4, 3, 3, 3, 3>::FixedDimTensor;
 
   R4(const SSR4 & T);
+
+  R4(const WWR4 & T);
 
   /// Rotate
   R4 rotate(const Rot & r) const;

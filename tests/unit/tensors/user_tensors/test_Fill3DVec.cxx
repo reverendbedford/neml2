@@ -40,7 +40,7 @@ TEST_CASE("Fill3DVec", "[tensors/user_tensors]")
   const auto & valid_4 = Factory::get_object<Vec>("Tensors", "v4");
   const auto correct_4 =
       Vec(torch::tensor({{1.0, 2.0, 3.0}, {4.0, 5.0, 6.0}, {7.0, 8.0, 9.0}, {10.0, 11.0, 12.0}},
-                        default_tensor_options));
+                        default_tensor_options()));
   REQUIRE(torch::allclose(valid_4, correct_4));
 
   REQUIRE_THROWS(Factory::get_object<Vec>("Tensors", "invalid"));

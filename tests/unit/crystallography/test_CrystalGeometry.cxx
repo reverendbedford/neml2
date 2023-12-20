@@ -38,7 +38,7 @@ namespace fs = std::filesystem;
 TEST_CASE("CrystalGeometry", "[crystallography]")
 {
   torch::manual_seed(42);
-  const auto & DTO = default_tensor_options;
+  const auto & DTO = default_tensor_options();
 
   // Load all the models in
   Factory::clear();

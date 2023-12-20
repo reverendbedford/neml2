@@ -49,19 +49,19 @@ public:
   SSR4(const R4 & T);
 
   /// Create the identity tensor \f$\delta_{ij}\delta_{kl}\f$
-  static SSR4 identity(const torch::TensorOptions & options = default_tensor_options);
+  static SSR4 identity(const torch::TensorOptions & options = default_tensor_options());
   /// Create the symmetric identity tensor \f$\delta_{ik}\delta_{jl}/2 + \delta_{il}\delta_{jk}/2\f$
-  static SSR4 identity_sym(const torch::TensorOptions & options = default_tensor_options);
+  static SSR4 identity_sym(const torch::TensorOptions & options = default_tensor_options());
   /// Create the volumetric identity tensor \f$\delta_{ij}\delta_{kl}/3\f$
-  static SSR4 identity_vol(const torch::TensorOptions & options = default_tensor_options);
+  static SSR4 identity_vol(const torch::TensorOptions & options = default_tensor_options());
   /// Create the deviatoric identity tensor \f$\delta_{ik}\delta_{jl}/2 + \delta_{il}\delta_{jk}/2 - \delta_{ij}\delta_{kl}/3\f$
-  static SSR4 identity_dev(const torch::TensorOptions & options = default_tensor_options);
+  static SSR4 identity_dev(const torch::TensorOptions & options = default_tensor_options());
   /// Create the fourth order elasticity tensor given the Young's modulus and the Poisson's ratio.
   static SSR4 isotropic_E_nu(const Scalar & E, const Scalar & nu);
   /// Create the fourth order elasticity tensor given the Young's modulus and the Poisson's ratio.
   static SSR4 isotropic_E_nu(const Real & E,
                              const Real & nu,
-                             const torch::TensorOptions & options = default_tensor_options);
+                             const torch::TensorOptions & options = default_tensor_options());
 
   /// Rotate
   SSR4 rotate(const Rot & r) const;

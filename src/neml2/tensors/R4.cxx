@@ -30,11 +30,17 @@
 #include "neml2/tensors/SSR4.h"
 #include "neml2/tensors/R5.h"
 #include "neml2/tensors/Rot.h"
+#include "neml2/tensors/WWR4.h"
 
 namespace neml2
 {
 R4::R4(const SSR4 & T)
   : R4(math::mandel_to_full(math::mandel_to_full(T, 1)))
+{
+}
+
+R4::R4(const WWR4 & T)
+  : R4(math::skew_to_full(math::skew_to_full(T, 1)))
 {
 }
 

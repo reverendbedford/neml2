@@ -30,6 +30,9 @@
 #include "neml2/tensors/SFR3.h"
 #include "neml2/tensors/SSR4.h"
 #include "neml2/tensors/Rot.h"
+#include "neml2/tensors/SWR4.h"
+#include "neml2/tensors/WR2.h"
+#include "neml2/tensors/R4.h"
 
 namespace neml2
 {
@@ -202,4 +205,5 @@ SR2::transpose() const
 {
   return *this;
 }
+
 } // namespace neml2

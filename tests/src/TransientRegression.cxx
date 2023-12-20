@@ -61,7 +61,7 @@ TransientRegression::run()
   // Verify the result
   auto res = torch::jit::load(_driver.save_as_path());
   auto res_ref = torch::jit::load(_reference);
-  return allclose(res.named_buffers(true), res_ref.named_buffers(true));
+  return allclose(res.named_buffers(true), res_ref.named_buffers(true), _rtol, _atol);
 }
 
 bool

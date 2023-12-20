@@ -39,7 +39,7 @@ EmptyFixedDimTensor<T>::expected_options()
 
 template <typename T>
 EmptyFixedDimTensor<T>::EmptyFixedDimTensor(const OptionSet & options)
-  : T(T::empty(options.get<TorchShape>("batch_shape"), default_tensor_options)),
+  : T(T::empty(options.get<TorchShape>("batch_shape"), default_tensor_options())),
     NEML2Object(options)
 {
 }

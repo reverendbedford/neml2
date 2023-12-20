@@ -44,4 +44,6 @@ namespace math
  */
 BatchTensor bmm(const BatchTensor & a, const BatchTensor & b);
 }
+
+BatchTensor operator*(const BatchTensor & a, const BatchTensor & b);
 }

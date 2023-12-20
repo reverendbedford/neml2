@@ -37,6 +37,8 @@ LinspaceBatchTensor::expected_options()
   options.set<CrossRef<BatchTensor>>("end");
   options.set<TorchSize>("nstep");
   options.set<TorchSize>("dim") = 0;
+  options.set<TorchSize>("batch_dim") = -1;
+  options.set<TorchShape>("batch_expand") = TorchShape();
   return options;
 }
 
@@ -44,8 +46,12 @@ LinspaceBatchTensor::LinspaceBatchTensor(const OptionSet & options)
   : BatchTensor(BatchTensor::linspace(options.get<CrossRef<BatchTensor>>("start"),
                                       options.get<CrossRef<BatchTensor>>("end"),
                                       options.get<TorchSize>("nstep"),
-                                      options.get<TorchSize>("dim"))),
+                                      options.get<TorchSize>("dim"),
+                                      options.get<TorchSize>("batch_dim"))),
     NEML2Object(options)
 {
+  auto bs = options.get<TorchShape>("batch_expand");
+  if (bs.size() > 0)
+    this->batch_expand(bs);
 }
 } // namespace neml2

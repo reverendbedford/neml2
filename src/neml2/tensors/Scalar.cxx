@@ -42,4 +42,11 @@ operator*(const Scalar & a, const Scalar & b)
 {
   return torch::operator*(a, b);
 }
+
+Scalar
+abs(const Scalar & a)
+{
+  return Scalar(torch::abs(a), a.batch_dim());
+}
+
 } // namespace neml2

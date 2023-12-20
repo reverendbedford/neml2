@@ -42,7 +42,7 @@ public:
   /// Create a labeled identity tensor
   static LabeledMatrix identity(TorchShapeRef batch_size,
                                 const LabeledAxis & axis,
-                                const torch::TensorOptions & options = default_tensor_options);
+                                const torch::TensorOptions & options = default_tensor_options());
 
   /// Add another matrix into this matrix.
   /// The item set of the other matrix must be a subset of this matrix's item set.

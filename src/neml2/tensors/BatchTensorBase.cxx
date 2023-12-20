@@ -38,6 +38,9 @@
 #include "neml2/tensors/SSFR5.h"
 #include "neml2/tensors/Rot.h"
 #include "neml2/tensors/WR2.h"
+#include "neml2/tensors/SWR4.h"
+#include "neml2/tensors/WSR4.h"
+#include "neml2/tensors/WWR4.h"
 #include "neml2/tensors/Quaternion.h"
 #include "neml2/models/crystallography/MillerIndex.h"
 
@@ -64,16 +67,15 @@ BatchTensorBase<Derived>::BatchTensorBase(const Derived & tensor)
 
 template <class Derived>
 Derived
-BatchTensorBase<Derived>::empty(const TorchShapeRef & base_shape,
-                                const torch::TensorOptions & options)
+BatchTensorBase<Derived>::empty(TorchShapeRef base_shape, const torch::TensorOptions & options)
 {
   return Derived(torch::empty(base_shape, options), 0);
 }
 
 template <class Derived>
 Derived
-BatchTensorBase<Derived>::empty(const TorchShapeRef & batch_shape,
-                                const TorchShapeRef & base_shape,
+BatchTensorBase<Derived>::empty(TorchShapeRef batch_shape,
+                                TorchShapeRef base_shape,
                                 const torch::TensorOptions & options)
 {
   return Derived(torch::empty(utils::add_shapes(batch_shape, base_shape), options),
@@ -89,16 +91,15 @@ BatchTensorBase<Derived>::empty_like(const BatchTensorBase<Derived> & other)
 
 template <class Derived>
 Derived
-BatchTensorBase<Derived>::zeros(const TorchShapeRef & base_shape,
-                                const torch::TensorOptions & options)
+BatchTensorBase<Derived>::zeros(TorchShapeRef base_shape, const torch::TensorOptions & options)
 {
   return Derived(torch::zeros(base_shape, options), 0);
 }
 
 template <class Derived>
 Derived
-BatchTensorBase<Derived>::zeros(const TorchShapeRef & batch_shape,
-                                const TorchShapeRef & base_shape,
+BatchTensorBase<Derived>::zeros(TorchShapeRef batch_shape,
+                                TorchShapeRef base_shape,
                                 const torch::TensorOptions & options)
 {
   return Derived(torch::zeros(utils::add_shapes(batch_shape, base_shape), options),
@@ -114,16 +115,15 @@ BatchTensorBase<Derived>::zeros_like(const BatchTensorBase<Derived> & other)
 
 template <class Derived>
 Derived
-BatchTensorBase<Derived>::ones(const TorchShapeRef & base_shape,
-                               const torch::TensorOptions & options)
+BatchTensorBase<Derived>::ones(TorchShapeRef base_shape, const torch::TensorOptions & options)
 {
   return Derived(torch::ones(base_shape, options), 0);
 }
 
 template <class Derived>
 Derived
-BatchTensorBase<Derived>::ones(const TorchShapeRef & batch_shape,
-                               const TorchShapeRef & base_shape,
+BatchTensorBase<Derived>::ones(TorchShapeRef batch_shape,
+                               TorchShapeRef base_shape,
                                const torch::TensorOptions & options)
 {
   return Derived(torch::ones(utils::add_shapes(batch_shape, base_shape), options),
@@ -139,7 +139,7 @@ BatchTensorBase<Derived>::ones_like(const BatchTensorBase<Derived> & other)
 
 template <class Derived>
 Derived
-BatchTensorBase<Derived>::full(const TorchShapeRef & base_shape,
+BatchTensorBase<Derived>::full(TorchShapeRef base_shape,
                                Real init,
                                const torch::TensorOptions & options)
 {
@@ -148,8 +148,8 @@ BatchTensorBase<Derived>::full(const TorchShapeRef & base_shape,
 
 template <class Derived>
 Derived
-BatchTensorBase<Derived>::full(const TorchShapeRef & batch_shape,
-                               const TorchShapeRef & base_shape,
+BatchTensorBase<Derived>::full(TorchShapeRef batch_shape,
+                               TorchShapeRef base_shape,
                                Real init,
                                const torch::TensorOptions & options)
 {
@@ -173,7 +173,7 @@ BatchTensorBase<Derived>::identity(TorchSize n, const torch::TensorOptions & opt
 
 template <class Derived>
 Derived
-BatchTensorBase<Derived>::identity(const TorchShapeRef & batch_shape,
+BatchTensorBase<Derived>::identity(TorchShapeRef batch_shape,
                                    TorchSize n,
                                    const torch::TensorOptions & options)
 {
@@ -182,10 +182,8 @@ BatchTensorBase<Derived>::identity(const TorchShapeRef & batch_shape,
 
 template <class Derived>
 Derived
-BatchTensorBase<Derived>::linspace(const Derived & start,
-                                   const Derived & end,
-                                   TorchSize nstep,
-                                   TorchSize dim)
+BatchTensorBase<Derived>::linspace(
+    const Derived & start, const Derived & end, TorchSize nstep, TorchSize dim, TorchSize batch_dim)
 {
   neml_assert_broadcastable_dbg(start, end);
   neml_assert_dbg(nstep > 0, "nstep must be positive.");
@@ -207,15 +205,19 @@ BatchTensorBase<Derived>::linspace(const Derived & start,
     res = res + steps * diff;
   }
 
-  return res;
+  return Derived(res, batch_dim >= 0 ? batch_dim : res.batch_dim());
 }
 
 template <class Derived>
 Derived
-BatchTensorBase<Derived>::logspace(
-    const Derived & start, const Derived & end, TorchSize nstep, TorchSize dim, Real base)
+BatchTensorBase<Derived>::logspace(const Derived & start,
+                                   const Derived & end,
+                                   TorchSize nstep,
+                                   TorchSize dim,
+                                   TorchSize batch_dim,
+                                   Real base)
 {
-  auto exponent = Derived::linspace(start, end, nstep, dim);
+  auto exponent = Derived::linspace(start, end, nstep, dim, batch_dim);
   return math::pow(base, exponent);
 }
 
@@ -229,6 +231,13 @@ BatchTensorBase<Derived>::batched() const
 template <class Derived>
 TorchSize
 BatchTensorBase<Derived>::batch_dim() const
+{
+  return _batch_dim;
+}
+
+template <class Derived>
+TorchSize &
+BatchTensorBase<Derived>::batch_dim()
 {
   return _batch_dim;
 }
@@ -248,10 +257,24 @@ BatchTensorBase<Derived>::batch_sizes() const
 }
 
 template <class Derived>
+TorchSize
+BatchTensorBase<Derived>::batch_size(TorchSize index) const
+{
+  return batch_sizes()[index >= 0 ? index : index + batch_dim()];
+}
+
+template <class Derived>
 TorchShapeRef
 BatchTensorBase<Derived>::base_sizes() const
 {
   return sizes().slice(_batch_dim);
+}
+
+template <class Derived>
+TorchSize
+BatchTensorBase<Derived>::base_size(TorchSize index) const
+{
+  return base_sizes()[index >= 0 ? index : index + base_dim()];
 }
 
 template <class Derived>
@@ -340,6 +363,13 @@ BatchTensorBase<Derived>::batch_unsqueeze(TorchSize d) const
 
 template <class Derived>
 Derived
+BatchTensorBase<Derived>::list_unsqueeze() const
+{
+  return batch_unsqueeze(-1);
+}
+
+template <class Derived>
+Derived
 BatchTensorBase<Derived>::base_unsqueeze(TorchSize d) const
 {
   auto d2 = d < 0 ? d : d + batch_dim();
@@ -366,9 +396,18 @@ BatchTensorBase<Derived>::base_transpose(TorchSize d1, TorchSize d2) const
 
 template <class Derived>
 Derived
-BatchTensorBase<Derived>::clone() const
+BatchTensorBase<Derived>::base_movedim(TorchSize d1, TorchSize d2) const
 {
-  return Derived(torch::Tensor::clone(), _batch_dim);
+  return Derived(
+      torch::Tensor::movedim(d1 < 0 ? d1 : _batch_dim + d1, d2 < 0 ? d2 : _batch_dim + d2),
+      _batch_dim);
+}
+
+template <class Derived>
+Derived
+BatchTensorBase<Derived>::clone(torch::MemoryFormat memory_format) const
+{
+  return Derived(torch::Tensor::clone(memory_format), _batch_dim);
 }
 
 template <class Derived>
@@ -392,6 +431,22 @@ BatchTensorBase<Derived>::operator-() const
   return Derived(-torch::Tensor(*this), _batch_dim);
 }
 
+template <class Derived>
+Derived
+BatchTensorBase<Derived>::batch_sum(TorchSize d) const
+{
+  neml_assert_dbg(_batch_dim > 0, "Must have a batch dimension to sum along");
+  auto d2 = d >= 0 ? d : d - base_dim();
+  return Derived(torch::sum(*this, d2), _batch_dim - 1);
+}
+
+template <class Derived>
+Derived
+BatchTensorBase<Derived>::list_sum() const
+{
+  return batch_sum(-1);
+}
+
 template class BatchTensorBase<BatchTensor>;
 template class BatchTensorBase<Scalar>;
 template class BatchTensorBase<Vec>;
@@ -406,5 +461,8 @@ template class BatchTensorBase<SSR4>;
 template class BatchTensorBase<R5>;
 template class BatchTensorBase<SSFR5>;
 template class BatchTensorBase<Quaternion>;
+template class BatchTensorBase<SWR4>;
+template class BatchTensorBase<WSR4>;
+template class BatchTensorBase<WWR4>;
 template class BatchTensorBase<crystallography::MillerIndex>;
 } // end namespace neml2

@@ -59,7 +59,7 @@ CrossRef<torch::Tensor>::operator torch::Tensor() const
   try
   {
     // If it is just a number, we can still create a tensor out of it
-    return torch::tensor(utils::parse<Real>(_raw_str), default_tensor_options);
+    return torch::tensor(utils::parse<Real>(_raw_str), default_tensor_options());
   }
   catch (const ParserException & e)
   {
@@ -74,7 +74,7 @@ CrossRef<BatchTensor>::operator BatchTensor() const
   try
   {
     // If it is just a number, we can still create a Scalar out of it
-    return BatchTensor::full({}, {}, utils::parse<Real>(_raw_str), default_tensor_options);
+    return BatchTensor::full({}, {}, utils::parse<Real>(_raw_str), default_tensor_options());
   }
   catch (const ParserException & e)
   {
@@ -97,5 +97,6 @@ specialize_crossref_FixedDimTensor(R4);
 specialize_crossref_FixedDimTensor(SSR4);
 specialize_crossref_FixedDimTensor(R5);
 specialize_crossref_FixedDimTensor(SSFR5);
+specialize_crossref_FixedDimTensor(WR2);
 specialize_crossref_FixedDimTensor(crystallography::MillerIndex);
 } // namesace neml2

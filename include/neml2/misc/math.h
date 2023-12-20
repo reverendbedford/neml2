@@ -28,6 +28,11 @@
 
 namespace neml2
 {
+class SR2;
+class WR2;
+class SWR4;
+class SSR4;
+class WSR4;
 namespace math
 {
 constexpr Real eps = std::numeric_limits<at::scalar_value_type<Real>::type>::epsilon();
@@ -41,23 +46,29 @@ constexpr TorchSize mandel_index[6][2] = {{0, 0}, {1, 1}, {2, 2}, {1, 2}, {0, 2}
 constexpr TorchSize skew_reverse_index[3][3] = {{0, 2, 1}, {2, 0, 0}, {1, 0, 0}};
 constexpr Real skew_factor[3][3] = {{0.0, -1.0, 1.0}, {1.0, 0.0, -1.0}, {-1.0, 1.0, 0.0}};
 
-const torch::Tensor full_to_mandel_map = torch::tensor({0, 4, 8, 5, 2, 1});
-const torch::Tensor mandel_to_full_map = torch::tensor({0, 5, 4, 5, 1, 3, 4, 3, 2});
-const torch::Tensor full_to_mandel_factor = torch::tensor({1.0, 1.0, 1.0, sqrt2, sqrt2, sqrt2});
-const torch::Tensor mandel_to_full_factor =
-    torch::tensor({1.0, invsqrt2, invsqrt2, invsqrt2, 1.0, invsqrt2, invsqrt2, invsqrt2, 1.0});
-
 inline constexpr Real
 mandel_factor(TorchSize i)
 {
   return i < 3 ? 1.0 : sqrt2;
 }
 
-const torch::Tensor full_to_skew_map = torch::tensor({7, 2, 3});
-const torch::Tensor skew_to_full_map = torch::tensor({0, 2, 1, 2, 0, 0, 1, 0, 0});
-const torch::Tensor full_to_skew_factor = torch::tensor({1.0, 1.0, 1.0});
-const torch::Tensor skew_to_full_factor =
-    torch::tensor({0.0, -1.0, 1.0, 1.0, 0.0, -1.0, -1.0, 1.0, 0.0});
+const torch::Tensor
+full_to_mandel_map(const torch::TensorOptions & options = default_integer_tensor_options());
+const torch::Tensor
+mandel_to_full_map(const torch::TensorOptions & options = default_integer_tensor_options());
+const torch::Tensor
+full_to_mandel_factor(const torch::TensorOptions & options = default_tensor_options());
+const torch::Tensor
+mandel_to_full_factor(const torch::TensorOptions & options = default_tensor_options());
+
+const torch::Tensor
+full_to_skew_map(const torch::TensorOptions & options = default_integer_tensor_options());
+const torch::Tensor
+skew_to_full_map(const torch::TensorOptions & options = default_integer_tensor_options());
+const torch::Tensor
+full_to_skew_factor(const torch::TensorOptions & options = default_tensor_options());
+const torch::Tensor
+skew_to_full_factor(const torch::TensorOptions & options = default_tensor_options());
 
 /**
  * @brief Generic function to reduce two axes to one with some map
@@ -173,6 +184,27 @@ BatchTensor skew_to_full(const BatchTensor & skew, TorchSize dim = 0);
  * @return BatchTensor $\partial o/\partial p$
  */
 BatchTensor jacrev(const BatchTensor & o, const BatchTensor & p);
+
+BatchTensor
+base_diag_embed(const BatchTensor & a, TorchSize offset = 0, TorchSize d1 = -2, TorchSize d2 = -1);
+
+/// Product w_ik e_kj - e_ik w_kj with e SR2 and w WR2
+SR2 skew_and_sym_to_sym(const SR2 & e, const WR2 & w);
+
+/// Derivative of w_ik e_kj - e_ik w_kj wrt. e
+SSR4 d_skew_and_sym_to_sym_d_sym(const WR2 & w);
+
+/// Derivative of w_ik e_kj - e_ik w_kj wrt. w
+SWR4 d_skew_and_sym_to_sym_d_skew(const SR2 & e);
+
+/// Shortcut product a_ik b_kj - b_ik a_kj with both SR2
+WR2 multiply_and_make_skew(const SR2 & a, const SR2 & b);
+
+/// Derivative of a_ik b_kj - b_ik a_kj wrt a
+WSR4 d_multiply_and_make_skew_d_first(const SR2 & b);
+
+/// Derivative of a_ik b_kj - b_ik a_kj wrt b
+WSR4 d_multiply_and_make_skew_d_second(const SR2 & a);
 
 } // namespace math
 } // namespace neml2

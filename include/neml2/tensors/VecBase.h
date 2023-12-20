@@ -43,16 +43,17 @@ class VecBase : public FixedDimTensor<Derived, 3>
 public:
   using FixedDimTensor<Derived, 3>::FixedDimTensor;
 
-  [[nodiscard]] static Derived fill(const Real & v1,
-                                    const Real & v2,
-                                    const Real & v3,
-                                    const torch::TensorOptions & options = default_tensor_options);
+  [[nodiscard]] static Derived
+  fill(const Real & v1,
+       const Real & v2,
+       const Real & v3,
+       const torch::TensorOptions & options = default_tensor_options());
 
   [[nodiscard]] static Derived fill(const Scalar & v1, const Scalar & v2, const Scalar & v3);
 
   /// The derivative of a vector with respect to itself
   [[nodiscard]] static R2
-  identity_map(const torch::TensorOptions & options = default_tensor_options);
+  identity_map(const torch::TensorOptions & options = default_tensor_options());
 
   /// Accessor
   Scalar operator()(TorchSize i) const;
@@ -100,22 +101,9 @@ VecBase<Derived>::cross(const VecBase<Derived2> & v) const
   neml_assert_broadcastable_dbg(*this, v);
 
   auto batch_dim = broadcast_batch_dim(*this, v);
+  auto pair = torch::broadcast_tensors({*this, v});
 
-  if (this->dim() == v.dim())
-  {
-    auto res = torch::linalg_cross(*this, v);
-    return Derived(res, batch_dim);
-  }
-  else if (this->dim() < v.dim())
-  {
-    auto res = torch::linalg_cross(this->expand_as(v), v);
-    return Derived(res, batch_dim);
-  }
-  else
-  {
-    auto res = torch::linalg_cross(*this, v.expand_as(*this));
-    return Derived(res, batch_dim);
-  }
+  return Derived(torch::linalg_cross(pair[0], pair[1]), batch_dim);
 }
 
 template <class Derived>

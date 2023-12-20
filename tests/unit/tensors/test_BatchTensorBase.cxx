@@ -32,7 +32,7 @@ using namespace torch::indexing;
 TEST_CASE("BatchTensorBase", "[tensors]")
 {
   torch::manual_seed(42);
-  const auto & DTO = default_tensor_options;
+  const auto & DTO = default_tensor_options();
 
   TorchShape B = {5, 3, 1, 2};             // batch shape
   TorchSize Bn = B.size();                 // batch dimension

@@ -88,6 +88,9 @@ ImplicitUpdate::set_value(const LabeledVector & in,
   // The trial state is used as the initial guess
   auto guess = in("state");
 
+  // Perform automatic scaling
+  _model.init_scaling(guess, _solver.verbose);
+
   if (out || dout_din)
   {
     // Solve for the next state

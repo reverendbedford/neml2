@@ -40,7 +40,7 @@ OnesBatchTensor::expected_options()
 OnesBatchTensor::OnesBatchTensor(const OptionSet & options)
   : BatchTensor(BatchTensor::ones(options.get<TorchShape>("batch_shape"),
                                   options.get<TorchShape>("base_shape"),
-                                  default_tensor_options)),
+                                  default_tensor_options())),
     NEML2Object(options)
 {
 }

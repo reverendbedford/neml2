@@ -40,12 +40,12 @@ Data::Data(const OptionSet & options)
 }
 
 void
-Data::to(const torch::Device & device)
+Data::to(const torch::TensorOptions & options)
 {
-  send_buffers_to(device);
+  send_buffers_to(options);
 
   for (auto & data : _registered_data)
-    data->to(device);
+    data->to(options);
 }
 
 std::map<std::string, BatchTensor>

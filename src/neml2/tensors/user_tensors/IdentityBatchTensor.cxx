@@ -40,7 +40,7 @@ IdentityBatchTensor::expected_options()
 IdentityBatchTensor::IdentityBatchTensor(const OptionSet & options)
   : BatchTensor(BatchTensor::identity(options.get<TorchShape>("batch_shape"),
                                       options.get<TorchSize>("n"),
-                                      default_tensor_options)),
+                                      default_tensor_options())),
     NEML2Object(options)
 {
 }

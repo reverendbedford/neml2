@@ -38,6 +38,7 @@ LogspaceBatchTensor::expected_options()
   options.set<TorchSize>("nstep");
   options.set<TorchSize>("dim") = 0;
   options.set<Real>("base") = 10;
+  options.set<TorchSize>("batch_dim") = -1;
   return options;
 }
 
@@ -46,6 +47,7 @@ LogspaceBatchTensor::LogspaceBatchTensor(const OptionSet & options)
                                       options.get<CrossRef<BatchTensor>>("end"),
                                       options.get<TorchSize>("nstep"),
                                       options.get<TorchSize>("dim"),
+                                      options.get<TorchSize>("batch_dim"),
                                       options.get<Real>("base"))),
     NEML2Object(options)
 {

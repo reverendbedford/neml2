@@ -47,7 +47,8 @@ public:
   Rot(const Vec & v);
 
   /// The identity rotation, helpfully the zero vector
-  [[nodiscard]] static Rot identity(const torch::TensorOptions & options = default_tensor_options);
+  [[nodiscard]] static Rot
+  identity(const torch::TensorOptions & options = default_tensor_options());
 
   /// Inversion
   Rot inverse() const;
@@ -61,8 +62,11 @@ public:
   /// Rotate
   Rot rotate(const Rot & r) const;
 
-  /// Derivative of the rotated Rodrigues vector w.r.t. the Rodrigues vector
+  /// Derivative of the rotated Rodrigues vector w.r.t. the other Rodrigues vector
   R2 drotate(const Rot & r) const;
+
+  /// Derivative of the rotated Rodrigues vector w.r.t. this vector
+  R2 drotate_self(const Rot & r) const;
 };
 
 /// Composition of rotations r3 = r1 * r2 (r2 first, then r1)
@@ -70,4 +74,5 @@ public:
 //  as the standard matrix product R1 * R2 where R1 and R2 are the
 //  matrix representations of r1 and r2
 Rot operator*(const Rot & r1, const Rot & r2);
+
 } // namespace neml2

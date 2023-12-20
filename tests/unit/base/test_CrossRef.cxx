@@ -37,9 +37,9 @@ TEST_CASE("CrossRef", "[base]")
 
     const auto & auto_3 = Factory::get_object<SR2>("Tensors", "auto_3_crossref");
 
-    const auto scalar1 = Scalar(torch::tensor({1, 2, 3, 4, 5}, default_tensor_options), 1);
-    const auto scalar2 = Scalar(torch::tensor({5, 6, 7, 8, 9}, default_tensor_options), 1);
-    const auto scalar3 = Scalar(torch::tensor({-1, -2, -3, -4, -5}, default_tensor_options), 1);
+    const auto scalar1 = Scalar(torch::tensor({1, 2, 3, 4, 5}, default_tensor_options()), 1);
+    const auto scalar2 = Scalar(torch::tensor({5, 6, 7, 8, 9}, default_tensor_options()), 1);
+    const auto scalar3 = Scalar(torch::tensor({-1, -2, -3, -4, -5}, default_tensor_options()), 1);
     const auto auto_3_correct = SR2::fill(scalar1, scalar2, scalar3);
 
     REQUIRE(torch::allclose(auto_3, auto_3_correct));
@@ -49,7 +49,7 @@ TEST_CASE("CrossRef", "[base]")
   {
     CrossRef<Scalar> a;
     a = "3";
-    REQUIRE(torch::allclose(Scalar(a), Scalar(3.0, default_tensor_options)));
+    REQUIRE(torch::allclose(Scalar(a), Scalar(3.0, default_tensor_options())));
   }
 
   SECTION("empty scalar")
@@ -69,7 +69,7 @@ TEST_CASE("CrossRef", "[base]")
   {
     CrossRef<torch::Tensor> a;
     a = "3";
-    REQUIRE(torch::allclose(torch::Tensor(a), torch::tensor(3.0, default_tensor_options)));
+    REQUIRE(torch::allclose(torch::Tensor(a), torch::tensor(3.0, default_tensor_options())));
   }
 
   SECTION("empty tensor")

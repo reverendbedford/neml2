@@ -52,7 +52,7 @@ public:
 R2 transform_from_quaternion(const Quaternion & q);
 
 /// The identity transformation, i.e.e the Rank2 identity tensor
-R2 identity_transform(const torch::TensorOptions & options = default_tensor_options);
+R2 identity_transform(const torch::TensorOptions & options = default_tensor_options());
 /// A proper rotation, here provided by a Rot object
 R2 proper_rotation_transform(const Rot & rot);
 /// An improper rotation (rotation + reflection), here provided by a rot object giving the rotation and reflection axis
@@ -60,5 +60,5 @@ R2 improper_rotation_transform(const Rot & rot);
 /// A reflection, defined by the reflection plane
 R2 reflection_transform(const Vec & v);
 /// An inversion center
-R2 inversion_transform(const torch::TensorOptions & options = default_tensor_options);
+R2 inversion_transform(const torch::TensorOptions & options = default_tensor_options());
 } // namespace neml2

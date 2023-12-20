@@ -32,6 +32,7 @@ OptionSet
 Model::expected_options()
 {
   OptionSet options = Data::expected_options();
+  options += NonlinearSystem::expected_options();
   options.set<std::vector<LabeledAxisAccessor>>("additional_outputs");
   options.set<bool>("use_AD_first_derivative") = false;
   options.set<bool>("use_AD_second_derivative") = false;
@@ -41,6 +42,7 @@ Model::expected_options()
 Model::Model(const OptionSet & options)
   : Data(options),
     ParameterStore(options),
+    NonlinearSystem(options),
     _input(declare_axis()),
     _output(declare_axis()),
     _AD_1st_deriv(options.get<bool>("use_AD_first_derivative")),
@@ -53,13 +55,14 @@ Model::Model(const OptionSet & options)
 }
 
 void
-Model::to(const torch::Device & device)
+Model::to(const torch::TensorOptions & options)
 {
-  send_buffers_to(device);
-  send_parameters_to(device);
+  // This takes care of all the buffers recursively
+  Data::to(options);
 
+  send_parameters_to(options);
   for (auto & model : _registered_models)
-    model->to(device);
+    model->to(options);
 }
 
 void

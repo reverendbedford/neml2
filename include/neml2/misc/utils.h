@@ -119,7 +119,7 @@ TorchShape broadcast_sizes(T &&... shapes);
  * storage_size({5, 1, 1}) == 5;
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
-TorchSize storage_size(const TorchShapeRef & shape);
+TorchSize storage_size(TorchShapeRef shape);
 
 template <typename... S>
 TorchShape add_shapes(S &&... shape);
@@ -132,7 +132,7 @@ TorchShape add_shapes(S &&... shape);
  * @param pad The values used to pad the shape, default to 1
  * @return TorchShape The padded shape with dimension \p dim
  */
-TorchShape pad_prepend(const TorchShapeRef & s, TorchSize dim, TorchSize pad = 1);
+TorchShape pad_prepend(TorchShapeRef s, TorchSize dim, TorchSize pad = 1);
 
 /**
  * @brief Pad shape \p s to dimension \p dim by appending sizes of \p pad.
@@ -142,7 +142,7 @@ TorchShape pad_prepend(const TorchShapeRef & s, TorchSize dim, TorchSize pad = 1
  * @param pad The values used to pad the shape, default to 1
  * @return TorchShape The padded shape with dimension \p dim
  */
-TorchShape pad_append(const TorchShapeRef & s, TorchSize dim, TorchSize pad = 1);
+TorchShape pad_append(TorchShapeRef s, TorchSize dim, TorchSize pad = 1);
 
 std::string indentation(int level, int indent = 2);
 
@@ -152,7 +152,7 @@ std::string stringify(const T & t);
 namespace details
 {
 template <typename... S>
-TorchShape add_shapes_impl(TorchShape &, const TorchShapeRef &, S &&...);
+TorchShape add_shapes_impl(TorchShape &, TorchShapeRef, S &&...);
 
 TorchShape add_shapes_impl(TorchShape &);
 } // namespace details
@@ -310,7 +310,7 @@ namespace details
 {
 template <typename... S>
 TorchShape
-add_shapes_impl(TorchShape & net, const TorchShapeRef & s, S &&... rest)
+add_shapes_impl(TorchShape & net, TorchShapeRef s, S &&... rest)
 {
   net.insert(net.end(), s.begin(), s.end());
   return add_shapes_impl(net, std::forward<S>(rest)...);

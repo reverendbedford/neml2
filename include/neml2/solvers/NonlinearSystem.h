@@ -25,6 +25,7 @@
 #pragma once
 
 #include "neml2/tensors/BatchTensor.h"
+#include "neml2/base/OptionSet.h"
 
 namespace neml2
 {
@@ -35,6 +36,26 @@ namespace neml2
 class NonlinearSystem
 {
 public:
+  static OptionSet expected_options();
+
+  NonlinearSystem(const OptionSet & options);
+
+  /**
+   * @brief Compute algebraic Jacobian-based automatic scaling following
+   * https://cs.stanford.edu/people/paulliu/files/cs517-project.pdf
+   *
+   * @param x0 Guess used to compute the Jacobian for scaling
+   * @param verbose Print automatic scaling convergence information
+   */
+  virtual void init_scaling(const BatchTensor & x0, const bool verbose = false);
+
+  /// Apply scaling to the residual
+  BatchTensor scale_residual(const BatchTensor & r) const;
+  /// Apply scaling to the Jacobian
+  BatchTensor scale_Jacobian(const BatchTensor & J) const;
+  /// Remove scaling from the search direction, i.e. \f$ J^{-1} r \f$
+  BatchTensor scale_direction(const BatchTensor & p) const;
+
   /// Convenient shortcut to construct and return the system residual
   virtual BatchTensor residual(const BatchTensor & in) const final;
 
@@ -58,5 +79,23 @@ protected:
   virtual void assemble(const BatchTensor & x,
                         BatchTensor * residual,
                         BatchTensor * Jacobian = nullptr) const = 0;
+
+  /// If true, do automatic scaling
+  const bool _autoscale;
+
+  /// Tolerance for convergence check of the iterative automatic scaling algorithm
+  const Real _autoscale_tol;
+
+  /// Maximum number of iterations allowed for the iterative automatic scaling algorithm
+  const unsigned int _autoscale_miter;
+
+  /// Flag to indicate whether scaling matrices have been computed
+  bool _scaling_matrices_initialized;
+
+  /// Row scaling "matrix" -- since it's a batched diagonal matrix, we are only storing its diagonals
+  BatchTensor _row_scaling;
+
+  /// Column scaling "matrix" -- since it's a batched diagonal matrix, we are only storing its diagonals
+  BatchTensor _col_scaling;
 };
 } // namespace neml2

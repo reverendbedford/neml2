@@ -31,7 +31,7 @@ using namespace neml2;
 
 TEST_CASE("Rot", "[tensors]")
 {
-  const auto & DTO = default_tensor_options;
+  const auto & DTO = default_tensor_options();
 
   TorchShape B = {5, 3, 1, 2}; // batch shape
 
@@ -114,6 +114,17 @@ TEST_CASE("Rot", "[tensors]")
       REQUIRE(torch::allclose(vb.drotate(rb), dvp_drb));
       REQUIRE(torch::allclose(v.drotate(rb), dvp_drb));
       REQUIRE(torch::allclose(vb.drotate(r), dvp_drb));
+    }
+
+    SECTION("drotate_self")
+    {
+      auto r = Rot::fill(1.2496889, 1.62862628, 7.59575411);
+      auto v = Rot::fill(-5.68010824, -2.8011194, 15.25705169);
+
+      auto apply = [r](const Rot & x) { return x.rotate(r); };
+      auto dvp_dr = finite_differencing_derivative(apply, v);
+
+      REQUIRE(torch::allclose(v.drotate_self(r), dvp_dr));
     }
   }
 

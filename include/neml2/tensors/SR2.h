@@ -33,6 +33,8 @@ class R2;
 class SFR3;
 class SSR4;
 class Rot;
+class SWR4;
+class WR2;
 
 /**
  * @brief The (logical) symmetric second order tensor.
@@ -49,13 +51,13 @@ public:
 
   /// Fill the diagonals with a11 = a22 = a33 = a
   [[nodiscard]] static SR2 fill(const Real & a,
-                                const torch::TensorOptions & options = default_tensor_options);
+                                const torch::TensorOptions & options = default_tensor_options());
   [[nodiscard]] static SR2 fill(const Scalar & a);
   /// Fill the diagonals with a11, a22, a33
   [[nodiscard]] static SR2 fill(const Real & a11,
                                 const Real & a22,
                                 const Real & a33,
-                                const torch::TensorOptions & options = default_tensor_options);
+                                const torch::TensorOptions & options = default_tensor_options());
   [[nodiscard]] static SR2 fill(const Scalar & a11, const Scalar & a22, const Scalar & a33);
   /// Fill all entries
   [[nodiscard]] static SR2 fill(const Real & a11,
@@ -64,7 +66,7 @@ public:
                                 const Real & a23,
                                 const Real & a13,
                                 const Real & a12,
-                                const torch::TensorOptions & options = default_tensor_options);
+                                const torch::TensorOptions & options = default_tensor_options());
   [[nodiscard]] static SR2 fill(const Scalar & a11,
                                 const Scalar & a22,
                                 const Scalar & a33,
@@ -72,10 +74,11 @@ public:
                                 const Scalar & a13,
                                 const Scalar & a12);
   /// Identity
-  [[nodiscard]] static SR2 identity(const torch::TensorOptions & options = default_tensor_options);
+  [[nodiscard]] static SR2
+  identity(const torch::TensorOptions & options = default_tensor_options());
   /// The derivative of a SR2 with respect to itself
   [[nodiscard]] static SSR4
-  identity_map(const torch::TensorOptions & options = default_tensor_options);
+  identity_map(const torch::TensorOptions & options = default_tensor_options());
 
   /// Rotate
   SR2 rotate(const Rot & r) const;
@@ -116,4 +119,5 @@ public:
   /// Transpose, no-op
   SR2 transpose() const;
 };
+
 } // namespace neml2

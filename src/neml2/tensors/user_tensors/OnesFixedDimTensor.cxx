@@ -39,7 +39,7 @@ OnesFixedDimTensor<T>::expected_options()
 
 template <typename T>
 OnesFixedDimTensor<T>::OnesFixedDimTensor(const OptionSet & options)
-  : T(T::ones(options.get<TorchShape>("batch_shape"), default_tensor_options)),
+  : T(T::ones(options.get<TorchShape>("batch_shape"), default_tensor_options())),
     NEML2Object(options)
 {
 }

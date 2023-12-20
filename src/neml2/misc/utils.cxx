@@ -29,14 +29,14 @@ namespace neml2
 namespace utils
 {
 TorchSize
-storage_size(const TorchShapeRef & shape)
+storage_size(TorchShapeRef shape)
 {
   TorchSize sz = 1;
   return std::accumulate(shape.begin(), shape.end(), sz, std::multiplies<TorchSize>());
 }
 
 TorchShape
-pad_prepend(const TorchShapeRef & s, TorchSize dim, TorchSize pad)
+pad_prepend(TorchShapeRef s, TorchSize dim, TorchSize pad)
 {
   auto s2 = s.vec();
   s2.insert(s2.begin(), dim - s.size(), pad);
@@ -44,7 +44,7 @@ pad_prepend(const TorchShapeRef & s, TorchSize dim, TorchSize pad)
 }
 
 TorchShape
-pad_append(const TorchShapeRef & s, TorchSize dim, TorchSize pad)
+pad_append(TorchShapeRef s, TorchSize dim, TorchSize pad)
 {
   auto s2 = s.vec();
   s2.insert(s2.end(), dim - s.size(), pad);
