@@ -46,7 +46,7 @@ NonlinearSystem::NonlinearSystem(const OptionSet & options)
 }
 
 void
-NonlinearSystem::init_scaling(const BatchTensor & x0, const bool verbose)
+NonlinearSystem::init_scaling(const bool verbose)
 {
   if (!_autoscale)
     return;
@@ -57,15 +57,11 @@ NonlinearSystem::init_scaling(const BatchTensor & x0, const bool verbose)
   using namespace torch::indexing;
 
   // First compute the Jacobian
-  neml_assert_dbg(x0.base_dim() == 1,
-                  "The residual must be a logical vector, i.e. base_dim() == 1");
-  auto n = x0.base_sizes()[0];
-  auto J = BatchTensor::empty(x0.batch_sizes(), {n, n}, x0.options());
-  assemble(x0, nullptr, &J);
+  assemble(false, true);
 
-  auto Jp = J.clone();
-  _row_scaling = BatchTensor::ones_like(x0);
-  _col_scaling = BatchTensor::ones_like(x0);
+  auto Jp = _Jacobian.clone();
+  _row_scaling = BatchTensor::ones_like(_solution);
+  _col_scaling = BatchTensor::ones_like(_solution);
 
   if (verbose)
     std::cout << "Before automatic scaling cond(J) = " << std::scientific
@@ -83,7 +79,7 @@ NonlinearSystem::init_scaling(const BatchTensor & x0, const bool verbose)
       break;
 
     // scale rows and columns
-    for (TorchSize i = 0; i < x0.base_sizes()[0]; i++)
+    for (TorchSize i = 0; i < _ndof; i++)
     {
       auto ar = 1.0 / torch::sqrt(torch::max(Jp.base_index({i})));
       auto ac = 1.0 / torch::sqrt(torch::max(Jp.base_index({Slice(), i})));
@@ -134,32 +130,45 @@ NonlinearSystem::scale_direction(const BatchTensor & p) const
 }
 
 BatchTensor
-NonlinearSystem::residual(const BatchTensor & x) const
+NonlinearSystem::residual(const BatchTensor & x)
 {
-  neml_assert_dbg(x.base_dim() == 1, "The residual must be a logical vector, i.e. base_dim() == 1");
-  auto r = BatchTensor::empty_like(x);
-  assemble(x, &r);
-  return scale_residual(r);
+  set_solution(x);
+  return residual();
 }
 
 BatchTensor
-NonlinearSystem::Jacobian(const BatchTensor & x) const
+NonlinearSystem::residual()
 {
-  neml_assert_dbg(x.base_dim() == 1, "The residual must be a logical vector, i.e. base_dim() == 1");
-  auto n = x.base_sizes()[0];
-  auto J = BatchTensor::empty(x.batch_sizes(), {n, n}, x.options());
-  assemble(x, nullptr, &J);
-  return scale_Jacobian(J);
+  assemble(true, false);
+  return scale_residual(_residual);
+}
+
+BatchTensor
+NonlinearSystem::Jacobian(const BatchTensor & x)
+{
+  set_solution(x);
+  return Jacobian();
+}
+
+BatchTensor
+NonlinearSystem::Jacobian()
+{
+  assemble(false, true);
+  return scale_Jacobian(_Jacobian);
 }
 
 std::tuple<BatchTensor, BatchTensor>
-NonlinearSystem::residual_and_Jacobian(const BatchTensor & x) const
+NonlinearSystem::residual_and_Jacobian(const BatchTensor & x)
 {
-  neml_assert_dbg(x.base_dim() == 1, "The residual must be a logical vector, i.e. base_dim() == 1");
-  auto n = x.base_sizes()[0];
-  auto r = BatchTensor::empty_like(x);
-  auto J = BatchTensor::empty(x.batch_sizes(), {n, n}, x.options());
-  assemble(x, &r, &J);
-  return {scale_residual(r), scale_Jacobian(J)};
+  set_solution(x);
+  return residual_and_Jacobian();
 }
+
+std::tuple<BatchTensor, BatchTensor>
+NonlinearSystem::residual_and_Jacobian()
+{
+  assemble(true, true);
+  return {scale_residual(_residual), scale_Jacobian(_Jacobian)};
+}
+
 } // namespace neml2

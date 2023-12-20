@@ -24,25 +24,27 @@
 
 #pragma once
 
-#include "neml2/models/Model.h"
+#include "neml2/models/NewModel.h"
 
 namespace neml2
 {
-class OverStress : public Model
+class OverStress : public NewModel
 {
 public:
   static OptionSet expected_options();
 
   OverStress(const OptionSet & options);
 
-  const LabeledAxisAccessor mandel_stress;
-  const LabeledAxisAccessor back_stress;
-  const LabeledAxisAccessor over_stress;
-
 protected:
-  virtual void set_value(const LabeledVector & in,
-                         LabeledVector * out,
-                         LabeledMatrix * dout_din = nullptr,
-                         LabeledTensor3D * d2out_din2 = nullptr) const override;
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+
+  /// Mandel stress
+  const Variable<SR2> & _M;
+
+  /// Backstress
+  const Variable<SR2> & _X;
+
+  /// Overstress
+  Variable<SR2> & _O;
 };
 } // namespace neml2

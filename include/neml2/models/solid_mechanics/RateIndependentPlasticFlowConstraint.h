@@ -24,26 +24,28 @@
 
 #pragma once
 
-#include "neml2/models/Model.h"
+#include "neml2/models/NewModel.h"
 
 namespace neml2
 {
-class RateIndependentPlasticFlowConstraint : public Model
+class RateIndependentPlasticFlowConstraint : public NewModel
 {
 public:
   static OptionSet expected_options();
 
   RateIndependentPlasticFlowConstraint(const OptionSet & options);
 
-  const LabeledAxisAccessor yield_function;
-  const LabeledAxisAccessor flow_rate;
-  const LabeledAxisAccessor consistency_condition;
-
 protected:
-  void set_value(const LabeledVector & in,
-                 LabeledVector * out,
-                 LabeledMatrix * dout_din = nullptr,
-                 LabeledTensor3D * d2out_din2 = nullptr) const override;
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+
+  /// Plastic yield function
+  const Variable<Scalar> & _fp;
+
+  /// Flow rate (rate of the consistency parameter)
+  const Variable<Scalar> & _gamma_dot;
+
+  /// The residual for the consistency parameter equation
+  Variable<Scalar> & _r;
 };
 
 } // namespace neml2

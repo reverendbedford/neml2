@@ -33,7 +33,7 @@ register_NEML2_object(RateIndependentPlasticFlowConstraint);
 OptionSet
 RateIndependentPlasticFlowConstraint::expected_options()
 {
-  OptionSet options = Model::expected_options();
+  OptionSet options = NewModel::expected_options();
   options.set<LabeledAxisAccessor>("yield_function") = {{"state", "internal", "fp"}};
   options.set<LabeledAxisAccessor>("flow_rate") = {{"state", "internal", "gamma_rate"}};
   return options;
@@ -41,52 +41,44 @@ RateIndependentPlasticFlowConstraint::expected_options()
 
 RateIndependentPlasticFlowConstraint::RateIndependentPlasticFlowConstraint(
     const OptionSet & options)
-  : Model(options),
-    yield_function(
-        declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("yield_function"))),
-    flow_rate(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("flow_rate"))),
-    consistency_condition(declare_output_variable<Scalar>(
+  : NewModel(options),
+    _fp(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("yield_function"))),
+    _gamma_dot(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("flow_rate"))),
+    _r(declare_output_variable<Scalar>(
         options.get<LabeledAxisAccessor>("flow_rate").slice(1).on("residual")))
 {
-  setup();
 }
 
 void
-RateIndependentPlasticFlowConstraint::set_value(const LabeledVector & in,
-                                                LabeledVector * out,
-                                                LabeledMatrix * dout_din,
-                                                LabeledTensor3D * d2out_din2) const
+RateIndependentPlasticFlowConstraint::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   neml_assert_dbg(!d2out_din2, "Second derivative not implemented.");
-
-  const auto options = in.options();
-  const auto batch_sz = in.batch_sizes();
-
-  auto f = in.get<Scalar>(yield_function);
-  auto gamma_dot = in.get<Scalar>(flow_rate);
 
   // The residual is the yield function itself when the stress state is "outside" the yield surface,
   // also called return mapping. The residual is the hardening rate when the stress state is
   // "inside" the yield surface, as the hardening rate is by definition zero.
-  auto r = Scalar::empty(batch_sz, options);
-  r.index_put_({f < -TOL2}, gamma_dot.index({f < -TOL2}));
-  r.index_put_({f >= -TOL2}, f.index({f >= -TOL2}));
+  const auto yielding = _fp >= -TOL2;
+  const auto not_yielding = torch::logical_not(yielding);
 
   if (out)
-    out->set(r, consistency_condition);
+  {
+    auto r = Scalar::empty_like(_r);
+    r.index_put_({not_yielding}, Scalar(_gamma_dot).index({not_yielding}));
+    r.index_put_({yielding}, Scalar(_fp).index({yielding}));
+    _r = r;
+  }
 
   if (dout_din)
   {
-    auto dr_dgamma_dot = Scalar::empty(batch_sz, options);
-    dr_dgamma_dot.index_put_({f < -TOL2}, 1);
-    dr_dgamma_dot.index_put_({f >= -TOL2}, 0);
+    auto dr_dgamma_dot = Scalar::empty_like(_r);
+    dr_dgamma_dot.index_put_({not_yielding}, 1);
+    dr_dgamma_dot.index_put_({yielding}, 0);
+    _r.d(_gamma_dot) = dr_dgamma_dot;
 
-    auto dr_df = Scalar::empty(batch_sz, options);
-    dr_df.index_put_({f < -TOL2}, 0);
-    dr_df.index_put_({f >= -TOL2}, 1);
-
-    dout_din->set(dr_dgamma_dot, consistency_condition, flow_rate);
-    dout_din->set(dr_df, consistency_condition, yield_function);
+    auto dr_dfp = Scalar::empty_like(_r);
+    dr_dfp.index_put_({not_yielding}, 0);
+    dr_dfp.index_put_({yielding}, 1);
+    _r.d(_fp) = dr_dfp;
   }
 }
 

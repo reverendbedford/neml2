@@ -28,21 +28,30 @@
 using namespace torch::indexing;
 using namespace neml2;
 
-OptionSet
-TestNonlinearSystem::expected_options()
-{
-  return NonlinearSystem::expected_options();
-}
-
 TestNonlinearSystem::TestNonlinearSystem(const OptionSet & options)
   : NonlinearSystem(options)
 {
 }
 
-OptionSet
-PowerTestSystem::expected_options()
+void
+TestNonlinearSystem::reinit(const BatchTensor & x)
 {
-  return TestNonlinearSystem::expected_options();
+  neml_assert_dbg(x.base_dim() == 1, "Trial solution must be one dimensional");
+
+  _batch_sizes = x.batch_sizes().vec();
+  _options = x.options();
+
+  _ndof = x.base_sizes()[0];
+  _solution = x.clone();
+
+  reinit_implicit_system();
+}
+
+void
+TestNonlinearSystem::reinit_implicit_system()
+{
+  _residual = BatchTensor::zeros(_batch_sizes, {_ndof}, _options);
+  _Jacobian = BatchTensor::zeros(_batch_sizes, {_ndof, _ndof}, _options);
 }
 
 PowerTestSystem::PowerTestSystem(const OptionSet & options)
@@ -51,32 +60,21 @@ PowerTestSystem::PowerTestSystem(const OptionSet & options)
 }
 
 void
-PowerTestSystem::assemble(const BatchTensor & x,
-                          BatchTensor * residual,
-                          BatchTensor * Jacobian) const
+PowerTestSystem::assemble(bool residual, bool Jacobian)
 {
-  TorchSize n = x.base_sizes()[0];
   if (residual)
-    for (TorchSize i = 0; i < n; i++)
-      residual->base_index_put({i}, math::pow(x.base_index({i}), Scalar(i + 1, x.options())) - 1.0);
+    for (TorchSize i = 0; i < _ndof; i++)
+      _residual.base_index_put({i},
+                               math::pow(_solution.base_index({i}), Scalar(i + 1, _options)) - 1.0);
 
   if (Jacobian)
-  {
-    *Jacobian = BatchTensor::zeros_like(*Jacobian);
-    for (TorchSize i = 0; i < n; i++)
-      Jacobian->base_index_put({i, i},
-                               (i + 1) * math::pow(x.base_index({i}), Scalar(i, x.options())));
-  }
+    for (TorchSize i = 0; i < _ndof; i++)
+      _Jacobian.base_index_put({i, i},
+                               (i + 1) * math::pow(_solution.base_index({i}), Scalar(i, _options)));
 }
 
 BatchTensor
-PowerTestSystem::exact_solution(const BatchTensor & x) const
+PowerTestSystem::exact_solution() const
 {
-  return BatchTensor::ones_like(x);
-}
-
-BatchTensor
-PowerTestSystem::guess(const BatchTensor & x) const
-{
-  return BatchTensor::ones_like(x) * 2.0;
+  return BatchTensor::ones(_batch_sizes, {_ndof}, _options);
 }

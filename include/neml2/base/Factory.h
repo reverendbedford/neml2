@@ -55,10 +55,17 @@ public:
    * @tparam T The type of the `NEML2Object`
    * @param section The section name under which the search happens.
    * @param name The name of the object to retrieve.
+   * @param host (Optional) The host NEML2Object that is exposed to users. Leave as nullptr if
+   * *this* object is publicly exposed.
+   * @param force_create (Optional) Force the factory to create a new object even if the object has
+   * already been created.
    * @return std::shared_ptr<T> The object pointer.
    */
   template <class T>
-  static std::shared_ptr<T> get_object_ptr(const std::string & section, const std::string & name);
+  static std::shared_ptr<T> get_object_ptr(const std::string & section,
+                                           const std::string & name,
+                                           NEML2Object * host = nullptr,
+                                           bool force_create = false);
 
   /**
    * @brief Retrive an object reference under the given section with the given object name.
@@ -71,10 +78,17 @@ public:
    * @tparam T The type of the `NEML2Object`
    * @param section The section name under which the search happens.
    * @param name The name of the object to retrieve.
+   * @param host (Optional) The host NEML2Object that is exposed to users. Leave as nullptr if
+   * *this* object is publicly exposed.
+   * @param force_create (Optional) Force the factory to create a new object even if the object has
+   * already been created.
    * @return T & The object reference.
    */
   template <class T>
-  static T & get_object(const std::string & section, const std::string & name);
+  static T & get_object(const std::string & section,
+                        const std::string & name,
+                        NEML2Object * host = nullptr,
+                        bool force_create = false);
 
   /**
    * @brief Provide all objects' options to the factory. The factory is ready to manufacture
@@ -83,11 +97,6 @@ public:
    * @param all_options The collection of all the options of the objects to be manufactured.
    */
   static void load(const OptionCollection & all_options);
-
-  /**
-   * @brief Manufacture all recognized objects from the loaded option collection.
-   */
-  void manufacture();
 
   /**
    * @brief Destruct all the objects.
@@ -117,32 +126,37 @@ private:
 
   // Manufactured objects. The key of the outer map is the section name, and the key of the inner
   // map is the object name.
-  std::map<std::string, std::map<std::string, std::shared_ptr<NEML2Object>>> _objects;
+  std::map<std::string, std::map<std::string, std::vector<std::shared_ptr<NEML2Object>>>> _objects;
 };
 
 template <class T>
 inline std::shared_ptr<T>
-Factory::get_object_ptr(const std::string & section, const std::string & name)
+Factory::get_object_ptr(const std::string & section,
+                        const std::string & name,
+                        NEML2Object * host,
+                        bool force_create)
 {
   auto & factory = Factory::get();
 
   // Easy if it already exists
-  if (factory._objects.count(section) && factory._objects.at(section).count(name))
-  {
-    auto obj = std::dynamic_pointer_cast<T>(factory._objects[section][name]);
-    neml_assert(obj != nullptr,
-                "Found object named ",
-                name,
-                " under section ",
-                section,
-                ". But dynamic cast failed. Did you specify the correct object type?");
-    return obj;
-  }
+  if (!force_create)
+    if (factory._objects.count(section) && factory._objects.at(section).count(name))
+    {
+      auto obj = std::dynamic_pointer_cast<T>(factory._objects[section][name].back());
+      neml_assert(obj != nullptr,
+                  "Found object named ",
+                  name,
+                  " under section ",
+                  section,
+                  ". But dynamic cast failed. Did you specify the correct object type?");
+      return obj;
+    }
 
   // Otherwise try to create it
-  for (const auto & options : factory._all_options[section])
+  for (auto & options : factory._all_options[section])
     if (options.first == name)
     {
+      options.second.set<NEML2Object *>("_host") = host;
       factory.create_object(section, options.second);
       break;
     }
@@ -153,13 +167,16 @@ Factory::get_object_ptr(const std::string & section, const std::string & name)
               " under section ",
               section);
 
-  return Factory::get_object_ptr<T>(section, name);
+  return Factory::get_object_ptr<T>(section, name, host, false);
 }
 
 template <class T>
 inline T &
-Factory::get_object(const std::string & section, const std::string & name)
+Factory::get_object(const std::string & section,
+                    const std::string & name,
+                    NEML2Object * host,
+                    bool force_create)
 {
-  return *Factory::get_object_ptr<T>(section, name);
+  return *Factory::get_object_ptr<T>(section, name, host, force_create);
 }
 } // namespace neml2

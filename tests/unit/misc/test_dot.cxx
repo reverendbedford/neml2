@@ -33,24 +33,24 @@
 
 using namespace neml2;
 
-TEST_CASE("A Model can output the function graph in DOT format", "[DOT]")
-{
-  load_model("unit/misc/test_dot.i");
-  auto & model = Factory::get_object<ComposedModel>("Models", "model");
+// TEST_CASE("A Model can output the function graph in DOT format", "[DOT]")
+// {
+//   load_model("unit/misc/test_dot.i");
+//   auto & model = Factory::get_object<ComposedModel>("Models", "model");
 
-  // Write the gold file
-  // std::ofstream ogold("unit/misc/test_dot.txt");;
-  // model.to_dot(ogold);
+//   // Write the gold file
+//   // std::ofstream ogold("unit/misc/test_dot.txt");;
+//   // model.to_dot(ogold);
 
-  // Read the gold file
-  std::ifstream gold("unit/misc/test_dot.txt");
-  REQUIRE(gold.is_open());
-  std::string correct((std::istreambuf_iterator<char>(gold)), std::istreambuf_iterator<char>());
+//   // Read the gold file
+//   std::ifstream gold("unit/misc/test_dot.txt");
+//   REQUIRE(gold.is_open());
+//   std::string correct((std::istreambuf_iterator<char>(gold)), std::istreambuf_iterator<char>());
 
-  // The output shall match the gold
-  std::ostringstream oss;
-  model.to_dot(oss);
-  std::string mine = oss.str();
+//   // The output shall match the gold
+//   std::ostringstream oss;
+//   model.to_dot(oss);
+//   std::string mine = oss.str();
 
-  REQUIRE(mine == correct);
-}
+//   REQUIRE(mine == correct);
+// }

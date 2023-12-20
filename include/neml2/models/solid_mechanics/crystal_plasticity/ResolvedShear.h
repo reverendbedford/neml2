@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/models/Model.h"
+#include "neml2/models/NewModel.h"
 
 namespace neml2
 {
@@ -34,30 +34,27 @@ class CrystalGeometry;
 }
 
 /// Calculate the resolved shears
-class ResolvedShear : public Model
+class ResolvedShear : public NewModel
 {
 public:
   static OptionSet expected_options();
 
   ResolvedShear(const OptionSet & options);
 
-  /// Crystal geometry class with slip geometry
-  const crystallography::CrystalGeometry & crystal_geometry;
-
-  /// Output: resolved shears
-  const LabeledAxisAccessor resolved_shears;
-
-  /// Input: stress, Cauchy stress with the default kinematics
-  const LabeledAxisAccessor stress;
-
-  /// Input: current orientation
-  const LabeledAxisAccessor orientation;
-
 protected:
   /// Set the resolved shears and associated derivatives
-  virtual void set_value(const LabeledVector & in,
-                         LabeledVector * out,
-                         LabeledMatrix * dout_din = nullptr,
-                         LabeledTensor3D * d2out_din2 = nullptr) const override;
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+
+  /// Crystal geometry class with slip geometry
+  const crystallography::CrystalGeometry & _crystal_geometry;
+
+  /// Resolved shear stresses
+  Variable<BatchTensor> & _rss;
+
+  /// Stress
+  const Variable<SR2> & _S;
+
+  /// Orientation
+  const Variable<Rot> & _R;
 };
 } // namespace neml2

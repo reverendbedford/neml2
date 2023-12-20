@@ -1,9 +1,9 @@
 [Drivers]
   [unit]
-    type = ModelUnitTest
+    type = NewModelUnitTest
     model = 'model'
     batch_shape = '(10)'
-    input_scalar_names = 'state/internal/k'
+    input_scalar_names = 'state/internal/h'
     input_scalar_values = '20'
     input_symr2_names = 'state/internal/M'
     input_symr2_values = 'M'
@@ -26,12 +26,12 @@
     type = SR2Invariant
     invariant_type = 'VONMISES'
     tensor = 'state/internal/M'
-    invariant = 'state/internal/sm'
+    invariant = 'state/internal/s'
   []
   [yield]
     type = YieldFunction
     yield_stress = 50
-    isotropic_hardening = 'state/internal/k'
+    isotropic_hardening = 'state/internal/h'
   []
   [model]
     type = ComposedModel

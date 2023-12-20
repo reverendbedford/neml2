@@ -21,56 +21,51 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+#pragma once
 
-#include "neml2/models/IdentityMap.h"
-#include "neml2/tensors/SSR4.h"
+#include "neml2/tensors/BatchTensor.h"
+#include "neml2/misc/parser_utils.h"
 
 namespace neml2
 {
-register_NEML2_object(ScalarIdentityMap);
-register_NEML2_object(SR2IdentityMap);
-
-template <typename T>
-OptionSet
-IdentityMap<T>::expected_options()
+/**
+ * @brief The base class to allow us to set up a polymorphic container of BatchTensors. The concrete
+ * definitions will be templated on the actual tensor type.
+ *
+ */
+class TensorValueBase
 {
-  OptionSet options = Model::expected_options();
-  options.set<LabeledAxisAccessor>("from_var");
-  options.set<LabeledAxisAccessor>("to_var");
-  return options;
-}
+public:
+  virtual ~TensorValueBase() = default;
 
+  /// Send the value to the target options
+  virtual void to(const torch::TensorOptions &) = 0;
+
+  /// Convert the parameter value to a BatchTensor
+  virtual operator BatchTensor() const = 0;
+};
+
+/// Concrete definition of tensor value
 template <typename T>
-IdentityMap<T>::IdentityMap(const OptionSet & options)
-  : Model(options),
-    from(declare_input_variable<T>(options.get<LabeledAxisAccessor>("from_var"))),
-    to(declare_output_variable<T>(options.get<LabeledAxisAccessor>("to_var")))
+class TensorValue : public TensorValueBase
 {
-  this->setup();
-}
+public:
+  TensorValue() = default;
 
-template <typename T>
-void
-IdentityMap<T>::set_value(const LabeledVector & in,
-                          LabeledVector * out,
-                          LabeledMatrix * dout_din,
-                          LabeledTensor3D * d2out_din2) const
-{
-  if (out)
-    out->set(in(from), to);
-
-  if (dout_din)
+  TensorValue(const T & value)
+    : _value(value)
   {
-    auto I = T::identity_map(in.options());
-    dout_din->set(I, to, from);
   }
 
-  if (d2out_din2)
-  {
-    // zero
-  }
-}
+  virtual void to(const torch::TensorOptions & options) override { _value = _value.to(options); }
 
-template class IdentityMap<Scalar>;
-template class IdentityMap<SR2>;
+  virtual operator BatchTensor() const override { return BatchTensor(_value); }
+
+  virtual operator T() const { return T(_value, _value.batch_dim()); }
+
+  T & value() { return _value; }
+
+private:
+  T _value;
+};
 } // namespace neml2

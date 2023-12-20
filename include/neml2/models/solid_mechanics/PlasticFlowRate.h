@@ -24,18 +24,22 @@
 
 #pragma once
 
-#include "neml2/models/Model.h"
+#include "neml2/models/NewModel.h"
 
 namespace neml2
 {
-class PlasticFlowRate : public Model
+class PlasticFlowRate : public NewModel
 {
 public:
   static OptionSet expected_options();
 
   PlasticFlowRate(const OptionSet & options);
 
-  const LabeledAxisAccessor yield_function;
-  const LabeledAxisAccessor flow_rate;
+protected:
+  /// Plastic yield function
+  const Variable<Scalar> & _f;
+
+  /// Plastic flow rate
+  Variable<Scalar> & _gamma_dot;
 };
 } // namespace neml2

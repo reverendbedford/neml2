@@ -29,18 +29,16 @@ namespace neml2
 OptionSet
 KinematicHardening::expected_options()
 {
-  OptionSet options = Model::expected_options();
+  OptionSet options = NewModel::expected_options();
   options.set<LabeledAxisAccessor>("kinematic_plastic_strain") = {{"state", "internal", "Kp"}};
   options.set<LabeledAxisAccessor>("back_stress") = {{"state", "internal", "X"}};
   return options;
 }
 
 KinematicHardening::KinematicHardening(const OptionSet & options)
-  : Model(options),
-    kinematic_plastic_strain(
-        declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("kinematic_plastic_strain"))),
-    back_stress(declare_output_variable<SR2>(options.get<LabeledAxisAccessor>("back_stress")))
+  : NewModel(options),
+    _Kp(declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("kinematic_plastic_strain"))),
+    _X(declare_output_variable<SR2>(options.get<LabeledAxisAccessor>("back_stress")))
 {
-  setup();
 }
 } // namespace neml2

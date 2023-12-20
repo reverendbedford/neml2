@@ -34,10 +34,8 @@ OptionSet
 VoceSingleSlipHardeningRule::expected_options()
 {
   OptionSet options = SingleSlipHardeningRule::expected_options();
-
   options.set<CrossRef<Scalar>>("initial_slope");
   options.set<CrossRef<Scalar>>("saturated_hardening");
-
   return options;
 }
 
@@ -46,28 +44,20 @@ VoceSingleSlipHardeningRule::VoceSingleSlipHardeningRule(const OptionSet & optio
     _theta_0(declare_parameter<Scalar>("initial_slope", "initial_slope")),
     _tau_f(declare_parameter<Scalar>("saturated_hardening", "saturated_hardening"))
 {
-  setup();
 }
 
 void
-VoceSingleSlipHardeningRule::set_value(const LabeledVector & in,
-                                       LabeledVector * out,
-                                       LabeledMatrix * dout_din,
-                                       LabeledTensor3D * d2out_din2) const
+VoceSingleSlipHardeningRule::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   neml_assert_dbg(!d2out_din2, "Second derivative not implemented.");
 
-  // Grab the input
-  const auto sg = in.get<Scalar>(sum_slip_rates);
-  const auto tau = in.get<Scalar>(slip_hardening);
-
   if (out)
-    out->set(_theta_0 * (1 - tau / _tau_f) * sg, slip_hardening_rate);
+    _tau_dot = _theta_0 * (1 - _tau / _tau_f) * _gamma_dot_sum;
 
   if (dout_din)
   {
-    dout_din->set(-_theta_0 / _tau_f * sg, slip_hardening_rate, slip_hardening);
-    dout_din->set(_theta_0 * (1 - tau / _tau_f), slip_hardening_rate, sum_slip_rates);
+    _tau_dot.d(_tau) = -_theta_0 / _tau_f * _gamma_dot_sum;
+    _tau_dot.d(_gamma_dot_sum) = _theta_0 * (1 - _tau / _tau_f);
   }
 }
 } // namespace neml2

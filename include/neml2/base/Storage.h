@@ -33,23 +33,21 @@
 namespace neml2
 {
 /**
- * Storage container that stores a vector of unique pointers of T,
- * but represents most of the public facing accessors (iterators,
- * operator[]) as a vector of T.
+ * Storage container that stores a vector of unique pointers of T, but represents most of the public
+ * facing accessors (iterators, operator[]).
  *
- * That is, these accessors dereference the underlying storage.
- * More importantly, if data is not properly initialized using
- * setValue(), this dereferencing will either lead to an assertion
- * or a nullptr dereference.
+ * That is, these accessors dereference the underlying storage. More importantly, if data is not
+ * properly initialized using set_pointer(), this dereferencing will either lead to an assertion or
+ * a nullptr dereference.
  */
-template <class T>
-class UniqueVector
+template <typename I, typename T>
+class Storage
 {
 public:
-  UniqueVector() = default;
-  UniqueVector(UniqueVector &&) = default;
-  UniqueVector(const UniqueVector & mp) = delete;
-  UniqueVector & operator=(const UniqueVector &) = delete;
+  Storage() = default;
+  Storage(Storage &&) = default;
+  Storage(const Storage &) = delete;
+  Storage & operator=(const Storage &) = delete;
 
   /**
    * Iterator that adds an additional dereference to BaseIterator.
@@ -62,26 +60,28 @@ public:
     {
     }
 
-    using value_type = typename BaseIterator::value_type::element_type;
-    using pointer = value_type *;
-    using reference = value_type &;
+    using key_type = typename BaseIterator::value_type::first_type;
+    using value_type = typename BaseIterator::value_type::second_type::element_type;
 
-    reference operator*() const
+    std::pair<key_type, value_type &> operator*() const
     {
-      auto & val = BaseIterator::operator*();
-      neml_assert_dbg(val.get(), "Null object");
-      return *val;
+      auto & [key, val] = BaseIterator::operator*();
+      neml_assert_dbg(val.get(),
+                      "Trying to dereference a null object. Make sure the storage was properly "
+                      "initialized using set_pointer().");
+      return {key, *val};
     }
-    pointer operator->() const { return BaseIterator::operator*().get(); }
-    reference operator[](size_t n) const
+    std::pair<key_type, value_type *> operator->() const
     {
-      auto & val = BaseIterator::operator[](n);
-      neml_assert_dbg(val.get(), "Null object");
-      return *val;
+      auto & [key, val] = BaseIterator::operator*();
+      neml_assert_dbg(val.get(),
+                      "Trying to dereference a null object. Make sure the storage was properly "
+                      "initialized using set_pointer().");
+      return {key, val.get()};
     }
   };
 
-  using values_type = typename std::vector<std::unique_ptr<T>>;
+  using values_type = typename std::map<I, std::unique_ptr<T>>;
   using iterator = DereferenceIterator<typename values_type::iterator>;
   using const_iterator = DereferenceIterator<typename values_type::const_iterator>;
 
@@ -106,15 +106,17 @@ public:
    * in which case this will throw an assertion or dereference a nullptr.
    *
    * You can check whether or not the underlying data is intialized
-   * with has_value(i).
+   * with has_key(i).
    */
   ///@{
-  T & operator[](const std::size_t i) const
+  T & operator[](const I & i) const
   {
-    neml_assert_dbg(has_value(i), "Null object");
+    neml_assert_dbg(has_key(i),
+                    "Trying to access a null object. Make sure the storage was properly "
+                    "initialized using set_pointer().");
     return *pointer_value(i);
   }
-  T & operator[](const std::size_t i) { return std::as_const(*this)[i]; }
+  T & operator[](const I & i) { return std::as_const(*this)[i]; }
   ///@}
 
   /**
@@ -124,27 +126,28 @@ public:
    * as underlying objects could be uninitialized
    */
   std::size_t size() const { return _values.size(); }
+
   /**
    * @returns Whether or not the underlying storage is empty.
    */
   bool empty() const { return _values.empty(); }
 
   /**
-   * @returns whether or not the underlying object at index \p is initialized
+   * @returns whether or not the underlying object at index \p i is initialized
    */
-  bool has_value(const std::size_t i) const { return pointer_value(i) != nullptr; }
+  bool has_key(const I & i) const { return _values.count(i); }
 
   /**
    * @returns A pointer to the underlying data at index \p i
    *
-   * The pointer will be nullptr if !has_value(i), that is, if the
+   * The pointer will be nullptr if !has_key(i), that is, if the
    * unique_ptr at index \p i is not initialized
    */
   ///@{
-  const T * query_value(const std::size_t i) const { return pointer_value(i).get(); }
-  T * query_value(const std::size_t i)
+  const T * query_value(const I & i) const { return has_key(i) ? pointer_value(i).get() : nullptr; }
+  T * query_value(const I & i)
   {
-    return const_cast<T *>(std::as_const(*this).query_value(i));
+    return has_key(i) ? const_cast<T *>(std::as_const(*this).query_value(i)) : nullptr;
   }
   ///@}
 
@@ -157,28 +160,11 @@ public:
    * This is the only method that allows for the modification of
    * ownership in the underlying vector. Protect it wisely.
    */
-  void set_pointer(const std::size_t i, std::unique_ptr<T> && ptr)
+  T * set_pointer(const I & i, std::unique_ptr<T> && ptr)
   {
-    neml_assert_dbg(size() > i, "Invalid size");
     _values[i] = std::move(ptr);
+    return _values[i].get();
   }
-
-  /**
-   * Adds the given object in \p ptr to the storage.
-   */
-  T & add_pointer(std::unique_ptr<T> && ptr)
-  {
-    neml_assert_dbg(ptr.get(), "Null object");
-    return *_values.emplace_back(std::move(ptr));
-  }
-
-  /**
-   * Resizes the underlying vector.
-   *
-   * This is the only method that allows for modification of
-   * the underlying container. Protect it wisely.
-   */
-  void resize(const std::size_t size) { _values.resize(size); }
 
 private:
   /**
@@ -188,11 +174,7 @@ private:
    * We hope to only expose the underlying unique_ptr to this API,
    * and not in derived classes. Hopefully it can stay that way.
    */
-  const std::unique_ptr<T> & pointer_value(const std::size_t i) const
-  {
-    neml_assert_dbg(size() > i, "Invalid size");
-    return _values[i];
-  }
+  const std::unique_ptr<T> & pointer_value(const I & i) const { return _values.at(i); }
 
   /// The underlying data
   values_type _values;

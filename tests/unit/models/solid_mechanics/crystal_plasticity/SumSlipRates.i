@@ -1,6 +1,6 @@
 [Drivers]
   [unit]
-    type = ModelUnitTest
+    type = NewModelUnitTest
     model = 'model'
     batch_shape = '(10,3)'
     input_batch_tensor_names = 'state/internal/slip_rates'
@@ -24,7 +24,7 @@
     values = '1 1 1'
   []
   [sum]
-    type = Scalar 
+    type = Scalar
     values = '1.91'
   []
   [rates]

@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/models/Model.h"
+#include "neml2/models/NewModel.h"
 
 namespace neml2
 {
@@ -34,15 +34,12 @@ class CrystalGeometry;
 }
 
 /// A helper model to calculate the sum of the absolute value of the slip rates
-class SumSlipRates : public Model
+class SumSlipRates : public NewModel
 {
 public:
   static OptionSet expected_options();
 
   SumSlipRates(const OptionSet & options);
-
-  /// Crystal geometry class with slip geometry
-  const crystallography::CrystalGeometry & crystal_geometry;
 
   /// Input: list of slip rates
   const LabeledAxisAccessor slip_rates;
@@ -52,9 +49,15 @@ public:
 
 protected:
   /// Calculate the sum and the derivatives
-  virtual void set_value(const LabeledVector & in,
-                         LabeledVector * out,
-                         LabeledMatrix * dout_din = nullptr,
-                         LabeledTensor3D * d2out_din2 = nullptr) const override;
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+
+  /// Crystal geometry class with slip geometry
+  const crystallography::CrystalGeometry & _crystal_geometry;
+
+  /// Sum of the absolute slip rates
+  Variable<Scalar> & _sg;
+
+  /// Slip rates
+  const Variable<BatchTensor> & _g;
 };
 } // namespace neml2

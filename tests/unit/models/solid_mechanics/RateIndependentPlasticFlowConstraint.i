@@ -18,7 +18,7 @@
 
 [Drivers]
   [unit]
-    type = ModelUnitTest
+    type = NewModelUnitTest
     model = 'model'
     batch_shape = '(5)'
     input_scalar_names = 'state/internal/fp state/internal/gamma_rate'

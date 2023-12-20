@@ -73,6 +73,12 @@ LabeledAxisAccessor::empty() const
   return _item_names.empty();
 }
 
+size_t
+LabeledAxisAccessor::size() const
+{
+  return _item_names.size();
+}
+
 LabeledAxisAccessor
 LabeledAxisAccessor::with_suffix(const std::string & suffix) const
 {
@@ -110,6 +116,12 @@ LabeledAxisAccessor::slice(size_t n1, size_t n2) const
   new_names.erase(new_names.begin() + n2, new_names.end());
   new_names.erase(new_names.begin(), new_names.begin() + n1);
   return new_names;
+}
+
+bool
+LabeledAxisAccessor::start_with(const LabeledAxisAccessor & axis) const
+{
+  return slice(0, axis.size()) == axis;
 }
 
 void

@@ -45,30 +45,26 @@ PerzynaPlasticFlowRate::PerzynaPlasticFlowRate(const OptionSet & options)
 }
 
 void
-PerzynaPlasticFlowRate::set_value(const LabeledVector & in,
-                                  LabeledVector * out,
-                                  LabeledMatrix * dout_din,
-                                  LabeledTensor3D * d2out_din2) const
+PerzynaPlasticFlowRate::set_value(bool out, bool dout_din, bool d2out_din2)
 {
-  // Grab the yield function
-  auto f = in.get<Scalar>(yield_function);
-
   // Compute the Perzyna approximation of the yield surface
-  auto Hf = math::heaviside(f);
-  auto f_abs = math::abs(f);
+  auto Hf = math::heaviside(Scalar(_f));
+  auto f_abs = math::abs(Scalar(_f));
   auto gamma_dot_m = math::pow(f_abs / _eta, _n);
   auto gamma_dot = gamma_dot_m * Hf;
 
   if (out)
-    out->set(gamma_dot, flow_rate);
+    _gamma_dot = gamma_dot;
 
   if (dout_din || d2out_din2)
   {
     auto dgamma_dot_df = _n / f_abs * gamma_dot;
+
     if (dout_din)
-      dout_din->set(dgamma_dot_df, flow_rate, yield_function);
+      _gamma_dot.d(_f) = dgamma_dot_df;
+
     if (d2out_din2)
-      d2out_din2->set((1 - 1 / f_abs) * dgamma_dot_df, flow_rate, yield_function, yield_function);
+      _gamma_dot.d(_f, _f) = (1 - 1 / f_abs) * dgamma_dot_df;
   }
 }
 } // namespace neml2

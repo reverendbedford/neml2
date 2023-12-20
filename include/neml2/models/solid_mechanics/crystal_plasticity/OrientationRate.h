@@ -24,39 +24,37 @@
 
 #pragma once
 
-#include "neml2/models/Model.h"
+#include "neml2/models/NewModel.h"
 
 namespace neml2
 {
 /// Calculate the orientation rate from the crystal model kinetics
 // Strictly this is the *spin* not the rotation rate.  But the integration routines
 // expect spin.
-class OrientationRate : public Model
+class OrientationRate : public NewModel
 {
 public:
   static OptionSet expected_options();
 
   OrientationRate(const OptionSet & options);
 
-  /// Output: rate of reorientation
-  const LabeledAxisAccessor orientation_rate;
-
-  /// Input: current elastic stretch
-  const LabeledAxisAccessor elastic_strain;
-
-  /// Input: total vorticity
-  const LabeledAxisAccessor vorticity;
-
-  /// Input: plastic deformation rate
-  const LabeledAxisAccessor plastic_deformation_rate;
-  /// Input: plastic vorticity
-  const LabeledAxisAccessor plastic_vorticity;
-
 protected:
   /// Set the orientation spin and derivatives
-  virtual void set_value(const LabeledVector & in,
-                         LabeledVector * out,
-                         LabeledMatrix * dout_din = nullptr,
-                         LabeledTensor3D * d2out_din2 = nullptr) const override;
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+
+  /// Rate of reorientation
+  Variable<WR2> & _R_dot;
+
+  /// Current elastic stretch
+  const Variable<SR2> & _e;
+
+  /// Vorticity
+  const Variable<WR2> & _w;
+
+  /// Plastic deformation rate
+  const Variable<SR2> & _dp;
+
+  /// Plastic vorticity
+  const Variable<WR2> & _wp;
 };
 } // namespace neml2

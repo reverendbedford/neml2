@@ -29,10 +29,10 @@
 namespace neml2
 {
 /**
- * @brief The base class for nonlinear parameters interpolated from one or multiple axes of data
+ * @brief The base class for interpolated nonlinear parameter
  *
  * This model requires two parameters, namely the "abscissa" and the "ordinate". The ordinate is
- * interpolated using an input (specified by the "argument" option) along the axes of abscissa.
+ * interpolated using an input (specified by the "argument" option) along the axis of abscissa.
  *
  * The interpolant's batch shape is defined as the broadcasted batch shapes of the abscissa and the
  * ordinate, after excluding the dimensions on which the interpolation happens.
@@ -52,27 +52,34 @@ public:
 
   Interpolation(const OptionSet & options);
 
-  const LabeledAxisAccessor x;
-
 protected:
-  virtual void set_value(const LabeledVector & in,
-                         LabeledVector * out,
-                         LabeledMatrix * dout_din = nullptr,
-                         LabeledTensor3D * d2out_din2 = nullptr) const override;
+  /// The abscissa values of the interpolant
+  const Scalar & _X;
 
-  /**
-   * @brief Actually do the interpolation.
-   *
-   * The output (and its derivatives) are only "requested" if they are _not_ nullptrs.
-   *
-   * @param x input
-   * @param y output, i.e., the interpolated value
-   * @param dy_dx derivative
-   * @param d2y_dx2 second derivative
-   */
-  virtual void interpolate(const Scalar & x, T * y, T * dy_dx, T * d2y_dx2) const = 0;
+  /// The ordinate values of the interpolant
+  const T & _Y;
 
-  const Scalar & _abscissa;
-  const T & _ordinate;
+  /// Argument of interpolation
+  const Variable<Scalar> & _x;
 };
+
+template <typename T>
+OptionSet
+Interpolation<T>::expected_options()
+{
+  OptionSet options = NonlinearParameter<T>::expected_options();
+  options.set<LabeledAxisAccessor>("argument");
+  options.set<CrossRef<Scalar>>("abscissa");
+  options.set<CrossRef<T>>("ordinate");
+  return options;
+}
+
+template <typename T>
+Interpolation<T>::Interpolation(const OptionSet & options)
+  : NonlinearParameter<T>(options),
+    _X(this->template declare_parameter<Scalar>("X", "abscissa")),
+    _Y(this->template declare_parameter<T>("Y", "ordinate")),
+    _x(this->template declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("argument")))
+{
+}
 } // namespace neml2

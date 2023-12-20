@@ -45,33 +45,29 @@ PowerLawSlipRule::PowerLawSlipRule(const OptionSet & options)
     _gamma0(declare_parameter<Scalar>("gamma0", "gamma0")),
     _n(declare_parameter<Scalar>("n", "n"))
 {
-  setup();
 }
 
 void
-PowerLawSlipRule::set_value(const LabeledVector & in,
-                            LabeledVector * out,
-                            LabeledMatrix * dout_din,
-                            LabeledTensor3D * d2out_din2) const
+PowerLawSlipRule::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   neml_assert_dbg(!d2out_din2, "Second derivative not implemented.");
+
   // Grab the input
-  const auto tau = in.get_list<Scalar>(resolved_shears);
-  const auto tau_bar = in.get_list<Scalar>(slip_strengths);
+  const auto rss = Scalar(_rss, batch_dim() + 1);
+  const auto tau = Scalar(_tau, batch_dim() + 1);
 
   if (out)
-    out->set_list(_gamma0 * math::pow(abs(tau / tau_bar), _n - 1.0) * tau / tau_bar, slip_rates);
+    _g = BatchTensor(_gamma0 * math::pow(abs(rss / tau), _n - 1.0) * rss / tau, batch_dim());
 
   if (dout_din)
   {
-    dout_din->set_list(
-        math::batch_diag_embed(_gamma0 * _n * math::pow(abs(tau / tau_bar), _n - 1.0) / tau_bar),
-        slip_rates,
-        resolved_shears);
-    dout_din->set_list(math::batch_diag_embed(-_n * _gamma0 * tau * math::pow(abs(tau), _n - 1.0) /
-                                              math::pow(tau_bar, _n + 1)),
-                       slip_rates,
-                       slip_strengths);
+    _g.d(_rss) = BatchTensor(
+        math::batch_diag_embed(_gamma0 * _n * math::pow(abs(rss / tau), _n - 1.0) / tau),
+        batch_dim());
+    _g.d(_tau) =
+        BatchTensor(math::batch_diag_embed(-_n * _gamma0 * rss * math::pow(abs(rss), _n - 1.0) /
+                                           math::pow(tau, _n + 1)),
+                    batch_dim());
   }
 }
 } // namespace neml2

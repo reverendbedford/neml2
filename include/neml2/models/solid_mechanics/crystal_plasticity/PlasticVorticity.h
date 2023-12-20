@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/models/Model.h"
+#include "neml2/models/NewModel.h"
 
 namespace neml2
 {
@@ -34,30 +34,27 @@ class CrystalGeometry;
 }
 
 /// Calculate the plastic vorticity with the default crystal kinetics
-class PlasticVorticity : public Model
+class PlasticVorticity : public NewModel
 {
 public:
   static OptionSet expected_options();
 
   PlasticVorticity(const OptionSet & options);
 
-  /// Output: plastic vorticity
-  const LabeledAxisAccessor plastic_vorticity;
-
-  /// Input: current orientation
-  const LabeledAxisAccessor orientation;
-
-  /// Crystal geometry class with slip geometry
-  const crystallography::CrystalGeometry & crystal_geometry;
-
-  /// Input: list of slip rates
-  const LabeledAxisAccessor slip_rates;
-
 protected:
   /// Set the plastic vorticity and derivatives
-  virtual void set_value(const LabeledVector & in,
-                         LabeledVector * out,
-                         LabeledMatrix * dout_din = nullptr,
-                         LabeledTensor3D * d2out_din2 = nullptr) const override;
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+
+  /// Crystal geometry class with slip geometry
+  const crystallography::CrystalGeometry & _crystal_geometry;
+
+  /// Plastic vorticity
+  Variable<WR2> & _Wp;
+
+  /// Orientation
+  const Variable<Rot> & _R;
+
+  /// Slip rate
+  const Variable<BatchTensor> & _gamma_dot;
 };
 } // namespace neml2

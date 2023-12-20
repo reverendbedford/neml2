@@ -51,8 +51,8 @@ private:
   Real _atol;
 };
 
-bool allclose(const torch::jit::named_buffer_list & a,
-              const torch::jit::named_buffer_list & b,
-              Real rtol = 1e-5,
-              Real atol = 1e-8);
+std::string diff(const torch::jit::named_buffer_list & res,
+                 const torch::jit::named_buffer_list & ref,
+                 Real rtol = 1e-5,
+                 Real atol = 1e-8);
 } // namespace neml2

@@ -34,18 +34,15 @@ class VoceSingleSlipHardeningRule : public SingleSlipHardeningRule
 public:
   static OptionSet expected_options();
 
-  /// Initialize from options
   VoceSingleSlipHardeningRule(const OptionSet & options);
 
 protected:
   /// Set the slip hardening rate
-  virtual void set_value(const LabeledVector & in,
-                         LabeledVector * out,
-                         LabeledMatrix * dout_din = nullptr,
-                         LabeledTensor3D * d2out_din2 = nullptr) const override;
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
   /// Initial hardening slope
   const Scalar & _theta_0;
+
   /// Saturated hardening
   const Scalar & _tau_f;
 };

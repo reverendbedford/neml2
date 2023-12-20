@@ -24,29 +24,27 @@
 
 #pragma once
 
-#include "neml2/models/Model.h"
+#include "neml2/models/NewModel.h"
 
 namespace neml2
 {
-class Normality : public Model
+class Normality : public NewModel
 {
 public:
   static OptionSet expected_options();
 
   Normality(const OptionSet & options);
 
-  const LabeledAxisAccessor function;
-
 protected:
   /// The flow direction
-  virtual void set_value(const LabeledVector & in,
-                         LabeledVector * out,
-                         LabeledMatrix * dout_din = nullptr,
-                         LabeledTensor3D * d2out_din2 = nullptr) const override;
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
-  /// The potential function for the conjugate pairs
-  const Model & _model;
+  /// The model which evaluates the potential function
+  NewModel & _model;
 
-  std::map<LabeledAxisAccessor, LabeledAxisAccessor> _conjugate_pairs;
+  /// The potential function
+  const LabeledAxisAccessor _f;
+
+  std::map<LabeledAxisAccessor, Variable<BatchTensor> *> _conjugate_pairs;
 };
 } // namespace neml2

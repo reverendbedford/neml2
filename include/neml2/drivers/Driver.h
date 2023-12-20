@@ -27,7 +27,7 @@
 #include "neml2/base/Registry.h"
 #include "neml2/base/NEML2Object.h"
 #include "neml2/base/Factory.h"
-#include "neml2/models/Model.h"
+#include "neml2/models/NewModel.h"
 #include <filesystem>
 
 namespace neml2

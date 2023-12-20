@@ -1,6 +1,6 @@
 [Drivers]
   [unit]
-    type = ModelUnitTest
+    type = NewModelUnitTest
     model = 'model'
     batch_shape = '(10)'
     input_symr2_names = 'state/internal/Ee state/internal/Ep'

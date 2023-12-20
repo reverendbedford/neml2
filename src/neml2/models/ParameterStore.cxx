@@ -25,9 +25,38 @@
 #include "neml2/models/ParameterStore.h"
 #include "neml2/models/NonlinearParameter.h"
 #include "neml2/tensors/macros.h"
+#include "neml2/tensors/Variable.h"
 
 namespace neml2
 {
+ParameterStore::ParameterStore(const OptionSet & options, NEML2Object * object)
+  : _object(object),
+    _options(options)
+{
+}
+
+Storage<std::string, TensorValueBase> &
+ParameterStore::named_parameters()
+{
+  neml_assert(_object->host() == _object,
+              "named_parameters() should only be called on the host model.");
+  return _param_values;
+}
+
+void
+ParameterStore::send_parameters_to(const torch::TensorOptions & options)
+{
+  neml_assert(_object->host() == _object, "This method should only be called on the host model.");
+
+  for (auto && [name, param] : _param_values)
+    param.to(options);
+}
+
+const VariableBase *
+ParameterStore::nl_param(const std::string & name) const
+{
+  return _nl_params.count(name) ? _nl_params.at(name) : nullptr;
+}
 
 template <typename T, typename>
 const T &
@@ -47,15 +76,20 @@ ParameterStore::declare_parameter(const std::string & name, const std::string & 
       {
         // Handle the case of *nonlinear* parameter.
         // Note that nonlinear parameter should only exist inside a Model.
-        auto model = dynamic_cast<Model *>(this);
-        if (model)
-        {
-          auto & nl_param = Factory::get_object<NonlinearParameter<T>>(
-              "Models", _options.get<CrossRef<T>>(input_option_name).raw());
-          model->declare_input_variable<T>(nl_param.p);
-          _nl_params.emplace(name, nl_param.p);
-          return nl_param.get_value();
-        }
+        auto model = dynamic_cast<NewModel *>(this);
+        neml_assert(model,
+                    "Trying to declare a parameter named ",
+                    name,
+                    ". It is not a plain tensor value nor a cross-referenced parameter "
+                    "value. Hence I am guessing you are declaring a *nonlinear* parameter. "
+                    "However, nonlinear parameter should only be declared by a model, and this "
+                    "object does not appear to be a model.");
+
+        auto & nl_param = Factory::get_object<NonlinearParameter<T>>(
+            "Models", _options.get<CrossRef<T>>(input_option_name).raw());
+        model->declare_input_variable<T>(nl_param.param().name());
+        _nl_params[name] = &nl_param.param();
+        return nl_param.param().value();
       }
       catch (const NEMLException & e2)
       {
@@ -69,8 +103,8 @@ ParameterStore::declare_parameter(const std::string & name, const std::string & 
       "Trying to register parameter named " + name + " from input option named " +
       input_option_name + " of type " + utils::demangle(typeid(T).name()) +
       ". Make sure you provided the correct parameter name, option name, and parameter type. Note "
-      "that the parameter type can either be a plain type, a cross-reference, or an "
-      "interpolation.");
+      "that the parameter type can either be a plain type, a cross-reference, or a nonlinear "
+      "parameter.");
 }
 
 #define instantiate_declare_parameter(T)                                                           \

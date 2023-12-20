@@ -29,11 +29,13 @@ OptionSet
 NEML2Object::expected_options()
 {
   auto options = OptionSet();
+  options.set<NEML2Object *>("_host") = nullptr;
   return options;
 }
 
 NEML2Object::NEML2Object(const OptionSet & options)
-  : _options(options)
+  : _options(options),
+    _host(options.get<NEML2Object *>("_host"))
 {
 }
 } // namespace neml2

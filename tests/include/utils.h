@@ -65,14 +65,14 @@ finite_differencing_derivative(F && f,
   // The scalar case is trivial
   if (x.base_dim() == 0)
   {
-    auto y0 = BatchTensor(f(x));
+    auto y0 = BatchTensor(f(x)).clone();
 
     auto dx = eps * Scalar(neml2::math::abs(x));
     dx.index_put_({dx < aeps}, aeps);
 
     auto x1 = x + dx;
 
-    auto y1 = BatchTensor(f(x1));
+    auto y1 = BatchTensor(f(x1)).clone();
     auto dy_dx = (y1 - y0) / dx;
 
     return dy_dx;
@@ -83,7 +83,7 @@ finite_differencing_derivative(F && f,
       x.reshape(utils::add_shapes(x.batch_sizes(), utils::storage_size(x.base_sizes()))),
       x.batch_dim());
 
-  auto y0 = BatchTensor(f(x));
+  auto y0 = BatchTensor(f(x)).clone();
 
   auto dy_dxf = BatchTensor::empty(
       x.batch_sizes(), utils::add_shapes(y0.base_sizes(), xf.base_sizes()), x.options());
@@ -97,7 +97,7 @@ finite_differencing_derivative(F && f,
     xf1.base_index_put({i}, xf1.base_index({i}) + dx);
     auto x1 = BatchTensor(xf1.reshape(x.sizes()), x.batch_dim());
 
-    auto y1 = BatchTensor(f(x1));
+    auto y1 = BatchTensor(f(x1)).clone();
     dy_dxf.base_index_put({Ellipsis, i}, (y1 - y0) / dx);
   }
 

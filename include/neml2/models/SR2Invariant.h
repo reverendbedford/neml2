@@ -24,26 +24,26 @@
 
 #pragma once
 
-#include "neml2/models/Model.h"
+#include "neml2/models/NewModel.h"
 
 namespace neml2
 {
-class SR2Invariant : public Model
+class SR2Invariant : public NewModel
 {
 public:
   static OptionSet expected_options();
 
   SR2Invariant(const OptionSet & options);
 
-  const LabeledAxisAccessor tensor;
-  const LabeledAxisAccessor invariant;
-
 protected:
-  virtual void set_value(const LabeledVector & in,
-                         LabeledVector * out,
-                         LabeledMatrix * dout_din = nullptr,
-                         LabeledTensor3D * d2out_din2 = nullptr) const override;
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
   const std::string _type;
+
+  /// Input second order tensor
+  const Variable<SR2> & _A;
+
+  /// Invariant of the input tensor
+  Variable<Scalar> & _invariant;
 };
 } // namespace neml2

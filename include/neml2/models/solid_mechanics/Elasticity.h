@@ -24,12 +24,12 @@
 
 #pragma once
 
-#include "neml2/models/Model.h"
+#include "neml2/models/NewModel.h"
 #include "neml2/tensors/SR2.h"
 
 namespace neml2
 {
-class Elasticity : public Model
+class Elasticity : public NewModel
 {
 public:
   static OptionSet expected_options();
@@ -52,17 +52,16 @@ protected:
   /// The stress (rate) variable accessor
   const LabeledAxisAccessor _stress;
 
-public:
   /**
    * The variable accessor for the input. If _compliance == true, this is the stress (rate).
    * Otherwise this is the strain (rate).
    */
-  const LabeledAxisAccessor from_var;
+  const Variable<SR2> & _from;
 
   /**
    * The variable accessor for the output. If _compliance == true, this is the strain (rate).
    * Otherwise this is the stress (rate).
    */
-  const LabeledAxisAccessor to_var;
+  Variable<SR2> & _to;
 };
 } // namespace neml2

@@ -32,7 +32,7 @@ register_NEML2_object(SR2Invariant);
 OptionSet
 SR2Invariant::expected_options()
 {
-  OptionSet options = Model::expected_options();
+  OptionSet options = NewModel::expected_options();
   options.set<LabeledAxisAccessor>("tensor");
   options.set<LabeledAxisAccessor>("invariant");
   options.set<std::string>("invariant_type");
@@ -40,29 +40,24 @@ SR2Invariant::expected_options()
 }
 
 SR2Invariant::SR2Invariant(const OptionSet & options)
-  : Model(options),
-    tensor(declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("tensor"))),
-    invariant(declare_output_variable<Scalar>(options.get<LabeledAxisAccessor>("invariant"))),
-    _type(options.get<std::string>("invariant_type"))
+  : NewModel(options),
+    _type(options.get<std::string>("invariant_type")),
+    _A(declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("tensor"))),
+    _invariant(declare_output_variable<Scalar>(options.get<LabeledAxisAccessor>("invariant")))
 {
-  setup();
 }
 
 void
-SR2Invariant::set_value(const LabeledVector & in,
-                        LabeledVector * out,
-                        LabeledMatrix * dout_din,
-                        LabeledTensor3D * d2out_din2) const
+SR2Invariant::set_value(bool out, bool dout_din, bool d2out_din2)
 {
-  const auto options = in.options();
-  auto A = in.get<SR2>(tensor);
+  auto A = SR2(_A);
 
   if (_type == "I1")
   {
     if (out)
-      out->set(A.tr(), invariant);
+      _invariant = A.tr();
     if (dout_din)
-      dout_din->set(SR2::identity(options), invariant, tensor);
+      _invariant.d(_A) = SR2::identity(options());
     if (d2out_din2)
     {
       // zero
@@ -71,17 +66,17 @@ SR2Invariant::set_value(const LabeledVector & in,
   else if (_type == "I2")
   {
     if (out)
-      out->set((A.tr() * A.tr() - A.inner(A)) / 2.0, invariant);
+      _invariant = (A.tr() * A.tr() - A.inner(A)) / 2.0;
     if (dout_din || d2out_din2)
     {
-      auto I2 = SR2::identity(options);
+      auto I2 = SR2::identity(options());
       if (dout_din)
-        dout_din->set(A.tr() * I2 - A, invariant, tensor);
+        _invariant.d(_A) = A.tr() * I2 - A;
       if (d2out_din2)
       {
-        auto I2xI2 = SSR4::identity(options);
-        auto I4sym = SSR4::identity_sym(options);
-        d2out_din2->set(I2xI2 - I4sym, invariant, tensor, tensor);
+        auto I2xI2 = SSR4::identity(options());
+        auto I4sym = SSR4::identity_sym(options());
+        _invariant.d(_A, _A) = I2xI2 - I4sym;
       }
     }
   }
@@ -91,18 +86,17 @@ SR2Invariant::set_value(const LabeledVector & in,
     Scalar vm = std::sqrt(3.0 / 2.0) * S.norm(EPS);
 
     if (out)
-      out->set(vm, invariant);
+      _invariant = vm;
     if (dout_din || d2out_din2)
     {
       auto dvm_dA = 3.0 / 2.0 * S / vm;
       if (dout_din)
-        dout_din->set(dvm_dA, invariant, tensor);
+        _invariant.d(_A) = dvm_dA;
       if (d2out_din2)
       {
-        auto I = SSR4::identity_sym(options);
-        auto J = SSR4::identity_dev(options);
-        d2out_din2->set(
-            3.0 / 2.0 * (I - 2.0 / 3.0 * dvm_dA.outer(dvm_dA)) * J / vm, invariant, tensor, tensor);
+        auto I = SSR4::identity_sym(options());
+        auto J = SSR4::identity_dev(options());
+        _invariant.d(_A, _A) = 3.0 / 2.0 * (I - 2.0 / 3.0 * dvm_dA.outer(dvm_dA)) * J / vm;
       }
     }
   }

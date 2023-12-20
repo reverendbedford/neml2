@@ -24,17 +24,18 @@
 
 #pragma once
 
-#include "neml2/models/Model.h"
+#include "neml2/models/NewModel.h"
 
 namespace neml2
 {
-class FlowRule : public Model
+class FlowRule : public NewModel
 {
 public:
   static OptionSet expected_options();
 
   FlowRule(const OptionSet & options);
 
-  const LabeledAxisAccessor flow_rate;
+protected:
+  const Variable<Scalar> & _gamma_dot;
 };
 } // namespace neml2

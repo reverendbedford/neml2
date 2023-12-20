@@ -37,7 +37,7 @@ register_NEML2_object(PlasticDeformationRate);
 OptionSet
 PlasticDeformationRate::expected_options()
 {
-  OptionSet options = Model::expected_options();
+  OptionSet options = NewModel::expected_options();
 
   options.set<LabeledAxisAccessor>("plastic_deformation_rate") =
       vecstr{"state", "internal", "plastic_deformation_rate"};
@@ -52,41 +52,33 @@ PlasticDeformationRate::expected_options()
 }
 
 PlasticDeformationRate::PlasticDeformationRate(const OptionSet & options)
-  : Model(options),
-    plastic_deformation_rate(
-        declare_output_variable<SR2>(options.get<LabeledAxisAccessor>("plastic_deformation_rate"))),
-    orientation(declare_input_variable<Rot>(options.get<LabeledAxisAccessor>("orientation"))),
-    crystal_geometry(include_data<crystallography::CrystalGeometry>(
+  : NewModel(options),
+    _crystal_geometry(register_data<crystallography::CrystalGeometry>(
         options.get<std::string>("crystal_geometry_name"))),
-    slip_rates(declare_input_variable_list<Scalar>(options.get<LabeledAxisAccessor>("slip_rates"),
-                                                   crystal_geometry.nslip()))
+    _dp(declare_output_variable<SR2>(options.get<LabeledAxisAccessor>("plastic_deformation_rate"))),
+    _R(declare_input_variable<Rot>(options.get<LabeledAxisAccessor>("orientation"))),
+    _g(declare_input_variable_list<Scalar>(options.get<LabeledAxisAccessor>("slip_rates"),
+                                           _crystal_geometry.nslip()))
 {
-  setup();
 }
 
 void
-PlasticDeformationRate::set_value(const LabeledVector & in,
-                                  LabeledVector * out,
-                                  LabeledMatrix * dout_din,
-                                  LabeledTensor3D * d2out_din2) const
+PlasticDeformationRate::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   neml_assert_dbg(!d2out_din2, "Second derivative not implemented.");
 
   // Grab the input
-  const auto R = in.get<Rot>(orientation);
-  const auto g = in.get_list<Scalar>(slip_rates);
-  auto dp_crystal = (g * crystal_geometry.M()).list_sum();
+  const auto g = Scalar(_g, batch_dim() + 1);
+  const auto dp_crystal = (g * _crystal_geometry.M()).list_sum();
 
   if (out)
-    out->set(dp_crystal.rotate(R), plastic_deformation_rate);
+    _dp = dp_crystal.rotate(Rot(_R));
 
   if (dout_din)
   {
-    dout_din->set(list_derivative_outer_product_b(
-                      [](auto a, auto b) { return b.rotate(a); }, R, crystal_geometry.M()),
-                  plastic_deformation_rate,
-                  slip_rates);
-    dout_din->set(dp_crystal.drotate(R), plastic_deformation_rate, orientation);
+    _dp.d(_g) = list_derivative_outer_product_b(
+        [](auto a, auto b) { return b.rotate(a); }, Rot(_R), _crystal_geometry.M());
+    _dp.d(_R) = dp_crystal.drotate(Rot(_R));
   }
 }
 } // namespace neml2

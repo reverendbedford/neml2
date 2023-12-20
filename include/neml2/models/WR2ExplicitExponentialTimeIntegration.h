@@ -24,13 +24,13 @@
 
 #pragma once
 
-#include "neml2/models/Model.h"
+#include "neml2/models/NewModel.h"
 
 namespace neml2
 {
 /// Explicit exponential time integration for rotations
 // This function takes as input a skew tensor giving the spin and does the rotational update
-class WR2ExplicitExponentialTimeIntegration : public Model
+class WR2ExplicitExponentialTimeIntegration : public NewModel
 {
 public:
   static OptionSet expected_options();
@@ -38,29 +38,30 @@ public:
   WR2ExplicitExponentialTimeIntegration(const OptionSet & options);
 
 private:
-  /// Name of the variable giving the current value
+  /// Variable name
   const LabeledAxisAccessor _var_name;
-  /// Name of the variable giving current rate
-  const LabeledAxisAccessor _var_rate_name;
 
-public:
-  /// Input: current spin rate
-  const LabeledAxisAccessor var_rate;
-  /// Output: next value
-  const LabeledAxisAccessor var;
-  /// Input: previous value
-  const LabeledAxisAccessor var_n;
-  /// Input: next time
-  const LabeledAxisAccessor time;
-  /// Input: previous time
-  const LabeledAxisAccessor time_n;
+  /// Variable rate name
+  const LabeledAxisAccessor _var_rate_name;
 
 protected:
   /// Perform the time integration to update the variable value
-  virtual void set_value(const LabeledVector & in,
-                         LabeledVector * out,
-                         LabeledMatrix * dout_din = nullptr,
-                         LabeledTensor3D * d2out_din2 = nullptr) const override;
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+
+  /// Current value
+  Variable<Rot> & _s;
+
+  /// Current variable spin rate
+  const Variable<WR2> & _s_dot;
+
+  /// Previous value
+  const Variable<Rot> & _sn;
+
+  /// Current time
+  const Variable<Scalar> & _t;
+
+  /// Previous time
+  const Variable<Scalar> & _tn;
 };
 
 } // namespace neml2

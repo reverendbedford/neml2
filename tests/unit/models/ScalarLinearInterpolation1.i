@@ -1,8 +1,8 @@
 [Drivers]
   [unit]
-    type = ModelUnitTest
-    model = 'model'
-    batch_shape = '()'
+    type = NewModelUnitTest
+    model = 'E'
+    batch_shape = '(1)'
     input_scalar_names = 'forces/T'
     input_scalar_values = '300'
     output_scalar_names = 'E'
@@ -12,9 +12,8 @@
 []
 
 [Models]
-  [model]
+  [E]
     type = ScalarLinearInterpolation
-    parameter = 'E'
     argument = 'forces/T'
     abscissa = 'T'
     ordinate = 'E'

@@ -51,33 +51,18 @@ public:
    */
   virtual void to(const torch::TensorOptions & options);
 
-  /**
-   * @brief Get the named buffers
-   *
-   * @param recurse Whether to recursively retrieve buffers from registered Datas.
-   * @return A map from buffer name to buffer value
-   */
-  std::map<std::string, BatchTensor> named_buffers(bool recurse) const;
-
   /// All the registered data objects
   const std::vector<Data *> & registered_data() const { return _registered_data; }
 
 protected:
   /**
-   * @brief Register a data object
-   *
-   * @param data The Data to register
-   */
-  void register_data(std::shared_ptr<Data> data);
-
-  /**
-   * Both register a data and return a reference
+   * Register a data object and return its reference
    */
   template <typename T, typename = typename std::enable_if_t<std::is_base_of_v<Data, T>>>
-  T & include_data(const std::string & name)
+  T & register_data(const std::string & name)
   {
-    auto data = Factory::get_object_ptr<Data>("Data", name);
-    register_data(data);
+    auto data = Factory::get_object_ptr<Data>("Data", name, host());
+    _registered_data.push_back(data.get());
     return *(std::dynamic_pointer_cast<T>(data));
   }
 

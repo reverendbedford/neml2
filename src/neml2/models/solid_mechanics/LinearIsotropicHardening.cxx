@@ -43,16 +43,13 @@ LinearIsotropicHardening::LinearIsotropicHardening(const OptionSet & options)
 }
 
 void
-LinearIsotropicHardening::set_value(const LabeledVector & in,
-                                    LabeledVector * out,
-                                    LabeledMatrix * dout_din,
-                                    LabeledTensor3D * d2out_din2) const
+LinearIsotropicHardening::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   if (out)
-    out->set(_K * in(equivalent_plastic_strain), isotropic_hardening);
+    _h = _K * _ep;
 
   if (dout_din)
-    dout_din->set(_K, isotropic_hardening, equivalent_plastic_strain);
+    _h.d(_ep) = _K;
 
   if (d2out_din2)
   {

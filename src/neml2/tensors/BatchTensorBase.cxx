@@ -330,13 +330,20 @@ BatchTensorBase<Derived>::batch_expand(TorchShapeRef batch_size) const
 }
 
 template <class Derived>
-Derived
+BatchTensor
 BatchTensorBase<Derived>::base_expand(TorchShapeRef base_size) const
 {
   // We don't want to touch the batch dimensions, so put -1 for them.
   auto net = base_size.vec();
   net.insert(net.begin(), batch_dim(), -1);
-  return Derived(expand(net), batch_dim());
+  return BatchTensor(expand(net), batch_dim());
+}
+
+template <class Derived>
+BatchTensor
+BatchTensorBase<Derived>::base_expand_as(const BatchTensor & other) const
+{
+  return base_expand(other.base_sizes());
 }
 
 template <class Derived>
@@ -347,10 +354,24 @@ BatchTensorBase<Derived>::batch_expand_copy(TorchShapeRef batch_size) const
 }
 
 template <class Derived>
-Derived
+BatchTensor
 BatchTensorBase<Derived>::base_expand_copy(TorchShapeRef base_size) const
 {
-  return Derived(base_expand(base_size).contiguous(), batch_dim());
+  return BatchTensor(base_expand(base_size).contiguous(), batch_dim());
+}
+
+template <class Derived>
+Derived
+BatchTensorBase<Derived>::batch_reshape(TorchShapeRef batch_shape) const
+{
+  return Derived(reshape(utils::add_shapes(batch_shape, base_sizes())), _batch_dim);
+}
+
+template <class Derived>
+BatchTensor
+BatchTensorBase<Derived>::base_reshape(TorchShapeRef base_shape) const
+{
+  return BatchTensor(reshape(utils::add_shapes(batch_sizes(), base_shape)), _batch_dim);
 }
 
 template <class Derived>
@@ -369,11 +390,11 @@ BatchTensorBase<Derived>::list_unsqueeze() const
 }
 
 template <class Derived>
-Derived
+BatchTensor
 BatchTensorBase<Derived>::base_unsqueeze(TorchSize d) const
 {
   auto d2 = d < 0 ? d : d + batch_dim();
-  return Derived(torch::Tensor::unsqueeze(d2), batch_dim());
+  return BatchTensor(torch::Tensor::unsqueeze(d2), batch_dim());
 }
 
 template <class Derived>
@@ -386,19 +407,19 @@ BatchTensorBase<Derived>::batch_transpose(TorchSize d1, TorchSize d2) const
 }
 
 template <class Derived>
-Derived
+BatchTensor
 BatchTensorBase<Derived>::base_transpose(TorchSize d1, TorchSize d2) const
 {
-  return Derived(
+  return BatchTensor(
       torch::Tensor::transpose(d1 < 0 ? d1 : _batch_dim + d1, d2 < 0 ? d2 : _batch_dim + d2),
       _batch_dim);
 }
 
 template <class Derived>
-Derived
+BatchTensor
 BatchTensorBase<Derived>::base_movedim(TorchSize d1, TorchSize d2) const
 {
-  return Derived(
+  return BatchTensor(
       torch::Tensor::movedim(d1 < 0 ? d1 : _batch_dim + d1, d2 < 0 ? d2 : _batch_dim + d2),
       _batch_dim);
 }

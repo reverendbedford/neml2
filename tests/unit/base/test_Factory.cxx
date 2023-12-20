@@ -44,12 +44,12 @@ TEST_CASE("Factory", "[base]")
   Factory::load(all_options);
   auto & summodel = Factory::get_object<ScalarSumModel>("Models", "example");
 
-  REQUIRE(summodel.input().has_subaxis("state"));
-  REQUIRE(summodel.input().subaxis("state").has_subaxis("substate"));
-  REQUIRE(summodel.input().subaxis("state").has_variable<Scalar>("A"));
-  REQUIRE(summodel.input().subaxis("state").subaxis("substate").has_variable<Scalar>("B"));
+  REQUIRE(summodel.input_axis().has_subaxis("state"));
+  REQUIRE(summodel.input_axis().subaxis("state").has_subaxis("substate"));
+  REQUIRE(summodel.input_axis().subaxis("state").has_variable<Scalar>("A"));
+  REQUIRE(summodel.input_axis().subaxis("state").subaxis("substate").has_variable<Scalar>("B"));
 
-  REQUIRE(summodel.output().has_subaxis("state"));
-  REQUIRE(summodel.output().subaxis("state").has_subaxis("outsub"));
-  REQUIRE(summodel.output().subaxis("state").subaxis("outsub").has_variable<Scalar>("C"));
+  REQUIRE(summodel.output_axis().has_subaxis("state"));
+  REQUIRE(summodel.output_axis().subaxis("state").has_subaxis("outsub"));
+  REQUIRE(summodel.output_axis().subaxis("state").subaxis("outsub").has_variable<Scalar>("C"));
 }

@@ -35,7 +35,7 @@ namespace neml2
 OptionSet
 SlipStrengthMap::expected_options()
 {
-  OptionSet options = Model::expected_options();
+  OptionSet options = NewModel::expected_options();
 
   options.set<LabeledAxisAccessor>("slip_strengths") =
       vecstr{"state", "internal", "slip_strengths"};
@@ -45,13 +45,12 @@ SlipStrengthMap::expected_options()
 }
 
 SlipStrengthMap::SlipStrengthMap(const OptionSet & options)
-  : Model(options),
-    crystal_geometry(include_data<crystallography::CrystalGeometry>(
+  : NewModel(options),
+    _crystal_geometry(register_data<crystallography::CrystalGeometry>(
         options.get<std::string>("crystal_geometry_name"))),
-    slip_strengths(declare_output_variable_list<Scalar>(
-        options.get<LabeledAxisAccessor>("slip_strengths"), crystal_geometry.nslip()))
+    _tau(declare_output_variable_list<Scalar>(options.get<LabeledAxisAccessor>("slip_strengths"),
+                                              _crystal_geometry.nslip()))
 {
-  setup();
 }
 
 } // namespace neml2

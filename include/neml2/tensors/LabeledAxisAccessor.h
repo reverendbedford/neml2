@@ -60,6 +60,8 @@ public:
 
   bool empty() const;
 
+  size_t size() const;
+
   /// Append a suffix to the item name.
   LabeledAxisAccessor with_suffix(const std::string & suffix) const;
 
@@ -74,6 +76,9 @@ public:
 
   /// Extract out the labels from \p n1 to \p n2
   LabeledAxisAccessor slice(size_t n1, size_t n2) const;
+
+  /// Check if this accessor begins with another accessor
+  bool start_with(const LabeledAxisAccessor & axis) const;
 
 private:
   /// Throws if the item name has invalid format

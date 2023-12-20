@@ -37,56 +37,41 @@ register_NEML2_object(PlasticVorticity);
 OptionSet
 PlasticVorticity::expected_options()
 {
-  OptionSet options = Model::expected_options();
-
+  OptionSet options = NewModel::expected_options();
   options.set<LabeledAxisAccessor>("plastic_vorticity") =
       vecstr{"state", "internal", "plastic_vorticity"};
-
   options.set<LabeledAxisAccessor>("orientation") = vecstr{"state", "orientation"};
-
   options.set<LabeledAxisAccessor>("slip_rates") = vecstr{"state", "internal", "slip_rates"};
-
   options.set<std::string>("crystal_geometry_name") = "crystal_geometry";
-
   return options;
 }
 
 PlasticVorticity::PlasticVorticity(const OptionSet & options)
-  : Model(options),
-    plastic_vorticity(
-        declare_output_variable<WR2>(options.get<LabeledAxisAccessor>("plastic_vorticity"))),
-    orientation(declare_input_variable<Rot>(options.get<LabeledAxisAccessor>("orientation"))),
-    crystal_geometry(include_data<crystallography::CrystalGeometry>(
+  : NewModel(options),
+    _crystal_geometry(register_data<crystallography::CrystalGeometry>(
         options.get<std::string>("crystal_geometry_name"))),
-    slip_rates(declare_input_variable_list<Scalar>(options.get<LabeledAxisAccessor>("slip_rates"),
-                                                   crystal_geometry.nslip()))
+    _Wp(declare_output_variable<WR2>(options.get<LabeledAxisAccessor>("plastic_vorticity"))),
+    _R(declare_input_variable<Rot>(options.get<LabeledAxisAccessor>("orientation"))),
+    _gamma_dot(declare_input_variable_list<Scalar>(options.get<LabeledAxisAccessor>("slip_rates"),
+                                                   _crystal_geometry.nslip()))
 {
-  setup();
 }
 
 void
-PlasticVorticity::set_value(const LabeledVector & in,
-                            LabeledVector * out,
-                            LabeledMatrix * dout_din,
-                            LabeledTensor3D * d2out_din2) const
+PlasticVorticity::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   neml_assert_dbg(!d2out_din2, "Second derivative not implemented.");
 
-  // Grab the input
-  const auto R = in.get<Rot>(orientation);
-  const auto g = in.get_list<Scalar>(slip_rates);
-  auto wp_crystal = (g * crystal_geometry.W()).list_sum();
+  const auto Wp_crystal = (Scalar(_gamma_dot.value()) * _crystal_geometry.W()).list_sum();
 
   if (out)
-    out->set(wp_crystal.rotate(R), plastic_vorticity);
+    _Wp = Wp_crystal.rotate(Rot(_R));
 
   if (dout_din)
   {
-    dout_din->set(list_derivative_outer_product_b(
-                      [](auto a, auto b) { return b.rotate(a); }, R, crystal_geometry.W()),
-                  plastic_vorticity,
-                  slip_rates);
-    dout_din->set(wp_crystal.drotate(R), plastic_vorticity, orientation);
+    _Wp.d(_gamma_dot) = list_derivative_outer_product_b(
+        [](auto a, auto b) { return b.rotate(a); }, Rot(_R), _crystal_geometry.W());
+    _Wp.d(_R) = Wp_crystal.drotate(Rot(_R));
   }
 }
 } // namespace neml2

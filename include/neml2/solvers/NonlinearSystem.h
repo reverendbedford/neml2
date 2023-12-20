@@ -44,10 +44,9 @@ public:
    * @brief Compute algebraic Jacobian-based automatic scaling following
    * https://cs.stanford.edu/people/paulliu/files/cs517-project.pdf
    *
-   * @param x0 Guess used to compute the Jacobian for scaling
    * @param verbose Print automatic scaling convergence information
    */
-  virtual void init_scaling(const BatchTensor & x0, const bool verbose = false);
+  virtual void init_scaling(const bool verbose = false);
 
   /// Apply scaling to the residual
   BatchTensor scale_residual(const BatchTensor & r) const;
@@ -56,29 +55,52 @@ public:
   /// Remove scaling from the search direction, i.e. \f$ J^{-1} r \f$
   BatchTensor scale_direction(const BatchTensor & p) const;
 
-  /// Convenient shortcut to construct and return the system residual
-  virtual BatchTensor residual(const BatchTensor & in) const final;
+  /// Set the solution vector
+  virtual void set_solution(const BatchTensor & x) { _solution.copy_(x); }
 
-  /// Convenient shortcut to construct and return the system Jacobian
-  virtual BatchTensor Jacobian(const BatchTensor & in) const final;
+  /// Get the solution vector
+  virtual const BatchTensor & solution() const { return _solution; }
 
-  /// Convenient shortcut to construct and return the system residual and Jacobian
-  virtual std::tuple<BatchTensor, BatchTensor>
-  residual_and_Jacobian(const BatchTensor & in) const final;
+  /// Convenient shortcut to set the current solution, assemble and return the system residual
+  virtual BatchTensor residual(const BatchTensor & x) final;
+  /// Convenient shortcut to assemble and return the system residual
+  virtual BatchTensor residual() final;
+
+  /// Convenient shortcut to set the current solution, assemble and return the system Jacobian
+  virtual BatchTensor Jacobian(const BatchTensor & x) final;
+  /// Convenient shortcut to assemble and return the system Jacobian
+  virtual BatchTensor Jacobian() final;
+
+  /// Convenient shortcut to set the current solution, assemble and return the system residual and Jacobian
+  virtual std::tuple<BatchTensor, BatchTensor> residual_and_Jacobian(const BatchTensor & x) final;
+  /// Convenient shortcut to assemble and return the system residual and Jacobian
+  virtual std::tuple<BatchTensor, BatchTensor> residual_and_Jacobian() final;
 
 protected:
+  virtual void reinit_implicit_system() {}
+
   /**
-   * @brief Compute the residual and Jacobian at the current guess \f$x\f$
+   * @brief Compute the residual and Jacobian
    *
-   * @param x The current guess of the solution
-   * @param residual The current residual. The residual calculation is *requested* if it is *not* a
-   * nullptr.
-   * @param Jacobian The current Jacobian. The Jacobian calculation is *requested* if it is *not* a
-   * nullptr.
+   * @param residual Whether residual is requested
+   * @param Jacobian Whether Jacobian is requested
    */
-  virtual void assemble(const BatchTensor & x,
-                        BatchTensor * residual,
-                        BatchTensor * Jacobian = nullptr) const = 0;
+  virtual void assemble(bool, bool) {}
+
+  /// Remove me
+  virtual void assemble(const BatchTensor &, BatchTensor *, BatchTensor *) {}
+
+  /// Number of degrees of freedom
+  TorchSize _ndof;
+
+  /// View for the solution of this nonlinear system
+  BatchTensor _solution;
+
+  /// View for the residual of this nonlinear system
+  BatchTensor _residual;
+
+  /// View for the Jacobian of this nonlinear system
+  BatchTensor _Jacobian;
 
   /// If true, do automatic scaling
   const bool _autoscale;

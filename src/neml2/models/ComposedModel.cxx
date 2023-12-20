@@ -31,363 +31,178 @@ register_NEML2_object(ComposedModel);
 OptionSet
 ComposedModel::expected_options()
 {
-  OptionSet options = Model::expected_options();
+  OptionSet options = NewModel::expected_options();
   options.set<std::vector<std::string>>("models");
+  options.set<std::vector<LabeledAxisAccessor>>("additional_outputs");
   return options;
 }
 
 ComposedModel::ComposedModel(const OptionSet & options)
-  : Model(options)
+  : NewModel(options),
+    _additional_outputs(options.get<std::vector<LabeledAxisAccessor>>("additional_outputs"))
 {
-  std::vector<std::shared_ptr<Model>> models;
+  // Add registered models as nodes in the dependency resolver
   for (const auto & model_name : options.get<std::vector<std::string>>("models"))
-    models.push_back(Factory::get_object_ptr<Model>("Models", model_name));
+    register_model<NewModel>(model_name, /*merge_input=*/false);
 
-  register_dependency(models);
+  // Add registered models as nodes in the dependency resolver
+  for (auto submodel : registered_models())
+    _dependency.add_node(submodel);
+  for (const auto & var : _additional_outputs)
+    _dependency.add_additional_outbound_item(var);
 
-  resolve_dependency();
+  // Resolve the dependency
+  _dependency.unique_item_provider() = true;
+  _dependency.unique_item_consumer() = false;
+  _dependency.resolve();
 
-  // Register the models that are needed for evaluation as submodules
-  for (auto i : _evaluation_order)
-    register_model(i, /*merge_input=*/false);
+  // Register input variables
+  for (const auto & item : _dependency.inbound_items())
+  {
+    auto var = item.value;
+    auto sz = item.parent->input_axis().storage_size(var);
 
-  setup();
-}
+    if (input_axis().has_variable(var))
+      neml_assert(input_axis().storage_size(var) == sz,
+                  "Multiple sub-models in a ComposedModel define the same input variable ",
+                  var,
+                  ", but with different shape/storage size.");
+    else
+      declare_input_variable(var, sz);
+  }
 
-bool
-ComposedModel::implicit() const
-{
-  for (auto i : _evaluation_order)
-    if (i->implicit())
-      return true;
-  return false;
+  // Register output variables
+  for (const auto & item : _dependency.outbound_items())
+  {
+    auto var = item.value;
+    auto sz = item.parent->output_axis().storage_size(var);
+    neml_assert(!output_axis().has_variable(var),
+                "Multiple sub-models in a ComposedModel define the same output variable ",
+                var);
+
+    declare_output_variable(var, sz);
+  }
 }
 
 void
-ComposedModel::register_dependency(const std::vector<std::shared_ptr<Model>> & models)
+ComposedModel::allocate_variables(TorchShapeRef batch_shape, const torch::TensorOptions & options)
 {
-  for (const auto & modeli : models)
-  {
-    // see which model _provides_ the consumed variables
-    for (const auto & consumed_var : modeli->consumed_variables())
-    {
-      bool provided = false;
-      for (const auto & modelj : models)
-      {
-        // No self dependency
-        if (modeli == modelj)
-          continue;
+  NewModel::allocate_variables(batch_shape, options);
+  _din_din = LabeledMatrix::identity(batch_shape, input_axis(), options);
+}
 
-        const auto & provided_vars = modelj->provided_variables();
-        if (provided_vars.find(consumed_var) != provided_vars.end())
-        {
-          add_edge(modelj, modeli);
-          provided = true;
-          break;
-        }
-      }
-      if (!provided)
-        declare_input_variable(consumed_var, modeli->input().storage_size(consumed_var));
+void
+ComposedModel::setup_submodel_input_views()
+{
+  for (auto submodel : registered_models())
+  {
+    for (const auto & item : _dependency.inbound_items())
+      if (item.parent == submodel)
+        item.parent->input_view(item.value)->setup_views(input_view(item.value));
+
+    for (const auto & [item, providers] : _dependency.item_providers())
+      if (item.parent == submodel)
+        item.parent->input_view(item.value)
+            ->setup_views(&providers.begin()->parent->output_storage());
+
+    submodel->setup_submodel_input_views();
+  }
+}
+
+void
+ComposedModel::set_value(bool out, bool dout_din, bool d2out_din2)
+{
+  for (auto i : _dependency.resolution())
+    i->set_value(out, dout_din, d2out_din2);
+
+  // If only output variable values are requested, we just need to gather the end models' output
+  // into the output storage.
+  if (out)
+  {
+    for (auto model : _dependency.end_nodes())
+      output_storage().fill(model->output_storage());
+  }
+
+  // If the first derivatives of the output variables w.r.t. the input variables are requested, we
+  // need to traverse through the sub-models once more to accumulate all the partial derivatives
+  // using chain rule.
+  if (dout_din && !d2out_din2)
+  {
+    clear_derivative_cache();
+
+    for (auto model : _dependency.end_nodes())
+      derivative_storage().fill(total_derivative(model));
+
+    clear_derivative_cache();
+  }
+
+  // Similarly for second derivatives, just slightly more involving...
+  if (d2out_din2)
+  {
+    clear_derivative_cache();
+    clear_second_derivative_cache();
+
+    for (auto model : _dependency.end_nodes())
+    {
+      auto [deriv, secderiv] = total_second_derivative(model);
+      derivative_storage().fill(deriv);
+      second_derivative_storage().fill(secderiv);
     }
 
-    // see which model _consumes_ the provided variables
-    for (const auto & provided_var : modeli->provided_variables())
+    clear_derivative_cache();
+    clear_second_derivative_cache();
+  }
+}
+
+LabeledMatrix
+ComposedModel::total_derivative(NewModel * model)
+{
+  if (_dpout_din.count(model))
+    return _dpout_din[model];
+
+  // Apply chain rule if neccessary
+  auto dpin_din =
+      LabeledMatrix::zeros(batch_sizes(), {&model->input_axis(), &input_axis()}, options());
+  dpin_din.fill(_din_din);
+  if (_dependency.node_providers().count(model))
+    for (auto dep : _dependency.node_providers().at(model))
+      dpin_din.fill(total_derivative(dep));
+  const auto dout_din = model->derivative_storage().chain(dpin_din);
+
+  // Cache the result
+  _dpout_din[model] = dout_din;
+
+  return dout_din;
+}
+
+std::pair<LabeledMatrix, LabeledTensor3D>
+ComposedModel::total_second_derivative(NewModel * model)
+{
+  if (_dpout_din.count(model) && _d2pout_din2.count(model))
+    return {_dpout_din[model], _d2pout_din2[model]};
+
+  // Apply chain rule if neccessary
+  auto dpin_din =
+      LabeledMatrix::zeros(batch_sizes(), {&model->input_axis(), &input_axis()}, options());
+  auto d2pin_din2 = LabeledTensor3D::zeros(
+      batch_sizes(), {&model->input_axis(), &input_axis(), &input_axis()}, options());
+  dpin_din.fill(_din_din);
+  if (_dependency.node_providers().count(model))
+    for (auto dep : _dependency.node_providers().at(model))
     {
-      bool consumed = false;
-      for (const auto & modelj : models)
-      {
-        // No self dependency
-        if (modeli == modelj)
-          continue;
-
-        const auto & consumed_vars = modelj->consumed_variables();
-        if (consumed_vars.find(provided_var) != consumed_vars.end())
-        {
-          consumed = true;
-          break;
-        }
-      }
-      if (!consumed)
-        declare_output_variable(provided_var, modeli->output().storage_size(provided_var));
+      auto [deriv, secderiv] = total_second_derivative(dep);
+      dpin_din.fill(deriv);
+      d2pin_din2.fill(secderiv);
     }
+  const auto dout_din = model->derivative_storage().chain(dpin_din);
+  const auto d2out_din2 =
+      model->second_derivative_storage().chain(d2pin_din2, model->derivative_storage(), dpin_din);
 
-    // Each model may request additional outputs
-    for (const auto & var : modeli->additional_outputs())
-      declare_output_variable(var, modeli->output().storage_size(var));
-  }
+  // Cache the result
+  _dpout_din[model] = dout_din;
+  _d2pout_din2[model] = d2out_din2;
+
+  return {dout_din, d2out_din2};
 }
 
-void
-ComposedModel::add_edge(const std::shared_ptr<Model> & from, const std::shared_ptr<Model> & to)
-{
-  add_node(from);
-  add_node(to);
-  _dependecies[to->name()].push_back(from);
-}
-
-void
-ComposedModel::add_node(const std::shared_ptr<Model> & model)
-{
-  _models[model->name()] = model;
-  if (_dependecies.count(model->name()) == 0)
-    _dependecies[model->name()];
-}
-
-void
-ComposedModel::resolve_dependency()
-{
-  // Find the root model(s)
-  // Basic idea: if a model is not needed by any other model, then it must be a root model
-  std::map<std::string, bool> visited;
-  for (const auto & [name, deps] : _dependecies)
-    for (auto dep : deps)
-      visited[dep->name()] = true;
-  for (const auto & [name, i] : _models)
-    if (!visited[name])
-      _output_models.push_back(i);
-
-  // Figure out the evaluation order
-  visited.clear();
-  _evaluation_order.clear();
-  for (auto i : _output_models)
-    resolve_dependency(i, _evaluation_order, visited);
-}
-
-void
-ComposedModel::resolve_dependency(const std::shared_ptr<Model> & i,
-                                  std::vector<std::shared_ptr<Model>> & order,
-                                  std::map<std::string, bool> & visited)
-{
-  // Mark the current node as visited
-  visited[i->name()] = true;
-
-  // Recurse for all the dependent models
-  for (auto dep : dependent_models(i->name()))
-    if (!visited[dep->name()])
-      resolve_dependency(dep, order, visited);
-
-  order.push_back(i);
-}
-
-void
-ComposedModel::set_value(const LabeledVector & in,
-                         LabeledVector * out,
-                         LabeledMatrix * dout_din,
-                         LabeledTensor3D * d2out_din2) const
-{
-  // pin stands for partial input
-  // pout stands for partial output
-  const auto batch_sz = in.batch_sizes();
-  const auto options = in.options();
-
-  // If only out is requested, we just evaluate all the models following the sorted evaluation
-  // order. That's it!
-  if (out && !dout_din && !d2out_din2)
-  {
-    std::map<std::string, LabeledVector> cached_pout;
-
-    // Follow the (sorted) evaluation order to evaluate all the models
-    for (auto i : _evaluation_order)
-    {
-      auto pin = LabeledVector::empty(batch_sz, {&i->input()}, options);
-      pin.fill(in);
-
-      // All the dependencies must have been cached, as we have sorted out the evaluation order
-      // according to the dependecies. If a dependency's output hasn't been cached, we screwed up
-      // the dependency resolution.
-      const auto & deps = dependent_models(i->name());
-      for (auto dep : deps)
-      {
-        neml_assert_dbg(cached_pout.count(dep->name()) > 0,
-                        "Internal error, incorrect evaluation order");
-        pin.fill(cached_pout.at(dep->name()));
-      }
-
-      auto pout = i->value(pin);
-      out->fill(pout);
-
-      cached_pout.emplace(i->name(), pout);
-    }
-    return;
-  }
-  // If dout_din is requested, we will need to evaluate both the models' value and derivatives, as
-  // well as apply first order chain rule to compute the first order total derivatives.
-  else if (dout_din && !d2out_din2)
-  {
-    std::map<std::string, LabeledVector> cached_pout;
-    std::map<std::string, LabeledMatrix> cached_dpout_din;
-
-    auto din_din = LabeledMatrix::identity(batch_sz, input(), options);
-
-    // Follow the (sorted) evaluation order to evaluate all the models
-    for (auto i : _evaluation_order)
-    {
-      auto pin = LabeledVector::empty(batch_sz, {&i->input()}, options);
-      auto dpin_din = LabeledMatrix::zeros(batch_sz, {&i->input(), &input()}, options);
-      pin.fill(in);
-      dpin_din.fill(din_din);
-
-      // All the dependencies must have been cached, as we have sorted out the evaluation order
-      // according to the dependecies. If a dependency's output hasn't been cached, we screwed up
-      // the dependency resolution.
-      const auto & deps = dependent_models(i->name());
-      for (auto dep : deps)
-      {
-        neml_assert_dbg(cached_pout.count(dep->name()) > 0,
-                        "Internal error, incorrect evaluation order");
-        pin.fill(cached_pout.at(dep->name()));
-        dpin_din.fill(cached_dpout_din.at(dep->name()));
-      }
-
-      auto [pout, dpout_dpin] = i->value_and_dvalue(pin);
-      auto dpout_din = dpout_dpin.chain(dpin_din);
-
-      if (out)
-        out->fill(pout);
-
-      dout_din->fill(dpout_din);
-
-      cached_pout.emplace(i->name(), pout);
-      cached_dpout_din.emplace(i->name(), dpout_din);
-    }
-    return;
-  }
-  // Here's the most sophisticated case: d2out_din2 is requested. In this case each model's value,
-  // first and second derivatives are necessary. We need to apply the first order chain rule to
-  // compute the first order total derivatives, and the second order chain rule to compute the
-  // second order total derivatives.
-  else if (d2out_din2)
-  {
-    std::map<std::string, LabeledVector> cached_pout;
-    std::map<std::string, LabeledMatrix> cached_dpout_din;
-    std::map<std::string, LabeledTensor3D> cached_d2pout_din2;
-
-    auto din_din = LabeledMatrix::identity(batch_sz, input(), options);
-
-    // Follow the (sorted) evaluation order to evaluate all the models
-    for (auto i : _evaluation_order)
-    {
-      auto pin = LabeledVector::empty(batch_sz, {&i->input()}, options);
-      auto dpin_din = LabeledMatrix::zeros(batch_sz, {&i->input(), &input()}, options);
-      auto d2pin_din2 =
-          LabeledTensor3D::zeros(batch_sz, {&i->input(), &input(), &input()}, options);
-      pin.fill(in);
-      dpin_din.fill(din_din);
-
-      // All the dependencies must have been cached, as we have sorted out the evaluation order
-      // according to the dependecies. If a dependency's output hasn't been cached, we screwed up
-      // the dependency resolution.
-      const auto & deps = dependent_models(i->name());
-      for (auto dep : deps)
-      {
-        neml_assert_dbg(cached_pout.count(dep->name()) > 0,
-                        "Internal error, incorrect evaluation order");
-        pin.fill(cached_pout.at(dep->name()));
-        dpin_din.fill(cached_dpout_din.at(dep->name()));
-        d2pin_din2.fill(cached_d2pout_din2.at(dep->name()));
-      }
-
-      auto [pout, dpout_dpin, d2pout_dpin2] = i->value_and_dvalue_and_d2value(pin);
-      auto dpout_din = dpout_dpin.chain(dpin_din);
-      auto d2pout_din2 = d2pout_dpin2.chain(d2pin_din2, dpout_dpin, dpin_din);
-
-      if (out)
-        out->fill(pout);
-
-      if (dout_din)
-        dout_din->fill(dpout_din);
-
-      d2out_din2->fill(d2pout_din2);
-
-      cached_pout.emplace(i->name(), pout);
-      cached_dpout_din.emplace(i->name(), dpout_din);
-      cached_d2pout_din2.emplace(i->name(), d2pout_din2);
-    }
-  }
-  else
-    throw NEMLException("Logic error");
-}
-
-const std::vector<std::shared_ptr<Model>> &
-ComposedModel::dependent_models(const std::string & n) const
-{
-  neml_assert(_models.count(n) != 0, n, " is not registered in ", name());
-
-  return _dependecies.at(n);
-}
-
-// LCOV_EXCL_START
-std::string
-ComposedModel::evaluation_order() const
-{
-  std::stringstream ss;
-  for (auto i : _evaluation_order)
-    ss << i->name() << " ";
-  return ss.str();
-}
-// LCOV_EXCL_STOP
-
-void
-ComposedModel::to_dot(std::ostream & os) const
-{
-  // Keep track of input output IDs so that I can connect them later
-  std::map<std::string, int> io_ids;
-
-  // Preemble
-  int id = 0;
-  os << "digraph {\n";
-  os << "compound = true\n";
-  os << "graph [ranksep = 4, penwidth = 2]\n";
-
-  // Write all the models
-  for (auto i : _evaluation_order)
-    to_dot(os, *i, id, io_ids);
-
-  os << "}\n";
-}
-
-void
-ComposedModel::to_dot(std::ostream & os,
-                      const Model & model,
-                      int & id,
-                      std::map<std::string, int> & io_ids) const
-{
-  // Preemble
-  os << "subgraph ";
-  os << "cluster_" << id++ << " ";
-  os << "{\n";
-  os << "label = \"" << model.name() << "\"\n";
-
-  io_ids.emplace(model.name() + " input", id);
-  input().to_dot(os, id, model.name() + " input", true, true);
-  io_ids.emplace(model.name() + " output", id);
-  output().to_dot(os, id, model.name() + " output", true, true);
-
-  for (auto i : dependent_models(model.name()))
-  {
-    os << "\"" << i->name() + " output\"";
-    os << " -> ";
-    os << "\"" << model.name() << " input\"";
-    os << "[ltail = cluster_" << io_ids[i->name() + " output"] << ", ";
-    os << "lhead = cluster_" << io_ids[model.name() + " input"] << ", penwidth = 2]\n";
-  }
-
-  os << "}\n";
-}
-
-// LCOV_EXCL_START
-void
-ComposedModel::print_dependency(std::ostream & os) const
-{
-  for (const auto & [name, deps] : _dependecies)
-  {
-    os << name << " depends on {";
-    for (const auto & dep : deps)
-      os << dep->name() << ", ";
-    os << "}" << std::endl;
-  }
-  if (_dependecies.empty())
-    os << std::endl;
-}
-// LCOV_EXCL_STOP
 } // namespace neml2

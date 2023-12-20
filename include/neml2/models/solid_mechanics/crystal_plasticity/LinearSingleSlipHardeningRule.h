@@ -37,10 +37,7 @@ public:
   LinearSingleSlipHardeningRule(const OptionSet & options);
 
 protected:
-  virtual void set_value(const LabeledVector & in,
-                         LabeledVector * out,
-                         LabeledMatrix * dout_din = nullptr,
-                         LabeledTensor3D * d2out_din2 = nullptr) const override;
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
   /// Hardening rate
   const Scalar & _theta;

@@ -41,43 +41,43 @@ LinearInterpolation<T>::expected_options()
 template <typename T>
 LinearInterpolation<T>::LinearInterpolation(const OptionSet & options)
   : Interpolation<T>(options),
-    _batch_shape(utils::broadcast_sizes(
-        this->_abscissa.batch_sizes().slice(0, this->_abscissa.batch_dim() - 1),
-        this->_ordinate.batch_sizes().slice(0, this->_ordinate.batch_dim() - 1))),
-    _a0(this->template declare_buffer<Scalar>(
-        "A0", this->_abscissa.batch_index({Ellipsis, Slice(None, -1)}))),
-    _a1(this->template declare_buffer<Scalar>(
-        "A1", this->_abscissa.batch_index({Ellipsis, Slice(1, None)}))),
-    _o0(this->template declare_buffer<T>("O0",
-                                         this->_ordinate.batch_index({Ellipsis, Slice(None, -1)}))),
-    _slope(this->template declare_buffer<T>(
-        "S",
-        math::diff(this->_ordinate, 1, this->_ordinate.batch_dim() - 1) /
-            math::diff(this->_abscissa, 1, this->_abscissa.batch_dim() - 1)))
+    _interp_batch_sizes(
+        utils::broadcast_sizes(this->_X.batch_sizes().slice(0, this->_X.batch_dim() - 1),
+                               this->_Y.batch_sizes().slice(0, this->_Y.batch_dim() - 1))),
+    _X0(this->template declare_buffer<Scalar>("X0",
+                                              this->_X.batch_index({Ellipsis, Slice(None, -1)}))),
+    _X1(this->template declare_buffer<Scalar>("X1",
+                                              this->_X.batch_index({Ellipsis, Slice(1, None)}))),
+    _Y0(this->template declare_buffer<T>("Y0", this->_Y.batch_index({Ellipsis, Slice(None, -1)}))),
+    _slope(this->template declare_buffer<T>("S",
+                                            math::diff(this->_Y, 1, this->_Y.batch_dim() - 1) /
+                                                math::diff(this->_X, 1, this->_X.batch_dim() - 1)))
 {
-  this->setup();
 }
 
 template <typename T>
 void
-LinearInterpolation<T>::interpolate(const Scalar & x, T * y, T * dy_dx, T * d2y_dx2) const
+LinearInterpolation<T>::set_value(bool out, bool dout_din, bool d2out_din2)
 {
-  const auto loc = torch::logical_and(torch::gt(x.batch_unsqueeze(-1), _a0),
-                                      torch::le(x.batch_unsqueeze(-1), _a1));
+  const auto x = Scalar(this->_x);
+  const auto loc = torch::logical_and(torch::gt(x.batch_unsqueeze(-1), _X0),
+                                      torch::le(x.batch_unsqueeze(-1), _X1));
   const auto si = mask<T>(_slope, loc);
 
-  if (y)
+  if (out)
   {
-    const auto a0i = mask<Scalar>(_a0, loc);
-    const auto o0i = mask<T>(_o0, loc);
-    (*y) = o0i + si * (x - a0i);
+    const auto X0i = mask<Scalar>(_X0, loc);
+    const auto Y0i = mask<T>(_Y0, loc);
+    this->_p = Y0i + si * (x - X0i);
   }
 
-  if (dy_dx)
-    (*dy_dx) = si;
+  if (dout_din)
+    this->_p.d(this->_x) = si;
 
-  if (d2y_dx2)
-    (*d2y_dx2) = T::zeros_like(si);
+  if (d2out_din2)
+  {
+    // zero
+  }
 }
 
 instantiate_all_FixedDimTensor(LinearInterpolation);

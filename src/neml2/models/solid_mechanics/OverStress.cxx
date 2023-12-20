@@ -32,7 +32,7 @@ register_NEML2_object(OverStress);
 OptionSet
 OverStress::expected_options()
 {
-  OptionSet options = Model::expected_options();
+  OptionSet options = NewModel::expected_options();
   options.set<LabeledAxisAccessor>("mandel_stress") = {{"state", "internal", "M"}};
   options.set<LabeledAxisAccessor>("back_stress") = {{"state", "internal", "X"}};
   options.set<LabeledAxisAccessor>("over_stress") = {{"state", "internal", "O"}};
@@ -40,32 +40,24 @@ OverStress::expected_options()
 }
 
 OverStress::OverStress(const OptionSet & options)
-  : Model(options),
-    mandel_stress(declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("mandel_stress"))),
-    back_stress(declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("back_stress"))),
-    over_stress(declare_output_variable<SR2>(options.get<LabeledAxisAccessor>("over_stress")))
+  : NewModel(options),
+    _M(declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("mandel_stress"))),
+    _X(declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("back_stress"))),
+    _O(declare_output_variable<SR2>(options.get<LabeledAxisAccessor>("over_stress")))
 {
-  setup();
 }
 
 void
-OverStress::set_value(const LabeledVector & in,
-                      LabeledVector * out,
-                      LabeledMatrix * dout_din,
-                      LabeledTensor3D * d2out_din2) const
+OverStress::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   if (out)
-  {
-    auto M = in.get<SR2>(mandel_stress);
-    auto X = in.get<SR2>(back_stress);
-    out->set(M - X, over_stress);
-  }
+    _O = _M - _X;
 
   if (dout_din)
   {
-    auto I = SR2::identity_map(in.options());
-    dout_din->set(I, over_stress, mandel_stress);
-    dout_din->set(-I, over_stress, back_stress);
+    auto I = SR2::identity_map(options());
+    _O.d(_M) = I;
+    _O.d(_X) = -I;
   }
 
   if (d2out_din2)

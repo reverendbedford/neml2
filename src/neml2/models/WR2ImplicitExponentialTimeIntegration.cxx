@@ -36,7 +36,7 @@ register_NEML2_object(WR2ImplicitExponentialTimeIntegration);
 OptionSet
 WR2ImplicitExponentialTimeIntegration::expected_options()
 {
-  OptionSet options = Model::expected_options();
+  OptionSet options = NewModel::expected_options();
   options.set<LabeledAxisAccessor>("variable");
   options.set<LabeledAxisAccessor>("time") = {"t"};
   return options;
@@ -44,50 +44,39 @@ WR2ImplicitExponentialTimeIntegration::expected_options()
 
 WR2ImplicitExponentialTimeIntegration::WR2ImplicitExponentialTimeIntegration(
     const OptionSet & options)
-  : Model(options),
+  : NewModel(options),
     _var_name(options.get<LabeledAxisAccessor>("variable")),
     _var_rate_name(_var_name.with_suffix("_rate")),
-    res(declare_output_variable<Vec>(_var_name.on("residual"))),
-    var_rate(declare_input_variable<WR2>(_var_rate_name.on("state"))),
-    var(declare_input_variable<Rot>(_var_name.on("state"))),
-    var_n(declare_input_variable<Rot>(_var_name.on("old_state"))),
-    time(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("time").on("forces"))),
-    time_n(
-        declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("time").on("old_forces")))
+    _r(declare_output_variable<Vec>(_var_name.on("residual"))),
+    _s_dot(declare_input_variable<WR2>(_var_rate_name.on("state"))),
+    _s(declare_input_variable<Rot>(_var_name.on("state"))),
+    _sn(declare_input_variable<Rot>(_var_name.on("old_state"))),
+    _t(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("time").on("forces"))),
+    _tn(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("time").on("old_forces")))
 {
-  setup();
 }
 
 void
-WR2ImplicitExponentialTimeIntegration::set_value(const LabeledVector & in,
-                                                 LabeledVector * out,
-                                                 LabeledMatrix * dout_din,
-                                                 LabeledTensor3D * d2out_din2) const
+WR2ImplicitExponentialTimeIntegration::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   neml_assert_dbg(!d2out_din2, "Second derivative not implemented.");
-  const auto options = in.options();
 
-  // Rate has the first type, output the second
-  auto s_dot = in.get<WR2>(var_rate);
-  auto dt = in.get<Scalar>(time) - in.get<Scalar>(time_n);
-  auto s_np1 = in.get<Rot>(var);
-  auto s_n = in.get<Rot>(var_n);
-
-  auto inc = (s_dot * dt).exp();
+  const auto dt = _t - _tn;
+  const auto inc = (_s_dot * dt).exp();
 
   if (out)
-    out->set(s_np1 - s_n.rotate(inc), res); // This is actually a vec...
+    _r = _s - Rot(_sn).rotate(inc);
 
   if (dout_din)
   {
-    auto de = (s_dot * dt).dexp();
-    dout_din->set(R2::identity(options), res, var);
-    dout_din->set(-s_n.drotate(inc) * de * dt, res, var_rate);
-    if (Model::stage == Model::Stage::UPDATING)
+    const auto de = (_s_dot * dt).dexp();
+    _r.d(_s) = R2::identity(options());
+    _r.d(_s_dot) = -Rot(_sn).drotate(inc) * de * dt;
+    if (NewModel::stage == NewModel::Stage::UPDATING)
     {
-      dout_din->set(-s_n.drotate_self(inc), res, var_n);
-      dout_din->set(-s_n.drotate(inc) * de * Vec(s_dot), res, time);
-      dout_din->set(s_n.drotate(inc) * de * Vec(s_dot), res, time_n);
+      _r.d(_sn) = -Rot(_sn).drotate_self(inc);
+      _r.d(_t) = -Rot(_sn).drotate(inc) * de * Vec(_s_dot.value());
+      _r.d(_tn) = Rot(_sn).drotate(inc) * de * Vec(_s_dot.value());
     }
   }
 }

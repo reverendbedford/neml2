@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/models/Model.h"
+#include "neml2/models/NewModel.h"
 
 namespace neml2
 {
@@ -34,23 +34,24 @@ class CrystalGeometry;
 }
 
 /// Parent class of slip rules, mapping from resolved shear and internal state to slip rates
-class SlipRule : public Model
+class SlipRule : public NewModel
 {
 public:
   static OptionSet expected_options();
 
   SlipRule(const OptionSet & options);
 
+protected:
   /// Crystal geometry class with slip geometry
-  const crystallography::CrystalGeometry & crystal_geometry;
+  const crystallography::CrystalGeometry & _crystal_geometry;
 
-  /// Output: slip rates
-  const LabeledAxisAccessor slip_rates;
+  /// Slip rates
+  Variable<BatchTensor> & _g;
 
-  /// Input: resolved shears
-  const LabeledAxisAccessor resolved_shears;
+  /// Resolved shears
+  const Variable<BatchTensor> & _rss;
 
-  // Input: slip strengths, mapped from internal variables
-  const LabeledAxisAccessor slip_strengths;
+  /// Slip strengths, mapped from internal variables
+  const Variable<BatchTensor> & _tau;
 };
 } // namespace neml2

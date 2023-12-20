@@ -61,31 +61,45 @@ TransientRegression::run()
   // Verify the result
   auto res = torch::jit::load(_driver.save_as_path());
   auto res_ref = torch::jit::load(_reference);
-  return allclose(res.named_buffers(true), res_ref.named_buffers(true), _rtol, _atol);
-}
+  auto err_msg = diff(res.named_buffers(true), res_ref.named_buffers(true), _rtol, _atol);
 
-bool
-allclose(const torch::jit::named_buffer_list & a,
-         const torch::jit::named_buffer_list & b,
-         Real rtol,
-         Real atol)
-{
-  std::map<std::string, torch::Tensor> a_map;
-  for (auto item : a)
-    a_map.emplace(item.name, item.value);
-
-  std::map<std::string, torch::Tensor> b_map;
-  for (auto item : b)
-    b_map.emplace(item.name, item.value);
-
-  for (auto && [key, value] : a_map)
-  {
-    if (b_map.count(key) == 0)
-      return false;
-    if (!torch::allclose(value, b_map[key], rtol, atol))
-      return false;
-  }
+  neml_assert(err_msg.empty(), err_msg);
 
   return true;
+}
+
+std::string
+diff(const torch::jit::named_buffer_list & res,
+     const torch::jit::named_buffer_list & ref,
+     Real rtol,
+     Real atol)
+{
+  std::map<std::string, torch::Tensor> res_map;
+  for (auto item : res)
+    res_map.emplace(item.name, item.value);
+
+  std::map<std::string, torch::Tensor> ref_map;
+  for (auto item : ref)
+    ref_map.emplace(item.name, item.value);
+
+  std::string err_msg;
+
+  for (auto && [key, value] : res_map)
+    if (ref_map.count(key) == 0)
+      err_msg += "Result has extra variable " + key + ".\n";
+
+  for (auto && [key, value] : ref_map)
+  {
+    if (res_map.count(key) == 0)
+    {
+      err_msg += "Result is missing variable " + key + ".\n";
+      continue;
+    }
+
+    if (!torch::allclose(res_map[key], value, rtol, atol))
+      err_msg += "Result has wrong value for variable " + key + ".\n";
+  }
+
+  return err_msg;
 }
 }

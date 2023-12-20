@@ -46,9 +46,7 @@ TEST_CASE("WWR4", "[tensors]")
       {
         auto u = R4(torch::rand(utils::add_shapes(B, 3, 3, 3, 3), DTO));
         // Symmetrize it
-        auto s = (u - u.base_transpose(0, 1) - u.base_transpose(2, 3) +
-                  u.base_transpose(0, 1).base_transpose(2, 3)) /
-                 4.0;
+        auto s = (u - u.transpose(0, 1) - u.transpose(2, 3) + u.transpose_minor()) / 4.0;
 
         // Converting to WWR4 should be equivalent to symmetrization
         REQUIRE(torch::allclose(WWR4(s), WWR4(u)));

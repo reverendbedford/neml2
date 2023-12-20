@@ -1,6 +1,6 @@
 [Drivers]
   [unit]
-    type = ModelUnitTest
+    type = NewModelUnitTest
     model = 'model'
     batch_shape = '()'
     output_batch_tensor_names = 'state/internal/resolved_shears'

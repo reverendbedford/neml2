@@ -42,10 +42,12 @@ public:
   const LabeledAxisAccessor equivalent_plastic_strain_rate;
 
 protected:
-  /// The flow direction
-  virtual void set_value(const LabeledVector & in,
-                         LabeledVector * out,
-                         LabeledMatrix * dout_din = nullptr,
-                         LabeledTensor3D * d2out_din2 = nullptr) const override;
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+
+  /// Isotropic hardening direction
+  const Variable<Scalar> & _Nk;
+
+  /// Rate of equivalent plastic strain
+  Variable<Scalar> & _ep_dot;
 };
 } // namespace neml2

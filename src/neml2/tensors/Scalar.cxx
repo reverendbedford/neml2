@@ -40,6 +40,7 @@ Scalar::identity_map(const torch::TensorOptions & options)
 Scalar
 operator*(const Scalar & a, const Scalar & b)
 {
+  neml_assert_batch_broadcastable_dbg(a, b);
   return torch::operator*(a, b);
 }
 

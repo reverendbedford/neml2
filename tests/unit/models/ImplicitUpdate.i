@@ -1,6 +1,6 @@
 [Drivers]
   [unit]
-    type = ModelUnitTest
+    type = NewModelUnitTest
     model = 'model'
     batch_shape = '(10)'
     input_scalar_names = 'old_state/foo old_state/bar forces/temperature forces/t old_forces/t'
@@ -11,7 +11,10 @@
     output_scalar_values = '-1.43918 -2.55098'
     output_symr2_names = 'state/baz'
     output_symr2_values = '0'
+    check_values = true
+    check_first_derivatives = true
     check_second_derivatives = false
+    check_AD_first_derivatives = false
     check_AD_second_derivatives = false
     check_AD_derivatives = false
   []

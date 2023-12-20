@@ -272,5 +272,24 @@ d_multiply_and_make_skew_d_second(const SR2 & a)
                  torch::einsum("...ia,...bj->...ijab", {I, A})));
 }
 
+namespace linalg
+{
+std::tuple<BatchTensor, BatchTensor>
+lu_factor(const BatchTensor & A, bool pivot)
+{
+  auto [LU, pivots] = torch::linalg_lu_factor(A, pivot);
+  return {BatchTensor(LU, A.batch_dim()), BatchTensor(pivots, A.batch_dim())};
+}
+
+BatchTensor
+lu_solve(const BatchTensor & LU,
+         const BatchTensor & pivots,
+         const BatchTensor & B,
+         bool left,
+         bool adjoint)
+{
+  return BatchTensor(torch::linalg_lu_solve(LU, pivots, B, left, adjoint), B.batch_dim());
+}
+} // namespace linalg
 } // namespace math
 } // namespace neml2

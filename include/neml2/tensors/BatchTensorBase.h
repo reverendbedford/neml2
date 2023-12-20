@@ -185,21 +185,26 @@ public:
   Derived batch_expand(TorchShapeRef batch_size) const;
 
   /// Return a new view of the tensor with values broadcast along the base dimensions.
-  Derived base_expand(TorchShapeRef base_size) const;
+  BatchTensor base_expand(TorchShapeRef base_size) const;
 
   /// Expand the batch to have the same shape as another tensor
   template <class Derived2>
   Derived batch_expand_as(const BatchTensorBase<Derived2> & other) const;
 
   /// Expand the base to have the same shape as another tensor
-  template <class Derived2>
-  Derived base_expand_as(const BatchTensorBase<Derived2> & other) const;
+  BatchTensor base_expand_as(const BatchTensor & other) const;
 
   /// Return a new tensor with values broadcast along the batch dimensions.
   Derived batch_expand_copy(TorchShapeRef batch_size) const;
 
   /// Return a new tensor with values broadcast along the base dimensions.
-  Derived base_expand_copy(TorchShapeRef base_size) const;
+  BatchTensor base_expand_copy(TorchShapeRef base_size) const;
+
+  /// Reshape batch dimensions
+  Derived batch_reshape(TorchShapeRef batch_shape) const;
+
+  /// Reshape base dimensions
+  BatchTensor base_reshape(TorchShapeRef base_shape) const;
 
   /// Unsqueeze a batch dimension
   Derived batch_unsqueeze(TorchSize d) const;
@@ -208,18 +213,18 @@ public:
   Derived list_unsqueeze() const;
 
   /// Unsqueeze a base dimension
-  Derived base_unsqueeze(TorchSize d) const;
+  BatchTensor base_unsqueeze(TorchSize d) const;
 
   /// Transpose two batch dimensions
   Derived batch_transpose(TorchSize d1, TorchSize d2) const;
 
   /// Transpose two base dimensions
-  Derived base_transpose(TorchSize d1, TorchSize d2) const;
+  BatchTensor base_transpose(TorchSize d1, TorchSize d2) const;
 
   /// Move two base dimensions
-  Derived base_movedim(TorchSize d1, TorchSize d2) const;
+  BatchTensor base_movedim(TorchSize d1, TorchSize d2) const;
 
-  /// Cone (take ownership)
+  /// Clone (take ownership)
   Derived clone(torch::MemoryFormat memory_format = torch::MemoryFormat::Contiguous) const;
 
   /// Discard function graph
@@ -248,14 +253,6 @@ Derived
 BatchTensorBase<Derived>::batch_expand_as(const BatchTensorBase<Derived2> & other) const
 {
   return batch_expand(other.batch_sizes());
-}
-
-template <class Derived>
-template <class Derived2>
-Derived
-BatchTensorBase<Derived>::base_expand_as(const BatchTensorBase<Derived2> & other) const
-{
-  return base_expand(other.base_sizes());
 }
 
 template <class Derived,

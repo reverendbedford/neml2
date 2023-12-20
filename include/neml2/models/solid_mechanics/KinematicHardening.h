@@ -24,18 +24,22 @@
 
 #pragma once
 
-#include "neml2/models/Model.h"
+#include "neml2/models/NewModel.h"
 
 namespace neml2
 {
-class KinematicHardening : public Model
+class KinematicHardening : public NewModel
 {
 public:
   static OptionSet expected_options();
 
   KinematicHardening(const OptionSet & options);
 
-  const LabeledAxisAccessor kinematic_plastic_strain;
-  const LabeledAxisAccessor back_stress;
+protected:
+  /// Kinematic plastic strain
+  const Variable<SR2> & _Kp;
+
+  /// Backstress
+  Variable<SR2> & _X;
 };
 } // namespace neml2

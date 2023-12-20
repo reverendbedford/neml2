@@ -206,5 +206,15 @@ WSR4 d_multiply_and_make_skew_d_first(const SR2 & b);
 /// Derivative of a_ik b_kj - b_ik a_kj wrt b
 WSR4 d_multiply_and_make_skew_d_second(const SR2 & a);
 
+namespace linalg
+{
+std::tuple<BatchTensor, BatchTensor> lu_factor(const BatchTensor & A, bool pivot = true);
+
+BatchTensor lu_solve(const BatchTensor & LU,
+                     const BatchTensor & pivots,
+                     const BatchTensor & B,
+                     bool left = true,
+                     bool adjoint = false);
+} // namespace linalg
 } // namespace math
 } // namespace neml2

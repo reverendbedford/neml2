@@ -31,34 +31,40 @@ using namespace neml2;
 
 TEST_CASE("NewtonNonlinearSolver", "[solvers]")
 {
-  TorchShape batch_sz = {2};
-  TorchSize nbase = 4;
-  auto x0 = BatchTensor::zeros(batch_sz, nbase, default_tensor_options());
-
+  // Create the nonlinear solver
   OptionSet options = NewtonNonlinearSolver::expected_options();
   NewtonNonlinearSolver solver(options);
 
+  // Initial guess
+  TorchShape batch_sz = {2};
+  TorchSize nbase = 4;
+  auto x0 = BatchTensor::full(batch_sz, nbase, 2.0, default_tensor_options());
+
   SECTION("solve")
   {
+    // Create the nonlinear system
     auto options = PowerTestSystem::expected_options();
     PowerTestSystem system(options);
-    x0 = system.guess(x0);
+    system.reinit(x0);
 
-    auto x_res = solver.solve(system, x0);
+    auto [succeeded, iters] = solver.solve(system);
 
-    REQUIRE(torch::allclose(x_res, system.exact_solution(x0)));
+    REQUIRE(succeeded);
+    REQUIRE(torch::allclose(system.solution(), system.exact_solution()));
   }
 
   SECTION("automatic scaling")
   {
+    // Create the nonlinear system (with automatic scaling)
     auto options = PowerTestSystem::expected_options();
     options.set<bool>("automatic_scaling") = true;
     PowerTestSystem system(options);
-    x0 = system.guess(x0);
+    system.reinit(x0);
 
-    system.init_scaling(x0, solver.verbose);
-    auto x_res = solver.solve(system, x0);
+    system.init_scaling(solver.verbose);
+    auto [succeeded, iters] = solver.solve(system);
 
-    REQUIRE(torch::allclose(x_res, system.exact_solution(x0)));
+    REQUIRE(succeeded);
+    REQUIRE(torch::allclose(system.solution(), system.exact_solution()));
   }
 }

@@ -77,15 +77,17 @@ protected:
   virtual void apply_predictor();
   /// Perform the constitutive update for the current time step.
   virtual void solve_step();
-  /// Save the results of the current time step.
-  virtual void store_step();
+  /// Save the input of the current time step.
+  virtual void store_input();
+  /// Save the output of the current time step.
+  virtual void store_output();
   // @}
 
   /// Save the results into the destination file/path.
   virtual void output() const;
 
   /// The model which the driver uses to perform constitutive updates.
-  Model & _model;
+  NewModel & _model;
   /// The tensor options for all the computations
   const torch::TensorOptions _options;
 
@@ -100,16 +102,20 @@ protected:
   /// The batch size
   TorchSize _nbatch;
   /// The input to the constitutive model
-  LabeledVector _in;
+  LabeledVector & _in;
   /// The output of the constitutive model
-  LabeledVector _out;
+  LabeledVector & _out;
 
   /// The predictor used to set the initial guess
   std::string _predictor;
   /// The destination file name or file path
   std::string _save_as;
-  /// Set to true to list all the model parameters at the beginning.
+  /// Set to true to list all the model parameters at the beginning
   const bool _show_params;
+  /// Set to true to show model's input axis at the beginning
+  const bool _show_input;
+  /// Set to true to show model's output axis at the beginning
+  const bool _show_output;
 
   /// Inputs from all time steps
   LabeledVector _result_in;

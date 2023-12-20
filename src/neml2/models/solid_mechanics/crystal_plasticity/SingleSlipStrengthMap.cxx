@@ -44,35 +44,20 @@ SingleSlipStrengthMap::expected_options()
 
 SingleSlipStrengthMap::SingleSlipStrengthMap(const OptionSet & options)
   : SlipStrengthMap(options),
-    slip_hardening(
-        declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("slip_hardening"))),
+    _tau_bar(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("slip_hardening"))),
     _tau_const(declare_parameter<Scalar>("constant_strength", "constant_strength"))
 {
-  setup();
 }
 
 void
-SingleSlipStrengthMap::set_value(const LabeledVector & in,
-                                 LabeledVector * out,
-                                 LabeledMatrix * dout_din,
-                                 LabeledTensor3D * d2out_din2) const
+SingleSlipStrengthMap::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   neml_assert_dbg(!d2out_din2, "Second derivative not implemented.");
 
-  // Grab the input
-  const auto tau_bar = in.get<Scalar>(slip_hardening) + _tau_const;
-
   if (out)
-    out->set_list(tau_bar.batch_unsqueeze(-1).batch_expand(utils::add_shapes(
-                      tau_bar.batch_sizes(), TorchShape{crystal_geometry.nslip()})),
-                  slip_strengths);
+    _tau = (_tau_bar + _tau_const).base_unsqueeze(0).base_expand_as(_tau.value());
 
   if (dout_din)
-    dout_din->set_list(BatchTensor::ones(utils::add_shapes(tau_bar.batch_sizes(),
-                                                           TorchShape{crystal_geometry.nslip(), 1}),
-                                         TorchShape{},
-                                         tau_bar.dtype()),
-                       slip_strengths,
-                       slip_hardening);
+    _tau.d(_tau_bar) = Scalar::ones(options()).base_expand_as(_tau.d(_tau_bar).value());
 }
 } // namespace neml2

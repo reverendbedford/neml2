@@ -34,7 +34,7 @@ template <typename T>
 OptionSet
 SumModel<T>::expected_options()
 {
-  OptionSet options = Model::expected_options();
+  OptionSet options = NewModel::expected_options();
   options.set<std::vector<LabeledAxisAccessor>>("from_var");
   options.set<LabeledAxisAccessor>("to_var");
   return options;
@@ -42,37 +42,28 @@ SumModel<T>::expected_options()
 
 template <typename T>
 SumModel<T>::SumModel(const OptionSet & options)
-  : Model(options),
-    to(declare_output_variable<T>(options.get<LabeledAxisAccessor>("to_var")))
+  : NewModel(options),
+    _to(declare_output_variable<T>(options.get<LabeledAxisAccessor>("to_var")))
 {
   for (auto fv : options.get<std::vector<LabeledAxisAccessor>>("from_var"))
-    from.push_back(declare_input_variable<T>(fv));
-
-  this->setup();
+    _from.push_back(&declare_input_variable<T>(fv));
 }
 
 template <typename T>
 void
-SumModel<T>::set_value(const LabeledVector & in,
-                       LabeledVector * out,
-                       LabeledMatrix * dout_din,
-                       LabeledTensor3D * d2out_din2) const
+SumModel<T>::set_value(bool out, bool dout_din, bool d2out_din2)
 {
-  const auto options = in.options();
-
   if (out)
   {
-    auto sum = T::zeros(in.batch_sizes(), options);
-    for (auto fv : from)
-      sum += in.get<T>(fv);
-    out->set(sum, to);
+    auto sum = T::zeros_like(_to);
+    for (auto fv : _from)
+      sum += *fv;
+    _to = sum;
   }
 
   if (dout_din)
-  {
-    for (auto fv : from)
-      dout_din->set(T::identity_map(options), to, fv);
-  }
+    for (auto fv : _from)
+      _to.d(*fv) = T::identity_map(options());
 
   if (d2out_din2)
   {

@@ -31,7 +31,7 @@ namespace neml2
 OptionSet
 Elasticity::expected_options()
 {
-  OptionSet options = Model::expected_options();
+  OptionSet options = NewModel::expected_options();
   options.set<LabeledAxisAccessor>("strain") = {{"state", "internal", "Ee"}};
   options.set<LabeledAxisAccessor>("stress") = vecstr{"state", "S"};
   options.set<bool>("compliance") = false;
@@ -40,14 +40,13 @@ Elasticity::expected_options()
 }
 
 Elasticity::Elasticity(const OptionSet & options)
-  : Model(options),
+  : NewModel(options),
     _compliance(options.get<bool>("compliance")),
     _rate_form(options.get<bool>("rate_form")),
     _strain(options.get<LabeledAxisAccessor>("strain").with_suffix(_rate_form ? "_rate" : "")),
     _stress(options.get<LabeledAxisAccessor>("stress").with_suffix(_rate_form ? "_rate" : "")),
-    from_var(declare_input_variable<SR2>(_compliance ? _stress : _strain)),
-    to_var(declare_output_variable<SR2>(_compliance ? _strain : _stress))
+    _from(declare_input_variable<SR2>(_compliance ? _stress : _strain)),
+    _to(declare_output_variable<SR2>(_compliance ? _strain : _stress))
 {
-  setup();
 }
 } // namespace neml2

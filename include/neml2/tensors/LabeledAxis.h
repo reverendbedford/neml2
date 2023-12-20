@@ -64,13 +64,16 @@ public:
 
   /// Add a variable or subaxis
   template <typename T>
-  LabeledAxis & add(const std::string & name)
+  LabeledAxis & add(const LabeledAxisAccessor & accessor)
   {
     // Add an empty subaxis
     if constexpr (std::is_same_v<LabeledAxis, T>)
     {
-      if (!has_subaxis(name))
-        _subaxes.emplace(name, std::make_shared<LabeledAxis>());
+      if (!accessor.empty() && !has_subaxis(accessor.slice(0, 1)))
+      {
+        _subaxes.emplace(accessor.vec()[0], std::make_shared<LabeledAxis>());
+        subaxis(accessor.vec()[0]).add<LabeledAxis>(accessor.slice(1));
+      }
       return *this;
     }
     else
@@ -78,7 +81,7 @@ public:
       // The storage is *flat* -- will need to reshape when we return!
       // All NEML2 primitive data types will have the member const_base_sizes
       auto sz = utils::storage_size(T::const_base_sizes);
-      add(name, sz);
+      add(accessor, sz);
       return *this;
     }
   }
@@ -162,7 +165,8 @@ public:
   const std::map<std::string, std::shared_ptr<LabeledAxis>> & subaxes() const { return _subaxes; }
 
   /// Get the variable accessors
-  std::vector<LabeledAxisAccessor> variable_accessors(bool recursive = false) const;
+  std::set<LabeledAxisAccessor> variable_accessors(bool recursive = false,
+                                                   const LabeledAxisAccessor & subaxis = {}) const;
 
   /// Get a sub-axis
   const LabeledAxis & subaxis(const std::string & name) const;
@@ -219,9 +223,10 @@ private:
                       TorchSize offseta,
                       TorchSize offsetb) const;
 
-  void variable_accessors(std::vector<LabeledAxisAccessor> & accessors,
+  void variable_accessors(std::set<LabeledAxisAccessor> & accessors,
                           LabeledAxisAccessor cur,
-                          bool recursive) const;
+                          bool recursive,
+                          const LabeledAxisAccessor & subaxis) const;
 
   /// Variables and their sizes
   std::map<std::string, TorchSize> _variables;

@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 #include "neml2/models/ImplicitUpdate.h"
+#include "neml2/misc/math.h"
 
 namespace neml2
 {
@@ -31,92 +32,72 @@ register_NEML2_object(ImplicitUpdate);
 OptionSet
 ImplicitUpdate::expected_options()
 {
-  OptionSet options = Model::expected_options();
+  OptionSet options = NewModel::expected_options();
   options.set<std::string>("implicit_model");
   options.set<std::string>("solver");
   return options;
 }
 
 ImplicitUpdate::ImplicitUpdate(const OptionSet & options)
-  : Model(options),
-    _model(include_model<Model>(options.get<std::string>("implicit_model"))),
+  : NewModel(options),
+    _model(register_model<NewModel>(options.get<std::string>("implicit_model"))),
     _solver(Factory::get_object<NonlinearSolver>("Solvers", options.get<std::string>("solver")))
 {
-  // Now that the implicit model has been registered, the input of this ImplicitUpdate model should
-  // be the same as the implicit model's input. The input subaxes of the implicit model looks
-  // something like
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // inputs: state (trial) -------> outputs: residual
-  //         old state
-  //         forces
-  //         old forces
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // The inputs and outputs of *this* model (ImplicitUpdate) should look like this after
-  // the update:
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // inputs: state (trial)  ------> outputs: state
-  //         old state
-  //         forces
-  //         old forces
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // So, we need to add the state to the output
-  output().add<LabeledAxis>("state");
-  for (auto var : _model.output().subaxis("residual").variable_accessors(/*recursive=*/true))
-  {
-    auto sz = _model.output().subaxis("residual").storage_size(var);
-    declare_output_variable(var.on("state"), sz);
-  }
-
-  setup();
+  // Take care of dependency registration:
+  //   1. Input variables of the "implicit_model" should be *consumed* by *this* model. This has
+  //      already been taken care of by the `register_model` call.
+  //   2. Output variables of the "implicit_model" on the "residual" subaxis should be *provided* by
+  //      *this* model.
+  for (auto var : _model.output_axis().subaxis("residual").variable_accessors(/*recursive=*/true))
+    declare_output_variable(var.on("state"),
+                            _model.output_axis().subaxis("residual").storage_size(var));
 }
 
 void
-ImplicitUpdate::set_value(const LabeledVector & in,
-                          LabeledVector * out,
-                          LabeledMatrix * dout_din,
-                          LabeledTensor3D * d2out_din2) const
+ImplicitUpdate::check_AD_limitation() const
+{
+  neml_assert_dbg(!_AD_1st_deriv && !_AD_2nd_deriv,
+                  "ImplicitUpdate does not support AD because it uses in-place operations to "
+                  "iteratively update the trial solution until convergence.");
+}
+
+void
+ImplicitUpdate::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   neml_assert_dbg(!d2out_din2, "This model does not define the second derivatives.");
   neml_assert_dbg(
       !dout_din || out,
       "ImplicitUpdate: requires the value and the first derivatives to be computed together.");
 
-  // Cache the input as we are solving the implicit model with FIXED forces, old forces, and old
-  // state
-  _model.cache_input(in);
-
   // The trial state is used as the initial guess
-  auto guess = in("state");
-
   // Perform automatic scaling
-  _model.init_scaling(guess, _solver.verbose);
+  _model.init_scaling(_solver.verbose);
 
   if (out || dout_din)
   {
     // Solve for the next state
-    Model::stage = Model::Stage::SOLVING;
-    BatchTensor sol = _solver.solve(_model, guess);
-    Model::stage = Model::Stage::UPDATING;
+    NewModel::stage = NewModel::Stage::SOLVING;
+    auto [succeeded, iters] = _solver.solve(_model);
+    neml_assert(succeeded, "Nonlinear solve failed.");
+    output_storage()("state").copy_(_model.solution());
+    NewModel::stage = NewModel::Stage::UPDATING;
 
-    if (out)
-      out->set(sol, "state");
-
-    // Use the implicit function theorem to calculate the other derivatives
+    // Use the implicit function theorem (IFT) to calculate the other derivatives
     if (dout_din)
     {
-      auto implicit_in = LabeledVector::empty(in.batch_sizes(), {&_model.input()}, in.options());
-      implicit_in.fill(in);
-      implicit_in.set(sol, "state");
+      // IFT requires dstate/dinput evaluated at the solution:
+      _model.value_and_dvalue();
+      auto partials = _model.get_doutput_dinput();
 
-      auto partials = _model.dvalue(implicit_in);
+      // The actual IFT:
       LabeledMatrix J = partials.slice(1, "state");
-      auto [LU, pivot] = torch::linalg_lu_factor(J);
-      dout_din->block("state", "old_state")
-          .copy_(-torch::linalg_lu_solve(LU, pivot, partials.slice(1, "old_state")));
-      dout_din->block("state", "forces")
-          .copy_(-torch::linalg_lu_solve(LU, pivot, partials.slice(1, "forces")));
-      dout_din->block("state", "old_forces")
-          .copy_(-torch::linalg_lu_solve(LU, pivot, partials.slice(1, "old_forces")));
+      auto [LU, pivot] = math::linalg::lu_factor(J);
+      derivative_storage()("state", "old_state")
+          .copy_(-math::linalg::lu_solve(LU, pivot, partials.slice(1, "old_state")));
+      derivative_storage()("state", "forces")
+          .copy_(-math::linalg::lu_solve(LU, pivot, partials.slice(1, "forces")));
+      derivative_storage()("state", "old_forces")
+          .copy_(-math::linalg::lu_solve(LU, pivot, partials.slice(1, "old_forces")));
     }
   }
 }

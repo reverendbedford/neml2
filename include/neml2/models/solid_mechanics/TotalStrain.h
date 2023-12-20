@@ -24,11 +24,11 @@
 
 #pragma once
 
-#include "neml2/models/Model.h"
+#include "neml2/models/NewModel.h"
 
 namespace neml2
 {
-class TotalStrain : public Model
+class TotalStrain : public NewModel
 {
 public:
   static OptionSet expected_options();
@@ -36,16 +36,17 @@ public:
   TotalStrain(const OptionSet & options);
 
 protected:
-  void set_value(const LabeledVector & in,
-                 LabeledVector * out,
-                 LabeledMatrix * dout_din = nullptr,
-                 LabeledTensor3D * d2out_din2 = nullptr) const override;
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
   const bool _rate_form;
 
-public:
-  const LabeledAxisAccessor elastic_strain;
-  const LabeledAxisAccessor plastic_strain;
-  const LabeledAxisAccessor total_strain;
+  /// Elastic strain (rate)
+  const Variable<SR2> & _Ee;
+
+  /// Plastic strain (rate)
+  const Variable<SR2> & _Ep;
+
+  /// Total strain (rate)
+  Variable<SR2> & _E;
 };
 } // namespace neml2

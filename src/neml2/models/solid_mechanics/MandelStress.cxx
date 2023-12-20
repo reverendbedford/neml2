@@ -31,17 +31,16 @@ namespace neml2
 OptionSet
 MandelStress::expected_options()
 {
-  OptionSet options = Model::expected_options();
+  OptionSet options = NewModel::expected_options();
   options.set<LabeledAxisAccessor>("cauchy_stress") = vecstr{"state", "S"};
   options.set<LabeledAxisAccessor>("mandel_stress") = {{"state", "internal", "M"}};
   return options;
 }
 
 MandelStress::MandelStress(const OptionSet & options)
-  : Model(options),
-    cauchy_stress(declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("cauchy_stress"))),
-    mandel_stress(declare_output_variable<SR2>(options.get<LabeledAxisAccessor>("mandel_stress")))
+  : NewModel(options),
+    _S(declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("cauchy_stress"))),
+    _M(declare_output_variable<SR2>(options.get<LabeledAxisAccessor>("mandel_stress")))
 {
-  setup();
 }
 } // namespace neml2

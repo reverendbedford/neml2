@@ -241,6 +241,9 @@ LabeledAxis::storage_size(const std::vector<std::string>::const_iterator & cur,
 TorchIndex
 LabeledAxis::indices(const LabeledAxisAccessor & accessor) const
 {
+  if (accessor.empty())
+    return torch::indexing::Slice();
+
   return indices(0, accessor.vec().begin(), accessor.vec().end());
 }
 
@@ -328,30 +331,35 @@ LabeledAxis::item_names() const
   return names;
 }
 
-std::vector<LabeledAxisAccessor>
-LabeledAxis::variable_accessors(bool recursive) const
+std::set<LabeledAxisAccessor>
+LabeledAxis::variable_accessors(bool recursive, const LabeledAxisAccessor & subaxis) const
 {
-  std::vector<LabeledAxisAccessor> accessors;
-  variable_accessors(accessors, {}, recursive);
+  std::set<LabeledAxisAccessor> accessors;
+  variable_accessors(accessors, {}, recursive, subaxis);
   return accessors;
 }
 
 void
-LabeledAxis::variable_accessors(std::vector<LabeledAxisAccessor> & accessors,
+LabeledAxis::variable_accessors(std::set<LabeledAxisAccessor> & accessors,
                                 LabeledAxisAccessor cur,
-                                bool recursive) const
+                                bool recursive,
+                                const LabeledAxisAccessor & subaxis) const
 {
   for (auto & var : _variables)
   {
     LabeledAxisAccessor var_accessor{{var.first}};
-    accessors.push_back(var_accessor.on(cur));
+    var_accessor = var_accessor.on(cur);
+    if (subaxis.empty())
+      accessors.insert(var_accessor);
+    else if (var_accessor.slice(0, subaxis.size()) == subaxis)
+      accessors.insert(var_accessor);
   }
 
   if (recursive)
     for (auto & [name, axis] : _subaxes)
     {
       auto next = cur.append(name);
-      axis->variable_accessors(accessors, next, recursive);
+      axis->variable_accessors(accessors, next, recursive, subaxis);
     }
 }
 

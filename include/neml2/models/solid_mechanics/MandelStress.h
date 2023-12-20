@@ -24,18 +24,19 @@
 
 #pragma once
 
-#include "neml2/models/Model.h"
+#include "neml2/models/NewModel.h"
 
 namespace neml2
 {
-class MandelStress : public Model
+class MandelStress : public NewModel
 {
 public:
   static OptionSet expected_options();
 
   MandelStress(const OptionSet & options);
 
-  const LabeledAxisAccessor cauchy_stress;
-  const LabeledAxisAccessor mandel_stress;
+protected:
+  const Variable<SR2> & _S;
+  Variable<SR2> & _M;
 };
 } // namespace neml2

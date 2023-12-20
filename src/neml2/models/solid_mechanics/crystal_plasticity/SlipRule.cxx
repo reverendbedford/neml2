@@ -35,7 +35,7 @@ namespace neml2
 OptionSet
 SlipRule::expected_options()
 {
-  OptionSet options = Model::expected_options();
+  OptionSet options = NewModel::expected_options();
 
   options.set<LabeledAxisAccessor>("slip_rates") = vecstr{"state", "internal", "slip_rates"};
 
@@ -50,17 +50,16 @@ SlipRule::expected_options()
 }
 
 SlipRule::SlipRule(const OptionSet & options)
-  : Model(options),
-    crystal_geometry(include_data<crystallography::CrystalGeometry>(
+  : NewModel(options),
+    _crystal_geometry(register_data<crystallography::CrystalGeometry>(
         options.get<std::string>("crystal_geometry_name"))),
-    slip_rates(declare_output_variable_list<Scalar>(options.get<LabeledAxisAccessor>("slip_rates"),
-                                                    crystal_geometry.nslip())),
-    resolved_shears(declare_input_variable_list<Scalar>(
-        options.get<LabeledAxisAccessor>("resolved_shears"), crystal_geometry.nslip())),
-    slip_strengths(declare_input_variable_list<Scalar>(
-        options.get<LabeledAxisAccessor>("slip_strengths"), crystal_geometry.nslip()))
+    _g(declare_output_variable_list<Scalar>(options.get<LabeledAxisAccessor>("slip_rates"),
+                                            _crystal_geometry.nslip())),
+    _rss(declare_input_variable_list<Scalar>(options.get<LabeledAxisAccessor>("resolved_shears"),
+                                             _crystal_geometry.nslip())),
+    _tau(declare_input_variable_list<Scalar>(options.get<LabeledAxisAccessor>("slip_strengths"),
+                                             _crystal_geometry.nslip()))
 {
-  setup();
 }
 
 } // namespace neml2

@@ -40,45 +40,36 @@ AssociativePlasticFlow::expected_options()
 
 AssociativePlasticFlow::AssociativePlasticFlow(const OptionSet & options)
   : FlowRule(options),
-    flow_direction(declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("flow_direction"))),
-    plastic_strain_rate(
-        declare_output_variable<SR2>(options.get<LabeledAxisAccessor>("plastic_strain_rate")))
+    _NM(declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("flow_direction"))),
+    _Ep_dot(declare_output_variable<SR2>(options.get<LabeledAxisAccessor>("plastic_strain_rate")))
 {
-  setup();
 }
 
 void
-AssociativePlasticFlow::set_value(const LabeledVector & in,
-                                  LabeledVector * out,
-                                  LabeledMatrix * dout_din,
-                                  LabeledTensor3D * d2out_din2) const
+AssociativePlasticFlow::set_value(bool out, bool dout_din, bool d2out_din2)
 {
-  const auto options = in.options();
-
   // For associative flow,
   // Ep_dot = gamma_dot * NM
   //     NM = df/dM
-  const auto gamma_dot = in.get<Scalar>(flow_rate);
-  const auto NM = in.get<SR2>(flow_direction);
 
   if (out)
-    out->set(gamma_dot * NM, plastic_strain_rate);
+    _Ep_dot = _gamma_dot * _NM;
 
   if (dout_din || d2out_din2)
   {
-    auto I = SR2::identity_map(options);
+    auto I = SR2::identity_map(options());
 
     if (dout_din)
     {
-      dout_din->set(NM, plastic_strain_rate, flow_rate);
-      dout_din->set(gamma_dot * I, plastic_strain_rate, flow_direction);
+      _Ep_dot.d(_gamma_dot) = _NM;
+      _Ep_dot.d(_NM) = _gamma_dot * I;
     }
 
     if (d2out_din2)
     {
       // I don't know when this will be useful, but since it's easy...
-      d2out_din2->set(I, plastic_strain_rate, flow_rate, flow_direction);
-      d2out_din2->set(I, plastic_strain_rate, flow_direction, flow_rate);
+      _Ep_dot.d(_gamma_dot, _NM) = I;
+      _Ep_dot.d(_NM, _gamma_dot) = I;
     }
   }
 }

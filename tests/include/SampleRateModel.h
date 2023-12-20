@@ -24,27 +24,29 @@
 
 #pragma once
 
-#include "neml2/models/Model.h"
+#include "neml2/models/NewModel.h"
 
-class SampleRateModel : public neml2::Model
+namespace neml2
+{
+class SampleRateModel : public NewModel
 {
 public:
-  SampleRateModel(const neml2::OptionSet & options);
+  SampleRateModel(const OptionSet & options);
+
+  const Variable<Scalar> & foo;
+  const Variable<Scalar> & bar;
+  const Variable<SR2> & baz;
+  const Variable<Scalar> & T;
+
+  Variable<Scalar> & foo_dot;
+  Variable<Scalar> & bar_dot;
+  Variable<SR2> & baz_dot;
 
 protected:
-  virtual void set_value(const neml2::LabeledVector & in,
-                         neml2::LabeledVector * out,
-                         neml2::LabeledMatrix * dout_din = nullptr,
-                         neml2::LabeledTensor3D * d2out_din2 = nullptr) const override;
+  void set_value(bool, bool, bool) override;
 
-  const neml2::Scalar _a;
-  const neml2::Scalar _b;
-  const neml2::Scalar _c;
-  const neml2::LabeledAxisAccessor _foo;
-  const neml2::LabeledAxisAccessor _bar;
-  const neml2::LabeledAxisAccessor _baz;
-  const neml2::LabeledAxisAccessor _temperature;
-  const neml2::LabeledAxisAccessor _foo_rate;
-  const neml2::LabeledAxisAccessor _bar_rate;
-  const neml2::LabeledAxisAccessor _baz_rate;
+  const Scalar _a;
+  const Scalar _b;
+  const Scalar _c;
 };
+}

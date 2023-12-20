@@ -42,27 +42,15 @@ Factory::load(const OptionCollection & all_options)
 }
 
 void
-Factory::manufacture()
-{
-  auto f = get();
-  for (const auto & section : Factory::pipeline)
-    for (const auto & options : _all_options[section])
-      f.create_object(section, options.second);
-}
-
-void
 Factory::create_object(const std::string & section, const OptionSet & options)
 {
   const std::string & name = options.name();
   const std::string & type = options.type();
 
-  // Some other object might have already requested the existence of this object, at which time we
-  // have already created it. So don't bother doing anything again.
-  if (_objects[section].count(name))
-    return;
-
   auto builder = Registry::builder(type);
-  _objects[section].emplace(name, (*builder)(options));
+  auto object = (*builder)(options);
+  _objects[section][name].push_back(object);
+  object->setup();
 }
 
 // LCOV_EXCL_START

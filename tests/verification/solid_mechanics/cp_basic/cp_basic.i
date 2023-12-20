@@ -142,10 +142,10 @@
     type = ImplicitUpdate
     implicit_model = 'implicit_rate'
     solver = 'newton'
-    additional_outputs = 'state/elastic_strain'
   []
   [model_with_stress]
     type = ComposedModel
     models = 'model elasticity'
+    additional_outputs = 'state/elastic_strain'
   []
 []

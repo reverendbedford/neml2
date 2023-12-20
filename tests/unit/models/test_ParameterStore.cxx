@@ -22,30 +22,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
+#include <catch2/catch.hpp>
 
-#include "neml2/models/Model.h"
+#include "utils.h"
+#include "neml2/models/NewModel.h"
 
-namespace neml2
+using namespace neml2;
+
+TEST_CASE("ParameterStore", "[models]")
 {
-template <typename T>
-class IdentityMap : public Model
-{
-public:
-  static OptionSet expected_options();
+  SECTION("class ParameterStore")
+  {
+    SECTION("named_parameters")
+    {
+      load_model("unit/models/ImplicitUpdate.i");
+      auto & model = Factory::get_object<NewModel>("Models", "model");
+      auto & params = model.named_parameters();
 
-  IdentityMap(const OptionSet & options);
-
-  const LabeledAxisAccessor from;
-  const LabeledAxisAccessor to;
-
-protected:
-  virtual void set_value(const LabeledVector & in,
-                         LabeledVector * out,
-                         LabeledMatrix * dout_din = nullptr,
-                         LabeledTensor3D * d2out_din2 = nullptr) const override;
-};
-
-typedef IdentityMap<Scalar> ScalarIdentityMap;
-typedef IdentityMap<SR2> SR2IdentityMap;
-} // namespace neml2
+      REQUIRE(params.size() == 3);
+      REQUIRE(params.has_key("a"));
+      REQUIRE(params.has_key("b"));
+      REQUIRE(params.has_key("c"));
+    }
+  }
+}

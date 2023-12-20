@@ -53,6 +53,13 @@ protected:
     return var;
   }
 
+  /// Declare a subaxis recursively on an axis
+  LabeledAxisAccessor declare_subaxis(LabeledAxis & axis, const LabeledAxisAccessor & subaxis) const
+  {
+    axis.add<LabeledAxis>(subaxis);
+    return subaxis;
+  }
+
 private:
   /// All the declared axes
   std::vector<std::shared_ptr<LabeledAxis>> _axes;

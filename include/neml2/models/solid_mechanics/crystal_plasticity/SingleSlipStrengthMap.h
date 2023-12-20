@@ -39,13 +39,10 @@ public:
 
 protected:
   /// Set the slip system strengths and associated derivatives
-  virtual void set_value(const LabeledVector & in,
-                         LabeledVector * out,
-                         LabeledMatrix * dout_din = nullptr,
-                         LabeledTensor3D * d2out_din2 = nullptr) const override;
+  void set_value(bool out, bool dou2_din, bool d2out_din2) override;
 
-  /// Input: value of the slip hardening variable
-  const LabeledAxisAccessor slip_hardening;
+  /// Slip hardening variable
+  const Variable<Scalar> & _tau_bar;
 
   /// Constant strength to offset the slip hardening
   const Scalar & _tau_const;

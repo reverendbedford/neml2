@@ -44,52 +44,41 @@ ChabochePlasticHardening::expected_options()
 
 ChabochePlasticHardening::ChabochePlasticHardening(const OptionSet & options)
   : FlowRule(options),
-    back_stress(declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("back_stress"))),
-    flow_direction(declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("flow_direction"))),
-    back_stress_rate(declare_output_variable<SR2>(back_stress.with_suffix("_rate"))),
+    _X(declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("back_stress"))),
+    _NM(declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("flow_direction"))),
+    _X_dot(declare_output_variable<SR2>(_X.name().with_suffix("_rate"))),
     _C(declare_parameter<Scalar>("C", "C")),
     _g(declare_parameter<Scalar>("g", "g")),
     _A(declare_parameter<Scalar>("A", "A")),
     _a(declare_parameter<Scalar>("a", "a"))
 {
-  setup();
 }
 
 void
-ChabochePlasticHardening::set_value(const LabeledVector & in,
-                                    LabeledVector * out,
-                                    LabeledMatrix * dout_din,
-                                    LabeledTensor3D * d2out_din2) const
+ChabochePlasticHardening::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   neml_assert_dbg(!d2out_din2, "Chaboche model doesn't implement second derivatives.");
 
-  SR2 X = in.get<SR2>(back_stress);
-  Scalar gamma_dot = in.get<Scalar>(flow_rate);
-  SR2 NM = in.get<SR2>(flow_direction);
-
   // The effective stress
-  Scalar eff = X.norm(EPS);
+  auto s = SR2(_X).norm(EPS);
   // The part that's proportional to the plastic strain rate
-  auto g_term = 2.0 / 3.0 * _C * NM - _g * X;
+  auto g_term = 2.0 / 3.0 * _C * _NM - _g * _X;
 
   if (out)
   {
     // The static recovery term
-    auto s_term = -_A * math::pow(eff, _a - 1) * X;
-    auto X_dot = g_term * gamma_dot + s_term;
-    out->set(X_dot, back_stress_rate);
+    auto s_term = -_A * math::pow(s, _a - 1) * _X;
+    _X_dot = g_term * _gamma_dot + s_term;
   }
 
   if (dout_din)
   {
-    auto I = SR2::identity_map(in.options());
+    auto I = SR2::identity_map(options());
 
-    dout_din->set(g_term, back_stress_rate, flow_rate);
-    dout_din->set(2.0 / 3.0 * _C * gamma_dot * I, back_stress_rate, flow_direction);
-    dout_din->set(-_g * gamma_dot * I -
-                      _A * math::pow(eff, _a - 3) * ((_a - 1) * X.outer(X) + eff * eff * I),
-                  back_stress_rate,
-                  back_stress);
+    _X_dot.d(_gamma_dot) = g_term;
+    _X_dot.d(_NM) = 2.0 / 3.0 * _C * _gamma_dot * I;
+    _X_dot.d(_X) = -_g * _gamma_dot * I -
+                   _A * math::pow(s, _a - 3) * ((_a - 1) * SR2(_X).outer(SR2(_X)) + s * s * I);
   }
 }
 

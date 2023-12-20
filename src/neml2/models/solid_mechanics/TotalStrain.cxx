@@ -34,7 +34,7 @@ register_NEML2_object(TotalStrain);
 OptionSet
 TotalStrain::expected_options()
 {
-  OptionSet options = Model::expected_options();
+  OptionSet options = NewModel::expected_options();
   options.set<LabeledAxisAccessor>("elastic_strain") = {{"state", "internal", "Ee"}};
   options.set<LabeledAxisAccessor>("plastic_strain") = {{"state", "internal", "Ep"}};
   options.set<LabeledAxisAccessor>("total_strain") = vecstr{"state", "E"};
@@ -43,32 +43,28 @@ TotalStrain::expected_options()
 }
 
 TotalStrain::TotalStrain(const OptionSet & options)
-  : Model(options),
+  : NewModel(options),
     _rate_form(options.get<bool>("rate_form")),
-    elastic_strain(declare_input_variable<SR2>(
+    _Ee(declare_input_variable<SR2>(
         options.get<LabeledAxisAccessor>("elastic_strain").with_suffix(_rate_form ? "_rate" : ""))),
-    plastic_strain(declare_input_variable<SR2>(
+    _Ep(declare_input_variable<SR2>(
         options.get<LabeledAxisAccessor>("plastic_strain").with_suffix(_rate_form ? "_rate" : ""))),
-    total_strain(declare_output_variable<SR2>(
+    _E(declare_output_variable<SR2>(
         options.get<LabeledAxisAccessor>("total_strain").with_suffix(_rate_form ? "_rate" : "")))
 {
-  this->setup();
 }
 
 void
-TotalStrain::set_value(const LabeledVector & in,
-                       LabeledVector * out,
-                       LabeledMatrix * dout_din,
-                       LabeledTensor3D * d2out_din2) const
+TotalStrain::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   if (out)
-    out->set(in.get<SR2>(elastic_strain) + in.get<SR2>(plastic_strain), total_strain);
+    _E = _Ee + _Ep;
 
   if (dout_din)
   {
-    auto I = SR2::identity_map(in.options());
-    dout_din->set(I, total_strain, elastic_strain);
-    dout_din->set(I, total_strain, plastic_strain);
+    auto I = SR2::identity_map(options());
+    _E.d(_Ee) = I;
+    _E.d(_Ep) = I;
   }
 
   if (d2out_din2)

@@ -82,14 +82,6 @@ public:
   /// Whether this model is implicit
   virtual bool implicit() const { return false; }
 
-  /**
-   * @brief Get the named parameters
-   *
-   * @param recurse Whether to recursively retrieve parameters from sub-models.
-   * @return A map from parameter name to parameter value
-   */
-  std::map<std::string, BatchTensor> named_parameters(bool recurse) const;
-
   /// The models that may be used during the evaluation of this model
   const std::vector<Model *> & registered_models() const { return _registered_models; }
 
@@ -222,31 +214,27 @@ protected:
     return declare_output_variable(var, list_sz * T::const_base_storage);
   }
 
-  virtual void setup() { setup_layout(); }
-
-  /**
-   * @brief Register a model that the current model may use during its evaluation. No dependency
-   * information is added.
-   *
-   * @param model The model to register
-   * @param merge_input Whether to merge the input of the registered model into *this* model's
-   * input.
-   */
-  void register_model(std::shared_ptr<Model> model, bool merge_input = true);
+  virtual void setup() override { setup_layout(); }
 
   /**
    * Both register a model and return a reference
    */
   template <typename T, typename = typename std::enable_if_t<std::is_base_of_v<Model, T>>>
-  T & include_model(const std::string & name, bool merge_input = true)
+  T & register_model(const std::string & name, bool merge_input = true)
   {
     auto model = Factory::get_object_ptr<Model>("Models", name);
-    register_model(model, merge_input);
+    if (merge_input)
+    {
+      // Additional inputs from the the registered model
+      auto merged_vars = input().merge(model->input());
+      _consumed_vars.insert(merged_vars.begin(), merged_vars.end());
+    }
+
+    _registered_models.push_back(model.get());
     return *(std::dynamic_pointer_cast<T>(model));
   }
 
-  virtual void
-  assemble(const BatchTensor & x, BatchTensor * r, BatchTensor * J = nullptr) const override;
+  virtual void assemble(const BatchTensor & x, BatchTensor * r, BatchTensor * J = nullptr) override;
 
   /// Models *this* model may use during its evaluation
   std::vector<Model *> _registered_models;

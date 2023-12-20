@@ -34,7 +34,7 @@ template <typename T>
 OptionSet
 ForceRate<T>::expected_options()
 {
-  OptionSet options = Model::expected_options();
+  OptionSet options = NewModel::expected_options();
   options.set<LabeledAxisAccessor>("force");
   options.set<LabeledAxisAccessor>("time") = {"t"};
   return options;
@@ -42,67 +42,55 @@ ForceRate<T>::expected_options()
 
 template <typename T>
 ForceRate<T>::ForceRate(const OptionSet & options)
-  : Model(options),
-    force(declare_input_variable<T>(options.get<LabeledAxisAccessor>("force").on("forces"))),
-    force_n(declare_input_variable<T>(options.get<LabeledAxisAccessor>("force").on("old_forces"))),
-    time(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("time").on("forces"))),
-    time_n(
-        declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("time").on("old_forces"))),
-    force_rate(declare_output_variable<T>(
-        options.get<LabeledAxisAccessor>("force").with_suffix("_rate").on("forces")))
+  : NewModel(options),
+    _df_dt(declare_output_variable<T>(
+        options.get<LabeledAxisAccessor>("force").with_suffix("_rate").on("forces"))),
+    _f(declare_input_variable<T>(options.get<LabeledAxisAccessor>("force").on("forces"))),
+    _fn(declare_input_variable<T>(options.get<LabeledAxisAccessor>("force").on("old_forces"))),
+    _t(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("time").on("forces"))),
+    _tn(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("time").on("old_forces")))
 {
-  this->setup();
 }
 
 template <typename T>
 void
-ForceRate<T>::set_value(const LabeledVector & in,
-                        LabeledVector * out,
-                        LabeledMatrix * dout_din,
-                        LabeledTensor3D * d2out_din2) const
+ForceRate<T>::set_value(bool out, bool dout_din, bool d2out_din2)
 {
-  const auto options = in.options();
-
-  auto f_np1 = in.get<T>(force);
-  auto f_n = in.get<T>(force_n);
-  auto t_np1 = in.get<Scalar>(time);
-  auto t_n = in.get<Scalar>(time_n);
-
-  auto df = f_np1 - f_n;
-  auto dt = t_np1 - t_n;
+  auto df = _f - _fn;
+  auto dt = _t - _tn;
 
   if (out)
-  {
-    auto f_dot = df / dt;
-    out->set(f_dot, force_rate);
-  }
+    _df_dt = df / dt;
 
   if (dout_din || d2out_din2)
   {
-    auto I = T::identity_map(options);
+    auto I = T::identity_map(options());
 
     if (dout_din)
     {
-      dout_din->set(I / dt, force_rate, force);
-      dout_din->set(-I / dt, force_rate, force_n);
-      dout_din->set(-df / dt / dt, force_rate, time);
-      dout_din->set(df / dt / dt, force_rate, time_n);
+      _df_dt.d(_f) = I / dt;
+      _df_dt.d(_fn) = -I / dt;
+      _df_dt.d(_t) = -df / dt / dt;
+      _df_dt.d(_tn) = df / dt / dt;
     }
 
     if (d2out_din2)
     {
-      d2out_din2->set(-I / dt / dt, force_rate, force, time);
-      d2out_din2->set(I / dt / dt, force_rate, force, time_n);
-      d2out_din2->set(I / dt / dt, force_rate, force_n, time);
-      d2out_din2->set(-I / dt / dt, force_rate, force_n, time_n);
-      d2out_din2->set(-I / dt / dt, force_rate, time, force);
-      d2out_din2->set(I / dt / dt, force_rate, time, force_n);
-      d2out_din2->set(2 * df / dt / dt / dt, force_rate, time, time);
-      d2out_din2->set(-2 * df / dt / dt / dt, force_rate, time, time_n);
-      d2out_din2->set(I / dt / dt, force_rate, time_n, force);
-      d2out_din2->set(-I / dt / dt, force_rate, time_n, force_n);
-      d2out_din2->set(-2 * df / dt / dt / dt, force_rate, time_n, time);
-      d2out_din2->set(2 * df / dt / dt / dt, force_rate, time_n, time_n);
+      _df_dt.d(_f, _t) = -I / dt / dt;
+      _df_dt.d(_f, _tn) = I / dt / dt;
+
+      _df_dt.d(_fn, _t) = I / dt / dt;
+      _df_dt.d(_fn, _tn) = -I / dt / dt;
+
+      _df_dt.d(_t, _f) = -I / dt / dt;
+      _df_dt.d(_t, _fn) = I / dt / dt;
+      _df_dt.d(_t, _t) = 2 * df / dt / dt / dt;
+      _df_dt.d(_t, _tn) = -2 * df / dt / dt / dt;
+
+      _df_dt.d(_tn, _f) = I / dt / dt;
+      _df_dt.d(_tn, _fn) = -I / dt / dt;
+      _df_dt.d(_tn, _t) = -2 * df / dt / dt / dt;
+      _df_dt.d(_tn, _tn) = 2 * df / dt / dt / dt;
     }
   }
 }

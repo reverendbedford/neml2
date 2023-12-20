@@ -46,7 +46,7 @@ TEST_CASE("SSR4", "[tensors]")
       {
         auto u = R4(torch::rand(utils::add_shapes(B, 3, 3, 3, 3), DTO));
         // Symmetrize it
-        auto s = (u + u.transpose_minor() + u.base_transpose(0, 1) + u.base_transpose(2, 3)) / 4.0;
+        auto s = (u + u.transpose_minor() + u.transpose(0, 1) + u.transpose(2, 3)) / 4.0;
         // Converting to SSR4 should be equivalent to symmetrization
         REQUIRE(torch::allclose(SSR4(s), SSR4(u)));
       }

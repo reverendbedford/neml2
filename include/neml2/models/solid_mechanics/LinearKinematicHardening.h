@@ -28,6 +28,10 @@
 
 namespace neml2
 {
+/**
+ * @brief Simple linear map between equivalent strain and hardening
+ *
+ */
 class LinearKinematicHardening : public KinematicHardening
 {
 public:
@@ -36,12 +40,9 @@ public:
   LinearKinematicHardening(const OptionSet & options);
 
 protected:
-  /// Simple linear map between equivalent strain and hardening
-  virtual void set_value(const LabeledVector & in,
-                         LabeledVector * out,
-                         LabeledMatrix * dout_din = nullptr,
-                         LabeledTensor3D * d2out_din2 = nullptr) const override;
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
+  /// Hardening modulus
   const Scalar & _H;
 };
 } // namespace neml2

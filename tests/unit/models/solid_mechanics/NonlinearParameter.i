@@ -1,6 +1,6 @@
 [Drivers]
   [unit]
-    type = ModelUnitTest
+    type = NewModelUnitTest
     model = 'model'
     batch_shape = '(2,2)'
     input_symr2_names = 'state/internal/M'
@@ -40,11 +40,10 @@
     type = SR2Invariant
     invariant_type = 'VONMISES'
     tensor = 'state/internal/M'
-    invariant = 'state/internal/sm'
+    invariant = 'state/internal/s'
   []
   [s0]
     type = ScalarLinearInterpolation
-    parameter = 's0'
     argument = 'forces/T'
     abscissa = 'T_data'
     ordinate = 's0_data'

@@ -41,7 +41,8 @@ Model::expected_options()
 
 Model::Model(const OptionSet & options)
   : Data(options),
-    ParameterStore(options),
+    ParameterStore(options, this),
+    LabeledAxisInterface(),
     NonlinearSystem(options),
     _input(declare_axis()),
     _output(declare_axis()),
@@ -51,7 +52,6 @@ Model::Model(const OptionSet & options)
   check_AD_limitation();
   for (const auto & var : options.get<std::vector<LabeledAxisAccessor>>("additional_outputs"))
     _additional_outputs.insert(var);
-  setup();
 }
 
 void
@@ -236,32 +236,6 @@ Model::value_and_dvalue_and_d2value(const LabeledVector & in) const
   return {out, dout_din, d2out_din2};
 }
 
-std::map<std::string, BatchTensor>
-Model::named_parameters(bool recurse) const
-{
-  auto params = ParameterStore::named_parameters();
-
-  if (recurse)
-    for (auto & model : _registered_models)
-      for (auto && [n, v] : model->named_parameters(true))
-        params.emplace(model->name() + "." + n, v);
-
-  return params;
-}
-
-void
-Model::register_model(std::shared_ptr<Model> model, bool merge_input)
-{
-  if (merge_input)
-  {
-    // Additional inputs from the the registered model
-    auto merged_vars = input().merge(model->input());
-    _consumed_vars.insert(merged_vars.begin(), merged_vars.end());
-  }
-
-  _registered_models.push_back(model.get());
-}
-
 void
 Model::cache_input(const LabeledVector & in)
 {
@@ -269,7 +243,7 @@ Model::cache_input(const LabeledVector & in)
 }
 
 void
-Model::assemble(const BatchTensor & x, BatchTensor * r, BatchTensor * J) const
+Model::assemble(const BatchTensor & x, BatchTensor * r, BatchTensor * J)
 {
   auto in = LabeledVector::empty(x.batch_sizes(), {&input()}, x.options());
 

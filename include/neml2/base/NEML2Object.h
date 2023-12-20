@@ -51,6 +51,17 @@ public:
 
   const OptionSet & options() const { return _options; }
 
+  /**
+   * @brief Setup this object.
+   *
+   * This method is called automatically if you use the Factory method get_object or get_object_ptr,
+   * right after construction. This serves as the entry point for things that are not
+   * convenient/possible to do at construction time, but are necessary before this object can be
+   * used (by others).
+   *
+   */
+  virtual void setup() {}
+
   /// A readonly reference to the object's name
   const std::string & name() const { return _options.name(); }
   /// A readonly reference to the object's type
@@ -60,7 +71,34 @@ public:
   /// A readonly reference to the object's docstring
   const std::string & doc() const { return _options.doc(); }
 
+  template <typename T = NEML2Object>
+  const T * host() const;
+
+  template <typename T = NEML2Object>
+  T * host();
+
 private:
   const OptionSet & _options;
+
+  /// The publicly exposed NEML2Object
+  NEML2Object * _host;
 };
+
+template <typename T>
+const T *
+NEML2Object::host() const
+{
+  auto host_ptr = dynamic_cast<const T *>(_host ? _host : this);
+  neml_assert(host_ptr, "Internal error: Failed to retrieve host of object ", name());
+  return host_ptr;
+}
+
+template <typename T>
+T *
+NEML2Object::host()
+{
+  auto host_ptr = dynamic_cast<T *>(_host ? _host : this);
+  neml_assert(host_ptr, "Internal error: Failed to retrieve host of object ", name());
+  return host_ptr;
+}
 } // namespace neml2

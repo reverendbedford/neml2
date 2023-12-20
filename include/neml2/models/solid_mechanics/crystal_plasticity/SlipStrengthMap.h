@@ -24,24 +24,25 @@
 
 #pragma once
 
-#include "neml2/models/Model.h"
+#include "neml2/models/NewModel.h"
 
 #include "neml2/models/crystallography/CrystalGeometry.h"
 
 namespace neml2
 {
 /// Parent class of maps between internal variables and the slip system strengths
-class SlipStrengthMap : public Model
+class SlipStrengthMap : public NewModel
 {
 public:
   static OptionSet expected_options();
 
   SlipStrengthMap(const OptionSet & options);
 
+protected:
   /// Crystal geometry class with slip geometry
-  const crystallography::CrystalGeometry & crystal_geometry;
+  const crystallography::CrystalGeometry & _crystal_geometry;
 
-  /// Output: slip system strengths
-  const LabeledAxisAccessor slip_strengths;
+  /// Slip strengths
+  Variable<BatchTensor> & _tau;
 };
 } // namespace neml2

@@ -23,7 +23,6 @@
 // THE SOFTWARE.
 
 #include "neml2/models/solid_mechanics/Normality.h"
-#include "neml2/models/solid_mechanics/YieldFunction.h"
 
 namespace neml2
 {
@@ -32,7 +31,7 @@ register_NEML2_object(Normality);
 OptionSet
 Normality::expected_options()
 {
-  OptionSet options = Model::expected_options();
+  OptionSet options = NewModel::expected_options();
   options.set<std::string>("model");
   options.set<LabeledAxisAccessor>("function");
   options.set<std::vector<LabeledAxisAccessor>>("from");
@@ -41,9 +40,9 @@ Normality::expected_options()
 }
 
 Normality::Normality(const OptionSet & options)
-  : Model(options),
-    function(options.get<LabeledAxisAccessor>("function")),
-    _model(include_model<Model>(options.get<std::string>("model")))
+  : NewModel(options),
+    _model(register_model<NewModel>(options.get<std::string>("model"))),
+    _f(options.get<LabeledAxisAccessor>("function"))
 {
   // Set up the conjugate pairs
   const auto from = options.get<std::vector<LabeledAxisAccessor>>("from");
@@ -56,46 +55,31 @@ Normality::Normality(const OptionSet & options)
               " variables.");
   for (size_t i = 0; i < from.size(); i++)
   {
-    _conjugate_pairs.emplace(from[i], to[i]);
-    auto sz = _model.output().storage_size(function) * _model.input().storage_size(from[i]);
-    declare_output_variable(to[i], sz);
+    auto sz = _model.output_axis().storage_size(_f) * _model.input_axis().storage_size(from[i]);
+    _conjugate_pairs.emplace(from[i], &declare_output_variable(to[i], sz));
   }
-
-  setup();
 }
 
 void
-Normality::set_value(const LabeledVector & in,
-                     LabeledVector * out,
-                     LabeledMatrix * dout_din,
-                     LabeledTensor3D * d2out_din2) const
+Normality::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   neml_assert_dbg(!d2out_din2, "Normality doesn't implement second derivatives.");
 
   // All we do here is simply mapping the derivatives.
   // However, let's consider all the cases to make it as efficient as possible.
   if (out && !dout_din)
+    _model.value_and_dvalue();
+  else
+    _model.value_and_dvalue_and_d2value();
+
+  for (auto && [ivar, var] : _conjugate_pairs)
   {
-    const auto df_din = _model.dvalue(in);
-    for (const auto & [from, to] : _conjugate_pairs)
-      out->set(df_din(function, from), to);
-  }
-  else if (!out && dout_din)
-  {
-    const auto d2f_din2 = _model.d2value(in);
-    for (const auto & [from_i, to_i] : _conjugate_pairs)
-      for (const auto & [from_j, to_j] : _conjugate_pairs)
-        dout_din->set(d2f_din2(function, from_i, from_j), to_i, from_j);
-  }
-  else if (out && dout_din)
-  {
-    const auto [df_din, d2f_din2] = _model.dvalue_and_d2value(in);
-    for (const auto & [from_i, to_i] : _conjugate_pairs)
-    {
-      out->set(df_din(function, from_i), to_i);
-      for (const auto & [from_j, to_j] : _conjugate_pairs)
-        dout_din->set(d2f_din2(function, from_i, from_j), to_i, from_j);
-    }
+    if (out)
+      (*var) = _model.derivative_storage()(_f, ivar);
+
+    if (dout_din)
+      for (auto && [jvar, j] : input_views())
+        var->d(j) = _model.second_derivative_storage()(_f, ivar, jvar);
   }
 }
 } // namespace neml2

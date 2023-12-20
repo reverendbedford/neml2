@@ -1,8 +1,8 @@
 [Drivers]
   [unit]
-    type = ModelUnitTest
-    model = 'model'
-    batch_shape = '()'
+    type = NewModelUnitTest
+    model = 'D'
+    batch_shape = '(1)'
     input_scalar_names = 'forces/T'
     input_scalar_values = '300'
     output_symr2_names = 'D'
@@ -12,9 +12,8 @@
 []
 
 [Models]
-  [model]
+  [D]
     type = SR2LinearInterpolation
-    parameter = 'D'
     argument = 'forces/T'
     abscissa = 'T'
     ordinate = 'D'

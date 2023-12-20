@@ -24,13 +24,13 @@
 
 #pragma once
 
-#include "neml2/models/Model.h"
+#include "neml2/models/NewModel.h"
 
 namespace neml2
 {
 /// Implicit exponential time integration for rotations
 // This function takes as input a skew tensor giving the spin and does the rotational update
-class WR2ImplicitExponentialTimeIntegration : public Model
+class WR2ImplicitExponentialTimeIntegration : public NewModel
 {
 public:
   static OptionSet expected_options();
@@ -38,30 +38,32 @@ public:
   WR2ImplicitExponentialTimeIntegration(const OptionSet & options);
 
 private:
-  /// name of the input variable
+  /// Variable name
   const LabeledAxisAccessor _var_name;
-  /// name of the rate variable
-  const LabeledAxisAccessor _var_rate_name;
 
-public:
-  /// Output: nonlinear resijdual
-  const LabeledAxisAccessor res;
-  /// Input: current variable spin rate
-  const LabeledAxisAccessor var_rate;
-  /// Input: current guess at next value
-  const LabeledAxisAccessor var;
-  /// Input: previous value
-  const LabeledAxisAccessor var_n;
-  /// Input: next time
-  const LabeledAxisAccessor time;
-  /// Input: previous time
-  const LabeledAxisAccessor time_n;
+  /// Variable rate name
+  const LabeledAxisAccessor _var_rate_name;
 
 protected:
   /// Perform the update by defining the nonlinear residual and it's derivatives
-  virtual void set_value(const LabeledVector & in,
-                         LabeledVector * out,
-                         LabeledMatrix * dout_din = nullptr,
-                         LabeledTensor3D * d2out_din2 = nullptr) const override;
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+
+  /// Nonlinear residual
+  Variable<Vec> & _r;
+
+  /// Current variable spin rate
+  const Variable<WR2> & _s_dot;
+
+  /// Current guess at next value
+  const Variable<Rot> & _s;
+
+  /// Previous value
+  const Variable<Rot> & _sn;
+
+  /// Current time
+  const Variable<Scalar> & _t;
+
+  /// Previous time
+  const Variable<Scalar> & _tn;
 };
 } // namespace neml2
