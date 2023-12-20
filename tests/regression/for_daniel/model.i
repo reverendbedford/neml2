@@ -7,6 +7,7 @@
   []
   [times]
     type = LinspaceScalar
+    start = 0
     end = end_time
     nstep = 100
   []
@@ -28,12 +29,28 @@
     end = end_temperature
     nstep = 100
   []
+  [exx]
+    type = FullScalar
+    batch_shape = '(1)'
+    value = 0.1
+  []
+  [eyy]
+    type = FullScalar
+    batch_shape = '(1)'
+    value = -0.05
+  []
+  [ezz]
+    type = FullScalar
+    batch_shape = '(1)'
+    value = -0.05
+  []
   [max_strain]
     type = FillSR2
-    values = '0.1 -0.05 -0.05'
+    values = 'exx eyy ezz'
   []
   [strains]
-    type = LinspaceScalar
+    type = LinspaceSR2
+    start = 0
     end = max_strain
     nstep = 100
   []
