@@ -31,17 +31,17 @@
   []
   [exx]
     type = FullScalar
-    batch_shape = '(1)'
+    batch_shape = '(20)'
     value = 0.1
   []
   [eyy]
     type = FullScalar
-    batch_shape = '(1)'
+    batch_shape = '(20)'
     value = -0.05
   []
   [ezz]
     type = FullScalar
-    batch_shape = '(1)'
+    batch_shape = '(20)'
     value = -0.05
   []
   [max_strain]

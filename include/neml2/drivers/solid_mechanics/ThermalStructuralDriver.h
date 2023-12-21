@@ -39,6 +39,6 @@ protected:
   virtual void update_forces() override;
 
   LabeledAxisAccessor _temperature_name;
-  torch::Tensor _temperature;
+  Scalar _temperature;
 };
 }

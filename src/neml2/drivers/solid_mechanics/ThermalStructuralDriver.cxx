@@ -41,7 +41,7 @@ ThermalStructuralDriver::expected_options()
 ThermalStructuralDriver::ThermalStructuralDriver(const OptionSet & options)
   : SolidMechanicsDriver(options),
     _temperature_name(options.get<LabeledAxisAccessor>("temperature")),
-    _temperature(options.get<CrossRef<torch::Tensor>>("prescribed_temperatures"))
+    _temperature(options.get<CrossRef<torch::Tensor>>("prescribed_temperatures"), 2)
 {
 }
 
@@ -49,7 +49,7 @@ void
 ThermalStructuralDriver::update_forces()
 {
   SolidMechanicsDriver::update_forces();
-  auto current_temperature = Scalar(_temperature.index({_step_count}).unsqueeze(-1));
+  auto current_temperature = _temperature.batch_index({_step_count});
   _in.set(current_temperature, _temperature_name);
 }
 }
