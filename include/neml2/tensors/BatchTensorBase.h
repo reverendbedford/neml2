@@ -398,6 +398,24 @@ sign(const Derived & a)
   return Derived(torch::sign(a), a.batch_dim());
 }
 
+template <
+    class Derived,
+    typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<Derived>, Derived>>>
+Derived
+cosh(const Derived & a)
+{
+  return Derived(torch::cosh(a), a.batch_dim());
+}
+
+template <
+    class Derived,
+    typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<Derived>, Derived>>>
+Derived
+sinh(const Derived & a)
+{
+  return Derived(torch::sinh(a), a.batch_dim());
+}
+
 /**
  * This is (almost) equivalent to Torch's heaviside, except that the Torch's version is not
  * differentiable (back-propagatable). I said "almost" because torch::heaviside allows you to set
