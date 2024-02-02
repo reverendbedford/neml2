@@ -44,6 +44,8 @@ TransientDriver::expected_options()
   options.set<bool>("show_parameters") = false;
   options.set<std::string>("device") = "cpu";
 
+  options.set<std::vector<LabeledAxisAccessor>>("ic_scalar_names");
+  options.set<std::vector<CrossRef<Scalar>>>("ic_scalar_values");
   options.set<std::vector<LabeledAxisAccessor>>("ic_rot_names");
   options.set<std::vector<CrossRef<Rot>>>("ic_rot_values");
   options.set<std::vector<LabeledAxisAccessor>>("ic_sr2_names");
@@ -68,6 +70,8 @@ TransientDriver::TransientDriver(const OptionSet & options)
     _show_params(options.get<bool>("show_parameters")),
     _result_in(LabeledVector::zeros({_nsteps, _nbatch}, {&_model.input()})),
     _result_out(LabeledVector::zeros({_nsteps, _nbatch}, {&_model.output()})),
+    _ic_scalar_names(options.get<std::vector<LabeledAxisAccessor>>("ic_scalar_names")),
+    _ic_scalar_values(options.get<std::vector<CrossRef<Scalar>>>("ic_scalar_values")),
     _ic_rot_names(options.get<std::vector<LabeledAxisAccessor>>("ic_rot_names")),
     _ic_rot_values(options.get<std::vector<CrossRef<Rot>>>("ic_rot_values")),
     _ic_sr2_names(options.get<std::vector<LabeledAxisAccessor>>("ic_sr2_names")),
@@ -157,6 +161,7 @@ TransientDriver::update_forces()
 void
 TransientDriver::apply_ic()
 {
+  set_IC<Scalar>(_ic_scalar_names, _ic_scalar_values);
   set_IC<Rot>(_ic_rot_names, _ic_rot_values);
   set_IC<SR2>(_ic_sr2_names, _ic_sr2_values);
 }
