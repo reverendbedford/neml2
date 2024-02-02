@@ -116,6 +116,10 @@ protected:
   /// Outputs from all time steps
   LabeledVector _result_out;
 
+  /// Names for scalar initial conditions
+  std::vector<LabeledAxisAccessor> _ic_scalar_names;
+  /// Values for the scalar initial conditions
+  std::vector<CrossRef<Scalar>> _ic_scalar_values;
   /// Names for the Rot initial conditions
   std::vector<LabeledAxisAccessor> _ic_rot_names;
   /// Values for the Rot initial conditions
