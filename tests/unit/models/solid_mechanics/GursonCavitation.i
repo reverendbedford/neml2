@@ -1,6 +1,6 @@
 [Drivers]
   [unit]
-    type = ModelUnitTest
+    type = NewModelUnitTest
     model = 'model'
     batch_shape = '(10)'
     input_scalar_names = 'state/internal/f'
@@ -12,7 +12,6 @@
     check_second_derivatives = true
   []
 []
-
 
 [Tensors]
   [Epr]

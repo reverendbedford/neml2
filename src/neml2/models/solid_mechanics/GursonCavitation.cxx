@@ -32,7 +32,7 @@ register_NEML2_object(GursonCavitation);
 OptionSet
 GursonCavitation::expected_options()
 {
-  OptionSet options = Model::expected_options();
+  OptionSet options = NewModel::expected_options();
   options.set<LabeledAxisAccessor>("plastic_strain_rate") = {{"state", "internal", "Ep_rate"}};
   options.set<LabeledAxisAccessor>("void_fraction") = {{"state", "internal", "f"}};
   options.set<LabeledAxisAccessor>("void_fraction_rate") = {{"state", "internal", "f_rate"}};
@@ -40,44 +40,37 @@ GursonCavitation::expected_options()
 }
 
 GursonCavitation::GursonCavitation(const OptionSet & options)
-  : Model(options),
-    plastic_strain_rate(
-        declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("plastic_strain_rate"))),
-    void_fraction(
-        declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("void_fraction"))),
-    void_fraction_rate(
-        declare_output_variable<Scalar>(options.get<LabeledAxisAccessor>("void_fraction_rate")))
+  : NewModel(options),
+    _phi_dot(
+        declare_output_variable<Scalar>(options.get<LabeledAxisAccessor>("void_fraction_rate"))),
+    _Ep_dot(declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("plastic_strain_rate"))),
+    _phi(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("void_fraction")))
 {
-  setup();
 }
 
 void
-GursonCavitation::set_value(const LabeledVector & in,
-                            LabeledVector * out,
-                            LabeledMatrix * dout_din,
-                            LabeledTensor3D * d2out_din2) const
+GursonCavitation::set_value(bool out, bool dout_din, bool d2out_din2)
 {
-  const auto options = in.options();
-
-  auto f = in.get<Scalar>(void_fraction);
-  auto tr_ep = in.get<SR2>(plastic_strain_rate).tr();
+  const auto ep_dot = SR2(_Ep_dot).tr();
 
   if (out)
-    out->set((1 - f) * tr_ep, void_fraction_rate);
+    _phi_dot = (1 - _phi) * ep_dot;
 
   if (dout_din || d2out_din2)
   {
-    auto I = SR2::identity(options);
+    const auto I = SR2::identity(options());
+
     if (dout_din)
     {
-      dout_din->set(-tr_ep, void_fraction_rate, void_fraction);
-      dout_din->set(I * (1 - f), void_fraction_rate, plastic_strain_rate);
+      _phi_dot.d(_phi) = -ep_dot;
+      _phi_dot.d(_Ep_dot) = I * (1 - _phi);
     }
+
     // No idea if this will ever be used, but why not as it's easy?
     if (d2out_din2)
     {
-      d2out_din2->set(-I, void_fraction_rate, void_fraction, plastic_strain_rate);
-      d2out_din2->set(-I, void_fraction_rate, plastic_strain_rate, void_fraction);
+      _phi_dot.d(_phi, _Ep_dot) = -I;
+      _phi_dot.d(_Ep_dot, _phi) = -I;
     }
   }
 }

@@ -24,30 +24,35 @@
 
 #pragma once
 
-#include "neml2/models/Model.h"
+#include "neml2/models/NewModel.h"
 
 namespace neml2
 {
-class GTNYieldFunction : public Model
+class GTNYieldFunction : public NewModel
 {
 public:
   static OptionSet expected_options();
 
   GTNYieldFunction(const OptionSet & options);
 
-public:
-  const LabeledAxisAccessor flow_invariant;
-  const LabeledAxisAccessor poro_invariant;
-  const LabeledAxisAccessor isotropic_hardening;
-  const LabeledAxisAccessor void_fraction;
-  const LabeledAxisAccessor yield_function;
-
 protected:
   /// The value of the yield function
-  virtual void set_value(const LabeledVector & in,
-                         LabeledVector * out,
-                         LabeledMatrix * dout_din = nullptr,
-                         LabeledTensor3D * d2out_din2 = nullptr) const override;
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+
+  /// Yield function
+  Variable<Scalar> & _f;
+
+  /// Flow invariant
+  const Variable<Scalar> & _se;
+
+  /// Poro invariant
+  const Variable<Scalar> & _sp;
+
+  /// Void fraction
+  const Variable<Scalar> & _phi;
+
+  /// Isotropic hardening
+  const Variable<Scalar> * _h;
 
   /// Yield stress
   const Scalar & _s0;

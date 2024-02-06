@@ -71,8 +71,7 @@ YieldFunction::set_value(bool out, bool dout_din, bool d2out_din2)
     if (_h)
       _f.d(*_h) = -std::sqrt(2.0 / 3.0) * I;
 
-    const auto sy = nl_param("sy");
-    if (sy)
+    if (const auto sy = nl_param("sy"))
       _f.d(*sy) = -std::sqrt(2.0 / 3.0) * I;
   }
 

@@ -119,10 +119,10 @@
     type = ImplicitUpdate
     implicit_model = 'surface'
     solver = 'newton'
-    additional_outputs = 'state/internal/Ep'
   []
   [model]
     type = ComposedModel
     models = 'return_map elastic_strain elasticity'
+    additional_outputs = 'state/internal/Ep'
   []
 []

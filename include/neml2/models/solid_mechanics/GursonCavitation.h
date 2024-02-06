@@ -24,31 +24,28 @@
 
 #pragma once
 
-#include "neml2/models/Model.h"
+#include "neml2/models/NewModel.h"
 
 namespace neml2
 {
-class GursonCavitation : public Model
+class GursonCavitation : public NewModel
 {
 public:
   static OptionSet expected_options();
 
   GursonCavitation(const OptionSet & options);
 
-  /// Accessor for the plastic strain rate
-  const LabeledAxisAccessor plastic_strain_rate;
-
-  /// Accessor for the void fracation
-  const LabeledAxisAccessor void_fraction;
-
-  /// Accessor for the cavitation rate
-  const LabeledAxisAccessor void_fraction_rate;
-
 protected:
   /// The flow direction
-  virtual void set_value(const LabeledVector & in,
-                         LabeledVector * out,
-                         LabeledMatrix * dout_din = nullptr,
-                         LabeledTensor3D * d2out_din2 = nullptr) const override;
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+
+  /// Void fraction rate
+  Variable<Scalar> & _phi_dot;
+
+  /// Plastic strain rate
+  const Variable<SR2> & _Ep_dot;
+
+  /// Current void fraction
+  const Variable<Scalar> & _phi;
 };
 } // namespace neml2
