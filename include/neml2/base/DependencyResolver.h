@@ -271,18 +271,23 @@ DependencyResolver<Node, ItemType>::resolve()
   _visited.clear();
   _resolution.clear();
   for (const auto & node : _end_nodes)
-    resolve(node);
+    if (!_visited[node])
+      resolve(node);
 
   // Make sure each node appears in the resolution once and only once
   for (const auto & node : _nodes)
   {
     auto count = std::count(_resolution.begin(), _resolution.end(), node);
+    neml_assert(count > 0,
+                "Each node must appear in the dependency resolution. Node ",
+                node->name(),
+                " is missing. This is an internal error -- consider filing a bug report.");
     neml_assert(count == 1,
                 "Each node must appear in the dependency resolution once and only once. Node ",
                 node->name(),
                 " appeared ",
                 count,
-                " times.");
+                " times. This indicates cyclic dependency.");
   }
 }
 
