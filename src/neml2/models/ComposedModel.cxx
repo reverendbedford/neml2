@@ -120,7 +120,10 @@ ComposedModel::set_value(bool out, bool dout_din, bool d2out_din2)
   if (out)
   {
     for (auto model : _dependency.end_nodes())
+    {
+      std::cout << model->name() << std::endl;
       output_storage().fill(model->output_storage());
+    }
   }
 
   // If the first derivatives of the output variables w.r.t. the input variables are requested, we
@@ -167,7 +170,7 @@ ComposedModel::total_derivative(Model * model)
   if (_dependency.node_providers().count(model))
     for (auto dep : _dependency.node_providers().at(model))
       dpin_din.fill(total_derivative(dep));
-  const auto dout_din = model->derivative_storage().chain(dpin_din);
+  const auto dout_din = model->get_doutput_dinput().chain(dpin_din);
 
   // Cache the result
   _dpout_din[model] = dout_din;

@@ -197,7 +197,7 @@ protected:
 
   virtual void cache(const torch::TensorOptions & options);
 
-  virtual void reinit_implicit_system() override;
+  virtual void reinit_implicit_system(bool s, bool r, bool J) override;
 
   /**
    * @brief Register a model that the current model may use during its evaluation.
@@ -234,6 +234,9 @@ protected:
 
   /// Whether to use AD to compute 2nd derivatives
   bool _AD_2nd_deriv;
+
+  /// Whether this is an implicit system
+  bool _implicit;
 
 private:
   /// Helper method to extract derivatives after back propagation

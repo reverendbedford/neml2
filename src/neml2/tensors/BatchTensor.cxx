@@ -40,7 +40,7 @@ bmm(const BatchTensor & a, const BatchTensor & b)
                   "The second tensor in bmm has base dimension ",
                   b.base_dim(),
                   " instead of 2.");
-  return BatchTensor(torch::einsum("...im,...mj", {a, b}), broadcast_batch_dim(a, b));
+  return BatchTensor(torch::matmul(a, b), broadcast_batch_dim(a, b));
 }
 }
 

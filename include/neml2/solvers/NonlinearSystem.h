@@ -56,7 +56,7 @@ public:
   BatchTensor scale_direction(const BatchTensor & p) const;
 
   /// Set the solution vector
-  virtual void set_solution(const BatchTensor & x) { _solution.copy_(x); }
+  virtual void set_solution(const BatchTensor & x);
 
   /// Get the solution vector
   virtual const BatchTensor & solution() const { return _solution; }
@@ -77,7 +77,7 @@ public:
   virtual std::tuple<BatchTensor, BatchTensor> residual_and_Jacobian() final;
 
 protected:
-  virtual void reinit_implicit_system() {}
+  virtual void reinit_implicit_system(bool /*s*/, bool /*r*/, bool /*J*/) {}
 
   /**
    * @brief Compute the residual and Jacobian
@@ -86,9 +86,6 @@ protected:
    * @param Jacobian Whether Jacobian is requested
    */
   virtual void assemble(bool, bool) {}
-
-  /// Remove me
-  virtual void assemble(const BatchTensor &, BatchTensor *, BatchTensor *) {}
 
   /// Number of degrees of freedom
   TorchSize _ndof;

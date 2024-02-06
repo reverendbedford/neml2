@@ -55,7 +55,7 @@ LabeledMatrix::fill(const LabeledMatrix & other, bool recursive)
   const auto indices1 = axis(1).common_indices(other.axis(1), recursive);
   for (const auto & [idxi, idxi_other] : indices0)
     for (const auto & [idxj, idxj_other] : indices1)
-      _tensor.base_index({idxi, idxj}).copy_(other.base_index({idxi_other, idxj_other}));
+      _tensor.base_index_put({idxi, idxj}, other.base_index({idxi_other, idxj_other}));
 }
 
 LabeledMatrix

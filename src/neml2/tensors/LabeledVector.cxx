@@ -46,14 +46,7 @@ LabeledVector::fill(const LabeledVector & other, bool recursive)
 {
   const auto indices = axis(0).common_indices(other.axis(0), recursive);
   for (const auto & [idx, idx_other] : indices)
-    _tensor.base_index({idx}).copy_(other.base_index({idx_other}));
-}
-
-LabeledMatrix
-LabeledVector::outer(const LabeledVector & other) const
-{
-  return LabeledMatrix(math::bmm(tensor().base_unsqueeze(-1), other.tensor().base_unsqueeze(-2)),
-                       {&axis(0), &other.axis(0)});
+    _tensor.base_index_put({idx}, other.base_index({idx_other}));
 }
 
 namespace utils

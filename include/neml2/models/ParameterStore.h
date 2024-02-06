@@ -128,6 +128,7 @@ ParameterStore::get_parameter(const std::string & name)
   neml_assert(_object->host() == _object, "This method should only be called on the host model.");
 
   auto base_ptr = _param_values.query_value(name);
+  neml_assert(base_ptr, "Parameter named ", name, " does not exist.");
   auto ptr = dynamic_cast<TensorValue<T> *>(base_ptr);
   neml_assert_dbg(ptr, "Internal error: Failed to cast parameter to a concrete type.");
   return ptr->value();
@@ -138,7 +139,7 @@ const T &
 ParameterStore::declare_parameter(const std::string & name, const T & rawval)
 {
   if (_object->host() != _object)
-    _object->host<ParameterStore>()->declare_parameter(name, rawval);
+    return _object->host<ParameterStore>()->declare_parameter(_object->name() + "." + name, rawval);
 
   // If the parameter already exists, return its reference
   if (_param_values.has_key(name))

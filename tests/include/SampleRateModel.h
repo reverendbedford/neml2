@@ -45,8 +45,8 @@ public:
 protected:
   void set_value(bool, bool, bool) override;
 
-  const Scalar _a;
-  const Scalar _b;
-  const Scalar _c;
+  const Scalar & _a;
+  const Scalar & _b;
+  const Scalar & _c;
 };
 }

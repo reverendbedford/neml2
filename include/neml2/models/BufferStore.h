@@ -115,6 +115,7 @@ BufferStore::get_buffer(const std::string & name)
   neml_assert(_object->host() == _object, "This method should only be called on the host model.");
 
   auto base_ptr = _buffer_values.query_value(name);
+  neml_assert(base_ptr, "Buffer named ", name, " does not exist.");
   auto ptr = dynamic_cast<TensorValue<T> *>(base_ptr);
   neml_assert_dbg(ptr, "Internal error: Failed to cast buffer to a concrete type.");
   return ptr->value();
@@ -125,7 +126,7 @@ const T &
 BufferStore::declare_buffer(const std::string & name, const T & rawval)
 {
   if (_object->host() != _object)
-    return _object->host<BufferStore>()->declare_buffer(name, rawval);
+    return _object->host<BufferStore>()->declare_buffer(_object->name() + "." + name, rawval);
 
   // If the buffer already exists, return its reference
   if (_buffer_values.has_key(name))

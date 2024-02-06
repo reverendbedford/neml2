@@ -172,18 +172,25 @@ BatchTensor full_to_skew(const BatchTensor & full, TorchSize dim = 0);
 BatchTensor skew_to_full(const BatchTensor & skew, TorchSize dim = 0);
 
 /**
- * @brief Use automatic differentiation to calculate the derivatives w.r.t. to the parameter
- * _component by component_
+ * @brief Use automatic differentiation (AD) to calculate the derivatives w.r.t. to the parameter
  *
- * If the parameter is batched, the batch shape must be the _same_ with the batch shape of the
- * output \p o. Note that this is the poor-man's attempt at obtaining the Jacobian -- libTorch
- * really isn't designed for this -- unless we have vmap...
+ * @warning Torch (and hence NEML2) AD wasn't designed to compute the full Jacobian from the very
+ * beginning. Using this method to calculate the full Jacobian is inefficient and is subjected to
+ * some restrictions on batch shapes: This method will only work when the output \p y and the
+ * paramter \p p have the same batch shape.
  *
- * @param o The `BatchTensor` to to be differentiated
+ * However, in practice, the batch shape of the output \p y and the batch shape of the parameter \p
+ * p can be different. In that case, calculating the full Jacobian is not possible, and an exception
+ * will be thrown.
+ *
+ * One possible (inefficient) workaround is to expand and copy the parameter \p p batch dimensions,
+ * e.g., batch_expand_copy, _before_ calculating the output \p y.
+ *
+ * @param y The `BatchTensor` to to be differentiated
  * @param p The parameter to take derivatives with respect to
- * @return BatchTensor $\partial o/\partial p$
+ * @return BatchTensor \f$\partial y/\partial p\f$
  */
-BatchTensor jacrev(const BatchTensor & o, const BatchTensor & p);
+BatchTensor jacrev(const BatchTensor & out, const BatchTensor & p);
 
 BatchTensor
 base_diag_embed(const BatchTensor & a, TorchSize offset = 0, TorchSize d1 = -2, TorchSize d2 = -1);

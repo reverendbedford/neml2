@@ -63,21 +63,22 @@ Model::setup()
     for (auto && [x_name, x_var] : input_views())
       y_var.add_arg(x_var);
   }
+
+  // Determine if this is an implicit system
+  if (!input_axis().has_subaxis("state"))
+    _implicit = false;
+  else if (!output_axis().has_subaxis("residual"))
+    _implicit = false;
+  else if (input_axis().subaxis("state") != output_axis().subaxis("residual"))
+    _implicit = false;
+  else
+    _implicit = true;
 }
 
 bool
 Model::implicit() const
 {
-  if (!host<Model>()->input_axis().has_subaxis("state"))
-    return false;
-
-  if (!output_axis().has_subaxis("residual"))
-    return false;
-
-  if (host<Model>()->input_axis().subaxis("state") != output_axis().subaxis("residual"))
-    return false;
-
-  return true;
+  return _implicit;
 }
 
 void
@@ -99,7 +100,7 @@ Model::reinit(TorchShapeRef batch_shape, const torch::TensorOptions & options)
   setup_output_views(true, true, true);
 
   // Setup views for residual and Jacobian
-  reinit_implicit_system();
+  reinit_implicit_system(true, true, true);
 }
 
 void
@@ -160,6 +161,8 @@ void
 Model::detach_and_zero(bool out, bool dout_din, bool d2out_din2)
 {
   VariableStore::detach_and_zero(out, dout_din, d2out_din2);
+  reinit_implicit_system(false, out, dout_din);
+
   for (auto submodel : registered_models())
     submodel->detach_and_zero(out, dout_din, d2out_din2);
 }
@@ -183,18 +186,25 @@ Model::cache(const torch::TensorOptions & options)
 }
 
 void
-Model::reinit_implicit_system()
+Model::reinit_implicit_system(bool s, bool r, bool J)
 {
   if (implicit())
   {
-    _ndof = host<Model>()->input_axis().storage_size("state");
-    _solution = host<Model>()->input_storage()("state");
-    _residual = output_storage()("residual");
-    _Jacobian = derivative_storage()("residual", "state");
+    if (s)
+    {
+      _ndof = host<Model>()->input_axis().storage_size("state");
+      _solution = host<Model>()->input_storage()("state");
+    }
+
+    if (r)
+      _residual = output_storage()("residual");
+
+    if (J)
+      _Jacobian = derivative_storage()("residual", "state");
   }
 
   for (auto submodel : registered_models())
-    submodel->reinit_implicit_system();
+    submodel->reinit_implicit_system(s, r, J);
 }
 
 void

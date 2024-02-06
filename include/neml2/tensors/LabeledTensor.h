@@ -231,7 +231,7 @@ template <typename T>
 void
 LabeledTensor<Derived, D>::copy_(const T & other)
 {
-  _tensor.copy_(other);
+  _tensor.index_put_({torch::indexing::Slice()}, other);
 }
 
 template <class Derived, TorchSize D>

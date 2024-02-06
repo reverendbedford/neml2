@@ -43,6 +43,49 @@ public:
   /// Setup the layouts of all the registered axes
   virtual void setup_layout();
 
+  /// Get an input variable
+  /// @{
+  template <typename T = BatchTensor>
+  Variable<T> & get_input_variable(const LabeledAxisAccessor & name)
+  {
+    auto var_base_ptr = _input_views.query_value(name);
+    neml_assert(var_base_ptr, "Input variable ", name, " does not exist.");
+    auto var_ptr = dynamic_cast<Variable<T> *>(var_base_ptr);
+    neml_assert(
+        var_ptr, "Input variable ", name, " exist but cannot be cast to the requested type.");
+    return *var_ptr;
+  }
+  template <typename T = BatchTensor>
+  const Variable<T> & get_input_variable(const LabeledAxisAccessor & name) const
+  {
+    const auto var_base_ptr = _input_views.query_value(name);
+    neml_assert(var_base_ptr, "Input variable ", name, " does not exist.");
+    const auto var_ptr = dynamic_cast<const Variable<T> *>(var_base_ptr);
+    neml_assert(
+        var_ptr, "Input variable ", name, " exist but cannot be cast to the requested type.");
+    return *var_ptr;
+  }
+  /// @}
+
+  /// Get an output variable
+  /// @{
+  template <typename T = BatchTensor>
+  const Variable<T> & get_output_variable(const LabeledAxisAccessor & name)
+  {
+    return std::as_const(*this).get_output_variable<T>(name);
+  }
+  template <typename T = BatchTensor>
+  const Variable<T> & get_output_variable(const LabeledAxisAccessor & name) const
+  {
+    const auto var_base_ptr = _output_views.query_value(name);
+    neml_assert(var_base_ptr, "Output variable ", name, " does not exist.");
+    const auto var_ptr = dynamic_cast<const Variable<T> *>(var_base_ptr);
+    neml_assert(
+        var_ptr, "Output variable ", name, " exist but cannot be cast to the requested type.");
+    return *var_ptr;
+  }
+  /// @}
+
   /// Definition of the input variables
   /// @{
   LabeledAxis & input_axis() { return _input_axis; }

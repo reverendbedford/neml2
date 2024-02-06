@@ -51,8 +51,8 @@ LabeledTensor3D::fill(const LabeledTensor3D & other, bool recursive)
   for (const auto & [idxi, idxi_other] : indices0)
     for (const auto & [idxj, idxj_other] : indices1)
       for (const auto & [idxk, idxk_other] : indices2)
-        _tensor.base_index({idxi, idxj, idxk})
-            .copy_(other.base_index({idxi_other, idxj_other, idxk_other}));
+        _tensor.base_index_put({idxi, idxj, idxk},
+                               other.base_index({idxi_other, idxj_other, idxk_other}));
 }
 
 LabeledTensor3D
