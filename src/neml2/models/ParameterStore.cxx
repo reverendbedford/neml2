@@ -76,7 +76,7 @@ ParameterStore::declare_parameter(const std::string & name, const std::string & 
       {
         // Handle the case of *nonlinear* parameter.
         // Note that nonlinear parameter should only exist inside a Model.
-        auto model = dynamic_cast<NewModel *>(this);
+        auto model = dynamic_cast<Model *>(this);
         neml_assert(model,
                     "Trying to declare a parameter named ",
                     name,

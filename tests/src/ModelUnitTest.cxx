@@ -35,6 +35,7 @@ ModelUnitTest::expected_options()
   OptionSet options = Driver::expected_options();
   options.set<std::string>("model");
   options.set<TorchShape>("batch_shape") = {1};
+  options.set<bool>("check_values") = true;
   options.set<bool>("check_first_derivatives") = true;
   options.set<bool>("check_second_derivatives") = false;
   options.set<bool>("check_AD_first_derivatives") = true;
@@ -74,6 +75,7 @@ ModelUnitTest::ModelUnitTest(const OptionSet & options)
   : Driver(options),
     _model(Factory::get_object<Model>("Models", options.get<std::string>("model"))),
     _batch_shape(options.get<TorchShape>("batch_shape")),
+    _check_values(options.get<bool>("check_values")),
     _check_1st_deriv(options.get<bool>("check_first_derivatives")),
     _check_2nd_deriv(options.get<bool>("check_second_derivatives")),
     _check_AD_1st_deriv(options.get<bool>("check_AD_first_derivatives")),
@@ -87,19 +89,21 @@ ModelUnitTest::ModelUnitTest(const OptionSet & options)
     _secderiv_rtol(options.get<Real>("second_derivatives_rel_tol")),
     _secderiv_atol(options.get<Real>("second_derivatives_abs_tol"))
 {
-  _in = LabeledVector::zeros(_batch_shape, {&_model.input()});
+  _in = LabeledVector::zeros(_batch_shape, {&_model.input_axis()});
   fill_vector<BatchTensor>(_in, "input_batch_tensor_names", "input_batch_tensor_values");
   fill_vector<Scalar>(_in, "input_scalar_names", "input_scalar_values");
   fill_vector<SR2>(_in, "input_symr2_names", "input_symr2_values");
   fill_vector<WR2>(_in, "input_skewr2_names", "input_skewr2_values");
   fill_vector<Rot>(_in, "input_rot_names", "input_rot_values");
 
-  _out = LabeledVector::zeros(_batch_shape, {&_model.output()});
+  _out = LabeledVector::zeros(_batch_shape, {&_model.output_axis()});
   fill_vector<BatchTensor>(_out, "output_batch_tensor_names", "output_batch_tensor_values");
   fill_vector<Scalar>(_out, "output_scalar_names", "output_scalar_values");
   fill_vector<SR2>(_out, "output_symr2_names", "output_symr2_values");
   fill_vector<WR2>(_out, "output_skewr2_names", "output_skewr2_values");
   fill_vector<Rot>(_out, "output_rot_names", "output_rot_values");
+
+  _model.reinit(_in);
 }
 
 bool
@@ -120,7 +124,8 @@ ModelUnitTest::run()
 void
 ModelUnitTest::check_all()
 {
-  check_values();
+  if (_check_values)
+    check_values();
 
   if (_check_1st_deriv)
     check_derivatives(false, false);
@@ -157,7 +162,7 @@ void
 ModelUnitTest::check_derivatives(bool first, bool second)
 {
   _model.use_AD_derivatives(first, second);
-  auto exact = _model.dvalue(_in);
+  auto exact = std::get<1>(_model.value_and_dvalue(_in));
   auto numerical = finite_differencing_derivative(
       [this](const BatchTensor & x) { return _model.value(LabeledVector(x, _in.axes())); }, _in);
   neml_assert(torch::allclose(exact.tensor(), numerical, _deriv_rtol, _deriv_atol),
@@ -172,9 +177,11 @@ void
 ModelUnitTest::check_second_derivatives(bool first, bool second)
 {
   _model.use_AD_derivatives(first, second);
-  auto exact = _model.d2value(_in);
+  auto exact = std::get<2>(_model.value_and_dvalue_and_d2value(_in));
   auto numerical = finite_differencing_derivative(
-      [this](const BatchTensor & x) { return _model.dvalue(LabeledVector(x, _in.axes())); }, _in);
+      [this](const BatchTensor & x)
+      { return std::get<1>(_model.value_and_dvalue(LabeledVector(x, _in.axes()))); },
+      _in);
   neml_assert(torch::allclose(exact.tensor(), numerical, _secderiv_rtol, _secderiv_atol),
               "The model gives second derivatives that are different from those given by finite "
               "differencing. The model gives:\n",

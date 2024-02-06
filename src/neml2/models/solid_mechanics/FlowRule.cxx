@@ -29,13 +29,13 @@ namespace neml2
 OptionSet
 FlowRule::expected_options()
 {
-  OptionSet options = NewModel::expected_options();
+  OptionSet options = Model::expected_options();
   options.set<LabeledAxisAccessor>("flow_rate") = {{"state", "internal", "gamma_rate"}};
   return options;
 }
 
 FlowRule::FlowRule(const OptionSet & options)
-  : NewModel(options),
+  : Model(options),
     _gamma_dot(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("flow_rate")))
 {
 }

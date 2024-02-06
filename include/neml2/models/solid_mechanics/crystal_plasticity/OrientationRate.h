@@ -24,14 +24,14 @@
 
 #pragma once
 
-#include "neml2/models/NewModel.h"
+#include "neml2/models/Model.h"
 
 namespace neml2
 {
 /// Calculate the orientation rate from the crystal model kinetics
 // Strictly this is the *spin* not the rotation rate.  But the integration routines
 // expect spin.
-class OrientationRate : public NewModel
+class OrientationRate : public Model
 {
 public:
   static OptionSet expected_options();

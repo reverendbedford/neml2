@@ -24,12 +24,12 @@
 
 #pragma once
 
-#include "neml2/models/NewModel.h"
+#include "neml2/models/Model.h"
 #include "neml2/solvers/NonlinearSolver.h"
 
 namespace neml2
 {
-class ImplicitUpdate : public NewModel
+class ImplicitUpdate : public Model
 {
 public:
   static OptionSet expected_options();
@@ -42,7 +42,7 @@ protected:
   void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
   /// The implicit model to be updated
-  NewModel & _model;
+  Model & _model;
 
   /// The nonlinear solver used to solve the nonlinear system
   const NonlinearSolver & _solver;

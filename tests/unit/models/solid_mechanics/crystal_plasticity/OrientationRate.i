@@ -1,6 +1,6 @@
 [Drivers]
   [unit]
-    type = NewModelUnitTest
+    type = ModelUnitTest
     model = 'model'
     batch_shape = '(5,4)'
     input_symr2_names = 'state/elastic_strain state/internal/plastic_deformation_rate'

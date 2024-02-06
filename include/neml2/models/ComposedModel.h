@@ -24,12 +24,12 @@
 
 #pragma once
 
-#include "neml2/models/NewModel.h"
+#include "neml2/models/Model.h"
 #include "neml2/base/DependencyResolver.h"
 
 namespace neml2
 {
-class ComposedModel : public NewModel
+class ComposedModel : public Model
 {
 public:
   static OptionSet expected_options();
@@ -50,24 +50,24 @@ private:
   void clear_second_derivative_cache() { _d2pout_din2.clear(); }
 
   /// Helper method to recursively apply chain rule
-  LabeledMatrix total_derivative(NewModel * model);
+  LabeledMatrix total_derivative(Model * model);
 
   /// Helper method to recursively apply second order chain rule
-  std::pair<LabeledMatrix, LabeledTensor3D> total_second_derivative(NewModel * model);
+  std::pair<LabeledMatrix, LabeledTensor3D> total_second_derivative(Model * model);
 
   /// Additional outbound items in the dependency graph
   const std::vector<LabeledAxisAccessor> _additional_outputs;
 
   /// Helper to resolve model dependency
-  DependencyResolver<NewModel, LabeledAxisAccessor> _dependency;
+  DependencyResolver<Model, LabeledAxisAccessor> _dependency;
 
   /// Starting point of chain rule
   LabeledMatrix _din_din;
 
   /// Cache for partial derivatives of model outputs w.r.t. total input
-  std::map<NewModel *, LabeledMatrix> _dpout_din;
+  std::map<Model *, LabeledMatrix> _dpout_din;
 
   /// Cache for second partial derivatives of model outputs w.r.t. total input
-  std::map<NewModel *, LabeledTensor3D> _d2pout_din2;
+  std::map<Model *, LabeledTensor3D> _d2pout_din2;
 };
 } // namespace neml2

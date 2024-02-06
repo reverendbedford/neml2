@@ -32,15 +32,15 @@ register_NEML2_object(ImplicitUpdate);
 OptionSet
 ImplicitUpdate::expected_options()
 {
-  OptionSet options = NewModel::expected_options();
+  OptionSet options = Model::expected_options();
   options.set<std::string>("implicit_model");
   options.set<std::string>("solver");
   return options;
 }
 
 ImplicitUpdate::ImplicitUpdate(const OptionSet & options)
-  : NewModel(options),
-    _model(register_model<NewModel>(options.get<std::string>("implicit_model"))),
+  : Model(options),
+    _model(register_model<Model>(options.get<std::string>("implicit_model"))),
     _solver(Factory::get_object<NonlinearSolver>("Solvers", options.get<std::string>("solver")))
 {
   // Take care of dependency registration:
@@ -76,11 +76,11 @@ ImplicitUpdate::set_value(bool out, bool dout_din, bool d2out_din2)
   if (out || dout_din)
   {
     // Solve for the next state
-    NewModel::stage = NewModel::Stage::SOLVING;
+    Model::stage = Model::Stage::SOLVING;
     auto [succeeded, iters] = _solver.solve(_model);
     neml_assert(succeeded, "Nonlinear solve failed.");
     output_storage()("state").copy_(_model.solution());
-    NewModel::stage = NewModel::Stage::UPDATING;
+    Model::stage = Model::Stage::UPDATING;
 
     // Use the implicit function theorem (IFT) to calculate the other derivatives
     if (dout_din)

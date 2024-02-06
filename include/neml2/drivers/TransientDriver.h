@@ -87,7 +87,7 @@ protected:
   virtual void output() const;
 
   /// The model which the driver uses to perform constitutive updates.
-  NewModel & _model;
+  Model & _model;
   /// The tensor options for all the computations
   const torch::TensorOptions _options;
 

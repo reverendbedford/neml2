@@ -24,12 +24,12 @@
 
 #pragma once
 
-#include "neml2/models/NewModel.h"
+#include "neml2/models/Model.h"
 
 namespace neml2
 {
 /// Calculate the elastic strain rate from crystal model kinematics
-class ElasticStrainRate : public NewModel
+class ElasticStrainRate : public Model
 {
 public:
   static OptionSet expected_options();

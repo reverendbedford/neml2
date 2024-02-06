@@ -1,6 +1,6 @@
 [Drivers]
   [unit]
-    type = NewModelUnitTest
+    type = ModelUnitTest
     model = 'model'
     batch_shape = '(1)'
     input_scalar_names = 'state/foo state/bar state/foo_rate state/bar_rate old_state/foo old_state/bar forces/t old_forces/t'

@@ -1,6 +1,6 @@
 [Drivers]
   [unit]
-    type = NewModelUnitTest
+    type = ModelUnitTest
     model = 'model'
     input_scalar_names = 'state/internal/k'
     input_scalar_values = '20'

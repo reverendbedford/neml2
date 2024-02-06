@@ -24,12 +24,12 @@
 
 #pragma once
 
-#include "neml2/models/NewModel.h"
+#include "neml2/models/Model.h"
 #include "neml2/tensors/SR2.h"
 
 namespace neml2
 {
-class Elasticity : public NewModel
+class Elasticity : public Model
 {
 public:
   static OptionSet expected_options();

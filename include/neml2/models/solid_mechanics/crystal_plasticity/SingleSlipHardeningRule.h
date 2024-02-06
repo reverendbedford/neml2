@@ -24,12 +24,12 @@
 
 #pragma once
 
-#include "neml2/models/NewModel.h"
+#include "neml2/models/Model.h"
 
 namespace neml2
 {
 /// Any slip rule where all systems share the same strength
-class SingleSlipHardeningRule : public NewModel
+class SingleSlipHardeningRule : public Model
 {
 public:
   static OptionSet expected_options();

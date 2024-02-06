@@ -34,7 +34,7 @@ template <typename T>
 OptionSet
 ForceRate<T>::expected_options()
 {
-  OptionSet options = NewModel::expected_options();
+  OptionSet options = Model::expected_options();
   options.set<LabeledAxisAccessor>("force");
   options.set<LabeledAxisAccessor>("time") = {"t"};
   return options;
@@ -42,7 +42,7 @@ ForceRate<T>::expected_options()
 
 template <typename T>
 ForceRate<T>::ForceRate(const OptionSet & options)
-  : NewModel(options),
+  : Model(options),
     _df_dt(declare_output_variable<T>(
         options.get<LabeledAxisAccessor>("force").with_suffix("_rate").on("forces"))),
     _f(declare_input_variable<T>(options.get<LabeledAxisAccessor>("force").on("forces"))),

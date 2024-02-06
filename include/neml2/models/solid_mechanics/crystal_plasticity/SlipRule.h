@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/models/NewModel.h"
+#include "neml2/models/Model.h"
 
 namespace neml2
 {
@@ -34,7 +34,7 @@ class CrystalGeometry;
 }
 
 /// Parent class of slip rules, mapping from resolved shear and internal state to slip rates
-class SlipRule : public NewModel
+class SlipRule : public Model
 {
 public:
   static OptionSet expected_options();

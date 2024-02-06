@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/models/NewModel.h"
+#include "neml2/models/Model.h"
 
 namespace neml2
 {
@@ -34,7 +34,7 @@ class CrystalGeometry;
 }
 
 /// Calculate the plastic vorticity with the default crystal kinetics
-class PlasticVorticity : public NewModel
+class PlasticVorticity : public Model
 {
 public:
   static OptionSet expected_options();

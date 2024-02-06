@@ -35,10 +35,5 @@ public:
   using neml2::Model::Model;
 
 protected:
-  void set_value(const neml2::LabeledVector &,
-                 neml2::LabeledVector *,
-                 neml2::LabeledMatrix *,
-                 neml2::LabeledTensor3D *) const
-  {
-  }
+  void set_value(bool, bool, bool) override {}
 };

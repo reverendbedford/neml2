@@ -29,14 +29,14 @@ namespace neml2
 OptionSet
 IsotropicHardening::expected_options()
 {
-  OptionSet options = NewModel::expected_options();
+  OptionSet options = Model::expected_options();
   options.set<LabeledAxisAccessor>("equivalent_plastic_strain") = {{"state", "internal", "ep"}};
   options.set<LabeledAxisAccessor>("isotropic_hardening") = {{"state", "internal", "k"}};
   return options;
 }
 
 IsotropicHardening::IsotropicHardening(const OptionSet & options)
-  : NewModel(options),
+  : Model(options),
     _ep(declare_input_variable<Scalar>(
         options.get<LabeledAxisAccessor>("equivalent_plastic_strain"))),
     _h(declare_output_variable<Scalar>(options.get<LabeledAxisAccessor>("isotropic_hardening")))

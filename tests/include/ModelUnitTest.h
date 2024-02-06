@@ -72,6 +72,7 @@ private:
 
   Model & _model;
   const TorchShape _batch_shape;
+  const bool _check_values;
   const bool _check_1st_deriv;
   const bool _check_2nd_deriv;
   const bool _check_AD_1st_deriv;

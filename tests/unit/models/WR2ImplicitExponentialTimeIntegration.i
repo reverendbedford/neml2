@@ -1,6 +1,6 @@
 [Drivers]
   [unit]
-    type = NewModelUnitTest
+    type = ModelUnitTest
     model = 'model'
     input_skewr2_names = 'state/foo_rate'
     input_skewr2_values = 'w'

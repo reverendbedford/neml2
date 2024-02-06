@@ -35,7 +35,7 @@ namespace neml2
 OptionSet
 SlipRule::expected_options()
 {
-  OptionSet options = NewModel::expected_options();
+  OptionSet options = Model::expected_options();
 
   options.set<LabeledAxisAccessor>("slip_rates") = vecstr{"state", "internal", "slip_rates"};
 
@@ -50,7 +50,7 @@ SlipRule::expected_options()
 }
 
 SlipRule::SlipRule(const OptionSet & options)
-  : NewModel(options),
+  : Model(options),
     _crystal_geometry(register_data<crystallography::CrystalGeometry>(
         options.get<std::string>("crystal_geometry_name"))),
     _g(declare_output_variable_list<Scalar>(options.get<LabeledAxisAccessor>("slip_rates"),

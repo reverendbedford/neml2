@@ -31,7 +31,7 @@ register_NEML2_object(GTNYieldFunction);
 OptionSet
 GTNYieldFunction::expected_options()
 {
-  OptionSet options = NewModel::expected_options();
+  OptionSet options = Model::expected_options();
   options.set<CrossRef<Scalar>>("yield_stress");
   options.set<CrossRef<Scalar>>("q1");
   options.set<CrossRef<Scalar>>("q2");
@@ -45,7 +45,7 @@ GTNYieldFunction::expected_options()
 }
 
 GTNYieldFunction::GTNYieldFunction(const OptionSet & options)
-  : NewModel(options),
+  : Model(options),
     _f(declare_output_variable<Scalar>(options.get<LabeledAxisAccessor>("yield_function"))),
     _se(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("flow_invariant"))),
     _sp(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("poro_invariant"))),

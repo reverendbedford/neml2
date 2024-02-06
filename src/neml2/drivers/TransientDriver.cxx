@@ -58,7 +58,7 @@ TransientDriver::expected_options()
 
 TransientDriver::TransientDriver(const OptionSet & options)
   : Driver(options),
-    _model(Factory::get_object<NewModel>("Models", options.get<std::string>("model"))),
+    _model(Factory::get_object<Model>("Models", options.get<std::string>("model"))),
     _options(default_tensor_options().device(options.get<std::string>("device"))),
     _time(options.get<CrossRef<torch::Tensor>>("times"), 2),
     _step_count(0),

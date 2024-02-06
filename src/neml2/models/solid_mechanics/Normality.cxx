@@ -31,7 +31,7 @@ register_NEML2_object(Normality);
 OptionSet
 Normality::expected_options()
 {
-  OptionSet options = NewModel::expected_options();
+  OptionSet options = Model::expected_options();
   options.set<std::string>("model");
   options.set<LabeledAxisAccessor>("function");
   options.set<std::vector<LabeledAxisAccessor>>("from");
@@ -40,8 +40,8 @@ Normality::expected_options()
 }
 
 Normality::Normality(const OptionSet & options)
-  : NewModel(options),
-    _model(register_model<NewModel>(options.get<std::string>("model"))),
+  : Model(options),
+    _model(register_model<Model>(options.get<std::string>("model"))),
     _f(options.get<LabeledAxisAccessor>("function"))
 {
   // Set up the conjugate pairs

@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/models/NewModel.h"
+#include "neml2/models/Model.h"
 
 namespace neml2
 {
@@ -34,7 +34,7 @@ class CrystalGeometry;
 }
 
 /// A helper model to calculate the sum of the absolute value of the slip rates
-class SumSlipRates : public NewModel
+class SumSlipRates : public Model
 {
 public:
   static OptionSet expected_options();

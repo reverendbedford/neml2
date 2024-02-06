@@ -36,7 +36,7 @@ register_NEML2_object(WR2ImplicitExponentialTimeIntegration);
 OptionSet
 WR2ImplicitExponentialTimeIntegration::expected_options()
 {
-  OptionSet options = NewModel::expected_options();
+  OptionSet options = Model::expected_options();
   options.set<LabeledAxisAccessor>("variable");
   options.set<LabeledAxisAccessor>("time") = {"t"};
   return options;
@@ -44,7 +44,7 @@ WR2ImplicitExponentialTimeIntegration::expected_options()
 
 WR2ImplicitExponentialTimeIntegration::WR2ImplicitExponentialTimeIntegration(
     const OptionSet & options)
-  : NewModel(options),
+  : Model(options),
     _var_name(options.get<LabeledAxisAccessor>("variable")),
     _var_rate_name(_var_name.with_suffix("_rate")),
     _r(declare_output_variable<Vec>(_var_name.on("residual"))),
@@ -72,7 +72,7 @@ WR2ImplicitExponentialTimeIntegration::set_value(bool out, bool dout_din, bool d
     const auto de = (_s_dot * dt).dexp();
     _r.d(_s) = R2::identity(options());
     _r.d(_s_dot) = -Rot(_sn).drotate(inc) * de * dt;
-    if (NewModel::stage == NewModel::Stage::UPDATING)
+    if (Model::stage == Model::Stage::UPDATING)
     {
       _r.d(_sn) = -Rot(_sn).drotate_self(inc);
       _r.d(_t) = -Rot(_sn).drotate(inc) * de * Vec(_s_dot.value());

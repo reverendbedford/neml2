@@ -34,7 +34,7 @@ register_NEML2_object(TotalStrain);
 OptionSet
 TotalStrain::expected_options()
 {
-  OptionSet options = NewModel::expected_options();
+  OptionSet options = Model::expected_options();
   options.set<LabeledAxisAccessor>("elastic_strain") = {{"state", "internal", "Ee"}};
   options.set<LabeledAxisAccessor>("plastic_strain") = {{"state", "internal", "Ep"}};
   options.set<LabeledAxisAccessor>("total_strain") = vecstr{"state", "E"};
@@ -43,7 +43,7 @@ TotalStrain::expected_options()
 }
 
 TotalStrain::TotalStrain(const OptionSet & options)
-  : NewModel(options),
+  : Model(options),
     _rate_form(options.get<bool>("rate_form")),
     _Ee(declare_input_variable<SR2>(
         options.get<LabeledAxisAccessor>("elastic_strain").with_suffix(_rate_form ? "_rate" : ""))),

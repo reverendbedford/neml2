@@ -36,7 +36,7 @@ register_NEML2_object(OrientationRate);
 OptionSet
 OrientationRate::expected_options()
 {
-  OptionSet options = NewModel::expected_options();
+  OptionSet options = Model::expected_options();
   options.set<LabeledAxisAccessor>("orientation_rate") = vecstr{"state", "orientation_rate"};
   options.set<LabeledAxisAccessor>("elastic_strain") = vecstr{"state", "elastic_strain"};
   options.set<LabeledAxisAccessor>("vorticity") = vecstr{"forces", "vorticity"};
@@ -48,7 +48,7 @@ OrientationRate::expected_options()
 }
 
 OrientationRate::OrientationRate(const OptionSet & options)
-  : NewModel(options),
+  : Model(options),
     _R_dot(declare_output_variable<WR2>(options.get<LabeledAxisAccessor>("orientation_rate"))),
     _e(declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("elastic_strain"))),
     _w(declare_input_variable<WR2>(options.get<LabeledAxisAccessor>("vorticity"))),

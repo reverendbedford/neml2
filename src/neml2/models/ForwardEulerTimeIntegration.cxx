@@ -34,7 +34,7 @@ template <typename T>
 OptionSet
 ForwardEulerTimeIntegration<T>::expected_options()
 {
-  OptionSet options = NewModel::expected_options();
+  OptionSet options = Model::expected_options();
   options.set<LabeledAxisAccessor>("variable");
   options.set<LabeledAxisAccessor>("time") = {{"t"}};
   return options;
@@ -42,7 +42,7 @@ ForwardEulerTimeIntegration<T>::expected_options()
 
 template <typename T>
 ForwardEulerTimeIntegration<T>::ForwardEulerTimeIntegration(const OptionSet & options)
-  : NewModel(options),
+  : Model(options),
     _var_name(options.get<LabeledAxisAccessor>("variable")),
     _var_rate_name(_var_name.with_suffix("_rate")),
     _s(declare_output_variable<T>(_var_name.on("state"))),
@@ -67,7 +67,7 @@ ForwardEulerTimeIntegration<T>::set_value(bool out, bool dout_din, bool d2out_di
     if (dout_din)
     {
       _s.d(_ds_dt) = I * (_t - _tn);
-      if (NewModel::stage == NewModel::Stage::UPDATING)
+      if (Model::stage == Model::Stage::UPDATING)
       {
         _s.d(_sn) = I;
         _s.d(_t) = _ds_dt;
@@ -76,7 +76,7 @@ ForwardEulerTimeIntegration<T>::set_value(bool out, bool dout_din, bool d2out_di
     }
 
     if (d2out_din2)
-      if (NewModel::stage == NewModel::Stage::UPDATING)
+      if (Model::stage == Model::Stage::UPDATING)
       {
         _s.d(_ds_dt, _t) = I;
         _s.d(_ds_dt, _tn) = -I;

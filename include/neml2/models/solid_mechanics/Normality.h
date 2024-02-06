@@ -24,11 +24,11 @@
 
 #pragma once
 
-#include "neml2/models/NewModel.h"
+#include "neml2/models/Model.h"
 
 namespace neml2
 {
-class Normality : public NewModel
+class Normality : public Model
 {
 public:
   static OptionSet expected_options();
@@ -40,7 +40,7 @@ protected:
   void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
   /// The model which evaluates the potential function
-  NewModel & _model;
+  Model & _model;
 
   /// The potential function
   const LabeledAxisAccessor _f;

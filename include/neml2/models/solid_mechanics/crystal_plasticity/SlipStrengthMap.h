@@ -24,14 +24,14 @@
 
 #pragma once
 
-#include "neml2/models/NewModel.h"
+#include "neml2/models/Model.h"
 
 #include "neml2/models/crystallography/CrystalGeometry.h"
 
 namespace neml2
 {
 /// Parent class of maps between internal variables and the slip system strengths
-class SlipStrengthMap : public NewModel
+class SlipStrengthMap : public Model
 {
 public:
   static OptionSet expected_options();

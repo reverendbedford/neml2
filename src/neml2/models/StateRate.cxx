@@ -34,7 +34,7 @@ template <typename T>
 OptionSet
 StateRate<T>::expected_options()
 {
-  OptionSet options = NewModel::expected_options();
+  OptionSet options = Model::expected_options();
   options.set<LabeledAxisAccessor>("state");
   options.set<LabeledAxisAccessor>("time") = {"t"};
   return options;
@@ -42,7 +42,7 @@ StateRate<T>::expected_options()
 
 template <typename T>
 StateRate<T>::StateRate(const OptionSet & options)
-  : NewModel(options),
+  : Model(options),
     _s(declare_input_variable<T>(options.get<LabeledAxisAccessor>("state").on("state"))),
     _sn(declare_input_variable<T>(options.get<LabeledAxisAccessor>("state").on("old_state"))),
     _t(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("time").on("forces"))),

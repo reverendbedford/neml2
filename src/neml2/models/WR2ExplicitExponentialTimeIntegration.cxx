@@ -32,7 +32,7 @@ register_NEML2_object(WR2ExplicitExponentialTimeIntegration);
 OptionSet
 WR2ExplicitExponentialTimeIntegration::expected_options()
 {
-  OptionSet options = NewModel::expected_options();
+  OptionSet options = Model::expected_options();
   options.set<LabeledAxisAccessor>("variable");
   options.set<LabeledAxisAccessor>("time") = {{"t"}};
   return options;
@@ -40,7 +40,7 @@ WR2ExplicitExponentialTimeIntegration::expected_options()
 
 WR2ExplicitExponentialTimeIntegration::WR2ExplicitExponentialTimeIntegration(
     const OptionSet & options)
-  : NewModel(options),
+  : Model(options),
     _var_name(options.get<LabeledAxisAccessor>("variable")),
     _var_rate_name(_var_name.with_suffix("_rate")),
     _s(declare_output_variable<Rot>(_var_name.on("state"))),
@@ -68,7 +68,7 @@ WR2ExplicitExponentialTimeIntegration::set_value(bool out, bool dout_din, bool d
   {
     const auto de = (_s_dot * dt).dexp();
     _s.d(_s_dot) = Rot(_sn).drotate(inc) * de * dt;
-    if (NewModel::stage == NewModel::Stage::UPDATING)
+    if (Model::stage == Model::Stage::UPDATING)
     {
       _s.d(_sn) = Rot(_sn).drotate_self(inc);
       _s.d(_t) = Rot(_sn).drotate(inc) * de * Vec(_s_dot.value());

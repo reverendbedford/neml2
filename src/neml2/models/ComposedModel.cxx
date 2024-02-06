@@ -31,19 +31,19 @@ register_NEML2_object(ComposedModel);
 OptionSet
 ComposedModel::expected_options()
 {
-  OptionSet options = NewModel::expected_options();
+  OptionSet options = Model::expected_options();
   options.set<std::vector<std::string>>("models");
   options.set<std::vector<LabeledAxisAccessor>>("additional_outputs");
   return options;
 }
 
 ComposedModel::ComposedModel(const OptionSet & options)
-  : NewModel(options),
+  : Model(options),
     _additional_outputs(options.get<std::vector<LabeledAxisAccessor>>("additional_outputs"))
 {
   // Add registered models as nodes in the dependency resolver
   for (const auto & model_name : options.get<std::vector<std::string>>("models"))
-    register_model<NewModel>(model_name, /*merge_input=*/false);
+    register_model<Model>(model_name, /*merge_input=*/false);
 
   // Add registered models as nodes in the dependency resolver
   for (auto submodel : registered_models())
@@ -87,7 +87,7 @@ ComposedModel::ComposedModel(const OptionSet & options)
 void
 ComposedModel::allocate_variables(TorchShapeRef batch_shape, const torch::TensorOptions & options)
 {
-  NewModel::allocate_variables(batch_shape, options);
+  Model::allocate_variables(batch_shape, options);
   _din_din = LabeledMatrix::identity(batch_shape, input_axis(), options);
 }
 
@@ -155,7 +155,7 @@ ComposedModel::set_value(bool out, bool dout_din, bool d2out_din2)
 }
 
 LabeledMatrix
-ComposedModel::total_derivative(NewModel * model)
+ComposedModel::total_derivative(Model * model)
 {
   if (_dpout_din.count(model))
     return _dpout_din[model];
@@ -176,7 +176,7 @@ ComposedModel::total_derivative(NewModel * model)
 }
 
 std::pair<LabeledMatrix, LabeledTensor3D>
-ComposedModel::total_second_derivative(NewModel * model)
+ComposedModel::total_second_derivative(Model * model)
 {
   if (_dpout_din.count(model) && _d2pout_din2.count(model))
     return {_dpout_din[model], _d2pout_din2[model]};

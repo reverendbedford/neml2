@@ -30,13 +30,13 @@ template <typename T>
 OptionSet
 NonlinearParameter<T>::expected_options()
 {
-  OptionSet options = NewModel::expected_options();
+  OptionSet options = Model::expected_options();
   return options;
 }
 
 template <typename T>
 NonlinearParameter<T>::NonlinearParameter(const OptionSet & options)
-  : NewModel(options),
+  : Model(options),
     _p(declare_output_variable<T>(name()))
 {
 }

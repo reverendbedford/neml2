@@ -32,7 +32,7 @@ register_NEML2_object(SR2Invariant);
 OptionSet
 SR2Invariant::expected_options()
 {
-  OptionSet options = NewModel::expected_options();
+  OptionSet options = Model::expected_options();
   options.set<LabeledAxisAccessor>("tensor");
   options.set<LabeledAxisAccessor>("invariant");
   options.set<std::string>("invariant_type");
@@ -40,7 +40,7 @@ SR2Invariant::expected_options()
 }
 
 SR2Invariant::SR2Invariant(const OptionSet & options)
-  : NewModel(options),
+  : Model(options),
     _type(options.get<std::string>("invariant_type")),
     _A(declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("tensor"))),
     _invariant(declare_output_variable<Scalar>(options.get<LabeledAxisAccessor>("invariant")))

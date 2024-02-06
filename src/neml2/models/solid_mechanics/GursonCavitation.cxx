@@ -32,7 +32,7 @@ register_NEML2_object(GursonCavitation);
 OptionSet
 GursonCavitation::expected_options()
 {
-  OptionSet options = NewModel::expected_options();
+  OptionSet options = Model::expected_options();
   options.set<LabeledAxisAccessor>("plastic_strain_rate") = {{"state", "internal", "Ep_rate"}};
   options.set<LabeledAxisAccessor>("void_fraction") = {{"state", "internal", "f"}};
   options.set<LabeledAxisAccessor>("void_fraction_rate") = {{"state", "internal", "f_rate"}};
@@ -40,7 +40,7 @@ GursonCavitation::expected_options()
 }
 
 GursonCavitation::GursonCavitation(const OptionSet & options)
-  : NewModel(options),
+  : Model(options),
     _phi_dot(
         declare_output_variable<Scalar>(options.get<LabeledAxisAccessor>("void_fraction_rate"))),
     _Ep_dot(declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("plastic_strain_rate"))),

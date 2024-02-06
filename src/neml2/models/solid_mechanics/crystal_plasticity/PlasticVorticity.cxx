@@ -37,7 +37,7 @@ register_NEML2_object(PlasticVorticity);
 OptionSet
 PlasticVorticity::expected_options()
 {
-  OptionSet options = NewModel::expected_options();
+  OptionSet options = Model::expected_options();
   options.set<LabeledAxisAccessor>("plastic_vorticity") =
       vecstr{"state", "internal", "plastic_vorticity"};
   options.set<LabeledAxisAccessor>("orientation") = vecstr{"state", "orientation"};
@@ -47,7 +47,7 @@ PlasticVorticity::expected_options()
 }
 
 PlasticVorticity::PlasticVorticity(const OptionSet & options)
-  : NewModel(options),
+  : Model(options),
     _crystal_geometry(register_data<crystallography::CrystalGeometry>(
         options.get<std::string>("crystal_geometry_name"))),
     _Wp(declare_output_variable<WR2>(options.get<LabeledAxisAccessor>("plastic_vorticity"))),

@@ -33,7 +33,7 @@ template <typename T>
 OptionSet
 BackwardEulerTimeIntegration<T>::expected_options()
 {
-  OptionSet options = NewModel::expected_options();
+  OptionSet options = Model::expected_options();
   options.set<LabeledAxisAccessor>("variable");
   options.set<LabeledAxisAccessor>("time") = {"t"};
   return options;
@@ -41,7 +41,7 @@ BackwardEulerTimeIntegration<T>::expected_options()
 
 template <typename T>
 BackwardEulerTimeIntegration<T>::BackwardEulerTimeIntegration(const OptionSet & options)
-  : NewModel(options),
+  : Model(options),
     _var_name(options.get<LabeledAxisAccessor>("variable")),
     _var_rate_name(_var_name.with_suffix("_rate")),
     _r(declare_output_variable<T>(_var_name.on("residual"))),
@@ -68,7 +68,7 @@ BackwardEulerTimeIntegration<T>::set_value(bool out, bool dout_din, bool d2out_d
     {
       _r.d(_s) = I;
       _r.d(_ds_dt) = -I * (_t - _tn);
-      if (NewModel::stage == NewModel::Stage::UPDATING)
+      if (Model::stage == Model::Stage::UPDATING)
       {
         _r.d(_sn) = -I;
         _r.d(_t) = -_ds_dt;
@@ -80,7 +80,7 @@ BackwardEulerTimeIntegration<T>::set_value(bool out, bool dout_din, bool d2out_d
     {
       _r.d(_ds_dt, _t) = -I;
       _r.d(_ds_dt, _tn) = I;
-      if (NewModel::stage == NewModel::Stage::UPDATING)
+      if (Model::stage == Model::Stage::UPDATING)
       {
         _r.d(_t, _ds_dt) = -I;
         _r.d(_tn, _ds_dt) = I;

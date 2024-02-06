@@ -36,7 +36,7 @@ register_NEML2_object(ElasticStrainRate);
 OptionSet
 ElasticStrainRate::expected_options()
 {
-  OptionSet options = NewModel::expected_options();
+  OptionSet options = Model::expected_options();
   options.set<LabeledAxisAccessor>("elastic_strain_rate") = vecstr{"state", "elastic_strain_rate"};
   options.set<LabeledAxisAccessor>("elastic_strain") = vecstr{"state", "elastic_strain"};
 
@@ -49,7 +49,7 @@ ElasticStrainRate::expected_options()
 }
 
 ElasticStrainRate::ElasticStrainRate(const OptionSet & options)
-  : NewModel(options),
+  : Model(options),
     _e_dot(declare_output_variable<SR2>(options.get<LabeledAxisAccessor>("elastic_strain_rate"))),
     _e(declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("elastic_strain"))),
     _d(declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("deformation_rate"))),

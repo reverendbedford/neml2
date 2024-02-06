@@ -25,7 +25,7 @@
 #include <catch2/catch.hpp>
 
 #include "utils.h"
-#include "neml2/models/NewModel.h"
+#include "neml2/models/Model.h"
 
 using namespace neml2;
 
@@ -36,7 +36,7 @@ TEST_CASE("ParameterStore", "[models]")
     SECTION("named_parameters")
     {
       load_model("unit/models/ImplicitUpdate.i");
-      auto & model = Factory::get_object<NewModel>("Models", "model");
+      auto & model = Factory::get_object<Model>("Models", "model");
       auto & params = model.named_parameters();
 
       REQUIRE(params.size() == 3);

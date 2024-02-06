@@ -24,11 +24,11 @@
 
 #pragma once
 
-#include "neml2/models/NewModel.h"
+#include "neml2/models/Model.h"
 
 namespace neml2
 {
-class SampleRateModel : public NewModel
+class SampleRateModel : public Model
 {
 public:
   SampleRateModel(const OptionSet & options);

@@ -24,11 +24,11 @@
 
 #pragma once
 
-#include "neml2/models/NewModel.h"
+#include "neml2/models/Model.h"
 
 namespace neml2
 {
-class RateIndependentPlasticFlowConstraint : public NewModel
+class RateIndependentPlasticFlowConstraint : public Model
 {
 public:
   static OptionSet expected_options();

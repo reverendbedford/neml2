@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/models/NewModel.h"
+#include "neml2/models/Model.h"
 
 namespace neml2
 {
@@ -34,7 +34,7 @@ class CrystalGeometry;
 }
 
 /// Plastic deformation rate with the default kinetics
-class PlasticDeformationRate : public NewModel
+class PlasticDeformationRate : public Model
 {
 public:
   static OptionSet expected_options();

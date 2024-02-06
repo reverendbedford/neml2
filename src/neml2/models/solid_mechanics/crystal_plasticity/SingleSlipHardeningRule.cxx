@@ -32,7 +32,7 @@ namespace neml2
 OptionSet
 SingleSlipHardeningRule::expected_options()
 {
-  OptionSet options = NewModel::expected_options();
+  OptionSet options = Model::expected_options();
   options.set<LabeledAxisAccessor>("slip_hardening_rate") = {
       "state", "internal", "slip_hardening_rate"};
   options.set<LabeledAxisAccessor>("slip_hardening") = {"state", "internal", "slip_hardening"};
@@ -41,7 +41,7 @@ SingleSlipHardeningRule::expected_options()
 }
 
 SingleSlipHardeningRule::SingleSlipHardeningRule(const OptionSet & options)
-  : NewModel(options),
+  : Model(options),
     _tau_dot(
         declare_output_variable<Scalar>(options.get<LabeledAxisAccessor>("slip_hardening_rate"))),
     _tau(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("slip_hardening"))),

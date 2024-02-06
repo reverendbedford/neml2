@@ -31,7 +31,7 @@ register_NEML2_object(YieldFunction);
 OptionSet
 YieldFunction::expected_options()
 {
-  OptionSet options = NewModel::expected_options();
+  OptionSet options = Model::expected_options();
   options.set<CrossRef<Scalar>>("yield_stress");
   options.set<LabeledAxisAccessor>("effective_stress") = {{"state", "internal", "s"}};
   options.set<LabeledAxisAccessor>("isotropic_hardening");
@@ -40,7 +40,7 @@ YieldFunction::expected_options()
 }
 
 YieldFunction::YieldFunction(const OptionSet & options)
-  : NewModel(options),
+  : Model(options),
     _s(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("effective_stress"))),
     _h(options.get<LabeledAxisAccessor>("isotropic_hardening").empty()
            ? nullptr

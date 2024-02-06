@@ -24,11 +24,11 @@
 
 #pragma once
 
-#include "neml2/models/NewModel.h"
+#include "neml2/models/Model.h"
 
 namespace neml2
 {
-class KinematicHardening : public NewModel
+class KinematicHardening : public Model
 {
 public:
   static OptionSet expected_options();

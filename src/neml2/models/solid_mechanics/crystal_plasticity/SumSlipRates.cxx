@@ -38,7 +38,7 @@ register_NEML2_object(SumSlipRates);
 OptionSet
 SumSlipRates::expected_options()
 {
-  OptionSet options = NewModel::expected_options();
+  OptionSet options = Model::expected_options();
 
   options.set<LabeledAxisAccessor>("slip_rates") = vecstr{"state", "internal", "slip_rates"};
   options.set<LabeledAxisAccessor>("sum_slip_rates") =
@@ -50,7 +50,7 @@ SumSlipRates::expected_options()
 }
 
 SumSlipRates::SumSlipRates(const OptionSet & options)
-  : NewModel(options),
+  : Model(options),
     _crystal_geometry(register_data<crystallography::CrystalGeometry>(
         options.get<std::string>("crystal_geometry_name"))),
     _sg(declare_output_variable<Scalar>(options.get<LabeledAxisAccessor>("sum_slip_rates"))),

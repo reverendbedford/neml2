@@ -24,12 +24,12 @@
 
 #pragma once
 
-#include "neml2/models/NewModel.h"
+#include "neml2/models/Model.h"
 
 namespace neml2
 {
 template <typename T>
-class ForceRate : public NewModel
+class ForceRate : public Model
 {
 public:
   static OptionSet expected_options();

@@ -34,7 +34,7 @@ template <typename T>
 OptionSet
 SumModel<T>::expected_options()
 {
-  OptionSet options = NewModel::expected_options();
+  OptionSet options = Model::expected_options();
   options.set<std::vector<LabeledAxisAccessor>>("from_var");
   options.set<LabeledAxisAccessor>("to_var");
   return options;
@@ -42,7 +42,7 @@ SumModel<T>::expected_options()
 
 template <typename T>
 SumModel<T>::SumModel(const OptionSet & options)
-  : NewModel(options),
+  : Model(options),
     _to(declare_output_variable<T>(options.get<LabeledAxisAccessor>("to_var")))
 {
   for (auto fv : options.get<std::vector<LabeledAxisAccessor>>("from_var"))

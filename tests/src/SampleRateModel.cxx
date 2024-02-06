@@ -31,7 +31,7 @@ using vecstr = std::vector<std::string>;
 register_NEML2_object(SampleRateModel);
 
 SampleRateModel::SampleRateModel(const OptionSet & options)
-  : NewModel(options),
+  : Model(options),
     foo(declare_input_variable<Scalar>(vecstr{"state", "foo"})),
     bar(declare_input_variable<Scalar>(vecstr{"state", "bar"})),
     baz(declare_input_variable<SR2>(vecstr{"state", "baz"})),
