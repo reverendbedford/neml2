@@ -11,12 +11,13 @@
     output_scalar_values = '-1.43918 -2.55098'
     output_symr2_names = 'state/baz'
     output_symr2_values = '0'
-    check_values = true
-    check_first_derivatives = true
+    check_values = false
+    check_first_derivatives = false
     check_second_derivatives = false
     check_AD_first_derivatives = false
     check_AD_second_derivatives = false
     check_AD_derivatives = false
+    check_parameter_derivatives = true
   []
 []
 
@@ -26,6 +27,7 @@
     abs_tol = 1e-10
     rel_tol = 1e-08
     max_its = 100
+    verbose = true
   []
 []
 

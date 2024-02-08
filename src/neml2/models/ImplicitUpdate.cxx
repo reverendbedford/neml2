@@ -79,7 +79,7 @@ ImplicitUpdate::set_value(bool out, bool dout_din, bool d2out_din2)
     Model::stage = Model::Stage::SOLVING;
     auto [succeeded, iters] = _solver.solve(_model);
     neml_assert(succeeded, "Nonlinear solve failed.");
-    output_storage()("state").copy_(_model.solution());
+    output_storage().copy_(_model.solution());
     Model::stage = Model::Stage::UPDATING;
 
     // Use the implicit function theorem (IFT) to calculate the other derivatives

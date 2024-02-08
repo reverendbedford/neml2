@@ -214,6 +214,28 @@ Model::reinit_implicit_system(bool s, bool r, bool J)
 }
 
 void
+Model::detach_and_zero_implicit_system(bool s, bool r, bool J)
+{
+  if (implicit())
+  {
+    if (s)
+    {
+      if (host<Model>()->input_storage().tensor().requires_grad())
+      {
+        host<Model>()->input_storage().tensor().detach_();
+        _solution = host<Model>()->input_storage()("state");
+      }
+      _solution.zero_();
+    }
+
+    VariableStore::detach_and_zero(r, J, false);
+  }
+
+  for (auto submodel : registered_models())
+    submodel->detach_and_zero_implicit_system(s, r, J);
+}
+
+void
 Model::check_AD_limitation() const
 {
   if (_AD_1st_deriv && !_AD_2nd_deriv)
@@ -356,7 +378,6 @@ Model::provided_items() const
 void
 Model::assemble(bool residual, bool Jacobian)
 {
-  // Let's try to be as efficient as possible by considering all the cases!
   if (residual && !Jacobian)
     value();
   else if (Jacobian)

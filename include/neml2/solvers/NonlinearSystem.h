@@ -59,7 +59,7 @@ public:
   virtual void set_solution(const BatchTensor & x);
 
   /// Get the solution vector
-  virtual const BatchTensor & solution() const { return _solution; }
+  virtual BatchTensor solution() const { return _solution.clone(); }
 
   /// Convenient shortcut to set the current solution, assemble and return the system residual
   virtual BatchTensor residual(const BatchTensor & x) final;
@@ -77,6 +77,8 @@ public:
   virtual std::tuple<BatchTensor, BatchTensor> residual_and_Jacobian() final;
 
 protected:
+  virtual void detach_and_zero_implicit_system(bool /*s*/, bool /*r*/, bool /*J*/) {}
+
   virtual void reinit_implicit_system(bool /*s*/, bool /*r*/, bool /*J*/) {}
 
   /**

@@ -7,6 +7,7 @@
     input_symr2_values = 'Ee'
     output_symr2_names = 'state/S'
     output_symr2_values = 'S'
+    check_parameter_derivatives = true
   []
 []
 

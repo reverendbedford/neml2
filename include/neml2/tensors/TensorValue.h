@@ -43,6 +43,9 @@ public:
 
   /// Convert the parameter value to a BatchTensor
   virtual operator BatchTensor() const = 0;
+
+  /// Set the parameter value
+  virtual void set(const BatchTensor & val) = 0;
 };
 
 /// Concrete definition of tensor value
@@ -59,11 +62,13 @@ public:
 
   virtual void to(const torch::TensorOptions & options) override { _value = _value.to(options); }
 
-  virtual operator BatchTensor() const override { return BatchTensor(_value); }
+  virtual operator BatchTensor() const override { return _value; }
 
-  virtual operator T() const { return T(_value, _value.batch_dim()); }
+  virtual operator T() const { return _value; }
 
   T & value() { return _value; }
+
+  virtual void set(const BatchTensor & val) override { _value = val; }
 
 private:
   T _value;

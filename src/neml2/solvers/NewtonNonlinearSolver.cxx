@@ -53,9 +53,6 @@ NewtonNonlinearSolver::NewtonNonlinearSolver(const OptionSet & options)
 std::tuple<bool, size_t>
 NewtonNonlinearSolver::solve(NonlinearSystem & system) const
 {
-  // The trial solution that we are going to update
-  auto x = system.solution().clone();
-
   // The initial residual for relative convergence check
   auto R = system.residual();
   auto nR0 = torch::linalg::vector_norm(R, 2, -1, false, c10::nullopt);
@@ -69,7 +66,7 @@ NewtonNonlinearSolver::solve(NonlinearSystem & system) const
 
   // Begin iterating
   auto J = system.Jacobian();
-  alpha = update(system, x, R, J);
+  alpha = update(system, R, J);
 
   // Continuing iterating until one of:
   // 1. nR < atol (success)
@@ -77,15 +74,15 @@ NewtonNonlinearSolver::solve(NonlinearSystem & system) const
   // 3. i > miters (failure)
   for (size_t i = 1; i < miters; i++)
   {
-    std::tie(R, J) = system.residual_and_Jacobian(x);
+    // Update trial solution
+    alpha = update(system, R, J);
+
+    std::tie(R, J) = system.residual_and_Jacobian();
     auto nR = torch::linalg::vector_norm(R, 2, -1, false, c10::nullopt);
 
     // Check for initial convergence
     if (converged(i, nR, nR0, alpha))
       return {true, i};
-
-    // Update trial solution
-    alpha = update(system, x, R, J);
   }
 
   return {false, miters};
@@ -110,13 +107,13 @@ NewtonNonlinearSolver::converged(size_t itr,
 
 Real
 NewtonNonlinearSolver::update(NonlinearSystem & system,
-                              BatchTensor & x,
                               const BatchTensor & R,
                               const BatchTensor & J) const
 {
+  auto x = system.solution();
   auto dx = solve_direction(system, R, J);
-  Real alpha = _linesearch ? linesearch(system, x, R.clone(), dx) : 1.0;
-  x += alpha * dx;
+  Real alpha = _linesearch ? linesearch(system, x, R, dx) : 1.0;
+  system.set_solution(x + alpha * dx);
   return alpha;
 }
 
@@ -153,7 +150,7 @@ NewtonNonlinearSolver::solve_direction(NonlinearSystem & system,
                                        const BatchTensor & J) const
 {
   auto p = -BatchTensor(torch::linalg::solve(J, R, true), R.batch_dim());
-  return system.scale_direction(p);
+  return system.scale_direction(p).clone();
 }
 
 } // namespace neml2

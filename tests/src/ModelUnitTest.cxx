@@ -24,6 +24,7 @@
 
 #include "ModelUnitTest.h"
 #include "utils.h"
+#include "neml2/misc/math.h"
 
 namespace neml2
 {
@@ -41,6 +42,7 @@ ModelUnitTest::expected_options()
   options.set<bool>("check_AD_first_derivatives") = true;
   options.set<bool>("check_AD_second_derivatives") = true;
   options.set<bool>("check_AD_derivatives") = true;
+  options.set<bool>("check_parameter_derivatives") = false;
   options.set<bool>("check_cuda") = true;
   options.set<std::vector<LabeledAxisAccessor>>("input_batch_tensor_names");
   options.set<std::vector<CrossRef<BatchTensor>>>("input_batch_tensor_values");
@@ -68,6 +70,8 @@ ModelUnitTest::expected_options()
   options.set<Real>("derivatives_abs_tol") = 1e-8;
   options.set<Real>("second_derivatives_rel_tol") = 1e-5;
   options.set<Real>("second_derivatives_abs_tol") = 1e-8;
+  options.set<Real>("parameter_derivatives_rel_tol") = 1e-5;
+  options.set<Real>("parameter_derivatives_abs_tol") = 1e-8;
   return options;
 }
 
@@ -81,13 +85,16 @@ ModelUnitTest::ModelUnitTest(const OptionSet & options)
     _check_AD_1st_deriv(options.get<bool>("check_AD_first_derivatives")),
     _check_AD_2nd_deriv(options.get<bool>("check_AD_second_derivatives")),
     _check_AD_derivs(options.get<bool>("check_AD_derivatives")),
+    _check_param_derivs(options.get<bool>("check_parameter_derivatives")),
     _check_cuda(options.get<bool>("check_cuda")),
     _out_rtol(options.get<Real>("output_rel_tol")),
     _out_atol(options.get<Real>("output_abs_tol")),
     _deriv_rtol(options.get<Real>("derivatives_rel_tol")),
     _deriv_atol(options.get<Real>("derivatives_abs_tol")),
     _secderiv_rtol(options.get<Real>("second_derivatives_rel_tol")),
-    _secderiv_atol(options.get<Real>("second_derivatives_abs_tol"))
+    _secderiv_atol(options.get<Real>("second_derivatives_abs_tol")),
+    _param_rtol(options.get<Real>("parameter_derivatives_rel_tol")),
+    _param_atol(options.get<Real>("parameter_derivatives_abs_tol"))
 {
   _in = LabeledVector::zeros(_batch_shape, {&_model.input_axis()});
   fill_vector<BatchTensor>(_in, "input_batch_tensor_names", "input_batch_tensor_values");
@@ -141,6 +148,9 @@ ModelUnitTest::check_all()
 
   if (_check_AD_derivs)
     check_second_derivatives(true, true);
+
+  if (_check_param_derivs)
+    check_parameter_derivatives();
 }
 
 void
@@ -188,5 +198,33 @@ ModelUnitTest::check_second_derivatives(bool first, bool second)
               exact.tensor(),
               "\nFinite differencing gives:\n",
               numerical);
+}
+
+void
+ModelUnitTest::check_parameter_derivatives()
+{
+  for (auto && [name, param] : _model.named_parameters())
+  {
+    auto pval = BatchTensor(param).batch_expand_copy(_batch_shape);
+    pval.requires_grad_(true);
+    param.set(pval);
+    auto out = _model.value(_in);
+    auto exact = math::jacrev(out, BatchTensor(param));
+    auto numerical = finite_differencing_derivative(
+        [&, &param = param](const BatchTensor & x)
+        {
+          param.set(x);
+          return _model.value(_in);
+        },
+        BatchTensor(param));
+    neml_assert(torch::allclose(exact, numerical, _param_rtol, _param_atol),
+                "The model gives derivatives for parameter '",
+                name,
+                "' that are different from those given by finite "
+                "differencing. The model gives:\n",
+                exact,
+                "\nFinite differencing gives:\n",
+                numerical);
+  }
 }
 }

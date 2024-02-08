@@ -69,6 +69,7 @@ private:
   void check_values();
   void check_derivatives(bool first, bool second);
   void check_second_derivatives(bool first, bool second);
+  void check_parameter_derivatives();
 
   Model & _model;
   const TorchShape _batch_shape;
@@ -78,6 +79,7 @@ private:
   const bool _check_AD_1st_deriv;
   const bool _check_AD_2nd_deriv;
   const bool _check_AD_derivs;
+  const bool _check_param_derivs;
   const bool _check_cuda;
 
   LabeledVector _in;
@@ -89,5 +91,7 @@ private:
   Real _deriv_atol;
   Real _secderiv_rtol;
   Real _secderiv_atol;
+  Real _param_rtol;
+  Real _param_atol;
 };
 } // namespace neml2
