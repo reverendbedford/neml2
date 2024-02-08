@@ -55,8 +55,14 @@ Model::Model(const OptionSet & options)
 void
 Model::setup()
 {
+  // Declare nonlinear parameters as input variable
+  for (const auto & [name, param] : nl_params())
+    declare_input_variable(param->name(), param->base_storage());
+
+  // Setup input and output axes
   setup_layout();
 
+  // Setup functional dependence for each output variable
   for (auto && [y_name, y_var] : output_views())
   {
     y_var.clear_args();

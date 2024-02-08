@@ -87,7 +87,6 @@ ParameterStore::declare_parameter(const std::string & name, const std::string & 
 
         auto & nl_param = Factory::get_object<NonlinearParameter<T>>(
             "Models", _options.get<CrossRef<T>>(input_option_name).raw());
-        model->declare_input_variable<T>(nl_param.param().name());
         _nl_params[name] = &nl_param.param();
         return nl_param.param().value();
       }

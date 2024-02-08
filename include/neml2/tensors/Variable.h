@@ -60,9 +60,6 @@ public:
   /// Setup the variable's views into blocks of the storage
   virtual void setup_views(const VariableBase * other);
 
-  /// Is this variable a leaf variable?
-  bool is_leaf() const { return _args.empty(); }
-
   /// Arguments
   const std::vector<LabeledAxisAccessor> & args() const { return _args; }
 

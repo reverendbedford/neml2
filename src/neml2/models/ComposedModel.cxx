@@ -120,10 +120,7 @@ ComposedModel::set_value(bool out, bool dout_din, bool d2out_din2)
   if (out)
   {
     for (auto model : _dependency.end_nodes())
-    {
-      std::cout << model->name() << std::endl;
       output_storage().fill(model->output_storage());
-    }
   }
 
   // If the first derivatives of the output variables w.r.t. the input variables are requested, we
