@@ -53,6 +53,8 @@ public:
             typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<T>, T>>>
   T & get_parameter(const std::string & name);
 
+  bool has_nl_param() const { return !_nl_params.empty(); }
+
   /**
    * @brief Query the existence of a nonlinear parameter
    *

@@ -46,28 +46,23 @@ LinearIsotropicElasticity::LinearIsotropicElasticity(const OptionSet & options)
 }
 
 void
-LinearIsotropicElasticity::set_value(bool out, bool dout_din, bool d2out_din2)
+LinearIsotropicElasticity::set_value(bool out, bool dout_din, bool /*d2out_din2*/)
 {
   // We need to work with the bulk modulus K and the shear modulus G so that the expression for
   // stiffness and compliance can be unified:
-  auto K = _E / 3 / (1 - 2 * _nu);
-  auto G = _E / 2 / (1 + _nu);
-  auto vol_factor = _compliance ? 1 / (3 * K) : 3 * K;
-  auto dev_factor = _compliance ? 1 / (2 * G) : 2 * G;
+  const auto K = _E / 3 / (1 - 2 * _nu);
+  const auto G = _E / 2 / (1 + _nu);
+  const auto vf = _compliance ? 1 / (3 * K) : 3 * K;
+  const auto df = _compliance ? 1 / (2 * G) : 2 * G;
 
   if (out)
-    _to = vol_factor * SR2(_from).vol() + dev_factor * SR2(_from).dev();
+    _to = vf * SR2(_from).vol() + df * SR2(_from).dev();
 
   if (dout_din)
   {
-    auto I = SSR4::identity_vol(options());
-    auto J = SSR4::identity_dev(options());
-    _to.d(_from) = vol_factor * I + dev_factor * J;
-  }
-
-  if (d2out_din2)
-  {
-    // zero
+    const auto I = SSR4::identity_vol(options());
+    const auto J = SSR4::identity_dev(options());
+    _to.d(_from) = vf * I + df * J;
   }
 }
 } // namespace neml2
