@@ -74,15 +74,15 @@ NewtonNonlinearSolver::solve(NonlinearSystem & system) const
   // 3. i > miters (failure)
   for (size_t i = 1; i < miters; i++)
   {
-    // Update trial solution
-    alpha = update(system, R, J);
-
     std::tie(R, J) = system.residual_and_Jacobian();
     auto nR = torch::linalg::vector_norm(R, 2, -1, false, c10::nullopt);
 
     // Check for initial convergence
     if (converged(i, nR, nR0, alpha))
       return {true, i};
+
+    // Update trial solution
+    alpha = update(system, R, J);
   }
 
   return {false, miters};
