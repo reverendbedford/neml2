@@ -104,7 +104,7 @@ NonlinearSystem::scale_residual(const BatchTensor & r) const
       _autoscale == _scaling_matrices_initialized,
       _autoscale ? "Automatic scaling is requested but scaling matrices have not been initialized."
                  : "Automatic scaling is not requested but scaling matrices were initialized.");
-  return _autoscale ? _row_scaling * r : r;
+  return _row_scaling * r;
 }
 
 BatchTensor
@@ -114,9 +114,8 @@ NonlinearSystem::scale_Jacobian(const BatchTensor & J) const
       _autoscale == _scaling_matrices_initialized,
       _autoscale ? "Automatic scaling is requested but scaling matrices have not been initialized."
                  : "Automatic scaling is not requested but scaling matrices were initialized.");
-  return _autoscale ? math::bmm(math::bmm(math::base_diag_embed(_row_scaling), J),
-                                math::base_diag_embed(_col_scaling))
-                    : J;
+  return math::bmm(math::bmm(math::base_diag_embed(_row_scaling), J),
+                   math::base_diag_embed(_col_scaling));
 }
 
 BatchTensor
@@ -139,42 +138,54 @@ BatchTensor
 NonlinearSystem::residual(const BatchTensor & x)
 {
   set_solution(x);
-  return residual();
+  residual();
+  return residual_view();
 }
 
-BatchTensor
+void
 NonlinearSystem::residual()
 {
   assemble(true, false);
-  return scale_residual(_residual);
+
+  if (_autoscale)
+    _scaled_residual = scale_residual(_residual);
 }
 
 BatchTensor
 NonlinearSystem::Jacobian(const BatchTensor & x)
 {
   set_solution(x);
-  return Jacobian();
+  Jacobian();
+  return Jacobian_view();
 }
 
-BatchTensor
+void
 NonlinearSystem::Jacobian()
 {
   assemble(false, true);
-  return scale_Jacobian(_Jacobian);
+
+  if (_autoscale)
+    _scaled_Jacobian = scale_Jacobian(_Jacobian);
 }
 
 std::tuple<BatchTensor, BatchTensor>
 NonlinearSystem::residual_and_Jacobian(const BatchTensor & x)
 {
   set_solution(x);
-  return residual_and_Jacobian();
+  residual_and_Jacobian();
+  return {residual_view(), Jacobian_view()};
 }
 
-std::tuple<BatchTensor, BatchTensor>
+void
 NonlinearSystem::residual_and_Jacobian()
 {
   assemble(true, true);
-  return {scale_residual(_residual), scale_Jacobian(_Jacobian)};
+
+  if (_autoscale)
+  {
+    _scaled_residual = scale_residual(_residual);
+    _scaled_Jacobian = scale_Jacobian(_Jacobian);
+  }
 }
 
 } // namespace neml2

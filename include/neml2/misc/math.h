@@ -52,23 +52,32 @@ mandel_factor(TorchSize i)
   return i < 3 ? 1.0 : sqrt2;
 }
 
-const torch::Tensor
-full_to_mandel_map(const torch::TensorOptions & options = default_integer_tensor_options());
-const torch::Tensor
-mandel_to_full_map(const torch::TensorOptions & options = default_integer_tensor_options());
-const torch::Tensor
-full_to_mandel_factor(const torch::TensorOptions & options = default_tensor_options());
-const torch::Tensor
-mandel_to_full_factor(const torch::TensorOptions & options = default_tensor_options());
+struct ConstantTensors
+{
+  ConstantTensors();
 
-const torch::Tensor
-full_to_skew_map(const torch::TensorOptions & options = default_integer_tensor_options());
-const torch::Tensor
-skew_to_full_map(const torch::TensorOptions & options = default_integer_tensor_options());
-const torch::Tensor
-full_to_skew_factor(const torch::TensorOptions & options = default_tensor_options());
-const torch::Tensor
-skew_to_full_factor(const torch::TensorOptions & options = default_tensor_options());
+  // Get the global constants
+  static ConstantTensors & get();
+
+  static const torch::Tensor & full_to_mandel_map();
+  static const torch::Tensor & mandel_to_full_map();
+  static const torch::Tensor & full_to_mandel_factor();
+  static const torch::Tensor & mandel_to_full_factor();
+  static const torch::Tensor & full_to_skew_map();
+  static const torch::Tensor & skew_to_full_map();
+  static const torch::Tensor & full_to_skew_factor();
+  static const torch::Tensor & skew_to_full_factor();
+
+private:
+  torch::Tensor _full_to_mandel_map;
+  torch::Tensor _mandel_to_full_map;
+  torch::Tensor _full_to_mandel_factor;
+  torch::Tensor _mandel_to_full_factor;
+  torch::Tensor _full_to_skew_map;
+  torch::Tensor _skew_to_full_map;
+  torch::Tensor _full_to_skew_factor;
+  torch::Tensor _skew_to_full_factor;
+};
 
 /**
  * @brief Generic function to reduce two axes to one with some map

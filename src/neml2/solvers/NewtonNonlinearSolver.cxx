@@ -56,14 +56,14 @@ NewtonNonlinearSolver::solve(NonlinearSystem & system, BatchTensor & x) const
   neml_assert_dbg(!x.requires_grad(), "The trial solution shall not contain any function graph.");
 
   // The initial residual for relative convergence check
-  auto R = system.residual();
-  auto nR0 = torch::linalg::vector_norm(R, 2, -1, false, c10::nullopt);
+  system.residual();
+  auto nR0 = torch::linalg::vector_norm(system.residual_view(), 2, -1, false, c10::nullopt);
 
   // Check for initial convergence
   if (converged(0, nR0, nR0, 1.0))
   {
-    auto J = system.Jacobian();
-    update(system, x, R, J, /*final=*/true);
+    system.Jacobian();
+    update(system, x, /*final=*/true);
     return {true, 0};
   }
 
@@ -71,8 +71,8 @@ NewtonNonlinearSolver::solve(NonlinearSystem & system, BatchTensor & x) const
   Real alpha;
 
   // Begin iterating
-  auto J = system.Jacobian();
-  alpha = update(system, x, R, J);
+  system.Jacobian();
+  alpha = update(system, x);
 
   // Continuing iterating until one of:
   // 1. nR < atol (success)
@@ -80,18 +80,18 @@ NewtonNonlinearSolver::solve(NonlinearSystem & system, BatchTensor & x) const
   // 3. i > miters (failure)
   for (size_t i = 1; i < miters; i++)
   {
-    std::tie(R, J) = system.residual_and_Jacobian();
-    auto nR = torch::linalg::vector_norm(R, 2, -1, false, c10::nullopt);
+    system.residual_and_Jacobian();
+    auto nR = torch::linalg::vector_norm(system.residual_view(), 2, -1, false, c10::nullopt);
 
     // Check for initial convergence
     if (converged(i, nR, nR0, alpha))
     {
-      update(system, x, R, J, /*final=*/true);
+      update(system, x, /*final=*/true);
       return {true, i};
     }
 
     // Update trial solution
-    alpha = update(system, x, R, J);
+    alpha = update(system, x);
   }
 
   return {false, miters};
@@ -115,13 +115,9 @@ NewtonNonlinearSolver::converged(size_t itr,
 }
 
 Real
-NewtonNonlinearSolver::update(NonlinearSystem & system,
-                              BatchTensor & x,
-                              const BatchTensor & R,
-                              const BatchTensor & J,
-                              bool final) const
+NewtonNonlinearSolver::update(NonlinearSystem & system, BatchTensor & x, bool final) const
 {
-  auto dx = solve_direction(system, R, J);
+  auto dx = solve_direction(system);
 
   if (final)
   {
@@ -129,7 +125,7 @@ NewtonNonlinearSolver::update(NonlinearSystem & system,
     return 1;
   }
 
-  auto alpha = _linesearch ? linesearch(system, x, R, dx) : 1.0;
+  auto alpha = _linesearch ? linesearch(system, x, dx) : 1.0;
   x.variable_data() += alpha * dx;
   system.set_solution(x);
   return alpha;
@@ -138,15 +134,17 @@ NewtonNonlinearSolver::update(NonlinearSystem & system,
 Real
 NewtonNonlinearSolver::linesearch(NonlinearSystem & system,
                                   const BatchTensor & x,
-                                  const BatchTensor & R0,
                                   const BatchTensor & dx) const
 {
   Real alpha = 1.0;
+  const auto & R = system.residual_view();
+  auto R0 = R.clone();
   auto nR02 = torch::linalg_vecdot(R0, R0);
 
   for (size_t i = 1; i < _linesearch_miter; i++)
   {
-    auto R = system.residual(x + alpha * dx);
+    system.set_solution(x + alpha * dx);
+    system.residual();
     auto nR2 = torch::linalg_vecdot(R, R);
     auto crit = nR02 + 2.0 * _linesearch_c * alpha * torch::linalg_vecdot(R0, dx);
     if (verbose)
@@ -163,11 +161,10 @@ NewtonNonlinearSolver::linesearch(NonlinearSystem & system,
 }
 
 BatchTensor
-NewtonNonlinearSolver::solve_direction(NonlinearSystem & system,
-                                       const BatchTensor & R,
-                                       const BatchTensor & J) const
+NewtonNonlinearSolver::solve_direction(NonlinearSystem & system) const
 {
-  auto p = -BatchTensor(torch::linalg::solve(J, R, true), R.batch_dim());
+  auto p = -BatchTensor(torch::linalg::solve(system.Jacobian_view(), system.residual_view(), true),
+                        system.residual_view().batch_dim());
   return system.scale_direction(p);
 }
 

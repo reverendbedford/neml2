@@ -62,19 +62,22 @@ public:
   virtual BatchTensor solution() const { return _solution; }
 
   /// Convenient shortcut to set the current solution, assemble and return the system residual
-  virtual BatchTensor residual(const BatchTensor & x) final;
+  BatchTensor residual(const BatchTensor & x);
   /// Convenient shortcut to assemble and return the system residual
-  virtual BatchTensor residual() final;
+  void residual();
 
   /// Convenient shortcut to set the current solution, assemble and return the system Jacobian
-  virtual BatchTensor Jacobian(const BatchTensor & x) final;
+  BatchTensor Jacobian(const BatchTensor & x);
   /// Convenient shortcut to assemble and return the system Jacobian
-  virtual BatchTensor Jacobian() final;
+  void Jacobian();
 
   /// Convenient shortcut to set the current solution, assemble and return the system residual and Jacobian
-  virtual std::tuple<BatchTensor, BatchTensor> residual_and_Jacobian(const BatchTensor & x) final;
+  std::tuple<BatchTensor, BatchTensor> residual_and_Jacobian(const BatchTensor & x);
   /// Convenient shortcut to assemble and return the system residual and Jacobian
-  virtual std::tuple<BatchTensor, BatchTensor> residual_and_Jacobian() final;
+  void residual_and_Jacobian();
+
+  const BatchTensor & residual_view() const { return _autoscale ? _scaled_residual : _residual; }
+  const BatchTensor & Jacobian_view() const { return _autoscale ? _scaled_Jacobian : _Jacobian; }
 
 protected:
   virtual void reinit_implicit_system(bool /*s*/, bool /*r*/, bool /*J*/) = 0;
@@ -98,6 +101,10 @@ protected:
 
   /// View for the Jacobian of this nonlinear system
   BatchTensor _Jacobian;
+
+  BatchTensor _scaled_residual;
+
+  BatchTensor _scaled_Jacobian;
 
   /// If true, do automatic scaling
   const bool _autoscale;

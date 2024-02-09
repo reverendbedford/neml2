@@ -111,6 +111,6 @@ template <class Derived2>
 R2
 VecBase<Derived>::outer(const VecBase<Derived2> & v) const
 {
-  return R2(torch::einsum("...i,...j", {*this, v}), broadcast_batch_dim(*this, v));
+  return torch::matmul(this->unsqueeze(-1), v.unsqueeze(-2));
 }
 } // namespace neml2
