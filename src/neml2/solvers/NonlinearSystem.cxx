@@ -132,7 +132,7 @@ NonlinearSystem::scale_direction(const BatchTensor & p) const
 void
 NonlinearSystem::set_solution(const BatchTensor & x)
 {
-  _solution.variable_data().copy_(x.clone());
+  _solution.variable_data().copy_(x);
 }
 
 BatchTensor
@@ -146,7 +146,7 @@ BatchTensor
 NonlinearSystem::residual()
 {
   assemble(true, false);
-  return scale_residual(_residual).clone();
+  return scale_residual(_residual);
 }
 
 BatchTensor
@@ -160,7 +160,7 @@ BatchTensor
 NonlinearSystem::Jacobian()
 {
   assemble(false, true);
-  return scale_Jacobian(_Jacobian).clone();
+  return scale_Jacobian(_Jacobian);
 }
 
 std::tuple<BatchTensor, BatchTensor>
@@ -174,7 +174,7 @@ std::tuple<BatchTensor, BatchTensor>
 NonlinearSystem::residual_and_Jacobian()
 {
   assemble(true, true);
-  return {scale_residual(_residual).clone(), scale_Jacobian(_Jacobian).clone()};
+  return {scale_residual(_residual), scale_Jacobian(_Jacobian)};
 }
 
 } // namespace neml2

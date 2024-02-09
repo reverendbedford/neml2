@@ -119,7 +119,6 @@
     type = TransientRegression
     driver = 'driver'
     reference = 'gold/result.pt'
-    atol = 1e-3
   []
 []
 

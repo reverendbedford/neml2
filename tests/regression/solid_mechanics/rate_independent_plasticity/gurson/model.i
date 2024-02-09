@@ -77,7 +77,6 @@
 [Solvers]
   [newton]
     type = NewtonNonlinearSolver
-    linesearch = true
   []
 []
 

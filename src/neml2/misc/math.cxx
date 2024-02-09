@@ -165,12 +165,12 @@ skew_to_full(const BatchTensor & skew, TorchSize dim)
 BatchTensor
 jacrev(const BatchTensor & y, const BatchTensor & p)
 {
-  neml_assert_dbg(p.batch_sizes() == y.batch_sizes(),
-                  "The batch shape of the parameter must be the same as the batch shape "
-                  "of the output. However, the batch shape of the parameter is ",
-                  p.batch_sizes(),
-                  ", and the batch shape of the output is ",
-                  y.batch_sizes());
+  neml_assert(p.batch_sizes() == y.batch_sizes(),
+              "The batch shape of the parameter must be the same as the batch shape "
+              "of the output. However, the batch shape of the parameter is ",
+              p.batch_sizes(),
+              ", and the batch shape of the output is ",
+              y.batch_sizes());
 
   // flatten y to handle arbitrarily shaped output
   auto yf = BatchTensor(

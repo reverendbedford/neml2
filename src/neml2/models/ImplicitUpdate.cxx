@@ -77,7 +77,7 @@ ImplicitUpdate::set_value(bool out, bool dout_din, bool d2out_din2)
   {
     // Solve for the next state
     Model::stage = Model::Stage::SOLVING;
-    auto sol = _model.solution();
+    auto sol = _model.solution().clone();
     auto [succeeded, iters] = _solver.solve(_model, sol);
     neml_assert(succeeded, "Nonlinear solve failed.");
     Model::stage = Model::Stage::UPDATING;
@@ -90,7 +90,7 @@ ImplicitUpdate::set_value(bool out, bool dout_din, bool d2out_din2)
     {
       // IFT requires dstate/dinput evaluated at the solution:
       _model.value_and_dvalue();
-      auto partials = _model.get_doutput_dinput();
+      auto partials = _model.derivative_storage();
 
       // The actual IFT:
       LabeledMatrix J = partials.slice(1, "state");

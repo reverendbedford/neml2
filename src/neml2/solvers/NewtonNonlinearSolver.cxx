@@ -168,7 +168,7 @@ NewtonNonlinearSolver::solve_direction(NonlinearSystem & system,
                                        const BatchTensor & J) const
 {
   auto p = -BatchTensor(torch::linalg::solve(J, R, true), R.batch_dim());
-  return system.scale_direction(p).clone();
+  return system.scale_direction(p);
 }
 
 } // namespace neml2

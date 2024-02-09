@@ -187,8 +187,6 @@ protected:
   virtual void setup_output_views(bool out, bool dout_din = true, bool d2out_din2 = true) override;
   virtual void setup_submodel_output_views(bool out, bool dout_din = true, bool d2out_din2 = true);
 
-  virtual void detach_and_zero_implicit_system(bool s, bool r, bool J) override;
-
   /// Call VariableStore::detach_and_zero recursively on all submodels
   virtual void detach_and_zero(bool out, bool dout_din = true, bool d2out_din2 = true) override;
 

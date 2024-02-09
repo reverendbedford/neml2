@@ -45,15 +45,17 @@ protected:
   void set_value(bool, bool, bool) override;
 
 private:
-  void clear_derivative_cache() { _dpout_din.clear(); }
-
-  void clear_second_derivative_cache() { _d2pout_din2.clear(); }
+  void clear_chain_rule_cache()
+  {
+    _dpout_din.clear();
+    _d2pout_din2.clear();
+  }
 
   /// Helper method to recursively apply chain rule
-  LabeledMatrix total_derivative(Model * model);
+  void apply_chain_rule(Model * model);
 
   /// Helper method to recursively apply second order chain rule
-  std::pair<LabeledMatrix, LabeledTensor3D> total_second_derivative(Model * model);
+  void apply_second_order_chain_rule(Model * model);
 
   /// Additional outbound items in the dependency graph
   const std::vector<LabeledAxisAccessor> _additional_outputs;

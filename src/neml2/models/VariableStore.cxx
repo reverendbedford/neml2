@@ -119,7 +119,6 @@ VariableStore::detach_and_zero(bool out, bool dout_din, bool d2out_din2)
       _out.tensor().detach_();
       out_detached = true;
     }
-    _out.zero_();
   }
 
   if (dout_din)

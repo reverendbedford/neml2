@@ -112,97 +112,65 @@ ComposedModel::setup_submodel_input_views()
 void
 ComposedModel::set_value(bool out, bool dout_din, bool d2out_din2)
 {
+  clear_chain_rule_cache();
+
   for (auto i : _dependency.resolution())
+  {
     i->set_value(out, dout_din, d2out_din2);
 
-  // If only output variable values are requested, we just need to gather the end models' output
-  // into the output storage.
-  if (out)
+    if (dout_din && !d2out_din2)
+      apply_chain_rule(i);
+
+    if (d2out_din2)
+      apply_second_order_chain_rule(i);
+  }
+
+  for (auto model : _dependency.end_nodes())
   {
-    for (auto model : _dependency.end_nodes())
+    if (out)
       output_storage().fill(model->output_storage());
+
+    if (dout_din)
+      derivative_storage().fill(_dpout_din[model]);
+
+    if (d2out_din2)
+      second_derivative_storage().fill(_d2pout_din2[model]);
   }
 
-  // If the first derivatives of the output variables w.r.t. the input variables are requested, we
-  // need to traverse through the sub-models once more to accumulate all the partial derivatives
-  // using chain rule.
-  if (dout_din && !d2out_din2)
-  {
-    clear_derivative_cache();
-
-    for (auto model : _dependency.end_nodes())
-      derivative_storage().fill(total_derivative(model));
-
-    clear_derivative_cache();
-  }
-
-  // Similarly for second derivatives, just slightly more involving...
-  if (d2out_din2)
-  {
-    clear_derivative_cache();
-    clear_second_derivative_cache();
-
-    for (auto model : _dependency.end_nodes())
-    {
-      auto [deriv, secderiv] = total_second_derivative(model);
-      derivative_storage().fill(deriv);
-      second_derivative_storage().fill(secderiv);
-    }
-
-    clear_derivative_cache();
-    clear_second_derivative_cache();
-  }
+  clear_chain_rule_cache();
 }
 
-LabeledMatrix
-ComposedModel::total_derivative(Model * model)
+void
+ComposedModel::apply_chain_rule(Model * i)
 {
-  if (_dpout_din.count(model))
-    return _dpout_din[model];
-
-  // Apply chain rule if neccessary
-  auto dpin_din =
-      LabeledMatrix::zeros(batch_sizes(), {&model->input_axis(), &input_axis()}, options());
+  auto dpin_din = LabeledMatrix::empty(batch_sizes(), {&i->input_axis(), &input_axis()}, options());
   dpin_din.fill(_din_din);
-  if (_dependency.node_providers().count(model))
-    for (auto dep : _dependency.node_providers().at(model))
-      dpin_din.fill(total_derivative(dep));
-  const auto dout_din = model->get_doutput_dinput().chain(dpin_din);
 
-  // Cache the result
-  _dpout_din[model] = dout_din;
+  if (_dependency.node_providers().count(i))
+    for (auto dep : _dependency.node_providers().at(i))
+      dpin_din.fill(_dpout_din[dep]);
 
-  return dout_din;
+  _dpout_din[i] = i->derivative_storage().chain(dpin_din);
 }
 
-std::pair<LabeledMatrix, LabeledTensor3D>
-ComposedModel::total_second_derivative(Model * model)
+void
+ComposedModel::apply_second_order_chain_rule(Model * i)
 {
-  if (_dpout_din.count(model) && _d2pout_din2.count(model))
-    return {_dpout_din[model], _d2pout_din2[model]};
-
-  // Apply chain rule if neccessary
-  auto dpin_din =
-      LabeledMatrix::zeros(batch_sizes(), {&model->input_axis(), &input_axis()}, options());
+  auto dpin_din = LabeledMatrix::empty(batch_sizes(), {&i->input_axis(), &input_axis()}, options());
   auto d2pin_din2 = LabeledTensor3D::zeros(
-      batch_sizes(), {&model->input_axis(), &input_axis(), &input_axis()}, options());
+      batch_sizes(), {&i->input_axis(), &input_axis(), &input_axis()}, options());
   dpin_din.fill(_din_din);
-  if (_dependency.node_providers().count(model))
-    for (auto dep : _dependency.node_providers().at(model))
+
+  if (_dependency.node_providers().count(i))
+    for (auto dep : _dependency.node_providers().at(i))
     {
-      auto [deriv, secderiv] = total_second_derivative(dep);
-      dpin_din.fill(deriv);
-      d2pin_din2.fill(secderiv);
+      dpin_din.fill(_dpout_din[dep]);
+      d2pin_din2.fill(_d2pout_din2[dep]);
     }
-  const auto dout_din = model->derivative_storage().chain(dpin_din);
-  const auto d2out_din2 =
-      model->second_derivative_storage().chain(d2pin_din2, model->derivative_storage(), dpin_din);
 
-  // Cache the result
-  _dpout_din[model] = dout_din;
-  _d2pout_din2[model] = d2out_din2;
-
-  return {dout_din, d2out_din2};
+  _dpout_din[i] = i->derivative_storage().chain(dpin_din);
+  _d2pout_din2[i] =
+      i->second_derivative_storage().chain(d2pin_din2, i->derivative_storage(), dpin_din);
 }
 
 } // namespace neml2
