@@ -24,6 +24,7 @@
 
 #include "TransientRegression.h"
 #include "neml2/drivers/TransientDriver.h"
+#include <iomanip>
 #include <torch/script.h>
 
 namespace fs = std::filesystem;
@@ -82,24 +83,29 @@ diff(const torch::jit::named_buffer_list & res,
   for (auto item : ref)
     ref_map.emplace(item.name, item.value);
 
-  std::string err_msg;
+  std::ostringstream err_msg;
 
   for (auto && [key, value] : res_map)
     if (ref_map.count(key) == 0)
-      err_msg += "Result has extra variable " + key + ".\n";
+      err_msg << "Result has extra variable " << key << ".\n";
 
   for (auto && [key, value] : ref_map)
   {
     if (res_map.count(key) == 0)
     {
-      err_msg += "Result is missing variable " + key + ".\n";
+      err_msg << "Result is missing variable " << key << ".\n";
       continue;
     }
 
     if (!torch::allclose(res_map[key], value, rtol, atol))
-      err_msg += "Result has wrong value for variable " + key + ".\n";
+    {
+      auto diff = torch::abs(res_map[key] - value) - rtol * torch::abs(value);
+      err_msg << "Result has wrong value for variable " << key
+              << ". Maximum mixed difference = " << std::scientific << diff.max().item<Real>()
+              << " > atol = " << std::scientific << atol << "\n";
+    }
   }
 
-  return err_msg;
+  return err_msg.str();
 }
 }

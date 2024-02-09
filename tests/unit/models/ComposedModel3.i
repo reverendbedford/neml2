@@ -2,16 +2,14 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    batch_shape = '(10)'
+    batch_shape = '(1)'
     input_scalar_names = 'old_state/foo old_state/bar forces/temperature forces/t old_forces/t'
     input_scalar_values = '0 0 15 1.3 1.1'
     input_symr2_names = 'old_state/baz'
     input_symr2_values = '0'
-    output_scalar_names = 'residual/foo residual/bar'
-    output_scalar_values = '0 0'
-    output_symr2_names = 'residual/baz'
-    output_symr2_values = '0'
-    check_values = false
+    output_scalar_names = 'state/sum'
+    output_scalar_values = '-3.9902'
+    check_values = true
     check_first_derivatives = true
     check_second_derivatives = false
     check_AD_first_derivatives = false
@@ -54,8 +52,19 @@
     implicit_model = 'implicit_rate'
     solver = 'newton'
   []
+  [baz_tr]
+    type = SR2Invariant
+    tensor = 'state/baz'
+    invariant = 'state/baz_tr'
+    invariant_type = 'I1'
+  []
+  [sum]
+    type = ScalarSumModel
+    from_var = 'state/foo state/bar state/baz_tr'
+    to_var = 'state/sum'
+  []
   [model]
     type = ComposedModel
-    models = 'implicit_update implicit_rate'
+    models = 'implicit_update baz_tr sum'
   []
 []

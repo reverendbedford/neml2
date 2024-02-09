@@ -51,22 +51,28 @@ NewtonNonlinearSolver::NewtonNonlinearSolver(const OptionSet & options)
 }
 
 std::tuple<bool, size_t>
-NewtonNonlinearSolver::solve(NonlinearSystem & system) const
+NewtonNonlinearSolver::solve(NonlinearSystem & system, BatchTensor & x) const
 {
+  neml_assert_dbg(!x.requires_grad(), "The trial solution shall not contain any function graph.");
+
   // The initial residual for relative convergence check
   auto R = system.residual();
   auto nR0 = torch::linalg::vector_norm(R, 2, -1, false, c10::nullopt);
 
   // Check for initial convergence
   if (converged(0, nR0, nR0, 1.0))
+  {
+    auto J = system.Jacobian();
+    update(system, x, R, J, /*final=*/true);
     return {true, 0};
+  }
 
   // The line search parameter (1 for full Newton step)
   Real alpha;
 
   // Begin iterating
   auto J = system.Jacobian();
-  alpha = update(system, R, J);
+  alpha = update(system, x, R, J);
 
   // Continuing iterating until one of:
   // 1. nR < atol (success)
@@ -79,10 +85,13 @@ NewtonNonlinearSolver::solve(NonlinearSystem & system) const
 
     // Check for initial convergence
     if (converged(i, nR, nR0, alpha))
+    {
+      update(system, x, R, J, /*final=*/true);
       return {true, i};
+    }
 
     // Update trial solution
-    alpha = update(system, R, J);
+    alpha = update(system, x, R, J);
   }
 
   return {false, miters};
@@ -107,13 +116,22 @@ NewtonNonlinearSolver::converged(size_t itr,
 
 Real
 NewtonNonlinearSolver::update(NonlinearSystem & system,
+                              BatchTensor & x,
                               const BatchTensor & R,
-                              const BatchTensor & J) const
+                              const BatchTensor & J,
+                              bool final) const
 {
-  auto x = system.solution();
   auto dx = solve_direction(system, R, J);
-  Real alpha = _linesearch ? linesearch(system, x, R, dx) : 1.0;
-  system.set_solution(x + alpha * dx);
+
+  if (final)
+  {
+    x += dx;
+    return 1;
+  }
+
+  auto alpha = _linesearch ? linesearch(system, x, R, dx) : 1.0;
+  x.variable_data() += alpha * dx;
+  system.set_solution(x);
   return alpha;
 }
 

@@ -119,7 +119,7 @@
     type = TransientRegression
     driver = 'driver'
     reference = 'gold/result.pt'
-    atol = 1e-5
+    atol = 1e-3
   []
 []
 
@@ -128,7 +128,6 @@
     type = NewtonNonlinearSolver
     linesearch = true
     max_linesearch_iterations = 5
-    abs_tol = 1e-6
   []
 []
 

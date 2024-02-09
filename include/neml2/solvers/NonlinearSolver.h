@@ -49,10 +49,12 @@ public:
    * @brief Solve the given nonlinear system.
    *
    * @param system The nonlinear system of equations.
+   * @param sol The initial solution which will be iteratively updated during the solve. It will be
+   * the solution to the system upon convergence
    * @return A boolean indicating whether the solve has succeeded and the number of iterations
    * before convergence.
    */
-  virtual std::tuple<bool, size_t> solve(NonlinearSystem & system) const = 0;
+  virtual std::tuple<bool, size_t> solve(NonlinearSystem & system, BatchTensor & sol) const = 0;
 
   /// Absolute tolerance
   Real atol;

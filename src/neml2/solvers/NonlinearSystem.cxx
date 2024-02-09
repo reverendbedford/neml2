@@ -132,8 +132,7 @@ NonlinearSystem::scale_direction(const BatchTensor & p) const
 void
 NonlinearSystem::set_solution(const BatchTensor & x)
 {
-  detach_and_zero_implicit_system(true, false, false);
-  _solution.index_put_({torch::indexing::Slice()}, x);
+  _solution.variable_data().copy_(x.clone());
 }
 
 BatchTensor

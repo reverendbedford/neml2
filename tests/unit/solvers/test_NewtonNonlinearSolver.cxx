@@ -38,19 +38,19 @@ TEST_CASE("NewtonNonlinearSolver", "[solvers]")
   // Initial guess
   TorchShape batch_sz = {2};
   TorchSize nbase = 4;
-  auto x0 = BatchTensor::full(batch_sz, nbase, 2.0, default_tensor_options());
+  auto x = BatchTensor::full(batch_sz, nbase, 2.0, default_tensor_options());
 
   SECTION("solve")
   {
     // Create the nonlinear system
     auto options = PowerTestSystem::expected_options();
     PowerTestSystem system(options);
-    system.reinit(x0);
+    system.reinit(x);
 
-    auto [succeeded, iters] = solver.solve(system);
+    auto [succeeded, iters] = solver.solve(system, x);
 
     REQUIRE(succeeded);
-    REQUIRE(torch::allclose(system.solution(), system.exact_solution()));
+    REQUIRE(torch::allclose(x, system.exact_solution()));
   }
 
   SECTION("automatic scaling")
@@ -59,12 +59,12 @@ TEST_CASE("NewtonNonlinearSolver", "[solvers]")
     auto options = PowerTestSystem::expected_options();
     options.set<bool>("automatic_scaling") = true;
     PowerTestSystem system(options);
-    system.reinit(x0);
+    system.reinit(x);
 
     system.init_scaling(solver.verbose);
-    auto [succeeded, iters] = solver.solve(system);
+    auto [succeeded, iters] = solver.solve(system, x);
 
     REQUIRE(succeeded);
-    REQUIRE(torch::allclose(system.solution(), system.exact_solution()));
+    REQUIRE(torch::allclose(x, system.exact_solution()));
   }
 }

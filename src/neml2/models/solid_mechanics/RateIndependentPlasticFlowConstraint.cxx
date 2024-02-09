@@ -36,12 +36,14 @@ RateIndependentPlasticFlowConstraint::expected_options()
   OptionSet options = Model::expected_options();
   options.set<LabeledAxisAccessor>("yield_function") = {{"state", "internal", "fp"}};
   options.set<LabeledAxisAccessor>("flow_rate") = {{"state", "internal", "gamma_rate"}};
+  options.set<Real>("yielding_tolerance") = 1e-8;
   return options;
 }
 
 RateIndependentPlasticFlowConstraint::RateIndependentPlasticFlowConstraint(
     const OptionSet & options)
   : Model(options),
+    _ytol(options.get<Real>("yielding_tolerance")),
     _fp(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("yield_function"))),
     _gamma_dot(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("flow_rate"))),
     _r(declare_output_variable<Scalar>(
@@ -57,7 +59,7 @@ RateIndependentPlasticFlowConstraint::set_value(bool out, bool dout_din, bool d2
   // The residual is the yield function itself when the stress state is "outside" the yield surface,
   // also called return mapping. The residual is the hardening rate when the stress state is
   // "inside" the yield surface, as the hardening rate is by definition zero.
-  const auto yielding = _fp >= -TOL2;
+  const auto yielding = _fp >= -_ytol;
   const auto not_yielding = torch::logical_not(yielding);
 
   if (out)

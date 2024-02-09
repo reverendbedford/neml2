@@ -41,7 +41,7 @@ public:
 
   NewtonNonlinearSolver(const OptionSet & options);
 
-  virtual std::tuple<bool, size_t> solve(NonlinearSystem & system) const override;
+  virtual std::tuple<bool, size_t> solve(NonlinearSystem & system, BatchTensor & x) const override;
 
 protected:
   /**
@@ -60,7 +60,11 @@ protected:
   converged(size_t itr, const torch::Tensor & nR, const torch::Tensor & nR0, Real alpha) const;
 
   /// Update trial solution
-  virtual Real update(NonlinearSystem & system, const BatchTensor & R, const BatchTensor & J) const;
+  virtual Real update(NonlinearSystem & system,
+                      BatchTensor & x,
+                      const BatchTensor & R,
+                      const BatchTensor & J,
+                      bool final = false) const;
 
   /// Perform Armijo linesearch
   virtual Real linesearch(NonlinearSystem & system,
