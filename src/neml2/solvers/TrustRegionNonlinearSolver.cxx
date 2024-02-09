@@ -96,7 +96,7 @@ TrustRegionNonlinearSolver::solve(const NonlinearSystem & system, const BatchTen
     auto accept = (rho >= _accept_criteria);
     x = BatchTensor(torch::where(accept.unsqueeze(-1), xp, x), x.batch_dim());
     R = BatchTensor(torch::where(accept.unsqueeze(-1), Rp, R), R.batch_dim());
-    J = BatchTensor(torch::where(accept.unsqueeze(-1), Jp, J), J.batch_dim());
+    J = BatchTensor(torch::where(accept.unsqueeze(-1).unsqueeze(-1), Jp, J), J.batch_dim());
     nR = torch::linalg::vector_norm(R, 2, -1, false, c10::nullopt);
   }
 
@@ -129,7 +129,7 @@ TrustRegionNonlinearSolver::solve_subproblem(const BatchTensor & R,
                                              const Scalar & delta) const
 {
   // The full Newton step
-  auto p_newton = BatchTensor(torch::linalg::solve(J, R, true), R.batch_dim());
+  auto p_newton = -BatchTensor(torch::linalg::solve(J, R, true), R.batch_dim());
   // The trust region step
   auto s = scalar_newton([&, R, J, delta](BatchTensor x)
                          { return TrustRegionNonlinearSolver::subproblem(x, R, J, delta); },
