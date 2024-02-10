@@ -34,6 +34,7 @@
 #include "neml2/tensors/SFR3.h"
 #include "neml2/tensors/R4.h"
 #include "neml2/tensors/SSR4.h"
+#include "neml2/tensors/SFFR4.h"
 #include "neml2/tensors/R5.h"
 #include "neml2/tensors/SSFR5.h"
 #include "neml2/tensors/Rot.h"
@@ -479,6 +480,7 @@ template class BatchTensorBase<R3>;
 template class BatchTensorBase<SFR3>;
 template class BatchTensorBase<R4>;
 template class BatchTensorBase<SSR4>;
+template class BatchTensorBase<SFFR4>;
 template class BatchTensorBase<R5>;
 template class BatchTensorBase<SSFR5>;
 template class BatchTensorBase<Quaternion>;

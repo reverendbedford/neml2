@@ -34,6 +34,7 @@
 #include "neml2/tensors/SFR3.h"
 #include "neml2/tensors/R4.h"
 #include "neml2/tensors/SSR4.h"
+#include "neml2/tensors/SFFR4.h"
 #include "neml2/tensors/R5.h"
 #include "neml2/tensors/SSFR5.h"
 #include "neml2/tensors/WR2.h"

@@ -52,7 +52,7 @@ protected:
   Variable<SR2> & _dp;
 
   /// Current orientation
-  const Variable<Rot> & _R;
+  const Variable<R2> & _R;
 
   /// Slip rates
   const Variable<BatchTensor> & _g;

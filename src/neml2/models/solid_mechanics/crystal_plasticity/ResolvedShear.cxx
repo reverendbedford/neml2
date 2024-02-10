@@ -41,7 +41,7 @@ ResolvedShear::expected_options()
   options.set<LabeledAxisAccessor>("resolved_shears") =
       vecstr{"state", "internal", "resolved_shears"};
   options.set<LabeledAxisAccessor>("stress") = vecstr{"state", "internal", "cauchy_stress"};
-  options.set<LabeledAxisAccessor>("orientation") = vecstr{"state", "orientation"};
+  options.set<LabeledAxisAccessor>("orientation") = vecstr{"state", "orientation_ER"};
   options.set<std::string>("crystal_geometry_name") = "crystal_geometry";
   return options;
 }
@@ -53,7 +53,7 @@ ResolvedShear::ResolvedShear(const OptionSet & options)
     _rss(declare_output_variable_list<Scalar>(options.get<LabeledAxisAccessor>("resolved_shears"),
                                               _crystal_geometry.nslip())),
     _S(declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("stress"))),
-    _R(declare_input_variable<Rot>(options.get<LabeledAxisAccessor>("orientation")))
+    _R(declare_input_variable<R2>(options.get<LabeledAxisAccessor>("orientation")))
 {
 }
 
@@ -63,7 +63,7 @@ ResolvedShear::set_value(bool out, bool dout_din, bool d2out_din2)
   neml_assert_dbg(!d2out_din2, "Second derivative not implemented.");
 
   const auto S = SR2(_S).list_unsqueeze();
-  const auto R = Rot(_R).list_unsqueeze();
+  const auto R = R2(_R).list_unsqueeze();
 
   if (out)
     _rss = BatchTensor(_crystal_geometry.M().rotate(R).inner(S), batch_dim());
@@ -71,11 +71,10 @@ ResolvedShear::set_value(bool out, bool dout_din, bool d2out_din2)
   if (dout_din)
   {
     _rss.d(_S) = BatchTensor(_crystal_geometry.M().rotate(R), batch_dim());
-    _rss.d(_R) = BatchTensor(
-        SR2(BatchTensor(_crystal_geometry.M().drotate(R), batch_dim()).base_transpose(-1, -2),
-            batch_dim() + 2)
-            .inner(SR2(_S).batch_unsqueeze(-1).batch_unsqueeze(-1)),
-        batch_dim());
+    _rss.d(_R) =
+        BatchTensor(SR2(_crystal_geometry.M().drotate(R).movedim(-3, -1))
+                        .inner(SR2(_S).batch_unsqueeze(-1).batch_unsqueeze(-1).batch_unsqueeze(-1)),
+                    batch_dim());
   }
 }
 

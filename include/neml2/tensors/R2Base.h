@@ -32,6 +32,7 @@ class Scalar;
 class Vec;
 class SR2;
 class R3;
+class R4;
 class Rot;
 class WR2;
 class R2;
@@ -106,11 +107,17 @@ public:
   [[nodiscard]] static Derived
   identity(const torch::TensorOptions & options = default_tensor_options());
 
-  /// Rotate
+  /// Rotate using a Rodrigues vector
   Derived rotate(const Rot & r) const;
+
+  /// Rotate using a rotation matrix
+  Derived rotate(const R2 & R) const;
 
   /// Derivative of the rotated tensor w.r.t. the Rodrigues vector
   R3 drotate(const Rot & r) const;
+
+  /// Derivative of the rotated tensor w.r.t. the rotation matrix
+  R4 drotate(const R2 & R) const;
 
   /// Accessor
   Scalar operator()(TorchSize i, TorchSize j) const;

@@ -22,39 +22,37 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
-
-#include "neml2/models/Model.h"
+#include "neml2/models/RotationMatrix.h"
 
 namespace neml2
 {
-namespace crystallography
+register_NEML2_object(RotationMatrix);
+
+OptionSet
+RotationMatrix::expected_options()
 {
-class CrystalGeometry;
+  OptionSet options = Model::expected_options();
+  options.set<LabeledAxisAccessor>("from");
+  options.set<LabeledAxisAccessor>("to");
+  return options;
 }
 
-/// Calculate the resolved shears
-class ResolvedShear : public Model
+RotationMatrix::RotationMatrix(const OptionSet & options)
+  : Model(options),
+    _from(declare_input_variable<Rot>(options.get<LabeledAxisAccessor>("from"))),
+    _to(declare_output_variable<R2>(options.get<LabeledAxisAccessor>("to")))
 {
-public:
-  static OptionSet expected_options();
+}
 
-  ResolvedShear(const OptionSet & options);
+void
+RotationMatrix::set_value(bool out, bool dout_din, bool d2out_din2)
+{
+  neml_assert(!d2out_din2, "Second derivatives not implemented");
 
-protected:
-  /// Set the resolved shears and associated derivatives
-  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+  if (out)
+    _to = Rot(_from).euler_rodrigues();
 
-  /// Crystal geometry class with slip geometry
-  const crystallography::CrystalGeometry & _crystal_geometry;
-
-  /// Resolved shear stresses
-  Variable<BatchTensor> & _rss;
-
-  /// Stress
-  const Variable<SR2> & _S;
-
-  /// Orientation
-  const Variable<R2> & _R;
-};
+  if (dout_din)
+    _to.d(_from) = Rot(_from).deuler_rodrigues();
+}
 } // namespace neml2

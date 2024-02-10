@@ -58,7 +58,16 @@
 []
 
 [Models]
-  [model]
+  [euler_rodrigues]
+    type = RotationMatrix
+    from = 'state/orientation'
+    to = 'state/orientation_ER'
+  []
+  [wp]
     type = PlasticDeformationRate
+  []
+  [model]
+    type = ComposedModel
+    models = 'euler_rodrigues wp'
   []
 []

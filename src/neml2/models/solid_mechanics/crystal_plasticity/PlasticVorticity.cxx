@@ -40,7 +40,7 @@ PlasticVorticity::expected_options()
   OptionSet options = Model::expected_options();
   options.set<LabeledAxisAccessor>("plastic_vorticity") =
       vecstr{"state", "internal", "plastic_vorticity"};
-  options.set<LabeledAxisAccessor>("orientation") = vecstr{"state", "orientation"};
+  options.set<LabeledAxisAccessor>("orientation") = vecstr{"state", "orientation_ER"};
   options.set<LabeledAxisAccessor>("slip_rates") = vecstr{"state", "internal", "slip_rates"};
   options.set<std::string>("crystal_geometry_name") = "crystal_geometry";
   return options;
@@ -51,7 +51,7 @@ PlasticVorticity::PlasticVorticity(const OptionSet & options)
     _crystal_geometry(register_data<crystallography::CrystalGeometry>(
         options.get<std::string>("crystal_geometry_name"))),
     _Wp(declare_output_variable<WR2>(options.get<LabeledAxisAccessor>("plastic_vorticity"))),
-    _R(declare_input_variable<Rot>(options.get<LabeledAxisAccessor>("orientation"))),
+    _R(declare_input_variable<R2>(options.get<LabeledAxisAccessor>("orientation"))),
     _gamma_dot(declare_input_variable_list<Scalar>(options.get<LabeledAxisAccessor>("slip_rates"),
                                                    _crystal_geometry.nslip()))
 {
@@ -65,13 +65,14 @@ PlasticVorticity::set_value(bool out, bool dout_din, bool d2out_din2)
   const auto Wp_crystal = (Scalar(_gamma_dot.value()) * _crystal_geometry.W()).list_sum();
 
   if (out)
-    _Wp = Wp_crystal.rotate(Rot(_R));
+    _Wp = Wp_crystal.rotate(R2(_R));
 
   if (dout_din)
   {
-    _Wp.d(_gamma_dot) = list_derivative_outer_product_b(
-        [](auto a, auto b) { return b.rotate(a); }, Rot(_R), _crystal_geometry.W());
-    _Wp.d(_R) = Wp_crystal.drotate(Rot(_R));
+    _Wp.d(_gamma_dot) =
+        BatchTensor(_crystal_geometry.W().rotate(R2(_R).batch_unsqueeze(-1)), batch_dim())
+            .base_transpose(-1, -2);
+    _Wp.d(_R) = Wp_crystal.drotate(R2(_R));
   }
 }
 } // namespace neml2

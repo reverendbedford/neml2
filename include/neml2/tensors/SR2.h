@@ -32,6 +32,7 @@ class Scalar;
 class R2;
 class SFR3;
 class SSR4;
+class SFFR4;
 class Rot;
 class SWR4;
 class WR2;
@@ -82,9 +83,11 @@ public:
 
   /// Rotate
   SR2 rotate(const Rot & r) const;
+  SR2 rotate(const R2 & R) const;
 
   /// Derivative of the rotated tensor w.r.t. the Rodrigues vector
   SFR3 drotate(const Rot & r) const;
+  SFFR4 drotate(const R2 & R) const;
 
   /// Accessor
   Scalar operator()(TorchSize i, TorchSize j) const;

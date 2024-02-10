@@ -25,36 +25,28 @@
 #pragma once
 
 #include "neml2/models/Model.h"
+#include "neml2/tensors/Rot.h"
 
 namespace neml2
 {
-namespace crystallography
-{
-class CrystalGeometry;
-}
-
-/// Calculate the resolved shears
-class ResolvedShear : public Model
+/**
+ * @brief Convert a Rodrigues vector (Rot) to a second order tensor (R2).
+ *
+ * This model exists simply because this conversion is too computationally expensive without an
+ * optimized kernel, either on CPU or GPU.
+ */
+class RotationMatrix : public Model
 {
 public:
   static OptionSet expected_options();
 
-  ResolvedShear(const OptionSet & options);
+  RotationMatrix(const OptionSet & options);
 
 protected:
-  /// Set the resolved shears and associated derivatives
   void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
-  /// Crystal geometry class with slip geometry
-  const crystallography::CrystalGeometry & _crystal_geometry;
+  const Variable<Rot> & _from;
 
-  /// Resolved shear stresses
-  Variable<BatchTensor> & _rss;
-
-  /// Stress
-  const Variable<SR2> & _S;
-
-  /// Orientation
-  const Variable<R2> & _R;
+  Variable<R2> & _to;
 };
 } // namespace neml2

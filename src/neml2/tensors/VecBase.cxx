@@ -28,6 +28,7 @@
 #include "neml2/tensors/Vec.h"
 #include "neml2/tensors/Rot.h"
 #include "neml2/tensors/WR2.h"
+#include "neml2/tensors/R3.h"
 
 namespace neml2
 {
@@ -86,6 +87,13 @@ VecBase<Derived>::rotate(const Rot & r) const
 }
 
 template <class Derived>
+Derived
+VecBase<Derived>::rotate(const R2 & R) const
+{
+  return R * Vec(*this);
+}
+
+template <class Derived>
 R2
 VecBase<Derived>::drotate(const Rot & r) const
 {
@@ -95,6 +103,14 @@ VecBase<Derived>::drotate(const Rot & r) const
   return 2.0 *
          (-rv.outer(r) - outer(r) + r.outer(*this) + R2::fill(r.dot(*this)) - R2::skew(*this)) /
          (1.0 + rr);
+}
+
+template <class Derived>
+R3
+VecBase<Derived>::drotate(const R2 & R) const
+{
+  auto I = R2::identity(R.options());
+  return torch::einsum("...ij,...k", {I, *this});
 }
 
 template class VecBase<Vec>;

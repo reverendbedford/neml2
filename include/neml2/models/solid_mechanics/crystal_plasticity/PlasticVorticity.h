@@ -52,7 +52,7 @@ protected:
   Variable<WR2> & _Wp;
 
   /// Orientation
-  const Variable<Rot> & _R;
+  const Variable<R2> & _R;
 
   /// Slip rate
   const Variable<BatchTensor> & _gamma_dot;

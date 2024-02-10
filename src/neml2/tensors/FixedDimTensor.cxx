@@ -33,6 +33,7 @@
 #include "neml2/tensors/SFR3.h"
 #include "neml2/tensors/R4.h"
 #include "neml2/tensors/SSR4.h"
+#include "neml2/tensors/SFFR4.h"
 #include "neml2/tensors/R5.h"
 #include "neml2/tensors/SSFR5.h"
 #include "neml2/tensors/Rot.h"
@@ -147,6 +148,7 @@ template class FixedDimTensor<R3, 3, 3, 3>;
 template class FixedDimTensor<SFR3, 6, 3>;
 template class FixedDimTensor<R4, 3, 3, 3, 3>;
 template class FixedDimTensor<SSR4, 6, 6>;
+template class FixedDimTensor<SFFR4, 6, 3, 3>;
 template class FixedDimTensor<R5, 3, 3, 3, 3, 3>;
 template class FixedDimTensor<SSFR5, 6, 6, 3>;
 template class FixedDimTensor<Quaternion, 4>;
