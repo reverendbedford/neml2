@@ -58,10 +58,10 @@ private:
   void apply_second_order_chain_rule(Model * model);
 
   /// Additional outbound items in the dependency graph
-  const std::vector<LabeledAxisAccessor> _additional_outputs;
+  const std::vector<VariableName> _additional_outputs;
 
   /// Helper to resolve model dependency
-  DependencyResolver<Model, LabeledAxisAccessor> _dependency;
+  DependencyResolver<Model, VariableName> _dependency;
 
   /// Starting point of chain rule
   LabeledMatrix _din_din;

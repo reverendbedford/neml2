@@ -48,7 +48,7 @@ class Model : public Data,
               public ParameterStore,
               public VariableStore,
               public NonlinearSystem,
-              public DependencyDefinition<LabeledAxisAccessor>
+              public DependencyDefinition<VariableName>
 {
 public:
   static OptionSet expected_options();
@@ -108,20 +108,17 @@ public:
   const std::vector<Model *> & registered_models() const { return _registered_models; }
 
   /// The variables that this model depends on
-  virtual const std::set<LabeledAxisAccessor> consumed_items() const override;
+  virtual const std::set<VariableName> consumed_items() const override;
 
   /// The variables that this model defines as part of its output
-  virtual const std::set<LabeledAxisAccessor> provided_items() const override;
+  virtual const std::set<VariableName> provided_items() const override;
 
   /**
    * The additional variables that this model should provide. Typically these variables are not
    * directly computed by this model, instead they come from other information that this model
    * _knows_, e.g., directly from the input variables.
    */
-  const std::vector<LabeledAxisAccessor> & additional_outputs() const
-  {
-    return _additional_outputs;
-  }
+  const std::vector<VariableName> & additional_outputs() const { return _additional_outputs; }
 
   /**
    * Validate the currently requested AD settings.
@@ -247,7 +244,7 @@ protected:
   /// Models *this* model may use during its evaluation
   std::vector<Model *> _registered_models;
 
-  std::vector<LabeledAxisAccessor> _additional_outputs;
+  std::vector<VariableName> _additional_outputs;
 
   /// Whether to use AD to compute 1st derivatives
   bool _AD_1st_deriv;

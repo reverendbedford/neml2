@@ -68,7 +68,7 @@ OptionSet
 Interpolation<T>::expected_options()
 {
   OptionSet options = NonlinearParameter<T>::expected_options();
-  options.set<LabeledAxisAccessor>("argument");
+  options.set<VariableName>("argument");
   options.set<CrossRef<Scalar>>("abscissa");
   options.set<CrossRef<T>>("ordinate");
   return options;
@@ -79,7 +79,7 @@ Interpolation<T>::Interpolation(const OptionSet & options)
   : NonlinearParameter<T>(options),
     _X(this->template declare_parameter<Scalar>("X", "abscissa")),
     _Y(this->template declare_parameter<T>("Y", "ordinate")),
-    _x(this->template declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("argument")))
+    _x(this->template declare_input_variable<Scalar>(options.get<VariableName>("argument")))
 {
 }
 } // namespace neml2

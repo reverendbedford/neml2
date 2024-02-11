@@ -43,8 +43,8 @@ protected:
   Model & _model;
 
   /// The potential function
-  const LabeledAxisAccessor _f;
+  const VariableName _f;
 
-  std::map<LabeledAxisAccessor, Variable<BatchTensor> *> _conjugate_pairs;
+  std::map<VariableName, Variable<BatchTensor> *> _conjugate_pairs;
 };
 } // namespace neml2

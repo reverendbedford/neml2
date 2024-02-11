@@ -35,8 +35,8 @@ OptionSet
 ForceRate<T>::expected_options()
 {
   OptionSet options = Model::expected_options();
-  options.set<LabeledAxisAccessor>("force");
-  options.set<LabeledAxisAccessor>("time") = {"t"};
+  options.set<VariableName>("force");
+  options.set<VariableName>("time") = {"t"};
   return options;
 }
 
@@ -44,11 +44,11 @@ template <typename T>
 ForceRate<T>::ForceRate(const OptionSet & options)
   : Model(options),
     _df_dt(declare_output_variable<T>(
-        options.get<LabeledAxisAccessor>("force").with_suffix("_rate").on("forces"))),
-    _f(declare_input_variable<T>(options.get<LabeledAxisAccessor>("force").on("forces"))),
-    _fn(declare_input_variable<T>(options.get<LabeledAxisAccessor>("force").on("old_forces"))),
-    _t(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("time").on("forces"))),
-    _tn(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("time").on("old_forces")))
+        options.get<VariableName>("force").with_suffix("_rate").on("forces"))),
+    _f(declare_input_variable<T>(options.get<VariableName>("force").on("forces"))),
+    _fn(declare_input_variable<T>(options.get<VariableName>("force").on("old_forces"))),
+    _t(declare_input_variable<Scalar>(options.get<VariableName>("time").on("forces"))),
+    _tn(declare_input_variable<Scalar>(options.get<VariableName>("time").on("old_forces")))
 {
 }
 

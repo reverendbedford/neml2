@@ -39,10 +39,10 @@ public:
 
 private:
   /// Variable name
-  const LabeledAxisAccessor _var_name;
+  const VariableName _var_name;
 
   /// Variable rate name
-  const LabeledAxisAccessor _var_rate_name;
+  const VariableName _var_rate_name;
 
 protected:
   /// Perform the update by defining the nonlinear residual and it's derivatives

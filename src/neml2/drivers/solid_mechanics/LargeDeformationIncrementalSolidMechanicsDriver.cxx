@@ -35,12 +35,12 @@ LargeDeformationIncrementalSolidMechanicsDriver::expected_options()
 {
   OptionSet options = TransientDriver::expected_options();
   options.set<std::string>("control") = "STRAIN";
-  options.set<LabeledAxisAccessor>("deformation_rate") = vecstr{"forces", "deformation_rate"};
-  options.set<LabeledAxisAccessor>("cauchy_stress_rate") = vecstr{"forces", "cauchy_stress_rate"};
+  options.set<VariableName>("deformation_rate") = vecstr{"forces", "deformation_rate"};
+  options.set<VariableName>("cauchy_stress_rate") = vecstr{"forces", "cauchy_stress_rate"};
   options.set<CrossRef<torch::Tensor>>("prescribed_deformation_rate");
   options.set<CrossRef<torch::Tensor>>("prescribed_cauchy_stress_rate");
 
-  options.set<LabeledAxisAccessor>("vorticity") = vecstr{"forces", "vorticity"};
+  options.set<VariableName>("vorticity") = vecstr{"forces", "vorticity"};
   options.set<bool>("provide_vorticity") = false;
   options.set<CrossRef<torch::Tensor>>("prescribed_vorticity") = "vorticity";
 
@@ -51,17 +51,17 @@ LargeDeformationIncrementalSolidMechanicsDriver::LargeDeformationIncrementalSoli
     const OptionSet & options)
   : TransientDriver(options),
     _control(options.get<std::string>("control")),
-    _vorticity_name(options.get<LabeledAxisAccessor>("vorticity"))
+    _vorticity_name(options.get<VariableName>("vorticity"))
 {
   if (_control == "STRAIN")
   {
     _driving_force = SR2(options.get<CrossRef<torch::Tensor>>("prescribed_deformation_rate"), 2);
-    _driving_force_name = options.get<LabeledAxisAccessor>("deformation_rate");
+    _driving_force_name = options.get<VariableName>("deformation_rate");
   }
   else if (_control == "STRESS")
   {
     _driving_force = SR2(options.get<CrossRef<torch::Tensor>>("prescribed_cauchy_stress_rate"), 2);
-    _driving_force_name = options.get<LabeledAxisAccessor>("cauchy_stress_rate");
+    _driving_force_name = options.get<VariableName>("cauchy_stress_rate");
   }
   else
     // LCOV_EXCL_START

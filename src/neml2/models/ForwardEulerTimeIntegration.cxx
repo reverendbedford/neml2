@@ -35,21 +35,21 @@ OptionSet
 ForwardEulerTimeIntegration<T>::expected_options()
 {
   OptionSet options = Model::expected_options();
-  options.set<LabeledAxisAccessor>("variable");
-  options.set<LabeledAxisAccessor>("time") = {{"t"}};
+  options.set<VariableName>("variable");
+  options.set<VariableName>("time") = {{"t"}};
   return options;
 }
 
 template <typename T>
 ForwardEulerTimeIntegration<T>::ForwardEulerTimeIntegration(const OptionSet & options)
   : Model(options),
-    _var_name(options.get<LabeledAxisAccessor>("variable")),
+    _var_name(options.get<VariableName>("variable")),
     _var_rate_name(_var_name.with_suffix("_rate")),
     _s(declare_output_variable<T>(_var_name.on("state"))),
     _ds_dt(declare_input_variable<T>(_var_rate_name.on("state"))),
     _sn(declare_input_variable<T>(_var_name.on("old_state"))),
-    _t(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("time").on("forces"))),
-    _tn(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("time").on("old_forces")))
+    _t(declare_input_variable<Scalar>(options.get<VariableName>("time").on("forces"))),
+    _tn(declare_input_variable<Scalar>(options.get<VariableName>("time").on("old_forces")))
 {
 }
 

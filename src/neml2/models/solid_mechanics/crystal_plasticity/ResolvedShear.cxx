@@ -38,10 +38,9 @@ OptionSet
 ResolvedShear::expected_options()
 {
   OptionSet options = Model::expected_options();
-  options.set<LabeledAxisAccessor>("resolved_shears") =
-      vecstr{"state", "internal", "resolved_shears"};
-  options.set<LabeledAxisAccessor>("stress") = vecstr{"state", "internal", "cauchy_stress"};
-  options.set<LabeledAxisAccessor>("orientation") = vecstr{"state", "orientation_ER"};
+  options.set<VariableName>("resolved_shears") = vecstr{"state", "internal", "resolved_shears"};
+  options.set<VariableName>("stress") = vecstr{"state", "internal", "cauchy_stress"};
+  options.set<VariableName>("orientation") = vecstr{"state", "orientation_ER"};
   options.set<std::string>("crystal_geometry_name") = "crystal_geometry";
   return options;
 }
@@ -50,10 +49,10 @@ ResolvedShear::ResolvedShear(const OptionSet & options)
   : Model(options),
     _crystal_geometry(register_data<crystallography::CrystalGeometry>(
         options.get<std::string>("crystal_geometry_name"))),
-    _rss(declare_output_variable_list<Scalar>(options.get<LabeledAxisAccessor>("resolved_shears"),
+    _rss(declare_output_variable_list<Scalar>(options.get<VariableName>("resolved_shears"),
                                               _crystal_geometry.nslip())),
-    _S(declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("stress"))),
-    _R(declare_input_variable<R2>(options.get<LabeledAxisAccessor>("orientation")))
+    _S(declare_input_variable<SR2>(options.get<VariableName>("stress"))),
+    _R(declare_input_variable<R2>(options.get<VariableName>("orientation")))
 {
 }
 

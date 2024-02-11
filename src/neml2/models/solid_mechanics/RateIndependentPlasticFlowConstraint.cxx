@@ -34,8 +34,8 @@ OptionSet
 RateIndependentPlasticFlowConstraint::expected_options()
 {
   OptionSet options = Model::expected_options();
-  options.set<LabeledAxisAccessor>("yield_function") = {{"state", "internal", "fp"}};
-  options.set<LabeledAxisAccessor>("flow_rate") = {{"state", "internal", "gamma_rate"}};
+  options.set<VariableName>("yield_function") = {{"state", "internal", "fp"}};
+  options.set<VariableName>("flow_rate") = {{"state", "internal", "gamma_rate"}};
   options.set<Real>("yielding_tolerance") = 1e-8;
   return options;
 }
@@ -44,10 +44,10 @@ RateIndependentPlasticFlowConstraint::RateIndependentPlasticFlowConstraint(
     const OptionSet & options)
   : Model(options),
     _ytol(options.get<Real>("yielding_tolerance")),
-    _fp(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("yield_function"))),
-    _gamma_dot(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("flow_rate"))),
+    _fp(declare_input_variable<Scalar>(options.get<VariableName>("yield_function"))),
+    _gamma_dot(declare_input_variable<Scalar>(options.get<VariableName>("flow_rate"))),
     _r(declare_output_variable<Scalar>(
-        options.get<LabeledAxisAccessor>("flow_rate").slice(1).on("residual")))
+        options.get<VariableName>("flow_rate").slice(1).on("residual")))
 {
 }
 

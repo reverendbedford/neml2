@@ -32,19 +32,17 @@ OptionSet
 AssociativeIsotropicPlasticHardening::expected_options()
 {
   OptionSet options = FlowRule::expected_options();
-  options.set<LabeledAxisAccessor>("isotropic_hardening_direction") = {{"state", "internal", "Nk"}};
-  options.set<LabeledAxisAccessor>("equivalent_plastic_strain_rate") = {
-      {"state", "internal", "ep_rate"}};
+  options.set<VariableName>("isotropic_hardening_direction") = {{"state", "internal", "Nk"}};
+  options.set<VariableName>("equivalent_plastic_strain_rate") = {{"state", "internal", "ep_rate"}};
   return options;
 }
 
 AssociativeIsotropicPlasticHardening::AssociativeIsotropicPlasticHardening(
     const OptionSet & options)
   : FlowRule(options),
-    _Nk(declare_input_variable<Scalar>(
-        options.get<LabeledAxisAccessor>("isotropic_hardening_direction"))),
+    _Nk(declare_input_variable<Scalar>(options.get<VariableName>("isotropic_hardening_direction"))),
     _ep_dot(declare_output_variable<Scalar>(
-        options.get<LabeledAxisAccessor>("equivalent_plastic_strain_rate")))
+        options.get<VariableName>("equivalent_plastic_strain_rate")))
 {
 }
 

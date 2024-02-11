@@ -37,12 +37,10 @@ SlipRule::expected_options()
 {
   OptionSet options = Model::expected_options();
 
-  options.set<LabeledAxisAccessor>("slip_rates") = vecstr{"state", "internal", "slip_rates"};
+  options.set<VariableName>("slip_rates") = vecstr{"state", "internal", "slip_rates"};
 
-  options.set<LabeledAxisAccessor>("resolved_shears") =
-      vecstr{"state", "internal", "resolved_shears"};
-  options.set<LabeledAxisAccessor>("slip_strengths") =
-      vecstr{"state", "internal", "slip_strengths"};
+  options.set<VariableName>("resolved_shears") = vecstr{"state", "internal", "resolved_shears"};
+  options.set<VariableName>("slip_strengths") = vecstr{"state", "internal", "slip_strengths"};
 
   options.set<std::string>("crystal_geometry_name") = "crystal_geometry";
 
@@ -53,11 +51,11 @@ SlipRule::SlipRule(const OptionSet & options)
   : Model(options),
     _crystal_geometry(register_data<crystallography::CrystalGeometry>(
         options.get<std::string>("crystal_geometry_name"))),
-    _g(declare_output_variable_list<Scalar>(options.get<LabeledAxisAccessor>("slip_rates"),
+    _g(declare_output_variable_list<Scalar>(options.get<VariableName>("slip_rates"),
                                             _crystal_geometry.nslip())),
-    _rss(declare_input_variable_list<Scalar>(options.get<LabeledAxisAccessor>("resolved_shears"),
+    _rss(declare_input_variable_list<Scalar>(options.get<VariableName>("resolved_shears"),
                                              _crystal_geometry.nslip())),
-    _tau(declare_input_variable_list<Scalar>(options.get<LabeledAxisAccessor>("slip_strengths"),
+    _tau(declare_input_variable_list<Scalar>(options.get<VariableName>("slip_strengths"),
                                              _crystal_geometry.nslip()))
 {
 }

@@ -47,10 +47,10 @@ protected:
   const bool _rate_form;
 
   /// The strain (rate) variable accessor
-  const LabeledAxisAccessor _strain;
+  const VariableName _strain;
 
   /// The stress (rate) variable accessor
-  const LabeledAxisAccessor _stress;
+  const VariableName _stress;
 
   /**
    * The variable accessor for the input. If _compliance == true, this is the stress (rate).

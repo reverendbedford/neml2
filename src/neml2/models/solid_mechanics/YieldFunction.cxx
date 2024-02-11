@@ -33,20 +33,19 @@ YieldFunction::expected_options()
 {
   OptionSet options = Model::expected_options();
   options.set<CrossRef<Scalar>>("yield_stress");
-  options.set<LabeledAxisAccessor>("effective_stress") = {{"state", "internal", "s"}};
-  options.set<LabeledAxisAccessor>("isotropic_hardening");
-  options.set<LabeledAxisAccessor>("yield_function") = {{"state", "internal", "fp"}};
+  options.set<VariableName>("effective_stress") = {{"state", "internal", "s"}};
+  options.set<VariableName>("isotropic_hardening");
+  options.set<VariableName>("yield_function") = {{"state", "internal", "fp"}};
   return options;
 }
 
 YieldFunction::YieldFunction(const OptionSet & options)
   : Model(options),
-    _s(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("effective_stress"))),
-    _h(options.get<LabeledAxisAccessor>("isotropic_hardening").empty()
+    _s(declare_input_variable<Scalar>(options.get<VariableName>("effective_stress"))),
+    _h(options.get<VariableName>("isotropic_hardening").empty()
            ? nullptr
-           : &declare_input_variable<Scalar>(
-                 options.get<LabeledAxisAccessor>("isotropic_hardening"))),
-    _f(declare_output_variable<Scalar>(options.get<LabeledAxisAccessor>("yield_function"))),
+           : &declare_input_variable<Scalar>(options.get<VariableName>("isotropic_hardening"))),
+    _f(declare_output_variable<Scalar>(options.get<VariableName>("yield_function"))),
     _sy(declare_parameter<Scalar>("sy", "yield_stress"))
 {
 }

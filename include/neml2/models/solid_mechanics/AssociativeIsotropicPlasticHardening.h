@@ -36,10 +36,10 @@ public:
   AssociativeIsotropicPlasticHardening(const OptionSet & options);
 
   /// Accessor for the isotropic hardening direction
-  const LabeledAxisAccessor isotropic_hardening_direction;
+  const VariableName isotropic_hardening_direction;
 
   /// Accessor for the plastic strain rate
-  const LabeledAxisAccessor equivalent_plastic_strain_rate;
+  const VariableName equivalent_plastic_strain_rate;
 
 protected:
   void set_value(bool out, bool dout_din, bool d2out_din2) override;

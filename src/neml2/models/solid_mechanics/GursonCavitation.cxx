@@ -33,18 +33,17 @@ OptionSet
 GursonCavitation::expected_options()
 {
   OptionSet options = Model::expected_options();
-  options.set<LabeledAxisAccessor>("plastic_strain_rate") = {{"state", "internal", "Ep_rate"}};
-  options.set<LabeledAxisAccessor>("void_fraction") = {{"state", "internal", "f"}};
-  options.set<LabeledAxisAccessor>("void_fraction_rate") = {{"state", "internal", "f_rate"}};
+  options.set<VariableName>("plastic_strain_rate") = {{"state", "internal", "Ep_rate"}};
+  options.set<VariableName>("void_fraction") = {{"state", "internal", "f"}};
+  options.set<VariableName>("void_fraction_rate") = {{"state", "internal", "f_rate"}};
   return options;
 }
 
 GursonCavitation::GursonCavitation(const OptionSet & options)
   : Model(options),
-    _phi_dot(
-        declare_output_variable<Scalar>(options.get<LabeledAxisAccessor>("void_fraction_rate"))),
-    _Ep_dot(declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("plastic_strain_rate"))),
-    _phi(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("void_fraction")))
+    _phi_dot(declare_output_variable<Scalar>(options.get<VariableName>("void_fraction_rate"))),
+    _Ep_dot(declare_input_variable<SR2>(options.get<VariableName>("plastic_strain_rate"))),
+    _phi(declare_input_variable<Scalar>(options.get<VariableName>("void_fraction")))
 {
 }
 

@@ -37,22 +37,22 @@ OptionSet
 WR2ImplicitExponentialTimeIntegration::expected_options()
 {
   OptionSet options = Model::expected_options();
-  options.set<LabeledAxisAccessor>("variable");
-  options.set<LabeledAxisAccessor>("time") = {"t"};
+  options.set<VariableName>("variable");
+  options.set<VariableName>("time") = {"t"};
   return options;
 }
 
 WR2ImplicitExponentialTimeIntegration::WR2ImplicitExponentialTimeIntegration(
     const OptionSet & options)
   : Model(options),
-    _var_name(options.get<LabeledAxisAccessor>("variable")),
+    _var_name(options.get<VariableName>("variable")),
     _var_rate_name(_var_name.with_suffix("_rate")),
     _r(declare_output_variable<Vec>(_var_name.on("residual"))),
     _s_dot(declare_input_variable<WR2>(_var_rate_name.on("state"))),
     _s(declare_input_variable<Rot>(_var_name.on("state"))),
     _sn(declare_input_variable<Rot>(_var_name.on("old_state"))),
-    _t(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("time").on("forces"))),
-    _tn(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("time").on("old_forces")))
+    _t(declare_input_variable<Scalar>(options.get<VariableName>("time").on("forces"))),
+    _tn(declare_input_variable<Scalar>(options.get<VariableName>("time").on("old_forces")))
 {
 }
 

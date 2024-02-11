@@ -33,8 +33,8 @@ OptionSet
 ChabochePlasticHardening::expected_options()
 {
   OptionSet options = FlowRule::expected_options();
-  options.set<LabeledAxisAccessor>("back_stress") = {{"state", "internal", "X"}};
-  options.set<LabeledAxisAccessor>("flow_direction") = {{"state", "internal", "NM"}};
+  options.set<VariableName>("back_stress") = {{"state", "internal", "X"}};
+  options.set<VariableName>("flow_direction") = {{"state", "internal", "NM"}};
   options.set<CrossRef<Scalar>>("C");
   options.set<CrossRef<Scalar>>("g");
   options.set<CrossRef<Scalar>>("A");
@@ -44,8 +44,8 @@ ChabochePlasticHardening::expected_options()
 
 ChabochePlasticHardening::ChabochePlasticHardening(const OptionSet & options)
   : FlowRule(options),
-    _X(declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("back_stress"))),
-    _NM(declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("flow_direction"))),
+    _X(declare_input_variable<SR2>(options.get<VariableName>("back_stress"))),
+    _NM(declare_input_variable<SR2>(options.get<VariableName>("flow_direction"))),
     _X_dot(declare_output_variable<SR2>(_X.name().with_suffix("_rate"))),
     _C(declare_parameter<Scalar>("C", "C")),
     _g(declare_parameter<Scalar>("g", "g")),

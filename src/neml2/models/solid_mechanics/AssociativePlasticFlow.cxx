@@ -33,15 +33,15 @@ OptionSet
 AssociativePlasticFlow::expected_options()
 {
   OptionSet options = FlowRule::expected_options();
-  options.set<LabeledAxisAccessor>("flow_direction") = {{"state", "internal", "NM"}};
-  options.set<LabeledAxisAccessor>("plastic_strain_rate") = {{"state", "internal", "Ep_rate"}};
+  options.set<VariableName>("flow_direction") = {{"state", "internal", "NM"}};
+  options.set<VariableName>("plastic_strain_rate") = {{"state", "internal", "Ep_rate"}};
   return options;
 }
 
 AssociativePlasticFlow::AssociativePlasticFlow(const OptionSet & options)
   : FlowRule(options),
-    _NM(declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("flow_direction"))),
-    _Ep_dot(declare_output_variable<SR2>(options.get<LabeledAxisAccessor>("plastic_strain_rate")))
+    _NM(declare_input_variable<SR2>(options.get<VariableName>("flow_direction"))),
+    _Ep_dot(declare_output_variable<SR2>(options.get<VariableName>("plastic_strain_rate")))
 {
 }
 

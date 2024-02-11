@@ -33,20 +33,17 @@ OptionSet
 SingleSlipHardeningRule::expected_options()
 {
   OptionSet options = Model::expected_options();
-  options.set<LabeledAxisAccessor>("slip_hardening_rate") = {
-      "state", "internal", "slip_hardening_rate"};
-  options.set<LabeledAxisAccessor>("slip_hardening") = {"state", "internal", "slip_hardening"};
-  options.set<LabeledAxisAccessor>("sum_slip_rates") = {"state", "internal", "sum_slip_rates"};
+  options.set<VariableName>("slip_hardening_rate") = {"state", "internal", "slip_hardening_rate"};
+  options.set<VariableName>("slip_hardening") = {"state", "internal", "slip_hardening"};
+  options.set<VariableName>("sum_slip_rates") = {"state", "internal", "sum_slip_rates"};
   return options;
 }
 
 SingleSlipHardeningRule::SingleSlipHardeningRule(const OptionSet & options)
   : Model(options),
-    _tau_dot(
-        declare_output_variable<Scalar>(options.get<LabeledAxisAccessor>("slip_hardening_rate"))),
-    _tau(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("slip_hardening"))),
-    _gamma_dot_sum(
-        declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("sum_slip_rates")))
+    _tau_dot(declare_output_variable<Scalar>(options.get<VariableName>("slip_hardening_rate"))),
+    _tau(declare_input_variable<Scalar>(options.get<VariableName>("slip_hardening"))),
+    _gamma_dot_sum(declare_input_variable<Scalar>(options.get<VariableName>("sum_slip_rates")))
 {
 }
 

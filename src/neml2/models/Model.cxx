@@ -33,7 +33,7 @@ Model::expected_options()
 {
   OptionSet options = Data::expected_options();
   options += NonlinearSystem::expected_options();
-  options.set<std::vector<LabeledAxisAccessor>>("additional_outputs");
+  options.set<std::vector<VariableName>>("additional_outputs");
   options.set<bool>("use_AD_first_derivative") = false;
   options.set<bool>("use_AD_second_derivative") = false;
   options.set<int>("_extra_derivative_order") = 0;
@@ -45,7 +45,7 @@ Model::Model(const OptionSet & options)
     ParameterStore(options, this),
     VariableStore(options, this),
     NonlinearSystem(options),
-    _additional_outputs(options.get<std::vector<LabeledAxisAccessor>>("additional_outputs")),
+    _additional_outputs(options.get<std::vector<VariableName>>("additional_outputs")),
     _AD_1st_deriv(options.get<bool>("use_AD_first_derivative")),
     _AD_2nd_deriv(options.get<bool>("use_AD_second_derivative")),
     _options(default_tensor_options()),
@@ -355,13 +355,13 @@ Model::value_and_dvalue_and_d2value()
   }
 }
 
-const std::set<LabeledAxisAccessor>
+const std::set<VariableName>
 Model::consumed_items() const
 {
   return input_axis().variable_accessors(true);
 }
 
-const std::set<LabeledAxisAccessor>
+const std::set<VariableName>
 Model::provided_items() const
 {
   return output_axis().variable_accessors(true);

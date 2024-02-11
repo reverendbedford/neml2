@@ -37,7 +37,7 @@ TransientDriver::expected_options()
   OptionSet options = Driver::expected_options();
   options.set<std::string>("model");
   options.set<CrossRef<torch::Tensor>>("times");
-  options.set<LabeledAxisAccessor>("time") = vecstr{"forces", "t"};
+  options.set<VariableName>("time") = vecstr{"forces", "t"};
   options.set<std::string>("predictor") = "PREVIOUS_STATE";
   options.set<Real>("cp_elastic_scale") = 1.0;
   options.set<std::string>("save_as");
@@ -46,11 +46,11 @@ TransientDriver::expected_options()
   options.set<bool>("show_output_axis") = false;
   options.set<std::string>("device") = "cpu";
 
-  options.set<std::vector<LabeledAxisAccessor>>("ic_scalar_names");
+  options.set<std::vector<VariableName>>("ic_scalar_names");
   options.set<std::vector<CrossRef<Scalar>>>("ic_scalar_values");
-  options.set<std::vector<LabeledAxisAccessor>>("ic_rot_names");
+  options.set<std::vector<VariableName>>("ic_rot_names");
   options.set<std::vector<CrossRef<Rot>>>("ic_rot_values");
-  options.set<std::vector<LabeledAxisAccessor>>("ic_sr2_names");
+  options.set<std::vector<VariableName>>("ic_sr2_names");
   options.set<std::vector<CrossRef<SR2>>>("ic_sr2_values");
 
   return options;
@@ -62,7 +62,7 @@ TransientDriver::TransientDriver(const OptionSet & options)
     _device(options.get<std::string>("device")),
     _time(options.get<CrossRef<torch::Tensor>>("times"), 2),
     _step_count(0),
-    _time_name(options.get<LabeledAxisAccessor>("time")),
+    _time_name(options.get<VariableName>("time")),
     _nsteps(_time.batch_sizes()[0]),
     _nbatch(_time.batch_sizes()[1]),
     _in(_model.input_storage()),
@@ -74,11 +74,11 @@ TransientDriver::TransientDriver(const OptionSet & options)
     _show_output(options.get<bool>("show_output_axis")),
     _result_in(LabeledVector::zeros({_nsteps, _nbatch}, {&_model.input_axis()})),
     _result_out(LabeledVector::zeros({_nsteps, _nbatch}, {&_model.output_axis()})),
-    _ic_scalar_names(options.get<std::vector<LabeledAxisAccessor>>("ic_scalar_names")),
+    _ic_scalar_names(options.get<std::vector<VariableName>>("ic_scalar_names")),
     _ic_scalar_values(options.get<std::vector<CrossRef<Scalar>>>("ic_scalar_values")),
-    _ic_rot_names(options.get<std::vector<LabeledAxisAccessor>>("ic_rot_names")),
+    _ic_rot_names(options.get<std::vector<VariableName>>("ic_rot_names")),
     _ic_rot_values(options.get<std::vector<CrossRef<Rot>>>("ic_rot_values")),
-    _ic_sr2_names(options.get<std::vector<LabeledAxisAccessor>>("ic_sr2_names")),
+    _ic_sr2_names(options.get<std::vector<VariableName>>("ic_sr2_names")),
     _ic_sr2_values(options.get<std::vector<CrossRef<SR2>>>("ic_sr2_values")),
     _cp_elastic_scale(options.get<Real>("cp_elastic_scale"))
 {

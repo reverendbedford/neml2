@@ -33,9 +33,9 @@ TEST_CASE("Factory", "[base]")
   auto options = ScalarSumModel::expected_options();
   options.name() = "example";
   options.type() = "ScalarSumModel";
-  options.set<std::vector<LabeledAxisAccessor>>("from_var") = {vecstr{"state", "A"},
-                                                               vecstr{"state", "substate", "B"}};
-  options.set<LabeledAxisAccessor>("to_var") = vecstr{"state", "outsub", "C"};
+  options.set<std::vector<VariableName>>("from_var") = {vecstr{"state", "A"},
+                                                        vecstr{"state", "substate", "B"}};
+  options.set<VariableName>("to_var") = vecstr{"state", "outsub", "C"};
 
   OptionCollection all_options;
   all_options["Models"]["example"] = options;

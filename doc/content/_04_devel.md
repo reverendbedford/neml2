@@ -77,8 +77,8 @@ public:
 
   IsotropicHardening(const OptionSet & options);
 
-  const LabeledAxisAccessor equivalent_plastic_strain;
-  const LabeledAxisAccessor isotropic_hardening;
+  const VariableName equivalent_plastic_strain;
+  const VariableName isotropic_hardening;
 };
 } // namespace neml2
 ```
@@ -94,17 +94,17 @@ OptionSet
 IsotropicHardening::expected_options()
 {
   OptionSet options = Model::expected_options();
-  options.set<LabeledAxisAccessor>("equivalent_plastic_strain") = {{"state", "internal", "ep"}};
-  options.set<LabeledAxisAccessor>("isotropic_hardening") = {{"state", "internal", "k"}};
+  options.set<VariableName>("equivalent_plastic_strain") = {{"state", "internal", "ep"}};
+  options.set<VariableName>("isotropic_hardening") = {{"state", "internal", "k"}};
   return options;
 }
 
 IsotropicHardening::IsotropicHardening(const OptionSet & options)
   : Model(options),
     equivalent_plastic_strain(declare_input_variable<Scalar>(
-        options.get<LabeledAxisAccessor>("equivalent_plastic_strain"))),
+        options.get<VariableName>("equivalent_plastic_strain"))),
     isotropic_hardening(
-        declare_output_variable<Scalar>(options.get<LabeledAxisAccessor>("isotropic_hardening")))
+        declare_output_variable<Scalar>(options.get<VariableName>("isotropic_hardening")))
 {
   setup();
 }

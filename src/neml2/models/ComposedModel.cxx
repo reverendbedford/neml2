@@ -33,13 +33,13 @@ ComposedModel::expected_options()
 {
   OptionSet options = Model::expected_options();
   options.set<std::vector<std::string>>("models");
-  options.set<std::vector<LabeledAxisAccessor>>("additional_outputs");
+  options.set<std::vector<VariableName>>("additional_outputs");
   return options;
 }
 
 ComposedModel::ComposedModel(const OptionSet & options)
   : Model(options),
-    _additional_outputs(options.get<std::vector<LabeledAxisAccessor>>("additional_outputs"))
+    _additional_outputs(options.get<std::vector<VariableName>>("additional_outputs"))
 {
   // Add registered models as nodes in the dependency resolver
   for (const auto & model_name : options.get<std::vector<std::string>>("models"))

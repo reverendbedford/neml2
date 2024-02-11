@@ -109,11 +109,11 @@ parse<bool>(const std::string & raw_str)
 }
 
 template <>
-LabeledAxisAccessor
-parse<LabeledAxisAccessor>(const std::string & raw_str)
+VariableName
+parse<VariableName>(const std::string & raw_str)
 {
   auto tokens = split(raw_str, "/ \t\n\v\f\r");
-  return LabeledAxisAccessor{tokens};
+  return VariableName{tokens};
 }
 
 template <>

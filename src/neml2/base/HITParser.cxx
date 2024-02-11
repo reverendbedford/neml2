@@ -144,7 +144,7 @@ HITParser::extract_option(hit::Node * n, OptionSet & options) const
         extract_option_t(TorchSize);
         extract_option_t(Real);
         extract_option_t(std::string);
-        extract_option_t(LabeledAxisAccessor);
+        extract_option_t(VariableName);
         extract_option_t(CrossRef<torch::Tensor>);
         extract_option_t(CrossRef<BatchTensor>);
         extract_option_t(CrossRef<Scalar>);

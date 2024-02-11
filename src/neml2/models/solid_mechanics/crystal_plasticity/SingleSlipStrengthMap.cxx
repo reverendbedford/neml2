@@ -35,8 +35,7 @@ SingleSlipStrengthMap::expected_options()
 {
   OptionSet options = SlipStrengthMap::expected_options();
 
-  options.set<LabeledAxisAccessor>("slip_hardening") =
-      vecstr{"state", "internal", "slip_hardening"};
+  options.set<VariableName>("slip_hardening") = vecstr{"state", "internal", "slip_hardening"};
   options.set<CrossRef<Scalar>>("constant_strength");
 
   return options;
@@ -44,7 +43,7 @@ SingleSlipStrengthMap::expected_options()
 
 SingleSlipStrengthMap::SingleSlipStrengthMap(const OptionSet & options)
   : SlipStrengthMap(options),
-    _tau_bar(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("slip_hardening"))),
+    _tau_bar(declare_input_variable<Scalar>(options.get<VariableName>("slip_hardening"))),
     _tau_const(declare_parameter<Scalar>("constant_strength", "constant_strength"))
 {
 }

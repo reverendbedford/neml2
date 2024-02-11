@@ -32,14 +32,15 @@
 
 namespace neml2
 {
+using VariableName = LabeledAxisAccessor;
+
 // Forward declarations
 class Derivative;
-class SecondDerivative;
 
 class VariableBase
 {
 public:
-  VariableBase(const LabeledAxisAccessor & name_in)
+  VariableBase(const VariableName & name_in)
     : _name(name_in),
       _value_storage(nullptr),
       _derivative_storage(nullptr),
@@ -61,7 +62,7 @@ public:
   virtual void setup_views(const VariableBase * other);
 
   /// Arguments
-  const std::vector<LabeledAxisAccessor> & args() const { return _args; }
+  const std::vector<VariableName> & args() const { return _args; }
 
   /// Add an argument
   void add_arg(const VariableBase & arg) { _args.push_back(arg.name()); }
@@ -79,7 +80,7 @@ public:
   BatchTensor raw_value() const { return _raw_value; }
 
   /// Name of this variable
-  const LabeledAxisAccessor & name() const { return _name; }
+  const VariableName & name() const { return _name; }
 
   /// Batch shape
   TorchShapeRef batch_sizes() const { return _batch_sizes; }
@@ -101,22 +102,22 @@ public:
 
 protected:
   /// Name of the variable
-  const LabeledAxisAccessor _name;
+  const VariableName _name;
 
   /// Batch shape of this variable
   TorchShape _batch_sizes;
 
   /// Names of the variables that this variable depends on
-  std::vector<LabeledAxisAccessor> _args;
+  std::vector<VariableName> _args;
 
   /// The raw (flattened) variable value
   BatchTensor _raw_value;
 
   /// The derivative of this variable w.r.t. arguments.
-  std::map<LabeledAxisAccessor, BatchTensor> _dvalue_d;
+  std::map<VariableName, BatchTensor> _dvalue_d;
 
   /// The second derivative of this variable w.r.t. arguments.
-  std::map<LabeledAxisAccessor, std::map<LabeledAxisAccessor, BatchTensor>> _d2value_d;
+  std::map<VariableName, std::map<VariableName, BatchTensor>> _d2value_d;
 
   /// The value storage that this variable is viewing into
   const LabeledVector * _value_storage;
@@ -137,14 +138,14 @@ class Variable : public VariableBase
 {
 public:
   template <typename T2 = T, typename = typename std::enable_if_t<!std::is_same_v<BatchTensor, T2>>>
-  Variable(const LabeledAxisAccessor & name_in)
+  Variable(const VariableName & name_in)
     : VariableBase(name_in),
       _base_sizes(T::const_base_sizes)
   {
   }
 
   template <typename T2 = T, typename = typename std::enable_if_t<std::is_same_v<BatchTensor, T2>>>
-  Variable(const LabeledAxisAccessor & name_in, TorchShapeRef base_shape)
+  Variable(const VariableName & name_in, TorchShapeRef base_shape)
     : VariableBase(name_in),
       _base_sizes(base_shape.vec())
   {

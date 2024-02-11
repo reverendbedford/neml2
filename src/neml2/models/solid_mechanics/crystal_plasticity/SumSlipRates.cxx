@@ -40,9 +40,8 @@ SumSlipRates::expected_options()
 {
   OptionSet options = Model::expected_options();
 
-  options.set<LabeledAxisAccessor>("slip_rates") = vecstr{"state", "internal", "slip_rates"};
-  options.set<LabeledAxisAccessor>("sum_slip_rates") =
-      vecstr{"state", "internal", "sum_slip_rates"};
+  options.set<VariableName>("slip_rates") = vecstr{"state", "internal", "slip_rates"};
+  options.set<VariableName>("sum_slip_rates") = vecstr{"state", "internal", "sum_slip_rates"};
 
   options.set<std::string>("crystal_geometry_name") = "crystal_geometry";
 
@@ -53,8 +52,8 @@ SumSlipRates::SumSlipRates(const OptionSet & options)
   : Model(options),
     _crystal_geometry(register_data<crystallography::CrystalGeometry>(
         options.get<std::string>("crystal_geometry_name"))),
-    _sg(declare_output_variable<Scalar>(options.get<LabeledAxisAccessor>("sum_slip_rates"))),
-    _g(declare_input_variable_list<Scalar>(options.get<LabeledAxisAccessor>("slip_rates"),
+    _sg(declare_output_variable<Scalar>(options.get<VariableName>("sum_slip_rates"))),
+    _g(declare_input_variable_list<Scalar>(options.get<VariableName>("slip_rates"),
                                            _crystal_geometry.nslip()))
 {
 }

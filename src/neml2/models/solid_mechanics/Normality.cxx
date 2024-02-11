@@ -33,20 +33,20 @@ Normality::expected_options()
 {
   OptionSet options = Model::expected_options();
   options.set<std::string>("model");
-  options.set<LabeledAxisAccessor>("function");
-  options.set<std::vector<LabeledAxisAccessor>>("from");
-  options.set<std::vector<LabeledAxisAccessor>>("to");
+  options.set<VariableName>("function");
+  options.set<std::vector<VariableName>>("from");
+  options.set<std::vector<VariableName>>("to");
   return options;
 }
 
 Normality::Normality(const OptionSet & options)
   : Model(options),
     _model(register_model<Model>(options.get<std::string>("model"), /*extra_deriv_order=*/1)),
-    _f(options.get<LabeledAxisAccessor>("function"))
+    _f(options.get<VariableName>("function"))
 {
   // Set up the conjugate pairs
-  const auto from = options.get<std::vector<LabeledAxisAccessor>>("from");
-  const auto to = options.get<std::vector<LabeledAxisAccessor>>("to");
+  const auto from = options.get<std::vector<VariableName>>("from");
+  const auto to = options.get<std::vector<VariableName>>("to");
   neml_assert(from.size() == to.size(),
               "The conjugate pairs should have a one-to-one correspondance. ",
               from.size(),

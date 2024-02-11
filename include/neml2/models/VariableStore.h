@@ -46,7 +46,7 @@ public:
   /// Get an input variable
   /// @{
   template <typename T = BatchTensor>
-  Variable<T> & get_input_variable(const LabeledAxisAccessor & name)
+  Variable<T> & get_input_variable(const VariableName & name)
   {
     auto var_base_ptr = _input_views.query_value(name);
     neml_assert(var_base_ptr, "Input variable ", name, " does not exist.");
@@ -56,7 +56,7 @@ public:
     return *var_ptr;
   }
   template <typename T = BatchTensor>
-  const Variable<T> & get_input_variable(const LabeledAxisAccessor & name) const
+  const Variable<T> & get_input_variable(const VariableName & name) const
   {
     const auto var_base_ptr = _input_views.query_value(name);
     neml_assert(var_base_ptr, "Input variable ", name, " does not exist.");
@@ -70,12 +70,12 @@ public:
   /// Get an output variable
   /// @{
   template <typename T = BatchTensor>
-  const Variable<T> & get_output_variable(const LabeledAxisAccessor & name)
+  const Variable<T> & get_output_variable(const VariableName & name)
   {
     return std::as_const(*this).get_output_variable<T>(name);
   }
   template <typename T = BatchTensor>
-  const Variable<T> & get_output_variable(const LabeledAxisAccessor & name) const
+  const Variable<T> & get_output_variable(const VariableName & name) const
   {
     const auto var_base_ptr = _output_views.query_value(name);
     neml_assert(var_base_ptr, "Output variable ", name, " does not exist.");
@@ -100,14 +100,14 @@ public:
 
   /// Input variable views
   /// @{
-  Storage<LabeledAxisAccessor, VariableBase> & input_views() { return _input_views; }
-  const Storage<LabeledAxisAccessor, VariableBase> & input_views() const { return _input_views; }
+  Storage<VariableName, VariableBase> & input_views() { return _input_views; }
+  const Storage<VariableName, VariableBase> & input_views() const { return _input_views; }
   /// @}
 
   /// Output variable views
   /// @{
-  Storage<LabeledAxisAccessor, VariableBase> & output_views() { return _output_views; }
-  const Storage<LabeledAxisAccessor, VariableBase> & output_views() const { return _output_views; }
+  Storage<VariableName, VariableBase> & output_views() { return _output_views; }
+  const Storage<VariableName, VariableBase> & output_views() const { return _output_views; }
   /// @}
 
   /// Input storage
@@ -135,9 +135,9 @@ public:
   /// @}
 
   /// Get the view of an input variable
-  VariableBase * input_view(const LabeledAxisAccessor &);
+  VariableBase * input_view(const VariableName &);
   /// Get the view of an output variable
-  VariableBase * output_view(const LabeledAxisAccessor &);
+  VariableBase * output_view(const VariableName &);
 
 protected:
   /// Cache the variable's batch shape
@@ -155,15 +155,14 @@ protected:
 
   /// Declare an input variable
   template <typename T>
-  const Variable<T> & declare_input_variable(const LabeledAxisAccessor & name)
+  const Variable<T> & declare_input_variable(const VariableName & name)
   {
     declare_variable<T>(_input_axis, name);
     return *create_variable_view<T>(_input_views, name);
   }
 
   /// Declare an input variable (with unknown base shape at compile time)
-  const Variable<BatchTensor> & declare_input_variable(const LabeledAxisAccessor & name,
-                                                       TorchSize sz)
+  const Variable<BatchTensor> & declare_input_variable(const VariableName & name, TorchSize sz)
   {
     declare_variable(_input_axis, name, sz);
     return *create_variable_view<BatchTensor>(_input_views, name, sz);
@@ -171,7 +170,7 @@ protected:
 
   /// Declare an input variable that is a list of tensors of fixed size
   template <typename T>
-  const Variable<BatchTensor> & declare_input_variable_list(const LabeledAxisAccessor & name,
+  const Variable<BatchTensor> & declare_input_variable_list(const VariableName & name,
                                                             TorchSize list_size)
   {
     return declare_input_variable(name, list_size * T::const_base_storage);
@@ -179,14 +178,14 @@ protected:
 
   /// Declare an output variable
   template <typename T>
-  Variable<T> & declare_output_variable(const LabeledAxisAccessor & name)
+  Variable<T> & declare_output_variable(const VariableName & name)
   {
     declare_variable<T>(_output_axis, name);
     return *create_variable_view<T>(_output_views, name);
   }
 
   /// Declare an input variable (with unknown base shape at compile time)
-  Variable<BatchTensor> & declare_output_variable(const LabeledAxisAccessor & name, TorchSize sz)
+  Variable<BatchTensor> & declare_output_variable(const VariableName & name, TorchSize sz)
   {
     declare_variable(_output_axis, name, sz);
     return *create_variable_view<BatchTensor>(_output_views, name, sz);
@@ -194,7 +193,7 @@ protected:
 
   /// Declare an output variable that is a list of tensors of fixed size
   template <typename T>
-  Variable<BatchTensor> & declare_output_variable_list(const LabeledAxisAccessor & name,
+  Variable<BatchTensor> & declare_output_variable_list(const VariableName & name,
                                                        TorchSize list_size)
   {
     return declare_output_variable(name, list_size * T::const_base_storage);
@@ -202,21 +201,20 @@ protected:
 
   /// Declare an item recursively on an axis
   template <typename T>
-  LabeledAxisAccessor declare_variable(LabeledAxis & axis, const LabeledAxisAccessor & var) const
+  VariableName declare_variable(LabeledAxis & axis, const VariableName & var) const
   {
     return declare_variable(axis, var, T::const_base_storage);
   }
 
   /// Declare an item (with known storage size) recursively on an axis
-  LabeledAxisAccessor
-  declare_variable(LabeledAxis & axis, const LabeledAxisAccessor & var, TorchSize sz) const
+  VariableName declare_variable(LabeledAxis & axis, const VariableName & var, TorchSize sz) const
   {
     axis.add(var, sz);
     return var;
   }
 
   /// Declare a subaxis recursively on an axis
-  LabeledAxisAccessor declare_subaxis(LabeledAxis & axis, const LabeledAxisAccessor & subaxis) const
+  VariableName declare_subaxis(LabeledAxis & axis, const VariableName & subaxis) const
   {
     axis.add<LabeledAxis>(subaxis);
     return subaxis;
@@ -225,8 +223,8 @@ protected:
 private:
   // Create a variable view (doesn't setup the view)
   template <typename T>
-  Variable<T> * create_variable_view(Storage<LabeledAxisAccessor, VariableBase> & views,
-                                     const LabeledAxisAccessor & name,
+  Variable<T> * create_variable_view(Storage<VariableName, VariableBase> & views,
+                                     const VariableName & name,
                                      TorchSize sz = -1)
   {
     if constexpr (std::is_same_v<T, BatchTensor>)
@@ -272,10 +270,10 @@ private:
   Storage<std::string, LabeledAxis> _axes;
 
   /// Input variable views
-  Storage<LabeledAxisAccessor, VariableBase> _input_views;
+  Storage<VariableName, VariableBase> _input_views;
 
   /// Output variable views
-  Storage<LabeledAxisAccessor, VariableBase> _output_views;
+  Storage<VariableName, VariableBase> _output_views;
 
   /// The input axis
   LabeledAxis & _input_axis;

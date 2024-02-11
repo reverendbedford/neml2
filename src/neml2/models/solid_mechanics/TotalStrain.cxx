@@ -35,9 +35,9 @@ OptionSet
 TotalStrain::expected_options()
 {
   OptionSet options = Model::expected_options();
-  options.set<LabeledAxisAccessor>("elastic_strain") = {{"state", "internal", "Ee"}};
-  options.set<LabeledAxisAccessor>("plastic_strain") = {{"state", "internal", "Ep"}};
-  options.set<LabeledAxisAccessor>("total_strain") = vecstr{"state", "E"};
+  options.set<VariableName>("elastic_strain") = {{"state", "internal", "Ee"}};
+  options.set<VariableName>("plastic_strain") = {{"state", "internal", "Ep"}};
+  options.set<VariableName>("total_strain") = vecstr{"state", "E"};
   options.set<bool>("rate_form") = false;
   return options;
 }
@@ -46,11 +46,11 @@ TotalStrain::TotalStrain(const OptionSet & options)
   : Model(options),
     _rate_form(options.get<bool>("rate_form")),
     _Ee(declare_input_variable<SR2>(
-        options.get<LabeledAxisAccessor>("elastic_strain").with_suffix(_rate_form ? "_rate" : ""))),
+        options.get<VariableName>("elastic_strain").with_suffix(_rate_form ? "_rate" : ""))),
     _Ep(declare_input_variable<SR2>(
-        options.get<LabeledAxisAccessor>("plastic_strain").with_suffix(_rate_form ? "_rate" : ""))),
+        options.get<VariableName>("plastic_strain").with_suffix(_rate_form ? "_rate" : ""))),
     _E(declare_output_variable<SR2>(
-        options.get<LabeledAxisAccessor>("total_strain").with_suffix(_rate_form ? "_rate" : "")))
+        options.get<VariableName>("total_strain").with_suffix(_rate_form ? "_rate" : "")))
 {
 }
 

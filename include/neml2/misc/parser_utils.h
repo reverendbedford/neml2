@@ -26,7 +26,7 @@
 
 #include "neml2/misc/types.h"
 #include "neml2/misc/error.h"
-#include "neml2/tensors/LabeledAxis.h"
+#include "neml2/tensors/Variable.h"
 #include "neml2/base/CrossRef.h"
 
 namespace neml2
@@ -100,7 +100,7 @@ bool parse<bool>(const std::string & raw_str);
 template <>
 TorchShape parse<TorchShape>(const std::string & raw_str);
 template <>
-LabeledAxisAccessor parse<LabeledAxisAccessor>(const std::string & raw_str);
+VariableName parse<VariableName>(const std::string & raw_str);
 // @}
 } // namespace utils
 } // namespace neml2

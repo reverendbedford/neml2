@@ -36,24 +36,23 @@ GTNYieldFunction::expected_options()
   options.set<CrossRef<Scalar>>("q1");
   options.set<CrossRef<Scalar>>("q2");
   options.set<CrossRef<Scalar>>("q3");
-  options.set<LabeledAxisAccessor>("flow_invariant") = {{"state", "internal", "se"}};
-  options.set<LabeledAxisAccessor>("poro_invariant") = {{"state", "internal", "sp"}};
-  options.set<LabeledAxisAccessor>("isotropic_hardening");
-  options.set<LabeledAxisAccessor>("void_fraction") = {{"state", "internal", "f"}};
-  options.set<LabeledAxisAccessor>("yield_function") = {{"state", "internal", "fp"}};
+  options.set<VariableName>("flow_invariant") = {{"state", "internal", "se"}};
+  options.set<VariableName>("poro_invariant") = {{"state", "internal", "sp"}};
+  options.set<VariableName>("isotropic_hardening");
+  options.set<VariableName>("void_fraction") = {{"state", "internal", "f"}};
+  options.set<VariableName>("yield_function") = {{"state", "internal", "fp"}};
   return options;
 }
 
 GTNYieldFunction::GTNYieldFunction(const OptionSet & options)
   : Model(options),
-    _f(declare_output_variable<Scalar>(options.get<LabeledAxisAccessor>("yield_function"))),
-    _se(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("flow_invariant"))),
-    _sp(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("poro_invariant"))),
-    _phi(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("void_fraction"))),
-    _h(options.get<LabeledAxisAccessor>("isotropic_hardening").empty()
+    _f(declare_output_variable<Scalar>(options.get<VariableName>("yield_function"))),
+    _se(declare_input_variable<Scalar>(options.get<VariableName>("flow_invariant"))),
+    _sp(declare_input_variable<Scalar>(options.get<VariableName>("poro_invariant"))),
+    _phi(declare_input_variable<Scalar>(options.get<VariableName>("void_fraction"))),
+    _h(options.get<VariableName>("isotropic_hardening").empty()
            ? nullptr
-           : &declare_input_variable<Scalar>(
-                 options.get<LabeledAxisAccessor>("isotropic_hardening"))),
+           : &declare_input_variable<Scalar>(options.get<VariableName>("isotropic_hardening"))),
     _s0(declare_parameter<Scalar>("sy", "yield_stress")),
     _q1(declare_parameter<Scalar>("q1", "q1")),
     _q2(declare_parameter<Scalar>("q2", "q2")),

@@ -33,17 +33,17 @@ OptionSet
 OverStress::expected_options()
 {
   OptionSet options = Model::expected_options();
-  options.set<LabeledAxisAccessor>("mandel_stress") = {{"state", "internal", "M"}};
-  options.set<LabeledAxisAccessor>("back_stress") = {{"state", "internal", "X"}};
-  options.set<LabeledAxisAccessor>("over_stress") = {{"state", "internal", "O"}};
+  options.set<VariableName>("mandel_stress") = {{"state", "internal", "M"}};
+  options.set<VariableName>("back_stress") = {{"state", "internal", "X"}};
+  options.set<VariableName>("over_stress") = {{"state", "internal", "O"}};
   return options;
 }
 
 OverStress::OverStress(const OptionSet & options)
   : Model(options),
-    _M(declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("mandel_stress"))),
-    _X(declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("back_stress"))),
-    _O(declare_output_variable<SR2>(options.get<LabeledAxisAccessor>("over_stress")))
+    _M(declare_input_variable<SR2>(options.get<VariableName>("mandel_stress"))),
+    _X(declare_input_variable<SR2>(options.get<VariableName>("back_stress"))),
+    _O(declare_output_variable<SR2>(options.get<VariableName>("over_stress")))
 {
 }
 

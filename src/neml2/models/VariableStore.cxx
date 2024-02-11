@@ -54,13 +54,13 @@ VariableStore::setup_layout()
 }
 
 VariableBase *
-VariableStore::input_view(const LabeledAxisAccessor & name)
+VariableStore::input_view(const VariableName & name)
 {
   return _input_views.query_value(name);
 }
 
 VariableBase *
-VariableStore::output_view(const LabeledAxisAccessor & name)
+VariableStore::output_view(const VariableName & name)
 {
   return _output_views.query_value(name);
 }

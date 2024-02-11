@@ -37,8 +37,8 @@ public:
   ForwardEulerTimeIntegration(const OptionSet & options);
 
 private:
-  const LabeledAxisAccessor _var_name;
-  const LabeledAxisAccessor _var_rate_name;
+  const VariableName _var_name;
+  const VariableName _var_rate_name;
 
 protected:
   void set_value(bool out, bool dout_din, bool d2out_din2) override;

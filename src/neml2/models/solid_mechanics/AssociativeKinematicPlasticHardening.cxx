@@ -33,19 +33,17 @@ OptionSet
 AssociativeKinematicPlasticHardening::expected_options()
 {
   OptionSet options = FlowRule::expected_options();
-  options.set<LabeledAxisAccessor>("kinematic_hardening_direction") = {{"state", "internal", "NX"}};
-  options.set<LabeledAxisAccessor>("kinematic_plastic_strain_rate") = {
-      {"state", "internal", "Kp_rate"}};
+  options.set<VariableName>("kinematic_hardening_direction") = {{"state", "internal", "NX"}};
+  options.set<VariableName>("kinematic_plastic_strain_rate") = {{"state", "internal", "Kp_rate"}};
   return options;
 }
 
 AssociativeKinematicPlasticHardening::AssociativeKinematicPlasticHardening(
     const OptionSet & options)
   : FlowRule(options),
-    _NX(declare_input_variable<SR2>(
-        options.get<LabeledAxisAccessor>("kinematic_hardening_direction"))),
-    _Kp_dot(declare_output_variable<SR2>(
-        options.get<LabeledAxisAccessor>("kinematic_plastic_strain_rate")))
+    _NX(declare_input_variable<SR2>(options.get<VariableName>("kinematic_hardening_direction"))),
+    _Kp_dot(
+        declare_output_variable<SR2>(options.get<VariableName>("kinematic_plastic_strain_rate")))
 {
 }
 

@@ -95,8 +95,8 @@ protected:
   Scalar _time;
   /// The current step count
   TorchSize _step_count;
-  /// LabeledAxisAccessor for the time
-  LabeledAxisAccessor _time_name;
+  /// VariableName for the time
+  VariableName _time_name;
   /// Total number of steps
   TorchSize _nsteps;
   /// The batch size
@@ -123,15 +123,15 @@ protected:
   LabeledVector _result_out;
 
   /// Names for scalar initial conditions
-  std::vector<LabeledAxisAccessor> _ic_scalar_names;
+  std::vector<VariableName> _ic_scalar_names;
   /// Values for the scalar initial conditions
   std::vector<CrossRef<Scalar>> _ic_scalar_values;
   /// Names for the Rot initial conditions
-  std::vector<LabeledAxisAccessor> _ic_rot_names;
+  std::vector<VariableName> _ic_rot_names;
   /// Values for the Rot initial conditions
   std::vector<CrossRef<Rot>> _ic_rot_values;
   /// Names for the SR2 initial conditions
-  std::vector<LabeledAxisAccessor> _ic_sr2_names;
+  std::vector<VariableName> _ic_sr2_names;
   /// Values for the SR2 initial conditions
   std::vector<CrossRef<SR2>> _ic_sr2_values;
 
@@ -142,7 +142,7 @@ private:
   void output_pt(const std::filesystem::path & out) const;
 
   template <typename T>
-  void set_IC(const std::vector<LabeledAxisAccessor> & ic_names,
+  void set_IC(const std::vector<VariableName> & ic_names,
               const std::vector<CrossRef<T>> & ic_values)
   {
     for (size_t i = 0; i < ic_names.size(); i++)

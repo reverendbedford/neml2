@@ -32,15 +32,15 @@ OptionSet
 RotationMatrix::expected_options()
 {
   OptionSet options = Model::expected_options();
-  options.set<LabeledAxisAccessor>("from");
-  options.set<LabeledAxisAccessor>("to");
+  options.set<VariableName>("from");
+  options.set<VariableName>("to");
   return options;
 }
 
 RotationMatrix::RotationMatrix(const OptionSet & options)
   : Model(options),
-    _from(declare_input_variable<Rot>(options.get<LabeledAxisAccessor>("from"))),
-    _to(declare_output_variable<R2>(options.get<LabeledAxisAccessor>("to")))
+    _from(declare_input_variable<Rot>(options.get<VariableName>("from"))),
+    _to(declare_output_variable<R2>(options.get<VariableName>("to")))
 {
 }
 

@@ -37,23 +37,22 @@ OptionSet
 OrientationRate::expected_options()
 {
   OptionSet options = Model::expected_options();
-  options.set<LabeledAxisAccessor>("orientation_rate") = vecstr{"state", "orientation_rate"};
-  options.set<LabeledAxisAccessor>("elastic_strain") = vecstr{"state", "elastic_strain"};
-  options.set<LabeledAxisAccessor>("vorticity") = vecstr{"forces", "vorticity"};
-  options.set<LabeledAxisAccessor>("plastic_deformation_rate") =
+  options.set<VariableName>("orientation_rate") = vecstr{"state", "orientation_rate"};
+  options.set<VariableName>("elastic_strain") = vecstr{"state", "elastic_strain"};
+  options.set<VariableName>("vorticity") = vecstr{"forces", "vorticity"};
+  options.set<VariableName>("plastic_deformation_rate") =
       vecstr{"state", "internal", "plastic_deformation_rate"};
-  options.set<LabeledAxisAccessor>("plastic_vorticity") =
-      vecstr{"state", "internal", "plastic_vorticity"};
+  options.set<VariableName>("plastic_vorticity") = vecstr{"state", "internal", "plastic_vorticity"};
   return options;
 }
 
 OrientationRate::OrientationRate(const OptionSet & options)
   : Model(options),
-    _R_dot(declare_output_variable<WR2>(options.get<LabeledAxisAccessor>("orientation_rate"))),
-    _e(declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("elastic_strain"))),
-    _w(declare_input_variable<WR2>(options.get<LabeledAxisAccessor>("vorticity"))),
-    _dp(declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("plastic_deformation_rate"))),
-    _wp(declare_input_variable<WR2>(options.get<LabeledAxisAccessor>("plastic_vorticity")))
+    _R_dot(declare_output_variable<WR2>(options.get<VariableName>("orientation_rate"))),
+    _e(declare_input_variable<SR2>(options.get<VariableName>("elastic_strain"))),
+    _w(declare_input_variable<WR2>(options.get<VariableName>("vorticity"))),
+    _dp(declare_input_variable<SR2>(options.get<VariableName>("plastic_deformation_rate"))),
+    _wp(declare_input_variable<WR2>(options.get<VariableName>("plastic_vorticity")))
 {
 }
 

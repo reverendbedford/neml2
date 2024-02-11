@@ -32,15 +32,15 @@ OptionSet
 MandelStress::expected_options()
 {
   OptionSet options = Model::expected_options();
-  options.set<LabeledAxisAccessor>("cauchy_stress") = vecstr{"state", "S"};
-  options.set<LabeledAxisAccessor>("mandel_stress") = {{"state", "internal", "M"}};
+  options.set<VariableName>("cauchy_stress") = vecstr{"state", "S"};
+  options.set<VariableName>("mandel_stress") = {{"state", "internal", "M"}};
   return options;
 }
 
 MandelStress::MandelStress(const OptionSet & options)
   : Model(options),
-    _S(declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("cauchy_stress"))),
-    _M(declare_output_variable<SR2>(options.get<LabeledAxisAccessor>("mandel_stress")))
+    _S(declare_input_variable<SR2>(options.get<VariableName>("cauchy_stress"))),
+    _M(declare_output_variable<SR2>(options.get<VariableName>("mandel_stress")))
 {
 }
 } // namespace neml2

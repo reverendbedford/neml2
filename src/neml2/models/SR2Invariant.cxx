@@ -33,8 +33,8 @@ OptionSet
 SR2Invariant::expected_options()
 {
   OptionSet options = Model::expected_options();
-  options.set<LabeledAxisAccessor>("tensor");
-  options.set<LabeledAxisAccessor>("invariant");
+  options.set<VariableName>("tensor");
+  options.set<VariableName>("invariant");
   options.set<std::string>("invariant_type");
   return options;
 }
@@ -42,8 +42,8 @@ SR2Invariant::expected_options()
 SR2Invariant::SR2Invariant(const OptionSet & options)
   : Model(options),
     _type(options.get<std::string>("invariant_type")),
-    _A(declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("tensor"))),
-    _invariant(declare_output_variable<Scalar>(options.get<LabeledAxisAccessor>("invariant")))
+    _A(declare_input_variable<SR2>(options.get<VariableName>("tensor"))),
+    _invariant(declare_output_variable<Scalar>(options.get<VariableName>("invariant")))
 {
 }
 
