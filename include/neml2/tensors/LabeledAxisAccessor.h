@@ -45,11 +45,29 @@ class LabeledAxisAccessor
 public:
   LabeledAxisAccessor() = default;
 
-  LabeledAxisAccessor(const char * name);
-  LabeledAxisAccessor(const std::string & name);
+  template <typename... S>
+  LabeledAxisAccessor(const char * name, S &&... names)
+  {
+    validate_item_name(name);
+    _item_names.push_back(name);
+
+    (validate_item_name(names), ...);
+    (_item_names.push_back(names), ...);
+  }
+
+  template <typename... S>
+  LabeledAxisAccessor(const std::string & name, S &&... names)
+  {
+    validate_item_name(name);
+    _item_names.push_back(name);
+
+    (validate_item_name(names), ...);
+    (_item_names.push_back(names), ...);
+  }
+
   LabeledAxisAccessor(const std::vector<std::string> & names);
-  LabeledAxisAccessor(const std::initializer_list<std::string> & names);
-  LabeledAxisAccessor(const LabeledAxisAccessor & names);
+
+  LabeledAxisAccessor(const LabeledAxisAccessor & other);
 
   /// Assignment operator
   LabeledAxisAccessor & operator=(const LabeledAxisAccessor & other);

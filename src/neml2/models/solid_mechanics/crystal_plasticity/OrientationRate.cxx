@@ -27,8 +27,6 @@
 #include "neml2/tensors/tensors.h"
 #include "neml2/misc/math.h"
 
-using vecstr = std::vector<std::string>;
-
 namespace neml2
 {
 register_NEML2_object(OrientationRate);
@@ -37,22 +35,23 @@ OptionSet
 OrientationRate::expected_options()
 {
   OptionSet options = Model::expected_options();
-  options.set<VariableName>("orientation_rate") = vecstr{"state", "orientation_rate"};
-  options.set<VariableName>("elastic_strain") = vecstr{"state", "elastic_strain"};
-  options.set<VariableName>("vorticity") = vecstr{"forces", "vorticity"};
+  options.set<VariableName>("orientation_rate") = VariableName("state", "orientation_rate");
+  options.set<VariableName>("elastic_strain") = VariableName("state", "elastic_strain");
+  options.set<VariableName>("vorticity") = VariableName("forces", "vorticity");
   options.set<VariableName>("plastic_deformation_rate") =
-      vecstr{"state", "internal", "plastic_deformation_rate"};
-  options.set<VariableName>("plastic_vorticity") = vecstr{"state", "internal", "plastic_vorticity"};
+      VariableName("state", "internal", "plastic_deformation_rate");
+  options.set<VariableName>("plastic_vorticity") =
+      VariableName("state", "internal", "plastic_vorticity");
   return options;
 }
 
 OrientationRate::OrientationRate(const OptionSet & options)
   : Model(options),
-    _R_dot(declare_output_variable<WR2>(options.get<VariableName>("orientation_rate"))),
-    _e(declare_input_variable<SR2>(options.get<VariableName>("elastic_strain"))),
-    _w(declare_input_variable<WR2>(options.get<VariableName>("vorticity"))),
-    _dp(declare_input_variable<SR2>(options.get<VariableName>("plastic_deformation_rate"))),
-    _wp(declare_input_variable<WR2>(options.get<VariableName>("plastic_vorticity")))
+    _R_dot(declare_output_variable<WR2>("orientation_rate")),
+    _e(declare_input_variable<SR2>("elastic_strain")),
+    _w(declare_input_variable<WR2>("vorticity")),
+    _dp(declare_input_variable<SR2>("plastic_deformation_rate")),
+    _wp(declare_input_variable<WR2>("plastic_vorticity"))
 {
 }
 

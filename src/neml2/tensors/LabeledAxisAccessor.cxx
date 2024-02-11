@@ -27,26 +27,7 @@
 
 namespace neml2
 {
-LabeledAxisAccessor::LabeledAxisAccessor(const char * name)
-  : _item_names({std::string(name)})
-{
-  validate_item_name(_item_names[0]);
-}
-
-LabeledAxisAccessor::LabeledAxisAccessor(const std::string & name)
-  : _item_names({name})
-{
-  validate_item_name(name);
-}
-
 LabeledAxisAccessor::LabeledAxisAccessor(const std::vector<std::string> & names)
-  : _item_names(names)
-{
-  for (const auto & name : names)
-    validate_item_name(name);
-}
-
-LabeledAxisAccessor::LabeledAxisAccessor(const std::initializer_list<std::string> & names)
   : _item_names(names)
 {
   for (const auto & name : _item_names)
@@ -54,7 +35,7 @@ LabeledAxisAccessor::LabeledAxisAccessor(const std::initializer_list<std::string
 }
 
 LabeledAxisAccessor::LabeledAxisAccessor(const LabeledAxisAccessor & other)
-  : _item_names(other._item_names)
+  : LabeledAxisAccessor(other._item_names)
 {
 }
 

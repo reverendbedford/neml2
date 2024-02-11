@@ -24,16 +24,14 @@
 
 #include "neml2/models/solid_mechanics/Elasticity.h"
 
-using vecstr = std::vector<std::string>;
-
 namespace neml2
 {
 OptionSet
 Elasticity::expected_options()
 {
   OptionSet options = Model::expected_options();
-  options.set<VariableName>("strain") = {{"state", "internal", "Ee"}};
-  options.set<VariableName>("stress") = vecstr{"state", "S"};
+  options.set<VariableName>("strain") = VariableName("state", "internal", "Ee");
+  options.set<VariableName>("stress") = VariableName("state", "S");
   options.set<bool>("compliance") = false;
   options.set<bool>("rate_form") = false;
   return options;

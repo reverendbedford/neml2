@@ -56,7 +56,7 @@ Normality::Normality(const OptionSet & options)
   for (size_t i = 0; i < from.size(); i++)
   {
     auto sz = _model.output_axis().storage_size(_f) * _model.input_axis().storage_size(from[i]);
-    _conjugate_pairs.emplace(from[i], &declare_output_variable(to[i], sz));
+    _conjugate_pairs.emplace(from[i], &declare_output_variable(sz, to[i]));
   }
 }
 

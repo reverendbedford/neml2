@@ -28,8 +28,6 @@
 #include "neml2/tensors/tensors.h"
 #include "neml2/tensors/list_tensors.h"
 
-using vecstr = std::vector<std::string>;
-
 namespace neml2
 {
 register_NEML2_object(ResolvedShear);
@@ -38,9 +36,10 @@ OptionSet
 ResolvedShear::expected_options()
 {
   OptionSet options = Model::expected_options();
-  options.set<VariableName>("resolved_shears") = vecstr{"state", "internal", "resolved_shears"};
-  options.set<VariableName>("stress") = vecstr{"state", "internal", "cauchy_stress"};
-  options.set<VariableName>("orientation") = vecstr{"state", "orientation_ER"};
+  options.set<VariableName>("resolved_shears") =
+      VariableName("state", "internal", "resolved_shears");
+  options.set<VariableName>("stress") = VariableName("state", "internal", "cauchy_stress");
+  options.set<VariableName>("orientation") = VariableName("state", "orientation_ER");
   options.set<std::string>("crystal_geometry_name") = "crystal_geometry";
   return options;
 }
@@ -49,10 +48,9 @@ ResolvedShear::ResolvedShear(const OptionSet & options)
   : Model(options),
     _crystal_geometry(register_data<crystallography::CrystalGeometry>(
         options.get<std::string>("crystal_geometry_name"))),
-    _rss(declare_output_variable_list<Scalar>(options.get<VariableName>("resolved_shears"),
-                                              _crystal_geometry.nslip())),
-    _S(declare_input_variable<SR2>(options.get<VariableName>("stress"))),
-    _R(declare_input_variable<R2>(options.get<VariableName>("orientation")))
+    _rss(declare_output_variable_list<Scalar>(_crystal_geometry.nslip(), "resolved_shears")),
+    _S(declare_input_variable<SR2>("stress")),
+    _R(declare_input_variable<R2>("orientation"))
 {
 }
 

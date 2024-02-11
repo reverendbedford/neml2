@@ -30,15 +30,15 @@ OptionSet
 IsotropicHardening::expected_options()
 {
   OptionSet options = Model::expected_options();
-  options.set<VariableName>("equivalent_plastic_strain") = {{"state", "internal", "ep"}};
-  options.set<VariableName>("isotropic_hardening") = {{"state", "internal", "k"}};
+  options.set<VariableName>("equivalent_plastic_strain") = VariableName("state", "internal", "ep");
+  options.set<VariableName>("isotropic_hardening") = VariableName("state", "internal", "k");
   return options;
 }
 
 IsotropicHardening::IsotropicHardening(const OptionSet & options)
   : Model(options),
-    _ep(declare_input_variable<Scalar>(options.get<VariableName>("equivalent_plastic_strain"))),
-    _h(declare_output_variable<Scalar>(options.get<VariableName>("isotropic_hardening")))
+    _ep(declare_input_variable<Scalar>("equivalent_plastic_strain")),
+    _h(declare_output_variable<Scalar>("isotropic_hardening"))
 {
 }
 } // namespace neml2

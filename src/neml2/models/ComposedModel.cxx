@@ -68,7 +68,7 @@ ComposedModel::ComposedModel(const OptionSet & options)
                   var,
                   ", but with different shape/storage size.");
     else
-      declare_input_variable(var, sz);
+      declare_input_variable(sz, var);
   }
 
   // Register output variables
@@ -80,7 +80,7 @@ ComposedModel::ComposedModel(const OptionSet & options)
                 "Multiple sub-models in a ComposedModel define the same output variable ",
                 var);
 
-    declare_output_variable(var, sz);
+    declare_output_variable(sz, var);
   }
 }
 

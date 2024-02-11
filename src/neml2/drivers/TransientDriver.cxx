@@ -27,7 +27,6 @@
 #include "neml2/models/ImplicitUpdate.h"
 
 namespace fs = std::filesystem;
-using vecstr = std::vector<std::string>;
 
 namespace neml2
 {
@@ -37,7 +36,7 @@ TransientDriver::expected_options()
   OptionSet options = Driver::expected_options();
   options.set<std::string>("model");
   options.set<CrossRef<torch::Tensor>>("times");
-  options.set<VariableName>("time") = vecstr{"forces", "t"};
+  options.set<VariableName>("time") = VariableName("forces", "t");
   options.set<std::string>("predictor") = "PREVIOUS_STATE";
   options.set<Real>("cp_elastic_scale") = 1.0;
   options.set<std::string>("save_as");

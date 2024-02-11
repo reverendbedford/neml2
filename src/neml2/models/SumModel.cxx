@@ -43,7 +43,7 @@ SumModel<T>::expected_options()
 template <typename T>
 SumModel<T>::SumModel(const OptionSet & options)
   : Model(options),
-    _to(declare_output_variable<T>(options.get<VariableName>("to_var")))
+    _to(declare_output_variable<T>("to_var"))
 {
   for (auto fv : options.get<std::vector<VariableName>>("from_var"))
     _from.push_back(&declare_input_variable<T>(fv));

@@ -37,7 +37,7 @@ NonlinearParameter<T>::expected_options()
 template <typename T>
 NonlinearParameter<T>::NonlinearParameter(const OptionSet & options)
   : Model(options),
-    _p(declare_output_variable<T>(name()))
+    _p(declare_output_variable<T>(VariableName(name())))
 {
 }
 

@@ -26,9 +26,9 @@
 
 namespace neml2
 {
-VariableStore::VariableStore(const OptionSet & /*options*/, NEML2Object * object)
+VariableStore::VariableStore(const OptionSet & options, NEML2Object * object)
   : _object(object),
-    // _options(options),
+    _options(options),
     _input_axis(declare_axis("input")),
     _output_axis(declare_axis("output"))
 {

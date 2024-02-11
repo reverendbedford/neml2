@@ -38,7 +38,7 @@ WR2ImplicitExponentialTimeIntegration::expected_options()
 {
   OptionSet options = Model::expected_options();
   options.set<VariableName>("variable");
-  options.set<VariableName>("time") = {"t"};
+  options.set<VariableName>("time") = VariableName("t");
   return options;
 }
 

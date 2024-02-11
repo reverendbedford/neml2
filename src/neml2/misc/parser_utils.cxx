@@ -113,7 +113,7 @@ VariableName
 parse<VariableName>(const std::string & raw_str)
 {
   auto tokens = split(raw_str, "/ \t\n\v\f\r");
-  return VariableName{tokens};
+  return VariableName(tokens);
 }
 
 template <>

@@ -30,15 +30,15 @@ OptionSet
 PlasticFlowRate::expected_options()
 {
   OptionSet options = Model::expected_options();
-  options.set<VariableName>("yield_function") = {{"state", "internal", "fp"}};
-  options.set<VariableName>("flow_rate") = {{"state", "internal", "gamma_rate"}};
+  options.set<VariableName>("yield_function") = VariableName("state", "internal", "fp");
+  options.set<VariableName>("flow_rate") = VariableName("state", "internal", "gamma_rate");
   return options;
 }
 
 PlasticFlowRate::PlasticFlowRate(const OptionSet & options)
   : Model(options),
-    _f(declare_input_variable<Scalar>(options.get<VariableName>("yield_function"))),
-    _gamma_dot(declare_output_variable<Scalar>(options.get<VariableName>("flow_rate")))
+    _f(declare_input_variable<Scalar>("yield_function")),
+    _gamma_dot(declare_output_variable<Scalar>("flow_rate"))
 {
 }
 } // namespace neml2

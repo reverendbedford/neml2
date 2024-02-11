@@ -26,16 +26,15 @@
 #include "neml2/models/SumModel.h"
 
 using namespace neml2;
-using vecstr = std::vector<std::string>;
 
 TEST_CASE("Factory", "[base]")
 {
   auto options = ScalarSumModel::expected_options();
   options.name() = "example";
   options.type() = "ScalarSumModel";
-  options.set<std::vector<VariableName>>("from_var") = {vecstr{"state", "A"},
-                                                        vecstr{"state", "substate", "B"}};
-  options.set<VariableName>("to_var") = vecstr{"state", "outsub", "C"};
+  options.set<std::vector<VariableName>>("from_var") = {VariableName("state", "A"),
+                                                        VariableName("state", "substate", "B")};
+  options.set<VariableName>("to_var") = VariableName("state", "outsub", "C");
 
   OptionCollection all_options;
   all_options["Models"]["example"] = options;
@@ -43,6 +42,9 @@ TEST_CASE("Factory", "[base]")
   Factory::clear();
   Factory::load(all_options);
   auto & summodel = Factory::get_object<ScalarSumModel>("Models", "example");
+
+  std::cout << summodel.input_axis() << std::endl;
+  std::cout << summodel.output_axis() << std::endl;
 
   REQUIRE(summodel.input_axis().has_subaxis("state"));
   REQUIRE(summodel.input_axis().subaxis("state").has_subaxis("substate"));

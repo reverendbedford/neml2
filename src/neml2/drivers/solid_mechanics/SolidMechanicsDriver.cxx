@@ -24,8 +24,6 @@
 
 #include "neml2/drivers/solid_mechanics/SolidMechanicsDriver.h"
 
-using vecstr = std::vector<std::string>;
-
 namespace neml2
 {
 register_NEML2_object(SolidMechanicsDriver);
@@ -35,8 +33,8 @@ SolidMechanicsDriver::expected_options()
 {
   OptionSet options = TransientDriver::expected_options();
   options.set<std::string>("control") = "STRAIN";
-  options.set<VariableName>("total_strain") = vecstr{"forces", "E"};
-  options.set<VariableName>("cauchy_stress") = vecstr{"forces", "S"};
+  options.set<VariableName>("total_strain") = VariableName("forces", "E");
+  options.set<VariableName>("cauchy_stress") = VariableName("forces", "S");
   options.set<CrossRef<torch::Tensor>>("prescribed_strains");
   options.set<CrossRef<torch::Tensor>>("prescribed_stresses");
   return options;

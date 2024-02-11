@@ -154,49 +154,53 @@ protected:
   virtual void detach_and_zero(bool out, bool dout_din = true, bool d2out_din2 = true);
 
   /// Declare an input variable
-  template <typename T>
-  const Variable<T> & declare_input_variable(const VariableName & name)
+  template <typename T, typename... S>
+  const Variable<T> & declare_input_variable(S &&... name)
   {
-    declare_variable<T>(_input_axis, name);
-    return *create_variable_view<T>(_input_views, name);
+    const auto var_name = variable_name(std::forward<S>(name)...);
+    declare_variable<T>(_input_axis, var_name);
+    return *create_variable_view<T>(_input_views, var_name);
   }
 
   /// Declare an input variable (with unknown base shape at compile time)
-  const Variable<BatchTensor> & declare_input_variable(const VariableName & name, TorchSize sz)
+  template <typename... S>
+  const Variable<BatchTensor> & declare_input_variable(TorchSize sz, S &&... name)
   {
-    declare_variable(_input_axis, name, sz);
-    return *create_variable_view<BatchTensor>(_input_views, name, sz);
+    const auto var_name = variable_name(std::forward<S>(name)...);
+    declare_variable(_input_axis, var_name, sz);
+    return *create_variable_view<BatchTensor>(_input_views, var_name, sz);
   }
 
   /// Declare an input variable that is a list of tensors of fixed size
-  template <typename T>
-  const Variable<BatchTensor> & declare_input_variable_list(const VariableName & name,
-                                                            TorchSize list_size)
+  template <typename T, typename... S>
+  const Variable<BatchTensor> & declare_input_variable_list(TorchSize list_size, S &&... name)
   {
-    return declare_input_variable(name, list_size * T::const_base_storage);
+    return declare_input_variable(list_size * T::const_base_storage, std::forward<S>(name)...);
   }
 
   /// Declare an output variable
-  template <typename T>
-  Variable<T> & declare_output_variable(const VariableName & name)
+  template <typename T, typename... S>
+  Variable<T> & declare_output_variable(S &&... name)
   {
-    declare_variable<T>(_output_axis, name);
-    return *create_variable_view<T>(_output_views, name);
+    const auto var_name = variable_name(std::forward<S>(name)...);
+    declare_variable<T>(_output_axis, var_name);
+    return *create_variable_view<T>(_output_views, var_name);
   }
 
   /// Declare an input variable (with unknown base shape at compile time)
-  Variable<BatchTensor> & declare_output_variable(const VariableName & name, TorchSize sz)
+  template <typename... S>
+  Variable<BatchTensor> & declare_output_variable(TorchSize sz, S &&... name)
   {
-    declare_variable(_output_axis, name, sz);
-    return *create_variable_view<BatchTensor>(_output_views, name, sz);
+    const auto var_name = variable_name(std::forward<S>(name)...);
+    declare_variable(_output_axis, var_name, sz);
+    return *create_variable_view<BatchTensor>(_output_views, var_name, sz);
   }
 
   /// Declare an output variable that is a list of tensors of fixed size
-  template <typename T>
-  Variable<BatchTensor> & declare_output_variable_list(const VariableName & name,
-                                                       TorchSize list_size)
+  template <typename T, typename... S>
+  Variable<BatchTensor> & declare_output_variable_list(TorchSize list_size, S &&... name)
   {
-    return declare_output_variable(name, list_size * T::const_base_storage);
+    return declare_output_variable(list_size * T::const_base_storage, std::forward<S>(name)...);
   }
 
   /// Declare an item recursively on an axis
@@ -221,6 +225,22 @@ protected:
   }
 
 private:
+  // Helper method to construct variable name in place
+  template <typename... S>
+  VariableName variable_name(S &&... name) const
+  {
+    using FirstType = std::tuple_element_t<0, std::tuple<S...>>;
+
+    if constexpr (sizeof...(name) == 1 && std::is_convertible_v<FirstType, std::string>)
+    {
+      if (_options.contains<VariableName>(name...))
+        return _options.get<VariableName>(name...);
+      return VariableName(std::forward<S>(name)...);
+    }
+    else
+      return VariableName(std::forward<S>(name)...);
+  }
+
   // Create a variable view (doesn't setup the view)
   template <typename T>
   Variable<T> * create_variable_view(Storage<VariableName, VariableBase> & views,
@@ -260,11 +280,11 @@ private:
   NEML2Object * _object;
 
   /**
-   * @brief Parsed input file options. These options could be convenient when we look up a
-   * cross-referenced tensor value by its name.
+   * @brief Parsed input file options. These options are useful for example when we declare a
+   * variable using an input option name.
    *
    */
-  // const OptionSet & _options;
+  const OptionSet _options;
 
   /// All the declared axes
   Storage<std::string, LabeledAxis> _axes;

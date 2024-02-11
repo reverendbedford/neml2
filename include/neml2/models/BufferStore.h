@@ -102,7 +102,7 @@ private:
    * cross-referenced tensor value by its name.
    *
    */
-  const OptionSet & _options;
+  const OptionSet _options;
 
   /// The actual storage for all the buffers
   Storage<std::string, TensorValueBase> _buffer_values;

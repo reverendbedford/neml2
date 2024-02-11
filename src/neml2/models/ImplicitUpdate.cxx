@@ -50,8 +50,8 @@ ImplicitUpdate::ImplicitUpdate(const OptionSet & options)
   //   2. Output variables of the "implicit_model" on the "residual" subaxis should be *provided* by
   //      *this* model.
   for (auto var : _model.output_axis().subaxis("residual").variable_accessors(/*recursive=*/true))
-    declare_output_variable(var.on("state"),
-                            _model.output_axis().subaxis("residual").storage_size(var));
+    declare_output_variable(_model.output_axis().subaxis("residual").storage_size(var),
+                            var.on("state"));
 }
 
 void

@@ -79,7 +79,7 @@ Interpolation<T>::Interpolation(const OptionSet & options)
   : NonlinearParameter<T>(options),
     _X(this->template declare_parameter<Scalar>("X", "abscissa")),
     _Y(this->template declare_parameter<T>("Y", "ordinate")),
-    _x(this->template declare_input_variable<Scalar>(options.get<VariableName>("argument")))
+    _x(this->template declare_input_variable<Scalar>("argument"))
 {
 }
 } // namespace neml2

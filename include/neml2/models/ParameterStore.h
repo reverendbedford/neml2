@@ -118,7 +118,7 @@ private:
    * cross-referenced tensor value by its name.
    *
    */
-  const OptionSet & _options;
+  const OptionSet _options;
 
   /// The actual storage for all the parameters
   Storage<std::string, TensorValueBase> _param_values;

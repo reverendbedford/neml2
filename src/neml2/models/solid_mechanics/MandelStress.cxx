@@ -24,23 +24,21 @@
 
 #include "neml2/models/solid_mechanics/MandelStress.h"
 
-using vecstr = std::vector<std::string>;
-
 namespace neml2
 {
 OptionSet
 MandelStress::expected_options()
 {
   OptionSet options = Model::expected_options();
-  options.set<VariableName>("cauchy_stress") = vecstr{"state", "S"};
-  options.set<VariableName>("mandel_stress") = {{"state", "internal", "M"}};
+  options.set<VariableName>("cauchy_stress") = VariableName("state", "S");
+  options.set<VariableName>("mandel_stress") = VariableName("state", "internal", "M");
   return options;
 }
 
 MandelStress::MandelStress(const OptionSet & options)
   : Model(options),
-    _S(declare_input_variable<SR2>(options.get<VariableName>("cauchy_stress"))),
-    _M(declare_output_variable<SR2>(options.get<VariableName>("mandel_stress")))
+    _S(declare_input_variable<SR2>("cauchy_stress")),
+    _M(declare_output_variable<SR2>("mandel_stress"))
 {
 }
 } // namespace neml2

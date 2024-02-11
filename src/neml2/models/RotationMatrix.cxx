@@ -39,8 +39,8 @@ RotationMatrix::expected_options()
 
 RotationMatrix::RotationMatrix(const OptionSet & options)
   : Model(options),
-    _from(declare_input_variable<Rot>(options.get<VariableName>("from"))),
-    _to(declare_output_variable<R2>(options.get<VariableName>("to")))
+    _from(declare_input_variable<Rot>("from")),
+    _to(declare_output_variable<R2>("to"))
 {
 }
 

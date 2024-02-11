@@ -26,19 +26,18 @@
 #include "neml2/tensors/SSR4.h"
 
 using namespace neml2;
-using vecstr = std::vector<std::string>;
 
 register_NEML2_object(SampleRateModel);
 
 SampleRateModel::SampleRateModel(const OptionSet & options)
   : Model(options),
-    foo(declare_input_variable<Scalar>(vecstr{"state", "foo"})),
-    bar(declare_input_variable<Scalar>(vecstr{"state", "bar"})),
-    baz(declare_input_variable<SR2>(vecstr{"state", "baz"})),
-    T(declare_input_variable<Scalar>(vecstr{"forces", "temperature"})),
-    foo_dot(declare_output_variable<Scalar>(vecstr{"state", "foo_rate"})),
-    bar_dot(declare_output_variable<Scalar>(vecstr{"state", "bar_rate"})),
-    baz_dot(declare_output_variable<SR2>(vecstr{"state", "baz_rate"})),
+    foo(declare_input_variable<Scalar>("state", "foo")),
+    bar(declare_input_variable<Scalar>("state", "bar")),
+    baz(declare_input_variable<SR2>("state", "baz")),
+    T(declare_input_variable<Scalar>("forces", "temperature")),
+    foo_dot(declare_output_variable<Scalar>("state", "foo_rate")),
+    bar_dot(declare_output_variable<Scalar>("state", "bar_rate")),
+    baz_dot(declare_output_variable<SR2>("state", "baz_rate")),
     _a(declare_parameter("a", Scalar(-0.01, default_tensor_options()))),
     _b(declare_parameter("b", Scalar(-0.5, default_tensor_options()))),
     _c(declare_parameter("c", Scalar(-0.9, default_tensor_options())))

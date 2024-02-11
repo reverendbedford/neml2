@@ -60,7 +60,7 @@ Model::setup()
 {
   // Declare nonlinear parameters as input variable
   for (const auto & [name, param] : nl_params())
-    declare_input_variable(param->name(), param->base_storage());
+    declare_input_variable(param->base_storage(), VariableName(param->name()));
 
   // Setup input and output axes
   setup_layout();

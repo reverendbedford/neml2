@@ -24,8 +24,6 @@
 
 #include "neml2/models/solid_mechanics/RateIndependentPlasticFlowConstraint.h"
 
-using vecstr = std::vector<std::string>;
-
 namespace neml2
 {
 register_NEML2_object(RateIndependentPlasticFlowConstraint);
@@ -34,8 +32,8 @@ OptionSet
 RateIndependentPlasticFlowConstraint::expected_options()
 {
   OptionSet options = Model::expected_options();
-  options.set<VariableName>("yield_function") = {{"state", "internal", "fp"}};
-  options.set<VariableName>("flow_rate") = {{"state", "internal", "gamma_rate"}};
+  options.set<VariableName>("yield_function") = VariableName("state", "internal", "fp");
+  options.set<VariableName>("flow_rate") = VariableName("state", "internal", "gamma_rate");
   options.set<Real>("yielding_tolerance") = 1e-8;
   return options;
 }
@@ -44,8 +42,8 @@ RateIndependentPlasticFlowConstraint::RateIndependentPlasticFlowConstraint(
     const OptionSet & options)
   : Model(options),
     _ytol(options.get<Real>("yielding_tolerance")),
-    _fp(declare_input_variable<Scalar>(options.get<VariableName>("yield_function"))),
-    _gamma_dot(declare_input_variable<Scalar>(options.get<VariableName>("flow_rate"))),
+    _fp(declare_input_variable<Scalar>("yield_function")),
+    _gamma_dot(declare_input_variable<Scalar>("flow_rate")),
     _r(declare_output_variable<Scalar>(
         options.get<VariableName>("flow_rate").slice(1).on("residual")))
 {

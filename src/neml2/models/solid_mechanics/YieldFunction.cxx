@@ -33,19 +33,19 @@ YieldFunction::expected_options()
 {
   OptionSet options = Model::expected_options();
   options.set<CrossRef<Scalar>>("yield_stress");
-  options.set<VariableName>("effective_stress") = {{"state", "internal", "s"}};
+  options.set<VariableName>("effective_stress") = VariableName("state", "internal", "s");
   options.set<VariableName>("isotropic_hardening");
-  options.set<VariableName>("yield_function") = {{"state", "internal", "fp"}};
+  options.set<VariableName>("yield_function") = VariableName("state", "internal", "fp");
   return options;
 }
 
 YieldFunction::YieldFunction(const OptionSet & options)
   : Model(options),
-    _s(declare_input_variable<Scalar>(options.get<VariableName>("effective_stress"))),
+    _s(declare_input_variable<Scalar>("effective_stress")),
     _h(options.get<VariableName>("isotropic_hardening").empty()
            ? nullptr
-           : &declare_input_variable<Scalar>(options.get<VariableName>("isotropic_hardening"))),
-    _f(declare_output_variable<Scalar>(options.get<VariableName>("yield_function"))),
+           : &declare_input_variable<Scalar>("isotropic_hardening")),
+    _f(declare_output_variable<Scalar>("yield_function")),
     _sy(declare_parameter<Scalar>("sy", "yield_stress"))
 {
 }

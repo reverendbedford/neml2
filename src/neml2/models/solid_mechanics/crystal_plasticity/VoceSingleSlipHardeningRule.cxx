@@ -24,8 +24,6 @@
 
 #include "neml2/models/solid_mechanics/crystal_plasticity/VoceSingleSlipHardeningRule.h"
 
-using vecstr = std::vector<std::string>;
-
 namespace neml2
 {
 register_NEML2_object(VoceSingleSlipHardeningRule);

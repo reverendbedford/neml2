@@ -27,8 +27,6 @@
 #include "neml2/tensors/tensors.h"
 #include "neml2/misc/math.h"
 
-using vecstr = std::vector<std::string>;
-
 namespace neml2
 {
 register_NEML2_object(ElasticStrainRate);
@@ -37,24 +35,24 @@ OptionSet
 ElasticStrainRate::expected_options()
 {
   OptionSet options = Model::expected_options();
-  options.set<VariableName>("elastic_strain_rate") = vecstr{"state", "elastic_strain_rate"};
-  options.set<VariableName>("elastic_strain") = vecstr{"state", "elastic_strain"};
+  options.set<VariableName>("elastic_strain_rate") = VariableName("state", "elastic_strain_rate");
+  options.set<VariableName>("elastic_strain") = VariableName("state", "elastic_strain");
 
-  options.set<VariableName>("deformation_rate") = vecstr{"forces", "deformation_rate"};
-  options.set<VariableName>("vorticity") = vecstr{"forces", "vorticity"};
+  options.set<VariableName>("deformation_rate") = VariableName("forces", "deformation_rate");
+  options.set<VariableName>("vorticity") = VariableName("forces", "vorticity");
 
   options.set<VariableName>("plastic_deformation_rate") =
-      vecstr{"state", "internal", "plastic_deformation_rate"};
+      VariableName("state", "internal", "plastic_deformation_rate");
   return options;
 }
 
 ElasticStrainRate::ElasticStrainRate(const OptionSet & options)
   : Model(options),
-    _e_dot(declare_output_variable<SR2>(options.get<VariableName>("elastic_strain_rate"))),
-    _e(declare_input_variable<SR2>(options.get<VariableName>("elastic_strain"))),
-    _d(declare_input_variable<SR2>(options.get<VariableName>("deformation_rate"))),
-    _w(declare_input_variable<WR2>(options.get<VariableName>("vorticity"))),
-    _dp(declare_input_variable<SR2>(options.get<VariableName>("plastic_deformation_rate")))
+    _e_dot(declare_output_variable<SR2>("elastic_strain_rate")),
+    _e(declare_input_variable<SR2>("elastic_strain")),
+    _d(declare_input_variable<SR2>("deformation_rate")),
+    _w(declare_input_variable<WR2>("vorticity")),
+    _dp(declare_input_variable<SR2>("plastic_deformation_rate"))
 {
 }
 

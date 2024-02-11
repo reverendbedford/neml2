@@ -28,8 +28,6 @@
 #include "neml2/tensors/tensors.h"
 #include "neml2/tensors/list_tensors.h"
 
-using vecstr = std::vector<std::string>;
-
 namespace neml2
 {
 register_NEML2_object(PlasticDeformationRate);
@@ -40,11 +38,11 @@ PlasticDeformationRate::expected_options()
   OptionSet options = Model::expected_options();
 
   options.set<VariableName>("plastic_deformation_rate") =
-      vecstr{"state", "internal", "plastic_deformation_rate"};
+      VariableName("state", "internal", "plastic_deformation_rate");
 
-  options.set<VariableName>("orientation") = vecstr{"state", "orientation_ER"};
+  options.set<VariableName>("orientation") = VariableName("state", "orientation_ER");
 
-  options.set<VariableName>("slip_rates") = vecstr{"state", "internal", "slip_rates"};
+  options.set<VariableName>("slip_rates") = VariableName("state", "internal", "slip_rates");
 
   options.set<std::string>("crystal_geometry_name") = "crystal_geometry";
 
@@ -55,10 +53,9 @@ PlasticDeformationRate::PlasticDeformationRate(const OptionSet & options)
   : Model(options),
     _crystal_geometry(register_data<crystallography::CrystalGeometry>(
         options.get<std::string>("crystal_geometry_name"))),
-    _dp(declare_output_variable<SR2>(options.get<VariableName>("plastic_deformation_rate"))),
-    _R(declare_input_variable<R2>(options.get<VariableName>("orientation"))),
-    _g(declare_input_variable_list<Scalar>(options.get<VariableName>("slip_rates"),
-                                           _crystal_geometry.nslip()))
+    _dp(declare_output_variable<SR2>("plastic_deformation_rate")),
+    _R(declare_input_variable<R2>("orientation")),
+    _g(declare_input_variable_list<Scalar>(_crystal_geometry.nslip(), "slip_rates"))
 {
 }
 

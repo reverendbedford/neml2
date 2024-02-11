@@ -25,8 +25,6 @@
 #include "neml2/models/solid_mechanics/TotalStrain.h"
 #include "neml2/tensors/SSR4.h"
 
-using vecstr = std::vector<std::string>;
-
 namespace neml2
 {
 register_NEML2_object(TotalStrain);
@@ -35,9 +33,9 @@ OptionSet
 TotalStrain::expected_options()
 {
   OptionSet options = Model::expected_options();
-  options.set<VariableName>("elastic_strain") = {{"state", "internal", "Ee"}};
-  options.set<VariableName>("plastic_strain") = {{"state", "internal", "Ep"}};
-  options.set<VariableName>("total_strain") = vecstr{"state", "E"};
+  options.set<VariableName>("elastic_strain") = VariableName("state", "internal", "Ee");
+  options.set<VariableName>("plastic_strain") = VariableName("state", "internal", "Ep");
+  options.set<VariableName>("total_strain") = VariableName("state", "E");
   options.set<bool>("rate_form") = false;
   return options;
 }

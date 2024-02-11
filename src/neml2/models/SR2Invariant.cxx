@@ -42,8 +42,8 @@ SR2Invariant::expected_options()
 SR2Invariant::SR2Invariant(const OptionSet & options)
   : Model(options),
     _type(options.get<std::string>("invariant_type")),
-    _A(declare_input_variable<SR2>(options.get<VariableName>("tensor"))),
-    _invariant(declare_output_variable<Scalar>(options.get<VariableName>("invariant")))
+    _A(declare_input_variable<SR2>("tensor")),
+    _invariant(declare_output_variable<Scalar>("invariant"))
 {
 }
 

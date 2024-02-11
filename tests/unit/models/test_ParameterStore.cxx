@@ -79,12 +79,11 @@ TEST_CASE("ParameterStore", "[models]")
     auto & nu = model.get_parameter<Scalar>("nu");
 
     // First prepare some arbitrary input
-    using vecstr = std::vector<std::string>;
-    auto & Ee = model.get_input_variable<SR2>(vecstr{"state", "internal", "Ee"});
+    auto & Ee = model.get_input_variable<SR2>(VariableName("state", "internal", "Ee"));
     Ee = SR2::fill(0.09, 0.04, -0.02);
 
     // The outputs of the model
-    const auto & S = model.get_output_variable<SR2>(vecstr{"state", "S"});
+    const auto & S = model.get_output_variable<SR2>(VariableName("state", "S"));
 
     SECTION("batch mismatch")
     {
