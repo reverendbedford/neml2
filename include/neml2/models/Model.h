@@ -72,15 +72,28 @@ public:
    *
    * IMPORTANT: If the batch shape of this model changes, this method must be called again to
    * re-allocate the storage and views.
+   *
+   * @param batch_shape Batch shape of the input, output and derivatives
+   * @param deriv_order Order of derivative required for this model
+   * @param device Device on which the model will be evaluated
+   * @param dtype Number type, e.g., torch::kFloat32, torch::kFloat64, etc
    */
   virtual void reinit(TorchShapeRef batch_shape,
-                      const torch::TensorOptions & options = default_tensor_options());
+                      int deriv_order = 0,
+                      const torch::Device & device = torch::kCPU,
+                      const torch::Dtype & dtype = TORCH_DTYPE);
 
   /**
    * @brief Allocate storage and setup views for all the variables of this model and recursively all
-   * of the sub-models.
+   * of the sub-models. See the other overload for detaile description.
    */
-  virtual void reinit(const BatchTensor & tensor);
+  virtual void reinit(const BatchTensor & tensor, int deriv_order = 0);
+
+  /// Whether derivative has been requested for this model
+  bool requires_grad() const { return _deriv_order >= 1; }
+
+  /// Whether 2nd derivative has been requested for this model
+  bool requires_2nd_grad() const { return _deriv_order >= 2; }
 
   /// This model's batch dim
   TorchSize batch_dim() const { return _batch_sizes.size(); }
@@ -175,9 +188,10 @@ protected:
    */
   virtual void setup() override;
 
+  using VariableStore::allocate_variables;
+
   /// Call VariableStore::allocate_variables recursively on all submodels
-  virtual void allocate_variables(TorchShapeRef batch_shape,
-                                  const torch::TensorOptions & options) override;
+  virtual void allocate_variables(TorchShapeRef batch_shape, const torch::TensorOptions & options);
 
   /// Call VariableStore::setup_input_views recursively on all submodels
   virtual void setup_input_views() override;
@@ -193,9 +207,10 @@ protected:
   /// The map between input -> output, and optionally its derivatives
   virtual void set_value(bool out, bool dout_din, bool d2out_din2) = 0;
 
-  virtual void cache(TorchShapeRef batch_shape) override;
+  using VariableStore::cache;
 
-  virtual void cache(const torch::TensorOptions & options);
+  virtual void
+  cache(TorchShapeRef batch_shape, const torch::TensorOptions & options, int deriv_order);
 
   virtual void reinit_implicit_system(bool s, bool r, bool J) override;
 
@@ -206,13 +221,18 @@ protected:
    * model, which will affect dependency resolution inside a ComposedModel.
    *
    * @param model The model to register
+   * @param extra_deriv_order The additional derivative order required for the registered-submodel
    * @param merge_input Whether to merge the input of the registered model into *this* model's
    * input.
    */
   template <typename T, typename = typename std::enable_if_t<std::is_base_of_v<Model, T>>>
-  T & register_model(const std::string & name, bool merge_input = true)
+  T & register_model(const std::string & name, int extra_deriv_order = 0, bool merge_input = true)
   {
-    auto model = Factory::get_object_ptr<Model>("Models", name, host(), /*force_create=*/true);
+    OptionSet extra_opts;
+    extra_opts.set<NEML2Object *>("_host") = host();
+    extra_opts.set<int>("_extra_derivative_order") = extra_deriv_order;
+
+    auto model = Factory::get_object_ptr<Model>("Models", name, extra_opts, /*force_create=*/true);
 
     if (merge_input)
       for (auto && [name, var] : model->input_views())
@@ -250,5 +270,26 @@ private:
 
   /// This model's tensor options
   torch::TensorOptions _options;
+
+  /**
+   * @brief The derivative order required for this model
+   *
+   * The input/output, derivative, and second derivative storages will be allocated accordingly when
+   * allocate_variables is called.
+   *
+   * 0: Only value is required
+   * 1: First order derivative is required
+   * 2: Second order derivative is required
+   */
+  int _deriv_order;
+
+  /**
+   * @brief The extra derivative order required for this model
+   *
+   * When a model is registered as a sub-model, the parent model may require additional derivative
+   * order from the sub-model. For example, some models may define its own outputs as functions of
+   * the sub-model's derivatives. Normality is an example of such model.
+   */
+  const int _extra_deriv_order;
 };
 } // namespace neml2

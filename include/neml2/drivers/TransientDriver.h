@@ -88,8 +88,8 @@ protected:
 
   /// The model which the driver uses to perform constitutive updates.
   Model & _model;
-  /// The tensor options for all the computations
-  const torch::TensorOptions _options;
+  /// The device on which to evaluate the model
+  const torch::Device _device;
 
   /// The current time
   Scalar _time;

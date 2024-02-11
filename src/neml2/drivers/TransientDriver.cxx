@@ -59,7 +59,7 @@ TransientDriver::expected_options()
 TransientDriver::TransientDriver(const OptionSet & options)
   : Driver(options),
     _model(Factory::get_object<Model>("Models", options.get<std::string>("model"))),
-    _options(default_tensor_options().device(options.get<std::string>("device"))),
+    _device(options.get<std::string>("device")),
     _time(options.get<CrossRef<torch::Tensor>>("times"), 2),
     _step_count(0),
     _time_name(options.get<LabeledAxisAccessor>("time")),
@@ -82,11 +82,11 @@ TransientDriver::TransientDriver(const OptionSet & options)
     _ic_sr2_values(options.get<std::vector<CrossRef<SR2>>>("ic_sr2_values")),
     _cp_elastic_scale(options.get<Real>("cp_elastic_scale"))
 {
-  _model.reinit({_nbatch}, _options);
+  _model.reinit({_nbatch}, 0, _device);
 
-  _time = _time.to(_options);
-  _result_in = _result_in.to(_options);
-  _result_out = _result_out.to(_options);
+  _time = _time.to(_device);
+  _result_in = _result_in.to(_device);
+  _result_out = _result_out.to(_device);
 }
 
 void
@@ -257,8 +257,8 @@ TransientDriver::save_as_path() const
 torch::nn::ModuleDict
 TransientDriver::result() const
 {
-  auto result_in_cpu = _result_in.to(_options.device(torch::kCPU));
-  auto result_out_cpu = _result_out.to(_options.device(torch::kCPU));
+  auto result_in_cpu = _result_in.to(torch::kCPU);
+  auto result_out_cpu = _result_out.to(torch::kCPU);
 
   // Dump input variables into a Module
   auto res_in = std::make_shared<torch::nn::Module>();

@@ -78,7 +78,7 @@ public:
   T * host();
 
 private:
-  const OptionSet & _options;
+  const OptionSet _options;
 
   /// The publicly exposed NEML2Object
   NEML2Object * _host;

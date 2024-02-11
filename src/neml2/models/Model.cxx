@@ -36,6 +36,7 @@ Model::expected_options()
   options.set<std::vector<LabeledAxisAccessor>>("additional_outputs");
   options.set<bool>("use_AD_first_derivative") = false;
   options.set<bool>("use_AD_second_derivative") = false;
+  options.set<int>("_extra_derivative_order") = 0;
   return options;
 }
 
@@ -47,7 +48,9 @@ Model::Model(const OptionSet & options)
     _additional_outputs(options.get<std::vector<LabeledAxisAccessor>>("additional_outputs")),
     _AD_1st_deriv(options.get<bool>("use_AD_first_derivative")),
     _AD_2nd_deriv(options.get<bool>("use_AD_second_derivative")),
-    _options(default_tensor_options())
+    _options(default_tensor_options()),
+    _deriv_order(0),
+    _extra_deriv_order(options.get<int>("_extra_derivative_order"))
 {
   check_AD_limitation();
 }
@@ -88,13 +91,18 @@ Model::implicit() const
 }
 
 void
-Model::reinit(TorchShapeRef batch_shape, const torch::TensorOptions & options)
+Model::reinit(TorchShapeRef batch_shape,
+              int deriv_order,
+              const torch::Device & device,
+              const torch::Dtype & dtype)
 {
   neml_assert(host() == this, "This method should only be called on the host model.");
 
-  // Cache batch shape and tensor options
-  cache(batch_shape);
-  cache(options);
+  // Tensor options
+  const auto options = default_tensor_options().device(device).dtype(dtype);
+
+  // Cache batch shape, tensor options, and derivative order
+  cache(batch_shape, options, deriv_order);
 
   // Send buffers and parameters
   send_buffers_to(options);
@@ -110,15 +118,15 @@ Model::reinit(TorchShapeRef batch_shape, const torch::TensorOptions & options)
 }
 
 void
-Model::reinit(const BatchTensor & tensor)
+Model::reinit(const BatchTensor & tensor, int deriv_order)
 {
-  reinit(tensor.batch_sizes(), tensor.options());
+  reinit(tensor.batch_sizes(), deriv_order, tensor.device(), tensor.scalar_type());
 }
 
 void
 Model::allocate_variables(TorchShapeRef batch_shape, const torch::TensorOptions & options)
 {
-  VariableStore::allocate_variables(batch_shape, options);
+  VariableStore::allocate_variables(batch_shape, options, _deriv_order);
   for (auto submodel : registered_models())
     submodel->allocate_variables(batch_shape, options);
 }
@@ -145,7 +153,8 @@ Model::setup_submodel_input_views()
 void
 Model::setup_output_views(bool out, bool dout_din, bool d2out_din2)
 {
-  VariableStore::setup_output_views(out, dout_din, d2out_din2);
+  VariableStore::setup_output_views(
+      out, dout_din && requires_grad(), d2out_din2 && requires_2nd_grad());
   setup_submodel_output_views(out, dout_din, d2out_din2);
 }
 
@@ -155,9 +164,11 @@ Model::setup_submodel_output_views(bool out, bool dout_din, bool d2out_din2)
   for (auto submodel : registered_models())
   {
     for (auto && [name, var] : submodel->output_views())
-      var.setup_views(out ? &submodel->output_storage() : nullptr,
-                      dout_din ? &submodel->derivative_storage() : nullptr,
-                      d2out_din2 ? &submodel->second_derivative_storage() : nullptr);
+      var.setup_views(
+          out ? &submodel->output_storage() : nullptr,
+          dout_din && submodel->requires_grad() ? &submodel->derivative_storage() : nullptr,
+          d2out_din2 && submodel->requires_2nd_grad() ? &submodel->second_derivative_storage()
+                                                      : nullptr);
 
     submodel->setup_submodel_output_views(out, dout_din, d2out_din2);
   }
@@ -166,29 +177,25 @@ Model::setup_submodel_output_views(bool out, bool dout_din, bool d2out_din2)
 void
 Model::detach_and_zero(bool out, bool dout_din, bool d2out_din2)
 {
-  VariableStore::detach_and_zero(out, dout_din, d2out_din2);
-  reinit_implicit_system(false, out, dout_din);
+  VariableStore::detach_and_zero(
+      out, dout_din && requires_grad(), d2out_din2 && requires_2nd_grad());
+  reinit_implicit_system(false, out, dout_din && requires_grad());
 
   for (auto submodel : registered_models())
     submodel->detach_and_zero(out, dout_din, d2out_din2);
 }
 
 void
-Model::cache(TorchShapeRef batch_shape)
+Model::cache(TorchShapeRef batch_shape, const torch::TensorOptions & options, int deriv_order)
 {
   _batch_sizes = batch_shape.vec();
+  _options = options;
+  _deriv_order = deriv_order + _extra_deriv_order;
+
   VariableStore::cache(batch_shape);
 
   for (auto submodel : registered_models())
-    submodel->cache(batch_shape);
-}
-
-void
-Model::cache(const torch::TensorOptions & options)
-{
-  _options = options;
-  for (auto submodel : registered_models())
-    submodel->cache(options);
+    submodel->cache(batch_shape, options, _deriv_order);
 }
 
 void
@@ -298,6 +305,9 @@ Model::value()
 void
 Model::value_and_dvalue()
 {
+  neml_assert_dbg(requires_grad(),
+                  "value_and_dvalue() is called but derivative storage hasn't been allocated.");
+
   if (!_AD_1st_deriv)
   {
     detach_and_zero(true, true, false);
@@ -316,6 +326,10 @@ Model::value_and_dvalue()
 void
 Model::value_and_dvalue_and_d2value()
 {
+  neml_assert_dbg(requires_2nd_grad(),
+                  "value_and_dvalue_and_d2value() is called but second derivative storage hasn't "
+                  "been allocated.");
+
   if (!_AD_2nd_deriv)
   {
     detach_and_zero(true, true, true);

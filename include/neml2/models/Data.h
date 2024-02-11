@@ -61,7 +61,10 @@ protected:
   template <typename T, typename = typename std::enable_if_t<std::is_base_of_v<Data, T>>>
   T & register_data(const std::string & name)
   {
-    auto data = Factory::get_object_ptr<Data>("Data", name, host());
+    OptionSet extra_opts;
+    extra_opts.set<NEML2Object *>("_host") = host();
+
+    auto data = Factory::get_object_ptr<Data>("Data", name, extra_opts);
     _registered_data.push_back(data.get());
     return *(std::dynamic_pointer_cast<T>(data));
   }

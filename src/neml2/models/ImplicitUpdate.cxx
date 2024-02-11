@@ -40,7 +40,8 @@ ImplicitUpdate::expected_options()
 
 ImplicitUpdate::ImplicitUpdate(const OptionSet & options)
   : Model(options),
-    _model(register_model<Model>(options.get<std::string>("implicit_model"))),
+    _model(register_model<Model>(options.get<std::string>("implicit_model"),
+                                 requires_grad() ? /*extra_deriv_order=*/0 : 1)),
     _solver(Factory::get_object<NonlinearSolver>("Solvers", options.get<std::string>("solver")))
 {
   // Take care of dependency registration:

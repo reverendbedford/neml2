@@ -143,7 +143,9 @@ protected:
   /// Cache the variable's batch shape
   virtual void cache(TorchShapeRef batch_shape);
 
-  virtual void allocate_variables(TorchShapeRef batch_shape, const torch::TensorOptions & options);
+  virtual void allocate_variables(TorchShapeRef batch_shape,
+                                  const torch::TensorOptions & options,
+                                  int deriv_order);
 
   virtual void setup_input_views();
 

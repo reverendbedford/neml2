@@ -75,17 +75,28 @@ VariableStore::cache(TorchShapeRef batch_shape)
 }
 
 void
-VariableStore::allocate_variables(TorchShapeRef batch_shape, const torch::TensorOptions & options)
+VariableStore::allocate_variables(TorchShapeRef batch_shape,
+                                  const torch::TensorOptions & options,
+                                  int deriv_order)
 {
   // Allocate input storage only if this is a host model
   if (_object->host() == _object)
     _in = LabeledVector::zeros(batch_shape, {&input_axis()}, options);
 
+  neml_assert_dbg(deriv_order >= 0 && deriv_order <= 2,
+                  "Expect derivative order from [0, 2], got ",
+                  deriv_order);
+
   // Allocate output storage
-  _out = LabeledVector::zeros(batch_shape, {&output_axis()}, options);
-  _dout_din = LabeledMatrix::zeros(batch_shape, {&output_axis(), &input_axis()}, options);
-  _d2out_din2 =
-      LabeledTensor3D::zeros(batch_shape, {&output_axis(), &input_axis(), &input_axis()}, options);
+  if (deriv_order >= 0)
+    _out = LabeledVector::zeros(batch_shape, {&output_axis()}, options);
+
+  if (deriv_order >= 1)
+    _dout_din = LabeledMatrix::zeros(batch_shape, {&output_axis(), &input_axis()}, options);
+
+  if (deriv_order >= 2)
+    _d2out_din2 = LabeledTensor3D::zeros(
+        batch_shape, {&output_axis(), &input_axis(), &input_axis()}, options);
 }
 
 void

@@ -64,7 +64,7 @@ public:
   template <class T>
   static std::shared_ptr<T> get_object_ptr(const std::string & section,
                                            const std::string & name,
-                                           NEML2Object * host = nullptr,
+                                           const OptionSet & additional_options = OptionSet(),
                                            bool force_create = false);
 
   /**
@@ -87,7 +87,7 @@ public:
   template <class T>
   static T & get_object(const std::string & section,
                         const std::string & name,
-                        NEML2Object * host = nullptr,
+                        const OptionSet & additional_options = OptionSet(),
                         bool force_create = false);
 
   /**
@@ -133,7 +133,7 @@ template <class T>
 inline std::shared_ptr<T>
 Factory::get_object_ptr(const std::string & section,
                         const std::string & name,
-                        NEML2Object * host,
+                        const OptionSet & additional_options,
                         bool force_create)
 {
   auto & factory = Factory::get();
@@ -156,8 +156,9 @@ Factory::get_object_ptr(const std::string & section,
   for (auto & options : factory._all_options[section])
     if (options.first == name)
     {
-      options.second.set<NEML2Object *>("_host") = host;
-      factory.create_object(section, options.second);
+      auto new_options = options.second;
+      new_options += additional_options;
+      factory.create_object(section, new_options);
       break;
     }
 
@@ -167,16 +168,16 @@ Factory::get_object_ptr(const std::string & section,
               " under section ",
               section);
 
-  return Factory::get_object_ptr<T>(section, name, host, false);
+  return Factory::get_object_ptr<T>(section, name, OptionSet(), false);
 }
 
 template <class T>
 inline T &
 Factory::get_object(const std::string & section,
                     const std::string & name,
-                    NEML2Object * host,
+                    const OptionSet & additional_options,
                     bool force_create)
 {
-  return *Factory::get_object_ptr<T>(section, name, host, force_create);
+  return *Factory::get_object_ptr<T>(section, name, additional_options, force_create);
 }
 } // namespace neml2

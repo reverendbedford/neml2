@@ -73,8 +73,8 @@ LargeDeformationIncrementalSolidMechanicsDriver::LargeDeformationIncrementalSoli
   else
     _vorticity = WR2::zeros(_driving_force.batch_sizes());
 
-  _driving_force = _driving_force.to(_options);
-  _vorticity = _vorticity.to(_options);
+  _driving_force = _driving_force.to(_device);
+  _vorticity = _vorticity.to(_device);
 
   check_integrity();
 }

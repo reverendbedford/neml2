@@ -41,7 +41,7 @@ Normality::expected_options()
 
 Normality::Normality(const OptionSet & options)
   : Model(options),
-    _model(register_model<Model>(options.get<std::string>("model"))),
+    _model(register_model<Model>(options.get<std::string>("model"), /*extra_deriv_order=*/1)),
     _f(options.get<LabeledAxisAccessor>("function"))
 {
   // Set up the conjugate pairs

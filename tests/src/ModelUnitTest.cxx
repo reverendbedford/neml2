@@ -110,7 +110,12 @@ ModelUnitTest::ModelUnitTest(const OptionSet & options)
   fill_vector<WR2>(_out, "output_skewr2_names", "output_skewr2_values");
   fill_vector<Rot>(_out, "output_rot_names", "output_rot_values");
 
-  _model.reinit(_in);
+  if (_check_2nd_deriv || _check_AD_2nd_deriv || _check_AD_derivs)
+    _model.reinit(_in, 2);
+  else if (_check_1st_deriv)
+    _model.reinit(_in, 1);
+  else
+    _model.reinit(_in, 0);
 }
 
 bool
