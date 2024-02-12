@@ -89,23 +89,25 @@ TrustRegionNonlinearSolver::solve(const NonlinearSystem & system, const BatchTen
     // Figure out the quality of the subproblem solution compared to the quadratic model
     auto xp = x + system.scale_direction(p);
     auto [Rp, Jp] = system.residual_and_Jacobian(xp);
-    auto red_a = TrustRegionNonlinearSolver::merit_reduction(p, Jp);
-    auto red_b = TrustRegionNonlinearSolver::merit_reduction(p, J);
+    auto nRp = torch::linalg::vector_norm(Rp, 2, -1, false, c10::nullopt);
+    auto red_a = nR - nRp;
+    auto red_b = nR - TrustRegionNonlinearSolver::merit_function(p, R, J);
     auto rho = red_a / red_b;
 
     // Adjust the trust region
     delta.batch_index_put({rho < _reduce_criteria},
                           _reduce_factor * delta.batch_index({rho < _reduce_criteria}));
-    delta.batch_index_put({rho > _expand_criteria},
-                          _expand_factor * delta.batch_index({rho > _expand_criteria}));
-    delta = torch::maximum(delta, torch::tensor(_delta_max, delta.dtype()));
+    delta.batch_index_put(
+        {rho > _expand_criteria},
+        torch::minimum(_expand_factor * delta.batch_index({rho > _expand_criteria}),
+                       torch::tensor(_delta_max, delta.dtype())));
 
     // Accept or reject the current step
-    auto accept = (rho >= _accept_criteria);
+    auto accept = rho >= _accept_criteria;
     x = BatchTensor(torch::where(accept.unsqueeze(-1), xp, x), x.batch_dim());
     R = BatchTensor(torch::where(accept.unsqueeze(-1), Rp, R), R.batch_dim());
     J = BatchTensor(torch::where(accept.unsqueeze(-1).unsqueeze(-1), Jp, J), J.batch_dim());
-    nR = torch::linalg::vector_norm(R, 2, -1, false, c10::nullopt);
+    nR = torch::where(accept, nRp, nR);
   }
 
   // Throw if we exceeded miters
@@ -219,9 +221,11 @@ TrustRegionNonlinearSolver::subproblem(const Scalar & s,
 }
 
 Scalar
-TrustRegionNonlinearSolver::merit_reduction(const BatchTensor & p, const BatchTensor & J)
+TrustRegionNonlinearSolver::merit_function(const BatchTensor & p,
+                                           const BatchTensor & R,
+                                           const BatchTensor & J)
 {
-  return 0.5 * math::bvv(p, math::bmv(J, p));
+  return torch::linalg::vector_norm(R + math::bmv(J, p), 2, -1, false, c10::nullopt);
 }
 
 } // namespace neml2
