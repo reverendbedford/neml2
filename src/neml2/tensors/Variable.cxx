@@ -66,6 +66,22 @@ VariableBase::setup_views(const VariableBase * other)
   setup_views(other->_value_storage, other->_derivative_storage, other->_second_derivative_storage);
 }
 
+void
+VariableBase::reinit_views()
+{
+  if (_value_storage)
+    _raw_value = (*_value_storage)(name());
+
+  if (_derivative_storage)
+    for (const auto & arg : args())
+      _dvalue_d[arg] = (*_derivative_storage)(name(), arg);
+
+  if (_second_derivative_storage)
+    for (const auto & arg1 : args())
+      for (const auto & arg2 : args())
+        _d2value_d[arg1][arg2] = (*_second_derivative_storage)(name(), arg1, arg2);
+}
+
 Derivative
 VariableBase::d(const VariableBase & x)
 {

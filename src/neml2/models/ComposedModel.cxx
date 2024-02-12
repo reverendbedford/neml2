@@ -85,6 +85,13 @@ ComposedModel::ComposedModel(const OptionSet & options)
 }
 
 void
+ComposedModel::to(const torch::TensorOptions & options)
+{
+  Model::to(options);
+  _din_din = _din_din.to(options);
+}
+
+void
 ComposedModel::allocate_variables(TorchShapeRef batch_shape, const torch::TensorOptions & options)
 {
   Model::allocate_variables(batch_shape, options);

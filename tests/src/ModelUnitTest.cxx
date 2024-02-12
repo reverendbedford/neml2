@@ -96,8 +96,6 @@ ModelUnitTest::ModelUnitTest(const OptionSet & options)
     _param_rtol(options.get<Real>("parameter_derivatives_rel_tol")),
     _param_atol(options.get<Real>("parameter_derivatives_abs_tol"))
 {
-  std::cout << _model.input_axis() << std::endl;
-
   _in = LabeledVector::zeros(_batch_shape, {&_model.input_axis()});
   fill_vector<BatchTensor>(_in, "input_batch_tensor_names", "input_batch_tensor_values");
   fill_vector<Scalar>(_in, "input_scalar_names", "input_scalar_values");

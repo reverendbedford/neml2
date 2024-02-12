@@ -91,6 +91,22 @@ Model::implicit() const
 }
 
 void
+Model::to(const torch::TensorOptions & options)
+{
+  cache(options);
+
+  send_buffers_to(options);
+  send_parameters_to(options);
+
+  send_input_to(options);
+  send_output_to(options, true, true, true);
+
+  setup_input_views();
+  setup_output_views(true, true, true);
+  reinit_implicit_system(true, true, true);
+}
+
+void
 Model::reinit(TorchShapeRef batch_shape,
               int deriv_order,
               const torch::Device & device,
@@ -102,7 +118,9 @@ Model::reinit(TorchShapeRef batch_shape,
   const auto options = default_tensor_options().device(device).dtype(dtype);
 
   // Cache batch shape, tensor options, and derivative order
-  cache(batch_shape, options, deriv_order);
+  cache(batch_shape);
+  cache(options);
+  cache(deriv_order);
 
   // Send buffers and parameters
   send_buffers_to(options);
@@ -121,6 +139,26 @@ void
 Model::reinit(const BatchTensor & tensor, int deriv_order)
 {
   reinit(tensor.batch_sizes(), deriv_order, tensor.device(), tensor.scalar_type());
+}
+
+void
+Model::send_input_to(const torch::TensorOptions & options)
+{
+  VariableStore::send_input_to(options);
+  for (auto submodel : registered_models())
+    submodel->send_input_to(options);
+}
+
+void
+Model::send_output_to(const torch::TensorOptions & options,
+                      bool out,
+                      bool dout_din,
+                      bool d2out_din2)
+{
+  VariableStore::send_output_to(
+      options, out, dout_din && requires_grad(), d2out_din2 && requires_2nd_grad());
+  for (auto submodel : registered_models())
+    submodel->send_output_to(options, out, dout_din, d2out_din2);
 }
 
 void
@@ -186,16 +224,28 @@ Model::detach_and_zero(bool out, bool dout_din, bool d2out_din2)
 }
 
 void
-Model::cache(TorchShapeRef batch_shape, const torch::TensorOptions & options, int deriv_order)
+Model::cache(TorchShapeRef batch_shape)
 {
   _batch_sizes = batch_shape.vec();
-  _options = options;
-  _deriv_order = deriv_order + _extra_deriv_order;
-
   VariableStore::cache(batch_shape);
-
   for (auto submodel : registered_models())
-    submodel->cache(batch_shape, options, _deriv_order);
+    submodel->cache(batch_shape);
+}
+
+void
+Model::cache(const torch::TensorOptions & options)
+{
+  _options = options;
+  for (auto submodel : registered_models())
+    submodel->cache(options);
+}
+
+void
+Model::cache(int deriv_order)
+{
+  _deriv_order = deriv_order + _extra_deriv_order;
+  for (auto submodel : registered_models())
+    submodel->cache(_deriv_order);
 }
 
 void
@@ -308,15 +358,13 @@ Model::value_and_dvalue()
   neml_assert_dbg(requires_grad(),
                   "value_and_dvalue() is called but derivative storage hasn't been allocated.");
 
+  detach_and_zero(true, true, false);
+
   if (!_AD_1st_deriv)
-  {
-    detach_and_zero(true, true, false);
     set_value(true, true, false);
-  }
   else
   {
     input_storage().tensor().requires_grad_();
-    detach_and_zero(true, false, false);
     set_value(true, false, false);
     extract_derivatives(/*retain_graph=*/true, /*create_graph=*/false, /*allow_unused=*/true);
     input_storage().tensor().requires_grad_(false);
@@ -330,27 +378,25 @@ Model::value_and_dvalue_and_d2value()
                   "value_and_dvalue_and_d2value() is called but second derivative storage hasn't "
                   "been allocated.");
 
+  detach_and_zero(true, true, true);
+
   if (!_AD_2nd_deriv)
-  {
-    detach_and_zero(true, true, true);
     set_value(true, true, true);
-  }
   else
   {
     input_storage().tensor().requires_grad_();
+
     if (!_AD_1st_deriv)
-    {
-      detach_and_zero(true, true, false);
       set_value(true, true, false);
-    }
     else
     {
-      detach_and_zero(true, false, false);
       set_value(true, false, false);
       extract_derivatives(/*retain_graph=*/true, /*create_graph=*/true, /*allow_unused=*/true);
     }
+
     extract_second_derivatives(
         /*retain_graph=*/true, /*create_graph=*/false, /*allow_unused=*/true);
+
     input_storage().tensor().requires_grad_(false);
   }
 }
@@ -412,7 +458,8 @@ Model::extract_second_derivatives(bool retain_graph, bool create_graph, bool all
                                              retain_graph,
                                              create_graph,
                                              allow_unused)[0];
-        second_derivative_storage().base_index_put({i, j, torch::indexing::Slice()}, jac_row);
+        if (jac_row.defined())
+          second_derivative_storage().base_index_put({i, j, torch::indexing::Slice()}, jac_row);
       }
 }
 } // namespace neml2

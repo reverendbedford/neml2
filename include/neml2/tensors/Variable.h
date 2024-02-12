@@ -61,6 +61,9 @@ public:
   /// Setup the variable's views into blocks of the storage
   virtual void setup_views(const VariableBase * other);
 
+  /// Reinitialize variable views
+  virtual void reinit_views();
+
   /// Arguments
   const std::vector<VariableName> & args() const { return _args; }
 
@@ -156,13 +159,20 @@ public:
                            const LabeledTensor3D * secderiv = nullptr) override
   {
     VariableBase::setup_views(value, deriv, secderiv);
-    if (value)
+    if (_value_storage)
       _value = T(_raw_value.view(sizes()), batch_dim());
   }
 
   virtual TorchShapeRef base_sizes() const override { return _base_sizes; }
 
   virtual TorchShapeRef sizes() const override { return _sizes; }
+
+  virtual void reinit_views() override
+  {
+    VariableBase::reinit_views();
+    if (_value_storage)
+      _value = T(_raw_value.view(sizes()), batch_dim());
+  }
 
   /// Suppressed constructor to prevent accidental dereferencing
   [[deprecated("Variable<T> must be assigned to references -- missing &")]] Variable(

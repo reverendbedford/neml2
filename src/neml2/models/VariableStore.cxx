@@ -66,6 +66,27 @@ VariableStore::output_view(const VariableName & name)
 }
 
 void
+VariableStore::send_input_to(const torch::TensorOptions & options)
+{
+  if (_object->host() == _object)
+    _in = _in.to(options);
+}
+
+void
+VariableStore::send_output_to(const torch::TensorOptions & options,
+                              bool out,
+                              bool dout_din,
+                              bool d2out_din2)
+{
+  if (out)
+    _out = _out.to(options);
+  if (dout_din)
+    _dout_din = _dout_din.to(options);
+  if (d2out_din2)
+    _d2out_din2 = _d2out_din2.to(options);
+}
+
+void
 VariableStore::cache(TorchShapeRef batch_shape)
 {
   for (auto && [name, var] : input_views())

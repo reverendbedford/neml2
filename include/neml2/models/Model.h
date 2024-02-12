@@ -64,6 +64,13 @@ public:
   bool implicit() const;
 
   /**
+   * @brief Recursively send this model and all the registered models to the target options.
+   *
+   * @param options The target options
+   */
+  virtual void to(const torch::TensorOptions & options) override;
+
+  /**
    * @brief Allocate storage and setup views for all the variables of this model and recursively all
    * of the sub-models.
    *
@@ -185,6 +192,12 @@ protected:
    */
   virtual void setup() override;
 
+  virtual void send_input_to(const torch::TensorOptions & options) override;
+  virtual void send_output_to(const torch::TensorOptions & options,
+                              bool out,
+                              bool dout_din,
+                              bool d2out_din2) override;
+
   using VariableStore::allocate_variables;
 
   /// Call VariableStore::allocate_variables recursively on all submodels
@@ -206,8 +219,13 @@ protected:
 
   using VariableStore::cache;
 
-  virtual void
-  cache(TorchShapeRef batch_shape, const torch::TensorOptions & options, int deriv_order);
+  virtual void cache(TorchShapeRef batch_shape) override;
+
+  /// Cache tensor options
+  virtual void cache(const torch::TensorOptions & options);
+
+  /// Cache derivative order
+  virtual void cache(int deriv_order);
 
   virtual void reinit_implicit_system(bool s, bool r, bool J) override;
 

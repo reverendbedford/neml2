@@ -55,7 +55,7 @@ SumModel<T>::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   if (out)
   {
-    auto sum = T::zeros_like(_to);
+    auto sum = T::zeros(_to.batch_sizes(), options());
     for (auto fv : _from)
       sum += *fv;
     _to = sum;
