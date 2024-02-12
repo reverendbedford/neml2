@@ -87,5 +87,14 @@ protected:
 
   /// Acceptance criteria for a step
   Real _accept_criteria;
+
+  /// Relative tolerance for scalar subproblem solve
+  Real _subproblem_rtol;
+
+  /// Absolute tolerance for the scalar subproblem solve
+  Real _subproblem_atol;
+
+  /// Maximum iterations for the scalar subproblem solve
+  unsigned int _subproblem_miter;
 };
 } // namespace neml2

@@ -41,6 +41,10 @@ TrustRegionNonlinearSolver::expected_options()
   options.set<Real>("reduce_factor") = 0.25;
   options.set<Real>("expand_factor") = 2.0;
   options.set<Real>("accept_criteria") = 0.1;
+  options.set<Real>("subproblem_rel_tol") = 1e-3;
+  options.set<Real>("subproblem_abs_tol") = 1e-3;
+  options.set<unsigned int>("subproblem_miter") = 5;
+
   return options;
 }
 
@@ -52,7 +56,10 @@ TrustRegionNonlinearSolver::TrustRegionNonlinearSolver(const OptionSet & options
     _expand_criteria(options.get<Real>("expand_criteria")),
     _reduce_factor(options.get<Real>("reduce_factor")),
     _expand_factor(options.get<Real>("expand_factor")),
-    _accept_criteria(options.get<Real>("accept_criteria"))
+    _accept_criteria(options.get<Real>("accept_criteria")),
+    _subproblem_rtol(options.get<Real>("subproblem_rel_tol")),
+    _subproblem_atol(options.get<Real>("subproblem_abs_tol")),
+    _subproblem_miter(options.get<unsigned int>("subproblem_miter"))
 {
 }
 
@@ -91,6 +98,7 @@ TrustRegionNonlinearSolver::solve(const NonlinearSystem & system, const BatchTen
                           _reduce_factor * delta.batch_index({rho < _reduce_criteria}));
     delta.batch_index_put({rho > _expand_criteria},
                           _expand_factor * delta.batch_index({rho > _expand_criteria}));
+    delta = torch::maximum(delta, torch::tensor(_delta_max, delta.dtype()));
 
     // Accept or reject the current step
     auto accept = (rho >= _accept_criteria);
@@ -163,7 +171,7 @@ TrustRegionNonlinearSolver::scalar_newton(
   // 2. nR / nR0 < rtol (success)
   // 3. i > miters (failure), but return anyway
   // Should these be different from the main system tolerances?
-  for (size_t i = 1; i < miters; i++)
+  for (size_t i = 1; i < _subproblem_miter; i++)
   {
     // Do some printing if verbose
     if (verbose)
@@ -172,7 +180,8 @@ TrustRegionNonlinearSolver::scalar_newton(
                 << torch::max(nR0).item<Real>() << std::endl;
 
     // Check for convergence
-    if (torch::all(torch::logical_or(nR < atol, nR / nR0 < rtol)).item<bool>())
+    if (torch::all(torch::logical_or(nR < _subproblem_atol, nR / nR0 < _subproblem_rtol))
+            .item<bool>())
       break;
 
     x -= R / J;

@@ -80,3 +80,72 @@ PowerTestSystem::guess(const BatchTensor & x) const
 {
   return BatchTensor::ones_like(x) * 2.0;
 }
+
+OptionSet
+RosenbrockTestSystem::expected_options()
+{
+  return TestNonlinearSystem::expected_options();
+}
+
+RosenbrockTestSystem::RosenbrockTestSystem(const OptionSet & options)
+  : TestNonlinearSystem(options)
+{
+}
+
+void
+RosenbrockTestSystem::assemble(const BatchTensor & x,
+                               BatchTensor * residual,
+                               BatchTensor * Jacobian) const
+{
+  if (residual)
+  {
+    *residual = BatchTensor::zeros_like(*residual);
+    auto xm = x.base_index({torch::indexing::Slice(1, -1)});
+    auto xm_m1 = x.base_index({torch::indexing::Slice(0, -2)});
+    auto xm_p1 = x.base_index({torch::indexing::Slice(2, torch::indexing::None)});
+
+    auto x0 = x.base_index({0});
+    auto x1 = x.base_index({1});
+
+    auto xn1 = x.base_index({-1});
+    auto xn2 = x.base_index({-2});
+
+    residual->base_index_put({torch::indexing::Slice(1, -1)},
+                             200 * (xm - math::pow(xm_m1, 2.0)) -
+                                 400 * (xm_p1 - math::pow(xm, 2.0)) * xm - 2 * (1 - xm));
+    residual->base_index_put({0}, -400 * x0 * (x1 - math::pow(x0, 2.0)) - 2 * (1 - x0));
+    residual->base_index_put({-1}, 200.0 * (xn1 - math::pow(xn2, 2.0)));
+  }
+
+  if (Jacobian)
+  {
+    auto s_x0n1 = x.base_index({torch::indexing::Slice(0, -1)});
+    auto s_x11 = x.base_index({torch::indexing::Slice(1, -1)});
+    auto s_x2 = x.base_index({torch::indexing::Slice(2, torch::indexing::None)});
+
+    auto x0 = x.base_index({0});
+    auto x1 = x.base_index({1});
+
+    auto d1 = -400 * s_x0n1;
+    auto H = torch::diag_embed(d1, -1) + torch::diag_embed(d1, 1);
+    auto diagonal = BatchTensor::zeros_like(x);
+    diagonal.base_index_put({0}, 1200 * math::pow(x0, 2.0) - 400.0 * x1 + 2);
+    diagonal.base_index_put({-1}, torch::tensor(200.0, x.dtype()));
+    diagonal.base_index_put({torch::indexing::Slice(1, -1)},
+                            202 + 1200 * math::pow(s_x11, 2.0) - 400 * s_x2);
+
+    *Jacobian = BatchTensor(torch::diag_embed(diagonal) + H, Jacobian->batch_dim());
+  }
+}
+
+BatchTensor
+RosenbrockTestSystem::exact_solution(const BatchTensor & x) const
+{
+  return BatchTensor::ones_like(x);
+}
+
+BatchTensor
+RosenbrockTestSystem::guess(const BatchTensor & x) const
+{
+  return BatchTensor::ones_like(x) * 0.75;
+}

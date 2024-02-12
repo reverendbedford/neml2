@@ -48,3 +48,16 @@ public:
   virtual neml2::BatchTensor exact_solution(const neml2::BatchTensor & x) const;
   virtual neml2::BatchTensor guess(const neml2::BatchTensor & x) const;
 };
+
+class RosenbrockTestSystem : public TestNonlinearSystem
+{
+public:
+  static neml2::OptionSet expected_options();
+  RosenbrockTestSystem(const neml2::OptionSet & options);
+
+  virtual void assemble(const neml2::BatchTensor & x,
+                        neml2::BatchTensor * residual,
+                        neml2::BatchTensor * Jacobian = nullptr) const;
+  virtual neml2::BatchTensor exact_solution(const neml2::BatchTensor & x) const;
+  virtual neml2::BatchTensor guess(const neml2::BatchTensor & x) const;
+};

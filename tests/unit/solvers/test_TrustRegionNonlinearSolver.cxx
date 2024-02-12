@@ -61,4 +61,15 @@ TEST_CASE("TrustRegionNonlinearSolver", "[solvers]")
 
     REQUIRE(torch::allclose(x_res, system.exact_solution(x0)));
   }
+
+  SECTION("solve something harder")
+  {
+    auto options = RosenbrockTestSystem::expected_options();
+    RosenbrockTestSystem system(options);
+    x0 = system.guess(x0);
+
+    auto x_res = solver.solve(system, x0);
+
+    REQUIRE(torch::allclose(x_res, system.exact_solution(x0)));
+  }
 }
