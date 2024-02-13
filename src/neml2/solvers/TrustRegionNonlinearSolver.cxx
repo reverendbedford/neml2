@@ -41,9 +41,9 @@ TrustRegionNonlinearSolver::expected_options()
   options.set<Real>("reduce_factor") = 0.25;
   options.set<Real>("expand_factor") = 2.0;
   options.set<Real>("accept_criteria") = 0.1;
-  options.set<Real>("subproblem_rel_tol") = 1e-3;
-  options.set<Real>("subproblem_abs_tol") = 1e-3;
-  options.set<unsigned int>("subproblem_miter") = 5;
+  options.set<Real>("subproblem_rel_tol") = 1e-6;
+  options.set<Real>("subproblem_abs_tol") = 1e-8;
+  options.set<unsigned int>("subproblem_miter") = 10;
 
   return options;
 }
@@ -90,8 +90,8 @@ TrustRegionNonlinearSolver::solve(const NonlinearSystem & system, const BatchTen
     auto xp = x + system.scale_direction(p);
     auto [Rp, Jp] = system.residual_and_Jacobian(xp);
     auto nRp = torch::linalg::vector_norm(Rp, 2, -1, false, c10::nullopt);
-    auto red_a = nR - nRp;
-    auto red_b = nR - TrustRegionNonlinearSolver::merit_function(p, R, J);
+    auto red_a = 0.5 * torch::pow(nR, 2.0) - 0.5 * torch::pow(nRp, 2.0);
+    auto red_b = TrustRegionNonlinearSolver::merit_function_reduction(p, R, J);
     auto rho = red_a / red_b;
 
     // Adjust the trust region
@@ -150,10 +150,11 @@ TrustRegionNonlinearSolver::solve_subproblem(const BatchTensor & R,
 
   // Now select between the two...
   return BatchTensor(
-      torch::where(
-          (torch::linalg::vector_norm(p_newton, 2, -1, false, c10::nullopt) <= delta).unsqueeze(-1),
-          p_newton,
-          p_trust),
+      torch::where((torch::linalg::vector_norm(p_newton, 2, -1, false, c10::nullopt) <=
+                    math::sqrt(2.0 * delta))
+                       .unsqueeze(-1),
+                   p_newton,
+                   p_trust),
       p_newton.batch_dim());
 }
 
@@ -215,17 +216,18 @@ TrustRegionNonlinearSolver::subproblem(const Scalar & s,
 {
   auto p = -TrustRegionNonlinearSolver::JJsJ_product(J, s, math::bmv(J.base_transpose(0, 1), R));
   auto np = BatchTensor(torch::linalg::vector_norm(p, 2, -1, false, c10::nullopt), p.batch_dim());
-  auto Ri = 1.0 / np - 1.0 / delta;
+  auto Ri = 1.0 / np - 1.0 / math::sqrt(2.0 * delta);
   auto Ji = 1.0 / math::pow(np, 3.0) * math::bvv(p, JJsJ_product(J, s, p));
   return {Ri, Ji};
 }
 
 Scalar
-TrustRegionNonlinearSolver::merit_function(const BatchTensor & p,
-                                           const BatchTensor & R,
-                                           const BatchTensor & J)
+TrustRegionNonlinearSolver::merit_function_reduction(const BatchTensor & p,
+                                                     const BatchTensor & R,
+                                                     const BatchTensor & J)
 {
-  return torch::linalg::vector_norm(R + math::bmv(J, p), 2, -1, false, c10::nullopt);
+  auto Jp = math::bmv(J, p);
+  return -math::bvv(R, Jp) - 0.5 * math::bvv(Jp, Jp);
 }
 
 } // namespace neml2

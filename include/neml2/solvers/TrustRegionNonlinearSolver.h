@@ -65,7 +65,8 @@ protected:
   subproblem(const Scalar & s, const BatchTensor & R, const BatchTensor & J, const Scalar & delta);
 
   /// A helper to calculate the reduction in the merit function
-  static Scalar merit_function(const BatchTensor & p, const BatchTensor & R, const BatchTensor & J);
+  static Scalar
+  merit_function_reduction(const BatchTensor & p, const BatchTensor & R, const BatchTensor & J);
 
   /// Initial size of the trust region
   Real _delta_0;
