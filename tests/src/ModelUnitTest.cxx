@@ -87,6 +87,7 @@ ModelUnitTest::ModelUnitTest(const OptionSet & options)
     _check_AD_derivs(options.get<bool>("check_AD_derivatives")),
     _check_param_derivs(options.get<bool>("check_parameter_derivatives")),
     _check_cuda(options.get<bool>("check_cuda")),
+    _deriv_order(-1),
     _out_rtol(options.get<Real>("output_rel_tol")),
     _out_atol(options.get<Real>("output_abs_tol")),
     _deriv_rtol(options.get<Real>("derivatives_rel_tol")),
@@ -111,11 +112,13 @@ ModelUnitTest::ModelUnitTest(const OptionSet & options)
   fill_vector<Rot>(_out, "output_rot_names", "output_rot_values");
 
   if (_check_2nd_deriv || _check_AD_2nd_deriv || _check_AD_derivs)
-    _model.reinit(_in, 2);
+    _deriv_order = 2;
   else if (_check_1st_deriv)
-    _model.reinit(_in, 1);
+    _deriv_order = 1;
   else
-    _model.reinit(_in, 0);
+    _deriv_order = 0;
+
+  _model.reinit(_in, _deriv_order);
 }
 
 bool
@@ -125,8 +128,8 @@ ModelUnitTest::run()
 
   if (_check_cuda && torch::cuda::is_available())
   {
-    _model.to(default_tensor_options().device(torch::kCUDA));
     _in = _in.to(default_tensor_options().device(torch::kCUDA));
+    _model.reinit(_in, _deriv_order);
     check_all();
   }
 

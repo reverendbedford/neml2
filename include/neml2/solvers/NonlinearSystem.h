@@ -80,8 +80,6 @@ public:
   const BatchTensor & Jacobian_view() const { return _autoscale ? _scaled_Jacobian : _Jacobian; }
 
 protected:
-  virtual void reinit_implicit_system(bool /*s*/, bool /*r*/, bool /*J*/) = 0;
-
   /**
    * @brief Compute the residual and Jacobian
    *

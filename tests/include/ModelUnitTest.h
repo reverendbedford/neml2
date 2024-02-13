@@ -82,6 +82,8 @@ private:
   const bool _check_param_derivs;
   const bool _check_cuda;
 
+  int _deriv_order;
+
   LabeledVector _in;
   LabeledVector _out;
 

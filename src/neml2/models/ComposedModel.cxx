@@ -56,6 +56,9 @@ ComposedModel::ComposedModel(const OptionSet & options)
   _dependency.unique_item_consumer() = false;
   _dependency.resolve();
 
+  // Sort the registered models by dependency resolution
+  _registered_models = _dependency.resolution();
+
   // Register input variables
   for (const auto & item : _dependency.inbound_items())
   {
@@ -85,17 +88,12 @@ ComposedModel::ComposedModel(const OptionSet & options)
 }
 
 void
-ComposedModel::to(const torch::TensorOptions & options)
+ComposedModel::allocate_variables(int deriv_order, bool options_changed)
 {
-  Model::to(options);
-  _din_din = _din_din.to(options);
-}
+  Model::allocate_variables(deriv_order, options_changed);
 
-void
-ComposedModel::allocate_variables(TorchShapeRef batch_shape, const torch::TensorOptions & options)
-{
-  Model::allocate_variables(batch_shape, options);
-  _din_din = LabeledMatrix::identity(batch_shape, input_axis(), options);
+  if (options_changed)
+    _din_din = LabeledMatrix::identity(batch_sizes(), input_axis(), options());
 }
 
 void
@@ -121,7 +119,7 @@ ComposedModel::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   clear_chain_rule_cache();
 
-  for (auto i : _dependency.resolution())
+  for (auto i : registered_models())
   {
     i->set_value(out, dout_din, d2out_din2);
 

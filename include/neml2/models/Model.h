@@ -64,13 +64,6 @@ public:
   bool implicit() const;
 
   /**
-   * @brief Recursively send this model and all the registered models to the target options.
-   *
-   * @param options The target options
-   */
-  virtual void to(const torch::TensorOptions & options) override;
-
-  /**
    * @brief Allocate storage and setup views for all the variables of this model and recursively all
    * of the sub-models.
    *
@@ -94,7 +87,7 @@ public:
    * @brief Allocate storage and setup views for all the variables of this model and recursively all
    * of the sub-models. See the other overload for detaile description.
    */
-  virtual void reinit(const BatchTensor & tensor, int deriv_order = 0);
+  virtual void reinit(const BatchTensor & tensor, int deriv_order);
 
   /// Whether derivative has been requested for this model
   bool requires_grad() const { return _deriv_order >= 1; }
@@ -192,24 +185,24 @@ protected:
    */
   virtual void setup() override;
 
-  virtual void send_input_to(const torch::TensorOptions & options) override;
-  virtual void send_output_to(const torch::TensorOptions & options,
-                              bool out,
-                              bool dout_din,
-                              bool d2out_din2) override;
-
   using VariableStore::allocate_variables;
 
   /// Call VariableStore::allocate_variables recursively on all submodels
-  virtual void allocate_variables(TorchShapeRef batch_shape, const torch::TensorOptions & options);
+  virtual void allocate_variables(int deriv_order, bool options_changed);
 
   /// Call VariableStore::setup_input_views recursively on all submodels
   virtual void setup_input_views() override;
   virtual void setup_submodel_input_views();
 
   /// Call VariableStore::setup_output_views recursively on all submodels
-  virtual void setup_output_views(bool out, bool dout_din = true, bool d2out_din2 = true) override;
-  virtual void setup_submodel_output_views(bool out, bool dout_din = true, bool d2out_din2 = true);
+  virtual void setup_output_views() override;
+  virtual void setup_submodel_output_views();
+
+  /// Call VariableStore::reinit_input_views recursively on all submodels
+  virtual void reinit_input_views() override;
+
+  /// Call VariableStore::reinit_output_views recursively on all submodels
+  virtual void reinit_output_views(bool out, bool dout_din = true, bool d2out_din2 = true) override;
 
   /// Call VariableStore::detach_and_zero recursively on all submodels
   virtual void detach_and_zero(bool out, bool dout_din = true, bool d2out_din2 = true) override;
@@ -223,11 +216,6 @@ protected:
 
   /// Cache tensor options
   virtual void cache(const torch::TensorOptions & options);
-
-  /// Cache derivative order
-  virtual void cache(int deriv_order);
-
-  virtual void reinit_implicit_system(bool s, bool r, bool J) override;
 
   /**
    * @brief Register a model that the current model may use during its evaluation.

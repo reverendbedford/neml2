@@ -140,31 +140,23 @@ public:
   VariableBase * output_view(const VariableName &);
 
 protected:
-  /**
-   * @brief Send the input storage to options
-   *
-   * @param options The target options
-   */
-  virtual void send_input_to(const torch::TensorOptions & options);
-
-  /**
-   * @brief Send the output (and derivative) storage to options
-   *
-   * @param options The target options
-   */
-  virtual void
-  send_output_to(const torch::TensorOptions & options, bool out, bool dout_din, bool d2out_din2);
-
   /// Cache the variable's batch shape
   virtual void cache(TorchShapeRef batch_shape);
 
   virtual void allocate_variables(TorchShapeRef batch_shape,
                                   const torch::TensorOptions & options,
-                                  int deriv_order);
+                                  bool in,
+                                  bool out,
+                                  bool dout_din,
+                                  bool d2out_din2);
 
   virtual void setup_input_views();
 
-  virtual void setup_output_views(bool out, bool dout_din = true, bool d2out_din2 = true);
+  virtual void setup_output_views();
+
+  virtual void reinit_input_views();
+
+  virtual void reinit_output_views(bool out, bool dout_din = true, bool d2out_din2 = true);
 
   virtual void detach_and_zero(bool out, bool dout_din = true, bool d2out_din2 = true);
 

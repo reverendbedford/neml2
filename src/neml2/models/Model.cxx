@@ -49,7 +49,7 @@ Model::Model(const OptionSet & options)
     _AD_1st_deriv(options.get<bool>("use_AD_first_derivative")),
     _AD_2nd_deriv(options.get<bool>("use_AD_second_derivative")),
     _options(default_tensor_options()),
-    _deriv_order(0),
+    _deriv_order(-1),
     _extra_deriv_order(options.get<int>("_extra_derivative_order"))
 {
   check_AD_limitation();
@@ -58,7 +58,7 @@ Model::Model(const OptionSet & options)
 void
 Model::setup()
 {
-  // Declare nonlinear parameters as input variable
+  // Declare nonlinear parameters as additional input variables
   for (const auto & [name, param] : nl_params())
     declare_input_variable(param->base_storage(), VariableName(param->name()));
 
@@ -82,28 +82,16 @@ Model::setup()
     _implicit = false;
   else
     _implicit = true;
+
+  // Setup variable views
+  setup_input_views();
+  setup_output_views();
 }
 
 bool
 Model::implicit() const
 {
   return _implicit;
-}
-
-void
-Model::to(const torch::TensorOptions & options)
-{
-  cache(options);
-
-  send_buffers_to(options);
-  send_parameters_to(options);
-
-  send_input_to(options);
-  send_output_to(options, true, true, true);
-
-  setup_input_views();
-  setup_output_views(true, true, true);
-  reinit_implicit_system(true, true, true);
 }
 
 void
@@ -114,25 +102,26 @@ Model::reinit(TorchShapeRef batch_shape,
 {
   neml_assert(host() == this, "This method should only be called on the host model.");
 
-  // Tensor options
-  const auto options = default_tensor_options().device(device).dtype(dtype);
+  // Re-cache batch shape if it has changed
+  const auto batch_shape_promoted = batch_shape.empty() ? TorchShape{1} : batch_shape.vec();
+  const bool batch_shape_changed = batch_shape_promoted != batch_sizes();
+  if (batch_shape_changed)
+    cache(batch_shape_promoted);
 
-  // Cache batch shape, tensor options, and derivative order
-  cache(batch_shape);
-  cache(options);
-  cache(deriv_order);
+  // Re-cache tensor options if they have changed
+  const bool device_changed = device != options().device();
+  const bool dtype_changed = dtype != options().dtype();
+  const bool options_changed = device_changed || dtype_changed;
+  if (options_changed)
+  {
+    const auto options = default_tensor_options().device(device).dtype(dtype);
+    cache(options);
+    send_buffers_to(options);
+    send_parameters_to(options);
+  }
 
-  // Send buffers and parameters
-  send_buffers_to(options);
-  send_parameters_to(options);
-
-  // Reallocate variable storage
-  allocate_variables(batch_shape, options);
-  setup_input_views();
-  setup_output_views(true, true, true);
-
-  // Setup views for residual and Jacobian
-  reinit_implicit_system(true, true, true);
+  // Reallocate variable storage when necessary
+  allocate_variables(deriv_order, batch_shape_changed || options_changed);
 }
 
 void
@@ -142,31 +131,35 @@ Model::reinit(const BatchTensor & tensor, int deriv_order)
 }
 
 void
-Model::send_input_to(const torch::TensorOptions & options)
+Model::allocate_variables(int deriv_order, bool options_changed)
 {
-  VariableStore::send_input_to(options);
-  for (auto submodel : registered_models())
-    submodel->send_input_to(options);
-}
+  const auto deriv_order_old = _deriv_order;
+  const auto deriv_order_new = deriv_order + _extra_deriv_order;
 
-void
-Model::send_output_to(const torch::TensorOptions & options,
-                      bool out,
-                      bool dout_din,
-                      bool d2out_din2)
-{
-  VariableStore::send_output_to(
-      options, out, dout_din && requires_grad(), d2out_din2 && requires_2nd_grad());
-  for (auto submodel : registered_models())
-    submodel->send_output_to(options, out, dout_din, d2out_din2);
-}
+  bool in = false;
+  bool out = false;
+  bool dout_din = false;
+  bool d2out_din2 = false;
 
-void
-Model::allocate_variables(TorchShapeRef batch_shape, const torch::TensorOptions & options)
-{
-  VariableStore::allocate_variables(batch_shape, options, _deriv_order);
+  if (options_changed)
+  {
+    in = true;
+    out = deriv_order_new >= 0;
+    dout_din = deriv_order_new >= 1;
+    d2out_din2 = deriv_order_new >= 2;
+  }
+  else
+  {
+    out = deriv_order_new >= 0 && deriv_order_old < 0;
+    dout_din = deriv_order_new >= 1 && deriv_order_old < 1;
+    d2out_din2 = deriv_order_new >= 2 && deriv_order_old < 2;
+  }
+
+  _deriv_order = deriv_order_new;
+  VariableStore::allocate_variables(batch_sizes(), options(), in, out, dout_din, d2out_din2);
+
   for (auto submodel : registered_models())
-    submodel->allocate_variables(batch_shape, options);
+    submodel->allocate_variables(_deriv_order, options_changed);
 }
 
 void
@@ -189,26 +182,50 @@ Model::setup_submodel_input_views()
 }
 
 void
-Model::setup_output_views(bool out, bool dout_din, bool d2out_din2)
+Model::setup_output_views()
 {
-  VariableStore::setup_output_views(
-      out, dout_din && requires_grad(), d2out_din2 && requires_2nd_grad());
-  setup_submodel_output_views(out, dout_din, d2out_din2);
+  VariableStore::setup_output_views();
+  setup_submodel_output_views();
 }
 
 void
-Model::setup_submodel_output_views(bool out, bool dout_din, bool d2out_din2)
+Model::setup_submodel_output_views()
 {
   for (auto submodel : registered_models())
   {
     for (auto && [name, var] : submodel->output_views())
-      var.setup_views(
-          out ? &submodel->output_storage() : nullptr,
-          dout_din && submodel->requires_grad() ? &submodel->derivative_storage() : nullptr,
-          d2out_din2 && submodel->requires_2nd_grad() ? &submodel->second_derivative_storage()
-                                                      : nullptr);
+      var.setup_views(&submodel->output_storage(),
+                      &submodel->derivative_storage(),
+                      &submodel->second_derivative_storage());
 
-    submodel->setup_submodel_output_views(out, dout_din, d2out_din2);
+    submodel->setup_submodel_output_views();
+  }
+}
+
+void
+Model::reinit_input_views()
+{
+  VariableStore::reinit_input_views();
+
+  if (implicit())
+  {
+    _ndof = host<Model>()->input_axis().storage_size("state");
+    _solution = host<Model>()->input_storage()("state");
+  }
+}
+
+void
+Model::reinit_output_views(bool out, bool dout_din, bool d2out_din2)
+{
+  VariableStore::reinit_output_views(
+      out, dout_din && requires_grad(), d2out_din2 && requires_2nd_grad());
+
+  if (implicit())
+  {
+    if (out)
+      _residual = output_storage()("residual");
+    if (dout_din && requires_grad())
+      _Jacobian = derivative_storage()("residual", "state");
   }
 }
 
@@ -217,7 +234,6 @@ Model::detach_and_zero(bool out, bool dout_din, bool d2out_din2)
 {
   VariableStore::detach_and_zero(
       out, dout_din && requires_grad(), d2out_din2 && requires_2nd_grad());
-  reinit_implicit_system(false, out, dout_din && requires_grad());
 
   for (auto submodel : registered_models())
     submodel->detach_and_zero(out, dout_din, d2out_din2);
@@ -241,36 +257,6 @@ Model::cache(const torch::TensorOptions & options)
 }
 
 void
-Model::cache(int deriv_order)
-{
-  _deriv_order = deriv_order + _extra_deriv_order;
-  for (auto submodel : registered_models())
-    submodel->cache(_deriv_order);
-}
-
-void
-Model::reinit_implicit_system(bool s, bool r, bool J)
-{
-  if (implicit())
-  {
-    if (s)
-    {
-      _ndof = host<Model>()->input_axis().storage_size("state");
-      _solution = host<Model>()->input_storage()("state");
-    }
-
-    if (r)
-      _residual = output_storage()("residual");
-
-    if (J)
-      _Jacobian = derivative_storage()("residual", "state");
-  }
-
-  for (auto submodel : registered_models())
-    submodel->reinit_implicit_system(s, r, J);
-}
-
-void
 Model::check_AD_limitation() const
 {
   if (_AD_1st_deriv && !_AD_2nd_deriv)
@@ -288,19 +274,14 @@ Model::use_AD_derivatives(bool first, bool second)
 void
 Model::set_input(const LabeledVector & in)
 {
-  neml_assert_dbg(in.batch_sizes() == batch_sizes(),
-                  "Incompatible batch shape between the model and the input. Did you call reinit? "
-                  "The model has cached batch shape: ",
-                  batch_sizes(),
-                  ", but the input has batch shape: ",
-                  in.batch_sizes());
+  neml_assert_batch_broadcastable(in, input_storage());
   neml_assert_dbg(in.axis(0) == input_axis(),
                   "Incompatible input axis. The model has input axis: \n",
                   input_axis(),
                   "The input vector has axis: \n",
                   in.axis(0));
 
-  input_storage().copy_(in);
+  input_storage().copy_(in.tensor().batch_expand(batch_sizes()));
 }
 
 LabeledVector

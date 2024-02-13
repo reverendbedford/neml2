@@ -44,13 +44,6 @@ public:
    */
   Data(const OptionSet & options);
 
-  /**
-   * @brief Recursively send this Data and all the registered Data to the target options.
-   *
-   * @param options The target options
-   */
-  virtual void to(const torch::TensorOptions & options);
-
   /// All the registered data objects
   const std::vector<Data *> & registered_data() const { return _registered_data; }
 

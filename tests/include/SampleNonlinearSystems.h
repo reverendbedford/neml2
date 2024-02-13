@@ -37,8 +37,6 @@ public:
   virtual BatchTensor exact_solution() const = 0;
 
 protected:
-  virtual void reinit_implicit_system(bool s, bool r, bool J) override;
-
   TorchShape _batch_sizes;
   torch::TensorOptions _options;
 };

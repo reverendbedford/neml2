@@ -36,11 +36,8 @@ public:
 
   ComposedModel(const OptionSet & options);
 
-  virtual void to(const torch::TensorOptions & options) override;
-
 protected:
-  virtual void allocate_variables(TorchShapeRef batch_shape,
-                                  const torch::TensorOptions & options) override;
+  virtual void allocate_variables(int deriv_order, bool options_changed) override;
 
   virtual void setup_submodel_input_views() override;
 

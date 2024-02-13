@@ -54,15 +54,15 @@ public:
   virtual void cache(TorchShapeRef batch_shape);
 
   /// Setup the variable's views into blocks of the storage
-  virtual void setup_views(const LabeledVector * value,
-                           const LabeledMatrix * deriv = nullptr,
-                           const LabeledTensor3D * secderiv = nullptr);
+  void setup_views(const LabeledVector * value,
+                   const LabeledMatrix * deriv = nullptr,
+                   const LabeledTensor3D * secderiv = nullptr);
 
   /// Setup the variable's views into blocks of the storage
-  virtual void setup_views(const VariableBase * other);
+  void setup_views(const VariableBase * other);
 
   /// Reinitialize variable views
-  virtual void reinit_views();
+  virtual void reinit_views(bool out, bool dout_din, bool d2out_din2);
 
   /// Arguments
   const std::vector<VariableName> & args() const { return _args; }
@@ -154,25 +154,16 @@ public:
   {
   }
 
-  virtual void setup_views(const LabeledVector * value,
-                           const LabeledMatrix * deriv = nullptr,
-                           const LabeledTensor3D * secderiv = nullptr) override
+  virtual void reinit_views(bool out, bool dout_din, bool d2out_din2) override
   {
-    VariableBase::setup_views(value, deriv, secderiv);
-    if (_value_storage)
+    VariableBase::reinit_views(out, dout_din, d2out_din2);
+    if (out)
       _value = T(_raw_value.view(sizes()), batch_dim());
   }
 
   virtual TorchShapeRef base_sizes() const override { return _base_sizes; }
 
   virtual TorchShapeRef sizes() const override { return _sizes; }
-
-  virtual void reinit_views() override
-  {
-    VariableBase::reinit_views();
-    if (_value_storage)
-      _value = T(_raw_value.view(sizes()), batch_dim());
-  }
 
   /// Suppressed constructor to prevent accidental dereferencing
   [[deprecated("Variable<T> must be assigned to references -- missing &")]] Variable(

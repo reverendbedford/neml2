@@ -43,18 +43,8 @@ TestNonlinearSystem::reinit(const BatchTensor & x)
 
   _ndof = x.base_sizes()[0];
   _solution = x.clone();
-
-  reinit_implicit_system(true, true, true);
-}
-
-void
-TestNonlinearSystem::reinit_implicit_system(bool /*s*/, bool r, bool J)
-{
-  if (r)
-    _residual = BatchTensor::zeros(_batch_sizes, {_ndof}, _options);
-
-  if (J)
-    _Jacobian = BatchTensor::zeros(_batch_sizes, {_ndof, _ndof}, _options);
+  _residual = BatchTensor::zeros(_batch_sizes, {_ndof}, _options);
+  _Jacobian = BatchTensor::zeros(_batch_sizes, {_ndof, _ndof}, _options);
 }
 
 PowerTestSystem::PowerTestSystem(const OptionSet & options)

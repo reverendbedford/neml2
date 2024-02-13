@@ -66,27 +66,6 @@ VariableStore::output_view(const VariableName & name)
 }
 
 void
-VariableStore::send_input_to(const torch::TensorOptions & options)
-{
-  if (_object->host() == _object)
-    _in = _in.to(options);
-}
-
-void
-VariableStore::send_output_to(const torch::TensorOptions & options,
-                              bool out,
-                              bool dout_din,
-                              bool d2out_din2)
-{
-  if (out)
-    _out = _out.to(options);
-  if (dout_din)
-    _dout_din = _dout_din.to(options);
-  if (d2out_din2)
-    _d2out_din2 = _d2out_din2.to(options);
-}
-
-void
 VariableStore::cache(TorchShapeRef batch_shape)
 {
   for (auto && [name, var] : input_views())
@@ -98,26 +77,30 @@ VariableStore::cache(TorchShapeRef batch_shape)
 void
 VariableStore::allocate_variables(TorchShapeRef batch_shape,
                                   const torch::TensorOptions & options,
-                                  int deriv_order)
+                                  bool in,
+                                  bool out,
+                                  bool dout_din,
+                                  bool d2out_din2)
 {
   // Allocate input storage only if this is a host model
-  if (_object->host() == _object)
+  if (in && _object->host() == _object)
     _in = LabeledVector::zeros(batch_shape, {&input_axis()}, options);
 
-  neml_assert_dbg(deriv_order >= 0 && deriv_order <= 2,
-                  "Expect derivative order from [0, 2], got ",
-                  deriv_order);
-
   // Allocate output storage
-  if (deriv_order >= 0)
+  if (out)
     _out = LabeledVector::zeros(batch_shape, {&output_axis()}, options);
 
-  if (deriv_order >= 1)
+  if (dout_din)
     _dout_din = LabeledMatrix::zeros(batch_shape, {&output_axis(), &input_axis()}, options);
 
-  if (deriv_order >= 2)
+  if (d2out_din2)
     _d2out_din2 = LabeledTensor3D::zeros(
         batch_shape, {&output_axis(), &input_axis(), &input_axis()}, options);
+
+  if (in)
+    reinit_input_views();
+
+  reinit_output_views(out, dout_din, d2out_din2);
 }
 
 void
@@ -128,12 +111,24 @@ VariableStore::setup_input_views()
 }
 
 void
-VariableStore::setup_output_views(bool out, bool dout_din, bool d2out_din2)
+VariableStore::setup_output_views()
 {
   for (auto && [name, var] : output_views())
-    var.setup_views(out ? &_out : nullptr,
-                    dout_din ? &_dout_din : nullptr,
-                    d2out_din2 ? &_d2out_din2 : nullptr);
+    var.setup_views(&_out, &_dout_din, &_d2out_din2);
+}
+
+void
+VariableStore::reinit_input_views()
+{
+  for (auto && [name, var] : input_views())
+    var.reinit_views(true, false, false);
+}
+
+void
+VariableStore::reinit_output_views(bool out, bool dout_din, bool d2out_din2)
+{
+  for (auto && [name, var] : output_views())
+    var.reinit_views(out, dout_din, d2out_din2);
 }
 
 void
@@ -174,6 +169,6 @@ VariableStore::detach_and_zero(bool out, bool dout_din, bool d2out_din2)
   }
 
   // If the storage is detached in-place, we need to reconfigure all the views.
-  setup_output_views(out_detached, dout_din_detached, d2out_din2_detached);
+  reinit_output_views(out_detached, dout_din_detached, d2out_din2_detached);
 }
 } // namespace neml2

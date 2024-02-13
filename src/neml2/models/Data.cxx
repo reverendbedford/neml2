@@ -38,12 +38,4 @@ Data::Data(const OptionSet & options)
     BufferStore(options, this)
 {
 }
-
-void
-Data::to(const torch::TensorOptions & options)
-{
-  neml_assert(host() == this, "This method should only be called on the host model.");
-
-  send_buffers_to(options);
-}
 }
