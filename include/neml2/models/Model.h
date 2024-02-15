@@ -60,8 +60,8 @@ public:
    */
   Model(const OptionSet & options);
 
-  /// Is this model an implicit system?
-  bool implicit() const;
+  /// Whether this model defines one or more nonlinear equations to be solved
+  virtual bool is_nonlinear_system() const { return _nonlinear_system; }
 
   /**
    * @brief Allocate storage and setup views for all the variables of this model and recursively all
@@ -112,13 +112,6 @@ public:
 
   /// The variables that this model defines as part of its output
   virtual const std::set<VariableName> provided_items() const override;
-
-  /**
-   * The additional variables that this model should provide. Typically these variables are not
-   * directly computed by this model, instead they come from other information that this model
-   * _knows_, e.g., directly from the input variables.
-   */
-  const std::vector<VariableName> & additional_outputs() const { return _additional_outputs; }
 
   /**
    * Validate the currently requested AD settings.
@@ -225,15 +218,20 @@ protected:
    *
    * @param model The model to register
    * @param extra_deriv_order The additional derivative order required for the registered-submodel
+   * @param nonlinear Set to true if the registered model defines a nonlinear system to be solved
    * @param merge_input Whether to merge the input of the registered model into *this* model's
    * input.
    */
   template <typename T, typename = typename std::enable_if_t<std::is_base_of_v<Model, T>>>
-  T & register_model(const std::string & name, int extra_deriv_order = 0, bool merge_input = true)
+  T & register_model(const std::string & name,
+                     int extra_deriv_order = 0,
+                     bool nonlinear = false,
+                     bool merge_input = true)
   {
     OptionSet extra_opts;
     extra_opts.set<NEML2Object *>("_host") = host();
     extra_opts.set<int>("_extra_derivative_order") = extra_deriv_order;
+    extra_opts.set<bool>("_nonlinear_system") = nonlinear;
 
     auto model = Factory::get_object_ptr<Model>("Models", name, extra_opts, /*force_create=*/true);
 
@@ -250,16 +248,11 @@ protected:
   /// Models *this* model may use during its evaluation
   std::vector<Model *> _registered_models;
 
-  std::vector<VariableName> _additional_outputs;
-
   /// Whether to use AD to compute 1st derivatives
   bool _AD_1st_deriv;
 
   /// Whether to use AD to compute 2nd derivatives
   bool _AD_2nd_deriv;
-
-  /// Whether this is an implicit system
-  bool _implicit;
 
 private:
   /// Helper method to extract derivatives after back propagation
@@ -294,5 +287,8 @@ private:
    * the sub-model's derivatives. Normality is an example of such model.
    */
   const int _extra_deriv_order;
+
+  /// Whether this is a nonlinear system
+  bool _nonlinear_system;
 };
 } // namespace neml2

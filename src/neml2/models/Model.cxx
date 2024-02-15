@@ -33,10 +33,10 @@ Model::expected_options()
 {
   OptionSet options = Data::expected_options();
   options += NonlinearSystem::expected_options();
-  options.set<std::vector<VariableName>>("additional_outputs");
   options.set<bool>("use_AD_first_derivative") = false;
   options.set<bool>("use_AD_second_derivative") = false;
   options.set<int>("_extra_derivative_order") = 0;
+  options.set<bool>("_nonlinear_system") = false;
   return options;
 }
 
@@ -45,12 +45,12 @@ Model::Model(const OptionSet & options)
     ParameterStore(options, this),
     VariableStore(options, this),
     NonlinearSystem(options),
-    _additional_outputs(options.get<std::vector<VariableName>>("additional_outputs")),
     _AD_1st_deriv(options.get<bool>("use_AD_first_derivative")),
     _AD_2nd_deriv(options.get<bool>("use_AD_second_derivative")),
     _options(default_tensor_options()),
     _deriv_order(-1),
-    _extra_deriv_order(options.get<int>("_extra_derivative_order"))
+    _extra_deriv_order(options.get<int>("_extra_derivative_order")),
+    _nonlinear_system(options.get<bool>("_nonlinear_system"))
 {
   check_AD_limitation();
 }
@@ -73,25 +73,9 @@ Model::setup()
       y_var.add_arg(x_var);
   }
 
-  // Determine if this is an implicit system
-  if (!input_axis().has_subaxis("state"))
-    _implicit = false;
-  else if (!output_axis().has_subaxis("residual"))
-    _implicit = false;
-  else if (input_axis().subaxis("state") != output_axis().subaxis("residual"))
-    _implicit = false;
-  else
-    _implicit = true;
-
   // Setup variable views
   setup_input_views();
   setup_output_views();
-}
-
-bool
-Model::implicit() const
-{
-  return _implicit;
 }
 
 void
@@ -207,7 +191,7 @@ Model::reinit_input_views()
 {
   VariableStore::reinit_input_views();
 
-  if (implicit())
+  if (is_nonlinear_system())
   {
     _ndof = host<Model>()->input_axis().storage_size("state");
     _solution = host<Model>()->input_storage()("state");
@@ -220,7 +204,7 @@ Model::reinit_output_views(bool out, bool dout_din, bool d2out_din2)
   VariableStore::reinit_output_views(
       out, dout_din && requires_grad(), d2out_din2 && requires_2nd_grad());
 
-  if (implicit())
+  if (is_nonlinear_system())
   {
     if (out)
       _residual = output_storage()("residual");

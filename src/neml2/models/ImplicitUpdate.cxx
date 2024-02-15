@@ -41,9 +41,24 @@ ImplicitUpdate::expected_options()
 ImplicitUpdate::ImplicitUpdate(const OptionSet & options)
   : Model(options),
     _model(register_model<Model>(options.get<std::string>("implicit_model"),
-                                 requires_grad() ? /*extra_deriv_order=*/0 : 1)),
+                                 /*extra_deriv_order=*/requires_grad() ? 0 : 1,
+                                 /*nonlinear=*/true)),
     _solver(Factory::get_object<NonlinearSolver>("Solvers", options.get<std::string>("solver")))
 {
+  // Make sure the nonlinear system is square
+  neml_assert(_model.input_axis().has_subaxis("state"),
+              "The implicit model's input should have a state subaxis. The input axis is\n",
+              _model.input_axis());
+  neml_assert(_model.output_axis().has_subaxis("residual"),
+              "The implicit model's output should have a residual subaxis. The output axis is\n",
+              _model.output_axis());
+  neml_assert(_model.input_axis().subaxis("state") == _model.output_axis().subaxis("residual"),
+              "The implicit model should have conformal trial state and residual. The input state "
+              "subaxis is\n",
+              _model.input_axis().subaxis("state"),
+              "\nThe output residual subaxis is\n",
+              _model.output_axis().subaxis("residual"));
+
   // Take care of dependency registration:
   //   1. Input variables of the "implicit_model" should be *consumed* by *this* model. This has
   //      already been taken care of by the `register_model` call.

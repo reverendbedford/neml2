@@ -42,7 +42,7 @@ ComposedModel::ComposedModel(const OptionSet & options)
     _additional_outputs(options.get<std::vector<VariableName>>("additional_outputs"))
 {
   for (const auto & model_name : options.get<std::vector<std::string>>("models"))
-    register_model<Model>(model_name, 0, /*merge_input=*/false);
+    register_model<Model>(model_name, 0, /*nonlinear=*/false, /*merge_input=*/false);
 
   // Add registered models as nodes in the dependency resolver
   for (auto submodel : registered_models())
