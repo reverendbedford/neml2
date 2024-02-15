@@ -105,6 +105,7 @@
     linesearch_cutback = 2.0
     linesearch_stopping_criteria = 1.0e-3
     max_linesearch_iterations = 5
+    rel_tol = 1e-4
   []
 []
 
