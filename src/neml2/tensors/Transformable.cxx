@@ -50,7 +50,8 @@ proper_rotation_transform(const Rot & rot)
 R2
 improper_rotation_transform(const Rot & rot)
 {
-  return rot.euler_rodrigues() * (R2::identity(rot.options()) - 2 * rot.outer(rot));
+  Vec v = rot / rot.norm();
+  return rot.euler_rodrigues() * (R2::identity(rot.options()) - 2 * v.outer(v));
 }
 
 R2

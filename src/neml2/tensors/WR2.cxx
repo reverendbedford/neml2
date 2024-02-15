@@ -34,10 +34,7 @@
 
 namespace neml2
 {
-WR2::WR2(const R2 & T)
-  : WR2(math::full_to_skew((T - T.transpose()) / 2.0))
-{
-}
+WR2::WR2(const R2 & T) : WR2(math::full_to_skew((T - T.transpose()) / 2.0)) {}
 
 WR2
 WR2::fill(const Real & a21,
@@ -64,56 +61,49 @@ WR2::operator()(TorchSize i, TorchSize j) const
 Rot
 WR2::exp() const
 {
-  // There are singularities at norm() = 0 and pi
+  // There are singularities at norm() = 0 and 2*pi
   // To the third order near zero this reduces to
-  // *this * (1/2 + norm^2 / 24)
+  // *this * (1/4 + 5 * norm^4 / 96)
   // We use this formula for small rotations
 
   // The other singularity is essentially unavoidable
 
   // This is what determines which region to sit in
-  auto norm = this->norm();
+  auto norm2 = this->norm_sq();
 
   // So we want the result to be as accurate as machine precision
   auto thresh = std::pow(math::eps, 1.0 / 3.0);
 
-  // Setup with the stable Taylor series
-  Rot res = (*this) * (0.5 + norm * norm / 24.0);
+  // Taylor series
+  Rot res_taylor = (*this) * (0.25 + 5.0 * norm2 * norm2 / 96.0);
 
-  // Figure out where we are relative to the cutoff
-  auto gt = norm > thresh;
+  // Actual definition
+  Rot res_actual = (*this) * Scalar(torch::tan(norm2 / 2.0) /
+                                    (2.0 * torch::Tensor(norm2) * torch::cos(norm2 / 2)));
 
-  // Insert the true expression
-  res.index_put_({gt},
-                 torch::Tensor(this->index({gt})) *
-                     (torch::tan(norm.index({gt}) / 2.0) / norm.index({gt})).unsqueeze(-1));
-
-  return res;
+  return torch::where((norm2 > thresh).unsqueeze(-1), res_actual, res_taylor);
 }
 
 R2
 WR2::dexp() const
 {
   // Same singularities as WR2::exp()
-  auto norm = this->norm();
+  auto norm2 = this->norm_sq();
   auto thresh = std::pow(math::eps, 1.0 / 3.0);
-  auto gt = norm > thresh;
-  auto gt_norm = norm.index({gt});
 
-  // Stuff that goes with id, filled with the Taylor part
-  auto id_factor = 0.5 + norm * norm / 24.0;
-  // and backfilled with the true expression values
-  id_factor.index_put_({gt}, Scalar(torch::tan(gt_norm / 2.0)) / gt_norm);
+  R2 res_taylor = 5.0 * norm2 / 24.0 * this->outer(*this) +
+                  (0.25 + 5.0 * norm2 * norm2 / 96.0) * R2::identity(options());
 
-  // Stuff that goes like the outer product, filled with the Taylor part
-  auto outer_factor = Scalar::zeros_like(norm) + 1.0 / 12.0;
-  // and backfilled withthe true expression values
-  outer_factor.index_put_(
-      {gt},
-      Scalar((gt_norm - torch::sin(gt_norm)) / (gt_norm * gt_norm * (1.0 + torch::cos(gt_norm)))) /
-          gt_norm);
+  auto f1 = Scalar(torch::tan(norm2 / 2.0) / (2.0 * torch::Tensor(norm2) * torch::cos(norm2 / 2)));
+  auto f2 =
+      Scalar(torch::Tensor(norm2) * torch::pow(1.0 / torch::cos(norm2 / 2), 3.0) +
+             torch::tan(norm2 / 2.0) * (torch::Tensor(norm2) * torch::tan(norm2 / 2.0) - 2.0) *
+                 (1.0 / torch::cos(norm2 / 2.0))) /
+      Scalar(2 * torch::pow(norm2, 2.0));
 
-  return R2::identity(this->options()) * id_factor + this->outer(*this) * outer_factor;
+  R2 res_actual = f1 * R2::identity(options()) + f2 * this->outer(*this);
+
+  return torch::where((norm2 > thresh).unsqueeze(-1).unsqueeze(-1), res_actual, res_taylor);
 }
 
 } // namespace neml2

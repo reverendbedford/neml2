@@ -148,7 +148,7 @@ TEST_CASE("R2", "[tensors]")
 
     SECTION("rotate")
     {
-      auto r = Rot::fill(1.2496889, 1.62862628, 7.59575411);
+      auto r = Rot::fill(0.13991834, 0.18234513, 0.85043991, DTO);
       auto T = R2::fill(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0);
       auto Tp = R2::fill(-1.02332,
                          -0.0592151,
@@ -172,7 +172,7 @@ TEST_CASE("R2", "[tensors]")
 
     SECTION("drotate")
     {
-      auto r = Rot::fill(1.2496889, 1.62862628, 7.59575411);
+      auto r = Rot::fill(0.13991834, 0.18234513, 0.85043991, DTO);
       auto T = R2::fill(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0);
       auto Tp = R2::fill(-1.02332,
                          -0.0592151,
