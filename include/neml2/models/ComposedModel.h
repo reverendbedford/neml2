@@ -39,6 +39,13 @@ public:
 protected:
   virtual void allocate_variables(int deriv_order, bool options_changed) override;
 
+  /**
+   * Setup each of the sub-model's input views. Note the logic is different from the base class's.
+   * The sub-models in a composed model should not all view into the host's input storage. Instead,
+   * the non-inbound input variables should view into dependent models' output storage. This avoids
+   * all the copying when passing a sub-model's output as another sub-model's input.
+   *
+   */
   virtual void setup_submodel_input_views() override;
 
   void set_value(bool, bool, bool) override;

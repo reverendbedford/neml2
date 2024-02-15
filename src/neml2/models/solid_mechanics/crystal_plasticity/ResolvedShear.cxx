@@ -39,7 +39,7 @@ ResolvedShear::expected_options()
   options.set<VariableName>("resolved_shears") =
       VariableName("state", "internal", "resolved_shears");
   options.set<VariableName>("stress") = VariableName("state", "internal", "cauchy_stress");
-  options.set<VariableName>("orientation") = VariableName("state", "orientation_ER");
+  options.set<VariableName>("orientation") = VariableName("state", "orientation_matrix");
   options.set<std::string>("crystal_geometry_name") = "crystal_geometry";
   return options;
 }

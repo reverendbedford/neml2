@@ -85,7 +85,7 @@ public:
 
   /**
    * @brief Allocate storage and setup views for all the variables of this model and recursively all
-   * of the sub-models. See the other overload for detaile description.
+   * of the sub-models. See the other overload for detailed description.
    */
   virtual void reinit(const BatchTensor & tensor, int deriv_order);
 

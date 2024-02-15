@@ -52,6 +52,14 @@ mandel_factor(TorchSize i)
   return i < 3 ? 1.0 : sqrt2;
 }
 
+/**
+ * @brief A helper class to hold static data of type torch::Tensor
+ *
+ * This class exists because torch::Tensor cannot be declared as constexpr nor as static data in the
+ * global scope. The former is obvious. The latter is because at the time static variables are
+ * initialized, some torch data structures have not been properly initialized yet.
+ *
+ */
 struct ConstantTensors
 {
   ConstantTensors();

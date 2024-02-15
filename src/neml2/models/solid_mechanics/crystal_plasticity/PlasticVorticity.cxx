@@ -38,7 +38,7 @@ PlasticVorticity::expected_options()
   OptionSet options = Model::expected_options();
   options.set<VariableName>("plastic_vorticity") =
       VariableName("state", "internal", "plastic_vorticity");
-  options.set<VariableName>("orientation") = VariableName("state", "orientation_ER");
+  options.set<VariableName>("orientation") = VariableName("state", "orientation_matrix");
   options.set<VariableName>("slip_rates") = VariableName("state", "internal", "slip_rates");
   options.set<std::string>("crystal_geometry_name") = "crystal_geometry";
   return options;

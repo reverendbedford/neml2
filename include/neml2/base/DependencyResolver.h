@@ -32,6 +32,14 @@
 
 namespace neml2
 {
+/**
+ * @brief The DependencyResolver identifies and resolves the dependencies among a set of objects
+ * derived from DependencyDefinition.
+ *
+ * @tparam Node The type of the node in the dependency graph, i.e. if this resolver is used to
+ * figure out dependencies among Models, this template parameter should be Model.
+ * @tparam ItemType The type of the consumed/provided items of each node
+ */
 template <typename Node, typename ItemType>
 class DependencyResolver
 {

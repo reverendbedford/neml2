@@ -26,13 +26,23 @@
 
 #include <set>
 
+namespace neml2
+{
+/**
+ * Defines what this object consume and provide. The consumed and provided items will later
+ * be used in DependencyResolver to identify dependencies among a set of objects. In short, this
+ * object will _depend_ on whoever provides any of this object's consumed items, and vice versa.
+ *
+ * @tparam T The type of the consumed/provided items
+ */
 template <typename T>
 class DependencyDefinition
 {
 public:
-  /// What this object depends on
+  /// What this object consumes
   virtual const std::set<T> consumed_items() const = 0;
 
   /// What this object provides
   virtual const std::set<T> provided_items() const = 0;
 };
+} // namespace neml2

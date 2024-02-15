@@ -40,7 +40,7 @@ PlasticDeformationRate::expected_options()
   options.set<VariableName>("plastic_deformation_rate") =
       VariableName("state", "internal", "plastic_deformation_rate");
 
-  options.set<VariableName>("orientation") = VariableName("state", "orientation_ER");
+  options.set<VariableName>("orientation") = VariableName("state", "orientation_matrix");
 
   options.set<VariableName>("slip_rates") = VariableName("state", "internal", "slip_rates");
 

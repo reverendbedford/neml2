@@ -96,7 +96,7 @@
   [euler_rodrigues]
     type = RotationMatrix
     from = 'state/orientation'
-    to = 'state/orientation_ER'
+    to = 'state/orientation_matrix'
   []
   [elasticity]
     type = LinearIsotropicElasticity
