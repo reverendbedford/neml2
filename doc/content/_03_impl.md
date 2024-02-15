@@ -147,7 +147,7 @@ The above example represents an axis of size 15. This axis has 4 items: `a`, `b`
 
 Duplicate labels are *not* allowed on the same level of the axis, e.g. "a", "b", "c", and "sub" share the same level and so must be different. However, items on different levels of an axis can share the same label, e.g., "a" on the sub-axis "sub" has the same label as "a" on the main axis. In NEML2 convention, item names are always fully qualified, and a sub-axis is prefixed with a left slash, e.g. item "b" on the sub-axis "sub" can be denoted as "sub/b" on the main axis.
 
-> A label cannot contain: white spaces, quotes, left slash (`/`), or new line. 
+> A label cannot contain: white spaces, quotes, left slash (`/`), or new line.
 
 > Due to performance considerations, a `LabeledAxis` can only be modified, e.g., adding/removing variables and sub-axis, at the time a model is constructed. After the model construction phase, the `LabeledAxis` associated with that model can no longer be modified over the entire course of the simulation.
 
@@ -185,7 +185,7 @@ Translating the above mathematical definition into NEML2 is straightforward.
 - [declare_output_variable](@ref neml2::Model::declare_output_variable) declares an output variable \f$y_i\f$ in the output space \f$\mathbb{R}^n\f$.
 - [set_value](@ref neml2::Model::set_value) is a method defining the forward operator \f$f\f$.
 
-Both `declare_input_variable` and `declare_output_variable` are templated on the variable type -- recall that only a variable of the NEML2 primitive tensor type can be registered. Furthermore, both calls return a convenient accessor of type [LabeledAxisAccessor](@ref neml2::LabeledAxisAccessor) which can be later used to retrieve/modify the labeled view of the input/output vector.
+Both `declare_input_variable` and `declare_output_variable` are templated on the variable type -- recall that only a variable of the NEML2 primitive tensor type can be registered. Furthermore, both calls return a convenient accessor of type [VariableName](@ref neml2::VariableName) which can be later used to retrieve/modify the labeled view of the input/output vector.
 
 > Declaration of the variables don't immediately set up the layout of the input/output `LabeledAxis`. The method [setup](@ref neml2::Model::setup) should be explicitly called in order to set up the memory layout of the `LabeledAxis`s. **Note that [setup](@ref neml2::Model::setup) must be called after all the variables have been added, and before the forward operator of the `Model` can be used.**
 

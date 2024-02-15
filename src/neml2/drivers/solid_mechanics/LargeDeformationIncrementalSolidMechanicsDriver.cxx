@@ -24,8 +24,6 @@
 
 #include "neml2/drivers/solid_mechanics/LargeDeformationIncrementalSolidMechanicsDriver.h"
 
-using vecstr = std::vector<std::string>;
-
 namespace neml2
 {
 register_NEML2_object(LargeDeformationIncrementalSolidMechanicsDriver);
@@ -35,12 +33,12 @@ LargeDeformationIncrementalSolidMechanicsDriver::expected_options()
 {
   OptionSet options = TransientDriver::expected_options();
   options.set<std::string>("control") = "STRAIN";
-  options.set<LabeledAxisAccessor>("deformation_rate") = vecstr{"forces", "deformation_rate"};
-  options.set<LabeledAxisAccessor>("cauchy_stress_rate") = vecstr{"forces", "cauchy_stress_rate"};
+  options.set<VariableName>("deformation_rate") = VariableName("forces", "deformation_rate");
+  options.set<VariableName>("cauchy_stress_rate") = VariableName("forces", "cauchy_stress_rate");
   options.set<CrossRef<torch::Tensor>>("prescribed_deformation_rate");
   options.set<CrossRef<torch::Tensor>>("prescribed_cauchy_stress_rate");
 
-  options.set<LabeledAxisAccessor>("vorticity") = vecstr{"forces", "vorticity"};
+  options.set<VariableName>("vorticity") = VariableName("forces", "vorticity");
   options.set<bool>("provide_vorticity") = false;
   options.set<CrossRef<torch::Tensor>>("prescribed_vorticity") = "vorticity";
 
@@ -51,17 +49,17 @@ LargeDeformationIncrementalSolidMechanicsDriver::LargeDeformationIncrementalSoli
     const OptionSet & options)
   : TransientDriver(options),
     _control(options.get<std::string>("control")),
-    _vorticity_name(options.get<LabeledAxisAccessor>("vorticity"))
+    _vorticity_name(options.get<VariableName>("vorticity"))
 {
   if (_control == "STRAIN")
   {
     _driving_force = SR2(options.get<CrossRef<torch::Tensor>>("prescribed_deformation_rate"), 2);
-    _driving_force_name = options.get<LabeledAxisAccessor>("deformation_rate");
+    _driving_force_name = options.get<VariableName>("deformation_rate");
   }
   else if (_control == "STRESS")
   {
     _driving_force = SR2(options.get<CrossRef<torch::Tensor>>("prescribed_cauchy_stress_rate"), 2);
-    _driving_force_name = options.get<LabeledAxisAccessor>("cauchy_stress_rate");
+    _driving_force_name = options.get<VariableName>("cauchy_stress_rate");
   }
   else
     // LCOV_EXCL_START
@@ -73,8 +71,8 @@ LargeDeformationIncrementalSolidMechanicsDriver::LargeDeformationIncrementalSoli
   else
     _vorticity = WR2::zeros(_driving_force.batch_sizes());
 
-  _driving_force = _driving_force.to(_options);
-  _vorticity = _vorticity.to(_options);
+  _driving_force = _driving_force.to(_device);
+  _vorticity = _vorticity.to(_device);
 
   check_integrity();
 }

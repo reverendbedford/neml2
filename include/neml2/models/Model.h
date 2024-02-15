@@ -24,9 +24,11 @@
 
 #pragma once
 
+#include "neml2/base/DependencyDefinition.h"
+
 #include "neml2/models/Data.h"
 #include "neml2/models/ParameterStore.h"
-#include "neml2/models/LabeledAxisInterface.h"
+#include "neml2/models/VariableStore.h"
 #include "neml2/solvers/NonlinearSystem.h"
 
 #include "neml2/tensors/LabeledVector.h"
@@ -44,8 +46,9 @@ namespace neml2
  */
 class Model : public Data,
               public ParameterStore,
-              public LabeledAxisInterface,
-              public NonlinearSystem
+              public VariableStore,
+              public NonlinearSystem,
+              public DependencyDefinition<VariableName>
 {
 public:
   static OptionSet expected_options();
@@ -57,54 +60,58 @@ public:
    */
   Model(const OptionSet & options);
 
-  /**
-   * @brief Recursively convert this model and its sub-models to use the target options.
-   *
-   * What this does behind the scenes is just sending all the model parameters to the target
-   * options. This operation is recursively applied on of the sub-models.
-   *
-   * @param options The target options
-   */
-  virtual void to(const torch::TensorOptions & options) override;
-
-  /// Definition of the input variables
-  /// @{
-  LabeledAxis & input() { return _input; }
-  const LabeledAxis & input() const { return _input; }
-  /// @}
-
-  /// Which variables this object defines as output
-  /// @{
-  LabeledAxis & output() { return _output; }
-  const LabeledAxis & output() const { return _output; }
-  /// @}
-
-  /// Whether this model is implicit
-  virtual bool implicit() const { return false; }
+  /// Whether this model defines one or more nonlinear equations to be solved
+  virtual bool is_nonlinear_system() const { return _nonlinear_system; }
 
   /**
-   * @brief Get the named parameters
+   * @brief Allocate storage and setup views for all the variables of this model and recursively all
+   * of the sub-models.
    *
-   * @param recurse Whether to recursively retrieve parameters from sub-models.
-   * @return A map from parameter name to parameter value
+   * This method must be called before any call to the forward operators, e.g., value, dvalue,
+   * value_and_dvalue, etc.
+   *
+   * IMPORTANT: If the batch shape of this model changes, this method must be called again to
+   * re-allocate the storage and views.
+   *
+   * @param batch_shape Batch shape of the input, output and derivatives
+   * @param deriv_order Order of derivative required for this model
+   * @param device Device on which the model will be evaluated
+   * @param dtype Number type, e.g., torch::kFloat32, torch::kFloat64, etc
    */
-  std::map<std::string, BatchTensor> named_parameters(bool recurse) const;
+  virtual void reinit(TorchShapeRef batch_shape,
+                      int deriv_order = 0,
+                      const torch::Device & device = torch::kCPU,
+                      const torch::Dtype & dtype = TORCH_DTYPE);
+
+  /**
+   * @brief Allocate storage and setup views for all the variables of this model and recursively all
+   * of the sub-models. See the other overload for detailed description.
+   */
+  virtual void reinit(const BatchTensor & tensor, int deriv_order);
+
+  /// Whether derivative has been requested for this model
+  bool requires_grad() const { return _deriv_order >= 1; }
+
+  /// Whether 2nd derivative has been requested for this model
+  bool requires_2nd_grad() const { return _deriv_order >= 2; }
+
+  /// This model's batch dim
+  TorchSize batch_dim() const { return _batch_sizes.size(); }
+
+  /// This model's batch shape
+  TorchShapeRef batch_sizes() const { return _batch_sizes; }
+
+  /// This model's tensor options
+  const torch::TensorOptions & options() const { return _options; }
 
   /// The models that may be used during the evaluation of this model
   const std::vector<Model *> & registered_models() const { return _registered_models; }
 
   /// The variables that this model depends on
-  const std::set<LabeledAxisAccessor> & consumed_variables() const { return _consumed_vars; }
+  virtual const std::set<VariableName> consumed_items() const override;
 
   /// The variables that this model defines as part of its output
-  const std::set<LabeledAxisAccessor> & provided_variables() const { return _provided_vars; }
-
-  /**
-   * The additional variables that this model should provide. Typically these variables are not
-   * directly computed by this model, instead they come from other information that this model
-   * _knows_, e.g., directly from the input variables.
-   */
-  const std::set<LabeledAxisAccessor> & additional_outputs() const { return _additional_outputs; }
+  virtual const std::set<VariableName> provided_items() const override;
 
   /**
    * Validate the currently requested AD settings.
@@ -116,36 +123,36 @@ public:
    *         false          false   great, everything handcoded
    *  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
    */
-  void check_AD_limitation() const;
+  virtual void check_AD_limitation() const;
 
   /// Tell this model to use AD to get derivatives
   void use_AD_derivatives(bool first = true, bool second = true);
 
+  /// Set \p in to be the input of this model
+  virtual void set_input(const LabeledVector & in);
+
+  /// \return the output of this model
+  virtual LabeledVector get_output();
+
+  /// \return the derivative of the output w.r.t. the input of this model
+  virtual LabeledMatrix get_doutput_dinput();
+
+  /// \return the second derivative of the output w.r.t. the input of this model
+  virtual LabeledTensor3D get_d2output_dinput2();
+
   /// Convenient shortcut to construct and return the model value
-  virtual LabeledVector value(const LabeledVector & in) const;
-
-  /// Convenient shortcut to construct and return the model derivative
-  virtual LabeledMatrix dvalue(const LabeledVector & in) const;
-
-  /// Convenient shortcut to construct and return the model's second derivative
-  virtual LabeledTensor3D d2value(const LabeledVector & in) const;
+  virtual LabeledVector value(const LabeledVector & in);
 
   /// Convenient shortcut to construct and return the model value and its derivative
-  virtual std::tuple<LabeledVector, LabeledMatrix> value_and_dvalue(const LabeledVector & in) const;
-
-  /// Convenient shortcut to construct and return the model's first and second derivative
-  virtual std::tuple<LabeledMatrix, LabeledTensor3D>
-  dvalue_and_d2value(const LabeledVector & in) const;
+  virtual std::tuple<LabeledVector, LabeledMatrix> value_and_dvalue(const LabeledVector & in);
 
   /// Convenient shortcut to construct and return the model's value, first and second derivative
   virtual std::tuple<LabeledVector, LabeledMatrix, LabeledTensor3D>
-  value_and_dvalue_and_d2value(const LabeledVector & in) const;
+  value_and_dvalue_and_d2value(const LabeledVector & in);
 
-  /**
-   * During the SOLVING stage, we update the state with \emph fixed forces, old forces, and old
-   * state. This function caches those fixed values.
-   */
-  void cache_input(const LabeledVector & in);
+  virtual void value();
+  virtual void value_and_dvalue();
+  virtual void value_and_dvalue_and_d2value();
 
   /**
    * A model can be treated as an implicit model. An implicit model need to be "solved": the state
@@ -155,114 +162,133 @@ public:
    * forces, and old state. Therefore, the model can/should avoid unnecessary computations by
    * examining the current `stage`.
    */
-  enum Stage
-  {
-    SOLVING,
-    UPDATING
-  };
-  static Model::Stage stage;
+  static enum Stage { SOLVING, UPDATING } stage;
 
   /// Declaration of nonlinear parameters may require manipulation of input
   friend class ParameterStore;
 
+  /// ComposedModel's set_value need to call submodel's set_value
+  friend class ComposedModel;
+
 protected:
+  /**
+   * @brief Setup this model.
+   * 1. Setup the layout of the input and output axes.
+   * 2. Setup the arguments of each variable.
+   */
+  virtual void setup() override;
+
+  using VariableStore::allocate_variables;
+
+  /// Call VariableStore::allocate_variables recursively on all submodels
+  virtual void allocate_variables(int deriv_order, bool options_changed);
+
+  /// Call VariableStore::setup_input_views recursively on all submodels
+  virtual void setup_input_views() override;
+  virtual void setup_submodel_input_views();
+
+  /// Call VariableStore::setup_output_views recursively on all submodels
+  virtual void setup_output_views() override;
+  virtual void setup_submodel_output_views();
+
+  /// Call VariableStore::reinit_input_views recursively on all submodels
+  virtual void reinit_input_views() override;
+
+  /// Call VariableStore::reinit_output_views recursively on all submodels
+  virtual void reinit_output_views(bool out, bool dout_din = true, bool d2out_din2 = true) override;
+
+  /// Call VariableStore::detach_and_zero recursively on all submodels
+  virtual void detach_and_zero(bool out, bool dout_din = true, bool d2out_din2 = true) override;
+
   /// The map between input -> output, and optionally its derivatives
-  virtual void set_value(const LabeledVector & in,
-                         LabeledVector * out,
-                         LabeledMatrix * dout_din = nullptr,
-                         LabeledTensor3D * d2out_din2 = nullptr) const = 0;
+  virtual void set_value(bool out, bool dout_din, bool d2out_din2) = 0;
 
-  /// Declare an input variable
-  template <typename T>
-  LabeledAxisAccessor declare_input_variable(const LabeledAxisAccessor & var)
-  {
-    auto accessor = declare_variable<T>(_input, var);
-    _consumed_vars.insert(accessor);
-    return accessor;
-  }
+  using VariableStore::cache;
 
-  /// Declare an input variable with known storage size
-  LabeledAxisAccessor declare_input_variable(const LabeledAxisAccessor & var, TorchSize sz)
-  {
-    auto accessor = declare_variable(_input, var, sz);
-    _consumed_vars.insert(accessor);
-    return accessor;
-  }
+  virtual void cache(TorchShapeRef batch_shape) override;
 
-  /// Declare an input variable that is a list of tensors of fixed size
-  template <typename T>
-  LabeledAxisAccessor declare_input_variable_list(const LabeledAxisAccessor & var,
-                                                  TorchSize list_size)
-  {
-    return declare_input_variable(var, list_size * T::const_base_storage);
-  }
-
-  /// Declare an output variable
-  template <typename T>
-  LabeledAxisAccessor declare_output_variable(const LabeledAxisAccessor & var)
-  {
-    auto accessor = declare_variable<T>(_output, var);
-    _provided_vars.insert(accessor);
-    return accessor;
-  }
-
-  /// Declare an output variable with known storage size
-  LabeledAxisAccessor declare_output_variable(const LabeledAxisAccessor & var, TorchSize sz)
-  {
-    auto accessor = declare_variable(_output, var, sz);
-    _provided_vars.insert(accessor);
-    return accessor;
-  }
-
-  /// Declare an output variable that is a list of tensors with fixed size
-  template <typename T>
-  LabeledAxisAccessor declare_output_variable_list(const LabeledAxisAccessor & var,
-                                                   TorchSize list_sz)
-  {
-    return declare_output_variable(var, list_sz * T::const_base_storage);
-  }
-
-  virtual void setup() { setup_layout(); }
+  /// Cache tensor options
+  virtual void cache(const torch::TensorOptions & options);
 
   /**
-   * @brief Register a model that the current model may use during its evaluation. No dependency
-   * information is added.
+   * @brief Register a model that the current model may use during its evaluation.
+   *
+   * If \p merge_input is set to true, this model will also *consume* the consumed variables of \p
+   * model, which will affect dependency resolution inside a ComposedModel.
    *
    * @param model The model to register
+   * @param extra_deriv_order The additional derivative order required for the registered-submodel
+   * @param nonlinear Set to true if the registered model defines a nonlinear system to be solved
    * @param merge_input Whether to merge the input of the registered model into *this* model's
    * input.
    */
-  void register_model(std::shared_ptr<Model> model, bool merge_input = true);
-
-  /**
-   * Both register a model and return a reference
-   */
   template <typename T, typename = typename std::enable_if_t<std::is_base_of_v<Model, T>>>
-  T & include_model(const std::string & name, bool merge_input = true)
+  T & register_model(const std::string & name,
+                     int extra_deriv_order = 0,
+                     bool nonlinear = false,
+                     bool merge_input = true)
   {
-    auto model = Factory::get_object_ptr<Model>("Models", name);
-    register_model(model, merge_input);
+    OptionSet extra_opts;
+    extra_opts.set<NEML2Object *>("_host") = host();
+    extra_opts.set<int>("_extra_derivative_order") = extra_deriv_order;
+    extra_opts.set<bool>("_nonlinear_system") = nonlinear;
+
+    auto model = Factory::get_object_ptr<Model>("Models", name, extra_opts, /*force_create=*/true);
+
+    if (merge_input)
+      for (auto && [name, var] : model->input_views())
+        declare_input_variable(var.base_storage(), name);
+
+    _registered_models.push_back(model.get());
     return *(std::dynamic_pointer_cast<T>(model));
   }
 
-  virtual void
-  assemble(const BatchTensor & x, BatchTensor * r, BatchTensor * J = nullptr) const override;
+  virtual void assemble(bool residual, bool Jacobian) override;
 
   /// Models *this* model may use during its evaluation
   std::vector<Model *> _registered_models;
 
-  std::set<LabeledAxisAccessor> _consumed_vars;
-  std::set<LabeledAxisAccessor> _provided_vars;
-  std::set<LabeledAxisAccessor> _additional_outputs;
-
-private:
-  LabeledAxis & _input;
-  LabeledAxis & _output;
-
+  /// Whether to use AD to compute 1st derivatives
   bool _AD_1st_deriv;
+
+  /// Whether to use AD to compute 2nd derivatives
   bool _AD_2nd_deriv;
 
-  /// Cached input while solving this implicit model
-  LabeledVector _cached_in;
+private:
+  /// Helper method to extract derivatives after back propagation
+  void extract_derivatives(bool retain_graph, bool create_graph, bool allow_unused);
+
+  /// Helper method to extract second derivatives after back propagation
+  void extract_second_derivatives(bool retain_graph, bool create_graph, bool allow_unused);
+
+  /// This model's batch shape
+  TorchShape _batch_sizes;
+
+  /// This model's tensor options
+  torch::TensorOptions _options;
+
+  /**
+   * @brief The derivative order required for this model
+   *
+   * The input/output, derivative, and second derivative storages will be allocated accordingly when
+   * allocate_variables is called.
+   *
+   * 0: Only value is required
+   * 1: First order derivative is required
+   * 2: Second order derivative is required
+   */
+  int _deriv_order;
+
+  /**
+   * @brief The extra derivative order required for this model
+   *
+   * When a model is registered as a sub-model, the parent model may require additional derivative
+   * order from the sub-model. For example, some models may define its own outputs as functions of
+   * the sub-model's derivatives. Normality is an example of such model.
+   */
+  const int _extra_deriv_order;
+
+  /// Whether this is a nonlinear system
+  bool _nonlinear_system;
 };
 } // namespace neml2

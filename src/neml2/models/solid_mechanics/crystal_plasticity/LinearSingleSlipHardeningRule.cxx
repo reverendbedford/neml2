@@ -24,8 +24,6 @@
 
 #include "neml2/models/solid_mechanics/crystal_plasticity/LinearSingleSlipHardeningRule.h"
 
-using vecstr = std::vector<std::string>;
-
 namespace neml2
 {
 register_NEML2_object(LinearSingleSlipHardeningRule);
@@ -34,9 +32,7 @@ OptionSet
 LinearSingleSlipHardeningRule::expected_options()
 {
   OptionSet options = SingleSlipHardeningRule::expected_options();
-
   options.set<CrossRef<Scalar>>("hardening_slope");
-
   return options;
 }
 
@@ -44,27 +40,17 @@ LinearSingleSlipHardeningRule::LinearSingleSlipHardeningRule(const OptionSet & o
   : SingleSlipHardeningRule(options),
     _theta(declare_parameter<Scalar>("hardening_slope", "hardening_slope"))
 {
-  setup();
 }
 
 void
-LinearSingleSlipHardeningRule::set_value(const LabeledVector & in,
-                                         LabeledVector * out,
-                                         LabeledMatrix * dout_din,
-                                         LabeledTensor3D * d2out_din2) const
+LinearSingleSlipHardeningRule::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   neml_assert_dbg(!d2out_din2, "Second derivative not implemented.");
 
-  // Grab the input
-  const auto sg = in.get<Scalar>(sum_slip_rates);
-
   if (out)
-    out->set(_theta * sg, slip_hardening_rate);
+    _tau_dot = _theta * _gamma_dot_sum;
 
   if (dout_din)
-  {
-    dout_din->set(Scalar(0.0, in.options()), slip_hardening_rate, slip_hardening);
-    dout_din->set(_theta, slip_hardening_rate, sum_slip_rates);
-  }
+    _tau_dot.d(_gamma_dot_sum) = _theta;
 }
 } // namespace neml2

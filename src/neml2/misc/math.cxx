@@ -30,47 +30,83 @@ namespace neml2
 {
 namespace math
 {
-const torch::Tensor
-full_to_mandel_map(const torch::TensorOptions & options)
+ConstantTensors::ConstantTensors()
 {
-  return torch::tensor({0, 4, 8, 5, 2, 1}, options);
-}
-const torch::Tensor
-mandel_to_full_map(const torch::TensorOptions & options)
-{
-  return torch::tensor({0, 5, 4, 5, 1, 3, 4, 3, 2}, options);
-}
-const torch::Tensor
-full_to_mandel_factor(const torch::TensorOptions & options)
-{
-  return torch::tensor({1.0, 1.0, 1.0, sqrt2, sqrt2, sqrt2}, options);
-}
-const torch::Tensor
-mandel_to_full_factor(const torch::TensorOptions & options)
-{
-  return torch::tensor({1.0, invsqrt2, invsqrt2, invsqrt2, 1.0, invsqrt2, invsqrt2, invsqrt2, 1.0},
-                       options);
+  _full_to_mandel_map = torch::tensor({0, 4, 8, 5, 2, 1}, default_integer_tensor_options());
+
+  _mandel_to_full_map =
+      torch::tensor({0, 5, 4, 5, 1, 3, 4, 3, 2}, default_integer_tensor_options());
+
+  _full_to_mandel_factor =
+      torch::tensor({1.0, 1.0, 1.0, sqrt2, sqrt2, sqrt2}, default_tensor_options());
+
+  _mandel_to_full_factor =
+      torch::tensor({1.0, invsqrt2, invsqrt2, invsqrt2, 1.0, invsqrt2, invsqrt2, invsqrt2, 1.0},
+                    default_tensor_options());
+
+  _full_to_skew_map = torch::tensor({7, 2, 3}, default_integer_tensor_options());
+
+  _skew_to_full_map = torch::tensor({0, 2, 1, 2, 0, 0, 1, 0, 0}, default_integer_tensor_options());
+
+  _full_to_skew_factor = torch::tensor({1.0, 1.0, 1.0}, default_tensor_options());
+
+  _skew_to_full_factor =
+      torch::tensor({0.0, -1.0, 1.0, 1.0, 0.0, -1.0, -1.0, 1.0, 0.0}, default_tensor_options());
 }
 
-const torch::Tensor
-full_to_skew_map(const torch::TensorOptions & options)
+ConstantTensors &
+ConstantTensors::get()
 {
-  return torch::tensor({7, 2, 3}, options);
+  static ConstantTensors cts;
+  return cts;
 }
-const torch::Tensor
-skew_to_full_map(const torch::TensorOptions & options)
+
+const torch::Tensor &
+ConstantTensors::full_to_mandel_map()
 {
-  return torch::tensor({0, 2, 1, 2, 0, 0, 1, 0, 0}, options);
+  return get()._full_to_mandel_map;
 }
-const torch::Tensor
-full_to_skew_factor(const torch::TensorOptions & options)
+
+const torch::Tensor &
+ConstantTensors::mandel_to_full_map()
 {
-  return torch::tensor({1.0, 1.0, 1.0}, options);
+  return get()._mandel_to_full_map;
 }
-const torch::Tensor
-skew_to_full_factor(const torch::TensorOptions & options)
+
+const torch::Tensor &
+ConstantTensors::full_to_mandel_factor()
 {
-  return torch::tensor({0.0, -1.0, 1.0, 1.0, 0.0, -1.0, -1.0, 1.0, 0.0}, options);
+  return get()._full_to_mandel_factor;
+}
+
+const torch::Tensor &
+ConstantTensors::mandel_to_full_factor()
+{
+  return get()._mandel_to_full_factor;
+}
+
+const torch::Tensor &
+ConstantTensors::full_to_skew_map()
+{
+  return get()._full_to_skew_map;
+}
+
+const torch::Tensor &
+ConstantTensors::skew_to_full_map()
+{
+  return get()._skew_to_full_map;
+}
+
+const torch::Tensor &
+ConstantTensors::full_to_skew_factor()
+{
+  return get()._full_to_skew_factor;
+}
+
+const torch::Tensor &
+ConstantTensors::skew_to_full_factor()
+{
+  return get()._skew_to_full_factor;
 }
 
 BatchTensor
@@ -129,83 +165,83 @@ reduced_to_full(const BatchTensor & reduced,
 BatchTensor
 full_to_mandel(const BatchTensor & full, TorchSize dim)
 {
-  return full_to_reduced(full,
-                         full_to_mandel_map(full.options().dtype(TORCH_INT_DTYPE)),
-                         full_to_mandel_factor(full.options()),
-                         dim);
+  return full_to_reduced(
+      full,
+      ConstantTensors::full_to_mandel_map().to(full.options().dtype(TORCH_INT_DTYPE)),
+      ConstantTensors::full_to_mandel_factor().to(full.options()),
+      dim);
 }
 
 BatchTensor
 mandel_to_full(const BatchTensor & mandel, TorchSize dim)
 {
-  return reduced_to_full(mandel,
-                         mandel_to_full_map(mandel.options().dtype(TORCH_INT_DTYPE)),
-                         mandel_to_full_factor(mandel.options()),
-                         dim);
+  return reduced_to_full(
+      mandel,
+      ConstantTensors::mandel_to_full_map().to(mandel.options().dtype(TORCH_INT_DTYPE)),
+      ConstantTensors::mandel_to_full_factor().to(mandel.options()),
+      dim);
 }
 
 BatchTensor
 full_to_skew(const BatchTensor & full, TorchSize dim)
 {
-  return full_to_reduced(full,
-                         full_to_skew_map(full.options().dtype(TORCH_INT_DTYPE)),
-                         full_to_skew_factor(full.options()),
-                         dim);
+  return full_to_reduced(
+      full,
+      ConstantTensors::full_to_skew_map().to(full.options().dtype(TORCH_INT_DTYPE)),
+      ConstantTensors::full_to_skew_factor().to(full.options()),
+      dim);
 }
 
 BatchTensor
 skew_to_full(const BatchTensor & skew, TorchSize dim)
 {
-  return reduced_to_full(skew,
-                         skew_to_full_map(skew.options().dtype(TORCH_INT_DTYPE)),
-                         skew_to_full_factor(skew.options()),
-                         dim);
+  return reduced_to_full(
+      skew,
+      ConstantTensors::skew_to_full_map().to(skew.options().dtype(TORCH_INT_DTYPE)),
+      ConstantTensors::skew_to_full_factor().to(skew.options()),
+      dim);
 }
 
 BatchTensor
-jacrev(const BatchTensor & out, const BatchTensor & p)
+jacrev(const BatchTensor & y, const BatchTensor & p)
 {
-  neml_assert_dbg(
-      p.batch_dim() == 0 || out.batch_sizes() == p.batch_sizes(),
-      "If the parameter is batched, its batch shape must be the same as the batch shape "
-      "of the output. However, the batch shape of the parameter is ",
-      p.batch_sizes(),
-      ", and the batch shape of the output is ",
-      out.batch_sizes());
+  neml_assert(p.batch_sizes() == y.batch_sizes(),
+              "The batch shape of the parameter must be the same as the batch shape "
+              "of the output. However, the batch shape of the parameter is ",
+              p.batch_sizes(),
+              ", and the batch shape of the output is ",
+              y.batch_sizes());
 
-  // flatten out to handle arbitrarily shaped output
-  auto outf = BatchTensor(
-      out.reshape(utils::add_shapes(out.batch_sizes(), utils::storage_size(out.base_sizes()))),
-      out.batch_dim());
+  // flatten y to handle arbitrarily shaped output
+  auto yf = BatchTensor(
+      y.reshape(utils::add_shapes(y.batch_sizes(), utils::storage_size(y.base_sizes()))),
+      y.batch_dim());
 
-  neml_assert_dbg(outf.base_dim() == 1, "Flattened output must be flat.");
+  neml_assert_dbg(yf.base_dim() == 1, "Flattened output must be flat.");
 
-  auto doutf_dp = BatchTensor::empty(
-      outf.batch_sizes(), utils::add_shapes(outf.base_sizes(), p.base_sizes()), outf.options());
+  auto dyf_dp = BatchTensor::empty(
+      yf.batch_sizes(), utils::add_shapes(yf.base_sizes(), p.base_sizes()), yf.options());
 
-  for (TorchSize i = 0; i < outf.base_sizes()[0]; i++)
+  for (TorchSize i = 0; i < yf.base_sizes()[0]; i++)
   {
-    auto G = BatchTensor::zeros_like(outf);
-    G.index_put_({torch::indexing::Ellipsis, i}, 1.0);
-    auto doutfi_dp = torch::autograd::grad({outf},
-                                           {p},
-                                           {G},
-                                           /*retain_graph=*/true,
-                                           /*create_graph=*/false,
-                                           /*allow_unused=*/false)[0];
-    if (doutfi_dp.defined())
-      doutf_dp.base_index_put({i, torch::indexing::Ellipsis}, doutfi_dp);
+    auto v = BatchTensor::zeros_like(yf);
+    v.index_put_({torch::indexing::Ellipsis, i}, 1.0);
+    const auto dyfi_dp = torch::autograd::grad({yf},
+                                               {p},
+                                               {v},
+                                               /*retain_graph=*/true,
+                                               /*create_graph=*/false,
+                                               /*allow_unused=*/false)[0];
+    if (dyfi_dp.defined())
+      dyf_dp.base_index_put({i, torch::indexing::Ellipsis}, dyfi_dp);
   }
 
-  // reshape the derivative back to the correct shape
-  auto dout_dp = BatchTensor(
-      doutf_dp.reshape(utils::add_shapes(out.batch_sizes(), out.base_sizes(), p.base_sizes())),
-      out.batch_dim());
+  // Reshape the derivative back to the correct shape
+  const auto dy_dp = BatchTensor(
+      dyf_dp.reshape(utils::add_shapes(y.batch_sizes(), y.base_sizes(), p.base_sizes())),
+      y.batch_dim());
 
-  // factor to account for broadcasting
-  Real factor = p.batch_dim() == 0 ? utils::storage_size(out.batch_sizes()) : 1;
-
-  return dout_dp / factor;
+  return dy_dp;
 }
 
 BatchTensor
@@ -272,5 +308,24 @@ d_multiply_and_make_skew_d_second(const SR2 & a)
                  torch::einsum("...ia,...bj->...ijab", {I, A})));
 }
 
+namespace linalg
+{
+std::tuple<BatchTensor, BatchTensor>
+lu_factor(const BatchTensor & A, bool pivot)
+{
+  auto [LU, pivots] = torch::linalg_lu_factor(A, pivot);
+  return {BatchTensor(LU, A.batch_dim()), BatchTensor(pivots, A.batch_dim())};
+}
+
+BatchTensor
+lu_solve(const BatchTensor & LU,
+         const BatchTensor & pivots,
+         const BatchTensor & B,
+         bool left,
+         bool adjoint)
+{
+  return BatchTensor(torch::linalg_lu_solve(LU, pivots, B, left, adjoint), B.batch_dim());
+}
+} // namespace linalg
 } // namespace math
 } // namespace neml2

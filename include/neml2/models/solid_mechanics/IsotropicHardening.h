@@ -35,7 +35,11 @@ public:
 
   IsotropicHardening(const OptionSet & options);
 
-  const LabeledAxisAccessor equivalent_plastic_strain;
-  const LabeledAxisAccessor isotropic_hardening;
+protected:
+  /// Equivalent plastic strain
+  const Variable<Scalar> & _ep;
+
+  /// Isotropic hardening
+  Variable<Scalar> & _h;
 };
 } // namespace neml2

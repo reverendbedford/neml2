@@ -30,18 +30,21 @@ using namespace neml2;
 
 TEST_CASE("NonlinearSystem", "[solvers]")
 {
+  // Initial guess
   TorchShape batch_sz = {2};
   TorchSize nbase = 4;
-  auto x0 = BatchTensor::zeros(batch_sz, nbase, default_tensor_options());
+  auto x0 = BatchTensor::full(batch_sz, nbase, 2.0, default_tensor_options());
 
+  // Create the nonlinear system
   auto options = PowerTestSystem::expected_options();
   options.set<bool>("automatic_scaling") = true;
   PowerTestSystem system(options);
-  x0 = system.guess(x0);
+  system.reinit(x0);
 
   SECTION("Automatic scaling can reduce condition number")
   {
-    system.init_scaling(x0);
+    system.set_solution(x0);
+    system.init_scaling();
     REQUIRE(torch::max(torch::linalg_cond(system.Jacobian(x0))).item<Real>() == Approx(1.0));
   }
 }

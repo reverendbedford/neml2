@@ -41,22 +41,9 @@ public:
 
   NewtonNonlinearSolver(const OptionSet & options);
 
-  virtual BatchTensor solve(const NonlinearSystem & system, const BatchTensor & x0) const override;
+  virtual std::tuple<bool, size_t> solve(NonlinearSystem & system, BatchTensor & x) const override;
 
 protected:
-  /// Find the current update direction
-  virtual BatchTensor solve_direction(const NonlinearSystem & system,
-                                      const BatchTensor & R,
-                                      const BatchTensor & J) const;
-
-  /// Update without linesearch
-  virtual Real
-  update_no_linesearch(BatchTensor & x, BatchTensor & R, const NonlinearSystem & system) const;
-
-  /// Update with linesearch, backtrack until meeting the Armijo criteria
-  virtual Real
-  update_linesearch(BatchTensor & x, BatchTensor & R, const NonlinearSystem & system) const;
-
   /**
    * @brief Check for convergence. The current iteration is said to be converged if the residual
    * norm is below the absolute tolerance or or the ratio between the residual norm and the initial
@@ -71,6 +58,16 @@ protected:
    */
   virtual bool
   converged(size_t itr, const torch::Tensor & nR, const torch::Tensor & nR0, Real alpha) const;
+
+  /// Update trial solution
+  virtual Real update(NonlinearSystem & system, BatchTensor & x, bool final = false) const;
+
+  /// Perform Armijo linesearch
+  virtual Real
+  linesearch(NonlinearSystem & system, const BatchTensor & x, const BatchTensor & dx) const;
+
+  /// Find the current update direction
+  virtual BatchTensor solve_direction(NonlinearSystem & system) const;
 
   /// If true, do a linesearch
   bool _linesearch;

@@ -64,7 +64,7 @@ nt = 100
 
 [Models]
   ###############################################################################
-  # Use the trial state to precalculate invariant flow directions 
+  # Use the trial state to precalculate invariant flow directions
   # prior to radial return
   ###############################################################################
   [trial_elastic_strain]
@@ -96,7 +96,7 @@ nt = 100
     type = SR2Invariant
     invariant_type = 'VONMISES'
     tensor = 'state/internal/O'
-    invariant = 'state/internal/sm'
+    invariant = 'state/internal/s'
   []
   [yield]
     type = YieldFunction
@@ -121,7 +121,7 @@ nt = 100
   []
   ###############################################################################
   # The actual radial return:
-  # Since the flow directions are invariant, we only need to solve 
+  # Since the flow directions are invariant, we only need to solve
   # the consistency condition.
   ###############################################################################
   [plastic_strain_rate]
@@ -164,9 +164,9 @@ nt = 100
   []
   [surface]
     type = ComposedModel
-    models = "plastic_strain_rate plastic_strain elastic_strain cauchy_stress mandel_stress 
-              kinematic_plastic_strain_rate kinematic_plastic_strain kinharden 
-              equivalent_plastic_strain_rate equivalent_plastic_strain isoharden 
+    models = "plastic_strain_rate plastic_strain elastic_strain cauchy_stress mandel_stress
+              kinematic_plastic_strain_rate kinematic_plastic_strain kinharden
+              equivalent_plastic_strain_rate equivalent_plastic_strain isoharden
               overstress vonmises yield consistency"
   []
   [return_map]
@@ -176,14 +176,14 @@ nt = 100
   []
   [model0]
     type = ComposedModel
-    models = "trial_state return_map 
+    models = "trial_state return_map
               plastic_strain_rate plastic_strain
               equivalent_plastic_strain_rate equivalent_plastic_strain
               kinematic_plastic_strain_rate kinematic_plastic_strain"
-    additional_outputs = 'state/internal/Ep state/internal/ep state/internal/Kp'
   []
   [model]
     type = ComposedModel
     models = 'model0 elastic_strain cauchy_stress'
+    additional_outputs = 'state/internal/Ep state/internal/ep state/internal/Kp'
   []
 []

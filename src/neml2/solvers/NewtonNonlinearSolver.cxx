@@ -50,24 +50,29 @@ NewtonNonlinearSolver::NewtonNonlinearSolver(const OptionSet & options)
 {
 }
 
-BatchTensor
-NewtonNonlinearSolver::solve(const NonlinearSystem & system, const BatchTensor & x0) const
+std::tuple<bool, size_t>
+NewtonNonlinearSolver::solve(NonlinearSystem & system, BatchTensor & x) const
 {
-  // Setup initial guess and initial residual
-  auto x = x0.clone();
-  auto R = system.residual(x);
-  auto nR0 = torch::linalg::vector_norm(R, 2, -1, false, c10::nullopt);
+  neml_assert_dbg(!x.requires_grad(), "The trial solution shall not contain any function graph.");
+
+  // The initial residual for relative convergence check
+  system.residual();
+  auto nR0 = torch::linalg::vector_norm(system.residual_view(), 2, -1, false, c10::nullopt);
 
   // Check for initial convergence
   if (converged(0, nR0, nR0, 1.0))
-    return x;
+  {
+    system.Jacobian();
+    update(system, x, /*final=*/true);
+    return {true, 0};
+  }
 
+  // The line search parameter (1 for full Newton step)
   Real alpha;
+
   // Begin iterating
-  if (_linesearch)
-    alpha = update_linesearch(x, R, system);
-  else
-    alpha = update_no_linesearch(x, R, system);
+  system.Jacobian();
+  alpha = update(system, x);
 
   // Continuing iterating until one of:
   // 1. nR < atol (success)
@@ -75,32 +80,21 @@ NewtonNonlinearSolver::solve(const NonlinearSystem & system, const BatchTensor &
   // 3. i > miters (failure)
   for (size_t i = 1; i < miters; i++)
   {
-    auto nR = torch::linalg::vector_norm(R, 2, -1, false, c10::nullopt);
+    system.residual_and_Jacobian();
+    auto nR = torch::linalg::vector_norm(system.residual_view(), 2, -1, false, c10::nullopt);
 
     // Check for initial convergence
     if (converged(i, nR, nR0, alpha))
-      return x;
+    {
+      update(system, x, /*final=*/true);
+      return {true, i};
+    }
 
-    // Update R and the norm of R
-    if (_linesearch)
-      alpha = update_linesearch(x, R, system);
-    else
-      alpha = update_no_linesearch(x, R, system);
+    // Update trial solution
+    alpha = update(system, x);
   }
 
-  // Throw if we exceeded miters
-  throw NEMLException("Nonlinear solver exceeded miters!");
-
-  return x;
-}
-
-BatchTensor
-NewtonNonlinearSolver::solve_direction(const NonlinearSystem & system,
-                                       const BatchTensor & R,
-                                       const BatchTensor & J) const
-{
-  auto p = BatchTensor(torch::linalg::solve(J, R, true), R.batch_dim());
-  return system.scale_direction(p);
+  return {false, miters};
 }
 
 bool
@@ -121,34 +115,36 @@ NewtonNonlinearSolver::converged(size_t itr,
 }
 
 Real
-NewtonNonlinearSolver::update_no_linesearch(BatchTensor & x,
-                                            BatchTensor & R,
-                                            const NonlinearSystem & system) const
+NewtonNonlinearSolver::update(NonlinearSystem & system, BatchTensor & x, bool final) const
 {
-  BatchTensor J;
-  std::tie(R, J) = system.residual_and_Jacobian(x);
-  auto dx = solve_direction(system, R, J);
-  x -= dx;
-  return 1.0;
+  auto dx = solve_direction(system);
+
+  if (final)
+  {
+    x += dx;
+    return 1;
+  }
+
+  auto alpha = _linesearch ? linesearch(system, x, dx) : 1.0;
+  x.variable_data() += alpha * dx;
+  system.set_solution(x);
+  return alpha;
 }
 
 Real
-NewtonNonlinearSolver::update_linesearch(BatchTensor & x,
-                                         BatchTensor & R,
-                                         const NonlinearSystem & system) const
+NewtonNonlinearSolver::linesearch(NonlinearSystem & system,
+                                  const BatchTensor & x,
+                                  const BatchTensor & dx) const
 {
-  BatchTensor J;
-  std::tie(R, J) = system.residual_and_Jacobian(x);
-
+  Real alpha = 1.0;
+  const auto & R = system.residual_view();
   auto R0 = R.clone();
   auto nR02 = torch::linalg_vecdot(R0, R0);
-  Real alpha = 1.0;
-
-  auto dx = solve_direction(system, R, J);
 
   for (size_t i = 1; i < _linesearch_miter; i++)
   {
-    R = system.residual(x - alpha * dx);
+    system.set_solution(x + alpha * dx);
+    system.residual();
     auto nR2 = torch::linalg_vecdot(R, R);
     auto crit = nR02 + 2.0 * _linesearch_c * alpha * torch::linalg_vecdot(R0, dx);
     if (verbose)
@@ -160,9 +156,16 @@ NewtonNonlinearSolver::update_linesearch(BatchTensor & x,
       break;
     alpha /= _linesearch_sigma;
   }
-  x -= alpha * dx;
 
   return alpha;
+}
+
+BatchTensor
+NewtonNonlinearSolver::solve_direction(NonlinearSystem & system) const
+{
+  auto p = -BatchTensor(torch::linalg::solve(system.Jacobian_view(), system.residual_view(), true),
+                        system.residual_view().batch_dim());
+  return system.scale_direction(p);
 }
 
 } // namespace neml2

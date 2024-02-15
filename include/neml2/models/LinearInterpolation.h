@@ -80,7 +80,7 @@ public:
   LinearInterpolation(const OptionSet & options);
 
 protected:
-  virtual void interpolate(const Scalar & x, T * y, T * dy_dx, T * d2y_dx2) const override;
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
 private:
   /**
@@ -96,14 +96,14 @@ private:
   template <typename T2>
   T2 mask(const T2 & in, const torch::Tensor & m) const;
 
-  /// Batch shape of the interpolant, excluding the 0th dimension which is the interpolation axis
-  const TorchShape _batch_shape;
+  /// Batch shape of the interpolant, excluding the last dimension which is the interpolation axis
+  const TorchShape _interp_batch_sizes;
   /// Starting abscissa of each interval
-  const Scalar & _a0;
+  const Scalar & _X0;
   /// Ending abscissa of each interval
-  const Scalar & _a1;
+  const Scalar & _X1;
   /// Starting ordinate of each interval
-  const T & _o0;
+  const T & _Y0;
   /// Slope of each interval
   const T & _slope;
 };

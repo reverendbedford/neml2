@@ -35,17 +35,13 @@ public:
 
   AssociativePlasticFlow(const OptionSet & options);
 
-  /// Accessor for the flow direction
-  const LabeledAxisAccessor flow_direction;
-
-  /// Accessor for the plastic strain rate
-  const LabeledAxisAccessor plastic_strain_rate;
-
 protected:
-  /// The flow direction
-  virtual void set_value(const LabeledVector & in,
-                         LabeledVector * out,
-                         LabeledMatrix * dout_din = nullptr,
-                         LabeledTensor3D * d2out_din2 = nullptr) const override;
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+
+  /// Flow direction
+  const Variable<SR2> & _NM;
+
+  /// Plastic strain rate
+  Variable<SR2> & _Ep_dot;
 };
 } // namespace neml2

@@ -65,7 +65,7 @@ nt = 100
 
 [Models]
   ###############################################################################
-  # Use the trial state to precalculate invariant flow directions 
+  # Use the trial state to precalculate invariant flow directions
   # prior to radial return
   ###############################################################################
   [trial_elastic_strain]
@@ -97,7 +97,7 @@ nt = 100
     type = SR2Invariant
     invariant_type = 'VONMISES'
     tensor = 'state/internal/O'
-    invariant = 'state/internal/sm'
+    invariant = 'state/internal/s'
   []
   [yield]
     type = YieldFunction
@@ -122,7 +122,7 @@ nt = 100
   []
   ###############################################################################
   # The actual radial return:
-  # Since the flow directions are invariant, we only need to integrate 
+  # Since the flow directions are invariant, we only need to integrate
   # the consistency parameter.
   ###############################################################################
   [trial_flow_rate]
@@ -166,10 +166,10 @@ nt = 100
   []
   [surface]
     type = ComposedModel
-    models = "trial_flow_rate 
-              plastic_strain_rate plastic_strain elastic_strain cauchy_stress mandel_stress 
-              kinematic_plastic_strain_rate kinematic_plastic_strain kinharden 
-              equivalent_plastic_strain_rate equivalent_plastic_strain isoharden 
+    models = "trial_flow_rate
+              plastic_strain_rate plastic_strain elastic_strain cauchy_stress mandel_stress
+              kinematic_plastic_strain_rate kinematic_plastic_strain kinharden
+              equivalent_plastic_strain_rate equivalent_plastic_strain isoharden
               overstress vonmises yield"
   []
   [flow_rate]
@@ -189,18 +189,18 @@ nt = 100
     type = ImplicitUpdate
     implicit_model = 'implicit_rate'
     solver = 'newton'
-    additional_outputs = 'state/internal/gamma'
   []
   [model0]
     type = ComposedModel
-    models = "trial_state return_map trial_flow_rate 
+    models = "trial_state return_map trial_flow_rate
               plastic_strain_rate plastic_strain
               equivalent_plastic_strain_rate equivalent_plastic_strain
               kinematic_plastic_strain_rate kinematic_plastic_strain"
-    additional_outputs = 'state/internal/Ep state/internal/ep state/internal/Kp'
+    additional_outputs = 'state/internal/gamma'
   []
   [model]
     type = ComposedModel
     models = 'model0 elastic_strain cauchy_stress'
+    additional_outputs = 'state/internal/Ep state/internal/ep state/internal/Kp'
   []
 []

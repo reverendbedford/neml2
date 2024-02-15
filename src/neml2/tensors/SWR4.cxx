@@ -30,7 +30,7 @@ namespace neml2
 {
 
 SWR4::SWR4(const R4 & F)
-  : SWR4(math::full_to_mandel(math::full_to_skew((F + F.base_transpose(0, 1)), 2)))
+  : SWR4(math::full_to_mandel(math::full_to_skew((F + F.transpose(0, 1)), 2)))
 {
 }
 

@@ -22,35 +22,31 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <catch2/catch.hpp>
+#pragma once
 
-#include <iostream>
-#include <fstream>
-#include <streambuf>
+#include "neml2/models/Model.h"
+#include "neml2/tensors/Rot.h"
 
-#include "utils.h"
-#include "neml2/models/ComposedModel.h"
-
-using namespace neml2;
-
-TEST_CASE("A Model can output the function graph in DOT format", "[DOT]")
+namespace neml2
 {
-  load_model("unit/misc/test_dot.i");
-  auto & model = Factory::get_object<ComposedModel>("Models", "model");
+/**
+ * @brief Convert a Rodrigues vector (Rot) to a second order tensor (R2).
+ *
+ * This model exists simply because this conversion is too computationally expensive without an
+ * optimized kernel, either on CPU or GPU.
+ */
+class RotationMatrix : public Model
+{
+public:
+  static OptionSet expected_options();
 
-  // Write the gold file
-  // std::ofstream ogold("unit/misc/test_dot.txt");;
-  // model.to_dot(ogold);
+  RotationMatrix(const OptionSet & options);
 
-  // Read the gold file
-  std::ifstream gold("unit/misc/test_dot.txt");
-  REQUIRE(gold.is_open());
-  std::string correct((std::istreambuf_iterator<char>(gold)), std::istreambuf_iterator<char>());
+protected:
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
-  // The output shall match the gold
-  std::ostringstream oss;
-  model.to_dot(oss);
-  std::string mine = oss.str();
+  const Variable<Rot> & _from;
 
-  REQUIRE(mine == correct);
-}
+  Variable<R2> & _to;
+};
+} // namespace neml2

@@ -63,6 +63,14 @@ LabeledTensor<Derived, D>::LabeledTensor(const Derived & other)
 }
 
 template <class Derived, TorchSize D>
+void
+LabeledTensor<Derived, D>::operator=(const Derived & other)
+{
+  _tensor = other.tensor();
+  _axes = other.axes();
+}
+
+template <class Derived, TorchSize D>
 LabeledTensor<Derived, D>::operator BatchTensor() const
 {
   return _tensor;
@@ -123,6 +131,20 @@ Derived
 LabeledTensor<Derived, D>::clone(torch::MemoryFormat memory_format) const
 {
   return Derived(_tensor.clone(memory_format), _axes);
+}
+
+template <class Derived, TorchSize D>
+void
+LabeledTensor<Derived, D>::detach_()
+{
+  _tensor.detach_();
+}
+
+template <class Derived, TorchSize D>
+void
+LabeledTensor<Derived, D>::zero_()
+{
+  _tensor.zero_();
 }
 
 template <class Derived, TorchSize D>

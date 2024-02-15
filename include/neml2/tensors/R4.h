@@ -57,6 +57,9 @@ public:
   /// Accessor
   Scalar operator()(TorchSize i, TorchSize j, TorchSize k, TorchSize l) const;
 
+  /// Arbitrary transpose two dimensions
+  R4 transpose(TorchSize d1, TorchSize d2) const;
+
   /// Transpose minor axes
   R4 transpose_minor() const;
 

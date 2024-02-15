@@ -35,15 +35,20 @@ public:
 
   RateIndependentPlasticFlowConstraint(const OptionSet & options);
 
-  const LabeledAxisAccessor yield_function;
-  const LabeledAxisAccessor flow_rate;
-  const LabeledAxisAccessor consistency_condition;
-
 protected:
-  void set_value(const LabeledVector & in,
-                 LabeledVector * out,
-                 LabeledMatrix * dout_din = nullptr,
-                 LabeledTensor3D * d2out_din2 = nullptr) const override;
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+
+  /// A heuristic tolerance to determine whether the current stress state is within the yield surface
+  const Real _ytol;
+
+  /// Plastic yield function
+  const Variable<Scalar> & _fp;
+
+  /// Flow rate (rate of the consistency parameter)
+  const Variable<Scalar> & _gamma_dot;
+
+  /// The residual for the consistency parameter equation
+  Variable<Scalar> & _r;
 };
 
 } // namespace neml2

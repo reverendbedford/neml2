@@ -36,13 +36,14 @@ public:
 
   SingleSlipHardeningRule(const OptionSet & options);
 
-  /// Output: hardening rate
-  const LabeledAxisAccessor slip_hardening_rate;
+protected:
+  /// Hardening rate
+  Variable<Scalar> & _tau_dot;
 
-  /// Input: current slip hardening value
-  const LabeledAxisAccessor slip_hardening;
+  /// Current slip hardening value
+  const Variable<Scalar> & _tau;
 
-  /// Input: sum of the absolute value of the slip rates
-  const LabeledAxisAccessor sum_slip_rates;
+  /// Sum of the absolute value of the slip rates
+  const Variable<Scalar> & _gamma_dot_sum;
 };
 } // namespace neml2

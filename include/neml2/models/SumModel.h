@@ -36,14 +36,14 @@ public:
 
   SumModel(const OptionSet & options);
 
-  const LabeledAxisAccessor to;
-  std::vector<LabeledAxisAccessor> from;
-
 protected:
-  virtual void set_value(const LabeledVector & in,
-                         LabeledVector * out,
-                         LabeledMatrix * dout_din = nullptr,
-                         LabeledTensor3D * d2out_din2 = nullptr) const override;
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+
+  /// Sum of all the input variables
+  Variable<T> & _to;
+
+  /// The input variables (to be summed)
+  std::vector<const Variable<T> *> _from;
 };
 
 typedef SumModel<Scalar> ScalarSumModel;

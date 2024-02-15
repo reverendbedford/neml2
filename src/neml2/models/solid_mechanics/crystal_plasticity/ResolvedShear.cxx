@@ -28,8 +28,6 @@
 #include "neml2/tensors/tensors.h"
 #include "neml2/tensors/list_tensors.h"
 
-using vecstr = std::vector<std::string>;
-
 namespace neml2
 {
 register_NEML2_object(ResolvedShear);
@@ -38,54 +36,42 @@ OptionSet
 ResolvedShear::expected_options()
 {
   OptionSet options = Model::expected_options();
-
-  options.set<LabeledAxisAccessor>("resolved_shears") =
-      vecstr{"state", "internal", "resolved_shears"};
-  options.set<LabeledAxisAccessor>("stress") = vecstr{"state", "internal", "cauchy_stress"};
-  options.set<LabeledAxisAccessor>("orientation") = vecstr{"state", "orientation"};
-
+  options.set<VariableName>("resolved_shears") =
+      VariableName("state", "internal", "resolved_shears");
+  options.set<VariableName>("stress") = VariableName("state", "internal", "cauchy_stress");
+  options.set<VariableName>("orientation") = VariableName("state", "orientation_matrix");
   options.set<std::string>("crystal_geometry_name") = "crystal_geometry";
-
   return options;
 }
 
 ResolvedShear::ResolvedShear(const OptionSet & options)
   : Model(options),
-    crystal_geometry(include_data<crystallography::CrystalGeometry>(
+    _crystal_geometry(register_data<crystallography::CrystalGeometry>(
         options.get<std::string>("crystal_geometry_name"))),
-    resolved_shears(declare_output_variable_list<Scalar>(
-        options.get<LabeledAxisAccessor>("resolved_shears"), crystal_geometry.nslip())),
-    stress(declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("stress"))),
-    orientation(declare_input_variable<Rot>(options.get<LabeledAxisAccessor>("orientation")))
+    _rss(declare_output_variable_list<Scalar>(_crystal_geometry.nslip(), "resolved_shears")),
+    _S(declare_input_variable<SR2>("stress")),
+    _R(declare_input_variable<R2>("orientation"))
 {
-  setup();
 }
 
 void
-ResolvedShear::set_value(const LabeledVector & in,
-                         LabeledVector * out,
-                         LabeledMatrix * dout_din,
-                         LabeledTensor3D * d2out_din2) const
+ResolvedShear::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   neml_assert_dbg(!d2out_din2, "Second derivative not implemented.");
-  // Grab the input
-  const auto S = in.get<SR2>(stress);
-  const auto R = in.get<Rot>(orientation);
+
+  const auto S = SR2(_S).list_unsqueeze();
+  const auto R = R2(_R).list_unsqueeze();
 
   if (out)
-    out->set_list(crystal_geometry.M().rotate(R.list_unsqueeze()).inner(S.list_unsqueeze()),
-                  resolved_shears);
+    _rss = BatchTensor(_crystal_geometry.M().rotate(R).inner(S), batch_dim());
 
   if (dout_din)
   {
-    dout_din->set(BatchTensor(crystal_geometry.M().rotate(R.list_unsqueeze()), S.batch_dim()),
-                  resolved_shears,
-                  stress);
-    auto deriv = SR2(BatchTensor(crystal_geometry.M().drotate(R.list_unsqueeze()), R.batch_dim())
-                         .base_transpose(-1, -2),
-                     R.batch_dim() + 2)
-                     .inner(S.batch_unsqueeze(-1).batch_unsqueeze(-1));
-    dout_din->set(BatchTensor(deriv, R.batch_dim()), resolved_shears, orientation);
+    _rss.d(_S) = BatchTensor(_crystal_geometry.M().rotate(R), batch_dim());
+    _rss.d(_R) =
+        BatchTensor(SR2(_crystal_geometry.M().drotate(R).movedim(-3, -1))
+                        .inner(SR2(_S).batch_unsqueeze(-1).batch_unsqueeze(-1).batch_unsqueeze(-1)),
+                    batch_dim());
   }
 }
 

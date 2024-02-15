@@ -35,19 +35,20 @@ public:
 
   YieldFunction(const OptionSet & options);
 
-public:
-  const LabeledAxisAccessor stress_measure;
-  const LabeledAxisAccessor isotropic_hardening;
-  const LabeledAxisAccessor yield_function;
-
 protected:
   /// The value of the yield function
-  virtual void set_value(const LabeledVector & in,
-                         LabeledVector * out,
-                         LabeledMatrix * dout_din = nullptr,
-                         LabeledTensor3D * d2out_din2 = nullptr) const override;
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+
+  /// Effective stress
+  const Variable<Scalar> & _s;
+
+  /// (Optional) Isotropic hardening
+  const Variable<Scalar> * _h;
+
+  /// Yield function
+  Variable<Scalar> & _f;
 
   /// Yield stress
-  const Scalar & _s0;
+  const Scalar & _sy;
 };
 } // namespace neml2

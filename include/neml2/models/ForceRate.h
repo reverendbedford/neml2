@@ -36,17 +36,23 @@ public:
 
   ForceRate(const OptionSet & options);
 
-  const LabeledAxisAccessor force;
-  const LabeledAxisAccessor force_n;
-  const LabeledAxisAccessor time;
-  const LabeledAxisAccessor time_n;
-  const LabeledAxisAccessor force_rate;
-
 protected:
-  virtual void set_value(const LabeledVector & in,
-                         LabeledVector * out,
-                         LabeledMatrix * dout_din = nullptr,
-                         LabeledTensor3D * d2out_din2 = nullptr) const override;
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+
+  /// Force rate
+  Variable<T> & _df_dt;
+
+  /// Current force value
+  const Variable<T> & _f;
+
+  /// Old force value
+  const Variable<T> & _fn;
+
+  /// Current time
+  const Variable<Scalar> & _t;
+
+  /// Old time
+  const Variable<Scalar> & _tn;
 };
 
 typedef ForceRate<Scalar> ScalarForceRate;

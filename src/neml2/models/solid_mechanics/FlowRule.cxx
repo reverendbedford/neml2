@@ -30,14 +30,13 @@ OptionSet
 FlowRule::expected_options()
 {
   OptionSet options = Model::expected_options();
-  options.set<LabeledAxisAccessor>("flow_rate") = {{"state", "internal", "gamma_rate"}};
+  options.set<VariableName>("flow_rate") = VariableName("state", "internal", "gamma_rate");
   return options;
 }
 
 FlowRule::FlowRule(const OptionSet & options)
   : Model(options),
-    flow_rate(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("flow_rate")))
+    _gamma_dot(declare_input_variable<Scalar>("flow_rate"))
 {
-  setup();
 }
 } // namespace neml2

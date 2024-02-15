@@ -48,7 +48,6 @@ TEST_CASE("HITParser", "[base]")
 
       SECTION("default values")
       {
-        REQUIRE(options.get<std::vector<LabeledAxisAccessor>>("additional_outputs").empty());
         REQUIRE(options.get<bool>("use_AD_first_derivative") == false);
         REQUIRE(options.get<bool>("use_AD_second_derivative") == false);
       }

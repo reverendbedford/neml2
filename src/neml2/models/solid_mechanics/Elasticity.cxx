@@ -24,16 +24,14 @@
 
 #include "neml2/models/solid_mechanics/Elasticity.h"
 
-using vecstr = std::vector<std::string>;
-
 namespace neml2
 {
 OptionSet
 Elasticity::expected_options()
 {
   OptionSet options = Model::expected_options();
-  options.set<LabeledAxisAccessor>("strain") = {{"state", "internal", "Ee"}};
-  options.set<LabeledAxisAccessor>("stress") = vecstr{"state", "S"};
+  options.set<VariableName>("strain") = VariableName("state", "internal", "Ee");
+  options.set<VariableName>("stress") = VariableName("state", "S");
   options.set<bool>("compliance") = false;
   options.set<bool>("rate_form") = false;
   return options;
@@ -43,11 +41,10 @@ Elasticity::Elasticity(const OptionSet & options)
   : Model(options),
     _compliance(options.get<bool>("compliance")),
     _rate_form(options.get<bool>("rate_form")),
-    _strain(options.get<LabeledAxisAccessor>("strain").with_suffix(_rate_form ? "_rate" : "")),
-    _stress(options.get<LabeledAxisAccessor>("stress").with_suffix(_rate_form ? "_rate" : "")),
-    from_var(declare_input_variable<SR2>(_compliance ? _stress : _strain)),
-    to_var(declare_output_variable<SR2>(_compliance ? _strain : _stress))
+    _strain(options.get<VariableName>("strain").with_suffix(_rate_form ? "_rate" : "")),
+    _stress(options.get<VariableName>("stress").with_suffix(_rate_form ? "_rate" : "")),
+    _from(declare_input_variable<SR2>(_compliance ? _stress : _strain)),
+    _to(declare_output_variable<SR2>(_compliance ? _strain : _stress))
 {
-  setup();
 }
 } // namespace neml2

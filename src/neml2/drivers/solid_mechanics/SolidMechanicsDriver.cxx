@@ -24,8 +24,6 @@
 
 #include "neml2/drivers/solid_mechanics/SolidMechanicsDriver.h"
 
-using vecstr = std::vector<std::string>;
-
 namespace neml2
 {
 register_NEML2_object(SolidMechanicsDriver);
@@ -35,8 +33,8 @@ SolidMechanicsDriver::expected_options()
 {
   OptionSet options = TransientDriver::expected_options();
   options.set<std::string>("control") = "STRAIN";
-  options.set<LabeledAxisAccessor>("total_strain") = vecstr{"forces", "E"};
-  options.set<LabeledAxisAccessor>("cauchy_stress") = vecstr{"forces", "S"};
+  options.set<VariableName>("total_strain") = VariableName("forces", "E");
+  options.set<VariableName>("cauchy_stress") = VariableName("forces", "S");
   options.set<CrossRef<torch::Tensor>>("prescribed_strains");
   options.set<CrossRef<torch::Tensor>>("prescribed_stresses");
   return options;
@@ -49,19 +47,19 @@ SolidMechanicsDriver::SolidMechanicsDriver(const OptionSet & options)
   if (_control == "STRAIN")
   {
     _driving_force = SR2(options.get<CrossRef<torch::Tensor>>("prescribed_strains"), 2);
-    _driving_force_name = options.get<LabeledAxisAccessor>("total_strain");
+    _driving_force_name = options.get<VariableName>("total_strain");
   }
   else if (_control == "STRESS")
   {
     _driving_force = SR2(options.get<CrossRef<torch::Tensor>>("prescribed_stresses"), 2);
-    _driving_force_name = options.get<LabeledAxisAccessor>("cauchy_stress");
+    _driving_force_name = options.get<VariableName>("cauchy_stress");
   }
   else
     // LCOV_EXCL_START
     throw NEMLException("Unsupported control type.");
   // LCOV_EXCL_STOP
 
-  _driving_force = _driving_force.to(_options);
+  _driving_force = _driving_force.to(_device);
 
   check_integrity();
 }

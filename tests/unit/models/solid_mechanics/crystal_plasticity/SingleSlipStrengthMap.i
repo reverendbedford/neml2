@@ -24,7 +24,7 @@
     values = '1 1 1'
   []
   [hardening]
-    type = Scalar 
+    type = Scalar
     values = '100.0'
   []
   [strengths]

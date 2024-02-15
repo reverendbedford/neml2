@@ -41,21 +41,19 @@ LabeledMatrix::identity(TorchShapeRef batch_size,
 void
 LabeledMatrix::accumulate(const LabeledMatrix & other, bool recursive)
 {
+  neml_assert_dbg(axis(1) == other.axis(1), "Can only accumulate matrices with conformal y axes");
   const auto indices0 = axis(0).common_indices(other.axis(0), recursive);
-  const auto indices1 = axis(1).common_indices(other.axis(1), recursive);
   for (const auto & [idxi, idxi_other] : indices0)
-    for (const auto & [idxj, idxj_other] : indices1)
-      _tensor.base_index({idxi, idxj}) += other.base_index({idxi_other, idxj_other});
+    _tensor.base_index({idxi}) += other.base_index({idxi_other});
 }
 
 void
 LabeledMatrix::fill(const LabeledMatrix & other, bool recursive)
 {
+  neml_assert_dbg(axis(1) == other.axis(1), "Can only accumulate matrices with conformal y axes");
   const auto indices0 = axis(0).common_indices(other.axis(0), recursive);
-  const auto indices1 = axis(1).common_indices(other.axis(1), recursive);
   for (const auto & [idxi, idxi_other] : indices0)
-    for (const auto & [idxj, idxj_other] : indices1)
-      _tensor.base_index({idxi, idxj}).copy_(other.base_index({idxi_other, idxj_other}));
+    _tensor.base_index_put({idxi}, other.base_index({idxi_other}));
 }
 
 LabeledMatrix

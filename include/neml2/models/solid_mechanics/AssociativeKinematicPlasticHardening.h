@@ -35,17 +35,13 @@ public:
 
   AssociativeKinematicPlasticHardening(const OptionSet & options);
 
-  /// Accessor for the kinematic hardening direction
-  const LabeledAxisAccessor kinematic_hardening_direction;
-
-  /// Accessor for the kinematic plastic strain rate
-  const LabeledAxisAccessor kinematic_plastic_strain_rate;
-
 protected:
-  /// The flow direction
-  virtual void set_value(const LabeledVector & in,
-                         LabeledVector * out,
-                         LabeledMatrix * dout_din = nullptr,
-                         LabeledTensor3D * d2out_din2 = nullptr) const override;
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+
+  /// Kinematic hardening direction
+  const Variable<SR2> & _NX;
+
+  /// Rate of kinematic plastic strain
+  Variable<SR2> & _Kp_dot;
 };
 } // namespace neml2

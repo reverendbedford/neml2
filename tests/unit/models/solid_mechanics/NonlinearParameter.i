@@ -40,11 +40,10 @@
     type = SR2Invariant
     invariant_type = 'VONMISES'
     tensor = 'state/internal/M'
-    invariant = 'state/internal/sm'
+    invariant = 'state/internal/s'
   []
   [s0]
     type = ScalarLinearInterpolation
-    parameter = 's0'
     argument = 'forces/T'
     abscissa = 'T_data'
     ordinate = 's0_data'

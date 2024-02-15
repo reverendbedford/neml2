@@ -29,6 +29,7 @@
 #include "neml2/tensors/Vec.h"
 #include "neml2/tensors/SR2.h"
 #include "neml2/tensors/R3.h"
+#include "neml2/tensors/R4.h"
 #include "neml2/tensors/Rot.h"
 #include "neml2/tensors/WR2.h"
 
@@ -175,8 +176,14 @@ template <class Derived>
 Derived
 R2Base<Derived>::rotate(const Rot & r) const
 {
-  R2 R = r.euler_rodrigues();
-  return Derived(R * R2(*this) * R.transpose());
+  return rotate(r.euler_rodrigues());
+}
+
+template <class Derived>
+Derived
+R2Base<Derived>::rotate(const R2 & R) const
+{
+  return R * R2(*this) * R.transpose();
 }
 
 template <class Derived>
@@ -189,6 +196,15 @@ R2Base<Derived>::drotate(const Rot & r) const
   return R3(torch::einsum("...itl,...tm,...jm", {F, *this, R}) +
                 torch::einsum("...ik,...kt,...jtl", {R, *this, F}),
             broadcast_batch_dim(*this, F, R));
+}
+
+template <class Derived>
+R4
+R2Base<Derived>::drotate(const R2 & R) const
+{
+  auto I = R2::identity(R.options());
+  return torch::einsum("...ik,...jl", {I, R * this->transpose()}) +
+         torch::einsum("...jk,...il", {I, R * R2(*this)});
 }
 
 template <class Derived>

@@ -37,25 +37,23 @@ public:
   /// Construct from OptionSet
   ElasticStrainRate(const OptionSet & options);
 
-  /// Output: elastic strain rate
-  const LabeledAxisAccessor elastic_strain_rate;
-
-  /// Input: current strain
-  const LabeledAxisAccessor elastic_strain;
-
-  /// Input: current deformation rate
-  const LabeledAxisAccessor deformation_rate;
-  /// Input: current vorticity
-  const LabeledAxisAccessor vorticity;
-
-  /// Input: plastic deformation rate
-  const LabeledAxisAccessor plastic_deformation_rate;
-
 protected:
   /// Set elastic strain rate and derivatives
-  virtual void set_value(const LabeledVector & in,
-                         LabeledVector * out,
-                         LabeledMatrix * dout_din = nullptr,
-                         LabeledTensor3D * d2out_din2 = nullptr) const override;
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+
+  /// Elastic strain rate
+  Variable<SR2> & _e_dot;
+
+  /// Current strain
+  const Variable<SR2> & _e;
+
+  /// Current deformation rate
+  const Variable<SR2> & _d;
+
+  /// Current vorticity
+  const Variable<WR2> & _w;
+
+  /// Plastic deformation rate
+  const Variable<SR2> & _dp;
 };
 } // namespace neml2

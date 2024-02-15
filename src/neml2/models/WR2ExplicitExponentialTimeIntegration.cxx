@@ -33,56 +33,46 @@ OptionSet
 WR2ExplicitExponentialTimeIntegration::expected_options()
 {
   OptionSet options = Model::expected_options();
-  options.set<LabeledAxisAccessor>("variable");
-  options.set<LabeledAxisAccessor>("time") = {{"t"}};
+  options.set<VariableName>("variable");
+  options.set<VariableName>("time") = VariableName("t");
   return options;
 }
 
 WR2ExplicitExponentialTimeIntegration::WR2ExplicitExponentialTimeIntegration(
     const OptionSet & options)
   : Model(options),
-    _var_name(options.get<LabeledAxisAccessor>("variable")),
+    _var_name(options.get<VariableName>("variable")),
     _var_rate_name(_var_name.with_suffix("_rate")),
-    var_rate(declare_input_variable<WR2>(_var_rate_name.on("state"))),
-    var(declare_output_variable<Rot>(_var_name.on("state"))),
-    var_n(declare_input_variable<Rot>(_var_name.on("old_state"))),
-    time(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("time").on("forces"))),
-    time_n(
-        declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("time").on("old_forces")))
+    _s(declare_output_variable<Rot>(_var_name.on("state"))),
+    _s_dot(declare_input_variable<WR2>(_var_rate_name.on("state"))),
+    _sn(declare_input_variable<Rot>(_var_name.on("old_state"))),
+    _t(declare_input_variable<Scalar>(options.get<VariableName>("time").on("forces"))),
+    _tn(declare_input_variable<Scalar>(options.get<VariableName>("time").on("old_forces")))
 {
-  this->setup();
 }
 
 void
-WR2ExplicitExponentialTimeIntegration::set_value(const LabeledVector & in,
-                                                 LabeledVector * out,
-                                                 LabeledMatrix * dout_din,
-                                                 LabeledTensor3D * d2out_din2) const
+WR2ExplicitExponentialTimeIntegration::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   neml_assert_dbg(!d2out_din2, "Second derivative not implemented.");
 
-  auto s_n = in.get<Rot>(var_n);
-  auto t_np1 = in.get<Scalar>(time);
-  auto t_n = in.get<Scalar>(time_n);
-  auto s_dot = in.get<WR2>(var_rate);
-  auto dt = t_np1 - t_n;
+  const auto dt = _t - _tn;
 
   // Incremental rotation
-  auto inc = (s_dot * dt).exp();
+  const auto inc = (_s_dot * dt).exp();
 
   if (out)
-    out->set(s_n.rotate(inc), var);
+    _s = Rot(_sn).rotate(inc);
 
   if (dout_din)
   {
-    auto de = (s_dot * dt).dexp();
-
-    dout_din->set(s_n.drotate(inc) * de * dt, var, var_rate);
+    const auto de = (_s_dot * dt).dexp();
+    _s.d(_s_dot) = Rot(_sn).drotate(inc) * de * dt;
     if (Model::stage == Model::Stage::UPDATING)
     {
-      dout_din->set(s_n.drotate_self(inc), var, var_n);
-      dout_din->set(s_n.drotate(inc) * de * Vec(s_dot), var, time);
-      dout_din->set(-s_n.drotate(inc) * de * Vec(s_dot), var, time_n);
+      _s.d(_sn) = Rot(_sn).drotate_self(inc);
+      _s.d(_t) = Rot(_sn).drotate(inc) * de * Vec(_s_dot.value());
+      _s.d(_tn) = -Rot(_sn).drotate(inc) * de * Vec(_s_dot.value());
     }
   }
 }

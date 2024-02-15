@@ -24,36 +24,48 @@
 
 #pragma once
 
+#include "neml2/base/NEML2Object.h"
 #include "neml2/base/OptionSet.h"
-#include "neml2/base/UniqueVector.h"
-#include "neml2/tensors/BatchTensorValue.h"
+#include "neml2/base/Storage.h"
+#include "neml2/tensors/TensorValue.h"
 
 namespace neml2
 {
+class VariableBase;
+
 /// Interface for object which can store parameters
 class ParameterStore
 {
 public:
-  ParameterStore(const OptionSet & options)
-    : _options(options)
+  ParameterStore(const OptionSet & options, NEML2Object * object);
+
+  /// @returns the buffer storage
+  /// @{
+  const Storage<std::string, TensorValueBase> & named_parameters() const
   {
+    return const_cast<ParameterStore *>(this)->named_parameters();
   }
+  Storage<std::string, TensorValueBase> & named_parameters();
+  /// }@
 
-  bool has_parameter(const std::string & name) const { return _param_ids.count(name); }
-
-  bool has_nonlinear_parameter(const std::string & name) const { return _nl_params.count(name); }
-
-  /**
-   * @brief Get the named parameters
-   *
-   * @return A map from parameter name to parameter value
-   */
-  std::map<std::string, BatchTensor> named_parameters() const;
-
-  /// Get a parameter's value
+  /// Get a writable reference of a parameter
   template <typename T,
             typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<T>, T>>>
-  const T & get_parameter(const std::string & name) const;
+  T & get_parameter(const std::string & name);
+
+  /// Whether this parameter store has any nonlinear parameter
+  bool has_nl_param() const { return !_nl_params.empty(); }
+
+  /// Get all nonlinear parameters
+  const std::map<std::string, const VariableBase *> & nl_params() const { return _nl_params; }
+
+  /**
+   * @brief Query the existence of a nonlinear parameter
+   *
+   * @return const VariableBase* Pointer to the VariableBase if the parameter associated with the
+   * given parameter name is nonlinear. Returns nullptr otherwise.
+   */
+  const VariableBase * nl_param(const std::string &) const;
 
 protected:
   /**
@@ -63,18 +75,30 @@ protected:
    */
   virtual void send_parameters_to(const torch::TensorOptions & options);
 
-  /// Get the accessor for a given nonlinear parameter
-  const LabeledAxisAccessor & nl_param(const std::string & name) const
-  {
-    return _nl_params.at(name);
-  }
-
+  /**
+   * @brief Declare a parameter.
+   *
+   * Note that all parameters are stored in the host (the object exposed to users). An object may be
+   * used multiple times in the host, and the same parameter may be declared multiple times. That is
+   * allowed, but only the first call to declare_parameter constructs the parameter value, and
+   * subsequent calls only returns a reference to the existing parameter.
+   *
+   * @tparam T Buffer type. See @ref primitive for supported types.
+   * @param name Buffer name
+   * @param rawval Buffer value
+   * @return Reference to buffer
+   */
   template <typename T,
             typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<T>, T>>>
   const T & declare_parameter(const std::string & name, const T & rawval);
 
   /**
-   * @brief Declare a model parameter.
+   * @brief Declare a parameter.
+   *
+   * Note that all parameters are stored in the host (the object exposed to users). An object may be
+   * used multiple times in the host, and the same parameter may be declared multiple times. That is
+   * allowed, but only the first call to declare_parameter constructs the parameter value, and
+   * subsequent calls only returns a reference to the existing parameter.
    *
    * @tparam T Parameter type. See @ref primitive for supported types.
    * @param name Name of the model parameter.
@@ -87,71 +111,51 @@ protected:
   const T & declare_parameter(const std::string & name, const std::string & input_option_name);
 
 private:
+  NEML2Object * _object;
+
   /**
    * @brief Parsed input file options. These options could be convenient when we look up a
    * cross-referenced tensor value by its name.
    *
    */
-  const OptionSet & _options;
-
-  /// Map from parameter name to ID
-  std::map<std::string, size_t> _param_ids;
-
-  /// Map from parameter ID to name
-  std::vector<std::string> _param_names;
+  const OptionSet _options;
 
   /// The actual storage for all the parameters
-  UniqueVector<BatchTensorValueBase> _param_values;
+  Storage<std::string, TensorValueBase> _param_values;
 
-  /// Accessors for all the *nonlinear* parameters
-  std::map<std::string, LabeledAxisAccessor> _nl_params;
+  /// @brief Map from nonlinear parameter names to their corresponding variable views
+  std::map<std::string, const VariableBase *> _nl_params;
 };
 
-inline std::map<std::string, BatchTensor>
-ParameterStore::named_parameters() const
-{
-  std::map<std::string, BatchTensor> params;
-
-  for (const auto & n : _param_names)
-    params.emplace(n, _param_values[_param_ids.at(n)]);
-
-  return params;
-}
-
 template <typename T, typename>
-const T &
-ParameterStore::get_parameter(const std::string & name) const
+T &
+ParameterStore::get_parameter(const std::string & name)
 {
-  auto id = _param_ids.at(name);
-  const auto & base_prop = _param_values[id];
-  const auto prop = dynamic_cast<const BatchTensorValue<T> *>(&base_prop);
-  neml_assert_dbg(prop, "Internal error, parameter cast failure.");
-  return prop->get();
-}
+  neml_assert(_object->host() == _object, "This method should only be called on the host model.");
 
-inline void
-ParameterStore::send_parameters_to(const torch::TensorOptions & options)
-{
-  for (auto && [name, id] : _param_ids)
-    _param_values[id].to(options);
+  auto base_ptr = _param_values.query_value(name);
+  neml_assert(base_ptr, "Parameter named ", name, " does not exist.");
+  auto ptr = dynamic_cast<TensorValue<T> *>(base_ptr);
+  neml_assert_dbg(ptr, "Internal error: Failed to cast parameter to a concrete type.");
+  return ptr->value();
 }
 
 template <typename T, typename>
 const T &
 ParameterStore::declare_parameter(const std::string & name, const T & rawval)
 {
-  neml_assert(std::find(_param_names.begin(), _param_names.end(), name) == _param_names.end(),
-              "Trying to declare a parameter named ",
-              name,
-              " that already exists.");
+  if (_object->host() != _object)
+    return _object->host<ParameterStore>()->declare_parameter(_object->name() + "." + name, rawval);
 
-  auto val = std::make_unique<BatchTensorValue<T>>(rawval);
-  _param_ids.emplace(name, _param_ids.size());
-  _param_names.push_back(name);
-  auto & base_prop = _param_values.add_pointer(std::move(val));
-  auto prop = dynamic_cast<BatchTensorValue<T> *>(&base_prop);
-  neml_assert(prop, "Internal error, parameter cast failure.");
-  return prop->get();
+  // If the parameter already exists, return its reference
+  if (_param_values.has_key(name))
+    return get_parameter<T>(name);
+
+  auto val = std::make_unique<TensorValue<T>>(rawval);
+  auto base_ptr = _param_values.set_pointer(name, std::move(val));
+  auto ptr = dynamic_cast<TensorValue<T> *>(base_ptr);
+  neml_assert(ptr, "Internal error: Failed to cast parameter to a concrete type.");
+  return ptr->value();
 }
 
 } // namespace neml2

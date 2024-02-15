@@ -118,6 +118,11 @@
 []
 
 [Models]
+  [euler_rodrigues]
+    type = RotationMatrix
+    from = 'state/orientation'
+    to = 'state/orientation_matrix'
+  []
   [elasticity]
     type = LinearIsotropicElasticity
     youngs_modulus = 1e5
@@ -172,17 +177,17 @@
 
   [implicit_rate]
     type = ComposedModel
-    models = 'elasticity orientation_rate resolved_shear elastic_stretch plastic_deformation_rate plastic_spin sum_slip_rates slip_rule slip_strength voce_hardening integrate_slip_hardening integrate_elastic_strain integrate_orientation'
+    models = 'euler_rodrigues elasticity orientation_rate resolved_shear elastic_stretch plastic_deformation_rate plastic_spin sum_slip_rates slip_rule slip_strength voce_hardening integrate_slip_hardening integrate_elastic_strain integrate_orientation'
     automatic_scaling = true
   []
   [model]
     type = ImplicitUpdate
     implicit_model = 'implicit_rate'
     solver = 'newton'
-    additional_outputs = 'state/elastic_strain'
   []
   [model_with_stress]
     type = ComposedModel
     models = 'model elasticity'
+    additional_outputs = 'state/elastic_strain'
   []
 []

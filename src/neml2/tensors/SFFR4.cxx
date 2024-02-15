@@ -22,41 +22,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <catch2/catch.hpp>
+#include "neml2/tensors/SFFR4.h"
 
-#include "utils.h"
-#include "neml2/models/Model.h"
-
-using namespace neml2;
-
-TEST_CASE("Model", "[models]")
+namespace neml2
 {
-  SECTION("class Model")
-  {
-    SECTION("named_parameters")
-    {
-      load_model("unit/models/ImplicitUpdate.i");
-      auto & model = Factory::get_object<Model>("Models", "model");
-      auto params = model.named_parameters(/*recurse=*/true);
-
-      // There are three parameters:
-      auto a = "implicit_rate.rate.a";
-      auto b = "implicit_rate.rate.b";
-      auto c = "implicit_rate.rate.c";
-
-      REQUIRE(params.size() == 3);
-      REQUIRE(params.count(a) == 1);
-      REQUIRE(params.count(b) == 1);
-      REQUIRE(params.count(c) == 1);
-
-      // Make sure modifying a parameter value _actually_ modifies its dereferenced value in the
-      // model. For example, the current value of a is
-      auto a_val_original = params[a].clone();
-      // Now add 0.02 to it
-      params[a] += 0.02;
-      // Check the actual value used in the model
-      auto new_params = model.named_parameters(/*recurse=*/true);
-      REQUIRE(torch::allclose(a_val_original + 0.02, new_params[a]));
-    }
-  }
-}
+} // namespace neml2

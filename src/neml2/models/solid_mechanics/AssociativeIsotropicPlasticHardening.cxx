@@ -32,50 +32,43 @@ OptionSet
 AssociativeIsotropicPlasticHardening::expected_options()
 {
   OptionSet options = FlowRule::expected_options();
-  options.set<LabeledAxisAccessor>("isotropic_hardening_direction") = {{"state", "internal", "Nk"}};
-  options.set<LabeledAxisAccessor>("equivalent_plastic_strain_rate") = {
-      {"state", "internal", "ep_rate"}};
+  options.set<VariableName>("isotropic_hardening_direction") =
+      VariableName("state", "internal", "Nk");
+  options.set<VariableName>("equivalent_plastic_strain_rate") =
+      VariableName("state", "internal", "ep_rate");
   return options;
 }
 
 AssociativeIsotropicPlasticHardening::AssociativeIsotropicPlasticHardening(
     const OptionSet & options)
   : FlowRule(options),
-    isotropic_hardening_direction(declare_input_variable<Scalar>(
-        options.get<LabeledAxisAccessor>("isotropic_hardening_direction"))),
-    equivalent_plastic_strain_rate(declare_output_variable<Scalar>(
-        options.get<LabeledAxisAccessor>("equivalent_plastic_strain_rate")))
+    _Nk(declare_input_variable<Scalar>("isotropic_hardening_direction")),
+    _ep_dot(declare_output_variable<Scalar>("equivalent_plastic_strain_rate"))
 {
-  setup();
 }
 
 void
-AssociativeIsotropicPlasticHardening::set_value(const LabeledVector & in,
-                                                LabeledVector * out,
-                                                LabeledMatrix * dout_din,
-                                                LabeledTensor3D * d2out_din2) const
+AssociativeIsotropicPlasticHardening::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   // For associative flow,
   // ep_dot = - gamma_dot * Nk
   //     Nk = df/dk
-  auto gamma_dot = in.get<Scalar>(flow_rate);
-  auto Nk = in.get<Scalar>(isotropic_hardening_direction);
 
   if (out)
-    out->set(-gamma_dot * Nk, equivalent_plastic_strain_rate);
+    _ep_dot = -_gamma_dot * _Nk;
 
   if (dout_din)
   {
-    dout_din->set(-Nk, equivalent_plastic_strain_rate, flow_rate);
-    dout_din->set(-gamma_dot, equivalent_plastic_strain_rate, isotropic_hardening_direction);
+    _ep_dot.d(_gamma_dot) = -_Nk;
+    _ep_dot.d(_Nk) = -_gamma_dot;
   }
 
   if (d2out_din2)
   {
-    auto I = Scalar::identity_map(in.options());
     // I don't know when this will be useful, but since it's easy...
-    d2out_din2->set(-I, equivalent_plastic_strain_rate, flow_rate, isotropic_hardening_direction);
-    d2out_din2->set(-I, equivalent_plastic_strain_rate, isotropic_hardening_direction, flow_rate);
+    auto I = Scalar::identity_map(options());
+    _ep_dot.d(_gamma_dot, _Nk) = -I;
+    _ep_dot.d(_Nk, _gamma_dot) = -I;
   }
 }
 } // namespace neml2

@@ -44,19 +44,13 @@ LinearKinematicHardening::LinearKinematicHardening(const OptionSet & options)
 }
 
 void
-LinearKinematicHardening::set_value(const LabeledVector & in,
-                                    LabeledVector * out,
-                                    LabeledMatrix * dout_din,
-                                    LabeledTensor3D * d2out_din2) const
+LinearKinematicHardening::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   if (out)
-    out->set(_H * in(kinematic_plastic_strain), back_stress);
+    _X = _H * _Kp;
 
   if (dout_din)
-  {
-    auto I = SR2::identity_map(in.options());
-    dout_din->set(_H * I, back_stress, kinematic_plastic_strain);
-  }
+    _X.d(_Kp) = _H * SR2::identity_map(options());
 
   if (d2out_din2)
   {

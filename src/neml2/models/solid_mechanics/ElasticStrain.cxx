@@ -25,8 +25,6 @@
 #include "neml2/models/solid_mechanics/ElasticStrain.h"
 #include "neml2/tensors/SSR4.h"
 
-using vecstr = std::vector<std::string>;
-
 namespace neml2
 {
 register_NEML2_object(ElasticStrain);
@@ -35,9 +33,9 @@ OptionSet
 ElasticStrain::expected_options()
 {
   OptionSet options = Model::expected_options();
-  options.set<LabeledAxisAccessor>("total_strain") = vecstr{"forces", "E"};
-  options.set<LabeledAxisAccessor>("plastic_strain") = {{"state", "internal", "Ep"}};
-  options.set<LabeledAxisAccessor>("elastic_strain") = {{"state", "internal", "Ee"}};
+  options.set<VariableName>("total_strain") = VariableName("forces", "E");
+  options.set<VariableName>("plastic_strain") = VariableName("state", "internal", "Ep");
+  options.set<VariableName>("elastic_strain") = VariableName("state", "internal", "Ee");
   options.set<bool>("rate_form") = false;
   return options;
 }
@@ -45,36 +43,26 @@ ElasticStrain::expected_options()
 ElasticStrain::ElasticStrain(const OptionSet & options)
   : Model(options),
     _rate_form(options.get<bool>("rate_form")),
-    total_strain(declare_input_variable<SR2>(
-        options.get<LabeledAxisAccessor>("total_strain").with_suffix(_rate_form ? "_rate" : ""))),
-    plastic_strain(declare_input_variable<SR2>(
-        options.get<LabeledAxisAccessor>("plastic_strain").with_suffix(_rate_form ? "_rate" : ""))),
-    elastic_strain(declare_output_variable<SR2>(
-        options.get<LabeledAxisAccessor>("elastic_strain").with_suffix(_rate_form ? "_rate" : "")))
+    _E(declare_input_variable<SR2>(
+        options.get<VariableName>("total_strain").with_suffix(_rate_form ? "_rate" : ""))),
+    _Ep(declare_input_variable<SR2>(
+        options.get<VariableName>("plastic_strain").with_suffix(_rate_form ? "_rate" : ""))),
+    _Ee(declare_output_variable<SR2>(
+        options.get<VariableName>("elastic_strain").with_suffix(_rate_form ? "_rate" : "")))
 {
-  setup();
 }
 
 void
-ElasticStrain::set_value(const LabeledVector & in,
-                         LabeledVector * out,
-                         LabeledMatrix * dout_din,
-                         LabeledTensor3D * d2out_din2) const
+ElasticStrain::set_value(bool out, bool dout_din, bool d2out_din2)
 {
-  // Simple additive decomposition:
-  // elastic strain = total strain - plastic strain
   if (out)
-  {
-    auto E = in.get<SR2>(total_strain);
-    auto Ep = in.get<SR2>(plastic_strain);
-    out->set(E - Ep, elastic_strain);
-  }
+    _Ee = _E - _Ep;
 
   if (dout_din)
   {
-    auto I = SR2::identity_map(in.options());
-    dout_din->set(I, elastic_strain, total_strain);
-    dout_din->set(-I, elastic_strain, plastic_strain);
+    auto I = SR2::identity_map(options());
+    _Ee.d(_E) = I;
+    _Ee.d(_Ep) = -I;
   }
 
   if (d2out_din2)

@@ -34,72 +34,56 @@ OptionSet
 BackwardEulerTimeIntegration<T>::expected_options()
 {
   OptionSet options = Model::expected_options();
-  options.set<LabeledAxisAccessor>("variable");
-  options.set<LabeledAxisAccessor>("time") = {"t"};
+  options.set<VariableName>("variable");
+  options.set<VariableName>("time") = VariableName("t");
   return options;
 }
 
 template <typename T>
 BackwardEulerTimeIntegration<T>::BackwardEulerTimeIntegration(const OptionSet & options)
   : Model(options),
-    _var_name(options.get<LabeledAxisAccessor>("variable")),
+    _var_name(options.get<VariableName>("variable")),
     _var_rate_name(_var_name.with_suffix("_rate")),
-    res(declare_output_variable<T>(_var_name.on("residual"))),
-    var_rate(declare_input_variable<T>(_var_rate_name.on("state"))),
-    var(declare_input_variable<T>(_var_name.on("state"))),
-    var_n(declare_input_variable<T>(_var_name.on("old_state"))),
-    time(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("time").on("forces"))),
-    time_n(
-        declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("time").on("old_forces")))
+    _r(declare_output_variable<T>(_var_name.on("residual"))),
+    _ds_dt(declare_input_variable<T>(_var_rate_name.on("state"))),
+    _s(declare_input_variable<T>(_var_name.on("state"))),
+    _sn(declare_input_variable<T>(_var_name.on("old_state"))),
+    _t(declare_input_variable<Scalar>(options.get<VariableName>("time").on("forces"))),
+    _tn(declare_input_variable<Scalar>(options.get<VariableName>("time").on("old_forces")))
 {
-  setup();
 }
 
 template <typename T>
 void
-BackwardEulerTimeIntegration<T>::set_value(const LabeledVector & in,
-                                           LabeledVector * out,
-                                           LabeledMatrix * dout_din,
-                                           LabeledTensor3D * d2out_din2) const
+BackwardEulerTimeIntegration<T>::set_value(bool out, bool dout_din, bool d2out_din2)
 {
-  const auto options = in.options();
-
-  auto s_dot = in(var_rate);
-  auto dt = in.get<Scalar>(time) - in.get<Scalar>(time_n);
-
   if (out)
-  {
-    auto s_np1 = in(var);
-    auto s_n = in(var_n);
-    // r = s_np1 - s_n - s_dot * (t_np1 - t_n)
-    out->set(s_np1 - s_n - s_dot * dt, res);
-  }
+    _r = _s - _sn - _ds_dt * (_t - _tn);
 
   if (dout_din || d2out_din2)
   {
-    auto n_state = output().storage_size(res);
-    auto I = BatchTensor::identity(n_state, options);
+    auto I = BatchTensor::identity(T::const_base_storage, options());
 
     if (dout_din)
     {
-      dout_din->set(I, res, var);
-      dout_din->set(-I * dt, res, var_rate);
+      _r.d(_s) = I;
+      _r.d(_ds_dt) = -I * (_t - _tn);
       if (Model::stage == Model::Stage::UPDATING)
       {
-        dout_din->set(-I, res, var_n);
-        dout_din->set(-s_dot, res, time);
-        dout_din->set(s_dot, res, time_n);
+        _r.d(_sn) = -I;
+        _r.d(_t) = -_ds_dt;
+        _r.d(_tn) = _ds_dt;
       }
     }
 
     if (d2out_din2)
     {
-      d2out_din2->set(-I, res, var_rate, time);
-      d2out_din2->set(I, res, var_rate, time_n);
+      _r.d(_ds_dt, _t) = -I;
+      _r.d(_ds_dt, _tn) = I;
       if (Model::stage == Model::Stage::UPDATING)
       {
-        d2out_din2->set(-I, res, time, var_rate);
-        d2out_din2->set(I, res, time_n, var_rate);
+        _r.d(_t, _ds_dt) = -I;
+        _r.d(_tn, _ds_dt) = I;
       }
     }
   }

@@ -54,7 +54,16 @@
 []
 
 [Models]
-  [model]
+  [euler_rodrigues]
+    type = RotationMatrix
+    from = 'state/orientation'
+    to = 'state/orientation_matrix'
+  []
+  [tau]
     type = ResolvedShear
+  []
+  [model]
+    type = ComposedModel
+    models = 'euler_rodrigues tau'
   []
 []

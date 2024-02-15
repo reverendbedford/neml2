@@ -94,12 +94,25 @@ TEST_CASE("WR2", "[tensors]")
 
     SECTION("drotate")
     {
-      auto apply = [w](const BatchTensor & x) { return w.rotate(Rot(x)); };
-      auto dwp_dr = finite_differencing_derivative(apply, r);
+      // Rodrigues vector
+      auto apply_r = [w](const BatchTensor & x) { return w.rotate(Rot(x)); };
+      auto dwp_dr = finite_differencing_derivative(apply_r, r);
       auto dwp_drb = dwp_dr.batch_expand(B);
 
       REQUIRE(torch::allclose(w.drotate(r), dwp_dr));
       REQUIRE(torch::allclose(wb.drotate(rb), dwp_drb));
+
+      // Rotation matrix
+      auto R = R2(r);
+      auto Rb = R2(rb);
+      auto apply_R = [w](const BatchTensor & x) { return w.rotate(R2(x)); };
+      auto dwp_dR = finite_differencing_derivative(apply_R, R);
+      auto dwp_dRb = dwp_dR.batch_expand(B);
+
+      REQUIRE(torch::allclose(w.drotate(R), dwp_dR));
+      REQUIRE(torch::allclose(wb.drotate(Rb), dwp_dRb));
+      REQUIRE(torch::allclose(w.drotate(Rb), dwp_dRb));
+      REQUIRE(torch::allclose(wb.drotate(R), dwp_dRb));
     }
 
     SECTION("exp")

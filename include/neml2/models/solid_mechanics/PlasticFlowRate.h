@@ -35,7 +35,11 @@ public:
 
   PlasticFlowRate(const OptionSet & options);
 
-  const LabeledAxisAccessor yield_function;
-  const LabeledAxisAccessor flow_rate;
+protected:
+  /// Plastic yield function
+  const Variable<Scalar> & _f;
+
+  /// Plastic flow rate
+  Variable<Scalar> & _gamma_dot;
 };
 } // namespace neml2

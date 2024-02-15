@@ -77,8 +77,10 @@ protected:
   virtual void apply_predictor();
   /// Perform the constitutive update for the current time step.
   virtual void solve_step();
-  /// Save the results of the current time step.
-  virtual void store_step();
+  /// Save the input of the current time step.
+  virtual void store_input();
+  /// Save the output of the current time step.
+  virtual void store_output();
   // @}
 
   /// Save the results into the destination file/path.
@@ -86,30 +88,34 @@ protected:
 
   /// The model which the driver uses to perform constitutive updates.
   Model & _model;
-  /// The tensor options for all the computations
-  const torch::TensorOptions _options;
+  /// The device on which to evaluate the model
+  const torch::Device _device;
 
   /// The current time
   Scalar _time;
   /// The current step count
   TorchSize _step_count;
-  /// LabeledAxisAccessor for the time
-  LabeledAxisAccessor _time_name;
+  /// VariableName for the time
+  VariableName _time_name;
   /// Total number of steps
   TorchSize _nsteps;
   /// The batch size
   TorchSize _nbatch;
   /// The input to the constitutive model
-  LabeledVector _in;
+  LabeledVector & _in;
   /// The output of the constitutive model
-  LabeledVector _out;
+  LabeledVector & _out;
 
   /// The predictor used to set the initial guess
   std::string _predictor;
   /// The destination file name or file path
   std::string _save_as;
-  /// Set to true to list all the model parameters at the beginning.
+  /// Set to true to list all the model parameters at the beginning
   const bool _show_params;
+  /// Set to true to show model's input axis at the beginning
+  const bool _show_input;
+  /// Set to true to show model's output axis at the beginning
+  const bool _show_output;
 
   /// Inputs from all time steps
   LabeledVector _result_in;
@@ -117,15 +123,15 @@ protected:
   LabeledVector _result_out;
 
   /// Names for scalar initial conditions
-  std::vector<LabeledAxisAccessor> _ic_scalar_names;
+  std::vector<VariableName> _ic_scalar_names;
   /// Values for the scalar initial conditions
   std::vector<CrossRef<Scalar>> _ic_scalar_values;
   /// Names for the Rot initial conditions
-  std::vector<LabeledAxisAccessor> _ic_rot_names;
+  std::vector<VariableName> _ic_rot_names;
   /// Values for the Rot initial conditions
   std::vector<CrossRef<Rot>> _ic_rot_values;
   /// Names for the SR2 initial conditions
-  std::vector<LabeledAxisAccessor> _ic_sr2_names;
+  std::vector<VariableName> _ic_sr2_names;
   /// Values for the SR2 initial conditions
   std::vector<CrossRef<SR2>> _ic_sr2_values;
 
@@ -136,7 +142,7 @@ private:
   void output_pt(const std::filesystem::path & out) const;
 
   template <typename T>
-  void set_IC(const std::vector<LabeledAxisAccessor> & ic_names,
+  void set_IC(const std::vector<VariableName> & ic_names,
               const std::vector<CrossRef<T>> & ic_values)
   {
     for (size_t i = 0; i < ic_names.size(); i++)

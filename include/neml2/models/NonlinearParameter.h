@@ -54,13 +54,11 @@ public:
 
   NonlinearParameter(const OptionSet & options);
 
-  const LabeledAxisAccessor p;
-
-  /// Get the nonlinear parameter value
-  const T & get_value() const { return _p[0]; }
+  /// Get the nonlinear parameter
+  const Variable<T> & param() const { return _p; }
 
 protected:
-  /// Manage memory for the nonlinear parameter $p$, and its derivatives.
-  UniqueVector<T> _p;
+  /// The nonlinear parameter
+  Variable<T> & _p;
 };
 } // namespace neml2

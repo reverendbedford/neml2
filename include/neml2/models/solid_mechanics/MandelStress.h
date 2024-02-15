@@ -35,7 +35,8 @@ public:
 
   MandelStress(const OptionSet & options);
 
-  const LabeledAxisAccessor cauchy_stress;
-  const LabeledAxisAccessor mandel_stress;
+protected:
+  const Variable<SR2> & _S;
+  Variable<SR2> & _M;
 };
 } // namespace neml2

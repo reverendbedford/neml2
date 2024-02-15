@@ -35,18 +35,16 @@ public:
 
   Normality(const OptionSet & options);
 
-  const LabeledAxisAccessor function;
-
 protected:
   /// The flow direction
-  virtual void set_value(const LabeledVector & in,
-                         LabeledVector * out,
-                         LabeledMatrix * dout_din = nullptr,
-                         LabeledTensor3D * d2out_din2 = nullptr) const override;
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
-  /// The potential function for the conjugate pairs
-  const Model & _model;
+  /// The model which evaluates the potential function
+  Model & _model;
 
-  std::map<LabeledAxisAccessor, LabeledAxisAccessor> _conjugate_pairs;
+  /// The potential function
+  const VariableName _f;
+
+  std::map<VariableName, Variable<BatchTensor> *> _conjugate_pairs;
 };
 } // namespace neml2

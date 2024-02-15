@@ -35,35 +35,7 @@ Data::expected_options()
 
 Data::Data(const OptionSet & options)
   : NEML2Object(options),
-    BufferStore(options)
+    BufferStore(options, this)
 {
-}
-
-void
-Data::to(const torch::TensorOptions & options)
-{
-  send_buffers_to(options);
-
-  for (auto & data : _registered_data)
-    data->to(options);
-}
-
-std::map<std::string, BatchTensor>
-Data::named_buffers(bool recurse) const
-{
-  auto buffers = BufferStore::named_buffers();
-
-  if (recurse)
-    for (auto & data : _registered_data)
-      for (auto && [n, v] : data->named_buffers(true))
-        buffers.emplace(data->name() + "." + n, v);
-
-  return buffers;
-}
-
-void
-Data::register_data(std::shared_ptr<Data> data)
-{
-  _registered_data.push_back(data.get());
 }
 }

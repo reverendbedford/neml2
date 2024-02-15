@@ -57,6 +57,9 @@ public:
   /// Copy constructor
   LabeledTensor(const Derived & other);
 
+  /// Assignment operator
+  void operator=(const Derived & other);
+
   /// A potentially dangerous implicit conversion
   // Should we mark it explicit?
   operator BatchTensor() const;
@@ -86,8 +89,15 @@ public:
   /// Clone this LabeledTensor
   Derived clone(torch::MemoryFormat memory_format = torch::MemoryFormat::Contiguous) const;
 
+  /// Copy the value from another tensor
   template <typename T>
   void copy_(const T & other);
+
+  /// Detach from gradient graphs
+  void detach_();
+
+  /// Zero out this tensor
+  void zero_();
 
   /// Get the underlying tensor
   /// @{
@@ -132,7 +142,7 @@ public:
   template <typename... S>
   BatchTensor operator()(S &&... names) const;
 
-  /// Slice the tensor on the given dimension by a single sub-axis
+  /// Slice the tensor on the given dimension by a single variable or sub-axis
   Derived slice(TorchSize i, const std::string & name) const;
 
   /// Get the sub-block labeled by the given sub-axis names

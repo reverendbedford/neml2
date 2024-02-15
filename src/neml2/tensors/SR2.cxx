@@ -29,6 +29,7 @@
 #include "neml2/tensors/R3.h"
 #include "neml2/tensors/SFR3.h"
 #include "neml2/tensors/SSR4.h"
+#include "neml2/tensors/SFFR4.h"
 #include "neml2/tensors/Rot.h"
 #include "neml2/tensors/SWR4.h"
 #include "neml2/tensors/WR2.h"
@@ -123,10 +124,23 @@ SR2::rotate(const Rot & r) const
   return R2(*this).rotate(r);
 }
 
+SR2
+SR2::rotate(const R2 & R) const
+{
+  return R2(*this).rotate(R);
+}
+
 SFR3
 SR2::drotate(const Rot & r) const
 {
   auto dR = R2(*this).drotate(r);
+  return math::full_to_mandel(dR);
+}
+
+SFFR4
+SR2::drotate(const R2 & R) const
+{
+  auto dR = R2(*this).drotate(R);
   return math::full_to_mandel(dR);
 }
 

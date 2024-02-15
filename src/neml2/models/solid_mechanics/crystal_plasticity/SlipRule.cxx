@@ -28,8 +28,6 @@
 #include "neml2/tensors/tensors.h"
 #include "neml2/tensors/list_tensors.h"
 
-using vecstr = std::vector<std::string>;
-
 namespace neml2
 {
 OptionSet
@@ -37,12 +35,11 @@ SlipRule::expected_options()
 {
   OptionSet options = Model::expected_options();
 
-  options.set<LabeledAxisAccessor>("slip_rates") = vecstr{"state", "internal", "slip_rates"};
+  options.set<VariableName>("slip_rates") = VariableName("state", "internal", "slip_rates");
 
-  options.set<LabeledAxisAccessor>("resolved_shears") =
-      vecstr{"state", "internal", "resolved_shears"};
-  options.set<LabeledAxisAccessor>("slip_strengths") =
-      vecstr{"state", "internal", "slip_strengths"};
+  options.set<VariableName>("resolved_shears") =
+      VariableName("state", "internal", "resolved_shears");
+  options.set<VariableName>("slip_strengths") = VariableName("state", "internal", "slip_strengths");
 
   options.set<std::string>("crystal_geometry_name") = "crystal_geometry";
 
@@ -51,16 +48,12 @@ SlipRule::expected_options()
 
 SlipRule::SlipRule(const OptionSet & options)
   : Model(options),
-    crystal_geometry(include_data<crystallography::CrystalGeometry>(
+    _crystal_geometry(register_data<crystallography::CrystalGeometry>(
         options.get<std::string>("crystal_geometry_name"))),
-    slip_rates(declare_output_variable_list<Scalar>(options.get<LabeledAxisAccessor>("slip_rates"),
-                                                    crystal_geometry.nslip())),
-    resolved_shears(declare_input_variable_list<Scalar>(
-        options.get<LabeledAxisAccessor>("resolved_shears"), crystal_geometry.nslip())),
-    slip_strengths(declare_input_variable_list<Scalar>(
-        options.get<LabeledAxisAccessor>("slip_strengths"), crystal_geometry.nslip()))
+    _g(declare_output_variable_list<Scalar>(_crystal_geometry.nslip(), "slip_rates")),
+    _rss(declare_input_variable_list<Scalar>(_crystal_geometry.nslip(), "resolved_shears")),
+    _tau(declare_input_variable_list<Scalar>(_crystal_geometry.nslip(), "slip_strengths"))
 {
-  setup();
 }
 
 } // namespace neml2

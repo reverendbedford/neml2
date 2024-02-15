@@ -35,66 +35,53 @@ OptionSet
 ForwardEulerTimeIntegration<T>::expected_options()
 {
   OptionSet options = Model::expected_options();
-  options.set<LabeledAxisAccessor>("variable");
-  options.set<LabeledAxisAccessor>("time") = {{"t"}};
+  options.set<VariableName>("variable");
+  options.set<VariableName>("time") = VariableName("t");
   return options;
 }
 
 template <typename T>
 ForwardEulerTimeIntegration<T>::ForwardEulerTimeIntegration(const OptionSet & options)
   : Model(options),
-    _var_name(options.get<LabeledAxisAccessor>("variable")),
+    _var_name(options.get<VariableName>("variable")),
     _var_rate_name(_var_name.with_suffix("_rate")),
-    var_rate(declare_input_variable<T>(_var_rate_name.on("state"))),
-    var(declare_output_variable<T>(_var_name.on("state"))),
-    var_n(declare_input_variable<T>(_var_name.on("old_state"))),
-    time(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("time").on("forces"))),
-    time_n(
-        declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("time").on("old_forces")))
+    _s(declare_output_variable<T>(_var_name.on("state"))),
+    _ds_dt(declare_input_variable<T>(_var_rate_name.on("state"))),
+    _sn(declare_input_variable<T>(_var_name.on("old_state"))),
+    _t(declare_input_variable<Scalar>(options.get<VariableName>("time").on("forces"))),
+    _tn(declare_input_variable<Scalar>(options.get<VariableName>("time").on("old_forces")))
 {
-  this->setup();
 }
 
 template <typename T>
 void
-ForwardEulerTimeIntegration<T>::set_value(const LabeledVector & in,
-                                          LabeledVector * out,
-                                          LabeledMatrix * dout_din,
-                                          LabeledTensor3D * d2out_din2) const
+ForwardEulerTimeIntegration<T>::set_value(bool out, bool dout_din, bool d2out_din2)
 {
-  const auto options = in.options();
-
-  auto s_n = in.get<T>(var_n);
-  auto t_np1 = in.get<Scalar>(time);
-  auto t_n = in.get<Scalar>(time_n);
-  auto s_dot = in.get<T>(var_rate);
-  auto dt = t_np1 - t_n;
-
   if (out)
-    out->set(s_n + s_dot * dt, var);
+    _s = _sn + _ds_dt * (_t - _tn);
 
   if (dout_din || d2out_din2)
   {
-    auto I = T::identity_map(options);
+    auto I = T::identity_map(options());
 
     if (dout_din)
     {
-      dout_din->set(I * dt, var, var_rate);
+      _s.d(_ds_dt) = I * (_t - _tn);
       if (Model::stage == Model::Stage::UPDATING)
       {
-        dout_din->set(I, var, var_n);
-        dout_din->set(s_dot, var, time);
-        dout_din->set(-s_dot, var, time_n);
+        _s.d(_sn) = I;
+        _s.d(_t) = _ds_dt;
+        _s.d(_tn) = -_ds_dt;
       }
     }
 
     if (d2out_din2)
       if (Model::stage == Model::Stage::UPDATING)
       {
-        d2out_din2->set(I, var, var_rate, time);
-        d2out_din2->set(-I, var, var_rate, time_n);
-        d2out_din2->set(I, var, time, var_rate);
-        d2out_din2->set(-I, var, time_n, var_rate);
+        _s.d(_ds_dt, _t) = I;
+        _s.d(_ds_dt, _tn) = -I;
+        _s.d(_t, _ds_dt) = I;
+        _s.d(_tn, _ds_dt) = -I;
       }
   }
 }

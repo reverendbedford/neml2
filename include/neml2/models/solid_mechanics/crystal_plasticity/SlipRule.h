@@ -41,16 +41,17 @@ public:
 
   SlipRule(const OptionSet & options);
 
+protected:
   /// Crystal geometry class with slip geometry
-  const crystallography::CrystalGeometry & crystal_geometry;
+  const crystallography::CrystalGeometry & _crystal_geometry;
 
-  /// Output: slip rates
-  const LabeledAxisAccessor slip_rates;
+  /// Slip rates
+  Variable<BatchTensor> & _g;
 
-  /// Input: resolved shears
-  const LabeledAxisAccessor resolved_shears;
+  /// Resolved shears
+  const Variable<BatchTensor> & _rss;
 
-  // Input: slip strengths, mapped from internal variables
-  const LabeledAxisAccessor slip_strengths;
+  /// Slip strengths, mapped from internal variables
+  const Variable<BatchTensor> & _tau;
 };
 } // namespace neml2

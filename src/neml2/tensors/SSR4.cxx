@@ -36,7 +36,7 @@ namespace neml2
 SSR4::SSR4(const R4 & T)
   : SSR4(math::full_to_mandel(
         math::full_to_mandel(
-            (T + T.transpose_minor() + T.base_transpose(0, 1) + T.base_transpose(2, 3)) / 4.0),
+            (T + T.transpose_minor() + R4(T.transpose(0, 1)) + R4(T.transpose(2, 3))) / 4.0),
         1))
 {
 }

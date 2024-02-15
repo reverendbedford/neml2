@@ -47,22 +47,21 @@ protected:
   const bool _rate_form;
 
   /// The strain (rate) variable accessor
-  const LabeledAxisAccessor _strain;
+  const VariableName _strain;
 
   /// The stress (rate) variable accessor
-  const LabeledAxisAccessor _stress;
+  const VariableName _stress;
 
-public:
   /**
    * The variable accessor for the input. If _compliance == true, this is the stress (rate).
    * Otherwise this is the strain (rate).
    */
-  const LabeledAxisAccessor from_var;
+  const Variable<SR2> & _from;
 
   /**
    * The variable accessor for the output. If _compliance == true, this is the strain (rate).
    * Otherwise this is the stress (rate).
    */
-  const LabeledAxisAccessor to_var;
+  Variable<SR2> & _to;
 };
 } // namespace neml2

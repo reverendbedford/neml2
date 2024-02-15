@@ -26,85 +26,53 @@
 #include "neml2/tensors/SSR4.h"
 
 using namespace neml2;
-using vecstr = std::vector<std::string>;
 
 register_NEML2_object(SampleRateModel);
 
 SampleRateModel::SampleRateModel(const OptionSet & options)
   : Model(options),
+    foo(declare_input_variable<Scalar>("state", "foo")),
+    bar(declare_input_variable<Scalar>("state", "bar")),
+    baz(declare_input_variable<SR2>("state", "baz")),
+    T(declare_input_variable<Scalar>("forces", "temperature")),
+    foo_dot(declare_output_variable<Scalar>("state", "foo_rate")),
+    bar_dot(declare_output_variable<Scalar>("state", "bar_rate")),
+    baz_dot(declare_output_variable<SR2>("state", "baz_rate")),
     _a(declare_parameter("a", Scalar(-0.01, default_tensor_options()))),
     _b(declare_parameter("b", Scalar(-0.5, default_tensor_options()))),
-    _c(declare_parameter("c", Scalar(-0.9, default_tensor_options()))),
-    _foo(declare_input_variable<Scalar>(vecstr{"state", "foo"})),
-    _bar(declare_input_variable<Scalar>(vecstr{"state", "bar"})),
-    _baz(declare_input_variable<SR2>(vecstr{"state", "baz"})),
-    _temperature(declare_input_variable<Scalar>(vecstr{"forces", "temperature"})),
-    _foo_rate(declare_output_variable<Scalar>(vecstr{"state", "foo_rate"})),
-    _bar_rate(declare_output_variable<Scalar>(vecstr{"state", "bar_rate"})),
-    _baz_rate(declare_output_variable<SR2>(vecstr{"state", "baz_rate"}))
+    _c(declare_parameter("c", Scalar(-0.9, default_tensor_options())))
 {
-  setup();
 }
 
 void
-SampleRateModel::set_value(const LabeledVector & in,
-                           LabeledVector * out,
-                           LabeledMatrix * dout_din,
-                           LabeledTensor3D * d2out_din2) const
+SampleRateModel::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   neml_assert_dbg(!d2out_din2, "Second derivative not implemented.");
 
-  // Grab the trial states
-  auto foo = in.get<Scalar>(_foo);
-  auto bar = in.get<Scalar>(_bar);
-  auto baz = in.get<SR2>(_baz);
-
-  // Say the rates depend on temperature, for fun
-  auto T = in.get<Scalar>(_temperature);
-
-  // Some made up rates
-  auto foo_dot = (foo * foo + bar) * T + baz.tr();
-  auto bar_dot = _a * bar + _b * foo + _c * T + baz.tr();
-  auto baz_dot = (foo + bar) * baz * (T - 3);
-
-  // Set the output
   if (out)
   {
-    out->set(foo_dot, _foo_rate);
-    out->set(bar_dot, _bar_rate);
-    out->set(baz_dot, _baz_rate);
+    foo_dot = (foo * foo + bar) * T + SR2(baz).tr();
+    bar_dot = _a * bar + _b * foo + _c * T + SR2(baz).tr();
+    baz_dot = (foo + bar) * baz * (T - 3);
   }
 
   if (dout_din)
   {
-    const auto options = in.options();
+    auto I = SR2::identity(options());
 
-    auto dfoo_dot_dfoo = 2 * foo * T;
-    auto dfoo_dot_dbar = T;
-    auto dfoo_dot_dbaz = SR2::identity(options);
-    auto dbar_dot_dfoo = _b;
-    auto dbar_dot_dbar = _a;
-    auto dbar_dot_dbaz = SR2::identity(options);
-    auto dbaz_dot_dfoo = baz * (T - 3);
-    auto dbaz_dot_dbar = baz * (T - 3);
-    auto dbaz_dot_dbaz = (foo + bar) * (T - 3) * SR2::identity_map(options);
+    foo_dot.d(foo) = 2 * foo * T;
+    foo_dot.d(bar) = T;
+    foo_dot.d(baz) = I;
+    foo_dot.d(T) = foo * foo + bar;
 
-    dout_din->set(dfoo_dot_dfoo, _foo_rate, _foo);
-    dout_din->set(dfoo_dot_dbar, _foo_rate, _bar);
-    dout_din->set(dfoo_dot_dbaz, _foo_rate, _baz);
-    dout_din->set(dbar_dot_dfoo, _bar_rate, _foo);
-    dout_din->set(dbar_dot_dbar, _bar_rate, _bar);
-    dout_din->set(dfoo_dot_dbaz, _bar_rate, _baz);
-    dout_din->set(dbaz_dot_dfoo, _baz_rate, _foo);
-    dout_din->set(dbaz_dot_dbar, _baz_rate, _bar);
-    dout_din->set(dbaz_dot_dbaz, _baz_rate, _baz);
+    bar_dot.d(foo) = _b;
+    bar_dot.d(bar) = _a;
+    bar_dot.d(baz) = I;
+    bar_dot.d(T) = _c;
 
-    auto dfoo_dot_dT = foo * foo + bar;
-    auto dbar_dot_dT = _c;
-    auto dbaz_dot_dT = (foo + bar) * baz;
-
-    dout_din->set(dfoo_dot_dT, _foo_rate, _temperature);
-    dout_din->set(dbar_dot_dT, _bar_rate, _temperature);
-    dout_din->set(dbaz_dot_dT, _baz_rate, _temperature);
+    baz_dot.d(foo) = baz * (T - 3);
+    baz_dot.d(bar) = baz * (T - 3);
+    baz_dot.d(baz) = (foo + bar) * (T - 3) * SR2::identity_map(options());
+    baz_dot.d(T) = (foo + bar) * baz;
   }
 }

@@ -35,6 +35,7 @@ public:
 
   FlowRule(const OptionSet & options);
 
-  const LabeledAxisAccessor flow_rate;
+protected:
+  const Variable<Scalar> & _gamma_dot;
 };
 } // namespace neml2

@@ -45,11 +45,29 @@ class LabeledAxisAccessor
 public:
   LabeledAxisAccessor() = default;
 
-  LabeledAxisAccessor(const char * name);
-  LabeledAxisAccessor(const std::string & name);
+  template <typename... S>
+  LabeledAxisAccessor(const char * name, S &&... names)
+  {
+    validate_item_name(name);
+    _item_names.push_back(name);
+
+    (validate_item_name(names), ...);
+    (_item_names.push_back(names), ...);
+  }
+
+  template <typename... S>
+  LabeledAxisAccessor(const std::string & name, S &&... names)
+  {
+    validate_item_name(name);
+    _item_names.push_back(name);
+
+    (validate_item_name(names), ...);
+    (_item_names.push_back(names), ...);
+  }
+
   LabeledAxisAccessor(const std::vector<std::string> & names);
-  LabeledAxisAccessor(const std::initializer_list<std::string> & names);
-  LabeledAxisAccessor(const LabeledAxisAccessor & names);
+
+  LabeledAxisAccessor(const LabeledAxisAccessor & other);
 
   /// Assignment operator
   LabeledAxisAccessor & operator=(const LabeledAxisAccessor & other);
@@ -59,6 +77,8 @@ public:
   const std::vector<std::string> & vec() const { return _item_names; }
 
   bool empty() const;
+
+  size_t size() const;
 
   /// Append a suffix to the item name.
   LabeledAxisAccessor with_suffix(const std::string & suffix) const;
@@ -74,6 +94,9 @@ public:
 
   /// Extract out the labels from \p n1 to \p n2
   LabeledAxisAccessor slice(size_t n1, size_t n2) const;
+
+  /// Check if this accessor begins with another accessor
+  bool start_with(const LabeledAxisAccessor & axis) const;
 
 private:
   /// Throws if the item name has invalid format

@@ -66,6 +66,6 @@ protected:
    * The name of the driving force, depending on `_control` this is either the prescribed strain or
    * the prescribed stress.
    */
-  LabeledAxisAccessor _driving_force_name;
+  VariableName _driving_force_name;
 };
 }

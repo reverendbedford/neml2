@@ -27,7 +27,6 @@
 #include "neml2/models/ImplicitUpdate.h"
 
 namespace fs = std::filesystem;
-using vecstr = std::vector<std::string>;
 
 namespace neml2
 {
@@ -37,18 +36,20 @@ TransientDriver::expected_options()
   OptionSet options = Driver::expected_options();
   options.set<std::string>("model");
   options.set<CrossRef<torch::Tensor>>("times");
-  options.set<LabeledAxisAccessor>("time") = vecstr{"forces", "t"};
+  options.set<VariableName>("time") = VariableName("forces", "t");
   options.set<std::string>("predictor") = "PREVIOUS_STATE";
   options.set<Real>("cp_elastic_scale") = 1.0;
   options.set<std::string>("save_as");
   options.set<bool>("show_parameters") = false;
+  options.set<bool>("show_input_axis") = false;
+  options.set<bool>("show_output_axis") = false;
   options.set<std::string>("device") = "cpu";
 
-  options.set<std::vector<LabeledAxisAccessor>>("ic_scalar_names");
+  options.set<std::vector<VariableName>>("ic_scalar_names");
   options.set<std::vector<CrossRef<Scalar>>>("ic_scalar_values");
-  options.set<std::vector<LabeledAxisAccessor>>("ic_rot_names");
+  options.set<std::vector<VariableName>>("ic_rot_names");
   options.set<std::vector<CrossRef<Rot>>>("ic_rot_values");
-  options.set<std::vector<LabeledAxisAccessor>>("ic_sr2_names");
+  options.set<std::vector<VariableName>>("ic_sr2_names");
   options.set<std::vector<CrossRef<SR2>>>("ic_sr2_values");
 
   return options;
@@ -57,33 +58,34 @@ TransientDriver::expected_options()
 TransientDriver::TransientDriver(const OptionSet & options)
   : Driver(options),
     _model(Factory::get_object<Model>("Models", options.get<std::string>("model"))),
-    _options(default_tensor_options().device(options.get<std::string>("device"))),
+    _device(options.get<std::string>("device")),
     _time(options.get<CrossRef<torch::Tensor>>("times"), 2),
     _step_count(0),
-    _time_name(options.get<LabeledAxisAccessor>("time")),
+    _time_name(options.get<VariableName>("time")),
     _nsteps(_time.batch_sizes()[0]),
     _nbatch(_time.batch_sizes()[1]),
-    _in(LabeledVector::zeros(_nbatch, {&_model.input()})),
-    _out(LabeledVector::zeros(_nbatch, {&_model.output()})),
+    _in(_model.input_storage()),
+    _out(_model.output_storage()),
     _predictor(options.get<std::string>("predictor")),
     _save_as(options.get<std::string>("save_as")),
     _show_params(options.get<bool>("show_parameters")),
-    _result_in(LabeledVector::zeros({_nsteps, _nbatch}, {&_model.input()})),
-    _result_out(LabeledVector::zeros({_nsteps, _nbatch}, {&_model.output()})),
-    _ic_scalar_names(options.get<std::vector<LabeledAxisAccessor>>("ic_scalar_names")),
+    _show_input(options.get<bool>("show_input_axis")),
+    _show_output(options.get<bool>("show_output_axis")),
+    _result_in(LabeledVector::zeros({_nsteps, _nbatch}, {&_model.input_axis()})),
+    _result_out(LabeledVector::zeros({_nsteps, _nbatch}, {&_model.output_axis()})),
+    _ic_scalar_names(options.get<std::vector<VariableName>>("ic_scalar_names")),
     _ic_scalar_values(options.get<std::vector<CrossRef<Scalar>>>("ic_scalar_values")),
-    _ic_rot_names(options.get<std::vector<LabeledAxisAccessor>>("ic_rot_names")),
+    _ic_rot_names(options.get<std::vector<VariableName>>("ic_rot_names")),
     _ic_rot_values(options.get<std::vector<CrossRef<Rot>>>("ic_rot_values")),
-    _ic_sr2_names(options.get<std::vector<LabeledAxisAccessor>>("ic_sr2_names")),
+    _ic_sr2_names(options.get<std::vector<VariableName>>("ic_sr2_names")),
     _ic_sr2_values(options.get<std::vector<CrossRef<SR2>>>("ic_sr2_values")),
     _cp_elastic_scale(options.get<Real>("cp_elastic_scale"))
 {
-  _model.to(_options);
-  _in = _in.to(_options);
-  _out = _out.to(_options);
-  _time = _time.to(_options);
-  _result_in = _result_in.to(_options);
-  _result_out = _result_out.to(_options);
+  _model.reinit({_nbatch}, 0, _device);
+
+  _time = _time.to(_device);
+  _result_in = _result_in.to(_device);
+  _result_out = _result_out.to(_device);
 }
 
 void
@@ -98,10 +100,16 @@ TransientDriver::check_integrity() const
 bool
 TransientDriver::run()
 {
+  // LCOV_EXCL_START
   if (_show_params)
-    // LCOV_EXCL_START
-    for (auto && [pname, pval] : _model.named_parameters(true))
+    for (auto && [pname, pval] : _model.named_parameters())
       std::cout << pname << std::endl;
+
+  if (_show_input)
+    std::cout << _model.name() << "'s input axis:\n" << _model.input_axis() << std::endl;
+
+  if (_show_output)
+    std::cout << _model.name() << "'s output axis:\n" << _model.output_axis() << std::endl;
   // LCOV_EXCL_STOP
 
   auto status = solve();
@@ -126,14 +134,17 @@ TransientDriver::solve()
       advance_step();
     update_forces();
     if (_step_count == 0)
+    {
+      store_input();
       apply_ic();
+    }
     else
     {
-      if (_model.implicit())
-        apply_predictor();
+      apply_predictor();
+      store_input();
       solve_step();
     }
-    store_step();
+    store_output();
 
     if (_verbose)
       // LCOV_EXCL_START
@@ -147,8 +158,11 @@ TransientDriver::solve()
 void
 TransientDriver::advance_step()
 {
-  LabeledVector(_in.slice("old_state")).fill(_out.slice("state"));
-  LabeledVector(_in.slice("old_forces")).fill(_in.slice("forces"));
+  if (_in.axis(0).has_subaxis("old_state") && _out.axis(0).has_subaxis("state"))
+    _in.slice("old_state").fill(_out.slice("state"));
+
+  if (_in.axis(0).has_subaxis("old_forces") && _in.axis(0).has_subaxis("forces"))
+    _in.slice("old_forces").fill(_in.slice("forces"));
 }
 
 void
@@ -177,31 +191,34 @@ TransientDriver::apply_predictor()
     cp = true;
   }
 
-  if (predictor == "PREVIOUS_STATE")
-    _in.slice("state").fill(_in.slice("old_state"));
-  else if (predictor == "LINEAR_EXTRAPOLATION")
+  if (_in.axis(0).has_subaxis("state") && _in.axis(0).has_subaxis("old_state"))
   {
-    // Fall back to PREVIOUS_STATE predictor at the 1st time step
-    if (_step_count == 1)
+    if (predictor == "PREVIOUS_STATE")
       _in.slice("state").fill(_in.slice("old_state"));
-    // Otherwise linearly extrapolate in time
-    else
+    else if (predictor == "LINEAR_EXTRAPOLATION")
     {
-      auto t = _in.get<Scalar>(_time_name);
-      auto t_n = _result_in.get<Scalar>(_time_name).batch_index({_step_count - 1});
-      auto t_nm1 = _result_in.get<Scalar>(_time_name).batch_index({_step_count - 2});
-      auto dt = t - t_n;
-      auto dt_n = t_n - t_nm1;
+      // Fall back to PREVIOUS_STATE predictor at the 1st time step
+      if (_step_count == 1)
+        _in.slice("state").fill(_in.slice("old_state"));
+      // Otherwise linearly extrapolate in time
+      else
+      {
+        auto t = _in.get<Scalar>(_time_name);
+        auto t_n = _result_in.get<Scalar>(_time_name).batch_index({_step_count - 1});
+        auto t_nm1 = _result_in.get<Scalar>(_time_name).batch_index({_step_count - 2});
+        auto dt = t - t_n;
+        auto dt_n = t_n - t_nm1;
 
-      auto states = _result_out.slice("state");
-      auto state_n = states.tensor().batch_index({_step_count - 1});
-      auto state_nm1 = states.tensor().batch_index({_step_count - 2});
-      LabeledVector state(state_n + (state_n - state_nm1) / dt_n * dt, states.axes());
-      _in.slice("state").fill(state);
+        auto states = _result_out.slice("state");
+        auto state_n = states.tensor().batch_index({_step_count - 1});
+        auto state_nm1 = states.tensor().batch_index({_step_count - 2});
+        LabeledVector state(state_n + (state_n - state_nm1) / dt_n * dt, states.axes());
+        _in.slice("state").fill(state);
+      }
     }
+    else
+      throw NEMLException("Unrecognized predictor type: " + _predictor);
   }
-  else
-    throw NEMLException("Unrecognized predictor type: " + _predictor);
 
   if (cp && (_step_count == 1))
   {
@@ -215,13 +232,18 @@ TransientDriver::apply_predictor()
 void
 TransientDriver::solve_step()
 {
-  _out = _model.value(_in);
+  _model.value();
 }
 
 void
-TransientDriver::store_step()
+TransientDriver::store_input()
 {
   _result_in.batch_index_put({_step_count}, _in);
+}
+
+void
+TransientDriver::store_output()
+{
   _result_out.batch_index_put({_step_count}, _out);
 }
 
@@ -234,8 +256,8 @@ TransientDriver::save_as_path() const
 torch::nn::ModuleDict
 TransientDriver::result() const
 {
-  auto result_in_cpu = _result_in.to(_options.device(torch::kCPU));
-  auto result_out_cpu = _result_out.to(_options.device(torch::kCPU));
+  auto result_in_cpu = _result_in.to(torch::kCPU);
+  auto result_out_cpu = _result_out.to(torch::kCPU);
 
   // Dump input variables into a Module
   auto res_in = std::make_shared<torch::nn::Module>();

@@ -37,22 +37,29 @@ public:
   BackwardEulerTimeIntegration(const OptionSet & options);
 
 private:
-  const LabeledAxisAccessor _var_name;
-  const LabeledAxisAccessor _var_rate_name;
-
-public:
-  const LabeledAxisAccessor res;
-  const LabeledAxisAccessor var_rate;
-  const LabeledAxisAccessor var;
-  const LabeledAxisAccessor var_n;
-  const LabeledAxisAccessor time;
-  const LabeledAxisAccessor time_n;
+  const VariableName _var_name;
+  const VariableName _var_rate_name;
 
 protected:
-  virtual void set_value(const LabeledVector & in,
-                         LabeledVector * out,
-                         LabeledMatrix * dout_din = nullptr,
-                         LabeledTensor3D * d2out_din2 = nullptr) const override;
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+
+  /// Residual
+  Variable<T> & _r;
+
+  /// Variable rate
+  const Variable<T> & _ds_dt;
+
+  /// Current variable value
+  const Variable<T> & _s;
+
+  /// Old variable value
+  const Variable<T> & _sn;
+
+  /// Current time
+  const Variable<Scalar> & _t;
+
+  /// Old time
+  const Variable<Scalar> & _tn;
 };
 
 typedef BackwardEulerTimeIntegration<Scalar> ScalarBackwardEulerTimeIntegration;

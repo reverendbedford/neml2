@@ -38,10 +38,11 @@ public:
 
   SlipStrengthMap(const OptionSet & options);
 
+protected:
   /// Crystal geometry class with slip geometry
-  const crystallography::CrystalGeometry & crystal_geometry;
+  const crystallography::CrystalGeometry & _crystal_geometry;
 
-  /// Output: slip system strengths
-  const LabeledAxisAccessor slip_strengths;
+  /// Slip strengths
+  Variable<BatchTensor> & _tau;
 };
 } // namespace neml2

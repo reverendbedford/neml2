@@ -66,7 +66,7 @@ TEST_CASE("LabeledAxis", "[tensors]")
     SECTION("add")
     {
       LabeledAxis a;
-      LabeledAxisAccessor i({"a", "b", "c"});
+      LabeledAxisAccessor i("a", "b", "c");
       a.add("foo", 13);
       a.add(i, 3);
       a.setup_layout();
@@ -79,8 +79,8 @@ TEST_CASE("LabeledAxis", "[tensors]")
     SECTION("rename")
     {
       LabeledAxis a;
-      LabeledAxisAccessor i({"a", "b"});
-      LabeledAxisAccessor j({"a", "c"});
+      LabeledAxisAccessor i("a", "b");
+      LabeledAxisAccessor j("a", "c");
       a.add(i, 2);
       a.add(j, 3);
       a.rename("a", "d");
@@ -114,7 +114,7 @@ TEST_CASE("LabeledAxis", "[tensors]")
     SECTION("clear")
     {
       LabeledAxis a;
-      LabeledAxisAccessor i({"a", "b"});
+      LabeledAxisAccessor i("a", "b");
       LabeledAxisAccessor j("c");
       a.add(i, 2);
       a.add(j, 3);
@@ -129,13 +129,13 @@ TEST_CASE("LabeledAxis", "[tensors]")
     SECTION("merge")
     {
       LabeledAxis a;
-      LabeledAxisAccessor i({"a", "b"});
+      LabeledAxisAccessor i("a", "b");
       LabeledAxisAccessor j("c");
       a.add(i, 2);
       a.add(j, 3);
 
       LabeledAxis b;
-      LabeledAxisAccessor k({"a", "d"});
+      LabeledAxisAccessor k("a", "d");
       LabeledAxisAccessor l("c");
       b.add(k, 2);
       b.add(l, 3);
@@ -152,7 +152,7 @@ TEST_CASE("LabeledAxis", "[tensors]")
     SECTION("has_item")
     {
       LabeledAxis a;
-      LabeledAxisAccessor i({"a", "b"});
+      LabeledAxisAccessor i("a", "b");
       LabeledAxisAccessor j("c");
       a.add(i, 2);
       a.add(j, 3);
@@ -165,7 +165,7 @@ TEST_CASE("LabeledAxis", "[tensors]")
     SECTION("has_variable")
     {
       LabeledAxis a;
-      LabeledAxisAccessor i({"a", "b"});
+      LabeledAxisAccessor i("a", "b");
       LabeledAxisAccessor j("c");
       a.add(i, 2);
       a.add(j, 3);
@@ -184,9 +184,9 @@ TEST_CASE("LabeledAxis", "[tensors]")
     SECTION("storage_size")
     {
       LabeledAxis a;
-      LabeledAxisAccessor i({"a", "b"});
+      LabeledAxisAccessor i("a", "b");
       LabeledAxisAccessor j("c");
-      LabeledAxisAccessor k({"a", "d"});
+      LabeledAxisAccessor k("a", "d");
       a.add(i, 2);
       a.add(j, 3);
       a.add(k, 3);

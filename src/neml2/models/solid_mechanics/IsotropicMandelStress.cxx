@@ -37,21 +37,15 @@ IsotropicMandelStress::expected_options()
 }
 
 void
-IsotropicMandelStress::set_value(const LabeledVector & in,
-                                 LabeledVector * out,
-                                 LabeledMatrix * dout_din,
-                                 LabeledTensor3D * d2out_din2) const
+IsotropicMandelStress::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   // Isotropic mandel stress is just the Cauchy stress
 
   if (out)
-    out->set(in.get<SR2>(cauchy_stress), mandel_stress);
+    _M = SR2(_S);
 
   if (dout_din)
-  {
-    auto I = SR2::identity_map(in.options());
-    dout_din->set(I, mandel_stress, cauchy_stress);
-  }
+    _M.d(_S) = SR2::identity_map(options());
 
   if (d2out_din2)
   {

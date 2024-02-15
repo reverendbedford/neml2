@@ -24,7 +24,7 @@
     values = '1 1 1'
   []
   [sum]
-    type = Scalar 
+    type = Scalar
     values = '1.91'
   []
   [rates]

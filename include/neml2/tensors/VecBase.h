@@ -31,6 +31,7 @@
 namespace neml2
 {
 class Rot;
+class R3;
 
 /**
  * @brief Base class for the (logical) vector.
@@ -76,11 +77,17 @@ public:
   /// Norm
   Scalar norm() const;
 
-  /// Rotate
+  /// Rotate using a Rodrigues vector
   Derived rotate(const Rot & r) const;
+
+  /// Rotate using a rotation matrix
+  Derived rotate(const R2 & R) const;
 
   /// Derivative of the rotated vector w.r.t. the Rodrigues vector
   R2 drotate(const Rot & r) const;
+
+  /// Derivative of the rotated vector w.r.t. the rotation matrix
+  R3 drotate(const R2 & R) const;
 };
 
 template <class Derived>
@@ -111,6 +118,6 @@ template <class Derived2>
 R2
 VecBase<Derived>::outer(const VecBase<Derived2> & v) const
 {
-  return R2(torch::einsum("...i,...j", {*this, v}), broadcast_batch_dim(*this, v));
+  return torch::matmul(this->unsqueeze(-1), v.unsqueeze(-2));
 }
 } // namespace neml2

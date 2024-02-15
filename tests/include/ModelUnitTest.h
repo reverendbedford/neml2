@@ -53,7 +53,7 @@ private:
   void
   fill_vector(LabeledVector & vec, const std::string & option_vars, const std::string & option_vals)
   {
-    const auto vars = options().get<std::vector<LabeledAxisAccessor>>(option_vars);
+    const auto vars = options().get<std::vector<VariableName>>(option_vars);
     const auto vals = options().get<std::vector<CrossRef<T>>>(option_vals);
     neml_assert(vars.size() == vals.size(),
                 "Trying to assign ",
@@ -69,15 +69,20 @@ private:
   void check_values();
   void check_derivatives(bool first, bool second);
   void check_second_derivatives(bool first, bool second);
+  void check_parameter_derivatives();
 
   Model & _model;
   const TorchShape _batch_shape;
+  const bool _check_values;
   const bool _check_1st_deriv;
   const bool _check_2nd_deriv;
   const bool _check_AD_1st_deriv;
   const bool _check_AD_2nd_deriv;
   const bool _check_AD_derivs;
+  const bool _check_param_derivs;
   const bool _check_cuda;
+
+  int _deriv_order;
 
   LabeledVector _in;
   LabeledVector _out;
@@ -88,5 +93,7 @@ private:
   Real _deriv_atol;
   Real _secderiv_rtol;
   Real _secderiv_atol;
+  Real _param_rtol;
+  Real _param_atol;
 };
 } // namespace neml2

@@ -27,8 +27,6 @@
 #include "neml2/tensors/tensors.h"
 #include "neml2/misc/math.h"
 
-using vecstr = std::vector<std::string>;
-
 namespace neml2
 {
 register_NEML2_object(OrientationRate);
@@ -37,57 +35,41 @@ OptionSet
 OrientationRate::expected_options()
 {
   OptionSet options = Model::expected_options();
-  options.set<LabeledAxisAccessor>("orientation_rate") = vecstr{"state", "orientation_rate"};
-  options.set<LabeledAxisAccessor>("elastic_strain") = vecstr{"state", "elastic_strain"};
-
-  options.set<LabeledAxisAccessor>("vorticity") = vecstr{"forces", "vorticity"};
-
-  options.set<LabeledAxisAccessor>("plastic_deformation_rate") =
-      vecstr{"state", "internal", "plastic_deformation_rate"};
-  options.set<LabeledAxisAccessor>("plastic_vorticity") =
-      vecstr{"state", "internal", "plastic_vorticity"};
+  options.set<VariableName>("orientation_rate") = VariableName("state", "orientation_rate");
+  options.set<VariableName>("elastic_strain") = VariableName("state", "elastic_strain");
+  options.set<VariableName>("vorticity") = VariableName("forces", "vorticity");
+  options.set<VariableName>("plastic_deformation_rate") =
+      VariableName("state", "internal", "plastic_deformation_rate");
+  options.set<VariableName>("plastic_vorticity") =
+      VariableName("state", "internal", "plastic_vorticity");
   return options;
 }
 
 OrientationRate::OrientationRate(const OptionSet & options)
   : Model(options),
-    orientation_rate(
-        declare_output_variable<WR2>(options.get<LabeledAxisAccessor>("orientation_rate"))),
-    elastic_strain(declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("elastic_strain"))),
-    vorticity(declare_input_variable<WR2>(options.get<LabeledAxisAccessor>("vorticity"))),
-    plastic_deformation_rate(
-        declare_input_variable<SR2>(options.get<LabeledAxisAccessor>("plastic_deformation_rate"))),
-    plastic_vorticity(
-        declare_input_variable<WR2>(options.get<LabeledAxisAccessor>("plastic_vorticity")))
+    _R_dot(declare_output_variable<WR2>("orientation_rate")),
+    _e(declare_input_variable<SR2>("elastic_strain")),
+    _w(declare_input_variable<WR2>("vorticity")),
+    _dp(declare_input_variable<SR2>("plastic_deformation_rate")),
+    _wp(declare_input_variable<WR2>("plastic_vorticity"))
 {
-  setup();
 }
 
 void
-OrientationRate::set_value(const LabeledVector & in,
-                           LabeledVector * out,
-                           LabeledMatrix * dout_din,
-                           LabeledTensor3D * d2out_din2) const
+OrientationRate::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   neml_assert_dbg(!d2out_din2, "Second derivative not implemented.");
 
-  // Grab the input
-  const auto e = in.get<SR2>(elastic_strain);
-  const auto w = in.get<WR2>(vorticity);
-  const auto dp = in.get<SR2>(plastic_deformation_rate);
-  const auto wp = in.get<WR2>(plastic_vorticity);
-
   if (out)
-    out->set(w - wp + math::multiply_and_make_skew(dp, e), orientation_rate);
+    _R_dot = _w - _wp + math::multiply_and_make_skew(SR2(_dp), SR2(_e));
 
   if (dout_din)
   {
-    auto I = WWR4::identity(in.options());
-    dout_din->set(math::d_multiply_and_make_skew_d_second(dp), orientation_rate, elastic_strain);
-    dout_din->set(I, orientation_rate, vorticity);
-    dout_din->set(
-        math::d_multiply_and_make_skew_d_first(e), orientation_rate, plastic_deformation_rate);
-    dout_din->set(-I, orientation_rate, plastic_vorticity);
+    const auto I = WWR4::identity(options());
+    _R_dot.d(_e) = math::d_multiply_and_make_skew_d_second(SR2(_dp));
+    _R_dot.d(_w) = I;
+    _R_dot.d(_dp) = math::d_multiply_and_make_skew_d_first(SR2(_e));
+    _R_dot.d(_wp) = -I;
   }
 }
 } // namespace neml2

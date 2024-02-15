@@ -130,14 +130,27 @@ TEST_CASE("SR2", "[tensors]")
 
     SECTION("drotate")
     {
-      auto apply = [T](const BatchTensor & x) { return T.rotate(Rot(x)); };
-      auto dTp_dr = finite_differencing_derivative(apply, r);
+      // Rodrigues vector
+      auto apply_r = [T](const BatchTensor & x) { return T.rotate(Rot(x)); };
+      auto dTp_dr = finite_differencing_derivative(apply_r, r);
       auto dTp_drb = dTp_dr.batch_expand(B);
 
       REQUIRE(torch::allclose(T.drotate(r), dTp_dr));
       REQUIRE(torch::allclose(Tb.drotate(rb), dTp_drb));
       REQUIRE(torch::allclose(T.drotate(rb), dTp_drb));
       REQUIRE(torch::allclose(Tb.drotate(r), dTp_drb));
+
+      // Rotation matrix
+      auto R = R2(r);
+      auto Rb = R2(rb);
+      auto apply_R = [T](const BatchTensor & x) { return T.rotate(R2(x)); };
+      auto dTp_dR = finite_differencing_derivative(apply_R, R);
+      auto dTp_dRb = dTp_dR.batch_expand(B);
+
+      REQUIRE(torch::allclose(T.drotate(R), dTp_dR));
+      REQUIRE(torch::allclose(Tb.drotate(Rb), dTp_dRb));
+      REQUIRE(torch::allclose(T.drotate(Rb), dTp_dRb));
+      REQUIRE(torch::allclose(Tb.drotate(R), dTp_dRb));
     }
 
     SECTION("operator()")

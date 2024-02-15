@@ -74,7 +74,7 @@ public:
    */
   const std::string & raw() const { return _raw_str; }
 
-  friend std::stringstream & operator>><>(std::stringstream & in, CrossRef<T> &);
+  friend std::stringstream & operator>> <>(std::stringstream & in, CrossRef<T> &);
 
 private:
   /// The raw string literal.

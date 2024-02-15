@@ -35,20 +35,17 @@ public:
 
   ChabochePlasticHardening(const OptionSet & options);
 
-public:
-  /// Input: the current value of this backstress
-  const LabeledAxisAccessor back_stress;
-  /// Input: the current flow direction
-  const LabeledAxisAccessor flow_direction;
-  /// Output: the rate of this backstress
-  const LabeledAxisAccessor back_stress_rate;
-
 protected:
-  /// Set the rate of the backstress and derivatives, if requested
-  virtual void set_value(const LabeledVector & in,
-                         LabeledVector * out,
-                         LabeledMatrix * dout_din = nullptr,
-                         LabeledTensor3D * d2out_din2 = nullptr) const override;
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+
+  /// Backstress
+  const Variable<SR2> & _X;
+
+  /// Flow direction
+  const Variable<SR2> & _NM;
+
+  /// Rate of backstress
+  Variable<SR2> & _X_dot;
 
   const Scalar & _C;
   const Scalar & _g;

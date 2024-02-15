@@ -22,30 +22,37 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
-
-#include "neml2/models/Model.h"
+#include "neml2/models/RotationMatrix.h"
 
 namespace neml2
 {
-template <typename T>
-class IdentityMap : public Model
+register_NEML2_object(RotationMatrix);
+
+OptionSet
+RotationMatrix::expected_options()
 {
-public:
-  static OptionSet expected_options();
+  OptionSet options = Model::expected_options();
+  options.set<VariableName>("from");
+  options.set<VariableName>("to");
+  return options;
+}
 
-  IdentityMap(const OptionSet & options);
+RotationMatrix::RotationMatrix(const OptionSet & options)
+  : Model(options),
+    _from(declare_input_variable<Rot>("from")),
+    _to(declare_output_variable<R2>("to"))
+{
+}
 
-  const LabeledAxisAccessor from;
-  const LabeledAxisAccessor to;
+void
+RotationMatrix::set_value(bool out, bool dout_din, bool d2out_din2)
+{
+  neml_assert(!d2out_din2, "Second derivatives not implemented");
 
-protected:
-  virtual void set_value(const LabeledVector & in,
-                         LabeledVector * out,
-                         LabeledMatrix * dout_din = nullptr,
-                         LabeledTensor3D * d2out_din2 = nullptr) const override;
-};
+  if (out)
+    _to = Rot(_from).euler_rodrigues();
 
-typedef IdentityMap<Scalar> ScalarIdentityMap;
-typedef IdentityMap<SR2> SR2IdentityMap;
+  if (dout_din)
+    _to.d(_from) = Rot(_from).deuler_rodrigues();
+}
 } // namespace neml2

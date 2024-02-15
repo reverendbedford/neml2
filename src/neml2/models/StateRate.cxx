@@ -35,74 +35,62 @@ OptionSet
 StateRate<T>::expected_options()
 {
   OptionSet options = Model::expected_options();
-  options.set<LabeledAxisAccessor>("state");
-  options.set<LabeledAxisAccessor>("time") = {"t"};
+  options.set<VariableName>("state");
+  options.set<VariableName>("time") = VariableName("t");
   return options;
 }
 
 template <typename T>
 StateRate<T>::StateRate(const OptionSet & options)
   : Model(options),
-    state(declare_input_variable<T>(options.get<LabeledAxisAccessor>("state").on("state"))),
-    state_n(declare_input_variable<T>(options.get<LabeledAxisAccessor>("state").on("old_state"))),
-    time(declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("time").on("forces"))),
-    time_n(
-        declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("time").on("old_forces"))),
-    state_rate(declare_output_variable<T>(
-        options.get<LabeledAxisAccessor>("state").with_suffix("_rate").on("state")))
+    _s(declare_input_variable<T>(options.get<VariableName>("state").on("state"))),
+    _sn(declare_input_variable<T>(options.get<VariableName>("state").on("old_state"))),
+    _t(declare_input_variable<Scalar>(options.get<VariableName>("time").on("forces"))),
+    _tn(declare_input_variable<Scalar>(options.get<VariableName>("time").on("old_forces"))),
+    _ds_dt(declare_output_variable<T>(
+        options.get<VariableName>("state").with_suffix("_rate").on("state")))
 {
-  this->setup();
 }
 
 template <typename T>
 void
-StateRate<T>::set_value(const LabeledVector & in,
-                        LabeledVector * out,
-                        LabeledMatrix * dout_din,
-                        LabeledTensor3D * d2out_din2) const
+StateRate<T>::set_value(bool out, bool dout_din, bool d2out_din2)
 {
-  const auto options = in.options();
-
-  auto s_np1 = in.get<T>(state);
-  auto s_n = in.get<T>(state_n);
-  auto t_np1 = in.get<Scalar>(time);
-  auto t_n = in.get<Scalar>(time_n);
-
-  auto ds = s_np1 - s_n;
-  auto dt = t_np1 - t_n;
+  auto ds = _s - _sn;
+  auto dt = _t - _tn;
 
   if (out)
-  {
-    auto s_dot = ds / dt;
-    out->set(s_dot, state_rate);
-  }
+    _ds_dt = ds / dt;
 
   if (dout_din || d2out_din2)
   {
-    auto I = T::identity_map(options);
+    auto I = T::identity_map(options());
 
     if (dout_din)
     {
-      dout_din->set(I / dt, state_rate, state);
-      dout_din->set(-I / dt, state_rate, state_n);
-      dout_din->set(-ds / dt / dt, state_rate, time);
-      dout_din->set(ds / dt / dt, state_rate, time_n);
+      _ds_dt.d(_s) = I / dt;
+      _ds_dt.d(_sn) = -I / dt;
+      _ds_dt.d(_t) = -ds / dt / dt;
+      _ds_dt.d(_tn) = ds / dt / dt;
     }
 
     if (d2out_din2)
     {
-      d2out_din2->set(-I / dt / dt, state_rate, state, time);
-      d2out_din2->set(I / dt / dt, state_rate, state, time_n);
-      d2out_din2->set(I / dt / dt, state_rate, state_n, time);
-      d2out_din2->set(-I / dt / dt, state_rate, state_n, time_n);
-      d2out_din2->set(-I / dt / dt, state_rate, time, state);
-      d2out_din2->set(I / dt / dt, state_rate, time, state_n);
-      d2out_din2->set(2 * ds / dt / dt / dt, state_rate, time, time);
-      d2out_din2->set(-2 * ds / dt / dt / dt, state_rate, time, time_n);
-      d2out_din2->set(I / dt / dt, state_rate, time_n, state);
-      d2out_din2->set(-I / dt / dt, state_rate, time_n, state_n);
-      d2out_din2->set(-2 * ds / dt / dt / dt, state_rate, time_n, time);
-      d2out_din2->set(2 * ds / dt / dt / dt, state_rate, time_n, time_n);
+      _ds_dt.d(_s, _t) = -I / dt / dt;
+      _ds_dt.d(_s, _tn) = I / dt / dt;
+
+      _ds_dt.d(_sn, _t) = I / dt / dt;
+      _ds_dt.d(_sn, _tn) = -I / dt / dt;
+
+      _ds_dt.d(_t, _s) = -I / dt / dt;
+      _ds_dt.d(_t, _sn) = I / dt / dt;
+      _ds_dt.d(_t, _t) = 2 * ds / dt / dt / dt;
+      _ds_dt.d(_t, _tn) = -2 * ds / dt / dt / dt;
+
+      _ds_dt.d(_tn, _s) = I / dt / dt;
+      _ds_dt.d(_tn, _sn) = -I / dt / dt;
+      _ds_dt.d(_tn, _t) = -2 * ds / dt / dt / dt;
+      _ds_dt.d(_tn, _tn) = 2 * ds / dt / dt / dt;
     }
   }
 }

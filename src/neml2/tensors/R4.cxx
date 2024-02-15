@@ -77,6 +77,12 @@ R4::operator()(TorchSize i, TorchSize j, TorchSize k, TorchSize l) const
 }
 
 R4
+R4::transpose(TorchSize d1, TorchSize d2) const
+{
+  return BatchTensorBase<R4>::base_transpose(d1, d2);
+}
+
+R4
 R4::transpose_minor() const
 {
   return BatchTensorBase<R4>::base_transpose(0, 1).base_transpose(2, 3);

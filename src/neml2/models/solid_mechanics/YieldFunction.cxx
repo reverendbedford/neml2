@@ -33,49 +33,45 @@ YieldFunction::expected_options()
 {
   OptionSet options = Model::expected_options();
   options.set<CrossRef<Scalar>>("yield_stress");
-  options.set<LabeledAxisAccessor>("stress_measure") = {{"state", "internal", "sm"}};
-  options.set<LabeledAxisAccessor>("isotropic_hardening");
-  options.set<LabeledAxisAccessor>("yield_function") = {{"state", "internal", "fp"}};
+  options.set<VariableName>("effective_stress") = VariableName("state", "internal", "s");
+  options.set<VariableName>("isotropic_hardening");
+  options.set<VariableName>("yield_function") = VariableName("state", "internal", "fp");
   return options;
 }
 
 YieldFunction::YieldFunction(const OptionSet & options)
   : Model(options),
-    stress_measure(
-        declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("stress_measure"))),
-    isotropic_hardening(options.get<LabeledAxisAccessor>("isotropic_hardening")),
-    yield_function(
-        declare_output_variable<Scalar>(options.get<LabeledAxisAccessor>("yield_function"))),
-    _s0(declare_parameter<Scalar>("sy", "yield_stress"))
+    _s(declare_input_variable<Scalar>("effective_stress")),
+    _h(options.get<VariableName>("isotropic_hardening").empty()
+           ? nullptr
+           : &declare_input_variable<Scalar>("isotropic_hardening")),
+    _f(declare_output_variable<Scalar>("yield_function")),
+    _sy(declare_parameter<Scalar>("sy", "yield_stress"))
 {
-  if (!isotropic_hardening.empty())
-    declare_input_variable<Scalar>(isotropic_hardening);
-  setup();
 }
 
 void
-YieldFunction::set_value(const LabeledVector & in,
-                         LabeledVector * out,
-                         LabeledMatrix * dout_din,
-                         LabeledTensor3D * d2out_din2) const
+YieldFunction::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   if (out)
   {
-    auto sm = in.get<Scalar>(stress_measure);
-    auto f = sm - _s0;
-    if (!isotropic_hardening.empty())
-      f -= in.get<Scalar>(isotropic_hardening);
-    out->set(std::sqrt(2.0 / 3.0) * f, yield_function);
+    if (_h)
+      _f = std::sqrt(2.0 / 3.0) * (_s - _sy - (*_h));
+    else
+      _f = std::sqrt(2.0 / 3.0) * (_s - _sy);
   }
 
   if (dout_din)
   {
-    auto I = Scalar::identity_map(in.options());
-    dout_din->set(std::sqrt(2.0 / 3.0) * I, yield_function, stress_measure);
-    if (!isotropic_hardening.empty())
-      dout_din->set(-std::sqrt(2.0 / 3.0) * I, yield_function, isotropic_hardening);
-    if (has_nonlinear_parameter("sy"))
-      dout_din->set(-std::sqrt(2.0 / 3.0) * I, yield_function, nl_param("sy"));
+    auto I = Scalar::identity_map(options());
+
+    _f.d(_s) = std::sqrt(2.0 / 3.0) * I;
+
+    if (_h)
+      _f.d(*_h) = -std::sqrt(2.0 / 3.0) * I;
+
+    if (const auto sy = nl_param("sy"))
+      _f.d(*sy) = -std::sqrt(2.0 / 3.0) * I;
   }
 
   if (d2out_din2)

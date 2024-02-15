@@ -32,27 +32,21 @@ namespace neml2
 void
 LabeledTensor3D::accumulate(const LabeledTensor3D & other, bool recursive)
 {
+  neml_assert_dbg(axis(1) == other.axis(1), "Can only accumulate 3D tensors with conformal y axes");
+  neml_assert_dbg(axis(2) == other.axis(2), "Can only accumulate 3D tensors with conformal z axes");
   const auto indices0 = axis(0).common_indices(other.axis(0), recursive);
-  const auto indices1 = axis(1).common_indices(other.axis(1), recursive);
-  const auto indices2 = axis(2).common_indices(other.axis(2), recursive);
   for (const auto & [idxi, idxi_other] : indices0)
-    for (const auto & [idxj, idxj_other] : indices1)
-      for (const auto & [idxk, idxk_other] : indices2)
-        _tensor.base_index({idxi, idxj, idxk}) +=
-            other.base_index({idxi_other, idxj_other, idxk_other});
+    _tensor.base_index({idxi}) += other.base_index({idxi_other});
 }
 
 void
 LabeledTensor3D::fill(const LabeledTensor3D & other, bool recursive)
 {
+  neml_assert_dbg(axis(1) == other.axis(1), "Can only accumulate 3D tensors with conformal y axes");
+  neml_assert_dbg(axis(2) == other.axis(2), "Can only accumulate 3D tensors with conformal z axes");
   const auto indices0 = axis(0).common_indices(other.axis(0), recursive);
-  const auto indices1 = axis(1).common_indices(other.axis(1), recursive);
-  const auto indices2 = axis(2).common_indices(other.axis(2), recursive);
   for (const auto & [idxi, idxi_other] : indices0)
-    for (const auto & [idxj, idxj_other] : indices1)
-      for (const auto & [idxk, idxk_other] : indices2)
-        _tensor.base_index({idxi, idxj, idxk})
-            .copy_(other.base_index({idxi_other, idxj_other, idxk_other}));
+    _tensor.base_index_put({idxi}, other.base_index({idxi_other}));
 }
 
 LabeledTensor3D

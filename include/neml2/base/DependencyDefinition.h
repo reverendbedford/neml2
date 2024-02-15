@@ -21,61 +21,28 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+
 #pragma once
 
-#include "neml2/tensors/BatchTensor.h"
-#include "neml2/misc/parser_utils.h"
+#include <set>
 
 namespace neml2
 {
 /**
- * @brief The base class to allow us set up a containers of BatchTensors while maintaining
- * polymorphism. The concrete definition below `BatchTensorValue` will be templated on the actual
- * tensor type.
+ * Defines what this object consume and provide. The consumed and provided items will later
+ * be used in DependencyResolver to identify dependencies among a set of objects. In short, this
+ * object will _depend_ on whoever provides any of this object's consumed items, and vice versa.
  *
+ * @tparam T The type of the consumed/provided items
  */
-class BatchTensorValueBase
-{
-public:
-  virtual ~BatchTensorValueBase() = default;
-
-  /**
-   * String identifying the type of parameter stored.
-   * Must be reimplemented in derived classes.
-   */
-  virtual std::string type() const = 0;
-
-  /// Send the value to the target options
-  virtual void to(const torch::TensorOptions &) = 0;
-
-  /// Convert the parameter value to a BatchTensor
-  virtual operator BatchTensor() const = 0;
-};
-
-/// Concrete definition of a BatchTensor value
 template <typename T>
-class BatchTensorValue : public BatchTensorValueBase
+class DependencyDefinition
 {
 public:
-  BatchTensorValue() = default;
+  /// What this object consumes
+  virtual const std::set<T> consumed_items() const = 0;
 
-  BatchTensorValue(const T & value)
-    : _value(value)
-  {
-  }
-
-  virtual std::string type() const override { return utils::demangle(typeid(T).name()); }
-
-  virtual void to(const torch::TensorOptions & options) override { _value = _value.to(options); }
-
-  virtual operator BatchTensor() const override { return BatchTensor(_value); }
-
-  const T & get() const { return _value; }
-
-  T & set() { return _value; }
-
-private:
-  /// Stored BatchTensor
-  T _value;
+  /// What this object provides
+  virtual const std::set<T> provided_items() const = 0;
 };
 } // namespace neml2

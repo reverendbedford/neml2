@@ -41,23 +41,20 @@ public:
 
   PlasticDeformationRate(const OptionSet & options);
 
-  /// Output: plastic deformation rate
-  const LabeledAxisAccessor plastic_deformation_rate;
-
-  /// Input: current orientation
-  const LabeledAxisAccessor orientation;
-
-  /// Crystal geometry class with slip geometry
-  const crystallography::CrystalGeometry & crystal_geometry;
-
-  /// Input: list of slip rates
-  const LabeledAxisAccessor slip_rates;
-
 protected:
   /// Set the plastic deformation rate and derivatives
-  virtual void set_value(const LabeledVector & in,
-                         LabeledVector * out,
-                         LabeledMatrix * dout_din = nullptr,
-                         LabeledTensor3D * d2out_din2 = nullptr) const override;
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+
+  /// Crystal geometry class with slip geometry
+  const crystallography::CrystalGeometry & _crystal_geometry;
+
+  /// Plastic deformation rate
+  Variable<SR2> & _dp;
+
+  /// Current orientation
+  const Variable<R2> & _R;
+
+  /// Slip rates
+  const Variable<BatchTensor> & _g;
 };
 } // namespace neml2

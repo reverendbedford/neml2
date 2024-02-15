@@ -37,7 +37,7 @@ TEST_CASE("LabeledAxisAccessor", "[tensors]")
   {
     SECTION("LabeledAxisAccessor")
     {
-      REQUIRE_THROWS_WITH(LabeledAxisAccessor({"a.b", "c", "d"}),
+      REQUIRE_THROWS_WITH(LabeledAxisAccessor("a.b", "c", "d"),
                           Catch::Matchers::Contains("Invalid item name"));
     }
 

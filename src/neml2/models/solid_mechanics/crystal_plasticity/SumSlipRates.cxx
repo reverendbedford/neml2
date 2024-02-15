@@ -29,8 +29,6 @@
 #include "neml2/tensors/tensors.h"
 #include "neml2/tensors/list_tensors.h"
 
-using vecstr = std::vector<std::string>;
-
 namespace neml2
 {
 register_NEML2_object(SumSlipRates);
@@ -40,9 +38,8 @@ SumSlipRates::expected_options()
 {
   OptionSet options = Model::expected_options();
 
-  options.set<LabeledAxisAccessor>("slip_rates") = vecstr{"state", "internal", "slip_rates"};
-  options.set<LabeledAxisAccessor>("sum_slip_rates") =
-      vecstr{"state", "internal", "sum_slip_rates"};
+  options.set<VariableName>("slip_rates") = VariableName("state", "internal", "slip_rates");
+  options.set<VariableName>("sum_slip_rates") = VariableName("state", "internal", "sum_slip_rates");
 
   options.set<std::string>("crystal_geometry_name") = "crystal_geometry";
 
@@ -51,33 +48,26 @@ SumSlipRates::expected_options()
 
 SumSlipRates::SumSlipRates(const OptionSet & options)
   : Model(options),
-    crystal_geometry(include_data<crystallography::CrystalGeometry>(
+    _crystal_geometry(register_data<crystallography::CrystalGeometry>(
         options.get<std::string>("crystal_geometry_name"))),
-    slip_rates(declare_input_variable_list<Scalar>(options.get<LabeledAxisAccessor>("slip_rates"),
-                                                   crystal_geometry.nslip())),
-    sum_slip_rates(
-        declare_output_variable<Scalar>(options.get<LabeledAxisAccessor>("sum_slip_rates")))
+    _sg(declare_output_variable<Scalar>("sum_slip_rates")),
+    _g(declare_input_variable_list<Scalar>(_crystal_geometry.nslip(), "slip_rates"))
 {
-  setup();
 }
 
 void
-SumSlipRates::set_value(const LabeledVector & in,
-                        LabeledVector * out,
-                        LabeledMatrix * dout_din,
-                        LabeledTensor3D * d2out_din2) const
+SumSlipRates::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   neml_assert_dbg(!d2out_din2, "Second derivative not implemented.");
+
   // Grab the input
-  const auto gamma = in.get_list<Scalar>(slip_rates);
+  const auto g = Scalar(_g, batch_dim() + 1);
 
   if (out)
-    out->set(abs(gamma).batch_sum(-1), sum_slip_rates);
+    _sg = math::abs(g).batch_sum(-1);
 
   if (dout_din)
-    dout_din->set_list(BatchTensor(sign(gamma), gamma.batch_dim()).batch_unsqueeze(-1),
-                       sum_slip_rates,
-                       slip_rates);
+    _sg.d(_g) = BatchTensor(math::sign(g), batch_dim()).base_unsqueeze(0);
 }
 
 } // namespace neml2

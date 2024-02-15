@@ -27,35 +27,25 @@
 #include "neml2/tensors/tensors.h"
 #include "neml2/tensors/list_tensors.h"
 
-using vecstr = std::vector<std::string>;
-
 namespace neml2
 {
 OptionSet
 SingleSlipHardeningRule::expected_options()
 {
   OptionSet options = Model::expected_options();
-
-  options.set<LabeledAxisAccessor>("slip_hardening_rate") =
-      vecstr{"state", "internal", "slip_hardening_rate"};
-  options.set<LabeledAxisAccessor>("slip_hardening") =
-      vecstr{"state", "internal", "slip_hardening"};
-  options.set<LabeledAxisAccessor>("sum_slip_rates") =
-      vecstr{"state", "internal", "sum_slip_rates"};
-
+  options.set<VariableName>("slip_hardening_rate") =
+      VariableName("state", "internal", "slip_hardening_rate");
+  options.set<VariableName>("slip_hardening") = VariableName("state", "internal", "slip_hardening");
+  options.set<VariableName>("sum_slip_rates") = VariableName("state", "internal", "sum_slip_rates");
   return options;
 }
 
 SingleSlipHardeningRule::SingleSlipHardeningRule(const OptionSet & options)
   : Model(options),
-    slip_hardening_rate(
-        declare_output_variable<Scalar>(options.get<LabeledAxisAccessor>("slip_hardening_rate"))),
-    slip_hardening(
-        declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("slip_hardening"))),
-    sum_slip_rates(
-        declare_input_variable<Scalar>(options.get<LabeledAxisAccessor>("sum_slip_rates")))
+    _tau_dot(declare_output_variable<Scalar>("slip_hardening_rate")),
+    _tau(declare_input_variable<Scalar>("slip_hardening")),
+    _gamma_dot_sum(declare_input_variable<Scalar>("sum_slip_rates"))
 {
-  setup();
 }
 
 } // namespace neml2

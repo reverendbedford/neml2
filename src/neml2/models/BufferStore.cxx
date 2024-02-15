@@ -22,39 +22,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
-
-#include "neml2/tensors/LabeledAxis.h"
+#include "neml2/models/BufferStore.h"
 
 namespace neml2
 {
-class LabeledAxisInterface
+BufferStore::BufferStore(const OptionSet & options, NEML2Object * object)
+  : _object(object),
+    _options(options)
 {
-public:
-  /// Setup the layouts of all the registered axes
-  virtual void setup_layout();
+}
 
-protected:
-  /// Declare an axis
-  [[nodiscard]] LabeledAxis & declare_axis();
+Storage<std::string, TensorValueBase> &
+BufferStore::named_buffers()
+{
+  neml_assert(_object->host() == _object,
+              "named_buffers() should only be called on the host model.");
+  return _buffer_values;
+}
 
-  /// Declare an item recursively on an axis
-  template <typename T>
-  LabeledAxisAccessor declare_variable(LabeledAxis & axis, const LabeledAxisAccessor & var) const
-  {
-    return declare_variable(axis, var, T::const_base_storage);
-  }
+void
+BufferStore::send_buffers_to(const torch::TensorOptions & options)
+{
+  neml_assert(_object->host() == _object, "This method should only be called on the host model.");
 
-  /// Declare an item (with known storage size) recursively on an axis
-  LabeledAxisAccessor
-  declare_variable(LabeledAxis & axis, const LabeledAxisAccessor & var, TorchSize sz) const
-  {
-    axis.add(var, sz);
-    return var;
-  }
-
-private:
-  /// All the declared axes
-  std::vector<std::shared_ptr<LabeledAxis>> _axes;
-};
+  for (auto && [name, buffer] : _buffer_values)
+    buffer.to(options);
+}
 } // namespace neml2

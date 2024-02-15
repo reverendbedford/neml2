@@ -30,7 +30,7 @@ namespace neml2
 {
 
 WSR4::WSR4(const R4 & F)
-  : WSR4(math::full_to_mandel(math::full_to_skew((F + F.base_transpose(2, 3)) / 2.0), 1))
+  : WSR4(math::full_to_mandel(math::full_to_skew((F + F.transpose(2, 3)) / 2.0), 1))
 {
 }
 

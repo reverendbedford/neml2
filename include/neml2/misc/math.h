@@ -52,23 +52,40 @@ mandel_factor(TorchSize i)
   return i < 3 ? 1.0 : sqrt2;
 }
 
-const torch::Tensor
-full_to_mandel_map(const torch::TensorOptions & options = default_integer_tensor_options());
-const torch::Tensor
-mandel_to_full_map(const torch::TensorOptions & options = default_integer_tensor_options());
-const torch::Tensor
-full_to_mandel_factor(const torch::TensorOptions & options = default_tensor_options());
-const torch::Tensor
-mandel_to_full_factor(const torch::TensorOptions & options = default_tensor_options());
+/**
+ * @brief A helper class to hold static data of type torch::Tensor
+ *
+ * This class exists because torch::Tensor cannot be declared as constexpr nor as static data in the
+ * global scope. The former is obvious. The latter is because at the time static variables are
+ * initialized, some torch data structures have not been properly initialized yet.
+ *
+ */
+struct ConstantTensors
+{
+  ConstantTensors();
 
-const torch::Tensor
-full_to_skew_map(const torch::TensorOptions & options = default_integer_tensor_options());
-const torch::Tensor
-skew_to_full_map(const torch::TensorOptions & options = default_integer_tensor_options());
-const torch::Tensor
-full_to_skew_factor(const torch::TensorOptions & options = default_tensor_options());
-const torch::Tensor
-skew_to_full_factor(const torch::TensorOptions & options = default_tensor_options());
+  // Get the global constants
+  static ConstantTensors & get();
+
+  static const torch::Tensor & full_to_mandel_map();
+  static const torch::Tensor & mandel_to_full_map();
+  static const torch::Tensor & full_to_mandel_factor();
+  static const torch::Tensor & mandel_to_full_factor();
+  static const torch::Tensor & full_to_skew_map();
+  static const torch::Tensor & skew_to_full_map();
+  static const torch::Tensor & full_to_skew_factor();
+  static const torch::Tensor & skew_to_full_factor();
+
+private:
+  torch::Tensor _full_to_mandel_map;
+  torch::Tensor _mandel_to_full_map;
+  torch::Tensor _full_to_mandel_factor;
+  torch::Tensor _mandel_to_full_factor;
+  torch::Tensor _full_to_skew_map;
+  torch::Tensor _skew_to_full_map;
+  torch::Tensor _full_to_skew_factor;
+  torch::Tensor _skew_to_full_factor;
+};
 
 /**
  * @brief Generic function to reduce two axes to one with some map
@@ -172,18 +189,25 @@ BatchTensor full_to_skew(const BatchTensor & full, TorchSize dim = 0);
 BatchTensor skew_to_full(const BatchTensor & skew, TorchSize dim = 0);
 
 /**
- * @brief Use automatic differentiation to calculate the derivatives w.r.t. to the parameter
- * _component by component_
+ * @brief Use automatic differentiation (AD) to calculate the derivatives w.r.t. to the parameter
  *
- * If the parameter is batched, the batch shape must be the _same_ with the batch shape of the
- * output \p o. Note that this is the poor-man's attempt at obtaining the Jacobian -- libTorch
- * really isn't designed for this -- unless we have vmap...
+ * @warning Torch (and hence NEML2) AD wasn't designed to compute the full Jacobian from the very
+ * beginning. Using this method to calculate the full Jacobian is inefficient and is subjected to
+ * some restrictions on batch shapes: This method will only work when the output \p y and the
+ * paramter \p p have the same batch shape.
  *
- * @param o The `BatchTensor` to to be differentiated
+ * However, in practice, the batch shape of the output \p y and the batch shape of the parameter \p
+ * p can be different. In that case, calculating the full Jacobian is not possible, and an exception
+ * will be thrown.
+ *
+ * One possible (inefficient) workaround is to expand and copy the parameter \p p batch dimensions,
+ * e.g., batch_expand_copy, _before_ calculating the output \p y.
+ *
+ * @param y The `BatchTensor` to to be differentiated
  * @param p The parameter to take derivatives with respect to
- * @return BatchTensor $\partial o/\partial p$
+ * @return BatchTensor \f$\partial y/\partial p\f$
  */
-BatchTensor jacrev(const BatchTensor & o, const BatchTensor & p);
+BatchTensor jacrev(const BatchTensor & out, const BatchTensor & p);
 
 BatchTensor
 base_diag_embed(const BatchTensor & a, TorchSize offset = 0, TorchSize d1 = -2, TorchSize d2 = -1);
@@ -206,5 +230,15 @@ WSR4 d_multiply_and_make_skew_d_first(const SR2 & b);
 /// Derivative of a_ik b_kj - b_ik a_kj wrt b
 WSR4 d_multiply_and_make_skew_d_second(const SR2 & a);
 
+namespace linalg
+{
+std::tuple<BatchTensor, BatchTensor> lu_factor(const BatchTensor & A, bool pivot = true);
+
+BatchTensor lu_solve(const BatchTensor & LU,
+                     const BatchTensor & pivots,
+                     const BatchTensor & B,
+                     bool left = true,
+                     bool adjoint = false);
+} // namespace linalg
 } // namespace math
 } // namespace neml2

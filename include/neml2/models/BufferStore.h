@@ -24,9 +24,10 @@
 
 #pragma once
 
+#include "neml2/base/NEML2Object.h"
 #include "neml2/base/OptionSet.h"
-#include "neml2/base/UniqueVector.h"
-#include "neml2/tensors/BatchTensorValue.h"
+#include "neml2/base/Storage.h"
+#include "neml2/tensors/TensorValue.h"
 
 namespace neml2
 {
@@ -34,33 +35,37 @@ namespace neml2
 class BufferStore
 {
 public:
-  BufferStore(const OptionSet & options)
-    : _options(options)
+  BufferStore(const OptionSet & options, NEML2Object * object);
+
+  /// @returns the buffer storage
+  /// @{
+  const Storage<std::string, TensorValueBase> & named_buffers() const
   {
+    return const_cast<BufferStore *>(this)->named_buffers();
   }
+  Storage<std::string, TensorValueBase> & named_buffers();
+  /// }@
 
-  /**
-   * @brief Get the named buffers
-   *
-   * @return A map from buffer name to buffer value
-   */
-  std::map<std::string, BatchTensor> named_buffers() const;
-
-  /// Get a buffer's value
+  /// Get a writable reference of a buffer
   template <typename T,
             typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<T>, T>>>
-  const T & get_buffer(const std::string & name) const;
+  T & get_buffer(const std::string & name);
 
 protected:
   /**
-   * @brief Send buffers to options
+   * @brief Send all buffers to \p options
    *
    * @param options The target options
    */
   virtual void send_buffers_to(const torch::TensorOptions & options);
 
   /**
-   * @brief Declare a model buffer.
+   * @brief Declare a buffer.
+   *
+   * Note that all buffers are stored in the host (the object exposed to users). An object may be
+   * used multiple times in the host, and the same buffer may be declared multiple times. That is
+   * allowed, but only the first call to declare_buffer constructs the buffer value, and subsequent
+   * calls only returns a reference to the existing buffer.
    *
    * @tparam T Buffer type. See @ref primitive for supported types.
    * @param name Buffer name
@@ -72,7 +77,12 @@ protected:
   const T & declare_buffer(const std::string & name, const T & rawval);
 
   /**
-   * @brief Declare a model buffer.
+   * @brief Declare a buffer.
+   *
+   * Note that all buffers are stored in the host (the object exposed to users). An object may be
+   * used multiple times in the host, and the same buffer may be declared multiple times. That is
+   * allowed, but only the first call to declare_buffer constructs the buffer value, and subsequent
+   * calls only returns a reference to the existing buffer.
    *
    * @tparam T Buffer type. See @ref primitive for supported types.
    * @param name Buffer name
@@ -85,68 +95,48 @@ protected:
   const T & declare_buffer(const std::string & name, const std::string & input_option_name);
 
 private:
+  NEML2Object * _object;
+
   /**
    * @brief Parsed input file options. These options could be convenient when we look up a
    * cross-referenced tensor value by its name.
    *
    */
-  const OptionSet & _options;
-
-  /// Map from buffer name to ID
-  std::map<std::string, size_t> _buffer_ids;
-
-  /// Map from buffer ID to name
-  std::vector<std::string> _buffer_names;
+  const OptionSet _options;
 
   /// The actual storage for all the buffers
-  UniqueVector<BatchTensorValueBase> _buffer_values;
+  Storage<std::string, TensorValueBase> _buffer_values;
 };
 
-inline std::map<std::string, BatchTensor>
-BufferStore::named_buffers() const
-{
-  std::map<std::string, BatchTensor> buffers;
-
-  for (const auto & n : _buffer_names)
-    buffers.emplace(n, _buffer_values[_buffer_ids.at(n)]);
-
-  return buffers;
-}
-
 template <typename T, typename>
-const T &
-BufferStore::get_buffer(const std::string & name) const
+T &
+BufferStore::get_buffer(const std::string & name)
 {
-  auto id = _buffer_ids.at(name);
-  const auto & base_prop = _buffer_values[id];
-  const auto prop = dynamic_cast<const BatchTensorValue<T> *>(&base_prop);
-  neml_assert_dbg(prop, "Internal error, buffer cast failure.");
-  return prop->get();
-}
+  neml_assert(_object->host() == _object, "This method should only be called on the host model.");
 
-inline void
-BufferStore::send_buffers_to(const torch::TensorOptions & options)
-{
-  for (auto && [name, id] : _buffer_ids)
-    _buffer_values[id].to(options);
+  auto base_ptr = _buffer_values.query_value(name);
+  neml_assert(base_ptr, "Buffer named ", name, " does not exist.");
+  auto ptr = dynamic_cast<TensorValue<T> *>(base_ptr);
+  neml_assert_dbg(ptr, "Internal error: Failed to cast buffer to a concrete type.");
+  return ptr->value();
 }
 
 template <typename T, typename>
 const T &
 BufferStore::declare_buffer(const std::string & name, const T & rawval)
 {
-  neml_assert(std::find(_buffer_names.begin(), _buffer_names.end(), name) == _buffer_names.end(),
-              "Trying to declare a buffer named ",
-              name,
-              " that already exists.");
+  if (_object->host() != _object)
+    return _object->host<BufferStore>()->declare_buffer(_object->name() + "." + name, rawval);
 
-  auto val = std::make_unique<BatchTensorValue<T>>(rawval);
-  _buffer_ids.emplace(name, _buffer_ids.size());
-  _buffer_names.push_back(name);
-  auto & base_prop = _buffer_values.add_pointer(std::move(val));
-  auto prop = dynamic_cast<BatchTensorValue<T> *>(&base_prop);
-  neml_assert(prop, "Internal error, parameter cast failure.");
-  return prop->get();
+  // If the buffer already exists, return its reference
+  if (_buffer_values.has_key(name))
+    return get_buffer<T>(name);
+
+  auto val = std::make_unique<TensorValue<T>>(rawval);
+  auto base_ptr = _buffer_values.set_pointer(name, std::move(val));
+  auto ptr = dynamic_cast<TensorValue<T> *>(base_ptr);
+  neml_assert(ptr, "Internal error: Failed to cast buffer to a concrete type.");
+  return ptr->value();
 }
 
 template <typename T, typename>

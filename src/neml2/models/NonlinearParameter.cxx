@@ -31,20 +31,14 @@ OptionSet
 NonlinearParameter<T>::expected_options()
 {
   OptionSet options = Model::expected_options();
-  options.set<LabeledAxisAccessor>("parameter");
   return options;
 }
 
 template <typename T>
 NonlinearParameter<T>::NonlinearParameter(const OptionSet & options)
   : Model(options),
-    p(declare_output_variable<T>(options.get<LabeledAxisAccessor>("parameter")))
+    _p(declare_output_variable<T>(VariableName(name())))
 {
-  // Resize y for the value
-  _p.resize(1);
-  _p.set_pointer(0, std::make_unique<T>());
-
-  setup();
 }
 
 instantiate_all_FixedDimTensor(NonlinearParameter);

@@ -42,7 +42,7 @@ TEST_CASE("R4", "[R4]")
     {
       auto u = R4(torch::rand(utils::add_shapes(B, 3, 3, 3, 3), DTO));
       // Symmetrize it
-      auto s = (u + u.transpose_minor() + u.base_transpose(0, 1) + u.base_transpose(2, 3)) / 4.0;
+      auto s = (u + u.transpose_minor() + u.transpose(0, 1) + u.transpose(2, 3)) / 4.0;
       // Converting to SSR4 and then back should be equivalent to symmetrization
       REQUIRE(torch::allclose(s, R4(SSR4(u))));
     }
@@ -122,7 +122,7 @@ TEST_CASE("R4", "[R4]")
     SECTION("operator()")
     {
       auto u = R4(torch::rand(utils::add_shapes(B, 3, 3, 3, 3), DTO));
-      auto s1 = (u + u.transpose_minor() + u.base_transpose(0, 1) + u.base_transpose(2, 3)) / 4.0;
+      auto s1 = (u + u.transpose_minor() + u.transpose(0, 1) + u.transpose(2, 3)) / 4.0;
       auto s2 = R4(SSR4(u));
       for (TorchSize i = 0; i < 3; i++)
         for (TorchSize j = 0; j < 3; j++)

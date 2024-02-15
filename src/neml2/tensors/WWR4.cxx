@@ -30,9 +30,8 @@ namespace neml2
 {
 
 WWR4::WWR4(const R4 & F)
-  : WWR4(math::full_to_skew(math::full_to_skew(F - F.base_transpose(0, 1) - F.base_transpose(2, 3) +
-                                                   F.base_transpose(0, 1).base_transpose(2, 3),
-                                               1)))
+  : WWR4(math::full_to_skew(
+        math::full_to_skew(F - F.transpose(0, 1) - F.transpose(2, 3) + F.transpose_minor(), 1)))
 {
 }
 

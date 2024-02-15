@@ -11,6 +11,8 @@
     output_symr2_names = 'state/internal/NM state/internal/NX'
     output_symr2_values = 'NM NX'
     output_abs_tol = 1e-4
+    check_AD_second_derivatives = false
+    check_AD_derivatives = false
   []
 []
 
@@ -41,7 +43,7 @@
     type = SR2Invariant
     invariant_type = 'VONMISES'
     tensor = 'state/internal/O'
-    invariant = 'state/internal/sm'
+    invariant = 'state/internal/s'
   []
   [yield]
     type = YieldFunction

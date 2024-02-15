@@ -22,55 +22,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/models/IdentityMap.h"
-#include "neml2/tensors/SSR4.h"
+#pragma once
+
+#include "neml2/tensors/FixedDimTensor.h"
 
 namespace neml2
 {
-register_NEML2_object(ScalarIdentityMap);
-register_NEML2_object(SR2IdentityMap);
-
-template <typename T>
-OptionSet
-IdentityMap<T>::expected_options()
+/**
+ * @brief The logical fourth order tensor with minor symmetry in the 1st and 2nd dimensions.
+ *
+ * Mandel notation is used, and so the logical storage space is (6, 3, 3).
+ */
+class SFFR4 : public FixedDimTensor<SFFR4, 6, 3, 3>
 {
-  OptionSet options = Model::expected_options();
-  options.set<LabeledAxisAccessor>("from_var");
-  options.set<LabeledAxisAccessor>("to_var");
-  return options;
-}
-
-template <typename T>
-IdentityMap<T>::IdentityMap(const OptionSet & options)
-  : Model(options),
-    from(declare_input_variable<T>(options.get<LabeledAxisAccessor>("from_var"))),
-    to(declare_output_variable<T>(options.get<LabeledAxisAccessor>("to_var")))
-{
-  this->setup();
-}
-
-template <typename T>
-void
-IdentityMap<T>::set_value(const LabeledVector & in,
-                          LabeledVector * out,
-                          LabeledMatrix * dout_din,
-                          LabeledTensor3D * d2out_din2) const
-{
-  if (out)
-    out->set(in(from), to);
-
-  if (dout_din)
-  {
-    auto I = T::identity_map(in.options());
-    dout_din->set(I, to, from);
-  }
-
-  if (d2out_din2)
-  {
-    // zero
-  }
-}
-
-template class IdentityMap<Scalar>;
-template class IdentityMap<SR2>;
+public:
+  using FixedDimTensor<SFFR4, 6, 3, 3>::FixedDimTensor;
+};
 } // namespace neml2

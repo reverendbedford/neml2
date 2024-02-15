@@ -95,6 +95,7 @@ specialize_crossref_FixedDimTensor(R3);
 specialize_crossref_FixedDimTensor(SFR3);
 specialize_crossref_FixedDimTensor(R4);
 specialize_crossref_FixedDimTensor(SSR4);
+specialize_crossref_FixedDimTensor(SFFR4);
 specialize_crossref_FixedDimTensor(R5);
 specialize_crossref_FixedDimTensor(SSFR5);
 specialize_crossref_FixedDimTensor(WR2);

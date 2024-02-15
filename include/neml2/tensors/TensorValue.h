@@ -21,22 +21,56 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+#pragma once
 
-#include "neml2/models/LabeledAxisInterface.h"
+#include "neml2/tensors/BatchTensor.h"
+#include "neml2/misc/parser_utils.h"
 
 namespace neml2
 {
-LabeledAxis &
-LabeledAxisInterface::declare_axis()
+/**
+ * @brief The base class to allow us to set up a polymorphic container of BatchTensors. The concrete
+ * definitions will be templated on the actual tensor type.
+ *
+ */
+class TensorValueBase
 {
-  _axes.push_back(std::make_shared<LabeledAxis>());
-  return *_axes.back();
-}
+public:
+  virtual ~TensorValueBase() = default;
 
-void
-LabeledAxisInterface::setup_layout()
+  /// Send the value to the target options
+  virtual void to(const torch::TensorOptions &) = 0;
+
+  /// Convert the parameter value to a BatchTensor
+  virtual operator BatchTensor() const = 0;
+
+  /// Set the parameter value
+  virtual void set(const BatchTensor & val) = 0;
+};
+
+/// Concrete definition of tensor value
+template <typename T>
+class TensorValue : public TensorValueBase
 {
-  for (auto & axis : _axes)
-    axis->setup_layout();
-}
+public:
+  TensorValue() = default;
+
+  TensorValue(const T & value)
+    : _value(value)
+  {
+  }
+
+  virtual void to(const torch::TensorOptions & options) override { _value = _value.to(options); }
+
+  virtual operator BatchTensor() const override { return _value; }
+
+  virtual operator T() const { return _value; }
+
+  T & value() { return _value; }
+
+  virtual void set(const BatchTensor & val) override { _value = val; }
+
+private:
+  T _value;
+};
 } // namespace neml2

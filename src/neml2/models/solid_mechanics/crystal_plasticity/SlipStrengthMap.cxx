@@ -28,8 +28,6 @@
 #include "neml2/tensors/tensors.h"
 #include "neml2/tensors/list_tensors.h"
 
-using vecstr = std::vector<std::string>;
-
 namespace neml2
 {
 OptionSet
@@ -37,8 +35,7 @@ SlipStrengthMap::expected_options()
 {
   OptionSet options = Model::expected_options();
 
-  options.set<LabeledAxisAccessor>("slip_strengths") =
-      vecstr{"state", "internal", "slip_strengths"};
+  options.set<VariableName>("slip_strengths") = VariableName("state", "internal", "slip_strengths");
   options.set<std::string>("crystal_geometry_name") = "crystal_geometry";
 
   return options;
@@ -46,12 +43,10 @@ SlipStrengthMap::expected_options()
 
 SlipStrengthMap::SlipStrengthMap(const OptionSet & options)
   : Model(options),
-    crystal_geometry(include_data<crystallography::CrystalGeometry>(
+    _crystal_geometry(register_data<crystallography::CrystalGeometry>(
         options.get<std::string>("crystal_geometry_name"))),
-    slip_strengths(declare_output_variable_list<Scalar>(
-        options.get<LabeledAxisAccessor>("slip_strengths"), crystal_geometry.nslip()))
+    _tau(declare_output_variable_list<Scalar>(_crystal_geometry.nslip(), "slip_strengths"))
 {
-  setup();
 }
 
 } // namespace neml2
