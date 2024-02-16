@@ -98,15 +98,15 @@ ImplicitUpdate::set_value(bool out, bool dout_din, bool d2out_din2)
     neml_assert(succeeded, "Nonlinear solve failed.");
     Model::stage = Model::Stage::UPDATING;
 
-    if (out && !dout_din)
+    if (out)
       output_storage().copy_(sol);
 
     // Use the implicit function theorem (IFT) to calculate the other derivatives
     if (dout_din)
     {
-      // IFT requires dstate/dinput evaluated at the solution:
+      // IFT requires dresidual/dinput evaluated at the solution:
       _model.value_and_dvalue();
-      auto partials = _model.derivative_storage();
+      const auto & partials = _model.derivative_storage();
 
       // The actual IFT:
       LabeledMatrix J = partials.slice(1, "state");
