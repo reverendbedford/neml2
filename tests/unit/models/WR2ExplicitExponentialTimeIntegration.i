@@ -25,11 +25,11 @@
 [Tensors]
   [foo]
     type = FillRot
-    values = '0.07598595 -0.03827791 0.05679948'
+    values = '0.03789409 -0.01908914 0.02832582'
   []
   [old_foo]
     type = FillRot
-    values = '0.075 -0.04 0.06'
+    values = '0.03739906 -0.01994617 0.02991925'
   []
   [w]
     type = FillWR2

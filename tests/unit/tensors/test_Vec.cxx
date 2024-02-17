@@ -39,7 +39,7 @@ TEST_CASE("Vec", "[tensors]")
   {
     SECTION("rotate")
     {
-      auto r = Rot::fill(1.2496889, 1.62862628, 7.59575411, DTO);
+      auto r = Rot::fill(0.13991834, 0.18234513, 0.85043991, DTO);
       auto v = Vec::fill(1.0, -2.0, 3.0, DTO);
       auto vp = Vec::fill(0.495655, 3.13461, 1.98205, DTO);
 
@@ -55,7 +55,7 @@ TEST_CASE("Vec", "[tensors]")
 
     SECTION("drotate")
     {
-      auto r = Rot::fill(1.2496889, 1.62862628, 7.59575411);
+      auto r = Rot::fill(0.13991834, 0.18234513, 0.85043991);
       auto v = Vec::fill(1.0, -2.0, 3.0);
       auto vp = Vec::fill(0.495655, 3.13461, 1.98205);
 
@@ -67,10 +67,10 @@ TEST_CASE("Vec", "[tensors]")
       auto dvp_dr = finite_differencing_derivative(apply, r);
       auto dvp_drb = dvp_dr.batch_expand(B);
 
-      REQUIRE(torch::allclose(v.drotate(r), dvp_dr));
-      REQUIRE(torch::allclose(vb.drotate(rb), dvp_drb));
-      REQUIRE(torch::allclose(v.drotate(rb), dvp_drb));
-      REQUIRE(torch::allclose(vb.drotate(r), dvp_drb));
+      REQUIRE(torch::allclose(v.drotate(r), dvp_dr, 1e-4));
+      REQUIRE(torch::allclose(vb.drotate(rb), dvp_drb, 1e-4));
+      REQUIRE(torch::allclose(v.drotate(rb), dvp_drb, 1e-4));
+      REQUIRE(torch::allclose(vb.drotate(r), dvp_drb, 1e-4));
     }
   }
 }

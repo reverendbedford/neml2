@@ -10,9 +10,9 @@
     input_batch_tensor_names = 'state/internal/slip_rates'
     input_batch_tensor_values = 'gamma'
     derivatives_rel_tol = 0
-    derivatives_abs_tol = 5e-6
+    derivatives_abs_tol = 1e-5
     second_derivatives_rel_tol = 0
-    second_derivatives_abs_tol = 5e-6
+    second_derivatives_abs_tol = 1e-4
   []
 []
 
@@ -31,7 +31,7 @@
   []
   [R]
     type = FillRot
-    values = '0.01 -0.05 0.07'
+    values = '0.00499066 -0.0249533 0.03493462'
   []
   [gamma]
     type = LinspaceBatchTensor

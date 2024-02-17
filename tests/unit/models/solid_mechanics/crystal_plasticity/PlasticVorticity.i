@@ -31,7 +31,7 @@
   []
   [R]
     type = FillRot
-    values = '0.01 -0.05 0.07'
+    values = '0.00499066 -0.0249533 0.03493462'
   []
   [gamma]
     type = LinspaceBatchTensor
