@@ -98,6 +98,7 @@
   [initial_orientation]
     type = FillRot
     values = 'R1 R2 R3'
+    method = 'standard'
   []
 []
 

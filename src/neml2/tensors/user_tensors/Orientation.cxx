@@ -138,15 +138,26 @@ Orientation::fill_matrix(const R2 & M) const
   auto trace = M.index({Ellipsis, 0, 0}) + M.index({Ellipsis, 1, 1}) + M.index({Ellipsis, 2, 2});
   auto theta = torch::acos((trace - 1.0) / 2.0);
 
-  // Get the vector
+  // Get the standard Rod. parameters
   auto scale = torch::tan(theta / 2.0) / (2.0 * torch::sin(theta));
   scale.index_put_({theta == 0}, 0.0);
   auto rx = (M.index({Ellipsis, 2, 1}) - M.index({Ellipsis, 1, 2})) * scale;
   auto ry = (M.index({Ellipsis, 0, 2}) - M.index({Ellipsis, 2, 0})) * scale;
   auto rz = (M.index({Ellipsis, 1, 0}) - M.index({Ellipsis, 0, 1})) * scale;
 
+  return fill_rodrigues(rx, ry, rz);
+}
+
+Rot
+Orientation::fill_rodrigues(const Scalar & rx, const Scalar & ry, const Scalar & rz) const
+{
+  // Get the modified Rod. parameters
+  auto ns = rx * rx + ry * ry + rz * rz;
+  auto f = torch::sqrt(torch::Tensor(ns) + torch::tensor(1.0, ns.dtype())) +
+           torch::tensor(1.0, ns.dtype());
+
   // Stack and return
-  return Rot(torch::stack({rx, ry, rz}, 1), 1);
+  return Rot(torch::stack({rx / f, ry / f, rz / f}, 1), 1);
 }
 
 Rot

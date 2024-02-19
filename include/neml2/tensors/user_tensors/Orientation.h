@@ -62,6 +62,9 @@ private:
   /// Fill some number of random orientations
   Rot fill_random(unsigned int n, TorchSize random_seed) const;
 
+  /// Fill from standard Rodrigues parameters
+  Rot fill_rodrigues(const Scalar & rx, const Scalar & ry, const Scalar & rz) const;
+
   /// Expand to fill a batch dimension if required
   Rot expand_as_needed(const Rot & input, unsigned int inp_size) const;
 };
