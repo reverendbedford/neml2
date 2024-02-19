@@ -413,6 +413,16 @@ sinh(const Derived & a)
   return Derived(torch::sinh(a), a.batch_dim());
 }
 
+template <
+    class Derived,
+    typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<Derived>, Derived>>>
+Derived
+where(const torch::Tensor & condition, const Derived & a, const Derived & b)
+{
+  neml_assert_broadcastable_dbg(a, b);
+  return Derived(torch::where(condition, a, b), broadcast_batch_dim(a, b));
+}
+
 /**
  * This is (almost) equivalent to Torch's heaviside, except that the Torch's version is not
  * differentiable (back-propagatable). I said "almost" because torch::heaviside allows you to set

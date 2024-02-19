@@ -116,6 +116,20 @@ Rot::drotate_self(const Rot & r) const
 }
 
 Rot
+Rot::shadow() const
+{
+  return -*this / this->norm_sq();
+}
+
+R2
+Rot::dshadow() const
+{
+  auto ns = this->norm_sq();
+
+  return (2.0 / ns * this->outer(*this) - R2::identity(options())) / ns;
+}
+
+Rot
 operator*(const Rot & r1, const Rot & r2)
 {
   auto rr1 = r1.norm_sq();

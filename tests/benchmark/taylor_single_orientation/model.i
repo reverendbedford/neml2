@@ -77,6 +77,7 @@
     type = Orientation
     quantity = ${nbatch}
     values = '30 60 45'
+    normalize = true
   []
 []
 

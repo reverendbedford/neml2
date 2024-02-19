@@ -24,50 +24,31 @@
 
 #pragma once
 
-#include "neml2/base/Registry.h"
-#include "neml2/base/NEML2Object.h"
-
-#include "neml2/tensors/Rot.h"
+#include "neml2/models/Model.h"
 
 namespace neml2
 {
-/**
- * @brief Create batch of rotations, with various methods
- */
-class Orientation : public Rot, public NEML2Object
+/// Calculate the orientation rate from the crystal model kinetics
+// Strictly this is the *spin* not the rotation rate.  But the integration routines
+// expect spin.
+class FixOrientations : public Model
 {
 public:
   static OptionSet expected_options();
 
-  /**
-   * @brief Construct a new Orientation object
-   *
-   * @param options The options extracted from the input file.
-   */
-  Orientation(const OptionSet & options);
+  FixOrientations(const OptionSet & options);
 
-private:
-  /// A helper method to dispatch to the correct fill method based on the selected options
-  Rot fill(const std::vector<Real> & values,
-           std::string input_type,
-           bool normalize,
-           const OptionSet & options) const;
+protected:
+  /// Set the orientation spin and derivatives
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
-  /// Fill from an array of Euler angles
-  Rot fill_euler_angles(const torch::Tensor & vals,
-                        std::string angle_convention,
-                        std::string angle_type) const;
+  /// Corrected MRP representation
+  Variable<Rot> & _output;
 
-  /// Fill from rotation matrices
-  Rot fill_matrix(const R2 & vals) const;
+  /// MRP representation of orientations
+  const Variable<Rot> & _input;
 
-  /// Fill some number of random orientations
-  Rot fill_random(unsigned int n, TorchSize random_seed) const;
-
-  /// Fill from standard Rodrigues parameters
-  Rot fill_rodrigues(const Scalar & rx, const Scalar & ry, const Scalar & rz) const;
-
-  /// Expand to fill a batch dimension if required
-  Rot expand_as_needed(const Rot & input, unsigned int inp_size) const;
+  /// Threshold for making the swap
+  Real _threshold;
 };
 } // namespace neml2

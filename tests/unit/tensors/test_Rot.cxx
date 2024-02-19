@@ -81,6 +81,26 @@ TEST_CASE("Rot", "[tensors]")
       REQUIRE(torch::allclose(a.batch_expand(B).deuler_rodrigues(), dA_da.batch_expand(B), 1.0e-4));
     }
 
+    SECTION("shadow")
+    {
+      auto a = Rot::fill(1.2, 3.1, -2.1, DTO);
+      auto ab = a.batch_expand(B);
+      auto b = Rot::fill(-0.07761966, -0.20051746, 0.13583441, DTO);
+
+      SECTION("defintion")
+      {
+        REQUIRE(torch::allclose(a.shadow(), b));
+        REQUIRE(torch::allclose(ab.shadow(), b));
+      }
+      SECTION("concept") { REQUIRE(torch::allclose(a.euler_rodrigues(), b.euler_rodrigues())); }
+      SECTION("derivative")
+      {
+        auto apply = [](const BatchTensor & x) { return Rot(x).shadow(); };
+        auto dA = finite_differencing_derivative(apply, a);
+        REQUIRE(torch::allclose(a.dshadow(), dA, 1.0e-4));
+      }
+    }
+
     SECTION("rotate")
     {
       auto r = Rot::fill(0.13991834, 0.18234513, 0.85043991, DTO);

@@ -67,6 +67,12 @@ public:
 
   /// Derivative of the rotated Rodrigues vector w.r.t. this vector
   R2 drotate_self(const Rot & r) const;
+
+  /// Return the shadow parameter set (a set of MRPs that define the same orientation)
+  Rot shadow() const;
+
+  /// Return the derivative of the shadow map
+  R2 dshadow() const;
 };
 
 /// Composition of rotations r3 = r1 * r2 (r2 first, then r1)
