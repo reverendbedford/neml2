@@ -45,6 +45,6 @@ protected:
   Model & _model;
 
   /// The nonlinear solver used to solve the nonlinear system
-  const NonlinearSolver & _solver;
+  NonlinearSolver & _solver;
 };
 } // namespace neml2

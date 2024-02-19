@@ -58,7 +58,7 @@ nt = 100
 
 [Solvers]
   [newton]
-    type = NewtonNonlinearSolver
+    type = Newton
   []
 []
 

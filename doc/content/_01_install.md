@@ -115,7 +115,7 @@ The NEML2 input files have extension `.i`. An example input file is shown below
 
 [Solvers]
   [newton]
-    type = NewtonNonlinearSolver
+    type = Newton
   []
 []
 

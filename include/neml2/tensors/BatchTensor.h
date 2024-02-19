@@ -39,10 +39,28 @@ namespace math
 /**
  * @brief Batched matrix-matrix product
  *
- * The input matrices \p a and \p b must have exactly 2 base dimensions. The batch shapes are
+ * The input matrices \p a and \p b must have exactly 2 base dimensions. The batch shapes must
  * broadcast.
  */
 BatchTensor bmm(const BatchTensor & a, const BatchTensor & b);
+
+/**
+ * @brief Batched matrix-vector product
+ *
+ * The input tensor \p a must have exactly 2 base dimensions.
+ * The input tensor \p v must have exactly 1 base dimension.
+ * The batch shapes must broadcast.
+ */
+BatchTensor bmv(const BatchTensor & a, const BatchTensor & v);
+
+/**
+ * @brief Batched vector-vector (dot) product
+ *
+ * The input tensor \p a must have exactly 1 base dimension.
+ * The input tensor \p vbmust have exactly 1 base dimension.
+ * The batch shapes must broadcast.
+ */
+BatchTensor bvv(const BatchTensor & a, const BatchTensor & b);
 }
 
 BatchTensor operator*(const BatchTensor & a, const BatchTensor & b);

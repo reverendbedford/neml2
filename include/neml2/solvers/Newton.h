@@ -24,43 +24,49 @@
 
 #pragma once
 
-#include "neml2/solvers/Solver.h"
-#include "neml2/solvers/NonlinearSystem.h"
+#include "neml2/solvers/NonlinearSolver.h"
 
 namespace neml2
 {
 /**
- * @brief The nonlinear solver solves a nonlinear system of equations.
+ * @copydoc neml2::NonlinearSolver
  *
+ * The Newton-Raphson method is used to iteratively update the initial guess until the residual
+ * becomes zero within specified tolerances.
  */
-class NonlinearSolver : public Solver
+class Newton : public NonlinearSolver
 {
 public:
   static OptionSet expected_options();
 
-  /**
-   * @brief Construct a new NonlinearSolver object
-   *
-   * @param options The options extracted from the input file
-   */
-  NonlinearSolver(const OptionSet & options);
+  Newton(const OptionSet & options);
+
+  virtual std::tuple<bool, size_t> solve(NonlinearSystem & system, BatchTensor & x) override;
+
+protected:
+  /// Prepare solver internal data before the iterative update
+  virtual void prepare(const NonlinearSystem & /*system*/, const BatchTensor & /*x*/) {}
 
   /**
-   * @brief Solve the given nonlinear system.
+   * @brief Check for convergence. The current iteration is said to be converged if the residual
+   * norm is below the absolute tolerance or or the ratio between the residual norm and the initial
+   * residual norm is below the relative tolerance.
    *
-   * @param system The nonlinear system of equations.
-   * @param sol The initial solution which will be iteratively updated during the solve. It will be
-   * the solution to the system upon convergence
-   * @return A boolean indicating whether the solve has succeeded and the number of iterations
-   * before convergence.
+   * @param itr The current iteration number
+   * @param nR The current residual norm
+   * @param nR0 The initial residual norm
+   * @return true Converged
+   * @return false Not converged
    */
-  virtual std::tuple<bool, size_t> solve(NonlinearSystem & system, BatchTensor & sol) = 0;
+  virtual bool converged(size_t itr, const torch::Tensor & nR, const torch::Tensor & nR0) const;
 
-  /// Absolute tolerance
-  Real atol;
-  /// Relative tolerance
-  Real rtol;
-  /// Maximum number of iterations
-  unsigned int miters;
+  /// Update trial solution
+  virtual void update(NonlinearSystem & system, BatchTensor & x);
+
+  /// Do a final update to track AD function graph
+  virtual void final_update(NonlinearSystem & system, BatchTensor & x);
+
+  /// Find the current update direction
+  virtual BatchTensor solve_direction(const NonlinearSystem & system);
 };
 } // namespace neml2

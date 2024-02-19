@@ -188,4 +188,14 @@ NonlinearSystem::residual_and_Jacobian()
   }
 }
 
+BatchTensor
+NonlinearSystem::residual_norm() const
+{
+  // If the residual is a logical scalar just return its absolute value
+  if (residual_view().base_dim() == 0)
+    return math::abs(residual_view());
+
+  return BatchTensor(torch::linalg::vector_norm(residual_view(), 2, -1, false, c10::nullopt),
+                     residual_view().batch_dim());
+}
 } // namespace neml2

@@ -51,4 +51,15 @@ public:
 protected:
   virtual void assemble(bool, bool) override;
 };
+
+class RosenbrockTestSystem : public TestNonlinearSystem
+{
+public:
+  RosenbrockTestSystem(const neml2::OptionSet & options);
+
+  virtual neml2::BatchTensor exact_solution() const override;
+
+protected:
+  virtual void assemble(bool, bool) override;
+};
 }

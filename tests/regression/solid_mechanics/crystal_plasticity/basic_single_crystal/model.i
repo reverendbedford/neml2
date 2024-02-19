@@ -124,8 +124,7 @@
 
 [Solvers]
   [newton]
-    type = NewtonNonlinearSolver
-    linesearch = true
+    type = NewtonWithLineSearch
     max_linesearch_iterations = 5
   []
 []

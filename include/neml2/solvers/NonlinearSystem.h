@@ -79,6 +79,9 @@ public:
   const BatchTensor & residual_view() const { return _autoscale ? _scaled_residual : _residual; }
   const BatchTensor & Jacobian_view() const { return _autoscale ? _scaled_Jacobian : _Jacobian; }
 
+  /// The residual norm
+  BatchTensor residual_norm() const;
+
 protected:
   /**
    * @brief Compute the residual and Jacobian
