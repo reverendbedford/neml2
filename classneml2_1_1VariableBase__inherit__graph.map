@@ -1,0 +1,19 @@
+<map id="VariableBase" name="VariableBase">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,179,112,204"/>
+<area shape="rect" id="Node000002" href="$classneml2_1_1Variable.html" title=" " alt="" coords="179,5,374,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="67,165,101,101,127,68,158,40,180,29,183,33,162,44,131,71,105,104,72,167"/>
+<area shape="rect" id="Node000003" href="$classneml2_1_1Variable.html" title=" " alt="" coords="187,55,366,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="75,166,110,126,133,106,159,89,186,78,188,83,161,94,137,110,114,130,79,169"/>
+<area shape="rect" id="Node000004" href="$classneml2_1_1Variable.html" title=" " alt="" coords="185,104,369,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="92,170,159,138,199,127,200,132,161,143,94,174"/>
+<area shape="rect" id="Node000005" href="$classneml2_1_1Variable.html" title=" " alt="" coords="191,153,362,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="126,181,191,173,191,179,126,186"/>
+<area shape="rect" id="Node000006" href="$classneml2_1_1Variable.html" title=" " alt="" coords="160,203,393,228"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="126,196,162,200,161,205,125,201"/>
+<area shape="rect" id="Node000007" href="$classneml2_1_1Variable.html" title=" " alt="" coords="189,252,365,277"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="96,208,161,237,206,249,204,255,159,242,94,213"/>
+<area shape="rect" id="Node000008" href="$classneml2_1_1Variable.html" title=" " alt="" coords="188,301,365,327"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="79,213,115,251,137,270,161,286,192,299,190,304,159,291,134,275,111,255,76,216"/>
+<area shape="rect" id="Node000009" href="$classneml2_1_1Variable.html" title="Concrete definition of a variable." alt="" coords="220,351,333,376"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="73,216,106,277,131,309,161,336,190,349,220,357,219,362,188,354,159,340,127,313,102,280,68,218"/>
+</map>

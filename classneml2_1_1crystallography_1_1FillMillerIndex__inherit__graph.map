@@ -1,0 +1,13 @@
+<map id="FillMillerIndex" name="FillMillerIndex">
+<area shape="rect" id="Node000001" title="Create a single&#45;batched &quot;list&quot; of Miller indices." alt="" coords="133,299,247,324"/>
+<area shape="rect" id="Node000002" href="$classneml2_1_1crystallography_1_1MillerIndex.html" title="Represention of a crystal direction or plane a Miller Index." alt="" coords="80,225,175,251"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="149,259,182,297,178,300,145,263"/>
+<area shape="rect" id="Node000003" href="$classneml2_1_1FixedDimTensor.html" title=" " alt="" coords="5,152,249,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="130,191,130,225,125,225,125,191"/>
+<area shape="rect" id="Node000004" href="$classneml2_1_1BatchTensorBase.html" title="NEML2&#39;s enhanced tensor type." alt="" coords="20,79,235,104"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="130,118,130,152,125,152,125,118"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="95,5,159,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="130,44,130,79,125,79,125,44"/>
+<area shape="rect" id="Node000006" href="$classneml2_1_1NEML2Object.html" title="The base class of all &quot;manufacturable&quot; objects in the NEML2 library." alt="" coords="199,225,309,251"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="236,263,202,300,198,297,232,259"/>
+</map>
