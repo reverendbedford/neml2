@@ -27,6 +27,7 @@
 namespace neml2
 {
 register_NEML2_object(ScalarBackwardEulerTimeIntegration);
+register_NEML2_object(VecBackwardEulerTimeIntegration);
 register_NEML2_object(SR2BackwardEulerTimeIntegration);
 
 template <typename T>
@@ -35,6 +36,7 @@ BackwardEulerTimeIntegration<T>::expected_options()
 {
   OptionSet options = Model::expected_options();
   options.set<VariableName>("variable");
+  options.set<VariableName>("variable_rate");
   options.set<VariableName>("time") = VariableName("t");
   return options;
 }
@@ -43,7 +45,9 @@ template <typename T>
 BackwardEulerTimeIntegration<T>::BackwardEulerTimeIntegration(const OptionSet & options)
   : Model(options),
     _var_name(options.get<VariableName>("variable")),
-    _var_rate_name(_var_name.with_suffix("_rate")),
+    _var_rate_name(options.get<LabeledAxisAccessor>("variable_rate").empty()
+                       ? _var_name.with_suffix("_rate")
+                       : options.get<LabeledAxisAccessor>("variable_rate")),
     _r(declare_output_variable<T>(_var_name.on("residual"))),
     _ds_dt(declare_input_variable<T>(_var_rate_name.on("state"))),
     _s(declare_input_variable<T>(_var_name.on("state"))),
@@ -90,5 +94,6 @@ BackwardEulerTimeIntegration<T>::set_value(bool out, bool dout_din, bool d2out_d
 }
 
 template class BackwardEulerTimeIntegration<Scalar>;
+template class BackwardEulerTimeIntegration<Vec>;
 template class BackwardEulerTimeIntegration<SR2>;
 } // namespace neml2

@@ -30,7 +30,7 @@ const torch::TensorOptions
 default_tensor_options()
 {
   return torch::TensorOptions()
-      .dtype(TORCH_DTYPE)
+      .dtype(NEML2_DTYPE)
       .layout(torch::kStrided)
       .memory_format(torch::MemoryFormat::Contiguous)
       .pinned_memory(false)
@@ -42,7 +42,7 @@ const torch::TensorOptions
 default_integer_tensor_options()
 {
   return torch::TensorOptions()
-      .dtype(TORCH_INT_DTYPE)
+      .dtype(NEML2_INT_DTYPE)
       .layout(torch::kStrided)
       .memory_format(torch::MemoryFormat::Contiguous)
       .pinned_memory(false)

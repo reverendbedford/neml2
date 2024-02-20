@@ -24,8 +24,7 @@
 
 #pragma once
 
-#include <cstddef>
-#include <torch/torch.h>
+#include "neml2/base/config.h"
 
 namespace neml2
 {
@@ -36,22 +35,6 @@ typedef std::vector<TorchSize> TorchShape;
 typedef torch::IntArrayRef TorchShapeRef;
 typedef at::indexing::TensorIndex TorchIndex;
 typedef std::vector<at::indexing::TensorIndex> TorchSlice;
-
-/**
- * TODO: make the following constants configurable
- */
-/// The machine precision
-static constexpr Real EPS = 1E-15;
-/// The tolerance used in various algorithms
-static constexpr Real TOL = 1E-6;
-/// A tighter tolerance used in various algorithms
-static constexpr Real TOL2 = TOL * TOL;
-
-#define _CONCAT(x, y) x##y
-#define CONCAT(x, y) _CONCAT(x, y)
-#define TORCH_ENUM_PREFIX torch::k
-#define TORCH_DTYPE CONCAT(TORCH_ENUM_PREFIX, DTYPE)
-#define TORCH_INT_DTYPE CONCAT(TORCH_ENUM_PREFIX, INT_DTYPE)
 
 /**
  * The factory methods like `torch::arange`, `torch::ones`, `torch::zeros`, `torch::rand` etc.

@@ -23,12 +23,8 @@
 // THE SOFTWARE.
 
 #include "neml2/tensors/VecBase.h"
-
-// To be intantiated
-#include "neml2/tensors/Vec.h"
-#include "neml2/tensors/Rot.h"
-#include "neml2/tensors/WR2.h"
-#include "neml2/tensors/R3.h"
+#include "neml2/tensors/tensors.h"
+#include "neml2/tensors/macros.h"
 
 namespace neml2
 {
@@ -106,7 +102,6 @@ VecBase<Derived>::drotate(const R2 & R) const
   return torch::einsum("...ij,...k", {I, *this});
 }
 
-template class VecBase<Vec>;
-template class VecBase<Rot>;
-template class VecBase<WR2>;
+#define VECBASE_INSTANTIATE(T) template class VecBase<T>
+FOR_ALL_VECBASE(VECBASE_INSTANTIATE);
 } // namespace neml2

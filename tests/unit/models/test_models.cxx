@@ -34,7 +34,8 @@ namespace fs = std::filesystem;
 TEST_CASE("models")
 {
   const auto pwd = fs::current_path();
-  const auto search_path = fs::absolute(fs::path("unit/models"));
+  const auto search_path = fs::path(NEML2_BINARY_DIR) / "tests" / "unit" / "models";
+  const auto tests_path = fs::path(NEML2_SOURCE_DIR) / "tests" / "unit" / "models";
 
   // Find all unit tests
   std::vector<fs::path> tests;
@@ -49,7 +50,12 @@ TEST_CASE("models")
     fs::current_path(test.parent_path());
     const auto cwd = fs::current_path();
 
-    DYNAMIC_SECTION(fs::relative(test, search_path).string())
+    // When we do development, only symbolic links are created for test artifacts.
+    // Otherwise, the tests artifacts are copied over.
+    auto section_name = fs::is_symlink(test) ? fs::relative(test, tests_path).string()
+                                             : fs::relative(test, search_path).string();
+
+    DYNAMIC_SECTION(section_name)
     {
       try
       {

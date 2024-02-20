@@ -22,35 +22,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
+#include <pybind11/pybind11.h>
 
-#include "neml2/base/Registry.h"
-#include "neml2/base/NEML2Object.h"
+namespace py = pybind11;
 
-#include "neml2/tensors/macros.h"
-#include "neml2/tensors/tensors.h"
+// Forward declarations for submodules
+// void NEML2_MODULE_MATH(py::module_ &);
+// void NEML2_MODULE_TENSORS(py::module_ &);
 
-namespace neml2
+PYBIND11_MODULE(neml2, m)
 {
-/**
- * @brief Create a ones FixedDimTensor of type T from the input file.
- *
- * @tparam T The concrete tensor derived from FixedDimTensor
- */
-template <typename T>
-class OnesFixedDimTensor : public T, public NEML2Object
-{
-public:
-  static OptionSet expected_options();
+  py::module::import("torch");
 
-  /**
-   * @brief Construct a new OnesFixedDimTensor object
-   *
-   * @param options The options extracted from the input file.
-   */
-  OnesFixedDimTensor(const OptionSet & options);
-};
+  m.doc() = "NEML2, GPU-enabled vectorized material modeling library";
 
-#define ONESFIXEDDIMTENSOR_TYPEDEF(T) typedef OnesFixedDimTensor<T> Ones##T
-FOR_ALL_FIXEDDIMTENSOR(ONESFIXEDDIMTENSOR_TYPEDEF);
-} // namespace neml2
+  // NEML2_MODULE_MATH(m);
+  // NEML2_MODULE_TENSORS(m);
+}

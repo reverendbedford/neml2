@@ -29,3 +29,7 @@ doc/html
 **/syntax.yml
 build
 _deps
+__pycache__
+config.h
+conftest.py
+*.pyi

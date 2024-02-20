@@ -1,10 +1,10 @@
 if(NOT DEFINED DOXYGEN_EXECUTABLE)
   if(UNIX AND NOT APPLE)
-    set(FETCHCONTENT_QUIET FALSE)
     FetchContent_Declare(
       doxygen
       URL https://github.com/doxygen/doxygen/releases/download/Release_1_9_8/doxygen-1.9.8.linux.bin.tar.gz
     )
+    message(STATUS "Downloading doxygen, this may take a few minutes.")
     FetchContent_MakeAvailable(doxygen)
     set(DOXYGEN_EXECUTABLE ${doxygen_SOURCE_DIR}/bin/doxygen)
   else()

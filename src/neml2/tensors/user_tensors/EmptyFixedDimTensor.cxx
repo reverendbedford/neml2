@@ -26,7 +26,8 @@
 
 namespace neml2
 {
-register_all_FixedDimTensor_prefix(Empty, "Empty");
+#define EMPTYFIXEDDIMTENSOR_REGISTER(T) register_NEML2_object_alias(Empty##T, "Empty" #T)
+FOR_ALL_FIXEDDIMTENSOR(EMPTYFIXEDDIMTENSOR_REGISTER);
 
 template <typename T>
 OptionSet
@@ -44,5 +45,6 @@ EmptyFixedDimTensor<T>::EmptyFixedDimTensor(const OptionSet & options)
 {
 }
 
-instantiate_all_FixedDimTensor(EmptyFixedDimTensor);
+#define EMPTYFIXEDDIMTENSOR_INSTANTIATE_FIXEDDIMTENSOR(T) template class EmptyFixedDimTensor<T>
+FOR_ALL_FIXEDDIMTENSOR(EMPTYFIXEDDIMTENSOR_INSTANTIATE_FIXEDDIMTENSOR);
 } // namespace neml2
