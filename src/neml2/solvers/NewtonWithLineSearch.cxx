@@ -41,8 +41,7 @@ NewtonWithLineSearch::expected_options()
 }
 
 NewtonWithLineSearch::NewtonWithLineSearch(const OptionSet & options)
-  : Newton(options),
-    _linesearch_miter(options.get<unsigned int>("max_linesearch_iterations")),
+  : Newton(options), _linesearch_miter(options.get<unsigned int>("max_linesearch_iterations")),
     _linesearch_sigma(options.get<Real>("linesearch_cutback")),
     _linesearch_c(options.get<Real>("linesearch_stopping_criteria"))
 {
@@ -71,7 +70,7 @@ NewtonWithLineSearch::linesearch(NonlinearSystem & system,
 
   for (size_t i = 1; i < _linesearch_miter; i++)
   {
-    system.set_solution(x + _alpha * dx);
+    system.set_solution(x + system.scale_direction(_alpha * dx));
     system.residual();
     auto nR2 = math::bvv(R, R);
     auto crit = nR02 + 2.0 * _linesearch_c * _alpha * math::bvv(R0, dx);
