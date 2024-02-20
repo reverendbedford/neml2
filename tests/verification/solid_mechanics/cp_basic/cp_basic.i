@@ -52,6 +52,7 @@
     ic_rot_names = 'state/orientation'
     ic_rot_values = 'initial_orientation'
     predictor = 'CP_PREVIOUS_STATE'
+    cp_elastic_scale = 0.05
   []
   [verification]
     type = VTestVerification
@@ -68,6 +69,9 @@
 [Solvers]
   [newton]
     type = NewtonWithLineSearch
+    linesearch_cutback = 2.0
+    linesearch_stopping_criteria = 1.0e-3
+    max_linesearch_iterations = 5
   []
 []
 
