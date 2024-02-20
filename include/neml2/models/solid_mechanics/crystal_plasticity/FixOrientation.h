@@ -28,18 +28,23 @@
 
 namespace neml2
 {
-/// Calculate the orientation rate from the crystal model kinetics
-// Strictly this is the *spin* not the rotation rate.  But the integration routines
-// expect spin.
-class FixOrientations : public Model
+/**
+ * @brief Swap orientation plane when the singularity at \f[2 \pi\] is met with the modified
+ * Rodrigues vector.
+ *
+ * See the following reference for details
+ *
+ * > Banks, Matthew Jarrett. "Switching Methods for Three-Dimensional Rotational Dynamics Using
+ * > Modified Rodrigues Parameters." (2023).
+ */
+class FixOrientation : public Model
 {
 public:
   static OptionSet expected_options();
 
-  FixOrientations(const OptionSet & options);
+  FixOrientation(const OptionSet & options);
 
 protected:
-  /// Set the orientation spin and derivatives
   void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
   /// Corrected MRP representation

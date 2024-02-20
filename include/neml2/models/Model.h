@@ -107,6 +107,9 @@ public:
   /// The models that may be used during the evaluation of this model
   const std::vector<Model *> & registered_models() const { return _registered_models; }
 
+  /// Get a registered model by its name
+  Model * registered_model(const std::string & name) const;
+
   /// The variables that this model depends on
   virtual const std::set<VariableName> consumed_items() const override;
 

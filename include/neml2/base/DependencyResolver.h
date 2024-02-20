@@ -46,11 +46,7 @@ class DependencyResolver
 public:
   struct Item
   {
-    Item(Node * const node, const ItemType & item)
-      : parent(node),
-        value(item)
-    {
-    }
+    Item(Node * const node, const ItemType & item) : parent(node), value(item) {}
 
     Node * const parent;
     const ItemType value;
@@ -76,6 +72,9 @@ public:
   void add_node(DependencyDefinition<ItemType> *);
 
   void add_additional_outbound_item(const ItemType & item);
+
+  /// Set a node's priority
+  void set_priority(DependencyDefinition<ItemType> *, size_t);
 
   /// Resolve nodal dependency and find an evaluation order
   void resolve();
@@ -150,7 +149,10 @@ private:
   std::vector<Node *> _resolution;
 
   /// Track visited nodes during BFS
-  std::map<Node *, bool> _visited;
+  std::map<Node *, int> _status;
+
+  /// Priority of nodes used to break cyclic dependency
+  std::map<Node *, size_t> _priority;
 };
 
 template <typename Node, typename ItemType>
@@ -176,6 +178,15 @@ DependencyResolver<Node, ItemType>::add_additional_outbound_item(const ItemType 
 
 template <typename Node, typename ItemType>
 void
+DependencyResolver<Node, ItemType>::set_priority(DependencyDefinition<ItemType> * def,
+                                                 size_t priority)
+{
+  auto node = dynamic_cast<Node *>(def);
+  _priority[node] = priority;
+}
+
+template <typename Node, typename ItemType>
+void
 DependencyResolver<Node, ItemType>::build_graph()
 {
   // Clear the previous graph
@@ -193,11 +204,22 @@ DependencyResolver<Node, ItemType>::build_graph()
   {
     std::vector<Item> providers;
 
-    // Match consumer with provider
     for (const auto & itemj : _provided_items)
-      if (itemi.parent != itemj.parent) // No self dependency
-        if (itemi.value == itemj.value)
-          providers.push_back(itemj);
+    {
+      // Match consumer with provider
+      if (itemi.value != itemj.value)
+        continue;
+
+      // No self dependency
+      if (itemi.parent == itemj.parent)
+        continue;
+
+      // Enforce priority
+      if (_priority[itemi.parent] > _priority[itemj.parent])
+        continue;
+
+      providers.push_back(itemj);
+    }
 
     // If the user asks for unique providers, we should error if multiple providers have been
     // found. Otherwise, just put the first provider into the graph.
@@ -217,11 +239,26 @@ DependencyResolver<Node, ItemType>::build_graph()
   {
     std::vector<Item> consumers;
 
-    // Match consumer with provider
     for (const auto & itemj : _consumed_items)
-      if (itemi.parent != itemj.parent) // No self dependency
-        if (itemi.value == itemj.value && itemj.parent)
-          consumers.push_back(itemj);
+    {
+      // Skip additional outbound item
+      if (!itemj.parent)
+        continue;
+
+      // Match provider with consumer
+      if (itemi.value != itemj.value)
+        continue;
+
+      // No self dependency
+      if (itemi.parent == itemj.parent)
+        continue;
+
+      // Enforce priority
+      if (_priority[itemi.parent] < _priority[itemj.parent])
+        continue;
+
+      consumers.push_back(itemj);
+    }
 
     // If the user asks for unique consumers, we should error if multiple consumers have been
     // found. Otherwise, just put the first consumer into the graph.
@@ -276,10 +313,10 @@ DependencyResolver<Node, ItemType>::resolve()
 {
   build_graph();
 
-  _visited.clear();
+  _status.clear();
   _resolution.clear();
   for (const auto & node : _end_nodes)
-    if (!_visited[node])
+    if (!_status[node])
       resolve(node);
 
   // Make sure each node appears in the resolution once and only once
@@ -303,17 +340,33 @@ template <typename Node, typename ItemType>
 void
 DependencyResolver<Node, ItemType>::resolve(Node * node)
 {
-  // Mark the current node as visited
-  _visited[node] = true;
+  // Mark the current node as visiting (so that we know there is circular dependency when a
+  // "visiting" node is visited again).
+  _status[node] += 1;
 
   // Recurse for all the dependent nodes
   if (_node_provider_graph.count(node))
     for (const auto & dep : _node_provider_graph[node])
-      if (!_visited[dep])
+    {
+      // The dependent node must either be "not visited" or "visited".
+      // If the dependent node is "being visited", there must be cyclic dependency.
+      neml_assert(_status[dep] != 1,
+                  "While resolving dependency, two nodes '",
+                  node->name(),
+                  "' and '",
+                  dep->name(),
+                  "' have (possibly indirect) cyclic dependency. The cyclic dependency can be "
+                  "resolved by explicitly setting the node priorities.");
+
+      if (!_status[dep])
         resolve(dep);
+    }
 
   // At this point, all the dependent nodes must have been pushed into the resolution. It is
   // therefore safe to push the current node into the resolution.
   _resolution.push_back(node);
+
+  // Finished visiting this node
+  _status[node] += 1;
 }
 } // namespace neml2

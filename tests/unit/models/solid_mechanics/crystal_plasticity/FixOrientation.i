@@ -23,7 +23,7 @@
 
 [Models]
   [model]
-    type = FixOrientations
+    type = FixOrientation
     input_orientation = 'state/orientation'
     output_orientation = 'state/output_orientation'
   []

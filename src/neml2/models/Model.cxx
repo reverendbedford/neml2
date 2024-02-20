@@ -41,14 +41,10 @@ Model::expected_options()
 }
 
 Model::Model(const OptionSet & options)
-  : Data(options),
-    ParameterStore(options, this),
-    VariableStore(options, this),
-    NonlinearSystem(options),
-    _AD_1st_deriv(options.get<bool>("use_AD_first_derivative")),
+  : Data(options), ParameterStore(options, this), VariableStore(options, this),
+    NonlinearSystem(options), _AD_1st_deriv(options.get<bool>("use_AD_first_derivative")),
     _AD_2nd_deriv(options.get<bool>("use_AD_second_derivative")),
-    _options(default_tensor_options()),
-    _deriv_order(-1),
+    _options(default_tensor_options()), _deriv_order(-1),
     _extra_deriv_order(options.get<int>("_extra_derivative_order")),
     _nonlinear_system(options.get<bool>("_nonlinear_system"))
 {
@@ -364,6 +360,17 @@ Model::value_and_dvalue_and_d2value()
 
     input_storage().tensor().requires_grad_(false);
   }
+}
+
+Model *
+Model::registered_model(const std::string & name) const
+{
+  for (auto submodel : _registered_models)
+    if (submodel->name() == name)
+      return submodel;
+
+  throw NEMLException("There is no registered model named '" + name + "' in '" + this->name() +
+                      "'");
 }
 
 const std::set<VariableName>

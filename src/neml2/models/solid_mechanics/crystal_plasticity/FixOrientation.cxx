@@ -22,29 +22,46 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
+#include "neml2/models/solid_mechanics/crystal_plasticity/FixOrientation.h"
 
-#include "neml2/models/Model.h"
+#include "neml2/tensors/tensors.h"
+#include "neml2/misc/math.h"
 
 namespace neml2
 {
-template <typename T>
-class Identity : public Model
+register_NEML2_object(FixOrientation);
+
+OptionSet
+FixOrientation::expected_options()
 {
-public:
-  static OptionSet expected_options();
+  OptionSet options = Model::expected_options();
+  options.set<VariableName>("input_orientation") = VariableName("state", "orientation");
+  options.set<VariableName>("output_orientation") = VariableName("state", "orientation");
+  options.set<Real>("threshold") = 1.0;
+  return options;
+}
 
-  Identity(const OptionSet & options);
+FixOrientation::FixOrientation(const OptionSet & options)
+  : Model(options), _output(declare_output_variable<Rot>("output_orientation")),
+    _input(declare_input_variable<Rot>("input_orientation")),
+    _threshold(options.get<Real>("threshold"))
+{
+}
 
-protected:
-  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+void
+FixOrientation::set_value(bool out, bool dout_din, bool d2out_din2)
+{
+  neml_assert_dbg(!d2out_din2, "Second derivative not implemented.");
 
-  /// Output name
-  Variable<T> & _output;
+  if (out)
+    _output = math::where(
+        (Rot(_input).norm_sq() < _threshold).unsqueeze(-1), Rot(_input), Rot(_input).shadow());
 
-  /// Input name
-  const Variable<T> & _input;
-};
-
-typedef Identity<Rot> RotIdentity;
+  if (dout_din)
+  {
+    const auto I = R2::identity(options());
+    _output.d(_input) = math::where(
+        (Rot(_input).norm_sq() < _threshold).unsqueeze(-1).unsqueeze(-1), I, Rot(_input).dshadow());
+  }
+}
 } // namespace neml2
