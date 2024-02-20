@@ -41,10 +41,14 @@ Model::expected_options()
 }
 
 Model::Model(const OptionSet & options)
-  : Data(options), ParameterStore(options, this), VariableStore(options, this),
-    NonlinearSystem(options), _AD_1st_deriv(options.get<bool>("use_AD_first_derivative")),
+  : Data(options),
+    ParameterStore(options, this),
+    VariableStore(options, this),
+    NonlinearSystem(options),
+    _AD_1st_deriv(options.get<bool>("use_AD_first_derivative")),
     _AD_2nd_deriv(options.get<bool>("use_AD_second_derivative")),
-    _options(default_tensor_options()), _deriv_order(-1),
+    _options(default_tensor_options()),
+    _deriv_order(-1),
     _extra_deriv_order(options.get<int>("_extra_derivative_order")),
     _nonlinear_system(options.get<bool>("_nonlinear_system"))
 {

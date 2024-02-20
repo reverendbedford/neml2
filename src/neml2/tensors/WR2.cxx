@@ -34,7 +34,10 @@
 
 namespace neml2
 {
-WR2::WR2(const R2 & T) : WR2(math::full_to_skew((T - T.transpose()) / 2.0)) {}
+WR2::WR2(const R2 & T)
+  : WR2(math::full_to_skew((T - T.transpose()) / 2.0))
+{
+}
 
 WR2
 WR2::fill(const Real & a21,

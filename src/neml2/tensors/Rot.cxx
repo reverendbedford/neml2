@@ -34,7 +34,10 @@
 
 namespace neml2
 {
-Rot::Rot(const Vec & v) : Rot(BatchTensor(v)) {}
+Rot::Rot(const Vec & v)
+  : Rot(BatchTensor(v))
+{
+}
 
 // Done
 Rot

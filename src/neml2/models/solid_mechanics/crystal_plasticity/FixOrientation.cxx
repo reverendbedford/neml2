@@ -42,7 +42,8 @@ FixOrientation::expected_options()
 }
 
 FixOrientation::FixOrientation(const OptionSet & options)
-  : Model(options), _output(declare_output_variable<Rot>("output_orientation")),
+  : Model(options),
+    _output(declare_output_variable<Rot>("output_orientation")),
     _input(declare_input_variable<Rot>("input_orientation")),
     _threshold(options.get<Real>("threshold"))
 {

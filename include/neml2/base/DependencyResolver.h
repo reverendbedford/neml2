@@ -46,7 +46,11 @@ class DependencyResolver
 public:
   struct Item
   {
-    Item(Node * const node, const ItemType & item) : parent(node), value(item) {}
+    Item(Node * const node, const ItemType & item)
+      : parent(node),
+        value(item)
+    {
+    }
 
     Node * const parent;
     const ItemType value;

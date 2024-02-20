@@ -16,6 +16,7 @@ PointerAlignment: Middle
 
 BinPackParameters: false
 BinPackArguments: false
+PackConstructorInitializers: Never
 AllowShortBlocksOnASingleLine: false
 AllowShortFunctionsOnASingleLine: true
 AllowShortIfStatementsOnASingleLine: false

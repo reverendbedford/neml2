@@ -41,7 +41,8 @@ NewtonWithLineSearch::expected_options()
 }
 
 NewtonWithLineSearch::NewtonWithLineSearch(const OptionSet & options)
-  : Newton(options), _linesearch_miter(options.get<unsigned int>("max_linesearch_iterations")),
+  : Newton(options),
+    _linesearch_miter(options.get<unsigned int>("max_linesearch_iterations")),
     _linesearch_sigma(options.get<Real>("linesearch_cutback")),
     _linesearch_c(options.get<Real>("linesearch_stopping_criteria"))
 {
