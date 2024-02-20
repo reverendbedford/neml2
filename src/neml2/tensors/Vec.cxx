@@ -34,6 +34,12 @@ Vec::Vec(const Rot & r)
 {
 }
 
+R2
+Vec::identity_map(const torch::TensorOptions & options)
+{
+  return R2::identity(options);
+}
+
 Vec
 Vec::transform(const R2 & op) const
 {

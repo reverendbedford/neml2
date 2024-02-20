@@ -34,14 +34,14 @@ namespace fs = std::filesystem;
 TEST_CASE("solid mechanics")
 {
   const auto pwd = fs::current_path();
-  const auto search_path = fs::absolute(fs::path("regression/solid_mechanics"));
+  const auto search_path = pwd / "regression" / "solid_mechanics";
 
   // Find all regression tests
   std::vector<fs::path> tests;
   using rdi = fs::recursive_directory_iterator;
   for (const auto & entry : rdi(search_path))
     if (entry.path().extension() == ".i")
-      tests.push_back(fs::absolute(entry.path()));
+      tests.push_back(entry.path().lexically_relative(pwd));
 
   for (auto test : tests)
   {
@@ -49,7 +49,9 @@ TEST_CASE("solid mechanics")
     fs::current_path(test.parent_path());
     const auto cwd = fs::current_path();
 
-    DYNAMIC_SECTION(fs::relative(test, search_path).string())
+    auto section_name = (pwd / test).lexically_relative(search_path).string();
+
+    DYNAMIC_SECTION(section_name)
     {
       try
       {
@@ -64,9 +66,9 @@ TEST_CASE("solid mechanics")
         throw;
       }
     }
-  }
 
-  // Catch2 will split dynamic sections into different test cases, so we need to set the current
-  // path back to where we were. Otherwise the next test case will start from the
-  fs::current_path(pwd);
+    // Catch2 will split dynamic sections into different test cases, so we need to set the current
+    // path back to where we were. Otherwise the next test case will start from the
+    fs::current_path(pwd);
+  }
 }

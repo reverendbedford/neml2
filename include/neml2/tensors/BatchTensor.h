@@ -32,6 +32,53 @@ class BatchTensor : public BatchTensorBase<BatchTensor>
 {
 public:
   using BatchTensorBase<BatchTensor>::BatchTensorBase;
+
+  /// Unbatched empty tensor given base shape
+  [[nodiscard]] static BatchTensor
+  empty(const TorchShapeRef & base_shape,
+        const torch::TensorOptions & options = default_tensor_options());
+  /// Empty tensor given batch and base shapes
+  [[nodiscard]] static BatchTensor
+  empty(const TorchShapeRef & batch_shape,
+        const TorchShapeRef & base_shape,
+        const torch::TensorOptions & options = default_tensor_options());
+  /// Unbatched tensor filled with zeros given base shape
+  [[nodiscard]] static BatchTensor
+  zeros(const TorchShapeRef & base_shape,
+        const torch::TensorOptions & options = default_tensor_options());
+  /// Zero tensor given batch and base shapes
+  [[nodiscard]] static BatchTensor
+  zeros(const TorchShapeRef & batch_shape,
+        const TorchShapeRef & base_shape,
+        const torch::TensorOptions & options = default_tensor_options());
+  /// Unbatched tensor filled with ones given base shape
+  [[nodiscard]] static BatchTensor
+  ones(const TorchShapeRef & base_shape,
+       const torch::TensorOptions & options = default_tensor_options());
+  /// Unit tensor given batch and base shapes
+  [[nodiscard]] static BatchTensor
+  ones(const TorchShapeRef & batch_shape,
+       const TorchShapeRef & base_shape,
+       const torch::TensorOptions & options = default_tensor_options());
+  /// Unbatched tensor filled with a given value given base shape
+  [[nodiscard]] static BatchTensor
+  full(const TorchShapeRef & base_shape,
+       Real init,
+       const torch::TensorOptions & options = default_tensor_options());
+  /// Full tensor given batch and base shapes
+  [[nodiscard]] static BatchTensor
+  full(const TorchShapeRef & batch_shape,
+       const TorchShapeRef & base_shape,
+       Real init,
+       const torch::TensorOptions & options = default_tensor_options());
+  /// Unbatched identity tensor
+  [[nodiscard]] static BatchTensor
+  identity(TorchSize n, const torch::TensorOptions & options = default_tensor_options());
+  /// Identity tensor given batch shape and base length
+  [[nodiscard]] static BatchTensor
+  identity(const TorchShapeRef & batch_shape,
+           TorchSize n,
+           const torch::TensorOptions & options = default_tensor_options());
 };
 
 namespace math

@@ -51,5 +51,6 @@ public:
   OnesFixedDimTensor(const OptionSet & options);
 };
 
-typedef_all_FixedDimTensor_prefix(OnesFixedDimTensor, Ones);
+#define ONESFIXEDDIMTENSOR_TYPEDEF(T) typedef OnesFixedDimTensor<T> Ones##T
+FOR_ALL_FIXEDDIMTENSOR(ONESFIXEDDIMTENSOR_TYPEDEF);
 } // namespace neml2

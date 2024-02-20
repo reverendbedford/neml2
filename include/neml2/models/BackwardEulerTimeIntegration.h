@@ -24,6 +24,7 @@
 
 #pragma once
 
+#include "neml2/tensors/tensors.h"
 #include "neml2/models/Model.h"
 
 namespace neml2
@@ -63,5 +64,6 @@ protected:
 };
 
 typedef BackwardEulerTimeIntegration<Scalar> ScalarBackwardEulerTimeIntegration;
+typedef BackwardEulerTimeIntegration<Vec> VecBackwardEulerTimeIntegration;
 typedef BackwardEulerTimeIntegration<SR2> SR2BackwardEulerTimeIntegration;
 } // namespace neml2

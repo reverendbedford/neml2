@@ -6,11 +6,11 @@ on:
   pull_request:
     branches: [main]
   schedule:
-    - cron: '0 0 * * 0'
+    - cron: "0 0 * * 0"
 
 permissions:
-  contents: read  # Required when overriding permissions
-  pull-requests: write  # For posting coverage report
+  contents: read # Required when overriding permissions
+  pull-requests: write # For posting coverage report
   checks: write
 
 # Newer commits should cancel old runs
@@ -29,7 +29,7 @@ jobs:
           - "include"
           - "tests"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Run clang-format style check
         uses: jidicula/clang-format-action@v4.11.0
         with:
@@ -39,7 +39,7 @@ jobs:
     name: Copyright check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-python@v4
         with:
           python-version: "3.10"
@@ -54,7 +54,7 @@ jobs:
         unity: [ON, OFF]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - uses: actions/setup-python@v4
@@ -69,6 +69,7 @@ jobs:
             -DNEML2_VERIFICATION=ON \
             -DNEML2_BENCHMARK=OFF \
             -DNEML2_PROFILING=OFF \
+            -DNEML2_PYBIND=OFF \
             -DNEML2_DOC=OFF \
             .
       - run: make -j 2
@@ -98,7 +99,7 @@ jobs:
         btype: [Release, Debug]
         unity: [ON, OFF]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - uses: actions/setup-python@v4
@@ -113,6 +114,7 @@ jobs:
             -DNEML2_VERIFICATION=ON \
             -DNEML2_BENCHMARK=ON \
             -DNEML2_PROFILING=ON \
+            -DNEML2_PYBIND=OFF \
             -DNEML2_DOC=OFF \
             .
       - run: make -j 2
@@ -121,7 +123,7 @@ jobs:
     needs: build-test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - uses: actions/setup-python@v4
@@ -150,7 +152,7 @@ jobs:
     needs: clang-format
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
           path: neml2
@@ -159,7 +161,7 @@ jobs:
           echo -e "\
             #include \"neml2/base/Registry.h\"\n\
             int main() {\n\
-              std::cout << neml2::Registry::expected_options(\"ScalarSumModel\") << std::endl;\n\
+              neml2::Registry::print(std::cout);\n\
               return 0;\n\
             }\
             " > main.cxx
@@ -179,4 +181,3 @@ jobs:
       - name: Compile
         run: cd build && make -j 2
       - run: cd build && ./foo
-

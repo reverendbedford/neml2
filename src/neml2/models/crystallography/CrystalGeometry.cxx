@@ -25,7 +25,6 @@
 #include "neml2/models/crystallography/CrystalGeometry.h"
 
 #include "neml2/models/crystallography/crystallography.h"
-#include "neml2/models/crystallography/MillerIndex.h"
 #include "neml2/tensors/tensors.h"
 
 using namespace torch::indexing;

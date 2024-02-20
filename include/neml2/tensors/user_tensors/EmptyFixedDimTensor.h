@@ -51,5 +51,6 @@ public:
   EmptyFixedDimTensor(const OptionSet & options);
 };
 
-typedef_all_FixedDimTensor_prefix(EmptyFixedDimTensor, Empty);
+#define EMPTYFIXEDDIMTENSOR_TYPEDEF(T) typedef EmptyFixedDimTensor<T> Empty##T
+FOR_ALL_FIXEDDIMTENSOR(EMPTYFIXEDDIMTENSOR_TYPEDEF);
 } // namespace neml2

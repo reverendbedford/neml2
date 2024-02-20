@@ -51,5 +51,6 @@ public:
   ZerosFixedDimTensor(const OptionSet & options);
 };
 
-typedef_all_FixedDimTensor_prefix(ZerosFixedDimTensor, Zeros);
+#define ZEROSFIXEDDIMTENSOR_TYPEDEF(T) typedef ZerosFixedDimTensor<T> Zeros##T
+FOR_ALL_FIXEDDIMTENSOR(ZEROSFIXEDDIMTENSOR_TYPEDEF);
 } // namespace neml2

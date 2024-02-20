@@ -119,5 +119,7 @@ LinearInterpolation<T>::mask(const T2 & in, const torch::Tensor & m) const
       in_expand.batch_sizes().slice(0, in_expand.batch_dim() - 1), in.base_sizes()));
 }
 
-typedef_all_FixedDimTensor_suffix(LinearInterpolation, LinearInterpolation);
+#define LINEARINTERPOLATION_TYPEDEF_FIXEDDIMTENSOR(T)                                              \
+  typedef LinearInterpolation<T> T##LinearInterpolation
+FOR_ALL_FIXEDDIMTENSOR(LINEARINTERPOLATION_TYPEDEF_FIXEDDIMTENSOR);
 } // namespace neml2

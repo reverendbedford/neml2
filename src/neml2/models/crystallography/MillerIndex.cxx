@@ -28,9 +28,6 @@
 
 namespace neml2
 {
-namespace crystallography
-{
-
 MillerIndex
 MillerIndex::fill(Integer a, Integer b, Integer c, const torch::TensorOptions & options)
 {
@@ -59,6 +56,4 @@ MillerIndex::to_normalized_vec(const torch::TensorOptions & options) const
   auto v = this->to_vec(options);
   return v / v.norm();
 }
-
-} // namespace crystallography
 } // namespace neml2

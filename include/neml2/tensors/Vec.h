@@ -45,6 +45,10 @@ public:
 
   Vec(const Rot & r);
 
+  /// The derivative of a Vec with respect to itself
+  [[nodiscard]] static R2
+  identity_map(const torch::TensorOptions & options = default_tensor_options());
+
   // Transform by a crystal symmetry operator
   virtual Vec transform(const R2 & op) const;
 };
