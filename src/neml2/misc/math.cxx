@@ -167,7 +167,7 @@ full_to_mandel(const BatchTensor & full, TorchSize dim)
 {
   return full_to_reduced(
       full,
-      ConstantTensors::full_to_mandel_map().to(full.options().dtype(TORCH_INT_DTYPE)),
+      ConstantTensors::full_to_mandel_map().to(full.options().dtype(NEML2_INT_DTYPE)),
       ConstantTensors::full_to_mandel_factor().to(full.options()),
       dim);
 }
@@ -177,7 +177,7 @@ mandel_to_full(const BatchTensor & mandel, TorchSize dim)
 {
   return reduced_to_full(
       mandel,
-      ConstantTensors::mandel_to_full_map().to(mandel.options().dtype(TORCH_INT_DTYPE)),
+      ConstantTensors::mandel_to_full_map().to(mandel.options().dtype(NEML2_INT_DTYPE)),
       ConstantTensors::mandel_to_full_factor().to(mandel.options()),
       dim);
 }
@@ -187,7 +187,7 @@ full_to_skew(const BatchTensor & full, TorchSize dim)
 {
   return full_to_reduced(
       full,
-      ConstantTensors::full_to_skew_map().to(full.options().dtype(TORCH_INT_DTYPE)),
+      ConstantTensors::full_to_skew_map().to(full.options().dtype(NEML2_INT_DTYPE)),
       ConstantTensors::full_to_skew_factor().to(full.options()),
       dim);
 }
@@ -197,7 +197,7 @@ skew_to_full(const BatchTensor & skew, TorchSize dim)
 {
   return reduced_to_full(
       skew,
-      ConstantTensors::skew_to_full_map().to(skew.options().dtype(TORCH_INT_DTYPE)),
+      ConstantTensors::skew_to_full_map().to(skew.options().dtype(NEML2_INT_DTYPE)),
       ConstantTensors::skew_to_full_factor().to(skew.options()),
       dim);
 }

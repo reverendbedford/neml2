@@ -26,7 +26,8 @@
 
 namespace neml2
 {
-register_all_FixedDimTensor_prefix(Linspace, "Linspace");
+#define LINSPACEFIXEDDIMTENSOR_REGISTER(T) register_NEML2_object_alias(Linspace##T, "Linspace" #T)
+FOR_ALL_FIXEDDIMTENSOR(LINSPACEFIXEDDIMTENSOR_REGISTER);
 
 template <typename T>
 OptionSet
@@ -52,5 +53,7 @@ LinspaceFixedDimTensor<T>::LinspaceFixedDimTensor(const OptionSet & options)
 {
 }
 
-instantiate_all_FixedDimTensor(LinspaceFixedDimTensor);
+#define LINSPACEFIXEDDIMTENSOR_INSTANTIATE_FIXEDDIMTENSOR(T)                                       \
+  template class LinspaceFixedDimTensor<T>
+FOR_ALL_FIXEDDIMTENSOR(LINSPACEFIXEDDIMTENSOR_INSTANTIATE_FIXEDDIMTENSOR);
 } // namespace neml2

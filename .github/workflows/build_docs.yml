@@ -18,13 +18,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - uses: actions/setup-python@v4
         with:
           python-version: "3.10"
-      - run: sudo apt install graphviz
       - run: pip install -r requirements.txt
       - run: |
           cmake \
@@ -35,6 +34,7 @@ jobs:
             -DNEML2_VERIFICATION=OFF \
             -DNEML2_BENCHMARK=OFF \
             -DNEML2_PROFILING=OFF \
+            -DNEML2_PYBIND=OFF \
             -DNEML2_DOC=ON \
             .
       - run: make doc-syntax -j 2

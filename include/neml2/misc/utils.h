@@ -306,6 +306,13 @@ stringify(const T & t)
   return os.str();
 }
 
+template <>
+inline std::string
+stringify(const bool & t)
+{
+  return t ? "true" : "false";
+}
+
 namespace details
 {
 template <typename... S>

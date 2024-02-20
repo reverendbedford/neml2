@@ -28,7 +28,6 @@
 #include "neml2/tensors/tensors.h"
 
 using namespace neml2;
-using namespace neml2::crystallography;
 
 TEST_CASE("MillerIndex", "[crystallography]")
 {

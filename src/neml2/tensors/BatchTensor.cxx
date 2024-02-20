@@ -26,6 +26,81 @@
 
 namespace neml2
 {
+BatchTensor
+BatchTensor::empty(const TorchShapeRef & base_shape, const torch::TensorOptions & options)
+{
+  return BatchTensor(torch::empty(base_shape, options), 0);
+}
+
+BatchTensor
+BatchTensor::empty(const TorchShapeRef & batch_shape,
+                   const TorchShapeRef & base_shape,
+                   const torch::TensorOptions & options)
+{
+  return BatchTensor(torch::empty(utils::add_shapes(batch_shape, base_shape), options),
+                     batch_shape.size());
+}
+
+BatchTensor
+BatchTensor::zeros(const TorchShapeRef & base_shape, const torch::TensorOptions & options)
+{
+  return BatchTensor(torch::zeros(base_shape, options), 0);
+}
+
+BatchTensor
+BatchTensor::zeros(const TorchShapeRef & batch_shape,
+                   const TorchShapeRef & base_shape,
+                   const torch::TensorOptions & options)
+{
+  return BatchTensor(torch::zeros(utils::add_shapes(batch_shape, base_shape), options),
+                     batch_shape.size());
+}
+
+BatchTensor
+BatchTensor::ones(const TorchShapeRef & base_shape, const torch::TensorOptions & options)
+{
+  return BatchTensor(torch::ones(base_shape, options), 0);
+}
+
+BatchTensor
+BatchTensor::ones(const TorchShapeRef & batch_shape,
+                  const TorchShapeRef & base_shape,
+                  const torch::TensorOptions & options)
+{
+  return BatchTensor(torch::ones(utils::add_shapes(batch_shape, base_shape), options),
+                     batch_shape.size());
+}
+
+BatchTensor
+BatchTensor::full(const TorchShapeRef & base_shape, Real init, const torch::TensorOptions & options)
+{
+  return BatchTensor(torch::full(base_shape, init, options), 0);
+}
+
+BatchTensor
+BatchTensor::full(const TorchShapeRef & batch_shape,
+                  const TorchShapeRef & base_shape,
+                  Real init,
+                  const torch::TensorOptions & options)
+{
+  return BatchTensor(torch::full(utils::add_shapes(batch_shape, base_shape), init, options),
+                     batch_shape.size());
+}
+
+BatchTensor
+BatchTensor::identity(TorchSize n, const torch::TensorOptions & options)
+{
+  return BatchTensor(torch::eye(n, options), 0);
+}
+
+BatchTensor
+BatchTensor::identity(const TorchShapeRef & batch_shape,
+                      TorchSize n,
+                      const torch::TensorOptions & options)
+{
+  return identity(n, options).batch_expand_copy(batch_shape);
+}
+
 namespace math
 {
 BatchTensor

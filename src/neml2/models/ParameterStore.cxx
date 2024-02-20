@@ -106,7 +106,7 @@ ParameterStore::declare_parameter(const std::string & name, const std::string & 
       "parameter.");
 }
 
-#define instantiate_declare_parameter(T)                                                           \
+#define PARAMETERSTORE_INTANTIATE_FIXEDDIMTENSOR(T)                                                \
   template const T & ParameterStore::declare_parameter<T>(const std::string &, const std::string &)
-FOR_ALL_FIXEDDIMTENSOR(instantiate_declare_parameter);
+FOR_ALL_FIXEDDIMTENSOR(PARAMETERSTORE_INTANTIATE_FIXEDDIMTENSOR);
 } // namespace neml2

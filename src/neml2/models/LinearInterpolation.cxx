@@ -28,7 +28,9 @@ using namespace torch::indexing;
 
 namespace neml2
 {
-register_all_FixedDimTensor_suffix(LinearInterpolation, "LinearInterpolation");
+#define LINEARINTERPOLATION_REGISTER(T)                                                            \
+  register_NEML2_object_alias(T##LinearInterpolation, #T "LinearInterpolation")
+FOR_ALL_FIXEDDIMTENSOR(LINEARINTERPOLATION_REGISTER);
 
 template <typename T>
 OptionSet
@@ -80,5 +82,6 @@ LinearInterpolation<T>::set_value(bool out, bool dout_din, bool d2out_din2)
   }
 }
 
-instantiate_all_FixedDimTensor(LinearInterpolation);
+#define LINEARINTERPOLATION_INSTANTIATE_FIXEDDIMTENSOR(T) template class LinearInterpolation<T>
+FOR_ALL_FIXEDDIMTENSOR(LINEARINTERPOLATION_INSTANTIATE_FIXEDDIMTENSOR);
 } // namespace neml2

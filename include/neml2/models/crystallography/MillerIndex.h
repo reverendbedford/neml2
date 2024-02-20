@@ -31,8 +31,6 @@
 namespace neml2
 {
 class Vec;
-namespace crystallography
-{
 /// Represention of a crystal direction or plane a Miller Index
 // I delibrately made this not inherit from VecBase but we could
 // reconsider that later on
@@ -56,6 +54,4 @@ public:
   /// Convert back to a normalized real Vec
   Vec to_normalized_vec(const torch::TensorOptions & options = default_tensor_options()) const;
 };
-
-} // namespace crystallography
 } // namespace neml2

@@ -1,0 +1,5 @@
+#
+##### pip requirements ######
+#
+pytest
+pytest-testdox

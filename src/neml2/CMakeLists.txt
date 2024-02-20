@@ -1,23 +1,45 @@
-include(Macros)
+include(NEML2UnityGroup)
 
 # Add all the source files
 file(GLOB_RECURSE SRCS *.cxx)
 add_library(neml2 SHARED ${SRCS})
 
-# compile options
-target_compile_options(neml2 PUBLIC -Wall -Wextra -pedantic -Werror)
+# libTorch comes with two flavors: one with cxx11 abi, one without.
+# We should be consistent with whatever is detected from the libTorch.
+if(TORCH_CXX_FLAGS MATCHES "-D_GLIBCXX_USE_CXX11_ABI=1")
+  target_compile_definitions(neml2 PUBLIC _GLIBCXX_USE_CXX11_ABI=1)
+  message(STATUS "NEML2 is using CXX11 ABI to be consistent with libTorch")
+else()
+  target_compile_definitions(neml2 PUBLIC _GLIBCXX_USE_CXX11_ABI=0)
+  message(STATUS "NEML2 is using pre-CXX11 ABI to be consistent with libTorch")
+endif()
 
-REGISTERUNITYGROUP(neml2 "NEML2" .)
+# NEML2 (private) compile options
+target_compile_options(neml2 PRIVATE -Wall -Wextra -pedantic -Werror)
 
-# My headers
-target_include_directories(neml2 PUBLIC "${NEML2_SOURCE_DIR}/include")
+# Group source files together if UNITY build is requested
+register_unity_group(neml2 "NEML2" .)
 
-# torch headers
-# torch libraries
-target_link_libraries(neml2 ${TORCH_LIBRARIES})
+# NEML2 headers
+target_include_directories(neml2 PUBLIC ${NEML2_SOURCE_DIR}/include ${NEML2_BINARY_DIR}/include)
+
+# torch headers and libraries
+target_include_directories(neml2 SYSTEM PUBLIC ${LIBTORCH_DIR}/include/torch/csrc/api/include)
+target_include_directories(neml2 SYSTEM PUBLIC ${LIBTORCH_DIR}/include)
+
+# torch libraries (excluding torch_python!)
+file(GLOB LIBTORCH_C10LIBS ${LIBTORCH_DIR}/lib/libc10*)
+file(GLOB LIBTORCH_TORCHLIBS ${LIBTORCH_DIR}/lib/libtorch*)
+
+find_library(LIBTORCH_PYTHON torch_python HINTS ${LIBTORCH_DIR}/lib)
+list(REMOVE_ITEM LIBTORCH_TORCHLIBS ${LIBTORCH_PYTHON})
+
+target_link_directories(neml2 PUBLIC ${LIBTORCH_DIR}/lib)
+target_link_libraries(neml2 PUBLIC ${LIBTORCH_TORCHLIBS})
+target_link_libraries(neml2 PUBLIC ${LIBTORCH_C10LIBS})
 
 # hit for parsing
-target_link_libraries(neml2 hit)
+target_link_libraries(neml2 PUBLIC hit)
 
 # Make scalar type configurable:
 if(NOT NEML2_DTYPE)
@@ -37,4 +59,24 @@ if(NOT NEML2_INT_DTYPE)
 endif()
 
 message(STATUS "Configuring with default integer scalar type: ${NEML2_INT_DTYPE}")
-target_compile_definitions(neml2 PUBLIC INT_DTYPE=${NEML2_INT_DTYPE})
+configure_file(
+  ${NEML2_SOURCE_DIR}/include/neml2/base/config.h.in
+  ${NEML2_BINARY_DIR}/include/neml2/base/config.h
+)
+install(FILES ${NEML2_BINARY_DIR}/include/neml2/base/config.h DESTINATION ${CMAKE_INSTALL_PREFIX}/neml2/include/base)
+
+list(APPEND NEML2_INSTALL_RPATH lib)
+list(APPEND NEML2_INSTALL_RPATH ${LIBTORCH_DIR}/lib)
+set_target_properties(neml2 PROPERTIES INSTALL_RPATH "${NEML2_INSTALL_RPATH}")
+install(TARGETS neml2 LIBRARY DESTINATION neml2/lib)
+
+# Install public headers
+# This is apparently the non-modern way as I am just copying all headers in the include directory
+# This is because I am having trouble understanding the so-called "modern" way...
+file(GLOB_RECURSE NEML2_PUBLIC_HEADERS ${NEML2_SOURCE_DIR}/include/*.h)
+
+foreach(NEML2_PUBLIC_HEADER ${NEML2_PUBLIC_HEADERS})
+  file(RELATIVE_PATH NEML2_PUBLIC_HEADER_RELPATH ${NEML2_SOURCE_DIR}/include/neml2 ${NEML2_PUBLIC_HEADER})
+  cmake_path(GET NEML2_PUBLIC_HEADER_RELPATH PARENT_PATH NEML2_PUBLIC_HEADER_DIR)
+  install(FILES ${NEML2_PUBLIC_HEADER} DESTINATION ${CMAKE_INSTALL_PREFIX}/neml2/include/${NEML2_PUBLIC_HEADER_DIR})
+endforeach()

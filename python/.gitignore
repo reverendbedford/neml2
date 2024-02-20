@@ -1,0 +1,2 @@
+# Do not ignore stub typing files (for install purposes)
+!neml2/**/*.pyi
