@@ -54,7 +54,7 @@ Newton::solve(NonlinearSystem & system, BatchTensor & x)
   // Check for initial convergence
   if (converged(0, nR0, nR0))
   {
-    // FIXME: The final update is only necessary if we use AD
+    // TODO: The final update is only necessary if we use AD
     system.Jacobian();
     final_update(system, x);
     return {true, 0};
@@ -76,7 +76,7 @@ Newton::solve(NonlinearSystem & system, BatchTensor & x)
     // Check for convergence
     if (converged(i, nR, nR0))
     {
-      // FIXME: The final update is only necessary if we use AD
+      // TODO: The final update is only necessary if we use AD
       final_update(system, x);
       return {true, i};
     }
@@ -121,8 +121,7 @@ Newton::solve_direction(const NonlinearSystem & system)
   if (system.residual_view().base_dim() == 0)
     return -system.residual_view() / system.Jacobian_view();
 
-  return -BatchTensor(torch::linalg::solve(system.Jacobian_view(), system.residual_view(), true),
-                      system.residual_view().batch_dim());
+  return -math::linalg::solve(system.Jacobian_view(), system.residual_view());
 }
 
 } // namespace neml2

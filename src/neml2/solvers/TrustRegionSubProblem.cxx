@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 #include "neml2/solvers/TrustRegionSubProblem.h"
+#include "neml2/misc/math.h"
 
 namespace neml2
 {
@@ -66,9 +67,7 @@ TrustRegionSubProblem::assemble(bool residual, bool Jacobian)
 BatchTensor
 TrustRegionSubProblem::preconditioned_solve(const Scalar & s, const BatchTensor & v) const
 {
-  return BatchTensor(
-      torch::linalg::solve(_JJ + s * BatchTensor::identity(v.base_sizes()[0], _options), v, true),
-      v.batch_dim());
+  return math::linalg::solve(_JJ + s * BatchTensor::identity(v.base_sizes()[0], _options), v);
 }
 
 BatchTensor

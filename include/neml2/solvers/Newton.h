@@ -25,6 +25,7 @@
 #pragma once
 
 #include "neml2/solvers/NonlinearSolver.h"
+#include "neml2/misc/math.h"
 
 namespace neml2
 {

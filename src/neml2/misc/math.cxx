@@ -310,6 +310,29 @@ d_multiply_and_make_skew_d_second(const SR2 & a)
 
 namespace linalg
 {
+BatchTensor
+vector_norm(const BatchTensor & v)
+{
+  neml_assert_dbg(v.base_dim() == 0 || v.base_dim() == 1,
+                  "v in vector_norm has base dimension ",
+                  v.base_dim(),
+                  " instead of 0 or 1.");
+
+  // If the vector is a logical scalar just return its absolute value
+  if (v.base_dim() == 0)
+    return math::abs(v);
+
+  return BatchTensor(torch::linalg::vector_norm(
+                         v, /*order=*/2, /*dim=*/-1, /*keepdim=*/false, /*dtype=*/c10::nullopt),
+                     v.batch_dim());
+}
+
+BatchTensor
+solve(const BatchTensor & A, const BatchTensor & B)
+{
+  return BatchTensor(torch::linalg::solve(A, B, /*left=*/true), A.batch_dim());
+}
+
 std::tuple<BatchTensor, BatchTensor>
 lu_factor(const BatchTensor & A, bool pivot)
 {

@@ -232,6 +232,12 @@ WSR4 d_multiply_and_make_skew_d_second(const SR2 & a);
 
 namespace linalg
 {
+/// Vector norm of a vector. Falls back to math::abs is \p v is a Scalar.
+BatchTensor vector_norm(const BatchTensor & v);
+
+/// Solve the linear system A X = B
+BatchTensor solve(const BatchTensor & A, const BatchTensor & B);
+
 std::tuple<BatchTensor, BatchTensor> lu_factor(const BatchTensor & A, bool pivot = true);
 
 BatchTensor lu_solve(const BatchTensor & LU,
