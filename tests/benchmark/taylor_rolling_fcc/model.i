@@ -99,8 +99,7 @@
 
 [Solvers]
   [newton]
-    type = NewtonNonlinearSolver
-    linesearch = true
+    type = NewtonWithLineSearch
     max_its = 500
     linesearch_cutback = 2.0
     linesearch_stopping_criteria = 1.0e-3

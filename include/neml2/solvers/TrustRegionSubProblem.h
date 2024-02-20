@@ -22,49 +22,50 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <catch2/catch.hpp>
+#pragma once
 
-#include "SampleNonlinearSystems.h"
-#include "neml2/solvers/NewtonNonlinearSolver.h"
+#include "neml2/solvers/NonlinearSystem.h"
 
-using namespace neml2;
-
-TEST_CASE("NewtonNonlinearSolver", "[solvers]")
+namespace neml2
 {
-  // Create the nonlinear solver
-  OptionSet options = NewtonNonlinearSolver::expected_options();
-  NewtonNonlinearSolver solver(options);
+/**
+ * The trust region subproblem introduced in
+ *
+ * > Yuan, Ya-xiang. Trust region algorithms for nonlinear equations. Hong Kong Baptist
+ * > University, Department of Mathematics, 1994.
+ */
+class TrustRegionSubProblem : public NonlinearSystem
+{
+public:
+  TrustRegionSubProblem(const OptionSet & options);
 
-  // Initial guess
-  TorchShape batch_sz = {2};
-  TorchSize nbase = 4;
-  auto x = BatchTensor::full(batch_sz, nbase, 2.0, default_tensor_options());
+  virtual void reinit(const NonlinearSystem & system, const Scalar & delta);
 
-  SECTION("solve")
-  {
-    // Create the nonlinear system
-    auto options = PowerTestSystem::expected_options();
-    PowerTestSystem system(options);
-    system.reinit(x);
+  BatchTensor preconditioned_direction(const Scalar & s) const;
 
-    auto [succeeded, iters] = solver.solve(system, x);
+protected:
+  virtual void assemble(bool residual, bool Jacobian) override;
 
-    REQUIRE(succeeded);
-    REQUIRE(torch::allclose(x, system.exact_solution()));
-  }
+  BatchTensor preconditioned_solve(const Scalar & s, const BatchTensor & v) const;
 
-  SECTION("automatic scaling")
-  {
-    // Create the nonlinear system (with automatic scaling)
-    auto options = PowerTestSystem::expected_options();
-    options.set<bool>("automatic_scaling") = true;
-    PowerTestSystem system(options);
-    system.reinit(x);
+  TorchShape _batch_sizes;
 
-    system.init_scaling(solver.verbose);
-    auto [succeeded, iters] = solver.solve(system, x);
+  torch::TensorOptions _options;
 
-    REQUIRE(succeeded);
-    REQUIRE(torch::allclose(x, system.exact_solution()));
-  }
-}
+private:
+  /// Residual of the underlying nonlinear problem
+  BatchTensor _R;
+
+  /// Jacobian of the underlying nonlinear problem
+  BatchTensor _J;
+
+  /// The trust region radius
+  Scalar _delta;
+
+  /// Temporary Jacobian-Jacobian product
+  BatchTensor _JJ;
+
+  /// Temporary Jacobian-Residual product
+  BatchTensor _JR;
+};
+} // namespace neml2

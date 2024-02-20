@@ -42,6 +42,36 @@ bmm(const BatchTensor & a, const BatchTensor & b)
                   " instead of 2.");
   return BatchTensor(torch::matmul(a, b), broadcast_batch_dim(a, b));
 }
+
+BatchTensor
+bmv(const BatchTensor & a, const BatchTensor & v)
+{
+  neml_assert_batch_broadcastable_dbg(a, v);
+  neml_assert_dbg(a.base_dim() == 2,
+                  "The first tensor in bmv has base dimension ",
+                  a.base_dim(),
+                  " instead of 2.");
+  neml_assert_dbg(v.base_dim() == 1,
+                  "The second tensor in bmv has base dimension ",
+                  v.base_dim(),
+                  " instead of 1.");
+  return BatchTensor(torch::matmul(a, v.base_unsqueeze(-1)).squeeze(-1), broadcast_batch_dim(a, v));
+}
+
+BatchTensor
+bvv(const BatchTensor & a, const BatchTensor & b)
+{
+  neml_assert_batch_broadcastable_dbg(a, b);
+  neml_assert_dbg(a.base_dim() == 1,
+                  "The first tensor in bvv has base dimension ",
+                  a.base_dim(),
+                  " instead of 1.");
+  neml_assert_dbg(b.base_dim() == 1,
+                  "The second tensor in bvv has base dimension ",
+                  b.base_dim(),
+                  " instead of 1.");
+  return BatchTensor(torch::sum(a * b, -1), broadcast_batch_dim(a, b));
+}
 }
 
 BatchTensor

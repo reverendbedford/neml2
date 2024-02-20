@@ -188,4 +188,9 @@ NonlinearSystem::residual_and_Jacobian()
   }
 }
 
+BatchTensor
+NonlinearSystem::residual_norm() const
+{
+  return math::linalg::vector_norm(residual_view());
+}
 } // namespace neml2

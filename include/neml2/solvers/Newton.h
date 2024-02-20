@@ -24,27 +24,50 @@
 
 #pragma once
 
-#include "neml2/models/Model.h"
 #include "neml2/solvers/NonlinearSolver.h"
+#include "neml2/misc/math.h"
 
 namespace neml2
 {
-class ImplicitUpdate : public Model
+/**
+ * @copydoc neml2::NonlinearSolver
+ *
+ * The Newton-Raphson method is used to iteratively update the initial guess until the residual
+ * becomes zero within specified tolerances.
+ */
+class Newton : public NonlinearSolver
 {
 public:
   static OptionSet expected_options();
 
-  ImplicitUpdate(const OptionSet & name);
+  Newton(const OptionSet & options);
 
-  virtual void check_AD_limitation() const override;
+  virtual std::tuple<bool, size_t> solve(NonlinearSystem & system, BatchTensor & x) override;
 
 protected:
-  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+  /// Prepare solver internal data before the iterative update
+  virtual void prepare(const NonlinearSystem & /*system*/, const BatchTensor & /*x*/) {}
 
-  /// The implicit model to be updated
-  Model & _model;
+  /**
+   * @brief Check for convergence. The current iteration is said to be converged if the residual
+   * norm is below the absolute tolerance or or the ratio between the residual norm and the initial
+   * residual norm is below the relative tolerance.
+   *
+   * @param itr The current iteration number
+   * @param nR The current residual norm
+   * @param nR0 The initial residual norm
+   * @return true Converged
+   * @return false Not converged
+   */
+  virtual bool converged(size_t itr, const torch::Tensor & nR, const torch::Tensor & nR0) const;
 
-  /// The nonlinear solver used to solve the nonlinear system
-  NonlinearSolver & _solver;
+  /// Update trial solution
+  virtual void update(NonlinearSystem & system, BatchTensor & x);
+
+  /// Do a final update to track AD function graph
+  virtual void final_update(NonlinearSystem & system, BatchTensor & x);
+
+  /// Find the current update direction
+  virtual BatchTensor solve_direction(const NonlinearSystem & system);
 };
 } // namespace neml2

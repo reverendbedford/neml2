@@ -24,53 +24,29 @@
 
 #pragma once
 
-#include "neml2/solvers/NonlinearSolver.h"
+#include "neml2/solvers/Newton.h"
 
 namespace neml2
 {
 /**
- * @copydoc neml2::NonlinearSolver
+ * @copydoc neml2::Newton
  *
- * The Newton-Raphson method is used to iteratively update the initial guess until the residual
- * becomes zero within specified tolerances.
+ * Armijo line search strategy is used to search along the direction of the full Newton step for a
+ * decreasing residual norm.
  */
-class NewtonNonlinearSolver : public NonlinearSolver
+class NewtonWithLineSearch : public Newton
 {
 public:
   static OptionSet expected_options();
 
-  NewtonNonlinearSolver(const OptionSet & options);
-
-  virtual std::tuple<bool, size_t> solve(NonlinearSystem & system, BatchTensor & x) const override;
+  NewtonWithLineSearch(const OptionSet & options);
 
 protected:
-  /**
-   * @brief Check for convergence. The current iteration is said to be converged if the residual
-   * norm is below the absolute tolerance or or the ratio between the residual norm and the initial
-   * residual norm is below the relative tolerance.
-   *
-   * @param itr The current iteration number
-   * @param nR The current residual norm
-   * @param nR0 The initial residual norm
-   * @param alpha The linesearch parameter
-   * @return true Converged
-   * @return false Not converged
-   */
-  virtual bool
-  converged(size_t itr, const torch::Tensor & nR, const torch::Tensor & nR0, Real alpha) const;
-
   /// Update trial solution
-  virtual Real update(NonlinearSystem & system, BatchTensor & x, bool final = false) const;
+  virtual void update(NonlinearSystem & system, BatchTensor & x) override;
 
   /// Perform Armijo linesearch
-  virtual Real
-  linesearch(NonlinearSystem & system, const BatchTensor & x, const BatchTensor & dx) const;
-
-  /// Find the current update direction
-  virtual BatchTensor solve_direction(NonlinearSystem & system) const;
-
-  /// If true, do a linesearch
-  bool _linesearch;
+  virtual void linesearch(NonlinearSystem & system, const BatchTensor & x, const BatchTensor & dx);
 
   /// Linesearch maximum iterations
   unsigned int _linesearch_miter;
@@ -80,5 +56,8 @@ protected:
 
   /// Stopping criteria for linesearch
   Real _linesearch_c;
+
+  /// The line search parameter
+  Scalar _alpha;
 };
 } // namespace neml2

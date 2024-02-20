@@ -23,7 +23,7 @@
 
 [Solvers]
   [newton]
-    type = NewtonNonlinearSolver
+    type = Newton
     abs_tol = 1e-10
     rel_tol = 1e-08
     max_its = 100
