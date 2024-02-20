@@ -36,8 +36,8 @@ TEST_CASE("Orientation", "[tensors/user_tensors]")
   SECTION("Kocks, radians")
   {
     const auto & auto_1 = Factory::get_object<Rot>("Tensors", "kocks_rad");
-    auto correct_1 = Rot(torch::tensor({{-0.98498741, -0.19966683, -9.96664442},
-                                        {-1.00250574, -0.02506787, -13.30832395},
+    auto correct_1 = Rot(torch::tensor({{-0.08900237, -0.01804167, -0.90057498},
+                                        {-0.06969849, -0.00174283, -0.9252516},
                                         {0.0, 0.0, 0.0}},
                                        default_tensor_options()));
     REQUIRE(torch::allclose(auto_1, correct_1));
@@ -45,8 +45,8 @@ TEST_CASE("Orientation", "[tensors/user_tensors]")
   SECTION("Kocks, degrees")
   {
     const auto & auto_1 = Factory::get_object<Rot>("Tensors", "kocks_deg");
-    auto correct_1 = Rot(torch::tensor({{-0.577350, -1.000000, -1.732051},
-                                        {-2.021802, 0.159119, -10.385397},
+    auto correct_1 = Rot(torch::tensor({{-0.17445754, -0.30216947, -0.52337294},
+                                        {-0.17386297, 0.01368329, -0.89308248},
                                         {0.000000, 0.000000, 0.00000}},
                                        default_tensor_options()));
     REQUIRE(torch::allclose(auto_1, correct_1));
@@ -55,8 +55,8 @@ TEST_CASE("Orientation", "[tensors/user_tensors]")
   SECTION("Bunge, radians")
   {
     const auto & auto_1 = Factory::get_object<Rot>("Tensors", "bunge_rad");
-    auto correct_1 = Rot(torch::tensor({{-0.101864, 0.010220, -0.202710},
-                                        {-0.074953, 0.005632, -0.025005},
+    auto correct_1 = Rot(torch::tensor({{-0.05029174, 0.00504576, -0.10008088},
+                                        {-0.03741789, 0.0028116, -0.01248295},
                                         {-0.000000, 0.000000, 0.000000}},
                                        default_tensor_options()));
     REQUIRE(torch::allclose(auto_1, correct_1, 1e-3, 1e-4));
@@ -64,8 +64,8 @@ TEST_CASE("Orientation", "[tensors/user_tensors]")
   SECTION("Bunge, degrees")
   {
     const auto & auto_1 = Factory::get_object<Rot>("Tensors", "bunge_deg");
-    auto correct_1 = Rot(torch::tensor({{-1.000000, 0.577350, -1.732051},
-                                        {-0.194084, 0.018688, 0.078702},
+    auto correct_1 = Rot(torch::tensor({{-0.30216947, 0.17445754, -0.52337294},
+                                        {-0.09599247, 0.00924294, 0.03892541},
                                         {-0.000000, 0.000000, -0.000000}},
                                        default_tensor_options()));
     REQUIRE(torch::allclose(auto_1, correct_1, 1e-3, 1e-4));
@@ -74,8 +74,8 @@ TEST_CASE("Orientation", "[tensors/user_tensors]")
   SECTION("Roe, radians")
   {
     const auto & auto_1 = Factory::get_object<Rot>("Tensors", "roe_rad");
-    auto correct_1 = Rot(torch::tensor({{-0.010220, -0.101864, -0.202710},
-                                        {-0.005632, -0.074953, -0.025005},
+    auto correct_1 = Rot(torch::tensor({{-0.00504576, -0.05029174, -0.10008088},
+                                        {-0.0028116, -0.03741789, -0.01248295},
                                         {0.000000, 0.000000, 0.000000}},
                                        default_tensor_options()));
     REQUIRE(torch::allclose(auto_1, correct_1, 1e-3, 1e-4));
@@ -83,8 +83,8 @@ TEST_CASE("Orientation", "[tensors/user_tensors]")
   SECTION("Roe, degrees")
   {
     const auto & auto_1 = Factory::get_object<Rot>("Tensors", "roe_deg");
-    auto correct_1 = Rot(torch::tensor({{-0.577350, -1.000000, -1.732051},
-                                        {-0.018688, -0.194084, 0.078702},
+    auto correct_1 = Rot(torch::tensor({{-0.17445754, -0.30216947, -0.52337294},
+                                        {-0.00924294, -0.09599247, 0.03892541},
                                         {0.000000, -0.000000, -0.000000}},
                                        default_tensor_options()));
     REQUIRE(torch::allclose(auto_1, correct_1, 1e-3, 1e-4));

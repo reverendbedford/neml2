@@ -71,7 +71,7 @@ NewtonWithLineSearch::linesearch(NonlinearSystem & system,
 
   for (size_t i = 1; i < _linesearch_miter; i++)
   {
-    system.set_solution(x + _alpha * dx);
+    system.set_solution(x + system.scale_direction(_alpha * dx));
     system.residual();
     auto nR2 = math::bvv(R, R);
     auto crit = nR02 + 2.0 * _linesearch_c * _alpha * math::bvv(R0, dx);

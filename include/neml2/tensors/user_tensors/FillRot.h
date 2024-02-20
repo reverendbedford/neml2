@@ -48,6 +48,6 @@ public:
 
 private:
   /// A helper method to dispatch to the correct fill method based on the selected options
-  Rot fill(const std::vector<CrossRef<Scalar>> & values) const;
+  Rot fill(const std::vector<CrossRef<Scalar>> & values, const std::string & method) const;
 };
 } // namespace neml2

@@ -40,6 +40,7 @@ Orientation::expected_options()
   options.set<std::string>("angle_convention") = "kocks";
   options.set<std::string>("angle_type") = "degrees";
   options.set<std::vector<Real>>("values") = {};
+  options.set<bool>("normalize") = false;
 
   options.set<TorchSize>("random_seed") = -1;
 
@@ -48,33 +49,36 @@ Orientation::expected_options()
 }
 
 Orientation::Orientation(const OptionSet & options)
-  : Rot(fill(
-        options.get<std::vector<Real>>("values"), options.get<std::string>("input_type"), options)),
+  : Rot(fill(options)),
     NEML2Object(options)
 {
 }
 
 Rot
-Orientation::fill(const std::vector<Real> & values,
-                  std::string input_type,
-                  const OptionSet & options) const
+Orientation::fill(const OptionSet & options) const
 {
+  std::string input_type = options.get<std::string>("input_type");
+
+  Rot R;
   if (input_type == "euler_angles")
   {
-    return expand_as_needed(fill_euler_angles(torch::tensor(values, default_tensor_options()),
-                                              options.get<std::string>("angle_convention"),
-                                              options.get<std::string>("angle_type")),
-                            options.get<unsigned int>("quantity"));
+    R = expand_as_needed(fill_euler_angles(torch::tensor(options.get<std::vector<Real>>("values"),
+                                                         default_tensor_options()),
+                                           options.get<std::string>("angle_convention"),
+                                           options.get<std::string>("angle_type")),
+                         options.get<unsigned int>("quantity"));
   }
   else if (input_type == "random")
   {
-    return fill_random(options.get<unsigned int>("quantity"),
-                       options.get<TorchSize>("random_seed"));
+    R = fill_random(options.get<unsigned int>("quantity"), options.get<TorchSize>("random_seed"));
   }
   else
     throw NEMLException("Unknown Orientation input_type " + input_type);
 
-  return Rot();
+  if (options.get<bool>("normalize"))
+    return math::where((R.norm_sq() < 1.0).unsqueeze(-1), R, R.shadow());
+
+  return R;
 }
 
 Rot
@@ -138,15 +142,26 @@ Orientation::fill_matrix(const R2 & M) const
   auto trace = M.index({Ellipsis, 0, 0}) + M.index({Ellipsis, 1, 1}) + M.index({Ellipsis, 2, 2});
   auto theta = torch::acos((trace - 1.0) / 2.0);
 
-  // Get the vector
+  // Get the standard Rod. parameters
   auto scale = torch::tan(theta / 2.0) / (2.0 * torch::sin(theta));
   scale.index_put_({theta == 0}, 0.0);
   auto rx = (M.index({Ellipsis, 2, 1}) - M.index({Ellipsis, 1, 2})) * scale;
   auto ry = (M.index({Ellipsis, 0, 2}) - M.index({Ellipsis, 2, 0})) * scale;
   auto rz = (M.index({Ellipsis, 1, 0}) - M.index({Ellipsis, 0, 1})) * scale;
 
+  return fill_rodrigues(rx, ry, rz);
+}
+
+Rot
+Orientation::fill_rodrigues(const Scalar & rx, const Scalar & ry, const Scalar & rz) const
+{
+  // Get the modified Rod. parameters
+  auto ns = rx * rx + ry * ry + rz * rz;
+  auto f = torch::sqrt(torch::Tensor(ns) + torch::tensor(1.0, ns.dtype())) +
+           torch::tensor(1.0, ns.dtype());
+
   // Stack and return
-  return Rot(torch::stack({rx, ry, rz}, 1), 1);
+  return Rot(torch::stack({rx / f, ry / f, rz / f}, 1), 1);
 }
 
 Rot

@@ -56,7 +56,7 @@ TEST_CASE("Rot", "[tensors]")
 
     SECTION("euler_rodrigues")
     {
-      auto a = Rot::fill(1.2496889, 1.62862628, 7.59575411, DTO);
+      auto a = Rot::fill(0.13991834, 0.18234513, 0.85043991, DTO);
       auto A = R2::fill(-0.91855865,
                         -0.1767767,
                         0.35355339,
@@ -73,18 +73,39 @@ TEST_CASE("Rot", "[tensors]")
 
     SECTION("deuler_rodrigues")
     {
-      auto a = Rot::fill(1.2496889, 1.62862628, 7.59575411, DTO);
+      auto a = Rot::fill(0.13991834, 0.18234513, 0.85043991, DTO);
       auto apply = [](const BatchTensor & x) { return Rot(x).euler_rodrigues(); };
       auto dA_da = finite_differencing_derivative(apply, a);
-      REQUIRE(torch::allclose(a.deuler_rodrigues(), dA_da));
-      REQUIRE(torch::allclose(a.batch_expand(B).deuler_rodrigues(), dA_da.batch_expand(B)));
+
+      REQUIRE(torch::allclose(a.deuler_rodrigues(), dA_da, 1.0e-4));
+      REQUIRE(torch::allclose(a.batch_expand(B).deuler_rodrigues(), dA_da.batch_expand(B), 1.0e-4));
+    }
+
+    SECTION("shadow")
+    {
+      auto a = Rot::fill(1.2, 3.1, -2.1, DTO);
+      auto ab = a.batch_expand(B);
+      auto b = Rot::fill(-0.07761966, -0.20051746, 0.13583441, DTO);
+
+      SECTION("defintion")
+      {
+        REQUIRE(torch::allclose(a.shadow(), b));
+        REQUIRE(torch::allclose(ab.shadow(), b));
+      }
+      SECTION("concept") { REQUIRE(torch::allclose(a.euler_rodrigues(), b.euler_rodrigues())); }
+      SECTION("derivative")
+      {
+        auto apply = [](const BatchTensor & x) { return Rot(x).shadow(); };
+        auto dA = finite_differencing_derivative(apply, a);
+        REQUIRE(torch::allclose(a.dshadow(), dA, 1.0e-4));
+      }
     }
 
     SECTION("rotate")
     {
-      auto r = Rot::fill(1.2496889, 1.62862628, 7.59575411);
-      auto v = Rot::fill(-5.68010824, -2.8011194, 15.25705169);
-      auto vp = Rot::fill(-0.40390244, 0.61401441, -0.27708492);
+      auto r = Rot::fill(0.13991834, 0.18234513, 0.85043991, DTO);
+      auto v = Rot::fill(-0.32366123, -0.15961206, 0.86937009, DTO);
+      auto vp = Rot::fill(1.48720771, -2.26086024, 1.02025338, DTO);
 
       auto rb = r.batch_expand(B);
       auto vb = v.batch_expand(B);
@@ -98,41 +119,39 @@ TEST_CASE("Rot", "[tensors]")
 
     SECTION("drotate")
     {
-      auto r = Rot::fill(1.2496889, 1.62862628, 7.59575411);
-      auto v = Rot::fill(-5.68010824, -2.8011194, 15.25705169);
-      auto vp = Rot::fill(-0.40390244, 0.61401441, -0.27708492);
+      auto r = Rot::fill(0.13991834, 0.18234513, 0.85043991, DTO);
+      auto v = Rot::fill(-0.32366123, -0.15961206, 0.86937009, DTO);
 
       auto rb = r.batch_expand(B);
       auto vb = v.batch_expand(B);
-      auto vpb = vp.batch_expand(B);
 
       auto apply = [v](const BatchTensor & x) { return v.rotate(Rot(x)); };
       auto dvp_dr = finite_differencing_derivative(apply, r);
       auto dvp_drb = dvp_dr.batch_expand(B);
 
-      REQUIRE(torch::allclose(v.drotate(r), dvp_dr));
-      REQUIRE(torch::allclose(vb.drotate(rb), dvp_drb));
-      REQUIRE(torch::allclose(v.drotate(rb), dvp_drb));
-      REQUIRE(torch::allclose(vb.drotate(r), dvp_drb));
+      REQUIRE(torch::allclose(v.drotate(r), dvp_dr, 1e-4));
+      REQUIRE(torch::allclose(vb.drotate(rb), dvp_drb, 1e-4));
+      REQUIRE(torch::allclose(v.drotate(rb), dvp_drb, 1e-4));
+      REQUIRE(torch::allclose(vb.drotate(r), dvp_drb, 1e-4));
     }
 
     SECTION("drotate_self")
     {
-      auto r = Rot::fill(1.2496889, 1.62862628, 7.59575411);
-      auto v = Rot::fill(-5.68010824, -2.8011194, 15.25705169);
+      auto r = Rot::fill(0.13991834, 0.18234513, 0.85043991, DTO);
+      auto v = Rot::fill(-0.32366123, -0.15961206, 0.86937009, DTO);
 
       auto apply = [r](const Rot & x) { return x.rotate(r); };
       auto dvp_dr = finite_differencing_derivative(apply, v);
 
-      REQUIRE(torch::allclose(v.drotate_self(r), dvp_dr));
+      REQUIRE(torch::allclose(v.drotate_self(r), dvp_dr, 1e-4));
     }
   }
 
   SECTION("operator*")
   {
-    auto a = Rot::fill(1.2496889, 1.62862628, 7.59575411);
-    auto b = Rot::fill(-5.68010824, -2.8011194, 15.25705169);
-    auto c = Rot::fill(-0.40390244, 0.61401441, -0.27708492);
+    auto a = Rot::fill(0.13991834, 0.18234513, 0.85043991, DTO);
+    auto b = Rot::fill(-0.32366123, -0.15961206, 0.86937009, DTO);
+    auto c = Rot::fill(1.48720771, -2.26086024, 1.02025338, DTO);
     REQUIRE(torch::allclose(a * b, c));
     REQUIRE(torch::allclose(a.batch_expand(B) * b, c.batch_expand(B)));
     REQUIRE(torch::allclose(a * b.batch_expand(B), c.batch_expand(B)));

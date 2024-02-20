@@ -35,9 +35,15 @@ class R2;
 class R3;
 
 /**
- * @brief Rotation stored in the Rodriguez format.
+ * @brief Rotation stored as modified Rodrigues parameters
  *
  * The logical storage space is (3).
+ *
+ * One way to define this convention is that the three parameters are the values of the vector n
+ * tan(theta/4) where n is the rotation axis and theta the rotation angle.
+ *
+ * Note this is different from the standard Rodrigues parameters, which are defined by n
+ * tan(theta/2)
  */
 class Rot : public VecBase<Rot>
 {
@@ -67,6 +73,12 @@ public:
 
   /// Derivative of the rotated Rodrigues vector w.r.t. this vector
   R2 drotate_self(const Rot & r) const;
+
+  /// Return the shadow parameter set (a set of MRPs that define the same orientation)
+  Rot shadow() const;
+
+  /// Return the derivative of the shadow map
+  R2 dshadow() const;
 };
 
 /// Composition of rotations r3 = r1 * r2 (r2 first, then r1)

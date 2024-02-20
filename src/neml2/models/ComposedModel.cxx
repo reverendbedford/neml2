@@ -34,6 +34,7 @@ ComposedModel::expected_options()
   OptionSet options = Model::expected_options();
   options.set<std::vector<std::string>>("models");
   options.set<std::vector<VariableName>>("additional_outputs");
+  options.set<std::vector<std::string>>("priority");
   return options;
 }
 
@@ -49,6 +50,12 @@ ComposedModel::ComposedModel(const OptionSet & options)
     _dependency.add_node(submodel);
   for (const auto & var : _additional_outputs)
     _dependency.add_additional_outbound_item(var);
+
+  // Define priority in the event of cyclic dependency
+  auto priority_order = options.get<std::vector<std::string>>("priority");
+  size_t priority = priority_order.empty() ? 0 : priority_order.size() - 1;
+  for (const auto & model_name : priority_order)
+    _dependency.set_priority(registered_model(model_name), priority--);
 
   // Resolve the dependency
   _dependency.unique_item_provider() = true;

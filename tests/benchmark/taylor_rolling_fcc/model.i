@@ -78,6 +78,7 @@
     input_type = "random"
     quantity = ${nbatch}
     random_seed = 25
+    normalize = true
   []
 []
 
@@ -100,11 +101,9 @@
 [Solvers]
   [newton]
     type = NewtonWithLineSearch
-    max_its = 500
     linesearch_cutback = 2.0
     linesearch_stopping_criteria = 1.0e-3
     max_linesearch_iterations = 5
-    rel_tol = 1e-4
   []
 []
 
@@ -185,9 +184,13 @@
     implicit_model = 'implicit_rate'
     solver = 'newton'
   []
+  [fix_orientation]
+    type = FixOrientation
+  []
   [model_with_stress]
     type = ComposedModel
-    models = 'model elasticity'
+    models = 'model fix_orientation elasticity'
+    priority = 'model fix_orientation'
     additional_outputs = 'state/elastic_strain'
   []
 []

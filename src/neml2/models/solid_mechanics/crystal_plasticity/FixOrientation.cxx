@@ -22,28 +22,47 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#define CATCH_CONFIG_ENABLE_BENCHMARKING
+#include "neml2/models/solid_mechanics/crystal_plasticity/FixOrientation.h"
 
-#include <catch2/catch.hpp>
+#include "neml2/tensors/tensors.h"
+#include "neml2/misc/math.h"
 
-#include "utils.h"
-#include "neml2/drivers/Driver.h"
-
-using namespace neml2;
-
-TEST_CASE("taylor")
+namespace neml2
 {
-  std::vector<TorchSize> nbatches = {1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096};
-  std::vector<std::string> devices = {"cpu", "cuda:0"};
-  TorchSize ntime = 500;
+register_NEML2_object(FixOrientation);
 
-  for (auto && device : devices)
-    for (TorchSize nbatch : nbatches)
-    {
-      const auto config = "nbatch=" + utils::stringify(nbatch) + " device=" + device +
-                          " ntime=" + utils::stringify(ntime);
-      load_model("benchmark/taylor_rolling_fcc/model.i", config);
-      auto & driver = Factory::get_object<Driver>("Drivers", "driver");
-      BENCHMARK("{" + config + "}") { return driver.run(); };
-    }
+OptionSet
+FixOrientation::expected_options()
+{
+  OptionSet options = Model::expected_options();
+  options.set<VariableName>("input_orientation") = VariableName("state", "orientation");
+  options.set<VariableName>("output_orientation") = VariableName("state", "orientation");
+  options.set<Real>("threshold") = 1.0;
+  return options;
 }
+
+FixOrientation::FixOrientation(const OptionSet & options)
+  : Model(options),
+    _output(declare_output_variable<Rot>("output_orientation")),
+    _input(declare_input_variable<Rot>("input_orientation")),
+    _threshold(options.get<Real>("threshold"))
+{
+}
+
+void
+FixOrientation::set_value(bool out, bool dout_din, bool d2out_din2)
+{
+  neml_assert_dbg(!d2out_din2, "Second derivative not implemented.");
+
+  if (out)
+    _output = math::where(
+        (Rot(_input).norm_sq() < _threshold).unsqueeze(-1), Rot(_input), Rot(_input).shadow());
+
+  if (dout_din)
+  {
+    const auto I = R2::identity(options());
+    _output.d(_input) = math::where(
+        (Rot(_input).norm_sq() < _threshold).unsqueeze(-1).unsqueeze(-1), I, Rot(_input).dshadow());
+  }
+}
+} // namespace neml2

@@ -33,23 +33,43 @@ FillRot::expected_options()
 {
   OptionSet options = NEML2Object::expected_options();
   options.set<std::vector<CrossRef<Scalar>>>("values");
+  options.set<std::string>("method") = "modified";
   return options;
 }
 
 FillRot::FillRot(const OptionSet & options)
-  : Rot(fill(options.get<std::vector<CrossRef<Scalar>>>("values"))),
+  : Rot(fill(options.get<std::vector<CrossRef<Scalar>>>("values"),
+             options.get<std::string>("method"))),
     NEML2Object(options)
 {
 }
 
 Rot
-FillRot::fill(const std::vector<CrossRef<Scalar>> & values) const
+FillRot::fill(const std::vector<CrossRef<Scalar>> & values, const std::string & method) const
 {
-  if (values.size() == 3)
-    return Rot::fill(values[0], values[1], values[2]);
+  if (method == "modified")
+  {
+    if (values.size() == 3)
+      return Rot::fill(values[0], values[1], values[2]);
+    else
+      neml_assert(
+          false, "Number of values must be 3, but ", values.size(), " values are provided.");
+  }
+  else if (method == "standard")
+  {
+    if (values.size() == 3)
+    {
+      auto ns = values[0] * values[0] + values[1] * values[1] + values[2] * values[2];
+      auto f = Scalar(torch::sqrt(torch::Tensor(ns) + torch::tensor(1.0, ns.dtype())) +
+                      torch::tensor(1.0, ns.dtype()));
+      return Rot::fill(values[0] / f, values[1] / f, values[2] / f);
+    }
+    else
+      neml_assert(
+          false, "Number of values must be 3, but ", values.size(), " values are provided.");
+  }
   else
-    neml_assert(false, "Number of values must be 3, but ", values.size(), " values are provided.");
-
+    throw NEMLException("Unknown Rot fill type " + method);
   return Rot();
 }
 } // namespace neml2

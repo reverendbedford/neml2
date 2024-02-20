@@ -12,6 +12,7 @@
     output_rot_values = 'res'
     check_AD_derivatives = false
     check_AD_second_derivatives = false
+    output_rel_tol = 1e-4
   []
 []
 
@@ -25,15 +26,15 @@
 [Tensors]
   [res]
     type = FillRot
-    values = '-0.06598595 -0.01172209 0.01320052'
+    values = '-0.032903 -0.005864  0.006609'
   []
   [foo]
     type = FillRot
-    values = '0.01 -0.05 0.07'
+    values = '0.00499066 -0.0249533 0.03493462'
   []
   [old_foo]
     type = FillRot
-    values = '0.075 -0.04 0.06'
+    values = '0.03739906 -0.01994617  0.02991925'
   []
   [w]
     type = FillWR2

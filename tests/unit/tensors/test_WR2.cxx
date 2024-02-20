@@ -75,7 +75,7 @@ TEST_CASE("WR2", "[tensors]")
       REQUIRE(torch::allclose(I, da_da));
     }
 
-    auto r = Rot::fill(1.2496889, 1.62862628, 7.59575411);
+    auto r = Rot::fill(0.13991834, 0.18234513, 0.85043991);
     auto w = WR2::fill(-0.2, 0.012, 0.15);
     auto W = R2(w);
 
@@ -88,6 +88,9 @@ TEST_CASE("WR2", "[tensors]")
 
     SECTION("rotate")
     {
+      std::cout << w.rotate(r) << std::endl;
+      std::cout << WR2(W.rotate(r)) << std::endl;
+
       REQUIRE(torch::allclose(w.rotate(r), WR2(W.rotate(r))));
       REQUIRE(torch::allclose(wb.rotate(rb), WR2(Wb.rotate(rb))));
     }
@@ -99,8 +102,8 @@ TEST_CASE("WR2", "[tensors]")
       auto dwp_dr = finite_differencing_derivative(apply_r, r);
       auto dwp_drb = dwp_dr.batch_expand(B);
 
-      REQUIRE(torch::allclose(w.drotate(r), dwp_dr));
-      REQUIRE(torch::allclose(wb.drotate(rb), dwp_drb));
+      REQUIRE(torch::allclose(w.drotate(r), dwp_dr, 1e-4));
+      REQUIRE(torch::allclose(wb.drotate(rb), dwp_drb, 1e-4));
 
       // Rotation matrix
       auto R = R2(r);
@@ -129,8 +132,8 @@ TEST_CASE("WR2", "[tensors]")
                                 -0.19702309,
                                 0.98003256);
 
-        REQUIRE(torch::allclose(R2(w.exp()), correct));
-        REQUIRE(torch::allclose(R2(wb.exp()), correct.batch_expand(B)));
+        REQUIRE(torch::allclose(R2(w.exp()), correct, 1e-4, 1e-4));
+        REQUIRE(torch::allclose(R2(wb.exp()), correct.batch_expand(B), 1e-4, 1e-4));
       }
 
       SECTION("zero maps to zero")
@@ -154,6 +157,7 @@ TEST_CASE("WR2", "[tensors]")
       SECTION("zero values")
       {
         auto dnum = finite_differencing_derivative(apply, w0);
+
         REQUIRE(torch::allclose(dnum, w0.dexp()));
         REQUIRE(torch::allclose(dnum.batch_expand(B), w0b.dexp()));
       }

@@ -366,6 +366,17 @@ Model::value_and_dvalue_and_d2value()
   }
 }
 
+Model *
+Model::registered_model(const std::string & name) const
+{
+  for (auto submodel : _registered_models)
+    if (submodel->name() == name)
+      return submodel;
+
+  throw NEMLException("There is no registered model named '" + name + "' in '" + this->name() +
+                      "'");
+}
+
 const std::set<VariableName>
 Model::consumed_items() const
 {

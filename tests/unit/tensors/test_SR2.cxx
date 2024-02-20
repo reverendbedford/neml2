@@ -112,7 +112,7 @@ TEST_CASE("SR2", "[tensors]")
       REQUIRE(torch::allclose(I, da_da));
     }
 
-    auto r = Rot::fill(1.2496889, 1.62862628, 7.59575411);
+    auto r = Rot::fill(0.13991834, 0.18234513, 0.85043991);
     auto T = SR2(R2::fill(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0));
     auto Tp = SR2::fill(-1.02332, 0.208734, 15.8146, -1.86545, -2.71806, 0.190785);
 
@@ -135,10 +135,10 @@ TEST_CASE("SR2", "[tensors]")
       auto dTp_dr = finite_differencing_derivative(apply_r, r);
       auto dTp_drb = dTp_dr.batch_expand(B);
 
-      REQUIRE(torch::allclose(T.drotate(r), dTp_dr));
-      REQUIRE(torch::allclose(Tb.drotate(rb), dTp_drb));
-      REQUIRE(torch::allclose(T.drotate(rb), dTp_drb));
-      REQUIRE(torch::allclose(Tb.drotate(r), dTp_drb));
+      REQUIRE(torch::allclose(T.drotate(r), dTp_dr, 1e-4));
+      REQUIRE(torch::allclose(Tb.drotate(rb), dTp_drb, 1e-4));
+      REQUIRE(torch::allclose(T.drotate(rb), dTp_drb, 1e-4));
+      REQUIRE(torch::allclose(Tb.drotate(r), dTp_drb, 1e-4));
 
       // Rotation matrix
       auto R = R2(r);

@@ -22,28 +22,38 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#define CATCH_CONFIG_ENABLE_BENCHMARKING
+#pragma once
 
-#include <catch2/catch.hpp>
+#include "neml2/models/Model.h"
 
-#include "utils.h"
-#include "neml2/drivers/Driver.h"
-
-using namespace neml2;
-
-TEST_CASE("taylor")
+namespace neml2
 {
-  std::vector<TorchSize> nbatches = {1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096};
-  std::vector<std::string> devices = {"cpu", "cuda:0"};
-  TorchSize ntime = 500;
+/**
+ * @brief Swap orientation plane when the singularity at \f[2 \pi\] is met with the modified
+ * Rodrigues vector.
+ *
+ * See the following reference for details
+ *
+ * > Banks, Matthew Jarrett. "Switching Methods for Three-Dimensional Rotational Dynamics Using
+ * > Modified Rodrigues Parameters." (2023).
+ */
+class FixOrientation : public Model
+{
+public:
+  static OptionSet expected_options();
 
-  for (auto && device : devices)
-    for (TorchSize nbatch : nbatches)
-    {
-      const auto config = "nbatch=" + utils::stringify(nbatch) + " device=" + device +
-                          " ntime=" + utils::stringify(ntime);
-      load_model("benchmark/taylor_rolling_fcc/model.i", config);
-      auto & driver = Factory::get_object<Driver>("Drivers", "driver");
-      BENCHMARK("{" + config + "}") { return driver.run(); };
-    }
-}
+  FixOrientation(const OptionSet & options);
+
+protected:
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+
+  /// Corrected MRP representation
+  Variable<Rot> & _output;
+
+  /// MRP representation of orientations
+  const Variable<Rot> & _input;
+
+  /// Threshold for making the swap
+  Real _threshold;
+};
+} // namespace neml2

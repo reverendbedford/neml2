@@ -44,7 +44,7 @@ TEST_CASE("Symmetry operator definitions", "[tensors]")
     }
     SECTION("improper rotation")
     {
-      R2 ref = R2::identity(DTO) - 2 * r.outer(r);
+      R2 ref = R2::identity(DTO) - 2 * (r / r.norm()).outer(r / r.norm());
       REQUIRE(torch::allclose(improper_rotation_transform(r), r.euler_rodrigues() * ref));
       REQUIRE(torch::allclose(improper_rotation_transform(r), ref * r.euler_rodrigues()));
     }

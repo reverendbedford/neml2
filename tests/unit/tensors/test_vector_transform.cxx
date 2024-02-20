@@ -50,7 +50,7 @@ TEST_CASE("Symmetry transforms", "[crystallography]")
       REQUIRE(torch::allclose(vb.transform(op), vb));
     }
     // 90 about z
-    auto r = Rot::fill(0.0, 0, 1.0, DTO);
+    auto r = Rot::fill(0.0, 0, 0.41421356, DTO);
     SECTION("ProperRotation")
     {
       auto op = proper_rotation_transform(r);
