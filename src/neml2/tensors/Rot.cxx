@@ -39,21 +39,18 @@ Rot::Rot(const Vec & v)
 {
 }
 
-// Done
 Rot
 Rot::identity(const torch::TensorOptions & options)
 {
   return Rot::zeros(options);
 }
 
-// Done
 Rot
 Rot::inverse() const
 {
   return -(*this);
 }
 
-// Done
 R2
 Rot::euler_rodrigues() const
 {

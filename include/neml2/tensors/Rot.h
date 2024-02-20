@@ -35,9 +35,15 @@ class R2;
 class R3;
 
 /**
- * @brief Rotation stored in the Rodriguez format.
+ * @brief Rotation stored as modified Rodrigues parameters
  *
  * The logical storage space is (3).
+ *
+ * One way to define this convention is that the three parameters are the values of the vector n
+ * tan(theta/4) where n is the rotation axis and theta the rotation angle.
+ *
+ * Note this is different from the standard Rodrigues parameters, which are defined by n
+ * tan(theta/2)
  */
 class Rot : public VecBase<Rot>
 {

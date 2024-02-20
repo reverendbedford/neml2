@@ -45,7 +45,7 @@ FillRot::FillRot(const OptionSet & options)
 }
 
 Rot
-FillRot::fill(const std::vector<CrossRef<Scalar>> & values, std::string method) const
+FillRot::fill(const std::vector<CrossRef<Scalar>> & values, const std::string & method) const
 {
   if (method == "modified")
   {

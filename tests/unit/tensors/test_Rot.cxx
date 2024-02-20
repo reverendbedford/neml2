@@ -111,10 +111,6 @@ TEST_CASE("Rot", "[tensors]")
       auto vb = v.batch_expand(B);
       auto vpb = vp.batch_expand(B);
 
-      std::cout << v.rotate(r).euler_rodrigues() << std::endl;
-      std::cout << r.euler_rodrigues() * v.euler_rodrigues() << std::endl;
-      std::cout << vp.euler_rodrigues() << std::endl;
-
       REQUIRE(torch::allclose(v.rotate(r), vp));
       REQUIRE(torch::allclose(vb.rotate(rb), vpb));
       REQUIRE(torch::allclose(v.rotate(rb), vpb));

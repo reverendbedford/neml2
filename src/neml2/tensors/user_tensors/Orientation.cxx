@@ -49,24 +49,21 @@ Orientation::expected_options()
 }
 
 Orientation::Orientation(const OptionSet & options)
-  : Rot(fill(options.get<std::vector<Real>>("values"),
-             options.get<std::string>("input_type"),
-             options.get<bool>("normalize"),
-             options)),
+  : Rot(fill(options)),
     NEML2Object(options)
 {
 }
 
 Rot
-Orientation::fill(const std::vector<Real> & values,
-                  std::string input_type,
-                  bool normalize,
-                  const OptionSet & options) const
+Orientation::fill(const OptionSet & options) const
 {
+  std::string input_type = options.get<std::string>("input_type");
+
   Rot R;
   if (input_type == "euler_angles")
   {
-    R = expand_as_needed(fill_euler_angles(torch::tensor(values, default_tensor_options()),
+    R = expand_as_needed(fill_euler_angles(torch::tensor(options.get<std::vector<Real>>("values"),
+                                                         default_tensor_options()),
                                            options.get<std::string>("angle_convention"),
                                            options.get<std::string>("angle_type")),
                          options.get<unsigned int>("quantity"));
@@ -78,7 +75,7 @@ Orientation::fill(const std::vector<Real> & values,
   else
     throw NEMLException("Unknown Orientation input_type " + input_type);
 
-  if (normalize)
+  if (options.get<bool>("normalize"))
     return math::where((R.norm_sq() < 1.0).unsqueeze(-1), R, R.shadow());
 
   return R;
