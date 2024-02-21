@@ -22,22 +22,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <pybind11/pybind11.h>
+#include <pybind11/operators.h>
 
-#include "neml2/tensors/macros.h"
+#include "neml2_wrap/tensors/FixedDimTensor.h"
 
 namespace py = pybind11;
-
-// Forward declarations
-#define TENSORS_FORWARD_DECL_T(T) void def_##T(py::module_ &)
-FOR_ALL_BATCHTENSORBASE(TENSORS_FORWARD_DECL_T);
+using namespace neml2;
 
 void
-NEML2_MODULE_TENSORS(py::module_ & M)
+def_SWR4(py::module_ & m)
 {
-  auto m = M.def_submodule("tensors");
-  m.doc() = "NEML2 primitive tensor types";
+  auto c = py::class_<SWR4>(m, "SWR4");
 
-#define TENSORS_DEF_T(T) def_##T(m)
-  FOR_ALL_BATCHTENSORBASE(TENSORS_DEF_T);
+  // Define batch/base views and getters/setters
+  def_BatchView<SWR4>(m, "SWR4BatchView");
+  def_BaseView<SWR4>(m, "SWR4BaseView");
+
+  // Methods decorated by BatchTensorBase
+  def_BatchTensorBase<SWR4>(c);
+
+  // Methods decorated by FixedDimTensor
+  def_FixedDimTensor<SWR4>(c);
 }

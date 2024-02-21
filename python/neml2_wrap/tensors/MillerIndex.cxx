@@ -22,22 +22,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <pybind11/pybind11.h>
+#include <pybind11/operators.h>
 
-#include "neml2/tensors/macros.h"
+#include "neml2_wrap/tensors/FixedDimTensor.h"
 
 namespace py = pybind11;
-
-// Forward declarations
-#define TENSORS_FORWARD_DECL_T(T) void def_##T(py::module_ &)
-FOR_ALL_BATCHTENSORBASE(TENSORS_FORWARD_DECL_T);
+using namespace neml2;
 
 void
-NEML2_MODULE_TENSORS(py::module_ & M)
+def_MillerIndex(py::module_ & m)
 {
-  auto m = M.def_submodule("tensors");
-  m.doc() = "NEML2 primitive tensor types";
+  auto c = py::class_<MillerIndex>(m, "MillerIndex");
 
-#define TENSORS_DEF_T(T) def_##T(m)
-  FOR_ALL_BATCHTENSORBASE(TENSORS_DEF_T);
+  // Define batch/base views and getters/setters
+  def_BatchView<MillerIndex>(m, "MillerIndexBatchView");
+  def_BaseView<MillerIndex>(m, "MillerIndexBaseView");
+
+  // Methods decorated by BatchTensorBase
+  def_BatchTensorBase<MillerIndex>(c);
+
+  // Methods decorated by FixedDimTensor
+  def_FixedDimTensor<MillerIndex>(c);
 }
