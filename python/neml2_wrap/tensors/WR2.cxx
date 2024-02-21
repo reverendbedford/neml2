@@ -47,7 +47,7 @@ def_WR2(py::module_ & m)
   // Methods decorated by VecBase
   def_VecBase<WR2>(c);
 
-  // Ctors, conversions, accessros etc.
+  // Ctors, conversions, accessors etc.
   c.def(py::init<const R2 &>());
 
   // Methods

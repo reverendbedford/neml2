@@ -47,7 +47,7 @@ def_Rot(py::module_ & m)
   // Methods decorated by VecBase
   def_VecBase<Rot>(c);
 
-  // Ctors, conversions, accessros etc.
+  // Ctors, conversions, accessors etc.
   c.def(py::init<const Vec &>());
 
   // Methods

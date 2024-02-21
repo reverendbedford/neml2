@@ -50,7 +50,7 @@ template <class Derived>
 void
 def_FixedDimTensor(py::class_<Derived> & c)
 {
-  // Ctors, conversions, accessros etc.
+  // Ctors, conversions, accessors etc.
   c.def(py::init<const torch::Tensor &>());
 
   // Static methods

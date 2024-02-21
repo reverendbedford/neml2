@@ -50,7 +50,7 @@ template <class Derived>
 void
 def_VecBase(py::class_<Derived> & c)
 {
-  // Ctors, conversions, accessros etc.
+  // Ctors, conversions, accessors etc.
   c.def("__call__", &Derived::operator());
 
   // Methods
