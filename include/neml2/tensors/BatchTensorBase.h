@@ -151,7 +151,7 @@ public:
 
   /// Expand the base to have the same shape as another tensor
   template <class Derived2>
-  Derived2 base_expand_as(const Derived2 & other) const;
+  BatchTensor base_expand_as(const Derived2 & other) const;
 
   /// Return a new tensor with values broadcast along the batch dimensions.
   Derived batch_expand_copy(TorchShapeRef batch_size) const;
@@ -205,22 +205,6 @@ private:
   /// Number of batch dimensions. The first `_batch_dim` dimensions are considered batch dimensions.
   TorchSize _batch_dim;
 };
-
-template <class Derived>
-template <class Derived2>
-Derived
-BatchTensorBase<Derived>::batch_expand_as(const Derived2 & other) const
-{
-  return batch_expand(other.batch_sizes());
-}
-
-template <class Derived>
-template <class Derived2>
-Derived2
-BatchTensorBase<Derived>::base_expand_as(const Derived2 & other) const
-{
-  return base_expand(other.base_sizes());
-}
 
 template <class Derived,
           typename = typename std::enable_if<std::is_base_of_v<BatchTensorBase<Derived>, Derived>>>

@@ -228,12 +228,6 @@ template <class Derived>
 BatchTensor
 BatchTensorBase<Derived>::base_expand(TorchShapeRef base_size) const
 {
-  neml_assert_dbg((TorchSize)base_size.size() == base_dim(),
-                  "Cannot expand base shape from ",
-                  base_sizes(),
-                  " to ",
-                  base_size,
-                  ": cannot add new dimension(s).");
   // We don't want to touch the batch dimensions, so put -1 for them.
   auto net = base_size.vec();
   net.insert(net.begin(), batch_dim(), -1);
@@ -252,6 +246,22 @@ BatchTensor
 BatchTensorBase<Derived>::base_expand_copy(TorchShapeRef base_size) const
 {
   return BatchTensor(base_expand(base_size).contiguous(), batch_dim());
+}
+
+template <class Derived>
+template <class Derived2>
+Derived
+BatchTensorBase<Derived>::batch_expand_as(const Derived2 & other) const
+{
+  return batch_expand(other.batch_sizes());
+}
+
+template <class Derived>
+template <class Derived2>
+BatchTensor
+BatchTensorBase<Derived>::base_expand_as(const Derived2 & other) const
+{
+  return base_expand(other.base_sizes());
 }
 
 template <class Derived>
