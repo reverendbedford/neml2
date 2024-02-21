@@ -249,22 +249,6 @@ BatchTensorBase<Derived>::base_expand_copy(TorchShapeRef base_size) const
 }
 
 template <class Derived>
-template <class Derived2>
-Derived
-BatchTensorBase<Derived>::batch_expand_as(const Derived2 & other) const
-{
-  return batch_expand(other.batch_sizes());
-}
-
-template <class Derived>
-template <class Derived2>
-BatchTensor
-BatchTensorBase<Derived>::base_expand_as(const Derived2 & other) const
-{
-  return base_expand(other.base_sizes());
-}
-
-template <class Derived>
 Derived
 BatchTensorBase<Derived>::batch_reshape(TorchShapeRef batch_shape) const
 {
