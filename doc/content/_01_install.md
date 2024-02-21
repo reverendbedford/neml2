@@ -66,7 +66,7 @@ libTorch can be downloaded from the official PyTorch website: [https://pytorch.o
 
 > In the future we may provide an option to automatically install a compatible version of libTorch.
 
-There are many ways of installing the Nvidia driver and the CUDA toolkit. We will not try to make a recommendation here. However, do make sure the Nvidia driver is compatible with your GPU. It is also recommended to install a CUDA toolkit with the same version number as the libTorch CUDA version.
+There are many ways of installing the NVIDIA driver and the CUDA toolkit. We will not try to make a recommendation here. However, do make sure the NVIDIA driver is compatible with your GPU. It is also recommended to install a CUDA toolkit with the same version number as the libTorch CUDA version.
 
 ## Quick Start {#user}
 
