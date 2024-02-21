@@ -4,7 +4,7 @@ if(POLICY CMP0094)
 endif()
 
 # Suppress the warning related to the new policy on fetch content's timestamp
-if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.24.0")
+if(POLICY CMP0135)
   cmake_policy(SET CMP0135 NEW)
 endif()
 
