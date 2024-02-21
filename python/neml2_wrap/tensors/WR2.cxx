@@ -22,20 +22,34 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <pybind11/pybind11.h>
+#include <pybind11/operators.h>
+
+#include "neml2_wrap/tensors/VecBase.h"
 
 namespace py = pybind11;
+using namespace neml2;
 
-// Forward declarations for submodules
-void NEML2_MODULE_MATH(py::module_ &);
-void NEML2_MODULE_TENSORS(py::module_ &);
-
-PYBIND11_MODULE(neml2, m)
+void
+def_WR2(py::module_ & m)
 {
-  py::module::import("torch");
+  auto c = py::class_<WR2>(m, "WR2");
 
-  m.doc() = "NEML2, GPU-enabled vectorized material modeling library";
+  // Define batch/base views and getters/setters
+  def_BatchView<WR2>(m, "WR2BatchView");
+  def_BaseView<WR2>(m, "WR2BaseView");
 
-  NEML2_MODULE_MATH(m);
-  NEML2_MODULE_TENSORS(m);
+  // Methods decorated by BatchTensorBase
+  def_BatchTensorBase<WR2>(c);
+
+  // Methods decorated by FixedDimTensor
+  def_FixedDimTensor<WR2>(c);
+
+  // Methods decorated by VecBase
+  def_VecBase<WR2>(c);
+
+  // Ctors, conversions, accessros etc.
+  c.def(py::init<const R2 &>());
+
+  // Methods
+  c.def("__call__", &WR2::operator()).def("exp", &WR2::exp).def("dexp", &WR2::dexp);
 }

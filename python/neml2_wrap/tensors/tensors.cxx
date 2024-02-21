@@ -24,18 +24,32 @@
 
 #include <pybind11/pybind11.h>
 
+// #include "neml2/tensors/macros.h"
+
 namespace py = pybind11;
 
-// Forward declarations for submodules
-void NEML2_MODULE_MATH(py::module_ &);
-void NEML2_MODULE_TENSORS(py::module_ &);
+// Forward declarations
+// #define TENSORS_FORWARD_DECL_T(T) void def_##T(py::module_ &)
+// FOR_ALL_BATCHTENSORBASE(TENSORS_FORWARD_DECL_T);
+void def_BatchTensor(py::module_ &);
+void def_Scalar(py::module_ &);
+void def_Vec(py::module_ &);
+void def_Rot(py::module_ &);
+void def_WR2(py::module_ &);
+void def_R2(py::module_ &);
 
-PYBIND11_MODULE(neml2, m)
+void
+NEML2_MODULE_TENSORS(py::module_ & M)
 {
-  py::module::import("torch");
+  auto m = M.def_submodule("tensors");
+  m.doc() = "NEML2 primitive tensor types";
 
-  m.doc() = "NEML2, GPU-enabled vectorized material modeling library";
-
-  NEML2_MODULE_MATH(m);
-  NEML2_MODULE_TENSORS(m);
+  // #define TENSORS_DEF_T(T) def_##T(m)
+  //   FOR_ALL_BATCHTENSORBASE(TENSORS_DEF_T);
+  def_BatchTensor(m);
+  def_Scalar(m);
+  def_Vec(m);
+  def_Rot(m);
+  def_WR2(m);
+  def_R2(m);
 }

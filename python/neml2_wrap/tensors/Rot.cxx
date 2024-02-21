@@ -22,20 +22,48 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <pybind11/pybind11.h>
+#include <pybind11/operators.h>
+
+#include "neml2_wrap/tensors/VecBase.h"
 
 namespace py = pybind11;
+using namespace neml2;
 
-// Forward declarations for submodules
-void NEML2_MODULE_MATH(py::module_ &);
-void NEML2_MODULE_TENSORS(py::module_ &);
-
-PYBIND11_MODULE(neml2, m)
+void
+def_Rot(py::module_ & m)
 {
-  py::module::import("torch");
+  auto c = py::class_<Rot>(m, "Rot");
 
-  m.doc() = "NEML2, GPU-enabled vectorized material modeling library";
+  // Define batch/base views and getters/setters
+  def_BatchView<Rot>(m, "RotBatchView");
+  def_BaseView<Rot>(m, "RotBaseView");
 
-  NEML2_MODULE_MATH(m);
-  NEML2_MODULE_TENSORS(m);
+  // Methods decorated by BatchTensorBase
+  def_BatchTensorBase<Rot>(c);
+
+  // Methods decorated by FixedDimTensor
+  def_FixedDimTensor<Rot>(c);
+
+  // Methods decorated by VecBase
+  def_VecBase<Rot>(c);
+
+  // Ctors, conversions, accessros etc.
+  c.def(py::init<const Vec &>());
+
+  // Methods
+  c.def("inverse", &Rot::inverse)
+      .def("euler_rodrigues", &Rot::euler_rodrigues)
+      .def("deuler_rodrigues", &Rot::deuler_rodrigues)
+      .def("rotate", &Rot::rotate)
+      .def("drotate", &Rot::drotate);
+
+  // Operators
+  c.def(py::self * py::self);
+
+  // Static methods
+  c.def_static(
+      "identity",
+      [](NEML2_TENSOR_OPTIONS_VARGS) { return Rot::identity(NEML2_TENSOR_OPTIONS); },
+      py::kw_only(),
+      PY_ARG_TENSOR_OPTIONS);
 }

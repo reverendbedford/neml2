@@ -22,20 +22,42 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <pybind11/pybind11.h>
+#pragma once
+
+#include "neml2_wrap/tensors/FixedDimTensor.h"
 
 namespace py = pybind11;
 
-// Forward declarations for submodules
-void NEML2_MODULE_MATH(py::module_ &);
-void NEML2_MODULE_TENSORS(py::module_ &);
-
-PYBIND11_MODULE(neml2, m)
+namespace neml2
 {
-  py::module::import("torch");
 
-  m.doc() = "NEML2, GPU-enabled vectorized material modeling library";
+// Forward declarations
+template <class Derived>
+void def_R2Base(py::class_<Derived> & c);
 
-  NEML2_MODULE_MATH(m);
-  NEML2_MODULE_TENSORS(m);
+} // namespace neml2
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementations
+///////////////////////////////////////////////////////////////////////////////
+
+namespace neml2
+{
+
+template <class Derived>
+void
+def_R2Base(py::class_<Derived> & c)
+{
+  // Ctors, conversions, accessors etc.
+  c.def("__call__", &Derived::operator());
+
+  // Methods
+  c.def("rotate", py::overload_cast<const Rot &>(&Derived::rotate, py::const_))
+      .def("drotate", py::overload_cast<const Rot &>(&Derived::drotate, py::const_))
+      .def("inverse", &Derived::inverse)
+      .def("transpose", &Derived::transpose);
+
+  // Static methods
 }
+
+} // namespace neml2

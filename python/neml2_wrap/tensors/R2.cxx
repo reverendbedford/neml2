@@ -22,20 +22,32 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <pybind11/pybind11.h>
+#include <pybind11/operators.h>
+
+#include "neml2_wrap/tensors/R2Base.h"
 
 namespace py = pybind11;
+using namespace neml2;
 
-// Forward declarations for submodules
-void NEML2_MODULE_MATH(py::module_ &);
-void NEML2_MODULE_TENSORS(py::module_ &);
-
-PYBIND11_MODULE(neml2, m)
+void
+def_R2(py::module_ & m)
 {
-  py::module::import("torch");
+  auto c = py::class_<R2>(m, "R2");
 
-  m.doc() = "NEML2, GPU-enabled vectorized material modeling library";
+  // Define batch/base views and getters/setters
+  def_BatchView<R2>(m, "R2BatchView");
+  def_BaseView<R2>(m, "R2BaseView");
 
-  NEML2_MODULE_MATH(m);
-  NEML2_MODULE_TENSORS(m);
+  // Methods decorated by BatchTensorBase
+  def_BatchTensorBase<R2>(c);
+
+  // Methods decorated by FixedDimTensor
+  def_FixedDimTensor<R2>(c);
+
+  // Methods decorated by R2Base
+  def_R2Base<R2>(c);
+
+  // Operators
+  c.def(py::self * Vec());
+  c.def(py::self * py::self);
 }

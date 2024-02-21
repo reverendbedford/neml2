@@ -24,18 +24,32 @@
 
 #include <pybind11/pybind11.h>
 
+#include "neml2/tensors/tensors.h"
+#include "neml2/tensors/macros.h"
+
 namespace py = pybind11;
+using namespace neml2;
 
-// Forward declarations for submodules
-void NEML2_MODULE_MATH(py::module_ &);
-void NEML2_MODULE_TENSORS(py::module_ &);
-
-PYBIND11_MODULE(neml2, m)
+void
+NEML2_MODULE_MATH(py::module_ & M)
 {
-  py::module::import("torch");
+  auto m = M.def_submodule("math");
+  m.doc() = "NEML2 mathematical functions and utilities";
 
-  m.doc() = "NEML2, GPU-enabled vectorized material modeling library";
+  // Methods
+  m.def("bmm", &math::bmm);
 
-  NEML2_MODULE_MATH(m);
-  NEML2_MODULE_TENSORS(m);
+  // Templated methods
+  // These methods are special because the argument could be anything derived from BatchTensorBase,
+  // so we need to bind every possible instantiation.
+#define MATH_DEF_BATCHTENSORBASE(T)                                                                \
+  m.def("sign", &math::sign<T>)                                                                    \
+      .def("heaviside", &math::heaviside<T>)                                                       \
+      .def("macaulay", &math::macaulay<T>)                                                         \
+      .def("dmacaulay", &math::dmacaulay<T>)                                                       \
+      .def("sqrt", &math::sqrt<T>)                                                                 \
+      .def("exp", &math::exp<T>)                                                                   \
+      .def("abs", &math::abs<T>)
+
+  FOR_ALL_BATCHTENSORBASE(MATH_DEF_BATCHTENSORBASE);
 }
