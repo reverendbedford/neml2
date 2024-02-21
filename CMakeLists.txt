@@ -8,6 +8,9 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${NEML2_SOURCE_DIR}/cmake/Modules/")
 # Load NEML2 specific CMake policies
 include(NEML2CMakePolicies)
 
+# We will rely on FetchContent to download various packages
+include(FetchContent)
+
 # Accept Release, Debug, and RelWithDebInfo, add Coverage build types
 set(CMAKE_CXX_FLAGS_COVERAGE
       "-O0 -fprofile-arcs -ftest-coverage"
