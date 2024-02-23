@@ -5,8 +5,8 @@ project(NEML2 LANGUAGES CXX)
 # Setup modules
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${NEML2_SOURCE_DIR}/cmake/Modules/")
 
-# Get NEML2 metadata
-include(NEML2Metadata)
+# Get NEML2 dependency
+include(NEML2Dependency)
 
 # FindPython should return the first matching Python
 if(POLICY CMP0094)
