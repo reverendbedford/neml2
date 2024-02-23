@@ -134,7 +134,7 @@ if(NOT DEFINED LIBTORCH_DIR)
             "If you are on a Unix-based system and ran into this error, please submit a bug report.")
 endif()
 
-find_package(Torch REQUIRED HINTS "${LIBTORCH_DIR}/share/cmake")
+# find_package(Torch REQUIRED HINTS "${LIBTORCH_DIR}/share/cmake")
 
 # libTorch comes with two flavors: one with cxx11 abi, one without.
 # We should be consistent with whatever is detected from the libTorch.
