@@ -43,9 +43,6 @@ TEST_CASE("Factory", "[base]")
   Factory::load(all_options);
   auto & summodel = Factory::get_object<ScalarSumModel>("Models", "example");
 
-  std::cout << summodel.input_axis() << std::endl;
-  std::cout << summodel.output_axis() << std::endl;
-
   REQUIRE(summodel.input_axis().has_subaxis("state"));
   REQUIRE(summodel.input_axis().subaxis("state").has_subaxis("substate"));
   REQUIRE(summodel.input_axis().subaxis("state").has_variable<Scalar>("A"));

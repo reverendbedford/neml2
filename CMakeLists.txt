@@ -112,14 +112,13 @@ if(NOT DEFINED LIBTORCH_DIR)
             message(STATUS "Downloading libTorch, this may take a few minutes.")
             FetchContent_MakeAvailable(torch)
 
-            # I doubt this is necessary/correct anymore -- someone should check
-            if(APPLE AND APPLE_SILICON)
-                  set(LIBTORCH_DIR ${torch_SOURCE_DIR}/torch)
+            if(NOT torch_SOURCE_DIR)
+                  message(FATAL_ERROR "Failed to donwload libTorch")
             else()
                   set(LIBTORCH_DIR ${torch_SOURCE_DIR})
+                  message(STATUS "Using downloaded libTorch: ${LIBTORCH_DIR}")
             endif()
 
-            message(STATUS "Using downloaded libTorch: ${LIBTORCH_DIR}")
       else()
             message(STATUS "We only download a default libTorch (CPU) on Unix systems. This is not a Unix system.")
       endif()

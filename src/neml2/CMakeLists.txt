@@ -14,10 +14,10 @@ target_include_directories(neml2 PUBLIC ${NEML2_SOURCE_DIR}/include ${NEML2_BINA
 
 # torch headers
 # torch libraries
-target_link_libraries(neml2 ${TORCH_LIBRARIES})
+target_link_libraries(neml2 PUBLIC ${TORCH_LIBRARIES})
 
 # hit for parsing
-target_link_libraries(neml2 hit)
+target_link_libraries(neml2 PUBLIC hit)
 
 # Make scalar type configurable:
 if(NOT NEML2_DTYPE)
@@ -40,4 +40,12 @@ message(STATUS "Configuring with default integer scalar type: ${NEML2_INT_DTYPE}
 configure_file(
   ${NEML2_SOURCE_DIR}/include/neml2/base/config.h.in
   ${NEML2_BINARY_DIR}/include/neml2/base/config.h
+)
+
+list(APPEND NEML2_INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib)
+list(APPEND NEML2_INSTALL_RPATH ${LIBTORCH_DIR}/lib)
+set_target_properties(neml2 PROPERTIES INSTALL_RPATH "${NEML2_INSTALL_RPATH}")
+install(TARGETS neml2
+  LIBRARY DESTINATION lib
+  PUBLIC_HEADER DESTINATION include
 )

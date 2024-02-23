@@ -181,9 +181,6 @@ TEST_CASE("SSR4", "[tensors]")
       auto dTp_dr = finite_differencing_derivative(apply, r);
       auto dTp_drb = dTp_dr.batch_expand(B);
 
-      std::cout << torch::max(torch::abs(torch::Tensor(T.drotate(r)) - torch::Tensor(dTp_dr)))
-                << std::endl;
-
       REQUIRE(torch::allclose(T.drotate(r), dTp_dr, /*rtol=*/0, /*atol=*/1e-4));
       REQUIRE(torch::allclose(Tb.drotate(rb), dTp_drb, /*rtol=*/0, /*atol=*/1e-4));
       REQUIRE(torch::allclose(T.drotate(rb), dTp_drb, /*rtol=*/0, /*atol=*/1e-4));
