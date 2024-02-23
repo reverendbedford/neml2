@@ -97,7 +97,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
-        python-version: ["3.7", "3.8", "3.9", "3.10"]
+        python-version: ["3.8", "3.9", "3.10", "3.11"]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -107,9 +107,9 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - if: startsWith(matrix.os,'ubuntu')
-        run: pip install torch --index-url https://download.pytorch.org/whl/cpu
+        run: pip install torch==2.2.1 --index-url https://download.pytorch.org/whl/cpu
       - if: startsWith(matrix.os,'macos')
-        run: pip install torch
+        run: pip install torch==2.2.1
       - run: pip install -r requirements.txt
       - run: |
           cmake \

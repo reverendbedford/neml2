@@ -1,3 +1,5 @@
+#! /usr/bin/env python
+
 # Copyright 2023, UChicago Argonne, LLC
 # All Rights Reserved
 # Software Name: NEML2 -- the New Engineering material Model Library, version 2
@@ -21,7 +23,6 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-
 
 from pathlib import Path
 import subprocess
@@ -65,21 +66,36 @@ def should_check(path):
 
 
 def generate_copyright_heading(copyright, prefix):
-    return (
-        prefix
-        + " "
-        + (prefix + " ").join(
-            line.strip() + "\n" for line in copyright.splitlines(True)
-        )
-    ).replace(prefix + " \n", prefix + "\n")
+    return [
+        (prefix + " " + line.strip() + "\n").replace(prefix + " \n", prefix + "\n")
+        for line in copyright.splitlines(True)
+    ]
 
 
 def has_correct_heading(path, copyright, prefix, modify):
     heading = generate_copyright_heading(copyright, prefix)
 
-    # First check if it has the correct heading
-    content = path.read_text()
-    correct = content.startswith(heading)
+    # Find the starting and ending line numbers of the first comment block
+    # (It's okay if the license header doesn't start from the first line.
+    #  This relaxation is useful for things like shebang which have to be on the first line.)
+    with path.open("w", encoding="utf-8") as file:
+        lines = file.readlines()
+        state = 0
+        for i, line in enumerate(lines):
+            if state == 0 and (line.startswith(prefix + " ") or line == prefix + "\n"):
+                lineno_start = i
+                state = 1
+            elif state == 1 and not (
+                line.startswith(prefix + " ") or line == prefix + "\n"
+            ):
+                lineno_end = i
+                break
+    precomment = lines[:lineno_start]
+    comment = lines[lineno_start:lineno_end]
+    postcomment = lines[lineno_end:]
+
+    # Is the existing heading correct?
+    correct = comment == heading
 
     if not modify:
         return correct
@@ -87,10 +103,9 @@ def has_correct_heading(path, copyright, prefix, modify):
     if correct:
         return True
 
-    # Correct the heading
+    # Correct the heading if requested
     with path.open("w", encoding="utf-8") as file:
-        file.write(heading)
-        for line in content.splitlines(True):
+        for line in precomment + heading + postcomment:
             file.write(line)
 
     print("Corrected copyright heading for " + str(path))

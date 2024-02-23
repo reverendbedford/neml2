@@ -24,10 +24,20 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+import sys
+from pathlib import Path
+
 if __name__ == "__main__":
     try:
-        import torch
-    except ImportError:
+        import yaml
+    except:
         print("")
     else:
-        print(torch.__path__[0])
+        with open(Path(__file__).parent.parent / "RELEASE.yml") as stream:
+            try:
+                info = yaml.safe_load(stream)
+                for arg in sys.argv[1:]:
+                    info = info[arg]
+                print(info)
+            except:
+                print("")

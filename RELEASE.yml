@@ -1,0 +1,26 @@
+# This file contains information about the current release
+
+# The compatibility matrix should stay consistent with the latest PyTorch release.
+# At least we should try to...
+#
+# To update the compatibility matrix, open a PR to the main branch which
+#   - updates .github/workflows/tests.yml, e.g., pip install torch==x.x.x
+#   - updates the corresponding dependencies in this file to the new versions
+compatibility:
+  python:
+    - 3.8
+    - 3.9
+    - 3.10
+    - 3.11
+  pytorch:
+    major: 2
+    minor: 2
+    patch: 1
+  cuda:
+    major: 11
+    minor: 8
+  cudnn:
+    major: 8
+    minor: 7
+    patch: 0
+    tweak: 84

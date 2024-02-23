@@ -5,6 +5,9 @@ project(NEML2 LANGUAGES CXX)
 # Setup modules
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${NEML2_SOURCE_DIR}/cmake/Modules/")
 
+# Get NEML2 metadata
+include(NEML2Metadata)
+
 # FindPython should return the first matching Python
 if(POLICY CMP0094)
       cmake_policy(SET CMP0094 NEW)
@@ -93,16 +96,14 @@ if(NOT DEFINED LIBTORCH_DIR)
 
       if(UNIX)
             if(NOT APPLE)
-                  FetchContent_Declare(torch URL https://download.pytorch.org/libtorch/nightly/cpu/libtorch-shared-with-deps-latest.zip)
+                  FetchContent_Declare(torch URL https://download.pytorch.org/libtorch/cpu/libtorch-shared-with-deps-${NEML2_PYTORCH_VERSION}%2Bcpu.zip)
             else()
                   if(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "arm64")
                         set(APPLE_SILICON ON)
-
-                        # This URL will need to be maintained
-                        FetchContent_Declare(torch URL https://files.pythonhosted.org/packages/7b/7c/4d8728e6f8dbe2b8af054bd92c290d94c633270443514e3ee4b768125cf9/torch-2.1.0-cp311-none-macosx_11_0_arm64.whl)
+                        FetchContent_Declare(torch URL https://download.pytorch.org/libtorch/cpu/libtorch-macos-arm64-${NEML2_PYTORCH_VERSION}.zip)
                   else()
                         set(APPLE_SILICON OFF)
-                        FetchContent_Declare(torch URL https://download.pytorch.org/libtorch/nightly/cpu/libtorch-macos-latest.zip)
+                        FetchContent_Declare(torch URL https://download.pytorch.org/libtorch/cpu/libtorch-macos-x86_64-${NEML2_PYTORCH_VERSION}.zip)
                   endif()
 
                   message(WARNING ${CMAKE_SYSTEM_PROCESSOR})
@@ -111,6 +112,7 @@ if(NOT DEFINED LIBTORCH_DIR)
             message(STATUS "Downloading libTorch, this may take a few minutes.")
             FetchContent_MakeAvailable(torch)
 
+            # I doubt this is necessary/correct anymore -- someone should check
             if(APPLE AND APPLE_SILICON)
                   set(LIBTORCH_DIR ${torch_SOURCE_DIR}/torch)
             else()
