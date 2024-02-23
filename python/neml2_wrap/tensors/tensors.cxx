@@ -29,14 +29,17 @@
 namespace py = pybind11;
 
 // Forward declarations
-#define TENSORS_FORWARD_DECL_T(T) void def_##T(py::module_ &)
-FOR_ALL_BATCHTENSORBASE(TENSORS_FORWARD_DECL_T);
+#define TENSORS_DEF_T_FWD(T) void def_##T(py::class_ &)
+FOR_ALL_BATCHTENSORBASE(TENSORS_DEF_T_FWD);
 
 void
 NEML2_MODULE_TENSORS(py::module_ & M)
 {
   auto m = M.def_submodule("tensors");
   m.doc() = "NEML2 primitive tensor types";
+
+#define TENSORS_DECL_T(T) auto c_##T = py::class_<BatchTensor>(m, #T);
+  FOR_ALL_BATCHTENSORBASE(TENSORS_DEF_T);
 
 #define TENSORS_DEF_T(T) def_##T(m)
   FOR_ALL_BATCHTENSORBASE(TENSORS_DEF_T);
