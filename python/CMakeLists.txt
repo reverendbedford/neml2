@@ -17,10 +17,6 @@ set_target_properties(pyneml2 PROPERTIES OUTPUT_NAME neml2)
 # to security considerations (see e.g. https://github.com/microsoft/pylance-release/issues/70).
 # To provide language servers with hints on modules and types, we use
 # pybind11-stubgen to generate stub type information.
-#
-# TODO: I have not yet figured out a way to expose at::Tensor type casters while
-# generating the stubs. So for now all the torch.Tensor types will be replaced by
-# ... in the argument lists.
 add_custom_target(pyneml2-stub
   DEPENDS pyneml2
   WORKING_DIRECTORY ${NEML2_BINARY_DIR}/python

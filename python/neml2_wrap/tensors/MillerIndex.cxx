@@ -22,25 +22,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <pybind11/operators.h>
-
 #include "neml2_wrap/tensors/FixedDimTensor.h"
 
 namespace py = pybind11;
 using namespace neml2;
 
 void
-def_MillerIndex(py::module_ & m)
+def_MillerIndex(py::class_<MillerIndex> & /*c*/)
 {
-  auto c = py::class_<MillerIndex>(m, "MillerIndex");
-
-  // Define batch/base views and getters/setters
-  def_BatchView<MillerIndex>(m, "MillerIndexBatchView");
-  def_BaseView<MillerIndex>(m, "MillerIndexBaseView");
-
-  // Methods decorated by BatchTensorBase
-  def_BatchTensorBase<MillerIndex>(c);
-
-  // Methods decorated by FixedDimTensor
-  def_FixedDimTensor<MillerIndex>(c);
 }

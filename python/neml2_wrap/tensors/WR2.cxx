@@ -22,31 +22,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <pybind11/operators.h>
-
 #include "neml2_wrap/tensors/VecBase.h"
 
 namespace py = pybind11;
 using namespace neml2;
 
 void
-def_WR2(py::module_ & m)
+def_WR2(py::class_<WR2> & c)
 {
-  auto c = py::class_<WR2>(m, "WR2");
-
-  // Define batch/base views and getters/setters
-  def_BatchView<WR2>(m, "WR2BatchView");
-  def_BaseView<WR2>(m, "WR2BaseView");
-
-  // Methods decorated by BatchTensorBase
-  def_BatchTensorBase<WR2>(c);
-
-  // Methods decorated by FixedDimTensor
-  def_FixedDimTensor<WR2>(c);
-
-  // Methods decorated by VecBase
-  def_VecBase<WR2>(c);
-
   // Ctors, conversions, accessors etc.
   c.def(py::init<const R2 &>());
 

@@ -50,7 +50,7 @@ template <>
 struct type_caster<torch::Dtype>
 {
 public:
-  PYBIND11_TYPE_CASTER(torch::Dtype, _("torch::Dtype"));
+  PYBIND11_TYPE_CASTER(torch::Dtype, _("neml2.Dtype"));
 
   /**
    * PYBIND11_TYPE_CASTER defines a member field called value. Since at::Device cannot be

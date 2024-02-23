@@ -22,25 +22,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <pybind11/operators.h>
-
 #include "neml2_wrap/tensors/FixedDimTensor.h"
 
 namespace py = pybind11;
 using namespace neml2;
 
 void
-def_WSR4(py::module_ & m)
+def_WSR4(py::class_<WSR4> & /*c*/)
 {
-  auto c = py::class_<WSR4>(m, "WSR4");
-
-  // Define batch/base views and getters/setters
-  def_BatchView<WSR4>(m, "WSR4BatchView");
-  def_BaseView<WSR4>(m, "WSR4BaseView");
-
-  // Methods decorated by BatchTensorBase
-  def_BatchTensorBase<WSR4>(c);
-
-  // Methods decorated by FixedDimTensor
-  def_FixedDimTensor<WSR4>(c);
 }

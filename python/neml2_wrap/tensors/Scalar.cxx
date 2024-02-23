@@ -22,28 +22,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <pybind11/operators.h>
-
 #include "neml2_wrap/tensors/FixedDimTensor.h"
 
 namespace py = pybind11;
 using namespace neml2;
 
 void
-def_Scalar(py::module_ & m)
+def_Scalar(py::class_<Scalar> & c)
 {
-  auto c = py::class_<Scalar>(m, "Scalar");
-
-  // Define batch/base views and getters/setters
-  def_BatchView<Scalar>(m, "ScalarBatchView");
-  def_BaseView<Scalar>(m, "ScalarBaseView");
-
-  // Methods decorated by BatchTensorBase
-  def_BatchTensorBase<Scalar>(c);
-
-  // Methods decorated by FixedDimTensor
-  def_FixedDimTensor<Scalar>(c);
-
   // Named constructors
   c.def_static(
       "identity_map",

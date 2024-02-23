@@ -28,17 +28,8 @@ namespace py = pybind11;
 using namespace neml2;
 
 void
-def_BatchTensor(py::module_ & m)
+def_BatchTensor(py::class_<BatchTensor> & c)
 {
-  auto c = py::class_<BatchTensor>(m, "BatchTensor");
-
-  // Define batch/base views and getters/setters
-  def_BatchView<BatchTensor>(m, "BatchTensorBatchView");
-  def_BaseView<BatchTensor>(m, "BatchTensorBaseView");
-
-  // Methods decorated by BatchTensorBase
-  def_BatchTensorBase<BatchTensor>(c);
-
   // Static methods
   c.def_static(
        "empty",

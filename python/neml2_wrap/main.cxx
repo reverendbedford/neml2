@@ -23,21 +23,9 @@
 // THE SOFTWARE.
 
 #include <pybind11/pybind11.h>
+#include <torch/torch.h>
 
 namespace py = pybind11;
-
-// Each module, submodule, class, and method have a corresponding binding method.
-// For example, the "tensors" module contains all of the bindings related to NEML2 primitive
-// tensors, and is defined by the NEML2_MODULE_TENSORS_XXX methods.
-
-// The module definition methods are grouped into two parts: declaration and definition. A natural
-// question to ask is why bother separating declarations from definitions? The reason is for typing:
-// Once we build the neml2 python library with all the necessary bindings, we will have to extract
-// all the typing information (mostly function signature) from the library, which is needed by
-// language servers like Pylance. We use pybind11-stubgen for that purpose. For a type to be
-// deducible by pybind11-stubgen, a concrete definition of the binding class must exist at the point
-// of method definition. Therefore, we need to first create all the class definitions before
-// creating method bindings that use them as arguments.
 
 // Forward declarations
 void NEML2_MODULE_TENSORS(py::module_ &);
@@ -47,8 +35,12 @@ PYBIND11_MODULE(neml2, m)
 {
   py::module::import("torch");
 
+  // This is for function signatures to understand torch::Dtype
+  // See `struct type_caster<torch::Dtype>` for more details.
+  py::class_<torch::Dtype>(m, "Dtype");
+
   m.doc() = "NEML2, GPU-enabled vectorized material modeling library";
 
-  NEML2_MODULE_MATH(m_math);
-  NEML2_MODULE_TENSORS(m_tensors);
+  NEML2_MODULE_TENSORS(m);
+  NEML2_MODULE_MATH(m);
 }

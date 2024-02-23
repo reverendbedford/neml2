@@ -22,31 +22,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <pybind11/operators.h>
-
 #include "neml2_wrap/tensors/R2Base.h"
 
 namespace py = pybind11;
 using namespace neml2;
 
 void
-def_R2(py::module_ & m)
+def_R2(py::class_<R2> & c)
 {
-  auto c = py::class_<R2>(m, "R2");
-
-  // Define batch/base views and getters/setters
-  def_BatchView<R2>(m, "R2BatchView");
-  def_BaseView<R2>(m, "R2BaseView");
-
-  // Methods decorated by BatchTensorBase
-  def_BatchTensorBase<R2>(c);
-
-  // Methods decorated by FixedDimTensor
-  def_FixedDimTensor<R2>(c);
-
-  // Methods decorated by R2Base
-  def_R2Base<R2>(c);
-
   // Operators
   c.def(py::self * Vec());
   c.def(py::self * py::self);

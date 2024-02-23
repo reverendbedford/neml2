@@ -22,25 +22,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <pybind11/operators.h>
-
 #include "neml2_wrap/tensors/FixedDimTensor.h"
 
 namespace py = pybind11;
 using namespace neml2;
 
 void
-def_SFR3(py::module_ & m)
+def_SFR3(py::class_<SFR3> & /*c*/)
 {
-  auto c = py::class_<SFR3>(m, "SFR3");
-
-  // Define batch/base views and getters/setters
-  def_BatchView<SFR3>(m, "SFR3BatchView");
-  def_BaseView<SFR3>(m, "SFR3BaseView");
-
-  // Methods decorated by BatchTensorBase
-  def_BatchTensorBase<SFR3>(c);
-
-  // Methods decorated by FixedDimTensor
-  def_FixedDimTensor<SFR3>(c);
 }

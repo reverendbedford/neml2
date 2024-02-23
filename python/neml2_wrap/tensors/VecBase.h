@@ -63,10 +63,9 @@ def_VecBase(py::class_<Derived> & c)
   // These methods are special because the argument could be anything derived from VecBase, so we
   // need to bind every possible instantiation.
 #define VECBASE_DEF_VECBASE(T)                                                                     \
-  c.def("dot", &Derived::template dot<T>)                                                          \
-      .def("cross", &Derived::template cross<T>)                                                   \
-      .def("outer", &Derived::template outer<T>)
-
+  c.def("dot", [](const Derived * self, const T & other) { return self->dot(other); })             \
+      .def("cross", [](const Derived * self, const T & other) { return self->cross(other); })      \
+      .def("outer", [](const Derived * self, const T & other) { return self->outer(other); })
   FOR_ALL_VECBASE(VECBASE_DEF_VECBASE);
 
   // Static methods

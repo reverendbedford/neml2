@@ -22,31 +22,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <pybind11/operators.h>
-
 #include "neml2_wrap/tensors/VecBase.h"
 
 namespace py = pybind11;
 using namespace neml2;
 
 void
-def_Rot(py::module_ & m)
+def_Rot(py::class_<Rot> & c)
 {
-  auto c = py::class_<Rot>(m, "Rot");
-
-  // Define batch/base views and getters/setters
-  def_BatchView<Rot>(m, "RotBatchView");
-  def_BaseView<Rot>(m, "RotBaseView");
-
-  // Methods decorated by BatchTensorBase
-  def_BatchTensorBase<Rot>(c);
-
-  // Methods decorated by FixedDimTensor
-  def_FixedDimTensor<Rot>(c);
-
-  // Methods decorated by VecBase
-  def_VecBase<Rot>(c);
-
   // Ctors, conversions, accessors etc.
   c.def(py::init<const Vec &>());
 

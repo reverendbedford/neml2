@@ -22,25 +22,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <pybind11/operators.h>
-
 #include "neml2_wrap/tensors/FixedDimTensor.h"
 
 namespace py = pybind11;
 using namespace neml2;
 
 void
-def_SR2(py::module_ & m)
+def_SR2(py::class_<SR2> & /*c*/)
 {
-  auto c = py::class_<SR2>(m, "SR2");
-
-  // Define batch/base views and getters/setters
-  def_BatchView<SR2>(m, "SR2BatchView");
-  def_BaseView<SR2>(m, "SR2BaseView");
-
-  // Methods decorated by BatchTensorBase
-  def_BatchTensorBase<SR2>(c);
-
-  // Methods decorated by FixedDimTensor
-  def_FixedDimTensor<SR2>(c);
 }

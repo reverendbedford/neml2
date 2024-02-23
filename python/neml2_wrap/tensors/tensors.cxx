@@ -25,12 +25,17 @@
 #include <pybind11/pybind11.h>
 
 #include "neml2/tensors/macros.h"
+#include "neml2_wrap/tensors/BatchTensorBase.h"
+#include "neml2_wrap/tensors/FixedDimTensor.h"
+#include "neml2_wrap/tensors/VecBase.h"
+#include "neml2_wrap/tensors/R2Base.h"
 
 namespace py = pybind11;
+using namespace neml2;
 
 // Forward declarations
-#define TENSORS_DEF_T_FWD(T) void def_##T(py::class_ &)
-FOR_ALL_BATCHTENSORBASE(TENSORS_DEF_T_FWD);
+#define TENSOR_CUSTOM_DEF_FWD(T) void def_##T(py::class_<T> &)
+FOR_ALL_BATCHTENSORBASE(TENSOR_CUSTOM_DEF_FWD);
 
 void
 NEML2_MODULE_TENSORS(py::module_ & M)
@@ -38,9 +43,40 @@ NEML2_MODULE_TENSORS(py::module_ & M)
   auto m = M.def_submodule("tensors");
   m.doc() = "NEML2 primitive tensor types";
 
-#define TENSORS_DECL_T(T) auto c_##T = py::class_<BatchTensor>(m, #T);
-  FOR_ALL_BATCHTENSORBASE(TENSORS_DEF_T);
+  // Declare all the BatchTensorBase derived tensors
+  // This is as simple as calling py::class_, but it is important to do this for ALL tensors up
+  // front. The reason is for typing: Once we build the neml2 python library with all the necessary
+  // bindings, we will have to extract all the typing information (mostly function signature) from
+  // the library, which is needed by language servers like Pylance. We use pybind11-stubgen for that
+  // purpose. For a type to be deducible by pybind11-stubgen, a concrete definition of the binding
+  // class must exist at the point of method definition. Therefore, we need to first create all the
+  // class definitions before creating method bindings that use them as arguments.
+#define BATCHTENSORBASE_DECL(T) auto c_##T = py::class_<T>(m, #T);
+  FOR_ALL_BATCHTENSORBASE(BATCHTENSORBASE_DECL);
 
-#define TENSORS_DEF_T(T) def_##T(m)
-  FOR_ALL_BATCHTENSORBASE(TENSORS_DEF_T);
+  // All of them have BatchView and BaseView
+#define BATCHVIEW_DEF(T) def_BatchView<T>(m, #T "BatchView");
+  FOR_ALL_BATCHTENSORBASE(BATCHVIEW_DEF);
+#define BASEVIEW_DEF(T) def_BaseView<T>(m, #T "BaseView");
+  FOR_ALL_BATCHTENSORBASE(BASEVIEW_DEF);
+
+  // Common methods decorated by BatchTensorBase
+#define BATCHTENSORBASE_DEF(T) def_BatchTensorBase<T>(c_##T);
+  FOR_ALL_BATCHTENSORBASE(BATCHTENSORBASE_DEF);
+
+  // Common methods decorated by FixedDimTensor
+#define FIXEDDIMTENSOR_DEF(T) def_FixedDimTensor<T>(c_##T);
+  FOR_ALL_FIXEDDIMTENSOR(FIXEDDIMTENSOR_DEF);
+
+  // Common methods decorated by VecBase
+#define VECBASE_DEF(T) def_VecBase<T>(c_##T);
+  FOR_ALL_VECBASE(VECBASE_DEF);
+
+  // Common methods decorated by R2Base
+#define R2BASE_DEF(T) def_R2Base<T>(c_##T);
+  FOR_ALL_R2BASE(R2BASE_DEF);
+
+  // Tensor specific methods
+#define TENSOR_CUSTOM_DEF(T) def_##T(c_##T);
+  FOR_ALL_BATCHTENSORBASE(TENSOR_CUSTOM_DEF);
 }

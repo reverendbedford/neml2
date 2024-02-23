@@ -124,7 +124,7 @@ jobs:
             -DNEML2_DOC=OFF \
             .
       - run: make pyneml2 -j 2
-      # - run: make pyneml2-stub
+      - run: make pyneml2-stub
       - run: pytest --force-testdox tests
   build-all:
     needs: clang-format

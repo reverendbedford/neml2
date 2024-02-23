@@ -22,25 +22,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <pybind11/operators.h>
-
 #include "neml2_wrap/tensors/FixedDimTensor.h"
 
 namespace py = pybind11;
 using namespace neml2;
 
 void
-def_Quaternion(py::module_ & m)
+def_Quaternion(py::class_<Quaternion> & /*m*/)
 {
-  auto c = py::class_<Quaternion>(m, "Quaternion");
-
-  // Define batch/base views and getters/setters
-  def_BatchView<Quaternion>(m, "QuaternionBatchView");
-  def_BaseView<Quaternion>(m, "QuaternionBaseView");
-
-  // Methods decorated by BatchTensorBase
-  def_BatchTensorBase<Quaternion>(c);
-
-  // Methods decorated by FixedDimTensor
-  def_FixedDimTensor<Quaternion>(c);
 }
