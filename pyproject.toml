@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "neml2"
+version = "1.3.0"
+authors = [
+  { name = "Mark Messner", email = "messner@anl.gov" },
+  { name = "Gary Hu", email = "thu@anl.gov" },
+]
+description = "GPU-enabled vectorized material modeling library"
+readme = "README.md"
+requires-python = ">=3.8"
