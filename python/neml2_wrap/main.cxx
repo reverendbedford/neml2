@@ -37,7 +37,8 @@ PYBIND11_MODULE(neml2, m)
 
   // This is for function signatures to understand torch::Dtype
   // See `struct type_caster<torch::Dtype>` for more details.
-  py::class_<torch::Dtype>(m, "Dtype");
+  // py::module_local() is necessary because apparently torch::Dtype is also registered by torch
+  py::class_<torch::Dtype>(m, "Dtype", py::module_local());
 
   m.doc() = "NEML2, GPU-enabled vectorized material modeling library";
 
