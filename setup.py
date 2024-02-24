@@ -28,6 +28,7 @@ import os
 import sys
 import platform
 import subprocess
+import sysconfig
 from pathlib import Path
 
 from setuptools import setup, Extension
@@ -58,7 +59,7 @@ class CMakeBuild(build_ext):
 
     def build_extension(self, ext):
         ext_dir = str(Path(self.get_ext_fullpath(ext.name)).parent.resolve())
-
+        torch_dir = str(Path(sysconfig.get_path("purelib")) / "torch")
         Path(self.build_temp).mkdir(parents=True, exist_ok=True)
 
         configure_args = [
@@ -66,6 +67,8 @@ class CMakeBuild(build_ext):
             ext.sourcedir,
             "-DCMAKE_BUILD_TYPE=RelWithDebInfo",
             "-DCMAKE_UNITY_BUILD=ON",
+            "-DBUILD_TESTING=OFF",
+            "-DLIBTORCH_DIR={}".format(torch_dir),
             "-DNEML2_UNIT=OFF",
             "-DNEML2_REGRESSION=OFF",
             "-DNEML2_VERIFICATION=OFF",
@@ -94,4 +97,7 @@ class CMakeBuild(build_ext):
         subprocess.check_call(build_args)
 
 
-setup(ext_modules=[CMakeExtension("neml2")], cmdclass={"build_ext": CMakeBuild})
+setup(
+    ext_modules=[CMakeExtension("neml2")],
+    cmdclass={"build_ext": CMakeBuild},
+)

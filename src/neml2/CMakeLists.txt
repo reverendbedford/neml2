@@ -23,7 +23,6 @@ file(GLOB LIBTORCH_TORCHLIBS ${LIBTORCH_DIR}/lib/libtorch*)
 
 find_library(LIBTORCH_PYTHON torch_python HINTS ${LIBTORCH_DIR}/lib)
 list(REMOVE_ITEM LIBTORCH_TORCHLIBS ${LIBTORCH_PYTHON})
-message(STATUS "LIBTORCH_TORCHLIBS = ${LIBTORCH_TORCHLIBS}")
 
 target_link_directories(neml2 PUBLIC ${LIBTORCH_DIR}/lib)
 target_link_libraries(neml2 PUBLIC ${LIBTORCH_TORCHLIBS})
