@@ -17,9 +17,14 @@ target_include_directories(neml2 PUBLIC ${NEML2_SOURCE_DIR}/include ${NEML2_BINA
 target_include_directories(neml2 SYSTEM PUBLIC ${LIBTORCH_DIR}/include/torch/csrc/api/include)
 target_include_directories(neml2 SYSTEM PUBLIC ${LIBTORCH_DIR}/include)
 
-# torch libraries
-file(GLOB LIBTORCH_TORCHLIBS ${LIBTORCH_DIR}/lib/libtorch*)
+# torch libraries (excluding torch_python!)
 file(GLOB LIBTORCH_C10LIBS ${LIBTORCH_DIR}/lib/libc10*)
+file(GLOB LIBTORCH_TORCHLIBS ${LIBTORCH_DIR}/lib/libtorch*)
+
+find_library(LIBTORCH_PYTHON torch_python HINTS ${LIBTORCH_DIR}/lib)
+list(REMOVE_ITEM LIBTORCH_TORCHLIBS ${LIBTORCH_PYTHON})
+message(STATUS "LIBTORCH_TORCHLIBS = ${LIBTORCH_TORCHLIBS}")
+
 target_link_directories(neml2 PUBLIC ${LIBTORCH_DIR}/lib)
 target_link_libraries(neml2 PUBLIC ${LIBTORCH_TORCHLIBS})
 target_link_libraries(neml2 PUBLIC ${LIBTORCH_C10LIBS})

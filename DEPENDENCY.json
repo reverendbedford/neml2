@@ -1,25 +1,7 @@
 {
-  "python-min": {
-    "major": 3,
-    "minor": 8
-  },
-  "python-max": {
-    "major": 3,
-    "minor": 11
-  },
   "pytorch": {
     "major": 2,
     "minor": 2,
     "patch": 1
-  },
-  "cuda": {
-    "major": 11,
-    "minor": 8
-  },
-  "cudnn": {
-    "major": 8,
-    "minor": 7,
-    "patch": 0,
-    "tweak": 84
   }
 }

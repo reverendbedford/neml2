@@ -57,12 +57,13 @@ class CMakeBuild(build_ext):
             self.build_extension(ext)
 
     def build_extension(self, ext):
-        ext_dir = Path(self.get_ext_fullpath(ext.name)).parent.resolve()
+        ext_dir = str(Path(self.get_ext_fullpath(ext.name)).parent.resolve())
 
         Path(self.build_temp).mkdir(parents=True, exist_ok=True)
 
         configure_args = [
             "cmake",
+            ext.sourcedir,
             "-DCMAKE_BUILD_TYPE=RelWithDebInfo",
             "-DCMAKE_UNITY_BUILD=ON",
             "-DNEML2_UNIT=OFF",
@@ -74,7 +75,6 @@ class CMakeBuild(build_ext):
             "-DNEML2_DOC=OFF",
             "-DCMAKE_INSTALL_PREFIX=" + ext_dir,
             "-DPYTHON_EXECUTABLE={}".format(sys.executable),
-            "-S{}".format(ext.sourcedir),
             "-B{}".format(self.build_temp),
         ]
 
@@ -94,4 +94,4 @@ class CMakeBuild(build_ext):
         subprocess.check_call(build_args)
 
 
-setup()
+setup(ext_modules=[CMakeExtension("neml2")], cmdclass={"build_ext": CMakeBuild})

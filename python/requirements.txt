@@ -2,3 +2,4 @@
 ##### pip requirements ######
 #
 pybind11-stubgen
+build

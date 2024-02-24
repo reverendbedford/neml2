@@ -8,7 +8,4 @@ target_include_directories(testutils PUBLIC "${NEML2_SOURCE_DIR}/include")
 list(APPEND TEST_UTILS_INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib)
 list(APPEND TEST_UTILS_INSTALL_RPATH ${LIBTORCH_DIR}/lib)
 set_target_properties(testutils PROPERTIES INSTALL_RPATH "${TEST_UTILS_INSTALL_RPATH}")
-install(TARGETS testutils
-  LIBRARY DESTINATION lib
-  PUBLIC_HEADER DESTINATION include
-)
+install(TARGETS testutils LIBRARY DESTINATION lib)

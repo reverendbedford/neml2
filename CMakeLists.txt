@@ -177,7 +177,7 @@ if(NEML2_PYBIND)
 
       # Figure out the torch path
       execute_process(
-            COMMAND "${Python_EXECUTABLE}" "scripts/find_torch.py"
+            COMMAND "${Python_EXECUTABLE}" "${NEML2_SOURCE_DIR}/scripts/find_torch.py"
             OUTPUT_VARIABLE PYTORCH_DIR
             OUTPUT_STRIP_TRAILING_WHITESPACE
       )
