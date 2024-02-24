@@ -29,6 +29,7 @@ import sys
 import platform
 import subprocess
 import sysconfig
+import torch
 from pathlib import Path
 
 from setuptools import setup, Extension
@@ -59,7 +60,7 @@ class CMakeBuild(build_ext):
 
     def build_extension(self, ext):
         ext_dir = str(Path(self.get_ext_fullpath(ext.name)).parent.resolve())
-        torch_dir = str(Path(sysconfig.get_path("purelib")) / "torch")
+        torch_dir = torch.__path__[0]
         Path(self.build_temp).mkdir(parents=True, exist_ok=True)
 
         configure_args = [
@@ -77,7 +78,6 @@ class CMakeBuild(build_ext):
             "-DNEML2_PYBIND=ON",
             "-DNEML2_DOC=OFF",
             "-DCMAKE_INSTALL_PREFIX=" + ext_dir,
-            "-DPYTHON_EXECUTABLE={}".format(sys.executable),
             "-B{}".format(self.build_temp),
         ]
 
