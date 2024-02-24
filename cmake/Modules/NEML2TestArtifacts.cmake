@@ -35,7 +35,7 @@ macro(install_test_artifacts test_dir)
   endif()
 
   foreach(ARTIFACT ${ARTIFACTS})
-    set(ARTIFACT_INSTALL_PATH ${CMAKE_INSTALL_PREFIX}/bin/${test_dir}/${ARTIFACT})
+    set(ARTIFACT_INSTALL_PATH ${CMAKE_INSTALL_PREFIX}/neml2/bin/${test_dir}/${ARTIFACT})
     cmake_path(GET ARTIFACT_INSTALL_PATH PARENT_PATH ARTIFACT_INSTALL_DIR)
     install(FILES ${NEML2_SOURCE_DIR}/tests/${test_dir}/${ARTIFACT} DESTINATION ${ARTIFACT_INSTALL_DIR})
   endforeach()

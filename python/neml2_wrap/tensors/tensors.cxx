@@ -37,10 +37,8 @@ using namespace neml2;
 #define TENSOR_CUSTOM_DEF_FWD(T) void def_##T(py::class_<T> &)
 FOR_ALL_BATCHTENSORBASE(TENSOR_CUSTOM_DEF_FWD);
 
-void
-NEML2_MODULE_TENSORS(py::module_ & M)
+PYBIND11_MODULE(tensors, m)
 {
-  auto m = M.def_submodule("tensors");
   m.doc() = "NEML2 primitive tensor types";
 
   // Declare all the BatchTensorBase derived tensors

@@ -53,23 +53,20 @@ configure_file(
   ${NEML2_SOURCE_DIR}/include/neml2/base/config.h.in
   ${NEML2_BINARY_DIR}/include/neml2/base/config.h
 )
-install(FILES ${NEML2_BINARY_DIR}/include/neml2/base/config.h DESTINATION ${CMAKE_INSTALL_PREFIX}/include/neml2/base)
+install(FILES ${NEML2_BINARY_DIR}/include/neml2/base/config.h DESTINATION ${CMAKE_INSTALL_PREFIX}/neml2/include/base)
 
-list(APPEND NEML2_INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib)
+list(APPEND NEML2_INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/neml2/lib)
 list(APPEND NEML2_INSTALL_RPATH ${LIBTORCH_DIR}/lib)
 set_target_properties(neml2 PROPERTIES INSTALL_RPATH "${NEML2_INSTALL_RPATH}")
-install(TARGETS neml2
-  LIBRARY DESTINATION lib
-  PUBLIC_HEADER DESTINATION include
-)
+install(TARGETS neml2 LIBRARY DESTINATION neml2/lib)
 
 # Install public headers
 # This is apparently the non-modern way as I am just copying all headers in the include directory
-# But at the same time, I am having trouble understanding the so-called "modern" way...
+# This is because I am having trouble understanding the so-called "modern" way...
 file(GLOB_RECURSE NEML2_PUBLIC_HEADERS ${NEML2_SOURCE_DIR}/include/*.h)
 
 foreach(NEML2_PUBLIC_HEADER ${NEML2_PUBLIC_HEADERS})
-  file(RELATIVE_PATH NEML2_PUBLIC_HEADER_RELPATH ${NEML2_SOURCE_DIR}/include ${NEML2_PUBLIC_HEADER})
+  file(RELATIVE_PATH NEML2_PUBLIC_HEADER_RELPATH ${NEML2_SOURCE_DIR}/include/neml2 ${NEML2_PUBLIC_HEADER})
   cmake_path(GET NEML2_PUBLIC_HEADER_RELPATH PARENT_PATH NEML2_PUBLIC_HEADER_DIR)
-  install(FILES ${NEML2_PUBLIC_HEADER} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/${NEML2_PUBLIC_HEADER_DIR})
+  install(FILES ${NEML2_PUBLIC_HEADER} DESTINATION ${CMAKE_INSTALL_PREFIX}/neml2/include/${NEML2_PUBLIC_HEADER_DIR})
 endforeach()

@@ -30,11 +30,9 @@
 namespace py = pybind11;
 using namespace neml2;
 
-void
-NEML2_MODULE_MATH(py::module_ & M)
+PYBIND11_MODULE(math, m)
 {
-  auto m = M.def_submodule("math");
-  m.doc() = "NEML2 mathematical functions and utilities";
+  m.doc() = "Mathematical functions and utilities";
 
   // Methods
   m.def("bmm", &math::bmm);

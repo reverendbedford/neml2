@@ -6,8 +6,4 @@ add_library(hit SHARED
 )
 set_target_properties(hit PROPERTIES UNITY_BUILD OFF)
 target_include_directories(hit PUBLIC hit)
-install(
-  TARGETS hit
-  LIBRARY DESTINATION lib
-  PUBLIC_HEADER DESTINATION include
-)
+install(TARGETS hit LIBRARY DESTINATION neml2/lib)

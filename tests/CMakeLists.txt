@@ -29,7 +29,7 @@ if(NEML2_UNIT)
 
       install_test_artifacts(unit)
 
-      list(APPEND UNIT_TESTS_INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib)
+      list(APPEND UNIT_TESTS_INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/neml2/lib)
       list(APPEND UNIT_TESTS_INSTALL_RPATH ${LIBTORCH_DIR}/lib)
       set_target_properties(unit_tests PROPERTIES INSTALL_RPATH "${UNIT_TESTS_INSTALL_RPATH}")
       install(TARGETS unit_tests)
@@ -58,7 +58,7 @@ if(NEML2_REGRESSION)
 
       install_test_artifacts(regression)
 
-      list(APPEND REGRESSION_TESTS_INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib)
+      list(APPEND REGRESSION_TESTS_INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/neml2/lib)
       list(APPEND REGRESSION_TESTS_INSTALL_RPATH ${LIBTORCH_DIR}/lib)
       set_target_properties(regression_tests PROPERTIES INSTALL_RPATH "${REGRESSION_TESTS_INSTALL_RPATH}")
       install(TARGETS regression_tests)
@@ -87,7 +87,7 @@ if(NEML2_VERIFICATION)
 
       install_test_artifacts(verification)
 
-      list(APPEND REGRESSION_TESTS_INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib)
+      list(APPEND REGRESSION_TESTS_INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/neml2/lib)
       list(APPEND REGRESSION_TESTS_INSTALL_RPATH ${LIBTORCH_DIR}/lib)
       set_target_properties(verification_tests PROPERTIES INSTALL_RPATH "${REGRESSION_TESTS_INSTALL_RPATH}")
       install(TARGETS verification_tests)
@@ -116,7 +116,7 @@ if(NEML2_BENCHMARK)
 
       install_test_artifacts(benchmark)
 
-      list(APPEND BENCHMARK_TESTS_INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib)
+      list(APPEND BENCHMARK_TESTS_INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/neml2/lib)
       list(APPEND BENCHMARK_TESTS_INSTALL_RPATH ${LIBTORCH_DIR}/lib)
       set_target_properties(benchmark_tests PROPERTIES INSTALL_RPATH "${BENCHMARK_TESTS_INSTALL_RPATH}")
       install(TARGETS benchmark_tests)
@@ -145,7 +145,7 @@ if(NEML2_PROFILING)
 
       install_test_artifacts(profiling)
 
-      list(APPEND PROFILING_TESTS_INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib)
+      list(APPEND PROFILING_TESTS_INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/neml2/lib)
       list(APPEND PROFILING_TESTS_INSTALL_RPATH ${LIBTORCH_DIR}/lib)
       set_target_properties(profiling_tests PROPERTIES INSTALL_RPATH "${PROFILING_TESTS_INSTALL_RPATH}")
       install(TARGETS profiling_tests)
