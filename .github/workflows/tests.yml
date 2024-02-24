@@ -179,7 +179,7 @@ jobs:
           echo -e "\
             #include \"neml2/base/Registry.h\"\n\
             int main() {\n\
-              std::cout << neml2::Registry::expected_options(\"ScalarSumModel\") << std::endl;\n\
+              neml2::Registry::print(std::cout);\n\
               return 0;\n\
             }\
             " > main.cxx

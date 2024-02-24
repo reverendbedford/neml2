@@ -4,6 +4,16 @@ include(NEML2UnityGroup)
 file(GLOB_RECURSE SRCS *.cxx)
 add_library(neml2 SHARED ${SRCS})
 
+# libTorch comes with two flavors: one with cxx11 abi, one without.
+# We should be consistent with whatever is detected from the libTorch.
+if(TORCH_CXX_FLAGS MATCHES "-D_GLIBCXX_USE_CXX11_ABI=1")
+  target_compile_definitions(neml2 PUBLIC _GLIBCXX_USE_CXX11_ABI=1)
+  message(STATUS "NEML2 is using CXX11 ABI to be consistent with libTorch")
+else()
+  target_compile_definitions(neml2 PUBLIC _GLIBCXX_USE_CXX11_ABI=0)
+  message(STATUS "NEML2 is using pre-CXX11 ABI to be consistent with libTorch")
+endif()
+
 # NEML2 (private) compile options
 target_compile_options(neml2 PRIVATE -Wall -Wextra -pedantic -Werror)
 

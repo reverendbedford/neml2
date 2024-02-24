@@ -34,3 +34,4 @@ config.h
 conftest.py
 *.pyi
 neml2.egg-info
+.pytest_cache

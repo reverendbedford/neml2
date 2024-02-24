@@ -134,18 +134,6 @@ if(NOT DEFINED LIBTORCH_DIR)
             "If you are on a Unix-based system and ran into this error, please submit a bug report.")
 endif()
 
-# find_package(Torch REQUIRED HINTS "${LIBTORCH_DIR}/share/cmake")
-
-# libTorch comes with two flavors: one with cxx11 abi, one without.
-# We should be consistent with whatever is detected from the libTorch.
-if(TORCH_CXX_FLAGS MATCHES "-D_GLIBCXX_USE_CXX11_ABI=1")
-      add_compile_definitions(_GLIBCXX_USE_CXX11_ABI=1)
-      message(STATUS "NEML2 is using CXX11 ABI to be consistent with libTorch")
-else()
-      add_compile_definitions(_GLIBCXX_USE_CXX11_ABI=0)
-      message(STATUS "NEML2 is using pre-CXX11 ABI to be consistent with libTorch")
-endif()
-
 # Catch2, for testing
 add_subdirectory("${NEML2_SOURCE_DIR}/extern/Catch2" "${NEML2_BINARY_DIR}/extern/Catch2")
 list(APPEND CMAKE_MODULE_PATH "${NEML2_SOURCE_DIR}/extern/Catch2/contrib")
