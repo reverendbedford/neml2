@@ -12,14 +12,22 @@ file(GLOB_RECURSE tensors_srcs neml2_wrap/tensors/*.cxx)
 pybind11_add_module(tensors ${tensors_srcs})
 target_include_directories(tensors PUBLIC ${NEML2_SOURCE_DIR}/python ${NEML2_BINARY_DIR}/python)
 target_link_libraries(tensors PUBLIC neml2 ${LIBTORCH_PYTHON})
-set_target_properties(tensors PROPERTIES INSTALL_RPATH "${PYNEML2_INSTALL_RPATH}")
+set_target_properties(tensors
+  PROPERTIES
+  LIBRARY_OUTPUT_DIRECTORY ${NEML2_BINARY_DIR}/python/neml2
+  INSTALL_RPATH "${PYNEML2_INSTALL_RPATH}"
+)
 install(TARGETS tensors LIBRARY DESTINATION neml2)
 
 # Define submodule math
 pybind11_add_module(math neml2_wrap/misc/math.cxx)
 target_include_directories(math PUBLIC ${NEML2_SOURCE_DIR}/python ${NEML2_BINARY_DIR}/python)
 target_link_libraries(math PUBLIC neml2 ${LIBTORCH_PYTHON})
-set_target_properties(math PROPERTIES INSTALL_RPATH "${PYNEML2_INSTALL_RPATH}")
+set_target_properties(math
+  PROPERTIES
+  LIBRARY_OUTPUT_DIRECTORY ${NEML2_BINARY_DIR}/python/neml2
+  INSTALL_RPATH "${PYNEML2_INSTALL_RPATH}"
+)
 install(TARGETS math LIBRARY DESTINATION neml2)
 
 # Install python files

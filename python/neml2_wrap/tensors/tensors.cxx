@@ -36,6 +36,7 @@ using namespace neml2;
 // Forward declarations
 #define TENSOR_CUSTOM_DEF_FWD(T) void def_##T(py::class_<T> &)
 FOR_ALL_BATCHTENSORBASE(TENSOR_CUSTOM_DEF_FWD);
+void def_LabeledAxisAccessor(py::module_ & m);
 
 PYBIND11_MODULE(tensors, m)
 {
@@ -77,4 +78,7 @@ PYBIND11_MODULE(tensors, m)
   // Tensor specific methods
 #define TENSOR_CUSTOM_DEF(T) def_##T(c_##T);
   FOR_ALL_BATCHTENSORBASE(TENSOR_CUSTOM_DEF);
+
+  // Labeled tensors
+  def_LabeledAxisAccessor(m);
 }
