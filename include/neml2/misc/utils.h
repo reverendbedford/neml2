@@ -199,6 +199,10 @@ void
 neml_assert_broadcastable_dbg([[maybe_unused]] T &&... tensors)
 {
 #ifndef NDEBUG
+  if (not broadcastable(tensors...))
+  {
+    std::cout << "HMM" << std::endl;
+  }
   neml_assert_dbg(broadcastable(tensors...),
                   "The ",
                   sizeof...(tensors),

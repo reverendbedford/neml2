@@ -143,7 +143,7 @@
   [euler_rodrigues_old]
     type = RotationMatrix
     from = 'old_state/orientation'
-    to = 'state/orientation_matrix'
+    to = 'old_state/orientation_matrix'
   []
   [elasticity]
     type = LinearIsotropicElasticity
@@ -154,18 +154,18 @@
   []
   [resolved_shear]
     type = ResolvedShear
+    orientation = 'old_state/orientation_matrix'
   []
   [elastic_stretch]
     type = ElasticStrainRate
   []
   [plastic_spin]
     type = PlasticVorticity
+    orientation = 'old_state/orientation_matrix'
   []
   [plastic_deformation_rate]
     type = PlasticDeformationRate
-  []
-  [orientation_rate]
-    type = OrientationRate
+    orientation = "old_state/orientation_matrix"
   []
   [sum_slip_rates]
     type = SumSlipRates
@@ -209,14 +209,79 @@
     implicit_model = 'implicit_rate_except_rotation'
     solver = 'newton'
   []
-  [integrate_rotation]
-    type = RotIdentityModel
-    from_var = 'old_state/orientation'
-    to_var = 'state/orientation'
+
+
+  [euler_rodrigues]
+    type = RotationMatrix
+    from = 'state/orientation'
+    to = 'state/orientation_matrix'
   []
+  [elasticity_lagged]
+    type = LinearIsotropicElasticity
+    youngs_modulus = 1e5
+    poisson_ratio = 0.25
+    strain = "old_state/elastic_strain"
+    stress = "old_state/internal/cauchy_stress"
+  []
+  [resolved_shear_lagged]
+    type = ResolvedShear
+    resolved_shears = "old_state/internal/resolved_shears"
+    stress = "old_state/internal/cauchy_stress"
+  []
+  [plastic_spin_lagged]
+    type = PlasticVorticity
+    plastic_vorticity = "old_state/internal/plastic_vorticity"
+    slip_rates = "old_state/internal/slip_rates"
+  []
+  [plastic_deformation_rate_lagged]
+    type = PlasticDeformationRate
+    plastic_deformation_rate = "old_state/internal/plastic_deformation_rate"
+    slip_rates = "old_state/internal/slip_rates"
+  []
+  [orientation_rate]
+    type = OrientationRate
+    elastic_strain = "old_state/elastic_strain"
+    plastic_deformation_rate = "old_state/internal/plastic_deformation_rate"
+    plastic_vorticity = "old_state/internal/plastic_vorticity"
+  []
+  [slip_rule_lagged]
+    type = PowerLawSlipRule
+    n = 8.0
+    gamma0 = 2.0e-1
+    slip_rates = "old_state/internal/slip_rates"
+    resolved_shears = "old_state/internal/resolved_shears"
+    slip_strengths = "old_state/internal/slip_strengths"
+  []
+  [slip_strength_lagged]
+    type = SingleSlipStrengthMap
+    constant_strength = 50.0
+    slip_strengths = "old_state/internal/slip_strengths"
+    slip_hardening = "old_state/internal/slip_hardening"
+  []
+  [integrate_orientation]
+    type = WR2ImplicitExponentialTimeIntegration
+    variable = 'orientation'
+  []
+
+  [implicit_rate_rotation]
+    type = ComposedModel
+    models = "euler_rodrigues elasticity_lagged resolved_shear_lagged
+              plastic_deformation_rate_lagged plastic_spin_lagged
+              orientation_rate
+              slip_rule_lagged slip_strength_lagged
+              integrate_orientation"
+  []
+  [integrate_rotation]
+    type = ImplicitUpdate
+    implicit_model = 'implicit_rate_rotation'
+    solver = 'newton'
+  []
+
+
   [model]
     type = ComposedModel
     models = "integrate_except_rotation integrate_rotation"
+    priority = "integrate_except_rotation integrate_rotation"
   []
 
   [model_with_stress]
