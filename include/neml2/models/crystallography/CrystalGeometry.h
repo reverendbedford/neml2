@@ -34,9 +34,10 @@ class Vec;
 class R2;
 class SR2;
 class WR2;
+class MillerIndex;
+
 namespace crystallography
 {
-class MillerIndex;
 
 /// @brief Defines the geometry of a crystal system
 /// This includes a basic definition of the crystal lattice,

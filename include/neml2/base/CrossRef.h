@@ -80,6 +80,21 @@ private:
   /// The raw string literal.
   std::string _raw_str;
 };
+} // namespace neml2
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementations
+///////////////////////////////////////////////////////////////////////////////
+
+namespace neml2
+{
+template <typename T>
+CrossRef<T> &
+CrossRef<T>::operator=(const std::string & other)
+{
+  _raw_str = other;
+  return *this;
+}
 
 template <typename T>
 std::ostream &

@@ -83,7 +83,7 @@ SR2Invariant::set_value(bool out, bool dout_din, bool d2out_din2)
   else if (_type == "VONMISES")
   {
     auto S = A.dev();
-    Scalar vm = std::sqrt(3.0 / 2.0) * S.norm(EPS);
+    Scalar vm = std::sqrt(3.0 / 2.0) * S.norm(NEML2_EPS);
 
     if (out)
       _invariant = vm;

@@ -4,7 +4,7 @@ TabWidth: 2
 ColumnLimit: 100
 UseTab: Never
 
-CommentPragmas: '^/'
+CommentPragmas: "^/"
 ReflowComments: true
 AlignTrailingComments: true
 SpacesBeforeTrailingComments: 1

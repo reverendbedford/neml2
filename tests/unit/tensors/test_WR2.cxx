@@ -88,9 +88,6 @@ TEST_CASE("WR2", "[tensors]")
 
     SECTION("rotate")
     {
-      std::cout << w.rotate(r) << std::endl;
-      std::cout << WR2(W.rotate(r)) << std::endl;
-
       REQUIRE(torch::allclose(w.rotate(r), WR2(W.rotate(r))));
       REQUIRE(torch::allclose(wb.rotate(rb), WR2(Wb.rotate(rb))));
     }

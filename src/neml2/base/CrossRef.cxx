@@ -26,33 +26,10 @@
 #include "neml2/base/Factory.h"
 #include "neml2/misc/parser_utils.h"
 #include "neml2/tensors/tensors.h"
-#include "neml2/models/crystallography/MillerIndex.h"
-
-#define specialize_crossref_FixedDimTensor(tensor_type)                                            \
-  template <>                                                                                      \
-  CrossRef<tensor_type>::operator tensor_type() const                                              \
-  {                                                                                                \
-    try                                                                                            \
-    {                                                                                              \
-      return tensor_type::full(utils::parse<Real>(_raw_str));                                      \
-    }                                                                                              \
-    catch (const ParserException & e)                                                              \
-    {                                                                                              \
-      return Factory::get_object<tensor_type>("Tensors", _raw_str);                                \
-    }                                                                                              \
-  }                                                                                                \
-  template class CrossRef<tensor_type>
+#include "neml2/tensors/macros.h"
 
 namespace neml2
 {
-template <typename T>
-CrossRef<T> &
-CrossRef<T>::operator=(const std::string & other)
-{
-  _raw_str = other;
-  return *this;
-}
-
 template <>
 CrossRef<torch::Tensor>::operator torch::Tensor() const
 {
@@ -84,20 +61,20 @@ CrossRef<BatchTensor>::operator BatchTensor() const
 }
 
 template class CrossRef<torch::Tensor>;
-template class CrossRef<BatchTensor>;
+#define CROSSREF_SPECIALIZE_FIXEDDIMTENSOR(T)                                                      \
+  template <>                                                                                      \
+  CrossRef<T>::operator T() const                                                                  \
+  {                                                                                                \
+    try                                                                                            \
+    {                                                                                              \
+      return T::full(utils::parse<Real>(_raw_str));                                                \
+    }                                                                                              \
+    catch (const ParserException & e)                                                              \
+    {                                                                                              \
+      return Factory::get_object<T>("Tensors", _raw_str);                                          \
+    }                                                                                              \
+  }                                                                                                \
+  static_assert(true)
 
-specialize_crossref_FixedDimTensor(Scalar);
-specialize_crossref_FixedDimTensor(Vec);
-specialize_crossref_FixedDimTensor(Rot);
-specialize_crossref_FixedDimTensor(R2);
-specialize_crossref_FixedDimTensor(SR2);
-specialize_crossref_FixedDimTensor(R3);
-specialize_crossref_FixedDimTensor(SFR3);
-specialize_crossref_FixedDimTensor(R4);
-specialize_crossref_FixedDimTensor(SSR4);
-specialize_crossref_FixedDimTensor(SFFR4);
-specialize_crossref_FixedDimTensor(R5);
-specialize_crossref_FixedDimTensor(SSFR5);
-specialize_crossref_FixedDimTensor(WR2);
-specialize_crossref_FixedDimTensor(crystallography::MillerIndex);
+FOR_ALL_FIXEDDIMTENSOR(CROSSREF_SPECIALIZE_FIXEDDIMTENSOR);
 } // namesace neml2

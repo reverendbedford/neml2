@@ -26,7 +26,8 @@
 
 namespace neml2
 {
-register_all_FixedDimTensor_prefix(Logspace, "Logspace");
+#define LOGSPACEFIXEDDIMTENSOR_REGISTER(T) register_NEML2_object_alias(Logspace##T, "Logspace" #T)
+FOR_ALL_FIXEDDIMTENSOR(LOGSPACEFIXEDDIMTENSOR_REGISTER);
 
 template <typename T>
 OptionSet
@@ -54,5 +55,7 @@ LogspaceFixedDimTensor<T>::LogspaceFixedDimTensor(const OptionSet & options)
 {
 }
 
-instantiate_all_FixedDimTensor(LogspaceFixedDimTensor);
+#define LOGSPACEFIXEDDIMTENSOR_INSTANTIATE_FIXEDDIMTENSOR(T)                                       \
+  template class LogspaceFixedDimTensor<T>
+FOR_ALL_FIXEDDIMTENSOR(LOGSPACEFIXEDDIMTENSOR_INSTANTIATE_FIXEDDIMTENSOR);
 } // namespace neml2

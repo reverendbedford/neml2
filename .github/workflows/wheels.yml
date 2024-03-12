@@ -1,0 +1,43 @@
+name: python
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "0 0 * * 0"
+
+permissions:
+  contents: read # Required when overriding permissions
+  pull-requests: write # For posting coverage report
+  checks: write
+
+# Newer commits should cancel old runs
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  black:
+    name: Formatting Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: psf/black@stable
+        with:
+          options: "--check -v"
+          src: "python/neml2 tests/python"
+  wheel:
+    needs: black
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.16.5
