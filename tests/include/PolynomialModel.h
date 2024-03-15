@@ -24,57 +24,57 @@
 
 #pragma once
 
-#include "neml2/drivers/TransientDriver.h"
+#include "neml2/models/Model.h"
 
 namespace neml2
 {
 /**
- * @brief The transient driver specialized for solid mechanics problems.
+ * @brief This class spits out the creep strain rate along with the rate of two other internal
+ * variables, given the von Mises stress, temperature, and the current internal state as input.
  *
+ * This is notionally the example for the so-called LAROMANCE type of reduced order models. For
+ * demonstration purposes, the rate equations are just decoupled, 2nd order polynomials of the form
+ *
+ * \[
+ * f = a_0 + a_1 x + a_2 x^2
+ * \]
  */
-class SolidMechanicsDriver : public TransientDriver
+class PolynomialModel : public Model
 {
 public:
+  PolynomialModel(const OptionSet & options);
+
   static OptionSet expected_options();
 
-  /**
-   * @brief Construct a new SolidMechanicsDriver object
-   *
-   * @param options The options extracted from the input file
-   */
-  SolidMechanicsDriver(const OptionSet & options);
-
 protected:
-  virtual void update_forces() override;
-  void check_integrity() const override;
+  void set_value(bool, bool, bool) override;
 
-  /**
-   * @brief The control method to drive the constitutive update.
-   *
-   * STRAIN: Use strain control to drive the update.
-   * STRESS: Use stress control to drive the update.
-   */
-  const std::string _control;
-
-  /**
-   * The value of the driving force, depending on `_control` this is either the prescribed strain or
-   * the prescribed stress.
-   */
-  SR2 _driving_force;
-
-  /**
-   * The name of the driving force, depending on `_control` this is either the prescribed strain or
-   * the prescribed stress.
-   */
-  VariableName _driving_force_name;
-
-  /// Name of the temperature variable
-  const VariableName _temperature_name;
-
-  /// Whether temperature is prescribed
-  const bool _temperature_prescribed;
+  /// The von Mises stress
+  const Variable<Scalar> & _s;
 
   /// Temperature
-  Scalar _temperature;
+  const Variable<Scalar> & _T;
+
+  /// Internal variables, could be wall dislocation density etc.
+  const Variable<Scalar> & _s1;
+  const Variable<Scalar> & _s2;
+
+  /// Creep strain rate
+  Variable<Scalar> & _ep_dot;
+
+  /// Rate of the 1st internal state
+  Variable<Scalar> & _s1_dot;
+
+  /// Rate of the 2nd internal state
+  Variable<Scalar> & _s2_dot;
+
+  /// Polynomial coefficients for the creep strain rate equation
+  const std::vector<Real> _s_coef;
+
+  /// Polynomial coefficients for the 1st internal state variable
+  const std::vector<Real> _s1_coef;
+
+  /// Polynomial coefficients for the 2nd internal state variable
+  const std::vector<Real> _s2_coef;
 };
 }

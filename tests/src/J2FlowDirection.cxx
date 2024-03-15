@@ -22,59 +22,45 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
-
-#include "neml2/drivers/TransientDriver.h"
+#include "J2FlowDirection.h"
+#include "neml2/tensors/SSR4.h"
 
 namespace neml2
 {
-/**
- * @brief The transient driver specialized for solid mechanics problems.
- *
- */
-class SolidMechanicsDriver : public TransientDriver
+register_NEML2_object(J2FlowDirection);
+
+OptionSet
+J2FlowDirection::expected_options()
 {
-public:
-  static OptionSet expected_options();
-
-  /**
-   * @brief Construct a new SolidMechanicsDriver object
-   *
-   * @param options The options extracted from the input file
-   */
-  SolidMechanicsDriver(const OptionSet & options);
-
-protected:
-  virtual void update_forces() override;
-  void check_integrity() const override;
-
-  /**
-   * @brief The control method to drive the constitutive update.
-   *
-   * STRAIN: Use strain control to drive the update.
-   * STRESS: Use stress control to drive the update.
-   */
-  const std::string _control;
-
-  /**
-   * The value of the driving force, depending on `_control` this is either the prescribed strain or
-   * the prescribed stress.
-   */
-  SR2 _driving_force;
-
-  /**
-   * The name of the driving force, depending on `_control` this is either the prescribed strain or
-   * the prescribed stress.
-   */
-  VariableName _driving_force_name;
-
-  /// Name of the temperature variable
-  const VariableName _temperature_name;
-
-  /// Whether temperature is prescribed
-  const bool _temperature_prescribed;
-
-  /// Temperature
-  Scalar _temperature;
-};
+  auto options = Model::expected_options();
+  options.set<VariableName>("mandel_stress") = VariableName("state", "M");
+  options.set<VariableName>("flow_direction") = VariableName("state", "NM");
+  return options;
 }
+
+J2FlowDirection::J2FlowDirection(const OptionSet & options)
+  : Model(options),
+    _M(declare_input_variable<SR2>("mandel_stress")),
+    _N(declare_output_variable<SR2>("flow_direction"))
+{
+}
+
+void
+J2FlowDirection::set_value(bool out, bool dout_din, bool d2out_din2)
+{
+  neml_assert_dbg(!d2out_din2, "I am too lazy to implement second derivatives");
+
+  auto S = SR2(_M).dev();
+  auto sn = S.norm(EPS);
+
+  if (out)
+  {
+    _N = S / sn;
+  }
+
+  if (dout_din)
+  {
+    _N.d(_M) = SSR4::identity_dev(options()) / sn - S.outer(S) / sn / sn / sn;
+  }
+}
+} // namespace neml2

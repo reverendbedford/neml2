@@ -24,57 +24,25 @@
 
 #pragma once
 
-#include "neml2/drivers/TransientDriver.h"
+#include "neml2/models/Model.h"
 
 namespace neml2
 {
-/**
- * @brief The transient driver specialized for solid mechanics problems.
- *
- */
-class SolidMechanicsDriver : public TransientDriver
+/// The plastic flow direction assuming J2 flow.
+class J2FlowDirection : public Model
 {
 public:
   static OptionSet expected_options();
 
-  /**
-   * @brief Construct a new SolidMechanicsDriver object
-   *
-   * @param options The options extracted from the input file
-   */
-  SolidMechanicsDriver(const OptionSet & options);
+  J2FlowDirection(const OptionSet & options);
 
 protected:
-  virtual void update_forces() override;
-  void check_integrity() const override;
+  virtual void set_value(bool, bool, bool) override;
 
-  /**
-   * @brief The control method to drive the constitutive update.
-   *
-   * STRAIN: Use strain control to drive the update.
-   * STRESS: Use stress control to drive the update.
-   */
-  const std::string _control;
+  /// Mandel stress
+  const Variable<SR2> & _M;
 
-  /**
-   * The value of the driving force, depending on `_control` this is either the prescribed strain or
-   * the prescribed stress.
-   */
-  SR2 _driving_force;
-
-  /**
-   * The name of the driving force, depending on `_control` this is either the prescribed strain or
-   * the prescribed stress.
-   */
-  VariableName _driving_force_name;
-
-  /// Name of the temperature variable
-  const VariableName _temperature_name;
-
-  /// Whether temperature is prescribed
-  const bool _temperature_prescribed;
-
-  /// Temperature
-  Scalar _temperature;
+  /// Flow direction
+  Variable<SR2> & _N;
 };
-}
+} // namespace neml2

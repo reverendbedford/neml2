@@ -35,14 +35,22 @@ SolidMechanicsDriver::expected_options()
   options.set<std::string>("control") = "STRAIN";
   options.set<VariableName>("total_strain") = VariableName("forces", "E");
   options.set<VariableName>("cauchy_stress") = VariableName("forces", "S");
+  options.set<VariableName>("temperature") = VariableName("forces", "T");
   options.set<CrossRef<torch::Tensor>>("prescribed_strains");
   options.set<CrossRef<torch::Tensor>>("prescribed_stresses");
+  options.set<CrossRef<torch::Tensor>>("prescribed_temperatures");
   return options;
 }
 
 SolidMechanicsDriver::SolidMechanicsDriver(const OptionSet & options)
   : TransientDriver(options),
-    _control(options.get<std::string>("control"))
+    _control(options.get<std::string>("control")),
+    _temperature_name(options.get<VariableName>("temperature")),
+    _temperature_prescribed(
+        !options.get<CrossRef<torch::Tensor>>("prescribed_temperatures").raw().empty()),
+    _temperature(_temperature_prescribed
+                     ? Scalar(options.get<CrossRef<torch::Tensor>>("prescribed_temperatures"), 2)
+                     : Scalar())
 {
   if (_control == "STRAIN")
   {
@@ -60,6 +68,7 @@ SolidMechanicsDriver::SolidMechanicsDriver(const OptionSet & options)
   // LCOV_EXCL_STOP
 
   _driving_force = _driving_force.to(_device);
+  _temperature = _temperature.to(_device);
 
   check_integrity();
 }
@@ -87,13 +96,40 @@ SolidMechanicsDriver::check_integrity() const
   neml_assert(_driving_force.sizes()[2] == 6,
               "Input strain/stress should have final dimension 6 but instead has final dimension ",
               _driving_force.sizes()[2]);
+
+  if (_temperature_prescribed)
+  {
+    neml_assert(_temperature.batch_dim() == 2,
+                "Input temperature should have 2 batch dimensions but instead has batch dimension",
+                _temperature.batch_dim());
+    neml_assert(_time.sizes()[0] == _temperature.sizes()[0],
+                "Input temperature and time should have the same number of time steps. The input "
+                "time has ",
+                _time.sizes()[0],
+                " time steps, while the input temperature has ",
+                _temperature.sizes()[0],
+                " time steps");
+    neml_assert(_time.sizes()[1] == _temperature.sizes()[1],
+                "Input temperature and time should have the same batch size. The input time has a "
+                "batch size of ",
+                _time.sizes()[1],
+                " while the input temperature has a batch size of ",
+                _temperature.sizes()[1]);
+  }
 }
 
 void
 SolidMechanicsDriver::update_forces()
 {
   TransientDriver::update_forces();
+
   auto current_driving_force = _driving_force.batch_index({_step_count});
   _in.set(current_driving_force, _driving_force_name);
+
+  if (_temperature_prescribed)
+  {
+    auto current_temperature = _temperature.batch_index({_step_count});
+    _in.set(current_temperature, _temperature_name);
+  }
 }
 }
