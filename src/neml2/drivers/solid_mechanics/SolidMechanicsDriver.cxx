@@ -68,7 +68,9 @@ SolidMechanicsDriver::SolidMechanicsDriver(const OptionSet & options)
   // LCOV_EXCL_STOP
 
   _driving_force = _driving_force.to(_device);
-  _temperature = _temperature.to(_device);
+
+  if (_temperature_prescribed)
+    _temperature = _temperature.to(_device);
 
   check_integrity();
 }
