@@ -21,60 +21,28 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+
 #pragma once
 
-#include "neml2/tensors/BatchTensor.h"
-#include "neml2/misc/parser_utils.h"
+#include "neml2/models/Model.h"
 
 namespace neml2
 {
-/**
- * @brief The base class to allow us to set up a polymorphic container of BatchTensors. The concrete
- * definitions will be templated on the actual tensor type.
- *
- */
-class TensorValueBase
+/// The plastic flow direction assuming J2 flow.
+class J2FlowDirection : public Model
 {
 public:
-  virtual ~TensorValueBase() = default;
+  static OptionSet expected_options();
 
-  /// Send the value to the target options
-  virtual void to(const torch::TensorOptions &) = 0;
+  J2FlowDirection(const OptionSet & options);
 
-  /// Convert the parameter value to a BatchTensor
-  virtual operator BatchTensor() const = 0;
+protected:
+  virtual void set_value(bool, bool, bool) override;
 
-  /// Set the parameter value
-  virtual void set(const BatchTensor & val) = 0;
-};
+  /// Mandel stress
+  const Variable<SR2> & _M;
 
-/// Concrete definition of tensor value
-template <typename T>
-class TensorValue : public TensorValueBase
-{
-public:
-  TensorValue() = default;
-
-  TensorValue(const T & value)
-    : _value(value)
-  {
-  }
-
-  virtual void to(const torch::TensorOptions & options) override { _value = _value.to(options); }
-
-  virtual operator BatchTensor() const override { return _value; }
-
-  template <typename T2 = T, typename = typename std::enable_if_t<!std::is_same_v<T2, BatchTensor>>>
-  operator T() const
-  {
-    return _value;
-  }
-
-  T & value() { return _value; }
-
-  virtual void set(const BatchTensor & val) override { _value = val; }
-
-private:
-  T _value;
+  /// Flow direction
+  Variable<SR2> & _N;
 };
 } // namespace neml2

@@ -49,7 +49,8 @@ Newton::solve(NonlinearSystem & system, BatchTensor & x)
 
   // The initial residual for relative convergence check
   system.residual();
-  auto nR0 = system.residual_norm();
+  auto nR = system.residual_norm();
+  auto nR0 = nR.clone();
 
   // Check for initial convergence
   if (converged(0, nR0, nR0))
@@ -69,14 +70,16 @@ Newton::solve(NonlinearSystem & system, BatchTensor & x)
   // 3. i > miters (failure)
   for (size_t i = 1; i < miters; i++)
   {
-    system.residual_and_Jacobian();
+    system.Jacobian();
     update(system, x);
-    auto nR = system.residual_norm();
+    system.residual();
+    nR = system.residual_norm();
 
     // Check for convergence
     if (converged(i, nR, nR0))
     {
       // TODO: The final update is only necessary if we use AD
+      system.Jacobian();
       final_update(system, x);
       return {true, i};
     }
