@@ -64,7 +64,11 @@ public:
 
   virtual operator BatchTensor() const override { return _value; }
 
-  virtual operator T() const { return _value; }
+  template <typename T2 = T, typename = typename std::enable_if_t<!std::is_same_v<T2, BatchTensor>>>
+  operator T() const
+  {
+    return _value;
+  }
 
   T & value() { return _value; }
 

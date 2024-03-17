@@ -64,7 +64,6 @@
     prescribed_strains = 'strains'
     prescribed_temperatures = 'temperatures'
     save_as = 'result.pt'
-    verbose = true
   []
   [regression]
     type = TransientRegression
@@ -78,7 +77,6 @@
     type = Newton
     abs_tol = 1e-8
     rel_tol = 1e-6
-    verbose = true
   []
 []
 
@@ -145,7 +143,7 @@
     invariant = 'state/s'
   []
   [rom]
-    type = PolynomialModel
+    type = TabulatedPolynomialModel
     von_mises_stress = 'state/s'
     temperature = 'forces/T'
     internal_state_1 = 'state/s1'
@@ -153,9 +151,8 @@
     equivalent_plastic_strain_rate = 'state/ep_rate'
     internal_state_1_rate = 'state/s1_rate'
     internal_state_2_rate = 'state/s2_rate'
-    s_coefficients = '1e-9 1e-8 1e-12'
-    s1_coefficients = '1e-3 1e-3 1e-6'
-    s2_coefficients = '1e-3 1e-3 1e-6'
+    use_AD_first_derivative = true
+    use_AD_second_derivative = true
   []
   [integrate_ep]
     type = ScalarBackwardEulerTimeIntegration
