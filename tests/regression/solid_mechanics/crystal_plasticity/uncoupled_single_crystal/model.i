@@ -279,9 +279,8 @@
 
 
   [model]
-    type = ComposedModel
+    type = SequentialModel
     models = "integrate_except_rotation integrate_rotation"
-    priority = "integrate_except_rotation integrate_rotation"
   []
 
   [model_with_stress]
