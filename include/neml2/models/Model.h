@@ -173,6 +173,9 @@ public:
   /// ComposedModel's set_value need to call submodel's set_value
   friend class ComposedModel;
 
+  /// Same thing for SequentialModel
+  friend class SequentialModel;
+
 protected:
   /**
    * @brief Setup this model.

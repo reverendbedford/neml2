@@ -25,7 +25,6 @@
 #pragma once
 
 #include "neml2/models/Model.h"
-#include "neml2/base/DependencyResolver.h"
 
 namespace neml2
 {
@@ -39,7 +38,9 @@ public:
 protected:
   /**
    * Setup each of the sub-model's input views.
-   * For this class we have a chain where each model should point into the next
+   * For this class we have a chain where each model should point into the next.
+   * So we need to each model in the chain, after the first, to see if we need
+   * to update its input view to point to the previous models output view.
    */
   virtual void setup_submodel_input_views() override;
 

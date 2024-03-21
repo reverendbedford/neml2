@@ -25,6 +25,8 @@
 #include "neml2/tensors/LabeledAxisAccessor.h"
 #include "neml2/misc/error.h"
 
+#include <algorithm>
+
 namespace neml2
 {
 LabeledAxisAccessor::LabeledAxisAccessor(const std::vector<std::string> & names)
@@ -103,6 +105,14 @@ bool
 LabeledAxisAccessor::start_with(const LabeledAxisAccessor & axis) const
 {
   return slice(0, axis.size()) == axis;
+}
+
+LabeledAxisAccessor
+LabeledAxisAccessor::replace(const std::string & original, const std::string & updated) const
+{
+  auto new_names = _item_names;
+  std::replace(new_names.begin(), new_names.end(), original, updated);
+  return new_names;
 }
 
 void

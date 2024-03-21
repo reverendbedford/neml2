@@ -24,6 +24,8 @@
 
 #include "neml2/models/SequentialModel.h"
 
+#include <iterator>
+
 namespace neml2
 {
 register_NEML2_object(SequentialModel);
@@ -44,25 +46,42 @@ SequentialModel::SequentialModel(const OptionSet & options)
     register_model<Model>(model_name, 0, /*nonlinear=*/false, /*merge_input=*/false);
 
   // Input is the merged input of all the models
+  size_t i = 0;
   for (auto & model : registered_models())
-    for (auto && [name, var] : model->output_views())
+  {
+    std::cout << "Model " << i << " input" << std::endl;
+
+    for (auto && [name, var] : model->input_views())
+    {
+      std::cout << name << std::endl;
       if (!input_axis().has_variable(name))
         declare_input_variable(var.base_storage(), name);
+    }
+    i++;
+  }
 
   // Output is the merged output of all the models, except here we need to throw if a variable is
   // repeated
+  i = 0;
   for (auto & model : registered_models())
+  {
+    std::cout << "Model " << i << " output" << std::endl;
     for (auto && [name, var] : model->output_views())
+    {
+      std::cout << name << std::endl;
       if (output_axis().has_variable(name))
         throw NEMLException("Two submodels in a SequentialModel declare the same output.");
       else
         declare_output_variable(var.base_storage(), name);
+    }
+    i++;
+  }
 
-  std::cout << "A" << std::endl;
+  std::cout << "Overall Inputs" << std::endl;
   for (auto && [name, var] : input_views())
     std::cout << name << std::endl;
 
-  std::cout << "B" << std::endl;
+  std::cout << "Overall Outputs" << std::endl;
   for (auto && [name, var] : output_views())
     std::cout << name << std::endl;
 }
@@ -70,17 +89,51 @@ SequentialModel::SequentialModel(const OptionSet & options)
 void
 SequentialModel::setup_submodel_input_views()
 {
-  for (auto submodel : registered_models())
+  std::cout << "Setting up submodels" << std::endl;
+  size_t i = 0;
+  for (auto it = registered_models().begin(); it != registered_models().end(); ++it)
   {
+    std::cout << "Setting up model " << i << std::endl;
+    // First model in chain doesn't need any rearrangement
+    if (it != registered_models().begin())
+    {
+      auto prev_it = std::prev(it);
+      for (auto && [name, var] : (*it)->input_views())
+      {
+        if ((*prev_it)->output_axis().has_variable(name.replace("old_state", "state")))
+        {
+          std::cout << "Sharing " << name << std::endl;
+          (*it)->input_view(name)->setup_views(
+              (*prev_it)->output_view(name.replace("old_state", "state")));
+        }
+        else
+        {
+          std::cout << "Not sharing " << name << std::endl;
+          (*it)->input_view(name)->setup_views(input_view(name));
+        }
+      }
+    }
+    // Just map to composed input
+    else
+    {
+      for (auto && [name, var] : (*it)->input_views())
+      {
+        std::cout << "Not sharing " << name << std::endl;
+        (*it)->input_view(name)->setup_views(input_view(name));
+      }
+    }
+    (*it)->setup_submodel_input_views();
+    ++i;
   }
 }
 
 void
 SequentialModel::set_value(bool out, bool dout_din, bool d2out_din2)
 {
-  (void)out;
-  (void)dout_din;
-  (void)d2out_din2;
+  for (auto model : registered_models())
+  {
+    model->set_value(out, dout_din, d2out_din2);
+  }
 }
 
 } // namespace neml2

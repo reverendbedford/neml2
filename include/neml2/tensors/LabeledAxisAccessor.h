@@ -98,6 +98,9 @@ public:
   /// Check if this accessor begins with another accessor
   bool start_with(const LabeledAxisAccessor & axis) const;
 
+  /// Replace all entries matching original with updated
+  LabeledAxisAccessor replace(const std::string & original, const std::string & updated) const;
+
 private:
   /// Throws if the item name has invalid format
   void validate_item_name(const std::string &) const;
