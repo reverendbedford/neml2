@@ -54,6 +54,52 @@
     end = max_strain
     nstep = 100
   []
+  [A0]
+    type = BatchTensor
+    values = "1e-6 1e-6 1e-6 1e-6 1e-6 1e-6 1e-6 1e-6 1e-6
+              1e-6 1e-6 1e-6 1e-6 1e-6 1e-6 1e-6 1e-6 1e-6"
+    base_shape = '(2,3,3)'
+  []
+  [A1]
+    type = BatchTensor
+    values = "1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6
+              1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6
+              1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6
+              1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6
+              1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6
+              1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6"
+    base_shape = '(2,3,3,4)'
+  []
+  [A2]
+    type = BatchTensor
+    values = "1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6
+              1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6
+              1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6
+              1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6
+              1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6
+              1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6"
+    base_shape = '(2,3,3,4)'
+  []
+  [s_lb]
+    type = BatchTensor
+    values = '0 50'
+    base_shape = (2)
+  []
+  [s_ub]
+    type = BatchTensor
+    values = '50 100'
+    base_shape = (2)
+  []
+  [T_lb]
+    type = BatchTensor
+    values = '0 300 600'
+    base_shape = (3)
+  []
+  [T_ub]
+    type = BatchTensor
+    values = '300 600 1000'
+    base_shape = (3)
+  []
 []
 
 [Drivers]
@@ -151,6 +197,13 @@
     equivalent_plastic_strain_rate = 'state/ep_rate'
     internal_state_1_rate = 'state/s1_rate'
     internal_state_2_rate = 'state/s2_rate'
+    A0 = 'A0'
+    A1 = 'A1'
+    A2 = 'A2'
+    stress_tile_lower_bounds = 's_lb'
+    stress_tile_upper_bounds = 's_ub'
+    temperature_tile_lower_bounds = 'T_lb'
+    temperature_tile_upper_bounds = 'T_ub'
     use_AD_first_derivative = true
     use_AD_second_derivative = true
   []

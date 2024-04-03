@@ -36,7 +36,7 @@ namespace neml2
  * demonstration purposes, the rate equations are just 2nd order polynomials of the form
  *
  * \[
- * \dot{y}_k = \tilde{\delta}_{ij} \left( A^0_{ij} + A^1_{ij} x + A^2_{ij} x_k^2 \right)
+ * \dot{y}_k = \tilde{\delta}_{ij} \left( A^0_{ijk} + A^1_{ijkl} x_l + A^2_{ijkl} x_l^2 \right)
  * \]
  *
  * where $x_k$ is the model input, and $\dot{y}_k$ is the model output. $A^0_{ij}$, $A^1_{ij}$, and
@@ -65,10 +65,13 @@ protected:
   smooth_index(const torch::Tensor & x, const torch::Tensor & lb, const torch::Tensor & ub) const;
 
   /**
-   * @brief Setting up the coefficient matrices:
+   * The coefficient matrices:
    *
-   * Each coefficient matrix is of shape (...; 2, 3, 3, 4) -- It is vital to understand why they
-   * have this particular shape!
+   * A0 is of shape (...; 2, 3, 3)
+   * A1 and A2 are of shape (...; 2, 3, 3, 4)
+   * It is vital to understand why they have these particular shapes!
+   *
+   * For A1 and A2:
    *
    * The last two base dimensions are 3-by-4, because we have 4 input variables: von Mises stress,
    * temperature, and two internal variables, and 3 output variables: equivalent creep strain rate
@@ -79,67 +82,42 @@ protected:
    * axes of the table. The von Mises stress is tiled into 2 intervals, and the temperature is tiled
    * into 3 intervals. Hence the shape 2-by-3.
    *
-   * In case it is not apparent, the coefficients are completely made up.
-   *
-   * @return BatchTensor
+   * Same reasoning applies to the constant coefficient matrix A0.
    */
-  // @{
-  BatchTensor A0() const;
-  BatchTensor A1() const;
-  BatchTensor A2() const;
-  // @}
-
-  /**
-   * @brief Setting up the table intervals
-   *
-   * The von Mises stress axis has 2 intervals: [0, 50), [50, 100)
-   * The temperature axis has 3 intervals: [0, 300), [300, 600), [600, 1000)
-   *
-   * @return BatchTensor Lower/Upper bounds for each interval
-   */
-  // @{
-  BatchTensor s_lb() const;
-  BatchTensor s_ub() const;
-  BatchTensor T_lb() const;
-  BatchTensor T_ub() const;
-  // @}
-
-  /// The von Mises stress
-  const Variable<Scalar> & _s;
-
-  /// Temperature
-  const Variable<Scalar> & _T;
-
-  /// Internal variables, could be wall dislocation density etc.
-  const Variable<Scalar> & _s1;
-  const Variable<Scalar> & _s2;
-
-  /// Creep strain rate
-  Variable<Scalar> & _ep_dot;
-
-  /// Rate of the 1st internal state
-  Variable<Scalar> & _s1_dot;
-
-  /// Rate of the 2nd internal state
-  Variable<Scalar> & _s2_dot;
-
-  /// Polynomial coefficients
   // @{
   const BatchTensor & _A0;
   const BatchTensor & _A1;
   const BatchTensor & _A2;
   // @}
 
-  /// Intervals of the 1st table axis: von Mises stress
-  // @{
+  /// Lower bound of the von Mises stress axis of the table
   const BatchTensor & _s_lb;
+  /// Upper bound of the von Mises stress axis of the table
   const BatchTensor & _s_ub;
+  /// Lower bound of the temperature axis of the table
+  const BatchTensor & _T_lb;
+  /// Upper bound of the temperature axis of the table
+  const BatchTensor & _T_ub;
+
+  /// Model input
+  // @{
+  /// The von Mises stress
+  const Variable<Scalar> & _s;
+  /// Temperature
+  const Variable<Scalar> & _T;
+  /// Internal variables, could be wall dislocation density etc.
+  const Variable<Scalar> & _s1;
+  const Variable<Scalar> & _s2;
   // @}
 
-  /// Intervals of the 2nd table axis: temperature
+  /// Model output
   // @{
-  const BatchTensor & _T_lb;
-  const BatchTensor & _T_ub;
+  /// Creep strain rate
+  Variable<Scalar> & _ep_dot;
+  /// Rate of the 1st internal state
+  Variable<Scalar> & _s1_dot;
+  /// Rate of the 2nd internal state
+  Variable<Scalar> & _s2_dot;
   // @}
 
   /// Parameter controlling the sharpness of the smooth indexing

@@ -32,19 +32,36 @@ OptionSet
 TabulatedPolynomialModel::expected_options()
 {
   auto options = Model::expected_options();
+  // Model inputs
   options.set<VariableName>("von_mises_stress") = VariableName("state", "s");
   options.set<VariableName>("temperature") = VariableName("forces", "T");
   options.set<VariableName>("internal_state_1") = VariableName("state", "s1");
   options.set<VariableName>("internal_state_2") = VariableName("state", "s2");
+  // Model outputs
   options.set<VariableName>("equivalent_plastic_strain_rate") = VariableName("state", "ep_rate");
   options.set<VariableName>("internal_state_1_rate") = VariableName("state", "s1_rate");
   options.set<VariableName>("internal_state_2_rate") = VariableName("state", "s2_rate");
+  // Model constants
+  options.set<CrossRef<BatchTensor>>("A0");
+  options.set<CrossRef<BatchTensor>>("A1");
+  options.set<CrossRef<BatchTensor>>("A2");
+  options.set<CrossRef<BatchTensor>>("stress_tile_lower_bounds");
+  options.set<CrossRef<BatchTensor>>("stress_tile_upper_bounds");
+  options.set<CrossRef<BatchTensor>>("temperature_tile_lower_bounds");
+  options.set<CrossRef<BatchTensor>>("temperature_tile_upper_bounds");
   options.set<Real>("index_sharpness") = 1.0;
   return options;
 }
 
 TabulatedPolynomialModel::TabulatedPolynomialModel(const OptionSet & options)
   : Model(options),
+    _A0(declare_buffer<BatchTensor>("A0", "A0")),
+    _A1(declare_buffer<BatchTensor>("A1", "A1")),
+    _A2(declare_buffer<BatchTensor>("A2", "A2")),
+    _s_lb(declare_buffer<BatchTensor>("s_lb", "stress_tile_lower_bounds")),
+    _s_ub(declare_buffer<BatchTensor>("s_ub", "stress_tile_upper_bounds")),
+    _T_lb(declare_buffer<BatchTensor>("T_lb", "temperature_tile_lower_bounds")),
+    _T_ub(declare_buffer<BatchTensor>("T_ub", "temperature_tile_upper_bounds")),
     _s(declare_input_variable<Scalar>("von_mises_stress")),
     _T(declare_input_variable<Scalar>("temperature")),
     _s1(declare_input_variable<Scalar>("internal_state_1")),
@@ -52,79 +69,73 @@ TabulatedPolynomialModel::TabulatedPolynomialModel(const OptionSet & options)
     _ep_dot(declare_output_variable<Scalar>("equivalent_plastic_strain_rate")),
     _s1_dot(declare_output_variable<Scalar>("internal_state_1_rate")),
     _s2_dot(declare_output_variable<Scalar>("internal_state_2_rate")),
-    _A0(declare_buffer<BatchTensor>("A0", A0())),
-    _A1(declare_buffer<BatchTensor>("A1", A1())),
-    _A2(declare_buffer<BatchTensor>("A2", A2())),
-    _s_lb(declare_buffer<BatchTensor>("s_lb", s_lb())),
-    _s_ub(declare_buffer<BatchTensor>("s_ub", s_ub())),
-    _T_lb(declare_buffer<BatchTensor>("T_lb", T_lb())),
-    _T_ub(declare_buffer<BatchTensor>("T_ub", T_ub())),
     _k(options.get<Real>("index_sharpness"))
 {
 }
 
-BatchTensor
-TabulatedPolynomialModel::A0() const
-{
-  return BatchTensor(torch::tensor({{{1e-6, 1e-6, 1e-6}, {1e-6, 1e-6, 1e-6}, {1e-6, 1e-6, 1e-6}},
-                                    {{1e-6, 1e-6, 1e-6}, {1e-6, 1e-6, 1e-6}, {1e-6, 1e-6, 1e-6}}},
-                                   default_tensor_options()),
-                     0);
-}
+// BatchTensor
+// TabulatedPolynomialModel::A0() const
+// {
+//   return BatchTensor(torch::tensor({{{1e-6, 1e-6, 1e-6}, {1e-6, 1e-6, 1e-6}, {1e-6, 1e-6, 1e-6}},
+//                                     {{1e-6, 1e-6, 1e-6}, {1e-6, 1e-6, 1e-6}, {1e-6, 1e-6,
+//                                     1e-6}}},
+//                                    default_tensor_options()),
+//                      0);
+// }
 
-BatchTensor
-TabulatedPolynomialModel::A1() const
-{
-  return BatchTensor(
-      torch::tensor(
-          {{{{1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}},
-            {{1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}},
-            {{1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}}},
-           {{{1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}},
-            {{1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}},
-            {{1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}}}},
-          default_tensor_options()),
-      0);
-}
+// BatchTensor
+// TabulatedPolynomialModel::A1() const
+// {
+//   return BatchTensor(
+//       torch::tensor(
+//           {{{{1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}},
+//             {{1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}},
+//             {{1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}}},
+//            {{{1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}},
+//             {{1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}},
+//             {{1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}}}},
+//           default_tensor_options()),
+//       0);
+// }
 
-BatchTensor
-TabulatedPolynomialModel::A2() const
-{
-  return BatchTensor(
-      torch::tensor(
-          {{{{1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}},
-            {{1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}},
-            {{1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}}},
-           {{{1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}},
-            {{1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}},
-            {{1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}}}},
-          default_tensor_options()),
-      0);
-}
+// BatchTensor
+// TabulatedPolynomialModel::A2() const
+// {
+//   return BatchTensor(
+//       torch::tensor(
+//           {{{{1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}},
+//             {{1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}},
+//             {{1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}}},
+//            {{{1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}},
+//             {{1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}},
+//             {{1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}, {1e-6, 2e-6, 3e-6, 4e-6}}}},
+//           default_tensor_options()),
+//       0);
+// }
 
-BatchTensor
-TabulatedPolynomialModel::s_lb() const
-{
-  return BatchTensor(torch::tensor({0., 50.}, default_tensor_options()), 0);
-}
+// BatchTensor
+// TabulatedPolynomialModel::s_lb() const
+// {
+//   return BatchTensor(torch::tensor({0., 50.}, default_tensor_options()), 0);
+// }
 
-BatchTensor
-TabulatedPolynomialModel::s_ub() const
-{
-  return BatchTensor(torch::tensor({50., 100.}, default_tensor_options()), 0);
-}
+// BatchTensor
+// TabulatedPolynomialModel::s_ub() const
+// {
+//   return BatchTensor(torch::tensor({50., 100.}, default_tensor_options()), 0);
+// }
 
-BatchTensor
-TabulatedPolynomialModel::T_lb() const
-{
-  return BatchTensor(torch::tensor({0., 300., 600.}, default_tensor_options()), 0);
-}
+// BatchTensor
+// TabulatedPolynomialModel::T_lb() const
+// {
+//   return BatchTensor(torch::tensor({0., 300., 600.}, default_tensor_options()), 0);
+// }
 
-BatchTensor
-TabulatedPolynomialModel::T_ub() const
-{
-  return BatchTensor(torch::tensor({300., 600., 1000.}, default_tensor_options()), 0);
-}
+// BatchTensor
+// TabulatedPolynomialModel::T_ub() const
+// {
+//   return BatchTensor(torch::tensor({300., 600., 1000.}, default_tensor_options()), 0);
+// }
 
 torch::Tensor
 TabulatedPolynomialModel::smooth_index(const torch::Tensor & x,
