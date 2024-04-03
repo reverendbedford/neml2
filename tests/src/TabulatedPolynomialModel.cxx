@@ -138,7 +138,8 @@ TabulatedPolynomialModel::smooth_index(const torch::Tensor & x,
 void
 TabulatedPolynomialModel::set_value(bool out, bool dout_din, bool d2out_din2)
 {
-  neml_assert_dbg(!d2out_din2, "Second derivative not implemented.");
+  neml_assert_dbg(!dout_din || !d2out_din2,
+                  "Only AD derivatives are currently supported for this model");
 
   // This example model has 4 input variables:
   //
@@ -170,9 +171,5 @@ TabulatedPolynomialModel::set_value(bool out, bool dout_din, bool d2out_din2)
     _ep_dot = Scalar(y.index({torch::indexing::Ellipsis, 0}));
     _s1_dot = Scalar(y.index({torch::indexing::Ellipsis, 1}));
     _s2_dot = Scalar(y.index({torch::indexing::Ellipsis, 2}));
-  }
-
-  if (dout_din)
-  {
   }
 }

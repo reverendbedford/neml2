@@ -48,7 +48,7 @@ J2FlowDirection::J2FlowDirection(const OptionSet & options)
 void
 J2FlowDirection::set_value(bool out, bool dout_din, bool d2out_din2)
 {
-  neml_assert_dbg(!d2out_din2, "I am too lazy to implement second derivatives");
+  neml_assert_dbg(!d2out_din2, "Second derivatives not implemented");
 
   auto S = SR2(_M).dev();
   auto sn = S.norm(EPS);
