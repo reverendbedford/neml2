@@ -21,60 +21,46 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-#pragma once
 
-#include "neml2/tensors/BatchTensor.h"
-#include "neml2/misc/parser_utils.h"
+#include "J2FlowDirection.h"
+#include "neml2/tensors/SSR4.h"
 
 namespace neml2
 {
-/**
- * @brief The base class to allow us to set up a polymorphic container of BatchTensors. The concrete
- * definitions will be templated on the actual tensor type.
- *
- */
-class TensorValueBase
+register_NEML2_object(J2FlowDirection);
+
+OptionSet
+J2FlowDirection::expected_options()
 {
-public:
-  virtual ~TensorValueBase() = default;
+  auto options = Model::expected_options();
+  options.set<VariableName>("mandel_stress") = VariableName("state", "M");
+  options.set<VariableName>("flow_direction") = VariableName("state", "NM");
+  return options;
+}
 
-  /// Send the value to the target options
-  virtual void to(const torch::TensorOptions &) = 0;
-
-  /// Convert the parameter value to a BatchTensor
-  virtual operator BatchTensor() const = 0;
-
-  /// Set the parameter value
-  virtual void set(const BatchTensor & val) = 0;
-};
-
-/// Concrete definition of tensor value
-template <typename T>
-class TensorValue : public TensorValueBase
+J2FlowDirection::J2FlowDirection(const OptionSet & options)
+  : Model(options),
+    _M(declare_input_variable<SR2>("mandel_stress")),
+    _N(declare_output_variable<SR2>("flow_direction"))
 {
-public:
-  TensorValue() = default;
+}
 
-  TensorValue(const T & value)
-    : _value(value)
+void
+J2FlowDirection::set_value(bool out, bool dout_din, bool d2out_din2)
+{
+  neml_assert_dbg(!d2out_din2, "Second derivatives not implemented");
+
+  auto S = SR2(_M).dev();
+  auto sn = S.norm(EPS);
+
+  if (out)
   {
+    _N = S / sn;
   }
 
-  virtual void to(const torch::TensorOptions & options) override { _value = _value.to(options); }
-
-  virtual operator BatchTensor() const override { return _value; }
-
-  template <typename T2 = T, typename = typename std::enable_if_t<!std::is_same_v<T2, BatchTensor>>>
-  operator T() const
+  if (dout_din)
   {
-    return _value;
+    _N.d(_M) = SSR4::identity_dev(options()) / sn - S.outer(S) / sn / sn / sn;
   }
-
-  T & value() { return _value; }
-
-  virtual void set(const BatchTensor & val) override { _value = val; }
-
-private:
-  T _value;
-};
+}
 } // namespace neml2

@@ -54,7 +54,7 @@ protected:
    * STRAIN: Use strain control to drive the update.
    * STRESS: Use stress control to drive the update.
    */
-  std::string _control;
+  const std::string _control;
 
   /**
    * The value of the driving force, depending on `_control` this is either the prescribed strain or
@@ -67,5 +67,14 @@ protected:
    * the prescribed stress.
    */
   VariableName _driving_force_name;
+
+  /// Name of the temperature variable
+  const VariableName _temperature_name;
+
+  /// Whether temperature is prescribed
+  const bool _temperature_prescribed;
+
+  /// Temperature
+  Scalar _temperature;
 };
 }
