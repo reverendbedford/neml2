@@ -35,11 +35,11 @@ set(CMAKE_CXX_FLAGS_COVERAGE
       CACHE STRING "Flags used by C++ compiler during coverage builds."
       FORCE)
 
-# Set a default build type if none was specified
-set(DEFAULT_BUILD_TYPE "Release")
-
+# Set the default build type
 if(EXISTS "${NEML2_SOURCE_DIR}/.git")
       set(DEFAULT_BUILD_TYPE "Debug")
+else()
+      set(DEFAULT_BUILD_TYPE "Release")
 endif()
 
 if(NOT CMAKE_BUILD_TYPE)
@@ -70,8 +70,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # This is preferred when we build Python bindings for NEML2, and so I will make
 # this plan a higher priority.
 if(NOT DEFINED LIBTORCH_DIR)
-      message(STATUS "LIBTORCH_DIR not set, try to find a PyTorch installation.")
-
       find_package(Python)
 
       if(Python_Interpreter_FOUND)
@@ -79,9 +77,6 @@ if(NOT DEFINED LIBTORCH_DIR)
 
             if(EXISTS ${PYTORCH_DIR})
                   set(LIBTORCH_DIR ${Python_SITEARCH}/torch)
-                  message(STATUS "Found PyTorch: ${LIBTORCH_DIR}")
-            else()
-                  message(STATUS "PyTorch package not found")
             endif()
       endif()
 endif()
@@ -89,8 +84,6 @@ endif()
 # Plan B: If we are on Unix systems, we could default to downloading a CPU-only
 # libTorch.
 if(NOT DEFINED LIBTORCH_DIR)
-      message(STATUS "LIBTORCH_DIR not set, try to download a libTorch (CPU) from the official website.")
-
       if(UNIX)
             if(NOT APPLE)
                   FetchContent_Declare(torch URL https://download.pytorch.org/libtorch/cpu/libtorch-shared-with-deps-${NEML2_PYTORCH_VERSION}%2Bcpu.zip)
@@ -102,8 +95,6 @@ if(NOT DEFINED LIBTORCH_DIR)
                         set(APPLE_SILICON OFF)
                         FetchContent_Declare(torch URL https://download.pytorch.org/libtorch/cpu/libtorch-macos-x86_64-${NEML2_PYTORCH_VERSION}.zip)
                   endif()
-
-                  message(WARNING ${CMAKE_SYSTEM_PROCESSOR})
             endif()
 
             message(STATUS "Downloading libTorch, this may take a few minutes.")
@@ -113,7 +104,6 @@ if(NOT DEFINED LIBTORCH_DIR)
                   message(FATAL_ERROR "Failed to donwload libTorch")
             else()
                   set(LIBTORCH_DIR ${torch_SOURCE_DIR})
-                  message(STATUS "Using downloaded libTorch: ${LIBTORCH_DIR}")
             endif()
 
       else()
@@ -129,6 +119,9 @@ if(NOT DEFINED LIBTORCH_DIR)
             "  1. Manually download libTorch and set LIBTORCH_DIR while running cmake.\n"
             "  2. Install Python and the PyTorch package.\n"
             "If you are on a Unix-based system and ran into this error, please submit a bug report.")
+else()
+      message(STATUS "Using libTorch at: ${LIBTORCH_DIR}")
+      include(NEML2TorchConfig)
 endif()
 
 # Catch2, for testing

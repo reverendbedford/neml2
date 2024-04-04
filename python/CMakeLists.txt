@@ -10,7 +10,7 @@ macro(add_submodule mname)
   python_add_library(${mname} MODULE ${msrcs} WITH_SOABI)
   target_include_directories(${mname} PUBLIC ${NEML2_SOURCE_DIR})
   target_link_libraries(${mname} PRIVATE pybind11::headers)
-  target_link_libraries(${mname} PUBLIC neml2 ${LIBTORCH_PYTHON})
+  target_link_libraries(${mname} PUBLIC neml2 ${Torch_PYTHON_BINDING})
   set_target_properties(${mname} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${NEML2_BINARY_DIR}/python/neml2)
 
   # Binary Python modules (such as pybind11 bindings) don't work well with
