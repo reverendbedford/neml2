@@ -1,6 +1,6 @@
 include(NEML2Artifacts)
 
-if(NOT LIBTORCH_PYTHON)
+if(NOT Torch_PYTHON_BINDING)
   message(FATAL_ERROR "Could not find the libTorch Python binding")
 endif()
 
