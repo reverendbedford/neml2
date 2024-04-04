@@ -137,9 +137,6 @@ endif()
 # base library
 add_subdirectory(src/neml2)
 
-# hit for parsing
-add_subdirectory("${NEML2_SOURCE_DIR}/extern/hit" "${NEML2_BINARY_DIR}/extern/hit")
-
 # Doxygen
 option(NEML2_DOC "Build NEML2 documentation: doxygen" OFF)
 
