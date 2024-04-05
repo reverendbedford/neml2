@@ -8,9 +8,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${NEML2_SOURCE_DIR}/cmake/Modules/")
 # Ninja only: limit number of jobs in a CI build
 set_property(GLOBAL PROPERTY JOB_POOLS CI=6)
 
-# Get NEML2 dependency
-include(NEML2Dependency)
-
 # FindPython should return the first matching Python
 if(POLICY CMP0094)
       cmake_policy(SET CMP0094 NEW)
@@ -33,15 +30,8 @@ set(CMAKE_CXX_FLAGS_COVERAGE
       FORCE)
 
 # Set the default build type
-if(EXISTS "${NEML2_SOURCE_DIR}/.git")
-      set(DEFAULT_BUILD_TYPE "Debug")
-else()
-      set(DEFAULT_BUILD_TYPE "Release")
-endif()
-
 if(NOT CMAKE_BUILD_TYPE)
-      message(STATUS "Setting build type to '${DEFAULT_BUILD_TYPE}' as none was specified.")
-      set(CMAKE_BUILD_TYPE "${DEFAULT_BUILD_TYPE}" CACHE
+      set(CMAKE_BUILD_TYPE "Debug" CACHE
             STRING "Choose the type of build." FORCE)
 
       # Set the possible values of build type for cmake-gui

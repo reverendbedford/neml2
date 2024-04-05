@@ -12,7 +12,6 @@ authors = [
 description = "GPU-enabled vectorized material modeling library"
 readme = "README.md"
 requires-python = ">=3.8"
-dependencies = ["torch==2.2.1"]
 
 [tool.scikit-build]
 cmake.build-type = "RelWithDebInfo"
@@ -32,11 +31,11 @@ NEML2_DOC = "OFF"
 [tool.cibuildwheel]
 build = "cp38-* cp39-* cp310-* cp311-*"
 skip = "*-win32 *-manylinux1_i686"
-before-build = "pip install numpy torch==2.2.1"
+before-build = "pip install numpy torch==2.2.1 pybind11-stubgen"
 build-verbosity = 1
-# test-requires = "pytest"
-# test-command = "pytest {project}/tests"
+test-requires = "pytest"
+test-command = "pytest {project}/tests"
 
 [tool.cibuildwheel.macos.environment]
-# MacOS 10.15 is the lowest version that supports _full__ C++17
+# MacOS 10.15 is the lowest version that supports _full_ C++17
 MACOSX_DEPLOYMENT_TARGET = "10.15"

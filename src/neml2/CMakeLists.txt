@@ -61,7 +61,7 @@ target_link_libraries(neml2 PUBLIC hit)
 
 set_target_properties(neml2
   PROPERTIES
-  INSTALL_RPATH "@loader_path;${Torch_LINK_DIRECTORIES}"
+  INSTALL_RPATH "$ORIGIN;$ORIGIN/lib;${Torch_LINK_DIRECTORIES}"
 )
 install(
   TARGETS neml2

@@ -1,3 +1,5 @@
+set(PYTORCH_VERSION "2.2.1")
+
 # We will rely on FetchContent to download libTorch
 include(FetchContent)
 

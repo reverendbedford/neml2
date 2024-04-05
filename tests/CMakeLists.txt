@@ -30,11 +30,14 @@ if(NEML2_UNIT)
       target_include_directories(unit_tests PUBLIC ${NEML2_SOURCE_DIR}/tests/include)
       catch_discover_tests(unit_tests)
 
-      add_custom_command(TARGET unit_tests
-            POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E create_symlink ${NEML2_SOURCE_DIR}/tests/unit ${NEML2_BINARY_DIR}/tests/unit
-            COMMENT "Creating symlink for unit tests"
-      )
+      if(NOT ${NEML2_BINARY_DIR} STREQUAL ${NEML2_SOURCE_DIR})
+            add_custom_command(TARGET unit_tests
+                  POST_BUILD
+                  COMMAND ${CMAKE_COMMAND} -E create_symlink ${NEML2_SOURCE_DIR}/tests/unit ${NEML2_BINARY_DIR}/tests/unit
+                  COMMENT "Creating symlink for unit tests"
+            )
+      endif()
+
       set_target_properties(unit_tests
             PROPERTIES
             INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib;${Torch_LINK_DIRECTORIES}"
@@ -72,11 +75,14 @@ if(NEML2_REGRESSION)
       target_include_directories(regression_tests PUBLIC "${NEML2_SOURCE_DIR}/tests/include")
       catch_discover_tests(regression_tests)
 
-      add_custom_command(TARGET regression_tests
-            POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E create_symlink ${NEML2_SOURCE_DIR}/tests/regression ${NEML2_BINARY_DIR}/tests/regression
-            COMMENT "Creating symlink for regression tests"
-      )
+      if(NOT ${NEML2_BINARY_DIR} STREQUAL ${NEML2_SOURCE_DIR})
+            add_custom_command(TARGET regression_tests
+                  POST_BUILD
+                  COMMAND ${CMAKE_COMMAND} -E create_symlink ${NEML2_SOURCE_DIR}/tests/regression ${NEML2_BINARY_DIR}/tests/regression
+                  COMMENT "Creating symlink for regression tests"
+            )
+      endif()
+
       set_target_properties(regression_tests
             PROPERTIES
             INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib;${Torch_LINK_DIRECTORIES}"
@@ -114,11 +120,14 @@ if(NEML2_VERIFICATION)
       target_include_directories(verification_tests PUBLIC "${NEML2_SOURCE_DIR}/tests/include")
       catch_discover_tests(verification_tests)
 
-      add_custom_command(TARGET verification_tests
-            POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E create_symlink ${NEML2_SOURCE_DIR}/tests/verification ${NEML2_BINARY_DIR}/tests/verification
-            COMMENT "Creating symlink for verification tests"
-      )
+      if(NOT ${NEML2_BINARY_DIR} STREQUAL ${NEML2_SOURCE_DIR})
+            add_custom_command(TARGET verification_tests
+                  POST_BUILD
+                  COMMAND ${CMAKE_COMMAND} -E create_symlink ${NEML2_SOURCE_DIR}/tests/verification ${NEML2_BINARY_DIR}/tests/verification
+                  COMMENT "Creating symlink for verification tests"
+            )
+      endif()
+
       set_target_properties(verification_tests
             PROPERTIES
             INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib;${Torch_LINK_DIRECTORIES}"
@@ -158,11 +167,14 @@ if(NEML2_BENCHMARK)
       target_include_directories(benchmark_tests PUBLIC "${NEML2_SOURCE_DIR}/tests/include")
       catch_discover_tests(benchmark_tests)
 
-      add_custom_command(TARGET benchmark_tests
-            POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E create_symlink ${NEML2_SOURCE_DIR}/tests/benchmark ${NEML2_BINARY_DIR}/tests/benchmark
-            COMMENT "Creating symlink for benchmark tests"
-      )
+      if(NOT ${NEML2_BINARY_DIR} STREQUAL ${NEML2_SOURCE_DIR})
+            add_custom_command(TARGET benchmark_tests
+                  POST_BUILD
+                  COMMAND ${CMAKE_COMMAND} -E create_symlink ${NEML2_SOURCE_DIR}/tests/benchmark ${NEML2_BINARY_DIR}/tests/benchmark
+                  COMMENT "Creating symlink for benchmark tests"
+            )
+      endif()
+
       set_target_properties(benchmark_tests
             PROPERTIES
             INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib;${Torch_LINK_DIRECTORIES}"
@@ -201,11 +213,14 @@ if(NEML2_PROFILING)
       target_link_libraries(profiling_tests neml2 testutils profiler)
       target_include_directories(profiling_tests PUBLIC "${NEML2_SOURCE_DIR}/tests/include")
 
-      add_custom_command(TARGET profiling_tests
-            POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E create_symlink ${NEML2_SOURCE_DIR}/tests/profiling ${NEML2_BINARY_DIR}/tests/profiling
-            COMMENT "Creating symlink for profiling tests"
-      )
+      if(NOT ${NEML2_BINARY_DIR} STREQUAL ${NEML2_SOURCE_DIR})
+            add_custom_command(TARGET profiling_tests
+                  POST_BUILD
+                  COMMAND ${CMAKE_COMMAND} -E create_symlink ${NEML2_SOURCE_DIR}/tests/profiling ${NEML2_BINARY_DIR}/tests/profiling
+                  COMMENT "Creating symlink for profiling tests"
+            )
+      endif()
+
       set_target_properties(profiling_tests
             PROPERTIES
             INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib;${Torch_LINK_DIRECTORIES}"
@@ -229,10 +244,14 @@ endif()
 # ###################################################
 if(NEML2_PYBIND)
       configure_file(${NEML2_SOURCE_DIR}/tests/python/conftest.py.in ${NEML2_SOURCE_DIR}/tests/python/conftest.py)
-      add_custom_target(link_pybind_tests ALL
-            COMMAND ${CMAKE_COMMAND} -E create_symlink ${NEML2_SOURCE_DIR}/tests/python ${NEML2_BINARY_DIR}/tests/python
-            COMMENT "Creating symlink for python binding tests"
-      )
+
+      if(NOT ${NEML2_BINARY_DIR} STREQUAL ${NEML2_SOURCE_DIR})
+            add_custom_target(link_pybind_tests ALL
+                  COMMAND ${CMAKE_COMMAND} -E create_symlink ${NEML2_SOURCE_DIR}/tests/python ${NEML2_BINARY_DIR}/tests/python
+                  COMMENT "Creating symlink for python binding tests"
+            )
+      endif()
+
       install(DIRECTORY python
             TYPE BIN
             FILES_MATCHING
