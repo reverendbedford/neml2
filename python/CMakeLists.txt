@@ -23,23 +23,10 @@ macro(add_submodule mname)
     INSTALL_RPATH "$ORIGIN;$ORIGIN/lib;${Torch_LINK_DIRECTORIES}"
   )
   install(TARGETS ${mname} LIBRARY DESTINATION .)
-
-  # Binary Python modules (such as pybind11 bindings) don't work well with
-  # PyLance, though other language servers may work. This is by design mainly due
-  # to security considerations (see e.g. https://github.com/microsoft/pylance-release/issues/70).
-  # To provide language servers with hints on modules and types, we use
-  # pybind11-stubgen to generate stub type information.
-  add_custom_command(TARGET ${mname}
-    POST_BUILD
-    WORKING_DIRECTORY ${NEML2_BINARY_DIR}/python
-    COMMAND PYTHONPATH=$ENV{PYTHONPATH}:. pybind11-stubgen -o . neml2.${mname}
-    COMMENT "Generating typing information for python submodule neml2.${mname}"
-  )
-  install(FILES ${NEML2_BINARY_DIR}/python/neml2/${mname}.pyi DESTINATION .)
 endmacro()
 
 # Actually add the submodules (using the above macro)
-# add_submodule(tensors)
+add_submodule(tensors)
 add_submodule(math)
 install(DIRECTORY neml2/
   DESTINATION .
