@@ -4,6 +4,11 @@ if(NOT Torch_PYTHON_BINDING)
   message(FATAL_ERROR "Could not find the libTorch Python binding")
 endif()
 
+add_custom_target(pyneml2 ALL
+  COMMAND ${CMAKE_COMMAND} -E create_symlink ${NEML2_SOURCE_DIR}/python/neml2/__init__.py ${NEML2_BINARY_DIR}/python/neml2/__init__.py
+  COMMENT "Creating symlink for __init__.py"
+)
+
 # macro for defining a submodule
 macro(add_submodule mname)
   file(GLOB_RECURSE msrcs neml2/${mname}/*.cxx)
@@ -11,7 +16,12 @@ macro(add_submodule mname)
   target_include_directories(${mname} PUBLIC ${NEML2_SOURCE_DIR})
   target_link_libraries(${mname} PRIVATE pybind11::headers)
   target_link_libraries(${mname} PUBLIC neml2 ${Torch_PYTHON_BINDING})
-  set_target_properties(${mname} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${NEML2_BINARY_DIR}/python/neml2)
+  set_target_properties(${mname}
+    PROPERTIES
+    LIBRARY_OUTPUT_DIRECTORY ${NEML2_BINARY_DIR}/python/neml2
+    INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib;${Torch_LINK_DIRECTORIES}"
+  )
+  install(TARGETS ${mname} LIBRARY DESTINATION .)
 
   # Binary Python modules (such as pybind11 bindings) don't work well with
   # PyLance, though other language servers may work. This is by design mainly due
@@ -32,3 +42,6 @@ endmacro()
 # Actually add the submodules (using the above macro)
 add_submodule(tensors)
 add_submodule(math)
+
+# Install __init__.py
+install(FILES neml2/__init__.py DESTINATION ${CMAKE_INSTALL_PREFIX})

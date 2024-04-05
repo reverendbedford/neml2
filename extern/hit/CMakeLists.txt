@@ -1,12 +1,9 @@
-# HIT for model (de)serialization
 add_library(hit SHARED
   hit/parse.cc
   hit/lex.cc
   hit/braceexpr.cc
 )
 
-# libTorch comes with two flavors: one with cxx11 abi, one without.
-# We should be consistent with whatever is detected from the libTorch.
 if(Torch_CXX11_ABI)
   target_compile_definitions(hit PUBLIC _GLIBCXX_USE_CXX11_ABI=1)
 else()
@@ -14,4 +11,18 @@ else()
 endif()
 
 set_target_properties(hit PROPERTIES UNITY_BUILD OFF)
-target_include_directories(hit PUBLIC hit)
+target_include_directories(hit PUBLIC .)
+target_sources(hit
+  PUBLIC
+  FILE_SET HEADERS
+  FILES
+  hit/braceexpr.h
+  hit/hit.h
+  hit/lex.h
+  hit/parse.h
+)
+install(
+  TARGETS hit
+  FILE_SET HEADERS
+  COMPONENT Development
+)

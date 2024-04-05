@@ -55,9 +55,6 @@ endif()
 # Add the unity option to the cache
 option(CMAKE_UNITY_BUILD "Use a unity build" OFF)
 
-# Enable testing
-enable_testing()
-
 # c++ 17 support
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -124,18 +121,15 @@ else()
       include(NEML2TorchConfig)
 endif()
 
-# Catch2, for testing
-add_subdirectory("${NEML2_SOURCE_DIR}/extern/Catch2" "${NEML2_BINARY_DIR}/extern/Catch2")
-list(APPEND CMAKE_MODULE_PATH "${NEML2_SOURCE_DIR}/extern/Catch2/contrib")
-include(CTest)
-include(Catch)
-
-if(BUILD_TESTING)
-      add_subdirectory(tests)
-endif()
-
 # base library
 add_subdirectory(src/neml2)
+
+# testing
+option(NEML2_TESTS "Build NEML2 tests" ON)
+
+if(NEML2_TESTS)
+      add_subdirectory(tests)
+endif()
 
 # Doxygen
 option(NEML2_DOC "Build NEML2 documentation: doxygen" OFF)

@@ -35,3 +35,6 @@ conftest.py
 *.pyi
 neml2.egg-info
 .pytest_cache
+src/neml2/base/config.h
+install
+conftest.py

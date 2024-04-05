@@ -4,30 +4,6 @@ include(NEML2UnityGroup)
 file(GLOB_RECURSE SRCS *.cxx)
 add_library(neml2 SHARED ${SRCS})
 
-# NEML2 (private) compile options
-target_compile_options(neml2 PRIVATE -Wall -Wextra -pedantic -Werror)
-
-# Group source files together if UNITY build is requested
-register_unity_group(neml2 "NEML2" .)
-
-# NEML2 headers
-target_include_directories(neml2 PUBLIC ${NEML2_SOURCE_DIR}/include ${NEML2_BINARY_DIR}/include)
-
-# torch
-target_include_directories(neml2 SYSTEM PUBLIC ${Torch_INCLUDE_DIRECTORIES})
-target_link_directories(neml2 PUBLIC ${Torch_LINK_DIRECTORIES})
-target_link_libraries(neml2 PUBLIC ${Torch_LIBRARIES})
-
-if(Torch_CXX11_ABI)
-  target_compile_definitions(neml2 PUBLIC _GLIBCXX_USE_CXX11_ABI=1)
-else()
-  target_compile_definitions(neml2 PUBLIC _GLIBCXX_USE_CXX11_ABI=0)
-endif()
-
-# hit for parsing
-add_subdirectory("${NEML2_SOURCE_DIR}/extern/hit" "${NEML2_BINARY_DIR}/extern/hit")
-target_link_libraries(neml2 PUBLIC hit)
-
 # Make scalar type configurable:
 if(NOT NEML2_DTYPE)
   set(NEML2_DTYPE "Float64" CACHE STRING "Default NEML2 scalar type." FORCE)
@@ -48,22 +24,47 @@ message(STATUS "Configuring with default integer scalar type: ${NEML2_INT_DTYPE}
 
 configure_file(
   ${NEML2_SOURCE_DIR}/include/neml2/base/config.h.in
-  ${NEML2_BINARY_DIR}/include/neml2/base/config.h
+  ${NEML2_SOURCE_DIR}/include/neml2/base/config.h
 )
-install(FILES ${NEML2_BINARY_DIR}/include/neml2/base/config.h DESTINATION ${CMAKE_INSTALL_PREFIX}/neml2/include/base)
 
-list(APPEND NEML2_INSTALL_RPATH lib)
-list(APPEND NEML2_INSTALL_RPATH ${LIBTORCH_DIR}/lib)
-set_target_properties(neml2 PROPERTIES INSTALL_RPATH "${NEML2_INSTALL_RPATH}")
-install(TARGETS neml2 RUNTIME_DEPENDENCIES hit)
+# NEML2 (private) compile options
+target_compile_options(neml2 PRIVATE -Wall -Wextra -pedantic -Werror)
 
-# Install public headers
-# This is apparently the non-modern way as I am just copying all headers in the include directory
-# This is because I am having trouble understanding the so-called "modern" way...
-# file(GLOB_RECURSE NEML2_PUBLIC_HEADERS ${NEML2_SOURCE_DIR}/include/*.h)
+# Group source files together if UNITY build is requested
+register_unity_group(neml2 "NEML2" .)
 
-# foreach(NEML2_PUBLIC_HEADER ${NEML2_PUBLIC_HEADERS})
-# file(RELATIVE_PATH NEML2_PUBLIC_HEADER_RELPATH ${NEML2_SOURCE_DIR}/include/neml2 ${NEML2_PUBLIC_HEADER})
-# cmake_path(GET NEML2_PUBLIC_HEADER_RELPATH PARENT_PATH NEML2_PUBLIC_HEADER_DIR)
-# install(FILES ${NEML2_PUBLIC_HEADER} DESTINATION ${CMAKE_INSTALL_PREFIX}/neml2/include/${NEML2_PUBLIC_HEADER_DIR})
-# endforeach()
+# NEML2 headers
+file(GLOB_RECURSE _NEML2_HEADERS ${NEML2_SOURCE_DIR}/include/*.h)
+target_include_directories(neml2 PUBLIC ${NEML2_SOURCE_DIR}/include ${NEML2_BINARY_DIR}/include)
+target_sources(neml2
+  PUBLIC
+  FILE_SET HEADERS
+  BASE_DIRS ${NEML2_SOURCE_DIR}/include
+  FILES
+  ${_NEML2_HEADERS}
+)
+
+# torch
+target_include_directories(neml2 SYSTEM PUBLIC ${Torch_INCLUDE_DIRECTORIES})
+target_link_directories(neml2 PUBLIC ${Torch_LINK_DIRECTORIES})
+target_link_libraries(neml2 PUBLIC ${Torch_LIBRARIES})
+
+if(Torch_CXX11_ABI)
+  target_compile_definitions(neml2 PUBLIC _GLIBCXX_USE_CXX11_ABI=1)
+else()
+  target_compile_definitions(neml2 PUBLIC _GLIBCXX_USE_CXX11_ABI=0)
+endif()
+
+# hit for parsing
+add_subdirectory("${NEML2_SOURCE_DIR}/extern/hit" "${NEML2_BINARY_DIR}/extern/hit")
+target_link_libraries(neml2 PUBLIC hit)
+
+set_target_properties(neml2
+  PROPERTIES
+  INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib;${Torch_LINK_DIRECTORIES}"
+)
+install(
+  TARGETS neml2
+  FILE_SET HEADERS
+  COMPONENT Development
+)

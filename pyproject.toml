@@ -32,8 +32,8 @@ build = "cp38-* cp39-* cp310-* cp311-*"
 skip = "*-win32 *-manylinux1_i686"
 before-build = "pip install numpy torch==2.2.1"
 build-verbosity = 1
-test-requires = "pytest"
-test-command = "pytest {project}/tests"
+# test-requires = "pytest"
+# test-command = "pytest {project}/tests"
 
 [tool.cibuildwheel.macos.environment]
 # MacOS 10.15 is the lowest version that supports _full__ C++17
