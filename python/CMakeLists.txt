@@ -1,4 +1,5 @@
-include(NEML2Artifacts)
+find_package(Python COMPONENTS Interpreter Development.Module)
+find_package(pybind11 CONFIG REQUIRED HINTS ${Python_SITEARCH})
 
 if(NOT Torch_PYTHON_BINDING)
   message(FATAL_ERROR "Could not find the libTorch Python binding")
@@ -19,7 +20,7 @@ macro(add_submodule mname)
   set_target_properties(${mname}
     PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${NEML2_BINARY_DIR}/python/neml2
-    INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib;${Torch_LINK_DIRECTORIES}"
+    INSTALL_RPATH "@loader_path/lib;${Torch_LINK_DIRECTORIES}"
   )
   install(TARGETS ${mname} LIBRARY DESTINATION .)
 
@@ -42,3 +43,9 @@ endmacro()
 # Actually add the submodules (using the above macro)
 # add_submodule(tensors)
 add_submodule(math)
+install(DIRECTORY neml2/
+  DESTINATION .
+  FILES_MATCHING
+  PATTERN "*.py"
+  PATTERN "*.pyi"
+)
