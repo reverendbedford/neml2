@@ -1,5 +1,4 @@
 include(NEML2UnityGroup)
-include(NEML2Artifacts)
 
 # Catch2, for testing
 add_subdirectory(${NEML2_SOURCE_DIR}/extern/Catch2 ${NEML2_BINARY_DIR}/extern/Catch2)
