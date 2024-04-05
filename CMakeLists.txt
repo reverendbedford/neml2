@@ -48,6 +48,15 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Torch)
 
+# Install rpath, important for a relocatable install
+if(UNIX)
+      if(APPLE)
+            set(CMAKE_INSTALL_RPATH "@loader_path;@loader_path/lib;${Torch_LINK_DIRECTORIES}")
+      else()
+            set(CMAKE_INSTALL_RPATH "$ORIGIN;$ORIGIN/lib;${Torch_LINK_DIRECTORIES}")
+      endif()
+endif()
+
 # base library
 add_subdirectory(src/neml2)
 
