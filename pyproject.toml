@@ -17,6 +17,8 @@ dependencies = ["torch==2.2.1"]
 [tool.scikit-build]
 cmake.build-type = "RelWithDebInfo"
 wheel.expand-macos-universal-tags = true
+wheel.packages = []
+wheel.install-dir = "neml2"
 
 [tool.scikit-build.cmake.define]
 CMAKE_INSTALL_PREFIX = "install"
@@ -24,7 +26,7 @@ CMAKE_JOB_POOL_COMPILE = "CI"
 CMAKE_JOB_POOL_LINK = "CI"
 CMAKE_UNITY_BUILD = "ON"
 NEML2_PYBIND = "ON"
-BUILD_TESTING = "OFF"
+NEML2_TESTS = "OFF"
 NEML2_DOC = "OFF"
 
 [tool.cibuildwheel]

@@ -5,8 +5,8 @@ if(NOT Torch_PYTHON_BINDING)
 endif()
 
 add_custom_target(pyneml2 ALL
-  COMMAND ${CMAKE_COMMAND} -E create_symlink ${NEML2_SOURCE_DIR}/python/neml2/__init__.py ${NEML2_BINARY_DIR}/python/neml2/__init__.py
-  COMMENT "Creating symlink for __init__.py"
+  COMMAND ${CMAKE_COMMAND} -E copy ${NEML2_SOURCE_DIR}/python/neml2/__init__.py ${NEML2_BINARY_DIR}/python/neml2/__init__.py
+  COMMENT "Copying __init__.py"
 )
 
 # macro for defining a submodule
@@ -40,8 +40,5 @@ macro(add_submodule mname)
 endmacro()
 
 # Actually add the submodules (using the above macro)
-add_submodule(tensors)
+# add_submodule(tensors)
 add_submodule(math)
-
-# Install __init__.py
-install(FILES neml2/__init__.py DESTINATION ${CMAKE_INSTALL_PREFIX})
