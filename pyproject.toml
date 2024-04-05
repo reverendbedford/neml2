@@ -33,7 +33,7 @@ build = "cp38-* cp39-* cp310-* cp311-*"
 skip = "*-win32 *-manylinux1_i686"
 before-build = "pip install numpy torch==2.2.1"
 build-verbosity = 1
-test-requires = "pytest pytest-testdox"
+test-requires = "pytest pytest-testdox numpy torch==2.2.1"
 test-command = "pytest --force-testdox {project}/tests"
 
 [tool.cibuildwheel.macos.environment]
