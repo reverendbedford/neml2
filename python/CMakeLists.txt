@@ -17,11 +17,6 @@ macro(add_submodule mname)
   target_include_directories(${mname} PUBLIC ${NEML2_SOURCE_DIR})
   target_link_libraries(${mname} PRIVATE pybind11::headers)
   target_link_libraries(${mname} PUBLIC neml2 ${Torch_PYTHON_BINDING})
-  set_target_properties(${mname}
-    PROPERTIES
-    LIBRARY_OUTPUT_DIRECTORY ${NEML2_BINARY_DIR}/python/neml2
-    INSTALL_RPATH "$ORIGIN;$ORIGIN/lib;${Torch_LINK_DIRECTORIES}"
-  )
   install(TARGETS ${mname} LIBRARY DESTINATION .)
 endmacro()
 

@@ -37,10 +37,6 @@ if(NEML2_UNIT)
             )
       endif()
 
-      set_target_properties(unit_tests
-            PROPERTIES
-            INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib;${Torch_LINK_DIRECTORIES}"
-      )
       install(TARGETS unit_tests)
       install(DIRECTORY unit
             TYPE BIN
@@ -82,10 +78,6 @@ if(NEML2_REGRESSION)
             )
       endif()
 
-      set_target_properties(regression_tests
-            PROPERTIES
-            INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib;${Torch_LINK_DIRECTORIES}"
-      )
       install(TARGETS regression_tests)
       install(DIRECTORY regression
             TYPE BIN
@@ -127,10 +119,6 @@ if(NEML2_VERIFICATION)
             )
       endif()
 
-      set_target_properties(verification_tests
-            PROPERTIES
-            INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib;${Torch_LINK_DIRECTORIES}"
-      )
       install(TARGETS verification_tests)
       install(DIRECTORY verification
             TYPE BIN
@@ -174,10 +162,6 @@ if(NEML2_BENCHMARK)
             )
       endif()
 
-      set_target_properties(benchmark_tests
-            PROPERTIES
-            INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib;${Torch_LINK_DIRECTORIES}"
-      )
       install(TARGETS benchmark_tests)
       install(DIRECTORY benchmark
             TYPE BIN
@@ -220,10 +204,6 @@ if(NEML2_PROFILING)
             )
       endif()
 
-      set_target_properties(profiling_tests
-            PROPERTIES
-            INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib;${Torch_LINK_DIRECTORIES}"
-      )
       install(TARGETS profiling_tests)
       install(DIRECTORY profiling
             TYPE BIN
