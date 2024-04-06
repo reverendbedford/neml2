@@ -147,6 +147,7 @@ jobs:
         with:
           lcov-file: ./coverage/coverage.info
           github-token: ${{ secrets.PR_ACTION }}
+          delete-old-comments: true
   cmake-integration:
     name: Test CMake integration as a subproject
     needs: clang-format
