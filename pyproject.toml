@@ -25,6 +25,7 @@ CMAKE_JOB_POOL_COMPILE = "CI"
 CMAKE_JOB_POOL_LINK = "CI"
 CMAKE_UNITY_BUILD = "ON"
 NEML2_PYBIND = "ON"
+NEML2_WHEELS = "ON"
 NEML2_TESTS = "OFF"
 NEML2_DOC = "OFF"
 
@@ -39,3 +40,9 @@ test-command = "pytest --force-testdox {project}/tests"
 [tool.cibuildwheel.macos.environment]
 # MacOS 10.15 is the lowest version that supports _full_ C++17
 MACOSX_DEPLOYMENT_TARGET = "10.15"
+
+[tool.cibuildwheel.linux]
+repair-wheel-command = "mv {wheel} {dest_dir}/"
+
+[tool.cibuildwheel.macos]
+repair-wheel-command = "mv {wheel} {dest_dir}/"

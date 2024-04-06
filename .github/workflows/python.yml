@@ -37,10 +37,11 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: Backup docker
+        if: matrix.os == 'ubuntu-latest'
         run: sudo mv /var/lib/docker ${GITHUB_WORKSPACE}/docker
       - name: Maximize build space
-        uses: easimon/maximize-build-space@master
         if: matrix.os == 'ubuntu-latest'
+        uses: easimon/maximize-build-space@master
         with:
           remove-dotnet: "true"
           remove-android: "true"
@@ -48,6 +49,7 @@ jobs:
           remove-codeql: "true"
           build-mount-path: "/var/lib/docker/"
       - name: Remount docker
+        if: matrix.os == 'ubuntu-latest'
         run: sudo sh -c "mv ${GITHUB_WORKSPACE}/docker/* /var/lib/docker"
       - uses: actions/checkout@v4
         with:
