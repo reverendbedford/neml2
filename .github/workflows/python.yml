@@ -36,14 +36,8 @@ jobs:
         os: [ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - name: Maximize build space
-        uses: easimon/maximize-build-space@master
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - name: Check free space
-        run: |
-          echo "Free space:"
-          df -h
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.16.5
