@@ -45,6 +45,9 @@ jobs:
           remove-haskell: "true"
           remove-codeql: "true"
           remove-docker-images: "true"
+          build-mount-path: "/var/lib/docker/"
+      - name: Remount docker
+        run: sh -c "mv ${GITHUB_WORKSPACE}/docker/* /var/lib/docker"
       - uses: actions/checkout@v4
         with:
           submodules: recursive
