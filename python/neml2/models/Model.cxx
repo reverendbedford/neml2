@@ -21,34 +21,26 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-#pragma once
 
-#include <filesystem>
+#include <pybind11/pybind11.h>
 
-#include "neml2/base/OptionCollection.h"
+#include "python/neml2/misc/types.h"
+#include "neml2/models/Model.h"
 
-namespace neml2
+namespace py = pybind11;
+using namespace neml2;
+
+void
+def_Model(py::module_ & m)
 {
-/**
- * @brief A parser is responsible for parsing an input file into a collection of options which
- * can be used by the `Factory` to manufacture corresponding objects.
- *
- */
-class Parser
-{
-public:
-  Parser() = default;
-
-  /**
-   * @brief Deserialize a file.
-   *
-   * @param filename Name/path of the input file.
-   * @param additional_input  Additional content of the input file not included in the input file
-   * itself, e.g., from command line.
-   * @return OptionCollection The extracted object options.
-   */
-  virtual OptionCollection parse(const std::filesystem::path & filename,
-                                 const std::string & additional_input = "") const = 0;
-};
-
-} // namespace neml2
+  py::class_<Model, std::shared_ptr<Model>>(m, "Model")
+      .def("reinit",
+           py::overload_cast<TorchShapeRef, int, const torch::Device &, const torch::Dtype &>(
+               &Model::reinit),
+           py::arg("batch_shape"),
+           py::arg("deriv_order") = 0,
+           py::arg("device") = torch::Device(torch::kCPU),
+           py::arg("dtype") = torch::Dtype(NEML2_DTYPE))
+      .def("input_axis", [](const Model & self) { return self.input_axis(); })
+      .def("output_axis", [](const Model & self) { return self.output_axis(); });
+}

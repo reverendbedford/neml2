@@ -21,34 +21,20 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-#pragma once
 
-#include <filesystem>
+#include <pybind11/pybind11.h>
 
-#include "neml2/base/OptionCollection.h"
+namespace py = pybind11;
 
-namespace neml2
+// Forward declarations
+void def_Model(py::module_ & m);
+
+PYBIND11_MODULE(models, m)
 {
-/**
- * @brief A parser is responsible for parsing an input file into a collection of options which
- * can be used by the `Factory` to manufacture corresponding objects.
- *
- */
-class Parser
-{
-public:
-  Parser() = default;
+  m.doc() = "Material models";
 
-  /**
-   * @brief Deserialize a file.
-   *
-   * @param filename Name/path of the input file.
-   * @param additional_input  Additional content of the input file not included in the input file
-   * itself, e.g., from command line.
-   * @return OptionCollection The extracted object options.
-   */
-  virtual OptionCollection parse(const std::filesystem::path & filename,
-                                 const std::string & additional_input = "") const = 0;
-};
+  py::module_::import("neml2.base");
+  py::module_::import("neml2.tensors");
 
-} // namespace neml2
+  def_Model(m);
+}

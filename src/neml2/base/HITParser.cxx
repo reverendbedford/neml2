@@ -33,7 +33,7 @@
 namespace neml2
 {
 OptionCollection
-HITParser::parse(const std::string & filename, const std::string & additional_input) const
+HITParser::parse(const std::filesystem::path & filename, const std::string & additional_input) const
 {
   // Open and read the file
   std::ifstream file(filename);
