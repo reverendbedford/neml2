@@ -52,7 +52,7 @@ public:
   {
   }
 
-  bool from_python(handle src, uint8_t, cleanup_list *)
+  bool from_python(handle src, uint8_t, cleanup_list *) noexcept
   {
     PyObject * index = src.ptr();
 
@@ -91,7 +91,7 @@ public:
     return false;
   }
 
-  static handle from_cpp(const torch::Dtype & src, rv_policy, cleanup_list *)
+  static handle from_cpp(const at::indexing::TensorIndex & src, rv_policy, cleanup_list *) noexcept
   {
     if (src.is_none())
       return Py_None;
@@ -109,7 +109,7 @@ public:
     }
     if (src.is_boolean())
       return src.boolean() ? Py_True : Py_False;
-    throw std::invalid_argument("Invalid tensor index");
+    return Py_None;
   }
 };
 }

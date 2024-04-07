@@ -28,9 +28,9 @@ namespace nb = nanobind;
 using namespace neml2;
 
 void
-def_R2(py::class_<R2> & c)
+def_R2(nb::class_<R2> & c)
 {
   // Operators
-  c.def(py::self * Vec());
-  c.def(py::self * py::self);
+  c.def(nb::self * Vec());
+  c.def(nb::self * nb::self);
 }

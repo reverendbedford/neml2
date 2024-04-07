@@ -23,7 +23,7 @@
 // THE SOFTWARE.
 
 #include <nanobind/nanobind.h>
-#include <nanobind/stl.h>
+#include <nanobind/stl/vector.h>
 
 #include "neml2/tensors/LabeledAxisAccessor.h"
 #include "neml2/misc/utils.h"
@@ -32,17 +32,17 @@ namespace nb = nanobind;
 using namespace neml2;
 
 void
-def_LabeledAxisAccessor(py::module_ & m)
+def_LabeledAxisAccessor(nb::module_ & m)
 {
-  auto c = py::class_<LabeledAxisAccessor>(m, "LabeledAxisAccessor");
+  auto c = nb::class_<LabeledAxisAccessor>(m, "LabeledAxisAccessor");
 
   // Ctors
-  c.def(py::init<>())
-      .def(py::init<const std::string &>())
-      .def(py::init<const std::string &, const std::string &>())
-      .def(py::init<const std::string &, const std::string &, const std::string &>())
-      .def(py::init<const std::vector<std::string> &>())
-      .def(py::init<const LabeledAxisAccessor &>())
+  c.def(nb::init<>())
+      .def(nb::init<const std::string &>())
+      .def(nb::init<const std::string &, const std::string &>())
+      .def(nb::init<const std::string &, const std::string &, const std::string &>())
+      .def(nb::init<const std::vector<std::string> &>())
+      .def(nb::init<const LabeledAxisAccessor &>())
       .def("empty", &LabeledAxisAccessor::empty)
       .def("size", &LabeledAxisAccessor::size)
       .def("with_suffix", &LabeledAxisAccessor::with_suffix)

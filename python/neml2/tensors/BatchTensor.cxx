@@ -28,15 +28,14 @@ namespace nb = nanobind;
 using namespace neml2;
 
 void
-def_BatchTensor(py::class_<BatchTensor> & c)
+def_BatchTensor(nb::class_<BatchTensor> & c)
 {
   // Static methods
   c.def_static(
        "empty",
        [](const TorchShapeRef & base_shape, NEML2_TENSOR_OPTIONS_VARGS)
        { return BatchTensor::empty(base_shape, NEML2_TENSOR_OPTIONS); },
-       py::arg("base_shape"),
-       py::kw_only(),
+       nb::arg("base_shape"),
        PY_ARG_TENSOR_OPTIONS)
       .def_static(
           "empty",
@@ -44,16 +43,14 @@ def_BatchTensor(py::class_<BatchTensor> & c)
              const TorchShapeRef & base_shape,
              NEML2_TENSOR_OPTIONS_VARGS)
           { return BatchTensor::empty(batch_shape, base_shape, NEML2_TENSOR_OPTIONS); },
-          py::arg("batch_shape"),
-          py::arg("base_shape"),
-          py::kw_only(),
+          nb::arg("batch_shape"),
+          nb::arg("base_shape"),
           PY_ARG_TENSOR_OPTIONS)
       .def_static(
           "zeros",
           [](const TorchShapeRef & base_shape, NEML2_TENSOR_OPTIONS_VARGS)
           { return BatchTensor::zeros(base_shape, NEML2_TENSOR_OPTIONS); },
-          py::arg("base_shape"),
-          py::kw_only(),
+          nb::arg("base_shape"),
           PY_ARG_TENSOR_OPTIONS)
       .def_static(
           "zeros",
@@ -61,16 +58,14 @@ def_BatchTensor(py::class_<BatchTensor> & c)
              const TorchShapeRef & base_shape,
              NEML2_TENSOR_OPTIONS_VARGS)
           { return BatchTensor::zeros(batch_shape, base_shape, NEML2_TENSOR_OPTIONS); },
-          py::arg("batch_shape"),
-          py::arg("base_shape"),
-          py::kw_only(),
+          nb::arg("batch_shape"),
+          nb::arg("base_shape"),
           PY_ARG_TENSOR_OPTIONS)
       .def_static(
           "ones",
           [](const TorchShapeRef & base_shape, NEML2_TENSOR_OPTIONS_VARGS)
           { return BatchTensor::ones(base_shape, NEML2_TENSOR_OPTIONS); },
-          py::arg("base_shape"),
-          py::kw_only(),
+          nb::arg("base_shape"),
           PY_ARG_TENSOR_OPTIONS)
       .def_static(
           "ones",
@@ -78,17 +73,15 @@ def_BatchTensor(py::class_<BatchTensor> & c)
              const TorchShapeRef & base_shape,
              NEML2_TENSOR_OPTIONS_VARGS)
           { return BatchTensor::ones(batch_shape, base_shape, NEML2_TENSOR_OPTIONS); },
-          py::arg("batch_shape"),
-          py::arg("base_shape"),
-          py::kw_only(),
+          nb::arg("batch_shape"),
+          nb::arg("base_shape"),
           PY_ARG_TENSOR_OPTIONS)
       .def_static(
           "full",
           [](const TorchShapeRef & base_shape, Real init, NEML2_TENSOR_OPTIONS_VARGS)
           { return BatchTensor::full(base_shape, init, NEML2_TENSOR_OPTIONS); },
-          py::arg("base_shape"),
-          py::arg("fill_value"),
-          py::kw_only(),
+          nb::arg("base_shape"),
+          nb::arg("fill_value"),
           PY_ARG_TENSOR_OPTIONS)
       .def_static(
           "full",
@@ -97,24 +90,21 @@ def_BatchTensor(py::class_<BatchTensor> & c)
              Real init,
              NEML2_TENSOR_OPTIONS_VARGS)
           { return BatchTensor::full(batch_shape, base_shape, init, NEML2_TENSOR_OPTIONS); },
-          py::arg("batch_shape"),
-          py::arg("base_shape"),
-          py::arg("fill_value"),
-          py::kw_only(),
+          nb::arg("batch_shape"),
+          nb::arg("base_shape"),
+          nb::arg("fill_value"),
           PY_ARG_TENSOR_OPTIONS)
       .def_static(
           "identity",
           [](TorchSize n, NEML2_TENSOR_OPTIONS_VARGS)
           { return BatchTensor::identity(n, NEML2_TENSOR_OPTIONS); },
-          py::arg("n"),
-          py::kw_only(),
+          nb::arg("n"),
           PY_ARG_TENSOR_OPTIONS)
       .def_static(
           "identity",
           [](const TorchShapeRef & batch_shape, TorchSize n, NEML2_TENSOR_OPTIONS_VARGS)
           { return BatchTensor::identity(batch_shape, n, NEML2_TENSOR_OPTIONS); },
-          py::arg("batch_shape"),
-          py::arg("n"),
-          py::kw_only(),
+          nb::arg("batch_shape"),
+          nb::arg("n"),
           PY_ARG_TENSOR_OPTIONS);
 }

@@ -35,7 +35,7 @@ NB_MODULE(math, m)
   m.doc() = "Mathematical functions and utilities";
 
   // Bring in tensor types
-  py::module_::import("neml2.tensors");
+  nb::module_::import_("neml2.tensors");
 
   // Methods
   m.def("bmm", &math::bmm);

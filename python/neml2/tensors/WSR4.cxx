@@ -28,6 +28,6 @@ namespace nb = nanobind;
 using namespace neml2;
 
 void
-def_WSR4(py::class_<WSR4> & /*c*/)
+def_WSR4(nb::class_<WSR4> & /*c*/)
 {
 }

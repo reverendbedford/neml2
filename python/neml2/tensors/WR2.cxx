@@ -28,10 +28,10 @@ namespace nb = nanobind;
 using namespace neml2;
 
 void
-def_WR2(py::class_<WR2> & c)
+def_WR2(nb::class_<WR2> & c)
 {
   // Ctors, conversions, accessors etc.
-  c.def(py::init<const R2 &>());
+  c.def(nb::init<const R2 &>());
 
   // Methods
   c.def("__call__", &WR2::operator()).def("exp", &WR2::exp).def("dexp", &WR2::dexp);

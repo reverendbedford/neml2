@@ -33,7 +33,7 @@ namespace neml2
 
 // Forward declarations
 template <class Derived>
-void def_R2Base(py::class_<Derived> & c);
+void def_R2Base(nb::class_<Derived> & c);
 
 } // namespace neml2
 
@@ -46,14 +46,14 @@ namespace neml2
 
 template <class Derived>
 void
-def_R2Base(py::class_<Derived> & c)
+def_R2Base(nb::class_<Derived> & c)
 {
   // Ctors, conversions, accessors etc.
   c.def("__call__", &Derived::operator());
 
   // Methods
-  c.def("rotate", py::overload_cast<const Rot &>(&Derived::rotate, py::const_))
-      .def("drotate", py::overload_cast<const Rot &>(&Derived::drotate, py::const_))
+  c.def("rotate", nb::overload_cast<const Rot &>(&Derived::rotate, nb::const_))
+      .def("drotate", nb::overload_cast<const Rot &>(&Derived::drotate, nb::const_))
       .def("inverse", &Derived::inverse)
       .def("transpose", &Derived::transpose);
 

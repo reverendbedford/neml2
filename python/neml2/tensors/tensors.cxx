@@ -34,23 +34,23 @@ namespace nb = nanobind;
 using namespace neml2;
 
 // Forward declarations
-#define TENSOR_CUSTOM_DEF_FWD(T) void def_##T(py::class_<T> &)
+#define TENSOR_CUSTOM_DEF_FWD(T) void def_##T(nb::class_<T> &)
 FOR_ALL_BATCHTENSORBASE(TENSOR_CUSTOM_DEF_FWD);
-void def_LabeledAxisAccessor(py::module_ & m);
+void def_LabeledAxisAccessor(nb::module_ & m);
 
 NB_MODULE(tensors, m)
 {
   m.doc() = "NEML2 primitive tensor types";
 
   // Declare all the BatchTensorBase derived tensors
-  // This is as simple as calling py::class_, but it is important to do this for ALL tensors up
+  // This is as simple as calling nb::class_, but it is important to do this for ALL tensors up
   // front. The reason is for typing: Once we build the neml2 python library with all the necessary
   // bindings, we will have to extract all the typing information (mostly function signature) from
   // the library, which is needed by language servers like Pylance. We use pybind11-stubgen for that
   // purpose. For a type to be deducible by pybind11-stubgen, a concrete definition of the binding
   // class must exist at the point of method definition. Therefore, we need to first create all the
   // class definitions before creating method bindings that use them as arguments.
-#define BATCHTENSORBASE_DECL(T) auto c_##T = py::class_<T>(m, #T);
+#define BATCHTENSORBASE_DECL(T) auto c_##T = nb::class_<T>(m, #T);
   FOR_ALL_BATCHTENSORBASE(BATCHTENSORBASE_DECL);
 
   // All of them have BatchView and BaseView

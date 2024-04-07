@@ -37,8 +37,8 @@ namespace nb = nanobind;
   torch::TensorOptions().dtype(dtype).device(device).requires_grad(requires_grad)
 
 #define PY_ARG_TENSOR_OPTIONS                                                                      \
-  py::arg("dtype") = torch::Dtype(NEML2_DTYPE), py::arg("device") = torch::Device(torch::kCPU),    \
-  py::arg("requires_grad") = false
+  nb::arg("dtype") = torch::Dtype(NEML2_DTYPE), nb::arg("device") = torch::Device(torch::kCPU),    \
+  nb::arg("requires_grad") = false
 
 namespace nanobind
 {
@@ -51,7 +51,7 @@ template <>
 struct type_caster<torch::Dtype>
 {
 public:
-  NB_TYPE_CASTER(torch::Dtype, _("torch.dtype"));
+  NB_TYPE_CASTER(torch::Dtype, const_name("torch.dtype"));
 
   /**
    * NB_TYPE_CASTER defines a member field called value. Since at::Dtype cannot be
@@ -63,7 +63,7 @@ public:
   {
   }
 
-  bool from_python(handle src, uint8_t, cleanup_list *)
+  bool from_python(handle src, uint8_t, cleanup_list *) noexcept
   {
     PyObject * obj = src.ptr();
     if (THPDtype_Check(obj))
@@ -74,7 +74,7 @@ public:
     return false;
   }
 
-  static handle from_cpp(const torch::Dtype & src, rv_policy, cleanup_list *)
+  static handle from_cpp(const torch::Dtype & src, rv_policy, cleanup_list *) noexcept
   {
     return handle(reinterpret_cast<PyObject *>(torch::getTHPDtype(src)));
   }

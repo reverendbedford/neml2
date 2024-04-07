@@ -35,7 +35,7 @@ namespace neml2
 
 // Forward declarations
 template <class Derived>
-void def_FixedDimTensor(py::class_<Derived> & c);
+void def_FixedDimTensor(nb::class_<Derived> & c);
 
 } // namespace neml2
 
@@ -48,62 +48,54 @@ namespace neml2
 
 template <class Derived>
 void
-def_FixedDimTensor(py::class_<Derived> & c)
+def_FixedDimTensor(nb::class_<Derived> & c)
 {
   // Ctors, conversions, accessors etc.
-  c.def(py::init<const torch::Tensor &>());
+  c.def(nb::init<const torch::Tensor &>());
 
   // Static methods
   c.def_static(
        "empty",
        [](NEML2_TENSOR_OPTIONS_VARGS) { return Derived::empty(NEML2_TENSOR_OPTIONS); },
-       py::kw_only(),
        PY_ARG_TENSOR_OPTIONS)
       .def_static(
           "empty",
           [](const TorchShapeRef & batch_shape, NEML2_TENSOR_OPTIONS_VARGS)
           { return Derived::empty(batch_shape, NEML2_TENSOR_OPTIONS); },
-          py::arg("batch_shape"),
-          py::kw_only(),
+          nb::arg("batch_shape"),
           PY_ARG_TENSOR_OPTIONS)
       .def_static(
           "zeros",
           [](NEML2_TENSOR_OPTIONS_VARGS) { return Derived::zeros(NEML2_TENSOR_OPTIONS); },
-          py::kw_only(),
           PY_ARG_TENSOR_OPTIONS)
       .def_static(
           "zeros",
           [](const TorchShapeRef & batch_shape, NEML2_TENSOR_OPTIONS_VARGS)
           { return Derived::zeros(batch_shape, NEML2_TENSOR_OPTIONS); },
-          py::arg("batch_shape"),
-          py::kw_only(),
+          nb::arg("batch_shape"),
           PY_ARG_TENSOR_OPTIONS)
       .def_static(
           "ones",
           [](NEML2_TENSOR_OPTIONS_VARGS) { return Derived::ones(NEML2_TENSOR_OPTIONS); },
-          py::kw_only(),
           PY_ARG_TENSOR_OPTIONS)
       .def_static(
           "ones",
           [](const TorchShapeRef & batch_shape, NEML2_TENSOR_OPTIONS_VARGS)
           { return Derived::ones(batch_shape, NEML2_TENSOR_OPTIONS); },
-          py::arg("batch_shape"),
-          py::kw_only(),
+          nb::arg("batch_shape"),
           PY_ARG_TENSOR_OPTIONS)
       .def_static(
           "full",
           [](Real init, NEML2_TENSOR_OPTIONS_VARGS)
           { return Derived::full(init, NEML2_TENSOR_OPTIONS); },
-          py::arg("fill_value"),
-          py::kw_only(),
+          nb::arg("fill_value"),
           PY_ARG_TENSOR_OPTIONS)
       .def_static(
           "full",
           [](const TorchShapeRef & batch_shape, Real init, NEML2_TENSOR_OPTIONS_VARGS)
           { return Derived::full(batch_shape, init, NEML2_TENSOR_OPTIONS); },
-          py::arg("batch_shape"),
-          py::arg("fill_value"),
-          py::kw_only(),
+          nb::arg("batch_shape"),
+          nb::arg("fill_value"),
           PY_ARG_TENSOR_OPTIONS);
 }
 
