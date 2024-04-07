@@ -24,11 +24,11 @@
 
 #pragma once
 
-#include <nanobind/operators.h>
+#include <pybind11/operators.h>
 
 #include "python/neml2/tensors/FixedDimTensor.h"
 
-namespace nb = nanobind;
+namespace py = pybind11;
 
 namespace neml2
 {

@@ -24,7 +24,7 @@
 
 #include "python/neml2/tensors/R2Base.h"
 
-namespace nb = nanobind;
+namespace py = pybind11;
 using namespace neml2;
 
 void

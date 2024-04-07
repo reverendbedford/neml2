@@ -22,13 +22,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <nanobind/nanobind.h>
-#include <nanobind/stl.h>
+#include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
 
 #include "neml2/tensors/LabeledAxisAccessor.h"
 #include "neml2/misc/utils.h"
 
-namespace nb = nanobind;
+namespace py = pybind11;
 using namespace neml2;
 
 void

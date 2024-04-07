@@ -22,7 +22,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <nanobind/nanobind.h>
+#include <pybind11/pybind11.h>
 
 #include "neml2/tensors/macros.h"
 #include "python/neml2/tensors/BatchTensorBase.h"
@@ -30,7 +30,7 @@
 #include "python/neml2/tensors/VecBase.h"
 #include "python/neml2/tensors/R2Base.h"
 
-namespace nb = nanobind;
+namespace py = pybind11;
 using namespace neml2;
 
 // Forward declarations
@@ -38,7 +38,7 @@ using namespace neml2;
 FOR_ALL_BATCHTENSORBASE(TENSOR_CUSTOM_DEF_FWD);
 void def_LabeledAxisAccessor(py::module_ & m);
 
-NB_MODULE(tensors, m)
+PYBIND11_MODULE(tensors, m)
 {
   m.doc() = "NEML2 primitive tensor types";
 
