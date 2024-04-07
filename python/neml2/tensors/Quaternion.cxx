@@ -28,6 +28,6 @@ namespace nb = nanobind;
 using namespace neml2;
 
 void
-def_Quaternion(nb::class_<Quaternion> & /*m*/)
+def_Quaternion(py::class_<Quaternion> & /*m*/)
 {
 }

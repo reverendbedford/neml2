@@ -28,6 +28,6 @@ namespace nb = nanobind;
 using namespace neml2;
 
 void
-def_SR2(nb::class_<SR2> & /*c*/)
+def_SR2(py::class_<SR2> & /*c*/)
 {
 }

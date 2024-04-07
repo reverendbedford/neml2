@@ -24,7 +24,6 @@
 
 #pragma once
 
-#include <nanobind/nanobind.h>
 #include <nanobind/operators.h>
 
 #include "python/neml2/misc/indexing.h"
@@ -39,11 +38,11 @@ namespace neml2
 
 // Forward declarations
 template <class Derived>
-void def_BatchView(nb::module_ & m, const std::string & name);
+void def_BatchView(py::module_ & m, const std::string & name);
 template <class Derived>
-void def_BaseView(nb::module_ & m, const std::string & name);
+void def_BaseView(py::module_ & m, const std::string & name);
 template <class Derived>
-void def_BatchTensorBase(nb::class_<Derived> & c);
+void def_BatchTensorBase(py::class_<Derived> & c);
 
 /**
  * @brief Convenient shim wrapper for working with batch dimensions
@@ -132,10 +131,10 @@ namespace neml2
 {
 template <class Derived>
 void
-def_BatchView(nb::module_ & m, const std::string & name)
+def_BatchView(py::module_ & m, const std::string & name)
 {
-  auto c = nb::class_<BatchView<Derived>>(m, name.c_str())
-               .def(nb::init<Derived *>())
+  auto c = py::class_<BatchView<Derived>>(m, name.c_str())
+               .def(py::init<Derived *>())
                .def("dim", &BatchView<Derived>::dim)
                .def_prop_ro("shape", &BatchView<Derived>::sizes)
                .def("__getitem__", &BatchView<Derived>::index)
@@ -165,10 +164,10 @@ def_BatchView(nb::module_ & m, const std::string & name)
 
 template <class Derived>
 void
-def_BaseView(nb::module_ & m, const std::string & name)
+def_BaseView(py::module_ & m, const std::string & name)
 {
-  auto c = nb::class_<BaseView<Derived>>(m, name.c_str())
-               .def(nb::init<Derived *>())
+  auto c = py::class_<BaseView<Derived>>(m, name.c_str())
+               .def(py::init<Derived *>())
                .def("dim", &BaseView<Derived>::dim)
                .def_prop_ro("shape", &BaseView<Derived>::sizes)
                .def("__getitem__", &BaseView<Derived>::index)
@@ -199,16 +198,18 @@ def_BaseView(nb::module_ & m, const std::string & name)
 
 template <class Derived>
 void
-def_BatchTensorBase(nb::class_<Derived> & c)
+def_BatchTensorBase(py::class_<Derived> & c)
 {
+  auto classname = c.attr("__name__").template cast<std::string>();
+
   // Ctors, conversions, accessors etc.
-  c.def(nb::init<>())
-      .def(nb::init<const torch::Tensor &, TorchSize>())
-      .def(nb::init<const Derived &>())
+  c.def(py::init<>())
+      .def(py::init<const torch::Tensor &, TorchSize>())
+      .def(py::init<const Derived &>())
       .def("__str__",
-           [](const Derived & self)
+           [classname](const Derived & self)
            {
-             return "<Tensor of shape " + utils::stringify(self.batch_sizes()) +
+             return "<" + classname + " of shape " + utils::stringify(self.batch_sizes()) +
                     utils::stringify(self.base_sizes()) + ">";
            })
       .def("__repr__",
@@ -228,6 +229,7 @@ def_BatchTensorBase(nb::class_<Derived> & c)
       .def(
           "to",
           [](Derived * self, NEML2_TENSOR_OPTIONS_VARGS) { return self->to(NEML2_TENSOR_OPTIONS); },
+          py::kw_only(),
           PY_ARG_TENSOR_OPTIONS)
       .def_prop_ro("batch", [](Derived * self) { return BatchView<Derived>(self); })
       .def_prop_ro("base", [](Derived * self) { return BaseView<Derived>(self); })
@@ -235,18 +237,18 @@ def_BatchTensorBase(nb::class_<Derived> & c)
       .def_prop_ro("dtype", &Derived::scalar_type);
 
   // Binary, unary operators
-  c.def(float() + nb::self)
-      .def(nb::self + float())
-      .def(nb::self + nb::self)
-      .def(float() - nb::self)
-      .def(nb::self - float())
-      .def(nb::self - nb::self)
-      .def(float() * nb::self)
-      .def(nb::self * float())
-      .def(float() / nb::self)
-      .def(nb::self / float())
-      .def(nb::self / nb::self)
-      .def(-nb::self)
+  c.def(float() + py::self)
+      .def(py::self + float())
+      .def(py::self + py::self)
+      .def(float() - py::self)
+      .def(py::self - float())
+      .def(py::self - py::self)
+      .def(float() * py::self)
+      .def(py::self * float())
+      .def(float() / py::self)
+      .def(py::self / float())
+      .def(py::self / py::self)
+      .def(-py::self)
       .def("__pow__", [](const Derived & a, float b) { return math::pow(a, b); })
       .def("__pow__", [](const Derived & a, const Scalar & b) { return math::pow(a, b); })
       .def("__rpow__", [](const Derived & b, float a) { return math::pow(a, b); })
@@ -259,18 +261,18 @@ def_BatchTensorBase(nb::class_<Derived> & c)
       .def_static("full_like", &Derived::full_like)
       .def_static("linspace",
                   &Derived::linspace,
-                  nb::arg("start"),
-                  nb::arg("end"),
-                  nb::arg("nstep"),
-                  nb::arg("dim") = 0,
-                  nb::arg("batch_dim") = -1)
+                  py::arg("start"),
+                  py::arg("end"),
+                  py::arg("nstep"),
+                  py::arg("dim") = 0,
+                  py::arg("batch_dim") = -1)
       .def_static("logspace",
                   &Derived::logspace,
-                  nb::arg("start"),
-                  nb::arg("end"),
-                  nb::arg("nstep"),
-                  nb::arg("dim") = 0,
-                  nb::arg("batch_dim") = -1,
-                  nb::arg("base") = 10.0);
+                  py::arg("start"),
+                  py::arg("end"),
+                  py::arg("nstep"),
+                  py::arg("dim") = 0,
+                  py::arg("batch_dim") = -1,
+                  py::arg("base") = 10.0);
 }
 } // namespace neml2

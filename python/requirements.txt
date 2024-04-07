@@ -1,4 +1,5 @@
 #
 ##### pip requirements ######
 #
-nanobind
+pybind11
+pybind11-stubgen

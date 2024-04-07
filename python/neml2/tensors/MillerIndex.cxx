@@ -28,6 +28,6 @@ namespace nb = nanobind;
 using namespace neml2;
 
 void
-def_MillerIndex(nb::class_<MillerIndex> & /*c*/)
+def_MillerIndex(py::class_<MillerIndex> & /*c*/)
 {
 }

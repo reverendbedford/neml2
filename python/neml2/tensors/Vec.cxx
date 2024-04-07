@@ -28,10 +28,10 @@ namespace nb = nanobind;
 using namespace neml2;
 
 void
-def_Vec(nb::class_<Vec> & c)
+def_Vec(py::class_<Vec> & c)
 {
   // Ctors, conversions, accessors etc.
-  c.def(nb::init<const Rot &>());
+  c.def(py::init<const Rot &>());
 
   // Methods
   c.def("transform", &Vec::transform);

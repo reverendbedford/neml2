@@ -28,6 +28,6 @@ namespace nb = nanobind;
 using namespace neml2;
 
 void
-def_SFR3(nb::class_<SFR3> & /*c*/)
+def_SFR3(py::class_<SFR3> & /*c*/)
 {
 }

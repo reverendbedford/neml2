@@ -28,10 +28,10 @@ namespace nb = nanobind;
 using namespace neml2;
 
 void
-def_Rot(nb::class_<Rot> & c)
+def_Rot(py::class_<Rot> & c)
 {
   // Ctors, conversions, accessors etc.
-  c.def(nb::init<const Vec &>());
+  c.def(py::init<const Vec &>());
 
   // Methods
   c.def("inverse", &Rot::inverse)
@@ -41,11 +41,12 @@ def_Rot(nb::class_<Rot> & c)
       .def("drotate", &Rot::drotate);
 
   // Operators
-  c.def(nb::self * nb::self);
+  c.def(py::self * py::self);
 
   // Static methods
   c.def_static(
       "identity",
       [](NEML2_TENSOR_OPTIONS_VARGS) { return Rot::identity(NEML2_TENSOR_OPTIONS); },
+      py::kw_only(),
       PY_ARG_TENSOR_OPTIONS);
 }

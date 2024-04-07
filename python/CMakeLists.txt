@@ -1,4 +1,6 @@
 find_package(Python COMPONENTS Interpreter Development.Module)
+
+# find_package(pybind11 CONFIG REQUIRED HINTS ${Python_SITEARCH})
 execute_process(
   COMMAND "${Python_EXECUTABLE}" -m nanobind --cmake_dir
   OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE NB_DIR)
@@ -17,7 +19,7 @@ add_custom_target(pyneml2 ALL
 # macro for defining a submodule
 macro(add_submodule mname)
   file(GLOB_RECURSE msrcs neml2/${mname}/*.cxx)
-  nanobind_add_module(${mname} NOMINSIZE ${msrcs})
+  nanobind_add_module(${mname} ${msrcs})
   target_include_directories(${mname} PUBLIC ${NEML2_SOURCE_DIR})
   target_link_libraries(${mname} PUBLIC neml2 ${Torch_PYTHON_BINDING})
   install(TARGETS ${mname} LIBRARY DESTINATION .)

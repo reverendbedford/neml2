@@ -35,7 +35,7 @@ namespace neml2
 
 // Forward declarations
 template <class Derived>
-void def_VecBase(nb::class_<Derived> & c);
+void def_VecBase(py::class_<Derived> & c);
 
 } // namespace neml2
 
@@ -48,7 +48,7 @@ namespace neml2
 
 template <class Derived>
 void
-def_VecBase(nb::class_<Derived> & c)
+def_VecBase(py::class_<Derived> & c)
 {
   // Ctors, conversions, accessors etc.
   c.def("__call__", &Derived::operator());
@@ -56,8 +56,8 @@ def_VecBase(nb::class_<Derived> & c)
   // Methods
   c.def("norm_sq", &Derived::norm_sq)
       .def("norm", &Derived::norm)
-      .def("rotate", nb::overload_cast<const Rot &>(&Derived::rotate, nb::const_))
-      .def("drotate", nb::overload_cast<const Rot &>(&Derived::drotate, nb::const_));
+      .def("rotate", py::overload_cast<const Rot &>(&Derived::rotate, py::const_))
+      .def("drotate", py::overload_cast<const Rot &>(&Derived::drotate, py::const_));
 
   // Templated methods
   // These methods are special because the argument could be anything derived from VecBase, so we
@@ -73,20 +73,22 @@ def_VecBase(nb::class_<Derived> & c)
        "fill",
        [](const Real & v1, const Real & v2, const Real & v3, NEML2_TENSOR_OPTIONS_VARGS)
        { return Derived::fill(v1, v2, v3, NEML2_TENSOR_OPTIONS); },
-       nb::arg("x"),
-       nb::arg("y"),
-       nb::arg("z"),
+       py::arg("x"),
+       py::arg("y"),
+       py::arg("z"),
+       py::kw_only(),
        PY_ARG_TENSOR_OPTIONS)
       .def_static(
           "fill",
           [](const Scalar & v1, const Scalar & v2, const Scalar & v3)
           { return Derived::fill(v1, v2, v3); },
-          nb::arg("x"),
-          nb::arg("y"),
-          nb::arg("z"))
+          py::arg("x"),
+          py::arg("y"),
+          py::arg("z"))
       .def_static(
           "identity_map",
           [](NEML2_TENSOR_OPTIONS_VARGS) { return Derived::identity_map(NEML2_TENSOR_OPTIONS); },
+          py::kw_only(),
           PY_ARG_TENSOR_OPTIONS);
 }
 
