@@ -28,7 +28,7 @@
 #include <torch/csrc/utils/tensor_dtypes.h>
 #include <torch/csrc/DynamicTypes.h>
 
-namespace py = pybind11;
+namespace nb = nanobind;
 
 #define NEML2_TENSOR_OPTIONS_VARGS                                                                 \
   const torch::Dtype &dtype, const torch::Device &device, bool requires_grad
@@ -40,7 +40,7 @@ namespace py = pybind11;
   py::arg("dtype") = torch::Dtype(NEML2_DTYPE), py::arg("device") = torch::Device(torch::kCPU),    \
   py::arg("requires_grad") = false
 
-namespace pybind11
+namespace nanobind
 {
 namespace detail
 {
@@ -51,10 +51,10 @@ template <>
 struct type_caster<torch::Dtype>
 {
 public:
-  PYBIND11_TYPE_CASTER(torch::Dtype, _("torch.dtype"));
+  NB_TYPE_CASTER(torch::Dtype, _("torch.dtype"));
 
   /**
-   * PYBIND11_TYPE_CASTER defines a member field called value. Since at::Dtype cannot be
+   * NB_TYPE_CASTER defines a member field called value. Since at::Dtype cannot be
    * default-initialized, we provide this constructor to explicitly initialize that field. The value
    * doesn't matter as it will be overwritten after a successful call to load.
    */
@@ -63,7 +63,7 @@ public:
   {
   }
 
-  bool load(handle src, bool)
+  bool from_python(handle src, uint8_t, cleanup_list *)
   {
     PyObject * obj = src.ptr();
     if (THPDtype_Check(obj))
@@ -74,8 +74,7 @@ public:
     return false;
   }
 
-  static handle
-  cast(const torch::Dtype & src, return_value_policy /* policy */, handle /* parent */)
+  static handle from_cpp(const torch::Dtype & src, rv_policy, cleanup_list *)
   {
     return handle(reinterpret_cast<PyObject *>(torch::getTHPDtype(src)));
   }

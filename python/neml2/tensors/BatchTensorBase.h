@@ -24,14 +24,14 @@
 
 #pragma once
 
-#include <pybind11/operators.h>
+#include <nanobind/operators.h>
 
 #include "python/neml2/misc/indexing.h"
 #include "python/neml2/misc/types.h"
 #include "neml2/tensors/tensors.h"
 #include "neml2/tensors/macros.h"
 
-namespace py = pybind11;
+namespace nb = nanobind;
 
 namespace neml2
 {
@@ -136,7 +136,7 @@ def_BatchView(py::module_ & m, const std::string & name)
   auto c = py::class_<BatchView<Derived>>(m, name.c_str())
                .def(py::init<Derived *>())
                .def("dim", &BatchView<Derived>::dim)
-               .def_property_readonly("shape", &BatchView<Derived>::sizes)
+               .def_prop_ro("shape", &BatchView<Derived>::sizes)
                .def("__getitem__", &BatchView<Derived>::index)
                .def("__getitem__",
                     [](BatchView<Derived> * self, at::indexing::TensorIndex index)
@@ -169,7 +169,7 @@ def_BaseView(py::module_ & m, const std::string & name)
   auto c = py::class_<BaseView<Derived>>(m, name.c_str())
                .def(py::init<Derived *>())
                .def("dim", &BaseView<Derived>::dim)
-               .def_property_readonly("shape", &BaseView<Derived>::sizes)
+               .def_prop_ro("shape", &BaseView<Derived>::sizes)
                .def("__getitem__", &BaseView<Derived>::index)
                .def("__getitem__",
                     [](BaseView<Derived> * self, at::indexing::TensorIndex index)
@@ -223,7 +223,7 @@ def_BatchTensorBase(py::class_<Derived> & c)
       .def("defined", &Derived::defined)
       .def("batched", &Derived::batched)
       .def("dim", &Derived::dim)
-      .def_property_readonly("shape", &Derived::sizes)
+      .def_prop_ro("shape", &Derived::sizes)
       .def("clone", [](Derived * self) { return self->clone(); })
       .def("detach", &Derived::detach)
       .def(
@@ -231,10 +231,10 @@ def_BatchTensorBase(py::class_<Derived> & c)
           [](Derived * self, NEML2_TENSOR_OPTIONS_VARGS) { return self->to(NEML2_TENSOR_OPTIONS); },
           py::kw_only(),
           PY_ARG_TENSOR_OPTIONS)
-      .def_property_readonly("batch", [](Derived * self) { return BatchView<Derived>(self); })
-      .def_property_readonly("base", [](Derived * self) { return BaseView<Derived>(self); })
-      .def_property_readonly("device", &Derived::device)
-      .def_property_readonly("dtype", &Derived::scalar_type);
+      .def_prop_ro("batch", [](Derived * self) { return BatchView<Derived>(self); })
+      .def_prop_ro("base", [](Derived * self) { return BaseView<Derived>(self); })
+      .def_prop_ro("device", &Derived::device)
+      .def_prop_ro("dtype", &Derived::scalar_type);
 
   // Binary, unary operators
   c.def(float() + py::self)

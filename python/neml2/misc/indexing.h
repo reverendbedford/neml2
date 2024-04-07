@@ -27,9 +27,9 @@
 #include <torch/extension.h>
 #include <torch/csrc/autograd/python_variable_indexing.h>
 
-namespace py = pybind11;
+namespace nb = nanobind;
 
-namespace pybind11
+namespace nanobind
 {
 namespace detail
 {
@@ -40,10 +40,10 @@ template <>
 struct type_caster<at::indexing::TensorIndex>
 {
 public:
-  PYBIND11_TYPE_CASTER(at::indexing::TensorIndex, const_name("Any"));
+  NB_TYPE_CASTER(at::indexing::TensorIndex, const_name("Any"));
 
   /**
-   * PYBIND11_TYPE_CASTER defines a member field called value. Since at::indexing::TensorIndex
+   * NB_TYPE_CASTER defines a member field called value. Since at::indexing::TensorIndex
    * cannot be default-initialized, we provide this constructor to explicitly initialize that field.
    * The value doesn't matter as it will be overwritten after a successful call to load.
    */
@@ -52,7 +52,7 @@ public:
   {
   }
 
-  bool load(handle src, bool)
+  bool from_python(handle src, uint8_t, cleanup_list *)
   {
     PyObject * index = src.ptr();
 
@@ -91,8 +91,7 @@ public:
     return false;
   }
 
-  static handle
-  cast(const at::indexing::TensorIndex & src, return_value_policy /* policy */, handle /* parent */)
+  static handle from_cpp(const torch::Dtype & src, rv_policy, cleanup_list *)
   {
     if (src.is_none())
       return Py_None;

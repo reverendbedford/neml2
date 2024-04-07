@@ -24,11 +24,11 @@
 
 #pragma once
 
-#include <pybind11/operators.h>
+#include <nanobind/operators.h>
 
 #include "python/neml2/tensors/BatchTensorBase.h"
 
-namespace py = pybind11;
+namespace nb = nanobind;
 
 namespace neml2
 {

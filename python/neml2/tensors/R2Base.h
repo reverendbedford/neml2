@@ -26,7 +26,7 @@
 
 #include "python/neml2/tensors/FixedDimTensor.h"
 
-namespace py = pybind11;
+namespace nb = nanobind;
 
 namespace neml2
 {

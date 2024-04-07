@@ -22,15 +22,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <pybind11/pybind11.h>
+#include <nanobind/nanobind.h>
 
 #include "neml2/tensors/tensors.h"
 #include "neml2/tensors/macros.h"
 
-namespace py = pybind11;
+namespace nb = nanobind;
 using namespace neml2;
 
-PYBIND11_MODULE(math, m)
+NB_MODULE(math, m)
 {
   m.doc() = "Mathematical functions and utilities";
 

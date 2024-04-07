@@ -24,7 +24,7 @@
 
 #include "python/neml2/tensors/VecBase.h"
 
-namespace py = pybind11;
+namespace nb = nanobind;
 using namespace neml2;
 
 void
