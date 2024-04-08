@@ -2,6 +2,7 @@ import torch
 
 from .base import HITParser
 from .base import Factory
+from .models import Model
 
 
 def load_input(filename, addtional_args=""):

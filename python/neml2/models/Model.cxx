@@ -41,6 +41,14 @@ def_Model(py::module_ & m)
            py::arg("deriv_order") = 0,
            py::arg("device") = torch::Device(torch::kCPU),
            py::arg("dtype") = torch::Dtype(NEML2_DTYPE))
-      .def("input_axis", [](const Model & self) { return self.input_axis(); })
-      .def("output_axis", [](const Model & self) { return self.output_axis(); });
+      .def(
+          "input_axis",
+          [](const Model & self) { return &self.input_axis(); },
+          py::return_value_policy::reference)
+      .def(
+          "output_axis",
+          [](const Model & self) { return &self.output_axis(); },
+          py::return_value_policy::reference)
+      .def("value", [](Model & self, const LabeledVector & x) { return self.value(x); })
+      .def("value_and_dvalue", py::overload_cast<const LabeledVector &>(&Model::value_and_dvalue));
 }

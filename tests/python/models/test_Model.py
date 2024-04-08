@@ -24,16 +24,17 @@
 
 import pytest
 from pathlib import Path
+import torch
 import neml2
-from neml2.base import Factory
-from neml2.models import Model
+from neml2.tensors import BatchTensor, LabeledVector
+from neml2.tensors import LabeledAxisAccessor as AA
 
 
 @pytest.mark.it("get_model")
 def test_get_model():
     pwd = Path(__file__).parent
     neml2.load_input(pwd / "test_Model.i")
-    model = neml2.get_model("model")
+    neml2.get_model("model")
 
 
 @pytest.mark.it("input_axis")
@@ -41,4 +42,81 @@ def test_input_axis():
     pwd = Path(__file__).parent
     neml2.load_input(pwd / "test_Model.i")
     model = neml2.get_model("model")
-    print(model.input_axis())
+    input_axis = model.input_axis()
+    assert input_axis.storage_size() == 8
+    assert input_axis.has_subaxis(AA("forces"))
+    assert input_axis.has_variable(AA("forces", "t"))
+    assert input_axis.has_subaxis(AA("old_forces"))
+    assert input_axis.has_variable(AA("old_forces", "t"))
+    assert input_axis.has_subaxis(AA("old_state"))
+    assert input_axis.has_variable(AA("old_state", "foo"))
+    assert input_axis.has_variable(AA("old_state", "bar"))
+    assert input_axis.has_subaxis(AA("state"))
+    assert input_axis.has_variable(AA("state", "foo"))
+    assert input_axis.has_variable(AA("state", "foo_rate"))
+    assert input_axis.has_variable(AA("state", "bar"))
+    assert input_axis.has_variable(AA("state", "bar_rate"))
+
+
+@pytest.mark.it("output_axis")
+def test_output_axis():
+    pwd = Path(__file__).parent
+    neml2.load_input(pwd / "test_Model.i")
+    model = neml2.get_model("model")
+    output_axis = model.output_axis()
+    assert output_axis.storage_size() == 1
+    assert output_axis.has_variable(AA("residual", "foo_bar"))
+
+
+@pytest.mark.it("value")
+def test_value():
+    pwd = Path(__file__).parent
+    neml2.load_input(pwd / "test_Model.i")
+    model = neml2.get_model("model")
+
+    a = torch.linspace(0, 1, 8).expand(5, 2, 8)
+    x = BatchTensor(a, 2)
+    model.reinit(x.batch.shape)
+    x = LabeledVector(x, [model.input_axis()])
+
+    y = model.value(x)
+    assert y.tensor().batch.shape == (5, 2)
+    assert y.tensor().base.shape == (1,)
+    assert torch.allclose(
+        y.tensor().tensor(), torch.tensor(0.9591836144729537, dtype=torch.float64)
+    )
+
+
+@pytest.mark.it("value and derivative")
+def test_value_and_dvalue():
+    pwd = Path(__file__).parent
+    neml2.load_input(pwd / "test_Model.i")
+    model = neml2.get_model("model")
+
+    a = torch.linspace(0, 1, 8).expand(5, 2, 8)
+    x = BatchTensor(a, 2)
+    model.reinit(x.batch.shape, 1)
+    x = LabeledVector(x, [model.input_axis()])
+
+    y, dy_dx = model.value_and_dvalue(x)
+    assert y.tensor().batch.shape == (5, 2)
+    assert y.tensor().base.shape == (1,)
+    assert torch.allclose(
+        y.tensor().tensor(), torch.tensor(0.9591836144729537, dtype=torch.float64)
+    )
+    assert torch.allclose(
+        dy_dx.tensor().tensor(),
+        torch.tensor(
+            [
+                -1.7142857313156128,
+                1.7142857313156128,
+                -1.0,
+                -1.0,
+                1.0,
+                0.1428571492433548,
+                1.0,
+                0.1428571492433548,
+            ],
+            dtype=torch.float64,
+        ),
+    )

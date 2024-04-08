@@ -44,7 +44,8 @@ namespace neml2
  * method \p set_value. All concrete models must provide the implementation of the forward operator
  * by overriding the \p set_value method.
  */
-class Model : public Data,
+class Model : public std::enable_shared_from_this<Model>,
+              public Data,
               public ParameterStore,
               public VariableStore,
               public NonlinearSystem,

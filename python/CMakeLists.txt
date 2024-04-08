@@ -29,10 +29,9 @@ macro(add_submodule_dir mname)
 endmacro()
 
 # Actually add the submodules (using the above macros)
-# add_submodule_dir(base)
+add_submodule_dir(base)
 add_submodule_dir(tensors)
-
-# add_submodule_dir(models)
+add_submodule_dir(models)
 add_submodule(math neml2/misc/math.cxx)
 
 # Install python artifacts

@@ -25,6 +25,7 @@
 #pragma once
 
 #include <pybind11/operators.h>
+#include <pybind11/stl.h>
 
 #include "neml2/tensors/LabeledTensor.h"
 
@@ -52,9 +53,13 @@ def_LabeledTensor(py::class_<Derived> & c)
 {
   // Ctors, conversions, accessors etc.
   c.def(py::init<>())
-      .def(py::init<const torch::Tensor &, TorchSize, const std::vector<const LabeledAxis *> &>())
+      // I have absolutely no clue as to why the following constructor gives segfault :(
+      // .def(py::init<const torch::Tensor &, TorchSize, const std::vector<const LabeledAxis *>
+      // &>())
       .def(py::init<const BatchTensor &, const std::vector<const LabeledAxis *> &>())
-      .def(py::init<const Derived &>());
+      .def(py::init<const Derived &>())
+      .def("tensor", [](const Derived & self) { return self.tensor(); })
+      .def("axis", &Derived::axis);
 }
 
 } // namespace neml2
