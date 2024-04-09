@@ -53,11 +53,23 @@ def_LabeledTensor(py::class_<Derived> & c)
 {
   // Ctors, conversions, accessors etc.
   c.def(py::init<>())
-      // I have absolutely no clue as to why the following constructor gives segfault :(
-      // .def(py::init<const torch::Tensor &, TorchSize, const std::vector<const LabeledAxis *>
-      // &>())
+      // I have absolutely no clue as to why the following constructor gives segfault in another
+      // totally unrelated class constructor's binding :(
+      //  .def(py::init<const torch::Tensor &, TorchSize, const std::vector<const LabeledAxis *>
+      //  &>())
       .def(py::init<const BatchTensor &, const std::vector<const LabeledAxis *> &>())
       .def(py::init<const Derived &>())
+      .def("__repr__",
+           [](const Derived & self)
+           {
+             std::ostringstream os;
+             for (TorchSize i = 0; i < D; i++)
+               os << "Axis " << i << ":\n" << self.axis(i) << "\n\n";
+             os << self.tensor() << '\n';
+             os << "Batch shape: " << self.batch_sizes() << '\n';
+             os << " Base shape: " << self.base_sizes() << '\n';
+             return os.str();
+           })
       .def("tensor", [](const Derived & self) { return self.tensor(); })
       .def("axis", &Derived::axis);
 }

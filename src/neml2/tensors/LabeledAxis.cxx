@@ -26,8 +26,6 @@
 
 namespace neml2
 {
-int LabeledAxis::level = 0;
-
 LabeledAxis::LabeledAxis()
   : _offset(0)
 {
@@ -405,32 +403,27 @@ LabeledAxis::equals(const LabeledAxis & other) const
 }
 
 std::ostream &
-operator<<(std::ostream & os, const LabeledAxis & info)
+operator<<(std::ostream & os, const LabeledAxis & axis)
 {
-  os << utils::indentation(LabeledAxis::level);
-  os << "LabeledAxis [" << info.storage_size() << "] {";
-  if (info.nitem() == 0)
+  // Collect variable names and indices
+  size_t max_var_name_length = 0;
+  std::map<std::string, TorchIndex> vars;
+  for (auto var : axis.variable_accessors(true))
   {
-    os << "}";
-    return os;
+    auto var_name = utils::stringify(var);
+    if (var_name.size() > max_var_name_length)
+      max_var_name_length = var_name.size();
+    vars.emplace(var_name, axis.indices(var));
   }
 
-  LabeledAxis::level += 1;
-
-  for (const auto & [name, sz] : info._variables)
-    os << std::endl << utils::indentation(LabeledAxis::level) << name << ": [" << sz << "]";
-
-  for (const auto & [name, axis] : info._subaxes)
+  // Print variables with right alignment
+  for (auto var = vars.begin(); var != vars.end(); var++)
   {
-    os << std::endl;
-    os << utils::indentation(LabeledAxis::level);
-    os << name << ": " << std::endl;
-    LabeledAxis::level += 1;
-    os << *axis;
-    LabeledAxis::level -= 1;
+    os << std::setw(max_var_name_length) << var->first << ": " << var->second;
+    if (std::next(var) != vars.end())
+      os << std::endl;
   }
-  os << std::endl;
-  os << utils::indentation(--LabeledAxis::level) << "}";
+
   return os;
 }
 
