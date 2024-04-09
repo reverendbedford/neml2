@@ -27,7 +27,6 @@ from pathlib import Path
 from neml2.base import HITParser
 
 
-@pytest.mark.it("parse")
 def test_parse():
     pwd = Path(__file__).parent
     parser = HITParser()

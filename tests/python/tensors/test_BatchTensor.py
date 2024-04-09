@@ -30,7 +30,6 @@ from common import *
 from neml2.tensors import BatchTensor
 
 
-@pytest.mark.it("Named constructors")
 def test_named_ctors(tensor_options):
     batch_shape = (2, 3)
     base_shape = (3, 1, 2)
@@ -77,7 +76,6 @@ def test_named_ctors(tensor_options):
     )
 
 
-@pytest.mark.it("Views")
 def test_views(tensor_options):
     batch_shape = (2, 3)
     base_shape = (3, 1, 2)

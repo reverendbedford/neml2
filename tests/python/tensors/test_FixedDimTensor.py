@@ -30,7 +30,6 @@ from common import *
 from neml2.tensors import Scalar
 
 
-@pytest.mark.it("Named constructors")
 def test_named_ctors(tensor_options):
     batch_shape = (2, 3)
     shape = batch_shape

@@ -27,7 +27,6 @@ import pytest
 from neml2.tensors import LabeledAxisAccessor
 
 
-@pytest.mark.it("Constructors")
 def test_ctors():
     A = LabeledAxisAccessor()
     assert str(A) == ""
@@ -45,7 +44,6 @@ def test_ctors():
     assert str(A) == "state/internal/gamma"
 
 
-@pytest.mark.it("empty")
 def test_empty():
     A = LabeledAxisAccessor()
     B = LabeledAxisAccessor("state", "stress")
@@ -53,7 +51,6 @@ def test_empty():
     assert not B.empty()
 
 
-@pytest.mark.it("size")
 def test_size():
     A = LabeledAxisAccessor()
     B = LabeledAxisAccessor("state", "stress")
@@ -61,14 +58,12 @@ def test_size():
     assert B.size() == 2
 
 
-@pytest.mark.it("with_suffix")
 def test_with_suffix():
     A = LabeledAxisAccessor("state", "stress")
     B = LabeledAxisAccessor("state", "stress_foo")
     assert A.with_suffix("_foo") == B
 
 
-@pytest.mark.it("append")
 def test_append():
     A = LabeledAxisAccessor("state")
     B = LabeledAxisAccessor("foo", "bar")
@@ -76,14 +71,12 @@ def test_append():
     assert A.append(B) == C
 
 
-@pytest.mark.it("on")
 def test_on():
     A = LabeledAxisAccessor("stress")
     B = LabeledAxisAccessor("residual", "stress")
     assert A.on(LabeledAxisAccessor("residual")) == B
 
 
-@pytest.mark.it("start_with")
 def test_start_with():
     A = LabeledAxisAccessor("internal", "stress", "foo")
     B = LabeledAxisAccessor("internal", "stress")

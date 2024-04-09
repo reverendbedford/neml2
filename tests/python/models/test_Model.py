@@ -30,14 +30,12 @@ from neml2.tensors import BatchTensor, LabeledVector
 from neml2.tensors import LabeledAxisAccessor as AA
 
 
-@pytest.mark.it("get_model")
 def test_get_model():
     pwd = Path(__file__).parent
     neml2.load_input(pwd / "test_Model.i")
     neml2.get_model("model")
 
 
-@pytest.mark.it("input_axis")
 def test_input_axis():
     pwd = Path(__file__).parent
     neml2.load_input(pwd / "test_Model.i")
@@ -58,7 +56,6 @@ def test_input_axis():
     assert input_axis.has_variable(AA("state", "bar_rate"))
 
 
-@pytest.mark.it("output_axis")
 def test_output_axis():
     pwd = Path(__file__).parent
     neml2.load_input(pwd / "test_Model.i")
@@ -68,7 +65,6 @@ def test_output_axis():
     assert output_axis.has_variable(AA("residual", "foo_bar"))
 
 
-@pytest.mark.it("value")
 def test_value():
     pwd = Path(__file__).parent
     neml2.load_input(pwd / "test_Model.i")
@@ -87,7 +83,6 @@ def test_value():
     )
 
 
-@pytest.mark.it("value and derivative")
 def test_value_and_dvalue():
     pwd = Path(__file__).parent
     neml2.load_input(pwd / "test_Model.i")

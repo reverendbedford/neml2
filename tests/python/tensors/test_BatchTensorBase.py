@@ -82,7 +82,6 @@ def sample(request, tensor_options):
     return request.getfixturevalue(request.param)
 
 
-@pytest.mark.it("Constructors and basic operations")
 def test_basic(sample, base_shape, tensor_options):
     # Default c'tor
     A = BatchTensor()
@@ -101,7 +100,6 @@ def test_basic(sample, base_shape, tensor_options):
     assert sample.batched() == (sample.dim() > len(base_shape))
 
 
-@pytest.mark.it("Batch view")
 def test_batch_view(sample, base_shape):
     sample0 = sample.clone()
     Z = sample.tensor()
@@ -142,7 +140,6 @@ def test_batch_view(sample, base_shape):
         assert torch.allclose(B.tensor(), torch.transpose(Z, 0, 1))
 
 
-@pytest.mark.it("Base view")
 def test_base_view(sample, base_shape):
     sample0 = sample.clone()
     Z = sample.tensor()
@@ -183,7 +180,6 @@ def test_base_view(sample, base_shape):
     assert torch.allclose(B.tensor(), torch.transpose(Z, batch_dim, batch_dim + 1))
 
 
-@pytest.mark.it("Binary operators")
 def test_binary_ops(_A, _B, _C):
     # add
     assert_unary_op(lambda x: x + 0.5, _A)
@@ -220,13 +216,11 @@ def test_binary_ops(_A, _B, _C):
     assert_binary_op(lambda x, y: x**y, _B, _C)
 
 
-@pytest.mark.it("Unary operators")
 def test_unary_ops(sample):
     # neg
     assert_unary_op(lambda x: -x, sample)
 
 
-@pytest.mark.it("Named constructors")
 def test_named_ctors(_A, _B, _C, tensor_options):
     # empty_like
     A = BatchTensor.empty_like(_A)
