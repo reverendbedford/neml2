@@ -12,7 +12,7 @@ authors = [
 description = "GPU-enabled vectorized material modeling library"
 readme = "README.md"
 requires-python = ">=3.8"
-dependencies = "torch==2.2.1"
+dependencies = ["torch==2.2.1"]
 
 [tool.scikit-build]
 cmake.build-type = "RelWithDebInfo"
