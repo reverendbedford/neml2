@@ -222,8 +222,6 @@ endif()
 # Python binding tests
 # ###################################################
 if(NEML2_PYBIND)
-      configure_file(${NEML2_SOURCE_DIR}/tests/python/conftest.py.in ${NEML2_SOURCE_DIR}/tests/python/conftest.py)
-
       if(NOT ${NEML2_BINARY_DIR} STREQUAL ${NEML2_SOURCE_DIR})
             add_custom_target(link_pybind_tests ALL
                   COMMAND ${CMAKE_COMMAND} -E create_symlink ${NEML2_SOURCE_DIR}/tests/python ${NEML2_BINARY_DIR}/tests/python
