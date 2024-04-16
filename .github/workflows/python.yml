@@ -63,7 +63,7 @@ jobs:
             -DNEML2_DOC=OFF \
             -B build \
             .
-      - run: make -j 2
+      - run: cd build && make -j 2
       - run: PYTHONPATH=build/python pytest --junitxml=build/python/pytest.xml tests
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2
