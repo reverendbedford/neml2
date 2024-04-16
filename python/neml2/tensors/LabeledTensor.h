@@ -71,7 +71,7 @@ def_LabeledTensor(py::class_<Derived> & c)
              return os.str();
            })
       .def("tensor", [](const Derived & self) { return self.tensor(); })
-      .def("axis", &Derived::axis);
+      .def("axis", &Derived::axis, py::return_value_policy::reference);
 }
 
 } // namespace neml2

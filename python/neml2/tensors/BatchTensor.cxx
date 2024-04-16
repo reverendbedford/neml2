@@ -24,12 +24,18 @@
 
 #include "python/neml2/tensors/BatchTensorBase.h"
 
+#include "neml2/tensors/macros.h"
+
 namespace py = pybind11;
 using namespace neml2;
 
 void
 def_BatchTensor(py::class_<BatchTensor> & c)
 {
+  // All FixedDimTensors are convertible to BatchTensor
+#define BATCHTENSOR_FROM_FIXEDDIMTENSOR(T) c.def(py::init<T>());
+  FOR_ALL_FIXEDDIMTENSOR(BATCHTENSOR_FROM_FIXEDDIMTENSOR);
+
   // Static methods
   c.def_static(
        "empty",

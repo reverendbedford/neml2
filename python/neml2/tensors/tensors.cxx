@@ -25,10 +25,13 @@
 #include <pybind11/pybind11.h>
 
 #include "neml2/tensors/macros.h"
+#include "neml2/tensors/TensorValue.h"
+
 #include "python/neml2/tensors/BatchTensorBase.h"
 #include "python/neml2/tensors/FixedDimTensor.h"
 #include "python/neml2/tensors/VecBase.h"
 #include "python/neml2/tensors/R2Base.h"
+#include "python/neml2/base/Storage.h"
 
 namespace py = pybind11;
 using namespace neml2;
@@ -41,6 +44,7 @@ void def_LabeledAxisAccessor(py::module_ & m);
 void def_LabeledAxis(py::module_ & m);
 void def_LabeledVector(py::module_ & m);
 void def_LabeledMatrix(py::module_ & m);
+void def_TensorValueBase(py::module_ & m);
 
 PYBIND11_MODULE(tensors, m)
 {
@@ -88,4 +92,8 @@ PYBIND11_MODULE(tensors, m)
   def_LabeledAxis(m);
   def_LabeledVector(m);
   def_LabeledMatrix(m);
+
+  // Tensor storage
+  def_TensorValueBase(m);
+  def_Storage<std::string, TensorValueBase>(m, "TensorValueStorage");
 }

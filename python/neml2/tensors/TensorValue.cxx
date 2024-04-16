@@ -25,14 +25,34 @@
 #include <pybind11/pybind11.h>
 
 #include "neml2/tensors/TensorValue.h"
+#include "python/neml2/misc/types.h"
 
 namespace py = pybind11;
 using namespace neml2;
 
 void
-def_TensorValue(py::module_ & m)
+def_TensorValueBase(py::module_ & m)
 {
   py::class_<TensorValueBase>(m, "TensorValueBase")
-      .def(py::init<>())
-      .def("parse", &HITParser::parse, py::arg("filename"), py::arg("additional_args") = "");
+      .def("set", &TensorValueBase::set)
+      // The following accessors/modifiers should mirror BatchTensorBase.h
+      .def("tensor", [](const TensorValueBase & self) { return BatchTensor(self); })
+      .def("defined", [](const TensorValueBase & self) { return BatchTensor(self).defined(); })
+      .def("batched", [](const TensorValueBase & self) { return BatchTensor(self).batched(); })
+      .def("dim", [](const TensorValueBase & self) { return BatchTensor(self).dim(); })
+      .def_property_readonly("shape",
+                             [](const TensorValueBase & self) { return BatchTensor(self).sizes(); })
+      .def_property_readonly("dtype",
+                             [](const TensorValueBase & self) { return BatchTensor(self).dtype(); })
+      .def_property_readonly(
+          "device", [](const TensorValueBase & self) { return BatchTensor(self).device(); })
+      .def_property_readonly("requires_grad",
+                             [](const TensorValueBase & self)
+                             { return BatchTensor(self).requires_grad(); })
+      .def("requires_grad_",
+           [](const TensorValueBase & self, bool req)
+           { return BatchTensor(self).requires_grad_(req); })
+      .def_property_readonly("grad",
+                             [](const TensorValueBase & self) { return BatchTensor(self).grad(); });
+  ;
 }

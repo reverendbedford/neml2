@@ -50,5 +50,9 @@ def_Model(py::module_ & m)
           [](const Model & self) { return &self.output_axis(); },
           py::return_value_policy::reference)
       .def("value", [](Model & self, const LabeledVector & x) { return self.value(x); })
-      .def("value_and_dvalue", py::overload_cast<const LabeledVector &>(&Model::value_and_dvalue));
+      .def("value_and_dvalue", py::overload_cast<const LabeledVector &>(&Model::value_and_dvalue))
+      .def(
+          "named_parameters",
+          [](Model & self) { return &self.named_parameters(); },
+          py::return_value_policy::reference);
 }

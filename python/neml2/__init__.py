@@ -16,6 +16,7 @@ def load_input(filename, addtional_args=""):
     """
     parser = HITParser()
     oc = parser.parse(filename, addtional_args)
+    Factory.clear()
     Factory.load(oc)
 
 

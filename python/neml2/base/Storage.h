@@ -22,14 +22,34 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#pragma once
+
 #include <pybind11/pybind11.h>
+#include <pybind11/operators.h>
+#include <pybind11/stl.h>
 
 #include "neml2/base/Storage.h"
 
 namespace py = pybind11;
-using namespace neml2;
 
-void
-def_Storage(py::module_ & m)
+namespace neml2
 {
+template <typename I, typename T>
+void
+def_Storage(py::module_ & m, const std::string & pyname)
+{
+  py::class_<Storage<I, T>>(m, pyname.c_str())
+      .def(
+          "__getitem__",
+          [](const Storage<I, T> & self, const I & i) { return &self[i]; },
+          py::return_value_policy::reference)
+      .def("keys",
+           [](const Storage<I, T> & self)
+           {
+             std::vector<I> keys;
+             for (auto && [key, val] : self)
+               keys.push_back(key);
+             return keys;
+           });
+}
 }

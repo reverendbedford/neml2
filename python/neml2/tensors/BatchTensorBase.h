@@ -219,11 +219,8 @@ def_BatchTensorBase(py::class_<Derived> & c)
                     "Batch shape: " + utils::stringify(self.batch_sizes()) + '\n' +
                     " Base shape: " + utils::stringify(self.base_sizes());
            })
-      .def("tensor", [](const Derived & self) { return torch::Tensor(self); })
-      .def("defined", &Derived::defined)
-      .def("batched", &Derived::batched)
-      .def("dim", &Derived::dim)
-      .def_property_readonly("shape", &Derived::sizes)
+      .def_property_readonly("batch", [](Derived * self) { return new BatchView<Derived>(self); })
+      .def_property_readonly("base", [](Derived * self) { return new BaseView<Derived>(self); })
       .def("clone", [](Derived * self) { return self->clone(); })
       .def("detach", &Derived::detach)
       .def(
@@ -231,10 +228,17 @@ def_BatchTensorBase(py::class_<Derived> & c)
           [](Derived * self, NEML2_TENSOR_OPTIONS_VARGS) { return self->to(NEML2_TENSOR_OPTIONS); },
           py::kw_only(),
           PY_ARG_TENSOR_OPTIONS)
-      .def_property_readonly("batch", [](Derived * self) { return BatchView<Derived>(self); })
-      .def_property_readonly("base", [](Derived * self) { return BaseView<Derived>(self); })
+      // The following accessors/modifiers should also be implemented in TensorValue.cxx
+      .def("tensor", [](const Derived & self) { return torch::Tensor(self); })
+      .def("defined", &Derived::defined)
+      .def("batched", &Derived::batched)
+      .def("dim", &Derived::dim)
+      .def_property_readonly("shape", &Derived::sizes)
+      .def_property_readonly("dtype", &Derived::scalar_type)
       .def_property_readonly("device", &Derived::device)
-      .def_property_readonly("dtype", &Derived::scalar_type);
+      .def("requires_grad_", &Derived::requires_grad_)
+      .def_property_readonly("requires_grad", &Derived::requires_grad)
+      .def_property_readonly("grad", &Derived::grad);
 
   // Binary, unary operators
   c.def(float() + py::self)
