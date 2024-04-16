@@ -70,13 +70,13 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         with:
           files: build/python/pytest.xml
-          check_name: Python Binding Test Results (${{ matrix.os }}
+          check_name: Python Binding Test Results (${{ matrix.os }})
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action/composite@v2
         if: matrix.os == 'macos-latest'
         with:
           files: build/python/pytest.xml
-          check_name: Python Binding Test Results (${{ matrix.os }}
+          check_name: Python Binding Test Results (${{ matrix.os }})
   sdist:
     name: Build source distribution
     runs-on: ubuntu-latest
