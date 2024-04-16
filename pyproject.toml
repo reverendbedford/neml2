@@ -15,6 +15,7 @@ requires-python = ">=3.8"
 dependencies = ["torch==2.2.1"]
 
 [tool.scikit-build]
+cmake.version = ">=3.23"
 cmake.build-type = "RelWithDebInfo"
 wheel.expand-macos-universal-tags = true
 wheel.packages = []

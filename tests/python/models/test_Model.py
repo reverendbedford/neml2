@@ -38,8 +38,7 @@ def test_get_model():
 
 def test_input_axis():
     pwd = Path(__file__).parent
-    neml2.load_input(pwd / "test_Model.i")
-    model = neml2.get_model("model")
+    model = neml2.load_model(pwd / "test_Model.i", "model")
     input_axis = model.input_axis()
     assert input_axis.storage_size() == 8
     assert input_axis.has_subaxis(AA("forces"))
@@ -58,8 +57,7 @@ def test_input_axis():
 
 def test_output_axis():
     pwd = Path(__file__).parent
-    neml2.load_input(pwd / "test_Model.i")
-    model = neml2.get_model("model")
+    model = neml2.load_model(pwd / "test_Model.i", "model")
     output_axis = model.output_axis()
     assert output_axis.storage_size() == 1
     assert output_axis.has_variable(AA("residual", "foo_bar"))
@@ -67,8 +65,7 @@ def test_output_axis():
 
 def test_value():
     pwd = Path(__file__).parent
-    neml2.load_input(pwd / "test_Model.i")
-    model = neml2.get_model("model")
+    model = neml2.load_model(pwd / "test_Model.i", "model")
 
     a = torch.linspace(0, 1, 8).expand(5, 2, 8)
     x = BatchTensor(a, 2)
@@ -85,8 +82,7 @@ def test_value():
 
 def test_value_and_dvalue():
     pwd = Path(__file__).parent
-    neml2.load_input(pwd / "test_Model.i")
-    model = neml2.get_model("model")
+    model = neml2.load_model(pwd / "test_Model.i", "model")
 
     a = torch.linspace(0, 1, 8).expand(5, 2, 8)
     x = BatchTensor(a, 2)

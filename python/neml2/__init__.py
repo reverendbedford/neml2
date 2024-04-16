@@ -20,3 +20,12 @@ def load_input(filename, addtional_args=""):
 
 
 get_model = Factory.get_model
+
+
+def load_model(filename, model, additional_args=""):
+    """
+    Load an input file and return the model with the specified name.
+    This is equivalent to calling load_input and then get_model.
+    """
+    load_input(filename, additional_args)
+    return get_model(model)

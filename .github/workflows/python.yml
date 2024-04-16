@@ -28,6 +28,48 @@ jobs:
         with:
           options: "--check -v"
           src: "python/neml2 tests/python"
+  build-test:
+    name: Build and test Python bindings
+    needs: black
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: jwlawson/actions-setup-cmake@v2
+        with:
+          cmake-version: "3.23"
+      - run: |
+          cmake \
+            -DCMAKE_BUILD_TYPE=Debug \
+            -DCMAKE_UNITY_BUILD=ON \
+            -DNEML2_UNIT=OFF \
+            -DNEML2_REGRESSION=OFF \
+            -DNEML2_VERIFICATION=OFF \
+            -DNEML2_BENCHMARK=OFF \
+            -DNEML2_PROFILING=OFF \
+            -DNEML2_PYBIND=ON \
+            -DNEML2_DOC=OFF \
+            -B build \
+            .
+      - run: make -j 2
+      - run: PYTHONPATH=build/python pytest --junitxml=build/python/pytest.xml tests
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: matrix.os == 'ubuntu-latest'
+        with:
+          files: build/python/pytest.xml
+          check_name: Python Binding Test Results (${{ matrix.os }}
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action/composite@v2
+        if: matrix.os == 'macos-latest'
+        with:
+          files: build/python/pytest.xml
+          check_name: Python Binding Test Results (${{ matrix.os }}
   sdist:
     name: Build source distribution
     runs-on: ubuntu-latest
@@ -42,7 +84,7 @@ jobs:
           name: package-sdist
           path: dist/*.tar.gz
   wheels:
-    needs: black
+    needs: build-test
     strategy:
       fail-fast: false
       matrix:
@@ -67,6 +109,9 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
+      - uses: jwlawson/actions-setup-cmake@v2
+        with:
+          cmake-version: "3.23"
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.16.5
       - name: Upload wheels
