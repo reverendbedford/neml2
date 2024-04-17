@@ -51,16 +51,19 @@ J2FlowDirection::set_value(bool out, bool dout_din, bool d2out_din2)
   neml_assert_dbg(!d2out_din2, "Second derivatives not implemented");
 
   auto S = SR2(_M).dev();
-  auto sn = S.norm(NEML2_EPS);
+  auto vm = std::sqrt(3.0 / 2.0) * S.norm(NEML2_EPS);
+  auto dvm_dM = 3.0 / 2.0 * S / vm;
 
   if (out)
   {
-    _N = S / sn;
+    _N = dvm_dM;
   }
 
   if (dout_din)
   {
-    _N.d(_M) = SSR4::identity_dev(options()) / sn - S.outer(S) / sn / sn / sn;
+    auto I = SSR4::identity_sym(options());
+    auto J = SSR4::identity_dev(options());
+    _N.d(_M) = 3.0 / 2.0 * (I - 2.0 / 3.0 * dvm_dM.outer(dvm_dM)) * J / vm;
   }
 }
 } // namespace neml2

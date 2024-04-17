@@ -159,7 +159,7 @@ void
 TransientDriver::advance_step()
 {
   if (_in.axis(0).has_subaxis("old_state") && _out.axis(0).has_subaxis("state"))
-    _in.slice("old_state").fill(_out.slice("state"));
+    _in.slice("old_state").fill(_out.detach().slice("state"));
 
   if (_in.axis(0).has_subaxis("old_forces") && _in.axis(0).has_subaxis("forces"))
     _in.slice("old_forces").fill(_in.slice("forces"));
@@ -232,19 +232,19 @@ TransientDriver::apply_predictor()
 void
 TransientDriver::solve_step()
 {
-  _model.value();
+  _model.value(_in);
 }
 
 void
 TransientDriver::store_input()
 {
-  _result_in.batch_index_put({_step_count}, _in);
+  _result_in.batch_index_put({_step_count}, _in.detach());
 }
 
 void
 TransientDriver::store_output()
 {
-  _result_out.batch_index_put({_step_count}, _out);
+  _result_out.batch_index_put({_step_count}, _out.detach());
 }
 
 std::string

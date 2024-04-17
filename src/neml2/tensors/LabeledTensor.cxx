@@ -134,6 +134,13 @@ LabeledTensor<Derived, D>::clone(torch::MemoryFormat memory_format) const
 }
 
 template <class Derived, TorchSize D>
+Derived
+LabeledTensor<Derived, D>::detach() const
+{
+  return Derived(_tensor.detach(), _axes);
+}
+
+template <class Derived, TorchSize D>
 void
 LabeledTensor<Derived, D>::detach_()
 {

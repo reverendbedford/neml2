@@ -129,6 +129,15 @@ public:
    */
   virtual void check_AD_limitation() const;
 
+  /// Set requires_grad for the input variables
+  void input_requires_grad_(bool req = true);
+
+  /// Whether this model is using AD to get 1st derivatives
+  bool using_AD_1st_derivative() const { return _AD_1st_deriv; }
+
+  /// Whether this model is using AD to get 2nd derivatives
+  bool using_AD_2nd_derivative() const { return _AD_2nd_deriv; }
+
   /// Tell this model to use AD to get derivatives
   void use_AD_derivatives(bool first = true, bool second = true);
 

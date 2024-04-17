@@ -94,6 +94,15 @@ ComposedModel::ComposedModel(const OptionSet & options)
 }
 
 void
+ComposedModel::check_AD_limitation() const
+{
+  if (_AD_1st_deriv || _AD_2nd_deriv)
+    throw NEMLException(
+        "ComposedModel does not use automatic differentiation. use_AD_first_derivative and "
+        "use_AD_second_derivative should be set to false.");
+}
+
+void
 ComposedModel::allocate_variables(int deriv_order, bool options_changed)
 {
   Model::allocate_variables(deriv_order, options_changed);
@@ -127,7 +136,14 @@ ComposedModel::set_value(bool out, bool dout_din, bool d2out_din2)
 
   for (auto i : registered_models())
   {
-    i->set_value(out, dout_din, d2out_din2);
+    if (out && !dout_din && !d2out_din2)
+      i->value();
+    else if (out && dout_din && !d2out_din2)
+      i->value_and_dvalue();
+    else if (out && dout_din && d2out_din2)
+      i->value_and_dvalue_and_d2value();
+    else
+      throw NEMLException("Unsupported call signature to set_value");
 
     if (dout_din && !d2out_din2)
       apply_chain_rule(i);

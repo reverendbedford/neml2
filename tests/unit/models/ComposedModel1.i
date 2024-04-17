@@ -8,6 +8,9 @@
     output_scalar_names = 'residual/foo_bar'
     output_scalar_values = '0.6'
     check_second_derivatives = true
+    check_AD_first_derivatives = false
+    check_AD_second_derivatives = false
+    check_AD_derivatives = false
   []
 []
 

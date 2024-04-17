@@ -7,6 +7,9 @@
     output_scalar_values = 'rate'
     input_scalar_names = 'state/internal/slip_hardening state/internal/sum_slip_rates'
     input_scalar_values = 'tau_bar sum_slip'
+    check_AD_first_derivatives = false
+    check_AD_second_derivatives = false
+    check_AD_derivatives = false
   []
 []
 

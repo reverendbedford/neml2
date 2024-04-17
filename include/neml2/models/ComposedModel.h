@@ -36,6 +36,8 @@ public:
 
   ComposedModel(const OptionSet & options);
 
+  virtual void check_AD_limitation() const override;
+
 protected:
   virtual void allocate_variables(int deriv_order, bool options_changed) override;
 

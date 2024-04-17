@@ -93,6 +93,9 @@ public:
   template <typename T>
   void copy_(const T & other);
 
+  /// Return a copy without gradient graphs
+  Derived detach() const;
+
   /// Detach from gradient graphs
   void detach_();
 
