@@ -1,9 +1,27 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.23)
 
 project(NEML2 LANGUAGES CXX)
 
-# ## Setup modules ###
+# Setup modules
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${NEML2_SOURCE_DIR}/cmake/Modules/")
+
+# Ninja only: limit number of jobs in a CI build
+set_property(GLOBAL PROPERTY JOB_POOLS CI=6)
+
+# FindPython should return the first matching Python
+if(POLICY CMP0094)
+      cmake_policy(SET CMP0094 NEW)
+endif()
+
+# Suppress the warning related to the new policy on fetch content's timestamp
+if(POLICY CMP0135)
+      cmake_policy(SET CMP0135 NEW)
+endif()
+
+# Suppress the warning related to the new policy on FindPythonXXX
+if(POLICY CMP0148)
+      cmake_policy(SET CMP0148 NEW)
+endif()
 
 # Accept Release, Debug, and RelWithDebInfo, add Coverage build types
 set(CMAKE_CXX_FLAGS_COVERAGE
@@ -11,16 +29,9 @@ set(CMAKE_CXX_FLAGS_COVERAGE
       CACHE STRING "Flags used by C++ compiler during coverage builds."
       FORCE)
 
-# Set a default build type if none was specified
-set(DEFAULT_BUILD_TYPE "Release")
-
-if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/.git")
-      set(DEFAULT_BUILD_TYPE "Debug")
-endif()
-
+# Set the default build type
 if(NOT CMAKE_BUILD_TYPE)
-      message(STATUS "Setting build type to '${DEFAULT_BUILD_TYPE}' as none was specified.")
-      set(CMAKE_BUILD_TYPE "${DEFAULT_BUILD_TYPE}" CACHE
+      set(CMAKE_BUILD_TYPE "Debug" CACHE
             STRING "Choose the type of build." FORCE)
 
       # Set the possible values of build type for cmake-gui
@@ -31,85 +42,53 @@ endif()
 # Add the unity option to the cache
 option(CMAKE_UNITY_BUILD "Use a unity build" OFF)
 
-# Enable testing
-enable_testing()
-
 # c++ 17 support
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Suppress the warning related to the new policy on fetch content's timestamp
-if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.24.0")
-      cmake_policy(SET CMP0135 NEW)
-endif()
+find_package(Torch)
 
-# Select between system torch and the current (CPU) torch
-if(NOT DEFINED LIBTORCH_DIR)
-      # Location of current CPU torch
-      include(FetchContent)
+# Install rpath, important for a relocatable install
+option(NEML2_WHEELS "Customize the build for Python wheels" OFF)
 
+if(NEML2_WHEELS)
       if(UNIX)
-            if(NOT APPLE)
-                  FetchContent_Declare(torch URL https://download.pytorch.org/libtorch/nightly/cpu/libtorch-shared-with-deps-latest.zip)
+            if(APPLE)
+                  set(CMAKE_INSTALL_RPATH "@loader_path;@loader_path/lib;@loader_path/../torch/lib;@loader_path/../../torch/lib")
             else()
-                  if(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "arm64")
-                        set(APPLE_SILICON ON)
-
-                        # This URL will need to be maintained
-                        FetchContent_Declare(torch URL https://files.pythonhosted.org/packages/7b/7c/4d8728e6f8dbe2b8af054bd92c290d94c633270443514e3ee4b768125cf9/torch-2.1.0-cp311-none-macosx_11_0_arm64.whl)
-                  else()
-                        set(APPLE_SILICON OFF)
-                        FetchContent_Declare(torch URL https://download.pytorch.org/libtorch/nightly/cpu/libtorch-macos-latest.zip)
-                  endif()
-
-                  message(WARNING ${CMAKE_SYSTEM_PROCESSOR})
+                  set(CMAKE_INSTALL_RPATH "$ORIGIN;$ORIGIN/lib;$ORIGIN/../torch/lib;$ORIGIN/../../torch/lib")
             endif()
-      else()
-            message(FATAL_ERROR "We only download a default libtorch on linux and macos. For other operating systems, please specify LIBTORCH_DIR.")
       endif()
-
-      set(FETCHCONTENT_QUIET FALSE)
-      FetchContent_MakeAvailable(torch)
-      set(FETCHCONTENT_QUIET TRUE)
-
-      if(APPLE AND APPLE_SILICON)
-            set(LIBTORCH_DIR ${torch_SOURCE_DIR}/torch)
-      else()
-            set(LIBTORCH_DIR ${torch_SOURCE_DIR})
-      endif()
-endif()
-
-find_package(Torch REQUIRED HINTS "${LIBTORCH_DIR}/share/cmake")
-
-# libTorch comes with two flavors: one with cxx11 abi, one without.
-# We should be consistent with whatever is detected from the libTorch.
-if(TORCH_CXX_FLAGS MATCHES "-D_GLIBCXX_USE_CXX11_ABI=1")
-      add_compile_definitions(_GLIBCXX_USE_CXX11_ABI=1)
-      message(STATUS "NEML2 is using CXX11 ABI to be consistent with libTorch")
 else()
-      add_compile_definitions(_GLIBCXX_USE_CXX11_ABI=0)
-      message(STATUS "NEML2 is using pre-CXX11 ABI to be consistent with libTorch")
-endif()
-
-# Catch2, for testing
-add_subdirectory("${NEML2_SOURCE_DIR}/extern/Catch2" "${NEML2_BINARY_DIR}/extern/Catch2")
-list(APPEND CMAKE_MODULE_PATH "${NEML2_SOURCE_DIR}/extern/Catch2/contrib")
-include(CTest)
-include(Catch)
-
-if(BUILD_TESTING)
-      add_subdirectory(tests)
+      if(UNIX)
+            if(APPLE)
+                  set(CMAKE_INSTALL_RPATH "@loader_path;@loader_path/lib;${Torch_LINK_DIRECTORIES}")
+            else()
+                  set(CMAKE_INSTALL_RPATH "$ORIGIN;$ORIGIN/lib;${Torch_LINK_DIRECTORIES}")
+            endif()
+      endif()
 endif()
 
 # base library
 add_subdirectory(src/neml2)
 
-# hit for parsing
-add_subdirectory("${NEML2_SOURCE_DIR}/extern/hit" "${NEML2_BINARY_DIR}/extern/hit")
+# testing
+option(NEML2_TESTS "Build NEML2 tests" ON)
+
+if(NEML2_TESTS)
+      add_subdirectory(tests)
+endif()
 
 # Doxygen
 option(NEML2_DOC "Build NEML2 documentation: doxygen" OFF)
 
 if(NEML2_DOC)
       add_subdirectory(doc)
+endif()
+
+# Python binding
+option(NEML2_PYBIND "Build NEML2 Python binding" OFF)
+
+if(NEML2_PYBIND)
+      add_subdirectory(python)
 endif()

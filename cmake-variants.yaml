@@ -1,0 +1,61 @@
+libneml2:
+  default: development
+  choices:
+    development:
+      short: Development
+      long: Build for development
+      buildType: Debug
+      settings:
+        NEML2_TESTS: ON
+        NEML2_UNIT: ON
+        NEML2_REGRESSION: ON
+        NEML2_VERIFICATION: ON
+        NEML2_BENCHMARK: OFF
+        NEML2_PROFILING: OFF
+    profiling:
+      short: Benchmarking
+      long: Build for benchmarking and profiling
+      buildType: Release
+      settings:
+        NEML2_TESTS: ON
+        NEML2_UNIT: OFF
+        NEML2_REGRESSION: OFF
+        NEML2_VERIFICATION: OFF
+        NEML2_BENCHMARK: ON
+        NEML2_PROFILING: ON
+    release:
+      short: Release
+      long: Build for release
+      buildType: RelWithDebInfo
+      settings:
+        NEML2_TESTS: OFF
+
+pyneml2:
+  default: none
+  choices:
+    none:
+      short: No pybind
+      long: Not building python binding
+      settings:
+        NEML2_PYBIND: OFF
+        NEML2_WHEELS: OFF
+    binding:
+      short: Pybind
+      long: Build python binding
+      settings:
+        NEML2_PYBIND: ON
+        NEML2_WHEELS: OFF
+
+doc:
+  default: no
+  choices:
+    no:
+      short: No doc
+      long: No documentation target
+      settings:
+        NEML2_DOC: OFF
+    yes:
+      short: Doc
+      long: Add documentation targets
+      settings:
+        NEML2_DOC: ON

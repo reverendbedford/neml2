@@ -26,7 +26,8 @@
 
 namespace neml2
 {
-register_all_FixedDimTensor_prefix(Ones, "Ones");
+#define ONESFIXEDDIMTENSOR_REGISTER(T) register_NEML2_object_alias(Ones##T, "Ones" #T)
+FOR_ALL_FIXEDDIMTENSOR(ONESFIXEDDIMTENSOR_REGISTER);
 
 template <typename T>
 OptionSet
@@ -44,5 +45,6 @@ OnesFixedDimTensor<T>::OnesFixedDimTensor(const OptionSet & options)
 {
 }
 
-instantiate_all_FixedDimTensor(OnesFixedDimTensor);
+#define ONESFIXEDDIMTENSOR_INSTANTIATE_FIXEDDIMTENSOR(T) template class OnesFixedDimTensor<T>
+FOR_ALL_FIXEDDIMTENSOR(ONESFIXEDDIMTENSOR_INSTANTIATE_FIXEDDIMTENSOR);
 } // namespace neml2

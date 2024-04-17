@@ -5,12 +5,12 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
-  schedule:
-    - cron: '0 0 * * 0'
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 permissions:
-  contents: read  # Required when overriding permissions
-  pull-requests: write  # For posting coverage report
+  contents: read # Required when overriding permissions
+  pull-requests: write # For posting coverage report
   checks: write
 
 # Newer commits should cancel old runs
@@ -29,7 +29,7 @@ jobs:
           - "include"
           - "tests"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Run clang-format style check
         uses: jidicula/clang-format-action@v4.11.0
         with:
@@ -39,12 +39,12 @@ jobs:
     name: Copyright check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: "3.8"
       - name: Check to see if source files have the correct copyright header
-        run: python scripts/check_copyright.py
+        run: ./scripts/check_copyright.py
   build-test:
     needs: clang-format
     strategy:
@@ -54,12 +54,12 @@ jobs:
         unity: [ON, OFF]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - uses: actions/setup-python@v4
+      - uses: jwlawson/actions-setup-cmake@v2
         with:
-          python-version: "3.10"
+          cmake-version: "3.23"
       - run: |
           cmake \
             -DCMAKE_BUILD_TYPE=${{ matrix.btype }} \
@@ -69,6 +69,7 @@ jobs:
             -DNEML2_VERIFICATION=ON \
             -DNEML2_BENCHMARK=OFF \
             -DNEML2_PROFILING=OFF \
+            -DNEML2_PYBIND=OFF \
             -DNEML2_DOC=OFF \
             .
       - run: make -j 2
@@ -98,12 +99,9 @@ jobs:
         btype: [Release, Debug]
         unity: [ON, OFF]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - uses: actions/setup-python@v4
-        with:
-          python-version: "3.10"
       - run: |
           cmake \
             -DCMAKE_BUILD_TYPE=${{ matrix.btype }} \
@@ -113,6 +111,7 @@ jobs:
             -DNEML2_VERIFICATION=ON \
             -DNEML2_BENCHMARK=ON \
             -DNEML2_PROFILING=ON \
+            -DNEML2_PYBIND=OFF \
             -DNEML2_DOC=OFF \
             .
       - run: make -j 2
@@ -121,12 +120,9 @@ jobs:
     needs: build-test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - uses: actions/setup-python@v4
-        with:
-          python-version: "3.10"
       - run: sudo apt install lcov
       - run: |
           cmake \
@@ -141,16 +137,17 @@ jobs:
             .
       - run: make -j 2
       - run: ./scripts/coverage.sh
-      - uses: romeovs/lcov-reporter-action@v0.2.19
+      - uses: romeovs/lcov-reporter-action@v0.3.1
         with:
           lcov-file: ./coverage/coverage.info
           github-token: ${{ secrets.PR_ACTION }}
+          delete-old-comments: true
   cmake-integration:
     name: Test CMake integration as a subproject
     needs: clang-format
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
           path: neml2
@@ -159,7 +156,7 @@ jobs:
           echo -e "\
             #include \"neml2/base/Registry.h\"\n\
             int main() {\n\
-              std::cout << neml2::Registry::expected_options(\"ScalarSumModel\") << std::endl;\n\
+              neml2::Registry::print(std::cout);\n\
               return 0;\n\
             }\
             " > main.cxx
@@ -179,4 +176,3 @@ jobs:
       - name: Compile
         run: cd build && make -j 2
       - run: cd build && ./foo
-

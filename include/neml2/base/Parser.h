@@ -23,6 +23,8 @@
 // THE SOFTWARE.
 #pragma once
 
+#include <filesystem>
+
 #include "neml2/base/OptionCollection.h"
 
 namespace neml2
@@ -45,7 +47,7 @@ public:
    * itself, e.g., from command line.
    * @return OptionCollection The extracted object options.
    */
-  virtual OptionCollection parse(const std::string & filename,
+  virtual OptionCollection parse(const std::filesystem::path & filename,
                                  const std::string & additional_input = "") const = 0;
 };
 

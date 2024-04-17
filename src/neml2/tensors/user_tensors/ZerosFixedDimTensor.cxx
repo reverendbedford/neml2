@@ -26,7 +26,8 @@
 
 namespace neml2
 {
-register_all_FixedDimTensor_prefix(Zeros, "Zeros");
+#define ZEROSFIXEDDIMTENSOR_REGISTER(T) register_NEML2_object_alias(Zeros##T, "Zeros" #T)
+FOR_ALL_FIXEDDIMTENSOR(ZEROSFIXEDDIMTENSOR_REGISTER);
 
 template <typename T>
 OptionSet
@@ -44,5 +45,6 @@ ZerosFixedDimTensor<T>::ZerosFixedDimTensor(const OptionSet & options)
 {
 }
 
-instantiate_all_FixedDimTensor(ZerosFixedDimTensor);
+#define ZEROSFIXEDDIMTENSOR_INSTANTIATE_FIXEDDIMTENSOR(T) template class ZerosFixedDimTensor<T>
+FOR_ALL_FIXEDDIMTENSOR(ZEROSFIXEDDIMTENSOR_INSTANTIATE_FIXEDDIMTENSOR);
 } // namespace neml2

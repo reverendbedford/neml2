@@ -44,7 +44,8 @@ namespace neml2
  * method \p set_value. All concrete models must provide the implementation of the forward operator
  * by overriding the \p set_value method.
  */
-class Model : public Data,
+class Model : public std::enable_shared_from_this<Model>,
+              public Data,
               public ParameterStore,
               public VariableStore,
               public NonlinearSystem,
@@ -81,7 +82,7 @@ public:
   virtual void reinit(TorchShapeRef batch_shape,
                       int deriv_order = 0,
                       const torch::Device & device = torch::kCPU,
-                      const torch::Dtype & dtype = TORCH_DTYPE);
+                      const torch::Dtype & dtype = NEML2_DTYPE);
 
   /**
    * @brief Allocate storage and setup views for all the variables of this model and recursively all

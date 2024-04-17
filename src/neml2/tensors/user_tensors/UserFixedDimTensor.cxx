@@ -26,7 +26,8 @@
 
 namespace neml2
 {
-register_all_FixedDimTensor_prefix(User, "");
+#define USERFIXEDDIMTENSOR_REGISTER(T) register_NEML2_object_alias(User##T, #T)
+FOR_ALL_FIXEDDIMTENSOR(USERFIXEDDIMTENSOR_REGISTER);
 
 template <typename T>
 OptionSet
@@ -59,5 +60,6 @@ UserFixedDimTensor<T>::UserFixedDimTensor(const OptionSet & options)
                 utils::storage_size(this->sizes()));
 }
 
-instantiate_all_FixedDimTensor(UserFixedDimTensor);
+#define USERFIXEDDIMTENSOR_INSTANTIATE_FIXEDDIMTENSOR(T) template class UserFixedDimTensor<T>
+FOR_ALL_FIXEDDIMTENSOR(USERFIXEDDIMTENSOR_INSTANTIATE_FIXEDDIMTENSOR);
 } // namespace neml2

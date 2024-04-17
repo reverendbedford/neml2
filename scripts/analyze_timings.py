@@ -1,3 +1,5 @@
+#! /usr/bin/env python
+
 # Copyright 2023, UChicago Argonne, LLC
 # All Rights Reserved
 # Software Name: NEML2 -- the New Engineering material Model Library, version 2
@@ -21,7 +23,6 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-
 
 import sys
 import pandas as pd

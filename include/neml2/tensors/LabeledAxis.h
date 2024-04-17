@@ -185,9 +185,6 @@ public:
               bool subgraph = false,
               bool node_handle = false) const;
 
-  /// Helper static variable to keep track of indentation when printing
-  static int level;
-
 private:
   void add(LabeledAxis & axis,
            TorchSize sz,

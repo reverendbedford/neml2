@@ -1,20 +1,20 @@
 # ###################################################
 # MACROs for registering UNITY groups
 # ###################################################
-MACRO(SUBDIRLIST result curdir)
-      FILE(GLOB_RECURSE children ${curdir}/*.cxx)
-      SET(dirlist "")
+macro(_src_subdirs result curdir)
+      file(GLOB_RECURSE children ${curdir}/*.cxx)
+      set(dirlist "")
 
-      FOREACH(child ${children})
+      foreach(child ${children})
             get_filename_component(child_dir ${child} DIRECTORY)
-            LIST(APPEND dirlist ${child_dir})
-      ENDFOREACH()
+            list(APPEND dirlist ${child_dir})
+      endforeach()
 
       list(REMOVE_DUPLICATES dirlist)
-      SET(${result} ${dirlist})
-ENDMACRO()
+      set(${result} ${dirlist})
+endmacro()
 
-MACRO(SETUNITYGROUP name root subdir)
+macro(_set_unity_group name root subdir)
       file(RELATIVE_PATH UNITY_NAME_RAW ${root} ${subdir})
 
       if(NOT UNITY_NAME_RAW STREQUAL "")
@@ -28,19 +28,19 @@ MACRO(SETUNITYGROUP name root subdir)
                   endif()
             endif()
       endif()
-ENDMACRO()
+endmacro()
 
-MACRO(REGISTERUNITYGROUP target name rel_root)
+macro(register_unity_group target name rel_root)
       get_target_property(UNITY_ENABLED ${target} UNITY_BUILD)
 
       if(UNITY_ENABLED)
             get_filename_component(ABS_ROOT ${rel_root} ABSOLUTE)
-            SUBDIRLIST(SUBDIRS ${ABS_ROOT})
+            _src_subdirs(SUBDIRS ${ABS_ROOT})
 
-            FOREACH(subdir ${SUBDIRS})
-                  SETUNITYGROUP(${name} ${ABS_ROOT} ${subdir})
-            ENDFOREACH()
+            foreach(subdir ${SUBDIRS})
+                  _set_unity_group(${name} ${ABS_ROOT} ${subdir})
+            endforeach()
 
             set_target_properties(${target} PROPERTIES UNITY_BUILD_MODE GROUP)
       endif()
-ENDMACRO()
+endmacro()

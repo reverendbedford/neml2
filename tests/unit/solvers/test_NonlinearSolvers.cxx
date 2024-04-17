@@ -41,7 +41,7 @@ TEMPLATE_LIST_TEST_CASE("NonlinearSolvers", "[solvers]", solver_types)
 
   // Create the nonlinear solver
   OptionSet options = TestType::expected_options();
-  options.set<bool>("verbose") = true;
+  options.set<bool>("verbose") = false;
   TestType solver(options);
 
   SECTION("solve")

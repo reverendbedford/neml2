@@ -1,3 +1,5 @@
+#! /usr/bin/env python
+
 # Copyright 2023, UChicago Argonne, LLC
 # All Rights Reserved
 # Software Name: NEML2 -- the New Engineering material Model Library, version 2
@@ -22,29 +24,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-
 from pathlib import Path
 import subprocess
 import sys
 import argparse
-
-parser = argparse.ArgumentParser()
-parser.add_argument(
-    "-m",
-    "--modify",
-    help="Modify the files to have the correct copyright heading",
-    action="store_true",
-)
-args = parser.parse_args()
-
-extensions = {".h": "//", ".cxx": "//", ".py": "#", ".sh": "#"}
-additional_files = {}
-
-exclude_dirs = ["extern"]
-exclude_files = []
-
-
-rootdir = Path(".")
 
 
 def should_check(path):
@@ -65,21 +48,64 @@ def should_check(path):
 
 
 def generate_copyright_heading(copyright, prefix):
-    return (
-        prefix
-        + " "
-        + (prefix + " ").join(
-            line.strip() + "\n" for line in copyright.splitlines(True)
-        )
-    ).replace(prefix + " \n", prefix + "\n")
+    return [
+        (prefix + " " + line.strip() + "\n").replace(prefix + " \n", prefix + "\n")
+        for line in copyright.splitlines(True)
+    ]
 
 
-def has_correct_heading(path, copyright, prefix, modify):
+def get_first_comment_block(path, prefix):
+    # Find the starting and ending line numbers of the first comment block
+    # (It's okay if the license header doesn't start from the first line.
+    #  This relaxation is useful for things like shebang which have to be on the first line.)
+    with path.open("r", encoding="utf-8") as file:
+        lines = file.readlines()
+        state = 0
+        lineno_start = -1
+        lineno_end = -1
+        for i, line in enumerate(lines):
+            if state == 0 and (line.startswith(prefix + " ") or line == prefix + "\n"):
+                lineno_start = i
+                state = 1
+            elif state == 1 and not (
+                line.startswith(prefix + " ") or line == prefix + "\n"
+            ):
+                lineno_end = i
+                break
+
+    return lines, lineno_start, lineno_end
+
+
+def has_correct_heading(lines, start, end, correct_heading):
+    if start < 0:
+        return False
+    if end <= start:
+        return lines[start:] == correct_heading
+    if end > start:
+        return lines[start:end] == correct_heading
+    return False
+
+
+def update_heading(path, lines, start, end, correct_heading):
+    if start >= 0:
+        if end > start:
+            newlines = lines[:start] + correct_heading + lines[end:]
+        else:
+            newlines = lines[:start] + correct_heading
+    else:
+        newlines = correct_heading
+
+    with path.open("w", encoding="utf-8") as file:
+        for line in newlines:
+            file.write(line)
+
+    print("Corrected copyright heading for " + str(path))
+
+
+def update_heading_ondemand(path, copyright, prefix, modify):
     heading = generate_copyright_heading(copyright, prefix)
-
-    # First check if it has the correct heading
-    content = path.read_text()
-    correct = content.startswith(heading)
+    lines, lineno_start, lineno_end = get_first_comment_block(path, prefix)
+    correct = has_correct_heading(lines, lineno_start, lineno_end, heading)
 
     if not modify:
         return correct
@@ -87,41 +113,54 @@ def has_correct_heading(path, copyright, prefix, modify):
     if correct:
         return True
 
-    # Correct the heading
-    with path.open("w", encoding="utf-8") as file:
-        file.write(heading)
-        for line in content.splitlines(True):
-            file.write(line)
-
-    print("Corrected copyright heading for " + str(path))
-
+    update_heading(path, lines, lineno_start, lineno_end, heading)
     return True
 
 
-files = subprocess.run(
-    ["git", "ls-tree", "-r", "HEAD", "--name-only"], capture_output=True, text=True
-).stdout
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-m",
+        "--modify",
+        help="Modify the files to have the correct copyright heading",
+        action="store_true",
+    )
+    args = parser.parse_args()
 
-copyright = Path(rootdir / "LICENSE").read_text()
-print("The copyright statement is")
-print(copyright)
+    extensions = {".h": "//", ".cxx": "//", ".py": "#", ".sh": "#"}
+    additional_files = {}
 
-success = True
-for file in files.splitlines():
-    file_path = Path(file)
-    if should_check(file_path):
-        if file_path.suffix in extensions:
-            prefix = extensions[file_path.suffix]
-        elif file_path.name in additional_files:
-            prefix = additional_files[file_path.name]
-        else:
-            sys.exit("Internal error")
+    exclude_dirs = ["extern"]
+    exclude_files = ["__init__.py"]
 
-        if not has_correct_heading(file_path, copyright, prefix, args.modify):
-            print(file)
-            success = False
+    rootdir = Path(".")
 
-if success:
-    print("All files have the correct copyright heading")
-else:
-    sys.exit("The above files do NOT contain the correct copyright heading")
+    files = subprocess.run(
+        ["git", "ls-tree", "-r", "HEAD", "--name-only"], capture_output=True, text=True
+    ).stdout
+
+    copyright = Path(rootdir / "LICENSE").read_text()
+    print("The copyright statement is")
+    print(copyright)
+
+    success = True
+    for file in files.splitlines():
+        file_path = Path(file)
+        if should_check(file_path):
+            if file_path.suffix in extensions:
+                prefix = extensions[file_path.suffix]
+            elif file_path.name in additional_files:
+                prefix = additional_files[file_path.name]
+            else:
+                sys.exit("Internal error")
+
+            if not update_heading_ondemand(file_path, copyright, prefix, args.modify):
+                print(file)
+                success = False
+
+    if success:
+        print("All files have the correct copyright heading")
+    else:
+        sys.exit(
+            "The above files do NOT contain the correct copyright heading. Use the -m or --modify option to automatically correct them."
+        )

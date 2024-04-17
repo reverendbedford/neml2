@@ -60,7 +60,7 @@ ChabochePlasticHardening::set_value(bool out, bool dout_din, bool d2out_din2)
   neml_assert_dbg(!d2out_din2, "Chaboche model doesn't implement second derivatives.");
 
   // The effective stress
-  auto s = SR2(_X).norm(EPS);
+  auto s = SR2(_X).norm(NEML2_EPS);
   // The part that's proportional to the plastic strain rate
   auto g_term = 2.0 / 3.0 * _C * _NM - _g * _X;
 

@@ -1,4 +1,11 @@
-include(Macros)
+include(NEML2UnityGroup)
+
+# Catch2, for testing
+add_subdirectory(${NEML2_SOURCE_DIR}/extern/Catch2 ${NEML2_BINARY_DIR}/extern/Catch2)
+list(APPEND CMAKE_MODULE_PATH ${NEML2_SOURCE_DIR}/extern/Catch2/contrib)
+
+# include(CTest)
+include(Catch)
 
 # Test utilities
 add_subdirectory(src)
@@ -15,19 +22,33 @@ if(NEML2_UNIT)
             ${UNIT_TESTS}
       )
 
-      # compile options
       target_compile_options(unit_tests PUBLIC -Wall -Wextra -pedantic -Werror)
-
-      REGISTERUNITYGROUP(unit_tests "Unit test" unit)
+      register_unity_group(unit_tests "Unit test" unit)
       target_link_libraries(unit_tests Catch2::Catch2)
       target_link_libraries(unit_tests neml2 testutils)
-      target_include_directories(unit_tests PUBLIC
-            "${NEML2_SOURCE_DIR}/include"
-            "${NEML2_SOURCE_DIR}/tests/include")
+      target_include_directories(unit_tests PUBLIC ${NEML2_SOURCE_DIR}/tests/include)
       catch_discover_tests(unit_tests)
 
-      message(STATUS "Copying test files to build directory, may include large files...")
-      file(COPY ${NEML2_SOURCE_DIR}/tests/unit DESTINATION ${NEML2_BINARY_DIR}/tests PATTERN "*.cxx" EXCLUDE PATTERN "*.md" EXCLUDE)
+      if(NOT ${NEML2_BINARY_DIR} STREQUAL ${NEML2_SOURCE_DIR})
+            add_custom_command(TARGET unit_tests
+                  POST_BUILD
+                  COMMAND ${CMAKE_COMMAND} -E create_symlink ${NEML2_SOURCE_DIR}/tests/unit ${NEML2_BINARY_DIR}/tests/unit
+                  COMMENT "Creating symlink for unit tests"
+            )
+      endif()
+
+      install(TARGETS unit_tests)
+      install(DIRECTORY unit
+            TYPE BIN
+            FILES_MATCHING
+            PATTERN "*.i"
+            PATTERN "*.pt"
+            PATTERN "*.txt"
+            PATTERN "*.vtest"
+            PATTERN "*.xml"
+            PATTERN "*.py"
+            PATTERN "*.pyi"
+      )
 endif()
 
 # ###################################################
@@ -42,17 +63,33 @@ if(NEML2_REGRESSION)
             ${REGRESSION_TESTS}
       )
 
-      # compile options
       target_compile_options(regression_tests PUBLIC -Wall -Wextra -pedantic -Werror)
-
-      REGISTERUNITYGROUP(regression_tests "Regression test" regression)
+      register_unity_group(regression_tests "Regression test" regression)
       target_link_libraries(regression_tests Catch2::Catch2)
       target_link_libraries(regression_tests neml2 testutils)
       target_include_directories(regression_tests PUBLIC "${NEML2_SOURCE_DIR}/tests/include")
       catch_discover_tests(regression_tests)
 
-      message(STATUS "Copying test files to build directory, may include large files...")
-      file(COPY ${NEML2_SOURCE_DIR}/tests/regression DESTINATION ${NEML2_BINARY_DIR}/tests PATTERN "*.cxx" EXCLUDE PATTERN "*.md" EXCLUDE)
+      if(NOT ${NEML2_BINARY_DIR} STREQUAL ${NEML2_SOURCE_DIR})
+            add_custom_command(TARGET regression_tests
+                  POST_BUILD
+                  COMMAND ${CMAKE_COMMAND} -E create_symlink ${NEML2_SOURCE_DIR}/tests/regression ${NEML2_BINARY_DIR}/tests/regression
+                  COMMENT "Creating symlink for regression tests"
+            )
+      endif()
+
+      install(TARGETS regression_tests)
+      install(DIRECTORY regression
+            TYPE BIN
+            FILES_MATCHING
+            PATTERN "*.i"
+            PATTERN "*.pt"
+            PATTERN "*.txt"
+            PATTERN "*.vtest"
+            PATTERN "*.xml"
+            PATTERN "*.py"
+            PATTERN "*.pyi"
+      )
 endif()
 
 # ###################################################
@@ -67,17 +104,33 @@ if(NEML2_VERIFICATION)
             ${VERIFICATION_TESTS}
       )
 
-      # compile options
       target_compile_options(verification_tests PUBLIC -Wall -Wextra -pedantic -Werror)
-
-      REGISTERUNITYGROUP(verification_tests "Verification test" verification)
+      register_unity_group(verification_tests "Verification test" verification)
       target_link_libraries(verification_tests Catch2::Catch2)
       target_link_libraries(verification_tests neml2 testutils)
       target_include_directories(verification_tests PUBLIC "${NEML2_SOURCE_DIR}/tests/include")
       catch_discover_tests(verification_tests)
 
-      message(STATUS "Copying test files to build directory, may include large files...")
-      file(COPY ${NEML2_SOURCE_DIR}/tests/verification DESTINATION ${NEML2_BINARY_DIR}/tests PATTERN "*.cxx" EXCLUDE PATTERN "*.md" EXCLUDE)
+      if(NOT ${NEML2_BINARY_DIR} STREQUAL ${NEML2_SOURCE_DIR})
+            add_custom_command(TARGET verification_tests
+                  POST_BUILD
+                  COMMAND ${CMAKE_COMMAND} -E create_symlink ${NEML2_SOURCE_DIR}/tests/verification ${NEML2_BINARY_DIR}/tests/verification
+                  COMMENT "Creating symlink for verification tests"
+            )
+      endif()
+
+      install(TARGETS verification_tests)
+      install(DIRECTORY verification
+            TYPE BIN
+            FILES_MATCHING
+            PATTERN "*.i"
+            PATTERN "*.pt"
+            PATTERN "*.txt"
+            PATTERN "*.vtest"
+            PATTERN "*.xml"
+            PATTERN "*.py"
+            PATTERN "*.pyi"
+      )
 endif()
 
 # ###################################################
@@ -95,14 +148,32 @@ if(NEML2_BENCHMARK)
       # compile options
       target_compile_options(benchmark_tests PUBLIC -Wall -Wextra -pedantic -Werror)
 
-      REGISTERUNITYGROUP(benchmark_tests "Benchmark test" benchmark)
+      register_unity_group(benchmark_tests "Benchmark test" benchmark)
       target_link_libraries(benchmark_tests Catch2::Catch2)
       target_link_libraries(benchmark_tests neml2 testutils)
       target_include_directories(benchmark_tests PUBLIC "${NEML2_SOURCE_DIR}/tests/include")
       catch_discover_tests(benchmark_tests)
 
-      message(STATUS "Copying test files to build directory, may include large files...")
-      file(COPY ${NEML2_SOURCE_DIR}/tests/benchmark DESTINATION ${NEML2_BINARY_DIR}/tests PATTERN "*.cxx" EXCLUDE PATTERN "*.md" EXCLUDE)
+      if(NOT ${NEML2_BINARY_DIR} STREQUAL ${NEML2_SOURCE_DIR})
+            add_custom_command(TARGET benchmark_tests
+                  POST_BUILD
+                  COMMAND ${CMAKE_COMMAND} -E create_symlink ${NEML2_SOURCE_DIR}/tests/benchmark ${NEML2_BINARY_DIR}/tests/benchmark
+                  COMMENT "Creating symlink for benchmark tests"
+            )
+      endif()
+
+      install(TARGETS benchmark_tests)
+      install(DIRECTORY benchmark
+            TYPE BIN
+            FILES_MATCHING
+            PATTERN "*.i"
+            PATTERN "*.pt"
+            PATTERN "*.txt"
+            PATTERN "*.vtest"
+            PATTERN "*.xml"
+            PATTERN "*.py"
+            PATTERN "*.pyi"
+      )
 endif()
 
 # ###################################################
@@ -118,14 +189,49 @@ if(NEML2_PROFILING)
             ${TEST_UTILS}
             ${PROFILING_TESTS}
       )
-      REGISTERUNITYGROUP(profiling_tests "Profiling test" profiling)
 
-      # compile options
+      register_unity_group(profiling_tests "Profiling test" profiling)
       target_compile_options(profiling_tests PUBLIC -Wall -Wextra -pedantic -Werror)
       target_link_options(profiling_tests PRIVATE "-Wl,-no-as-needed")
       target_link_libraries(profiling_tests neml2 testutils profiler)
       target_include_directories(profiling_tests PUBLIC "${NEML2_SOURCE_DIR}/tests/include")
 
-      message(STATUS "Copying test files to build directory, may include large files...")
-      file(COPY ${NEML2_SOURCE_DIR}/tests/profiling DESTINATION ${NEML2_BINARY_DIR}/tests PATTERN "*.cxx" EXCLUDE PATTERN "*.md" EXCLUDE)
+      if(NOT ${NEML2_BINARY_DIR} STREQUAL ${NEML2_SOURCE_DIR})
+            add_custom_command(TARGET profiling_tests
+                  POST_BUILD
+                  COMMAND ${CMAKE_COMMAND} -E create_symlink ${NEML2_SOURCE_DIR}/tests/profiling ${NEML2_BINARY_DIR}/tests/profiling
+                  COMMENT "Creating symlink for profiling tests"
+            )
+      endif()
+
+      install(TARGETS profiling_tests)
+      install(DIRECTORY profiling
+            TYPE BIN
+            FILES_MATCHING
+            PATTERN "*.i"
+            PATTERN "*.pt"
+            PATTERN "*.txt"
+            PATTERN "*.vtest"
+            PATTERN "*.xml"
+            PATTERN "*.py"
+            PATTERN "*.pyi"
+      )
+endif()
+
+# ###################################################
+# Python binding tests
+# ###################################################
+if(NEML2_PYBIND)
+      if(NOT ${NEML2_BINARY_DIR} STREQUAL ${NEML2_SOURCE_DIR})
+            add_custom_target(link_pybind_tests ALL
+                  COMMAND ${CMAKE_COMMAND} -E create_symlink ${NEML2_SOURCE_DIR}/tests/python ${NEML2_BINARY_DIR}/tests/python
+                  COMMENT "Creating symlink for python binding tests"
+            )
+      endif()
+
+      install(DIRECTORY python
+            TYPE BIN
+            FILES_MATCHING
+            PATTERN "*.py"
+      )
 endif()

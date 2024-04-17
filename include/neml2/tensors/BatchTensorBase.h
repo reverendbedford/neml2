@@ -56,58 +56,16 @@ public:
 
   BatchTensorBase(Real) = delete;
 
-  /// Unbatched empty tensor given base shape
-  [[nodiscard]] static Derived
-  empty(TorchShapeRef base_shape, const torch::TensorOptions & options = default_tensor_options());
-  /// Empty tensor given batch and base shapes
-  [[nodiscard]] static Derived
-  empty(TorchShapeRef batch_shape,
-        TorchShapeRef base_shape,
-        const torch::TensorOptions & options = default_tensor_options());
   /// Empty tensor like another, i.e. same batch and base shapes, same tensor options, etc.
-  [[nodiscard]] static Derived empty_like(const BatchTensorBase<Derived> & other);
-  /// Unbatched tensor filled with zeros given base shape
-  [[nodiscard]] static Derived
-  zeros(TorchShapeRef base_shape, const torch::TensorOptions & options = default_tensor_options());
-  /// Zero tensor given batch and base shapes
-  [[nodiscard]] static Derived
-  zeros(TorchShapeRef batch_shape,
-        TorchShapeRef base_shape,
-        const torch::TensorOptions & options = default_tensor_options());
+  [[nodiscard]] static Derived empty_like(const Derived & other);
   /// Zero tensor like another, i.e. same batch and base shapes, same tensor options, etc.
-  [[nodiscard]] static Derived zeros_like(const BatchTensorBase<Derived> & other);
-  /// Unbatched tensor filled with ones given base shape
-  [[nodiscard]] static Derived
-  ones(TorchShapeRef base_shape, const torch::TensorOptions & options = default_tensor_options());
-  /// Unit tensor given batch and base shapes
-  [[nodiscard]] static Derived
-  ones(TorchShapeRef batch_shape,
-       TorchShapeRef base_shape,
-       const torch::TensorOptions & options = default_tensor_options());
+  [[nodiscard]] static Derived zeros_like(const Derived & other);
   /// Unit tensor like another, i.e. same batch and base shapes, same tensor options, etc.
-  [[nodiscard]] static Derived ones_like(const BatchTensorBase<Derived> & other);
-  /// Unbatched tensor filled with a given value given base shape
-  [[nodiscard]] static Derived
-  full(TorchShapeRef base_shape,
-       Real init,
-       const torch::TensorOptions & options = default_tensor_options());
-  /// Full tensor given batch and base shapes
-  [[nodiscard]] static Derived
-  full(TorchShapeRef batch_shape,
-       TorchShapeRef base_shape,
-       Real init,
-       const torch::TensorOptions & options = default_tensor_options());
+  [[nodiscard]] static Derived ones_like(const Derived & other);
   /// Full tensor like another, i.e. same batch and base shapes, same tensor options, etc.,
   /// but filled with a different value
-  [[nodiscard]] static Derived full_like(const BatchTensorBase<Derived> & other, Real init);
-  /// Unbatched identity tensor
-  [[nodiscard]] static Derived
-  identity(TorchSize n, const torch::TensorOptions & options = default_tensor_options());
-  /// Identity tensor given batch shape and base length
-  [[nodiscard]] static Derived
-  identity(TorchShapeRef batch_shape,
-           TorchSize n,
-           const torch::TensorOptions & options = default_tensor_options());
+  [[nodiscard]] static Derived full_like(const Derived & other, Real init);
+
   /**
    * @brief Create a new tensor by adding a new batch dimension with linear spacing between \p
    * start and \p end.
@@ -172,13 +130,13 @@ public:
   /// Get a batch
   Derived batch_index(TorchSlice indices) const;
 
-  /// Return an index sliced on the batch dimensions
+  /// Return an index sliced on the base dimensions
   BatchTensor base_index(const TorchSlice & indices) const;
 
   /// Set a index sliced on the batch dimensions to a value
   void batch_index_put(TorchSlice indices, const torch::Tensor & other);
 
-  /// Set a index sliced on the batch dimensions to a value
+  /// Set a index sliced on the base dimensions to a value
   void base_index_put(const TorchSlice & indices, const torch::Tensor & other);
 
   /// Return a new view of the tensor with values broadcast along the batch dimensions.
@@ -189,10 +147,11 @@ public:
 
   /// Expand the batch to have the same shape as another tensor
   template <class Derived2>
-  Derived batch_expand_as(const BatchTensorBase<Derived2> & other) const;
+  Derived batch_expand_as(const Derived2 & other) const;
 
   /// Expand the base to have the same shape as another tensor
-  BatchTensor base_expand_as(const BatchTensor & other) const;
+  template <class Derived2>
+  Derived2 base_expand_as(const Derived2 & other) const;
 
   /// Return a new tensor with values broadcast along the batch dimensions.
   Derived batch_expand_copy(TorchShapeRef batch_size) const;
@@ -250,9 +209,17 @@ private:
 template <class Derived>
 template <class Derived2>
 Derived
-BatchTensorBase<Derived>::batch_expand_as(const BatchTensorBase<Derived2> & other) const
+BatchTensorBase<Derived>::batch_expand_as(const Derived2 & other) const
 {
   return batch_expand(other.batch_sizes());
+}
+
+template <class Derived>
+template <class Derived2>
+Derived2
+BatchTensorBase<Derived>::base_expand_as(const Derived2 & other) const
+{
+  return base_expand(other.base_sizes());
 }
 
 template <class Derived,

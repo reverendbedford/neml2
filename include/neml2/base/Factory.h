@@ -55,8 +55,7 @@ public:
    * @tparam T The type of the `NEML2Object`
    * @param section The section name under which the search happens.
    * @param name The name of the object to retrieve.
-   * @param host (Optional) The host NEML2Object that is exposed to users. Leave as nullptr if
-   * *this* object is publicly exposed.
+   * @param additional_options Additional input options to pass to the object constructor
    * @param force_create (Optional) Force the factory to create a new object even if the object has
    * already been created.
    * @return std::shared_ptr<T> The object pointer.
@@ -78,8 +77,7 @@ public:
    * @tparam T The type of the `NEML2Object`
    * @param section The section name under which the search happens.
    * @param name The name of the object to retrieve.
-   * @param host (Optional) The host NEML2Object that is exposed to users. Leave as nullptr if
-   * *this* object is publicly exposed.
+   * @param additional_options Additional input options to pass to the object constructor
    * @param force_create (Optional) Force the factory to create a new object even if the object has
    * already been created.
    * @return T & The object reference.

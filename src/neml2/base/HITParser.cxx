@@ -27,13 +27,13 @@
 #include "neml2/base/CrossRef.h"
 #include "neml2/tensors/LabeledAxis.h"
 #include "neml2/tensors/tensors.h"
-#include "neml2/models/crystallography/MillerIndex.h"
+#include "neml2/tensors/macros.h"
 #include <memory>
 
 namespace neml2
 {
 OptionCollection
-HITParser::parse(const std::string & filename, const std::string & additional_input) const
+HITParser::parse(const std::filesystem::path & filename, const std::string & additional_input) const
 {
   // Open and read the file
   std::ifstream file(filename);
@@ -122,6 +122,8 @@ HITParser::extract_option(hit::Node * n, OptionSet & options) const
   extract_option_base(std::vector<ptype>, utils::parse_vector<ptype>);                             \
   extract_option_base(std::vector<std::vector<ptype>>, utils::parse_vector_vector<ptype>)
 
+#define extract_option_t_cr(ptype) extract_option_t(CrossRef<ptype>)
+
   if (n->type() == hit::NodeType::Field)
   {
     bool found = false;
@@ -146,20 +148,7 @@ HITParser::extract_option(hit::Node * n, OptionSet & options) const
         extract_option_t(std::string);
         extract_option_t(VariableName);
         extract_option_t(CrossRef<torch::Tensor>);
-        extract_option_t(CrossRef<BatchTensor>);
-        extract_option_t(CrossRef<Scalar>);
-        extract_option_t(CrossRef<Vec>);
-        extract_option_t(CrossRef<Rot>);
-        extract_option_t(CrossRef<R2>);
-        extract_option_t(CrossRef<SR2>);
-        extract_option_t(CrossRef<R3>);
-        extract_option_t(CrossRef<SFR3>);
-        extract_option_t(CrossRef<R4>);
-        extract_option_t(CrossRef<SSR4>);
-        extract_option_t(CrossRef<R5>);
-        extract_option_t(CrossRef<SSFR5>);
-        extract_option_t(CrossRef<WR2>);
-        extract_option_t(CrossRef<crystallography::MillerIndex>);
+        FOR_ALL_BATCHTENSORBASE(extract_option_t_cr);
         // LCOV_EXCL_START
         else neml_assert(false, "Unsupported option type for option ", n->fullpath());
         // LCOV_EXCL_STOP

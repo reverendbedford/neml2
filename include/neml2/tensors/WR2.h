@@ -47,13 +47,6 @@ public:
   /// Skew-symmetrize a R2 then fill
   WR2(const R2 & T);
 
-  /// Fill all entries
-  [[nodiscard]] static WR2 fill(const Real & a21,
-                                const Real & a02,
-                                const Real & a10,
-                                const torch::TensorOptions & options = default_tensor_options());
-  [[nodiscard]] static WR2 fill(const Scalar & a21, const Scalar & a02, const Scalar & a10);
-
   /// Accessor
   Scalar operator()(TorchSize i, TorchSize j) const;
 

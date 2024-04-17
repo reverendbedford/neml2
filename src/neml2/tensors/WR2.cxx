@@ -39,21 +39,6 @@ WR2::WR2(const R2 & T)
 {
 }
 
-WR2
-WR2::fill(const Real & a21,
-          const Real & a02,
-          const Real & a10,
-          const torch::TensorOptions & options)
-{
-  return WR2::fill(Scalar(a21, options), Scalar(a02, options), Scalar(a10, options));
-}
-
-WR2
-WR2::fill(const Scalar & a21, const Scalar & a02, const Scalar & a10)
-{
-  return WR2(torch::stack({a21, a02, a10}, -1), a21.batch_dim());
-}
-
 Scalar
 WR2::operator()(TorchSize i, TorchSize j) const
 {

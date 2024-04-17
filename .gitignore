@@ -29,3 +29,12 @@ doc/html
 **/syntax.yml
 build
 _deps
+__pycache__
+config.h
+conftest.py
+*.pyi
+neml2.egg-info
+.pytest_cache
+src/neml2/base/config.h
+install
+conftest.py

@@ -1,0 +1,143 @@
+name: python
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+permissions:
+  contents: read # Required when overriding permissions
+  pull-requests: write # For posting coverage report
+  checks: write
+
+# Newer commits should cancel old runs
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  black:
+    name: Formatting Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: psf/black@stable
+        with:
+          options: "--check -v"
+          src: "python/neml2 tests/python"
+  build-test:
+    name: Build and test Python bindings
+    needs: black
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: jwlawson/actions-setup-cmake@v2
+        with:
+          cmake-version: "3.23"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.8"
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+      - name: Install PyTorch
+        run: pip install torch==2.2.1
+      - run: |
+          cmake \
+            -DCMAKE_BUILD_TYPE=Debug \
+            -DCMAKE_UNITY_BUILD=ON \
+            -DNEML2_UNIT=OFF \
+            -DNEML2_REGRESSION=OFF \
+            -DNEML2_VERIFICATION=OFF \
+            -DNEML2_BENCHMARK=OFF \
+            -DNEML2_PROFILING=OFF \
+            -DNEML2_PYBIND=ON \
+            -DNEML2_DOC=OFF \
+            -B build \
+            .
+      - run: cd build && make -j 2
+      - run: PYTHONPATH=build/python pytest --junitxml=build/python/pytest.xml tests
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: matrix.os == 'ubuntu-latest'
+        with:
+          files: build/python/pytest.xml
+          check_name: Python Binding Test Results (${{ matrix.os }})
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action/composite@v2
+        if: matrix.os == 'macos-latest'
+        with:
+          files: build/python/pytest.xml
+          check_name: Python Binding Test Results (${{ matrix.os }})
+  sdist:
+    name: Build source distribution
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build SDist
+        run: pipx run build --sdist
+      - name: Upload SDist
+        uses: actions/upload-artifact@v4
+        if: github.event_name == 'release' && github.event.action == 'published'
+        with:
+          name: package-sdist
+          path: dist/*.tar.gz
+  wheels:
+    needs: build-test
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Backup docker
+        if: matrix.os == 'ubuntu-latest'
+        run: sudo mv /var/lib/docker ${GITHUB_WORKSPACE}/docker
+      - name: Maximize build space
+        if: matrix.os == 'ubuntu-latest'
+        uses: easimon/maximize-build-space@master
+        with:
+          remove-dotnet: "true"
+          remove-android: "true"
+          remove-haskell: "true"
+          remove-codeql: "true"
+          build-mount-path: "/var/lib/docker/"
+      - name: Remount docker
+        if: matrix.os == 'ubuntu-latest'
+        run: sudo sh -c "mv ${GITHUB_WORKSPACE}/docker/* /var/lib/docker"
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: jwlawson/actions-setup-cmake@v2
+        with:
+          cmake-version: "3.23"
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.16.5
+      - name: Upload wheels
+        if: github.event_name == 'release' && github.event.action == 'published'
+        uses: actions/upload-artifact@v4
+        with:
+          name: package-wheels-${{ matrix.os }}-${{ strategy.job-index }}
+          path: ./wheelhouse/*.whl
+  PyPI:
+    needs: [sdist, wheels]
+    environment: pypi
+    permissions:
+      id-token: write
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release' && github.event.action == 'published'
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: package-*
+          path: dist
+          merge-multiple: true
+      - uses: pypa/gh-action-pypi-publish@release/v1

@@ -51,5 +51,6 @@ public:
   LogspaceFixedDimTensor(const OptionSet & options);
 };
 
-typedef_all_FixedDimTensor_prefix(LogspaceFixedDimTensor, Logspace);
+#define LOGSPACEFIXEDDIMTENSOR_TYPEDEF(T) typedef LogspaceFixedDimTensor<T> Logspace##T
+FOR_ALL_FIXEDDIMTENSOR(LOGSPACEFIXEDDIMTENSOR_TYPEDEF);
 } // namespace neml2

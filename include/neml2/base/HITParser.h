@@ -24,7 +24,7 @@
 #pragma once
 
 #include "neml2/base/Parser.h"
-#include "hit.h"
+#include "hit/hit.h"
 
 namespace neml2
 {
@@ -38,7 +38,7 @@ class HITParser : public Parser
 public:
   HITParser() = default;
 
-  virtual OptionCollection parse(const std::string & filename,
+  virtual OptionCollection parse(const std::filesystem::path & filename,
                                  const std::string & additional_input = "") const override;
 
   /**
