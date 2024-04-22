@@ -213,6 +213,9 @@ protected:
   /// Call VariableStore::detach_and_zero recursively on all submodels
   virtual void detach_and_zero(bool out, bool dout_din = true, bool d2out_din2 = true) override;
 
+  /// Set \p x as the current solution of the nonlinear system
+  virtual void set_solution(const BatchTensor & x) override;
+
   /// The map between input -> output, and optionally its derivatives
   virtual void set_value(bool out, bool dout_din, bool d2out_din2) = 0;
 

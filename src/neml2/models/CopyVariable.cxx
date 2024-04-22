@@ -22,42 +22,47 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
-
-#include "neml2/tensors/R2Base.h"
+#include "neml2/models/CopyVariable.h"
 
 namespace neml2
 {
-class Rot;
-class SR2;
-class WR2;
-class R4;
+#define COPYVARIABLE_REGISTER_FIXEDDIMTENSOR(T) register_NEML2_object(Copy##T)
+FOR_ALL_FIXEDDIMTENSOR(COPYVARIABLE_REGISTER_FIXEDDIMTENSOR);
 
-/**
- * @brief A basic R2
- *
- * The logical storage space is (3,3).
- */
-class R2 : public R2Base<R2>
+template <typename T>
+OptionSet
+CopyVariable<T>::expected_options()
 {
-public:
-  using R2Base<R2>::R2Base;
+  OptionSet options = Model::expected_options();
+  options.set<VariableName>("from");
+  options.set<VariableName>("to");
+  return options;
+}
 
-  /// @brief Form a full R2 from a symmetric tensor
-  /// @param S Mandel-convention symmetric tensor
-  R2(const SR2 & S);
+template <typename T>
+CopyVariable<T>::CopyVariable(const OptionSet & options)
+  : Model(options),
+    _to(declare_output_variable<T>("to")),
+    _from(declare_input_variable<T>("from"))
+{
+}
 
-  /// @brief Form a full R2 from a skew-symmetric tensor
-  /// @param W skew-vector convention skew-symmetric tensor
-  R2(const WR2 & W);
+template <typename T>
+void
+CopyVariable<T>::set_value(bool out, bool dout_din, bool d2out_din2)
+{
+  if (out)
+    _to = T(_from);
 
-  /// @brief Form rotation matrix from vector
-  /// @param r rotation vector
-  explicit R2(const Rot & r);
+  if (dout_din)
+    _to.d(_from) = T::identity_map(options());
 
-  /// The derivative of a R2 with respect to itself
-  [[nodiscard]] static R4
-  identity_map(const torch::TensorOptions & options = default_tensor_options());
-};
+  if (d2out_din2)
+  {
+    // zero
+  }
+}
 
+#define COPYVARIABLE_INSTANTIATE_FIXEDDIMTENSOR(T) template class CopyVariable<T>
+FOR_ALL_FIXEDDIMTENSOR(COPYVARIABLE_INSTANTIATE_FIXEDDIMTENSOR);
 } // namespace neml2

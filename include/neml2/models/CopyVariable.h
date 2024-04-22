@@ -24,40 +24,32 @@
 
 #pragma once
 
-#include "neml2/tensors/R2Base.h"
+#include "neml2/models/Model.h"
+#include "neml2/tensors/macros.h"
 
 namespace neml2
 {
-class Rot;
-class SR2;
-class WR2;
-class R4;
-
 /**
- * @brief A basic R2
- *
- * The logical storage space is (3,3).
+ * @brief Copy the value of a variable into another variable
  */
-class R2 : public R2Base<R2>
+template <typename T>
+class CopyVariable : public Model
 {
 public:
-  using R2Base<R2>::R2Base;
+  static OptionSet expected_options();
 
-  /// @brief Form a full R2 from a symmetric tensor
-  /// @param S Mandel-convention symmetric tensor
-  R2(const SR2 & S);
+  CopyVariable(const OptionSet & options);
 
-  /// @brief Form a full R2 from a skew-symmetric tensor
-  /// @param W skew-vector convention skew-symmetric tensor
-  R2(const WR2 & W);
+protected:
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
-  /// @brief Form rotation matrix from vector
-  /// @param r rotation vector
-  explicit R2(const Rot & r);
+  /// Destination variable
+  Variable<T> & _to;
 
-  /// The derivative of a R2 with respect to itself
-  [[nodiscard]] static R4
-  identity_map(const torch::TensorOptions & options = default_tensor_options());
+  /// Souce variable
+  const Variable<T> & _from;
 };
 
+#define COPYVARIABLE_TYPEDEF_FIXEDDIMTENSOR(T) typedef CopyVariable<T> Copy##T
+FOR_ALL_FIXEDDIMTENSOR(COPYVARIABLE_TYPEDEF_FIXEDDIMTENSOR);
 } // namespace neml2

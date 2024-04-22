@@ -193,8 +193,8 @@ Model::reinit_input_views()
 
   if (is_nonlinear_system())
   {
-    _ndof = host<Model>()->input_axis().storage_size("state");
-    _solution = host<Model>()->input_storage()("state");
+    _ndof = output_axis().storage_size("residual");
+    _solution = BatchTensor::empty(batch_sizes(), _ndof, options());
   }
 }
 
@@ -221,6 +221,16 @@ Model::detach_and_zero(bool out, bool dout_din, bool d2out_din2)
 
   for (auto submodel : registered_models())
     submodel->detach_and_zero(out, dout_din, d2out_din2);
+}
+
+void
+Model::set_solution(const BatchTensor & x)
+{
+  NonlinearSystem::set_solution(x);
+
+  // Also update the model input variables
+  LabeledVector sol(x, {&output_axis().subaxis("residual")});
+  host<VariableStore>()->input_storage().slice("state").fill(sol);
 }
 
 void

@@ -84,6 +84,12 @@ public:
   full(TorchShapeRef batch_shape,
        Real init,
        const torch::TensorOptions & options = default_tensor_options());
+
+  /// Derived tensor classes should define identity_map where appropriate
+  [[nodiscard]] static BatchTensor identity_map(const torch::TensorOptions &)
+  {
+    throw NEMLException("Not implemented");
+  }
 };
 
 ///////////////////////////////////////////////////////////////////////////////
