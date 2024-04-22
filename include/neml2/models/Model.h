@@ -61,6 +61,16 @@ public:
    */
   Model(const OptionSet & options);
 
+  /**
+   * @brief Check for common problems
+   *
+   * This method serves as the entry point for diagnosing common problems in model setup,
+   * composition, etc.
+   *
+   * @returns A vector of exceptions of type Diagnosis for each of the detected problem.
+   */
+  virtual std::vector<Diagnosis> preflight() const;
+
   /// Whether this model defines one or more nonlinear equations to be solved
   virtual bool is_nonlinear_system() const { return _nonlinear_system; }
 

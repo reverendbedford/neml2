@@ -169,6 +169,10 @@
     type = SR2ForwardEulerTimeIntegration
     variable = 'Ep'
   []
+  [plastic_update]
+    type = ComposedModel
+    models = 'ep_rate plastic_strain_rate plastic_strain'
+  []
   [elastic_strain]
     type = ElasticStrain
     plastic_strain = 'state/Ep'
@@ -176,7 +180,7 @@
   []
   [stress_update]
     type = ComposedModel
-    models = 'ep_rate plastic_strain_rate plastic_strain elastic_strain cauchy_stress'
+    models = 'elastic_strain cauchy_stress'
   []
 
   #####################################################################################
@@ -221,7 +225,7 @@
   []
   [rate]
     type = ComposedModel
-    models = "stress_update vonmises rom
+    models = "plastic_update stress_update vonmises rom
               integrate_ep integrate_s1 integrate_s2"
   []
   [radial_return]
@@ -235,7 +239,7 @@
   #####################################################################################
   [model]
     type = ComposedModel
-    models = 'trial_state radial_return stress_update'
-    additional_outputs = 'state/ep'
+    models = 'trial_state radial_return plastic_update stress_update'
+    additional_outputs = 'state/ep state/Ep'
   []
 []

@@ -280,6 +280,6 @@
     type = ComposedModel
     models = 'cache2 subsystem1 cache1 subsystem2'
     priority = 'cache2 subsystem1 cache1 subsystem2'
-    additional_outputs = 'state/elastic_strain'
+    additional_outputs = 'state/elastic_strain state/internal/slip_hardening'
   []
 []

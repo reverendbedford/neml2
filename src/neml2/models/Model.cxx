@@ -55,6 +55,36 @@ Model::Model(const OptionSet & options)
   check_AD_limitation();
 }
 
+std::vector<Diagnosis>
+Model::preflight() const
+{
+  neml_assert(host() == this, "This method should only be called on the host model.");
+
+  std::vector<Diagnosis> errors;
+
+  // Check for statefulness
+  if (input_axis().has_subaxis("old_state"))
+  {
+    if (!output_axis().has_subaxis("state"))
+      errors.push_back(
+          make_diagnosis(name(),
+                         ": input axis has sub-axis 'old_state', but output axis does not "
+                         "have sub-axis 'state'."));
+    else
+    {
+      auto s_vars = output_axis().subaxis("state").variable_accessors(/*recursive=*/true);
+      for (auto var : input_axis().subaxis("old_state").variable_accessors(/*recursive=*/true))
+        if (!s_vars.count(var))
+          errors.push_back(make_diagnosis(name(),
+                                          ": input axis has old state named ",
+                                          var,
+                                          ", but it doesn't exist on the output axis."));
+    }
+  }
+
+  return errors;
+}
+
 void
 Model::setup()
 {
