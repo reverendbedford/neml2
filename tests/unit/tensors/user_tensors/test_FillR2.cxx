@@ -33,19 +33,19 @@ TEST_CASE("FillR2", "[tensors/user_tensors]")
 {
   load_model("unit/tensors/user_tensors/test_FillR2.i");
 
-  const auto & auto_1 = Factory::get_object<R2>("Tensors", "1");
+  const auto auto_1 = Factory::get_object_ptr<R2>("Tensors", "1");
   const auto auto_1_correct = R2::fill(1);
-  REQUIRE(torch::allclose(auto_1, auto_1_correct));
+  REQUIRE(torch::allclose(*auto_1, auto_1_correct));
 
-  const auto & auto_3 = Factory::get_object<R2>("Tensors", "3");
+  const auto auto_3 = Factory::get_object_ptr<R2>("Tensors", "3");
   const auto auto_3_correct = R2::fill(1, 2, 3);
-  REQUIRE(torch::allclose(auto_3, auto_3_correct));
+  REQUIRE(torch::allclose(*auto_3, auto_3_correct));
 
-  const auto & auto_6 = Factory::get_object<R2>("Tensors", "6");
+  const auto auto_6 = Factory::get_object_ptr<R2>("Tensors", "6");
   const auto auto_6_correct = R2::fill(1, 2, 3, 4, 5, 6);
-  REQUIRE(torch::allclose(auto_6, auto_6_correct));
+  REQUIRE(torch::allclose(*auto_6, auto_6_correct));
 
-  const auto & auto_9 = Factory::get_object<R2>("Tensors", "9");
+  const auto auto_9 = Factory::get_object_ptr<R2>("Tensors", "9");
   const auto auto_9_correct = R2::fill(1, 2, 3, 4, 5, 6, 7, 8, 9);
-  REQUIRE(torch::allclose(auto_9, auto_9_correct));
+  REQUIRE(torch::allclose(*auto_9, auto_9_correct));
 }

@@ -33,15 +33,15 @@ TEST_CASE("FillSR2", "[tensors/user_tensors]")
 {
   load_model("unit/tensors/user_tensors/test_FillSR2.i");
 
-  const auto & auto_1 = Factory::get_object<SR2>("Tensors", "1");
+  const auto auto_1 = Factory::get_object_ptr<SR2>("Tensors", "1");
   const auto auto_1_correct = SR2::fill(1);
-  REQUIRE(torch::allclose(auto_1, auto_1_correct));
+  REQUIRE(torch::allclose(*auto_1, auto_1_correct));
 
-  const auto & auto_3 = Factory::get_object<SR2>("Tensors", "3");
+  const auto auto_3 = Factory::get_object_ptr<SR2>("Tensors", "3");
   const auto auto_3_correct = SR2::fill(1, 2, 3);
-  REQUIRE(torch::allclose(auto_3, auto_3_correct));
+  REQUIRE(torch::allclose(*auto_3, auto_3_correct));
 
-  const auto & auto_6 = Factory::get_object<SR2>("Tensors", "6");
+  const auto auto_6 = Factory::get_object_ptr<SR2>("Tensors", "6");
   const auto auto_6_correct = SR2::fill(1, 2, 3, 4, 5, 6);
-  REQUIRE(torch::allclose(auto_6, auto_6_correct));
+  REQUIRE(torch::allclose(*auto_6, auto_6_correct));
 }

@@ -35,9 +35,9 @@ TEST_CASE("IdentityBatchTensor", "[tensors/user_tensors]")
 
   SECTION("IdentityBatchTensor")
   {
-    const auto & a = Factory::get_object<BatchTensor>("Tensors", "a");
-    REQUIRE(a.batch_sizes() == TorchShape{2, 1});
-    REQUIRE(a.base_sizes() == TorchShape{12, 12});
-    REQUIRE(torch::allclose(a, BatchTensor::identity({2, 1}, 12, default_tensor_options())));
+    const auto a = Factory::get_object_ptr<BatchTensor>("Tensors", "a");
+    REQUIRE(a->batch_sizes() == TorchShape{2, 1});
+    REQUIRE(a->base_sizes() == TorchShape{12, 12});
+    REQUIRE(torch::allclose(*a, BatchTensor::identity({2, 1}, 12, default_tensor_options())));
   }
 }

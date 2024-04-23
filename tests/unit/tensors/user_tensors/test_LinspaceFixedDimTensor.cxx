@@ -33,16 +33,16 @@ using namespace neml2;
 #define test_LinspaceFixedDimTensor(tensor_type, tensor_name, batch_shape, nstep, dim)             \
   SECTION("Linspace" #tensor_type)                                                                 \
   {                                                                                                \
-    const auto & tensor_name = Factory::get_object<tensor_type>("Tensors", #tensor_name);          \
-    const auto & tensor_name##_start =                                                             \
-        Factory::get_object<tensor_type>("Tensors", #tensor_name "0");                             \
-    const auto & tensor_name##_end =                                                               \
-        Factory::get_object<tensor_type>("Tensors", #tensor_name "1");                             \
+    const auto tensor_name = Factory::get_object_ptr<tensor_type>("Tensors", #tensor_name);        \
+    const auto tensor_name##_start =                                                               \
+        Factory::get_object_ptr<tensor_type>("Tensors", #tensor_name "0");                         \
+    const auto tensor_name##_end =                                                                 \
+        Factory::get_object_ptr<tensor_type>("Tensors", #tensor_name "1");                         \
     const auto tensor_name##_correct =                                                             \
-        tensor_type::linspace(tensor_name##_start, tensor_name##_end, nstep, dim);                 \
-    REQUIRE(tensor_name.batch_sizes() == batch_shape);                                             \
-    REQUIRE(tensor_name.base_sizes() == tensor_type::const_base_sizes);                            \
-    REQUIRE(torch::allclose(tensor_name, tensor_name##_correct));                                  \
+        tensor_type::linspace(*tensor_name##_start, *tensor_name##_end, nstep, dim);               \
+    REQUIRE(tensor_name->batch_sizes() == batch_shape);                                            \
+    REQUIRE(tensor_name->base_sizes() == tensor_type::const_base_sizes);                           \
+    REQUIRE(torch::allclose(*tensor_name, tensor_name##_correct));                                 \
   }                                                                                                \
   static_assert(true)
 

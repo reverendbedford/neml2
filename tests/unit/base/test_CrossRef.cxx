@@ -35,14 +35,14 @@ TEST_CASE("CrossRef", "[base]")
   {
     load_model("unit/base/test_CrossRef_Scalar.i");
 
-    const auto & auto_3 = Factory::get_object<SR2>("Tensors", "auto_3_crossref");
+    const auto auto_3 = Factory::get_object_ptr<SR2>("Tensors", "auto_3_crossref");
 
     const auto scalar1 = Scalar(torch::tensor({1, 2, 3, 4, 5}, default_tensor_options()), 1);
     const auto scalar2 = Scalar(torch::tensor({5, 6, 7, 8, 9}, default_tensor_options()), 1);
     const auto scalar3 = Scalar(torch::tensor({-1, -2, -3, -4, -5}, default_tensor_options()), 1);
     const auto auto_3_correct = SR2::fill(scalar1, scalar2, scalar3);
 
-    REQUIRE(torch::allclose(auto_3, auto_3_correct));
+    REQUIRE(torch::allclose(*auto_3, auto_3_correct));
   }
 
   SECTION("Scalar operator=")
