@@ -57,9 +57,13 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.8"
       - uses: jwlawson/actions-setup-cmake@v2
         with:
           cmake-version: "3.23"
+      - run: pip install torch==2.2.1
       - run: |
           cmake \
             -DCMAKE_BUILD_TYPE=${{ matrix.btype }} \
@@ -102,6 +106,13 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.8"
+      - uses: jwlawson/actions-setup-cmake@v2
+        with:
+          cmake-version: "3.23"
+      - run: pip install torch==2.2.1
       - run: |
           cmake \
             -DCMAKE_BUILD_TYPE=${{ matrix.btype }} \
@@ -124,6 +135,13 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.8"
+      - uses: jwlawson/actions-setup-cmake@v2
+        with:
+          cmake-version: "3.23"
+      - run: pip install torch==2.2.1
       - run: sudo apt install lcov
       - run: |
           cmake \
@@ -152,6 +170,13 @@ jobs:
         with:
           submodules: recursive
           path: neml2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.8"
+      - uses: jwlawson/actions-setup-cmake@v2
+        with:
+          cmake-version: "3.23"
+      - run: pip install torch==2.2.1
       - name: Create a source file for testing purposes
         run: |
           echo -e "\
