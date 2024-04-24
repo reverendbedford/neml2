@@ -21,18 +21,16 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-#include <catch2/catch.hpp>
-#include <fstream>
 
 #include "neml2/base/Registry.h"
+#include <fstream>
 
-using namespace neml2;
-
-TEST_CASE("Registry", "[base]")
+int
+main()
 {
-  SECTION("syntax")
-  {
-    std::ofstream out("syntax.yml");
-    Registry::print(out);
-  }
+  std::ofstream syntax_file;
+  syntax_file.open("syntax.txt");
+  neml2::Registry::print(syntax_file);
+  syntax_file.close();
+  return 0;
 }

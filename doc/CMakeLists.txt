@@ -38,11 +38,14 @@ configure_file(
   ${NEML2_BINARY_DIR}/doc/DoxyfileLATEX.sh
 )
 
+# Build a dummy program to extract all the syntax
+add_executable(syntax syntax.cxx)
+target_link_libraries(syntax PRIVATE neml2)
 add_custom_target(doc-syntax
-  DEPENDS unit_tests
+  DEPENDS syntax
   WORKING_DIRECTORY ${NEML2_BINARY_DIR}/doc
-  COMMAND ${NEML2_BINARY_DIR}/tests/unit_tests Registry -c syntax -r compact
-  COMMAND ${Python_EXECUTABLE} ${NEML2_SOURCE_DIR}/scripts/syntax_to_md.py syntax.yml content/_99_syntax.md
+  COMMAND ${NEML2_BINARY_DIR}/doc/syntax
+  COMMAND ${Python_EXECUTABLE} ${NEML2_SOURCE_DIR}/scripts/syntax_to_md.py syntax.txt content/_99_syntax.md
   COMMENT "Generate NEML2 syntax and convert to markdown"
   VERBATIM
 )
