@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.23)
 
-project(NEML2 LANGUAGES CXX)
+project(NEML2 VERSION 1.3.1 LANGUAGES CXX)
 
 # Setup modules
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${NEML2_SOURCE_DIR}/cmake/Modules/")
