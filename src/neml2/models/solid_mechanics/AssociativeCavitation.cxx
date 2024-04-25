@@ -22,33 +22,52 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
-
-#include "neml2/models/Model.h"
+#include "neml2/models/solid_mechanics/AssociativeCavitation.h"
 
 namespace neml2
 {
-template <typename T>
-class SumModel : public Model
+register_NEML2_object(AssociativeCavitation);
+
+OptionSet
+AssociativeCavitation::expected_options()
 {
-public:
-  static OptionSet expected_options();
+  OptionSet options = Model::expected_options();
+  options.set<VariableName>("flow_rate") = VariableName("state", "internal", "gamma_rate");
+  options.set<VariableName>("cavitation_direction") = VariableName("state", "internal", "Nf");
+  options.set<VariableName>("cavitation_rate") = VariableName("state", "internal", "f_rate");
+  return options;
+}
 
-  SumModel(const OptionSet & options);
+AssociativeCavitation::AssociativeCavitation(const OptionSet & options)
+  : Model(options),
+    _gamma_dot(declare_input_variable<Scalar>("flow_rate")),
+    _Nf(declare_input_variable<Scalar>("cavitation_direction")),
+    _f_dot(declare_output_variable<Scalar>("cavitation_rate"))
+{
+}
 
-protected:
-  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+void
+AssociativeCavitation::set_value(bool out, bool dout_din, bool d2out_din2)
+{
+  // For associative flow,
+  // f_dot = - gamma_dot * Nf
+  //    Nf = dfp/df
 
-  /// Sum of all the input variables
-  Variable<T> & _to;
+  if (out)
+    _f_dot = -_gamma_dot * _Nf;
 
-  /// The input variables (to be summed)
-  std::vector<const Variable<T> *> _from;
+  if (dout_din)
+  {
+    _f_dot.d(_gamma_dot) = -_Nf;
+    _f_dot.d(_Nf) = -_gamma_dot;
+  }
 
-  /// Scaling coefficient for each term
-  std::vector<const Scalar *> _coefs;
-};
-
-typedef SumModel<Scalar> ScalarSumModel;
-typedef SumModel<SR2> SR2SumModel;
+  if (d2out_din2)
+  {
+    // I don't know when this will be useful, but since it's easy...
+    auto I = Scalar::identity_map(options());
+    _f_dot.d(_gamma_dot, _Nf) = -I;
+    _f_dot.d(_Nf, _gamma_dot) = -I;
+  }
+}
 } // namespace neml2

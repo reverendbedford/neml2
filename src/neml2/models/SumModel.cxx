@@ -37,6 +37,7 @@ SumModel<T>::expected_options()
   OptionSet options = Model::expected_options();
   options.set<std::vector<VariableName>>("from_var");
   options.set<VariableName>("to_var");
+  options.set<std::vector<CrossRef<Scalar>>>("coefficients") = {};
   return options;
 }
 
@@ -47,23 +48,45 @@ SumModel<T>::SumModel(const OptionSet & options)
 {
   for (auto fv : options.get<std::vector<VariableName>>("from_var"))
     _from.push_back(&declare_input_variable<T>(fv));
+
+  // The number of coefficients can be 0, 1, or N
+  //  - 0: The _coefs vector will be filled with ones
+  //  - 1: The _coefs vector will be filled with _coefs[0]
+  //  - N: N must be equal to the length of _from
+  const auto coefs_in = options.get<std::vector<CrossRef<Scalar>>>("coefficients");
+  const auto N = _from.size();
+  if (coefs_in.size() == 0)
+    _coefs = std::vector<const Scalar *>(
+        N, &declare_parameter("c", Scalar(1.0, default_tensor_options())));
+  else if (coefs_in.size() == 1)
+    _coefs = std::vector<const Scalar *>(N, &declare_parameter("c", Scalar(coefs_in[0])));
+  else
+  {
+    neml_assert(coefs_in.size() == N,
+                "Number of coefficients must be 0, 1, or N, where N is the number of 'from_var'.");
+    _coefs.resize(N);
+    for (size_t i = 0; i < N; i++)
+      _coefs[i] = &declare_parameter("c_" + utils::stringify(i), Scalar(coefs_in[i]));
+  }
 }
 
 template <typename T>
 void
 SumModel<T>::set_value(bool out, bool dout_din, bool d2out_din2)
 {
+  const auto N = _from.size();
+
   if (out)
   {
     auto sum = T::zeros(_to.batch_sizes(), options());
-    for (auto fv : _from)
-      sum += *fv;
+    for (size_t i = 0; i < N; i++)
+      sum += (*_coefs[i]) * (*_from[i]);
     _to = sum;
   }
 
   if (dout_din)
-    for (auto fv : _from)
-      _to.d(*fv) = T::identity_map(options());
+    for (size_t i = 0; i < N; i++)
+      _to.d(*_from[i]) = (*_coefs[i]) * T::identity_map(options());
 
   if (d2out_din2)
   {

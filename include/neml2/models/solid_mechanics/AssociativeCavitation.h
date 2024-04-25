@@ -28,27 +28,22 @@
 
 namespace neml2
 {
-template <typename T>
-class SumModel : public Model
+class AssociativeCavitation : public Model
 {
 public:
   static OptionSet expected_options();
 
-  SumModel(const OptionSet & options);
+  AssociativeCavitation(const OptionSet & options);
 
 protected:
   void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
-  /// Sum of all the input variables
-  Variable<T> & _to;
+  const Variable<Scalar> & _gamma_dot;
 
-  /// The input variables (to be summed)
-  std::vector<const Variable<T> *> _from;
+  /// Cavitation ("flow") direction
+  const Variable<Scalar> & _Nf;
 
-  /// Scaling coefficient for each term
-  std::vector<const Scalar *> _coefs;
+  /// Cavitation growth rate
+  Variable<Scalar> & _f_dot;
 };
-
-typedef SumModel<Scalar> ScalarSumModel;
-typedef SumModel<SR2> SR2SumModel;
 } // namespace neml2

@@ -22,33 +22,42 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
-
-#include "neml2/models/Model.h"
+#include "neml2/models/solid_mechanics/OlevskySinteringStress.h"
 
 namespace neml2
 {
-template <typename T>
-class SumModel : public Model
+register_NEML2_object(OlevskySinteringStress);
+
+OptionSet
+OlevskySinteringStress::expected_options()
 {
-public:
-  static OptionSet expected_options();
+  OptionSet options = Model::expected_options();
+  options.set<VariableName>("sintering_stress") = VariableName("state", "internal", "ss");
+  options.set<VariableName>("void_fraction") = VariableName("state", "internal", "f");
+  options.set<CrossRef<Scalar>>("surface_tension");
+  options.set<CrossRef<Scalar>>("particle_radius");
+  return options;
+}
 
-  SumModel(const OptionSet & options);
+OlevskySinteringStress::OlevskySinteringStress(const OptionSet & options)
+  : Model(options),
+    _s(declare_output_variable<Scalar>("sintering_stress")),
+    _phi(declare_input_variable<Scalar>("void_fraction")),
+    _gamma(declare_parameter<Scalar>("gamma", "surface_tension")),
+    _r(declare_parameter<Scalar>("r", "particle_radius"))
+{
+}
 
-protected:
-  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+void
+OlevskySinteringStress::set_value(bool out, bool dout_din, bool d2out_din2)
+{
+  if (out)
+    _s = 3 * _gamma * _phi * _phi / _r;
 
-  /// Sum of all the input variables
-  Variable<T> & _to;
+  if (dout_din)
+    _s.d(_phi) = 6 * _gamma * _phi / _r;
 
-  /// The input variables (to be summed)
-  std::vector<const Variable<T> *> _from;
-
-  /// Scaling coefficient for each term
-  std::vector<const Scalar *> _coefs;
-};
-
-typedef SumModel<Scalar> ScalarSumModel;
-typedef SumModel<SR2> SR2SumModel;
+  if (d2out_din2)
+    _s.d(_phi, _phi) = 6 * _gamma / _r;
+}
 } // namespace neml2
