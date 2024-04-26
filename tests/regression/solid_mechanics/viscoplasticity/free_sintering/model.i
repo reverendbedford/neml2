@@ -92,8 +92,16 @@ nbatch = 20
     saturated_hardening = 5
     saturation_rate = 1.2
   []
+  [eigen_strain]
+    type = ThermalEigenStrain
+    reference_temperature = 300
+    CTE = 1e-6
+  []
   [elastic_strain]
-    type = ElasticStrain
+    type = SR2SumModel
+    to_var = 'state/internal/Ee'
+    from_var = 'forces/E state/internal/Ep forces/Eg'
+    coefficients = '1 -1 -1'
   []
   [elasticity]
     type = LinearIsotropicElasticity
@@ -193,7 +201,7 @@ nbatch = 20
   []
   [model]
     type = ComposedModel
-    models = 'return_map elastic_strain elasticity'
+    models = 'eigen_strain return_map elastic_strain elasticity'
     additional_outputs = 'state/internal/Ep state/internal/ep state/internal/f'
   []
 []
