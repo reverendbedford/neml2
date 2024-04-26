@@ -22,28 +22,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
-
-#include "neml2/models/Model.h"
-#include "neml2/tensors/SR2.h"
+#include "neml2/models/solid_mechanics/Eigenstrain.h"
 
 namespace neml2
 {
-class EigenStrain : public Model
+OptionSet
+Eigenstrain::expected_options()
 {
-public:
-  static OptionSet expected_options();
+  OptionSet options = Model::expected_options();
+  options.set<VariableName>("eigenstrain") = VariableName("forces", "Eg");
+  return options;
+}
 
-  EigenStrain(const OptionSet & options);
-
-protected:
-  /// Whether the eigen strain is defiend in rate form
-  const bool _rate_form;
-
-  /// Name of the eigen strain. If _rate_form is true, "_rate" is appended.
-  const VariableName _eg_name;
-
-  /// Eigen strain
-  Variable<SR2> & _eg;
-};
+Eigenstrain::Eigenstrain(const OptionSet & options)
+  : Model(options),
+    _eg(declare_output_variable<SR2>("eigenstrain"))
+{
+}
 } // namespace neml2

@@ -92,8 +92,8 @@ nbatch = 20
     saturated_hardening = 5
     saturation_rate = 1.2
   []
-  [eigen_strain]
-    type = ThermalEigenStrain
+  [eigenstrain]
+    type = ThermalEigenstrain
     reference_temperature = 300
     CTE = 1e-6
   []
@@ -201,7 +201,7 @@ nbatch = 20
   []
   [model]
     type = ComposedModel
-    models = 'eigen_strain return_map elastic_strain elasticity'
+    models = 'eigenstrain return_map elastic_strain elasticity'
     additional_outputs = 'state/internal/Ep state/internal/ep state/internal/f'
   []
 []

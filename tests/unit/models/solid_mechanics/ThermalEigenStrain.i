@@ -19,7 +19,7 @@
 
 [Models]
   [model]
-    type = ThermalEigenStrain
+    type = ThermalEigenstrain
     reference_temperature = 300
     CTE = 1e-5
   []

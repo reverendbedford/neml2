@@ -22,24 +22,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/models/solid_mechanics/ThermalEigenStrain.h"
+#include "neml2/models/solid_mechanics/ThermalEigenstrain.h"
 
 namespace neml2
 {
-register_NEML2_object(ThermalEigenStrain);
+register_NEML2_object(ThermalEigenstrain);
 
 OptionSet
-ThermalEigenStrain::expected_options()
+ThermalEigenstrain::expected_options()
 {
-  OptionSet options = EigenStrain::expected_options();
+  OptionSet options = Eigenstrain::expected_options();
   options.set<VariableName>("temperature") = VariableName("forces", "T");
   options.set<CrossRef<Scalar>>("reference_temperature");
   options.set<CrossRef<Scalar>>("CTE");
   return options;
 }
 
-ThermalEigenStrain::ThermalEigenStrain(const OptionSet & options)
-  : EigenStrain(options),
+ThermalEigenstrain::ThermalEigenstrain(const OptionSet & options)
+  : Eigenstrain(options),
     _T(declare_input_variable<Scalar>("temperature")),
     _T0(declare_parameter<Scalar>("T0", "reference_temperature")),
     _alpha(declare_parameter<Scalar>("alpha", "CTE"))
@@ -47,7 +47,7 @@ ThermalEigenStrain::ThermalEigenStrain(const OptionSet & options)
 }
 
 void
-ThermalEigenStrain::set_value(bool out, bool dout_din, bool d2out_din2)
+ThermalEigenstrain::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   if (out)
     _eg = _alpha * (_T - _T0) * SR2::identity(options());

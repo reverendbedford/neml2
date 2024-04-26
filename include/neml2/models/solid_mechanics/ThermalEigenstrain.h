@@ -24,16 +24,16 @@
 
 #pragma once
 
-#include "neml2/models/solid_mechanics/EigenStrain.h"
+#include "neml2/models/solid_mechanics/Eigenstrain.h"
 
 namespace neml2
 {
-class ThermalEigenStrain : public EigenStrain
+class ThermalEigenstrain : public Eigenstrain
 {
 public:
   static OptionSet expected_options();
 
-  ThermalEigenStrain(const OptionSet & options);
+  ThermalEigenstrain(const OptionSet & options);
 
 protected:
   void set_value(bool, bool, bool) override;
