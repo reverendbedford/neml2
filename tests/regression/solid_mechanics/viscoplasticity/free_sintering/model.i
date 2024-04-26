@@ -1,4 +1,4 @@
-nbatch = 1
+nbatch = 20
 
 [Tensors]
   [end_time]
@@ -11,6 +11,24 @@ nbatch = 1
     type = LinspaceScalar
     start = 0
     end = end_time
+    nstep = 100
+  []
+  [start_temperature]
+    type = LinspaceScalar
+    start = 300
+    end = 300
+    nstep = ${nbatch}
+  []
+  [end_temperature]
+    type = LinspaceScalar
+    start = 1800
+    end = 1800
+    nstep = ${nbatch}
+  []
+  [temperatures]
+    type = LinspaceScalar
+    start = start_temperature
+    end = end_temperature
     nstep = 100
   []
   [exx]
@@ -50,6 +68,7 @@ nbatch = 1
     model = 'model'
     times = 'times'
     prescribed_strains = 'strains'
+    prescribed_temperatures = 'temperatures'
     ic_scalar_names = 'state/internal/f'
     ic_scalar_values = 'f0'
     save_as = 'result.pt'
@@ -107,17 +126,24 @@ nbatch = 1
     from_var = 'state/internal/sh state/internal/ss'
     coefficients = '1 -1'
   []
+  [q1]
+    type = ArrheniusParameter
+    temperature = 'forces/T'
+    reference_value = 500
+    activation_energy = 5e4
+    ideal_gas_constant = 8.314
+  []
   [yield]
     type = GTNYieldFunction
     yield_stress = 60.0
-    q1 = 10
+    q1 = 'q1'
     q2 = 1.0
     q3 = 1.57
     isotropic_hardening = 'state/internal/k'
   []
   [flow]
     type = ComposedModel
-    models = 'j2 i1 ss sp yield'
+    models = 'q1 j2 i1 ss sp yield'
   []
   [flow_rate]
     type = PerzynaPlasticFlowRate
