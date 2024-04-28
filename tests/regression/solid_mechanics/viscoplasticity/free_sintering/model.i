@@ -1,4 +1,5 @@
-nbatch = 20
+nbatch = 10
+nstep = 100
 
 [Tensors]
   [end_time]
@@ -11,7 +12,7 @@ nbatch = 20
     type = LinspaceScalar
     start = 0
     end = end_time
-    nstep = 100
+    nstep = ${nstep}
   []
   [start_temperature]
     type = LinspaceScalar
@@ -29,7 +30,7 @@ nbatch = 20
     type = LinspaceScalar
     start = start_temperature
     end = end_temperature
-    nstep = 100
+    nstep = ${nstep}
   []
   [exx]
     type = FullScalar
@@ -54,11 +55,17 @@ nbatch = 20
     type = LinspaceSR2
     start = 0
     end = max_strain
-    nstep = 100
+    nstep = ${nstep}
   []
   [f0]
     type = Scalar
     values = '0.36'
+  []
+  [gamma]
+    type = LinspaceScalar
+    start = 0
+    end = 150
+    nstep = ${nbatch}
   []
 []
 
@@ -92,6 +99,11 @@ nbatch = 20
     saturated_hardening = 5
     saturation_rate = 1.2
   []
+  [sintering_stress]
+    type = OlevskySinteringStress
+    surface_tension = 'gamma'
+    particle_radius = 3e-4
+  []
   [eigenstrain]
     type = ThermalEigenstrain
     reference_temperature = 300
@@ -117,16 +129,11 @@ nbatch = 20
     tensor = 'state/internal/M'
     invariant = 'state/internal/se'
   []
-  [i1]
+  [sh]
     type = SR2Invariant
     invariant_type = 'I1'
     tensor = 'state/internal/M'
     invariant = 'state/internal/sh'
-  []
-  [ss]
-    type = OlevskySinteringStress
-    surface_tension = 5e-3
-    particle_radius = 3e-5
   []
   [sp]
     type = ScalarSumModel
@@ -137,7 +144,7 @@ nbatch = 20
   [q1]
     type = ArrheniusParameter
     temperature = 'forces/T'
-    reference_value = 500
+    reference_value = 8000
     activation_energy = 5e4
     ideal_gas_constant = 8.314
   []
@@ -145,25 +152,25 @@ nbatch = 20
     type = GTNYieldFunction
     yield_stress = 60.0
     q1 = 'q1'
-    q2 = 1.0
+    q2 = 0.01
     q3 = 1.57
     isotropic_hardening = 'state/internal/k'
   []
   [flow]
     type = ComposedModel
-    models = 'q1 j2 i1 ss sp yield'
+    models = 'q1 j2 sh sp yield'
   []
   [flow_rate]
     type = PerzynaPlasticFlowRate
-    reference_stress = 1000
+    reference_stress = 500
     exponent = 2
   []
   [normality]
     type = Normality
     model = 'flow'
     function = 'state/internal/fp'
-    from = 'state/internal/M state/internal/k state/internal/f'
-    to = 'state/internal/NM state/internal/Nk state/internal/Nf'
+    from = 'state/internal/M state/internal/k'
+    to = 'state/internal/NM state/internal/Nk'
   []
   [Eprate]
     type = AssociativePlasticFlow
@@ -172,7 +179,7 @@ nbatch = 20
     type = AssociativeIsotropicPlasticHardening
   []
   [voidrate]
-    type = AssociativeCavitation
+    type = GursonCavitation
   []
   [integrate_Ep]
     type = SR2BackwardEulerTimeIntegration
@@ -188,7 +195,7 @@ nbatch = 20
   []
   [surface]
     type = ComposedModel
-    models = "isoharden elastic_strain elasticity
+    models = "isoharden sintering_stress elastic_strain elasticity
               mandel_stress flow flow_rate
               normality
               Eprate eprate voidrate
