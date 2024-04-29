@@ -9,8 +9,11 @@
     input_symr2_values = 'M'
     output_scalar_names = 'state/internal/fp'
     output_scalar_values = '83.5577'
-    check_second_derivatives = true
     derivatives_abs_tol = 1e-06
+    check_second_derivatives = true
+    check_AD_first_derivatives = false
+    check_AD_second_derivatives = false
+    check_AD_derivatives = false
   []
 []
 

@@ -35,37 +35,37 @@ TEST_CASE("UserFixedDimTensor", "[tensors/user_tensors]")
   {
     load_model("unit/tensors/user_tensors/test_UserFixedDimTensor.i");
 
-    const auto & user_Scalar = Factory::get_object<Scalar>("Tensors", "Scalar");
-    REQUIRE(user_Scalar.batch_sizes() == TorchShape{3, 2});
+    const auto user_Scalar = Factory::get_object_ptr<Scalar>("Tensors", "Scalar");
+    REQUIRE(user_Scalar->batch_sizes() == TorchShape{3, 2});
 
-    const auto & user_Vec = Factory::get_object<Vec>("Tensors", "Vec");
-    REQUIRE(user_Vec.batch_sizes() == TorchShape{3, 2});
+    const auto user_Vec = Factory::get_object_ptr<Vec>("Tensors", "Vec");
+    REQUIRE(user_Vec->batch_sizes() == TorchShape{3, 2});
 
-    const auto & user_Rot = Factory::get_object<Rot>("Tensors", "Rot");
-    REQUIRE(user_Rot.batch_sizes() == TorchShape{3, 2});
+    const auto user_Rot = Factory::get_object_ptr<Rot>("Tensors", "Rot");
+    REQUIRE(user_Rot->batch_sizes() == TorchShape{3, 2});
 
-    const auto & user_R2 = Factory::get_object<R2>("Tensors", "R2");
-    REQUIRE(user_R2.batch_sizes() == TorchShape{3, 2});
+    const auto user_R2 = Factory::get_object_ptr<R2>("Tensors", "R2");
+    REQUIRE(user_R2->batch_sizes() == TorchShape{3, 2});
 
-    const auto & user_SR2 = Factory::get_object<SR2>("Tensors", "SR2");
-    REQUIRE(user_SR2.batch_sizes() == TorchShape{3, 2});
+    const auto user_SR2 = Factory::get_object_ptr<SR2>("Tensors", "SR2");
+    REQUIRE(user_SR2->batch_sizes() == TorchShape{3, 2});
 
-    const auto & user_R3 = Factory::get_object<R3>("Tensors", "R3");
-    REQUIRE(user_R3.batch_sizes() == TorchShape{3, 2});
+    const auto user_R3 = Factory::get_object_ptr<R3>("Tensors", "R3");
+    REQUIRE(user_R3->batch_sizes() == TorchShape{3, 2});
 
-    const auto & user_SFR3 = Factory::get_object<SFR3>("Tensors", "SFR3");
-    REQUIRE(user_SFR3.batch_sizes() == TorchShape{3, 2});
+    const auto user_SFR3 = Factory::get_object_ptr<SFR3>("Tensors", "SFR3");
+    REQUIRE(user_SFR3->batch_sizes() == TorchShape{3, 2});
 
-    const auto & user_R4 = Factory::get_object<R4>("Tensors", "R4");
-    REQUIRE(user_R4.batch_sizes() == TorchShape{3, 2});
+    const auto user_R4 = Factory::get_object_ptr<R4>("Tensors", "R4");
+    REQUIRE(user_R4->batch_sizes() == TorchShape{3, 2});
 
-    const auto & user_SSR4 = Factory::get_object<SSR4>("Tensors", "SSR4");
-    REQUIRE(user_SSR4.batch_sizes() == TorchShape{3, 2});
+    const auto user_SSR4 = Factory::get_object_ptr<SSR4>("Tensors", "SSR4");
+    REQUIRE(user_SSR4->batch_sizes() == TorchShape{3, 2});
 
-    const auto & user_R5 = Factory::get_object<R5>("Tensors", "R5");
-    REQUIRE(user_R5.batch_sizes() == TorchShape{3, 2});
+    const auto user_R5 = Factory::get_object_ptr<R5>("Tensors", "R5");
+    REQUIRE(user_R5->batch_sizes() == TorchShape{3, 2});
 
-    const auto & user_SSFR5 = Factory::get_object<SSFR5>("Tensors", "SSFR5");
-    REQUIRE(user_SSFR5.batch_sizes() == TorchShape{3, 2});
+    const auto user_SSFR5 = Factory::get_object_ptr<SSFR5>("Tensors", "SSFR5");
+    REQUIRE(user_SSFR5->batch_sizes() == TorchShape{3, 2});
   }
 }

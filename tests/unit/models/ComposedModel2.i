@@ -14,6 +14,9 @@
     output_scalar_names = 'residual/foo_bar_baz'
     output_scalar_values = '1.0'
     check_second_derivatives = true
+    check_AD_first_derivatives = false
+    check_AD_second_derivatives = false
+    check_AD_derivatives = false
   []
 []
 

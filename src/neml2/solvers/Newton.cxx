@@ -45,8 +45,6 @@ Newton::Newton(const OptionSet & options)
 std::tuple<bool, size_t>
 Newton::solve(NonlinearSystem & system, BatchTensor & x)
 {
-  neml_assert_dbg(!x.requires_grad(), "The trial solution shall not contain any function graph.");
-
   // The initial residual for relative convergence check
   system.residual();
   auto nR = system.residual_norm();

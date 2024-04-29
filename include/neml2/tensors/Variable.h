@@ -64,6 +64,9 @@ public:
   /// Reinitialize variable views
   virtual void reinit_views(bool out, bool dout_din, bool d2out_din2);
 
+  /// Set requires_grad for the underlying storage
+  virtual void requires_grad_(bool req = true) = 0;
+
   /// Arguments
   const std::vector<VariableName> & args() const { return _args; }
 
@@ -79,8 +82,17 @@ public:
   /// Create a wrapper representing the second derivative d2y/dx2
   Derivative d(const VariableBase & x1, const VariableBase & x2);
 
-  /// Raw (flattened) variable value (view)
-  BatchTensor raw_value() const { return _raw_value; }
+  /// @{ Accessors for storage
+  const LabeledVector & value_storage() const;
+  const LabeledMatrix & derivative_storage() const;
+  const LabeledTensor3D & second_derivative_storage() const;
+  /// @}
+
+  /// Raw flattened variable value
+  const BatchTensor & raw_value() const { return _raw_value; }
+
+  /// Variable value of the logical shape
+  virtual const BatchTensor tensor() const = 0;
 
   /// Name of this variable
   const VariableName & name() const { return _name; }
@@ -161,6 +173,8 @@ public:
       _value = T(_raw_value.view(sizes()), batch_dim());
   }
 
+  virtual void requires_grad_(bool req = true) override { _value.requires_grad_(req); }
+
   virtual TorchShapeRef base_sizes() const override { return _base_sizes; }
 
   virtual TorchShapeRef sizes() const override { return _sizes; }
@@ -189,8 +203,11 @@ public:
                       val.batch_expand(batch_sizes()).base_reshape(base_sizes()));
   }
 
-  /// The variable value with the correct logical shape
+  /// Variable value of the logical shape
   const T & value() const { return _value; }
+
+  /// Variable value of the logical shape
+  virtual const BatchTensor tensor() const override { return _value; }
 
   /// Negation
   T operator-() const { return -_value; }
@@ -217,7 +234,7 @@ protected:
   /// Shape of this variable
   TorchShape _sizes;
 
-  /// Tensor value with the correct logical shape
+  /// Variable value of the logical shape
   T _value;
 };
 

@@ -77,6 +77,27 @@ VariableBase::reinit_views(bool out, bool dout_din, bool d2out_din2)
         _d2value_d[arg1][arg2] = (*_second_derivative_storage)(name(), arg1, arg2);
 }
 
+const LabeledVector &
+VariableBase::value_storage() const
+{
+  neml_assert_dbg(_value_storage, "Variable value storage not initialized.");
+  return *_value_storage;
+}
+
+const LabeledMatrix &
+VariableBase::derivative_storage() const
+{
+  neml_assert_dbg(_derivative_storage, "Variable derivative storage not initialized.");
+  return *_derivative_storage;
+}
+
+const LabeledTensor3D &
+VariableBase::second_derivative_storage() const
+{
+  neml_assert_dbg(_second_derivative_storage, "Variable 2nd derivative storage not initialized.");
+  return *_second_derivative_storage;
+}
+
 Derivative
 VariableBase::d(const VariableBase & x)
 {

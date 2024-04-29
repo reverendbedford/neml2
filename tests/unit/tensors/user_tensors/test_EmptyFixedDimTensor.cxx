@@ -33,9 +33,9 @@ using namespace neml2;
 #define test_EmptyFixedDimTensor(tensor_type, tensor_name, batch_shape)                            \
   SECTION("Empty" #tensor_type)                                                                    \
   {                                                                                                \
-    const auto & tensor_name = Factory::get_object<tensor_type>("Tensors", #tensor_name);          \
-    REQUIRE(tensor_name.batch_sizes() == batch_shape);                                             \
-    REQUIRE(tensor_name.base_sizes() == tensor_type::const_base_sizes);                            \
+    const auto tensor_name = Factory::get_object_ptr<tensor_type>("Tensors", #tensor_name);        \
+    REQUIRE(tensor_name->batch_sizes() == batch_shape);                                            \
+    REQUIRE(tensor_name->base_sizes() == tensor_type::const_base_sizes);                           \
   }                                                                                                \
   static_assert(true)
 

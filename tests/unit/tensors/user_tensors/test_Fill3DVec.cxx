@@ -33,15 +33,15 @@ TEST_CASE("Fill3DVec", "[tensors/user_tensors]")
 {
   load_model("unit/tensors/user_tensors/test_Fill3DVec.i");
 
-  const auto & valid_1 = Factory::get_object<Vec>("Tensors", "v1");
+  const auto valid_1 = Factory::get_object_ptr<Vec>("Tensors", "v1");
   const auto correct_1 = Vec::fill(1.0, 2.0, 3.0);
-  REQUIRE(torch::allclose(valid_1, correct_1));
+  REQUIRE(torch::allclose(*valid_1, correct_1));
 
-  const auto & valid_4 = Factory::get_object<Vec>("Tensors", "v4");
+  const auto valid_4 = Factory::get_object_ptr<Vec>("Tensors", "v4");
   const auto correct_4 =
       Vec(torch::tensor({{1.0, 2.0, 3.0}, {4.0, 5.0, 6.0}, {7.0, 8.0, 9.0}, {10.0, 11.0, 12.0}},
                         default_tensor_options()));
-  REQUIRE(torch::allclose(valid_4, correct_4));
+  REQUIRE(torch::allclose(*valid_4, correct_4));
 
-  REQUIRE_THROWS(Factory::get_object<Vec>("Tensors", "invalid"));
+  REQUIRE_THROWS(Factory::get_object_ptr<Vec>("Tensors", "invalid"));
 }

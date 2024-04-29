@@ -232,7 +232,7 @@ TransientDriver::apply_predictor()
 void
 TransientDriver::solve_step()
 {
-  _model.value();
+  _model.value(_in);
 }
 
 void

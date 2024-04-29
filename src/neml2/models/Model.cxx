@@ -248,6 +248,13 @@ Model::check_AD_limitation() const
 }
 
 void
+Model::input_requires_grad_(bool req)
+{
+  for (auto && [name, var] : input_views())
+    var.requires_grad_(req);
+}
+
+void
 Model::use_AD_derivatives(bool first, bool second)
 {
   _AD_1st_deriv = first;
@@ -290,6 +297,7 @@ LabeledVector
 Model::value(const LabeledVector & in)
 {
   set_input(in);
+  detach_and_zero(true, false, false);
   value();
   return get_output();
 }
@@ -298,6 +306,7 @@ std::tuple<LabeledVector, LabeledMatrix>
 Model::value_and_dvalue(const LabeledVector & in)
 {
   set_input(in);
+  detach_and_zero(true, true, false);
   value_and_dvalue();
   return {get_output(), get_doutput_dinput()};
 }
@@ -306,6 +315,7 @@ std::tuple<LabeledVector, LabeledMatrix, LabeledTensor3D>
 Model::value_and_dvalue_and_d2value(const LabeledVector & in)
 {
   set_input(in);
+  detach_and_zero(true, true, true);
   value_and_dvalue_and_d2value();
   return {get_output(), get_doutput_dinput(), get_d2output_dinput2()};
 }
@@ -313,7 +323,6 @@ Model::value_and_dvalue_and_d2value(const LabeledVector & in)
 void
 Model::value()
 {
-  detach_and_zero(true, false, false);
   set_value(true, false, false);
 }
 
@@ -323,16 +332,13 @@ Model::value_and_dvalue()
   neml_assert_dbg(requires_grad(),
                   "value_and_dvalue() is called but derivative storage hasn't been allocated.");
 
-  detach_and_zero(true, true, false);
-
   if (!_AD_1st_deriv)
     set_value(true, true, false);
   else
   {
-    input_storage().tensor().requires_grad_();
+    input_requires_grad_();
     set_value(true, false, false);
     extract_derivatives(/*retain_graph=*/true, /*create_graph=*/false, /*allow_unused=*/true);
-    input_storage().tensor().requires_grad_(false);
   }
 }
 
@@ -343,13 +349,11 @@ Model::value_and_dvalue_and_d2value()
                   "value_and_dvalue_and_d2value() is called but second derivative storage hasn't "
                   "been allocated.");
 
-  detach_and_zero(true, true, true);
-
   if (!_AD_2nd_deriv)
     set_value(true, true, true);
   else
   {
-    input_storage().tensor().requires_grad_();
+    input_requires_grad_();
 
     if (!_AD_1st_deriv)
       set_value(true, true, false);
@@ -361,8 +365,6 @@ Model::value_and_dvalue_and_d2value()
 
     extract_second_derivatives(
         /*retain_graph=*/true, /*create_graph=*/false, /*allow_unused=*/true);
-
-    input_storage().tensor().requires_grad_(false);
   }
 }
 
@@ -393,9 +395,15 @@ void
 Model::assemble(bool residual, bool Jacobian)
 {
   if (residual && !Jacobian)
+  {
+    detach_and_zero(true, false, false);
     value();
+  }
   else if (Jacobian)
+  {
+    detach_and_zero(true, true, false);
     value_and_dvalue();
+  }
 }
 
 void
@@ -407,14 +415,22 @@ Model::extract_derivatives(bool retain_graph, bool create_graph, bool allow_unus
     {
       auto grad_outputs = BatchTensor::zeros_like(output_storage());
       grad_outputs.index_put_({torch::indexing::Ellipsis, i}, 1.0);
-      auto jac_row = torch::autograd::grad({output_storage()},
-                                           {input_storage()},
-                                           {grad_outputs},
-                                           retain_graph,
-                                           create_graph,
-                                           allow_unused)[0];
-      if (jac_row.defined())
-        derivative_storage().base_index_put({i, torch::indexing::Slice()}, jac_row);
+      for (auto && [name, var] : input_views())
+      {
+        auto dyi_dvar = torch::autograd::grad({output_storage()},
+                                              {var.tensor()},
+                                              {grad_outputs},
+                                              retain_graph,
+                                              create_graph,
+                                              allow_unused)[0];
+
+        if (dyi_dvar.defined())
+        {
+          derivative_storage().base_index_put(
+              {i, input_axis().indices(name)},
+              dyi_dvar.reshape(utils::add_shapes(batch_sizes(), var.base_storage())));
+        }
+      }
     }
 }
 
@@ -428,14 +444,19 @@ Model::extract_second_derivatives(bool retain_graph, bool create_graph, bool all
       {
         auto grad_outputs = torch::zeros_like(derivative_storage());
         grad_outputs.index_put_({torch::indexing::Ellipsis, i, j}, 1.0);
-        auto jac_row = torch::autograd::grad({derivative_storage()},
-                                             {input_storage()},
-                                             {grad_outputs},
-                                             retain_graph,
-                                             create_graph,
-                                             allow_unused)[0];
-        if (jac_row.defined())
-          second_derivative_storage().base_index_put({i, j, torch::indexing::Slice()}, jac_row);
+        for (auto && [name, var] : input_views())
+        {
+          auto dydxij_dvar = torch::autograd::grad({derivative_storage()},
+                                                   {var.tensor()},
+                                                   {grad_outputs},
+                                                   retain_graph,
+                                                   create_graph,
+                                                   allow_unused)[0];
+          if (dydxij_dvar.defined())
+            second_derivative_storage().base_index_put(
+                {i, j, input_axis().indices(name)},
+                dydxij_dvar.reshape(utils::add_shapes(batch_sizes(), var.base_storage())));
+        }
       }
 }
 } // namespace neml2

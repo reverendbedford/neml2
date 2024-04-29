@@ -11,8 +11,9 @@
     input_rot_values = 'R'
     derivatives_rel_tol = 1e-4
     derivatives_abs_tol = 5e-6
-    check_AD_derivatives = false
+    check_AD_first_derivatives = false
     check_AD_second_derivatives = false
+    check_AD_derivatives = false
   []
 []
 
