@@ -151,7 +151,7 @@ nbatch = 20
     invariant = 'state/s'
   []
   [rom]
-    type = TorchScriptModel
+    type = TorchScriptFlowRate
     von_mises_stress = 'state/s'
     temperature = 'forces/T'
     internal_state_1 = 'state/G'

@@ -22,14 +22,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "TorchScriptModel.h"
+#include "TorchScriptFlowRate.h"
 
 using namespace neml2;
 
-register_NEML2_object(TorchScriptModel);
+register_NEML2_object(TorchScriptFlowRate);
 
 OptionSet
-TorchScriptModel::expected_options()
+TorchScriptFlowRate::expected_options()
 {
   auto options = Model::expected_options();
   // Model inputs
@@ -46,7 +46,7 @@ TorchScriptModel::expected_options()
   return options;
 }
 
-TorchScriptModel::TorchScriptModel(const OptionSet & options)
+TorchScriptFlowRate::TorchScriptFlowRate(const OptionSet & options)
   : Model(options),
     _s(declare_input_variable<Scalar>("von_mises_stress")),
     _T(declare_input_variable<Scalar>("temperature")),
@@ -61,10 +61,10 @@ TorchScriptModel::TorchScriptModel(const OptionSet & options)
 }
 
 void
-TorchScriptModel::reinit(TorchShapeRef batch_shape,
-                         int deriv_order,
-                         const torch::Device & device,
-                         const torch::Dtype & dtype)
+TorchScriptFlowRate::reinit(TorchShapeRef batch_shape,
+                            int deriv_order,
+                            const torch::Device & device,
+                            const torch::Dtype & dtype)
 {
   Model::reinit(batch_shape, deriv_order, device, dtype);
   _surrogate->to(device);
@@ -72,7 +72,7 @@ TorchScriptModel::reinit(TorchShapeRef batch_shape,
 }
 
 void
-TorchScriptModel::set_value(bool out, bool dout_din, bool d2out_din2)
+TorchScriptFlowRate::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   neml_assert_dbg(!dout_din || !d2out_din2,
                   "Only AD derivatives are currently supported for this model");

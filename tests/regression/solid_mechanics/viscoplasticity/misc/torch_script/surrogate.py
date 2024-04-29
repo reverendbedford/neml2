@@ -28,6 +28,19 @@ import torch
 
 
 class Surrogate(torch.nn.Module):
+    """
+    This model defines an arbitrary power-law plastic flow rate with two
+    additional internal variables. The internal variables (G and C) are made up
+    and do not necessarily have any physical meaning.
+
+    Most importantly, this model can represent a feed-forward neural network
+    without loss of generality:
+      - It has a bunch of parameters.
+      - It has a (nonlinear) forward operator that maps some input to
+        some output.
+      - The shapes of input and output are not necessarily the same.
+    """
+
     def __init__(self, dtype):
         super().__init__()
         self.A1 = torch.nn.Parameter(torch.tensor(5e-3, dtype=dtype))
@@ -41,6 +54,20 @@ class Surrogate(torch.nn.Module):
         self.C0 = torch.nn.Parameter(torch.tensor(4e-3, dtype=dtype))
 
     def forward(self, x):
+        """
+        The forward operator maps 4 inputs to 3 outputs.
+
+        The inputs are
+           s: von Mises stress
+           T: temperature
+           G: grain size
+           C: stoichiometry
+
+        The outputs are
+           ep_dot: rate of the equivalent plastic strain
+            G_dot: rate of grain growth
+            C_dot: reaction rate
+        """
         s = x[..., 0]
         T = x[..., 1]
         G = x[..., 2]
@@ -61,5 +88,12 @@ class Surrogate(torch.nn.Module):
 
 
 if __name__ == "__main__":
+    # Instantiate the model and trace it into a torch script.
+    # See the following pages for a gentle introduction to torch script:
+    #   https://pytorch.org/tutorials/beginner/Intro_to_TorchScript_tutorial.html
+    #   https://pytorch.org/docs/stable/jit.html
     surrogate = torch.jit.script(Surrogate(torch.float64))
+
+    # Write the torch script to disk. NEML2 can read this torch script as part
+    # of the material model.
     torch.jit.save(surrogate, "surrogate.pt")

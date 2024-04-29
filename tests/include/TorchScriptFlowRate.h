@@ -38,10 +38,10 @@ namespace neml2
  * example demonstrates the usage of pretrained machine learning model as part (or all) of the
  * material model.
  */
-class TorchScriptModel : public Model
+class TorchScriptFlowRate : public Model
 {
 public:
-  TorchScriptModel(const OptionSet & options);
+  TorchScriptFlowRate(const OptionSet & options);
 
   static OptionSet expected_options();
 
