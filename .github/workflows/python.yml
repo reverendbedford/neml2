@@ -52,7 +52,7 @@ jobs:
       - name: Install Python dependencies
         run: pip install -r requirements.txt
       - name: Install PyTorch
-        run: pip install torch==2.2.1
+        run: pip install torch==2.2.2
       - run: |
           cmake \
             -DCMAKE_BUILD_TYPE=Debug \

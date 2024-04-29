@@ -63,7 +63,7 @@ jobs:
       - uses: jwlawson/actions-setup-cmake@v2
         with:
           cmake-version: "3.23"
-      - run: pip install torch==2.2.1
+      - run: pip install torch==2.2.2
       - run: |
           cmake \
             -DCMAKE_BUILD_TYPE=${{ matrix.btype }} \
@@ -112,7 +112,7 @@ jobs:
       - uses: jwlawson/actions-setup-cmake@v2
         with:
           cmake-version: "3.23"
-      - run: pip install torch==2.2.1
+      - run: pip install torch==2.2.2
       - run: |
           cmake \
             -DCMAKE_BUILD_TYPE=${{ matrix.btype }} \
@@ -141,7 +141,7 @@ jobs:
       - uses: jwlawson/actions-setup-cmake@v2
         with:
           cmake-version: "3.23"
-      - run: pip install torch==2.2.1
+      - run: pip install torch==2.2.2
       - run: sudo apt install lcov
       - run: |
           cmake \
@@ -176,7 +176,7 @@ jobs:
       - uses: jwlawson/actions-setup-cmake@v2
         with:
           cmake-version: "3.23"
-      - run: pip install torch==2.2.1
+      - run: pip install torch==2.2.2
       - name: Create a source file for testing purposes
         run: |
           echo -e "\

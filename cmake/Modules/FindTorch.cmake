@@ -1,4 +1,4 @@
-set(PYTORCH_VERSION "2.2.1")
+set(PYTORCH_VERSION "2.2.2")
 
 # We will rely on FetchContent to download libTorch
 include(FetchContent)
