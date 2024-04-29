@@ -4,7 +4,7 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "neml2"
-version = "1.3.1"
+version = "1.4.0"
 authors = [
   { name = "Mark Messner", email = "messner@anl.gov" },
   { name = "Gary Hu", email = "thu@anl.gov" },
@@ -12,7 +12,7 @@ authors = [
 description = "GPU-enabled vectorized material modeling library"
 readme = "README.md"
 requires-python = ">=3.8"
-dependencies = ["torch==2.2.1"]
+dependencies = ["torch==2.2.2"]
 
 [tool.scikit-build]
 cmake.version = ">=3.23"
@@ -34,9 +34,9 @@ NEML2_DOC = "OFF"
 [tool.cibuildwheel]
 build = "cp38-* cp39-* cp310-* cp311-*"
 skip = "*-win32 *-manylinux_i686 *-musllinux*"
-before-build = "pip install numpy torch==2.2.1"
+before-build = "pip install numpy torch==2.2.2"
 build-verbosity = 1
-test-requires = "pytest numpy torch==2.2.1"
+test-requires = "pytest numpy torch==2.2.2"
 test-command = "pytest {project}/tests"
 
 [tool.cibuildwheel.macos.environment]
