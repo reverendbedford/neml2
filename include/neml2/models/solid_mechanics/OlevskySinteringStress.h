@@ -28,27 +28,33 @@
 
 namespace neml2
 {
-template <typename T>
-class SumModel : public Model
+/**
+ * The Olevsky-Skorohod sintering stress model taken from
+ *
+ * > Olevsky, Eugene A. "Theory of sintering: from discrete to continuum." Materials Science and
+ * > Engineering: R: Reports 23.2 (1998): 41-100.
+ *
+ */
+class OlevskySinteringStress : public Model
 {
 public:
   static OptionSet expected_options();
 
-  SumModel(const OptionSet & options);
+  OlevskySinteringStress(const OptionSet & options);
 
 protected:
   void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
-  /// Sum of all the input variables
-  Variable<T> & _to;
+  /// Sintering stress
+  Variable<Scalar> & _s;
 
-  /// The input variables (to be summed)
-  std::vector<const Variable<T> *> _from;
+  /// Void fraction
+  const Variable<Scalar> & _phi;
 
-  /// Scaling coefficient for each term
-  std::vector<const Scalar *> _coefs;
+  /// Surface tension
+  const Scalar & _gamma;
+
+  /// Particle radius
+  const Scalar & _r;
 };
-
-typedef SumModel<Scalar> ScalarSumModel;
-typedef SumModel<SR2> SR2SumModel;
 } // namespace neml2

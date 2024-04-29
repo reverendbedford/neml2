@@ -22,33 +22,42 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
-
-#include "neml2/models/Model.h"
+#include "neml2/models/solid_mechanics/ThermalEigenstrain.h"
 
 namespace neml2
 {
-template <typename T>
-class SumModel : public Model
+register_NEML2_object(ThermalEigenstrain);
+
+OptionSet
+ThermalEigenstrain::expected_options()
 {
-public:
-  static OptionSet expected_options();
+  OptionSet options = Eigenstrain::expected_options();
+  options.set<VariableName>("temperature") = VariableName("forces", "T");
+  options.set<CrossRef<Scalar>>("reference_temperature");
+  options.set<CrossRef<Scalar>>("CTE");
+  return options;
+}
 
-  SumModel(const OptionSet & options);
+ThermalEigenstrain::ThermalEigenstrain(const OptionSet & options)
+  : Eigenstrain(options),
+    _T(declare_input_variable<Scalar>("temperature")),
+    _T0(declare_parameter<Scalar>("T0", "reference_temperature")),
+    _alpha(declare_parameter<Scalar>("alpha", "CTE"))
+{
+}
 
-protected:
-  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+void
+ThermalEigenstrain::set_value(bool out, bool dout_din, bool d2out_din2)
+{
+  if (out)
+    _eg = _alpha * (_T - _T0) * SR2::identity(options());
 
-  /// Sum of all the input variables
-  Variable<T> & _to;
+  if (dout_din)
+    _eg.d(_T) = _alpha * SR2::identity(options());
 
-  /// The input variables (to be summed)
-  std::vector<const Variable<T> *> _from;
-
-  /// Scaling coefficient for each term
-  std::vector<const Scalar *> _coefs;
-};
-
-typedef SumModel<Scalar> ScalarSumModel;
-typedef SumModel<SR2> SR2SumModel;
+  if (d2out_din2)
+  {
+    // zero
+  }
+}
 } // namespace neml2

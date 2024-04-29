@@ -22,33 +22,49 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
-
-#include "neml2/models/Model.h"
+#include "neml2/models/ArrheniusParameter.h"
 
 namespace neml2
 {
-template <typename T>
-class SumModel : public Model
+register_NEML2_object(ArrheniusParameter);
+
+OptionSet
+ArrheniusParameter::expected_options()
 {
-public:
-  static OptionSet expected_options();
+  OptionSet options = NonlinearParameter<Scalar>::expected_options();
+  options.set<CrossRef<Scalar>>("reference_value");
+  options.set<CrossRef<Scalar>>("activation_energy");
+  options.set<Real>("ideal_gas_constant");
+  options.set<VariableName>("temperature") = VariableName("forces", "T");
+  return options;
+}
 
-  SumModel(const OptionSet & options);
+ArrheniusParameter::ArrheniusParameter(const OptionSet & options)
+  : NonlinearParameter<Scalar>(options),
+    _p0(declare_parameter<Scalar>("p0", "reference_value")),
+    _Q(declare_parameter<Scalar>("Q", "activation_energy")),
+    _R(options.get<Real>("ideal_gas_constant")),
+    _T(declare_input_variable<Scalar>("temperature"))
+{
+}
 
-protected:
-  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+void
+ArrheniusParameter::set_value(bool out, bool dout_din, bool d2out_din2)
+{
+  const auto p = _p0 * math::exp(-_Q / _R / _T);
 
-  /// Sum of all the input variables
-  Variable<T> & _to;
+  if (out)
+    _p = p;
 
-  /// The input variables (to be summed)
-  std::vector<const Variable<T> *> _from;
+  if (dout_din || d2out_din2)
+  {
+    const auto dp_dT = p * _Q / _R / _T / _T;
 
-  /// Scaling coefficient for each term
-  std::vector<const Scalar *> _coefs;
-};
+    if (dout_din)
+      _p.d(_T) = dp_dT;
 
-typedef SumModel<Scalar> ScalarSumModel;
-typedef SumModel<SR2> SR2SumModel;
+    if (d2out_din2)
+      _p.d(_T, _T) = dp_dT * _Q / _R / _T / _T - 2 * p * _Q / _R / _T / _T / _T;
+  }
+}
 } // namespace neml2

@@ -24,31 +24,33 @@
 
 #pragma once
 
-#include "neml2/models/Model.h"
+#include "neml2/models/NonlinearParameter.h"
 
 namespace neml2
 {
-template <typename T>
-class SumModel : public Model
+/**
+ * @brief A scalar-valued parameter following an Arrhenius type relation
+ */
+class ArrheniusParameter : public NonlinearParameter<Scalar>
 {
 public:
   static OptionSet expected_options();
 
-  SumModel(const OptionSet & options);
+  ArrheniusParameter(const OptionSet & options);
 
 protected:
   void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
-  /// Sum of all the input variables
-  Variable<T> & _to;
+  /// The parameter's reference value
+  const Scalar & _p0;
 
-  /// The input variables (to be summed)
-  std::vector<const Variable<T> *> _from;
+  /// Activation energy
+  const Scalar & _Q;
 
-  /// Scaling coefficient for each term
-  std::vector<const Scalar *> _coefs;
+  /// The ideal gas constant
+  const Real _R;
+
+  /// Temperature
+  const Variable<Scalar> & _T;
 };
-
-typedef SumModel<Scalar> ScalarSumModel;
-typedef SumModel<SR2> SR2SumModel;
 } // namespace neml2

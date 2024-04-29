@@ -24,31 +24,27 @@
 
 #pragma once
 
-#include "neml2/models/Model.h"
+#include "neml2/models/solid_mechanics/Eigenstrain.h"
 
 namespace neml2
 {
-template <typename T>
-class SumModel : public Model
+class ThermalEigenstrain : public Eigenstrain
 {
 public:
   static OptionSet expected_options();
 
-  SumModel(const OptionSet & options);
+  ThermalEigenstrain(const OptionSet & options);
 
 protected:
-  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+  void set_value(bool, bool, bool) override;
 
-  /// Sum of all the input variables
-  Variable<T> & _to;
+  /// Eigen strain
+  const Variable<Scalar> & _T;
 
-  /// The input variables (to be summed)
-  std::vector<const Variable<T> *> _from;
+  /// The reference (stress free) temperature
+  const Scalar & _T0;
 
-  /// Scaling coefficient for each term
-  std::vector<const Scalar *> _coefs;
+  /// Coefficient of thermal expansion
+  const Scalar & _alpha;
 };
-
-typedef SumModel<Scalar> ScalarSumModel;
-typedef SumModel<SR2> SR2SumModel;
 } // namespace neml2

@@ -22,33 +22,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
-
-#include "neml2/models/Model.h"
+#include "neml2/models/solid_mechanics/Eigenstrain.h"
 
 namespace neml2
 {
-template <typename T>
-class SumModel : public Model
+OptionSet
+Eigenstrain::expected_options()
 {
-public:
-  static OptionSet expected_options();
+  OptionSet options = Model::expected_options();
+  options.set<VariableName>("eigenstrain") = VariableName("forces", "Eg");
+  return options;
+}
 
-  SumModel(const OptionSet & options);
-
-protected:
-  void set_value(bool out, bool dout_din, bool d2out_din2) override;
-
-  /// Sum of all the input variables
-  Variable<T> & _to;
-
-  /// The input variables (to be summed)
-  std::vector<const Variable<T> *> _from;
-
-  /// Scaling coefficient for each term
-  std::vector<const Scalar *> _coefs;
-};
-
-typedef SumModel<Scalar> ScalarSumModel;
-typedef SumModel<SR2> SR2SumModel;
+Eigenstrain::Eigenstrain(const OptionSet & options)
+  : Model(options),
+    _eg(declare_output_variable<SR2>("eigenstrain"))
+{
+}
 } // namespace neml2

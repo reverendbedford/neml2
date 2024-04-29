@@ -25,30 +25,19 @@
 #pragma once
 
 #include "neml2/models/Model.h"
+#include "neml2/tensors/SR2.h"
 
 namespace neml2
 {
-template <typename T>
-class SumModel : public Model
+class Eigenstrain : public Model
 {
 public:
   static OptionSet expected_options();
 
-  SumModel(const OptionSet & options);
+  Eigenstrain(const OptionSet & options);
 
 protected:
-  void set_value(bool out, bool dout_din, bool d2out_din2) override;
-
-  /// Sum of all the input variables
-  Variable<T> & _to;
-
-  /// The input variables (to be summed)
-  std::vector<const Variable<T> *> _from;
-
-  /// Scaling coefficient for each term
-  std::vector<const Scalar *> _coefs;
+  /// Eigen strain
+  Variable<SR2> & _eg;
 };
-
-typedef SumModel<Scalar> ScalarSumModel;
-typedef SumModel<SR2> SR2SumModel;
 } // namespace neml2

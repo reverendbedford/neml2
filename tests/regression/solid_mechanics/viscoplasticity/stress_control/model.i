@@ -1,8 +1,8 @@
 [Tensors]
   [end_time]
     type = LogspaceScalar
-    start = -1
-    end = 5
+    start = 1
+    end = 4
     nstep = 20
   []
   [times]
@@ -36,6 +36,11 @@
     end = max_stress
     nstep = 100
   []
+  [szz]
+    type = FullScalar
+    batch_shape = '(20)'
+    value = 0
+  []
 []
 
 [Drivers]
@@ -45,6 +50,7 @@
     times = 'times'
     control = 'STRESS'
     prescribed_stresses = 'stresses'
+    predictor = LINEAR_EXTRAPOLATION
     save_as = 'result.pt'
   []
   [regression]
@@ -61,32 +67,31 @@
 []
 
 [Models]
-  [isoharden]
-    type = LinearIsotropicHardening
-    hardening_modulus = 1000
-  []
-  [elastic_strain]
-    type = ElasticStrain
-    total_strain = 'state/E'
-  []
-  [elasticity]
-    type = LinearIsotropicElasticity
-    youngs_modulus = 1e5
-    poisson_ratio = 0.3
-  []
   [mandel_stress]
     type = IsotropicMandelStress
+    cauchy_stress = 'forces/S'
+    mandel_stress = 'forces/M'
   []
   [vonmises]
     type = SR2Invariant
+    tensor = 'forces/M'
+    invariant = 'forces/s'
     invariant_type = 'VONMISES'
-    tensor = 'state/internal/M'
-    invariant = 'state/internal/s'
+  []
+  [isoharden]
+    type = LinearIsotropicHardening
+    hardening_modulus = 500
   []
   [yield]
     type = YieldFunction
-    yield_stress = 5
+    yield_stress = 60
+    effective_stress = 'forces/s'
     isotropic_hardening = 'state/internal/k'
+  []
+  [flow_rate]
+    type = PerzynaPlasticFlowRate
+    reference_stress = 100
+    exponent = 2
   []
   [flow]
     type = ComposedModel
@@ -96,13 +101,8 @@
     type = Normality
     model = 'flow'
     function = 'state/internal/fp'
-    from = 'state/internal/M state/internal/k'
-    to = 'state/internal/NM state/internal/Nk'
-  []
-  [flow_rate]
-    type = PerzynaPlasticFlowRate
-    reference_stress = 100
-    exponent = 2
+    from = 'state/internal/k forces/M'
+    to = 'state/internal/Nk state/internal/NM'
   []
   [eprate]
     type = AssociativeIsotropicPlasticHardening
@@ -110,23 +110,6 @@
   [Eprate]
     type = AssociativePlasticFlow
   []
-  [Srate]
-    type = SR2ForceRate
-    force = 'S'
-  []
-  [Eerate]
-    type = LinearIsotropicElasticity
-    stress = 'forces/S'
-    youngs_modulus = 1e5
-    poisson_ratio = 0.3
-    rate_form = true
-    compliance = true
-  []
-  [Erate]
-    type = TotalStrain
-    rate_form = true
-  []
-
   [integrate_ep]
     type = ScalarBackwardEulerTimeIntegration
     variable = 'internal/ep'
@@ -135,19 +118,36 @@
     type = SR2BackwardEulerTimeIntegration
     variable = 'internal/Ep'
   []
-  [integrate_E]
-    type = SR2BackwardEulerTimeIntegration
-    variable = 'E'
-  []
-  [implicit_rate]
+  [surface]
     type = ComposedModel
-    models = "isoharden elastic_strain elasticity mandel_stress vonmises yield
-              normality flow_rate eprate Eprate Srate Eerate Erate
-              integrate_ep integrate_Ep integrate_E"
+    models = "isoharden yield flow_rate normality
+              eprate Eprate
+              integrate_ep integrate_Ep"
+  []
+  [return_map]
+    type = ImplicitUpdate
+    implicit_model = 'surface'
+    solver = 'newton'
+  []
+  [stress_update]
+    type = ComposedModel
+    models = "mandel_stress vonmises return_map"
+  []
+  [elastic_strain]
+    type = LinearIsotropicElasticity
+    youngs_modulus = 3e4
+    poisson_ratio = 0.3
+    compliance = true
+    stress = 'forces/S'
+  []
+  [total_strain]
+    type = SR2SumModel
+    to_var = 'state/E'
+    from_var = 'state/internal/Ee state/internal/Ep'
   []
   [model]
-    type = ImplicitUpdate
-    implicit_model = 'implicit_rate'
-    solver = 'newton'
+    type = ComposedModel
+    models = 'stress_update elastic_strain total_strain'
+    additional_outputs = 'state/internal/ep state/internal/Ep'
   []
 []
