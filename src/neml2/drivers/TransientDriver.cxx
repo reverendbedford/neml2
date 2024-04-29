@@ -92,6 +92,12 @@ void
 TransientDriver::check_integrity() const
 {
   Driver::check_integrity();
+
+  auto errors = _model.preflight();
+  // For now, let's throw one error at a time...
+  if (!errors.empty())
+    throw errors[0];
+
   neml_assert(_time.dim() == 2,
               "Input time should have dimension 2 but instead has dimension ",
               _time.dim());

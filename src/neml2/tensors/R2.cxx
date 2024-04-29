@@ -29,6 +29,8 @@
 #include "neml2/tensors/Rot.h"
 #include "neml2/tensors/SR2.h"
 #include "neml2/tensors/WR2.h"
+#include "neml2/tensors/R4.h"
+#include "neml2/tensors/SSR4.h"
 
 namespace neml2
 {
@@ -48,4 +50,9 @@ R2::R2(const Rot & r)
 {
 }
 
+R4
+R2::identity_map(const torch::TensorOptions & options)
+{
+  return SSR4::identity(options);
+}
 } // namespace neml2

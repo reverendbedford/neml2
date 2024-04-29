@@ -55,6 +55,36 @@ Model::Model(const OptionSet & options)
   check_AD_limitation();
 }
 
+std::vector<Diagnosis>
+Model::preflight() const
+{
+  neml_assert(host() == this, "This method should only be called on the host model.");
+
+  std::vector<Diagnosis> errors;
+
+  // Check for statefulness
+  if (input_axis().has_subaxis("old_state"))
+  {
+    if (!output_axis().has_subaxis("state"))
+      errors.push_back(
+          make_diagnosis(name(),
+                         ": input axis has sub-axis 'old_state', but output axis does not "
+                         "have sub-axis 'state'."));
+    else
+    {
+      auto s_vars = output_axis().subaxis("state").variable_accessors(/*recursive=*/true);
+      for (auto var : input_axis().subaxis("old_state").variable_accessors(/*recursive=*/true))
+        if (!s_vars.count(var))
+          errors.push_back(make_diagnosis(name(),
+                                          ": input axis has old state named ",
+                                          var,
+                                          ", but it doesn't exist on the output axis."));
+    }
+  }
+
+  return errors;
+}
+
 void
 Model::setup()
 {
@@ -193,8 +223,8 @@ Model::reinit_input_views()
 
   if (is_nonlinear_system())
   {
-    _ndof = host<Model>()->input_axis().storage_size("state");
-    _solution = host<Model>()->input_storage()("state");
+    _ndof = output_axis().storage_size("residual");
+    _solution = BatchTensor::empty(batch_sizes(), _ndof, options());
   }
 }
 
@@ -221,6 +251,16 @@ Model::detach_and_zero(bool out, bool dout_din, bool d2out_din2)
 
   for (auto submodel : registered_models())
     submodel->detach_and_zero(out, dout_din, d2out_din2);
+}
+
+void
+Model::set_solution(const BatchTensor & x)
+{
+  NonlinearSystem::set_solution(x);
+
+  // Also update the model input variables
+  LabeledVector sol(x, {&output_axis().subaxis("residual")});
+  host<VariableStore>()->input_storage().slice("state").fill(sol);
 }
 
 void
