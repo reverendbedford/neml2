@@ -208,6 +208,11 @@
   ############################################################################
   # Sub-system #2 for updating orientation
   ############################################################################
+  [euler_rodrigues_2]
+    type = RotationMatrix
+    from = 'old_state/orientation'
+    to = 'state/orientation_matrix'
+  []
   [elasticity_2]
     type = LinearIsotropicElasticity
     youngs_modulus = 1e5
@@ -230,7 +235,7 @@
   []
   [subsystem2]
     type = ComposedModel
-    models = "elasticity_2 resolved_shear
+    models = "euler_rodrigues_2 elasticity_2 resolved_shear
               plastic_deformation_rate plastic_spin
               slip_rule slip_strength_2 orientation_rate
               integrate_orientation"
