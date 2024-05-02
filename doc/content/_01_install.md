@@ -1,32 +1,44 @@
-# Getting Started {#install}
+# Installation Guide {#install}
 
 [TOC]
 
-## Choose the compute platform
+## Prerequisites
 
-NEML2 can be compiled to support two compute platforms:
-- CPU
-- CUDA
-
-Choose the CPU compute platform if you only need to run NEML2 using CPUs. Choose the CUDA compute platform if you plan to take advantage of the GPU(s) of the computer.
+Compiling the NEML2 core library requires
+- A C++ compiler with C++17 support
+- CMake >= 3.23
 
 ## Dependencies
 
-NEML2 depends on the following drivers/packages/libraries:
-|  CPU  | CUDA  | Dependency   | Version |
-| :---: | :---: | :----------- | :------ |
-|   x   |   x   | C++ compiler | >=17    |
-|   x   |   x   | CMake        | >=3.1   |
-|   x   |   x   | libTorch     |         |
-|       |   x   | CUDA toolkit |         |
+### Required dependencies
 
-See [notes on obtaining the dependencies](@ref NotesOnObtainingTheDependencies) for some guidance.
+- [PyTorch](https://pytorch.org/get-started/locally/), version 2.2.2.
 
-For developers, some additional dependencies are recommended (regardless of the compute platform):
-- [Doxygen](https://www.doxygen.nl/), the documentation generator
-- [clang-format](https://clang.llvm.org/docs/ClangFormat.html), the C++ code formatter
+Other PyTorch releases with a few minor versions around are likely to be compatible. In the PyTorch official download page, several download options are provided: conda, pip, libTorch, and source distribution.
+- **Recommended** If you choose to download PyTorch using conda or pip, the NEML2 CMake script can automatically detect and use the PyTorch installation.
+- If you choose to download libTorch or build PyTorch from source, you will need to set `LIBTORCH_DIR` to be the location of libTorch when using CMake to configure NEML2.
+- If no PyTorch installation can be detected and `LIBTORCH_DIR` is not set at configure time, the NEML2 CMake script will automatically download and use the libTorch obtained from the official website. Note, however, that this method only works on Linux and Mac systems.
 
-## Install NEML2
+> The libTorch distributions from the official website come with two flavors: "Pre-cxx11 ABI" and "cxx11 ABI". Both variants are supported by NEML2. If you are unsure, we recommend the one with "cxx11 ABI".
+
+### Optional dependencies
+
+*No action is needed to manually obtain the optional dependencies.* The compatible optional dependencies will be automatically downloaded and configured by CMake depending on the build customization.
+
+- [HIT](https://github.com/idaholab/moose/tree/master/framework/contrib/hit) for input file parsing.
+- [Catch2](https://github.com/catchorg/Catch2) for unit and regression testing.
+- [gperftools](https://github.com/gperftools/gperftools) for profiling.
+- [Doxygen](https://github.com/doxygen/doxygen) for building the documentation.
+- [Doxygen Awesome](https://github.com/jothepro/doxygen-awesome-css) the documentation theme.
+- Python packages
+  - PyYAML
+  - pandas
+  - matplotlib
+  - pybind11
+  - pybind11-stubgen
+  - pytest
+
+## Build, Test, and Install
 
 First, obtain the NEML2 source code.
 
@@ -34,119 +46,56 @@ First, obtain the NEML2 source code.
 git clone https://github.com/reverendbedford/neml2.git
 cd neml2
 git checkout main
-git submodule update --recursive --init
 ```
 
-Then, configure NEML2 and generate the Makefile.
+Then, configure NEML2. See [build customization](#build-customization) for possible configuration options.
 
 ```
-cmake -DCMAKE_PREFIX_PATH=/path/to/torch/share/cmake .
+mkdir build && cmake -B build .
 ```
-where `/path/to/torch/share/cmake` is the path to the `share/cmake` directory of your libTorch installation.
 
 Finally, compile NEML2.
 
 ```
-make -j N
+cd build && make -j N
 ```
-where `N` is the number of processors to use for parallel compilation.
+where `N` is the number of cores to use for parallel compilation.
 
-After the compilation finishes, you can run the tests to make sure the build was successful:
+After the compilation is complete, optionally run the tests to make sure the compilation was successful.
+
 ```
 make test
 ```
 
-## Notes on obtaining the dependencies {#NotesOnObtainingTheDependencies}
+The compiled NEML2 can be installed as a system library.
 
-Feel free to create a ticket at [https://github.com/reverendbedford/neml2/issues](https://github.com/reverendbedford/neml2/issues) if you run into issues about installing the dependencies.
-
-Typically, the C++ compiler, a reasonably modern CMake, Doxygen, and clang-format can be obtained via the system package manager.
-
-libTorch can be downloaded from the official PyTorch website: [https://pytorch.org/get-started/locally/](https://pytorch.org/get-started/locally/). Choose the compute platform in consistency with the NEML2 compute platform. Also take a note of the version of the libTorch-compatible CUDA if you chose CUDA as the compute platform. Note that there are two versions of libTorch: "Pre-cxx11 ABI" and "cxx11 ABI". Both versions are supported by NEML2. If you are unsure, we recommend the one with "cxx11 ABI".
-
-> In the future we may provide an option to automatically install a compatible version of libTorch.
-
-There are many ways of installing the NVIDIA driver and the CUDA toolkit. We will not try to make a recommendation here. However, do make sure the NVIDIA driver is compatible with your GPU. It is also recommended to install a CUDA toolkit with the same version number as the libTorch CUDA version.
-
-## Quick Start {#user}
-
-NEML2 uses the [HIT](https://github.com/idaholab/hit) format, a simple hierarchical text language, for model specification. More generally speaking, HIT is the canonical language used in NEML2 for serialization, deserialization, and archival purposes.
-
-The NEML2 input files have extension `.i`. An example input file is shown below
-```python
-[Tensors]
-  [end_time]
-    type = LogSpaceTensor
-    start = -1
-    end = 5
-    steps = 20
-  []
-  [times]
-    type = LinSpaceTensor
-    end = end_time
-    steps = 100
-  []
-  [max_strain]
-    type = InitializedSymR2
-    values = '0.1 -0.05 -0.05'
-    nbatch = 20
-  []
-  [strains]
-    type = LinSpaceTensor
-    end = max_strain
-    steps = 100
-  []
-[]
-
-[Drivers]
-  [driver]
-    type = SolidMechanicsDriver
-    model = 'model'
-    times = 'times'
-    prescribed_strains = 'strains'
-    save_as = 'result.pt'
-  []
-  [regression]
-    type = TransientRegression
-    driver = 'driver'
-    reference = 'gold/result.pt'
-  []
-[]
-
-[Solvers]
-  [newton]
-    type = Newton
-  []
-[]
-
-[Models]
-  [implicit_rate]
-    type = ComposedModel
-    models = 'mandel_stress vonmises yield normality flow_rate Eprate Erate Eerate elasticity integrate_stress'
-  []
-  [model]
-    type = ImplicitUpdate
-    implicit_model = 'implicit_rate'
-    solver = 'newton'
-  []
-[]
 ```
-There are four top-level sections:
-- `[Tensors]`: Tensors specified from within the input file.
-- `[Solvers]`: Solvers for solving an implicit model.
-- `[Models]`: NEML2 constitutive models.
-- `[Drivers]`: Drivers used to evaluate/test models.
+make install
+```
 
-The user has full control over the sub-sections under the top-level sections, called _objects_. The sub-section name is used as the name of the object. Each object reserves a special field named "type". NEML2 parses the value in the "type" field and constructs the corresponding object at run time. The syntax and options for all objects are listed in the [syntax documentation](@ref syntax).
+## Build Customization {#build-customization}
 
-Currently, NEML2 does not maintain a set of examples. However, the regression tests shall serve as decent input file templates. The regression tests are located in `/tests/regression` in the repository.
+Additional configuration options can be passed via command line using the `-DOPTION` or `-DOPTION=ON` format. For example,
 
+```
+cmake -DNEML2_DOC=ON -B build .
+```
+turns on the `NEML2_DOC` option, and additional targets for building the Doxygen documentation will be created inside the Makefile. Note that this would also download additional optional dependencies that are required to build the documentation.
 
-## Next steps
+Commonly used configuration options are summarized below. Default options are underlined.
 
-Depending on your specific use case, the following resources might be useful:
-
-- [Mathematical conventions](@ref math) introduces the common mathematical notations used throughout this documentation.
-- [Implementation](@ref impl) describes the basics of the library architecture and design philosophy. They can be a good starting point if you want to create your own material model within the NEML2 framework.
-- [Model development](@ref devel) is a step-by-step guide for building a constitutive model. It uses the small deformation \f$J_2\f$ isotropic viscoplasticity as an example.
-- [Class list](https://reverendbedford.github.io/neml2/annotated.html) is a complete list of class doxygen documentations.
+| Option               | Values (<u>default</u>)                                     | Description                                                                               |
+| :------------------- | :---------------------------------------------------------- | :---------------------------------------------------------------------------------------- |
+| CMAKE_BUILD_TYPE     | <u>Debug</u>, Release, MinSizeRel, RelWithDebInfo, Coverage | CMake [Reference](https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html)     |
+| CMAKE_INSTALL_PREFIX |                                                             | CMake [Reference](https://cmake.org/cmake/help/latest/variable/CMAKE_INSTALL_PREFIX.html) |
+| CMAKE_UNITY_BUILD    |                                                             | CMake [Reference](https://cmake.org/cmake/help/latest/variable/CMAKE_UNITY_BUILD.html)    |
+| NEML2_DTYPE          | Float16, Float32, <u>Float64</u>                            | Default floating point integral type used in the material models                          |
+| NEML2_INT_DTYPE      | Int8, Int16, Int32, <u>Int64</u>                            | Default fixed point integral type used in the material models                             |
+| BUILD_TESTING        | <u>ON</u>, OFF                                              | Master knob for including/excluding all tests                                             |
+| NEML2_UNIT           | <u>ON</u>, OFF                                              | Create the unit testing target                                                            |
+| NEML2_REGRESSION     | <u>ON</u>, OFF                                              | Create the regression testing target                                                      |
+| NEML2_VERIFICATION   | <u>ON</u>, OFF                                              | Create the verification testing target                                                    |
+| NEML2_BENCHMARK      | ON, <u>OFF</u>                                              | Create the benchmark testing target                                                       |
+| NEML2_PROFILING      | ON, <u>OFF</u>                                              | Create the profiling executable target                                                    |
+| NEML2_DOC            | ON, <u>OFF</u>                                              | Create the documentation target                                                           |
+| NEML2_PYBIND         | ON, <u>OFF</u>                                              | Create the Python bindings target                                                         |
