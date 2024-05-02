@@ -2,7 +2,7 @@ if(NOT DEFINED DOXYGEN_EXECUTABLE)
   if(UNIX AND NOT APPLE)
     FetchContent_Declare(
       doxygen
-      URL https://github.com/doxygen/doxygen/releases/download/Release_1_9_8/doxygen-1.9.8.linux.bin.tar.gz
+      URL https://github.com/doxygen/doxygen/releases/download/Release_1_10_0/doxygen-1.10.0.linux.bin.tar.gz
     )
     message(STATUS "Downloading doxygen, this may take a few minutes.")
     FetchContent_MakeAvailable(doxygen)
@@ -11,6 +11,15 @@ if(NOT DEFINED DOXYGEN_EXECUTABLE)
     message(FATAL_ERROR "We only download a default doxygen on linux for CI purposes. For other operating systems, please specify DOXYGEN_EXECUTABLE.")
   endif()
 endif()
+
+# Theme for the doxygen documentation
+FetchContent_Declare(
+  doxygen-awesome-css
+  GIT_REPOSITORY https://github.com/jothepro/doxygen-awesome-css.git
+  GIT_TAG 5b27b3a747ca1e559fa54149762cca0bad6036fb # version 2.3.2
+)
+message(STATUS "Downloading doxygen-awesome-css, this may take a few minutes.")
+FetchContent_MakeAvailable(doxygen-awesome-css)
 
 find_package(Python COMPONENTS Interpreter)
 
