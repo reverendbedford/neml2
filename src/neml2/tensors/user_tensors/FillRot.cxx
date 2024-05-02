@@ -31,7 +31,7 @@ register_NEML2_object(FillRot);
 OptionSet
 FillRot::expected_options()
 {
-  OptionSet options = NEML2Object::expected_options();
+  OptionSet options = UserTensor::expected_options();
   options.set<std::vector<CrossRef<Scalar>>>("values");
   options.set<std::string>("method") = "modified";
   return options;
@@ -40,7 +40,7 @@ FillRot::expected_options()
 FillRot::FillRot(const OptionSet & options)
   : Rot(fill(options.get<std::vector<CrossRef<Scalar>>>("values"),
              options.get<std::string>("method"))),
-    NEML2Object(options)
+    UserTensor(options)
 {
 }
 

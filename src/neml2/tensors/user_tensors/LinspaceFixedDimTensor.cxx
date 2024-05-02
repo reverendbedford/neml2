@@ -33,7 +33,7 @@ template <typename T>
 OptionSet
 LinspaceFixedDimTensor<T>::expected_options()
 {
-  OptionSet options = NEML2Object::expected_options();
+  OptionSet options = UserTensor::expected_options();
   options.set<CrossRef<T>>("start");
   options.set<CrossRef<T>>("end");
   options.set<TorchSize>("nstep");
@@ -49,7 +49,7 @@ LinspaceFixedDimTensor<T>::LinspaceFixedDimTensor(const OptionSet & options)
                   options.get<TorchSize>("nstep"),
                   options.get<TorchSize>("dim"),
                   options.get<TorchSize>("batch_dim"))),
-    NEML2Object(options)
+    UserTensor(options)
 {
 }
 

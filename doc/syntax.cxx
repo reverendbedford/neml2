@@ -29,8 +29,15 @@ int
 main()
 {
   std::ofstream syntax_file;
-  syntax_file.open("syntax.txt");
-  neml2::Registry::print(syntax_file);
+  syntax_file.open("syntax.yml");
+
+  for (auto && [type, options] : neml2::Registry::expected_options())
+  {
+    options.set<std::string>("type") = type;
+    syntax_file << neml2::Registry::syntax_type(type) << ":\n";
+    syntax_file << options << "\n";
+  }
+
   syntax_file.close();
   return 0;
 }

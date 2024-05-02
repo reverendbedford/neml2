@@ -35,7 +35,7 @@ register_NEML2_object(Orientation);
 OptionSet
 Orientation::expected_options()
 {
-  OptionSet options = NEML2Object::expected_options();
+  OptionSet options = UserTensor::expected_options();
   options.set<std::string>("input_type") = "euler_angles";
   options.set<std::string>("angle_convention") = "kocks";
   options.set<std::string>("angle_type") = "degrees";
@@ -50,7 +50,7 @@ Orientation::expected_options()
 
 Orientation::Orientation(const OptionSet & options)
   : Rot(fill(options)),
-    NEML2Object(options)
+    UserTensor(options)
 {
 }
 

@@ -31,7 +31,7 @@ register_NEML2_object(IdentityBatchTensor);
 OptionSet
 IdentityBatchTensor::expected_options()
 {
-  OptionSet options = NEML2Object::expected_options();
+  OptionSet options = UserTensor::expected_options();
   options.set<TorchShape>("batch_shape") = {};
   options.set<TorchSize>("n");
   return options;
@@ -41,7 +41,7 @@ IdentityBatchTensor::IdentityBatchTensor(const OptionSet & options)
   : BatchTensor(BatchTensor::identity(options.get<TorchShape>("batch_shape"),
                                       options.get<TorchSize>("n"),
                                       default_tensor_options())),
-    NEML2Object(options)
+    UserTensor(options)
 {
 }
 } // namespace neml2

@@ -30,13 +30,6 @@ import re
 from pathlib import Path
 
 
-def get_type(params):
-    for param in params:
-        for param_name, info in param.items():
-            if param_name == "type":
-                return demangle(info["value"])
-
-
 def demangle(type):
     type = type.replace(
         "std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >",
@@ -52,8 +45,13 @@ def demangle(type):
 
 def postprocess(value, type):
     if type == "bool":
-        value = str(bool(value))
+        value = "true" if value else "false"
     return value
+
+
+def get_sections(syntax):
+    sections = [params["section"] for type, params in syntax.items()]
+    return set(sections)
 
 
 if __name__ == "__main__":
@@ -63,27 +61,42 @@ if __name__ == "__main__":
     with open(sys.argv[1], "r") as stream:
         syntax = yaml.safe_load(stream)
 
+    sections = get_sections(syntax)
+
     with open(sys.argv[2], "w") as stream:
         stream.write("# Syntax Documentation {#syntax}\n\n")
         stream.write("[TOC]\n\n")
-        for s in syntax:
-            for type, params in s.items():
-                input_type = get_type(params)
-                stream.write("## {}\n\n".format(input_type))
-                names = []
-                types = []
-                values = []
-                for param in params:
-                    for param_name, info in param.items():
-                        if param_name == "name":
-                            continue
-                        if param_name == "type":
-                            continue
-                        param_type = demangle(info["type"])
-                        param_value = postprocess(info["value"], param_type)
-                        stream.write("- {}\n".format(param_name))
-                        stream.write("  - **Type**: {}\n".format(param_type))
-                        if param_value != None:
-                            stream.write("  - **Default**: {}\n".format(param_value))
+
+        for section in sections:
+            stream.write("## [{}]\n\n".format(section))
+            for type, params in syntax.items():
+                if params["section"] != section:
+                    continue
+                input_type = demangle(params["type"]["value"])
+                stream.write(
+                    "### {} {{#{}}}\n\n".format(input_type, input_type.lower())
+                )
+                if params["doc"]:
+                    stream.write("_{}_\n".format(params["doc"]))
+                for param_name, info in params.items():
+                    if param_name == "section":
+                        continue
+                    if param_name == "doc":
+                        continue
+                    if param_name == "name":
+                        continue
+                    if param_name == "type":
+                        continue
+                    if info["suppressed"]:
+                        continue
+
+                    param_type = demangle(info["type"])
+                    param_value = postprocess(info["value"], param_type)
+                    stream.write("- {}\n".format(param_name))
+                    if info["doc"]:
+                        stream.write("  - <u>Description</u>: {}\n".format(info["doc"]))
+                    stream.write("  - <u>Type</u>: {}\n".format(param_type))
+                    if param_value:
+                        stream.write("  - <u>Default</u>: {}\n".format(param_value))
                 stream.write("\n")
                 stream.write("Details: [{}](@ref {})\n\n".format(input_type, type))

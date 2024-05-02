@@ -34,6 +34,13 @@ Registry::get()
   return registry_singleton;
 }
 
+std::map<std::string, OptionSet>
+Registry::expected_options()
+{
+  auto & reg = get();
+  return reg._expected_options;
+}
+
 OptionSet
 Registry::expected_options(const std::string & name)
 {
@@ -43,6 +50,13 @@ Registry::expected_options(const std::string & name)
       name,
       " is not a registered object. Did you forget to register it with register_NEML2_object?");
   return reg._expected_options.at(name);
+}
+
+std::string
+Registry::syntax_type(const std::string & type)
+{
+  auto & reg = get();
+  return reg._syntax_type[type];
 }
 
 BuildPtr
@@ -55,20 +69,6 @@ Registry::builder(const std::string & name)
       " is not a registered object. Did you forget to register it with register_NEML2_object?");
   return reg._objects.at(name);
 }
-
-// LCOV_EXCL_START
-void
-Registry::print(std::ostream & os)
-{
-  auto & reg = get();
-  for (auto [type, options] : reg._expected_options)
-  {
-    options.set<std::string>("type") = type;
-    os << "- " << reg._syntax_type[type] << ":\n";
-    os << options << "\n";
-  }
-}
-// LCOV_EXCL_STOP
 
 void
 Registry::add_inner(const std::string & name,

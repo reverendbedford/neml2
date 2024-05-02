@@ -32,7 +32,7 @@ register_NEML2_object(LogspaceBatchTensor);
 OptionSet
 LogspaceBatchTensor::expected_options()
 {
-  OptionSet options = NEML2Object::expected_options();
+  OptionSet options = UserTensor::expected_options();
   options.set<CrossRef<BatchTensor>>("start");
   options.set<CrossRef<BatchTensor>>("end");
   options.set<TorchSize>("nstep");
@@ -49,7 +49,7 @@ LogspaceBatchTensor::LogspaceBatchTensor(const OptionSet & options)
                                       options.get<TorchSize>("dim"),
                                       options.get<TorchSize>("batch_dim"),
                                       options.get<Real>("base"))),
-    NEML2Object(options)
+    UserTensor(options)
 {
 }
 } // namespace neml2

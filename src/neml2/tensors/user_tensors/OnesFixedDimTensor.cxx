@@ -33,7 +33,7 @@ template <typename T>
 OptionSet
 OnesFixedDimTensor<T>::expected_options()
 {
-  OptionSet options = NEML2Object::expected_options();
+  OptionSet options = UserTensor::expected_options();
   options.set<TorchShape>("batch_shape") = {};
   return options;
 }
@@ -41,7 +41,7 @@ OnesFixedDimTensor<T>::expected_options()
 template <typename T>
 OnesFixedDimTensor<T>::OnesFixedDimTensor(const OptionSet & options)
   : T(T::ones(options.get<TorchShape>("batch_shape"), default_tensor_options())),
-    NEML2Object(options)
+    UserTensor(options)
 {
 }
 

@@ -24,25 +24,16 @@
 
 #pragma once
 
-#include "neml2/tensors/user_tensors/UserTensor.h"
-
-#include "neml2/tensors/BatchTensor.h"
+#include "neml2/base/Registry.h"
+#include "neml2/base/NEML2Object.h"
 
 namespace neml2
 {
-/**
- * @brief Create a logspace BatchTensor from the input file.
- */
-class LogspaceBatchTensor : public BatchTensor, public UserTensor
+class UserTensor : public NEML2Object
 {
 public:
   static OptionSet expected_options();
 
-  /**
-   * @brief Construct a new LogspaceBatchTensor object
-   *
-   * @param options The options extracted from the input file.
-   */
-  LogspaceBatchTensor(const OptionSet & options);
+  UserTensor(const OptionSet & options);
 };
 } // namespace neml2

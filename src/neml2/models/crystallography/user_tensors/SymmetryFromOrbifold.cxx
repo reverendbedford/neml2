@@ -35,14 +35,14 @@ register_NEML2_object(SymmetryFromOrbifold);
 OptionSet
 SymmetryFromOrbifold::expected_options()
 {
-  OptionSet options = NEML2Object::expected_options();
+  OptionSet options = UserTensor::expected_options();
   options.set<std::string>("orbifold");
   return options;
 }
 
 SymmetryFromOrbifold::SymmetryFromOrbifold(const OptionSet & options)
   : R2(symmetry_operations_from_orbifold(options.get<std::string>("orbifold"))),
-    NEML2Object(options)
+    UserTensor(options)
 {
 }
 }

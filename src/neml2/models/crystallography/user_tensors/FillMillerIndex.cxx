@@ -34,14 +34,14 @@ register_NEML2_object(FillMillerIndex);
 OptionSet
 FillMillerIndex::expected_options()
 {
-  OptionSet options = NEML2Object::expected_options();
+  OptionSet options = UserTensor::expected_options();
   options.set<std::vector<Integer>>("values");
   return options;
 }
 
 FillMillerIndex::FillMillerIndex(const OptionSet & options)
   : MillerIndex(fill(options.get<std::vector<Integer>>("values"))),
-    NEML2Object(options)
+    UserTensor(options)
 {
 }
 

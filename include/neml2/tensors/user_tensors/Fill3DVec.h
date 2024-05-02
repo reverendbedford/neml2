@@ -24,8 +24,7 @@
 
 #pragma once
 
-#include "neml2/base/Registry.h"
-#include "neml2/base/NEML2Object.h"
+#include "neml2/tensors/user_tensors/UserTensor.h"
 
 #include "neml2/tensors/Vec.h"
 
@@ -34,7 +33,7 @@ namespace neml2
 /**
  * @brief Create a single-batched "list" of 3D vectors
  */
-class Fill3DVec : public Vec, public NEML2Object
+class Fill3DVec : public Vec, public UserTensor
 {
 public:
   static OptionSet expected_options();

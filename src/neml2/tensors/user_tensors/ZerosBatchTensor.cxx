@@ -31,7 +31,7 @@ register_NEML2_object(ZerosBatchTensor);
 OptionSet
 ZerosBatchTensor::expected_options()
 {
-  OptionSet options = NEML2Object::expected_options();
+  OptionSet options = UserTensor::expected_options();
   options.set<TorchShape>("batch_shape") = {};
   options.set<TorchShape>("base_shape") = {};
   return options;
@@ -41,7 +41,7 @@ ZerosBatchTensor::ZerosBatchTensor(const OptionSet & options)
   : BatchTensor(BatchTensor::zeros(options.get<TorchShape>("batch_shape"),
                                    options.get<TorchShape>("base_shape"),
                                    default_tensor_options())),
-    NEML2Object(options)
+    UserTensor(options)
 {
 }
 } // namespace neml2

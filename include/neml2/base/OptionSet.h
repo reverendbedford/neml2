@@ -91,6 +91,10 @@ public:
   const std::string & doc() const { return _metadata.doc; }
   /// A writable reference to the option set's docstring
   std::string & doc() { return _metadata.doc; }
+  /// A readonly reference to the option set's section
+  const std::string & section() const { return _metadata.section; }
+  /// A writable reference to the option set's section
+  std::string & section() { return _metadata.section; }
 
   /**
    * \returns \p true if an option of type \p T
@@ -200,7 +204,7 @@ public:
        * object to suppress certain option. A suppressed option cannot be modified by the user. It
        * is up to the specific Parser to decide what happens when a user attempts to set a
        * suppressed option, e.g., the parser can choose to throw an exception, print a warning and
-       * accepts it, or print a warning and ignores it.
+       * accept it, or print a warning and ignores it.
        */
       bool suppressed = false;
     } _metadata;
@@ -345,6 +349,14 @@ protected:
      * https://www.doxygen.nl/manual/markdown.html
      */
     std::string doc = "";
+    /**
+     * @brief Which NEML2 input file section this object belongs to
+     *
+     * NEML2 supports first class systems such as [Tensors], [Models], [Drivers], [Solvers], etc.
+     * This field denotes which section, i.e. which of the first class system, this object belongs
+     * to.
+     */
+    std::string section = "";
   } _metadata;
 
   /// Data structure to map names with values

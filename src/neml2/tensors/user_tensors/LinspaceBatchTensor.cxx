@@ -32,7 +32,7 @@ register_NEML2_object(LinspaceBatchTensor);
 OptionSet
 LinspaceBatchTensor::expected_options()
 {
-  OptionSet options = NEML2Object::expected_options();
+  OptionSet options = UserTensor::expected_options();
   options.set<CrossRef<BatchTensor>>("start");
   options.set<CrossRef<BatchTensor>>("end");
   options.set<TorchSize>("nstep");
@@ -48,7 +48,7 @@ LinspaceBatchTensor::LinspaceBatchTensor(const OptionSet & options)
                                       options.get<TorchSize>("nstep"),
                                       options.get<TorchSize>("dim"),
                                       options.get<TorchSize>("batch_dim"))),
-    NEML2Object(options)
+    UserTensor(options)
 {
   auto bs = options.get<TorchShape>("batch_expand");
   if (bs.size() > 0)

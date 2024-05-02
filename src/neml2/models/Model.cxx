@@ -33,10 +33,17 @@ Model::expected_options()
 {
   OptionSet options = Data::expected_options();
   options += NonlinearSystem::expected_options();
+
+  options.section() = "Models";
+
   options.set<bool>("use_AD_first_derivative") = false;
   options.set<bool>("use_AD_second_derivative") = false;
   options.set<int>("_extra_derivative_order") = 0;
   options.set<bool>("_nonlinear_system") = false;
+
+  options.set("_extra_derivative_order").suppressed() = true;
+  options.set("_nonlinear_system").suppressed() = true;
+
   return options;
 }
 

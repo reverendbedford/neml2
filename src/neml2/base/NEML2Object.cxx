@@ -30,6 +30,7 @@ NEML2Object::expected_options()
 {
   auto options = OptionSet();
   options.set<NEML2Object *>("_host") = nullptr;
+  options.set("_host").suppressed() = true;
   return options;
 }
 

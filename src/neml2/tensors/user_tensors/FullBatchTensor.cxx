@@ -31,7 +31,7 @@ register_NEML2_object(FullBatchTensor);
 OptionSet
 FullBatchTensor::expected_options()
 {
-  OptionSet options = NEML2Object::expected_options();
+  OptionSet options = UserTensor::expected_options();
   options.set<TorchShape>("batch_shape") = {};
   options.set<TorchShape>("base_shape") = {};
   options.set<Real>("value");
@@ -43,7 +43,7 @@ FullBatchTensor::FullBatchTensor(const OptionSet & options)
                                   options.get<TorchShape>("base_shape"),
                                   options.get<Real>("value"),
                                   default_tensor_options())),
-    NEML2Object(options)
+    UserTensor(options)
 {
 }
 } // namespace neml2

@@ -24,8 +24,7 @@
 
 #pragma once
 
-#include "neml2/base/Registry.h"
-#include "neml2/base/NEML2Object.h"
+#include "neml2/tensors/user_tensors/UserTensor.h"
 
 #include "neml2/tensors/SR2.h"
 
@@ -34,7 +33,7 @@ namespace neml2
 /**
  * @brief Create a filled SR2 from the input file.
  */
-class FillSR2 : public SR2, public NEML2Object
+class FillSR2 : public SR2, public UserTensor
 {
 public:
   static OptionSet expected_options();

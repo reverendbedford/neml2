@@ -33,7 +33,7 @@ template <typename T>
 OptionSet
 LogspaceFixedDimTensor<T>::expected_options()
 {
-  OptionSet options = NEML2Object::expected_options();
+  OptionSet options = UserTensor::expected_options();
   options.set<CrossRef<T>>("start");
   options.set<CrossRef<T>>("end");
   options.set<TorchSize>("nstep");
@@ -51,7 +51,7 @@ LogspaceFixedDimTensor<T>::LogspaceFixedDimTensor(const OptionSet & options)
                   options.get<TorchSize>("dim"),
                   options.get<TorchSize>("batch_dim"),
                   options.get<Real>("base"))),
-    NEML2Object(options)
+    UserTensor(options)
 {
 }
 

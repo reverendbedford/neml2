@@ -33,7 +33,7 @@ template <typename T>
 OptionSet
 UserFixedDimTensor<T>::expected_options()
 {
-  OptionSet options = NEML2Object::expected_options();
+  OptionSet options = UserTensor::expected_options();
   options.set<std::vector<Real>>("values");
   options.set<TorchShape>("batch_shape") = {};
   return options;
@@ -42,7 +42,7 @@ UserFixedDimTensor<T>::expected_options()
 template <typename T>
 UserFixedDimTensor<T>::UserFixedDimTensor(const OptionSet & options)
   : T(T::empty(options.get<TorchShape>("batch_shape"), default_tensor_options())),
-    NEML2Object(options)
+    UserTensor(options)
 {
   auto vals = options.get<std::vector<Real>>("values");
   auto flat = torch::tensor(vals, default_tensor_options());

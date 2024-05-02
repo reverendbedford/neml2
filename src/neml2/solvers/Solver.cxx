@@ -30,6 +30,7 @@ OptionSet
 Solver::expected_options()
 {
   OptionSet options = NEML2Object::expected_options();
+  options.section() = "Solvers";
   options.set<bool>("verbose");
   return options;
 }

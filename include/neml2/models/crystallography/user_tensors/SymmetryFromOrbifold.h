@@ -24,8 +24,7 @@
 
 #pragma once
 
-#include "neml2/base/Registry.h"
-#include "neml2/base/NEML2Object.h"
+#include "neml2/tensors/user_tensors/UserTensor.h"
 
 #include "neml2/tensors/R2.h"
 
@@ -36,7 +35,7 @@ namespace crystallography
 /**
  * @brief Provide the correct symmetry operators for a given crystal class
  */
-class SymmetryFromOrbifold : public R2, public NEML2Object
+class SymmetryFromOrbifold : public R2, public UserTensor
 {
 public:
   static OptionSet expected_options();

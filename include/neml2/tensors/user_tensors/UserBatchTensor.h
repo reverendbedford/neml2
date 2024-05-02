@@ -24,8 +24,7 @@
 
 #pragma once
 
-#include "neml2/base/Registry.h"
-#include "neml2/base/NEML2Object.h"
+#include "neml2/tensors/user_tensors/UserTensor.h"
 
 #include "neml2/tensors/BatchTensor.h"
 
@@ -34,7 +33,7 @@ namespace neml2
 /**
  * @brief Create raw BatchTensor from the input file.
  */
-class UserBatchTensor : public BatchTensor, public NEML2Object
+class UserBatchTensor : public BatchTensor, public UserTensor
 {
 public:
   static OptionSet expected_options();

@@ -31,14 +31,14 @@ register_NEML2_object(Fill3DVec);
 OptionSet
 Fill3DVec::expected_options()
 {
-  OptionSet options = NEML2Object::expected_options();
+  OptionSet options = UserTensor::expected_options();
   options.set<std::vector<Real>>("values");
   return options;
 }
 
 Fill3DVec::Fill3DVec(const OptionSet & options)
   : Vec(fill(options.get<std::vector<Real>>("values"))),
-    NEML2Object(options)
+    UserTensor(options)
 {
 }
 
