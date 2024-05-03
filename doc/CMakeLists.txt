@@ -16,7 +16,7 @@ endif()
 FetchContent_Declare(
   doxygen-awesome-css
   GIT_REPOSITORY https://github.com/jothepro/doxygen-awesome-css.git
-  GIT_TAG 5b27b3a747ca1e559fa54149762cca0bad6036fb # version 2.3.2
+  GIT_TAG v2.3.2
 )
 message(STATUS "Downloading doxygen-awesome-css, this may take a few minutes.")
 FetchContent_MakeAvailable(doxygen-awesome-css)

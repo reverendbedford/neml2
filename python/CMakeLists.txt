@@ -1,5 +1,11 @@
-find_package(Python COMPONENTS Interpreter Development.Module)
-find_package(pybind11 CONFIG REQUIRED HINTS ${Python_SITEARCH})
+# pybind11
+FetchContent_Declare(
+  pybind11
+  GIT_REPOSITORY https://github.com/pybind/pybind11.git
+  GIT_TAG v2.12.0
+)
+message(STATUS "Downloading pybind11, this may take a few minutes.")
+FetchContent_MakeAvailable(pybind11)
 
 if(NOT Torch_PYTHON_BINDING)
   message(FATAL_ERROR "Could not find the libTorch Python binding")
@@ -14,7 +20,7 @@ endif()
 
 # macro for defining a submodule with given source files
 macro(add_submodule mname msrcs)
-  python_add_library(${mname} MODULE ${msrcs} WITH_SOABI)
+  pybind11_add_module(${mname} MODULE ${msrcs})
   set_target_properties(${mname} PROPERTIES LIBRARY_OUTPUT_DIRECTORY neml2)
   target_include_directories(${mname} PUBLIC ${NEML2_SOURCE_DIR})
   target_link_libraries(${mname} PRIVATE pybind11::headers)
@@ -35,9 +41,4 @@ add_submodule_dir(models)
 add_submodule(math neml2/misc/math.cxx)
 
 # Install python artifacts
-install(DIRECTORY neml2/
-  DESTINATION .
-  FILES_MATCHING
-  PATTERN "*.py"
-  PATTERN "*.pyi"
-)
+install(FILES neml2/__init__.py DESTINATION .)

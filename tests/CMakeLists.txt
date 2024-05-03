@@ -5,7 +5,7 @@ if(NEML2_UNIT OR NEML2_REGRESSION OR NEML2_VERIFICATION OR NEML2_BENCHMARK)
       FetchContent_Declare(
             Catch2
             GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-            GIT_TAG b5373dadca40b7edc8570cf9470b9b1cb1934d40 # version 3.5.4
+            GIT_TAG v3.5.4
       )
       message(STATUS "Downloading Catch2, this may take a few minutes.")
       FetchContent_MakeAvailable(Catch2)
