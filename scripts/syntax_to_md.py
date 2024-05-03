@@ -51,7 +51,7 @@ def postprocess(value, type):
 
 def get_sections(syntax):
     sections = [params["section"] for type, params in syntax.items()]
-    return set(sections)
+    return list(dict.fromkeys(sections))
 
 
 if __name__ == "__main__":
@@ -99,4 +99,6 @@ if __name__ == "__main__":
                     if param_value:
                         stream.write("  - <u>Default</u>: {}\n".format(param_value))
                 stream.write("\n")
-                stream.write("Details: [{}](@ref {})\n\n".format(input_type, type))
+                stream.write(
+                    "Detailed Doxygen documentation [link](@ref {})\n\n".format(type)
+                )

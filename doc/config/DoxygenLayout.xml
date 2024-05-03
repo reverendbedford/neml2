@@ -6,6 +6,7 @@
     <tab type="user" url="@ref user" title="User Guide"/>
     <tab type="user" url="@ref dev" title="Developer Guide"/>
     <tab type="user" url="@ref system" title="System Documentation"/>
+    <tab type="user" url="@ref physics" title="Physics Documentation"/>
     <tab type="user" url="@ref syntax" title="Syntax Documentation"/>
     <tab type="classlist" visible="yes" title="" intro=""/>
   </navindex>
