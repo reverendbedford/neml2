@@ -177,7 +177,7 @@ if(NEML2_PROFILING)
       FetchContent_Declare(
             gperftools
             GIT_REPOSITORY https://github.com/gperftools/gperftools.git
-            GIT_TAG gperftools-2.15
+            GIT_TAG gperftools-2.13
             EXCLUDE_FROM_ALL
       )
       message(STATUS "Downloading gperftools, this may take a few minutes.")
