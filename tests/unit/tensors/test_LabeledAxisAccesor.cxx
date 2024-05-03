@@ -22,7 +22,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_all.hpp>
 
 #include "neml2/misc/utils.h"
 #include "neml2/tensors/LabeledAxisAccessor.h"
@@ -38,7 +39,7 @@ TEST_CASE("LabeledAxisAccessor", "[tensors]")
     SECTION("LabeledAxisAccessor")
     {
       REQUIRE_THROWS_WITH(LabeledAxisAccessor("a.b", "c", "d"),
-                          Catch::Matchers::Contains("Invalid item name"));
+                          Catch::Matchers::ContainsSubstring("Invalid item name"));
     }
 
     SECTION("vec") { REQUIRE(a.vec() == std::vector<std::string>{"a", "b", "c"}); }

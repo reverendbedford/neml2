@@ -22,7 +22,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_all.hpp>
 
 #include "SampleNonlinearSystems.h"
 
@@ -45,6 +46,6 @@ TEST_CASE("NonlinearSystem", "[solvers]")
   {
     system.set_solution(x0);
     system.init_scaling();
-    REQUIRE(torch::max(torch::linalg_cond(system.Jacobian(x0))).item<Real>() == Approx(1.0));
+    REQUIRE(torch::max(torch::linalg_cond(system.Jacobian(x0))).item<Real>() == Catch::Approx(1.0));
   }
 }

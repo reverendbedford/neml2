@@ -22,7 +22,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_all.hpp>
 
 #include "neml2/tensors/LabeledTensor.h"
 #include "neml2/tensors/LabeledVector.h"
@@ -114,21 +115,21 @@ TEST_CASE("LabeledTensor", "[tensors]")
     {
       auto A = LabeledVector::zeros(nbatch, {&info1});
       A.set(BatchTensor::ones(6).batch_expand(nbatch), "first");
-      REQUIRE(torch::sum(A("first")).item<double>() == Approx(nbatch * 6));
-      REQUIRE(torch::sum(A("second")).item<double>() == Approx(0));
-      REQUIRE(torch::sum(A("third")).item<double>() == Approx(0));
+      REQUIRE(torch::sum(A("first")).item<double>() == Catch::Approx(nbatch * 6));
+      REQUIRE(torch::sum(A("second")).item<double>() == Catch::Approx(0));
+      REQUIRE(torch::sum(A("third")).item<double>() == Catch::Approx(0));
     }
 
     SECTION("logically 2D LabeledTensor")
     {
       auto A = LabeledMatrix::zeros(nbatch, {&info1, &info2});
       A.set(BatchTensor::ones({1, 6}).batch_expand(nbatch), "third", "second");
-      REQUIRE(torch::sum(A("first", "first")).item<double>() == Approx(0));
-      REQUIRE(torch::sum(A("first", "second")).item<double>() == Approx(0));
-      REQUIRE(torch::sum(A("second", "first")).item<double>() == Approx(0));
-      REQUIRE(torch::sum(A("second", "second")).item<double>() == Approx(0));
-      REQUIRE(torch::sum(A("third", "first")).item<double>() == Approx(0));
-      REQUIRE(torch::sum(A("third", "second")).item<double>() == Approx(nbatch * 6));
+      REQUIRE(torch::sum(A("first", "first")).item<double>() == Catch::Approx(0));
+      REQUIRE(torch::sum(A("first", "second")).item<double>() == Catch::Approx(0));
+      REQUIRE(torch::sum(A("second", "first")).item<double>() == Catch::Approx(0));
+      REQUIRE(torch::sum(A("second", "second")).item<double>() == Catch::Approx(0));
+      REQUIRE(torch::sum(A("third", "first")).item<double>() == Catch::Approx(0));
+      REQUIRE(torch::sum(A("third", "second")).item<double>() == Catch::Approx(nbatch * 6));
     }
   }
 
@@ -154,8 +155,8 @@ TEST_CASE("LabeledTensor", "[tensors]")
 
     // Since B is a deep copy, modifying B shouldn't affect A.
     B.set(BatchTensor::ones({1, 6}).batch_expand(nbatch), "third", "second");
-    REQUIRE(torch::sum(A("third", "second")).item<double>() == Approx(0));
-    REQUIRE(torch::sum(B("third", "second")).item<double>() == Approx(nbatch * 6));
+    REQUIRE(torch::sum(A("third", "second")).item<double>() == Catch::Approx(0));
+    REQUIRE(torch::sum(B("third", "second")).item<double>() == Catch::Approx(nbatch * 6));
   }
 
   SECTION("slice")
@@ -179,8 +180,8 @@ TEST_CASE("LabeledTensor", "[tensors]")
       auto A = LabeledVector::zeros(nbatch, {&info1});
       A.set(2.3 * BatchTensor::ones(7).batch_expand(nbatch), "sub1");
       auto B = A.slice("sub1");
-      REQUIRE(torch::sum(B("first")).item<double>() == Approx(nbatch * 6 * 2.3));
-      REQUIRE(torch::sum(B("second")).item<double>() == Approx(nbatch * 2.3));
+      REQUIRE(torch::sum(B("first")).item<double>() == Catch::Approx(nbatch * 6 * 2.3));
+      REQUIRE(torch::sum(B("second")).item<double>() == Catch::Approx(nbatch * 2.3));
     }
 
     SECTION("logically 2D LabeledTensor")
@@ -188,10 +189,12 @@ TEST_CASE("LabeledTensor", "[tensors]")
       auto A = LabeledMatrix::zeros(nbatch, {&info1, &info2});
       A.set(-1.9 * BatchTensor::ones({7, 6}).batch_expand(nbatch), "sub1", "second");
       auto B = A.slice(0, "sub1");
-      REQUIRE(torch::sum(B("first", "first")).item<double>() == Approx(0));
-      REQUIRE(torch::sum(B("first", "second")).item<double>() == Approx(nbatch * 6 * 6 * -1.9));
-      REQUIRE(torch::sum(B("second", "first")).item<double>() == Approx(0));
-      REQUIRE(torch::sum(B("second", "second")).item<double>() == Approx(nbatch * 1 * 6 * -1.9));
+      REQUIRE(torch::sum(B("first", "first")).item<double>() == Catch::Approx(0));
+      REQUIRE(torch::sum(B("first", "second")).item<double>() ==
+              Catch::Approx(nbatch * 6 * 6 * -1.9));
+      REQUIRE(torch::sum(B("second", "first")).item<double>() == Catch::Approx(0));
+      REQUIRE(torch::sum(B("second", "second")).item<double>() ==
+              Catch::Approx(nbatch * 1 * 6 * -1.9));
     }
   }
 }

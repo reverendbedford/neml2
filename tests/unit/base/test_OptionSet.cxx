@@ -21,7 +21,9 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-#include <catch2/catch.hpp>
+
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_all.hpp>
 
 #include "neml2/base/OptionSet.h"
 
@@ -42,7 +44,7 @@ TEST_CASE("OptionSet", "[base]")
 
     SECTION("get")
     {
-      REQUIRE(options.get<double>("p1") == Approx(1.5));
+      REQUIRE(options.get<double>("p1") == Catch::Approx(1.5));
       REQUIRE(options.get<std::string>("p2") == "foo");
       REQUIRE(options.get<unsigned int>("p3") == 3);
       REQUIRE_THAT(options.get<std::vector<std::string>>("p4"),
@@ -70,7 +72,7 @@ TEST_CASE("OptionSet", "[base]")
     SECTION("copy")
     {
       OptionSet options2(options);
-      REQUIRE(options.get<double>("p1") == Approx(1.5));
+      REQUIRE(options.get<double>("p1") == Catch::Approx(1.5));
       REQUIRE(options.get<std::string>("p2") == "foo");
       REQUIRE(options.get<unsigned int>("p3") == 3);
       REQUIRE_THAT(options.get<std::vector<std::string>>("p4"),

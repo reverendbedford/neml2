@@ -182,7 +182,6 @@ jobs:
           echo -e "\
             #include \"neml2/base/Registry.h\"\n\
             int main() {\n\
-              neml2::Registry::print(std::cout);\n\
               return 0;\n\
             }\
             " > main.cxx
@@ -190,7 +189,7 @@ jobs:
       - name: Create a CMakeLists.txt file for testing purposes
         run: |
           echo -e "\
-            cmake_minimum_required(VERSION 3.5)
+            cmake_minimum_required(VERSION 3.23)
             project(FOO)\n\
             add_subdirectory(neml2)\n\
             add_executable(foo main.cxx)\n\
@@ -198,7 +197,7 @@ jobs:
             " > CMakeLists.txt
       - run: cat CMakeLists.txt
       - name: Configure with CMake
-        run: cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF -DNEML2_DOC=OFF -B build .
+        run: cmake -DNEML2_TESTS=OFF -B build .
       - name: Compile
         run: cd build && make -j 2
       - run: cd build && ./foo

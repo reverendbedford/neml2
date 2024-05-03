@@ -91,7 +91,7 @@ Commonly used configuration options are summarized below. Default options are un
 | CMAKE_UNITY_BUILD    |                                                             | CMake [Reference](https://cmake.org/cmake/help/latest/variable/CMAKE_UNITY_BUILD.html)    |
 | NEML2_DTYPE          | Float16, Float32, <u>Float64</u>                            | Default floating point integral type used in the material models                          |
 | NEML2_INT_DTYPE      | Int8, Int16, Int32, <u>Int64</u>                            | Default fixed point integral type used in the material models                             |
-| BUILD_TESTING        | <u>ON</u>, OFF                                              | Master knob for including/excluding all tests                                             |
+| NEML2_TESTS          | <u>ON</u>, OFF                                              | Master knob for including/excluding all tests                                             |
 | NEML2_UNIT           | <u>ON</u>, OFF                                              | Create the unit testing target                                                            |
 | NEML2_REGRESSION     | <u>ON</u>, OFF                                              | Create the regression testing target                                                      |
 | NEML2_VERIFICATION   | <u>ON</u>, OFF                                              | Create the verification testing target                                                    |

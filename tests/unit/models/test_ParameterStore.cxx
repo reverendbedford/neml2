@@ -22,7 +22,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_all.hpp>
 
 #include "utils.h"
 #include "neml2/models/Model.h"
@@ -89,9 +90,10 @@ TEST_CASE("ParameterStore", "[models]")
     {
       E.requires_grad_(true);
       model.value();
-      REQUIRE_THROWS_WITH(math::jacrev(S.value(), E),
-                          Catch::Matchers::Contains("The batch shape of the parameter must be the "
-                                                    "same as the batch shape of the output"));
+      REQUIRE_THROWS_WITH(
+          math::jacrev(S.value(), E),
+          Catch::Matchers::ContainsSubstring("The batch shape of the parameter must be the "
+                                             "same as the batch shape of the output"));
     }
 
     SECTION("Jacobians are correct")
