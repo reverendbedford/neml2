@@ -1,19 +1,21 @@
 include(NEML2UnityGroup)
 
-# Catch2, for testing
-FetchContent_Declare(
-      Catch2
-      GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-      GIT_TAG b5373dadca40b7edc8570cf9470b9b1cb1934d40 # version 3.5.4
-)
-message(STATUS "Downloading Catch2, this may take a few minutes.")
-FetchContent_MakeAvailable(Catch2)
+if(NEML2_UNIT OR NEML2_REGRESSION OR NEML2_VERIFICATION OR NEML2_BENCHMARK)
+      # Catch2, for testing
+      FetchContent_Declare(
+            Catch2
+            GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+            GIT_TAG b5373dadca40b7edc8570cf9470b9b1cb1934d40 # version 3.5.4
+      )
+      message(STATUS "Downloading Catch2, this may take a few minutes.")
+      FetchContent_MakeAvailable(Catch2)
 
-# Catch2 v3 is built as a static library, so we MUST make sure the compile definitions are compatible with ours
-if(Torch_CXX11_ABI)
-      target_compile_definitions(Catch2 PUBLIC _GLIBCXX_USE_CXX11_ABI=1)
-else()
-      target_compile_definitions(Catch2 PUBLIC _GLIBCXX_USE_CXX11_ABI=0)
+      # Catch2 v3 is built as a static library, so we MUST make sure the compile definitions are compatible with ours
+      if(Torch_CXX11_ABI)
+            target_compile_definitions(Catch2 PUBLIC _GLIBCXX_USE_CXX11_ABI=1)
+      else()
+            target_compile_definitions(Catch2 PUBLIC _GLIBCXX_USE_CXX11_ABI=0)
+      endif()
 endif()
 
 # Test utilities
@@ -171,8 +173,16 @@ endif()
 option(NEML2_PROFILING "Build NEML2 profiling tests" OFF)
 
 if(NEML2_PROFILING)
-      # gperftools for profiling
-      add_subdirectory(${NEML2_SOURCE_DIR}/extern/gperftools ${NEML2_BINARY_DIR}/extern/gperftools EXCLUDE_FROM_ALL)
+      # gperftools
+      FetchContent_Declare(
+            gperftools
+            GIT_REPOSITORY https://github.com/gperftools/gperftools.git
+            GIT_TAG gperftools-2.15
+            EXCLUDE_FROM_ALL
+      )
+      message(STATUS "Downloading gperftools, this may take a few minutes.")
+      FetchContent_MakeAvailable(gperftools)
+
       file(GLOB_RECURSE PROFILING_TESTS profiling/*.cxx)
       add_executable(profiling_tests ${PROFILING_TESTS})
 

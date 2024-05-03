@@ -41,24 +41,54 @@ target_sources(neml2
   FILES
   ${_NEML2_HEADERS}
 )
+install(
+  TARGETS neml2
+  FILE_SET HEADERS
+  COMPONENT Development
+)
 
 # torch
 target_include_directories(neml2 SYSTEM PUBLIC ${Torch_INCLUDE_DIRECTORIES})
 target_link_directories(neml2 PUBLIC ${Torch_LINK_DIRECTORIES})
 target_link_libraries(neml2 PUBLIC ${Torch_LIBRARIES})
 
+# hit for parsing
+FetchContent_Declare(
+  hit
+  GIT_REPOSITORY https://github.com/idaholab/hit.git
+  GIT_TAG 100b575af08643b5e646cac8faff6c87dd1c15a7
+  SOURCE_DIR ${NEML2_BINARY_DIR}/_deps/hit/hit
+)
+message(STATUS "Downloading hit, this may take a few minutes.")
+FetchContent_MakeAvailable(hit)
+
+add_library(hit SHARED
+  ${hit_SOURCE_DIR}/parse.cc
+  ${hit_SOURCE_DIR}/lex.cc
+  ${hit_SOURCE_DIR}/braceexpr.cc
+)
+
 if(Torch_CXX11_ABI)
-  target_compile_definitions(neml2 PUBLIC _GLIBCXX_USE_CXX11_ABI=1)
+  target_compile_definitions(hit PUBLIC _GLIBCXX_USE_CXX11_ABI=1)
 else()
-  target_compile_definitions(neml2 PUBLIC _GLIBCXX_USE_CXX11_ABI=0)
+  target_compile_definitions(hit PUBLIC _GLIBCXX_USE_CXX11_ABI=0)
 endif()
 
-# hit for parsing
-add_subdirectory("${NEML2_SOURCE_DIR}/extern/hit" "${NEML2_BINARY_DIR}/extern/hit")
-target_link_libraries(neml2 PUBLIC hit)
-
+set_target_properties(hit PROPERTIES UNITY_BUILD OFF)
+target_include_directories(hit PUBLIC ${hit_SOURCE_DIR}/..)
+target_sources(hit
+  PUBLIC
+  FILE_SET HEADERS
+  BASE_DIRS ${hit_SOURCE_DIR}/..
+  FILES
+  ${hit_SOURCE_DIR}/braceexpr.h
+  ${hit_SOURCE_DIR}/hit.h
+  ${hit_SOURCE_DIR}/lex.h
+  ${hit_SOURCE_DIR}/parse.h
+)
 install(
-  TARGETS neml2
+  TARGETS hit
   FILE_SET HEADERS
   COMPONENT Development
 )
+target_link_libraries(neml2 PUBLIC hit)
