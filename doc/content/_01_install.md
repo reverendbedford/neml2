@@ -17,7 +17,8 @@ Compiling the NEML2 core library requires
 Other PyTorch releases with a few minor versions around are likely to be compatible. In the PyTorch official download page, several download options are provided: conda, pip, libTorch, and source distribution.
 - **Recommended** If you choose to download PyTorch using conda or pip, the NEML2 CMake script can automatically detect and use the PyTorch installation.
 - If you choose to download libTorch or build PyTorch from source, you will need to set `LIBTORCH_DIR` to be the location of libTorch when using CMake to configure NEML2.
-- If no PyTorch installation can be detected and `LIBTORCH_DIR` is not set at configure time, the NEML2 CMake script will automatically download and use the libTorch obtained from the official website. Note, however, that this method only works on Linux and Mac systems.
+
+If no PyTorch installation can be detected and `LIBTORCH_DIR` is not set at configure time, the NEML2 CMake script will automatically download and use the libTorch obtained from the official website. Note, however, that this method only works on Linux and Mac systems.
 
 > The libTorch distributions from the official website come with two flavors: "Pre-cxx11 ABI" and "cxx11 ABI". Both variants are supported by NEML2. If you are unsure, we recommend the one with "cxx11 ABI".
 
@@ -31,12 +32,10 @@ Other PyTorch releases with a few minor versions around are likely to be compati
 - [Doxygen](https://github.com/doxygen/doxygen) for building the documentation.
 - [Doxygen Awesome](https://github.com/jothepro/doxygen-awesome-css) the documentation theme.
 - Python packages
-  - PyYAML
+  - pytest
   - pandas
   - matplotlib
-  - pybind11
-  - pybind11-stubgen
-  - pytest
+  - PyYAML
 
 ## Build, Test, and Install
 
