@@ -177,11 +177,11 @@ if(NEML2_PROFILING)
       FetchContent_Declare(
             gperftools
             GIT_REPOSITORY https://github.com/gperftools/gperftools.git
-            GIT_TAG gperftools-2.13
-            EXCLUDE_FROM_ALL
+            GIT_TAG gperftools-2.15
       )
       message(STATUS "Downloading gperftools, this may take a few minutes.")
-      FetchContent_MakeAvailable(gperftools)
+      FetchContent_Populate(gperftools)
+      add_subdirectory(${gperftools_SOURCE_DIR} ${gperftools_BINARY_DIR} EXCLUDE_FROM_ALL)
 
       file(GLOB_RECURSE PROFILING_TESTS profiling/*.cxx)
       add_executable(profiling_tests ${PROFILING_TESTS})
