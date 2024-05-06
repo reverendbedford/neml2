@@ -98,3 +98,29 @@ Commonly used configuration options are summarized below. Default options are un
 | NEML2_PROFILING      | ON, <u>OFF</u>                                              | Create the profiling executable target                                                    |
 | NEML2_DOC            | ON, <u>OFF</u>                                              | Create the documentation target                                                           |
 | NEML2_PYBIND         | ON, <u>OFF</u>                                              | Create the Python bindings target                                                         |
+
+## CMake integration {#cmake-integration}
+
+Integrating NEML2 into a project that already uses CMake is fairly straightforward. The following CMakeLists.txt snippet links NEML2 into the target executable called `foo`:
+
+```
+add_subdirectory(neml2)
+
+add_executable(foo main.cxx)
+target_link_libraries(foo neml2)
+```
+
+The above snippet assumes NEML2 is checked out to the directory neml2, i.e., as a git submodule.
+Alternatively, you may use CMake's `FetchContent` module to integrate NEML2 into your project:
+
+```
+FetchContent_Declare(
+  neml2
+  GIT_REPOSITORY https://github.com/reverendbedford/neml2.git
+  GIT_TAG v1.4.0
+)
+FetchContent_MakeAvailable(neml2)
+
+add_executable(foo main.cxx)
+target_link_libraries(foo neml2)
+```

@@ -3,11 +3,15 @@
   <navindex>
     <tab type="mainpage" visible="yes" title="Overview"/>
     <tab type="user" url="@ref install" title="Installation Guide"/>
-    <tab type="user" url="@ref user" title="User Guide"/>
-    <tab type="user" url="@ref dev" title="Developer Guide"/>
-    <tab type="user" url="@ref system" title="System Documentation"/>
+    <tab type="usergroup" title="System Documentation" url="@ref system">
+      <tab type="user" url="@ref tensor" title="Tensor"/>
+      <tab type="user" url="@ref data" title="Data"/>
+      <tab type="user" url="@ref model" title="Model"/>
+      <tab type="user" url="@ref solver" title="Solver"/>
+      <tab type="user" url="@ref driver" title="Driver"/>
+    </tab>
     <tab type="user" url="@ref physics" title="Physics Documentation"/>
-    <tab type="user" url="@ref syntax" title="Syntax Documentation"/>
+    <tab type="user" url="@ref dev" title="Developer Guide"/>
     <tab type="classlist" visible="yes" title="" intro=""/>
   </navindex>
 
