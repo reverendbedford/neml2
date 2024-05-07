@@ -68,7 +68,9 @@ if __name__ == "__main__":
         stream.write("[TOC]\n\n")
 
         for section in sections:
-            stream.write("## [{}]\n\n".format(section))
+            stream.write(
+                "## [{}] {{#{}}}\n\n".format(section, "syntax-" + section.lower())
+            )
             for type, params in syntax.items():
                 if params["section"] != section:
                     continue
@@ -99,6 +101,4 @@ if __name__ == "__main__":
                     if param_value:
                         stream.write("  - <u>Default</u>: {}\n".format(param_value))
                 stream.write("\n")
-                stream.write(
-                    "Detailed Doxygen documentation [link](@ref {})\n\n".format(type)
-                )
+                stream.write("Detailed documentation [link](@ref {})\n\n".format(type))

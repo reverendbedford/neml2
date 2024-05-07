@@ -57,7 +57,7 @@ protected:
 };
 } // namespace neml2
 ```
-Since isotropic hardening _is a_ model, the class inherits from `Model`. The user-facing expected options are defined by the static method `expected_options`. NEML2 handles the parsing of user-specified options and pass them to the constructor. The input variable of the model is the equivalent plastic strain, and the output variable of the model is the isotropic hardening. Their corresponding variable value references are stored as `_ep` and `_h`, respectively, again following the [naming conventions](@ref naming-conventions).
+Since isotropic hardening _is a_ model, the class inherits from `Model`. The user-facing expected options are defined by the static method `expected_options`. NEML2 handles the parsing of user-specified options and pass them to the constructor (see [Input file syntax](@ref input-file-syntax) on how the input file works). The input variable of the model is the equivalent plastic strain, and the output variable of the model is the isotropic hardening. Their corresponding variable value references are stored as `_ep` and `_h`, respectively, again following the [naming conventions](@ref naming-conventions).
 
 The expected options and the constructor are defined as
 ```cpp
@@ -242,3 +242,4 @@ The first positional argument specifies the name of the benchmark test to run. T
 The Chaboche benchmark test is repeated with different batch sizes and on different devices (in this case CPU and GPU). The final benchmark results are summarized in the following figure.
 
 ![Chaboche benchmark results](@ref timings.png){html: width=50%, latex: width=10cm}
+

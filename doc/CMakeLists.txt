@@ -54,7 +54,7 @@ add_custom_target(doc-syntax
   DEPENDS syntax
   WORKING_DIRECTORY ${NEML2_BINARY_DIR}/doc
   COMMAND ${NEML2_BINARY_DIR}/doc/syntax
-  COMMAND ${Python_EXECUTABLE} ${NEML2_SOURCE_DIR}/scripts/syntax_to_md.py syntax.yml content/_99_syntax.md
+  COMMAND ${Python_EXECUTABLE} ${NEML2_SOURCE_DIR}/scripts/syntax_to_md.py syntax.yml content/syntax.md
   COMMENT "Generate NEML2 syntax and convert to markdown"
   VERBATIM
 )

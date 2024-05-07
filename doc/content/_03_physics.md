@@ -1,3 +1,0 @@
-# Physics Documentation {#physics}
-
-[TOC]

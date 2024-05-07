@@ -1,3 +1,0 @@
-# Solver {#solver}
-
-[TOC]
