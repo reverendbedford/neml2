@@ -28,8 +28,8 @@ jobs:
       - run: |
           cmake \
             -DCMAKE_BUILD_TYPE=Release \
-            -DCMAKE_UNITY_BUILD=OFF \
-            -DNEML2_UNIT=ON \
+            -DCMAKE_UNITY_BUILD=ON \
+            -DNEML2_UNIT=OFF \
             -DNEML2_REGRESSION=OFF \
             -DNEML2_VERIFICATION=OFF \
             -DNEML2_BENCHMARK=OFF \
