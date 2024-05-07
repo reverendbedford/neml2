@@ -1,0 +1,16 @@
+digraph "NewtonWithTrustRegion"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  Node1 [id="Node000001",label="NewtonWithTrustRegion",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip="The nonlinear solver solves a nonlinear system of equations."];
+  Node2 -> Node1 [id="edge1_Node000001_Node000002",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node2 [id="Node000002",label="Newton",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$classneml2_1_1Newton.html",tooltip="The nonlinear solver solves a nonlinear system of equations."];
+  Node3 -> Node2 [id="edge2_Node000002_Node000003",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node3 [id="Node000003",label="NonlinearSolver",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$classneml2_1_1NonlinearSolver.html",tooltip="The nonlinear solver solves a nonlinear system of equations."];
+  Node4 -> Node3 [id="edge3_Node000003_Node000004",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node4 [id="Node000004",label="Solver",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$classneml2_1_1Solver.html",tooltip="The solver solves a system of equations."];
+  Node5 -> Node4 [id="edge4_Node000004_Node000005",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node5 [id="Node000005",label="NEML2Object",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$classneml2_1_1NEML2Object.html",tooltip="The base class of all \"manufacturable\" objects in the NEML2 library."];
+}
