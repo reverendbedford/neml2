@@ -40,10 +40,16 @@ jobs:
       - run: make doc-syntax -j 2
       - run: make doc-html
       - run: cat doc/doxygen.log
+      - name: Preview GitHub Pages
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          source-dir: doc/build/html
       - name: Deploy to GitHub Pages
         if: ${{ github.event_name == 'push' }}
         uses: JamesIves/github-pages-deploy-action@v4.4.1
         with:
           branch: gh-pages
           folder: doc/build/html
-          single-commit: true
+          clean-exclude: pr-preview/
+          force: false
