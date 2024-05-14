@@ -33,16 +33,19 @@ Model::expected_options()
 {
   OptionSet options = Data::expected_options();
   options += NonlinearSystem::expected_options();
+  NonlinearSystem::disable_automatic_scaling(options);
 
   options.section() = "Models";
 
-  options.set<bool>("use_AD_first_derivative") = false;
-  options.set<bool>("use_AD_second_derivative") = false;
+  options.set<bool>("_use_AD_first_derivative") = false;
+  options.set<bool>("_use_AD_second_derivative") = false;
   options.set<int>("_extra_derivative_order") = 0;
   options.set<bool>("_nonlinear_system") = false;
 
   options.set("_extra_derivative_order").suppressed() = true;
   options.set("_nonlinear_system").suppressed() = true;
+  options.set("_use_AD_first_derivative").suppressed() = true;
+  options.set("_use_AD_second_derivative").suppressed() = true;
 
   return options;
 }
@@ -52,8 +55,8 @@ Model::Model(const OptionSet & options)
     ParameterStore(options, this),
     VariableStore(options, this),
     NonlinearSystem(options),
-    _AD_1st_deriv(options.get<bool>("use_AD_first_derivative")),
-    _AD_2nd_deriv(options.get<bool>("use_AD_second_derivative")),
+    _AD_1st_deriv(options.get<bool>("_use_AD_first_derivative")),
+    _AD_2nd_deriv(options.get<bool>("_use_AD_second_derivative")),
     _options(default_tensor_options()),
     _deriv_order(-1),
     _extra_deriv_order(options.get<int>("_extra_derivative_order")),

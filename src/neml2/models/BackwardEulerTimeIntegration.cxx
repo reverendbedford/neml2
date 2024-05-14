@@ -35,6 +35,7 @@ OptionSet
 BackwardEulerTimeIntegration<T>::expected_options()
 {
   OptionSet options = Model::expected_options();
+  NonlinearSystem::enable_automatic_scaling(options);
   options.set<VariableName>("variable");
   options.set<VariableName>("variable_rate");
   options.set<VariableName>("time") = VariableName("t");

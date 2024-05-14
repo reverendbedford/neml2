@@ -107,6 +107,6 @@ The assembly of the partial derivatives into the total derivative \f$\partial y 
 
 ## Automatic differentiation {#automatic-differentiation}
 
-Deriving and implementing derivatives of the forward operator can be cubersome from times to times. NEML2 offers the option to use automatic differentiation to obtain derivatives. To enable automatic differentiation, simply set the `use_AD_first_derivative` and/or the `use_AD_second_derivative` options to `true`.
+Deriving and implementing derivatives of the forward operator can be cubersome from times to times. NEML2 offers the option to use automatic differentiation to obtain derivatives. To enable automatic differentiation, simply set the `_use_AD_first_derivative` and/or the `_use_AD_second_derivative` options to `true`.
 
 Since a composed model uses chain rule to efficiently evaluate the total derivatives, automatic differentiation is disabled for `ComposedModel`. However, each of the child model can still use AD to calculate the derivatives of its own forward operator. Moreover, AD and non-AD models can be composed together.

@@ -43,6 +43,9 @@ TorchScriptFlowRate::expected_options()
   options.set<VariableName>("internal_state_2_rate") = VariableName("state", "C_rate");
   // The machine learning model
   options.set<std::string>("torch_script");
+  // Use AD
+  options.set<bool>("_use_AD_first_derivative") = true;
+  options.set<bool>("_use_AD_second_derivative") = true;
   return options;
 }
 

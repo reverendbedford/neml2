@@ -38,6 +38,10 @@ class NonlinearSystem
 public:
   static OptionSet expected_options();
 
+  static void disable_automatic_scaling(OptionSet & options);
+
+  static void enable_automatic_scaling(OptionSet & options);
+
   NonlinearSystem(const OptionSet & options);
 
   /**

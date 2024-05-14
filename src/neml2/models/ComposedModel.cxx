@@ -32,6 +32,7 @@ OptionSet
 ComposedModel::expected_options()
 {
   OptionSet options = Model::expected_options();
+  NonlinearSystem::enable_automatic_scaling(options);
   options.set<std::vector<std::string>>("models");
   options.set<std::vector<VariableName>>("additional_outputs");
   options.set<std::vector<std::string>>("priority");
@@ -98,8 +99,8 @@ ComposedModel::check_AD_limitation() const
 {
   if (_AD_1st_deriv || _AD_2nd_deriv)
     throw NEMLException(
-        "ComposedModel does not use automatic differentiation. use_AD_first_derivative and "
-        "use_AD_second_derivative should be set to false.");
+        "ComposedModel does not use automatic differentiation. _use_AD_first_derivative and "
+        "_use_AD_second_derivative should be set to false.");
 }
 
 void

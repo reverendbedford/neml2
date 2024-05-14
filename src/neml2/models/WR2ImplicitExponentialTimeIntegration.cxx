@@ -37,6 +37,7 @@ OptionSet
 WR2ImplicitExponentialTimeIntegration::expected_options()
 {
   OptionSet options = Model::expected_options();
+  NonlinearSystem::enable_automatic_scaling(options);
   options.set<VariableName>("variable");
   options.set<VariableName>("time") = VariableName("t");
   return options;

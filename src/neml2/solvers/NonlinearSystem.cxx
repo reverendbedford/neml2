@@ -37,6 +37,22 @@ NonlinearSystem::expected_options()
   return options;
 }
 
+void
+NonlinearSystem::disable_automatic_scaling(OptionSet & options)
+{
+  options.set("automatic_scaling").suppressed() = true;
+  options.set("automatic_scaling_tol").suppressed() = true;
+  options.set("automatic_scaling_miter").suppressed() = true;
+}
+
+void
+NonlinearSystem::enable_automatic_scaling(OptionSet & options)
+{
+  options.set("automatic_scaling").suppressed() = false;
+  options.set("automatic_scaling_tol").suppressed() = false;
+  options.set("automatic_scaling_miter").suppressed() = false;
+}
+
 NonlinearSystem::NonlinearSystem(const OptionSet & options)
   : _autoscale(options.get<bool>("automatic_scaling")),
     _autoscale_tol(options.get<Real>("automatic_scaling_tol")),
