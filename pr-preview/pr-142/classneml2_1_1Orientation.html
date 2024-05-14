@@ -134,6 +134,23 @@ $(function(){initNavTree('classneml2_1_1Orientation.html',''); initResizable(); 
 Inheritance diagram for Orientation:</div>
 <div class="dyncontent">
 <div class="center"><img src="classneml2_1_1Orientation__inherit__graph.png" border="0" usemap="#aOrientation_inherit__map" alt="Inheritance graph"/></div>
+<map name="aOrientation_inherit__map" id="aOrientation_inherit__map">
+<area shape="rect" title="Create batch of rotations, with various methods." alt="" coords="141,372,236,397"/>
+<area shape="rect" href="classneml2_1_1Rot.html" title="Rotation stored as modified Rodrigues parameters." alt="" coords="120,299,164,324"/>
+<area shape="poly" title=" " alt="" coords="159,334,183,370,179,373,155,337"/>
+<area shape="rect" href="classneml2_1_1VecBase.html" title=" " alt="" coords="52,225,181,251"/>
+<area shape="poly" title=" " alt="" coords="128,263,140,298,135,299,123,265"/>
+<area shape="rect" href="classneml2_1_1FixedDimTensor.html" title="FixedDimTensor inherits from BatchTensorBase and additionally templates on the base shape." alt="" coords="5,152,228,177"/>
+<area shape="poly" title=" " alt="" coords="119,191,119,225,114,225,114,191"/>
+<area shape="rect" href="classneml2_1_1BatchTensorBase.html" title="NEML2&#39;s enhanced tensor type." alt="" coords="9,79,224,104"/>
+<area shape="poly" title=" " alt="" coords="119,118,119,152,114,152,114,118"/>
+<area shape="rect" title=" " alt="" coords="85,5,149,31"/>
+<area shape="poly" title=" " alt="" coords="119,44,119,79,114,79,114,44"/>
+<area shape="rect" href="classneml2_1_1UserTensor.html" title=" " alt="" coords="200,299,295,324"/>
+<area shape="poly" title=" " alt="" coords="231,336,200,374,196,370,227,333"/>
+<area shape="rect" href="classneml2_1_1NEML2Object.html" title="The base class of all &quot;manufacturable&quot; objects in the NEML2 library." alt="" coords="206,225,315,251"/>
+<area shape="poly" title=" " alt="" coords="259,265,252,299,247,298,253,264"/>
+</map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -457,18 +474,6 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Construct a new <a class="el" href="classneml2_1_1Orientation.html" title="Create batch of rotations, with various methods.">Orientation</a> object. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">input_type</td><td>&ndash; the method used to define the angles, "euler_angles" or "random" </td></tr>
-    <tr><td class="paramname">angle_convention</td><td>&ndash; Euler angle convention, "Kocks", "Roe", or "Bunge" </td></tr>
-    <tr><td class="paramname">angle_type</td><td>&ndash; type of angles, either "degrees" or "radians" </td></tr>
-    <tr><td class="paramname">values</td><td>&ndash; input Euler angles, as a flattened nx3 matrix </td></tr>
-    <tr><td class="paramname">normalize</td><td>&ndash; if true do a "shadow parameter" replacement of the underlying MRP representation to move the inputs farther away from the singularity </td></tr>
-    <tr><td class="paramname">random_seed</td><td>&ndash; random seed for random angle generation </td></tr>
-    <tr><td class="paramname">quantity</td><td>&ndash; number (batch size) of random orientations </td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>

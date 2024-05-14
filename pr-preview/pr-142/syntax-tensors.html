@@ -120,7 +120,7 @@ $(function(){initNavTree('syntax-tensors.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><ul><li class="level2"><a href="#batchtensor">BatchTensor</a></li>
+<ul><li class="level1"><a href="#autotoc_md26">Available objects and their input file syntax</a><ul><li class="level2"><a href="#batchtensor">BatchTensor</a></li>
 <li class="level2"><a href="#emptybatchtensor">EmptyBatchTensor</a></li>
 <li class="level2"><a href="#emptymillerindex">EmptyMillerIndex</a></li>
 <li class="level2"><a href="#emptyquaternion">EmptyQuaternion</a></li>
@@ -263,9 +263,12 @@ $(function(){initNavTree('syntax-tensors.html',''); initResizable(); });
 <li class="level2"><a href="#zeroswsr4">ZerosWSR4</a></li>
 <li class="level2"><a href="#zeroswwr4">ZerosWWR4</a></li>
 </ul>
+</li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_content_2syntax_2tensors"></a></p>
+<h1><a class="anchor" id="autotoc_md26"></a>
+Available objects and their input file syntax</h1>
 <p>Refer to <a class="el" href="system-tensors.html">Systam Documentation</a> for detailed explanation about this system.</p>
 <h2><a class="anchor" id="batchtensor"></a>
 BatchTensor</h2>
@@ -3065,7 +3068,7 @@ OnesWWR4</h2>
 Orientation</h2>
 <details >
 <summary >
-<code>angle_convention</code></summary>
+<code>angle_convention</code> Euler angle convention, 'Kocks', 'Roe', or 'Bunge'</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: string</li>
@@ -3074,7 +3077,7 @@ Orientation</h2>
 </details>
 <details >
 <summary >
-<code>angle_type</code></summary>
+<code>angle_type</code> Type of angles, either 'degrees' or 'radians'</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: string</li>
@@ -3083,7 +3086,7 @@ Orientation</h2>
 </details>
 <details >
 <summary >
-<code>input_type</code></summary>
+<code>input_type</code> The method used to define the angles, 'euler_angles' or 'random'</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: string</li>
@@ -3092,7 +3095,7 @@ Orientation</h2>
 </details>
 <details >
 <summary >
-<code>normalize</code></summary>
+<code>normalize</code> If true do a shadow parameter replacement of the underlying MRP representation to move the inputs farther away from the singularity</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: bool</li>
@@ -3101,7 +3104,7 @@ Orientation</h2>
 </details>
 <details >
 <summary >
-<code>quantity</code></summary>
+<code>quantity</code> Number (batch size) of random orientations</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: unsigned int</li>
@@ -3110,7 +3113,7 @@ Orientation</h2>
 </details>
 <details >
 <summary >
-<code>random_seed</code></summary>
+<code>random_seed</code> Random seed for random angle generation</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long</li>
@@ -3119,7 +3122,7 @@ Orientation</h2>
 </details>
 <details >
 <summary >
-<code>values</code></summary>
+<code>values</code> Input Euler angles, as a flattened n-by-3 matrix</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;double&gt; </li>

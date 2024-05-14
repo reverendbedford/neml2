@@ -41,6 +41,7 @@ var annotated =
       [ "FillSR2", "classneml2_1_1FillSR2.html", "classneml2_1_1FillSR2" ],
       [ "FillWR2", "classneml2_1_1FillWR2.html", "classneml2_1_1FillWR2" ],
       [ "FixedDimTensor", "classneml2_1_1FixedDimTensor.html", "classneml2_1_1FixedDimTensor" ],
+      [ "FixOrientation", "classneml2_1_1FixOrientation.html", "classneml2_1_1FixOrientation" ],
       [ "FlowRule", "classneml2_1_1FlowRule.html", "classneml2_1_1FlowRule" ],
       [ "ForceRate", "classneml2_1_1ForceRate.html", "classneml2_1_1ForceRate" ],
       [ "ForwardEulerTimeIntegration", "classneml2_1_1ForwardEulerTimeIntegration.html", "classneml2_1_1ForwardEulerTimeIntegration" ],

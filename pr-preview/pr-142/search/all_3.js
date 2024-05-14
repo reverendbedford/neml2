@@ -64,7 +64,7 @@ var searchData=
   ['broadcast_5fsizes_61',['broadcast_sizes',['../namespaceneml2_1_1utils.html#a63e2ac98147d8b0df11f9d8100ce1099',1,'neml2::utils']]],
   ['broadcastable_62',['broadcastable',['../namespaceneml2.html#a36e466553cc4e968e9176bb270a9d651',1,'neml2']]],
   ['broadcasting_63',['Tensor broadcasting',['../system-tensors.html#tensor-broadcasting',1,'']]],
-  ['buffer_64',['Buffer',['../system-data.html#autotoc_md22',1,'']]],
+  ['buffer_64',['Buffer',['../system-data.html#autotoc_md27',1,'']]],
   ['bufferstore_65',['BufferStore',['../classneml2_1_1BufferStore.html',1,'BufferStore'],['../classneml2_1_1BufferStore.html#ac9a0513f22b822f9513059d10d072124',1,'neml2::BufferStore::BufferStore()']]],
   ['build_20customization_66',['Build Customization',['../install.html#build-customization',1,'']]],
   ['build_20test_20and_20install_67',['Build, Test, and Install',['../install.html#autotoc_md9',1,'']]],

@@ -28,9 +28,10 @@ var searchData=
   ['fixeddimtensor_3c_20wr2_2c_203_20_3e_25',['FixedDimTensor&lt; WR2, 3 &gt;',['../classneml2_1_1FixedDimTensor.html',1,'neml2']]],
   ['fixeddimtensor_3c_20wsr4_2c_203_2c_206_20_3e_26',['FixedDimTensor&lt; WSR4, 3, 6 &gt;',['../classneml2_1_1FixedDimTensor.html',1,'neml2']]],
   ['fixeddimtensor_3c_20wwr4_2c_203_2c_203_20_3e_27',['FixedDimTensor&lt; WWR4, 3, 3 &gt;',['../classneml2_1_1FixedDimTensor.html',1,'neml2']]],
-  ['flowrule_28',['FlowRule',['../classneml2_1_1FlowRule.html',1,'neml2']]],
-  ['forcerate_29',['ForceRate',['../classneml2_1_1ForceRate.html',1,'neml2']]],
-  ['forwardeulertimeintegration_30',['ForwardEulerTimeIntegration',['../classneml2_1_1ForwardEulerTimeIntegration.html',1,'neml2']]],
-  ['fullbatchtensor_31',['FullBatchTensor',['../classneml2_1_1FullBatchTensor.html',1,'neml2']]],
-  ['fullfixeddimtensor_32',['FullFixedDimTensor',['../classneml2_1_1FullFixedDimTensor.html',1,'neml2']]]
+  ['fixorientation_28',['FixOrientation',['../classneml2_1_1FixOrientation.html',1,'neml2']]],
+  ['flowrule_29',['FlowRule',['../classneml2_1_1FlowRule.html',1,'neml2']]],
+  ['forcerate_30',['ForceRate',['../classneml2_1_1ForceRate.html',1,'neml2']]],
+  ['forwardeulertimeintegration_31',['ForwardEulerTimeIntegration',['../classneml2_1_1ForwardEulerTimeIntegration.html',1,'neml2']]],
+  ['fullbatchtensor_32',['FullBatchTensor',['../classneml2_1_1FullBatchTensor.html',1,'neml2']]],
+  ['fullfixeddimtensor_33',['FullFixedDimTensor',['../classneml2_1_1FullFixedDimTensor.html',1,'neml2']]]
 ];
