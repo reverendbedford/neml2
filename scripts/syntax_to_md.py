@@ -55,29 +55,24 @@ def get_sections(syntax):
 
 
 if __name__ == "__main__":
-    outfile = Path(sys.argv[2])
-    outfile.parent.mkdir(parents=True, exist_ok=True)
+    outdir = Path(sys.argv[2])
+    outdir.mkdir(parents=True, exist_ok=True)
 
     with open(sys.argv[1], "r") as stream:
         syntax = yaml.safe_load(stream)
 
     sections = get_sections(syntax)
-
-    with open(sys.argv[2], "w") as stream:
-        stream.write("# Syntax Documentation {#syntax}\n\n")
-        stream.write("[TOC]\n\n")
-
-        for section in sections:
+    for section in sections:
+        with open((outdir / section.lower()).with_suffix(".md"), "w") as stream:
             stream.write(
-                "## [{}] {{#{}}}\n\n".format(section, "syntax-" + section.lower())
+                "# [{}] {{#{}}}\n\n".format(section, "syntax-" + section.lower())
             )
+            stream.write("[TOC]\n\n")
             for type, params in syntax.items():
                 if params["section"] != section:
                     continue
                 input_type = demangle(params["type"]["value"])
-                stream.write(
-                    "### {} {{#{}}}\n\n".format(input_type, input_type.lower())
-                )
+                stream.write("## {} {{#{}}}\n\n".format(input_type, input_type.lower()))
                 if params["doc"]:
                     stream.write("_{}_\n".format(params["doc"]))
                 for param_name, info in params.items():

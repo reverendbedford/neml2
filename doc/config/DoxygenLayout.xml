@@ -4,7 +4,13 @@
     <tab type="mainpage" visible="yes" title="Overview"/>
     <tab type="user" url="@ref install" title="Installation Guide"/>
     <tab type="user" url="@ref getting-started" title="Getting Started"/>
-    <tab type="user" url="@ref syntax" title="Syntax Documentation"/>
+    <tab type="usergroup" title="Syntax Documentation">
+      <tab type="user" url="@ref syntax-tensors" title="[Tensors]"/>
+      <tab type="user" url="@ref syntax-models" title="[Models]"/>
+      <tab type="user" url="@ref syntax-solvers" title="[Solvers]"/>
+      <tab type="user" url="@ref syntax-data" title="[Data]"/>
+      <tab type="user" url="@ref syntax-drivers" title="[Drivers]"/>
+    </tab>
     <tab type="usergroup" title="System Documentation" url="@ref system">
       <tab type="user" url="@ref tensor" title="Tensor"/>
       <tab type="user" url="@ref model" title="Model"/>
