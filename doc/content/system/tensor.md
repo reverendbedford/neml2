@@ -47,7 +47,7 @@ neml2_assert(batch_sz == {5, 2});
 | [R5](@ref neml2::R5)                   | \f$(3,3,3,3,3)\f$ | Rank-5 tensor                                                    |
 | [SSFR5](@ref neml2::SSFR5)             | \f$(6,6,3)\f$     | Rank-5 tensor with minor symmetry on base dimensions 0-3         |
 | [Rot](@ref neml2::Rot)                 | \f$(3)\f$         | Rotation tensor represented in the Rodrigues form                |
-| [Quarternion](@ref neml2::Quarternion) | \f$(4)\f$         | Quarternion                                                      |
+| [Quaternion](@ref neml2::Quaternion)   | \f$(4)\f$         | Quaternion                                                       |
 | [MillerIndex](@ref neml2::MillerIndex) | \f$(3)\f$         | Crystal direction or lattice plane represented as Miller indices |
 
 Furthermore, all primitive tensor types can be "registered" as variables on a `LabeledAxis`, which will be discussed in the following section on [labeled view](@ref tensor-labeling).

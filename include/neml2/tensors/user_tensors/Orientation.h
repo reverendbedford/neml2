@@ -41,14 +41,6 @@ public:
   /**
    * @brief Construct a new Orientation object
    *
-   * @param "input_type" -- the method used to define the angles, "euler_angles" or "random"
-   * @param "angle_convention" -- Euler angle convention, "Kocks", "Roe", or "Bunge"
-   * @param "angle_type" -- type of angles, either "degrees" or "radians"
-   * @param "values" -- input Euler angles, as a flattened nx3 matrix
-   * @param "normalize" -- if true do a "shadow parameter" replacement of the underlying MRP
-   * representation to move the inputs farther away from the singularity
-   * @param "random_seed" -- random seed for random angle generation
-   * @param "quantity" -- number (batch size) of random orientations
    */
   Orientation(const OptionSet & options);
 

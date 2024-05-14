@@ -41,7 +41,7 @@ All NEML2 capabilities that can be defined through the input file fall under a n
   []
 []
 ```
-defines a tensor named "E" under the `[Tensors]` block and a model named "elasticity" under the `[Models]` block. The [Syntax Documentation](@ref syntax) provides a complete list of objects that can be defined by an input file. The [System Documentation](@ref system) provides detailed explanation of each system.
+defines a tensor named "E" under the `[Tensors]` block and a model named "elasticity" under the `[Models]` block. The [Syntax Documentation](@ref syntax-tensors) provides a complete list of objects that can be defined by an input file. The [System Documentation](@ref system-tensors) provides detailed explanation of each system.
 
 ## Special syntax
 
