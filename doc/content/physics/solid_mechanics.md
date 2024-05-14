@@ -1,1 +1,0 @@
-# Solid Mechanics {#solid-mechanics}

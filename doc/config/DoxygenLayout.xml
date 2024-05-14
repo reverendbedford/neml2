@@ -11,14 +11,14 @@
       <tab type="user" url="@ref syntax-data" title="[Data]"/>
       <tab type="user" url="@ref syntax-drivers" title="[Drivers]"/>
     </tab>
-    <tab type="usergroup" title="System Documentation" url="@ref system">
+    <tab type="usergroup" title="System Documentation">
       <tab type="user" url="@ref system-tensors" title="Tensor"/>
       <tab type="user" url="@ref system-models" title="Model"/>
       <tab type="user" url="@ref system-solvers" title="Solver"/>
       <tab type="user" url="@ref system-data" title="Data"/>
       <tab type="user" url="@ref system-drivers" title="Driver"/>
     </tab>
-    <tab type="usergroup" title="Physics Documentation" url="@ref physics">
+    <tab type="usergroup" title="Physics Documentation">
       <tab type="user" url="@ref solid-mechanics" title="Solid Mechanics"/>
     </tab>
     <tab type="user" url="@ref dev" title="Developer Guide"/>
