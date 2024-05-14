@@ -1,6 +1,8 @@
-# Data {#data}
+# Data {#system-data}
 
 [TOC]
+
+Refer to [Syntax Documentation](@ref syntax-data) for the list of available objects.
 
 ## Buffer
 

@@ -33,21 +33,21 @@ ArrheniusParameter::expected_options()
 {
   OptionSet options = NonlinearParameter<Scalar>::expected_options();
 
-  options.doc() = "Defines the nonlinear parameter as a function of temperature according to the "
+  options.doc() = "Define the nonlinear parameter as a function of temperature according to the "
                   "Arrhenius law. The nonlinear parameter is therefore parametrized by the "
                   "reference value and the activation energy.";
 
   options.set<CrossRef<Scalar>>("reference_value");
-  options.set("reference_value").doc() = "reference value of the parameter";
+  options.set("reference_value").doc() = "Reference value of the parameter";
 
   options.set<CrossRef<Scalar>>("activation_energy");
-  options.set("activation_energy").doc() = "activation energy in the Arrhenius law";
+  options.set("activation_energy").doc() = "Activation energy in the Arrhenius law";
 
   options.set<Real>("ideal_gas_constant");
-  options.set("ideal_gas_constant").doc() = "the ideal gas constant";
+  options.set("ideal_gas_constant").doc() = "The ideal gas constant";
 
   options.set<VariableName>("temperature") = VariableName("forces", "T");
-  options.set("temperature").doc() = "variable name for the temperature";
+  options.set("temperature").doc() = "Variable name for the temperature";
 
   return options;
 }

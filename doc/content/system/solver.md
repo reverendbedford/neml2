@@ -1,6 +1,8 @@
-# Solver {#solver}
+# Solver {#system-solvers}
 
 [TOC]
+
+Refer to [Syntax Documentation](@ref syntax-solvers) for the list of available objects.
 
 Many material models are _implicit_, meaning that the update of the material model is the solution to one or more nonlinear systems of equations. While a model or a composition of models can define such nonlinear system, a solver is required to actually _solve_ the system.
 

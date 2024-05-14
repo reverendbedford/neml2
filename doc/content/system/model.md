@@ -1,6 +1,8 @@
-# Model {#model}
+# Model {#system-models}
 
 [TOC]
+
+Refer to [Syntax Documentation](@ref syntax-models) for the list of available objects.
 
 ## Model definition {#model-definition}
 

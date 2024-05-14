@@ -70,11 +70,18 @@ if __name__ == "__main__":
                 "# [{}] {{#{}}}\n\n".format(section, "syntax-" + section.lower())
             )
             stream.write("[TOC]\n\n")
+            stream.write(
+                "Refer to [Systam Documentation](@ref system-{}) for detailed explanation about this system.\n\n".format(
+                    section.lower()
+                )
+            )
             for type, params in syntax.items():
                 if params["section"] != section:
                     continue
                 input_type = demangle(params["type"]["value"])
-                stream.write("## {} {{#{}}}\n\n".format(input_type, input_type.lower()))
+                stream.write(
+                    "### {} {{#{}}}\n\n".format(input_type, input_type.lower())
+                )
                 if params["doc"]:
                     stream.write("_{}_\n".format(params["doc"]))
                 for param_name, info in params.items():

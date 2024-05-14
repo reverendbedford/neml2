@@ -1,6 +1,8 @@
-# Tensor {#tensor}
+# Tensor {#system-tensors}
 
 [TOC]
+
+Refer to [Syntax Documentation](@ref syntax-tensors) for the list of available objects.
 
 ## Tensor types {#tensor-types}
 
