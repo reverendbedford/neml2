@@ -94,11 +94,18 @@ if __name__ == "__main__":
 
                     param_type = demangle(info["type"])
                     param_value = postprocess(info["value"], param_type)
-                    stream.write("- {}\n".format(param_name))
-                    if info["doc"]:
-                        stream.write("  - <u>Description</u>: {}\n".format(info["doc"]))
+                    stream.write("<details>\n")
+                    if not info["doc"]:
+                        stream.write("  <summary>`{}`</summary>\n\n".format(param_name))
+                    else:
+                        stream.write(
+                            "  <summary>`{}` {}</summary>\n\n".format(
+                                param_name, info["doc"]
+                            )
+                        )
                     stream.write("  - <u>Type</u>: {}\n".format(param_type))
                     if param_value:
                         stream.write("  - <u>Default</u>: {}\n".format(param_value))
+                    stream.write("</details>\n")
                 stream.write("\n")
                 stream.write("Detailed documentation [link](@ref {})\n\n".format(type))
