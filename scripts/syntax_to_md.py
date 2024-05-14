@@ -40,6 +40,8 @@ def demangle(type):
     type = type.replace("std::", "")
     type = type.replace("at::", "")
     type = re.sub("CrossRef<(.+)>", r"\1", type)
+    type = type.replace("LabeledAxisAccessor", "VariableName")
+
     return type
 
 
