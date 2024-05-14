@@ -1,13 +1,18 @@
 var searchData=
 [
-  ['h_0',['h',['../namespaceneml2_1_1crystallography_1_1crystal__symmetry__operators.html#a7cf47d5a6e2dc752fd52463ecf7f6cdf',1,'neml2::crystallography::crystal_symmetry_operators']]],
-  ['has_5fitem_1',['has_item',['../classneml2_1_1LabeledAxis.html#a2da427c8559b4ec31e1ff4283c7aca9e',1,'neml2::LabeledAxis']]],
-  ['has_5fkey_2',['has_key',['../classneml2_1_1Storage.html#ac893681bb1eb5b74798ec69361a986a7',1,'neml2::Storage']]],
-  ['has_5fnl_5fparam_3',['has_nl_param',['../classneml2_1_1ParameterStore.html#a751fe1ea5451edbaa7daf11eeade2dc7',1,'neml2::ParameterStore']]],
-  ['has_5fsubaxis_4',['has_subaxis',['../classneml2_1_1LabeledAxis.html#adf8a2d37f9f0d03f166ac1eb995e5351',1,'neml2::LabeledAxis']]],
-  ['has_5fvariable_5',['has_variable',['../classneml2_1_1LabeledAxis.html#ae36396800f93c30c42bb89d35470fc97',1,'neml2::LabeledAxis::has_variable(const LabeledAxisAccessor &amp;var) const'],['../classneml2_1_1LabeledAxis.html#af390bf36bafcb18f29c32ab5d320c8c4',1,'neml2::LabeledAxis::has_variable(const LabeledAxisAccessor &amp;var) const']]],
-  ['heaviside_6',['heaviside',['../namespaceneml2_1_1math.html#a3660a3eac1e6d181fbdb872c2c2fe23f',1,'neml2::math']]],
-  ['hexagonal_7',['hexagonal',['../namespaceneml2_1_1crystallography_1_1crystal__symmetry__operators.html#a72170f90d94422c54abd369cd09e5a79',1,'neml2::crystallography::crystal_symmetry_operators']]],
-  ['hitparser_8',['HITParser',['../classneml2_1_1HITParser.html',1,'HITParser'],['../classneml2_1_1HITParser.html#ac21422f081569eb193b0f35f406574be',1,'neml2::HITParser::HITParser()']]],
-  ['host_9',['host',['../classneml2_1_1NEML2Object.html#a253b40cc691e6ea7d49648f990242573',1,'neml2::NEML2Object::host() const'],['../classneml2_1_1NEML2Object.html#aaeee19eb1c12dcdf793e38464d038f12',1,'neml2::NEML2Object::host()']]]
+  ['get_0',['get',['../classneml2_1_1Factory.html#ad5eadf90f55c3baf52ef413b2479b6ee',1,'neml2::Factory::get()'],['../classneml2_1_1OptionSet_1_1Option.html#a9681b4de0a8572cf68ac6025484bfcef',1,'neml2::OptionSet::Option::get()'],['../classneml2_1_1OptionSet.html#ac28058f50dff83236bb0e0141cc761d4',1,'neml2::OptionSet::get(const std::string &amp;) const'],['../classneml2_1_1OptionSet.html#a4ba687a627996b9af4706783017052b9',1,'neml2::OptionSet::get(const std::string &amp;) const'],['../classneml2_1_1Registry.html#a4e3d771caac9043ea566ade2ae0d9cea',1,'neml2::Registry::get()'],['../structneml2_1_1math_1_1ConstantTensors.html#a9a20e69c4f5d346e9ec72d7128f21ce7',1,'neml2::math::ConstantTensors::get()'],['../classneml2_1_1LabeledTensor.html#afec36430e0f802eeccaf877e68d6f553',1,'neml2::LabeledTensor::get()']]],
+  ['get_5fbuffer_1',['get_buffer',['../classneml2_1_1BufferStore.html#a90d9e45426181dfb84c53ad7b94db6cb',1,'neml2::BufferStore']]],
+  ['get_5fd2output_5fdinput2_2',['get_d2output_dinput2',['../classneml2_1_1Model.html#a266eb5da16fd21f487f704e356a3bbe9',1,'neml2::Model']]],
+  ['get_5fdoutput_5fdinput_3',['get_doutput_dinput',['../classneml2_1_1Model.html#a04e2b6ccc0f018be2893f2a916b1d828',1,'neml2::Model']]],
+  ['get_5finput_5fvariable_4',['get_input_variable',['../classneml2_1_1VariableStore.html#af8d8cebde25a68f326a90076c1719d8e',1,'neml2::VariableStore::get_input_variable(const VariableName &amp;name)'],['../classneml2_1_1VariableStore.html#a1aba32af3dbef1fa4b95d0d49c84c276',1,'neml2::VariableStore::get_input_variable(const VariableName &amp;name) const']]],
+  ['get_5flist_5',['get_list',['../classneml2_1_1LabeledTensor.html#acae3f183ffc9ad6f6c72af32162b0437',1,'neml2::LabeledTensor']]],
+  ['get_5fobject_6',['get_object',['../classneml2_1_1Factory.html#ad49e07c01bb834c89e6db43bbbd685ec',1,'neml2::Factory']]],
+  ['get_5fobject_5fptr_7',['get_object_ptr',['../classneml2_1_1Factory.html#a6450d6495f17e4fccfac260d73686ade',1,'neml2::Factory']]],
+  ['get_5foutput_8',['get_output',['../classneml2_1_1Model.html#a230166c77b24a5d909bb8c878684a8bb',1,'neml2::Model']]],
+  ['get_5foutput_5fvariable_9',['get_output_variable',['../classneml2_1_1VariableStore.html#a25e939c2523954864422594a22b8868c',1,'neml2::VariableStore::get_output_variable(const VariableName &amp;name)'],['../classneml2_1_1VariableStore.html#a1d19a82de162b265d6706f525dde9ea5',1,'neml2::VariableStore::get_output_variable(const VariableName &amp;name) const']]],
+  ['get_5fparameter_10',['get_parameter',['../classneml2_1_1ParameterStore.html#ac9d1e2479ec0f6bbae1cca7d71848d27',1,'neml2::ParameterStore']]],
+  ['getting_20started_11',['Getting Started',['../getting-started.html',1,'']]],
+  ['gtnyieldfunction_12',['GTNYieldFunction',['../classneml2_1_1GTNYieldFunction.html',1,'GTNYieldFunction'],['../classneml2_1_1GTNYieldFunction.html#af58c56c00ee14094ef09c2943a4bc417',1,'neml2::GTNYieldFunction::GTNYieldFunction()'],['../syntax-models.html#gtnyieldfunction',1,'GTNYieldFunction']]],
+  ['guide_13',['Guide',['../dev.html',1,'Developer Guide'],['../install.html',1,'Installation Guide']]],
+  ['gursoncavitation_14',['GursonCavitation',['../classneml2_1_1GursonCavitation.html',1,'GursonCavitation'],['../classneml2_1_1GursonCavitation.html#a59881fd209ee558acef9e5aa56871d6d',1,'neml2::GursonCavitation::GursonCavitation()'],['../syntax-models.html#gursoncavitation',1,'GursonCavitation']]]
 ];

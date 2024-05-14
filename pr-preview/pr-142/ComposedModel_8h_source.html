@@ -27,11 +27,11 @@ window.MathJax = {
     processHtmlClass: 'tex2jax_process'
   },
   loader: {
-    load: ['[tex]/ams','[tex]/physics']
+    load: ['[tex]/ams','[tex]/physics','[tex]/boldsymbol']
   },
   tex: {
     macros: {},
-    packages: ['base','configmacros','ams','physics']
+    packages: ['base','configmacros','ams','physics','boldsymbol']
   }
 };
 </script>
@@ -179,9 +179,9 @@ $(function(){initNavTree('ComposedModel_8h_source.html',''); initResizable(); })
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    _d2pout_din2.clear();</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  }</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="keywordtype">void</span> apply_chain_rule(<a class="code hl_class" href="classneml2_1_1Model.html">Model</a> * model);</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="keywordtype">void</span> apply_chain_rule(<a class="code hl_class" href="classneml2_1_1Model.html">Model</a> * <a class="code hl_class" href="classneml2_1_1CrossRef.html">model</a>);</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="keywordtype">void</span> apply_second_order_chain_rule(<a class="code hl_class" href="classneml2_1_1Model.html">Model</a> * model);</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="keywordtype">void</span> apply_second_order_chain_rule(<a class="code hl_class" href="classneml2_1_1Model.html">Model</a> * <a class="code hl_class" href="classneml2_1_1CrossRef.html">model</a>);</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="keyword">const</span> std::vector&lt;VariableName&gt; _additional_outputs;</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
@@ -196,11 +196,11 @@ $(function(){initNavTree('ComposedModel_8h_source.html',''); initResizable(); })
 </div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>} <span class="comment">// namespace neml2</span></div>
 <div class="ttc" id="aclassneml2_1_1ComposedModel_html"><div class="ttname"><a href="classneml2_1_1ComposedModel.html">neml2::ComposedModel</a></div><div class="ttdef"><b>Definition</b> ComposedModel.h:33</div></div>
-<div class="ttc" id="aclassneml2_1_1ComposedModel_html_a927276b6e76abcf6bec4e607a874f33a"><div class="ttname"><a href="classneml2_1_1ComposedModel.html#a927276b6e76abcf6bec4e607a874f33a">neml2::ComposedModel::setup_submodel_input_views</a></div><div class="ttdeci">virtual void setup_submodel_input_views() override</div><div class="ttdef"><b>Definition</b> ComposedModel.cxx:115</div></div>
-<div class="ttc" id="aclassneml2_1_1ComposedModel_html_a95baeffb6a3f93db7c85923a8798d686"><div class="ttname"><a href="classneml2_1_1ComposedModel.html#a95baeffb6a3f93db7c85923a8798d686">neml2::ComposedModel::check_AD_limitation</a></div><div class="ttdeci">virtual void check_AD_limitation() const override</div><div class="ttdef"><b>Definition</b> ComposedModel.cxx:97</div></div>
-<div class="ttc" id="aclassneml2_1_1ComposedModel_html_ab0556ab32c1aa494f9cd97714c6597cb"><div class="ttname"><a href="classneml2_1_1ComposedModel.html#ab0556ab32c1aa494f9cd97714c6597cb">neml2::ComposedModel::allocate_variables</a></div><div class="ttdeci">virtual void allocate_variables(int deriv_order, bool options_changed) override</div><div class="ttdoc">Call VariableStore::allocate_variables recursively on all submodels.</div><div class="ttdef"><b>Definition</b> ComposedModel.cxx:106</div></div>
+<div class="ttc" id="aclassneml2_1_1ComposedModel_html_a927276b6e76abcf6bec4e607a874f33a"><div class="ttname"><a href="classneml2_1_1ComposedModel.html#a927276b6e76abcf6bec4e607a874f33a">neml2::ComposedModel::setup_submodel_input_views</a></div><div class="ttdeci">virtual void setup_submodel_input_views() override</div><div class="ttdef"><b>Definition</b> ComposedModel.cxx:116</div></div>
+<div class="ttc" id="aclassneml2_1_1ComposedModel_html_a95baeffb6a3f93db7c85923a8798d686"><div class="ttname"><a href="classneml2_1_1ComposedModel.html#a95baeffb6a3f93db7c85923a8798d686">neml2::ComposedModel::check_AD_limitation</a></div><div class="ttdeci">virtual void check_AD_limitation() const override</div><div class="ttdef"><b>Definition</b> ComposedModel.cxx:98</div></div>
+<div class="ttc" id="aclassneml2_1_1ComposedModel_html_ab0556ab32c1aa494f9cd97714c6597cb"><div class="ttname"><a href="classneml2_1_1ComposedModel.html#ab0556ab32c1aa494f9cd97714c6597cb">neml2::ComposedModel::allocate_variables</a></div><div class="ttdeci">virtual void allocate_variables(int deriv_order, bool options_changed) override</div><div class="ttdoc">Call VariableStore::allocate_variables recursively on all submodels.</div><div class="ttdef"><b>Definition</b> ComposedModel.cxx:107</div></div>
 <div class="ttc" id="aclassneml2_1_1ComposedModel_html_acec712ff48d4c0884a1362c116f3257a"><div class="ttname"><a href="classneml2_1_1ComposedModel.html#acec712ff48d4c0884a1362c116f3257a">neml2::ComposedModel::expected_options</a></div><div class="ttdeci">static OptionSet expected_options()</div><div class="ttdef"><b>Definition</b> ComposedModel.cxx:32</div></div>
-<div class="ttc" id="aclassneml2_1_1ComposedModel_html_ae6396730f8e20adc1c9d3875c473acdd"><div class="ttname"><a href="classneml2_1_1ComposedModel.html#ae6396730f8e20adc1c9d3875c473acdd">neml2::ComposedModel::set_value</a></div><div class="ttdeci">void set_value(bool, bool, bool) override</div><div class="ttdoc">The map between input -&gt; output, and optionally its derivatives.</div><div class="ttdef"><b>Definition</b> ComposedModel.cxx:133</div></div>
+<div class="ttc" id="aclassneml2_1_1ComposedModel_html_ae6396730f8e20adc1c9d3875c473acdd"><div class="ttname"><a href="classneml2_1_1ComposedModel.html#ae6396730f8e20adc1c9d3875c473acdd">neml2::ComposedModel::set_value</a></div><div class="ttdeci">void set_value(bool, bool, bool) override</div><div class="ttdoc">The map between input -&gt; output, and optionally its derivatives.</div><div class="ttdef"><b>Definition</b> ComposedModel.cxx:134</div></div>
 <div class="ttc" id="aclassneml2_1_1CrossRef_html"><div class="ttname"><a href="classneml2_1_1CrossRef.html">neml2::CrossRef</a></div><div class="ttdoc">The wrapper (decorator) for cross-referencing unresolved values at parse time.</div><div class="ttdef"><b>Definition</b> CrossRef.h:52</div></div>
 <div class="ttc" id="aclassneml2_1_1LabeledMatrix_html"><div class="ttname"><a href="classneml2_1_1LabeledMatrix.html">neml2::LabeledMatrix</a></div><div class="ttdoc">A single-batched, logically 2D LabeledTensor.</div><div class="ttdef"><b>Definition</b> LabeledMatrix.h:38</div></div>
 <div class="ttc" id="aclassneml2_1_1Model_html"><div class="ttname"><a href="classneml2_1_1Model.html">neml2::Model</a></div><div class="ttdoc">The base class for all constitutive models.</div><div class="ttdef"><b>Definition</b> Model.h:53</div></div>

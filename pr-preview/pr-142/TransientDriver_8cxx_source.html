@@ -27,11 +27,11 @@ window.MathJax = {
     processHtmlClass: 'tex2jax_process'
   },
   loader: {
-    load: ['[tex]/ams','[tex]/physics']
+    load: ['[tex]/ams','[tex]/physics','[tex]/boldsymbol']
   },
   tex: {
     macros: {},
-    packages: ['base','configmacros','ams','physics']
+    packages: ['base','configmacros','ams','physics','boldsymbol']
   }
 };
 </script>
@@ -485,8 +485,8 @@ $(function(){initNavTree('TransientDriver_8cxx_source.html',''); initResizable()
 <div class="ttc" id="aclassneml2_1_1LabeledVector_html_aa6d44cdb598df1e3981279f35faaf9f2"><div class="ttname"><a href="classneml2_1_1LabeledVector.html#aa6d44cdb598df1e3981279f35faaf9f2">neml2::LabeledVector::fill</a></div><div class="ttdeci">void fill(const LabeledVector &amp;other, bool recursive=true)</div><div class="ttdef"><b>Definition</b> LabeledVector.cxx:45</div></div>
 <div class="ttc" id="aclassneml2_1_1LabeledVector_html_af34acd24f8bc3b69429d15a22b40ef1e"><div class="ttname"><a href="classneml2_1_1LabeledVector.html#af34acd24f8bc3b69429d15a22b40ef1e">neml2::LabeledVector::slice</a></div><div class="ttdeci">LabeledVector slice(const std::string &amp;name) const</div><div class="ttdoc">Slice the logically 1D tensor by a single sub-axis.</div><div class="ttdef"><b>Definition</b> LabeledVector.cxx:31</div></div>
 <div class="ttc" id="aclassneml2_1_1Model_html"><div class="ttname"><a href="classneml2_1_1Model.html">neml2::Model</a></div><div class="ttdoc">The base class for all constitutive models.</div><div class="ttdef"><b>Definition</b> Model.h:53</div></div>
-<div class="ttc" id="aclassneml2_1_1Model_html_a512f18460521794a4be56bbe4103a094"><div class="ttname"><a href="classneml2_1_1Model.html#a512f18460521794a4be56bbe4103a094">neml2::Model::value</a></div><div class="ttdeci">virtual LabeledVector value(const LabeledVector &amp;in)</div><div class="ttdoc">Convenient shortcut to construct and return the model value.</div><div class="ttdef"><b>Definition</b> Model.cxx:344</div></div>
-<div class="ttc" id="aclassneml2_1_1Model_html_ad878f13ac7d38f86f8e142e35419e572"><div class="ttname"><a href="classneml2_1_1Model.html#ad878f13ac7d38f86f8e142e35419e572">neml2::Model::preflight</a></div><div class="ttdeci">virtual std::vector&lt; Diagnosis &gt; preflight() const</div><div class="ttdoc">Check for common problems.</div><div class="ttdef"><b>Definition</b> Model.cxx:66</div></div>
+<div class="ttc" id="aclassneml2_1_1Model_html_a512f18460521794a4be56bbe4103a094"><div class="ttname"><a href="classneml2_1_1Model.html#a512f18460521794a4be56bbe4103a094">neml2::Model::value</a></div><div class="ttdeci">virtual LabeledVector value(const LabeledVector &amp;in)</div><div class="ttdoc">Convenient shortcut to construct and return the model value.</div><div class="ttdef"><b>Definition</b> Model.cxx:347</div></div>
+<div class="ttc" id="aclassneml2_1_1Model_html_ad878f13ac7d38f86f8e142e35419e572"><div class="ttname"><a href="classneml2_1_1Model.html#ad878f13ac7d38f86f8e142e35419e572">neml2::Model::preflight</a></div><div class="ttdeci">virtual std::vector&lt; Diagnosis &gt; preflight() const</div><div class="ttdoc">Check for common problems.</div><div class="ttdef"><b>Definition</b> Model.cxx:69</div></div>
 <div class="ttc" id="aclassneml2_1_1NEML2Object_html_a24dcbf29c0d6cd766009a182a6484e3b"><div class="ttname"><a href="classneml2_1_1NEML2Object.html#a24dcbf29c0d6cd766009a182a6484e3b">neml2::NEML2Object::name</a></div><div class="ttdeci">const std::string &amp; name() const</div><div class="ttdoc">A readonly reference to the object's name.</div><div class="ttdef"><b>Definition</b> NEML2Object.h:66</div></div>
 <div class="ttc" id="aclassneml2_1_1NEML2Object_html_aec5da9ce6df1e02019198dad4da09789"><div class="ttname"><a href="classneml2_1_1NEML2Object.html#aec5da9ce6df1e02019198dad4da09789">neml2::NEML2Object::options</a></div><div class="ttdeci">const OptionSet &amp; options() const</div><div class="ttdef"><b>Definition</b> NEML2Object.h:52</div></div>
 <div class="ttc" id="aclassneml2_1_1NEMLException_html"><div class="ttname"><a href="classneml2_1_1NEMLException.html">neml2::NEMLException</a></div><div class="ttdef"><b>Definition</b> error.h:33</div></div>

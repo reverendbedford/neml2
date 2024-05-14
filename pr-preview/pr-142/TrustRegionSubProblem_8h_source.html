@@ -27,11 +27,11 @@ window.MathJax = {
     processHtmlClass: 'tex2jax_process'
   },
   loader: {
-    load: ['[tex]/ams','[tex]/physics']
+    load: ['[tex]/ams','[tex]/physics','[tex]/boldsymbol']
   },
   tex: {
     macros: {},
-    packages: ['base','configmacros','ams','physics']
+    packages: ['base','configmacros','ams','physics','boldsymbol']
   }
 };
 </script>
@@ -160,7 +160,7 @@ $(function(){initNavTree('TrustRegionSubProblem_8h_source.html',''); initResizab
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <a class="code hl_function" href="classneml2_1_1TrustRegionSubProblem.html#a497b3b99a71ea4f87ae8ba1c3335b1c0">TrustRegionSubProblem</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1OptionSet.html">OptionSet</a> &amp; options);</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classneml2_1_1TrustRegionSubProblem.html#ac480a7f7a0914353179592c055bda38a">reinit</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1NonlinearSystem.html">NonlinearSystem</a> &amp; system, <span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1Scalar.html">Scalar</a> &amp; <a class="code hl_class" href="classneml2_1_1CrossRef.html">delta</a>);</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classneml2_1_1TrustRegionSubProblem.html#ac480a7f7a0914353179592c055bda38a">reinit</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1NonlinearSystem.html">NonlinearSystem</a> &amp; <a class="code hl_class" href="classneml2_1_1CrossRef.html">system</a>, <span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1Scalar.html">Scalar</a> &amp; <a class="code hl_class" href="classneml2_1_1CrossRef.html">delta</a>);</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <a class="code hl_class" href="classneml2_1_1BatchTensor.html">BatchTensor</a> <a class="code hl_function" href="classneml2_1_1TrustRegionSubProblem.html#af80c39630f8279703f3766a8c55354e6">preconditioned_direction</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1Scalar.html">Scalar</a> &amp; <a class="code hl_class" href="classneml2_1_1CrossRef.html">s</a>) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
@@ -189,8 +189,8 @@ $(function(){initNavTree('TrustRegionSubProblem_8h_source.html',''); initResizab
 <div class="ttc" id="aclassneml2_1_1BatchTensor_html"><div class="ttname"><a href="classneml2_1_1BatchTensor.html">neml2::BatchTensor</a></div><div class="ttdef"><b>Definition</b> BatchTensor.h:32</div></div>
 <div class="ttc" id="aclassneml2_1_1CrossRef_html"><div class="ttname"><a href="classneml2_1_1CrossRef.html">neml2::CrossRef</a></div><div class="ttdoc">The wrapper (decorator) for cross-referencing unresolved values at parse time.</div><div class="ttdef"><b>Definition</b> CrossRef.h:52</div></div>
 <div class="ttc" id="aclassneml2_1_1NonlinearSystem_html"><div class="ttname"><a href="classneml2_1_1NonlinearSystem.html">neml2::NonlinearSystem</a></div><div class="ttdoc">Definition of a nonlinear system of equations.</div><div class="ttdef"><b>Definition</b> NonlinearSystem.h:37</div></div>
-<div class="ttc" id="aclassneml2_1_1NonlinearSystem_html_a917637260d1c476b998378aadf943fe6"><div class="ttname"><a href="classneml2_1_1NonlinearSystem.html#a917637260d1c476b998378aadf943fe6">neml2::NonlinearSystem::residual</a></div><div class="ttdeci">void residual()</div><div class="ttdoc">Convenient shortcut to assemble and return the system residual.</div><div class="ttdef"><b>Definition</b> NonlinearSystem.cxx:146</div></div>
-<div class="ttc" id="aclassneml2_1_1NonlinearSystem_html_accde6e3f3ac0e13f42520c08755400f7"><div class="ttname"><a href="classneml2_1_1NonlinearSystem.html#accde6e3f3ac0e13f42520c08755400f7">neml2::NonlinearSystem::Jacobian</a></div><div class="ttdeci">void Jacobian()</div><div class="ttdoc">Convenient shortcut to assemble and return the system Jacobian.</div><div class="ttdef"><b>Definition</b> NonlinearSystem.cxx:163</div></div>
+<div class="ttc" id="aclassneml2_1_1NonlinearSystem_html_a917637260d1c476b998378aadf943fe6"><div class="ttname"><a href="classneml2_1_1NonlinearSystem.html#a917637260d1c476b998378aadf943fe6">neml2::NonlinearSystem::residual</a></div><div class="ttdeci">void residual()</div><div class="ttdoc">Convenient shortcut to assemble and return the system residual.</div><div class="ttdef"><b>Definition</b> NonlinearSystem.cxx:162</div></div>
+<div class="ttc" id="aclassneml2_1_1NonlinearSystem_html_accde6e3f3ac0e13f42520c08755400f7"><div class="ttname"><a href="classneml2_1_1NonlinearSystem.html#accde6e3f3ac0e13f42520c08755400f7">neml2::NonlinearSystem::Jacobian</a></div><div class="ttdeci">void Jacobian()</div><div class="ttdoc">Convenient shortcut to assemble and return the system Jacobian.</div><div class="ttdef"><b>Definition</b> NonlinearSystem.cxx:179</div></div>
 <div class="ttc" id="aclassneml2_1_1OptionSet_html"><div class="ttname"><a href="classneml2_1_1OptionSet.html">neml2::OptionSet</a></div><div class="ttdoc">A custom map-like data structure. The keys are strings, and the values can be nonhomogeneously typed.</div><div class="ttdef"><b>Definition</b> OptionSet.h:59</div></div>
 <div class="ttc" id="aclassneml2_1_1Scalar_html"><div class="ttname"><a href="classneml2_1_1Scalar.html">neml2::Scalar</a></div><div class="ttdoc">The (logical) scalar.</div><div class="ttdef"><b>Definition</b> Scalar.h:38</div></div>
 <div class="ttc" id="aclassneml2_1_1TrustRegionSubProblem_html"><div class="ttname"><a href="classneml2_1_1TrustRegionSubProblem.html">neml2::TrustRegionSubProblem</a></div><div class="ttdef"><b>Definition</b> TrustRegionSubProblem.h:38</div></div>

@@ -27,11 +27,11 @@ window.MathJax = {
     processHtmlClass: 'tex2jax_process'
   },
   loader: {
-    load: ['[tex]/ams','[tex]/physics']
+    load: ['[tex]/ams','[tex]/physics','[tex]/boldsymbol']
   },
   tex: {
     macros: {},
-    packages: ['base','configmacros','ams','physics']
+    packages: ['base','configmacros','ams','physics','boldsymbol']
   }
 };
 </script>
@@ -120,13 +120,13 @@ $(function(){initNavTree('getting-started.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md0">Using NEML2 material models</a></li>
+<ul><li class="level1"><a href="#autotoc_md3">Using NEML2 material models</a></li>
 <li class="level1"><a href="#input-file-syntax">Input file syntax</a></li>
-<li class="level1"><a href="#autotoc_md1">Special syntax</a></li>
+<li class="level1"><a href="#autotoc_md4">Special syntax</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_content_2getting__started"></a></p>
-<h1><a class="anchor" id="autotoc_md0"></a>
+<h1><a class="anchor" id="autotoc_md3"></a>
 Using NEML2 material models</h1>
 <p>The user interface of NEML2 is designed in such a way that no programing experience is required to compose custom material models and define how they are solved. This is achieved using <em>input files</em>. The input files are simply text files with a specific format that NEML2 can understand. NEML2 can <em>deserialize</em> an input file, i.e., parse and create material models specified within the input file.</p>
 <p>Since the input files are nothing more than text files saved on the disk, they can be used in any application that supports standard IO, easily exchanged among different devices running different operating systems, and archived for future reference.</p>
@@ -156,14 +156,14 @@ Input file syntax</h1>
 <div class="line">    poisson_ratio = 0.3</div>
 <div class="line">  []</div>
 <div class="line">[]</div>
-</div><!-- fragment --><p> defines a tensor named "E" under the <code>[Tensors]</code> block and a model named "elasticity" under the <code>[Models]</code> block. The <a class="el" href="syntax.html">Syntax Documentation</a> provides a complete list of objects that can be defined by an input file. The <a class="el" href="system.html">System Documentation</a> provides detailed explanation of each system.</p>
-<h1><a class="anchor" id="autotoc_md1"></a>
+</div><!-- fragment --><p> defines a tensor named "E" under the <code>[Tensors]</code> block and a model named "elasticity" under the <code>[Models]</code> block. The Syntax Documentation provides a complete list of objects that can be defined by an input file. The System Documentation provides detailed explanation of each system.</p>
+<h1><a class="anchor" id="autotoc_md4"></a>
 Special syntax</h1>
 <p><b>Boolean</b>: Oftentimes the behavior of the object is preferrably controlled by a boolean flag. However, since the HIT format only allows (array of) integer, floating-point number, and string, a special syntax shall be reserved for boolean values. In NEML2 input files, a string with value "true" can be parsed into a boolean <code>true</code>, and a string with value "false" can be parsed into a boolean <code>false</code>.</p>
 <blockquote class="doxtable">
 <p>&zwj;On the other hand, other commonly used boolean flags such as "on"/"off", "1"/"0", "True"/"False", etc., cannot be parsed into boolean values. Trying to do so will trigger a <code>ParserException</code>. </p>
 </blockquote>
-<p><b>Variable name</b>: NEML2 material models work with named variables to assign physical meanings to different slices of a tensor (see e.g. <a class="el" href="tensor.html#tensor-labeling">Tensor Labeling</a>). A fully qualified variable name can be parsed from a string, and the delimiter "/" signifies nested sub-axes. For example, the string "forces/t" can be parsed into a variable named "t" defined on the sub-axis named "forces".</p>
+<p><b>Variable name</b>: NEML2 material models work with named variables to assign physical meanings to different slices of a tensor (see e.g. <a class="el" href="system-tensors.html#tensor-labeling">Tensor Labeling</a>). A fully qualified variable name can be parsed from a string, and the delimiter "/" signifies nested sub-axes. For example, the string "forces/t" can be parsed into a variable named "t" defined on the sub-axis named "forces".</p>
 <p><b>Tensor shape</b>: Shape of a tensor can also be parsed from a string. The string must start with "(" and end with ")". An array of comma-separated integers must be enclosed by the parentheses. For example, the string "(5,6,7)" can be parsed into a shape tuple of value <code>(5, 6, 7)</code>. Note that white spaces are not allowed between the parentheses and could lead to undefined behavior. An empty array, i.e. "()", however, is allowed and fully supported. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->

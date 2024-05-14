@@ -27,11 +27,11 @@ window.MathJax = {
     processHtmlClass: 'tex2jax_process'
   },
   loader: {
-    load: ['[tex]/ams','[tex]/physics']
+    load: ['[tex]/ams','[tex]/physics','[tex]/boldsymbol']
   },
   tex: {
     macros: {},
-    packages: ['base','configmacros','ams','physics']
+    packages: ['base','configmacros','ams','physics','boldsymbol']
   }
 };
 </script>
@@ -135,6 +135,8 @@ $(function(){initNavTree('classneml2_1_1NonlinearSystem.html',''); initResizable
   <tr class="even"><td class="entry"><a class="el" href="classneml2_1_1NonlinearSystem.html#af4223605db5fffd7afbb2d66540914f6">_scaling_matrices_initialized</a></td><td class="entry"><a class="el" href="classneml2_1_1NonlinearSystem.html">NonlinearSystem</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classneml2_1_1NonlinearSystem.html#aa826ba08c300c5ab4ecbad19e14e4500">_solution</a></td><td class="entry"><a class="el" href="classneml2_1_1NonlinearSystem.html">NonlinearSystem</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classneml2_1_1NonlinearSystem.html#ab4db89afa31be3dabb2441e0f5325f25">assemble</a>(bool, bool)=0</td><td class="entry"><a class="el" href="classneml2_1_1NonlinearSystem.html">NonlinearSystem</a></td><td class="entry"><span class="mlabel">protected</span><span class="mlabel">pure virtual</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classneml2_1_1NonlinearSystem.html#a10397acfffa0c403f36d5de67393fe08">disable_automatic_scaling</a>(OptionSet &amp;options)</td><td class="entry"><a class="el" href="classneml2_1_1NonlinearSystem.html">NonlinearSystem</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classneml2_1_1NonlinearSystem.html#a504e031b186e6f2f127d195cdc1cfadf">enable_automatic_scaling</a>(OptionSet &amp;options)</td><td class="entry"><a class="el" href="classneml2_1_1NonlinearSystem.html">NonlinearSystem</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classneml2_1_1NonlinearSystem.html#acec712ff48d4c0884a1362c116f3257a">expected_options</a>()</td><td class="entry"><a class="el" href="classneml2_1_1NonlinearSystem.html">NonlinearSystem</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classneml2_1_1NonlinearSystem.html#a713c51e9741d73a5bb43fa5436c28aa6">init_scaling</a>(const bool verbose=false)</td><td class="entry"><a class="el" href="classneml2_1_1NonlinearSystem.html">NonlinearSystem</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classneml2_1_1NonlinearSystem.html#ae045412905020bf2ad042a0977c7914c">Jacobian</a>(const BatchTensor &amp;x)</td><td class="entry"><a class="el" href="classneml2_1_1NonlinearSystem.html">NonlinearSystem</a></td><td class="entry"></td></tr>

@@ -27,11 +27,11 @@ window.MathJax = {
     processHtmlClass: 'tex2jax_process'
   },
   loader: {
-    load: ['[tex]/ams','[tex]/physics']
+    load: ['[tex]/ams','[tex]/physics','[tex]/boldsymbol']
   },
   tex: {
     macros: {},
-    packages: ['base','configmacros','ams','physics']
+    packages: ['base','configmacros','ams','physics','boldsymbol']
   }
 };
 </script>
@@ -120,23 +120,27 @@ $(function(){initNavTree('install.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md2">Prerequisites</a></li>
-<li class="level1"><a href="#autotoc_md3">Dependencies</a></li>
-<li class="level1"><a href="#autotoc_md4">Build, Test, and Install</a></li>
+<ul><li class="level1"><a href="#autotoc_md5">Prerequisites</a></li>
+<li class="level1"><a href="#autotoc_md6">Dependencies</a><ul><li class="level2"><a href="#autotoc_md7">Required dependencies</a></li>
+<li class="level2"><a href="#autotoc_md8">Optional dependencies</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#autotoc_md9">Build, Test, and Install</a></li>
 <li class="level1"><a href="#build-customization">Build Customization</a></li>
 <li class="level1"><a href="#cmake-integration">CMake integration</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_content_2install"></a></p>
-<h1><a class="anchor" id="autotoc_md2"></a>
+<h1><a class="anchor" id="autotoc_md5"></a>
 Prerequisites</h1>
 <p>Compiling the NEML2 core library requires</p><ul>
 <li>A C++ compiler with C++17 support</li>
 <li>CMake &gt;= 3.23</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md3"></a>
+<h1><a class="anchor" id="autotoc_md6"></a>
 Dependencies</h1>
-<h2>Required dependencies</h2>
+<h2><a class="anchor" id="autotoc_md7"></a>
+Required dependencies</h2>
 <ul>
 <li><a href="https://pytorch.org/get-started/locally/">PyTorch</a>, version 2.2.2.</li>
 </ul>
@@ -148,7 +152,8 @@ Dependencies</h1>
 <blockquote class="doxtable">
 <p>&zwj;The libTorch distributions from the official website come with two flavors: "Pre-cxx11 ABI" and "cxx11 ABI". Both variants are supported by NEML2. If you are unsure, we recommend the one with "cxx11 ABI". </p>
 </blockquote>
-<h2>Optional dependencies</h2>
+<h2><a class="anchor" id="autotoc_md8"></a>
+Optional dependencies</h2>
 <p><em>No action is needed to manually obtain the optional dependencies.</em> The compatible optional dependencies will be automatically downloaded and configured by CMake depending on the build customization.</p>
 <ul>
 <li><a href="https://github.com/idaholab/moose/tree/master/framework/contrib/hit">HIT</a> for input file parsing.</li>
@@ -164,7 +169,7 @@ Dependencies</h1>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md4"></a>
+<h1><a class="anchor" id="autotoc_md9"></a>
 Build, Test, and Install</h1>
 <p>First, obtain the NEML2 source code.</p>
 <div class="fragment"><div class="line">git clone https://github.com/reverendbedford/neml2.git</div>

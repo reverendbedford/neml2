@@ -27,11 +27,11 @@ window.MathJax = {
     processHtmlClass: 'tex2jax_process'
   },
   loader: {
-    load: ['[tex]/ams','[tex]/physics']
+    load: ['[tex]/ams','[tex]/physics','[tex]/boldsymbol']
   },
   tex: {
     macros: {},
-    packages: ['base','configmacros','ams','physics']
+    packages: ['base','configmacros','ams','physics','boldsymbol']
   }
 };
 </script>
@@ -160,21 +160,21 @@ $(function(){initNavTree('ArrheniusParameter_8cxx_source.html',''); initResizabl
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>{</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <a class="code hl_class" href="classneml2_1_1OptionSet.html">OptionSet</a> <a class="code hl_function" href="classneml2_1_1Model.html#a761d77eb7c81c3e93b34bfe6caf4b132">options</a> = <a class="code hl_function" href="classneml2_1_1NonlinearParameter.html#acec712ff48d4c0884a1362c116f3257a">NonlinearParameter&lt;Scalar&gt;::expected_options</a>();</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <a class="code hl_function" href="classneml2_1_1Model.html#a761d77eb7c81c3e93b34bfe6caf4b132">options</a>.doc() = <span class="stringliteral">&quot;Defines the nonlinear parameter as a function of temperature according to the &quot;</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <a class="code hl_function" href="classneml2_1_1Model.html#a761d77eb7c81c3e93b34bfe6caf4b132">options</a>.doc() = <span class="stringliteral">&quot;Define the nonlinear parameter as a function of temperature according to the &quot;</span></div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>                  <span class="stringliteral">&quot;Arrhenius law. The nonlinear parameter is therefore parametrized by the &quot;</span></div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>                  <span class="stringliteral">&quot;reference value and the activation energy.&quot;</span>;</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <a class="code hl_function" href="classneml2_1_1Model.html#a761d77eb7c81c3e93b34bfe6caf4b132">options</a>.set&lt;<a class="code hl_class" href="classneml2_1_1CrossRef.html">CrossRef&lt;Scalar&gt;</a>&gt;(<span class="stringliteral">&quot;reference_value&quot;</span>);</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <a class="code hl_function" href="classneml2_1_1Model.html#a761d77eb7c81c3e93b34bfe6caf4b132">options</a>.set(<span class="stringliteral">&quot;reference_value&quot;</span>).doc() = <span class="stringliteral">&quot;reference value of the parameter&quot;</span>;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <a class="code hl_function" href="classneml2_1_1Model.html#a761d77eb7c81c3e93b34bfe6caf4b132">options</a>.set(<span class="stringliteral">&quot;reference_value&quot;</span>).doc() = <span class="stringliteral">&quot;Reference value of the parameter&quot;</span>;</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <a class="code hl_function" href="classneml2_1_1Model.html#a761d77eb7c81c3e93b34bfe6caf4b132">options</a>.set&lt;<a class="code hl_class" href="classneml2_1_1CrossRef.html">CrossRef&lt;Scalar&gt;</a>&gt;(<span class="stringliteral">&quot;activation_energy&quot;</span>);</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <a class="code hl_function" href="classneml2_1_1Model.html#a761d77eb7c81c3e93b34bfe6caf4b132">options</a>.set(<span class="stringliteral">&quot;activation_energy&quot;</span>).doc() = <span class="stringliteral">&quot;activation energy in the Arrhenius law&quot;</span>;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <a class="code hl_function" href="classneml2_1_1Model.html#a761d77eb7c81c3e93b34bfe6caf4b132">options</a>.set(<span class="stringliteral">&quot;activation_energy&quot;</span>).doc() = <span class="stringliteral">&quot;Activation energy in the Arrhenius law&quot;</span>;</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <a class="code hl_function" href="classneml2_1_1Model.html#a761d77eb7c81c3e93b34bfe6caf4b132">options</a>.set&lt;<a class="code hl_typedef" href="namespaceneml2.html#a445a5f0e2a34c9d97d69a3c2d1957907">Real</a>&gt;(<span class="stringliteral">&quot;ideal_gas_constant&quot;</span>);</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <a class="code hl_function" href="classneml2_1_1Model.html#a761d77eb7c81c3e93b34bfe6caf4b132">options</a>.set(<span class="stringliteral">&quot;ideal_gas_constant&quot;</span>).doc() = <span class="stringliteral">&quot;the ideal gas constant&quot;</span>;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <a class="code hl_function" href="classneml2_1_1Model.html#a761d77eb7c81c3e93b34bfe6caf4b132">options</a>.set(<span class="stringliteral">&quot;ideal_gas_constant&quot;</span>).doc() = <span class="stringliteral">&quot;The ideal gas constant&quot;</span>;</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <a class="code hl_function" href="classneml2_1_1Model.html#a761d77eb7c81c3e93b34bfe6caf4b132">options</a>.set&lt;<a class="code hl_class" href="classneml2_1_1LabeledAxisAccessor.html">VariableName</a>&gt;(<span class="stringliteral">&quot;temperature&quot;</span>) = <a class="code hl_typedef" href="namespaceneml2.html#a9e1488821b46ffc106c90ab80036b7aa">VariableName</a>(<span class="stringliteral">&quot;forces&quot;</span>, <span class="stringliteral">&quot;T&quot;</span>);</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <a class="code hl_function" href="classneml2_1_1Model.html#a761d77eb7c81c3e93b34bfe6caf4b132">options</a>.set(<span class="stringliteral">&quot;temperature&quot;</span>).doc() = <span class="stringliteral">&quot;variable name for the temperature&quot;</span>;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <a class="code hl_function" href="classneml2_1_1Model.html#a761d77eb7c81c3e93b34bfe6caf4b132">options</a>.set(<span class="stringliteral">&quot;temperature&quot;</span>).doc() = <span class="stringliteral">&quot;Variable name for the temperature&quot;</span>;</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classneml2_1_1Model.html#a761d77eb7c81c3e93b34bfe6caf4b132">options</a>;</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>}</div>

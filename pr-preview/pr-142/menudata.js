@@ -26,14 +26,19 @@ var menudata={children:[
 {text:"Overview",url:"index.html"},
 {text:"Installation Guide",url:"install.html"},
 {text:"Getting Started",url:"getting-started.html"},
-{text:"Syntax Documentation",url:"syntax.html"},
-{text:"System Documentation",url:"system.html",children:[
-{text:"Tensor",url:"tensor.html"},
-{text:"Model",url:"model.html"},
-{text:"Solver",url:"solver.html"},
-{text:"Data",url:"data.html"},
-{text:"Driver",url:"driver.html"}]},
-{text:"Physics Documentation",url:"physics.html",children:[
+{text:"Syntax Documentation",url:"usergroup0.html",children:[
+{text:"[Tensors]",url:"syntax-tensors.html"},
+{text:"[Models]",url:"syntax-models.html"},
+{text:"[Solvers]",url:"syntax-solvers.html"},
+{text:"[Data]",url:"syntax-data.html"},
+{text:"[Drivers]",url:"syntax-drivers.html"}]},
+{text:"System Documentation",url:"usergroup1.html",children:[
+{text:"Tensor",url:"system-tensors.html"},
+{text:"Model",url:"system-models.html"},
+{text:"Solver",url:"system-solvers.html"},
+{text:"Data",url:"system-data.html"},
+{text:"Driver",url:"system-drivers.html"}]},
+{text:"Physics Documentation",url:"usergroup2.html",children:[
 {text:"Solid Mechanics",url:"solid-mechanics.html"}]},
 {text:"Developer Guide",url:"dev.html"},
 {text:"Class List",url:"annotated.html"}]}

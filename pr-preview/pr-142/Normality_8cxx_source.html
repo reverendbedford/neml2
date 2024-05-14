@@ -27,11 +27,11 @@ window.MathJax = {
     processHtmlClass: 'tex2jax_process'
   },
   loader: {
-    load: ['[tex]/ams','[tex]/physics']
+    load: ['[tex]/ams','[tex]/physics','[tex]/boldsymbol']
   },
   tex: {
     macros: {},
-    packages: ['base','configmacros','ams','physics']
+    packages: ['base','configmacros','ams','physics','boldsymbol']
   }
 };
 </script>
@@ -220,8 +220,8 @@ $(function(){initNavTree('Normality_8cxx_source.html',''); initResizable(); });
 <div class="ttc" id="aclassneml2_1_1LabeledAxis_html_ad3cb6983f0b5082414eb7d3eec6544ea"><div class="ttname"><a href="classneml2_1_1LabeledAxis.html#ad3cb6983f0b5082414eb7d3eec6544ea">neml2::LabeledAxis::storage_size</a></div><div class="ttdeci">TorchSize storage_size() const</div><div class="ttdoc">Get the (total) storage size of this axis.</div><div class="ttdef"><b>Definition</b> LabeledAxis.h:142</div></div>
 <div class="ttc" id="aclassneml2_1_1Model_html"><div class="ttname"><a href="classneml2_1_1Model.html">neml2::Model</a></div><div class="ttdoc">The base class for all constitutive models.</div><div class="ttdef"><b>Definition</b> Model.h:53</div></div>
 <div class="ttc" id="aclassneml2_1_1Model_html_a761d77eb7c81c3e93b34bfe6caf4b132"><div class="ttname"><a href="classneml2_1_1Model.html#a761d77eb7c81c3e93b34bfe6caf4b132">neml2::Model::options</a></div><div class="ttdeci">const torch::TensorOptions &amp; options() const</div><div class="ttdoc">This model's tensor options.</div><div class="ttdef"><b>Definition</b> Model.h:116</div></div>
-<div class="ttc" id="aclassneml2_1_1Model_html_aae192fceb1a47041cf713c65169bd474"><div class="ttname"><a href="classneml2_1_1Model.html#aae192fceb1a47041cf713c65169bd474">neml2::Model::value_and_dvalue_and_d2value</a></div><div class="ttdeci">virtual std::tuple&lt; LabeledVector, LabeledMatrix, LabeledTensor3D &gt; value_and_dvalue_and_d2value(const LabeledVector &amp;in)</div><div class="ttdoc">Convenient shortcut to construct and return the model's value, first and second derivative.</div><div class="ttdef"><b>Definition</b> Model.cxx:362</div></div>
-<div class="ttc" id="aclassneml2_1_1Model_html_ac81b25c4962b603fd3dac69ce57319c0"><div class="ttname"><a href="classneml2_1_1Model.html#ac81b25c4962b603fd3dac69ce57319c0">neml2::Model::value_and_dvalue</a></div><div class="ttdeci">virtual std::tuple&lt; LabeledVector, LabeledMatrix &gt; value_and_dvalue(const LabeledVector &amp;in)</div><div class="ttdoc">Convenient shortcut to construct and return the model value and its derivative.</div><div class="ttdef"><b>Definition</b> Model.cxx:353</div></div>
+<div class="ttc" id="aclassneml2_1_1Model_html_aae192fceb1a47041cf713c65169bd474"><div class="ttname"><a href="classneml2_1_1Model.html#aae192fceb1a47041cf713c65169bd474">neml2::Model::value_and_dvalue_and_d2value</a></div><div class="ttdeci">virtual std::tuple&lt; LabeledVector, LabeledMatrix, LabeledTensor3D &gt; value_and_dvalue_and_d2value(const LabeledVector &amp;in)</div><div class="ttdoc">Convenient shortcut to construct and return the model's value, first and second derivative.</div><div class="ttdef"><b>Definition</b> Model.cxx:365</div></div>
+<div class="ttc" id="aclassneml2_1_1Model_html_ac81b25c4962b603fd3dac69ce57319c0"><div class="ttname"><a href="classneml2_1_1Model.html#ac81b25c4962b603fd3dac69ce57319c0">neml2::Model::value_and_dvalue</a></div><div class="ttdeci">virtual std::tuple&lt; LabeledVector, LabeledMatrix &gt; value_and_dvalue(const LabeledVector &amp;in)</div><div class="ttdoc">Convenient shortcut to construct and return the model value and its derivative.</div><div class="ttdef"><b>Definition</b> Model.cxx:356</div></div>
 <div class="ttc" id="aclassneml2_1_1Model_html_acec712ff48d4c0884a1362c116f3257a"><div class="ttname"><a href="classneml2_1_1Model.html#acec712ff48d4c0884a1362c116f3257a">neml2::Model::expected_options</a></div><div class="ttdeci">static OptionSet expected_options()</div><div class="ttdef"><b>Definition</b> Model.cxx:32</div></div>
 <div class="ttc" id="aclassneml2_1_1Normality_html"><div class="ttname"><a href="classneml2_1_1Normality.html">neml2::Normality</a></div><div class="ttdef"><b>Definition</b> Normality.h:32</div></div>
 <div class="ttc" id="aclassneml2_1_1Normality_html_a182326ae4276f4f9d786dacdbdd2bedd"><div class="ttname"><a href="classneml2_1_1Normality.html#a182326ae4276f4f9d786dacdbdd2bedd">neml2::Normality::_model</a></div><div class="ttdeci">Model &amp; _model</div><div class="ttdoc">The model which evaluates the potential function.</div><div class="ttdef"><b>Definition</b> Normality.h:43</div></div>

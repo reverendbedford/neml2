@@ -27,11 +27,11 @@ window.MathJax = {
     processHtmlClass: 'tex2jax_process'
   },
   loader: {
-    load: ['[tex]/ams','[tex]/physics']
+    load: ['[tex]/ams','[tex]/physics','[tex]/boldsymbol']
   },
   tex: {
     macros: {},
-    packages: ['base','configmacros','ams','physics']
+    packages: ['base','configmacros','ams','physics','boldsymbol']
   }
 };
 </script>
@@ -120,17 +120,20 @@ $(function(){initNavTree('index.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="overview"></a> <a href="https://reverendbedford.github.io/neml2/"><img src="https://github.com/reverendbedford/neml2/actions/workflows/build_docs.yml/badge.svg?branch=main" alt="Documentation" style="pointer-events: none;" class="inline"/></a> <a href="https://github.com/reverendbedford/neml2/actions/workflows/tests.yml"><img src="https://github.com/reverendbedford/neml2/actions/workflows/tests.yml/badge.svg?branch=main" alt="tests" style="pointer-events: none;" class="inline"/></a></p>
-<h2>The New Engineering Material model Library, version 2</h2>
+<h2><a class="anchor" id="autotoc_md0"></a>
+The New Engineering Material model Library, version 2</h2>
 <p>NEML2 is an offshoot of <a href="https://github.com/Argonne-National-Laboratory/neml">NEML</a>, an earlier material modeling code developed at Argonne National Laboratory. Like its predecessor, NEML2 provides a flexible, modular way to build material models from smaller blocks. Unlike its predecessor, NEML2 vectorizes the material update to efficiently run on GPUs. NEML2 is built on top of <a href="https://pytorch.org/cppdocs/">PyTorch</a> to provide GPU support, and this also means that NEML2 models have all the features of a PyTorch module (i.e. <code>torch.nn.module</code>). So, for example, users can take derivatives of the model with respect to parameters using automatic differentiation.</p>
 <p>NEML2 is provided as open source software under a MIT <a href="https://raw.githubusercontent.com/reverendbedford/neml2/main/LICENSE">license</a>.</p>
 <blockquote class="doxtable">
 <p>&zwj;<b>Disclaimer</b></p>
 <p>NEML2 is <em>not</em> a database of material models. There are many example material models in the library for testing and verification purposes. These models do not represent the response of any actual material. </p>
 </blockquote>
-<h2>Installation</h2>
+<h2><a class="anchor" id="autotoc_md1"></a>
+Installation</h2>
 <p>Building should be as easy as cloning the repository, configuring with CMake, building with <code>make</code>, testing with <code>make test</code>, and installing with <code>make install</code>.</p>
 <p>By default, NEML2 will be compiled against the PyTorch package in the current environment. Finer control over various dependencies as well as other build customization is documented in the <a href="https://reverendbedford.github.io/neml2/install.html">Installation Guide</a>.</p>
-<h2>Features and design philosophy</h2>
+<h2><a class="anchor" id="autotoc_md2"></a>
+Features and design philosophy</h2>
 <ul>
 <li><b>Vectorization</b>: NEML2 models can be vectorized, meaning that a large <em>batch</em> of material models can be evaluated simultaneously. The vectorized models can be evaluated on both CPU and GPU. Moreover, NEML2 provides a unified implementation and user interface, for both developers and end users, that work on all supported devices.</li>
 <li><b>Modular and flexible material models</b>: NEML2 material models are modular – they are built up from smaller pieces into a complete model. NEML2 offers an extremely flexible way of composing models. Each individual model only defines the forward operator (and optionally its derivative) with a given set of inputs and outputs. When a set of models are <em>composed</em> together to form a composite model, dependencies among different models are automatically detected, registered, and resolved. The user has <em>complete control</em> over how NEML2 evaluates a set of models.</li>

@@ -27,11 +27,11 @@ window.MathJax = {
     processHtmlClass: 'tex2jax_process'
   },
   loader: {
-    load: ['[tex]/ams','[tex]/physics']
+    load: ['[tex]/ams','[tex]/physics','[tex]/boldsymbol']
   },
   tex: {
     macros: {},
-    packages: ['base','configmacros','ams','physics']
+    packages: ['base','configmacros','ams','physics','boldsymbol']
   }
 };
 </script>
@@ -173,7 +173,9 @@ $(function(){initNavTree('classneml2_1_1ArrheniusParameter.html',''); initResiza
   <tr class="even"><td class="entry"><a class="el" href="classneml2_1_1VariableStore.html#a1ed74d73fce62d022f68bdcc31cc5303">derivative_storage</a>()</td><td class="entry"><a class="el" href="classneml2_1_1VariableStore.html">VariableStore</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classneml2_1_1VariableStore.html#aa68c0cd79e201d97b9f14883783032a3">derivative_storage</a>() const</td><td class="entry"><a class="el" href="classneml2_1_1VariableStore.html">VariableStore</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classneml2_1_1Model.html#a04206d74a662f2c1731c21062986a5a6">detach_and_zero</a>(bool out, bool dout_din=true, bool d2out_din2=true) override</td><td class="entry"><a class="el" href="classneml2_1_1Model.html">Model</a></td><td class="entry"><span class="mlabel">protected</span><span class="mlabel">virtual</span></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classneml2_1_1NEML2Object.html#a95ddf7f84b4944b035c3f05fab305f99">doc</a>() const</td><td class="entry"><a class="el" href="classneml2_1_1NEML2Object.html">NEML2Object</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classneml2_1_1NonlinearSystem.html#a10397acfffa0c403f36d5de67393fe08">disable_automatic_scaling</a>(OptionSet &amp;options)</td><td class="entry"><a class="el" href="classneml2_1_1NonlinearSystem.html">NonlinearSystem</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classneml2_1_1NEML2Object.html#a95ddf7f84b4944b035c3f05fab305f99">doc</a>() const</td><td class="entry"><a class="el" href="classneml2_1_1NEML2Object.html">NEML2Object</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classneml2_1_1NonlinearSystem.html#a504e031b186e6f2f127d195cdc1cfadf">enable_automatic_scaling</a>(OptionSet &amp;options)</td><td class="entry"><a class="el" href="classneml2_1_1NonlinearSystem.html">NonlinearSystem</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classneml2_1_1ArrheniusParameter.html#acec712ff48d4c0884a1362c116f3257a">expected_options</a>()</td><td class="entry"><a class="el" href="classneml2_1_1ArrheniusParameter.html">ArrheniusParameter</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classneml2_1_1BufferStore.html#a90d9e45426181dfb84c53ad7b94db6cb">get_buffer</a>(const std::string &amp;name)</td><td class="entry"><a class="el" href="classneml2_1_1BufferStore.html">BufferStore</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classneml2_1_1Model.html#a266eb5da16fd21f487f704e356a3bbe9">get_d2output_dinput2</a>()</td><td class="entry"><a class="el" href="classneml2_1_1Model.html">Model</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
@@ -259,8 +261,8 @@ $(function(){initNavTree('classneml2_1_1ArrheniusParameter.html',''); initResiza
   <tr class="even"><td class="entry"><a class="el" href="classneml2_1_1Model.html#a0995df984a1dce9429ab2a514ee35c0a">setup_submodel_output_views</a>()</td><td class="entry"><a class="el" href="classneml2_1_1Model.html">Model</a></td><td class="entry"><span class="mlabel">protected</span><span class="mlabel">virtual</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classneml2_1_1NonlinearSystem.html#aee33c25348ed032e9e00b6560f1eaa87">solution</a>() const</td><td class="entry"><a class="el" href="classneml2_1_1NonlinearSystem.html">NonlinearSystem</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classneml2_1_1Model.html#aca8133200c1122e29b87b314d82604ebab09b6d718c535c4d6fe77cc69ae8de0b">SOLVING</a> enum value</td><td class="entry"><a class="el" href="classneml2_1_1Model.html">Model</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classneml2_1_1Model.html#aca8133200c1122e29b87b314d82604eb">Stage</a> enum name</td><td class="entry"><a class="el" href="classneml2_1_1Model.html">Model</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classneml2_1_1Model.html#ae7b4c8007ec64164ea8302baa937ab9f">stage</a></td><td class="entry"><a class="el" href="classneml2_1_1Model.html">Model</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classneml2_1_1Model.html#ae7b4c8007ec64164ea8302baa937ab9f">stage</a></td><td class="entry"><a class="el" href="classneml2_1_1Model.html">Model</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classneml2_1_1Model.html#aca8133200c1122e29b87b314d82604eb">Stage</a> enum name</td><td class="entry"><a class="el" href="classneml2_1_1Model.html">Model</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classneml2_1_1NEML2Object.html#a4acb75b8abcd83a41915c116edbd003c">type</a>() const</td><td class="entry"><a class="el" href="classneml2_1_1NEML2Object.html">NEML2Object</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classneml2_1_1Model.html#aca8133200c1122e29b87b314d82604ebac10be9b18b215c436b592c0834af413e">UPDATING</a> enum value</td><td class="entry"><a class="el" href="classneml2_1_1Model.html">Model</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classneml2_1_1Model.html#a20eb432f1b43832c0fc9c1bc25642454">use_AD_derivatives</a>(bool first=true, bool second=true)</td><td class="entry"><a class="el" href="classneml2_1_1Model.html">Model</a></td><td class="entry"></td></tr>

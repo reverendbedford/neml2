@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['key_5ftype_0',['key_type',['../structneml2_1_1Storage_1_1DereferenceIterator.html#a3f88e28e9c8d2ca45c67c1af2225243c',1,'neml2::Storage::DereferenceIterator']]],
-  ['kinematichardening_1',['KinematicHardening',['../classneml2_1_1KinematicHardening.html',1,'KinematicHardening'],['../classneml2_1_1KinematicHardening.html#a1b511a61778dfd2b7d3ebcb68618e0bb',1,'neml2::KinematicHardening::KinematicHardening()']]]
+  ['jacobian_0',['Jacobian',['../classneml2_1_1NonlinearSystem.html#ae045412905020bf2ad042a0977c7914c',1,'neml2::NonlinearSystem::Jacobian(const BatchTensor &amp;x)'],['../classneml2_1_1NonlinearSystem.html#accde6e3f3ac0e13f42520c08755400f7',1,'neml2::NonlinearSystem::Jacobian()']]],
+  ['jacobian_5fview_1',['Jacobian_view',['../classneml2_1_1NonlinearSystem.html#a96e1ce2727ab9d35e66fadaa8aff9ac1',1,'neml2::NonlinearSystem']]],
+  ['jacrev_2',['jacrev',['../namespaceneml2_1_1math.html#a20090715463d12da0b343c1525ac132b',1,'neml2::math']]]
 ];

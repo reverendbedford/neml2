@@ -27,11 +27,11 @@ window.MathJax = {
     processHtmlClass: 'tex2jax_process'
   },
   loader: {
-    load: ['[tex]/ams','[tex]/physics']
+    load: ['[tex]/ams','[tex]/physics','[tex]/boldsymbol']
   },
   tex: {
     macros: {},
-    packages: ['base','configmacros','ams','physics']
+    packages: ['base','configmacros','ams','physics','boldsymbol']
   }
 };
 </script>
@@ -163,7 +163,7 @@ $(function(){initNavTree('NonlinearSolver_8h_source.html',''); initResizable(); 
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <a class="code hl_function" href="classneml2_1_1NonlinearSolver.html#a62092b7dfd06714c04dd109cc922fa4c">NonlinearSolver</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1OptionSet.html">OptionSet</a> &amp; <a class="code hl_function" href="classneml2_1_1NEML2Object.html#aec5da9ce6df1e02019198dad4da09789">options</a>);</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="classneml2_1_1NonlinearSolver.html#a015c29532c13895001e6df05a72bb0ba">   57</a></span>  <span class="keyword">virtual</span> std::tuple&lt;bool, size_t&gt; <a class="code hl_function" href="classneml2_1_1NonlinearSolver.html#a015c29532c13895001e6df05a72bb0ba">solve</a>(<a class="code hl_class" href="classneml2_1_1NonlinearSystem.html">NonlinearSystem</a> &amp; system, <a class="code hl_class" href="classneml2_1_1BatchTensor.html">BatchTensor</a> &amp; <a class="code hl_class" href="classneml2_1_1CrossRef.html">sol</a>) = 0;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="classneml2_1_1NonlinearSolver.html#a015c29532c13895001e6df05a72bb0ba">   57</a></span>  <span class="keyword">virtual</span> std::tuple&lt;bool, size_t&gt; <a class="code hl_function" href="classneml2_1_1NonlinearSolver.html#a015c29532c13895001e6df05a72bb0ba">solve</a>(<a class="code hl_class" href="classneml2_1_1NonlinearSystem.html">NonlinearSystem</a> &amp; <a class="code hl_class" href="classneml2_1_1CrossRef.html">system</a>, <a class="code hl_class" href="classneml2_1_1BatchTensor.html">BatchTensor</a> &amp; <a class="code hl_class" href="classneml2_1_1CrossRef.html">sol</a>) = 0;</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="classneml2_1_1NonlinearSolver.html#aff40f34b1f5add4277144d7a5af598cc">   60</a></span>  <a class="code hl_class" href="classneml2_1_1CrossRef.html">Real</a> <a class="code hl_variable" href="classneml2_1_1NonlinearSolver.html#aff40f34b1f5add4277144d7a5af598cc">atol</a>;</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="classneml2_1_1NonlinearSolver.html#a6559a2da3b4577aa75e4bb7dbe642d6c">   62</a></span>  <a class="code hl_class" href="classneml2_1_1CrossRef.html">Real</a> <a class="code hl_variable" href="classneml2_1_1NonlinearSolver.html#a6559a2da3b4577aa75e4bb7dbe642d6c">rtol</a>;</div>

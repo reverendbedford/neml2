@@ -28,15 +28,21 @@ var NAVTREE =
     [ "Overview", "index.html", null ],
     [ "Installation Guide", "install.html", null ],
     [ "Getting Started", "getting-started.html", null ],
-    [ "Syntax Documentation", "syntax.html", null ],
-    [ "System Documentation", "system.html", [
-      [ "Tensor", "tensor.html", null ],
-      [ "Model", "model.html", null ],
-      [ "Solver", "solver.html", null ],
-      [ "Data", "data.html", null ],
-      [ "Driver", "driver.html", null ]
+    [ "Syntax Documentation", "usergroup0.html", [
+      [ "[Tensors]", "syntax-tensors.html", null ],
+      [ "[Models]", "syntax-models.html", null ],
+      [ "[Solvers]", "syntax-solvers.html", null ],
+      [ "[Data]", "syntax-data.html", null ],
+      [ "[Drivers]", "syntax-drivers.html", null ]
     ] ],
-    [ "Physics Documentation", "physics.html", [
+    [ "System Documentation", "usergroup1.html", [
+      [ "Tensor", "system-tensors.html", null ],
+      [ "Model", "system-models.html", null ],
+      [ "Solver", "system-solvers.html", null ],
+      [ "Data", "system-data.html", null ],
+      [ "Driver", "system-drivers.html", null ]
+    ] ],
+    [ "Physics Documentation", "usergroup2.html", [
       [ "Solid Mechanics", "solid-mechanics.html", null ]
     ] ],
     [ "Developer Guide", "dev.html", null ],

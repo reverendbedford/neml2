@@ -27,11 +27,11 @@ window.MathJax = {
     processHtmlClass: 'tex2jax_process'
   },
   loader: {
-    load: ['[tex]/ams','[tex]/physics']
+    load: ['[tex]/ams','[tex]/physics','[tex]/boldsymbol']
   },
   tex: {
     macros: {},
-    packages: ['base','configmacros','ams','physics']
+    packages: ['base','configmacros','ams','physics','boldsymbol']
   }
 };
 </script>
@@ -90,7 +90,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('model.html',''); initResizable(); });
+$(function(){initNavTree('system-models.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -132,6 +132,7 @@ $(function(){initNavTree('model.html',''); initResizable(); });
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_content_2system_2model"></a></p>
+<p>Refer to <a class="el" href="syntax-models.html">Syntax Documentation</a> for the list of available objects.</p>
 <h1><a class="anchor" id="model-definition"></a>
 Model definition</h1>
 <p>A NEML2 model is a function (in the context of mathematics)  </p><p class="formulaDsp">
@@ -239,7 +240,7 @@ Automatic chain rule</h2>
 </ul>
 <h1><a class="anchor" id="automatic-differentiation"></a>
 Automatic differentiation</h1>
-<p>Deriving and implementing derivatives of the forward operator can be cubersome from times to times. NEML2 offers the option to use automatic differentiation to obtain derivatives. To enable automatic differentiation, simply set the <code>use_AD_first_derivative</code> and/or the <code>use_AD_second_derivative</code> options to <code>true</code>.</p>
+<p>Deriving and implementing derivatives of the forward operator can be cubersome from times to times. NEML2 offers the option to use automatic differentiation to obtain derivatives. To enable automatic differentiation, simply set the <code>_use_AD_first_derivative</code> and/or the <code>_use_AD_second_derivative</code> options to <code>true</code>.</p>
 <p>Since a composed model uses chain rule to efficiently evaluate the total derivatives, automatic differentiation is disabled for <code>ComposedModel</code>. However, each of the child model can still use AD to calculate the derivatives of its own forward operator. Moreover, AD and non-AD models can be composed together. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
