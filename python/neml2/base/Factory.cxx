@@ -35,8 +35,5 @@ def_Factory(py::module_ & m)
 {
   py::class_<Factory>(m, "Factory")
       .def_static("load", &Factory::load)
-      .def_static("clear", &Factory::clear)
-      .def_static("get_model",
-                  [](const std::string & name)
-                  { return Factory::get_object_ptr<Model>("Models", name); });
+      .def_static("clear", &Factory::clear);
 }

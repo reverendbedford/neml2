@@ -4,7 +4,6 @@ if(NOT DEFINED DOXYGEN_EXECUTABLE)
       doxygen
       URL https://github.com/doxygen/doxygen/releases/download/Release_1_10_0/doxygen-1.10.0.linux.bin.tar.gz
     )
-    message(STATUS "Downloading doxygen, this may take a few minutes.")
     FetchContent_MakeAvailable(doxygen)
     set(DOXYGEN_EXECUTABLE ${doxygen_SOURCE_DIR}/bin/doxygen)
   else()
@@ -18,7 +17,6 @@ FetchContent_Declare(
   GIT_REPOSITORY https://github.com/jothepro/doxygen-awesome-css.git
   GIT_TAG v2.3.2
 )
-message(STATUS "Downloading doxygen-awesome-css, this may take a few minutes.")
 FetchContent_MakeAvailable(doxygen-awesome-css)
 
 find_package(Python COMPONENTS Interpreter)
@@ -59,7 +57,7 @@ add_custom_target(doc-syntax
   VERBATIM
 )
 
-add_custom_target(doc-html
+add_custom_target(doc-html ALL
   DEPENDS doc-syntax
   WORKING_DIRECTORY ${NEML2_BINARY_DIR}/doc
   COMMAND ${DOXYGEN_EXECUTABLE} -q DoxyfileHTML.sh

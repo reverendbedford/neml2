@@ -44,7 +44,7 @@ where \f$ f^p \f$ is the yield function, and \f$ \gamma \f$ is the consistency p
 
 ### Consistent plasticity
 
-Consistent plasticity refers to the family of (macroscale) plasticity models that solves the plastic loading/unloading conditions (or the KKT conditions) exactly (up to machine precision).
+Consistent plasticity refers to the family of (macroscale) plasticity models that solve the plastic loading/unloading conditions (or the KKT conditions) exactly (up to machine precision).
 
 > Consistent plasticity models are sometimes considered rate-independent. But that is a misnomer as rate sensitivity can be baked into the yield function definition in terms of the rates of the internal variables.
 
@@ -53,7 +53,7 @@ Residual associated with the KKT conditions can be written as the complementarit
 \f{align*}
   r =
   \begin{cases}
-    \dot{\gamma}, & f^p \leq 0 \\
+    \dot{\gamma}, & f^p < 0 \\
     f^p, & f^p \geq 0.
   \end{cases}
 \f}

@@ -36,7 +36,9 @@ INPUT                  = ${NEML2_SOURCE_DIR}/README.md \
                          ${NEML2_BINARY_DIR}/doc/content
 FILE_PATTERNS          = *.cxx \
                          *.h \
+                         *.pyi \
                          *.md
+EXTENSION_MAPPING      = pyi=Python
 RECURSIVE              = YES
 IMAGE_PATH             = ${NEML2_SOURCE_DIR}/doc/content/asset
 EXCLUDE_SYMBOLS        = neml2::*internal neml2::*details

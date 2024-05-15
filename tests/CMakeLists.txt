@@ -7,7 +7,6 @@ if(NEML2_UNIT OR NEML2_REGRESSION OR NEML2_VERIFICATION OR NEML2_BENCHMARK)
             GIT_REPOSITORY https://github.com/catchorg/Catch2.git
             GIT_TAG v3.5.4
       )
-      message(STATUS "Downloading Catch2, this may take a few minutes.")
       FetchContent_MakeAvailable(Catch2)
 
       # Catch2 v3 is built as a static library, so we MUST make sure the compile definitions are compatible with ours
@@ -179,7 +178,6 @@ if(NEML2_PROFILING)
             GIT_REPOSITORY https://github.com/gperftools/gperftools.git
             GIT_TAG gperftools-2.15
       )
-      message(STATUS "Downloading gperftools, this may take a few minutes.")
       FetchContent_Populate(gperftools)
       add_subdirectory(${gperftools_SOURCE_DIR} ${gperftools_BINARY_DIR} EXCLUDE_FROM_ALL)
 

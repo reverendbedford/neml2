@@ -4,7 +4,6 @@ FetchContent_Declare(
   GIT_REPOSITORY https://github.com/pybind/pybind11.git
   GIT_TAG v2.12.0
 )
-message(STATUS "Downloading pybind11, this may take a few minutes.")
 FetchContent_MakeAvailable(pybind11)
 
 if(NOT Torch_PYTHON_BINDING)

@@ -59,7 +59,6 @@ FetchContent_Declare(
   GIT_TAG 100b575af08643b5e646cac8faff6c87dd1c15a7
   SOURCE_DIR ${NEML2_BINARY_DIR}/_deps/hit/hit
 )
-message(STATUS "Downloading hit, this may take a few minutes.")
 FetchContent_MakeAvailable(hit)
 
 add_library(hit SHARED

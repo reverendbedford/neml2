@@ -38,7 +38,6 @@ if(NOT DEFINED LIBTORCH_DIR)
       endif()
     endif()
 
-    message(STATUS "Downloading libTorch, this may take a few minutes.")
     FetchContent_MakeAvailable(torch)
 
     if(NOT torch_SOURCE_DIR)

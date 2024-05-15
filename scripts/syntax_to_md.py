@@ -72,7 +72,7 @@ if __name__ == "__main__":
             stream.write("[TOC]\n\n")
             stream.write("## Available objects and their input file syntax\n\n")
             stream.write(
-                "Refer to [Systam Documentation](@ref system-{}) for detailed explanation about this system.\n\n".format(
+                "Refer to [System Documentation](@ref system-{}) for detailed explanation about this system.\n\n".format(
                     section.lower()
                 )
             )
