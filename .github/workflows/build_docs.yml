@@ -42,7 +42,8 @@ jobs:
             -DNEML2_DOC=ON \
             .
       - run: cmake --build . --target html -j 2 --
-      - run: cat doc/doxygen.log
+      - run: cat doc/doxygen.html.log
+      - run: cat doc/doxygen.python.log
       - name: Preview GitHub Pages
         if: ${{ github.event_name == 'pull_request' }}
         uses: rossjrw/pr-preview-action@v1
