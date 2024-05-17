@@ -38,40 +38,27 @@ add_custom_target(syntax-cpp
 # ----------------------------------------------------------------------------
 # Extract all Python API
 # ----------------------------------------------------------------------------
-if(NEML2_PYBIND)
-  add_custom_target(syntax-python
-    DEPENDS base tensors models math
-    WORKING_DIRECTORY ${NEML2_BINARY_DIR}/python
-    COMMAND ${CMAKE_COMMAND} -E make_directory ${NEML2_BINARY_DIR}/doc/content/python
-    COMMAND PYTHONPATH=. pybind11-stubgen -o ${NEML2_BINARY_DIR}/doc/content/python neml2
-    COMMAND PYTHONPATH=. pybind11-stubgen -o ${NEML2_BINARY_DIR}/doc/content/python neml2.math
-    VERBATIM
-  )
-endif()
+add_custom_target(syntax-python
+  DEPENDS base tensors models math
+  WORKING_DIRECTORY ${NEML2_BINARY_DIR}/python
+  COMMAND ${CMAKE_COMMAND} -E make_directory ${NEML2_BINARY_DIR}/doc/content/python
+  COMMAND PYTHONPATH=. pybind11-stubgen -o ${NEML2_BINARY_DIR}/doc/content/python neml2
+  COMMAND PYTHONPATH=. pybind11-stubgen -o ${NEML2_BINARY_DIR}/doc/content/python neml2.math
+  VERBATIM
+)
 
 # ----------------------------------------------------------------------------
 # HTML
 # ----------------------------------------------------------------------------
 generate_doxyfile(${NEML2_BINARY_DIR}/doc/DoxyfileHTML "config/Doxyfile.in;config/HTML.in")
+generate_doxyfile(${NEML2_BINARY_DIR}/doc/DoxyfilePython "config/Doxyfile.in;config/HTML.in;config/Python.in")
 add_custom_target(html ALL
-  DEPENDS syntax-cpp
+  DEPENDS syntax-cpp syntax-python
   WORKING_DIRECTORY ${NEML2_BINARY_DIR}/doc
   COMMAND ${DOXYGEN_EXECUTABLE} -q DoxyfileHTML.sh
+  COMMAND ${DOXYGEN_EXECUTABLE} -q DoxyfilePython.sh
   VERBATIM
 )
-
-# ----------------------------------------------------------------------------
-# HTML (PYTHON)
-# ----------------------------------------------------------------------------
-if(NEML2_PYBIND)
-  generate_doxyfile(${NEML2_BINARY_DIR}/doc/DoxyfilePython "config/Doxyfile.in;config/HTML.in;config/Python.in")
-  add_custom_target(html-python ALL
-    DEPENDS syntax-python
-    WORKING_DIRECTORY ${NEML2_BINARY_DIR}/doc
-    COMMAND ${DOXYGEN_EXECUTABLE} -q DoxyfilePython.sh
-    VERBATIM
-  )
-endif()
 
 # ----------------------------------------------------------------------------
 # LaTeX

@@ -29,7 +29,7 @@ configure_file(
 target_compile_options(neml2 PRIVATE -Wall -Wextra -pedantic -Werror)
 
 # Group source files together if UNITY build is requested
-register_unity_group(neml2 "NEML2" .)
+register_unity_group(neml2 .)
 
 # NEML2 headers
 file(GLOB_RECURSE _NEML2_HEADERS ${NEML2_SOURCE_DIR}/include/*.h)

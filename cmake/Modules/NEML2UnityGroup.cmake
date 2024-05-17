@@ -3,7 +3,6 @@
 # ----------------------------------------------------------------------------
 macro(_src_subdirs result curdir)
       file(GLOB_RECURSE children ${curdir}/*.cxx)
-      set(dirlist "")
 
       foreach(child ${children})
             get_filename_component(child_dir ${child} DIRECTORY)

@@ -35,15 +35,11 @@ jobs:
           cmake \
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_UNITY_BUILD=ON \
-            -DNEML2_UNIT=OFF \
-            -DNEML2_REGRESSION=OFF \
-            -DNEML2_VERIFICATION=OFF \
-            -DNEML2_BENCHMARK=OFF \
-            -DNEML2_PROFILER=OFF \
+            -DNEML2_TESTS=OFF \
             -DNEML2_PYBIND=ON \
             -DNEML2_DOC=ON \
             .
-      - run: make doc-html -j 2
+      - run: cmake --build . --target html -j 2 --
       - run: cat doc/doxygen.log
       - name: Preview GitHub Pages
         if: ${{ github.event_name == 'pull_request' }}
