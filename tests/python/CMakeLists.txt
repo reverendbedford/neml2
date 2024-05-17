@@ -1,0 +1,9 @@
+if(NOT ${NEML2_BINARY_DIR} STREQUAL ${NEML2_SOURCE_DIR})
+  file(CREATE_LINK ${NEML2_SOURCE_DIR}/tests/python ${NEML2_BINARY_DIR}/tests/python SYMBOLIC)
+endif()
+
+install(DIRECTORY .
+  TYPE BIN
+  FILES_MATCHING
+  PATTERN "*.py"
+)

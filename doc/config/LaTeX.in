@@ -8,6 +8,7 @@ LATEX_HEADER           = ${NEML2_SOURCE_DIR}/doc/config/ANLReportHeader.tex
 LATEX_FOOTER           = ${NEML2_SOURCE_DIR}/doc/config/ANLReportFooter.tex
 LATEX_EXTRA_STYLESHEET = ${NEML2_SOURCE_DIR}/doc/config/ANLReportExtra.sty
 LATEX_HIDE_INDICES     = YES
+WARN_LOGFILE           = ${NEML2_BINARY_DIR}/doc/doxygen.latex.log
 
 #---------------------------------------------------------------------------
 # Configuration options related to the dot tool

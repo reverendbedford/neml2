@@ -61,7 +61,7 @@ jobs:
             -DNEML2_REGRESSION=OFF \
             -DNEML2_VERIFICATION=OFF \
             -DNEML2_BENCHMARK=OFF \
-            -DNEML2_PROFILING=OFF \
+            -DNEML2_PROFILER=OFF \
             -DNEML2_PYBIND=ON \
             -DNEML2_DOC=OFF \
             -B build \

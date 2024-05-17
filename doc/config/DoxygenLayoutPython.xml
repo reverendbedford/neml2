@@ -2,28 +2,28 @@
   <!-- Navigation index tabs for HTML output -->
   <navindex>
     <tab type="mainpage" visible="yes" title="Overview"/>
-    <tab type="user" url="@ref install" title="Installation Guide"/>
-    <tab type="user" url="@ref getting-started" title="Getting Started"/>
+    <tab type="user" url="../install.html" title="Installation Guide"/>
+    <tab type="user" url="../getting-started.html" title="Getting Started"/>
     <tab type="usergroup" title="Syntax Documentation">
-      <tab type="user" url="@ref syntax-tensors" title="[Tensors]"/>
-      <tab type="user" url="@ref syntax-models" title="[Models]"/>
-      <tab type="user" url="@ref syntax-solvers" title="[Solvers]"/>
-      <tab type="user" url="@ref syntax-data" title="[Data]"/>
-      <tab type="user" url="@ref syntax-drivers" title="[Drivers]"/>
+      <tab type="user" url="../syntax-tensors.html" title="[Tensors]"/>
+      <tab type="user" url="../syntax-models.html" title="[Models]"/>
+      <tab type="user" url="../syntax-solvers.html" title="[Solvers]"/>
+      <tab type="user" url="../syntax-data.html" title="[Data]"/>
+      <tab type="user" url="../syntax-drivers.html" title="[Drivers]"/>
     </tab>
     <tab type="usergroup" title="System Documentation">
-      <tab type="user" url="@ref system-tensors" title="Tensor"/>
-      <tab type="user" url="@ref system-models" title="Model"/>
-      <tab type="user" url="@ref system-solvers" title="Solver"/>
-      <tab type="user" url="@ref system-data" title="Data"/>
-      <tab type="user" url="@ref system-drivers" title="Driver"/>
+      <tab type="user" url="../system-tensors.html" title="Tensor"/>
+      <tab type="user" url="../system-models.html" title="Model"/>
+      <tab type="user" url="../system-solvers.html" title="Solver"/>
+      <tab type="user" url="../system-data.html" title="Data"/>
+      <tab type="user" url="../system-drivers.html" title="Driver"/>
     </tab>
     <tab type="usergroup" title="Physics Documentation">
-      <tab type="user" url="@ref solid-mechanics" title="Solid Mechanics"/>
+      <tab type="user" url="../solid-mechanics.html" title="Solid Mechanics"/>
     </tab>
-    <tab type="user" url="@ref dev" title="Developer Guide"/>
-    <tab type="classlist" visible="yes" title="C++ API Reference" intro=""/>
-    <tab type="user" url="python/annotated.html" title="Python API Reference"/>
+    <tab type="user" url="../dev.html" title="Developer Guide"/>
+    <tab type="user" url="../annotated.html" title="C++ API Reference"/>
+    <tab type="classlist" visible="yes" title="Python API Reference" intro=""/>
   </navindex>
 
   <!-- Layout definition for a class page -->

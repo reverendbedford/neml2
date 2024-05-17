@@ -39,12 +39,11 @@ jobs:
             -DNEML2_REGRESSION=OFF \
             -DNEML2_VERIFICATION=OFF \
             -DNEML2_BENCHMARK=OFF \
-            -DNEML2_PROFILING=OFF \
-            -DNEML2_PYBIND=OFF \
+            -DNEML2_PROFILER=OFF \
+            -DNEML2_PYBIND=ON \
             -DNEML2_DOC=ON \
             .
-      - run: make doc-syntax -j 2
-      - run: make doc-html
+      - run: make doc-html -j 2
       - run: cat doc/doxygen.log
       - name: Preview GitHub Pages
         if: ${{ github.event_name == 'pull_request' }}

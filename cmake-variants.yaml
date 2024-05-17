@@ -11,10 +11,10 @@ libneml2:
         NEML2_REGRESSION: ON
         NEML2_VERIFICATION: ON
         NEML2_BENCHMARK: OFF
-        NEML2_PROFILING: OFF
-    profiling:
+        NEML2_PROFILER: OFF
+    benchmarking:
       short: Benchmarking
-      long: Build for benchmarking and profiling
+      long: Build benchmarks and profiler
       buildType: Release
       settings:
         NEML2_TESTS: ON
@@ -22,7 +22,7 @@ libneml2:
         NEML2_REGRESSION: OFF
         NEML2_VERIFICATION: OFF
         NEML2_BENCHMARK: ON
-        NEML2_PROFILING: ON
+        NEML2_PROFILER: ON
     release:
       short: Release
       long: Build for release

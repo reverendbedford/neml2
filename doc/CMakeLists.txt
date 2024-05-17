@@ -1,83 +1,96 @@
-if(NOT DEFINED DOXYGEN_EXECUTABLE)
-  if(UNIX AND NOT APPLE)
-    FetchContent_Declare(
-      doxygen
-      URL https://github.com/doxygen/doxygen/releases/download/Release_1_10_0/doxygen-1.10.0.linux.bin.tar.gz
-    )
-    FetchContent_MakeAvailable(doxygen)
-    set(DOXYGEN_EXECUTABLE ${doxygen_SOURCE_DIR}/bin/doxygen)
-  else()
-    message(FATAL_ERROR "We only download a default doxygen on linux for CI purposes. For other operating systems, please specify DOXYGEN_EXECUTABLE.")
-  endif()
-endif()
-
-# Theme for the doxygen documentation
-FetchContent_Declare(
-  doxygen-awesome-css
-  GIT_REPOSITORY https://github.com/jothepro/doxygen-awesome-css.git
-  GIT_TAG v2.3.2
-)
+# ----------------------------------------------------------------------------
+# Dependencies and 3rd party packages
+# ----------------------------------------------------------------------------
+FetchContent_MakeAvailable(doxygen)
+set(DOXYGEN_EXECUTABLE ${doxygen_SOURCE_DIR}/bin/doxygen)
 FetchContent_MakeAvailable(doxygen-awesome-css)
-
 find_package(Python COMPONENTS Interpreter)
 
-# Generate Doxyfile for HTML
-message(STATUS "Generating Doxyfile for HTML")
-file(WRITE ${NEML2_BINARY_DIR}/doc/DoxyfileHTML.in "")
-file(READ ${NEML2_SOURCE_DIR}/doc/config/Doxyfile.in CONTENTS)
-file(APPEND ${NEML2_BINARY_DIR}/doc/DoxyfileHTML.in ${CONTENTS})
-file(READ ${NEML2_SOURCE_DIR}/doc/config/HTML.in CONTENTS)
-file(APPEND ${NEML2_BINARY_DIR}/doc/DoxyfileHTML.in ${CONTENTS})
-configure_file(
-  ${NEML2_BINARY_DIR}/doc/DoxyfileHTML.in
-  ${NEML2_BINARY_DIR}/doc/DoxyfileHTML.sh
-)
+# ----------------------------------------------------------------------------
+# Macro for generating and configuring Doxyfile
+# ----------------------------------------------------------------------------
+macro(generate_doxyfile output inputs)
+  file(WRITE ${output}.in "")
 
-# Generate Doxyfile for LATEX
-message(STATUS "Generating Doxyfile for LATEX")
-file(WRITE ${NEML2_BINARY_DIR}/doc/DoxyfileLATEX.in "")
-file(READ ${NEML2_SOURCE_DIR}/doc/config/Doxyfile.in CONTENTS)
-file(APPEND ${NEML2_BINARY_DIR}/doc/DoxyfileLATEX.in ${CONTENTS})
-file(READ ${NEML2_SOURCE_DIR}/doc/config/LATEX.in CONTENTS)
-file(APPEND ${NEML2_BINARY_DIR}/doc/DoxyfileLATEX.in ${CONTENTS})
-configure_file(
-  ${NEML2_BINARY_DIR}/doc/DoxyfileLATEX.in
-  ${NEML2_BINARY_DIR}/doc/DoxyfileLATEX.sh
-)
+  foreach(input ${inputs})
+    file(READ ${input} _content)
+    file(APPEND ${output}.in ${_content})
+  endforeach()
 
-# Build a dummy program to extract all the syntax
-add_executable(syntax syntax.cxx)
-target_link_libraries(syntax PRIVATE neml2)
-add_custom_target(doc-syntax
-  DEPENDS syntax
+  configure_file(${output}.in ${output}.sh)
+
+  file(REMOVE ${output}.in)
+endmacro()
+
+# ----------------------------------------------------------------------------
+# Extract all input file syntax
+# ----------------------------------------------------------------------------
+add_executable(syntax-cpp-exe syntax.cxx)
+target_link_libraries(syntax-cpp-exe PRIVATE neml2)
+add_custom_target(syntax-cpp
+  DEPENDS syntax-cpp-exe
   WORKING_DIRECTORY ${NEML2_BINARY_DIR}/doc
-  COMMAND ${NEML2_BINARY_DIR}/doc/syntax
+  COMMAND ${NEML2_BINARY_DIR}/doc/syntax-cpp-exe
   COMMAND ${Python_EXECUTABLE} ${NEML2_SOURCE_DIR}/scripts/syntax_to_md.py syntax.yml content/syntax
-  COMMENT "Generate NEML2 syntax and convert to markdown"
   VERBATIM
 )
 
-add_custom_target(doc-html ALL
-  DEPENDS doc-syntax
+# ----------------------------------------------------------------------------
+# Extract all Python API
+# ----------------------------------------------------------------------------
+if(NEML2_PYBIND)
+  add_custom_target(syntax-python
+    DEPENDS base tensors models math
+    WORKING_DIRECTORY ${NEML2_BINARY_DIR}/python
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${NEML2_BINARY_DIR}/doc/content/python
+    COMMAND PYTHONPATH=. pybind11-stubgen -o ${NEML2_BINARY_DIR}/doc/content/python neml2
+    COMMAND PYTHONPATH=. pybind11-stubgen -o ${NEML2_BINARY_DIR}/doc/content/python neml2.math
+    VERBATIM
+  )
+endif()
+
+# ----------------------------------------------------------------------------
+# HTML
+# ----------------------------------------------------------------------------
+generate_doxyfile(${NEML2_BINARY_DIR}/doc/DoxyfileHTML "config/Doxyfile.in;config/HTML.in")
+add_custom_target(html ALL
+  DEPENDS syntax-cpp
   WORKING_DIRECTORY ${NEML2_BINARY_DIR}/doc
   COMMAND ${DOXYGEN_EXECUTABLE} -q DoxyfileHTML.sh
-  COMMENT "Generate Doxygen HTML"
   VERBATIM
 )
 
-add_custom_target(doc-latex
-  DEPENDS doc-syntax
+# ----------------------------------------------------------------------------
+# HTML (PYTHON)
+# ----------------------------------------------------------------------------
+if(NEML2_PYBIND)
+  generate_doxyfile(${NEML2_BINARY_DIR}/doc/DoxyfilePython "config/Doxyfile.in;config/HTML.in;config/Python.in")
+  add_custom_target(html-python ALL
+    DEPENDS syntax-python
+    WORKING_DIRECTORY ${NEML2_BINARY_DIR}/doc
+    COMMAND ${DOXYGEN_EXECUTABLE} -q DoxyfilePython.sh
+    VERBATIM
+  )
+endif()
+
+# ----------------------------------------------------------------------------
+# LaTeX
+# ----------------------------------------------------------------------------
+generate_doxyfile(${NEML2_BINARY_DIR}/doc/DoxyfileLaTeX "config/Doxyfile.in;config/LaTeX.in")
+add_custom_target(latex
+  DEPENDS syntax-cpp
   WORKING_DIRECTORY ${NEML2_BINARY_DIR}/doc
-  COMMAND ${DOXYGEN_EXECUTABLE} -q DoxyfileLATEX.sh
-  COMMENT "Generate Doxygen LATEX"
+  COMMAND ${DOXYGEN_EXECUTABLE} -q DoxyfileLaTeX.sh
   VERBATIM
 )
 
-add_custom_target(doc-pdf
-  DEPENDS doc-latex
+# ----------------------------------------------------------------------------
+# PDF
+# ----------------------------------------------------------------------------
+add_custom_target(pdf
+  DEPENDS latex
   WORKING_DIRECTORY ${NEML2_BINARY_DIR}/doc/build/latex
   COMMAND ${CMAKE_COMMAND} -E copy_directory ${NEML2_SOURCE_DIR}/doc/content/asset ${NEML2_BINARY_DIR}/doc/build/latex
   COMMAND latexmk -pdf refman.tex -outdir=${NEML2_BINARY_DIR}/doc/build/pdf -silent
-  COMMENT "Generate Doxygen PDF"
   VERBATIM
 )

@@ -53,12 +53,6 @@ target_link_directories(neml2 PUBLIC ${Torch_LINK_DIRECTORIES})
 target_link_libraries(neml2 PUBLIC ${Torch_LIBRARIES})
 
 # hit for parsing
-FetchContent_Declare(
-  hit
-  GIT_REPOSITORY https://github.com/idaholab/hit.git
-  GIT_TAG 100b575af08643b5e646cac8faff6c87dd1c15a7
-  SOURCE_DIR ${NEML2_BINARY_DIR}/_deps/hit/hit
-)
 FetchContent_MakeAvailable(hit)
 
 add_library(hit SHARED

@@ -94,8 +94,8 @@ Commonly used configuration options are summarized below. Default options are un
 | NEML2_UNIT           | <u>ON</u>, OFF                                              | Create the unit testing target                                                            |
 | NEML2_REGRESSION     | <u>ON</u>, OFF                                              | Create the regression testing target                                                      |
 | NEML2_VERIFICATION   | <u>ON</u>, OFF                                              | Create the verification testing target                                                    |
-| NEML2_BENCHMARK      | ON, <u>OFF</u>                                              | Create the benchmark testing target                                                       |
-| NEML2_PROFILING      | ON, <u>OFF</u>                                              | Create the profiling executable target                                                    |
+| NEML2_BENCHMARK      | ON, <u>OFF</u>                                              | Create the benchmark target                                                               |
+| NEML2_PROFILER       | ON, <u>OFF</u>                                              | Create the profiler target                                                                |
 | NEML2_DOC            | ON, <u>OFF</u>                                              | Create the documentation target                                                           |
 | NEML2_PYBIND         | ON, <u>OFF</u>                                              | Create the Python bindings target                                                         |
 
