@@ -46,7 +46,8 @@ var NAVTREE =
       [ "Solid Mechanics", "solid-mechanics.html", null ]
     ] ],
     [ "Developer Guide", "dev.html", null ],
-    [ "Class List", "annotated.html", "annotated" ]
+    [ "C++ API Reference", "annotated.html", "annotated" ],
+    [ "Python API Reference", "python/annotated.html", null ]
   ] ]
 ];
 

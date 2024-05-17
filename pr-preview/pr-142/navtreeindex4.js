@@ -137,6 +137,7 @@ var NAVTREEINDEX4 =
 "index.html":[],
 "install.html":[1],
 "pages.html":[],
+"python/annotated.html":[8],
 "solid-mechanics.html":[5,0],
 "structneml2_1_1DependencyResolver_1_1Item.html":[7,0,16,0],
 "structneml2_1_1DependencyResolver_1_1Item.html#a018c1f77300f359f81d16a37794750e4":[7,0,16,0,4],

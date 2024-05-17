@@ -41,4 +41,5 @@ var menudata={children:[
 {text:"Physics Documentation",url:"usergroup2.html",children:[
 {text:"Solid Mechanics",url:"solid-mechanics.html"}]},
 {text:"Developer Guide",url:"dev.html"},
-{text:"Class List",url:"annotated.html"}]}
+{text:"C++ API Reference",url:"annotated.html"},
+{text:"Python API Reference",url:"python/annotated.html"}]}
