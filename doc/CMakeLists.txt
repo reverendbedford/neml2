@@ -4,7 +4,12 @@
 FetchContent_MakeAvailable(doxygen)
 set(DOXYGEN_EXECUTABLE ${doxygen_SOURCE_DIR}/bin/doxygen)
 FetchContent_MakeAvailable(doxygen-awesome-css)
+
 find_package(Python COMPONENTS Interpreter)
+execute_process(
+  COMMAND_ERROR_IS_FATAL ANY
+  COMMAND ${Python_EXECUTABLE} ${NEML2_SOURCE_DIR}/scripts/check_python_dep.py ${CMAKE_CURRENT_SOURCE_DIR}/requirements.txt
+)
 
 # ----------------------------------------------------------------------------
 # Macro for generating and configuring Doxyfile

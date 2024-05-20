@@ -3,4 +3,4 @@
 #
 -r doc/requirements.txt
 -r scripts/requirements.txt
--r tests/requirements.txt
+-r tests/python/requirements.txt
