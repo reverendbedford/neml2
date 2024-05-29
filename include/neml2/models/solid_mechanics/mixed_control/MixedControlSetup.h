@@ -45,5 +45,9 @@ protected:
   const Variable<SR2> & _mixed_state_old;
   Variable<SR2> & _stress;
   Variable<SR2> & _strain;
+
+  // These are constant
+  SSR4 _cached_strain_derivative;
+  SSR4 _cached_stress_derivative;
 };
 } // namespace neml2

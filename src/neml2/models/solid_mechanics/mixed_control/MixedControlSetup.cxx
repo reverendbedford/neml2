@@ -32,8 +32,7 @@ OptionSet
 MixedControlSetup::expected_options()
 {
   OptionSet options = Model::expected_options();
-  options.set<std::vector<std::string>>("control") = {
-      "strain", "stress", "stress", "stress", "stress", "stress"};
+  options.set<std::vector<std::string>>("control");
 
   options.set<VariableName>("state_name") = VariableName("mixed_state");
 
@@ -49,8 +48,8 @@ MixedControlSetup::MixedControlSetup(const OptionSet & options)
     _state_name(options.get<VariableName>("state_name")),
     _control_types(options.get<std::vector<std::string>>("control")),
     _fixed_values(declare_parameter<SR2>("fixed_values", "fixed_values")),
-    _mixed_state(declare_input_variable<SR2>(_state_name.on("forces"))),
-    _mixed_state_old(declare_input_variable<SR2>(_state_name.on("old_forces"))),
+    _mixed_state(declare_input_variable<SR2>(_state_name.on("state"))),
+    _mixed_state_old(declare_input_variable<SR2>(_state_name.on("old_state"))),
     _stress(declare_output_variable<SR2>("cauchy_stress")),
     _strain(declare_output_variable<SR2>("strain"))
 {
@@ -59,6 +58,17 @@ MixedControlSetup::MixedControlSetup(const OptionSet & options)
   for (size_t i = 0; i < 6; i++)
     neml_assert(_control_types[i] == "stress" || _control_types[i] == "strain",
                 "the entries of control must either be 'stress' or 'strain'");
+
+  // Setup the cached derivatives
+  _cached_stress_derivative = SSR4::zeros(_fixed_values.options());
+  _cached_strain_derivative = SSR4::zeros(_fixed_values.options());
+  for (int i = 0; i < 6; i++)
+  {
+    if (_control_types[i] == "stress")
+      _cached_strain_derivative.base_index_put({i, i}, Scalar::ones(_fixed_values.options()));
+    else
+      _cached_stress_derivative.base_index_put({i, i}, Scalar::ones(_fixed_values.options()));
+  }
 }
 
 void
@@ -83,21 +93,8 @@ MixedControlSetup::set_value(bool out, bool dout_din, bool d2out_din2)
 
   if (dout_din)
   {
-    for (int i = 0; i < 6; i++)
-    {
-      if (_control_types[i] == "stress")
-      {
-        // derivative_storage().base_index_put({output_axis().indices(_strain.name())[i],
-        //                                      input_axis().indices(_mixed_state.name())[i]},
-        //                                     Scalar::ones(_strain.tensor().options()));
-        //((BatchTensor)(_stress.d(_fixed_values))).base_index_put({i, i}, 1.0);
-      }
-      else
-      {
-        //((BatchTensorBase)_strain.d(_fixed_values)).base_index_put({i, i}, 1.0);
-        //((BatchTensorBase)_stress.d(_mixed_state)).base_index_put({i, i}, 1.0);
-      }
-    }
+    _stress.d(_mixed_state) = _cached_stress_derivative;
+    _strain.d(_mixed_state) = _cached_strain_derivative;
   }
 
   // All zero
