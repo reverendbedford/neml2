@@ -48,9 +48,9 @@ MixedControlSetup::MixedControlSetup(const OptionSet & options)
   : Model(options),
     _state_name(options.get<VariableName>("state_name")),
     _control_types(options.get<std::vector<std::string>>("control")),
-    _fixed_values(options.get<CrossRef<SR2>>("fixed_values")),
+    _fixed_values(declare_parameter<SR2>("fixed_values", "fixed_values")),
     _mixed_state(declare_input_variable<SR2>(_state_name.on("forces"))),
-    _mixed_state_old(declare_input_variable<SR>(_state_name.on("old_forces"))),
+    _mixed_state_old(declare_input_variable<SR2>(_state_name.on("old_forces"))),
     _stress(declare_output_variable<SR2>("cauchy_stress")),
     _strain(declare_output_variable<SR2>("strain"))
 {
@@ -66,14 +66,42 @@ MixedControlSetup::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   if (out)
   {
-    for (size_t i = 0; i < 6; i++)
+    for (int i = 0; i < 6; i++)
     {
       if (_control_types[i] == "stress")
-        // Hmm
-        else
-      // Hmm
+      {
+        ((SR2)_stress).base_index_put({i}, ((SR2)_fixed_values).base_index({i}));
+        ((SR2)_strain).base_index_put({i}, ((SR2)_mixed_state).base_index({i}));
+      }
+      else
+      {
+        ((SR2)_strain).base_index_put({i}, ((SR2)_fixed_values).base_index({i}));
+        ((SR2)_stress).base_index_put({i}, ((SR2)_mixed_state).base_index({i}));
+      }
     }
   }
+
+  if (dout_din)
+  {
+    for (int i = 0; i < 6; i++)
+    {
+      if (_control_types[i] == "stress")
+      {
+        // derivative_storage().base_index_put({output_axis().indices(_strain.name())[i],
+        //                                      input_axis().indices(_mixed_state.name())[i]},
+        //                                     Scalar::ones(_strain.tensor().options()));
+        //((BatchTensor)(_stress.d(_fixed_values))).base_index_put({i, i}, 1.0);
+      }
+      else
+      {
+        //((BatchTensorBase)_strain.d(_fixed_values)).base_index_put({i, i}, 1.0);
+        //((BatchTensorBase)_stress.d(_mixed_state)).base_index_put({i, i}, 1.0);
+      }
+    }
+  }
+
+  // All zero
+  (void)(d2out_din2);
 }
 
 } // namespace neml2

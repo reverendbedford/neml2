@@ -40,7 +40,10 @@ protected:
 
   const VariableName & _state_name;
   const std::vector<std::string> _control_types;
-  const Variable<SR2> &_mixed_state, _mixed_state_old;
-  Variable<SR2> &_stress, _strain;
+  const SR2 & _fixed_values;
+  const Variable<SR2> & _mixed_state;
+  const Variable<SR2> & _mixed_state_old;
+  Variable<SR2> & _stress;
+  Variable<SR2> & _strain;
 };
 } // namespace neml2
