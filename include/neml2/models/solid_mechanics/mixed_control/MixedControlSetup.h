@@ -40,7 +40,11 @@ protected:
 
   const VariableName & _state_name;
   const VariableName & _fixed_values_name;
-  const std::vector<std::string> _control_types;
+
+  const Real _threshold;
+
+  const Variable<SR2> & _control;
+
   const Variable<SR2> & _fixed_values;
   const Variable<SR2> & _fixed_values_old;
   const Variable<SR2> & _mixed_state;
