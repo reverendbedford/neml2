@@ -39,12 +39,16 @@ protected:
   void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
   const VariableName & _state_name;
+  const VariableName & _fixed_values_name;
   const std::vector<std::string> _control_types;
-  const SR2 & _fixed_values;
+  const Variable<SR2> & _fixed_values;
+  const Variable<SR2> & _fixed_values_old;
   const Variable<SR2> & _mixed_state;
   const Variable<SR2> & _mixed_state_old;
   Variable<SR2> & _stress;
+  Variable<SR2> & _stress_old;
   Variable<SR2> & _strain;
+  Variable<SR2> & _strain_old;
 
   // These are constant
   SSR4 _cached_strain_derivative;

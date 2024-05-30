@@ -46,8 +46,7 @@ SolidMechanicsDriver::expected_options()
   options.set("cauchy_stress").doc() = "Cauchy stress";
 
   options.set<VariableName>("temperature") = VariableName("forces", "T");
-  options.set("temperature").doc() = "Temperature";
-
+  options.set<VariableName>("fixed_values") = VariableName("forces", "fixed_values");
   options.set<CrossRef<torch::Tensor>>("prescribed_strains");
   options.set("prescribed_strains").doc() = "Prescribed strain (when control = STRAIN)";
 
@@ -55,8 +54,7 @@ SolidMechanicsDriver::expected_options()
   options.set("prescribed_stresses").doc() = "Prescribed stress (when control = STRESS)";
 
   options.set<CrossRef<torch::Tensor>>("prescribed_temperatures");
-  options.set("prescribed_temperatures").doc() = "Prescribed temperature";
-
+  options.set<CrossRef<torch::Tensor>>("prescribed_mixed_conditions");
   return options;
 }
 
@@ -79,6 +77,11 @@ SolidMechanicsDriver::SolidMechanicsDriver(const OptionSet & options)
   {
     _driving_force = SR2(options.get<CrossRef<torch::Tensor>>("prescribed_stresses"), 2);
     _driving_force_name = options.get<VariableName>("cauchy_stress");
+  }
+  else if (_control == "MIXED")
+  {
+    _driving_force = SR2(options.get<CrossRef<torch::Tensor>>("prescribed_mixed_conditions"), 2);
+    _driving_force_name = options.get<VariableName>("fixed_values");
   }
   else
     // LCOV_EXCL_START
