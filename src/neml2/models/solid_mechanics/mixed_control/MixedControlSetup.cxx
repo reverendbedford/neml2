@@ -34,7 +34,7 @@ MixedControlSetup::expected_options()
   OptionSet options = Model::expected_options();
 
   options.set<VariableName>("control") = VariableName("forces", "control");
-  options.set<Real>("threshold") = 1.0;
+  options.set<Real>("threshold") = 0.5;
 
   options.set<VariableName>("state_name") = VariableName("mixed_state");
 
@@ -70,37 +70,37 @@ MixedControlSetup::set_value(bool out, bool dout_din, bool d2out_din2)
   auto strain_select = _control.tensor() <= _threshold;
   auto stress_select = _control.tensor() > _threshold;
 
+  // This also converts these to floats
+  auto ones_stress =
+      BatchTensor(strain_select.to(_stress.tensor().options()), _control.batch_dim());
+  auto ones_strain = BatchTensor::ones_like(_control.tensor()) - ones_stress;
+
+  auto dstrain = SSR4(BatchTensor(torch::diag_embed(ones_stress), batch_dim()));
+  auto dstress = SSR4(BatchTensor(torch::diag_embed(ones_strain), batch_dim()));
+
   if (out)
   {
-    ((SR2)_stress).index_put_({stress_select}, _fixed_values.tensor().index({stress_select}));
-    ((SR2)_stress).index_put_({strain_select}, ((SR2)_mixed_state).index({strain_select}));
-    ((SR2)_strain).index_put_({strain_select}, ((SR2)_fixed_values).index({strain_select}));
-    ((SR2)_strain).index_put_({stress_select}, ((SR2)_mixed_state).index({stress_select}));
+    // Even benign in place operations get errors
+    _stress = dstress * _fixed_values + dstrain * _mixed_state;
+    _strain = dstrain * _fixed_values + dstress * _mixed_state;
 
-    ((SR2)_stress_old).index_put_({stress_select}, ((SR2)_fixed_values_old).index({stress_select}));
-    ((SR2)_stress_old).index_put_({strain_select}, ((SR2)_mixed_state_old).index({strain_select}));
-    ((SR2)_strain_old).index_put_({strain_select}, ((SR2)_fixed_values_old).index({strain_select}));
-    ((SR2)_strain_old).index_put_({stress_select}, ((SR2)_mixed_state_old).index({stress_select}));
+    _stress_old = dstress * _fixed_values_old + dstrain * _mixed_state_old;
+    _strain_old = dstrain * _fixed_values_old + dstress * _mixed_state_old;
   }
 
   if (dout_din)
   {
-    // This also converts these to floats
-    auto ones_stress =
-        BatchTensor(strain_select.to(_stress.tensor().options()), _control.batch_dim());
-    auto ones_strain = BatchTensor::ones_like(_control.tensor()) - ones_stress;
+    _stress.d(_fixed_values) = dstress;
+    _stress.d(_mixed_state) = dstrain;
 
-    _stress.d(_fixed_values) = ones_stress;
-    _stress.d(_mixed_state) = ones_strain;
+    _strain.d(_fixed_values) = dstrain;
+    _strain.d(_mixed_state) = dstress;
 
-    _strain.d(_fixed_values) = ones_strain;
-    _strain.d(_mixed_state) = ones_stress;
+    _stress_old.d(_fixed_values_old) = dstress;
+    _stress_old.d(_mixed_state_old) = dstrain;
 
-    _stress_old.d(_fixed_values) = ones_stress;
-    _stress_old.d(_mixed_state) = ones_strain;
-
-    _strain_old.d(_fixed_values) = ones_strain;
-    _strain_old.d(_mixed_state) = ones_stress;
+    _strain_old.d(_fixed_values_old) = dstrain;
+    _strain_old.d(_mixed_state_old) = dstress;
   }
 
   // All zero
