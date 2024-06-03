@@ -81,7 +81,7 @@ protected:
   /// Temperature
   Scalar _temperature;
 
-  /// Actual control signal
+  /// Actual control signal, when used for control == "MIXED"
   SR2 _control_signal;
 };
 }

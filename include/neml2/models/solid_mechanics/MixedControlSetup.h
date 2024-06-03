@@ -38,25 +38,29 @@ public:
 protected:
   void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
-  const VariableName & _control_name;
-  const VariableName & _state_name;
-  const VariableName & _fixed_values_name;
-
+  /**
+   * @brief The threshold for the control signal
+   *
+   * control <= _threshold -> strain control
+   * control > _threshold -> stress control
+   */
   const Real _threshold;
 
+  /// Actual input control signal
   const Variable<SR2> & _control;
-  const Variable<SR2> & _control_old;
 
+  /// Driving forces to pull the "controled" entries from
   const Variable<SR2> & _fixed_values;
-  const Variable<SR2> & _fixed_values_old;
+  /// Conjugate state containing the mixed, unknown stresses and strains
   const Variable<SR2> & _mixed_state;
-  const Variable<SR2> & _mixed_state_old;
+
+  /// Stress tensor to target
   Variable<SR2> & _stress;
-  Variable<SR2> & _stress_old;
+  /// Strain tensor to target
   Variable<SR2> & _strain;
-  Variable<SR2> & _strain_old;
 
 private:
+  /// Construct the derivative operators from the control signal
   std::pair<SSR4, SSR4> _make_operators(const SR2 & bcontrol) const;
 };
 } // namespace neml2

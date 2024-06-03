@@ -1,54 +1,35 @@
 [Tensors]
-  [end_time]
-    type = LogspaceScalar
-    start = -1
-    end = 5
-    nstep = 20
-  []
   [times]
-    type = LinspaceScalar
-    start = 0
-    end = end_time
-    nstep = 100
+    type = VTestTimeSeries
+    vtest = 'mixed_control.vtest'
+    variable = 'time'
+    variable_type = 'SCALAR'
   []
-  [applied_strain]
-    type = FullScalar
-    batch_shape = '(20)'
-    value = 0.1
+  [strains]
+    type = VTestTimeSeries
+    vtest = 'mixed_control.vtest'
+    variable = 'strain'
+    variable_type = 'SYMR2'
   []
-  [applied_stress]
-    type = FullScalar
-    batch_shape = '(20)'
-    value = -130
-  []
-  [zero]
-    type = FullScalar
-    batch_shape = '(20)'
-    value = 0.0
-  []
-  [zero_control]
-    type = FullScalar
-    batch_shape = '(100,20)'
-    value = 0.0
+  [stresses]
+    type = VTestTimeSeries
+    vtest = 'mixed_control.vtest'
+    variable = 'stress'
+    variable_type = 'SYMR2'
   []
   [one_control]
     type = FullScalar
-    batch_shape = '(100,20)'
+    batch_shape = '(100,1)'
     value = 1.0
   []
-  [max_conds]
-    type = FillSR2
-    values = 'applied_strain zero zero applied_stress zero zero'
-  []
-  [conditions]
-    type = LinspaceSR2
-    start = 0
-    end = max_conds
-    nstep = 100
+  [zero_control]
+    type = FullScalar
+    batch_shape = '(100,1)'
+    value = 0.0
   []
   [control]
     type = FillSR2
-    values = 'zero_control one_control one_control one_control zero_control zero_control'
+    values = 'one_control one_control one_control zero_control one_control one_control'
   []
 []
 
@@ -58,14 +39,16 @@
     model = 'model_with_output'
     control = 'MIXED'
     times = 'times'
-    prescribed_mixed_conditions = 'conditions'
+    prescribed_mixed_conditions = 'stresses'
     prescribed_control = 'control'
-    save_as = 'result.pt'
   []
-  [regression]
-    type = TransientRegression
+  [verification]
+    type = VTestVerification
     driver = 'driver'
-    reference = 'gold/result.pt'
+    variables = 'output.output/stress output.output/strain'
+    references = 'stresses strains'
+    atol = 1e-5
+    rtol = 1e-5
   []
 []
 

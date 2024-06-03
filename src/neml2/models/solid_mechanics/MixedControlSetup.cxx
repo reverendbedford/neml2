@@ -22,7 +22,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/models/solid_mechanics/mixed_control/MixedControlSetup.h"
+#include "neml2/models/solid_mechanics/MixedControlSetup.h"
 
 namespace neml2
 {
@@ -33,35 +33,25 @@ MixedControlSetup::expected_options()
 {
   OptionSet options = Model::expected_options();
 
-  options.set<VariableName>("control_name") = VariableName("control");
+  options.set<VariableName>("control") = VariableName("forces", "control");
   options.set<Real>("threshold") = 0.5;
 
-  options.set<VariableName>("state_name") = VariableName("mixed_state");
-  options.set<VariableName>("fixed_values_name") = VariableName("fixed_values");
+  options.set<VariableName>("mixed_state") = VariableName("state", "mixed_state");
+  options.set<VariableName>("fixed_values") = VariableName("forces", "fixed_values");
 
   options.set<VariableName>("cauchy_stress") = VariableName("state", "S");
-  options.set<VariableName>("old_cauchy_stress") = VariableName("old_state", "S");
   options.set<VariableName>("strain") = VariableName("forces", "E");
-  options.set<VariableName>("old_strain") = VariableName("old_forces", "E");
   return options;
 }
 
 MixedControlSetup::MixedControlSetup(const OptionSet & options)
   : Model(options),
-    _control_name(options.get<VariableName>("control_name")),
-    _state_name(options.get<VariableName>("state_name")),
-    _fixed_values_name(options.get<VariableName>("fixed_values_name")),
     _threshold(options.get<Real>("threshold")),
-    _control(declare_input_variable<SR2>(_control_name.on("forces"))),
-    _control_old(declare_input_variable<SR2>(_control_name.on("old_forces"))),
-    _fixed_values(declare_input_variable<SR2>(_fixed_values_name.on("forces"))),
-    _fixed_values_old(declare_input_variable<SR2>(_fixed_values_name.on("old_forces"))),
-    _mixed_state(declare_input_variable<SR2>(_state_name.on("state"))),
-    _mixed_state_old(declare_input_variable<SR2>(_state_name.on("old_state"))),
+    _control(declare_input_variable<SR2>("control")),
+    _fixed_values(declare_input_variable<SR2>("fixed_values")),
+    _mixed_state(declare_input_variable<SR2>("mixed_state")),
     _stress(declare_output_variable<SR2>("cauchy_stress")),
-    _stress_old(declare_output_variable<SR2>("old_cauchy_stress")),
-    _strain(declare_output_variable<SR2>("strain")),
-    _strain_old(declare_output_variable<SR2>("old_strain"))
+    _strain(declare_output_variable<SR2>("strain"))
 {
 }
 
@@ -69,16 +59,12 @@ void
 MixedControlSetup::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   auto [dstrain, dstress] = _make_operators(_control.tensor());
-  auto [old_dstrain, old_dstress] = _make_operators(_control_old.tensor());
 
   if (out)
   {
     // Even benign in place operations get errors
     _stress = dstress * _fixed_values + dstrain * _mixed_state;
     _strain = dstrain * _fixed_values + dstress * _mixed_state;
-
-    _stress_old = old_dstress * _fixed_values_old + old_dstrain * _mixed_state_old;
-    _strain_old = old_dstrain * _fixed_values_old + old_dstress * _mixed_state_old;
   }
 
   if (dout_din)
@@ -88,12 +74,6 @@ MixedControlSetup::set_value(bool out, bool dout_din, bool d2out_din2)
 
     _strain.d(_fixed_values) = dstrain;
     _strain.d(_mixed_state) = dstress;
-
-    _stress_old.d(_fixed_values_old) = old_dstress;
-    _stress_old.d(_mixed_state_old) = old_dstrain;
-
-    _strain_old.d(_fixed_values_old) = old_dstrain;
-    _strain_old.d(_mixed_state_old) = old_dstress;
   }
 
   // All zero
