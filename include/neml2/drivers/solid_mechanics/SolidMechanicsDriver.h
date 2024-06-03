@@ -53,6 +53,7 @@ protected:
    *
    * STRAIN: Use strain control to drive the update.
    * STRESS: Use stress control to drive the update.
+   * MIXED: Use mixed stress/strain control with signal provided by _control_name
    */
   const std::string _control;
 
@@ -68,6 +69,9 @@ protected:
    */
   VariableName _driving_force_name;
 
+  /// Name of the control signal for mixed stress/strain control
+  const VariableName _control_name;
+
   /// Name of the temperature variable
   const VariableName _temperature_name;
 
@@ -76,5 +80,8 @@ protected:
 
   /// Temperature
   Scalar _temperature;
+
+  /// Actual control signal
+  SR2 _control_signal;
 };
 }

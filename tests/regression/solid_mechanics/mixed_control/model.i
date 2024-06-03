@@ -16,20 +16,39 @@
     batch_shape = '(20)'
     value = 0.1
   []
+  [applied_stress]
+    type = FullScalar
+    batch_shape = '(20)'
+    value = -130
+  []
   [zero]
     type = FullScalar
     batch_shape = '(20)'
     value = 0.0
   []
+  [zero_control]
+    type = FullScalar
+    batch_shape = '(100,20)'
+    value = 0.0
+  []
+  [one_control]
+    type = FullScalar
+    batch_shape = '(100,20)'
+    value = 1.0
+  []
   [max_conds]
     type = FillSR2
-    values = 'applied_strain zero zero zero zero zero'
+    values = 'applied_strain zero zero applied_stress zero zero'
   []
   [conditions]
     type = LinspaceSR2
     start = 0
     end = max_conds
     nstep = 100
+  []
+  [control]
+    type = FillSR2
+    values = 'zero_control one_control one_control one_control zero_control zero_control'
   []
 []
 
@@ -40,6 +59,7 @@
     control = 'MIXED'
     times = 'times'
     prescribed_mixed_conditions = 'conditions'
+    prescribed_control = 'control'
     save_as = 'result.pt'
   []
   [regression]
@@ -52,6 +72,7 @@
 [Solvers]
   [newton]
     type = Newton
+    verbose = true
   []
 []
 
@@ -153,7 +174,6 @@
   []
   [mixed]
     type = MixedControlSetup
-    control = 'strain stress stress strain strain strain'
   []
   [rename]
     type = CopySR2
@@ -168,6 +188,13 @@
     type = ImplicitUpdate
     implicit_model = 'implicit_rate'
     solver = 'newton'
+  []
+  [extract]
+    type = MixedControlResults
+  []
+  [model_with_output]
+    type = ComposedModel
+    models = 'model extract'
   []
 []
 

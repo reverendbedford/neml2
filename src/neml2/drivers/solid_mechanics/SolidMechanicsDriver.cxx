@@ -55,18 +55,27 @@ SolidMechanicsDriver::expected_options()
 
   options.set<CrossRef<torch::Tensor>>("prescribed_temperatures");
   options.set<CrossRef<torch::Tensor>>("prescribed_mixed_conditions");
+
+  options.set<VariableName>("control_name") = VariableName("forces", "control");
+  options.set<CrossRef<torch::Tensor>>("prescribed_control");
+
   return options;
 }
 
 SolidMechanicsDriver::SolidMechanicsDriver(const OptionSet & options)
   : TransientDriver(options),
     _control(options.get<std::string>("control")),
+    _control_name(options.get<VariableName>("control_name")),
     _temperature_name(options.get<VariableName>("temperature")),
     _temperature_prescribed(
         !options.get<CrossRef<torch::Tensor>>("prescribed_temperatures").raw().empty()),
     _temperature(_temperature_prescribed
                      ? Scalar(options.get<CrossRef<torch::Tensor>>("prescribed_temperatures"), 2)
-                     : Scalar())
+                     : Scalar()),
+    _control_signal(_control == "MIXED"
+                        ? SR2(options.get<CrossRef<torch::Tensor>>("prescribed_control"), 2)
+                        : SR2())
+
 {
   if (_control == "STRAIN")
   {
@@ -139,6 +148,23 @@ SolidMechanicsDriver::check_integrity() const
                 " while the input temperature has a batch size of ",
                 _temperature.sizes()[1]);
   }
+
+  if (_control == "MIXED")
+  {
+    neml_assert(
+        _control_signal.batch_dim() == 2,
+        "Input control signal should have 2 batch dimensions but instead has batch dimension",
+        _control_signal.batch_dim());
+    neml_assert(
+        _control_signal.sizes()[0] == _time.sizes()[0],
+        "Input control signal should have the same number of steps steps as time, but instead has",
+        _control_signal.sizes()[0],
+        "time steps");
+    neml_assert(
+        _control_signal.sizes()[1] == _time.sizes()[1],
+        "Input control signal should have the same batch size as time, but instead has batch size",
+        _control_signal.sizes()[1]);
+  }
 }
 
 void
@@ -153,6 +179,12 @@ SolidMechanicsDriver::update_forces()
   {
     auto current_temperature = _temperature.batch_index({_step_count});
     _in.set(current_temperature, _temperature_name);
+  }
+
+  if (_control == "MIXED")
+  {
+    auto current_control = _control_signal.batch_index({_step_count});
+    _in.set(current_control, _control_name);
   }
 }
 }
