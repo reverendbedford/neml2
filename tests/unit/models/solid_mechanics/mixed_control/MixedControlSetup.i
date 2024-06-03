@@ -3,8 +3,8 @@
     type = ModelUnitTest
     model = 'model'
     batch_shape = '()'
-    input_symr2_names = 'state/mixed_state old_state/mixed_state forces/fixed_values old_forces/fixed_values forces/control'
-    input_symr2_values = 'mvals old_mvals vals old_vals control'
+    input_symr2_names = 'state/mixed_state old_state/mixed_state forces/fixed_values old_forces/fixed_values forces/control old_forces/control'
+    input_symr2_values = 'mvals old_mvals vals old_vals control old_control'
     output_symr2_names = 'state/S forces/E old_state/S old_forces/E'
     output_symr2_values = 'stress strain old_stress old_strain'
   []
@@ -12,6 +12,11 @@
 
 [Tensors]
   [control]
+    type = FillSR2
+    values = '1.0 0.0 0.0 1.0 1.0 0.0'
+  []
+
+  [old_control]
     type = FillSR2
     values = '1.0 0.0 0.0 1.0 1.0 0.0'
   []

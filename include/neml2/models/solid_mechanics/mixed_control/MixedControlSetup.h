@@ -38,12 +38,14 @@ public:
 protected:
   void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
+  const VariableName & _control_name;
   const VariableName & _state_name;
   const VariableName & _fixed_values_name;
 
   const Real _threshold;
 
   const Variable<SR2> & _control;
+  const Variable<SR2> & _control_old;
 
   const Variable<SR2> & _fixed_values;
   const Variable<SR2> & _fixed_values_old;
@@ -54,8 +56,7 @@ protected:
   Variable<SR2> & _strain;
   Variable<SR2> & _strain_old;
 
-  // These are constant
-  SSR4 _cached_strain_derivative;
-  SSR4 _cached_stress_derivative;
+private:
+  std::pair<SSR4, SSR4> _make_operators(const SR2 & bcontrol) const;
 };
 } // namespace neml2

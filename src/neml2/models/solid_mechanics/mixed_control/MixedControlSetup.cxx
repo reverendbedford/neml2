@@ -33,11 +33,10 @@ MixedControlSetup::expected_options()
 {
   OptionSet options = Model::expected_options();
 
-  options.set<VariableName>("control") = VariableName("forces", "control");
+  options.set<VariableName>("control_name") = VariableName("control");
   options.set<Real>("threshold") = 0.5;
 
   options.set<VariableName>("state_name") = VariableName("mixed_state");
-
   options.set<VariableName>("fixed_values_name") = VariableName("fixed_values");
 
   options.set<VariableName>("cauchy_stress") = VariableName("state", "S");
@@ -49,10 +48,12 @@ MixedControlSetup::expected_options()
 
 MixedControlSetup::MixedControlSetup(const OptionSet & options)
   : Model(options),
+    _control_name(options.get<VariableName>("control_name")),
     _state_name(options.get<VariableName>("state_name")),
     _fixed_values_name(options.get<VariableName>("fixed_values_name")),
     _threshold(options.get<Real>("threshold")),
-    _control(declare_input_variable<SR2>("control")),
+    _control(declare_input_variable<SR2>(_control_name.on("forces"))),
+    _control_old(declare_input_variable<SR2>(_control_name.on("old_forces"))),
     _fixed_values(declare_input_variable<SR2>(_fixed_values_name.on("forces"))),
     _fixed_values_old(declare_input_variable<SR2>(_fixed_values_name.on("old_forces"))),
     _mixed_state(declare_input_variable<SR2>(_state_name.on("state"))),
@@ -67,16 +68,8 @@ MixedControlSetup::MixedControlSetup(const OptionSet & options)
 void
 MixedControlSetup::set_value(bool out, bool dout_din, bool d2out_din2)
 {
-  auto strain_select = _control.tensor() <= _threshold;
-  auto stress_select = _control.tensor() > _threshold;
-
-  // This also converts these to floats
-  auto ones_stress =
-      BatchTensor(strain_select.to(_stress.tensor().options()), _control.batch_dim());
-  auto ones_strain = BatchTensor::ones_like(_control.tensor()) - ones_stress;
-
-  auto dstrain = SSR4(BatchTensor(torch::diag_embed(ones_stress), batch_dim()));
-  auto dstress = SSR4(BatchTensor(torch::diag_embed(ones_strain), batch_dim()));
+  auto [dstrain, dstress] = _make_operators(_control.tensor());
+  auto [old_dstrain, old_dstress] = _make_operators(_control_old.tensor());
 
   if (out)
   {
@@ -84,8 +77,8 @@ MixedControlSetup::set_value(bool out, bool dout_din, bool d2out_din2)
     _stress = dstress * _fixed_values + dstrain * _mixed_state;
     _strain = dstrain * _fixed_values + dstress * _mixed_state;
 
-    _stress_old = dstress * _fixed_values_old + dstrain * _mixed_state_old;
-    _strain_old = dstrain * _fixed_values_old + dstress * _mixed_state_old;
+    _stress_old = old_dstress * _fixed_values_old + old_dstrain * _mixed_state_old;
+    _strain_old = old_dstrain * _fixed_values_old + old_dstress * _mixed_state_old;
   }
 
   if (dout_din)
@@ -96,15 +89,31 @@ MixedControlSetup::set_value(bool out, bool dout_din, bool d2out_din2)
     _strain.d(_fixed_values) = dstrain;
     _strain.d(_mixed_state) = dstress;
 
-    _stress_old.d(_fixed_values_old) = dstress;
-    _stress_old.d(_mixed_state_old) = dstrain;
+    _stress_old.d(_fixed_values_old) = old_dstress;
+    _stress_old.d(_mixed_state_old) = old_dstrain;
 
-    _strain_old.d(_fixed_values_old) = dstrain;
-    _strain_old.d(_mixed_state_old) = dstress;
+    _strain_old.d(_fixed_values_old) = old_dstrain;
+    _strain_old.d(_mixed_state_old) = old_dstress;
   }
 
   // All zero
   (void)(d2out_din2);
+}
+
+std::pair<SSR4, SSR4>
+MixedControlSetup::_make_operators(const SR2 & control) const
+{
+  auto strain_select = control <= _threshold;
+  auto stress_select = control > _threshold;
+
+  // This also converts these to floats
+  auto ones_stress = BatchTensor(strain_select.to(_stress.tensor().options()), control.batch_dim());
+  auto ones_strain = BatchTensor::ones_like(control) - ones_stress;
+
+  auto dstrain = SSR4(BatchTensor(torch::diag_embed(ones_stress), batch_dim()));
+  auto dstress = SSR4(BatchTensor(torch::diag_embed(ones_strain), batch_dim()));
+
+  return std::make_pair(dstrain, dstress);
 }
 
 } // namespace neml2
