@@ -54,18 +54,18 @@ jobs:
       - name: Install PyTorch
         run: pip install torch==2.2.2
       - run: pip install -v .
-      - run: pytest --junitxml=build/python/pytest.xml python/tests
+      - run: pytest --junitxml=pytest.xml python/tests
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2
         if: matrix.os == 'ubuntu-latest'
         with:
-          files: build/python/pytest.xml
+          files: pytest.xml
           check_name: Python Binding Test Results (${{ matrix.os }})
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action/composite@v2
         if: matrix.os == 'macos-12'
         with:
-          files: build/python/pytest.xml
+          files: pytest.xml
           check_name: Python Binding Test Results (${{ matrix.os }})
   sdist:
     name: Build source distribution
