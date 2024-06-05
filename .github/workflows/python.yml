@@ -30,7 +30,7 @@ jobs:
       - uses: psf/black@stable
         with:
           options: "--check -v"
-          src: "python/neml2 tests/python"
+          src: "python/neml2 python/tests"
   build-test:
     name: Build and test Python bindings
     needs: black
@@ -53,21 +53,8 @@ jobs:
         run: pip install -r requirements.txt
       - name: Install PyTorch
         run: pip install torch==2.2.2
-      - run: |
-          cmake \
-            -DCMAKE_BUILD_TYPE=Debug \
-            -DCMAKE_UNITY_BUILD=ON \
-            -DNEML2_UNIT=OFF \
-            -DNEML2_REGRESSION=OFF \
-            -DNEML2_VERIFICATION=OFF \
-            -DNEML2_BENCHMARK=OFF \
-            -DNEML2_PROFILER=OFF \
-            -DNEML2_PYBIND=ON \
-            -DNEML2_DOC=OFF \
-            -B build \
-            .
-      - run: cd build && make -j 2
-      - run: PYTHONPATH=build/python pytest --junitxml=build/python/pytest.xml tests
+      - run: pip install -v .
+      - run: pytest --junitxml=build/python/pytest.xml python/tests
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2
         if: matrix.os == 'ubuntu-latest'
@@ -93,45 +80,8 @@ jobs:
         with:
           name: package-sdist
           path: dist/*.tar.gz
-  wheels:
-    needs: build-test
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, macos-12]
-    runs-on: ${{ matrix.os }}
-    steps:
-      - name: Backup docker
-        if: matrix.os == 'ubuntu-latest'
-        run: sudo mv /var/lib/docker ${GITHUB_WORKSPACE}/docker
-      - name: Maximize build space
-        if: matrix.os == 'ubuntu-latest'
-        uses: easimon/maximize-build-space@master
-        with:
-          remove-dotnet: "true"
-          remove-android: "true"
-          remove-haskell: "true"
-          remove-codeql: "true"
-          build-mount-path: "/var/lib/docker/"
-      - name: Remount docker
-        if: matrix.os == 'ubuntu-latest'
-        run: sudo sh -c "mv ${GITHUB_WORKSPACE}/docker/* /var/lib/docker"
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-      - uses: jwlawson/actions-setup-cmake@v2
-        with:
-          cmake-version: "3.23"
-      - name: Build wheels
-        uses: pypa/cibuildwheel@v2.16.5
-      - name: Upload wheels
-        if: github.event_name == 'release' && github.event.action == 'published'
-        uses: actions/upload-artifact@v4
-        with:
-          name: package-wheels-${{ matrix.os }}-${{ strategy.job-index }}
-          path: ./wheelhouse/*.whl
   PyPI:
-    needs: [sdist, wheels]
+    needs: sdist
     environment: pypi
     permissions:
       id-token: write
@@ -140,7 +90,7 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         with:
-          pattern: package-*
+          pattern: package-sdist
           path: dist
           merge-multiple: true
       - uses: pypa/gh-action-pypi-publish@release/v1

@@ -32,8 +32,8 @@ class CMakeBuild(build_ext):
             "-DCMAKE_INSTALL_PREFIX={}".format(extdir),
             "-DCMAKE_BUILD_TYPE=RelWithDebInfo",
             "-DCMAKE_UNITY_BUILD=ON",
-            "-DNEML2_PYBIND=OFF",
-            "-DNEML2_TESTS=ON",
+            "-DNEML2_PYBIND=ON",
+            "-DNEML2_TESTS=OFF",
             "-DNEML2_RUNNER=OFF",
             "-DNEML2_DOC=OFF",
         ]

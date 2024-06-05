@@ -68,11 +68,8 @@ jobs:
           cmake \
             -DCMAKE_BUILD_TYPE=${{ matrix.btype }} \
             -DCMAKE_UNITY_BUILD=${{ matrix.unity }} \
-            -DNEML2_UNIT=ON \
-            -DNEML2_REGRESSION=ON \
-            -DNEML2_VERIFICATION=ON \
-            -DNEML2_BENCHMARK=OFF \
-            -DNEML2_PROFILER=OFF \
+            -DNEML2_TESTS=ON \
+            -DNEML2_RUNNER=OFF \
             -DNEML2_PYBIND=OFF \
             -DNEML2_DOC=OFF \
             .
@@ -117,11 +114,9 @@ jobs:
           cmake \
             -DCMAKE_BUILD_TYPE=${{ matrix.btype }} \
             -DCMAKE_UNITY_BUILD=${{ matrix.unity }} \
-            -DNEML2_UNIT=ON \
-            -DNEML2_REGRESSION=ON \
-            -DNEML2_VERIFICATION=ON \
-            -DNEML2_BENCHMARK=ON \
-            -DNEML2_PROFILER=ON \
+            -DNEML2_TESTS=ON \
+            -DNEML2_RUNNER=ON \
+            -DNEML2_RUNNER_AS_PROFILER=ON \
             -DNEML2_PYBIND=OFF \
             -DNEML2_DOC=OFF \
             .
@@ -147,11 +142,9 @@ jobs:
           cmake \
             -DCMAKE_BUILD_TYPE=Coverage \
             -DCMAKE_UNITY_BUILD=OFF \
-            -DNEML2_UNIT=ON \
-            -DNEML2_REGRESSION=ON \
-            -DNEML2_VERIFICATION=ON \
-            -DNEML2_BENCHMARK=OFF \
-            -DNEML2_PROFILER=OFF \
+            -DNEML2_TESTS=ON \
+            -DNEML2_RUNNER=OFF \
+            -DNEML2_PYBIND=OFF \
             -DNEML2_DOC=OFF \
             .
       - run: make -j 2
@@ -193,6 +186,7 @@ jobs:
             project(FOO)\n\
             add_subdirectory(neml2)\n\
             add_executable(foo main.cxx)\n\
+            add_compile_definitions(_GLIBCXX_USE_CXX11_ABI=0)\n\
             target_link_libraries(foo neml2)\n\
             " > CMakeLists.txt
       - run: cat CMakeLists.txt

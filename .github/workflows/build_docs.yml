@@ -38,6 +38,7 @@ jobs:
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_UNITY_BUILD=ON \
             -DNEML2_TESTS=OFF \
+            -DNEML2_RUNNER=OFF \
             -DNEML2_PYBIND=ON \
             -DNEML2_DOC=ON \
             .
