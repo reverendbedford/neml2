@@ -113,6 +113,7 @@ $(function(){initNavTree('namespaceneml2.html',''); initResizable(); });
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">neml2 Namespace Reference</div></div>
 </div><!--header-->
@@ -558,6 +559,15 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a9e1488821b46ffc106c90ab80036b7aa" id="r_a9e1488821b46ffc106c90ab80036b7aa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9e1488821b46ffc106c90ab80036b7aa">VariableName</a> = <a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a></td></tr>
 <tr class="separator:a9e1488821b46ffc106c90ab80036b7aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a4c55c16d7c784070b26231f015e33a10" id="r_a4c55c16d7c784070b26231f015e33a10"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4c55c16d7c784070b26231f015e33a10">ParserType</a> { <a class="el" href="#a4c55c16d7c784070b26231f015e33a10ad4cf8619fedf804702c72835be555da0">HIT</a>
+, <a class="el" href="#a4c55c16d7c784070b26231f015e33a10a60018cf01f907998778170cb8db31c99">XML</a>
+, <a class="el" href="#a4c55c16d7c784070b26231f015e33a10a8f9162aeb03d4b4053825f71ecb6cdcc">YAML</a>
+, <a class="el" href="#a4c55c16d7c784070b26231f015e33a10aeef9468d1b98bca652a04bf5063fd9d6">AUTO</a>
+ }</td></tr>
+<tr class="separator:a4c55c16d7c784070b26231f015e33a10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a218b02a505cc827ba161808fdc755a4a" id="r_a218b02a505cc827ba161808fdc755a4a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a218b02a505cc827ba161808fdc755a4a">FOR_ALL_FIXEDDIMTENSOR</a> (CROSSREF_SPECIALIZE_FIXEDDIMTENSOR)</td></tr>
@@ -566,6 +576,9 @@ Functions</h2></td></tr>
 <tr class="separator:a23a102128ef1ea51570e19de47c31f37"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee91e52a56229f56b7d7427b9d876e84" id="r_aee91e52a56229f56b7d7427b9d876e84"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aee91e52a56229f56b7d7427b9d876e84">operator&lt;&lt;</a> (std::ostream &amp;<a class="el" href="classneml2_1_1CrossRef.html">os</a>, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1OptionSet.html">OptionSet</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">p</a>)</td></tr>
 <tr class="separator:aee91e52a56229f56b7d7427b9d876e84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa00ba32837fe23a079a374ae29b5b34" id="r_afa00ba32837fe23a079a374ae29b5b34"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afa00ba32837fe23a079a374ae29b5b34">load_model</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;path, <a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;<a class="el" href="classneml2_1_1CrossRef.html">additional_input</a>=&quot;&quot;, <a class="el" href="#a4c55c16d7c784070b26231f015e33a10">ParserType</a> <a class="el" href="classneml2_1_1CrossRef.html">ptype</a>=<a class="el" href="#a4c55c16d7c784070b26231f015e33a10aeef9468d1b98bca652a04bf5063fd9d6">ParserType::AUTO</a>)</td></tr>
+<tr class="memdesc:afa00ba32837fe23a079a374ae29b5b34"><td class="mdescLeft">&#160;</td><td class="mdescRight">A convenient function to parse all options from an input file.  <br /></td></tr>
+<tr class="separator:afa00ba32837fe23a079a374ae29b5b34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb0d855576075b8f5d9edf82ca426ef4" id="r_afb0d855576075b8f5d9edf82ca426ef4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afb0d855576075b8f5d9edf82ca426ef4">register_NEML2_object</a> (<a class="el" href="classneml2_1_1LargeDeformationIncrementalSolidMechanicsDriver.html">LargeDeformationIncrementalSolidMechanicsDriver</a>)</td></tr>
 <tr class="separator:afb0d855576075b8f5d9edf82ca426ef4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e477c0e944a51cf5584de44a315cb15" id="r_a7e477c0e944a51cf5584de44a315cb15"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7e477c0e944a51cf5584de44a315cb15">register_NEML2_object</a> (<a class="el" href="classneml2_1_1SolidMechanicsDriver.html">SolidMechanicsDriver</a>)</td></tr>
@@ -1263,6 +1276,27 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="a4c55c16d7c784070b26231f015e33a10" name="a4c55c16d7c784070b26231f015e33a10"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c55c16d7c784070b26231f015e33a10">&#9670;&#160;</a></span>ParserType</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">enum</a> <a class="el" href="#a4c55c16d7c784070b26231f015e33a10">ParserType</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a4c55c16d7c784070b26231f015e33a10ad4cf8619fedf804702c72835be555da0" name="a4c55c16d7c784070b26231f015e33a10ad4cf8619fedf804702c72835be555da0"></a>HIT&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4c55c16d7c784070b26231f015e33a10a60018cf01f907998778170cb8db31c99" name="a4c55c16d7c784070b26231f015e33a10a60018cf01f907998778170cb8db31c99"></a>XML&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4c55c16d7c784070b26231f015e33a10a8f9162aeb03d4b4053825f71ecb6cdcc" name="a4c55c16d7c784070b26231f015e33a10a8f9162aeb03d4b4053825f71ecb6cdcc"></a>YAML&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4c55c16d7c784070b26231f015e33a10aeef9468d1b98bca652a04bf5063fd9d6" name="a4c55c16d7c784070b26231f015e33a10aeef9468d1b98bca652a04bf5063fd9d6"></a>AUTO&#160;</td><td class="fielddoc"></td></tr>
+</table>
 
 </div>
 </div>
@@ -2093,6 +2127,42 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a cla
 </div><div class="memdoc">
 
 <p>outer product on lists, where the second input is a list tensor </p>
+
+</div>
+</div>
+<a id="afa00ba32837fe23a079a374ae29b5b34" name="afa00ba32837fe23a079a374ae29b5b34"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa00ba32837fe23a079a374ae29b5b34">&#9670;&#160;</a></span>load_model()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">void</a> load_model </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>path</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>additional_input</em><span class="paramdefsep"> = </span><span class="paramdefval">&quot;&quot;</span>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#a4c55c16d7c784070b26231f015e33a10">ParserType</a></td>          <td class="paramname"><span class="paramname"><em>ptype</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="#a4c55c16d7c784070b26231f015e33a10aeef9468d1b98bca652a04bf5063fd9d6">ParserType::AUTO</a></span></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A convenient function to parse all options from an input file. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">path</td><td>Path to the input file to be parsed </td></tr>
+    <tr><td class="paramname">additional_input</td><td>Additional cliargs to pass to the parser </td></tr>
+    <tr><td class="paramname">ptype</td><td>Input file format </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
