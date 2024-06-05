@@ -25,13 +25,13 @@ class CMakeBuild(build_ext):
 
         # Must be in this form due to bug in .resolve() only fixed in Python 3.10+
         ext_fullpath = Path.cwd() / self.get_ext_fullpath(ext.name)
-        extdir = ext_fullpath.parent.resolve()
+        extdir = ext_fullpath.parent.resolve() / "neml2"
 
         # Configure arguments
         cmake_args = [
             "-DCMAKE_INSTALL_PREFIX={}".format(extdir),
             "-DCMAKE_BUILD_TYPE=RelWithDebInfo",
-            "-DCMAKE_UNITY_BUILD={}".format(os.environ.get("UNITY_BUILD", "OFF")),
+            "-DCMAKE_UNITY_BUILD=ON",
             "-DNEML2_PYBIND=OFF",
             "-DNEML2_TESTS=ON",
             "-DNEML2_RUNNER=OFF",
