@@ -10,12 +10,9 @@ execute_process(
 # ----------------------------------------------------------------------------
 # Install test resources
 # ----------------------------------------------------------------------------
-if(NOT ${NEML2_BINARY_DIR} STREQUAL ${NEML2_SOURCE_DIR})
-  file(CREATE_LINK ${NEML2_SOURCE_DIR}/tests/python ${NEML2_BINARY_DIR}/tests/python SYMBOLIC)
-endif()
-
 install(DIRECTORY .
-  TYPE BIN
+  DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/python
+  COMPONENT Development
   FILES_MATCHING
   PATTERN "*.py"
 )

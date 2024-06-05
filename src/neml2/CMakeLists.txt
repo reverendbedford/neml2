@@ -3,6 +3,7 @@ include(NEML2UnityGroup)
 # Add all the source files
 file(GLOB_RECURSE SRCS *.cxx)
 add_library(neml2 SHARED ${SRCS})
+set_target_properties(neml2 PROPERTIES INSTALL_RPATH "${EXEC_DIR};${Torch_LINK_DIRECTORIES}")
 
 # Make scalar type configurable:
 if(NOT NEML2_DTYPE)
@@ -41,11 +42,7 @@ target_sources(neml2
   FILES
   ${_NEML2_HEADERS}
 )
-install(
-  TARGETS neml2
-  FILE_SET HEADERS
-  COMPONENT Development
-)
+install(TARGETS neml2 COMPONENT Development FILE_SET HEADERS)
 
 # torch
 target_include_directories(neml2 SYSTEM PUBLIC ${Torch_INCLUDE_DIRECTORIES})
@@ -53,6 +50,7 @@ target_link_directories(neml2 PUBLIC ${Torch_LINK_DIRECTORIES})
 target_link_libraries(neml2 PUBLIC ${Torch_LIBRARIES})
 
 # hit for parsing
+message(STATUS "Configuring hit")
 FetchContent_MakeAvailable(hit)
 
 add_library(hit SHARED
@@ -60,12 +58,6 @@ add_library(hit SHARED
   ${hit_SOURCE_DIR}/lex.cc
   ${hit_SOURCE_DIR}/braceexpr.cc
 )
-
-if(Torch_CXX11_ABI)
-  target_compile_definitions(hit PUBLIC _GLIBCXX_USE_CXX11_ABI=1)
-else()
-  target_compile_definitions(hit PUBLIC _GLIBCXX_USE_CXX11_ABI=0)
-endif()
 
 set_target_properties(hit PROPERTIES UNITY_BUILD OFF)
 target_include_directories(hit PUBLIC ${hit_SOURCE_DIR}/..)
@@ -79,9 +71,5 @@ target_sources(hit
   ${hit_SOURCE_DIR}/lex.h
   ${hit_SOURCE_DIR}/parse.h
 )
-install(
-  TARGETS hit
-  FILE_SET HEADERS
-  COMPONENT Development
-)
+install(TARGETS hit COMPONENT Development FILE_SET HEADERS)
 target_link_libraries(neml2 PUBLIC hit)

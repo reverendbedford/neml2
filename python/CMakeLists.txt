@@ -1,3 +1,4 @@
+message(STATUS "Configuring pybind11")
 FetchContent_MakeAvailable(pybind11)
 
 if(NOT Torch_PYTHON_BINDING)
@@ -8,6 +9,7 @@ endif()
 macro(add_submodule mname msrcs)
   pybind11_add_module(${mname} MODULE ${msrcs})
   set_target_properties(${mname} PROPERTIES LIBRARY_OUTPUT_DIRECTORY neml2)
+  set_target_properties(${mname} PROPERTIES INSTALL_RPATH "${EXEC_DIR}/lib;${Torch_LINK_DIRECTORIES}")
   target_include_directories(${mname} PUBLIC ${NEML2_SOURCE_DIR})
   target_link_libraries(${mname} PRIVATE pybind11::headers)
   target_link_libraries(${mname} PUBLIC neml2 ${Torch_PYTHON_BINDING})
@@ -32,13 +34,5 @@ install(FILES neml2/__init__.py DESTINATION .)
 
 # Tests
 if(NEML2_TESTS)
-  if(NOT ${NEML2_BINARY_DIR} STREQUAL ${NEML2_SOURCE_DIR})
-    file(CREATE_LINK ${NEML2_SOURCE_DIR}/tests/python ${NEML2_BINARY_DIR}/tests/python SYMBOLIC)
-  endif()
-
-  install(DIRECTORY python
-    TYPE BIN
-    FILES_MATCHING
-    PATTERN "*.py"
-  )
+  add_subdirectory(tests)
 endif()

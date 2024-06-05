@@ -1,6 +1,7 @@
 # ----------------------------------------------------------------------------
 # Dependencies and 3rd party packages
 # ----------------------------------------------------------------------------
+message(STATUS "Configuring Doxygen")
 FetchContent_MakeAvailable(doxygen)
 set(DOXYGEN_EXECUTABLE ${doxygen_SOURCE_DIR}/bin/doxygen)
 FetchContent_MakeAvailable(doxygen-awesome-css)

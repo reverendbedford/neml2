@@ -20,6 +20,7 @@ endif()
 # Plan B: If we are on Unix systems, we could default to downloading a CPU-only
 # libTorch.
 if(NOT DEFINED LIBTORCH_DIR)
+  message(STATUS "Configuring Torch")
   FetchContent_MakeAvailable(torch)
   set(LIBTORCH_DIR ${torch_SOURCE_DIR})
 endif()

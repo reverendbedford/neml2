@@ -1,6 +1,7 @@
 [build-system]
-requires = ["scikit-build-core>=0.3.3"]
-build-backend = "scikit_build_core.build"
+# requires = ["setuptools>=42", "wheel", "cmake>=3.23"]
+requires = ["setuptools>=42", "cmake>=3.23"]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "neml2"
@@ -12,39 +13,3 @@ authors = [
 description = "GPU-enabled vectorized material modeling library"
 readme = "README.md"
 requires-python = ">=3.8"
-dependencies = ["torch==2.2.2"]
-
-[tool.scikit-build]
-cmake.version = ">=3.23"
-cmake.build-type = "RelWithDebInfo"
-wheel.expand-macos-universal-tags = true
-wheel.packages = []
-wheel.install-dir = "neml2"
-
-[tool.scikit-build.cmake.define]
-CMAKE_INSTALL_PREFIX = "install"
-CMAKE_JOB_POOL_COMPILE = "CI"
-CMAKE_JOB_POOL_LINK = "CI"
-CMAKE_UNITY_BUILD = "ON"
-NEML2_PYBIND = "ON"
-NEML2_WHEELS = "ON"
-NEML2_TESTS = "OFF"
-NEML2_DOC = "OFF"
-
-[tool.cibuildwheel]
-build = "cp38-* cp39-* cp310-* cp311-*"
-skip = "*-win32 *-manylinux_i686 *-musllinux*"
-before-build = "pip install numpy torch==2.2.2"
-build-verbosity = 1
-test-requires = "pytest numpy torch==2.2.2"
-test-command = "pytest {project}/tests"
-
-[tool.cibuildwheel.macos.environment]
-# MacOS 10.15 is the lowest version that supports _full_ C++17
-MACOSX_DEPLOYMENT_TARGET = "10.15"
-
-[tool.cibuildwheel.linux]
-repair-wheel-command = "mv {wheel} {dest_dir}/"
-
-[tool.cibuildwheel.macos]
-repair-wheel-command = "mv {wheel} {dest_dir}/"

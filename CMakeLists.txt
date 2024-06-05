@@ -26,14 +26,13 @@ endif()
 # Project-level settings, options, and flags
 # ----------------------------------------------------------------------------
 list(APPEND CMAKE_MODULE_PATH ${NEML2_SOURCE_DIR}/cmake/Modules) # CMake modules and macros
-set_property(GLOBAL PROPERTY JOB_POOLS CI=6) # Ninja only: limit number of jobs in a CI build
 set(CMAKE_CXX_FLAGS_COVERAGE "-O0 -fprofile-arcs -ftest-coverage" CACHE STRING "Flags used by C++ compiler during coverage builds." FORCE)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-option(NEML2_WHEELS "Modify rpath to accomodate Python wheels" OFF)
 option(NEML2_TESTS "Build NEML2 tests" ON)
-option(NEML2_PYBIND "Build NEML2 Python binding" OFF)
-option(NEML2_DOC "Build NEML2 documentation: doxygen" OFF)
+option(NEML2_RUNNER "Build a simple runner for benchmarking, profiling, debugging, etc." OFF)
+option(NEML2_PYBIND "Build NEML2 Python bindings" OFF)
+option(NEML2_DOC "Build NEML2 documentation (html)" OFF)
 
 # ----------------------------------------------------------------------------
 # Dependencies and 3rd party packages
@@ -45,8 +44,27 @@ set(PYBIND11_VERSION "2.12.0")
 set(HIT_VERSION "100b575af08643b5e646cac8faff6c87dd1c15a7")
 set(CATCH2_VERSION "3.5.4")
 set(GPERFTOOLS_VERSION "2.15")
+set(ARGPARSE_VERSION "3.0")
 include(NEML2Dependencies)
 find_package(Torch) # This gets redirected to our FindTorch.cmake
+
+# ----------------------------------------------------------------------------
+# PyTorch ships libraries with or without CXX11 ABI
+# ----------------------------------------------------------------------------
+if(Torch_CXX11_ABI)
+      add_compile_definitions(_GLIBCXX_USE_CXX11_ABI=1)
+else()
+      add_compile_definitions(_GLIBCXX_USE_CXX11_ABI=0)
+endif()
+
+# ----------------------------------------------------------------------------
+# For relocatable install
+# ----------------------------------------------------------------------------
+if(UNIX AND APPLE)
+      set(EXEC_DIR "@loader_path")
+elseif(UNIX AND NOT APPLE)
+      set(EXEC_DIR "$ORIGIN")
+endif()
 
 # ----------------------------------------------------------------------------
 # Build types
@@ -59,11 +77,17 @@ endif()
 # ----------------------------------------------------------------------------
 # Subdirectories
 # ----------------------------------------------------------------------------
-add_subdirectory(src/neml2) # base neml2 library
+# base neml2 library
+add_subdirectory(src/neml2)
 
 # tests
 if(NEML2_TESTS)
       add_subdirectory(tests)
+endif()
+
+# runner
+if(NEML2_RUNNER)
+      add_subdirectory(runner)
 endif()
 
 # Python bindings

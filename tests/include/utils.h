@@ -24,21 +24,9 @@
 
 #pragma once
 
-#include "neml2/base/HITParser.h"
+#include "neml2/base/Parser.h"
 #include "neml2/base/Factory.h"
 #include "neml2/tensors/Scalar.h"
-
-enum ParserType
-{
-  HIT,
-  XML,
-  YAML,
-  AUTO
-};
-
-void load_model(const std::string & path,
-                const std::string & additional_input = "",
-                ParserType ptype = ParserType::AUTO);
 
 /**
  * @brief A simple finite-differencing helper to numerically approximate the derivative of the

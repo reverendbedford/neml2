@@ -55,3 +55,10 @@ FetchContent_Declare(
   GIT_REPOSITORY https://github.com/gperftools/gperftools.git
   GIT_TAG gperftools-${GPERFTOOLS_VERSION}
 )
+
+# C++ implementation of argparse
+FetchContent_Declare(
+  argparse
+  GIT_REPOSITORY https://github.com/p-ranav/argparse.git
+  GIT_TAG v${ARGPARSE_VERSION}
+)
