@@ -1,7 +1,7 @@
 [Drivers]
   [unit]
     type = ModelUnitTest
-    model = 'p'
+    model = 'model'
     batch_shape = '(5)'
     input_scalar_names = 'forces/T'
     input_scalar_values = '1000'
@@ -25,6 +25,10 @@
     reference_value = 'q0'
     activation_energy = 'Q'
     ideal_gas_constant = 8.314
+  []
+  [model]
+    type = ComposedModel
+    models = 'qq p'
   []
 []
 
