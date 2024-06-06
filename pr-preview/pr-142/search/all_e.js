@@ -2,7 +2,7 @@ var searchData=
 [
   ['m_0',['M',['../classneml2_1_1crystallography_1_1CrystalGeometry.html#a535a6b43fbd97119ba65e2136045e867',1,'neml2::crystallography::CrystalGeometry']]],
   ['macaulay_1',['macaulay',['../namespaceneml2_1_1math.html#a07399cca7394048ccc2ff2f52c637992',1,'neml2::math']]],
-  ['macroscale_2',['Plasticity (macroscale)',['../solid-mechanics.html#autotoc_md11',1,'']]],
+  ['macroscale_2',['Plasticity (macroscale)',['../solid-mechanics.html#autotoc_md16',1,'']]],
   ['make_5fdiagnosis_3',['make_diagnosis',['../namespaceneml2.html#a7952e15d66084fae9041c63b375e7c13',1,'neml2']]],
   ['mandel_5ffactor_4',['mandel_factor',['../namespaceneml2_1_1math.html#a9fab7b99811f47db9b7962b5f94bf5a3',1,'neml2::math']]],
   ['mandel_5findex_5',['mandel_index',['../namespaceneml2_1_1math.html#a75eb484f07670cf8f340c8091efa85d7',1,'neml2::math']]],
@@ -21,7 +21,7 @@ var searchData=
   ['millerindex_18',['MillerIndex',['../classneml2_1_1MillerIndex.html',1,'MillerIndex'],['../syntax-tensors.html#millerindex',1,'MillerIndex']]],
   ['millerindexlinearinterpolation_19',['MillerIndexLinearInterpolation',['../syntax-models.html#millerindexlinearinterpolation',1,'']]],
   ['miters_20',['miters',['../classneml2_1_1NonlinearSolver.html#a0cf640f7d773e8524e9266f8947fdcb5',1,'neml2::NonlinearSolver']]],
-  ['mixed_20hardening_21',['Mixed hardening',['../solid-mechanics.html#autotoc_md19',1,'']]],
+  ['mixed_20hardening_21',['Mixed hardening',['../solid-mechanics.html#autotoc_md24',1,'']]],
   ['model_22',['Model',['../classneml2_1_1Model.html',1,'Model'],['../classneml2_1_1Model.html#aec637141dc1379fd56d05cf1b7cb10ee',1,'neml2::Model::Model()'],['../system-models.html',1,'Model'],['../dev.html#custom-model',1,'Writing a custom model']]],
   ['model_20composition_23',['Model composition',['../system-models.html#model-composition',1,'']]],
   ['model_20definition_24',['Model definition',['../system-models.html#model-definition',1,'']]],
