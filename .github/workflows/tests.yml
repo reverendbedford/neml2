@@ -74,11 +74,11 @@ jobs:
             -DNEML2_DOC=OFF \
             .
       - run: make -j 2
-      - run: cd tests && ./unit_tests -r junit > unit_tests.xml
+      - run: cd tests && ./unit/unit_tests -r junit > unit_tests.xml
         continue-on-error: true
-      - run: cd tests && ./regression_tests -r junit > regression_tests.xml
+      - run: cd tests && ./regression/regression_tests -r junit > regression_tests.xml
         continue-on-error: true
-      - run: cd tests && ./verification_tests -r junit > verification_tests.xml
+      - run: cd tests && ./verification/verification_tests -r junit > verification_tests.xml
         continue-on-error: true
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2
