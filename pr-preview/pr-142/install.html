@@ -154,6 +154,7 @@ Optional dependencies</h2>
 <li><a href="https://github.com/gperftools/gperftools">gperftools</a> for profiling.</li>
 <li><a href="https://github.com/doxygen/doxygen">Doxygen</a> for building the documentation.</li>
 <li><a href="https://github.com/jothepro/doxygen-awesome-css">Doxygen Awesome</a> the documentation theme.</li>
+<li><a href="https://github.com/p-ranav/argparse">argparse</a> for command-line argument parsing.</li>
 <li>Python packages<ul>
 <li>pytest</li>
 <li>pandas</li>
@@ -169,15 +170,14 @@ Build, Test, and Install</h1>
 <div class="line">cd neml2</div>
 <div class="line">git checkout main</div>
 </div><!-- fragment --><p>Then, configure NEML2. See <a class="el" href="#build-customization">build customization</a> for possible configuration options.</p>
-<div class="fragment"><div class="line">mkdir build &amp;&amp; cmake -B build .</div>
+<div class="fragment"><div class="line">cmake -B build .</div>
 </div><!-- fragment --><p>Finally, compile NEML2.</p>
-<div class="fragment"><div class="line">cd build &amp;&amp; make -j N</div>
+<div class="fragment"><div class="line">cmake --build build -j N</div>
 </div><!-- fragment --><p> where <code>N</code> is the number of cores to use for parallel compilation.</p>
-<p>After the compilation is complete, optionally run the tests to make sure the compilation was successful.</p>
-<div class="fragment"><div class="line">make test</div>
-</div><!-- fragment --><p>The compiled NEML2 can be installed as a system library.</p>
-<div class="fragment"><div class="line">make install</div>
-</div><!-- fragment --><h1><a class="anchor" id="build-customization"></a>
+<p>The compiled NEML2 can be installed as a system library.</p>
+<div class="fragment"><div class="line">cmake --install build</div>
+</div><!-- fragment --><p>For more fine-grained control over the configure, build, and install commands, please refer to the <a href="https://cmake.org/cmake/help/latest/manual/cmake.1.html">CMake documentation</a>.</p>
+<h1><a class="anchor" id="build-customization"></a>
 Build Customization</h1>
 <p>Additional configuration options can be passed via command line using the <code>-DOPTION</code> or <code>-DOPTION=ON</code> format. For example,</p>
 <div class="fragment"><div class="line">cmake -DNEML2_DOC=ON -B build .</div>
@@ -205,9 +205,9 @@ Build Customization</h1>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyLeft">NEML2_VERIFICATION   </td><td class="markdownTableBodyLeft"><u>ON</u>, OFF   </td><td class="markdownTableBodyLeft">Create the verification testing target    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyLeft">NEML2_BENCHMARK   </td><td class="markdownTableBodyLeft">ON, <u>OFF</u>   </td><td class="markdownTableBodyLeft">Create the benchmark target    </td></tr>
+<td class="markdownTableBodyLeft">NEML2_RUNNER   </td><td class="markdownTableBodyLeft">ON, <u>OFF</u>   </td><td class="markdownTableBodyLeft">Create a simple runner    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyLeft">NEML2_PROFILER   </td><td class="markdownTableBodyLeft">ON, <u>OFF</u>   </td><td class="markdownTableBodyLeft">Create the profiler target    </td></tr>
+<td class="markdownTableBodyLeft">NEML2_RUNNER_AS_PROFILER   </td><td class="markdownTableBodyLeft">ON, <u>OFF</u>   </td><td class="markdownTableBodyLeft">Make the runner a profiler by linking against gperftools    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyLeft">NEML2_DOC   </td><td class="markdownTableBodyLeft">ON, <u>OFF</u>   </td><td class="markdownTableBodyLeft">Create the documentation target    </td></tr>
 <tr class="markdownTableRowOdd">
