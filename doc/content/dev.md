@@ -187,13 +187,13 @@ A model unit test examines the outputs of a `Model` given a predefined set of in
 All input files for model unit tests should be stored inside `tests/unit/models`. Every input file with the `.i` extension will be automatically discovered and executed. To run all the model unit tests, use the following commands
 ```
 cd tests
-./unit_tests models
+../build/unit/unit_tests models
 ```
 
 To run a specific model unit test, use the `-c` command line option followed by the relative location of the input file, i.e.
 ```
 cd tests
-./unit_tests models -c solid_mechanics/LinearIsotropicElasticity.i
+../build/unit/unit_tests models -c solid_mechanics/LinearIsotropicElasticity.i
 ```
 
 ### Regression tests {#regression-tests}
@@ -203,12 +203,12 @@ A model regression test runs a `Model` using a user specified driver. The result
 Each input file for model regression tests should be stored inside a separate folder inside `tests/regression`. Every input file with the `.i` extension will be automatically discovered and executed. To run all the model regression tests, use the `regression_tests` executable followed by the physics module, i.e.
 ```
 cd tests
-./regression_tests "solid mechanics"
+../build/regression/regression_tests "solid mechanics"
 ```
 To run a specific model regression test, use the `-c` command line option followed by the relative location of the input file, i.e.
 ```
 cd tests
-./regression_tests "solid mechanics" -c viscoplasticity/chaboche/model.i
+../build/regression/regression_tests "solid mechanics" -c viscoplasticity/chaboche/model.i
 ```
 Note that the regression test expects an option `reference` which specifies the relative location to the reference solution.
 
@@ -219,27 +219,13 @@ The model verification test is similar to the model regression test in terms of 
 Each input file for model verification tests should be stored inside a separate folder inside `tests/verification`. Every input file with the `.i` extension will be automatically discovered and executed. To run all the model verification tests, use the `verification_tests` executable followed by the physics module, i.e.
 ```
 cd tests
-./verification_tests "solid mechanics"
+../build/verification/verification_tests "solid mechanics"
 ```
 
 To run a specific model verification test, use the `-c` command line option followed by the relative location of the input file, i.e.
 ```
 cd tests
-./verification_tests "solid mechanics" -c chaboche/chaboche.i
+../build/verification/verification_tests "solid mechanics" -c chaboche/chaboche.i
 ```
 The regression test compares variables (specified using the `variables` option) against reference values (specified using the `references` option). The reference variables can be read using input objects with type `VTestTimeSeries`.
-
-### Benchmarking {#benchmarking}
-
-The benchmark tests can be authored within the [Catch2 microbenchmarking framework](https://github.com/catchorg/Catch2/blob/v2.x/docs/benchmarks.md). Before any benchmarks can be executed, the clock's resolution is estimated. A few other environmental artifacts are also estimated at this point, like the cost of calling the clock function, but they almost never have any impact in the results. The user code is executed a few times to obtain an estimate of the amount of runs that should be in each sample. This also has the potential effect of bringing relevant code and data into the caches before the actual measurement starts. Finally, all the samples are collected sequentially by performing the number of runs estimated in the previous step for each sample.
-
-To run a benchmark test, use the `benchmark.sh` script inside the `scripts` directory with 3 positional arguments:
-```
-./scripts/benchmark.sh Chaboche 5 timings
-```
-The first positional argument specifies the name of the benchmark test to run. The second positional argument specifies the number of samples to repeat in each iteration. The third positional argument specifies the output directory of the benchmark results.
-
-The Chaboche benchmark test is repeated with different batch sizes and on different devices (in this case CPU and GPU). The final benchmark results are summarized in the following figure.
-
-![Chaboche benchmark results](@ref timings.png){html: width=50%, latex: width=10cm}
 

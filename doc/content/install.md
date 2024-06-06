@@ -31,6 +31,7 @@ If no PyTorch installation can be detected and `LIBTORCH_DIR` is not set at conf
 - [gperftools](https://github.com/gperftools/gperftools) for profiling.
 - [Doxygen](https://github.com/doxygen/doxygen) for building the documentation.
 - [Doxygen Awesome](https://github.com/jothepro/doxygen-awesome-css) the documentation theme.
+- [argparse](https://github.com/p-ranav/argparse) for command-line argument parsing.
 - Python packages
   - pytest
   - pandas
@@ -50,27 +51,23 @@ git checkout main
 Then, configure NEML2. See [build customization](#build-customization) for possible configuration options.
 
 ```
-mkdir build && cmake -B build .
+cmake -B build .
 ```
 
 Finally, compile NEML2.
 
 ```
-cd build && make -j N
+cmake --build build -j N
 ```
 where `N` is the number of cores to use for parallel compilation.
-
-After the compilation is complete, optionally run the tests to make sure the compilation was successful.
-
-```
-make test
-```
 
 The compiled NEML2 can be installed as a system library.
 
 ```
-make install
+cmake --install build
 ```
+
+For more fine-grained control over the configure, build, and install commands, please refer to the [CMake documentation](https://cmake.org/cmake/help/latest/manual/cmake.1.html).
 
 ## Build Customization {#build-customization}
 
@@ -83,21 +80,21 @@ turns on the `NEML2_DOC` option, and additional targets for building the Doxygen
 
 Commonly used configuration options are summarized below. Default options are underlined.
 
-| Option               | Values (<u>default</u>)                                     | Description                                                                               |
-| :------------------- | :---------------------------------------------------------- | :---------------------------------------------------------------------------------------- |
-| CMAKE_BUILD_TYPE     | <u>Debug</u>, Release, MinSizeRel, RelWithDebInfo, Coverage | CMake [Reference](https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html)     |
-| CMAKE_INSTALL_PREFIX |                                                             | CMake [Reference](https://cmake.org/cmake/help/latest/variable/CMAKE_INSTALL_PREFIX.html) |
-| CMAKE_UNITY_BUILD    |                                                             | CMake [Reference](https://cmake.org/cmake/help/latest/variable/CMAKE_UNITY_BUILD.html)    |
-| NEML2_DTYPE          | Float16, Float32, <u>Float64</u>                            | Default floating point integral type used in the material models                          |
-| NEML2_INT_DTYPE      | Int8, Int16, Int32, <u>Int64</u>                            | Default fixed point integral type used in the material models                             |
-| NEML2_TESTS          | <u>ON</u>, OFF                                              | Master knob for including/excluding all tests                                             |
-| NEML2_UNIT           | <u>ON</u>, OFF                                              | Create the unit testing target                                                            |
-| NEML2_REGRESSION     | <u>ON</u>, OFF                                              | Create the regression testing target                                                      |
-| NEML2_VERIFICATION   | <u>ON</u>, OFF                                              | Create the verification testing target                                                    |
-| NEML2_BENCHMARK      | ON, <u>OFF</u>                                              | Create the benchmark target                                                               |
-| NEML2_PROFILER       | ON, <u>OFF</u>                                              | Create the profiler target                                                                |
-| NEML2_DOC            | ON, <u>OFF</u>                                              | Create the documentation target                                                           |
-| NEML2_PYBIND         | ON, <u>OFF</u>                                              | Create the Python bindings target                                                         |
+| Option                   | Values (<u>default</u>)                                     | Description                                                                               |
+| :----------------------- | :---------------------------------------------------------- | :---------------------------------------------------------------------------------------- |
+| CMAKE_BUILD_TYPE         | <u>Debug</u>, Release, MinSizeRel, RelWithDebInfo, Coverage | CMake [Reference](https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html)     |
+| CMAKE_INSTALL_PREFIX     |                                                             | CMake [Reference](https://cmake.org/cmake/help/latest/variable/CMAKE_INSTALL_PREFIX.html) |
+| CMAKE_UNITY_BUILD        |                                                             | CMake [Reference](https://cmake.org/cmake/help/latest/variable/CMAKE_UNITY_BUILD.html)    |
+| NEML2_DTYPE              | Float16, Float32, <u>Float64</u>                            | Default floating point integral type used in the material models                          |
+| NEML2_INT_DTYPE          | Int8, Int16, Int32, <u>Int64</u>                            | Default fixed point integral type used in the material models                             |
+| NEML2_TESTS              | <u>ON</u>, OFF                                              | Master knob for including/excluding all tests                                             |
+| NEML2_UNIT               | <u>ON</u>, OFF                                              | Create the unit testing target                                                            |
+| NEML2_REGRESSION         | <u>ON</u>, OFF                                              | Create the regression testing target                                                      |
+| NEML2_VERIFICATION       | <u>ON</u>, OFF                                              | Create the verification testing target                                                    |
+| NEML2_RUNNER             | ON, <u>OFF</u>                                              | Create a simple runner                                                                    |
+| NEML2_RUNNER_AS_PROFILER | ON, <u>OFF</u>                                              | Make the runner a profiler by linking against gperftools                                  |
+| NEML2_DOC                | ON, <u>OFF</u>                                              | Create the documentation target                                                           |
+| NEML2_PYBIND             | ON, <u>OFF</u>                                              | Create the Python bindings target                                                         |
 
 ## CMake integration {#cmake-integration}
 
