@@ -32,13 +32,16 @@ If no PyTorch installation can be detected and `LIBTORCH_DIR` is not set at conf
 - [Doxygen](https://github.com/doxygen/doxygen) for building the documentation.
 - [Doxygen Awesome](https://github.com/jothepro/doxygen-awesome-css) the documentation theme.
 - [argparse](https://github.com/p-ranav/argparse) for command-line argument parsing.
+- [pybind11](https://github.com/pybind/pybind11) for building Python bindings.
 - Python packages
   - pytest
   - pandas
   - matplotlib
   - PyYAML
 
-## Build, Test, and Install
+## Build and install
+
+### C++ backend
 
 First, obtain the NEML2 source code.
 
@@ -69,14 +72,41 @@ cmake --install build
 
 For more fine-grained control over the configure, build, and install commands, please refer to the [CMake documentation](https://cmake.org/cmake/help/latest/manual/cmake.1.html).
 
-## Build Customization {#build-customization}
+
+### Python package
+
+NEML2 also provides an _experimental_ Python package which provides bindings for the primitive tensors and parsers for deserializing and running material models. Package source distributions are available on PyPI, but package wheels are currently not built and uploaded to PyPI.
+
+To install the NEML2 Python package, run the following command at the repository's root.
+
+```
+pip install -v .
+```
+
+The command installs a package named `%neml2` to the site-packages directory, and so it can be imported in Python scripts using
+
+```python
+import neml2
+```
+
+For security reasons, static analysis tools and IDEs for Python usually refuse to extract function signature, type hints, etc. from bindary extensions such as the NEML2 Python bindings. As a workaround, "stubs" can be generated a priori to make them less opaque. The NEML2 python package works well with `pybind11-stubgen` for that purpose. Stubs can be generated using the following command:
+
+```
+pip install pybind11-stubgen
+pybind11-stubgen neml2
+```
+
+Refer to the [pybind11-stubgen documentation](https://pypi.org/project/pybind11-stubgen/) for more command-line options. Most static analysis tools and IDEs can understand the stubs and therefore provide the full set of features.
+
+
+## Build customization {#build-customization}
 
 Additional configuration options can be passed via command line using the `-DOPTION` or `-DOPTION=ON` format. For example,
 
 ```
-cmake -DNEML2_DOC=ON -B build .
+cmake -DNEML2_PYBIND=ON -B build .
 ```
-turns on the `NEML2_DOC` option, and additional targets for building the Doxygen documentation will be created inside the Makefile. Note that this would also download additional optional dependencies that are required to build the documentation.
+turns on the `NEML2_PYBIND` option, and additional targets for building the Python bindings will be created. Note that this would also download additional optional dependencies, e.g., pybind11, that are required to build the Python bindings.
 
 Commonly used configuration options are summarized below. Default options are underlined.
 
@@ -107,7 +137,7 @@ add_executable(foo main.cxx)
 target_link_libraries(foo neml2)
 ```
 
-The above snippet assumes NEML2 is checked out to the directory neml2, i.e., as a git submodule.
+The above snippet assumes NEML2 is checked out to the directory %neml2, i.e., as a git submodule.
 Alternatively, you may use CMake's `FetchContent` module to integrate NEML2 into your project:
 
 ```
@@ -121,3 +151,21 @@ FetchContent_MakeAvailable(neml2)
 add_executable(foo main.cxx)
 target_link_libraries(foo neml2)
 ```
+
+## Testing {#testing}
+
+### C++ backend
+
+By default when `NEML2_TESTS` is set to `ON`, three test suites are built under the specified build directory:
+
+- `tests/unit/unit_tests`: Collection of tests to ensure individual objects are working correctly.
+- `tests/regression/regression_tests`: Collection of tests to avoid regression.
+- `tests/verification/verification_tests`: Collection of verification problems.
+
+The tests assume the working directory to be the `tests` directory relative to the repository root. For Visual Studio Code users, the [C++ TestMate](https://github.com/matepek/vscode-catch2-test-adapter) extension can be used to automatically discover and run tests. In the extension settings, the "Working Directory" variable should be modified to `${workspaceFolder}/tests`.
+
+### Python package
+
+A collection of tests are available under `python/tests` to ensure the NEML2 Python package is working correctly. For Visual Studio Code users, the [Python](https://github.com/Microsoft/vscode-python) extension can be used to automatically discover and run tests. In the extension settings, the "Pytest Enabled" variable shall be set to true.
+
+If the Python bindings are built (with `NEML2_PYBIND` set to `ON`) but are not installed to the site-packages directory, pytest will not be able to import the %neml2 package unless the environment variable `PYTHONPATH` is modified according to the specified build directory. For Visual Studio Code users, create a `.env` file in the repository's root and include an entry `PYTHONPATH=build/python` (assuming the build directory is `build`), and the Python extension will be able to import the NEML2 Python package.

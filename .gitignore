@@ -38,3 +38,4 @@ neml2.egg-info
 src/neml2/base/config.h
 install
 conftest.py
+.env

@@ -172,7 +172,7 @@ register_NEML2_object(LinearIsotropicHardening);
 ```
 so that an instance of the class can be created at runtime.
 
-## Testing {#testing}
+## Testing {#dev-testing}
 
 It is of paramount importance to ensure the correctness of the implementation. NEML2 offers 5 types of tests with different purposes.
 
