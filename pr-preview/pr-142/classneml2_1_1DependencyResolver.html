@@ -142,16 +142,19 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a355819888f9c9e2cecf8d7ff2f28aa88" id="r_a355819888f9c9e2cecf8d7ff2f28aa88"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a355819888f9c9e2cecf8d7ff2f28aa88">DependencyResolver</a> ()=<a class="el" href="classneml2_1_1CrossRef.html">default</a></td></tr>
 <tr class="separator:a355819888f9c9e2cecf8d7ff2f28aa88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb0aa5aef7ca2b96310dd488f657c7b1" id="r_acb0aa5aef7ca2b96310dd488f657c7b1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acb0aa5aef7ca2b96310dd488f657c7b1">add_node</a> (<a class="el" href="classneml2_1_1DependencyDefinition.html">DependencyDefinition</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">ItemType</a> &gt; *)</td></tr>
+<tr class="memdesc:acb0aa5aef7ca2b96310dd488f657c7b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a node (defining consumed/provided items) in the dependency graph.  <br /></td></tr>
 <tr class="separator:acb0aa5aef7ca2b96310dd488f657c7b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4224c5895e0b6e80da6234b4e91678fd" id="r_a4224c5895e0b6e80da6234b4e91678fd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4224c5895e0b6e80da6234b4e91678fd">add_additional_outbound_item</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">ItemType</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">item</a>)</td></tr>
+<tr class="memdesc:a4224c5895e0b6e80da6234b4e91678fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add an additional outbound item that the dependency graph <em>provides</em>  <br /></td></tr>
 <tr class="separator:a4224c5895e0b6e80da6234b4e91678fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a14b65c9c0f5c5198c65aa8e7f7dd90" id="r_a4a14b65c9c0f5c5198c65aa8e7f7dd90"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4a14b65c9c0f5c5198c65aa8e7f7dd90">set_priority</a> (<a class="el" href="classneml2_1_1DependencyDefinition.html">DependencyDefinition</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">ItemType</a> &gt; *, <a class="el" href="classneml2_1_1CrossRef.html">size_t</a>)</td></tr>
-<tr class="memdesc:a4a14b65c9c0f5c5198c65aa8e7f7dd90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a node's priority.  <br /></td></tr>
+<tr class="memdesc:a4a14b65c9c0f5c5198c65aa8e7f7dd90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a node's priority, useful for resolving cyclic dependency.  <br /></td></tr>
 <tr class="separator:a4a14b65c9c0f5c5198c65aa8e7f7dd90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a661aae5c7879d65dec749900d5876407" id="r_a661aae5c7879d65dec749900d5876407"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a661aae5c7879d65dec749900d5876407">resolve</a> ()</td></tr>
 <tr class="memdesc:a661aae5c7879d65dec749900d5876407"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resolve nodal dependency and find an evaluation order.  <br /></td></tr>
 <tr class="separator:a661aae5c7879d65dec749900d5876407"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7efd59222012491f718125a215b5269" id="r_aa7efd59222012491f718125a215b5269"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::vector&lt; <a class="el" href="classneml2_1_1CrossRef.html">Node</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa7efd59222012491f718125a215b5269">resolution</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:aa7efd59222012491f718125a215b5269"><td class="mdescLeft">&#160;</td><td class="mdescRight">The resolved (nodal) evaluation order following which all consumed items of the current node.  <br /></td></tr>
 <tr class="separator:aa7efd59222012491f718125a215b5269"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1717716528c1f3fee2ab3b3314d767e" id="r_af1717716528c1f3fee2ab3b3314d767e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::map&lt; <a class="el" href="structneml2_1_1DependencyResolver_1_1Item.html">Item</a>, std::set&lt; <a class="el" href="structneml2_1_1DependencyResolver_1_1Item.html">Item</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af1717716528c1f3fee2ab3b3314d767e">item_providers</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
 <tr class="separator:af1717716528c1f3fee2ab3b3314d767e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -162,12 +165,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a00649e9a7ae856e5e59937e2cb6d5a51" id="r_a00649e9a7ae856e5e59937e2cb6d5a51"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::map&lt; <a class="el" href="classneml2_1_1CrossRef.html">Node</a> *, std::set&lt; <a class="el" href="classneml2_1_1CrossRef.html">Node</a> * &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a00649e9a7ae856e5e59937e2cb6d5a51">node_consumers</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
 <tr class="separator:a00649e9a7ae856e5e59937e2cb6d5a51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99f9b4f5b5b03ec2155706ada3b97835" id="r_a99f9b4f5b5b03ec2155706ada3b97835"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::set&lt; <a class="el" href="classneml2_1_1CrossRef.html">Node</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a99f9b4f5b5b03ec2155706ada3b97835">end_nodes</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:a99f9b4f5b5b03ec2155706ada3b97835"><td class="mdescLeft">&#160;</td><td class="mdescRight">End nodes which are not consumed by anyone else.  <br /></td></tr>
 <tr class="separator:a99f9b4f5b5b03ec2155706ada3b97835"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa8e36a12b2a8a87cede36b5b185a1d1f" id="r_aa8e36a12b2a8a87cede36b5b185a1d1f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::set&lt; <a class="el" href="structneml2_1_1DependencyResolver_1_1Item.html">Item</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa8e36a12b2a8a87cede36b5b185a1d1f">outbound_items</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:aa8e36a12b2a8a87cede36b5b185a1d1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The items provided by the overall dependency graph, i.e., the items that are not consumed by <em>any</em> node.  <br /></td></tr>
 <tr class="separator:aa8e36a12b2a8a87cede36b5b185a1d1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0bb7c4760fb660672ae5647548c0116" id="r_ad0bb7c4760fb660672ae5647548c0116"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::set&lt; <a class="el" href="classneml2_1_1CrossRef.html">Node</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad0bb7c4760fb660672ae5647548c0116">start_nodes</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:ad0bb7c4760fb660672ae5647548c0116"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start nodes which do not consume anyone else.  <br /></td></tr>
 <tr class="separator:ad0bb7c4760fb660672ae5647548c0116"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a9d9fec50cf186c13a8e3f68ab8f2ba" id="r_a1a9d9fec50cf186c13a8e3f68ab8f2ba"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::set&lt; <a class="el" href="structneml2_1_1DependencyResolver_1_1Item.html">Item</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1a9d9fec50cf186c13a8e3f68ab8f2ba">inbound_items</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:a1a9d9fec50cf186c13a8e3f68ab8f2ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">The items consumed by the overall dependency graph, i.e., the items that are not provided by <em>any</em> node.  <br /></td></tr>
 <tr class="separator:a1a9d9fec50cf186c13a8e3f68ab8f2ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a655e67dcaf20c6865dec4dfe48425bcb" id="r_a655e67dcaf20c6865dec4dfe48425bcb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">bool</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a655e67dcaf20c6865dec4dfe48425bcb">unique_item_provider</a> ()</td></tr>
 <tr class="separator:a655e67dcaf20c6865dec4dfe48425bcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -220,6 +227,8 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a cla
       </table>
 </div><div class="memdoc">
 
+<p>Add an additional outbound item that the dependency graph <em>provides</em> </p>
+
 </div>
 </div>
 <a id="acb0aa5aef7ca2b96310dd488f657c7b1" name="acb0aa5aef7ca2b96310dd488f657c7b1"></a>
@@ -238,6 +247,8 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a cla
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Add a node (defining consumed/provided items) in the dependency graph. </p>
 
 </div>
 </div>
@@ -266,6 +277,8 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a cla
 </table>
 </div><div class="memdoc">
 
+<p>End nodes which are not consumed by anyone else. </p>
+
 </div>
 </div>
 <a id="a1a9d9fec50cf186c13a8e3f68ab8f2ba" name="a1a9d9fec50cf186c13a8e3f68ab8f2ba"></a>
@@ -293,6 +306,8 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a cla
 </table>
 </div><div class="memdoc">
 
+<p>The items consumed by the overall dependency graph, i.e., the items that are not provided by <em>any</em> node. </p>
+
 </div>
 </div>
 <a id="a201b2fcc14bade0611c6d90841748bec" name="a201b2fcc14bade0611c6d90841748bec"></a>
@@ -319,6 +334,7 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a cla
   </tr>
 </table>
 </div><div class="memdoc">
+<p>The item-item consumer dictionary: key of the dictionary is the item of interest, and the value of the dictionary is the set of items that <em>consume</em> the item of interest. </p>
 
 </div>
 </div>
@@ -346,6 +362,7 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a cla
   </tr>
 </table>
 </div><div class="memdoc">
+<p>The item-item provider dictionary: key of the dictionary is the item of interest, and the value of the dictionary is the set of items that <em>provide</em> the item of interest. </p>
 
 </div>
 </div>
@@ -373,6 +390,7 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a cla
   </tr>
 </table>
 </div><div class="memdoc">
+<p>The node-node consumer dictionary: key of the dictionary is the node of interest, and the value of the dictionary is the set of nodes that <em>consume</em> the item of interest. </p>
 
 </div>
 </div>
@@ -400,6 +418,7 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a cla
   </tr>
 </table>
 </div><div class="memdoc">
+<p>The node-node provider dictionary: key of the dictionary is the node of interest, and the value of the dictionary is the set of nodes that <em>provide</em> the item of interest. </p>
 
 </div>
 </div>
@@ -428,6 +447,8 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a cla
 </table>
 </div><div class="memdoc">
 
+<p>The items provided by the overall dependency graph, i.e., the items that are not consumed by <em>any</em> node. </p>
+
 </div>
 </div>
 <a id="aa7efd59222012491f718125a215b5269" name="aa7efd59222012491f718125a215b5269"></a>
@@ -454,6 +475,8 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a cla
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>The resolved (nodal) evaluation order following which all consumed items of the current node. </p>
 
 </div>
 </div>
@@ -499,7 +522,7 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a cla
       </table>
 </div><div class="memdoc">
 
-<p>Set a node's priority. </p>
+<p>Set a node's priority, useful for resolving cyclic dependency. </p>
 
 </div>
 </div>
@@ -528,6 +551,8 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a cla
 </table>
 </div><div class="memdoc">
 
+<p>Start nodes which do not consume anyone else. </p>
+
 </div>
 </div>
 <a id="af6952f13157df51b7a03b0a4e64b53f2" name="af6952f13157df51b7a03b0a4e64b53f2"></a>
@@ -554,6 +579,7 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a cla
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>a boolean flag controlling whether item consumer should be unique </dd></dl>
 
 </div>
 </div>
@@ -581,6 +607,7 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a cla
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>a boolean flag controlling whether item provider should be unique </dd></dl>
 
 </div>
 </div>

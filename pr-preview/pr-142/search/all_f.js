@@ -7,7 +7,7 @@ var searchData=
   ['neml2_4',['neml2',['../namespaceneml2.html',1,'']]],
   ['neml2_20as_20a_20c_20library_5',['Using NEML2 as a C++ library',['../getting-started.html#autotoc_md5',1,'']]],
   ['neml2_20material_20models_6',['Using NEML2 material models',['../getting-started.html#autotoc_md3',1,'']]],
-  ['neml2_20python_20package_7',['Using the NEML2 Python package',['../getting-started.html#autotoc_md6',1,'']]],
+  ['neml2_20python_20package_20experimental_7',['Using the NEML2 Python package (experimental)',['../getting-started.html#autotoc_md6',1,'']]],
   ['neml2_3a_3acrystallography_8',['crystallography',['../namespaceneml2_1_1crystallography.html',1,'neml2']]],
   ['neml2_3a_3acrystallography_3a_3acrystal_5fsymmetry_5foperators_9',['crystal_symmetry_operators',['../namespaceneml2_1_1crystallography_1_1crystal__symmetry__operators.html',1,'neml2::crystallography']]],
   ['neml2_3a_3amath_10',['math',['../namespaceneml2_1_1math.html',1,'neml2']]],
