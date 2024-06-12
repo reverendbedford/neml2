@@ -493,6 +493,71 @@ Flow rules</h2>
 </div><!-- fragment --><p>In the above example, a model named "normality" is used to compute the associative flow directions, and the rates of the internal variables are mapped using the rate of the consistency parameter and each of the associative flow direction. The cross-referenced model named "flow" (omitted in the example) is the composition of models defining the yield function \( f^p \) in terms of the variational arguments \( \boldsymbol{\sigma} \), \( k \), and \( \boldsymbol{X} \).</p>
 <h1><a class="anchor" id="autotoc_md26"></a>
 Crystal plasticity</h1>
+<p>NEML2 adopts an incremental rate-form view of crystal plasticity. The fundemental kinematics derive from the rate expansion of the elastic-plastic multiplactive split:</p>
+<p class="formulaDsp">
+\begin{align*}
+  F = F^e F^p
+\end{align*}
+</p>
+<p>where the spatial velocity gradient is then</p>
+<p class="formulaDsp">
+\begin{align*}
+  l = \dot{F} F^{-1} = \dot{F}^e F^{e-1} + F^e \dot{F}^{p} {F}^{p-1} F^{e-1}
+\end{align*}
+</p>
+<p>The plastic deformation \( \bar{l}^p = \dot{F}^{p} {F}^{p-1} \) defines the crystal plasticity kinemtics and NEML2 assumes that the elastic stretch is small ( \( F^e = \left(I + \varepsilon \right) R^e \)) so that spatial velocity gradient becomes</p>
+<p class="formulaDsp">
+\begin{align*}
+  l =  \dot{\varepsilon} +  \Omega^e - \Omega^e \varepsilon + \varepsilon \Omega^e + l^p + \varepsilon l^p -  l^p \varepsilon 
+\end{align*}
+</p>
+<p>defining \( l^p = R^e \bar{l}^p R^{eT} \) as the constitutive plastic velocity gradient rotated into the current configuration and \( \Omega^e = \dot{R}^e R^{eT} \) as the elastic spin and assuming that</p>
+<ol type="1">
+<li>Terms quadratic in the elastic stretch ( \( \varepsilon\)) are small.</li>
+<li>Terms quadratic in the rate of elastic stretch ( \( \dot{\varepsilon} \)) are also small.</li>
+</ol>
+<p>The first assumption is accurate for metal plasticity, the second assumption is more questionable if the material deforms at a fast strain rate.</p>
+<p>Define the current orientation of a crystal as the composition of its initial rotation from the crystal system to the lab frame and the elastic rotation, i.e.</p>
+<p class="formulaDsp">
+\begin{align*}
+  Q = R^e Q_0
+\end{align*}
+</p>
+<p>and note with this defintion we can rewrite the spin equation:</p>
+<p class="formulaDsp">
+\begin{align*}
+  \Omega^e = \dot{R}^e R^{eT} = \dot{Q} Q_0^T Q_0 Q^T = \dot{Q} Q^T
+\end{align*}
+</p>
+<p>With this definition and the choice of kinematics above we can derive evolution equations for our fundemental constitutive quantities, the elastic stretch \( \varepsilon \) and the orientation $Q$ by splitting the spatial velocity gradient into symmetric and skew parts and rearranging the resulting equations:</p>
+<p class="formulaDsp">
+\begin{align*}
+  \dot{\varepsilon}= d -d^p-\varepsilon w +  w \varepsilon \\
+  \dot{Q} = \left(w - w^p - \varepsilon d^p + d^p \varepsilon\right) Q .
+\end{align*}
+</p>
+<p>where \(l = d + w\) and \(l^p = d^p + w^p\)</p>
+<p>For most (or all) choices of crystal plasticity constitutive models we also need to define the Cauchy stress as:  </p><p class="formulaDsp">
+\begin{align*}
+  \sigma = C : \varepsilon
+\end{align*}
+</p>
+<p>with \( C \) a (generally) anisotropic crystal elasticity tensor rotated into the current configuration.</p>
+<p>The crystal plasticity examples in NEML2 integrate the elastic strain (and the constitutive internal variables) using a backward Euler integration rule and integrate the crystal orientation using either an implicit or explicit exponential rule. These integrate rules can either be coupled or decoupled, i.e. integrated together in a fully implicit manner or first integrate the strain and internal variables and then sequentially integrating the rotations.</p>
+<p>A full constitutive model must then define the plastic deformation $l^p$ and whatever internal variables are used in this definition. A wide variety of choices are possible, but the examples use the basic assumption of Asaro:</p>
+<p class="formulaDsp">
+\begin{align*}
+  l^p = \sum_{i=1}^{n_{slip}} \dot{\gamma}_i Q \left(d_i \otimes n_i \right) Q^T
+\end{align*}
+</p>
+<p>where now \( \dot{gamma}_i \), the slip rate on each system, is the constitutive chioce. NEML provides a variety of options for defining these slip rates in terms of internal hardening variables and the results shear stress</p>
+<p class="formulaDsp">
+\begin{align*}
+  \tau_i = \sigma : Q \operatorname{sym}\left(d_i \otimes n_i \right) Q^T
+\end{align*}
+</p>
+<p>Ancillary classes automatically generate lists of slip and twin systems from the crystal sytem, so the user does not need to manually provide these themselves.</p>
+<p>NEML2 uses <em>modified</em> Rodrigues parameters to define orientations internally. These can be converted to Euler angles, quaternions, etc. for output. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
