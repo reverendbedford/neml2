@@ -40,13 +40,13 @@ public:
   ParameterStore(const OptionSet & options, NEML2Object * object);
 
   /// @returns the buffer storage
-  /// @{
+  ///@{
   const Storage<std::string, TensorValueBase> & named_parameters() const
   {
     return const_cast<ParameterStore *>(this)->named_parameters();
   }
   Storage<std::string, TensorValueBase> & named_parameters();
-  /// }@
+  ///}@
 
   /// Get a writable reference of a parameter
   template <typename T,

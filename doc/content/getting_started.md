@@ -109,7 +109,7 @@ Finally, the following code constructs the 3 input strains `in` and performs 3 m
   auto out = model.value(in);
 ```
 
-## Using the NEML2 Python package
+## Using the NEML2 Python package (experimental)
 
 With the NEML2 Python package, the above input file can be directly used in a Python script. The Python APIs closely ressembles the C++ APIs. For example, the above C++ source code translates to the following Python script.
 

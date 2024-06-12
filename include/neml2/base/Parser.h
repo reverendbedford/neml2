@@ -50,7 +50,7 @@ void load_model(const std::string & path,
 
 /**
  * @brief A parser is responsible for parsing an input file into a collection of options which
- * can be used by the `Factory` to manufacture corresponding objects.
+ * can be used by the Factory to manufacture corresponding objects.
  *
  */
 class Parser

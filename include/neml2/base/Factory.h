@@ -32,8 +32,8 @@ namespace neml2
 {
 /**
  * The factory is responsible for:
- * 1. retriving a `NEML2Object` given the object name as a `std::string`
- * 2. creating a `NEML2Object` given the type of the `NEML2Object` as a `std::string`.
+ * 1. retriving a NEML2Object given the object name as a std::string
+ * 2. creating a NEML2Object given the type of the NEML2Object as a std::string.
  */
 class Factory
 {
@@ -41,7 +41,7 @@ public:
   /// The sequence which we use to manufacture objects.
   static std::vector<std::string> pipeline;
 
-  /// Get the global `Factory` singleton.
+  /// Get the global Factory singleton.
   static Factory & get();
 
   /**
@@ -52,7 +52,7 @@ public:
    * - the object with the given name exists but does not have the correct type (e.g., dynamic case
    * fails).
    *
-   * @tparam T The type of the `NEML2Object`
+   * @tparam T The type of the NEML2Object
    * @param section The section name under which the search happens.
    * @param name The name of the object to retrieve.
    * @param additional_options Additional input options to pass to the object constructor
@@ -74,7 +74,7 @@ public:
    * - the object with the given name exists but does not have the correct type (e.g., dynamic case
    * fails).
    *
-   * @tparam T The type of the `NEML2Object`
+   * @tparam T The type of the NEML2Object
    * @param section The section name under which the search happens.
    * @param name The name of the object to retrieve.
    * @param additional_options Additional input options to pass to the object constructor
@@ -111,7 +111,7 @@ public:
 
 protected:
   /**
-   * @brief Manufacture a single `NEML2Object`.
+   * @brief Manufacture a single NEML2Object.
    *
    * @param section The section which the object to be manufactured belongs to.
    * @param options The options of the object.

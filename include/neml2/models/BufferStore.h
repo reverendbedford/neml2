@@ -38,13 +38,13 @@ public:
   BufferStore(const OptionSet & options, NEML2Object * object);
 
   /// @returns the buffer storage
-  /// @{
+  ///@{
   const Storage<std::string, TensorValueBase> & named_buffers() const
   {
     return const_cast<BufferStore *>(this)->named_buffers();
   }
   Storage<std::string, TensorValueBase> & named_buffers();
-  /// }@
+  ///}@
 
   /// Get a writable reference of a buffer
   template <typename T,

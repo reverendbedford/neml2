@@ -37,18 +37,18 @@
 
 namespace neml2
 {
+///@{
 /**
- * Helper functions for printing scalar, vector, vector<vector>. Called from
+ * Helper functions for printing scalar, vector, vector of vector. Called from
  * OptionSet::Option<T>::print(...).
  */
 template <typename P>
 void print_helper(std::ostream & os, const P *);
-
 template <typename P>
 void print_helper(std::ostream & os, const std::vector<P> *);
-
 template <typename P>
 void print_helper(std::ostream & os, const std::vector<std::vector<P>> *);
+///@}
 
 /**
  * @brief A custom map-like data structure. The keys are strings, and the values can be

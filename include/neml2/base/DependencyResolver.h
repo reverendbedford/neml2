@@ -44,6 +44,10 @@ template <typename Node, typename ItemType>
 class DependencyResolver
 {
 public:
+  /**
+   * Similar to @tparam ItemType but additionally contains information about its @tparam Node
+   * parent, i.e. the node which defines this consumed/provided item.
+   */
   struct Item
   {
     Item(Node * const node, const ItemType & item)
@@ -52,19 +56,25 @@ public:
     {
     }
 
+    /// Node which defines this item
     Node * const parent;
+
+    /// The consumed/provided item
     const ItemType value;
 
+    /// Test for equality between two items
     bool operator==(const Item & other) const
     {
       return parent == other.parent && value == other.value;
     }
 
+    /// Test for inequality between two items
     bool operator!=(const Item & other) const
     {
       return parent != other.parent || value != other.value;
     }
 
+    /// An arbitrary comparator so that items can be sorted (for consistency)
     bool operator<(const Item & other) const
     {
       return parent != other.parent ? (parent < other.parent) : (value < other.value);
@@ -73,30 +83,61 @@ public:
 
   DependencyResolver() = default;
 
+  /// Add a node (defining consumed/provided items) in the dependency graph
   void add_node(DependencyDefinition<ItemType> *);
 
+  /// Add an additional outbound item that the dependency graph _provides_
   void add_additional_outbound_item(const ItemType & item);
 
-  /// Set a node's priority
+  /// Set a node's priority, useful for resolving cyclic dependency
   void set_priority(DependencyDefinition<ItemType> *, size_t);
 
   /// Resolve nodal dependency and find an evaluation order
   void resolve();
 
+  /// The resolved (nodal) evaluation order following which all consumed items of the current node
   const std::vector<Node *> & resolution() const { return _resolution; }
 
+  /**
+   * The item-item provider dictionary: key of the dictionary is the item of interest, and the value
+   * of the dictionary is the set of items that _provide_ the item of interest.
+   */
   const std::map<Item, std::set<Item>> & item_providers() const { return _item_provider_graph; }
+
+  /**
+   * The item-item consumer dictionary: key of the dictionary is the item of interest, and the value
+   * of the dictionary is the set of items that _consume_ the item of interest.
+   */
   const std::map<Item, std::set<Item>> & item_consumers() const { return _item_consumer_graph; }
+
+  /**
+   * The node-node provider dictionary: key of the dictionary is the node of interest, and the value
+   * of the dictionary is the set of nodes that _provide_ the item of interest.
+   */
   const std::map<Node *, std::set<Node *>> & node_providers() const { return _node_provider_graph; }
+
+  /**
+   * The node-node consumer dictionary: key of the dictionary is the node of interest, and the value
+   * of the dictionary is the set of nodes that _consume_ the item of interest.
+   */
   const std::map<Node *, std::set<Node *>> & node_consumers() const { return _node_consumer_graph; }
 
+  /// End nodes which are not consumed by anyone else
   const std::set<Node *> & end_nodes() const { return _end_nodes; }
+
+  /// The items provided by the overall dependency graph, i.e., the items that are not consumed by _any_ node.
   const std::set<Item> & outbound_items() const { return _out_items; }
 
+  /// Start nodes which do not consume anyone else
   const std::set<Node *> & start_nodes() const { return _start_nodes; }
+
+  /// The items consumed by the overall dependency graph, i.e., the items that are not provided by _any_ node.
   const std::set<Item> & inbound_items() const { return _in_items; }
 
+  /// @returns a boolean flag controlling whether item provider should be unique
   bool & unique_item_provider() { return _unique_item_provider; }
+
+  /// @returns a boolean flag controlling whether item consumer should be unique
   bool & unique_item_consumer() { return _unique_item_consumer; }
 
 private:

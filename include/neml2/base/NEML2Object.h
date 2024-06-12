@@ -71,9 +71,11 @@ public:
   /// A readonly reference to the object's docstring
   const std::string & doc() const { return _options.doc(); }
 
+  /// Get a readonly pointer to the host
   template <typename T = NEML2Object>
   const T * host() const;
 
+  /// Get a writable pointer to the host
   template <typename T = NEML2Object>
   T * host();
 
