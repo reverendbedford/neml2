@@ -113,46 +113,46 @@ $(function(){initNavTree('install.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md6">Prerequisites</a></li>
-<li class="level1"><a href="#autotoc_md7">Dependencies</a><ul><li class="level2"><a href="#autotoc_md8">Required dependencies</a></li>
-<li class="level2"><a href="#autotoc_md9">Optional dependencies</a></li>
+<ul><li class="level1"><a href="#autotoc_md7">Prerequisites</a></li>
+<li class="level1"><a href="#autotoc_md8">Dependencies</a><ul><li class="level2"><a href="#autotoc_md9">Required dependencies</a></li>
+<li class="level2"><a href="#autotoc_md10">Optional dependencies</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md10">Build and install</a><ul><li class="level2"><a href="#autotoc_md11">C++ backend</a></li>
-<li class="level2"><a href="#autotoc_md12">Python package</a></li>
+<li class="level1"><a href="#autotoc_md11">Build and install</a><ul><li class="level2"><a href="#autotoc_md12">C++ backend</a></li>
+<li class="level2"><a href="#autotoc_md13">Python package</a></li>
 </ul>
 </li>
 <li class="level1"><a href="#build-customization">Build customization</a></li>
 <li class="level1"><a href="#cmake-integration">CMake integration</a></li>
-<li class="level1"><a href="#testing">Testing</a><ul><li class="level2"><a href="#autotoc_md13">C++ backend</a></li>
-<li class="level2"><a href="#autotoc_md14">Python package</a></li>
+<li class="level1"><a href="#testing">Testing</a><ul><li class="level2"><a href="#autotoc_md14">C++ backend</a></li>
+<li class="level2"><a href="#autotoc_md15">Python package</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_content_2install"></a></p>
-<h1><a class="anchor" id="autotoc_md6"></a>
+<h1><a class="anchor" id="autotoc_md7"></a>
 Prerequisites</h1>
 <p>Compiling the NEML2 core library requires</p><ul>
 <li>A C++ compiler with C++17 support</li>
 <li>CMake &gt;= 3.23</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md7"></a>
+<h1><a class="anchor" id="autotoc_md8"></a>
 Dependencies</h1>
-<h2><a class="anchor" id="autotoc_md8"></a>
+<h2><a class="anchor" id="autotoc_md9"></a>
 Required dependencies</h2>
 <ul>
 <li><a href="https://pytorch.org/get-started/locally/">PyTorch</a>, version 2.2.2.</li>
 </ul>
 <p>Other PyTorch releases with a few minor versions around are likely to be compatible. In the PyTorch official download page, several download options are provided: conda, pip, libTorch, and source distribution.</p><ul>
-<li><b>Recommended</b> If you choose to download PyTorch using conda or pip, the NEML2 CMake script can automatically detect and use the PyTorch installation.</li>
+<li><b>Recommended</b>: If you choose to download PyTorch using conda or pip, the NEML2 CMake script can automatically detect and use the PyTorch installation.</li>
 <li>If you choose to download libTorch or build PyTorch from source, you will need to set <code>LIBTORCH_DIR</code> to be the location of libTorch when using CMake to configure NEML2.</li>
 </ul>
 <p>If no PyTorch installation can be detected and <code>LIBTORCH_DIR</code> is not set at configure time, the NEML2 CMake script will automatically download and use the libTorch obtained from the official website. Note, however, that this method only works on Linux and Mac systems.</p>
 <blockquote class="doxtable">
 <p>&zwj;The libTorch distributions from the official website come with two flavors: "Pre-cxx11 ABI" and "cxx11 ABI". Both variants are supported by NEML2. If you are unsure, we recommend the one with "cxx11 ABI". </p>
 </blockquote>
-<h2><a class="anchor" id="autotoc_md9"></a>
+<h2><a class="anchor" id="autotoc_md10"></a>
 Optional dependencies</h2>
 <p><em>No action is needed to manually obtain the optional dependencies.</em> The compatible optional dependencies will be automatically downloaded and configured by CMake depending on the build customization.</p>
 <ul>
@@ -171,9 +171,9 @@ Optional dependencies</h2>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md10"></a>
+<h1><a class="anchor" id="autotoc_md11"></a>
 Build and install</h1>
-<h2><a class="anchor" id="autotoc_md11"></a>
+<h2><a class="anchor" id="autotoc_md12"></a>
 C++ backend</h2>
 <p>First, obtain the NEML2 source code.</p>
 <div class="fragment"><div class="line">git clone https://github.com/reverendbedford/neml2.git</div>
@@ -187,7 +187,7 @@ C++ backend</h2>
 <p>The compiled NEML2 can be installed as a system library.</p>
 <div class="fragment"><div class="line">cmake --install build</div>
 </div><!-- fragment --><p>For more fine-grained control over the configure, build, and install commands, please refer to the <a href="https://cmake.org/cmake/help/latest/manual/cmake.1.html">CMake documentation</a>.</p>
-<h2><a class="anchor" id="autotoc_md12"></a>
+<h2><a class="anchor" id="autotoc_md13"></a>
 Python package</h2>
 <p>NEML2 also provides an <em>experimental</em> Python package which provides bindings for the primitive tensors and parsers for deserializing and running material models. Package source distributions are available on PyPI, but package wheels are currently not built and uploaded to PyPI.</p>
 <p>To install the NEML2 Python package, run the following command at the repository's root.</p>
@@ -203,7 +203,7 @@ Build customization</h1>
 <p>Additional configuration options can be passed via command line using the <code>-DOPTION</code> or <code>-DOPTION=ON</code> format. For example,</p>
 <div class="fragment"><div class="line">cmake -DNEML2_PYBIND=ON -B build .</div>
 </div><!-- fragment --><p> turns on the <code>NEML2_PYBIND</code> option, and additional targets for building the Python bindings will be created. Note that this would also download additional optional dependencies, e.g., pybind11, that are required to build the Python bindings.</p>
-<p>Commonly used configuration options are summarized below. Default options are underlined.</p>
+<p>Commonly used configuration options are summarized below. Default options are <u>underlined</u>.</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadLeft">Option   </th><th class="markdownTableHeadLeft">Values (<u>default</u>)   </th><th class="markdownTableHeadLeft">Description    </th></tr>
@@ -253,7 +253,7 @@ CMake integration</h1>
 <div class="line">target_link_libraries(foo neml2)</div>
 </div><!-- fragment --><h1><a class="anchor" id="testing"></a>
 Testing</h1>
-<h2><a class="anchor" id="autotoc_md13"></a>
+<h2><a class="anchor" id="autotoc_md14"></a>
 C++ backend</h2>
 <p>By default when <code>NEML2_TESTS</code> is set to <code>ON</code>, three test suites are built under the specified build directory:</p>
 <ul>
@@ -262,7 +262,7 @@ C++ backend</h2>
 <li><code>tests/verification/verification_tests</code>: Collection of verification problems.</li>
 </ul>
 <p>The tests assume the working directory to be the <code>tests</code> directory relative to the repository root. For Visual Studio Code users, the <a href="https://github.com/matepek/vscode-catch2-test-adapter">C++ TestMate</a> extension can be used to automatically discover and run tests. In the extension settings, the "Working Directory" variable should be modified to <code>${workspaceFolder}/tests</code>.</p>
-<h2><a class="anchor" id="autotoc_md14"></a>
+<h2><a class="anchor" id="autotoc_md15"></a>
 Python package</h2>
 <p>A collection of tests are available under <code>python/tests</code> to ensure the NEML2 Python package is working correctly. For Visual Studio Code users, the <a href="https://github.com/Microsoft/vscode-python">Python</a> extension can be used to automatically discover and run tests. In the extension settings, the "Pytest Enabled" variable shall be set to true.</p>
 <p>If the Python bindings are built (with <code>NEML2_PYBIND</code> set to <code>ON</code>) but are not installed to the site-packages directory, pytest will not be able to import the neml2 package unless the environment variable <code>PYTHONPATH</code> is modified according to the specified build directory. For Visual Studio Code users, create a <code>.env</code> file in the repository's root and include an entry <code>PYTHONPATH=build/python</code> (assuming the build directory is <code>build</code>), and the Python extension will be able to import the NEML2 Python package. </p>

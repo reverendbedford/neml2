@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['c_20backend_0',['C backend',['../install.html#autotoc_md11',1,'C++ backend'],['../install.html#autotoc_md13',1,'C++ backend']]],
+  ['c_20backend_0',['C backend',['../install.html#autotoc_md12',1,'C++ backend'],['../install.html#autotoc_md14',1,'C++ backend']]],
   ['c_20library_1',['Using NEML2 as a C++ library',['../getting-started.html#autotoc_md5',1,'']]],
   ['cache_2',['cache',['../classneml2_1_1Model.html#a4f7eec6a4bb95790529d1b2da67a53c5',1,'neml2::Model::cache(TorchShapeRef batch_shape) override'],['../classneml2_1_1Model.html#a1c7a05ae31d50eac8a167749b33d4beb',1,'neml2::Model::cache(const torch::TensorOptions &amp;options)'],['../classneml2_1_1VariableStore.html#ae147de587e4fe77aa4435645437d1012',1,'neml2::VariableStore::cache()'],['../classneml2_1_1VariableBase.html#ae147de587e4fe77aa4435645437d1012',1,'neml2::VariableBase::cache()'],['../classneml2_1_1Variable.html#a992ec3cee3007d401d5e7595c116e1ae',1,'neml2::Variable::cache()'],['../classneml2_1_1Model.html#ae147de587e4fe77aa4435645437d1012',1,'neml2::Model::cache()']]],
   ['cartesian_5fslip_5fdirections_3',['cartesian_slip_directions',['../classneml2_1_1crystallography_1_1CrystalGeometry.html#a36bd73f4c085e0bb5a0a8695405dff24',1,'neml2::crystallography::CrystalGeometry']]],
@@ -18,7 +18,7 @@ var searchData=
   ['common_5findices_15',['common_indices',['../classneml2_1_1LabeledAxis.html#aeee24d22a2ce8ce51058eebc510286e4',1,'neml2::LabeledAxis']]],
   ['composedmodel_16',['ComposedModel',['../classneml2_1_1ComposedModel.html',1,'ComposedModel'],['../classneml2_1_1Model.html#a0415245a59cfbcab2c75c07836ce752c',1,'neml2::Model::ComposedModel'],['../classneml2_1_1ComposedModel.html#a61d3a5cb5bea001c7e1d07bd027b21d3',1,'neml2::ComposedModel::ComposedModel()'],['../syntax-models.html#composedmodel',1,'ComposedModel']]],
   ['composition_17',['Model composition',['../system-models.html#model-composition',1,'']]],
-  ['consistent_20plasticity_18',['Consistent plasticity',['../solid-mechanics.html#autotoc_md17',1,'']]],
+  ['consistent_20plasticity_18',['Consistent plasticity',['../solid-mechanics.html#autotoc_md18',1,'']]],
   ['const_5fbase_5fdim_19',['const_base_dim',['../classneml2_1_1FixedDimTensor.html#a2c3d7e7a7528f781c26187bafd5a3a38',1,'neml2::FixedDimTensor']]],
   ['const_5fbase_5fsizes_20',['const_base_sizes',['../classneml2_1_1FixedDimTensor.html#ae20bf86efbce6dbeb5acb069b38250b4',1,'neml2::FixedDimTensor']]],
   ['const_5fbase_5fstorage_21',['const_base_storage',['../classneml2_1_1FixedDimTensor.html#a566102b5db1b4459d63c57e49caba1c5',1,'neml2::FixedDimTensor']]],
@@ -54,7 +54,7 @@ var searchData=
   ['creation_51',['Tensor creation',['../system-tensors.html#tensor-creation',1,'']]],
   ['cross_52',['cross',['../classneml2_1_1VecBase.html#a4996844499661c80b0c411081692270f',1,'neml2::VecBase']]],
   ['crossref_53',['CrossRef',['../classneml2_1_1CrossRef.html',1,'CrossRef&lt; T &gt;'],['../classneml2_1_1CrossRef.html#acc20d5a296c08119e6d065e320b64758',1,'neml2::CrossRef::CrossRef()']]],
-  ['crystal_20plasticity_54',['Crystal plasticity',['../solid-mechanics.html#autotoc_md26',1,'']]],
+  ['crystal_20plasticity_54',['Crystal plasticity',['../solid-mechanics.html#autotoc_md27',1,'']]],
   ['crystalgeometry_55',['CrystalGeometry',['../classneml2_1_1crystallography_1_1CrystalGeometry.html',1,'CrystalGeometry'],['../classneml2_1_1crystallography_1_1CrystalGeometry.html#a90cfc33f0a3cd16ab9b2a9f5846cdbb8',1,'neml2::crystallography::CrystalGeometry::CrystalGeometry(const OptionSet &amp;options)'],['../classneml2_1_1crystallography_1_1CrystalGeometry.html#a9f44fbfd551f2ceab42344bbeda8fb69',1,'neml2::crystallography::CrystalGeometry::CrystalGeometry(const OptionSet &amp;options, const R2 &amp;cclass, const Vec &amp;lattice_vectors)'],['../syntax-data.html#crystalgeometry',1,'CrystalGeometry']]],
   ['cubic_56',['cubic',['../namespaceneml2_1_1crystallography_1_1crystal__symmetry__operators.html#ab5c7c19b0f39a7c22b0f05dc3572a699',1,'neml2::crystallography::crystal_symmetry_operators']]],
   ['cubiccrystal_57',['CubicCrystal',['../classneml2_1_1crystallography_1_1CubicCrystal.html',1,'CubicCrystal'],['../classneml2_1_1crystallography_1_1CubicCrystal.html#a85d3478b22f2b2cb55316d5e934b56f2',1,'neml2::crystallography::CubicCrystal::CubicCrystal()'],['../syntax-data.html#cubiccrystal',1,'CubicCrystal']]],

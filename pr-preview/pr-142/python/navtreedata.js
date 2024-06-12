@@ -25,7 +25,7 @@
 var NAVTREE =
 [
   [ "NEML2", "index.html", [
-    [ "Overview", "index.html", null ],
+    [ "Overview", "index.html", "index" ],
     [ "Installation Guide", "../install.html", null ],
     [ "Getting Started", "../getting-started.html", null ],
     [ "Syntax Documentation", "usergroup0.html", [

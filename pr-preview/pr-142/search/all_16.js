@@ -13,6 +13,7 @@ var searchData=
   ['usertensor_10',['UserTensor',['../classneml2_1_1UserTensor.html',1,'UserTensor'],['../classneml2_1_1UserTensor.html#ac27d8038fae54e7c02124de047364114',1,'neml2::UserTensor::UserTensor()']]],
   ['using_20neml2_20as_20a_20c_20library_11',['Using NEML2 as a C++ library',['../getting-started.html#autotoc_md5',1,'']]],
   ['using_20neml2_20material_20models_12',['Using NEML2 material models',['../getting-started.html#autotoc_md3',1,'']]],
-  ['using_5fad_5f1st_5fderivative_13',['using_AD_1st_derivative',['../classneml2_1_1Model.html#a589b757feab733d91d9d8abfbdcf3ced',1,'neml2::Model']]],
-  ['using_5fad_5f2nd_5fderivative_14',['using_AD_2nd_derivative',['../classneml2_1_1Model.html#ae198da52e9e3e1cb691b0c3e4d842216',1,'neml2::Model']]]
+  ['using_20the_20neml2_20python_20package_13',['Using the NEML2 Python package',['../getting-started.html#autotoc_md6',1,'']]],
+  ['using_5fad_5f1st_5fderivative_14',['using_AD_1st_derivative',['../classneml2_1_1Model.html#a589b757feab733d91d9d8abfbdcf3ced',1,'neml2::Model']]],
+  ['using_5fad_5f2nd_5fderivative_15',['using_AD_2nd_derivative',['../classneml2_1_1Model.html#ae198da52e9e3e1cb691b0c3e4d842216',1,'neml2::Model']]]
 ];
