@@ -15,7 +15,7 @@ Compiling the NEML2 core library requires
 - [PyTorch](https://pytorch.org/get-started/locally/), version 2.2.2.
 
 Other PyTorch releases with a few minor versions around are likely to be compatible. In the PyTorch official download page, several download options are provided: conda, pip, libTorch, and source distribution.
-- **Recommended** If you choose to download PyTorch using conda or pip, the NEML2 CMake script can automatically detect and use the PyTorch installation.
+- **Recommended**: If you choose to download PyTorch using conda or pip, the NEML2 CMake script can automatically detect and use the PyTorch installation.
 - If you choose to download libTorch or build PyTorch from source, you will need to set `LIBTORCH_DIR` to be the location of libTorch when using CMake to configure NEML2.
 
 If no PyTorch installation can be detected and `LIBTORCH_DIR` is not set at configure time, the NEML2 CMake script will automatically download and use the libTorch obtained from the official website. Note, however, that this method only works on Linux and Mac systems.
@@ -108,7 +108,7 @@ cmake -DNEML2_PYBIND=ON -B build .
 ```
 turns on the `NEML2_PYBIND` option, and additional targets for building the Python bindings will be created. Note that this would also download additional optional dependencies, e.g., pybind11, that are required to build the Python bindings.
 
-Commonly used configuration options are summarized below. Default options are underlined.
+Commonly used configuration options are summarized below. Default options are <u>underlined</u>.
 
 | Option                   | Values (<u>default</u>)                                     | Description                                                                               |
 | :----------------------- | :---------------------------------------------------------- | :---------------------------------------------------------------------------------------- |
