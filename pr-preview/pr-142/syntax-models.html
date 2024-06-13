@@ -208,9 +208,9 @@ Available objects and their input file syntax</h1>
 <p>Refer to <a class="el" href="system-models.html">System Documentation</a> for detailed explanation about this system.</p>
 <h2><a class="anchor" id="arrheniusparameter"></a>
 ArrheniusParameter</h2>
-<p><em>Define the nonlinear parameter as a function of temperature according to the Arrhenius law. The nonlinear parameter is therefore parametrized by the reference value and the activation energy.</em> </p><details >
+<p>Define the nonlinear parameter as a function of temperature according to the Arrhenius law \( p = p_0 \exp \left( -\frac{Q}{RT} \right) \), where \( p_0 \) is the reference value, \( Q \) is the activation energy, \( R \) is the ideal gas constant, and \( T \) is the temperature. </p><details >
 <summary >
-<code>activation_energy</code> Activation energy in the Arrhenius law</summary>
+<code>activation_energy</code> Activation energy</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -226,7 +226,7 @@ ArrheniusParameter</h2>
 </details>
 <details >
 <summary >
-<code>reference_value</code> Reference value of the parameter</summary>
+<code>reference_value</code> Reference value</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -234,7 +234,7 @@ ArrheniusParameter</h2>
 </details>
 <details >
 <summary >
-<code>temperature</code> Variable name for the temperature</summary>
+<code>temperature</code> Temperature</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -396,9 +396,9 @@ ChabochePlasticHardening</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ChabochePlasticHardening.html">link</a></p>
 <h2><a class="anchor" id="composedmodel"></a>
 ComposedModel</h2>
-<details >
+<p>Compose multiple models together to form a single model. The composed model can then be treated as a new model and composed with others. The <a class="el" href="system-models.html#model-composition">system documentation</a> provides in-depth explanation on how the models are composed together. </p><details >
 <summary >
-<code>additional_outputs</code></summary>
+<code>additional_outputs</code> Extra output variables to be extracted from the composed model in addition to the ones identified through dependency resolution.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;VariableName&gt; </li>
@@ -433,7 +433,7 @@ ComposedModel</h2>
 </details>
 <details >
 <summary >
-<code>models</code></summary>
+<code>models</code> Models being composed together</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;string&gt; </li>
@@ -441,7 +441,7 @@ ComposedModel</h2>
 </details>
 <details >
 <summary >
-<code>priority</code></summary>
+<code>priority</code> Priorities of models in decreasing order. A model with higher priority will be evaluated first. This is useful for breaking cyclic dependency.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;string&gt; </li>
@@ -450,9 +450,9 @@ ComposedModel</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ComposedModel.html">link</a></p>
 <h2><a class="anchor" id="copymillerindex"></a>
 CopyMillerIndex</h2>
-<details >
+<p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>from</code></summary>
+<code>from</code> Variable to copy value from</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -460,7 +460,7 @@ CopyMillerIndex</h2>
 </details>
 <details >
 <summary >
-<code>to</code></summary>
+<code>to</code> Variable to copy value to</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -469,9 +469,9 @@ CopyMillerIndex</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
 <h2><a class="anchor" id="copyquaternion"></a>
 CopyQuaternion</h2>
-<details >
+<p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>from</code></summary>
+<code>from</code> Variable to copy value from</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -479,7 +479,7 @@ CopyQuaternion</h2>
 </details>
 <details >
 <summary >
-<code>to</code></summary>
+<code>to</code> Variable to copy value to</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -488,9 +488,9 @@ CopyQuaternion</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
 <h2><a class="anchor" id="copyr2"></a>
 CopyR2</h2>
-<details >
+<p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>from</code></summary>
+<code>from</code> Variable to copy value from</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -498,7 +498,7 @@ CopyR2</h2>
 </details>
 <details >
 <summary >
-<code>to</code></summary>
+<code>to</code> Variable to copy value to</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -507,9 +507,9 @@ CopyR2</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
 <h2><a class="anchor" id="copyr3"></a>
 CopyR3</h2>
-<details >
+<p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>from</code></summary>
+<code>from</code> Variable to copy value from</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -517,7 +517,7 @@ CopyR3</h2>
 </details>
 <details >
 <summary >
-<code>to</code></summary>
+<code>to</code> Variable to copy value to</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -526,9 +526,9 @@ CopyR3</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
 <h2><a class="anchor" id="copyr4"></a>
 CopyR4</h2>
-<details >
+<p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>from</code></summary>
+<code>from</code> Variable to copy value from</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -536,7 +536,7 @@ CopyR4</h2>
 </details>
 <details >
 <summary >
-<code>to</code></summary>
+<code>to</code> Variable to copy value to</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -545,9 +545,9 @@ CopyR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
 <h2><a class="anchor" id="copyr5"></a>
 CopyR5</h2>
-<details >
+<p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>from</code></summary>
+<code>from</code> Variable to copy value from</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -555,7 +555,7 @@ CopyR5</h2>
 </details>
 <details >
 <summary >
-<code>to</code></summary>
+<code>to</code> Variable to copy value to</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -564,9 +564,9 @@ CopyR5</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
 <h2><a class="anchor" id="copyrot"></a>
 CopyRot</h2>
-<details >
+<p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>from</code></summary>
+<code>from</code> Variable to copy value from</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -574,7 +574,7 @@ CopyRot</h2>
 </details>
 <details >
 <summary >
-<code>to</code></summary>
+<code>to</code> Variable to copy value to</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -583,9 +583,9 @@ CopyRot</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
 <h2><a class="anchor" id="copysffr4"></a>
 CopySFFR4</h2>
-<details >
+<p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>from</code></summary>
+<code>from</code> Variable to copy value from</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -593,7 +593,7 @@ CopySFFR4</h2>
 </details>
 <details >
 <summary >
-<code>to</code></summary>
+<code>to</code> Variable to copy value to</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -602,9 +602,9 @@ CopySFFR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
 <h2><a class="anchor" id="copysfr3"></a>
 CopySFR3</h2>
-<details >
+<p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>from</code></summary>
+<code>from</code> Variable to copy value from</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -612,7 +612,7 @@ CopySFR3</h2>
 </details>
 <details >
 <summary >
-<code>to</code></summary>
+<code>to</code> Variable to copy value to</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -621,9 +621,9 @@ CopySFR3</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
 <h2><a class="anchor" id="copysr2"></a>
 CopySR2</h2>
-<details >
+<p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>from</code></summary>
+<code>from</code> Variable to copy value from</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -631,7 +631,7 @@ CopySR2</h2>
 </details>
 <details >
 <summary >
-<code>to</code></summary>
+<code>to</code> Variable to copy value to</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -640,9 +640,9 @@ CopySR2</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
 <h2><a class="anchor" id="copyssfr5"></a>
 CopySSFR5</h2>
-<details >
+<p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>from</code></summary>
+<code>from</code> Variable to copy value from</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -650,7 +650,7 @@ CopySSFR5</h2>
 </details>
 <details >
 <summary >
-<code>to</code></summary>
+<code>to</code> Variable to copy value to</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -659,9 +659,9 @@ CopySSFR5</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
 <h2><a class="anchor" id="copyssr4"></a>
 CopySSR4</h2>
-<details >
+<p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>from</code></summary>
+<code>from</code> Variable to copy value from</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -669,7 +669,7 @@ CopySSR4</h2>
 </details>
 <details >
 <summary >
-<code>to</code></summary>
+<code>to</code> Variable to copy value to</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -678,9 +678,9 @@ CopySSR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
 <h2><a class="anchor" id="copyswr4"></a>
 CopySWR4</h2>
-<details >
+<p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>from</code></summary>
+<code>from</code> Variable to copy value from</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -688,7 +688,7 @@ CopySWR4</h2>
 </details>
 <details >
 <summary >
-<code>to</code></summary>
+<code>to</code> Variable to copy value to</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -697,9 +697,9 @@ CopySWR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
 <h2><a class="anchor" id="copyscalar"></a>
 CopyScalar</h2>
-<details >
+<p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>from</code></summary>
+<code>from</code> Variable to copy value from</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -707,7 +707,7 @@ CopyScalar</h2>
 </details>
 <details >
 <summary >
-<code>to</code></summary>
+<code>to</code> Variable to copy value to</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -716,9 +716,9 @@ CopyScalar</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
 <h2><a class="anchor" id="copyvec"></a>
 CopyVec</h2>
-<details >
+<p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>from</code></summary>
+<code>from</code> Variable to copy value from</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -726,7 +726,7 @@ CopyVec</h2>
 </details>
 <details >
 <summary >
-<code>to</code></summary>
+<code>to</code> Variable to copy value to</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -735,9 +735,9 @@ CopyVec</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
 <h2><a class="anchor" id="copywr2"></a>
 CopyWR2</h2>
-<details >
+<p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>from</code></summary>
+<code>from</code> Variable to copy value from</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -745,7 +745,7 @@ CopyWR2</h2>
 </details>
 <details >
 <summary >
-<code>to</code></summary>
+<code>to</code> Variable to copy value to</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -754,9 +754,9 @@ CopyWR2</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
 <h2><a class="anchor" id="copywsr4"></a>
 CopyWSR4</h2>
-<details >
+<p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>from</code></summary>
+<code>from</code> Variable to copy value from</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -764,7 +764,7 @@ CopyWSR4</h2>
 </details>
 <details >
 <summary >
-<code>to</code></summary>
+<code>to</code> Variable to copy value to</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -773,9 +773,9 @@ CopyWSR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
 <h2><a class="anchor" id="copywwr4"></a>
 CopyWWR4</h2>
-<details >
+<p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>from</code></summary>
+<code>from</code> Variable to copy value from</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -783,7 +783,7 @@ CopyWWR4</h2>
 </details>
 <details >
 <summary >
-<code>to</code></summary>
+<code>to</code> Variable to copy value to</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -1018,9 +1018,9 @@ GursonCavitation</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1GursonCavitation.html">link</a></p>
 <h2><a class="anchor" id="implicitupdate"></a>
 ImplicitUpdate</h2>
-<details >
+<p>Update an implicit model by solving the underlying implicit system of equations. </p><details >
 <summary >
-<code>implicit_model</code></summary>
+<code>implicit_model</code> The implicit model defining the implicit system of equations to be solved</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: string </li>
@@ -1028,7 +1028,7 @@ ImplicitUpdate</h2>
 </details>
 <details >
 <summary >
-<code>solver</code></summary>
+<code>solver</code> Solver used to solve the implicit system</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: string </li>
@@ -1209,9 +1209,9 @@ LinearSingleSlipHardeningRule</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearSingleSlipHardeningRule.html">link</a></p>
 <h2><a class="anchor" id="millerindexlinearinterpolation"></a>
 MillerIndexLinearInterpolation</h2>
-<details >
+<p>Interpolate a MillerIndex as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
 <summary >
-<code>abscissa</code></summary>
+<code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1219,7 +1219,7 @@ MillerIndexLinearInterpolation</h2>
 </details>
 <details >
 <summary >
-<code>argument</code></summary>
+<code>argument</code> Argument used to query the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -1227,7 +1227,7 @@ MillerIndexLinearInterpolation</h2>
 </details>
 <details >
 <summary >
-<code>ordinate</code></summary>
+<code>ordinate</code> MillerIndex defining the ordinate values of the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: MillerIndex </li>
@@ -1556,9 +1556,9 @@ PowerLawSlipRule</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1PowerLawSlipRule.html">link</a></p>
 <h2><a class="anchor" id="quaternionlinearinterpolation"></a>
 QuaternionLinearInterpolation</h2>
-<details >
+<p>Interpolate a Quaternion as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
 <summary >
-<code>abscissa</code></summary>
+<code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1566,7 +1566,7 @@ QuaternionLinearInterpolation</h2>
 </details>
 <details >
 <summary >
-<code>argument</code></summary>
+<code>argument</code> Argument used to query the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -1574,7 +1574,7 @@ QuaternionLinearInterpolation</h2>
 </details>
 <details >
 <summary >
-<code>ordinate</code></summary>
+<code>ordinate</code> Quaternion defining the ordinate values of the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Quaternion </li>
@@ -1583,9 +1583,9 @@ QuaternionLinearInterpolation</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
 <h2><a class="anchor" id="r2linearinterpolation"></a>
 R2LinearInterpolation</h2>
-<details >
+<p>Interpolate a R2 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
 <summary >
-<code>abscissa</code></summary>
+<code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1593,7 +1593,7 @@ R2LinearInterpolation</h2>
 </details>
 <details >
 <summary >
-<code>argument</code></summary>
+<code>argument</code> Argument used to query the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -1601,7 +1601,7 @@ R2LinearInterpolation</h2>
 </details>
 <details >
 <summary >
-<code>ordinate</code></summary>
+<code>ordinate</code> R2 defining the ordinate values of the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: R2 </li>
@@ -1610,9 +1610,9 @@ R2LinearInterpolation</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
 <h2><a class="anchor" id="r3linearinterpolation"></a>
 R3LinearInterpolation</h2>
-<details >
+<p>Interpolate a R3 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
 <summary >
-<code>abscissa</code></summary>
+<code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1620,7 +1620,7 @@ R3LinearInterpolation</h2>
 </details>
 <details >
 <summary >
-<code>argument</code></summary>
+<code>argument</code> Argument used to query the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -1628,7 +1628,7 @@ R3LinearInterpolation</h2>
 </details>
 <details >
 <summary >
-<code>ordinate</code></summary>
+<code>ordinate</code> R3 defining the ordinate values of the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: R3 </li>
@@ -1637,9 +1637,9 @@ R3LinearInterpolation</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
 <h2><a class="anchor" id="r4linearinterpolation"></a>
 R4LinearInterpolation</h2>
-<details >
+<p>Interpolate a R4 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
 <summary >
-<code>abscissa</code></summary>
+<code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1647,7 +1647,7 @@ R4LinearInterpolation</h2>
 </details>
 <details >
 <summary >
-<code>argument</code></summary>
+<code>argument</code> Argument used to query the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -1655,7 +1655,7 @@ R4LinearInterpolation</h2>
 </details>
 <details >
 <summary >
-<code>ordinate</code></summary>
+<code>ordinate</code> R4 defining the ordinate values of the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: R4 </li>
@@ -1664,9 +1664,9 @@ R4LinearInterpolation</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
 <h2><a class="anchor" id="r5linearinterpolation"></a>
 R5LinearInterpolation</h2>
-<details >
+<p>Interpolate a R5 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
 <summary >
-<code>abscissa</code></summary>
+<code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1674,7 +1674,7 @@ R5LinearInterpolation</h2>
 </details>
 <details >
 <summary >
-<code>argument</code></summary>
+<code>argument</code> Argument used to query the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -1682,7 +1682,7 @@ R5LinearInterpolation</h2>
 </details>
 <details >
 <summary >
-<code>ordinate</code></summary>
+<code>ordinate</code> R5 defining the ordinate values of the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: R5 </li>
@@ -1760,9 +1760,9 @@ ResolvedShear</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ResolvedShear.html">link</a></p>
 <h2><a class="anchor" id="rotlinearinterpolation"></a>
 RotLinearInterpolation</h2>
-<details >
+<p>Interpolate a Rot as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
 <summary >
-<code>abscissa</code></summary>
+<code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1770,7 +1770,7 @@ RotLinearInterpolation</h2>
 </details>
 <details >
 <summary >
-<code>argument</code></summary>
+<code>argument</code> Argument used to query the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -1778,7 +1778,7 @@ RotLinearInterpolation</h2>
 </details>
 <details >
 <summary >
-<code>ordinate</code></summary>
+<code>ordinate</code> Rot defining the ordinate values of the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Rot </li>
@@ -1787,9 +1787,9 @@ RotLinearInterpolation</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
 <h2><a class="anchor" id="rotationmatrix"></a>
 RotationMatrix</h2>
-<details >
+<p>Convert a Rot (rotation represented in Rodrigues format) to R2 (a full rotation matrix). </p><details >
 <summary >
-<code>from</code></summary>
+<code>from</code> Rot to convert</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -1797,7 +1797,7 @@ RotationMatrix</h2>
 </details>
 <details >
 <summary >
-<code>to</code></summary>
+<code>to</code> R2 to store the resulting rotation matrix</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -1806,9 +1806,9 @@ RotationMatrix</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1RotationMatrix.html">link</a></p>
 <h2><a class="anchor" id="sffr4linearinterpolation"></a>
 SFFR4LinearInterpolation</h2>
-<details >
+<p>Interpolate a SFFR4 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
 <summary >
-<code>abscissa</code></summary>
+<code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1816,7 +1816,7 @@ SFFR4LinearInterpolation</h2>
 </details>
 <details >
 <summary >
-<code>argument</code></summary>
+<code>argument</code> Argument used to query the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -1824,7 +1824,7 @@ SFFR4LinearInterpolation</h2>
 </details>
 <details >
 <summary >
-<code>ordinate</code></summary>
+<code>ordinate</code> SFFR4 defining the ordinate values of the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: SFFR4 </li>
@@ -1833,9 +1833,9 @@ SFFR4LinearInterpolation</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
 <h2><a class="anchor" id="sfr3linearinterpolation"></a>
 SFR3LinearInterpolation</h2>
-<details >
+<p>Interpolate a SFR3 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
 <summary >
-<code>abscissa</code></summary>
+<code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1843,7 +1843,7 @@ SFR3LinearInterpolation</h2>
 </details>
 <details >
 <summary >
-<code>argument</code></summary>
+<code>argument</code> Argument used to query the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -1851,7 +1851,7 @@ SFR3LinearInterpolation</h2>
 </details>
 <details >
 <summary >
-<code>ordinate</code></summary>
+<code>ordinate</code> SFR3 defining the ordinate values of the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: SFR3 </li>
@@ -1860,7 +1860,7 @@ SFR3LinearInterpolation</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
 <h2><a class="anchor" id="sr2backwardeulertimeintegration"></a>
 SR2BackwardEulerTimeIntegration</h2>
-<details >
+<p>Define the backward Euler time integration residual \( r = s - s_n - (t - t_n) \dot{s} \), where \(s\) is the variable being integrated, \(\dot{s}\) is the variable rate, and \(t\) is time. Subscripts \(n\) denote quantities from the previous time step. </p><details >
 <summary >
 <code>automatic_scaling</code></summary>
 <p></p>
@@ -1889,7 +1889,7 @@ SR2BackwardEulerTimeIntegration</h2>
 </details>
 <details >
 <summary >
-<code>time</code></summary>
+<code>time</code> Time</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1898,7 +1898,7 @@ SR2BackwardEulerTimeIntegration</h2>
 </details>
 <details >
 <summary >
-<code>variable</code></summary>
+<code>variable</code> Variable being integrated</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -1906,7 +1906,7 @@ SR2BackwardEulerTimeIntegration</h2>
 </details>
 <details >
 <summary >
-<code>variable_rate</code></summary>
+<code>variable_rate</code> Variable rate</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -1915,9 +1915,9 @@ SR2BackwardEulerTimeIntegration</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1BackwardEulerTimeIntegration.html">link</a></p>
 <h2><a class="anchor" id="sr2forcerate"></a>
 SR2ForceRate</h2>
-<details >
+<p>Calculate the first order discrete time derivative of a force variable as \( \dot{f} = \frac{f-f_n}{t-t_n} \), where \( f \) is the force variable, and \( t \) is time. </p><details >
 <summary >
-<code>force</code></summary>
+<code>force</code> The force variable to take time derivative with</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -1925,7 +1925,7 @@ SR2ForceRate</h2>
 </details>
 <details >
 <summary >
-<code>time</code></summary>
+<code>time</code> Time</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1935,9 +1935,9 @@ SR2ForceRate</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ForceRate.html">link</a></p>
 <h2><a class="anchor" id="sr2forwardeulertimeintegration"></a>
 SR2ForwardEulerTimeIntegration</h2>
-<details >
+<p>Perform forward Euler time integration defined as \( s = s_n + (t - t_n) \dot{s} \), where \(s\) is the variable being integrated, \(\dot{s}\) is the variable rate, and \(t\) is time. Subscripts \(n\) denote quantities from the previous time step. </p><details >
 <summary >
-<code>time</code></summary>
+<code>time</code> Time</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1946,7 +1946,7 @@ SR2ForwardEulerTimeIntegration</h2>
 </details>
 <details >
 <summary >
-<code>variable</code></summary>
+<code>variable</code> Variable being integrated</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -1955,9 +1955,9 @@ SR2ForwardEulerTimeIntegration</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ForwardEulerTimeIntegration.html">link</a></p>
 <h2><a class="anchor" id="sr2invariant"></a>
 SR2Invariant</h2>
-<details >
+<p>Calculate the invariant of a symmetric second order tensor (of type SR2). </p><details >
 <summary >
-<code>invariant</code></summary>
+<code>invariant</code> Invariant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -1965,7 +1965,7 @@ SR2Invariant</h2>
 </details>
 <details >
 <summary >
-<code>invariant_type</code></summary>
+<code>invariant_type</code> Type of invariant. Options are I1, I2, and VONMISES.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: string </li>
@@ -1973,7 +1973,7 @@ SR2Invariant</h2>
 </details>
 <details >
 <summary >
-<code>tensor</code></summary>
+<code>tensor</code> SR2 which is used to calculate the invariant of</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -1982,9 +1982,9 @@ SR2Invariant</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1SR2Invariant.html">link</a></p>
 <h2><a class="anchor" id="sr2linearinterpolation"></a>
 SR2LinearInterpolation</h2>
-<details >
+<p>Interpolate a SR2 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
 <summary >
-<code>abscissa</code></summary>
+<code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1992,7 +1992,7 @@ SR2LinearInterpolation</h2>
 </details>
 <details >
 <summary >
-<code>argument</code></summary>
+<code>argument</code> Argument used to query the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2000,7 +2000,7 @@ SR2LinearInterpolation</h2>
 </details>
 <details >
 <summary >
-<code>ordinate</code></summary>
+<code>ordinate</code> SR2 defining the ordinate values of the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: SR2 </li>
@@ -2009,9 +2009,9 @@ SR2LinearInterpolation</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
 <h2><a class="anchor" id="sr2staterate"></a>
 SR2StateRate</h2>
-<details >
+<p>Calculate the first order discrete time derivative of a state variable as \( \dot{s} = \frac{s-s_n}{t-t_n} \), where \( s \) is the state variable, and \( t \) is time. </p><details >
 <summary >
-<code>state</code></summary>
+<code>state</code> The state variable to take time derivative with</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2019,7 +2019,7 @@ SR2StateRate</h2>
 </details>
 <details >
 <summary >
-<code>time</code></summary>
+<code>time</code> Time</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2029,9 +2029,9 @@ SR2StateRate</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1StateRate.html">link</a></p>
 <h2><a class="anchor" id="sr2summodel"></a>
 SR2SumModel</h2>
-<details >
+<p>Calculate linear combination of multiple SR2 tensors as \( u = c_i v_i \) (Einstein summation assumed), where \( c_i \) are the coefficients, and \( v_i \) are the variables to be summed. </p><details >
 <summary >
-<code>coefficients</code></summary>
+<code>coefficients</code> Weights associated with each variable</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;Scalar&gt; </li>
@@ -2039,7 +2039,7 @@ SR2SumModel</h2>
 </details>
 <details >
 <summary >
-<code>from_var</code></summary>
+<code>from_var</code> SR2 tensors to be summed</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;VariableName&gt; </li>
@@ -2047,7 +2047,7 @@ SR2SumModel</h2>
 </details>
 <details >
 <summary >
-<code>to_var</code></summary>
+<code>to_var</code> The sum</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2056,9 +2056,9 @@ SR2SumModel</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1SumModel.html">link</a></p>
 <h2><a class="anchor" id="ssfr5linearinterpolation"></a>
 SSFR5LinearInterpolation</h2>
-<details >
+<p>Interpolate a SSFR5 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
 <summary >
-<code>abscissa</code></summary>
+<code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -2066,7 +2066,7 @@ SSFR5LinearInterpolation</h2>
 </details>
 <details >
 <summary >
-<code>argument</code></summary>
+<code>argument</code> Argument used to query the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2074,7 +2074,7 @@ SSFR5LinearInterpolation</h2>
 </details>
 <details >
 <summary >
-<code>ordinate</code></summary>
+<code>ordinate</code> SSFR5 defining the ordinate values of the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: SSFR5 </li>
@@ -2083,9 +2083,9 @@ SSFR5LinearInterpolation</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
 <h2><a class="anchor" id="ssr4linearinterpolation"></a>
 SSR4LinearInterpolation</h2>
-<details >
+<p>Interpolate a SSR4 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
 <summary >
-<code>abscissa</code></summary>
+<code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -2093,7 +2093,7 @@ SSR4LinearInterpolation</h2>
 </details>
 <details >
 <summary >
-<code>argument</code></summary>
+<code>argument</code> Argument used to query the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2101,7 +2101,7 @@ SSR4LinearInterpolation</h2>
 </details>
 <details >
 <summary >
-<code>ordinate</code></summary>
+<code>ordinate</code> SSR4 defining the ordinate values of the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: SSR4 </li>
@@ -2110,9 +2110,9 @@ SSR4LinearInterpolation</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
 <h2><a class="anchor" id="swr4linearinterpolation"></a>
 SWR4LinearInterpolation</h2>
-<details >
+<p>Interpolate a SWR4 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
 <summary >
-<code>abscissa</code></summary>
+<code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -2120,7 +2120,7 @@ SWR4LinearInterpolation</h2>
 </details>
 <details >
 <summary >
-<code>argument</code></summary>
+<code>argument</code> Argument used to query the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2128,7 +2128,7 @@ SWR4LinearInterpolation</h2>
 </details>
 <details >
 <summary >
-<code>ordinate</code></summary>
+<code>ordinate</code> SWR4 defining the ordinate values of the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: SWR4 </li>
@@ -2137,7 +2137,7 @@ SWR4LinearInterpolation</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
 <h2><a class="anchor" id="scalarbackwardeulertimeintegration"></a>
 ScalarBackwardEulerTimeIntegration</h2>
-<details >
+<p>Define the backward Euler time integration residual \( r = s - s_n - (t - t_n) \dot{s} \), where \(s\) is the variable being integrated, \(\dot{s}\) is the variable rate, and \(t\) is time. Subscripts \(n\) denote quantities from the previous time step. </p><details >
 <summary >
 <code>automatic_scaling</code></summary>
 <p></p>
@@ -2166,7 +2166,7 @@ ScalarBackwardEulerTimeIntegration</h2>
 </details>
 <details >
 <summary >
-<code>time</code></summary>
+<code>time</code> Time</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2175,7 +2175,7 @@ ScalarBackwardEulerTimeIntegration</h2>
 </details>
 <details >
 <summary >
-<code>variable</code></summary>
+<code>variable</code> Variable being integrated</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2183,7 +2183,7 @@ ScalarBackwardEulerTimeIntegration</h2>
 </details>
 <details >
 <summary >
-<code>variable_rate</code></summary>
+<code>variable_rate</code> Variable rate</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2192,9 +2192,9 @@ ScalarBackwardEulerTimeIntegration</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1BackwardEulerTimeIntegration.html">link</a></p>
 <h2><a class="anchor" id="scalarforcerate"></a>
 ScalarForceRate</h2>
-<details >
+<p>Calculate the first order discrete time derivative of a force variable as \( \dot{f} = \frac{f-f_n}{t-t_n} \), where \( f \) is the force variable, and \( t \) is time. </p><details >
 <summary >
-<code>force</code></summary>
+<code>force</code> The force variable to take time derivative with</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2202,7 +2202,7 @@ ScalarForceRate</h2>
 </details>
 <details >
 <summary >
-<code>time</code></summary>
+<code>time</code> Time</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2212,9 +2212,9 @@ ScalarForceRate</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ForceRate.html">link</a></p>
 <h2><a class="anchor" id="scalarforwardeulertimeintegration"></a>
 ScalarForwardEulerTimeIntegration</h2>
-<details >
+<p>Perform forward Euler time integration defined as \( s = s_n + (t - t_n) \dot{s} \), where \(s\) is the variable being integrated, \(\dot{s}\) is the variable rate, and \(t\) is time. Subscripts \(n\) denote quantities from the previous time step. </p><details >
 <summary >
-<code>time</code></summary>
+<code>time</code> Time</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2223,7 +2223,7 @@ ScalarForwardEulerTimeIntegration</h2>
 </details>
 <details >
 <summary >
-<code>variable</code></summary>
+<code>variable</code> Variable being integrated</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2232,9 +2232,9 @@ ScalarForwardEulerTimeIntegration</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ForwardEulerTimeIntegration.html">link</a></p>
 <h2><a class="anchor" id="scalarlinearinterpolation"></a>
 ScalarLinearInterpolation</h2>
-<details >
+<p>Interpolate a Scalar as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
 <summary >
-<code>abscissa</code></summary>
+<code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -2242,7 +2242,7 @@ ScalarLinearInterpolation</h2>
 </details>
 <details >
 <summary >
-<code>argument</code></summary>
+<code>argument</code> Argument used to query the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2250,7 +2250,7 @@ ScalarLinearInterpolation</h2>
 </details>
 <details >
 <summary >
-<code>ordinate</code></summary>
+<code>ordinate</code> Scalar defining the ordinate values of the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -2259,9 +2259,9 @@ ScalarLinearInterpolation</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
 <h2><a class="anchor" id="scalarstaterate"></a>
 ScalarStateRate</h2>
-<details >
+<p>Calculate the first order discrete time derivative of a state variable as \( \dot{s} = \frac{s-s_n}{t-t_n} \), where \( s \) is the state variable, and \( t \) is time. </p><details >
 <summary >
-<code>state</code></summary>
+<code>state</code> The state variable to take time derivative with</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2269,7 +2269,7 @@ ScalarStateRate</h2>
 </details>
 <details >
 <summary >
-<code>time</code></summary>
+<code>time</code> Time</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2279,9 +2279,9 @@ ScalarStateRate</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1StateRate.html">link</a></p>
 <h2><a class="anchor" id="scalarsummodel"></a>
 ScalarSumModel</h2>
-<details >
+<p>Calculate linear combination of multiple Scalar tensors as \( u = c_i v_i \) (Einstein summation assumed), where \( c_i \) are the coefficients, and \( v_i \) are the variables to be summed. </p><details >
 <summary >
-<code>coefficients</code></summary>
+<code>coefficients</code> Weights associated with each variable</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;Scalar&gt; </li>
@@ -2289,7 +2289,7 @@ ScalarSumModel</h2>
 </details>
 <details >
 <summary >
-<code>from_var</code></summary>
+<code>from_var</code> Scalar tensors to be summed</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;VariableName&gt; </li>
@@ -2297,7 +2297,7 @@ ScalarSumModel</h2>
 </details>
 <details >
 <summary >
-<code>to_var</code></summary>
+<code>to_var</code> The sum</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2450,7 +2450,7 @@ TotalStrain</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1TotalStrain.html">link</a></p>
 <h2><a class="anchor" id="vecbackwardeulertimeintegration"></a>
 VecBackwardEulerTimeIntegration</h2>
-<details >
+<p>Define the backward Euler time integration residual \( r = s - s_n - (t - t_n) \dot{s} \), where \(s\) is the variable being integrated, \(\dot{s}\) is the variable rate, and \(t\) is time. Subscripts \(n\) denote quantities from the previous time step. </p><details >
 <summary >
 <code>automatic_scaling</code></summary>
 <p></p>
@@ -2479,7 +2479,7 @@ VecBackwardEulerTimeIntegration</h2>
 </details>
 <details >
 <summary >
-<code>time</code></summary>
+<code>time</code> Time</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2488,7 +2488,7 @@ VecBackwardEulerTimeIntegration</h2>
 </details>
 <details >
 <summary >
-<code>variable</code></summary>
+<code>variable</code> Variable being integrated</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2496,7 +2496,7 @@ VecBackwardEulerTimeIntegration</h2>
 </details>
 <details >
 <summary >
-<code>variable_rate</code></summary>
+<code>variable_rate</code> Variable rate</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2505,9 +2505,9 @@ VecBackwardEulerTimeIntegration</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1BackwardEulerTimeIntegration.html">link</a></p>
 <h2><a class="anchor" id="veclinearinterpolation"></a>
 VecLinearInterpolation</h2>
-<details >
+<p>Interpolate a Vec as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
 <summary >
-<code>abscissa</code></summary>
+<code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -2515,7 +2515,7 @@ VecLinearInterpolation</h2>
 </details>
 <details >
 <summary >
-<code>argument</code></summary>
+<code>argument</code> Argument used to query the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2523,7 +2523,7 @@ VecLinearInterpolation</h2>
 </details>
 <details >
 <summary >
-<code>ordinate</code></summary>
+<code>ordinate</code> Vec defining the ordinate values of the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Vec </li>
@@ -2615,9 +2615,9 @@ VoceSingleSlipHardeningRule</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1VoceSingleSlipHardeningRule.html">link</a></p>
 <h2><a class="anchor" id="wr2explicitexponentialtimeintegration"></a>
 WR2ExplicitExponentialTimeIntegration</h2>
-<details >
+<p>Perform explicit discrete exponential time integration of a rotation. The update can be written as \( s = \exp\left[ (t-t_n)\dot{s}\right] \circ s_n \), where \( \circ \) denotes the rotation operator. </p><details >
 <summary >
-<code>time</code></summary>
+<code>time</code> Time</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2626,7 +2626,7 @@ WR2ExplicitExponentialTimeIntegration</h2>
 </details>
 <details >
 <summary >
-<code>variable</code></summary>
+<code>variable</code> Variable being integrated</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2635,7 +2635,7 @@ WR2ExplicitExponentialTimeIntegration</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1WR2ExplicitExponentialTimeIntegration.html">link</a></p>
 <h2><a class="anchor" id="wr2implicitexponentialtimeintegration"></a>
 WR2ImplicitExponentialTimeIntegration</h2>
-<details >
+<p>Define the implicit discrete exponential time integration residual of a rotation variable. The residual can be written as \( r = s - \exp\left[ (t-t_n)\dot{s}\right] \circ s_n \), where \( \circ \) denotes the rotation operator. </p><details >
 <summary >
 <code>automatic_scaling</code></summary>
 <p></p>
@@ -2664,7 +2664,7 @@ WR2ImplicitExponentialTimeIntegration</h2>
 </details>
 <details >
 <summary >
-<code>time</code></summary>
+<code>time</code> Time</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2673,7 +2673,7 @@ WR2ImplicitExponentialTimeIntegration</h2>
 </details>
 <details >
 <summary >
-<code>variable</code></summary>
+<code>variable</code> Variable being integrated</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2682,9 +2682,9 @@ WR2ImplicitExponentialTimeIntegration</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1WR2ImplicitExponentialTimeIntegration.html">link</a></p>
 <h2><a class="anchor" id="wr2linearinterpolation"></a>
 WR2LinearInterpolation</h2>
-<details >
+<p>Interpolate a WR2 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
 <summary >
-<code>abscissa</code></summary>
+<code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -2692,7 +2692,7 @@ WR2LinearInterpolation</h2>
 </details>
 <details >
 <summary >
-<code>argument</code></summary>
+<code>argument</code> Argument used to query the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2700,7 +2700,7 @@ WR2LinearInterpolation</h2>
 </details>
 <details >
 <summary >
-<code>ordinate</code></summary>
+<code>ordinate</code> WR2 defining the ordinate values of the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: WR2 </li>
@@ -2709,9 +2709,9 @@ WR2LinearInterpolation</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
 <h2><a class="anchor" id="wsr4linearinterpolation"></a>
 WSR4LinearInterpolation</h2>
-<details >
+<p>Interpolate a WSR4 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
 <summary >
-<code>abscissa</code></summary>
+<code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -2719,7 +2719,7 @@ WSR4LinearInterpolation</h2>
 </details>
 <details >
 <summary >
-<code>argument</code></summary>
+<code>argument</code> Argument used to query the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2727,7 +2727,7 @@ WSR4LinearInterpolation</h2>
 </details>
 <details >
 <summary >
-<code>ordinate</code></summary>
+<code>ordinate</code> WSR4 defining the ordinate values of the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: WSR4 </li>
@@ -2736,9 +2736,9 @@ WSR4LinearInterpolation</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
 <h2><a class="anchor" id="wwr4linearinterpolation"></a>
 WWR4LinearInterpolation</h2>
-<details >
+<p>Interpolate a WWR4 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
 <summary >
-<code>abscissa</code></summary>
+<code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -2746,7 +2746,7 @@ WWR4LinearInterpolation</h2>
 </details>
 <details >
 <summary >
-<code>argument</code></summary>
+<code>argument</code> Argument used to query the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2754,7 +2754,7 @@ WWR4LinearInterpolation</h2>
 </details>
 <details >
 <summary >
-<code>ordinate</code></summary>
+<code>ordinate</code> WWR4 defining the ordinate values of the interpolant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: WWR4 </li>
