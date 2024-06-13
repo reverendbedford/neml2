@@ -125,9 +125,9 @@ Available objects and their input file syntax</h1>
 <p>Refer to <a class="el" href="system-drivers.html">System Documentation</a> for detailed explanation about this system.</p>
 <h2><a class="anchor" id="largedeformationincrementalsolidmechanicsdriver"></a>
 LargeDeformationIncrementalSolidMechanicsDriver</h2>
-<details >
+<p>Driver for large deformation solid mechanics material model. The material model is updated <em>incrementally</em>. </p><details >
 <summary >
-<code>cauchy_stress_rate</code></summary>
+<code>cauchy_stress_rate</code> Cauchy stress rate</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -136,7 +136,7 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>control</code></summary>
+<code>control</code> External control of the material update. Options are STRAIN and STRESS, for strain control and stress control, respectively.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: string</li>
@@ -145,7 +145,7 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>cp_elastic_scale</code></summary>
+<code>cp_elastic_scale</code> Elastic step scale factor used in the 'CP_' predictors</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -154,7 +154,7 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>deformation_rate</code></summary>
+<code>deformation_rate</code> Deformation rate</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -163,7 +163,7 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>device</code></summary>
+<code>device</code> Device on which to evaluate the material model. The string supplied must follow the following schema: (cpu|cuda)[:&lt;device-index&gt;] where cpu or cuda specifies the device type, and :&lt;device-index&gt; optionally specifies a device index. For example, device='cpu' sets the target compute device to be CPU, and device='cuda:1' sets the target compute device to be CUDA with device ID 1.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: string</li>
@@ -172,7 +172,7 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>ic_rot_names</code></summary>
+<code>ic_rot_names</code> Apply initial conditions to these Rot variables</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;VariableName&gt; </li>
@@ -180,7 +180,7 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>ic_rot_values</code></summary>
+<code>ic_rot_values</code> Initial condition values for the Rot variables</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;Rot&gt; </li>
@@ -188,7 +188,7 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>ic_scalar_names</code></summary>
+<code>ic_scalar_names</code> Apply initial conditions to these Scalar variables</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;VariableName&gt; </li>
@@ -196,7 +196,7 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>ic_scalar_values</code></summary>
+<code>ic_scalar_values</code> Initial condition values for the Scalar variables</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;Scalar&gt; </li>
@@ -204,7 +204,7 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>ic_sr2_names</code></summary>
+<code>ic_sr2_names</code> Apply initial conditions to these SR2 variables</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;VariableName&gt; </li>
@@ -212,7 +212,7 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>ic_sr2_values</code></summary>
+<code>ic_sr2_values</code> Initial condition values for the SR2 variables</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;SR2&gt; </li>
@@ -220,7 +220,7 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>model</code></summary>
+<code>model</code> The material model to be updated by the driver</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: string </li>
@@ -228,7 +228,7 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>predictor</code></summary>
+<code>predictor</code> Predictor used to set the initial guess for each time step. Options are PREVIOUS_STATE, LINEAR_EXTRAPOLATION, CP_PREVIOUS_STATE, and CP_LINEAR_EXTRAPOLATION. The options prefixed with 'CP_' are specifically designed for crystal plasticity models.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: string</li>
@@ -237,7 +237,7 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>prescribed_cauchy_stress_rate</code></summary>
+<code>prescribed_cauchy_stress_rate</code> Prescribed cauchy stress rate (when control = STRESS)</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Tensor </li>
@@ -245,7 +245,7 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>prescribed_deformation_rate</code></summary>
+<code>prescribed_deformation_rate</code> Prescribed deformation rate (when control = STRAIN)</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Tensor </li>
@@ -253,25 +253,15 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>prescribed_vorticity</code></summary>
+<code>prescribed_vorticity</code> Prescribed vorticity</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Tensor</li>
-<li><u>Default</u>: vorticity </li>
+<li><u>Type</u>: Tensor </li>
 </ul>
 </details>
 <details >
 <summary >
-<code>provide_vorticity</code></summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>save_as</code></summary>
+<code>save_as</code> File path (absolute or relative to the working directory) to store the results</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: string </li>
@@ -279,7 +269,7 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>show_input_axis</code></summary>
+<code>show_input_axis</code> Whether to show model input axis at the beginning</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: bool</li>
@@ -288,7 +278,7 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>show_output_axis</code></summary>
+<code>show_output_axis</code> Whether to show model output axis at the beginning</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: bool</li>
@@ -297,7 +287,7 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>show_parameters</code></summary>
+<code>show_parameters</code> Whether to show model parameters at the beginning</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: bool</li>
@@ -306,7 +296,7 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>time</code></summary>
+<code>time</code> Time</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -315,7 +305,7 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>times</code></summary>
+<code>times</code> Time steps to perform the material update. The times tensor must have exactly 2 dimensions. The first dimension represents time steps, and the second dimension represents batches (i.e., how many material models to update simultaneously).</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Tensor </li>
@@ -323,7 +313,7 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>verbose</code></summary>
+<code>verbose</code> Whether to output additional logging information</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: bool</li>
@@ -332,7 +322,7 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>vorticity</code></summary>
+<code>vorticity</code> Vorticity</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -342,7 +332,7 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LargeDeformationIncrementalSolidMechanicsDriver.html">link</a></p>
 <h2><a class="anchor" id="solidmechanicsdriver"></a>
 SolidMechanicsDriver</h2>
-<details >
+<p>Driver for small deformation solid mechanics material model with optional thermal coupling. </p><details >
 <summary >
 <code>cauchy_stress</code></summary>
 <p></p>
@@ -353,7 +343,7 @@ SolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>control</code></summary>
+<code>control</code> External control of the material update. Options are STRAIN and STRESS, for strain control and stress control, respectively.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: string</li>
@@ -362,7 +352,7 @@ SolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>cp_elastic_scale</code></summary>
+<code>cp_elastic_scale</code> Elastic step scale factor used in the 'CP_' predictors</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -371,7 +361,7 @@ SolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>device</code></summary>
+<code>device</code> Device on which to evaluate the material model. The string supplied must follow the following schema: (cpu|cuda)[:&lt;device-index&gt;] where cpu or cuda specifies the device type, and :&lt;device-index&gt; optionally specifies a device index. For example, device='cpu' sets the target compute device to be CPU, and device='cuda:1' sets the target compute device to be CUDA with device ID 1.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: string</li>
@@ -380,7 +370,7 @@ SolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>ic_rot_names</code></summary>
+<code>ic_rot_names</code> Apply initial conditions to these Rot variables</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;VariableName&gt; </li>
@@ -388,7 +378,7 @@ SolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>ic_rot_values</code></summary>
+<code>ic_rot_values</code> Initial condition values for the Rot variables</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;Rot&gt; </li>
@@ -396,7 +386,7 @@ SolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>ic_scalar_names</code></summary>
+<code>ic_scalar_names</code> Apply initial conditions to these Scalar variables</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;VariableName&gt; </li>
@@ -404,7 +394,7 @@ SolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>ic_scalar_values</code></summary>
+<code>ic_scalar_values</code> Initial condition values for the Scalar variables</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;Scalar&gt; </li>
@@ -412,7 +402,7 @@ SolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>ic_sr2_names</code></summary>
+<code>ic_sr2_names</code> Apply initial conditions to these SR2 variables</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;VariableName&gt; </li>
@@ -420,7 +410,7 @@ SolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>ic_sr2_values</code></summary>
+<code>ic_sr2_values</code> Initial condition values for the SR2 variables</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;SR2&gt; </li>
@@ -428,7 +418,7 @@ SolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>model</code></summary>
+<code>model</code> The material model to be updated by the driver</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: string </li>
@@ -436,7 +426,7 @@ SolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>predictor</code></summary>
+<code>predictor</code> Predictor used to set the initial guess for each time step. Options are PREVIOUS_STATE, LINEAR_EXTRAPOLATION, CP_PREVIOUS_STATE, and CP_LINEAR_EXTRAPOLATION. The options prefixed with 'CP_' are specifically designed for crystal plasticity models.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: string</li>
@@ -445,7 +435,7 @@ SolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>prescribed_strains</code></summary>
+<code>prescribed_strains</code> Prescribed strain (when control = STRAIN)</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Tensor </li>
@@ -453,7 +443,7 @@ SolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>prescribed_stresses</code></summary>
+<code>prescribed_stresses</code> Prescribed stress (when control = STRESS)</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Tensor </li>
@@ -461,7 +451,7 @@ SolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>prescribed_temperatures</code></summary>
+<code>prescribed_temperatures</code> Prescribed temperature</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Tensor </li>
@@ -469,7 +459,7 @@ SolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>save_as</code></summary>
+<code>save_as</code> File path (absolute or relative to the working directory) to store the results</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: string </li>
@@ -477,7 +467,7 @@ SolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>show_input_axis</code></summary>
+<code>show_input_axis</code> Whether to show model input axis at the beginning</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: bool</li>
@@ -486,7 +476,7 @@ SolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>show_output_axis</code></summary>
+<code>show_output_axis</code> Whether to show model output axis at the beginning</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: bool</li>
@@ -495,7 +485,7 @@ SolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>show_parameters</code></summary>
+<code>show_parameters</code> Whether to show model parameters at the beginning</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: bool</li>
@@ -513,7 +503,7 @@ SolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>time</code></summary>
+<code>time</code> Time</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -522,7 +512,7 @@ SolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>times</code></summary>
+<code>times</code> Time steps to perform the material update. The times tensor must have exactly 2 dimensions. The first dimension represents time steps, and the second dimension represents batches (i.e., how many material models to update simultaneously).</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Tensor </li>
@@ -530,7 +520,7 @@ SolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>total_strain</code></summary>
+<code>total_strain</code> Temperature</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -539,7 +529,7 @@ SolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>verbose</code></summary>
+<code>verbose</code> Whether to output additional logging information</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: bool</li>

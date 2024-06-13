@@ -1,5 +1,6 @@
 var NAVTREEINDEX4 =
 {
+"classneml2_1_1VariableBase.html#afbdf73363abf2d3b756a5d7644a69f02":[7,0,131,26],
 "classneml2_1_1VariableStore.html":[7,0,132],
 "classneml2_1_1VariableStore.html#a02da82c738550ad12bc7be1e570a4eb8":[7,0,132,38],
 "classneml2_1_1VariableStore.html#a1aba32af3dbef1fa4b95d0d49c84c276":[7,0,132,17],

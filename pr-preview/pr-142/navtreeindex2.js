@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"classneml2_1_1NewtonWithLineSearch.html#a7e563029d2910cc757143104b596c16d":[7,0,69,6],
 "classneml2_1_1NewtonWithLineSearch.html#abc1d581c0101c65e66ea6a0fbb8d8832":[7,0,69,2],
 "classneml2_1_1NewtonWithLineSearch.html#adeec481f76ef105e31a77ee6a08f079c":[7,0,69,5],
 "classneml2_1_1NewtonWithTrustRegion.html":[7,0,70],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "classneml2_1_1Rot.html#abffd3c77e357fdb6bba600b7ddfc71de":[7,0,100,6],
 "classneml2_1_1Rot.html#ac08c00583d91fb307c34ca531b54121f":[7,0,100,0],
 "classneml2_1_1Rot.html#ae58fc9bb650a0214ce766bd1126da279":[7,0,100,2],
-"classneml2_1_1RotationMatrix.html":[7,0,101],
-"classneml2_1_1RotationMatrix.html#a9873862bccf002752dc124d8c108346a":[7,0,101,2]
+"classneml2_1_1RotationMatrix.html":[7,0,101]
 };
