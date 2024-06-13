@@ -57,60 +57,77 @@ def get_sections(syntax):
 
 
 if __name__ == "__main__":
-    outdir = Path(sys.argv[2])
-    outdir.mkdir(parents=True, exist_ok=True)
-
     with open(sys.argv[1], "r") as stream:
         syntax = yaml.safe_load(stream)
 
-    sections = get_sections(syntax)
-    for section in sections:
-        with open((outdir / section.lower()).with_suffix(".md"), "w") as stream:
-            stream.write(
-                "# [{}] {{#{}}}\n\n".format(section, "syntax-" + section.lower())
-            )
-            stream.write("[TOC]\n\n")
-            stream.write("## Available objects and their input file syntax\n\n")
-            stream.write(
-                "Refer to [System Documentation](@ref system-{}) for detailed explanation about this system.\n\n".format(
-                    section.lower()
-                )
-            )
-            for type, params in syntax.items():
-                if params["section"] != section:
-                    continue
-                input_type = demangle(params["type"]["value"])
-                stream.write(
-                    "### {} {{#{}}}\n\n".format(input_type, input_type.lower())
-                )
-                if params["doc"]:
-                    stream.write("{}\n".format(params["doc"]))
-                for param_name, info in params.items():
-                    if param_name == "section":
-                        continue
-                    if param_name == "doc":
-                        continue
-                    if param_name == "name":
-                        continue
-                    if param_name == "type":
-                        continue
-                    if info["suppressed"]:
-                        continue
+    outdir = Path(sys.argv[2])
+    outdir.mkdir(parents=True, exist_ok=True)
 
-                    param_type = demangle(info["type"])
-                    param_value = postprocess(info["value"], param_type)
-                    stream.write("<details>\n")
-                    if not info["doc"]:
-                        stream.write("  <summary>`{}`</summary>\n\n".format(param_name))
+    logfile = Path(sys.argv[3])
+    logfile.parent.mkdir(parents=True, exist_ok=True)
+
+    with open(logfile, "w") as log:
+        sections = get_sections(syntax)
+        for section in sections:
+            with open((outdir / section.lower()).with_suffix(".md"), "w") as stream:
+                stream.write(
+                    "# [{}] {{#{}}}\n\n".format(section, "syntax-" + section.lower())
+                )
+                stream.write("[TOC]\n\n")
+                stream.write("## Available objects and their input file syntax\n\n")
+                stream.write(
+                    "Refer to [System Documentation](@ref system-{}) for detailed explanation about this system.\n\n".format(
+                        section.lower()
+                    )
+                )
+                for type, params in syntax.items():
+                    if params["section"] != section:
+                        continue
+                    input_type = demangle(params["type"]["value"])
+                    stream.write(
+                        "### {} {{#{}}}\n\n".format(input_type, input_type.lower())
+                    )
+                    if params["doc"]:
+                        stream.write("{}\n".format(params["doc"]))
                     else:
-                        stream.write(
-                            "  <summary>`{}` {}</summary>\n\n".format(
-                                param_name, info["doc"]
-                            )
+                        log.write(
+                            "'{}' is missing object description\n".format(input_type)
                         )
-                    stream.write("  - <u>Type</u>: {}\n".format(param_type))
-                    if param_value:
-                        stream.write("  - <u>Default</u>: {}\n".format(param_value))
-                    stream.write("</details>\n")
-                stream.write("\n")
-                stream.write("Detailed documentation [link](@ref {})\n\n".format(type))
+                    for param_name, info in params.items():
+                        if param_name == "section":
+                            continue
+                        if param_name == "doc":
+                            continue
+                        if param_name == "name":
+                            continue
+                        if param_name == "type":
+                            continue
+                        if info["suppressed"]:
+                            continue
+
+                        param_type = demangle(info["type"])
+                        param_value = postprocess(info["value"], param_type)
+                        stream.write("<details>\n")
+                        if not info["doc"]:
+                            stream.write(
+                                "  <summary>`{}`</summary>\n\n".format(param_name)
+                            )
+                            log.write(
+                                "  '{}' is mising option description\n".format(
+                                    param_name
+                                )
+                            )
+                        else:
+                            stream.write(
+                                "  <summary>`{}` {}</summary>\n\n".format(
+                                    param_name, info["doc"]
+                                )
+                            )
+                        stream.write("  - <u>Type</u>: {}\n".format(param_type))
+                        if param_value:
+                            stream.write("  - <u>Default</u>: {}\n".format(param_value))
+                        stream.write("</details>\n")
+                    stream.write("\n")
+                    stream.write(
+                        "Detailed documentation [link](@ref {})\n\n".format(type)
+                    )

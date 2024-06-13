@@ -37,7 +37,7 @@ add_custom_target(syntax-cpp
   DEPENDS syntax-cpp-exe
   WORKING_DIRECTORY ${NEML2_BINARY_DIR}/doc
   COMMAND ${NEML2_BINARY_DIR}/doc/syntax-cpp-exe
-  COMMAND ${Python_EXECUTABLE} ${NEML2_SOURCE_DIR}/scripts/syntax_to_md.py syntax.yml content/syntax
+  COMMAND ${Python_EXECUTABLE} ${NEML2_SOURCE_DIR}/scripts/syntax_to_md.py syntax.yml content/syntax syntax_error.log
   VERBATIM
 )
 
