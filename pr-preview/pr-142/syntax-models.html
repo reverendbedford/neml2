@@ -879,9 +879,9 @@ ElasticStrainRate</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ElasticStrainRate.html">link</a></p>
 <h2><a class="anchor" id="fixorientation"></a>
 FixOrientation</h2>
-<details >
+<p>Checks the value of the modified Rodrigues parameter by checking if \( \left\lVert r \right\rVert &gt; t \), with \( t \) a threshold value set to 1.0 by default and replacing all the orientations that exceed this limit with their shadow parameters values. </p><details >
 <summary >
-<code>input_orientation</code></summary>
+<code>input_orientation</code> Name of input tensor of orientations to operate on.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -890,7 +890,7 @@ FixOrientation</h2>
 </details>
 <details >
 <summary >
-<code>output_orientation</code></summary>
+<code>output_orientation</code> Name of output tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -899,7 +899,7 @@ FixOrientation</h2>
 </details>
 <details >
 <summary >
-<code>threshold</code></summary>
+<code>threshold</code> Threshold value for translating to the shadow parameters</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -1171,9 +1171,9 @@ LinearKinematicHardening</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearKinematicHardening.html">link</a></p>
 <h2><a class="anchor" id="linearsinglesliphardeningrule"></a>
 LinearSingleSlipHardeningRule</h2>
-<details >
+<p>Simple linear slip system hardening defined by \( \dot{\tau} = \theta \sum_{i=1}^{n_{slip}} \left| \dot{\gamma}_i \right| \) where \( \theta \) is the hardening slope. </p><details >
 <summary >
-<code>hardening_slope</code></summary>
+<code>hardening_slope</code> Hardening rate</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1181,7 +1181,7 @@ LinearSingleSlipHardeningRule</h2>
 </details>
 <details >
 <summary >
-<code>slip_hardening</code></summary>
+<code>slip_hardening</code> Name of current values of slip hardening</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1190,7 +1190,7 @@ LinearSingleSlipHardeningRule</h2>
 </details>
 <details >
 <summary >
-<code>slip_hardening_rate</code></summary>
+<code>slip_hardening_rate</code> Name of tensor to output the slip system hardening rates into</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1199,7 +1199,7 @@ LinearSingleSlipHardeningRule</h2>
 </details>
 <details >
 <summary >
-<code>sum_slip_rates</code></summary>
+<code>sum_slip_rates</code> Name of tensor containing the sum of the slip rates</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1308,9 +1308,9 @@ OlevskySinteringStress</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OlevskySinteringStress.html">link</a></p>
 <h2><a class="anchor" id="orientationrate"></a>
 OrientationRate</h2>
-<details >
+<p>Defines the rate of the crystal orientations as a spin given by \( \Omega^e = w - w^p - \varepsilon d^p + d^p \varepsilon \) where \( \Omega^e = \dot{Q} Q^T \), \( Q \) is the orientation, \( w \) is the vorticity, \( w^p \) is the plastic vorticity, \( d^p \) is the plastic deformation rate, and \( \varepsilon \) is the elastic stretch. </p><details >
 <summary >
-<code>elastic_strain</code></summary>
+<code>elastic_strain</code> The name of the elastic strain tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1319,7 +1319,7 @@ OrientationRate</h2>
 </details>
 <details >
 <summary >
-<code>orientation_rate</code></summary>
+<code>orientation_rate</code> The name of the orientation rate (spin)</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1328,7 +1328,7 @@ OrientationRate</h2>
 </details>
 <details >
 <summary >
-<code>plastic_deformation_rate</code></summary>
+<code>plastic_deformation_rate</code> The name of the plastic deformation rate</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1337,7 +1337,7 @@ OrientationRate</h2>
 </details>
 <details >
 <summary >
-<code>plastic_vorticity</code></summary>
+<code>plastic_vorticity</code> The name of the plastic vorticity</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1346,7 +1346,7 @@ OrientationRate</h2>
 </details>
 <details >
 <summary >
-<code>vorticity</code></summary>
+<code>vorticity</code> The name of the voriticty tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1423,9 +1423,9 @@ PerzynaPlasticFlowRate</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1PerzynaPlasticFlowRate.html">link</a></p>
 <h2><a class="anchor" id="plasticdeformationrate"></a>
 PlasticDeformationRate</h2>
-<details >
+<p>Caclulates the plastic deformation rate as \( d^p = \sum_{i=1}^{n_{slip}} \dot{\gamma}_i Q \operatorname{sym}{\left(d_i \otimes n_i \right)} Q^T \) with \( d^p \) the plastic deformation rate, \( \dot{\gamma}_i \) the slip rate on the ith slip system, \(Q \) the orientation, \( d_i \) the slip system direction, and \( n_i \) the slip system normal. </p><details >
 <summary >
-<code>crystal_geometry_name</code></summary>
+<code>crystal_geometry_name</code> The name of the Data object containing the crystallographic information for the material</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: string</li>
@@ -1434,7 +1434,7 @@ PlasticDeformationRate</h2>
 </details>
 <details >
 <summary >
-<code>orientation</code></summary>
+<code>orientation</code> The name of the orientation matrix tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1443,7 +1443,7 @@ PlasticDeformationRate</h2>
 </details>
 <details >
 <summary >
-<code>plastic_deformation_rate</code></summary>
+<code>plastic_deformation_rate</code> The name of the plastic deformation rate tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1452,7 +1452,7 @@ PlasticDeformationRate</h2>
 </details>
 <details >
 <summary >
-<code>slip_rates</code></summary>
+<code>slip_rates</code> The name of the tensor containg the current slip rates</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1462,9 +1462,9 @@ PlasticDeformationRate</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1PlasticDeformationRate.html">link</a></p>
 <h2><a class="anchor" id="plasticvorticity"></a>
 PlasticVorticity</h2>
-<details >
+<p>Caclulates the plastic vorcitity as \( w^p = \sum_{i=1}^{n_{slip}} \dot{\gamma}_i Q \operatorname{skew}{\left(d_i \otimes n_i \right)} Q^T \) with \( d^p \) the plastic deformation rate, \( \dot{\gamma}_i \) the slip rate on the ith slip system, \(Q \) the orientation, \( d_i \) the slip system direction, and \( n_i \) the slip system normal. </p><details >
 <summary >
-<code>crystal_geometry_name</code></summary>
+<code>crystal_geometry_name</code> The name of the Data object containing the crystallographic information for the material</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: string</li>
@@ -1473,7 +1473,7 @@ PlasticVorticity</h2>
 </details>
 <details >
 <summary >
-<code>orientation</code></summary>
+<code>orientation</code> The name of the orientation matrix tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1482,7 +1482,7 @@ PlasticVorticity</h2>
 </details>
 <details >
 <summary >
-<code>plastic_vorticity</code></summary>
+<code>plastic_vorticity</code> The name of the plastic vorticity tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1491,7 +1491,7 @@ PlasticVorticity</h2>
 </details>
 <details >
 <summary >
-<code>slip_rates</code></summary>
+<code>slip_rates</code> The name of the tensor containg the current slip rates</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1501,9 +1501,9 @@ PlasticVorticity</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1PlasticVorticity.html">link</a></p>
 <h2><a class="anchor" id="powerlawsliprule"></a>
 PowerLawSlipRule</h2>
-<details >
+<p>Power law slip rule defined as \( \dot{\gamma}_i = \dot{\gamma}_0 \left| \frac{\tau_i}{\hat{\tau}_i} \right|^{n-1} \frac{\tau_i}{\hat{\tau}_i} \) with \( \dot{\gamma}_i \) the slip rate on system \( i \), \( \tau_i \) the resolved shear, \( \hat{\tau}_i \) the slip system strength, \( n \) the rate senstivity, and \( \dot{\gamma}_0 \) a reference slip rate. </p><details >
 <summary >
-<code>crystal_geometry_name</code></summary>
+<code>crystal_geometry_name</code> Name of the Data object containing the crystallographic information</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: string</li>
@@ -1512,7 +1512,7 @@ PowerLawSlipRule</h2>
 </details>
 <details >
 <summary >
-<code>gamma0</code></summary>
+<code>gamma0</code> Reference slip rate</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1520,7 +1520,7 @@ PowerLawSlipRule</h2>
 </details>
 <details >
 <summary >
-<code>n</code></summary>
+<code>n</code> Rate sensitivity exponent</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1528,7 +1528,7 @@ PowerLawSlipRule</h2>
 </details>
 <details >
 <summary >
-<code>resolved_shears</code></summary>
+<code>resolved_shears</code> Name of the resolved shear tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1537,7 +1537,7 @@ PowerLawSlipRule</h2>
 </details>
 <details >
 <summary >
-<code>slip_rates</code></summary>
+<code>slip_rates</code> Name of the slip rate tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1546,7 +1546,7 @@ PowerLawSlipRule</h2>
 </details>
 <details >
 <summary >
-<code>slip_strengths</code></summary>
+<code>slip_strengths</code> Name of the tensor containing the slip system strengths</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1724,9 +1724,9 @@ RateIndependentPlasticFlowConstraint</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1RateIndependentPlasticFlowConstraint.html">link</a></p>
 <h2><a class="anchor" id="resolvedshear"></a>
 ResolvedShear</h2>
-<details >
+<p>Calculates the resolved shears as \( \tau_i = \sigma : Q \operatorname{sym}\left(d_i \otimes n_i \right) Q^T \) where \( \tau_i \) is the resolved shear on slip system i, \( \sigma \) is the Cauchy stress \( Q \) is the orientation matrix, \( d_i \) is the slip direction, and \( n_i \) is the slip system normal. </p><details >
 <summary >
-<code>crystal_geometry_name</code></summary>
+<code>crystal_geometry_name</code> The name of the data object with the crystallographic information</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: string</li>
@@ -1735,7 +1735,7 @@ ResolvedShear</h2>
 </details>
 <details >
 <summary >
-<code>orientation</code></summary>
+<code>orientation</code> The name of the orientation matrix</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1744,7 +1744,7 @@ ResolvedShear</h2>
 </details>
 <details >
 <summary >
-<code>resolved_shears</code></summary>
+<code>resolved_shears</code> The name of the resolved shears</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1753,7 +1753,7 @@ ResolvedShear</h2>
 </details>
 <details >
 <summary >
-<code>stress</code></summary>
+<code>stress</code> The name of the Cauchy stress tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2309,9 +2309,9 @@ ScalarSumModel</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1SumModel.html">link</a></p>
 <h2><a class="anchor" id="singleslipstrengthmap"></a>
 SingleSlipStrengthMap</h2>
-<details >
+<p>Calculates the slip system strength for all slip systems as \( \hat{\tau}_i = \bar{\tau} + \tau_0 \) where \( \hat{\tau}_i \) is the strength for slip system i, \( \bar{\tau} \) is an evolving slip system strength (one value of all systems), defined by another object, and \( \tau_0 \) is a constant strength. </p><details >
 <summary >
-<code>constant_strength</code></summary>
+<code>constant_strength</code> The constant slip system strength</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -2319,7 +2319,7 @@ SingleSlipStrengthMap</h2>
 </details>
 <details >
 <summary >
-<code>crystal_geometry_name</code></summary>
+<code>crystal_geometry_name</code> Name of the Data object containing the crystallographic information</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: string</li>
@@ -2328,7 +2328,7 @@ SingleSlipStrengthMap</h2>
 </details>
 <details >
 <summary >
-<code>slip_hardening</code></summary>
+<code>slip_hardening</code> The name of the evovling, scalar strength</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2337,7 +2337,7 @@ SingleSlipStrengthMap</h2>
 </details>
 <details >
 <summary >
-<code>slip_strengths</code></summary>
+<code>slip_strengths</code> Name of the slip system strengths</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2347,9 +2347,9 @@ SingleSlipStrengthMap</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1SingleSlipStrengthMap.html">link</a></p>
 <h2><a class="anchor" id="sumsliprates"></a>
 SumSlipRates</h2>
-<details >
+<p>Calculates the sum of the absolute value of all the slip rates as \( \sum_{i=1}^{n_{slip}} \left| \dot{\gamma}_i \right| \). </p><details >
 <summary >
-<code>crystal_geometry_name</code></summary>
+<code>crystal_geometry_name</code> The name of the Data object containing the crystallographic information</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: string</li>
@@ -2358,7 +2358,7 @@ SumSlipRates</h2>
 </details>
 <details >
 <summary >
-<code>slip_rates</code></summary>
+<code>slip_rates</code> The name of individual slip rates</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2367,7 +2367,7 @@ SumSlipRates</h2>
 </details>
 <details >
 <summary >
-<code>sum_slip_rates</code></summary>
+<code>sum_slip_rates</code> The outut name for the scalar sum of the slip rates</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2572,9 +2572,9 @@ VoceIsotropicHardening</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1VoceIsotropicHardening.html">link</a></p>
 <h2><a class="anchor" id="vocesinglesliphardeningrule"></a>
 VoceSingleSlipHardeningRule</h2>
-<details >
+<p>Voce hardening for a SingleSlipStrength type model defined by \( \dot{\tau} = \theta_0 \left( 1 - \frac{\tau}{\tau_f} \right) \sum_{i=1}^{n_{slip}} \left| \dot{\gamma}_i \right| \) where \( \theta_0 \) is the initial rate of work hardening, \( \tau_f \) is the saturated, maximum value of the slip system strength, and \( \dot{\gamma}_i \) is the slip rate on each system. </p><details >
 <summary >
-<code>initial_slope</code></summary>
+<code>initial_slope</code> The initial rate of hardening</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -2582,7 +2582,7 @@ VoceSingleSlipHardeningRule</h2>
 </details>
 <details >
 <summary >
-<code>saturated_hardening</code></summary>
+<code>saturated_hardening</code> The final, saturated value of the slip system strength</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -2590,7 +2590,7 @@ VoceSingleSlipHardeningRule</h2>
 </details>
 <details >
 <summary >
-<code>slip_hardening</code></summary>
+<code>slip_hardening</code> Name of current values of slip hardening</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2599,7 +2599,7 @@ VoceSingleSlipHardeningRule</h2>
 </details>
 <details >
 <summary >
-<code>slip_hardening_rate</code></summary>
+<code>slip_hardening_rate</code> Name of tensor to output the slip system hardening rates into</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2608,7 +2608,7 @@ VoceSingleSlipHardeningRule</h2>
 </details>
 <details >
 <summary >
-<code>sum_slip_rates</code></summary>
+<code>sum_slip_rates</code> Name of tensor containing the sum of the slip rates</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>

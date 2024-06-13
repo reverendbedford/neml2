@@ -125,9 +125,9 @@ Available objects and their input file syntax</h1>
 <p>Refer to <a class="el" href="system-data.html">System Documentation</a> for detailed explanation about this system.</p>
 <h2><a class="anchor" id="crystalgeometry"></a>
 CrystalGeometry</h2>
-<details >
+<p>A Data object storing basic crystallographic information for a given crystal system. </p><details >
 <summary >
-<code>crystal_class</code></summary>
+<code>crystal_class</code> The set of symmetry operations defining the crystal class.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: R2 </li>
@@ -135,7 +135,7 @@ CrystalGeometry</h2>
 </details>
 <details >
 <summary >
-<code>lattice_vectors</code></summary>
+<code>lattice_vectors</code> The three lattice vectors defining the crystal translational symmetry</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Vec </li>
@@ -143,7 +143,7 @@ CrystalGeometry</h2>
 </details>
 <details >
 <summary >
-<code>slip_directions</code></summary>
+<code>slip_directions</code> A list of Miller indices defining the slip directions</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: MillerIndex </li>
@@ -151,7 +151,7 @@ CrystalGeometry</h2>
 </details>
 <details >
 <summary >
-<code>slip_planes</code></summary>
+<code>slip_planes</code> A list of Miller indices defining the slip planes</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: MillerIndex </li>
@@ -160,9 +160,9 @@ CrystalGeometry</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1crystallography_1_1CrystalGeometry.html">link</a></p>
 <h2><a class="anchor" id="cubiccrystal"></a>
 CubicCrystal</h2>
-<details >
+<p>A specialization of the general CrystalGeometry class defining a cubic crystal system. </p><details >
 <summary >
-<code>lattice_parameter</code></summary>
+<code>lattice_parameter</code> The lattice parameter #68</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -170,7 +170,7 @@ CubicCrystal</h2>
 </details>
 <details >
 <summary >
-<code>slip_directions</code></summary>
+<code>slip_directions</code> A list of Miller indices defining the slip directions</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: MillerIndex </li>
@@ -178,7 +178,7 @@ CubicCrystal</h2>
 </details>
 <details >
 <summary >
-<code>slip_planes</code></summary>
+<code>slip_planes</code> A list of Miller indices defining the slip planes</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: MillerIndex </li>
