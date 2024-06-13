@@ -35,8 +35,16 @@ OptionSet
 StateRate<T>::expected_options()
 {
   OptionSet options = Model::expected_options();
+  options.doc() = "Calculate the first order discrete time derivative of a state variable as \\f$ "
+                  "\\dot{s} = \\frac{s-s_n}{t-t_n} \\f$, where \\f$ s \\f$ is the state variable, "
+                  "and \\f$ t \\f$ is time.";
+
   options.set<VariableName>("state");
+  options.set("state").doc() = "The state variable to take time derivative with";
+
   options.set<VariableName>("time") = VariableName("t");
+  options.set("time").doc() = "Time";
+
   return options;
 }
 

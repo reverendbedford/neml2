@@ -34,10 +34,24 @@ template <typename T>
 OptionSet
 SumModel<T>::expected_options()
 {
+  // This is the only way of getting tensor type in a static method like this...
+  // Trim 6 chars to remove 'neml2::'
+  auto tensor_type = utils::demangle(typeid(T).name()).substr(7);
+
   OptionSet options = Model::expected_options();
+  options.doc() = "Calculate linear combination of multiple " + tensor_type +
+                  " tensors as \\f$ u = c_i v_i \\f$ (Einstein summation assumed), where \\f$ c_i "
+                  "\\f$ are the coefficients, and \\f$ v_i \\f$ are the variables to be summed.";
+
   options.set<std::vector<VariableName>>("from_var");
+  options.set("from_var").doc() = tensor_type + " tensors to be summed";
+
   options.set<VariableName>("to_var");
+  options.set("to_var").doc() = "The sum";
+
   options.set<std::vector<CrossRef<Scalar>>>("coefficients") = {};
+  options.set("coefficients").doc() = "Weights associated with each variable";
+
   return options;
 }
 

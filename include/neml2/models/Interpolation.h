@@ -67,10 +67,24 @@ template <typename T>
 OptionSet
 Interpolation<T>::expected_options()
 {
+  // This is the only way of getting tensor type in a static method like this...
+  // Trim 6 chars to remove 'neml2::'
+  auto tensor_type = utils::demangle(typeid(T).name()).substr(7);
+
   OptionSet options = NonlinearParameter<T>::expected_options();
+  options.doc() = "Interpolate a " + tensor_type +
+                  " as a function of the given argument. See neml2::Interpolation for rules on "
+                  "shapes of the interpolant and the argument.";
+
   options.set<VariableName>("argument");
+  options.set("argument").doc() = "Argument used to query the interpolant";
+
   options.set<CrossRef<Scalar>>("abscissa");
+  options.set("abscissa").doc() = "Scalar defining the abscissa values of the interpolant";
+
   options.set<CrossRef<T>>("ordinate");
+  options.set("ordinate").doc() = tensor_type + " defining the ordinate values of the interpolant";
+
   return options;
 }
 

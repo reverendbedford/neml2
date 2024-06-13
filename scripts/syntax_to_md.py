@@ -84,7 +84,7 @@ if __name__ == "__main__":
                     "### {} {{#{}}}\n\n".format(input_type, input_type.lower())
                 )
                 if params["doc"]:
-                    stream.write("_{}_\n".format(params["doc"]))
+                    stream.write("{}\n".format(params["doc"]))
                 for param_name, info in params.items():
                     if param_name == "section":
                         continue
