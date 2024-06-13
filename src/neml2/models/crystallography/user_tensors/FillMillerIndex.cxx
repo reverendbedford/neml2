@@ -35,7 +35,11 @@ OptionSet
 FillMillerIndex::expected_options()
 {
   OptionSet options = UserTensor::expected_options();
+  options.doc() = "Fills a tensor of Miller indices from a list of integers.";
+
   options.set<std::vector<Integer>>("values");
+  options.set("values").doc() = "List of integers defining a Miller index, use -1 instead of \\f$ "
+                                "\\bar{1} \\f$.";
   return options;
 }
 

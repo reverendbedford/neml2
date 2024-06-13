@@ -36,6 +36,13 @@ OptionSet
 Orientation::expected_options()
 {
   OptionSet options = UserTensor::expected_options();
+
+  options.doc() = "An orientation, internally defined as a set of Modified Rodrigues parameters "
+                  "given by \\f$ r = n \\tan{\\frac{\\theta}{4}} \\f$ with \\f$ n \\f$ the axis of "
+                  "rotation and \\f$ \\theta \\f$ the rotation angle about that axis.  However, "
+                  "this class provides a variety of ways to define the orientation in terms of "
+                  "other, more common representations.";
+
   options.set<std::string>("input_type") = "euler_angles";
   options.set("input_type").doc() =
       "The method used to define the angles, 'euler_angles' or 'random'";

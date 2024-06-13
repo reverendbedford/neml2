@@ -35,9 +35,22 @@ OptionSet
 FixOrientation::expected_options()
 {
   OptionSet options = Model::expected_options();
+
+  options.doc() =
+      "Checks the value of the modified Rodrigues parameter by checking if "
+      "\\f$ \\left\\lVert r \\right\\rVert > t \\f$, with \\f$ t \\f$ a threshold value set "
+      "to 1.0 by default and replacing all the orientations that exceed this limit "
+      "with their shadow parameters values.";
+
   options.set<VariableName>("input_orientation") = VariableName("state", "orientation");
+  options.set("input_orientation").doc() = "Name of input tensor of orientations to operate on.";
+
   options.set<VariableName>("output_orientation") = VariableName("state", "orientation");
+  options.set("output_orientation").doc() = "Name of output tensor";
+
   options.set<Real>("threshold") = 1.0;
+  options.set("threshold").doc() = "Threshold value for translating to the shadow parameters";
+
   return options;
 }
 

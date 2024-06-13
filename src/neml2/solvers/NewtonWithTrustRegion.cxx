@@ -68,7 +68,7 @@ NewtonWithTrustRegion::expected_options()
   options.set("subproblem_rel_tol").doc() = "Relative tolerance used for the quadratic sub-problem";
 
   options.set<Real>("subproblem_abs_tol") = 1e-8;
-  options.set("subproblem_rel_tol").doc() = "Absolute tolerance used for the quadratic sub-problem";
+  options.set("subproblem_abs_tol").doc() = "Absolute tolerance used for the quadratic sub-problem";
 
   options.set<unsigned int>("subproblem_max_its") = 10;
   options.set("subproblem_max_its").doc() =

@@ -43,10 +43,10 @@ SolidMechanicsDriver::expected_options()
   options.set("total_strain").doc() = "Total strain";
 
   options.set<VariableName>("cauchy_stress") = VariableName("forces", "S");
-  options.set("total_strain").doc() = "Cauchy stress";
+  options.set("cauchy_stress").doc() = "Cauchy stress";
 
   options.set<VariableName>("temperature") = VariableName("forces", "T");
-  options.set("total_strain").doc() = "Temperature";
+  options.set("temperature").doc() = "Temperature";
 
   options.set<CrossRef<torch::Tensor>>("prescribed_strains");
   options.set("prescribed_strains").doc() = "Prescribed strain (when control = STRAIN)";

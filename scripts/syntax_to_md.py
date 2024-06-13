@@ -68,7 +68,7 @@ if __name__ == "__main__":
 
     with open(logfile, "w") as log:
         missing = 0
-        log.write("The following syntax is missing:\n")
+        log.write("## Missing syntax\n")
         sections = get_sections(syntax)
         for section in sections:
             with open((outdir / section.lower()).with_suffix(".md"), "w") as stream:
@@ -93,6 +93,7 @@ if __name__ == "__main__":
                         stream.write("{}\n".format(params["doc"]))
                     else:
                         missing += 1
+
                         log.write(
                             "  * '{}' is missing object description\n".format(
                                 input_type
@@ -119,8 +120,8 @@ if __name__ == "__main__":
                             )
                             missing += 1
                             log.write(
-                                "    * '{}' is mising option description\n".format(
-                                    param_name
+                                "    * '{}'.'{}' is mising option description\n".format(
+                                    input_type, param_name
                                 )
                             )
                         else:

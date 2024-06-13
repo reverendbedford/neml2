@@ -33,9 +33,18 @@ OptionSet
 PowerLawSlipRule::expected_options()
 {
   OptionSet options = SlipRule::expected_options();
+  options.doc() =
+      "Power law slip rule defined as \\f$ \\dot{\\gamma}_i = \\dot{\\gamma}_0 \\left| "
+      "\\frac{\\tau_i}{\\hat{\\tau}_i} \\right|^{n-1} \\frac{\\tau_i}{\\hat{\\tau}_i} \\f$ with "
+      "\\f$ \\dot{\\gamma}_i \\f$ the slip rate on system \\f$ i \\f$, \\f$ \\tau_i \\f$ the "
+      "resolved shear, \\f$ \\hat{\\tau}_i \\f$ the slip system strength, \\f$ n \\f$ the rate "
+      "senstivity, and \\f$ \\dot{\\gamma}_0 \\f$ a reference slip rate.";
 
   options.set<CrossRef<Scalar>>("gamma0");
+  options.set("gamma0").doc() = "Reference slip rate";
+
   options.set<CrossRef<Scalar>>("n");
+  options.set("n").doc() = "Rate sensitivity exponent";
 
   return options;
 }

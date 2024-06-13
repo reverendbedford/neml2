@@ -38,11 +38,14 @@ OptionSet
 CubicCrystal::expected_options()
 {
   OptionSet options = CrystalGeometry::expected_options();
+  options.doc() =
+      "A specialization of the general CrystalGeometry class defining a cubic crystal system.";
 
   options.set("crystal_class").suppressed() = true;
   options.set("lattice_vectors").suppressed() = true;
 
   options.set<CrossRef<Scalar>>("lattice_parameter");
+  options.set("lattice_parameter").doc() = "The lattice parameter \\f$ a \\f$";
 
   return options;
 }

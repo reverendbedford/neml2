@@ -32,8 +32,18 @@ OptionSet
 VoceSingleSlipHardeningRule::expected_options()
 {
   OptionSet options = SingleSlipHardeningRule::expected_options();
+  options.doc() = "Voce hardening for a SingleSlipStrength type model defined by \\f$ \\dot{\\tau} "
+                  "= \\theta_0 \\left( 1 - \\frac{\\tau}{\\tau_f} \\right) "
+                  "\\sum_{i=1}^{n_{slip}} \\left| \\dot{\\gamma}_i \\right| \\f$ where \\f$ "
+                  "\\theta_0 \\f$ is the initial rate of work hardening, \\f$ \\tau_f \\f$ is the "
+                  "saturated, maximum value of the slip system strength, and \\f$ \\dot{\\gamma}_i "
+                  "\\f$ is the slip rate on each system.";
+
   options.set<CrossRef<Scalar>>("initial_slope");
+  options.set("initial_slope").doc() = "The initial rate of hardening";
   options.set<CrossRef<Scalar>>("saturated_hardening");
+  options.set("saturated_hardening").doc() =
+      "The final, saturated value of the slip system strength";
   return options;
 }
 
