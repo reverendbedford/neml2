@@ -474,7 +474,7 @@ A full constitutive model must then define the plastic deformation $l^p$ and wha
   l^p = \sum_{i=1}^{n_{slip}} \dot{\gamma}_i Q \left(d_i \otimes n_i \right) Q^T
 \f}
 
-where now \f$ \dot{gamma}_i \f$, the slip rate on each system, is the constitutive chioce.  NEML provides a variety of options for defining these slip rates in terms of internal hardening variables and the results shear stress
+where now \f$ \dot{\gamma}_i \f$, the slip rate on each system, is the constitutive chioce.  NEML provides a variety of options for defining these slip rates in terms of internal hardening variables and the results shear stress
 
 \f{align*}
   \tau_i = \sigma : Q \operatorname{sym}\left(d_i \otimes n_i \right) Q^T

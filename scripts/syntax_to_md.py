@@ -67,6 +67,7 @@ if __name__ == "__main__":
     logfile.parent.mkdir(parents=True, exist_ok=True)
 
     with open(logfile, "w") as log:
+        missing = 0
         log.write("The following syntax is missing:\n")
         sections = get_sections(syntax)
         for section in sections:
@@ -91,8 +92,11 @@ if __name__ == "__main__":
                     if params["doc"]:
                         stream.write("{}\n".format(params["doc"]))
                     else:
+                        missing += 1
                         log.write(
-                            "'{}' is missing object description\n".format(input_type)
+                            "  * '{}' is missing object description\n".format(
+                                input_type
+                            )
                         )
                     for param_name, info in params.items():
                         if param_name == "section":
@@ -113,8 +117,9 @@ if __name__ == "__main__":
                             stream.write(
                                 "  <summary>`{}`</summary>\n\n".format(param_name)
                             )
+                            missing += 1
                             log.write(
-                                "  '{}' is mising option description\n".format(
+                                "    * '{}' is mising option description\n".format(
                                     param_name
                                 )
                             )
@@ -132,3 +137,6 @@ if __name__ == "__main__":
                     stream.write(
                         "Detailed documentation [link](@ref {})\n\n".format(type)
                     )
+
+        if missing == 0:
+            log.write("Nothing, good job! :purple_heart:")
