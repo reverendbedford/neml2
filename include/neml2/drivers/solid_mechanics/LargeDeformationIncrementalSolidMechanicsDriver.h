@@ -71,13 +71,16 @@ protected:
   VariableName _driving_force_name;
 
   /**
-   * The value of the (total) vorticity
-   */
-  WR2 _vorticity;
-
-  /**
    * The name of the total vorticity
    */
   VariableName _vorticity_name;
+
+  /// Whether vorticity is prescribed
+  const bool _vorticity_prescribed;
+
+  /**
+   * The value of the (total) vorticity
+   */
+  WR2 _vorticity;
 };
 }

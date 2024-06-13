@@ -31,7 +31,10 @@ Driver::expected_options()
 {
   OptionSet options = NEML2Object::expected_options();
   options.section() = "Drivers";
+
   options.set<bool>("verbose") = false;
+  options.set("verbose").doc() = "Whether to output additional logging information";
+
   return options;
 }
 

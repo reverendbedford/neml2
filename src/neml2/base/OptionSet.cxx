@@ -90,13 +90,25 @@ OptionSet::print(std::ostream & os) const
   OptionSet::const_iterator it = _values.begin();
 
   os << "  section: " << section() << '\n';
-  os << "  doc: " << doc() << '\n';
+  if (doc().empty())
+    os << "  doc:\n";
+  else
+  {
+    os << "  doc: |-\n";
+    os << "    " << doc() << '\n';
+  }
 
   while (it != _values.end())
   {
     os << "  " << it->first << ":\n";
     os << "    type: " << it->second->type() << '\n';
-    os << "    doc: " << it->second->doc() << '\n';
+    if (it->second->doc().empty())
+      os << "    doc:\n";
+    else
+    {
+      os << "    doc: |-\n";
+      os << "      " << it->second->doc() << '\n';
+    }
     os << "    suppressed: " << it->second->suppressed() << '\n';
     os << "    value: ";
     it->second->print(os);

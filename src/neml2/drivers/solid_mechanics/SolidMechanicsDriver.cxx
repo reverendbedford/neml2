@@ -32,13 +32,31 @@ OptionSet
 SolidMechanicsDriver::expected_options()
 {
   OptionSet options = TransientDriver::expected_options();
+  options.doc() =
+      "Driver for small deformation solid mechanics material model with optional thermal coupling.";
+
   options.set<std::string>("control") = "STRAIN";
+  options.set("control").doc() = "External control of the material update. Options are STRAIN and "
+                                 "STRESS, for strain control and stress control, respectively.";
+
   options.set<VariableName>("total_strain") = VariableName("forces", "E");
+  options.set("total_strain").doc() = "Total strain";
+
   options.set<VariableName>("cauchy_stress") = VariableName("forces", "S");
+  options.set("total_strain").doc() = "Cauchy stress";
+
   options.set<VariableName>("temperature") = VariableName("forces", "T");
+  options.set("total_strain").doc() = "Temperature";
+
   options.set<CrossRef<torch::Tensor>>("prescribed_strains");
+  options.set("prescribed_strains").doc() = "Prescribed strain (when control = STRAIN)";
+
   options.set<CrossRef<torch::Tensor>>("prescribed_stresses");
+  options.set("prescribed_stresses").doc() = "Prescribed stress (when control = STRESS)";
+
   options.set<CrossRef<torch::Tensor>>("prescribed_temperatures");
+  options.set("prescribed_temperatures").doc() = "Prescribed temperature";
+
   return options;
 }
 
