@@ -133,7 +133,6 @@ $(function(){initNavTree('syntax-tensors.html',''); initResizable(); });
 <li class="level2"><a href="#emptywr2">EmptyWR2</a></li>
 <li class="level2"><a href="#emptywsr4">EmptyWSR4</a></li>
 <li class="level2"><a href="#emptywwr4">EmptyWWR4</a></li>
-<li class="level2"><a href="#fill3dvec">Fill3DVec</a></li>
 <li class="level2"><a href="#fillmillerindex">FillMillerIndex</a></li>
 <li class="level2"><a href="#fillr2">FillR2</a></li>
 <li class="level2"><a href="#fillrot">FillRot</a></li>
@@ -265,9 +264,9 @@ Available objects and their input file syntax</h1>
 <p>Refer to <a class="el" href="system-tensors.html">System Documentation</a> for detailed explanation about this system.</p>
 <h2><a class="anchor" id="batchtensor"></a>
 BatchTensor</h2>
-<details >
+<p><em>Construct a BatchTensor from a vector of values. The vector will be reshaped according to the specified batch and base shapes.</em> </p><details >
 <summary >
-<code>base_shape</code></summary>
+<code>base_shape</code> Base shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -275,7 +274,7 @@ BatchTensor</h2>
 </details>
 <details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -283,7 +282,7 @@ BatchTensor</h2>
 </details>
 <details >
 <summary >
-<code>values</code></summary>
+<code>values</code> Values in this (flattened) tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;double&gt; </li>
@@ -292,9 +291,9 @@ BatchTensor</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1UserBatchTensor.html">link</a></p>
 <h2><a class="anchor" id="emptybatchtensor"></a>
 EmptyBatchTensor</h2>
-<details >
+<p><em>Construct an empty BatchTensor given batch and base shapes. Tensor values are <b>undefined</b> after construction.</em> </p><details >
 <summary >
-<code>base_shape</code></summary>
+<code>base_shape</code> Base shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -302,7 +301,7 @@ EmptyBatchTensor</h2>
 </details>
 <details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -311,9 +310,9 @@ EmptyBatchTensor</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1EmptyBatchTensor.html">link</a></p>
 <h2><a class="anchor" id="emptymillerindex"></a>
 EmptyMillerIndex</h2>
-<details >
+<p><em>Construct an empty MillerIndex with given batch shape. Tensor values are <b>undefined</b> after construction.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -322,9 +321,9 @@ EmptyMillerIndex</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1EmptyFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="emptyquaternion"></a>
 EmptyQuaternion</h2>
-<details >
+<p><em>Construct an empty Quaternion with given batch shape. Tensor values are <b>undefined</b> after construction.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -333,9 +332,9 @@ EmptyQuaternion</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1EmptyFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="emptyr2"></a>
 EmptyR2</h2>
-<details >
+<p><em>Construct an empty R2 with given batch shape. Tensor values are <b>undefined</b> after construction.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -344,9 +343,9 @@ EmptyR2</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1EmptyFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="emptyr3"></a>
 EmptyR3</h2>
-<details >
+<p><em>Construct an empty R3 with given batch shape. Tensor values are <b>undefined</b> after construction.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -355,9 +354,9 @@ EmptyR3</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1EmptyFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="emptyr4"></a>
 EmptyR4</h2>
-<details >
+<p><em>Construct an empty R4 with given batch shape. Tensor values are <b>undefined</b> after construction.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -366,9 +365,9 @@ EmptyR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1EmptyFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="emptyr5"></a>
 EmptyR5</h2>
-<details >
+<p><em>Construct an empty R5 with given batch shape. Tensor values are <b>undefined</b> after construction.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -377,9 +376,9 @@ EmptyR5</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1EmptyFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="emptyrot"></a>
 EmptyRot</h2>
-<details >
+<p><em>Construct an empty Rot with given batch shape. Tensor values are <b>undefined</b> after construction.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -388,9 +387,9 @@ EmptyRot</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1EmptyFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="emptysffr4"></a>
 EmptySFFR4</h2>
-<details >
+<p><em>Construct an empty SFFR4 with given batch shape. Tensor values are <b>undefined</b> after construction.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -399,9 +398,9 @@ EmptySFFR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1EmptyFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="emptysfr3"></a>
 EmptySFR3</h2>
-<details >
+<p><em>Construct an empty SFR3 with given batch shape. Tensor values are <b>undefined</b> after construction.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -410,9 +409,9 @@ EmptySFR3</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1EmptyFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="emptysr2"></a>
 EmptySR2</h2>
-<details >
+<p><em>Construct an empty SR2 with given batch shape. Tensor values are <b>undefined</b> after construction.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -421,9 +420,9 @@ EmptySR2</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1EmptyFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="emptyssfr5"></a>
 EmptySSFR5</h2>
-<details >
+<p><em>Construct an empty SSFR5 with given batch shape. Tensor values are <b>undefined</b> after construction.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -432,9 +431,9 @@ EmptySSFR5</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1EmptyFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="emptyssr4"></a>
 EmptySSR4</h2>
-<details >
+<p><em>Construct an empty SSR4 with given batch shape. Tensor values are <b>undefined</b> after construction.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -443,9 +442,9 @@ EmptySSR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1EmptyFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="emptyswr4"></a>
 EmptySWR4</h2>
-<details >
+<p><em>Construct an empty SWR4 with given batch shape. Tensor values are <b>undefined</b> after construction.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -454,9 +453,9 @@ EmptySWR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1EmptyFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="emptyscalar"></a>
 EmptyScalar</h2>
-<details >
+<p><em>Construct an empty Scalar with given batch shape. Tensor values are <b>undefined</b> after construction.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -465,9 +464,9 @@ EmptyScalar</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1EmptyFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="emptyvec"></a>
 EmptyVec</h2>
-<details >
+<p><em>Construct an empty Vec with given batch shape. Tensor values are <b>undefined</b> after construction.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -476,9 +475,9 @@ EmptyVec</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1EmptyFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="emptywr2"></a>
 EmptyWR2</h2>
-<details >
+<p><em>Construct an empty WR2 with given batch shape. Tensor values are <b>undefined</b> after construction.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -487,9 +486,9 @@ EmptyWR2</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1EmptyFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="emptywsr4"></a>
 EmptyWSR4</h2>
-<details >
+<p><em>Construct an empty WSR4 with given batch shape. Tensor values are <b>undefined</b> after construction.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -498,26 +497,15 @@ EmptyWSR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1EmptyFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="emptywwr4"></a>
 EmptyWWR4</h2>
-<details >
+<p><em>Construct an empty WWR4 with given batch shape. Tensor values are <b>undefined</b> after construction.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1EmptyFixedDimTensor.html">link</a></p>
-<h2><a class="anchor" id="fill3dvec"></a>
-Fill3DVec</h2>
-<details >
-<summary >
-<code>values</code></summary>
-<p></p>
-<ul>
-<li><u>Type</u>: vector&lt;double&gt; </li>
-</ul>
-</details>
-<p>Detailed documentation <a class="el" href="classneml2_1_1Fill3DVec.html">link</a></p>
 <h2><a class="anchor" id="fillmillerindex"></a>
 FillMillerIndex</h2>
 <details >
@@ -531,9 +519,9 @@ FillMillerIndex</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1crystallography_1_1FillMillerIndex.html">link</a></p>
 <h2><a class="anchor" id="fillr2"></a>
 FillR2</h2>
-<details >
+<p><em>Construct a R2 with a vector of Scalars. The vector length must be 1, 3, 6, or 9. When vector length is 1, the Scalar value is used to fill the diagonals; when vector length is 3, the Scalar values are used to fill the respective diagonal entries; when vector length is 6, the Scalar values are used to fill the tensor following the Voigt notation; when vector length is 9, the Scalar values are used to fill the tensor in the row-major fashion.</em> </p><details >
 <summary >
-<code>values</code></summary>
+<code>values</code> Scalars used to fill the R2</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;Scalar&gt; </li>
@@ -542,9 +530,9 @@ FillR2</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FillR2.html">link</a></p>
 <h2><a class="anchor" id="fillrot"></a>
 FillRot</h2>
-<details >
+<p><em>Construct a Rot from a vector of Scalars.</em> </p><details >
 <summary >
-<code>method</code></summary>
+<code>method</code> Fill method, options are 'modified' and 'standard'.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: string</li>
@@ -553,7 +541,7 @@ FillRot</h2>
 </details>
 <details >
 <summary >
-<code>values</code></summary>
+<code>values</code> Scalars used to fill the Rot</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;Scalar&gt; </li>
@@ -562,9 +550,9 @@ FillRot</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FillRot.html">link</a></p>
 <h2><a class="anchor" id="fillsr2"></a>
 FillSR2</h2>
-<details >
+<p><em>Construct a R2 with a vector of Scalars. The vector length must be 1, 3, or 6. See the full documentation on <a class="el" href="classneml2_1_1SR2.html" title="The (logical) symmetric second order tensor.">neml2::SR2</a> on the dispatch of fill method. When vector length is 1, the Scalar value is used to fill the diagonals; when vector length is 3, the Scalar values are used to fill the respective diagonal entries; when vector length is 6, the Scalar values are used to fill the tensor following the Voigt notation.</em> </p><details >
 <summary >
-<code>values</code></summary>
+<code>values</code> Scalars used to fill the R2</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;Scalar&gt; </li>
@@ -573,9 +561,9 @@ FillSR2</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FillSR2.html">link</a></p>
 <h2><a class="anchor" id="fillwr2"></a>
 FillWR2</h2>
-<details >
+<p><em>Construct a Rot from a vector of Scalars.</em> </p><details >
 <summary >
-<code>values</code></summary>
+<code>values</code> Scalars used to fill the WR2</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;Scalar&gt; </li>
@@ -584,9 +572,9 @@ FillWR2</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FillWR2.html">link</a></p>
 <h2><a class="anchor" id="fullbatchtensor"></a>
 FullBatchTensor</h2>
-<details >
+<p><em>Construct a full BatchTensor with given batch and base shapes filled with a given value.</em> </p><details >
 <summary >
-<code>base_shape</code></summary>
+<code>base_shape</code> Base shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -594,7 +582,7 @@ FullBatchTensor</h2>
 </details>
 <details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -602,7 +590,7 @@ FullBatchTensor</h2>
 </details>
 <details >
 <summary >
-<code>value</code></summary>
+<code>value</code> Value used to fill the tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double </li>
@@ -611,9 +599,9 @@ FullBatchTensor</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FullBatchTensor.html">link</a></p>
 <h2><a class="anchor" id="fullmillerindex"></a>
 FullMillerIndex</h2>
-<details >
+<p><em>Construct a full MillerIndex with given batch shape filled with a given value.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -621,7 +609,7 @@ FullMillerIndex</h2>
 </details>
 <details >
 <summary >
-<code>value</code></summary>
+<code>value</code> Value used to fill the tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double </li>
@@ -630,9 +618,9 @@ FullMillerIndex</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FullFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="fullquaternion"></a>
 FullQuaternion</h2>
-<details >
+<p><em>Construct a full Quaternion with given batch shape filled with a given value.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -640,7 +628,7 @@ FullQuaternion</h2>
 </details>
 <details >
 <summary >
-<code>value</code></summary>
+<code>value</code> Value used to fill the tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double </li>
@@ -649,9 +637,9 @@ FullQuaternion</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FullFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="fullr2"></a>
 FullR2</h2>
-<details >
+<p><em>Construct a full R2 with given batch shape filled with a given value.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -659,7 +647,7 @@ FullR2</h2>
 </details>
 <details >
 <summary >
-<code>value</code></summary>
+<code>value</code> Value used to fill the tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double </li>
@@ -668,9 +656,9 @@ FullR2</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FullFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="fullr3"></a>
 FullR3</h2>
-<details >
+<p><em>Construct a full R3 with given batch shape filled with a given value.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -678,7 +666,7 @@ FullR3</h2>
 </details>
 <details >
 <summary >
-<code>value</code></summary>
+<code>value</code> Value used to fill the tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double </li>
@@ -687,9 +675,9 @@ FullR3</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FullFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="fullr4"></a>
 FullR4</h2>
-<details >
+<p><em>Construct a full R4 with given batch shape filled with a given value.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -697,7 +685,7 @@ FullR4</h2>
 </details>
 <details >
 <summary >
-<code>value</code></summary>
+<code>value</code> Value used to fill the tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double </li>
@@ -706,9 +694,9 @@ FullR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FullFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="fullr5"></a>
 FullR5</h2>
-<details >
+<p><em>Construct a full R5 with given batch shape filled with a given value.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -716,7 +704,7 @@ FullR5</h2>
 </details>
 <details >
 <summary >
-<code>value</code></summary>
+<code>value</code> Value used to fill the tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double </li>
@@ -725,9 +713,9 @@ FullR5</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FullFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="fullrot"></a>
 FullRot</h2>
-<details >
+<p><em>Construct a full Rot with given batch shape filled with a given value.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -735,7 +723,7 @@ FullRot</h2>
 </details>
 <details >
 <summary >
-<code>value</code></summary>
+<code>value</code> Value used to fill the tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double </li>
@@ -744,9 +732,9 @@ FullRot</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FullFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="fullsffr4"></a>
 FullSFFR4</h2>
-<details >
+<p><em>Construct a full SFFR4 with given batch shape filled with a given value.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -754,7 +742,7 @@ FullSFFR4</h2>
 </details>
 <details >
 <summary >
-<code>value</code></summary>
+<code>value</code> Value used to fill the tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double </li>
@@ -763,9 +751,9 @@ FullSFFR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FullFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="fullsfr3"></a>
 FullSFR3</h2>
-<details >
+<p><em>Construct a full SFR3 with given batch shape filled with a given value.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -773,7 +761,7 @@ FullSFR3</h2>
 </details>
 <details >
 <summary >
-<code>value</code></summary>
+<code>value</code> Value used to fill the tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double </li>
@@ -782,9 +770,9 @@ FullSFR3</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FullFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="fullsr2"></a>
 FullSR2</h2>
-<details >
+<p><em>Construct a full SR2 with given batch shape filled with a given value.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -792,7 +780,7 @@ FullSR2</h2>
 </details>
 <details >
 <summary >
-<code>value</code></summary>
+<code>value</code> Value used to fill the tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double </li>
@@ -801,9 +789,9 @@ FullSR2</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FullFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="fullssfr5"></a>
 FullSSFR5</h2>
-<details >
+<p><em>Construct a full SSFR5 with given batch shape filled with a given value.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -811,7 +799,7 @@ FullSSFR5</h2>
 </details>
 <details >
 <summary >
-<code>value</code></summary>
+<code>value</code> Value used to fill the tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double </li>
@@ -820,9 +808,9 @@ FullSSFR5</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FullFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="fullssr4"></a>
 FullSSR4</h2>
-<details >
+<p><em>Construct a full SSR4 with given batch shape filled with a given value.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -830,7 +818,7 @@ FullSSR4</h2>
 </details>
 <details >
 <summary >
-<code>value</code></summary>
+<code>value</code> Value used to fill the tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double </li>
@@ -839,9 +827,9 @@ FullSSR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FullFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="fullswr4"></a>
 FullSWR4</h2>
-<details >
+<p><em>Construct a full SWR4 with given batch shape filled with a given value.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -849,7 +837,7 @@ FullSWR4</h2>
 </details>
 <details >
 <summary >
-<code>value</code></summary>
+<code>value</code> Value used to fill the tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double </li>
@@ -858,9 +846,9 @@ FullSWR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FullFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="fullscalar"></a>
 FullScalar</h2>
-<details >
+<p><em>Construct a full Scalar with given batch shape filled with a given value.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -868,7 +856,7 @@ FullScalar</h2>
 </details>
 <details >
 <summary >
-<code>value</code></summary>
+<code>value</code> Value used to fill the tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double </li>
@@ -877,9 +865,9 @@ FullScalar</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FullFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="fullvec"></a>
 FullVec</h2>
-<details >
+<p><em>Construct a full Vec with given batch shape filled with a given value.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -887,7 +875,7 @@ FullVec</h2>
 </details>
 <details >
 <summary >
-<code>value</code></summary>
+<code>value</code> Value used to fill the tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double </li>
@@ -896,9 +884,9 @@ FullVec</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FullFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="fullwr2"></a>
 FullWR2</h2>
-<details >
+<p><em>Construct a full WR2 with given batch shape filled with a given value.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -906,7 +894,7 @@ FullWR2</h2>
 </details>
 <details >
 <summary >
-<code>value</code></summary>
+<code>value</code> Value used to fill the tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double </li>
@@ -915,9 +903,9 @@ FullWR2</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FullFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="fullwsr4"></a>
 FullWSR4</h2>
-<details >
+<p><em>Construct a full WSR4 with given batch shape filled with a given value.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -925,7 +913,7 @@ FullWSR4</h2>
 </details>
 <details >
 <summary >
-<code>value</code></summary>
+<code>value</code> Value used to fill the tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double </li>
@@ -934,9 +922,9 @@ FullWSR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FullFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="fullwwr4"></a>
 FullWWR4</h2>
-<details >
+<p><em>Construct a full WWR4 with given batch shape filled with a given value.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -944,7 +932,7 @@ FullWWR4</h2>
 </details>
 <details >
 <summary >
-<code>value</code></summary>
+<code>value</code> Value used to fill the tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double </li>
@@ -953,9 +941,9 @@ FullWWR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FullFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="identitybatchtensor"></a>
 IdentityBatchTensor</h2>
-<details >
+<p><em>Construct an identity BatchTensor with given batch shape.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -963,7 +951,7 @@ IdentityBatchTensor</h2>
 </details>
 <details >
 <summary >
-<code>n</code></summary>
+<code>n</code> Diagonal size of the identity tensor, i.e., base shape of the identity tensor will be (n,n)</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -972,9 +960,9 @@ IdentityBatchTensor</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1IdentityBatchTensor.html">link</a></p>
 <h2><a class="anchor" id="linspacebatchtensor"></a>
 LinspaceBatchTensor</h2>
-<details >
+<p><em>Construct a BatchTensor linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1BatchTensorBase.html#a552f6006626b8b88424169c8074baca1" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::BatchTensorBase::linspace</a> for a detailed explanation.</em> </p><details >
 <summary >
-<code>batch_dim</code></summary>
+<code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long</li>
@@ -983,7 +971,7 @@ LinspaceBatchTensor</h2>
 </details>
 <details >
 <summary >
-<code>batch_expand</code></summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -991,7 +979,7 @@ LinspaceBatchTensor</h2>
 </details>
 <details >
 <summary >
-<code>dim</code></summary>
+<code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -999,7 +987,7 @@ LinspaceBatchTensor</h2>
 </details>
 <details >
 <summary >
-<code>end</code></summary>
+<code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: BatchTensor </li>
@@ -1007,7 +995,7 @@ LinspaceBatchTensor</h2>
 </details>
 <details >
 <summary >
-<code>nstep</code></summary>
+<code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1015,7 +1003,7 @@ LinspaceBatchTensor</h2>
 </details>
 <details >
 <summary >
-<code>start</code></summary>
+<code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: BatchTensor </li>
@@ -1024,9 +1012,9 @@ LinspaceBatchTensor</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspaceBatchTensor.html">link</a></p>
 <h2><a class="anchor" id="linspacemillerindex"></a>
 LinspaceMillerIndex</h2>
-<details >
+<p><em>Construct a MillerIndex linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1BatchTensorBase.html#a552f6006626b8b88424169c8074baca1" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::BatchTensorBase::linspace</a> for a detailed explanation.</em> </p><details >
 <summary >
-<code>batch_dim</code></summary>
+<code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long</li>
@@ -1035,7 +1023,7 @@ LinspaceMillerIndex</h2>
 </details>
 <details >
 <summary >
-<code>dim</code></summary>
+<code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1043,7 +1031,7 @@ LinspaceMillerIndex</h2>
 </details>
 <details >
 <summary >
-<code>end</code></summary>
+<code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: MillerIndex </li>
@@ -1051,7 +1039,7 @@ LinspaceMillerIndex</h2>
 </details>
 <details >
 <summary >
-<code>nstep</code></summary>
+<code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1059,7 +1047,7 @@ LinspaceMillerIndex</h2>
 </details>
 <details >
 <summary >
-<code>start</code></summary>
+<code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: MillerIndex </li>
@@ -1068,9 +1056,9 @@ LinspaceMillerIndex</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspaceFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="linspacequaternion"></a>
 LinspaceQuaternion</h2>
-<details >
+<p><em>Construct a Quaternion linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1BatchTensorBase.html#a552f6006626b8b88424169c8074baca1" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::BatchTensorBase::linspace</a> for a detailed explanation.</em> </p><details >
 <summary >
-<code>batch_dim</code></summary>
+<code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long</li>
@@ -1079,7 +1067,7 @@ LinspaceQuaternion</h2>
 </details>
 <details >
 <summary >
-<code>dim</code></summary>
+<code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1087,7 +1075,7 @@ LinspaceQuaternion</h2>
 </details>
 <details >
 <summary >
-<code>end</code></summary>
+<code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Quaternion </li>
@@ -1095,7 +1083,7 @@ LinspaceQuaternion</h2>
 </details>
 <details >
 <summary >
-<code>nstep</code></summary>
+<code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1103,7 +1091,7 @@ LinspaceQuaternion</h2>
 </details>
 <details >
 <summary >
-<code>start</code></summary>
+<code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Quaternion </li>
@@ -1112,9 +1100,9 @@ LinspaceQuaternion</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspaceFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="linspacer2"></a>
 LinspaceR2</h2>
-<details >
+<p><em>Construct a R2 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1BatchTensorBase.html#a552f6006626b8b88424169c8074baca1" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::BatchTensorBase::linspace</a> for a detailed explanation.</em> </p><details >
 <summary >
-<code>batch_dim</code></summary>
+<code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long</li>
@@ -1123,7 +1111,7 @@ LinspaceR2</h2>
 </details>
 <details >
 <summary >
-<code>dim</code></summary>
+<code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1131,7 +1119,7 @@ LinspaceR2</h2>
 </details>
 <details >
 <summary >
-<code>end</code></summary>
+<code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: R2 </li>
@@ -1139,7 +1127,7 @@ LinspaceR2</h2>
 </details>
 <details >
 <summary >
-<code>nstep</code></summary>
+<code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1147,7 +1135,7 @@ LinspaceR2</h2>
 </details>
 <details >
 <summary >
-<code>start</code></summary>
+<code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: R2 </li>
@@ -1156,9 +1144,9 @@ LinspaceR2</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspaceFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="linspacer3"></a>
 LinspaceR3</h2>
-<details >
+<p><em>Construct a R3 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1BatchTensorBase.html#a552f6006626b8b88424169c8074baca1" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::BatchTensorBase::linspace</a> for a detailed explanation.</em> </p><details >
 <summary >
-<code>batch_dim</code></summary>
+<code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long</li>
@@ -1167,7 +1155,7 @@ LinspaceR3</h2>
 </details>
 <details >
 <summary >
-<code>dim</code></summary>
+<code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1175,7 +1163,7 @@ LinspaceR3</h2>
 </details>
 <details >
 <summary >
-<code>end</code></summary>
+<code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: R3 </li>
@@ -1183,7 +1171,7 @@ LinspaceR3</h2>
 </details>
 <details >
 <summary >
-<code>nstep</code></summary>
+<code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1191,7 +1179,7 @@ LinspaceR3</h2>
 </details>
 <details >
 <summary >
-<code>start</code></summary>
+<code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: R3 </li>
@@ -1200,9 +1188,9 @@ LinspaceR3</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspaceFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="linspacer4"></a>
 LinspaceR4</h2>
-<details >
+<p><em>Construct a R4 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1BatchTensorBase.html#a552f6006626b8b88424169c8074baca1" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::BatchTensorBase::linspace</a> for a detailed explanation.</em> </p><details >
 <summary >
-<code>batch_dim</code></summary>
+<code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long</li>
@@ -1211,7 +1199,7 @@ LinspaceR4</h2>
 </details>
 <details >
 <summary >
-<code>dim</code></summary>
+<code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1219,7 +1207,7 @@ LinspaceR4</h2>
 </details>
 <details >
 <summary >
-<code>end</code></summary>
+<code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: R4 </li>
@@ -1227,7 +1215,7 @@ LinspaceR4</h2>
 </details>
 <details >
 <summary >
-<code>nstep</code></summary>
+<code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1235,7 +1223,7 @@ LinspaceR4</h2>
 </details>
 <details >
 <summary >
-<code>start</code></summary>
+<code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: R4 </li>
@@ -1244,9 +1232,9 @@ LinspaceR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspaceFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="linspacer5"></a>
 LinspaceR5</h2>
-<details >
+<p><em>Construct a R5 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1BatchTensorBase.html#a552f6006626b8b88424169c8074baca1" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::BatchTensorBase::linspace</a> for a detailed explanation.</em> </p><details >
 <summary >
-<code>batch_dim</code></summary>
+<code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long</li>
@@ -1255,7 +1243,7 @@ LinspaceR5</h2>
 </details>
 <details >
 <summary >
-<code>dim</code></summary>
+<code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1263,7 +1251,7 @@ LinspaceR5</h2>
 </details>
 <details >
 <summary >
-<code>end</code></summary>
+<code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: R5 </li>
@@ -1271,7 +1259,7 @@ LinspaceR5</h2>
 </details>
 <details >
 <summary >
-<code>nstep</code></summary>
+<code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1279,7 +1267,7 @@ LinspaceR5</h2>
 </details>
 <details >
 <summary >
-<code>start</code></summary>
+<code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: R5 </li>
@@ -1288,9 +1276,9 @@ LinspaceR5</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspaceFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="linspacerot"></a>
 LinspaceRot</h2>
-<details >
+<p><em>Construct a Rot linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1BatchTensorBase.html#a552f6006626b8b88424169c8074baca1" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::BatchTensorBase::linspace</a> for a detailed explanation.</em> </p><details >
 <summary >
-<code>batch_dim</code></summary>
+<code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long</li>
@@ -1299,7 +1287,7 @@ LinspaceRot</h2>
 </details>
 <details >
 <summary >
-<code>dim</code></summary>
+<code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1307,7 +1295,7 @@ LinspaceRot</h2>
 </details>
 <details >
 <summary >
-<code>end</code></summary>
+<code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Rot </li>
@@ -1315,7 +1303,7 @@ LinspaceRot</h2>
 </details>
 <details >
 <summary >
-<code>nstep</code></summary>
+<code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1323,7 +1311,7 @@ LinspaceRot</h2>
 </details>
 <details >
 <summary >
-<code>start</code></summary>
+<code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Rot </li>
@@ -1332,9 +1320,9 @@ LinspaceRot</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspaceFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="linspacesffr4"></a>
 LinspaceSFFR4</h2>
-<details >
+<p><em>Construct a SFFR4 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1BatchTensorBase.html#a552f6006626b8b88424169c8074baca1" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::BatchTensorBase::linspace</a> for a detailed explanation.</em> </p><details >
 <summary >
-<code>batch_dim</code></summary>
+<code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long</li>
@@ -1343,7 +1331,7 @@ LinspaceSFFR4</h2>
 </details>
 <details >
 <summary >
-<code>dim</code></summary>
+<code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1351,7 +1339,7 @@ LinspaceSFFR4</h2>
 </details>
 <details >
 <summary >
-<code>end</code></summary>
+<code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: SFFR4 </li>
@@ -1359,7 +1347,7 @@ LinspaceSFFR4</h2>
 </details>
 <details >
 <summary >
-<code>nstep</code></summary>
+<code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1367,7 +1355,7 @@ LinspaceSFFR4</h2>
 </details>
 <details >
 <summary >
-<code>start</code></summary>
+<code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: SFFR4 </li>
@@ -1376,9 +1364,9 @@ LinspaceSFFR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspaceFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="linspacesfr3"></a>
 LinspaceSFR3</h2>
-<details >
+<p><em>Construct a SFR3 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1BatchTensorBase.html#a552f6006626b8b88424169c8074baca1" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::BatchTensorBase::linspace</a> for a detailed explanation.</em> </p><details >
 <summary >
-<code>batch_dim</code></summary>
+<code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long</li>
@@ -1387,7 +1375,7 @@ LinspaceSFR3</h2>
 </details>
 <details >
 <summary >
-<code>dim</code></summary>
+<code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1395,7 +1383,7 @@ LinspaceSFR3</h2>
 </details>
 <details >
 <summary >
-<code>end</code></summary>
+<code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: SFR3 </li>
@@ -1403,7 +1391,7 @@ LinspaceSFR3</h2>
 </details>
 <details >
 <summary >
-<code>nstep</code></summary>
+<code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1411,7 +1399,7 @@ LinspaceSFR3</h2>
 </details>
 <details >
 <summary >
-<code>start</code></summary>
+<code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: SFR3 </li>
@@ -1420,9 +1408,9 @@ LinspaceSFR3</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspaceFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="linspacesr2"></a>
 LinspaceSR2</h2>
-<details >
+<p><em>Construct a SR2 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1BatchTensorBase.html#a552f6006626b8b88424169c8074baca1" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::BatchTensorBase::linspace</a> for a detailed explanation.</em> </p><details >
 <summary >
-<code>batch_dim</code></summary>
+<code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long</li>
@@ -1431,7 +1419,7 @@ LinspaceSR2</h2>
 </details>
 <details >
 <summary >
-<code>dim</code></summary>
+<code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1439,7 +1427,7 @@ LinspaceSR2</h2>
 </details>
 <details >
 <summary >
-<code>end</code></summary>
+<code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: SR2 </li>
@@ -1447,7 +1435,7 @@ LinspaceSR2</h2>
 </details>
 <details >
 <summary >
-<code>nstep</code></summary>
+<code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1455,7 +1443,7 @@ LinspaceSR2</h2>
 </details>
 <details >
 <summary >
-<code>start</code></summary>
+<code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: SR2 </li>
@@ -1464,9 +1452,9 @@ LinspaceSR2</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspaceFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="linspacessfr5"></a>
 LinspaceSSFR5</h2>
-<details >
+<p><em>Construct a SSFR5 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1BatchTensorBase.html#a552f6006626b8b88424169c8074baca1" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::BatchTensorBase::linspace</a> for a detailed explanation.</em> </p><details >
 <summary >
-<code>batch_dim</code></summary>
+<code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long</li>
@@ -1475,7 +1463,7 @@ LinspaceSSFR5</h2>
 </details>
 <details >
 <summary >
-<code>dim</code></summary>
+<code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1483,7 +1471,7 @@ LinspaceSSFR5</h2>
 </details>
 <details >
 <summary >
-<code>end</code></summary>
+<code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: SSFR5 </li>
@@ -1491,7 +1479,7 @@ LinspaceSSFR5</h2>
 </details>
 <details >
 <summary >
-<code>nstep</code></summary>
+<code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1499,7 +1487,7 @@ LinspaceSSFR5</h2>
 </details>
 <details >
 <summary >
-<code>start</code></summary>
+<code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: SSFR5 </li>
@@ -1508,9 +1496,9 @@ LinspaceSSFR5</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspaceFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="linspacessr4"></a>
 LinspaceSSR4</h2>
-<details >
+<p><em>Construct a SSR4 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1BatchTensorBase.html#a552f6006626b8b88424169c8074baca1" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::BatchTensorBase::linspace</a> for a detailed explanation.</em> </p><details >
 <summary >
-<code>batch_dim</code></summary>
+<code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long</li>
@@ -1519,7 +1507,7 @@ LinspaceSSR4</h2>
 </details>
 <details >
 <summary >
-<code>dim</code></summary>
+<code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1527,7 +1515,7 @@ LinspaceSSR4</h2>
 </details>
 <details >
 <summary >
-<code>end</code></summary>
+<code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: SSR4 </li>
@@ -1535,7 +1523,7 @@ LinspaceSSR4</h2>
 </details>
 <details >
 <summary >
-<code>nstep</code></summary>
+<code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1543,7 +1531,7 @@ LinspaceSSR4</h2>
 </details>
 <details >
 <summary >
-<code>start</code></summary>
+<code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: SSR4 </li>
@@ -1552,9 +1540,9 @@ LinspaceSSR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspaceFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="linspaceswr4"></a>
 LinspaceSWR4</h2>
-<details >
+<p><em>Construct a SWR4 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1BatchTensorBase.html#a552f6006626b8b88424169c8074baca1" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::BatchTensorBase::linspace</a> for a detailed explanation.</em> </p><details >
 <summary >
-<code>batch_dim</code></summary>
+<code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long</li>
@@ -1563,7 +1551,7 @@ LinspaceSWR4</h2>
 </details>
 <details >
 <summary >
-<code>dim</code></summary>
+<code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1571,7 +1559,7 @@ LinspaceSWR4</h2>
 </details>
 <details >
 <summary >
-<code>end</code></summary>
+<code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: SWR4 </li>
@@ -1579,7 +1567,7 @@ LinspaceSWR4</h2>
 </details>
 <details >
 <summary >
-<code>nstep</code></summary>
+<code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1587,7 +1575,7 @@ LinspaceSWR4</h2>
 </details>
 <details >
 <summary >
-<code>start</code></summary>
+<code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: SWR4 </li>
@@ -1596,9 +1584,9 @@ LinspaceSWR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspaceFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="linspacescalar"></a>
 LinspaceScalar</h2>
-<details >
+<p><em>Construct a Scalar linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1BatchTensorBase.html#a552f6006626b8b88424169c8074baca1" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::BatchTensorBase::linspace</a> for a detailed explanation.</em> </p><details >
 <summary >
-<code>batch_dim</code></summary>
+<code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long</li>
@@ -1607,7 +1595,7 @@ LinspaceScalar</h2>
 </details>
 <details >
 <summary >
-<code>dim</code></summary>
+<code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1615,7 +1603,7 @@ LinspaceScalar</h2>
 </details>
 <details >
 <summary >
-<code>end</code></summary>
+<code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1623,7 +1611,7 @@ LinspaceScalar</h2>
 </details>
 <details >
 <summary >
-<code>nstep</code></summary>
+<code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1631,7 +1619,7 @@ LinspaceScalar</h2>
 </details>
 <details >
 <summary >
-<code>start</code></summary>
+<code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1640,9 +1628,9 @@ LinspaceScalar</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspaceFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="linspacevec"></a>
 LinspaceVec</h2>
-<details >
+<p><em>Construct a Vec linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1BatchTensorBase.html#a552f6006626b8b88424169c8074baca1" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::BatchTensorBase::linspace</a> for a detailed explanation.</em> </p><details >
 <summary >
-<code>batch_dim</code></summary>
+<code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long</li>
@@ -1651,7 +1639,7 @@ LinspaceVec</h2>
 </details>
 <details >
 <summary >
-<code>dim</code></summary>
+<code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1659,7 +1647,7 @@ LinspaceVec</h2>
 </details>
 <details >
 <summary >
-<code>end</code></summary>
+<code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Vec </li>
@@ -1667,7 +1655,7 @@ LinspaceVec</h2>
 </details>
 <details >
 <summary >
-<code>nstep</code></summary>
+<code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1675,7 +1663,7 @@ LinspaceVec</h2>
 </details>
 <details >
 <summary >
-<code>start</code></summary>
+<code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Vec </li>
@@ -1684,9 +1672,9 @@ LinspaceVec</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspaceFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="linspacewr2"></a>
 LinspaceWR2</h2>
-<details >
+<p><em>Construct a WR2 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1BatchTensorBase.html#a552f6006626b8b88424169c8074baca1" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::BatchTensorBase::linspace</a> for a detailed explanation.</em> </p><details >
 <summary >
-<code>batch_dim</code></summary>
+<code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long</li>
@@ -1695,7 +1683,7 @@ LinspaceWR2</h2>
 </details>
 <details >
 <summary >
-<code>dim</code></summary>
+<code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1703,7 +1691,7 @@ LinspaceWR2</h2>
 </details>
 <details >
 <summary >
-<code>end</code></summary>
+<code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: WR2 </li>
@@ -1711,7 +1699,7 @@ LinspaceWR2</h2>
 </details>
 <details >
 <summary >
-<code>nstep</code></summary>
+<code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1719,7 +1707,7 @@ LinspaceWR2</h2>
 </details>
 <details >
 <summary >
-<code>start</code></summary>
+<code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: WR2 </li>
@@ -1728,9 +1716,9 @@ LinspaceWR2</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspaceFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="linspacewsr4"></a>
 LinspaceWSR4</h2>
-<details >
+<p><em>Construct a WSR4 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1BatchTensorBase.html#a552f6006626b8b88424169c8074baca1" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::BatchTensorBase::linspace</a> for a detailed explanation.</em> </p><details >
 <summary >
-<code>batch_dim</code></summary>
+<code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long</li>
@@ -1739,7 +1727,7 @@ LinspaceWSR4</h2>
 </details>
 <details >
 <summary >
-<code>dim</code></summary>
+<code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1747,7 +1735,7 @@ LinspaceWSR4</h2>
 </details>
 <details >
 <summary >
-<code>end</code></summary>
+<code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: WSR4 </li>
@@ -1755,7 +1743,7 @@ LinspaceWSR4</h2>
 </details>
 <details >
 <summary >
-<code>nstep</code></summary>
+<code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1763,7 +1751,7 @@ LinspaceWSR4</h2>
 </details>
 <details >
 <summary >
-<code>start</code></summary>
+<code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: WSR4 </li>
@@ -1772,9 +1760,9 @@ LinspaceWSR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspaceFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="linspacewwr4"></a>
 LinspaceWWR4</h2>
-<details >
+<p><em>Construct a WWR4 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1BatchTensorBase.html#a552f6006626b8b88424169c8074baca1" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::BatchTensorBase::linspace</a> for a detailed explanation.</em> </p><details >
 <summary >
-<code>batch_dim</code></summary>
+<code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long</li>
@@ -1783,7 +1771,7 @@ LinspaceWWR4</h2>
 </details>
 <details >
 <summary >
-<code>dim</code></summary>
+<code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1791,7 +1779,7 @@ LinspaceWWR4</h2>
 </details>
 <details >
 <summary >
-<code>end</code></summary>
+<code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: WWR4 </li>
@@ -1799,7 +1787,7 @@ LinspaceWWR4</h2>
 </details>
 <details >
 <summary >
-<code>nstep</code></summary>
+<code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1807,7 +1795,7 @@ LinspaceWWR4</h2>
 </details>
 <details >
 <summary >
-<code>start</code></summary>
+<code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: WWR4 </li>
@@ -1816,9 +1804,9 @@ LinspaceWWR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspaceFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="logspacebatchtensor"></a>
 LogspaceBatchTensor</h2>
-<details >
+<p><em>Construct a BatchTensor with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1BatchTensorBase.html#a6aa3d15dbae744a5ae0fdc4384dc53cf" title="log-space equivalent of the linspace named constructor">neml2::BatchTensorBase::logspace</a> for a detailed explanation.</em> </p><details >
 <summary >
-<code>base</code></summary>
+<code>base</code> Exponent base</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -1827,7 +1815,7 @@ LogspaceBatchTensor</h2>
 </details>
 <details >
 <summary >
-<code>batch_dim</code></summary>
+<code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long</li>
@@ -1836,7 +1824,7 @@ LogspaceBatchTensor</h2>
 </details>
 <details >
 <summary >
-<code>dim</code></summary>
+<code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1844,7 +1832,7 @@ LogspaceBatchTensor</h2>
 </details>
 <details >
 <summary >
-<code>end</code></summary>
+<code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: BatchTensor </li>
@@ -1852,7 +1840,7 @@ LogspaceBatchTensor</h2>
 </details>
 <details >
 <summary >
-<code>nstep</code></summary>
+<code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1860,7 +1848,7 @@ LogspaceBatchTensor</h2>
 </details>
 <details >
 <summary >
-<code>start</code></summary>
+<code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: BatchTensor </li>
@@ -1869,9 +1857,9 @@ LogspaceBatchTensor</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspaceBatchTensor.html">link</a></p>
 <h2><a class="anchor" id="logspacemillerindex"></a>
 LogspaceMillerIndex</h2>
-<details >
+<p><em>Construct a MillerIndex with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1BatchTensorBase.html#a6aa3d15dbae744a5ae0fdc4384dc53cf" title="log-space equivalent of the linspace named constructor">neml2::BatchTensorBase::logspace</a> for a detailed explanation.</em> </p><details >
 <summary >
-<code>base</code></summary>
+<code>base</code> Exponent base</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -1880,7 +1868,7 @@ LogspaceMillerIndex</h2>
 </details>
 <details >
 <summary >
-<code>batch_dim</code></summary>
+<code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long</li>
@@ -1889,7 +1877,7 @@ LogspaceMillerIndex</h2>
 </details>
 <details >
 <summary >
-<code>dim</code></summary>
+<code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1897,7 +1885,7 @@ LogspaceMillerIndex</h2>
 </details>
 <details >
 <summary >
-<code>end</code></summary>
+<code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: MillerIndex </li>
@@ -1905,7 +1893,7 @@ LogspaceMillerIndex</h2>
 </details>
 <details >
 <summary >
-<code>nstep</code></summary>
+<code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1913,7 +1901,7 @@ LogspaceMillerIndex</h2>
 </details>
 <details >
 <summary >
-<code>start</code></summary>
+<code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: MillerIndex </li>
@@ -1922,9 +1910,9 @@ LogspaceMillerIndex</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspaceFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="logspacequaternion"></a>
 LogspaceQuaternion</h2>
-<details >
+<p><em>Construct a Quaternion with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1BatchTensorBase.html#a6aa3d15dbae744a5ae0fdc4384dc53cf" title="log-space equivalent of the linspace named constructor">neml2::BatchTensorBase::logspace</a> for a detailed explanation.</em> </p><details >
 <summary >
-<code>base</code></summary>
+<code>base</code> Exponent base</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -1933,7 +1921,7 @@ LogspaceQuaternion</h2>
 </details>
 <details >
 <summary >
-<code>batch_dim</code></summary>
+<code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long</li>
@@ -1942,7 +1930,7 @@ LogspaceQuaternion</h2>
 </details>
 <details >
 <summary >
-<code>dim</code></summary>
+<code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1950,7 +1938,7 @@ LogspaceQuaternion</h2>
 </details>
 <details >
 <summary >
-<code>end</code></summary>
+<code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Quaternion </li>
@@ -1958,7 +1946,7 @@ LogspaceQuaternion</h2>
 </details>
 <details >
 <summary >
-<code>nstep</code></summary>
+<code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -1966,7 +1954,7 @@ LogspaceQuaternion</h2>
 </details>
 <details >
 <summary >
-<code>start</code></summary>
+<code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Quaternion </li>
@@ -1975,9 +1963,9 @@ LogspaceQuaternion</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspaceFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="logspacer2"></a>
 LogspaceR2</h2>
-<details >
+<p><em>Construct a R2 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1BatchTensorBase.html#a6aa3d15dbae744a5ae0fdc4384dc53cf" title="log-space equivalent of the linspace named constructor">neml2::BatchTensorBase::logspace</a> for a detailed explanation.</em> </p><details >
 <summary >
-<code>base</code></summary>
+<code>base</code> Exponent base</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -1986,7 +1974,7 @@ LogspaceR2</h2>
 </details>
 <details >
 <summary >
-<code>batch_dim</code></summary>
+<code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long</li>
@@ -1995,7 +1983,7 @@ LogspaceR2</h2>
 </details>
 <details >
 <summary >
-<code>dim</code></summary>
+<code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -2003,7 +1991,7 @@ LogspaceR2</h2>
 </details>
 <details >
 <summary >
-<code>end</code></summary>
+<code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: R2 </li>
@@ -2011,7 +1999,7 @@ LogspaceR2</h2>
 </details>
 <details >
 <summary >
-<code>nstep</code></summary>
+<code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -2019,7 +2007,7 @@ LogspaceR2</h2>
 </details>
 <details >
 <summary >
-<code>start</code></summary>
+<code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: R2 </li>
@@ -2028,9 +2016,9 @@ LogspaceR2</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspaceFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="logspacer3"></a>
 LogspaceR3</h2>
-<details >
+<p><em>Construct a R3 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1BatchTensorBase.html#a6aa3d15dbae744a5ae0fdc4384dc53cf" title="log-space equivalent of the linspace named constructor">neml2::BatchTensorBase::logspace</a> for a detailed explanation.</em> </p><details >
 <summary >
-<code>base</code></summary>
+<code>base</code> Exponent base</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -2039,7 +2027,7 @@ LogspaceR3</h2>
 </details>
 <details >
 <summary >
-<code>batch_dim</code></summary>
+<code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long</li>
@@ -2048,7 +2036,7 @@ LogspaceR3</h2>
 </details>
 <details >
 <summary >
-<code>dim</code></summary>
+<code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -2056,7 +2044,7 @@ LogspaceR3</h2>
 </details>
 <details >
 <summary >
-<code>end</code></summary>
+<code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: R3 </li>
@@ -2064,7 +2052,7 @@ LogspaceR3</h2>
 </details>
 <details >
 <summary >
-<code>nstep</code></summary>
+<code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -2072,7 +2060,7 @@ LogspaceR3</h2>
 </details>
 <details >
 <summary >
-<code>start</code></summary>
+<code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: R3 </li>
@@ -2081,9 +2069,9 @@ LogspaceR3</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspaceFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="logspacer4"></a>
 LogspaceR4</h2>
-<details >
+<p><em>Construct a R4 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1BatchTensorBase.html#a6aa3d15dbae744a5ae0fdc4384dc53cf" title="log-space equivalent of the linspace named constructor">neml2::BatchTensorBase::logspace</a> for a detailed explanation.</em> </p><details >
 <summary >
-<code>base</code></summary>
+<code>base</code> Exponent base</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -2092,7 +2080,7 @@ LogspaceR4</h2>
 </details>
 <details >
 <summary >
-<code>batch_dim</code></summary>
+<code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long</li>
@@ -2101,7 +2089,7 @@ LogspaceR4</h2>
 </details>
 <details >
 <summary >
-<code>dim</code></summary>
+<code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -2109,7 +2097,7 @@ LogspaceR4</h2>
 </details>
 <details >
 <summary >
-<code>end</code></summary>
+<code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: R4 </li>
@@ -2117,7 +2105,7 @@ LogspaceR4</h2>
 </details>
 <details >
 <summary >
-<code>nstep</code></summary>
+<code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -2125,7 +2113,7 @@ LogspaceR4</h2>
 </details>
 <details >
 <summary >
-<code>start</code></summary>
+<code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: R4 </li>
@@ -2134,9 +2122,9 @@ LogspaceR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspaceFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="logspacer5"></a>
 LogspaceR5</h2>
-<details >
+<p><em>Construct a R5 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1BatchTensorBase.html#a6aa3d15dbae744a5ae0fdc4384dc53cf" title="log-space equivalent of the linspace named constructor">neml2::BatchTensorBase::logspace</a> for a detailed explanation.</em> </p><details >
 <summary >
-<code>base</code></summary>
+<code>base</code> Exponent base</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -2145,7 +2133,7 @@ LogspaceR5</h2>
 </details>
 <details >
 <summary >
-<code>batch_dim</code></summary>
+<code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long</li>
@@ -2154,7 +2142,7 @@ LogspaceR5</h2>
 </details>
 <details >
 <summary >
-<code>dim</code></summary>
+<code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -2162,7 +2150,7 @@ LogspaceR5</h2>
 </details>
 <details >
 <summary >
-<code>end</code></summary>
+<code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: R5 </li>
@@ -2170,7 +2158,7 @@ LogspaceR5</h2>
 </details>
 <details >
 <summary >
-<code>nstep</code></summary>
+<code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -2178,7 +2166,7 @@ LogspaceR5</h2>
 </details>
 <details >
 <summary >
-<code>start</code></summary>
+<code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: R5 </li>
@@ -2187,9 +2175,9 @@ LogspaceR5</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspaceFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="logspacerot"></a>
 LogspaceRot</h2>
-<details >
+<p><em>Construct a Rot with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1BatchTensorBase.html#a6aa3d15dbae744a5ae0fdc4384dc53cf" title="log-space equivalent of the linspace named constructor">neml2::BatchTensorBase::logspace</a> for a detailed explanation.</em> </p><details >
 <summary >
-<code>base</code></summary>
+<code>base</code> Exponent base</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -2198,7 +2186,7 @@ LogspaceRot</h2>
 </details>
 <details >
 <summary >
-<code>batch_dim</code></summary>
+<code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long</li>
@@ -2207,7 +2195,7 @@ LogspaceRot</h2>
 </details>
 <details >
 <summary >
-<code>dim</code></summary>
+<code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -2215,7 +2203,7 @@ LogspaceRot</h2>
 </details>
 <details >
 <summary >
-<code>end</code></summary>
+<code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Rot </li>
@@ -2223,7 +2211,7 @@ LogspaceRot</h2>
 </details>
 <details >
 <summary >
-<code>nstep</code></summary>
+<code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -2231,7 +2219,7 @@ LogspaceRot</h2>
 </details>
 <details >
 <summary >
-<code>start</code></summary>
+<code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Rot </li>
@@ -2240,9 +2228,9 @@ LogspaceRot</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspaceFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="logspacesffr4"></a>
 LogspaceSFFR4</h2>
-<details >
+<p><em>Construct a SFFR4 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1BatchTensorBase.html#a6aa3d15dbae744a5ae0fdc4384dc53cf" title="log-space equivalent of the linspace named constructor">neml2::BatchTensorBase::logspace</a> for a detailed explanation.</em> </p><details >
 <summary >
-<code>base</code></summary>
+<code>base</code> Exponent base</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -2251,7 +2239,7 @@ LogspaceSFFR4</h2>
 </details>
 <details >
 <summary >
-<code>batch_dim</code></summary>
+<code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long</li>
@@ -2260,7 +2248,7 @@ LogspaceSFFR4</h2>
 </details>
 <details >
 <summary >
-<code>dim</code></summary>
+<code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -2268,7 +2256,7 @@ LogspaceSFFR4</h2>
 </details>
 <details >
 <summary >
-<code>end</code></summary>
+<code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: SFFR4 </li>
@@ -2276,7 +2264,7 @@ LogspaceSFFR4</h2>
 </details>
 <details >
 <summary >
-<code>nstep</code></summary>
+<code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -2284,7 +2272,7 @@ LogspaceSFFR4</h2>
 </details>
 <details >
 <summary >
-<code>start</code></summary>
+<code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: SFFR4 </li>
@@ -2293,9 +2281,9 @@ LogspaceSFFR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspaceFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="logspacesfr3"></a>
 LogspaceSFR3</h2>
-<details >
+<p><em>Construct a SFR3 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1BatchTensorBase.html#a6aa3d15dbae744a5ae0fdc4384dc53cf" title="log-space equivalent of the linspace named constructor">neml2::BatchTensorBase::logspace</a> for a detailed explanation.</em> </p><details >
 <summary >
-<code>base</code></summary>
+<code>base</code> Exponent base</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -2304,7 +2292,7 @@ LogspaceSFR3</h2>
 </details>
 <details >
 <summary >
-<code>batch_dim</code></summary>
+<code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long</li>
@@ -2313,7 +2301,7 @@ LogspaceSFR3</h2>
 </details>
 <details >
 <summary >
-<code>dim</code></summary>
+<code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -2321,7 +2309,7 @@ LogspaceSFR3</h2>
 </details>
 <details >
 <summary >
-<code>end</code></summary>
+<code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: SFR3 </li>
@@ -2329,7 +2317,7 @@ LogspaceSFR3</h2>
 </details>
 <details >
 <summary >
-<code>nstep</code></summary>
+<code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -2337,7 +2325,7 @@ LogspaceSFR3</h2>
 </details>
 <details >
 <summary >
-<code>start</code></summary>
+<code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: SFR3 </li>
@@ -2346,9 +2334,9 @@ LogspaceSFR3</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspaceFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="logspacesr2"></a>
 LogspaceSR2</h2>
-<details >
+<p><em>Construct a SR2 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1BatchTensorBase.html#a6aa3d15dbae744a5ae0fdc4384dc53cf" title="log-space equivalent of the linspace named constructor">neml2::BatchTensorBase::logspace</a> for a detailed explanation.</em> </p><details >
 <summary >
-<code>base</code></summary>
+<code>base</code> Exponent base</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -2357,7 +2345,7 @@ LogspaceSR2</h2>
 </details>
 <details >
 <summary >
-<code>batch_dim</code></summary>
+<code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long</li>
@@ -2366,7 +2354,7 @@ LogspaceSR2</h2>
 </details>
 <details >
 <summary >
-<code>dim</code></summary>
+<code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -2374,7 +2362,7 @@ LogspaceSR2</h2>
 </details>
 <details >
 <summary >
-<code>end</code></summary>
+<code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: SR2 </li>
@@ -2382,7 +2370,7 @@ LogspaceSR2</h2>
 </details>
 <details >
 <summary >
-<code>nstep</code></summary>
+<code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -2390,7 +2378,7 @@ LogspaceSR2</h2>
 </details>
 <details >
 <summary >
-<code>start</code></summary>
+<code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: SR2 </li>
@@ -2399,9 +2387,9 @@ LogspaceSR2</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspaceFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="logspacessfr5"></a>
 LogspaceSSFR5</h2>
-<details >
+<p><em>Construct a SSFR5 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1BatchTensorBase.html#a6aa3d15dbae744a5ae0fdc4384dc53cf" title="log-space equivalent of the linspace named constructor">neml2::BatchTensorBase::logspace</a> for a detailed explanation.</em> </p><details >
 <summary >
-<code>base</code></summary>
+<code>base</code> Exponent base</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -2410,7 +2398,7 @@ LogspaceSSFR5</h2>
 </details>
 <details >
 <summary >
-<code>batch_dim</code></summary>
+<code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long</li>
@@ -2419,7 +2407,7 @@ LogspaceSSFR5</h2>
 </details>
 <details >
 <summary >
-<code>dim</code></summary>
+<code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -2427,7 +2415,7 @@ LogspaceSSFR5</h2>
 </details>
 <details >
 <summary >
-<code>end</code></summary>
+<code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: SSFR5 </li>
@@ -2435,7 +2423,7 @@ LogspaceSSFR5</h2>
 </details>
 <details >
 <summary >
-<code>nstep</code></summary>
+<code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -2443,7 +2431,7 @@ LogspaceSSFR5</h2>
 </details>
 <details >
 <summary >
-<code>start</code></summary>
+<code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: SSFR5 </li>
@@ -2452,9 +2440,9 @@ LogspaceSSFR5</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspaceFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="logspacessr4"></a>
 LogspaceSSR4</h2>
-<details >
+<p><em>Construct a SSR4 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1BatchTensorBase.html#a6aa3d15dbae744a5ae0fdc4384dc53cf" title="log-space equivalent of the linspace named constructor">neml2::BatchTensorBase::logspace</a> for a detailed explanation.</em> </p><details >
 <summary >
-<code>base</code></summary>
+<code>base</code> Exponent base</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -2463,7 +2451,7 @@ LogspaceSSR4</h2>
 </details>
 <details >
 <summary >
-<code>batch_dim</code></summary>
+<code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long</li>
@@ -2472,7 +2460,7 @@ LogspaceSSR4</h2>
 </details>
 <details >
 <summary >
-<code>dim</code></summary>
+<code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -2480,7 +2468,7 @@ LogspaceSSR4</h2>
 </details>
 <details >
 <summary >
-<code>end</code></summary>
+<code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: SSR4 </li>
@@ -2488,7 +2476,7 @@ LogspaceSSR4</h2>
 </details>
 <details >
 <summary >
-<code>nstep</code></summary>
+<code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -2496,7 +2484,7 @@ LogspaceSSR4</h2>
 </details>
 <details >
 <summary >
-<code>start</code></summary>
+<code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: SSR4 </li>
@@ -2505,9 +2493,9 @@ LogspaceSSR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspaceFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="logspaceswr4"></a>
 LogspaceSWR4</h2>
-<details >
+<p><em>Construct a SWR4 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1BatchTensorBase.html#a6aa3d15dbae744a5ae0fdc4384dc53cf" title="log-space equivalent of the linspace named constructor">neml2::BatchTensorBase::logspace</a> for a detailed explanation.</em> </p><details >
 <summary >
-<code>base</code></summary>
+<code>base</code> Exponent base</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -2516,7 +2504,7 @@ LogspaceSWR4</h2>
 </details>
 <details >
 <summary >
-<code>batch_dim</code></summary>
+<code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long</li>
@@ -2525,7 +2513,7 @@ LogspaceSWR4</h2>
 </details>
 <details >
 <summary >
-<code>dim</code></summary>
+<code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -2533,7 +2521,7 @@ LogspaceSWR4</h2>
 </details>
 <details >
 <summary >
-<code>end</code></summary>
+<code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: SWR4 </li>
@@ -2541,7 +2529,7 @@ LogspaceSWR4</h2>
 </details>
 <details >
 <summary >
-<code>nstep</code></summary>
+<code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -2549,7 +2537,7 @@ LogspaceSWR4</h2>
 </details>
 <details >
 <summary >
-<code>start</code></summary>
+<code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: SWR4 </li>
@@ -2558,9 +2546,9 @@ LogspaceSWR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspaceFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="logspacescalar"></a>
 LogspaceScalar</h2>
-<details >
+<p><em>Construct a Scalar with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1BatchTensorBase.html#a6aa3d15dbae744a5ae0fdc4384dc53cf" title="log-space equivalent of the linspace named constructor">neml2::BatchTensorBase::logspace</a> for a detailed explanation.</em> </p><details >
 <summary >
-<code>base</code></summary>
+<code>base</code> Exponent base</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -2569,7 +2557,7 @@ LogspaceScalar</h2>
 </details>
 <details >
 <summary >
-<code>batch_dim</code></summary>
+<code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long</li>
@@ -2578,7 +2566,7 @@ LogspaceScalar</h2>
 </details>
 <details >
 <summary >
-<code>dim</code></summary>
+<code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -2586,7 +2574,7 @@ LogspaceScalar</h2>
 </details>
 <details >
 <summary >
-<code>end</code></summary>
+<code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -2594,7 +2582,7 @@ LogspaceScalar</h2>
 </details>
 <details >
 <summary >
-<code>nstep</code></summary>
+<code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -2602,7 +2590,7 @@ LogspaceScalar</h2>
 </details>
 <details >
 <summary >
-<code>start</code></summary>
+<code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -2611,9 +2599,9 @@ LogspaceScalar</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspaceFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="logspacevec"></a>
 LogspaceVec</h2>
-<details >
+<p><em>Construct a Vec with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1BatchTensorBase.html#a6aa3d15dbae744a5ae0fdc4384dc53cf" title="log-space equivalent of the linspace named constructor">neml2::BatchTensorBase::logspace</a> for a detailed explanation.</em> </p><details >
 <summary >
-<code>base</code></summary>
+<code>base</code> Exponent base</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -2622,7 +2610,7 @@ LogspaceVec</h2>
 </details>
 <details >
 <summary >
-<code>batch_dim</code></summary>
+<code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long</li>
@@ -2631,7 +2619,7 @@ LogspaceVec</h2>
 </details>
 <details >
 <summary >
-<code>dim</code></summary>
+<code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -2639,7 +2627,7 @@ LogspaceVec</h2>
 </details>
 <details >
 <summary >
-<code>end</code></summary>
+<code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Vec </li>
@@ -2647,7 +2635,7 @@ LogspaceVec</h2>
 </details>
 <details >
 <summary >
-<code>nstep</code></summary>
+<code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -2655,7 +2643,7 @@ LogspaceVec</h2>
 </details>
 <details >
 <summary >
-<code>start</code></summary>
+<code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Vec </li>
@@ -2664,9 +2652,9 @@ LogspaceVec</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspaceFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="logspacewr2"></a>
 LogspaceWR2</h2>
-<details >
+<p><em>Construct a WR2 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1BatchTensorBase.html#a6aa3d15dbae744a5ae0fdc4384dc53cf" title="log-space equivalent of the linspace named constructor">neml2::BatchTensorBase::logspace</a> for a detailed explanation.</em> </p><details >
 <summary >
-<code>base</code></summary>
+<code>base</code> Exponent base</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -2675,7 +2663,7 @@ LogspaceWR2</h2>
 </details>
 <details >
 <summary >
-<code>batch_dim</code></summary>
+<code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long</li>
@@ -2684,7 +2672,7 @@ LogspaceWR2</h2>
 </details>
 <details >
 <summary >
-<code>dim</code></summary>
+<code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -2692,7 +2680,7 @@ LogspaceWR2</h2>
 </details>
 <details >
 <summary >
-<code>end</code></summary>
+<code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: WR2 </li>
@@ -2700,7 +2688,7 @@ LogspaceWR2</h2>
 </details>
 <details >
 <summary >
-<code>nstep</code></summary>
+<code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -2708,7 +2696,7 @@ LogspaceWR2</h2>
 </details>
 <details >
 <summary >
-<code>start</code></summary>
+<code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: WR2 </li>
@@ -2717,9 +2705,9 @@ LogspaceWR2</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspaceFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="logspacewsr4"></a>
 LogspaceWSR4</h2>
-<details >
+<p><em>Construct a WSR4 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1BatchTensorBase.html#a6aa3d15dbae744a5ae0fdc4384dc53cf" title="log-space equivalent of the linspace named constructor">neml2::BatchTensorBase::logspace</a> for a detailed explanation.</em> </p><details >
 <summary >
-<code>base</code></summary>
+<code>base</code> Exponent base</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -2728,7 +2716,7 @@ LogspaceWSR4</h2>
 </details>
 <details >
 <summary >
-<code>batch_dim</code></summary>
+<code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long</li>
@@ -2737,7 +2725,7 @@ LogspaceWSR4</h2>
 </details>
 <details >
 <summary >
-<code>dim</code></summary>
+<code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -2745,7 +2733,7 @@ LogspaceWSR4</h2>
 </details>
 <details >
 <summary >
-<code>end</code></summary>
+<code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: WSR4 </li>
@@ -2753,7 +2741,7 @@ LogspaceWSR4</h2>
 </details>
 <details >
 <summary >
-<code>nstep</code></summary>
+<code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -2761,7 +2749,7 @@ LogspaceWSR4</h2>
 </details>
 <details >
 <summary >
-<code>start</code></summary>
+<code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: WSR4 </li>
@@ -2770,9 +2758,9 @@ LogspaceWSR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspaceFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="logspacewwr4"></a>
 LogspaceWWR4</h2>
-<details >
+<p><em>Construct a WWR4 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1BatchTensorBase.html#a6aa3d15dbae744a5ae0fdc4384dc53cf" title="log-space equivalent of the linspace named constructor">neml2::BatchTensorBase::logspace</a> for a detailed explanation.</em> </p><details >
 <summary >
-<code>base</code></summary>
+<code>base</code> Exponent base</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -2781,7 +2769,7 @@ LogspaceWWR4</h2>
 </details>
 <details >
 <summary >
-<code>batch_dim</code></summary>
+<code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long</li>
@@ -2790,7 +2778,7 @@ LogspaceWWR4</h2>
 </details>
 <details >
 <summary >
-<code>dim</code></summary>
+<code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -2798,7 +2786,7 @@ LogspaceWWR4</h2>
 </details>
 <details >
 <summary >
-<code>end</code></summary>
+<code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: WWR4 </li>
@@ -2806,7 +2794,7 @@ LogspaceWWR4</h2>
 </details>
 <details >
 <summary >
-<code>nstep</code></summary>
+<code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: long </li>
@@ -2814,7 +2802,7 @@ LogspaceWWR4</h2>
 </details>
 <details >
 <summary >
-<code>start</code></summary>
+<code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: WWR4 </li>
@@ -2823,9 +2811,9 @@ LogspaceWWR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspaceFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="millerindex"></a>
 MillerIndex</h2>
-<details >
+<p><em>Construct a MillerIndex from a vector values. The vector will be reshaped according to the specified batch shape.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -2833,7 +2821,7 @@ MillerIndex</h2>
 </details>
 <details >
 <summary >
-<code>values</code></summary>
+<code>values</code> Values in this (flattened) tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;double&gt; </li>
@@ -2842,9 +2830,9 @@ MillerIndex</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1UserFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="onesbatchtensor"></a>
 OnesBatchTensor</h2>
-<details >
+<p><em>Construct a BatchTensor with batch and base shapes filled with ones.</em> </p><details >
 <summary >
-<code>base_shape</code></summary>
+<code>base_shape</code> Base shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -2852,7 +2840,7 @@ OnesBatchTensor</h2>
 </details>
 <details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -2861,9 +2849,9 @@ OnesBatchTensor</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OnesBatchTensor.html">link</a></p>
 <h2><a class="anchor" id="onesmillerindex"></a>
 OnesMillerIndex</h2>
-<details >
+<p><em>Construct a MillerIndex with given batch shape filled with ones.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -2872,9 +2860,9 @@ OnesMillerIndex</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OnesFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="onesquaternion"></a>
 OnesQuaternion</h2>
-<details >
+<p><em>Construct a Quaternion with given batch shape filled with ones.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -2883,9 +2871,9 @@ OnesQuaternion</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OnesFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="onesr2"></a>
 OnesR2</h2>
-<details >
+<p><em>Construct a R2 with given batch shape filled with ones.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -2894,9 +2882,9 @@ OnesR2</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OnesFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="onesr3"></a>
 OnesR3</h2>
-<details >
+<p><em>Construct a R3 with given batch shape filled with ones.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -2905,9 +2893,9 @@ OnesR3</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OnesFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="onesr4"></a>
 OnesR4</h2>
-<details >
+<p><em>Construct a R4 with given batch shape filled with ones.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -2916,9 +2904,9 @@ OnesR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OnesFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="onesr5"></a>
 OnesR5</h2>
-<details >
+<p><em>Construct a R5 with given batch shape filled with ones.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -2927,9 +2915,9 @@ OnesR5</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OnesFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="onesrot"></a>
 OnesRot</h2>
-<details >
+<p><em>Construct a Rot with given batch shape filled with ones.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -2938,9 +2926,9 @@ OnesRot</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OnesFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="onessffr4"></a>
 OnesSFFR4</h2>
-<details >
+<p><em>Construct a SFFR4 with given batch shape filled with ones.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -2949,9 +2937,9 @@ OnesSFFR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OnesFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="onessfr3"></a>
 OnesSFR3</h2>
-<details >
+<p><em>Construct a SFR3 with given batch shape filled with ones.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -2960,9 +2948,9 @@ OnesSFR3</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OnesFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="onessr2"></a>
 OnesSR2</h2>
-<details >
+<p><em>Construct a SR2 with given batch shape filled with ones.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -2971,9 +2959,9 @@ OnesSR2</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OnesFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="onesssfr5"></a>
 OnesSSFR5</h2>
-<details >
+<p><em>Construct a SSFR5 with given batch shape filled with ones.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -2982,9 +2970,9 @@ OnesSSFR5</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OnesFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="onesssr4"></a>
 OnesSSR4</h2>
-<details >
+<p><em>Construct a SSR4 with given batch shape filled with ones.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -2993,9 +2981,9 @@ OnesSSR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OnesFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="onesswr4"></a>
 OnesSWR4</h2>
-<details >
+<p><em>Construct a SWR4 with given batch shape filled with ones.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3004,9 +2992,9 @@ OnesSWR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OnesFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="onesscalar"></a>
 OnesScalar</h2>
-<details >
+<p><em>Construct a Scalar with given batch shape filled with ones.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3015,9 +3003,9 @@ OnesScalar</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OnesFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="onesvec"></a>
 OnesVec</h2>
-<details >
+<p><em>Construct a Vec with given batch shape filled with ones.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3026,9 +3014,9 @@ OnesVec</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OnesFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="oneswr2"></a>
 OnesWR2</h2>
-<details >
+<p><em>Construct a WR2 with given batch shape filled with ones.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3037,9 +3025,9 @@ OnesWR2</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OnesFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="oneswsr4"></a>
 OnesWSR4</h2>
-<details >
+<p><em>Construct a WSR4 with given batch shape filled with ones.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3048,9 +3036,9 @@ OnesWSR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OnesFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="oneswwr4"></a>
 OnesWWR4</h2>
-<details >
+<p><em>Construct a WWR4 with given batch shape filled with ones.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3124,9 +3112,9 @@ Orientation</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1Orientation.html">link</a></p>
 <h2><a class="anchor" id="quaternion"></a>
 Quaternion</h2>
-<details >
+<p><em>Construct a Quaternion from a vector values. The vector will be reshaped according to the specified batch shape.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3134,7 +3122,7 @@ Quaternion</h2>
 </details>
 <details >
 <summary >
-<code>values</code></summary>
+<code>values</code> Values in this (flattened) tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;double&gt; </li>
@@ -3143,9 +3131,9 @@ Quaternion</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1UserFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="r2"></a>
 R2</h2>
-<details >
+<p><em>Construct a R2 from a vector values. The vector will be reshaped according to the specified batch shape.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3153,7 +3141,7 @@ R2</h2>
 </details>
 <details >
 <summary >
-<code>values</code></summary>
+<code>values</code> Values in this (flattened) tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;double&gt; </li>
@@ -3162,9 +3150,9 @@ R2</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1UserFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="r3"></a>
 R3</h2>
-<details >
+<p><em>Construct a R3 from a vector values. The vector will be reshaped according to the specified batch shape.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3172,7 +3160,7 @@ R3</h2>
 </details>
 <details >
 <summary >
-<code>values</code></summary>
+<code>values</code> Values in this (flattened) tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;double&gt; </li>
@@ -3181,9 +3169,9 @@ R3</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1UserFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="r4"></a>
 R4</h2>
-<details >
+<p><em>Construct a R4 from a vector values. The vector will be reshaped according to the specified batch shape.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3191,7 +3179,7 @@ R4</h2>
 </details>
 <details >
 <summary >
-<code>values</code></summary>
+<code>values</code> Values in this (flattened) tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;double&gt; </li>
@@ -3200,9 +3188,9 @@ R4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1UserFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="r5"></a>
 R5</h2>
-<details >
+<p><em>Construct a R5 from a vector values. The vector will be reshaped according to the specified batch shape.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3210,7 +3198,7 @@ R5</h2>
 </details>
 <details >
 <summary >
-<code>values</code></summary>
+<code>values</code> Values in this (flattened) tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;double&gt; </li>
@@ -3219,9 +3207,9 @@ R5</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1UserFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="rot"></a>
 Rot</h2>
-<details >
+<p><em>Construct a Rot from a vector values. The vector will be reshaped according to the specified batch shape.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3229,7 +3217,7 @@ Rot</h2>
 </details>
 <details >
 <summary >
-<code>values</code></summary>
+<code>values</code> Values in this (flattened) tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;double&gt; </li>
@@ -3238,9 +3226,9 @@ Rot</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1UserFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="sffr4"></a>
 SFFR4</h2>
-<details >
+<p><em>Construct a SFFR4 from a vector values. The vector will be reshaped according to the specified batch shape.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3248,7 +3236,7 @@ SFFR4</h2>
 </details>
 <details >
 <summary >
-<code>values</code></summary>
+<code>values</code> Values in this (flattened) tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;double&gt; </li>
@@ -3257,9 +3245,9 @@ SFFR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1UserFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="sfr3"></a>
 SFR3</h2>
-<details >
+<p><em>Construct a SFR3 from a vector values. The vector will be reshaped according to the specified batch shape.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3267,7 +3255,7 @@ SFR3</h2>
 </details>
 <details >
 <summary >
-<code>values</code></summary>
+<code>values</code> Values in this (flattened) tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;double&gt; </li>
@@ -3276,9 +3264,9 @@ SFR3</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1UserFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="sr2"></a>
 SR2</h2>
-<details >
+<p><em>Construct a SR2 from a vector values. The vector will be reshaped according to the specified batch shape.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3286,7 +3274,7 @@ SR2</h2>
 </details>
 <details >
 <summary >
-<code>values</code></summary>
+<code>values</code> Values in this (flattened) tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;double&gt; </li>
@@ -3295,9 +3283,9 @@ SR2</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1UserFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="ssfr5"></a>
 SSFR5</h2>
-<details >
+<p><em>Construct a SSFR5 from a vector values. The vector will be reshaped according to the specified batch shape.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3305,7 +3293,7 @@ SSFR5</h2>
 </details>
 <details >
 <summary >
-<code>values</code></summary>
+<code>values</code> Values in this (flattened) tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;double&gt; </li>
@@ -3314,9 +3302,9 @@ SSFR5</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1UserFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="ssr4"></a>
 SSR4</h2>
-<details >
+<p><em>Construct a SSR4 from a vector values. The vector will be reshaped according to the specified batch shape.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3324,7 +3312,7 @@ SSR4</h2>
 </details>
 <details >
 <summary >
-<code>values</code></summary>
+<code>values</code> Values in this (flattened) tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;double&gt; </li>
@@ -3333,9 +3321,9 @@ SSR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1UserFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="swr4"></a>
 SWR4</h2>
-<details >
+<p><em>Construct a SWR4 from a vector values. The vector will be reshaped according to the specified batch shape.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3343,7 +3331,7 @@ SWR4</h2>
 </details>
 <details >
 <summary >
-<code>values</code></summary>
+<code>values</code> Values in this (flattened) tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;double&gt; </li>
@@ -3352,9 +3340,9 @@ SWR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1UserFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="scalar"></a>
 Scalar</h2>
-<details >
+<p><em>Construct a Scalar from a vector values. The vector will be reshaped according to the specified batch shape.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3362,7 +3350,7 @@ Scalar</h2>
 </details>
 <details >
 <summary >
-<code>values</code></summary>
+<code>values</code> Values in this (flattened) tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;double&gt; </li>
@@ -3382,9 +3370,9 @@ SymmetryFromOrbifold</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1crystallography_1_1SymmetryFromOrbifold.html">link</a></p>
 <h2><a class="anchor" id="vec"></a>
 Vec</h2>
-<details >
+<p><em>Construct a Vec from a vector values. The vector will be reshaped according to the specified batch shape.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3392,7 +3380,7 @@ Vec</h2>
 </details>
 <details >
 <summary >
-<code>values</code></summary>
+<code>values</code> Values in this (flattened) tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;double&gt; </li>
@@ -3401,9 +3389,9 @@ Vec</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1UserFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="wr2"></a>
 WR2</h2>
-<details >
+<p><em>Construct a WR2 from a vector values. The vector will be reshaped according to the specified batch shape.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3411,7 +3399,7 @@ WR2</h2>
 </details>
 <details >
 <summary >
-<code>values</code></summary>
+<code>values</code> Values in this (flattened) tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;double&gt; </li>
@@ -3420,9 +3408,9 @@ WR2</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1UserFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="wsr4"></a>
 WSR4</h2>
-<details >
+<p><em>Construct a WSR4 from a vector values. The vector will be reshaped according to the specified batch shape.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3430,7 +3418,7 @@ WSR4</h2>
 </details>
 <details >
 <summary >
-<code>values</code></summary>
+<code>values</code> Values in this (flattened) tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;double&gt; </li>
@@ -3439,9 +3427,9 @@ WSR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1UserFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="wwr4"></a>
 WWR4</h2>
-<details >
+<p><em>Construct a WWR4 from a vector values. The vector will be reshaped according to the specified batch shape.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3449,7 +3437,7 @@ WWR4</h2>
 </details>
 <details >
 <summary >
-<code>values</code></summary>
+<code>values</code> Values in this (flattened) tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;double&gt; </li>
@@ -3458,9 +3446,9 @@ WWR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1UserFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="zerosbatchtensor"></a>
 ZerosBatchTensor</h2>
-<details >
+<p><em>Construct a BatchTensor with batch and base shapes filled with zeros.</em> </p><details >
 <summary >
-<code>base_shape</code></summary>
+<code>base_shape</code> Base shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3468,7 +3456,7 @@ ZerosBatchTensor</h2>
 </details>
 <details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3477,9 +3465,9 @@ ZerosBatchTensor</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ZerosBatchTensor.html">link</a></p>
 <h2><a class="anchor" id="zerosmillerindex"></a>
 ZerosMillerIndex</h2>
-<details >
+<p><em>Construct a MillerIndex with given batch shape filled with zeros.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3488,9 +3476,9 @@ ZerosMillerIndex</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ZerosFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="zerosquaternion"></a>
 ZerosQuaternion</h2>
-<details >
+<p><em>Construct a Quaternion with given batch shape filled with zeros.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3499,9 +3487,9 @@ ZerosQuaternion</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ZerosFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="zerosr2"></a>
 ZerosR2</h2>
-<details >
+<p><em>Construct a R2 with given batch shape filled with zeros.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3510,9 +3498,9 @@ ZerosR2</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ZerosFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="zerosr3"></a>
 ZerosR3</h2>
-<details >
+<p><em>Construct a R3 with given batch shape filled with zeros.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3521,9 +3509,9 @@ ZerosR3</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ZerosFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="zerosr4"></a>
 ZerosR4</h2>
-<details >
+<p><em>Construct a R4 with given batch shape filled with zeros.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3532,9 +3520,9 @@ ZerosR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ZerosFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="zerosr5"></a>
 ZerosR5</h2>
-<details >
+<p><em>Construct a R5 with given batch shape filled with zeros.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3543,9 +3531,9 @@ ZerosR5</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ZerosFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="zerosrot"></a>
 ZerosRot</h2>
-<details >
+<p><em>Construct a Rot with given batch shape filled with zeros.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3554,9 +3542,9 @@ ZerosRot</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ZerosFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="zerossffr4"></a>
 ZerosSFFR4</h2>
-<details >
+<p><em>Construct a SFFR4 with given batch shape filled with zeros.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3565,9 +3553,9 @@ ZerosSFFR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ZerosFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="zerossfr3"></a>
 ZerosSFR3</h2>
-<details >
+<p><em>Construct a SFR3 with given batch shape filled with zeros.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3576,9 +3564,9 @@ ZerosSFR3</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ZerosFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="zerossr2"></a>
 ZerosSR2</h2>
-<details >
+<p><em>Construct a SR2 with given batch shape filled with zeros.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3587,9 +3575,9 @@ ZerosSR2</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ZerosFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="zerosssfr5"></a>
 ZerosSSFR5</h2>
-<details >
+<p><em>Construct a SSFR5 with given batch shape filled with zeros.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3598,9 +3586,9 @@ ZerosSSFR5</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ZerosFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="zerosssr4"></a>
 ZerosSSR4</h2>
-<details >
+<p><em>Construct a SSR4 with given batch shape filled with zeros.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3609,9 +3597,9 @@ ZerosSSR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ZerosFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="zerosswr4"></a>
 ZerosSWR4</h2>
-<details >
+<p><em>Construct a SWR4 with given batch shape filled with zeros.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3620,9 +3608,9 @@ ZerosSWR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ZerosFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="zerosscalar"></a>
 ZerosScalar</h2>
-<details >
+<p><em>Construct a Scalar with given batch shape filled with zeros.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3631,9 +3619,9 @@ ZerosScalar</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ZerosFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="zerosvec"></a>
 ZerosVec</h2>
-<details >
+<p><em>Construct a Vec with given batch shape filled with zeros.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3642,9 +3630,9 @@ ZerosVec</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ZerosFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="zeroswr2"></a>
 ZerosWR2</h2>
-<details >
+<p><em>Construct a WR2 with given batch shape filled with zeros.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3653,9 +3641,9 @@ ZerosWR2</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ZerosFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="zeroswsr4"></a>
 ZerosWSR4</h2>
-<details >
+<p><em>Construct a WSR4 with given batch shape filled with zeros.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>
@@ -3664,9 +3652,9 @@ ZerosWSR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ZerosFixedDimTensor.html">link</a></p>
 <h2><a class="anchor" id="zeroswwr4"></a>
 ZerosWWR4</h2>
-<details >
+<p><em>Construct a WWR4 with given batch shape filled with zeros.</em> </p><details >
 <summary >
-<code>batch_shape</code></summary>
+<code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;long&gt; </li>

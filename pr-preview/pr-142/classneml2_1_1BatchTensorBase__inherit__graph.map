@@ -86,14 +86,14 @@
 <area shape="poly" id="edge43_Node000041_Node000046" title=" " alt="" coords="627,1217,686,1217,686,1222,627,1222"/>
 <area shape="rect" id="Node000050" href="$classneml2_1_1VecBase.html" title=" " alt="" coords="686,1256,817,1281"/>
 <area shape="poly" id="edge45_Node000041_Node000050" title=" " alt="" coords="581,1232,687,1253,686,1259,580,1237"/>
-<area shape="rect" id="Node000053" href="$classneml2_1_1VecBase.html" title=" " alt="" coords="683,1305,820,1331"/>
-<area shape="poly" id="edge47_Node000041_Node000053" title=" " alt="" coords="543,1236,673,1292,706,1303,705,1308,671,1296,541,1240"/>
+<area shape="rect" id="Node000052" href="$classneml2_1_1VecBase.html" title=" " alt="" coords="683,1305,820,1331"/>
+<area shape="poly" id="edge47_Node000041_Node000052" title=" " alt="" coords="543,1236,673,1292,706,1303,705,1308,671,1296,541,1240"/>
 <area shape="rect" id="Node000043" href="$classneml2_1_1R2.html" title="A basic R2." alt="" coords="917,1157,955,1183"/>
 <area shape="poly" id="edge42_Node000042_Node000043" title=" " alt="" coords="824,1167,917,1167,917,1173,824,1173"/>
 <area shape="rect" id="Node000047" href="$classneml2_1_1Rot.html" title="Rotation stored as modified Rodrigues parameters." alt="" coords="914,1207,958,1232"/>
 <area shape="poly" id="edge44_Node000046_Node000047" title=" " alt="" coords="830,1217,914,1217,914,1222,830,1222"/>
 <area shape="rect" id="Node000051" href="$classneml2_1_1Vec.html" title="The (logical) vector." alt="" coords="913,1256,959,1281"/>
 <area shape="poly" id="edge46_Node000050_Node000051" title=" " alt="" coords="830,1266,913,1266,913,1271,830,1271"/>
-<area shape="rect" id="Node000054" href="$classneml2_1_1WR2.html" title="A skew rank 2, represented as an axial vector." alt="" coords="910,1305,962,1331"/>
-<area shape="poly" id="edge48_Node000053_Node000054" title=" " alt="" coords="834,1315,910,1315,910,1321,834,1321"/>
+<area shape="rect" id="Node000053" href="$classneml2_1_1WR2.html" title="A skew rank 2, represented as an axial vector." alt="" coords="910,1305,962,1331"/>
+<area shape="poly" id="edge48_Node000052_Node000053" title=" " alt="" coords="834,1315,910,1315,910,1321,834,1321"/>
 </map>

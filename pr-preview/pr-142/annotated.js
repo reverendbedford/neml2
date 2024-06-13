@@ -35,7 +35,6 @@ var annotated =
       [ "EmptyBatchTensor", "classneml2_1_1EmptyBatchTensor.html", "classneml2_1_1EmptyBatchTensor" ],
       [ "EmptyFixedDimTensor", "classneml2_1_1EmptyFixedDimTensor.html", "classneml2_1_1EmptyFixedDimTensor" ],
       [ "Factory", "classneml2_1_1Factory.html", "classneml2_1_1Factory" ],
-      [ "Fill3DVec", "classneml2_1_1Fill3DVec.html", "classneml2_1_1Fill3DVec" ],
       [ "FillR2", "classneml2_1_1FillR2.html", "classneml2_1_1FillR2" ],
       [ "FillRot", "classneml2_1_1FillRot.html", "classneml2_1_1FillRot" ],
       [ "FillSR2", "classneml2_1_1FillSR2.html", "classneml2_1_1FillSR2" ],
