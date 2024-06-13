@@ -126,9 +126,9 @@ Available objects and their input file syntax</h1>
 <p>Refer to <a class="el" href="system-solvers.html">System Documentation</a> for detailed explanation about this system.</p>
 <h2><a class="anchor" id="newton"></a>
 Newton</h2>
-<details >
+<p>The standard Newton-Raphson solver which always takes the 'full' Newton step. </p><details >
 <summary >
-<code>abs_tol</code></summary>
+<code>abs_tol</code> Absolute tolerance in the convergence criteria</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -137,7 +137,7 @@ Newton</h2>
 </details>
 <details >
 <summary >
-<code>max_its</code></summary>
+<code>max_its</code> Maximum number of iterations allowed before issuing an error/exception</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: unsigned int</li>
@@ -146,7 +146,7 @@ Newton</h2>
 </details>
 <details >
 <summary >
-<code>rel_tol</code></summary>
+<code>rel_tol</code> Relative tolerance in the convergence criteria</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -155,7 +155,7 @@ Newton</h2>
 </details>
 <details >
 <summary >
-<code>verbose</code></summary>
+<code>verbose</code> Verbosity of the solver</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: bool</li>
@@ -165,9 +165,9 @@ Newton</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1Newton.html">link</a></p>
 <h2><a class="anchor" id="newtonwithlinesearch"></a>
 NewtonWithLineSearch</h2>
-<details >
+<p>The Newton-Raphson solver with line search. </p><details >
 <summary >
-<code>abs_tol</code></summary>
+<code>abs_tol</code> Absolute tolerance in the convergence criteria</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -176,7 +176,7 @@ NewtonWithLineSearch</h2>
 </details>
 <details >
 <summary >
-<code>linesearch_cutback</code></summary>
+<code>linesearch_cutback</code> Linesearch cut-back factor when the current scale factor cannot sufficiently reduce the residual.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -185,7 +185,7 @@ NewtonWithLineSearch</h2>
 </details>
 <details >
 <summary >
-<code>linesearch_stopping_criteria</code></summary>
+<code>linesearch_stopping_criteria</code> The lineseach tolerance slightly relaxing the definition of residual decrease</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -194,7 +194,7 @@ NewtonWithLineSearch</h2>
 </details>
 <details >
 <summary >
-<code>max_its</code></summary>
+<code>max_its</code> Maximum number of iterations allowed before issuing an error/exception</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: unsigned int</li>
@@ -203,7 +203,7 @@ NewtonWithLineSearch</h2>
 </details>
 <details >
 <summary >
-<code>max_linesearch_iterations</code></summary>
+<code>max_linesearch_iterations</code> Maximum allowable linesearch iterations. No error is produced upon reaching the maximum number of iterations, and the scale factor in the last iteration is used to scale the step.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: unsigned int</li>
@@ -212,7 +212,7 @@ NewtonWithLineSearch</h2>
 </details>
 <details >
 <summary >
-<code>rel_tol</code></summary>
+<code>rel_tol</code> Relative tolerance in the convergence criteria</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -221,7 +221,7 @@ NewtonWithLineSearch</h2>
 </details>
 <details >
 <summary >
-<code>verbose</code></summary>
+<code>verbose</code> Verbosity of the solver</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: bool</li>
@@ -231,9 +231,9 @@ NewtonWithLineSearch</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1NewtonWithLineSearch.html">link</a></p>
 <h2><a class="anchor" id="newtonwithtrustregion"></a>
 NewtonWithTrustRegion</h2>
-<details >
+<p>A trust-region Newton solver. The step size and direction are modified by solving a constrained minimization problem using the local quadratic approximation. The default solver parameters are chosen based on a limited set of problems we tested on and are expected to be tuned. </p><details >
 <summary >
-<code>abs_tol</code></summary>
+<code>abs_tol</code> Absolute tolerance in the convergence criteria</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -242,7 +242,7 @@ NewtonWithTrustRegion</h2>
 </details>
 <details >
 <summary >
-<code>accept_criteria</code></summary>
+<code>accept_criteria</code> Reject the current step when the merit function reduction is below this threshold</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -251,7 +251,7 @@ NewtonWithTrustRegion</h2>
 </details>
 <details >
 <summary >
-<code>delta_0</code></summary>
+<code>delta_0</code> Initial trust region radius</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -260,7 +260,7 @@ NewtonWithTrustRegion</h2>
 </details>
 <details >
 <summary >
-<code>delta_max</code></summary>
+<code>delta_max</code> Maximum trust region radius</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -269,7 +269,7 @@ NewtonWithTrustRegion</h2>
 </details>
 <details >
 <summary >
-<code>expand_criteria</code></summary>
+<code>expand_criteria</code> The trust region radius is increased when the merit function reduction is above this threshold</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -278,7 +278,7 @@ NewtonWithTrustRegion</h2>
 </details>
 <details >
 <summary >
-<code>expand_factor</code></summary>
+<code>expand_factor</code> Factor to apply when increasing the trust region radius</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -287,7 +287,7 @@ NewtonWithTrustRegion</h2>
 </details>
 <details >
 <summary >
-<code>max_its</code></summary>
+<code>max_its</code> Maximum number of iterations allowed before issuing an error/exception</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: unsigned int</li>
@@ -296,7 +296,7 @@ NewtonWithTrustRegion</h2>
 </details>
 <details >
 <summary >
-<code>reduce_criteria</code></summary>
+<code>reduce_criteria</code> The trust region radius is reduced when the merit function reduction is below this threshold</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -305,7 +305,7 @@ NewtonWithTrustRegion</h2>
 </details>
 <details >
 <summary >
-<code>reduce_factor</code></summary>
+<code>reduce_factor</code> Factor to apply when reducing the trust region radius</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -314,7 +314,7 @@ NewtonWithTrustRegion</h2>
 </details>
 <details >
 <summary >
-<code>rel_tol</code></summary>
+<code>rel_tol</code> Relative tolerance in the convergence criteria</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -332,7 +332,7 @@ NewtonWithTrustRegion</h2>
 </details>
 <details >
 <summary >
-<code>subproblem_max_its</code></summary>
+<code>subproblem_max_its</code> Maximum number of allowable iterations when solving the quadratic sub-problem</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: unsigned int</li>
@@ -341,7 +341,7 @@ NewtonWithTrustRegion</h2>
 </details>
 <details >
 <summary >
-<code>subproblem_rel_tol</code></summary>
+<code>subproblem_rel_tol</code> Absolute tolerance used for the quadratic sub-problem</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -350,7 +350,7 @@ NewtonWithTrustRegion</h2>
 </details>
 <details >
 <summary >
-<code>verbose</code></summary>
+<code>verbose</code> Verbosity of the solver</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: bool</li>

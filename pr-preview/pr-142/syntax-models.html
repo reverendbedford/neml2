@@ -244,9 +244,9 @@ ArrheniusParameter</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ArrheniusParameter.html">link</a></p>
 <h2><a class="anchor" id="associativeisotropicplastichardening"></a>
 AssociativeIsotropicPlasticHardening</h2>
-<details >
+<p>Map the flow rate (i.e., the consistency parameter in the KKT conditions) to the rate of internal variables. This object calculates the rate of equivalent plastic strain following associative flow rule, i.e. \( \dot{\varepsilon}_p = - \dot{\gamma} \frac{\partial f}{\partial k} \), where \( \dot{\varepsilon}_p \) is the equivalent plastic strain, \( \dot{\gamma} \) is the flow rate, \( f \) is the yield function, and \( k \) is the isotropic hardening. </p><details >
 <summary >
-<code>equivalent_plastic_strain_rate</code></summary>
+<code>equivalent_plastic_strain_rate</code> Rate of equivalent plastic strain</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -255,7 +255,7 @@ AssociativeIsotropicPlasticHardening</h2>
 </details>
 <details >
 <summary >
-<code>flow_rate</code></summary>
+<code>flow_rate</code> Flow rate</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -264,7 +264,7 @@ AssociativeIsotropicPlasticHardening</h2>
 </details>
 <details >
 <summary >
-<code>isotropic_hardening_direction</code></summary>
+<code>isotropic_hardening_direction</code> Direction of associative isotropic hardening which can be calculated using Normality.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -274,9 +274,9 @@ AssociativeIsotropicPlasticHardening</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1AssociativeIsotropicPlasticHardening.html">link</a></p>
 <h2><a class="anchor" id="associativekinematicplastichardening"></a>
 AssociativeKinematicPlasticHardening</h2>
-<details >
+<p>Map the flow rate (i.e., the consistency parameter in the KKT conditions) to the rate of internal variables. This object calculates the rate of kinematic plastic strain following associative flow rule, i.e. \( \dot{\boldsymbol{K}}_p = - \dot{\gamma} \frac{\partial f}{\partial \boldsymbol{X}} \), where \( \dot{\boldsymbol{K}}_p \) is the kinematic plastic strain, \( \dot{\gamma} \) is the flow rate, \( f \) is the yield function, and \( \boldsymbol{X} \) is the kinematic hardening. </p><details >
 <summary >
-<code>flow_rate</code></summary>
+<code>flow_rate</code> Flow rate</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -285,7 +285,7 @@ AssociativeKinematicPlasticHardening</h2>
 </details>
 <details >
 <summary >
-<code>kinematic_hardening_direction</code></summary>
+<code>kinematic_hardening_direction</code> Direction of associative kinematic hardening which can be calculated using Normality.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -294,7 +294,7 @@ AssociativeKinematicPlasticHardening</h2>
 </details>
 <details >
 <summary >
-<code>kinematic_plastic_strain_rate</code></summary>
+<code>kinematic_plastic_strain_rate</code> Rate of kinematic plastic strain</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -304,9 +304,9 @@ AssociativeKinematicPlasticHardening</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1AssociativeKinematicPlasticHardening.html">link</a></p>
 <h2><a class="anchor" id="associativeplasticflow"></a>
 AssociativePlasticFlow</h2>
-<details >
+<p>Map the flow rate (i.e., the consistency parameter in the KKT conditions) to the rate of internal variables. This object calculates the rate of plastic strain following associative flow rule, i.e. \( \dot{\boldsymbol{\varepsilon}}_p = - \dot{\gamma} \frac{\partial f}{\partial \boldsymbol{M}} \), where \( \dot{\boldsymbol{\varepsilon}}_p \) is the plastic strain, \( \dot{\gamma} \) is the flow rate, \( f \) is the yield function, and \( \boldsymbol{M} \) is the Mandel stress. </p><details >
 <summary >
-<code>flow_direction</code></summary>
+<code>flow_direction</code> Flow direction which can be calculated using Normality</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -315,7 +315,7 @@ AssociativePlasticFlow</h2>
 </details>
 <details >
 <summary >
-<code>flow_rate</code></summary>
+<code>flow_rate</code> Flow rate</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -324,7 +324,7 @@ AssociativePlasticFlow</h2>
 </details>
 <details >
 <summary >
-<code>plastic_strain_rate</code></summary>
+<code>plastic_strain_rate</code> Rate of plastic strain</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -334,9 +334,9 @@ AssociativePlasticFlow</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1AssociativePlasticFlow.html">link</a></p>
 <h2><a class="anchor" id="chabocheplastichardening"></a>
 ChabochePlasticHardening</h2>
-<details >
+<p>Map the flow rate (i.e., the consistency parameter in the KKT conditions) to the rate of internal variables. This object defines the non-associative Chaboche kinematic hardening. In the Chaboche model, back stress is directly treated as an internal variable. Rate of back stress is given as \( \dot{\boldsymbol{X}} = \left( \frac{2}{3} C \frac{\partial f}{\partial \boldsymbol{M}} - g \boldsymbol{X} \right) \dot{\gamma} - A \lVert \boldsymbol{X} \rVert^{a - 1} \boldsymbol{X} \), including kinematic hardening, dynamic recovery, and static recovery. \( \frac{\partial f}{\partial \boldsymbol{M}} \) is the flow direction, \( \dot{\gamma} \) is the flow rate, and \( C \), \( g \), \( A \), and \( a \) are material parameters. </p><details >
 <summary >
-<code>A</code></summary>
+<code>A</code> Static recovery prefactor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -344,7 +344,7 @@ ChabochePlasticHardening</h2>
 </details>
 <details >
 <summary >
-<code>C</code></summary>
+<code>C</code> Kinematic hardening coefficient</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -352,7 +352,7 @@ ChabochePlasticHardening</h2>
 </details>
 <details >
 <summary >
-<code>a</code></summary>
+<code>a</code> Static recovery exponent</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -360,7 +360,7 @@ ChabochePlasticHardening</h2>
 </details>
 <details >
 <summary >
-<code>back_stress</code></summary>
+<code>back_stress</code> Back stress</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -369,7 +369,7 @@ ChabochePlasticHardening</h2>
 </details>
 <details >
 <summary >
-<code>flow_direction</code></summary>
+<code>flow_direction</code> Flow direction</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -378,7 +378,7 @@ ChabochePlasticHardening</h2>
 </details>
 <details >
 <summary >
-<code>flow_rate</code></summary>
+<code>flow_rate</code> Flow rate</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -387,7 +387,7 @@ ChabochePlasticHardening</h2>
 </details>
 <details >
 <summary >
-<code>g</code></summary>
+<code>g</code> Dynamic recovery coefficient</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -406,7 +406,7 @@ ComposedModel</h2>
 </details>
 <details >
 <summary >
-<code>automatic_scaling</code></summary>
+<code>automatic_scaling</code> Whether to perform automatic scaling. See neml2::NonlinearSystem::init_scaling for implementation details.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: bool</li>
@@ -415,7 +415,7 @@ ComposedModel</h2>
 </details>
 <details >
 <summary >
-<code>automatic_scaling_miter</code></summary>
+<code>automatic_scaling_miter</code> Maximum number of automatic scaling iterations. No error is produced upon reaching the maximum number of scaling iterations, and the scaling matrices obtained at the last iteration are used to scale the nonlinear system.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: unsigned int</li>
@@ -424,7 +424,7 @@ ComposedModel</h2>
 </details>
 <details >
 <summary >
-<code>automatic_scaling_tol</code></summary>
+<code>automatic_scaling_tol</code> Tolerance used in iteratively updating the scaling matrices.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -792,9 +792,9 @@ CopyWWR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
 <h2><a class="anchor" id="elasticstrain"></a>
 ElasticStrain</h2>
-<details >
+<p>Calculate elastic strain given total and plastic strain (assuming additive decomposition), i.e. \( \boldsymbol{\varepsilon}_e = \boldsymbol{\varepsilon} - \boldsymbol{\varepsilon}_p \). </p><details >
 <summary >
-<code>elastic_strain</code></summary>
+<code>elastic_strain</code> Elastic strain</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -803,7 +803,7 @@ ElasticStrain</h2>
 </details>
 <details >
 <summary >
-<code>plastic_strain</code></summary>
+<code>plastic_strain</code> Plastic strain</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -812,7 +812,7 @@ ElasticStrain</h2>
 </details>
 <details >
 <summary >
-<code>rate_form</code></summary>
+<code>rate_form</code> Whether the model defines the relationship in rate form</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: bool</li>
@@ -821,7 +821,7 @@ ElasticStrain</h2>
 </details>
 <details >
 <summary >
-<code>total_strain</code></summary>
+<code>total_strain</code> Total strain</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -909,9 +909,9 @@ FixOrientation</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FixOrientation.html">link</a></p>
 <h2><a class="anchor" id="gtnyieldfunction"></a>
 GTNYieldFunction</h2>
-<details >
+<p>Gurson-Tvergaard-Needleman yield function for poroplasticity. The yield function is defined as \( f = \left( \frac{\bar{\sigma}}{\sigma_y + k} \right)^2 + 2 q_1 \phi \cosh \left( \frac{1}{2} q_2 \frac{3\sigma_h-\sigma_s}{\sigma_y + k} \right) - \left( q_3 \phi^2 + 1 \right) \), where \( \bar{\sigma} \) is the von Mises stress, \( \sigma_y \) is the yield stress, \( k \) is isotropic hardening, \( \phi \) is the porosity, \( \sigma_h \) is the hydrostatic stress, and \( \sigma_s \) is the void growth back stress (sintering stress). \( q_1 \), \( q_2 \), and \( q_3 \) are parameters controlling the yield mechanisms. </p><details >
 <summary >
-<code>flow_invariant</code></summary>
+<code>flow_invariant</code> Effective stress driving plastic flow</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -920,7 +920,7 @@ GTNYieldFunction</h2>
 </details>
 <details >
 <summary >
-<code>isotropic_hardening</code></summary>
+<code>isotropic_hardening</code> Isotropic hardening</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -928,7 +928,7 @@ GTNYieldFunction</h2>
 </details>
 <details >
 <summary >
-<code>poro_invariant</code></summary>
+<code>poro_invariant</code> Effective stress driving porous flow</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -937,7 +937,7 @@ GTNYieldFunction</h2>
 </details>
 <details >
 <summary >
-<code>q1</code></summary>
+<code>q1</code> Parameter controlling the balance/competition between plastic flow and void evolution.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -945,7 +945,7 @@ GTNYieldFunction</h2>
 </details>
 <details >
 <summary >
-<code>q2</code></summary>
+<code>q2</code> Void evolution rate</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -953,7 +953,7 @@ GTNYieldFunction</h2>
 </details>
 <details >
 <summary >
-<code>q3</code></summary>
+<code>q3</code> Pore pressure</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -961,7 +961,7 @@ GTNYieldFunction</h2>
 </details>
 <details >
 <summary >
-<code>void_fraction</code></summary>
+<code>void_fraction</code> Void fraction (porosity)</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -970,7 +970,7 @@ GTNYieldFunction</h2>
 </details>
 <details >
 <summary >
-<code>yield_function</code></summary>
+<code>yield_function</code> Yield function</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -979,7 +979,7 @@ GTNYieldFunction</h2>
 </details>
 <details >
 <summary >
-<code>yield_stress</code></summary>
+<code>yield_stress</code> Yield stress</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -988,9 +988,9 @@ GTNYieldFunction</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1GTNYieldFunction.html">link</a></p>
 <h2><a class="anchor" id="gursoncavitation"></a>
 GursonCavitation</h2>
-<details >
+<p>Local mass balance used in conjunction with the GTNYieldFunction, \( \dot{\phi} = (1-\phi) \dot{\varepsilon}_p \). </p><details >
 <summary >
-<code>plastic_strain_rate</code></summary>
+<code>plastic_strain_rate</code> Plastic strain rate</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -999,7 +999,7 @@ GursonCavitation</h2>
 </details>
 <details >
 <summary >
-<code>void_fraction</code></summary>
+<code>void_fraction</code> Void fraction (porosity)</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1008,7 +1008,7 @@ GursonCavitation</h2>
 </details>
 <details >
 <summary >
-<code>void_fraction_rate</code></summary>
+<code>void_fraction_rate</code> Rate of void evolution</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1037,9 +1037,9 @@ ImplicitUpdate</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ImplicitUpdate.html">link</a></p>
 <h2><a class="anchor" id="isotropicmandelstress"></a>
 IsotropicMandelStress</h2>
-<details >
+<p>Map Cauchy stress to Mandel stress For isotropic material under small deformation, the Mandel stress and the Cauchy stress coincide. </p><details >
 <summary >
-<code>cauchy_stress</code></summary>
+<code>cauchy_stress</code> Cauchy stress</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1048,7 +1048,7 @@ IsotropicMandelStress</h2>
 </details>
 <details >
 <summary >
-<code>mandel_stress</code></summary>
+<code>mandel_stress</code> Mandel stress</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1058,9 +1058,9 @@ IsotropicMandelStress</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1IsotropicMandelStress.html">link</a></p>
 <h2><a class="anchor" id="linearisotropicelasticity"></a>
 LinearIsotropicElasticity</h2>
-<details >
+<p>Relate elastic strain to stress for linear isotropic material. \( \boldsymbol{\sigma} = K \tr \boldsymbol{\varepsilon}_e + 2 G \text{dev} \boldsymbol{\varepsilon}_e \), where \( K \) and \( G \) are bulk and shear moduli, respectively. For convenience, this object only requests Young's modulus and Poisson's ratio, and handles the Lame parameter conversion behind the scenes. </p><details >
 <summary >
-<code>compliance</code></summary>
+<code>compliance</code> Whether the model defines the compliance relationship, i.e., mapping from stress to elastic strain. When set to false (default), the model maps elastic strain to stress.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: bool</li>
@@ -1069,7 +1069,7 @@ LinearIsotropicElasticity</h2>
 </details>
 <details >
 <summary >
-<code>poisson_ratio</code></summary>
+<code>poisson_ratio</code> Poisson's ratio</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1077,7 +1077,7 @@ LinearIsotropicElasticity</h2>
 </details>
 <details >
 <summary >
-<code>rate_form</code></summary>
+<code>rate_form</code> Whether the model defines the stress-strain relationship in rate form. When set to true, the model maps elastic strain <em>rate</em> to stress <em>rate</em>.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: bool</li>
@@ -1086,7 +1086,7 @@ LinearIsotropicElasticity</h2>
 </details>
 <details >
 <summary >
-<code>strain</code></summary>
+<code>strain</code> Elastic strain</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1095,7 +1095,7 @@ LinearIsotropicElasticity</h2>
 </details>
 <details >
 <summary >
-<code>stress</code></summary>
+<code>stress</code> Stress</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1104,7 +1104,7 @@ LinearIsotropicElasticity</h2>
 </details>
 <details >
 <summary >
-<code>youngs_modulus</code></summary>
+<code>youngs_modulus</code> Young's modulus</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1113,9 +1113,9 @@ LinearIsotropicElasticity</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearIsotropicElasticity.html">link</a></p>
 <h2><a class="anchor" id="linearisotropichardening"></a>
 LinearIsotropicHardening</h2>
-<details >
+<p>Map equivalent plastic strain to isotropic hardening following a linear relationship, i.e., \( k = H \varepsilon_p \) where \( H \) is the hardening modulus. </p><details >
 <summary >
-<code>equivalent_plastic_strain</code></summary>
+<code>equivalent_plastic_strain</code> Equivalent plastic strain</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1124,7 +1124,7 @@ LinearIsotropicHardening</h2>
 </details>
 <details >
 <summary >
-<code>hardening_modulus</code></summary>
+<code>hardening_modulus</code> Hardening modulus</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1132,7 +1132,7 @@ LinearIsotropicHardening</h2>
 </details>
 <details >
 <summary >
-<code>isotropic_hardening</code></summary>
+<code>isotropic_hardening</code> Isotropic hardening</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1142,9 +1142,9 @@ LinearIsotropicHardening</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearIsotropicHardening.html">link</a></p>
 <h2><a class="anchor" id="linearkinematichardening"></a>
 LinearKinematicHardening</h2>
-<details >
+<p>Map kinematic plastic strain to back stress following a linear relationship, i.e., \( \boldsymbol{X} = H \boldsymbol{K}_p \) where \( H \) is the hardening modulus. </p><details >
 <summary >
-<code>back_stress</code></summary>
+<code>back_stress</code> Back stress</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1153,7 +1153,7 @@ LinearKinematicHardening</h2>
 </details>
 <details >
 <summary >
-<code>hardening_modulus</code></summary>
+<code>hardening_modulus</code> Hardening modulus</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1161,7 +1161,7 @@ LinearKinematicHardening</h2>
 </details>
 <details >
 <summary >
-<code>kinematic_plastic_strain</code></summary>
+<code>kinematic_plastic_strain</code> Kinematic plastic strain</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1236,9 +1236,9 @@ MillerIndexLinearInterpolation</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
 <h2><a class="anchor" id="normality"></a>
 Normality</h2>
-<details >
+<p>Store the first derivatives of a scalar-valued function in given variables, i.e. \( u_i = \dfrac{f(\boldsymbol{v})}{v_i} \). </p><details >
 <summary >
-<code>from</code></summary>
+<code>from</code> Function arguments to take derivatives w.r.t.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;VariableName&gt; </li>
@@ -1246,7 +1246,7 @@ Normality</h2>
 </details>
 <details >
 <summary >
-<code>function</code></summary>
+<code>function</code> Function to take derivative</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -1254,7 +1254,7 @@ Normality</h2>
 </details>
 <details >
 <summary >
-<code>model</code></summary>
+<code>model</code> The model which evaluates the scalar-valued function</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: string </li>
@@ -1262,7 +1262,7 @@ Normality</h2>
 </details>
 <details >
 <summary >
-<code>to</code></summary>
+<code>to</code> Variables to store the first derivatives</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;VariableName&gt; </li>
@@ -1271,9 +1271,9 @@ Normality</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1Normality.html">link</a></p>
 <h2><a class="anchor" id="olevskysinteringstress"></a>
 OlevskySinteringStress</h2>
-<details >
+<p>Define the Olevsky-Skorohod sintering stress to be used in conjunction with poroplasticity yield functions such as the GTNYieldFunction. The sintering stress is defined as \( \sigma_s = 3 \dfrac{\gamma}{r} \phi^2 \), where \( \gamma \) is the surface tension, \( r \) is the size of the particles/powders, and \( \phi \) is the void fraction. </p><details >
 <summary >
-<code>particle_radius</code></summary>
+<code>particle_radius</code> Particle radius</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1281,7 +1281,7 @@ OlevskySinteringStress</h2>
 </details>
 <details >
 <summary >
-<code>sintering_stress</code></summary>
+<code>sintering_stress</code> Sintering stress</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1290,7 +1290,7 @@ OlevskySinteringStress</h2>
 </details>
 <details >
 <summary >
-<code>surface_tension</code></summary>
+<code>surface_tension</code> Surface tension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1298,7 +1298,7 @@ OlevskySinteringStress</h2>
 </details>
 <details >
 <summary >
-<code>void_fraction</code></summary>
+<code>void_fraction</code> Void fraction</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1356,9 +1356,9 @@ OrientationRate</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OrientationRate.html">link</a></p>
 <h2><a class="anchor" id="overstress"></a>
 OverStress</h2>
-<details >
+<p>Calculate the over stress \( \boldsymbol{O} = \boldsymbol{M} - \boldsymbol{X} \), where \( \boldsymbol{M} \) is the Mandel stress and \( \boldsymbol{X} \) is the back stress. </p><details >
 <summary >
-<code>back_stress</code></summary>
+<code>back_stress</code> Back stress</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1367,7 +1367,7 @@ OverStress</h2>
 </details>
 <details >
 <summary >
-<code>mandel_stress</code></summary>
+<code>mandel_stress</code> Mandel stress</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1376,7 +1376,7 @@ OverStress</h2>
 </details>
 <details >
 <summary >
-<code>over_stress</code></summary>
+<code>over_stress</code> Over stress</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1386,9 +1386,9 @@ OverStress</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OverStress.html">link</a></p>
 <h2><a class="anchor" id="perzynaplasticflowrate"></a>
 PerzynaPlasticFlowRate</h2>
-<details >
+<p>Perzyna's viscous approximation of the consistent yield envelope (with a power law), i.e. \( \dot{\gamma} = \left( \frac{\left&lt; f \right&gt;}{\eta} \right)^n \), where \( f \) is the yield function, \( \eta \) is the reference stress, and \( n \) is the power-law exponent. </p><details >
 <summary >
-<code>exponent</code></summary>
+<code>exponent</code> Power-law exponent</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1396,7 +1396,7 @@ PerzynaPlasticFlowRate</h2>
 </details>
 <details >
 <summary >
-<code>flow_rate</code></summary>
+<code>flow_rate</code> Flow rate</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1405,7 +1405,7 @@ PerzynaPlasticFlowRate</h2>
 </details>
 <details >
 <summary >
-<code>reference_stress</code></summary>
+<code>reference_stress</code> Reference stress</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1413,7 +1413,7 @@ PerzynaPlasticFlowRate</h2>
 </details>
 <details >
 <summary >
-<code>yield_function</code></summary>
+<code>yield_function</code> Yield function</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1691,9 +1691,12 @@ R5LinearInterpolation</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
 <h2><a class="anchor" id="rateindependentplasticflowconstraint"></a>
 RateIndependentPlasticFlowConstraint</h2>
-<details >
+<p>Solve the consistent plasticity yield envelope by solving the equivalent complementarity condition </p><p class="formulaDsp">
+\[ r = \begin{cases} \dot{\gamma}, &amp; f &lt; 0 \\ f, &amp; f \geq 0. \end{cases} \]
+</p>
+ <details >
 <summary >
-<code>flow_rate</code></summary>
+<code>flow_rate</code> Flow rate</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1702,7 +1705,7 @@ RateIndependentPlasticFlowConstraint</h2>
 </details>
 <details >
 <summary >
-<code>yield_function</code></summary>
+<code>yield_function</code> Yield function</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1711,7 +1714,7 @@ RateIndependentPlasticFlowConstraint</h2>
 </details>
 <details >
 <summary >
-<code>yielding_tolerance</code></summary>
+<code>yielding_tolerance</code> Tolerance for determining whether the current material state is inside or outside the yield envelope</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -1862,7 +1865,7 @@ SFR3LinearInterpolation</h2>
 SR2BackwardEulerTimeIntegration</h2>
 <p>Define the backward Euler time integration residual \( r = s - s_n - (t - t_n) \dot{s} \), where \(s\) is the variable being integrated, \(\dot{s}\) is the variable rate, and \(t\) is time. Subscripts \(n\) denote quantities from the previous time step. </p><details >
 <summary >
-<code>automatic_scaling</code></summary>
+<code>automatic_scaling</code> Whether to perform automatic scaling. See neml2::NonlinearSystem::init_scaling for implementation details.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: bool</li>
@@ -1871,7 +1874,7 @@ SR2BackwardEulerTimeIntegration</h2>
 </details>
 <details >
 <summary >
-<code>automatic_scaling_miter</code></summary>
+<code>automatic_scaling_miter</code> Maximum number of automatic scaling iterations. No error is produced upon reaching the maximum number of scaling iterations, and the scaling matrices obtained at the last iteration are used to scale the nonlinear system.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: unsigned int</li>
@@ -1880,7 +1883,7 @@ SR2BackwardEulerTimeIntegration</h2>
 </details>
 <details >
 <summary >
-<code>automatic_scaling_tol</code></summary>
+<code>automatic_scaling_tol</code> Tolerance used in iteratively updating the scaling matrices.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -2139,7 +2142,7 @@ SWR4LinearInterpolation</h2>
 ScalarBackwardEulerTimeIntegration</h2>
 <p>Define the backward Euler time integration residual \( r = s - s_n - (t - t_n) \dot{s} \), where \(s\) is the variable being integrated, \(\dot{s}\) is the variable rate, and \(t\) is time. Subscripts \(n\) denote quantities from the previous time step. </p><details >
 <summary >
-<code>automatic_scaling</code></summary>
+<code>automatic_scaling</code> Whether to perform automatic scaling. See neml2::NonlinearSystem::init_scaling for implementation details.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: bool</li>
@@ -2148,7 +2151,7 @@ ScalarBackwardEulerTimeIntegration</h2>
 </details>
 <details >
 <summary >
-<code>automatic_scaling_miter</code></summary>
+<code>automatic_scaling_miter</code> Maximum number of automatic scaling iterations. No error is produced upon reaching the maximum number of scaling iterations, and the scaling matrices obtained at the last iteration are used to scale the nonlinear system.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: unsigned int</li>
@@ -2157,7 +2160,7 @@ ScalarBackwardEulerTimeIntegration</h2>
 </details>
 <details >
 <summary >
-<code>automatic_scaling_tol</code></summary>
+<code>automatic_scaling_tol</code> Tolerance used in iteratively updating the scaling matrices.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -2374,9 +2377,9 @@ SumSlipRates</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1SumSlipRates.html">link</a></p>
 <h2><a class="anchor" id="thermaleigenstrain"></a>
 ThermalEigenstrain</h2>
-<details >
+<p>Define the (cummulative, as opposed to instantaneous) linear isotropic thermal eigenstrain, i.e. \( \boldsymbol{\varepsilon}_T = \alpha (T - T_0) \boldsymbol{I} \), where \( \alpha \) is the coefficient of thermal expansion (CTE), \( T \) is the temperature, and \( T_0 \) is the reference (stress-free) temperature. </p><details >
 <summary >
-<code>CTE</code></summary>
+<code>CTE</code> Coefficient of thermal expansion</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -2384,7 +2387,7 @@ ThermalEigenstrain</h2>
 </details>
 <details >
 <summary >
-<code>eigenstrain</code></summary>
+<code>eigenstrain</code> Eigenstrain</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2393,7 +2396,7 @@ ThermalEigenstrain</h2>
 </details>
 <details >
 <summary >
-<code>reference_temperature</code></summary>
+<code>reference_temperature</code> Reference (stress-free) temperature</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -2401,7 +2404,7 @@ ThermalEigenstrain</h2>
 </details>
 <details >
 <summary >
-<code>temperature</code></summary>
+<code>temperature</code> Temperature</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2411,9 +2414,9 @@ ThermalEigenstrain</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ThermalEigenstrain.html">link</a></p>
 <h2><a class="anchor" id="totalstrain"></a>
 TotalStrain</h2>
-<details >
+<p>Calculate the total strain by summing the elastic and plastic strain. </p><details >
 <summary >
-<code>elastic_strain</code></summary>
+<code>elastic_strain</code> Elastic strain</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2422,7 +2425,7 @@ TotalStrain</h2>
 </details>
 <details >
 <summary >
-<code>plastic_strain</code></summary>
+<code>plastic_strain</code> Plastic strain</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2431,7 +2434,7 @@ TotalStrain</h2>
 </details>
 <details >
 <summary >
-<code>rate_form</code></summary>
+<code>rate_form</code> Whether to define the relationship in rate form</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: bool</li>
@@ -2440,7 +2443,7 @@ TotalStrain</h2>
 </details>
 <details >
 <summary >
-<code>total_strain</code></summary>
+<code>total_strain</code> Total strain</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2452,7 +2455,7 @@ TotalStrain</h2>
 VecBackwardEulerTimeIntegration</h2>
 <p>Define the backward Euler time integration residual \( r = s - s_n - (t - t_n) \dot{s} \), where \(s\) is the variable being integrated, \(\dot{s}\) is the variable rate, and \(t\) is time. Subscripts \(n\) denote quantities from the previous time step. </p><details >
 <summary >
-<code>automatic_scaling</code></summary>
+<code>automatic_scaling</code> Whether to perform automatic scaling. See neml2::NonlinearSystem::init_scaling for implementation details.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: bool</li>
@@ -2461,7 +2464,7 @@ VecBackwardEulerTimeIntegration</h2>
 </details>
 <details >
 <summary >
-<code>automatic_scaling_miter</code></summary>
+<code>automatic_scaling_miter</code> Maximum number of automatic scaling iterations. No error is produced upon reaching the maximum number of scaling iterations, and the scaling matrices obtained at the last iteration are used to scale the nonlinear system.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: unsigned int</li>
@@ -2470,7 +2473,7 @@ VecBackwardEulerTimeIntegration</h2>
 </details>
 <details >
 <summary >
-<code>automatic_scaling_tol</code></summary>
+<code>automatic_scaling_tol</code> Tolerance used in iteratively updating the scaling matrices.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -2532,9 +2535,9 @@ VecLinearInterpolation</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
 <h2><a class="anchor" id="voceisotropichardening"></a>
 VoceIsotropicHardening</h2>
-<details >
+<p>Voce isotropic hardening model, \( h = R \left[ 1 - \exp(-d \varepsilon_p) \right] \), where \( R \) is the isotropic hardening upon saturation, and \( d \) is the hardening rate. </p><details >
 <summary >
-<code>equivalent_plastic_strain</code></summary>
+<code>equivalent_plastic_strain</code> Equivalent plastic strain</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2543,7 +2546,7 @@ VoceIsotropicHardening</h2>
 </details>
 <details >
 <summary >
-<code>isotropic_hardening</code></summary>
+<code>isotropic_hardening</code> Isotropic hardening</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2552,7 +2555,7 @@ VoceIsotropicHardening</h2>
 </details>
 <details >
 <summary >
-<code>saturated_hardening</code></summary>
+<code>saturated_hardening</code> Saturated isotropic hardening</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -2560,7 +2563,7 @@ VoceIsotropicHardening</h2>
 </details>
 <details >
 <summary >
-<code>saturation_rate</code></summary>
+<code>saturation_rate</code> Hardening saturation rate</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -2637,7 +2640,7 @@ WR2ExplicitExponentialTimeIntegration</h2>
 WR2ImplicitExponentialTimeIntegration</h2>
 <p>Define the implicit discrete exponential time integration residual of a rotation variable. The residual can be written as \( r = s - \exp\left[ (t-t_n)\dot{s}\right] \circ s_n \), where \( \circ \) denotes the rotation operator. </p><details >
 <summary >
-<code>automatic_scaling</code></summary>
+<code>automatic_scaling</code> Whether to perform automatic scaling. See neml2::NonlinearSystem::init_scaling for implementation details.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: bool</li>
@@ -2646,7 +2649,7 @@ WR2ImplicitExponentialTimeIntegration</h2>
 </details>
 <details >
 <summary >
-<code>automatic_scaling_miter</code></summary>
+<code>automatic_scaling_miter</code> Maximum number of automatic scaling iterations. No error is produced upon reaching the maximum number of scaling iterations, and the scaling matrices obtained at the last iteration are used to scale the nonlinear system.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: unsigned int</li>
@@ -2655,7 +2658,7 @@ WR2ImplicitExponentialTimeIntegration</h2>
 </details>
 <details >
 <summary >
-<code>automatic_scaling_tol</code></summary>
+<code>automatic_scaling_tol</code> Tolerance used in iteratively updating the scaling matrices.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
@@ -2763,9 +2766,9 @@ WWR4LinearInterpolation</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
 <h2><a class="anchor" id="yieldfunction"></a>
 YieldFunction</h2>
-<details >
+<p>Classical macroscale plasticity yield function, \( f = \bar{\sigma} - \sigma_y - h \), where \( \bar{\sigma} \) is the effective stress, \( \sigma_y \) is the yield stress, and \( h \) is the isotropic hardening. </p><details >
 <summary >
-<code>effective_stress</code></summary>
+<code>effective_stress</code> Effective stress</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2774,7 +2777,7 @@ YieldFunction</h2>
 </details>
 <details >
 <summary >
-<code>isotropic_hardening</code></summary>
+<code>isotropic_hardening</code> Isotropic hardening</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2782,7 +2785,7 @@ YieldFunction</h2>
 </details>
 <details >
 <summary >
-<code>yield_function</code></summary>
+<code>yield_function</code> Yield function</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2791,7 +2794,7 @@ YieldFunction</h2>
 </details>
 <details >
 <summary >
-<code>yield_stress</code></summary>
+<code>yield_stress</code> Yield stress</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>

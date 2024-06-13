@@ -227,7 +227,7 @@ Automatic chain rule</h2>
   \frac{\partial y}{\partial y_1}, \quad \frac{\partial y}{\partial y_2}, \quad \frac{\partial y}{\partial x_4}.
 \]
 </p>
-<p> The assembly of the partial derivatives into the total derivative \(\partial y / \partial \mathbf{x}\) using the chain rule is handled by NEML2. This design serves as the fundation for a modular model implementation:</p><ul>
+<p> The assembly of the partial derivatives into the total derivative \(\partial y / \partial \boldsymbol{x}\) using the chain rule is handled by NEML2. This design serves as the fundation for a modular model implementation:</p><ul>
 <li>Each model <em>does not</em> need to know its composition with others.</li>
 <li>The same model partial derivatives can be reused in <em>any</em> composition.</li>
 </ul>
