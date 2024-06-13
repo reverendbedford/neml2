@@ -67,6 +67,7 @@ if __name__ == "__main__":
     logfile.parent.mkdir(parents=True, exist_ok=True)
 
     with open(logfile, "w") as log:
+        log.write("The following syntax is missing:\n")
         sections = get_sections(syntax)
         for section in sections:
             with open((outdir / section.lower()).with_suffix(".md"), "w") as stream:

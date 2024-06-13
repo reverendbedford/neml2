@@ -58,3 +58,10 @@ jobs:
           folder: doc/build/html
           clean-exclude: pr-preview/
           force: false
+      - name: Scold users about missing docs
+        if: ${{ github.event_name == 'pull_request'}}
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+            filePath: doc/syntax_error.log
+            comment_tag: doc_scold
+            GITHUB_TOKEN: ${{ secrets.PR_ACTION }}
