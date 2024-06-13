@@ -33,10 +33,22 @@ OptionSet
 ElasticStrain::expected_options()
 {
   OptionSet options = Model::expected_options();
+  options.doc() = "Calculate elastic strain given total and plastic strain (assuming additive "
+                  "decomposition), i.e. \\f$ \\boldsymbol{\\varepsilon}_e = "
+                  "\\boldsymbol{\\varepsilon} - \\boldsymbol{\\varepsilon}_p \\f$.";
+
   options.set<VariableName>("total_strain") = VariableName("forces", "E");
+  options.set("total_strain").doc() = "Total strain";
+
   options.set<VariableName>("plastic_strain") = VariableName("state", "internal", "Ep");
+  options.set("plastic_strain").doc() = "Plastic strain";
+
   options.set<VariableName>("elastic_strain") = VariableName("state", "internal", "Ee");
+  options.set("elastic_strain").doc() = "Elastic strain";
+
   options.set<bool>("rate_form") = false;
+  options.set("rate_form").doc() = "Whether the model defines the relationship in rate form";
+
   return options;
 }
 

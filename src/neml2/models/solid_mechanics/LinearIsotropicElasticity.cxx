@@ -33,8 +33,18 @@ OptionSet
 LinearIsotropicElasticity::expected_options()
 {
   OptionSet options = Elasticity::expected_options();
+  options.doc() += " for linear isotropic material. \\f$ \\boldsymbol{\\sigma} = K \\tr "
+                   "\\boldsymbol{\\varepsilon}_e + 2 G \\text{dev} \\boldsymbol{\\varepsilon}_e "
+                   "\\f$, where \\f$ K \\f$ and \\f$ G \\f$ are bulk and shear moduli, "
+                   "respectively. For convenience, this object only requests Young's modulus and "
+                   "Poisson's ratio, and handles the Lame parameter conversion behind the scenes.";
+
   options.set<CrossRef<Scalar>>("youngs_modulus");
+  options.set("youngs_modulus").doc() = "Young's modulus";
+
   options.set<CrossRef<Scalar>>("poisson_ratio");
+  options.set("poisson_ratio").doc() = "Poisson's ratio";
+
   return options;
 }
 

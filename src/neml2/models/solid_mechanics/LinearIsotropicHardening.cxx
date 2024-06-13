@@ -32,7 +32,12 @@ OptionSet
 LinearIsotropicHardening::expected_options()
 {
   OptionSet options = IsotropicHardening::expected_options();
+  options.doc() += " following a linear relationship, i.e., \\f$ k = H \\varepsilon_p \\f$ where "
+                   "\\f$ H \\f$ is the hardening modulus.";
+
   options.set<CrossRef<Scalar>>("hardening_modulus");
+  options.set("hardening_modulus").doc() = "Hardening modulus";
+
   return options;
 }
 

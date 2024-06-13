@@ -32,10 +32,23 @@ OptionSet
 YieldFunction::expected_options()
 {
   OptionSet options = Model::expected_options();
+  options.doc() =
+      "Classical macroscale plasticity yield function, \\f$ f = \\bar{\\sigma} - \\sigma_y - h "
+      "\\f$, where \\f$ \\bar{\\sigma} \\f$ is the effective stress, \\f$ \\sigma_y \\f$ is the "
+      "yield stress, and \\f$ h \\f$ is the isotropic hardening.";
+
   options.set<CrossRef<Scalar>>("yield_stress");
+  options.set("yield_stress").doc() = "Yield stress";
+
   options.set<VariableName>("effective_stress") = VariableName("state", "internal", "s");
+  options.set("effective_stress").doc() = "Effective stress";
+
   options.set<VariableName>("isotropic_hardening");
+  options.set("isotropic_hardening").doc() = "Isotropic hardening";
+
   options.set<VariableName>("yield_function") = VariableName("state", "internal", "fp");
+  options.set("yield_function").doc() = "Yield function";
+
   return options;
 }
 

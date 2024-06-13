@@ -33,9 +33,19 @@ OptionSet
 OverStress::expected_options()
 {
   OptionSet options = Model::expected_options();
+  options.doc() = "Calculate the over stress \\f$ \\boldsymbol{O} = \\boldsymbol{M} - "
+                  "\\boldsymbol{X} \\f$, where \\f$ \\boldsymbol{M} \\f$ is the Mandel stress and "
+                  "\\f$ \\boldsymbol{X} \\f$ is the back stress.";
+
   options.set<VariableName>("mandel_stress") = VariableName("state", "internal", "M");
+  options.set("mandel_stress").doc() = "Mandel stress";
+
   options.set<VariableName>("back_stress") = VariableName("state", "internal", "X");
+  options.set("back_stress").doc() = "Back stress";
+
   options.set<VariableName>("over_stress") = VariableName("state", "internal", "O");
+  options.set("over_stress").doc() = "Over stress";
+
   return options;
 }
 

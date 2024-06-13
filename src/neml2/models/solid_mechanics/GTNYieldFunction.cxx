@@ -32,15 +32,44 @@ OptionSet
 GTNYieldFunction::expected_options()
 {
   OptionSet options = Model::expected_options();
+  options.doc() =
+      "Gurson-Tvergaard-Needleman yield function for poroplasticity. The yield function is defined "
+      "as \\f$ f = \\left( \\frac{\\bar{\\sigma}}{\\sigma_y + k} \\right)^2 + 2 q_1 \\phi \\cosh "
+      "\\left( \\frac{1}{2} q_2 \\frac{3\\sigma_h-\\sigma_s}{\\sigma_y + k} \\right) - \\left( q_3 "
+      "\\phi^2 + 1 \\right) \\f$, where \\f$ \\bar{\\sigma} \\f$ is the von Mises stress, \\f$ "
+      "\\sigma_y \\f$ is the yield stress, \\f$ k \\f$ is isotropic hardening, \\f$ \\phi \\f$ is "
+      "the porosity, \\f$ \\sigma_h \\f$ is the hydrostatic stress, and \\f$ \\sigma_s \\f$ is the "
+      "void growth back stress (sintering stress). \\f$ q_1 \\f$, \\f$ q_2 \\f$, and \\f$ q_3 \\f$ "
+      "are parameters controlling the yield mechanisms.";
+
   options.set<CrossRef<Scalar>>("yield_stress");
+  options.set("yield_stress").doc() = "Yield stress";
+
   options.set<CrossRef<Scalar>>("q1");
+  options.set("q1").doc() =
+      "Parameter controlling the balance/competition between plastic flow and void evolution.";
+
   options.set<CrossRef<Scalar>>("q2");
+  options.set("q2").doc() = "Void evolution rate";
+
   options.set<CrossRef<Scalar>>("q3");
+  options.set("q3").doc() = "Pore pressure";
+
   options.set<VariableName>("flow_invariant") = VariableName("state", "internal", "se");
+  options.set("flow_invariant").doc() = "Effective stress driving plastic flow";
+
   options.set<VariableName>("poro_invariant") = VariableName("state", "internal", "sp");
+  options.set("poro_invariant").doc() = "Effective stress driving porous flow";
+
   options.set<VariableName>("isotropic_hardening");
+  options.set("isotropic_hardening").doc() = "Isotropic hardening";
+
   options.set<VariableName>("void_fraction") = VariableName("state", "internal", "f");
+  options.set("void_fraction").doc() = "Void fraction (porosity)";
+
   options.set<VariableName>("yield_function") = VariableName("state", "internal", "fp");
+  options.set("yield_function").doc() = "Yield function";
+
   return options;
 }
 

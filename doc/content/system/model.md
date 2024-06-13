@@ -103,7 +103,7 @@ and `Model` \f$h\f$ only defines
 \f[
   \frac{\partial y}{\partial y_1}, \quad \frac{\partial y}{\partial y_2}, \quad \frac{\partial y}{\partial x_4}.
 \f]
-The assembly of the partial derivatives into the total derivative \f$\partial y / \partial \mathbf{x}\f$ using the chain rule is handled by NEML2. This design serves as the fundation for a modular model implementation:
+The assembly of the partial derivatives into the total derivative \f$\partial y / \partial \boldsymbol{x}\f$ using the chain rule is handled by NEML2. This design serves as the fundation for a modular model implementation:
 - Each model _does not_ need to know its composition with others.
 - The same model partial derivatives can be reused in _any_ composition.
 

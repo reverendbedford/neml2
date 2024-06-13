@@ -32,10 +32,21 @@ OptionSet
 AssociativeIsotropicPlasticHardening::expected_options()
 {
   OptionSet options = FlowRule::expected_options();
+  options.doc() += " This object calculates the rate of equivalent plastic strain following "
+                   "associative flow rule, i.e. \\f$ \\dot{\\varepsilon}_p = - \\dot{\\gamma} "
+                   "\\frac{\\partial f}{\\partial k} \\f$, where \\f$ \\dot{\\varepsilon}_p \\f$ "
+                   "is the equivalent plastic strain, \\f$ \\dot{\\gamma} \\f$ is the flow rate, "
+                   "\\f$ f \\f$ is the yield function, and \\f$ k \\f$ is the isotropic hardening.";
+
   options.set<VariableName>("isotropic_hardening_direction") =
       VariableName("state", "internal", "Nk");
+  options.set("isotropic_hardening_direction").doc() =
+      "Direction of associative isotropic hardening which can be calculated using Normality.";
+
   options.set<VariableName>("equivalent_plastic_strain_rate") =
       VariableName("state", "internal", "ep_rate");
+  options.set("equivalent_plastic_strain_rate").doc() = "Rate of equivalent plastic strain";
+
   return options;
 }
 

@@ -32,10 +32,21 @@ OptionSet
 Normality::expected_options()
 {
   OptionSet options = Model::expected_options();
+  options.doc() = "Store the first derivatives of a scalar-valued function in given variables, "
+                  "i.e. \\f$ u_i = \\dfrac{f(\\boldsymbol{v})}{v_i} \\f$.";
+
   options.set<std::string>("model");
+  options.set("model").doc() = "The model which evaluates the scalar-valued function";
+
   options.set<VariableName>("function");
+  options.set("function").doc() = "Function to take derivative";
+
   options.set<std::vector<VariableName>>("from");
+  options.set("from").doc() = "Function arguments to take derivatives w.r.t.";
+
   options.set<std::vector<VariableName>>("to");
+  options.set("to").doc() = "Variables to store the first derivatives";
+
   return options;
 }
 

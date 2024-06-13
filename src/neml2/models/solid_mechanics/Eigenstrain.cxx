@@ -30,7 +30,10 @@ OptionSet
 Eigenstrain::expected_options()
 {
   OptionSet options = Model::expected_options();
+
   options.set<VariableName>("eigenstrain") = VariableName("forces", "Eg");
+  options.set("eigenstrain").doc() = "Eigenstrain";
+
   return options;
 }
 

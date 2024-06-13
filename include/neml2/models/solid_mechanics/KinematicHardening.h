@@ -39,7 +39,7 @@ protected:
   /// Kinematic plastic strain
   const Variable<SR2> & _Kp;
 
-  /// Backstress
+  /// Back stress
   Variable<SR2> & _X;
 };
 } // namespace neml2

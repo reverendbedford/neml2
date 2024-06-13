@@ -32,8 +32,16 @@ OptionSet
 VoceIsotropicHardening::expected_options()
 {
   OptionSet options = IsotropicHardening::expected_options();
+  options.doc() = "Voce isotropic hardening model, \\f$ h = R \\left[ 1 - \\exp(-d \\varepsilon_p) "
+                  "\\right] \\f$, where \\f$ R \\f$ is the isotropic hardening upon saturation, "
+                  "and \\f$ d \\f$ is the hardening rate.";
+
   options.set<CrossRef<Scalar>>("saturated_hardening");
+  options.set("saturated_hardening").doc() = "Saturated isotropic hardening";
+
   options.set<CrossRef<Scalar>>("saturation_rate");
+  options.set("saturation_rate").doc() = "Hardening saturation rate";
+
   return options;
 }
 

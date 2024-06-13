@@ -33,6 +33,9 @@ OptionSet
 IsotropicMandelStress::expected_options()
 {
   OptionSet options = MandelStress::expected_options();
+  options.doc() += " For isotropic material under small deformation, the Mandel stress and the "
+                   "Cauchy stress coincide.";
+
   return options;
 }
 

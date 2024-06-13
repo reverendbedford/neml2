@@ -9,7 +9,7 @@ The following tutorials serve as a developer-facing step-by-step guide for creat
   k &= H \bar{\varepsilon}^p,
 \f}
 where \f$\bar{\varepsilon}^p\f$ is the equivalent plastic strain and \f$k\f$ is the isotropic hardening. The input variable for this model is
-\f$\mathbf{\varepsilon}\f$, the output variable for this model is \f$k\f$, and the parameters of the model is \f$H\f$.
+\f$\boldsymbol{\varepsilon}\f$, the output variable for this model is \f$k\f$, and the parameters of the model is \f$H\f$.
 
 ### Naming conventions {#naming-conventions}
 

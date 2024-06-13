@@ -33,12 +33,34 @@ OptionSet
 ChabochePlasticHardening::expected_options()
 {
   OptionSet options = FlowRule::expected_options();
+  options.doc() +=
+      " This object defines the non-associative Chaboche kinematic hardening. In the Chaboche "
+      "model, back stress is directly treated as an internal variable. Rate of back stress is "
+      "given as \\f$ \\dot{\\boldsymbol{X}} = \\left( \\frac{2}{3} C \\frac{\\partial f}{\\partial "
+      "\\boldsymbol{M}} - g \\boldsymbol{X} \\right) \\dot{\\gamma} - A \\lVert \\boldsymbol{X} "
+      "\\rVert^{a - 1} \\boldsymbol{X} \\f$, including kinematic hardening, dynamic recovery, and "
+      "static recovery. \\f$ \\frac{\\partial f}{\\partial \\boldsymbol{M}} \\f$ is the flow "
+      "direction, \\f$ \\dot{\\gamma} \\f$ is the flow rate, and \\f$ C \\f$, \\f$ g \\f$, \\f$ A "
+      "\\f$, and \\f$ a \\f$ are material parameters.";
+
   options.set<VariableName>("back_stress") = VariableName("state", "internal", "X");
+  options.set("back_stress").doc() = "Back stress";
+
   options.set<VariableName>("flow_direction") = VariableName("state", "internal", "NM");
+  options.set("flow_direction").doc() = "Flow direction";
+
   options.set<CrossRef<Scalar>>("C");
+  options.set("C").doc() = "Kinematic hardening coefficient";
+
   options.set<CrossRef<Scalar>>("g");
+  options.set("g").doc() = "Dynamic recovery coefficient";
+
   options.set<CrossRef<Scalar>>("A");
+  options.set("A").doc() = "Static recovery prefactor";
+
   options.set<CrossRef<Scalar>>("a");
+  options.set("a").doc() = "Static recovery exponent";
+
   return options;
 }
 

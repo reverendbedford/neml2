@@ -30,10 +30,24 @@ OptionSet
 Elasticity::expected_options()
 {
   OptionSet options = Model::expected_options();
+  options.doc() = "Relate elastic strain to stress";
+
   options.set<VariableName>("strain") = VariableName("state", "internal", "Ee");
+  options.set("strain").doc() = "Elastic strain";
+
   options.set<VariableName>("stress") = VariableName("state", "S");
+  options.set("stress").doc() = "Stress";
+
   options.set<bool>("compliance") = false;
+  options.set("compliance").doc() =
+      "Whether the model defines the compliance relationship, i.e., mapping from stress to elastic "
+      "strain. When set to false (default), the model maps elastic strain to stress.";
+
   options.set<bool>("rate_form") = false;
+  options.set("rate_form").doc() =
+      "Whether the model defines the stress-strain relationship in rate form. When set to true, "
+      "the model maps elastic strain *rate* to stress *rate*.";
+
   return options;
 }
 

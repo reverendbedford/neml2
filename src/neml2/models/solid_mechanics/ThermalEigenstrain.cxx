@@ -32,9 +32,21 @@ OptionSet
 ThermalEigenstrain::expected_options()
 {
   OptionSet options = Eigenstrain::expected_options();
+  options.doc() =
+      "Define the (cummulative, as opposed to instantaneous) linear isotropic thermal eigenstrain, "
+      "i.e. \\f$ \\boldsymbol{\\varepsilon}_T = \\alpha (T - T_0) \\boldsymbol{I} \\f$, where \\f$ "
+      "\\alpha \\f$ is the coefficient of thermal expansion (CTE), \\f$ T \\f$ is the temperature, "
+      "and \\f$ T_0 \\f$ is the reference (stress-free) temperature.";
+
   options.set<VariableName>("temperature") = VariableName("forces", "T");
+  options.set("temperature").doc() = "Temperature";
+
   options.set<CrossRef<Scalar>>("reference_temperature");
+  options.set("reference_temperature").doc() = "Reference (stress-free) temperature";
+
   options.set<CrossRef<Scalar>>("CTE");
+  options.set("CTE").doc() = "Coefficient of thermal expansion";
+
   return options;
 }
 

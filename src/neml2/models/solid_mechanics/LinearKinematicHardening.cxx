@@ -33,7 +33,12 @@ OptionSet
 LinearKinematicHardening::expected_options()
 {
   OptionSet options = KinematicHardening::expected_options();
+  options.doc() += " following a linear relationship, i.e., \\f$ \\boldsymbol{X} = H "
+                   "\\boldsymbol{K}_p \\f$ where \\f$ H \\f$ is the hardening modulus.";
+
   options.set<CrossRef<Scalar>>("hardening_modulus");
+  options.set("hardening_modulus").doc() = "Hardening modulus";
+
   return options;
 }
 
