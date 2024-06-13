@@ -32,7 +32,16 @@ OptionSet
 FillR2::expected_options()
 {
   OptionSet options = UserTensor::expected_options();
+  options.doc() = "Construct a R2 with a vector of Scalars. The vector length must be 1, 3, 6, or "
+                  "9. When vector length is 1, the Scalar value is used to fill the diagonals; "
+                  "when vector length is 3, the Scalar values are used to fill the respective "
+                  "diagonal entries; when vector length is 6, the Scalar values are used to fill "
+                  "the tensor following the Voigt notation; when vector length is 9, the Scalar "
+                  "values are used to fill the tensor in the row-major fashion.";
+
   options.set<std::vector<CrossRef<Scalar>>>("values");
+  options.set("values").doc() = "Scalars used to fill the R2";
+
   return options;
 }
 

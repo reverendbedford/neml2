@@ -32,9 +32,18 @@ OptionSet
 UserBatchTensor::expected_options()
 {
   OptionSet options = UserTensor::expected_options();
+  options.doc() = "Construct a BatchTensor from a vector of values. The vector will be reshaped "
+                  "according to the specified batch and base shapes.";
+
   options.set<std::vector<Real>>("values");
+  options.set("values").doc() = "Values in this (flattened) tensor";
+
   options.set<TorchShape>("batch_shape") = {};
+  options.set("batch_shape").doc() = "Batch shape";
+
   options.set<TorchShape>("base_shape") = {};
+  options.set("base_shape").doc() = "Base shape";
+
   return options;
 }
 

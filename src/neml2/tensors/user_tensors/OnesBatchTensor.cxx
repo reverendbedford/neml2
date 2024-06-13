@@ -32,8 +32,14 @@ OptionSet
 OnesBatchTensor::expected_options()
 {
   OptionSet options = UserTensor::expected_options();
+  options.doc() = "Construct a BatchTensor with batch and base shapes filled with ones.";
+
   options.set<TorchShape>("batch_shape") = {};
+  options.set("batch_shape").doc() = "Batch shape";
+
   options.set<TorchShape>("base_shape") = {};
+  options.set("base_shape").doc() = "Base shape";
+
   return options;
 }
 

@@ -32,7 +32,6 @@ OptionSet
 ArrheniusParameter::expected_options()
 {
   OptionSet options = NonlinearParameter<Scalar>::expected_options();
-
   options.doc() = "Define the nonlinear parameter as a function of temperature according to the "
                   "Arrhenius law. The nonlinear parameter is therefore parametrized by the "
                   "reference value and the activation energy.";

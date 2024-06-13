@@ -33,9 +33,20 @@ template <typename T>
 OptionSet
 FullFixedDimTensor<T>::expected_options()
 {
+  // This is the only way of getting tensor type in a static method like this...
+  // Trim 6 chars to remove 'neml2::'
+  auto tensor_type = utils::demangle(typeid(T).name()).substr(7);
+
   OptionSet options = UserTensor::expected_options();
+  options.doc() =
+      "Construct a full " + tensor_type + " with given batch shape filled with a given value.";
+
   options.set<TorchShape>("batch_shape") = {};
+  options.set("batch_shape").doc() = "Batch shape";
+
   options.set<Real>("value");
+  options.set("value").doc() = "Value used to fill the tensor";
+
   return options;
 }
 

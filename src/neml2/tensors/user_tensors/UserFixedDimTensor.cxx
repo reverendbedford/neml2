@@ -33,9 +33,21 @@ template <typename T>
 OptionSet
 UserFixedDimTensor<T>::expected_options()
 {
+  // This is the only way of getting tensor type in a static method like this...
+  // Trim 6 chars to remove 'neml2::'
+  auto tensor_type = utils::demangle(typeid(T).name()).substr(7);
+
   OptionSet options = UserTensor::expected_options();
+  options.doc() =
+      "Construct a " + tensor_type +
+      " from a vector values. The vector will be reshaped according to the specified batch shape.";
+
   options.set<std::vector<Real>>("values");
+  options.set("values").doc() = "Values in this (flattened) tensor";
+
   options.set<TorchShape>("batch_shape") = {};
+  options.set("batch_shape").doc() = "Batch shape";
+
   return options;
 }
 
