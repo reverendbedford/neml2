@@ -120,7 +120,7 @@ if __name__ == "__main__":
                             )
                             missing += 1
                             log.write(
-                                "    * '{}'.'{}' is mising option description\n".format(
+                                "    * '{}'.'{}' is missing option description\n".format(
                                     input_type, param_name
                                 )
                             )
