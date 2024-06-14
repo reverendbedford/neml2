@@ -68,7 +68,7 @@ if __name__ == "__main__":
 
     with open(logfile, "w") as log:
         missing = 0
-        log.write("## Missing syntax\n")
+        log.write("## Syntax check\n\n")
         sections = get_sections(syntax)
         for section in sections:
             with open((outdir / section.lower()).with_suffix(".md"), "w") as stream:
@@ -95,8 +95,8 @@ if __name__ == "__main__":
                         missing += 1
 
                         log.write(
-                            "  * '{}' is missing object description\n".format(
-                                input_type
+                            "  * '{}/{}' is missing object description\n".format(
+                                section, input_type
                             )
                         )
                     for param_name, info in params.items():
@@ -120,8 +120,8 @@ if __name__ == "__main__":
                             )
                             missing += 1
                             log.write(
-                                "    * '{}'.'{}' is missing option description\n".format(
-                                    input_type, param_name
+                                "  * '{}/{}/{}' is missing option description\n".format(
+                                    section, input_type, param_name
                                 )
                             )
                         else:
@@ -130,6 +130,12 @@ if __name__ == "__main__":
                                     param_name, info["doc"]
                                 )
                             )
+                            if "\\f" in info["doc"]:
+                                log.write(
+                                    "  * '{}/{}/{}' has formula in its option description\n".format(
+                                        section, input_type, param_name
+                                    )
+                                )
                         stream.write("  - <u>Type</u>: {}\n".format(param_type))
                         if param_value:
                             stream.write("  - <u>Default</u>: {}\n".format(param_value))
@@ -140,4 +146,4 @@ if __name__ == "__main__":
                     )
 
         if missing == 0:
-            log.write("Nothing, good job! :purple_heart:")
+            log.write("No syntax error, good job! :purple_heart:")
