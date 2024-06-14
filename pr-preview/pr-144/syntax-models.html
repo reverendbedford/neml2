@@ -113,7 +113,7 @@ $(function(){initNavTree('syntax-models.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md30">Available objects and their input file syntax</a><ul><li class="level2"><a href="#arrheniusparameter">ArrheniusParameter</a></li>
+<ul><li class="level1"><a href="#autotoc_md32">Available objects and their input file syntax</a><ul><li class="level2"><a href="#arrheniusparameter">ArrheniusParameter</a></li>
 <li class="level2"><a href="#associativeisotropicplastichardening">AssociativeIsotropicPlasticHardening</a></li>
 <li class="level2"><a href="#associativekinematicplastichardening">AssociativeKinematicPlasticHardening</a></li>
 <li class="level2"><a href="#associativeplasticflow">AssociativePlasticFlow</a></li>
@@ -204,7 +204,7 @@ $(function(){initNavTree('syntax-models.html',''); initResizable(); });
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_content_2syntax_2models"></a></p>
-<h1><a class="anchor" id="autotoc_md30"></a>
+<h1><a class="anchor" id="autotoc_md32"></a>
 Available objects and their input file syntax</h1>
 <p>Refer to <a class="el" href="system-models.html">System Documentation</a> for detailed explanation about this system.</p>
 <h2><a class="anchor" id="arrheniusparameter"></a>
@@ -1237,9 +1237,9 @@ MillerIndexLinearInterpolation</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
 <h2><a class="anchor" id="mixedcontrolsetup"></a>
 MixedControlSetup</h2>
-<details >
+<p>Object to setup a model for mixed stress/strain control. Copies the values of the fixed_values (the input strain or stress) and the mixed_state (the conjugate stress or strain values) into the stress and strain tensors used by the model. </p><details >
 <summary >
-<code>cauchy_stress</code></summary>
+<code>cauchy_stress</code> The name of the Cauchy stress tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1248,7 +1248,7 @@ MixedControlSetup</h2>
 </details>
 <details >
 <summary >
-<code>control</code></summary>
+<code>control</code> The name of the control signal. Values less than the threshold are strain control, greater are stress control</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1257,7 +1257,7 @@ MixedControlSetup</h2>
 </details>
 <details >
 <summary >
-<code>fixed_values</code></summary>
+<code>fixed_values</code> The name of the fixed values, i.e. the actual strain or stress values being imposed on the model</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1266,7 +1266,7 @@ MixedControlSetup</h2>
 </details>
 <details >
 <summary >
-<code>mixed_state</code></summary>
+<code>mixed_state</code> The name of the mixed state tensor. This holds the conjugate values to those being controlled</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1275,7 +1275,7 @@ MixedControlSetup</h2>
 </details>
 <details >
 <summary >
-<code>strain</code></summary>
+<code>strain</code> The name of the strain tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1284,7 +1284,7 @@ MixedControlSetup</h2>
 </details>
 <details >
 <summary >
-<code>threshold</code></summary>
+<code>threshold</code> The threshold to switch between strain and stress control</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: double</li>
