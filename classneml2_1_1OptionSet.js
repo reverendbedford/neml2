@@ -27,6 +27,8 @@ var classneml2_1_1OptionSet =
     [ "path", "classneml2_1_1OptionSet.html#ad038412f559f57e1729f968660265824", null ],
     [ "path", "classneml2_1_1OptionSet.html#ab00e03d2eef5a496bd9c62006fcaf9e1", null ],
     [ "print", "classneml2_1_1OptionSet.html#ae76e7240cdf93cfe932eb4ebee0711e7", null ],
+    [ "section", "classneml2_1_1OptionSet.html#ada54d880aaa4413ba670eebaf3a4667b", null ],
+    [ "section", "classneml2_1_1OptionSet.html#a9d10e47729bd3dd343ead341bf52998c", null ],
     [ "set", "classneml2_1_1OptionSet.html#ad7b48908d194178c1b1724bd6b8f0d5d", null ],
     [ "set", "classneml2_1_1OptionSet.html#a11ae50191017046b7e29026164df0b73", null ],
     [ "size", "classneml2_1_1OptionSet.html#ade1601ccf1fa3bcf050867f0852ca4e5", null ],

@@ -1,15 +1,18 @@
 var searchData=
 [
-  ['unique_5fbidirectional_0',['unique_bidirectional',['../namespaceneml2_1_1crystallography.html#a2a8634e10751e0d7000cbcb18b9b0db3',1,'neml2::crystallography']]],
-  ['unique_5fitem_5fconsumer_1',['unique_item_consumer',['../classneml2_1_1DependencyResolver.html#af6952f13157df51b7a03b0a4e64b53f2',1,'neml2::DependencyResolver']]],
-  ['unique_5fitem_5fprovider_2',['unique_item_provider',['../classneml2_1_1DependencyResolver.html#a655e67dcaf20c6865dec4dfe48425bcb',1,'neml2::DependencyResolver']]],
-  ['update_3',['update',['../classneml2_1_1Newton.html#ae09577d854f85bc322d91abdb5f7cdfc',1,'neml2::Newton::update()'],['../classneml2_1_1NewtonWithLineSearch.html#abc1d581c0101c65e66ea6a0fbb8d8832',1,'neml2::NewtonWithLineSearch::update()'],['../classneml2_1_1NewtonWithTrustRegion.html#abc1d581c0101c65e66ea6a0fbb8d8832',1,'neml2::NewtonWithTrustRegion::update()']]],
-  ['update_5fforces_4',['update_forces',['../classneml2_1_1LargeDeformationIncrementalSolidMechanicsDriver.html#aab075b25feb32c0a14f95554aa06ffc9',1,'neml2::LargeDeformationIncrementalSolidMechanicsDriver::update_forces()'],['../classneml2_1_1SolidMechanicsDriver.html#aab075b25feb32c0a14f95554aa06ffc9',1,'neml2::SolidMechanicsDriver::update_forces()'],['../classneml2_1_1TransientDriver.html#a27e224e479ca5d21b09009c233fb3ecc',1,'neml2::TransientDriver::update_forces()']]],
-  ['updating_5',['UPDATING',['../classneml2_1_1Model.html#aca8133200c1122e29b87b314d82604ebac10be9b18b215c436b592c0834af413e',1,'neml2::Model']]],
-  ['use_5fad_5fderivatives_6',['use_AD_derivatives',['../classneml2_1_1Model.html#a20eb432f1b43832c0fc9c1bc25642454',1,'neml2::Model']]],
-  ['used_20operators_7',['Commonly used operators',['../math.html#autotoc_md6',1,'']]],
-  ['userbatchtensor_8',['userbatchtensor',['../classneml2_1_1UserBatchTensor.html#a2e9cb74502909277b26e43336c527b5c',1,'neml2::UserBatchTensor::UserBatchTensor()'],['../classneml2_1_1UserBatchTensor.html',1,'UserBatchTensor']]],
-  ['userfixeddimtensor_9',['userfixeddimtensor',['../classneml2_1_1UserFixedDimTensor.html#a3468e9d993ffe9b808e5104a6b0f560c',1,'neml2::UserFixedDimTensor::UserFixedDimTensor()'],['../classneml2_1_1UserFixedDimTensor.html',1,'UserFixedDimTensor&lt; T &gt;']]],
-  ['using_5fad_5f1st_5fderivative_10',['using_AD_1st_derivative',['../classneml2_1_1Model.html#a589b757feab733d91d9d8abfbdcf3ced',1,'neml2::Model']]],
-  ['using_5fad_5f2nd_5fderivative_11',['using_AD_2nd_derivative',['../classneml2_1_1Model.html#ae198da52e9e3e1cb691b0c3e4d842216',1,'neml2::Model']]]
+  ['w_0',['W',['../classneml2_1_1crystallography_1_1CrystalGeometry.html#a513ecb69529b1e45d7927050805ea4fc',1,'neml2::crystallography::CrystalGeometry']]],
+  ['what_1',['what',['../classneml2_1_1NEMLException.html#a576a441c2b1e2f01d271e237b314eac3',1,'neml2::NEMLException::what()'],['../classneml2_1_1ParserException.html#a576a441c2b1e2f01d271e237b314eac3',1,'neml2::ParserException::what()']]],
+  ['where_2',['where',['../namespaceneml2_1_1math.html#a76d6436121452c26405b3f98a827c4f3',1,'neml2::math']]],
+  ['with_20tensors_3',['Working with tensors',['../system-tensors.html#working-with-tensors',1,'']]],
+  ['with_5fsuffix_4',['with_suffix',['../classneml2_1_1LabeledAxisAccessor.html#a68aee86962a6ea2deef39fd6a9f86a4c',1,'neml2::LabeledAxisAccessor']]],
+  ['working_20with_20tensors_5',['Working with tensors',['../system-tensors.html#working-with-tensors',1,'']]],
+  ['wr2_6',['WR2',['../classneml2_1_1WR2.html',1,'WR2'],['../classneml2_1_1WR2.html#a6cb43b5cdc34ea2c3ce3043766148081',1,'neml2::WR2::WR2()'],['../syntax-tensors.html#wr2',1,'WR2']]],
+  ['wr2explicitexponentialtimeintegration_7',['WR2ExplicitExponentialTimeIntegration',['../classneml2_1_1WR2ExplicitExponentialTimeIntegration.html',1,'WR2ExplicitExponentialTimeIntegration'],['../classneml2_1_1WR2ExplicitExponentialTimeIntegration.html#a87b18f571db9bc8b7cc36280b1e9c485',1,'neml2::WR2ExplicitExponentialTimeIntegration::WR2ExplicitExponentialTimeIntegration()'],['../syntax-models.html#wr2explicitexponentialtimeintegration',1,'WR2ExplicitExponentialTimeIntegration']]],
+  ['wr2implicitexponentialtimeintegration_8',['WR2ImplicitExponentialTimeIntegration',['../classneml2_1_1WR2ImplicitExponentialTimeIntegration.html',1,'WR2ImplicitExponentialTimeIntegration'],['../classneml2_1_1WR2ImplicitExponentialTimeIntegration.html#a4659fde107d6570a0870675b509edffd',1,'neml2::WR2ImplicitExponentialTimeIntegration::WR2ImplicitExponentialTimeIntegration()'],['../syntax-models.html#wr2implicitexponentialtimeintegration',1,'WR2ImplicitExponentialTimeIntegration']]],
+  ['wr2linearinterpolation_9',['WR2LinearInterpolation',['../syntax-models.html#wr2linearinterpolation',1,'']]],
+  ['writing_20a_20custom_20model_10',['Writing a custom model',['../dev.html#custom-model',1,'']]],
+  ['wsr4_11',['WSR4',['../classneml2_1_1WSR4.html',1,'WSR4'],['../classneml2_1_1WSR4.html#a5ed8a8dad51cca66ccaa68c5191990a1',1,'neml2::WSR4::WSR4()'],['../syntax-tensors.html#wsr4',1,'WSR4']]],
+  ['wsr4linearinterpolation_12',['WSR4LinearInterpolation',['../syntax-models.html#wsr4linearinterpolation',1,'']]],
+  ['wwr4_13',['WWR4',['../classneml2_1_1WWR4.html',1,'WWR4'],['../classneml2_1_1WWR4.html#adc28cfde0ac29bb8956d8c29ef76438b',1,'neml2::WWR4::WWR4()'],['../syntax-tensors.html#wwr4',1,'WWR4']]],
+  ['wwr4linearinterpolation_14',['WWR4LinearInterpolation',['../syntax-models.html#wwr4linearinterpolation',1,'']]]
 ];

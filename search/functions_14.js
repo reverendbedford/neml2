@@ -8,6 +8,7 @@ var searchData=
   ['use_5fad_5fderivatives_5',['use_AD_derivatives',['../classneml2_1_1Model.html#a20eb432f1b43832c0fc9c1bc25642454',1,'neml2::Model']]],
   ['userbatchtensor_6',['UserBatchTensor',['../classneml2_1_1UserBatchTensor.html#a2e9cb74502909277b26e43336c527b5c',1,'neml2::UserBatchTensor']]],
   ['userfixeddimtensor_7',['UserFixedDimTensor',['../classneml2_1_1UserFixedDimTensor.html#a3468e9d993ffe9b808e5104a6b0f560c',1,'neml2::UserFixedDimTensor']]],
-  ['using_5fad_5f1st_5fderivative_8',['using_AD_1st_derivative',['../classneml2_1_1Model.html#a589b757feab733d91d9d8abfbdcf3ced',1,'neml2::Model']]],
-  ['using_5fad_5f2nd_5fderivative_9',['using_AD_2nd_derivative',['../classneml2_1_1Model.html#ae198da52e9e3e1cb691b0c3e4d842216',1,'neml2::Model']]]
+  ['usertensor_8',['UserTensor',['../classneml2_1_1UserTensor.html#ac27d8038fae54e7c02124de047364114',1,'neml2::UserTensor']]],
+  ['using_5fad_5f1st_5fderivative_9',['using_AD_1st_derivative',['../classneml2_1_1Model.html#a589b757feab733d91d9d8abfbdcf3ced',1,'neml2::Model']]],
+  ['using_5fad_5f2nd_5fderivative_10',['using_AD_2nd_derivative',['../classneml2_1_1Model.html#ae198da52e9e3e1cb691b0c3e4d842216',1,'neml2::Model']]]
 ];

@@ -25,23 +25,39 @@
 var NAVTREE =
 [
   [ "NEML2", "index.html", [
-    [ "Overview", "index.html", null ],
-    [ "Getting Started", "install.html", null ],
-    [ "Mathematical Conventions", "math.html", null ],
-    [ "Implementation", "impl.html", null ],
-    [ "Model Development", "devel.html", null ],
-    [ "Syntax Documentation", "syntax.html", null ],
-    [ "Class List", "annotated.html", "annotated" ]
+    [ "Overview", "index.html", "index" ],
+    [ "Installation Guide", "install.html", null ],
+    [ "Getting Started", "getting-started.html", null ],
+    [ "Syntax Documentation", "usergroup0.html", [
+      [ "[Tensors]", "syntax-tensors.html", null ],
+      [ "[Models]", "syntax-models.html", null ],
+      [ "[Solvers]", "syntax-solvers.html", null ],
+      [ "[Data]", "syntax-data.html", null ],
+      [ "[Drivers]", "syntax-drivers.html", null ]
+    ] ],
+    [ "System Documentation", "usergroup1.html", [
+      [ "Tensor", "system-tensors.html", null ],
+      [ "Model", "system-models.html", null ],
+      [ "Solver", "system-solvers.html", null ],
+      [ "Data", "system-data.html", null ],
+      [ "Driver", "system-drivers.html", null ]
+    ] ],
+    [ "Physics Documentation", "usergroup2.html", [
+      [ "Solid Mechanics", "solid-mechanics.html", null ]
+    ] ],
+    [ "Developer Guide", "dev.html", null ],
+    [ "C++ API Reference", "annotated.html", "annotated" ],
+    [ "Python API Reference", "python/annotated.html", null ]
   ] ]
 ];
 
 var NAVTREEINDEX =
 [
 "annotated.html",
-"classneml2_1_1Interpolation.html#ac4925bba66b80ec8cb53ba886e30c03e",
-"classneml2_1_1NewtonWithTrustRegion.html#a12a5cca77acc375efb48e143cb45c24f",
-"classneml2_1_1SR2.html#a02479ce9eca6f094343da5e4f67d8a47",
-"classneml2_1_1VariableStore.html#a2d2e29f41191ea798a556db8e88a6f84"
+"classneml2_1_1ImplicitUpdate.html#af5600a36813e455aefee72bec1d574fb",
+"classneml2_1_1NewtonWithLineSearch.html#a7e563029d2910cc757143104b596c16d",
+"classneml2_1_1RotationMatrix.html#a9873862bccf002752dc124d8c108346a",
+"classneml2_1_1VariableBase.html#afbdf73363abf2d3b756a5d7644a69f02"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

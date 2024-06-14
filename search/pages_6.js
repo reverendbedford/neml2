@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['started_0',['Getting Started',['../install.html',1,'']]],
-  ['syntax_20documentation_1',['Syntax Documentation',['../syntax.html',1,'']]]
+  ['tensor_0',['Tensor',['../system-tensors.html',1,'']]],
+  ['tensors_1',['[Tensors]',['../syntax-tensors.html',1,'']]]
 ];

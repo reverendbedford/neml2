@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['development_0',['Model Development',['../devel.html',1,'']]],
-  ['documentation_1',['Syntax Documentation',['../syntax.html',1,'']]]
+  ['getting_20started_0',['Getting Started',['../getting-started.html',1,'']]],
+  ['guide_1',['Guide',['../dev.html',1,'Developer Guide'],['../install.html',1,'Installation Guide']]]
 ];

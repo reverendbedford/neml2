@@ -1,27 +1,9 @@
 var searchData=
 [
-  ['z_0',['z',['../namespaceneml2_1_1crystallography_1_1crystal__symmetry__operators.html#a1bfee4dd874919955f1d29e58726e599',1,'neml2::crystallography::crystal_symmetry_operators']]],
-  ['zero_5f_1',['zero_',['../classneml2_1_1LabeledTensor.html#a2379fcc4a3964848a0c4936ac9480c18',1,'neml2::LabeledTensor']]],
-  ['zeros_2',['zeros',['../classneml2_1_1BatchTensor.html#a2e8de87986f4553a0d70d70e63987581',1,'neml2::BatchTensor::zeros(const TorchShapeRef &amp;base_shape, const torch::TensorOptions &amp;options=default_tensor_options())'],['../classneml2_1_1BatchTensor.html#a80b9df52d964ade540ba65ada05abf53',1,'neml2::BatchTensor::zeros(const TorchShapeRef &amp;batch_shape, const TorchShapeRef &amp;base_shape, const torch::TensorOptions &amp;options=default_tensor_options())'],['../classneml2_1_1FixedDimTensor.html#a9fdb72e77dca8b4114b11b889a09ef5b',1,'neml2::FixedDimTensor::zeros(const torch::TensorOptions &amp;options=default_tensor_options())'],['../classneml2_1_1FixedDimTensor.html#acd11fd88c20efa639434e64dacebcd27',1,'neml2::FixedDimTensor::zeros(TorchShapeRef batch_shape, const torch::TensorOptions &amp;options=default_tensor_options())'],['../classneml2_1_1LabeledTensor.html#a6101835ea4e1cd051617915ecdddeebf',1,'neml2::LabeledTensor::zeros()']]],
-  ['zeros_5flike_3',['zeros_like',['../classneml2_1_1BatchTensorBase.html#a9f8f7b529e5ff91dff05c9d68d78ef43',1,'neml2::BatchTensorBase::zeros_like()'],['../classneml2_1_1LabeledTensor.html#a9f8f7b529e5ff91dff05c9d68d78ef43',1,'neml2::LabeledTensor::zeros_like()']]],
-  ['zerosbatchtensor_4',['zerosbatchtensor',['../classneml2_1_1ZerosBatchTensor.html',1,'ZerosBatchTensor'],['../syntax.html#autotoc_md236',1,'ZerosBatchTensor'],['../classneml2_1_1ZerosBatchTensor.html#aa0fbba1321bdc1c93a7326db7aed7db9',1,'neml2::ZerosBatchTensor::ZerosBatchTensor()']]],
-  ['zerosfixeddimtensor_5',['zerosfixeddimtensor',['../classneml2_1_1ZerosFixedDimTensor.html#ada5e85e964cca987f8fd313e648f23be',1,'neml2::ZerosFixedDimTensor::ZerosFixedDimTensor()'],['../classneml2_1_1ZerosFixedDimTensor.html',1,'ZerosFixedDimTensor&lt; T &gt;']]],
-  ['zerosmillerindex_6',['ZerosMillerIndex',['../syntax.html#autotoc_md237',1,'']]],
-  ['zerosquaternion_7',['ZerosQuaternion',['../syntax.html#autotoc_md238',1,'']]],
-  ['zerosr2_8',['ZerosR2',['../syntax.html#autotoc_md239',1,'']]],
-  ['zerosr3_9',['ZerosR3',['../syntax.html#autotoc_md240',1,'']]],
-  ['zerosr4_10',['ZerosR4',['../syntax.html#autotoc_md241',1,'']]],
-  ['zerosr5_11',['ZerosR5',['../syntax.html#autotoc_md242',1,'']]],
-  ['zerosrot_12',['ZerosRot',['../syntax.html#autotoc_md243',1,'']]],
-  ['zerosscalar_13',['ZerosScalar',['../syntax.html#autotoc_md250',1,'']]],
-  ['zerossffr4_14',['ZerosSFFR4',['../syntax.html#autotoc_md244',1,'']]],
-  ['zerossfr3_15',['ZerosSFR3',['../syntax.html#autotoc_md245',1,'']]],
-  ['zerossr2_16',['ZerosSR2',['../syntax.html#autotoc_md246',1,'']]],
-  ['zerosssfr5_17',['ZerosSSFR5',['../syntax.html#autotoc_md247',1,'']]],
-  ['zerosssr4_18',['ZerosSSR4',['../syntax.html#autotoc_md248',1,'']]],
-  ['zerosswr4_19',['ZerosSWR4',['../syntax.html#autotoc_md249',1,'']]],
-  ['zerosvec_20',['ZerosVec',['../syntax.html#autotoc_md251',1,'']]],
-  ['zeroswr2_21',['ZerosWR2',['../syntax.html#autotoc_md252',1,'']]],
-  ['zeroswsr4_22',['ZerosWSR4',['../syntax.html#autotoc_md253',1,'']]],
-  ['zeroswwr4_23',['ZerosWWR4',['../syntax.html#autotoc_md254',1,'']]]
+  ['_7eneml2object_0',['~NEML2Object',['../classneml2_1_1NEML2Object.html#ad9cb8bba430bcfb31348ddfe6b9b00c8',1,'neml2::NEML2Object']]],
+  ['_7eoptionbase_1',['~OptionBase',['../classneml2_1_1OptionSet_1_1OptionBase.html#a4f58f9ab0365689e468d9be63afe52e1',1,'neml2::OptionSet::OptionBase']]],
+  ['_7eoptionset_2',['~OptionSet',['../classneml2_1_1OptionSet.html#a1bc9c5aafad6d681547ed24cfa05e0da',1,'neml2::OptionSet']]],
+  ['_7etensorvaluebase_3',['~TensorValueBase',['../classneml2_1_1TensorValueBase.html#a7e08960d46282e5832e73c36ac71d207',1,'neml2::TensorValueBase']]],
+  ['_7etransformable_4',['~Transformable',['../classneml2_1_1Transformable.html#abf90d5d78122068de834c6da6257b524',1,'neml2::Transformable']]],
+  ['_7evariablebase_5',['~VariableBase',['../classneml2_1_1VariableBase.html#a11c5fe28b4558368c4e40dd53523aadb',1,'neml2::VariableBase']]]
 ];
