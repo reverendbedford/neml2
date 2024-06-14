@@ -46,7 +46,10 @@ SolidMechanicsDriver::expected_options()
   options.set("cauchy_stress").doc() = "Cauchy stress";
 
   options.set<VariableName>("temperature") = VariableName("forces", "T");
+  options.set("temperature").doc() = "Name of temperature";
+
   options.set<VariableName>("fixed_values") = VariableName("forces", "fixed_values");
+
   options.set<CrossRef<torch::Tensor>>("prescribed_strains");
   options.set("prescribed_strains").doc() = "Prescribed strain (when control = STRAIN)";
 
@@ -54,10 +57,20 @@ SolidMechanicsDriver::expected_options()
   options.set("prescribed_stresses").doc() = "Prescribed stress (when control = STRESS)";
 
   options.set<CrossRef<torch::Tensor>>("prescribed_temperatures");
+  options.set("prescribed_temperatures").doc() =
+      "Actual prescibed temperature values, when providing temperatures to the model";
+
   options.set<CrossRef<torch::Tensor>>("prescribed_mixed_conditions");
+  options.set("prescribed_mixed_conditions").doc() =
+      "The fixed, controlled values provided as user input for the mixed control case.  Where the "
+      "control signal is 0 these are strain values, where it is 1 these are stress values";
 
   options.set<VariableName>("control_name") = VariableName("forces", "control");
+  options.set("control_name").doc() = "The name of the control signal on the input axis";
+
   options.set<CrossRef<torch::Tensor>>("prescribed_control");
+  options.set("prescribed_control").doc() = "The actual values of the control signal.  0 implies "
+                                            "strain control, 1 implies stress control";
 
   return options;
 }

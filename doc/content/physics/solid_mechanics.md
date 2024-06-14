@@ -411,6 +411,52 @@ The example input file below defines associative \f$ J_2 \f$ flow rules
 In the above example, a model named "normality" is used to compute the associative flow directions, and the rates of the internal variables are mapped using the rate of the consistency parameter and each of the associative flow direction. The cross-referenced model named "flow" (omitted in the example) is the composition of models defining the yield function \f$ f^p \f$ in terms of the variational arguments \f$ \boldsymbol{\sigma} \f$, \f$ k \f$, and \f$ \boldsymbol{X} \f$.
 
 
+## Mixed stress/strain control
+
+NEML2 models can be setup to take as input strain and provide stress or take as input stress and provide strain.  With some additional work, a model that "natively" works in either strain or stress control can be modified to work under mixed stress/strain control.
+
+Mixed control here means that some components of the strain tensor and some components of the stress tensor are provided as input and the model must solve for the conjugate, missing components of stress or strain.
+
+Mathematically, at each time step consider a tensor of applied, mixed strain or stress conditions \f$ f_{ij}  \f$ and a control signal \f$ c_{ij} \f$.  When \f$ c_{ij} < h \f$ for some threshold \f$ h \f$ we consider the corresponding component of the input \f$ f_{ij} \f$ to be a strain value and the model must solve for the corresponding value of stress.  If \f$ c_{ij} \ge h \f$ we consider the corresponding component of the input \f$ f_{ij} \f$ to be a stress value and the model must solve for the corresponding value of strain. 
+
+Modifying a model for mixed control only requires a few additional objects.  The first maps from the mixed input and a conjugate mixed state vector into the actual model stress and strain input axes:
+
+```python
+  [mixed]
+    type = MixedControlSetup
+  []
+  [mixed_old]
+    type = MixedControlSetup
+    control = "old_forces/control"
+    mixed_state = "old_state/mixed_state"
+    fixed_values = "old_forces/fixed_values"
+    cauchy_stress = "old_state/S"
+    strain = "old_forces/E"
+  []
+```
+
+The second modification renames the resulting residual to map to the correct name for the mixed state:
+
+```python
+  [rename]
+    type = CopySR2
+    from = "residual/S"
+    to = "residual/mixed_state"
+  []
+```
+
+In this example the "base" model is setup for strain control, so that the residual is formed on stress.  For "base" stress control the only change would be the name of the `from` parameter in this object.
+
+These two modifications will allow the model to be run in mixed control.  One additional modification clarifies the output by mapping the mixed input and state back to stress and strain tensors
+
+```python
+  [mixed_output]
+    type = MixedControlSetup
+    cauchy_stress = 'output/stress'
+    strain = 'output/strain'
+  []
+```
+
 ## Crystal plasticity
 
 NEML2 adopts an incremental rate-form view of crystal plasticity.  The fundemental kinematics derive from the rate expansion of the elastic-plastic multiplactive split:

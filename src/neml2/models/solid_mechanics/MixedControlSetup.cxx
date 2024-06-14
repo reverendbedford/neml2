@@ -32,15 +32,33 @@ OptionSet
 MixedControlSetup::expected_options()
 {
   OptionSet options = Model::expected_options();
+  options.doc() =
+      "Object to setup a model for mixed stress/strain control.  Copies the values of the "
+      "fixed_values (the input strain or stress) and the mixed_state (the conjugate stress or "
+      "strain values) into the stress and strain tensors used by the model.";
 
   options.set<VariableName>("control") = VariableName("forces", "control");
+  options.set("control").doc() =
+      "The name of the control signal.  Values less than the threshold are "
+      "strain control, greater are stress control";
+
   options.set<Real>("threshold") = 0.5;
+  options.set("threshold").doc() = "The threshold to switch between strain and stress control";
 
   options.set<VariableName>("mixed_state") = VariableName("state", "mixed_state");
+  options.set("mixed_state").doc() = "The name of the mixed state tensor. This holds the conjugate "
+                                     "values to those being controlled";
+
   options.set<VariableName>("fixed_values") = VariableName("forces", "fixed_values");
+  options.set("fixed_values").doc() = "The name of the fixed values, i.e. the actual strain or "
+                                      "stress values being imposed on the model";
 
   options.set<VariableName>("cauchy_stress") = VariableName("state", "S");
+  options.set("cauchy_stress").doc() = "The name of the Cauchy stress tensor";
+
   options.set<VariableName>("strain") = VariableName("forces", "E");
+  options.set("strain").doc() = "The name of the strain tensor";
+
   return options;
 }
 
