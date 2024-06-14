@@ -11,9 +11,9 @@ var searchData=
   ['userbatchtensor_8',['UserBatchTensor',['../classneml2_1_1UserBatchTensor.html',1,'UserBatchTensor'],['../classneml2_1_1UserBatchTensor.html#a2e9cb74502909277b26e43336c527b5c',1,'neml2::UserBatchTensor::UserBatchTensor()']]],
   ['userfixeddimtensor_9',['UserFixedDimTensor',['../classneml2_1_1UserFixedDimTensor.html',1,'UserFixedDimTensor&lt; T &gt;'],['../classneml2_1_1UserFixedDimTensor.html#a3468e9d993ffe9b808e5104a6b0f560c',1,'neml2::UserFixedDimTensor::UserFixedDimTensor()']]],
   ['usertensor_10',['UserTensor',['../classneml2_1_1UserTensor.html',1,'UserTensor'],['../classneml2_1_1UserTensor.html#ac27d8038fae54e7c02124de047364114',1,'neml2::UserTensor::UserTensor()']]],
-  ['using_20neml2_20as_20a_20c_20library_11',['Using NEML2 as a C++ library',['../getting-started.html#autotoc_md5',1,'']]],
-  ['using_20neml2_20material_20models_12',['Using NEML2 material models',['../getting-started.html#autotoc_md3',1,'']]],
-  ['using_20the_20neml2_20python_20package_20experimental_13',['Using the NEML2 Python package (experimental)',['../getting-started.html#autotoc_md6',1,'']]],
+  ['using_20neml2_20as_20a_20c_20library_11',['Using NEML2 as a C++ library',['../getting-started.html#autotoc_md6',1,'']]],
+  ['using_20neml2_20material_20models_12',['Using NEML2 material models',['../getting-started.html#autotoc_md4',1,'']]],
+  ['using_20the_20neml2_20python_20package_20experimental_13',['Using the NEML2 Python package (experimental)',['../getting-started.html#autotoc_md7',1,'']]],
   ['using_5fad_5f1st_5fderivative_14',['using_AD_1st_derivative',['../classneml2_1_1Model.html#a589b757feab733d91d9d8abfbdcf3ced',1,'neml2::Model']]],
   ['using_5fad_5f2nd_5fderivative_15',['using_AD_2nd_derivative',['../classneml2_1_1Model.html#ae198da52e9e3e1cb691b0c3e4d842216',1,'neml2::Model']]]
 ];
