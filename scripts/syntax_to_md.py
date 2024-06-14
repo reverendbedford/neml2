@@ -95,8 +95,8 @@ if __name__ == "__main__":
                         missing += 1
 
                         log.write(
-                            "  * '{}' is missing object description\n".format(
-                                input_type
+                            "  * '{}/{}' is missing object description\n".format(
+                                section, input_type
                             )
                         )
                     for param_name, info in params.items():
@@ -120,8 +120,8 @@ if __name__ == "__main__":
                             )
                             missing += 1
                             log.write(
-                                "  * '{}/{}' is missing option description\n".format(
-                                    input_type, param_name
+                                "  * '{}/{}/{}' is missing option description\n".format(
+                                    section, input_type, param_name
                                 )
                             )
                         else:
@@ -132,8 +132,8 @@ if __name__ == "__main__":
                             )
                             if "\\f" in info["doc"]:
                                 log.write(
-                                    "  * '{}/{}' has formula in its option description\n".format(
-                                        input_type, param_name
+                                    "  * '{}/{}/{}' has formula in its option description\n".format(
+                                        section, input_type, param_name
                                     )
                                 )
                         stream.write("  - <u>Type</u>: {}\n".format(param_type))
