@@ -35,8 +35,16 @@ OptionSet
 ForceRate<T>::expected_options()
 {
   OptionSet options = Model::expected_options();
+  options.doc() = "Calculate the first order discrete time derivative of a force variable as \\f$ "
+                  "\\dot{f} = \\frac{f-f_n}{t-t_n} \\f$, where \\f$ f \\f$ is the force variable, "
+                  "and \\f$ t \\f$ is time.";
+
   options.set<VariableName>("force");
+  options.set("force").doc() = "The force variable to take time derivative with";
+
   options.set<VariableName>("time") = {"t"};
+  options.set("time").doc() = "Time";
+
   return options;
 }
 

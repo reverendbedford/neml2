@@ -30,9 +30,17 @@ OptionSet
 NonlinearSolver::expected_options()
 {
   OptionSet options = Solver::expected_options();
+
   options.set<Real>("abs_tol") = 1e-10;
+  options.set("abs_tol").doc() = "Absolute tolerance in the convergence criteria";
+
   options.set<Real>("rel_tol") = 1e-8;
+  options.set("rel_tol").doc() = "Relative tolerance in the convergence criteria";
+
   options.set<unsigned int>("max_its") = 100;
+  options.set("max_its").doc() =
+      "Maximum number of iterations allowed before issuing an error/exception";
+
   return options;
 }
 

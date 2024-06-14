@@ -35,8 +35,18 @@ OptionSet
 ForwardEulerTimeIntegration<T>::expected_options()
 {
   OptionSet options = Model::expected_options();
+  options.doc() =
+      "Perform forward Euler time integration defined as \\f$ s = s_n + (t - t_n) \\dot{s} "
+      "\\f$, where \\f$s\\f$ is the variable being integrated, \\f$\\dot{s}\\f$ is the variable "
+      "rate, and \\f$t\\f$ is time. Subscripts \\f$n\\f$ denote quantities from the previous time "
+      "step.";
+
   options.set<VariableName>("variable");
+  options.set("variable").doc() = "Variable being integrated";
+
   options.set<VariableName>("time") = VariableName("t");
+  options.set("time").doc() = "Time";
+
   return options;
 }
 

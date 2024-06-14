@@ -82,7 +82,7 @@ public:
   /// Create a wrapper representing the second derivative d2y/dx2
   Derivative d(const VariableBase & x1, const VariableBase & x2);
 
-  /// @{ Accessors for storage
+  ///@{ Accessors for storage
   const LabeledVector & value_storage() const;
   const LabeledMatrix & derivative_storage() const;
   const LabeledTensor3D & second_derivative_storage() const;

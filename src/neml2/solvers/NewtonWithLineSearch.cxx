@@ -34,9 +34,21 @@ OptionSet
 NewtonWithLineSearch::expected_options()
 {
   OptionSet options = Newton::expected_options();
+  options.doc() = "The Newton-Raphson solver with line search.";
+
   options.set<unsigned int>("max_linesearch_iterations") = 10;
+  options.set("max_linesearch_iterations").doc() =
+      "Maximum allowable linesearch iterations. No error is produced upon reaching the maximum "
+      "number of iterations, and the scale factor in the last iteration is used to scale the step.";
+
   options.set<Real>("linesearch_cutback") = 2.0;
+  options.set("linesearch_cutback").doc() = "Linesearch cut-back factor when the current scale "
+                                            "factor cannot sufficiently reduce the residual.";
+
   options.set<Real>("linesearch_stopping_criteria") = 1.0e-3;
+  options.set("linesearch_stopping_criteria").doc() =
+      "The lineseach tolerance slightly relaxing the definition of residual decrease";
+
   return options;
 }
 

@@ -40,13 +40,13 @@ public:
   ParameterStore(const OptionSet & options, NEML2Object * object);
 
   /// @returns the buffer storage
-  /// @{
+  ///@{
   const Storage<std::string, TensorValueBase> & named_parameters() const
   {
     return const_cast<ParameterStore *>(this)->named_parameters();
   }
   Storage<std::string, TensorValueBase> & named_parameters();
-  /// }@
+  ///}@
 
   /// Get a writable reference of a parameter
   template <typename T,
@@ -83,7 +83,7 @@ protected:
    * allowed, but only the first call to declare_parameter constructs the parameter value, and
    * subsequent calls only returns a reference to the existing parameter.
    *
-   * @tparam T Buffer type. See @ref primitive for supported types.
+   * @tparam T Buffer type. See @ref statically-shaped-tensor for supported types.
    * @param name Buffer name
    * @param rawval Buffer value
    * @return Reference to buffer
@@ -100,7 +100,7 @@ protected:
    * allowed, but only the first call to declare_parameter constructs the parameter value, and
    * subsequent calls only returns a reference to the existing parameter.
    *
-   * @tparam T Parameter type. See @ref primitive for supported types.
+   * @tparam T Parameter type. See @ref statically-shaped-tensor for supported types.
    * @param name Name of the model parameter.
    * @param input_option_name Name of the input option that defines the value of the model
    * parameter.

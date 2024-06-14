@@ -33,8 +33,16 @@ OptionSet
 WR2ExplicitExponentialTimeIntegration::expected_options()
 {
   OptionSet options = Model::expected_options();
+  options.doc() = "Perform explicit discrete exponential time integration of a rotation. The "
+                  "update can be written as \\f$ s = \\exp\\left[ (t-t_n)\\dot{s}\\right] \\circ "
+                  "s_n \\f$, where \\f$ \\circ \\f$ denotes the rotation operator.";
+
   options.set<VariableName>("variable");
+  options.set("variable").doc() = "Variable being integrated";
+
   options.set<VariableName>("time") = VariableName("t");
+  options.set("time").doc() = "Time";
+
   return options;
 }
 

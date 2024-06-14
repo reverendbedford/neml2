@@ -34,14 +34,18 @@ register_NEML2_object(FillMillerIndex);
 OptionSet
 FillMillerIndex::expected_options()
 {
-  OptionSet options = NEML2Object::expected_options();
+  OptionSet options = UserTensor::expected_options();
+  options.doc() = "Fills a tensor of Miller indices from a list of integers. Use -1 instead of "
+                  "\\f$ \\bar{1} \\f$.";
+
   options.set<std::vector<Integer>>("values");
+  options.set("values").doc() = "List of integers defining a Miller index";
   return options;
 }
 
 FillMillerIndex::FillMillerIndex(const OptionSet & options)
   : MillerIndex(fill(options.get<std::vector<Integer>>("values"))),
-    NEML2Object(options)
+    UserTensor(options)
 {
 }
 

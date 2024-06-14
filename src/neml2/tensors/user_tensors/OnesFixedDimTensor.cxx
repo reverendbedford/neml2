@@ -33,15 +33,23 @@ template <typename T>
 OptionSet
 OnesFixedDimTensor<T>::expected_options()
 {
-  OptionSet options = NEML2Object::expected_options();
+  // This is the only way of getting tensor type in a static method like this...
+  // Trim 6 chars to remove 'neml2::'
+  auto tensor_type = utils::demangle(typeid(T).name()).substr(7);
+
+  OptionSet options = UserTensor::expected_options();
+  options.doc() = "Construct a " + tensor_type + " with given batch shape filled with ones.";
+
   options.set<TorchShape>("batch_shape") = {};
+  options.set("batch_shape").doc() = "Batch shape";
+
   return options;
 }
 
 template <typename T>
 OnesFixedDimTensor<T>::OnesFixedDimTensor(const OptionSet & options)
   : T(T::ones(options.get<TorchShape>("batch_shape"), default_tensor_options())),
-    NEML2Object(options)
+    UserTensor(options)
 {
 }
 

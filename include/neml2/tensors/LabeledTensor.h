@@ -103,7 +103,7 @@ public:
   void zero_();
 
   /// Get the underlying tensor
-  /// @{
+  ///@{
   const BatchTensor & tensor() const { return _tensor; }
   BatchTensor & tensor() { return _tensor; }
   /// @}

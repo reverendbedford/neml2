@@ -160,8 +160,6 @@ nbatch = 20
     internal_state_1_rate = 'state/G_rate'
     internal_state_2_rate = 'state/C_rate'
     torch_script = 'gold/surrogate.pt'
-    use_AD_first_derivative = true
-    use_AD_second_derivative = true
   []
   [integrate_ep]
     type = ScalarBackwardEulerTimeIntegration

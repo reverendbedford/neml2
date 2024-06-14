@@ -45,8 +45,8 @@ using BuildPtr = std::shared_ptr<NEML2Object> (*)(const OptionSet & options);
  * The Registry is used as a global singleton to collect information on all available NEML2Object
  * that can manufactured from the input file.
  *
- * To register a concrete class to the registry, use the macro `register_NEML2_object` or
- * `register_NEML2_object_alias`. Each object/class should only be registered once.
+ * To register a concrete class to the registry, use the macro register_NEML2_object or
+ * register_NEML2_object_alias. Each object/class should only be registered once.
  */
 class Registry
 {
@@ -62,14 +62,17 @@ public:
     return 0;
   }
 
+  /// Return the expected options of all registered classs
+  static std::map<std::string, OptionSet> expected_options();
+
   /// Return the expected options of a specific registered class
   static OptionSet expected_options(const std::string & name);
 
+  /// Return the syntax type (what appears in the input file) given a registered object's type
+  static std::string syntax_type(const std::string & type);
+
   /// Return the build method pointer of a specific registered class
   static BuildPtr builder(const std::string & name);
-
-  /// List all registered objects
-  static void print(std::ostream & os = std::cout);
 
 private:
   Registry() {}

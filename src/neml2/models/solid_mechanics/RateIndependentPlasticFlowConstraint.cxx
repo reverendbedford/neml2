@@ -32,9 +32,21 @@ OptionSet
 RateIndependentPlasticFlowConstraint::expected_options()
 {
   OptionSet options = Model::expected_options();
+  options.doc() = "Solve the consistent plasticity yield envelope by solving the equivalent "
+                  "complementarity condition \\f[ r = \\begin{cases} \\dot{\\gamma}, & f < 0 "
+                  "\\\\ f, & f \\geq 0. \\end{cases} \\f]";
+
   options.set<VariableName>("yield_function") = VariableName("state", "internal", "fp");
+  options.set("yield_function").doc() = "Yield function";
+
   options.set<VariableName>("flow_rate") = VariableName("state", "internal", "gamma_rate");
+  options.set("flow_rate").doc() = "Flow rate";
+
   options.set<Real>("yielding_tolerance") = 1e-8;
+  options.set("yielding_tolerance").doc() =
+      "Tolerance for determining whether the current material state is inside or outside the yield "
+      "envelope";
+
   return options;
 }
 

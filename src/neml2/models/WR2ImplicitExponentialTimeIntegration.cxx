@@ -37,8 +37,19 @@ OptionSet
 WR2ImplicitExponentialTimeIntegration::expected_options()
 {
   OptionSet options = Model::expected_options();
+  options.doc() = "Define the implicit discrete exponential time integration residual of a "
+                  "rotation variable. The residual can be written as \\f$ r = s - \\exp\\left[ "
+                  "(t-t_n)\\dot{s}\\right] \\circ s_n \\f$, where \\f$ \\circ \\f$ denotes the "
+                  "rotation operator.";
+
+  NonlinearSystem::enable_automatic_scaling(options);
+
   options.set<VariableName>("variable");
+  options.set("variable").doc() = "Variable being integrated";
+
   options.set<VariableName>("time") = VariableName("t");
+  options.set("time").doc() = "Time";
+
   return options;
 }
 

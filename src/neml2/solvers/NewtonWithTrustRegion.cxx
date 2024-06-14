@@ -34,16 +34,45 @@ OptionSet
 NewtonWithTrustRegion::expected_options()
 {
   OptionSet options = Newton::expected_options();
+  options.doc() =
+      "A trust-region Newton solver. The step size and direction are modified by solving a "
+      "constrained minimization problem using the local quadratic approximation. The default "
+      "solver parameters are chosen based on a limited set of problems we tested on and are "
+      "expected to be tuned.";
+
   options.set<Real>("delta_0") = 1.0;
+  options.set("delta_0").doc() = "Initial trust region radius";
+
   options.set<Real>("delta_max") = 10.0;
+  options.set("delta_max").doc() = "Maximum trust region radius";
+
   options.set<Real>("reduce_criteria") = 0.25;
+  options.set("reduce_criteria").doc() = "The trust region radius is reduced when the merit "
+                                         "function reduction is below this threshold";
+
   options.set<Real>("expand_criteria") = 0.75;
+  options.set("expand_criteria").doc() = "The trust region radius is increased when the merit "
+                                         "function reduction is above this threshold";
+
   options.set<Real>("reduce_factor") = 0.25;
+  options.set("reduce_factor").doc() = "Factor to apply when reducing the trust region radius";
+
   options.set<Real>("expand_factor") = 2.0;
+  options.set("expand_factor").doc() = "Factor to apply when increasing the trust region radius";
+
   options.set<Real>("accept_criteria") = 0.1;
+  options.set("accept_criteria").doc() =
+      "Reject the current step when the merit function reduction is below this threshold";
+
   options.set<Real>("subproblem_rel_tol") = 1e-6;
+  options.set("subproblem_rel_tol").doc() = "Relative tolerance used for the quadratic sub-problem";
+
   options.set<Real>("subproblem_abs_tol") = 1e-8;
+  options.set("subproblem_abs_tol").doc() = "Absolute tolerance used for the quadratic sub-problem";
+
   options.set<unsigned int>("subproblem_max_its") = 10;
+  options.set("subproblem_max_its").doc() =
+      "Maximum number of allowable iterations when solving the quadratic sub-problem";
 
   return options;
 }

@@ -35,14 +35,20 @@ register_NEML2_object(SymmetryFromOrbifold);
 OptionSet
 SymmetryFromOrbifold::expected_options()
 {
-  OptionSet options = NEML2Object::expected_options();
+  OptionSet options = UserTensor::expected_options();
+  options.doc() = "Returns a tensor of symmetry operations for a given symmetr group represented "
+                  "in orbifold notation.";
+
   options.set<std::string>("orbifold");
+  options.set("orbifold").doc() =
+      "A string giving the orbifold representation of the group, for example 432 for the typical "
+      "cubic crystal system defined by chiral octahedral symmetry";
   return options;
 }
 
 SymmetryFromOrbifold::SymmetryFromOrbifold(const OptionSet & options)
   : R2(symmetry_operations_from_orbifold(options.get<std::string>("orbifold"))),
-    NEML2Object(options)
+    UserTensor(options)
 {
 }
 }

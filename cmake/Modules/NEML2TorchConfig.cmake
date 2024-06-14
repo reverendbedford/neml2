@@ -1,7 +1,7 @@
 # libTorch comes with two flavors: one with cxx11 abi, one without.
 # We should be consistent with whatever is detected from the libTorch.
 try_compile(Torch_CXX11_ABI
-  ${NEML2_SOURCE_DIR}/cmake/detect_torch_cxx11_abi/build
+  ${NEML2_BINARY_DIR}/cmake/detect_torch_cxx11_abi/build
   ${NEML2_SOURCE_DIR}/cmake/detect_torch_cxx11_abi
   TEST
   CMAKE_FLAGS "-DLIBTORCH_DIR=${LIBTORCH_DIR}"

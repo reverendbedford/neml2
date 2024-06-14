@@ -1,9 +1,8 @@
-# ###################################################
-# MACROs for registering UNITY groups
-# ###################################################
+# ----------------------------------------------------------------------------
+# Macros for registering unity groups
+# ----------------------------------------------------------------------------
 macro(_src_subdirs result curdir)
       file(GLOB_RECURSE children ${curdir}/*.cxx)
-      set(dirlist "")
 
       foreach(child ${children})
             get_filename_component(child_dir ${child} DIRECTORY)
@@ -14,7 +13,7 @@ macro(_src_subdirs result curdir)
       set(${result} ${dirlist})
 endmacro()
 
-macro(_set_unity_group name root subdir)
+macro(_set_unity_group root subdir)
       file(RELATIVE_PATH UNITY_NAME_RAW ${root} ${subdir})
 
       if(NOT UNITY_NAME_RAW STREQUAL "")
@@ -24,13 +23,12 @@ macro(_set_unity_group name root subdir)
                   if(NOT UNITY_NAME MATCHES "CMakeFiles")
                         file(GLOB_RECURSE UNITY_FILES ${subdir}/*.cxx)
                         set_source_files_properties(${UNITY_FILES} PROPERTIES UNITY_GROUP ${UNITY_NAME})
-                        message(STATUS "${name}: group unity for ${UNITY_NAME}")
                   endif()
             endif()
       endif()
 endmacro()
 
-macro(register_unity_group target name rel_root)
+macro(register_unity_group target rel_root)
       get_target_property(UNITY_ENABLED ${target} UNITY_BUILD)
 
       if(UNITY_ENABLED)
@@ -38,7 +36,7 @@ macro(register_unity_group target name rel_root)
             _src_subdirs(SUBDIRS ${ABS_ROOT})
 
             foreach(subdir ${SUBDIRS})
-                  _set_unity_group(${name} ${ABS_ROOT} ${subdir})
+                  _set_unity_group(${ABS_ROOT} ${subdir})
             endforeach()
 
             set_target_properties(${target} PROPERTIES UNITY_BUILD_MODE GROUP)

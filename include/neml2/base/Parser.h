@@ -29,9 +29,28 @@
 
 namespace neml2
 {
+enum ParserType
+{
+  HIT,
+  XML,
+  YAML,
+  AUTO
+};
+
+/**
+ * @brief A convenient function to parse all options from an input file
+ *
+ * @param path Path to the input file to be parsed
+ * @param additional_input Additional cliargs to pass to the parser
+ * @param ptype Input file format
+ */
+void load_model(const std::string & path,
+                const std::string & additional_input = "",
+                ParserType ptype = ParserType::AUTO);
+
 /**
  * @brief A parser is responsible for parsing an input file into a collection of options which
- * can be used by the `Factory` to manufacture corresponding objects.
+ * can be used by the Factory to manufacture corresponding objects.
  *
  */
 class Parser

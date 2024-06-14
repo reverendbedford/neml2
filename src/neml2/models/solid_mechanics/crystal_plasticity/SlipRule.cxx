@@ -35,13 +35,22 @@ SlipRule::expected_options()
 {
   OptionSet options = Model::expected_options();
 
+  options.doc() = "Parent class for all slip rules, which define the slip rate in terms of the "
+                  "resolved shear and the slip system strength";
+
   options.set<VariableName>("slip_rates") = VariableName("state", "internal", "slip_rates");
+  options.set("slip_rates").doc() = "Name of the slip rate tensor";
 
   options.set<VariableName>("resolved_shears") =
       VariableName("state", "internal", "resolved_shears");
+  options.set("resolved_shears").doc() = "Name of the resolved shear tensor";
+
   options.set<VariableName>("slip_strengths") = VariableName("state", "internal", "slip_strengths");
+  options.set("slip_strengths").doc() = "Name of the tensor containing the slip system strengths";
 
   options.set<std::string>("crystal_geometry_name") = "crystal_geometry";
+  options.set("crystal_geometry_name").doc() =
+      "Name of the Data object containing the crystallographic information";
 
   return options;
 }

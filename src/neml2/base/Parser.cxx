@@ -21,8 +21,36 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+
 #include "neml2/base/Parser.h"
+#include "neml2/base/Factory.h"
+#include "neml2/base/HITParser.h"
 
 namespace neml2
 {
+void
+load_model(const std::string & path, const std::string & additional_input, ParserType ptype)
+{
+  // We are being forward looking here
+  if (ptype == ParserType::AUTO)
+  {
+    if (utils::end_with(path, ".i"))
+      ptype = ParserType::HIT;
+    else if (utils::end_with(path, ".xml"))
+      ptype = ParserType::XML;
+    else if (utils::end_with(path, ".yml"))
+      ptype = ParserType::YAML;
+  }
+
+  // but for now we only support HIT
+  if (ptype == ParserType::HIT)
+  {
+    HITParser parser;
+
+    Factory::clear();
+    Factory::load(parser.parse(path, additional_input));
+  }
+  else
+    neml_assert(false, "Unsupported parser type");
+}
 } // namespace neml2

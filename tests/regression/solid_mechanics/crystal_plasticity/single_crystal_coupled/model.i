@@ -109,7 +109,6 @@
     times = 'times'
     prescribed_deformation_rate = 'deformation_rate'
     prescribed_vorticity = 'vorticity'
-    provide_vorticity = true
     ic_rot_names = 'state/orientation'
     ic_rot_values = 'initial_orientation'
     predictor = 'CP_PREVIOUS_STATE'

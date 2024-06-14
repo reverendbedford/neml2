@@ -42,8 +42,8 @@ def_TensorValueBase(py::module_ & m)
       .def("dim", [](const TensorValueBase & self) { return BatchTensor(self).dim(); })
       .def_property_readonly("shape",
                              [](const TensorValueBase & self) { return BatchTensor(self).sizes(); })
-      .def_property_readonly("dtype",
-                             [](const TensorValueBase & self) { return BatchTensor(self).dtype(); })
+      .def_property_readonly(
+          "dtype", [](const TensorValueBase & self) { return BatchTensor(self).scalar_type(); })
       .def_property_readonly(
           "device", [](const TensorValueBase & self) { return BatchTensor(self).device(); })
       .def_property_readonly("requires_grad",
@@ -54,5 +54,4 @@ def_TensorValueBase(py::module_ & m)
            { return BatchTensor(self).requires_grad_(req); })
       .def_property_readonly("grad",
                              [](const TensorValueBase & self) { return BatchTensor(self).grad(); });
-  ;
 }

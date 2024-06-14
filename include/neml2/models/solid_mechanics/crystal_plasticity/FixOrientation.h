@@ -29,7 +29,7 @@
 namespace neml2
 {
 /**
- * @brief Swap orientation plane when the singularity at \f[2 \pi\] is met with the modified
+ * @brief Swap orientation plane when the singularity at \f$ 2 \pi \f$ is met with the modified
  * Rodrigues vector.
  *
  * See the following reference for details

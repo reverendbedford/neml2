@@ -31,14 +31,18 @@ register_NEML2_object(FillWR2);
 OptionSet
 FillWR2::expected_options()
 {
-  OptionSet options = NEML2Object::expected_options();
+  OptionSet options = UserTensor::expected_options();
+  options.doc() = "Construct a Rot from a vector of Scalars.";
+
   options.set<std::vector<CrossRef<Scalar>>>("values");
+  options.set("values").doc() = "Scalars used to fill the WR2";
+
   return options;
 }
 
 FillWR2::FillWR2(const OptionSet & options)
   : WR2(fill(options.get<std::vector<CrossRef<Scalar>>>("values"))),
-    NEML2Object(options)
+    UserTensor(options)
 {
 }
 

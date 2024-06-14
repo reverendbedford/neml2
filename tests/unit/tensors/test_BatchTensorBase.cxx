@@ -22,7 +22,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_all.hpp>
 
 #include "neml2/tensors/BatchTensor.h"
 
@@ -378,7 +379,7 @@ TEST_CASE("BatchTensorBase", "[tensors]")
       REQUIRE(b.storage().data_ptr() == a.storage().data_ptr());
       REQUIRE(b.batch_sizes() == s);
       REQUIRE(b.base_sizes() == a.base_sizes());
-      REQUIRE(torch::sum(a - b).item<Real>() == Approx(0));
+      REQUIRE(torch::sum(a - b).item<Real>() == Catch::Approx(0));
     }
 
     SECTION("base_expand")
@@ -394,7 +395,7 @@ TEST_CASE("BatchTensorBase", "[tensors]")
       // tensors because they have different base shapes. However, they _should_ be broadcastable
       // based on libTorch's original broadcasting rules. So we need to interpret them as
       // torch::Tensors first before we can compute a - b. This is the correct behavior.
-      REQUIRE(torch::sum(torch::Tensor(a) - torch::Tensor(b)).item<Real>() == Approx(0));
+      REQUIRE(torch::sum(torch::Tensor(a) - torch::Tensor(b)).item<Real>() == Catch::Approx(0));
     }
 
     SECTION("batch_expand_as")
@@ -427,7 +428,7 @@ TEST_CASE("BatchTensorBase", "[tensors]")
       auto b = a.batch_expand_copy(s);
       REQUIRE(b.batch_sizes() == s);
       REQUIRE(b.base_sizes() == a.base_sizes());
-      REQUIRE(torch::sum(a - b).item<Real>() == Approx(0));
+      REQUIRE(torch::sum(a - b).item<Real>() == Catch::Approx(0));
     }
 
     SECTION("base_expand_copy")
@@ -442,7 +443,7 @@ TEST_CASE("BatchTensorBase", "[tensors]")
       // tensors because they have different base shapes. However, they _should_ be broadcastable
       // based on libTorch's original broadcasting rules. So we need to interpret them as
       // torch::Tensors first before we can compute a - b. This is the correct behavior.
-      REQUIRE(torch::sum(torch::Tensor(a) - torch::Tensor(b)).item<Real>() == Approx(0));
+      REQUIRE(torch::sum(torch::Tensor(a) - torch::Tensor(b)).item<Real>() == Catch::Approx(0));
     }
 
     SECTION("batch_unsqueeze")

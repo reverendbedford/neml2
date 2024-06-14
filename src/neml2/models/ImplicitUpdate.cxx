@@ -33,8 +33,16 @@ OptionSet
 ImplicitUpdate::expected_options()
 {
   OptionSet options = Model::expected_options();
+  options.doc() =
+      "Update an implicit model by solving the underlying implicit system of equations.";
+
   options.set<std::string>("implicit_model");
+  options.set("implicit_model").doc() =
+      "The implicit model defining the implicit system of equations to be solved";
+
   options.set<std::string>("solver");
+  options.set("solver").doc() = "Solver used to solve the implicit system";
+
   return options;
 }
 

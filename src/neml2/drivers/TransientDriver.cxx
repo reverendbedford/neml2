@@ -34,23 +34,66 @@ OptionSet
 TransientDriver::expected_options()
 {
   OptionSet options = Driver::expected_options();
+
   options.set<std::string>("model");
+  options.set("model").doc() = "The material model to be updated by the driver";
+
   options.set<CrossRef<torch::Tensor>>("times");
+  options.set("times").doc() =
+      "Time steps to perform the material update. The times tensor must have exactly 2 dimensions. "
+      "The first dimension represents time steps, and the second dimension represents batches "
+      "(i.e., how many material models to update simultaneously).";
+
   options.set<VariableName>("time") = VariableName("forces", "t");
+  options.set("time").doc() = "Time";
+
   options.set<std::string>("predictor") = "PREVIOUS_STATE";
+  options.set("predictor").doc() =
+      "Predictor used to set the initial guess for each time step. Options are PREVIOUS_STATE, "
+      "LINEAR_EXTRAPOLATION, CP_PREVIOUS_STATE, and CP_LINEAR_EXTRAPOLATION. The options prefixed "
+      "with 'CP_' are specifically designed for crystal plasticity models.";
+
   options.set<Real>("cp_elastic_scale") = 1.0;
+  options.set("cp_elastic_scale").doc() = "Elastic step scale factor used in the 'CP_' predictors";
+
   options.set<std::string>("save_as");
+  options.set("save_as").doc() =
+      "File path (absolute or relative to the working directory) to store the results";
+
   options.set<bool>("show_parameters") = false;
+  options.set("show_parameters").doc() = "Whether to show model parameters at the beginning";
+
   options.set<bool>("show_input_axis") = false;
+  options.set("show_input_axis").doc() = "Whether to show model input axis at the beginning";
+
   options.set<bool>("show_output_axis") = false;
+  options.set("show_output_axis").doc() = "Whether to show model output axis at the beginning";
+
   options.set<std::string>("device") = "cpu";
+  options.set("device").doc() =
+      "Device on which to evaluate the material model. The string supplied must follow the "
+      "following schema: (cpu|cuda)[:<device-index>] where cpu or cuda specifies the device type, "
+      "and :<device-index> optionally specifies a device index. For example, device='cpu' sets the "
+      "target compute device to be CPU, and device='cuda:1' sets the target compute device to be "
+      "CUDA with device ID 1.";
 
   options.set<std::vector<VariableName>>("ic_scalar_names");
+  options.set("ic_scalar_names").doc() = "Apply initial conditions to these Scalar variables";
+
   options.set<std::vector<CrossRef<Scalar>>>("ic_scalar_values");
+  options.set("ic_scalar_values").doc() = "Initial condition values for the Scalar variables";
+
   options.set<std::vector<VariableName>>("ic_rot_names");
+  options.set("ic_rot_names").doc() = "Apply initial conditions to these Rot variables";
+
   options.set<std::vector<CrossRef<Rot>>>("ic_rot_values");
+  options.set("ic_rot_values").doc() = "Initial condition values for the Rot variables";
+
   options.set<std::vector<VariableName>>("ic_sr2_names");
+  options.set("ic_sr2_names").doc() = "Apply initial conditions to these SR2 variables";
+
   options.set<std::vector<CrossRef<SR2>>>("ic_sr2_values");
+  options.set("ic_sr2_values").doc() = "Initial condition values for the SR2 variables";
 
   return options;
 }

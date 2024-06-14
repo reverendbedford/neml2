@@ -35,22 +35,44 @@ register_NEML2_object(Orientation);
 OptionSet
 Orientation::expected_options()
 {
-  OptionSet options = NEML2Object::expected_options();
+  OptionSet options = UserTensor::expected_options();
+
+  options.doc() = "An orientation, internally defined as a set of Modified Rodrigues parameters "
+                  "given by \\f$ r = n \\tan{\\frac{\\theta}{4}} \\f$ with \\f$ n \\f$ the axis of "
+                  "rotation and \\f$ \\theta \\f$ the rotation angle about that axis.  However, "
+                  "this class provides a variety of ways to define the orientation in terms of "
+                  "other, more common representations.";
+
   options.set<std::string>("input_type") = "euler_angles";
+  options.set("input_type").doc() =
+      "The method used to define the angles, 'euler_angles' or 'random'";
+
   options.set<std::string>("angle_convention") = "kocks";
+  options.set("angle_convention").doc() = "Euler angle convention, 'Kocks', 'Roe', or 'Bunge'";
+
   options.set<std::string>("angle_type") = "degrees";
+  options.set("angle_type").doc() = "Type of angles, either 'degrees' or 'radians'";
+
   options.set<std::vector<Real>>("values") = {};
+  options.set("values").doc() = "Input Euler angles, as a flattened n-by-3 matrix";
+
   options.set<bool>("normalize") = false;
+  options.set("normalize").doc() =
+      "If true do a shadow parameter replacement of the underlying MRP representation to move the "
+      "inputs farther away from the singularity";
 
   options.set<TorchSize>("random_seed") = -1;
+  options.set("random_seed").doc() = "Random seed for random angle generation";
 
   options.set<unsigned int>("quantity") = 1;
+  options.set("quantity").doc() = "Number (batch size) of random orientations";
+
   return options;
 }
 
 Orientation::Orientation(const OptionSet & options)
   : Rot(fill(options)),
-    NEML2Object(options)
+    UserTensor(options)
 {
 }
 

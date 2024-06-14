@@ -131,7 +131,7 @@ if __name__ == "__main__":
     additional_files = {}
 
     exclude_dirs = ["extern"]
-    exclude_files = ["__init__.py"]
+    exclude_files = ["__init__.py", "setup.py"]
 
     rootdir = Path(".")
 

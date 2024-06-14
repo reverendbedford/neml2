@@ -35,14 +35,29 @@ OptionSet
 ElasticStrainRate::expected_options()
 {
   OptionSet options = Model::expected_options();
+
+  options.doc() = "Calculates the elastic strain rate as \\f$\\dot{\\varepsilon} = d - d^p - "
+                  "\\varepsilon w + w \\varepsilon \\f$ "
+                  "where \\f$ d \\f$ is the deformation rate, \\f$ d^p \\f$ is the plastic "
+                  "deformation rate, \\f$ w \\f$ is the vorticity, and \\f$ \\varepsilon \\f$ is "
+                  "the elastic strain.";
+
   options.set<VariableName>("elastic_strain_rate") = VariableName("state", "elastic_strain_rate");
+  options.set("elastic_strain_rate").doc() = "Name of the elastic strain rate";
+
   options.set<VariableName>("elastic_strain") = VariableName("state", "elastic_strain");
+  options.set("elastic_strain").doc() = "Name of the elastic strain";
 
   options.set<VariableName>("deformation_rate") = VariableName("forces", "deformation_rate");
+  options.set("deformation_rate").doc() = "Name of the deformation rate";
+
   options.set<VariableName>("vorticity") = VariableName("forces", "vorticity");
+  options.set("vorticity").doc() = "Name of the vorticity";
 
   options.set<VariableName>("plastic_deformation_rate") =
       VariableName("state", "internal", "plastic_deformation_rate");
+  options.set("plastic_deformation_rate").doc() = "Name of the plastic deformation rate";
+
   return options;
 }
 

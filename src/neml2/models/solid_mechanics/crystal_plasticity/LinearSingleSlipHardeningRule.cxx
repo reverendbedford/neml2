@@ -32,7 +32,14 @@ OptionSet
 LinearSingleSlipHardeningRule::expected_options()
 {
   OptionSet options = SingleSlipHardeningRule::expected_options();
+
+  options.doc() = "Simple linear slip system hardening defined by \\f$ \\dot{\\tau} = \\theta "
+                  "\\sum_{i=1}^{n_{slip}} \\left| \\dot{\\gamma}_i \\right| \\f$ where \\f$ "
+                  "\\theta \\f$ is the hardening slope.";
+
   options.set<CrossRef<Scalar>>("hardening_slope");
+  options.set("hardening_slope").doc() = "Hardening rate";
+
   return options;
 }
 

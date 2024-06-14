@@ -38,13 +38,13 @@ public:
   BufferStore(const OptionSet & options, NEML2Object * object);
 
   /// @returns the buffer storage
-  /// @{
+  ///@{
   const Storage<std::string, TensorValueBase> & named_buffers() const
   {
     return const_cast<BufferStore *>(this)->named_buffers();
   }
   Storage<std::string, TensorValueBase> & named_buffers();
-  /// }@
+  ///}@
 
   /// Get a writable reference of a buffer
   template <typename T,
@@ -67,7 +67,7 @@ protected:
    * allowed, but only the first call to declare_buffer constructs the buffer value, and subsequent
    * calls only returns a reference to the existing buffer.
    *
-   * @tparam T Buffer type. See @ref primitive for supported types.
+   * @tparam T Buffer type. See @ref statically-shaped-tensor for supported types.
    * @param name Buffer name
    * @param rawval Buffer value
    * @return Reference to buffer
@@ -84,7 +84,7 @@ protected:
    * allowed, but only the first call to declare_buffer constructs the buffer value, and subsequent
    * calls only returns a reference to the existing buffer.
    *
-   * @tparam T Buffer type. See @ref primitive for supported types.
+   * @tparam T Buffer type. See @ref statically-shaped-tensor for supported types.
    * @param name Buffer name
    * @param input_option_name Name of the input option that defines the value of the model
    * buffer.

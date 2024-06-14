@@ -208,8 +208,6 @@
     stress_tile_upper_bounds = 's_ub'
     temperature_tile_lower_bounds = 'T_lb'
     temperature_tile_upper_bounds = 'T_ub'
-    use_AD_first_derivative = true
-    use_AD_second_derivative = true
   []
   [integrate_ep]
     type = ScalarBackwardEulerTimeIntegration

@@ -40,10 +40,22 @@ OptionSet
 CrystalGeometry::expected_options()
 {
   OptionSet options = Data::expected_options();
+
+  options.doc() =
+      "A Data object storing basic crystallographic information for a given crystal system.";
+
   options.set<CrossRef<R2>>("crystal_class");
+  options.set("crystal_class").doc() = "The set of symmetry operations defining the crystal class.";
+
   options.set<CrossRef<Vec>>("lattice_vectors");
+  options.set("lattice_vectors").doc() =
+      "The three lattice vectors defining the crystal translational symmetry";
+
   options.set<CrossRef<MillerIndex>>("slip_directions");
+  options.set("slip_directions").doc() = "A list of Miller indices defining the slip directions";
+
   options.set<CrossRef<MillerIndex>>("slip_planes");
+  options.set("slip_planes").doc() = "A list of Miller indices defining the slip planes";
 
   return options;
 }

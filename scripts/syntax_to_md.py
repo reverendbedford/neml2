@@ -30,13 +30,6 @@ import re
 from pathlib import Path
 
 
-def get_type(params):
-    for param in params:
-        for param_name, info in param.items():
-            if param_name == "type":
-                return demangle(info["value"])
-
-
 def demangle(type):
     type = type.replace(
         "std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >",
@@ -47,43 +40,104 @@ def demangle(type):
     type = type.replace("std::", "")
     type = type.replace("at::", "")
     type = re.sub("CrossRef<(.+)>", r"\1", type)
+    type = type.replace("LabeledAxisAccessor", "VariableName")
+
     return type
 
 
 def postprocess(value, type):
     if type == "bool":
-        value = str(bool(value))
+        value = "true" if value else "false"
     return value
 
 
-if __name__ == "__main__":
-    outfile = Path(sys.argv[2])
-    outfile.parent.mkdir(parents=True, exist_ok=True)
+def get_sections(syntax):
+    sections = [params["section"] for type, params in syntax.items()]
+    return list(dict.fromkeys(sections))
 
+
+if __name__ == "__main__":
     with open(sys.argv[1], "r") as stream:
         syntax = yaml.safe_load(stream)
 
-    with open(sys.argv[2], "w") as stream:
-        stream.write("# Syntax Documentation {#syntax}\n\n")
-        stream.write("[TOC]\n\n")
-        for s in syntax:
-            for type, params in s.items():
-                input_type = get_type(params)
-                stream.write("## {}\n\n".format(input_type))
-                names = []
-                types = []
-                values = []
-                for param in params:
-                    for param_name, info in param.items():
+    outdir = Path(sys.argv[2])
+    outdir.mkdir(parents=True, exist_ok=True)
+
+    logfile = Path(sys.argv[3])
+    logfile.parent.mkdir(parents=True, exist_ok=True)
+
+    with open(logfile, "w") as log:
+        missing = 0
+        log.write("## Missing syntax\n")
+        sections = get_sections(syntax)
+        for section in sections:
+            with open((outdir / section.lower()).with_suffix(".md"), "w") as stream:
+                stream.write(
+                    "# [{}] {{#{}}}\n\n".format(section, "syntax-" + section.lower())
+                )
+                stream.write("[TOC]\n\n")
+                stream.write("## Available objects and their input file syntax\n\n")
+                stream.write(
+                    "Refer to [System Documentation](@ref system-{}) for detailed explanation about this system.\n\n".format(
+                        section.lower()
+                    )
+                )
+                for type, params in syntax.items():
+                    if params["section"] != section:
+                        continue
+                    input_type = demangle(params["type"]["value"])
+                    stream.write(
+                        "### {} {{#{}}}\n\n".format(input_type, input_type.lower())
+                    )
+                    if params["doc"]:
+                        stream.write("{}\n".format(params["doc"]))
+                    else:
+                        missing += 1
+
+                        log.write(
+                            "  * '{}' is missing object description\n".format(
+                                input_type
+                            )
+                        )
+                    for param_name, info in params.items():
+                        if param_name == "section":
+                            continue
+                        if param_name == "doc":
+                            continue
                         if param_name == "name":
                             continue
                         if param_name == "type":
                             continue
+                        if info["suppressed"]:
+                            continue
+
                         param_type = demangle(info["type"])
                         param_value = postprocess(info["value"], param_type)
-                        stream.write("- {}\n".format(param_name))
-                        stream.write("  - **Type**: {}\n".format(param_type))
-                        if param_value != None:
-                            stream.write("  - **Default**: {}\n".format(param_value))
-                stream.write("\n")
-                stream.write("Details: [{}](@ref {})\n\n".format(input_type, type))
+                        stream.write("<details>\n")
+                        if not info["doc"]:
+                            stream.write(
+                                "  <summary>`{}`</summary>\n\n".format(param_name)
+                            )
+                            missing += 1
+                            log.write(
+                                "    * '{}'.'{}' is missing option description\n".format(
+                                    input_type, param_name
+                                )
+                            )
+                        else:
+                            stream.write(
+                                "  <summary>`{}` {}</summary>\n\n".format(
+                                    param_name, info["doc"]
+                                )
+                            )
+                        stream.write("  - <u>Type</u>: {}\n".format(param_type))
+                        if param_value:
+                            stream.write("  - <u>Default</u>: {}\n".format(param_value))
+                        stream.write("</details>\n")
+                    stream.write("\n")
+                    stream.write(
+                        "Detailed documentation [link](@ref {})\n\n".format(type)
+                    )
+
+        if missing == 0:
+            log.write("Nothing, good job! :purple_heart:")

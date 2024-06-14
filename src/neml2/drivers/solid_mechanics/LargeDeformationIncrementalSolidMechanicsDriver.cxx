@@ -32,15 +32,32 @@ OptionSet
 LargeDeformationIncrementalSolidMechanicsDriver::expected_options()
 {
   OptionSet options = TransientDriver::expected_options();
+  options.doc() = "Driver for large deformation solid mechanics material model. The material model "
+                  "is updated *incrementally*.";
+
   options.set<std::string>("control") = "STRAIN";
+  options.set("control").doc() = "External control of the material update. Options are STRAIN and "
+                                 "STRESS, for strain control and stress control, respectively.";
+
   options.set<VariableName>("deformation_rate") = VariableName("forces", "deformation_rate");
+  options.set("deformation_rate").doc() = "Deformation rate";
+
   options.set<VariableName>("cauchy_stress_rate") = VariableName("forces", "cauchy_stress_rate");
-  options.set<CrossRef<torch::Tensor>>("prescribed_deformation_rate");
-  options.set<CrossRef<torch::Tensor>>("prescribed_cauchy_stress_rate");
+  options.set("cauchy_stress_rate").doc() = "Cauchy stress rate";
 
   options.set<VariableName>("vorticity") = VariableName("forces", "vorticity");
-  options.set<bool>("provide_vorticity") = false;
-  options.set<CrossRef<torch::Tensor>>("prescribed_vorticity") = "vorticity";
+  options.set("vorticity").doc() = "Vorticity";
+
+  options.set<CrossRef<torch::Tensor>>("prescribed_deformation_rate");
+  options.set("prescribed_deformation_rate").doc() =
+      "Prescribed deformation rate (when control = STRAIN)";
+
+  options.set<CrossRef<torch::Tensor>>("prescribed_cauchy_stress_rate");
+  options.set("prescribed_cauchy_stress_rate").doc() =
+      "Prescribed cauchy stress rate (when control = STRESS)";
+
+  options.set<CrossRef<torch::Tensor>>("prescribed_vorticity");
+  options.set("prescribed_vorticity").doc() = "Prescribed vorticity";
 
   return options;
 }
@@ -49,7 +66,12 @@ LargeDeformationIncrementalSolidMechanicsDriver::LargeDeformationIncrementalSoli
     const OptionSet & options)
   : TransientDriver(options),
     _control(options.get<std::string>("control")),
-    _vorticity_name(options.get<VariableName>("vorticity"))
+    _vorticity_name(options.get<VariableName>("vorticity")),
+    _vorticity_prescribed(
+        !options.get<CrossRef<torch::Tensor>>("prescribed_vorticity").raw().empty()),
+    _vorticity(_vorticity_prescribed
+                   ? WR2(options.get<CrossRef<torch::Tensor>>("prescribed_vorticity"))
+                   : WR2::zeros(_driving_force.batch_sizes()))
 {
   if (_control == "STRAIN")
   {
@@ -65,11 +87,6 @@ LargeDeformationIncrementalSolidMechanicsDriver::LargeDeformationIncrementalSoli
     // LCOV_EXCL_START
     throw NEMLException("Unsupported control type.");
   // LCOV_EXCL_STOP
-
-  if (options.get<bool>("provide_vorticity"))
-    _vorticity = WR2(options.get<CrossRef<torch::Tensor>>("prescribed_vorticity"));
-  else
-    _vorticity = WR2::zeros(_driving_force.batch_sizes());
 
   _driving_force = _driving_force.to(_device);
   _vorticity = _vorticity.to(_device);

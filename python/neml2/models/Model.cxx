@@ -26,6 +26,7 @@
 
 #include "python/neml2/misc/types.h"
 #include "neml2/models/Model.h"
+#include "neml2/base/Factory.h"
 
 namespace py = pybind11;
 using namespace neml2;
@@ -55,4 +56,10 @@ def_Model(py::module_ & m)
           "named_parameters",
           [](Model & self) { return &self.named_parameters(); },
           py::return_value_policy::reference);
+
+  // Make Model manufacturable
+  auto factory = (py::class_<Factory>)py::module_::import("neml2.base").attr("Factory");
+  factory.def_static("get_model",
+                     [](const std::string & name)
+                     { return Factory::get_object_ptr<Model>("Models", name); });
 }

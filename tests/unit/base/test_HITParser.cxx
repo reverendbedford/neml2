@@ -21,7 +21,9 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-#include <catch2/catch.hpp>
+
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_all.hpp>
 
 #include "neml2/base/HITParser.h"
 #include "SampleParserTestingModel.h"
@@ -48,8 +50,8 @@ TEST_CASE("HITParser", "[base]")
 
       SECTION("default values")
       {
-        REQUIRE(options.get<bool>("use_AD_first_derivative") == false);
-        REQUIRE(options.get<bool>("use_AD_second_derivative") == false);
+        REQUIRE(options.get<bool>("_use_AD_first_derivative") == false);
+        REQUIRE(options.get<bool>("_use_AD_second_derivative") == false);
       }
 
       SECTION("booleans")
@@ -81,7 +83,7 @@ TEST_CASE("HITParser", "[base]")
 
       SECTION("Reals")
       {
-        REQUIRE(options.get<Real>("Real") == Approx(3.14159));
+        REQUIRE(options.get<Real>("Real") == Catch::Approx(3.14159));
         REQUIRE_THAT(options.get<std::vector<Real>>("Real_vec"),
                      Catch::Matchers::Approx(std::vector<Real>{-111, 12, 1.1}));
         REQUIRE_THAT(options.get<std::vector<std::vector<Real>>>("Real_vec_vec")[0],
@@ -123,10 +125,10 @@ TEST_CASE("HITParser", "[base]")
     {
       SECTION("setting a suppressed option")
       {
-        REQUIRE_THROWS_WITH(
-            parser.parse("unit/base/test_HITParser2.i"),
-            Catch::Matchers::Contains("Option named 'suppressed_option' is suppressed, and its "
-                                      "value cannot be modified."));
+        REQUIRE_THROWS_WITH(parser.parse("unit/base/test_HITParser2.i"),
+                            Catch::Matchers::ContainsSubstring(
+                                "Option named 'suppressed_option' is suppressed, and its "
+                                "value cannot be modified."));
       }
     }
   }

@@ -21,7 +21,9 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-#include <catch2/catch.hpp>
+
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_all.hpp>
 
 #include "neml2/misc/parser_utils.h"
 
@@ -60,7 +62,7 @@ TEST_CASE("parser_utils", "[misc]")
     SECTION("torch::Tensor")
     {
       REQUIRE_THROWS_WITH(utils::parse<torch::Tensor>("1"),
-                          Catch::Matchers::Contains("Cannot parse torch::Tensor"));
+                          Catch::Matchers::ContainsSubstring("Cannot parse torch::Tensor"));
     }
 
     SECTION("TorchShape")
@@ -74,7 +76,7 @@ TEST_CASE("parser_utils", "[misc]")
       REQUIRE(utils::parse<TorchShape>("()") == TorchShape{});
       REQUIRE_THROWS_WITH(
           utils::parse<TorchShape>("1"),
-          Catch::Matchers::Contains("a shape must start with '(' and end with ')'"));
+          Catch::Matchers::ContainsSubstring("a shape must start with '(' and end with ')'"));
     }
 
     SECTION("bool")
@@ -82,7 +84,7 @@ TEST_CASE("parser_utils", "[misc]")
       REQUIRE(utils::parse<bool>("true"));
       REQUIRE(!utils::parse<bool>("false"));
       REQUIRE_THROWS_WITH(utils::parse<bool>("off"),
-                          Catch::Matchers::Contains("Failed to parse boolean value"));
+                          Catch::Matchers::ContainsSubstring("Failed to parse boolean value"));
     }
   }
 }

@@ -1,13 +1,12 @@
+# ----------------------------------------------------------------------------
+# Project metadata
+# ----------------------------------------------------------------------------
 cmake_minimum_required(VERSION 3.23)
-
 project(NEML2 VERSION 1.4.0 LANGUAGES CXX)
 
-# Setup modules
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${NEML2_SOURCE_DIR}/cmake/Modules/")
-
-# Ninja only: limit number of jobs in a CI build
-set_property(GLOBAL PROPERTY JOB_POOLS CI=6)
-
+# ----------------------------------------------------------------------------
+# Policy
+# ----------------------------------------------------------------------------
 # FindPython should return the first matching Python
 if(POLICY CMP0094)
       cmake_policy(SET CMP0094 NEW)
@@ -23,72 +22,80 @@ if(POLICY CMP0148)
       cmake_policy(SET CMP0148 NEW)
 endif()
 
-# Accept Release, Debug, and RelWithDebInfo, add Coverage build types
-set(CMAKE_CXX_FLAGS_COVERAGE
-      "-O0 -fprofile-arcs -ftest-coverage"
-      CACHE STRING "Flags used by C++ compiler during coverage builds."
-      FORCE)
-
-# Set the default build type
-if(NOT CMAKE_BUILD_TYPE)
-      set(CMAKE_BUILD_TYPE "Debug" CACHE
-            STRING "Choose the type of build." FORCE)
-
-      # Set the possible values of build type for cmake-gui
-      set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS
-            "Debug" "Release" "MinSizeRel" "RelWithDebInfo" "Coverage")
-endif()
-
-# Add the unity option to the cache
-option(CMAKE_UNITY_BUILD "Use a unity build" OFF)
-
-# c++ 17 support
+# ----------------------------------------------------------------------------
+# Project-level settings, options, and flags
+# ----------------------------------------------------------------------------
+list(APPEND CMAKE_MODULE_PATH ${NEML2_SOURCE_DIR}/cmake/Modules) # CMake modules and macros
+set(CMAKE_CXX_FLAGS_COVERAGE "-O0 -fprofile-arcs -ftest-coverage" CACHE STRING "Flags used by C++ compiler during coverage builds." FORCE)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+option(NEML2_TESTS "Build NEML2 tests" ON)
+option(NEML2_RUNNER "Build a simple runner for benchmarking, profiling, debugging, etc." OFF)
+option(NEML2_PYBIND "Build NEML2 Python bindings" OFF)
+option(NEML2_DOC "Build NEML2 documentation (html)" OFF)
 
-find_package(Torch)
+# ----------------------------------------------------------------------------
+# Dependencies and 3rd party packages
+# ----------------------------------------------------------------------------
+set(PYTORCH_VERSION "2.2.2")
+set(DOXYGEN_VERSION "1.10.0")
+set(DOXYGEN_AWESOME_VERSION "2.3.2")
+set(PYBIND11_VERSION "2.12.0")
+set(HIT_VERSION "100b575af08643b5e646cac8faff6c87dd1c15a7")
+set(CATCH2_VERSION "3.5.4")
+set(GPERFTOOLS_VERSION "2.15")
+set(ARGPARSE_VERSION "3.0")
+include(NEML2Dependencies)
+find_package(Torch) # This gets redirected to our FindTorch.cmake
 
-# Install rpath, important for a relocatable install
-option(NEML2_WHEELS "Customize the build for Python wheels" OFF)
-
-if(NEML2_WHEELS)
-      if(UNIX)
-            if(APPLE)
-                  set(CMAKE_INSTALL_RPATH "@loader_path;@loader_path/lib;@loader_path/../torch/lib;@loader_path/../../torch/lib")
-            else()
-                  set(CMAKE_INSTALL_RPATH "$ORIGIN;$ORIGIN/lib;$ORIGIN/../torch/lib;$ORIGIN/../../torch/lib")
-            endif()
-      endif()
+# ----------------------------------------------------------------------------
+# PyTorch ships libraries with or without CXX11 ABI
+# ----------------------------------------------------------------------------
+if(Torch_CXX11_ABI)
+      add_compile_definitions(_GLIBCXX_USE_CXX11_ABI=1)
 else()
-      if(UNIX)
-            if(APPLE)
-                  set(CMAKE_INSTALL_RPATH "@loader_path;@loader_path/lib;${Torch_LINK_DIRECTORIES}")
-            else()
-                  set(CMAKE_INSTALL_RPATH "$ORIGIN;$ORIGIN/lib;${Torch_LINK_DIRECTORIES}")
-            endif()
-      endif()
+      add_compile_definitions(_GLIBCXX_USE_CXX11_ABI=0)
 endif()
 
-# base library
+# ----------------------------------------------------------------------------
+# For relocatable install
+# ----------------------------------------------------------------------------
+if(UNIX AND APPLE)
+      set(EXEC_DIR "@loader_path")
+elseif(UNIX AND NOT APPLE)
+      set(EXEC_DIR "$ORIGIN")
+endif()
+
+# ----------------------------------------------------------------------------
+# Build types
+# ----------------------------------------------------------------------------
+if(NOT CMAKE_BUILD_TYPE)
+      set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Choose the type of build." FORCE)
+      set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo" "Coverage")
+endif()
+
+# ----------------------------------------------------------------------------
+# Subdirectories
+# ----------------------------------------------------------------------------
+# base neml2 library
 add_subdirectory(src/neml2)
 
-# testing
-option(NEML2_TESTS "Build NEML2 tests" ON)
-
+# tests
 if(NEML2_TESTS)
       add_subdirectory(tests)
 endif()
 
-# Doxygen
-option(NEML2_DOC "Build NEML2 documentation: doxygen" OFF)
-
-if(NEML2_DOC)
-      add_subdirectory(doc)
+# runner
+if(NEML2_RUNNER)
+      add_subdirectory(runner)
 endif()
 
-# Python binding
-option(NEML2_PYBIND "Build NEML2 Python binding" OFF)
-
+# Python bindings
 if(NEML2_PYBIND)
       add_subdirectory(python)
+endif()
+
+# Documentation
+if(NEML2_DOC)
+      add_subdirectory(doc)
 endif()

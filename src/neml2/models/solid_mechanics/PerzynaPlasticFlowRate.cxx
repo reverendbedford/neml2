@@ -32,8 +32,18 @@ OptionSet
 PerzynaPlasticFlowRate::expected_options()
 {
   OptionSet options = PlasticFlowRate::expected_options();
+  options.doc() =
+      "Perzyna's viscous approximation of the consistent yield envelope (with a power "
+      "law), i.e. \\f$ \\dot{\\gamma} = \\left( \\frac{\\left< f \\right>}{\\eta} \\right)^n \\f$, "
+      "where \\f$ f \\f$ is the yield function, \\f$ \\eta \\f$ is the reference stress, and \\f$ "
+      "n \\f$ is the power-law exponent.";
+
   options.set<CrossRef<Scalar>>("reference_stress");
+  options.set("reference_stress").doc() = "Reference stress";
+
   options.set<CrossRef<Scalar>>("exponent");
+  options.set("exponent").doc() = "Power-law exponent";
+
   return options;
 }
 

@@ -37,6 +37,7 @@ OptionSet
 LinearInterpolation<T>::expected_options()
 {
   OptionSet options = Interpolation<T>::expected_options();
+  options.doc() += " This object performs a _linear interpolation_.";
   return options;
 }
 

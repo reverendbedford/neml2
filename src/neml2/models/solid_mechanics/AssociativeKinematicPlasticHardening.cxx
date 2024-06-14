@@ -33,10 +33,22 @@ OptionSet
 AssociativeKinematicPlasticHardening::expected_options()
 {
   OptionSet options = FlowRule::expected_options();
+  options.doc() +=
+      " This object calculates the rate of kinematic plastic strain following associative flow "
+      "rule, i.e. \\f$ \\dot{\\boldsymbol{K}}_p = - \\dot{\\gamma} \\frac{\\partial f}{\\partial "
+      "\\boldsymbol{X}} \\f$, where \\f$ \\dot{\\boldsymbol{K}}_p \\f$ is the kinematic plastic "
+      "strain, \\f$ \\dot{\\gamma} \\f$ is the flow rate, \\f$ f \\f$ is the yield function, and "
+      "\\f$ \\boldsymbol{X} \\f$ is the kinematic hardening.";
+
   options.set<VariableName>("kinematic_hardening_direction") =
       VariableName("state", "internal", "NX");
+  options.set("kinematic_hardening_direction").doc() =
+      "Direction of associative kinematic hardening which can be calculated using Normality.";
+
   options.set<VariableName>("kinematic_plastic_strain_rate") =
       VariableName("state", "internal", "Kp_rate");
+  options.set("kinematic_plastic_strain_rate").doc() = "Rate of kinematic plastic strain";
+
   return options;
 }
 

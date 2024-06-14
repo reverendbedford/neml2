@@ -32,8 +32,15 @@ OptionSet
 RotationMatrix::expected_options()
 {
   OptionSet options = Model::expected_options();
+  options.doc() =
+      "Convert a Rot (rotation represented in Rodrigues format) to R2 (a full rotation matrix).";
+
   options.set<VariableName>("from");
+  options.set("from").doc() = "Rot to convert";
+
   options.set<VariableName>("to");
+  options.set("to").doc() = "R2 to store the resulting rotation matrix";
+
   return options;
 }
 

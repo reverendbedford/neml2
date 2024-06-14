@@ -31,9 +31,16 @@ register_NEML2_object(EmptyBatchTensor);
 OptionSet
 EmptyBatchTensor::expected_options()
 {
-  OptionSet options = NEML2Object::expected_options();
+  OptionSet options = UserTensor::expected_options();
+  options.doc() = "Construct an empty BatchTensor given batch and base shapes. Tensor values are "
+                  "**undefined** after construction.";
+
   options.set<TorchShape>("batch_shape") = {};
+  options.set("batch_shape").doc() = "Batch shape";
+
   options.set<TorchShape>("base_shape") = {};
+  options.set("base_shape").doc() = "Base shape";
+
   return options;
 }
 
@@ -41,7 +48,7 @@ EmptyBatchTensor::EmptyBatchTensor(const OptionSet & options)
   : BatchTensor(BatchTensor::empty(options.get<TorchShape>("batch_shape"),
                                    options.get<TorchShape>("base_shape"),
                                    default_tensor_options())),
-    NEML2Object(options)
+    UserTensor(options)
 {
 }
 } // namespace neml2

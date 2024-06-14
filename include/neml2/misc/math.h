@@ -207,7 +207,7 @@ BatchTensor skew_to_full(const BatchTensor & skew, TorchSize dim = 0);
  * @param p The parameter to take derivatives with respect to
  * @return BatchTensor \f$\partial y/\partial p\f$
  */
-BatchTensor jacrev(const BatchTensor & out, const BatchTensor & p);
+BatchTensor jacrev(const BatchTensor & y, const BatchTensor & p);
 
 BatchTensor
 base_diag_embed(const BatchTensor & a, TorchSize offset = 0, TorchSize d1 = -2, TorchSize d2 = -1);

@@ -38,13 +38,13 @@ public:
 protected:
   void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
-  /// Backstress
+  /// Back stress
   const Variable<SR2> & _X;
 
   /// Flow direction
   const Variable<SR2> & _NM;
 
-  /// Rate of backstress
+  /// Rate of back stress
   Variable<SR2> & _X_dot;
 
   const Scalar & _C;

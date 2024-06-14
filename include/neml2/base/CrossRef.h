@@ -55,15 +55,16 @@ public:
 
   /**
    * @brief Assignment operator
+   *
+   * This simply assigns the string without parsing and resolving the cross-reference
    */
   CrossRef<T> & operator=(const std::string & other);
 
   /**
    * @brief Implicit conversion operator.
    *
-   * It is assumed that the cross-referenced object has already been manufactured at this point.
-   *
-   * @return T The resolved value.
+   * The underlying string is parsed and used to resolve the cross-reference. It is assumed that the
+   * cross-referenced object has already been manufactured at this point.
    */
   operator T() const;
 

@@ -22,7 +22,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_all.hpp>
 
 #include "utils.h"
 #include "neml2/misc/math.h"
@@ -55,7 +56,7 @@ TEST_CASE("CrossRef", "[base]")
   SECTION("empty scalar")
   {
     REQUIRE_THROWS_WITH(load_model("unit/base/test_CrossRef_empty_Scalar.i"),
-                        Catch::Matchers::Contains("Failed to parse '' as a"));
+                        Catch::Matchers::ContainsSubstring("Failed to parse '' as a"));
   }
 
   SECTION("SR2 operator=")
@@ -75,6 +76,6 @@ TEST_CASE("CrossRef", "[base]")
   SECTION("empty tensor")
   {
     REQUIRE_THROWS_WITH(load_model("unit/base/test_CrossRef_empty_Tensor.i"),
-                        Catch::Matchers::Contains("Failed to parse '' as a"));
+                        Catch::Matchers::ContainsSubstring("Failed to parse '' as a"));
   }
 }

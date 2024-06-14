@@ -1,1 +1,2 @@
 PyYAML
+pybind11-stubgen

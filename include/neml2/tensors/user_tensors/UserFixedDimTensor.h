@@ -24,8 +24,7 @@
 
 #pragma once
 
-#include "neml2/base/Registry.h"
-#include "neml2/base/NEML2Object.h"
+#include "neml2/tensors/user_tensors/UserTensor.h"
 
 #include "neml2/tensors/macros.h"
 #include "neml2/tensors/tensors.h"
@@ -38,7 +37,7 @@ namespace neml2
  * @tparam T The concrete tensor derived from BatchTensorBase
  */
 template <typename T>
-class UserFixedDimTensor : public T, public NEML2Object
+class UserFixedDimTensor : public T, public UserTensor
 {
 public:
   static OptionSet expected_options();

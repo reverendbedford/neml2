@@ -22,7 +22,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_all.hpp>
 
 #include "neml2/tensors/Scalar.h"
 #include "neml2/tensors/Vec.h"
@@ -94,7 +95,8 @@ TEST_CASE("FixedDimTensor", "[tensors]")
 
 #ifndef NDEBUG
         // Calling .defined() to make sure this doesn't get optimized away...
-        REQUIRE_THROWS_WITH(SR2(a, Bn).defined(), Catch::Matchers::Contains("Base shape mismatch"));
+        REQUIRE_THROWS_WITH(SR2(a, Bn).defined(),
+                            Catch::Matchers::ContainsSubstring("Base shape mismatch"));
 #endif
       }
 
@@ -110,7 +112,8 @@ TEST_CASE("FixedDimTensor", "[tensors]")
 
 #ifndef NDEBUG
         // Calling .defined() to make sure this doesn't get optimized away...
-        REQUIRE_THROWS_WITH(SR2(a).defined(), Catch::Matchers::Contains("Base shape mismatch"));
+        REQUIRE_THROWS_WITH(SR2(a).defined(),
+                            Catch::Matchers::ContainsSubstring("Base shape mismatch"));
 #endif
       }
     }

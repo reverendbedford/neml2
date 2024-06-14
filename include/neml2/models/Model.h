@@ -242,7 +242,7 @@ protected:
    * If \p merge_input is set to true, this model will also *consume* the consumed variables of \p
    * model, which will affect dependency resolution inside a ComposedModel.
    *
-   * @param model The model to register
+   * @param name The model to register
    * @param extra_deriv_order The additional derivative order required for the registered-submodel
    * @param nonlinear Set to true if the registered model defines a nonlinear system to be solved
    * @param merge_input Whether to merge the input of the registered model into *this* model's

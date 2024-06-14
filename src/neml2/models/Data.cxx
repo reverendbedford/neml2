@@ -30,6 +30,7 @@ OptionSet
 Data::expected_options()
 {
   auto options = NEML2Object::expected_options();
+  options.section() = "Data";
   return options;
 }
 

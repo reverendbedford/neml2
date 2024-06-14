@@ -38,6 +38,10 @@ class NonlinearSystem
 public:
   static OptionSet expected_options();
 
+  static void disable_automatic_scaling(OptionSet & options);
+
+  static void enable_automatic_scaling(OptionSet & options);
+
   NonlinearSystem(const OptionSet & options);
 
   /**
@@ -89,7 +93,7 @@ protected:
    * @param residual Whether residual is requested
    * @param Jacobian Whether Jacobian is requested
    */
-  virtual void assemble(bool, bool) = 0;
+  virtual void assemble(bool residual, bool Jacobian) = 0;
 
   /// Number of degrees of freedom
   TorchSize _ndof;

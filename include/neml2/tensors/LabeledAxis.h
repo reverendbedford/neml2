@@ -39,7 +39,7 @@ namespace neml2
  * @brief A *labeled* axis used to associate layout of a tensor with human-interpretable names.
  *
  * A logically one-dimensional tensor requires one LabeledAxis, two-dimensional tensor requires two
- * LabeledAxis, and so on. See @ref labeledview for a detailed explanation of tensor labeling.
+ * LabeledAxis, and so on. See @ref tensor-labeling for a detailed explanation of tensor labeling.
  *
  * All the LabeledAxis modifiers can only be used during the setup stage. Calling any modifiers
  * after the setup stage is forbidden and will result in a runtime error in Debug mode.

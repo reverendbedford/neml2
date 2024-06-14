@@ -33,8 +33,17 @@ SingleSlipStrengthMap::expected_options()
 {
   OptionSet options = SlipStrengthMap::expected_options();
 
+  options.doc() =
+      "Calculates the slip system strength for all slip systems as \\f$ \\hat{\\tau}_i = "
+      "\\bar{\\tau} + \\tau_0 \\f$ where \\f$ \\hat{\\tau}_i \\f$ is the strength for slip system "
+      "i, \\f$ \\bar{\\tau} \\f$ is an evolving slip system strength (one value of all systems), "
+      "defined by another object, and \\f$ \\tau_0 \\f$ is a constant strength.";
+
   options.set<VariableName>("slip_hardening") = VariableName("state", "internal", "slip_hardening");
+  options.set("slip_hardening").doc() = "The name of the evovling, scalar strength";
+
   options.set<CrossRef<Scalar>>("constant_strength");
+  options.set("constant_strength").doc() = "The constant slip system strength";
 
   return options;
 }

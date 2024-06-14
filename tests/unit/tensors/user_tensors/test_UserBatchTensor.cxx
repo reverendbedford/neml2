@@ -22,7 +22,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_all.hpp>
 
 #include "utils.h"
 #include "neml2/tensors/user_tensors/UserBatchTensor.h"
@@ -70,7 +71,7 @@ TEST_CASE("UserBatchTensor", "[tensors/user_tensors]")
 
     REQUIRE_THROWS_WITH(
         Factory::get_object_ptr<BatchTensor>("Tensors", "a"),
-        Catch::Matchers::Contains("Number of values 1 must equal to either the "
-                                  "base storage size 6 or the total storage size 12"));
+        Catch::Matchers::ContainsSubstring("Number of values 1 must equal to either the "
+                                           "base storage size 6 or the total storage size 12"));
   }
 }

@@ -31,10 +31,39 @@ OptionSet
 NonlinearSystem::expected_options()
 {
   OptionSet options;
+
   options.set<bool>("automatic_scaling") = false;
+  options.set("automatic_scaling").doc() =
+      "Whether to perform automatic scaling. See neml2::NonlinearSystem::init_scaling for "
+      "implementation details.";
+
   options.set<Real>("automatic_scaling_tol") = 0.01;
+  options.set("automatic_scaling_tol").doc() =
+      "Tolerance used in iteratively updating the scaling matrices.";
+
   options.set<unsigned int>("automatic_scaling_miter") = 20;
+  options.set("automatic_scaling_miter").doc() =
+      "Maximum number of automatic scaling iterations. No error is produced upon reaching the "
+      "maximum number of scaling iterations, and the scaling matrices obtained at the last "
+      "iteration are used to scale the nonlinear system.";
+
   return options;
+}
+
+void
+NonlinearSystem::disable_automatic_scaling(OptionSet & options)
+{
+  options.set("automatic_scaling").suppressed() = true;
+  options.set("automatic_scaling_tol").suppressed() = true;
+  options.set("automatic_scaling_miter").suppressed() = true;
+}
+
+void
+NonlinearSystem::enable_automatic_scaling(OptionSet & options)
+{
+  options.set("automatic_scaling").suppressed() = false;
+  options.set("automatic_scaling_tol").suppressed() = false;
+  options.set("automatic_scaling_miter").suppressed() = false;
 }
 
 NonlinearSystem::NonlinearSystem(const OptionSet & options)

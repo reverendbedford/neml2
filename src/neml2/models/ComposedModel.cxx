@@ -32,9 +32,26 @@ OptionSet
 ComposedModel::expected_options()
 {
   OptionSet options = Model::expected_options();
+  options.doc() =
+      "Compose multiple models together to form a single model. The composed model can then be "
+      "treated as a new model and composed with others. The [system documentation](@ref "
+      "model-composition) provides in-depth explanation on how the models are composed together.";
+
+  NonlinearSystem::enable_automatic_scaling(options);
+
   options.set<std::vector<std::string>>("models");
+  options.set("models").doc() = "Models being composed together";
+
   options.set<std::vector<VariableName>>("additional_outputs");
+  options.set("additional_outputs").doc() =
+      "Extra output variables to be extracted from the composed model in addition to the ones "
+      "identified through dependency resolution.";
+
   options.set<std::vector<std::string>>("priority");
+  options.set("priority").doc() =
+      "Priorities of models in decreasing order. A model with higher priority will be evaluated "
+      "first. This is useful for breaking cyclic dependency.";
+
   return options;
 }
 
@@ -98,8 +115,8 @@ ComposedModel::check_AD_limitation() const
 {
   if (_AD_1st_deriv || _AD_2nd_deriv)
     throw NEMLException(
-        "ComposedModel does not use automatic differentiation. use_AD_first_derivative and "
-        "use_AD_second_derivative should be set to false.");
+        "ComposedModel does not use automatic differentiation. _use_AD_first_derivative and "
+        "_use_AD_second_derivative should be set to false.");
 }
 
 void

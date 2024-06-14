@@ -34,6 +34,8 @@ OptionSet
 Newton::expected_options()
 {
   OptionSet options = NonlinearSolver::expected_options();
+  options.doc() = "The standard Newton-Raphson solver which always takes the 'full' Newton step.";
+
   return options;
 }
 

@@ -21,7 +21,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
 
 #include "neml2/models/SumModel.h"
 

@@ -2,12 +2,16 @@
 # Configuration options related to the HTML output
 #---------------------------------------------------------------------------
 GENERATE_HTML          = YES
+DISABLE_INDEX          = NO
+FULL_SIDEBAR           = NO
 HTML_OUTPUT            = html
-HTML_EXTRA_STYLESHEET  = ${NEML2_SOURCE_DIR}/extern/doxygen-awesome-css/doxygen-awesome.css \
-                         ${NEML2_SOURCE_DIR}/extern/doxygen-awesome-css/doxygen-awesome-sidebar-only.css
+HTML_EXTRA_STYLESHEET  = ${doxygen-awesome-css_SOURCE_DIR}/doxygen-awesome.css\
+                         ${doxygen-awesome-css_SOURCE_DIR}/doxygen-awesome-sidebar-only.css
+HTML_COLORSTYLE        = LIGHT
 GENERATE_TREEVIEW      = YES
 USE_MATHJAX            = YES
 MATHJAX_VERSION        = MathJax_3
 MATHJAX_FORMAT         = HTML-CSS
 MATHJAX_RELPATH        = https://cdn.jsdelivr.net/npm/mathjax@3
-MATHJAX_EXTENSIONS     = ams physics
+MATHJAX_EXTENSIONS     = ams physics boldsymbol
+WARN_LOGFILE           = ${NEML2_BINARY_DIR}/doc/doxygen.html.log

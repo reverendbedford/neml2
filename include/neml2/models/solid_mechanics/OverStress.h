@@ -41,7 +41,7 @@ protected:
   /// Mandel stress
   const Variable<SR2> & _M;
 
-  /// Backstress
+  /// Back stress
   const Variable<SR2> & _X;
 
   /// Overstress

@@ -35,9 +35,23 @@ OptionSet
 BackwardEulerTimeIntegration<T>::expected_options()
 {
   OptionSet options = Model::expected_options();
+  options.doc() =
+      "Define the backward Euler time integration residual \\f$ r = s - s_n - (t - t_n) \\dot{s} "
+      "\\f$, where \\f$s\\f$ is the variable being integrated, \\f$\\dot{s}\\f$ is the variable "
+      "rate, and \\f$t\\f$ is time. Subscripts \\f$n\\f$ denote quantities from the previous time "
+      "step.";
+
+  NonlinearSystem::enable_automatic_scaling(options);
+
   options.set<VariableName>("variable");
+  options.set("variable").doc() = "Variable being integrated";
+
   options.set<VariableName>("variable_rate");
+  options.set("variable_rate").doc() = "Variable rate";
+
   options.set<VariableName>("time") = VariableName("t");
+  options.set("time").doc() = "Time";
+
   return options;
 }
 

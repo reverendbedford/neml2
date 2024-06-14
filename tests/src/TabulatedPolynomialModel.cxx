@@ -50,6 +50,9 @@ TabulatedPolynomialModel::expected_options()
   options.set<CrossRef<BatchTensor>>("temperature_tile_lower_bounds");
   options.set<CrossRef<BatchTensor>>("temperature_tile_upper_bounds");
   options.set<Real>("index_sharpness") = 1.0;
+  // Use AD
+  options.set<bool>("_use_AD_first_derivative") = true;
+  options.set<bool>("_use_AD_second_derivative") = true;
   return options;
 }
 
