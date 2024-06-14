@@ -45,7 +45,7 @@ CubicCrystal::expected_options()
   options.set("lattice_vectors").suppressed() = true;
 
   options.set<CrossRef<Scalar>>("lattice_parameter");
-  options.set("lattice_parameter").doc() = "The lattice parameter \\f$ a \\f$";
+  options.set("lattice_parameter").doc() = "The lattice parameter";
 
   return options;
 }
