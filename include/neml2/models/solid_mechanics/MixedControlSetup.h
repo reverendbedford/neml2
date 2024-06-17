@@ -44,7 +44,7 @@ protected:
    * control <= _threshold -> strain control
    * control > _threshold -> stress control
    */
-  const Real _threshold;
+  const BatchTensor _threshold;
 
   /// Actual input control signal
   const Variable<SR2> & _control;
@@ -61,6 +61,6 @@ protected:
 
 private:
   /// Construct the derivative operators from the control signal
-  std::pair<SSR4, SSR4> _make_operators(const SR2 & bcontrol) const;
+  std::pair<SSR4, SSR4> make_operators(const SR2 & bcontrol) const;
 };
 } // namespace neml2

@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 #include "neml2/models/solid_mechanics/MixedControlSetup.h"
+#include "neml2/misc/math.h"
 
 namespace neml2
 {
@@ -42,7 +43,7 @@ MixedControlSetup::expected_options()
       "The name of the control signal.  Values less than the threshold are "
       "strain control, greater are stress control";
 
-  options.set<Real>("threshold") = 0.5;
+  options.set<BatchTensor>("threshold") = BatchTensor::full({}, 0.5);
   options.set("threshold").doc() = "The threshold to switch between strain and stress control";
 
   options.set<VariableName>("mixed_state") = VariableName("state", "mixed_state");
@@ -64,7 +65,7 @@ MixedControlSetup::expected_options()
 
 MixedControlSetup::MixedControlSetup(const OptionSet & options)
   : Model(options),
-    _threshold(options.get<Real>("threshold")),
+    _threshold(options.get<BatchTensor>("threshold")),
     _control(declare_input_variable<SR2>("control")),
     _fixed_values(declare_input_variable<SR2>("fixed_values")),
     _mixed_state(declare_input_variable<SR2>("mixed_state")),
@@ -76,7 +77,7 @@ MixedControlSetup::MixedControlSetup(const OptionSet & options)
 void
 MixedControlSetup::set_value(bool out, bool dout_din, bool d2out_din2)
 {
-  auto [dstrain, dstress] = _make_operators(_control.tensor());
+  auto [dstrain, dstress] = make_operators(_control.tensor());
 
   if (out)
   {
@@ -99,7 +100,7 @@ MixedControlSetup::set_value(bool out, bool dout_din, bool d2out_din2)
 }
 
 std::pair<SSR4, SSR4>
-MixedControlSetup::_make_operators(const SR2 & control) const
+MixedControlSetup::make_operators(const SR2 & control) const
 {
   auto strain_select = control <= _threshold;
   auto stress_select = control > _threshold;
@@ -108,10 +109,11 @@ MixedControlSetup::_make_operators(const SR2 & control) const
   auto ones_stress = BatchTensor(strain_select.to(_stress.tensor().options()), control.batch_dim());
   auto ones_strain = BatchTensor::ones_like(control) - ones_stress;
 
-  auto dstrain = SSR4(BatchTensor(torch::diag_embed(ones_stress), batch_dim()));
-  auto dstress = SSR4(BatchTensor(torch::diag_embed(ones_strain), batch_dim()));
+  // auto dstrain = SSR4(BatchTensor(torch::diag_embed(ones_stress), batch_dim()));
+  auto dstrain = math::base_diag_embed(ones_stress);
+  auto dstress = math::base_diag_embed(ones_strain);
 
-  return std::make_pair(dstrain, dstress);
+  return {dstrain, dstress};
 }
 
 } // namespace neml2
