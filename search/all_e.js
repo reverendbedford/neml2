@@ -22,10 +22,12 @@ var searchData=
   ['millerindexlinearinterpolation_19',['MillerIndexLinearInterpolation',['../syntax-models.html#millerindexlinearinterpolation',1,'']]],
   ['miters_20',['miters',['../classneml2_1_1NonlinearSolver.html#a0cf640f7d773e8524e9266f8947fdcb5',1,'neml2::NonlinearSolver']]],
   ['mixed_20hardening_21',['Mixed hardening',['../solid-mechanics.html#autotoc_md26',1,'']]],
-  ['model_22',['Model',['../classneml2_1_1Model.html',1,'Model'],['../classneml2_1_1Model.html#aec637141dc1379fd56d05cf1b7cb10ee',1,'neml2::Model::Model()'],['../system-models.html',1,'Model'],['../dev.html#custom-model',1,'Writing a custom model']]],
-  ['model_20composition_23',['Model composition',['../system-models.html#model-composition',1,'']]],
-  ['model_20definition_24',['Model definition',['../system-models.html#model-definition',1,'']]],
-  ['model_20library_20version_202_25',['The New Engineering Material model Library, version 2',['../index.html#autotoc_md1',1,'']]],
-  ['models_26',['Models',['../syntax-models.html',1,'[Models]'],['../getting-started.html#autotoc_md4',1,'Using NEML2 material models']]],
-  ['multiply_5fand_5fmake_5fskew_27',['multiply_and_make_skew',['../namespaceneml2_1_1math.html#a81565e709d0982bfa707db6cdb283148',1,'neml2::math']]]
+  ['mixed_20stress_20strain_20control_22',['Mixed stress/strain control',['../solid-mechanics.html#autotoc_md28',1,'']]],
+  ['mixedcontrolsetup_23',['MixedControlSetup',['../classneml2_1_1MixedControlSetup.html',1,'MixedControlSetup'],['../classneml2_1_1MixedControlSetup.html#ab20953605998f5cb4f77ac24128c5d2c',1,'neml2::MixedControlSetup::MixedControlSetup()'],['../syntax-models.html#mixedcontrolsetup',1,'MixedControlSetup']]],
+  ['model_24',['Model',['../classneml2_1_1Model.html',1,'Model'],['../classneml2_1_1Model.html#aec637141dc1379fd56d05cf1b7cb10ee',1,'neml2::Model::Model()'],['../system-models.html',1,'Model'],['../dev.html#custom-model',1,'Writing a custom model']]],
+  ['model_20composition_25',['Model composition',['../system-models.html#model-composition',1,'']]],
+  ['model_20definition_26',['Model definition',['../system-models.html#model-definition',1,'']]],
+  ['model_20library_20version_202_27',['The New Engineering Material model Library, version 2',['../index.html#autotoc_md1',1,'']]],
+  ['models_28',['Models',['../syntax-models.html',1,'[Models]'],['../getting-started.html#autotoc_md4',1,'Using NEML2 material models']]],
+  ['multiply_5fand_5fmake_5fskew_29',['multiply_and_make_skew',['../namespaceneml2_1_1math.html#a81565e709d0982bfa707db6cdb283148',1,'neml2::math']]]
 ];

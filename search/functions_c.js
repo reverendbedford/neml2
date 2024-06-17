@@ -10,6 +10,7 @@ var searchData=
   ['mandelstress_7',['MandelStress',['../classneml2_1_1MandelStress.html#ada0110969b6f09c672a95c7e750c7ddc',1,'neml2::MandelStress::MandelStress()'],['../classneml2_1_1IsotropicMandelStress.html#ada0110969b6f09c672a95c7e750c7ddc',1,'neml2::IsotropicMandelStress::MandelStress()']]],
   ['merge_8',['merge',['../classneml2_1_1LabeledAxis.html#a0987c4608abea00ed7fea0996be7773e',1,'neml2::LabeledAxis']]],
   ['merit_5ffunction_5freduction_9',['merit_function_reduction',['../classneml2_1_1NewtonWithTrustRegion.html#a50ee7b5fbb0e203670369f5d24ecebd1',1,'neml2::NewtonWithTrustRegion']]],
-  ['model_10',['Model',['../classneml2_1_1Model.html#aec637141dc1379fd56d05cf1b7cb10ee',1,'neml2::Model']]],
-  ['multiply_5fand_5fmake_5fskew_11',['multiply_and_make_skew',['../namespaceneml2_1_1math.html#a81565e709d0982bfa707db6cdb283148',1,'neml2::math']]]
+  ['mixedcontrolsetup_10',['MixedControlSetup',['../classneml2_1_1MixedControlSetup.html#ab20953605998f5cb4f77ac24128c5d2c',1,'neml2::MixedControlSetup']]],
+  ['model_11',['Model',['../classneml2_1_1Model.html#aec637141dc1379fd56d05cf1b7cb10ee',1,'neml2::Model']]],
+  ['multiply_5fand_5fmake_5fskew_12',['multiply_and_make_skew',['../namespaceneml2_1_1math.html#a81565e709d0982bfa707db6cdb283148',1,'neml2::math']]]
 ];

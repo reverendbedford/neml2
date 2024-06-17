@@ -55,9 +55,9 @@ var NAVTREEINDEX =
 [
 "annotated.html",
 "classneml2_1_1ImplicitUpdate.html#af5600a36813e455aefee72bec1d574fb",
-"classneml2_1_1NewtonWithLineSearch.html#a7e563029d2910cc757143104b596c16d",
-"classneml2_1_1RotationMatrix.html#a9873862bccf002752dc124d8c108346a",
-"classneml2_1_1VariableBase.html#afbdf73363abf2d3b756a5d7644a69f02"
+"classneml2_1_1Newton.html#ac41f8f37ebcf1f72f62c7baf4e0f792c",
+"classneml2_1_1Rot.html#a2512acc3f34d16344bcfc06b2412fa75",
+"classneml2_1_1VariableBase.html#a9af5a4c323d926a00b6009f33439b679"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

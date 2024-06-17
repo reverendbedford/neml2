@@ -7,7 +7,7 @@ var searchData=
   ['d_5fskew_5fand_5fsym_5fto_5fsym_5fd_5fsym_4',['d_skew_and_sym_to_sym_d_sym',['../namespaceneml2_1_1math.html#a2ccba74da02a48db36da4981e7cb9c43',1,'neml2::math']]],
   ['data_5',['Data',['../syntax-data.html',1,'[Data]'],['../classneml2_1_1Data.html',1,'Data'],['../classneml2_1_1Data.html#ac566fea2e6d2c713725700379e658e86',1,'neml2::Data::Data()']]],
   ['data_6',['data',['../classneml2_1_1OptionCollection.html#a49107ede54f8e66a69908684b9c486f2',1,'neml2::OptionCollection']]],
-  ['data_7',['Data',['../system-data.html',1,'Data'],['../system-data.html#autotoc_md35',1,'Data']]],
+  ['data_7',['Data',['../system-data.html',1,'Data'],['../system-data.html#autotoc_md36',1,'Data']]],
   ['declare_5faxis_8',['declare_axis',['../classneml2_1_1VariableStore.html#ab7ad1933589cbc3638a7f295dc59c44a',1,'neml2::VariableStore']]],
   ['declare_5fbuffer_9',['declare_buffer',['../classneml2_1_1BufferStore.html#a71f1b9a304f24158c1c50fd7bf39dbba',1,'neml2::BufferStore::declare_buffer(const std::string &amp;name, const T &amp;rawval)'],['../classneml2_1_1BufferStore.html#afecb0cb84b93d6b59150843ecad87f51',1,'neml2::BufferStore::declare_buffer(const std::string &amp;name, const std::string &amp;input_option_name)']]],
   ['declare_5finput_5fvariable_10',['declare_input_variable',['../classneml2_1_1VariableStore.html#a40ad626c6229a766a9562f76de8a75a2',1,'neml2::VariableStore::declare_input_variable(S &amp;&amp;... name)'],['../classneml2_1_1VariableStore.html#a60152f8b0f9f7181254deeeedb51c5de',1,'neml2::VariableStore::declare_input_variable(TorchSize sz, S &amp;&amp;... name)']]],

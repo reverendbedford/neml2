@@ -113,14 +113,14 @@ $(function(){initNavTree('syntax-drivers.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md30">Available objects and their input file syntax</a><ul><li class="level2"><a href="#largedeformationincrementalsolidmechanicsdriver">LargeDeformationIncrementalSolidMechanicsDriver</a></li>
+<ul><li class="level1"><a href="#autotoc_md31">Available objects and their input file syntax</a><ul><li class="level2"><a href="#largedeformationincrementalsolidmechanicsdriver">LargeDeformationIncrementalSolidMechanicsDriver</a></li>
 <li class="level2"><a href="#solidmechanicsdriver">SolidMechanicsDriver</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_content_2syntax_2drivers"></a></p>
-<h1><a class="anchor" id="autotoc_md30"></a>
+<h1><a class="anchor" id="autotoc_md31"></a>
 Available objects and their input file syntax</h1>
 <p>Refer to <a class="el" href="system-drivers.html">System Documentation</a> for detailed explanation about this system.</p>
 <h2><a class="anchor" id="largedeformationincrementalsolidmechanicsdriver"></a>
@@ -352,6 +352,15 @@ SolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
+<code>control_name</code> The name of the control signal on the input axis</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: VariableName</li>
+<li><u>Default</u>: forces/control </li>
+</ul>
+</details>
+<details >
+<summary >
 <code>cp_elastic_scale</code> Elastic step scale factor used in the 'CP_' predictors</summary>
 <p></p>
 <ul>
@@ -366,6 +375,15 @@ SolidMechanicsDriver</h2>
 <ul>
 <li><u>Type</u>: string</li>
 <li><u>Default</u>: cpu </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>fixed_values</code></summary>
+<p></p>
+<ul>
+<li><u>Type</u>: VariableName</li>
+<li><u>Default</u>: forces/fixed_values </li>
 </ul>
 </details>
 <details >
@@ -435,6 +453,22 @@ SolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
+<code>prescribed_control</code> The actual values of the control signal. 0 implies strain control, 1 implies stress control</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: Tensor </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>prescribed_mixed_conditions</code> The fixed, controlled values provided as user input for the mixed control case. Where the control signal is 0 these are strain values, where it is 1 these are stress values</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: Tensor </li>
+</ul>
+</details>
+<details >
+<summary >
 <code>prescribed_strains</code> Prescribed strain (when control = STRAIN)</summary>
 <p></p>
 <ul>
@@ -451,7 +485,7 @@ SolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>prescribed_temperatures</code> Prescribed temperature</summary>
+<code>prescribed_temperatures</code> Actual prescibed temperature values, when providing temperatures to the model</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Tensor </li>
@@ -494,7 +528,7 @@ SolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>temperature</code> Temperature</summary>
+<code>temperature</code> Name of temperature</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>

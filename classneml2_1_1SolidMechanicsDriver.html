@@ -251,6 +251,9 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:aebdd63e6594d95a4c83de26a2b897233"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab85d5fd967db7b3337d09002adfa3a41" id="r_ab85d5fd967db7b3337d09002adfa3a41"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceneml2.html#a9e1488821b46ffc106c90ab80036b7aa">VariableName</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab85d5fd967db7b3337d09002adfa3a41">_driving_force_name</a></td></tr>
 <tr class="separator:ab85d5fd967db7b3337d09002adfa3a41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ec8f3de0deb3db1e3c0dad8c49e0cb9" id="r_a6ec8f3de0deb3db1e3c0dad8c49e0cb9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="namespaceneml2.html#a9e1488821b46ffc106c90ab80036b7aa">VariableName</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6ec8f3de0deb3db1e3c0dad8c49e0cb9">_control_name</a></td></tr>
+<tr class="memdesc:a6ec8f3de0deb3db1e3c0dad8c49e0cb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name of the control signal for mixed stress/strain control.  <br /></td></tr>
+<tr class="separator:a6ec8f3de0deb3db1e3c0dad8c49e0cb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc868afdc45d4507ea3b8ee122c88b92" id="r_abc868afdc45d4507ea3b8ee122c88b92"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="namespaceneml2.html#a9e1488821b46ffc106c90ab80036b7aa">VariableName</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abc868afdc45d4507ea3b8ee122c88b92">_temperature_name</a></td></tr>
 <tr class="memdesc:abc868afdc45d4507ea3b8ee122c88b92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name of the temperature variable.  <br /></td></tr>
 <tr class="separator:abc868afdc45d4507ea3b8ee122c88b92"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -260,6 +263,9 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:a6cda150eeeb217a432bafb913f99512a" id="r_a6cda150eeeb217a432bafb913f99512a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Scalar.html">Scalar</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6cda150eeeb217a432bafb913f99512a">_temperature</a></td></tr>
 <tr class="memdesc:a6cda150eeeb217a432bafb913f99512a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Temperature.  <br /></td></tr>
 <tr class="separator:a6cda150eeeb217a432bafb913f99512a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0053eefc6c5f51e0b253adb9044703fa" id="r_a0053eefc6c5f51e0b253adb9044703fa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1SR2.html">SR2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0053eefc6c5f51e0b253adb9044703fa">_control_signal</a></td></tr>
+<tr class="memdesc:a0053eefc6c5f51e0b253adb9044703fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Actual control signal, when used for control == "MIXED".  <br /></td></tr>
+<tr class="separator:a0053eefc6c5f51e0b253adb9044703fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classneml2_1_1TransientDriver"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classneml2_1_1TransientDriver')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classneml2_1_1TransientDriver.html">TransientDriver</a></td></tr>
 <tr class="memitem:a182326ae4276f4f9d786dacdbdd2bedd inherit pro_attribs_classneml2_1_1TransientDriver" id="r_a182326ae4276f4f9d786dacdbdd2bedd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Model.html">Model</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1TransientDriver.html#a182326ae4276f4f9d786dacdbdd2bedd">_model</a></td></tr>
 <tr class="memdesc:a182326ae4276f4f9d786dacdbdd2bedd inherit pro_attribs_classneml2_1_1TransientDriver"><td class="mdescLeft">&#160;</td><td class="mdescRight">The model which the driver uses to perform constitutive updates.  <br /></td></tr>
@@ -467,7 +473,55 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>The control method to drive the constitutive update. </p>
-<p>STRAIN: Use strain control to drive the update. STRESS: Use stress control to drive the update. </p>
+<p>STRAIN: Use strain control to drive the update. STRESS: Use stress control to drive the update. MIXED: Use mixed stress/strain control with signal provided by _control_name </p>
+
+</div>
+</div>
+<a id="a6ec8f3de0deb3db1e3c0dad8c49e0cb9" name="a6ec8f3de0deb3db1e3c0dad8c49e0cb9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ec8f3de0deb3db1e3c0dad8c49e0cb9">&#9670;&#160;</a></span>_control_name</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="namespaceneml2.html#a9e1488821b46ffc106c90ab80036b7aa">VariableName</a> _control_name</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Name of the control signal for mixed stress/strain control. </p>
+
+</div>
+</div>
+<a id="a0053eefc6c5f51e0b253adb9044703fa" name="a0053eefc6c5f51e0b253adb9044703fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0053eefc6c5f51e0b253adb9044703fa">&#9670;&#160;</a></span>_control_signal</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1SR2.html">SR2</a> _control_signal</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Actual control signal, when used for control == "MIXED". </p>
 
 </div>
 </div>

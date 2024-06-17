@@ -73,6 +73,7 @@ var annotated =
       [ "LogspaceFixedDimTensor", "classneml2_1_1LogspaceFixedDimTensor.html", "classneml2_1_1LogspaceFixedDimTensor" ],
       [ "MandelStress", "classneml2_1_1MandelStress.html", "classneml2_1_1MandelStress" ],
       [ "MillerIndex", "classneml2_1_1MillerIndex.html", "classneml2_1_1MillerIndex" ],
+      [ "MixedControlSetup", "classneml2_1_1MixedControlSetup.html", "classneml2_1_1MixedControlSetup" ],
       [ "Model", "classneml2_1_1Model.html", "classneml2_1_1Model" ],
       [ "NEML2Object", "classneml2_1_1NEML2Object.html", "classneml2_1_1NEML2Object" ],
       [ "NEMLException", "classneml2_1_1NEMLException.html", "classneml2_1_1NEMLException" ],
