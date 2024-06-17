@@ -43,7 +43,7 @@ MixedControlSetup::expected_options()
       "The name of the control signal.  Values less than the threshold are "
       "strain control, greater are stress control";
 
-  options.set<BatchTensor>("threshold") = BatchTensor::full({}, 0.5);
+  options.set<CrossRef<BatchTensor>>("threshold") = "0.5";
   options.set("threshold").doc() = "The threshold to switch between strain and stress control";
 
   options.set<VariableName>("mixed_state") = VariableName("state", "mixed_state");
@@ -65,7 +65,7 @@ MixedControlSetup::expected_options()
 
 MixedControlSetup::MixedControlSetup(const OptionSet & options)
   : Model(options),
-    _threshold(options.get<BatchTensor>("threshold")),
+    _threshold(options.get<CrossRef<BatchTensor>>("threshold")),
     _control(declare_input_variable<SR2>("control")),
     _fixed_values(declare_input_variable<SR2>("fixed_values")),
     _mixed_state(declare_input_variable<SR2>("mixed_state")),
