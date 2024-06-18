@@ -132,7 +132,7 @@
     type = ComposedModel
     models = "elastic_strain elasticity
               mandel_stress vonmises
-              yield ys normality Eprate
+              yield normality Eprate
               consistency integrate_Ep"
   []
   [return_map]

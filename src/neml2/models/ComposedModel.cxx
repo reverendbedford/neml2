@@ -176,11 +176,7 @@ ComposedModel::set_value(bool out, bool dout_din, bool d2out_din2)
   for (auto i : registered_models())
   {
     if (out && !dout_din && !d2out_din2)
-    {
-      std::cout << "Evaluating " << i->name() << std::endl;
       i->value();
-      std::cout << "  Evaluated " << i->name() << std::endl;
-    }
     else if (out && dout_din && !d2out_din2)
       i->value_and_dvalue();
     else if (out && dout_din && d2out_din2)
