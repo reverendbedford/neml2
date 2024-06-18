@@ -384,6 +384,15 @@ template <
     class Derived,
     typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<Derived>, Derived>>>
 Derived
+tanh(const Derived & a)
+{
+  return Derived(torch::tanh(a), a.batch_dim());
+}
+
+template <
+    class Derived,
+    typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<Derived>, Derived>>>
+Derived
 where(const torch::Tensor & condition, const Derived & a, const Derived & b)
 {
   neml_assert_broadcastable_dbg(a, b);
@@ -469,5 +478,15 @@ batch_diag_embed(const Derived & a, TorchSize offset = 0, TorchSize d1 = -2, Tor
                      a, offset, d1 < 0 ? d1 - a.base_dim() : d1, d2 < 0 ? d2 - a.base_dim() : d2),
                  a.batch_dim() + 1);
 }
+
+template <
+    class Derived,
+    typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<Derived>, Derived>>>
+Derived
+log(const Derived & a)
+{
+  return Derived(torch::log(a), a.batch_dim());
+}
+
 } // namespace math
 } // namespace neml2

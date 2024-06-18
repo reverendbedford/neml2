@@ -1,0 +1,100 @@
+// Copyright 2023, UChicago Argonne, LLC
+// All Rights Reserved
+// Software Name: NEML2 -- the New Engineering material Model Library, version 2
+// By: Argonne National Laboratory
+// OPEN SOURCE LICENSE (MIT)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
+#include "neml2/models/solid_mechanics/KocksMeckingRateSensitivity.h"
+
+namespace neml2
+{
+register_NEML2_object(KocksMeckingRateSensitivity);
+
+OptionSet
+KocksMeckingRateSensitivity::expected_options()
+{
+  OptionSet options = NonlinearParameter<Scalar>::expected_options();
+  options.set<CrossRef<Scalar>>("A");
+  options.set<CrossRef<Scalar>>("shear_modulus");
+
+  options.set<Real>("k");
+  options.set<Real>("b");
+
+  options.set<VariableName>("temperature") = VariableName("forces", "T");
+  return options;
+}
+
+KocksMeckingRateSensitivity::KocksMeckingRateSensitivity(const OptionSet & options)
+  : NonlinearParameter<Scalar>(options),
+    _A(declare_parameter<Scalar>("A", "A")),
+    _mu(declare_parameter<Scalar>("shear_modulus", "shear_modulus")),
+    _k(options.get<Real>("k")),
+    _b3(options.get<Real>("b") * options.get<Real>("b") * options.get<Real>("b")),
+    _T(declare_input_variable<Scalar>("temperature"))
+{
+}
+
+void
+KocksMeckingRateSensitivity::set_value(bool out, bool dout_din, bool d2out_din2)
+{
+  if (out)
+    _p = -_mu * _b3 / (_k * _T * _A);
+
+  if (dout_din)
+  {
+    _p.d(_T) = _b3 * _mu / (_A * _k * _T * _T);
+    if (const auto mu = nl_param("shear_modulus"))
+      _p.d(*mu) = -_b3 / (_A * _k * _T);
+    if (const auto A = nl_param("A"))
+      _p.d(*A) = -_b3 * _mu / (_A * _A * _k * _T);
+  }
+
+  if (d2out_din2)
+  {
+    // T, T
+    _p.d(_T, _T) = -2.0 * _b3 * _mu / (_A * _k * _T * _T * _T);
+    if (const auto A = nl_param("A"))
+    {
+      // A, A
+      _p.d(*A, *A) = -2.0 * _b3 * _mu / (_A * _A * _A * _k * _T);
+      // A, T and T, A
+      auto AT = -_b3 * _mu / (_A * _A * _k * _T * _T);
+      _p.d(*A, _T) = AT;
+      _p.d(_T, *A) = AT;
+    }
+    if (const auto mu = nl_param("mu"))
+    {
+      // mu, T and T, mu
+      auto MT = _b3 / (_A * _k * _T * _T);
+      _p.d(*mu, _T) = MT;
+      _p.d(_T, *mu) = MT;
+
+      if (const auto A = nl_param("A)"))
+      {
+        // mu, A and A, mu
+        auto MA = _b3 / (_A * _A * _k * _T);
+        _p.d(*mu, *A) = MA;
+        _p.d(*A, *mu) = MA;
+      }
+    }
+  }
+}
+} // namespace neml2
