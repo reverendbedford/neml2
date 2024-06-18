@@ -60,7 +60,29 @@ ComposedModel::ComposedModel(const OptionSet & options)
     _additional_outputs(options.get<std::vector<VariableName>>("additional_outputs"))
 {
   for (const auto & model_name : options.get<std::vector<std::string>>("models"))
-    register_model<Model>(model_name, 0, /*nonlinear=*/false, /*merge_input=*/false);
+  {
+    // For sub-models, we need sharable=false because each sub-model shall have _independent_ output
+    // storage. This is because the same model could be registered as a sub-model by different
+    // models, and it could be evaluated with _different_ input, and hence yields _different_ output
+    // values.
+    const auto & submodel = register_model<Model>(
+        model_name, 0, /*nonlinear=*/false, /*merge_input=*/false, /*sharable=*/false);
+
+    // Each sub-model may have nonlinear parameters. In our design, nonlinear parameters _are_
+    // models. Since we do not want to put the burden of adding nonlinear parameters in the input
+    // file through the option 'models', we should do more behind the scenes to register them for
+    // the user.
+    //
+    // Registering nonlinear parameters here ensures dependency resolution. And if a nonlinear
+    // parameter is registered by multiple models (which is very possible), we won't have to
+    // evaluate the nonlinar parameter over and over again!
+    for (auto && [pname, param] : submodel.nl_params())
+    {
+      neml_assert_dbg(param->name().size() == 1, "Internal parameter name error");
+      register_model<Model>(
+          param->name().vec()[0], 0, /*nonlinear=*/false, /*merge_input=*/false, /*sharable=*/true);
+    }
+  }
 
   // Add registered models as nodes in the dependency resolver
   for (auto submodel : registered_models())
@@ -154,7 +176,11 @@ ComposedModel::set_value(bool out, bool dout_din, bool d2out_din2)
   for (auto i : registered_models())
   {
     if (out && !dout_din && !d2out_din2)
+    {
+      std::cout << "Evaluating " << i->name() << std::endl;
       i->value();
+      std::cout << "  Evaluated " << i->name() << std::endl;
+    }
     else if (out && dout_din && !d2out_din2)
       i->value_and_dvalue();
     else if (out && dout_din && d2out_din2)
