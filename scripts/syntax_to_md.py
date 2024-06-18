@@ -147,3 +147,5 @@ if __name__ == "__main__":
 
         if missing == 0:
             log.write("No syntax error, good job! :purple_heart:")
+        else:
+            exit(1)
