@@ -76,12 +76,7 @@ ComposedModel::ComposedModel(const OptionSet & options)
     // Registering nonlinear parameters here ensures dependency resolution. And if a nonlinear
     // parameter is registered by multiple models (which is very possible), we won't have to
     // evaluate the nonlinar parameter over and over again!
-    for (auto && [pname, param] : submodel.nl_params())
-    {
-      neml_assert_dbg(param->name().size() == 1, "Internal parameter name error");
-      register_model<Model>(
-          param->name().vec()[0], 0, /*nonlinear=*/false, /*merge_input=*/false, /*sharable=*/true);
-    }
+    register_nonlinear_params(submodel);
   }
 
   // Add registered models as nodes in the dependency resolver
@@ -133,6 +128,20 @@ ComposedModel::ComposedModel(const OptionSet & options)
 }
 
 void
+ComposedModel::register_nonlinear_params(const Model & m)
+{
+  for (auto && [pname, param] : m.nl_params())
+  {
+    neml_assert_dbg(param->name().size() == 1, "Internal parameter name error");
+    auto & submodel = register_model<Model>(
+        param->name().vec()[0], 0, /*nonlinear=*/false, /*merge_input=*/false, /*sharable=*/true);
+
+    // Nonlinear parameters could be nested...
+    register_nonlinear_params(submodel);
+  }
+}
+
+void
 ComposedModel::check_AD_limitation() const
 {
   if (_AD_1st_deriv || _AD_2nd_deriv)
@@ -176,11 +185,7 @@ ComposedModel::set_value(bool out, bool dout_din, bool d2out_din2)
   for (auto i : registered_models())
   {
     if (out && !dout_din && !d2out_din2)
-    {
-      std::cout << "Evaluating " << i->name() << std::endl;
       i->value();
-      std::cout << "  Evaluated " << i->name() << std::endl;
-    }
     else if (out && dout_din && !d2out_din2)
       i->value_and_dvalue();
     else if (out && dout_din && d2out_din2)
