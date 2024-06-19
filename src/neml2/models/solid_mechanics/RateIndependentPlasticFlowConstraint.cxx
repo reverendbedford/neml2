@@ -42,18 +42,12 @@ RateIndependentPlasticFlowConstraint::expected_options()
   options.set<VariableName>("flow_rate") = VariableName("state", "internal", "gamma_rate");
   options.set("flow_rate").doc() = "Flow rate";
 
-  options.set<Real>("yielding_tolerance") = 1e-8;
-  options.set("yielding_tolerance").doc() =
-      "Tolerance for determining whether the current material state is inside or outside the yield "
-      "envelope";
-
   return options;
 }
 
 RateIndependentPlasticFlowConstraint::RateIndependentPlasticFlowConstraint(
     const OptionSet & options)
   : Model(options),
-    _ytol(options.get<Real>("yielding_tolerance")),
     _fp(declare_input_variable<Scalar>("yield_function")),
     _gamma_dot(declare_input_variable<Scalar>("flow_rate")),
     _r(declare_output_variable<Scalar>(
@@ -77,33 +71,6 @@ RateIndependentPlasticFlowConstraint::set_value(bool out, bool dout_din, bool d2
     _r.d(_gamma_dot) = I - _gamma_dot / math::sqrt(_gamma_dot * _gamma_dot + _fp * _fp);
     _r.d(_fp) = -I - _fp / math::sqrt(_gamma_dot * _gamma_dot + _fp * _fp);
   }
-
-  // The residual is the yield function itself when the stress state is "outside" the yield surface,
-  // also called return mapping. The residual is the hardening rate when the stress state is
-  // "inside" the yield surface, as the hardening rate is by definition zero.
-  // const auto yielding = _fp >= -_ytol;
-  // const auto not_yielding = torch::logical_not(yielding);
-
-  // if (out)
-  // {
-  //   auto r = Scalar::empty_like(_r);
-  //   r.index_put_({not_yielding}, Scalar(_gamma_dot).index({not_yielding}));
-  //   r.index_put_({yielding}, Scalar(_fp).index({yielding}));
-  //   _r = r;
-  // }
-
-  // if (dout_din)
-  // {
-  //   auto dr_dgamma_dot = Scalar::empty_like(_r);
-  //   dr_dgamma_dot.index_put_({not_yielding}, 1);
-  //   dr_dgamma_dot.index_put_({yielding}, 0);
-  //   _r.d(_gamma_dot) = dr_dgamma_dot;
-
-  //   auto dr_dfp = Scalar::empty_like(_r);
-  //   dr_dfp.index_put_({not_yielding}, 0);
-  //   dr_dfp.index_put_({yielding}, 1);
-  //   _r.d(_fp) = dr_dfp;
-  // }
 }
 
 } // namespace neml2

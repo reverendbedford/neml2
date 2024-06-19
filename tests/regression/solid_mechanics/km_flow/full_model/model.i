@@ -180,7 +180,7 @@
     g0 = 0.538
     rate_independent_flow_rate = 'state/internal/gamma_rate_ri' 
     rate_dependent_flow_rate = 'state/internal/gamma_rate_rd'
-    sharpness = 100.0
+    sharpness = 500.0
   []
   [Eprate]
     type = AssociativePlasticFlow
@@ -212,7 +212,7 @@
   []
   [surface]
     type = ComposedModel
-    models = "isoharden elasticity
+    models = "isoharden elasticity g
               mandel_stress vonmises
               yield yield_zero normality eprate Eprate Erate Eerate
               ri_flowrate rd_flowrate flowrate integrate_ep integrate_stress effective_strain_rate"

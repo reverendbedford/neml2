@@ -48,16 +48,14 @@
     times = 'times'
     prescribed_strains = 'strains'
     prescribed_temperatures = 'temperatures'
-    save_as = 'hmm.pt'
-    verbose = true
   []
   [verification]
     type = VTestVerification
     driver = 'driver'
     variables = 'output.state/S'
     references = 'stresses'
-    atol = 1e-5
-    rtol = 1e-5
+    rtol = 1.0e-5
+    atol = 1.0e-5
   []
 []
 
@@ -155,11 +153,11 @@
     eps0 = 1e10
   []
   [flowrate]
-    type = KocksMeckingFlowSwitchHard
+    type = KocksMeckingFlowSwitch
     g0 = 0.3708
     rate_independent_flow_rate = 'state/internal/gamma_rate_ri' 
     rate_dependent_flow_rate = 'state/internal/gamma_rate_rd'
-    #sharpness = 200.0
+    sharpness = 500.0
   []
   [Eprate]
     type = AssociativePlasticFlow
