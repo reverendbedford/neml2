@@ -29,14 +29,14 @@
     values = '750 850 950'
     batch_shape = '(3)'
   []
-  [mu_values]
-    type = Scalar
-    values = '76923.07692308 67307.69230769 57692.30769231'
-    batch_shape = '(3)'
-  []
   [E_values]
     type = Scalar
     values = '200000 175000 150000'
+    batch_shape = '(3)'
+  []
+  [mu_values]
+    type = Scalar
+    values = '76923.07692308 67307.69230769 57692.30769231'
     batch_shape = '(3)'
   []
 []
@@ -49,6 +49,7 @@
     prescribed_strains = 'strains'
     prescribed_temperatures = 'temperatures'
     save_as = 'hmm.pt'
+    verbose = true
   []
   [verification]
     type = VTestVerification
@@ -78,7 +79,7 @@
   []
   [isoharden]
     type = LinearIsotropicHardening
-    hardening_modulus = 1000
+    hardening_modulus = 1000.0
   []
   [mu]
     type = ScalarLinearInterpolation
@@ -154,11 +155,11 @@
     eps0 = 1e10
   []
   [flowrate]
-    type = KocksMeckingFlowSwitch
+    type = KocksMeckingFlowSwitchHard
     g0 = 0.3708
     rate_independent_flow_rate = 'state/internal/gamma_rate_ri' 
     rate_dependent_flow_rate = 'state/internal/gamma_rate_rd'
-    sharpness = 100.0
+    #sharpness = 200.0
   []
   [Eprate]
     type = AssociativePlasticFlow
@@ -199,7 +200,7 @@
     models = "isoharden elasticity
               mandel_stress vonmises
               yield yield_zero normality eprate Eprate Erate Eerate
-              ri_flowrate rd_flowrate flowrate integrate_ep integrate_stress effective_strain_rate"
+              ri_flowrate rd_flowrate g flowrate integrate_ep integrate_stress effective_strain_rate"
   []
   [model]
     type = ImplicitUpdate
@@ -207,4 +208,3 @@
     solver = 'newton'
   []
 []
-
