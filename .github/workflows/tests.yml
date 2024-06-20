@@ -62,7 +62,7 @@ jobs:
           python-version: "3.8"
       - uses: jwlawson/actions-setup-cmake@v2
         with:
-          cmake-version: "3.23"
+          cmake-version: "3.28"
       - run: pip install torch==2.2.2
       - run: |
           cmake \
@@ -108,7 +108,7 @@ jobs:
           python-version: "3.8"
       - uses: jwlawson/actions-setup-cmake@v2
         with:
-          cmake-version: "3.23"
+          cmake-version: "3.28"
       - run: pip install torch==2.2.2
       - run: |
           cmake \
@@ -135,7 +135,7 @@ jobs:
           python-version: "3.8"
       - uses: jwlawson/actions-setup-cmake@v2
         with:
-          cmake-version: "3.23"
+          cmake-version: "3.28"
       - run: pip install torch==2.2.2
       - run: sudo apt install lcov
       - run: |
@@ -168,7 +168,7 @@ jobs:
           python-version: "3.8"
       - uses: jwlawson/actions-setup-cmake@v2
         with:
-          cmake-version: "3.23"
+          cmake-version: "3.28"
       - run: pip install torch==2.2.2
       - name: Create a source file for testing purposes
         run: |
@@ -182,7 +182,7 @@ jobs:
       - name: Create a CMakeLists.txt file for testing purposes
         run: |
           echo -e "\
-            cmake_minimum_required(VERSION 3.23)
+            cmake_minimum_required(VERSION 3.28)
             project(FOO)\n\
             add_subdirectory(neml2)\n\
             add_executable(foo main.cxx)\n\

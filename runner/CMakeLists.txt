@@ -13,8 +13,7 @@ target_link_libraries(runner PRIVATE neml2 argparse)
 option(NEML2_RUNNER_AS_PROFILER "Additionally link the runner against gperftools profiler" OFF)
 
 if(NEML2_RUNNER_AS_PROFILER)
-  FetchContent_Populate(gperftools)
-  add_subdirectory(${gperftools_SOURCE_DIR} ${gperftools_BINARY_DIR} EXCLUDE_FROM_ALL)
+  FetchContent_MakeAvailable(gperftools)
   target_link_libraries(runner PRIVATE profiler)
 endif()
 

@@ -59,7 +59,11 @@ set(wasp_ENABLE_testframework OFF CACHE INTERNAL "" FORCE)
 set(wasp_ENABLE_TESTS OFF CACHE INTERNAL "" FORCE)
 set(DISABLE_HIT_TYPE_PROMOTION ON CACHE INTERNAL "" FORCE)
 FetchContent_MakeAvailable(wasp)
-set_target_properties(waspcore wasphit PROPERTIES POSITION_INDEPENDENT_CODE ON)
+set_target_properties(waspcore wasphit
+  PROPERTIES
+  POSITION_INDEPENDENT_CODE ON
+  UNITY_BUILD OFF
+)
 
 # HIT for parsing
 message(STATUS "Configuring HIT")

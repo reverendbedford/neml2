@@ -57,6 +57,7 @@ FetchContent_Declare(
 # gperftools for profiling
 FetchContent_Declare(
   gperftools
+  EXCLUDE_FROM_ALL
   GIT_REPOSITORY https://github.com/gperftools/gperftools.git
   GIT_TAG gperftools-${GPERFTOOLS_VERSION}
 )
