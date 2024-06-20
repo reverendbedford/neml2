@@ -140,13 +140,38 @@ Factory::get_object_ptr(const std::string & section,
   if (!force_create)
     if (factory._objects.count(section) && factory._objects.at(section).count(name))
     {
-      auto obj = std::dynamic_pointer_cast<T>(factory._objects[section][name].back());
+      const auto & neml2_obj = factory._objects[section][name].back();
+
+      // Error on option clash (these errors should only be developer-facing)
+      for (const auto & [key, value] : additional_options)
+      {
+        neml_assert_dbg(neml2_obj->input_options().contains(key),
+                        "While retrieving object named '",
+                        name,
+                        "' under section ",
+                        section,
+                        ", additional option '",
+                        key,
+                        "'");
+        neml_assert_dbg(neml2_obj->input_options().get(key) == *value,
+                        "While retrieving object named '",
+                        name,
+                        "' under section ",
+                        section,
+                        ", encountered option clash for '",
+                        key,
+                        "'");
+      }
+
+      // Check for object type
+      auto obj = std::dynamic_pointer_cast<T>(neml2_obj);
       neml_assert(obj != nullptr,
                   "Found object named ",
                   name,
                   " under section ",
                   section,
                   ". But dynamic cast failed. Did you specify the correct object type?");
+
       return obj;
     }
 

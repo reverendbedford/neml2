@@ -49,7 +49,7 @@ public:
 
   virtual ~NEML2Object() = default;
 
-  const OptionSet & options() const { return _options; }
+  const OptionSet & input_options() const { return _input_options; }
 
   /**
    * @brief Setup this object.
@@ -63,13 +63,13 @@ public:
   virtual void setup() {}
 
   /// A readonly reference to the object's name
-  const std::string & name() const { return _options.name(); }
+  const std::string & name() const { return _input_options.name(); }
   /// A readonly reference to the object's type
-  const std::string & type() const { return _options.type(); }
+  const std::string & type() const { return _input_options.type(); }
   /// A readonly reference to the object's path
-  const std::string & path() const { return _options.path(); }
+  const std::string & path() const { return _input_options.path(); }
   /// A readonly reference to the object's docstring
-  const std::string & doc() const { return _options.doc(); }
+  const std::string & doc() const { return _input_options.doc(); }
 
   /// Get a readonly pointer to the host
   template <typename T = NEML2Object>
@@ -80,7 +80,7 @@ public:
   T * host();
 
 private:
-  const OptionSet _options;
+  const OptionSet _input_options;
 
   /// The publicly exposed NEML2Object
   NEML2Object * _host;

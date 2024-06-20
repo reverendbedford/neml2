@@ -35,7 +35,7 @@ NEML2Object::expected_options()
 }
 
 NEML2Object::NEML2Object(const OptionSet & options)
-  : _options(options),
+  : _input_options(options),
     _host(options.get<NEML2Object *>("_host"))
 {
 }

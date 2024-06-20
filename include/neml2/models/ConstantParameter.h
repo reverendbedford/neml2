@@ -70,7 +70,7 @@ ConstantParameter<T>::set_value(bool out, bool dout_din, bool d2out_din2)
     this->_p = _value;
 
   if (dout_din)
-    if (const auto value = this->template nl_param("value"))
+    if (const auto value = this->nl_param("value"))
       this->_p.d(*value) = T::identity_map(this->options());
 
   // This is zero

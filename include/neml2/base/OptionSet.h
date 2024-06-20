@@ -127,6 +127,9 @@ public:
   public:
     virtual ~OptionBase() = default;
 
+    /// Test for option equality
+    virtual bool operator==(const OptionBase & other) const = 0;
+
     /// A readonly reference to the option's name
     const std::string & name() const { return _metadata.name; }
 
@@ -207,6 +210,12 @@ public:
        * accept it, or print a warning and ignores it.
        */
       bool suppressed = false;
+
+      bool operator==(const Metadata & other) const
+      {
+        return name == other.name && type == other.type && doc == other.doc &&
+               suppressed == other.suppressed;
+      }
     } _metadata;
   };
 
@@ -225,6 +234,8 @@ public:
       _metadata.type = utils::demangle(typeid(T).name());
     }
 
+    virtual bool operator==(const OptionBase & other) const override;
+
     /**
      * \returns A read-only reference to the option value
      */
@@ -235,9 +246,9 @@ public:
      */
     T & set() { return _value; }
 
-    virtual void print(std::ostream &) const;
+    virtual void print(std::ostream &) const override;
 
-    virtual std::unique_ptr<OptionBase> clone() const;
+    virtual std::unique_ptr<OptionBase> clone() const override;
 
   private:
     /// Stored option value
@@ -362,6 +373,17 @@ protected:
   /// Data structure to map names with values
   map_type _values;
 };
+
+template <typename T>
+bool
+OptionSet::Option<T>::operator==(const OptionBase & other) const
+{
+  const auto other_ptr = dynamic_cast<const Option<T> *>(&other);
+  if (!other_ptr)
+    return false;
+
+  return (_metadata == other_ptr->_metadata) && (other_ptr->get() == this->get());
+}
 
 // LCOV_EXCL_START
 template <typename T>

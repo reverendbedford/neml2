@@ -247,23 +247,19 @@ protected:
    * @param nonlinear Set to true if the registered model defines a nonlinear system to be solved
    * @param merge_input Whether to merge the input of the registered model into *this* model's
    * input.
-   * @param sharable Whether the registered sub-models share the same storage when registered by
-   * different models
    */
   template <typename T, typename = typename std::enable_if_t<std::is_base_of_v<Model, T>>>
   T & register_model(const std::string & name,
                      int extra_deriv_order = 0,
                      bool nonlinear = false,
-                     bool merge_input = true,
-                     bool sharable = false)
+                     bool merge_input = true)
   {
     OptionSet extra_opts;
     extra_opts.set<NEML2Object *>("_host") = host();
     extra_opts.set<int>("_extra_derivative_order") = extra_deriv_order;
     extra_opts.set<bool>("_nonlinear_system") = nonlinear;
 
-    auto model =
-        Factory::get_object_ptr<Model>("Models", name, extra_opts, /*force_create=*/!sharable);
+    auto model = Factory::get_object_ptr<Model>("Models", name, extra_opts, /*force_create=*/true);
 
     if (merge_input)
       for (auto && [name, var] : model->input_views())
