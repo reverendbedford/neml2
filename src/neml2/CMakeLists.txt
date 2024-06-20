@@ -49,27 +49,40 @@ target_include_directories(neml2 SYSTEM PUBLIC ${Torch_INCLUDE_DIRECTORIES})
 target_link_directories(neml2 PUBLIC ${Torch_LINK_DIRECTORIES})
 target_link_libraries(neml2 PUBLIC ${Torch_LIBRARIES})
 
-# hit for parsing
-message(STATUS "Configuring hit")
+# WASP for parsing
+message(STATUS "Configuring WASP")
+set(wasp_ENABLE_ALL_PACKAGES OFF CACHE INTERNAL "" FORCE)
+set(wasp_ENABLE_wasphit ON CACHE INTERNAL "" FORCE)
+set(wasp_ENABLE_wasplsp ON CACHE INTERNAL "" FORCE)
+set(wasp_ENABLE_waspsiren ON CACHE INTERNAL "" FORCE)
+set(wasp_ENABLE_testframework OFF CACHE INTERNAL "" FORCE)
+set(wasp_ENABLE_TESTS OFF CACHE INTERNAL "" FORCE)
+set(DISABLE_HIT_TYPE_PROMOTION ON CACHE INTERNAL "" FORCE)
+FetchContent_MakeAvailable(wasp)
+set_target_properties(waspcore wasphit PROPERTIES POSITION_INDEPENDENT_CODE ON)
+
+# HIT for parsing
+message(STATUS "Configuring HIT")
 FetchContent_MakeAvailable(hit)
 
 add_library(hit SHARED
-  ${hit_SOURCE_DIR}/parse.cc
-  ${hit_SOURCE_DIR}/lex.cc
-  ${hit_SOURCE_DIR}/braceexpr.cc
+  ${hit_SOURCE_DIR}/src/hit/parse.cc
+  ${hit_SOURCE_DIR}/src/hit/lex.cc
+  ${hit_SOURCE_DIR}/src/hit/braceexpr.cc
 )
 
 set_target_properties(hit PROPERTIES UNITY_BUILD OFF)
-target_include_directories(hit PUBLIC ${hit_SOURCE_DIR}/..)
+target_include_directories(hit PUBLIC ${hit_SOURCE_DIR}/.. ${wasp_SOURCE_DIR})
+target_link_libraries(hit PRIVATE wasphit)
 target_sources(hit
   PUBLIC
   FILE_SET HEADERS
-  BASE_DIRS ${hit_SOURCE_DIR}/..
+  BASE_DIRS ${hit_SOURCE_DIR}/include
   FILES
-  ${hit_SOURCE_DIR}/braceexpr.h
-  ${hit_SOURCE_DIR}/hit.h
-  ${hit_SOURCE_DIR}/lex.h
-  ${hit_SOURCE_DIR}/parse.h
+  ${hit_SOURCE_DIR}/include/hit/braceexpr.h
+  ${hit_SOURCE_DIR}/include/hit/hit.h
+  ${hit_SOURCE_DIR}/include/hit/lex.h
+  ${hit_SOURCE_DIR}/include/hit/parse.h
 )
 install(TARGETS hit COMPONENT Development FILE_SET HEADERS)
 target_link_libraries(neml2 PUBLIC hit)

@@ -34,12 +34,17 @@ FetchContent_Declare(
   GIT_TAG v${PYBIND11_VERSION}
 )
 
-# HIT for parsing input files
+# WASP and HIT for parsing input files
+FetchContent_Declare(
+  wasp
+  EXCLUDE_FROM_ALL
+  GIT_REPOSITORY https://code.ornl.gov/neams-workbench/wasp
+  GIT_TAG ${WASP_VERSION}
+)
 FetchContent_Declare(
   hit
-  GIT_REPOSITORY https://github.com/idaholab/hit.git
+  GIT_REPOSITORY https://github.com/hugary1995/hit
   GIT_TAG ${HIT_VERSION}
-  SOURCE_DIR ${NEML2_BINARY_DIR}/_deps/hit/hit
 )
 
 # Catch2 for testing
