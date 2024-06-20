@@ -169,14 +169,10 @@ Consistent plasticity</h2>
 <blockquote class="doxtable">
 <p>&zwj;Consistent plasticity models are sometimes considered rate-independent. But that is a misnomer as rate sensitivity can be baked into the yield function definition in terms of the rates of the internal variables. </p>
 </blockquote>
-<p>Residual associated with the KKT conditions can be written as the complementarity condition</p>
+<p>Residual associated with the KKT conditions can be written as the Fischer-Burmeister complementarity condition</p>
 <p class="formulaDsp">
 \begin{align*}
-  r =
-  \begin{cases}
-    \dot{\gamma}, &amp; f^p &lt; 0 \\
-    f^p, &amp; f^p \geq 0.
-  \end{cases}
+  r = \dot{\gamma} - f^p - \sqrt{{\dot{\gamma}}^2 + {f^p}^2}.
 \end{align*}
 </p>
 <p>This complementarity condition is implemented by the object <code>RateIndependentPlasticFlowConstraint</code>. A complete example input file for consistent plasticity is shown below, and the composition and possible modifications are explained in the following subsections.</p>
@@ -539,7 +535,7 @@ Crystal plasticity</h1>
 <p>The plastic deformation \( \bar{l}^p = \dot{F}^{p} {F}^{p-1} \) defines the crystal plasticity kinemtics and NEML2 assumes that the elastic stretch is small ( \( F^e = \left(I + \varepsilon \right) R^e \)) so that spatial velocity gradient becomes</p>
 <p class="formulaDsp">
 \begin{align*}
-  l =  \dot{\varepsilon} +  \Omega^e - \Omega^e \varepsilon + \varepsilon \Omega^e + l^p + \varepsilon l^p -  l^p \varepsilon 
+  l =  \dot{\varepsilon} +  \Omega^e - \Omega^e \varepsilon + \varepsilon \Omega^e + l^p + \varepsilon l^p -  l^p \varepsilon
 \end{align*}
 </p>
 <p>defining \( l^p = R^e \bar{l}^p R^{eT} \) as the constitutive plastic velocity gradient rotated into the current configuration and \( \Omega^e = \dot{R}^e R^{eT} \) as the elastic spin and assuming that</p>

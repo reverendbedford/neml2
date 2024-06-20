@@ -23,9 +23,10 @@ var searchData=
   ['list_5funsqueeze_20',['list_unsqueeze',['../classneml2_1_1BatchTensorBase.html#ad58907686e8b8e8e4ec31125cdc919c0',1,'neml2::BatchTensorBase']]],
   ['load_21',['load',['../classneml2_1_1Factory.html#a08109a9bce2e7f02df728b78854d6c62',1,'neml2::Factory']]],
   ['load_5fmodel_22',['load_model',['../namespaceneml2.html#afa00ba32837fe23a079a374ae29b5b34',1,'neml2']]],
-  ['logspace_23',['logspace',['../classneml2_1_1BatchTensorBase.html#a6aa3d15dbae744a5ae0fdc4384dc53cf',1,'neml2::BatchTensorBase']]],
-  ['logspacebatchtensor_24',['LogspaceBatchTensor',['../classneml2_1_1LogspaceBatchTensor.html#a54a9d0e1f4eff78b9d3d3c64d9f20dc2',1,'neml2::LogspaceBatchTensor']]],
-  ['logspacefixeddimtensor_25',['LogspaceFixedDimTensor',['../classneml2_1_1LogspaceFixedDimTensor.html#aa051135cf64481fb1b8c72b232ab52e2',1,'neml2::LogspaceFixedDimTensor']]],
-  ['lu_5ffactor_26',['lu_factor',['../namespaceneml2_1_1math_1_1linalg.html#a861994b4f550e8803e0816f2cf49350b',1,'neml2::math::linalg']]],
-  ['lu_5fsolve_27',['lu_solve',['../namespaceneml2_1_1math_1_1linalg.html#ae180e5ea3d7141ff90f458b26c1e7a61',1,'neml2::math::linalg']]]
+  ['log_23',['log',['../namespaceneml2_1_1math.html#a81291d8077a1d283666386da802c3d9c',1,'neml2::math']]],
+  ['logspace_24',['logspace',['../classneml2_1_1BatchTensorBase.html#a6aa3d15dbae744a5ae0fdc4384dc53cf',1,'neml2::BatchTensorBase']]],
+  ['logspacebatchtensor_25',['LogspaceBatchTensor',['../classneml2_1_1LogspaceBatchTensor.html#a54a9d0e1f4eff78b9d3d3c64d9f20dc2',1,'neml2::LogspaceBatchTensor']]],
+  ['logspacefixeddimtensor_26',['LogspaceFixedDimTensor',['../classneml2_1_1LogspaceFixedDimTensor.html#aa051135cf64481fb1b8c72b232ab52e2',1,'neml2::LogspaceFixedDimTensor']]],
+  ['lu_5ffactor_27',['lu_factor',['../namespaceneml2_1_1math_1_1linalg.html#a861994b4f550e8803e0816f2cf49350b',1,'neml2::math::linalg']]],
+  ['lu_5fsolve_28',['lu_solve',['../namespaceneml2_1_1math_1_1linalg.html#ae180e5ea3d7141ff90f458b26c1e7a61',1,'neml2::math::linalg']]]
 ];

@@ -6,6 +6,7 @@ var classneml2_1_1OptionSet_1_1OptionBase =
     [ "doc", "classneml2_1_1OptionSet_1_1OptionBase.html#abce685eded664bf68a6d49066ca559b4", null ],
     [ "doc", "classneml2_1_1OptionSet_1_1OptionBase.html#a95ddf7f84b4944b035c3f05fab305f99", null ],
     [ "name", "classneml2_1_1OptionSet_1_1OptionBase.html#a24dcbf29c0d6cd766009a182a6484e3b", null ],
+    [ "operator==", "classneml2_1_1OptionSet_1_1OptionBase.html#a819496e535eb8afbf1dbd144c0230561", null ],
     [ "print", "classneml2_1_1OptionSet_1_1OptionBase.html#a21160e293a34d988bc55f3306690cc52", null ],
     [ "suppressed", "classneml2_1_1OptionSet_1_1OptionBase.html#abff04b0bf2df60e4de4af22e520f54c3", null ],
     [ "suppressed", "classneml2_1_1OptionSet_1_1OptionBase.html#a6385b064a833c95ffd156ca3c5fcc03a", null ],
