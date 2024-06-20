@@ -59,27 +59,23 @@ ComposedModel::ComposedModel(const OptionSet & options)
   : Model(options),
     _additional_outputs(options.get<std::vector<VariableName>>("additional_outputs"))
 {
-  // Each sub-model shall have _independent_ output storage. This is because the same model could
-  // be registered as a sub-model by different models, and it could be evaluated with _different_
-  // input, and hence yields _different_ output values.
   for (const auto & model_name : options.get<std::vector<std::string>>("models"))
   {
+    // Each sub-model shall have _independent_ output storage. This is because the same model could
+    // be registered as a sub-model by different models, and it could be evaluated with _different_
+    // input, and hence yields _different_ output values.
     const auto & submodel =
         register_model<Model>(model_name, 0, /*nonlinear=*/false, /*merge_input=*/false);
     register_nonlinear_params(submodel);
-  }
 
-  // Each sub-model may have nonlinear parameters. In our design, nonlinear parameters _are_
-  // models. Since we do not want to put the burden of adding nonlinear parameters in the input
-  // file through the option 'models', we should do more behind the scenes to register them for
-  // the user.
-  //
-  // Registering nonlinear parameters here ensures dependency resolution. And if a nonlinear
-  // parameter is registered by multiple models (which is very possible), we won't have to
-  // evaluate the nonlinar parameter over and over again!
-  for (const auto & model_name : options.get<std::vector<std::string>>("models"))
-  {
-    const auto & submodel = Factory::get_object<Model>("Models", model_name);
+    // Each sub-model may have nonlinear parameters. In our design, nonlinear parameters _are_
+    // models. Since we do not want to put the burden of adding nonlinear parameters in the input
+    // file through the option 'models', we should do more behind the scenes to register them for
+    // the user.
+    //
+    // Registering nonlinear parameters here ensures dependency resolution. And if a nonlinear
+    // parameter is registered by multiple models (which is very possible), we won't have to
+    // evaluate the nonlinar parameter over and over again!
     register_nonlinear_params(submodel);
   }
 
