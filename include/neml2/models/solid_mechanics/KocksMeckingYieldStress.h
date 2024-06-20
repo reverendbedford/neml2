@@ -21,22 +21,30 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-#include "neml2/base/NEML2Object.h"
+
+#pragma once
+
+#include "neml2/models/NonlinearParameter.h"
 
 namespace neml2
 {
-OptionSet
-NEML2Object::expected_options()
+/**
+ * @brief A scalar-valued parameter defined by (mu0 - D/(exp(T0/T)-1)) * exp(_C)
+ */
+class KocksMeckingYieldStress : public NonlinearParameter<Scalar>
 {
-  auto options = OptionSet();
-  options.set<NEML2Object *>("_host") = nullptr;
-  options.set("_host").suppressed() = true;
-  return options;
-}
+public:
+  static OptionSet expected_options();
 
-NEML2Object::NEML2Object(const OptionSet & options)
-  : _input_options(options),
-    _host(options.get<NEML2Object *>("_host"))
-{
+  KocksMeckingYieldStress(const OptionSet & options);
+
+protected:
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+
+  /// The Kocks-Mecking intercept value
+  const Scalar & _C;
+
+  /// The shear modulus
+  const Scalar & _mu;
+};
 }
-} // namespace neml2

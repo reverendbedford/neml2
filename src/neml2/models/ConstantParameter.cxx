@@ -21,22 +21,49 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-#include "neml2/base/NEML2Object.h"
+
+#include "neml2/models/ConstantParameter.h"
 
 namespace neml2
 {
+
+template <typename T>
 OptionSet
-NEML2Object::expected_options()
+ConstantParameter<T>::expected_options()
 {
-  auto options = OptionSet();
-  options.set<NEML2Object *>("_host") = nullptr;
-  options.set("_host").suppressed() = true;
+  OptionSet options = NonlinearParameter<T>::expected_options();
+  options.doc() = "A parameter that is just a constant value, generally used to refer to a "
+                  "parameter in more than one downstream object.";
+
+  options.set<CrossRef<T>>("value");
+  options.set("value").doc() = "The constant value of the parameter";
   return options;
 }
 
-NEML2Object::NEML2Object(const OptionSet & options)
-  : _input_options(options),
-    _host(options.get<NEML2Object *>("_host"))
+template <typename T>
+ConstantParameter<T>::ConstantParameter(const OptionSet & options)
+  : NonlinearParameter<T>(options),
+    _value(this->template declare_parameter<T>("value", "value"))
 {
 }
+
+template <typename T>
+void
+ConstantParameter<T>::set_value(bool out, bool dout_din, bool d2out_din2)
+{
+  if (out)
+    this->_p = _value;
+
+  if (dout_din)
+    if (const auto value = this->nl_param("value"))
+      this->_p.d(*value) = T::identity_map(this->options());
+
+  // This is zero
+  (void)d2out_din2;
+}
+
+#define CONSTANTPARAMETER_REGISTER(T)                                                              \
+  register_NEML2_object_alias(T##ConstantParameter, #T "ConstantParameter")
+FOR_ALL_FIXEDDIMTENSOR(CONSTANTPARAMETER_REGISTER);
+
 } // namespace neml2

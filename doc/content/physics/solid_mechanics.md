@@ -48,14 +48,10 @@ Consistent plasticity refers to the family of (macroscale) plasticity models tha
 
 > Consistent plasticity models are sometimes considered rate-independent. But that is a misnomer as rate sensitivity can be baked into the yield function definition in terms of the rates of the internal variables.
 
-Residual associated with the KKT conditions can be written as the complementarity condition
+Residual associated with the KKT conditions can be written as the Fischer-Burmeister complementarity condition
 
 \f{align*}
-  r =
-  \begin{cases}
-    \dot{\gamma}, & f^p < 0 \\
-    f^p, & f^p \geq 0.
-  \end{cases}
+  r = \dot{\gamma} - f^p - \sqrt{{\dot{\gamma}}^2 + {f^p}^2}.
 \f}
 
 This complementarity condition is implemented by the object `RateIndependentPlasticFlowConstraint`. A complete example input file for consistent plasticity is shown below, and the composition and possible modifications are explained in the following subsections.
@@ -417,7 +413,7 @@ NEML2 models can be setup to take as input strain and provide stress or take as 
 
 Mixed control here means that some components of the strain tensor and some components of the stress tensor are provided as input and the model must solve for the conjugate, missing components of stress or strain.
 
-Mathematically, at each time step consider a tensor of applied, mixed strain or stress conditions \f$ f_{ij}  \f$ and a control signal \f$ c_{ij} \f$.  When \f$ c_{ij} < h \f$ for some threshold \f$ h \f$ we consider the corresponding component of the input \f$ f_{ij} \f$ to be a strain value and the model must solve for the corresponding value of stress.  If \f$ c_{ij} \ge h \f$ we consider the corresponding component of the input \f$ f_{ij} \f$ to be a stress value and the model must solve for the corresponding value of strain. 
+Mathematically, at each time step consider a tensor of applied, mixed strain or stress conditions \f$ f_{ij}  \f$ and a control signal \f$ c_{ij} \f$.  When \f$ c_{ij} < h \f$ for some threshold \f$ h \f$ we consider the corresponding component of the input \f$ f_{ij} \f$ to be a strain value and the model must solve for the corresponding value of stress.  If \f$ c_{ij} \ge h \f$ we consider the corresponding component of the input \f$ f_{ij} \f$ to be a stress value and the model must solve for the corresponding value of strain.
 
 Modifying a model for mixed control only requires a few additional objects.  The first maps from the mixed input and a conjugate mixed state vector into the actual model stress and strain input axes:
 
@@ -474,7 +470,7 @@ where the spatial velocity gradient is then
 The plastic deformation \f$ \bar{l}^p = \dot{F}^{p} {F}^{p-1} \f$ defines the crystal plasticity kinemtics and NEML2 assumes that the elastic stretch is small (\f$ F^e = \left(I + \varepsilon \right) R^e \f$) so that spatial velocity gradient becomes
 
 \f{align*}
-  l =  \dot{\varepsilon} +  \Omega^e - \Omega^e \varepsilon + \varepsilon \Omega^e + l^p + \varepsilon l^p -  l^p \varepsilon 
+  l =  \dot{\varepsilon} +  \Omega^e - \Omega^e \varepsilon + \varepsilon \Omega^e + l^p + \varepsilon l^p -  l^p \varepsilon
 \f}
 
 defining \f$ l^p = R^e \bar{l}^p R^{eT} \f$ as the constitutive plastic velocity gradient rotated into the current configuration and \f$ \Omega^e = \dot{R}^e R^{eT} \f$ as the elastic spin and assuming that

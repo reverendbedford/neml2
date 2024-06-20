@@ -147,3 +147,7 @@ if __name__ == "__main__":
 
         if missing == 0:
             log.write("No syntax error, good job! :purple_heart:")
+        else:
+            print("*" * 79, file=sys.stderr)
+            print("Syntax errors have been written to", logfile, file=sys.stderr)
+            print("*" * 79, file=sys.stderr)

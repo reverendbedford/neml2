@@ -39,6 +39,9 @@ public:
   virtual void check_AD_limitation() const override;
 
 protected:
+  /// Recursively register sub-model's nonlinar parameters
+  void register_nonlinear_params(const Model & m);
+
   virtual void allocate_variables(int deriv_order, bool options_changed) override;
 
   /**

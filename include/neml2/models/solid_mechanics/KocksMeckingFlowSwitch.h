@@ -21,22 +21,39 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-#include "neml2/base/NEML2Object.h"
+
+#pragma once
+
+#include "neml2/models/Model.h"
 
 namespace neml2
 {
-OptionSet
-NEML2Object::expected_options()
+class KocksMeckingFlowSwitch : public Model
 {
-  auto options = OptionSet();
-  options.set<NEML2Object *>("_host") = nullptr;
-  options.set("_host").suppressed() = true;
-  return options;
-}
+public:
+  static OptionSet expected_options();
 
-NEML2Object::NEML2Object(const OptionSet & options)
-  : _input_options(options),
-    _host(options.get<NEML2Object *>("_host"))
-{
-}
+  KocksMeckingFlowSwitch(const OptionSet & options);
+
+protected:
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+
+  /// The critical activation energy value
+  const Scalar & _g0;
+
+  /// The KM activation energy
+  const Variable<Scalar> & _g;
+
+  /// The steepness parameter
+  const Real _sharp;
+
+  /// The rate independent flow rate
+  const Variable<Scalar> & _ri_flow;
+
+  /// The rate dependent flow rate
+  const Variable<Scalar> & _rd_flow;
+
+  /// Plastic flow rate
+  Variable<Scalar> & _gamma_dot;
+};
 } // namespace neml2

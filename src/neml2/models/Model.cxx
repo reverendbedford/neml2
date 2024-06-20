@@ -179,7 +179,7 @@ Model::allocate_variables(int deriv_order, bool options_changed)
     d2out_din2 = deriv_order_new >= 2 && deriv_order_old < 2;
   }
 
-  _deriv_order = deriv_order_new;
+  _deriv_order = std::max(deriv_order_new, deriv_order_old);
   VariableStore::allocate_variables(batch_sizes(), options(), in, out, dout_din, d2out_din2);
 
   for (auto submodel : registered_models())

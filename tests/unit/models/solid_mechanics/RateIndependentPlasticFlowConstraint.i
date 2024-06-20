@@ -1,7 +1,7 @@
 [Tensors]
   [fp]
     type = Scalar
-    values = '-2 -1 0 1 2'
+    values = '-2 -1 0.5 1 2'
     batch_shape = '(5)'
   []
   [gamma_rate]
@@ -11,7 +11,7 @@
   []
   [rp]
     type = Scalar
-    values = '5 4 0 1 2'
+    values = '1.61483519 0.87689437 -0.54138127 -1.23606798 -3.23606798'
     batch_shape = '(5)'
   []
 []

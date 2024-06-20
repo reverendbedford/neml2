@@ -68,6 +68,9 @@ public:
    */
   operator T() const;
 
+  /// Test equality
+  bool operator==(const CrossRef<T> & other) const { return _raw_str == other.raw(); }
+
   /**
    * @brief Get the raw string literal
    *

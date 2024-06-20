@@ -49,6 +49,7 @@ SolidMechanicsDriver::expected_options()
   options.set("temperature").doc() = "Name of temperature";
 
   options.set<VariableName>("fixed_values") = VariableName("forces", "fixed_values");
+  options.set("fixed_values").doc() = "Name of fixed values (when control = MIXED)";
 
   options.set<CrossRef<torch::Tensor>>("prescribed_strains");
   options.set("prescribed_strains").doc() = "Prescribed strain (when control = STRAIN)";

@@ -53,8 +53,8 @@ private:
   void
   fill_vector(LabeledVector & vec, const std::string & option_vars, const std::string & option_vals)
   {
-    const auto vars = options().get<std::vector<VariableName>>(option_vars);
-    const auto vals = options().get<std::vector<CrossRef<T>>>(option_vals);
+    const auto vars = input_options().get<std::vector<VariableName>>(option_vars);
+    const auto vals = input_options().get<std::vector<CrossRef<T>>>(option_vals);
     neml_assert(vars.size() == vals.size(),
                 "Trying to assign ",
                 vals.size(),

@@ -21,22 +21,33 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-#include "neml2/base/NEML2Object.h"
+
+#pragma once
+
+#include "neml2/models/NonlinearParameter.h"
 
 namespace neml2
 {
-OptionSet
-NEML2Object::expected_options()
+/**
+ * @brief A parameter that is actually just a constant
+ */
+template <typename T>
+class ConstantParameter : public NonlinearParameter<T>
 {
-  auto options = OptionSet();
-  options.set<NEML2Object *>("_host") = nullptr;
-  options.set("_host").suppressed() = true;
-  return options;
-}
+public:
+  static OptionSet expected_options();
 
-NEML2Object::NEML2Object(const OptionSet & options)
-  : _input_options(options),
-    _host(options.get<NEML2Object *>("_host"))
-{
-}
+  ConstantParameter(const OptionSet & options);
+
+protected:
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+
+  /// The constant value
+  const T & _value;
+};
+
+#define CONSTANTPARAMETER_TYPEDEF_FIXEDDIMTENSOR(T)                                                \
+  typedef ConstantParameter<T> T##ConstantParameter
+FOR_ALL_FIXEDDIMTENSOR(CONSTANTPARAMETER_TYPEDEF_FIXEDDIMTENSOR);
+
 } // namespace neml2

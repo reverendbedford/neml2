@@ -108,6 +108,25 @@ SR2Invariant::set_value(bool out, bool dout_din, bool d2out_din2)
       }
     }
   }
+  else if (_type == "EFFECTIVE_STRAIN")
+  {
+    Scalar r = std::sqrt(2.0 / 3.0) * A.norm(NEML2_EPS);
+
+    if (out)
+      _invariant = r;
+
+    if (dout_din || d2out_din2)
+    {
+      auto d = 2.0 / 3.0 * A / r;
+
+      if (dout_din)
+        _invariant.d(_A) = 2.0 / 3.0 * A / r;
+
+      if (d2out_din2)
+        _invariant.d(_A, _A) =
+            2.0 / 3.0 * (SSR4::identity_sym(options()) - 3.0 / 2.0 * d.outer(d)) / r;
+    }
+  }
   else
     throw NEMLException("Unsupported invariant type: " + _type);
 }
