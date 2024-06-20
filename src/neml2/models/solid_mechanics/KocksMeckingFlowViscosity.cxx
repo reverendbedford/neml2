@@ -45,7 +45,7 @@ KocksMeckingFlowViscosity::expected_options()
   options.set<CrossRef<Scalar>>("A");
   options.set("A").doc() = "The Kocks-Mecking slope parameter";
   options.set<CrossRef<Scalar>>("B");
-  options.set("A").doc() = "The Kocks-Mecking intercept parameter";
+  options.set("B").doc() = "The Kocks-Mecking intercept parameter";
   options.set<CrossRef<Scalar>>("shear_modulus");
   options.set("shear_modulus").doc() = "The shear modulus";
 

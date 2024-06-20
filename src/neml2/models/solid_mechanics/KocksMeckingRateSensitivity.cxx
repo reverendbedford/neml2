@@ -98,7 +98,7 @@ KocksMeckingRateSensitivity::set_value(bool out, bool dout_din, bool d2out_din2)
       _p.d(*mu, _T) = MT;
       _p.d(_T, *mu) = MT;
 
-      if (const auto A = nl_param("A)"))
+      if (const auto A = nl_param("A"))
       {
         // mu, A and A, mu
         auto MA = _b3 / (_A * _A * _k * _T);

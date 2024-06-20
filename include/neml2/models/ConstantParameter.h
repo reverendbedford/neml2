@@ -46,37 +46,6 @@ protected:
   const T & _value;
 };
 
-template <typename T>
-OptionSet
-ConstantParameter<T>::expected_options()
-{
-  OptionSet options = NonlinearParameter<T>::expected_options();
-  options.set<CrossRef<T>>("value");
-  return options;
-}
-
-template <typename T>
-ConstantParameter<T>::ConstantParameter(const OptionSet & options)
-  : NonlinearParameter<T>(options),
-    _value(this->template declare_parameter<T>("value", "value"))
-{
-}
-
-template <typename T>
-void
-ConstantParameter<T>::set_value(bool out, bool dout_din, bool d2out_din2)
-{
-  if (out)
-    this->_p = _value;
-
-  if (dout_din)
-    if (const auto value = this->nl_param("value"))
-      this->_p.d(*value) = T::identity_map(this->options());
-
-  // This is zero
-  (void)d2out_din2;
-}
-
 #define CONSTANTPARAMETER_TYPEDEF_FIXEDDIMTENSOR(T)                                                \
   typedef ConstantParameter<T> T##ConstantParameter
 FOR_ALL_FIXEDDIMTENSOR(CONSTANTPARAMETER_TYPEDEF_FIXEDDIMTENSOR);
