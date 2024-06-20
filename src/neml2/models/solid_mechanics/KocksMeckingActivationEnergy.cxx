@@ -32,16 +32,32 @@ OptionSet
 KocksMeckingActivationEnergy::expected_options()
 {
   OptionSet options = Model::expected_options();
+  options.doc() =
+      "Calculates the Kocks-Mecking normalized activation as \\f$g = \\frac{kT}{\\mu "
+      "b^3} \\log \\frac{\\dot{\\varepsilon}_0}{\\dot{\\varepsilon}} \\f$ with \\f$ "
+      "\\mu \\f$ the shear modulus, \\f$ k \\f$ the Boltzmann constant, \\f$ T \\f$ the absolute "
+      "temperature, \\f$ b \\f$ the Burgers vector length, \\f$ \\dot{\\varepsilon}_0 \\f$ a "
+      "reference strain rate, and \\f$ \\dot{\\varepsilon} \\f$ the current strain rate.";
+
   options.set<CrossRef<Scalar>>("shear_modulus");
+  options.set("shear_modulus").doc() = "The shear modulus";
 
   options.set<Real>("eps0");
+  options.set("eps0").doc() = "Reference strain rate";
+
   options.set<Real>("k");
+  options.set("k").doc() = "The Boltzmann constant";
   options.set<Real>("b");
+  options.set("b").doc() = "Magnitude of the Burgers vector";
 
   options.set<VariableName>("temperature") = VariableName("forces", "T");
+  options.set("temperature").doc() = "Absolute temperature";
+
   options.set<VariableName>("strain_rate") = VariableName("forces", "effective_strain_rate");
+  options.set("strain_rate").doc() = "Name of the effective strain rate";
 
   options.set<VariableName>("activation_energy") = VariableName("forces", "g");
+  options.set("activation_energy").doc() = "Output name of the activation energy";
   return options;
 }
 

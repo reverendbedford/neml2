@@ -32,13 +32,24 @@ OptionSet
 KocksMeckingRateSensitivity::expected_options()
 {
   OptionSet options = NonlinearParameter<Scalar>::expected_options();
+  options.doc() =
+      "Calculates the temperature-dependent rate sensitivity for a Perzyna-type model using the "
+      "Kocks-Mecking model.  The value is \\f$ n = \\frac{\\mu b^3}{k T A} \\f$ with \\f$ \\mu "
+      "\\f$ the shear modulus, \\f$ b \\f$ the Burgers vector, \\f$  k\\f$ the Boltzmann constant, "
+      "\\f$ T \\f$ absolute temperature, and \\f$ A \\f$ the Kocks-Mecking slope parameter.";
+
   options.set<CrossRef<Scalar>>("A");
+  options.set("A").doc() = "The Kocks-Mecking slope parameter";
   options.set<CrossRef<Scalar>>("shear_modulus");
+  options.set("shear_modulus").doc() = "The shear modulus";
 
   options.set<Real>("k");
+  options.set("k").doc() = "Boltzmann constant";
   options.set<Real>("b");
+  options.set("b").doc() = "The Burgers vector";
 
   options.set<VariableName>("temperature") = VariableName("forces", "T");
+  options.set("temperature").doc() = "Absolute temperature";
   return options;
 }
 

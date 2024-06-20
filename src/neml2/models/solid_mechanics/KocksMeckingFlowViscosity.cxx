@@ -32,15 +32,34 @@ OptionSet
 KocksMeckingFlowViscosity::expected_options()
 {
   OptionSet options = NonlinearParameter<Scalar>::expected_options();
+  options.doc() =
+      "Calculates the temperature-dependent flow viscosity for a Perzyna-type model using the "
+      "Kocks-Mecking model.  The value is \\f$ \\eta = \\exp{B} \\mu "
+      "\\dot{\\varepsilon}_0^\\frac{-k T A}{\\mu b^3} \\f$ with \\f$ \\mu "
+      "\\f$ the shear modulus, \\f$ \\dot{\\varepsilon}_0 \\f$ a reference strain rate,  \\f$ b "
+      "\\f$ the Burgers vector, "
+      "\\f$  k\\f$ the Boltzmann constant, "
+      "\\f$ T \\f$ absolute temperature, \\f$ A \\f$ the Kocks-Mecking slope parameter, and \\f$ B "
+      "\\f$ the Kocks-Mecking intercept parameter.";
+
   options.set<CrossRef<Scalar>>("A");
+  options.set("A").doc() = "The Kocks-Mecking slope parameter";
   options.set<CrossRef<Scalar>>("B");
+  options.set("A").doc() = "The Kocks-Mecking intercept parameter";
   options.set<CrossRef<Scalar>>("shear_modulus");
+  options.set("shear_modulus").doc() = "The shear modulus";
 
   options.set<Real>("eps0");
+  options.set("eps0").doc() = "The reference strain rate";
+
   options.set<Real>("k");
+  options.set("k").doc() = "Boltzmann constant";
   options.set<Real>("b");
+  options.set("b").doc() = "The Burgers vector";
 
   options.set<VariableName>("temperature") = VariableName("forces", "T");
+  options.set("temperature").doc() = "Absolute temperature";
+
   return options;
 }
 
