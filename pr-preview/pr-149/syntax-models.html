@@ -2080,7 +2080,7 @@ R5LinearInterpolation</h2>
 <h2><a class="anchor" id="rateindependentplasticflowconstraint"></a>
 RateIndependentPlasticFlowConstraint</h2>
 <p>Solve the consistent plasticity yield envelope by solving the equivalent complementarity condition </p><p class="formulaDsp">
-\[ r = \begin{cases} \dot{\gamma}, &amp; f &lt; 0 \\ f, &amp; f \geq 0. \end{cases} \]
+\[ r = \dot{\gamma} - f^p - \sqrt{{\dot{\gamma}}^2 + {f^p}^2} \]
 </p>
  <details >
 <summary >
