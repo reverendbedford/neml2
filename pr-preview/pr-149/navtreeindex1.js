@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"classneml2_1_1IdentityBatchTensor.html#af6ef863e854f39a6d7199b176fe68549":[7,0,42,0],
 "classneml2_1_1ImplicitUpdate.html":[7,0,43],
 "classneml2_1_1ImplicitUpdate.html#a182326ae4276f4f9d786dacdbdd2bedd":[7,0,43,3],
 "classneml2_1_1ImplicitUpdate.html#a5b24ff1e1c2d72a80212adf9aab58b7c":[7,0,43,0],
@@ -236,7 +237,6 @@ var NAVTREEINDEX1 =
 "classneml2_1_1Model.html#a266eb5da16fd21f487f704e356a3bbe9":[7,0,72,13],
 "classneml2_1_1Model.html#a306c6fb1cd21dd211b6f9087842c543d":[7,0,72,6],
 "classneml2_1_1Model.html#a326e09c3f398872d1bfec46b02377111":[7,0,72,45],
-"classneml2_1_1Model.html#a356e915d317ef00b379b3dcae2f15b0c":[7,0,72,21],
 "classneml2_1_1Model.html#a399e7aa4d4dce8b472ec5d591759b62f":[7,0,72,23],
 "classneml2_1_1Model.html#a3c97529c21f71bb6268fb4e45ec97dcb":[7,0,72,51],
 "classneml2_1_1Model.html#a47193d2d14f1c32d608190382e516e06":[7,0,72,50],

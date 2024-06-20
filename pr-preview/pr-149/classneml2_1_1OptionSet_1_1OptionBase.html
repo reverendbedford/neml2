@@ -141,6 +141,9 @@ Classes</h2></td></tr>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a4f58f9ab0365689e468d9be63afe52e1" id="r_a4f58f9ab0365689e468d9be63afe52e1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4f58f9ab0365689e468d9be63afe52e1">~OptionBase</a> ()=<a class="el" href="classneml2_1_1CrossRef.html">default</a></td></tr>
 <tr class="separator:a4f58f9ab0365689e468d9be63afe52e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a819496e535eb8afbf1dbd144c0230561" id="r_a819496e535eb8afbf1dbd144c0230561"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a819496e535eb8afbf1dbd144c0230561">operator==</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1OptionSet_1_1OptionBase.html">OptionBase</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">other</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a> =0</td></tr>
+<tr class="memdesc:a819496e535eb8afbf1dbd144c0230561"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test for option equality.  <br /></td></tr>
+<tr class="separator:a819496e535eb8afbf1dbd144c0230561"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a24dcbf29c0d6cd766009a182a6484e3b" id="r_a24dcbf29c0d6cd766009a182a6484e3b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a24dcbf29c0d6cd766009a182a6484e3b">name</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
 <tr class="memdesc:a24dcbf29c0d6cd766009a182a6484e3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">A readonly reference to the option's name.  <br /></td></tr>
 <tr class="separator:a24dcbf29c0d6cd766009a182a6484e3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -220,7 +223,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Clone this value. Useful in copy-construction. Must be reimplemented in derived classes. </p>
 
-<p>Implemented in <a class="el" href="classneml2_1_1OptionSet_1_1Option.html#ad55677a1e1d5e06f5b4dba15b0a4406a">OptionSet::Option&lt; T &gt;</a>.</p>
+<p>Implemented in <a class="el" href="classneml2_1_1OptionSet_1_1Option.html#a569f1abb3f7facc138d118e830ae7efb">OptionSet::Option&lt; T &gt;</a>.</p>
 
 </div>
 </div>
@@ -305,6 +308,35 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a819496e535eb8afbf1dbd144c0230561" name="a819496e535eb8afbf1dbd144c0230561"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a819496e535eb8afbf1dbd144c0230561">&#9670;&#160;</a></span>operator==()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">bool</a> <a class="el" href="classneml2_1_1CrossRef.html">operator</a>== </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1OptionSet_1_1OptionBase.html">OptionBase</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>other</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Test for option equality. </p>
+
+<p>Implemented in <a class="el" href="classneml2_1_1OptionSet_1_1Option.html#a669ad615262a53cf3f50f57a332cce3d">OptionSet::Option&lt; T &gt;</a>.</p>
+
+</div>
+</div>
 <a id="a21160e293a34d988bc55f3306690cc52" name="a21160e293a34d988bc55f3306690cc52"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a21160e293a34d988bc55f3306690cc52">&#9670;&#160;</a></span>print()</h2>
 
@@ -329,7 +361,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Prints the option value to the specified stream. Must be reimplemented in derived classes. </p>
 
-<p>Implemented in <a class="el" href="classneml2_1_1OptionSet_1_1Option.html#a5373937eb2da6355c8e828618af2a7e8">OptionSet::Option&lt; T &gt;</a>.</p>
+<p>Implemented in <a class="el" href="classneml2_1_1OptionSet_1_1Option.html#a1fa0887c62bf33bf82853cc59c040d02">OptionSet::Option&lt; T &gt;</a>.</p>
 
 </div>
 </div>

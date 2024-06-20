@@ -24,7 +24,7 @@ var classneml2_1_1Model =
     [ "options", "classneml2_1_1Model.html#a761d77eb7c81c3e93b34bfe6caf4b132", null ],
     [ "preflight", "classneml2_1_1Model.html#ad878f13ac7d38f86f8e142e35419e572", null ],
     [ "provided_items", "classneml2_1_1Model.html#ae209446ae484a69eaf9e68d40f9c92f3", null ],
-    [ "register_model", "classneml2_1_1Model.html#a356e915d317ef00b379b3dcae2f15b0c", null ],
+    [ "register_model", "classneml2_1_1Model.html#a9ab0087ee546f83a6759eac8c8f9aefe", null ],
     [ "registered_model", "classneml2_1_1Model.html#af3399c3fc4f3655059830e3d859df13e", null ],
     [ "registered_models", "classneml2_1_1Model.html#a399e7aa4d4dce8b472ec5d591759b62f", null ],
     [ "reinit", "classneml2_1_1Model.html#a5bab3d9c679eacfb84cabd392b427b70", null ],

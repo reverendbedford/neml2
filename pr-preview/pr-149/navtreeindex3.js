@@ -1,5 +1,8 @@
 var NAVTREEINDEX3 =
 {
+"classneml2_1_1PowerLawSlipRule.html#a2d3075db2c674c90b8485db750c3766f":[7,0,97,0],
+"classneml2_1_1PowerLawSlipRule.html#a33f4548cff023b27d42b2d3dc54422a5":[7,0,97,2],
+"classneml2_1_1PowerLawSlipRule.html#a6644dbfab08bce2264651b42570533b8":[7,0,97,3],
 "classneml2_1_1PowerLawSlipRule.html#af5600a36813e455aefee72bec1d574fb":[7,0,97,1],
 "classneml2_1_1Quaternion.html":[7,0,98],
 "classneml2_1_1Quaternion.html#a465e8730866726c7c9257c4ecaac40e0":[7,0,98,0],
@@ -246,8 +249,5 @@ var NAVTREEINDEX3 =
 "classneml2_1_1TrustRegionSubProblem.html#a198c57309f26cd3689c319ff67b3275a":[7,0,133,6],
 "classneml2_1_1TrustRegionSubProblem.html#a48946e285cd8dcdd755f1924ce7fc3a4":[7,0,133,3],
 "classneml2_1_1TrustRegionSubProblem.html#a497b3b99a71ea4f87ae8ba1c3335b1c0":[7,0,133,0],
-"classneml2_1_1TrustRegionSubProblem.html#a8f5979a053c52a6bd1fb79183277f9da":[7,0,133,5],
-"classneml2_1_1TrustRegionSubProblem.html#ac480a7f7a0914353179592c055bda38a":[7,0,133,4],
-"classneml2_1_1TrustRegionSubProblem.html#af80c39630f8279703f3766a8c55354e6":[7,0,133,2],
-"classneml2_1_1UserBatchTensor.html":[7,0,134]
+"classneml2_1_1TrustRegionSubProblem.html#a8f5979a053c52a6bd1fb79183277f9da":[7,0,133,5]
 };

@@ -112,8 +112,9 @@ var NAVTREEINDEX0 =
 "classneml2_1_1CrossRef.html#a4639f65c5afb53e9002392398ebb5b62":[7,0,14,4],
 "classneml2_1_1CrossRef.html#a54724b9dd792a6022b918eae2f393734":[7,0,14,2],
 "classneml2_1_1CrossRef.html#a5f2d6817ad000b6a0da23d21c55e81b5":[7,0,14,3],
-"classneml2_1_1CrossRef.html#ab38f034fbc6bbd6fc8e4b7fc9edfbd6f":[7,0,14,6],
-"classneml2_1_1CrossRef.html#ac0eb811c043afc6922aa1e800a245866":[7,0,14,5],
+"classneml2_1_1CrossRef.html#a9387e67432edd56f3d118668592af3d1":[7,0,14,5],
+"classneml2_1_1CrossRef.html#ab38f034fbc6bbd6fc8e4b7fc9edfbd6f":[7,0,14,7],
+"classneml2_1_1CrossRef.html#ac0eb811c043afc6922aa1e800a245866":[7,0,14,6],
 "classneml2_1_1CrossRef.html#acc20d5a296c08119e6d065e320b64758":[7,0,14,0],
 "classneml2_1_1Data.html":[7,0,15],
 "classneml2_1_1Data.html#a7a3be96c7ae5bc7584b5ed2a5a0a57eb":[7,0,15,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "classneml2_1_1HITParser.html#a75cd4c45919b17b4913461ada89f42da":[7,0,41,2],
 "classneml2_1_1HITParser.html#ac21422f081569eb193b0f35f406574be":[7,0,41,0],
 "classneml2_1_1HITParser.html#acbe23d06511e326e470133298cc1eedc":[7,0,41,1],
-"classneml2_1_1IdentityBatchTensor.html":[7,0,42],
-"classneml2_1_1IdentityBatchTensor.html#af6ef863e854f39a6d7199b176fe68549":[7,0,42,0]
+"classneml2_1_1IdentityBatchTensor.html":[7,0,42]
 };
