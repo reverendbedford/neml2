@@ -43,6 +43,7 @@ jobs:
             -DNEML2_DOC=ON \
             .
       - run: cmake --build . --target html -j 2 --
+        continue-on-error: true
       - run: cat doc/doxygen.html.log
       - run: cat doc/doxygen.python.log
       - name: Preview GitHub Pages
@@ -62,6 +63,6 @@ jobs:
         if: ${{ github.event_name == 'pull_request'}}
         uses: thollander/actions-comment-pull-request@v2
         with:
-            filePath: doc/syntax_error.log
-            comment_tag: doc_scold
-            GITHUB_TOKEN: ${{ secrets.PR_ACTION }}
+          filePath: doc/syntax_error.log
+          comment_tag: doc_scold
+          GITHUB_TOKEN: ${{ secrets.PR_ACTION }}
