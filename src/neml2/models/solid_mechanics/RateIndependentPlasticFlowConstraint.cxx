@@ -33,8 +33,8 @@ RateIndependentPlasticFlowConstraint::expected_options()
 {
   OptionSet options = Model::expected_options();
   options.doc() = "Solve the consistent plasticity yield envelope by solving the equivalent "
-                  "complementarity condition \\f[ r = \\begin{cases} \\dot{\\gamma}, & f < 0 "
-                  "\\\\ f, & f \\geq 0. \\end{cases} \\f]";
+                  "complementarity condition \\f[ r = \\dot{\\gamma} - f^p - "
+                  "\\sqrt{{\\dot{\\gamma}}^2 + {f^p}^2} \\f]";
 
   options.set<VariableName>("yield_function") = VariableName("state", "internal", "fp");
   options.set("yield_function").doc() = "Yield function";
