@@ -151,4 +151,3 @@ if __name__ == "__main__":
             print("*" * 79, file=sys.stderr)
             print("Syntax errors have been written to", logfile, file=sys.stderr)
             print("*" * 79, file=sys.stderr)
-            exit(1)
