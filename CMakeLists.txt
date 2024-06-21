@@ -74,6 +74,7 @@ if(CMAKE_BUILD_TYPE STREQUAL "Coverage")
       if(NOT ${NEML2_SOURCE_DIR} STREQUAL ${NEML2_BINARY_DIR})
             message(FATAL_ERROR "Build type Coverage only supports in-source build")
       endif()
+      set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE ON)
 endif()
 
 # ----------------------------------------------------------------------------
