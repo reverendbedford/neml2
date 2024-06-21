@@ -39,6 +39,7 @@ def_TensorValueBase(py::module_ & m)
       .def("tensor", [](const TensorValueBase & self) { return BatchTensor(self); })
       .def("defined", [](const TensorValueBase & self) { return BatchTensor(self).defined(); })
       .def("batched", [](const TensorValueBase & self) { return BatchTensor(self).batched(); })
+      .def("batch_dim", [](const TensorValueBase & self) { return BatchTensor(self).batch_dim(); })
       .def("dim", [](const TensorValueBase & self) { return BatchTensor(self).dim(); })
       .def_property_readonly("shape",
                              [](const TensorValueBase & self) { return BatchTensor(self).sizes(); })
