@@ -74,7 +74,7 @@ jobs:
             -DNEML2_DOC=OFF \
             -B build \
             .
-      - run: cmake --build build --target html -j 2 --
+      - run: cmake --build build --target all -j 2 --
       - run: cd tests && ../build/tests/unit/unit_tests -r junit > unit_tests.xml
         continue-on-error: true
       - run: cd tests && ../build/tests/regression/regression_tests -r junit > regression_tests.xml
@@ -122,7 +122,7 @@ jobs:
             -DNEML2_DOC=OFF \
             -B build \
             .
-      - run: cmake --build build --target html -j 2 --
+      - run: cmake --build build --target all -j 2 --
   coverage:
     name: Code coverage check
     needs: clang-format
@@ -153,7 +153,7 @@ jobs:
             -DNEML2_DOC=OFF \
             -B build \
             .
-      - run: cmake --build build --target html -j 2 --
+      - run: cmake --build build --target all -j 2 --
       - run: build/scripts/coverage.sh
       - uses: romeovs/lcov-reporter-action@v0.3.1
         with:
@@ -199,5 +199,5 @@ jobs:
       - name: Configure with CMake
         run: cmake -DNEML2_TESTS=OFF -B build .
       - name: Compile
-        run: cmake --build build --target html -j 2 --
+        run: cmake --build build --target all -j 2 --
       - run: ./build/foo
