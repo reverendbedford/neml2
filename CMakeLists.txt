@@ -42,21 +42,16 @@ set(DOXYGEN_VERSION "1.10.0")
 set(DOXYGEN_AWESOME_VERSION "2.3.2")
 set(PYBIND11_VERSION "2.12.0")
 set(WASP_VERSION "c8c9ce4259115973f147e345608450d87dc390c4")
-set(HIT_VERSION "6ad08fe9c6d58db94543fe70b79cea11609aec22")
+set(HIT_VERSION "54f835f4e6a6ad4b4ff734a324c288e9f19e2562")
 set(CATCH2_VERSION "3.5.4")
 set(GPERFTOOLS_VERSION "2.15")
 set(ARGPARSE_VERSION "3.0")
 include(NEML2Dependencies)
-find_package(Torch) # This gets redirected to our FindTorch.cmake
 
 # ----------------------------------------------------------------------------
 # PyTorch ships libraries with or without CXX11 ABI
 # ----------------------------------------------------------------------------
-if(Torch_CXX11_ABI)
-      add_compile_definitions(_GLIBCXX_USE_CXX11_ABI=1)
-else()
-      add_compile_definitions(_GLIBCXX_USE_CXX11_ABI=0)
-endif()
+add_compile_definitions(_GLIBCXX_USE_CXX11_ABI=${GLIBCXX_USE_CXX11_ABI})
 
 # ----------------------------------------------------------------------------
 # For relocatable install
@@ -73,6 +68,12 @@ endif()
 if(NOT CMAKE_BUILD_TYPE)
       set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Choose the type of build." FORCE)
       set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo" "Coverage")
+endif()
+
+if(CMAKE_BUILD_TYPE STREQUAL "Coverage")
+      if(NOT ${NEML2_SOURCE_DIR} STREQUAL ${NEML2_BINARY_DIR})
+            message(FATAL_ERROR "Build type Coverage only supports in-source build")
+      endif()
 endif()
 
 # ----------------------------------------------------------------------------

@@ -49,40 +49,7 @@ target_include_directories(neml2 SYSTEM PUBLIC ${Torch_INCLUDE_DIRECTORIES})
 target_link_directories(neml2 PUBLIC ${Torch_LINK_DIRECTORIES})
 target_link_libraries(neml2 PUBLIC ${Torch_LIBRARIES})
 
-# Do not track coverage info in WASP and HIT
-set(CMAKE_BUILD_TYPE_CACHE ${CMAKE_BUILD_TYPE})
-set(CMAKE_BUILD_TYPE "Release" CACHE STRING "" FORCE)
-
-# WASP for parsing
-message(STATUS "Configuring WASP")
-set(wasp_ENABLE_ALL_PACKAGES OFF CACHE INTERNAL "" FORCE)
-set(wasp_ENABLE_wasphit ON CACHE INTERNAL "" FORCE)
-set(wasp_ENABLE_testframework OFF CACHE INTERNAL "" FORCE)
-set(wasp_ENABLE_TESTS OFF CACHE INTERNAL "" FORCE)
-set(DISABLE_HIT_TYPE_PROMOTION ON CACHE INTERNAL "" FORCE)
-FetchContent_MakeAvailable(wasp)
-set_target_properties(waspcore wasphit
-  PROPERTIES
-  POSITION_INDEPENDENT_CODE ON
-  UNITY_BUILD OFF
-)
-target_sources(wasphit
-  PUBLIC
-  FILE_SET HEADERS
-  BASE_DIRS ${wasp_SOURCE_DIR}
-  FILES
-  ${wasp_SOURCE_DIR}/wasphit/HITLexer.h
-  ${wasp_SOURCE_DIR}/wasphit/HITParser.hpp
-  ${wasp_SOURCE_DIR}/wasphit/HITInterpreter.h
-  ${wasp_SOURCE_DIR}/wasphit/HITInterpreter.i.h
-  ${wasp_SOURCE_DIR}/wasphit/HITNodeView.h
-  ${wasp_SOURCE_DIR}/wasphit/HITNodeView.i.h
-  ${wasp_SOURCE_DIR}/wasphit/HIT.lex
-  ${wasp_SOURCE_DIR}/wasphit/HIT.bison
-)
-install(TARGETS wasphit COMPONENT Development FILE_SET HEADERS)
-
-# HIT for parsing
+# HIT (WASP) for parsing
 message(STATUS "Configuring HIT")
 FetchContent_MakeAvailable(hit)
 
@@ -91,10 +58,18 @@ add_library(hit SHARED
   ${hit_SOURCE_DIR}/src/hit/lex.cc
   ${hit_SOURCE_DIR}/src/hit/braceexpr.cc
 )
+add_dependencies(hit wasp)
+set(wasp_INSTALL_DIR ${NEML2_BINARY_DIR}/wasp/install)
+install(DIRECTORY
+  ${wasp_INSTALL_DIR}/include/waspcore
+  ${wasp_INSTALL_DIR}/include/wasphit
+  TYPE INCLUDE
+)
 
 set_target_properties(hit PROPERTIES UNITY_BUILD OFF)
-target_include_directories(hit PUBLIC ${hit_SOURCE_DIR}/.. ${wasp_SOURCE_DIR})
-target_link_libraries(hit PRIVATE wasphit)
+target_include_directories(hit PUBLIC ${hit_SOURCE_DIR}/.. ${wasp_INSTALL_DIR}/include)
+target_link_libraries(hit PRIVATE waspcore wasphit)
+target_link_directories(hit PRIVATE ${wasp_INSTALL_DIR}/lib)
 target_sources(hit
   PUBLIC
   FILE_SET HEADERS
@@ -107,6 +82,3 @@ target_sources(hit
 )
 install(TARGETS hit COMPONENT Development FILE_SET HEADERS)
 target_link_libraries(neml2 PUBLIC hit)
-
-# Recover the build type now that WASP and HIT has been added
-set(CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE_CACHE} CACHE STRING "Choose the type of build." FORCE)

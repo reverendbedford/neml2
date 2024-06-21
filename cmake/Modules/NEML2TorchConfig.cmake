@@ -7,6 +7,12 @@ try_compile(Torch_CXX11_ABI
   CMAKE_FLAGS "-DLIBTORCH_DIR=${LIBTORCH_DIR}"
 )
 
+if(Torch_CXX11_ABI)
+  set(GLIBCXX_USE_CXX11_ABI 1)
+else()
+  set(GLIBCXX_USE_CXX11_ABI 0)
+endif()
+
 set(Torch_INCLUDE_DIRECTORIES ${LIBTORCH_DIR}/include/torch/csrc/api/include ${LIBTORCH_DIR}/include)
 set(Torch_LINK_DIRECTORIES ${LIBTORCH_DIR}/lib)
 
