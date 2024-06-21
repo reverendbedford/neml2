@@ -161,6 +161,12 @@ public:
   /// Get the variables
   const std::map<std::string, TorchSize> & variables() const { return _variables; }
 
+  /// Get all variables, recursively, including their subaxes and in order
+  std::vector<std::vector<std::string>> all_ordered_variables() const;
+
+  /// Get the subaxis names, ordered by not recursively
+  std::vector<std::string> ordered_subaxes() const;
+
   /// Get the subaxes
   const std::map<std::string, std::shared_ptr<LabeledAxis>> & subaxes() const { return _subaxes; }
 

@@ -329,6 +329,40 @@ LabeledAxis::item_names() const
   return names;
 }
 
+std::vector<std::vector<std::string>>
+LabeledAxis::all_ordered_variables() const
+{
+  std::vector<std::pair<c10::SymInt, std::vector<std::string>>> names;
+
+  for (const auto & item : variable_accessors(true))
+  {
+    auto loc = indices(item);
+    // Better be a slice
+    neml_assert_dbg(loc.is_slice(),
+                    "Attempting to order a tensor index that is not a contignous slice!");
+    names.push_back(std::make_pair(loc.slice().start(), item.vec()));
+  }
+  // Sort...
+  sort(names.begin(), names.end());
+  // Extract just the names
+  std::vector<std::vector<std::string>> just_names;
+  for (const auto & item : names)
+    just_names.push_back(item.second);
+
+  return just_names;
+}
+
+std::vector<std::string>
+LabeledAxis::ordered_subaxes() const
+{
+  // Keys of the map
+  std::vector<std::string> just_names;
+  for (const auto & item : _subaxes)
+    just_names.push_back(item.first);
+
+  return just_names;
+}
+
 std::set<LabeledAxisAccessor>
 LabeledAxis::variable_accessors(bool recursive, const LabeledAxisAccessor & subaxis) const
 {
