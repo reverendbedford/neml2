@@ -67,14 +67,17 @@ endif()
 # ----------------------------------------------------------------------------
 if(NOT CMAKE_BUILD_TYPE)
       set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Choose the type of build." FORCE)
-      set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo" "Coverage")
 endif()
 
+set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo" "Coverage")
+
 if(CMAKE_BUILD_TYPE STREQUAL "Coverage")
-      if(NOT ${NEML2_SOURCE_DIR} STREQUAL ${NEML2_BINARY_DIR})
-            message(FATAL_ERROR "Build type Coverage only supports in-source build")
+      if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+            message(FATAL_ERROR "Build type Coverage must use gcc/g++ as the compiler")
       endif()
+
       set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE ON)
+      configure_file(scripts/coverage.sh.in ${NEML2_BINARY_DIR}/scripts/coverage.sh)
 endif()
 
 # ----------------------------------------------------------------------------
