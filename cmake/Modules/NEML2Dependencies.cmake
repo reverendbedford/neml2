@@ -40,7 +40,7 @@ FetchContent_Declare(
 # WASP and HIT for parsing input files
 ExternalProject_Add(
   wasp
-  GIT_REPOSITORY https://code.ornl.gov/neams-workbench/wasp
+  GIT_REPOSITORY https://code.ornl.gov/neams-workbench/wasp.git
   GIT_TAG ${WASP_VERSION}
   PREFIX wasp
   CMAKE_ARGS
@@ -63,7 +63,7 @@ ExternalProject_Add(
 )
 FetchContent_Declare(
   hit
-  GIT_REPOSITORY https://github.com/hugary1995/hit
+  GIT_REPOSITORY https://github.com/idaholab/hit.git
   GIT_TAG ${HIT_VERSION}
 )
 
