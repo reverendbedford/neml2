@@ -26,6 +26,8 @@
 #include "utils.h"
 #include "neml2/misc/math.h"
 
+#include <torch/cuda.h>
+
 namespace neml2
 {
 register_NEML2_object(ModelUnitTest);

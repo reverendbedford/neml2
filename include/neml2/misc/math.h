@@ -235,6 +235,9 @@ namespace linalg
 /// Vector norm of a vector. Falls back to math::abs is \p v is a Scalar.
 BatchTensor vector_norm(const BatchTensor & v);
 
+/// Inverse of a square matrix
+BatchTensor inv(const BatchTensor & m);
+
 /// Solve the linear system A X = B
 BatchTensor solve(const BatchTensor & A, const BatchTensor & B);
 
