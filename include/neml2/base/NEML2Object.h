@@ -23,7 +23,6 @@
 // THE SOFTWARE.
 #pragma once
 
-#include <torch/torch.h>
 #include "neml2/base/OptionSet.h"
 
 namespace neml2

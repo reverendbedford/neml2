@@ -25,9 +25,11 @@
 #pragma once
 
 #include "neml2/drivers/Driver.h"
-#include <filesystem>
-
 #include "neml2/tensors/tensors.h"
+
+#include <filesystem>
+#include <torch/nn/modules/container/moduledict.h>
+#include <torch/serialize.h>
 
 namespace neml2
 {

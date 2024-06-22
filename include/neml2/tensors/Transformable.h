@@ -24,7 +24,6 @@
 
 #pragma once
 
-#include <torch/torch.h>
 #include "neml2/misc/types.h"
 
 namespace neml2

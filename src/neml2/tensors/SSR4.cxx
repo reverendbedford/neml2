@@ -123,7 +123,7 @@ SSR4::operator()(TorchSize i, TorchSize j, TorchSize k, TorchSize l) const
 SSR4
 SSR4::inverse() const
 {
-  return SSR4(torch::linalg::inv(*this), batch_dim());
+  return math::linalg::inv(*this);
 }
 
 SSR4

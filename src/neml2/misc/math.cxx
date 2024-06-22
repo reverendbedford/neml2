@@ -26,6 +26,9 @@
 #include "neml2/misc/error.h"
 #include "neml2/tensors/tensors.h"
 
+#include <torch/autograd.h>
+#include <torch/linalg.h>
+
 namespace neml2
 {
 namespace math
@@ -325,6 +328,12 @@ vector_norm(const BatchTensor & v)
   return BatchTensor(torch::linalg::vector_norm(
                          v, /*order=*/2, /*dim=*/-1, /*keepdim=*/false, /*dtype=*/c10::nullopt),
                      v.batch_dim());
+}
+
+BatchTensor
+inv(const BatchTensor & m)
+{
+  return BatchTensor(torch::linalg::inv(m), m.batch_dim());
 }
 
 BatchTensor
