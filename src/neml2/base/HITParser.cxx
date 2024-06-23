@@ -25,6 +25,7 @@
 #include "neml2/base/HITParser.h"
 #include "neml2/base/Factory.h"
 #include "neml2/base/CrossRef.h"
+#include "neml2/base/Sequence.h"
 #include "neml2/base/Settings.h"
 #include "neml2/base/EnumSelection.h"
 #include "neml2/tensors/LabeledAxis.h"
@@ -126,7 +127,8 @@ HITParser::extract_option(hit::Node * n, OptionSet & options) const
 #define extract_option_t(ptype)                                                                    \
   extract_option_base(ptype, utils::parse_<ptype>);                                                \
   extract_option_base(std::vector<ptype>, utils::parse_vector_<ptype>);                            \
-  extract_option_base(std::vector<std::vector<ptype>>, utils::parse_vector_vector_<ptype>)
+  extract_option_base(std::vector<std::vector<ptype>>, utils::parse_vector_vector_<ptype>);        \
+  extract_option_base(Sequence<ptype>, utils::parse_<Sequence<ptype>>)
 
 #define extract_option_t_cr(ptype) extract_option_t(CrossRef<ptype>)
 

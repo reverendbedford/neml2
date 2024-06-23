@@ -50,6 +50,9 @@ TEST_CASE("UserFixedDimTensor", "[tensors/user_tensors]")
     const auto user_SR2 = Factory::get_object_ptr<SR2>("Tensors", "SR2");
     REQUIRE(user_SR2->batch_sizes() == TorchShape{3, 2});
 
+    const auto user_SR2_csv = Factory::get_object_ptr<SR2>("Tensors", "SR2_csv");
+    REQUIRE(user_SR2->batch_sizes() == TorchShape{3, 2});
+
     const auto user_R3 = Factory::get_object_ptr<R3>("Tensors", "R3");
     REQUIRE(user_R3->batch_sizes() == TorchShape{3, 2});
 

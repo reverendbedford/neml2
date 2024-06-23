@@ -24,6 +24,8 @@
 
 #include "SampleParserTestingModel.h"
 
+#include "neml2/base/Sequence.h"
+
 using namespace neml2;
 
 register_NEML2_object(SampleParserTestingModel);
@@ -65,6 +67,13 @@ SampleParserTestingModel::expected_options()
   options.set<TorchShape>("shape");
   options.set<std::vector<TorchShape>>("shape_vec");
   options.set<std::vector<std::vector<TorchShape>>>("shape_vec_vec");
+
+  options.set<Sequence<Real>>("Real_seq");
+  options.set<Sequence<Real>>("Real_seq_from_csv_col_name");
+  options.set<Sequence<Real>>("Real_seq_from_csv_col_index");
+  options.set<Sequence<std::string>>("string_seq");
+  options.set<Sequence<std::string>>("string_seq_from_csv_col_name");
+  options.set<Sequence<std::string>>("string_seq_from_csv_col_index");
 
   options.set<std::string>("suppressed_option") = "suppress me";
   options.set("suppressed_option").suppressed() = true;

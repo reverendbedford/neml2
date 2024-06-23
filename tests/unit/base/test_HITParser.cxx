@@ -26,6 +26,7 @@
 #include <catch2/matchers/catch_matchers_all.hpp>
 
 #include "neml2/base/HITParser.h"
+#include "neml2/base/Sequence.h"
 #include "SampleParserTestingModel.h"
 
 using namespace neml2;
@@ -35,6 +36,7 @@ TEST_CASE("HITParser", "[base]")
   SECTION("class HITParser")
   {
     HITParser parser;
+
     SECTION("parse")
     {
       auto all_options = parser.parse("unit/base/test_HITParser1.i");
@@ -142,6 +144,60 @@ TEST_CASE("HITParser", "[base]")
                             Catch::Matchers::ContainsSubstring(
                                 "Option named 'suppressed_option' is suppressed, and its "
                                 "value cannot be modified."));
+      }
+    }
+
+    SECTION("Sequence")
+    {
+      auto all_options = parser.parse("unit/base/test_HITParser3.i");
+      OptionSet options = all_options["Models"]["foo"];
+
+      SECTION("parse sequence from string")
+      {
+        REQUIRE_THAT(options.get<Sequence<Real>>("Real_seq").vec(),
+                     Catch::Matchers::Approx(std::vector<Real>{1.1, 2.2, -3.3}));
+        REQUIRE(options.get<Sequence<std::string>>("string_seq").vec() ==
+                std::vector<std::string>{"today", "is", "a", "good", "day"});
+      }
+
+      SECTION("parse sequence from CSV using column name")
+      {
+        REQUIRE_THAT(options.get<Sequence<Real>>("Real_seq_from_csv_col_name").vec(),
+                     Catch::Matchers::Approx(std::vector<Real>{1.1e2, -9.1, 3.1, 4.1, 5.2}));
+        REQUIRE(options.get<Sequence<std::string>>("string_seq_from_csv_col_name").vec() ==
+                std::vector<std::string>{"a", "b", "c", "d", "e"});
+      }
+
+      SECTION("parse sequence from CSV using column index")
+      {
+        REQUIRE_THAT(options.get<Sequence<Real>>("Real_seq_from_csv_col_index").vec(),
+                     Catch::Matchers::Approx(std::vector<Real>{2.5, 3, 8.8, -100e3, -1}));
+        REQUIRE(options.get<Sequence<std::string>>("string_seq_from_csv_col_index").vec() ==
+                std::vector<std::string>{"ff", "gg", "hh", "ii", "jj"});
+      }
+    }
+
+    SECTION("Sequence error")
+    {
+      auto all_options = parser.parse("unit/base/test_HITParser4.i");
+      OptionSet options = all_options["Models"]["foo"];
+
+      SECTION("unable to open CSV file")
+      {
+        REQUIRE_THROWS_WITH(options.get<Sequence<Real>>("Real_seq_from_csv_col_name").vec(),
+                            Catch::Matchers::ContainsSubstring("Cannot open file"));
+      }
+
+      SECTION("column index out of bounds")
+      {
+        REQUIRE_THROWS_WITH(
+            options.get<Sequence<std::string>>("string_seq_from_csv_col_name").vec(),
+            Catch::Matchers::ContainsSubstring("Index out of bounds"));
+        REQUIRE_THROWS_WITH(options.get<Sequence<Real>>("Real_seq_from_csv_col_index").vec(),
+                            Catch::Matchers::ContainsSubstring("Index out of bounds"));
+        REQUIRE_THROWS_WITH(
+            options.get<Sequence<std::string>>("string_seq_from_csv_col_index").vec(),
+            Catch::Matchers::ContainsSubstring("Index out of bounds"));
       }
     }
   }

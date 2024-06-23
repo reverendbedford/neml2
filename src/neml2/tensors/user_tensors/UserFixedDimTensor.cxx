@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 #include "neml2/tensors/user_tensors/UserFixedDimTensor.h"
+#include "neml2/base/Sequence.h"
 
 namespace neml2
 {
@@ -42,7 +43,7 @@ UserFixedDimTensor<T>::expected_options()
       "Construct a " + tensor_type +
       " from a vector values. The vector will be reshaped according to the specified batch shape.";
 
-  options.set<std::vector<Real>>("values");
+  options.set<Sequence<Real>>("values");
   options.set("values").doc() = "Values in this (flattened) tensor";
 
   options.set<TorchShape>("batch_shape") = {};
@@ -56,7 +57,7 @@ UserFixedDimTensor<T>::UserFixedDimTensor(const OptionSet & options)
   : T(T::empty(options.get<TorchShape>("batch_shape"), default_tensor_options())),
     UserTensor(options)
 {
-  auto vals = options.get<std::vector<Real>>("values");
+  auto vals = options.get<Sequence<Real>>("values").vec();
   auto flat = torch::tensor(vals, default_tensor_options());
   if (vals.size() == size_t(this->base_storage()))
     this->index_put_({torch::indexing::Ellipsis}, flat.reshape(this->base_sizes()));
