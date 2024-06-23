@@ -28,7 +28,7 @@
 #include <string>
 
 #include "neml2/misc/parser_utils.h"
-#include "neml2/contrib/csv.hpp"
+#include "csvparser/csv.hpp"
 
 namespace neml2
 {

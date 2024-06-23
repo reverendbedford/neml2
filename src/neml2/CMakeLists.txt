@@ -18,7 +18,7 @@ register_unity_group(neml2 .)
 
 # NEML2 headers
 file(GLOB_RECURSE _NEML2_HEADERS ${NEML2_SOURCE_DIR}/include/*.h)
-target_include_directories(neml2 PUBLIC ${NEML2_SOURCE_DIR}/include ${NEML2_BINARY_DIR}/include)
+target_include_directories(neml2 PUBLIC ${NEML2_SOURCE_DIR}/include ${NEML2_SOURCE_DIR}/contrib)
 target_sources(neml2
   PUBLIC
   FILE_SET HEADERS
@@ -27,6 +27,7 @@ target_sources(neml2
   ${_NEML2_HEADERS}
 )
 install(TARGETS neml2 COMPONENT Development FILE_SET HEADERS)
+install(DIRECTORY ${NEML2_SOURCE_DIR}/contrib/csvparser TYPE INCLUDE)
 
 # torch
 target_include_directories(neml2 SYSTEM PUBLIC ${Torch_INCLUDE_DIRECTORIES})
