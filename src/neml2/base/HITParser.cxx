@@ -25,6 +25,8 @@
 #include "neml2/base/HITParser.h"
 #include "neml2/base/Factory.h"
 #include "neml2/base/CrossRef.h"
+#include "neml2/base/Settings.h"
+#include "neml2/base/EnumSelection.h"
 #include "neml2/tensors/LabeledAxis.h"
 #include "neml2/tensors/tensors.h"
 #include "neml2/tensors/macros.h"
@@ -64,9 +66,15 @@ HITParser::parse(const std::filesystem::path & filename, const std::string & add
   expander.registerEvaler("raw", raw);
   root->walk(&expander);
 
-  // Loop over each known section and extract options for each object
   OptionCollection all_options;
-  for (const auto & section : Factory::pipeline)
+
+  // Extract global settings
+  auto settings_node = root->find("Settings");
+  if (settings_node)
+    extract_options(settings_node, all_options.settings());
+
+  // Loop over each known section and extract options for each object
+  for (const auto & section : Parser::sections)
   {
     auto section_node = root->find(section);
     if (section_node)
@@ -112,15 +120,13 @@ void
 HITParser::extract_option(hit::Node * n, OptionSet & options) const
 {
 #define extract_option_base(ptype, method)                                                         \
-  else if (option->type() ==                                                                       \
-           utils::demangle(                                                                        \
-               typeid(ptype).name())) dynamic_cast<OptionSet::Option<ptype> *>(option.get())       \
-      ->set() = method(n->strVal())
+  else if (option->type() == utils::demangle(typeid(ptype).name()))                                \
+      method(dynamic_cast<OptionSet::Option<ptype> *>(option.get())->set(), n->strVal())
 
 #define extract_option_t(ptype)                                                                    \
-  extract_option_base(ptype, utils::parse<ptype>);                                                 \
-  extract_option_base(std::vector<ptype>, utils::parse_vector<ptype>);                             \
-  extract_option_base(std::vector<std::vector<ptype>>, utils::parse_vector_vector<ptype>)
+  extract_option_base(ptype, utils::parse_<ptype>);                                                \
+  extract_option_base(std::vector<ptype>, utils::parse_vector_<ptype>);                            \
+  extract_option_base(std::vector<std::vector<ptype>>, utils::parse_vector_vector_<ptype>)
 
 #define extract_option_t_cr(ptype) extract_option_t(CrossRef<ptype>)
 
@@ -147,6 +153,7 @@ HITParser::extract_option(hit::Node * n, OptionSet & options) const
         extract_option_t(Real);
         extract_option_t(std::string);
         extract_option_t(VariableName);
+        extract_option_t(EnumSelection);
         extract_option_t(CrossRef<torch::Tensor>);
         FOR_ALL_BATCHTENSORBASE(extract_option_t_cr);
         // LCOV_EXCL_START

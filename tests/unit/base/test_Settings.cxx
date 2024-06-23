@@ -24,24 +24,24 @@
 
 #include <catch2/catch_test_macros.hpp>
 
-#include "utils.h"
-#include "neml2/models/crystallography/user_tensors/FillMillerIndex.h"
+#include "neml2/base/Settings.h"
+#include "neml2/base/HITParser.h"
 
 using namespace neml2;
-using namespace neml2::crystallography;
 
-TEST_CASE("FillMillerIndex", "[crystallography/user_tensors]")
+TEST_CASE("Settings", "[Settings]")
 {
-  load_model("unit/crystallography/user_tensors/test_FillMillerIndex.i");
+  HITParser parser;
+  auto all_options = parser.parse("unit/base/test_HITParser1.i");
 
-  const auto valid_1 = Factory::get_object_ptr<MillerIndex>("Tensors", "v1");
-  const auto correct_1 = MillerIndex::fill(1, 2, 3);
-  REQUIRE(torch::allclose(*valid_1, correct_1));
+  // Before applying the global settings
+  REQUIRE(default_dtype() == torch::kFloat64);
+  REQUIRE(default_int_dtype() == torch::kInt64);
+  REQUIRE(default_device() == torch::kCPU);
 
-  const auto valid_4 = Factory::get_object_ptr<MillerIndex>("Tensors", "v4");
-  const auto correct_4 = MillerIndex(
-      torch::tensor({{1, 2, 3}, {4, 5, 6}, {7, 8, 9}, {10, 11, 12}}, default_int_tensor_options()));
-  REQUIRE(torch::allclose(*valid_4, correct_4));
-
-  REQUIRE_THROWS(Factory::get_object<MillerIndex>("Tensors", "invalid"));
+  // Apply the global settings
+  Settings(all_options.settings());
+  REQUIRE(default_dtype() == torch::kFloat16);
+  REQUIRE(default_int_dtype() == torch::kInt32);
+  REQUIRE(default_device() == torch::Device("cuda:1"));
 }

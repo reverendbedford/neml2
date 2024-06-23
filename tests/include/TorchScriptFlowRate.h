@@ -51,8 +51,8 @@ public:
    */
   virtual void reinit(TorchShapeRef batch_shape,
                       int deriv_order = 0,
-                      const torch::Device & device = torch::kCPU,
-                      const torch::Dtype & dtype = NEML2_DTYPE) override;
+                      const torch::Device & device = default_device(),
+                      const torch::Dtype & dtype = default_dtype()) override;
 
 protected:
   virtual void set_value(bool out, bool dout_din, bool d2out_din2) override;

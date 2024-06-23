@@ -26,8 +26,6 @@
 
 namespace neml2
 {
-std::vector<std::string> Factory::pipeline = {"Tensors", "Solvers", "Data", "Models", "Drivers"};
-
 Factory &
 Factory::get()
 {
@@ -38,7 +36,12 @@ Factory::get()
 void
 Factory::load(const OptionCollection & all_options)
 {
-  get()._all_options = all_options;
+  auto & factory = get();
+
+  factory._all_options = all_options;
+
+  // Also apply global settings
+  factory._settings = Settings(all_options.settings());
 }
 
 void

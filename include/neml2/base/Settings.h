@@ -21,56 +21,20 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+
 #pragma once
 
-#include <filesystem>
-
-#include "neml2/base/OptionCollection.h"
+#include "neml2/base/OptionSet.h"
 
 namespace neml2
 {
-enum ParserType
-{
-  HIT,
-  XML,
-  YAML,
-  AUTO
-};
-
-/**
- * @brief A convenient function to parse all options from an input file
- *
- * @param path Path to the input file to be parsed
- * @param additional_input Additional cliargs to pass to the parser
- * @param ptype Input file format
- */
-void load_model(const std::string & path,
-                const std::string & additional_input = "",
-                ParserType ptype = ParserType::AUTO);
-
-/**
- * @brief A parser is responsible for parsing an input file into a collection of options which
- * can be used by the Factory to manufacture corresponding objects.
- *
- */
-class Parser
+class Settings
 {
 public:
-  Parser() = default;
+  static OptionSet expected_options();
 
-  /// Known top-level sections in the input file
-  static std::vector<std::string> sections;
+  Settings() = default;
 
-  /**
-   * @brief Deserialize a file.
-   *
-   * @param filename Name/path of the input file.
-   * @param additional_input  Additional content of the input file not included in the input file
-   * itself, e.g., from command line.
-   * @return OptionCollection The extracted object options.
-   */
-  virtual OptionCollection parse(const std::filesystem::path & filename,
-                                 const std::string & additional_input = "") const = 0;
+  Settings(const OptionSet & options);
 };
-
 } // namespace neml2

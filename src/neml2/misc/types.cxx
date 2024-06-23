@@ -26,27 +26,40 @@
 
 namespace neml2
 {
-const torch::TensorOptions
+torch::TensorOptions &
 default_tensor_options()
 {
-  return torch::TensorOptions()
-      .dtype(NEML2_DTYPE)
-      .layout(torch::kStrided)
-      .memory_format(torch::MemoryFormat::Contiguous)
-      .pinned_memory(false)
-      .device(torch::kCPU)
-      .requires_grad(false);
+  static torch::TensorOptions _default_tensor_options =
+      torch::TensorOptions().dtype(default_dtype()).device(default_device());
+  return _default_tensor_options;
 }
 
-const torch::TensorOptions
-default_integer_tensor_options()
+torch::TensorOptions &
+default_int_tensor_options()
 {
-  return torch::TensorOptions()
-      .dtype(NEML2_INT_DTYPE)
-      .layout(torch::kStrided)
-      .memory_format(torch::MemoryFormat::Contiguous)
-      .pinned_memory(false)
-      .device(torch::kCPU)
-      .requires_grad(false);
+  static torch::TensorOptions _default_int_tensor_options =
+      torch::TensorOptions().dtype(default_int_dtype()).device(default_device());
+  return _default_int_tensor_options;
+}
+
+torch::Dtype &
+default_dtype()
+{
+  static torch::Dtype _default_dtype = torch::kFloat64;
+  return _default_dtype;
+}
+
+torch::Dtype &
+default_int_dtype()
+{
+  static torch::Dtype _default_int_dtype = torch::kInt64;
+  return _default_int_dtype;
+}
+
+torch::Device &
+default_device()
+{
+  static torch::Device _default_device = torch::kCPU;
+  return _default_device;
 }
 } // namespace neml2

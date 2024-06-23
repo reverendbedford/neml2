@@ -22,40 +22,46 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/models/crystallography/user_tensors/FillMillerIndex.h"
+#include "neml2/base/Settings.h"
 
 namespace neml2
 {
-namespace crystallography
-{
-
-register_NEML2_object(FillMillerIndex);
-
 OptionSet
-FillMillerIndex::expected_options()
+Settings::expected_options()
 {
-  OptionSet options = UserTensor::expected_options();
-  options.doc() = "Fills a tensor of Miller indices from a list of integers. Use -1 instead of "
-                  "\\f$ \\bar{1} \\f$.";
+  OptionSet options;
+  options.section() = "Settings";
 
-  options.set<std::vector<Integer>>("values");
-  options.set("values").doc() = "List of integers defining a Miller index";
+  options.set<EnumSelection>("default_floating_point_type") =
+      EnumSelection({"Float16", "Float32", "Float64"},
+                    {static_cast<int>(torch::kFloat16),
+                     static_cast<int>(torch::kFloat32),
+                     static_cast<int>(torch::kFloat64)},
+                    "Float64");
+
+  options.set<EnumSelection>("default_integer_type") =
+      EnumSelection({"Int8", "Int16", "Int32", "Int64"},
+                    {static_cast<int>(torch::kInt8),
+                     static_cast<int>(torch::kInt16),
+                     static_cast<int>(torch::kInt32),
+                     static_cast<int>(torch::kInt64)},
+                    "Int64");
+
+  options.set<std::string>("default_device") = "cpu";
+
   return options;
 }
 
-FillMillerIndex::FillMillerIndex(const OptionSet & options)
-  : MillerIndex(fill(options.get<std::vector<Integer>>("values"))),
-    UserTensor(options)
+Settings::Settings(const OptionSet & options)
 {
-}
+  // Default floating point dtype
+  default_dtype() = options.get<EnumSelection>("default_floating_point_type").as<torch::Dtype>();
+  torch::set_default_dtype(scalarTypeToTypeMeta(default_dtype()));
 
-MillerIndex
-FillMillerIndex::fill(const std::vector<Integer> & values) const
-{
-  if ((values.size() % 3) != 0)
-    neml_assert(false, "Number of provided values must be a multiple of three!");
+  // Default integral dtype
+  default_int_dtype() = options.get<EnumSelection>("default_integer_type").as<torch::Dtype>();
 
-  return MillerIndex(torch::tensor(values, default_int_tensor_options()).reshape({-1, 3}));
+  // Default device
+  default_device() = torch::Device(options.get<std::string>("default_device"));
 }
-} // namespace crystallography
 } // namespace neml2

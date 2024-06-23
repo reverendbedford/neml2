@@ -2,6 +2,12 @@ x = 5
 pi = 3.14159
 day = 'day'
 
+[Settings]
+  default_floating_point_type = 'Float16'
+  default_integer_type = 'Int32'
+  default_device = 'cuda:1'
+[]
+
 [Models]
   [foo]
     type = SampleParserTestingModel

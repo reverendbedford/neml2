@@ -25,6 +25,7 @@
 #pragma once
 
 #include "neml2/base/OptionSet.h"
+#include "neml2/base/Settings.h"
 
 namespace neml2
 {
@@ -39,6 +40,12 @@ class OptionCollection
 public:
   OptionCollection() = default;
 
+  /// Get global settings
+  ///@{
+  OptionSet & settings() { return _settings; }
+  const OptionSet & settings() const { return _settings; }
+  ///@}
+
   /// Implicit conversion to an STL map.
   operator std::map<std::string, std::map<std::string, OptionSet>>() const { return _data; }
 
@@ -49,6 +56,10 @@ public:
   const std::map<std::string, std::map<std::string, OptionSet>> & data() const { return _data; }
 
 private:
+  /// Global settings under the [Settings] section
+  OptionSet _settings = Settings::expected_options();
+
+  /// Collection of options for all manufacturable objects
   std::map<std::string, std::map<std::string, OptionSet>> _data;
 };
 

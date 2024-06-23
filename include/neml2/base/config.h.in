@@ -25,12 +25,6 @@
 #include <cstddef>
 #include <torch/torch.h>
 
-// clang-format off
-#cmakedefine NEML2_DTYPE torch::k@NEML2_DTYPE@
-
-#cmakedefine NEML2_INT_DTYPE torch::k@NEML2_INT_DTYPE@
-// clang-format on
-
 /**
  * TODO: make the following constants configurable
  */
@@ -39,4 +33,4 @@
 /// The tolerance used in various algorithms
 #define NEML2_TOL 1E-6
 /// A tighter tolerance used in various algorithms
-#define NEML2_TOL2 1e-12
+#define NEML2_TOL2 1E-12

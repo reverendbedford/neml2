@@ -28,6 +28,8 @@
 
 namespace neml2
 {
+std::vector<std::string> Parser::sections = {"Tensors", "Solvers", "Data", "Models", "Drivers"};
+
 void
 load_model(const std::string & path, const std::string & additional_input, ParserType ptype)
 {
