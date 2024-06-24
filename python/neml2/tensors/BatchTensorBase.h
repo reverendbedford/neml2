@@ -236,7 +236,7 @@ def_BatchTensorBase(py::class_<Derived> & c)
       .def_property_readonly("shape", &Derived::sizes)
       .def_property_readonly("dtype", &Derived::scalar_type)
       .def_property_readonly("device", &Derived::device)
-      .def_property_readonly("batch_dim", &Derived::batch_dim)
+      .def_property_readonly("batch_dim", [](Derived * self) { return self->batch_dim(); })
       .def("requires_grad_", &Derived::requires_grad_)
       .def_property_readonly("requires_grad", &Derived::requires_grad)
       .def_property_readonly("grad", &Derived::grad);
