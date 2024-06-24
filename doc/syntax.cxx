@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 #include "neml2/base/Registry.h"
+#include "neml2/base/Settings.h"
 #include <fstream>
 
 int
@@ -31,11 +32,15 @@ main()
   std::ofstream syntax_file;
   syntax_file.open("syntax.yml");
 
+  auto settings = neml2::Settings::expected_options();
+  syntax_file << "neml2::Settings:\n";
+  syntax_file << settings << '\n';
+
   for (auto && [type, options] : neml2::Registry::expected_options())
   {
     options.set<std::string>("type") = type;
     syntax_file << neml2::Registry::syntax_type(type) << ":\n";
-    syntax_file << options << "\n";
+    syntax_file << options << '\n';
   }
 
   syntax_file.close();

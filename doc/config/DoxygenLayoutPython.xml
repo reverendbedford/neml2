@@ -5,6 +5,7 @@
     <tab type="user" url="../install.html" title="Installation Guide"/>
     <tab type="user" url="../getting-started.html" title="Getting Started"/>
     <tab type="usergroup" title="Syntax Documentation">
+      <tab type="user" url="../syntax-settings.html" title="[Settings]"/>
       <tab type="user" url="../syntax-tensors.html" title="[Tensors]"/>
       <tab type="user" url="../syntax-models.html" title="[Models]"/>
       <tab type="user" url="../syntax-solvers.html" title="[Solvers]"/>
@@ -12,6 +13,7 @@
       <tab type="user" url="../syntax-drivers.html" title="[Drivers]"/>
     </tab>
     <tab type="usergroup" title="System Documentation">
+      <tab type="user" url="../system-settings.html" title="Settings"/>
       <tab type="user" url="../system-tensors.html" title="Tensor"/>
       <tab type="user" url="../system-models.html" title="Model"/>
       <tab type="user" url="../system-solvers.html" title="Solver"/>

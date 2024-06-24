@@ -31,23 +31,36 @@ Settings::expected_options()
 {
   OptionSet options;
   options.section() = "Settings";
+  options.doc() = "Global settings for tensors, models, etc.";
 
-  options.set<EnumSelection>("default_floating_point_type") =
-      EnumSelection({"Float16", "Float32", "Float64"},
-                    {static_cast<int>(torch::kFloat16),
-                     static_cast<int>(torch::kFloat32),
-                     static_cast<int>(torch::kFloat64)},
-                    "Float64");
+  options.set<std::string>("type") = "Settings";
 
-  options.set<EnumSelection>("default_integer_type") =
-      EnumSelection({"Int8", "Int16", "Int32", "Int64"},
-                    {static_cast<int>(torch::kInt8),
-                     static_cast<int>(torch::kInt16),
-                     static_cast<int>(torch::kInt32),
-                     static_cast<int>(torch::kInt64)},
-                    "Int64");
+  EnumSelection dtype_selection({"Float16", "Float32", "Float64"},
+                                {static_cast<int>(torch::kFloat16),
+                                 static_cast<int>(torch::kFloat32),
+                                 static_cast<int>(torch::kFloat64)},
+                                "Float64");
+  options.set<EnumSelection>("default_floating_point_type") = dtype_selection;
+  options.set("default_floating_point_type").doc() =
+      "Default floating point type for tensors. Options are " + dtype_selection.candidates_str();
+
+  EnumSelection int_dtype_selection({"Int8", "Int16", "Int32", "Int64"},
+                                    {static_cast<int>(torch::kInt8),
+                                     static_cast<int>(torch::kInt16),
+                                     static_cast<int>(torch::kInt32),
+                                     static_cast<int>(torch::kInt64)},
+                                    "Int64");
+  options.set<EnumSelection>("default_integer_type") = int_dtype_selection;
+  options.set("default_integer_type").doc() =
+      "Default integer type for tensors. Options are " + int_dtype_selection.candidates_str();
 
   options.set<std::string>("default_device") = "cpu";
+  options.set("default_device").doc() =
+      "Default device on which tensors are created and models are evaluated. The string supplied "
+      "must follow the following schema: (cpu|cuda)[:<device-index>] where cpu or cuda specifies "
+      "the device type, and :<device-index> optionally specifies a device index. For example, "
+      "device='cpu' sets the target compute device to be CPU, and device='cuda:1' sets the target "
+      "compute device to be CUDA with device ID 1.";
 
   return options;
 }
