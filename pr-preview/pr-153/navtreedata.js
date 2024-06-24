@@ -29,6 +29,7 @@ var NAVTREE =
     [ "Installation Guide", "install.html", null ],
     [ "Getting Started", "getting-started.html", null ],
     [ "Syntax Documentation", "usergroup0.html", [
+      [ "[Settings]", "syntax-settings.html", null ],
       [ "[Tensors]", "syntax-tensors.html", null ],
       [ "[Models]", "syntax-models.html", null ],
       [ "[Solvers]", "syntax-solvers.html", null ],
@@ -36,6 +37,7 @@ var NAVTREE =
       [ "[Drivers]", "syntax-drivers.html", null ]
     ] ],
     [ "System Documentation", "usergroup1.html", [
+      [ "Settings", "system-settings.html", null ],
       [ "Tensor", "system-tensors.html", null ],
       [ "Model", "system-models.html", null ],
       [ "Solver", "system-solvers.html", null ],

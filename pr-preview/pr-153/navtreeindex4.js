@@ -249,5 +249,5 @@ var NAVTREEINDEX4 =
 "structneml2_1_1Storage_1_1DereferenceIterator.html#aff1ef965010b2a4c8744ad33d8412342":[7,0,125,0,2],
 "structneml2_1_1math_1_1ConstantTensors.html":[7,0,1,0],
 "structneml2_1_1math_1_1ConstantTensors.html#a73c46f80dd30b119283a7111fb1981c7":[7,0,1,0,0],
-"syntax-data.html":[3,3]
+"syntax-data.html":[3,4]
 };

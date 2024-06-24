@@ -27,12 +27,14 @@ var menudata={children:[
 {text:"Installation Guide",url:"install.html"},
 {text:"Getting Started",url:"getting-started.html"},
 {text:"Syntax Documentation",url:"usergroup0.html",children:[
+{text:"[Settings]",url:"syntax-settings.html"},
 {text:"[Tensors]",url:"syntax-tensors.html"},
 {text:"[Models]",url:"syntax-models.html"},
 {text:"[Solvers]",url:"syntax-solvers.html"},
 {text:"[Data]",url:"syntax-data.html"},
 {text:"[Drivers]",url:"syntax-drivers.html"}]},
 {text:"System Documentation",url:"usergroup1.html",children:[
+{text:"Settings",url:"system-settings.html"},
 {text:"Tensor",url:"system-tensors.html"},
 {text:"Model",url:"system-models.html"},
 {text:"Solver",url:"system-solvers.html"},
