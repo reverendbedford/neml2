@@ -206,6 +206,9 @@ protected:
   /// Call VariableStore::allocate_variables recursively on all submodels
   virtual void allocate_variables(int deriv_order, bool options_changed);
 
+  /// Reallocate all output storages and variable views
+  virtual void reallocate_output();
+
   /// Call VariableStore::setup_input_views recursively on all submodels
   virtual void setup_input_views() override;
   virtual void setup_submodel_input_views();
@@ -219,9 +222,6 @@ protected:
 
   /// Call VariableStore::reinit_output_views recursively on all submodels
   virtual void reinit_output_views(bool out, bool dout_din = true, bool d2out_din2 = true) override;
-
-  /// Call VariableStore::detach_and_zero recursively on all submodels
-  virtual void detach_and_zero(bool out, bool dout_din = true, bool d2out_din2 = true) override;
 
   /// Set \p x as the current solution of the nonlinear system
   virtual void set_solution(const BatchTensor & x) override;

@@ -187,6 +187,15 @@ Model::allocate_variables(int deriv_order, bool options_changed)
 }
 
 void
+Model::reallocate_output()
+{
+  VariableStore::allocate_variables(
+      _batch_sizes, _options, this != host(), true, requires_grad(), requires_2nd_grad());
+  for (auto submodel : registered_models())
+    submodel->reallocate_output();
+}
+
+void
 Model::setup_input_views()
 {
   VariableStore::setup_input_views();
@@ -251,16 +260,6 @@ Model::reinit_output_views(bool out, bool dout_din, bool d2out_din2)
     if (dout_din && requires_grad())
       _Jacobian = derivative_storage()("residual", "state");
   }
-}
-
-void
-Model::detach_and_zero(bool out, bool dout_din, bool d2out_din2)
-{
-  VariableStore::detach_and_zero(
-      out, dout_din && requires_grad(), d2out_din2 && requires_2nd_grad());
-
-  for (auto submodel : registered_models())
-    submodel->detach_and_zero(out, dout_din, d2out_din2);
 }
 
 void
@@ -347,7 +346,7 @@ LabeledVector
 Model::value(const LabeledVector & in)
 {
   set_input(in);
-  detach_and_zero(true, false, false);
+  reallocate_output();
   value();
   return get_output();
 }
@@ -356,7 +355,7 @@ std::tuple<LabeledVector, LabeledMatrix>
 Model::value_and_dvalue(const LabeledVector & in)
 {
   set_input(in);
-  detach_and_zero(true, true, false);
+  reallocate_output();
   value_and_dvalue();
   return {get_output(), get_doutput_dinput()};
 }
@@ -365,7 +364,7 @@ std::tuple<LabeledVector, LabeledMatrix, LabeledTensor3D>
 Model::value_and_dvalue_and_d2value(const LabeledVector & in)
 {
   set_input(in);
-  detach_and_zero(true, true, true);
+  reallocate_output();
   value_and_dvalue_and_d2value();
   return {get_output(), get_doutput_dinput(), get_d2output_dinput2()};
 }
@@ -444,16 +443,12 @@ Model::provided_items() const
 void
 Model::assemble(bool residual, bool Jacobian)
 {
+  reallocate_output();
+
   if (residual && !Jacobian)
-  {
-    detach_and_zero(true, false, false);
     value();
-  }
   else if (Jacobian)
-  {
-    detach_and_zero(true, true, false);
     value_and_dvalue();
-  }
 }
 
 void
