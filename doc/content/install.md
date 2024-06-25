@@ -6,7 +6,7 @@
 
 Compiling the NEML2 core library requires
 - A C++ compiler with C++17 support
-- CMake >= 3.23
+- CMake >= 3.28
 
 ## Dependencies
 
@@ -27,6 +27,7 @@ If no PyTorch installation can be detected and `LIBTORCH_DIR` is not set at conf
 *No action is needed to manually obtain the optional dependencies.* The compatible optional dependencies will be automatically downloaded and configured by CMake depending on the build customization.
 
 - [HIT](https://github.com/idaholab/moose/tree/master/framework/contrib/hit) for input file parsing.
+- [WASP](https://code.ornl.gov/neams-workbench/wasp) as the lexing and parsing backend for HIT.
 - [Catch2](https://github.com/catchorg/Catch2) for unit and regression testing.
 - [gperftools](https://github.com/gperftools/gperftools) for profiling.
 - [Doxygen](https://github.com/doxygen/doxygen) for building the documentation.

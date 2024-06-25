@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------------
 # Project metadata
 # ----------------------------------------------------------------------------
-cmake_minimum_required(VERSION 3.23)
+cmake_minimum_required(VERSION 3.28)
 project(NEML2 VERSION 1.4.0 LANGUAGES CXX)
 
 # ----------------------------------------------------------------------------
@@ -41,21 +41,17 @@ set(PYTORCH_VERSION "2.2.2")
 set(DOXYGEN_VERSION "1.10.0")
 set(DOXYGEN_AWESOME_VERSION "2.3.2")
 set(PYBIND11_VERSION "2.12.0")
-set(HIT_VERSION "100b575af08643b5e646cac8faff6c87dd1c15a7")
+set(WASP_VERSION "c8c9ce4259115973f147e345608450d87dc390c4")
+set(HIT_VERSION "2b56209d3f1a1c5f0bede15a3e13981b599a5f91")
 set(CATCH2_VERSION "3.5.4")
 set(GPERFTOOLS_VERSION "2.15")
 set(ARGPARSE_VERSION "3.0")
 include(NEML2Dependencies)
-find_package(Torch) # This gets redirected to our FindTorch.cmake
 
 # ----------------------------------------------------------------------------
 # PyTorch ships libraries with or without CXX11 ABI
 # ----------------------------------------------------------------------------
-if(Torch_CXX11_ABI)
-      add_compile_definitions(_GLIBCXX_USE_CXX11_ABI=1)
-else()
-      add_compile_definitions(_GLIBCXX_USE_CXX11_ABI=0)
-endif()
+add_compile_definitions(_GLIBCXX_USE_CXX11_ABI=${GLIBCXX_USE_CXX11_ABI})
 
 # ----------------------------------------------------------------------------
 # For relocatable install
@@ -71,7 +67,17 @@ endif()
 # ----------------------------------------------------------------------------
 if(NOT CMAKE_BUILD_TYPE)
       set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Choose the type of build." FORCE)
-      set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo" "Coverage")
+endif()
+
+set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo" "Coverage")
+
+if(CMAKE_BUILD_TYPE STREQUAL "Coverage")
+      if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+            message(FATAL_ERROR "Build type Coverage must use gcc/g++ as the compiler")
+      endif()
+
+      set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE ON)
+      configure_file(scripts/coverage.sh.in ${NEML2_BINARY_DIR}/scripts/coverage.sh)
 endif()
 
 # ----------------------------------------------------------------------------

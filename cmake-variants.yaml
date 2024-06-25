@@ -29,6 +29,18 @@ libneml2:
         NEML2_RUNNER_AS_PROFILER: ON
         NEML2_PYBIND: OFF
         NEML2_DOC: OFF
+    coverage:
+      short: Coverage
+      long: Build unit tests with coverage flags
+      buildType: Coverage
+      settings:
+        NEML2_TESTS: ON
+        NEML2_UNIT: ON
+        NEML2_REGRESSION: OFF
+        NEML2_VERIFICATION: OFF
+        NEML2_RUNNER: OFF
+        NEML2_PYBIND: OFF
+        NEML2_DOC: OFF
     production:
       short: Production
       long: Build for production release

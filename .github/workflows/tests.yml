@@ -62,7 +62,7 @@ jobs:
           python-version: "3.8"
       - uses: jwlawson/actions-setup-cmake@v2
         with:
-          cmake-version: "3.23"
+          cmake-version: "3.28"
       - run: pip install torch==2.2.2
       - run: |
           cmake \
@@ -72,13 +72,14 @@ jobs:
             -DNEML2_RUNNER=OFF \
             -DNEML2_PYBIND=OFF \
             -DNEML2_DOC=OFF \
+            -B build \
             .
-      - run: make -j 2
-      - run: cd tests && ./unit/unit_tests -r junit > unit_tests.xml
+      - run: cmake --build build --target all -j 2 --
+      - run: cd tests && ../build/tests/unit/unit_tests -r junit > unit_tests.xml
         continue-on-error: true
-      - run: cd tests && ./regression/regression_tests -r junit > regression_tests.xml
+      - run: cd tests && ../build/tests/regression/regression_tests -r junit > regression_tests.xml
         continue-on-error: true
-      - run: cd tests && ./verification/verification_tests -r junit > verification_tests.xml
+      - run: cd tests && ../build/tests/verification/verification_tests -r junit > verification_tests.xml
         continue-on-error: true
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2
@@ -108,7 +109,7 @@ jobs:
           python-version: "3.8"
       - uses: jwlawson/actions-setup-cmake@v2
         with:
-          cmake-version: "3.23"
+          cmake-version: "3.28"
       - run: pip install torch==2.2.2
       - run: |
           cmake \
@@ -119,11 +120,12 @@ jobs:
             -DNEML2_RUNNER_AS_PROFILER=ON \
             -DNEML2_PYBIND=OFF \
             -DNEML2_DOC=OFF \
+            -B build \
             .
-      - run: make -j 2
+      - run: cmake --build build --target all -j 2 --
   coverage:
     name: Code coverage check
-    needs: build-test
+    needs: clang-format
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
     steps:
@@ -135,7 +137,7 @@ jobs:
           python-version: "3.8"
       - uses: jwlawson/actions-setup-cmake@v2
         with:
-          cmake-version: "3.23"
+          cmake-version: "3.28"
       - run: pip install torch==2.2.2
       - run: sudo apt install lcov
       - run: |
@@ -143,15 +145,19 @@ jobs:
             -DCMAKE_BUILD_TYPE=Coverage \
             -DCMAKE_UNITY_BUILD=OFF \
             -DNEML2_TESTS=ON \
+            -DNEML2_UNIT=ON \
+            -DNEML2_REGRESSION=OFF \
+            -DNEML2_VERIFICATION=OFF \
             -DNEML2_RUNNER=OFF \
             -DNEML2_PYBIND=OFF \
             -DNEML2_DOC=OFF \
+            -B build \
             .
-      - run: make -j 2
-      - run: ./scripts/coverage.sh
+      - run: cmake --build build --target all -j 2 --
+      - run: build/scripts/coverage.sh
       - uses: romeovs/lcov-reporter-action@v0.3.1
         with:
-          lcov-file: ./coverage/coverage.info
+          lcov-file: build/coverage/coverage.info
           github-token: ${{ secrets.PR_ACTION }}
           delete-old-comments: true
   cmake-integration:
@@ -168,7 +174,7 @@ jobs:
           python-version: "3.8"
       - uses: jwlawson/actions-setup-cmake@v2
         with:
-          cmake-version: "3.23"
+          cmake-version: "3.28"
       - run: pip install torch==2.2.2
       - name: Create a source file for testing purposes
         run: |
@@ -182,7 +188,7 @@ jobs:
       - name: Create a CMakeLists.txt file for testing purposes
         run: |
           echo -e "\
-            cmake_minimum_required(VERSION 3.23)
+            cmake_minimum_required(VERSION 3.28)
             project(FOO)\n\
             add_subdirectory(neml2)\n\
             add_executable(foo main.cxx)\n\
@@ -193,5 +199,5 @@ jobs:
       - name: Configure with CMake
         run: cmake -DNEML2_TESTS=OFF -B build .
       - name: Compile
-        run: cd build && make -j 2
-      - run: cd build && ./foo
+        run: cmake --build build --target all -j 2 --
+      - run: ./build/foo

@@ -45,7 +45,7 @@ jobs:
           submodules: recursive
       - uses: jwlawson/actions-setup-cmake@v2
         with:
-          cmake-version: "3.23"
+          cmake-version: "3.28"
       - uses: actions/setup-python@v5
         with:
           python-version: "3.8"
