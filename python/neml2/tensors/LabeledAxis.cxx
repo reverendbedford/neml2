@@ -56,7 +56,8 @@ def_LabeledAxis(py::module_ & m)
                                  [](const LabeledAxis & self) { return self.nvariable(); })
           .def_property_readonly("nsubaxis",
                                  [](const LabeledAxis & self) { return self.nsubaxis(); })
-          .def("subaxis_names", [](const LabeledAxis & self) { return self.ordered_subaxes(); });
+          .def("subaxis_names", [](const LabeledAxis & self) { return self.ordered_subaxes(); })
+          .def("variables", [](const LabeledAxis & self) { return self.variables(); });
 
   // Operators
   c.def("__repr__", [](const LabeledAxis & self) { return utils::stringify(self); })
