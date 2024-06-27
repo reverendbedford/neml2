@@ -85,8 +85,10 @@ ParameterStore::declare_parameter(const std::string & name, const std::string & 
                     "However, nonlinear parameter should only be declared by a model, and this "
                     "object does not appear to be a model.");
 
+        OptionSet extra_opts;
+        extra_opts.set<NEML2Object *>("_host") = model->host();
         auto & nl_param = Factory::get_object<NonlinearParameter<T>>(
-            "Models", _options.get<CrossRef<T>>(input_option_name).raw());
+            "Models", _options.get<CrossRef<T>>(input_option_name).raw(), extra_opts);
         _nl_params[name] = &nl_param.param();
         return nl_param.param().value();
       }

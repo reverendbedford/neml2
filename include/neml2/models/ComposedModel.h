@@ -40,7 +40,7 @@ public:
 
 protected:
   /// Recursively register sub-model's nonlinar parameters
-  void register_nonlinear_params(const Model & m);
+  void register_nonlinear_params(Model & m);
 
   virtual void allocate_variables(int deriv_order, bool options_changed) override;
 

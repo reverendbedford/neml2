@@ -64,9 +64,8 @@ ComposedModel::ComposedModel(const OptionSet & options)
     // Each sub-model shall have _independent_ output storage. This is because the same model could
     // be registered as a sub-model by different models, and it could be evaluated with _different_
     // input, and hence yields _different_ output values.
-    const auto & submodel =
+    auto & submodel =
         register_model<Model>(model_name, 0, /*nonlinear=*/false, /*merge_input=*/false);
-    register_nonlinear_params(submodel);
 
     // Each sub-model may have nonlinear parameters. In our design, nonlinear parameters _are_
     // models. Since we do not want to put the burden of adding nonlinear parameters in the input
@@ -128,13 +127,16 @@ ComposedModel::ComposedModel(const OptionSet & options)
 }
 
 void
-ComposedModel::register_nonlinear_params(const Model & m)
+ComposedModel::register_nonlinear_params(Model & m)
 {
+
   for (auto && [pname, param] : m.nl_params())
   {
     neml_assert_dbg(param->name().size() == 1, "Internal parameter name error");
 
-    auto submodel = Factory::get_object_ptr<Model>("Models", param->name().vec()[0]);
+    OptionSet extra_opts;
+    extra_opts.set<NEML2Object *>("_host") = m.host();
+    auto submodel = Factory::get_object_ptr<Model>("Models", param->name().vec()[0], extra_opts);
     _registered_models.push_back(submodel.get());
 
     // Nonlinear parameters could be nested...
