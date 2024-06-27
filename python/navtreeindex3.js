@@ -1,5 +1,7 @@
 var NAVTREEINDEX3 =
 {
+"classtensors_1_1R3BatchView.html#a2b9a0b571a6c22b794fba9b28e11613c":[8,2,18,16],
+"classtensors_1_1R3BatchView.html#a2c51b76aa4c970a721ff560d3af20b2e":[8,2,18,25],
 "classtensors_1_1R3BatchView.html#a2ffb97c624ab5fc590e9384db1c4e7d6":[8,2,18,28],
 "classtensors_1_1R3BatchView.html#a3219687c1e38894c5947203f9ff28f20":[8,2,18,20],
 "classtensors_1_1R3BatchView.html#a35536134a6ceb1e866faf188992e9c9f":[8,2,18,43],
@@ -247,7 +249,5 @@ var NAVTREEINDEX3 =
 "classtensors_1_1R5BaseView.html#a7192f84ef4bc5b782f647cd49711866f":[8,2,23,13],
 "classtensors_1_1R5BaseView.html#a78a196270b444c17124a964040475a4e":[8,2,23,14],
 "classtensors_1_1R5BaseView.html#a7d8eea8bee26003ffc2e878fa310e34e":[8,2,23,36],
-"classtensors_1_1R5BaseView.html#a7f258d02033d71e8430fa4b0b103f613":[8,2,23,48],
-"classtensors_1_1R5BaseView.html#a81e837b883f8a3c0c73b224f1fce771a":[8,2,23,21],
-"classtensors_1_1R5BaseView.html#a89685c00f313d257b6a8b8d172296389":[8,2,23,32]
+"classtensors_1_1R5BaseView.html#a7f258d02033d71e8430fa4b0b103f613":[8,2,23,48]
 };

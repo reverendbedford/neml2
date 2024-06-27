@@ -1,5 +1,7 @@
 var NAVTREEINDEX12 =
 {
+"classtensors_1_1WWR4BatchView.html#ab2fcbe4dedb2db4f6474278be34510b6":[8,2,62,27],
+"classtensors_1_1WWR4BatchView.html#ab4e08f442857a75f099624a49138c674":[8,2,62,5],
 "classtensors_1_1WWR4BatchView.html#ab5cf2f1baa55950f080ba85ad93f38cb":[8,2,62,24],
 "classtensors_1_1WWR4BatchView.html#ab753689c5735f7a67f0e5ff3c7a4d165":[8,2,62,41],
 "classtensors_1_1WWR4BatchView.html#abb73c322d3cf19563fb38711e3b982f6":[8,2,62,10],
