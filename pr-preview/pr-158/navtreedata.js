@@ -29,6 +29,7 @@ var NAVTREE =
     [ "Installation Guide", "install.html", null ],
     [ "Getting Started", "getting-started.html", null ],
     [ "Syntax Documentation", "usergroup0.html", [
+      [ "[Settings]", "syntax-settings.html", null ],
       [ "[Tensors]", "syntax-tensors.html", null ],
       [ "[Models]", "syntax-models.html", null ],
       [ "[Solvers]", "syntax-solvers.html", null ],
@@ -36,6 +37,7 @@ var NAVTREE =
       [ "[Drivers]", "syntax-drivers.html", null ]
     ] ],
     [ "System Documentation", "usergroup1.html", [
+      [ "Settings", "system-settings.html", null ],
       [ "Tensor", "system-tensors.html", null ],
       [ "Model", "system-models.html", null ],
       [ "Solver", "system-solvers.html", null ],
@@ -54,10 +56,11 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"classneml2_1_1IdentityBatchTensor.html#af6ef863e854f39a6d7199b176fe68549",
-"classneml2_1_1Model.html#a6db3b86fbdfc7c9bd78568026e3cdb5c",
-"classneml2_1_1PowerLawSlipRule.html#a2d3075db2c674c90b8485db750c3766f",
-"classneml2_1_1TrustRegionSubProblem.html#ac480a7f7a0914353179592c055bda38a"
+"classneml2_1_1GTNYieldFunction.html#ae4111034621a15ce3bd4b82dee26a72d",
+"classneml2_1_1Model.html#a306c6fb1cd21dd211b6f9087842c543d",
+"classneml2_1_1PlasticDeformationRate.html#a6008b9d35a22d9cc57748b75b938d5aa",
+"classneml2_1_1TransientDriver.html#ab751051b1545cd408cec6e352cf57486",
+"syntax-drivers.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

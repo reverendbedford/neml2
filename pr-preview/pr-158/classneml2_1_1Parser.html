@@ -111,6 +111,7 @@ $(function(){initNavTree('classneml2_1_1Parser.html',''); initResizable(); });
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classneml2_1_1Parser-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Parser Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div></div>
 </div><!--header-->
@@ -140,6 +141,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3553a992f67289497987a233410a0e93" id="r_a3553a992f67289497987a233410a0e93"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1OptionCollection.html">OptionCollection</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3553a992f67289497987a233410a0e93">parse</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> std::filesystem::path &amp;<a class="el" href="classneml2_1_1CrossRef.html">filename</a>, <a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;<a class="el" href="classneml2_1_1CrossRef.html">additional_input</a>=&quot;&quot;) <a class="el" href="classneml2_1_1CrossRef.html">const</a> =0</td></tr>
 <tr class="memdesc:a3553a992f67289497987a233410a0e93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deserialize a file.  <br /></td></tr>
 <tr class="separator:a3553a992f67289497987a233410a0e93"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:a6ba7a8d172b555bcf202bdaaae46799c" id="r_a6ba7a8d172b555bcf202bdaaae46799c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">static</a> std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6ba7a8d172b555bcf202bdaaae46799c">sections</a> = {&quot;Tensors&quot;, &quot;Solvers&quot;, &quot;Data&quot;, &quot;Models&quot;, &quot;Drivers&quot;}</td></tr>
+<tr class="memdesc:a6ba7a8d172b555bcf202bdaaae46799c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Known top-level sections in the input file.  <br /></td></tr>
+<tr class="separator:a6ba7a8d172b555bcf202bdaaae46799c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a4fb6c48eb8714d188c78f891adf803fb" name="a4fb6c48eb8714d188c78f891adf803fb"></a>
@@ -206,6 +213,31 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classneml2_1_1OptionCollection.html" title="A data structure that holds options of multiple objects.">OptionCollection</a> The extracted object options. </dd></dl>
 
 <p>Implemented in <a class="el" href="classneml2_1_1HITParser.html#a75cd4c45919b17b4913461ada89f42da">HITParser</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a6ba7a8d172b555bcf202bdaaae46799c" name="a6ba7a8d172b555bcf202bdaaae46799c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ba7a8d172b555bcf202bdaaae46799c">&#9670;&#160;</a></span>sections</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; std::string &gt; sections = {&quot;Tensors&quot;, &quot;Solvers&quot;, &quot;Data&quot;, &quot;Models&quot;, &quot;Drivers&quot;}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Known top-level sections in the input file. </p>
 
 </div>
 </div>

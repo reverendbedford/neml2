@@ -19,10 +19,11 @@ var searchData=
   ['apply_5fpredictor_16',['apply_predictor',['../classneml2_1_1TransientDriver.html#a4e60c62b56859976b7a755b393a928b2',1,'neml2::TransientDriver']]],
   ['args_17',['args',['../classneml2_1_1VariableBase.html#a1199dd216f7a0626267181ae084e3e97',1,'neml2::VariableBase']]],
   ['arrheniusparameter_18',['ArrheniusParameter',['../classneml2_1_1ArrheniusParameter.html#a4de66c32ecd3ad290fe1d10134c927cf',1,'neml2::ArrheniusParameter']]],
-  ['assemble_19',['assemble',['../classneml2_1_1Model.html#a09c1379721a903e027e596f15646c1a2',1,'neml2::Model::assemble()'],['../classneml2_1_1NonlinearSystem.html#af8ddb5164cca4931f510ef1c4d623c50',1,'neml2::NonlinearSystem::assemble()'],['../classneml2_1_1TrustRegionSubProblem.html#a09c1379721a903e027e596f15646c1a2',1,'neml2::TrustRegionSubProblem::assemble()']]],
-  ['associativeisotropicplastichardening_20',['AssociativeIsotropicPlasticHardening',['../classneml2_1_1AssociativeIsotropicPlasticHardening.html#a9e808379e4c8688c899ff1655b18c4fa',1,'neml2::AssociativeIsotropicPlasticHardening']]],
-  ['associativekinematicplastichardening_21',['AssociativeKinematicPlasticHardening',['../classneml2_1_1AssociativeKinematicPlasticHardening.html#a8b47b8d001aa3a10d675b9b1ea95f60c',1,'neml2::AssociativeKinematicPlasticHardening']]],
-  ['associativeplasticflow_22',['AssociativePlasticFlow',['../classneml2_1_1AssociativePlasticFlow.html#a0252b1e4716dce0ddfa1e3d79bcffeb4',1,'neml2::AssociativePlasticFlow']]],
-  ['axes_23',['axes',['../classneml2_1_1LabeledTensor.html#add3c03ff32fe93768e4d810705192fa1',1,'neml2::LabeledTensor']]],
-  ['axis_24',['axis',['../classneml2_1_1LabeledTensor.html#a0bd747691aec73be54c127e6299964ed',1,'neml2::LabeledTensor']]]
+  ['as_19',['as',['../classneml2_1_1EnumSelection.html#a0a722d04cee6bf06b968660956d7ebc3',1,'neml2::EnumSelection']]],
+  ['assemble_20',['assemble',['../classneml2_1_1Model.html#a09c1379721a903e027e596f15646c1a2',1,'neml2::Model::assemble()'],['../classneml2_1_1NonlinearSystem.html#af8ddb5164cca4931f510ef1c4d623c50',1,'neml2::NonlinearSystem::assemble()'],['../classneml2_1_1TrustRegionSubProblem.html#a09c1379721a903e027e596f15646c1a2',1,'neml2::TrustRegionSubProblem::assemble()']]],
+  ['associativeisotropicplastichardening_21',['AssociativeIsotropicPlasticHardening',['../classneml2_1_1AssociativeIsotropicPlasticHardening.html#a9e808379e4c8688c899ff1655b18c4fa',1,'neml2::AssociativeIsotropicPlasticHardening']]],
+  ['associativekinematicplastichardening_22',['AssociativeKinematicPlasticHardening',['../classneml2_1_1AssociativeKinematicPlasticHardening.html#a8b47b8d001aa3a10d675b9b1ea95f60c',1,'neml2::AssociativeKinematicPlasticHardening']]],
+  ['associativeplasticflow_23',['AssociativePlasticFlow',['../classneml2_1_1AssociativePlasticFlow.html#a0252b1e4716dce0ddfa1e3d79bcffeb4',1,'neml2::AssociativePlasticFlow']]],
+  ['axes_24',['axes',['../classneml2_1_1LabeledTensor.html#add3c03ff32fe93768e4d810705192fa1',1,'neml2::LabeledTensor']]],
+  ['axis_25',['axis',['../classneml2_1_1LabeledTensor.html#a0bd747691aec73be54c127e6299964ed',1,'neml2::LabeledTensor']]]
 ];

@@ -29,6 +29,7 @@ var NAVTREE =
     [ "Installation Guide", "../install.html", null ],
     [ "Getting Started", "../getting-started.html", null ],
     [ "Syntax Documentation", "usergroup0.html", [
+      [ "[Settings]", "../syntax-settings.html", null ],
       [ "[Tensors]", "../syntax-tensors.html", null ],
       [ "[Models]", "../syntax-models.html", null ],
       [ "[Solvers]", "../syntax-solvers.html", null ],
@@ -36,6 +37,7 @@ var NAVTREE =
       [ "[Drivers]", "../syntax-drivers.html", null ]
     ] ],
     [ "System Documentation", "usergroup1.html", [
+      [ "Settings", "../system-settings.html", null ],
       [ "Tensor", "../system-tensors.html", null ],
       [ "Model", "../system-models.html", null ],
       [ "Solver", "../system-solvers.html", null ],
@@ -54,18 +56,18 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "../annotated.html",
-"classtensors_1_1MillerIndex.html#aad8ebfb24678f393f62eb5e07ea58988",
-"classtensors_1_1QuaternionBatchView.html#aeb277e63e56c5bb054baebc086fc4045",
-"classtensors_1_1R3BatchView.html#a2ffb97c624ab5fc590e9384db1c4e7d6",
-"classtensors_1_1R5BaseView.html#a8b32100376613f61de57197ecde60890",
-"classtensors_1_1SFFR4.html#a7eed60b6f933dbfe94e8f17984134c6c",
-"classtensors_1_1SFR3BatchView.html#adf3e049b7e15518e913bfedf9a1eb46f",
-"classtensors_1_1SSFR5BatchView.html#a4dfa71ea0bdca5bb60e587b597f8df83",
-"classtensors_1_1SWR4BaseView.html#abb73c322d3cf19563fb38711e3b982f6",
-"classtensors_1_1Scalar.html#ac3b7534ee6722993ad035b52ce7c9ead",
-"classtensors_1_1VecBaseView.html#a57e05344ef710a689745263ebb6db1e2",
-"classtensors_1_1WSR4.html#a739c764ae876326bdbd8af6d1954da94",
-"classtensors_1_1WWR4BatchView.html#ab5cf2f1baa55950f080ba85ad93f38cb"
+"classtensors_1_1MillerIndex.html#aac28ca36673931b4ce74e608155dba41",
+"classtensors_1_1QuaternionBatchView.html#adf3e049b7e15518e913bfedf9a1eb46f",
+"classtensors_1_1R3BatchView.html#a2b9a0b571a6c22b794fba9b28e11613c",
+"classtensors_1_1R5BaseView.html#a81e837b883f8a3c0c73b224f1fce771a",
+"classtensors_1_1SFFR4.html#a79a64c4aa8a1e2b467de1596828f1fc1",
+"classtensors_1_1SFR3BatchView.html#add7da0f38f113433ec80ac5a444f303b",
+"classtensors_1_1SSFR5BatchView.html#a43080b242de156a5409d4b58fc7d0c9c",
+"classtensors_1_1SWR4BaseView.html#ab5cf2f1baa55950f080ba85ad93f38cb",
+"classtensors_1_1Scalar.html#ac272fcdacd3c30f796d7eac92b5cad76",
+"classtensors_1_1VecBaseView.html#a521532c9422edc7d56436f962f37dab1",
+"classtensors_1_1WSR4.html#a6852c9a2b2bddb0ff0ec552d311fcdc6",
+"classtensors_1_1WWR4BatchView.html#ab2fcbe4dedb2db4f6474278be34510b6"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
