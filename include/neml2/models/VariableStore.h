@@ -172,9 +172,6 @@ protected:
   /// Create the views for output variables, and optionally for the derivative and second derivatives
   virtual void reinit_output_views(bool out, bool dout_din = true, bool d2out_din2 = true);
 
-  /// Detach the tensor storages and set each element in the tensor to 0
-  virtual void detach_and_zero(bool out, bool dout_din = true, bool d2out_din2 = true);
-
   /// Declare an input variable
   template <typename T, typename... S>
   const Variable<T> & declare_input_variable(S &&... name)

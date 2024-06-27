@@ -130,45 +130,4 @@ VariableStore::reinit_output_views(bool out, bool dout_din, bool d2out_din2)
   for (auto && [name, var] : output_views())
     var.reinit_views(out, dout_din, d2out_din2);
 }
-
-void
-VariableStore::detach_and_zero(bool out, bool dout_din, bool d2out_din2)
-{
-  bool out_detached = false;
-  bool dout_din_detached = false;
-  bool d2out_din2_detached = false;
-
-  // Detach and zero per request
-  if (out)
-  {
-    if (_out.tensor().requires_grad())
-    {
-      _out.tensor().detach_();
-      out_detached = true;
-    }
-  }
-
-  if (dout_din)
-  {
-    if (_dout_din.tensor().requires_grad())
-    {
-      _dout_din.tensor().detach_();
-      dout_din_detached = true;
-    }
-    _dout_din.zero_();
-  }
-
-  if (d2out_din2)
-  {
-    if (_d2out_din2.tensor().requires_grad())
-    {
-      _d2out_din2.tensor().detach_();
-      d2out_din2_detached = true;
-    }
-    _d2out_din2.zero_();
-  }
-
-  // If the storage is detached in-place, we need to reconfigure all the views.
-  reinit_output_views(out_detached, dout_din_detached, d2out_din2_detached);
-}
 } // namespace neml2
