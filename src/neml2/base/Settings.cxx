@@ -72,7 +72,7 @@ Settings::Settings(const OptionSet & options)
   torch::set_default_dtype(scalarTypeToTypeMeta(default_dtype()));
 
   // Default integral dtype
-  default_int_dtype() = options.get<EnumSelection>("default_integer_type").as<torch::Dtype>();
+  default_integer_dtype() = options.get<EnumSelection>("default_integer_type").as<torch::Dtype>();
 
   // Default device
   default_device() = torch::Device(options.get<std::string>("default_device"));

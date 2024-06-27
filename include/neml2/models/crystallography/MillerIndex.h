@@ -43,7 +43,7 @@ public:
   static MillerIndex fill(Integer a,
                           Integer b,
                           Integer c,
-                          const torch::TensorOptions & options = default_int_tensor_options());
+                          const torch::TensorOptions & options = default_integer_tensor_options());
 
   /// Reduce to the greatest common demoninator
   MillerIndex reduce() const;

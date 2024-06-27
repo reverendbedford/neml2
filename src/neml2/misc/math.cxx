@@ -32,18 +32,19 @@ namespace math
 {
 ConstantTensors::ConstantTensors()
 {
-  _full_to_mandel_map = torch::tensor({0, 4, 8, 5, 2, 1}, default_int_tensor_options());
+  _full_to_mandel_map = torch::tensor({0, 4, 8, 5, 2, 1}, default_integer_tensor_options());
 
-  _mandel_to_full_map = torch::tensor({0, 5, 4, 5, 1, 3, 4, 3, 2}, default_int_tensor_options());
+  _mandel_to_full_map =
+      torch::tensor({0, 5, 4, 5, 1, 3, 4, 3, 2}, default_integer_tensor_options());
 
   _full_to_mandel_factor = torch::tensor({1.0, 1.0, 1.0, sqrt2, sqrt2, sqrt2});
 
   _mandel_to_full_factor =
       torch::tensor({1.0, invsqrt2, invsqrt2, invsqrt2, 1.0, invsqrt2, invsqrt2, invsqrt2, 1.0});
 
-  _full_to_skew_map = torch::tensor({7, 2, 3}, default_int_tensor_options());
+  _full_to_skew_map = torch::tensor({7, 2, 3}, default_integer_tensor_options());
 
-  _skew_to_full_map = torch::tensor({0, 2, 1, 2, 0, 0, 1, 0, 0}, default_int_tensor_options());
+  _skew_to_full_map = torch::tensor({0, 2, 1, 2, 0, 0, 1, 0, 0}, default_integer_tensor_options());
 
   _full_to_skew_factor = torch::tensor({1.0, 1.0, 1.0});
 
@@ -163,7 +164,7 @@ full_to_mandel(const BatchTensor & full, TorchSize dim)
 {
   return full_to_reduced(
       full,
-      ConstantTensors::full_to_mandel_map().to(full.options().dtype(default_int_dtype())),
+      ConstantTensors::full_to_mandel_map().to(full.options().dtype(default_integer_dtype())),
       ConstantTensors::full_to_mandel_factor().to(full.options()),
       dim);
 }
@@ -173,7 +174,7 @@ mandel_to_full(const BatchTensor & mandel, TorchSize dim)
 {
   return reduced_to_full(
       mandel,
-      ConstantTensors::mandel_to_full_map().to(mandel.options().dtype(default_int_dtype())),
+      ConstantTensors::mandel_to_full_map().to(mandel.options().dtype(default_integer_dtype())),
       ConstantTensors::mandel_to_full_factor().to(mandel.options()),
       dim);
 }
@@ -183,7 +184,7 @@ full_to_skew(const BatchTensor & full, TorchSize dim)
 {
   return full_to_reduced(
       full,
-      ConstantTensors::full_to_skew_map().to(full.options().dtype(default_int_dtype())),
+      ConstantTensors::full_to_skew_map().to(full.options().dtype(default_integer_dtype())),
       ConstantTensors::full_to_skew_factor().to(full.options()),
       dim);
 }
@@ -193,7 +194,7 @@ skew_to_full(const BatchTensor & skew, TorchSize dim)
 {
   return reduced_to_full(
       skew,
-      ConstantTensors::skew_to_full_map().to(skew.options().dtype(default_int_dtype())),
+      ConstantTensors::skew_to_full_map().to(skew.options().dtype(default_integer_dtype())),
       ConstantTensors::skew_to_full_factor().to(skew.options()),
       dim);
 }

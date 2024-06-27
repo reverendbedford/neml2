@@ -49,11 +49,11 @@ typedef std::vector<at::indexing::TensorIndex> TorchSlice;
 /// Default floating point tensor options
 torch::TensorOptions & default_tensor_options();
 /// Default integral tensor options
-torch::TensorOptions & default_int_tensor_options();
+torch::TensorOptions & default_integer_tensor_options();
 /// Default floating point type
 torch::Dtype & default_dtype();
 /// Default integral type
-torch::Dtype & default_int_dtype();
+torch::Dtype & default_integer_dtype();
 /// Default device
 torch::Device & default_device();
 ///@}

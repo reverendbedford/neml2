@@ -35,11 +35,11 @@ default_tensor_options()
 }
 
 torch::TensorOptions &
-default_int_tensor_options()
+default_integer_tensor_options()
 {
-  static torch::TensorOptions _default_int_tensor_options =
-      torch::TensorOptions().dtype(default_int_dtype()).device(default_device());
-  return _default_int_tensor_options;
+  static torch::TensorOptions _default_integer_tensor_options =
+      torch::TensorOptions().dtype(default_integer_dtype()).device(default_device());
+  return _default_integer_tensor_options;
 }
 
 torch::Dtype &
@@ -50,10 +50,10 @@ default_dtype()
 }
 
 torch::Dtype &
-default_int_dtype()
+default_integer_dtype()
 {
-  static torch::Dtype _default_int_dtype = torch::kInt64;
-  return _default_int_dtype;
+  static torch::Dtype _default_integer_dtype = torch::kInt64;
+  return _default_integer_dtype;
 }
 
 torch::Device &

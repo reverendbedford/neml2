@@ -36,12 +36,12 @@ TEST_CASE("Settings", "[Settings]")
 
   // Before applying the global settings
   REQUIRE(default_dtype() == torch::kFloat64);
-  REQUIRE(default_int_dtype() == torch::kInt64);
+  REQUIRE(default_integer_dtype() == torch::kInt64);
   REQUIRE(default_device() == torch::kCPU);
 
   // Apply the global settings
   Settings(all_options.settings());
   REQUIRE(default_dtype() == torch::kFloat16);
-  REQUIRE(default_int_dtype() == torch::kInt32);
+  REQUIRE(default_integer_dtype() == torch::kInt32);
   REQUIRE(default_device() == torch::Device("cuda:1"));
 }

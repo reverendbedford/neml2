@@ -55,7 +55,7 @@ FillMillerIndex::fill(const std::vector<Integer> & values) const
   if ((values.size() % 3) != 0)
     neml_assert(false, "Number of provided values must be a multiple of three!");
 
-  return MillerIndex(torch::tensor(values, default_int_tensor_options()).reshape({-1, 3}));
+  return MillerIndex(torch::tensor(values, default_integer_tensor_options()).reshape({-1, 3}));
 }
 } // namespace crystallography
 } // namespace neml2
