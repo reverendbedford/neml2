@@ -56,6 +56,9 @@ TEST_CASE("HITParser", "[base]")
         REQUIRE(settings.get<EnumSelection>("default_integer_type").as<torch::Dtype>() ==
                 torch::kInt32);
         REQUIRE(settings.get<std::string>("default_device") == "cuda:1");
+        REQUIRE(settings.get<Real>("machine_precision") == Catch::Approx(0.5));
+        REQUIRE(settings.get<Real>("tolerance") == Catch::Approx(0.1));
+        REQUIRE(settings.get<Real>("tighter_tolerance") == Catch::Approx(0.01));
       }
 
       SECTION("default values")

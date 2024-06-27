@@ -6,6 +6,9 @@ day = 'day'
   default_floating_point_type = 'Float16'
   default_integer_type = 'Int32'
   default_device = 'cuda:1'
+  machine_precision = 0.5
+  tolerance = 0.1
+  tighter_tolerance = 0.01
 []
 
 [Models]

@@ -62,6 +62,16 @@ Settings::expected_options()
       "device='cpu' sets the target compute device to be CPU, and device='cuda:1' sets the target "
       "compute device to be CUDA with device ID 1.";
 
+  options.set<Real>("machine_precision") = machine_precision();
+  options.set("machine_precision").doc() =
+      "Machine precision used at various places to workaround singularities like division-by-zero.";
+
+  options.set<Real>("tolerance") = tolerance();
+  options.set("tolerance").doc() = "Tolerance used in various algorithms.";
+
+  options.set<Real>("tighter_tolerance") = tighter_tolerance();
+  options.set("tighter_tolerance").doc() = "A tighter tolerance used in various algorithms.";
+
   return options;
 }
 
@@ -76,5 +86,12 @@ Settings::Settings(const OptionSet & options)
 
   // Default device
   default_device() = torch::Device(options.get<std::string>("default_device"));
+
+  // Machine precision
+  machine_precision() = options.get<Real>("machine_precision");
+
+  // Tolerances
+  tolerance() = options.get<Real>("tolerance");
+  tighter_tolerance() = options.get<Real>("tighter_tolerance");
 }
 } // namespace neml2

@@ -24,13 +24,3 @@
 
 #include <cstddef>
 #include <torch/torch.h>
-
-/**
- * TODO: make the following constants configurable
- */
-/// The machine precision
-#define NEML2_EPS 1E-15
-/// The tolerance used in various algorithms
-#define NEML2_TOL 1E-6
-/// A tighter tolerance used in various algorithms
-#define NEML2_TOL2 1E-12

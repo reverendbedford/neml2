@@ -51,7 +51,7 @@ J2FlowDirection::set_value(bool out, bool dout_din, bool d2out_din2)
   neml_assert_dbg(!d2out_din2, "Second derivatives not implemented");
 
   auto S = SR2(_M).dev();
-  auto vm = std::sqrt(3.0 / 2.0) * S.norm(NEML2_EPS);
+  auto vm = std::sqrt(3.0 / 2.0) * S.norm(machine_precision());
   auto dvm_dM = 3.0 / 2.0 * S / vm;
 
   if (out)

@@ -91,7 +91,7 @@ SR2Invariant::set_value(bool out, bool dout_din, bool d2out_din2)
   else if (_type == "VONMISES")
   {
     auto S = A.dev();
-    Scalar vm = std::sqrt(3.0 / 2.0) * S.norm(NEML2_EPS);
+    Scalar vm = std::sqrt(3.0 / 2.0) * S.norm(machine_precision());
 
     if (out)
       _invariant = vm;
@@ -110,7 +110,7 @@ SR2Invariant::set_value(bool out, bool dout_din, bool d2out_din2)
   }
   else if (_type == "EFFECTIVE_STRAIN")
   {
-    Scalar r = std::sqrt(2.0 / 3.0) * A.norm(NEML2_EPS);
+    Scalar r = std::sqrt(2.0 / 3.0) * A.norm(machine_precision());
 
     if (out)
       _invariant = r;

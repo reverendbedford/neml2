@@ -57,4 +57,17 @@ torch::Dtype & default_integer_dtype();
 /// Default device
 torch::Device & default_device();
 ///@}
+
+/// Machine precision
+// TODO: make this depend on the current dtype
+Real & machine_precision();
+
+/// The tolerance used in various algorithms
+// TODO: make this depend on the current dtype
+Real & tolerance();
+
+/// A tighter tolerance used in various algorithms
+// TODO: make this depend on the current dtype
+Real & tighter_tolerance();
+
 } // namespace neml2

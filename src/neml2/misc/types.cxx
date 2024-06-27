@@ -62,4 +62,25 @@ default_device()
   static torch::Device _default_device = torch::kCPU;
   return _default_device;
 }
+
+Real &
+machine_precision()
+{
+  static Real _machine_precision = 1E-15;
+  return _machine_precision;
+}
+
+Real &
+tolerance()
+{
+  static Real _tolerance = 1E-6;
+  return _tolerance;
+}
+
+Real &
+tighter_tolerance()
+{
+  static Real _tighter_tolerance = 1E-12;
+  return _tighter_tolerance;
+}
 } // namespace neml2
