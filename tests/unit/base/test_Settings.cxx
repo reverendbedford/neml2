@@ -22,27 +22,33 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/base/Registry.h"
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_all.hpp>
+
 #include "neml2/base/Settings.h"
-#include <fstream>
+#include "neml2/base/HITParser.h"
 
-int
-main()
+using namespace neml2;
+
+TEST_CASE("Settings", "[Settings]")
 {
-  std::ofstream syntax_file;
-  syntax_file.open("syntax.yml");
+  HITParser parser;
+  auto all_options = parser.parse("unit/base/test_HITParser1.i");
 
-  auto settings = neml2::Settings::expected_options();
-  syntax_file << "neml2::Settings:\n";
-  syntax_file << settings << '\n';
+  // Before applying the global settings
+  REQUIRE(default_dtype() == torch::kFloat64);
+  REQUIRE(default_integer_dtype() == torch::kInt64);
+  REQUIRE(default_device() == torch::kCPU);
+  REQUIRE(machine_precision() == Catch::Approx(1e-15));
+  REQUIRE(tolerance() == Catch::Approx(1e-6));
+  REQUIRE(tighter_tolerance() == Catch::Approx(1e-12));
 
-  for (auto && [type, options] : neml2::Registry::expected_options())
-  {
-    options.set<std::string>("type") = type;
-    syntax_file << neml2::Registry::syntax_type(type) << ":\n";
-    syntax_file << options << '\n';
-  }
-
-  syntax_file.close();
-  return 0;
+  // Apply the global settings
+  Settings(all_options.settings());
+  REQUIRE(default_dtype() == torch::kFloat16);
+  REQUIRE(default_integer_dtype() == torch::kInt32);
+  REQUIRE(default_device() == torch::Device("cuda:1"));
+  REQUIRE(machine_precision() == Catch::Approx(0.5));
+  REQUIRE(tolerance() == Catch::Approx(0.1));
+  REQUIRE(tighter_tolerance() == Catch::Approx(0.01));
 }

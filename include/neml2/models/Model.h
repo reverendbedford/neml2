@@ -91,8 +91,8 @@ public:
    */
   virtual void reinit(TorchShapeRef batch_shape,
                       int deriv_order = 0,
-                      const torch::Device & device = torch::kCPU,
-                      const torch::Dtype & dtype = NEML2_DTYPE);
+                      const torch::Device & device = default_device(),
+                      const torch::Dtype & dtype = default_dtype());
 
   /**
    * @brief Allocate storage and setup views for all the variables of this model and recursively all

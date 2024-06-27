@@ -38,15 +38,36 @@ typedef std::vector<at::indexing::TensorIndex> TorchSlice;
 
 /**
  * The factory methods like `torch::arange`, `torch::ones`, `torch::zeros`, `torch::rand` etc.
- * accept a common argument to configure the properties of the tensor being created. We predefine a
- * default tensor configuration in NEML2. This default configuration is consistently used throughout
- * NEML2. This default can be configured by CMake.
+ * accept a common argument to configure the properties of the tensor being created. We predefine
+ * a default tensor configuration in NEML2. This default configuration is consistently used
+ * throughout NEML2.
  *
  * See https://pytorch.org/cppdocs/notes/tensor_creation.html#configuring-properties-of-the-tensor
  * for more details.
  */
-const torch::TensorOptions default_tensor_options();
+///@{
+/// Default floating point tensor options
+torch::TensorOptions & default_tensor_options();
+/// Default integral tensor options
+torch::TensorOptions & default_integer_tensor_options();
+/// Default floating point type
+torch::Dtype & default_dtype();
+/// Default integral type
+torch::Dtype & default_integer_dtype();
+/// Default device
+torch::Device & default_device();
+///@}
 
-/// We similarly want to have a default integer scalar type for some types of tensors
-const torch::TensorOptions default_integer_tensor_options();
+/// Machine precision
+// TODO: make this depend on the current dtype
+Real & machine_precision();
+
+/// The tolerance used in various algorithms
+// TODO: make this depend on the current dtype
+Real & tolerance();
+
+/// A tighter tolerance used in various algorithms
+// TODO: make this depend on the current dtype
+Real & tighter_tolerance();
+
 } // namespace neml2

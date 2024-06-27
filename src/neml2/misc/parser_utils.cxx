@@ -96,29 +96,39 @@ end_with(std::string_view str, std::string_view suffix)
 }
 
 template <>
-bool
-parse<bool>(const std::string & raw_str)
+void
+parse_<bool>(bool & val, const std::string & raw_str)
 {
-  std::string val = parse<std::string>(raw_str);
-  if (val == "true")
-    return true;
-  if (val == "false")
-    return false;
-
-  throw ParserException("Failed to parse boolean value. Only 'true' and 'false' are recognized.");
+  std::string str_val = parse<std::string>(raw_str);
+  if (str_val == "true")
+    val = true;
+  else if (str_val == "false")
+    val = false;
+  else
+    throw ParserException("Failed to parse boolean value. Only 'true' and 'false' are recognized.");
 }
 
 template <>
-VariableName
-parse<VariableName>(const std::string & raw_str)
+void
+parse_vector_(std::vector<bool> & vals, const std::string & raw_str)
+{
+  auto tokens = split(raw_str, " \t\n\v\f\r");
+  vals.resize(tokens.size());
+  for (size_t i = 0; i < tokens.size(); i++)
+    vals[i] = parse<bool>(tokens[i]);
+}
+
+template <>
+void
+parse_<VariableName>(VariableName & val, const std::string & raw_str)
 {
   auto tokens = split(raw_str, "/ \t\n\v\f\r");
-  return VariableName(tokens);
+  val = VariableName(tokens);
 }
 
 template <>
-TorchShape
-parse<TorchShape>(const std::string & raw_str)
+void
+parse_<TorchShape>(TorchShape & val, const std::string & raw_str)
 {
   if (!start_with(raw_str, "(") || !end_with(raw_str, ")"))
     throw ParserException("Trying to parse " + raw_str +
@@ -127,11 +137,9 @@ parse<TorchShape>(const std::string & raw_str)
   auto inner = trim(raw_str, "() \t\n\v\f\r");
   auto tokens = split(inner, ", \t\n\v\f\r");
 
-  TorchShape shape;
+  val.clear();
   for (auto & token : tokens)
-    shape.push_back(parse<TorchSize>(token));
-
-  return shape;
+    val.push_back(parse<TorchSize>(token));
 }
 } // namespace utils
 } // namespace neml2

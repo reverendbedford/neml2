@@ -25,6 +25,7 @@
 
 #include "neml2/base/Registry.h"
 #include "neml2/base/NEML2Object.h"
+#include "neml2/base/Settings.h"
 #include "neml2/misc/error.h"
 #include "neml2/base/OptionCollection.h"
 
@@ -38,9 +39,6 @@ namespace neml2
 class Factory
 {
 public:
-  /// The sequence which we use to manufacture objects.
-  static std::vector<std::string> pipeline;
-
   /// Get the global Factory singleton.
   static Factory & get();
 
@@ -122,9 +120,14 @@ private:
   /// The collection of all the options of the objects to be manufactured.
   OptionCollection _all_options;
 
-  // Manufactured objects. The key of the outer map is the section name, and the key of the inner
-  // map is the object name.
+  /**
+   * Manufactured objects. The key of the outer map is the section name, and the key of the inner
+   * map is the object name.
+   */
   std::map<std::string, std::map<std::string, std::vector<std::shared_ptr<NEML2Object>>>> _objects;
+
+  /// Global settings
+  Settings _settings;
 };
 
 template <class T>

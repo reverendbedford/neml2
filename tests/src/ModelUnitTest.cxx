@@ -128,7 +128,7 @@ ModelUnitTest::run()
 
   if (_check_cuda && torch::cuda::is_available())
   {
-    _in = _in.to(default_tensor_options().device(torch::kCUDA));
+    _in = _in.to(torch::kCUDA);
     _model.reinit(_in, _deriv_order);
     check_all();
   }

@@ -40,8 +40,8 @@ def_Model(py::module_ & m)
                &Model::reinit),
            py::arg("batch_shape"),
            py::arg("deriv_order") = 0,
-           py::arg("device") = torch::Device(torch::kCPU),
-           py::arg("dtype") = torch::Dtype(NEML2_DTYPE))
+           py::arg("device") = torch::Device(default_device()),
+           py::arg("dtype") = torch::Dtype(default_dtype()))
       .def(
           "input_axis",
           [](const Model & self) { return &self.input_axis(); },

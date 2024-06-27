@@ -37,8 +37,8 @@ namespace py = pybind11;
   torch::TensorOptions().dtype(dtype).device(device).requires_grad(requires_grad)
 
 #define PY_ARG_TENSOR_OPTIONS                                                                      \
-  py::arg("dtype") = torch::Dtype(NEML2_DTYPE), py::arg("device") = torch::Device(torch::kCPU),    \
-  py::arg("requires_grad") = false
+  py::arg("dtype") = torch::Dtype(torch::kFloat64),                                                \
+  py::arg("device") = torch::Device(torch::kCPU), py::arg("requires_grad") = false
 
 namespace pybind11
 {

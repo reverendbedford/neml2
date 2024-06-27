@@ -24,19 +24,3 @@
 
 #include <cstddef>
 #include <torch/torch.h>
-
-// clang-format off
-#cmakedefine NEML2_DTYPE torch::k@NEML2_DTYPE@
-
-#cmakedefine NEML2_INT_DTYPE torch::k@NEML2_INT_DTYPE@
-// clang-format on
-
-/**
- * TODO: make the following constants configurable
- */
-/// The machine precision
-#define NEML2_EPS 1E-15
-/// The tolerance used in various algorithms
-#define NEML2_TOL 1E-6
-/// A tighter tolerance used in various algorithms
-#define NEML2_TOL2 1e-12
