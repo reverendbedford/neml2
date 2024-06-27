@@ -62,14 +62,14 @@ Settings::expected_options()
       "device='cpu' sets the target compute device to be CPU, and device='cuda:1' sets the target "
       "compute device to be CUDA with device ID 1.";
 
-  options.set<Real>("machine_precision") = machine_precision();
+  options.set<Real>("machine_precision") = 1E-15;
   options.set("machine_precision").doc() =
       "Machine precision used at various places to workaround singularities like division-by-zero.";
 
-  options.set<Real>("tolerance") = tolerance();
+  options.set<Real>("tolerance") = 1e-6;
   options.set("tolerance").doc() = "Tolerance used in various algorithms.";
 
-  options.set<Real>("tighter_tolerance") = tighter_tolerance();
+  options.set<Real>("tighter_tolerance") = 1E-12;
   options.set("tighter_tolerance").doc() = "A tighter tolerance used in various algorithms.";
 
   return options;
