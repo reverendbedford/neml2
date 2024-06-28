@@ -101,14 +101,62 @@ end_with(std::string_view str, std::string_view suffix)
 torch::Tensor
 parse_csv(const std::string & filename_and_index, const torch::TensorOptions & options)
 {
+  auto [filename, rows, cols] = parse_csv_spec(filename_and_index);
+
+  // Count number of rows and columns
+  csv::CSVReader counter(filename);
+  TorchSize nrow = 0;
+  for (const auto & row : counter)
+  {
+    (void)row;
+    nrow += 1;
+  }
+  auto ncol = counter.get_col_names().size();
+
+  // Figure out which rows to read
+  auto row_indices = torch::full({nrow}, false, torch::kBool);
+  row_indices.index_put_(rows, true);
+  std::vector<bool> row_indices_v(row_indices.data_ptr<bool>(),
+                                  row_indices.data_ptr<bool>() + row_indices.numel());
+
+  // Figure out which columns to read
+  auto col_indices = torch::arange(ncol).index(cols).contiguous();
+  std::vector<TorchSize> col_indices_v(col_indices.data_ptr<TorchSize>(),
+                                       col_indices.data_ptr<TorchSize>() + col_indices.numel());
+  std::cout << col_indices << std::endl;
+  for (auto c : col_indices_v)
+    std::cout << c << " ";
+  std::cout << std::endl;
+
+  // Read the CSV
+  csv::CSVReader reader(filename);
+  auto tensor = torch::empty(
+      {torch::sum(row_indices).item<TorchSize>(), TorchSize(col_indices_v.size())}, options);
+  TorchSize row_number = 0;
+  TorchSize i = 0;
+  for (const auto & row : reader)
+    if (row_indices_v[row_number++])
+    {
+      std::vector<Real> row_v;
+      for (auto col_index : col_indices_v)
+        row_v.push_back(row[col_index].get<Real>());
+      tensor.index_put_({i++}, torch::tensor(row_v, options));
+    }
+
+  return tensor.squeeze();
+}
+
+std::tuple<std::string, TorchIndex, TorchIndex>
+parse_csv_spec(const std::string & filename_and_index)
+{
   size_t pos;
   std::string filename, index;
 
   // Check to see if indexing is specified
-  if (filename_and_index.back() == ']' && filename_and_index.find('[') != std::string::npos)
+  pos = filename_and_index.find('[');
+  if (filename_and_index.back() == ']' && pos != std::string::npos)
   {
     // Split filename and index
-    pos = filename_and_index.find('[');
     filename = filename_and_index.substr(0, pos);
     index = filename_and_index.substr(pos);
   }
@@ -118,8 +166,6 @@ parse_csv(const std::string & filename_and_index, const torch::TensorOptions & o
   // Read the CSV into a 2D vector of Real
   csv::CSVReader reader(filename);
   auto col_names = reader.get_col_names();
-  auto nrow = reader.n_rows();
-  auto ncol = col_names.size();
 
   // Parse row and col indexing
   auto rows = TorchIndex(torch::indexing::Slice());
@@ -128,47 +174,46 @@ parse_csv(const std::string & filename_and_index, const torch::TensorOptions & o
   {
     // Remove the enclosing brackets
     index = index.substr(1, index.length() - 2);
-    neml_assert(!index.empty(), "Empty CSV indexing not allowed");
+    if (index.empty())
+      throw ParserException("Empty CSV indexing not allowed");
     // Split row and col index
     const bool adv_row_idx = (index[0] == '[');
-    pos = index.find(adv_row_idx ? ']' : ',');
     if (adv_row_idx)
-      neml_assert(pos != std::string::npos, "Missing closing ] in ", filename_and_index);
-    auto row_idx = index.substr(0, pos);
-    auto col_idx = index.substr(pos + 1);
-    rows = parse_indexing(row_idx);
-    if (!col_idx.empty())
     {
-      // Substitute column names for integer
-      for (const auto & col_name : col_names)
-        std::regex_replace(col_idx, std::regex(col_name), stringify(reader.index_of(col_name)));
-      cols = parse_indexing(col_idx);
+      pos = index.find(']');
+      if (pos == std::string::npos)
+        throw ParserException("Missing closing ] in '" + filename_and_index + "'");
+      auto row_idx = index.substr(0, pos + 1);
+      rows = parse_indexing(row_idx);
+      if (pos + 2 < index.length())
+        if (index[pos + 1] != ',')
+          throw ParserException("Expected comma after row indexing, got '" +
+                                stringify(index[pos + 1]) + "' instead");
+      pos += 1;
+    }
+    else
+    {
+      pos = index.find(',');
+      if (pos == 0)
+        throw ParserException("Row indexing cannot begin with comma");
+      auto row_idx = index.substr(0, pos);
+      rows = parse_indexing(row_idx);
+    }
+    if (pos != std::string::npos && pos + 1 < index.length())
+    {
+      auto col_idx = index.substr(pos + 1);
+      if (!col_idx.empty())
+      {
+        // Substitute column names for integer
+        for (const auto & col_name : col_names)
+          col_idx = std::regex_replace(
+              col_idx, std::regex(col_name), stringify(reader.index_of(col_name)));
+        cols = parse_indexing(col_idx);
+      }
     }
   }
 
-  // Figure out which rows and cols to read
-  auto row_indices = torch::full({TorchSize(nrow)}, false, torch::kBool);
-  row_indices.index_put_(rows, true);
-  auto col_indices = torch::arange(ncol).index(cols).contiguous();
-  std::vector<TorchSize> col_indices_v(col_indices.data_ptr<TorchSize>(),
-                                       col_indices.data_ptr<TorchSize>() + col_indices.numel());
-
-  // Read the CSV
-  auto tensor = torch::empty(
-      {torch::sum(row_indices).item<TorchSize>(), TorchSize(col_indices_v.size())}, options);
-  TorchSize i = 0;
-  for (const auto & row : reader)
-  {
-    if (!row_indices.index({i}).item<bool>())
-      continue;
-    std::vector<Real> row_v;
-    for (auto col_index : col_indices_v)
-      row_v.push_back(row[col_index].get<Real>());
-    tensor.index_put_({i}, torch::tensor(row_v, options));
-    i += 1;
-  }
-
-  return tensor.squeeze();
+  return {filename, rows, cols};
 }
 
 TorchIndex
@@ -179,7 +224,8 @@ parse_indexing(const std::string & str)
   // Advanced indexing
   if (str[0] == '[')
   {
-    pos = str.find(']');
+    if (str.back() != ']')
+      throw ParserException("Missing closing ] in '" + str + "'");
     auto indices_str = split(str.substr(1, str.length() - 2), ",");
     std::vector<TorchSize> indices;
     for (const auto & index_str : indices_str)
@@ -195,12 +241,13 @@ parse_indexing(const std::string & str)
   std::string start, stop, step;
   pos = str.find(':');
   start = str.substr(0, pos);
-  auto stop_step = str.substr(pos + 1);
-  if (!stop_step.empty())
+  if (pos != std::string::npos && pos + 1 < str.length())
   {
+    auto stop_step = str.substr(pos + 1);
     pos = stop_step.find(':');
     stop = stop_step.substr(0, pos);
-    step = stop_step.substr(pos + 1);
+    if (pos != std::string::npos && pos + 1 < stop_step.length())
+      step = stop_step.substr(pos + 1);
   }
   return torch::indexing::Slice(
       start.empty() ? torch::nullopt : std::optional(torch::SymInt(parse<TorchSize>(start))),

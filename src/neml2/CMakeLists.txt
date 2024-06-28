@@ -19,6 +19,7 @@ register_unity_group(neml2 .)
 # NEML2 headers
 file(GLOB_RECURSE _NEML2_HEADERS ${NEML2_SOURCE_DIR}/include/*.h)
 target_include_directories(neml2 PUBLIC ${NEML2_SOURCE_DIR}/include ${NEML2_SOURCE_DIR}/contrib)
+target_link_libraries(neml2 PUBLIC Threads::Threads)
 target_sources(neml2
   PUBLIC
   FILE_SET HEADERS

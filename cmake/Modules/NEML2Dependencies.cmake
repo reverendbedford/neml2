@@ -88,3 +88,6 @@ FetchContent_Declare(
   GIT_REPOSITORY https://github.com/p-ranav/argparse.git
   GIT_TAG v${ARGPARSE_VERSION}
 )
+
+# Threading
+find_package(Threads REQUIRED)

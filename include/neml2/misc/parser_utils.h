@@ -144,6 +144,15 @@ bool end_with(std::string_view str, std::string_view suffix);
 torch::Tensor parse_csv(const std::string & filename_and_index,
                         const torch::TensorOptions & options = default_tensor_options());
 
+/**
+ * @brief Helper method for parse_csv
+ *
+ * @return std::tuple<std::string, TorchIndex, TorchIndex> 0: Filename, 1: Row indexing, 2: Column
+ * indexing
+ */
+std::tuple<std::string, TorchIndex, TorchIndex>
+parse_csv_spec(const std::string & filename_and_index);
+
 /// Parse a string into TorchIndex
 TorchIndex parse_indexing(const std::string & str);
 
