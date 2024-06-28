@@ -130,3 +130,18 @@ TEST_CASE("ParameterStore", "[models]")
     }
   }
 }
+
+TEST_CASE("Nested parameter registration")
+{
+  load_model("unit/models/test_ParameterStore.i");
+  auto & model = Factory::get_object<Model>("Models", "model");
+
+  const auto & params = model.named_parameters();
+  REQUIRE(params.has_key("E1.value"));
+  REQUIRE(params.has_key("E2.value"));
+  REQUIRE(params.has_key("E3.value"));
+  REQUIRE(params.has_key("elasticity1.nu"));
+  REQUIRE(params.has_key("elasticity2.nu"));
+  REQUIRE(params.has_key("elasticity2_another.nu"));
+  REQUIRE(params.has_key("elasticity3.nu"));
+}

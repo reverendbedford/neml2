@@ -40,7 +40,8 @@ TEST_CASE("models")
   std::vector<fs::path> tests;
   using rdi = fs::recursive_directory_iterator;
   for (const auto & entry : rdi(search_path))
-    if (entry.path().extension() == ".i")
+    if (entry.path().extension() == ".i" &&
+        !utils::start_with(entry.path().filename().string(), "test_"))
       tests.push_back(entry.path().lexically_relative(pwd));
 
   for (auto test : tests)
