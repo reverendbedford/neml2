@@ -23,7 +23,10 @@
 // THE SOFTWARE.
 
 #include "neml2/misc/parser_utils.h"
+#include "csvparser/csv.hpp"
+
 #include <cxxabi.h>
+#include <regex>
 
 namespace neml2
 {
@@ -93,6 +96,116 @@ end_with(std::string_view str, std::string_view suffix)
 {
   return str.size() >= suffix.size() &&
          0 == str.compare(str.size() - suffix.size(), suffix.size(), suffix);
+}
+
+torch::Tensor
+parse_csv(const std::string & filename_and_index, const torch::TensorOptions & options)
+{
+  size_t pos;
+  std::string filename, index;
+
+  // Check to see if indexing is specified
+  if (filename_and_index.back() == ']' && filename_and_index.find('[') != std::string::npos)
+  {
+    // Split filename and index
+    pos = filename_and_index.find('[');
+    filename = filename_and_index.substr(0, pos);
+    index = filename_and_index.substr(pos);
+  }
+  else
+    filename = filename_and_index;
+
+  // Read the CSV into a 2D vector of Real
+  csv::CSVReader reader(filename);
+  auto col_names = reader.get_col_names();
+  auto nrow = reader.n_rows();
+  auto ncol = col_names.size();
+
+  // Parse row and col indexing
+  auto rows = TorchIndex(torch::indexing::Slice());
+  auto cols = TorchIndex(torch::indexing::Slice());
+  if (!index.empty())
+  {
+    // Remove the enclosing brackets
+    index = index.substr(1, index.length() - 2);
+    neml_assert(!index.empty(), "Empty CSV indexing not allowed");
+    // Split row and col index
+    const bool adv_row_idx = (index[0] == '[');
+    pos = index.find(adv_row_idx ? ']' : ',');
+    if (adv_row_idx)
+      neml_assert(pos != std::string::npos, "Missing closing ] in ", filename_and_index);
+    auto row_idx = index.substr(0, pos);
+    auto col_idx = index.substr(pos + 1);
+    rows = parse_indexing(row_idx);
+    if (!col_idx.empty())
+    {
+      // Substitute column names for integer
+      for (const auto & col_name : col_names)
+        std::regex_replace(col_idx, std::regex(col_name), stringify(reader.index_of(col_name)));
+      cols = parse_indexing(col_idx);
+    }
+  }
+
+  // Figure out which rows and cols to read
+  auto row_indices = torch::full({TorchSize(nrow)}, false, torch::kBool);
+  row_indices.index_put_(rows, true);
+  auto col_indices = torch::arange(ncol).index(cols).contiguous();
+  std::vector<TorchSize> col_indices_v(col_indices.data_ptr<TorchSize>(),
+                                       col_indices.data_ptr<TorchSize>() + col_indices.numel());
+
+  // Read the CSV
+  auto tensor = torch::empty(
+      {torch::sum(row_indices).item<TorchSize>(), TorchSize(col_indices_v.size())}, options);
+  TorchSize i = 0;
+  for (const auto & row : reader)
+  {
+    if (!row_indices.index({i}).item<bool>())
+      continue;
+    std::vector<Real> row_v;
+    for (auto col_index : col_indices_v)
+      row_v.push_back(row[col_index].get<Real>());
+    tensor.index_put_({i}, torch::tensor(row_v, options));
+    i += 1;
+  }
+
+  return tensor.squeeze();
+}
+
+TorchIndex
+parse_indexing(const std::string & str)
+{
+  size_t pos;
+
+  // Advanced indexing
+  if (str[0] == '[')
+  {
+    pos = str.find(']');
+    auto indices_str = split(str.substr(1, str.length() - 2), ",");
+    std::vector<TorchSize> indices;
+    for (const auto & index_str : indices_str)
+      indices.push_back(parse<TorchSize>(index_str));
+    return torch::tensor(indices, default_integer_tensor_options());
+  }
+
+  // Single element indexing
+  if (str.find(':') == std::string::npos)
+    return parse<Integer>(str);
+
+  // Slice
+  std::string start, stop, step;
+  pos = str.find(':');
+  start = str.substr(0, pos);
+  auto stop_step = str.substr(pos + 1);
+  if (!stop_step.empty())
+  {
+    pos = stop_step.find(':');
+    stop = stop_step.substr(0, pos);
+    step = stop_step.substr(pos + 1);
+  }
+  return torch::indexing::Slice(
+      start.empty() ? torch::nullopt : std::optional(torch::SymInt(parse<TorchSize>(start))),
+      stop.empty() ? torch::nullopt : std::optional(torch::SymInt(parse<TorchSize>(stop))),
+      step.empty() ? torch::nullopt : std::optional(torch::SymInt(parse<TorchSize>(step))));
 }
 
 template <>

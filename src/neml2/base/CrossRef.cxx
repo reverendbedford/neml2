@@ -38,10 +38,33 @@ CrossRef<torch::Tensor>::operator torch::Tensor() const
     // If it is just a number, we can still create a tensor out of it
     return torch::tensor(utils::parse<Real>(_raw_str), default_tensor_options());
   }
-  catch (const ParserException & e)
+  catch (const ParserException & e1)
   {
-    // Conversion to a number failed, so it might be the name of another tensor
-    return Factory::get_object<torch::Tensor>("Tensors", _raw_str);
+    // Conversion to a number failed...
+    try
+    {
+      // It could be a CSV...
+      return utils::parse_csv(_raw_str, default_tensor_options());
+    }
+    catch (const ParserException & e2)
+    {
+      try
+      {
+        // Or it could be torch::Tensor defined under the [Tensors] section
+        return Factory::get_object<torch::Tensor>("Tensors", _raw_str);
+      }
+      catch (const std::exception & e3)
+      {
+        throw NEMLException(
+            "While resolving a cross reference '" + _raw_str +
+            "', several attempts have been made but all failed.\n\nParsing it as a "
+            "Real failed with error message:\n" +
+            e1.what() + "\n\nParsing it as a CSV file failed with error message:\n" + e2.what() +
+            "\n\nParsing it as the name of a torch::Tensor under the [Tensors] "
+            "section failed with error message:\n" +
+            e3.what());
+      }
+    }
   }
 }
 
@@ -50,13 +73,27 @@ CrossRef<BatchTensor>::operator BatchTensor() const
 {
   try
   {
-    // If it is just a number, we can still create a Scalar out of it
+    // If it is just a number, we can still create a tensor out of it
     return BatchTensor::full({}, {}, utils::parse<Real>(_raw_str), default_tensor_options());
   }
-  catch (const ParserException & e)
+  catch (const ParserException & e1)
   {
-    // Conversion to a number failed, so it might be the name of another BatchTensor
-    return Factory::get_object<BatchTensor>("Tensors", _raw_str);
+    // Conversion to a number failed...
+    try
+    {
+      // It could be BatchTensor defined under the [Tensors] section
+      return Factory::get_object<BatchTensor>("Tensors", _raw_str);
+    }
+    catch (const std::exception & e2)
+    {
+      throw NEMLException("While resolving a cross reference '" + _raw_str +
+                          "', several attempts have been made but all failed.\n\nParsing it as a "
+                          "Real failed with error message:\n" +
+                          e1.what() +
+                          "\n\nParsing it as the name of a BatchTensor under the [Tensors] "
+                          "section failed with error message:\n" +
+                          e2.what());
+    }
   }
 }
 
@@ -69,9 +106,31 @@ template class CrossRef<torch::Tensor>;
     {                                                                                              \
       return T::full(utils::parse<Real>(_raw_str));                                                \
     }                                                                                              \
-    catch (const ParserException & e)                                                              \
+    catch (const ParserException & e1)                                                             \
     {                                                                                              \
-      return Factory::get_object<T>("Tensors", _raw_str);                                          \
+      try                                                                                          \
+      {                                                                                            \
+        return T(utils::parse_csv(_raw_str, default_tensor_options()));                            \
+      }                                                                                            \
+      catch (const ParserException & e2)                                                           \
+      {                                                                                            \
+        try                                                                                        \
+        {                                                                                          \
+          return Factory::get_object<T>("Tensors", _raw_str);                                      \
+        }                                                                                          \
+        catch (const std::exception & e3)                                                          \
+        {                                                                                          \
+          throw NEMLException(                                                                     \
+              "While resolving a cross reference '" + _raw_str +                                   \
+              "', several attempts have been made but all failed.\n\nParsing it as a "             \
+              "Real failed with error message:\n" +                                                \
+              e1.what() + "\n\nParsing it as a CSV file failed with error message:\n" +            \
+              e2.what() +                                                                          \
+              "\n\nParsing it as the name of a tensor under the [Tensors] "                        \
+              "section failed with error message:\n" +                                             \
+              e3.what());                                                                          \
+        }                                                                                          \
+      }                                                                                            \
     }                                                                                              \
   }                                                                                                \
   static_assert(true)

@@ -51,15 +51,101 @@ namespace utils
 /// This is a dummy to prevent compilers whining about not know how to >> torch::Tensor
 std::stringstream & operator>>(std::stringstream & in, torch::Tensor &);
 
+/**
+ * @brief Demangle a cxx11 abi type info to a human readable string.
+ *
+ * Be aware that this explicitly uses abi::__cxa_demangle and so it might not work for some
+ * compilers.
+ */
 std::string demangle(const char * name);
 
+/**
+ * @brief Split a string into tokens given delimiters
+ *
+ * @param str String to split
+ * @param delims Possible delimters
+ * @return std::vector<std::string> Tokens split from the given string
+ */
 std::vector<std::string> split(const std::string & str, const std::string & delims);
 
+/**
+ * @brief Trim white space from the two ends of the string
+ *
+ * @param str String to trim
+ * @param white_space Default definition of _whitespace_ characters
+ * @return std::string Trimmed string
+ */
 std::string trim(const std::string & str, const std::string & white_space = " \t\n\v\f\r");
 
+/// Check if the string starts with the given prefix
 bool start_with(std::string_view str, std::string_view prefix);
 
+/// Check if the string ends with the given prefix
 bool end_with(std::string_view str, std::string_view suffix);
+
+/**
+ * @brief Parse a CSV file into a torch::Tensor
+ *
+ * The first argument \p filename_and_index is the CSV filename. It can optionally provide
+ * instructions on how to index the torch::Tensor using the schema
+ * `(filename).(extension)[indexing]`.
+ *
+ * If `indexing` is not provided, the CSV file will be converted to a 2D torch::Tensor, with CSV
+ * rows as tensor rows and CSV columns as tensor columns, preserving the order defined in the CSV
+ * file.
+ *
+ * If `indexing` is provided, the 2D torch::Tensor will be indexed accordingly. `indexing`
+ * should use the schema `[(row indexing)[,(column indexing)]]` where `row indexing` and `column
+ * indexing` are instructions on row indexing and column indexing, respectively. Only single element
+ * indexing and the basic slice syntax are supported. See
+ * https://numpy.org/doc/stable/user/basics.indexing.html#slicing-and-striding for detailed
+ * explanation on the basic slice syntax. Column names can be used in column indexing specification.
+ *
+ * File name extension
+ *
+ * Examples of \p filename_and_index specification:
+ *
+ * The following would convert the _entire_ CSV file to a 2D torch::Tensor
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~python
+ * filename.csv
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ *
+ * A single row can be indexed using
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~python
+ * filename.csv[2]
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ * A single column can be indexed using
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~python
+ * filename.csv[:,3]
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ * A slice of row can be indexed using
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~python
+ * filename.csv[2:]
+ * filename.csv[:5]
+ * filename.csv[1:5]
+ * filename.csv[:-5]
+ * filename.csv[1:5:2]
+ * filename.csv[::2]
+ * filename.csv[::-1]
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ * Row and column indexing can be combined with a comma delimiter.
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~python
+ * filename.csv[2:,5:7]
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ *
+ * Column names can be used in column indexing (but not in row indexing apparently).
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~python
+ * filename.csv[2:,stress_xx:stress_zz]
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ */
+torch::Tensor parse_csv(const std::string & filename_and_index,
+                        const torch::TensorOptions & options = default_tensor_options());
+
+/// Parse a string into TorchIndex
+TorchIndex parse_indexing(const std::string & str);
 
 template <typename T>
 void
