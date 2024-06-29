@@ -23,10 +23,11 @@
 // THE SOFTWARE.
 
 #include "neml2/models/VariableStore.h"
+#include "neml2/models/Model.h"
 
 namespace neml2
 {
-VariableStore::VariableStore(const OptionSet & options, NEML2Object * object)
+VariableStore::VariableStore(const OptionSet & options, Model * object)
   : _object(object),
     _options(options),
     _input_axis(declare_axis("input")),

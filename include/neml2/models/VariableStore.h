@@ -33,10 +33,13 @@
 
 namespace neml2
 {
+// Forward decl
+class Model;
+
 class VariableStore
 {
 public:
-  VariableStore(const OptionSet & options, NEML2Object * object);
+  VariableStore(const OptionSet & options, Model * object);
 
   LabeledAxis & declare_axis(const std::string & name);
 
@@ -282,12 +285,12 @@ private:
     // Allocate
     if constexpr (std::is_same_v<T, BatchTensor>)
     {
-      auto var = std::make_unique<Variable<BatchTensor>>(name, sz);
+      auto var = std::make_unique<Variable<BatchTensor>>(name, sz, _object->assembly_mode());
       var_base_ptr = views.set_pointer(name, std::move(var));
     }
     else
     {
-      auto var = std::make_unique<Variable<T>>(name);
+      auto var = std::make_unique<Variable<T>>(name, _object->assembly_mode());
       var_base_ptr = views.set_pointer(name, std::move(var));
     }
 
@@ -299,7 +302,7 @@ private:
     return var_ptr;
   }
 
-  NEML2Object * _object;
+  Model * _object;
 
   /**
    * @brief Parsed input file options. These options are useful for example when we declare a

@@ -41,11 +41,17 @@ Model::expected_options()
   options.set<bool>("_use_AD_second_derivative") = false;
   options.set<int>("_extra_derivative_order") = 0;
   options.set<bool>("_nonlinear_system") = false;
+  options.set<EnumSelection>("_assembly_mode") =
+      EnumSelection({"INPLACE", "CONCATENATION"},
+                    {static_cast<int>(Model::AssemblyMode::INPLACE),
+                     static_cast<int>(Model::AssemblyMode::CONCATENATION)},
+                    "INPLACE");
 
   options.set("_extra_derivative_order").suppressed() = true;
   options.set("_nonlinear_system").suppressed() = true;
   options.set("_use_AD_first_derivative").suppressed() = true;
   options.set("_use_AD_second_derivative").suppressed() = true;
+  options.set("_assembly_mode").suppressed() = true;
 
   return options;
 }
@@ -60,7 +66,8 @@ Model::Model(const OptionSet & options)
     _options(default_tensor_options()),
     _deriv_order(-1),
     _extra_deriv_order(options.get<int>("_extra_derivative_order")),
-    _nonlinear_system(options.get<bool>("_nonlinear_system"))
+    _nonlinear_system(options.get<bool>("_nonlinear_system")),
+    _assembly_mode(options.get<EnumSelection>("_assembly_mode").as<AssemblyMode>())
 {
   check_AD_limitation();
 }

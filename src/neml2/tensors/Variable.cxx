@@ -37,6 +37,9 @@ VariableBase::setup_views(const LabeledVector * value,
                           const LabeledMatrix * deriv,
                           const LabeledTensor3D * secderiv)
 {
+  neml_assert_dbg(_assembly_mode == Model::AssemblyMode::INPLACE,
+                  "This method only works in inplace assembly mode");
+
   if (value)
     _value_storage = value;
 
@@ -57,6 +60,9 @@ VariableBase::setup_views(const VariableBase * other)
 void
 VariableBase::reinit_views(bool out, bool dout_din, bool d2out_din2)
 {
+  neml_assert_dbg(_assembly_mode == Model::AssemblyMode::INPLACE,
+                  "This method only works in inplace assembly mode");
+
   if (out)
     neml_assert(_value_storage, "Variable value storage not initialized.");
   if (dout_din)
@@ -80,6 +86,9 @@ VariableBase::reinit_views(bool out, bool dout_din, bool d2out_din2)
 const LabeledVector &
 VariableBase::value_storage() const
 {
+  neml_assert_dbg(_assembly_mode == Model::AssemblyMode::INPLACE,
+                  "This method only works in inplace assembly mode");
+
   neml_assert_dbg(_value_storage, "Variable value storage not initialized.");
   return *_value_storage;
 }
@@ -87,6 +96,9 @@ VariableBase::value_storage() const
 const LabeledMatrix &
 VariableBase::derivative_storage() const
 {
+  neml_assert_dbg(_assembly_mode == Model::AssemblyMode::INPLACE,
+                  "This method only works in inplace assembly mode");
+
   neml_assert_dbg(_derivative_storage, "Variable derivative storage not initialized.");
   return *_derivative_storage;
 }
@@ -94,6 +106,9 @@ VariableBase::derivative_storage() const
 const LabeledTensor3D &
 VariableBase::second_derivative_storage() const
 {
+  neml_assert_dbg(_assembly_mode == Model::AssemblyMode::INPLACE,
+                  "This method only works in inplace assembly mode");
+
   neml_assert_dbg(_second_derivative_storage, "Variable 2nd derivative storage not initialized.");
   return *_second_derivative_storage;
 }
@@ -132,7 +147,12 @@ VariableBase::d(const VariableBase & x1, const VariableBase & x2)
 void
 Derivative::operator=(const BatchTensor & val)
 {
-  _value.index_put_({torch::indexing::Slice()},
-                    val.batch_expand_as(_value).base_reshape(_value.base_sizes()));
+  if (_assembly_mode == Model::AssemblyMode::INPLACE)
+    _value.index_put_({torch::indexing::Slice()},
+                      val.batch_expand_as(_value).base_reshape(_value.base_sizes()));
+  else if (_assembly_mode == Model::AssemblyMode::CONCATENATION)
+    _value = val.batch_expand_as(_value).base_reshape(_value.base_sizes());
+  else
+    throw NEMLException("Unknown assembly mode");
 }
 }
