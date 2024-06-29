@@ -43,9 +43,15 @@ public:
   VariableBase(const VariableName & name_in, const Model::AssemblyMode & assembly_mode)
     : _name(name_in),
       _assembly_mode(assembly_mode),
+      // Model::AssemblyMode::INPLACE
       _value_storage(nullptr),
       _derivative_storage(nullptr),
-      _second_derivative_storage(nullptr)
+      _second_derivative_storage(nullptr),
+      // Model::AssemblyMode::CONCATENATION
+      __args_idx(nullptr),
+      __raw_value(nullptr),
+      __dvalue_d(nullptr),
+      __d2value_d(nullptr)
   {
   }
 
@@ -54,13 +60,22 @@ public:
   /// Cache the variable's batch shape
   virtual void cache(TorchShapeRef batch_shape);
 
-  /// Setup the variable's views into blocks of the storage
+  /// Setup the variable's views following another variable
+  void setup_views(const VariableBase * other);
+
+  /// Setup the variable's views into blocks of the storage (Model::AssemblyMode::INPLACE)
   void setup_views(const LabeledVector * value,
                    const LabeledMatrix * deriv = nullptr,
                    const LabeledTensor3D * secderiv = nullptr);
 
-  /// Setup the variable's views into blocks of the storage
-  void setup_views(const VariableBase * other);
+  /// Setup the variable's input "view" (Model::AssemblyMode::CONCATENATION)
+  void setup_views(BatchTensor * value);
+
+  /// Setup the variable's output "views" (Model::AssemblyMode::CONCATENATION)
+  void setup_views(const std::unordered_map<VariableName, size_t> * idx,
+                   BatchTensor * value,
+                   std::vector<BatchTensor *> * deriv = nullptr,
+                   std::vector<std::vector<BatchTensor *>> * secderiv = nullptr);
 
   /// Reinitialize variable views
   virtual void reinit_views(bool out, bool dout_din, bool d2out_din2);
@@ -152,10 +167,14 @@ protected:
   /// To distinguish from their INPLACE counterparts, the members are prefixed
   /// with an additional underscore.
   ///@{
+  /// Argument assembly indices
+  const std::unordered_map<VariableName, size_t> * __args_idx;
+  /// The raw (flattened) variable value
+  BatchTensor * __raw_value;
   /// The derivative of this variable w.r.t. arguments.
-  std::map<VariableName, BatchTensor *> __dvalue_d;
+  const std::vector<BatchTensor *> * __dvalue_d;
   /// The second derivative of this variable w.r.t. arguments.
-  std::map<VariableName, std::map<VariableName, BatchTensor *>> __d2value_d;
+  const std::vector<std::vector<BatchTensor *>> * __d2value_d;
   ///@}
 };
 
@@ -192,7 +211,7 @@ public:
 
   virtual void requires_grad_(bool req = true) override
   {
-    neml_assert_dbg(_assembly_mode == Model::AssemblyMode::CONCATENATION || !req,
+    neml_assert_dbg(_assembly_mode == Model::AssemblyMode::INPLACE,
                     "Cannot request AD in concatenation assembly mode");
     _value.requires_grad_(req);
   }
@@ -220,7 +239,7 @@ public:
       _value.index_put_({torch::indexing::Slice()},
                         val.batch_expand(batch_sizes()).base_reshape(base_sizes()));
     else if (_assembly_mode == Model::AssemblyMode::CONCATENATION)
-      (*__value) = val;
+      (*__raw_value) = val.batch_expand(batch_sizes()).base_reshape({base_storage()});
     else
       throw NEMLException("Unknown assembly mode");
   }
@@ -231,21 +250,13 @@ public:
     if (_assembly_mode == Model::AssemblyMode::INPLACE)
       return _value;
     else if (_assembly_mode == Model::AssemblyMode::CONCATENATION)
-      return *__value;
+      return __raw_value->base_reshape(base_sizes());
     else
       throw NEMLException("Unknown assembly mode");
   }
 
   /// Variable value of the logical shape
-  virtual const BatchTensor tensor() const override
-  {
-    if (_assembly_mode == Model::AssemblyMode::INPLACE)
-      return _value;
-    else if (_assembly_mode == Model::AssemblyMode::CONCATENATION)
-      return *__value;
-    else
-      throw NEMLException("Unknown assembly mode");
-  }
+  virtual const BatchTensor tensor() const override { return value(); }
 
   /// Negation
   T operator-() const { return -value(); }
@@ -274,16 +285,15 @@ protected:
 
   /// Variable value of the logical shape (Model::AssemblyMode::INPLACE)
   T _value;
-
-  /// Variable value of the logical shape (Model::AssemblyMode::CONCATENATION)
-  BatchTensor * __value;
 };
 
 class Derivative
 {
 public:
-  Derivative(BatchTensor & val)
-    : _value(val)
+  Derivative(BatchTensor & val, const TorchShape & batch_sizes, const TorchShape & base_sizes)
+    : _value(val),
+      _batch_sizes(batch_sizes),
+      _base_sizes(base_sizes)
   {
   }
 
@@ -293,6 +303,10 @@ public:
 
 private:
   BatchTensor & _value;
+
+  TorchShapeRef _batch_sizes;
+
+  TorchShapeRef _base_sizes;
 };
 
 // Everything below is just for convenience: We just forward operations to the the variable values

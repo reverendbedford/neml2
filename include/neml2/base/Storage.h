@@ -120,6 +120,17 @@ public:
   ///@}
 
   /**
+   * @return The keys of this storage
+   */
+  std::unordered_set<I> keys() const
+  {
+    auto ret;
+    for (auto && [key, std::ignore] : _values)
+      ret.insert(key);
+    return ret;
+  }
+
+  /**
    * @returns The size of the underlying storage.
    *
    * Note that this is not necessarily the size of _constructed_ objects,

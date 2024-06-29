@@ -83,44 +83,182 @@ VariableStore::allocate_variables(TorchShapeRef batch_shape,
                                   bool dout_din,
                                   bool d2out_din2)
 {
-  // Allocate input storage only if this is a host model
-  if (in && _object->host() == _object)
-    _in = LabeledVector::zeros(batch_shape, {&input_axis()}, options);
-
-  // Allocate output storage
-  if (out)
-    _out = LabeledVector::zeros(batch_shape, {&output_axis()}, options);
-
-  if (dout_din)
-    _dout_din = LabeledMatrix::zeros(batch_shape, {&output_axis(), &input_axis()}, options);
-
-  if (d2out_din2)
-    _d2out_din2 = LabeledTensor3D::zeros(
-        batch_shape, {&output_axis(), &input_axis(), &input_axis()}, options);
-
-  if (in)
-    reinit_input_views();
-
-  reinit_output_views(out, dout_din, d2out_din2);
+  if (_object->assembly_mode() == Model::AssemblyMode::INPLACE)
+    allocate_variables_inplace(batch_shape, options, in, out, dout_din, d2out_din2);
+  else if (_object->assembly_mode() == Model::AssemblyMode::CONCATENATION)
+    allocate_variables_concatenation(in, out, dout_din, d2out_din2);
+  else
+    throw NEMLException("Unknown assembly mode");
 }
+
+void
+VariableStore::allocate_variables_inplace(TorchShapeRef batch_shape,
+                                          const torch::TensorOptions & options,
+                                          bool in,
+                                          bool out,
+                                          bool dout_din,
+                                          bool d2out_din2)
+{
+  if (_object->assembly_mode() == Model::AssemblyMode::INPLACE)
+  {
+    // Allocate input storage only if this is a host model
+    if (in && _object->host() == _object)
+      _in = LabeledVector::zeros(batch_shape, {&input_axis()}, options);
+
+    // Allocate output storage
+    if (out)
+      _out = LabeledVector::zeros(batch_shape, {&output_axis()}, options);
+
+    if (dout_din)
+      _dout_din = LabeledMatrix::zeros(batch_shape, {&output_axis(), &input_axis()}, options);
+
+    if (d2out_din2)
+      _d2out_din2 = LabeledTensor3D::zeros(
+          batch_shape, {&output_axis(), &input_axis(), &input_axis()}, options);
+
+    if (in)
+      reinit_input_views();
+
+    reinit_output_views(out, dout_din, d2out_din2);
+  }
+  else if (_object->assembly_mode() == Model::AssemblyMode::CONCATENATION)
+  {
+    // Pre-sort the input and output variables so that the final assembly using concatenation
+    // would just be a simple torch::cat.
+    __in_idx = _input_axis.assembly_indices(_input_views.keys());
+    __out_idx = _output_axis.assembly_indices(_output_views.keys());
+
+    // Resize the storage vectors accordingly
+    const auto ninput = __in_idx.size();
+    const auto noutput = __out_idx.size();
+
+    if (in && _object->host() == _object)
+      __in.resize(ninput);
+
+    if (out)
+      __out.resize(noutput);
+
+    if (dout_din)
+    {
+      __dout_din.resize(noutput);
+      for (size_t i = 0; i < noutput; i++)
+        __dout_din[i].resize(ninput);
+    }
+
+    if (d2out_din2)
+    {
+      __d2out_din2.resize(noutput);
+      for (size_t i = 0; i < noutput; i++)
+      {
+        __d2out_din2[i].resize(ninput);
+        for (size_t j = 0; j < ninput; j++)
+          __d2out_din2[i][j].resize(ninput);
+      }
+    }
+  }
+  else
+    throw NEMLException("Unknown assembly mode");
+}
+
+// BatchTensor &
+// VariableStore::input_storage(const VariableName & x)
+// {
+//   return const_cast<BatchTensor &>(std::as_const(this)->input_storage(x));
+// }
+
+// const BatchTensor &
+// VariableStore::input_storage(const VariableName & x) const
+// {
+//   return __in[__in_idx.at(x)];
+// }
+
+// BatchTensor &
+// VariableStore::output_storage(const VariableName & y)
+// {
+//   return const_cast<BatchTensor &>(std::as_const(this)->output_storage(y));
+// }
+
+// const BatchTensor &
+// VariableStore::output_storage(const VariableName & y) const
+// {
+//   return __out[__out_idx.at(y)];
+// }
+
+// BatchTensor &
+// VariableStore::derivative_storage(const VariableName & y, const VariableName & x)
+// {
+//   return const_cast<BatchTensor &>(std::as_const(this)->derivative_storage(y, x));
+// }
+
+// const BatchTensor &
+// VariableStore::derivative_storage(const VariableName & y, const VariableName & x) const
+// {
+//   return __dout_din[__out_idx.at(y)][__in_idx.at(x)];
+// }
+
+// BatchTensor &
+// VariableStore::second_derivative_storage(const VariableName & y,
+//                                          const VariableName & x1,
+//                                          const VariableName & x2)
+// {
+//   return const_cast<BatchTensor &>(std::as_const(this)->second_derivative_storage(y, x1, x2));
+// }
+
+// const BatchTensor &
+// VariableStore::second_derivative_storage(const VariableName & y,
+//                                          const VariableName & x1,
+//                                          const VariableName & x2) const
+// {
+//   return __d2out_din2[__out_idx.at(y)][__in_idx.at(x1)][__in_idx.at(2)];
+// }
 
 void
 VariableStore::setup_input_views()
 {
-  for (auto && [name, var] : input_views())
-    var.setup_views(&_object->host<VariableStore>()->input_storage());
+  if (_object->assembly_mode() == Model::AssemblyMode::INPLACE)
+  {
+    for (auto && [name, var] : input_views())
+      var.setup_views(&_object->host<VariableStore>()->input_storage());
+  }
+  else if (_object->assembly_mode() == Model::AssemblyMode::CONCATENATION)
+  {
+    for (auto && [name, var] : input_views())
+      var.setup_views(&_object->host<VariableStore>()->input_storage(var))
+  }
+  else
+    throw NEMLException("Unknown assembly mode");
 }
 
 void
 VariableStore::setup_output_views()
 {
-  for (auto && [name, var] : output_views())
-    var.setup_views(&_out, &_dout_din, &_d2out_din2);
+  if (_object->assembly_mode() == Model::AssemblyMode::INPLACE)
+  {
+    for (auto && [name, var] : output_views())
+      var.setup_views(&_out, &_dout_din, &_d2out_din2);
+  }
+  else if (_object->assembly_mode() == Model::AssemblyMode::CONCATENATION)
+  {
+    for (auto && [name, var] : output_views())
+    {
+      const auto var_idx = __out_idx[var];
+      var.setup_views(__in_idx,
+                      __out.empty() ? nullptr : &__out[var_idx],
+                      __dout_din.empty() ? nullptr : &__dout_din[var_idx],
+                      __d2out_din2.empty() ? nullptr : &__d2out_din2[var_idx])
+    }
+  }
+  else
+    throw NEMLException("Unknown assembly mode");
 }
 
 void
 VariableStore::reinit_input_views()
 {
+  // No-op for concatenation mode
+  if (_object->assembly_mode() == Model::AssemblyMode::CONCATENATION)
+    return;
+
   for (auto && [name, var] : input_views())
     var.reinit_views(true, false, false);
 }
@@ -128,6 +266,10 @@ VariableStore::reinit_input_views()
 void
 VariableStore::reinit_output_views(bool out, bool dout_din, bool d2out_din2)
 {
+  // No-op for concatenation mode
+  if (_object->assembly_mode() == Model::AssemblyMode::CONCATENATION)
+    return;
+
   for (auto && [name, var] : output_views())
     var.reinit_views(out, dout_din, d2out_din2);
 }
@@ -135,6 +277,10 @@ VariableStore::reinit_output_views(bool out, bool dout_din, bool d2out_din2)
 void
 VariableStore::detach_and_zero(bool out, bool dout_din, bool d2out_din2)
 {
+  // No-op for concatenation mode
+  if (_object->assembly_mode() == Model::AssemblyMode::CONCATENATION)
+    return;
+
   bool out_detached = false;
   bool dout_din_detached = false;
   bool d2out_din2_detached = false;

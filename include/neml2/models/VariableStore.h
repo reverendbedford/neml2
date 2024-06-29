@@ -113,34 +113,52 @@ public:
   const Storage<VariableName, VariableBase> & output_views() const { return _output_views; }
   /// @}
 
-  /// Input storage
-  ///@{
-  LabeledVector & input_storage() { return _in; }
-  const LabeledVector & input_storage() const { return _in; }
-  /// @}
-
-  /// Output storage
-  ///@{
-  LabeledVector & output_storage() { return _out; }
-  const LabeledVector & output_storage() const { return _out; }
-  /// @}
-
-  /// Derivative storage
-  ///@{
-  LabeledMatrix & derivative_storage() { return _dout_din; }
-  const LabeledMatrix & derivative_storage() const { return _dout_din; }
-  /// @}
-
-  /// Second derivative storage
-  ///@{
-  LabeledTensor3D & second_derivative_storage() { return _d2out_din2; }
-  const LabeledTensor3D & second_derivative_storage() const { return _d2out_din2; }
-  /// @}
-
   /// Get the view of an input variable
   VariableBase * input_view(const VariableName &);
   /// Get the view of an output variable
   VariableBase * output_view(const VariableName &);
+
+  /// Storage accessors for Model::AssemblyMode::INPLACE
+  ///@{
+  /// Input storage
+  LabeledVector & input_storage() { return _in; }
+  /// Input storage
+  const LabeledVector & input_storage() const { return _in; }
+  /// Output storage
+  LabeledVector & output_storage() { return _out; }
+  /// Output storage
+  const LabeledVector & output_storage() const { return _out; }
+  /// Derivative storage
+  LabeledMatrix & derivative_storage() { return _dout_din; }
+  /// Derivative storage
+  const LabeledMatrix & derivative_storage() const { return _dout_din; }
+  /// Second derivative storage
+  LabeledTensor3D & second_derivative_storage() { return _d2out_din2; }
+  /// Second derivative storage
+  const LabeledTensor3D & second_derivative_storage() const { return _d2out_din2; }
+  /// @}
+
+  /// Storage accessors for Model::AssemblyMode::CONCATENATION
+  ///@{
+  /// Input storage
+  BatchTensor & input_storage(const VariableName & y);
+  /// Input storage
+  const BatchTensor & input_storage(const VariableName &) const;
+  /// Output storage
+  BatchTensor & output_storage(const VariableName &);
+  /// Output storage
+  const BatchTensor & output_storage(const VariableName &) const;
+  /// Derivative storage
+  BatchTensor & derivative_storage(const VariableName &, const VariableName &);
+  /// Derivative storage
+  const BatchTensor & derivative_storage(const VariableName &, const VariableName &) const;
+  /// Second derivative storage
+  BatchTensor &
+  second_derivative_storage(const VariableName &, const VariableName &, const VariableName &);
+  /// Second derivative storage
+  const BatchTensor &
+  second_derivative_storage(const VariableName &, const VariableName &, const VariableName &) const;
+  ///@}
 
 protected:
   /// Cache the variable's batch shape
@@ -326,16 +344,32 @@ private:
   /// The output axis
   LabeledAxis & _output_axis;
 
+  /// Storage for Model::AssemblyMode::INPLACE
+  ///@{
   /// The storage for input variable values
   LabeledVector _in;
-
   /// The storage for output variable values
   LabeledVector _out;
-
   /// The storage for output variable 1st derivatives w.r.t. input variables
   LabeledMatrix _dout_din;
-
   /// The storage for output variable 2nd derivatives w.r.t. input variables
   LabeledTensor3D _d2out_din2;
+  ///@}
+
+  /// Storage for Model::Assembly::CONCATENATION
+  ///@{
+  /// Input variable assembly indices
+  std::unordered_map<VariableName, size_t> __in_idx;
+  /// Output variable assembly indices
+  std::unordered_map<VariableName, size_t> __out_idx;
+  /// The storage for input variable values
+  std::vector<BatchTensor> __in;
+  /// The storage for output variable values
+  std::vector<BatchTensor> __out;
+  /// The storage for output variable 1st derivatives w.r.t. input variables
+  std::vector<std::vector<BatchTensor>> __dout_din;
+  /// The storage for output variable 2nd derivatives w.r.t. input variables
+  std::vector<std::vector<std::vector<BatchTensor>>> __d2out_din2;
+  ///@}
 };
 } // namespace neml2
