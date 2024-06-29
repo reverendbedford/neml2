@@ -26,11 +26,6 @@
     values = " 1  2  3  4  5  6"
     batch_shape = '(3,2)'
   []
-  [SR2_csv]
-    type = SR2
-    values = 'unit/tensors/user_tensors/test_UserFixedDimTensor.csv:SR2'
-    batch_shape = '(3,2)'
-  []
   [R3]
     type = R3
     values = "1 2 3 4 5 6 7 8 9

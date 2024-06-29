@@ -43,26 +43,26 @@ CrossRef<torch::Tensor>::operator torch::Tensor() const
     // Conversion to a number failed...
     try
     {
-      // It could be a CSV...
-      return utils::parse_csv(_raw_str, default_tensor_options());
+      // it could be a torch::Tensor defined under the [Tensors] section...
+      return Factory::get_object<torch::Tensor>("Tensors", _raw_str);
     }
-    catch (const ParserException & e2)
+    catch (const NEMLException & e2)
     {
       try
       {
-        // Or it could be torch::Tensor defined under the [Tensors] section
-        return Factory::get_object<torch::Tensor>("Tensors", _raw_str);
+        // or it could be a CSV
+        return utils::parse_csv(_raw_str, default_tensor_options());
       }
-      catch (const std::exception & e3)
+      catch (const ParserException & e3)
       {
         throw NEMLException(
             "While resolving a cross reference '" + _raw_str +
             "', several attempts have been made but all failed.\n\nParsing it as a "
             "Real failed with error message:\n" +
-            e1.what() + "\n\nParsing it as a CSV file failed with error message:\n" + e2.what() +
-            "\n\nParsing it as the name of a torch::Tensor under the [Tensors] "
-            "section failed with error message:\n" +
-            e3.what());
+            e1.what() +
+            "\n\nParsing it as the name of a torch::Tensor under the [Tensors] section failed with "
+            "error message:\n" +
+            e2.what() + "\n\nParsing it as a CSV file failed with error message:\n" + e3.what());
       }
     }
   }
@@ -81,18 +81,27 @@ CrossRef<BatchTensor>::operator BatchTensor() const
     // Conversion to a number failed...
     try
     {
-      // It could be BatchTensor defined under the [Tensors] section
+      // it could be a BatchTensor defined under the [Tensors] section...
       return Factory::get_object<BatchTensor>("Tensors", _raw_str);
     }
-    catch (const std::exception & e2)
+    catch (const NEMLException & e2)
     {
-      throw NEMLException("While resolving a cross reference '" + _raw_str +
-                          "', several attempts have been made but all failed.\n\nParsing it as a "
-                          "Real failed with error message:\n" +
-                          e1.what() +
-                          "\n\nParsing it as the name of a BatchTensor under the [Tensors] "
-                          "section failed with error message:\n" +
-                          e2.what());
+      try
+      {
+        // or it could be a CSV
+        return utils::parse_csv(_raw_str, default_tensor_options());
+      }
+      catch (const ParserException & e3)
+      {
+        throw NEMLException(
+            "While resolving a cross reference '" + _raw_str +
+            "', several attempts have been made but all failed.\n\nParsing it as a "
+            "Real failed with error message:\n" +
+            e1.what() +
+            "\n\nParsing it as the name of a BatchTensor under the [Tensors] section failed with "
+            "error message:\n" +
+            e2.what() + "\n\nParsing it as a CSV file failed with error message:\n" + e3.what());
+      }
     }
   }
 }
@@ -118,16 +127,16 @@ template class CrossRef<torch::Tensor>;
         {                                                                                          \
           return Factory::get_object<T>("Tensors", _raw_str);                                      \
         }                                                                                          \
-        catch (const std::exception & e3)                                                          \
+        catch (const NEMLException & e3)                                                           \
         {                                                                                          \
           throw NEMLException(                                                                     \
               "While resolving a cross reference '" + _raw_str +                                   \
               "', several attempts have been made but all failed.\n\nParsing it as a "             \
               "Real failed with error message:\n" +                                                \
-              e1.what() + "\n\nParsing it as a CSV file failed with error message:\n" +            \
-              e2.what() +                                                                          \
-              "\n\nParsing it as the name of a tensor under the [Tensors] "                        \
-              "section failed with error message:\n" +                                             \
+              e1.what() +                                                                          \
+              "\n\nParsing it as the name of a tensor under the [Tensors] section failed with "    \
+              "error message:\n" +                                                                 \
+              e2.what() + "\n\nParsing it as a CSV file failed with error message:\n" +            \
               e3.what());                                                                          \
         }                                                                                          \
       }                                                                                            \

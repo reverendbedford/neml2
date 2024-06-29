@@ -98,52 +98,87 @@ end_with(std::string_view str, std::string_view suffix)
          0 == str.compare(str.size() - suffix.size(), suffix.size(), suffix);
 }
 
-torch::Tensor
-parse_csv(const std::string & filename_and_index, const torch::TensorOptions & options)
+BatchTensor
+parse_csv(const std::string & csv, const torch::TensorOptions & options)
 {
-  auto [filename, rows, cols] = parse_csv_spec(filename_and_index);
-
-  // Count number of rows and columns
-  csv::CSVReader counter(filename);
-  TorchSize nrow = 0;
-  for (const auto & row : counter)
+  try
   {
-    (void)row;
-    nrow += 1;
-  }
-  auto ncol = counter.get_col_names().size();
-
-  // Figure out which rows to read
-  auto row_indices = torch::full({nrow}, false, torch::kBool);
-  row_indices.index_put_(rows, true);
-  std::vector<bool> row_indices_v(row_indices.data_ptr<bool>(),
-                                  row_indices.data_ptr<bool>() + row_indices.numel());
-
-  // Figure out which columns to read
-  auto col_indices = torch::arange(ncol).index(cols).contiguous();
-  std::vector<TorchSize> col_indices_v(col_indices.data_ptr<TorchSize>(),
-                                       col_indices.data_ptr<TorchSize>() + col_indices.numel());
-  std::cout << col_indices << std::endl;
-  for (auto c : col_indices_v)
-    std::cout << c << " ";
-  std::cout << std::endl;
-
-  // Read the CSV
-  csv::CSVReader reader(filename);
-  auto tensor = torch::empty(
-      {torch::sum(row_indices).item<TorchSize>(), TorchSize(col_indices_v.size())}, options);
-  TorchSize row_number = 0;
-  TorchSize i = 0;
-  for (const auto & row : reader)
-    if (row_indices_v[row_number++])
+    // Separate filename.extension[indexing] and (batch-shape)
+    std::string filename_and_index;
+    TorchShape batch_shape;
+    const bool has_batch_shape = csv.back() == ')';
+    if (has_batch_shape)
     {
-      std::vector<Real> row_v;
-      for (auto col_index : col_indices_v)
-        row_v.push_back(row[col_index].get<Real>());
-      tensor.index_put_({i++}, torch::tensor(row_v, options));
+      auto pos = csv.find_last_of("(");
+      if (pos == std::string::npos)
+        throw ParserException("Missing starting ( in '" + csv + "'");
+      filename_and_index = csv.substr(0, pos);
+      batch_shape = parse<TorchShape>(csv.substr(pos));
     }
+    else
+      filename_and_index = csv;
 
-  return tensor.squeeze();
+    // Separate filename, row indexing, and column indexing
+    auto [filename, rows, cols] = parse_csv_spec(filename_and_index);
+
+    // Allow the following delimiters
+    csv::CSVFormat fmt;
+    fmt.delimiter({',', ' ', '\t'});
+
+    // Count number of rows and columns in the CSV file
+    csv::CSVReader counter(filename, fmt);
+    TorchSize nrow = 0;
+    for (const auto & row : counter)
+    {
+      (void)row;
+      nrow += 1;
+    }
+    auto ncol = counter.get_col_names().size();
+
+    // Figure out which rows to read
+    auto row_indices = torch::full({nrow}, false, torch::kBool);
+    row_indices.index_put_(rows, true);
+    std::vector<bool> row_indices_v(row_indices.data_ptr<bool>(),
+                                    row_indices.data_ptr<bool>() + row_indices.numel());
+
+    // Figure out which columns to read
+    auto col_indices = torch::arange(TorchSize(ncol)).index(cols).contiguous();
+    std::vector<TorchSize> col_indices_v(col_indices.data_ptr<TorchSize>(),
+                                         col_indices.data_ptr<TorchSize>() + col_indices.numel());
+
+    // Read the CSV
+    csv::CSVReader reader(filename, fmt);
+    auto tensor = torch::empty(
+        {torch::sum(row_indices).item<TorchSize>(), TorchSize(col_indices_v.size())}, options);
+    TorchSize row_number = 0;
+    TorchSize i = 0;
+    for (const auto & row : reader)
+      if (row_indices_v[row_number++])
+      {
+        std::vector<Real> row_v;
+        for (auto col_index : col_indices_v)
+          row_v.push_back(row[col_index].get<Real>());
+        tensor.index_put_({i++}, torch::tensor(row_v, options));
+      }
+
+    // Convert torch::Tensor to neml2::BatchTensor
+    TorchSize batch_dim = i == 1 ? 0 : 1;
+    auto batch_tensor = BatchTensor(tensor.squeeze(), batch_dim);
+    return has_batch_shape ? batch_tensor.batch_reshape(batch_shape) : batch_tensor;
+  }
+  catch (const ParserException & e)
+  {
+    throw;
+  }
+  catch (const NEMLException & e)
+  {
+    throw;
+  }
+  catch (const std::exception & e)
+  {
+    throw ParserException("Encountered an unhandled error while reading CSV '" + csv +
+                          "': " + e.what());
+  }
 }
 
 std::tuple<std::string, TorchIndex, TorchIndex>
@@ -163,9 +198,21 @@ parse_csv_spec(const std::string & filename_and_index)
   else
     filename = filename_and_index;
 
-  // Read the CSV into a 2D vector of Real
-  csv::CSVReader reader(filename);
+  // Allow the following delimiters
+  csv::CSVFormat fmt;
+  fmt.delimiter({',', ' ', '\t'});
+  csv::CSVReader reader(filename, fmt);
   auto col_names = reader.get_col_names();
+  while (col_names[0] == "#")
+  {
+    fmt.h reader = csv::CSVReader(filename, fmt);
+  }
+
+  // Read the CSV
+
+  for (auto col_name : col_names)
+    std::cout << col_name << " ";
+  std::cout << std::endl;
 
   // Parse row and col indexing
   auto rows = TorchIndex(torch::indexing::Slice());

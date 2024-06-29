@@ -23,7 +23,6 @@
 // THE SOFTWARE.
 
 #include "neml2/tensors/user_tensors/UserBatchTensor.h"
-#include "neml2/base/Sequence.h"
 
 namespace neml2
 {
@@ -36,7 +35,7 @@ UserBatchTensor::expected_options()
   options.doc() = "Construct a BatchTensor from a vector of values. The vector will be reshaped "
                   "according to the specified batch and base shapes.";
 
-  options.set<Sequence<Real>>("values");
+  options.set<std::vector<Real>>("values");
   options.set("values").doc() = "Values in this (flattened) tensor";
 
   options.set<TorchShape>("batch_shape") = {};
@@ -54,7 +53,7 @@ UserBatchTensor::UserBatchTensor(const OptionSet & options)
                                    default_tensor_options())),
     UserTensor(options)
 {
-  auto vals = options.get<Sequence<Real>>("values").vec();
+  auto vals = options.get<std::vector<Real>>("values");
   auto flat = torch::tensor(vals, default_tensor_options());
   if (vals.size() == size_t(this->base_storage()))
     this->index_put_({torch::indexing::Ellipsis}, flat.reshape(this->base_sizes()));

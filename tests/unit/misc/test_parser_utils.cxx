@@ -124,12 +124,22 @@ TEST_CASE("parser_utils", "[misc]")
 
     SECTION("column name substitution")
     {
-      auto [filename, rows, cols] = utils::parse_csv_spec(test_file + "[1:4,sr2_0:]");
-      std::cout << filename << std::endl;
-      std::cout << rows << std::endl;
-      std::cout << cols << std::endl;
       auto tensor = utils::parse_csv(test_file + "[1:4,sr2_0:]");
-      // REQUIRE(torch::allclose(tensor, correct));
+      auto correct = torch::tensor(
+          {{1., 2., 3., 4., 5., 6.}, {1., 2., 3., 4., 5., 6.}, {1., 2., 3., 4., 5., 6.}},
+          default_tensor_options());
+      REQUIRE(torch::allclose(tensor, correct));
+    }
+
+    SECTION("batch reshape")
+    {
+      auto tensor = utils::parse_csv(test_file + "[1:4,sr2_0:](1,3,1)");
+      auto correct =
+          torch::tensor(
+              {{1., 2., 3., 4., 5., 6.}, {1., 2., 3., 4., 5., 6.}, {1., 2., 3., 4., 5., 6.}},
+              default_tensor_options())
+              .reshape({1, 3, 1, 6});
+      REQUIRE(torch::allclose(tensor, correct));
     }
   }
 

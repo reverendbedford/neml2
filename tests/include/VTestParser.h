@@ -26,27 +26,26 @@
 
 #include "neml2/misc/parser_utils.h"
 
-class VTestParser
+class CSVParser
 {
 public:
-  VTestParser(const std::string & name);
+  CSVParser(const std::string & name);
 
-  const std::vector<std::string> & meta() const { return _meta; }
-
-  const std::vector<std::string> & headers() const { return _headers; }
-
-  torch::Tensor operator[](const std::string & key) const { return _data.at(key); }
+  const std::vector<std::string> & col_names() const { return _col_names; }
 
 private:
-  void parse();
+  BatchTensor parse();
 
+  /// Filename
   std::string _name;
 
-  std::vector<std::string> _meta;
+  /// Column names, if a header row is available
+  std::vector<std::string> _col_names;
 
-  std::string _description;
-
-  std::vector<std::string> _headers;
-
-  std::map<std::string, torch::Tensor> _data;
+  /// Parser options
+  ///@{
+  char _delim = ',';
+  int64_t _header_row = -1;
+  std::string _comment_prefix = "#";
+  ///@}
 };

@@ -84,26 +84,30 @@ bool start_with(std::string_view str, std::string_view prefix);
 bool end_with(std::string_view str, std::string_view suffix);
 
 /**
- * @brief Parse a CSV file into a torch::Tensor
+ * @brief Parse a CSV file into a BatchTensor
  *
- * The first argument \p filename_and_index is the CSV filename. It can optionally provide
- * instructions on how to index the torch::Tensor using the schema
- * `(filename).(extension)[indexing]`.
+ * The first argument \p csv is the CSV file specification. Row/column selection as well as (batch)
+ * reshaping are supported via the schema
+ * `<filename>.(csv|vtest)[<indexing>][<batch-shape>]`.
  *
  * If `indexing` is not provided, the CSV file will be converted to a 2D torch::Tensor, with CSV
  * rows as tensor rows and CSV columns as tensor columns, preserving the order defined in the CSV
  * file.
  *
  * If `indexing` is provided, the 2D torch::Tensor will be indexed accordingly. `indexing`
- * should use the schema `[(row indexing)[,(column indexing)]]` where `row indexing` and `column
- * indexing` are instructions on row indexing and column indexing, respectively. Only single element
- * indexing and the basic slice syntax are supported. See
+ * should use the schema `[<row-indexing)[,<column-indexing)]]` where `row-indexing` and
+ * `column-indexing` are instructions on row indexing and column indexing, respectively. Only single
+ * element indexing, the basic slice syntax, and tensor indexing are supported. See
  * https://numpy.org/doc/stable/user/basics.indexing.html#slicing-and-striding for detailed
  * explanation on the basic slice syntax. Column names can be used in column indexing specification.
  *
- * File name extension
+ * The base shape of the returned tensor will be (n,) if the number of selected columns n is greater
+ * than 1 and () if only one column is selected. If `batch-shape` is not provided, the batch shape
+ * of the returned tensor will be (m,) if the number of selected rows m is greater than 1 and () if
+ * only one row is selected. If `batch-shape` is provided, the returned tensor will be reshaped to
+ * match the given batch shape.
  *
- * Examples of \p filename_and_index specification:
+ * Examples of \p csv specification:
  *
  * The following would convert the _entire_ CSV file to a 2D torch::Tensor
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~python
@@ -141,8 +145,8 @@ bool end_with(std::string_view str, std::string_view suffix);
  * filename.csv[2:,stress_xx:stress_zz]
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
-torch::Tensor parse_csv(const std::string & filename_and_index,
-                        const torch::TensorOptions & options = default_tensor_options());
+BatchTensor parse_csv(const std::string & csv,
+                      const torch::TensorOptions & options = default_tensor_options());
 
 /**
  * @brief Helper method for parse_csv

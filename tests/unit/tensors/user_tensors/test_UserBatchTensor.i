@@ -23,10 +23,4 @@
     batch_shape = '(2)'
     base_shape = '(2,3)'
   []
-  [e]
-    type = BatchTensor
-    values = 'unit/tensors/user_tensors/test_UserBatchTensor.csv:value'
-    batch_shape = '(2)'
-    base_shape = '(2,3)'
-  []
 []

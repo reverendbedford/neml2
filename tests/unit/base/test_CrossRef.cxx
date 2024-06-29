@@ -46,6 +46,14 @@ TEST_CASE("CrossRef", "[base]")
     REQUIRE(torch::allclose(*auto_3, auto_3_correct));
   }
 
+  SECTION("Scalar from CSV")
+  {
+    CrossRef<Scalar> a;
+    a = "unit/base/test_CrossRef.csv[:,scalar]";
+    const auto a_correct = Scalar(torch::tensor({5., 6., 7., 8.}, default_tensor_options()));
+    REQUIRE(torch::allclose(Scalar(a), a_correct));
+  }
+
   SECTION("Scalar operator=")
   {
     CrossRef<Scalar> a;
@@ -57,6 +65,17 @@ TEST_CASE("CrossRef", "[base]")
   {
     REQUIRE_THROWS_WITH(load_model("unit/base/test_CrossRef_empty_Scalar.i"),
                         Catch::Matchers::ContainsSubstring("Failed to parse '' as a"));
+  }
+
+  SECTION("SR2 from CSV")
+  {
+    CrossRef<SR2> a;
+    a = "unit/base/test_CrossRef.csv[:3,[s_xx,s_yy,s_zz,s_yz,s_xz,s_xy]]";
+    const auto a_correct = SR2(torch::tensor({{0.5, 1.1, 2.2, 0.5, 1.1, 2.2},
+                                              {-1.5, 2.2, 3.3, 0.5, 1.1, 2.2},
+                                              {-3.0, -5.0, 100.1, 0.5, 1.1, 2.2}},
+                                             default_tensor_options()));
+    REQUIRE(torch::allclose(SR2(a), a_correct));
   }
 
   SECTION("SR2 operator=")

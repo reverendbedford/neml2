@@ -63,13 +63,6 @@ TEST_CASE("UserBatchTensor", "[tensors/user_tensors]")
     REQUIRE(torch::allclose(*d, d_correct));
     REQUIRE(d->batch_sizes() == TorchShape{2});
     REQUIRE(d->base_sizes() == TorchShape{2, 3});
-
-    const auto e = Factory::get_object_ptr<BatchTensor>("Tensors", "e");
-    const auto e_correct =
-        torch::tensor({{{1, 2, 3}, {4, 5, 6}}, {{1, 2, 3}, {4, 5, 6}}}, default_tensor_options());
-    REQUIRE(torch::allclose(*e, e_correct));
-    REQUIRE(e->batch_sizes() == TorchShape{2});
-    REQUIRE(e->base_sizes() == TorchShape{2, 3});
   }
 
   SECTION("error on invalid shape")
