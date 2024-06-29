@@ -35,6 +35,7 @@ TEST_CASE("HITParser", "[base]")
   SECTION("class HITParser")
   {
     HITParser parser;
+
     SECTION("parse")
     {
       auto all_options = parser.parse("unit/base/test_HITParser1.i");

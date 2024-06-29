@@ -23,7 +23,10 @@
 // THE SOFTWARE.
 
 #include "neml2/misc/parser_utils.h"
+#include "csvparser/csv.hpp"
+
 #include <cxxabi.h>
+#include <regex>
 
 namespace neml2
 {
@@ -93,6 +96,210 @@ end_with(std::string_view str, std::string_view suffix)
 {
   return str.size() >= suffix.size() &&
          0 == str.compare(str.size() - suffix.size(), suffix.size(), suffix);
+}
+
+BatchTensor
+parse_csv(const std::string & csv, const torch::TensorOptions & options)
+{
+  try
+  {
+    // Separate filename.extension[indexing] and (batch-shape)
+    std::string filename_and_index;
+    TorchShape batch_shape;
+    const bool has_batch_shape = csv.back() == ')';
+    if (has_batch_shape)
+    {
+      auto pos = csv.find_last_of("(");
+      if (pos == std::string::npos)
+        throw ParserException("Missing starting ( in '" + csv + "'");
+      filename_and_index = csv.substr(0, pos);
+      batch_shape = parse<TorchShape>(csv.substr(pos));
+    }
+    else
+      filename_and_index = csv;
+
+    // Separate filename, row indexing, and column indexing
+    auto [filename, rows, cols] = parse_csv_spec(filename_and_index);
+
+    // Allow the following delimiters
+    csv::CSVFormat fmt;
+    fmt.delimiter({',', ' ', '\t'});
+
+    // Count number of rows and columns in the CSV file
+    csv::CSVReader counter(filename, fmt);
+    TorchSize nrow = 0;
+    for (const auto & row : counter)
+    {
+      (void)row;
+      nrow += 1;
+    }
+    auto ncol = counter.get_col_names().size();
+
+    // Figure out which rows to read
+    auto row_indices = torch::full({nrow}, false, torch::kBool);
+    row_indices.index_put_(rows, true);
+    std::vector<bool> row_indices_v(row_indices.data_ptr<bool>(),
+                                    row_indices.data_ptr<bool>() + row_indices.numel());
+
+    // Figure out which columns to read
+    auto col_indices = torch::arange(TorchSize(ncol)).index(cols).contiguous();
+    std::vector<TorchSize> col_indices_v(col_indices.data_ptr<TorchSize>(),
+                                         col_indices.data_ptr<TorchSize>() + col_indices.numel());
+
+    // Read the CSV
+    csv::CSVReader reader(filename, fmt);
+    auto tensor = torch::empty(
+        {torch::sum(row_indices).item<TorchSize>(), TorchSize(col_indices_v.size())}, options);
+    TorchSize row_number = 0;
+    TorchSize i = 0;
+    for (const auto & row : reader)
+      if (row_indices_v[row_number++])
+      {
+        std::vector<Real> row_v;
+        for (auto col_index : col_indices_v)
+          row_v.push_back(row[col_index].get<Real>());
+        tensor.index_put_({i++}, torch::tensor(row_v, options));
+      }
+
+    // Convert torch::Tensor to neml2::BatchTensor
+    TorchSize batch_dim = i == 1 ? 0 : 1;
+    auto batch_tensor = BatchTensor(tensor.squeeze(), batch_dim);
+    return has_batch_shape ? batch_tensor.batch_reshape(batch_shape) : batch_tensor;
+  }
+  catch (const ParserException & e)
+  {
+    throw;
+  }
+  catch (const NEMLException & e)
+  {
+    throw;
+  }
+  catch (const std::exception & e)
+  {
+    throw ParserException("Encountered an unhandled error while reading CSV '" + csv +
+                          "': " + e.what());
+  }
+}
+
+std::tuple<std::string, TorchIndex, TorchIndex>
+parse_csv_spec(const std::string & filename_and_index)
+{
+  size_t pos;
+  std::string filename, index;
+
+  // Check to see if indexing is specified
+  pos = filename_and_index.find('[');
+  if (filename_and_index.back() == ']' && pos != std::string::npos)
+  {
+    // Split filename and index
+    filename = filename_and_index.substr(0, pos);
+    index = filename_and_index.substr(pos);
+  }
+  else
+    filename = filename_and_index;
+
+  // Allow the following delimiters
+  csv::CSVFormat fmt;
+  fmt.delimiter({',', ' ', '\t'});
+  csv::CSVReader reader(filename, fmt);
+  auto col_names = reader.get_col_names();
+  while (col_names[0] == "#")
+  {
+    fmt.h reader = csv::CSVReader(filename, fmt);
+  }
+
+  // Read the CSV
+
+  for (auto col_name : col_names)
+    std::cout << col_name << " ";
+  std::cout << std::endl;
+
+  // Parse row and col indexing
+  auto rows = TorchIndex(torch::indexing::Slice());
+  auto cols = TorchIndex(torch::indexing::Slice());
+  if (!index.empty())
+  {
+    // Remove the enclosing brackets
+    index = index.substr(1, index.length() - 2);
+    if (index.empty())
+      throw ParserException("Empty CSV indexing not allowed");
+    // Split row and col index
+    const bool adv_row_idx = (index[0] == '[');
+    if (adv_row_idx)
+    {
+      pos = index.find(']');
+      if (pos == std::string::npos)
+        throw ParserException("Missing closing ] in '" + filename_and_index + "'");
+      auto row_idx = index.substr(0, pos + 1);
+      rows = parse_indexing(row_idx);
+      if (pos + 2 < index.length())
+        if (index[pos + 1] != ',')
+          throw ParserException("Expected comma after row indexing, got '" +
+                                stringify(index[pos + 1]) + "' instead");
+      pos += 1;
+    }
+    else
+    {
+      pos = index.find(',');
+      if (pos == 0)
+        throw ParserException("Row indexing cannot begin with comma");
+      auto row_idx = index.substr(0, pos);
+      rows = parse_indexing(row_idx);
+    }
+    if (pos != std::string::npos && pos + 1 < index.length())
+    {
+      auto col_idx = index.substr(pos + 1);
+      if (!col_idx.empty())
+      {
+        // Substitute column names for integer
+        for (const auto & col_name : col_names)
+          col_idx = std::regex_replace(
+              col_idx, std::regex(col_name), stringify(reader.index_of(col_name)));
+        cols = parse_indexing(col_idx);
+      }
+    }
+  }
+
+  return {filename, rows, cols};
+}
+
+TorchIndex
+parse_indexing(const std::string & str)
+{
+  size_t pos;
+
+  // Advanced indexing
+  if (str[0] == '[')
+  {
+    if (str.back() != ']')
+      throw ParserException("Missing closing ] in '" + str + "'");
+    auto indices_str = split(str.substr(1, str.length() - 2), ",");
+    std::vector<TorchSize> indices;
+    for (const auto & index_str : indices_str)
+      indices.push_back(parse<TorchSize>(index_str));
+    return torch::tensor(indices, default_integer_tensor_options());
+  }
+
+  // Single element indexing
+  if (str.find(':') == std::string::npos)
+    return parse<Integer>(str);
+
+  // Slice
+  std::string start, stop, step;
+  pos = str.find(':');
+  start = str.substr(0, pos);
+  if (pos != std::string::npos && pos + 1 < str.length())
+  {
+    auto stop_step = str.substr(pos + 1);
+    pos = stop_step.find(':');
+    stop = stop_step.substr(0, pos);
+    if (pos != std::string::npos && pos + 1 < stop_step.length())
+      step = stop_step.substr(pos + 1);
+  }
+  return torch::indexing::Slice(
+      start.empty() ? torch::nullopt : std::optional(torch::SymInt(parse<TorchSize>(start))),
+      stop.empty() ? torch::nullopt : std::optional(torch::SymInt(parse<TorchSize>(stop))),
+      step.empty() ? torch::nullopt : std::optional(torch::SymInt(parse<TorchSize>(step))));
 }
 
 template <>

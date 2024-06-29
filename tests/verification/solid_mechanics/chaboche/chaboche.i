@@ -23,7 +23,7 @@
   [driver]
     type = SolidMechanicsDriver
     model = 'model'
-    times = 'times'
+    times = 'chaboche.vtest[:,time]'
     prescribed_strains = 'strains'
   []
   [verification]
