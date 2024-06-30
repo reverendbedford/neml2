@@ -31,7 +31,9 @@
 
 namespace neml2
 {
+// Forward decl
 class VariableBase;
+class Model;
 
 /// Interface for object which can store parameters
 class ParameterStore
@@ -57,7 +59,11 @@ public:
   bool has_nl_param() const { return !_nl_params.empty(); }
 
   /// Get all nonlinear parameters
-  const std::map<std::string, const VariableBase *> & nl_params() const { return _nl_params; }
+  std::map<std::string, const VariableBase *>
+  named_nonlinear_parameters(bool recursive = false) const;
+
+  /// Get all nonlinear parameters' models
+  std::map<std::string, Model *> named_nonlinear_parameter_models(bool recursive = false) const;
 
   /**
    * @brief Query the existence of a nonlinear parameter
@@ -123,8 +129,11 @@ private:
   /// The actual storage for all the parameters
   Storage<std::string, TensorValueBase> _param_values;
 
-  /// @brief Map from nonlinear parameter names to their corresponding variable views
+  /// Map from nonlinear parameter names to their corresponding variable views
   std::map<std::string, const VariableBase *> _nl_params;
+
+  /// Map from nonlinear parameter names to models which evaluate them
+  std::map<std::string, Model *> _nl_param_models;
 };
 
 template <typename T, typename>

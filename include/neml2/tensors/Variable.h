@@ -61,24 +61,21 @@ public:
   virtual void cache(TorchShapeRef batch_shape);
 
   /// Setup the variable's views following another variable
-  void setup_views(const VariableBase * other);
+  virtual void setup_views(const VariableBase * other);
 
   /// Setup the variable's views into blocks of the storage (AssemblyMode::INPLACE)
-  void setup_views(const LabeledVector * value,
-                   const LabeledMatrix * deriv = nullptr,
-                   const LabeledTensor3D * secderiv = nullptr);
+  virtual void setup_views(const LabeledVector * value,
+                           const LabeledMatrix * deriv = nullptr,
+                           const LabeledTensor3D * secderiv = nullptr);
 
   /// Setup the variable's input "view" (AssemblyMode::CONCATENATION)
-  void setup_views(BatchTensor * value);
+  virtual void setup_views(BatchTensor * value);
 
   /// Setup the variable's output "views" (AssemblyMode::CONCATENATION)
-  void setup_views(const std::map<VariableName, size_t> & idx,
-                   BatchTensor * value,
-                   std::vector<BatchTensor> * deriv = nullptr,
-                   std::vector<std::vector<BatchTensor>> * secderiv = nullptr);
-
-  /// Reinitialize variable views
-  virtual void reinit_views(bool out, bool dout_din, bool d2out_din2);
+  virtual void setup_views(const std::map<VariableName, size_t> & idx,
+                           BatchTensor * value,
+                           std::vector<BatchTensor> * deriv = nullptr,
+                           std::vector<std::vector<BatchTensor>> * secderiv = nullptr);
 
   /// Set requires_grad for the underlying storage
   virtual void requires_grad_(bool req = true) = 0;
@@ -202,10 +199,12 @@ public:
   {
   }
 
-  virtual void reinit_views(bool out, bool dout_din, bool d2out_din2) override
+  virtual void setup_views(const LabeledVector * value,
+                           const LabeledMatrix * deriv = nullptr,
+                           const LabeledTensor3D * secderiv = nullptr) override
   {
-    VariableBase::reinit_views(out, dout_din, d2out_din2);
-    if (out)
+    VariableBase::setup_views(value, deriv, secderiv);
+    if (value)
       _value = T(_raw_value.view(sizes()), batch_dim());
   }
 

@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_all.hpp>
 
 #include "neml2/tensors/LabeledAxis.h"
 #include "neml2/tensors/tensors.h"
@@ -284,6 +285,50 @@ TEST_CASE("LabeledAxis", "[tensors]")
 
       LabeledAxisAccessor i{{"sub1", "sub2", "r2t"}};
       REQUIRE(torch::allclose(idx.index(a.indices(i)), torch::arange(14, 20)));
+    }
+
+    SECTION("assembly_indices")
+    {
+      LabeledAxis a;
+      a.add<Scalar>("scalar");
+      a.add<SR2>("r2t");
+      a.add<LabeledAxis>("sub1");
+      a.subaxis("sub1").add<Scalar>("scalar");
+      a.subaxis("sub1").add<SR2>("r2t");
+      a.subaxis("sub1").add<LabeledAxis>("sub2");
+      a.subaxis("sub1").subaxis("sub2").add<Scalar>("scalar");
+      a.subaxis("sub1").subaxis("sub2").add<SR2>("r2t");
+      a.setup_layout();
+
+      /// The sorted layout is
+      ///  0 1 2 3 4 5   6          7 8 9 10 11 12   13              14 15 16 17 18 19    20
+      /// |----r2t----| |-scalar-| |---sub1/r2t---| |-sub1/scalar-| |--sub1/sub2/r2t--| |-sub1/sub2/scalar-|
+
+      auto var1 = LabeledAxisAccessor("r2t");
+      auto var2 = LabeledAxisAccessor("scalar");
+      auto var3 = LabeledAxisAccessor("sub1");
+      auto var4 = LabeledAxisAccessor("sub1", "r2t");
+      auto var5 = LabeledAxisAccessor("sub1", "scalar");
+      auto var6 = LabeledAxisAccessor("sub1", "sub2");
+
+      std::set<LabeledAxisAccessor> vars1{var1, var2, var3};
+      auto assy_idx1 = a.assembly_indices(vars1);
+      REQUIRE(assy_idx1[var1] == 0);
+      REQUIRE(assy_idx1[var2] == 1);
+      REQUIRE(assy_idx1[var3] == 2);
+
+      std::set<LabeledAxisAccessor> vars2{var1, var2, var4, var5, var6};
+      auto assy_idx2 = a.assembly_indices(vars2);
+      REQUIRE(assy_idx2[var1] == 0);
+      REQUIRE(assy_idx2[var2] == 1);
+      REQUIRE(assy_idx2[var4] == 2);
+      REQUIRE(assy_idx2[var5] == 3);
+      REQUIRE(assy_idx2[var6] == 4);
+
+      std::set<LabeledAxisAccessor> vars3{var1, var4, var5, var6};
+      REQUIRE_THROWS_WITH(
+          a.assembly_indices(vars3),
+          Catch::Matchers::ContainsSubstring("Given variables do not span the entire axis"));
     }
   }
 

@@ -57,6 +57,6 @@
   []
   [model]
     type = ComposedModel
-    models = 's0 vonmises yield'
+    models = 'vonmises yield'
   []
 []

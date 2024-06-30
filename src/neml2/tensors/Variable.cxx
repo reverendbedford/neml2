@@ -35,8 +35,8 @@ VariableBase::cache(TorchShapeRef batch_shape)
 void
 VariableBase::setup_views(const VariableBase * other)
 {
-  neml_assert(_assembly_mode == other->_assembly_mode, "Assembly mode mismatch");
   neml_assert(other, "other != nullptr");
+  neml_assert(_assembly_mode == other->_assembly_mode, "Assembly mode mismatch");
 
   if (_assembly_mode == AssemblyMode::INPLACE)
     setup_views(
@@ -56,8 +56,19 @@ VariableBase::setup_views(const LabeledVector * value,
               "This method only works in inplace assembly mode");
 
   _value_storage = value;
+  if (value)
+    _raw_value = (*value)(name());
+
   _derivative_storage = deriv;
+  if (deriv)
+    for (const auto & arg : args())
+      _dvalue_d[arg] = (*deriv)(name(), arg);
+
   _second_derivative_storage = secderiv;
+  if (secderiv)
+    for (const auto & arg1 : args())
+      for (const auto & arg2 : args())
+        _d2value_d[arg1][arg2] = (*secderiv)(name(), arg1, arg2);
 }
 
 void
@@ -82,32 +93,6 @@ VariableBase::setup_views(const std::map<VariableName, size_t> & idx,
   __raw_value = value;
   __dvalue_d = deriv;
   __d2value_d = secderiv;
-}
-
-void
-VariableBase::reinit_views(bool out, bool dout_din, bool d2out_din2)
-{
-  neml_assert(_assembly_mode == AssemblyMode::INPLACE,
-              "This method only works in inplace assembly mode");
-
-  if (out)
-    neml_assert(_value_storage, "Variable value storage not initialized.");
-  if (dout_din)
-    neml_assert(_derivative_storage, "Variable derivative storage not initialized.");
-  if (d2out_din2)
-    neml_assert(_second_derivative_storage, "Variable second derivative storage not initialized.");
-
-  if (out)
-    _raw_value = (*_value_storage)(name());
-
-  if (dout_din)
-    for (const auto & arg : args())
-      _dvalue_d[arg] = (*_derivative_storage)(name(), arg);
-
-  if (d2out_din2)
-    for (const auto & arg1 : args())
-      for (const auto & arg2 : args())
-        _d2value_d[arg1][arg2] = (*_second_derivative_storage)(name(), arg1, arg2);
 }
 
 const LabeledVector &

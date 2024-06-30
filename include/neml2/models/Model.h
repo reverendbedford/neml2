@@ -204,24 +204,21 @@ protected:
   using VariableStore::allocate_variables;
 
   /// Call VariableStore::allocate_variables recursively on all submodels
-  virtual void allocate_variables(int deriv_order, bool options_changed);
+  virtual void allocate_variables();
 
   /// Call VariableStore::setup_input_views recursively on all submodels
   virtual void setup_input_views() override;
   virtual void setup_submodel_input_views();
 
   /// Call VariableStore::setup_output_views recursively on all submodels
-  virtual void setup_output_views() override;
+  using VariableStore::setup_output_views;
+  virtual void setup_output_views();
   virtual void setup_submodel_output_views();
 
-  /// Call VariableStore::reinit_input_views recursively on all submodels
-  virtual void reinit_input_views() override;
-
-  /// Call VariableStore::reinit_output_views recursively on all submodels
-  virtual void reinit_output_views(bool out, bool dout_din = true, bool d2out_din2 = true) override;
+  virtual void setup_nonlinear_system();
 
   /// Call VariableStore::detach_and_zero recursively on all submodels
-  virtual void detach_and_zero(bool out, bool dout_din = true, bool d2out_din2 = true) override;
+  virtual void detach_and_zero(bool out, bool dout_din, bool d2out_din2) override;
 
   /// Set \p x as the current solution of the nonlinear system
   virtual void set_solution(const BatchTensor & x) override;
@@ -230,11 +227,10 @@ protected:
   virtual void set_value(bool out, bool dout_din, bool d2out_din2) = 0;
 
   using VariableStore::cache;
-
-  virtual void cache(TorchShapeRef batch_shape) override;
-
-  /// Cache tensor options
-  virtual void cache(const torch::TensorOptions & options);
+  virtual void cache(TorchShapeRef batch_shape,
+                     int deriv_order,
+                     const torch::Device & device,
+                     const torch::Dtype & dtype);
 
   /**
    * @brief Register a model that the current model may use during its evaluation.
@@ -258,8 +254,10 @@ protected:
     extra_opts.set<NEML2Object *>("_host") = host();
     extra_opts.set<int>("_extra_derivative_order") = extra_deriv_order;
     extra_opts.set<bool>("_nonlinear_system") = nonlinear;
+    extra_opts.set<EnumSelection>("_assembly_mode") =
+        input_options().get<EnumSelection>("_assembly_mode");
 
-    auto model = Factory::get_object_ptr<Model>("Models", name, extra_opts, /*force_create=*/true);
+    auto model = Factory::get_object_ptr<Model>("Models", name, extra_opts);
 
     if (merge_input)
       for (auto && [name, var] : model->input_views())

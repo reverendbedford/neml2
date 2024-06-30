@@ -34,7 +34,7 @@ VariableStore::expected_options()
   options.set<EnumSelection>("_assembly_mode") = EnumSelection(
       {"INPLACE", "CONCATENATION"},
       {static_cast<int>(AssemblyMode::INPLACE), static_cast<int>(AssemblyMode::CONCATENATION)},
-      "INPLACE");
+      "CONCATENATION");
   options.set("_assembly_mode").suppressed() = true;
   return options;
 }
@@ -112,11 +112,6 @@ VariableStore::allocate_variables(TorchShapeRef batch_shape,
     if (d2out_din2)
       _d2out_din2 = LabeledTensor3D::zeros(
           batch_shape, {&output_axis(), &input_axis(), &input_axis()}, options);
-
-    if (in)
-      reinit_input_views();
-
-    reinit_output_views(out, dout_din, d2out_din2);
   }
   else if (_assembly_mode == AssemblyMode::CONCATENATION)
   {
@@ -250,48 +245,35 @@ VariableStore::setup_input_views()
 }
 
 void
-VariableStore::setup_output_views()
+VariableStore::setup_output_views(bool out, bool dout_din, bool d2out_din2)
 {
   if (_assembly_mode == AssemblyMode::INPLACE)
   {
+    neml_assert(!out || !_out.axes().empty(), "Output storage not allocated");
+    neml_assert(!dout_din || !_dout_din.axes().empty(), "Derivative storage not allocated");
+    neml_assert(!d2out_din2 || !_d2out_din2.axes().empty(),
+                "Second derivative storage not allocated");
     for (auto && [name, var] : output_views())
-      var.setup_views(&_out, &_dout_din, &_d2out_din2);
+      var.setup_views(out ? &_out : nullptr,
+                      dout_din ? &_dout_din : nullptr,
+                      d2out_din2 ? &_d2out_din2 : nullptr);
   }
   else if (_assembly_mode == AssemblyMode::CONCATENATION)
   {
+    neml_assert(!out || !__out.empty(), "Output storage not allocated");
+    neml_assert(!dout_din || !__dout_din.empty(), "Derivative storage not allocated");
+    neml_assert(!d2out_din2 || !__d2out_din2.empty(), "Second derivative storage not allocated");
     for (auto && [name, var] : output_views())
     {
       const auto var_idx = __out_idx[name];
       var.setup_views(__in_idx,
-                      __out.empty() ? nullptr : &__out[var_idx],
-                      __dout_din.empty() ? nullptr : &__dout_din[var_idx],
-                      __d2out_din2.empty() ? nullptr : &__d2out_din2[var_idx]);
+                      out ? &__out[var_idx] : nullptr,
+                      dout_din ? &__dout_din[var_idx] : nullptr,
+                      d2out_din2 ? &__d2out_din2[var_idx] : nullptr);
     }
   }
   else
     throw NEMLException("Unknown assembly mode");
-}
-
-void
-VariableStore::reinit_input_views()
-{
-  // No-op for concatenation mode
-  if (_assembly_mode == AssemblyMode::CONCATENATION)
-    return;
-
-  for (auto && [name, var] : input_views())
-    var.reinit_views(true, false, false);
-}
-
-void
-VariableStore::reinit_output_views(bool out, bool dout_din, bool d2out_din2)
-{
-  // No-op for concatenation mode
-  if (_assembly_mode == AssemblyMode::CONCATENATION)
-    return;
-
-  for (auto && [name, var] : output_views())
-    var.reinit_views(out, dout_din, d2out_din2);
 }
 
 void
@@ -301,41 +283,29 @@ VariableStore::detach_and_zero(bool out, bool dout_din, bool d2out_din2)
   if (_assembly_mode == AssemblyMode::CONCATENATION)
     return;
 
-  bool out_detached = false;
-  bool dout_din_detached = false;
-  bool d2out_din2_detached = false;
-
   // Detach and zero per request
   if (out)
   {
     if (_out.tensor().requires_grad())
-    {
       _out.tensor().detach_();
-      out_detached = true;
-    }
+    _out.zero_();
   }
 
   if (dout_din)
   {
     if (_dout_din.tensor().requires_grad())
-    {
       _dout_din.tensor().detach_();
-      dout_din_detached = true;
-    }
     _dout_din.zero_();
   }
 
   if (d2out_din2)
   {
     if (_d2out_din2.tensor().requires_grad())
-    {
       _d2out_din2.tensor().detach_();
-      d2out_din2_detached = true;
-    }
     _d2out_din2.zero_();
   }
 
-  // If the storage is detached in-place, we need to reconfigure all the views.
-  reinit_output_views(out_detached, dout_din_detached, d2out_din2_detached);
+  // Since the storage is detached in-place, we need to reconfigure all the views.
+  setup_output_views(out, dout_din, d2out_din2);
 }
 } // namespace neml2

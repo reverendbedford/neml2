@@ -31,6 +31,22 @@
 
 namespace neml2
 {
+// Forward decl
+class Model;
+
+/**
+ * @brief A convenient function to manufacture a neml2::Model
+ *
+ * The input file must have already been parsed and loaded.
+ *
+ * @param mname Name of the model
+ * @param force_create Whether to force create the model even if one has already been manufactured
+ * @param assembly_mode The assembly mode, see neml2::AssemblyMode.
+ */
+Model & get_model(const std::string & mname,
+                  bool force_create = false,
+                  const AssemblyMode & assembly_mode = AssemblyMode::CONCATENATION);
+
 /**
  * The factory is responsible for:
  * 1. retriving a NEML2Object given the object name as a std::string
@@ -62,7 +78,7 @@ public:
   static std::shared_ptr<T> get_object_ptr(const std::string & section,
                                            const std::string & name,
                                            const OptionSet & additional_options = OptionSet(),
-                                           bool force_create = false);
+                                           bool force_create = true);
 
   /**
    * @brief Retrive an object reference under the given section with the given object name.
@@ -84,7 +100,7 @@ public:
   static T & get_object(const std::string & section,
                         const std::string & name,
                         const OptionSet & additional_options = OptionSet(),
-                        bool force_create = false);
+                        bool force_create = true);
 
   /**
    * @brief Provide all objects' options to the factory. The factory is ready to manufacture

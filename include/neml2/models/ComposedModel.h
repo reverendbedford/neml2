@@ -39,10 +39,7 @@ public:
   virtual void check_AD_limitation() const override;
 
 protected:
-  /// Recursively register sub-model's nonlinar parameters
-  void register_nonlinear_params(Model & m);
-
-  virtual void allocate_variables(int deriv_order, bool options_changed) override;
+  virtual void allocate_variables() override;
 
   /**
    * Setup each of the sub-model's input views. Note the logic is different from the base class's.

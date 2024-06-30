@@ -38,6 +38,7 @@ TrustRegionSubProblem::reinit(const NonlinearSystem & system, const Scalar & del
   _batch_sizes = delta.batch_sizes().vec();
   _options = delta.options();
 
+  _ndof = 1;
   _solution = Scalar::zeros(_batch_sizes, _options);
   _residual = Scalar::empty(_batch_sizes, _options);
   _Jacobian = Scalar::empty(_batch_sizes, _options);

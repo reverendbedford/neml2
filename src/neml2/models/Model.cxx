@@ -100,8 +100,8 @@ void
 Model::setup()
 {
   // Declare nonlinear parameters as additional input variables
-  for (const auto & [name, param] : nl_params())
-    declare_input_variable(param->base_storage(), VariableName(param->name()));
+  // for (const auto & [name, param] : named_nonlinear_parameters())
+  //   declare_input_variable(param->base_storage(), VariableName(param->name()));
 
   // Setup input and output axes
   setup_layout();
@@ -113,10 +113,6 @@ Model::setup()
     for (auto && [x_name, x_var] : input_views())
       y_var.add_arg(x_var);
   }
-
-  // Setup variable views
-  setup_input_views();
-  setup_output_views();
 }
 
 void
@@ -127,26 +123,20 @@ Model::reinit(TorchShapeRef batch_shape,
 {
   neml_assert(host() == this, "This method should only be called on the host model.");
 
-  // Re-cache batch shape if it has changed
-  const auto batch_shape_promoted = batch_shape.empty() ? TorchShape{1} : batch_shape.vec();
-  const bool batch_shape_changed = batch_shape_promoted != batch_sizes();
-  if (batch_shape_changed)
-    cache(batch_shape_promoted);
+  // Cache configuration
+  cache(batch_shape, deriv_order, device, dtype);
 
-  // Re-cache tensor options if they have changed
-  const bool device_changed = device != options().device();
-  const bool dtype_changed = dtype != options().dtype();
-  const bool options_changed = device_changed || dtype_changed;
-  if (options_changed)
-  {
-    const auto options = default_tensor_options().device(device).dtype(dtype);
-    cache(options);
-    send_buffers_to(options);
-    send_parameters_to(options);
-  }
+  // Sync buffers and parameters
+  send_buffers_to(options());
+  send_parameters_to(options());
 
-  // Reallocate variable storage when necessary
-  allocate_variables(deriv_order, batch_shape_changed || options_changed);
+  // Allocate variable storage
+  allocate_variables();
+
+  // Setup variable views
+  setup_input_views();
+  setup_output_views();
+  setup_nonlinear_system();
 }
 
 void
@@ -156,35 +146,17 @@ Model::reinit(const BatchTensor & tensor, int deriv_order)
 }
 
 void
-Model::allocate_variables(int deriv_order, bool options_changed)
+Model::allocate_variables()
 {
-  const auto deriv_order_old = _deriv_order;
-  const auto deriv_order_new = deriv_order + _extra_deriv_order;
-
-  bool in = false;
-  bool out = false;
-  bool dout_din = false;
-  bool d2out_din2 = false;
-
-  if (options_changed)
-  {
-    in = true;
-    out = deriv_order_new >= 0;
-    dout_din = deriv_order_new >= 1;
-    d2out_din2 = deriv_order_new >= 2;
-  }
-  else
-  {
-    out = deriv_order_new >= 0 && deriv_order_old < 0;
-    dout_din = deriv_order_new >= 1 && deriv_order_old < 1;
-    d2out_din2 = deriv_order_new >= 2 && deriv_order_old < 2;
-  }
-
-  _deriv_order = std::max(deriv_order_new, deriv_order_old);
-  VariableStore::allocate_variables(batch_sizes(), options(), in, out, dout_din, d2out_din2);
+  VariableStore::allocate_variables(batch_sizes(),
+                                    options(),
+                                    /*in=*/true,
+                                    /*out=*/true,
+                                    /*dout_din=*/requires_grad(),
+                                    /*d2out_din2=*/requires_2nd_grad());
 
   for (auto submodel : registered_models())
-    submodel->allocate_variables(_deriv_order, options_changed);
+    submodel->allocate_variables();
 }
 
 void
@@ -197,68 +169,78 @@ Model::setup_input_views()
 void
 Model::setup_submodel_input_views()
 {
-  for (auto submodel : registered_models())
+  if (assembly_mode() == AssemblyMode::INPLACE)
   {
-    for (auto && [name, var] : submodel->input_views())
-      var.setup_views(input_view(var.name()));
+    for (auto submodel : registered_models())
+    {
+      for (auto && [name, var] : submodel->input_views())
+        var.setup_views(input_view(var.name()));
 
-    submodel->setup_submodel_input_views();
+      submodel->setup_submodel_input_views();
+    }
   }
+  else if (assembly_mode() == AssemblyMode::CONCATENATION)
+  {
+    // TODO
+  }
+  else
+    throw NEMLException("Unknown assembly mode");
 }
 
 void
 Model::setup_output_views()
 {
-  VariableStore::setup_output_views();
+  VariableStore::setup_output_views(true, requires_grad(), requires_2nd_grad());
   setup_submodel_output_views();
 }
 
 void
 Model::setup_submodel_output_views()
 {
-  for (auto submodel : registered_models())
+  if (assembly_mode() == AssemblyMode::INPLACE)
   {
-    for (auto && [name, var] : submodel->output_views())
-      var.setup_views(&submodel->output_storage(),
-                      &submodel->derivative_storage(),
-                      &submodel->second_derivative_storage());
+    for (auto submodel : registered_models())
+    {
+      for (auto && [name, var] : submodel->output_views())
+        var.setup_views(&submodel->output_storage(),
+                        submodel->requires_grad() ? &submodel->derivative_storage() : nullptr,
+                        submodel->requires_2nd_grad() ? &submodel->second_derivative_storage()
+                                                      : nullptr);
 
-    submodel->setup_submodel_output_views();
+      submodel->setup_submodel_output_views();
+    }
   }
+  else if (assembly_mode() == AssemblyMode::CONCATENATION)
+  {
+    // TODO
+  }
+  else
+    throw NEMLException("Unknown assembly mode");
 }
 
 void
-Model::reinit_input_views()
+Model::setup_nonlinear_system()
 {
-  VariableStore::reinit_input_views();
+  if (assembly_mode() == AssemblyMode::CONCATENATION)
+    return;
 
   if (is_nonlinear_system())
   {
     _ndof = output_axis().storage_size("residual");
     _solution = BatchTensor::empty(batch_sizes(), _ndof, options());
-  }
-}
-
-void
-Model::reinit_output_views(bool out, bool dout_din, bool d2out_din2)
-{
-  VariableStore::reinit_output_views(
-      out, dout_din && requires_grad(), d2out_din2 && requires_2nd_grad());
-
-  if (is_nonlinear_system())
-  {
-    if (out)
-      _residual = output_storage()("residual");
-    if (dout_din && requires_grad())
+    _residual = output_storage()("residual");
+    if (requires_grad())
       _Jacobian = derivative_storage()("residual", "state");
   }
+
+  for (auto submodel : registered_models())
+    submodel->setup_nonlinear_system();
 }
 
 void
 Model::detach_and_zero(bool out, bool dout_din, bool d2out_din2)
 {
-  VariableStore::detach_and_zero(
-      out, dout_din && requires_grad(), d2out_din2 && requires_2nd_grad());
+  VariableStore::detach_and_zero(out, dout_din, d2out_din2);
 
   for (auto submodel : registered_models())
     submodel->detach_and_zero(out, dout_din, d2out_din2);
@@ -275,20 +257,20 @@ Model::set_solution(const BatchTensor & x)
 }
 
 void
-Model::cache(TorchShapeRef batch_shape)
+Model::cache(TorchShapeRef batch_shape,
+             int deriv_order,
+             const torch::Device & device,
+             const torch::Dtype & dtype)
 {
-  _batch_sizes = batch_shape.vec();
-  VariableStore::cache(batch_shape);
-  for (auto submodel : registered_models())
-    submodel->cache(batch_shape);
-}
+  _batch_sizes = batch_shape.empty() ? TorchShape{1} : batch_shape.vec();
+  VariableStore::cache(_batch_sizes);
 
-void
-Model::cache(const torch::TensorOptions & options)
-{
-  _options = options;
+  _deriv_order = std::max(deriv_order + _extra_deriv_order, _deriv_order);
+
+  _options = default_tensor_options().device(device).dtype(dtype);
+
   for (auto submodel : registered_models())
-    submodel->cache(options);
+    submodel->cache(batch_shape, _deriv_order, device, dtype);
 }
 
 void

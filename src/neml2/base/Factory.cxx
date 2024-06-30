@@ -23,9 +23,30 @@
 // THE SOFTWARE.
 
 #include "neml2/base/Factory.h"
+#include "neml2/models/Model.h"
 
 namespace neml2
 {
+Model &
+get_model(const std::string & mname, bool force_create, const AssemblyMode & assembly_mode)
+{
+  // Select the assembly mode
+  auto assembly_modes = Model::expected_options().get<EnumSelection>("_assembly_mode");
+  std::stringstream assembly_mode_selection;
+  if (assembly_mode == AssemblyMode::INPLACE)
+    assembly_mode_selection << "INPLACE";
+  else if (assembly_mode == AssemblyMode::CONCATENATION)
+    assembly_mode_selection << "CONCATENATION";
+  else
+    throw NEMLException("Unknown assembly mode");
+  assembly_mode_selection >> assembly_modes;
+
+  // Create the model
+  OptionSet extra_opts;
+  extra_opts.set<EnumSelection>("_assembly_mode") = assembly_modes;
+  return Factory::get_object<Model>("Models", mname, extra_opts, force_create);
+}
+
 Factory &
 Factory::get()
 {
