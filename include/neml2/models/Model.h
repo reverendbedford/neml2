@@ -55,16 +55,6 @@ public:
   static OptionSet expected_options();
 
   /**
-   * @brief Assembly mode, uhh I'll have to remember to add documentation when everything works
-   *
-   */
-  enum class AssemblyMode : int8_t
-  {
-    INPLACE,
-    CONCATENATION
-  };
-
-  /**
    * @brief Construct a new Model object
    *
    * @param options The options extracted from the input file
@@ -83,9 +73,6 @@ public:
 
   /// Whether this model defines one or more nonlinear equations to be solved
   virtual bool is_nonlinear_system() const { return _nonlinear_system; }
-
-  /// Get this model's assembly mode
-  const AssemblyMode & assembly_mode() const { return _assembly_mode; }
 
   /**
    * @brief Allocate storage and setup views for all the variables of this model and recursively all
@@ -329,11 +316,5 @@ private:
 
   /// Whether this is a nonlinear system
   bool _nonlinear_system;
-
-  /// Assembly mode
-  // TODO: Relax the constness, i.e., allow changing assembly mode after construction. This would
-  // require carefully deallocate/allocate variables and variable views based on the current and
-  // target assembly modes.
-  const AssemblyMode _assembly_mode;
 };
 } // namespace neml2

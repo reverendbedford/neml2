@@ -320,6 +320,37 @@ LabeledAxis::common_indices(const LabeledAxis & other,
                              offsetb + other._layout.at(name).first);
 }
 
+std::map<LabeledAxisAccessor, size_t>
+LabeledAxis::assembly_indices(const std::set<LabeledAxisAccessor> & vars) const
+{
+  // Sort variable indices based on slicing indices
+  std::map<std::pair<TorchSize, TorchSize>, LabeledAxisAccessor> sorted_vars;
+  for (const auto & var : vars)
+  {
+    auto var_idx = indices(var);
+    auto slice = std::pair<TorchSize, TorchSize>{var_idx.slice().start().expect_int(),
+                                                 var_idx.slice().stop().expect_int()};
+    sorted_vars.emplace(slice, var);
+  }
+
+  // The order of sorted variables is the assembly order, i.e., a direct torch::cat would yield a
+  // LabeledVector with correct variable correspondance.
+  //
+  // While we are placing the sorted assembly indices into the map to be returned, we may as well
+  // verify that the given variables span the entire axis.
+  std::map<LabeledAxisAccessor, size_t> assy_idx;
+  size_t i = 0;
+  TorchSize offset = 0;
+  for (const auto & [slice, var] : sorted_vars)
+  {
+    neml_assert(slice.first == offset, "Given variables do not span the entire axis");
+    assy_idx.emplace(var, i++);
+    offset = slice.second;
+  }
+  neml_assert(offset == storage_size(), "Given variables do not span the entire axis");
+  return assy_idx;
+}
+
 std::vector<std::string>
 LabeledAxis::item_names() const
 {

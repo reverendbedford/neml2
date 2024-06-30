@@ -122,10 +122,10 @@ public:
   /**
    * @return The keys of this storage
    */
-  std::unordered_set<I> keys() const
+  std::set<I> keys() const
   {
-    auto ret;
-    for (auto && [key, std::ignore] : _values)
+    std::set<I> ret;
+    for (auto && [key, val] : _values)
       ret.insert(key);
     return ret;
   }

@@ -28,6 +28,7 @@
 #include "neml2/tensors/LabeledTensor.h"
 #include "neml2/tensors/LabeledVector.h"
 #include "neml2/tensors/LabeledMatrix.h"
+#include "neml2/tensors/tensors.h"
 
 using namespace neml2;
 

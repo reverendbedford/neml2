@@ -27,9 +27,22 @@
 
 namespace neml2
 {
-VariableStore::VariableStore(const OptionSet & options, Model * object)
+OptionSet
+VariableStore::expected_options()
+{
+  OptionSet options;
+  options.set<EnumSelection>("_assembly_mode") = EnumSelection(
+      {"INPLACE", "CONCATENATION"},
+      {static_cast<int>(AssemblyMode::INPLACE), static_cast<int>(AssemblyMode::CONCATENATION)},
+      "INPLACE");
+  options.set("_assembly_mode").suppressed() = true;
+  return options;
+}
+
+VariableStore::VariableStore(const OptionSet & options, NEML2Object * object)
   : _object(object),
     _options(options),
+    _assembly_mode(options.get<EnumSelection>("_assembly_mode").as<AssemblyMode>()),
     _input_axis(declare_axis("input")),
     _output_axis(declare_axis("output"))
 {
@@ -83,23 +96,7 @@ VariableStore::allocate_variables(TorchShapeRef batch_shape,
                                   bool dout_din,
                                   bool d2out_din2)
 {
-  if (_object->assembly_mode() == Model::AssemblyMode::INPLACE)
-    allocate_variables_inplace(batch_shape, options, in, out, dout_din, d2out_din2);
-  else if (_object->assembly_mode() == Model::AssemblyMode::CONCATENATION)
-    allocate_variables_concatenation(in, out, dout_din, d2out_din2);
-  else
-    throw NEMLException("Unknown assembly mode");
-}
-
-void
-VariableStore::allocate_variables_inplace(TorchShapeRef batch_shape,
-                                          const torch::TensorOptions & options,
-                                          bool in,
-                                          bool out,
-                                          bool dout_din,
-                                          bool d2out_din2)
-{
-  if (_object->assembly_mode() == Model::AssemblyMode::INPLACE)
+  if (_assembly_mode == AssemblyMode::INPLACE)
   {
     // Allocate input storage only if this is a host model
     if (in && _object->host() == _object)
@@ -121,7 +118,7 @@ VariableStore::allocate_variables_inplace(TorchShapeRef batch_shape,
 
     reinit_output_views(out, dout_din, d2out_din2);
   }
-  else if (_object->assembly_mode() == Model::AssemblyMode::CONCATENATION)
+  else if (_assembly_mode == AssemblyMode::CONCATENATION)
   {
     // Pre-sort the input and output variables so that the final assembly using concatenation
     // would just be a simple torch::cat.
@@ -133,26 +130,49 @@ VariableStore::allocate_variables_inplace(TorchShapeRef batch_shape,
     const auto noutput = __out_idx.size();
 
     if (in && _object->host() == _object)
+    {
       __in.resize(ninput);
+      for (const auto & [var, i] : __in_idx)
+        __in[i] = BatchTensor::zeros(batch_shape, {_input_axis.storage_size(var)}, options);
+    }
 
     if (out)
+    {
       __out.resize(noutput);
+      for (const auto & [var, i] : __out_idx)
+        __out[i] = BatchTensor::zeros(batch_shape, {_output_axis.storage_size(var)}, options);
+    }
 
     if (dout_din)
     {
       __dout_din.resize(noutput);
-      for (size_t i = 0; i < noutput; i++)
+      for (const auto & [yvar, i] : __out_idx)
+      {
         __dout_din[i].resize(ninput);
+        for (const auto & [xvar, j] : __in_idx)
+          __dout_din[i][j] =
+              BatchTensor::zeros(batch_shape,
+                                 {_output_axis.storage_size(yvar), _input_axis.storage_size(xvar)},
+                                 options);
+      }
     }
 
     if (d2out_din2)
     {
       __d2out_din2.resize(noutput);
-      for (size_t i = 0; i < noutput; i++)
+      for (const auto & [yvar, i] : __out_idx)
       {
         __d2out_din2[i].resize(ninput);
-        for (size_t j = 0; j < ninput; j++)
+        for (const auto & [xvar1, j] : __in_idx)
+        {
           __d2out_din2[i][j].resize(ninput);
+          for (const auto & [xvar2, k] : __in_idx)
+            __d2out_din2[i][j][k] = BatchTensor::zeros(batch_shape,
+                                                       {_output_axis.storage_size(yvar),
+                                                        _input_axis.storage_size(xvar1),
+                                                        _input_axis.storage_size(xvar2)},
+                                                       options);
+        }
       }
     }
   }
@@ -160,70 +180,70 @@ VariableStore::allocate_variables_inplace(TorchShapeRef batch_shape,
     throw NEMLException("Unknown assembly mode");
 }
 
-// BatchTensor &
-// VariableStore::input_storage(const VariableName & x)
-// {
-//   return const_cast<BatchTensor &>(std::as_const(this)->input_storage(x));
-// }
+BatchTensor &
+VariableStore::input_storage(const VariableName & x)
+{
+  return __in[__in_idx.at(x)];
+}
 
-// const BatchTensor &
-// VariableStore::input_storage(const VariableName & x) const
-// {
-//   return __in[__in_idx.at(x)];
-// }
+const BatchTensor &
+VariableStore::input_storage(const VariableName & x) const
+{
+  return __in[__in_idx.at(x)];
+}
 
-// BatchTensor &
-// VariableStore::output_storage(const VariableName & y)
-// {
-//   return const_cast<BatchTensor &>(std::as_const(this)->output_storage(y));
-// }
+BatchTensor &
+VariableStore::output_storage(const VariableName & y)
+{
+  return __out[__out_idx.at(y)];
+}
 
-// const BatchTensor &
-// VariableStore::output_storage(const VariableName & y) const
-// {
-//   return __out[__out_idx.at(y)];
-// }
+const BatchTensor &
+VariableStore::output_storage(const VariableName & y) const
+{
+  return __out[__out_idx.at(y)];
+}
 
-// BatchTensor &
-// VariableStore::derivative_storage(const VariableName & y, const VariableName & x)
-// {
-//   return const_cast<BatchTensor &>(std::as_const(this)->derivative_storage(y, x));
-// }
+BatchTensor &
+VariableStore::derivative_storage(const VariableName & y, const VariableName & x)
+{
+  return __dout_din[__out_idx.at(y)][__in_idx.at(x)];
+}
 
-// const BatchTensor &
-// VariableStore::derivative_storage(const VariableName & y, const VariableName & x) const
-// {
-//   return __dout_din[__out_idx.at(y)][__in_idx.at(x)];
-// }
+const BatchTensor &
+VariableStore::derivative_storage(const VariableName & y, const VariableName & x) const
+{
+  return __dout_din[__out_idx.at(y)][__in_idx.at(x)];
+}
 
-// BatchTensor &
-// VariableStore::second_derivative_storage(const VariableName & y,
-//                                          const VariableName & x1,
-//                                          const VariableName & x2)
-// {
-//   return const_cast<BatchTensor &>(std::as_const(this)->second_derivative_storage(y, x1, x2));
-// }
+BatchTensor &
+VariableStore::second_derivative_storage(const VariableName & y,
+                                         const VariableName & x1,
+                                         const VariableName & x2)
+{
+  return __d2out_din2[__out_idx.at(y)][__in_idx.at(x1)][__in_idx.at(x2)];
+}
 
-// const BatchTensor &
-// VariableStore::second_derivative_storage(const VariableName & y,
-//                                          const VariableName & x1,
-//                                          const VariableName & x2) const
-// {
-//   return __d2out_din2[__out_idx.at(y)][__in_idx.at(x1)][__in_idx.at(2)];
-// }
+const BatchTensor &
+VariableStore::second_derivative_storage(const VariableName & y,
+                                         const VariableName & x1,
+                                         const VariableName & x2) const
+{
+  return __d2out_din2[__out_idx.at(y)][__in_idx.at(x1)][__in_idx.at(x2)];
+}
 
 void
 VariableStore::setup_input_views()
 {
-  if (_object->assembly_mode() == Model::AssemblyMode::INPLACE)
+  if (_assembly_mode == AssemblyMode::INPLACE)
   {
     for (auto && [name, var] : input_views())
       var.setup_views(&_object->host<VariableStore>()->input_storage());
   }
-  else if (_object->assembly_mode() == Model::AssemblyMode::CONCATENATION)
+  else if (_assembly_mode == AssemblyMode::CONCATENATION)
   {
     for (auto && [name, var] : input_views())
-      var.setup_views(&_object->host<VariableStore>()->input_storage(var))
+      var.setup_views(&_object->host<VariableStore>()->input_storage(name));
   }
   else
     throw NEMLException("Unknown assembly mode");
@@ -232,20 +252,20 @@ VariableStore::setup_input_views()
 void
 VariableStore::setup_output_views()
 {
-  if (_object->assembly_mode() == Model::AssemblyMode::INPLACE)
+  if (_assembly_mode == AssemblyMode::INPLACE)
   {
     for (auto && [name, var] : output_views())
       var.setup_views(&_out, &_dout_din, &_d2out_din2);
   }
-  else if (_object->assembly_mode() == Model::AssemblyMode::CONCATENATION)
+  else if (_assembly_mode == AssemblyMode::CONCATENATION)
   {
     for (auto && [name, var] : output_views())
     {
-      const auto var_idx = __out_idx[var];
+      const auto var_idx = __out_idx[name];
       var.setup_views(__in_idx,
                       __out.empty() ? nullptr : &__out[var_idx],
                       __dout_din.empty() ? nullptr : &__dout_din[var_idx],
-                      __d2out_din2.empty() ? nullptr : &__d2out_din2[var_idx])
+                      __d2out_din2.empty() ? nullptr : &__d2out_din2[var_idx]);
     }
   }
   else
@@ -256,7 +276,7 @@ void
 VariableStore::reinit_input_views()
 {
   // No-op for concatenation mode
-  if (_object->assembly_mode() == Model::AssemblyMode::CONCATENATION)
+  if (_assembly_mode == AssemblyMode::CONCATENATION)
     return;
 
   for (auto && [name, var] : input_views())
@@ -267,7 +287,7 @@ void
 VariableStore::reinit_output_views(bool out, bool dout_din, bool d2out_din2)
 {
   // No-op for concatenation mode
-  if (_object->assembly_mode() == Model::AssemblyMode::CONCATENATION)
+  if (_assembly_mode == AssemblyMode::CONCATENATION)
     return;
 
   for (auto && [name, var] : output_views())
@@ -278,7 +298,7 @@ void
 VariableStore::detach_and_zero(bool out, bool dout_din, bool d2out_din2)
 {
   // No-op for concatenation mode
-  if (_object->assembly_mode() == Model::AssemblyMode::CONCATENATION)
+  if (_assembly_mode == AssemblyMode::CONCATENATION)
     return;
 
   bool out_detached = false;

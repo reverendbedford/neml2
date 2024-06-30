@@ -37,6 +37,16 @@ typedef at::indexing::TensorIndex TorchIndex;
 typedef std::vector<at::indexing::TensorIndex> TorchSlice;
 
 /**
+ * @brief Assembly mode, uhh I'll have to remember to add documentation when everything works
+ *
+ */
+enum class AssemblyMode : int8_t
+{
+  INPLACE,
+  CONCATENATION
+};
+
+/**
  * The factory methods like `torch::arange`, `torch::ones`, `torch::zeros`, `torch::rand` etc.
  * accept a common argument to configure the properties of the tensor being created. We predefine
  * a default tensor configuration in NEML2. This default configuration is consistently used

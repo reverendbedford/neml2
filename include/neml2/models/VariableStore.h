@@ -33,13 +33,15 @@
 
 namespace neml2
 {
-// Forward decl
-class Model;
-
 class VariableStore
 {
 public:
-  VariableStore(const OptionSet & options, Model * object);
+  static OptionSet expected_options();
+
+  VariableStore(const OptionSet & options, NEML2Object * object);
+
+  /// Get this model's assembly mode
+  const AssemblyMode & assembly_mode() const { return _assembly_mode; }
 
   LabeledAxis & declare_axis(const std::string & name);
 
@@ -118,7 +120,7 @@ public:
   /// Get the view of an output variable
   VariableBase * output_view(const VariableName &);
 
-  /// Storage accessors for Model::AssemblyMode::INPLACE
+  /// Storage accessors for AssemblyMode::INPLACE
   ///@{
   /// Input storage
   LabeledVector & input_storage() { return _in; }
@@ -138,7 +140,7 @@ public:
   const LabeledTensor3D & second_derivative_storage() const { return _d2out_din2; }
   /// @}
 
-  /// Storage accessors for Model::AssemblyMode::CONCATENATION
+  /// Storage accessors for AssemblyMode::CONCATENATION
   ///@{
   /// Input storage
   BatchTensor & input_storage(const VariableName & y);
@@ -303,12 +305,12 @@ private:
     // Allocate
     if constexpr (std::is_same_v<T, BatchTensor>)
     {
-      auto var = std::make_unique<Variable<BatchTensor>>(name, sz, _object->assembly_mode());
+      auto var = std::make_unique<Variable<BatchTensor>>(name, sz, _assembly_mode);
       var_base_ptr = views.set_pointer(name, std::move(var));
     }
     else
     {
-      auto var = std::make_unique<Variable<T>>(name, _object->assembly_mode());
+      auto var = std::make_unique<Variable<T>>(name, _assembly_mode);
       var_base_ptr = views.set_pointer(name, std::move(var));
     }
 
@@ -320,7 +322,7 @@ private:
     return var_ptr;
   }
 
-  Model * _object;
+  NEML2Object * _object;
 
   /**
    * @brief Parsed input file options. These options are useful for example when we declare a
@@ -328,6 +330,12 @@ private:
    *
    */
   const OptionSet _options;
+
+  /// Assembly mode
+  // TODO: Relax the constness, i.e., allow changing assembly mode after construction. This would
+  // require carefully deallocate/allocate variables and variable views based on the current and
+  // target assembly modes.
+  const AssemblyMode _assembly_mode;
 
   /// All the declared axes
   Storage<std::string, LabeledAxis> _axes;
@@ -344,7 +352,7 @@ private:
   /// The output axis
   LabeledAxis & _output_axis;
 
-  /// Storage for Model::AssemblyMode::INPLACE
+  /// Storage for AssemblyMode::INPLACE
   ///@{
   /// The storage for input variable values
   LabeledVector _in;
@@ -359,9 +367,9 @@ private:
   /// Storage for Model::Assembly::CONCATENATION
   ///@{
   /// Input variable assembly indices
-  std::unordered_map<VariableName, size_t> __in_idx;
+  std::map<VariableName, size_t> __in_idx;
   /// Output variable assembly indices
-  std::unordered_map<VariableName, size_t> __out_idx;
+  std::map<VariableName, size_t> __out_idx;
   /// The storage for input variable values
   std::vector<BatchTensor> __in;
   /// The storage for output variable values

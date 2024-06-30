@@ -38,12 +38,11 @@ VariableBase::setup_views(const VariableBase * other)
   neml_assert(_assembly_mode == other->_assembly_mode, "Assembly mode mismatch");
   neml_assert(other, "other != nullptr");
 
-  if (_assembly_mode == Model::AssemblyMode::INPLACE)
+  if (_assembly_mode == AssemblyMode::INPLACE)
     setup_views(
         other->_value_storage, other->_derivative_storage, other->_second_derivative_storage);
-  else if (_assembly_mode == Model::AssemblyMode::CONCATENATION)
-    setup_views(
-        __args_idx, other->__value, other->_derivative_storage, other->_second_derivative_storage);
+  else if (_assembly_mode == AssemblyMode::CONCATENATION)
+    setup_views(*__args_idx, other->__raw_value, other->__dvalue_d, other->__d2value_d);
   else
     throw NEMLException("Unknown assembly mode");
 }
@@ -53,7 +52,7 @@ VariableBase::setup_views(const LabeledVector * value,
                           const LabeledMatrix * deriv,
                           const LabeledTensor3D * secderiv)
 {
-  neml_assert(_assembly_mode == Model::AssemblyMode::INPLACE,
+  neml_assert(_assembly_mode == AssemblyMode::INPLACE,
               "This method only works in inplace assembly mode");
 
   _value_storage = value;
@@ -64,22 +63,22 @@ VariableBase::setup_views(const LabeledVector * value,
 void
 VariableBase::setup_views(BatchTensor * value)
 {
-  neml_assert(_assembly_mode == Model::AssemblyMode::CONCATENATION,
+  neml_assert(_assembly_mode == AssemblyMode::CONCATENATION,
               "This method only works in concatenation assembly mode");
 
   __raw_value = value;
 }
 
 void
-VariableBase::setup_views(const std::unordered_map<VariableName, size_t> * idx,
+VariableBase::setup_views(const std::map<VariableName, size_t> & idx,
                           BatchTensor * value,
-                          std::vector<BatchTensor *> * deriv,
-                          std::vector<std::vector<BatchTensor *>> * secderiv)
+                          std::vector<BatchTensor> * deriv,
+                          std::vector<std::vector<BatchTensor>> * secderiv)
 {
-  neml_assert(_assembly_mode == Model::AssemblyMode::CONCATENATION,
+  neml_assert(_assembly_mode == AssemblyMode::CONCATENATION,
               "This method only works in concatenation assembly mode");
 
-  __args_idx = idx;
+  __args_idx = &idx;
   __raw_value = value;
   __dvalue_d = deriv;
   __d2value_d = secderiv;
@@ -88,7 +87,7 @@ VariableBase::setup_views(const std::unordered_map<VariableName, size_t> * idx,
 void
 VariableBase::reinit_views(bool out, bool dout_din, bool d2out_din2)
 {
-  neml_assert(_assembly_mode == Model::AssemblyMode::INPLACE,
+  neml_assert(_assembly_mode == AssemblyMode::INPLACE,
               "This method only works in inplace assembly mode");
 
   if (out)
@@ -114,7 +113,7 @@ VariableBase::reinit_views(bool out, bool dout_din, bool d2out_din2)
 const LabeledVector &
 VariableBase::value_storage() const
 {
-  neml_assert_dbg(_assembly_mode == Model::AssemblyMode::INPLACE,
+  neml_assert_dbg(_assembly_mode == AssemblyMode::INPLACE,
                   "This method only works in inplace assembly mode");
 
   neml_assert_dbg(_value_storage, "Variable value storage not initialized.");
@@ -124,7 +123,7 @@ VariableBase::value_storage() const
 const LabeledMatrix &
 VariableBase::derivative_storage() const
 {
-  neml_assert_dbg(_assembly_mode == Model::AssemblyMode::INPLACE,
+  neml_assert_dbg(_assembly_mode == AssemblyMode::INPLACE,
                   "This method only works in inplace assembly mode");
 
   neml_assert_dbg(_derivative_storage, "Variable derivative storage not initialized.");
@@ -134,7 +133,7 @@ VariableBase::derivative_storage() const
 const LabeledTensor3D &
 VariableBase::second_derivative_storage() const
 {
-  neml_assert_dbg(_assembly_mode == Model::AssemblyMode::INPLACE,
+  neml_assert_dbg(_assembly_mode == AssemblyMode::INPLACE,
                   "This method only works in inplace assembly mode");
 
   neml_assert_dbg(_second_derivative_storage, "Variable 2nd derivative storage not initialized.");
@@ -144,23 +143,23 @@ VariableBase::second_derivative_storage() const
 Derivative
 VariableBase::d(const VariableBase & x)
 {
-  if (_assembly_mode == Model::AssemblyMode::INPLACE)
+  if (_assembly_mode == AssemblyMode::INPLACE)
   {
     neml_assert_dbg(_dvalue_d.count(x.name()),
                     "Error retrieving first derivative: ",
                     name(),
                     " does not depend on ",
                     x.name());
-    return Derivative(_dvalue_d[x.name()]);
+    return Derivative(_dvalue_d[x.name()], batch_sizes(), _assembly_mode);
   }
-  else if (_assembly_mode == Model::AssemblyMode::CONCATENATION)
+  else if (_assembly_mode == AssemblyMode::CONCATENATION)
   {
-    neml_assert_dbg(__args_idx->count(x.name()) && __dvalue_d->size() > (*__args_idx)[x.name()],
+    neml_assert_dbg(__args_idx->count(x.name()) && __dvalue_d->size() > __args_idx->at(x.name()),
                     "Error retrieving first derivative: ",
                     name(),
                     " does not depend on ",
                     x.name());
-    return Derivative(*(*__dvalue_d)[(*__args_idx)[x.name()]]);
+    return Derivative((*__dvalue_d)[__args_idx->at(x.name())], batch_sizes(), _assembly_mode);
   }
   else
     throw NEMLException("Unknown assembly mode");
@@ -169,7 +168,7 @@ VariableBase::d(const VariableBase & x)
 Derivative
 VariableBase::d(const VariableBase & x1, const VariableBase & x2)
 {
-  if (_assembly_mode == Model::AssemblyMode::INPLACE)
+  if (_assembly_mode == AssemblyMode::INPLACE)
   {
     neml_assert_dbg(_d2value_d.count(x1.name()),
                     "Error retrieving second derivative: ",
@@ -183,24 +182,27 @@ VariableBase::d(const VariableBase & x1, const VariableBase & x2)
                     x1.name(),
                     ") does not depend on ",
                     x2.name());
-    return Derivative(_d2value_d[x1.name()][x2.name()]);
+    return Derivative(_d2value_d[x1.name()][x2.name()], batch_sizes(), _assembly_mode);
   }
-  else if (_assembly_mode == Model::AssemblyMode::CONCATENATION)
+  else if (_assembly_mode == AssemblyMode::CONCATENATION)
   {
-    neml_assert_dbg(__args_idx->count(x1.name()) && __d2value_d->size() > (*__args_idx)[x1.name()],
+    neml_assert_dbg(__args_idx->count(x1.name()) && __d2value_d->size() > __args_idx->at(x1.name()),
                     "Error retrieving second derivative: ",
                     name(),
                     " does not depend on ",
                     x1.name());
     neml_assert_dbg(__args_idx->count(x2.name()) &&
-                        (*__d2value_d)[(*__args_idx)[x1.name()]].size() > (*__args_idx)[x2.name()],
+                        (*__d2value_d)[__args_idx->at(x1.name())].size() >
+                            __args_idx->at(x2.name()),
                     "Error retrieving second derivative: d(",
                     name(),
                     ")/d(",
                     x1.name(),
                     ") does not depend on ",
                     x2.name());
-    return Derivative(*(*__d2value_d)[(*__args_idx)[x1.name()]][(*__args_idx)[x2.name()]]);
+    return Derivative((*__d2value_d)[__args_idx->at(x1.name())][__args_idx->at(x2.name())],
+                      batch_sizes(),
+                      _assembly_mode);
   }
   else
     throw NEMLException("Unknown assembly mode");
@@ -209,11 +211,12 @@ VariableBase::d(const VariableBase & x1, const VariableBase & x2)
 void
 Derivative::operator=(const BatchTensor & val)
 {
-  if (_assembly_mode == Model::AssemblyMode::INPLACE)
-    _value.index_put_({torch::indexing::Slice()},
-                      val.batch_expand(_batch_sizes).base_reshape(_base_sizes));
-  else if (_assembly_mode == Model::AssemblyMode::CONCATENATION)
-    _value = val.batch_expand(_batch_sizes).base_reshape(_base_sizes);
+  auto val_reshaped = val.batch_expand(_batch_sizes).base_reshape(_value.base_sizes());
+
+  if (_assembly_mode == AssemblyMode::INPLACE)
+    _value.index_put_({torch::indexing::Slice()}, val_reshaped);
+  else if (_assembly_mode == AssemblyMode::CONCATENATION)
+    _value = val_reshaped;
   else
     throw NEMLException("Unknown assembly mode");
 }

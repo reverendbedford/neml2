@@ -24,14 +24,11 @@
 
 #pragma once
 
+#include "neml2/misc/utils.h"
+#include "neml2/tensors/LabeledAxisAccessor.h"
+
 #include <unordered_map>
 #include <type_traits>
-
-#include "neml2/misc/types.h"
-
-#include "neml2/tensors/LabeledAxisAccessor.h"
-#include "neml2/tensors/Scalar.h"
-#include "neml2/tensors/SR2.h"
 
 namespace neml2
 {
@@ -154,6 +151,10 @@ public:
   /// Get the common indices of two `LabeledAxis`s
   std::vector<std::pair<TorchIndex, TorchIndex>> common_indices(const LabeledAxis & other,
                                                                 bool recursive = true) const;
+
+  /// Get the assembly indices
+  std::map<LabeledAxisAccessor, size_t>
+  assembly_indices(const std::set<LabeledAxisAccessor> & vars) const;
 
   /// Get the item names
   std::vector<std::string> item_names() const;
