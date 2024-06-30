@@ -188,6 +188,9 @@ BatchTensor full_to_skew(const BatchTensor & full, TorchSize dim = 0);
  */
 BatchTensor skew_to_full(const BatchTensor & skew, TorchSize dim = 0);
 
+/// Concatenate BatchTensors
+BatchTensor cat(const std::vector<BatchTensor> & tensors, TorchSize dim = 0);
+
 /**
  * @brief Use automatic differentiation (AD) to calculate the derivatives w.r.t. to the parameter
  *

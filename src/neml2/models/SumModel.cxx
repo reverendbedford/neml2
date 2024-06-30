@@ -94,7 +94,10 @@ SumModel<T>::set_value(bool out, bool dout_din, bool d2out_din2)
   {
     auto sum = T::zeros(_to.batch_sizes(), options());
     for (size_t i = 0; i < N; i++)
+    {
+      std::cout << "input " << i << " = \n" << T(*_from[i]) << std::endl;
       sum += (*_coefs[i]) * (*_from[i]);
+    }
     _to = sum;
   }
 

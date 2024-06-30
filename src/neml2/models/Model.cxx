@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 #include "neml2/models/Model.h"
+#include "neml2/misc/utils.h"
 
 namespace neml2
 {
@@ -99,10 +100,6 @@ Model::preflight() const
 void
 Model::setup()
 {
-  // Declare nonlinear parameters as additional input variables
-  // for (const auto & [name, param] : named_nonlinear_parameters())
-  //   declare_input_variable(param->base_storage(), VariableName(param->name()));
-
   // Setup input and output axes
   setup_layout();
 
@@ -298,32 +295,57 @@ Model::use_AD_derivatives(bool first, bool second)
 void
 Model::set_input(const LabeledVector & in)
 {
-  neml_assert_batch_broadcastable(in, input_storage());
+  neml_assert(utils::sizes_broadcastable(in.batch_sizes(), batch_sizes()));
   neml_assert_dbg(in.axis(0) == input_axis(),
                   "Incompatible input axis. The model has input axis: \n",
                   input_axis(),
                   "The input vector has axis: \n",
                   in.axis(0));
 
-  input_storage().copy_(in.tensor().batch_expand(batch_sizes()));
+  if (assembly_mode() == AssemblyMode::INPLACE)
+  {
+    input_storage().copy_(in.tensor().batch_expand(batch_sizes()));
+  }
+  else if (assembly_mode() == AssemblyMode::CONCATENATION)
+  {
+    for (auto && [name, var] : input_views())
+      var = in(name);
+  }
+  else
+    throw NEMLException("Unknown assembly mode");
 }
 
 LabeledVector
 Model::get_output()
 {
-  return output_storage().clone();
+  if (assembly_mode() == AssemblyMode::INPLACE)
+    return output_storage().clone();
+  else if (assembly_mode() == AssemblyMode::CONCATENATION)
+    return assemble_output();
+  else
+    throw NEMLException("Unknown assembly mode");
 }
 
 LabeledMatrix
 Model::get_doutput_dinput()
 {
-  return derivative_storage().clone();
+  if (assembly_mode() == AssemblyMode::INPLACE)
+    return derivative_storage().clone();
+  else if (assembly_mode() == AssemblyMode::CONCATENATION)
+    return assemble_derivative();
+  else
+    throw NEMLException("Unknown assembly mode");
 }
 
 LabeledTensor3D
 Model::get_d2output_dinput2()
 {
-  return second_derivative_storage().clone();
+  if (assembly_mode() == AssemblyMode::INPLACE)
+    return second_derivative_storage().clone();
+  else if (assembly_mode() == AssemblyMode::CONCATENATION)
+    return assemble_second_derivative();
+  else
+    throw NEMLException("Unknown assembly mode");
 }
 
 LabeledVector

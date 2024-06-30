@@ -102,7 +102,15 @@ public:
   /// @}
 
   /// Raw flattened variable value
-  const BatchTensor & raw_value() const { return _raw_value; }
+  const BatchTensor & raw_value() const
+  {
+    if (_assembly_mode == AssemblyMode::INPLACE)
+      return _raw_value;
+    else if (_assembly_mode == AssemblyMode::CONCATENATION)
+      return *__raw_value;
+    else
+      throw NEMLException("Unknown assembly mode");
+  }
 
   /// Variable value of the logical shape
   virtual const BatchTensor tensor() const = 0;
@@ -127,6 +135,8 @@ public:
 
   /// Total shape
   virtual TorchShapeRef sizes() const = 0;
+
+  virtual void operator=(const BatchTensor & val) = 0;
 
 protected:
   /// Name of the variable
@@ -210,8 +220,8 @@ public:
 
   virtual void requires_grad_(bool req = true) override
   {
-    neml_assert_dbg(_assembly_mode == AssemblyMode::INPLACE,
-                    "Cannot request AD in concatenation assembly mode");
+    neml_assert_dbg(_assembly_mode == AssemblyMode::CONCATENATION,
+                    "Cannot request AD in inplace assembly mode");
     _value.requires_grad_(req);
   }
 
@@ -232,7 +242,7 @@ public:
   }
 
   /// Set the variable value
-  void operator=(const BatchTensor & val)
+  void operator=(const BatchTensor & val) override
   {
     if (_assembly_mode == AssemblyMode::INPLACE)
       _value.index_put_({torch::indexing::Slice()},

@@ -24,6 +24,7 @@
 
 #include "neml2/models/VariableStore.h"
 #include "neml2/models/Model.h"
+#include "neml2/misc/math.h"
 
 namespace neml2
 {
@@ -225,6 +226,48 @@ VariableStore::second_derivative_storage(const VariableName & y,
                                          const VariableName & x2) const
 {
   return __d2out_din2[__out_idx.at(y)][__in_idx.at(x1)][__in_idx.at(x2)];
+}
+
+LabeledVector
+VariableStore::assemble_output() const
+{
+  neml_assert_dbg(_assembly_mode == AssemblyMode::CONCATENATION,
+                  "Use output_storage() for inplace assembly mode");
+  return LabeledVector(math::cat(__out, -1), {&_output_axis});
+}
+
+LabeledMatrix
+VariableStore::assemble_derivative() const
+{
+  neml_assert_dbg(_assembly_mode == AssemblyMode::CONCATENATION,
+                  "Use derivative_storage()() for inplace assembly mode");
+  std::vector<BatchTensor> rows(__dout_din.size());
+  std::transform(__dout_din.begin(),
+                 __dout_din.end(),
+                 rows.begin(),
+                 [](const auto & row) { return math::cat(row, -1); });
+  return LabeledMatrix(math::cat(rows, -2), {&_output_axis, &_input_axis});
+}
+
+LabeledTensor3D
+VariableStore::assemble_second_derivative() const
+{
+  neml_assert_dbg(_assembly_mode == AssemblyMode::CONCATENATION,
+                  "Use second_derivative_storage() for inplace assembly mode");
+  std::vector<BatchTensor> rows(__d2out_din2.size());
+  std::transform(__d2out_din2.begin(),
+                 __d2out_din2.end(),
+                 rows.begin(),
+                 [](const auto & row)
+                 {
+                   std::vector<BatchTensor> cols(row.size());
+                   std::transform(row.begin(),
+                                  row.end(),
+                                  cols.begin(),
+                                  [](const auto & col) { return math::cat(col, -1); });
+                   return math::cat(cols, -2);
+                 });
+  return LabeledTensor3D(math::cat(rows, -3), {&_output_axis, &_input_axis, &_input_axis});
 }
 
 void

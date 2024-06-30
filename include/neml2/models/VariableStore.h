@@ -162,6 +162,16 @@ public:
   second_derivative_storage(const VariableName &, const VariableName &, const VariableName &) const;
   ///@}
 
+  /// Assembly operators for AssemblyMode::CONCATENATION
+  ///@{
+  /// Assemble the output
+  LabeledVector assemble_output() const;
+  /// Assemble the output
+  LabeledMatrix assemble_derivative() const;
+  /// Assemble the output
+  LabeledTensor3D assemble_second_derivative() const;
+  ///@}
+
 protected:
   /// Cache the variable's batch shape
   virtual void cache(TorchShapeRef batch_shape);

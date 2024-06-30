@@ -200,6 +200,14 @@ skew_to_full(const BatchTensor & skew, TorchSize dim)
 }
 
 BatchTensor
+cat(const std::vector<BatchTensor> & tensors, TorchSize dim)
+{
+  neml_assert_dbg(!tensors.empty(), "Must provide at least one tensor to math::cat");
+  std::vector<torch::Tensor> torch_tensors(tensors.begin(), tensors.end());
+  return BatchTensor(torch::cat(torch_tensors, dim), tensors[0].batch_dim());
+}
+
+BatchTensor
 jacrev(const BatchTensor & y, const BatchTensor & p)
 {
   neml_assert(p.batch_sizes() == y.batch_sizes(),
