@@ -158,41 +158,23 @@ Factory::get_object_ptr(const std::string & section,
   // Easy if it already exists
   if (!force_create)
     if (factory._objects.count(section) && factory._objects.at(section).count(name))
-    {
-      const auto & neml2_obj = factory._objects[section][name].back();
-
-      // Error on option clash (these errors should only be developer-facing)
-      for (const auto & [key, value] : additional_options)
+      for (const auto & neml2_obj : factory._objects[section][name])
       {
-        neml_assert_dbg(neml2_obj->input_options().contains(key),
-                        "While retrieving object named '",
-                        name,
-                        "' under section ",
-                        section,
-                        ", additional option '",
-                        key,
-                        "'");
-        neml_assert_dbg(neml2_obj->input_options().get(key) == *value,
-                        "While retrieving object named '",
-                        name,
-                        "' under section ",
-                        section,
-                        ", encountered option clash for '",
-                        key,
-                        "'");
+        // Check for option clash
+        if (!options_compatible(neml2_obj->input_options(), additional_options))
+          continue;
+
+        // Check for object type
+        auto obj = std::dynamic_pointer_cast<T>(neml2_obj);
+        neml_assert(obj != nullptr,
+                    "Found object named ",
+                    name,
+                    " under section ",
+                    section,
+                    ". But dynamic cast failed. Did you specify the correct object type?");
+
+        return obj;
       }
-
-      // Check for object type
-      auto obj = std::dynamic_pointer_cast<T>(neml2_obj);
-      neml_assert(obj != nullptr,
-                  "Found object named ",
-                  name,
-                  " under section ",
-                  section,
-                  ". But dynamic cast failed. Did you specify the correct object type?");
-
-      return obj;
-    }
 
   // Otherwise try to create it
   for (auto & options : factory._all_options[section])
@@ -210,7 +192,9 @@ Factory::get_object_ptr(const std::string & section,
               " under section ",
               section);
 
-  return Factory::get_object_ptr<T>(section, name, OptionSet(), false);
+  auto obj = std::dynamic_pointer_cast<T>(factory._objects[section][name].back());
+  neml_assert(obj != nullptr, "Internal error: Factory failed to create object ", name);
+  return obj;
 }
 
 template <class T>

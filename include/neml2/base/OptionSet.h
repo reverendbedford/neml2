@@ -37,6 +37,9 @@
 
 namespace neml2
 {
+// Forward decl
+class OptionSet;
+
 ///@{
 /**
  * Helper functions for printing scalar, vector, vector of vector. Called from
@@ -49,6 +52,8 @@ void print_helper(std::ostream & os, const std::vector<P> *);
 template <typename P>
 void print_helper(std::ostream & os, const std::vector<std::vector<P>> *);
 ///@}
+
+bool options_compatible(const OptionSet & opts, const OptionSet & additional_opts);
 
 /**
  * @brief A custom map-like data structure. The keys are strings, and the values can be
@@ -127,8 +132,11 @@ public:
   public:
     virtual ~OptionBase() = default;
 
-    /// Test for option equality
+    /// Test for option (in)equality
+    ///@{
     virtual bool operator==(const OptionBase & other) const = 0;
+    virtual bool operator!=(const OptionBase & other) const = 0;
+    ///@}
 
     /// A readonly reference to the option's name
     const std::string & name() const { return _metadata.name; }
@@ -216,6 +224,9 @@ public:
         return name == other.name && type == other.type && doc == other.doc &&
                suppressed == other.suppressed;
       }
+
+      bool operator!=(const Metadata & other) const { return !(*this == other); }
+
     } _metadata;
   };
 
@@ -235,6 +246,8 @@ public:
     }
 
     virtual bool operator==(const OptionBase & other) const override;
+
+    virtual bool operator!=(const OptionBase & other) const override;
 
     /**
      * \returns A read-only reference to the option value
@@ -383,6 +396,13 @@ OptionSet::Option<T>::operator==(const OptionBase & other) const
     return false;
 
   return (_metadata == other_ptr->_metadata) && (other_ptr->get() == this->get());
+}
+
+template <typename T>
+bool
+OptionSet::Option<T>::operator!=(const OptionBase & other) const
+{
+  return !(*this == other);
 }
 
 // LCOV_EXCL_START

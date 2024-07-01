@@ -73,8 +73,9 @@ ComposedModel::ComposedModel(const OptionSet & options)
   // Registering nonlinear parameters here ensures dependency resolution. And if a nonlinear
   // parameter is registered by multiple models (which is very possible), we won't have to
   // evaluate the nonlinar parameter over and over again!
-  for (auto && [pname, submodel] : named_nonlinear_parameter_models(true))
-    _registered_models.push_back(submodel);
+  for (auto submodel : registered_models())
+    for (auto && [pname, pmodel] : submodel->named_nonlinear_parameter_models(/*recursive=*/false))
+      _registered_models.push_back(pmodel);
 
   // Add registered models as nodes in the dependency resolver
   for (auto submodel : registered_models())
@@ -190,19 +191,35 @@ ComposedModel::set_value(bool out, bool dout_din, bool d2out_din2)
       apply_second_order_chain_rule(i);
   }
 
-  for (auto model : _dependency.end_nodes())
+  if (assembly_mode() == AssemblyMode::INPLACE)
   {
-    if (out)
-      output_storage().fill(model->output_storage());
+    for (auto model : _dependency.end_nodes())
+    {
+      if (out)
+        output_storage().fill(model->output_storage());
 
-    if (dout_din)
-      derivative_storage().fill(_dpout_din[model]);
+      if (dout_din)
+        derivative_storage().fill(_dpout_din[model]);
 
-    if (d2out_din2)
-      second_derivative_storage().fill(_d2pout_din2[model]);
+      if (d2out_din2)
+        second_derivative_storage().fill(_d2pout_din2[model]);
+    }
   }
+  else if (assembly_mode() == AssemblyMode::CONCATENATION)
+  {
+    // TODO
+  }
+  else
+    throw NEMLException("Unknown assembly mode");
 
   clear_chain_rule_cache();
+}
+
+void
+ComposedModel::clear_chain_rule_cache()
+{
+  _dpout_din.clear();
+  _d2pout_din2.clear();
 }
 
 void

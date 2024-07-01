@@ -126,7 +126,8 @@ ParameterStore::declare_parameter(const std::string & name, const std::string & 
         extra_opts.set<EnumSelection>("_assembly_mode") =
             model->input_options().get<EnumSelection>("_assembly_mode");
         auto pname = _options.get<CrossRef<T>>(input_option_name).raw();
-        auto & nl_param = Factory::get_object<NonlinearParameter<T>>("Models", pname, extra_opts);
+        auto & nl_param = Factory::get_object<NonlinearParameter<T>>(
+            "Models", pname, extra_opts, /*force_create=*/false);
         model->declare_input_variable(nl_param.param().base_storage(), VariableName(pname));
         _nl_params[name] = &nl_param.param();
         _nl_param_models[name] = &nl_param;

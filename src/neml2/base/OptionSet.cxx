@@ -27,6 +27,19 @@
 namespace neml2
 {
 bool
+options_compatible(const OptionSet & opts, const OptionSet & additional_opts)
+{
+  for (const auto & [key, value] : additional_opts)
+  {
+    if (!opts.contains(key))
+      return false;
+    if (opts.get(key) != *value)
+      return false;
+  }
+  return true;
+}
+
+bool
 OptionSet::contains(const std::string & name) const
 {
   OptionSet::const_iterator it = _values.find(name);

@@ -167,22 +167,12 @@ Model::setup_input_views()
 void
 Model::setup_submodel_input_views()
 {
-  if (assembly_mode() == AssemblyMode::INPLACE)
+  for (auto submodel : registered_models())
   {
-    for (auto submodel : registered_models())
-    {
-      for (auto && [name, var] : submodel->input_views())
-        var.setup_views(input_view(var.name()));
-
-      submodel->setup_submodel_input_views();
-    }
+    for (auto && [name, var] : submodel->input_views())
+      var.setup_views(input_view(var.name()));
+    submodel->setup_submodel_input_views();
   }
-  else if (assembly_mode() == AssemblyMode::CONCATENATION)
-  {
-    // TODO
-  }
-  else
-    throw NEMLException("Unknown assembly mode");
 }
 
 void
@@ -198,15 +188,7 @@ Model::setup_submodel_output_views()
   if (assembly_mode() == AssemblyMode::INPLACE)
   {
     for (auto submodel : registered_models())
-    {
-      for (auto && [name, var] : submodel->output_views())
-        var.setup_views(&submodel->output_storage(),
-                        submodel->requires_grad() ? &submodel->derivative_storage() : nullptr,
-                        submodel->requires_2nd_grad() ? &submodel->second_derivative_storage()
-                                                      : nullptr);
-
-      submodel->setup_submodel_output_views();
-    }
+      submodel->setup_output_views();
   }
   else if (assembly_mode() == AssemblyMode::CONCATENATION)
   {
@@ -319,34 +301,19 @@ Model::set_input(const LabeledVector & in)
 LabeledVector
 Model::get_output()
 {
-  if (assembly_mode() == AssemblyMode::INPLACE)
-    return output_storage().clone();
-  else if (assembly_mode() == AssemblyMode::CONCATENATION)
-    return assemble_output();
-  else
-    throw NEMLException("Unknown assembly mode");
+  return output_storage().clone();
 }
 
 LabeledMatrix
 Model::get_doutput_dinput()
 {
-  if (assembly_mode() == AssemblyMode::INPLACE)
-    return derivative_storage().clone();
-  else if (assembly_mode() == AssemblyMode::CONCATENATION)
-    return assemble_derivative();
-  else
-    throw NEMLException("Unknown assembly mode");
+  return derivative_storage().clone();
 }
 
 LabeledTensor3D
 Model::get_d2output_dinput2()
 {
-  if (assembly_mode() == AssemblyMode::INPLACE)
-    return second_derivative_storage().clone();
-  else if (assembly_mode() == AssemblyMode::CONCATENATION)
-    return assemble_second_derivative();
-  else
-    throw NEMLException("Unknown assembly mode");
+  return second_derivative_storage().clone();
 }
 
 LabeledVector
@@ -380,6 +347,9 @@ void
 Model::value()
 {
   set_value(true, false, false);
+
+  if (assembly_mode() == AssemblyMode::CONCATENATION)
+    output_storage() = assemble_output();
 }
 
 void
@@ -395,6 +365,12 @@ Model::value_and_dvalue()
     input_requires_grad_();
     set_value(true, false, false);
     extract_derivatives(/*retain_graph=*/true, /*create_graph=*/true, /*allow_unused=*/true);
+  }
+
+  if (assembly_mode() == AssemblyMode::CONCATENATION)
+  {
+    output_storage() = assemble_output();
+    derivative_storage() = assemble_derivative();
   }
 }
 
@@ -421,6 +397,13 @@ Model::value_and_dvalue_and_d2value()
 
     extract_second_derivatives(
         /*retain_graph=*/true, /*create_graph=*/true, /*allow_unused=*/true);
+  }
+
+  if (assembly_mode() == AssemblyMode::CONCATENATION)
+  {
+    output_storage() = assemble_output();
+    derivative_storage() = assemble_derivative();
+    second_derivative_storage() = assemble_second_derivative();
   }
 }
 
@@ -503,7 +486,7 @@ Model::extract_second_derivatives(bool retain_graph, bool create_graph, bool all
   for (auto && [yname, yvar] : output_views())
     for (auto && [x1name, x1var] : input_views())
     {
-      auto dy_dx = derivative_storage(yname, x1name);
+      const auto & dy_dx = derivative_storage(yname, x1name);
 
       if (!dy_dx.requires_grad())
         continue;

@@ -80,102 +80,6 @@ VariableStore::output_view(const VariableName & name)
   return _output_views.query_value(name);
 }
 
-void
-VariableStore::cache(TorchShapeRef batch_shape)
-{
-  for (auto && [name, var] : input_views())
-    var.cache(batch_shape);
-  for (auto && [name, var] : output_views())
-    var.cache(batch_shape);
-}
-
-void
-VariableStore::allocate_variables(TorchShapeRef batch_shape,
-                                  const torch::TensorOptions & options,
-                                  bool in,
-                                  bool out,
-                                  bool dout_din,
-                                  bool d2out_din2)
-{
-  if (_assembly_mode == AssemblyMode::INPLACE)
-  {
-    // Allocate input storage only if this is a host model
-    if (in && _object->host() == _object)
-      _in = LabeledVector::zeros(batch_shape, {&input_axis()}, options);
-
-    // Allocate output storage
-    if (out)
-      _out = LabeledVector::zeros(batch_shape, {&output_axis()}, options);
-
-    if (dout_din)
-      _dout_din = LabeledMatrix::zeros(batch_shape, {&output_axis(), &input_axis()}, options);
-
-    if (d2out_din2)
-      _d2out_din2 = LabeledTensor3D::zeros(
-          batch_shape, {&output_axis(), &input_axis(), &input_axis()}, options);
-  }
-  else if (_assembly_mode == AssemblyMode::CONCATENATION)
-  {
-    // Pre-sort the input and output variables so that the final assembly using concatenation
-    // would just be a simple torch::cat.
-    __in_idx = _input_axis.assembly_indices(_input_views.keys());
-    __out_idx = _output_axis.assembly_indices(_output_views.keys());
-
-    // Resize the storage vectors accordingly
-    const auto ninput = __in_idx.size();
-    const auto noutput = __out_idx.size();
-
-    if (in && _object->host() == _object)
-    {
-      __in.resize(ninput);
-      for (const auto & [var, i] : __in_idx)
-        __in[i] = BatchTensor::zeros(batch_shape, {_input_axis.storage_size(var)}, options);
-    }
-
-    if (out)
-    {
-      __out.resize(noutput);
-      for (const auto & [var, i] : __out_idx)
-        __out[i] = BatchTensor::zeros(batch_shape, {_output_axis.storage_size(var)}, options);
-    }
-
-    if (dout_din)
-    {
-      __dout_din.resize(noutput);
-      for (const auto & [yvar, i] : __out_idx)
-      {
-        __dout_din[i].resize(ninput);
-        for (const auto & [xvar, j] : __in_idx)
-          __dout_din[i][j] =
-              BatchTensor::zeros(batch_shape,
-                                 {_output_axis.storage_size(yvar), _input_axis.storage_size(xvar)},
-                                 options);
-      }
-    }
-
-    if (d2out_din2)
-    {
-      __d2out_din2.resize(noutput);
-      for (const auto & [yvar, i] : __out_idx)
-      {
-        __d2out_din2[i].resize(ninput);
-        for (const auto & [xvar1, j] : __in_idx)
-        {
-          __d2out_din2[i][j].resize(ninput);
-          for (const auto & [xvar2, k] : __in_idx)
-            __d2out_din2[i][j][k] = BatchTensor::zeros(batch_shape,
-                                                       {_output_axis.storage_size(yvar),
-                                                        _input_axis.storage_size(xvar1),
-                                                        _input_axis.storage_size(xvar2)},
-                                                       options);
-        }
-      }
-    }
-  }
-  else
-    throw NEMLException("Unknown assembly mode");
-}
-
 BatchTensor &
 VariableStore::input_storage(const VariableName & x)
 {
@@ -226,6 +130,94 @@ VariableStore::second_derivative_storage(const VariableName & y,
                                          const VariableName & x2) const
 {
   return __d2out_din2[__out_idx.at(y)][__in_idx.at(x1)][__in_idx.at(x2)];
+}
+
+void
+VariableStore::cache(TorchShapeRef batch_shape)
+{
+  for (auto && [name, var] : input_views())
+    var.cache(batch_shape);
+  for (auto && [name, var] : output_views())
+    var.cache(batch_shape);
+}
+
+void
+VariableStore::allocate_variables(TorchShapeRef batch_shape,
+                                  const torch::TensorOptions & options,
+                                  bool in,
+                                  bool out,
+                                  bool dout_din,
+                                  bool d2out_din2)
+{
+  if (_assembly_mode == AssemblyMode::INPLACE)
+  {
+    // Allocate input storage only if this is a host model
+    if (in && _object->host() == _object)
+      _in = LabeledVector::zeros(batch_shape, {&input_axis()}, options);
+
+    // Allocate output storage
+    if (out)
+      _out = LabeledVector::zeros(batch_shape, {&output_axis()}, options);
+
+    if (dout_din)
+      _dout_din = LabeledMatrix::zeros(batch_shape, {&output_axis(), &input_axis()}, options);
+
+    if (d2out_din2)
+      _d2out_din2 = LabeledTensor3D::zeros(
+          batch_shape, {&output_axis(), &input_axis(), &input_axis()}, options);
+  }
+  else if (_assembly_mode == AssemblyMode::CONCATENATION)
+  {
+    // Pre-sort the input and output variables so that the final assembly using concatenation
+    // would just be a simple torch::cat.
+    __in_idx = _input_axis.assembly_indices(_input_views.keys());
+    __out_idx = _output_axis.assembly_indices(_output_views.keys());
+
+    // Resize the storage vectors accordingly
+    const auto ninput = __in_idx.size();
+    const auto noutput = __out_idx.size();
+
+    if (in)
+      __in.resize(ninput);
+
+    if (out)
+      __out.resize(noutput);
+
+    if (dout_din)
+    {
+      __dout_din.resize(noutput);
+      for (const auto & [yvar, i] : __out_idx)
+      {
+        __dout_din[i].resize(ninput);
+        for (const auto & [xvar, j] : __in_idx)
+          __dout_din[i][j] =
+              BatchTensor::empty(batch_shape,
+                                 {_output_axis.storage_size(yvar), _input_axis.storage_size(xvar)},
+                                 options);
+      }
+    }
+
+    if (d2out_din2)
+    {
+      __d2out_din2.resize(noutput);
+      for (const auto & [yvar, i] : __out_idx)
+      {
+        __d2out_din2[i].resize(ninput);
+        for (const auto & [xvar1, j] : __in_idx)
+        {
+          __d2out_din2[i][j].resize(ninput);
+          for (const auto & [xvar2, k] : __in_idx)
+            __d2out_din2[i][j][k] = BatchTensor::empty(batch_shape,
+                                                       {_output_axis.storage_size(yvar),
+                                                        _input_axis.storage_size(xvar1),
+                                                        _input_axis.storage_size(xvar2)},
+                                                       options);
+        }
+      }
+    }
+  }
+  else
+    throw NEMLException("Unknown assembly mode");
 }
 
 LabeledVector
@@ -281,7 +273,7 @@ VariableStore::setup_input_views()
   else if (_assembly_mode == AssemblyMode::CONCATENATION)
   {
     for (auto && [name, var] : input_views())
-      var.setup_views(&_object->host<VariableStore>()->input_storage(name));
+      var.setup_views({}, &__in[__in_idx[name]]);
   }
   else
     throw NEMLException("Unknown assembly mode");
@@ -335,13 +327,21 @@ VariableStore::detach_and_zero(bool /*out*/, bool dout_din, bool d2out_din2)
     if (dout_din)
       for (const auto & [yvar, i] : __out_idx)
         for (const auto & [xvar, j] : __in_idx)
+        {
+          __dout_din[i][j].detach_();
           __dout_din[i][j].zero_();
+          __dout_din[i][j] = __dout_din[i][j].clone();
+        }
 
     if (d2out_din2)
       for (const auto & [yvar, i] : __out_idx)
         for (const auto & [xvar1, j] : __in_idx)
           for (const auto & [xvar2, k] : __in_idx)
+          {
+            __d2out_din2[i][j][k].detach_();
             __d2out_din2[i][j][k].zero_();
+            __d2out_din2[i][j][k] = __d2out_din2[i][j][k].clone();
+          }
   }
   else
     throw NEMLException("Unknown assembly mode");

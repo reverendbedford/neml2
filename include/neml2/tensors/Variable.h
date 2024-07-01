@@ -48,7 +48,6 @@ public:
       _derivative_storage(nullptr),
       _second_derivative_storage(nullptr),
       // AssemblyMode::CONCATENATION
-      __args_idx(nullptr),
       __raw_value(nullptr),
       __dvalue_d(nullptr),
       __d2value_d(nullptr)
@@ -61,15 +60,12 @@ public:
   virtual void cache(TorchShapeRef batch_shape);
 
   /// Setup the variable's views following another variable
-  virtual void setup_views(const VariableBase * other);
+  virtual void setup_views(VariableBase * other);
 
   /// Setup the variable's views into blocks of the storage (AssemblyMode::INPLACE)
   virtual void setup_views(const LabeledVector * value,
                            const LabeledMatrix * deriv = nullptr,
                            const LabeledTensor3D * secderiv = nullptr);
-
-  /// Setup the variable's input "view" (AssemblyMode::CONCATENATION)
-  virtual void setup_views(BatchTensor * value);
 
   /// Setup the variable's output "views" (AssemblyMode::CONCATENATION)
   virtual void setup_views(const std::map<VariableName, size_t> & idx,
@@ -95,7 +91,7 @@ public:
   /// Create a wrapper representing the second derivative d2y/dx2
   Derivative d(const VariableBase & x1, const VariableBase & x2);
 
-  ///@{ Accessors for storage
+  ///@{ Accessors for storage (AssemblyMode::INPLACE)
   const LabeledVector & value_storage() const;
   const LabeledMatrix & derivative_storage() const;
   const LabeledTensor3D & second_derivative_storage() const;
@@ -175,7 +171,7 @@ protected:
   /// with an additional underscore.
   ///@{
   /// Argument assembly indices
-  const std::map<VariableName, size_t> * __args_idx;
+  std::map<VariableName, size_t> __args_idx;
   /// The raw (flattened) variable value
   BatchTensor * __raw_value;
   /// The derivative of this variable w.r.t. arguments.
@@ -237,12 +233,9 @@ public:
   virtual void requires_grad_(bool req = true) override
   {
     neml_assert_dbg(_assembly_mode == AssemblyMode::CONCATENATION,
-                    "Cannot request AD in inplace assembly mode");
-    if (req != __raw_value->requires_grad())
-    {
-      __raw_value->requires_grad_(req);
-      _value = __raw_value->base_reshape(base_sizes());
-    }
+                    "Cannot only request AD in concatenation assembly mode");
+    __raw_value->requires_grad_(req);
+    _value = __raw_value->base_reshape(base_sizes());
   }
 
   /// Set the variable value
