@@ -220,11 +220,26 @@ VariableStore::allocate_variables(TorchShapeRef batch_shape,
     throw NEMLException("Unknown assembly mode");
 }
 
+void
+VariableStore::gather_input()
+{
+  neml_assert_dbg(_assembly_mode == AssemblyMode::CONCATENATION,
+                  "gather_input() only works in concatenation assembly mode");
+
+  for (auto && [name, var] : input_views())
+    var.gather(_object->host<VariableStore>()->input_storage());
+}
+
 LabeledVector
 VariableStore::assemble_output() const
 {
   neml_assert_dbg(_assembly_mode == AssemblyMode::CONCATENATION,
                   "Use output_storage() for inplace assembly mode");
+
+  std::cout << "Assemblying " << _object->name() << std::endl;
+  for (auto & t : __out)
+    std::cout << t << std::endl;
+
   return LabeledVector(math::cat(__out, -1), {&_output_axis});
 }
 
@@ -331,6 +346,7 @@ VariableStore::detach_and_zero(bool /*out*/, bool dout_din, bool d2out_din2)
           __dout_din[i][j].detach_();
           __dout_din[i][j].zero_();
           __dout_din[i][j] = __dout_din[i][j].clone();
+          // At this point, the derivatives are zero, no grad fn, and at version 0
         }
 
     if (d2out_din2)
@@ -341,6 +357,7 @@ VariableStore::detach_and_zero(bool /*out*/, bool dout_din, bool d2out_din2)
             __d2out_din2[i][j][k].detach_();
             __d2out_din2[i][j][k].zero_();
             __d2out_din2[i][j][k] = __d2out_din2[i][j][k].clone();
+            // At this point, the derivatives are zero, no grad fn, and at version 0
           }
   }
   else

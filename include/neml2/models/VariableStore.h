@@ -164,6 +164,8 @@ public:
 
   /// Assembly operators for AssemblyMode::CONCATENATION
   ///@{
+  /// Gather input
+  void gather_input();
   /// Assemble the output
   LabeledVector assemble_output() const;
   /// Assemble the output

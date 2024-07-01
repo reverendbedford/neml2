@@ -169,9 +169,11 @@ Model::setup_submodel_input_views()
 {
   for (auto submodel : registered_models())
   {
-    for (auto && [name, var] : submodel->input_views())
-      var.setup_views(input_view(var.name()));
-    submodel->setup_submodel_input_views();
+    submodel->setup_input_views();
+
+    if (assembly_mode() == AssemblyMode::CONCATENATION)
+      for (auto && [name, var] : submodel->input_views())
+        var.set_source(host<VariableStore>()->input_view(name));
   }
 }
 
@@ -185,17 +187,8 @@ Model::setup_output_views()
 void
 Model::setup_submodel_output_views()
 {
-  if (assembly_mode() == AssemblyMode::INPLACE)
-  {
-    for (auto submodel : registered_models())
-      submodel->setup_output_views();
-  }
-  else if (assembly_mode() == AssemblyMode::CONCATENATION)
-  {
-    // TODO
-  }
-  else
-    throw NEMLException("Unknown assembly mode");
+  for (auto submodel : registered_models())
+    submodel->setup_output_views();
 }
 
 void
@@ -287,12 +280,12 @@ Model::set_input(const LabeledVector & in)
 
   if (assembly_mode() == AssemblyMode::INPLACE)
   {
+    neml_assert(!in.tensor().requires_grad(), "Inplace assembly mode does not support AD");
     input_storage().copy_(in.tensor().batch_expand(batch_sizes()));
   }
   else if (assembly_mode() == AssemblyMode::CONCATENATION)
   {
-    for (auto && [name, var] : input_views())
-      var = in(name);
+    input_storage() = in.clone();
   }
   else
     throw NEMLException("Unknown assembly mode");
@@ -346,6 +339,9 @@ Model::value_and_dvalue_and_d2value(const LabeledVector & in)
 void
 Model::value()
 {
+  if (assembly_mode() == AssemblyMode::CONCATENATION)
+    gather_input();
+
   set_value(true, false, false);
 
   if (assembly_mode() == AssemblyMode::CONCATENATION)
@@ -357,6 +353,9 @@ Model::value_and_dvalue()
 {
   neml_assert_dbg(requires_grad(),
                   "value_and_dvalue() is called but derivative storage hasn't been allocated.");
+
+  if (assembly_mode() == AssemblyMode::CONCATENATION)
+    gather_input();
 
   if (!_AD_1st_deriv)
     set_value(true, true, false);
@@ -380,6 +379,9 @@ Model::value_and_dvalue_and_d2value()
   neml_assert_dbg(requires_2nd_grad(),
                   "value_and_dvalue_and_d2value() is called but second derivative storage hasn't "
                   "been allocated.");
+
+  if (assembly_mode() == AssemblyMode::CONCATENATION)
+    gather_input();
 
   if (!_AD_2nd_deriv)
     set_value(true, true, true);

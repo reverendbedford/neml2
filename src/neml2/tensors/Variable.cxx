@@ -81,6 +81,19 @@ VariableBase::setup_views(const std::map<VariableName, size_t> & idx,
   __d2value_d = secderiv;
 }
 
+void
+VariableBase::set_source(const VariableBase * source)
+{
+  std::cout << "Variable " << name() << " is trying to view into " << source->name() << std::endl;
+
+  neml_assert(_assembly_mode == AssemblyMode::CONCATENATION,
+              "This method only works in concatenation assembly mode");
+  neml_assert(source, "set_source() must use a non-null source");
+  neml_assert(__source == this, "VariableBase::set_source cannot modify an already-set-up source");
+
+  __source = source;
+}
+
 const LabeledVector &
 VariableBase::value_storage() const
 {

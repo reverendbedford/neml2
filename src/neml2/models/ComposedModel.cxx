@@ -162,7 +162,22 @@ ComposedModel::setup_submodel_input_views()
   }
   else if (assembly_mode() == AssemblyMode::CONCATENATION)
   {
-    // TODO
+    for (auto submodel : registered_models())
+    {
+      std::cout << "----------------------------------------------------------\n";
+      std::cout << "Setting up submodel " << submodel->name() << std::endl;
+
+      submodel->setup_input_views();
+
+      for (const auto & item : _dependency.inbound_items())
+        if (item.parent == submodel)
+          submodel->input_view(item.value)->set_source(input_view(item.value));
+
+      for (const auto & [item, providers] : _dependency.item_providers())
+        if (item.parent == submodel)
+          submodel->input_view(item.value)
+              ->set_source(providers.begin()->parent->output_view(item.value));
+    }
   }
   else
     throw NEMLException("Unknown assembly mode");
@@ -207,7 +222,20 @@ ComposedModel::set_value(bool out, bool dout_din, bool d2out_din2)
   }
   else if (assembly_mode() == AssemblyMode::CONCATENATION)
   {
-    // TODO
+    for (const auto & item : _dependency.outbound_items())
+    {
+      auto model = item.parent;
+      auto var = item.value;
+
+      if (out)
+        output_view(var) = model->output_view(var);
+
+      if (dout_din)
+        derivative_storage().fill(_dpout_din[model]);
+
+      if (d2out_din2)
+        second_derivative_storage().fill(_d2pout_din2[model]);
+    }
   }
   else
     throw NEMLException("Unknown assembly mode");

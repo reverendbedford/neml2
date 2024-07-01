@@ -79,7 +79,7 @@ private:
 
   /// Chain rule cache for AssemblyMode::CONCATENATION
   ///@{
-  std::map<Model *, std::map<VariableName, std::map<VariableName, BatchTensor>>> __dpout_din;
+  std::map<Model *, std::map<VariableName, std::vector<BatchTensor>>> __dpout_din;
   ///@}
 };
 } // namespace neml2

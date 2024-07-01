@@ -48,6 +48,7 @@ public:
       _derivative_storage(nullptr),
       _second_derivative_storage(nullptr),
       // AssemblyMode::CONCATENATION
+      __source(this),
       __raw_value(nullptr),
       __dvalue_d(nullptr),
       __d2value_d(nullptr)
@@ -72,6 +73,12 @@ public:
                            BatchTensor * value,
                            std::vector<BatchTensor> * deriv = nullptr,
                            std::vector<std::vector<BatchTensor>> * secderiv = nullptr);
+
+  /// Set the source variable
+  void set_source(const VariableBase * source);
+
+  /// Copy from the source variable
+  virtual void gather(const LabeledVector & storage) = 0;
 
   /// Set requires_grad for the underlying storage
   virtual void requires_grad_(bool req = true) = 0;
@@ -172,6 +179,8 @@ protected:
   ///@{
   /// Argument assembly indices
   std::map<VariableName, size_t> __args_idx;
+  /// Source variable to copy from
+  const VariableBase * __source;
   /// The raw (flattened) variable value
   BatchTensor * __raw_value;
   /// The derivative of this variable w.r.t. arguments.
@@ -230,6 +239,12 @@ public:
   {
   }
 
+  virtual void gather(const LabeledVector & storage) override
+  {
+    *__raw_value = __source == this ? storage(name()) : __source->raw_value();
+    _value = __raw_value->base_reshape(base_sizes());
+  }
+
   virtual void requires_grad_(bool req = true) override
   {
     neml_assert_dbg(_assembly_mode == AssemblyMode::CONCATENATION,
@@ -246,7 +261,7 @@ public:
                         val.batch_expand(batch_sizes()).base_reshape(base_sizes()));
     else if (_assembly_mode == AssemblyMode::CONCATENATION)
     {
-      (*__raw_value) = val.batch_expand(batch_sizes()).base_reshape({base_storage()});
+      *__raw_value = val.batch_expand(batch_sizes()).base_reshape({base_storage()});
       _value = __raw_value->base_reshape(base_sizes());
     }
     else
