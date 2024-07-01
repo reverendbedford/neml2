@@ -320,35 +320,30 @@ VariableStore::setup_output_views(bool out, bool dout_din, bool d2out_din2)
 }
 
 void
-VariableStore::detach_and_zero(bool out, bool dout_din, bool d2out_din2)
+VariableStore::detach_and_zero(bool /*out*/, bool dout_din, bool d2out_din2)
 {
-  // No-op for concatenation mode
-  if (_assembly_mode == AssemblyMode::CONCATENATION)
-    return;
-
-  // Detach and zero per request
-  if (out)
+  if (_assembly_mode == AssemblyMode::INPLACE)
   {
-    if (_out.tensor().requires_grad())
-      _out.tensor().detach_();
-    _out.zero_();
-  }
+    if (dout_din)
+      _dout_din.zero_();
 
-  if (dout_din)
+    if (d2out_din2)
+      _d2out_din2.zero_();
+  }
+  else if (_assembly_mode == AssemblyMode::CONCATENATION)
   {
-    if (_dout_din.tensor().requires_grad())
-      _dout_din.tensor().detach_();
-    _dout_din.zero_();
-  }
+    if (dout_din)
+      for (const auto & [yvar, i] : __out_idx)
+        for (const auto & [xvar, j] : __in_idx)
+          __dout_din[i][j].zero_();
 
-  if (d2out_din2)
-  {
-    if (_d2out_din2.tensor().requires_grad())
-      _d2out_din2.tensor().detach_();
-    _d2out_din2.zero_();
+    if (d2out_din2)
+      for (const auto & [yvar, i] : __out_idx)
+        for (const auto & [xvar1, j] : __in_idx)
+          for (const auto & [xvar2, k] : __in_idx)
+            __d2out_din2[i][j][k].zero_();
   }
-
-  // Since the storage is detached in-place, we need to reconfigure all the views.
-  setup_output_views(out, dout_din, d2out_din2);
+  else
+    throw NEMLException("Unknown assembly mode");
 }
 } // namespace neml2

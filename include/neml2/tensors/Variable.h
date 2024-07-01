@@ -218,13 +218,6 @@ public:
       _value = T(_raw_value.view(sizes()), batch_dim());
   }
 
-  virtual void requires_grad_(bool req = true) override
-  {
-    neml_assert_dbg(_assembly_mode == AssemblyMode::CONCATENATION,
-                    "Cannot request AD in inplace assembly mode");
-    _value.requires_grad_(req);
-  }
-
   virtual TorchShapeRef base_sizes() const override { return _base_sizes; }
 
   virtual TorchShapeRef sizes() const override { return _sizes; }
@@ -239,6 +232,17 @@ public:
   [[deprecated("Variable<T> must be assigned to references -- missing &")]] void
   operator=(const Variable<T> &)
   {
+  }
+
+  virtual void requires_grad_(bool req = true) override
+  {
+    neml_assert_dbg(_assembly_mode == AssemblyMode::CONCATENATION,
+                    "Cannot request AD in inplace assembly mode");
+    if (req != __raw_value->requires_grad())
+    {
+      __raw_value->requires_grad_(req);
+      _value = __raw_value->base_reshape(base_sizes());
+    }
   }
 
   /// Set the variable value

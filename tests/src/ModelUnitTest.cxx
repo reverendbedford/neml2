@@ -45,7 +45,7 @@ ModelUnitTest::expected_options()
   options.set<bool>("check_parameter_derivatives") = false;
   options.set<bool>("check_cuda") = true;
   options.set<bool>("check_inplace") = true;
-  options.set<bool>("check_concatenation") = false;
+  options.set<bool>("check_concatenation") = true;
   options.set<std::vector<VariableName>>("input_batch_tensor_names");
   options.set<std::vector<CrossRef<BatchTensor>>>("input_batch_tensor_values");
   options.set<std::vector<VariableName>>("output_batch_tensor_names");
@@ -141,13 +141,11 @@ ModelUnitTest::run()
 bool
 ModelUnitTest::run(Model & model)
 {
-  model.reinit(_in, _deriv_order);
   check_all(model);
 
   if (_check_cuda && torch::cuda::is_available())
   {
     _in = _in.to(torch::kCUDA);
-    model.reinit(_in, _deriv_order);
     check_all(model);
   }
 
@@ -166,22 +164,28 @@ ModelUnitTest::check_all(Model & model)
   if (_check_2nd_deriv)
     check_second_derivatives(model, false, false);
 
-  if (_check_AD_1st_deriv)
-    check_derivatives(model, true, true);
+  // AD is only supported in concatenation assembly mode
+  if (model.assembly_mode() == AssemblyMode::CONCATENATION)
+  {
+    if (_check_AD_1st_deriv)
+      check_derivatives(model, true, true);
 
-  if (_check_AD_2nd_deriv)
-    check_second_derivatives(model, false, true);
+    if (_check_AD_2nd_deriv)
+      check_second_derivatives(model, false, true);
 
-  if (_check_AD_derivs)
-    check_second_derivatives(model, true, true);
+    if (_check_AD_derivs)
+      check_second_derivatives(model, true, true);
 
-  if (_check_param_derivs)
-    check_parameter_derivatives(model);
+    if (_check_param_derivs)
+      check_parameter_derivatives(model);
+  }
 }
 
 void
 ModelUnitTest::check_values(Model & model)
 {
+  model.reinit(_in, _deriv_order);
+
   auto out = model.value(_in);
   neml_assert(utils::allclose(out, _out.to(out.options()), _out_rtol, _out_atol),
               "The model gives values that are different from expected. The expected labels are:\n",
@@ -197,6 +201,8 @@ ModelUnitTest::check_values(Model & model)
 void
 ModelUnitTest::check_derivatives(Model & model, bool first, bool second)
 {
+  model.reinit(_in, _deriv_order);
+
   model.use_AD_derivatives(first, second);
   auto exact = std::get<1>(model.value_and_dvalue(_in));
   auto numerical = finite_differencing_derivative(
@@ -213,6 +219,8 @@ ModelUnitTest::check_derivatives(Model & model, bool first, bool second)
 void
 ModelUnitTest::check_second_derivatives(Model & model, bool first, bool second)
 {
+  model.reinit(_in, _deriv_order);
+
   model.use_AD_derivatives(first, second);
   auto exact = std::get<2>(model.value_and_dvalue_and_d2value(_in));
   auto numerical = finite_differencing_derivative(
@@ -230,6 +238,8 @@ ModelUnitTest::check_second_derivatives(Model & model, bool first, bool second)
 void
 ModelUnitTest::check_parameter_derivatives(Model & model)
 {
+  model.reinit(_in, _deriv_order);
+
   for (auto && [name, param] : model.named_parameters())
   {
     auto pval = BatchTensor(param).batch_expand_copy(_batch_shape);

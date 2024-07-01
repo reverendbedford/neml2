@@ -7,12 +7,6 @@
     input_scalar_values = '3 2'
     output_scalar_names = 'state/outsub/C'
     output_scalar_values = '5'
-    check_inplace = false
-    check_concatenation = true
-    check_AD_first_derivatives = false
-    check_AD_second_derivatives = false
-    check_AD_derivatives = false
-    check_parameter_derivatives = false
   []
 []
 

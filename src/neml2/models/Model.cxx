@@ -24,6 +24,7 @@
 
 #include "neml2/models/Model.h"
 #include "neml2/misc/utils.h"
+#include "neml2/misc/math.h"
 
 namespace neml2
 {
@@ -393,7 +394,7 @@ Model::value_and_dvalue()
   {
     input_requires_grad_();
     set_value(true, false, false);
-    extract_derivatives(/*retain_graph=*/true, /*create_graph=*/false, /*allow_unused=*/true);
+    extract_derivatives(/*retain_graph=*/true, /*create_graph=*/true, /*allow_unused=*/true);
   }
 }
 
@@ -419,7 +420,7 @@ Model::value_and_dvalue_and_d2value()
     }
 
     extract_second_derivatives(
-        /*retain_graph=*/true, /*create_graph=*/false, /*allow_unused=*/true);
+        /*retain_graph=*/true, /*create_graph=*/true, /*allow_unused=*/true);
   }
 }
 
@@ -464,54 +465,69 @@ Model::assemble(bool residual, bool Jacobian)
 void
 Model::extract_derivatives(bool retain_graph, bool create_graph, bool allow_unused)
 {
-  // Loop over rows to retrieve the derivatives
-  if (output_storage().tensor().requires_grad())
-    for (TorchSize i = 0; i < output_storage().base_sizes()[0]; i++)
-    {
-      auto grad_outputs = BatchTensor::zeros_like(output_storage());
-      grad_outputs.index_put_({torch::indexing::Ellipsis, i}, 1.0);
-      for (auto && [name, var] : input_views())
-      {
-        auto dyi_dvar = torch::autograd::grad({output_storage()},
-                                              {var.tensor()},
-                                              {grad_outputs},
-                                              retain_graph,
-                                              create_graph,
-                                              allow_unused)[0];
+  neml_assert_dbg(assembly_mode() == AssemblyMode::CONCATENATION,
+                  "This method only works with concatenation assembly mode");
 
-        if (dyi_dvar.defined())
-        {
-          derivative_storage().base_index_put(
-              {i, input_axis().indices(name)},
-              dyi_dvar.reshape(utils::add_shapes(batch_sizes(), var.base_storage())));
-        }
+  // Loop over rows to retrieve the derivatives
+  for (auto && [yname, yvar] : output_views())
+  {
+    auto yten = yvar.raw_value();
+
+    if (!yten.requires_grad())
+      continue;
+
+    for (auto && [xname, xvar] : input_views())
+    {
+      auto xten = xvar.raw_value();
+      std::vector<BatchTensor> dy_dx(yten.base_sizes()[0]);
+      for (TorchSize i = 0; i < yten.base_sizes()[0]; i++)
+      {
+        auto G = torch::zeros_like(yten, torch::TensorOptions().requires_grad(false));
+        G.index_put_({torch::indexing::Ellipsis, i}, 1.0);
+        dy_dx[i] = BatchTensor(
+            torch::autograd::grad({yten}, {xten}, {G}, retain_graph, create_graph, allow_unused)[0],
+            yten.batch_dim());
       }
+      derivative_storage(yname, xname) = math::stack(dy_dx, -2);
     }
+  }
 }
 
 void
 Model::extract_second_derivatives(bool retain_graph, bool create_graph, bool allow_unused)
 {
+  neml_assert_dbg(assembly_mode() == AssemblyMode::CONCATENATION,
+                  "This method only works with concatenation assembly mode");
+
   // Loop over rows to retrieve the second derivatives
-  if (derivative_storage().tensor().requires_grad())
-    for (TorchSize i = 0; i < derivative_storage().base_sizes()[0]; i++)
-      for (TorchSize j = 0; j < derivative_storage().base_sizes()[1]; j++)
+  for (auto && [yname, yvar] : output_views())
+    for (auto && [x1name, x1var] : input_views())
+    {
+      auto dy_dx = derivative_storage(yname, x1name);
+
+      if (!dy_dx.requires_grad())
+        continue;
+
+      for (auto && [x2name, x2var] : input_views())
       {
-        auto grad_outputs = torch::zeros_like(derivative_storage());
-        grad_outputs.index_put_({torch::indexing::Ellipsis, i, j}, 1.0);
-        for (auto && [name, var] : input_views())
+        auto xten = x2var.raw_value();
+        std::vector<BatchTensor> d2y_dx2_row(dy_dx.base_sizes()[0]);
+        for (TorchSize i = 0; i < dy_dx.base_sizes()[0]; i++)
         {
-          auto dydxij_dvar = torch::autograd::grad({derivative_storage()},
-                                                   {var.tensor()},
-                                                   {grad_outputs},
-                                                   retain_graph,
-                                                   create_graph,
-                                                   allow_unused)[0];
-          if (dydxij_dvar.defined())
-            second_derivative_storage().base_index_put(
-                {i, j, input_axis().indices(name)},
-                dydxij_dvar.reshape(utils::add_shapes(batch_sizes(), var.base_storage())));
+          std::vector<BatchTensor> d2y_dx2_col(dy_dx.base_sizes()[1]);
+          for (TorchSize j = 0; j < dy_dx.base_sizes()[1]; j++)
+          {
+            auto G = torch::zeros_like(dy_dx, torch::TensorOptions().requires_grad(false));
+            G.index_put_({torch::indexing::Ellipsis, i, j}, 1.0);
+            d2y_dx2_col[j] =
+                BatchTensor(torch::autograd::grad(
+                                {dy_dx}, {xten}, {G}, retain_graph, create_graph, allow_unused)[0],
+                            dy_dx.batch_dim());
+          }
+          d2y_dx2_row[i] = math::stack(d2y_dx2_col, -2);
         }
+        second_derivative_storage(yname, x1name, x2name) = math::stack(d2y_dx2_row, -3);
       }
+    }
 }
 } // namespace neml2
