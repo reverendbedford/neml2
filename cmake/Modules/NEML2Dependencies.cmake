@@ -42,7 +42,7 @@ ExternalProject_Add(
   wasp
   GIT_REPOSITORY https://code.ornl.gov/neams-workbench/wasp.git
   GIT_TAG ${WASP_VERSION}
-  PREFIX wasp
+  PREFIX ${NEML2_SOURCE_DIR}/_deps/wasp
   CMAKE_ARGS
   -DCMAKE_CXX_FLAGS:STRING=-D_GLIBCXX_USE_CXX11_ABI=${GLIBCXX_USE_CXX11_ABI}
   -DCMAKE_BUILD_TYPE:STRING=RELEASE

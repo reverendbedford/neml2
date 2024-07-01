@@ -222,20 +222,7 @@ ComposedModel::set_value(bool out, bool dout_din, bool d2out_din2)
   }
   else if (assembly_mode() == AssemblyMode::CONCATENATION)
   {
-    for (const auto & item : _dependency.outbound_items())
-    {
-      auto model = item.parent;
-      auto var = item.value;
-
-      if (out)
-        output_view(var) = model->output_view(var);
-
-      if (dout_din)
-        derivative_storage().fill(_dpout_din[model]);
-
-      if (d2out_din2)
-        second_derivative_storage().fill(_d2pout_din2[model]);
-    }
+    // TODO
   }
   else
     throw NEMLException("Unknown assembly mode");
