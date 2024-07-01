@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/misc/types.h"
+#include "neml2/tensors/StorageTensor.h"
 #include "neml2/tensors/LabeledAxis.h"
 #include "neml2/tensors/BatchTensor.h"
 
@@ -40,7 +40,7 @@ namespace neml2
  * @tparam D The number of base dimensions
  */
 template <class Derived, TorchSize D>
-class LabeledTensor
+class LabeledTensor : public StorageTensor<D>
 {
 public:
   /// Default constructor
