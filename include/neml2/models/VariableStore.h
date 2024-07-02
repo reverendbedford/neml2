@@ -27,9 +27,7 @@
 #include "neml2/base/NEML2Object.h"
 #include "neml2/base/Storage.h"
 #include "neml2/tensors/Variable.h"
-#include "neml2/tensors/LabeledVector.h"
-#include "neml2/tensors/LabeledMatrix.h"
-#include "neml2/tensors/LabeledTensor3D.h"
+#include "neml2/tensors/StorageTensor.h"
 
 namespace neml2
 {
@@ -123,56 +121,22 @@ public:
   /// Storage accessors for AssemblyMode::INPLACE
   ///@{
   /// Input storage
-  LabeledVector & input_storage() { return _in; }
+  StorageTensor<1> & input_storage() { return *_in; }
   /// Input storage
-  const LabeledVector & input_storage() const { return _in; }
+  const StorageTensor<1> & input_storage() const { return *_in; }
   /// Output storage
-  LabeledVector & output_storage() { return _out; }
+  StorageTensor<1> & output_storage() { return *_out; }
   /// Output storage
-  const LabeledVector & output_storage() const { return _out; }
+  const StorageTensor<1> & output_storage() const { return *_out; }
   /// Derivative storage
-  LabeledMatrix & derivative_storage() { return _dout_din; }
+  StorageTensor<2> & derivative_storage() { return *_dout_din; }
   /// Derivative storage
-  const LabeledMatrix & derivative_storage() const { return _dout_din; }
+  const StorageTensor<2> & derivative_storage() const { return *_dout_din; }
   /// Second derivative storage
-  LabeledTensor3D & second_derivative_storage() { return _d2out_din2; }
+  StorageTensor<3> & second_derivative_storage() { return *_d2out_din2; }
   /// Second derivative storage
-  const LabeledTensor3D & second_derivative_storage() const { return _d2out_din2; }
+  const StorageTensor<3> & second_derivative_storage() const { return *_d2out_din2; }
   /// @}
-
-  /// Storage accessors for AssemblyMode::CONCATENATION
-  ///@{
-  /// Input storage
-  BatchTensor & input_storage(const VariableName & y);
-  /// Input storage
-  const BatchTensor & input_storage(const VariableName &) const;
-  /// Output storage
-  BatchTensor & output_storage(const VariableName &);
-  /// Output storage
-  const BatchTensor & output_storage(const VariableName &) const;
-  /// Derivative storage
-  BatchTensor & derivative_storage(const VariableName &, const VariableName &);
-  /// Derivative storage
-  const BatchTensor & derivative_storage(const VariableName &, const VariableName &) const;
-  /// Second derivative storage
-  BatchTensor &
-  second_derivative_storage(const VariableName &, const VariableName &, const VariableName &);
-  /// Second derivative storage
-  const BatchTensor &
-  second_derivative_storage(const VariableName &, const VariableName &, const VariableName &) const;
-  ///@}
-
-  /// Assembly operators for AssemblyMode::CONCATENATION
-  ///@{
-  /// Gather input
-  void gather_input();
-  /// Assemble the output
-  LabeledVector assemble_output() const;
-  /// Assemble the output
-  LabeledMatrix assemble_derivative() const;
-  /// Assemble the output
-  LabeledTensor3D assemble_second_derivative() const;
-  ///@}
 
 protected:
   /// Cache the variable's batch shape
@@ -339,7 +303,7 @@ private:
 
   /// Assembly mode
   // TODO: Relax the constness, i.e., allow changing assembly mode after construction. This would
-  // require carefully deallocate/allocate variables and variable views based on the current and
+  // require carefully (de)allocating variables and variable views based on the current and
   // target assembly modes.
   const AssemblyMode _assembly_mode;
 
@@ -361,29 +325,13 @@ private:
   /// Storage for AssemblyMode::INPLACE
   ///@{
   /// The storage for input variable values
-  LabeledVector _in;
+  std::unique_ptr<StorageTensor<1>> _in;
   /// The storage for output variable values
-  LabeledVector _out;
+  std::unique_ptr<StorageTensor<1>> _out;
   /// The storage for output variable 1st derivatives w.r.t. input variables
-  LabeledMatrix _dout_din;
+  std::unique_ptr<StorageTensor<2>> _dout_din;
   /// The storage for output variable 2nd derivatives w.r.t. input variables
-  LabeledTensor3D _d2out_din2;
-  ///@}
-
-  /// Storage for Model::Assembly::CONCATENATION
-  ///@{
-  /// Input variable assembly indices
-  std::map<VariableName, size_t> __in_idx;
-  /// Output variable assembly indices
-  std::map<VariableName, size_t> __out_idx;
-  /// The storage for input variable values
-  std::vector<BatchTensor> __in;
-  /// The storage for output variable values
-  std::vector<BatchTensor> __out;
-  /// The storage for output variable 1st derivatives w.r.t. input variables
-  std::vector<std::vector<BatchTensor>> __dout_din;
-  /// The storage for output variable 2nd derivatives w.r.t. input variables
-  std::vector<std::vector<std::vector<BatchTensor>>> __d2out_din2;
+  std::unique_ptr<StorageTensor<3>> _d2out_din2;
   ///@}
 };
 } // namespace neml2

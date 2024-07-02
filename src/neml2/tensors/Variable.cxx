@@ -32,175 +32,32 @@ VariableBase::cache(TorchShapeRef batch_shape)
   _batch_sizes = batch_shape.vec();
 }
 
-void
-VariableBase::setup_views(VariableBase * other)
-{
-  neml_assert(_assembly_mode == AssemblyMode::INPLACE,
-              "This method only works in inplace assembly mode");
-
-  neml_assert(other, "other != nullptr");
-  setup_views(other->_value_storage, other->_derivative_storage, other->_second_derivative_storage);
-}
-
-void
-VariableBase::setup_views(const LabeledVector * value,
-                          const LabeledMatrix * deriv,
-                          const LabeledTensor3D * secderiv)
-{
-  neml_assert(_assembly_mode == AssemblyMode::INPLACE,
-              "This method only works in inplace assembly mode");
-
-  _value_storage = value;
-  if (value)
-    _raw_value = (*value)(name());
-
-  _derivative_storage = deriv;
-  if (deriv)
-    for (const auto & arg : args())
-      _dvalue_d[arg] = (*deriv)(name(), arg);
-
-  _second_derivative_storage = secderiv;
-  if (secderiv)
-    for (const auto & arg1 : args())
-      for (const auto & arg2 : args())
-        _d2value_d[arg1][arg2] = (*secderiv)(name(), arg1, arg2);
-}
-
-void
-VariableBase::setup_views(const std::map<VariableName, size_t> & idx,
-                          BatchTensor * value,
-                          std::vector<BatchTensor> * deriv,
-                          std::vector<std::vector<BatchTensor>> * secderiv)
-{
-  neml_assert(_assembly_mode == AssemblyMode::CONCATENATION,
-              "This method only works in concatenation assembly mode");
-
-  __args_idx = idx;
-  __raw_value = value;
-  __dvalue_d = deriv;
-  __d2value_d = secderiv;
-}
-
-void
-VariableBase::set_source(const VariableBase * source)
-{
-  std::cout << "Variable " << name() << " is trying to view into " << source->name() << std::endl;
-
-  neml_assert(_assembly_mode == AssemblyMode::CONCATENATION,
-              "This method only works in concatenation assembly mode");
-  neml_assert(source, "set_source() must use a non-null source");
-  neml_assert(__source == this, "VariableBase::set_source cannot modify an already-set-up source");
-
-  __source = source;
-}
-
-const LabeledVector &
-VariableBase::value_storage() const
-{
-  neml_assert_dbg(_assembly_mode == AssemblyMode::INPLACE,
-                  "This method only works in inplace assembly mode");
-
-  neml_assert_dbg(_value_storage, "Variable value storage not initialized.");
-  return *_value_storage;
-}
-
-const LabeledMatrix &
-VariableBase::derivative_storage() const
-{
-  neml_assert_dbg(_assembly_mode == AssemblyMode::INPLACE,
-                  "This method only works in inplace assembly mode");
-
-  neml_assert_dbg(_derivative_storage, "Variable derivative storage not initialized.");
-  return *_derivative_storage;
-}
-
-const LabeledTensor3D &
-VariableBase::second_derivative_storage() const
-{
-  neml_assert_dbg(_assembly_mode == AssemblyMode::INPLACE,
-                  "This method only works in inplace assembly mode");
-
-  neml_assert_dbg(_second_derivative_storage, "Variable 2nd derivative storage not initialized.");
-  return *_second_derivative_storage;
-}
-
-Derivative
+StorageTensor<2>::PlainView &
 VariableBase::d(const VariableBase & x)
 {
-  if (_assembly_mode == AssemblyMode::INPLACE)
-  {
-    neml_assert_dbg(_dvalue_d.count(x.name()),
-                    "Error retrieving first derivative: ",
-                    name(),
-                    " does not depend on ",
-                    x.name());
-    return Derivative(_dvalue_d[x.name()], batch_sizes(), _assembly_mode);
-  }
-  else if (_assembly_mode == AssemblyMode::CONCATENATION)
-  {
-    neml_assert_dbg(__args_idx.count(x.name()) && __dvalue_d->size() > __args_idx.at(x.name()),
-                    "Error retrieving first derivative: ",
-                    name(),
-                    " does not depend on ",
-                    x.name());
-    return Derivative((*__dvalue_d)[__args_idx.at(x.name())], batch_sizes(), _assembly_mode);
-  }
-  else
-    throw NEMLException("Unknown assembly mode");
+  neml_assert_dbg(_deriv_views.count(x.name()),
+                  "Error retrieving first derivative: ",
+                  name(),
+                  " does not depend on ",
+                  x.name());
+  return _deriv_views[x.name()];
 }
 
 Derivative
 VariableBase::d(const VariableBase & x1, const VariableBase & x2)
 {
-  if (_assembly_mode == AssemblyMode::INPLACE)
-  {
-    neml_assert_dbg(_d2value_d.count(x1.name()),
-                    "Error retrieving second derivative: ",
-                    name(),
-                    " does not depend on ",
-                    x1.name());
-    neml_assert_dbg(_d2value_d[x1.name()].count(x2.name()),
-                    "Error retrieving second derivative: d(",
-                    name(),
-                    ")/d(",
-                    x1.name(),
-                    ") does not depend on ",
-                    x2.name());
-    return Derivative(_d2value_d[x1.name()][x2.name()], batch_sizes(), _assembly_mode);
-  }
-  else if (_assembly_mode == AssemblyMode::CONCATENATION)
-  {
-    neml_assert_dbg(__args_idx.count(x1.name()) && __d2value_d->size() > __args_idx.at(x1.name()),
-                    "Error retrieving second derivative: ",
-                    name(),
-                    " does not depend on ",
-                    x1.name());
-    neml_assert_dbg(__args_idx.count(x2.name()) &&
-                        (*__d2value_d)[__args_idx.at(x1.name())].size() > __args_idx.at(x2.name()),
-                    "Error retrieving second derivative: d(",
-                    name(),
-                    ")/d(",
-                    x1.name(),
-                    ") does not depend on ",
-                    x2.name());
-    return Derivative((*__d2value_d)[__args_idx.at(x1.name())][__args_idx.at(x2.name())],
-                      batch_sizes(),
-                      _assembly_mode);
-  }
-  else
-    throw NEMLException("Unknown assembly mode");
-}
-
-void
-Derivative::operator=(const BatchTensor & val)
-{
-  auto val_reshaped = val.batch_expand(_batch_sizes).base_reshape(_value.base_sizes());
-
-  if (_assembly_mode == AssemblyMode::INPLACE)
-    _value.index_put_({torch::indexing::Slice()}, val_reshaped);
-  else if (_assembly_mode == AssemblyMode::CONCATENATION)
-    _value = val_reshaped.clone();
-  else
-    throw NEMLException("Unknown assembly mode");
+  neml_assert_dbg(_sec_deriv_views.count(x1.name()),
+                  "Error retrieving second derivative: ",
+                  name(),
+                  " does not depend on ",
+                  x1.name());
+  neml_assert_dbg(_sec_deriv_views[x1.name()].count(x2.name()),
+                  "Error retrieving second derivative: d(",
+                  name(),
+                  ")/d(",
+                  x1.name(),
+                  ") does not depend on ",
+                  x2.name());
+  return _sec_deriv_views[x1.name()][x2.name()];
 }
 }

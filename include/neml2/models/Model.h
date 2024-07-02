@@ -31,10 +31,6 @@
 #include "neml2/models/VariableStore.h"
 #include "neml2/solvers/NonlinearSystem.h"
 
-#include "neml2/tensors/LabeledVector.h"
-#include "neml2/tensors/LabeledMatrix.h"
-#include "neml2/tensors/LabeledTensor3D.h"
-
 namespace neml2
 {
 /**
@@ -152,26 +148,26 @@ public:
   void use_AD_derivatives(bool first = true, bool second = true);
 
   /// Set \p in to be the input of this model
-  virtual void set_input(const LabeledVector & in);
+  virtual void set_input(const BatchTensor & in);
 
   /// \return the output of this model
-  virtual LabeledVector get_output();
+  virtual BatchTensor get_output();
 
   /// \return the derivative of the output w.r.t. the input of this model
-  virtual LabeledMatrix get_doutput_dinput();
+  virtual BatchTensor get_doutput_dinput();
 
   /// \return the second derivative of the output w.r.t. the input of this model
-  virtual LabeledTensor3D get_d2output_dinput2();
+  virtual BatchTensor get_d2output_dinput2();
 
   /// Convenient shortcut to construct and return the model value
-  virtual LabeledVector value(const LabeledVector & in);
+  virtual BatchTensor value(const BatchTensor & in);
 
   /// Convenient shortcut to construct and return the model value and its derivative
-  virtual std::tuple<LabeledVector, LabeledMatrix> value_and_dvalue(const LabeledVector & in);
+  virtual std::tuple<BatchTensor, BatchTensor> value_and_dvalue(const BatchTensor & in);
 
   /// Convenient shortcut to construct and return the model's value, first and second derivative
-  virtual std::tuple<LabeledVector, LabeledMatrix, LabeledTensor3D>
-  value_and_dvalue_and_d2value(const LabeledVector & in);
+  virtual std::tuple<BatchTensor, BatchTensor, BatchTensor>
+  value_and_dvalue_and_d2value(const BatchTensor & in);
 
   virtual void value();
   virtual void value_and_dvalue();

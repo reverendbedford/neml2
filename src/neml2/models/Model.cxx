@@ -225,8 +225,7 @@ Model::set_solution(const BatchTensor & x)
   NonlinearSystem::set_solution(x);
 
   // Also update the model input variables
-  LabeledVector sol(x, {&output_axis().subaxis("residual")});
-  host<VariableStore>()->input_storage().slice("state").fill(sol);
+  host<VariableStore>()->input_storage().set_(sol, "state");
 }
 
 void
@@ -269,48 +268,42 @@ Model::use_AD_derivatives(bool first, bool second)
 }
 
 void
-Model::set_input(const LabeledVector & in)
+Model::set_input(const BatchTensor & in)
 {
   neml_assert(utils::sizes_broadcastable(in.batch_sizes(), batch_sizes()));
-  neml_assert_dbg(in.axis(0) == input_axis(),
-                  "Incompatible input axis. The model has input axis: \n",
-                  input_axis(),
-                  "The input vector has axis: \n",
-                  in.axis(0));
 
   if (assembly_mode() == AssemblyMode::INPLACE)
   {
-    neml_assert(!in.tensor().requires_grad(), "Inplace assembly mode does not support AD");
-    input_storage().copy_(in.tensor().batch_expand(batch_sizes()));
+    neml_assert(!in.requires_grad(), "Inplace assembly mode does not support AD");
+    input_storage().copy_(in.batch_expand(batch_sizes()));
   }
   else if (assembly_mode() == AssemblyMode::CONCATENATION)
   {
-    input_storage() = in.clone();
   }
   else
     throw NEMLException("Unknown assembly mode");
 }
 
-LabeledVector
+BatchTensor
 Model::get_output()
 {
-  return output_storage().clone();
+  return output_storage().assemble();
 }
 
-LabeledMatrix
+BatchTensor
 Model::get_doutput_dinput()
 {
-  return derivative_storage().clone();
+  return derivative_storage().assemble();
 }
 
 LabeledTensor3D
 Model::get_d2output_dinput2()
 {
-  return second_derivative_storage().clone();
+  return second_derivative_storage().assemble();
 }
 
-LabeledVector
-Model::value(const LabeledVector & in)
+BatchTensor
+Model::value(const BatchTensor & in)
 {
   set_input(in);
   detach_and_zero(true, false, false);
@@ -318,8 +311,8 @@ Model::value(const LabeledVector & in)
   return get_output();
 }
 
-std::tuple<LabeledVector, LabeledMatrix>
-Model::value_and_dvalue(const LabeledVector & in)
+std::tuple<BatchTensor, BatchTensor>
+Model::value_and_dvalue(const BatchTensor & in)
 {
   set_input(in);
   detach_and_zero(true, true, false);
@@ -327,8 +320,8 @@ Model::value_and_dvalue(const LabeledVector & in)
   return {get_output(), get_doutput_dinput()};
 }
 
-std::tuple<LabeledVector, LabeledMatrix, LabeledTensor3D>
-Model::value_and_dvalue_and_d2value(const LabeledVector & in)
+std::tuple<BatchTensor, BatchTensor, BatchTensor>
+Model::value_and_dvalue_and_d2value(const BatchTensor & in)
 {
   set_input(in);
   detach_and_zero(true, true, true);
