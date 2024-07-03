@@ -23,58 +23,7 @@
 // THE SOFTWARE.
 
 #include "neml2/base/CrossRef.h"
-#include "neml2/base/Factory.h"
-#include "neml2/misc/parser_utils.h"
-#include "neml2/tensors/tensors.h"
-#include "neml2/tensors/macros.h"
 
 namespace neml2
 {
-template <>
-CrossRef<torch::Tensor>::operator torch::Tensor() const
-{
-  try
-  {
-    // If it is just a number, we can still create a tensor out of it
-    return torch::tensor(utils::parse<Real>(_raw_str), default_tensor_options());
-  }
-  catch (const ParserException & e)
-  {
-    // Conversion to a number failed, so it might be the name of another tensor
-    return Factory::get_object<torch::Tensor>("Tensors", _raw_str);
-  }
-}
-
-template <>
-CrossRef<BatchTensor>::operator BatchTensor() const
-{
-  try
-  {
-    // If it is just a number, we can still create a Scalar out of it
-    return BatchTensor::full({}, {}, utils::parse<Real>(_raw_str), default_tensor_options());
-  }
-  catch (const ParserException & e)
-  {
-    // Conversion to a number failed, so it might be the name of another BatchTensor
-    return Factory::get_object<BatchTensor>("Tensors", _raw_str);
-  }
-}
-
-template class CrossRef<torch::Tensor>;
-#define CROSSREF_SPECIALIZE_FIXEDDIMTENSOR(T)                                                      \
-  template <>                                                                                      \
-  CrossRef<T>::operator T() const                                                                  \
-  {                                                                                                \
-    try                                                                                            \
-    {                                                                                              \
-      return T::full(utils::parse<Real>(_raw_str));                                                \
-    }                                                                                              \
-    catch (const ParserException & e)                                                              \
-    {                                                                                              \
-      return Factory::get_object<T>("Tensors", _raw_str);                                          \
-    }                                                                                              \
-  }                                                                                                \
-  static_assert(true)
-
-FOR_ALL_FIXEDDIMTENSOR(CROSSREF_SPECIALIZE_FIXEDDIMTENSOR);
 } // namesace neml2

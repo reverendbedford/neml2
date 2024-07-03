@@ -25,6 +25,7 @@
 #pragma once
 
 #include "neml2/solvers/Newton.h"
+#include "neml2/tensors/Scalar.h"
 
 namespace neml2
 {

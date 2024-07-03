@@ -40,10 +40,15 @@ public:
   class ViewBase
   {
   public:
-    ViewBase() = default;
+    ViewBase(SmartVector<ViewBase> & peers)
+      : _peers(peers)
+    {
+    }
+
+    virtual ~ViewBase() = default;
 
     /// Get the flattened raw value without reshaping
-    BatchTensor & raw_value() = 0;
+    virtual BatchTensor & raw_value() = 0;
 
   protected:
     /// Peer views that view into the same location
@@ -55,32 +60,32 @@ public:
   class View : public ViewBase
   {
   public:
-    View() = default;
+    using ViewBase::ViewBase;
+
+    /// Assignment operator
+    virtual void operator=(const BatchTensor &) = 0;
 
     /// Get the value with the correct base shape
-    T & value() = 0;
+    virtual T & value() = 0;
+
+    /// Make this a leaf variable in backward AD
+    virtual void requires_grad_(bool req = true) = 0;
   };
 
   StorageTensor() = default;
 
-  /// Copy assignment operator
-  virtual void operator=(const StorageTensor<D> &) = 0;
+  StorageTensor(const std::array<const LabeledAxis *, D> & axes)
+    : _axes(axes)
+  {
+  }
 
-  /// Get a view by slicing each axis
-  template <typename T>
-  View<T> & view(const std::array<VariableName, D> &);
+  virtual ~StorageTensor() = default;
 
   /// Copy values from another BatchTensor
   virtual void copy_(const BatchTensor &) = 0;
 
   /// Zero out the storage tensor
   virtual void zero_() = 0;
-
-  /// Get a slice of the tensor.
-  virtual BatchTensor get(const std::array<VariableName, D> & names) const;
-
-  /// Tensor value modifier
-  virtual void set_(const std::array<VariableName, D> &, const BatchTensor &) = 0;
 
   /// Assemble the tensor to a BatchTensor (takes ownership)
   virtual BatchTensor assemble() const = 0;
@@ -91,14 +96,36 @@ public:
   /// Get a specific labeled axis
   const LabeledAxis & axis(TorchSize i = 0) const { return *_axes[i]; }
 
-protected:
-  /// It is the derived class's responsibility to make the view
-  virtual std::unique_ptr<ViewBase> make_view() const = 0;
+  /// Get the raw tensor value given indices (takes ownership)
+  virtual BatchTensor get(const std::array<LabeledAxisAccessor, D> &) const = 0;
 
+  /// Set the raw tensor value given indices
+  virtual void set_(const std::array<LabeledAxisAccessor, D> &, const BatchTensor &) = 0;
+
+  /// Get the tensor and reinterpret as the given tensor type (takes ownership)
+  template <typename T>
+  T reinterpret(const std::array<LabeledAxisAccessor, D> &) const;
+
+protected:
   /// The labeled axes of this tensor
   std::array<const LabeledAxis *, D> _axes;
 
   /// Storage of all views
-  std::map<std::array<VariableName, D>, SmartVector<ViewBase>> _views;
+  std::map<std::array<LabeledAxisAccessor, D>, SmartVector<ViewBase>> _views;
 };
+} // namespace neml2
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementations
+///////////////////////////////////////////////////////////////////////////////
+
+namespace neml2
+{
+template <TorchSize D>
+template <typename T>
+T
+StorageTensor<D>::reinterpret(const std::array<LabeledAxisAccessor, D> & i) const
+{
+  return get(i).base_reshape(T::const_base_sizes);
+}
 } // namespace neml2

@@ -28,6 +28,7 @@
 #include <filesystem>
 
 #include "neml2/tensors/tensors.h"
+#include "neml2/tensors/LabeledTensor.h"
 
 namespace neml2
 {
@@ -118,9 +119,9 @@ protected:
   const bool _show_output;
 
   /// Inputs from all time steps
-  LabeledVector _result_in;
+  std::vector<LabeledVector> _result_in;
   /// Outputs from all time steps
-  LabeledVector _result_out;
+  std::vector<LabeledVector> _result_out;
 
   /// Names for scalar initial conditions
   std::vector<VariableName> _ic_scalar_names;
@@ -146,7 +147,7 @@ private:
               const std::vector<CrossRef<T>> & ic_values)
   {
     for (size_t i = 0; i < ic_names.size(); i++)
-      _out.set(T(ic_values[i]), ic_names[i]);
+      _out.set_({ic_names[i]}, T(ic_values[i]));
   }
 };
 } // namespace neml2

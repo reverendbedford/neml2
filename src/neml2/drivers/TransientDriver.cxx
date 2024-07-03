@@ -23,8 +23,7 @@
 // THE SOFTWARE.
 
 #include "neml2/drivers/TransientDriver.h"
-#include "neml2/models/ComposedModel.h"
-#include "neml2/models/ImplicitUpdate.h"
+#include "neml2/misc/math.h"
 
 namespace fs = std::filesystem;
 
@@ -107,15 +106,15 @@ TransientDriver::TransientDriver(const OptionSet & options)
     _time_name(options.get<VariableName>("time")),
     _nsteps(_time.batch_sizes()[0]),
     _nbatch(_time.batch_sizes()[1]),
-    _in(_model.input_storage()),
-    _out(_model.output_storage()),
+    _in(_model.input_storage<LabeledVector>()),
+    _out(_model.output_storage<LabeledVector>()),
     _predictor(options.get<std::string>("predictor")),
     _save_as(options.get<std::string>("save_as")),
     _show_params(options.get<bool>("show_parameters")),
     _show_input(options.get<bool>("show_input_axis")),
     _show_output(options.get<bool>("show_output_axis")),
-    _result_in(LabeledVector::zeros({_nsteps, _nbatch}, {&_model.input_axis()})),
-    _result_out(LabeledVector::zeros({_nsteps, _nbatch}, {&_model.output_axis()})),
+    _result_in(_nsteps),
+    _result_out(_nsteps),
     _ic_scalar_names(options.get<std::vector<VariableName>>("ic_scalar_names")),
     _ic_scalar_values(options.get<std::vector<CrossRef<Scalar>>>("ic_scalar_values")),
     _ic_rot_names(options.get<std::vector<VariableName>>("ic_rot_names")),
@@ -127,8 +126,6 @@ TransientDriver::TransientDriver(const OptionSet & options)
   _model.reinit({_nbatch}, 0, _device);
 
   _time = _time.to(_device);
-  _result_in = _result_in.to(_device);
-  _result_out = _result_out.to(_device);
 }
 
 void
@@ -207,18 +204,18 @@ TransientDriver::solve()
 void
 TransientDriver::advance_step()
 {
-  if (_in.axis(0).has_subaxis("old_state") && _out.axis(0).has_subaxis("state"))
-    _in.slice("old_state").fill(_out.slice("state"));
+  if (_model.input_axis().has_subaxis("old_state") && _model.output_axis().has_subaxis("state"))
+    _in.collect_(_out, "old_state", "state");
 
-  if (_in.axis(0).has_subaxis("old_forces") && _in.axis(0).has_subaxis("forces"))
-    _in.slice("old_forces").fill(_in.slice("forces"));
+  if (_model.input_axis().has_subaxis("old_forces") && _model.input_axis().has_subaxis("forces"))
+    _in.collect_(_in, "old_forces", "forces");
 }
 
 void
 TransientDriver::update_forces()
 {
-  auto current_time = _time.batch_index({_step_count});
-  _in.set(current_time, _time_name);
+  // Update current time
+  _in.set_({_time_name}, _time.batch_index({_step_count}));
 }
 
 void
@@ -240,29 +237,28 @@ TransientDriver::apply_predictor()
     cp = true;
   }
 
-  if (_in.axis(0).has_subaxis("state") && _in.axis(0).has_subaxis("old_state"))
+  if (_model.input_axis().has_subaxis("state") && _model.input_axis().has_subaxis("old_state"))
   {
     if (predictor == "PREVIOUS_STATE")
-      _in.slice("state").fill(_in.slice("old_state"));
+      _in.collect_(_in, "state", "old_state");
     else if (predictor == "LINEAR_EXTRAPOLATION")
     {
       // Fall back to PREVIOUS_STATE predictor at the 1st time step
       if (_step_count == 1)
-        _in.slice("state").fill(_in.slice("old_state"));
+        _in.collect_(_in, "state", "old_state");
       // Otherwise linearly extrapolate in time
       else
       {
-        auto t = _in.get<Scalar>(_time_name);
-        auto t_n = _result_in.get<Scalar>(_time_name).batch_index({_step_count - 1});
-        auto t_nm1 = _result_in.get<Scalar>(_time_name).batch_index({_step_count - 2});
+        auto t = _in.reinterpret<Scalar>({_time_name});
+        auto t_n = _result_in[_step_count - 1].reinterpret<Scalar>({_time_name});
+        auto t_nm1 = _result_in[_step_count - 2].reinterpret<Scalar>({_time_name});
         auto dt = t - t_n;
         auto dt_n = t_n - t_nm1;
 
-        auto states = _result_out.slice("state");
-        auto state_n = states.tensor().batch_index({_step_count - 1});
-        auto state_nm1 = states.tensor().batch_index({_step_count - 2});
-        LabeledVector state(state_n + (state_n - state_nm1) / dt_n * dt, states.axes());
-        _in.slice("state").fill(state);
+        auto state_n = _result_out[_step_count - 1].get({"state"});
+        auto state_nm1 = _result_out[_step_count - 2].get({"state"});
+        auto state_np1 = state_n + (state_n - state_nm1) / dt_n * dt;
+        _in.collect_(LabeledVector(state_np1, {&_model.output_axis().subaxis("state")}), "state");
       }
     }
     else
@@ -271,29 +267,29 @@ TransientDriver::apply_predictor()
 
   if (cp && (_step_count == 1))
   {
-    SR2 D = _in.get<SR2>(std::vector<std::string>{"forces", "deformation_rate"});
-    auto t = _in.get<Scalar>(_time_name);
-    auto t_n = _result_in.get<Scalar>(_time_name).batch_index({_step_count - 1});
-    _in.set(D * (t - t_n) * _cp_elastic_scale, std::vector<std::string>{"state", "elastic_strain"});
+    SR2 D = _in.reinterpret<SR2>({VariableName{"forces", "deformation_rate"}});
+    auto t = _in.reinterpret<Scalar>({_time_name});
+    auto t_n = _result_in[_step_count - 1].reinterpret<Scalar>({_time_name});
+    _in.set_({VariableName{"state", "elastic_strain"}}, D * (t - t_n) * _cp_elastic_scale);
   }
 }
 
 void
 TransientDriver::solve_step()
 {
-  _model.value(_in);
+  _model.value(_in.tensor());
 }
 
 void
 TransientDriver::store_input()
 {
-  _result_in.batch_index_put({_step_count}, _in);
+  _result_in[_step_count] = _in.clone();
 }
 
 void
 TransientDriver::store_output()
 {
-  _result_out.batch_index_put({_step_count}, _out);
+  _result_out[_step_count] = _out.clone();
 }
 
 std::string
@@ -305,20 +301,27 @@ TransientDriver::save_as_path() const
 torch::nn::ModuleDict
 TransientDriver::result() const
 {
-  auto result_in_cpu = _result_in.to(torch::kCPU);
-  auto result_out_cpu = _result_out.to(torch::kCPU);
-
-  // Dump input variables into a Module
+  // Dump input variables into a torch::nn::Module
   auto res_in = std::make_shared<torch::nn::Module>();
-  for (auto var : result_in_cpu.axis(0).variable_accessors(/*recursive=*/true))
-    res_in->register_buffer(utils::stringify(var), result_in_cpu(var).clone());
+  for (auto var : _model.input_axis().variable_accessors(/*recursive=*/true))
+  {
+    std::vector<BatchTensor> step_vars(_nsteps);
+    for (TorchSize i = 0; i < _nsteps; i++)
+      step_vars[i] = _result_in[i].tensor().to(torch::kCPU).detach().clone();
+    res_in->register_buffer(utils::stringify(var), math::stack(step_vars));
+  }
 
-  // Dump output variables into a Module
+  // Dump output variables into a torch::nn::Module
   auto res_out = std::make_shared<torch::nn::Module>();
-  for (auto var : result_out_cpu.axis(0).variable_accessors(/*recursive=*/true))
-    res_out->register_buffer(utils::stringify(var), result_out_cpu(var).clone());
+  for (auto var : _model.output_axis().variable_accessors(/*recursive=*/true))
+  {
+    std::vector<BatchTensor> step_vars(_nsteps);
+    for (TorchSize i = 0; i < _nsteps; i++)
+      step_vars[i] = _result_out[i].tensor().to(torch::kCPU).detach().clone();
+    res_out->register_buffer(utils::stringify(var), math::stack(step_vars));
+  }
 
-  // Combine input and output
+  // Combine input and output into a torch::nn::ModuleDict
   torch::nn::ModuleDict res;
   res->update({{"input", res_in}, {"output", res_out}});
   return res;

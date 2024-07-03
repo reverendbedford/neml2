@@ -30,6 +30,7 @@
 
 namespace neml2
 {
+class Scalar;
 class Vec;
 class R2;
 class SR2;

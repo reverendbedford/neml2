@@ -86,11 +86,13 @@ Normality::set_value(bool out, bool dout_din, bool d2out_din2)
   for (auto && [ivar, var] : _conjugate_pairs)
   {
     if (out)
-      (*var) = _model.derivative_storage()(_f, ivar);
+      // TODO: this could be a view
+      (*var) = _model.derivative_storage().get({_f, ivar});
 
     if (dout_din)
       for (auto && [jvar, j] : input_views())
-        var->d(j) = _model.second_derivative_storage()(_f, ivar, jvar);
+        // TODO: this could be a view
+        var->d(j) = _model.second_derivative_storage().get({_f, ivar, jvar});
   }
 }
 } // namespace neml2

@@ -32,7 +32,7 @@ VariableBase::cache(TorchShapeRef batch_shape)
   _batch_sizes = batch_shape.vec();
 }
 
-StorageTensor<2>::PlainView &
+StorageTensor<2>::View<BatchTensor> &
 VariableBase::d(const VariableBase & x)
 {
   neml_assert_dbg(_deriv_views.count(x.name()),
@@ -40,10 +40,10 @@ VariableBase::d(const VariableBase & x)
                   name(),
                   " does not depend on ",
                   x.name());
-  return _deriv_views[x.name()];
+  return *_deriv_views[x.name()];
 }
 
-Derivative
+StorageTensor<3>::View<BatchTensor> &
 VariableBase::d(const VariableBase & x1, const VariableBase & x2)
 {
   neml_assert_dbg(_sec_deriv_views.count(x1.name()),
@@ -58,6 +58,6 @@ VariableBase::d(const VariableBase & x1, const VariableBase & x2)
                   x1.name(),
                   ") does not depend on ",
                   x2.name());
-  return _sec_deriv_views[x1.name()][x2.name()];
+  return *_sec_deriv_views[x1.name()][x2.name()];
 }
 }

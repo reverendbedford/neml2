@@ -27,7 +27,6 @@
 #include "neml2/misc/types.h"
 #include "neml2/misc/error.h"
 #include "neml2/tensors/Variable.h"
-#include "neml2/base/CrossRef.h"
 #include "neml2/base/EnumSelection.h"
 
 namespace neml2

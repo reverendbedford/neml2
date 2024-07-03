@@ -121,21 +121,29 @@ public:
   /// Storage accessors for AssemblyMode::INPLACE
   ///@{
   /// Input storage
-  StorageTensor<1> & input_storage() { return *_in; }
+  template <typename T = StorageTensor<1>>
+  T & input_storage();
   /// Input storage
-  const StorageTensor<1> & input_storage() const { return *_in; }
+  template <typename T = StorageTensor<1>>
+  const T & input_storage() const;
   /// Output storage
-  StorageTensor<1> & output_storage() { return *_out; }
+  template <typename T = StorageTensor<1>>
+  T & output_storage();
   /// Output storage
-  const StorageTensor<1> & output_storage() const { return *_out; }
+  template <typename T = StorageTensor<1>>
+  const T & output_storage() const;
   /// Derivative storage
-  StorageTensor<2> & derivative_storage() { return *_dout_din; }
+  template <typename T = StorageTensor<2>>
+  T & derivative_storage();
   /// Derivative storage
-  const StorageTensor<2> & derivative_storage() const { return *_dout_din; }
+  template <typename T = StorageTensor<2>>
+  const T & derivative_storage() const;
   /// Second derivative storage
-  StorageTensor<3> & second_derivative_storage() { return *_d2out_din2; }
+  template <typename T = StorageTensor<3>>
+  T & second_derivative_storage();
   /// Second derivative storage
-  const StorageTensor<3> & second_derivative_storage() const { return *_d2out_din2; }
+  template <typename T = StorageTensor<3>>
+  const T & second_derivative_storage() const;
   /// @}
 
 protected:
@@ -334,4 +342,75 @@ private:
   std::unique_ptr<StorageTensor<3>> _d2out_din2;
   ///@}
 };
+} // namespace neml2
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementations
+///////////////////////////////////////////////////////////////////////////////
+
+namespace neml2
+{
+template <class T>
+T &
+VariableStore::input_storage()
+{
+  auto storage_ptr = dynamic_cast<T *>(_in.get());
+  neml_assert(storage_ptr, "Failed to cast storage");
+  return *storage_ptr;
+}
+
+template <class T>
+const T &
+VariableStore::input_storage() const
+{
+  return const_cast<VariableStore *>(this)->input_storage<T>();
+}
+
+template <class T>
+T &
+VariableStore::output_storage()
+{
+  auto storage_ptr = dynamic_cast<T *>(_out.get());
+  neml_assert(storage_ptr, "Failed to cast storage");
+  return *storage_ptr;
+}
+
+template <class T>
+const T &
+VariableStore::output_storage() const
+{
+  return const_cast<VariableStore *>(this)->output_storage<T>();
+}
+
+template <class T>
+T &
+VariableStore::derivative_storage()
+{
+  auto storage_ptr = dynamic_cast<T *>(_dout_din.get());
+  neml_assert(storage_ptr, "Failed to cast storage");
+  return *storage_ptr;
+}
+
+template <class T>
+const T &
+VariableStore::derivative_storage() const
+{
+  return const_cast<VariableStore *>(this)->derivative_storage<T>();
+}
+
+template <class T>
+T &
+VariableStore::second_derivative_storage()
+{
+  auto storage_ptr = dynamic_cast<T *>(_d2out_din2.get());
+  neml_assert(storage_ptr, "Failed to cast storage");
+  return *storage_ptr;
+}
+
+template <class T>
+const T &
+VariableStore::second_derivative_storage() const
+{
+  return const_cast<VariableStore *>(this)->second_derivative_storage<T>();
+}
 } // namespace neml2

@@ -103,14 +103,6 @@ Model::setup()
 {
   // Setup input and output axes
   setup_layout();
-
-  // Setup functional dependence for each output variable
-  for (auto && [y_name, y_var] : output_views())
-  {
-    y_var.clear_args();
-    for (auto && [x_name, x_var] : input_views())
-      y_var.add_arg(x_var);
-  }
 }
 
 void
@@ -168,13 +160,7 @@ void
 Model::setup_submodel_input_views()
 {
   for (auto submodel : registered_models())
-  {
     submodel->setup_input_views();
-
-    if (assembly_mode() == AssemblyMode::CONCATENATION)
-      for (auto && [name, var] : submodel->input_views())
-        var.set_source(host<VariableStore>()->input_view(name));
-  }
 }
 
 void
@@ -194,16 +180,13 @@ Model::setup_submodel_output_views()
 void
 Model::setup_nonlinear_system()
 {
-  if (assembly_mode() == AssemblyMode::CONCATENATION)
-    return;
-
   if (is_nonlinear_system())
   {
     _ndof = output_axis().storage_size("residual");
     _solution = BatchTensor::empty(batch_sizes(), _ndof, options());
-    _residual = output_storage()("residual");
+    _residual = output_storage().get({"residual"});
     if (requires_grad())
-      _Jacobian = derivative_storage()("residual", "state");
+      _Jacobian = derivative_storage().get({"residual", "state"});
   }
 
   for (auto submodel : registered_models())
@@ -225,7 +208,7 @@ Model::set_solution(const BatchTensor & x)
   NonlinearSystem::set_solution(x);
 
   // Also update the model input variables
-  host<VariableStore>()->input_storage().set_(sol, "state");
+  host<VariableStore>()->input_storage().set_({"state"}, x);
 }
 
 void
@@ -272,16 +255,8 @@ Model::set_input(const BatchTensor & in)
 {
   neml_assert(utils::sizes_broadcastable(in.batch_sizes(), batch_sizes()));
 
-  if (assembly_mode() == AssemblyMode::INPLACE)
-  {
-    neml_assert(!in.requires_grad(), "Inplace assembly mode does not support AD");
-    input_storage().copy_(in.batch_expand(batch_sizes()));
-  }
-  else if (assembly_mode() == AssemblyMode::CONCATENATION)
-  {
-  }
-  else
-    throw NEMLException("Unknown assembly mode");
+  neml_assert(!in.requires_grad(), "Inplace assembly mode does not support AD");
+  input_storage().copy_(in.batch_expand(batch_sizes()));
 }
 
 BatchTensor
@@ -296,7 +271,7 @@ Model::get_doutput_dinput()
   return derivative_storage().assemble();
 }
 
-LabeledTensor3D
+BatchTensor
 Model::get_d2output_dinput2()
 {
   return second_derivative_storage().assemble();
@@ -332,13 +307,7 @@ Model::value_and_dvalue_and_d2value(const BatchTensor & in)
 void
 Model::value()
 {
-  if (assembly_mode() == AssemblyMode::CONCATENATION)
-    gather_input();
-
   set_value(true, false, false);
-
-  if (assembly_mode() == AssemblyMode::CONCATENATION)
-    output_storage() = assemble_output();
 }
 
 void
@@ -346,9 +315,6 @@ Model::value_and_dvalue()
 {
   neml_assert_dbg(requires_grad(),
                   "value_and_dvalue() is called but derivative storage hasn't been allocated.");
-
-  if (assembly_mode() == AssemblyMode::CONCATENATION)
-    gather_input();
 
   if (!_AD_1st_deriv)
     set_value(true, true, false);
@@ -358,12 +324,6 @@ Model::value_and_dvalue()
     set_value(true, false, false);
     extract_derivatives(/*retain_graph=*/true, /*create_graph=*/true, /*allow_unused=*/true);
   }
-
-  if (assembly_mode() == AssemblyMode::CONCATENATION)
-  {
-    output_storage() = assemble_output();
-    derivative_storage() = assemble_derivative();
-  }
 }
 
 void
@@ -372,9 +332,6 @@ Model::value_and_dvalue_and_d2value()
   neml_assert_dbg(requires_2nd_grad(),
                   "value_and_dvalue_and_d2value() is called but second derivative storage hasn't "
                   "been allocated.");
-
-  if (assembly_mode() == AssemblyMode::CONCATENATION)
-    gather_input();
 
   if (!_AD_2nd_deriv)
     set_value(true, true, true);
@@ -392,13 +349,6 @@ Model::value_and_dvalue_and_d2value()
 
     extract_second_derivatives(
         /*retain_graph=*/true, /*create_graph=*/true, /*allow_unused=*/true);
-  }
-
-  if (assembly_mode() == AssemblyMode::CONCATENATION)
-  {
-    output_storage() = assemble_output();
-    derivative_storage() = assemble_derivative();
-    second_derivative_storage() = assemble_second_derivative();
   }
 }
 
@@ -466,7 +416,7 @@ Model::extract_derivatives(bool retain_graph, bool create_graph, bool allow_unus
             torch::autograd::grad({yten}, {xten}, {G}, retain_graph, create_graph, allow_unused)[0],
             yten.batch_dim());
       }
-      derivative_storage(yname, xname) = math::stack(dy_dx, -2);
+      derivative_storage().set_({yname, xname}, math::stack(dy_dx, -2));
     }
   }
 }
@@ -481,7 +431,7 @@ Model::extract_second_derivatives(bool retain_graph, bool create_graph, bool all
   for (auto && [yname, yvar] : output_views())
     for (auto && [x1name, x1var] : input_views())
     {
-      const auto & dy_dx = derivative_storage(yname, x1name);
+      const auto dy_dx = derivative_storage().get({yname, x1name});
 
       if (!dy_dx.requires_grad())
         continue;
@@ -504,7 +454,7 @@ Model::extract_second_derivatives(bool retain_graph, bool create_graph, bool all
           }
           d2y_dx2_row[i] = math::stack(d2y_dx2_col, -2);
         }
-        second_derivative_storage(yname, x1name, x2name) = math::stack(d2y_dx2_row, -3);
+        second_derivative_storage().set_({yname, x1name, x2name}, math::stack(d2y_dx2_row, -3));
       }
     }
 }

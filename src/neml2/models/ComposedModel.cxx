@@ -138,56 +138,28 @@ void
 ComposedModel::allocate_variables()
 {
   Model::allocate_variables();
-  _din_din = LabeledMatrix::identity(batch_sizes(), input_axis(), options());
 }
 
 void
 ComposedModel::setup_submodel_input_views()
 {
-  if (assembly_mode() == AssemblyMode::INPLACE)
+  for (auto submodel : registered_models())
   {
-    for (auto submodel : registered_models())
-    {
-      for (const auto & item : _dependency.inbound_items())
-        if (item.parent == submodel)
-          submodel->input_view(item.value)->setup_views(input_view(item.value));
+    for (const auto & item : _dependency.inbound_items())
+      if (item.parent == submodel)
+        submodel->input_view(item.value)->setup_views(input_view(item.value));
 
-      for (const auto & [item, providers] : _dependency.item_providers())
-        if (item.parent == submodel)
-          submodel->input_view(item.value)
-              ->setup_views(&providers.begin()->parent->output_storage());
+    for (const auto & [item, providers] : _dependency.item_providers())
+      if (item.parent == submodel)
+        submodel->input_view(item.value)->setup_views(&providers.begin()->parent->output_storage());
 
-      submodel->setup_submodel_input_views();
-    }
+    submodel->setup_submodel_input_views();
   }
-  else if (assembly_mode() == AssemblyMode::CONCATENATION)
-  {
-    for (auto submodel : registered_models())
-    {
-      std::cout << "----------------------------------------------------------\n";
-      std::cout << "Setting up submodel " << submodel->name() << std::endl;
-
-      submodel->setup_input_views();
-
-      for (const auto & item : _dependency.inbound_items())
-        if (item.parent == submodel)
-          submodel->input_view(item.value)->set_source(input_view(item.value));
-
-      for (const auto & [item, providers] : _dependency.item_providers())
-        if (item.parent == submodel)
-          submodel->input_view(item.value)
-              ->set_source(providers.begin()->parent->output_view(item.value));
-    }
-  }
-  else
-    throw NEMLException("Unknown assembly mode");
 }
 
 void
 ComposedModel::set_value(bool out, bool dout_din, bool d2out_din2)
 {
-  clear_chain_rule_cache();
-
   for (auto i : registered_models())
   {
     if (out && !dout_din && !d2out_din2)
@@ -206,68 +178,50 @@ ComposedModel::set_value(bool out, bool dout_din, bool d2out_din2)
       apply_second_order_chain_rule(i);
   }
 
-  if (assembly_mode() == AssemblyMode::INPLACE)
-  {
-    for (auto model : _dependency.end_nodes())
-    {
-      if (out)
-        output_storage().fill(model->output_storage());
+  // for (auto model : _dependency.end_nodes())
+  // {
+  //   if (out)
+  //     output_storage().collect_(model->output_storage());
 
-      if (dout_din)
-        derivative_storage().fill(_dpout_din[model]);
+  //   if (dout_din)
+  //     derivative_storage().collect_(_dpout_din[model]);
 
-      if (d2out_din2)
-        second_derivative_storage().fill(_d2pout_din2[model]);
-    }
-  }
-  else if (assembly_mode() == AssemblyMode::CONCATENATION)
-  {
-    // TODO
-  }
-  else
-    throw NEMLException("Unknown assembly mode");
-
-  clear_chain_rule_cache();
+  //   if (d2out_din2)
+  //     second_derivative_storage().collect_(_d2pout_din2[model]);
+  // }
 }
 
 void
-ComposedModel::clear_chain_rule_cache()
+ComposedModel::apply_chain_rule(Model * /*i*/)
 {
-  _dpout_din.clear();
-  _d2pout_din2.clear();
+  // auto dpin_din = LabeledMatrix::empty(batch_sizes(), {&i->input_axis(), &input_axis()},
+  // options()); dpin_din.fill(_din_din);
+
+  // if (_dependency.node_providers().count(i))
+  //   for (auto dep : _dependency.node_providers().at(i))
+  //     dpin_din.fill(_dpout_din[dep]);
+
+  // _dpout_din[i] = i->derivative_storage().chain(dpin_din);
 }
 
 void
-ComposedModel::apply_chain_rule(Model * i)
+ComposedModel::apply_second_order_chain_rule(Model * /*i*/)
 {
-  auto dpin_din = LabeledMatrix::empty(batch_sizes(), {&i->input_axis(), &input_axis()}, options());
-  dpin_din.fill(_din_din);
+  // auto dpin_din = LabeledMatrix::empty(batch_sizes(), {&i->input_axis(), &input_axis()},
+  // options()); auto d2pin_din2 = LabeledTensor3D::zeros(
+  //     batch_sizes(), {&i->input_axis(), &input_axis(), &input_axis()}, options());
+  // dpin_din.fill(_din_din);
 
-  if (_dependency.node_providers().count(i))
-    for (auto dep : _dependency.node_providers().at(i))
-      dpin_din.fill(_dpout_din[dep]);
+  // if (_dependency.node_providers().count(i))
+  //   for (auto dep : _dependency.node_providers().at(i))
+  //   {
+  //     dpin_din.fill(_dpout_din[dep]);
+  //     d2pin_din2.fill(_d2pout_din2[dep]);
+  //   }
 
-  _dpout_din[i] = i->derivative_storage().chain(dpin_din);
-}
-
-void
-ComposedModel::apply_second_order_chain_rule(Model * i)
-{
-  auto dpin_din = LabeledMatrix::empty(batch_sizes(), {&i->input_axis(), &input_axis()}, options());
-  auto d2pin_din2 = LabeledTensor3D::zeros(
-      batch_sizes(), {&i->input_axis(), &input_axis(), &input_axis()}, options());
-  dpin_din.fill(_din_din);
-
-  if (_dependency.node_providers().count(i))
-    for (auto dep : _dependency.node_providers().at(i))
-    {
-      dpin_din.fill(_dpout_din[dep]);
-      d2pin_din2.fill(_d2pout_din2[dep]);
-    }
-
-  _dpout_din[i] = i->derivative_storage().chain(dpin_din);
-  _d2pout_din2[i] =
-      i->second_derivative_storage().chain(d2pin_din2, i->derivative_storage(), dpin_din);
+  // _dpout_din[i] = i->derivative_storage().chain(dpin_din);
+  // _d2pout_din2[i] =
+  //     i->second_derivative_storage().chain(d2pin_din2, i->derivative_storage(), dpin_din);
 }
 
 } // namespace neml2

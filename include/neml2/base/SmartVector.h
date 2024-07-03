@@ -41,13 +41,13 @@ namespace neml2
  * a nullptr dereference.
  */
 template <typename T>
-class SmartMap
+class SmartVector
 {
 public:
-  SmartMap() = default;
-  SmartMap(SmartMap &&) = default;
-  SmartMap(const SmartMap &) = delete;
-  SmartMap & operator=(const SmartMap &) = delete;
+  SmartVector() = default;
+  SmartVector(SmartVector &&) = default;
+  SmartVector(const SmartVector &) = delete;
+  SmartVector & operator=(const SmartVector &) = delete;
 
   /**
    * Iterator that adds an additional dereference to BaseIterator.

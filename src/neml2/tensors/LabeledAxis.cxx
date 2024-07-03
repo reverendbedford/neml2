@@ -393,21 +393,24 @@ LabeledAxis::variable_accessors(std::set<LabeledAxisAccessor> & accessors,
 }
 
 const LabeledAxis &
-LabeledAxis::subaxis(const std::string & name) const
+LabeledAxis::subaxis(const LabeledAxisAccessor & s) const
 {
-  neml_assert_dbg(
-      _subaxes.count(name), "In LabeledAxis::subaxis, no subaxis matches given name ", name);
-
-  return *_subaxes.at(name);
+  return const_cast<LabeledAxis *>(this)->subaxis(s);
 }
 
 LabeledAxis &
-LabeledAxis::subaxis(const std::string & name)
+LabeledAxis::subaxis(const LabeledAxisAccessor & s)
 {
-  neml_assert_dbg(
-      _subaxes.count(name), "In LabeledAxis::subaxis, no subaxis matches given name ", name);
+  if (s.empty())
+    return *this;
 
-  return *_subaxes.at(name);
+  const auto & name = s.vec()[0];
+  neml_assert_dbg(_subaxes.count(name), "No subaxis matches given name ", name);
+
+  if (s.vec().size() == 1)
+    return *_subaxes.at(name);
+
+  return _subaxes.at(name)->subaxis(s.slice(1));
 }
 
 bool

@@ -32,20 +32,55 @@ namespace neml2
  * @brief The primary data structure in NEML2 for working with labeled tensor views.
  *
  * Each LabeledTensor consists of one BatchTensor and one or more LabeledAxis. The
- * `LabeledTensor<D>` is templated on the base dimension \f$D\f$. LabeledTensor handles the
+ * `LabeledTensor<D>` is templated on the base dimension @tparam D. LabeledTensor handles the
  * creation, modification, and accessing of labeled tensors.
  *
  * @tparam D The number of base dimensions
  */
-template <class Derived, TorchSize D>
+template <TorchSize D>
 class LabeledTensor : public StorageTensor<D>
 {
 public:
+  /// View into LabeledTensor
+  template <typename T>
+  class View : public StorageTensor<D>::template View<T>
+  {
+  public:
+    View(BatchTensor, SmartVector<typename StorageTensor<D>::ViewBase> & peers);
+
+    /**
+     * @copydoc neml2::StorageTensor::ViewBase::operator=
+     *
+     * Since this is a view managed by torch, we just need to reshape and copy the content into
+     * _value
+     */
+    virtual void operator=(const BatchTensor &) override;
+
+    virtual BatchTensor & raw_value() override { return _raw_value; }
+
+    virtual T & value() override { return _value; }
+
+    virtual void requires_grad_(bool req = true) override
+    {
+      if (req)
+        throw NEMLException(
+            "LabeledTensor does not support AD. This could happen if you attept to use AD in "
+            "inplace assembly mode. Switching to concatenation assembly mode should fix this "
+            "issue.");
+    }
+
+  protected:
+    /// View into the LabeledTensor without reshaping
+    BatchTensor _raw_value;
+    /// View into _view with the correct logical base shape of @tparam T
+    T _value;
+  };
+
   /// Default constructor
   LabeledTensor() = default;
 
   /// Copy constructor
-  LabeledTensor(const Derived & other);
+  LabeledTensor(const LabeledTensor<D> & other);
 
   /// Construct an empty tensor given batch shape and array of axes
   LabeledTensor(TorchShapeRef batch_shape,
@@ -60,30 +95,84 @@ public:
   /// Construct from a BatchTensor with array of axes
   LabeledTensor(const BatchTensor & tensor, const std::array<const LabeledAxis *, D> & axes);
 
-  /// Assignment operator
-  virtual void operator=(const StorageTensor<D> & other) override;
+  /// Copy assignment operator
+  void operator=(const LabeledTensor<D> & other);
+
+  /// Get a view by slicing each axis
+  template <typename T>
+  View<T> & view(const std::array<const LabeledAxis *, D> &);
+
+  LabeledTensor<D> clone() const;
 
   virtual void copy_(const BatchTensor & other) override;
 
   virtual void zero_() override;
-
-  virtual BatchTensor get(const std::array<VariableName, D> & names) const override;
-
-  virtual void set_(const std::array<VariableName, D> &, const BatchTensor &) override;
 
   virtual BatchTensor assemble() const override;
 
   /// Convert to BatchTensor (does not take ownership)
   virtual BatchTensor tensor() const;
 
+  virtual BatchTensor get(const std::array<LabeledAxisAccessor, D> & names) const override;
+
+  virtual void set_(const std::array<LabeledAxisAccessor, D> &, const BatchTensor &) override;
+
+  virtual void collect_(const LabeledTensor<D> & other,
+                        const LabeledAxisAccessor & i1 = LabeledAxisAccessor(),
+                        const LabeledAxisAccessor & i2 = LabeledAxisAccessor());
+
 protected:
   /// Calculate slicing indices given the names on each axis
-  TorchSlice slice_indices(const std::array<VariableName, D> & names) const;
+  TorchSlice slice_indices(const std::array<LabeledAxisAccessor, D> & names) const;
 
   /// Calculate storage shape given the names on each axis
-  TorchSlice storage_sizes(const std::array<VariableName, D> & names) const;
+  TorchShape storage_sizes(const std::array<LabeledAxisAccessor, D> & names) const;
 
   /// The tensor
   BatchTensor _tensor;
 };
+
+using LabeledVector = LabeledTensor<1>;
+using LabeledMatrix = LabeledTensor<2>;
+using LabeledTensor3D = LabeledTensor<3>;
+} // namespace neml2
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation
+///////////////////////////////////////////////////////////////////////////////
+
+namespace neml2
+{
+template <TorchSize D>
+template <typename T>
+LabeledTensor<D>::View<T>::View(BatchTensor raw_value,
+                                SmartVector<typename StorageTensor<D>::ViewBase> & peers)
+  : StorageTensor<D>::template View<T>(peers)
+{
+  _raw_value = raw_value;
+
+  auto shape = utils::add_shapes(_raw_value.batch_sizes(), T::const_base_sizes);
+  _value = T(_raw_value.view(shape));
+}
+
+template <TorchSize D>
+template <typename T>
+void
+LabeledTensor<D>::View<T>::operator=(const BatchTensor & val)
+{
+  _value.index_put_({torch::indexing::Slice()},
+                    val.batch_expand(_value.batch_sizes()).base_reshape(_value.base_sizes()));
+}
+
+template <TorchSize D>
+template <typename T>
+typename LabeledTensor<D>::template View<T> &
+LabeledTensor<D>::view(const std::array<const LabeledAxis *, D> & i)
+{
+  auto new_view = std::make_unique<View<T>>(get(i), this->_views[i]);
+  auto new_view_base = this->_views.set_pointer(new_view);
+  auto new_view_ptr = dynamic_cast<View<T> *>(new_view_base);
+  neml_assert(new_view_ptr, "Failed to cast view to concrete type");
+  return *new_view_ptr;
+}
 } // namespace neml2

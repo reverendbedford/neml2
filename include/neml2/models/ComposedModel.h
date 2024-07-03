@@ -53,8 +53,6 @@ protected:
   void set_value(bool, bool, bool) override;
 
 private:
-  void clear_chain_rule_cache();
-
   /// Helper method to recursively apply chain rule
   void apply_chain_rule(Model * model);
 
@@ -66,20 +64,5 @@ private:
 
   /// Helper to resolve model dependency
   DependencyResolver<Model, VariableName> _dependency;
-
-  /// Chain rule cache for AssemblyMode::INPLACE
-  ///@{
-  /// Starting point of chain rule
-  LabeledMatrix _din_din;
-  /// Cache for partial derivatives of model outputs w.r.t. total input
-  std::map<Model *, LabeledMatrix> _dpout_din;
-  /// Cache for second partial derivatives of model outputs w.r.t. total input
-  std::map<Model *, LabeledTensor3D> _d2pout_din2;
-  ///@}
-
-  /// Chain rule cache for AssemblyMode::CONCATENATION
-  ///@{
-  std::map<Model *, std::map<VariableName, std::vector<BatchTensor>>> __dpout_din;
-  ///@}
 };
 } // namespace neml2

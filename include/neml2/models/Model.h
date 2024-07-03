@@ -31,6 +31,8 @@
 #include "neml2/models/VariableStore.h"
 #include "neml2/solvers/NonlinearSystem.h"
 
+#include "neml2/tensors/tensors.h"
+
 namespace neml2
 {
 /**

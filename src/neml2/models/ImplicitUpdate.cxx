@@ -93,10 +93,6 @@ ImplicitUpdate::set_value(bool out, bool dout_din, bool d2out_din2)
       !dout_din || out,
       "ImplicitUpdate: requires the value and the first derivatives to be computed together.");
 
-  // Apply initial guess
-  LabeledVector sol0(_model.solution(), {&output_axis()});
-  sol0.fill(host<VariableStore>()->input_storage());
-
   // The trial state is used as the initial guess
   // Perform automatic scaling
   _model.init_scaling(_solver.verbose);
@@ -119,16 +115,19 @@ ImplicitUpdate::set_value(bool out, bool dout_din, bool d2out_din2)
       // IFT requires dresidual/dinput evaluated at the solution:
       _model.value_and_dvalue();
       const auto & partials = _model.derivative_storage();
+      // TODO: The following could be views
+      const auto dr_ds = partials.get({"residual", "state"});
+      const auto dr_dsn = partials.get({"residual", "old_state"});
+      const auto dr_df = partials.get({"residual", "forces"});
+      const auto dr_dfn = partials.get({"residual", "old_forces"});
 
       // The actual IFT:
-      LabeledMatrix J = partials.slice(1, "state");
-      auto [LU, pivot] = math::linalg::lu_factor(J);
-      derivative_storage()("state", "old_state")
-          .copy_(-math::linalg::lu_solve(LU, pivot, partials.slice(1, "old_state")));
-      derivative_storage()("state", "forces")
-          .copy_(-math::linalg::lu_solve(LU, pivot, partials.slice(1, "forces")));
-      derivative_storage()("state", "old_forces")
-          .copy_(-math::linalg::lu_solve(LU, pivot, partials.slice(1, "old_forces")));
+      // TODO: The following could use views
+      auto [LU, pivot] = math::linalg::lu_factor(dr_ds);
+      derivative_storage().set_({"state", "old_state"}, -math::linalg::lu_solve(LU, pivot, dr_dsn));
+      derivative_storage().set_({"state", "forces"}, -math::linalg::lu_solve(LU, pivot, dr_df));
+      derivative_storage().set_({"state", "old_forces"},
+                                -math::linalg::lu_solve(LU, pivot, dr_dfn));
     }
   }
 }

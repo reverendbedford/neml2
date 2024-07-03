@@ -170,9 +170,10 @@ public:
                                                    const LabeledAxisAccessor & subaxis = {}) const;
 
   /// Get a sub-axis
-  const LabeledAxis & subaxis(const std::string & name) const;
-  /// Get a sub-axis
-  LabeledAxis & subaxis(const std::string & name);
+  ///@{
+  const LabeledAxis & subaxis(const LabeledAxisAccessor & s) const;
+  LabeledAxis & subaxis(const LabeledAxisAccessor & s);
+  ///@}
 
   /// Check to see if two LabeledAxis objects are equivalent
   bool equals(const LabeledAxis & other) const;

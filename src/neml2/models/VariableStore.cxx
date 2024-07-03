@@ -25,6 +25,7 @@
 #include "neml2/models/VariableStore.h"
 #include "neml2/models/Model.h"
 #include "neml2/misc/math.h"
+#include "neml2/tensors/LabeledTensor.h"
 
 namespace neml2
 {
@@ -101,21 +102,23 @@ VariableStore::allocate_variables(TorchShapeRef batch_shape,
   {
     // Allocate input storage only if this is a host model
     if (in && _object->host() == _object)
-      _in = std::make_unique<StorageTensor<1>>(
-          LabeledVector::zeros(batch_shape, {&input_axis()}, options));
+      _in = std::make_unique<LabeledVector>(
+          batch_shape, std::array<const LabeledAxis *, 1>{&input_axis()}, options);
 
     // Allocate output storage
     if (out)
-      _out = std::make_unique<StorageTensor<1>>(
-          LabeledVector::zeros(batch_shape, {&output_axis()}, options));
+      _out = std::make_unique<LabeledVector>(
+          batch_shape, std::array<const LabeledAxis *, 1>{&output_axis()}, options);
 
     if (dout_din)
-      _dout_din = std::make_unique<StorageTensor<2>>(
-          LabeledMatrix::zeros(batch_shape, {&output_axis(), &input_axis()}, options));
+      _dout_din = std::make_unique<LabeledMatrix>(
+          batch_shape, std::array<const LabeledAxis *, 2>{&output_axis(), &input_axis()}, options);
 
     if (d2out_din2)
-      _d2out_din2 = std::make_unique<StorageTensor<3>>(LabeledTensor3D::zeros(
-          batch_shape, {&output_axis(), &input_axis(), &input_axis()}, options));
+      _d2out_din2 = std::make_unique<LabeledTensor3D>(
+          batch_shape,
+          std::array<const LabeledAxis *, 3>{&output_axis(), &input_axis(), &input_axis()},
+          options);
   }
   else if (_assembly_mode == AssemblyMode::CONCATENATION)
   {

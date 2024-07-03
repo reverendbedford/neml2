@@ -22,34 +22,4 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
-
-#include "neml2/tensors/LabeledTensor.h"
-
-namespace neml2
-{
-class LabeledMatrix;
-
-/**
- * @brief A single-batched, logically 3D LabeledTensor.
- *
- */
-class LabeledTensor3D : public LabeledTensor<LabeledTensor3D, 3>
-{
-public:
-  using LabeledTensor<LabeledTensor3D, 3>::LabeledTensor;
-
-  /// Add another tensor into this tensor.
-  /// The item set of the other tensor must be a subset of this tensor's item set.
-  void accumulate(const LabeledTensor3D & other, bool recursive = true);
-
-  /// Fill another tensor into this tensor.
-  /// The item set of the other tensor must be a subset of this tensor's item set.
-  void fill(const LabeledTensor3D & other, bool recursive = true);
-
-  /// Second order chain rule product of two derivatives
-  LabeledTensor3D chain(const LabeledTensor3D & other,
-                        const LabeledMatrix & dself,
-                        const LabeledMatrix & dother) const;
-};
-} // namespace neml2
+#include "neml2/tensors/StorageTensor.h"
