@@ -26,7 +26,7 @@
 
 #include "neml2/base/NEML2Object.h"
 #include "neml2/base/OptionSet.h"
-#include "neml2/base/Storage.h"
+#include "neml2/base/SmartMap.h"
 #include "neml2/tensors/TensorValue.h"
 
 namespace neml2
@@ -43,11 +43,11 @@ public:
 
   /// @returns the buffer storage
   ///@{
-  const Storage<std::string, TensorValueBase> & named_parameters() const
+  const SmartMap<std::string, TensorValueBase> & named_parameters() const
   {
     return const_cast<ParameterStore *>(this)->named_parameters();
   }
-  Storage<std::string, TensorValueBase> & named_parameters();
+  SmartMap<std::string, TensorValueBase> & named_parameters();
   ///}@
 
   /// Get a writable reference of a parameter
@@ -127,7 +127,7 @@ private:
   const OptionSet _options;
 
   /// The actual storage for all the parameters
-  Storage<std::string, TensorValueBase> _param_values;
+  SmartMap<std::string, TensorValueBase> _param_values;
 
   /// Map from nonlinear parameter names to their corresponding variable views
   std::map<std::string, const VariableBase *> _nl_params;

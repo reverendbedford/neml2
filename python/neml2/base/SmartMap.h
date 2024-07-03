@@ -28,7 +28,7 @@
 #include <pybind11/operators.h>
 #include <pybind11/stl.h>
 
-#include "neml2/base/Storage.h"
+#include "neml2/base/SmartMap.h"
 
 namespace py = pybind11;
 
@@ -36,15 +36,15 @@ namespace neml2
 {
 template <typename I, typename T>
 void
-def_Storage(py::module_ & m, const std::string & pyname)
+def_SmartMap(py::module_ & m, const std::string & pyname)
 {
-  py::class_<Storage<I, T>>(m, pyname.c_str())
+  py::class_<SmartMap<I, T>>(m, pyname.c_str())
       .def(
           "__getitem__",
-          [](const Storage<I, T> & self, const I & i) { return &self[i]; },
+          [](const SmartMap<I, T> & self, const I & i) { return &self[i]; },
           py::return_value_policy::reference)
       .def("keys",
-           [](const Storage<I, T> & self)
+           [](const SmartMap<I, T> & self)
            {
              std::vector<I> keys;
              for (auto && [key, val] : self)

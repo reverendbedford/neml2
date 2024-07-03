@@ -33,21 +33,21 @@
 namespace neml2
 {
 /**
- * Storage container that stores a vector of unique pointers of T, but represents most of the public
- * facing accessors (iterators, operator[]).
+ * Storage container that stores a map with keys of type I and values of type unique pointers of T,
+ * but represents most of the public facing accessors (iterators, operator[]).
  *
  * That is, these accessors dereference the underlying storage. More importantly, if data is not
  * properly initialized using set_pointer(), this dereferencing will either lead to an assertion or
  * a nullptr dereference.
  */
 template <typename I, typename T>
-class Storage
+class SmartMap
 {
 public:
-  Storage() = default;
-  Storage(Storage &&) = default;
-  Storage(const Storage &) = delete;
-  Storage & operator=(const Storage &) = delete;
+  SmartMap() = default;
+  SmartMap(SmartMap &&) = default;
+  SmartMap(const SmartMap &) = delete;
+  SmartMap & operator=(const SmartMap &) = delete;
 
   /**
    * Iterator that adds an additional dereference to BaseIterator.

@@ -35,7 +35,7 @@ ParameterStore::ParameterStore(const OptionSet & options, NEML2Object * object)
 {
 }
 
-Storage<std::string, TensorValueBase> &
+SmartMap<std::string, TensorValueBase> &
 ParameterStore::named_parameters()
 {
   neml_assert(_object->host() == _object,

@@ -31,7 +31,7 @@
 #include "python/neml2/tensors/FixedDimTensor.h"
 #include "python/neml2/tensors/VecBase.h"
 #include "python/neml2/tensors/R2Base.h"
-#include "python/neml2/base/Storage.h"
+#include "python/neml2/base/SmartMap.h"
 
 namespace py = pybind11;
 using namespace neml2;
@@ -95,5 +95,5 @@ PYBIND11_MODULE(tensors, m)
 
   // Tensor storage
   def_TensorValueBase(m);
-  def_Storage<std::string, TensorValueBase>(m, "TensorValueStorage");
+  def_SmartMap<std::string, TensorValueBase>(m, "TensorValueStorage");
 }

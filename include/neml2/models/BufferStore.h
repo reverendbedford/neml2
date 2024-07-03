@@ -26,7 +26,7 @@
 
 #include "neml2/base/NEML2Object.h"
 #include "neml2/base/OptionSet.h"
-#include "neml2/base/Storage.h"
+#include "neml2/base/SmartMap.h"
 #include "neml2/tensors/TensorValue.h"
 
 namespace neml2
@@ -39,11 +39,11 @@ public:
 
   /// @returns the buffer storage
   ///@{
-  const Storage<std::string, TensorValueBase> & named_buffers() const
+  const SmartMap<std::string, TensorValueBase> & named_buffers() const
   {
     return const_cast<BufferStore *>(this)->named_buffers();
   }
-  Storage<std::string, TensorValueBase> & named_buffers();
+  SmartMap<std::string, TensorValueBase> & named_buffers();
   ///}@
 
   /// Get a writable reference of a buffer
@@ -105,7 +105,7 @@ private:
   const OptionSet _options;
 
   /// The actual storage for all the buffers
-  Storage<std::string, TensorValueBase> _buffer_values;
+  SmartMap<std::string, TensorValueBase> _buffer_values;
 };
 
 template <typename T, typename>

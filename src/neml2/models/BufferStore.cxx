@@ -32,7 +32,7 @@ BufferStore::BufferStore(const OptionSet & options, NEML2Object * object)
 {
 }
 
-Storage<std::string, TensorValueBase> &
+SmartMap<std::string, TensorValueBase> &
 BufferStore::named_buffers()
 {
   neml_assert(_object->host() == _object,

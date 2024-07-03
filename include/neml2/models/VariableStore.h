@@ -25,7 +25,7 @@
 #pragma once
 
 #include "neml2/base/NEML2Object.h"
-#include "neml2/base/Storage.h"
+#include "neml2/base/SmartMap.h"
 #include "neml2/tensors/Variable.h"
 #include "neml2/tensors/StorageTensor.h"
 
@@ -103,14 +103,14 @@ public:
 
   /// Input variable views
   ///@{
-  Storage<VariableName, VariableBase> & input_views() { return _input_views; }
-  const Storage<VariableName, VariableBase> & input_views() const { return _input_views; }
+  SmartMap<VariableName, VariableBase> & input_views() { return _input_views; }
+  const SmartMap<VariableName, VariableBase> & input_views() const { return _input_views; }
   /// @}
 
   /// Output variable views
   ///@{
-  Storage<VariableName, VariableBase> & output_views() { return _output_views; }
-  const Storage<VariableName, VariableBase> & output_views() const { return _output_views; }
+  SmartMap<VariableName, VariableBase> & output_views() { return _output_views; }
+  const SmartMap<VariableName, VariableBase> & output_views() const { return _output_views; }
   /// @}
 
   /// Get the view of an input variable
@@ -258,7 +258,7 @@ private:
 
   // Create a variable view (doesn't setup the view)
   template <typename T>
-  Variable<T> * create_variable_view(Storage<VariableName, VariableBase> & views,
+  Variable<T> * create_variable_view(SmartMap<VariableName, VariableBase> & views,
                                      const VariableName & name,
                                      TorchSize sz = -1)
   {
@@ -308,13 +308,13 @@ private:
   const AssemblyMode _assembly_mode;
 
   /// All the declared axes
-  Storage<std::string, LabeledAxis> _axes;
+  SmartMap<std::string, LabeledAxis> _axes;
 
   /// Input variable views
-  Storage<VariableName, VariableBase> _input_views;
+  SmartMap<VariableName, VariableBase> _input_views;
 
   /// Output variable views
-  Storage<VariableName, VariableBase> _output_views;
+  SmartMap<VariableName, VariableBase> _output_views;
 
   /// The input axis
   LabeledAxis & _input_axis;
