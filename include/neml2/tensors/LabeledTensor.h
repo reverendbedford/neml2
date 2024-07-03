@@ -44,28 +44,21 @@ public:
   /// Default constructor
   LabeledTensor() = default;
 
-  /// Construct from a Tensor with batch dim and array of `LabeledAxis`
+  /// Copy constructor
+  LabeledTensor(const Derived & other);
+
+  /// Construct an empty tensor given batch shape and array of axes
+  LabeledTensor(TorchShapeRef batch_shape,
+                const std::array<const LabeledAxis *, D> & axes,
+                const torch::TensorOptions & options = default_tensor_options());
+
+  /// Construct from a Tensor with batch dim and array of axes
   LabeledTensor(const torch::Tensor & tensor,
                 TorchSize batch_dim,
                 const std::array<const LabeledAxis *, D> & axes);
 
-  /// Construct from a BatchTensor with array of `LabeledAxis`
+  /// Construct from a BatchTensor with array of axes
   LabeledTensor(const BatchTensor & tensor, const std::array<const LabeledAxis *, D> & axes);
-
-  /// Copy constructor
-  LabeledTensor(const Derived & other);
-
-  /// Setup new empty storage
-  [[nodiscard]] static Derived
-  empty(TorchShapeRef batch_shape,
-        const std::array<const LabeledAxis *, D> & axes,
-        const torch::TensorOptions & options = default_tensor_options());
-
-  /// Setup new storage with zeros
-  [[nodiscard]] static Derived
-  zeros(TorchShapeRef batch_shape,
-        const std::array<const LabeledAxis *, D> & axes,
-        const torch::TensorOptions & options = default_tensor_options());
 
   /// Assignment operator
   virtual void operator=(const StorageTensor<D> & other) override;
@@ -80,7 +73,8 @@ public:
 
   virtual BatchTensor assemble() const override;
 
-  virtual BatchTensor tensor() const override;
+  /// Convert to BatchTensor (does not take ownership)
+  virtual BatchTensor tensor() const;
 
 protected:
   /// Calculate slicing indices given the names on each axis

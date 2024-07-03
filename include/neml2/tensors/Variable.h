@@ -88,9 +88,9 @@ public:
   /// Derivative accessors
   ///@{
   /// Create a wrapper representing the derivative dy/dx
-  StorageTensor<2>::PlainView & d(const VariableBase & x);
+  StorageTensor<2>::View<BatchTensor> & d(const VariableBase & x);
   /// Create a wrapper representing the second derivative d2y/dx2
-  StorageTensor<3>::PlainView & d(const VariableBase & x1, const VariableBase & x2);
+  StorageTensor<3>::View<BatchTensor> & d(const VariableBase & x1, const VariableBase & x2);
   ///@}
 
 protected:
@@ -101,10 +101,11 @@ protected:
   TorchShape _batch_sizes;
 
   /// The derivative of this variable w.r.t. arguments.
-  std::map<VariableName, StorageTensor<2>::PlainView> _deriv_views;
+  std::map<VariableName, StorageTensor<2>::View<BatchTensor *>> _deriv_views;
 
   /// The second derivative of this variable w.r.t. arguments.
-  std::map<VariableName, std::map<VariableName, StorageTensor<3>::PlainView>> _sec_deriv_views;
+  std::map<VariableName, std::map<VariableName, StorageTensor<3>::View<BatchTensor> *>>
+      _sec_deriv_views;
 };
 
 /**

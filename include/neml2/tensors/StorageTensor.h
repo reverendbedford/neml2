@@ -25,6 +25,7 @@
 #pragma once
 
 #include "neml2/misc/types.h"
+#include "neml2/base/SmartVector.h"
 #include "neml2/tensors/LabeledAxis.h"
 #include "neml2/tensors/BatchTensor.h"
 
@@ -35,10 +36,39 @@ template <TorchSize D>
 class StorageTensor
 {
 public:
+  /// Abstract base class for view
+  class ViewBase
+  {
+  public:
+    ViewBase() = default;
+
+    /// Get the flattened raw value without reshaping
+    BatchTensor & raw_value() = 0;
+
+  protected:
+    /// Peer views that view into the same location
+    SmartVector<ViewBase> & _peers;
+  };
+
+  /// Intermediate base class for view (with additional information on tensor type)
+  template <typename T>
+  class View : public ViewBase
+  {
+  public:
+    View() = default;
+
+    /// Get the value with the correct base shape
+    T & value() = 0;
+  };
+
   StorageTensor() = default;
 
   /// Copy assignment operator
   virtual void operator=(const StorageTensor<D> &) = 0;
+
+  /// Get a view by slicing each axis
+  template <typename T>
+  View<T> & view(const std::array<VariableName, D> &);
 
   /// Copy values from another BatchTensor
   virtual void copy_(const BatchTensor &) = 0;
@@ -52,11 +82,8 @@ public:
   /// Tensor value modifier
   virtual void set_(const std::array<VariableName, D> &, const BatchTensor &) = 0;
 
-  /// Assemble the tensor to a BatchTensor
+  /// Assemble the tensor to a BatchTensor (takes ownership)
   virtual BatchTensor assemble() const = 0;
-
-  /// Convert to BatchTensor
-  virtual BatchTensor tensor() const = 0;
 
   /// Get all the labeled axes
   const std::array<const LabeledAxis *, D> & axes() const { return _axes; }
@@ -65,7 +92,13 @@ public:
   const LabeledAxis & axis(TorchSize i = 0) const { return *_axes[i]; }
 
 protected:
+  /// It is the derived class's responsibility to make the view
+  virtual std::unique_ptr<ViewBase> make_view() const = 0;
+
   /// The labeled axes of this tensor
   std::array<const LabeledAxis *, D> _axes;
+
+  /// Storage of all views
+  std::map<std::array<VariableName, D>, SmartVector<ViewBase>> _views;
 };
 } // namespace neml2
