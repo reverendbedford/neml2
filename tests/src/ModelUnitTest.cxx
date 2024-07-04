@@ -93,6 +93,8 @@ ModelUnitTest::ModelUnitTest(const OptionSet & options)
     _check_inplace(options.get<bool>("check_inplace")),
     _check_concat(options.get<bool>("check_concatenation")),
     _deriv_order(-1),
+    _in(_batch_shape, {&_model_inplace.input_axis()}),
+    _out(_batch_shape, {&_model_inplace.output_axis()}),
     _out_rtol(options.get<Real>("output_rel_tol")),
     _out_atol(options.get<Real>("output_abs_tol")),
     _deriv_rtol(options.get<Real>("derivatives_rel_tol")),
@@ -102,14 +104,12 @@ ModelUnitTest::ModelUnitTest(const OptionSet & options)
     _param_rtol(options.get<Real>("parameter_derivatives_rel_tol")),
     _param_atol(options.get<Real>("parameter_derivatives_abs_tol"))
 {
-  _in = LabeledVector::zeros(_batch_shape, {&_model_inplace.input_axis()});
   fill_vector<BatchTensor>(_in, "input_batch_tensor_names", "input_batch_tensor_values");
   fill_vector<Scalar>(_in, "input_scalar_names", "input_scalar_values");
   fill_vector<SR2>(_in, "input_symr2_names", "input_symr2_values");
   fill_vector<WR2>(_in, "input_skewr2_names", "input_skewr2_values");
   fill_vector<Rot>(_in, "input_rot_names", "input_rot_values");
 
-  _out = LabeledVector::zeros(_batch_shape, {&_model_inplace.output_axis()});
   fill_vector<BatchTensor>(_out, "output_batch_tensor_names", "output_batch_tensor_values");
   fill_vector<Scalar>(_out, "output_scalar_names", "output_scalar_values");
   fill_vector<SR2>(_out, "output_symr2_names", "output_symr2_values");
@@ -145,7 +145,7 @@ ModelUnitTest::run(Model & model)
 
   if (_check_cuda && torch::cuda::is_available())
   {
-    _in = _in.to(torch::kCUDA);
+    _in.to_(torch::kCUDA);
     check_all(model);
   }
 
@@ -186,16 +186,13 @@ ModelUnitTest::check_values(Model & model)
 {
   model.reinit(_in, _deriv_order);
 
-  auto out = model.value(_in);
-  neml_assert(utils::allclose(out, _out.to(out.options()), _out_rtol, _out_atol),
-              "The model gives values that are different from expected. The expected labels are:\n",
-              _out.axis(0),
-              "\nThe model gives the following labels:\n",
-              out.axis(0),
-              "\nThe expected values are:\n",
-              _out.tensor(),
-              "\nThe model gives the following values:\n",
-              out.tensor());
+  auto out = model.value(_in).to(torch::kCPU);
+  neml_assert(
+      torch::allclose(out, _out.assemble(), _out_rtol, _out_atol),
+      "The model gives values that are different from expected. \nThe expected values are:\n",
+      _out.assemble(),
+      "\nThe model gives the following values:\n",
+      out);
 }
 
 void
@@ -204,14 +201,13 @@ ModelUnitTest::check_derivatives(Model & model, bool first, bool second)
   model.reinit(_in, _deriv_order);
 
   model.use_AD_derivatives(first, second);
-  auto exact = std::get<1>(model.value_and_dvalue(_in));
+  auto exact = std::get<1>(model.value_and_dvalue(_in)).to(torch::kCPU);
   auto numerical = finite_differencing_derivative(
-      [this, &model](const BatchTensor & x) { return model.value(LabeledVector(x, _in.axes())); },
-      _in);
-  neml_assert(torch::allclose(exact.tensor(), numerical, _deriv_rtol, _deriv_atol),
+      [this, &model](const BatchTensor & x) { return model.value(x); }, _in);
+  neml_assert(torch::allclose(exact, numerical, _deriv_rtol, _deriv_atol),
               "The model gives derivatives that are different from those given by finite "
               "differencing. The model gives:\n",
-              exact.tensor(),
+              exact,
               "\nFinite differencing gives:\n",
               numerical);
 }
@@ -222,15 +218,14 @@ ModelUnitTest::check_second_derivatives(Model & model, bool first, bool second)
   model.reinit(_in, _deriv_order);
 
   model.use_AD_derivatives(first, second);
-  auto exact = std::get<2>(model.value_and_dvalue_and_d2value(_in));
+  auto exact = std::get<2>(model.value_and_dvalue_and_d2value(_in)).to(torch::kCPU);
   auto numerical = finite_differencing_derivative(
-      [this, &model](const BatchTensor & x)
-      { return std::get<1>(model.value_and_dvalue(LabeledVector(x, _in.axes()))); },
+      [this, &model](const BatchTensor & x) { return std::get<1>(model.value_and_dvalue(x)); },
       _in);
-  neml_assert(torch::allclose(exact.tensor(), numerical, _secderiv_rtol, _secderiv_atol),
+  neml_assert(torch::allclose(exact, numerical, _secderiv_rtol, _secderiv_atol),
               "The model gives second derivatives that are different from those given by finite "
               "differencing. The model gives:\n",
-              exact.tensor(),
+              exact,
               "\nFinite differencing gives:\n",
               numerical);
 }
@@ -245,7 +240,7 @@ ModelUnitTest::check_parameter_derivatives(Model & model)
     auto pval = BatchTensor(param).batch_expand_copy(_batch_shape);
     pval.requires_grad_(true);
     param.set(pval);
-    auto out = model.value(_in);
+    auto out = model.value(_in).to(torch::kCPU);
     auto exact = math::jacrev(out, BatchTensor(param));
     auto numerical = finite_differencing_derivative(
         [&, &param = param](const BatchTensor & x)

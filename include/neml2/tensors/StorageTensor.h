@@ -50,6 +50,17 @@ public:
     /// Get the flattened raw value without reshaping
     virtual BatchTensor & raw_value() = 0;
 
+    /// Some operations may "break" the view --
+
+    /**
+     * @brief Effectively recreate the view
+     *
+     * This method is needed because some operations may "break" the view.
+     * It is the derived class's responsibility to store enough information so that a view can be
+     * recreated upon request.
+     */
+    virtual void reinit() = 0;
+
   protected:
     /// Peer views that view into the same location
     SmartVector<ViewBase> & _peers;
@@ -81,6 +92,12 @@ public:
 
   virtual ~StorageTensor() = default;
 
+  /// Implicit conversion to BatchTensor
+  operator BatchTensor() const { return assemble(); }
+
+  /// Send to another device or dtype
+  virtual void to_(const torch::TensorOptions &) = 0;
+
   /// Copy values from another BatchTensor
   virtual void copy_(const BatchTensor &) = 0;
 
@@ -106,6 +123,9 @@ public:
   template <typename T>
   T reinterpret(const std::array<LabeledAxisAccessor, D> &) const;
 
+  /// Reinitialize all views
+  void reinit_views();
+
 protected:
   /// The labeled axes of this tensor
   std::array<const LabeledAxis *, D> _axes;
@@ -127,5 +147,14 @@ T
 StorageTensor<D>::reinterpret(const std::array<LabeledAxisAccessor, D> & i) const
 {
   return get(i).base_reshape(T::const_base_sizes);
+}
+
+template <TorchSize D>
+void
+StorageTensor<D>::reinit_views()
+{
+  for (auto && [i, views] : _views)
+    for (auto & view : views)
+      view.reinit();
 }
 } // namespace neml2

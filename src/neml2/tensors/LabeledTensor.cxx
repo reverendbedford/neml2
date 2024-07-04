@@ -90,6 +90,14 @@ LabeledTensor<D>::clone() const
 
 template <TorchSize D>
 void
+LabeledTensor<D>::to_(const torch::TensorOptions & options)
+{
+  _tensor = _tensor.to(options);
+  this->reinit_views();
+}
+
+template <TorchSize D>
+void
 LabeledTensor<D>::copy_(const BatchTensor & val)
 {
   _tensor.copy_(val);

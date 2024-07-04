@@ -46,7 +46,9 @@ public:
   class View : public StorageTensor<D>::template View<T>
   {
   public:
-    View(BatchTensor, SmartVector<typename StorageTensor<D>::ViewBase> & peers);
+    View(LabeledTensor<D> *,
+         const std::array<LabeledAxisAccessor, D> &,
+         SmartVector<typename StorageTensor<D>::ViewBase> &);
 
     /**
      * @copydoc neml2::StorageTensor::ViewBase::operator=
@@ -60,6 +62,8 @@ public:
 
     virtual T & value() override { return _value; }
 
+    virtual void reinit() override;
+
     virtual void requires_grad_(bool req = true) override
     {
       if (req)
@@ -69,7 +73,12 @@ public:
             "issue.");
     }
 
-  protected:
+  private:
+    /// The original storage this views into
+    LabeledTensor<D> * _storage;
+    /// Indices of the original storage this views into
+    const std::array<LabeledAxisAccessor, D> & _indices;
+
     /// View into the LabeledTensor without reshaping
     BatchTensor _raw_value;
     /// View into _view with the correct logical base shape of @tparam T
@@ -104,7 +113,9 @@ public:
 
   LabeledTensor<D> clone() const;
 
-  virtual void copy_(const BatchTensor & other) override;
+  virtual void to_(const torch::TensorOptions &) override;
+
+  virtual void copy_(const BatchTensor &) override;
 
   virtual void zero_() override;
 
@@ -145,11 +156,22 @@ namespace neml2
 {
 template <TorchSize D>
 template <typename T>
-LabeledTensor<D>::View<T>::View(BatchTensor raw_value,
+LabeledTensor<D>::View<T>::View(LabeledTensor<D> * storage,
+                                const std::array<LabeledAxisAccessor, D> & indices,
                                 SmartVector<typename StorageTensor<D>::ViewBase> & peers)
-  : StorageTensor<D>::template View<T>(peers)
+  : StorageTensor<D>::template View<T>(peers),
+    _storage(storage),
+    _indices(indices)
 {
-  _raw_value = raw_value;
+  reinit();
+}
+
+template <TorchSize D>
+template <typename T>
+void
+LabeledTensor<D>::View<T>::reinit()
+{
+  _raw_value = _storage->get(_indices);
 
   auto shape = utils::add_shapes(_raw_value.batch_sizes(), T::const_base_sizes);
   _value = T(_raw_value.view(shape));
@@ -169,7 +191,7 @@ template <typename T>
 typename LabeledTensor<D>::template View<T> &
 LabeledTensor<D>::view(const std::array<const LabeledAxis *, D> & i)
 {
-  auto new_view = std::make_unique<View<T>>(get(i), this->_views[i]);
+  auto new_view = std::make_unique<View<T>>(this, i, this->_views[i]);
   auto new_view_base = this->_views.set_pointer(new_view);
   auto new_view_ptr = dynamic_cast<View<T> *>(new_view_base);
   neml_assert(new_view_ptr, "Failed to cast view to concrete type");

@@ -27,6 +27,7 @@
 #include "neml2/drivers/Driver.h"
 #include "neml2/models/Model.h"
 #include "neml2/tensors/tensors.h"
+#include "neml2/tensors/LabeledTensor.h"
 
 namespace neml2
 {
@@ -55,7 +56,7 @@ private:
                 vars.size(),
                 " variables.");
     for (size_t i = 0; i < vars.size(); i++)
-      vec.set(T(vals[i]), vars[i]);
+      vec.set_({vars[i]}, T(vals[i]));
   }
 
   void check_all(Model & model);
