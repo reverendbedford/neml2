@@ -32,7 +32,8 @@ using namespace neml2;
 
 TEST_CASE("LabeledTensor", "[tensors]")
 {
-  // TorchSize nbatch = 10;
+  // Batch shape
+  TorchShape batch_sizes{2, 5};
 
   // Setup the Label
   LabeledAxis info1;
@@ -42,4 +43,65 @@ TEST_CASE("LabeledTensor", "[tensors]")
   LabeledAxis info2;
   info2.add<Scalar>("first").add<SR2>("second");
   info2.setup_layout();
+
+  SECTION("Empty constructor")
+  {
+    LabeledMatrix A;
+    REQUIRE(!A.tensor().defined());
+    REQUIRE(A.axes().size() == 2);
+  }
+
+  SECTION("Zero constructor")
+  {
+    auto zero = torch::tensor(0.0, default_tensor_options());
+
+    LabeledMatrix A(batch_sizes, {&info1, &info2});
+    REQUIRE(torch::allclose(A.tensor(), zero));
+    REQUIRE(A.axis(0) == info1);
+    REQUIRE(A.axis(1) == info2);
+    REQUIRE(A.tensor().batch_sizes() == batch_sizes);
+    REQUIRE(A.tensor().base_size(0) == info1.storage_size());
+    REQUIRE(A.tensor().base_size(1) == info2.storage_size());
+  }
+
+  SECTION("view")
+  {
+    LabeledMatrix A(batch_sizes, {&info1, &info2});
+    auto & view1 = A.view<BatchTensor>({"first", "second"});
+    auto & view2 = A.view<SR2>({"first", "first"});
+    auto & view3 = A.view<BatchTensor>({"first", "first"});
+
+    REQUIRE(view1.raw_value().base_sizes() == TorchShape{6, 6});
+    REQUIRE(view2.raw_value().base_sizes() == TorchShape{6, 1});
+    REQUIRE(view3.raw_value().base_sizes() == TorchShape{6, 1});
+
+    REQUIRE(view1.value().base_sizes() == TorchShape{6, 6});
+    REQUIRE(view2.value().base_sizes() == TorchShape{6});
+    REQUIRE(view3.value().base_sizes() == TorchShape{6, 1});
+
+    // Modifying view1 should affect
+    //   - A, since view1 is viewing into A
+    // and not view2 nor view3
+    view1 = BatchTensor::full({6, 6}, 1.0);
+    REQUIRE(torch::allclose(view1.raw_value(), torch::tensor(1.0, default_tensor_options())));
+    REQUIRE(torch::allclose(view2.raw_value(), torch::tensor(0.0, default_tensor_options())));
+    REQUIRE(torch::allclose(view3.raw_value(), torch::tensor(0.0, default_tensor_options())));
+
+    REQUIRE(torch::allclose(view1.value(), torch::tensor(1.0, default_tensor_options())));
+    REQUIRE(torch::allclose(view2.value(), torch::tensor(0.0, default_tensor_options())));
+    REQUIRE(torch::allclose(view3.value(), torch::tensor(0.0, default_tensor_options())));
+
+    // Modifying view2 should affect
+    //   - A, since view1 is viewing into A
+    //   - view3, since view2 and view3 are viewing into the same data
+    // and not view1
+    view2 = BatchTensor::full({6}, 3.0);
+    REQUIRE(torch::allclose(view1.raw_value(), torch::tensor(1.0, default_tensor_options())));
+    REQUIRE(torch::allclose(view2.raw_value(), torch::tensor(3.0, default_tensor_options())));
+    REQUIRE(torch::allclose(view3.raw_value(), torch::tensor(3.0, default_tensor_options())));
+
+    REQUIRE(torch::allclose(view1.value(), torch::tensor(1.0, default_tensor_options())));
+    REQUIRE(torch::allclose(view2.value(), torch::tensor(3.0, default_tensor_options())));
+    REQUIRE(torch::allclose(view3.value(), torch::tensor(3.0, default_tensor_options())));
+  }
 }
