@@ -104,4 +104,21 @@ TEST_CASE("LabeledTensor", "[tensors]")
     REQUIRE(torch::allclose(view2.value(), torch::tensor(3.0, default_tensor_options())));
     REQUIRE(torch::allclose(view3.value(), torch::tensor(3.0, default_tensor_options())));
   }
+
+  SECTION("clone")
+  {
+    LabeledMatrix A(batch_sizes, {&info1, &info2});
+    auto & view1 = A.view<SR2>({"first", "first"});
+
+    auto B = A.clone();
+
+    REQUIRE(A.tensor().sizes() == B.tensor().sizes());
+    REQUIRE(torch::allclose(A.tensor(), B.tensor()));
+    REQUIRE(A.axes() == B.axes());
+    REQUIRE(B.views().empty());
+
+    // Modifying A should NOT affect B
+    view1 = BatchTensor::full({6}, 3.0);
+    REQUIRE(torch::allclose(B.tensor(), torch::tensor(0.0, default_tensor_options())));
+  }
 }

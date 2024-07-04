@@ -73,6 +73,8 @@ public:
             "issue.");
     }
 
+    virtual typename StorageTensor<D>::View<T> & clone() override;
+
   private:
     /// The original storage this views into
     LabeledTensor<D> * _storage;
@@ -109,7 +111,7 @@ public:
 
   /// Get a view by slicing each axis
   template <typename T>
-  View<T> & view(const std::array<LabeledAxisAccessor, D> &);
+  [[nodiscard]] View<T> & view(const std::array<LabeledAxisAccessor, D> &);
 
   LabeledTensor<D> clone() const;
 
@@ -201,5 +203,13 @@ LabeledTensor<D>::view(const std::array<LabeledAxisAccessor, D> & i)
   auto new_view_ptr = dynamic_cast<View<T> *>(new_view_base);
   neml_assert(new_view_ptr, "Failed to cast view to concrete type");
   return *new_view_ptr;
+}
+
+template <TorchSize D>
+template <typename T>
+typename StorageTensor<D>::template View<T> &
+LabeledTensor<D>::View<T>::clone()
+{
+  return _storage->view<T>(_indices);
 }
 } // namespace neml2

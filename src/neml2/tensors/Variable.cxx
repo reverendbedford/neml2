@@ -60,4 +60,16 @@ VariableBase::d(const VariableBase & x1, const VariableBase & x2)
                   x2.name());
   return *_sec_deriv_views[x1.name()][x2.name()];
 }
+
+const std::map<VariableName, StorageTensor<2>::View<BatchTensor> *> &
+VariableBase::derivatives()
+{
+  return _deriv_views;
+}
+
+const std::map<VariableName, std::map<VariableName, StorageTensor<3>::View<BatchTensor> *>> &
+VariableBase::second_derivatives()
+{
+  return _sec_deriv_views;
+}
 }

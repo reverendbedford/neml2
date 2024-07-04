@@ -81,6 +81,9 @@ public:
 
     /// Make this a leaf variable in backward AD
     virtual void requires_grad_(bool req = true) = 0;
+
+    /// Make a clone of this view
+    virtual View<T> & clone() = 0;
   };
 
   StorageTensor() = default;
@@ -126,6 +129,12 @@ public:
   /// Reinitialize all views
   void reinit_views();
 
+  /// Get all views
+  const std::map<std::array<LabeledAxisAccessor, D>, SmartVector<ViewBase>> & views() const;
+
+  /// Get all views into the given indices
+  const SmartVector<ViewBase> & views(const std::array<LabeledAxisAccessor, D> & i) const;
+
 protected:
   /// The labeled axes of this tensor
   std::array<const LabeledAxis *, D> _axes;
@@ -156,5 +165,21 @@ StorageTensor<D>::reinit_views()
   for (auto && [i, views] : _views)
     for (auto & view : views)
       view.reinit();
+}
+
+template <TorchSize D>
+const std::map<std::array<LabeledAxisAccessor, D>,
+               SmartVector<typename StorageTensor<D>::ViewBase>> &
+StorageTensor<D>::views() const
+{
+  return _views;
+}
+
+template <TorchSize D>
+const SmartVector<typename StorageTensor<D>::ViewBase> &
+StorageTensor<D>::views(const std::array<LabeledAxisAccessor, D> & i) const
+{
+  neml_assert_dbg(_views.count(i), "No view associated with the given indices");
+  return _views.at(i);
 }
 } // namespace neml2
