@@ -109,7 +109,7 @@ public:
 
   /// Get a view by slicing each axis
   template <typename T>
-  View<T> & view(const std::array<const LabeledAxis *, D> &);
+  View<T> & view(const std::array<LabeledAxisAccessor, D> &);
 
   LabeledTensor<D> clone() const;
 
@@ -132,13 +132,13 @@ public:
                         const LabeledAxisAccessor & i1 = LabeledAxisAccessor(),
                         const LabeledAxisAccessor & i2 = LabeledAxisAccessor());
 
-protected:
   /// Calculate slicing indices given the names on each axis
   TorchSlice slice_indices(const std::array<LabeledAxisAccessor, D> & names) const;
 
   /// Calculate storage shape given the names on each axis
   TorchShape storage_sizes(const std::array<LabeledAxisAccessor, D> & names) const;
 
+protected:
   /// The tensor
   BatchTensor _tensor;
 };
@@ -171,10 +171,15 @@ template <typename T>
 void
 LabeledTensor<D>::View<T>::reinit()
 {
-  _raw_value = _storage->get(_indices);
+  _raw_value = _storage->tensor().base_index(_storage->slice_indices(_indices));
 
-  auto shape = utils::add_shapes(_raw_value.batch_sizes(), T::const_base_sizes);
-  _value = T(_raw_value.view(shape));
+  if constexpr (std::is_same_v<T, BatchTensor>)
+    _value = _raw_value;
+  else
+  {
+    auto shape = utils::add_shapes(_raw_value.batch_sizes(), T::const_base_sizes);
+    _value = T(_raw_value.view(shape));
+  }
 }
 
 template <TorchSize D>
@@ -189,10 +194,10 @@ LabeledTensor<D>::View<T>::operator=(const BatchTensor & val)
 template <TorchSize D>
 template <typename T>
 typename LabeledTensor<D>::template View<T> &
-LabeledTensor<D>::view(const std::array<const LabeledAxis *, D> & i)
+LabeledTensor<D>::view(const std::array<LabeledAxisAccessor, D> & i)
 {
   auto new_view = std::make_unique<View<T>>(this, i, this->_views[i]);
-  auto new_view_base = this->_views.set_pointer(new_view);
+  auto new_view_base = this->_views[i].set_pointer(std::move(new_view));
   auto new_view_ptr = dynamic_cast<View<T> *>(new_view_base);
   neml_assert(new_view_ptr, "Failed to cast view to concrete type");
   return *new_view_ptr;
