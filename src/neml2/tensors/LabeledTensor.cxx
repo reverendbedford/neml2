@@ -73,12 +73,53 @@ LabeledTensor<D>::LabeledTensor(const BatchTensor & tensor,
                     "LabeledTensor does not have the right size");
 }
 
+template <>
+LabeledTensor<2>
+LabeledTensor<2>::chain(const LabeledTensor<2> & dy_du, const LabeledTensor<2> & du_dx)
+{
+  // Axes must be conformal
+  neml_assert_dbg(dy_du.axis(1) == du_dx.axis(0), "Axes are not conformal");
+
+  // dy/dx = dy/du du/dx
+  return LabeledTensor<2>(math::bmm(dy_du.tensor(), du_dx.tensor()),
+                          {&dy_du.axis(0), &du_dx.axis(1)});
+}
+
+template <>
+LabeledTensor<3>
+LabeledTensor<3>::chain(const LabeledTensor<3> & d2y_du2,
+                        const LabeledTensor<3> & d2u_dx2,
+                        const LabeledTensor<2> & dy_du,
+                        const LabeledTensor<2> & du_dx)
+{
+  // Axes must be conformal
+  neml_assert_dbg(d2y_du2.axis(1) == d2y_du2.axis(2), "Axes are not conformal");
+  neml_assert_dbg(d2u_dx2.axis(1) == d2u_dx2.axis(2), "Axes are not conformal");
+  neml_assert_dbg(d2y_du2.axis(2) == d2u_dx2.axis(0), "Axes are not conformal");
+
+  // d2y/dx2 = d2y/du2 du/dx du/dx + dy/du d2u/dx2
+  // In index notation this is
+  // (d2y/dx2)_{ijk} = (d2y/du2)_{ipq} (du/dx)_{pj} (du/dx)_{qk} + (dy/du)_{ip} (d2u/dx2)_{pjk}
+  return LabeledTensor<3>(
+      torch::einsum("...ipq,...pj,...qk", {d2y_du2.tensor(), du_dx.tensor(), du_dx.tensor()}) +
+          torch::einsum("...ip,...pjk", {dy_du.tensor(), d2u_dx2.tensor()}),
+      broadcast_batch_dim(d2y_du2.tensor(), d2u_dx2.tensor(), dy_du.tensor(), du_dx.tensor()),
+      {&d2y_du2.axis(0), &d2u_dx2.axis(1), &d2u_dx2.axis(2)});
+}
+
 template <TorchSize D>
 void
 LabeledTensor<D>::operator=(const LabeledTensor<D> & other)
 {
   _tensor = other.tensor();
   this->_axes = other.axes();
+}
+
+template <TorchSize D>
+const BatchTensor &
+LabeledTensor<D>::view_raw(const std::array<LabeledAxisAccessor, D> & names)
+{
+  return view<BatchTensor>(names).raw_value();
 }
 
 template <TorchSize D>
@@ -140,7 +181,7 @@ LabeledTensor<D>::set_(const std::array<LabeledAxisAccessor, D> & names, const B
 
 template <TorchSize D>
 void
-LabeledTensor<D>::collect_(const LabeledTensor<D> & other,
+LabeledTensor<D>::collect_(const StorageTensor<D> & other,
                            const LabeledAxisAccessor & i1,
                            const LabeledAxisAccessor & i2)
 {
@@ -150,10 +191,11 @@ LabeledTensor<D>::collect_(const LabeledTensor<D> & other,
   if constexpr (D > 2)
     neml_assert_dbg(this->axis(2) == other.axis(2),
                     "Can only collect from tensor with conformal z axes");
+  const auto & other_l = static_cast<const LabeledTensor<D> &>(other);
   const auto indices =
-      this->axis(0).subaxis(i1).common_indices(other.axis(0).subaxis(i2), /*recursive=*/true);
+      this->axis(0).subaxis(i1).common_indices(other_l.axis(0).subaxis(i2), /*recursive=*/true);
   for (const auto & [idxi, idxi_other] : indices)
-    _tensor.base_index_put({idxi}, other.tensor().base_index({idxi_other}));
+    _tensor.base_index_put({idxi}, other_l.tensor().base_index({idxi_other}));
 }
 
 template <TorchSize D>

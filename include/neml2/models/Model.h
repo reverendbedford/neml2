@@ -312,5 +312,9 @@ private:
 
   /// Whether this is a nonlinear system
   bool _nonlinear_system;
+  /// View into the output storage as the nonlinear system's residual
+  const BatchTensor * _residual_view;
+  /// View into the derivative storage as the nonlinear system's Jacobian
+  const BatchTensor * _Jacobian_view;
 };
 } // namespace neml2

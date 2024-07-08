@@ -93,6 +93,9 @@ ImplicitUpdate::set_value(bool out, bool dout_din, bool d2out_din2)
       !dout_din || out,
       "ImplicitUpdate: requires the value and the first derivatives to be computed together.");
 
+  // Apply initial condition
+  _model.solution() = host<VariableStore>()->input_storage().get({"state"});
+
   // The trial state is used as the initial guess
   // Perform automatic scaling
   _model.init_scaling(_solver.verbose);

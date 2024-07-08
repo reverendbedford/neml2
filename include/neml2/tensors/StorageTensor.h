@@ -40,17 +40,16 @@ public:
   class ViewBase
   {
   public:
-    ViewBase(SmartVector<ViewBase> & peers)
-      : _peers(peers)
-    {
-    }
+    ViewBase() = default;
+
+    ViewBase(StorageTensor<D> *,
+             const std::array<LabeledAxisAccessor, D> &,
+             SmartVector<ViewBase> & peers);
 
     virtual ~ViewBase() = default;
 
     /// Get the flattened raw value without reshaping
-    virtual BatchTensor & raw_value() = 0;
-
-    /// Some operations may "break" the view --
+    virtual const BatchTensor & raw_value() const { throw NEMLException("Not implemented"); }
 
     /**
      * @brief Effectively recreate the view
@@ -59,11 +58,24 @@ public:
      * It is the derived class's responsibility to store enough information so that a view can be
      * recreated upon request.
      */
-    virtual void reinit() = 0;
+    virtual void reinit() { throw NEMLException("Not implemented"); }
+
+    /// Get the underlying storage tensor
+    template <typename T = StorageTensor<1>>
+    const T & storage() const;
+    template <typename T = StorageTensor<1>>
+    T & storage();
+
+    /// Get the view indices
+    const std::array<LabeledAxisAccessor, D> & indices() const;
 
   protected:
+    /// The original storage this views into
+    StorageTensor<D> * _storage;
+    /// Indices of the original storage this views into
+    std::array<LabeledAxisAccessor, D> _indices;
     /// Peer views that view into the same location
-    SmartVector<ViewBase> & _peers;
+    SmartVector<ViewBase> * _peers;
   };
 
   /// Intermediate base class for view (with additional information on tensor type)
@@ -74,16 +86,16 @@ public:
     using ViewBase::ViewBase;
 
     /// Assignment operator
-    virtual void operator=(const BatchTensor &) = 0;
+    virtual void operator=(const BatchTensor &) { throw NEMLException("Not implemented"); }
 
     /// Get the value with the correct base shape
-    virtual T & value() = 0;
+    virtual const T & value() const { throw NEMLException("Not implemented"); }
 
     /// Make this a leaf variable in backward AD
-    virtual void requires_grad_(bool req = true) = 0;
+    virtual void requires_grad_(bool) { throw NEMLException("Not implemented"); }
 
     /// Make a clone of this view
-    virtual View<T> & clone() = 0;
+    virtual View<T> & clone() { throw NEMLException("Not implemented"); }
   };
 
   StorageTensor() = default;
@@ -116,11 +128,25 @@ public:
   /// Get a specific labeled axis
   const LabeledAxis & axis(TorchSize i = 0) const { return *_axes[i]; }
 
+  /// Get the view into raw storage at given indices
+  virtual const BatchTensor & view_raw(const std::array<LabeledAxisAccessor, D> &) = 0;
+
   /// Get the raw tensor value given indices (takes ownership)
   virtual BatchTensor get(const std::array<LabeledAxisAccessor, D> &) const = 0;
 
   /// Set the raw tensor value given indices
   virtual void set_(const std::array<LabeledAxisAccessor, D> &, const BatchTensor &) = 0;
+
+  /**
+   * @brief Collect values from another StorageTensor
+   *
+   * @param other The other StorageTensor to collect data from
+   * @param i1 Variable/sub-axis of this tensor to fill into
+   * @param i2 Variable/sub-axis of the other tensor to fill from
+   */
+  virtual void collect_(const StorageTensor<D> & other,
+                        const LabeledAxisAccessor & i1 = LabeledAxisAccessor(),
+                        const LabeledAxisAccessor & i2 = LabeledAxisAccessor()) = 0;
 
   /// Get the tensor and reinterpret as the given tensor type (takes ownership)
   template <typename T>
@@ -150,6 +176,43 @@ protected:
 
 namespace neml2
 {
+template <TorchSize D>
+StorageTensor<D>::ViewBase::ViewBase(StorageTensor<D> * storage,
+                                     const std::array<LabeledAxisAccessor, D> & indices,
+                                     SmartVector<ViewBase> & peers)
+  : _storage(storage),
+    _indices(indices),
+    _peers(&peers)
+{
+}
+
+template <TorchSize D>
+template <typename T>
+const T &
+StorageTensor<D>::ViewBase::storage() const
+{
+  auto storage = dynamic_cast<const T *>(_storage);
+  neml_assert(storage, "Failed to cast storage");
+  return *storage;
+}
+
+template <TorchSize D>
+template <typename T>
+T &
+StorageTensor<D>::ViewBase::storage()
+{
+  auto storage = dynamic_cast<T *>(_storage);
+  neml_assert(storage, "Failed to cast storage");
+  return *storage;
+}
+
+template <TorchSize D>
+const std::array<LabeledAxisAccessor, D> &
+StorageTensor<D>::ViewBase::indices() const
+{
+  return _indices;
+}
+
 template <TorchSize D>
 template <typename T>
 T

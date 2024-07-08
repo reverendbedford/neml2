@@ -184,9 +184,9 @@ Model::setup_nonlinear_system()
   {
     _ndof = output_axis().storage_size("residual");
     _solution = BatchTensor::empty(batch_sizes(), _ndof, options());
-    _residual = output_storage().get({"residual"});
+    _residual_view = &output_storage().view_raw({"residual"});
     if (requires_grad())
-      _Jacobian = derivative_storage().get({"residual", "state"});
+      _Jacobian_view = &derivative_storage().view_raw({"residual", "state"});
   }
 
   for (auto submodel : registered_models())
@@ -382,11 +382,14 @@ Model::assemble(bool residual, bool Jacobian)
   {
     detach_and_zero(true, false, false);
     value();
+    _residual = _residual_view->clone();
   }
   else if (Jacobian)
   {
     detach_and_zero(true, true, false);
     value_and_dvalue();
+    _residual = _residual_view->clone();
+    _Jacobian = _Jacobian_view->clone();
   }
 }
 

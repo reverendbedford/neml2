@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 #include "neml2/models/ComposedModel.h"
+#include "neml2/models/ChainRule.h"
 
 namespace neml2
 {
@@ -123,6 +124,14 @@ ComposedModel::ComposedModel(const OptionSet & options)
 
     declare_output_variable(sz, var);
   }
+
+  // Create the ChainRule object to manage chain rule application
+  if (assembly_mode() == AssemblyMode::INPLACE)
+    _chain_rule = std::make_unique<ChainRuleImpl<AssemblyMode::INPLACE>>(this);
+  else if (assembly_mode() == AssemblyMode::CONCATENATION)
+    _chain_rule = std::make_unique<ChainRuleImpl<AssemblyMode::INPLACE>>(this);
+  else
+    throw NEMLException("Unknown assembly mode");
 }
 
 void
@@ -138,37 +147,7 @@ void
 ComposedModel::allocate_variables()
 {
   Model::allocate_variables();
-
-  if (assembly_mode() == AssemblyMode::INPLACE)
-  {
-    if (requires_grad() || requires_2nd_grad())
-    {
-      _din_din = std::make_unique<LabeledMatrix>(
-          batch_sizes(),
-          std::array<const LabeledAxis *, 2>{&input_axis(), &input_axis()},
-          options());
-
-      for (auto submodel : registered_models())
-        _dpout_din[submodel] = std::make_unique<LabeledMatrix>(
-            batch_sizes(),
-            std::array<const LabeledAxis *, 2>{&submodel->output_axis(), &input_axis()},
-            options());
-    }
-
-    if (requires_2nd_grad())
-      for (auto submodel : registered_models())
-        _d2pout_din2[submodel] = std::make_unique<LabeledTensor3D>(
-            batch_sizes(),
-            std::array<const LabeledAxis *, 3>{
-                &submodel->output_axis(), &input_axis(), &input_axis()},
-            options());
-  }
-  else if (assembly_mode() == AssemblyMode::CONCATENATION)
-  {
-    throw NEMLException("Not implemented");
-  }
-  else
-    throw NEMLException("Unknown assembly mode");
+  _chain_rule->allocate_variables();
 }
 
 void
@@ -178,7 +157,7 @@ ComposedModel::setup_submodel_input_views()
   {
     for (const auto & item : _dependency.inbound_items())
       if (item.parent == submodel)
-        submodel->input_view(item.value)->setup_views(input_view(item.value));
+        submodel->input_view(item.value)->setup_views(&input_view(item.value)->storage());
 
     for (const auto & [item, providers] : _dependency.item_providers())
       if (item.parent == submodel)
@@ -201,58 +180,23 @@ ComposedModel::set_value(bool out, bool dout_din, bool d2out_din2)
       i->value_and_dvalue_and_d2value();
     else
       throw NEMLException("Unsupported call signature to set_value");
-
-    if (dout_din && !d2out_din2)
-      apply_chain_rule(i);
-
-    if (d2out_din2)
-      apply_second_order_chain_rule(i);
   }
 
-  // for (auto model : _dependency.end_nodes())
-  // {
-  //   if (out)
-  //     output_storage().collect_(model->output_storage());
+  _chain_rule->apply(/*second_order=*/d2out_din2);
 
-  //   if (dout_din)
-  //     derivative_storage().collect_(_dpout_din[model]);
+  for (auto i : _dependency.end_nodes())
+  {
+    if (out)
+      output_storage().collect_(i->output_storage());
 
-  //   if (d2out_din2)
-  //     second_derivative_storage().collect_(_d2pout_din2[model]);
-  // }
-}
+    if (dout_din)
+      derivative_storage().collect_(_chain_rule->total_derivative(i));
 
-void
-ComposedModel::apply_chain_rule(Model * /*i*/)
-{
-  // auto dpin_din = LabeledMatrix::empty(batch_sizes(), {&i->input_axis(), &input_axis()},
-  // options()); dpin_din.fill(_din_din);
+    if (d2out_din2)
+      second_derivative_storage().collect_(_chain_rule->total_second_derivative(i));
+  }
 
-  // if (_dependency.node_providers().count(i))
-  //   for (auto dep : _dependency.node_providers().at(i))
-  //     dpin_din.fill(_dpout_din[dep]);
-
-  // _dpout_din[i] = i->derivative_storage().chain(dpin_din);
-}
-
-void
-ComposedModel::apply_second_order_chain_rule(Model * /*i*/)
-{
-  // auto dpin_din = LabeledMatrix::empty(batch_sizes(), {&i->input_axis(), &input_axis()},
-  // options()); auto d2pin_din2 = LabeledTensor3D::zeros(
-  //     batch_sizes(), {&i->input_axis(), &input_axis(), &input_axis()}, options());
-  // dpin_din.fill(_din_din);
-
-  // if (_dependency.node_providers().count(i))
-  //   for (auto dep : _dependency.node_providers().at(i))
-  //   {
-  //     dpin_din.fill(_dpout_din[dep]);
-  //     d2pin_din2.fill(_d2pout_din2[dep]);
-  //   }
-
-  // _dpout_din[i] = i->derivative_storage().chain(dpin_din);
-  // _d2pout_din2[i] =
-  //     i->second_derivative_storage().chain(d2pin_din2, i->derivative_storage(), dpin_din);
+  _chain_rule->clear();
 }
 
 } // namespace neml2

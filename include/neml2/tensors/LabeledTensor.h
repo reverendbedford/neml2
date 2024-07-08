@@ -46,7 +46,9 @@ public:
   class View : public StorageTensor<D>::template View<T>
   {
   public:
-    View(LabeledTensor<D> *,
+    View() = default;
+
+    View(StorageTensor<D> *,
          const std::array<LabeledAxisAccessor, D> &,
          SmartVector<typename StorageTensor<D>::ViewBase> &);
 
@@ -58,9 +60,9 @@ public:
      */
     virtual void operator=(const BatchTensor &) override;
 
-    virtual BatchTensor & raw_value() override { return _raw_value; }
+    virtual const BatchTensor & raw_value() const override { return _raw_value; }
 
-    virtual T & value() override { return _value; }
+    virtual const T & value() const override { return _value; }
 
     virtual void reinit() override;
 
@@ -73,14 +75,9 @@ public:
             "issue.");
     }
 
-    virtual typename StorageTensor<D>::View<T> & clone() override;
+    virtual typename StorageTensor<D>::template View<T> & clone() override;
 
   private:
-    /// The original storage this views into
-    LabeledTensor<D> * _storage;
-    /// Indices of the original storage this views into
-    const std::array<LabeledAxisAccessor, D> & _indices;
-
     /// View into the LabeledTensor without reshaping
     BatchTensor _raw_value;
     /// View into _view with the correct logical base shape of @tparam T
@@ -106,12 +103,23 @@ public:
   /// Construct from a BatchTensor with array of axes
   LabeledTensor(const BatchTensor & tensor, const std::array<const LabeledAxis *, D> & axes);
 
+  /// Chain rule
+  static LabeledTensor<2> chain(const LabeledTensor<2> &, const LabeledTensor<2> &);
+
+  /// Second order chain rule
+  static LabeledTensor<3> chain(const LabeledTensor<3> &,
+                                const LabeledTensor<3> &,
+                                const LabeledTensor<2> &,
+                                const LabeledTensor<2> &);
+
   /// Copy assignment operator
   void operator=(const LabeledTensor<D> & other);
 
   /// Get a view by slicing each axis
   template <typename T>
   [[nodiscard]] View<T> & view(const std::array<LabeledAxisAccessor, D> &);
+
+  virtual const BatchTensor & view_raw(const std::array<LabeledAxisAccessor, D> &) override;
 
   LabeledTensor<D> clone() const;
 
@@ -130,9 +138,9 @@ public:
 
   virtual void set_(const std::array<LabeledAxisAccessor, D> &, const BatchTensor &) override;
 
-  virtual void collect_(const LabeledTensor<D> & other,
+  virtual void collect_(const StorageTensor<D> & other,
                         const LabeledAxisAccessor & i1 = LabeledAxisAccessor(),
-                        const LabeledAxisAccessor & i2 = LabeledAxisAccessor());
+                        const LabeledAxisAccessor & i2 = LabeledAxisAccessor()) override;
 
   /// Calculate slicing indices given the names on each axis
   TorchSlice slice_indices(const std::array<LabeledAxisAccessor, D> & names) const;
@@ -158,12 +166,10 @@ namespace neml2
 {
 template <TorchSize D>
 template <typename T>
-LabeledTensor<D>::View<T>::View(LabeledTensor<D> * storage,
+LabeledTensor<D>::View<T>::View(StorageTensor<D> * storage,
                                 const std::array<LabeledAxisAccessor, D> & indices,
                                 SmartVector<typename StorageTensor<D>::ViewBase> & peers)
-  : StorageTensor<D>::template View<T>(peers),
-    _storage(storage),
-    _indices(indices)
+  : StorageTensor<D>::template View<T>(storage, indices, peers)
 {
   reinit();
 }
@@ -173,7 +179,9 @@ template <typename T>
 void
 LabeledTensor<D>::View<T>::reinit()
 {
-  _raw_value = _storage->tensor().base_index(_storage->slice_indices(_indices));
+  auto & storage = this->template storage<LabeledTensor<D>>();
+
+  _raw_value = storage.tensor().base_index(storage.slice_indices(this->indices()));
 
   if constexpr (std::is_same_v<T, BatchTensor>)
     _value = _raw_value;
@@ -210,6 +218,7 @@ template <typename T>
 typename StorageTensor<D>::template View<T> &
 LabeledTensor<D>::View<T>::clone()
 {
-  return _storage->view<T>(_indices);
+  auto & storage = this->template storage<LabeledTensor<D>>();
+  return storage.template view<T>(this->indices());
 }
 } // namespace neml2

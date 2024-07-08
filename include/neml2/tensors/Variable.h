@@ -47,12 +47,12 @@ public:
   ///@{
   /// Cache the variable's batch shape
   virtual void cache(TorchShapeRef batch_shape);
-  /// Setup the variable's views following another variable
-  virtual void setup_views(VariableBase * other) = 0;
   /// Setup the variable's views into blocks of the storage (AssemblyMode::INPLACE)
   virtual void setup_views(StorageTensor<1> * value,
                            StorageTensor<2> * deriv = nullptr,
                            StorageTensor<3> * secderiv = nullptr) = 0;
+  /// The storage which the variable views into
+  virtual StorageTensor<1> & storage() = 0;
   ///@}
 
   /// Variable metadata accessors
@@ -96,9 +96,9 @@ public:
   /// Create a wrapper representing the second derivative d2y/dx2
   StorageTensor<3>::View<BatchTensor> & d(const VariableBase & x1, const VariableBase & x2);
   /// Get all derivatives
-  const std::map<VariableName, StorageTensor<2>::View<BatchTensor> *> & derivatives();
+  const std::map<VariableName, StorageTensor<2>::View<BatchTensor>> & derivatives();
   /// Get all second derivatives
-  const std::map<VariableName, std::map<VariableName, StorageTensor<3>::View<BatchTensor> *>> &
+  const std::map<VariableName, std::map<VariableName, StorageTensor<3>::View<BatchTensor>>> &
   second_derivatives();
   ///@}
 
@@ -113,9 +113,9 @@ protected:
   TorchShape _batch_sizes;
 
   /// The derivative of this variable w.r.t. arguments.
-  std::map<VariableName, StorageTensor<2>::View<BatchTensor> *> _deriv_views;
+  std::map<VariableName, StorageTensor<2>::View<BatchTensor>> _deriv_views;
   /// The second derivative of this variable w.r.t. arguments.
-  std::map<VariableName, std::map<VariableName, StorageTensor<3>::View<BatchTensor> *>>
+  std::map<VariableName, std::map<VariableName, StorageTensor<3>::View<BatchTensor>>>
       _sec_deriv_views;
 };
 
@@ -161,12 +161,12 @@ public:
   ///@{
   /// Cache the variable's batch shape
   virtual void cache(TorchShapeRef batch_shape) override;
-  /// Setup the variable's views following another variable
-  virtual void setup_views(VariableBase * other) override;
   /// Setup the variable's views into blocks of the storage (AssemblyMode::INPLACE)
   virtual void setup_views(StorageTensor<1> * value,
                            StorageTensor<2> * deriv = nullptr,
                            StorageTensor<3> * secderiv = nullptr) override;
+  /// The storage which the variable views into
+  virtual StorageTensor<1> & storage() override;
   ///@}
 
   /// Variable metadata accessors
@@ -180,10 +180,10 @@ public:
   /// Variable value getters
   ///@{
   /// Raw flattened variable value
-  virtual const BatchTensor & raw_value() const override { return _view->raw_value(); }
+  virtual const BatchTensor & raw_value() const override { return _view.raw_value(); }
   /// Variable value of the logical shape
-  const T & value() const { return _view->value(); }
-  StorageTensor<1>::View<T> * view() { return _view; }
+  const T & value() const { return _view.value(); }
+  StorageTensor<1>::View<T> & view() { return _view; }
   ///@}
 
   /// Variable value modifiers
@@ -213,7 +213,7 @@ protected:
   const TorchShape _base_sizes;
 
   /// The variable value view
-  StorageTensor<1>::View<T> * _view;
+  StorageTensor<1>::View<T> _view;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -230,28 +230,6 @@ Variable<T>::cache(TorchShapeRef batch_shape)
 
 template <typename T>
 void
-Variable<T>::setup_views(VariableBase * other)
-{
-  auto other_s = dynamic_cast<Variable<T> *>(other);
-  neml_assert(other_s, "Failed to cast variable");
-
-  // value
-  _view = &other_s->view()->clone();
-
-  // derivatives
-  _deriv_views.clear();
-  for (auto && [arg, view] : other->derivatives())
-    _deriv_views[arg] = &view->clone();
-
-  // second derivatives
-  _sec_deriv_views.clear();
-  for (auto && [arg1, arg2_views] : other->second_derivatives())
-    for (auto && [arg2, view] : arg2_views)
-      _sec_deriv_views[arg1][arg2] = &view->clone();
-}
-
-template <typename T>
-void
 Variable<T>::setup_views(StorageTensor<1> * value,
                          StorageTensor<2> * deriv,
                          StorageTensor<3> * secderiv)
@@ -262,14 +240,14 @@ Variable<T>::setup_views(StorageTensor<1> * value,
     {
       auto value_s = dynamic_cast<LabeledVector *>(value);
       neml_assert(value_s, "Failed to cast value storage");
-      _view = &value_s->view<T>({name()});
+      _view = value_s->view<T>({name()});
     }
     if (deriv)
     {
       auto deriv_s = dynamic_cast<LabeledMatrix *>(deriv);
       neml_assert(deriv_s, "Failed to cast derivative storage");
       for (auto arg : deriv_s->axis(1).variable_accessors(true))
-        _deriv_views[arg] = &deriv_s->view<BatchTensor>({name(), arg});
+        _deriv_views[arg] = deriv_s->view<BatchTensor>({name(), arg});
     }
     if (secderiv)
     {
@@ -277,7 +255,7 @@ Variable<T>::setup_views(StorageTensor<1> * value,
       neml_assert(secderiv_s, "Failed to cast second derivative storage");
       for (auto arg1 : secderiv_s->axis(1).variable_accessors(true))
         for (auto arg2 : secderiv_s->axis(2).variable_accessors(true))
-          _sec_deriv_views[arg1][arg2] = &secderiv_s->view<BatchTensor>({name(), arg1, arg2});
+          _sec_deriv_views[arg1][arg2] = secderiv_s->view<BatchTensor>({name(), arg1, arg2});
     }
   }
   else if (_assembly_mode == AssemblyMode::CONCATENATION)
@@ -289,37 +267,44 @@ Variable<T>::setup_views(StorageTensor<1> * value,
 }
 
 template <typename T>
+StorageTensor<1> &
+Variable<T>::storage()
+{
+  return _view.storage();
+}
+
+template <typename T>
 void
 Variable<T>::requires_grad_(bool req)
 {
-  _view->requires_grad_(req);
+  _view.requires_grad_(req);
 }
 
 template <typename T>
 void
 Variable<T>::operator=(const BatchTensor & val)
 {
-  *_view = val;
+  _view = val;
 }
 
 template <typename T>
 T
 Variable<T>::operator-() const
 {
-  return -_view->value();
+  return -_view.value();
 }
 
 template <typename T>
 Variable<T>::operator T() const
 {
-  return _view->value();
+  return _view.value();
 }
 
 template <typename T>
 template <typename T2, typename>
 Variable<T>::operator BatchTensor() const
 {
-  return _view->value();
+  return _view.value();
 }
 
 // Everything below is just for convenience: We just forward operations to the the variable values
