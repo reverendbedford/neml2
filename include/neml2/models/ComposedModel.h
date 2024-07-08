@@ -64,5 +64,9 @@ private:
 
   /// Helper to resolve model dependency
   DependencyResolver<Model, VariableName> _dependency;
+
+  std::unique_ptr<StorageTensor<2>> _din_din;
+  std::unique_ptr<StorageTensor<2>> _dpout_din;
+  std::unique_ptr<StorageTensor<3>> _d2pout_din2;
 };
 } // namespace neml2

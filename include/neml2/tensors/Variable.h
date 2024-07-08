@@ -266,7 +266,7 @@ Variable<T>::setup_views(StorageTensor<1> * value,
     }
     if (deriv)
     {
-      auto deriv_s = dynamic_cast<LabeledMatrix *>(value);
+      auto deriv_s = dynamic_cast<LabeledMatrix *>(deriv);
       neml_assert(deriv_s, "Failed to cast derivative storage");
       for (auto arg : deriv_s->axis(1).variable_accessors(true))
         _deriv_views[arg] = &deriv_s->view<BatchTensor>({name(), arg});

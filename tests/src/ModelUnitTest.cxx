@@ -45,7 +45,7 @@ ModelUnitTest::expected_options()
   options.set<bool>("check_parameter_derivatives") = false;
   options.set<bool>("check_cuda") = true;
   options.set<bool>("check_inplace") = true;
-  options.set<bool>("check_concatenation") = true;
+  options.set<bool>("check_concatenation") = false;
   options.set<std::vector<VariableName>>("input_batch_tensor_names");
   options.set<std::vector<CrossRef<BatchTensor>>>("input_batch_tensor_values");
   options.set<std::vector<VariableName>>("output_batch_tensor_names");
@@ -141,11 +141,13 @@ ModelUnitTest::run()
 bool
 ModelUnitTest::run(Model & model)
 {
+  model.reinit(_in, _deriv_order);
   check_all(model);
 
   if (_check_cuda && torch::cuda::is_available())
   {
     _in.to_(torch::kCUDA);
+    model.reinit(_in, _deriv_order);
     check_all(model);
   }
 

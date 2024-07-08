@@ -138,6 +138,37 @@ void
 ComposedModel::allocate_variables()
 {
   Model::allocate_variables();
+
+  if (assembly_mode() == AssemblyMode::INPLACE)
+  {
+    if (requires_grad() || requires_2nd_grad())
+    {
+      _din_din = std::make_unique<LabeledMatrix>(
+          batch_sizes(),
+          std::array<const LabeledAxis *, 2>{&input_axis(), &input_axis()},
+          options());
+
+      for (auto submodel : registered_models())
+        _dpout_din[submodel] = std::make_unique<LabeledMatrix>(
+            batch_sizes(),
+            std::array<const LabeledAxis *, 2>{&submodel->output_axis(), &input_axis()},
+            options());
+    }
+
+    if (requires_2nd_grad())
+      for (auto submodel : registered_models())
+        _d2pout_din2[submodel] = std::make_unique<LabeledTensor3D>(
+            batch_sizes(),
+            std::array<const LabeledAxis *, 3>{
+                &submodel->output_axis(), &input_axis(), &input_axis()},
+            options());
+  }
+  else if (assembly_mode() == AssemblyMode::CONCATENATION)
+  {
+    throw NEMLException("Not implemented");
+  }
+  else
+    throw NEMLException("Unknown assembly mode");
 }
 
 void

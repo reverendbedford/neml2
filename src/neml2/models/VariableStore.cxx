@@ -189,9 +189,9 @@ VariableStore::setup_output_views(bool out, bool dout_din, bool d2out_din2)
 {
   if (_assembly_mode == AssemblyMode::INPLACE)
   {
-    neml_assert(!out || !_out, "Output storage not allocated");
-    neml_assert(!dout_din || !_dout_din, "Derivative storage not allocated");
-    neml_assert(!d2out_din2 || !_d2out_din2, "Second derivative storage not allocated");
+    neml_assert(!out || _out, "Output storage not allocated");
+    neml_assert(!dout_din || _dout_din, "Derivative storage not allocated");
+    neml_assert(!d2out_din2 || _d2out_din2, "Second derivative storage not allocated");
 
     for (auto && [name, var] : output_views())
       var.setup_views(out ? _out.get() : nullptr,

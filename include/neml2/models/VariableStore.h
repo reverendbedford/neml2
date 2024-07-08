@@ -330,8 +330,6 @@ private:
   /// The output axis
   LabeledAxis & _output_axis;
 
-  /// Storage for AssemblyMode::INPLACE
-  ///@{
   /// The storage for input variable values
   std::unique_ptr<StorageTensor<1>> _in;
   /// The storage for output variable values
@@ -340,7 +338,6 @@ private:
   std::unique_ptr<StorageTensor<2>> _dout_din;
   /// The storage for output variable 2nd derivatives w.r.t. input variables
   std::unique_ptr<StorageTensor<3>> _d2out_din2;
-  ///@}
 };
 } // namespace neml2
 
@@ -355,7 +352,7 @@ T &
 VariableStore::input_storage()
 {
   auto storage_ptr = dynamic_cast<T *>(_in.get());
-  neml_assert(storage_ptr, "Failed to cast storage");
+  neml_assert(storage_ptr, "Failed to cast input storage");
   return *storage_ptr;
 }
 
@@ -371,7 +368,7 @@ T &
 VariableStore::output_storage()
 {
   auto storage_ptr = dynamic_cast<T *>(_out.get());
-  neml_assert(storage_ptr, "Failed to cast storage");
+  neml_assert(storage_ptr, "Failed to cast output storage");
   return *storage_ptr;
 }
 
@@ -387,7 +384,7 @@ T &
 VariableStore::derivative_storage()
 {
   auto storage_ptr = dynamic_cast<T *>(_dout_din.get());
-  neml_assert(storage_ptr, "Failed to cast storage");
+  neml_assert(storage_ptr, "Failed to cast derivative storage");
   return *storage_ptr;
 }
 
@@ -403,7 +400,7 @@ T &
 VariableStore::second_derivative_storage()
 {
   auto storage_ptr = dynamic_cast<T *>(_d2out_din2.get());
-  neml_assert(storage_ptr, "Failed to cast storage");
+  neml_assert(storage_ptr, "Failed to cast second derivative storage");
   return *storage_ptr;
 }
 
