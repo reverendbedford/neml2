@@ -161,19 +161,13 @@ protected:
                                   bool d2out_din2);
 
   /// Tell each input variable view which tensor storage(s) to view into
-  virtual void setup_input_views();
+  virtual void setup_input_views(VariableStore * host = nullptr);
 
   /// Tell each output variable view which tensor storage(s) to view into
-  virtual void setup_output_views();
+  virtual void setup_output_views(bool out, bool dout_din, bool d2out_din2);
 
-  /// Create the views for input variables
-  virtual void reinit_input_views();
-
-  /// Create the views for output variables, and optionally for the derivative and second derivatives
-  virtual void reinit_output_views(bool out, bool dout_din = true, bool d2out_din2 = true);
-
-  /// Detach the tensor storages and set each element in the tensor to 0
-  virtual void detach_and_zero(bool out, bool dout_din = true, bool d2out_din2 = true);
+  /// Zero out derivative and second derivative storage
+  virtual void zero(bool dout_din, bool d2out_din2);
 
   /// Declare an input variable
   template <typename T, typename... S>

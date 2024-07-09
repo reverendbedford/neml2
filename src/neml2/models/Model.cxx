@@ -41,11 +41,13 @@ Model::expected_options()
   options.set<bool>("_use_AD_second_derivative") = false;
   options.set<int>("_extra_derivative_order") = 0;
   options.set<bool>("_nonlinear_system") = false;
+  options.set<bool>("_inference_mode") = false;
 
-  options.set("_extra_derivative_order").suppressed() = true;
-  options.set("_nonlinear_system").suppressed() = true;
   options.set("_use_AD_first_derivative").suppressed() = true;
   options.set("_use_AD_second_derivative").suppressed() = true;
+  options.set("_extra_derivative_order").suppressed() = true;
+  options.set("_nonlinear_system").suppressed() = true;
+  options.set("_inference_mode").suppressed() = true;
 
   return options;
 }
@@ -60,7 +62,8 @@ Model::Model(const OptionSet & options)
     _options(default_tensor_options()),
     _deriv_order(-1),
     _extra_deriv_order(options.get<int>("_extra_derivative_order")),
-    _nonlinear_system(options.get<bool>("_nonlinear_system"))
+    _nonlinear_system(options.get<bool>("_nonlinear_system")),
+    _inference_mode(options.get<bool>("_inference_mode"))
 {
   check_AD_limitation();
 }
@@ -98,24 +101,14 @@ Model::preflight() const
 void
 Model::setup()
 {
-  // Declare nonlinear parameters as additional input variables
-  for (const auto & [name, param] : nl_params())
-    declare_input_variable(param->base_storage(), VariableName(param->name()));
-
   // Setup input and output axes
   setup_layout();
+}
 
-  // Setup functional dependence for each output variable
-  for (auto && [y_name, y_var] : output_views())
-  {
-    y_var.clear_args();
-    for (auto && [x_name, x_var] : input_views())
-      y_var.add_arg(x_var);
-  }
-
-  // Setup variable views
-  setup_input_views();
-  setup_output_views();
+void
+Model::reinit(const BatchTensor & tensor, int deriv_order)
+{
+  reinit(tensor.batch_sizes(), deriv_order, tensor.device(), tensor.scalar_type());
 }
 
 void
@@ -126,89 +119,84 @@ Model::reinit(TorchShapeRef batch_shape,
 {
   neml_assert(host() == this, "This method should only be called on the host model.");
 
-  // Re-cache batch shape if it has changed
-  const auto batch_shape_promoted = batch_shape.empty() ? TorchShape{1} : batch_shape.vec();
-  const bool batch_shape_changed = batch_shape_promoted != batch_sizes();
-  if (batch_shape_changed)
-    cache(batch_shape_promoted);
+  // Cache configuration
+  cache(batch_shape, deriv_order, device, dtype);
 
-  // Re-cache tensor options if they have changed
-  const bool device_changed = device != options().device();
-  const bool dtype_changed = dtype != options().dtype();
-  const bool options_changed = device_changed || dtype_changed;
-  if (options_changed)
-  {
-    const auto options = default_tensor_options().device(device).dtype(dtype);
-    cache(options);
-    send_buffers_to(options);
-    send_parameters_to(options);
-  }
+  // Sync buffers and parameters
+  send_buffers_to(options());
+  send_parameters_to(options());
 
-  // Reallocate variable storage when necessary
-  allocate_variables(deriv_order, batch_shape_changed || options_changed);
+  // Allocate variable storage and set up variable views
+  reinit(/*in=*/true, /*out=*/true);
 }
 
 void
-Model::reinit(const BatchTensor & tensor, int deriv_order)
+Model::reinit(bool in, bool out)
 {
-  reinit(tensor.batch_sizes(), deriv_order, tensor.device(), tensor.scalar_type());
+  // Allocate variable storage
+  allocate_variables(in, out);
+
+  // Setup variable views
+  setup_input_views(this);
+  setup_output_views();
+  setup_nonlinear_system();
 }
 
 void
-Model::allocate_variables(int deriv_order, bool options_changed)
+Model::prepare()
 {
-  const auto deriv_order_old = _deriv_order;
-  const auto deriv_order_new = deriv_order + _extra_deriv_order;
-
-  bool in = false;
-  bool out = false;
-  bool dout_din = false;
-  bool d2out_din2 = false;
-
-  if (options_changed)
-  {
-    in = true;
-    out = deriv_order_new >= 0;
-    dout_din = deriv_order_new >= 1;
-    d2out_din2 = deriv_order_new >= 2;
-  }
+  if (_inference_mode)
+    zero();
   else
-  {
-    out = deriv_order_new >= 0 && deriv_order_old < 0;
-    dout_din = deriv_order_new >= 1 && deriv_order_old < 1;
-    d2out_din2 = deriv_order_new >= 2 && deriv_order_old < 2;
-  }
+    reinit(false, true);
+}
 
-  _deriv_order = std::max(deriv_order_new, deriv_order_old);
-  VariableStore::allocate_variables(batch_sizes(), options(), in, out, dout_din, d2out_din2);
+void
+Model::allocate_variables(bool in, bool out)
+{
+#ifndef NDEBUG
+  _evaluated_once = false;
+#endif
+
+  VariableStore::allocate_variables(batch_sizes(),
+                                    options(),
+                                    /*in=*/in,
+                                    /*out=*/out,
+                                    /*dout_din=*/out && requires_grad(),
+                                    /*d2out_din2=*/out && requires_2nd_grad());
+
+  if (in && is_nonlinear_system())
+  {
+    _ndof = output_axis().storage_size("residual");
+    _solution = BatchTensor::empty(batch_sizes(), _ndof, options());
+  }
 
   for (auto submodel : registered_models())
-    submodel->allocate_variables(_deriv_order, options_changed);
+    submodel->allocate_variables(in, out);
 }
 
 void
-Model::setup_input_views()
+Model::setup_input_views(VariableStore * host)
 {
-  VariableStore::setup_input_views();
-  setup_submodel_input_views();
+  VariableStore::setup_input_views(host);
+  setup_submodel_input_views(this);
 }
 
 void
-Model::setup_submodel_input_views()
+Model::setup_submodel_input_views(VariableStore * host)
 {
   for (auto submodel : registered_models())
   {
     for (auto && [name, var] : submodel->input_views())
-      var.setup_views(input_view(var.name()));
-
-    submodel->setup_submodel_input_views();
+      var.setup_views(&host->input_view(name)->value_storage());
+    submodel->setup_submodel_input_views(submodel);
   }
 }
 
 void
 Model::setup_output_views()
 {
-  VariableStore::setup_output_views();
+  VariableStore::setup_output_views(true, requires_grad(), requires_2nd_grad());
   setup_submodel_output_views();
 }
 
@@ -216,51 +204,30 @@ void
 Model::setup_submodel_output_views()
 {
   for (auto submodel : registered_models())
-  {
-    for (auto && [name, var] : submodel->output_views())
-      var.setup_views(&submodel->output_storage(),
-                      &submodel->derivative_storage(),
-                      &submodel->second_derivative_storage());
-
-    submodel->setup_submodel_output_views();
-  }
+    submodel->setup_output_views();
 }
 
 void
-Model::reinit_input_views()
+Model::setup_nonlinear_system()
 {
-  VariableStore::reinit_input_views();
-
   if (is_nonlinear_system())
   {
-    _ndof = output_axis().storage_size("residual");
-    _solution = BatchTensor::empty(batch_sizes(), _ndof, options());
-  }
-}
-
-void
-Model::reinit_output_views(bool out, bool dout_din, bool d2out_din2)
-{
-  VariableStore::reinit_output_views(
-      out, dout_din && requires_grad(), d2out_din2 && requires_2nd_grad());
-
-  if (is_nonlinear_system())
-  {
-    if (out)
-      _residual = output_storage()("residual");
-    if (dout_din && requires_grad())
+    _residual = output_storage()("residual");
+    if (requires_grad())
       _Jacobian = derivative_storage()("residual", "state");
   }
+
+  for (auto submodel : registered_models())
+    submodel->setup_nonlinear_system();
 }
 
 void
-Model::detach_and_zero(bool out, bool dout_din, bool d2out_din2)
+Model::zero()
 {
-  VariableStore::detach_and_zero(
-      out, dout_din && requires_grad(), d2out_din2 && requires_2nd_grad());
+  VariableStore::zero(requires_grad(), requires_2nd_grad());
 
   for (auto submodel : registered_models())
-    submodel->detach_and_zero(out, dout_din, d2out_din2);
+    submodel->zero();
 }
 
 void
@@ -274,20 +241,20 @@ Model::set_solution(const BatchTensor & x)
 }
 
 void
-Model::cache(TorchShapeRef batch_shape)
+Model::cache(TorchShapeRef batch_shape,
+             int deriv_order,
+             const torch::Device & device,
+             const torch::Dtype & dtype)
 {
-  _batch_sizes = batch_shape.vec();
-  VariableStore::cache(batch_shape);
-  for (auto submodel : registered_models())
-    submodel->cache(batch_shape);
-}
+  _batch_sizes = batch_shape.empty() ? TorchShape{1} : batch_shape.vec();
+  VariableStore::cache(_batch_sizes);
 
-void
-Model::cache(const torch::TensorOptions & options)
-{
-  _options = options;
+  _deriv_order = std::max(deriv_order + _extra_deriv_order, _deriv_order);
+
+  _options = default_tensor_options().device(device).dtype(dtype);
+
   for (auto submodel : registered_models())
-    submodel->cache(options);
+    submodel->cache(batch_shape, _deriv_order, device, dtype);
 }
 
 void
@@ -295,6 +262,8 @@ Model::check_AD_limitation() const
 {
   if (_AD_1st_deriv && !_AD_2nd_deriv)
     throw NEMLException("AD derivative is requested, but AD second derivative is not requested.");
+  if (_AD_1st_deriv || _AD_2nd_deriv)
+    neml_assert(!_inference_mode, "Inference mode does not support AD");
 }
 
 void
@@ -322,7 +291,7 @@ Model::set_input(const LabeledVector & in)
                   "The input vector has axis: \n",
                   in.axis(0));
 
-  input_storage().copy_(in.tensor().batch_expand(batch_sizes()));
+  input_storage().copy_(in.tensor().batch_expand(batch_sizes()).clone());
 }
 
 LabeledVector
@@ -347,7 +316,8 @@ LabeledVector
 Model::value(const LabeledVector & in)
 {
   set_input(in);
-  detach_and_zero(true, false, false);
+  prepare();
+
   value();
   return get_output();
 }
@@ -356,7 +326,8 @@ std::tuple<LabeledVector, LabeledMatrix>
 Model::value_and_dvalue(const LabeledVector & in)
 {
   set_input(in);
-  detach_and_zero(true, true, false);
+  prepare();
+
   value_and_dvalue();
   return {get_output(), get_doutput_dinput()};
 }
@@ -365,7 +336,8 @@ std::tuple<LabeledVector, LabeledMatrix, LabeledTensor3D>
 Model::value_and_dvalue_and_d2value(const LabeledVector & in)
 {
   set_input(in);
-  detach_and_zero(true, true, true);
+  prepare();
+
   value_and_dvalue_and_d2value();
   return {get_output(), get_doutput_dinput(), get_d2output_dinput2()};
 }
@@ -373,7 +345,11 @@ Model::value_and_dvalue_and_d2value(const LabeledVector & in)
 void
 Model::value()
 {
-  set_value(true, false, false);
+  check_inplace_dbg();
+  {
+    c10::InferenceMode guard(_inference_mode);
+    set_value(true, false, false);
+  }
 }
 
 void
@@ -382,8 +358,13 @@ Model::value_and_dvalue()
   neml_assert_dbg(requires_grad(),
                   "value_and_dvalue() is called but derivative storage hasn't been allocated.");
 
+  check_inplace_dbg();
+
   if (!_AD_1st_deriv)
+  {
+    c10::InferenceMode guard(_inference_mode);
     set_value(true, true, false);
+  }
   else
   {
     input_requires_grad_();
@@ -399,8 +380,13 @@ Model::value_and_dvalue_and_d2value()
                   "value_and_dvalue_and_d2value() is called but second derivative storage hasn't "
                   "been allocated.");
 
+  check_inplace_dbg();
+
   if (!_AD_2nd_deriv)
+  {
+    c10::InferenceMode guard(_inference_mode);
     set_value(true, true, true);
+  }
   else
   {
     input_requires_grad_();
@@ -416,6 +402,18 @@ Model::value_and_dvalue_and_d2value()
     extract_second_derivatives(
         /*retain_graph=*/true, /*create_graph=*/false, /*allow_unused=*/true);
   }
+}
+
+void
+Model::check_inplace_dbg()
+{
+#ifndef NDEBUG
+  neml_assert_dbg(_inference_mode || !_evaluated_once,
+                  "During the non-inference mode forward pass, model '",
+                  name(),
+                  "' is being evaluated a second time");
+  _evaluated_once = true;
+#endif
 }
 
 Model *
@@ -444,16 +442,12 @@ Model::provided_items() const
 void
 Model::assemble(bool residual, bool Jacobian)
 {
+  prepare();
+
   if (residual && !Jacobian)
-  {
-    detach_and_zero(true, false, false);
     value();
-  }
   else if (Jacobian)
-  {
-    detach_and_zero(true, true, false);
     value_and_dvalue();
-  }
 }
 
 void

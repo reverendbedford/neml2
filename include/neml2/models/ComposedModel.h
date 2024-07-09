@@ -38,11 +38,14 @@ public:
 
   virtual void check_AD_limitation() const override;
 
-protected:
-  /// Recursively register sub-model's nonlinar parameters
-  void register_nonlinear_params(Model & m);
+  virtual std::map<std::string, const VariableBase *>
+  named_nonlinear_parameters(bool recursive = false) const override;
 
-  virtual void allocate_variables(int deriv_order, bool options_changed) override;
+  virtual std::map<std::string, Model *>
+  named_nonlinear_parameter_models(bool recursive = false) const override;
+
+protected:
+  virtual void allocate_variables(bool in, bool out) override;
 
   /**
    * Setup each of the sub-model's input views. Note the logic is different from the base class's.
@@ -51,7 +54,7 @@ protected:
    * all the copying when passing a sub-model's output as another sub-model's input.
    *
    */
-  virtual void setup_submodel_input_views() override;
+  virtual void setup_submodel_input_views(VariableStore * host) override;
 
   void set_value(bool, bool, bool) override;
 
@@ -70,6 +73,9 @@ private:
 
   /// Additional outbound items in the dependency graph
   const std::vector<VariableName> _additional_outputs;
+
+  /// Whether to automatically add nonlinear parameters
+  const bool _auto_nl_param;
 
   /// Helper to resolve model dependency
   DependencyResolver<Model, VariableName> _dependency;

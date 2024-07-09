@@ -86,6 +86,8 @@ protected:
   /// Save the results into the destination file/path.
   virtual void output() const;
 
+  /// Whether to use inference mode
+  const bool _inference_mode;
   /// The model which the driver uses to perform constitutive updates.
   Model & _model;
   /// The device on which to evaluate the model

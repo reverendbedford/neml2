@@ -52,7 +52,7 @@ cd neml2
 git checkout main
 ```
 
-Then, configure NEML2. See [build customization](#build-customization) for possible configuration options.
+Then, configure NEML2. See [build customization](#install-build-customization) for possible configuration options.
 
 ```
 cmake -B build .
@@ -100,7 +100,7 @@ pybind11-stubgen neml2
 Refer to the [pybind11-stubgen documentation](https://pypi.org/project/pybind11-stubgen/) for more command-line options. Most static analysis tools and IDEs can understand the stubs and therefore provide the full set of features.
 
 
-## Build customization {#build-customization}
+## Build customization {#install-build-customization}
 
 Additional configuration options can be passed via command line using the `-DOPTION` or `-DOPTION=ON` format. For example,
 
@@ -125,7 +125,7 @@ Commonly used configuration options are summarized below. Default options are <u
 | NEML2_DOC                | ON, <u>OFF</u>                                              | Create the documentation target                                                           |
 | NEML2_PYBIND             | ON, <u>OFF</u>                                              | Create the Python bindings target                                                         |
 
-## CMake integration {#cmake-integration}
+## CMake integration {#install-cmake-integration}
 
 Integrating NEML2 into a project that already uses CMake is fairly straightforward. The following CMakeLists.txt snippet links NEML2 into the target executable called `foo`:
 
@@ -151,7 +151,7 @@ add_executable(foo main.cxx)
 target_link_libraries(foo neml2)
 ```
 
-## Testing {#testing}
+## Testing {#install-testing}
 
 ### C++ backend
 

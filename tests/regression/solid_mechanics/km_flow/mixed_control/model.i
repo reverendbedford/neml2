@@ -158,6 +158,7 @@
   [flow]
     type = ComposedModel
     models = 'vonmises yield'
+    automatic_nonlinear_parameter = false
   []
   [normality]
     type = Normality
@@ -209,7 +210,7 @@
   [flowrate]
     type = KocksMeckingFlowSwitch
     g0 = 0.538
-    rate_independent_flow_rate = 'state/internal/gamma_rate_ri' 
+    rate_independent_flow_rate = 'state/internal/gamma_rate_ri'
     rate_dependent_flow_rate = 'state/internal/gamma_rate_rd'
     sharpness = 500.0
   []
@@ -262,7 +263,7 @@
     models = "isoharden elasticity g
               mandel_stress vonmises
               yield yield_zero normality eprate Eprate Erate Eerate
-              ri_flowrate rd_flowrate flowrate integrate_ep integrate_stress effective_strain_rate 
+              ri_flowrate rd_flowrate flowrate integrate_ep integrate_stress effective_strain_rate
               mixed mixed_old rename"
   []
   [model_mixed]

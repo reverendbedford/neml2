@@ -38,43 +38,25 @@ VariableBase::setup_views(const LabeledVector * value,
                           const LabeledTensor3D * secderiv)
 {
   if (value)
+  {
     _value_storage = value;
+    _raw_value = (*_value_storage)(name());
+  }
 
   if (deriv)
+  {
     _derivative_storage = deriv;
+    for (auto arg : _derivative_storage->axis(1).variable_accessors(true))
+      _dvalue_d[arg] = (*_derivative_storage)(name(), arg);
+  }
 
   if (secderiv)
+  {
     _second_derivative_storage = secderiv;
-}
-
-void
-VariableBase::setup_views(const VariableBase * other)
-{
-  neml_assert(other, "other != nullptr");
-  setup_views(other->_value_storage, other->_derivative_storage, other->_second_derivative_storage);
-}
-
-void
-VariableBase::reinit_views(bool out, bool dout_din, bool d2out_din2)
-{
-  if (out)
-    neml_assert(_value_storage, "Variable value storage not initialized.");
-  if (dout_din)
-    neml_assert(_derivative_storage, "Variable derivative storage not initialized.");
-  if (d2out_din2)
-    neml_assert(_second_derivative_storage, "Variable second derivative storage not initialized.");
-
-  if (out)
-    _raw_value = (*_value_storage)(name());
-
-  if (dout_din)
-    for (const auto & arg : args())
-      _dvalue_d[arg] = (*_derivative_storage)(name(), arg);
-
-  if (d2out_din2)
-    for (const auto & arg1 : args())
-      for (const auto & arg2 : args())
+    for (auto arg1 : _second_derivative_storage->axis(1).variable_accessors(true))
+      for (auto arg2 : _second_derivative_storage->axis(2).variable_accessors(true))
         _d2value_d[arg1][arg2] = (*_second_derivative_storage)(name(), arg1, arg2);
+  }
 }
 
 const LabeledVector &

@@ -27,6 +27,7 @@
 #include "neml2/drivers/Driver.h"
 #include "neml2/models/Model.h"
 #include "neml2/tensors/tensors.h"
+#include "neml2/tensors/LabeledVector.h"
 
 namespace neml2
 {
@@ -39,14 +40,7 @@ public:
 
   bool run() override;
 
-  Model & model() { return _model; }
-  const Model & model() const { return _model; }
-
-  LabeledVector & in() { return _in; }
-  const LabeledVector & in() const { return _in; }
-
-  LabeledVector & out() { return _out; }
-  const LabeledVector & out() const { return _out; }
+  bool run(Model & model);
 
 private:
   template <typename T>
@@ -65,13 +59,14 @@ private:
       vec.set(T(vals[i]), vars[i]);
   }
 
-  void check_all();
-  void check_values();
-  void check_derivatives(bool first, bool second);
-  void check_second_derivatives(bool first, bool second);
-  void check_parameter_derivatives();
+  void check_all(Model & model);
+  void check_values(Model & model);
+  void check_derivatives(Model & model, bool first, bool second);
+  void check_second_derivatives(Model & model, bool first, bool second);
+  void check_parameter_derivatives(Model & model);
 
   Model & _model;
+  Model & _model_inference;
   const TorchShape _batch_shape;
   const bool _check_values;
   const bool _check_1st_deriv;
@@ -81,6 +76,7 @@ private:
   const bool _check_AD_derivs;
   const bool _check_param_derivs;
   const bool _check_cuda;
+  const bool _check_inference;
 
   int _deriv_order;
 

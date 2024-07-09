@@ -35,14 +35,6 @@ ParameterStore::ParameterStore(const OptionSet & options, NEML2Object * object)
 {
 }
 
-Storage<std::string, TensorValueBase> &
-ParameterStore::named_parameters()
-{
-  neml_assert(_object->host() == _object,
-              "named_parameters() should only be called on the host model.");
-  return _param_values;
-}
-
 void
 ParameterStore::send_parameters_to(const torch::TensorOptions & options)
 {
@@ -56,6 +48,60 @@ const VariableBase *
 ParameterStore::nl_param(const std::string & name) const
 {
   return _nl_params.count(name) ? _nl_params.at(name) : nullptr;
+}
+
+Storage<std::string, TensorValueBase> &
+ParameterStore::named_parameters()
+{
+  neml_assert(_object->host() == _object,
+              "named_parameters() should only be called on the host model.");
+  return _param_values;
+}
+
+std::map<std::string, const VariableBase *>
+ParameterStore::named_nonlinear_parameters(bool recursive) const
+{
+  if (!recursive)
+    return _nl_params;
+
+  auto model = dynamic_cast<const Model *>(this);
+  neml_assert(model, "Only models support recursive nonlinear parameter declaration");
+
+  auto all_nl_params = _nl_params;
+  for (auto submodel : model->registered_models())
+  {
+    auto sub_nl_params = submodel->named_nonlinear_parameters(true);
+    all_nl_params.insert(sub_nl_params.begin(), sub_nl_params.end());
+  }
+  for (auto && [pname, pmodel] : _nl_param_models)
+  {
+    auto sub_nl_params = pmodel->named_nonlinear_parameters(true);
+    all_nl_params.insert(sub_nl_params.begin(), sub_nl_params.end());
+  }
+  return all_nl_params;
+}
+
+std::map<std::string, Model *>
+ParameterStore::named_nonlinear_parameter_models(bool recursive) const
+{
+  if (!recursive)
+    return _nl_param_models;
+
+  auto model = dynamic_cast<const Model *>(this);
+  neml_assert(model, "Only models support recursive nonlinear parameter declaration");
+
+  auto all_nl_param_models = _nl_param_models;
+  for (auto submodel : model->registered_models())
+  {
+    auto sub_nl_param_models = submodel->named_nonlinear_parameter_models(true);
+    all_nl_param_models.insert(sub_nl_param_models.begin(), sub_nl_param_models.end());
+  }
+  for (auto && [pname, pmodel] : _nl_param_models)
+  {
+    auto sub_nl_param_models = pmodel->named_nonlinear_parameter_models(true);
+    all_nl_param_models.insert(sub_nl_param_models.begin(), sub_nl_param_models.end());
+  }
+  return all_nl_param_models;
 }
 
 template <typename T, typename>
@@ -87,9 +133,14 @@ ParameterStore::declare_parameter(const std::string & name, const std::string & 
 
         OptionSet extra_opts;
         extra_opts.set<NEML2Object *>("_host") = model->host();
+        extra_opts.set<bool>("_inference_mode") =
+            model->input_options().get<bool>("_inference_mode");
+        auto pname = _options.get<CrossRef<T>>(input_option_name).raw();
         auto & nl_param = Factory::get_object<NonlinearParameter<T>>(
-            "Models", _options.get<CrossRef<T>>(input_option_name).raw(), extra_opts);
+            "Models", pname, extra_opts, /*force_create=*/false);
+        model->declare_input_variable(nl_param.param().base_storage(), VariableName(pname));
         _nl_params[name] = &nl_param.param();
+        _nl_param_models[name] = &nl_param;
         return nl_param.param().value();
       }
       catch (const NEMLException & e2)

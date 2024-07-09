@@ -1,6 +1,8 @@
 include(FetchContent) # For downloading dependencies
 include(ExternalProject) # TriBITs really really is only designed for standalone build
 
+set(FETCHCONTENT_BASE_DIR ${NEML2_SOURCE_DIR}/_deps)
+
 # PyTorch
 if(UNIX)
   if(NOT APPLE)
@@ -42,7 +44,7 @@ ExternalProject_Add(
   wasp
   GIT_REPOSITORY https://code.ornl.gov/neams-workbench/wasp.git
   GIT_TAG ${WASP_VERSION}
-  PREFIX wasp
+  PREFIX ${FETCHCONTENT_BASE_DIR}/wasp
   CMAKE_ARGS
   -DCMAKE_CXX_FLAGS:STRING=-D_GLIBCXX_USE_CXX11_ABI=${GLIBCXX_USE_CXX11_ABI}
   -DCMAKE_BUILD_TYPE:STRING=RELEASE

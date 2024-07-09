@@ -51,8 +51,8 @@ void
 LabeledMatrix::fill(const LabeledMatrix & other, bool recursive)
 {
   neml_assert_dbg(axis(1) == other.axis(1), "Can only accumulate matrices with conformal y axes");
-  const auto indices0 = axis(0).common_indices(other.axis(0), recursive);
-  for (const auto & [idxi, idxi_other] : indices0)
+  const auto indices = axis(0).common_indices(other.axis(0), recursive);
+  for (const auto & [idxi, idxi_other] : indices)
     _tensor.base_index_put({idxi}, other.base_index({idxi_other}));
 }
 

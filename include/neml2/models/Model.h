@@ -74,6 +74,15 @@ public:
   /// Whether this model defines one or more nonlinear equations to be solved
   virtual bool is_nonlinear_system() const { return _nonlinear_system; }
 
+  /// Whether inferece mode is on
+  bool inference_mode() const { return _inference_mode; }
+
+  /**
+   * @brief Allocate storage and setup views for all the variables of this model and recursively all
+   * of the sub-models. See the other overload for detailed description.
+   */
+  virtual void reinit(const BatchTensor & tensor, int deriv_order);
+
   /**
    * @brief Allocate storage and setup views for all the variables of this model and recursively all
    * of the sub-models.
@@ -94,11 +103,8 @@ public:
                       const torch::Device & device = default_device(),
                       const torch::Dtype & dtype = default_dtype());
 
-  /**
-   * @brief Allocate storage and setup views for all the variables of this model and recursively all
-   * of the sub-models. See the other overload for detailed description.
-   */
-  virtual void reinit(const BatchTensor & tensor, int deriv_order);
+  /// Prepare for evaluation
+  void prepare();
 
   /// Whether derivative has been requested for this model
   bool requires_grad() const { return _deriv_order >= 1; }
@@ -177,6 +183,9 @@ public:
   virtual void value_and_dvalue();
   virtual void value_and_dvalue_and_d2value();
 
+  /// Check for potential in-place operation
+  void check_inplace_dbg();
+
   /**
    * A model can be treated as an implicit model. An implicit model need to be "solved": the state
    * variables should be iteratively updated until the residual becomes zero. During the SOLVING
@@ -204,24 +213,28 @@ protected:
   using VariableStore::allocate_variables;
 
   /// Call VariableStore::allocate_variables recursively on all submodels
-  virtual void allocate_variables(int deriv_order, bool options_changed);
+  virtual void allocate_variables(bool in, bool out);
 
   /// Call VariableStore::setup_input_views recursively on all submodels
-  virtual void setup_input_views() override;
-  virtual void setup_submodel_input_views();
+  virtual void setup_input_views(VariableStore * host = nullptr) override;
+  virtual void setup_submodel_input_views(VariableStore * host);
 
   /// Call VariableStore::setup_output_views recursively on all submodels
-  virtual void setup_output_views() override;
+  using VariableStore::setup_output_views;
+  virtual void setup_output_views();
   virtual void setup_submodel_output_views();
 
-  /// Call VariableStore::reinit_input_views recursively on all submodels
-  virtual void reinit_input_views() override;
+  virtual void setup_nonlinear_system();
 
-  /// Call VariableStore::reinit_output_views recursively on all submodels
-  virtual void reinit_output_views(bool out, bool dout_din = true, bool d2out_din2 = true) override;
+  /**
+   * @brief Allocate storage and setup views for all the variables of this model and recursively all
+   * of the sub-models. See the other overload for detailed description.
+   */
+  virtual void reinit(bool in, bool out);
 
-  /// Call VariableStore::detach_and_zero recursively on all submodels
-  virtual void detach_and_zero(bool out, bool dout_din = true, bool d2out_din2 = true) override;
+  /// Call VariableStore::zero recursively on all submodels
+  using VariableStore::zero;
+  virtual void zero();
 
   /// Set \p x as the current solution of the nonlinear system
   virtual void set_solution(const BatchTensor & x) override;
@@ -230,11 +243,10 @@ protected:
   virtual void set_value(bool out, bool dout_din, bool d2out_din2) = 0;
 
   using VariableStore::cache;
-
-  virtual void cache(TorchShapeRef batch_shape) override;
-
-  /// Cache tensor options
-  virtual void cache(const torch::TensorOptions & options);
+  virtual void cache(TorchShapeRef batch_shape,
+                     int deriv_order,
+                     const torch::Device & device,
+                     const torch::Dtype & dtype);
 
   /**
    * @brief Register a model that the current model may use during its evaluation.
@@ -258,8 +270,9 @@ protected:
     extra_opts.set<NEML2Object *>("_host") = host();
     extra_opts.set<int>("_extra_derivative_order") = extra_deriv_order;
     extra_opts.set<bool>("_nonlinear_system") = nonlinear;
+    extra_opts.set<bool>("_inference_mode") = input_options().get<bool>("_inference_mode");
 
-    auto model = Factory::get_object_ptr<Model>("Models", name, extra_opts, /*force_create=*/true);
+    auto model = Factory::get_object_ptr<Model>("Models", name, extra_opts);
 
     if (merge_input)
       for (auto && [name, var] : model->input_views())
@@ -316,5 +329,13 @@ private:
 
   /// Whether this is a nonlinear system
   bool _nonlinear_system;
+
+#ifndef NDEBUG
+  /// Whether this model has been evaluated in the current forward pass
+  bool _evaluated_once;
+#endif
+
+  /// Whether the evaluation uses inference mode
+  const bool _inference_mode;
 };
 } // namespace neml2

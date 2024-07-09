@@ -46,7 +46,6 @@ libneml2:
       long: Build for production release
       buildType: RelWithDebInfo
       settings:
-        CMAKE_UNITY_BUILD: ON
         NEML2_TESTS: OFF
         NEML2_RUNNER: OFF
         NEML2_PYBIND: ON

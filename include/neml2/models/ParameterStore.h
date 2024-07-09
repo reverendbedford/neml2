@@ -31,7 +31,9 @@
 
 namespace neml2
 {
+// Forward decl
 class VariableBase;
+class Model;
 
 /// Interface for object which can store parameters
 class ParameterStore
@@ -56,9 +58,6 @@ public:
   /// Whether this parameter store has any nonlinear parameter
   bool has_nl_param() const { return !_nl_params.empty(); }
 
-  /// Get all nonlinear parameters
-  const std::map<std::string, const VariableBase *> & nl_params() const { return _nl_params; }
-
   /**
    * @brief Query the existence of a nonlinear parameter
    *
@@ -66,6 +65,14 @@ public:
    * given parameter name is nonlinear. Returns nullptr otherwise.
    */
   const VariableBase * nl_param(const std::string &) const;
+
+  /// Get all nonlinear parameters
+  virtual std::map<std::string, const VariableBase *>
+  named_nonlinear_parameters(bool recursive = false) const;
+
+  /// Get all nonlinear parameters' models
+  virtual std::map<std::string, Model *>
+  named_nonlinear_parameter_models(bool recursive = false) const;
 
 protected:
   /**
@@ -110,6 +117,12 @@ protected:
             typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<T>, T>>>
   const T & declare_parameter(const std::string & name, const std::string & input_option_name);
 
+  /// Map from nonlinear parameter names to their corresponding variable views
+  std::map<std::string, const VariableBase *> _nl_params;
+
+  /// Map from nonlinear parameter names to models which evaluate them
+  std::map<std::string, Model *> _nl_param_models;
+
 private:
   NEML2Object * _object;
 
@@ -122,9 +135,6 @@ private:
 
   /// The actual storage for all the parameters
   Storage<std::string, TensorValueBase> _param_values;
-
-  /// @brief Map from nonlinear parameter names to their corresponding variable views
-  std::map<std::string, const VariableBase *> _nl_params;
 };
 
 template <typename T, typename>

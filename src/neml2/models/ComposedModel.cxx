@@ -52,31 +52,37 @@ ComposedModel::expected_options()
       "Priorities of models in decreasing order. A model with higher priority will be evaluated "
       "first. This is useful for breaking cyclic dependency.";
 
+  options.set<bool>("automatic_nonlinear_parameter") = true;
+  options.set("automatic_nonlinear_parameter").doc() =
+      "Whether to automatically add dependent nonlinear parameters";
+
   return options;
 }
 
 ComposedModel::ComposedModel(const OptionSet & options)
   : Model(options),
-    _additional_outputs(options.get<std::vector<VariableName>>("additional_outputs"))
+    _additional_outputs(options.get<std::vector<VariableName>>("additional_outputs")),
+    _auto_nl_param(options.get<bool>("automatic_nonlinear_parameter"))
 {
+  // Each sub-model shall have _independent_ output storage. This is because the same model could
+  // be registered as a sub-model by different models, and it could be evaluated with _different_
+  // input, and hence yields _different_ output values.
   for (const auto & model_name : options.get<std::vector<std::string>>("models"))
-  {
-    // Each sub-model shall have _independent_ output storage. This is because the same model could
-    // be registered as a sub-model by different models, and it could be evaluated with _different_
-    // input, and hence yields _different_ output values.
-    auto & submodel =
-        register_model<Model>(model_name, 0, /*nonlinear=*/false, /*merge_input=*/false);
+    register_model<Model>(model_name, 0, /*nonlinear=*/false, /*merge_input=*/false);
 
-    // Each sub-model may have nonlinear parameters. In our design, nonlinear parameters _are_
-    // models. Since we do not want to put the burden of adding nonlinear parameters in the input
-    // file through the option 'models', we should do more behind the scenes to register them for
-    // the user.
-    //
-    // Registering nonlinear parameters here ensures dependency resolution. And if a nonlinear
-    // parameter is registered by multiple models (which is very possible), we won't have to
-    // evaluate the nonlinar parameter over and over again!
-    register_nonlinear_params(submodel);
-  }
+  // Each sub-model may have nonlinear parameters. In our design, nonlinear parameters _are_
+  // models. Since we do not want to put the burden of "adding nonlinear parameters in the input
+  // file through the option 'models'" on users, we should do more behind the scenes to register
+  // them.
+  //
+  // Registering nonlinear parameters here ensures dependency resolution. And if a nonlinear
+  // parameter is registered by multiple models (which is very possible), we won't have to
+  // evaluate the nonlinar parameter over and over again!
+  auto submodels = registered_models();
+  if (_auto_nl_param)
+    for (auto submodel : submodels)
+      for (auto && [pname, pmodel] : submodel->named_nonlinear_parameter_models(/*recursive=*/true))
+        _registered_models.push_back(pmodel);
 
   // Add registered models as nodes in the dependency resolver
   for (auto submodel : registered_models())
@@ -124,23 +130,16 @@ ComposedModel::ComposedModel(const OptionSet & options)
 
     declare_output_variable(sz, var);
   }
-}
 
-void
-ComposedModel::register_nonlinear_params(Model & m)
-{
-
-  for (auto && [pname, param] : m.nl_params())
+  // Declare nonlinear parameters
+  for (auto submodel : submodels)
   {
-    neml_assert_dbg(param->name().size() == 1, "Internal parameter name error");
-
-    OptionSet extra_opts;
-    extra_opts.set<NEML2Object *>("_host") = m.host();
-    auto submodel = Factory::get_object_ptr<Model>("Models", param->name().vec()[0], extra_opts);
-    _registered_models.push_back(submodel.get());
-
-    // Nonlinear parameters could be nested...
-    register_nonlinear_params(*submodel);
+    for (auto && [pname, param] : submodel->named_nonlinear_parameters(/*recursive=*/true))
+      if (input_axis().has_variable(param->name()))
+        _nl_params[pname] = param;
+    for (auto && [pname, pmodel] : submodel->named_nonlinear_parameter_models(/*recursive=*/true))
+      if (_nl_params.count(pname))
+        _nl_param_models[pname] = pmodel;
   }
 }
 
@@ -153,30 +152,41 @@ ComposedModel::check_AD_limitation() const
         "_use_AD_second_derivative should be set to false.");
 }
 
-void
-ComposedModel::allocate_variables(int deriv_order, bool options_changed)
+std::map<std::string, const VariableBase *>
+ComposedModel::named_nonlinear_parameters(bool /*recursive*/) const
 {
-  Model::allocate_variables(deriv_order, options_changed);
+  return _nl_params;
+}
 
-  if (options_changed)
+std::map<std::string, Model *>
+ComposedModel::named_nonlinear_parameter_models(bool /*recursive*/) const
+{
+  return _nl_param_models;
+}
+
+void
+ComposedModel::allocate_variables(bool in, bool out)
+{
+  Model::allocate_variables(in, out);
+  if (out)
     _din_din = LabeledMatrix::identity(batch_sizes(), input_axis(), options());
 }
 
 void
-ComposedModel::setup_submodel_input_views()
+ComposedModel::setup_submodel_input_views(VariableStore * host)
 {
   for (auto submodel : registered_models())
   {
     for (const auto & item : _dependency.inbound_items())
       if (item.parent == submodel)
-        item.parent->input_view(item.value)->setup_views(input_view(item.value));
+        submodel->input_view(item.value)
+            ->setup_views(&host->input_view(item.value)->value_storage());
 
     for (const auto & [item, providers] : _dependency.item_providers())
       if (item.parent == submodel)
-        item.parent->input_view(item.value)
-            ->setup_views(&providers.begin()->parent->output_storage());
+        submodel->input_view(item.value)->setup_views(&providers.begin()->parent->output_storage());
 
-    submodel->setup_submodel_input_views();
+    submodel->setup_submodel_input_views(submodel);
   }
 }
 

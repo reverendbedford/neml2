@@ -31,6 +31,20 @@
 
 namespace neml2
 {
+// Forward decl
+class Model;
+
+/**
+ * @brief A convenient function to manufacture a neml2::Model
+ *
+ * The input file must have already been parsed and loaded.
+ *
+ * @param mname Name of the model
+ * @param inferece_mode The inference mode
+ * @param force_create Whether to force create the model even if one has already been manufactured
+ */
+Model & get_model(const std::string & mname, bool inferece_mode = false, bool force_create = true);
+
 /**
  * The factory is responsible for:
  * 1. retriving a NEML2Object given the object name as a std::string
@@ -62,7 +76,7 @@ public:
   static std::shared_ptr<T> get_object_ptr(const std::string & section,
                                            const std::string & name,
                                            const OptionSet & additional_options = OptionSet(),
-                                           bool force_create = false);
+                                           bool force_create = true);
 
   /**
    * @brief Retrive an object reference under the given section with the given object name.
@@ -84,7 +98,7 @@ public:
   static T & get_object(const std::string & section,
                         const std::string & name,
                         const OptionSet & additional_options = OptionSet(),
-                        bool force_create = false);
+                        bool force_create = true);
 
   /**
    * @brief Provide all objects' options to the factory. The factory is ready to manufacture
@@ -142,41 +156,23 @@ Factory::get_object_ptr(const std::string & section,
   // Easy if it already exists
   if (!force_create)
     if (factory._objects.count(section) && factory._objects.at(section).count(name))
-    {
-      const auto & neml2_obj = factory._objects[section][name].back();
-
-      // Error on option clash (these errors should only be developer-facing)
-      for (const auto & [key, value] : additional_options)
+      for (const auto & neml2_obj : factory._objects[section][name])
       {
-        neml_assert_dbg(neml2_obj->input_options().contains(key),
-                        "While retrieving object named '",
-                        name,
-                        "' under section ",
-                        section,
-                        ", additional option '",
-                        key,
-                        "'");
-        neml_assert_dbg(neml2_obj->input_options().get(key) == *value,
-                        "While retrieving object named '",
-                        name,
-                        "' under section ",
-                        section,
-                        ", encountered option clash for '",
-                        key,
-                        "'");
+        // Check for option clash
+        if (!options_compatible(neml2_obj->input_options(), additional_options))
+          continue;
+
+        // Check for object type
+        auto obj = std::dynamic_pointer_cast<T>(neml2_obj);
+        neml_assert(obj != nullptr,
+                    "Found object named ",
+                    name,
+                    " under section ",
+                    section,
+                    ". But dynamic cast failed. Did you specify the correct object type?");
+
+        return obj;
       }
-
-      // Check for object type
-      auto obj = std::dynamic_pointer_cast<T>(neml2_obj);
-      neml_assert(obj != nullptr,
-                  "Found object named ",
-                  name,
-                  " under section ",
-                  section,
-                  ". But dynamic cast failed. Did you specify the correct object type?");
-
-      return obj;
-    }
 
   // Otherwise try to create it
   for (auto & options : factory._all_options[section])
@@ -194,7 +190,9 @@ Factory::get_object_ptr(const std::string & section,
               " under section ",
               section);
 
-  return Factory::get_object_ptr<T>(section, name, OptionSet(), false);
+  auto obj = std::dynamic_pointer_cast<T>(factory._objects[section][name].back());
+  neml_assert(obj != nullptr, "Internal error: Factory failed to create object ", name);
+  return obj;
 }
 
 template <class T>

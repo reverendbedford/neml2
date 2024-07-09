@@ -23,9 +23,18 @@
 // THE SOFTWARE.
 
 #include "neml2/base/Factory.h"
+#include "neml2/models/Model.h"
 
 namespace neml2
 {
+Model &
+get_model(const std::string & mname, bool inference_mode, bool force_create)
+{
+  OptionSet extra_opts;
+  extra_opts.set<bool>("_inference_mode") = inference_mode;
+  return Factory::get_object<Model>("Models", mname, extra_opts, force_create);
+}
+
 Factory &
 Factory::get()
 {
@@ -64,10 +73,8 @@ Factory::print(std::ostream & os)
   for (auto & [section, objects] : all_objects)
   {
     os << "- " << section << ":" << std::endl;
-    // for (auto & object : objects)
-    //   os << "   " << object.first << ": " <<
-    //   utils::demangle(typeid(*(object.second.get())).name())
-    //      << std::endl;
+    for (auto & object : objects)
+      os << "   " << object.first << ": " << object.second.size() << std::endl;
   }
 }
 // LCOV_EXCL_STOP

@@ -127,6 +127,7 @@
   [flow]
     type = ComposedModel
     models = 'vonmises yield'
+    automatic_nonlinear_parameter = false
   []
   [normality]
     type = Normality
@@ -178,7 +179,7 @@
   [flowrate]
     type = KocksMeckingFlowSwitch
     g0 = 0.538
-    rate_independent_flow_rate = 'state/internal/gamma_rate_ri' 
+    rate_independent_flow_rate = 'state/internal/gamma_rate_ri'
     rate_dependent_flow_rate = 'state/internal/gamma_rate_rd'
     sharpness = 500.0
   []

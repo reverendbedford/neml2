@@ -96,6 +96,8 @@ ImplicitUpdate::set_value(bool out, bool dout_din, bool d2out_din2)
   // Apply initial guess
   LabeledVector sol0(_model.solution(), {&output_axis()});
   sol0.fill(host<VariableStore>()->input_storage());
+  if (sol0.tensor().requires_grad())
+    sol0.detach_();
 
   // The trial state is used as the initial guess
   // Perform automatic scaling
@@ -117,8 +119,9 @@ ImplicitUpdate::set_value(bool out, bool dout_din, bool d2out_din2)
     if (dout_din)
     {
       // IFT requires dresidual/dinput evaluated at the solution:
+      _model.prepare();
       _model.value_and_dvalue();
-      const auto & partials = _model.derivative_storage();
+      auto & partials = _model.derivative_storage();
 
       // The actual IFT:
       LabeledMatrix J = partials.slice(1, "state");

@@ -80,18 +80,16 @@ TEST_CASE("ParameterStore", "[models]")
     auto & nu = model.get_parameter<Scalar>("nu");
 
     // First prepare some arbitrary input
-    auto & Ee = model.get_input_variable<SR2>(VariableName("state", "internal", "Ee"));
-    Ee = SR2::fill(0.09, 0.04, -0.02);
-
-    // The outputs of the model
-    const auto & S = model.get_output_variable<SR2>(VariableName("state", "S"));
+    auto Ee = SR2::fill(0.09, 0.04, -0.02);
+    auto x = LabeledVector(Ee, {&model.input_axis()});
 
     SECTION("batch mismatch")
     {
       E.requires_grad_(true);
-      model.value();
+      auto y = model.value(x);
+      auto S = y(VariableName("state", "S"));
       REQUIRE_THROWS_WITH(
-          math::jacrev(S.value(), E),
+          math::jacrev(S, E),
           Catch::Matchers::ContainsSubstring("The batch shape of the parameter must be the "
                                              "same as the batch shape of the output"));
     }
@@ -103,27 +101,30 @@ TEST_CASE("ParameterStore", "[models]")
 
       E.requires_grad_(true);
       nu.requires_grad_(true);
-      model.value();
+      auto y = model.value(x);
+      auto S = y(VariableName("state", "S"));
 
       // Parameter gradients from torch AD
-      const auto dS_dE_exact = math::jacrev(S.value(), E);
-      const auto dS_dnu_exact = math::jacrev(S.value(), nu);
+      const auto dS_dE_exact = math::jacrev(S, E);
+      const auto dS_dnu_exact = math::jacrev(S, nu);
 
       // Parameter gradients from finite differencing
       const auto dS_dE_FD = finite_differencing_derivative(
-          [&](const BatchTensor & x)
+          [&](const BatchTensor & Ep)
           {
-            E = x;
-            model.value();
-            return S.value();
+            E = Ep;
+            auto y = model.value(x);
+            auto S = y(VariableName("state", "S"));
+            return S;
           },
           E.clone());
       const auto dS_dnu_FD = finite_differencing_derivative(
-          [&](const BatchTensor & x)
+          [&](const BatchTensor & nup)
           {
-            nu = x;
-            model.value();
-            return S.value();
+            nu = nup;
+            auto y = model.value(x);
+            auto S = y(VariableName("state", "S"));
+            return S;
           },
           nu.clone());
       REQUIRE(torch::allclose(dS_dnu_exact, dS_dnu_FD));

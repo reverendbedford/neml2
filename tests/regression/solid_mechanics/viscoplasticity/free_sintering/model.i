@@ -158,7 +158,8 @@ nstep = 100
   []
   [flow]
     type = ComposedModel
-    models = 'q1 j2 sh sp yield'
+    models = 'j2 sh sp yield'
+    automatic_nonlinear_parameter = false
   []
   [flow_rate]
     type = PerzynaPlasticFlowRate

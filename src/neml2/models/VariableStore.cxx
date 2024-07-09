@@ -96,79 +96,39 @@ VariableStore::allocate_variables(TorchShapeRef batch_shape,
   if (d2out_din2)
     _d2out_din2 = LabeledTensor3D::zeros(
         batch_shape, {&output_axis(), &input_axis(), &input_axis()}, options);
-
-  if (in)
-    reinit_input_views();
-
-  reinit_output_views(out, dout_din, d2out_din2);
 }
 
 void
-VariableStore::setup_input_views()
+VariableStore::setup_input_views(VariableStore * host)
 {
+  neml_assert_dbg(host || _object->host<VariableStore>() == host,
+                  "setup_input_views called on a non-host model without specifying the host as an "
+                  "argument");
   for (auto && [name, var] : input_views())
-    var.setup_views(&_object->host<VariableStore>()->input_storage());
-}
-
-void
-VariableStore::setup_output_views()
-{
-  for (auto && [name, var] : output_views())
-    var.setup_views(&_out, &_dout_din, &_d2out_din2);
-}
-
-void
-VariableStore::reinit_input_views()
-{
-  for (auto && [name, var] : input_views())
-    var.reinit_views(true, false, false);
-}
-
-void
-VariableStore::reinit_output_views(bool out, bool dout_din, bool d2out_din2)
-{
-  for (auto && [name, var] : output_views())
-    var.reinit_views(out, dout_din, d2out_din2);
-}
-
-void
-VariableStore::detach_and_zero(bool out, bool dout_din, bool d2out_din2)
-{
-  bool out_detached = false;
-  bool dout_din_detached = false;
-  bool d2out_din2_detached = false;
-
-  // Detach and zero per request
-  if (out)
   {
-    if (_out.tensor().requires_grad())
-    {
-      _out.tensor().detach_();
-      out_detached = true;
-    }
+    if (_object->host<VariableStore>() == host)
+      var.setup_views(&host->input_storage());
+    else
+      var.setup_views(&host->input_view(name)->value_storage());
   }
+}
 
+void
+VariableStore::setup_output_views(bool out, bool dout_din, bool d2out_din2)
+{
+  for (auto && [name, var] : output_views())
+    var.setup_views(out ? &_out : nullptr,
+                    dout_din ? &_dout_din : nullptr,
+                    d2out_din2 ? &_d2out_din2 : nullptr);
+}
+
+void
+VariableStore::zero(bool dout_din, bool d2out_din2)
+{
   if (dout_din)
-  {
-    if (_dout_din.tensor().requires_grad())
-    {
-      _dout_din.tensor().detach_();
-      dout_din_detached = true;
-    }
     _dout_din.zero_();
-  }
 
   if (d2out_din2)
-  {
-    if (_d2out_din2.tensor().requires_grad())
-    {
-      _d2out_din2.tensor().detach_();
-      d2out_din2_detached = true;
-    }
     _d2out_din2.zero_();
-  }
-
-  // If the storage is detached in-place, we need to reconfigure all the views.
-  reinit_output_views(out_detached, dout_din_detached, d2out_din2_detached);
 }
 } // namespace neml2

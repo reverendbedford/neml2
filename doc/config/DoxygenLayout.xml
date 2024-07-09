@@ -3,7 +3,16 @@
   <navindex>
     <tab type="mainpage" visible="yes" title="Overview"/>
     <tab type="user" url="@ref install" title="Installation Guide"/>
-    <tab type="user" url="@ref getting-started" title="Getting Started"/>
+    <tab type="usergroup" title="User Guide">
+      <tab type="user" url="@ref input-file" title="Input File"/>
+      <tab type="user" url="@ref cpp-backend" title="C++ Backend"/>
+      <tab type="user" url="@ref python-package" title="Python Package"/>
+    </tab>
+    <tab type="usergroup" title="Developer Guide">
+      <tab type="user" url="@ref naming-conventions" title="Naming Conventions"/>
+      <tab type="user" url="@ref custom-model" title="Custom Model"/>
+      <tab type="user" url="@ref testing" title="Testing"/>
+    </tab>
     <tab type="usergroup" title="Syntax Documentation">
       <tab type="user" url="@ref syntax-settings" title="[Settings]"/>
       <tab type="user" url="@ref syntax-tensors" title="[Tensors]"/>
@@ -23,7 +32,6 @@
     <tab type="usergroup" title="Physics Documentation">
       <tab type="user" url="@ref solid-mechanics" title="Solid Mechanics"/>
     </tab>
-    <tab type="user" url="@ref dev" title="Developer Guide"/>
     <tab type="classlist" visible="yes" title="C++ API Reference" intro=""/>
     <tab type="user" url="python/annotated.html" title="Python API Reference"/>
   </navindex>
