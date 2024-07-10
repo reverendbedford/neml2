@@ -12,8 +12,7 @@ var searchData=
   ['get_5foutput_9',['get_output',['../classneml2_1_1Model.html#a230166c77b24a5d909bb8c878684a8bb',1,'neml2::Model']]],
   ['get_5foutput_5fvariable_10',['get_output_variable',['../classneml2_1_1VariableStore.html#a25e939c2523954864422594a22b8868c',1,'neml2::VariableStore::get_output_variable(const VariableName &amp;name)'],['../classneml2_1_1VariableStore.html#a1d19a82de162b265d6706f525dde9ea5',1,'neml2::VariableStore::get_output_variable(const VariableName &amp;name) const']]],
   ['get_5fparameter_11',['get_parameter',['../classneml2_1_1ParameterStore.html#ac9d1e2479ec0f6bbae1cca7d71848d27',1,'neml2::ParameterStore']]],
-  ['getting_20started_12',['Getting Started',['../getting-started.html',1,'']]],
-  ['gtnyieldfunction_13',['GTNYieldFunction',['../classneml2_1_1GTNYieldFunction.html',1,'GTNYieldFunction'],['../classneml2_1_1GTNYieldFunction.html#af58c56c00ee14094ef09c2943a4bc417',1,'neml2::GTNYieldFunction::GTNYieldFunction()'],['../syntax-models.html#gtnyieldfunction',1,'GTNYieldFunction']]],
-  ['guide_14',['Guide',['../dev.html',1,'Developer Guide'],['../install.html',1,'Installation Guide']]],
-  ['gursoncavitation_15',['GursonCavitation',['../classneml2_1_1GursonCavitation.html',1,'GursonCavitation'],['../classneml2_1_1GursonCavitation.html#a59881fd209ee558acef9e5aa56871d6d',1,'neml2::GursonCavitation::GursonCavitation()'],['../syntax-models.html#gursoncavitation',1,'GursonCavitation']]]
+  ['gtnyieldfunction_12',['GTNYieldFunction',['../classneml2_1_1GTNYieldFunction.html',1,'GTNYieldFunction'],['../classneml2_1_1GTNYieldFunction.html#af58c56c00ee14094ef09c2943a4bc417',1,'neml2::GTNYieldFunction::GTNYieldFunction()'],['../syntax-models.html#gtnyieldfunction',1,'GTNYieldFunction']]],
+  ['guide_13',['Installation Guide',['../install.html',1,'']]],
+  ['gursoncavitation_14',['GursonCavitation',['../classneml2_1_1GursonCavitation.html',1,'GursonCavitation'],['../classneml2_1_1GursonCavitation.html#a59881fd209ee558acef9e5aa56871d6d',1,'neml2::GursonCavitation::GursonCavitation()'],['../syntax-models.html#gursoncavitation',1,'GursonCavitation']]]
 ];

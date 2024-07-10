@@ -113,7 +113,7 @@ $(function(){initNavTree('syntax-models.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md37">Available objects and their input file syntax</a><ul><li class="level2"><a href="#arrheniusparameter">ArrheniusParameter</a></li>
+<ul><li class="level1"><a href="#autotoc_md39">Available objects and their input file syntax</a><ul><li class="level2"><a href="#arrheniusparameter">ArrheniusParameter</a></li>
 <li class="level2"><a href="#associativeisotropicplastichardening">AssociativeIsotropicPlasticHardening</a></li>
 <li class="level2"><a href="#associativekinematicplastichardening">AssociativeKinematicPlasticHardening</a></li>
 <li class="level2"><a href="#associativeplasticflow">AssociativePlasticFlow</a></li>
@@ -227,21 +227,12 @@ $(function(){initNavTree('syntax-models.html',''); initResizable(); });
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_content_2syntax_2models"></a></p>
-<h1><a class="anchor" id="autotoc_md37"></a>
+<h1><a class="anchor" id="autotoc_md39"></a>
 Available objects and their input file syntax</h1>
 <p>Refer to <a class="el" href="system-models.html">System Documentation</a> for detailed explanation about this system.</p>
 <h2><a class="anchor" id="arrheniusparameter"></a>
 ArrheniusParameter</h2>
 <p>Define the nonlinear parameter as a function of temperature according to the Arrhenius law \( p = p_0 \exp \left( -\frac{Q}{RT} \right) \), where \( p_0 \) is the reference value, \( Q \) is the activation energy, \( R \) is the ideal gas constant, and \( T \) is the temperature. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>activation_energy</code> Activation energy</summary>
 <p></p>
@@ -279,15 +270,6 @@ ArrheniusParameter</h2>
 AssociativeIsotropicPlasticHardening</h2>
 <p>Map the flow rate (i.e., the consistency parameter in the KKT conditions) to the rate of internal variables. This object calculates the rate of equivalent plastic strain following associative flow rule, i.e. \( \dot{\varepsilon}_p = - \dot{\gamma} \frac{\partial f}{\partial k} \), where \( \dot{\varepsilon}_p \) is the equivalent plastic strain, \( \dot{\gamma} \) is the flow rate, \( f \) is the yield function, and \( k \) is the isotropic hardening. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>equivalent_plastic_strain_rate</code> Rate of equivalent plastic strain</summary>
 <p></p>
 <ul>
@@ -318,15 +300,6 @@ AssociativeIsotropicPlasticHardening</h2>
 AssociativeKinematicPlasticHardening</h2>
 <p>Map the flow rate (i.e., the consistency parameter in the KKT conditions) to the rate of internal variables. This object calculates the rate of kinematic plastic strain following associative flow rule, i.e. \( \dot{\boldsymbol{K}}_p = - \dot{\gamma} \frac{\partial f}{\partial \boldsymbol{X}} \), where \( \dot{\boldsymbol{K}}_p \) is the kinematic plastic strain, \( \dot{\gamma} \) is the flow rate, \( f \) is the yield function, and \( \boldsymbol{X} \) is the kinematic hardening. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>flow_rate</code> Flow rate</summary>
 <p></p>
 <ul>
@@ -356,15 +329,6 @@ AssociativeKinematicPlasticHardening</h2>
 <h2><a class="anchor" id="associativeplasticflow"></a>
 AssociativePlasticFlow</h2>
 <p>Map the flow rate (i.e., the consistency parameter in the KKT conditions) to the rate of internal variables. This object calculates the rate of plastic strain following associative flow rule, i.e. \( \dot{\boldsymbol{\varepsilon}}_p = - \dot{\gamma} \frac{\partial f}{\partial \boldsymbol{M}} \), where \( \dot{\boldsymbol{\varepsilon}}_p \) is the plastic strain, \( \dot{\gamma} \) is the flow rate, \( f \) is the yield function, and \( \boldsymbol{M} \) is the Mandel stress. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>flow_direction</code> Flow direction which can be calculated using Normality</summary>
 <p></p>
@@ -408,15 +372,6 @@ ChabochePlasticHardening</h2>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
 </ul>
 </details>
 <details >
@@ -466,15 +421,6 @@ ChabochePlasticHardening</h2>
 <h2><a class="anchor" id="composedmodel"></a>
 ComposedModel</h2>
 <p>Compose multiple models together to form a single model. The composed model can then be treated as a new model and composed with others. The <a class="el" href="system-models.html#model-composition">system documentation</a> provides in-depth explanation on how the models are composed together. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>additional_outputs</code> Extra output variables to be extracted from the composed model in addition to the ones identified through dependency resolution.</summary>
 <p></p>
@@ -539,15 +485,6 @@ ComposedModel</h2>
 CopyMillerIndex</h2>
 <p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>from</code> Variable to copy value from</summary>
 <p></p>
 <ul>
@@ -566,15 +503,6 @@ CopyMillerIndex</h2>
 <h2><a class="anchor" id="copyquaternion"></a>
 CopyQuaternion</h2>
 <p>Copy the value from one variable to another. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>from</code> Variable to copy value from</summary>
 <p></p>
@@ -595,15 +523,6 @@ CopyQuaternion</h2>
 CopyR2</h2>
 <p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>from</code> Variable to copy value from</summary>
 <p></p>
 <ul>
@@ -622,15 +541,6 @@ CopyR2</h2>
 <h2><a class="anchor" id="copyr3"></a>
 CopyR3</h2>
 <p>Copy the value from one variable to another. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>from</code> Variable to copy value from</summary>
 <p></p>
@@ -651,15 +561,6 @@ CopyR3</h2>
 CopyR4</h2>
 <p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>from</code> Variable to copy value from</summary>
 <p></p>
 <ul>
@@ -678,15 +579,6 @@ CopyR4</h2>
 <h2><a class="anchor" id="copyr5"></a>
 CopyR5</h2>
 <p>Copy the value from one variable to another. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>from</code> Variable to copy value from</summary>
 <p></p>
@@ -707,15 +599,6 @@ CopyR5</h2>
 CopyRot</h2>
 <p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>from</code> Variable to copy value from</summary>
 <p></p>
 <ul>
@@ -734,15 +617,6 @@ CopyRot</h2>
 <h2><a class="anchor" id="copysffr4"></a>
 CopySFFR4</h2>
 <p>Copy the value from one variable to another. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>from</code> Variable to copy value from</summary>
 <p></p>
@@ -763,15 +637,6 @@ CopySFFR4</h2>
 CopySFR3</h2>
 <p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>from</code> Variable to copy value from</summary>
 <p></p>
 <ul>
@@ -790,15 +655,6 @@ CopySFR3</h2>
 <h2><a class="anchor" id="copysr2"></a>
 CopySR2</h2>
 <p>Copy the value from one variable to another. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>from</code> Variable to copy value from</summary>
 <p></p>
@@ -819,15 +675,6 @@ CopySR2</h2>
 CopySSFR5</h2>
 <p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>from</code> Variable to copy value from</summary>
 <p></p>
 <ul>
@@ -846,15 +693,6 @@ CopySSFR5</h2>
 <h2><a class="anchor" id="copyssr4"></a>
 CopySSR4</h2>
 <p>Copy the value from one variable to another. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>from</code> Variable to copy value from</summary>
 <p></p>
@@ -875,15 +713,6 @@ CopySSR4</h2>
 CopySWR4</h2>
 <p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>from</code> Variable to copy value from</summary>
 <p></p>
 <ul>
@@ -902,15 +731,6 @@ CopySWR4</h2>
 <h2><a class="anchor" id="copyscalar"></a>
 CopyScalar</h2>
 <p>Copy the value from one variable to another. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>from</code> Variable to copy value from</summary>
 <p></p>
@@ -931,15 +751,6 @@ CopyScalar</h2>
 CopyVec</h2>
 <p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>from</code> Variable to copy value from</summary>
 <p></p>
 <ul>
@@ -958,15 +769,6 @@ CopyVec</h2>
 <h2><a class="anchor" id="copywr2"></a>
 CopyWR2</h2>
 <p>Copy the value from one variable to another. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>from</code> Variable to copy value from</summary>
 <p></p>
@@ -987,15 +789,6 @@ CopyWR2</h2>
 CopyWSR4</h2>
 <p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>from</code> Variable to copy value from</summary>
 <p></p>
 <ul>
@@ -1015,15 +808,6 @@ CopyWSR4</h2>
 CopyWWR4</h2>
 <p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>from</code> Variable to copy value from</summary>
 <p></p>
 <ul>
@@ -1042,15 +826,6 @@ CopyWWR4</h2>
 <h2><a class="anchor" id="elasticstrain"></a>
 ElasticStrain</h2>
 <p>Calculate elastic strain given total and plastic strain (assuming additive decomposition), i.e. \( \boldsymbol{\varepsilon}_e = \boldsymbol{\varepsilon} - \boldsymbol{\varepsilon}_p \). </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>elastic_strain</code> Elastic strain</summary>
 <p></p>
@@ -1090,15 +865,6 @@ ElasticStrain</h2>
 <h2><a class="anchor" id="elasticstrainrate"></a>
 ElasticStrainRate</h2>
 <p>Calculates the elastic strain rate as \(\dot{\varepsilon} = d - d^p - \varepsilon w + w \varepsilon \) where \( d \) is the deformation rate, \( d^p \) is the plastic deformation rate, \( w \) is the vorticity, and \( \varepsilon \) is the elastic strain. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>deformation_rate</code> Name of the deformation rate</summary>
 <p></p>
@@ -1148,15 +914,6 @@ ElasticStrainRate</h2>
 FixOrientation</h2>
 <p>Checks the value of the modified Rodrigues parameter by checking if \( \left\lVert r \right\rVert &gt; t \), with \( t \) a threshold value set to 1.0 by default and replacing all the orientations that exceed this limit with their shadow parameters values. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>input_orientation</code> Name of input tensor of orientations to operate on.</summary>
 <p></p>
 <ul>
@@ -1186,15 +943,6 @@ FixOrientation</h2>
 <h2><a class="anchor" id="gtnyieldfunction"></a>
 GTNYieldFunction</h2>
 <p>Gurson-Tvergaard-Needleman yield function for poroplasticity. The yield function is defined as \( f = \left( \frac{\bar{\sigma}}{\sigma_y + k} \right)^2 + 2 q_1 \phi \cosh \left( \frac{1}{2} q_2 \frac{3\sigma_h-\sigma_s}{\sigma_y + k} \right) - \left( q_3 \phi^2 + 1 \right) \), where \( \bar{\sigma} \) is the von Mises stress, \( \sigma_y \) is the yield stress, \( k \) is isotropic hardening, \( \phi \) is the porosity, \( \sigma_h \) is the hydrostatic stress, and \( \sigma_s \) is the void growth back stress (sintering stress). \( q_1 \), \( q_2 \), and \( q_3 \) are parameters controlling the yield mechanisms. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>flow_invariant</code> Effective stress driving plastic flow</summary>
 <p></p>
@@ -1275,15 +1023,6 @@ GTNYieldFunction</h2>
 GursonCavitation</h2>
 <p>Local mass balance used in conjunction with the GTNYieldFunction, \( \dot{\phi} = (1-\phi) \dot{\varepsilon}_p \). </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>plastic_strain_rate</code> Plastic strain rate</summary>
 <p></p>
 <ul>
@@ -1314,15 +1053,6 @@ GursonCavitation</h2>
 ImplicitUpdate</h2>
 <p>Update an implicit model by solving the underlying implicit system of equations. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>implicit_model</code> The implicit model defining the implicit system of equations to be solved</summary>
 <p></p>
 <ul>
@@ -1341,15 +1071,6 @@ ImplicitUpdate</h2>
 <h2><a class="anchor" id="isotropicmandelstress"></a>
 IsotropicMandelStress</h2>
 <p>Map Cauchy stress to Mandel stress For isotropic material under small deformation, the Mandel stress and the Cauchy stress coincide. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>cauchy_stress</code> Cauchy stress</summary>
 <p></p>
@@ -1371,15 +1092,6 @@ IsotropicMandelStress</h2>
 <h2><a class="anchor" id="kocksmeckingactivationenergy"></a>
 KocksMeckingActivationEnergy</h2>
 <p>Calculates the Kocks-Mecking normalized activation as \(g = \frac{kT}{\mu b^3} \log \frac{\dot{\varepsilon}_0}{\dot{\varepsilon}} \) with \( \mu \) the shear modulus, \( k \) the Boltzmann constant, \( T \) the absolute temperature, \( b \) the Burgers vector length, \( \dot{\varepsilon}_0 \) a reference strain rate, and \( \dot{\varepsilon} \) the current strain rate. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>activation_energy</code> Output name of the activation energy</summary>
 <p></p>
@@ -1442,15 +1154,6 @@ KocksMeckingActivationEnergy</h2>
 <h2><a class="anchor" id="kocksmeckingflowswitch"></a>
 KocksMeckingFlowSwitch</h2>
 <p>Switches between rate independent and rate dependent flow rules based on the value of the Kocks-Mecking normalized activation energy. For activation energies less than the threshold use the rate independent flow rule, for values greater than the threshold use the rate dependent flow rule. This version uses a soft switch between the models, based on a tanh sigmoid function. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>activation_energy</code> The input name of the activation energy</summary>
 <p></p>
@@ -1524,15 +1227,6 @@ KocksMeckingFlowViscosity</h2>
 </details>
 <details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>b</code> The Burgers vector</summary>
 <p></p>
 <ul>
@@ -1585,15 +1279,6 @@ KocksMeckingRateSensitivity</h2>
 </details>
 <details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>b</code> The Burgers vector</summary>
 <p></p>
 <ul>
@@ -1638,15 +1323,6 @@ KocksMeckingYieldStress</h2>
 </details>
 <details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>shear_modulus</code> The shear modulus</summary>
 <p></p>
 <ul>
@@ -1657,15 +1333,6 @@ KocksMeckingYieldStress</h2>
 <h2><a class="anchor" id="linearisotropicelasticity"></a>
 LinearIsotropicElasticity</h2>
 <p>Relate elastic strain to stress for linear isotropic material. \( \boldsymbol{\sigma} = K \tr \boldsymbol{\varepsilon}_e + 2 G \text{dev} \boldsymbol{\varepsilon}_e \), where \( K \) and \( G \) are bulk and shear moduli, respectively. For convenience, this object only requests Young's modulus and Poisson's ratio, and handles the Lame parameter conversion behind the scenes. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>compliance</code> Whether the model defines the compliance relationship, i.e., mapping from stress to elastic strain. When set to false (default), the model maps elastic strain to stress.</summary>
 <p></p>
@@ -1720,16 +1387,7 @@ LinearIsotropicElasticity</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearIsotropicElasticity.html">link</a></p>
 <h2><a class="anchor" id="linearisotropichardening"></a>
 LinearIsotropicHardening</h2>
-<p>Map equivalent plastic strain to isotropic hardening following a linear relationship, i.e., \( k = H \varepsilon_p \) where \( H \) is the hardening modulus. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
+<p>Map equivalent plastic strain to isotropic hardening following a linear relationship, i.e., \( h = K \varepsilon_p \) where \( K \) is the hardening modulus. </p><details >
 <summary >
 <code>equivalent_plastic_strain</code> Equivalent plastic strain</summary>
 <p></p>
@@ -1760,15 +1418,6 @@ LinearIsotropicHardening</h2>
 LinearKinematicHardening</h2>
 <p>Map kinematic plastic strain to back stress following a linear relationship, i.e., \( \boldsymbol{X} = H \boldsymbol{K}_p \) where \( H \) is the hardening modulus. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>back_stress</code> Back stress</summary>
 <p></p>
 <ul>
@@ -1797,15 +1446,6 @@ LinearKinematicHardening</h2>
 <h2><a class="anchor" id="linearsinglesliphardeningrule"></a>
 LinearSingleSlipHardeningRule</h2>
 <p>Simple linear slip system hardening defined by \( \dot{\tau} = \theta \sum_{i=1}^{n_{slip}} \left| \dot{\gamma}_i \right| \) where \( \theta \) is the hardening slope. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>hardening_slope</code> Hardening rate</summary>
 <p></p>
@@ -1845,15 +1485,6 @@ LinearSingleSlipHardeningRule</h2>
 MillerIndexConstantParameter</h2>
 <p>A parameter that is just a constant value, generally used to refer to a parameter in more than one downstream object. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>value</code> The constant value of the parameter</summary>
 <p></p>
 <ul>
@@ -1864,15 +1495,6 @@ MillerIndexConstantParameter</h2>
 <h2><a class="anchor" id="millerindexlinearinterpolation"></a>
 MillerIndexLinearInterpolation</h2>
 <p>Interpolate a MillerIndex as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
@@ -1900,15 +1522,6 @@ MillerIndexLinearInterpolation</h2>
 <h2><a class="anchor" id="mixedcontrolsetup"></a>
 MixedControlSetup</h2>
 <p>Object to setup a model for mixed stress/strain control. Copies the values of the fixed_values (the input strain or stress) and the mixed_state (the conjugate stress or strain values) into the stress and strain tensors used by the model. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>cauchy_stress</code> The name of the Cauchy stress tensor</summary>
 <p></p>
@@ -1967,15 +1580,6 @@ MixedControlSetup</h2>
 Normality</h2>
 <p>Store the first derivatives of a scalar-valued function in given variables, i.e. \( u_i = \dfrac{f(\boldsymbol{v})}{v_i} \). </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>from</code> Function arguments to take derivatives w.r.t.</summary>
 <p></p>
 <ul>
@@ -2010,15 +1614,6 @@ Normality</h2>
 <h2><a class="anchor" id="olevskysinteringstress"></a>
 OlevskySinteringStress</h2>
 <p>Define the Olevsky-Skorohod sintering stress to be used in conjunction with poroplasticity yield functions such as the GTNYieldFunction. The sintering stress is defined as \( \sigma_s = 3 \dfrac{\gamma}{r} \phi^2 \), where \( \gamma \) is the surface tension, \( r \) is the size of the particles/powders, and \( \phi \) is the void fraction. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>particle_radius</code> Particle radius</summary>
 <p></p>
@@ -2056,15 +1651,6 @@ OlevskySinteringStress</h2>
 <h2><a class="anchor" id="orientationrate"></a>
 OrientationRate</h2>
 <p>Defines the rate of the crystal orientations as a spin given by \( \Omega^e = w - w^p - \varepsilon d^p + d^p \varepsilon \) where \( \Omega^e = \dot{Q} Q^T \), \( Q \) is the orientation, \( w \) is the vorticity, \( w^p \) is the plastic vorticity, \( d^p \) is the plastic deformation rate, and \( \varepsilon \) is the elastic stretch. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>elastic_strain</code> The name of the elastic strain tensor</summary>
 <p></p>
@@ -2114,15 +1700,6 @@ OrientationRate</h2>
 OverStress</h2>
 <p>Calculate the over stress \( \boldsymbol{O} = \boldsymbol{M} - \boldsymbol{X} \), where \( \boldsymbol{M} \) is the Mandel stress and \( \boldsymbol{X} \) is the back stress. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>back_stress</code> Back stress</summary>
 <p></p>
 <ul>
@@ -2152,15 +1729,6 @@ OverStress</h2>
 <h2><a class="anchor" id="perzynaplasticflowrate"></a>
 PerzynaPlasticFlowRate</h2>
 <p>Perzyna's viscous approximation of the consistent yield envelope (with a power law), i.e. \( \dot{\gamma} = \left( \frac{\left&lt; f \right&gt;}{\eta} \right)^n \), where \( f \) is the yield function, \( \eta \) is the reference stress, and \( n \) is the power-law exponent. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>exponent</code> Power-law exponent</summary>
 <p></p>
@@ -2198,15 +1766,6 @@ PerzynaPlasticFlowRate</h2>
 <h2><a class="anchor" id="plasticdeformationrate"></a>
 PlasticDeformationRate</h2>
 <p>Caclulates the plastic deformation rate as \( d^p = \sum_{i=1}^{n_{slip}} \dot{\gamma}_i Q \operatorname{sym}{\left(d_i \otimes n_i \right)} Q^T \) with \( d^p \) the plastic deformation rate, \( \dot{\gamma}_i \) the slip rate on the ith slip system, \(Q \) the orientation, \( d_i \) the slip system direction, and \( n_i \) the slip system normal. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>crystal_geometry_name</code> The name of the Data object containing the crystallographic information for the material</summary>
 <p></p>
@@ -2247,15 +1806,6 @@ PlasticDeformationRate</h2>
 PlasticVorticity</h2>
 <p>Caclulates the plastic vorcitity as \( w^p = \sum_{i=1}^{n_{slip}} \dot{\gamma}_i Q \operatorname{skew}{\left(d_i \otimes n_i \right)} Q^T \) with \( d^p \) the plastic deformation rate, \( \dot{\gamma}_i \) the slip rate on the ith slip system, \(Q \) the orientation, \( d_i \) the slip system direction, and \( n_i \) the slip system normal. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>crystal_geometry_name</code> The name of the Data object containing the crystallographic information for the material</summary>
 <p></p>
 <ul>
@@ -2294,15 +1844,6 @@ PlasticVorticity</h2>
 <h2><a class="anchor" id="powerlawsliprule"></a>
 PowerLawSlipRule</h2>
 <p>Power law slip rule defined as \( \dot{\gamma}_i = \dot{\gamma}_0 \left| \frac{\tau_i}{\hat{\tau}_i} \right|^{n-1} \frac{\tau_i}{\hat{\tau}_i} \) with \( \dot{\gamma}_i \) the slip rate on system \( i \), \( \tau_i \) the resolved shear, \( \hat{\tau}_i \) the slip system strength, \( n \) the rate senstivity, and \( \dot{\gamma}_0 \) a reference slip rate. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>crystal_geometry_name</code> Name of the Data object containing the crystallographic information</summary>
 <p></p>
@@ -2359,15 +1900,6 @@ PowerLawSlipRule</h2>
 QuaternionConstantParameter</h2>
 <p>A parameter that is just a constant value, generally used to refer to a parameter in more than one downstream object. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>value</code> The constant value of the parameter</summary>
 <p></p>
 <ul>
@@ -2378,15 +1910,6 @@ QuaternionConstantParameter</h2>
 <h2><a class="anchor" id="quaternionlinearinterpolation"></a>
 QuaternionLinearInterpolation</h2>
 <p>Interpolate a Quaternion as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
@@ -2415,15 +1938,6 @@ QuaternionLinearInterpolation</h2>
 R2ConstantParameter</h2>
 <p>A parameter that is just a constant value, generally used to refer to a parameter in more than one downstream object. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>value</code> The constant value of the parameter</summary>
 <p></p>
 <ul>
@@ -2434,15 +1948,6 @@ R2ConstantParameter</h2>
 <h2><a class="anchor" id="r2linearinterpolation"></a>
 R2LinearInterpolation</h2>
 <p>Interpolate a R2 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
@@ -2471,15 +1976,6 @@ R2LinearInterpolation</h2>
 R3ConstantParameter</h2>
 <p>A parameter that is just a constant value, generally used to refer to a parameter in more than one downstream object. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>value</code> The constant value of the parameter</summary>
 <p></p>
 <ul>
@@ -2490,15 +1986,6 @@ R3ConstantParameter</h2>
 <h2><a class="anchor" id="r3linearinterpolation"></a>
 R3LinearInterpolation</h2>
 <p>Interpolate a R3 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
@@ -2527,15 +2014,6 @@ R3LinearInterpolation</h2>
 R4ConstantParameter</h2>
 <p>A parameter that is just a constant value, generally used to refer to a parameter in more than one downstream object. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>value</code> The constant value of the parameter</summary>
 <p></p>
 <ul>
@@ -2546,15 +2024,6 @@ R4ConstantParameter</h2>
 <h2><a class="anchor" id="r4linearinterpolation"></a>
 R4LinearInterpolation</h2>
 <p>Interpolate a R4 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
@@ -2583,15 +2052,6 @@ R4LinearInterpolation</h2>
 R5ConstantParameter</h2>
 <p>A parameter that is just a constant value, generally used to refer to a parameter in more than one downstream object. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>value</code> The constant value of the parameter</summary>
 <p></p>
 <ul>
@@ -2602,15 +2062,6 @@ R5ConstantParameter</h2>
 <h2><a class="anchor" id="r5linearinterpolation"></a>
 R5LinearInterpolation</h2>
 <p>Interpolate a R5 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
@@ -2642,15 +2093,6 @@ RateIndependentPlasticFlowConstraint</h2>
 </p>
  <details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>flow_rate</code> Flow rate</summary>
 <p></p>
 <ul>
@@ -2671,15 +2113,6 @@ RateIndependentPlasticFlowConstraint</h2>
 <h2><a class="anchor" id="resolvedshear"></a>
 ResolvedShear</h2>
 <p>Calculates the resolved shears as \( \tau_i = \sigma : Q \operatorname{sym}\left(d_i \otimes n_i \right) Q^T \) where \( \tau_i \) is the resolved shear on slip system i, \( \sigma \) is the Cauchy stress \( Q \) is the orientation matrix, \( d_i \) is the slip direction, and \( n_i \) is the slip system normal. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>crystal_geometry_name</code> The name of the data object with the crystallographic information</summary>
 <p></p>
@@ -2720,15 +2153,6 @@ ResolvedShear</h2>
 RotConstantParameter</h2>
 <p>A parameter that is just a constant value, generally used to refer to a parameter in more than one downstream object. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>value</code> The constant value of the parameter</summary>
 <p></p>
 <ul>
@@ -2739,15 +2163,6 @@ RotConstantParameter</h2>
 <h2><a class="anchor" id="rotlinearinterpolation"></a>
 RotLinearInterpolation</h2>
 <p>Interpolate a Rot as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
@@ -2776,15 +2191,6 @@ RotLinearInterpolation</h2>
 RotationMatrix</h2>
 <p>Convert a Rot (rotation represented in Rodrigues format) to R2 (a full rotation matrix). </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>from</code> Rot to convert</summary>
 <p></p>
 <ul>
@@ -2804,15 +2210,6 @@ RotationMatrix</h2>
 SFFR4ConstantParameter</h2>
 <p>A parameter that is just a constant value, generally used to refer to a parameter in more than one downstream object. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>value</code> The constant value of the parameter</summary>
 <p></p>
 <ul>
@@ -2823,15 +2220,6 @@ SFFR4ConstantParameter</h2>
 <h2><a class="anchor" id="sffr4linearinterpolation"></a>
 SFFR4LinearInterpolation</h2>
 <p>Interpolate a SFFR4 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
@@ -2860,15 +2248,6 @@ SFFR4LinearInterpolation</h2>
 SFR3ConstantParameter</h2>
 <p>A parameter that is just a constant value, generally used to refer to a parameter in more than one downstream object. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>value</code> The constant value of the parameter</summary>
 <p></p>
 <ul>
@@ -2879,15 +2258,6 @@ SFR3ConstantParameter</h2>
 <h2><a class="anchor" id="sfr3linearinterpolation"></a>
 SFR3LinearInterpolation</h2>
 <p>Interpolate a SFR3 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
@@ -2915,15 +2285,6 @@ SFR3LinearInterpolation</h2>
 <h2><a class="anchor" id="sr2backwardeulertimeintegration"></a>
 SR2BackwardEulerTimeIntegration</h2>
 <p>Define the backward Euler time integration residual \( r = s - s_n - (t - t_n) \dot{s} \), where \(s\) is the variable being integrated, \(\dot{s}\) is the variable rate, and \(t\) is time. Subscripts \(n\) denote quantities from the previous time step. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>automatic_scaling</code> Whether to perform automatic scaling. See neml2::NonlinearSystem::init_scaling for implementation details.</summary>
 <p></p>
@@ -2980,15 +2341,6 @@ SR2BackwardEulerTimeIntegration</h2>
 SR2ConstantParameter</h2>
 <p>A parameter that is just a constant value, generally used to refer to a parameter in more than one downstream object. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>value</code> The constant value of the parameter</summary>
 <p></p>
 <ul>
@@ -2999,15 +2351,6 @@ SR2ConstantParameter</h2>
 <h2><a class="anchor" id="sr2forcerate"></a>
 SR2ForceRate</h2>
 <p>Calculate the first order discrete time derivative of a force variable as \( \dot{f} = \frac{f-f_n}{t-t_n} \), where \( f \) is the force variable, and \( t \) is time. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>force</code> The force variable to take time derivative with</summary>
 <p></p>
@@ -3029,15 +2372,6 @@ SR2ForceRate</h2>
 SR2ForwardEulerTimeIntegration</h2>
 <p>Perform forward Euler time integration defined as \( s = s_n + (t - t_n) \dot{s} \), where \(s\) is the variable being integrated, \(\dot{s}\) is the variable rate, and \(t\) is time. Subscripts \(n\) denote quantities from the previous time step. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>time</code> Time</summary>
 <p></p>
 <ul>
@@ -3057,15 +2391,6 @@ SR2ForwardEulerTimeIntegration</h2>
 <h2><a class="anchor" id="sr2invariant"></a>
 SR2Invariant</h2>
 <p>Calculate the invariant of a symmetric second order tensor (of type SR2). </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>invariant</code> Invariant</summary>
 <p></p>
@@ -3094,15 +2419,6 @@ SR2Invariant</h2>
 SR2LinearInterpolation</h2>
 <p>Interpolate a SR2 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
 <ul>
@@ -3130,15 +2446,6 @@ SR2LinearInterpolation</h2>
 SR2StateRate</h2>
 <p>Calculate the first order discrete time derivative of a state variable as \( \dot{s} = \frac{s-s_n}{t-t_n} \), where \( s \) is the state variable, and \( t \) is time. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>state</code> The state variable to take time derivative with</summary>
 <p></p>
 <ul>
@@ -3158,15 +2465,6 @@ SR2StateRate</h2>
 <h2><a class="anchor" id="sr2summodel"></a>
 SR2SumModel</h2>
 <p>Calculate linear combination of multiple SR2 tensors as \( u = c_i v_i \) (Einstein summation assumed), where \( c_i \) are the coefficients, and \( v_i \) are the variables to be summed. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>coefficients</code> Weights associated with each variable</summary>
 <p></p>
@@ -3195,15 +2493,6 @@ SR2SumModel</h2>
 SSFR5ConstantParameter</h2>
 <p>A parameter that is just a constant value, generally used to refer to a parameter in more than one downstream object. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>value</code> The constant value of the parameter</summary>
 <p></p>
 <ul>
@@ -3214,15 +2503,6 @@ SSFR5ConstantParameter</h2>
 <h2><a class="anchor" id="ssfr5linearinterpolation"></a>
 SSFR5LinearInterpolation</h2>
 <p>Interpolate a SSFR5 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
@@ -3251,15 +2531,6 @@ SSFR5LinearInterpolation</h2>
 SSR4ConstantParameter</h2>
 <p>A parameter that is just a constant value, generally used to refer to a parameter in more than one downstream object. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>value</code> The constant value of the parameter</summary>
 <p></p>
 <ul>
@@ -3270,15 +2541,6 @@ SSR4ConstantParameter</h2>
 <h2><a class="anchor" id="ssr4linearinterpolation"></a>
 SSR4LinearInterpolation</h2>
 <p>Interpolate a SSR4 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
@@ -3307,15 +2569,6 @@ SSR4LinearInterpolation</h2>
 SWR4ConstantParameter</h2>
 <p>A parameter that is just a constant value, generally used to refer to a parameter in more than one downstream object. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>value</code> The constant value of the parameter</summary>
 <p></p>
 <ul>
@@ -3326,15 +2579,6 @@ SWR4ConstantParameter</h2>
 <h2><a class="anchor" id="swr4linearinterpolation"></a>
 SWR4LinearInterpolation</h2>
 <p>Interpolate a SWR4 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
@@ -3362,15 +2606,6 @@ SWR4LinearInterpolation</h2>
 <h2><a class="anchor" id="scalarbackwardeulertimeintegration"></a>
 ScalarBackwardEulerTimeIntegration</h2>
 <p>Define the backward Euler time integration residual \( r = s - s_n - (t - t_n) \dot{s} \), where \(s\) is the variable being integrated, \(\dot{s}\) is the variable rate, and \(t\) is time. Subscripts \(n\) denote quantities from the previous time step. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>automatic_scaling</code> Whether to perform automatic scaling. See neml2::NonlinearSystem::init_scaling for implementation details.</summary>
 <p></p>
@@ -3427,15 +2662,6 @@ ScalarBackwardEulerTimeIntegration</h2>
 ScalarConstantParameter</h2>
 <p>A parameter that is just a constant value, generally used to refer to a parameter in more than one downstream object. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>value</code> The constant value of the parameter</summary>
 <p></p>
 <ul>
@@ -3446,15 +2672,6 @@ ScalarConstantParameter</h2>
 <h2><a class="anchor" id="scalarforcerate"></a>
 ScalarForceRate</h2>
 <p>Calculate the first order discrete time derivative of a force variable as \( \dot{f} = \frac{f-f_n}{t-t_n} \), where \( f \) is the force variable, and \( t \) is time. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>force</code> The force variable to take time derivative with</summary>
 <p></p>
@@ -3476,15 +2693,6 @@ ScalarForceRate</h2>
 ScalarForwardEulerTimeIntegration</h2>
 <p>Perform forward Euler time integration defined as \( s = s_n + (t - t_n) \dot{s} \), where \(s\) is the variable being integrated, \(\dot{s}\) is the variable rate, and \(t\) is time. Subscripts \(n\) denote quantities from the previous time step. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>time</code> Time</summary>
 <p></p>
 <ul>
@@ -3504,15 +2712,6 @@ ScalarForwardEulerTimeIntegration</h2>
 <h2><a class="anchor" id="scalarlinearinterpolation"></a>
 ScalarLinearInterpolation</h2>
 <p>Interpolate a Scalar as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
@@ -3541,15 +2740,6 @@ ScalarLinearInterpolation</h2>
 ScalarStateRate</h2>
 <p>Calculate the first order discrete time derivative of a state variable as \( \dot{s} = \frac{s-s_n}{t-t_n} \), where \( s \) is the state variable, and \( t \) is time. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>state</code> The state variable to take time derivative with</summary>
 <p></p>
 <ul>
@@ -3569,15 +2759,6 @@ ScalarStateRate</h2>
 <h2><a class="anchor" id="scalarsummodel"></a>
 ScalarSumModel</h2>
 <p>Calculate linear combination of multiple Scalar tensors as \( u = c_i v_i \) (Einstein summation assumed), where \( c_i \) are the coefficients, and \( v_i \) are the variables to be summed. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>coefficients</code> Weights associated with each variable</summary>
 <p></p>
@@ -3605,15 +2786,6 @@ ScalarSumModel</h2>
 <h2><a class="anchor" id="singleslipstrengthmap"></a>
 SingleSlipStrengthMap</h2>
 <p>Calculates the slip system strength for all slip systems as \( \hat{\tau}_i = \bar{\tau} + \tau_0 \) where \( \hat{\tau}_i \) is the strength for slip system i, \( \bar{\tau} \) is an evolving slip system strength (one value of all systems), defined by another object, and \( \tau_0 \) is a constant strength. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>constant_strength</code> The constant slip system strength</summary>
 <p></p>
@@ -3653,15 +2825,6 @@ SingleSlipStrengthMap</h2>
 SumSlipRates</h2>
 <p>Calculates the sum of the absolute value of all the slip rates as \( \sum_{i=1}^{n_{slip}} \left| \dot{\gamma}_i \right| \). </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>crystal_geometry_name</code> The name of the Data object containing the crystallographic information</summary>
 <p></p>
 <ul>
@@ -3700,15 +2863,6 @@ ThermalEigenstrain</h2>
 </details>
 <details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>eigenstrain</code> Eigenstrain</summary>
 <p></p>
 <ul>
@@ -3737,15 +2891,6 @@ ThermalEigenstrain</h2>
 <h2><a class="anchor" id="totalstrain"></a>
 TotalStrain</h2>
 <p>Calculate the total strain by summing the elastic and plastic strain. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>elastic_strain</code> Elastic strain</summary>
 <p></p>
@@ -3785,15 +2930,6 @@ TotalStrain</h2>
 <h2><a class="anchor" id="vecbackwardeulertimeintegration"></a>
 VecBackwardEulerTimeIntegration</h2>
 <p>Define the backward Euler time integration residual \( r = s - s_n - (t - t_n) \dot{s} \), where \(s\) is the variable being integrated, \(\dot{s}\) is the variable rate, and \(t\) is time. Subscripts \(n\) denote quantities from the previous time step. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>automatic_scaling</code> Whether to perform automatic scaling. See neml2::NonlinearSystem::init_scaling for implementation details.</summary>
 <p></p>
@@ -3850,15 +2986,6 @@ VecBackwardEulerTimeIntegration</h2>
 VecConstantParameter</h2>
 <p>A parameter that is just a constant value, generally used to refer to a parameter in more than one downstream object. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>value</code> The constant value of the parameter</summary>
 <p></p>
 <ul>
@@ -3869,15 +2996,6 @@ VecConstantParameter</h2>
 <h2><a class="anchor" id="veclinearinterpolation"></a>
 VecLinearInterpolation</h2>
 <p>Interpolate a Vec as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
@@ -3905,15 +3023,6 @@ VecLinearInterpolation</h2>
 <h2><a class="anchor" id="voceisotropichardening"></a>
 VoceIsotropicHardening</h2>
 <p>Voce isotropic hardening model, \( h = R \left[ 1 - \exp(-d \varepsilon_p) \right] \), where \( R \) is the isotropic hardening upon saturation, and \( d \) is the hardening rate. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>equivalent_plastic_strain</code> Equivalent plastic strain</summary>
 <p></p>
@@ -3951,15 +3060,6 @@ VoceIsotropicHardening</h2>
 <h2><a class="anchor" id="vocesinglesliphardeningrule"></a>
 VoceSingleSlipHardeningRule</h2>
 <p>Voce hardening for a SingleSlipStrength type model defined by \( \dot{\tau} = \theta_0 \left( 1 - \frac{\tau}{\tau_f} \right) \sum_{i=1}^{n_{slip}} \left| \dot{\gamma}_i \right| \) where \( \theta_0 \) is the initial rate of work hardening, \( \tau_f \) is the saturated, maximum value of the slip system strength, and \( \dot{\gamma}_i \) is the slip rate on each system. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>initial_slope</code> The initial rate of hardening</summary>
 <p></p>
@@ -4007,15 +3107,6 @@ VoceSingleSlipHardeningRule</h2>
 WR2ConstantParameter</h2>
 <p>A parameter that is just a constant value, generally used to refer to a parameter in more than one downstream object. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>value</code> The constant value of the parameter</summary>
 <p></p>
 <ul>
@@ -4026,15 +3117,6 @@ WR2ConstantParameter</h2>
 <h2><a class="anchor" id="wr2explicitexponentialtimeintegration"></a>
 WR2ExplicitExponentialTimeIntegration</h2>
 <p>Perform explicit discrete exponential time integration of a rotation. The update can be written as \( s = \exp\left[ (t-t_n)\dot{s}\right] \circ s_n \), where \( \circ \) denotes the rotation operator. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>time</code> Time</summary>
 <p></p>
@@ -4055,15 +3137,6 @@ WR2ExplicitExponentialTimeIntegration</h2>
 <h2><a class="anchor" id="wr2implicitexponentialtimeintegration"></a>
 WR2ImplicitExponentialTimeIntegration</h2>
 <p>Define the implicit discrete exponential time integration residual of a rotation variable. The residual can be written as \( r = s - \exp\left[ (t-t_n)\dot{s}\right] \circ s_n \), where \( \circ \) denotes the rotation operator. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>automatic_scaling</code> Whether to perform automatic scaling. See neml2::NonlinearSystem::init_scaling for implementation details.</summary>
 <p></p>
@@ -4112,15 +3185,6 @@ WR2ImplicitExponentialTimeIntegration</h2>
 WR2LinearInterpolation</h2>
 <p>Interpolate a WR2 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
 <ul>
@@ -4148,15 +3212,6 @@ WR2LinearInterpolation</h2>
 WSR4ConstantParameter</h2>
 <p>A parameter that is just a constant value, generally used to refer to a parameter in more than one downstream object. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>value</code> The constant value of the parameter</summary>
 <p></p>
 <ul>
@@ -4167,15 +3222,6 @@ WSR4ConstantParameter</h2>
 <h2><a class="anchor" id="wsr4linearinterpolation"></a>
 WSR4LinearInterpolation</h2>
 <p>Interpolate a WSR4 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
@@ -4204,15 +3250,6 @@ WSR4LinearInterpolation</h2>
 WWR4ConstantParameter</h2>
 <p>A parameter that is just a constant value, generally used to refer to a parameter in more than one downstream object. </p><details >
 <summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>value</code> The constant value of the parameter</summary>
 <p></p>
 <ul>
@@ -4223,15 +3260,6 @@ WWR4ConstantParameter</h2>
 <h2><a class="anchor" id="wwr4linearinterpolation"></a>
 WWR4LinearInterpolation</h2>
 <p>Interpolate a WWR4 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
@@ -4259,15 +3287,6 @@ WWR4LinearInterpolation</h2>
 <h2><a class="anchor" id="yieldfunction"></a>
 YieldFunction</h2>
 <p>Classical macroscale plasticity yield function, \( f = \bar{\sigma} - \sigma_y - h \), where \( \bar{\sigma} \) is the effective stress, \( \sigma_y \) is the yield stress, and \( h \) is the isotropic hardening. </p><details >
-<summary >
-<code>_inference_mode</code> By default, inference mode is off, and variables are re-allocated every time the model is evaluated. As a consequence, variable views need to be reconfigured over and over again. This default behavior avoids in-place operations and is mandatory to use torch AD (i.e. for parameter derivative or AD forward operator). When inference mode is on, no gradient is computed, and the variables and variable views are set up once and for all, which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for details.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
 <summary >
 <code>effective_stress</code> Effective stress</summary>
 <p></p>

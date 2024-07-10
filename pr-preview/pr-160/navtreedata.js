@@ -27,8 +27,17 @@ var NAVTREE =
   [ "NEML2", "index.html", [
     [ "Overview", "index.html", "index" ],
     [ "Installation Guide", "install.html", null ],
-    [ "Getting Started", "getting-started.html", null ],
-    [ "Syntax Documentation", "usergroup0.html", [
+    [ "User Guide", "usergroup0.html", [
+      [ "Input File", "input-file.html", null ],
+      [ "C++ Backend", "cpp-backend.html", null ],
+      [ "Python Package", "python-package.html", null ]
+    ] ],
+    [ "Developer Guide", "usergroup1.html", [
+      [ "Naming Conventions", "naming-conventions.html", null ],
+      [ "Custom Model", "custom-model.html", null ],
+      [ "Testing", "testing.html", null ]
+    ] ],
+    [ "Syntax Documentation", "usergroup2.html", [
       [ "[Settings]", "syntax-settings.html", null ],
       [ "[Tensors]", "syntax-tensors.html", null ],
       [ "[Models]", "syntax-models.html", null ],
@@ -36,7 +45,7 @@ var NAVTREE =
       [ "[Data]", "syntax-data.html", null ],
       [ "[Drivers]", "syntax-drivers.html", null ]
     ] ],
-    [ "System Documentation", "usergroup1.html", [
+    [ "System Documentation", "usergroup3.html", [
       [ "Settings", "system-settings.html", null ],
       [ "Tensor", "system-tensors.html", null ],
       [ "Model", "system-models.html", null ],
@@ -44,10 +53,9 @@ var NAVTREE =
       [ "Data", "system-data.html", null ],
       [ "Driver", "system-drivers.html", null ]
     ] ],
-    [ "Physics Documentation", "usergroup2.html", [
+    [ "Physics Documentation", "usergroup4.html", [
       [ "Solid Mechanics", "solid-mechanics.html", null ]
     ] ],
-    [ "Developer Guide", "dev.html", null ],
     [ "C++ API Reference", "annotated.html", "annotated" ],
     [ "Python API Reference", "python/annotated.html", null ]
   ] ]
@@ -60,7 +68,7 @@ var NAVTREEINDEX =
 "classneml2_1_1Model.html#a266eb5da16fd21f487f704e356a3bbe9",
 "classneml2_1_1ParserException.html#a576a441c2b1e2f01d271e237b314eac3",
 "classneml2_1_1TransientDriver.html#a492220e8f23e5d32aea9c350bbab1be7",
-"structneml2_1_1Storage_1_1DereferenceIterator.html#aff1ef965010b2a4c8744ad33d8412342"
+"structneml2_1_1Storage_1_1DereferenceIterator.html#a6b68a3a6daf97aada59c4b29f0ba881a"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

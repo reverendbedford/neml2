@@ -1,8 +1,5 @@
 var searchData=
 [
-  ['settings_0',['Settings',['../syntax-settings.html',1,'[Settings]'],['../system-settings.html',1,'Settings']]],
-  ['solid_20mechanics_1',['Solid Mechanics',['../solid-mechanics.html',1,'']]],
-  ['solver_2',['Solver',['../system-solvers.html',1,'']]],
-  ['solvers_3',['[Solvers]',['../syntax-solvers.html',1,'']]],
-  ['started_4',['Getting Started',['../getting-started.html',1,'']]]
+  ['input_20file_0',['Input File',['../input-file.html',1,'']]],
+  ['installation_20guide_1',['Installation Guide',['../install.html',1,'']]]
 ];

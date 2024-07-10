@@ -1,5 +1,5 @@
 <map id="LinearIsotropicHardening" name="LinearIsotropicHardening">
-<area shape="rect" id="Node000001" title="Simple linear map between equivalent strain and hardening." alt="" coords="681,145,867,170"/>
+<area shape="rect" id="Node000001" title="Simple linear map between equivalent strain and isotropic hardening." alt="" coords="681,145,867,170"/>
 <area shape="rect" id="Node000002" href="$classneml2_1_1IsotropicHardening.html" title=" " alt="" coords="488,145,633,170"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="647,155,681,155,681,160,647,160"/>
 <area shape="rect" id="Node000003" href="$classneml2_1_1Model.html" title="The base class for all constitutive models." alt="" coords="377,145,440,170"/>

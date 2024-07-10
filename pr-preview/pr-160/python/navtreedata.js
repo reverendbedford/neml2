@@ -27,8 +27,17 @@ var NAVTREE =
   [ "NEML2", "index.html", [
     [ "Overview", "index.html", "index" ],
     [ "Installation Guide", "../install.html", null ],
-    [ "Getting Started", "../getting-started.html", null ],
-    [ "Syntax Documentation", "usergroup0.html", [
+    [ "User Guide", "usergroup0.html", [
+      [ "Input File", "../input-file.html", null ],
+      [ "C++ Backend", "../cpp-backend.html", null ],
+      [ "Python Package", "../python-package.html", null ]
+    ] ],
+    [ "Developer Guide", "usergroup1.html", [
+      [ "Naming Conventions", "../naming-conventions.html", null ],
+      [ "Custom Model", "../custom-model.html", null ],
+      [ "Testing", "../testing.html", null ]
+    ] ],
+    [ "Syntax Documentation", "usergroup2.html", [
       [ "[Settings]", "../syntax-settings.html", null ],
       [ "[Tensors]", "../syntax-tensors.html", null ],
       [ "[Models]", "../syntax-models.html", null ],
@@ -36,7 +45,7 @@ var NAVTREE =
       [ "[Data]", "../syntax-data.html", null ],
       [ "[Drivers]", "../syntax-drivers.html", null ]
     ] ],
-    [ "System Documentation", "usergroup1.html", [
+    [ "System Documentation", "usergroup3.html", [
       [ "Settings", "../system-settings.html", null ],
       [ "Tensor", "../system-tensors.html", null ],
       [ "Model", "../system-models.html", null ],
@@ -44,10 +53,9 @@ var NAVTREE =
       [ "Data", "../system-data.html", null ],
       [ "Driver", "../system-drivers.html", null ]
     ] ],
-    [ "Physics Documentation", "usergroup2.html", [
+    [ "Physics Documentation", "usergroup4.html", [
       [ "Solid Mechanics", "../solid-mechanics.html", null ]
     ] ],
-    [ "Developer Guide", "../dev.html", null ],
     [ "C++ API Reference", "../annotated.html", null ],
     [ "Python API Reference", "annotated.html", "annotated" ]
   ] ]
@@ -56,18 +64,18 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "../annotated.html",
-"classtensors_1_1MillerIndex.html#aac28ca36673931b4ce74e608155dba41",
-"classtensors_1_1QuaternionBatchView.html#adf3e049b7e15518e913bfedf9a1eb46f",
-"classtensors_1_1R3BatchView.html#a2b9a0b571a6c22b794fba9b28e11613c",
-"classtensors_1_1R5BaseView.html#a81e837b883f8a3c0c73b224f1fce771a",
-"classtensors_1_1SFFR4.html#a79a64c4aa8a1e2b467de1596828f1fc1",
-"classtensors_1_1SFR3BatchView.html#add7da0f38f113433ec80ac5a444f303b",
-"classtensors_1_1SSFR5BatchView.html#a43080b242de156a5409d4b58fc7d0c9c",
-"classtensors_1_1SWR4BaseView.html#ab5cf2f1baa55950f080ba85ad93f38cb",
-"classtensors_1_1Scalar.html#ac272fcdacd3c30f796d7eac92b5cad76",
-"classtensors_1_1VecBaseView.html#a521532c9422edc7d56436f962f37dab1",
-"classtensors_1_1WSR4.html#a6852c9a2b2bddb0ff0ec552d311fcdc6",
-"classtensors_1_1WWR4BatchView.html#ab2fcbe4dedb2db4f6474278be34510b6"
+"classtensors_1_1MillerIndex.html#a783fedd3223f7a4a051c00b22a8b3016",
+"classtensors_1_1QuaternionBatchView.html#ad00a122e27dc4f135cf2328073c80060",
+"classtensors_1_1R3BatchView.html#a1b5ff9a60ec535ac3fe73f02a421e0f0",
+"classtensors_1_1R5BaseView.html#a7192f84ef4bc5b782f647cd49711866f",
+"classtensors_1_1SFFR4.html#a6c473406fb744d689106b5c22955b8e0",
+"classtensors_1_1SFR3BatchView.html#acca1e87e47f8481d95c9d91c565592c0",
+"classtensors_1_1SSFR5BatchView.html#a2c51b76aa4c970a721ff560d3af20b2e",
+"classtensors_1_1SWR4BaseView.html#a8b32100376613f61de57197ecde60890",
+"classtensors_1_1Scalar.html#abc1b785959b47505de72feabab160402",
+"classtensors_1_1VecBaseView.html#a35536134a6ceb1e866faf188992e9c9f",
+"classtensors_1_1WSR4.html#a4f23ac09ae87619a0f06e9b932a84ecd",
+"classtensors_1_1WWR4BatchView.html#a8b32100376613f61de57197ecde60890"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

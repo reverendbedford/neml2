@@ -11,11 +11,10 @@ var searchData=
   ['wr2explicitexponentialtimeintegration_8',['WR2ExplicitExponentialTimeIntegration',['../classneml2_1_1WR2ExplicitExponentialTimeIntegration.html',1,'WR2ExplicitExponentialTimeIntegration'],['../classneml2_1_1WR2ExplicitExponentialTimeIntegration.html#a87b18f571db9bc8b7cc36280b1e9c485',1,'neml2::WR2ExplicitExponentialTimeIntegration::WR2ExplicitExponentialTimeIntegration()'],['../syntax-models.html#wr2explicitexponentialtimeintegration',1,'WR2ExplicitExponentialTimeIntegration']]],
   ['wr2implicitexponentialtimeintegration_9',['WR2ImplicitExponentialTimeIntegration',['../classneml2_1_1WR2ImplicitExponentialTimeIntegration.html',1,'WR2ImplicitExponentialTimeIntegration'],['../classneml2_1_1WR2ImplicitExponentialTimeIntegration.html#a4659fde107d6570a0870675b509edffd',1,'neml2::WR2ImplicitExponentialTimeIntegration::WR2ImplicitExponentialTimeIntegration()'],['../syntax-models.html#wr2implicitexponentialtimeintegration',1,'WR2ImplicitExponentialTimeIntegration']]],
   ['wr2linearinterpolation_10',['WR2LinearInterpolation',['../syntax-models.html#wr2linearinterpolation',1,'']]],
-  ['writing_20a_20custom_20model_11',['Writing a custom model',['../dev.html#custom-model',1,'']]],
-  ['wsr4_12',['WSR4',['../classneml2_1_1WSR4.html',1,'WSR4'],['../classneml2_1_1WSR4.html#a5ed8a8dad51cca66ccaa68c5191990a1',1,'neml2::WSR4::WSR4()'],['../syntax-tensors.html#wsr4',1,'WSR4']]],
-  ['wsr4constantparameter_13',['WSR4ConstantParameter',['../syntax-models.html#wsr4constantparameter',1,'']]],
-  ['wsr4linearinterpolation_14',['WSR4LinearInterpolation',['../syntax-models.html#wsr4linearinterpolation',1,'']]],
-  ['wwr4_15',['WWR4',['../classneml2_1_1WWR4.html',1,'WWR4'],['../classneml2_1_1WWR4.html#adc28cfde0ac29bb8956d8c29ef76438b',1,'neml2::WWR4::WWR4()'],['../syntax-tensors.html#wwr4',1,'WWR4']]],
-  ['wwr4constantparameter_16',['WWR4ConstantParameter',['../syntax-models.html#wwr4constantparameter',1,'']]],
-  ['wwr4linearinterpolation_17',['WWR4LinearInterpolation',['../syntax-models.html#wwr4linearinterpolation',1,'']]]
+  ['wsr4_11',['WSR4',['../classneml2_1_1WSR4.html',1,'WSR4'],['../classneml2_1_1WSR4.html#a5ed8a8dad51cca66ccaa68c5191990a1',1,'neml2::WSR4::WSR4()'],['../syntax-tensors.html#wsr4',1,'WSR4']]],
+  ['wsr4constantparameter_12',['WSR4ConstantParameter',['../syntax-models.html#wsr4constantparameter',1,'']]],
+  ['wsr4linearinterpolation_13',['WSR4LinearInterpolation',['../syntax-models.html#wsr4linearinterpolation',1,'']]],
+  ['wwr4_14',['WWR4',['../classneml2_1_1WWR4.html',1,'WWR4'],['../classneml2_1_1WWR4.html#adc28cfde0ac29bb8956d8c29ef76438b',1,'neml2::WWR4::WWR4()'],['../syntax-tensors.html#wwr4',1,'WWR4']]],
+  ['wwr4constantparameter_15',['WWR4ConstantParameter',['../syntax-models.html#wwr4constantparameter',1,'']]],
+  ['wwr4linearinterpolation_16',['WWR4LinearInterpolation',['../syntax-models.html#wwr4linearinterpolation',1,'']]]
 ];

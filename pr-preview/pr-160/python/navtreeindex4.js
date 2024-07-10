@@ -1,5 +1,9 @@
 var NAVTREEINDEX4 =
 {
+"classtensors_1_1R5BaseView.html#a7192f84ef4bc5b782f647cd49711866f":[8,2,23,13],
+"classtensors_1_1R5BaseView.html#a78a196270b444c17124a964040475a4e":[8,2,23,14],
+"classtensors_1_1R5BaseView.html#a7d8eea8bee26003ffc2e878fa310e34e":[8,2,23,36],
+"classtensors_1_1R5BaseView.html#a7f258d02033d71e8430fa4b0b103f613":[8,2,23,48],
 "classtensors_1_1R5BaseView.html#a81e837b883f8a3c0c73b224f1fce771a":[8,2,23,21],
 "classtensors_1_1R5BaseView.html#a89685c00f313d257b6a8b8d172296389":[8,2,23,32],
 "classtensors_1_1R5BaseView.html#a8b32100376613f61de57197ecde60890":[8,2,23,40],
@@ -96,8 +100,8 @@ var NAVTREEINDEX4 =
 "classtensors_1_1Rot.html#a5c65924abc958e5ec514a0df296f0313":[8,2,25,43],
 "classtensors_1_1Rot.html#a5eba84d267f52548d5d5ceff6f0fc28f":[8,2,25,35],
 "classtensors_1_1Rot.html#a6852c9a2b2bddb0ff0ec552d311fcdc6":[8,2,25,1],
-"classtensors_1_1Rot.html#a68993c47c30fd4182709c028337b2d8f":[8,2,25,54],
 "classtensors_1_1Rot.html#a68993c47c30fd4182709c028337b2d8f":[8,2,25,53],
+"classtensors_1_1Rot.html#a68993c47c30fd4182709c028337b2d8f":[8,2,25,54],
 "classtensors_1_1Rot.html#a6c473406fb744d689106b5c22955b8e0":[8,2,25,44],
 "classtensors_1_1Rot.html#a6f32da4d331be6890a865ad8e8413a2f":[8,2,25,45],
 "classtensors_1_1Rot.html#a783fedd3223f7a4a051c00b22a8b3016":[8,2,25,3],
@@ -245,9 +249,5 @@ var NAVTREEINDEX4 =
 "classtensors_1_1SFFR4.html#a5eba84d267f52548d5d5ceff6f0fc28f":[8,2,31,28],
 "classtensors_1_1SFFR4.html#a60dc309961fdf4c3f3a5cb63b02407d1":[8,2,31,18],
 "classtensors_1_1SFFR4.html#a6852c9a2b2bddb0ff0ec552d311fcdc6":[8,2,31,1],
-"classtensors_1_1SFFR4.html#a699da2be19ea8f7c81c9d5db1e14c3d5":[8,2,31,7],
-"classtensors_1_1SFFR4.html#a6c473406fb744d689106b5c22955b8e0":[8,2,31,31],
-"classtensors_1_1SFFR4.html#a7107569c753a36c97454a94a3837fb11":[8,2,31,21],
-"classtensors_1_1SFFR4.html#a783fedd3223f7a4a051c00b22a8b3016":[8,2,31,3],
-"classtensors_1_1SFFR4.html#a785f0a01ccfb16823306f8ed99ffbbf7":[8,2,31,26]
+"classtensors_1_1SFFR4.html#a699da2be19ea8f7c81c9d5db1e14c3d5":[8,2,31,7]
 };

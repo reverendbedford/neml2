@@ -1,5 +1,9 @@
 var NAVTREEINDEX12 =
 {
+"classtensors_1_1WWR4BatchView.html#a8b32100376613f61de57197ecde60890":[8,2,62,40],
+"classtensors_1_1WWR4BatchView.html#aa42b70121d281b849807720259d21224":[8,2,62,2],
+"classtensors_1_1WWR4BatchView.html#aa573070b9657b19f0e83cb0e0fced054":[8,2,62,1],
+"classtensors_1_1WWR4BatchView.html#ab2ac68447d79f88ad63b99f22975af14":[8,2,62,15],
 "classtensors_1_1WWR4BatchView.html#ab2fcbe4dedb2db4f6474278be34510b6":[8,2,62,27],
 "classtensors_1_1WWR4BatchView.html#ab4e08f442857a75f099624a49138c674":[8,2,62,5],
 "classtensors_1_1WWR4BatchView.html#ab5cf2f1baa55950f080ba85ad93f38cb":[8,2,62,24],
@@ -22,7 +26,9 @@ var NAVTREEINDEX12 =
 "index.html#autotoc_md2":[0,0,0],
 "index.html#autotoc_md3":[0,0,1],
 "pages.html":[],
-"usergroup0.html":[3],
-"usergroup1.html":[4],
-"usergroup2.html":[5]
+"usergroup0.html":[2],
+"usergroup1.html":[3],
+"usergroup2.html":[4],
+"usergroup3.html":[5],
+"usergroup4.html":[6]
 };
