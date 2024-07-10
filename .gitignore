@@ -39,3 +39,10 @@ src/neml2/base/config.h
 install
 conftest.py
 .env
+
+# For MOOSE in-source build
+.libs
+*.la
+*.so*
+*.lo
+*.lo.d

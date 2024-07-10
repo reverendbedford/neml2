@@ -65,7 +65,6 @@ Model::Model(const OptionSet & options)
     _nonlinear_system(options.get<bool>("_nonlinear_system")),
     _inference_mode(options.get<bool>("_inference_mode"))
 {
-  check_AD_limitation();
 }
 
 std::vector<Diagnosis>
@@ -157,6 +156,8 @@ Model::allocate_variables(bool in, bool out)
 #ifndef NDEBUG
   _evaluated_once = false;
 #endif
+
+  check_AD_limitation();
 
   VariableStore::allocate_variables(batch_sizes(),
                                     options(),
