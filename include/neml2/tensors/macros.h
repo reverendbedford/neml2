@@ -24,6 +24,8 @@
 
 #pragma once
 
+/// Macros for writing generic code blocks for all tensor types
+///@{
 #define FOR_ALL_BATCHTENSORBASE(f)                                                                 \
   FOR_ALL_FIXEDDIMTENSOR(f);                                                                       \
   f(BatchTensor)
@@ -52,3 +54,17 @@
   f(WR2)
 
 #define FOR_ALL_R2BASE(f) f(R2)
+///@}
+
+/// Similar macros but end with comma instead of semicolon
+///@{
+#define FOR_ALL_BATCHTENSORBASE_COMMA(f) FOR_ALL_FIXEDDIMTENSOR_COMMA(f), f(BatchTensor)
+
+#define FOR_ALL_FIXEDDIMTENSOR_COMMA(f)                                                            \
+  FOR_ALL_VECBASE_COMMA(f), FOR_ALL_R2BASE_COMMA(f), f(Scalar), f(SR2), f(R3), f(SFR3), f(R4),     \
+      f(SSR4), f(SFFR4), f(SWR4), f(WSR4), f(WWR4), f(R5), f(SSFR5), f(Quaternion), f(MillerIndex)
+
+#define FOR_ALL_VECBASE_COMMA(f) f(Vec), f(Rot), f(WR2)
+
+#define FOR_ALL_R2BASE_COMMA(f) f(R2)
+///@}

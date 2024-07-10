@@ -276,7 +276,7 @@ protected:
 
     if (merge_input)
       for (auto && [name, var] : model->input_views())
-        declare_input_variable(var.base_storage(), name);
+        declare_input_variable(var.base_storage(), var.type(), name);
 
     _registered_models.push_back(model.get());
     return *(std::dynamic_pointer_cast<T>(model));

@@ -43,3 +43,37 @@
 #include "neml2/tensors/WSR4.h"
 #include "neml2/tensors/WWR4.h"
 #include "neml2/models/crystallography/MillerIndex.h"
+
+#include "neml2/tensors/macros.h"
+
+#include <iostream>
+
+namespace neml2
+{
+#define _tensor_type_enum(T) k##T
+
+// Enum for tensor type introspection
+enum class TensorType : int8_t
+{
+  FOR_ALL_BATCHTENSORBASE_COMMA(_tensor_type_enum),
+  kUknown
+};
+
+template <typename T>
+struct TensorTypeEnum
+{
+  static constexpr TensorType value = TensorType::kUknown;
+};
+
+// Specialize TensorEnum for all tensor types
+#define _tensor_type_enum_specialize(T)                                                            \
+  template <>                                                                                      \
+  struct TensorTypeEnum<T>                                                                         \
+  {                                                                                                \
+    static constexpr TensorType value = TensorType::k##T;                                          \
+  }
+FOR_ALL_BATCHTENSORBASE(_tensor_type_enum_specialize);
+
+// Stringify the tensor type enum
+std::ostream & operator<<(std::ostream & os, const TensorType & t);
+}

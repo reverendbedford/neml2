@@ -26,7 +26,6 @@
 
 #include "neml2/models/Model.h"
 #include "neml2/tensors/tensors.h"
-#include "neml2/tensors/macros.h"
 
 namespace neml2
 {

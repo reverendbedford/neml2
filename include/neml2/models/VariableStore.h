@@ -180,18 +180,19 @@ protected:
 
   /// Declare an input variable (with unknown base shape at compile time)
   template <typename... S>
-  const Variable<BatchTensor> & declare_input_variable(TorchSize sz, S &&... name)
+  const Variable<BatchTensor> & declare_input_variable(TorchSize sz, TensorType t, S &&... name)
   {
     const auto var_name = variable_name(std::forward<S>(name)...);
     declare_variable(_input_axis, var_name, sz);
-    return *create_variable_view<BatchTensor>(_input_views, var_name, sz);
+    return *create_variable_view<BatchTensor>(_input_views, var_name, t, sz);
   }
 
   /// Declare an input variable that is a list of tensors of fixed size
   template <typename T, typename... S>
   const Variable<BatchTensor> & declare_input_variable_list(TorchSize list_size, S &&... name)
   {
-    return declare_input_variable(list_size * T::const_base_storage, std::forward<S>(name)...);
+    return declare_input_variable(
+        list_size * T::const_base_storage, TensorType::kBatchTensor, std::forward<S>(name)...);
   }
 
   /// Declare an output variable
@@ -205,18 +206,19 @@ protected:
 
   /// Declare an input variable (with unknown base shape at compile time)
   template <typename... S>
-  Variable<BatchTensor> & declare_output_variable(TorchSize sz, S &&... name)
+  Variable<BatchTensor> & declare_output_variable(TorchSize sz, TensorType t, S &&... name)
   {
     const auto var_name = variable_name(std::forward<S>(name)...);
     declare_variable(_output_axis, var_name, sz);
-    return *create_variable_view<BatchTensor>(_output_views, var_name, sz);
+    return *create_variable_view<BatchTensor>(_output_views, var_name, t, sz);
   }
 
   /// Declare an output variable that is a list of tensors of fixed size
   template <typename T, typename... S>
   Variable<BatchTensor> & declare_output_variable_list(TorchSize list_size, S &&... name)
   {
-    return declare_output_variable(list_size * T::const_base_storage, std::forward<S>(name)...);
+    return declare_output_variable(
+        list_size * T::const_base_storage, TensorType::kBatchTensor, std::forward<S>(name)...);
   }
 
   /// Declare an item recursively on an axis
@@ -261,6 +263,7 @@ private:
   template <typename T>
   Variable<T> * create_variable_view(Storage<VariableName, VariableBase> & views,
                                      const VariableName & name,
+                                     TensorType t = TensorTypeEnum<T>::value,
                                      TorchSize sz = -1)
   {
     if constexpr (std::is_same_v<T, BatchTensor>)
@@ -276,7 +279,7 @@ private:
     // Allocate
     if constexpr (std::is_same_v<T, BatchTensor>)
     {
-      auto var = std::make_unique<Variable<BatchTensor>>(name, sz);
+      auto var = std::make_unique<Variable<BatchTensor>>(name, sz, t);
       var_base_ptr = views.set_pointer(name, std::move(var));
     }
     else

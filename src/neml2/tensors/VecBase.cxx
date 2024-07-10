@@ -24,7 +24,6 @@
 
 #include "neml2/tensors/VecBase.h"
 #include "neml2/tensors/tensors.h"
-#include "neml2/tensors/macros.h"
 
 namespace neml2
 {

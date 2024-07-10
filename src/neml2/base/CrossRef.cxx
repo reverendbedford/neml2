@@ -26,7 +26,6 @@
 #include "neml2/base/Factory.h"
 #include "neml2/misc/parser_utils.h"
 #include "neml2/tensors/tensors.h"
-#include "neml2/tensors/macros.h"
 
 namespace neml2
 {

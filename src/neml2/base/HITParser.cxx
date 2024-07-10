@@ -29,7 +29,6 @@
 #include "neml2/base/EnumSelection.h"
 #include "neml2/tensors/LabeledAxis.h"
 #include "neml2/tensors/tensors.h"
-#include "neml2/tensors/macros.h"
 #include <memory>
 
 namespace neml2

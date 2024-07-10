@@ -22,33 +22,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
-
-#include "neml2/tensors/user_tensors/UserTensor.h"
-
 #include "neml2/tensors/tensors.h"
 
 namespace neml2
 {
-/**
- * @brief Create raw tensor of type T from the input file.
- *
- * @tparam T The concrete tensor derived from BatchTensorBase
- */
-template <typename T>
-class UserFixedDimTensor : public T, public UserTensor
+std::ostream &
+operator<<(std::ostream & os, const TensorType & t)
 {
-public:
-  static OptionSet expected_options();
+#define _stringify_tensor_type(T) else if (t == TensorType::k##T) os << #T
 
-  /**
-   * @brief Construct a new UserFixedDimTensor object
-   *
-   * @param options The options extracted from the input file.
-   */
-  UserFixedDimTensor(const OptionSet & options);
-};
-
-#define USERFIXEDDIMTENSOR_TYPEDEF(T) typedef UserFixedDimTensor<T> User##T
-FOR_ALL_FIXEDDIMTENSOR(USERFIXEDDIMTENSOR_TYPEDEF);
-} // namespace neml2
+  if (false)
+    ;
+  FOR_ALL_BATCHTENSORBASE(_stringify_tensor_type);
+  else os << "Unknown";
+  return os;
+}
+}

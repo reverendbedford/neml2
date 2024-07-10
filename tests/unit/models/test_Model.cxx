@@ -22,33 +22,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
+#include <catch2/catch_test_macros.hpp>
 
-#include "neml2/tensors/user_tensors/UserTensor.h"
+#include "utils.h"
+#include "neml2/models/Model.h"
 
-#include "neml2/tensors/tensors.h"
+using namespace neml2;
 
-namespace neml2
+TEST_CASE("Model", "[models]")
 {
-/**
- * @brief Create raw tensor of type T from the input file.
- *
- * @tparam T The concrete tensor derived from BatchTensorBase
- */
-template <typename T>
-class UserFixedDimTensor : public T, public UserTensor
-{
-public:
-  static OptionSet expected_options();
+  load_model("unit/models/ComposedModel3.i");
+  auto & model = Factory::get_object<Model>("Models", "model");
 
-  /**
-   * @brief Construct a new UserFixedDimTensor object
-   *
-   * @param options The options extracted from the input file.
-   */
-  UserFixedDimTensor(const OptionSet & options);
-};
-
-#define USERFIXEDDIMTENSOR_TYPEDEF(T) typedef UserFixedDimTensor<T> User##T
-FOR_ALL_FIXEDDIMTENSOR(USERFIXEDDIMTENSOR_TYPEDEF);
-} // namespace neml2
+  REQUIRE(model.input_view({"forces", "t"})->type() == TensorType::kScalar);
+  REQUIRE(model.input_view({"forces", "temperature"})->type() == TensorType::kScalar);
+  REQUIRE(model.input_view({"old_forces", "t"})->type() == TensorType::kScalar);
+  REQUIRE(model.input_view({"old_state", "bar"})->type() == TensorType::kScalar);
+  REQUIRE(model.input_view({"old_state", "baz"})->type() == TensorType::kSR2);
+  REQUIRE(model.input_view({"old_state", "foo"})->type() == TensorType::kScalar);
+  REQUIRE(model.input_view({"state", "bar"})->type() == TensorType::kScalar);
+  REQUIRE(model.input_view({"state", "baz"})->type() == TensorType::kSR2);
+  REQUIRE(model.input_view({"state", "foo"})->type() == TensorType::kScalar);
+  REQUIRE(model.output_view({"state", "sum"})->type() == TensorType::kScalar);
+}

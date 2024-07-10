@@ -100,6 +100,9 @@ public:
   /// Total shape
   virtual TorchShapeRef sizes() const = 0;
 
+  /// Variable type
+  virtual TensorType type() const = 0;
+
 protected:
   /// Name of the variable
   const VariableName _name;
@@ -135,15 +138,19 @@ class Variable : public VariableBase
 {
 public:
   template <typename T2 = T, typename = typename std::enable_if_t<!std::is_same_v<BatchTensor, T2>>>
-  Variable(const VariableName & name_in)
+  Variable(const VariableName & name_in, TensorType type = TensorTypeEnum<T2>::value)
     : VariableBase(name_in),
+      _type(type),
       _base_sizes(T::const_base_sizes)
   {
   }
 
   template <typename T2 = T, typename = typename std::enable_if_t<std::is_same_v<BatchTensor, T2>>>
-  Variable(const VariableName & name_in, TorchShapeRef base_shape)
+  Variable(const VariableName & name_in,
+           TorchShapeRef base_shape,
+           TensorType type = TensorType::kBatchTensor)
     : VariableBase(name_in),
+      _type(type),
       _base_sizes(base_shape.vec())
   {
   }
@@ -193,6 +200,8 @@ public:
   /// Variable value of the logical shape
   virtual const BatchTensor tensor() const override { return _value; }
 
+  virtual TensorType type() const override { return _type; }
+
   /// Negation
   T operator-() const { return -_value; }
 
@@ -212,6 +221,9 @@ public:
   }
 
 protected:
+  /// Variable tensor type
+  const TensorType _type;
+
   /// Base shape of this variable
   const TorchShape _base_sizes;
 

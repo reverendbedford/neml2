@@ -111,6 +111,7 @@ ComposedModel::ComposedModel(const OptionSet & options)
   {
     auto var = item.value;
     auto sz = item.parent->input_axis().storage_size(var);
+    auto type = item.parent->input_view(var)->type();
 
     if (input_axis().has_variable(var))
       neml_assert(input_axis().storage_size(var) == sz,
@@ -118,7 +119,7 @@ ComposedModel::ComposedModel(const OptionSet & options)
                   var,
                   ", but with different shape/storage size.");
     else
-      declare_input_variable(sz, var);
+      declare_input_variable(sz, type, var);
   }
 
   // Register output variables
@@ -126,11 +127,12 @@ ComposedModel::ComposedModel(const OptionSet & options)
   {
     auto var = item.value;
     auto sz = item.parent->output_axis().storage_size(var);
+    auto type = item.parent->output_view(var)->type();
     neml_assert(!output_axis().has_variable(var),
                 "Multiple sub-models in a ComposedModel define the same output variable ",
                 var);
 
-    declare_output_variable(sz, var);
+    declare_output_variable(sz, type, var);
   }
 
   // Declare nonlinear parameters

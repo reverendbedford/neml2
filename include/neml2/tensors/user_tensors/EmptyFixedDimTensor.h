@@ -26,7 +26,6 @@
 
 #include "neml2/tensors/user_tensors/UserTensor.h"
 
-#include "neml2/tensors/macros.h"
 #include "neml2/tensors/tensors.h"
 
 namespace neml2
