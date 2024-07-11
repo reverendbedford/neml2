@@ -24,6 +24,7 @@
 
 #include "neml2/base/Parser.h"
 #include "neml2/base/Factory.h"
+#include "neml2/base/guards.h"
 #include "neml2/drivers/Driver.h"
 
 #include <argparse/argparse.hpp>
@@ -72,16 +73,21 @@ main(int argc, char * argv[])
       neml2::load_model(input, additional_cliargs);
       auto & driver = neml2::Factory::get_object<neml2::Driver>("Drivers", drivername);
 
+      {
+        neml2::TimedSection ts(drivername, "Driver::run");
+        driver.run();
+      }
+
       if (program["--time"] == true)
       {
-        auto t1 = std::chrono::high_resolution_clock::now();
-        driver.run();
-        auto t2 = std::chrono::high_resolution_clock::now();
-        auto dt = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
-        std::cout << "Elapsed wall time: " << dt << " ms" << std::endl;
+        std::cout << "Elapsed wall time\n";
+        for (const auto & [section, object_times] : neml2::timed_sections())
+        {
+          std::cout << "  " << section << std::endl;
+          for (const auto & [object, time] : object_times)
+            std::cout << "    " << object << ": " << time << " ms" << std::endl;
+        }
       }
-      else
-        driver.run();
     }
     catch (const std::exception & err)
     {

@@ -55,9 +55,9 @@ def_LabeledTensor(py::class_<Derived> & c)
   c.def(py::init<>())
       // I have absolutely no clue as to why the following constructor gives segfault in another
       // totally unrelated class constructor's binding :(
-      //  .def(py::init<const torch::Tensor &, TorchSize, const std::vector<const LabeledAxis *>
+      //  .def(py::init<const torch::Tensor &, TorchSize, const std::array<const LabeledAxis *, D>
       //  &>())
-      .def(py::init<const BatchTensor &, const std::vector<const LabeledAxis *> &>())
+      .def(py::init<const BatchTensor &, const std::array<const LabeledAxis *, D> &>())
       .def(py::init<const Derived &>())
       .def("__repr__",
            [](const Derived & self)

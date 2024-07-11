@@ -27,6 +27,8 @@
 #include "neml2/models/Model.h"
 #include "neml2/base/DependencyResolver.h"
 
+#include <future>
+
 namespace neml2
 {
 class ComposedModel : public Model
@@ -44,6 +46,8 @@ public:
   virtual std::map<std::string, Model *>
   named_nonlinear_parameter_models(bool recursive = false) const override;
 
+  virtual void setup() override;
+
 protected:
   virtual void allocate_variables(bool in, bool out) override;
 
@@ -56,14 +60,25 @@ protected:
    */
   virtual void setup_submodel_input_views(VariableStore * host) override;
 
+  virtual void setup_output_views() override;
+
   void set_value(bool, bool, bool) override;
 
 private:
-  void clear_chain_rule_cache()
+  // Custom comparator for sorting assembly indices
+  struct TorchIndexCmp
   {
-    _dpout_din.clear();
-    _d2pout_din2.clear();
-  }
+    bool operator()(const TorchIndex & a, const TorchIndex & b) const
+    {
+      neml_assert(a.is_slice() && b.is_slice(), "Comparator must be used on slices");
+      neml_assert(a.slice().step().expect_int() == 1 && b.slice().step().expect_int() == 1,
+                  "Slices must have step == 1");
+      return a.slice().start().expect_int() < b.slice().start().expect_int();
+    }
+  };
+
+  /// Helper method to evaluate one single model in the threaded set_value loop
+  void set_value_async(Model * i, bool out, bool dout_din, bool d2out_din2);
 
   /// Helper method to recursively apply chain rule
   void apply_chain_rule(Model * model);
@@ -80,13 +95,23 @@ private:
   /// Helper to resolve model dependency
   DependencyResolver<Model, VariableName> _dependency;
 
-  /// Starting point of chain rule
-  LabeledMatrix _din_din;
+  /// Assembly indices
+  std::map<Model *, std::map<TorchIndex, std::pair<Model *, TorchIndex>, TorchIndexCmp>>
+      _assembly_indices;
+
+  /// Cache for partial derivatives of model inputs w.r.t. total input
+  std::map<Model *, std::vector<BatchTensor>> _dpin_din_views;
 
   /// Cache for partial derivatives of model outputs w.r.t. total input
   std::map<Model *, LabeledMatrix> _dpout_din;
 
+  /// Cache for second partial derivatives of model inputs w.r.t. total input
+  std::map<Model *, std::vector<BatchTensor>> _d2pin_din2_views;
+
   /// Cache for second partial derivatives of model outputs w.r.t. total input
   std::map<Model *, LabeledTensor3D> _d2pout_din2;
+
+  /// Threaded evaluation results of sub-models
+  std::map<Model *, std::future<void>> _async_results;
 };
 } // namespace neml2

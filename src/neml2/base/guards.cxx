@@ -22,54 +22,35 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/misc/utils.h"
+#include "neml2/base/guards.h"
+#include <mutex>
+#include <iostream>
 
 namespace neml2
 {
-namespace utils
+std::map<std::string, std::map<std::string, unsigned long>> &
+timed_sections()
 {
-TorchSize
-storage_size(TorchShapeRef shape)
-{
-  TorchSize sz = 1;
-  return std::accumulate(shape.begin(), shape.end(), sz, std::multiplies<TorchSize>());
+  static std::map<std::string, std::map<std::string, unsigned long>> _timed_sections_singleton;
+  return _timed_sections_singleton;
 }
 
-TorchShape
-pad_prepend(TorchShapeRef s, TorchSize dim, TorchSize pad)
+TimedSection::TimedSection(const std::string & name, const std::string & section)
+  : _name(name),
+    _section(section),
+    _t0(std::chrono::high_resolution_clock::now())
 {
-  TorchShape s2(s);
-  s2.insert(s2.begin(), dim - s.size(), pad);
-  return s2;
 }
 
-TorchShape
-pad_append(TorchShapeRef s, TorchSize dim, TorchSize pad)
+TimedSection::~TimedSection()
 {
-  TorchShape s2(s);
-  s2.insert(s2.end(), dim - s.size(), pad);
-  return s2;
-}
+  auto t1 = std::chrono::high_resolution_clock::now();
+  auto dt = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - _t0).count();
 
-// LCOV_EXCL_START
-std::string
-indentation(int level, int indent)
-{
-  std::stringstream ss;
-  std::string space(indent, ' ');
-  for (int i = 0; i < level; i++)
-    ss << space;
-  return ss.str();
+  static std::mutex _timed_sections_write_mutex;
+  {
+    std::scoped_lock lock(_timed_sections_write_mutex);
+    timed_sections()[_section][_name] += dt;
+  }
 }
-// LCOV_EXCL_STOP
-
-namespace details
-{
-TorchShape
-add_shapes_impl(TorchShape & net)
-{
-  return std::move(net);
 }
-} // namespace details
-} // namespace utils
-} // namespace neml2

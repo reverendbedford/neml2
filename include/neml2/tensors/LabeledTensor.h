@@ -46,13 +46,13 @@ public:
   /// Default constructor
   LabeledTensor() = default;
 
-  /// Construct from a Tensor with batch dim and vector of `LabeledAxis`
+  /// Construct from a Tensor with batch dim and array of `LabeledAxis`
   LabeledTensor(const torch::Tensor & tensor,
                 TorchSize batch_dim,
-                const std::vector<const LabeledAxis *> & axes);
+                const std::array<const LabeledAxis *, D> & axes);
 
-  /// Construct from a BatchTensor with vector of `LabeledAxis`
-  LabeledTensor(const BatchTensor & tensor, const std::vector<const LabeledAxis *> & axes);
+  /// Construct from a BatchTensor with array of `LabeledAxis`
+  LabeledTensor(const BatchTensor & tensor, const std::array<const LabeledAxis *, D> & axes);
 
   /// Copy constructor
   LabeledTensor(const Derived & other);
@@ -71,7 +71,7 @@ public:
   /// Setup new empty storage
   [[nodiscard]] static Derived
   empty(TorchShapeRef batch_shape,
-        const std::vector<const LabeledAxis *> & axes,
+        const std::array<const LabeledAxis *, D> & axes,
         const torch::TensorOptions & options = default_tensor_options());
 
   /// Setup new empty storage like another LabeledTensor
@@ -80,7 +80,7 @@ public:
   /// Setup new storage with zeros
   [[nodiscard]] static Derived
   zeros(TorchShapeRef batch_shape,
-        const std::vector<const LabeledAxis *> & axes,
+        const std::array<const LabeledAxis *, D> & axes,
         const torch::TensorOptions & options = default_tensor_options());
 
   /// Setup new storage with zeros like another LabeledTensor
@@ -124,7 +124,7 @@ public:
   TorchShapeRef base_sizes() const;
 
   /// Get all the labeled axes
-  const std::vector<const LabeledAxis *> & axes() const { return _axes; }
+  const std::array<const LabeledAxis *, D> & axes() const { return _axes; }
 
   /// Get a specific labeled axis
   const LabeledAxis & axis(TorchSize i = 0) const { return *_axes[i]; }
@@ -215,8 +215,7 @@ protected:
   BatchTensor _tensor;
 
   /// The labeled axes of this tensor
-  // Urgh, I can't use const references here as the elements of a vector has to be "assignable".
-  std::vector<const LabeledAxis *> _axes;
+  std::array<const LabeledAxis *, D> _axes;
 
 private:
   template <std::size_t... I, typename... S>
@@ -242,7 +241,6 @@ template <typename... S>
 TorchSlice
 LabeledTensor<Derived, D>::slice_indices(S &&... names) const
 {
-  static_assert(sizeof...(names) == D, "Wrong labaled dimesion in LabeledTensor::slice_indices");
   return slice_indices_impl(std::make_index_sequence<sizeof...(names)>(),
                             std::forward<S>(names)...);
 }
@@ -260,7 +258,6 @@ template <typename... S>
 TorchShape
 LabeledTensor<Derived, D>::storage_size(S &&... names) const
 {
-  static_assert(sizeof...(names) == D, "Wrong labaled dimesion in LabeledTensor::storage_size");
   return storage_size_impl(std::make_index_sequence<D>(), std::forward<S>(names)...);
 }
 
@@ -277,7 +274,6 @@ template <typename... S>
 BatchTensor
 LabeledTensor<Derived, D>::operator()(S &&... names) const
 {
-  static_assert(sizeof...(names) == D, "Wrong labeled dimension in LabeledTensor::operator()");
   return base_index(slice_indices(names...));
 }
 
@@ -295,7 +291,7 @@ Derived
 LabeledTensor<Derived, D>::block_impl(std::index_sequence<I...>, S &&... names) const
 {
   TorchSlice idx = {_axes[I]->indices(names)...};
-  std::vector<const LabeledAxis *> new_axes = {&_axes[I]->subaxis(names)...};
+  std::array<const LabeledAxis *, D> new_axes = {&_axes[I]->subaxis(names)...};
   return Derived(_tensor.base_index(idx), new_axes);
 }
 } // namespace neml2

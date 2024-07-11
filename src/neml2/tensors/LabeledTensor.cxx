@@ -33,24 +33,20 @@ namespace neml2
 template <class Derived, TorchSize D>
 LabeledTensor<Derived, D>::LabeledTensor(const torch::Tensor & tensor,
                                          TorchSize batch_dim,
-                                         const std::vector<const LabeledAxis *> & axes)
+                                         const std::array<const LabeledAxis *, D> & axes)
   : _tensor(tensor, batch_dim),
     _axes(axes)
 {
-  neml_assert_dbg(axes.size() == D, "Wrong labeled dimension");
-
   // Check that the size of the tensor was compatible
   neml_assert_dbg(base_sizes() == storage_size(), "LabeledTensor does not have the right size");
 }
 
 template <class Derived, TorchSize D>
 LabeledTensor<Derived, D>::LabeledTensor(const BatchTensor & tensor,
-                                         const std::vector<const LabeledAxis *> & axes)
+                                         const std::array<const LabeledAxis *, D> & axes)
   : _tensor(tensor),
     _axes(axes)
 {
-  neml_assert_dbg(axes.size() == D, "Wrong labeled dimension");
-
   // Check that the size of the tensor was compatible
   neml_assert_dbg(base_sizes() == storage_size(), "LabeledTensor does not have the right size");
 }
@@ -85,7 +81,7 @@ LabeledTensor<Derived, D>::operator torch::Tensor() const
 template <class Derived, TorchSize D>
 Derived
 LabeledTensor<Derived, D>::empty(TorchShapeRef batch_size,
-                                 const std::vector<const LabeledAxis *> & axes,
+                                 const std::array<const LabeledAxis *, D> & axes,
                                  const torch::TensorOptions & options)
 {
   TorchShape s;
@@ -107,7 +103,7 @@ LabeledTensor<Derived, D>::empty_like(const Derived & other)
 template <class Derived, TorchSize D>
 Derived
 LabeledTensor<Derived, D>::zeros(TorchShapeRef batch_size,
-                                 const std::vector<const LabeledAxis *> & axes,
+                                 const std::array<const LabeledAxis *, D> & axes,
                                  const torch::TensorOptions & options)
 {
   TorchShape s;

@@ -247,7 +247,7 @@ Model::cache(TorchShapeRef batch_shape,
              const torch::Device & device,
              const torch::Dtype & dtype)
 {
-  _batch_sizes = batch_shape.empty() ? TorchShape{1} : batch_shape.vec();
+  _batch_sizes = batch_shape.empty() ? TorchShape{1} : TorchShape(batch_shape);
   VariableStore::cache(_batch_sizes);
 
   _deriv_order = std::max(deriv_order + _extra_deriv_order, _deriv_order);

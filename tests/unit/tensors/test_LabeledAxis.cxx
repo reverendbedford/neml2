@@ -282,7 +282,7 @@ TEST_CASE("LabeledAxis", "[tensors]")
       REQUIRE(torch::allclose(idx.index(a.indices("r2t")), torch::arange(0, 6)));
       REQUIRE(torch::allclose(idx.index(a.indices("sub1")), torch::arange(7, 21)));
 
-      LabeledAxisAccessor i{{"sub1", "sub2", "r2t"}};
+      LabeledAxisAccessor i("sub1", "sub2", "r2t");
       REQUIRE(torch::allclose(idx.index(a.indices(i)), torch::arange(14, 20)));
     }
   }

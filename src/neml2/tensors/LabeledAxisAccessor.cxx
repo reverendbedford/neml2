@@ -27,13 +27,6 @@
 
 namespace neml2
 {
-LabeledAxisAccessor::LabeledAxisAccessor(const std::vector<std::string> & names)
-  : _item_names(names)
-{
-  for (const auto & name : _item_names)
-    validate_item_name(name);
-}
-
 LabeledAxisAccessor::LabeledAxisAccessor(const LabeledAxisAccessor & other)
   : LabeledAxisAccessor(other._item_names)
 {
@@ -46,7 +39,11 @@ LabeledAxisAccessor::operator=(const LabeledAxisAccessor & other)
   return *this;
 }
 
-LabeledAxisAccessor::operator std::vector<std::string>() const { return _item_names; }
+LabeledAxisAccessor::operator std::vector<std::string>() const
+{
+  std::vector<std::string> v(_item_names.begin(), _item_names.end());
+  return v;
+}
 
 bool
 LabeledAxisAccessor::empty() const
@@ -85,17 +82,14 @@ LabeledAxisAccessor::on(const LabeledAxisAccessor & axis) const
 LabeledAxisAccessor
 LabeledAxisAccessor::slice(size_t n) const
 {
-  auto new_names = _item_names;
-  new_names.erase(new_names.begin(), new_names.begin() + n);
+  c10::SmallVector<std::string> new_names(_item_names.begin() + n, _item_names.end());
   return new_names;
 }
 
 LabeledAxisAccessor
 LabeledAxisAccessor::slice(size_t n1, size_t n2) const
 {
-  auto new_names = _item_names;
-  new_names.erase(new_names.begin() + n2, new_names.end());
-  new_names.erase(new_names.begin(), new_names.begin() + n1);
+  c10::SmallVector<std::string> new_names(_item_names.begin() + n1, _item_names.begin() + n2);
   return new_names;
 }
 

@@ -188,22 +188,22 @@ public:
 private:
   void add(LabeledAxis & axis,
            TorchSize sz,
-           const std::vector<std::string>::const_iterator & cur,
-           const std::vector<std::string>::const_iterator & end) const;
+           const LabeledAxisAccessor::const_iterator & cur,
+           const LabeledAxisAccessor::const_iterator & end) const;
 
   void merge(LabeledAxis & other,
              std::vector<std::string> subaxes,
              std::vector<LabeledAxisAccessor> & merged_vars);
 
   /// Helper method to recursively find the storage size of a variable
-  TorchSize storage_size(const std::vector<std::string>::const_iterator & cur,
-                         const std::vector<std::string>::const_iterator & end) const;
+  TorchSize storage_size(const LabeledAxisAccessor::const_iterator & cur,
+                         const LabeledAxisAccessor::const_iterator & end) const;
 
   /// Helper method to recursively consume the sub-axis names of a `LabeledAxisAccessor` to get the
   /// indices of a variable.
   TorchIndex indices(TorchSize offset,
-                     const std::vector<std::string>::const_iterator & cur,
-                     const std::vector<std::string>::const_iterator & end) const;
+                     const LabeledAxisAccessor::const_iterator & cur,
+                     const LabeledAxisAccessor::const_iterator & end) const;
 
   /// Helper method to (recursively) index this axis using another axis
   void indices(const LabeledAxis & other,

@@ -221,8 +221,11 @@ TransientDriver::advance_step()
 void
 TransientDriver::update_forces()
 {
-  auto current_time = _time.batch_index({_step_count});
-  _in.set(current_time, _time_name);
+  if (_model.input_axis().has_variable(_time_name))
+  {
+    auto current_time = _time.batch_index({_step_count});
+    _in.set(current_time, _time_name);
+  }
 }
 
 void

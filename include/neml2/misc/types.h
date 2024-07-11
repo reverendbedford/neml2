@@ -31,10 +31,10 @@ namespace neml2
 typedef double Real;
 typedef int Integer;
 typedef int64_t TorchSize;
-typedef std::vector<TorchSize> TorchShape;
+typedef c10::SmallVector<TorchSize> TorchShape;
 typedef torch::IntArrayRef TorchShapeRef;
 typedef at::indexing::TensorIndex TorchIndex;
-typedef std::vector<at::indexing::TensorIndex> TorchSlice;
+typedef c10::SmallVector<at::indexing::TensorIndex> TorchSlice;
 
 /**
  * The factory methods like `torch::arange`, `torch::ones`, `torch::zeros`, `torch::rand` etc.
@@ -69,5 +69,4 @@ Real & tolerance();
 /// A tighter tolerance used in various algorithms
 // TODO: make this depend on the current dtype
 Real & tighter_tolerance();
-
 } // namespace neml2

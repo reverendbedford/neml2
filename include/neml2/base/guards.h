@@ -22,54 +22,58 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/misc/utils.h"
+#pragma once
+
+#include <ATen/Parallel.h>
+
+#include <string>
+#include <map>
+#include <chrono>
 
 namespace neml2
 {
-namespace utils
-{
-TorchSize
-storage_size(TorchShapeRef shape)
-{
-  TorchSize sz = 1;
-  return std::accumulate(shape.begin(), shape.end(), sz, std::multiplies<TorchSize>());
-}
+// Timed section
+std::map<std::string, std::map<std::string, unsigned long>> & timed_sections();
 
-TorchShape
-pad_prepend(TorchShapeRef s, TorchSize dim, TorchSize pad)
+struct TimedSection
 {
-  TorchShape s2(s);
-  s2.insert(s2.begin(), dim - s.size(), pad);
-  return s2;
-}
+  TimedSection(const std::string & name, const std::string & section);
 
-TorchShape
-pad_append(TorchShapeRef s, TorchSize dim, TorchSize pad)
-{
-  TorchShape s2(s);
-  s2.insert(s2.end(), dim - s.size(), pad);
-  return s2;
-}
+  ~TimedSection();
 
-// LCOV_EXCL_START
-std::string
-indentation(int level, int indent)
-{
-  std::stringstream ss;
-  std::string space(indent, ' ');
-  for (int i = 0; i < level; i++)
-    ss << space;
-  return ss.str();
-}
-// LCOV_EXCL_STOP
+private:
+  const std::string _name;
+  const std::string _section;
+  const std::chrono::time_point<std::chrono::high_resolution_clock> _t0;
+};
 
-namespace details
+// A RAII guard that sets number of interop threads for a local region
+struct InterOpThread
 {
-TorchShape
-add_shapes_impl(TorchShape & net)
+  InterOpThread(unsigned int num)
+    : prev_num(at::get_num_interop_threads())
+  {
+    if (num > 0)
+      at::set_num_interop_threads(num);
+  }
+
+  ~InterOpThread() { at::set_num_interop_threads(prev_num); }
+
+  unsigned int prev_num;
+};
+
+// A RAII guard that sets number of intraop threads for a local region
+struct IntraOpThread
 {
-  return std::move(net);
+  IntraOpThread(unsigned int num)
+    : prev_num(at::get_num_threads())
+  {
+    if (num > 0)
+      at::set_num_threads(num);
+  }
+
+  ~IntraOpThread() { at::set_num_threads(prev_num); }
+
+  unsigned int prev_num;
+};
 }
-} // namespace details
-} // namespace utils
-} // namespace neml2

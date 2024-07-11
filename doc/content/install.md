@@ -161,10 +161,23 @@ By default when `NEML2_TESTS` is set to `ON`, three test suites are built under 
 - `tests/regression/regression_tests`: Collection of tests to avoid regression.
 - `tests/verification/verification_tests`: Collection of verification problems.
 
-The tests assume the working directory to be the `tests` directory relative to the repository root. For Visual Studio Code users, the [C++ TestMate](https://github.com/matepek/vscode-catch2-test-adapter) extension can be used to automatically discover and run tests. In the extension settings, the "Working Directory" variable should be modified to `${workspaceFolder}/tests`.
+The tests assume the working directory to be the `tests` directory relative to the repository root. For Visual Studio Code users, the [C++ TestMate](https://github.com/matepek/vscode-catch2-test-adapter) extension can be used to automatically discover and run tests. In the extension settings, the "Working Directory" variable should be modified to `${workspaceFolder}/tests`. The `settings.json` file shall contain the following entry:
+```json
+{
+  "testMate.cpp.test.workingDirectory": "${workspaceFolder}/tests",
+}
+```
 
 ### Python package
 
-A collection of tests are available under `python/tests` to ensure the NEML2 Python package is working correctly. For Visual Studio Code users, the [Python](https://github.com/Microsoft/vscode-python) extension can be used to automatically discover and run tests. In the extension settings, the "Pytest Enabled" variable shall be set to true.
+A collection of tests are available under `python/tests` to ensure the NEML2 Python package is working correctly. For Visual Studio Code users, the [Python](https://github.com/Microsoft/vscode-python) extension can be used to automatically discover and run tests. In the extension settings, the "Pytest Enabled" variable shall be set to true. In addition, "pytestArgs" shall provide the location of tests, i.e. "${workspaceFolder}/python/tests". The `settings.json` file shall contain the following entries:
+```json
+{
+  "python.testing.pytestEnabled": true,
+  "python.testing.pytestArgs": [
+    "${workspaceFolder}/python/tests"
+  ],
+}
+```
 
 If the Python bindings are built (with `NEML2_PYBIND` set to `ON`) but are not installed to the site-packages directory, pytest will not be able to import the %neml2 package unless the environment variable `PYTHONPATH` is modified according to the specified build directory. For Visual Studio Code users, create a `.env` file in the repository's root and include an entry `PYTHONPATH=build/python` (assuming the build directory is `build`), and the Python extension will be able to import the NEML2 Python package.

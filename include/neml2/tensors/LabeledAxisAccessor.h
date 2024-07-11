@@ -27,6 +27,8 @@
 #include <vector>
 #include <iostream>
 
+#include <c10/util/SmallVector.h>
+
 namespace neml2
 {
 /**
@@ -65,16 +67,45 @@ public:
     (_item_names.push_back(names), ...);
   }
 
-  LabeledAxisAccessor(const std::vector<std::string> & names);
+  // note: The enable_if restricts Container to types other than std::string that have a .begin()
+  // and .end() that return valid input iterators.
+  template <
+      typename Container,
+      std::enable_if_t<!std::is_convertible_v<Container, std::string> &&
+                           std::is_convertible_v<
+                               typename std::iterator_traits<
+                                   decltype(std::declval<Container>().begin())>::iterator_category,
+                               std::input_iterator_tag> &&
+                           std::is_convertible_v<
+                               typename std::iterator_traits<
+                                   decltype(std::declval<Container>().end())>::iterator_category,
+                               std::input_iterator_tag>,
+                       int> = 0>
+  LabeledAxisAccessor(Container && c)
+  {
+    _item_names.append(c.begin(), c.end());
+    for (const auto & name : _item_names)
+      validate_item_name(name);
+  }
 
   LabeledAxisAccessor(const LabeledAxisAccessor & other);
+
+  /// Begin and end iterators to the underlying data.
+  ///@{
+  using iterator = c10::SmallVector<std::string>::iterator;
+  using const_iterator = c10::SmallVector<std::string>::const_iterator;
+  iterator begin() { return iterator(_item_names.begin()); }
+  iterator end() { return iterator(_item_names.end()); }
+  const_iterator begin() const { return const_iterator(_item_names.begin()); }
+  const_iterator end() const { return const_iterator(_item_names.end()); }
+  ///@}
 
   /// Assignment operator
   LabeledAxisAccessor & operator=(const LabeledAxisAccessor & other);
 
-  operator std::vector<std::string>() const;
+  explicit operator std::vector<std::string>() const;
 
-  const std::vector<std::string> & vec() const { return _item_names; }
+  const c10::SmallVector<std::string> & vec() const { return _item_names; }
 
   bool empty() const;
 
@@ -102,7 +133,7 @@ private:
   /// Throws if the item name has invalid format
   void validate_item_name(const std::string &) const;
 
-  std::vector<std::string> _item_names;
+  c10::SmallVector<std::string> _item_names;
 };
 
 /// Compare for equality between two LabeledAxisAccessor

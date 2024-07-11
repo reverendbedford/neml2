@@ -42,15 +42,15 @@ LabeledAxis::LabeledAxis(const LabeledAxis & other)
 LabeledAxis &
 LabeledAxis::add(const LabeledAxisAccessor & accessor, TorchSize sz)
 {
-  add(*this, sz, accessor.vec().begin(), accessor.vec().end());
+  add(*this, sz, accessor.begin(), accessor.end());
   return *this;
 }
 
 void
 LabeledAxis::add(LabeledAxis & axis,
                  TorchSize sz,
-                 const std::vector<std::string>::const_iterator & cur,
-                 const std::vector<std::string>::const_iterator & end) const
+                 const LabeledAxisAccessor::const_iterator & cur,
+                 const LabeledAxisAccessor::const_iterator & end) const
 {
   if (cur == end - 1)
   {
@@ -216,12 +216,12 @@ LabeledAxis::has_subaxis(const LabeledAxisAccessor & s) const
 TorchSize
 LabeledAxis::storage_size(const LabeledAxisAccessor & accessor) const
 {
-  return storage_size(accessor.vec().begin(), accessor.vec().end());
+  return storage_size(accessor.begin(), accessor.end());
 }
 
 TorchSize
-LabeledAxis::storage_size(const std::vector<std::string>::const_iterator & cur,
-                          const std::vector<std::string>::const_iterator & end) const
+LabeledAxis::storage_size(const LabeledAxisAccessor::const_iterator & cur,
+                          const LabeledAxisAccessor::const_iterator & end) const
 {
   if (cur == end - 1)
   {
@@ -242,13 +242,13 @@ LabeledAxis::indices(const LabeledAxisAccessor & accessor) const
   if (accessor.empty())
     return torch::indexing::Slice();
 
-  return indices(0, accessor.vec().begin(), accessor.vec().end());
+  return indices(0, accessor.begin(), accessor.end());
 }
 
 TorchIndex
 LabeledAxis::indices(TorchSize offset,
-                     const std::vector<std::string>::const_iterator & cur,
-                     const std::vector<std::string>::const_iterator & end) const
+                     const LabeledAxisAccessor::const_iterator & cur,
+                     const LabeledAxisAccessor::const_iterator & end) const
 {
   neml_assert_dbg(_layout.count(*cur), "Axis/variable named ", *cur, " does not exist.");
   const auto & [rbegin, rend] = _layout.at(*cur);

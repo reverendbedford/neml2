@@ -23,6 +23,8 @@
 // THE SOFTWARE.
 
 #include "neml2/models/ComposedModel.h"
+#include "neml2/misc/math.h"
+#include <thread>
 
 namespace neml2
 {
@@ -144,6 +146,24 @@ ComposedModel::ComposedModel(const OptionSet & options)
 }
 
 void
+ComposedModel::setup()
+{
+  Model::setup();
+
+  // Setup assembly indices
+  for (auto i : registered_models())
+  {
+    for (auto [i1, i2] : i->input_axis().common_indices(input_axis()))
+      _assembly_indices[i].insert_or_assign(i1, std::make_pair(this, i2));
+
+    if (_dependency.node_providers().count(i))
+      for (auto dep : _dependency.node_providers().at(i))
+        for (auto [i1, i2] : i->input_axis().common_indices(dep->output_axis()))
+          _assembly_indices[i].insert_or_assign(i1, std::make_pair(dep, i2));
+  }
+}
+
+void
 ComposedModel::check_AD_limitation() const
 {
   if (_AD_1st_deriv || _AD_2nd_deriv)
@@ -168,8 +188,51 @@ void
 ComposedModel::allocate_variables(bool in, bool out)
 {
   Model::allocate_variables(in, out);
+
   if (out)
-    _din_din = LabeledMatrix::identity(batch_sizes(), input_axis(), options());
+  {
+    if (requires_grad())
+    {
+      _dpout_din[this] = LabeledMatrix::identity(batch_sizes(), input_axis(), options());
+      for (auto i : registered_models())
+        _dpout_din[i] =
+            LabeledMatrix::empty(batch_sizes(), {&i->output_axis(), &input_axis()}, options());
+    }
+
+    if (requires_2nd_grad())
+    {
+      _d2pout_din2[this] = LabeledTensor3D::zeros(
+          batch_sizes(), {&input_axis(), &input_axis(), &input_axis()}, options());
+      for (auto i : registered_models())
+        _d2pout_din2[i] = LabeledTensor3D::empty(
+            batch_sizes(), {&i->output_axis(), &input_axis(), &input_axis()}, options());
+    }
+  }
+}
+
+void
+ComposedModel::setup_output_views()
+{
+  Model::setup_output_views();
+
+  for (auto i : registered_models())
+  {
+    // Setup views for dpin/din
+    if (requires_grad())
+    {
+      _dpin_din_views[i].clear();
+      for (auto & [i1, dep_i2] : _assembly_indices[i])
+        _dpin_din_views[i].push_back(_dpout_din[dep_i2.first].base_index({dep_i2.second}));
+    }
+
+    // Setup views for d2pin/din2
+    if (requires_2nd_grad())
+    {
+      _d2pin_din2_views[i].clear();
+      for (auto & [i1, dep_i2] : _assembly_indices[i])
+        _d2pin_din2_views[i].push_back(_d2pout_din2[dep_i2.first].base_index({dep_i2.second}));
+    }
+  }
 }
 
 void
@@ -193,25 +256,13 @@ ComposedModel::setup_submodel_input_views(VariableStore * host)
 void
 ComposedModel::set_value(bool out, bool dout_din, bool d2out_din2)
 {
-  clear_chain_rule_cache();
-
+  _async_results.clear();
   for (auto i : registered_models())
-  {
-    if (out && !dout_din && !d2out_din2)
-      i->value();
-    else if (out && dout_din && !d2out_din2)
-      i->value_and_dvalue();
-    else if (out && dout_din && d2out_din2)
-      i->value_and_dvalue_and_d2value();
-    else
-      throw NEMLException("Unsupported call signature to set_value");
+    _async_results[i] = std::async(
+        std::launch::deferred, &ComposedModel::set_value_async, this, i, out, dout_din, d2out_din2);
 
-    if (dout_din && !d2out_din2)
-      apply_chain_rule(i);
-
-    if (d2out_din2)
-      apply_second_order_chain_rule(i);
-  }
+  for (auto && [i, future] : _async_results)
+    future.wait();
 
   for (auto model : _dependency.end_nodes())
   {
@@ -224,41 +275,50 @@ ComposedModel::set_value(bool out, bool dout_din, bool d2out_din2)
     if (d2out_din2)
       second_derivative_storage().fill(_d2pout_din2[model]);
   }
+}
 
-  clear_chain_rule_cache();
+void
+ComposedModel::set_value_async(Model * i, bool out, bool dout_din, bool d2out_din2)
+{
+  // Wait for dependent models
+  if (_dependency.node_providers().count(i))
+    for (auto dep : _dependency.node_providers().at(i))
+      _async_results[dep].wait();
+
+  if (out && !dout_din && !d2out_din2)
+    i->value();
+  else if (out && dout_din && !d2out_din2)
+    i->value_and_dvalue();
+  else if (out && dout_din && d2out_din2)
+    i->value_and_dvalue_and_d2value();
+  else
+    throw NEMLException("Unsupported call signature to set_value");
+
+  if (dout_din && !d2out_din2)
+    apply_chain_rule(i);
+
+  if (d2out_din2)
+    apply_second_order_chain_rule(i);
 }
 
 void
 ComposedModel::apply_chain_rule(Model * i)
 {
-  auto dpin_din = LabeledMatrix::empty(batch_sizes(), {&i->input_axis(), &input_axis()}, options());
-  dpin_din.fill(_din_din);
-
-  if (_dependency.node_providers().count(i))
-    for (auto dep : _dependency.node_providers().at(i))
-      dpin_din.fill(_dpout_din[dep]);
-
-  _dpout_din[i] = i->derivative_storage().chain(dpin_din);
+  auto dpin_din =
+      LabeledMatrix(math::cat(_dpin_din_views[i], -2), {&i->input_axis(), &input_axis()});
+  _dpout_din[i].copy_(i->derivative_storage().chain(dpin_din));
 }
 
 void
 ComposedModel::apply_second_order_chain_rule(Model * i)
 {
-  auto dpin_din = LabeledMatrix::empty(batch_sizes(), {&i->input_axis(), &input_axis()}, options());
-  auto d2pin_din2 = LabeledTensor3D::zeros(
-      batch_sizes(), {&i->input_axis(), &input_axis(), &input_axis()}, options());
-  dpin_din.fill(_din_din);
-
-  if (_dependency.node_providers().count(i))
-    for (auto dep : _dependency.node_providers().at(i))
-    {
-      dpin_din.fill(_dpout_din[dep]);
-      d2pin_din2.fill(_d2pout_din2[dep]);
-    }
-
-  _dpout_din[i] = i->derivative_storage().chain(dpin_din);
-  _d2pout_din2[i] =
-      i->second_derivative_storage().chain(d2pin_din2, i->derivative_storage(), dpin_din);
+  auto dpin_din =
+      LabeledMatrix(math::cat(_dpin_din_views[i], -2), {&i->input_axis(), &input_axis()});
+  auto d2pin_din2 = LabeledTensor3D(math::cat(_d2pin_din2_views[i], -3),
+                                    {&i->input_axis(), &input_axis(), &input_axis()});
+  _dpout_din[i].copy_(i->derivative_storage().chain(dpin_din));
+  _d2pout_din2[i].copy_(
+      i->second_derivative_storage().chain(d2pin_din2, i->derivative_storage(), dpin_din));
 }
 
 } // namespace neml2

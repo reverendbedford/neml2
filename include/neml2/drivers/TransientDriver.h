@@ -49,6 +49,8 @@ public:
 
   bool run() override;
 
+  const Model & model() const { return _model; }
+
   /// The destination file/path to save the results.
   virtual std::string save_as_path() const;
 

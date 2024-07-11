@@ -27,14 +27,12 @@
 #include <torch/extension.h>
 #include <torch/csrc/autograd/python_variable_indexing.h>
 
-namespace py = pybind11;
-
 namespace pybind11
 {
 namespace detail
 {
 /**
- * @brief This instantiation enables type conversion between Python object <--> torch::Dtype
+ * @brief This specialization enables type conversion between Python object <--> TensorIndex
  */
 template <>
 struct type_caster<at::indexing::TensorIndex>

@@ -46,6 +46,16 @@ void def_LabeledVector(py::module_ & m);
 void def_LabeledMatrix(py::module_ & m);
 void def_TensorValueBase(py::module_ & m);
 
+// Instantiate global types
+namespace pybind11
+{
+namespace detail
+{
+template struct type_caster<c10::SmallVector<TorchSize>>;
+template struct type_caster<c10::SmallVector<at::indexing::TensorIndex>>;
+}
+}
+
 PYBIND11_MODULE(tensors, m)
 {
   m.doc() = "NEML2 primitive tensor types";

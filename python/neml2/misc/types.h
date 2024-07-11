@@ -28,8 +28,6 @@
 #include <torch/csrc/utils/tensor_dtypes.h>
 #include <torch/csrc/DynamicTypes.h>
 
-namespace py = pybind11;
-
 #define NEML2_TENSOR_OPTIONS_VARGS                                                                 \
   const torch::Dtype &dtype, const torch::Device &device, bool requires_grad
 
@@ -37,15 +35,15 @@ namespace py = pybind11;
   torch::TensorOptions().dtype(dtype).device(device).requires_grad(requires_grad)
 
 #define PY_ARG_TENSOR_OPTIONS                                                                      \
-  py::arg("dtype") = torch::Dtype(torch::kFloat64),                                                \
-  py::arg("device") = torch::Device(torch::kCPU), py::arg("requires_grad") = false
+  pybind11::arg("dtype") = torch::Dtype(torch::kFloat64),                                          \
+  pybind11::arg("device") = torch::Device(torch::kCPU), pybind11::arg("requires_grad") = false
 
 namespace pybind11
 {
 namespace detail
 {
 /**
- * @brief This instantiation enables type conversion between Python object <--> torch::Dtype
+ * @brief This specialization enables type conversion between Python object <--> torch::Dtype
  */
 template <>
 struct type_caster<torch::Dtype>
@@ -78,6 +76,39 @@ public:
   cast(const torch::Dtype & src, return_value_policy /* policy */, handle /* parent */)
   {
     return handle(reinterpret_cast<PyObject *>(torch::getTHPDtype(src)));
+  }
+};
+
+/**
+ * @brief This specialization exposes SmallVector
+ */
+template <typename T>
+struct type_caster<c10::SmallVector<T>>
+{
+public:
+  PYBIND11_TYPE_CASTER(c10::SmallVector<T>, const_name("list"));
+
+  bool load(handle src, bool)
+  {
+    // if src is a tuple
+    if (isinstance<iterable>(src))
+    {
+      auto src_iterable = reinterpret_borrow<iterable>(src);
+      for (auto item : src_iterable)
+        value.push_back(item.cast<T>());
+      return true;
+    }
+
+    return false;
+  }
+
+  static handle
+  cast(const c10::SmallVector<T> & src, return_value_policy /* policy */, handle /* parent */)
+  {
+    list l;
+    for (const auto & val : src)
+      l.append(val);
+    return l;
   }
 };
 }
