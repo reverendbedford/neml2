@@ -5,6 +5,7 @@ var classneml2_1_1TransientDriver =
     [ "apply_ic", "classneml2_1_1TransientDriver.html#af685bbe85bec624e671b138b972b8e50", null ],
     [ "apply_predictor", "classneml2_1_1TransientDriver.html#a4e60c62b56859976b7a755b393a928b2", null ],
     [ "check_integrity", "classneml2_1_1TransientDriver.html#aa73805ac3f59361d0ac05c230a42abd3", null ],
+    [ "model", "classneml2_1_1TransientDriver.html#a13dfbdd8c00d5c134b09bf2ab3cfa1e5", null ],
     [ "output", "classneml2_1_1TransientDriver.html#ac54a71acc6f2347370c143fad2357914", null ],
     [ "result", "classneml2_1_1TransientDriver.html#a8fb659df7408566ded216ff17534a98f", null ],
     [ "run", "classneml2_1_1TransientDriver.html#a40b1b00ccc3ff2761b437cb38ad8f37d", null ],
@@ -25,8 +26,8 @@ var classneml2_1_1TransientDriver =
     [ "_in", "classneml2_1_1TransientDriver.html#abe0e4aaaee20e09a51c71a575acbfc15", null ],
     [ "_inference_mode", "classneml2_1_1TransientDriver.html#ad649acd75402f9345553a7bfb99fec41", null ],
     [ "_model", "classneml2_1_1TransientDriver.html#a182326ae4276f4f9d786dacdbdd2bedd", null ],
-    [ "_nbatch", "classneml2_1_1TransientDriver.html#ab751051b1545cd408cec6e352cf57486", null ],
-    [ "_nsteps", "classneml2_1_1TransientDriver.html#ac37b152a2b9c1cd33bafb2335d94efa0", null ],
+    [ "_nbatch", "classneml2_1_1TransientDriver.html#ac0075290e9758d05afd557dfabd77f61", null ],
+    [ "_nsteps", "classneml2_1_1TransientDriver.html#a325904b16457ae0b7a1233c206df9053", null ],
     [ "_out", "classneml2_1_1TransientDriver.html#ac3328c3cf4a59b53c6494dfaad963893", null ],
     [ "_predictor", "classneml2_1_1TransientDriver.html#ae1a75b5a1bd26c27adb7264573c94006", null ],
     [ "_result_in", "classneml2_1_1TransientDriver.html#a13e985ad52b47ea908d95dd37258d885", null ],
@@ -35,7 +36,7 @@ var classneml2_1_1TransientDriver =
     [ "_show_input", "classneml2_1_1TransientDriver.html#a14dbdb42cec7e51c2f4efa8f3d54cc2c", null ],
     [ "_show_output", "classneml2_1_1TransientDriver.html#a190b8fd6bb076c47c43954dba00ac0e2", null ],
     [ "_show_params", "classneml2_1_1TransientDriver.html#a45b45a797ec870f251d4ab6f79c7a5d4", null ],
-    [ "_step_count", "classneml2_1_1TransientDriver.html#adba24faa29ea657abdaf169cd62c34f6", null ],
+    [ "_step_count", "classneml2_1_1TransientDriver.html#aa26d401a9a8bf99a4b7f167c507aff08", null ],
     [ "_time", "classneml2_1_1TransientDriver.html#a4701496b1cdd58ec942f443ba5c5c637", null ],
     [ "_time_name", "classneml2_1_1TransientDriver.html#acb4a5d343fba8e4e8988d2a466cce094", null ]
 ];

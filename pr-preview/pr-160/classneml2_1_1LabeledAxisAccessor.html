@@ -136,8 +136,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1f77bf7bf555848fcb277b5a9010a670" id="r_a1f77bf7bf555848fcb277b5a9010a670"><td class="memTemplParams" colspan="2">template&lt;typename... S&gt; </td></tr>
 <tr class="memitem:a1f77bf7bf555848fcb277b5a9010a670"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a1f77bf7bf555848fcb277b5a9010a670">LabeledAxisAccessor</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;name, <a class="el" href="classneml2_1_1CrossRef.html">S</a> &amp;&amp;... <a class="el" href="classneml2_1_1CrossRef.html">names</a>)</td></tr>
 <tr class="separator:a1f77bf7bf555848fcb277b5a9010a670"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea5f092424d31fa9d947ba485455c7e7" id="r_aea5f092424d31fa9d947ba485455c7e7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aea5f092424d31fa9d947ba485455c7e7">LabeledAxisAccessor</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> std::vector&lt; std::string &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">names</a>)</td></tr>
-<tr class="separator:aea5f092424d31fa9d947ba485455c7e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab84ce45a20af07cb6895420fdfdcf3b1" id="r_ab84ce45a20af07cb6895420fdfdcf3b1"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a class="el" href="classneml2_1_1CrossRef.html">Container</a> , std::enable_if_t&lt;!std::is_convertible_v&lt; <a class="el" href="classneml2_1_1CrossRef.html">Container</a>, std::string &gt; &amp;&amp;std::is_convertible_v&lt; <a class="el" href="classneml2_1_1CrossRef.html">typename</a> std::iterator_traits&lt; <a class="el" href="classneml2_1_1CrossRef.html">decltype</a>(std::declval&lt; <a class="el" href="classneml2_1_1CrossRef.html">Container</a> &gt;().<a class="el" href="#ad69bd11391be1a1dba5c8202259664f8">begin</a>())&gt;::iterator_category, std::input_iterator_tag &gt; &amp;&amp;std::is_convertible_v&lt; <a class="el" href="classneml2_1_1CrossRef.html">typename</a> std::iterator_traits&lt; <a class="el" href="classneml2_1_1CrossRef.html">decltype</a>(std::declval&lt; <a class="el" href="classneml2_1_1CrossRef.html">Container</a> &gt;().<a class="el" href="#acad38d52497a975bfb6f2f6acd76631f">end</a>())&gt;::iterator_category , std::input_iterator_tag , <a class="el" href="classneml2_1_1CrossRef.html">int</a> &gt; </td></tr>
+<tr class="memitem:ab84ce45a20af07cb6895420fdfdcf3b1"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ab84ce45a20af07cb6895420fdfdcf3b1">LabeledAxisAccessor</a> (<a class="el" href="classneml2_1_1CrossRef.html">Container</a> &amp;&amp;<a class="el" href="classneml2_1_1CrossRef.html">c</a>)</td></tr>
+<tr class="separator:ab84ce45a20af07cb6895420fdfdcf3b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf0a89e382d859e41956cb2c4cac8157" id="r_aaf0a89e382d859e41956cb2c4cac8157"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaf0a89e382d859e41956cb2c4cac8157">LabeledAxisAccessor</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">other</a>)</td></tr>
 <tr class="separator:aaf0a89e382d859e41956cb2c4cac8157"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5f4be138a9b35c0d531410fa890aad8" id="r_ad5f4be138a9b35c0d531410fa890aad8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad5f4be138a9b35c0d531410fa890aad8">operator=</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">other</a>)</td></tr>
@@ -145,8 +146,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ad5f4be138a9b35c0d531410fa890aad8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6bf50c7d79229ef0af3202e38b42cc02" id="r_a6bf50c7d79229ef0af3202e38b42cc02"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6bf50c7d79229ef0af3202e38b42cc02">operator std::vector&lt; std::string &gt;</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
 <tr class="separator:a6bf50c7d79229ef0af3202e38b42cc02"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc295dadc7fc843715ab3867f4c1a5b0" id="r_afc295dadc7fc843715ab3867f4c1a5b0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::vector&lt; std::string &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afc295dadc7fc843715ab3867f4c1a5b0">vec</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
-<tr class="separator:afc295dadc7fc843715ab3867f4c1a5b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf530e2062ae5cc2a1064ab8a8e7708c" id="r_adf530e2062ae5cc2a1064ab8a8e7708c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> c10::SmallVector&lt; std::string &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adf530e2062ae5cc2a1064ab8a8e7708c">vec</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="separator:adf530e2062ae5cc2a1064ab8a8e7708c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a644718bb2fb240de962dc3c9a1fdf0dc" id="r_a644718bb2fb240de962dc3c9a1fdf0dc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a644718bb2fb240de962dc3c9a1fdf0dc">empty</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
 <tr class="separator:a644718bb2fb240de962dc3c9a1fdf0dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a259cb5a711406a8c3e5d937eb9350cca" id="r_a259cb5a711406a8c3e5d937eb9350cca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a259cb5a711406a8c3e5d937eb9350cca">size</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
@@ -169,7 +170,49 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a64779a9b4ce79c080898dcd85ddc4cee" id="r_a64779a9b4ce79c080898dcd85ddc4cee"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a64779a9b4ce79c080898dcd85ddc4cee">start_with</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a> &amp;axis) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
 <tr class="memdesc:a64779a9b4ce79c080898dcd85ddc4cee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if this accessor begins with another accessor.  <br /></td></tr>
 <tr class="separator:a64779a9b4ce79c080898dcd85ddc4cee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fb774c9a97dbe8771a3d8ced2ce77e7" id="r_a7fb774c9a97dbe8771a3d8ced2ce77e7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7fb774c9a97dbe8771a3d8ced2ce77e7">iterator</a> = c10::SmallVector&lt;std::string&gt;::iterator</td></tr>
+<tr class="separator:a7fb774c9a97dbe8771a3d8ced2ce77e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2fc8d7e242c9b5c203449904c8c9e914" id="r_a2fc8d7e242c9b5c203449904c8c9e914"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2fc8d7e242c9b5c203449904c8c9e914">const_iterator</a> = c10::SmallVector&lt;std::string&gt;::const_iterator</td></tr>
+<tr class="separator:a2fc8d7e242c9b5c203449904c8c9e914"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad69bd11391be1a1dba5c8202259664f8" id="r_ad69bd11391be1a1dba5c8202259664f8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a7fb774c9a97dbe8771a3d8ced2ce77e7">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad69bd11391be1a1dba5c8202259664f8">begin</a> ()</td></tr>
+<tr class="separator:ad69bd11391be1a1dba5c8202259664f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acad38d52497a975bfb6f2f6acd76631f" id="r_acad38d52497a975bfb6f2f6acd76631f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a7fb774c9a97dbe8771a3d8ced2ce77e7">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acad38d52497a975bfb6f2f6acd76631f">end</a> ()</td></tr>
+<tr class="separator:acad38d52497a975bfb6f2f6acd76631f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29305669b60ca1680752e2fc3592ba99" id="r_a29305669b60ca1680752e2fc3592ba99"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a2fc8d7e242c9b5c203449904c8c9e914">const_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a29305669b60ca1680752e2fc3592ba99">begin</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="separator:a29305669b60ca1680752e2fc3592ba99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accf9a4bd0c34d4a5f6a7dab66ea10cdc" id="r_accf9a4bd0c34d4a5f6a7dab66ea10cdc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a2fc8d7e242c9b5c203449904c8c9e914">const_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#accf9a4bd0c34d4a5f6a7dab66ea10cdc">end</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="separator:accf9a4bd0c34d4a5f6a7dab66ea10cdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="a2fc8d7e242c9b5c203449904c8c9e914" name="a2fc8d7e242c9b5c203449904c8c9e914"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2fc8d7e242c9b5c203449904c8c9e914">&#9670;&#160;</a></span>const_iterator</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">using</a> <a class="el" href="#a2fc8d7e242c9b5c203449904c8c9e914">const_iterator</a> = c10::SmallVector&lt;std::string&gt;::const_iterator</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7fb774c9a97dbe8771a3d8ced2ce77e7" name="a7fb774c9a97dbe8771a3d8ced2ce77e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7fb774c9a97dbe8771a3d8ced2ce77e7">&#9670;&#160;</a></span>iterator</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">using</a> <a class="el" href="#a7fb774c9a97dbe8771a3d8ced2ce77e7">iterator</a> = c10::SmallVector&lt;std::string&gt;::iterator</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Begin and end iterators to the underlying data. </p>
+
+</div>
+</div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ad2b3c93540dbf9dcbe9a76153246fb80" name="ad2b3c93540dbf9dcbe9a76153246fb80"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad2b3c93540dbf9dcbe9a76153246fb80">&#9670;&#160;</a></span>LabeledAxisAccessor() <span class="overload">[1/5]</span></h2>
@@ -258,19 +301,29 @@ template&lt;typename... S&gt; </div>
 
 </div>
 </div>
-<a id="aea5f092424d31fa9d947ba485455c7e7" name="aea5f092424d31fa9d947ba485455c7e7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aea5f092424d31fa9d947ba485455c7e7">&#9670;&#160;</a></span>LabeledAxisAccessor() <span class="overload">[4/5]</span></h2>
+<a id="ab84ce45a20af07cb6895420fdfdcf3b1" name="ab84ce45a20af07cb6895420fdfdcf3b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab84ce45a20af07cb6895420fdfdcf3b1">&#9670;&#160;</a></span>LabeledAxisAccessor() <span class="overload">[4/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a class="el" href="classneml2_1_1CrossRef.html">Container</a> , std::enable_if_t&lt;!std::is_convertible_v&lt; <a class="el" href="classneml2_1_1CrossRef.html">Container</a>, std::string &gt; &amp;&amp;std::is_convertible_v&lt; <a class="el" href="classneml2_1_1CrossRef.html">typename</a> std::iterator_traits&lt; <a class="el" href="classneml2_1_1CrossRef.html">decltype</a>(std::declval&lt; <a class="el" href="classneml2_1_1CrossRef.html">Container</a> &gt;().<a class="el" href="#ad69bd11391be1a1dba5c8202259664f8">begin</a>())&gt;::iterator_category, std::input_iterator_tag &gt; &amp;&amp;std::is_convertible_v&lt; <a class="el" href="classneml2_1_1CrossRef.html">typename</a> std::iterator_traits&lt; <a class="el" href="classneml2_1_1CrossRef.html">decltype</a>(std::declval&lt; <a class="el" href="classneml2_1_1CrossRef.html">Container</a> &gt;().<a class="el" href="#acad38d52497a975bfb6f2f6acd76631f">end</a>())&gt;::iterator_category , std::input_iterator_tag , <a class="el" href="classneml2_1_1CrossRef.html">int</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a> </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::vector&lt; std::string &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>names</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">Container</a> &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>c</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -312,6 +365,56 @@ template&lt;typename... S&gt; </div>
 
 </div>
 </div>
+<a id="ad69bd11391be1a1dba5c8202259664f8" name="ad69bd11391be1a1dba5c8202259664f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad69bd11391be1a1dba5c8202259664f8">&#9670;&#160;</a></span>begin() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#a7fb774c9a97dbe8771a3d8ced2ce77e7">iterator</a> begin </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a29305669b60ca1680752e2fc3592ba99" name="a29305669b60ca1680752e2fc3592ba99"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a29305669b60ca1680752e2fc3592ba99">&#9670;&#160;</a></span>begin() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#a2fc8d7e242c9b5c203449904c8c9e914">const_iterator</a> begin </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a644718bb2fb240de962dc3c9a1fdf0dc" name="a644718bb2fb240de962dc3c9a1fdf0dc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a644718bb2fb240de962dc3c9a1fdf0dc">&#9670;&#160;</a></span>empty()</h2>
 
@@ -325,6 +428,56 @@ template&lt;typename... S&gt; </div>
           <td> const</td>
         </tr>
       </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="acad38d52497a975bfb6f2f6acd76631f" name="acad38d52497a975bfb6f2f6acd76631f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acad38d52497a975bfb6f2f6acd76631f">&#9670;&#160;</a></span>end() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#a7fb774c9a97dbe8771a3d8ced2ce77e7">iterator</a> end </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="accf9a4bd0c34d4a5f6a7dab66ea10cdc" name="accf9a4bd0c34d4a5f6a7dab66ea10cdc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#accf9a4bd0c34d4a5f6a7dab66ea10cdc">&#9670;&#160;</a></span>end() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#a2fc8d7e242c9b5c203449904c8c9e914">const_iterator</a> end </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -353,6 +506,9 @@ template&lt;typename... S&gt; </div>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">operator</a> std::vector&lt; std::string &gt; </td>
@@ -361,6 +517,11 @@ template&lt;typename... S&gt; </div>
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -462,8 +623,8 @@ template&lt;typename... S&gt; </div>
 
 </div>
 </div>
-<a id="afc295dadc7fc843715ab3867f4c1a5b0" name="afc295dadc7fc843715ab3867f4c1a5b0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afc295dadc7fc843715ab3867f4c1a5b0">&#9670;&#160;</a></span>vec()</h2>
+<a id="adf530e2062ae5cc2a1064ab8a8e7708c" name="adf530e2062ae5cc2a1064ab8a8e7708c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf530e2062ae5cc2a1064ab8a8e7708c">&#9670;&#160;</a></span>vec()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -472,7 +633,7 @@ template&lt;typename... S&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::vector&lt; std::string &gt; &amp; vec </td>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">const</a> c10::SmallVector&lt; std::string &gt; &amp; vec </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td> const</td>

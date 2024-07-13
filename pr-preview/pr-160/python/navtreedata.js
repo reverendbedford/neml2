@@ -65,17 +65,17 @@ var NAVTREEINDEX =
 [
 "../annotated.html",
 "classtensors_1_1MillerIndex.html#a783fedd3223f7a4a051c00b22a8b3016",
-"classtensors_1_1QuaternionBatchView.html#ad00a122e27dc4f135cf2328073c80060",
-"classtensors_1_1R3BatchView.html#a1b5ff9a60ec535ac3fe73f02a421e0f0",
-"classtensors_1_1R5BaseView.html#a7192f84ef4bc5b782f647cd49711866f",
+"classtensors_1_1QuaternionBatchView.html#ad9f4bce894e0267718c27bce7e305b96",
+"classtensors_1_1R3BatchView.html#a291cf91b893b7bf50a66d4a6702149e7",
+"classtensors_1_1R5BaseView.html#a9a74d70993ac53bc0355d7a0815bdc90",
 "classtensors_1_1SFFR4.html#a6c473406fb744d689106b5c22955b8e0",
-"classtensors_1_1SFR3BatchView.html#acca1e87e47f8481d95c9d91c565592c0",
-"classtensors_1_1SSFR5BatchView.html#a2c51b76aa4c970a721ff560d3af20b2e",
-"classtensors_1_1SWR4BaseView.html#a8b32100376613f61de57197ecde60890",
+"classtensors_1_1SFR3BatchView.html#add7da0f38f113433ec80ac5a444f303b",
+"classtensors_1_1SSFR5BatchView.html#a35536134a6ceb1e866faf188992e9c9f",
+"classtensors_1_1SWR4BaseView.html#ab90770428b710db17ccb9c7c9ff2c335",
 "classtensors_1_1Scalar.html#abc1b785959b47505de72feabab160402",
-"classtensors_1_1VecBaseView.html#a35536134a6ceb1e866faf188992e9c9f",
+"classtensors_1_1VecBaseView.html#a57e05344ef710a689745263ebb6db1e2",
 "classtensors_1_1WSR4.html#a4f23ac09ae87619a0f06e9b932a84ecd",
-"classtensors_1_1WWR4BatchView.html#a8b32100376613f61de57197ecde60890"
+"classtensors_1_1WWR4BatchView.html#ab5cf2f1baa55950f080ba85ad93f38cb"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

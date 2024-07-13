@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['yaml_0',['YAML',['../namespaceneml2.html#a4c55c16d7c784070b26231f015e33a10a8f9162aeb03d4b4053825f71ecb6cdcc',1,'neml2']]]
+  ['updating_0',['UPDATING',['../classneml2_1_1Model.html#aca8133200c1122e29b87b314d82604ebac10be9b18b215c436b592c0834af413e',1,'neml2::Model']]]
 ];

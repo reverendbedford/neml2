@@ -142,32 +142,32 @@ Loading a model from an input file</h1>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">main</a>() {</div>
 <div class="line">  load_model(<span class="stringliteral">&quot;input.i&quot;</span>);</div>
-<div class="line">  <span class="keyword">auto</span> &amp; <a class="code hl_class" href="classneml2_1_1CrossRef.html">model</a> = get_model(<span class="stringliteral">&quot;model&quot;</span>);</div>
+<div class="line">  <span class="keyword">auto</span> &amp; model = get_model(<span class="stringliteral">&quot;model&quot;</span>);</div>
 <div class="line"> </div>
 <div class="line">  <span class="comment">// ...</span></div>
 <div class="line"> </div>
 <div class="line">  <span class="keywordflow">return</span> 0;</div>
 <div class="line">}</div>
-<div class="ttc" id="aclassneml2_1_1CrossRef_html"><div class="ttname"><a href="classneml2_1_1CrossRef.html">neml2::CrossRef</a></div><div class="ttdoc">The wrapper (decorator) for cross-referencing unresolved values at parse time.</div><div class="ttdef"><b>Definition</b> CrossRef.h:52</div></div>
-<div class="ttc" id="anamespaceneml2_html"><div class="ttname"><a href="namespaceneml2.html">neml2</a></div><div class="ttdef"><b>Definition</b> CrossRef.cxx:32</div></div>
+<div class="ttc" id="aclassneml2_1_1CrossRef_html"><div class="ttname"><a href="classneml2_1_1CrossRef.html">neml2::CrossRef</a></div><div class="ttdoc">The wrapper (decorator) for cross-referencing unresolved values at parse time.</div><div class="ttdef"><b>Definition</b> CrossRef.h:53</div></div>
+<div class="ttc" id="anamespaceneml2_html"><div class="ttname"><a href="namespaceneml2.html">neml2</a></div><div class="ttdef"><b>Definition</b> CrossRef.cxx:30</div></div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md35"></a>
 Evaluate the model</h1>
 <p>Suppose we want to perform 3 material updates simultaneously, the model should be initialized using the <a class="el" href="classneml2_1_1Model.html#a5bab3d9c679eacfb84cabd392b427b70" title="Allocate storage and setup views for all the variables of this model and recursively all of the sub-m...">neml2::Model::reinit</a> method with the correct batch shape (refer to the <a class="el" href="system-tensors.html">tensor system documentation</a> for more detailed explanation on the term "batch"):</p>
-<div class="fragment"><div class="line"><a class="code hl_class" href="classneml2_1_1CrossRef.html">model</a>.reinit({3});</div>
+<div class="fragment"><div class="line">model.reinit({3});</div>
 </div><!-- fragment --><p>Finally, the following code constructs the 3 input strains <code>in</code> and performs 3 material updates <em>simultaneously</em>. Output stresses are stored in the tensor <code>out</code>.</p>
-<div class="fragment"><div class="line"><span class="keyword">auto</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">in</a> = LabeledVector::empty({3}, {<a class="code hl_class" href="classneml2_1_1CrossRef.html">model</a>.input_axis()});</div>
+<div class="fragment"><div class="line"><span class="keyword">auto</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">in</a> = LabeledVector::empty({3}, {model.input_axis()});</div>
 <div class="line"> </div>
 <div class="line"><a class="code hl_class" href="classneml2_1_1CrossRef.html">in</a>.batch_index_put({0}, SR2::fill(0.1, 0.2, 0.3, -0.1, -0.1, 0.2));</div>
 <div class="line"><a class="code hl_class" href="classneml2_1_1CrossRef.html">in</a>.batch_index_put({1}, SR2::fill(0.2, 0.2, 0.1, -0.1, -0.2, -0.5));</div>
 <div class="line"><a class="code hl_class" href="classneml2_1_1CrossRef.html">in</a>.batch_index_put({2}, SR2::fill(0.3, -0.2, 0.05, -0.1, -0.3, 0.1));</div>
 <div class="line"> </div>
-<div class="line"><span class="keyword">auto</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">out</a> = <a class="code hl_class" href="classneml2_1_1CrossRef.html">model</a>.value(<a class="code hl_class" href="classneml2_1_1CrossRef.html">in</a>);</div>
+<div class="line"><span class="keyword">auto</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">out</a> = model.value(<a class="code hl_class" href="classneml2_1_1CrossRef.html">in</a>);</div>
 </div><!-- fragment --><h1><a class="anchor" id="inference-mode"></a>
 Inference Mode</h1>
 <p>By default, inference mode is disabled. During every model evaluation, variables are re-allocated, and variable views are reconfigured. This default behavior avoids in-place operations and is mandatory to use PyTorch automatic differentiation (AD) (i.e. for parameter gradient or AD forward operator).</p>
 <p>The default behavior is flexible. However, if PyTorch AD is not needed, i.e., once the model is fully calibrated, the variable reallocation and view reconfiguration can be skipped. The inference mode is designed for that purpose.</p>
 <p>When inference mode is activated, no function graph is built, tensor version numbers are not incremented, and the variables and variable views are setup once and for all, all of which speed up evaluation. See <a href="https://pytorch.org/cppdocs/notes/inference_mode.html">https://pytorch.org/cppdocs/notes/inference_mode.html</a> for more details.</p>
-<p>To enable inference mode, use the optional second argument passed to <code><a class="el" href="namespaceneml2.html#ac3b81673a16c8a5de7e361a938aa89ae" title="A convenient function to manufacture a neml2::Model.">neml2::get_model</a></code>, i.e. </p><div class="fragment"><div class="line"><span class="keyword">auto</span> &amp; <a class="code hl_class" href="classneml2_1_1CrossRef.html">model</a> = get_model(<span class="stringliteral">&quot;model&quot;</span>, <span class="comment">/*inference_mode=*/</span><span class="keyword">true</span>);</div>
+<p>To enable inference mode, use the optional second argument passed to <code><a class="el" href="namespaceneml2.html#ac3b81673a16c8a5de7e361a938aa89ae" title="A convenient function to manufacture a neml2::Model.">neml2::get_model</a></code>, i.e. </p><div class="fragment"><div class="line"><span class="keyword">auto</span> &amp; model = get_model(<span class="stringliteral">&quot;model&quot;</span>, <span class="comment">/*inference_mode=*/</span><span class="keyword">true</span>);</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

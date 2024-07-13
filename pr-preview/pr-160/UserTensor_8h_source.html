@@ -146,24 +146,29 @@ $(function(){initNavTree('UserTensor_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#include &quot;neml2/base/Registry.h&quot;</span></div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#include &quot;neml2/base/NEML2Object.h&quot;</span></div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceneml2.html">neml2</a></div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>{</div>
-<div class="foldopen" id="foldopen00032" data-start="{" data-end="};">
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="classneml2_1_1UserTensor.html">   32</a></span><span class="keyword">class </span><a class="code hl_class" href="classneml2_1_1UserTensor.html">UserTensor</a> : <span class="keyword">public</span> <a class="code hl_class" href="classneml2_1_1NEML2Object.html">NEML2Object</a></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>{</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="keyword">static</span> <a class="code hl_class" href="classneml2_1_1OptionSet.html">OptionSet</a> <a class="code hl_function" href="classneml2_1_1UserTensor.html#acec712ff48d4c0884a1362c116f3257a">expected_options</a>();</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <a class="code hl_function" href="classneml2_1_1UserTensor.html#ac27d8038fae54e7c02124de047364114">UserTensor</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1OptionSet.html">OptionSet</a> &amp; options);</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>};</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment">// The following are not directly used by UserTensor itself.</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">// We put them here so that derived classes can add expected options of these types.</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="preprocessor">#include &quot;neml2/base/CrossRef.h&quot;</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="preprocessor">#include &quot;neml2/base/EnumSelection.h&quot;</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceneml2.html">neml2</a></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>{</div>
+<div class="foldopen" id="foldopen00037" data-start="{" data-end="};">
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="classneml2_1_1UserTensor.html">   37</a></span><span class="keyword">class </span><a class="code hl_class" href="classneml2_1_1UserTensor.html">UserTensor</a> : <span class="keyword">public</span> <a class="code hl_class" href="classneml2_1_1NEML2Object.html">NEML2Object</a></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>{</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keyword">static</span> <a class="code hl_class" href="classneml2_1_1OptionSet.html">OptionSet</a> <a class="code hl_function" href="classneml2_1_1UserTensor.html#acec712ff48d4c0884a1362c116f3257a">expected_options</a>();</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <a class="code hl_function" href="classneml2_1_1UserTensor.html#ac27d8038fae54e7c02124de047364114">UserTensor</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1OptionSet.html">OptionSet</a> &amp; options);</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>};</div>
 </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>} <span class="comment">// namespace neml2</span></div>
-<div class="ttc" id="aclassneml2_1_1NEML2Object_html"><div class="ttname"><a href="classneml2_1_1NEML2Object.html">neml2::NEML2Object</a></div><div class="ttdoc">The base class of all &quot;manufacturable&quot; objects in the NEML2 library.</div><div class="ttdef"><b>Definition</b> NEML2Object.h:39</div></div>
-<div class="ttc" id="aclassneml2_1_1OptionSet_html"><div class="ttname"><a href="classneml2_1_1OptionSet.html">neml2::OptionSet</a></div><div class="ttdoc">A custom map-like data structure. The keys are strings, and the values can be nonhomogeneously typed.</div><div class="ttdef"><b>Definition</b> OptionSet.h:64</div></div>
-<div class="ttc" id="aclassneml2_1_1UserTensor_html"><div class="ttname"><a href="classneml2_1_1UserTensor.html">neml2::UserTensor</a></div><div class="ttdef"><b>Definition</b> UserTensor.h:33</div></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>} <span class="comment">// namespace neml2</span></div>
+<div class="ttc" id="aclassneml2_1_1NEML2Object_html"><div class="ttname"><a href="classneml2_1_1NEML2Object.html">neml2::NEML2Object</a></div><div class="ttdoc">The base class of all &quot;manufacturable&quot; objects in the NEML2 library.</div><div class="ttdef"><b>Definition</b> NEML2Object.h:38</div></div>
+<div class="ttc" id="aclassneml2_1_1OptionSet_html"><div class="ttname"><a href="classneml2_1_1OptionSet.html">neml2::OptionSet</a></div><div class="ttdoc">A custom map-like data structure. The keys are strings, and the values can be nonhomogeneously typed.</div><div class="ttdef"><b>Definition</b> OptionSet.h:62</div></div>
+<div class="ttc" id="aclassneml2_1_1UserTensor_html"><div class="ttname"><a href="classneml2_1_1UserTensor.html">neml2::UserTensor</a></div><div class="ttdef"><b>Definition</b> UserTensor.h:38</div></div>
 <div class="ttc" id="aclassneml2_1_1UserTensor_html_ac27d8038fae54e7c02124de047364114"><div class="ttname"><a href="classneml2_1_1UserTensor.html#ac27d8038fae54e7c02124de047364114">neml2::UserTensor::UserTensor</a></div><div class="ttdeci">UserTensor(const OptionSet &amp;options)</div><div class="ttdef"><b>Definition</b> UserTensor.cxx:37</div></div>
 <div class="ttc" id="aclassneml2_1_1UserTensor_html_acec712ff48d4c0884a1362c116f3257a"><div class="ttname"><a href="classneml2_1_1UserTensor.html#acec712ff48d4c0884a1362c116f3257a">neml2::UserTensor::expected_options</a></div><div class="ttdeci">static OptionSet expected_options()</div><div class="ttdef"><b>Definition</b> UserTensor.cxx:30</div></div>
-<div class="ttc" id="anamespaceneml2_html"><div class="ttname"><a href="namespaceneml2.html">neml2</a></div><div class="ttdef"><b>Definition</b> CrossRef.cxx:32</div></div>
+<div class="ttc" id="anamespaceneml2_html"><div class="ttname"><a href="namespaceneml2.html">neml2</a></div><div class="ttdef"><b>Definition</b> CrossRef.cxx:30</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

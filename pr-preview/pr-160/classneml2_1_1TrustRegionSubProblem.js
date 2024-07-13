@@ -5,6 +5,6 @@ var classneml2_1_1TrustRegionSubProblem =
     [ "preconditioned_direction", "classneml2_1_1TrustRegionSubProblem.html#af80c39630f8279703f3766a8c55354e6", null ],
     [ "preconditioned_solve", "classneml2_1_1TrustRegionSubProblem.html#a48946e285cd8dcdd755f1924ce7fc3a4", null ],
     [ "reinit", "classneml2_1_1TrustRegionSubProblem.html#ac480a7f7a0914353179592c055bda38a", null ],
-    [ "_batch_sizes", "classneml2_1_1TrustRegionSubProblem.html#a8f5979a053c52a6bd1fb79183277f9da", null ],
+    [ "_batch_sizes", "classneml2_1_1TrustRegionSubProblem.html#a4e8f0f7edd364690725346a90949b79c", null ],
     [ "_options", "classneml2_1_1TrustRegionSubProblem.html#a198c57309f26cd3689c319ff67b3275a", null ]
 ];

@@ -9,13 +9,13 @@ var searchData=
   ['a3_6',['a3',['../classneml2_1_1crystallography_1_1CrystalGeometry.html#aa7b95df30a89dea7395524d959e4996d',1,'neml2::crystallography::CrystalGeometry']]],
   ['abs_7',['abs',['../namespaceneml2.html#afc4c434218699646c0011c0467b2e139',1,'neml2::abs()'],['../namespaceneml2_1_1math.html#abc681c094e1880e4f903e949d55031f5',1,'neml2::math::abs()']]],
   ['accumulate_8',['accumulate',['../classneml2_1_1LabeledMatrix.html#a9b47b9ffafe9d87002427c2d1f3e5187',1,'neml2::LabeledMatrix::accumulate()'],['../classneml2_1_1LabeledTensor3D.html#a07ff7a03515fb4e28083e641d1c9c4e9',1,'neml2::LabeledTensor3D::accumulate()'],['../classneml2_1_1LabeledVector.html#a297c44a87542517d5a70be7904c260d2',1,'neml2::LabeledVector::accumulate()']]],
-  ['add_9',['add',['../classneml2_1_1Registry.html#ad927078002bbca4fa72367b964ca2c51',1,'neml2::Registry::add()'],['../classneml2_1_1LabeledAxis.html#a257adabc944ee6a8e01450df49107462',1,'neml2::LabeledAxis::add(const LabeledAxisAccessor &amp;accessor)'],['../classneml2_1_1LabeledAxis.html#a48e5454cb82c84f69c338654eb0d7cd0',1,'neml2::LabeledAxis::add(const LabeledAxisAccessor &amp;accessor, TorchSize sz)']]],
+  ['add_9',['add',['../classneml2_1_1Registry.html#ad927078002bbca4fa72367b964ca2c51',1,'neml2::Registry::add()'],['../classneml2_1_1LabeledAxis.html#a257adabc944ee6a8e01450df49107462',1,'neml2::LabeledAxis::add(const LabeledAxisAccessor &amp;accessor)'],['../classneml2_1_1LabeledAxis.html#afa520f3d71904cf1717b90343d9023f8',1,'neml2::LabeledAxis::add(const LabeledAxisAccessor &amp;accessor, Size sz)']]],
   ['add_5fadditional_5foutbound_5fitem_10',['add_additional_outbound_item',['../classneml2_1_1DependencyResolver.html#a4224c5895e0b6e80da6234b4e91678fd',1,'neml2::DependencyResolver']]],
   ['add_5fnode_11',['add_node',['../classneml2_1_1DependencyResolver.html#acb0aa5aef7ca2b96310dd488f657c7b1',1,'neml2::DependencyResolver']]],
-  ['add_5fshapes_12',['add_shapes',['../namespaceneml2_1_1utils.html#aeba9d8ef56230127d6358172e7a7bf51',1,'neml2::utils']]],
+  ['add_5fshapes_12',['add_shapes',['../namespaceneml2_1_1utils.html#a39eba50b2ce9eee228416c8ab4da7480',1,'neml2::utils']]],
   ['advance_5fstep_13',['advance_step',['../classneml2_1_1TransientDriver.html#a11ffdacce9a30259ed9a8575c223c536',1,'neml2::TransientDriver']]],
   ['allclose_14',['allclose',['../namespaceneml2_1_1utils.html#a46b181f9028f2c615ea51aa580a33f9e',1,'neml2::utils']]],
-  ['allocate_5fvariables_15',['allocate_variables',['../classneml2_1_1ComposedModel.html#a57f6185364b24edc2e376c9fc0693e05',1,'neml2::ComposedModel::allocate_variables()'],['../classneml2_1_1Model.html#acbfa6a53c3c8f83c47a47c5722ebbb27',1,'neml2::Model::allocate_variables()'],['../classneml2_1_1VariableStore.html#a9847128872c6c0688ed9b79860bd99a0',1,'neml2::VariableStore::allocate_variables()'],['../classneml2_1_1Model.html#a9847128872c6c0688ed9b79860bd99a0',1,'neml2::Model::allocate_variables()']]],
+  ['allocate_5fvariables_15',['allocate_variables',['../classneml2_1_1ComposedModel.html#a57f6185364b24edc2e376c9fc0693e05',1,'neml2::ComposedModel::allocate_variables()'],['../classneml2_1_1Model.html#acbfa6a53c3c8f83c47a47c5722ebbb27',1,'neml2::Model::allocate_variables()'],['../classneml2_1_1VariableStore.html#a7dc095de073b164ed8262cac2aa0f632',1,'neml2::VariableStore::allocate_variables()'],['../classneml2_1_1Model.html#a7dc095de073b164ed8262cac2aa0f632',1,'neml2::Model::allocate_variables()']]],
   ['an_20input_20file_16',['Loading a model from an input file',['../cpp-backend.html#autotoc_md34',1,'']]],
   ['and_20design_20philosophy_17',['Features and design philosophy',['../index.html#autotoc_md3',1,'']]],
   ['and_20install_18',['Build and install',['../install.html#autotoc_md11',1,'']]],
@@ -38,8 +38,8 @@ var searchData=
   ['automatic_20input_20output_20identification_35',['Automatic input/output identification',['../system-models.html#automatic-input-output-identification',1,'']]],
   ['automatic_20scaling_36',['Automatic scaling',['../system-solvers.html#autotoc_md33',1,'']]],
   ['available_20objects_20and_20their_20input_20file_20syntax_37',['Available objects and their input file syntax',['../syntax-data.html#autotoc_md37',1,'Available objects and their input file syntax'],['../syntax-drivers.html#autotoc_md38',1,'Available objects and their input file syntax'],['../syntax-models.html#autotoc_md39',1,'Available objects and their input file syntax'],['../syntax-settings.html#autotoc_md40',1,'Available objects and their input file syntax'],['../syntax-solvers.html#autotoc_md41',1,'Available objects and their input file syntax'],['../syntax-tensors.html#autotoc_md42',1,'Available objects and their input file syntax']]],
-  ['axes_38',['axes',['../classneml2_1_1LabeledTensor.html#add3c03ff32fe93768e4d810705192fa1',1,'neml2::LabeledTensor']]],
-  ['axis_39',['axis',['../classneml2_1_1LabeledTensor.html#a0bd747691aec73be54c127e6299964ed',1,'neml2::LabeledTensor']]],
+  ['axes_38',['axes',['../classneml2_1_1LabeledTensor.html#afec8dac6ca9571d6393480a14f80b5e6',1,'neml2::LabeledTensor']]],
+  ['axis_39',['axis',['../classneml2_1_1LabeledTensor.html#a8dde6c6807f7190d271b655fe0264b61',1,'neml2::LabeledTensor']]],
   ['axis_20names_40',['Reserved axis names',['../naming-conventions.html#autotoc_md4',1,'']]],
-  ['axislayout_41',['AxisLayout',['../classneml2_1_1LabeledAxis.html#a6a3889f33182f7d18f6ee37cb2f72f69',1,'neml2::LabeledAxis']]]
+  ['axislayout_41',['AxisLayout',['../classneml2_1_1LabeledAxis.html#a82bb7025bc87136e212fcec7b5d3d157',1,'neml2::LabeledAxis']]]
 ];

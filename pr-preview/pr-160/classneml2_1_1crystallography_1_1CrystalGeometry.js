@@ -13,10 +13,10 @@ var classneml2_1_1crystallography_1_1CrystalGeometry =
     [ "cartesian_slip_directions", "classneml2_1_1crystallography_1_1CrystalGeometry.html#a36bd73f4c085e0bb5a0a8695405dff24", null ],
     [ "cartesian_slip_planes", "classneml2_1_1crystallography_1_1CrystalGeometry.html#a79c8c336f66cfb1d4a9fe68443ce3b73", null ],
     [ "M", "classneml2_1_1crystallography_1_1CrystalGeometry.html#a535a6b43fbd97119ba65e2136045e867", null ],
-    [ "nslip", "classneml2_1_1crystallography_1_1CrystalGeometry.html#ac358b558425514cb1527fde819fe67b6", null ],
-    [ "nslip_groups", "classneml2_1_1crystallography_1_1CrystalGeometry.html#abe038ce79775279a4d1c3344163e5c00", null ],
-    [ "nslip_in_group", "classneml2_1_1crystallography_1_1CrystalGeometry.html#afde6049d693b2896b101c9d52fba9ec8", null ],
-    [ "slip_slice", "classneml2_1_1crystallography_1_1CrystalGeometry.html#a664c1c7f4cbfced1ed25ef569d7b6751", null ],
+    [ "nslip", "classneml2_1_1crystallography_1_1CrystalGeometry.html#aa63e379f76e36296fce9dfe991eceba8", null ],
+    [ "nslip_groups", "classneml2_1_1crystallography_1_1CrystalGeometry.html#ab720de7f1de5b40b20d7bcc67a8fbf25", null ],
+    [ "nslip_in_group", "classneml2_1_1crystallography_1_1CrystalGeometry.html#aaacc7ffad04337bcf7fff32c8648caba", null ],
+    [ "slip_slice", "classneml2_1_1crystallography_1_1CrystalGeometry.html#a96383147b0a3d94c004571324103d066", null ],
     [ "symmetry_operators", "classneml2_1_1crystallography_1_1CrystalGeometry.html#a27ddce5eba41756e60524054f224bdc3", null ],
     [ "W", "classneml2_1_1crystallography_1_1CrystalGeometry.html#a513ecb69529b1e45d7927050805ea4fc", null ]
 ];

@@ -126,7 +126,7 @@ $(function(){initNavTree('classneml2_1_1LabeledAxis.html',''); initResizable(); 
 <p>All the <a class="el" href="classneml2_1_1LabeledAxis.html" title="A labeled axis used to associate layout of a tensor with human-interpretable names.">LabeledAxis</a> modifiers can only be used during the setup stage. Calling any modifiers after the setup stage is forbidden and will result in a runtime error in Debug mode.</p>
 <p>All the modifiers return the modified <a class="el" href="classneml2_1_1LabeledAxis.html" title="A labeled axis used to associate layout of a tensor with human-interpretable names.">LabeledAxis</a> by reference, so modifiers can be chained. For example </p><div class="fragment"><div class="line"><a class="code hl_class" href="classneml2_1_1LabeledAxis.html">LabeledAxis</a> <a class="code hl_class" href="classneml2_1_1CrossRef.html">labels</a> = <a class="code hl_class" href="classneml2_1_1CrossRef.html">input</a>().clone();</div>
 <div class="line"><a class="code hl_class" href="classneml2_1_1CrossRef.html">labels</a>.add&lt;<a class="code hl_class" href="classneml2_1_1SR2.html">SR2</a>&gt;(<span class="stringliteral">&quot;stress&quot;</span>).<a class="code hl_function" href="#a121129a48ae8bc9c81d0dece542dab76">rename</a>(<span class="stringliteral">&quot;stress&quot;</span>, <span class="stringliteral">&quot;stress1&quot;</span>).<a class="code hl_function" href="#a3f4fd45fc0bb729ed1426774e4fa88fa">remove</a>(<span class="stringliteral">&quot;stress1&quot;</span>);</div>
-<div class="ttc" id="aclassneml2_1_1CrossRef_html"><div class="ttname"><a href="classneml2_1_1CrossRef.html">neml2::CrossRef</a></div><div class="ttdoc">The wrapper (decorator) for cross-referencing unresolved values at parse time.</div><div class="ttdef"><b>Definition</b> CrossRef.h:52</div></div>
+<div class="ttc" id="aclassneml2_1_1CrossRef_html"><div class="ttname"><a href="classneml2_1_1CrossRef.html">neml2::CrossRef</a></div><div class="ttdoc">The wrapper (decorator) for cross-referencing unresolved values at parse time.</div><div class="ttdef"><b>Definition</b> CrossRef.h:53</div></div>
 <div class="ttc" id="aclassneml2_1_1LabeledAxis_html"><div class="ttname"><a href="classneml2_1_1LabeledAxis.html">neml2::LabeledAxis</a></div><div class="ttdoc">A labeled axis used to associate layout of a tensor with human-interpretable names.</div><div class="ttdef"><b>Definition</b> LabeledAxis.h:55</div></div>
 <div class="ttc" id="aclassneml2_1_1LabeledAxis_html_a121129a48ae8bc9c81d0dece542dab76"><div class="ttname"><a href="#a121129a48ae8bc9c81d0dece542dab76">neml2::LabeledAxis::rename</a></div><div class="ttdeci">LabeledAxis &amp; rename(const std::string &amp;original, const std::string &amp;rename)</div><div class="ttdoc">Change the label of an item.</div><div class="ttdef"><b>Definition</b> LabeledAxis.cxx:68</div></div>
 <div class="ttc" id="aclassneml2_1_1LabeledAxis_html_a3f4fd45fc0bb729ed1426774e4fa88fa"><div class="ttname"><a href="#a3f4fd45fc0bb729ed1426774e4fa88fa">neml2::LabeledAxis::remove</a></div><div class="ttdeci">LabeledAxis &amp; remove(const std::string &amp;name)</div><div class="ttdoc">Remove an item.</div><div class="ttdef"><b>Definition</b> LabeledAxis.cxx:94</div></div>
@@ -136,8 +136,8 @@ $(function(){initNavTree('classneml2_1_1LabeledAxis.html',''); initResizable(); 
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a6a3889f33182f7d18f6ee37cb2f72f69" id="r_a6a3889f33182f7d18f6ee37cb2f72f69"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">typedef</a> std::unordered_map&lt; std::string, std::pair&lt; <a class="el" href="namespaceneml2.html#a187b9ad91502db8b71f01d5a6da028c6">TorchSize</a>, <a class="el" href="namespaceneml2.html#a187b9ad91502db8b71f01d5a6da028c6">TorchSize</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6a3889f33182f7d18f6ee37cb2f72f69">AxisLayout</a></td></tr>
-<tr class="separator:a6a3889f33182f7d18f6ee37cb2f72f69"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82bb7025bc87136e212fcec7b5d3d157" id="r_a82bb7025bc87136e212fcec7b5d3d157"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">typedef</a> std::unordered_map&lt; std::string, std::pair&lt; <a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a>, <a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a82bb7025bc87136e212fcec7b5d3d157">AxisLayout</a></td></tr>
+<tr class="separator:a82bb7025bc87136e212fcec7b5d3d157"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -151,9 +151,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a257adabc944ee6a8e01450df49107462"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1LabeledAxis.html">LabeledAxis</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a257adabc944ee6a8e01450df49107462">add</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">accessor</a>)</td></tr>
 <tr class="memdesc:a257adabc944ee6a8e01450df49107462"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a variable or subaxis.  <br /></td></tr>
 <tr class="separator:a257adabc944ee6a8e01450df49107462"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48e5454cb82c84f69c338654eb0d7cd0" id="r_a48e5454cb82c84f69c338654eb0d7cd0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1LabeledAxis.html">LabeledAxis</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a48e5454cb82c84f69c338654eb0d7cd0">add</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">accessor</a>, <a class="el" href="namespaceneml2.html#a187b9ad91502db8b71f01d5a6da028c6">TorchSize</a> <a class="el" href="classneml2_1_1CrossRef.html">sz</a>)</td></tr>
-<tr class="memdesc:a48e5454cb82c84f69c338654eb0d7cd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add an arbitrary variable using a <code><a class="el" href="classneml2_1_1LabeledAxisAccessor.html" title="The accessor containing all the information needed to access an item in a LabeledAxis.">LabeledAxisAccessor</a></code>  <br /></td></tr>
-<tr class="separator:a48e5454cb82c84f69c338654eb0d7cd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa520f3d71904cf1717b90343d9023f8" id="r_afa520f3d71904cf1717b90343d9023f8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1LabeledAxis.html">LabeledAxis</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afa520f3d71904cf1717b90343d9023f8">add</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">accessor</a>, <a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a> <a class="el" href="classneml2_1_1CrossRef.html">sz</a>)</td></tr>
+<tr class="memdesc:afa520f3d71904cf1717b90343d9023f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add an arbitrary variable using a <code><a class="el" href="classneml2_1_1LabeledAxisAccessor.html" title="The accessor containing all the information needed to access an item in a LabeledAxis.">LabeledAxisAccessor</a></code>  <br /></td></tr>
+<tr class="separator:afa520f3d71904cf1717b90343d9023f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a121129a48ae8bc9c81d0dece542dab76" id="r_a121129a48ae8bc9c81d0dece542dab76"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1LabeledAxis.html">LabeledAxis</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a121129a48ae8bc9c81d0dece542dab76">rename</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;<a class="el" href="classneml2_1_1CrossRef.html">original</a>, <a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;rename)</td></tr>
 <tr class="memdesc:a121129a48ae8bc9c81d0dece542dab76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the label of an item.  <br /></td></tr>
 <tr class="separator:a121129a48ae8bc9c81d0dece542dab76"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -190,30 +190,30 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:adf8a2d37f9f0d03f166ac1eb995e5351" id="r_adf8a2d37f9f0d03f166ac1eb995e5351"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adf8a2d37f9f0d03f166ac1eb995e5351">has_subaxis</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">s</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
 <tr class="memdesc:adf8a2d37f9f0d03f166ac1eb995e5351"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check the existence of a subaxis by its <a class="el" href="classneml2_1_1LabeledAxisAccessor.html" title="The accessor containing all the information needed to access an item in a LabeledAxis.">LabeledAxisAccessor</a>.  <br /></td></tr>
 <tr class="separator:adf8a2d37f9f0d03f166ac1eb995e5351"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3cb6983f0b5082414eb7d3eec6544ea" id="r_ad3cb6983f0b5082414eb7d3eec6544ea"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceneml2.html#a187b9ad91502db8b71f01d5a6da028c6">TorchSize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad3cb6983f0b5082414eb7d3eec6544ea">storage_size</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
-<tr class="memdesc:ad3cb6983f0b5082414eb7d3eec6544ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the (total) storage size of <em>this</em> axis.  <br /></td></tr>
-<tr class="separator:ad3cb6983f0b5082414eb7d3eec6544ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a59f1f3730e7d412f057ee55b1afc68e8" id="r_a59f1f3730e7d412f057ee55b1afc68e8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceneml2.html#a187b9ad91502db8b71f01d5a6da028c6">TorchSize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a59f1f3730e7d412f057ee55b1afc68e8">storage_size</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">accessor</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
-<tr class="memdesc:a59f1f3730e7d412f057ee55b1afc68e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the storage size of an item by its <a class="el" href="classneml2_1_1LabeledAxisAccessor.html" title="The accessor containing all the information needed to access an item in a LabeledAxis.">LabeledAxisAccessor</a>.  <br /></td></tr>
-<tr class="separator:a59f1f3730e7d412f057ee55b1afc68e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5bbf040bd2bdfa94a990253032f7683" id="r_ac5bbf040bd2bdfa94a990253032f7683"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="#a6a3889f33182f7d18f6ee37cb2f72f69">AxisLayout</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac5bbf040bd2bdfa94a990253032f7683">layout</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memitem:a46694aabb7159a1ccd89c03707420f4e" id="r_a46694aabb7159a1ccd89c03707420f4e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a46694aabb7159a1ccd89c03707420f4e">storage_size</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:a46694aabb7159a1ccd89c03707420f4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the (total) storage size of <em>this</em> axis.  <br /></td></tr>
+<tr class="separator:a46694aabb7159a1ccd89c03707420f4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af67d7b27edb6f8574ac1949e59b05985" id="r_af67d7b27edb6f8574ac1949e59b05985"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af67d7b27edb6f8574ac1949e59b05985">storage_size</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">accessor</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:af67d7b27edb6f8574ac1949e59b05985"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the storage size of an item by its <a class="el" href="classneml2_1_1LabeledAxisAccessor.html" title="The accessor containing all the information needed to access an item in a LabeledAxis.">LabeledAxisAccessor</a>.  <br /></td></tr>
+<tr class="separator:af67d7b27edb6f8574ac1949e59b05985"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5bbf040bd2bdfa94a990253032f7683" id="r_ac5bbf040bd2bdfa94a990253032f7683"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="#a82bb7025bc87136e212fcec7b5d3d157">AxisLayout</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac5bbf040bd2bdfa94a990253032f7683">layout</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
 <tr class="memdesc:ac5bbf040bd2bdfa94a990253032f7683"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the layout.  <br /></td></tr>
 <tr class="separator:ac5bbf040bd2bdfa94a990253032f7683"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a886f0b43251385012194a2f0014d97bc" id="r_a886f0b43251385012194a2f0014d97bc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceneml2.html#a8d0cc622e28f7f67cd2a428acafd7559">TorchIndex</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a886f0b43251385012194a2f0014d97bc">indices</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">accessor</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
-<tr class="memdesc:a886f0b43251385012194a2f0014d97bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the indices of a specific item by a <code><a class="el" href="classneml2_1_1LabeledAxisAccessor.html" title="The accessor containing all the information needed to access an item in a LabeledAxis.">LabeledAxisAccessor</a></code>  <br /></td></tr>
-<tr class="separator:a886f0b43251385012194a2f0014d97bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab73b270e79e9675d683d2b79da1e5124" id="r_ab73b270e79e9675d683d2b79da1e5124"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceneml2.html#a8d0cc622e28f7f67cd2a428acafd7559">TorchIndex</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab73b270e79e9675d683d2b79da1e5124">indices</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledAxis.html">LabeledAxis</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">other</a>, <a class="el" href="classneml2_1_1CrossRef.html">bool</a> <a class="el" href="classneml2_1_1CrossRef.html">recursive</a>=<a class="el" href="classneml2_1_1CrossRef.html">true</a>, <a class="el" href="classneml2_1_1CrossRef.html">bool</a> <a class="el" href="classneml2_1_1CrossRef.html">inclusive</a>=<a class="el" href="classneml2_1_1CrossRef.html">true</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
-<tr class="memdesc:ab73b270e79e9675d683d2b79da1e5124"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the indices using another <code><a class="el" href="classneml2_1_1LabeledAxis.html" title="A labeled axis used to associate layout of a tensor with human-interpretable names.">LabeledAxis</a></code>.  <br /></td></tr>
-<tr class="separator:ab73b270e79e9675d683d2b79da1e5124"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeee24d22a2ce8ce51058eebc510286e4" id="r_aeee24d22a2ce8ce51058eebc510286e4"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::pair&lt; <a class="el" href="namespaceneml2.html#a8d0cc622e28f7f67cd2a428acafd7559">TorchIndex</a>, <a class="el" href="namespaceneml2.html#a8d0cc622e28f7f67cd2a428acafd7559">TorchIndex</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeee24d22a2ce8ce51058eebc510286e4">common_indices</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledAxis.html">LabeledAxis</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">other</a>, <a class="el" href="classneml2_1_1CrossRef.html">bool</a> <a class="el" href="classneml2_1_1CrossRef.html">recursive</a>=<a class="el" href="classneml2_1_1CrossRef.html">true</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
-<tr class="memdesc:aeee24d22a2ce8ce51058eebc510286e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the common indices of two <code><a class="el" href="classneml2_1_1LabeledAxis.html" title="A labeled axis used to associate layout of a tensor with human-interpretable names.">LabeledAxis</a></code>s.  <br /></td></tr>
-<tr class="separator:aeee24d22a2ce8ce51058eebc510286e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53bcc40242da2cdf14fa1a3454c799af" id="r_a53bcc40242da2cdf14fa1a3454c799af"><td class="memItemLeft" align="right" valign="top">indexing::TensorIndex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a53bcc40242da2cdf14fa1a3454c799af">indices</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">accessor</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:a53bcc40242da2cdf14fa1a3454c799af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the indices of a specific item by a <code><a class="el" href="classneml2_1_1LabeledAxisAccessor.html" title="The accessor containing all the information needed to access an item in a LabeledAxis.">LabeledAxisAccessor</a></code>  <br /></td></tr>
+<tr class="separator:a53bcc40242da2cdf14fa1a3454c799af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a461644a55897b47d5ff43e91538f2117" id="r_a461644a55897b47d5ff43e91538f2117"><td class="memItemLeft" align="right" valign="top">indexing::TensorIndex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a461644a55897b47d5ff43e91538f2117">indices</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledAxis.html">LabeledAxis</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">other</a>, <a class="el" href="classneml2_1_1CrossRef.html">bool</a> <a class="el" href="classneml2_1_1CrossRef.html">recursive</a>=<a class="el" href="classneml2_1_1CrossRef.html">true</a>, <a class="el" href="classneml2_1_1CrossRef.html">bool</a> <a class="el" href="classneml2_1_1CrossRef.html">inclusive</a>=<a class="el" href="classneml2_1_1CrossRef.html">true</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:a461644a55897b47d5ff43e91538f2117"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the indices using another <code><a class="el" href="classneml2_1_1LabeledAxis.html" title="A labeled axis used to associate layout of a tensor with human-interpretable names.">LabeledAxis</a></code>.  <br /></td></tr>
+<tr class="separator:a461644a55897b47d5ff43e91538f2117"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab12c5d05622ec08c8e8fe26418f26803" id="r_ab12c5d05622ec08c8e8fe26418f26803"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::pair&lt; indexing::TensorIndex, indexing::TensorIndex &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab12c5d05622ec08c8e8fe26418f26803">common_indices</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledAxis.html">LabeledAxis</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">other</a>, <a class="el" href="classneml2_1_1CrossRef.html">bool</a> <a class="el" href="classneml2_1_1CrossRef.html">recursive</a>=<a class="el" href="classneml2_1_1CrossRef.html">true</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:ab12c5d05622ec08c8e8fe26418f26803"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the common indices of two <code><a class="el" href="classneml2_1_1LabeledAxis.html" title="A labeled axis used to associate layout of a tensor with human-interpretable names.">LabeledAxis</a></code>s.  <br /></td></tr>
+<tr class="separator:ab12c5d05622ec08c8e8fe26418f26803"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a819d9fd1f38963fb549b3f2710896c4d" id="r_a819d9fd1f38963fb549b3f2710896c4d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a819d9fd1f38963fb549b3f2710896c4d">item_names</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
 <tr class="memdesc:a819d9fd1f38963fb549b3f2710896c4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the item names.  <br /></td></tr>
 <tr class="separator:a819d9fd1f38963fb549b3f2710896c4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3e30d0adfe9076cb8802028d3e971f2d" id="r_a3e30d0adfe9076cb8802028d3e971f2d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::map&lt; std::string, <a class="el" href="namespaceneml2.html#a187b9ad91502db8b71f01d5a6da028c6">TorchSize</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3e30d0adfe9076cb8802028d3e971f2d">variables</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
-<tr class="memdesc:a3e30d0adfe9076cb8802028d3e971f2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the variables.  <br /></td></tr>
-<tr class="separator:a3e30d0adfe9076cb8802028d3e971f2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a995e6a25bea15f9edc653f2f15c99c08" id="r_a995e6a25bea15f9edc653f2f15c99c08"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::map&lt; std::string, <a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a995e6a25bea15f9edc653f2f15c99c08">variables</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:a995e6a25bea15f9edc653f2f15c99c08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the variables.  <br /></td></tr>
+<tr class="separator:a995e6a25bea15f9edc653f2f15c99c08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97b9ffc40ac08969eb969ecb6fa28459" id="r_a97b9ffc40ac08969eb969ecb6fa28459"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::map&lt; std::string, std::shared_ptr&lt; <a class="el" href="classneml2_1_1LabeledAxis.html">LabeledAxis</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a97b9ffc40ac08969eb969ecb6fa28459">subaxes</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
 <tr class="memdesc:a97b9ffc40ac08969eb969ecb6fa28459"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the subaxes.  <br /></td></tr>
 <tr class="separator:a97b9ffc40ac08969eb969ecb6fa28459"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -239,14 +239,14 @@ Friends</h2></td></tr>
 <tr class="separator:ab702b420398239f81db6ab1c1f9d2dcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="a6a3889f33182f7d18f6ee37cb2f72f69" name="a6a3889f33182f7d18f6ee37cb2f72f69"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6a3889f33182f7d18f6ee37cb2f72f69">&#9670;&#160;</a></span>AxisLayout</h2>
+<a id="a82bb7025bc87136e212fcec7b5d3d157" name="a82bb7025bc87136e212fcec7b5d3d157"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a82bb7025bc87136e212fcec7b5d3d157">&#9670;&#160;</a></span>AxisLayout</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">typedef</a> std::unordered_map&lt;std::string, std::pair&lt;<a class="el" href="namespaceneml2.html#a187b9ad91502db8b71f01d5a6da028c6">TorchSize</a>, <a class="el" href="namespaceneml2.html#a187b9ad91502db8b71f01d5a6da028c6">TorchSize</a>&gt; &gt; <a class="el" href="#a6a3889f33182f7d18f6ee37cb2f72f69">AxisLayout</a></td>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">typedef</a> std::unordered_map&lt;std::string, std::pair&lt;<a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a>, <a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a>&gt; &gt; <a class="el" href="#a82bb7025bc87136e212fcec7b5d3d157">AxisLayout</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -322,8 +322,8 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T &gt;
 
 </div>
 </div>
-<a id="a48e5454cb82c84f69c338654eb0d7cd0" name="a48e5454cb82c84f69c338654eb0d7cd0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a48e5454cb82c84f69c338654eb0d7cd0">&#9670;&#160;</a></span>add() <span class="overload">[2/2]</span></h2>
+<a id="afa520f3d71904cf1717b90343d9023f8" name="afa520f3d71904cf1717b90343d9023f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa520f3d71904cf1717b90343d9023f8">&#9670;&#160;</a></span>add() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -336,7 +336,7 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T &gt;
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespaceneml2.html#a187b9ad91502db8b71f01d5a6da028c6">TorchSize</a></td>          <td class="paramname"><span class="paramname"><em>sz</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a></td>          <td class="paramname"><span class="paramname"><em>sz</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -364,14 +364,14 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T &gt;
 
 </div>
 </div>
-<a id="aeee24d22a2ce8ce51058eebc510286e4" name="aeee24d22a2ce8ce51058eebc510286e4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeee24d22a2ce8ce51058eebc510286e4">&#9670;&#160;</a></span>common_indices()</h2>
+<a id="ab12c5d05622ec08c8e8fe26418f26803" name="ab12c5d05622ec08c8e8fe26418f26803"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab12c5d05622ec08c8e8fe26418f26803">&#9670;&#160;</a></span>common_indices()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt; std::pair&lt; <a class="el" href="namespaceneml2.html#a8d0cc622e28f7f67cd2a428acafd7559">TorchIndex</a>, <a class="el" href="namespaceneml2.html#a8d0cc622e28f7f67cd2a428acafd7559">TorchIndex</a> &gt; &gt; common_indices </td>
+          <td class="memname">std::vector&lt; std::pair&lt; indexing::TensorIndex, indexing::TensorIndex &gt; &gt; common_indices </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledAxis.html">LabeledAxis</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>other</em>, </span></td>
         </tr>
@@ -500,14 +500,14 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T &gt;
 
 </div>
 </div>
-<a id="ab73b270e79e9675d683d2b79da1e5124" name="ab73b270e79e9675d683d2b79da1e5124"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab73b270e79e9675d683d2b79da1e5124">&#9670;&#160;</a></span>indices() <span class="overload">[1/2]</span></h2>
+<a id="a461644a55897b47d5ff43e91538f2117" name="a461644a55897b47d5ff43e91538f2117"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a461644a55897b47d5ff43e91538f2117">&#9670;&#160;</a></span>indices() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceneml2.html#a8d0cc622e28f7f67cd2a428acafd7559">TorchIndex</a> indices </td>
+          <td class="memname">indexing::TensorIndex indices </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledAxis.html">LabeledAxis</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>other</em>, </span></td>
         </tr>
@@ -528,14 +528,14 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T &gt;
 
 </div>
 </div>
-<a id="a886f0b43251385012194a2f0014d97bc" name="a886f0b43251385012194a2f0014d97bc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a886f0b43251385012194a2f0014d97bc">&#9670;&#160;</a></span>indices() <span class="overload">[2/2]</span></h2>
+<a id="a53bcc40242da2cdf14fa1a3454c799af" name="a53bcc40242da2cdf14fa1a3454c799af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53bcc40242da2cdf14fa1a3454c799af">&#9670;&#160;</a></span>indices() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceneml2.html#a8d0cc622e28f7f67cd2a428acafd7559">TorchIndex</a> indices </td>
+          <td class="memname">indexing::TensorIndex indices </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>accessor</em></span></td><td>)</td>
           <td> const</td>
@@ -576,7 +576,7 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T &gt;
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="#a6a3889f33182f7d18f6ee37cb2f72f69">AxisLayout</a> &amp; layout </td>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="#a82bb7025bc87136e212fcec7b5d3d157">AxisLayout</a> &amp; layout </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td> const</td>
@@ -753,8 +753,8 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T &gt;
 
 </div>
 </div>
-<a id="ad3cb6983f0b5082414eb7d3eec6544ea" name="ad3cb6983f0b5082414eb7d3eec6544ea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad3cb6983f0b5082414eb7d3eec6544ea">&#9670;&#160;</a></span>storage_size() <span class="overload">[1/2]</span></h2>
+<a id="a46694aabb7159a1ccd89c03707420f4e" name="a46694aabb7159a1ccd89c03707420f4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46694aabb7159a1ccd89c03707420f4e">&#9670;&#160;</a></span>storage_size() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -763,7 +763,7 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T &gt;
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceneml2.html#a187b9ad91502db8b71f01d5a6da028c6">TorchSize</a> storage_size </td>
+          <td class="memname"><a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a> storage_size </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td> const</td>
@@ -780,14 +780,14 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T &gt;
 
 </div>
 </div>
-<a id="a59f1f3730e7d412f057ee55b1afc68e8" name="a59f1f3730e7d412f057ee55b1afc68e8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a59f1f3730e7d412f057ee55b1afc68e8">&#9670;&#160;</a></span>storage_size() <span class="overload">[2/2]</span></h2>
+<a id="af67d7b27edb6f8574ac1949e59b05985" name="af67d7b27edb6f8574ac1949e59b05985"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af67d7b27edb6f8574ac1949e59b05985">&#9670;&#160;</a></span>storage_size() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceneml2.html#a187b9ad91502db8b71f01d5a6da028c6">TorchSize</a> storage_size </td>
+          <td class="memname"><a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a> storage_size </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>accessor</em></span></td><td>)</td>
           <td> const</td>
@@ -925,8 +925,8 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T &gt;
 
 </div>
 </div>
-<a id="a3e30d0adfe9076cb8802028d3e971f2d" name="a3e30d0adfe9076cb8802028d3e971f2d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3e30d0adfe9076cb8802028d3e971f2d">&#9670;&#160;</a></span>variables()</h2>
+<a id="a995e6a25bea15f9edc653f2f15c99c08" name="a995e6a25bea15f9edc653f2f15c99c08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a995e6a25bea15f9edc653f2f15c99c08">&#9670;&#160;</a></span>variables()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -935,7 +935,7 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T &gt;
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::map&lt; std::string, <a class="el" href="namespaceneml2.html#a187b9ad91502db8b71f01d5a6da028c6">TorchSize</a> &gt; &amp; variables </td>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::map&lt; std::string, <a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a> &gt; &amp; variables </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td> const</td>

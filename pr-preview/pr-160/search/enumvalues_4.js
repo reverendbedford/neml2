@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['xml_0',['XML',['../namespaceneml2.html#a4c55c16d7c784070b26231f015e33a10a60018cf01f907998778170cb8db31c99',1,'neml2']]]
+  ['solving_0',['SOLVING',['../classneml2_1_1Model.html#aca8133200c1122e29b87b314d82604ebab09b6d718c535c4d6fe77cc69ae8de0b',1,'neml2::Model']]]
 ];

@@ -26,9 +26,9 @@ var searchData=
   ['norm_23',['norm',['../classneml2_1_1SR2.html#ac00d16c9e75c43b909d9840eb1809606',1,'neml2::SR2::norm()'],['../classneml2_1_1VecBase.html#ad840f5d7d824ab9d442511c61c8f6b77',1,'neml2::VecBase::norm()']]],
   ['norm_5fsq_24',['norm_sq',['../classneml2_1_1SR2.html#aa34d9c66769904faf822a8e5a39ead76',1,'neml2::SR2::norm_sq()'],['../classneml2_1_1VecBase.html#aa34d9c66769904faf822a8e5a39ead76',1,'neml2::VecBase::norm_sq()']]],
   ['normality_25',['Normality',['../classneml2_1_1Normality.html#a8b48f7f0d9485d40f132c34df7ae1030',1,'neml2::Normality']]],
-  ['nslip_26',['nslip',['../classneml2_1_1crystallography_1_1CrystalGeometry.html#ac358b558425514cb1527fde819fe67b6',1,'neml2::crystallography::CrystalGeometry']]],
-  ['nslip_5fgroups_27',['nslip_groups',['../classneml2_1_1crystallography_1_1CrystalGeometry.html#abe038ce79775279a4d1c3344163e5c00',1,'neml2::crystallography::CrystalGeometry']]],
-  ['nslip_5fin_5fgroup_28',['nslip_in_group',['../classneml2_1_1crystallography_1_1CrystalGeometry.html#afde6049d693b2896b101c9d52fba9ec8',1,'neml2::crystallography::CrystalGeometry']]],
+  ['nslip_26',['nslip',['../classneml2_1_1crystallography_1_1CrystalGeometry.html#aa63e379f76e36296fce9dfe991eceba8',1,'neml2::crystallography::CrystalGeometry']]],
+  ['nslip_5fgroups_27',['nslip_groups',['../classneml2_1_1crystallography_1_1CrystalGeometry.html#ab720de7f1de5b40b20d7bcc67a8fbf25',1,'neml2::crystallography::CrystalGeometry']]],
+  ['nslip_5fin_5fgroup_28',['nslip_in_group',['../classneml2_1_1crystallography_1_1CrystalGeometry.html#aaacc7ffad04337bcf7fff32c8648caba',1,'neml2::crystallography::CrystalGeometry']]],
   ['nsubaxis_29',['nsubaxis',['../classneml2_1_1LabeledAxis.html#a2adc2d1f58e2b8563270f0120f174791',1,'neml2::LabeledAxis']]],
   ['nvariable_30',['nvariable',['../classneml2_1_1LabeledAxis.html#a015726d6651a14645d596fe2e381480e',1,'neml2::LabeledAxis']]]
 ];
