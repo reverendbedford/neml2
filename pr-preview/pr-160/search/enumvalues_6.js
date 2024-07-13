@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['xml_0',['XML',['../namespaceneml2.html#a4c55c16d7c784070b26231f015e33a10a60018cf01f907998778170cb8db31c99',1,'neml2']]]
+  ['none_0',['NONE',['../namespaceneml2.html#ab600865ffa5d3681d723ef019d109535ab50339a10e1de285ac99d4c3990b8693',1,'neml2']]]
 ];

@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['mandel_5findex_0',['mandel_index',['../namespaceneml2_1_1math.html#a1dc7c4e164c374e16c2fd1b698d24270',1,'neml2::math']]],
-  ['mandel_5freverse_5findex_1',['mandel_reverse_index',['../namespaceneml2_1_1math.html#a7fc96d473fbf98415dad4febc3a755d9',1,'neml2::math']]],
-  ['miters_2',['miters',['../classneml2_1_1NonlinearSolver.html#a0cf640f7d773e8524e9266f8947fdcb5',1,'neml2::NonlinearSolver']]]
+  ['invsqrt2_0',['invsqrt2',['../namespaceneml2_1_1math.html#a439b384911d4c1b60e3472253a5e8497',1,'neml2::math']]],
+  ['isotropic_5fhardening_5fdirection_1',['isotropic_hardening_direction',['../classneml2_1_1AssociativeIsotropicPlasticHardening.html#af5e3e076d623b827c2a46c6be99628be',1,'neml2::AssociativeIsotropicPlasticHardening']]]
 ];

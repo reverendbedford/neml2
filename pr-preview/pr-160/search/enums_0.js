@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['parsertype_0',['ParserType',['../namespaceneml2.html#a4c55c16d7c784070b26231f015e33a10',1,'neml2']]]
+  ['ftype_0',['FType',['../namespaceneml2.html#ab600865ffa5d3681d723ef019d109535',1,'neml2']]]
 ];

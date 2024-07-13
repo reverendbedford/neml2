@@ -227,6 +227,12 @@ $(function(){initNavTree('syntax-models.html',''); initResizable(); });
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_content_2syntax_2models"></a></p>
+<p>The following symbols are used throughout the documentation to denote different components of function definition.</p><ul>
+<li>🔷: input variable</li>
+<li>🔶: output variable</li>
+<li>🔵: parameter</li>
+<li>⚫: buffer</li>
+</ul>
 <h1><a class="anchor" id="autotoc_md39"></a>
 Available objects and their input file syntax</h1>
 <p>Refer to <a class="el" href="system-models.html">System Documentation</a> for detailed explanation about this system.</p>
@@ -234,7 +240,7 @@ Available objects and their input file syntax</h1>
 ArrheniusParameter</h2>
 <p>Define the nonlinear parameter as a function of temperature according to the Arrhenius law \( p = p_0 \exp \left( -\frac{Q}{RT} \right) \), where \( p_0 \) is the reference value, \( Q \) is the activation energy, \( R \) is the ideal gas constant, and \( T \) is the temperature. </p><details >
 <summary >
-<code>activation_energy</code> Activation energy</summary>
+<code>activation_energy</code> 🔵 Activation energy</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -250,7 +256,7 @@ ArrheniusParameter</h2>
 </details>
 <details >
 <summary >
-<code>reference_value</code> Reference value</summary>
+<code>reference_value</code> 🔵 Reference value</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -258,7 +264,7 @@ ArrheniusParameter</h2>
 </details>
 <details >
 <summary >
-<code>temperature</code> Temperature</summary>
+<code>temperature</code> 🔷 Temperature</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -270,7 +276,7 @@ ArrheniusParameter</h2>
 AssociativeIsotropicPlasticHardening</h2>
 <p>Map the flow rate (i.e., the consistency parameter in the KKT conditions) to the rate of internal variables. This object calculates the rate of equivalent plastic strain following associative flow rule, i.e. \( \dot{\varepsilon}_p = - \dot{\gamma} \frac{\partial f}{\partial k} \), where \( \dot{\varepsilon}_p \) is the equivalent plastic strain, \( \dot{\gamma} \) is the flow rate, \( f \) is the yield function, and \( k \) is the isotropic hardening. </p><details >
 <summary >
-<code>equivalent_plastic_strain_rate</code> Rate of equivalent plastic strain</summary>
+<code>equivalent_plastic_strain_rate</code> 🔶 Rate of equivalent plastic strain</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -279,7 +285,7 @@ AssociativeIsotropicPlasticHardening</h2>
 </details>
 <details >
 <summary >
-<code>flow_rate</code> Flow rate</summary>
+<code>flow_rate</code> 🔷 Flow rate</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -288,7 +294,7 @@ AssociativeIsotropicPlasticHardening</h2>
 </details>
 <details >
 <summary >
-<code>isotropic_hardening_direction</code> Direction of associative isotropic hardening which can be calculated using Normality.</summary>
+<code>isotropic_hardening_direction</code> 🔷 Direction of associative isotropic hardening which can be calculated using Normality.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -300,7 +306,7 @@ AssociativeIsotropicPlasticHardening</h2>
 AssociativeKinematicPlasticHardening</h2>
 <p>Map the flow rate (i.e., the consistency parameter in the KKT conditions) to the rate of internal variables. This object calculates the rate of kinematic plastic strain following associative flow rule, i.e. \( \dot{\boldsymbol{K}}_p = - \dot{\gamma} \frac{\partial f}{\partial \boldsymbol{X}} \), where \( \dot{\boldsymbol{K}}_p \) is the kinematic plastic strain, \( \dot{\gamma} \) is the flow rate, \( f \) is the yield function, and \( \boldsymbol{X} \) is the kinematic hardening. </p><details >
 <summary >
-<code>flow_rate</code> Flow rate</summary>
+<code>flow_rate</code> 🔷 Flow rate</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -309,7 +315,7 @@ AssociativeKinematicPlasticHardening</h2>
 </details>
 <details >
 <summary >
-<code>kinematic_hardening_direction</code> Direction of associative kinematic hardening which can be calculated using Normality.</summary>
+<code>kinematic_hardening_direction</code> 🔷 Direction of associative kinematic hardening which can be calculated using Normality.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -318,7 +324,7 @@ AssociativeKinematicPlasticHardening</h2>
 </details>
 <details >
 <summary >
-<code>kinematic_plastic_strain_rate</code> Rate of kinematic plastic strain</summary>
+<code>kinematic_plastic_strain_rate</code> 🔶 Rate of kinematic plastic strain</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -330,7 +336,7 @@ AssociativeKinematicPlasticHardening</h2>
 AssociativePlasticFlow</h2>
 <p>Map the flow rate (i.e., the consistency parameter in the KKT conditions) to the rate of internal variables. This object calculates the rate of plastic strain following associative flow rule, i.e. \( \dot{\boldsymbol{\varepsilon}}_p = - \dot{\gamma} \frac{\partial f}{\partial \boldsymbol{M}} \), where \( \dot{\boldsymbol{\varepsilon}}_p \) is the plastic strain, \( \dot{\gamma} \) is the flow rate, \( f \) is the yield function, and \( \boldsymbol{M} \) is the Mandel stress. </p><details >
 <summary >
-<code>flow_direction</code> Flow direction which can be calculated using Normality</summary>
+<code>flow_direction</code> 🔷 Flow direction which can be calculated using Normality</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -339,7 +345,7 @@ AssociativePlasticFlow</h2>
 </details>
 <details >
 <summary >
-<code>flow_rate</code> Flow rate</summary>
+<code>flow_rate</code> 🔷 Flow rate</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -348,7 +354,7 @@ AssociativePlasticFlow</h2>
 </details>
 <details >
 <summary >
-<code>plastic_strain_rate</code> Rate of plastic strain</summary>
+<code>plastic_strain_rate</code> 🔶 Rate of plastic strain</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -360,7 +366,7 @@ AssociativePlasticFlow</h2>
 ChabochePlasticHardening</h2>
 <p>Map the flow rate (i.e., the consistency parameter in the KKT conditions) to the rate of internal variables. This object defines the non-associative Chaboche kinematic hardening. In the Chaboche model, back stress is directly treated as an internal variable. Rate of back stress is given as \( \dot{\boldsymbol{X}} = \left( \frac{2}{3} C \frac{\partial f}{\partial \boldsymbol{M}} - g \boldsymbol{X} \right) \dot{\gamma} - A \lVert \boldsymbol{X} \rVert^{a - 1} \boldsymbol{X} \), including kinematic hardening, dynamic recovery, and static recovery. \( \frac{\partial f}{\partial \boldsymbol{M}} \) is the flow direction, \( \dot{\gamma} \) is the flow rate, and \( C \), \( g \), \( A \), and \( a \) are material parameters. </p><details >
 <summary >
-<code>A</code> Static recovery prefactor</summary>
+<code>A</code> 🔵 Static recovery prefactor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -368,7 +374,7 @@ ChabochePlasticHardening</h2>
 </details>
 <details >
 <summary >
-<code>C</code> Kinematic hardening coefficient</summary>
+<code>C</code> 🔵 Kinematic hardening coefficient</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -376,7 +382,7 @@ ChabochePlasticHardening</h2>
 </details>
 <details >
 <summary >
-<code>a</code> Static recovery exponent</summary>
+<code>a</code> 🔵 Static recovery exponent</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -384,7 +390,7 @@ ChabochePlasticHardening</h2>
 </details>
 <details >
 <summary >
-<code>back_stress</code> Back stress</summary>
+<code>back_stress</code> 🔷 Back stress</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -393,7 +399,7 @@ ChabochePlasticHardening</h2>
 </details>
 <details >
 <summary >
-<code>flow_direction</code> Flow direction</summary>
+<code>flow_direction</code> 🔷 Flow direction</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -402,7 +408,7 @@ ChabochePlasticHardening</h2>
 </details>
 <details >
 <summary >
-<code>flow_rate</code> Flow rate</summary>
+<code>flow_rate</code> 🔷 Flow rate</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -411,7 +417,7 @@ ChabochePlasticHardening</h2>
 </details>
 <details >
 <summary >
-<code>g</code> Dynamic recovery coefficient</summary>
+<code>g</code> 🔵 Dynamic recovery coefficient</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -422,7 +428,7 @@ ChabochePlasticHardening</h2>
 ComposedModel</h2>
 <p>Compose multiple models together to form a single model. The composed model can then be treated as a new model and composed with others. The <a class="el" href="system-models.html#model-composition">system documentation</a> provides in-depth explanation on how the models are composed together. </p><details >
 <summary >
-<code>additional_outputs</code> Extra output variables to be extracted from the composed model in addition to the ones identified through dependency resolution.</summary>
+<code>additional_outputs</code> 🔶 Extra output variables to be extracted from the composed model in addition to the ones identified through dependency resolution.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;VariableName&gt; </li>
@@ -485,7 +491,7 @@ ComposedModel</h2>
 CopyMillerIndex</h2>
 <p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>from</code> Variable to copy value from</summary>
+<code>from</code> 🔷 Variable to copy value from</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -493,7 +499,7 @@ CopyMillerIndex</h2>
 </details>
 <details >
 <summary >
-<code>to</code> Variable to copy value to</summary>
+<code>to</code> 🔶 Variable to copy value to</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -504,7 +510,7 @@ CopyMillerIndex</h2>
 CopyQuaternion</h2>
 <p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>from</code> Variable to copy value from</summary>
+<code>from</code> 🔷 Variable to copy value from</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -512,7 +518,7 @@ CopyQuaternion</h2>
 </details>
 <details >
 <summary >
-<code>to</code> Variable to copy value to</summary>
+<code>to</code> 🔶 Variable to copy value to</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -523,7 +529,7 @@ CopyQuaternion</h2>
 CopyR2</h2>
 <p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>from</code> Variable to copy value from</summary>
+<code>from</code> 🔷 Variable to copy value from</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -531,7 +537,7 @@ CopyR2</h2>
 </details>
 <details >
 <summary >
-<code>to</code> Variable to copy value to</summary>
+<code>to</code> 🔶 Variable to copy value to</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -542,7 +548,7 @@ CopyR2</h2>
 CopyR3</h2>
 <p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>from</code> Variable to copy value from</summary>
+<code>from</code> 🔷 Variable to copy value from</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -550,7 +556,7 @@ CopyR3</h2>
 </details>
 <details >
 <summary >
-<code>to</code> Variable to copy value to</summary>
+<code>to</code> 🔶 Variable to copy value to</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -561,7 +567,7 @@ CopyR3</h2>
 CopyR4</h2>
 <p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>from</code> Variable to copy value from</summary>
+<code>from</code> 🔷 Variable to copy value from</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -569,7 +575,7 @@ CopyR4</h2>
 </details>
 <details >
 <summary >
-<code>to</code> Variable to copy value to</summary>
+<code>to</code> 🔶 Variable to copy value to</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -580,7 +586,7 @@ CopyR4</h2>
 CopyR5</h2>
 <p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>from</code> Variable to copy value from</summary>
+<code>from</code> 🔷 Variable to copy value from</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -588,7 +594,7 @@ CopyR5</h2>
 </details>
 <details >
 <summary >
-<code>to</code> Variable to copy value to</summary>
+<code>to</code> 🔶 Variable to copy value to</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -599,7 +605,7 @@ CopyR5</h2>
 CopyRot</h2>
 <p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>from</code> Variable to copy value from</summary>
+<code>from</code> 🔷 Variable to copy value from</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -607,7 +613,7 @@ CopyRot</h2>
 </details>
 <details >
 <summary >
-<code>to</code> Variable to copy value to</summary>
+<code>to</code> 🔶 Variable to copy value to</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -618,7 +624,7 @@ CopyRot</h2>
 CopySFFR4</h2>
 <p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>from</code> Variable to copy value from</summary>
+<code>from</code> 🔷 Variable to copy value from</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -626,7 +632,7 @@ CopySFFR4</h2>
 </details>
 <details >
 <summary >
-<code>to</code> Variable to copy value to</summary>
+<code>to</code> 🔶 Variable to copy value to</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -637,7 +643,7 @@ CopySFFR4</h2>
 CopySFR3</h2>
 <p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>from</code> Variable to copy value from</summary>
+<code>from</code> 🔷 Variable to copy value from</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -645,7 +651,7 @@ CopySFR3</h2>
 </details>
 <details >
 <summary >
-<code>to</code> Variable to copy value to</summary>
+<code>to</code> 🔶 Variable to copy value to</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -656,7 +662,7 @@ CopySFR3</h2>
 CopySR2</h2>
 <p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>from</code> Variable to copy value from</summary>
+<code>from</code> 🔷 Variable to copy value from</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -664,7 +670,7 @@ CopySR2</h2>
 </details>
 <details >
 <summary >
-<code>to</code> Variable to copy value to</summary>
+<code>to</code> 🔶 Variable to copy value to</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -675,7 +681,7 @@ CopySR2</h2>
 CopySSFR5</h2>
 <p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>from</code> Variable to copy value from</summary>
+<code>from</code> 🔷 Variable to copy value from</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -683,7 +689,7 @@ CopySSFR5</h2>
 </details>
 <details >
 <summary >
-<code>to</code> Variable to copy value to</summary>
+<code>to</code> 🔶 Variable to copy value to</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -694,7 +700,7 @@ CopySSFR5</h2>
 CopySSR4</h2>
 <p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>from</code> Variable to copy value from</summary>
+<code>from</code> 🔷 Variable to copy value from</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -702,7 +708,7 @@ CopySSR4</h2>
 </details>
 <details >
 <summary >
-<code>to</code> Variable to copy value to</summary>
+<code>to</code> 🔶 Variable to copy value to</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -713,7 +719,7 @@ CopySSR4</h2>
 CopySWR4</h2>
 <p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>from</code> Variable to copy value from</summary>
+<code>from</code> 🔷 Variable to copy value from</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -721,7 +727,7 @@ CopySWR4</h2>
 </details>
 <details >
 <summary >
-<code>to</code> Variable to copy value to</summary>
+<code>to</code> 🔶 Variable to copy value to</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -732,7 +738,7 @@ CopySWR4</h2>
 CopyScalar</h2>
 <p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>from</code> Variable to copy value from</summary>
+<code>from</code> 🔷 Variable to copy value from</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -740,7 +746,7 @@ CopyScalar</h2>
 </details>
 <details >
 <summary >
-<code>to</code> Variable to copy value to</summary>
+<code>to</code> 🔶 Variable to copy value to</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -751,7 +757,7 @@ CopyScalar</h2>
 CopyVec</h2>
 <p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>from</code> Variable to copy value from</summary>
+<code>from</code> 🔷 Variable to copy value from</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -759,7 +765,7 @@ CopyVec</h2>
 </details>
 <details >
 <summary >
-<code>to</code> Variable to copy value to</summary>
+<code>to</code> 🔶 Variable to copy value to</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -770,7 +776,7 @@ CopyVec</h2>
 CopyWR2</h2>
 <p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>from</code> Variable to copy value from</summary>
+<code>from</code> 🔷 Variable to copy value from</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -778,7 +784,7 @@ CopyWR2</h2>
 </details>
 <details >
 <summary >
-<code>to</code> Variable to copy value to</summary>
+<code>to</code> 🔶 Variable to copy value to</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -789,7 +795,7 @@ CopyWR2</h2>
 CopyWSR4</h2>
 <p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>from</code> Variable to copy value from</summary>
+<code>from</code> 🔷 Variable to copy value from</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -797,7 +803,7 @@ CopyWSR4</h2>
 </details>
 <details >
 <summary >
-<code>to</code> Variable to copy value to</summary>
+<code>to</code> 🔶 Variable to copy value to</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -808,7 +814,7 @@ CopyWSR4</h2>
 CopyWWR4</h2>
 <p>Copy the value from one variable to another. </p><details >
 <summary >
-<code>from</code> Variable to copy value from</summary>
+<code>from</code> 🔷 Variable to copy value from</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -816,7 +822,7 @@ CopyWWR4</h2>
 </details>
 <details >
 <summary >
-<code>to</code> Variable to copy value to</summary>
+<code>to</code> 🔶 Variable to copy value to</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -827,7 +833,7 @@ CopyWWR4</h2>
 ElasticStrain</h2>
 <p>Calculate elastic strain given total and plastic strain (assuming additive decomposition), i.e. \( \boldsymbol{\varepsilon}_e = \boldsymbol{\varepsilon} - \boldsymbol{\varepsilon}_p \). </p><details >
 <summary >
-<code>elastic_strain</code> Elastic strain</summary>
+<code>elastic_strain</code> 🔶 Elastic strain</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -836,7 +842,7 @@ ElasticStrain</h2>
 </details>
 <details >
 <summary >
-<code>plastic_strain</code> Plastic strain</summary>
+<code>plastic_strain</code> 🔷 Plastic strain</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -854,7 +860,7 @@ ElasticStrain</h2>
 </details>
 <details >
 <summary >
-<code>total_strain</code> Total strain</summary>
+<code>total_strain</code> 🔷 Total strain</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -866,7 +872,7 @@ ElasticStrain</h2>
 ElasticStrainRate</h2>
 <p>Calculates the elastic strain rate as \(\dot{\varepsilon} = d - d^p - \varepsilon w + w \varepsilon \) where \( d \) is the deformation rate, \( d^p \) is the plastic deformation rate, \( w \) is the vorticity, and \( \varepsilon \) is the elastic strain. </p><details >
 <summary >
-<code>deformation_rate</code> Name of the deformation rate</summary>
+<code>deformation_rate</code> 🔷 Name of the deformation rate</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -875,7 +881,7 @@ ElasticStrainRate</h2>
 </details>
 <details >
 <summary >
-<code>elastic_strain</code> Name of the elastic strain</summary>
+<code>elastic_strain</code> 🔷 Name of the elastic strain</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -884,7 +890,7 @@ ElasticStrainRate</h2>
 </details>
 <details >
 <summary >
-<code>elastic_strain_rate</code> Name of the elastic strain rate</summary>
+<code>elastic_strain_rate</code> 🔶 Name of the elastic strain rate</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -893,7 +899,7 @@ ElasticStrainRate</h2>
 </details>
 <details >
 <summary >
-<code>plastic_deformation_rate</code> Name of the plastic deformation rate</summary>
+<code>plastic_deformation_rate</code> 🔷 Name of the plastic deformation rate</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -902,7 +908,7 @@ ElasticStrainRate</h2>
 </details>
 <details >
 <summary >
-<code>vorticity</code> Name of the vorticity</summary>
+<code>vorticity</code> 🔷 Name of the vorticity</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -914,7 +920,7 @@ ElasticStrainRate</h2>
 FixOrientation</h2>
 <p>Checks the value of the modified Rodrigues parameter by checking if \( \left\lVert r \right\rVert &gt; t \), with \( t \) a threshold value set to 1.0 by default and replacing all the orientations that exceed this limit with their shadow parameters values. </p><details >
 <summary >
-<code>input_orientation</code> Name of input tensor of orientations to operate on.</summary>
+<code>input_orientation</code> 🔷 Name of input tensor of orientations to operate on.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -923,7 +929,7 @@ FixOrientation</h2>
 </details>
 <details >
 <summary >
-<code>output_orientation</code> Name of output tensor</summary>
+<code>output_orientation</code> 🔶 Name of output tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -944,7 +950,7 @@ FixOrientation</h2>
 GTNYieldFunction</h2>
 <p>Gurson-Tvergaard-Needleman yield function for poroplasticity. The yield function is defined as \( f = \left( \frac{\bar{\sigma}}{\sigma_y + k} \right)^2 + 2 q_1 \phi \cosh \left( \frac{1}{2} q_2 \frac{3\sigma_h-\sigma_s}{\sigma_y + k} \right) - \left( q_3 \phi^2 + 1 \right) \), where \( \bar{\sigma} \) is the von Mises stress, \( \sigma_y \) is the yield stress, \( k \) is isotropic hardening, \( \phi \) is the porosity, \( \sigma_h \) is the hydrostatic stress, and \( \sigma_s \) is the void growth back stress (sintering stress). \( q_1 \), \( q_2 \), and \( q_3 \) are parameters controlling the yield mechanisms. </p><details >
 <summary >
-<code>flow_invariant</code> Effective stress driving plastic flow</summary>
+<code>flow_invariant</code> 🔷 Effective stress driving plastic flow</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -953,7 +959,7 @@ GTNYieldFunction</h2>
 </details>
 <details >
 <summary >
-<code>isotropic_hardening</code> Isotropic hardening</summary>
+<code>isotropic_hardening</code> 🔷 Isotropic hardening</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -961,7 +967,7 @@ GTNYieldFunction</h2>
 </details>
 <details >
 <summary >
-<code>poro_invariant</code> Effective stress driving porous flow</summary>
+<code>poro_invariant</code> 🔷 Effective stress driving porous flow</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -970,7 +976,7 @@ GTNYieldFunction</h2>
 </details>
 <details >
 <summary >
-<code>q1</code> Parameter controlling the balance/competition between plastic flow and void evolution.</summary>
+<code>q1</code> 🔵 Parameter controlling the balance/competition between plastic flow and void evolution.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -978,7 +984,7 @@ GTNYieldFunction</h2>
 </details>
 <details >
 <summary >
-<code>q2</code> Void evolution rate</summary>
+<code>q2</code> 🔵 Void evolution rate</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -986,7 +992,7 @@ GTNYieldFunction</h2>
 </details>
 <details >
 <summary >
-<code>q3</code> Pore pressure</summary>
+<code>q3</code> 🔵 Pore pressure</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -994,7 +1000,7 @@ GTNYieldFunction</h2>
 </details>
 <details >
 <summary >
-<code>void_fraction</code> Void fraction (porosity)</summary>
+<code>void_fraction</code> 🔷 Void fraction (porosity)</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1003,7 +1009,7 @@ GTNYieldFunction</h2>
 </details>
 <details >
 <summary >
-<code>yield_function</code> Yield function</summary>
+<code>yield_function</code> 🔶 Yield function</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1012,7 +1018,7 @@ GTNYieldFunction</h2>
 </details>
 <details >
 <summary >
-<code>yield_stress</code> Yield stress</summary>
+<code>yield_stress</code> 🔷 Yield stress</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1023,7 +1029,7 @@ GTNYieldFunction</h2>
 GursonCavitation</h2>
 <p>Local mass balance used in conjunction with the GTNYieldFunction, \( \dot{\phi} = (1-\phi) \dot{\varepsilon}_p \). </p><details >
 <summary >
-<code>plastic_strain_rate</code> Plastic strain rate</summary>
+<code>plastic_strain_rate</code> 🔷 Plastic strain rate</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1032,7 +1038,7 @@ GursonCavitation</h2>
 </details>
 <details >
 <summary >
-<code>void_fraction</code> Void fraction (porosity)</summary>
+<code>void_fraction</code> 🔷 Void fraction (porosity)</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1041,7 +1047,7 @@ GursonCavitation</h2>
 </details>
 <details >
 <summary >
-<code>void_fraction_rate</code> Rate of void evolution</summary>
+<code>void_fraction_rate</code> 🔶 Rate of void evolution</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1072,7 +1078,7 @@ ImplicitUpdate</h2>
 IsotropicMandelStress</h2>
 <p>Map Cauchy stress to Mandel stress For isotropic material under small deformation, the Mandel stress and the Cauchy stress coincide. </p><details >
 <summary >
-<code>cauchy_stress</code> Cauchy stress</summary>
+<code>cauchy_stress</code> 🔷 Cauchy stress</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1081,7 +1087,7 @@ IsotropicMandelStress</h2>
 </details>
 <details >
 <summary >
-<code>mandel_stress</code> Mandel stress</summary>
+<code>mandel_stress</code> 🔶 Mandel stress</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1093,7 +1099,7 @@ IsotropicMandelStress</h2>
 KocksMeckingActivationEnergy</h2>
 <p>Calculates the Kocks-Mecking normalized activation as \(g = \frac{kT}{\mu b^3} \log \frac{\dot{\varepsilon}_0}{\dot{\varepsilon}} \) with \( \mu \) the shear modulus, \( k \) the Boltzmann constant, \( T \) the absolute temperature, \( b \) the Burgers vector length, \( \dot{\varepsilon}_0 \) a reference strain rate, and \( \dot{\varepsilon} \) the current strain rate. </p><details >
 <summary >
-<code>activation_energy</code> Output name of the activation energy</summary>
+<code>activation_energy</code> 🔷 Output name of the activation energy</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1126,7 +1132,7 @@ KocksMeckingActivationEnergy</h2>
 </details>
 <details >
 <summary >
-<code>shear_modulus</code> The shear modulus</summary>
+<code>shear_modulus</code> 🔵 The shear modulus</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1134,7 +1140,7 @@ KocksMeckingActivationEnergy</h2>
 </details>
 <details >
 <summary >
-<code>strain_rate</code> Name of the effective strain rate</summary>
+<code>strain_rate</code> 🔷 Name of the effective strain rate</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1143,7 +1149,7 @@ KocksMeckingActivationEnergy</h2>
 </details>
 <details >
 <summary >
-<code>temperature</code> Absolute temperature</summary>
+<code>temperature</code> 🔷 Absolute temperature</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1155,7 +1161,7 @@ KocksMeckingActivationEnergy</h2>
 KocksMeckingFlowSwitch</h2>
 <p>Switches between rate independent and rate dependent flow rules based on the value of the Kocks-Mecking normalized activation energy. For activation energies less than the threshold use the rate independent flow rule, for values greater than the threshold use the rate dependent flow rule. This version uses a soft switch between the models, based on a tanh sigmoid function. </p><details >
 <summary >
-<code>activation_energy</code> The input name of the activation energy</summary>
+<code>activation_energy</code> 🔷 The input name of the activation energy</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1164,7 +1170,7 @@ KocksMeckingFlowSwitch</h2>
 </details>
 <details >
 <summary >
-<code>flow_rate</code> Output name for the mixed flow rate</summary>
+<code>flow_rate</code> 🔶 Output name for the mixed flow rate</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1173,7 +1179,7 @@ KocksMeckingFlowSwitch</h2>
 </details>
 <details >
 <summary >
-<code>g0</code> Critical value of activation energy</summary>
+<code>g0</code> 🔵 Critical value of activation energy</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1181,7 +1187,7 @@ KocksMeckingFlowSwitch</h2>
 </details>
 <details >
 <summary >
-<code>rate_dependent_flow_rate</code> Input name of the rate dependent flow rate</summary>
+<code>rate_dependent_flow_rate</code> 🔷 Input name of the rate dependent flow rate</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1190,7 +1196,7 @@ KocksMeckingFlowSwitch</h2>
 </details>
 <details >
 <summary >
-<code>rate_independent_flow_rate</code> Input name of the rate independent flow rate</summary>
+<code>rate_independent_flow_rate</code> 🔷 Input name of the rate independent flow rate</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1211,7 +1217,7 @@ KocksMeckingFlowSwitch</h2>
 KocksMeckingFlowViscosity</h2>
 <p>Calculates the temperature-dependent flow viscosity for a Perzyna-type model using the Kocks-Mecking model. The value is \( \eta = \exp{B} \mu \dot{\varepsilon}_0^\frac{-k T A}{\mu b^3} \) with \( \mu \) the shear modulus, \( \dot{\varepsilon}_0 \) a reference strain rate, \( b \) the Burgers vector, \(  k\) the Boltzmann constant, \( T \) absolute temperature, \( A \) the Kocks-Mecking slope parameter, and \( B \) the Kocks-Mecking intercept parameter. </p><details >
 <summary >
-<code>A</code> The Kocks-Mecking slope parameter</summary>
+<code>A</code> 🔵 The Kocks-Mecking slope parameter</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1219,7 +1225,7 @@ KocksMeckingFlowViscosity</h2>
 </details>
 <details >
 <summary >
-<code>B</code> The Kocks-Mecking intercept parameter</summary>
+<code>B</code> 🔵 The Kocks-Mecking intercept parameter</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1251,7 +1257,7 @@ KocksMeckingFlowViscosity</h2>
 </details>
 <details >
 <summary >
-<code>shear_modulus</code> The shear modulus</summary>
+<code>shear_modulus</code> 🔵 The shear modulus</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1259,7 +1265,7 @@ KocksMeckingFlowViscosity</h2>
 </details>
 <details >
 <summary >
-<code>temperature</code> Absolute temperature</summary>
+<code>temperature</code> 🔷 Absolute temperature</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1271,7 +1277,7 @@ KocksMeckingFlowViscosity</h2>
 KocksMeckingRateSensitivity</h2>
 <p>Calculates the temperature-dependent rate sensitivity for a Perzyna-type model using the Kocks-Mecking model. The value is \( n = \frac{\mu b^3}{k T A} \) with \( \mu \) the shear modulus, \( b \) the Burgers vector, \(  k\) the Boltzmann constant, \( T \) absolute temperature, and \( A \) the Kocks-Mecking slope parameter. </p><details >
 <summary >
-<code>A</code> The Kocks-Mecking slope parameter</summary>
+<code>A</code> 🔵 The Kocks-Mecking slope parameter</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1295,7 +1301,7 @@ KocksMeckingRateSensitivity</h2>
 </details>
 <details >
 <summary >
-<code>shear_modulus</code> The shear modulus</summary>
+<code>shear_modulus</code> 🔵 The shear modulus</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1303,7 +1309,7 @@ KocksMeckingRateSensitivity</h2>
 </details>
 <details >
 <summary >
-<code>temperature</code> Absolute temperature</summary>
+<code>temperature</code> 🔷 Absolute temperature</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1315,7 +1321,7 @@ KocksMeckingRateSensitivity</h2>
 KocksMeckingYieldStress</h2>
 <p>The yield stress given by the Kocks-Mecking model. \( \sigma_y = \exp{C} \mu \) with \( \mu \) the shear modulus and \( C \) the horizontal intercept from the Kocks-Mecking diagram. </p><details >
 <summary >
-<code>C</code> The Kocks-Mecking horizontal intercept</summary>
+<code>C</code> 🔵 The Kocks-Mecking horizontal intercept</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1323,7 +1329,7 @@ KocksMeckingYieldStress</h2>
 </details>
 <details >
 <summary >
-<code>shear_modulus</code> The shear modulus</summary>
+<code>shear_modulus</code> 🔵 The shear modulus</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1343,7 +1349,7 @@ LinearIsotropicElasticity</h2>
 </details>
 <details >
 <summary >
-<code>poisson_ratio</code> Poisson's ratio</summary>
+<code>poisson_ratio</code> 🔵 Poisson's ratio</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1360,7 +1366,7 @@ LinearIsotropicElasticity</h2>
 </details>
 <details >
 <summary >
-<code>strain</code> Elastic strain</summary>
+<code>strain</code> 🔷 Elastic strain</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1369,7 +1375,7 @@ LinearIsotropicElasticity</h2>
 </details>
 <details >
 <summary >
-<code>stress</code> Stress</summary>
+<code>stress</code> 🔶 Stress</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1378,7 +1384,7 @@ LinearIsotropicElasticity</h2>
 </details>
 <details >
 <summary >
-<code>youngs_modulus</code> Young's modulus</summary>
+<code>youngs_modulus</code> 🔵 Young's modulus</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1389,7 +1395,7 @@ LinearIsotropicElasticity</h2>
 LinearIsotropicHardening</h2>
 <p>Map equivalent plastic strain to isotropic hardening following a linear relationship, i.e., \( h = K \varepsilon_p \) where \( K \) is the hardening modulus. </p><details >
 <summary >
-<code>equivalent_plastic_strain</code> Equivalent plastic strain</summary>
+<code>equivalent_plastic_strain</code> 🔷 Equivalent plastic strain</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1398,7 +1404,7 @@ LinearIsotropicHardening</h2>
 </details>
 <details >
 <summary >
-<code>hardening_modulus</code> Hardening modulus</summary>
+<code>hardening_modulus</code> 🔵 Hardening modulus</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1406,7 +1412,7 @@ LinearIsotropicHardening</h2>
 </details>
 <details >
 <summary >
-<code>isotropic_hardening</code> Isotropic hardening</summary>
+<code>isotropic_hardening</code> 🔶 Isotropic hardening</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1418,7 +1424,7 @@ LinearIsotropicHardening</h2>
 LinearKinematicHardening</h2>
 <p>Map kinematic plastic strain to back stress following a linear relationship, i.e., \( \boldsymbol{X} = H \boldsymbol{K}_p \) where \( H \) is the hardening modulus. </p><details >
 <summary >
-<code>back_stress</code> Back stress</summary>
+<code>back_stress</code> 🔶 Back stress</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1427,7 +1433,7 @@ LinearKinematicHardening</h2>
 </details>
 <details >
 <summary >
-<code>hardening_modulus</code> Hardening modulus</summary>
+<code>hardening_modulus</code> 🔵 Hardening modulus</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1435,7 +1441,7 @@ LinearKinematicHardening</h2>
 </details>
 <details >
 <summary >
-<code>kinematic_plastic_strain</code> Kinematic plastic strain</summary>
+<code>kinematic_plastic_strain</code> 🔷 Kinematic plastic strain</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1447,7 +1453,7 @@ LinearKinematicHardening</h2>
 LinearSingleSlipHardeningRule</h2>
 <p>Simple linear slip system hardening defined by \( \dot{\tau} = \theta \sum_{i=1}^{n_{slip}} \left| \dot{\gamma}_i \right| \) where \( \theta \) is the hardening slope. </p><details >
 <summary >
-<code>hardening_slope</code> Hardening rate</summary>
+<code>hardening_slope</code> 🔵 Hardening rate</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1455,7 +1461,7 @@ LinearSingleSlipHardeningRule</h2>
 </details>
 <details >
 <summary >
-<code>slip_hardening</code> Name of current values of slip hardening</summary>
+<code>slip_hardening</code> 🔷 Name of current values of slip hardening</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1464,7 +1470,7 @@ LinearSingleSlipHardeningRule</h2>
 </details>
 <details >
 <summary >
-<code>slip_hardening_rate</code> Name of tensor to output the slip system hardening rates into</summary>
+<code>slip_hardening_rate</code> 🔶 Name of tensor to output the slip system hardening rates into</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1473,7 +1479,7 @@ LinearSingleSlipHardeningRule</h2>
 </details>
 <details >
 <summary >
-<code>sum_slip_rates</code> Name of tensor containing the sum of the slip rates</summary>
+<code>sum_slip_rates</code> 🔷 Name of tensor containing the sum of the slip rates</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1485,7 +1491,7 @@ LinearSingleSlipHardeningRule</h2>
 MillerIndexConstantParameter</h2>
 <p>A parameter that is just a constant value, generally used to refer to a parameter in more than one downstream object. </p><details >
 <summary >
-<code>value</code> The constant value of the parameter</summary>
+<code>value</code> 🔵 The constant value of the parameter</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: MillerIndex </li>
@@ -1523,7 +1529,7 @@ MillerIndexLinearInterpolation</h2>
 MixedControlSetup</h2>
 <p>Object to setup a model for mixed stress/strain control. Copies the values of the fixed_values (the input strain or stress) and the mixed_state (the conjugate stress or strain values) into the stress and strain tensors used by the model. </p><details >
 <summary >
-<code>cauchy_stress</code> The name of the Cauchy stress tensor</summary>
+<code>cauchy_stress</code> 🔶 The name of the Cauchy stress tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1532,7 +1538,7 @@ MixedControlSetup</h2>
 </details>
 <details >
 <summary >
-<code>control</code> The name of the control signal. Values less than the threshold are strain control, greater are stress control</summary>
+<code>control</code> 🔷 The name of the control signal. Values less than the threshold are strain control, greater are stress control</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1541,7 +1547,7 @@ MixedControlSetup</h2>
 </details>
 <details >
 <summary >
-<code>fixed_values</code> The name of the fixed values, i.e. the actual strain or stress values being imposed on the model</summary>
+<code>fixed_values</code> 🔷 The name of the fixed values, i.e. the actual strain or stress values being imposed on the model</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1550,7 +1556,7 @@ MixedControlSetup</h2>
 </details>
 <details >
 <summary >
-<code>mixed_state</code> The name of the mixed state tensor. This holds the conjugate values to those being controlled</summary>
+<code>mixed_state</code> 🔷 The name of the mixed state tensor. This holds the conjugate values to those being controlled</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1559,7 +1565,7 @@ MixedControlSetup</h2>
 </details>
 <details >
 <summary >
-<code>strain</code> The name of the strain tensor</summary>
+<code>strain</code> 🔶 The name of the strain tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1604,7 +1610,7 @@ Normality</h2>
 </details>
 <details >
 <summary >
-<code>to</code> Variables to store the first derivatives</summary>
+<code>to</code> 🔶 Variables to store the first derivatives</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;VariableName&gt; </li>
@@ -1615,7 +1621,7 @@ Normality</h2>
 OlevskySinteringStress</h2>
 <p>Define the Olevsky-Skorohod sintering stress to be used in conjunction with poroplasticity yield functions such as the GTNYieldFunction. The sintering stress is defined as \( \sigma_s = 3 \dfrac{\gamma}{r} \phi^2 \), where \( \gamma \) is the surface tension, \( r \) is the size of the particles/powders, and \( \phi \) is the void fraction. </p><details >
 <summary >
-<code>particle_radius</code> Particle radius</summary>
+<code>particle_radius</code> 🔵 Particle radius</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1623,7 +1629,7 @@ OlevskySinteringStress</h2>
 </details>
 <details >
 <summary >
-<code>sintering_stress</code> Sintering stress</summary>
+<code>sintering_stress</code> 🔶 Sintering stress</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1632,7 +1638,7 @@ OlevskySinteringStress</h2>
 </details>
 <details >
 <summary >
-<code>surface_tension</code> Surface tension</summary>
+<code>surface_tension</code> 🔵 Surface tension</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1640,7 +1646,7 @@ OlevskySinteringStress</h2>
 </details>
 <details >
 <summary >
-<code>void_fraction</code> Void fraction</summary>
+<code>void_fraction</code> 🔷 Void fraction</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1652,7 +1658,7 @@ OlevskySinteringStress</h2>
 OrientationRate</h2>
 <p>Defines the rate of the crystal orientations as a spin given by \( \Omega^e = w - w^p - \varepsilon d^p + d^p \varepsilon \) where \( \Omega^e = \dot{Q} Q^T \), \( Q \) is the orientation, \( w \) is the vorticity, \( w^p \) is the plastic vorticity, \( d^p \) is the plastic deformation rate, and \( \varepsilon \) is the elastic stretch. </p><details >
 <summary >
-<code>elastic_strain</code> The name of the elastic strain tensor</summary>
+<code>elastic_strain</code> 🔷 The name of the elastic strain tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1661,7 +1667,7 @@ OrientationRate</h2>
 </details>
 <details >
 <summary >
-<code>orientation_rate</code> The name of the orientation rate (spin)</summary>
+<code>orientation_rate</code> 🔶 The name of the orientation rate (spin)</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1670,7 +1676,7 @@ OrientationRate</h2>
 </details>
 <details >
 <summary >
-<code>plastic_deformation_rate</code> The name of the plastic deformation rate</summary>
+<code>plastic_deformation_rate</code> 🔷 The name of the plastic deformation rate</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1679,7 +1685,7 @@ OrientationRate</h2>
 </details>
 <details >
 <summary >
-<code>plastic_vorticity</code> The name of the plastic vorticity</summary>
+<code>plastic_vorticity</code> 🔷 The name of the plastic vorticity</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1688,7 +1694,7 @@ OrientationRate</h2>
 </details>
 <details >
 <summary >
-<code>vorticity</code> The name of the voriticty tensor</summary>
+<code>vorticity</code> 🔷 The name of the voriticty tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1700,7 +1706,7 @@ OrientationRate</h2>
 OverStress</h2>
 <p>Calculate the over stress \( \boldsymbol{O} = \boldsymbol{M} - \boldsymbol{X} \), where \( \boldsymbol{M} \) is the Mandel stress and \( \boldsymbol{X} \) is the back stress. </p><details >
 <summary >
-<code>back_stress</code> Back stress</summary>
+<code>back_stress</code> 🔷 Back stress</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1709,7 +1715,7 @@ OverStress</h2>
 </details>
 <details >
 <summary >
-<code>mandel_stress</code> Mandel stress</summary>
+<code>mandel_stress</code> 🔷 Mandel stress</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1718,7 +1724,7 @@ OverStress</h2>
 </details>
 <details >
 <summary >
-<code>over_stress</code> Over stress</summary>
+<code>over_stress</code> 🔶 Over stress</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1730,7 +1736,7 @@ OverStress</h2>
 PerzynaPlasticFlowRate</h2>
 <p>Perzyna's viscous approximation of the consistent yield envelope (with a power law), i.e. \( \dot{\gamma} = \left( \frac{\left&lt; f \right&gt;}{\eta} \right)^n \), where \( f \) is the yield function, \( \eta \) is the reference stress, and \( n \) is the power-law exponent. </p><details >
 <summary >
-<code>exponent</code> Power-law exponent</summary>
+<code>exponent</code> 🔵 Power-law exponent</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1738,7 +1744,7 @@ PerzynaPlasticFlowRate</h2>
 </details>
 <details >
 <summary >
-<code>flow_rate</code> Flow rate</summary>
+<code>flow_rate</code> 🔶 Flow rate</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1747,7 +1753,7 @@ PerzynaPlasticFlowRate</h2>
 </details>
 <details >
 <summary >
-<code>reference_stress</code> Reference stress</summary>
+<code>reference_stress</code> 🔵 Reference stress</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1755,7 +1761,7 @@ PerzynaPlasticFlowRate</h2>
 </details>
 <details >
 <summary >
-<code>yield_function</code> Yield function</summary>
+<code>yield_function</code> 🔷 Yield function</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1776,7 +1782,7 @@ PlasticDeformationRate</h2>
 </details>
 <details >
 <summary >
-<code>orientation</code> The name of the orientation matrix tensor</summary>
+<code>orientation</code> 🔷 The name of the orientation matrix tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1785,7 +1791,7 @@ PlasticDeformationRate</h2>
 </details>
 <details >
 <summary >
-<code>plastic_deformation_rate</code> The name of the plastic deformation rate tensor</summary>
+<code>plastic_deformation_rate</code> 🔶 The name of the plastic deformation rate tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1794,7 +1800,7 @@ PlasticDeformationRate</h2>
 </details>
 <details >
 <summary >
-<code>slip_rates</code> The name of the tensor containg the current slip rates</summary>
+<code>slip_rates</code> 🔷 The name of the tensor containg the current slip rates</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1815,7 +1821,7 @@ PlasticVorticity</h2>
 </details>
 <details >
 <summary >
-<code>orientation</code> The name of the orientation matrix tensor</summary>
+<code>orientation</code> 🔷 The name of the orientation matrix tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1824,7 +1830,7 @@ PlasticVorticity</h2>
 </details>
 <details >
 <summary >
-<code>plastic_vorticity</code> The name of the plastic vorticity tensor</summary>
+<code>plastic_vorticity</code> 🔶 The name of the plastic vorticity tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1833,7 +1839,7 @@ PlasticVorticity</h2>
 </details>
 <details >
 <summary >
-<code>slip_rates</code> The name of the tensor containg the current slip rates</summary>
+<code>slip_rates</code> 🔷 The name of the tensor containg the current slip rates</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1854,7 +1860,7 @@ PowerLawSlipRule</h2>
 </details>
 <details >
 <summary >
-<code>gamma0</code> Reference slip rate</summary>
+<code>gamma0</code> 🔵 Reference slip rate</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1862,7 +1868,7 @@ PowerLawSlipRule</h2>
 </details>
 <details >
 <summary >
-<code>n</code> Rate sensitivity exponent</summary>
+<code>n</code> 🔵 Rate sensitivity exponent</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -1870,7 +1876,7 @@ PowerLawSlipRule</h2>
 </details>
 <details >
 <summary >
-<code>resolved_shears</code> Name of the resolved shear tensor</summary>
+<code>resolved_shears</code> 🔷 Name of the resolved shear tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1879,7 +1885,7 @@ PowerLawSlipRule</h2>
 </details>
 <details >
 <summary >
-<code>slip_rates</code> Name of the slip rate tensor</summary>
+<code>slip_rates</code> 🔶 Name of the slip rate tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1888,7 +1894,7 @@ PowerLawSlipRule</h2>
 </details>
 <details >
 <summary >
-<code>slip_strengths</code> Name of the tensor containing the slip system strengths</summary>
+<code>slip_strengths</code> 🔷 Name of the tensor containing the slip system strengths</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -1900,7 +1906,7 @@ PowerLawSlipRule</h2>
 QuaternionConstantParameter</h2>
 <p>A parameter that is just a constant value, generally used to refer to a parameter in more than one downstream object. </p><details >
 <summary >
-<code>value</code> The constant value of the parameter</summary>
+<code>value</code> 🔵 The constant value of the parameter</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Quaternion </li>
@@ -1938,7 +1944,7 @@ QuaternionLinearInterpolation</h2>
 R2ConstantParameter</h2>
 <p>A parameter that is just a constant value, generally used to refer to a parameter in more than one downstream object. </p><details >
 <summary >
-<code>value</code> The constant value of the parameter</summary>
+<code>value</code> 🔵 The constant value of the parameter</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: R2 </li>
@@ -1976,7 +1982,7 @@ R2LinearInterpolation</h2>
 R3ConstantParameter</h2>
 <p>A parameter that is just a constant value, generally used to refer to a parameter in more than one downstream object. </p><details >
 <summary >
-<code>value</code> The constant value of the parameter</summary>
+<code>value</code> 🔵 The constant value of the parameter</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: R3 </li>
@@ -2014,7 +2020,7 @@ R3LinearInterpolation</h2>
 R4ConstantParameter</h2>
 <p>A parameter that is just a constant value, generally used to refer to a parameter in more than one downstream object. </p><details >
 <summary >
-<code>value</code> The constant value of the parameter</summary>
+<code>value</code> 🔵 The constant value of the parameter</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: R4 </li>
@@ -2052,7 +2058,7 @@ R4LinearInterpolation</h2>
 R5ConstantParameter</h2>
 <p>A parameter that is just a constant value, generally used to refer to a parameter in more than one downstream object. </p><details >
 <summary >
-<code>value</code> The constant value of the parameter</summary>
+<code>value</code> 🔵 The constant value of the parameter</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: R5 </li>
@@ -2093,7 +2099,7 @@ RateIndependentPlasticFlowConstraint</h2>
 </p>
  <details >
 <summary >
-<code>flow_rate</code> Flow rate</summary>
+<code>flow_rate</code> 🔷 Flow rate</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2102,7 +2108,7 @@ RateIndependentPlasticFlowConstraint</h2>
 </details>
 <details >
 <summary >
-<code>yield_function</code> Yield function</summary>
+<code>yield_function</code> 🔷 Yield function</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2123,7 +2129,7 @@ ResolvedShear</h2>
 </details>
 <details >
 <summary >
-<code>orientation</code> The name of the orientation matrix</summary>
+<code>orientation</code> 🔷 The name of the orientation matrix</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2132,7 +2138,7 @@ ResolvedShear</h2>
 </details>
 <details >
 <summary >
-<code>resolved_shears</code> The name of the resolved shears</summary>
+<code>resolved_shears</code> 🔶 The name of the resolved shears</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2141,7 +2147,7 @@ ResolvedShear</h2>
 </details>
 <details >
 <summary >
-<code>stress</code> The name of the Cauchy stress tensor</summary>
+<code>stress</code> 🔷 The name of the Cauchy stress tensor</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2153,7 +2159,7 @@ ResolvedShear</h2>
 RotConstantParameter</h2>
 <p>A parameter that is just a constant value, generally used to refer to a parameter in more than one downstream object. </p><details >
 <summary >
-<code>value</code> The constant value of the parameter</summary>
+<code>value</code> 🔵 The constant value of the parameter</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Rot </li>
@@ -2191,7 +2197,7 @@ RotLinearInterpolation</h2>
 RotationMatrix</h2>
 <p>Convert a Rot (rotation represented in Rodrigues format) to R2 (a full rotation matrix). </p><details >
 <summary >
-<code>from</code> Rot to convert</summary>
+<code>from</code> 🔷 Rot to convert</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2199,7 +2205,7 @@ RotationMatrix</h2>
 </details>
 <details >
 <summary >
-<code>to</code> R2 to store the resulting rotation matrix</summary>
+<code>to</code> 🔶 R2 to store the resulting rotation matrix</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2210,7 +2216,7 @@ RotationMatrix</h2>
 SFFR4ConstantParameter</h2>
 <p>A parameter that is just a constant value, generally used to refer to a parameter in more than one downstream object. </p><details >
 <summary >
-<code>value</code> The constant value of the parameter</summary>
+<code>value</code> 🔵 The constant value of the parameter</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: SFFR4 </li>
@@ -2248,7 +2254,7 @@ SFFR4LinearInterpolation</h2>
 SFR3ConstantParameter</h2>
 <p>A parameter that is just a constant value, generally used to refer to a parameter in more than one downstream object. </p><details >
 <summary >
-<code>value</code> The constant value of the parameter</summary>
+<code>value</code> 🔵 The constant value of the parameter</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: SFR3 </li>
@@ -2313,7 +2319,7 @@ SR2BackwardEulerTimeIntegration</h2>
 </details>
 <details >
 <summary >
-<code>time</code> Time</summary>
+<code>time</code> 🔷 Time</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2322,7 +2328,7 @@ SR2BackwardEulerTimeIntegration</h2>
 </details>
 <details >
 <summary >
-<code>variable</code> Variable being integrated</summary>
+<code>variable</code> 🔶 Variable being integrated</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2330,7 +2336,7 @@ SR2BackwardEulerTimeIntegration</h2>
 </details>
 <details >
 <summary >
-<code>variable_rate</code> Variable rate</summary>
+<code>variable_rate</code> 🔷 Variable rate</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2341,7 +2347,7 @@ SR2BackwardEulerTimeIntegration</h2>
 SR2ConstantParameter</h2>
 <p>A parameter that is just a constant value, generally used to refer to a parameter in more than one downstream object. </p><details >
 <summary >
-<code>value</code> The constant value of the parameter</summary>
+<code>value</code> 🔵 The constant value of the parameter</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: SR2 </li>
@@ -2352,7 +2358,7 @@ SR2ConstantParameter</h2>
 SR2ForceRate</h2>
 <p>Calculate the first order discrete time derivative of a force variable as \( \dot{f} = \frac{f-f_n}{t-t_n} \), where \( f \) is the force variable, and \( t \) is time. </p><details >
 <summary >
-<code>force</code> The force variable to take time derivative with</summary>
+<code>force</code> 🔶 The force variable to take time derivative with</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2360,7 +2366,7 @@ SR2ForceRate</h2>
 </details>
 <details >
 <summary >
-<code>time</code> Time</summary>
+<code>time</code> 🔷 Time</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2372,7 +2378,7 @@ SR2ForceRate</h2>
 SR2ForwardEulerTimeIntegration</h2>
 <p>Perform forward Euler time integration defined as \( s = s_n + (t - t_n) \dot{s} \), where \(s\) is the variable being integrated, \(\dot{s}\) is the variable rate, and \(t\) is time. Subscripts \(n\) denote quantities from the previous time step. </p><details >
 <summary >
-<code>time</code> Time</summary>
+<code>time</code> 🔷 Time</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2381,7 +2387,7 @@ SR2ForwardEulerTimeIntegration</h2>
 </details>
 <details >
 <summary >
-<code>variable</code> Variable being integrated</summary>
+<code>variable</code> 🔶 Variable being integrated</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2392,7 +2398,7 @@ SR2ForwardEulerTimeIntegration</h2>
 SR2Invariant</h2>
 <p>Calculate the invariant of a symmetric second order tensor (of type SR2). </p><details >
 <summary >
-<code>invariant</code> Invariant</summary>
+<code>invariant</code> 🔶 Invariant</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2408,7 +2414,7 @@ SR2Invariant</h2>
 </details>
 <details >
 <summary >
-<code>tensor</code> SR2 which is used to calculate the invariant of</summary>
+<code>tensor</code> 🔷 SR2 which is used to calculate the invariant of</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2446,7 +2452,7 @@ SR2LinearInterpolation</h2>
 SR2StateRate</h2>
 <p>Calculate the first order discrete time derivative of a state variable as \( \dot{s} = \frac{s-s_n}{t-t_n} \), where \( s \) is the state variable, and \( t \) is time. </p><details >
 <summary >
-<code>state</code> The state variable to take time derivative with</summary>
+<code>state</code> 🔷 The state variable to take time derivative with</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2454,7 +2460,7 @@ SR2StateRate</h2>
 </details>
 <details >
 <summary >
-<code>time</code> Time</summary>
+<code>time</code> 🔷 Time</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2466,7 +2472,7 @@ SR2StateRate</h2>
 SR2SumModel</h2>
 <p>Calculate linear combination of multiple SR2 tensors as \( u = c_i v_i \) (Einstein summation assumed), where \( c_i \) are the coefficients, and \( v_i \) are the variables to be summed. </p><details >
 <summary >
-<code>coefficients</code> Weights associated with each variable</summary>
+<code>coefficients</code> 🔵 Weights associated with each variable</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;Scalar&gt; </li>
@@ -2474,7 +2480,7 @@ SR2SumModel</h2>
 </details>
 <details >
 <summary >
-<code>from_var</code> SR2 tensors to be summed</summary>
+<code>from_var</code> 🔷 SR2 tensors to be summed</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;VariableName&gt; </li>
@@ -2482,7 +2488,7 @@ SR2SumModel</h2>
 </details>
 <details >
 <summary >
-<code>to_var</code> The sum</summary>
+<code>to_var</code> 🔶 The sum</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2493,7 +2499,7 @@ SR2SumModel</h2>
 SSFR5ConstantParameter</h2>
 <p>A parameter that is just a constant value, generally used to refer to a parameter in more than one downstream object. </p><details >
 <summary >
-<code>value</code> The constant value of the parameter</summary>
+<code>value</code> 🔵 The constant value of the parameter</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: SSFR5 </li>
@@ -2531,7 +2537,7 @@ SSFR5LinearInterpolation</h2>
 SSR4ConstantParameter</h2>
 <p>A parameter that is just a constant value, generally used to refer to a parameter in more than one downstream object. </p><details >
 <summary >
-<code>value</code> The constant value of the parameter</summary>
+<code>value</code> 🔵 The constant value of the parameter</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: SSR4 </li>
@@ -2569,7 +2575,7 @@ SSR4LinearInterpolation</h2>
 SWR4ConstantParameter</h2>
 <p>A parameter that is just a constant value, generally used to refer to a parameter in more than one downstream object. </p><details >
 <summary >
-<code>value</code> The constant value of the parameter</summary>
+<code>value</code> 🔵 The constant value of the parameter</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: SWR4 </li>
@@ -2634,7 +2640,7 @@ ScalarBackwardEulerTimeIntegration</h2>
 </details>
 <details >
 <summary >
-<code>time</code> Time</summary>
+<code>time</code> 🔷 Time</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2643,7 +2649,7 @@ ScalarBackwardEulerTimeIntegration</h2>
 </details>
 <details >
 <summary >
-<code>variable</code> Variable being integrated</summary>
+<code>variable</code> 🔶 Variable being integrated</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2651,7 +2657,7 @@ ScalarBackwardEulerTimeIntegration</h2>
 </details>
 <details >
 <summary >
-<code>variable_rate</code> Variable rate</summary>
+<code>variable_rate</code> 🔷 Variable rate</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2662,7 +2668,7 @@ ScalarBackwardEulerTimeIntegration</h2>
 ScalarConstantParameter</h2>
 <p>A parameter that is just a constant value, generally used to refer to a parameter in more than one downstream object. </p><details >
 <summary >
-<code>value</code> The constant value of the parameter</summary>
+<code>value</code> 🔵 The constant value of the parameter</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -2673,7 +2679,7 @@ ScalarConstantParameter</h2>
 ScalarForceRate</h2>
 <p>Calculate the first order discrete time derivative of a force variable as \( \dot{f} = \frac{f-f_n}{t-t_n} \), where \( f \) is the force variable, and \( t \) is time. </p><details >
 <summary >
-<code>force</code> The force variable to take time derivative with</summary>
+<code>force</code> 🔶 The force variable to take time derivative with</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2681,7 +2687,7 @@ ScalarForceRate</h2>
 </details>
 <details >
 <summary >
-<code>time</code> Time</summary>
+<code>time</code> 🔷 Time</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2693,7 +2699,7 @@ ScalarForceRate</h2>
 ScalarForwardEulerTimeIntegration</h2>
 <p>Perform forward Euler time integration defined as \( s = s_n + (t - t_n) \dot{s} \), where \(s\) is the variable being integrated, \(\dot{s}\) is the variable rate, and \(t\) is time. Subscripts \(n\) denote quantities from the previous time step. </p><details >
 <summary >
-<code>time</code> Time</summary>
+<code>time</code> 🔷 Time</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2702,7 +2708,7 @@ ScalarForwardEulerTimeIntegration</h2>
 </details>
 <details >
 <summary >
-<code>variable</code> Variable being integrated</summary>
+<code>variable</code> 🔶 Variable being integrated</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2740,7 +2746,7 @@ ScalarLinearInterpolation</h2>
 ScalarStateRate</h2>
 <p>Calculate the first order discrete time derivative of a state variable as \( \dot{s} = \frac{s-s_n}{t-t_n} \), where \( s \) is the state variable, and \( t \) is time. </p><details >
 <summary >
-<code>state</code> The state variable to take time derivative with</summary>
+<code>state</code> 🔷 The state variable to take time derivative with</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2748,7 +2754,7 @@ ScalarStateRate</h2>
 </details>
 <details >
 <summary >
-<code>time</code> Time</summary>
+<code>time</code> 🔷 Time</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2760,7 +2766,7 @@ ScalarStateRate</h2>
 ScalarSumModel</h2>
 <p>Calculate linear combination of multiple Scalar tensors as \( u = c_i v_i \) (Einstein summation assumed), where \( c_i \) are the coefficients, and \( v_i \) are the variables to be summed. </p><details >
 <summary >
-<code>coefficients</code> Weights associated with each variable</summary>
+<code>coefficients</code> 🔵 Weights associated with each variable</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;Scalar&gt; </li>
@@ -2768,7 +2774,7 @@ ScalarSumModel</h2>
 </details>
 <details >
 <summary >
-<code>from_var</code> Scalar tensors to be summed</summary>
+<code>from_var</code> 🔷 Scalar tensors to be summed</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: vector&lt;VariableName&gt; </li>
@@ -2776,7 +2782,7 @@ ScalarSumModel</h2>
 </details>
 <details >
 <summary >
-<code>to_var</code> The sum</summary>
+<code>to_var</code> 🔶 The sum</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2787,7 +2793,7 @@ ScalarSumModel</h2>
 SingleSlipStrengthMap</h2>
 <p>Calculates the slip system strength for all slip systems as \( \hat{\tau}_i = \bar{\tau} + \tau_0 \) where \( \hat{\tau}_i \) is the strength for slip system i, \( \bar{\tau} \) is an evolving slip system strength (one value of all systems), defined by another object, and \( \tau_0 \) is a constant strength. </p><details >
 <summary >
-<code>constant_strength</code> The constant slip system strength</summary>
+<code>constant_strength</code> 🔵 The constant slip system strength</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -2804,7 +2810,7 @@ SingleSlipStrengthMap</h2>
 </details>
 <details >
 <summary >
-<code>slip_hardening</code> The name of the evovling, scalar strength</summary>
+<code>slip_hardening</code> 🔷 The name of the evovling, scalar strength</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2813,7 +2819,7 @@ SingleSlipStrengthMap</h2>
 </details>
 <details >
 <summary >
-<code>slip_strengths</code> Name of the slip system strengths</summary>
+<code>slip_strengths</code> 🔶 Name of the slip system strengths</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2834,7 +2840,7 @@ SumSlipRates</h2>
 </details>
 <details >
 <summary >
-<code>slip_rates</code> The name of individual slip rates</summary>
+<code>slip_rates</code> 🔷 The name of individual slip rates</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2843,7 +2849,7 @@ SumSlipRates</h2>
 </details>
 <details >
 <summary >
-<code>sum_slip_rates</code> The outut name for the scalar sum of the slip rates</summary>
+<code>sum_slip_rates</code> 🔶 The outut name for the scalar sum of the slip rates</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2855,7 +2861,7 @@ SumSlipRates</h2>
 ThermalEigenstrain</h2>
 <p>Define the (cummulative, as opposed to instantaneous) linear isotropic thermal eigenstrain, i.e. \( \boldsymbol{\varepsilon}_T = \alpha (T - T_0) \boldsymbol{I} \), where \( \alpha \) is the coefficient of thermal expansion (CTE), \( T \) is the temperature, and \( T_0 \) is the reference (stress-free) temperature. </p><details >
 <summary >
-<code>CTE</code> Coefficient of thermal expansion</summary>
+<code>CTE</code> 🔵 Coefficient of thermal expansion</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -2863,7 +2869,7 @@ ThermalEigenstrain</h2>
 </details>
 <details >
 <summary >
-<code>eigenstrain</code> Eigenstrain</summary>
+<code>eigenstrain</code> 🔶 Eigenstrain</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2872,7 +2878,7 @@ ThermalEigenstrain</h2>
 </details>
 <details >
 <summary >
-<code>reference_temperature</code> Reference (stress-free) temperature</summary>
+<code>reference_temperature</code> ⚫ Reference (stress-free) temperature</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -2880,7 +2886,7 @@ ThermalEigenstrain</h2>
 </details>
 <details >
 <summary >
-<code>temperature</code> Temperature</summary>
+<code>temperature</code> 🔷 Temperature</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2892,7 +2898,7 @@ ThermalEigenstrain</h2>
 TotalStrain</h2>
 <p>Calculate the total strain by summing the elastic and plastic strain. </p><details >
 <summary >
-<code>elastic_strain</code> Elastic strain</summary>
+<code>elastic_strain</code> 🔷 Elastic strain</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2901,7 +2907,7 @@ TotalStrain</h2>
 </details>
 <details >
 <summary >
-<code>plastic_strain</code> Plastic strain</summary>
+<code>plastic_strain</code> 🔷 Plastic strain</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2919,7 +2925,7 @@ TotalStrain</h2>
 </details>
 <details >
 <summary >
-<code>total_strain</code> Total strain</summary>
+<code>total_strain</code> 🔶 Total strain</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2958,7 +2964,7 @@ VecBackwardEulerTimeIntegration</h2>
 </details>
 <details >
 <summary >
-<code>time</code> Time</summary>
+<code>time</code> 🔷 Time</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -2967,7 +2973,7 @@ VecBackwardEulerTimeIntegration</h2>
 </details>
 <details >
 <summary >
-<code>variable</code> Variable being integrated</summary>
+<code>variable</code> 🔶 Variable being integrated</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2975,7 +2981,7 @@ VecBackwardEulerTimeIntegration</h2>
 </details>
 <details >
 <summary >
-<code>variable_rate</code> Variable rate</summary>
+<code>variable_rate</code> 🔷 Variable rate</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -2986,7 +2992,7 @@ VecBackwardEulerTimeIntegration</h2>
 VecConstantParameter</h2>
 <p>A parameter that is just a constant value, generally used to refer to a parameter in more than one downstream object. </p><details >
 <summary >
-<code>value</code> The constant value of the parameter</summary>
+<code>value</code> 🔵 The constant value of the parameter</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Vec </li>
@@ -3024,7 +3030,7 @@ VecLinearInterpolation</h2>
 VoceIsotropicHardening</h2>
 <p>Voce isotropic hardening model, \( h = R \left[ 1 - \exp(-d \varepsilon_p) \right] \), where \( R \) is the isotropic hardening upon saturation, and \( d \) is the hardening rate. </p><details >
 <summary >
-<code>equivalent_plastic_strain</code> Equivalent plastic strain</summary>
+<code>equivalent_plastic_strain</code> 🔷 Equivalent plastic strain</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -3033,7 +3039,7 @@ VoceIsotropicHardening</h2>
 </details>
 <details >
 <summary >
-<code>isotropic_hardening</code> Isotropic hardening</summary>
+<code>isotropic_hardening</code> 🔶 Isotropic hardening</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -3042,7 +3048,7 @@ VoceIsotropicHardening</h2>
 </details>
 <details >
 <summary >
-<code>saturated_hardening</code> Saturated isotropic hardening</summary>
+<code>saturated_hardening</code> 🔵 Saturated isotropic hardening</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -3050,7 +3056,7 @@ VoceIsotropicHardening</h2>
 </details>
 <details >
 <summary >
-<code>saturation_rate</code> Hardening saturation rate</summary>
+<code>saturation_rate</code> 🔵 Hardening saturation rate</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -3061,7 +3067,7 @@ VoceIsotropicHardening</h2>
 VoceSingleSlipHardeningRule</h2>
 <p>Voce hardening for a SingleSlipStrength type model defined by \( \dot{\tau} = \theta_0 \left( 1 - \frac{\tau}{\tau_f} \right) \sum_{i=1}^{n_{slip}} \left| \dot{\gamma}_i \right| \) where \( \theta_0 \) is the initial rate of work hardening, \( \tau_f \) is the saturated, maximum value of the slip system strength, and \( \dot{\gamma}_i \) is the slip rate on each system. </p><details >
 <summary >
-<code>initial_slope</code> The initial rate of hardening</summary>
+<code>initial_slope</code> 🔵 The initial rate of hardening</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -3069,7 +3075,7 @@ VoceSingleSlipHardeningRule</h2>
 </details>
 <details >
 <summary >
-<code>saturated_hardening</code> The final, saturated value of the slip system strength</summary>
+<code>saturated_hardening</code> 🔵 The final, saturated value of the slip system strength</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>
@@ -3077,7 +3083,7 @@ VoceSingleSlipHardeningRule</h2>
 </details>
 <details >
 <summary >
-<code>slip_hardening</code> Name of current values of slip hardening</summary>
+<code>slip_hardening</code> 🔷 Name of current values of slip hardening</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -3086,7 +3092,7 @@ VoceSingleSlipHardeningRule</h2>
 </details>
 <details >
 <summary >
-<code>slip_hardening_rate</code> Name of tensor to output the slip system hardening rates into</summary>
+<code>slip_hardening_rate</code> 🔶 Name of tensor to output the slip system hardening rates into</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -3095,7 +3101,7 @@ VoceSingleSlipHardeningRule</h2>
 </details>
 <details >
 <summary >
-<code>sum_slip_rates</code> Name of tensor containing the sum of the slip rates</summary>
+<code>sum_slip_rates</code> 🔷 Name of tensor containing the sum of the slip rates</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -3107,7 +3113,7 @@ VoceSingleSlipHardeningRule</h2>
 WR2ConstantParameter</h2>
 <p>A parameter that is just a constant value, generally used to refer to a parameter in more than one downstream object. </p><details >
 <summary >
-<code>value</code> The constant value of the parameter</summary>
+<code>value</code> 🔵 The constant value of the parameter</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: WR2 </li>
@@ -3118,7 +3124,7 @@ WR2ConstantParameter</h2>
 WR2ExplicitExponentialTimeIntegration</h2>
 <p>Perform explicit discrete exponential time integration of a rotation. The update can be written as \( s = \exp\left[ (t-t_n)\dot{s}\right] \circ s_n \), where \( \circ \) denotes the rotation operator. </p><details >
 <summary >
-<code>time</code> Time</summary>
+<code>time</code> 🔷 Time</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -3127,7 +3133,7 @@ WR2ExplicitExponentialTimeIntegration</h2>
 </details>
 <details >
 <summary >
-<code>variable</code> Variable being integrated</summary>
+<code>variable</code> 🔶 Variable being integrated</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -3165,7 +3171,7 @@ WR2ImplicitExponentialTimeIntegration</h2>
 </details>
 <details >
 <summary >
-<code>time</code> Time</summary>
+<code>time</code> 🔷 Time</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -3174,7 +3180,7 @@ WR2ImplicitExponentialTimeIntegration</h2>
 </details>
 <details >
 <summary >
-<code>variable</code> Variable being integrated</summary>
+<code>variable</code> 🔶 Variable being integrated</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -3212,7 +3218,7 @@ WR2LinearInterpolation</h2>
 WSR4ConstantParameter</h2>
 <p>A parameter that is just a constant value, generally used to refer to a parameter in more than one downstream object. </p><details >
 <summary >
-<code>value</code> The constant value of the parameter</summary>
+<code>value</code> 🔵 The constant value of the parameter</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: WSR4 </li>
@@ -3250,7 +3256,7 @@ WSR4LinearInterpolation</h2>
 WWR4ConstantParameter</h2>
 <p>A parameter that is just a constant value, generally used to refer to a parameter in more than one downstream object. </p><details >
 <summary >
-<code>value</code> The constant value of the parameter</summary>
+<code>value</code> 🔵 The constant value of the parameter</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: WWR4 </li>
@@ -3288,7 +3294,7 @@ WWR4LinearInterpolation</h2>
 YieldFunction</h2>
 <p>Classical macroscale plasticity yield function, \( f = \bar{\sigma} - \sigma_y - h \), where \( \bar{\sigma} \) is the effective stress, \( \sigma_y \) is the yield stress, and \( h \) is the isotropic hardening. </p><details >
 <summary >
-<code>effective_stress</code> Effective stress</summary>
+<code>effective_stress</code> 🔷 Effective stress</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -3297,7 +3303,7 @@ YieldFunction</h2>
 </details>
 <details >
 <summary >
-<code>isotropic_hardening</code> Isotropic hardening</summary>
+<code>isotropic_hardening</code> 🔷 Isotropic hardening</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName </li>
@@ -3305,7 +3311,7 @@ YieldFunction</h2>
 </details>
 <details >
 <summary >
-<code>yield_function</code> Yield function</summary>
+<code>yield_function</code> 🔶 Yield function</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: VariableName</li>
@@ -3314,7 +3320,7 @@ YieldFunction</h2>
 </details>
 <details >
 <summary >
-<code>yield_stress</code> Yield stress</summary>
+<code>yield_stress</code> 🔷 Yield stress</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar </li>

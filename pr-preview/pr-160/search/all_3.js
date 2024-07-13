@@ -64,12 +64,13 @@ var searchData=
   ['broadcast_5fsizes_61',['broadcast_sizes',['../namespaceneml2_1_1utils.html#a288a351a0307f62ac8db5ea64dea8a63',1,'neml2::utils']]],
   ['broadcastable_62',['broadcastable',['../namespaceneml2.html#a36e466553cc4e968e9176bb270a9d651',1,'neml2']]],
   ['broadcasting_63',['Tensor broadcasting',['../system-tensors.html#tensor-broadcasting',1,'']]],
-  ['buffer_64',['Buffer',['../system-data.html#autotoc_md29',1,'']]],
-  ['bufferstore_65',['BufferStore',['../classneml2_1_1BufferStore.html',1,'BufferStore'],['../classneml2_1_1BufferStore.html#ac9a0513f22b822f9513059d10d072124',1,'neml2::BufferStore::BufferStore()']]],
-  ['build_20and_20install_66',['Build and install',['../install.html#autotoc_md11',1,'']]],
-  ['build_20customization_67',['Build customization',['../install.html#install-build-customization',1,'']]],
-  ['builder_68',['builder',['../classneml2_1_1Registry.html#a5e569192804822d0600e223341202e0a',1,'neml2::Registry']]],
-  ['buildptr_69',['BuildPtr',['../namespaceneml2.html#af62feabaf2151de89d0a76a2995f8b4d',1,'neml2']]],
-  ['burgers_70',['burgers',['../classneml2_1_1crystallography_1_1CrystalGeometry.html#a6e6ca00752e0b1f1e377b78c81df8d1c',1,'neml2::crystallography::CrystalGeometry']]],
-  ['bvv_71',['bvv',['../namespaceneml2_1_1math.html#a3cc8834161a72771f85701fb80bf4e22',1,'neml2::math']]]
+  ['buffer_64',['BUFFER',['../namespaceneml2.html#ab600865ffa5d3681d723ef019d109535a17de626bcae5109bb2f7a66dfc4a8a1d',1,'neml2']]],
+  ['buffer_65',['Buffer',['../system-data.html#autotoc_md29',1,'']]],
+  ['bufferstore_66',['BufferStore',['../classneml2_1_1BufferStore.html',1,'BufferStore'],['../classneml2_1_1BufferStore.html#ac9a0513f22b822f9513059d10d072124',1,'neml2::BufferStore::BufferStore()']]],
+  ['build_20and_20install_67',['Build and install',['../install.html#autotoc_md11',1,'']]],
+  ['build_20customization_68',['Build customization',['../install.html#install-build-customization',1,'']]],
+  ['builder_69',['builder',['../classneml2_1_1Registry.html#a5e569192804822d0600e223341202e0a',1,'neml2::Registry']]],
+  ['buildptr_70',['BuildPtr',['../namespaceneml2.html#af62feabaf2151de89d0a76a2995f8b4d',1,'neml2']]],
+  ['burgers_71',['burgers',['../classneml2_1_1crystallography_1_1CrystalGeometry.html#a6e6ca00752e0b1f1e377b78c81df8d1c',1,'neml2::crystallography::CrystalGeometry']]],
+  ['bvv_72',['bvv',['../namespaceneml2_1_1math.html#a3cc8834161a72771f85701fb80bf4e22',1,'neml2::math']]]
 ];

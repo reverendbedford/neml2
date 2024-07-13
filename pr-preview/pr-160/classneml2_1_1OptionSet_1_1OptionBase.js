@@ -5,6 +5,8 @@ var classneml2_1_1OptionSet_1_1OptionBase =
     [ "clone", "classneml2_1_1OptionSet_1_1OptionBase.html#aa98261f01b9710912a2bbc226b7187a6", null ],
     [ "doc", "classneml2_1_1OptionSet_1_1OptionBase.html#abce685eded664bf68a6d49066ca559b4", null ],
     [ "doc", "classneml2_1_1OptionSet_1_1OptionBase.html#a95ddf7f84b4944b035c3f05fab305f99", null ],
+    [ "ftype", "classneml2_1_1OptionSet_1_1OptionBase.html#a274da1b73f5117981224a7658da7307d", null ],
+    [ "ftype", "classneml2_1_1OptionSet_1_1OptionBase.html#af20f37b2d46adfb0e5f4c2e3fdb29047", null ],
     [ "name", "classneml2_1_1OptionSet_1_1OptionBase.html#a24dcbf29c0d6cd766009a182a6484e3b", null ],
     [ "operator!=", "classneml2_1_1OptionSet_1_1OptionBase.html#ae9568421843edb301df78b73cee5cf82", null ],
     [ "operator==", "classneml2_1_1OptionSet_1_1OptionBase.html#a819496e535eb8afbf1dbd144c0230561", null ],

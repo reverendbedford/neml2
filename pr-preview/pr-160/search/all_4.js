@@ -60,11 +60,12 @@ var searchData=
   ['create_5fobject_57',['create_object',['../classneml2_1_1Factory.html#a39a2492155a44988c111b4391c1843ed',1,'neml2::Factory']]],
   ['creation_58',['Tensor creation',['../system-tensors.html#tensor-creation',1,'']]],
   ['cross_59',['cross',['../classneml2_1_1VecBase.html#a4996844499661c80b0c411081692270f',1,'neml2::VecBase']]],
-  ['crossref_60',['CrossRef',['../classneml2_1_1CrossRef.html',1,'CrossRef&lt; T &gt;'],['../classneml2_1_1CrossRef.html#acc20d5a296c08119e6d065e320b64758',1,'neml2::CrossRef::CrossRef()']]],
-  ['crystal_20plasticity_61',['Crystal plasticity',['../solid-mechanics.html#autotoc_md28',1,'']]],
-  ['crystalgeometry_62',['CrystalGeometry',['../classneml2_1_1crystallography_1_1CrystalGeometry.html',1,'CrystalGeometry'],['../classneml2_1_1crystallography_1_1CrystalGeometry.html#a90cfc33f0a3cd16ab9b2a9f5846cdbb8',1,'neml2::crystallography::CrystalGeometry::CrystalGeometry(const OptionSet &amp;options)'],['../classneml2_1_1crystallography_1_1CrystalGeometry.html#a9f44fbfd551f2ceab42344bbeda8fb69',1,'neml2::crystallography::CrystalGeometry::CrystalGeometry(const OptionSet &amp;options, const R2 &amp;cclass, const Vec &amp;lattice_vectors)'],['../syntax-data.html#crystalgeometry',1,'CrystalGeometry']]],
-  ['cubic_63',['cubic',['../namespaceneml2_1_1crystallography_1_1crystal__symmetry__operators.html#ab5c7c19b0f39a7c22b0f05dc3572a699',1,'neml2::crystallography::crystal_symmetry_operators']]],
-  ['cubiccrystal_64',['CubicCrystal',['../classneml2_1_1crystallography_1_1CubicCrystal.html',1,'CubicCrystal'],['../classneml2_1_1crystallography_1_1CubicCrystal.html#a85d3478b22f2b2cb55316d5e934b56f2',1,'neml2::crystallography::CubicCrystal::CubicCrystal()'],['../syntax-data.html#cubiccrystal',1,'CubicCrystal']]],
-  ['custom_20model_65',['Custom Model',['../custom-model.html',1,'']]],
-  ['customization_66',['Build customization',['../install.html#install-build-customization',1,'']]]
+  ['cross_20referencing_60',['Cross-Referencing',['../input-file.html#cross-referencing',1,'']]],
+  ['crossref_61',['CrossRef',['../classneml2_1_1CrossRef.html',1,'CrossRef&lt; T &gt;'],['../classneml2_1_1CrossRef.html#acc20d5a296c08119e6d065e320b64758',1,'neml2::CrossRef::CrossRef()']]],
+  ['crystal_20plasticity_62',['Crystal plasticity',['../solid-mechanics.html#autotoc_md28',1,'']]],
+  ['crystalgeometry_63',['CrystalGeometry',['../classneml2_1_1crystallography_1_1CrystalGeometry.html',1,'CrystalGeometry'],['../classneml2_1_1crystallography_1_1CrystalGeometry.html#a90cfc33f0a3cd16ab9b2a9f5846cdbb8',1,'neml2::crystallography::CrystalGeometry::CrystalGeometry(const OptionSet &amp;options)'],['../classneml2_1_1crystallography_1_1CrystalGeometry.html#a9f44fbfd551f2ceab42344bbeda8fb69',1,'neml2::crystallography::CrystalGeometry::CrystalGeometry(const OptionSet &amp;options, const R2 &amp;cclass, const Vec &amp;lattice_vectors)'],['../syntax-data.html#crystalgeometry',1,'CrystalGeometry']]],
+  ['cubic_64',['cubic',['../namespaceneml2_1_1crystallography_1_1crystal__symmetry__operators.html#ab5c7c19b0f39a7c22b0f05dc3572a699',1,'neml2::crystallography::crystal_symmetry_operators']]],
+  ['cubiccrystal_65',['CubicCrystal',['../classneml2_1_1crystallography_1_1CubicCrystal.html',1,'CubicCrystal'],['../classneml2_1_1crystallography_1_1CubicCrystal.html#a85d3478b22f2b2cb55316d5e934b56f2',1,'neml2::crystallography::CubicCrystal::CubicCrystal()'],['../syntax-data.html#cubiccrystal',1,'CubicCrystal']]],
+  ['custom_20model_66',['Custom Model',['../custom-model.html',1,'']]],
+  ['customization_67',['Build customization',['../install.html#install-build-customization',1,'']]]
 ];
