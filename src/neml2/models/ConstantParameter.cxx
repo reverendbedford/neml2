@@ -35,7 +35,7 @@ ConstantParameter<T>::expected_options()
   options.doc() = "A parameter that is just a constant value, generally used to refer to a "
                   "parameter in more than one downstream object.";
 
-  options.set<CrossRef<T>>("value");
+  options.set_parameter<CrossRef<T>>("value");
   options.set("value").doc() = "The constant value of the parameter";
   return options;
 }

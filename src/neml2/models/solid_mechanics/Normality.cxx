@@ -44,7 +44,7 @@ Normality::expected_options()
   options.set<std::vector<VariableName>>("from");
   options.set("from").doc() = "Function arguments to take derivatives w.r.t.";
 
-  options.set<std::vector<VariableName>>("to");
+  options.set_output<std::vector<VariableName>>("to");
   options.set("to").doc() = "Variables to store the first derivatives";
 
   return options;

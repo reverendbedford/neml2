@@ -37,13 +37,13 @@ ElasticStrain::expected_options()
                   "decomposition), i.e. \\f$ \\boldsymbol{\\varepsilon}_e = "
                   "\\boldsymbol{\\varepsilon} - \\boldsymbol{\\varepsilon}_p \\f$.";
 
-  options.set<VariableName>("total_strain") = VariableName("forces", "E");
+  options.set_input<VariableName>("total_strain") = VariableName("forces", "E");
   options.set("total_strain").doc() = "Total strain";
 
-  options.set<VariableName>("plastic_strain") = VariableName("state", "internal", "Ep");
+  options.set_input<VariableName>("plastic_strain") = VariableName("state", "internal", "Ep");
   options.set("plastic_strain").doc() = "Plastic strain";
 
-  options.set<VariableName>("elastic_strain") = VariableName("state", "internal", "Ee");
+  options.set_output<VariableName>("elastic_strain") = VariableName("state", "internal", "Ee");
   options.set("elastic_strain").doc() = "Elastic strain";
 
   options.set<bool>("rate_form") = false;

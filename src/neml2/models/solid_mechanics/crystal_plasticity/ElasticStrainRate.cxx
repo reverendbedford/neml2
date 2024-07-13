@@ -42,19 +42,20 @@ ElasticStrainRate::expected_options()
                   "deformation rate, \\f$ w \\f$ is the vorticity, and \\f$ \\varepsilon \\f$ is "
                   "the elastic strain.";
 
-  options.set<VariableName>("elastic_strain_rate") = VariableName("state", "elastic_strain_rate");
+  options.set_output<VariableName>("elastic_strain_rate") =
+      VariableName("state", "elastic_strain_rate");
   options.set("elastic_strain_rate").doc() = "Name of the elastic strain rate";
 
-  options.set<VariableName>("elastic_strain") = VariableName("state", "elastic_strain");
+  options.set_input<VariableName>("elastic_strain") = VariableName("state", "elastic_strain");
   options.set("elastic_strain").doc() = "Name of the elastic strain";
 
-  options.set<VariableName>("deformation_rate") = VariableName("forces", "deformation_rate");
+  options.set_input<VariableName>("deformation_rate") = VariableName("forces", "deformation_rate");
   options.set("deformation_rate").doc() = "Name of the deformation rate";
 
-  options.set<VariableName>("vorticity") = VariableName("forces", "vorticity");
+  options.set_input<VariableName>("vorticity") = VariableName("forces", "vorticity");
   options.set("vorticity").doc() = "Name of the vorticity";
 
-  options.set<VariableName>("plastic_deformation_rate") =
+  options.set_input<VariableName>("plastic_deformation_rate") =
       VariableName("state", "internal", "plastic_deformation_rate");
   options.set("plastic_deformation_rate").doc() = "Name of the plastic deformation rate";
 

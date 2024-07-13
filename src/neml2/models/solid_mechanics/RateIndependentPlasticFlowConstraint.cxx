@@ -36,10 +36,10 @@ RateIndependentPlasticFlowConstraint::expected_options()
                   "complementarity condition \\f[ r = \\dot{\\gamma} - f^p - "
                   "\\sqrt{{\\dot{\\gamma}}^2 + {f^p}^2} \\f]";
 
-  options.set<VariableName>("yield_function") = VariableName("state", "internal", "fp");
+  options.set_input<VariableName>("yield_function") = VariableName("state", "internal", "fp");
   options.set("yield_function").doc() = "Yield function";
 
-  options.set<VariableName>("flow_rate") = VariableName("state", "internal", "gamma_rate");
+  options.set_input<VariableName>("flow_rate") = VariableName("state", "internal", "gamma_rate");
   options.set("flow_rate").doc() = "Flow rate";
 
   return options;

@@ -115,6 +115,7 @@ OptionSet::print(std::ostream & os) const
   {
     os << "  " << it->first << ":\n";
     os << "    type: " << it->second->type() << '\n';
+    os << "    ftype: " << it->second->ftype() << '\n';
     if (it->second->doc().empty())
       os << "    doc:\n";
     else
@@ -128,6 +129,25 @@ OptionSet::print(std::ostream & os) const
     if (++it != _values.end())
       os << '\n';
   }
+}
+
+std::ostream &
+operator<<(std::ostream & os, FType f)
+{
+  if (f == FType::NONE)
+    os << "NONE";
+  else if (f == FType::INPUT)
+    os << "INPUT";
+  else if (f == FType::OUTPUT)
+    os << "OUTPUT";
+  else if (f == FType::PARAMETER)
+    os << "PARAMETER";
+  else if (f == FType::BUFFER)
+    os << "BUFFER";
+  else
+    throw NEMLException("Unknown FType");
+
+  return os;
 }
 
 std::ostream &

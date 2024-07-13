@@ -36,10 +36,10 @@ CopyVariable<T>::expected_options()
   OptionSet options = Model::expected_options();
   options.doc() = "Copy the value from one variable to another.";
 
-  options.set<VariableName>("from");
+  options.set_input<VariableName>("from");
   options.set("from").doc() = "Variable to copy value from";
 
-  options.set<VariableName>("to");
+  options.set_output<VariableName>("to");
   options.set("to").doc() = "Variable to copy value to";
 
   return options;

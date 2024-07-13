@@ -40,10 +40,10 @@ PowerLawSlipRule::expected_options()
       "resolved shear, \\f$ \\hat{\\tau}_i \\f$ the slip system strength, \\f$ n \\f$ the rate "
       "senstivity, and \\f$ \\dot{\\gamma}_0 \\f$ a reference slip rate.";
 
-  options.set<CrossRef<Scalar>>("gamma0");
+  options.set_parameter<CrossRef<Scalar>>("gamma0");
   options.set("gamma0").doc() = "Reference slip rate";
 
-  options.set<CrossRef<Scalar>>("n");
+  options.set_parameter<CrossRef<Scalar>>("n");
   options.set("n").doc() = "Rate sensitivity exponent";
 
   return options;

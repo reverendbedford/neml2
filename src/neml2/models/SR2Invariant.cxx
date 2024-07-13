@@ -35,10 +35,10 @@ SR2Invariant::expected_options()
   OptionSet options = Model::expected_options();
   options.doc() = "Calculate the invariant of a symmetric second order tensor (of type SR2).";
 
-  options.set<VariableName>("tensor");
+  options.set_input<VariableName>("tensor");
   options.set("tensor").doc() = "SR2 which is used to calculate the invariant of";
 
-  options.set<VariableName>("invariant");
+  options.set_output<VariableName>("invariant");
   options.set("invariant").doc() = "Invariant";
 
   options.set<std::string>("invariant_type");

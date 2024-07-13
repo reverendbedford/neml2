@@ -35,13 +35,13 @@ TotalStrain::expected_options()
   OptionSet options = Model::expected_options();
   options.doc() = "Calculate the total strain by summing the elastic and plastic strain.";
 
-  options.set<VariableName>("elastic_strain") = VariableName("state", "internal", "Ee");
+  options.set_input<VariableName>("elastic_strain") = VariableName("state", "internal", "Ee");
   options.set("elastic_strain").doc() = "Elastic strain";
 
-  options.set<VariableName>("plastic_strain") = VariableName("state", "internal", "Ep");
+  options.set_input<VariableName>("plastic_strain") = VariableName("state", "internal", "Ep");
   options.set("plastic_strain").doc() = "Plastic strain";
 
-  options.set<VariableName>("total_strain") = VariableName("state", "E");
+  options.set_output<VariableName>("total_strain") = VariableName("state", "E");
   options.set("total_strain").doc() = "Total strain";
 
   options.set<bool>("rate_form") = false;

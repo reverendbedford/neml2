@@ -32,10 +32,11 @@ IsotropicHardening::expected_options()
   OptionSet options = Model::expected_options();
   options.doc() = "Map equivalent plastic strain to isotropic hardening";
 
-  options.set<VariableName>("equivalent_plastic_strain") = VariableName("state", "internal", "ep");
+  options.set_input<VariableName>("equivalent_plastic_strain") =
+      VariableName("state", "internal", "ep");
   options.set("equivalent_plastic_strain").doc() = "Equivalent plastic strain";
 
-  options.set<VariableName>("isotropic_hardening") = VariableName("state", "internal", "k");
+  options.set_output<VariableName>("isotropic_hardening") = VariableName("state", "internal", "k");
   options.set("isotropic_hardening").doc() = "Isotropic hardening";
 
   return options;

@@ -42,11 +42,11 @@ KocksMeckingFlowViscosity::expected_options()
       "\\f$ T \\f$ absolute temperature, \\f$ A \\f$ the Kocks-Mecking slope parameter, and \\f$ B "
       "\\f$ the Kocks-Mecking intercept parameter.";
 
-  options.set<CrossRef<Scalar>>("A");
+  options.set_parameter<CrossRef<Scalar>>("A");
   options.set("A").doc() = "The Kocks-Mecking slope parameter";
-  options.set<CrossRef<Scalar>>("B");
+  options.set_parameter<CrossRef<Scalar>>("B");
   options.set("B").doc() = "The Kocks-Mecking intercept parameter";
-  options.set<CrossRef<Scalar>>("shear_modulus");
+  options.set_parameter<CrossRef<Scalar>>("shear_modulus");
   options.set("shear_modulus").doc() = "The shear modulus";
 
   options.set<Real>("eps0");
@@ -57,7 +57,7 @@ KocksMeckingFlowViscosity::expected_options()
   options.set<Real>("b");
   options.set("b").doc() = "The Burgers vector";
 
-  options.set<VariableName>("temperature") = VariableName("forces", "T");
+  options.set_input<VariableName>("temperature") = VariableName("forces", "T");
   options.set("temperature").doc() = "Absolute temperature";
 
   return options;

@@ -36,10 +36,10 @@ VoceIsotropicHardening::expected_options()
                   "\\right] \\f$, where \\f$ R \\f$ is the isotropic hardening upon saturation, "
                   "and \\f$ d \\f$ is the hardening rate.";
 
-  options.set<CrossRef<Scalar>>("saturated_hardening");
+  options.set_parameter<CrossRef<Scalar>>("saturated_hardening");
   options.set("saturated_hardening").doc() = "Saturated isotropic hardening";
 
-  options.set<CrossRef<Scalar>>("saturation_rate");
+  options.set_parameter<CrossRef<Scalar>>("saturation_rate");
   options.set("saturation_rate").doc() = "Hardening saturation rate";
 
   return options;

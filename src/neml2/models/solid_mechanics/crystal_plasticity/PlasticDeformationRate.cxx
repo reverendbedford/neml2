@@ -43,14 +43,14 @@ PlasticDeformationRate::expected_options()
                   "\\f$ the slip rate on the ith slip system, \\f$Q \\f$ the orientation, \\f$ d_i "
                   "\\f$ the slip system direction, and \\f$ n_i \\f$ the slip system normal.";
 
-  options.set<VariableName>("plastic_deformation_rate") =
+  options.set_output<VariableName>("plastic_deformation_rate") =
       VariableName("state", "internal", "plastic_deformation_rate");
   options.set("plastic_deformation_rate").doc() = "The name of the plastic deformation rate tensor";
 
-  options.set<VariableName>("orientation") = VariableName("state", "orientation_matrix");
+  options.set_input<VariableName>("orientation") = VariableName("state", "orientation_matrix");
   options.set("orientation").doc() = "The name of the orientation matrix tensor";
 
-  options.set<VariableName>("slip_rates") = VariableName("state", "internal", "slip_rates");
+  options.set_input<VariableName>("slip_rates") = VariableName("state", "internal", "slip_rates");
   options.set("slip_rates").doc() = "The name of the tensor containg the current slip rates";
 
   options.set<std::string>("crystal_geometry_name") = "crystal_geometry";

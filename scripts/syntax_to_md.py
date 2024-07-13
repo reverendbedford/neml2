@@ -56,6 +56,31 @@ def get_sections(syntax):
     return list(dict.fromkeys(sections))
 
 
+def ftype_icon(ftype):
+    if ftype == "INPUT":
+        return "🇮"
+    elif ftype == "OUTPUT":
+        return "🇴"
+    elif ftype == "PARAMETER":
+        return "🇵"
+    elif ftype == "BUFFER":
+        return "🇧"
+
+    return ""
+
+
+def section_prologue(section):
+    if section == "Models":
+        return """The following symbols are used throughout the documentation to denote different components of function definition.
+               - 🇮: input variable
+               - 🇴: output variable
+               - 🇵: parameter
+               - 🇧: buffer
+               """
+
+    return ""
+
+
 if __name__ == "__main__":
     with open(sys.argv[1], "r") as stream:
         syntax = yaml.safe_load(stream)
@@ -76,6 +101,8 @@ if __name__ == "__main__":
                     "# [{}] {{#{}}}\n\n".format(section, "syntax-" + section.lower())
                 )
                 stream.write("[TOC]\n\n")
+                stream.write(section_prologue(section))
+                stream.write("\n")
                 stream.write("## Available objects and their input file syntax\n\n")
                 stream.write(
                     "Refer to [System Documentation](@ref system-{}) for detailed explanation about this system.\n\n".format(
@@ -125,9 +152,10 @@ if __name__ == "__main__":
                                 )
                             )
                         else:
+
                             stream.write(
-                                "  <summary>`{}` {}</summary>\n\n".format(
-                                    param_name, info["doc"]
+                                "  <summary>`{}` {} {}</summary>\n\n".format(
+                                    param_name, ftype_icon(info["ftype"]), info["doc"]
                                 )
                             )
                             if "\\f" in info["doc"]:

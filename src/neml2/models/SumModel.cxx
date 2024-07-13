@@ -43,13 +43,13 @@ SumModel<T>::expected_options()
                   " tensors as \\f$ u = c_i v_i \\f$ (Einstein summation assumed), where \\f$ c_i "
                   "\\f$ are the coefficients, and \\f$ v_i \\f$ are the variables to be summed.";
 
-  options.set<std::vector<VariableName>>("from_var");
+  options.set_input<std::vector<VariableName>>("from_var");
   options.set("from_var").doc() = tensor_type + " tensors to be summed";
 
-  options.set<VariableName>("to_var");
+  options.set_output<VariableName>("to_var");
   options.set("to_var").doc() = "The sum";
 
-  options.set<std::vector<CrossRef<Scalar>>>("coefficients") = {};
+  options.set_parameter<std::vector<CrossRef<Scalar>>>("coefficients") = {};
   options.set("coefficients").doc() = "Weights associated with each variable";
 
   return options;

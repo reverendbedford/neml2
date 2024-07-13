@@ -37,9 +37,9 @@ KocksMeckingYieldStress::expected_options()
                   "\\mu \\f$ with \\f$ \\mu \\f$ the shear modulus and \\f$ C \\f$ the horizontal "
                   "intercept from the Kocks-Mecking diagram.";
 
-  options.set<CrossRef<Scalar>>("C");
+  options.set_parameter<CrossRef<Scalar>>("C");
   options.set("C").doc() = "The Kocks-Mecking horizontal intercept";
-  options.set<CrossRef<Scalar>>("shear_modulus");
+  options.set_parameter<CrossRef<Scalar>>("shear_modulus");
   options.set("shear_modulus").doc() = "The shear modulus";
 
   return options;

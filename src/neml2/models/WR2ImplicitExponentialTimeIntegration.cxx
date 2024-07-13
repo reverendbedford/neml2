@@ -44,10 +44,10 @@ WR2ImplicitExponentialTimeIntegration::expected_options()
 
   NonlinearSystem::enable_automatic_scaling(options);
 
-  options.set<VariableName>("variable");
+  options.set_output<VariableName>("variable");
   options.set("variable").doc() = "Variable being integrated";
 
-  options.set<VariableName>("time") = VariableName("t");
+  options.set_input<VariableName>("time") = VariableName("t");
   options.set("time").doc() = "Time";
 
   return options;

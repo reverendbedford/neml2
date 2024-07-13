@@ -39,10 +39,10 @@ LinearIsotropicElasticity::expected_options()
                    "respectively. For convenience, this object only requests Young's modulus and "
                    "Poisson's ratio, and handles the Lame parameter conversion behind the scenes.";
 
-  options.set<CrossRef<Scalar>>("youngs_modulus");
+  options.set_parameter<CrossRef<Scalar>>("youngs_modulus");
   options.set("youngs_modulus").doc() = "Young's modulus";
 
-  options.set<CrossRef<Scalar>>("poisson_ratio");
+  options.set_parameter<CrossRef<Scalar>>("poisson_ratio");
   options.set("poisson_ratio").doc() = "Poisson's ratio";
 
   return options;

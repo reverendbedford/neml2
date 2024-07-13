@@ -42,10 +42,10 @@ FixOrientation::expected_options()
       "to 1.0 by default and replacing all the orientations that exceed this limit "
       "with their shadow parameters values.";
 
-  options.set<VariableName>("input_orientation") = VariableName("state", "orientation");
+  options.set_input<VariableName>("input_orientation") = VariableName("state", "orientation");
   options.set("input_orientation").doc() = "Name of input tensor of orientations to operate on.";
 
-  options.set<VariableName>("output_orientation") = VariableName("state", "orientation");
+  options.set_output<VariableName>("output_orientation") = VariableName("state", "orientation");
   options.set("output_orientation").doc() = "Name of output tensor";
 
   options.set<Real>("threshold") = 1.0;

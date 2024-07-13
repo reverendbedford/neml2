@@ -42,32 +42,32 @@ GTNYieldFunction::expected_options()
       "void growth back stress (sintering stress). \\f$ q_1 \\f$, \\f$ q_2 \\f$, and \\f$ q_3 \\f$ "
       "are parameters controlling the yield mechanisms.";
 
-  options.set<CrossRef<Scalar>>("yield_stress");
+  options.set_input<CrossRef<Scalar>>("yield_stress");
   options.set("yield_stress").doc() = "Yield stress";
 
-  options.set<CrossRef<Scalar>>("q1");
+  options.set_parameter<CrossRef<Scalar>>("q1");
   options.set("q1").doc() =
       "Parameter controlling the balance/competition between plastic flow and void evolution.";
 
-  options.set<CrossRef<Scalar>>("q2");
+  options.set_parameter<CrossRef<Scalar>>("q2");
   options.set("q2").doc() = "Void evolution rate";
 
-  options.set<CrossRef<Scalar>>("q3");
+  options.set_parameter<CrossRef<Scalar>>("q3");
   options.set("q3").doc() = "Pore pressure";
 
-  options.set<VariableName>("flow_invariant") = VariableName("state", "internal", "se");
+  options.set_input<VariableName>("flow_invariant") = VariableName("state", "internal", "se");
   options.set("flow_invariant").doc() = "Effective stress driving plastic flow";
 
-  options.set<VariableName>("poro_invariant") = VariableName("state", "internal", "sp");
+  options.set_input<VariableName>("poro_invariant") = VariableName("state", "internal", "sp");
   options.set("poro_invariant").doc() = "Effective stress driving porous flow";
 
-  options.set<VariableName>("isotropic_hardening");
+  options.set_input<VariableName>("isotropic_hardening");
   options.set("isotropic_hardening").doc() = "Isotropic hardening";
 
-  options.set<VariableName>("void_fraction") = VariableName("state", "internal", "f");
+  options.set_input<VariableName>("void_fraction") = VariableName("state", "internal", "f");
   options.set("void_fraction").doc() = "Void fraction (porosity)";
 
-  options.set<VariableName>("yield_function") = VariableName("state", "internal", "fp");
+  options.set_output<VariableName>("yield_function") = VariableName("state", "internal", "fp");
   options.set("yield_function").doc() = "Yield function";
 
   return options;

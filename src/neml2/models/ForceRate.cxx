@@ -39,10 +39,10 @@ ForceRate<T>::expected_options()
                   "\\dot{f} = \\frac{f-f_n}{t-t_n} \\f$, where \\f$ f \\f$ is the force variable, "
                   "and \\f$ t \\f$ is time.";
 
-  options.set<VariableName>("force");
+  options.set_output<VariableName>("force");
   options.set("force").doc() = "The force variable to take time derivative with";
 
-  options.set<VariableName>("time") = {"t"};
+  options.set_input<VariableName>("time") = {"t"};
   options.set("time").doc() = "Time";
 
   return options;

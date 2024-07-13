@@ -35,7 +35,7 @@ LinearIsotropicHardening::expected_options()
   options.doc() += " following a linear relationship, i.e., \\f$ h = K \\varepsilon_p \\f$ where "
                    "\\f$ K \\f$ is the hardening modulus.";
 
-  options.set<CrossRef<Scalar>>("hardening_modulus");
+  options.set_parameter<CrossRef<Scalar>>("hardening_modulus");
   options.set("hardening_modulus").doc() = "Hardening modulus";
 
   return options;

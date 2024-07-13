@@ -40,12 +40,12 @@ AssociativeKinematicPlasticHardening::expected_options()
       "strain, \\f$ \\dot{\\gamma} \\f$ is the flow rate, \\f$ f \\f$ is the yield function, and "
       "\\f$ \\boldsymbol{X} \\f$ is the kinematic hardening.";
 
-  options.set<VariableName>("kinematic_hardening_direction") =
+  options.set_input<VariableName>("kinematic_hardening_direction") =
       VariableName("state", "internal", "NX");
   options.set("kinematic_hardening_direction").doc() =
       "Direction of associative kinematic hardening which can be calculated using Normality.";
 
-  options.set<VariableName>("kinematic_plastic_strain_rate") =
+  options.set_output<VariableName>("kinematic_plastic_strain_rate") =
       VariableName("state", "internal", "Kp_rate");
   options.set("kinematic_plastic_strain_rate").doc() = "Rate of kinematic plastic strain";
 

@@ -43,20 +43,20 @@ OrientationRate::expected_options()
       "plastic vorticity, \\f$ d^p \\f$ is the plastic deformation rate, and \\f$ \\varepsilon "
       "\\f$ is the elastic stretch.";
 
-  options.set<VariableName>("orientation_rate") = VariableName("state", "orientation_rate");
+  options.set_output<VariableName>("orientation_rate") = VariableName("state", "orientation_rate");
   options.set("orientation_rate").doc() = "The name of the orientation rate (spin)";
 
-  options.set<VariableName>("elastic_strain") = VariableName("state", "elastic_strain");
+  options.set_input<VariableName>("elastic_strain") = VariableName("state", "elastic_strain");
   options.set("elastic_strain").doc() = "The name of the elastic strain tensor";
 
-  options.set<VariableName>("vorticity") = VariableName("forces", "vorticity");
+  options.set_input<VariableName>("vorticity") = VariableName("forces", "vorticity");
   options.set("vorticity").doc() = "The name of the voriticty tensor";
 
-  options.set<VariableName>("plastic_deformation_rate") =
+  options.set_input<VariableName>("plastic_deformation_rate") =
       VariableName("state", "internal", "plastic_deformation_rate");
   options.set("plastic_deformation_rate").doc() = "The name of the plastic deformation rate";
 
-  options.set<VariableName>("plastic_vorticity") =
+  options.set_input<VariableName>("plastic_vorticity") =
       VariableName("state", "internal", "plastic_vorticity");
   options.set("plastic_vorticity").doc() = "The name of the plastic vorticity";
   return options;

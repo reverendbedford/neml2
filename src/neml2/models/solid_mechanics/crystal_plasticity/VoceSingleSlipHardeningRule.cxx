@@ -39,9 +39,9 @@ VoceSingleSlipHardeningRule::expected_options()
                   "saturated, maximum value of the slip system strength, and \\f$ \\dot{\\gamma}_i "
                   "\\f$ is the slip rate on each system.";
 
-  options.set<CrossRef<Scalar>>("initial_slope");
+  options.set_parameter<CrossRef<Scalar>>("initial_slope");
   options.set("initial_slope").doc() = "The initial rate of hardening";
-  options.set<CrossRef<Scalar>>("saturated_hardening");
+  options.set_parameter<CrossRef<Scalar>>("saturated_hardening");
   options.set("saturated_hardening").doc() =
       "The final, saturated value of the slip system strength";
   return options;

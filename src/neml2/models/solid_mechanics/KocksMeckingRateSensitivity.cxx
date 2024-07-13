@@ -38,9 +38,9 @@ KocksMeckingRateSensitivity::expected_options()
       "\\f$ the shear modulus, \\f$ b \\f$ the Burgers vector, \\f$  k\\f$ the Boltzmann constant, "
       "\\f$ T \\f$ absolute temperature, and \\f$ A \\f$ the Kocks-Mecking slope parameter.";
 
-  options.set<CrossRef<Scalar>>("A");
+  options.set_parameter<CrossRef<Scalar>>("A");
   options.set("A").doc() = "The Kocks-Mecking slope parameter";
-  options.set<CrossRef<Scalar>>("shear_modulus");
+  options.set_parameter<CrossRef<Scalar>>("shear_modulus");
   options.set("shear_modulus").doc() = "The shear modulus";
 
   options.set<Real>("k");
@@ -48,7 +48,7 @@ KocksMeckingRateSensitivity::expected_options()
   options.set<Real>("b");
   options.set("b").doc() = "The Burgers vector";
 
-  options.set<VariableName>("temperature") = VariableName("forces", "T");
+  options.set_input<VariableName>("temperature") = VariableName("forces", "T");
   options.set("temperature").doc() = "Absolute temperature";
   return options;
 }

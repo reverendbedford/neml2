@@ -39,10 +39,10 @@ StateRate<T>::expected_options()
                   "\\dot{s} = \\frac{s-s_n}{t-t_n} \\f$, where \\f$ s \\f$ is the state variable, "
                   "and \\f$ t \\f$ is time.";
 
-  options.set<VariableName>("state");
+  options.set_input<VariableName>("state");
   options.set("state").doc() = "The state variable to take time derivative with";
 
-  options.set<VariableName>("time") = VariableName("t");
+  options.set_input<VariableName>("time") = VariableName("t");
   options.set("time").doc() = "Time";
 
   return options;

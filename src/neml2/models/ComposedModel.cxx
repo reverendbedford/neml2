@@ -44,7 +44,7 @@ ComposedModel::expected_options()
   options.set<std::vector<std::string>>("models");
   options.set("models").doc() = "Models being composed together";
 
-  options.set<std::vector<VariableName>>("additional_outputs");
+  options.set_output<std::vector<VariableName>>("additional_outputs");
   options.set("additional_outputs").doc() =
       "Extra output variables to be extracted from the composed model in addition to the ones "
       "identified through dependency resolution.";

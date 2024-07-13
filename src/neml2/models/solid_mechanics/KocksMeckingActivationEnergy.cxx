@@ -39,7 +39,7 @@ KocksMeckingActivationEnergy::expected_options()
       "temperature, \\f$ b \\f$ the Burgers vector length, \\f$ \\dot{\\varepsilon}_0 \\f$ a "
       "reference strain rate, and \\f$ \\dot{\\varepsilon} \\f$ the current strain rate.";
 
-  options.set<CrossRef<Scalar>>("shear_modulus");
+  options.set_parameter<CrossRef<Scalar>>("shear_modulus");
   options.set("shear_modulus").doc() = "The shear modulus";
 
   options.set<Real>("eps0");
@@ -50,13 +50,13 @@ KocksMeckingActivationEnergy::expected_options()
   options.set<Real>("b");
   options.set("b").doc() = "Magnitude of the Burgers vector";
 
-  options.set<VariableName>("temperature") = VariableName("forces", "T");
+  options.set_input<VariableName>("temperature") = VariableName("forces", "T");
   options.set("temperature").doc() = "Absolute temperature";
 
-  options.set<VariableName>("strain_rate") = VariableName("forces", "effective_strain_rate");
+  options.set_input<VariableName>("strain_rate") = VariableName("forces", "effective_strain_rate");
   options.set("strain_rate").doc() = "Name of the effective strain rate";
 
-  options.set<VariableName>("activation_energy") = VariableName("forces", "g");
+  options.set_input<VariableName>("activation_energy") = VariableName("forces", "g");
   options.set("activation_energy").doc() = "Output name of the activation energy";
   return options;
 }

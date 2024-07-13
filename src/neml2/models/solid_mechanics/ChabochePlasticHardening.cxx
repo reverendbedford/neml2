@@ -43,22 +43,22 @@ ChabochePlasticHardening::expected_options()
       "direction, \\f$ \\dot{\\gamma} \\f$ is the flow rate, and \\f$ C \\f$, \\f$ g \\f$, \\f$ A "
       "\\f$, and \\f$ a \\f$ are material parameters.";
 
-  options.set<VariableName>("back_stress") = VariableName("state", "internal", "X");
+  options.set_input<VariableName>("back_stress") = VariableName("state", "internal", "X");
   options.set("back_stress").doc() = "Back stress";
 
-  options.set<VariableName>("flow_direction") = VariableName("state", "internal", "NM");
+  options.set_input<VariableName>("flow_direction") = VariableName("state", "internal", "NM");
   options.set("flow_direction").doc() = "Flow direction";
 
-  options.set<CrossRef<Scalar>>("C");
+  options.set_parameter<CrossRef<Scalar>>("C");
   options.set("C").doc() = "Kinematic hardening coefficient";
 
-  options.set<CrossRef<Scalar>>("g");
+  options.set_parameter<CrossRef<Scalar>>("g");
   options.set("g").doc() = "Dynamic recovery coefficient";
 
-  options.set<CrossRef<Scalar>>("A");
+  options.set_parameter<CrossRef<Scalar>>("A");
   options.set("A").doc() = "Static recovery prefactor";
 
-  options.set<CrossRef<Scalar>>("a");
+  options.set_parameter<CrossRef<Scalar>>("a");
   options.set("a").doc() = "Static recovery exponent";
 
   return options;

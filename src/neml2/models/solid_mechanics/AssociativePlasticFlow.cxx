@@ -40,10 +40,11 @@ AssociativePlasticFlow::expected_options()
       "strain, \\f$ \\dot{\\gamma} \\f$ is the flow rate, \\f$ f \\f$ is the yield function, and "
       "\\f$ \\boldsymbol{M} \\f$ is the Mandel stress.";
 
-  options.set<VariableName>("flow_direction") = VariableName("state", "internal", "NM");
+  options.set_input<VariableName>("flow_direction") = VariableName("state", "internal", "NM");
   options.set("flow_direction").doc() = "Flow direction which can be calculated using Normality";
 
-  options.set<VariableName>("plastic_strain_rate") = VariableName("state", "internal", "Ep_rate");
+  options.set_output<VariableName>("plastic_strain_rate") =
+      VariableName("state", "internal", "Ep_rate");
   options.set("plastic_strain_rate").doc() = "Rate of plastic strain";
 
   return options;

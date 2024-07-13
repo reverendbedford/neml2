@@ -32,10 +32,10 @@ Elasticity::expected_options()
   OptionSet options = Model::expected_options();
   options.doc() = "Relate elastic strain to stress";
 
-  options.set<VariableName>("strain") = VariableName("state", "internal", "Ee");
+  options.set_input<VariableName>("strain") = VariableName("state", "internal", "Ee");
   options.set("strain").doc() = "Elastic strain";
 
-  options.set<VariableName>("stress") = VariableName("state", "S");
+  options.set_output<VariableName>("stress") = VariableName("state", "S");
   options.set("stress").doc() = "Stress";
 
   options.set<bool>("compliance") = false;
