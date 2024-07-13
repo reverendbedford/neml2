@@ -230,24 +230,18 @@ WSR4 d_multiply_and_make_skew_d_first(const SR2 & b);
 WSR4 d_multiply_and_make_skew_d_second(const SR2 & a);
 
 /// Concatenate a list of BatchTensors
-// template <
-//     typename Container,
-//     std::enable_if_t<
-//         std::is_convertible_v<typename std::iterator_traits<
-//                                   decltype(std::declval<Container>().begin())>::iterator_category,
-//                               std::input_iterator_tag> &&
-//             std::is_convertible_v<typename std::iterator_traits<
-//                                       decltype(std::declval<Container>().end())>::iterator_category,
-//                                   std::input_iterator_tag>,
-//         int> = 0>
-// inline BatchTensor
-// cat(Container && tensors, Size dim)
-// {
-//   torch::ArrayRef<torch::Tensor> tensor_array(tensors.data(), tensors.size());
-//   return BatchTensor(torch::cat(tensor_array, dim), tensors.begin()->batch_dim());
-// }
+template <
+    typename Container,
+    std::enable_if_t<
+        std::is_convertible_v<typename std::iterator_traits<
+                                  decltype(std::declval<Container>().begin())>::iterator_category,
+                              std::input_iterator_tag> &&
+            std::is_convertible_v<typename std::iterator_traits<
+                                      decltype(std::declval<Container>().end())>::iterator_category,
+                                  std::input_iterator_tag>,
+        int> = 0>
 inline BatchTensor
-cat(const std::vector<BatchTensor> & tensors, Size dim)
+cat(Container && tensors, Size dim)
 {
   std::vector<torch::Tensor> torch_tensors(tensors.begin(), tensors.end());
   return BatchTensor(torch::cat(torch_tensors, dim), tensors.begin()->batch_dim());
