@@ -45,7 +45,7 @@ TEST_CASE("FullFixedDimTensor", "[tensors/user_tensors]")
 {
   load_model("unit/tensors/user_tensors/test_FullFixedDimTensor.i");
 
-  TorchShape B{2, 1};
+  TensorShape B{2, 1};
 
   test_FullFixedDimTensor(Scalar, a, B, 1.3);
   test_FullFixedDimTensor(Vec, b, B, 1.3);

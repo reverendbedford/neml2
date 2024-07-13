@@ -50,9 +50,9 @@ TEST_CASE("LinspaceFixedDimTensor", "[tensors/user_tensors]")
 {
   load_model("unit/tensors/user_tensors/test_LinspaceFixedDimTensor.i");
 
-  TorchShape B{100, 2, 1};
-  TorchSize nstep = 100;
-  TorchSize dim = 0;
+  TensorShape B{100, 2, 1};
+  Size nstep = 100;
+  Size dim = 0;
 
   test_LinspaceFixedDimTensor(Scalar, a, B, nstep, dim);
   test_LinspaceFixedDimTensor(Vec, b, B, nstep, dim);

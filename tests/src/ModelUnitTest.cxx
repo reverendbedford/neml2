@@ -35,7 +35,7 @@ ModelUnitTest::expected_options()
 {
   OptionSet options = Driver::expected_options();
   options.set<std::string>("model");
-  options.set<TorchShape>("batch_shape") = {1};
+  options.set<TensorShape>("batch_shape") = {1};
   options.set<bool>("check_values") = true;
   options.set<bool>("check_first_derivatives") = true;
   options.set<bool>("check_second_derivatives") = false;
@@ -80,7 +80,7 @@ ModelUnitTest::ModelUnitTest(const OptionSet & options)
   : Driver(options),
     _model(get_model(options.get<std::string>("model"), false)),
     _model_inference(get_model(options.get<std::string>("model"), true)),
-    _batch_shape(options.get<TorchShape>("batch_shape")),
+    _batch_shape(options.get<TensorShape>("batch_shape")),
     _check_values(options.get<bool>("check_values")),
     _check_1st_deriv(options.get<bool>("check_first_derivatives")),
     _check_2nd_deriv(options.get<bool>("check_second_derivatives")),

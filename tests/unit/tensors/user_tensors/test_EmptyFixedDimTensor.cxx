@@ -43,7 +43,7 @@ TEST_CASE("EmptyFixedDimTensor", "[tensors/user_tensors]")
 {
   load_model("unit/tensors/user_tensors/test_EmptyFixedDimTensor.i");
 
-  TorchShape B{2, 1};
+  TensorShape B{2, 1};
 
   test_EmptyFixedDimTensor(Scalar, a, B);
   test_EmptyFixedDimTensor(Vec, b, B);

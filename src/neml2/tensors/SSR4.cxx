@@ -113,7 +113,7 @@ SSR4::drotate(const Rot & r) const
 }
 
 Scalar
-SSR4::operator()(TorchSize i, TorchSize j, TorchSize k, TorchSize l) const
+SSR4::operator()(Size i, Size j, Size k, Size l) const
 {
   const auto a = math::mandel_reverse_index[i][j];
   const auto b = math::mandel_reverse_index[k][l];

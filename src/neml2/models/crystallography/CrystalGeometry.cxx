@@ -27,8 +27,6 @@
 #include "neml2/models/crystallography/crystallography.h"
 #include "neml2/tensors/tensors.h"
 
-using namespace torch::indexing;
-
 namespace neml2
 {
 namespace crystallography
@@ -120,20 +118,20 @@ CrystalGeometry::b3() const
   return _reciprocal_lattice_vectors.batch_index({2});
 }
 
-TorchSize
+Size
 CrystalGeometry::nslip() const
 {
   return _slip_offsets.back();
 }
 
-TorchSize
+Size
 CrystalGeometry::nslip_groups() const
 {
   return _slip_offsets.size() - 1;
 }
 
-TorchSize
-CrystalGeometry::nslip_in_group(TorchSize i) const
+Size
+CrystalGeometry::nslip_in_group(Size i) const
 {
   neml_assert_dbg(i < nslip_groups());
   return _slip_offsets[i + 1] - _slip_offsets[i];
@@ -142,7 +140,7 @@ CrystalGeometry::nslip_in_group(TorchSize i) const
 CrystalGeometry::CrystalGeometry(const OptionSet & options,
                                  const R2 & cclass,
                                  const Vec & lattice_vectors,
-                                 std::tuple<Vec, Vec, Scalar, std::vector<TorchSize>> slip_data)
+                                 std::tuple<Vec, Vec, Scalar, std::vector<Size>> slip_data)
   : Data(options),
     _sym_ops(cclass),
     _lattice_vectors(declare_buffer<Vec>("lattice_vectors", lattice_vectors)),
@@ -184,7 +182,7 @@ CrystalGeometry::miller_to_cartesian(const Vec & A, const MillerIndex & d)
   return R2(torch::Tensor(A)) * d.reduce().to_vec();
 }
 
-std::tuple<Vec, Vec, Scalar, std::vector<TorchSize>>
+std::tuple<Vec, Vec, Scalar, std::vector<Size>>
 CrystalGeometry::setup_schmid_tensors(const Vec & A,
                                       const R2 & cls,
                                       const MillerIndex & slip_directions,
@@ -204,9 +202,9 @@ CrystalGeometry::setup_schmid_tensors(const Vec & A,
   std::vector<torch::Tensor> cartesian_slip_directions;
   std::vector<torch::Tensor> cartesian_slip_planes;
   std::vector<torch::Tensor> burgers_vectors;
-  std::vector<TorchSize> offsets = {0};
+  std::vector<Size> offsets = {0};
 
-  for (TorchSize i = 0; i < bshape[nbatch - 1]; i++)
+  for (Size i = 0; i < bshape[nbatch - 1]; i++)
   {
     // Get the cartesian slip plane and direction
     auto cmd = slip_directions.batch_index({torch::indexing::Ellipsis, i});
@@ -219,19 +217,18 @@ CrystalGeometry::setup_schmid_tensors(const Vec & A,
     // Accept the ones that are perpendicular
     // We could do this in a vectorized manner, but I don't think it's worth it as
     // this code only runs once
-    TorchSize last = offsets.back();
-    for (TorchSize j = 0; j < direction_options.batch_sizes()[direction_options.batch_dim() - 1];
-         j++)
+    Size last = offsets.back();
+    for (Size j = 0; j < direction_options.batch_sizes()[direction_options.batch_dim() - 1]; j++)
     {
-      auto di = direction_options.batch_index({torch::indexing::Ellipsis, j});
+      auto di = direction_options.batch_index({indexing::Ellipsis, j});
       auto dps = plane_options.dot(di);
       auto inds =
           torch::where(torch::isclose(torch::abs(dps), torch::tensor(0.0, dps.dtype()))).front();
       // We could very easily vectorize this loop, but again whatever
-      for (TorchSize kk = 0; kk < inds.sizes()[0]; kk++)
+      for (Size kk = 0; kk < inds.sizes()[0]; kk++)
       {
-        TorchSize k = inds.index({kk}).item<TorchSize>();
-        auto pi = plane_options.batch_index({torch::indexing::Ellipsis, k});
+        Size k = inds.index({kk}).item<Size>();
+        auto pi = plane_options.batch_index({indexing::Ellipsis, k});
         cartesian_slip_directions.push_back(di / di.norm());
         cartesian_slip_planes.push_back(pi / pi.norm());
         burgers_vectors.push_back(di.norm());

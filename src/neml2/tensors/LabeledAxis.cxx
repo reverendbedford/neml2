@@ -40,7 +40,7 @@ LabeledAxis::LabeledAxis(const LabeledAxis & other)
 }
 
 LabeledAxis &
-LabeledAxis::add(const LabeledAxisAccessor & accessor, TorchSize sz)
+LabeledAxis::add(const LabeledAxisAccessor & accessor, Size sz)
 {
   add(*this, sz, accessor.begin(), accessor.end());
   return *this;
@@ -48,7 +48,7 @@ LabeledAxis::add(const LabeledAxisAccessor & accessor, TorchSize sz)
 
 void
 LabeledAxis::add(LabeledAxis & axis,
-                 TorchSize sz,
+                 Size sz,
                  const LabeledAxisAccessor::const_iterator & cur,
                  const LabeledAxisAccessor::const_iterator & end) const
 {
@@ -163,7 +163,7 @@ LabeledAxis::setup_layout()
   // First emplace all the variables
   for (auto & [name, sz] : _variables)
   {
-    std::pair<TorchSize, TorchSize> range = {_offset, _offset + sz};
+    std::pair<Size, Size> range = {_offset, _offset + sz};
     _layout.emplace(name, range);
     _offset += sz;
   }
@@ -173,7 +173,7 @@ LabeledAxis::setup_layout()
   {
     // Setup the sub-axis if necessary
     axis->setup_layout();
-    std::pair<TorchSize, TorchSize> range = {_offset, _offset + axis->storage_size()};
+    std::pair<Size, Size> range = {_offset, _offset + axis->storage_size()};
     _layout.emplace(name, range);
     _offset += axis->storage_size();
   }
@@ -213,13 +213,13 @@ LabeledAxis::has_subaxis(const LabeledAxisAccessor & s) const
     return _subaxes.count(s.vec()[0]);
 }
 
-TorchSize
+Size
 LabeledAxis::storage_size(const LabeledAxisAccessor & accessor) const
 {
   return storage_size(accessor.begin(), accessor.end());
 }
 
-TorchSize
+Size
 LabeledAxis::storage_size(const LabeledAxisAccessor::const_iterator & cur,
                           const LabeledAxisAccessor::const_iterator & end) const
 {
@@ -236,7 +236,7 @@ LabeledAxis::storage_size(const LabeledAxisAccessor::const_iterator & cur,
   return subaxis(*cur).storage_size(cur + 1, end);
 }
 
-TorchIndex
+indexing::TensorIndex
 LabeledAxis::indices(const LabeledAxisAccessor & accessor) const
 {
   if (accessor.empty())
@@ -245,8 +245,8 @@ LabeledAxis::indices(const LabeledAxisAccessor & accessor) const
   return indices(0, accessor.begin(), accessor.end());
 }
 
-TorchIndex
-LabeledAxis::indices(TorchSize offset,
+indexing::TensorIndex
+LabeledAxis::indices(Size offset,
                      const LabeledAxisAccessor::const_iterator & cur,
                      const LabeledAxisAccessor::const_iterator & end) const
 {
@@ -258,14 +258,12 @@ LabeledAxis::indices(TorchSize offset,
   return subaxis(*cur).indices(offset + rbegin, cur + 1, end);
 }
 
-std::vector<std::pair<TorchIndex, TorchIndex>>
+std::vector<std::pair<indexing::TensorIndex, indexing::TensorIndex>>
 LabeledAxis::common_indices(const LabeledAxis & other, bool recursive) const
 {
-  using namespace torch::indexing;
-
-  std::vector<std::pair<TorchIndex, TorchIndex>> indices;
-  std::vector<TorchSize> idxa;
-  std::vector<TorchSize> idxb;
+  std::vector<std::pair<indexing::TensorIndex, indexing::TensorIndex>> indices;
+  std::vector<Size> idxa;
+  std::vector<Size> idxb;
   common_indices(other, recursive, idxa, idxb, 0, 0);
 
   if (idxa.empty())
@@ -280,12 +278,12 @@ LabeledAxis::common_indices(const LabeledAxis & other, bool recursive) const
       j += 2;
     else
     {
-      indices.push_back({Slice(idxa[i], idxa[j]), Slice(idxb[i], idxb[j])});
+      indices.push_back({indexing::Slice(idxa[i], idxa[j]), indexing::Slice(idxb[i], idxb[j])});
       i = j + 1;
       j = i + 1;
     }
   }
-  indices.push_back({Slice(idxa[i], idxa[j]), Slice(idxb[i], idxb[j])});
+  indices.push_back({indexing::Slice(idxa[i], idxa[j]), indexing::Slice(idxb[i], idxb[j])});
 
   return indices;
 }
@@ -293,10 +291,10 @@ LabeledAxis::common_indices(const LabeledAxis & other, bool recursive) const
 void
 LabeledAxis::common_indices(const LabeledAxis & other,
                             bool recursive,
-                            std::vector<TorchSize> & idxa,
-                            std::vector<TorchSize> & idxb,
-                            TorchSize offseta,
-                            TorchSize offsetb) const
+                            std::vector<Size> & idxa,
+                            std::vector<Size> & idxb,
+                            Size offseta,
+                            Size offsetb) const
 {
   for (const auto & [name, sz] : _variables)
     if (other.has_variable(name))
@@ -407,7 +405,7 @@ operator<<(std::ostream & os, const LabeledAxis & axis)
 {
   // Collect variable names and indices
   size_t max_var_name_length = 0;
-  std::map<std::string, TorchIndex> vars;
+  std::map<std::string, indexing::TensorIndex> vars;
   for (auto var : axis.variable_accessors(true))
   {
     auto var_name = utils::stringify(var);

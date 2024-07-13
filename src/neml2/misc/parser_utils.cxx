@@ -128,7 +128,7 @@ parse_<VariableName>(VariableName & val, const std::string & raw_str)
 
 template <>
 void
-parse_<TorchShape>(TorchShape & val, const std::string & raw_str)
+parse_<TensorShape>(TensorShape & val, const std::string & raw_str)
 {
   if (!start_with(raw_str, "(") || !end_with(raw_str, ")"))
     throw ParserException("Trying to parse " + raw_str +
@@ -139,7 +139,7 @@ parse_<TorchShape>(TorchShape & val, const std::string & raw_str)
 
   val.clear();
   for (auto & token : tokens)
-    val.push_back(parse<TorchSize>(token));
+    val.push_back(parse<Size>(token));
 }
 } // namespace utils
 } // namespace neml2

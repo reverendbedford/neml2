@@ -110,19 +110,17 @@ BatchTensor
 full_to_reduced(const BatchTensor & full,
                 const torch::Tensor & rmap,
                 const torch::Tensor & rfactors,
-                TorchSize dim)
+                Size dim)
 {
-  using namespace torch::indexing;
-
   auto batch_dim = full.batch_dim();
   auto starting_dim = batch_dim + dim;
   auto trailing_dim = full.dim() - starting_dim - 2; // 2 comes from the reduced axes (3,3)
   auto starting_shape = full.sizes().slice(0, starting_dim);
   auto trailing_shape = full.sizes().slice(starting_dim + 2);
 
-  TorchSlice net(starting_dim, None);
-  net.push_back(Ellipsis);
-  net.insert(net.end(), trailing_dim, None);
+  indexing::TensorIndices net(starting_dim, indexing::None);
+  net.push_back(indexing::Ellipsis);
+  net.insert(net.end(), trailing_dim, indexing::None);
   auto map =
       rmap.index(net).expand(utils::add_shapes(starting_shape, rmap.sizes()[0], trailing_shape));
   auto factor = rfactors.to(full).index(net);
@@ -138,19 +136,17 @@ BatchTensor
 reduced_to_full(const BatchTensor & reduced,
                 const torch::Tensor & rmap,
                 const torch::Tensor & rfactors,
-                TorchSize dim)
+                Size dim)
 {
-  using namespace torch::indexing;
-
   auto batch_dim = reduced.batch_dim();
   auto starting_dim = batch_dim + dim;
   auto trailing_dim = reduced.dim() - starting_dim - 1; // There's only 1 axis to unsqueeze
   auto starting_shape = reduced.sizes().slice(0, starting_dim);
   auto trailing_shape = reduced.sizes().slice(starting_dim + 1);
 
-  TorchSlice net(starting_dim, None);
-  net.push_back(Ellipsis);
-  net.insert(net.end(), trailing_dim, None);
+  indexing::TensorIndices net(starting_dim, indexing::None);
+  net.push_back(indexing::Ellipsis);
+  net.insert(net.end(), trailing_dim, indexing::None);
   auto map = rmap.index(net).expand(utils::add_shapes(starting_shape, 9, trailing_shape));
   auto factor = rfactors.to(reduced).index(net);
 
@@ -160,7 +156,7 @@ reduced_to_full(const BatchTensor & reduced,
 }
 
 BatchTensor
-full_to_mandel(const BatchTensor & full, TorchSize dim)
+full_to_mandel(const BatchTensor & full, Size dim)
 {
   return full_to_reduced(
       full,
@@ -170,7 +166,7 @@ full_to_mandel(const BatchTensor & full, TorchSize dim)
 }
 
 BatchTensor
-mandel_to_full(const BatchTensor & mandel, TorchSize dim)
+mandel_to_full(const BatchTensor & mandel, Size dim)
 {
   return reduced_to_full(
       mandel,
@@ -180,7 +176,7 @@ mandel_to_full(const BatchTensor & mandel, TorchSize dim)
 }
 
 BatchTensor
-full_to_skew(const BatchTensor & full, TorchSize dim)
+full_to_skew(const BatchTensor & full, Size dim)
 {
   return full_to_reduced(
       full,
@@ -190,7 +186,7 @@ full_to_skew(const BatchTensor & full, TorchSize dim)
 }
 
 BatchTensor
-skew_to_full(const BatchTensor & skew, TorchSize dim)
+skew_to_full(const BatchTensor & skew, Size dim)
 {
   return reduced_to_full(
       skew,
@@ -219,7 +215,7 @@ jacrev(const BatchTensor & y, const BatchTensor & p)
   auto dyf_dp = BatchTensor::empty(
       yf.batch_sizes(), utils::add_shapes(yf.base_sizes(), p.base_sizes()), yf.options());
 
-  for (TorchSize i = 0; i < yf.base_sizes()[0]; i++)
+  for (Size i = 0; i < yf.base_sizes()[0]; i++)
   {
     auto v = BatchTensor::zeros_like(yf);
     v.index_put_({torch::indexing::Ellipsis, i}, 1.0);
@@ -242,7 +238,7 @@ jacrev(const BatchTensor & y, const BatchTensor & p)
 }
 
 BatchTensor
-base_diag_embed(const BatchTensor & a, TorchSize offset, TorchSize d1, TorchSize d2)
+base_diag_embed(const BatchTensor & a, Size offset, Size d1, Size d2)
 {
   return BatchTensor(
       torch::diag_embed(

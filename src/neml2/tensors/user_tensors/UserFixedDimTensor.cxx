@@ -45,7 +45,7 @@ UserFixedDimTensor<T>::expected_options()
   options.set<std::vector<Real>>("values");
   options.set("values").doc() = "Values in this (flattened) tensor";
 
-  options.set<TorchShape>("batch_shape") = {};
+  options.set<TensorShape>("batch_shape") = {};
   options.set("batch_shape").doc() = "Batch shape";
 
   return options;
@@ -53,7 +53,7 @@ UserFixedDimTensor<T>::expected_options()
 
 template <typename T>
 UserFixedDimTensor<T>::UserFixedDimTensor(const OptionSet & options)
-  : T(T::empty(options.get<TorchShape>("batch_shape"), default_tensor_options())),
+  : T(T::empty(options.get<TensorShape>("batch_shape"), default_tensor_options())),
     UserTensor(options)
 {
   auto vals = options.get<std::vector<Real>>("values");

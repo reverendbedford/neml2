@@ -36,7 +36,7 @@ def_Model(py::module_ & m)
 {
   py::class_<Model, std::shared_ptr<Model>>(m, "Model")
       .def("reinit",
-           py::overload_cast<TorchShapeRef, int, const torch::Device &, const torch::Dtype &>(
+           py::overload_cast<TensorShapeRef, int, const torch::Device &, const torch::Dtype &>(
                &Model::reinit),
            py::arg("batch_shape"),
            py::arg("deriv_order") = 0,

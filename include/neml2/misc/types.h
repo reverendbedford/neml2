@@ -28,13 +28,18 @@
 
 namespace neml2
 {
-typedef double Real;
-typedef int Integer;
-typedef int64_t TorchSize;
-typedef c10::SmallVector<TorchSize> TorchShape;
-typedef torch::IntArrayRef TorchShapeRef;
-typedef at::indexing::TensorIndex TorchIndex;
-typedef c10::SmallVector<at::indexing::TensorIndex> TorchSlice;
+using Real = double;
+using Integer = int;
+using Size = int64_t;
+using TensorShape = c10::SmallVector<Size>;
+using TensorShapeRef = torch::IntArrayRef;
+
+// Bring in at::indexing
+namespace indexing
+{
+using namespace at::indexing;
+using TensorIndices = c10::SmallVector<TensorIndex>;
+}
 
 /**
  * The factory methods like `torch::arange`, `torch::ones`, `torch::zeros`, `torch::rand` etc.

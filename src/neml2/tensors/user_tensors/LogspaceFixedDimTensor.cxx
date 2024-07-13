@@ -48,13 +48,13 @@ LogspaceFixedDimTensor<T>::expected_options()
   options.set<CrossRef<T>>("end");
   options.set("end").doc() = "The ending tensor";
 
-  options.set<TorchSize>("nstep");
+  options.set<Size>("nstep");
   options.set("nstep").doc() = "The number of steps with even spacing along the new dimension";
 
-  options.set<TorchSize>("dim") = 0;
+  options.set<Size>("dim") = 0;
   options.set("dim").doc() = "Where to insert the new dimension";
 
-  options.set<TorchSize>("batch_dim") = -1;
+  options.set<Size>("batch_dim") = -1;
   options.set("batch_dim").doc() = "Batch dimension of the output";
 
   options.set<Real>("base") = 10;
@@ -67,9 +67,9 @@ template <typename T>
 LogspaceFixedDimTensor<T>::LogspaceFixedDimTensor(const OptionSet & options)
   : T(T::logspace(options.get<CrossRef<T>>("start"),
                   options.get<CrossRef<T>>("end"),
-                  options.get<TorchSize>("nstep"),
-                  options.get<TorchSize>("dim"),
-                  options.get<TorchSize>("batch_dim"),
+                  options.get<Size>("nstep"),
+                  options.get<Size>("dim"),
+                  options.get<Size>("batch_dim"),
                   options.get<Real>("base"))),
     UserTensor(options)
 {

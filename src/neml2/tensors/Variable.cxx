@@ -27,7 +27,7 @@
 namespace neml2
 {
 void
-VariableBase::cache(TorchShapeRef batch_shape)
+VariableBase::cache(TensorShapeRef batch_shape)
 {
   _batch_sizes = batch_shape.vec();
 }

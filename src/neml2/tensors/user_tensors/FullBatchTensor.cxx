@@ -35,10 +35,10 @@ FullBatchTensor::expected_options()
   options.doc() =
       "Construct a full BatchTensor with given batch and base shapes filled with a given value.";
 
-  options.set<TorchShape>("batch_shape") = {};
+  options.set<TensorShape>("batch_shape") = {};
   options.set("batch_shape").doc() = "Batch shape";
 
-  options.set<TorchShape>("base_shape") = {};
+  options.set<TensorShape>("base_shape") = {};
   options.set("base_shape").doc() = "Base shape";
 
   options.set<Real>("value");
@@ -48,8 +48,8 @@ FullBatchTensor::expected_options()
 }
 
 FullBatchTensor::FullBatchTensor(const OptionSet & options)
-  : BatchTensor(BatchTensor::full(options.get<TorchShape>("batch_shape"),
-                                  options.get<TorchShape>("base_shape"),
+  : BatchTensor(BatchTensor::full(options.get<TensorShape>("batch_shape"),
+                                  options.get<TensorShape>("base_shape"),
                                   options.get<Real>("value"),
                                   default_tensor_options())),
     UserTensor(options)

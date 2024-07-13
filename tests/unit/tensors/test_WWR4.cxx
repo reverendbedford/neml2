@@ -27,8 +27,6 @@
 #include "utils.h"
 #include "neml2/tensors/tensors.h"
 
-using namespace torch::indexing;
-
 using namespace neml2;
 
 TEST_CASE("WWR4", "[tensors]")
@@ -36,7 +34,7 @@ TEST_CASE("WWR4", "[tensors]")
   torch::manual_seed(42);
   const auto & DTO = default_tensor_options();
 
-  TorchShape B = {5, 3, 1, 2}; // batch shape
+  TensorShape B = {5, 3, 1, 2}; // batch shape
 
   SECTION("class WWR4")
   {

@@ -56,7 +56,7 @@ public:
                          const torch::TensorOptions & options = default_tensor_options());
 
   /// Accessor
-  Scalar operator()(TorchSize i) const;
+  Scalar operator()(Size i) const;
 
   /// Convert to R2
   R2 to_R2() const;

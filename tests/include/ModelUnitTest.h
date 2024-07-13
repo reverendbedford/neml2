@@ -67,7 +67,7 @@ private:
 
   Model & _model;
   Model & _model_inference;
-  const TorchShape _batch_shape;
+  const TensorShape _batch_shape;
   const bool _check_values;
   const bool _check_1st_deriv;
   const bool _check_2nd_deriv;

@@ -111,7 +111,7 @@ Model::reinit(const BatchTensor & tensor, int deriv_order)
 }
 
 void
-Model::reinit(TorchShapeRef batch_shape,
+Model::reinit(TensorShapeRef batch_shape,
               int deriv_order,
               const torch::Device & device,
               const torch::Dtype & dtype)
@@ -242,12 +242,12 @@ Model::set_solution(const BatchTensor & x)
 }
 
 void
-Model::cache(TorchShapeRef batch_shape,
+Model::cache(TensorShapeRef batch_shape,
              int deriv_order,
              const torch::Device & device,
              const torch::Dtype & dtype)
 {
-  _batch_sizes = batch_shape.empty() ? TorchShape{1} : TorchShape(batch_shape);
+  _batch_sizes = batch_shape.empty() ? TensorShape{1} : TensorShape(batch_shape);
   VariableStore::cache(_batch_sizes);
 
   _deriv_order = std::max(deriv_order + _extra_deriv_order, _deriv_order);
@@ -456,7 +456,7 @@ Model::extract_derivatives(bool retain_graph, bool create_graph, bool allow_unus
 {
   // Loop over rows to retrieve the derivatives
   if (output_storage().tensor().requires_grad())
-    for (TorchSize i = 0; i < output_storage().base_sizes()[0]; i++)
+    for (Size i = 0; i < output_storage().base_sizes()[0]; i++)
     {
       auto grad_outputs = BatchTensor::zeros_like(output_storage());
       grad_outputs.index_put_({torch::indexing::Ellipsis, i}, 1.0);
@@ -484,8 +484,8 @@ Model::extract_second_derivatives(bool retain_graph, bool create_graph, bool all
 {
   // Loop over rows to retrieve the second derivatives
   if (derivative_storage().tensor().requires_grad())
-    for (TorchSize i = 0; i < derivative_storage().base_sizes()[0]; i++)
-      for (TorchSize j = 0; j < derivative_storage().base_sizes()[1]; j++)
+    for (Size i = 0; i < derivative_storage().base_sizes()[0]; i++)
+      for (Size j = 0; j < derivative_storage().base_sizes()[1]; j++)
       {
         auto grad_outputs = torch::zeros_like(derivative_storage());
         grad_outputs.index_put_({torch::indexing::Ellipsis, i, j}, 1.0);

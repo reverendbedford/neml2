@@ -35,10 +35,10 @@ TEST_CASE("utils", "[misc]")
 
   SECTION("broadcast_batch_dim")
   {
-    TorchShape a = {};
-    TorchShape b = {1, 2};
-    TorchShape c = {3};
-    TorchShape d = {4, 5, 6};
+    TensorShape a = {};
+    TensorShape b = {1, 2};
+    TensorShape c = {3};
+    TensorShape d = {4, 5, 6};
 
     // Create some tensors with the above batch shapes, the base shapes should not matter.
     auto A = BatchTensor::empty(a, {5, 3}, DTO);
@@ -99,28 +99,28 @@ TEST_CASE("utils", "[misc]")
 
   SECTION("add_shapes")
   {
-    TorchShape s1 = {};
-    TorchShape s2 = {2, 3};
-    TorchShape s3 = {1, 2};
-    TorchShape s4 = {12, 3};
-    TorchShape s5 = {1, 2, 3};
+    TensorShape s1 = {};
+    TensorShape s2 = {2, 3};
+    TensorShape s3 = {1, 2};
+    TensorShape s4 = {12, 3};
+    TensorShape s5 = {1, 2, 3};
     REQUIRE(utils::add_shapes(s1, s1) == s1);
     REQUIRE(utils::add_shapes(s1, s2) == s2);
-    REQUIRE(utils::add_shapes(s3, s1, s4) == TorchShape{1, 2, 12, 3});
-    REQUIRE(utils::add_shapes(s5, 3, 5, s2) == TorchShape{1, 2, 3, 3, 5, 2, 3});
+    REQUIRE(utils::add_shapes(s3, s1, s4) == TensorShape{1, 2, 12, 3});
+    REQUIRE(utils::add_shapes(s5, 3, 5, s2) == TensorShape{1, 2, 3, 3, 5, 2, 3});
   }
 
   SECTION("pad_prepend")
   {
-    REQUIRE(utils::pad_prepend({3, 5}, 5, 1) == TorchShape{1, 1, 1, 3, 5});
-    REQUIRE(utils::pad_prepend({3, 5}, 3, 3) == TorchShape{3, 3, 5});
-    REQUIRE(utils::pad_prepend({3, 5}, 2) == TorchShape{3, 5});
+    REQUIRE(utils::pad_prepend({3, 5}, 5, 1) == TensorShape{1, 1, 1, 3, 5});
+    REQUIRE(utils::pad_prepend({3, 5}, 3, 3) == TensorShape{3, 3, 5});
+    REQUIRE(utils::pad_prepend({3, 5}, 2) == TensorShape{3, 5});
   }
 
   SECTION("pad_append")
   {
-    REQUIRE(utils::pad_append({3, 5}, 5, 1) == TorchShape{3, 5, 1, 1, 1});
-    REQUIRE(utils::pad_append({3, 5}, 3, 3) == TorchShape{3, 5, 3});
-    REQUIRE(utils::pad_append({3, 5}, 2) == TorchShape{3, 5});
+    REQUIRE(utils::pad_append({3, 5}, 5, 1) == TensorShape{3, 5, 1, 1, 1});
+    REQUIRE(utils::pad_append({3, 5}, 3, 3) == TensorShape{3, 5, 3});
+    REQUIRE(utils::pad_append({3, 5}, 2) == TensorShape{3, 5});
   }
 }

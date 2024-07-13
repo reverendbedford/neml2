@@ -48,7 +48,7 @@ protected:
 
   BatchTensor preconditioned_solve(const Scalar & s, const BatchTensor & v) const;
 
-  TorchShape _batch_sizes;
+  TensorShape _batch_sizes;
 
   torch::TensorOptions _options;
 

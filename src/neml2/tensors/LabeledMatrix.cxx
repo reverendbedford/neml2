@@ -25,12 +25,10 @@
 #include "neml2/tensors/LabeledMatrix.h"
 #include "neml2/tensors/LabeledVector.h"
 
-using namespace torch::indexing;
-
 namespace neml2
 {
 LabeledMatrix
-LabeledMatrix::identity(TorchShapeRef batch_size,
+LabeledMatrix::identity(TensorShapeRef batch_size,
                         const LabeledAxis & axis,
                         const torch::TensorOptions & options)
 {

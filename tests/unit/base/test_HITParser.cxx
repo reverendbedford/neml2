@@ -116,21 +116,21 @@ TEST_CASE("HITParser", "[base]")
                 std::vector<std::vector<std::string>>{{"neml2", "is", "very"}, {"useful"}});
       }
 
-      SECTION("TorchShapes")
+      SECTION("TensorShapes")
       {
-        auto shape = options.get<TorchShape>("shape");
-        auto shape_vec = options.get<std::vector<TorchShape>>("shape_vec");
-        auto shape_vec_vec = options.get<std::vector<std::vector<TorchShape>>>("shape_vec_vec");
-        REQUIRE(shape == TorchShape{1, 2, 3, 5});
-        REQUIRE(shape_vec[0] == TorchShape{1, 2, 3});
-        REQUIRE(shape_vec[1] == TorchShape{2, 3});
-        REQUIRE(shape_vec[2] == TorchShape{5});
-        REQUIRE(shape_vec_vec[0][0] == TorchShape{2, 5});
-        REQUIRE(shape_vec_vec[0][1] == TorchShape{});
-        REQUIRE(shape_vec_vec[0][2] == TorchShape{3, 3});
-        REQUIRE(shape_vec_vec[1][0] == TorchShape{2, 2});
-        REQUIRE(shape_vec_vec[1][1] == TorchShape{1});
-        REQUIRE(shape_vec_vec[1][2] == TorchShape{22});
+        auto shape = options.get<TensorShape>("shape");
+        auto shape_vec = options.get<std::vector<TensorShape>>("shape_vec");
+        auto shape_vec_vec = options.get<std::vector<std::vector<TensorShape>>>("shape_vec_vec");
+        REQUIRE(shape == TensorShape{1, 2, 3, 5});
+        REQUIRE(shape_vec[0] == TensorShape{1, 2, 3});
+        REQUIRE(shape_vec[1] == TensorShape{2, 3});
+        REQUIRE(shape_vec[2] == TensorShape{5});
+        REQUIRE(shape_vec_vec[0][0] == TensorShape{2, 5});
+        REQUIRE(shape_vec_vec[0][1] == TensorShape{});
+        REQUIRE(shape_vec_vec[0][2] == TensorShape{3, 3});
+        REQUIRE(shape_vec_vec[1][0] == TensorShape{2, 2});
+        REQUIRE(shape_vec_vec[1][1] == TensorShape{1});
+        REQUIRE(shape_vec_vec[1][2] == TensorShape{22});
       }
     }
 

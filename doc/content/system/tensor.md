@@ -103,15 +103,14 @@ To address this challenge, NEML2 creates *views*, instead of copies, of tensors 
 
 In NEML2, use [base_index](@ref neml2::BatchTensorBase::base_index) for indexing the base dimensions and [batch_index](@ref neml2::BatchTensorBase::batch_index) for indexing the batch dimensions:
 ```cpp
-using namespace torch::indexing;
 BatchTensor A(torch::tensor({{2, 3, 4}, {-1, -2, 3}, {6, 9, 7}}), 1);
 // A = [[  2  3  4]
 //      [ -1 -2  3]
 //      [  6  9  7]]
-BatchTensor B = A.batch_index({Slice(0, 2)});
+BatchTensor B = A.batch_index({indexing::Slice(0, 2)});
 // B = [[  2  3  4]
 //      [ -1 -2  3]]
-BatchTensor C = A.base_index({Slice(1, 3)});
+BatchTensor C = A.base_index({indexing::Slice(1, 3)});
 // C = [[  3  4]
 //      [ -2  3]
 //      [  9  7]]

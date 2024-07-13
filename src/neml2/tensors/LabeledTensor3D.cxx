@@ -25,8 +25,6 @@
 #include "neml2/tensors/LabeledTensor3D.h"
 #include "neml2/tensors/LabeledMatrix.h"
 
-using namespace torch::indexing;
-
 namespace neml2
 {
 void

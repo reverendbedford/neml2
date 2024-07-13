@@ -71,13 +71,13 @@ R4::drotate(const Rot & r) const
 }
 
 Scalar
-R4::operator()(TorchSize i, TorchSize j, TorchSize k, TorchSize l) const
+R4::operator()(Size i, Size j, Size k, Size l) const
 {
   return base_index({i, j, k, l});
 }
 
 R4
-R4::transpose(TorchSize d1, TorchSize d2) const
+R4::transpose(Size d1, Size d2) const
 {
   return BatchTensorBase<R4>::base_transpose(d1, d2);
 }

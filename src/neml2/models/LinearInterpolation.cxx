@@ -24,8 +24,6 @@
 
 #include "neml2/models/LinearInterpolation.h"
 
-using namespace torch::indexing;
-
 namespace neml2
 {
 #define LINEARINTERPOLATION_REGISTER(T)                                                            \
@@ -47,11 +45,12 @@ LinearInterpolation<T>::LinearInterpolation(const OptionSet & options)
     _interp_batch_sizes(
         utils::broadcast_sizes(this->_X.batch_sizes().slice(0, this->_X.batch_dim() - 1),
                                this->_Y.batch_sizes().slice(0, this->_Y.batch_dim() - 1))),
-    _X0(this->template declare_buffer<Scalar>("X0",
-                                              this->_X.batch_index({Ellipsis, Slice(None, -1)}))),
-    _X1(this->template declare_buffer<Scalar>("X1",
-                                              this->_X.batch_index({Ellipsis, Slice(1, None)}))),
-    _Y0(this->template declare_buffer<T>("Y0", this->_Y.batch_index({Ellipsis, Slice(None, -1)}))),
+    _X0(this->template declare_buffer<Scalar>(
+        "X0", this->_X.batch_index({indexing::Ellipsis, indexing::Slice(indexing::None, -1)}))),
+    _X1(this->template declare_buffer<Scalar>(
+        "X1", this->_X.batch_index({indexing::Ellipsis, indexing::Slice(1, indexing::None)}))),
+    _Y0(this->template declare_buffer<T>(
+        "Y0", this->_Y.batch_index({indexing::Ellipsis, indexing::Slice(indexing::None, -1)}))),
     _slope(this->template declare_buffer<T>("S",
                                             math::diff(this->_Y, 1, this->_Y.batch_dim() - 1) /
                                                 math::diff(this->_X, 1, this->_X.batch_dim() - 1)))

@@ -45,7 +45,7 @@ TEST_CASE("ZerosFixedDimTensor", "[tensors/user_tensors]")
 {
   load_model("unit/tensors/user_tensors/test_ZerosFixedDimTensor.i");
 
-  TorchShape B{2, 1};
+  TensorShape B{2, 1};
 
   test_ZerosFixedDimTensor(Scalar, a, B);
   test_ZerosFixedDimTensor(Vec, b, B);

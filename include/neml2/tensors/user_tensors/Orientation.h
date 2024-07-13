@@ -57,7 +57,7 @@ private:
   Rot fill_matrix(const R2 & vals) const;
 
   /// Fill some number of random orientations
-  Rot fill_random(unsigned int n, TorchSize random_seed) const;
+  Rot fill_random(unsigned int n, Size random_seed) const;
 
   /// Fill from standard Rodrigues parameters
   Rot fill_rodrigues(const Scalar & rx, const Scalar & ry, const Scalar & rz) const;

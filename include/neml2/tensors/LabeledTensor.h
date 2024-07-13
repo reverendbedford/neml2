@@ -39,7 +39,7 @@ namespace neml2
  *
  * @tparam D The number of base dimensions
  */
-template <class Derived, TorchSize D>
+template <class Derived, Size D>
 class LabeledTensor
 {
 public:
@@ -48,7 +48,7 @@ public:
 
   /// Construct from a Tensor with batch dim and array of `LabeledAxis`
   LabeledTensor(const torch::Tensor & tensor,
-                TorchSize batch_dim,
+                Size batch_dim,
                 const std::array<const LabeledAxis *, D> & axes);
 
   /// Construct from a BatchTensor with array of `LabeledAxis`
@@ -70,7 +70,7 @@ public:
 
   /// Setup new empty storage
   [[nodiscard]] static Derived
-  empty(TorchShapeRef batch_shape,
+  empty(TensorShapeRef batch_shape,
         const std::array<const LabeledAxis *, D> & axes,
         const torch::TensorOptions & options = default_tensor_options());
 
@@ -79,7 +79,7 @@ public:
 
   /// Setup new storage with zeros
   [[nodiscard]] static Derived
-  zeros(TorchShapeRef batch_shape,
+  zeros(TensorShapeRef batch_shape,
         const std::array<const LabeledAxis *, D> & axes,
         const torch::TensorOptions & options = default_tensor_options());
 
@@ -112,33 +112,33 @@ public:
   torch::TensorOptions options() const { return _tensor.options(); }
 
   /// Return the number of batch dimensions
-  TorchSize batch_dim() const;
+  Size batch_dim() const;
 
   /// Return the number of base dimensions
-  TorchSize base_dim() const;
+  Size base_dim() const;
 
   /// Return the batch size
-  TorchShapeRef batch_sizes() const;
+  TensorShapeRef batch_sizes() const;
 
   /// Return the base size
-  TorchShapeRef base_sizes() const;
+  TensorShapeRef base_sizes() const;
 
   /// Get all the labeled axes
   const std::array<const LabeledAxis *, D> & axes() const { return _axes; }
 
   /// Get a specific labeled axis
-  const LabeledAxis & axis(TorchSize i = 0) const { return *_axes[i]; }
+  const LabeledAxis & axis(Size i = 0) const { return *_axes[i]; }
 
   /// How to slice the tensor given the names on each axis
   template <typename... S>
-  TorchSlice slice_indices(S &&... names) const;
+  indexing::TensorIndices slice_indices(S &&... names) const;
 
   /// The shape of the entire LabeledTensor
-  TorchShapeRef storage_size() const;
+  TensorShapeRef storage_size() const;
 
   /// The shape of a sub-block specified by the names on each dimension
   template <typename... S>
-  TorchShape storage_size(S &&... names) const;
+  TensorShape storage_size(S &&... names) const;
 
   /// Return a labeled view into the tensor.
   /// **No reshaping is done.**
@@ -146,23 +146,23 @@ public:
   BatchTensor operator()(S &&... names) const;
 
   /// Slice the tensor on the given dimension by a single variable or sub-axis
-  Derived slice(TorchSize i, const std::string & name) const;
+  Derived slice(Size i, const std::string & name) const;
 
   /// Get the sub-block labeled by the given sub-axis names
   template <typename... S>
   Derived block(S &&... names) const;
 
   /// Get a batch
-  Derived batch_index(TorchSlice indices) const;
+  Derived batch_index(indexing::TensorIndices indices) const;
 
   /// Set a index sliced on the batch dimensions to a value
-  void batch_index_put(TorchSlice indices, const torch::Tensor & other);
+  void batch_index_put(indexing::TensorIndices indices, const torch::Tensor & other);
 
   /// Return an index sliced on the batch dimensions
-  BatchTensor base_index(TorchSlice indices) const;
+  BatchTensor base_index(indexing::TensorIndices indices) const;
 
   /// Set a index sliced on the batch dimensions to a value
-  void base_index_put(TorchSlice indices, const torch::Tensor & other);
+  void base_index_put(indexing::TensorIndices indices, const torch::Tensor & other);
 
   /// Template setup for appropriate variable types
   template <typename T>
@@ -219,16 +219,16 @@ protected:
 
 private:
   template <std::size_t... I, typename... S>
-  TorchSlice slice_indices_impl(std::index_sequence<I...>, S &&... names) const;
+  indexing::TensorIndices slice_indices_impl(std::index_sequence<I...>, S &&... names) const;
 
   template <std::size_t... I, typename... S>
-  TorchShape storage_size_impl(std::index_sequence<I...>, S &&... names) const;
+  TensorShape storage_size_impl(std::index_sequence<I...>, S &&... names) const;
 
   template <std::size_t... I, typename... S>
   Derived block_impl(std::index_sequence<I...>, S &&... names) const;
 };
 
-template <class Derived, TorchSize D>
+template <class Derived, Size D>
 template <typename T>
 void
 LabeledTensor<Derived, D>::copy_(const T & other)
@@ -236,40 +236,40 @@ LabeledTensor<Derived, D>::copy_(const T & other)
   _tensor.copy_(other);
 }
 
-template <class Derived, TorchSize D>
+template <class Derived, Size D>
 template <typename... S>
-TorchSlice
+indexing::TensorIndices
 LabeledTensor<Derived, D>::slice_indices(S &&... names) const
 {
   return slice_indices_impl(std::make_index_sequence<sizeof...(names)>(),
                             std::forward<S>(names)...);
 }
 
-template <class Derived, TorchSize D>
+template <class Derived, Size D>
 template <std::size_t... I, typename... S>
-TorchSlice
+indexing::TensorIndices
 LabeledTensor<Derived, D>::slice_indices_impl(std::index_sequence<I...>, S &&... names) const
 {
   return {_axes[I]->indices(names)...};
 }
 
-template <class Derived, TorchSize D>
+template <class Derived, Size D>
 template <typename... S>
-TorchShape
+TensorShape
 LabeledTensor<Derived, D>::storage_size(S &&... names) const
 {
   return storage_size_impl(std::make_index_sequence<D>(), std::forward<S>(names)...);
 }
 
-template <class Derived, TorchSize D>
+template <class Derived, Size D>
 template <std::size_t... I, typename... S>
-TorchShape
+TensorShape
 LabeledTensor<Derived, D>::storage_size_impl(std::index_sequence<I...>, S &&... names) const
 {
   return {_axes[I]->storage_size(names)...};
 }
 
-template <class Derived, TorchSize D>
+template <class Derived, Size D>
 template <typename... S>
 BatchTensor
 LabeledTensor<Derived, D>::operator()(S &&... names) const
@@ -277,7 +277,7 @@ LabeledTensor<Derived, D>::operator()(S &&... names) const
   return base_index(slice_indices(names...));
 }
 
-template <class Derived, TorchSize D>
+template <class Derived, Size D>
 template <typename... S>
 Derived
 LabeledTensor<Derived, D>::block(S &&... names) const
@@ -285,12 +285,12 @@ LabeledTensor<Derived, D>::block(S &&... names) const
   return block_impl(std::make_index_sequence<sizeof...(names)>(), std::forward<S>(names)...);
 }
 
-template <class Derived, TorchSize D>
+template <class Derived, Size D>
 template <std::size_t... I, typename... S>
 Derived
 LabeledTensor<Derived, D>::block_impl(std::index_sequence<I...>, S &&... names) const
 {
-  TorchSlice idx = {_axes[I]->indices(names)...};
+  indexing::TensorIndices idx = {_axes[I]->indices(names)...};
   std::array<const LabeledAxis *, D> new_axes = {&_axes[I]->subaxis(names)...};
   return Derived(_tensor.base_index(idx), new_axes);
 }

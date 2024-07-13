@@ -40,14 +40,14 @@ constexpr Real eps = std::numeric_limits<at::scalar_value_type<Real>::type>::eps
 constexpr Real sqrt2 = 1.4142135623730951;
 constexpr Real invsqrt2 = 0.7071067811865475;
 
-constexpr TorchSize mandel_reverse_index[3][3] = {{0, 5, 4}, {5, 1, 3}, {4, 3, 2}};
-constexpr TorchSize mandel_index[6][2] = {{0, 0}, {1, 1}, {2, 2}, {1, 2}, {0, 2}, {0, 1}};
+constexpr Size mandel_reverse_index[3][3] = {{0, 5, 4}, {5, 1, 3}, {4, 3, 2}};
+constexpr Size mandel_index[6][2] = {{0, 0}, {1, 1}, {2, 2}, {1, 2}, {0, 2}, {0, 1}};
 
-constexpr TorchSize skew_reverse_index[3][3] = {{0, 2, 1}, {2, 0, 0}, {1, 0, 0}};
+constexpr Size skew_reverse_index[3][3] = {{0, 2, 1}, {2, 0, 0}, {1, 0, 0}};
 constexpr Real skew_factor[3][3] = {{0.0, -1.0, 1.0}, {1.0, 0.0, -1.0}, {-1.0, 1.0, 0.0}};
 
 inline constexpr Real
-mandel_factor(TorchSize i)
+mandel_factor(Size i)
 {
   return i < 3 ? 1.0 : sqrt2;
 }
@@ -111,7 +111,7 @@ private:
 BatchTensor full_to_reduced(const BatchTensor & full,
                             const torch::Tensor & rmap,
                             const torch::Tensor & rfactors,
-                            TorchSize dim = 0);
+                            Size dim = 0);
 
 /**
  * @brief Convert a BatchTensor from reduced notation to full notation.
@@ -127,7 +127,7 @@ BatchTensor full_to_reduced(const BatchTensor & full,
 BatchTensor reduced_to_full(const BatchTensor & reduced,
                             const torch::Tensor & rmap,
                             const torch::Tensor & rfactors,
-                            TorchSize dim = 0);
+                            Size dim = 0);
 
 /**
  * @brief Convert a `BatchTensor` from full notation to Mandel notation.
@@ -145,7 +145,7 @@ BatchTensor reduced_to_full(const BatchTensor & reduced,
  * @param dim The base dimension where the symmetric axes start
  * @return BatchTensor The resulting tensor using Mandel notation to represent the symmetric axes.
  */
-BatchTensor full_to_mandel(const BatchTensor & full, TorchSize dim = 0);
+BatchTensor full_to_mandel(const BatchTensor & full, Size dim = 0);
 
 /**
  * @brief Convert a BatchTensor from Mandel notation to full notation.
@@ -156,7 +156,7 @@ BatchTensor full_to_mandel(const BatchTensor & full, TorchSize dim = 0);
  * @param dim The base dimension where the symmetric axes start
  * @return BatchTensor The resulting tensor in full notation.
  */
-BatchTensor mandel_to_full(const BatchTensor & mandel, TorchSize dim = 0);
+BatchTensor mandel_to_full(const BatchTensor & mandel, Size dim = 0);
 
 /**
  * @brief Convert a `BatchTensor` from full notation to skew vector notation.
@@ -175,7 +175,7 @@ BatchTensor mandel_to_full(const BatchTensor & mandel, TorchSize dim = 0);
  * @return BatchTensor The resulting tensor using skew notation to represent the skew-symmetric
  * axes.
  */
-BatchTensor full_to_skew(const BatchTensor & full, TorchSize dim = 0);
+BatchTensor full_to_skew(const BatchTensor & full, Size dim = 0);
 
 /**
  * @brief Convert a BatchTensor from skew vector notation to full notation.
@@ -186,7 +186,7 @@ BatchTensor full_to_skew(const BatchTensor & full, TorchSize dim = 0);
  * @param dim The base dimension where the symmetric axes start
  * @return BatchTensor The resulting tensor in full notation.
  */
-BatchTensor skew_to_full(const BatchTensor & skew, TorchSize dim = 0);
+BatchTensor skew_to_full(const BatchTensor & skew, Size dim = 0);
 
 /**
  * @brief Use automatic differentiation (AD) to calculate the derivatives w.r.t. to the parameter
@@ -209,8 +209,7 @@ BatchTensor skew_to_full(const BatchTensor & skew, TorchSize dim = 0);
  */
 BatchTensor jacrev(const BatchTensor & y, const BatchTensor & p);
 
-BatchTensor
-base_diag_embed(const BatchTensor & a, TorchSize offset = 0, TorchSize d1 = -2, TorchSize d2 = -1);
+BatchTensor base_diag_embed(const BatchTensor & a, Size offset = 0, Size d1 = -2, Size d2 = -1);
 
 /// Product w_ik e_kj - e_ik w_kj with e SR2 and w WR2
 SR2 skew_and_sym_to_sym(const SR2 & e, const WR2 & w);
@@ -242,13 +241,13 @@ WSR4 d_multiply_and_make_skew_d_second(const SR2 & a);
 //                                   std::input_iterator_tag>,
 //         int> = 0>
 // inline BatchTensor
-// cat(Container && tensors, TorchSize dim)
+// cat(Container && tensors, Size dim)
 // {
 //   torch::ArrayRef<torch::Tensor> tensor_array(tensors.data(), tensors.size());
 //   return BatchTensor(torch::cat(tensor_array, dim), tensors.begin()->batch_dim());
 // }
 inline BatchTensor
-cat(const std::vector<BatchTensor> & tensors, TorchSize dim)
+cat(const std::vector<BatchTensor> & tensors, Size dim)
 {
   std::vector<torch::Tensor> torch_tensors(tensors.begin(), tensors.end());
   return BatchTensor(torch::cat(torch_tensors, dim), tensors.begin()->batch_dim());

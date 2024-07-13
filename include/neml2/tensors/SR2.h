@@ -90,7 +90,7 @@ public:
   SFFR4 drotate(const R2 & R) const;
 
   /// Accessor
-  Scalar operator()(TorchSize i, TorchSize j) const;
+  Scalar operator()(Size i, Size j) const;
 
   /// Trace
   Scalar tr() const;

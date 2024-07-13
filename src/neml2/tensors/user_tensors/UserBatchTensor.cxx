@@ -38,18 +38,18 @@ UserBatchTensor::expected_options()
   options.set<std::vector<Real>>("values");
   options.set("values").doc() = "Values in this (flattened) tensor";
 
-  options.set<TorchShape>("batch_shape") = {};
+  options.set<TensorShape>("batch_shape") = {};
   options.set("batch_shape").doc() = "Batch shape";
 
-  options.set<TorchShape>("base_shape") = {};
+  options.set<TensorShape>("base_shape") = {};
   options.set("base_shape").doc() = "Base shape";
 
   return options;
 }
 
 UserBatchTensor::UserBatchTensor(const OptionSet & options)
-  : BatchTensor(BatchTensor::empty(options.get<TorchShape>("batch_shape"),
-                                   options.get<TorchShape>("base_shape"),
+  : BatchTensor(BatchTensor::empty(options.get<TensorShape>("batch_shape"),
+                                   options.get<TensorShape>("base_shape"),
                                    default_tensor_options())),
     UserTensor(options)
 {

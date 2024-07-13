@@ -58,27 +58,27 @@ public:
   {
   }
   /// Return the number of batch dimensions
-  TorchSize dim() const { return _data->batch_dim(); }
+  Size dim() const { return _data->batch_dim(); }
   /// Return the batch size
-  TorchShapeRef sizes() const { return _data->batch_sizes(); }
+  TensorShapeRef sizes() const { return _data->batch_sizes(); }
   /// Get a batch
-  Derived index(TorchSlice indices) const { return _data->batch_index(indices); }
+  Derived index(indexing::TensorIndices indices) const { return _data->batch_index(indices); }
   /// Set a index sliced on the batch dimensions to a value
-  void index_put(TorchSlice indices, const torch::Tensor & other)
+  void index_put(indexing::TensorIndices indices, const torch::Tensor & other)
   {
     _data->batch_index_put(indices, other);
   }
   /// Return a new view of the tensor with values broadcast along the batch dimensions.
-  Derived expand(TorchShapeRef batch_size) const { return _data->batch_expand(batch_size); }
+  Derived expand(TensorShapeRef batch_size) const { return _data->batch_expand(batch_size); }
   /// Return a new tensor with values broadcast along the batch dimensions.
-  Derived expand_copy(TorchShapeRef batch_size) const
+  Derived expand_copy(TensorShapeRef batch_size) const
   {
     return _data->batch_expand_copy(batch_size);
   }
   /// Unsqueeze a batch dimension
-  Derived unsqueeze(TorchSize d) const { return _data->batch_unsqueeze(d); }
+  Derived unsqueeze(Size d) const { return _data->batch_unsqueeze(d); }
   /// Transpose two batch dimensions
-  Derived transpose(TorchSize d1, TorchSize d2) const { return _data->batch_transpose(d1, d2); }
+  Derived transpose(Size d1, Size d2) const { return _data->batch_transpose(d1, d2); }
 
 private:
   Derived * _data;
@@ -98,26 +98,26 @@ public:
   {
   }
   /// Return the number of base dimensions
-  TorchSize dim() const { return _data->base_dim(); }
+  Size dim() const { return _data->base_dim(); }
   /// Return the base size
-  TorchShapeRef sizes() const { return _data->base_sizes(); }
+  TensorShapeRef sizes() const { return _data->base_sizes(); }
   /// Get a base
-  BatchTensor index(TorchSlice indices) const { return _data->base_index(indices); }
+  BatchTensor index(indexing::TensorIndices indices) const { return _data->base_index(indices); }
   /// Set a index sliced on the base dimensions to a value
-  void index_put(TorchSlice indices, const torch::Tensor & other)
+  void index_put(indexing::TensorIndices indices, const torch::Tensor & other)
   {
     _data->base_index_put(indices, other);
   }
   /// Return a new view of the tensor with values broadcast along the base dimensions.
-  Derived expand(TorchShapeRef base_size) const { return _data->base_expand(base_size); }
+  Derived expand(TensorShapeRef base_size) const { return _data->base_expand(base_size); }
   /// Return a new tensor with values broadcast along the base dimensions.
-  Derived expand_copy(TorchShapeRef base_size) const { return _data->base_expand_copy(base_size); }
+  Derived expand_copy(TensorShapeRef base_size) const { return _data->base_expand_copy(base_size); }
   /// Unsqueeze a base dimension
-  Derived unsqueeze(TorchSize d) const { return _data->base_unsqueeze(d); }
+  Derived unsqueeze(Size d) const { return _data->base_unsqueeze(d); }
   /// Transpose two base dimensions
-  Derived transpose(TorchSize d1, TorchSize d2) const { return _data->base_transpose(d1, d2); }
+  Derived transpose(Size d1, Size d2) const { return _data->base_transpose(d1, d2); }
   /// Return the flattened storage needed just for the base indices
-  TorchSize storage() const { return _data->base_storage(); }
+  Size storage() const { return _data->base_storage(); }
 
 private:
   Derived * _data;
@@ -154,7 +154,7 @@ def_BatchView(py::module_ & m, const std::string & name)
   // The setter should also take any primitive tensor type
 #define BATCHTENSORBASE_BATCHVIEW_SETITEM(T)                                                       \
   c.def("__setitem__",                                                                             \
-        [](BatchView<Derived> * self, TorchSlice index, const T & src)                             \
+        [](BatchView<Derived> * self, indexing::TensorIndices index, const T & src)                \
         { self->index_put(index, src); })                                                          \
       .def("__setitem__",                                                                          \
            [](BatchView<Derived> * self, at::indexing::TensorIndex index, const T & src)           \
@@ -188,7 +188,7 @@ def_BaseView(py::module_ & m, const std::string & name)
   // The setter should also take any primitive tensor type
 #define BATCHTENSORBASE_BASEVIEW_SETITEM(T)                                                        \
   c.def("__setitem__",                                                                             \
-        [](BaseView<Derived> * self, TorchSlice index, const T & src)                              \
+        [](BaseView<Derived> * self, indexing::TensorIndices index, const T & src)                 \
         { self->index_put(index, src); })                                                          \
       .def("__setitem__",                                                                          \
            [](BaseView<Derived> * self, at::indexing::TensorIndex index, const T & src)            \
@@ -204,7 +204,7 @@ def_BatchTensorBase(py::class_<Derived> & c)
 
   // Ctors, conversions, accessors etc.
   c.def(py::init<>())
-      .def(py::init<const torch::Tensor &, TorchSize>())
+      .def(py::init<const torch::Tensor &, Size>())
       .def(py::init<const Derived &>())
       .def("__str__",
            [classname](const Derived & self)

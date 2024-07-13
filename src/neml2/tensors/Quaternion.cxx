@@ -48,7 +48,7 @@ Quaternion::fill(const Scalar & s, const Scalar & q1, const Scalar & q2, const S
 }
 
 Scalar
-Quaternion::operator()(TorchSize i) const
+Quaternion::operator()(Size i) const
 {
   return FixedDimTensor<Quaternion, 4>::base_index({i});
 }

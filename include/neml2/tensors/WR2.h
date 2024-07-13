@@ -48,7 +48,7 @@ public:
   WR2(const R2 & T);
 
   /// Accessor
-  Scalar operator()(TorchSize i, TorchSize j) const;
+  Scalar operator()(Size i, Size j) const;
 
   /// Exponential map to make this into a rotation (Rot)
   Rot exp() const;

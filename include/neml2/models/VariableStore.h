@@ -141,7 +141,7 @@ public:
 
 protected:
   /// Cache the variable's batch shape
-  virtual void cache(TorchShapeRef batch_shape);
+  virtual void cache(TensorShapeRef batch_shape);
 
   /**
    * @brief Allocate variable storages given the batch shape and tensor options
@@ -153,7 +153,7 @@ protected:
    * @param dout_din Whether to allocate tensor storage for the first derivatives
    * @param d2out_din2 Whether to allocate tensor storage for the second derivatives
    */
-  virtual void allocate_variables(TorchShapeRef batch_shape,
+  virtual void allocate_variables(TensorShapeRef batch_shape,
                                   const torch::TensorOptions & options,
                                   bool in,
                                   bool out,
@@ -180,7 +180,7 @@ protected:
 
   /// Declare an input variable (with unknown base shape at compile time)
   template <typename... S>
-  const Variable<BatchTensor> & declare_input_variable(TorchSize sz, TensorType t, S &&... name)
+  const Variable<BatchTensor> & declare_input_variable(Size sz, TensorType t, S &&... name)
   {
     const auto var_name = variable_name(std::forward<S>(name)...);
     declare_variable(_input_axis, var_name, sz);
@@ -189,7 +189,7 @@ protected:
 
   /// Declare an input variable that is a list of tensors of fixed size
   template <typename T, typename... S>
-  const Variable<BatchTensor> & declare_input_variable_list(TorchSize list_size, S &&... name)
+  const Variable<BatchTensor> & declare_input_variable_list(Size list_size, S &&... name)
   {
     return declare_input_variable(
         list_size * T::const_base_storage, TensorType::kBatchTensor, std::forward<S>(name)...);
@@ -206,7 +206,7 @@ protected:
 
   /// Declare an input variable (with unknown base shape at compile time)
   template <typename... S>
-  Variable<BatchTensor> & declare_output_variable(TorchSize sz, TensorType t, S &&... name)
+  Variable<BatchTensor> & declare_output_variable(Size sz, TensorType t, S &&... name)
   {
     const auto var_name = variable_name(std::forward<S>(name)...);
     declare_variable(_output_axis, var_name, sz);
@@ -215,7 +215,7 @@ protected:
 
   /// Declare an output variable that is a list of tensors of fixed size
   template <typename T, typename... S>
-  Variable<BatchTensor> & declare_output_variable_list(TorchSize list_size, S &&... name)
+  Variable<BatchTensor> & declare_output_variable_list(Size list_size, S &&... name)
   {
     return declare_output_variable(
         list_size * T::const_base_storage, TensorType::kBatchTensor, std::forward<S>(name)...);
@@ -229,7 +229,7 @@ protected:
   }
 
   /// Declare an item (with known storage size) recursively on an axis
-  VariableName declare_variable(LabeledAxis & axis, const VariableName & var, TorchSize sz) const
+  VariableName declare_variable(LabeledAxis & axis, const VariableName & var, Size sz) const
   {
     axis.add(var, sz);
     return var;
@@ -264,7 +264,7 @@ private:
   Variable<T> * create_variable_view(Storage<VariableName, VariableBase> & views,
                                      const VariableName & name,
                                      TensorType t = TensorTypeEnum<T>::value,
-                                     TorchSize sz = -1)
+                                     Size sz = -1)
   {
     if constexpr (std::is_same_v<T, BatchTensor>)
       neml_assert(sz > 0, "Allocating a BatchTensor requires a known storage size.");

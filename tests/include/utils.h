@@ -48,7 +48,6 @@ finite_differencing_derivative(F && f,
                                neml2::Real aeps = 1e-6)
 {
   using namespace neml2;
-  using namespace torch::indexing;
 
   // The scalar case is trivial
   if (x.base_dim() == 0)
@@ -76,7 +75,7 @@ finite_differencing_derivative(F && f,
   auto dy_dxf = BatchTensor::empty(
       x.batch_sizes(), utils::add_shapes(y0.base_sizes(), xf.base_sizes()), x.options());
 
-  for (TorchSize i = 0; i < xf.base_sizes()[0]; i++)
+  for (Size i = 0; i < xf.base_sizes()[0]; i++)
   {
     auto dx = eps * Scalar(math::abs(xf.base_index({i})));
     dx.index_put_({dx < aeps}, aeps);
@@ -86,7 +85,7 @@ finite_differencing_derivative(F && f,
     auto x1 = BatchTensor(xf1.reshape(x.sizes()), x.batch_dim());
 
     auto y1 = BatchTensor(f(x1)).clone();
-    dy_dxf.base_index_put({Ellipsis, i}, (y1 - y0) / dx);
+    dy_dxf.base_index_put({indexing::Ellipsis, i}, (y1 - y0) / dx);
   }
 
   // Reshape the derivative back to the correct shape

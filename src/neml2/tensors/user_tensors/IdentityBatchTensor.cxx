@@ -34,10 +34,10 @@ IdentityBatchTensor::expected_options()
   OptionSet options = UserTensor::expected_options();
   options.doc() = "Construct an identity BatchTensor with given batch shape.";
 
-  options.set<TorchShape>("batch_shape") = {};
+  options.set<TensorShape>("batch_shape") = {};
   options.set("batch_shape").doc() = "Batch shape";
 
-  options.set<TorchSize>("n");
+  options.set<Size>("n");
   options.set("n").doc() =
       "Diagonal size of the identity tensor, i.e., base shape of the identity tensor will be (n,n)";
 
@@ -45,9 +45,8 @@ IdentityBatchTensor::expected_options()
 }
 
 IdentityBatchTensor::IdentityBatchTensor(const OptionSet & options)
-  : BatchTensor(BatchTensor::identity(options.get<TorchShape>("batch_shape"),
-                                      options.get<TorchSize>("n"),
-                                      default_tensor_options())),
+  : BatchTensor(BatchTensor::identity(
+        options.get<TensorShape>("batch_shape"), options.get<Size>("n"), default_tensor_options())),
     UserTensor(options)
 {
 }

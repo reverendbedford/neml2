@@ -26,8 +26,6 @@
 
 #include "neml2/tensors/Quaternion.h"
 
-using namespace torch::indexing;
-
 namespace neml2
 {
 register_NEML2_object(Orientation);
@@ -61,7 +59,7 @@ Orientation::expected_options()
       "If true do a shadow parameter replacement of the underlying MRP representation to move the "
       "inputs farther away from the singularity";
 
-  options.set<TorchSize>("random_seed") = -1;
+  options.set<Size>("random_seed") = -1;
   options.set("random_seed").doc() = "Random seed for random angle generation";
 
   options.set<unsigned int>("quantity") = 1;
@@ -92,7 +90,7 @@ Orientation::fill(const OptionSet & options) const
   }
   else if (input_type == "random")
   {
-    R = fill_random(options.get<unsigned int>("quantity"), options.get<TorchSize>("random_seed"));
+    R = fill_random(options.get<unsigned int>("quantity"), options.get<Size>("random_seed"));
   }
   else
     throw NEMLException("Unknown Orientation input_type " + input_type);
@@ -121,13 +119,15 @@ Orientation::fill_euler_angles(const torch::Tensor & vals,
 
   if (angle_convention == "bunge")
   {
-    ten.index_put_({Ellipsis, 0}, torch::fmod(ten.index({Ellipsis, 0}) - M_PI / 2.0, 2.0 * M_PI));
-    ten.index_put_({Ellipsis, 1}, torch::fmod(ten.index({Ellipsis, 1}), M_PI));
-    ten.index_put_({Ellipsis, 2}, torch::fmod(M_PI / 2.0 - ten.index({Ellipsis, 2}), 2.0 * M_PI));
+    ten.index_put_({indexing::Ellipsis, 0},
+                   torch::fmod(ten.index({indexing::Ellipsis, 0}) - M_PI / 2.0, 2.0 * M_PI));
+    ten.index_put_({indexing::Ellipsis, 1}, torch::fmod(ten.index({indexing::Ellipsis, 1}), M_PI));
+    ten.index_put_({indexing::Ellipsis, 2},
+                   torch::fmod(M_PI / 2.0 - ten.index({indexing::Ellipsis, 2}), 2.0 * M_PI));
   }
   else if (angle_convention == "roe")
   {
-    ten.index_put_({Ellipsis, 2}, M_PI - ten.index({Ellipsis, 2}));
+    ten.index_put_({indexing::Ellipsis, 2}, M_PI - ten.index({indexing::Ellipsis, 2}));
   }
   else
     neml_assert(angle_convention == "kocks",
@@ -135,23 +135,23 @@ Orientation::fill_euler_angles(const torch::Tensor & vals,
 
   // Make a rotation matrix...
   auto M = torch::zeros({ten.sizes()[0], 3, 3}, vals.options());
-  auto a = ten.index({Ellipsis, 0});
-  auto b = ten.index({Ellipsis, 1});
-  auto c = ten.index({Ellipsis, 2});
+  auto a = ten.index({indexing::Ellipsis, 0});
+  auto b = ten.index({indexing::Ellipsis, 1});
+  auto c = ten.index({indexing::Ellipsis, 2});
 
-  M.index_put_({Ellipsis, 0, 0},
+  M.index_put_({indexing::Ellipsis, 0, 0},
                -torch::sin(c) * torch::sin(a) - torch::cos(c) * torch::cos(a) * torch::cos(b));
-  M.index_put_({Ellipsis, 0, 1},
+  M.index_put_({indexing::Ellipsis, 0, 1},
                torch::sin(c) * torch::cos(a) - torch::cos(c) * torch::sin(a) * torch::cos(b));
-  M.index_put_({Ellipsis, 0, 2}, torch::cos(c) * torch::sin(b));
-  M.index_put_({Ellipsis, 1, 0},
+  M.index_put_({indexing::Ellipsis, 0, 2}, torch::cos(c) * torch::sin(b));
+  M.index_put_({indexing::Ellipsis, 1, 0},
                torch::cos(c) * torch::sin(a) - torch::sin(c) * torch::cos(a) * torch::cos(b));
-  M.index_put_({Ellipsis, 1, 1},
+  M.index_put_({indexing::Ellipsis, 1, 1},
                -torch::cos(c) * torch::cos(a) - torch::sin(c) * torch::sin(a) * torch::cos(b));
-  M.index_put_({Ellipsis, 1, 2}, torch::sin(c) * torch::sin(b));
-  M.index_put_({Ellipsis, 2, 0}, torch::cos(a) * torch::sin(b));
-  M.index_put_({Ellipsis, 2, 1}, torch::sin(a) * torch::sin(b));
-  M.index_put_({Ellipsis, 2, 2}, torch::cos(b));
+  M.index_put_({indexing::Ellipsis, 1, 2}, torch::sin(c) * torch::sin(b));
+  M.index_put_({indexing::Ellipsis, 2, 0}, torch::cos(a) * torch::sin(b));
+  M.index_put_({indexing::Ellipsis, 2, 1}, torch::sin(a) * torch::sin(b));
+  M.index_put_({indexing::Ellipsis, 2, 2}, torch::cos(b));
 
   // Convert from matrix to vector
   return fill_matrix(R2(M, 1));
@@ -161,15 +161,16 @@ Rot
 Orientation::fill_matrix(const R2 & M) const
 {
   // Get the angle
-  auto trace = M.index({Ellipsis, 0, 0}) + M.index({Ellipsis, 1, 1}) + M.index({Ellipsis, 2, 2});
+  auto trace = M.index({indexing::Ellipsis, 0, 0}) + M.index({indexing::Ellipsis, 1, 1}) +
+               M.index({indexing::Ellipsis, 2, 2});
   auto theta = torch::acos((trace - 1.0) / 2.0);
 
   // Get the standard Rod. parameters
   auto scale = torch::tan(theta / 2.0) / (2.0 * torch::sin(theta));
   scale.index_put_({theta == 0}, 0.0);
-  auto rx = (M.index({Ellipsis, 2, 1}) - M.index({Ellipsis, 1, 2})) * scale;
-  auto ry = (M.index({Ellipsis, 0, 2}) - M.index({Ellipsis, 2, 0})) * scale;
-  auto rz = (M.index({Ellipsis, 1, 0}) - M.index({Ellipsis, 0, 1})) * scale;
+  auto rx = (M.index({indexing::Ellipsis, 2, 1}) - M.index({indexing::Ellipsis, 1, 2})) * scale;
+  auto ry = (M.index({indexing::Ellipsis, 0, 2}) - M.index({indexing::Ellipsis, 2, 0})) * scale;
+  auto rz = (M.index({indexing::Ellipsis, 1, 0}) - M.index({indexing::Ellipsis, 0, 1})) * scale;
 
   return fill_rodrigues(rx, ry, rz);
 }
@@ -187,7 +188,7 @@ Orientation::fill_rodrigues(const Scalar & rx, const Scalar & ry, const Scalar &
 }
 
 Rot
-Orientation::fill_random(unsigned int n, TorchSize random_seed) const
+Orientation::fill_random(unsigned int n, Size random_seed) const
 {
   if (random_seed >= 0)
     torch::manual_seed(random_seed);

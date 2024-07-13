@@ -35,7 +35,7 @@ TEST_CASE("SR2", "[tensors]")
   torch::manual_seed(42);
   const auto & DTO = default_tensor_options();
 
-  TorchShape B = {5, 3, 1, 2}; // batch shape
+  TensorShape B = {5, 3, 1, 2}; // batch shape
 
   SECTION("class SR2")
   {
@@ -155,11 +155,10 @@ TEST_CASE("SR2", "[tensors]")
 
     SECTION("operator()")
     {
-      using namespace torch::indexing;
       auto a = SR2(torch::rand(utils::add_shapes(B, 6), DTO));
       auto b = R2(a);
-      for (TorchSize i = 0; i < 3; i++)
-        for (TorchSize j = 0; j < 3; j++)
+      for (Size i = 0; i < 3; i++)
+        for (Size j = 0; j < 3; j++)
           REQUIRE(torch::allclose(a(i, j), b(i, j)));
     }
 

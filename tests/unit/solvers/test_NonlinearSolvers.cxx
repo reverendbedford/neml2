@@ -37,8 +37,8 @@ using solver_types = std::tuple<Newton, NewtonWithLineSearch, NewtonWithTrustReg
 TEMPLATE_LIST_TEST_CASE("NonlinearSolvers", "[solvers]", solver_types)
 {
   // System shape
-  TorchShape batch_sz = {2};
-  TorchSize nbase = 4;
+  TensorShape batch_sz = {2};
+  Size nbase = 4;
 
   // Create the nonlinear solver
   OptionSet options = TestType::expected_options();

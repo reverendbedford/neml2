@@ -66,7 +66,7 @@ VariableStore::output_view(const VariableName & name)
 }
 
 void
-VariableStore::cache(TorchShapeRef batch_shape)
+VariableStore::cache(TensorShapeRef batch_shape)
 {
   for (auto && [name, var] : input_views())
     var.cache(batch_shape);
@@ -75,7 +75,7 @@ VariableStore::cache(TorchShapeRef batch_shape)
 }
 
 void
-VariableStore::allocate_variables(TorchShapeRef batch_shape,
+VariableStore::allocate_variables(TensorShapeRef batch_shape,
                                   const torch::TensorOptions & options,
                                   bool in,
                                   bool out,

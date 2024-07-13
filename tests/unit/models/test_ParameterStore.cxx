@@ -35,7 +35,7 @@ TEST_CASE("ParameterStore", "[models]")
 {
   load_model("unit/models/solid_mechanics/LinearIsotropicElasticity.i");
   auto & model = Factory::get_object<Model>("Models", "model");
-  auto batch_shape = TorchShape{5, 2};
+  auto batch_shape = TensorShape{5, 2};
   model.reinit(batch_shape);
 
   SECTION("class ParameterStore")
@@ -55,15 +55,15 @@ TEST_CASE("ParameterStore", "[models]")
       auto & E = model.get_parameter<Scalar>("E");
       auto & nu = model.get_parameter<Scalar>("nu");
 
-      REQUIRE(E.batch_sizes() == TorchShape());
-      REQUIRE(nu.batch_sizes() == TorchShape());
+      REQUIRE(E.batch_sizes() == TensorShape());
+      REQUIRE(nu.batch_sizes() == TensorShape());
 
       // Modifying the individual parameter references should affect values stored in the parameter
       // dictionary.
       E = E.batch_expand_copy({1, 2});
       nu = nu.batch_expand_copy({5, 1});
-      REQUIRE(BatchTensor(params["E"]).batch_sizes() == TorchShape{1, 2});
-      REQUIRE(BatchTensor(params["nu"]).batch_sizes() == TorchShape{5, 1});
+      REQUIRE(BatchTensor(params["E"]).batch_sizes() == TensorShape{1, 2});
+      REQUIRE(BatchTensor(params["nu"]).batch_sizes() == TensorShape{5, 1});
 
       // Same thing say when the user wants to use torch AD
       E.requires_grad_(true);

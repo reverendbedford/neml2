@@ -55,10 +55,10 @@ public:
   R5 drotate(const Rot & r) const;
 
   /// Accessor
-  Scalar operator()(TorchSize i, TorchSize j, TorchSize k, TorchSize l) const;
+  Scalar operator()(Size i, Size j, Size k, Size l) const;
 
   /// Arbitrary transpose two dimensions
-  R4 transpose(TorchSize d1, TorchSize d2) const;
+  R4 transpose(Size d1, Size d2) const;
 
   /// Transpose minor axes
   R4 transpose_minor() const;

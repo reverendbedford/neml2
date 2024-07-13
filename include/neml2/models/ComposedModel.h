@@ -66,9 +66,9 @@ protected:
 
 private:
   // Custom comparator for sorting assembly indices
-  struct TorchIndexCmp
+  struct SliceCmp
   {
-    bool operator()(const TorchIndex & a, const TorchIndex & b) const
+    bool operator()(const indexing::TensorIndex & a, const indexing::TensorIndex & b) const
     {
       neml_assert(a.is_slice() && b.is_slice(), "Comparator must be used on slices");
       neml_assert(a.slice().step().expect_int() == 1 && b.slice().step().expect_int() == 1,
@@ -96,7 +96,8 @@ private:
   DependencyResolver<Model, VariableName> _dependency;
 
   /// Assembly indices
-  std::map<Model *, std::map<TorchIndex, std::pair<Model *, TorchIndex>, TorchIndexCmp>>
+  std::map<Model *,
+           std::map<indexing::TensorIndex, std::pair<Model *, indexing::TensorIndex>, SliceCmp>>
       _assembly_indices;
 
   /// Cache for partial derivatives of model inputs w.r.t. total input

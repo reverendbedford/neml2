@@ -53,7 +53,7 @@ VecBase<Derived>::identity_map(const torch::TensorOptions & options)
 
 template <class Derived>
 Scalar
-VecBase<Derived>::operator()(TorchSize i) const
+VecBase<Derived>::operator()(Size i) const
 {
   return this->base_index({i});
 }

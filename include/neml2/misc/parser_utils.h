@@ -125,7 +125,7 @@ void parse_<bool>(bool &, const std::string & raw_str);
 template <>
 void parse_vector_<bool>(std::vector<bool> &, const std::string & raw_str);
 template <>
-void parse_<TorchShape>(TorchShape &, const std::string & raw_str);
+void parse_<TensorShape>(TensorShape &, const std::string & raw_str);
 template <>
 void parse_<VariableName>(VariableName &, const std::string & raw_str);
 // @}

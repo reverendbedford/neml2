@@ -54,7 +54,7 @@ namespace neml2
 class LabeledAxis
 {
 public:
-  typedef std::unordered_map<std::string, std::pair<TorchSize, TorchSize>> AxisLayout;
+  typedef std::unordered_map<std::string, std::pair<Size, Size>> AxisLayout;
 
   /// Empty constructor
   LabeledAxis();
@@ -87,7 +87,7 @@ public:
   }
 
   /// Add an arbitrary variable using a `LabeledAxisAccessor`
-  LabeledAxis & add(const LabeledAxisAccessor & accessor, TorchSize sz);
+  LabeledAxis & add(const LabeledAxisAccessor & accessor, Size sz);
 
   /// Change the label of an item
   LabeledAxis & rename(const std::string & original, const std::string & rename);
@@ -139,27 +139,28 @@ public:
   bool has_subaxis(const LabeledAxisAccessor & s) const;
 
   /// Get the (total) storage size of *this* axis
-  TorchSize storage_size() const { return _offset; }
+  Size storage_size() const { return _offset; }
   /// Get the storage size of an item by its LabeledAxisAccessor
-  TorchSize storage_size(const LabeledAxisAccessor & accessor) const;
+  Size storage_size(const LabeledAxisAccessor & accessor) const;
 
   /// Get the layout
   const AxisLayout & layout() const { return _layout; }
 
   /// Get the indices of a specific item by a `LabeledAxisAccessor`
-  TorchIndex indices(const LabeledAxisAccessor & accessor) const;
+  indexing::TensorIndex indices(const LabeledAxisAccessor & accessor) const;
   /// Get the indices using another `LabeledAxis`.
-  TorchIndex indices(const LabeledAxis & other, bool recursive = true, bool inclusive = true) const;
+  indexing::TensorIndex
+  indices(const LabeledAxis & other, bool recursive = true, bool inclusive = true) const;
 
   /// Get the common indices of two `LabeledAxis`s
-  std::vector<std::pair<TorchIndex, TorchIndex>> common_indices(const LabeledAxis & other,
-                                                                bool recursive = true) const;
+  std::vector<std::pair<indexing::TensorIndex, indexing::TensorIndex>>
+  common_indices(const LabeledAxis & other, bool recursive = true) const;
 
   /// Get the item names
   std::vector<std::string> item_names() const;
 
   /// Get the variables
-  const std::map<std::string, TorchSize> & variables() const { return _variables; }
+  const std::map<std::string, Size> & variables() const { return _variables; }
 
   /// Get the subaxes
   const std::map<std::string, std::shared_ptr<LabeledAxis>> & subaxes() const { return _subaxes; }
@@ -187,7 +188,7 @@ public:
 
 private:
   void add(LabeledAxis & axis,
-           TorchSize sz,
+           Size sz,
            const LabeledAxisAccessor::const_iterator & cur,
            const LabeledAxisAccessor::const_iterator & end) const;
 
@@ -196,29 +197,29 @@ private:
              std::vector<LabeledAxisAccessor> & merged_vars);
 
   /// Helper method to recursively find the storage size of a variable
-  TorchSize storage_size(const LabeledAxisAccessor::const_iterator & cur,
-                         const LabeledAxisAccessor::const_iterator & end) const;
+  Size storage_size(const LabeledAxisAccessor::const_iterator & cur,
+                    const LabeledAxisAccessor::const_iterator & end) const;
 
   /// Helper method to recursively consume the sub-axis names of a `LabeledAxisAccessor` to get the
   /// indices of a variable.
-  TorchIndex indices(TorchSize offset,
-                     const LabeledAxisAccessor::const_iterator & cur,
-                     const LabeledAxisAccessor::const_iterator & end) const;
+  indexing::TensorIndex indices(Size offset,
+                                const LabeledAxisAccessor::const_iterator & cur,
+                                const LabeledAxisAccessor::const_iterator & end) const;
 
   /// Helper method to (recursively) index this axis using another axis
   void indices(const LabeledAxis & other,
                bool recursive,
                bool inclusive,
-               std::vector<TorchSize> & idx,
-               TorchSize offset) const;
+               std::vector<Size> & idx,
+               Size offset) const;
 
   /// Get the common indices of two `LabeledAxis`s
   void common_indices(const LabeledAxis & other,
                       bool recursive,
-                      std::vector<TorchSize> & idxa,
-                      std::vector<TorchSize> & idxb,
-                      TorchSize offseta,
-                      TorchSize offsetb) const;
+                      std::vector<Size> & idxa,
+                      std::vector<Size> & idxb,
+                      Size offseta,
+                      Size offsetb) const;
 
   void variable_accessors(std::set<LabeledAxisAccessor> & accessors,
                           LabeledAxisAccessor cur,
@@ -226,13 +227,13 @@ private:
                           const LabeledAxisAccessor & subaxis) const;
 
   /// Variables and their sizes
-  std::map<std::string, TorchSize> _variables;
+  std::map<std::string, Size> _variables;
 
   /// Sub-axes
   // Each sub-axis can contain its own variables and sub-axes
   std::map<std::string, std::shared_ptr<LabeledAxis>> _subaxes;
 
-  /// The layout of this `LabeledAxis`, i.e. the name-to-TorchSlice map
+  /// The layout of this `LabeledAxis`, i.e. the name-to-indexing::TensorIndices map
   // After all the `LabeledAxis`s are setup, we need to setup the layout once and only once. This is
   // important for performance considerations, as we need to use the layout to construct many,
   // many LabeledVector and LabeledMatrix at runtime, and so we don't want to waste time on setting
@@ -242,7 +243,7 @@ private:
   /// The total storage size of the axis.
   // Similar considerations as `_layout`, i.e., the _offset will be zero during the setup stage,
   // and will have a fixed (hopefully correct) size after the layout have been setup.
-  TorchSize _offset;
+  Size _offset;
 };
 
 std::ostream & operator<<(std::ostream & os, const LabeledAxis & info);

@@ -27,8 +27,6 @@
 #include "utils.h"
 #include "neml2/tensors/tensors.h"
 
-using namespace torch::indexing;
-
 using namespace neml2;
 
 TEST_CASE("SSR4", "[tensors]")
@@ -36,7 +34,7 @@ TEST_CASE("SSR4", "[tensors]")
   torch::manual_seed(42);
   const auto & DTO = default_tensor_options();
 
-  TorchShape B = {5, 3, 1, 2}; // batch shape
+  TensorShape B = {5, 3, 1, 2}; // batch shape
 
   SECTION("class SSR4")
   {
@@ -55,20 +53,20 @@ TEST_CASE("SSR4", "[tensors]")
     SECTION("identity")
     {
       auto a = SSR4::identity(DTO);
-      for (TorchSize i = 0; i < 3; i++)
-        for (TorchSize j = 0; j < 3; j++)
-          for (TorchSize k = 0; k < 3; k++)
-            for (TorchSize l = 0; l < 3; l++)
+      for (Size i = 0; i < 3; i++)
+        for (Size j = 0; j < 3; j++)
+          for (Size k = 0; k < 3; k++)
+            for (Size l = 0; l < 3; l++)
               REQUIRE(torch::allclose(a(i, j, k, l), Scalar(i == j && k == l ? 1.0 : 0.0, DTO)));
     }
 
     SECTION("identity_sym")
     {
       auto a = SSR4::identity_sym(DTO);
-      for (TorchSize i = 0; i < 3; i++)
-        for (TorchSize j = 0; j < 3; j++)
-          for (TorchSize k = 0; k < 3; k++)
-            for (TorchSize l = 0; l < 3; l++)
+      for (Size i = 0; i < 3; i++)
+        for (Size j = 0; j < 3; j++)
+          for (Size k = 0; k < 3; k++)
+            for (Size l = 0; l < 3; l++)
               REQUIRE(torch::allclose(
                   a(i, j, k, l),
                   Scalar((i == k && j == l ? 0.5 : 0.0) + (i == l && j == k ? 0.5 : 0.0), DTO)));
@@ -77,10 +75,10 @@ TEST_CASE("SSR4", "[tensors]")
     SECTION("identity_vol")
     {
       auto a = SSR4::identity_vol(DTO);
-      for (TorchSize i = 0; i < 3; i++)
-        for (TorchSize j = 0; j < 3; j++)
-          for (TorchSize k = 0; k < 3; k++)
-            for (TorchSize l = 0; l < 3; l++)
+      for (Size i = 0; i < 3; i++)
+        for (Size j = 0; j < 3; j++)
+          for (Size k = 0; k < 3; k++)
+            for (Size l = 0; l < 3; l++)
               REQUIRE(
                   torch::allclose(a(i, j, k, l), Scalar(i == j && k == l ? 1.0 / 3 : 0.0, DTO)));
     }
@@ -88,10 +86,10 @@ TEST_CASE("SSR4", "[tensors]")
     SECTION("identity_dev")
     {
       auto a = SSR4::identity_dev(DTO);
-      for (TorchSize i = 0; i < 3; i++)
-        for (TorchSize j = 0; j < 3; j++)
-          for (TorchSize k = 0; k < 3; k++)
-            for (TorchSize l = 0; l < 3; l++)
+      for (Size i = 0; i < 3; i++)
+        for (Size j = 0; j < 3; j++)
+          for (Size k = 0; k < 3; k++)
+            for (Size l = 0; l < 3; l++)
               REQUIRE(torch::allclose(a(i, j, k, l),
                                       Scalar((i == k && j == l ? 0.5 : 0.0) +
                                                  (i == l && j == k ? 0.5 : 0.0) -

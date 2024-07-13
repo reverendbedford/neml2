@@ -35,7 +35,7 @@ namespace neml2
 {
 
 // Forward declarations
-template <class Derived, TorchSize D>
+template <class Derived, Size D>
 void def_LabeledTensor(py::class_<Derived> & c);
 
 } // namespace neml2
@@ -47,7 +47,7 @@ void def_LabeledTensor(py::class_<Derived> & c);
 namespace neml2
 {
 
-template <class Derived, TorchSize D>
+template <class Derived, Size D>
 void
 def_LabeledTensor(py::class_<Derived> & c)
 {
@@ -55,7 +55,7 @@ def_LabeledTensor(py::class_<Derived> & c)
   c.def(py::init<>())
       // I have absolutely no clue as to why the following constructor gives segfault in another
       // totally unrelated class constructor's binding :(
-      //  .def(py::init<const torch::Tensor &, TorchSize, const std::array<const LabeledAxis *, D>
+      //  .def(py::init<const torch::Tensor &, Size, const std::array<const LabeledAxis *, D>
       //  &>())
       .def(py::init<const BatchTensor &, const std::array<const LabeledAxis *, D> &>())
       .def(py::init<const Derived &>())
@@ -63,7 +63,7 @@ def_LabeledTensor(py::class_<Derived> & c)
            [](const Derived & self)
            {
              std::ostringstream os;
-             for (TorchSize i = 0; i < D; i++)
+             for (Size i = 0; i < D; i++)
                os << "Axis " << i << ":\n" << self.axis(i) << "\n\n";
              os << self.tensor() << '\n';
              os << "Batch shape: " << self.batch_sizes() << '\n';

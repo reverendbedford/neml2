@@ -83,8 +83,6 @@ NonlinearSystem::init_scaling(const bool verbose)
   if (_scaling_matrices_initialized)
     return;
 
-  using namespace torch::indexing;
-
   // First compute the Jacobian
   assemble(false, true);
 
@@ -108,14 +106,14 @@ NonlinearSystem::init_scaling(const bool verbose)
       break;
 
     // scale rows and columns
-    for (TorchSize i = 0; i < _ndof; i++)
+    for (Size i = 0; i < _ndof; i++)
     {
       auto ar = 1.0 / torch::sqrt(torch::max(Jp.base_index({i})));
-      auto ac = 1.0 / torch::sqrt(torch::max(Jp.base_index({Slice(), i})));
+      auto ac = 1.0 / torch::sqrt(torch::max(Jp.base_index({indexing::Slice(), i})));
       _row_scaling.base_index({i}) *= ar;
       _col_scaling.base_index({i}) *= ac;
       Jp.base_index({i}) *= ar;
-      Jp.base_index({Slice(), i}) *= ac;
+      Jp.base_index({indexing::Slice(), i}) *= ac;
     }
   }
 

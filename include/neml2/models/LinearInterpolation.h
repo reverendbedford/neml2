@@ -97,7 +97,7 @@ private:
   T2 mask(const T2 & in, const torch::Tensor & m) const;
 
   /// Batch shape of the interpolant, excluding the last dimension which is the interpolation axis
-  const TorchShape _interp_batch_sizes;
+  const TensorShape _interp_batch_sizes;
   /// Starting abscissa of each interval
   const Scalar & _X0;
   /// Ending abscissa of each interval

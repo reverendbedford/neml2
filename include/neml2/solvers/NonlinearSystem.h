@@ -96,7 +96,7 @@ protected:
   virtual void assemble(bool residual, bool Jacobian) = 0;
 
   /// Number of degrees of freedom
-  TorchSize _ndof;
+  Size _ndof;
 
   /// View for the solution of this nonlinear system
   BatchTensor _solution;

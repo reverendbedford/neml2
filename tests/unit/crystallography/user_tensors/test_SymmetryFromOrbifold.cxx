@@ -96,10 +96,8 @@ TEST_CASE("SymmetryFromOrbifold", "[tensors]")
                                   {{0.0, -1.0, 0.0}, {1.0, 0.0, 0.0}, {0.0, 0.0, 1.0}}},
                                  DTO);
 
-  using namespace torch::indexing;
-
   // Relates each crystal class to the relevant operators
-  std::map<std::string, std::tuple<torch::Tensor, std::vector<TorchSize>>> ops{
+  std::map<std::string, std::tuple<torch::Tensor, std::vector<Size>>> ops{
       {"1", {ktw_tetra, {0}}},
       {"2", {ktw_tetra, {0, 1}}},
       {"222", {ktw_tetra, {0, 1, 2, 3}}},
@@ -145,10 +143,10 @@ TEST_CASE("SymmetryFromOrbifold", "[tensors]")
     auto cls = GENERATE("1", "2", "222", "42", "4", "3", "6", "32", "622", "23", "432");
     auto & grp = Factory::get_object<R2>("Tensors", fmt_name(cls));
     // A loop is forgivable here I hope...
-    for (TorchSize i = 0; i < grp.batch_sizes()[0]; i++)
+    for (Size i = 0; i < grp.batch_sizes()[0]; i++)
     {
       R2 op_i = grp.batch_index({i});
-      for (TorchSize j = 0; j < grp.batch_sizes()[0]; j++)
+      for (Size j = 0; j < grp.batch_sizes()[0]; j++)
       {
         R2 op_j = grp.batch_index({j});
         R2 prod = op_i * op_j;
@@ -162,7 +160,7 @@ TEST_CASE("SymmetryFromOrbifold", "[tensors]")
     auto cls = GENERATE("1", "2", "222", "42", "4", "3", "6", "32", "622", "23", "432");
     auto & grp = Factory::get_object<R2>("Tensors", fmt_name(cls));
     // A loop is forgivable here I hope...
-    for (TorchSize i = 0; i < grp.batch_sizes()[0]; i++)
+    for (Size i = 0; i < grp.batch_sizes()[0]; i++)
     {
       R2 inv = grp.batch_index({i}).inverse();
       REQUIRE(torch::any(torch::all(torch::isclose(grp, inv).flatten(1), 1)).item().toBool());

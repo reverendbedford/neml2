@@ -98,13 +98,13 @@ protected:
   /// The current time
   Scalar _time;
   /// The current step count
-  TorchSize _step_count;
+  Size _step_count;
   /// VariableName for the time
   VariableName _time_name;
   /// Total number of steps
-  TorchSize _nsteps;
+  Size _nsteps;
   /// The batch size
-  TorchSize _nbatch;
+  Size _nbatch;
   /// The input to the constitutive model
   LabeledVector & _in;
   /// The output of the constitutive model

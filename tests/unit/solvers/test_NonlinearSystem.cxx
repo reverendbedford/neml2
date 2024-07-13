@@ -32,8 +32,8 @@ using namespace neml2;
 TEST_CASE("NonlinearSystem", "[solvers]")
 {
   // Initial guess
-  TorchShape batch_sz = {2};
-  TorchSize nbase = 4;
+  TensorShape batch_sz = {2};
+  Size nbase = 4;
   auto x0 = BatchTensor::full(batch_sz, nbase, 2.0, default_tensor_options());
 
   // Create the nonlinear system

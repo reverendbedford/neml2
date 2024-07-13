@@ -49,7 +49,7 @@ public:
   BatchTensorBase() = default;
 
   /// Construct from another torch::Tensor
-  BatchTensorBase(const torch::Tensor & tensor, TorchSize batch_dim);
+  BatchTensorBase(const torch::Tensor & tensor, Size batch_dim);
 
   /// Copy constructor
   BatchTensorBase(const Derived & tensor);
@@ -87,63 +87,60 @@ public:
    * @param batch_dim Batch dimension of the output
    * @return BatchTensor Linearly spaced tensor
    */
-  [[nodiscard]] static Derived linspace(const Derived & start,
-                                        const Derived & end,
-                                        TorchSize nstep,
-                                        TorchSize dim = 0,
-                                        TorchSize batch_dim = -1);
+  [[nodiscard]] static Derived linspace(
+      const Derived & start, const Derived & end, Size nstep, Size dim = 0, Size batch_dim = -1);
   /// log-space equivalent of the linspace named constructor
   [[nodiscard]] static Derived logspace(const Derived & start,
                                         const Derived & end,
-                                        TorchSize nstep,
-                                        TorchSize dim = 0,
-                                        TorchSize batch_dim = -1,
+                                        Size nstep,
+                                        Size dim = 0,
+                                        Size batch_dim = -1,
                                         Real base = 10);
 
   /// Whether the tensor is batched
   bool batched() const;
 
   /// Return the number of batch dimensions
-  TorchSize batch_dim() const;
+  Size batch_dim() const;
 
   /// Return a writable reference to the batch dimension
-  TorchSize & batch_dim();
+  Size & batch_dim();
 
   /// Return the number of base dimensions
-  TorchSize base_dim() const;
+  Size base_dim() const;
 
   /// Return the batch size
-  TorchShapeRef batch_sizes() const;
+  TensorShapeRef batch_sizes() const;
 
   /// Return the length of some batch axis
-  TorchSize batch_size(TorchSize index) const;
+  Size batch_size(Size index) const;
 
   /// Return the base size
-  TorchShapeRef base_sizes() const;
+  TensorShapeRef base_sizes() const;
 
   /// Return the length of some base axis
-  TorchSize base_size(TorchSize index) const;
+  Size base_size(Size index) const;
 
   /// Return the flattened storage needed just for the base indices
-  TorchSize base_storage() const;
+  Size base_storage() const;
 
   /// Get a batch
-  Derived batch_index(TorchSlice indices) const;
+  Derived batch_index(indexing::TensorIndices indices) const;
 
   /// Return an index sliced on the base dimensions
-  BatchTensor base_index(const TorchSlice & indices) const;
+  BatchTensor base_index(const indexing::TensorIndices & indices) const;
 
   /// Set a index sliced on the batch dimensions to a value
-  void batch_index_put(TorchSlice indices, const torch::Tensor & other);
+  void batch_index_put(indexing::TensorIndices indices, const torch::Tensor & other);
 
   /// Set a index sliced on the base dimensions to a value
-  void base_index_put(const TorchSlice & indices, const torch::Tensor & other);
+  void base_index_put(const indexing::TensorIndices & indices, const torch::Tensor & other);
 
   /// Return a new view of the tensor with values broadcast along the batch dimensions.
-  Derived batch_expand(TorchShapeRef batch_size) const;
+  Derived batch_expand(TensorShapeRef batch_size) const;
 
   /// Return a new view of the tensor with values broadcast along the base dimensions.
-  BatchTensor base_expand(TorchShapeRef base_size) const;
+  BatchTensor base_expand(TensorShapeRef base_size) const;
 
   /// Expand the batch to have the same shape as another tensor
   template <class Derived2>
@@ -154,34 +151,34 @@ public:
   Derived2 base_expand_as(const Derived2 & other) const;
 
   /// Return a new tensor with values broadcast along the batch dimensions.
-  Derived batch_expand_copy(TorchShapeRef batch_size) const;
+  Derived batch_expand_copy(TensorShapeRef batch_size) const;
 
   /// Return a new tensor with values broadcast along the base dimensions.
-  BatchTensor base_expand_copy(TorchShapeRef base_size) const;
+  BatchTensor base_expand_copy(TensorShapeRef base_size) const;
 
   /// Reshape batch dimensions
-  Derived batch_reshape(TorchShapeRef batch_shape) const;
+  Derived batch_reshape(TensorShapeRef batch_shape) const;
 
   /// Reshape base dimensions
-  BatchTensor base_reshape(TorchShapeRef base_shape) const;
+  BatchTensor base_reshape(TensorShapeRef base_shape) const;
 
   /// Unsqueeze a batch dimension
-  Derived batch_unsqueeze(TorchSize d) const;
+  Derived batch_unsqueeze(Size d) const;
 
   /// Unsqueeze on the special list batch dimension
   Derived list_unsqueeze() const;
 
   /// Unsqueeze a base dimension
-  BatchTensor base_unsqueeze(TorchSize d) const;
+  BatchTensor base_unsqueeze(Size d) const;
 
   /// Transpose two batch dimensions
-  Derived batch_transpose(TorchSize d1, TorchSize d2) const;
+  Derived batch_transpose(Size d1, Size d2) const;
 
   /// Transpose two base dimensions
-  BatchTensor base_transpose(TorchSize d1, TorchSize d2) const;
+  BatchTensor base_transpose(Size d1, Size d2) const;
 
   /// Move two base dimensions
-  BatchTensor base_movedim(TorchSize d1, TorchSize d2) const;
+  BatchTensor base_movedim(Size d1, Size d2) const;
 
   /// Clone (take ownership)
   Derived clone(torch::MemoryFormat memory_format = torch::MemoryFormat::Contiguous) const;
@@ -196,14 +193,14 @@ public:
   Derived operator-() const;
 
   /// Sum on a batch index
-  Derived batch_sum(TorchSize d) const;
+  Derived batch_sum(Size d) const;
 
   /// Sum on the list index (TODO: replace with class)
   Derived list_sum() const;
 
 private:
   /// Number of batch dimensions. The first `_batch_dim` dimensions are considered batch dimensions.
-  TorchSize _batch_dim;
+  Size _batch_dim;
 };
 
 template <class Derived>
@@ -463,7 +460,7 @@ template <
     class Derived,
     typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<Derived>, Derived>>>
 Derived
-diff(const Derived & a, TorchSize n = 1, TorchSize dim = -1)
+diff(const Derived & a, Size n = 1, Size dim = -1)
 {
   return Derived(torch::diff(a, n, dim), a.batch_dim());
 }
@@ -472,7 +469,7 @@ template <
     class Derived,
     typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<Derived>, Derived>>>
 Derived
-batch_diag_embed(const Derived & a, TorchSize offset = 0, TorchSize d1 = -2, TorchSize d2 = -1)
+batch_diag_embed(const Derived & a, Size offset = 0, Size d1 = -2, Size d2 = -1)
 {
   return Derived(torch::diag_embed(
                      a, offset, d1 < 0 ? d1 - a.base_dim() : d1, d2 < 0 ? d2 - a.base_dim() : d2),

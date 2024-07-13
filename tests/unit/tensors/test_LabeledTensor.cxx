@@ -35,7 +35,7 @@ TEST_CASE("LabeledTensor", "[tensors]")
 {
   SECTION("operator()")
   {
-    TorchSize nbatch = 10;
+    Size nbatch = 10;
 
     // Setup the Label
     LabeledAxis info1;
@@ -49,26 +49,26 @@ TEST_CASE("LabeledTensor", "[tensors]")
     SECTION("logically 1D LabeledTensor")
     {
       auto A = LabeledVector::zeros(nbatch, {&info1});
-      REQUIRE(A("first").sizes() == TorchShapeRef({nbatch, 6}));
-      REQUIRE(A("second").sizes() == TorchShapeRef({nbatch, 1}));
-      REQUIRE(A("third").sizes() == TorchShapeRef({nbatch, 1}));
+      REQUIRE(A("first").sizes() == TensorShapeRef({nbatch, 6}));
+      REQUIRE(A("second").sizes() == TensorShapeRef({nbatch, 1}));
+      REQUIRE(A("third").sizes() == TensorShapeRef({nbatch, 1}));
     }
 
     SECTION("logically 2D LabeledTensor")
     {
       auto A = LabeledMatrix::zeros(nbatch, {&info1, &info2});
-      REQUIRE(A("first", "first").sizes() == TorchShapeRef({nbatch, 6, 1}));
-      REQUIRE(A("first", "second").sizes() == TorchShapeRef({nbatch, 6, 6}));
-      REQUIRE(A("second", "first").sizes() == TorchShapeRef({nbatch, 1, 1}));
-      REQUIRE(A("second", "second").sizes() == TorchShapeRef({nbatch, 1, 6}));
-      REQUIRE(A("third", "first").sizes() == TorchShapeRef({nbatch, 1, 1}));
-      REQUIRE(A("third", "second").sizes() == TorchShapeRef({nbatch, 1, 6}));
+      REQUIRE(A("first", "first").sizes() == TensorShapeRef({nbatch, 6, 1}));
+      REQUIRE(A("first", "second").sizes() == TensorShapeRef({nbatch, 6, 6}));
+      REQUIRE(A("second", "first").sizes() == TensorShapeRef({nbatch, 1, 1}));
+      REQUIRE(A("second", "second").sizes() == TensorShapeRef({nbatch, 1, 6}));
+      REQUIRE(A("third", "first").sizes() == TensorShapeRef({nbatch, 1, 1}));
+      REQUIRE(A("third", "second").sizes() == TensorShapeRef({nbatch, 1, 6}));
     }
   }
 
   SECTION("get")
   {
-    TorchSize nbatch = 10;
+    Size nbatch = 10;
 
     // Setup the Label
     LabeledAxis info1;
@@ -82,25 +82,25 @@ TEST_CASE("LabeledTensor", "[tensors]")
     SECTION("logically 1D LabeledTensor")
     {
       auto A = LabeledVector::zeros(nbatch, {&info1});
-      REQUIRE(A.get<SR2>("first").sizes() == TorchShapeRef({nbatch, 6}));
-      REQUIRE(A.get<Scalar>("second").sizes() == TorchShapeRef({nbatch}));
-      REQUIRE(A.get<Scalar>("third").sizes() == TorchShapeRef({nbatch}));
+      REQUIRE(A.get<SR2>("first").sizes() == TensorShapeRef({nbatch, 6}));
+      REQUIRE(A.get<Scalar>("second").sizes() == TensorShapeRef({nbatch}));
+      REQUIRE(A.get<Scalar>("third").sizes() == TensorShapeRef({nbatch}));
     }
 
     SECTION("logically 2D LabeledTensor")
     {
       auto A = LabeledMatrix::zeros(nbatch, {&info1, &info2});
-      REQUIRE(A.get<SR2>("first", "first").sizes() == TorchShapeRef({nbatch, 6}));
-      REQUIRE(A.get<Scalar>("second", "first").sizes() == TorchShapeRef({nbatch}));
-      REQUIRE(A.get<SR2>("second", "second").sizes() == TorchShapeRef({nbatch, 6}));
-      REQUIRE(A.get<Scalar>("third", "first").sizes() == TorchShapeRef({nbatch}));
-      REQUIRE(A.get<SR2>("third", "second").sizes() == TorchShapeRef({nbatch, 6}));
+      REQUIRE(A.get<SR2>("first", "first").sizes() == TensorShapeRef({nbatch, 6}));
+      REQUIRE(A.get<Scalar>("second", "first").sizes() == TensorShapeRef({nbatch}));
+      REQUIRE(A.get<SR2>("second", "second").sizes() == TensorShapeRef({nbatch, 6}));
+      REQUIRE(A.get<Scalar>("third", "first").sizes() == TensorShapeRef({nbatch}));
+      REQUIRE(A.get<SR2>("third", "second").sizes() == TensorShapeRef({nbatch, 6}));
     }
   }
 
   SECTION("set")
   {
-    TorchSize nbatch = 10;
+    Size nbatch = 10;
 
     // Setup the Label
     LabeledAxis info1;
@@ -135,7 +135,7 @@ TEST_CASE("LabeledTensor", "[tensors]")
 
   SECTION("clone")
   {
-    TorchSize nbatch = 10;
+    Size nbatch = 10;
 
     // Setup the Label
     LabeledAxis info1;
@@ -161,7 +161,7 @@ TEST_CASE("LabeledTensor", "[tensors]")
 
   SECTION("slice")
   {
-    TorchSize nbatch = 10;
+    Size nbatch = 10;
 
     // Setup the Label
     LabeledAxis info1;

@@ -51,7 +51,7 @@ namespace pybind11
 {
 namespace detail
 {
-template struct type_caster<c10::SmallVector<TorchSize>>;
+template struct type_caster<c10::SmallVector<Size>>;
 template struct type_caster<c10::SmallVector<at::indexing::TensorIndex>>;
 }
 }

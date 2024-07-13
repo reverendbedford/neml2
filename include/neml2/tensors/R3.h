@@ -47,7 +47,7 @@ public:
   levi_civita(const torch::TensorOptions & options = default_tensor_options());
 
   /// Accessor
-  Scalar operator()(TorchSize i, TorchSize j, TorchSize k) const;
+  Scalar operator()(Size i, Size j, Size k) const;
 
   /// R3,Vector->R2 product ijk,k->ij
   R2 contract_k(const Vec & v) const;

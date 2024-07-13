@@ -34,7 +34,7 @@ TEST_CASE("Quaternion", "[tensors]")
   torch::manual_seed(42);
   const auto & DTO = default_tensor_options();
 
-  TorchShape B = {5, 3, 1, 2}; // batch shape
+  TensorShape B = {5, 3, 1, 2}; // batch shape
 
   auto q = Quaternion::fill(-0.30411437, -0.15205718, 0.91234311, 0.22808578, DTO);
   auto qb = q.batch_expand(B);

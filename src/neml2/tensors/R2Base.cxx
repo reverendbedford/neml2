@@ -209,7 +209,7 @@ R2Base<Derived>::drotate(const R2 & R) const
 
 template <class Derived>
 Scalar
-R2Base<Derived>::operator()(TorchSize i, TorchSize j) const
+R2Base<Derived>::operator()(Size i, Size j) const
 {
   return FixedDimTensor<Derived, 3, 3>::base_index({i, j});
 }

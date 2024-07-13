@@ -28,20 +28,19 @@
 #include "neml2/tensors/BatchTensor.h"
 
 using namespace neml2;
-using namespace torch::indexing;
 
 TEST_CASE("BatchTensorBase", "[tensors]")
 {
   torch::manual_seed(42);
   const auto & DTO = default_tensor_options();
 
-  TorchShape B = {5, 3, 1, 2};             // batch shape
-  TorchSize Bn = B.size();                 // batch dimension
-  TorchShape D = {2, 5, 1, 3};             // base shape
-  TorchSize Dn = D.size();                 // base dimension
-  TorchSize n = Bn + Dn;                   // total dimension
-  TorchShape BD = utils::add_shapes(B, D); // total shape
-  TorchSize L = utils::storage_size(D);    // base storage
+  TensorShape B = {5, 3, 1, 2};             // batch shape
+  Size Bn = B.size();                       // batch dimension
+  TensorShape D = {2, 5, 1, 3};             // base shape
+  Size Dn = D.size();                       // base dimension
+  Size n = Bn + Dn;                         // total dimension
+  TensorShape BD = utils::add_shapes(B, D); // total shape
+  Size L = utils::storage_size(D);          // base storage
 
   SECTION("class BatchTensorBase")
   {
@@ -89,7 +88,7 @@ TEST_CASE("BatchTensorBase", "[tensors]")
         REQUIRE(a.batch_dim() == 0);
         REQUIRE(a.base_dim() == Dn);
         REQUIRE(a.sizes() == D);
-        REQUIRE(a.batch_sizes() == TorchShape{});
+        REQUIRE(a.batch_sizes() == TensorShape{});
         REQUIRE(a.base_sizes() == D);
         REQUIRE(a.base_storage() == L);
       }
@@ -131,7 +130,7 @@ TEST_CASE("BatchTensorBase", "[tensors]")
         REQUIRE(a.batch_dim() == 0);
         REQUIRE(a.base_dim() == Dn);
         REQUIRE(a.sizes() == D);
-        REQUIRE(a.batch_sizes() == TorchShape{});
+        REQUIRE(a.batch_sizes() == TensorShape{});
         REQUIRE(a.base_sizes() == D);
         REQUIRE(a.base_storage() == L);
         REQUIRE(torch::allclose(a, torch::zeros_like(a)));
@@ -176,7 +175,7 @@ TEST_CASE("BatchTensorBase", "[tensors]")
         REQUIRE(a.batch_dim() == 0);
         REQUIRE(a.base_dim() == Dn);
         REQUIRE(a.sizes() == D);
-        REQUIRE(a.batch_sizes() == TorchShape{});
+        REQUIRE(a.batch_sizes() == TensorShape{});
         REQUIRE(a.base_sizes() == D);
         REQUIRE(a.base_storage() == L);
         REQUIRE(torch::allclose(a, torch::ones_like(a)));
@@ -222,7 +221,7 @@ TEST_CASE("BatchTensorBase", "[tensors]")
         REQUIRE(a.batch_dim() == 0);
         REQUIRE(a.base_dim() == Dn);
         REQUIRE(a.sizes() == D);
-        REQUIRE(a.batch_sizes() == TorchShape{});
+        REQUIRE(a.batch_sizes() == TensorShape{});
         REQUIRE(a.base_sizes() == D);
         REQUIRE(a.base_storage() == L);
         REQUIRE(torch::allclose(a, torch::full_like(a, init)));
@@ -263,15 +262,15 @@ TEST_CASE("BatchTensorBase", "[tensors]")
     {
       SECTION("unbatched")
       {
-        TorchSize n = 21;
-        TorchShape Deye = {n, n};
+        Size n = 21;
+        TensorShape Deye = {n, n};
         auto a = BatchTensor::identity(n, DTO);
         REQUIRE(!a.batched());
         REQUIRE(a.dim() == 2);
         REQUIRE(a.batch_dim() == 0);
         REQUIRE(a.base_dim() == 2);
         REQUIRE(a.sizes() == Deye);
-        REQUIRE(a.batch_sizes() == TorchShape{});
+        REQUIRE(a.batch_sizes() == TensorShape{});
         REQUIRE(a.base_sizes() == Deye);
         REQUIRE(a.base_storage() == n * n);
         REQUIRE(torch::allclose(a, torch::eye(n, DTO)));
@@ -279,9 +278,9 @@ TEST_CASE("BatchTensorBase", "[tensors]")
 
       SECTION("batched")
       {
-        TorchSize n = 33;
-        TorchShape Deye = {n, n};
-        TorchShape BDeye = utils::add_shapes(B, Deye);
+        Size n = 33;
+        TensorShape Deye = {n, n};
+        TensorShape BDeye = utils::add_shapes(B, Deye);
         auto a = BatchTensor::identity(B, n, DTO);
         REQUIRE(a.batched());
         REQUIRE(a.dim() == Bn + 2);
@@ -297,11 +296,11 @@ TEST_CASE("BatchTensorBase", "[tensors]")
 
     SECTION("linspace")
     {
-      TorchSize nstep = 101;
-      TorchSize dim = 2;
-      TorchShape B_new = B;
+      Size nstep = 101;
+      Size dim = 2;
+      TensorShape B_new = B;
       B_new.insert(B_new.begin() + dim, nstep);
-      TorchShape BD_new = utils::add_shapes(B_new, D);
+      TensorShape BD_new = utils::add_shapes(B_new, D);
 
       auto a = BatchTensor::full(B, D, -5.5, DTO);
       auto b = BatchTensor::full(B, D, 123, DTO);
@@ -319,11 +318,11 @@ TEST_CASE("BatchTensorBase", "[tensors]")
     {
       auto a = torch::rand({5, 3, 2, 1, 3}, DTO);
       auto b = BatchTensor(a, 3);
-      TorchSlice i1 = {0};
-      TorchSlice i2 = {2, 1};
-      TorchSlice i3 = {Slice(), Slice(0, 2), 1};
-      TorchSlice i4a = {2, Ellipsis, Slice(), Slice()};
-      TorchSlice i4b = {2, Ellipsis};
+      indexing::TensorIndices i1 = {0};
+      indexing::TensorIndices i2 = {2, 1};
+      indexing::TensorIndices i3 = {indexing::Slice(), indexing::Slice(0, 2), 1};
+      indexing::TensorIndices i4a = {2, indexing::Ellipsis, indexing::Slice(), indexing::Slice()};
+      indexing::TensorIndices i4b = {2, indexing::Ellipsis};
       REQUIRE(torch::allclose(a.index(i1), b.batch_index(i1)));
       REQUIRE(torch::allclose(a.index(i2), b.batch_index(i2)));
       REQUIRE(torch::allclose(a.index(i3), b.batch_index(i3)));
@@ -334,14 +333,19 @@ TEST_CASE("BatchTensorBase", "[tensors]")
     {
       auto a = torch::rand({5, 3, 2, 1, 3}, DTO);
       auto b = BatchTensor(a, 3);
-      TorchSlice i1a = {Slice(), Slice(), Slice(), 0};
-      TorchSlice i1b = {0};
-      TorchSlice i2a = {Slice(), Slice(), Slice(), Ellipsis};
-      TorchSlice i2b = {Ellipsis};
-      TorchSlice i3a = {Ellipsis};
-      TorchSlice i3b = {Ellipsis};
-      TorchSlice i4a = {Slice(), Slice(), Slice(), Slice(), Slice(1, None)};
-      TorchSlice i4b = {Slice(), Slice(1, None)};
+      indexing::TensorIndices i1a = {indexing::Slice(), indexing::Slice(), indexing::Slice(), 0};
+      indexing::TensorIndices i1b = {0};
+      indexing::TensorIndices i2a = {
+          indexing::Slice(), indexing::Slice(), indexing::Slice(), indexing::Ellipsis};
+      indexing::TensorIndices i2b = {indexing::Ellipsis};
+      indexing::TensorIndices i3a = {indexing::Ellipsis};
+      indexing::TensorIndices i3b = {indexing::Ellipsis};
+      indexing::TensorIndices i4a = {indexing::Slice(),
+                                     indexing::Slice(),
+                                     indexing::Slice(),
+                                     indexing::Slice(),
+                                     indexing::Slice(1, indexing::None)};
+      indexing::TensorIndices i4b = {indexing::Slice(), indexing::Slice(1, indexing::None)};
       REQUIRE(torch::allclose(a.index(i1a), b.base_index(i1b)));
       REQUIRE(torch::allclose(a.index(i2a), b.base_index(i2b)));
       REQUIRE(torch::allclose(a.index(i3a), b.base_index(i3b)));
@@ -353,8 +357,8 @@ TEST_CASE("BatchTensorBase", "[tensors]")
       auto a = torch::rand({5, 3, 2, 1, 3}, DTO);
       auto b = BatchTensor(a, 3);
       auto c = torch::rand({3, 2, 1, 3}, DTO);
-      TorchSlice ia = {2, Ellipsis, Slice(), Slice()};
-      TorchSlice ib = {2, Ellipsis};
+      indexing::TensorIndices ia = {2, indexing::Ellipsis, indexing::Slice(), indexing::Slice()};
+      indexing::TensorIndices ib = {2, indexing::Ellipsis};
       b.batch_index_put(ib, c);
       REQUIRE(torch::allclose(a.index(ia), c));
     }
@@ -364,16 +368,20 @@ TEST_CASE("BatchTensorBase", "[tensors]")
       auto a = torch::rand({5, 3, 2, 1, 3}, DTO);
       auto b = BatchTensor(a, 3);
       auto c = torch::rand({5, 3, 2, 1, 2}, DTO);
-      TorchSlice ia = {Slice(), Slice(), Slice(), Slice(), Slice(1, None)};
-      TorchSlice ib = {Slice(), Slice(1, None)};
+      indexing::TensorIndices ia = {indexing::Slice(),
+                                    indexing::Slice(),
+                                    indexing::Slice(),
+                                    indexing::Slice(),
+                                    indexing::Slice(1, indexing::None)};
+      indexing::TensorIndices ib = {indexing::Slice(), indexing::Slice(1, indexing::None)};
       b.base_index_put(ib, c);
       REQUIRE(torch::allclose(a.index(ia), c));
     }
 
     SECTION("batch_expand")
     {
-      TorchShape s0 = {5, 1, 2, 1, 5};
-      TorchShape s = {5, 8, 2, 2, 5};
+      TensorShape s0 = {5, 1, 2, 1, 5};
+      TensorShape s = {5, 8, 2, 2, 5};
       auto a = BatchTensor::full(s0, {3, 3}, 5.25324, DTO);
       auto b = a.batch_expand(s);
       REQUIRE(b.storage().data_ptr() == a.storage().data_ptr());
@@ -384,8 +392,8 @@ TEST_CASE("BatchTensorBase", "[tensors]")
 
     SECTION("base_expand")
     {
-      TorchShape s0 = {2, 1, 3, 1, 3};
-      TorchShape s = {2, 7, 3, 1, 3};
+      TensorShape s0 = {2, 1, 3, 1, 3};
+      TensorShape s = {2, 7, 3, 1, 3};
       auto a = BatchTensor::full({5, 1, 5}, s0, 1.32145, DTO);
       auto b = a.base_expand(s);
       REQUIRE(b.storage().data_ptr() == a.storage().data_ptr());
@@ -400,8 +408,8 @@ TEST_CASE("BatchTensorBase", "[tensors]")
 
     SECTION("batch_expand_as")
     {
-      TorchShape s0 = {5, 1, 2, 1, 5};
-      TorchShape s = {5, 8, 2, 2, 5};
+      TensorShape s0 = {5, 1, 2, 1, 5};
+      TensorShape s = {5, 8, 2, 2, 5};
       auto a = BatchTensor::full(s0, {3, 3}, 5.25324, DTO);
       auto b = BatchTensor::full(s, {5}, 3.33, DTO); // base shapes can differ!
       auto c = a.batch_expand_as(b);
@@ -411,8 +419,8 @@ TEST_CASE("BatchTensorBase", "[tensors]")
 
     SECTION("base_expand_as")
     {
-      TorchShape s0 = {2, 1, 3, 1, 3};
-      TorchShape s = {2, 7, 3, 1, 3};
+      TensorShape s0 = {2, 1, 3, 1, 3};
+      TensorShape s = {2, 7, 3, 1, 3};
       auto a = BatchTensor::full({5, 1, 5}, s0, 1.32145, DTO);
       auto b = BatchTensor::full({3, 2, 1}, s, 3.33, DTO); // batch shapes can differ!
       auto c = a.base_expand_as(b);
@@ -422,8 +430,8 @@ TEST_CASE("BatchTensorBase", "[tensors]")
 
     SECTION("batch_expand_copy")
     {
-      TorchShape s0 = {5, 1, 2, 1, 5};
-      TorchShape s = {5, 8, 2, 2, 5};
+      TensorShape s0 = {5, 1, 2, 1, 5};
+      TensorShape s = {5, 8, 2, 2, 5};
       auto a = BatchTensor::full(s0, {3, 3}, 5.25324, DTO);
       auto b = a.batch_expand_copy(s);
       REQUIRE(b.batch_sizes() == s);
@@ -433,8 +441,8 @@ TEST_CASE("BatchTensorBase", "[tensors]")
 
     SECTION("base_expand_copy")
     {
-      TorchShape s0 = {2, 1, 3, 1, 3};
-      TorchShape s = {2, 7, 3, 1, 3};
+      TensorShape s0 = {2, 1, 3, 1, 3};
+      TensorShape s = {2, 7, 3, 1, 3};
       auto a = BatchTensor::full({5, 1, 5}, s0, 1.32145, DTO);
       auto b = a.base_expand_copy(s);
       REQUIRE(b.batch_sizes() == a.batch_sizes());
@@ -451,15 +459,15 @@ TEST_CASE("BatchTensorBase", "[tensors]")
       auto a = BatchTensor::full({2, 5}, {3, 3}, 5.25324, DTO);
 
       auto a1 = a.batch_unsqueeze(0);
-      REQUIRE(a1.batch_sizes() == TorchShape{1, 2, 5});
+      REQUIRE(a1.batch_sizes() == TensorShape{1, 2, 5});
       REQUIRE(a1.base_sizes() == a.base_sizes());
 
       auto a2 = a.batch_unsqueeze(1);
-      REQUIRE(a2.batch_sizes() == TorchShape{2, 1, 5});
+      REQUIRE(a2.batch_sizes() == TensorShape{2, 1, 5});
       REQUIRE(a2.base_sizes() == a.base_sizes());
 
       auto a3 = a.batch_unsqueeze(-2);
-      REQUIRE(a3.batch_sizes() == TorchShape{2, 1, 5});
+      REQUIRE(a3.batch_sizes() == TensorShape{2, 1, 5});
       REQUIRE(a3.base_sizes() == a.base_sizes());
     }
 
@@ -469,22 +477,22 @@ TEST_CASE("BatchTensorBase", "[tensors]")
 
       auto a1 = a.base_unsqueeze(0);
       REQUIRE(a1.batch_sizes() == a.batch_sizes());
-      REQUIRE(a1.base_sizes() == TorchShape{1, 3, 3});
+      REQUIRE(a1.base_sizes() == TensorShape{1, 3, 3});
 
       auto a2 = a.base_unsqueeze(1);
       REQUIRE(a2.batch_sizes() == a.batch_sizes());
-      REQUIRE(a2.base_sizes() == TorchShape{3, 1, 3});
+      REQUIRE(a2.base_sizes() == TensorShape{3, 1, 3});
 
       auto a3 = a.base_unsqueeze(-2);
       REQUIRE(a3.batch_sizes() == a.batch_sizes());
-      REQUIRE(a3.base_sizes() == TorchShape{3, 1, 3});
+      REQUIRE(a3.base_sizes() == TensorShape{3, 1, 3});
     }
 
     SECTION("batch_transpose")
     {
       auto a = BatchTensor::full({2, 3, 5, 2}, {3, 3}, 5.25324, DTO);
       auto b = a.batch_transpose(1, 3);
-      REQUIRE(b.batch_sizes() == TorchShape{2, 2, 5, 3});
+      REQUIRE(b.batch_sizes() == TensorShape{2, 2, 5, 3});
       REQUIRE(b.base_sizes() == a.base_sizes());
     }
 
@@ -493,7 +501,7 @@ TEST_CASE("BatchTensorBase", "[tensors]")
       auto a = BatchTensor::full({3, 3}, {5, 3, 5, 2}, 5.25324, DTO);
       auto b = a.base_transpose(0, 3);
       REQUIRE(b.batch_sizes() == a.batch_sizes());
-      REQUIRE(b.base_sizes() == TorchShape{2, 3, 5, 5});
+      REQUIRE(b.base_sizes() == TensorShape{2, 3, 5, 5});
     }
   }
 

@@ -41,7 +41,7 @@ FullFixedDimTensor<T>::expected_options()
   options.doc() =
       "Construct a full " + tensor_type + " with given batch shape filled with a given value.";
 
-  options.set<TorchShape>("batch_shape") = {};
+  options.set<TensorShape>("batch_shape") = {};
   options.set("batch_shape").doc() = "Batch shape";
 
   options.set<Real>("value");
@@ -52,7 +52,7 @@ FullFixedDimTensor<T>::expected_options()
 
 template <typename T>
 FullFixedDimTensor<T>::FullFixedDimTensor(const OptionSet & options)
-  : T(T::full(options.get<TorchShape>("batch_shape"),
+  : T(T::full(options.get<TensorShape>("batch_shape"),
               options.get<Real>("value"),
               default_tensor_options())),
     UserTensor(options)

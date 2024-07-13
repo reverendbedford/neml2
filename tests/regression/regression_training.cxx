@@ -39,8 +39,8 @@ TEST_CASE("training")
   auto & model = Factory::get_object<Model>("Models", "model");
 
   // Reinitialize the model to have the correct batch shape and derivative order
-  TorchSize nbatch = 2;
-  model.reinit(TorchShape{nbatch}, /*deriv_order=*/0);
+  Size nbatch = 2;
+  model.reinit(TensorShape{nbatch}, /*deriv_order=*/0);
 
   // Request parameter gradient
   auto & p = model.named_parameters()["yield.sy"];

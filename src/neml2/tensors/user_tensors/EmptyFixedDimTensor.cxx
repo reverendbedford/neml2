@@ -41,7 +41,7 @@ EmptyFixedDimTensor<T>::expected_options()
   options.doc() = "Construct an empty " + tensor_type +
                   " with given batch shape. Tensor values are **undefined** after construction.";
 
-  options.set<TorchShape>("batch_shape") = {};
+  options.set<TensorShape>("batch_shape") = {};
   options.set("batch_shape").doc() = "Batch shape";
 
   return options;
@@ -49,7 +49,7 @@ EmptyFixedDimTensor<T>::expected_options()
 
 template <typename T>
 EmptyFixedDimTensor<T>::EmptyFixedDimTensor(const OptionSet & options)
-  : T(T::empty(options.get<TorchShape>("batch_shape"), default_tensor_options())),
+  : T(T::empty(options.get<TensorShape>("batch_shape"), default_tensor_options())),
     UserTensor(options)
 {
 }

@@ -34,7 +34,7 @@ TEST_CASE("VecBase", "[tensors]")
   torch::manual_seed(42);
   const auto & DTO = default_tensor_options();
 
-  TorchShape B = {5, 3, 1, 2}; // batch shape
+  TensorShape B = {5, 3, 1, 2}; // batch shape
 
   SECTION("class VecBase")
   {
@@ -62,11 +62,10 @@ TEST_CASE("VecBase", "[tensors]")
 
     SECTION("operator()")
     {
-      using namespace torch::indexing;
       auto a = Vec(torch::rand(utils::add_shapes(B, 3), DTO));
-      REQUIRE(torch::allclose(a(0), a.index({Ellipsis, 0})));
-      REQUIRE(torch::allclose(a(1), a.index({Ellipsis, 1})));
-      REQUIRE(torch::allclose(a(2), a.index({Ellipsis, 2})));
+      REQUIRE(torch::allclose(a(0), a.index({indexing::Ellipsis, 0})));
+      REQUIRE(torch::allclose(a(1), a.index({indexing::Ellipsis, 1})));
+      REQUIRE(torch::allclose(a(2), a.index({indexing::Ellipsis, 2})));
     }
 
     SECTION("dot")

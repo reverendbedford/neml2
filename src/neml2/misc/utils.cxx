@@ -28,25 +28,25 @@ namespace neml2
 {
 namespace utils
 {
-TorchSize
-storage_size(TorchShapeRef shape)
+Size
+storage_size(TensorShapeRef shape)
 {
-  TorchSize sz = 1;
-  return std::accumulate(shape.begin(), shape.end(), sz, std::multiplies<TorchSize>());
+  Size sz = 1;
+  return std::accumulate(shape.begin(), shape.end(), sz, std::multiplies<Size>());
 }
 
-TorchShape
-pad_prepend(TorchShapeRef s, TorchSize dim, TorchSize pad)
+TensorShape
+pad_prepend(TensorShapeRef s, Size dim, Size pad)
 {
-  TorchShape s2(s);
+  TensorShape s2(s);
   s2.insert(s2.begin(), dim - s.size(), pad);
   return s2;
 }
 
-TorchShape
-pad_append(TorchShapeRef s, TorchSize dim, TorchSize pad)
+TensorShape
+pad_append(TensorShapeRef s, Size dim, Size pad)
 {
-  TorchShape s2(s);
+  TensorShape s2(s);
   s2.insert(s2.end(), dim - s.size(), pad);
   return s2;
 }
@@ -65,8 +65,8 @@ indentation(int level, int indent)
 
 namespace details
 {
-TorchShape
-add_shapes_impl(TorchShape & net)
+TensorShape
+add_shapes_impl(TensorShape & net)
 {
   return std::move(net);
 }

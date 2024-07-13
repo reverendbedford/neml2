@@ -34,18 +34,18 @@ OnesBatchTensor::expected_options()
   OptionSet options = UserTensor::expected_options();
   options.doc() = "Construct a BatchTensor with batch and base shapes filled with ones.";
 
-  options.set<TorchShape>("batch_shape") = {};
+  options.set<TensorShape>("batch_shape") = {};
   options.set("batch_shape").doc() = "Batch shape";
 
-  options.set<TorchShape>("base_shape") = {};
+  options.set<TensorShape>("base_shape") = {};
   options.set("base_shape").doc() = "Base shape";
 
   return options;
 }
 
 OnesBatchTensor::OnesBatchTensor(const OptionSet & options)
-  : BatchTensor(BatchTensor::ones(options.get<TorchShape>("batch_shape"),
-                                  options.get<TorchShape>("base_shape"),
+  : BatchTensor(BatchTensor::ones(options.get<TensorShape>("batch_shape"),
+                                  options.get<TensorShape>("base_shape"),
                                   default_tensor_options())),
     UserTensor(options)
 {

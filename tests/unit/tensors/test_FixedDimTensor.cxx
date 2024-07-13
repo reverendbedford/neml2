@@ -42,23 +42,23 @@ TEST_CASE("FixedDimTensor", "[tensors]")
 {
   const auto & DTO = default_tensor_options();
 
-  TorchShape B = {5, 3, 1, 2}; // batch shape
-  TorchSize Bn = B.size();     // batch dimension
+  TensorShape B = {5, 3, 1, 2}; // batch shape
+  Size Bn = B.size();           // batch dimension
 
   SECTION("class FixedDimTensor")
   {
     SECTION("const_base_sizes")
     {
-      REQUIRE(Scalar::const_base_sizes == TorchShape{});
-      REQUIRE(Vec::const_base_sizes == TorchShape{3});
-      REQUIRE(R2::const_base_sizes == TorchShape{3, 3});
-      REQUIRE(SR2::const_base_sizes == TorchShape{6});
-      REQUIRE(R3::const_base_sizes == TorchShape{3, 3, 3});
-      REQUIRE(SFR3::const_base_sizes == TorchShape{6, 3});
-      REQUIRE(R4::const_base_sizes == TorchShape{3, 3, 3, 3});
-      REQUIRE(SSR4::const_base_sizes == TorchShape{6, 6});
-      REQUIRE(R5::const_base_sizes == TorchShape{3, 3, 3, 3, 3});
-      REQUIRE(SSFR5::const_base_sizes == TorchShape{6, 6, 3});
+      REQUIRE(Scalar::const_base_sizes == TensorShape{});
+      REQUIRE(Vec::const_base_sizes == TensorShape{3});
+      REQUIRE(R2::const_base_sizes == TensorShape{3, 3});
+      REQUIRE(SR2::const_base_sizes == TensorShape{6});
+      REQUIRE(R3::const_base_sizes == TensorShape{3, 3, 3});
+      REQUIRE(SFR3::const_base_sizes == TensorShape{6, 3});
+      REQUIRE(R4::const_base_sizes == TensorShape{3, 3, 3, 3});
+      REQUIRE(SSR4::const_base_sizes == TensorShape{6, 6});
+      REQUIRE(R5::const_base_sizes == TensorShape{3, 3, 3, 3, 3});
+      REQUIRE(SSFR5::const_base_sizes == TensorShape{6, 6, 3});
     }
 
     SECTION("const_base_dim")
@@ -126,7 +126,7 @@ TEST_CASE("FixedDimTensor", "[tensors]")
         REQUIRE(!a.batched());
         REQUIRE(a.batch_dim() == 0);
         REQUIRE(a.base_dim() == R5::const_base_dim);
-        REQUIRE(a.batch_sizes() == TorchShape{});
+        REQUIRE(a.batch_sizes() == TensorShape{});
         REQUIRE(a.base_sizes() == R5::const_base_sizes);
         REQUIRE(a.base_storage() == R5::const_base_storage);
       }
@@ -151,7 +151,7 @@ TEST_CASE("FixedDimTensor", "[tensors]")
         REQUIRE(!a.batched());
         REQUIRE(a.batch_dim() == 0);
         REQUIRE(a.base_dim() == R5::const_base_dim);
-        REQUIRE(a.batch_sizes() == TorchShape{});
+        REQUIRE(a.batch_sizes() == TensorShape{});
         REQUIRE(a.base_sizes() == R5::const_base_sizes);
         REQUIRE(a.base_storage() == R5::const_base_storage);
         REQUIRE(torch::allclose(a, torch::zeros_like(a)));
@@ -178,7 +178,7 @@ TEST_CASE("FixedDimTensor", "[tensors]")
         REQUIRE(!a.batched());
         REQUIRE(a.batch_dim() == 0);
         REQUIRE(a.base_dim() == R5::const_base_dim);
-        REQUIRE(a.batch_sizes() == TorchShape{});
+        REQUIRE(a.batch_sizes() == TensorShape{});
         REQUIRE(a.base_sizes() == R5::const_base_sizes);
         REQUIRE(a.base_storage() == R5::const_base_storage);
         REQUIRE(torch::allclose(a, torch::ones_like(a)));
@@ -206,7 +206,7 @@ TEST_CASE("FixedDimTensor", "[tensors]")
         REQUIRE(!a.batched());
         REQUIRE(a.batch_dim() == 0);
         REQUIRE(a.base_dim() == R5::const_base_dim);
-        REQUIRE(a.batch_sizes() == TorchShape{});
+        REQUIRE(a.batch_sizes() == TensorShape{});
         REQUIRE(a.base_sizes() == R5::const_base_sizes);
         REQUIRE(a.base_storage() == R5::const_base_storage);
         REQUIRE(torch::allclose(a, torch::full_like(a, init)));

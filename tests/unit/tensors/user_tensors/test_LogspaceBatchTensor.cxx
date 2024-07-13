@@ -36,13 +36,13 @@ TEST_CASE("LogspaceBatchTensor", "[tensors/user_tensors]")
   SECTION("LogspaceBatchTensor")
   {
     const auto a = Factory::get_object_ptr<BatchTensor>("Tensors", "a");
-    REQUIRE(a->batch_sizes() == TorchShape{100, 2, 1});
-    REQUIRE(a->base_sizes() == TorchShape{2, 3});
+    REQUIRE(a->batch_sizes() == TensorShape{100, 2, 1});
+    REQUIRE(a->base_sizes() == TensorShape{2, 3});
 
     const auto a0 = Factory::get_object_ptr<BatchTensor>("Tensors", "a0");
     const auto a1 = Factory::get_object_ptr<BatchTensor>("Tensors", "a1");
-    TorchSize nstep = 100;
-    TorchSize dim = 0;
+    Size nstep = 100;
+    Size dim = 0;
     Real base = 10;
     REQUIRE(torch::allclose(*a, BatchTensor::logspace(*a0, *a1, nstep, dim, -1, base)));
   }

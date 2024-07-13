@@ -40,7 +40,7 @@ public:
   using LabeledTensor<LabeledMatrix, 2>::LabeledTensor;
 
   /// Create a labeled identity tensor
-  static LabeledMatrix identity(TorchShapeRef batch_size,
+  static LabeledMatrix identity(TensorShapeRef batch_size,
                                 const LabeledAxis & axis,
                                 const torch::TensorOptions & options = default_tensor_options());
 

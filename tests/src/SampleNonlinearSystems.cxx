@@ -25,9 +25,8 @@
 #include "SampleNonlinearSystems.h"
 #include "neml2/tensors/Scalar.h"
 
-using namespace torch::indexing;
-using namespace neml2;
-
+namespace neml2
+{
 TestNonlinearSystem::TestNonlinearSystem(const OptionSet & options)
   : NonlinearSystem(options)
 {
@@ -56,12 +55,12 @@ void
 PowerTestSystem::assemble(bool residual, bool Jacobian)
 {
   if (residual)
-    for (TorchSize i = 0; i < _ndof; i++)
+    for (Size i = 0; i < _ndof; i++)
       _residual.base_index_put({i},
                                math::pow(_solution.base_index({i}), Scalar(i + 1, _options)) - 1.0);
 
   if (Jacobian)
-    for (TorchSize i = 0; i < _ndof; i++)
+    for (Size i = 0; i < _ndof; i++)
       _Jacobian.base_index_put({i, i},
                                (i + 1) * math::pow(_solution.base_index({i}), Scalar(i, _options)));
 }
@@ -82,9 +81,9 @@ RosenbrockTestSystem::assemble(bool residual, bool Jacobian)
 {
   if (residual)
   {
-    auto xm = _solution.base_index({Slice(1, -1)});
-    auto xm_m1 = _solution.base_index({Slice(0, -2)});
-    auto xm_p1 = _solution.base_index({Slice(2, None)});
+    auto xm = _solution.base_index({indexing::Slice(1, -1)});
+    auto xm_m1 = _solution.base_index({indexing::Slice(0, -2)});
+    auto xm_p1 = _solution.base_index({indexing::Slice(2, indexing::None)});
 
     auto x0 = _solution.base_index({0});
     auto x1 = _solution.base_index({1});
@@ -92,7 +91,7 @@ RosenbrockTestSystem::assemble(bool residual, bool Jacobian)
     auto xn1 = _solution.base_index({-1});
     auto xn2 = _solution.base_index({-2});
 
-    _residual.base_index_put({Slice(1, -1)},
+    _residual.base_index_put({indexing::Slice(1, -1)},
                              200 * (xm - math::pow(xm_m1, 2.0)) -
                                  400 * (xm_p1 - math::pow(xm, 2.0)) * xm - 2 * (1 - xm));
     _residual.base_index_put({0}, -400 * x0 * (x1 - math::pow(x0, 2.0)) - 2 * (1 - x0));
@@ -101,9 +100,9 @@ RosenbrockTestSystem::assemble(bool residual, bool Jacobian)
 
   if (Jacobian)
   {
-    auto s_x0n1 = _solution.base_index({Slice(0, -1)});
-    auto s_x11 = _solution.base_index({Slice(1, -1)});
-    auto s_x2 = _solution.base_index({Slice(2, None)});
+    auto s_x0n1 = _solution.base_index({indexing::Slice(0, -1)});
+    auto s_x11 = _solution.base_index({indexing::Slice(1, -1)});
+    auto s_x2 = _solution.base_index({indexing::Slice(2, indexing::None)});
 
     auto x0 = _solution.base_index({0});
     auto x1 = _solution.base_index({1});
@@ -114,7 +113,8 @@ RosenbrockTestSystem::assemble(bool residual, bool Jacobian)
 
     diagonal.base_index_put({0}, 1200 * math::pow(x0, 2.0) - 400.0 * x1 + 2);
     diagonal.base_index_put({-1}, Scalar(200.0, _options));
-    diagonal.base_index_put({Slice(1, -1)}, 202 + 1200 * math::pow(s_x11, 2.0) - 400 * s_x2);
+    diagonal.base_index_put({indexing::Slice(1, -1)},
+                            202 + 1200 * math::pow(s_x11, 2.0) - 400 * s_x2);
 
     _Jacobian = BatchTensor(torch::diag_embed(diagonal) + H, _solution.batch_dim());
   }
@@ -124,4 +124,5 @@ BatchTensor
 RosenbrockTestSystem::exact_solution() const
 {
   return BatchTensor::ones(_batch_sizes, {_ndof}, _options);
+}
 }

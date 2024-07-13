@@ -35,18 +35,18 @@ EmptyBatchTensor::expected_options()
   options.doc() = "Construct an empty BatchTensor given batch and base shapes. Tensor values are "
                   "**undefined** after construction.";
 
-  options.set<TorchShape>("batch_shape") = {};
+  options.set<TensorShape>("batch_shape") = {};
   options.set("batch_shape").doc() = "Batch shape";
 
-  options.set<TorchShape>("base_shape") = {};
+  options.set<TensorShape>("base_shape") = {};
   options.set("base_shape").doc() = "Base shape";
 
   return options;
 }
 
 EmptyBatchTensor::EmptyBatchTensor(const OptionSet & options)
-  : BatchTensor(BatchTensor::empty(options.get<TorchShape>("batch_shape"),
-                                   options.get<TorchShape>("base_shape"),
+  : BatchTensor(BatchTensor::empty(options.get<TensorShape>("batch_shape"),
+                                   options.get<TensorShape>("base_shape"),
                                    default_tensor_options())),
     UserTensor(options)
 {

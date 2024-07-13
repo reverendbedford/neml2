@@ -40,7 +40,7 @@ OnesFixedDimTensor<T>::expected_options()
   OptionSet options = UserTensor::expected_options();
   options.doc() = "Construct a " + tensor_type + " with given batch shape filled with ones.";
 
-  options.set<TorchShape>("batch_shape") = {};
+  options.set<TensorShape>("batch_shape") = {};
   options.set("batch_shape").doc() = "Batch shape";
 
   return options;
@@ -48,7 +48,7 @@ OnesFixedDimTensor<T>::expected_options()
 
 template <typename T>
 OnesFixedDimTensor<T>::OnesFixedDimTensor(const OptionSet & options)
-  : T(T::ones(options.get<TorchShape>("batch_shape"), default_tensor_options())),
+  : T(T::ones(options.get<TensorShape>("batch_shape"), default_tensor_options())),
     UserTensor(options)
 {
 }

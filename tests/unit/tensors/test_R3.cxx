@@ -34,7 +34,7 @@ TEST_CASE("R3", "[tensors]")
   torch::manual_seed(42);
   const auto & DTO = default_tensor_options();
 
-  TorchShape B = {5, 3, 1, 2}; // batch shape
+  TensorShape B = {5, 3, 1, 2}; // batch shape
 
   SECTION("class R3")
   {
@@ -42,16 +42,16 @@ TEST_CASE("R3", "[tensors]")
     {
       auto lc = R3::levi_civita(DTO);
 
-      std::vector<TorchShape> p = {{0, 1, 2}, {1, 2, 0}, {2, 0, 1}};
-      std::vector<TorchShape> n = {{2, 1, 0}, {1, 0, 2}, {0, 2, 1}};
-      for (TorchSize i = 0; i < 3; i++)
-        for (TorchSize j = 0; j < 3; j++)
-          for (TorchSize k = 0; k < 3; k++)
+      std::vector<TensorShape> p = {{0, 1, 2}, {1, 2, 0}, {2, 0, 1}};
+      std::vector<TensorShape> n = {{2, 1, 0}, {1, 0, 2}, {0, 2, 1}};
+      for (Size i = 0; i < 3; i++)
+        for (Size j = 0; j < 3; j++)
+          for (Size k = 0; k < 3; k++)
           {
             Real v = 0.0;
-            if (std::find(p.begin(), p.end(), TorchShape{i, j, k}) != p.end())
+            if (std::find(p.begin(), p.end(), TensorShape{i, j, k}) != p.end())
               v = 1.0;
-            else if (std::find(n.begin(), n.end(), TorchShape{i, j, k}) != n.end())
+            else if (std::find(n.begin(), n.end(), TensorShape{i, j, k}) != n.end())
               v = -1.0;
             REQUIRE(torch::allclose(lc(i, j, k), Scalar(v, DTO)));
           }
@@ -59,12 +59,11 @@ TEST_CASE("R3", "[tensors]")
 
     SECTION("operator()")
     {
-      using namespace torch::indexing;
       auto a = R3(torch::rand(utils::add_shapes(B, 3, 3, 3), DTO));
-      for (TorchSize i = 0; i < 3; i++)
-        for (TorchSize j = 0; j < 3; j++)
-          for (TorchSize k = 0; k < 3; k++)
-            REQUIRE(torch::allclose(a(i, j, k), a.index({Ellipsis, i, j, k})));
+      for (Size i = 0; i < 3; i++)
+        for (Size j = 0; j < 3; j++)
+          for (Size k = 0; k < 3; k++)
+            REQUIRE(torch::allclose(a(i, j, k), a.index({indexing::Ellipsis, i, j, k})));
     }
 
     SECTION("contract_k")

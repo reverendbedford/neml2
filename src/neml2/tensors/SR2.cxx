@@ -145,9 +145,9 @@ SR2::drotate(const R2 & R) const
 }
 
 Scalar
-SR2::operator()(TorchSize i, TorchSize j) const
+SR2::operator()(Size i, Size j) const
 {
-  TorchSize a = math::mandel_reverse_index[i][j];
+  Size a = math::mandel_reverse_index[i][j];
   return base_index({a}) / math::mandel_factor(a);
 }
 

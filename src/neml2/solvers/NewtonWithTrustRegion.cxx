@@ -148,7 +148,7 @@ NewtonWithTrustRegion::update(NonlinearSystem & system, BatchTensor & x)
   {
     std::cout << "     RHO MIN/MAX            : " << std::scientific << torch::min(rho).item<Real>()
               << "/" << std::scientific << torch::max(rho).item<Real>() << std::endl;
-    std::cout << "     ACCEPTANCE RATE        : " << torch::sum(accept).item<TorchSize>() << "/"
+    std::cout << "     ACCEPTANCE RATE        : " << torch::sum(accept).item<Size>() << "/"
               << utils::storage_size(_delta.batch_sizes()) << std::endl;
     std::cout << "     ADJUSTED DELTA MIN/MAX : " << std::scientific
               << torch::min(_delta).item<Real>() << "/" << std::scientific
@@ -181,7 +181,7 @@ NewtonWithTrustRegion::solve_direction(const NonlinearSystem & system)
   if (verbose)
   {
     std::cout << "     TRUST-REGION ITERATIONS: " << iters << std::endl;
-    std::cout << "     ACTIVE CONSTRAINTS     : " << torch::sum(s > 0).item<TorchSize>() << "/"
+    std::cout << "     ACTIVE CONSTRAINTS     : " << torch::sum(s > 0).item<Size>() << "/"
               << utils::storage_size(s.batch_sizes()) << std::endl;
   }
 

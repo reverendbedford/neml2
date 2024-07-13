@@ -28,11 +28,11 @@
 namespace neml2
 {
 template <class Derived>
-BatchTensorBase<Derived>::BatchTensorBase(const torch::Tensor & tensor, TorchSize batch_dim)
+BatchTensorBase<Derived>::BatchTensorBase(const torch::Tensor & tensor, Size batch_dim)
   : torch::Tensor(tensor),
     _batch_dim(batch_dim)
 {
-  neml_assert_dbg((TorchSize)sizes().size() >= _batch_dim,
+  neml_assert_dbg((Size)sizes().size() >= _batch_dim,
                   "Tensor dimension ",
                   sizes().size(),
                   " is smaller than the requested number of batch dimensions ",
@@ -77,12 +77,10 @@ BatchTensorBase<Derived>::full_like(const Derived & other, Real init)
 template <class Derived>
 Derived
 BatchTensorBase<Derived>::linspace(
-    const Derived & start, const Derived & end, TorchSize nstep, TorchSize dim, TorchSize batch_dim)
+    const Derived & start, const Derived & end, Size nstep, Size dim, Size batch_dim)
 {
   neml_assert_broadcastable_dbg(start, end);
   neml_assert_dbg(nstep > 0, "nstep must be positive.");
-
-  using namespace torch::indexing;
 
   auto res = start.batch_unsqueeze(dim);
 
@@ -91,9 +89,9 @@ BatchTensorBase<Derived>::linspace(
     auto Bd = broadcast_batch_dim(start, end);
     auto diff = (end - start).batch_unsqueeze(dim);
 
-    TorchSlice net(dim, None);
-    net.push_back(Ellipsis);
-    net.insert(net.end(), Bd - dim, None);
+    indexing::TensorIndices net(dim, indexing::None);
+    net.push_back(indexing::Ellipsis);
+    net.insert(net.end(), Bd - dim, indexing::None);
     Scalar steps = torch::arange(nstep, diff.options()).index(net) / (nstep - 1);
 
     res = res + steps * diff;
@@ -104,12 +102,8 @@ BatchTensorBase<Derived>::linspace(
 
 template <class Derived>
 Derived
-BatchTensorBase<Derived>::logspace(const Derived & start,
-                                   const Derived & end,
-                                   TorchSize nstep,
-                                   TorchSize dim,
-                                   TorchSize batch_dim,
-                                   Real base)
+BatchTensorBase<Derived>::logspace(
+    const Derived & start, const Derived & end, Size nstep, Size dim, Size batch_dim, Real base)
 {
   auto exponent = Derived::linspace(start, end, nstep, dim, batch_dim);
   return math::pow(base, exponent);
@@ -123,56 +117,56 @@ BatchTensorBase<Derived>::batched() const
 }
 
 template <class Derived>
-TorchSize
+Size
 BatchTensorBase<Derived>::batch_dim() const
 {
   return _batch_dim;
 }
 
 template <class Derived>
-TorchSize &
+Size &
 BatchTensorBase<Derived>::batch_dim()
 {
   return _batch_dim;
 }
 
 template <class Derived>
-TorchSize
+Size
 BatchTensorBase<Derived>::base_dim() const
 {
   return dim() - batch_dim();
 }
 
 template <class Derived>
-TorchShapeRef
+TensorShapeRef
 BatchTensorBase<Derived>::batch_sizes() const
 {
   return sizes().slice(0, _batch_dim);
 }
 
 template <class Derived>
-TorchSize
-BatchTensorBase<Derived>::batch_size(TorchSize index) const
+Size
+BatchTensorBase<Derived>::batch_size(Size index) const
 {
   return batch_sizes()[index >= 0 ? index : index + batch_dim()];
 }
 
 template <class Derived>
-TorchShapeRef
+TensorShapeRef
 BatchTensorBase<Derived>::base_sizes() const
 {
   return sizes().slice(_batch_dim);
 }
 
 template <class Derived>
-TorchSize
-BatchTensorBase<Derived>::base_size(TorchSize index) const
+Size
+BatchTensorBase<Derived>::base_size(Size index) const
 {
   return base_sizes()[index >= 0 ? index : index + base_dim()];
 }
 
 template <class Derived>
-TorchSize
+Size
 BatchTensorBase<Derived>::base_storage() const
 {
   return utils::storage_size(base_sizes());
@@ -180,7 +174,7 @@ BatchTensorBase<Derived>::base_storage() const
 
 template <class Derived>
 Derived
-BatchTensorBase<Derived>::batch_index(TorchSlice indices) const
+BatchTensorBase<Derived>::batch_index(indexing::TensorIndices indices) const
 {
   indices.insert(indices.end(), base_dim(), torch::indexing::Slice());
   auto res = this->index(indices);
@@ -189,16 +183,17 @@ BatchTensorBase<Derived>::batch_index(TorchSlice indices) const
 
 template <class Derived>
 BatchTensor
-BatchTensorBase<Derived>::base_index(const TorchSlice & indices) const
+BatchTensorBase<Derived>::base_index(const indexing::TensorIndices & indices) const
 {
-  TorchSlice indices2(batch_dim(), torch::indexing::Slice());
+  indexing::TensorIndices indices2(batch_dim(), torch::indexing::Slice());
   indices2.insert(indices2.end(), indices.begin(), indices.end());
   return BatchTensor(this->index(indices2), batch_dim());
 }
 
 template <class Derived>
 void
-BatchTensorBase<Derived>::batch_index_put(TorchSlice indices, const torch::Tensor & other)
+BatchTensorBase<Derived>::batch_index_put(indexing::TensorIndices indices,
+                                          const torch::Tensor & other)
 {
   indices.insert(indices.end(), base_dim(), torch::indexing::Slice());
   this->index_put_(indices, other);
@@ -206,16 +201,17 @@ BatchTensorBase<Derived>::batch_index_put(TorchSlice indices, const torch::Tenso
 
 template <class Derived>
 void
-BatchTensorBase<Derived>::base_index_put(const TorchSlice & indices, const torch::Tensor & other)
+BatchTensorBase<Derived>::base_index_put(const indexing::TensorIndices & indices,
+                                         const torch::Tensor & other)
 {
-  TorchSlice indices2(batch_dim(), torch::indexing::Slice());
+  indexing::TensorIndices indices2(batch_dim(), torch::indexing::Slice());
   indices2.insert(indices2.end(), indices.begin(), indices.end());
   this->index_put_(indices2, other);
 }
 
 template <class Derived>
 Derived
-BatchTensorBase<Derived>::batch_expand(TorchShapeRef batch_size) const
+BatchTensorBase<Derived>::batch_expand(TensorShapeRef batch_size) const
 {
   // We don't want to touch the base dimensions, so put -1 for them.
   auto net = batch_size.vec();
@@ -225,7 +221,7 @@ BatchTensorBase<Derived>::batch_expand(TorchShapeRef batch_size) const
 
 template <class Derived>
 BatchTensor
-BatchTensorBase<Derived>::base_expand(TorchShapeRef base_size) const
+BatchTensorBase<Derived>::base_expand(TensorShapeRef base_size) const
 {
   // We don't want to touch the batch dimensions, so put -1 for them.
   auto net = base_size.vec();
@@ -235,35 +231,35 @@ BatchTensorBase<Derived>::base_expand(TorchShapeRef base_size) const
 
 template <class Derived>
 Derived
-BatchTensorBase<Derived>::batch_expand_copy(TorchShapeRef batch_size) const
+BatchTensorBase<Derived>::batch_expand_copy(TensorShapeRef batch_size) const
 {
   return Derived(batch_expand(batch_size).contiguous(), batch_size.size());
 }
 
 template <class Derived>
 BatchTensor
-BatchTensorBase<Derived>::base_expand_copy(TorchShapeRef base_size) const
+BatchTensorBase<Derived>::base_expand_copy(TensorShapeRef base_size) const
 {
   return BatchTensor(base_expand(base_size).contiguous(), batch_dim());
 }
 
 template <class Derived>
 Derived
-BatchTensorBase<Derived>::batch_reshape(TorchShapeRef batch_shape) const
+BatchTensorBase<Derived>::batch_reshape(TensorShapeRef batch_shape) const
 {
   return Derived(reshape(utils::add_shapes(batch_shape, base_sizes())), _batch_dim);
 }
 
 template <class Derived>
 BatchTensor
-BatchTensorBase<Derived>::base_reshape(TorchShapeRef base_shape) const
+BatchTensorBase<Derived>::base_reshape(TensorShapeRef base_shape) const
 {
   return BatchTensor(reshape(utils::add_shapes(batch_sizes(), base_shape)), _batch_dim);
 }
 
 template <class Derived>
 Derived
-BatchTensorBase<Derived>::batch_unsqueeze(TorchSize d) const
+BatchTensorBase<Derived>::batch_unsqueeze(Size d) const
 {
   auto d2 = d >= 0 ? d : d - base_dim();
   return Derived(unsqueeze(d2), _batch_dim + 1);
@@ -278,7 +274,7 @@ BatchTensorBase<Derived>::list_unsqueeze() const
 
 template <class Derived>
 BatchTensor
-BatchTensorBase<Derived>::base_unsqueeze(TorchSize d) const
+BatchTensorBase<Derived>::base_unsqueeze(Size d) const
 {
   auto d2 = d < 0 ? d : d + batch_dim();
   return BatchTensor(torch::Tensor::unsqueeze(d2), batch_dim());
@@ -286,7 +282,7 @@ BatchTensorBase<Derived>::base_unsqueeze(TorchSize d) const
 
 template <class Derived>
 Derived
-BatchTensorBase<Derived>::batch_transpose(TorchSize d1, TorchSize d2) const
+BatchTensorBase<Derived>::batch_transpose(Size d1, Size d2) const
 {
   return Derived(
       torch::Tensor::transpose(d1 < 0 ? d1 - base_dim() : d1, d2 < 0 ? d2 - base_dim() : d2),
@@ -295,7 +291,7 @@ BatchTensorBase<Derived>::batch_transpose(TorchSize d1, TorchSize d2) const
 
 template <class Derived>
 BatchTensor
-BatchTensorBase<Derived>::base_transpose(TorchSize d1, TorchSize d2) const
+BatchTensorBase<Derived>::base_transpose(Size d1, Size d2) const
 {
   return BatchTensor(
       torch::Tensor::transpose(d1 < 0 ? d1 : _batch_dim + d1, d2 < 0 ? d2 : _batch_dim + d2),
@@ -304,7 +300,7 @@ BatchTensorBase<Derived>::base_transpose(TorchSize d1, TorchSize d2) const
 
 template <class Derived>
 BatchTensor
-BatchTensorBase<Derived>::base_movedim(TorchSize d1, TorchSize d2) const
+BatchTensorBase<Derived>::base_movedim(Size d1, Size d2) const
 {
   return BatchTensor(
       torch::Tensor::movedim(d1 < 0 ? d1 : _batch_dim + d1, d2 < 0 ? d2 : _batch_dim + d2),
@@ -341,7 +337,7 @@ BatchTensorBase<Derived>::operator-() const
 
 template <class Derived>
 Derived
-BatchTensorBase<Derived>::batch_sum(TorchSize d) const
+BatchTensorBase<Derived>::batch_sum(Size d) const
 {
   neml_assert_dbg(_batch_dim > 0, "Must have a batch dimension to sum along");
   auto d2 = d >= 0 ? d : d - base_dim();

@@ -40,7 +40,7 @@ R3::levi_civita(const torch::TensorOptions & options)
 }
 
 Scalar
-R3::operator()(TorchSize i, TorchSize j, TorchSize k) const
+R3::operator()(Size i, Size j, Size k) const
 {
   return base_index({i, j, k});
 }

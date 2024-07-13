@@ -31,7 +31,7 @@ namespace neml2
 {
 register_NEML2_object(VTestTimeSeries);
 
-const std::map<std::string, TorchShape> VTestTimeSeries::shape_map = {
+const std::map<std::string, TensorShape> VTestTimeSeries::shape_map = {
     {"SCALAR", {}}, {"SYMR2", {-1}}, {"WR2", {-1}}};
 
 OptionSet
@@ -42,7 +42,7 @@ VTestTimeSeries::expected_options()
   options.set<std::string>("variable");
   options.set<std::string>("variable_type");
 
-  options.set<TorchSize>("expand_batch") = 1;
+  options.set<Size>("expand_batch") = 1;
   return options;
 }
 
@@ -51,7 +51,7 @@ VTestTimeSeries::expected_options()
 VTestTimeSeries::VTestTimeSeries(const OptionSet & options)
   : NEML2Object(options),
     torch::Tensor(init(options).expand(utils::add_shapes(
-        TorchShape{-1, options.get<TorchSize>("expand_batch")},
+        TensorShape{-1, options.get<Size>("expand_batch")},
         VTestTimeSeries::shape_map.at(options.get<std::string>("variable_type")))))
 {
 }

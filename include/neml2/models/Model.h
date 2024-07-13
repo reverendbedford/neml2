@@ -98,7 +98,7 @@ public:
    * @param device Device on which the model will be evaluated
    * @param dtype Number type, e.g., torch::kFloat32, torch::kFloat64, etc
    */
-  virtual void reinit(TorchShapeRef batch_shape,
+  virtual void reinit(TensorShapeRef batch_shape,
                       int deriv_order = 0,
                       const torch::Device & device = default_device(),
                       const torch::Dtype & dtype = default_dtype());
@@ -113,10 +113,10 @@ public:
   bool requires_2nd_grad() const { return _deriv_order >= 2; }
 
   /// This model's batch dim
-  TorchSize batch_dim() const { return _batch_sizes.size(); }
+  Size batch_dim() const { return _batch_sizes.size(); }
 
   /// This model's batch shape
-  TorchShapeRef batch_sizes() const { return _batch_sizes; }
+  TensorShapeRef batch_sizes() const { return _batch_sizes; }
 
   /// This model's tensor options
   const torch::TensorOptions & options() const { return _options; }
@@ -243,7 +243,7 @@ protected:
   virtual void set_value(bool out, bool dout_din, bool d2out_din2) = 0;
 
   using VariableStore::cache;
-  virtual void cache(TorchShapeRef batch_shape,
+  virtual void cache(TensorShapeRef batch_shape,
                      int deriv_order,
                      const torch::Device & device,
                      const torch::Dtype & dtype);
@@ -301,7 +301,7 @@ private:
   void extract_second_derivatives(bool retain_graph, bool create_graph, bool allow_unused);
 
   /// This model's batch shape
-  TorchShape _batch_sizes;
+  TensorShape _batch_sizes;
 
   /// This model's tensor options
   torch::TensorOptions _options;

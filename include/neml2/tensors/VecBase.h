@@ -57,7 +57,7 @@ public:
   identity_map(const torch::TensorOptions & options = default_tensor_options());
 
   /// Accessor
-  Scalar operator()(TorchSize i) const;
+  Scalar operator()(Size i) const;
 
   /// dot product
   template <class Derived2>

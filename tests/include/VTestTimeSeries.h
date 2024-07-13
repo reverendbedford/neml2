@@ -38,7 +38,7 @@ public:
 
   VTestTimeSeries(const OptionSet & options);
 
-  static const std::map<std::string, TorchShape> shape_map;
+  static const std::map<std::string, TensorShape> shape_map;
 
 private:
   torch::Tensor init(const OptionSet & options) const;
