@@ -179,13 +179,6 @@ public:
 
   friend std::ostream & operator<<(std::ostream & os, const LabeledAxis & info);
 
-  /// Write this object in dot format
-  void to_dot(std::ostream & os,
-              int & id,
-              std::string name = "",
-              bool subgraph = false,
-              bool node_handle = false) const;
-
 private:
   void add(LabeledAxis & axis,
            Size sz,

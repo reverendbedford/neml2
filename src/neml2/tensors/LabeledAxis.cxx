@@ -425,36 +425,6 @@ operator<<(std::ostream & os, const LabeledAxis & axis)
   return os;
 }
 
-void
-LabeledAxis::to_dot(
-    std::ostream & os, int & id, std::string axis_name, bool subgraph, bool node_handle) const
-{
-  // Preemble
-  os << (subgraph ? "subgraph " : "graph ");
-  os << "cluster_" << id++ << " ";
-  os << "{\n";
-  os << "label = \"" << axis_name << "\"\n";
-  os << "bgcolor = lightgrey\n";
-
-  // The axis should have an invisible node so that I can draw arrows
-  if (node_handle)
-    os << "\"" << axis_name << "\" [label = \"\", style = invis]\n";
-
-  // Write all the variables
-  for (const auto & [name, sz] : _variables)
-  {
-    os << "\"" << axis_name + " " + name << "\" ";
-    os << "[style = filled, color = white, shape = Square, ";
-    os << "label = \"" << name + " [" << sz << "]\"]\n";
-  }
-
-  // Write all the subaxes
-  for (const auto & [name, subaxis] : _subaxes)
-    subaxis->to_dot(os, id, axis_name + " " + name, true);
-
-  os << "}\n";
-}
-
 bool
 operator==(const LabeledAxis & a, const LabeledAxis & b)
 {
