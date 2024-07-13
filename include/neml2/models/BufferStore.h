@@ -29,6 +29,11 @@
 #include "neml2/base/Storage.h"
 #include "neml2/tensors/TensorValue.h"
 
+// The following are not directly used by BufferStore itself.
+// We put them here so that derived classes can add expected options of these types.
+#include "neml2/base/CrossRef.h"
+#include "neml2/base/EnumSelection.h"
+
 namespace neml2
 {
 /// Interface for object which can store buffers

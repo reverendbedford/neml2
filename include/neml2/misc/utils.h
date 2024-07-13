@@ -29,6 +29,7 @@
 
 namespace neml2
 {
+
 /**
  * Two tensors are said to be broadcastable if
  * 1. Base shapes are the same
@@ -87,6 +88,9 @@ void neml_assert_batch_broadcastable_dbg(T &&...);
 
 namespace utils
 {
+/// Demangle a piece of cxx abi type information
+std::string demangle(const char * name);
+
 /// Check if all shapes are the *same*.
 template <class... T>
 bool sizes_same(T &&... shapes);

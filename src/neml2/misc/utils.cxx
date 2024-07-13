@@ -23,11 +23,19 @@
 // THE SOFTWARE.
 
 #include "neml2/misc/utils.h"
+#include <cxxabi.h>
 
 namespace neml2
 {
 namespace utils
 {
+std::string
+demangle(const char * name)
+{
+  // c10 already has an implementation, let's not reinvent the wheels
+  return c10::demangle(name);
+}
+
 Size
 storage_size(TensorShapeRef shape)
 {

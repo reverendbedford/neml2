@@ -25,7 +25,9 @@
 #pragma once
 
 #include "neml2/drivers/Driver.h"
+
 #include <filesystem>
+#include <torch/jit.h>
 
 namespace neml2
 {

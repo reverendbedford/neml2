@@ -25,7 +25,6 @@
 #include "neml2/base/CrossRef.h"
 #include "neml2/base/Factory.h"
 #include "neml2/misc/parser_utils.h"
-#include "neml2/tensors/tensors.h"
 
 namespace neml2
 {
@@ -59,8 +58,7 @@ CrossRef<BatchTensor>::operator BatchTensor() const
   }
 }
 
-template class CrossRef<torch::Tensor>;
-#define CROSSREF_SPECIALIZE_FIXEDDIMTENSOR(T)                                                      \
+#define CROSSREF_SPECIALIZE_FIXEDDIMTENSOR_IMPL(T)                                                 \
   template <>                                                                                      \
   CrossRef<T>::operator T() const                                                                  \
   {                                                                                                \
@@ -75,5 +73,5 @@ template class CrossRef<torch::Tensor>;
   }                                                                                                \
   static_assert(true)
 
-FOR_ALL_FIXEDDIMTENSOR(CROSSREF_SPECIALIZE_FIXEDDIMTENSOR);
+FOR_ALL_FIXEDDIMTENSOR(CROSSREF_SPECIALIZE_FIXEDDIMTENSOR_IMPL);
 } // namesace neml2

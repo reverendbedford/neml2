@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/base/config.h"
+#include <torch/types.h>
 
 namespace neml2
 {

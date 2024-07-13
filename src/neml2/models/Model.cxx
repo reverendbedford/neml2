@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 #include "neml2/models/Model.h"
+#include <torch/autograd.h>
 
 namespace neml2
 {

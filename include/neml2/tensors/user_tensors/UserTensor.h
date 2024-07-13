@@ -27,6 +27,11 @@
 #include "neml2/base/Registry.h"
 #include "neml2/base/NEML2Object.h"
 
+// The following are not directly used by UserTensor itself.
+// We put them here so that derived classes can add expected options of these types.
+#include "neml2/base/CrossRef.h"
+#include "neml2/base/EnumSelection.h"
+
 namespace neml2
 {
 class UserTensor : public NEML2Object

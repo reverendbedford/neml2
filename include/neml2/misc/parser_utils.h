@@ -24,14 +24,14 @@
 
 #pragma once
 
-#include "neml2/misc/types.h"
-#include "neml2/misc/error.h"
-#include "neml2/tensors/Variable.h"
-#include "neml2/base/CrossRef.h"
-#include "neml2/base/EnumSelection.h"
+#include "neml2/misc/utils.h"
 
 namespace neml2
 {
+// Forward decl
+class LabeledAxisAccessor;
+using VariableName = LabeledAxisAccessor;
+
 class ParserException : public std::exception
 {
 public:
@@ -51,8 +51,6 @@ namespace utils
 /// This is a dummy to prevent compilers whining about not know how to >> torch::Tensor
 std::stringstream & operator>>(std::stringstream & in, torch::Tensor &);
 
-std::string demangle(const char * name);
-
 std::vector<std::string> split(const std::string & str, const std::string & delims);
 
 std::string trim(const std::string & str, const std::string & white_space = " \t\n\v\f\r");
@@ -68,7 +66,8 @@ parse_(T & val, const std::string & raw_str)
   std::stringstream ss(trim(raw_str));
   ss >> val;
   if (ss.fail() || !ss.eof())
-    throw ParserException("Failed to parse '" + raw_str + "' as a " + demangle(typeid(T).name()));
+    throw ParserException("Failed to parse '" + raw_str + "' as a " +
+                          utils::demangle(typeid(T).name()));
 }
 
 template <typename T>

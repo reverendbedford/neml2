@@ -24,9 +24,7 @@
 
 #pragma once
 
-#include "neml2/misc/error.h"
-#include "neml2/misc/types.h"
-#include "neml2/misc/parser_utils.h"
+#include "neml2/misc/utils.h"
 
 #include <map>
 #include <sstream>

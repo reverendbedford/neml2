@@ -5,11 +5,6 @@ file(GLOB_RECURSE SRCS *.cxx)
 add_library(neml2 SHARED ${SRCS})
 set_target_properties(neml2 PROPERTIES INSTALL_RPATH "${EXEC_DIR};${Torch_LINK_DIRECTORIES}")
 
-configure_file(
-  ${NEML2_SOURCE_DIR}/include/neml2/base/config.h.in
-  ${NEML2_SOURCE_DIR}/include/neml2/base/config.h
-)
-
 # NEML2 (private) compile options
 target_compile_options(neml2 PRIVATE -Wall -Wextra -pedantic -Werror)
 

@@ -23,7 +23,7 @@
 // THE SOFTWARE.
 
 #include "neml2/misc/parser_utils.h"
-#include <cxxabi.h>
+#include "neml2/tensors/Variable.h"
 
 namespace neml2
 {
@@ -40,15 +40,6 @@ operator>>(std::stringstream & in, torch::Tensor & /**/)
 {
   throw ParserException("Cannot parse torch::Tensor");
   return in;
-}
-
-std::string
-demangle(const char * name)
-{
-  int status = -4;
-  std::unique_ptr<char, void (*)(void *)> res{abi::__cxa_demangle(name, NULL, NULL, &status),
-                                              std::free};
-  return (status == 0) ? res.get() : name;
 }
 
 std::vector<std::string>

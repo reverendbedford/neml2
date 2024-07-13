@@ -23,8 +23,8 @@
 // THE SOFTWARE.
 
 #include "neml2/solvers/NewtonWithTrustRegion.h"
-#include <iomanip>
 #include "neml2/misc/math.h"
+#include <iomanip>
 
 namespace neml2
 {
@@ -174,8 +174,7 @@ NewtonWithTrustRegion::solve_direction(const NonlinearSystem & system)
 
   // Now select between the two... Basically take the full Newton step whenever possible
   auto newton_inside_trust_region =
-      (torch::linalg::vector_norm(p_newton, 2, -1, false, c10::nullopt) <= math::sqrt(2.0 * _delta))
-          .unsqueeze(-1);
+      (math::linalg::vector_norm(p_newton) <= math::sqrt(2.0 * _delta)).unsqueeze(-1);
 
   // Do some printing if verbose
   if (verbose)

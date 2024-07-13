@@ -24,6 +24,7 @@
 
 #include "neml2/tensors/LabeledMatrix.h"
 #include "neml2/tensors/LabeledVector.h"
+#include "neml2/misc/math.h"
 
 namespace neml2
 {
@@ -75,7 +76,6 @@ LabeledMatrix::inverse() const
   neml_assert_dbg(axis(0).storage_size() == axis(1).storage_size(),
                   "Can only invert square derivatives");
 
-  return LabeledMatrix(BatchTensor(torch::linalg::inv(tensor()), batch_dim()),
-                       {&axis(1), &axis(0)});
+  return LabeledMatrix(math::linalg::inv(tensor()), {&axis(1), &axis(0)});
 }
 } // namespace neml2

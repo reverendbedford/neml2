@@ -23,9 +23,7 @@
 // THE SOFTWARE.
 #pragma once
 
-#include "neml2/base/Registry.h"
 #include "neml2/base/NEML2Object.h"
-#include "neml2/base/Settings.h"
 #include "neml2/misc/error.h"
 #include "neml2/base/OptionCollection.h"
 
@@ -33,6 +31,7 @@ namespace neml2
 {
 // Forward decl
 class Model;
+class Settings;
 
 /**
  * @brief A convenient function to manufacture a neml2::Model

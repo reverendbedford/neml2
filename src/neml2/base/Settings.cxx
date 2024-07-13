@@ -23,6 +23,9 @@
 // THE SOFTWARE.
 
 #include "neml2/base/Settings.h"
+#include "neml2/base/EnumSelection.h"
+
+#include <ATen/Parallel.h>
 
 namespace neml2
 {

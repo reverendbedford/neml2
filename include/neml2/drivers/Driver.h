@@ -30,6 +30,11 @@
 #include "neml2/models/Model.h"
 #include <filesystem>
 
+// The following are not directly used by Solver itself.
+// We put them here so that derived classes can add expected options of these types.
+#include "neml2/base/CrossRef.h"
+#include "neml2/base/EnumSelection.h"
+
 namespace neml2
 {
 /**

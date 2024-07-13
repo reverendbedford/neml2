@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 #include "neml2/base/HITParser.h"
+#include "neml2/base/Registry.h"
 #include "neml2/base/Factory.h"
 #include "neml2/base/CrossRef.h"
 #include "neml2/base/Settings.h"

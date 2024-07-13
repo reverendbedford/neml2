@@ -24,7 +24,8 @@
 
 #pragma once
 
-#include <cstddef>
+#include "neml2/tensors/tensors.h"
+
 #include <sstream>
 
 namespace neml2
@@ -115,4 +116,16 @@ operator>>(std::stringstream & ss, CrossRef<T> & cr)
   ss >> cr._raw_str;
   return ss;
 }
+
+template <>
+CrossRef<torch::Tensor>::operator torch::Tensor() const;
+
+template <>
+CrossRef<BatchTensor>::operator BatchTensor() const;
+
+#define CROSSREF_SPECIALIZE_FIXEDDIMTENSOR(T)                                                      \
+  template <>                                                                                      \
+  CrossRef<T>::operator T() const
+
+FOR_ALL_FIXEDDIMTENSOR(CROSSREF_SPECIALIZE_FIXEDDIMTENSOR);
 } // namespace neml2
