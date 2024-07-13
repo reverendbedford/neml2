@@ -183,9 +183,10 @@ Functions</h2></td></tr>
 <tr class="separator:a3cc8834161a72771f85701fb80bf4e22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a915a15e677e13fa785a0f378b5781f50" id="r_a915a15e677e13fa785a0f378b5781f50"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">constexpr</a> <a class="el" href="namespaceneml2.html#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a915a15e677e13fa785a0f378b5781f50">mandel_factor</a> (<a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a> <a class="el" href="classneml2_1_1CrossRef.html">i</a>)</td></tr>
 <tr class="separator:a915a15e677e13fa785a0f378b5781f50"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab344a85930a5572590b8442e0e3d618c" id="r_ab344a85930a5572590b8442e0e3d618c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab344a85930a5572590b8442e0e3d618c">cat</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> std::vector&lt; <a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">tensors</a>, <a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a> <a class="el" href="classneml2_1_1CrossRef.html">dim</a>)</td></tr>
-<tr class="memdesc:ab344a85930a5572590b8442e0e3d618c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Concatenate a list of BatchTensors.  <br /></td></tr>
-<tr class="separator:ab344a85930a5572590b8442e0e3d618c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af998f8bd014b1c6eaa3e004000efd32d" id="r_af998f8bd014b1c6eaa3e004000efd32d"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a class="el" href="classneml2_1_1CrossRef.html">Container</a> , std::enable_if_t&lt; std::is_convertible_v&lt; <a class="el" href="classneml2_1_1CrossRef.html">typename</a> std::iterator_traits&lt; <a class="el" href="classneml2_1_1CrossRef.html">decltype</a>(std::declval&lt; <a class="el" href="classneml2_1_1CrossRef.html">Container</a> &gt;().begin())&gt;::iterator_category, std::input_iterator_tag &gt; &amp;&amp;std::is_convertible_v&lt; <a class="el" href="classneml2_1_1CrossRef.html">typename</a> std::iterator_traits&lt; <a class="el" href="classneml2_1_1CrossRef.html">decltype</a>(std::declval&lt; <a class="el" href="classneml2_1_1CrossRef.html">Container</a> &gt;().end())&gt;::iterator_category , std::input_iterator_tag , <a class="el" href="classneml2_1_1CrossRef.html">int</a> &gt; </td></tr>
+<tr class="memitem:af998f8bd014b1c6eaa3e004000efd32d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#af998f8bd014b1c6eaa3e004000efd32d">cat</a> (<a class="el" href="classneml2_1_1CrossRef.html">Container</a> &amp;&amp;<a class="el" href="classneml2_1_1CrossRef.html">tensors</a>, <a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a> <a class="el" href="classneml2_1_1CrossRef.html">dim</a>)</td></tr>
+<tr class="memdesc:af998f8bd014b1c6eaa3e004000efd32d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Concatenate a list of BatchTensors.  <br /></td></tr>
+<tr class="separator:af998f8bd014b1c6eaa3e004000efd32d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe53334e78b28979ab68fad275892e3e" id="r_afe53334e78b28979ab68fad275892e3e"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;BatchTensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </td></tr>
 <tr class="memitem:afe53334e78b28979ab68fad275892e3e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">Derived</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#afe53334e78b28979ab68fad275892e3e">pow</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="namespaceneml2.html#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">n</a>)</td></tr>
 <tr class="separator:afe53334e78b28979ab68fad275892e3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -417,11 +418,13 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class=
 
 </div>
 </div>
-<a id="ab344a85930a5572590b8442e0e3d618c" name="ab344a85930a5572590b8442e0e3d618c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab344a85930a5572590b8442e0e3d618c">&#9670;&#160;</a></span>cat()</h2>
+<a id="af998f8bd014b1c6eaa3e004000efd32d" name="af998f8bd014b1c6eaa3e004000efd32d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af998f8bd014b1c6eaa3e004000efd32d">&#9670;&#160;</a></span>cat()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a class="el" href="classneml2_1_1CrossRef.html">Container</a> , std::enable_if_t&lt; std::is_convertible_v&lt; <a class="el" href="classneml2_1_1CrossRef.html">typename</a> std::iterator_traits&lt; <a class="el" href="classneml2_1_1CrossRef.html">decltype</a>(std::declval&lt; <a class="el" href="classneml2_1_1CrossRef.html">Container</a> &gt;().begin())&gt;::iterator_category, std::input_iterator_tag &gt; &amp;&amp;std::is_convertible_v&lt; <a class="el" href="classneml2_1_1CrossRef.html">typename</a> std::iterator_traits&lt; <a class="el" href="classneml2_1_1CrossRef.html">decltype</a>(std::declval&lt; <a class="el" href="classneml2_1_1CrossRef.html">Container</a> &gt;().end())&gt;::iterator_category , std::input_iterator_tag , <a class="el" href="classneml2_1_1CrossRef.html">int</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -429,7 +432,7 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class=
         <tr>
           <td class="memname"><a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a> cat </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::vector&lt; <a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>tensors</em>, </span></td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">Container</a> &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>tensors</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
