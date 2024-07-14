@@ -1,6 +1,7 @@
 var classneml2_1_1CrossRef =
 [
     [ "CrossRef", "classneml2_1_1CrossRef.html#acc20d5a296c08119e6d065e320b64758", null ],
+    [ "CrossRef", "classneml2_1_1CrossRef.html#aff5bd9f175c428e517afd585bf56a7be", null ],
     [ "operator T", "classneml2_1_1CrossRef.html#a54724b9dd792a6022b918eae2f393734", null ],
     [ "operator Tensor", "classneml2_1_1CrossRef.html#a928e5d4a51212df6035182ef39ef5094", null ],
     [ "operator Tensor", "classneml2_1_1CrossRef.html#a928e5d4a51212df6035182ef39ef5094", null ],

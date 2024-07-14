@@ -246,326 +246,144 @@ $(function(){initNavTree('TensorBase_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span> </div>
 <div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>  <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> <a class="code hl_function" href="classneml2_1_1TensorBase.html#a63c61e19a8f60cdee48047d1157bb82e">operator-</a>() <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span> </div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>  <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> <a class="code hl_function" href="classneml2_1_1TensorBase.html#aafacd5fa0fef9a320068e61adb8ee277">batch_sum</a>(<a class="code hl_class" href="classneml2_1_1CrossRef.html">Size</a> d) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span> </div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>  <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> <a class="code hl_function" href="classneml2_1_1TensorBase.html#a49ab97e9311fbb57698f594dc6b389b7">list_sum</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span> </div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>  <a class="code hl_class" href="classneml2_1_1CrossRef.html">Size</a> _batch_dim;</div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>};</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span> </div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> Derived&gt;</div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> Derived2&gt;</div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a></div>
-<div class="foldopen" id="foldopen00209" data-start="{" data-end="}">
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno"><a class="line" href="classneml2_1_1TensorBase.html#a3f41bedeaf30dd9617c2fc3012fd8ee1">  209</a></span><a class="code hl_function" href="classneml2_1_1TensorBase.html#a3f41bedeaf30dd9617c2fc3012fd8ee1">TensorBase&lt;Derived&gt;::batch_expand_as</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived2</a> &amp; <a class="code hl_class" href="classneml2_1_1CrossRef.html">other</a>)<span class="keyword"> const</span></div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>  <span class="keywordflow">return</span> batch_expand(<a class="code hl_class" href="classneml2_1_1CrossRef.html">other</a>.batch_sizes());</div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>}</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>  <a class="code hl_class" href="classneml2_1_1CrossRef.html">Size</a> _batch_dim;</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>};</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span> </div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> Derived&gt;</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> Derived2&gt;</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a></div>
+<div class="foldopen" id="foldopen00203" data-start="{" data-end="}">
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno"><a class="line" href="classneml2_1_1TensorBase.html#a3f41bedeaf30dd9617c2fc3012fd8ee1">  203</a></span><a class="code hl_function" href="classneml2_1_1TensorBase.html#a3f41bedeaf30dd9617c2fc3012fd8ee1">TensorBase&lt;Derived&gt;::batch_expand_as</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived2</a> &amp; <a class="code hl_class" href="classneml2_1_1CrossRef.html">other</a>)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>  <span class="keywordflow">return</span> batch_expand(<a class="code hl_class" href="classneml2_1_1CrossRef.html">other</a>.batch_sizes());</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>}</div>
 </div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span> </div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> Derived&gt;</div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> Derived2&gt;</div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived2</a></div>
-<div class="foldopen" id="foldopen00217" data-start="{" data-end="}">
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno"><a class="line" href="classneml2_1_1TensorBase.html#af14a57551daf430b20ae37d854421201">  217</a></span><a class="code hl_function" href="classneml2_1_1TensorBase.html#af14a57551daf430b20ae37d854421201">TensorBase&lt;Derived&gt;::base_expand_as</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived2</a> &amp; <a class="code hl_class" href="classneml2_1_1CrossRef.html">other</a>)<span class="keyword"> const</span></div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>  <span class="keywordflow">return</span> base_expand(<a class="code hl_class" href="classneml2_1_1CrossRef.html">other</a>.base_sizes());</div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>}</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span> </div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> Derived&gt;</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> Derived2&gt;</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived2</a></div>
+<div class="foldopen" id="foldopen00211" data-start="{" data-end="}">
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno"><a class="line" href="classneml2_1_1TensorBase.html#af14a57551daf430b20ae37d854421201">  211</a></span><a class="code hl_function" href="classneml2_1_1TensorBase.html#af14a57551daf430b20ae37d854421201">TensorBase&lt;Derived&gt;::base_expand_as</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived2</a> &amp; <a class="code hl_class" href="classneml2_1_1CrossRef.html">other</a>)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>  <span class="keywordflow">return</span> base_expand(<a class="code hl_class" href="classneml2_1_1CrossRef.html">other</a>.base_sizes());</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>}</div>
 </div>
 </div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span> </div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span><span class="keyword">template</span> &lt;<span class="keyword">class </span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>,</div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>          <span class="keyword">typename</span> = <span class="keyword">typename</span> std::enable_if&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>&gt;&gt;&gt;</div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a></div>
-<div class="foldopen" id="foldopen00225" data-start="{" data-end="}">
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno"><a class="line" href="namespaceneml2.html#a4a06befad6e7014420747836b8a3ed2b">  225</a></span><a class="code hl_function" href="namespaceneml2.html#a2ce2a882bb0b6240b194faacf81faba5">operator+</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; a, <span class="keyword">const</span> <a class="code hl_typedef" href="namespaceneml2.html#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp; b)</div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>{</div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>  <span class="keywordflow">return</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>(torch::operator+(a, b), a.batch_dim());</div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>}</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span> </div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span><span class="keyword">template</span> &lt;<span class="keyword">class </span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>,</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>          <span class="keyword">typename</span> = <span class="keyword">typename</span> std::enable_if&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>&gt;&gt;&gt;</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a></div>
+<div class="foldopen" id="foldopen00219" data-start="{" data-end="}">
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno"><a class="line" href="namespaceneml2.html#a4a06befad6e7014420747836b8a3ed2b">  219</a></span><a class="code hl_function" href="namespaceneml2.html#a2ce2a882bb0b6240b194faacf81faba5">operator+</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; a, <span class="keyword">const</span> <a class="code hl_typedef" href="namespaceneml2.html#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp; b)</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>{</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>  <span class="keywordflow">return</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>(torch::operator+(a, b), a.batch_dim());</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>}</div>
 </div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span> </div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span><span class="keyword">template</span> &lt;<span class="keyword">class </span>Derived,</div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>          <span class="keyword">typename</span> = <span class="keyword">typename</span> std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt;</div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>Derived</div>
-<div class="foldopen" id="foldopen00233" data-start="{" data-end="}">
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno"><a class="line" href="namespaceneml2.html#a06e2063634ebdd3581529ac6fd136c8c">  233</a></span><a class="code hl_function" href="namespaceneml2.html#a2ce2a882bb0b6240b194faacf81faba5">operator+</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceneml2.html#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp; a, <span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; b)</div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>{</div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>  <span class="keywordflow">return</span> b + a;</div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>}</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span> </div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span><span class="keyword">template</span> &lt;<span class="keyword">class </span>Derived,</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>          <span class="keyword">typename</span> = <span class="keyword">typename</span> std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt;</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>Derived</div>
+<div class="foldopen" id="foldopen00227" data-start="{" data-end="}">
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno"><a class="line" href="namespaceneml2.html#a06e2063634ebdd3581529ac6fd136c8c">  227</a></span><a class="code hl_function" href="namespaceneml2.html#a2ce2a882bb0b6240b194faacf81faba5">operator+</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceneml2.html#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp; a, <span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; b)</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>{</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>  <span class="keywordflow">return</span> b + a;</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>}</div>
 </div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span> </div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span><span class="keyword">template</span> &lt;<span class="keyword">class </span>Derived,</div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>          <span class="keyword">typename</span> = <span class="keyword">typename</span> std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt;</div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>Derived</div>
-<div class="foldopen" id="foldopen00241" data-start="{" data-end="}">
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno"><a class="line" href="namespaceneml2.html#a37ec09650332ebc7ad2d6945ae981b37">  241</a></span><a class="code hl_function" href="namespaceneml2.html#a2ce2a882bb0b6240b194faacf81faba5">operator+</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; a, <span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; b)</div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>{</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>  <a class="code hl_function" href="namespaceneml2.html#a98aa3f21d33a2c94a1d1b46498567ecf">neml_assert_broadcastable_dbg</a>(a, b);</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>  <span class="keywordflow">return</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>(torch::operator+(a, b), <a class="code hl_function" href="namespaceneml2.html#a2f8a7cea74c152236bf4d4bc627a0528">broadcast_batch_dim</a>(a, b));</div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>}</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span> </div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span><span class="keyword">template</span> &lt;<span class="keyword">class </span>Derived,</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>          <span class="keyword">typename</span> = <span class="keyword">typename</span> std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt;</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>Derived</div>
+<div class="foldopen" id="foldopen00235" data-start="{" data-end="}">
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno"><a class="line" href="namespaceneml2.html#a37ec09650332ebc7ad2d6945ae981b37">  235</a></span><a class="code hl_function" href="namespaceneml2.html#a2ce2a882bb0b6240b194faacf81faba5">operator+</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; a, <span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; b)</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>{</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>  <a class="code hl_function" href="namespaceneml2.html#a98aa3f21d33a2c94a1d1b46498567ecf">neml_assert_broadcastable_dbg</a>(a, b);</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>  <span class="keywordflow">return</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>(torch::operator+(a, b), <a class="code hl_function" href="namespaceneml2.html#a2f8a7cea74c152236bf4d4bc627a0528">broadcast_batch_dim</a>(a, b));</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>}</div>
 </div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span> </div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span><span class="keyword">template</span> &lt;<span class="keyword">class </span>Derived,</div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>          <span class="keyword">typename</span> = <span class="keyword">typename</span> std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt;</div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>Derived</div>
-<div class="foldopen" id="foldopen00250" data-start="{" data-end="}">
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno"><a class="line" href="namespaceneml2.html#a06e7406a3a63c03be1a5cf4c6d31edde">  250</a></span><a class="code hl_function" href="namespaceneml2.html#a26af0953f831b5c56a2bb0f459ce90ac">operator-</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; a, <span class="keyword">const</span> <a class="code hl_typedef" href="namespaceneml2.html#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp; b)</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>{</div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>  <span class="keywordflow">return</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>(torch::operator-(a, b), a.batch_dim());</div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>}</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span> </div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span><span class="keyword">template</span> &lt;<span class="keyword">class </span>Derived,</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>          <span class="keyword">typename</span> = <span class="keyword">typename</span> std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt;</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>Derived</div>
+<div class="foldopen" id="foldopen00244" data-start="{" data-end="}">
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno"><a class="line" href="namespaceneml2.html#a06e7406a3a63c03be1a5cf4c6d31edde">  244</a></span><a class="code hl_function" href="namespaceneml2.html#a26af0953f831b5c56a2bb0f459ce90ac">operator-</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; a, <span class="keyword">const</span> <a class="code hl_typedef" href="namespaceneml2.html#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp; b)</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>{</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>  <span class="keywordflow">return</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>(torch::operator-(a, b), a.batch_dim());</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>}</div>
 </div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span> </div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span><span class="keyword">template</span> &lt;<span class="keyword">class </span>Derived,</div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>          <span class="keyword">typename</span> = <span class="keyword">typename</span> std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt;</div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>Derived</div>
-<div class="foldopen" id="foldopen00258" data-start="{" data-end="}">
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno"><a class="line" href="namespaceneml2.html#a7ec8635818b302586643a063b39a7619">  258</a></span><a class="code hl_function" href="namespaceneml2.html#a26af0953f831b5c56a2bb0f459ce90ac">operator-</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceneml2.html#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp; a, <span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; b)</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>{</div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>  <span class="keywordflow">return</span> -b + a;</div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>}</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span> </div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span><span class="keyword">template</span> &lt;<span class="keyword">class </span>Derived,</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>          <span class="keyword">typename</span> = <span class="keyword">typename</span> std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt;</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>Derived</div>
+<div class="foldopen" id="foldopen00252" data-start="{" data-end="}">
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno"><a class="line" href="namespaceneml2.html#a7ec8635818b302586643a063b39a7619">  252</a></span><a class="code hl_function" href="namespaceneml2.html#a26af0953f831b5c56a2bb0f459ce90ac">operator-</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceneml2.html#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp; a, <span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; b)</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>{</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>  <span class="keywordflow">return</span> -b + a;</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>}</div>
 </div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span> </div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span><span class="keyword">template</span> &lt;<span class="keyword">class </span>Derived,</div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>          <span class="keyword">typename</span> = <span class="keyword">typename</span> std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt;</div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>Derived</div>
-<div class="foldopen" id="foldopen00266" data-start="{" data-end="}">
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno"><a class="line" href="namespaceneml2.html#a60e7ef973fffc6838ea4c1f71b521ee5">  266</a></span><a class="code hl_function" href="namespaceneml2.html#a26af0953f831b5c56a2bb0f459ce90ac">operator-</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; a, <span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; b)</div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>{</div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>  <a class="code hl_function" href="namespaceneml2.html#a98aa3f21d33a2c94a1d1b46498567ecf">neml_assert_broadcastable_dbg</a>(a, b);</div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>  <span class="keywordflow">return</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>(torch::operator-(a, b), <a class="code hl_function" href="namespaceneml2.html#a2f8a7cea74c152236bf4d4bc627a0528">broadcast_batch_dim</a>(a, b));</div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>}</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span> </div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span><span class="keyword">template</span> &lt;<span class="keyword">class </span>Derived,</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>          <span class="keyword">typename</span> = <span class="keyword">typename</span> std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt;</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>Derived</div>
+<div class="foldopen" id="foldopen00260" data-start="{" data-end="}">
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno"><a class="line" href="namespaceneml2.html#a60e7ef973fffc6838ea4c1f71b521ee5">  260</a></span><a class="code hl_function" href="namespaceneml2.html#a26af0953f831b5c56a2bb0f459ce90ac">operator-</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; a, <span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; b)</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>{</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>  <a class="code hl_function" href="namespaceneml2.html#a98aa3f21d33a2c94a1d1b46498567ecf">neml_assert_broadcastable_dbg</a>(a, b);</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>  <span class="keywordflow">return</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>(torch::operator-(a, b), <a class="code hl_function" href="namespaceneml2.html#a2f8a7cea74c152236bf4d4bc627a0528">broadcast_batch_dim</a>(a, b));</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>}</div>
 </div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span> </div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span><span class="keyword">template</span> &lt;<span class="keyword">class </span>Derived,</div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>          <span class="keyword">typename</span> = <span class="keyword">typename</span> std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt;</div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>Derived</div>
-<div class="foldopen" id="foldopen00275" data-start="{" data-end="}">
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno"><a class="line" href="namespaceneml2.html#a75faa8ba8411efc3b2b720d90a3fddea">  275</a></span><a class="code hl_function" href="namespaceneml2.html#a000b8fc6a59261516d3c8b2203c0c964">operator*</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; a, <span class="keyword">const</span> <a class="code hl_typedef" href="namespaceneml2.html#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp; b)</div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>{</div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>  <span class="keywordflow">return</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>(torch::operator*(a, b), a.batch_dim());</div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>}</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span> </div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span><span class="keyword">template</span> &lt;<span class="keyword">class </span>Derived,</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>          <span class="keyword">typename</span> = <span class="keyword">typename</span> std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt;</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>Derived</div>
+<div class="foldopen" id="foldopen00269" data-start="{" data-end="}">
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno"><a class="line" href="namespaceneml2.html#a75faa8ba8411efc3b2b720d90a3fddea">  269</a></span><a class="code hl_function" href="namespaceneml2.html#a000b8fc6a59261516d3c8b2203c0c964">operator*</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; a, <span class="keyword">const</span> <a class="code hl_typedef" href="namespaceneml2.html#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp; b)</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>{</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>  <span class="keywordflow">return</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>(torch::operator*(a, b), a.batch_dim());</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>}</div>
 </div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span> </div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span><span class="keyword">template</span> &lt;<span class="keyword">class </span>Derived,</div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>          <span class="keyword">typename</span> = <span class="keyword">typename</span> std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt;</div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>Derived</div>
-<div class="foldopen" id="foldopen00283" data-start="{" data-end="}">
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno"><a class="line" href="namespaceneml2.html#acacddf9597ea9935a387cffc05ccb30c">  283</a></span><a class="code hl_function" href="namespaceneml2.html#a000b8fc6a59261516d3c8b2203c0c964">operator*</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceneml2.html#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp; a, <span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; b)</div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>{</div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>  <span class="keywordflow">return</span> b * a;</div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>}</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span> </div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span><span class="keyword">template</span> &lt;<span class="keyword">class </span>Derived,</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>          <span class="keyword">typename</span> = <span class="keyword">typename</span> std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt;</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>Derived</div>
+<div class="foldopen" id="foldopen00277" data-start="{" data-end="}">
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno"><a class="line" href="namespaceneml2.html#acacddf9597ea9935a387cffc05ccb30c">  277</a></span><a class="code hl_function" href="namespaceneml2.html#a000b8fc6a59261516d3c8b2203c0c964">operator*</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceneml2.html#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp; a, <span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; b)</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>{</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>  <span class="keywordflow">return</span> b * a;</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>}</div>
 </div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span> </div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span><span class="keyword">template</span> &lt;<span class="keyword">class </span>Derived,</div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>          <span class="keyword">typename</span> = <span class="keyword">typename</span> std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt;</div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>Derived</div>
-<div class="foldopen" id="foldopen00291" data-start="{" data-end="}">
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno"><a class="line" href="namespaceneml2.html#ac3d06b91fffb3208abbb7d784208a066">  291</a></span><a class="code hl_function" href="namespaceneml2.html#a9607c95f046fe1abb739963043e86659">operator/</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; a, <span class="keyword">const</span> <a class="code hl_typedef" href="namespaceneml2.html#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp; b)</div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>{</div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>  <span class="keywordflow">return</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>(torch::operator/(a, b), a.batch_dim());</div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>}</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span> </div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span><span class="keyword">template</span> &lt;<span class="keyword">class </span>Derived,</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>          <span class="keyword">typename</span> = <span class="keyword">typename</span> std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt;</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>Derived</div>
+<div class="foldopen" id="foldopen00285" data-start="{" data-end="}">
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno"><a class="line" href="namespaceneml2.html#ac3d06b91fffb3208abbb7d784208a066">  285</a></span><a class="code hl_function" href="namespaceneml2.html#a9607c95f046fe1abb739963043e86659">operator/</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; a, <span class="keyword">const</span> <a class="code hl_typedef" href="namespaceneml2.html#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp; b)</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>{</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>  <span class="keywordflow">return</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>(torch::operator/(a, b), a.batch_dim());</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>}</div>
 </div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span> </div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span><span class="keyword">template</span> &lt;<span class="keyword">class </span>Derived,</div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>          <span class="keyword">typename</span> = <span class="keyword">typename</span> std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt;</div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>Derived</div>
-<div class="foldopen" id="foldopen00299" data-start="{" data-end="}">
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno"><a class="line" href="namespaceneml2.html#a95337ba06254907327a00b77731cb5e2">  299</a></span><a class="code hl_function" href="namespaceneml2.html#a9607c95f046fe1abb739963043e86659">operator/</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceneml2.html#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp; a, <span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; b)</div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>{</div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>  <span class="keywordflow">return</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>(torch::operator/(a, b), b.batch_dim());</div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>}</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span> </div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span><span class="keyword">template</span> &lt;<span class="keyword">class </span>Derived,</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>          <span class="keyword">typename</span> = <span class="keyword">typename</span> std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt;</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>Derived</div>
+<div class="foldopen" id="foldopen00293" data-start="{" data-end="}">
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno"><a class="line" href="namespaceneml2.html#a95337ba06254907327a00b77731cb5e2">  293</a></span><a class="code hl_function" href="namespaceneml2.html#a9607c95f046fe1abb739963043e86659">operator/</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceneml2.html#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp; a, <span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; b)</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>{</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>  <span class="keywordflow">return</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>(torch::operator/(a, b), b.batch_dim());</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>}</div>
 </div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span> </div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span><span class="keyword">template</span> &lt;<span class="keyword">class </span>Derived,</div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>          <span class="keyword">typename</span> = <span class="keyword">typename</span> std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt;</div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>Derived</div>
-<div class="foldopen" id="foldopen00307" data-start="{" data-end="}">
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno"><a class="line" href="namespaceneml2.html#a72e3deadef97ff2d3f6211242c52731e">  307</a></span><a class="code hl_function" href="namespaceneml2.html#a9607c95f046fe1abb739963043e86659">operator/</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; a, <span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; b)</div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>{</div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>  <a class="code hl_function" href="namespaceneml2.html#a98aa3f21d33a2c94a1d1b46498567ecf">neml_assert_broadcastable_dbg</a>(a, b);</div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>  <span class="keywordflow">return</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>(torch::operator/(a, b), <a class="code hl_function" href="namespaceneml2.html#a2f8a7cea74c152236bf4d4bc627a0528">broadcast_batch_dim</a>(a, b));</div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>}</div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span> </div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span><span class="keyword">template</span> &lt;<span class="keyword">class </span>Derived,</div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>          <span class="keyword">typename</span> = <span class="keyword">typename</span> std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt;</div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>Derived</div>
+<div class="foldopen" id="foldopen00301" data-start="{" data-end="}">
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno"><a class="line" href="namespaceneml2.html#a72e3deadef97ff2d3f6211242c52731e">  301</a></span><a class="code hl_function" href="namespaceneml2.html#a9607c95f046fe1abb739963043e86659">operator/</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; a, <span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; b)</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>{</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>  <a class="code hl_function" href="namespaceneml2.html#a98aa3f21d33a2c94a1d1b46498567ecf">neml_assert_broadcastable_dbg</a>(a, b);</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>  <span class="keywordflow">return</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>(torch::operator/(a, b), <a class="code hl_function" href="namespaceneml2.html#a2f8a7cea74c152236bf4d4bc627a0528">broadcast_batch_dim</a>(a, b));</div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>}</div>
 </div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span> </div>
-<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span><span class="keyword">namespace </span>math</div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>{</div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span><span class="keyword">template</span> &lt;<span class="keyword">class </span>Derived,</div>
-<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>          <span class="keyword">typename</span> = <span class="keyword">typename</span> std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt;</div>
-<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>Derived</div>
-<div class="foldopen" id="foldopen00318" data-start="{" data-end="}">
-<div class="line"><a id="l00318" name="l00318"></a><span class="lineno"><a class="line" href="namespaceneml2_1_1math.html#afe53334e78b28979ab68fad275892e3e">  318</a></span><a class="code hl_function" href="namespaceneml2_1_1math.html#ac201b57a29a6e74a6fa3e45c0263b2c3">pow</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; a, <span class="keyword">const</span> <a class="code hl_typedef" href="namespaceneml2.html#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp; <a class="code hl_class" href="classneml2_1_1CrossRef.html">n</a>)</div>
-<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>{</div>
-<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>  <span class="keywordflow">return</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>(torch::pow(a, <a class="code hl_class" href="classneml2_1_1CrossRef.html">n</a>), a.batch_dim());</div>
-<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>}</div>
-</div>
-<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span> </div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span><span class="keyword">template</span> &lt;<span class="keyword">class </span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>,</div>
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>          <span class="keyword">typename</span> = <span class="keyword">typename</span> std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>&gt;&gt;&gt;</div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a></div>
-<div class="foldopen" id="foldopen00326" data-start="{" data-end="}">
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno"><a class="line" href="namespaceneml2_1_1math.html#af2b0c914b164ef1e08678fe654527f3b">  326</a></span><a class="code hl_function" href="namespaceneml2_1_1math.html#ac201b57a29a6e74a6fa3e45c0263b2c3">pow</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceneml2.html#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp; a, <span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; <a class="code hl_class" href="classneml2_1_1CrossRef.html">n</a>)</div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>{</div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>  <span class="keywordflow">return</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>(torch::pow(a, <a class="code hl_class" href="classneml2_1_1CrossRef.html">n</a>), <a class="code hl_class" href="classneml2_1_1CrossRef.html">n</a>.batch_dim());</div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>}</div>
-</div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span> </div>
-<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span><span class="keyword">template</span> &lt;<span class="keyword">class </span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>,</div>
-<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>          <span class="keyword">typename</span> = <span class="keyword">typename</span> std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>&gt;&gt;&gt;</div>
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a></div>
-<div class="foldopen" id="foldopen00334" data-start="{" data-end="}">
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno"><a class="line" href="namespaceneml2_1_1math.html#a1c6d62ea5ad3fbccd30ed68d87e2f15f">  334</a></span><a class="code hl_function" href="namespaceneml2_1_1math.html#ac201b57a29a6e74a6fa3e45c0263b2c3">pow</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; a, <span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; <a class="code hl_class" href="classneml2_1_1CrossRef.html">n</a>)</div>
-<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>{</div>
-<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>  <a class="code hl_function" href="namespaceneml2.html#a98aa3f21d33a2c94a1d1b46498567ecf">neml_assert_broadcastable_dbg</a>(a, <a class="code hl_class" href="classneml2_1_1CrossRef.html">n</a>);</div>
-<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>  <span class="keywordflow">return</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>(torch::pow(a, <a class="code hl_class" href="classneml2_1_1CrossRef.html">n</a>), <a class="code hl_function" href="namespaceneml2.html#a2f8a7cea74c152236bf4d4bc627a0528">broadcast_batch_dim</a>(a, <a class="code hl_class" href="classneml2_1_1CrossRef.html">n</a>));</div>
-<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>}</div>
-</div>
-<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span> </div>
-<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span><span class="keyword">template</span> &lt;<span class="keyword">class </span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>,</div>
-<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>          <span class="keyword">typename</span> = <span class="keyword">typename</span> std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>&gt;&gt;&gt;</div>
-<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a></div>
-<div class="foldopen" id="foldopen00343" data-start="{" data-end="}">
-<div class="line"><a id="l00343" name="l00343"></a><span class="lineno"><a class="line" href="namespaceneml2_1_1math.html#adccc1f43da9f87f94ece3e73fb011015">  343</a></span><a class="code hl_function" href="namespaceneml2_1_1math.html#adccc1f43da9f87f94ece3e73fb011015">sign</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; a)</div>
-<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>{</div>
-<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>  <span class="keywordflow">return</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>(torch::sign(a), a.batch_dim());</div>
-<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>}</div>
-</div>
-<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span> </div>
-<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span><span class="keyword">template</span> &lt;<span class="keyword">class </span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>,</div>
-<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>          <span class="keyword">typename</span> = <span class="keyword">typename</span> std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>&gt;&gt;&gt;</div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a></div>
-<div class="foldopen" id="foldopen00351" data-start="{" data-end="}">
-<div class="line"><a id="l00351" name="l00351"></a><span class="lineno"><a class="line" href="namespaceneml2_1_1math.html#a566c7ce01c3b175339411627d5cdfe5c">  351</a></span><a class="code hl_function" href="namespaceneml2_1_1math.html#a566c7ce01c3b175339411627d5cdfe5c">cosh</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; a)</div>
-<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>{</div>
-<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>  <span class="keywordflow">return</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>(torch::cosh(a), a.batch_dim());</div>
-<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>}</div>
-</div>
-<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span> </div>
-<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span><span class="keyword">template</span> &lt;<span class="keyword">class </span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>,</div>
-<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>          <span class="keyword">typename</span> = <span class="keyword">typename</span> std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>&gt;&gt;&gt;</div>
-<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a></div>
-<div class="foldopen" id="foldopen00359" data-start="{" data-end="}">
-<div class="line"><a id="l00359" name="l00359"></a><span class="lineno"><a class="line" href="namespaceneml2_1_1math.html#a1a5e59ab29f8cef8128dda08465e359a">  359</a></span><a class="code hl_function" href="namespaceneml2_1_1math.html#a1a5e59ab29f8cef8128dda08465e359a">sinh</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; a)</div>
-<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>{</div>
-<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>  <span class="keywordflow">return</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>(torch::sinh(a), a.batch_dim());</div>
-<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>}</div>
-</div>
-<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span> </div>
-<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span><span class="keyword">template</span> &lt;<span class="keyword">class </span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>,</div>
-<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>          <span class="keyword">typename</span> = <span class="keyword">typename</span> std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>&gt;&gt;&gt;</div>
-<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a></div>
-<div class="foldopen" id="foldopen00367" data-start="{" data-end="}">
-<div class="line"><a id="l00367" name="l00367"></a><span class="lineno"><a class="line" href="namespaceneml2_1_1math.html#a3b40e677506403a96fe2d40c136a4970">  367</a></span><a class="code hl_function" href="namespaceneml2_1_1math.html#a3b40e677506403a96fe2d40c136a4970">tanh</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; a)</div>
-<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>{</div>
-<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>  <span class="keywordflow">return</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>(torch::tanh(a), a.batch_dim());</div>
-<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>}</div>
-</div>
-<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span> </div>
-<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span><span class="keyword">template</span> &lt;<span class="keyword">class </span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>,</div>
-<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>          <span class="keyword">typename</span> = <span class="keyword">typename</span> std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>&gt;&gt;&gt;</div>
-<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a></div>
-<div class="foldopen" id="foldopen00375" data-start="{" data-end="}">
-<div class="line"><a id="l00375" name="l00375"></a><span class="lineno"><a class="line" href="namespaceneml2_1_1math.html#a76d6436121452c26405b3f98a827c4f3">  375</a></span><a class="code hl_function" href="namespaceneml2_1_1math.html#a76d6436121452c26405b3f98a827c4f3">where</a>(<span class="keyword">const</span> torch::Tensor &amp; <a class="code hl_class" href="classneml2_1_1CrossRef.html">condition</a>, <span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; a, <span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; b)</div>
-<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>{</div>
-<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>  <a class="code hl_function" href="namespaceneml2.html#a98aa3f21d33a2c94a1d1b46498567ecf">neml_assert_broadcastable_dbg</a>(a, b);</div>
-<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>  <span class="keywordflow">return</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>(torch::where(<a class="code hl_class" href="classneml2_1_1CrossRef.html">condition</a>, a, b), <a class="code hl_function" href="namespaceneml2.html#a2f8a7cea74c152236bf4d4bc627a0528">broadcast_batch_dim</a>(a, b));</div>
-<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>}</div>
-</div>
-<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span> </div>
-<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span><span class="keyword">template</span> &lt;<span class="keyword">class </span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>,</div>
-<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>          <span class="keyword">typename</span> = <span class="keyword">typename</span> std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>&gt;&gt;&gt;</div>
-<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a></div>
-<div class="foldopen" id="foldopen00390" data-start="{" data-end="}">
-<div class="line"><a id="l00390" name="l00390"></a><span class="lineno"><a class="line" href="namespaceneml2_1_1math.html#a3660a3eac1e6d181fbdb872c2c2fe23f">  390</a></span><a class="code hl_function" href="namespaceneml2_1_1math.html#a3660a3eac1e6d181fbdb872c2c2fe23f">heaviside</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; a)</div>
-<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>{</div>
-<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>  <span class="keywordflow">return</span> (<a class="code hl_function" href="namespaceneml2_1_1math.html#adccc1f43da9f87f94ece3e73fb011015">sign</a>(a) + 1.0) / 2.0;</div>
-<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>}</div>
-</div>
-<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span> </div>
-<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span><span class="keyword">template</span> &lt;<span class="keyword">class </span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>,</div>
-<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>          <span class="keyword">typename</span> = <span class="keyword">typename</span> std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>&gt;&gt;&gt;</div>
-<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a></div>
-<div class="foldopen" id="foldopen00398" data-start="{" data-end="}">
-<div class="line"><a id="l00398" name="l00398"></a><span class="lineno"><a class="line" href="namespaceneml2_1_1math.html#a07399cca7394048ccc2ff2f52c637992">  398</a></span><a class="code hl_function" href="namespaceneml2_1_1math.html#a07399cca7394048ccc2ff2f52c637992">macaulay</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; a)</div>
-<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>{</div>
-<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>  <span class="keywordflow">return</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>(torch::Tensor(a) * torch::Tensor(<a class="code hl_function" href="namespaceneml2_1_1math.html#a3660a3eac1e6d181fbdb872c2c2fe23f">heaviside</a>(a)), a.batch_dim());</div>
-<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>}</div>
-</div>
-<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span> </div>
-<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span><span class="keyword">template</span> &lt;<span class="keyword">class </span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>,</div>
-<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>          <span class="keyword">typename</span> = <span class="keyword">typename</span> std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>&gt;&gt;&gt;</div>
-<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a></div>
-<div class="foldopen" id="foldopen00406" data-start="{" data-end="}">
-<div class="line"><a id="l00406" name="l00406"></a><span class="lineno"><a class="line" href="namespaceneml2_1_1math.html#ac1d1752d4b643f61a4ca6a5030143035">  406</a></span><a class="code hl_function" href="namespaceneml2_1_1math.html#ac1d1752d4b643f61a4ca6a5030143035">dmacaulay</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; a)</div>
-<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>{</div>
-<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceneml2_1_1math.html#a3660a3eac1e6d181fbdb872c2c2fe23f">heaviside</a>(a);</div>
-<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>}</div>
-</div>
-<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span> </div>
-<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span><span class="keyword">template</span> &lt;<span class="keyword">class </span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>,</div>
-<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>          <span class="keyword">typename</span> = <span class="keyword">typename</span> std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>&gt;&gt;&gt;</div>
-<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a></div>
-<div class="foldopen" id="foldopen00414" data-start="{" data-end="}">
-<div class="line"><a id="l00414" name="l00414"></a><span class="lineno"><a class="line" href="namespaceneml2_1_1math.html#aed999c56c4bba9691d9f2736c80947e0">  414</a></span><a class="code hl_function" href="namespaceneml2_1_1math.html#aed999c56c4bba9691d9f2736c80947e0">sqrt</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; a)</div>
-<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>{</div>
-<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>  <span class="keywordflow">return</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>(torch::sqrt(a), a.batch_dim());</div>
-<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>}</div>
-</div>
-<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span> </div>
-<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span><span class="keyword">template</span> &lt;<span class="keyword">class </span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>,</div>
-<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>          <span class="keyword">typename</span> = <span class="keyword">typename</span> std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>&gt;&gt;&gt;</div>
-<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a></div>
-<div class="foldopen" id="foldopen00422" data-start="{" data-end="}">
-<div class="line"><a id="l00422" name="l00422"></a><span class="lineno"><a class="line" href="namespaceneml2_1_1math.html#ac385085c905e89db6e73a7b259837294">  422</a></span><a class="code hl_function" href="namespaceneml2_1_1math.html#ac385085c905e89db6e73a7b259837294">exp</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; a)</div>
-<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>{</div>
-<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>  <span class="keywordflow">return</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>(torch::exp(a), a.batch_dim());</div>
-<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span>}</div>
-</div>
-<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span> </div>
-<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span><span class="keyword">template</span> &lt;<span class="keyword">class </span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>,</div>
-<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>          <span class="keyword">typename</span> = <span class="keyword">typename</span> std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>&gt;&gt;&gt;</div>
-<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a></div>
-<div class="foldopen" id="foldopen00430" data-start="{" data-end="}">
-<div class="line"><a id="l00430" name="l00430"></a><span class="lineno"><a class="line" href="namespaceneml2_1_1math.html#abc681c094e1880e4f903e949d55031f5">  430</a></span><a class="code hl_function" href="namespaceneml2_1_1math.html#abc681c094e1880e4f903e949d55031f5">abs</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; a)</div>
-<div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span>{</div>
-<div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span>  <span class="keywordflow">return</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>(torch::abs(a), a.batch_dim());</div>
-<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span>}</div>
-</div>
-<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span> </div>
-<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span><span class="keyword">template</span> &lt;<span class="keyword">class </span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>,</div>
-<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span>          <span class="keyword">typename</span> = <span class="keyword">typename</span> std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>&gt;&gt;&gt;</div>
-<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a></div>
-<div class="foldopen" id="foldopen00438" data-start="{" data-end="}">
-<div class="line"><a id="l00438" name="l00438"></a><span class="lineno"><a class="line" href="namespaceneml2_1_1math.html#a260ff766c2a65d4675d42006d779e113">  438</a></span><a class="code hl_function" href="namespaceneml2_1_1math.html#a260ff766c2a65d4675d42006d779e113">diff</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; a, <a class="code hl_class" href="classneml2_1_1CrossRef.html">Size</a> <a class="code hl_class" href="classneml2_1_1CrossRef.html">n</a> = 1, <a class="code hl_class" href="classneml2_1_1CrossRef.html">Size</a> <a class="code hl_class" href="classneml2_1_1CrossRef.html">dim</a> = -1)</div>
-<div class="line"><a id="l00439" name="l00439"></a><span class="lineno">  439</span>{</div>
-<div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span>  <span class="keywordflow">return</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>(torch::diff(a, <a class="code hl_class" href="classneml2_1_1CrossRef.html">n</a>, <a class="code hl_class" href="classneml2_1_1CrossRef.html">dim</a>), a.batch_dim());</div>
-<div class="line"><a id="l00441" name="l00441"></a><span class="lineno">  441</span>}</div>
-</div>
-<div class="line"><a id="l00442" name="l00442"></a><span class="lineno">  442</span> </div>
-<div class="line"><a id="l00443" name="l00443"></a><span class="lineno">  443</span><span class="keyword">template</span> &lt;<span class="keyword">class </span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>,</div>
-<div class="line"><a id="l00444" name="l00444"></a><span class="lineno">  444</span>          <span class="keyword">typename</span> = <span class="keyword">typename</span> std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>&gt;&gt;&gt;</div>
-<div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a></div>
-<div class="foldopen" id="foldopen00446" data-start="{" data-end="}">
-<div class="line"><a id="l00446" name="l00446"></a><span class="lineno"><a class="line" href="namespaceneml2_1_1math.html#a3bbd6379be65e293f17ef15390fe94a8">  446</a></span><a class="code hl_function" href="namespaceneml2_1_1math.html#a3bbd6379be65e293f17ef15390fe94a8">batch_diag_embed</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; a, <a class="code hl_class" href="classneml2_1_1CrossRef.html">Size</a> <a class="code hl_class" href="classneml2_1_1CrossRef.html">offset</a> = 0, <a class="code hl_class" href="classneml2_1_1CrossRef.html">Size</a> <a class="code hl_class" href="classneml2_1_1CrossRef.html">d1</a> = -2, <a class="code hl_class" href="classneml2_1_1CrossRef.html">Size</a> <a class="code hl_class" href="classneml2_1_1CrossRef.html">d2</a> = -1)</div>
-<div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span>{</div>
-<div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span>  <span class="keywordflow">return</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>(torch::diag_embed(</div>
-<div class="line"><a id="l00449" name="l00449"></a><span class="lineno">  449</span>                     a, <a class="code hl_class" href="classneml2_1_1CrossRef.html">offset</a>, <a class="code hl_class" href="classneml2_1_1CrossRef.html">d1</a> &lt; 0 ? <a class="code hl_class" href="classneml2_1_1CrossRef.html">d1</a> - a.base_dim() : <a class="code hl_class" href="classneml2_1_1CrossRef.html">d1</a>, <a class="code hl_class" href="classneml2_1_1CrossRef.html">d2</a> &lt; 0 ? <a class="code hl_class" href="classneml2_1_1CrossRef.html">d2</a> - a.base_dim() : <a class="code hl_class" href="classneml2_1_1CrossRef.html">d2</a>),</div>
-<div class="line"><a id="l00450" name="l00450"></a><span class="lineno">  450</span>                 a.batch_dim() + 1);</div>
-<div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span>}</div>
-</div>
-<div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span> </div>
-<div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span><span class="keyword">template</span> &lt;<span class="keyword">class </span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>,</div>
-<div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span>          <span class="keyword">typename</span> = <span class="keyword">typename</span> std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>&gt;&gt;&gt;</div>
-<div class="line"><a id="l00455" name="l00455"></a><span class="lineno">  455</span><a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a></div>
-<div class="foldopen" id="foldopen00456" data-start="{" data-end="}">
-<div class="line"><a id="l00456" name="l00456"></a><span class="lineno"><a class="line" href="namespaceneml2_1_1math.html#a81291d8077a1d283666386da802c3d9c">  456</a></span><a class="code hl_function" href="namespaceneml2_1_1math.html#a81291d8077a1d283666386da802c3d9c">log</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a> &amp; a)</div>
-<div class="line"><a id="l00457" name="l00457"></a><span class="lineno">  457</span>{</div>
-<div class="line"><a id="l00458" name="l00458"></a><span class="lineno">  458</span>  <span class="keywordflow">return</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">Derived</a>(torch::log(a), a.batch_dim());</div>
-<div class="line"><a id="l00459" name="l00459"></a><span class="lineno">  459</span>}</div>
-</div>
-<div class="line"><a id="l00460" name="l00460"></a><span class="lineno">  460</span> </div>
-<div class="line"><a id="l00461" name="l00461"></a><span class="lineno">  461</span>} <span class="comment">// namespace math</span></div>
-<div class="line"><a id="l00462" name="l00462"></a><span class="lineno">  462</span>} <span class="comment">// namespace neml2</span></div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>} <span class="comment">// namespace neml2</span></div>
 </div>
 </div>
 <div class="ttc" id="aclassneml2_1_1CrossRef_html"><div class="ttname"><a href="classneml2_1_1CrossRef.html">neml2::CrossRef</a></div><div class="ttdoc">The wrapper (decorator) for cross-referencing unresolved values at parse time.</div><div class="ttdef"><b>Definition</b> CrossRef.h:53</div></div>
@@ -574,9 +392,8 @@ $(function(){initNavTree('TensorBase_8h_source.html',''); initResizable(); });
 <div class="ttc" id="aclassneml2_1_1TensorBase_html_a0591d140742813d882e0d3fba0050da6"><div class="ttname"><a href="classneml2_1_1TensorBase.html#a0591d140742813d882e0d3fba0050da6">neml2::TensorBase::batch_expand_copy</a></div><div class="ttdeci">Derived batch_expand_copy(TensorShapeRef batch_size) const</div><div class="ttdoc">Return a new tensor with values broadcast along the batch dimensions.</div><div class="ttdef"><b>Definition</b> TensorBase.cxx:233</div></div>
 <div class="ttc" id="aclassneml2_1_1TensorBase_html_a2ea704e887313810623fafe509c83d67"><div class="ttname"><a href="classneml2_1_1TensorBase.html#a2ea704e887313810623fafe509c83d67">neml2::TensorBase::base_transpose</a></div><div class="ttdeci">neml2::Tensor base_transpose(Size d1, Size d2) const</div><div class="ttdoc">Transpose two base dimensions.</div><div class="ttdef"><b>Definition</b> TensorBase.cxx:293</div></div>
 <div class="ttc" id="aclassneml2_1_1TensorBase_html_a396a6aaae5bd291fe8c1af7a37fe3c54"><div class="ttname"><a href="classneml2_1_1TensorBase.html#a396a6aaae5bd291fe8c1af7a37fe3c54">neml2::TensorBase::logspace</a></div><div class="ttdeci">static Derived logspace(const Derived &amp;start, const Derived &amp;end, Size nstep, Size dim=0, Size batch_dim=-1, Real base=10)</div><div class="ttdoc">log-space equivalent of the linspace named constructor</div><div class="ttdef"><b>Definition</b> TensorBase.cxx:105</div></div>
-<div class="ttc" id="aclassneml2_1_1TensorBase_html_a3f41bedeaf30dd9617c2fc3012fd8ee1"><div class="ttname"><a href="classneml2_1_1TensorBase.html#a3f41bedeaf30dd9617c2fc3012fd8ee1">neml2::TensorBase::batch_expand_as</a></div><div class="ttdeci">Derived batch_expand_as(const Derived2 &amp;other) const</div><div class="ttdoc">Expand the batch to have the same shape as another tensor.</div><div class="ttdef"><b>Definition</b> TensorBase.h:209</div></div>
+<div class="ttc" id="aclassneml2_1_1TensorBase_html_a3f41bedeaf30dd9617c2fc3012fd8ee1"><div class="ttname"><a href="classneml2_1_1TensorBase.html#a3f41bedeaf30dd9617c2fc3012fd8ee1">neml2::TensorBase::batch_expand_as</a></div><div class="ttdeci">Derived batch_expand_as(const Derived2 &amp;other) const</div><div class="ttdoc">Expand the batch to have the same shape as another tensor.</div><div class="ttdef"><b>Definition</b> TensorBase.h:203</div></div>
 <div class="ttc" id="aclassneml2_1_1TensorBase_html_a40f9f85dd2f9e7fa571e774bf9331cfb"><div class="ttname"><a href="classneml2_1_1TensorBase.html#a40f9f85dd2f9e7fa571e774bf9331cfb">neml2::TensorBase::base_storage</a></div><div class="ttdeci">Size base_storage() const</div><div class="ttdoc">Return the flattened storage needed just for the base indices.</div><div class="ttdef"><b>Definition</b> TensorBase.cxx:170</div></div>
-<div class="ttc" id="aclassneml2_1_1TensorBase_html_a49ab97e9311fbb57698f594dc6b389b7"><div class="ttname"><a href="classneml2_1_1TensorBase.html#a49ab97e9311fbb57698f594dc6b389b7">neml2::TensorBase::list_sum</a></div><div class="ttdeci">Derived list_sum() const</div><div class="ttdoc">Sum on the list index (TODO: replace with class)</div><div class="ttdef"><b>Definition</b> TensorBase.cxx:348</div></div>
 <div class="ttc" id="aclassneml2_1_1TensorBase_html_a4b7be101bdff3388fd0e4bc34fdd26cf"><div class="ttname"><a href="classneml2_1_1TensorBase.html#a4b7be101bdff3388fd0e4bc34fdd26cf">neml2::TensorBase::TensorBase</a></div><div class="ttdeci">TensorBase()=default</div><div class="ttdoc">Default constructor.</div></div>
 <div class="ttc" id="aclassneml2_1_1TensorBase_html_a4d61c6894d38069f135760b1896bbd5c"><div class="ttname"><a href="classneml2_1_1TensorBase.html#a4d61c6894d38069f135760b1896bbd5c">neml2::TensorBase::batch_index_put</a></div><div class="ttdeci">void batch_index_put(indexing::TensorIndices indices, const torch::Tensor &amp;other)</div><div class="ttdoc">Set a index sliced on the batch dimensions to a value.</div><div class="ttdef"><b>Definition</b> TensorBase.cxx:195</div></div>
 <div class="ttc" id="aclassneml2_1_1TensorBase_html_a4dd203ac9e5e8e20044fd8bb6e03a187"><div class="ttname"><a href="classneml2_1_1TensorBase.html#a4dd203ac9e5e8e20044fd8bb6e03a187">neml2::TensorBase::batched</a></div><div class="ttdeci">bool batched() const</div><div class="ttdoc">Whether the tensor is batched.</div><div class="ttdef"><b>Definition</b> TensorBase.cxx:114</div></div>
@@ -596,7 +413,6 @@ $(function(){initNavTree('TensorBase_8h_source.html',''); initResizable(); });
 <div class="ttc" id="aclassneml2_1_1TensorBase_html_a89aacac3fcd85d316c3d04b8683bb770"><div class="ttname"><a href="classneml2_1_1TensorBase.html#a89aacac3fcd85d316c3d04b8683bb770">neml2::TensorBase::to</a></div><div class="ttdeci">Derived to(const torch::TensorOptions &amp;options) const</div><div class="ttdoc">Send to options.</div><div class="ttdef"><b>Definition</b> TensorBase.cxx:325</div></div>
 <div class="ttc" id="aclassneml2_1_1TensorBase_html_a8eb6187532e8b425e95f3957f193fc58"><div class="ttname"><a href="classneml2_1_1TensorBase.html#a8eb6187532e8b425e95f3957f193fc58">neml2::TensorBase::base_size</a></div><div class="ttdeci">Size base_size(Size index) const</div><div class="ttdoc">Return the length of some base axis.</div><div class="ttdef"><b>Definition</b> TensorBase.cxx:163</div></div>
 <div class="ttc" id="aclassneml2_1_1TensorBase_html_a9f8f7b529e5ff91dff05c9d68d78ef43"><div class="ttname"><a href="classneml2_1_1TensorBase.html#a9f8f7b529e5ff91dff05c9d68d78ef43">neml2::TensorBase::zeros_like</a></div><div class="ttdeci">static Derived zeros_like(const Derived &amp;other)</div><div class="ttdoc">Zero tensor like another, i.e. same batch and base shapes, same tensor options, etc.</div><div class="ttdef"><b>Definition</b> TensorBase.cxx:58</div></div>
-<div class="ttc" id="aclassneml2_1_1TensorBase_html_aafacd5fa0fef9a320068e61adb8ee277"><div class="ttname"><a href="classneml2_1_1TensorBase.html#aafacd5fa0fef9a320068e61adb8ee277">neml2::TensorBase::batch_sum</a></div><div class="ttdeci">Derived batch_sum(Size d) const</div><div class="ttdoc">Sum on a batch index.</div><div class="ttdef"><b>Definition</b> TensorBase.cxx:339</div></div>
 <div class="ttc" id="aclassneml2_1_1TensorBase_html_aaff71558397d8ecc0afc6451d4805fbe"><div class="ttname"><a href="classneml2_1_1TensorBase.html#aaff71558397d8ecc0afc6451d4805fbe">neml2::TensorBase::empty_like</a></div><div class="ttdeci">static Derived empty_like(const Derived &amp;other)</div><div class="ttdoc">Empty tensor like another, i.e. same batch and base shapes, same tensor options, etc.</div><div class="ttdef"><b>Definition</b> TensorBase.cxx:51</div></div>
 <div class="ttc" id="aclassneml2_1_1TensorBase_html_ab972dadef408e2d55b5dc566cfacf810"><div class="ttname"><a href="classneml2_1_1TensorBase.html#ab972dadef408e2d55b5dc566cfacf810">neml2::TensorBase::batch_unsqueeze</a></div><div class="ttdeci">Derived batch_unsqueeze(Size d) const</div><div class="ttdoc">Unsqueeze a batch dimension.</div><div class="ttdef"><b>Definition</b> TensorBase.cxx:261</div></div>
 <div class="ttc" id="aclassneml2_1_1TensorBase_html_abe1ac05204d27731c28308c6eacad45a"><div class="ttname"><a href="classneml2_1_1TensorBase.html#abe1ac05204d27731c28308c6eacad45a">neml2::TensorBase::full_like</a></div><div class="ttdeci">static Derived full_like(const Derived &amp;other, Real init)</div><div class="ttdef"><b>Definition</b> TensorBase.cxx:72</div></div>
@@ -609,24 +425,9 @@ $(function(){initNavTree('TensorBase_8h_source.html',''); initResizable(); });
 <div class="ttc" id="aclassneml2_1_1TensorBase_html_ae6f140f76d18e80955de45515bc5e3f0"><div class="ttname"><a href="classneml2_1_1TensorBase.html#ae6f140f76d18e80955de45515bc5e3f0">neml2::TensorBase::base_index_put</a></div><div class="ttdeci">void base_index_put(const indexing::TensorIndices &amp;indices, const torch::Tensor &amp;other)</div><div class="ttdoc">Set a index sliced on the base dimensions to a value.</div><div class="ttdef"><b>Definition</b> TensorBase.cxx:203</div></div>
 <div class="ttc" id="aclassneml2_1_1TensorBase_html_aeafc5562d6928fbdbc871352d059abd7"><div class="ttname"><a href="classneml2_1_1TensorBase.html#aeafc5562d6928fbdbc871352d059abd7">neml2::TensorBase::base_index</a></div><div class="ttdeci">neml2::Tensor base_index(const indexing::TensorIndices &amp;indices) const</div><div class="ttdoc">Return an index sliced on the base dimensions.</div><div class="ttdef"><b>Definition</b> TensorBase.cxx:186</div></div>
 <div class="ttc" id="aclassneml2_1_1TensorBase_html_aeb2877479587d83881cbd26b4e9297a4"><div class="ttname"><a href="classneml2_1_1TensorBase.html#aeb2877479587d83881cbd26b4e9297a4">neml2::TensorBase::ones_like</a></div><div class="ttdeci">static Derived ones_like(const Derived &amp;other)</div><div class="ttdoc">Unit tensor like another, i.e. same batch and base shapes, same tensor options, etc.</div><div class="ttdef"><b>Definition</b> TensorBase.cxx:65</div></div>
-<div class="ttc" id="aclassneml2_1_1TensorBase_html_af14a57551daf430b20ae37d854421201"><div class="ttname"><a href="classneml2_1_1TensorBase.html#af14a57551daf430b20ae37d854421201">neml2::TensorBase::base_expand_as</a></div><div class="ttdeci">Derived2 base_expand_as(const Derived2 &amp;other) const</div><div class="ttdoc">Expand the base to have the same shape as another tensor.</div><div class="ttdef"><b>Definition</b> TensorBase.h:217</div></div>
+<div class="ttc" id="aclassneml2_1_1TensorBase_html_af14a57551daf430b20ae37d854421201"><div class="ttname"><a href="classneml2_1_1TensorBase.html#af14a57551daf430b20ae37d854421201">neml2::TensorBase::base_expand_as</a></div><div class="ttdeci">Derived2 base_expand_as(const Derived2 &amp;other) const</div><div class="ttdoc">Expand the base to have the same shape as another tensor.</div><div class="ttdef"><b>Definition</b> TensorBase.h:211</div></div>
 <div class="ttc" id="aclassneml2_1_1Tensor_html"><div class="ttname"><a href="classneml2_1_1Tensor.html">neml2::Tensor</a></div><div class="ttdef"><b>Definition</b> Tensor.h:32</div></div>
 <div class="ttc" id="anamespaceneml2_1_1indexing_html_ab01afa980ae062f21a6d443c7353be09"><div class="ttname"><a href="namespaceneml2_1_1indexing.html#ab01afa980ae062f21a6d443c7353be09">neml2::indexing::TensorIndices</a></div><div class="ttdeci">c10::SmallVector&lt; TensorIndex &gt; TensorIndices</div><div class="ttdef"><b>Definition</b> types.h:41</div></div>
-<div class="ttc" id="anamespaceneml2_1_1math_html_a07399cca7394048ccc2ff2f52c637992"><div class="ttname"><a href="namespaceneml2_1_1math.html#a07399cca7394048ccc2ff2f52c637992">neml2::math::macaulay</a></div><div class="ttdeci">Derived macaulay(const Derived &amp;a)</div><div class="ttdef"><b>Definition</b> TensorBase.h:398</div></div>
-<div class="ttc" id="anamespaceneml2_1_1math_html_a1a5e59ab29f8cef8128dda08465e359a"><div class="ttname"><a href="namespaceneml2_1_1math.html#a1a5e59ab29f8cef8128dda08465e359a">neml2::math::sinh</a></div><div class="ttdeci">Derived sinh(const Derived &amp;a)</div><div class="ttdef"><b>Definition</b> TensorBase.h:359</div></div>
-<div class="ttc" id="anamespaceneml2_1_1math_html_a260ff766c2a65d4675d42006d779e113"><div class="ttname"><a href="namespaceneml2_1_1math.html#a260ff766c2a65d4675d42006d779e113">neml2::math::diff</a></div><div class="ttdeci">Derived diff(const Derived &amp;a, Size n=1, Size dim=-1)</div><div class="ttdef"><b>Definition</b> TensorBase.h:438</div></div>
-<div class="ttc" id="anamespaceneml2_1_1math_html_a3660a3eac1e6d181fbdb872c2c2fe23f"><div class="ttname"><a href="namespaceneml2_1_1math.html#a3660a3eac1e6d181fbdb872c2c2fe23f">neml2::math::heaviside</a></div><div class="ttdeci">Derived heaviside(const Derived &amp;a)</div><div class="ttdef"><b>Definition</b> TensorBase.h:390</div></div>
-<div class="ttc" id="anamespaceneml2_1_1math_html_a3b40e677506403a96fe2d40c136a4970"><div class="ttname"><a href="namespaceneml2_1_1math.html#a3b40e677506403a96fe2d40c136a4970">neml2::math::tanh</a></div><div class="ttdeci">Derived tanh(const Derived &amp;a)</div><div class="ttdef"><b>Definition</b> TensorBase.h:367</div></div>
-<div class="ttc" id="anamespaceneml2_1_1math_html_a3bbd6379be65e293f17ef15390fe94a8"><div class="ttname"><a href="namespaceneml2_1_1math.html#a3bbd6379be65e293f17ef15390fe94a8">neml2::math::batch_diag_embed</a></div><div class="ttdeci">Derived batch_diag_embed(const Derived &amp;a, Size offset=0, Size d1=-2, Size d2=-1)</div><div class="ttdef"><b>Definition</b> TensorBase.h:446</div></div>
-<div class="ttc" id="anamespaceneml2_1_1math_html_a566c7ce01c3b175339411627d5cdfe5c"><div class="ttname"><a href="namespaceneml2_1_1math.html#a566c7ce01c3b175339411627d5cdfe5c">neml2::math::cosh</a></div><div class="ttdeci">Derived cosh(const Derived &amp;a)</div><div class="ttdef"><b>Definition</b> TensorBase.h:351</div></div>
-<div class="ttc" id="anamespaceneml2_1_1math_html_a76d6436121452c26405b3f98a827c4f3"><div class="ttname"><a href="namespaceneml2_1_1math.html#a76d6436121452c26405b3f98a827c4f3">neml2::math::where</a></div><div class="ttdeci">Derived where(const torch::Tensor &amp;condition, const Derived &amp;a, const Derived &amp;b)</div><div class="ttdef"><b>Definition</b> TensorBase.h:375</div></div>
-<div class="ttc" id="anamespaceneml2_1_1math_html_a81291d8077a1d283666386da802c3d9c"><div class="ttname"><a href="namespaceneml2_1_1math.html#a81291d8077a1d283666386da802c3d9c">neml2::math::log</a></div><div class="ttdeci">Derived log(const Derived &amp;a)</div><div class="ttdef"><b>Definition</b> TensorBase.h:456</div></div>
-<div class="ttc" id="anamespaceneml2_1_1math_html_abc681c094e1880e4f903e949d55031f5"><div class="ttname"><a href="namespaceneml2_1_1math.html#abc681c094e1880e4f903e949d55031f5">neml2::math::abs</a></div><div class="ttdeci">Derived abs(const Derived &amp;a)</div><div class="ttdef"><b>Definition</b> TensorBase.h:430</div></div>
-<div class="ttc" id="anamespaceneml2_1_1math_html_ac1d1752d4b643f61a4ca6a5030143035"><div class="ttname"><a href="namespaceneml2_1_1math.html#ac1d1752d4b643f61a4ca6a5030143035">neml2::math::dmacaulay</a></div><div class="ttdeci">Derived dmacaulay(const Derived &amp;a)</div><div class="ttdef"><b>Definition</b> TensorBase.h:406</div></div>
-<div class="ttc" id="anamespaceneml2_1_1math_html_ac201b57a29a6e74a6fa3e45c0263b2c3"><div class="ttname"><a href="namespaceneml2_1_1math.html#ac201b57a29a6e74a6fa3e45c0263b2c3">neml2::math::pow</a></div><div class="ttdeci">Derived pow(const Derived &amp;a, const Scalar &amp;n)</div><div class="ttdef"><b>Definition</b> Scalar.h:149</div></div>
-<div class="ttc" id="anamespaceneml2_1_1math_html_ac385085c905e89db6e73a7b259837294"><div class="ttname"><a href="namespaceneml2_1_1math.html#ac385085c905e89db6e73a7b259837294">neml2::math::exp</a></div><div class="ttdeci">Derived exp(const Derived &amp;a)</div><div class="ttdef"><b>Definition</b> TensorBase.h:422</div></div>
-<div class="ttc" id="anamespaceneml2_1_1math_html_adccc1f43da9f87f94ece3e73fb011015"><div class="ttname"><a href="namespaceneml2_1_1math.html#adccc1f43da9f87f94ece3e73fb011015">neml2::math::sign</a></div><div class="ttdeci">Derived sign(const Derived &amp;a)</div><div class="ttdef"><b>Definition</b> TensorBase.h:343</div></div>
-<div class="ttc" id="anamespaceneml2_1_1math_html_aed999c56c4bba9691d9f2736c80947e0"><div class="ttname"><a href="namespaceneml2_1_1math.html#aed999c56c4bba9691d9f2736c80947e0">neml2::math::sqrt</a></div><div class="ttdeci">Derived sqrt(const Derived &amp;a)</div><div class="ttdef"><b>Definition</b> TensorBase.h:414</div></div>
 <div class="ttc" id="anamespaceneml2_html"><div class="ttname"><a href="namespaceneml2.html">neml2</a></div><div class="ttdef"><b>Definition</b> CrossRef.cxx:30</div></div>
 <div class="ttc" id="anamespaceneml2_html_a000b8fc6a59261516d3c8b2203c0c964"><div class="ttname"><a href="namespaceneml2.html#a000b8fc6a59261516d3c8b2203c0c964">neml2::operator*</a></div><div class="ttdeci">Vec operator*(const Derived1 &amp;A, const Derived2 &amp;b)</div><div class="ttdoc">matrix-vector product</div><div class="ttdef"><b>Definition</b> R2Base.cxx:233</div></div>
 <div class="ttc" id="anamespaceneml2_html_a26af0953f831b5c56a2bb0f459ce90ac"><div class="ttname"><a href="namespaceneml2.html#a26af0953f831b5c56a2bb0f459ce90ac">neml2::operator-</a></div><div class="ttdeci">Derived operator-(const Derived &amp;a, const Scalar &amp;b)</div><div class="ttdef"><b>Definition</b> Scalar.h:79</div></div>

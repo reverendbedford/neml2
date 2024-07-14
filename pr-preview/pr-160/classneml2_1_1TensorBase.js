@@ -27,13 +27,11 @@ var classneml2_1_1TensorBase =
     [ "batch_reshape", "classneml2_1_1TensorBase.html#a80375c73368a64451a096a1f57698806", null ],
     [ "batch_size", "classneml2_1_1TensorBase.html#a5032d54173ea547b4746d0b5b35442d0", null ],
     [ "batch_sizes", "classneml2_1_1TensorBase.html#a6980c3dd58aff939091347ef0b0159f5", null ],
-    [ "batch_sum", "classneml2_1_1TensorBase.html#aafacd5fa0fef9a320068e61adb8ee277", null ],
     [ "batch_transpose", "classneml2_1_1TensorBase.html#a6b473a77dca5dd23bb2b9a0c60e10ede", null ],
     [ "batch_unsqueeze", "classneml2_1_1TensorBase.html#ab972dadef408e2d55b5dc566cfacf810", null ],
     [ "batched", "classneml2_1_1TensorBase.html#a4dd203ac9e5e8e20044fd8bb6e03a187", null ],
     [ "clone", "classneml2_1_1TensorBase.html#a0582371c8c40f8720988ef1906dcc378", null ],
     [ "detach", "classneml2_1_1TensorBase.html#a55c462dc8ad0f78b6bf92e98c9cb5932", null ],
-    [ "list_sum", "classneml2_1_1TensorBase.html#a49ab97e9311fbb57698f594dc6b389b7", null ],
     [ "list_unsqueeze", "classneml2_1_1TensorBase.html#ad58907686e8b8e8e4ec31125cdc919c0", null ],
     [ "operator-", "classneml2_1_1TensorBase.html#a63c61e19a8f60cdee48047d1157bb82e", null ],
     [ "to", "classneml2_1_1TensorBase.html#a89aacac3fcd85d316c3d04b8683bb770", null ]

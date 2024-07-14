@@ -1,7 +1,7 @@
 var searchData=
 [
   ['m_0',['M',['../classneml2_1_1crystallography_1_1CrystalGeometry.html#a535a6b43fbd97119ba65e2136045e867',1,'neml2::crystallography::CrystalGeometry']]],
-  ['macaulay_1',['macaulay',['../namespaceneml2_1_1math.html#a07399cca7394048ccc2ff2f52c637992',1,'neml2::math']]],
+  ['macaulay_1',['macaulay',['../namespaceneml2_1_1math.html#ae2eb9e6308296289f4655c1b586910a9',1,'neml2::math']]],
   ['machine_5fprecision_2',['machine_precision',['../namespaceneml2.html#a7ed9e5d4e37beced5aab31ecc7c9938c',1,'neml2']]],
   ['macroscale_3',['Plasticity (macroscale)',['../solid-mechanics.html#autotoc_md17',1,'']]],
   ['make_5fdiagnosis_4',['make_diagnosis',['../namespaceneml2.html#a7952e15d66084fae9041c63b375e7c13',1,'neml2']]],
@@ -26,9 +26,9 @@ var searchData=
   ['mixed_20stress_20strain_20control_23',['Mixed stress/strain control',['../solid-mechanics.html#autotoc_md27',1,'']]],
   ['mixedcontrolsetup_24',['MixedControlSetup',['../classneml2_1_1MixedControlSetup.html',1,'MixedControlSetup'],['../classneml2_1_1MixedControlSetup.html#ab20953605998f5cb4f77ac24128c5d2c',1,'neml2::MixedControlSetup::MixedControlSetup()'],['../syntax-models.html#mixedcontrolsetup',1,'MixedControlSetup']]],
   ['mode_25',['Inference Mode',['../cpp-backend.html#inference-mode',1,'']]],
-  ['model_26',['Model',['../custom-model.html',1,'Custom Model'],['../cpp-backend.html#autotoc_md35',1,'Evaluate the model'],['../classneml2_1_1Model.html',1,'Model']]],
+  ['model_26',['Model',['../custom-model.html',1,'Custom Model'],['../cpp-backend.html#autotoc_md35',1,'Evaluate the model'],['../classneml2_1_1Model.html',1,'Model'],['../classneml2_1_1Model.html#aec637141dc1379fd56d05cf1b7cb10ee',1,'neml2::Model::Model()']]],
   ['model_27',['model',['../classneml2_1_1TransientDriver.html#a13dfbdd8c00d5c134b09bf2ab3cfa1e5',1,'neml2::TransientDriver']]],
-  ['model_28',['Model',['../classneml2_1_1Model.html#aec637141dc1379fd56d05cf1b7cb10ee',1,'neml2::Model::Model()'],['../system-models.html',1,'Model']]],
+  ['model_28',['Model',['../system-models.html',1,'']]],
   ['model_20composition_29',['Model composition',['../system-models.html#model-composition',1,'']]],
   ['model_20definition_30',['Model definition',['../system-models.html#model-definition',1,'']]],
   ['model_20description_31',['Model description',['../custom-model.html#custom-model-model-description',1,'']]],

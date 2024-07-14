@@ -245,7 +245,7 @@ Viscoplasticity</h2>
 <p>The Perzyna model is implemented by the object <code>PerzynaPlasticFlowRate</code>. A complete example input file for viscoplasticity is shown below, and the composition and possible modifications are explained in the following subsections.</p>
 <div class="fragment"><div class="line">[Models]</div>
 <div class="line">  [elastic_strain]</div>
-<div class="line">    type = SR2SumModel</div>
+<div class="line">    type = SR2LinearCombination</div>
 <div class="line">    from_var = &#39;forces/E state/internal/Ep&#39;</div>
 <div class="line">    to_var = &#39;state/internal/Ee&#39;</div>
 <div class="line">    coefficients = &#39;1 -1&#39;</div>
@@ -387,7 +387,7 @@ Kinematic hardening</h2>
 <div class="line">    hardening_modulus = 1000</div>
 <div class="line">  []</div>
 <div class="line">  [overstress]</div>
-<div class="line">    type = SR2SumModel</div>
+<div class="line">    type = SR2LinearCombination</div>
 <div class="line">    from_var = <span class="stringliteral">&#39;state/internal/S state/internal/X&#39;</span></div>
 <div class="line">    to_var = <span class="stringliteral">&#39;state/internal/O&#39;</span></div>
 <div class="line">    coefficients = <span class="stringliteral">&#39;1 -1&#39;</span></div>
@@ -408,7 +408,7 @@ Back stress</h2>
 <p>An alternative way of introducing hardening is through back stresses. Instead of modeling the accumulation of kinematic plastic strain, back stress models directly describe the evolution of back stress. An example input file defining a yield function with \( J_2 \) flow and two back stresses is shown below.</p>
 <div class="fragment"><div class="line">[Models]</div>
 <div class="line">  [overstress]</div>
-<div class="line">    type = SR2SumModel</div>
+<div class="line">    type = SR2LinearCombination</div>
 <div class="line">    from_var = <span class="stringliteral">&#39;state/internal/S state/internal/X1 state/internal/X2&#39;</span></div>
 <div class="line">    to_var = <span class="stringliteral">&#39;state/internal/O&#39;</span></div>
 <div class="line">    coefficients = <span class="stringliteral">&#39;1 -1 -1&#39;</span></div>
@@ -438,7 +438,7 @@ Mixed hardening</h2>
 <div class="line">    back_stress = <span class="stringliteral">&#39;state/internal/X0&#39;</span></div>
 <div class="line">  []</div>
 <div class="line">  [overstress]</div>
-<div class="line">    type = SR2SumModel</div>
+<div class="line">    type = SR2LinearCombination</div>
 <div class="line">    from_var = <span class="stringliteral">&#39;state/internal/S state/internal/X0 state/internal/X1 state/internal/X2&#39;</span></div>
 <div class="line">    to_var = <span class="stringliteral">&#39;state/internal/O&#39;</span></div>
 <div class="line">    coefficients = <span class="stringliteral">&#39;1 -1 -1 -1&#39;</span></div>

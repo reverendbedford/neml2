@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['tanh_0',['tanh',['../namespaceneml2_1_1math.html#a3b40e677506403a96fe2d40c136a4970',1,'neml2::math']]],
+  ['tanh_0',['tanh',['../namespaceneml2_1_1math.html#a7cc61383daf1b806e7a02b92d01e329e',1,'neml2::math']]],
   ['tensor_1',['tensor',['../classneml2_1_1LabeledTensor.html#a2b0af669577917de4340353ebb6a8a70',1,'neml2::LabeledTensor::tensor() const'],['../classneml2_1_1LabeledTensor.html#adaad35fd9cb3c63b5b1d33e4d496c3ba',1,'neml2::LabeledTensor::tensor()'],['../classneml2_1_1VariableBase.html#ab732915201a716a8117f031d165a8da8',1,'neml2::VariableBase::tensor()'],['../classneml2_1_1Variable.html#aa373fe769310476a747ff149d47f7529',1,'neml2::Variable::tensor()']]],
   ['tensorbase_2',['TensorBase',['../classneml2_1_1TensorBase.html#a4b7be101bdff3388fd0e4bc34fdd26cf',1,'neml2::TensorBase::TensorBase()=default'],['../classneml2_1_1TensorBase.html#a5049014e091e5999adc6f475cc3ce5d8',1,'neml2::TensorBase::TensorBase(const torch::Tensor &amp;tensor, Size batch_dim)'],['../classneml2_1_1TensorBase.html#ac3507069494875b8af8ee411b905bfa1',1,'neml2::TensorBase::TensorBase(const Derived &amp;tensor)'],['../classneml2_1_1TensorBase.html#a696df901d2bef3742fc8c8837f3cf78c',1,'neml2::TensorBase::TensorBase(Real)=delete']]],
   ['tensorvalue_3',['TensorValue',['../classneml2_1_1TensorValue.html#a4ef0573c0a51b62383ba776b32a1fccd',1,'neml2::TensorValue::TensorValue()=default'],['../classneml2_1_1TensorValue.html#a5236c420d38a800072c03b34a60eb82e',1,'neml2::TensorValue::TensorValue(const T &amp;value)']]],

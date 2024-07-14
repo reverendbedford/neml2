@@ -21,6 +21,7 @@ var classneml2_1_1Model =
     [ "inference_mode", "classneml2_1_1Model.html#aaf2ff21a25f82da2cafb6970e5d41a96", null ],
     [ "input_requires_grad_", "classneml2_1_1Model.html#a154163b56ffff4b922c3e6c9fda31bc9", null ],
     [ "is_nonlinear_system", "classneml2_1_1Model.html#a9952cc25d72ad689c212a71290a62eb6", null ],
+    [ "nonlinear_system_derivatives", "classneml2_1_1Model.html#a87d2023e2c814ee7ce722808c9912a45", null ],
     [ "options", "classneml2_1_1Model.html#a761d77eb7c81c3e93b34bfe6caf4b132", null ],
     [ "preflight", "classneml2_1_1Model.html#ad878f13ac7d38f86f8e142e35419e572", null ],
     [ "prepare", "classneml2_1_1Model.html#a1825b40ca3bc3a1ba67fdb58fac5015c", null ],

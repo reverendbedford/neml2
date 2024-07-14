@@ -188,9 +188,9 @@ $(function(){initNavTree('syntax-models.html',''); initResizable(); });
 <li class="level2"><a href="#sr2forcerate">SR2ForceRate</a></li>
 <li class="level2"><a href="#sr2forwardeulertimeintegration">SR2ForwardEulerTimeIntegration</a></li>
 <li class="level2"><a href="#sr2invariant">SR2Invariant</a></li>
+<li class="level2"><a href="#sr2linearcombination">SR2LinearCombination</a></li>
 <li class="level2"><a href="#sr2linearinterpolation">SR2LinearInterpolation</a></li>
 <li class="level2"><a href="#sr2staterate">SR2StateRate</a></li>
-<li class="level2"><a href="#sr2summodel">SR2SumModel</a></li>
 <li class="level2"><a href="#ssfr5constantparameter">SSFR5ConstantParameter</a></li>
 <li class="level2"><a href="#ssfr5linearinterpolation">SSFR5LinearInterpolation</a></li>
 <li class="level2"><a href="#ssr4constantparameter">SSR4ConstantParameter</a></li>
@@ -201,9 +201,9 @@ $(function(){initNavTree('syntax-models.html',''); initResizable(); });
 <li class="level2"><a href="#scalarconstantparameter">ScalarConstantParameter</a></li>
 <li class="level2"><a href="#scalarforcerate">ScalarForceRate</a></li>
 <li class="level2"><a href="#scalarforwardeulertimeintegration">ScalarForwardEulerTimeIntegration</a></li>
+<li class="level2"><a href="#scalarlinearcombination">ScalarLinearCombination</a></li>
 <li class="level2"><a href="#scalarlinearinterpolation">ScalarLinearInterpolation</a></li>
 <li class="level2"><a href="#scalarstaterate">ScalarStateRate</a></li>
-<li class="level2"><a href="#scalarsummodel">ScalarSumModel</a></li>
 <li class="level2"><a href="#singleslipstrengthmap">SingleSlipStrengthMap</a></li>
 <li class="level2"><a href="#sumsliprates">SumSlipRates</a></li>
 <li class="level2"><a href="#thermaleigenstrain">ThermalEigenstrain</a></li>
@@ -2421,6 +2421,34 @@ SR2Invariant</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1SR2Invariant.html">link</a></p>
+<h2><a class="anchor" id="sr2linearcombination"></a>
+SR2LinearCombination</h2>
+<p>Calculate linear combination of multiple SR2 tensors as \( u = c_i v_i \) (Einstein summation assumed), where \( c_i \) are the coefficients, and \( v_i \) are the variables to be summed. </p><details >
+<summary >
+<code>coefficients</code> 🇵 Weights associated with each variable</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: vector&lt;Scalar&gt;</li>
+<li><u>Default</u>: 1 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>from_var</code> 🇮 SR2 tensors to be summed</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: vector&lt;VariableName&gt; </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>to_var</code> 🇴 The sum</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: VariableName </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1LinearCombination.html">link</a></p>
 <h2><a class="anchor" id="sr2linearinterpolation"></a>
 SR2LinearInterpolation</h2>
 <p>Interpolate a SR2 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
@@ -2468,33 +2496,6 @@ SR2StateRate</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1StateRate.html">link</a></p>
-<h2><a class="anchor" id="sr2summodel"></a>
-SR2SumModel</h2>
-<p>Calculate linear combination of multiple SR2 tensors as \( u = c_i v_i \) (Einstein summation assumed), where \( c_i \) are the coefficients, and \( v_i \) are the variables to be summed. </p><details >
-<summary >
-<code>coefficients</code> 🇵 Weights associated with each variable</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: vector&lt;Scalar&gt; </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>from_var</code> 🇮 SR2 tensors to be summed</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: vector&lt;VariableName&gt; </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>to_var</code> 🇴 The sum</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: VariableName </li>
-</ul>
-</details>
-<p>Detailed documentation <a class="el" href="classneml2_1_1SumModel.html">link</a></p>
 <h2><a class="anchor" id="ssfr5constantparameter"></a>
 SSFR5ConstantParameter</h2>
 <p>A parameter that is just a constant value, generally used to refer to a parameter in more than one downstream object. </p><details >
@@ -2715,6 +2716,34 @@ ScalarForwardEulerTimeIntegration</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ForwardEulerTimeIntegration.html">link</a></p>
+<h2><a class="anchor" id="scalarlinearcombination"></a>
+ScalarLinearCombination</h2>
+<p>Calculate linear combination of multiple Scalar tensors as \( u = c_i v_i \) (Einstein summation assumed), where \( c_i \) are the coefficients, and \( v_i \) are the variables to be summed. </p><details >
+<summary >
+<code>coefficients</code> 🇵 Weights associated with each variable</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: vector&lt;Scalar&gt;</li>
+<li><u>Default</u>: 1 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>from_var</code> 🇮 Scalar tensors to be summed</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: vector&lt;VariableName&gt; </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>to_var</code> 🇴 The sum</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: VariableName </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1LinearCombination.html">link</a></p>
 <h2><a class="anchor" id="scalarlinearinterpolation"></a>
 ScalarLinearInterpolation</h2>
 <p>Interpolate a Scalar as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
@@ -2762,33 +2791,6 @@ ScalarStateRate</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1StateRate.html">link</a></p>
-<h2><a class="anchor" id="scalarsummodel"></a>
-ScalarSumModel</h2>
-<p>Calculate linear combination of multiple Scalar tensors as \( u = c_i v_i \) (Einstein summation assumed), where \( c_i \) are the coefficients, and \( v_i \) are the variables to be summed. </p><details >
-<summary >
-<code>coefficients</code> 🇵 Weights associated with each variable</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: vector&lt;Scalar&gt; </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>from_var</code> 🇮 Scalar tensors to be summed</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: vector&lt;VariableName&gt; </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>to_var</code> 🇴 The sum</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: VariableName </li>
-</ul>
-</details>
-<p>Detailed documentation <a class="el" href="classneml2_1_1SumModel.html">link</a></p>
 <h2><a class="anchor" id="singleslipstrengthmap"></a>
 SingleSlipStrengthMap</h2>
 <p>Calculates the slip system strength for all slip systems as \( \hat{\tau}_i = \bar{\tau} + \tau_0 \) where \( \hat{\tau}_i \) is the strength for slip system i, \( \bar{\tau} \) is an evolving slip system strength (one value of all systems), defined by another object, and \( \tau_0 \) is a constant strength. </p><details >
