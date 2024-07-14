@@ -35,10 +35,8 @@ If no PyTorch installation can be detected and `LIBTORCH_DIR` is not set at conf
 - [argparse](https://github.com/p-ranav/argparse) for command-line argument parsing.
 - [pybind11](https://github.com/pybind/pybind11) for building Python bindings.
 - Python packages
-  - pytest
-  - pandas
-  - matplotlib
-  - PyYAML
+  - [pytest](https://docs.pytest.org/en/stable/index.html) for testing Pythin bindings
+  - [PyYAML](https://pyyaml.org/) for extracting syntax documentation
 
 ## Build and install
 
