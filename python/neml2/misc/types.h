@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include <torch/extension.h>
+#include <torch/python.h>
 #include <torch/csrc/utils/tensor_dtypes.h>
 #include <torch/csrc/DynamicTypes.h>
 

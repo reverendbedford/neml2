@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include <torch/extension.h>
+#include <torch/python.h>
 #include <torch/csrc/autograd/python_variable_indexing.h>
 
 namespace pybind11
