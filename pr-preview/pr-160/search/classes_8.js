@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['identitybatchtensor_0',['IdentityBatchTensor',['../classneml2_1_1IdentityBatchTensor.html',1,'neml2']]],
+  ['identitytensor_0',['IdentityTensor',['../classneml2_1_1IdentityTensor.html',1,'neml2']]],
   ['implicitupdate_1',['ImplicitUpdate',['../classneml2_1_1ImplicitUpdate.html',1,'neml2']]],
   ['interopthread_2',['InterOpThread',['../structneml2_1_1InterOpThread.html',1,'neml2']]],
   ['interpolation_3',['Interpolation',['../classneml2_1_1Interpolation.html',1,'neml2']]],

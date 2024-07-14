@@ -1,11 +1,11 @@
 var searchData=
 [
   ['variable_0',['Variable',['../classneml2_1_1Variable.html',1,'neml2']]],
-  ['variable_3c_20neml2_3a_3abatchtensor_20_3e_1',['Variable&lt; neml2::BatchTensor &gt;',['../classneml2_1_1Variable.html',1,'neml2']]],
-  ['variable_3c_20neml2_3a_3ar2_20_3e_2',['Variable&lt; neml2::R2 &gt;',['../classneml2_1_1Variable.html',1,'neml2']]],
-  ['variable_3c_20neml2_3a_3arot_20_3e_3',['Variable&lt; neml2::Rot &gt;',['../classneml2_1_1Variable.html',1,'neml2']]],
-  ['variable_3c_20neml2_3a_3ascalar_20_3e_4',['Variable&lt; neml2::Scalar &gt;',['../classneml2_1_1Variable.html',1,'neml2']]],
-  ['variable_3c_20neml2_3a_3asr2_20_3e_5',['Variable&lt; neml2::SR2 &gt;',['../classneml2_1_1Variable.html',1,'neml2']]],
+  ['variable_3c_20neml2_3a_3ar2_20_3e_1',['Variable&lt; neml2::R2 &gt;',['../classneml2_1_1Variable.html',1,'neml2']]],
+  ['variable_3c_20neml2_3a_3arot_20_3e_2',['Variable&lt; neml2::Rot &gt;',['../classneml2_1_1Variable.html',1,'neml2']]],
+  ['variable_3c_20neml2_3a_3ascalar_20_3e_3',['Variable&lt; neml2::Scalar &gt;',['../classneml2_1_1Variable.html',1,'neml2']]],
+  ['variable_3c_20neml2_3a_3asr2_20_3e_4',['Variable&lt; neml2::SR2 &gt;',['../classneml2_1_1Variable.html',1,'neml2']]],
+  ['variable_3c_20neml2_3a_3atensor_20_3e_5',['Variable&lt; neml2::Tensor &gt;',['../classneml2_1_1Variable.html',1,'neml2']]],
   ['variable_3c_20neml2_3a_3avec_20_3e_6',['Variable&lt; neml2::Vec &gt;',['../classneml2_1_1Variable.html',1,'neml2']]],
   ['variable_3c_20neml2_3a_3awr2_20_3e_7',['Variable&lt; neml2::WR2 &gt;',['../classneml2_1_1Variable.html',1,'neml2']]],
   ['variable_3c_20scalar_20_3e_8',['Variable&lt; Scalar &gt;',['../classneml2_1_1Variable.html',1,'neml2']]],

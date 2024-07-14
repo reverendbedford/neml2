@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['jacobian_0',['Jacobian',['../classneml2_1_1NonlinearSystem.html#ae045412905020bf2ad042a0977c7914c',1,'neml2::NonlinearSystem::Jacobian(const BatchTensor &amp;x)'],['../classneml2_1_1NonlinearSystem.html#accde6e3f3ac0e13f42520c08755400f7',1,'neml2::NonlinearSystem::Jacobian()']]],
-  ['jacobian_5fview_1',['Jacobian_view',['../classneml2_1_1NonlinearSystem.html#a96e1ce2727ab9d35e66fadaa8aff9ac1',1,'neml2::NonlinearSystem']]],
-  ['jacrev_2',['jacrev',['../namespaceneml2_1_1math.html#af6e86f2331b876b48615b6c3f9de1f33',1,'neml2::math']]]
+  ['jacobian_0',['Jacobian',['../classneml2_1_1NonlinearSystem.html#a564c60f3e6410451e9e4126fcddf7d49',1,'neml2::NonlinearSystem::Jacobian(const Tensor &amp;x)'],['../classneml2_1_1NonlinearSystem.html#accde6e3f3ac0e13f42520c08755400f7',1,'neml2::NonlinearSystem::Jacobian()']]],
+  ['jacobian_5fview_1',['Jacobian_view',['../classneml2_1_1NonlinearSystem.html#a6704c709a5f396ba06997cea1fb84309',1,'neml2::NonlinearSystem']]],
+  ['jacrev_2',['jacrev',['../namespaceneml2_1_1math.html#afb39f4483193c50e4e2b631a23e73187',1,'neml2::math']]]
 ];

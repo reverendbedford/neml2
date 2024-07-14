@@ -1,8 +1,8 @@
 var searchData=
 [
   ['olevskysinteringstress_0',['OlevskySinteringStress',['../classneml2_1_1OlevskySinteringStress.html',1,'neml2']]],
-  ['onesbatchtensor_1',['OnesBatchTensor',['../classneml2_1_1OnesBatchTensor.html',1,'neml2']]],
-  ['onesfixeddimtensor_2',['OnesFixedDimTensor',['../classneml2_1_1OnesFixedDimTensor.html',1,'neml2']]],
+  ['oneslogicaltensor_1',['OnesLogicalTensor',['../classneml2_1_1OnesLogicalTensor.html',1,'neml2']]],
+  ['onestensor_2',['OnesTensor',['../classneml2_1_1OnesTensor.html',1,'neml2']]],
   ['option_3',['Option',['../classneml2_1_1OptionSet_1_1Option.html',1,'neml2::OptionSet']]],
   ['optionbase_4',['OptionBase',['../classneml2_1_1OptionSet_1_1OptionBase.html',1,'neml2::OptionSet']]],
   ['optioncollection_5',['OptionCollection',['../classneml2_1_1OptionCollection.html',1,'neml2']]],

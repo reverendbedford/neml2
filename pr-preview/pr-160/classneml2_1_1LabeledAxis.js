@@ -28,7 +28,6 @@ var classneml2_1_1LabeledAxis =
     [ "subaxes", "classneml2_1_1LabeledAxis.html#a97b9ffc40ac08969eb969ecb6fa28459", null ],
     [ "subaxis", "classneml2_1_1LabeledAxis.html#a9b970d8d7d4c7169525ea8f3398772d4", null ],
     [ "subaxis", "classneml2_1_1LabeledAxis.html#a41947bf637aabb9317890e40c8db1125", null ],
-    [ "to_dot", "classneml2_1_1LabeledAxis.html#a250fa96604d5bd3bc869db6185010c62", null ],
     [ "variable_accessors", "classneml2_1_1LabeledAxis.html#a23648f8d3c74cf036afe4f4768ae9474", null ],
     [ "variables", "classneml2_1_1LabeledAxis.html#a995e6a25bea15f9edc653f2f15c99c08", null ],
     [ "operator<<", "classneml2_1_1LabeledAxis.html#ab702b420398239f81db6ab1c1f9d2dcb", null ]

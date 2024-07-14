@@ -1,0 +1,99 @@
+<map id="TensorBase&lt; Derived &gt;" name="TensorBase&lt; Derived &gt;">
+<area shape="rect" id="Node000001" title="NEML2&#39;s enhanced tensor type." alt="" coords="117,604,295,629"/>
+<area shape="rect" id="Node000003" href="$classneml2_1_1LogicalTensor.html" title=" " alt="" coords="343,5,572,31"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="207,590,221,472,247,307,265,222,287,146,312,83,326,58,341,40,356,29,359,33,345,44,330,62,317,85,292,147,271,224,253,308,226,473,213,590"/>
+<area shape="rect" id="Node000006" href="$classneml2_1_1LogicalTensor.html" title=" " alt="" coords="343,55,571,80"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="208,590,223,482,251,332,269,256,290,186,314,129,341,91,359,78,362,82,345,95,319,132,295,188,274,257,256,333,228,483,213,591"/>
+<area shape="rect" id="Node000008" href="$classneml2_1_1LogicalTensor.html" title=" " alt="" coords="384,105,531,145"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="204,590,208,507,214,451,225,390,242,327,266,264,299,206,341,155,360,140,383,131,385,136,363,145,345,159,303,209,271,267,247,328,231,391,220,452,213,507,209,591"/>
+<area shape="rect" id="Node000009" href="$classneml2_1_1LogicalTensor.html" title=" " alt="" coords="367,169,547,209"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="206,590,213,517,233,417,251,364,274,311,304,262,341,219,366,202,369,207,344,223,308,265,278,313,256,365,239,419,218,518,211,591"/>
+<area shape="rect" id="Node000011" href="$classneml2_1_1LogicalTensor.html" title=" " alt="" coords="384,233,531,273"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="208,590,219,528,242,445,259,401,281,358,308,318,341,283,361,269,383,260,385,265,363,274,344,287,312,321,286,361,264,403,247,447,224,529,213,591"/>
+<area shape="rect" id="Node000013" href="$classneml2_1_1LogicalTensor.html" title=" " alt="" coords="384,297,531,337"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="210,590,225,538,251,473,289,405,313,374,341,347,361,334,383,325,385,330,363,339,344,351,317,377,293,408,256,475,230,540,216,591"/>
+<area shape="rect" id="Node000015" href="$classneml2_1_1LogicalTensor.html" title=" " alt="" coords="384,361,531,401"/>
+<area shape="poly" id="edge14_Node000001_Node000015" title=" " alt="" coords="215,590,233,550,260,502,296,452,341,410,382,390,385,395,344,415,300,456,265,505,238,553,220,592"/>
+<area shape="rect" id="Node000017" href="$classneml2_1_1LogicalTensor.html" title=" " alt="" coords="368,425,547,451"/>
+<area shape="poly" id="edge16_Node000001_Node000017" title=" " alt="" coords="220,591,268,525,302,490,341,461,370,448,372,453,344,466,305,494,272,529,224,594"/>
+<area shape="rect" id="Node000018" href="$classneml2_1_1LogicalTensor.html" title=" " alt="" coords="372,475,543,515"/>
+<area shape="poly" id="edge17_Node000001_Node000018" title=" " alt="" coords="232,594,281,559,342,525,372,513,374,518,344,530,284,563,235,598"/>
+<area shape="rect" id="Node000020" href="$classneml2_1_1LogicalTensor.html" title=" " alt="" coords="376,539,539,579"/>
+<area shape="poly" id="edge19_Node000001_Node000020" title=" " alt="" coords="275,598,375,575,377,580,276,603"/>
+<area shape="rect" id="Node000022" href="$classneml2_1_1LogicalTensor.html" title=" " alt="" coords="367,604,548,629"/>
+<area shape="poly" id="edge21_Node000001_Node000022" title=" " alt="" coords="309,614,367,614,367,619,309,619"/>
+<area shape="rect" id="Node000025" href="$classneml2_1_1LogicalTensor.html" title=" " alt="" coords="372,654,543,694"/>
+<area shape="poly" id="edge24_Node000001_Node000025" title=" " alt="" coords="276,630,372,652,371,657,275,635"/>
+<area shape="rect" id="Node000027" href="$classneml2_1_1LogicalTensor.html" title=" " alt="" coords="376,718,539,758"/>
+<area shape="poly" id="edge26_Node000001_Node000027" title=" " alt="" coords="235,635,284,670,344,704,377,716,375,721,342,708,281,675,232,640"/>
+<area shape="rect" id="Node000029" href="$classneml2_1_1LogicalTensor.html" title=" " alt="" coords="374,782,541,822"/>
+<area shape="poly" id="edge28_Node000001_Node000029" title=" " alt="" coords="225,640,273,704,306,738,344,768,375,782,373,787,341,772,303,742,269,707,220,643"/>
+<area shape="rect" id="Node000031" href="$classneml2_1_1LogicalTensor.html" title=" " alt="" coords="367,847,547,872"/>
+<area shape="poly" id="edge30_Node000001_Node000031" title=" " alt="" coords="218,642,235,684,262,736,298,788,320,812,344,832,368,844,366,849,341,836,316,816,294,792,257,739,231,686,213,644"/>
+<area shape="rect" id="Node000033" href="$classneml2_1_1LogicalTensor.html" title=" " alt="" coords="368,896,547,921"/>
+<area shape="poly" id="edge32_Node000001_Node000033" title=" " alt="" coords="215,642,229,694,254,760,292,827,316,857,344,882,369,896,366,901,341,887,312,860,288,830,249,762,224,696,210,644"/>
+<area shape="rect" id="Node000034" href="$classneml2_1_1LogicalTensor.html" title=" " alt="" coords="354,945,561,971"/>
+<area shape="poly" id="edge33_Node000001_Node000034" title=" " alt="" coords="213,642,224,703,247,782,264,823,286,863,313,900,344,932,362,943,359,947,341,936,308,904,282,866,260,825,242,784,219,704,208,643"/>
+<area shape="rect" id="Node000036" href="$classneml2_1_1LogicalTensor.html" title=" " alt="" coords="364,995,551,1020"/>
+<area shape="poly" id="edge35_Node000001_Node000036" title=" " alt="" coords="211,643,220,712,241,804,258,853,280,900,309,944,344,981,365,994,362,999,341,985,305,947,276,903,253,855,236,805,214,713,206,644"/>
+<area shape="rect" id="Node000037" href="$classneml2_1_1LogicalTensor.html" title=" " alt="" coords="374,1045,541,1085"/>
+<area shape="poly" id="edge36_Node000001_Node000037" title=" " alt="" coords="210,643,217,719,236,823,253,879,276,934,306,986,344,1031,375,1050,373,1054,341,1035,302,989,271,937,248,881,231,825,211,719,205,643"/>
+<area shape="rect" id="Node000039" href="$classneml2_1_1LogicalTensor.html" title=" " alt="" coords="371,1109,543,1149"/>
+<area shape="poly" id="edge38_Node000001_Node000039" title=" " alt="" coords="209,643,212,729,217,787,228,851,245,916,269,981,302,1042,344,1095,372,1113,369,1117,341,1099,297,1045,264,983,240,918,223,852,212,788,206,730,204,643"/>
+<area shape="rect" id="Node000041" href="$classneml2_1_1LogicalTensor.html" title="LogicalTensor inherits from TensorBase and additionally templates on the base shape." alt="" coords="354,1207,561,1232"/>
+<area shape="poly" id="edge40_Node000001_Node000041" title=" " alt="" coords="209,643,212,736,218,801,229,872,245,947,269,1022,302,1094,345,1159,359,1174,376,1186,413,1204,411,1209,374,1191,356,1178,341,1162,297,1096,264,1024,240,948,223,873,213,801,207,737,204,643"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,604,69,629"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="83,614,117,614,117,619,83,619"/>
+<area shape="rect" id="Node000004" href="$classneml2_1_1MillerIndex.html" title="Represention of a crystal direction or plane a Miller Index." alt="" coords="652,5,747,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="586,15,652,15,652,21,586,21"/>
+<area shape="rect" id="Node000005" href="$classneml2_1_1crystallography_1_1FillMillerIndex.html" title="Create a single&#45;batched &quot;list&quot; of Miller indices." alt="" coords="827,5,941,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="761,15,827,15,827,21,761,21"/>
+<area shape="rect" id="Node000007" href="$classneml2_1_1Quaternion.html" title="A batched quaternion." alt="" coords="652,55,747,80"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="586,65,652,65,652,70,586,70"/>
+<area shape="rect" id="Node000010" href="$classneml2_1_1R2Base.html" title="The (logical) full second order tensor." alt="" coords="623,176,775,201"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="561,186,623,186,623,191,561,191"/>
+<area shape="rect" id="Node000012" href="$classneml2_1_1R3.html" title="The (logical) full third order tensor." alt="" coords="680,240,719,265"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="545,250,680,250,680,255,545,255"/>
+<area shape="rect" id="Node000014" href="$classneml2_1_1R4.html" title="The (logical) full fourth order tensor." alt="" coords="680,304,719,329"/>
+<area shape="poly" id="edge13_Node000013_Node000014" title=" " alt="" coords="545,314,680,314,680,319,545,319"/>
+<area shape="rect" id="Node000016" href="$classneml2_1_1R5.html" title="The (logical) full fifth order tensor." alt="" coords="680,368,719,393"/>
+<area shape="poly" id="edge15_Node000015_Node000016" title=" " alt="" coords="545,378,680,378,680,383,545,383"/>
+<area shape="rect" id="Node000019" href="$classneml2_1_1SFFR4.html" title="The logical fourth order tensor with minor symmetry in the 1st and 2nd dimensions." alt="" coords="668,483,731,508"/>
+<area shape="poly" id="edge18_Node000018_Node000019" title=" " alt="" coords="556,493,668,493,668,498,556,498"/>
+<area shape="rect" id="Node000021" href="$classneml2_1_1SFR3.html" title="The logical third order tensor with symmetry in the first two dimensions." alt="" coords="672,547,727,572"/>
+<area shape="poly" id="edge20_Node000020_Node000021" title=" " alt="" coords="553,557,672,557,672,562,553,562"/>
+<area shape="rect" id="Node000023" href="$classneml2_1_1SR2.html" title="The (logical) symmetric second order tensor." alt="" coords="676,604,723,629"/>
+<area shape="poly" id="edge22_Node000022_Node000023" title=" " alt="" coords="562,614,676,614,676,619,562,619"/>
+<area shape="rect" id="Node000024" href="$classneml2_1_1FillSR2.html" title="Create a filled SR2 from the input file." alt="" coords="851,604,917,629"/>
+<area shape="poly" id="edge23_Node000023_Node000024" title=" " alt="" coords="737,614,850,614,850,619,737,619"/>
+<area shape="rect" id="Node000026" href="$classneml2_1_1SSFR5.html" title="The logical fifth order tensor with minor symmetry in the 1st and 2nd dimensions as well as in the 3r..." alt="" coords="668,661,731,687"/>
+<area shape="poly" id="edge25_Node000025_Node000026" title=" " alt="" coords="556,671,668,671,668,677,556,677"/>
+<area shape="rect" id="Node000028" href="$classneml2_1_1SSR4.html" title="The (logical) symmetric fourth order tensor, with symmetry in the first two dimensionss as well as in..." alt="" coords="672,725,727,751"/>
+<area shape="poly" id="edge27_Node000027_Node000028" title=" " alt="" coords="553,735,672,735,672,741,553,741"/>
+<area shape="rect" id="Node000030" href="$classneml2_1_1SWR4.html" title="The (logical) symmetric fourth order tensor, with symmetry in the first two dimensionss and skew&#45;symm..." alt="" coords="669,789,729,815"/>
+<area shape="poly" id="edge29_Node000029_Node000030" title=" " alt="" coords="554,799,669,799,669,805,554,805"/>
+<area shape="rect" id="Node000032" href="$classneml2_1_1Scalar.html" title="The (logical) scalar." alt="" coords="668,847,731,872"/>
+<area shape="poly" id="edge31_Node000031_Node000032" title=" " alt="" coords="561,857,668,857,668,862,561,862"/>
+<area shape="rect" id="Node000035" href="$classneml2_1_1VecBase.html" title="Base class for the (logical) vector." alt="" coords="620,945,779,971"/>
+<area shape="poly" id="edge34_Node000034_Node000035" title=" " alt="" coords="574,955,620,955,620,961,574,961"/>
+<area shape="rect" id="Node000038" href="$classneml2_1_1WSR4.html" title="The (logical) symmetric fourth order tensor, with skew symmetry in the first two dimensionss and symm..." alt="" coords="669,1052,729,1077"/>
+<area shape="poly" id="edge37_Node000037_Node000038" title=" " alt="" coords="554,1062,669,1062,669,1067,554,1067"/>
+<area shape="rect" id="Node000040" href="$classneml2_1_1WWR4.html" title="The (logical) symmetric fourth order tensor, with skew symmetry in the first two dimensions and last ..." alt="" coords="667,1108,732,1133"/>
+<area shape="poly" id="edge39_Node000039_Node000040" title=" " alt="" coords="557,1123,667,1119,667,1124,557,1128"/>
+<area shape="rect" id="Node000042" href="$classneml2_1_1R2Base.html" title=" " alt="" coords="640,1157,759,1183"/>
+<area shape="poly" id="edge41_Node000041_Node000042" title=" " alt="" coords="533,1201,639,1179,640,1185,534,1206"/>
+<area shape="rect" id="Node000046" href="$classneml2_1_1VecBase.html" title=" " alt="" coords="635,1207,764,1232"/>
+<area shape="poly" id="edge43_Node000041_Node000046" title=" " alt="" coords="574,1217,635,1217,635,1222,574,1222"/>
+<area shape="rect" id="Node000050" href="$classneml2_1_1VecBase.html" title=" " alt="" coords="634,1256,765,1281"/>
+<area shape="poly" id="edge45_Node000041_Node000050" title=" " alt="" coords="534,1232,637,1253,636,1259,533,1237"/>
+<area shape="rect" id="Node000052" href="$classneml2_1_1VecBase.html" title=" " alt="" coords="631,1305,768,1331"/>
+<area shape="poly" id="edge47_Node000041_Node000052" title=" " alt="" coords="496,1236,621,1292,654,1303,652,1308,619,1296,494,1240"/>
+<area shape="rect" id="Node000043" href="$classneml2_1_1R2.html" title="A basic R2." alt="" coords="865,1157,903,1183"/>
+<area shape="poly" id="edge42_Node000042_Node000043" title=" " alt="" coords="772,1167,865,1167,865,1173,772,1173"/>
+<area shape="rect" id="Node000047" href="$classneml2_1_1Rot.html" title="Rotation stored as modified Rodrigues parameters." alt="" coords="862,1207,906,1232"/>
+<area shape="poly" id="edge44_Node000046_Node000047" title=" " alt="" coords="778,1217,862,1217,862,1222,778,1222"/>
+<area shape="rect" id="Node000051" href="$classneml2_1_1Vec.html" title="The (logical) vector." alt="" coords="861,1256,907,1281"/>
+<area shape="poly" id="edge46_Node000050_Node000051" title=" " alt="" coords="778,1266,861,1266,861,1271,778,1271"/>
+<area shape="rect" id="Node000053" href="$classneml2_1_1WR2.html" title="A skew rank 2, represented as an axial vector." alt="" coords="858,1305,910,1331"/>
+<area shape="poly" id="edge48_Node000052_Node000053" title=" " alt="" coords="782,1315,858,1315,858,1321,782,1321"/>
+</map>

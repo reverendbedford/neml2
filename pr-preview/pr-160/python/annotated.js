@@ -10,9 +10,6 @@ var annotated =
       [ "Model", "classmodels_1_1Model.html", "classmodels_1_1Model" ]
     ] ],
     [ "tensors", "namespacetensors.html", [
-      [ "BatchTensor", "classtensors_1_1BatchTensor.html", "classtensors_1_1BatchTensor" ],
-      [ "BatchTensorBaseView", "classtensors_1_1BatchTensorBaseView.html", "classtensors_1_1BatchTensorBaseView" ],
-      [ "BatchTensorBatchView", "classtensors_1_1BatchTensorBatchView.html", "classtensors_1_1BatchTensorBatchView" ],
       [ "LabeledAxis", "classtensors_1_1LabeledAxis.html", "classtensors_1_1LabeledAxis" ],
       [ "LabeledAxisAccessor", "classtensors_1_1LabeledAxisAccessor.html", "classtensors_1_1LabeledAxisAccessor" ],
       [ "LabeledMatrix", "classtensors_1_1LabeledMatrix.html", "classtensors_1_1LabeledMatrix" ],
@@ -59,6 +56,9 @@ var annotated =
       [ "SWR4", "classtensors_1_1SWR4.html", "classtensors_1_1SWR4" ],
       [ "SWR4BaseView", "classtensors_1_1SWR4BaseView.html", "classtensors_1_1SWR4BaseView" ],
       [ "SWR4BatchView", "classtensors_1_1SWR4BatchView.html", "classtensors_1_1SWR4BatchView" ],
+      [ "Tensor", "classtensors_1_1Tensor.html", "classtensors_1_1Tensor" ],
+      [ "TensorBaseView", "classtensors_1_1TensorBaseView.html", "classtensors_1_1TensorBaseView" ],
+      [ "TensorBatchView", "classtensors_1_1TensorBatchView.html", "classtensors_1_1TensorBatchView" ],
       [ "TensorValueBase", "classtensors_1_1TensorValueBase.html", "classtensors_1_1TensorValueBase" ],
       [ "TensorValueStorage", "classtensors_1_1TensorValueStorage.html", "classtensors_1_1TensorValueStorage" ],
       [ "Vec", "classtensors_1_1Vec.html", "classtensors_1_1Vec" ],

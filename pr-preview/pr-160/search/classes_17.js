@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['zerosbatchtensor_0',['ZerosBatchTensor',['../classneml2_1_1ZerosBatchTensor.html',1,'neml2']]],
-  ['zerosfixeddimtensor_1',['ZerosFixedDimTensor',['../classneml2_1_1ZerosFixedDimTensor.html',1,'neml2']]]
+  ['zeroslogicaltensor_0',['ZerosLogicalTensor',['../classneml2_1_1ZerosLogicalTensor.html',1,'neml2']]],
+  ['zerostensor_1',['ZerosTensor',['../classneml2_1_1ZerosTensor.html',1,'neml2']]]
 ];

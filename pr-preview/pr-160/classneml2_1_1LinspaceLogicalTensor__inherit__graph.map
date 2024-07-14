@@ -1,0 +1,9 @@
+<map id="LinspaceLogicalTensor&lt; T &gt;" name="LinspaceLogicalTensor&lt; T &gt;">
+<area shape="rect" id="Node000001" title="Create a linspace LogicalTensor of type T from the input file." alt="" coords="5,152,211,177"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="35,79,74,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="74,113,101,150,97,153,69,117"/>
+<area shape="rect" id="Node000003" href="$classneml2_1_1UserTensorBase.html" title=" " alt="" coords="98,79,225,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="147,117,119,153,115,150,142,113"/>
+<area shape="rect" id="Node000004" href="$classneml2_1_1NEML2Object.html" title="The base class of all &quot;manufacturable&quot; objects in the NEML2 library." alt="" coords="107,5,216,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="164,44,164,79,159,79,159,44"/>
+</map>

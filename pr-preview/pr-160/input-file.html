@@ -173,7 +173,7 @@ Cross-Referencing</h1>
 <div class="line">  []</div>
 <div class="line">[]</div>
 </div><!-- fragment --><p> In the above example, the object of type <code>ImplicitUpdate</code> references an implicit model named "implicit_rate" and a solver named "newton".</p>
-<p>In addition to directly referencing objects by their names, a few special types support more flexible referencing mechanisms. <code>torch::Tensor</code>, <code>BatchTensor</code>, and all primitive tensor types with fixed base shapes such as <code>Scalar</code>, <code>SR2</code>, etc, can be referenced either by value or by name.</p>
+<p>In addition to directly referencing objects by their names, a few special types support more flexible referencing mechanisms. <code>torch::Tensor</code>, <code>Tensor</code>, and all primitive tensor types with fixed base shapes such as <code>Scalar</code>, <code>SR2</code>, etc, can be referenced either by value or by name.</p>
 <p>When a tensor is referenced by value, the parser will parse the input option value as a numeric literal and return a tensor filled with the specified value; when a tensor is referenced by name, the parser will look for and return the object under the <code>[Tensors]</code> section with the given name.</p>
 <p>In the following example, </p><div class="fragment"><div class="line">[Tensors]</div>
 <div class="line">  [p0]</div>

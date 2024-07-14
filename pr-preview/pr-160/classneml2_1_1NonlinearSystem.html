@@ -237,46 +237,46 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a713c51e9741d73a5bb43fa5436c28aa6" id="r_a713c51e9741d73a5bb43fa5436c28aa6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a713c51e9741d73a5bb43fa5436c28aa6">init_scaling</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">bool</a> verbose=<a class="el" href="classneml2_1_1CrossRef.html">false</a>)</td></tr>
 <tr class="memdesc:a713c51e9741d73a5bb43fa5436c28aa6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute algebraic Jacobian-based automatic scaling following <a href="https://cs.stanford.edu/people/paulliu/files/cs517-project.pdf">https://cs.stanford.edu/people/paulliu/files/cs517-project.pdf</a>.  <br /></td></tr>
 <tr class="separator:a713c51e9741d73a5bb43fa5436c28aa6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac766cd14837ed4253b9897e31eb77268" id="r_ac766cd14837ed4253b9897e31eb77268"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac766cd14837ed4253b9897e31eb77268">scale_residual</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">r</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
-<tr class="memdesc:ac766cd14837ed4253b9897e31eb77268"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply scaling to the residual.  <br /></td></tr>
-<tr class="separator:ac766cd14837ed4253b9897e31eb77268"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9abb4dbec0f22f150e1f0b6a666cce5" id="r_ae9abb4dbec0f22f150e1f0b6a666cce5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae9abb4dbec0f22f150e1f0b6a666cce5">scale_Jacobian</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">J</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
-<tr class="memdesc:ae9abb4dbec0f22f150e1f0b6a666cce5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply scaling to the Jacobian.  <br /></td></tr>
-<tr class="separator:ae9abb4dbec0f22f150e1f0b6a666cce5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab3d049aa80e81efdbcb03518a5d3826c" id="r_ab3d049aa80e81efdbcb03518a5d3826c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab3d049aa80e81efdbcb03518a5d3826c">scale_direction</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">p</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
-<tr class="memdesc:ab3d049aa80e81efdbcb03518a5d3826c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove scaling from the search direction, i.e. \( J^{-1} r \).  <br /></td></tr>
-<tr class="separator:ab3d049aa80e81efdbcb03518a5d3826c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d22d2986daa7e42a47ccf346630599e" id="r_a5d22d2986daa7e42a47ccf346630599e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5d22d2986daa7e42a47ccf346630599e">set_solution</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">x</a>)</td></tr>
-<tr class="memdesc:a5d22d2986daa7e42a47ccf346630599e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the solution vector.  <br /></td></tr>
-<tr class="separator:a5d22d2986daa7e42a47ccf346630599e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aee33c25348ed032e9e00b6560f1eaa87" id="r_aee33c25348ed032e9e00b6560f1eaa87"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aee33c25348ed032e9e00b6560f1eaa87">solution</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
-<tr class="memdesc:aee33c25348ed032e9e00b6560f1eaa87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the solution vector.  <br /></td></tr>
-<tr class="separator:aee33c25348ed032e9e00b6560f1eaa87"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19fa0d77fd38eebb88046d5dc89218bd" id="r_a19fa0d77fd38eebb88046d5dc89218bd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a19fa0d77fd38eebb88046d5dc89218bd">residual</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">x</a>)</td></tr>
-<tr class="memdesc:a19fa0d77fd38eebb88046d5dc89218bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenient shortcut to set the current solution, assemble and return the system residual.  <br /></td></tr>
-<tr class="separator:a19fa0d77fd38eebb88046d5dc89218bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3c27ef5ad4ec16b6eee62cff35b7361" id="r_aa3c27ef5ad4ec16b6eee62cff35b7361"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa3c27ef5ad4ec16b6eee62cff35b7361">scale_residual</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">r</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:aa3c27ef5ad4ec16b6eee62cff35b7361"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply scaling to the residual.  <br /></td></tr>
+<tr class="separator:aa3c27ef5ad4ec16b6eee62cff35b7361"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ca9fa15939bbb1b386d6f7b13864e3f" id="r_a8ca9fa15939bbb1b386d6f7b13864e3f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8ca9fa15939bbb1b386d6f7b13864e3f">scale_Jacobian</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">J</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:a8ca9fa15939bbb1b386d6f7b13864e3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply scaling to the Jacobian.  <br /></td></tr>
+<tr class="separator:a8ca9fa15939bbb1b386d6f7b13864e3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4e2ef01d8ec083bc561fb92a69c9a67" id="r_ad4e2ef01d8ec083bc561fb92a69c9a67"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad4e2ef01d8ec083bc561fb92a69c9a67">scale_direction</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">p</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:ad4e2ef01d8ec083bc561fb92a69c9a67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove scaling from the search direction, i.e. \( J^{-1} r \).  <br /></td></tr>
+<tr class="separator:ad4e2ef01d8ec083bc561fb92a69c9a67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2879c802a2566a0d01ed883bd315d0e6" id="r_a2879c802a2566a0d01ed883bd315d0e6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2879c802a2566a0d01ed883bd315d0e6">set_solution</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">x</a>)</td></tr>
+<tr class="memdesc:a2879c802a2566a0d01ed883bd315d0e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the solution vector.  <br /></td></tr>
+<tr class="separator:a2879c802a2566a0d01ed883bd315d0e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9c0710942e63cc9c3ef32e0fb44e007" id="r_af9c0710942e63cc9c3ef32e0fb44e007"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af9c0710942e63cc9c3ef32e0fb44e007">solution</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:af9c0710942e63cc9c3ef32e0fb44e007"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the solution vector.  <br /></td></tr>
+<tr class="separator:af9c0710942e63cc9c3ef32e0fb44e007"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab221d4d61f90ce6f65316329c9629d93" id="r_ab221d4d61f90ce6f65316329c9629d93"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab221d4d61f90ce6f65316329c9629d93">residual</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">x</a>)</td></tr>
+<tr class="memdesc:ab221d4d61f90ce6f65316329c9629d93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenient shortcut to set the current solution, assemble and return the system residual.  <br /></td></tr>
+<tr class="separator:ab221d4d61f90ce6f65316329c9629d93"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a917637260d1c476b998378aadf943fe6" id="r_a917637260d1c476b998378aadf943fe6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a917637260d1c476b998378aadf943fe6">residual</a> ()</td></tr>
 <tr class="memdesc:a917637260d1c476b998378aadf943fe6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenient shortcut to assemble and return the system residual.  <br /></td></tr>
 <tr class="separator:a917637260d1c476b998378aadf943fe6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae045412905020bf2ad042a0977c7914c" id="r_ae045412905020bf2ad042a0977c7914c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae045412905020bf2ad042a0977c7914c">Jacobian</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">x</a>)</td></tr>
-<tr class="memdesc:ae045412905020bf2ad042a0977c7914c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenient shortcut to set the current solution, assemble and return the system Jacobian.  <br /></td></tr>
-<tr class="separator:ae045412905020bf2ad042a0977c7914c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a564c60f3e6410451e9e4126fcddf7d49" id="r_a564c60f3e6410451e9e4126fcddf7d49"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a564c60f3e6410451e9e4126fcddf7d49">Jacobian</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">x</a>)</td></tr>
+<tr class="memdesc:a564c60f3e6410451e9e4126fcddf7d49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenient shortcut to set the current solution, assemble and return the system Jacobian.  <br /></td></tr>
+<tr class="separator:a564c60f3e6410451e9e4126fcddf7d49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:accde6e3f3ac0e13f42520c08755400f7" id="r_accde6e3f3ac0e13f42520c08755400f7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#accde6e3f3ac0e13f42520c08755400f7">Jacobian</a> ()</td></tr>
 <tr class="memdesc:accde6e3f3ac0e13f42520c08755400f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenient shortcut to assemble and return the system Jacobian.  <br /></td></tr>
 <tr class="separator:accde6e3f3ac0e13f42520c08755400f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b26fbd6399e1383ef70d0c0f127852f" id="r_a8b26fbd6399e1383ef70d0c0f127852f"><td class="memItemLeft" align="right" valign="top">std::tuple&lt; <a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a>, <a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8b26fbd6399e1383ef70d0c0f127852f">residual_and_Jacobian</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">x</a>)</td></tr>
-<tr class="memdesc:a8b26fbd6399e1383ef70d0c0f127852f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenient shortcut to set the current solution, assemble and return the system residual and Jacobian.  <br /></td></tr>
-<tr class="separator:a8b26fbd6399e1383ef70d0c0f127852f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accba0374d67c27e38850702e401259c7" id="r_accba0374d67c27e38850702e401259c7"><td class="memItemLeft" align="right" valign="top">std::tuple&lt; <a class="el" href="classneml2_1_1Tensor.html">Tensor</a>, <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#accba0374d67c27e38850702e401259c7">residual_and_Jacobian</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">x</a>)</td></tr>
+<tr class="memdesc:accba0374d67c27e38850702e401259c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenient shortcut to set the current solution, assemble and return the system residual and Jacobian.  <br /></td></tr>
+<tr class="separator:accba0374d67c27e38850702e401259c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a74465843b80bbe89e6ef9c70ab53d998" id="r_a74465843b80bbe89e6ef9c70ab53d998"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a74465843b80bbe89e6ef9c70ab53d998">residual_and_Jacobian</a> ()</td></tr>
 <tr class="memdesc:a74465843b80bbe89e6ef9c70ab53d998"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenient shortcut to assemble and return the system residual and Jacobian.  <br /></td></tr>
 <tr class="separator:a74465843b80bbe89e6ef9c70ab53d998"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac76704b13e861f725bf72f162d303602" id="r_ac76704b13e861f725bf72f162d303602"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac76704b13e861f725bf72f162d303602">residual_view</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
-<tr class="separator:ac76704b13e861f725bf72f162d303602"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96e1ce2727ab9d35e66fadaa8aff9ac1" id="r_a96e1ce2727ab9d35e66fadaa8aff9ac1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a96e1ce2727ab9d35e66fadaa8aff9ac1">Jacobian_view</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
-<tr class="separator:a96e1ce2727ab9d35e66fadaa8aff9ac1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acbe415baf1df7db4665376b84e7cb525" id="r_acbe415baf1df7db4665376b84e7cb525"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acbe415baf1df7db4665376b84e7cb525">residual_norm</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
-<tr class="memdesc:acbe415baf1df7db4665376b84e7cb525"><td class="mdescLeft">&#160;</td><td class="mdescRight">The residual norm.  <br /></td></tr>
-<tr class="separator:acbe415baf1df7db4665376b84e7cb525"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65f5940076ca4e9e5624df4daef72fdf" id="r_a65f5940076ca4e9e5624df4daef72fdf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a65f5940076ca4e9e5624df4daef72fdf">residual_view</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="separator:a65f5940076ca4e9e5624df4daef72fdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6704c709a5f396ba06997cea1fb84309" id="r_a6704c709a5f396ba06997cea1fb84309"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6704c709a5f396ba06997cea1fb84309">Jacobian_view</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="separator:a6704c709a5f396ba06997cea1fb84309"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1e7bcd42fb4c23bac026417e5cb3b85" id="r_af1e7bcd42fb4c23bac026417e5cb3b85"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af1e7bcd42fb4c23bac026417e5cb3b85">residual_norm</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:af1e7bcd42fb4c23bac026417e5cb3b85"><td class="mdescLeft">&#160;</td><td class="mdescRight">The residual norm.  <br /></td></tr>
+<tr class="separator:af1e7bcd42fb4c23bac026417e5cb3b85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -289,7 +289,7 @@ Static Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:af8ddb5164cca4931f510ef1c4d623c50" id="r_af8ddb5164cca4931f510ef1c4d623c50"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af8ddb5164cca4931f510ef1c4d623c50">assemble</a> (<a class="el" href="classneml2_1_1CrossRef.html">bool</a> <a class="el" href="#a19fa0d77fd38eebb88046d5dc89218bd">residual</a>, <a class="el" href="classneml2_1_1CrossRef.html">bool</a> <a class="el" href="#ae045412905020bf2ad042a0977c7914c">Jacobian</a>)=0</td></tr>
+<tr class="memitem:af8ddb5164cca4931f510ef1c4d623c50" id="r_af8ddb5164cca4931f510ef1c4d623c50"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af8ddb5164cca4931f510ef1c4d623c50">assemble</a> (<a class="el" href="classneml2_1_1CrossRef.html">bool</a> <a class="el" href="#ab221d4d61f90ce6f65316329c9629d93">residual</a>, <a class="el" href="classneml2_1_1CrossRef.html">bool</a> <a class="el" href="#a564c60f3e6410451e9e4126fcddf7d49">Jacobian</a>)=0</td></tr>
 <tr class="memdesc:af8ddb5164cca4931f510ef1c4d623c50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the residual and Jacobian.  <br /></td></tr>
 <tr class="separator:af8ddb5164cca4931f510ef1c4d623c50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -298,19 +298,19 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:aa9409aa93f0767a6d04f7b253350c8d1" id="r_aa9409aa93f0767a6d04f7b253350c8d1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa9409aa93f0767a6d04f7b253350c8d1">_ndof</a></td></tr>
 <tr class="memdesc:aa9409aa93f0767a6d04f7b253350c8d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of degrees of freedom.  <br /></td></tr>
 <tr class="separator:aa9409aa93f0767a6d04f7b253350c8d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa826ba08c300c5ab4ecbad19e14e4500" id="r_aa826ba08c300c5ab4ecbad19e14e4500"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa826ba08c300c5ab4ecbad19e14e4500">_solution</a></td></tr>
-<tr class="memdesc:aa826ba08c300c5ab4ecbad19e14e4500"><td class="mdescLeft">&#160;</td><td class="mdescRight">View for the solution of this nonlinear system.  <br /></td></tr>
-<tr class="separator:aa826ba08c300c5ab4ecbad19e14e4500"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab6c01752c8ac7a47066536af091c368e" id="r_ab6c01752c8ac7a47066536af091c368e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab6c01752c8ac7a47066536af091c368e">_residual</a></td></tr>
-<tr class="memdesc:ab6c01752c8ac7a47066536af091c368e"><td class="mdescLeft">&#160;</td><td class="mdescRight">View for the residual of this nonlinear system.  <br /></td></tr>
-<tr class="separator:ab6c01752c8ac7a47066536af091c368e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f7f8c3660e0952800c5d93512f7313e" id="r_a2f7f8c3660e0952800c5d93512f7313e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2f7f8c3660e0952800c5d93512f7313e">_Jacobian</a></td></tr>
-<tr class="memdesc:a2f7f8c3660e0952800c5d93512f7313e"><td class="mdescLeft">&#160;</td><td class="mdescRight">View for the Jacobian of this nonlinear system.  <br /></td></tr>
-<tr class="separator:a2f7f8c3660e0952800c5d93512f7313e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a269837fb9c7edc832423f15bffdd9927" id="r_a269837fb9c7edc832423f15bffdd9927"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a269837fb9c7edc832423f15bffdd9927">_scaled_residual</a></td></tr>
-<tr class="separator:a269837fb9c7edc832423f15bffdd9927"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb936bf39dccd1e5dbdc708e43d90fea" id="r_acb936bf39dccd1e5dbdc708e43d90fea"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acb936bf39dccd1e5dbdc708e43d90fea">_scaled_Jacobian</a></td></tr>
-<tr class="separator:acb936bf39dccd1e5dbdc708e43d90fea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3787027c2fd5cb1a2c7ff7b4c5e6e00" id="r_ab3787027c2fd5cb1a2c7ff7b4c5e6e00"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab3787027c2fd5cb1a2c7ff7b4c5e6e00">_solution</a></td></tr>
+<tr class="memdesc:ab3787027c2fd5cb1a2c7ff7b4c5e6e00"><td class="mdescLeft">&#160;</td><td class="mdescRight">View for the solution of this nonlinear system.  <br /></td></tr>
+<tr class="separator:ab3787027c2fd5cb1a2c7ff7b4c5e6e00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37894f2b35e16d223d553b8011c39a16" id="r_a37894f2b35e16d223d553b8011c39a16"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a37894f2b35e16d223d553b8011c39a16">_residual</a></td></tr>
+<tr class="memdesc:a37894f2b35e16d223d553b8011c39a16"><td class="mdescLeft">&#160;</td><td class="mdescRight">View for the residual of this nonlinear system.  <br /></td></tr>
+<tr class="separator:a37894f2b35e16d223d553b8011c39a16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2b5276faf5229a29a50138f0278ac5b" id="r_ae2b5276faf5229a29a50138f0278ac5b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae2b5276faf5229a29a50138f0278ac5b">_Jacobian</a></td></tr>
+<tr class="memdesc:ae2b5276faf5229a29a50138f0278ac5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">View for the Jacobian of this nonlinear system.  <br /></td></tr>
+<tr class="separator:ae2b5276faf5229a29a50138f0278ac5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a776d4bee420f50a29168071840201bb7" id="r_a776d4bee420f50a29168071840201bb7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a776d4bee420f50a29168071840201bb7">_scaled_residual</a></td></tr>
+<tr class="separator:a776d4bee420f50a29168071840201bb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33729211298e44fe6dcfc7be2f5bf258" id="r_a33729211298e44fe6dcfc7be2f5bf258"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a33729211298e44fe6dcfc7be2f5bf258">_scaled_Jacobian</a></td></tr>
+<tr class="separator:a33729211298e44fe6dcfc7be2f5bf258"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac728afd1425ea7e7674348d5314ebd0d" id="r_ac728afd1425ea7e7674348d5314ebd0d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac728afd1425ea7e7674348d5314ebd0d">_autoscale</a></td></tr>
 <tr class="memdesc:ac728afd1425ea7e7674348d5314ebd0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, do automatic scaling.  <br /></td></tr>
 <tr class="separator:ac728afd1425ea7e7674348d5314ebd0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -323,12 +323,12 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:af4223605db5fffd7afbb2d66540914f6" id="r_af4223605db5fffd7afbb2d66540914f6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af4223605db5fffd7afbb2d66540914f6">_scaling_matrices_initialized</a></td></tr>
 <tr class="memdesc:af4223605db5fffd7afbb2d66540914f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to indicate whether scaling matrices have been computed.  <br /></td></tr>
 <tr class="separator:af4223605db5fffd7afbb2d66540914f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac7a18c70a2fc1b705788c4a2ed8055d7" id="r_ac7a18c70a2fc1b705788c4a2ed8055d7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac7a18c70a2fc1b705788c4a2ed8055d7">_row_scaling</a></td></tr>
-<tr class="memdesc:ac7a18c70a2fc1b705788c4a2ed8055d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Row scaling "matrix" &ndash; since it's a batched diagonal matrix, we are only storing its diagonals.  <br /></td></tr>
-<tr class="separator:ac7a18c70a2fc1b705788c4a2ed8055d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a67f862bffa2bcb02931f4779af18706e" id="r_a67f862bffa2bcb02931f4779af18706e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a67f862bffa2bcb02931f4779af18706e">_col_scaling</a></td></tr>
-<tr class="memdesc:a67f862bffa2bcb02931f4779af18706e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Column scaling "matrix" &ndash; since it's a batched diagonal matrix, we are only storing its diagonals.  <br /></td></tr>
-<tr class="separator:a67f862bffa2bcb02931f4779af18706e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02dbb5e5c0d1f4b6561fd31d5a0f3f1e" id="r_a02dbb5e5c0d1f4b6561fd31d5a0f3f1e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a02dbb5e5c0d1f4b6561fd31d5a0f3f1e">_row_scaling</a></td></tr>
+<tr class="memdesc:a02dbb5e5c0d1f4b6561fd31d5a0f3f1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Row scaling "matrix" &ndash; since it's a batched diagonal matrix, we are only storing its diagonals.  <br /></td></tr>
+<tr class="separator:a02dbb5e5c0d1f4b6561fd31d5a0f3f1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2d8902fff0c90b396b9ed26ed8b4c7e" id="r_ab2d8902fff0c90b396b9ed26ed8b4c7e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab2d8902fff0c90b396b9ed26ed8b4c7e">_col_scaling</a></td></tr>
+<tr class="memdesc:ab2d8902fff0c90b396b9ed26ed8b4c7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Column scaling "matrix" &ndash; since it's a batched diagonal matrix, we are only storing its diagonals.  <br /></td></tr>
+<tr class="separator:ab2d8902fff0c90b396b9ed26ed8b4c7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a596124ec7dce0384ee6e74070aa574dc" name="a596124ec7dce0384ee6e74070aa574dc"></a>
@@ -516,16 +516,16 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ae045412905020bf2ad042a0977c7914c" name="ae045412905020bf2ad042a0977c7914c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae045412905020bf2ad042a0977c7914c">&#9670;&#160;</a></span>Jacobian() <span class="overload">[2/2]</span></h2>
+<a id="a564c60f3e6410451e9e4126fcddf7d49" name="a564c60f3e6410451e9e4126fcddf7d49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a564c60f3e6410451e9e4126fcddf7d49">&#9670;&#160;</a></span>Jacobian() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a> Jacobian </td>
+          <td class="memname"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a> Jacobian </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>x</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>x</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -535,8 +535,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a96e1ce2727ab9d35e66fadaa8aff9ac1" name="a96e1ce2727ab9d35e66fadaa8aff9ac1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a96e1ce2727ab9d35e66fadaa8aff9ac1">&#9670;&#160;</a></span>Jacobian_view()</h2>
+<a id="a6704c709a5f396ba06997cea1fb84309" name="a6704c709a5f396ba06997cea1fb84309"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6704c709a5f396ba06997cea1fb84309">&#9670;&#160;</a></span>Jacobian_view()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -545,7 +545,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a> &amp; Jacobian_view </td>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp; Jacobian_view </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td> const</td>
@@ -579,16 +579,16 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a19fa0d77fd38eebb88046d5dc89218bd" name="a19fa0d77fd38eebb88046d5dc89218bd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a19fa0d77fd38eebb88046d5dc89218bd">&#9670;&#160;</a></span>residual() <span class="overload">[2/2]</span></h2>
+<a id="ab221d4d61f90ce6f65316329c9629d93" name="ab221d4d61f90ce6f65316329c9629d93"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab221d4d61f90ce6f65316329c9629d93">&#9670;&#160;</a></span>residual() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a> residual </td>
+          <td class="memname"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a> residual </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>x</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>x</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -617,16 +617,16 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a8b26fbd6399e1383ef70d0c0f127852f" name="a8b26fbd6399e1383ef70d0c0f127852f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8b26fbd6399e1383ef70d0c0f127852f">&#9670;&#160;</a></span>residual_and_Jacobian() <span class="overload">[2/2]</span></h2>
+<a id="accba0374d67c27e38850702e401259c7" name="accba0374d67c27e38850702e401259c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#accba0374d67c27e38850702e401259c7">&#9670;&#160;</a></span>residual_and_Jacobian() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::tuple&lt; <a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a>, <a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a> &gt; residual_and_Jacobian </td>
+          <td class="memname">std::tuple&lt; <a class="el" href="classneml2_1_1Tensor.html">Tensor</a>, <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &gt; residual_and_Jacobian </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>x</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>x</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -636,14 +636,14 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="acbe415baf1df7db4665376b84e7cb525" name="acbe415baf1df7db4665376b84e7cb525"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acbe415baf1df7db4665376b84e7cb525">&#9670;&#160;</a></span>residual_norm()</h2>
+<a id="af1e7bcd42fb4c23bac026417e5cb3b85" name="af1e7bcd42fb4c23bac026417e5cb3b85"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1e7bcd42fb4c23bac026417e5cb3b85">&#9670;&#160;</a></span>residual_norm()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a> residual_norm </td>
+          <td class="memname"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a> residual_norm </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td> const</td>
@@ -655,8 +655,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ac76704b13e861f725bf72f162d303602" name="ac76704b13e861f725bf72f162d303602"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac76704b13e861f725bf72f162d303602">&#9670;&#160;</a></span>residual_view()</h2>
+<a id="a65f5940076ca4e9e5624df4daef72fdf" name="a65f5940076ca4e9e5624df4daef72fdf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a65f5940076ca4e9e5624df4daef72fdf">&#9670;&#160;</a></span>residual_view()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -665,7 +665,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a> &amp; residual_view </td>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp; residual_view </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td> const</td>
@@ -680,16 +680,16 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ab3d049aa80e81efdbcb03518a5d3826c" name="ab3d049aa80e81efdbcb03518a5d3826c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab3d049aa80e81efdbcb03518a5d3826c">&#9670;&#160;</a></span>scale_direction()</h2>
+<a id="ad4e2ef01d8ec083bc561fb92a69c9a67" name="ad4e2ef01d8ec083bc561fb92a69c9a67"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4e2ef01d8ec083bc561fb92a69c9a67">&#9670;&#160;</a></span>scale_direction()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a> scale_direction </td>
+          <td class="memname"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a> scale_direction </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>p</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>p</em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -699,16 +699,16 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ae9abb4dbec0f22f150e1f0b6a666cce5" name="ae9abb4dbec0f22f150e1f0b6a666cce5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae9abb4dbec0f22f150e1f0b6a666cce5">&#9670;&#160;</a></span>scale_Jacobian()</h2>
+<a id="a8ca9fa15939bbb1b386d6f7b13864e3f" name="a8ca9fa15939bbb1b386d6f7b13864e3f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ca9fa15939bbb1b386d6f7b13864e3f">&#9670;&#160;</a></span>scale_Jacobian()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a> scale_Jacobian </td>
+          <td class="memname"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a> scale_Jacobian </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>J</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>J</em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -718,16 +718,16 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ac766cd14837ed4253b9897e31eb77268" name="ac766cd14837ed4253b9897e31eb77268"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac766cd14837ed4253b9897e31eb77268">&#9670;&#160;</a></span>scale_residual()</h2>
+<a id="aa3c27ef5ad4ec16b6eee62cff35b7361" name="aa3c27ef5ad4ec16b6eee62cff35b7361"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3c27ef5ad4ec16b6eee62cff35b7361">&#9670;&#160;</a></span>scale_residual()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a> scale_residual </td>
+          <td class="memname"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a> scale_residual </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>r</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>r</em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -737,8 +737,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a5d22d2986daa7e42a47ccf346630599e" name="a5d22d2986daa7e42a47ccf346630599e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5d22d2986daa7e42a47ccf346630599e">&#9670;&#160;</a></span>set_solution()</h2>
+<a id="a2879c802a2566a0d01ed883bd315d0e6" name="a2879c802a2566a0d01ed883bd315d0e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2879c802a2566a0d01ed883bd315d0e6">&#9670;&#160;</a></span>set_solution()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -749,7 +749,7 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">void</a> set_solution </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>x</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>x</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -762,12 +762,12 @@ Protected Attributes</h2></td></tr>
 
 <p>Set the solution vector. </p>
 
-<p>Reimplemented in <a class="el" href="classneml2_1_1Model.html#a6db3b86fbdfc7c9bd78568026e3cdb5c">Model</a>.</p>
+<p>Reimplemented in <a class="el" href="classneml2_1_1Model.html#a679f0dde73dc90d4389c2364083a4b33">Model</a>.</p>
 
 </div>
 </div>
-<a id="aee33c25348ed032e9e00b6560f1eaa87" name="aee33c25348ed032e9e00b6560f1eaa87"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aee33c25348ed032e9e00b6560f1eaa87">&#9670;&#160;</a></span>solution()</h2>
+<a id="af9c0710942e63cc9c3ef32e0fb44e007" name="af9c0710942e63cc9c3ef32e0fb44e007"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9c0710942e63cc9c3ef32e0fb44e007">&#9670;&#160;</a></span>solution()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -776,7 +776,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a> solution </td>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> solution </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td> const</td>
@@ -866,8 +866,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a67f862bffa2bcb02931f4779af18706e" name="a67f862bffa2bcb02931f4779af18706e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a67f862bffa2bcb02931f4779af18706e">&#9670;&#160;</a></span>_col_scaling</h2>
+<a id="ab2d8902fff0c90b396b9ed26ed8b4c7e" name="ab2d8902fff0c90b396b9ed26ed8b4c7e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2d8902fff0c90b396b9ed26ed8b4c7e">&#9670;&#160;</a></span>_col_scaling</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -876,7 +876,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a> _col_scaling</td>
+          <td class="memname"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a> _col_scaling</td>
         </tr>
       </table>
   </td>
@@ -890,8 +890,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a2f7f8c3660e0952800c5d93512f7313e" name="a2f7f8c3660e0952800c5d93512f7313e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2f7f8c3660e0952800c5d93512f7313e">&#9670;&#160;</a></span>_Jacobian</h2>
+<a id="ae2b5276faf5229a29a50138f0278ac5b" name="ae2b5276faf5229a29a50138f0278ac5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2b5276faf5229a29a50138f0278ac5b">&#9670;&#160;</a></span>_Jacobian</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -900,7 +900,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a> _Jacobian</td>
+          <td class="memname"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a> _Jacobian</td>
         </tr>
       </table>
   </td>
@@ -938,8 +938,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ab6c01752c8ac7a47066536af091c368e" name="ab6c01752c8ac7a47066536af091c368e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab6c01752c8ac7a47066536af091c368e">&#9670;&#160;</a></span>_residual</h2>
+<a id="a37894f2b35e16d223d553b8011c39a16" name="a37894f2b35e16d223d553b8011c39a16"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37894f2b35e16d223d553b8011c39a16">&#9670;&#160;</a></span>_residual</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -948,7 +948,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a> _residual</td>
+          <td class="memname"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a> _residual</td>
         </tr>
       </table>
   </td>
@@ -962,8 +962,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ac7a18c70a2fc1b705788c4a2ed8055d7" name="ac7a18c70a2fc1b705788c4a2ed8055d7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac7a18c70a2fc1b705788c4a2ed8055d7">&#9670;&#160;</a></span>_row_scaling</h2>
+<a id="a02dbb5e5c0d1f4b6561fd31d5a0f3f1e" name="a02dbb5e5c0d1f4b6561fd31d5a0f3f1e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02dbb5e5c0d1f4b6561fd31d5a0f3f1e">&#9670;&#160;</a></span>_row_scaling</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -972,7 +972,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a> _row_scaling</td>
+          <td class="memname"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a> _row_scaling</td>
         </tr>
       </table>
   </td>
@@ -986,8 +986,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="acb936bf39dccd1e5dbdc708e43d90fea" name="acb936bf39dccd1e5dbdc708e43d90fea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acb936bf39dccd1e5dbdc708e43d90fea">&#9670;&#160;</a></span>_scaled_Jacobian</h2>
+<a id="a33729211298e44fe6dcfc7be2f5bf258" name="a33729211298e44fe6dcfc7be2f5bf258"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a33729211298e44fe6dcfc7be2f5bf258">&#9670;&#160;</a></span>_scaled_Jacobian</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -996,7 +996,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a> _scaled_Jacobian</td>
+          <td class="memname"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a> _scaled_Jacobian</td>
         </tr>
       </table>
   </td>
@@ -1008,8 +1008,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a269837fb9c7edc832423f15bffdd9927" name="a269837fb9c7edc832423f15bffdd9927"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a269837fb9c7edc832423f15bffdd9927">&#9670;&#160;</a></span>_scaled_residual</h2>
+<a id="a776d4bee420f50a29168071840201bb7" name="a776d4bee420f50a29168071840201bb7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a776d4bee420f50a29168071840201bb7">&#9670;&#160;</a></span>_scaled_residual</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1018,7 +1018,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a> _scaled_residual</td>
+          <td class="memname"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a> _scaled_residual</td>
         </tr>
       </table>
   </td>
@@ -1054,8 +1054,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="aa826ba08c300c5ab4ecbad19e14e4500" name="aa826ba08c300c5ab4ecbad19e14e4500"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa826ba08c300c5ab4ecbad19e14e4500">&#9670;&#160;</a></span>_solution</h2>
+<a id="ab3787027c2fd5cb1a2c7ff7b4c5e6e00" name="ab3787027c2fd5cb1a2c7ff7b4c5e6e00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3787027c2fd5cb1a2c7ff7b4c5e6e00">&#9670;&#160;</a></span>_solution</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1064,7 +1064,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1BatchTensor.html">BatchTensor</a> _solution</td>
+          <td class="memname"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a> _solution</td>
         </tr>
       </table>
   </td>

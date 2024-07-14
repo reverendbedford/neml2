@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['optioncollection_0',['OptionCollection',['../classbase_1_1OptionCollection.html',1,'base']]],
-  ['optionset_1',['OptionSet',['../classbase_1_1OptionSet.html',1,'base']]]
+  ['quaternion_0',['Quaternion',['../classtensors_1_1Quaternion.html',1,'tensors']]],
+  ['quaternionbaseview_1',['QuaternionBaseView',['../classtensors_1_1QuaternionBaseView.html',1,'tensors']]],
+  ['quaternionbatchview_2',['QuaternionBatchView',['../classtensors_1_1QuaternionBatchView.html',1,'tensors']]]
 ];

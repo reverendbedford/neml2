@@ -143,7 +143,7 @@ $(function(){initNavTree('tensors_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#include &quot;neml2/tensors/BatchTensor.h&quot;</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#include &quot;neml2/tensors/Tensor.h&quot;</span></div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#include &quot;neml2/tensors/Scalar.h&quot;</span></div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="preprocessor">#include &quot;neml2/tensors/Vec.h&quot;</span></div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="preprocessor">#include &quot;neml2/tensors/Rot.h&quot;</span></div>
@@ -175,7 +175,7 @@ $(function(){initNavTree('tensors_8h_source.html',''); initResizable(); });
 <div class="foldopen" id="foldopen00056" data-start="{" data-end="};">
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="namespaceneml2.html#a9b44248b88341f8c9cafe5d9d822a443">   56</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="namespaceneml2.html#a9b44248b88341f8c9cafe5d9d822a443">TensorType</a> : <a class="code hl_class" href="classneml2_1_1CrossRef.html">int8_t</a></div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>{</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <a class="code hl_enumvalue" href="namespaceneml2.html#a9b44248b88341f8c9cafe5d9d822a443a219227ef22c1efe2337ad82c4efd8f76">FOR_ALL_BATCHTENSORBASE_COMMA</a>(_tensor_type_enum),</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <a class="code hl_enumvalue" href="namespaceneml2.html#a9b44248b88341f8c9cafe5d9d822a443a7fe4e3cd204fe9fa1348f92d946370f1">FOR_ALL_TensorBASE_COMMA</a>(_tensor_type_enum),</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <a class="code hl_enumvalue" href="namespaceneml2.html#a9b44248b88341f8c9cafe5d9d822a443aa938666e7a4985ce45a25b2435fceb2f">kUknown</a></div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>};</div>
 </div>
@@ -195,7 +195,7 @@ $(function(){initNavTree('tensors_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="preprocessor">  {                                                                                                \</span></div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="preprocessor">    static constexpr TensorType value = TensorType::k##T;                                          \</span></div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="preprocessor">  }</span></div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno"><a class="line" href="namespaceneml2.html#a60ba2c573f62e14a1b01822afc6ce541">   75</a></span>FOR_ALL_BATCHTENSORBASE(_tensor_type_enum_specialize);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno"><a class="line" href="namespaceneml2.html#ab8392d04e318e19f7b12ad5604715c4a">   75</a></span>FOR_ALL_TensorBASE(_tensor_type_enum_specialize);</div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="comment">// Stringify the tensor type enum</span></div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>std::ostream &amp; <a class="code hl_function" href="namespaceneml2.html#abe5f4914fa546b6fae49a84c4b4f5704">operator&lt;&lt;</a>(std::ostream &amp; <a class="code hl_class" href="classneml2_1_1CrossRef.html">os</a>, <span class="keyword">const</span> <a class="code hl_enumeration" href="namespaceneml2.html#a9b44248b88341f8c9cafe5d9d822a443">TensorType</a> &amp; <a class="code hl_class" href="classneml2_1_1CrossRef.html">t</a>);</div>
@@ -203,7 +203,7 @@ $(function(){initNavTree('tensors_8h_source.html',''); initResizable(); });
 <div class="ttc" id="aclassneml2_1_1CrossRef_html"><div class="ttname"><a href="classneml2_1_1CrossRef.html">neml2::CrossRef</a></div><div class="ttdoc">The wrapper (decorator) for cross-referencing unresolved values at parse time.</div><div class="ttdef"><b>Definition</b> CrossRef.h:53</div></div>
 <div class="ttc" id="anamespaceneml2_html"><div class="ttname"><a href="namespaceneml2.html">neml2</a></div><div class="ttdef"><b>Definition</b> CrossRef.cxx:30</div></div>
 <div class="ttc" id="anamespaceneml2_html_a9b44248b88341f8c9cafe5d9d822a443"><div class="ttname"><a href="namespaceneml2.html#a9b44248b88341f8c9cafe5d9d822a443">neml2::TensorType</a></div><div class="ttdeci">TensorType</div><div class="ttdef"><b>Definition</b> tensors.h:57</div></div>
-<div class="ttc" id="anamespaceneml2_html_a9b44248b88341f8c9cafe5d9d822a443a219227ef22c1efe2337ad82c4efd8f76"><div class="ttname"><a href="namespaceneml2.html#a9b44248b88341f8c9cafe5d9d822a443a219227ef22c1efe2337ad82c4efd8f76">neml2::TensorType::FOR_ALL_BATCHTENSORBASE_COMMA</a></div><div class="ttdeci">@ FOR_ALL_BATCHTENSORBASE_COMMA</div></div>
+<div class="ttc" id="anamespaceneml2_html_a9b44248b88341f8c9cafe5d9d822a443a7fe4e3cd204fe9fa1348f92d946370f1"><div class="ttname"><a href="namespaceneml2.html#a9b44248b88341f8c9cafe5d9d822a443a7fe4e3cd204fe9fa1348f92d946370f1">neml2::TensorType::FOR_ALL_TensorBASE_COMMA</a></div><div class="ttdeci">@ FOR_ALL_TensorBASE_COMMA</div></div>
 <div class="ttc" id="anamespaceneml2_html_a9b44248b88341f8c9cafe5d9d822a443aa938666e7a4985ce45a25b2435fceb2f"><div class="ttname"><a href="namespaceneml2.html#a9b44248b88341f8c9cafe5d9d822a443aa938666e7a4985ce45a25b2435fceb2f">neml2::TensorType::kUknown</a></div><div class="ttdeci">@ kUknown</div></div>
 <div class="ttc" id="anamespaceneml2_html_abe5f4914fa546b6fae49a84c4b4f5704"><div class="ttname"><a href="namespaceneml2.html#abe5f4914fa546b6fae49a84c4b4f5704">neml2::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;os, const EnumSelection &amp;es)</div><div class="ttdef"><b>Definition</b> EnumSelection.cxx:31</div></div>
 <div class="ttc" id="astructneml2_1_1TensorTypeEnum_html"><div class="ttname"><a href="structneml2_1_1TensorTypeEnum.html">neml2::TensorTypeEnum</a></div><div class="ttdef"><b>Definition</b> tensors.h:64</div></div>
