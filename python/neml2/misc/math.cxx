@@ -25,6 +25,7 @@
 #include <pybind11/pybind11.h>
 
 #include "neml2/tensors/tensors.h"
+#include "neml2/misc/math.h"
 
 namespace py = pybind11;
 using namespace neml2;

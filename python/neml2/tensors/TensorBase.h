@@ -30,6 +30,7 @@
 #include "python/neml2/misc/types.h"
 #include "neml2/tensors/tensors.h"
 #include "neml2/tensors/macros.h"
+#include "neml2/misc/math.h"
 
 namespace py = pybind11;
 
