@@ -12,7 +12,7 @@ All nonlinear solvers derive from the common base class `NonlinearSolver`. The b
 
 Derived classes must override the method
 ```cpp
-std::tuple<bool, size_t> solve(NonlinearSystem & system, BatchTensor & sol)
+std::tuple<bool, size_t> solve(NonlinearSystem & system, Tensor & sol)
 ```
 The first argument is the nonlinear system of equations to be solved, and the second argument is the initial guess which will be iteratively updated during the solve. The second argument will hold the solution to the system upon convergence. The first tuple element in the return value is a boolean indicating whether the solve has succeeeded, and the second tuple element is the number of iterations taken before convergence.
 

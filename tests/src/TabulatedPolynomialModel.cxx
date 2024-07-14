@@ -42,13 +42,13 @@ TabulatedPolynomialModel::expected_options()
   options.set<VariableName>("internal_state_1_rate") = VariableName("state", "s1_rate");
   options.set<VariableName>("internal_state_2_rate") = VariableName("state", "s2_rate");
   // Model constants
-  options.set<CrossRef<BatchTensor>>("A0");
-  options.set<CrossRef<BatchTensor>>("A1");
-  options.set<CrossRef<BatchTensor>>("A2");
-  options.set<CrossRef<BatchTensor>>("stress_tile_lower_bounds");
-  options.set<CrossRef<BatchTensor>>("stress_tile_upper_bounds");
-  options.set<CrossRef<BatchTensor>>("temperature_tile_lower_bounds");
-  options.set<CrossRef<BatchTensor>>("temperature_tile_upper_bounds");
+  options.set<CrossRef<Tensor>>("A0");
+  options.set<CrossRef<Tensor>>("A1");
+  options.set<CrossRef<Tensor>>("A2");
+  options.set<CrossRef<Tensor>>("stress_tile_lower_bounds");
+  options.set<CrossRef<Tensor>>("stress_tile_upper_bounds");
+  options.set<CrossRef<Tensor>>("temperature_tile_lower_bounds");
+  options.set<CrossRef<Tensor>>("temperature_tile_upper_bounds");
   options.set<Real>("index_sharpness") = 1.0;
   // Use AD
   options.set<bool>("_use_AD_first_derivative") = true;
@@ -58,13 +58,13 @@ TabulatedPolynomialModel::expected_options()
 
 TabulatedPolynomialModel::TabulatedPolynomialModel(const OptionSet & options)
   : Model(options),
-    _A0(declare_buffer<BatchTensor>("A0", "A0")),
-    _A1(declare_buffer<BatchTensor>("A1", "A1")),
-    _A2(declare_buffer<BatchTensor>("A2", "A2")),
-    _s_lb(declare_buffer<BatchTensor>("s_lb", "stress_tile_lower_bounds")),
-    _s_ub(declare_buffer<BatchTensor>("s_ub", "stress_tile_upper_bounds")),
-    _T_lb(declare_buffer<BatchTensor>("T_lb", "temperature_tile_lower_bounds")),
-    _T_ub(declare_buffer<BatchTensor>("T_ub", "temperature_tile_upper_bounds")),
+    _A0(declare_buffer<Tensor>("A0", "A0")),
+    _A1(declare_buffer<Tensor>("A1", "A1")),
+    _A2(declare_buffer<Tensor>("A2", "A2")),
+    _s_lb(declare_buffer<Tensor>("s_lb", "stress_tile_lower_bounds")),
+    _s_ub(declare_buffer<Tensor>("s_ub", "stress_tile_upper_bounds")),
+    _T_lb(declare_buffer<Tensor>("T_lb", "temperature_tile_lower_bounds")),
+    _T_ub(declare_buffer<Tensor>("T_ub", "temperature_tile_upper_bounds")),
     _s(declare_input_variable<Scalar>("von_mises_stress")),
     _T(declare_input_variable<Scalar>("temperature")),
     _s1(declare_input_variable<Scalar>("internal_state_1")),

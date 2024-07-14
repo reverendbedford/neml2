@@ -55,6 +55,6 @@ protected:
   const Variable<R2> & _R;
 
   /// Slip rate
-  const Variable<BatchTensor> & _gamma_dot;
+  const Variable<Tensor> & _gamma_dot;
 };
 } // namespace neml2

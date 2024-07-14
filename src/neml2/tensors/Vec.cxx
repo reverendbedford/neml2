@@ -30,7 +30,7 @@
 namespace neml2
 {
 Vec::Vec(const Rot & r)
-  : Vec(BatchTensor(r))
+  : Vec(Tensor(r))
 {
 }
 

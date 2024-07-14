@@ -80,7 +80,7 @@ BackwardEulerTimeIntegration<T>::set_value(bool out, bool dout_din, bool d2out_d
 
   if (dout_din || d2out_din2)
   {
-    auto I = BatchTensor::identity(T::const_base_storage, options());
+    auto I = Tensor::identity(T::const_base_storage, options());
 
     if (dout_din)
     {

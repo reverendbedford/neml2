@@ -48,9 +48,9 @@ ModelUnitTest::expected_options()
   options.set<bool>("check_cuda") = true;
   options.set<bool>("check_inference") = true;
   options.set<std::vector<VariableName>>("input_batch_tensor_names");
-  options.set<std::vector<CrossRef<BatchTensor>>>("input_batch_tensor_values");
+  options.set<std::vector<CrossRef<Tensor>>>("input_batch_tensor_values");
   options.set<std::vector<VariableName>>("output_batch_tensor_names");
-  options.set<std::vector<CrossRef<BatchTensor>>>("output_batch_tensor_values");
+  options.set<std::vector<CrossRef<Tensor>>>("output_batch_tensor_values");
   options.set<std::vector<VariableName>>("input_scalar_names");
   options.set<std::vector<CrossRef<Scalar>>>("input_scalar_values");
   options.set<std::vector<VariableName>>("input_symr2_names");
@@ -103,14 +103,14 @@ ModelUnitTest::ModelUnitTest(const OptionSet & options)
     _param_atol(options.get<Real>("parameter_derivatives_abs_tol"))
 {
   _in = LabeledVector::zeros(_batch_shape, {&_model.input_axis()});
-  fill_vector<BatchTensor>(_in, "input_batch_tensor_names", "input_batch_tensor_values");
+  fill_vector<Tensor>(_in, "input_batch_tensor_names", "input_batch_tensor_values");
   fill_vector<Scalar>(_in, "input_scalar_names", "input_scalar_values");
   fill_vector<SR2>(_in, "input_symr2_names", "input_symr2_values");
   fill_vector<WR2>(_in, "input_skewr2_names", "input_skewr2_values");
   fill_vector<Rot>(_in, "input_rot_names", "input_rot_values");
 
   _out = LabeledVector::zeros(_batch_shape, {&_model.output_axis()});
-  fill_vector<BatchTensor>(_out, "output_batch_tensor_names", "output_batch_tensor_values");
+  fill_vector<Tensor>(_out, "output_batch_tensor_names", "output_batch_tensor_values");
   fill_vector<Scalar>(_out, "output_scalar_names", "output_scalar_values");
   fill_vector<SR2>(_out, "output_symr2_names", "output_symr2_values");
   fill_vector<WR2>(_out, "output_skewr2_names", "output_skewr2_values");
@@ -203,8 +203,7 @@ ModelUnitTest::check_derivatives(Model & model, bool first, bool second)
   model.use_AD_derivatives(first, second);
   auto exact = std::get<1>(model.value_and_dvalue(_in));
   auto numerical = finite_differencing_derivative(
-      [this, &model](const BatchTensor & x) { return model.value(LabeledVector(x, _in.axes())); },
-      _in);
+      [this, &model](const Tensor & x) { return model.value(LabeledVector(x, _in.axes())); }, _in);
   neml_assert(torch::allclose(exact, numerical, _deriv_rtol, _deriv_atol),
               "The model gives derivatives that are different from those given by finite "
               "differencing. The model gives:\n",
@@ -219,7 +218,7 @@ ModelUnitTest::check_second_derivatives(Model & model, bool first, bool second)
   model.use_AD_derivatives(first, second);
   auto exact = std::get<2>(model.value_and_dvalue_and_d2value(_in));
   auto numerical = finite_differencing_derivative(
-      [this, &model](const BatchTensor & x)
+      [this, &model](const Tensor & x)
       { return std::get<1>(model.value_and_dvalue(LabeledVector(x, _in.axes()))); },
       _in);
   neml_assert(torch::allclose(exact, numerical, _secderiv_rtol, _secderiv_atol),
@@ -235,18 +234,18 @@ ModelUnitTest::check_parameter_derivatives(Model & model)
 {
   for (auto && [name, param] : model.named_parameters())
   {
-    auto pval = BatchTensor(param).batch_expand_copy(_batch_shape);
+    auto pval = Tensor(param).batch_expand_copy(_batch_shape);
     pval.requires_grad_(true);
     param.set(pval);
     auto out = model.value(_in);
-    auto exact = math::jacrev(out, BatchTensor(param));
+    auto exact = math::jacrev(out, Tensor(param));
     auto numerical = finite_differencing_derivative(
-        [&, &param = param](const BatchTensor & x)
+        [&, &param = param](const Tensor & x)
         {
           param.set(x);
           return model.value(_in);
         },
-        BatchTensor(param));
+        Tensor(param));
     neml_assert(torch::allclose(exact, numerical, _param_rtol, _param_atol),
                 "The model gives derivatives for parameter '",
                 name,

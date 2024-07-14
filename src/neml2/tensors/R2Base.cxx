@@ -225,7 +225,7 @@ template <class Derived>
 Derived
 R2Base<Derived>::transpose() const
 {
-  return BatchTensorBase<Derived>::base_transpose(0, 1);
+  return TensorBase<Derived>::base_transpose(0, 1);
 }
 
 template <class Derived1, class Derived2, typename, typename>

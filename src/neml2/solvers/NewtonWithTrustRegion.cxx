@@ -109,13 +109,13 @@ NewtonWithTrustRegion::subproblem_solver_options(const OptionSet & options) cons
 }
 
 void
-NewtonWithTrustRegion::prepare(const NonlinearSystem & /*system*/, const BatchTensor & x)
+NewtonWithTrustRegion::prepare(const NonlinearSystem & /*system*/, const Tensor & x)
 {
   _delta = Scalar::full(x.batch_sizes(), _delta_0, x.options());
 }
 
 void
-NewtonWithTrustRegion::update(NonlinearSystem & system, BatchTensor & x)
+NewtonWithTrustRegion::update(NonlinearSystem & system, Tensor & x)
 {
   auto p = solve_direction(system);
 
@@ -159,7 +159,7 @@ NewtonWithTrustRegion::update(NonlinearSystem & system, BatchTensor & x)
   system.set_solution(x);
 }
 
-BatchTensor
+Tensor
 NewtonWithTrustRegion::solve_direction(const NonlinearSystem & system)
 {
   // The full Newton step
@@ -169,7 +169,7 @@ NewtonWithTrustRegion::solve_direction(const NonlinearSystem & system)
   _subproblem.reinit(system, _delta);
   auto s = _subproblem.solution().clone();
   auto [succeeded, iters] = _subproblem_solver.solve(_subproblem, s);
-  s = BatchTensor(torch::clamp(s, 0.0), s.batch_dim());
+  s = Tensor(torch::clamp(s, 0.0), s.batch_dim());
   auto p_trust = -_subproblem.preconditioned_direction(s);
 
   // Now select between the two... Basically take the full Newton step whenever possible
@@ -184,13 +184,12 @@ NewtonWithTrustRegion::solve_direction(const NonlinearSystem & system)
               << utils::storage_size(s.batch_sizes()) << std::endl;
   }
 
-  return BatchTensor(torch::where(newton_inside_trust_region, p_newton, p_trust),
-                     p_newton.batch_dim());
+  return Tensor(torch::where(newton_inside_trust_region, p_newton, p_trust), p_newton.batch_dim());
 }
 
 Scalar
 NewtonWithTrustRegion::merit_function_reduction(const NonlinearSystem & system,
-                                                const BatchTensor & p) const
+                                                const Tensor & p) const
 {
   auto Jp = math::bmv(system.Jacobian_view(), p);
   return -math::bvv(system.residual_view(), Jp) - 0.5 * math::bvv(Jp, Jp);

@@ -47,14 +47,13 @@ public:
 };
 
 /// Absolute value
-// I don't understand why, but apparently without this the BatchTensor abs and aten::abs (i.e. the
+// I don't understand why, but apparently without this the Tensor abs and aten::abs (i.e. the
 // torch native abs) are ambiguous
 Scalar abs(const Scalar & a);
 
-template <
-    class Derived,
-    typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
-    typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<Derived>, Derived>>>
+template <class Derived,
+          typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
+          typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<Derived>, Derived>>>
 Derived
 operator+(const Derived & a, const Scalar & b)
 {
@@ -64,20 +63,18 @@ operator+(const Derived & a, const Scalar & b)
   return Derived(torch::operator+(a, b.index(net)), broadcast_batch_dim(a, b));
 }
 
-template <
-    class Derived,
-    typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
-    typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<Derived>, Derived>>>
+template <class Derived,
+          typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
+          typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<Derived>, Derived>>>
 Derived
 operator+(const Scalar & a, const Derived & b)
 {
   return b + a;
 }
 
-template <
-    class Derived,
-    typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
-    typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<Derived>, Derived>>>
+template <class Derived,
+          typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
+          typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<Derived>, Derived>>>
 Derived
 operator-(const Derived & a, const Scalar & b)
 {
@@ -87,20 +84,18 @@ operator-(const Derived & a, const Scalar & b)
   return Derived(torch::operator-(a, b.index(net)), broadcast_batch_dim(a, b));
 }
 
-template <
-    class Derived,
-    typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
-    typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<Derived>, Derived>>>
+template <class Derived,
+          typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
+          typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<Derived>, Derived>>>
 Derived
 operator-(const Scalar & a, const Derived & b)
 {
   return -b + a;
 }
 
-template <
-    class Derived,
-    typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
-    typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<Derived>, Derived>>>
+template <class Derived,
+          typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
+          typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<Derived>, Derived>>>
 Derived
 operator*(const Derived & a, const Scalar & b)
 {
@@ -110,10 +105,9 @@ operator*(const Derived & a, const Scalar & b)
   return Derived(torch::operator*(a, b.index(net)), broadcast_batch_dim(a, b));
 }
 
-template <
-    class Derived,
-    typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
-    typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<Derived>, Derived>>>
+template <class Derived,
+          typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
+          typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<Derived>, Derived>>>
 Derived
 operator*(const Scalar & a, const Derived & b)
 {
@@ -122,10 +116,9 @@ operator*(const Scalar & a, const Derived & b)
 
 Scalar operator*(const Scalar & a, const Scalar & b);
 
-template <
-    class Derived,
-    typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
-    typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<Derived>, Derived>>>
+template <class Derived,
+          typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
+          typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<Derived>, Derived>>>
 Derived
 operator/(const Derived & a, const Scalar & b)
 {
@@ -135,10 +128,9 @@ operator/(const Derived & a, const Scalar & b)
   return Derived(torch::operator/(a, b.index(net)), broadcast_batch_dim(a, b));
 }
 
-template <
-    class Derived,
-    typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
-    typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<Derived>, Derived>>>
+template <class Derived,
+          typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
+          typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<Derived>, Derived>>>
 Derived
 operator/(const Scalar & a, const Derived & b)
 {
@@ -150,10 +142,9 @@ operator/(const Scalar & a, const Derived & b)
 
 namespace math
 {
-template <
-    class Derived,
-    typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
-    typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<Derived>, Derived>>>
+template <class Derived,
+          typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
+          typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<Derived>, Derived>>>
 Derived
 pow(const Derived & a, const Scalar & n)
 {
@@ -163,10 +154,9 @@ pow(const Derived & a, const Scalar & n)
   return Derived(torch::pow(a, n.index(net)), broadcast_batch_dim(a, n));
 }
 
-template <
-    class Derived,
-    typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
-    typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<Derived>, Derived>>>
+template <class Derived,
+          typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
+          typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<Derived>, Derived>>>
 Derived
 pow(const Scalar & a, const Derived & n)
 {

@@ -26,7 +26,7 @@
 
 #include <pybind11/operators.h>
 
-#include "python/neml2/tensors/BatchTensorBase.h"
+#include "python/neml2/tensors/TensorBase.h"
 
 namespace py = pybind11;
 

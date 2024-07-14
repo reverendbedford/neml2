@@ -26,7 +26,7 @@ from pathlib import Path
 import math
 import torch
 import neml2
-from neml2.tensors import LabeledVector, BatchTensor
+from neml2.tensors import LabeledVector, Tensor
 
 
 def test_parameter_gradient():
@@ -40,18 +40,18 @@ def test_parameter_gradient():
     # Define the input
     ndof = 26
     x = torch.linspace(0, 0.2, ndof).expand(*B, -1)
-    x = LabeledVector(BatchTensor(x, len(B)), [model.input_axis()])
+    x = LabeledVector(Tensor(x, len(B)), [model.input_axis()])
 
     # Say I want to get the parameter gradient on the flow viscosity
     p = model.named_parameters()["flow_rate.eta"]
-    p.set(BatchTensor.full((), 100, requires_grad=True))
+    p.set(Tensor.full((), 100, requires_grad=True))
 
     # Evaluate the model
     y = model.value(x)
 
     # Evaluate the loss function
-    # First .tensor() converts LabeledVector to BatchTensor
-    # Second .tensor() converts BatchTensor to torch.Tensor
+    # First .tensor() converts LabeledVector to Tensor
+    # Second .tensor() converts Tensor to torch.Tensor
     f = torch.norm(y.tensor().tensor())
 
     # Get the parameter gradient

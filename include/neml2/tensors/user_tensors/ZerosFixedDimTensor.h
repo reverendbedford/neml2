@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/tensors/user_tensors/UserTensor.h"
+#include "neml2/tensors/user_tensors/UserTensorBase.h"
 
 #include "neml2/tensors/tensors.h"
 
@@ -36,7 +36,7 @@ namespace neml2
  * @tparam T The concrete tensor derived from FixedDimTensor
  */
 template <typename T>
-class ZerosFixedDimTensor : public T, public UserTensor
+class ZerosFixedDimTensor : public T, public UserTensorBase
 {
 public:
   static OptionSet expected_options();

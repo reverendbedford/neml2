@@ -58,7 +58,7 @@ TEST_CASE("training")
       torch::tensor({100.0, 100.0, 200.0, -50.0, -150.0, 50.0, 0.001}, default_tensor_options())
           .expand({nbatch, 7});
   auto x1 = torch::cat({force0, force1, state0, state1}, -1);
-  auto y1 = model.value(LabeledVector(BatchTensor(x1, 1), {&model.input_axis()}));
+  auto y1 = model.value(LabeledVector(Tensor(x1, 1), {&model.input_axis()}));
   state1 = torch::Tensor(y1) * 1e-2;
 
   // Evaluate the model for the second time
@@ -68,7 +68,7 @@ TEST_CASE("training")
       torch::tensor({100.0, 100.0, 200.0, -50.0, -150.0, 50.0, 0.001}, default_tensor_options())
           .expand({nbatch, 7});
   auto x2 = torch::cat({force1, force2, state1, state2}, -1);
-  auto y2 = model.value(LabeledVector(BatchTensor(x2, 1), {&model.input_axis()}));
+  auto y2 = model.value(LabeledVector(Tensor(x2, 1), {&model.input_axis()}));
   state2 = torch::Tensor(y2) * 1e-2;
 
   // Evaluate the objective function
@@ -76,5 +76,5 @@ TEST_CASE("training")
 
   // Check the parameter gradient
   f.backward();
-  REQUIRE(BatchTensor(p).grad().item<Real>() == Catch::Approx(-127.5426));
+  REQUIRE(Tensor(p).grad().item<Real>() == Catch::Approx(-127.5426));
 }

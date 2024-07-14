@@ -37,7 +37,7 @@ FullFixedDimTensor<T>::expected_options()
   // Trim 6 chars to remove 'neml2::'
   auto tensor_type = utils::demangle(typeid(T).name()).substr(7);
 
-  OptionSet options = UserTensor::expected_options();
+  OptionSet options = UserTensorBase::expected_options();
   options.doc() =
       "Construct a full " + tensor_type + " with given batch shape filled with a given value.";
 
@@ -55,7 +55,7 @@ FullFixedDimTensor<T>::FullFixedDimTensor(const OptionSet & options)
   : T(T::full(options.get<TensorShape>("batch_shape"),
               options.get<Real>("value"),
               default_tensor_options())),
-    UserTensor(options)
+    UserTensorBase(options)
 {
 }
 

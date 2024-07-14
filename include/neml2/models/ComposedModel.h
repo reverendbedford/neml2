@@ -101,13 +101,13 @@ private:
       _assembly_indices;
 
   /// Cache for partial derivatives of model inputs w.r.t. total input
-  std::map<Model *, std::vector<BatchTensor>> _dpin_din_views;
+  std::map<Model *, std::vector<Tensor>> _dpin_din_views;
 
   /// Cache for partial derivatives of model outputs w.r.t. total input
   std::map<Model *, LabeledMatrix> _dpout_din;
 
   /// Cache for second partial derivatives of model inputs w.r.t. total input
-  std::map<Model *, std::vector<BatchTensor>> _d2pin_din2_views;
+  std::map<Model *, std::vector<Tensor>> _d2pin_din2_views;
 
   /// Cache for second partial derivatives of model outputs w.r.t. total input
   std::map<Model *, LabeledTensor3D> _d2pout_din2;

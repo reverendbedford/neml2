@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/tensors/user_tensors/UserTensor.h"
+#include "neml2/tensors/user_tensors/UserTensorBase.h"
 
 #include "neml2/tensors/tensors.h"
 
@@ -33,10 +33,10 @@ namespace neml2
 /**
  * @brief Create raw tensor of type T from the input file.
  *
- * @tparam T The concrete tensor derived from BatchTensorBase
+ * @tparam T The concrete tensor derived from TensorBase
  */
 template <typename T>
-class UserFixedDimTensor : public T, public UserTensor
+class UserFixedDimTensor : public T, public UserTensorBase
 {
 public:
   static OptionSet expected_options();

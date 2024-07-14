@@ -43,10 +43,10 @@ public:
 
 protected:
   /// Update trial solution
-  virtual void update(NonlinearSystem & system, BatchTensor & x) override;
+  virtual void update(NonlinearSystem & system, Tensor & x) override;
 
   /// Perform Armijo linesearch
-  virtual void linesearch(NonlinearSystem & system, const BatchTensor & x, const BatchTensor & dx);
+  virtual void linesearch(NonlinearSystem & system, const Tensor & x, const Tensor & dx);
 
   /// Linesearch maximum iterations
   unsigned int _linesearch_miter;

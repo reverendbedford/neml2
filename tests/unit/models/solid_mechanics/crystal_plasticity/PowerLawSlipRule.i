@@ -28,7 +28,7 @@
     values = '1 1 1'
   []
   [tau]
-    type = LinspaceBatchTensor
+    type = LinspaceTensor
     start = -100
     end = 200
     nstep = 12
@@ -37,7 +37,7 @@
     batch_expand = '(10,3)'
   []
   [tau_bar]
-    type = LinspaceBatchTensor
+    type = LinspaceTensor
     start = 50
     end = 250
     nstep = 12
@@ -46,7 +46,7 @@
     batch_expand = '(10,3)'
   []
   [rates]
-    type = BatchTensor
+    type = Tensor
     values = '-3.4297e-02 -1.3898e-03 -3.7875e-05 -1.3357e-07 1.7191e-09 9.9957e-07 9.3434e-06 3.3176e-05 7.6855e-05 1.4079e-04 2.2299e-04 3.2045e-04'
     base_shape = '(12)'
   []

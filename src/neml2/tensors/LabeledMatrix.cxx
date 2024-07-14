@@ -33,8 +33,7 @@ LabeledMatrix::identity(TensorShapeRef batch_size,
                         const LabeledAxis & axis,
                         const torch::TensorOptions & options)
 {
-  return LabeledMatrix(BatchTensor::identity(batch_size, axis.storage_size(), options),
-                       {&axis, &axis});
+  return LabeledMatrix(Tensor::identity(batch_size, axis.storage_size(), options), {&axis, &axis});
 }
 
 void

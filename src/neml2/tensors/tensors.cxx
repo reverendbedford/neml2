@@ -33,7 +33,7 @@ operator<<(std::ostream & os, const TensorType & t)
 
   if (false)
     ;
-  FOR_ALL_BATCHTENSORBASE(_stringify_tensor_type);
+  FOR_ALL_TensorBASE(_stringify_tensor_type);
   else os << "Unknown";
   return os;
 }

@@ -54,7 +54,7 @@ TEST_CASE("VecBase", "[tensors]")
       auto I = Vec::identity_map(DTO);
       auto a = Vec(torch::rand(utils::add_shapes(B, 3), DTO));
 
-      auto apply = [](const BatchTensor & x) { return x; };
+      auto apply = [](const Tensor & x) { return x; };
       auto da_da = finite_differencing_derivative(apply, a);
 
       REQUIRE(torch::allclose(I, da_da));

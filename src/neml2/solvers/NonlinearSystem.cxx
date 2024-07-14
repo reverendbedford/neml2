@@ -87,8 +87,8 @@ NonlinearSystem::init_scaling(const bool verbose)
   assemble(false, true);
 
   auto Jp = _Jacobian.clone();
-  _row_scaling = BatchTensor::ones_like(_solution);
-  _col_scaling = BatchTensor::ones_like(_solution);
+  _row_scaling = Tensor::ones_like(_solution);
+  _col_scaling = Tensor::ones_like(_solution);
 
   if (verbose)
     std::cout << "Before automatic scaling cond(J) = " << std::scientific
@@ -124,8 +124,8 @@ NonlinearSystem::init_scaling(const bool verbose)
               << torch::max(torch::linalg_cond(Jp)).item<Real>() << std::endl;
 }
 
-BatchTensor
-NonlinearSystem::scale_residual(const BatchTensor & r) const
+Tensor
+NonlinearSystem::scale_residual(const Tensor & r) const
 {
   neml_assert_dbg(
       _autoscale == _scaling_matrices_initialized,
@@ -134,8 +134,8 @@ NonlinearSystem::scale_residual(const BatchTensor & r) const
   return _row_scaling * r;
 }
 
-BatchTensor
-NonlinearSystem::scale_Jacobian(const BatchTensor & J) const
+Tensor
+NonlinearSystem::scale_Jacobian(const Tensor & J) const
 {
   neml_assert_dbg(
       _autoscale == _scaling_matrices_initialized,
@@ -145,8 +145,8 @@ NonlinearSystem::scale_Jacobian(const BatchTensor & J) const
                    math::base_diag_embed(_col_scaling));
 }
 
-BatchTensor
-NonlinearSystem::scale_direction(const BatchTensor & p) const
+Tensor
+NonlinearSystem::scale_direction(const Tensor & p) const
 {
   neml_assert_dbg(
       _autoscale == _scaling_matrices_initialized,
@@ -156,13 +156,13 @@ NonlinearSystem::scale_direction(const BatchTensor & p) const
 }
 
 void
-NonlinearSystem::set_solution(const BatchTensor & x)
+NonlinearSystem::set_solution(const Tensor & x)
 {
   _solution.variable_data().copy_(x);
 }
 
-BatchTensor
-NonlinearSystem::residual(const BatchTensor & x)
+Tensor
+NonlinearSystem::residual(const Tensor & x)
 {
   set_solution(x);
   residual();
@@ -178,8 +178,8 @@ NonlinearSystem::residual()
     _scaled_residual = scale_residual(_residual);
 }
 
-BatchTensor
-NonlinearSystem::Jacobian(const BatchTensor & x)
+Tensor
+NonlinearSystem::Jacobian(const Tensor & x)
 {
   set_solution(x);
   Jacobian();
@@ -195,8 +195,8 @@ NonlinearSystem::Jacobian()
     _scaled_Jacobian = scale_Jacobian(_Jacobian);
 }
 
-std::tuple<BatchTensor, BatchTensor>
-NonlinearSystem::residual_and_Jacobian(const BatchTensor & x)
+std::tuple<Tensor, Tensor>
+NonlinearSystem::residual_and_Jacobian(const Tensor & x)
 {
   set_solution(x);
   residual_and_Jacobian();
@@ -215,7 +215,7 @@ NonlinearSystem::residual_and_Jacobian()
   }
 }
 
-BatchTensor
+Tensor
 NonlinearSystem::residual_norm() const
 {
   return math::linalg::vector_norm(residual_view());

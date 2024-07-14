@@ -62,14 +62,14 @@ TEST_CASE("ParameterStore", "[models]")
       // dictionary.
       E = E.batch_expand_copy({1, 2});
       nu = nu.batch_expand_copy({5, 1});
-      REQUIRE(BatchTensor(params["E"]).batch_sizes() == TensorShape{1, 2});
-      REQUIRE(BatchTensor(params["nu"]).batch_sizes() == TensorShape{5, 1});
+      REQUIRE(Tensor(params["E"]).batch_sizes() == TensorShape{1, 2});
+      REQUIRE(Tensor(params["nu"]).batch_sizes() == TensorShape{5, 1});
 
       // Same thing say when the user wants to use torch AD
       E.requires_grad_(true);
       nu.requires_grad_(true);
-      REQUIRE(BatchTensor(params["E"]).requires_grad());
-      REQUIRE(BatchTensor(params["nu"]).requires_grad());
+      REQUIRE(Tensor(params["E"]).requires_grad());
+      REQUIRE(Tensor(params["nu"]).requires_grad());
     }
   }
 
@@ -110,7 +110,7 @@ TEST_CASE("ParameterStore", "[models]")
 
       // Parameter gradients from finite differencing
       const auto dS_dE_FD = finite_differencing_derivative(
-          [&](const BatchTensor & Ep)
+          [&](const Tensor & Ep)
           {
             E = Ep;
             auto y = model.value(x);
@@ -119,7 +119,7 @@ TEST_CASE("ParameterStore", "[models]")
           },
           E.clone());
       const auto dS_dnu_FD = finite_differencing_derivative(
-          [&](const BatchTensor & nup)
+          [&](const Tensor & nup)
           {
             nu = nup;
             auto y = model.value(x);

@@ -121,7 +121,7 @@ template <>
 CrossRef<torch::Tensor>::operator torch::Tensor() const;
 
 template <>
-CrossRef<BatchTensor>::operator BatchTensor() const;
+CrossRef<Tensor>::operator Tensor() const;
 
 #define CROSSREF_SPECIALIZE_FIXEDDIMTENSOR(T)                                                      \
   template <>                                                                                      \

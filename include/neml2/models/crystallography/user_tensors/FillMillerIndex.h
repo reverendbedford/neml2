@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/tensors/user_tensors/UserTensor.h"
+#include "neml2/tensors/user_tensors/UserTensorBase.h"
 
 #include "neml2/models/crystallography/MillerIndex.h"
 
@@ -35,7 +35,7 @@ namespace crystallography
 /**
  * @brief Create a single-batched "list" of Miller indices
  */
-class FillMillerIndex : public MillerIndex, public UserTensor
+class FillMillerIndex : public MillerIndex, public UserTensorBase
 {
 public:
   static OptionSet expected_options();

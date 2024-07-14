@@ -37,7 +37,7 @@ UserFixedDimTensor<T>::expected_options()
   // Trim 6 chars to remove 'neml2::'
   auto tensor_type = utils::demangle(typeid(T).name()).substr(7);
 
-  OptionSet options = UserTensor::expected_options();
+  OptionSet options = UserTensorBase::expected_options();
   options.doc() =
       "Construct a " + tensor_type +
       " from a vector values. The vector will be reshaped according to the specified batch shape.";
@@ -54,7 +54,7 @@ UserFixedDimTensor<T>::expected_options()
 template <typename T>
 UserFixedDimTensor<T>::UserFixedDimTensor(const OptionSet & options)
   : T(T::empty(options.get<TensorShape>("batch_shape"), default_tensor_options())),
-    UserTensor(options)
+    UserTensorBase(options)
 {
   auto vals = options.get<std::vector<Real>>("values");
   auto flat = torch::tensor(vals, default_tensor_options());

@@ -45,7 +45,7 @@ public:
 
   /// Get an input variable
   ///@{
-  template <typename T = BatchTensor>
+  template <typename T = Tensor>
   Variable<T> & get_input_variable(const VariableName & name)
   {
     auto var_base_ptr = _input_views.query_value(name);
@@ -55,7 +55,7 @@ public:
         var_ptr, "Input variable ", name, " exist but cannot be cast to the requested type.");
     return *var_ptr;
   }
-  template <typename T = BatchTensor>
+  template <typename T = Tensor>
   const Variable<T> & get_input_variable(const VariableName & name) const
   {
     const auto var_base_ptr = _input_views.query_value(name);
@@ -69,12 +69,12 @@ public:
 
   /// Get an output variable
   ///@{
-  template <typename T = BatchTensor>
+  template <typename T = Tensor>
   const Variable<T> & get_output_variable(const VariableName & name)
   {
     return std::as_const(*this).get_output_variable<T>(name);
   }
-  template <typename T = BatchTensor>
+  template <typename T = Tensor>
   const Variable<T> & get_output_variable(const VariableName & name) const
   {
     const auto var_base_ptr = _output_views.query_value(name);
@@ -180,19 +180,19 @@ protected:
 
   /// Declare an input variable (with unknown base shape at compile time)
   template <typename... S>
-  const Variable<BatchTensor> & declare_input_variable(Size sz, TensorType t, S &&... name)
+  const Variable<Tensor> & declare_input_variable(Size sz, TensorType t, S &&... name)
   {
     const auto var_name = variable_name(std::forward<S>(name)...);
     declare_variable(_input_axis, var_name, sz);
-    return *create_variable_view<BatchTensor>(_input_views, var_name, t, sz);
+    return *create_variable_view<Tensor>(_input_views, var_name, t, sz);
   }
 
   /// Declare an input variable that is a list of tensors of fixed size
   template <typename T, typename... S>
-  const Variable<BatchTensor> & declare_input_variable_list(Size list_size, S &&... name)
+  const Variable<Tensor> & declare_input_variable_list(Size list_size, S &&... name)
   {
     return declare_input_variable(
-        list_size * T::const_base_storage, TensorType::kBatchTensor, std::forward<S>(name)...);
+        list_size * T::const_base_storage, TensorType::kTensor, std::forward<S>(name)...);
   }
 
   /// Declare an output variable
@@ -206,19 +206,19 @@ protected:
 
   /// Declare an input variable (with unknown base shape at compile time)
   template <typename... S>
-  Variable<BatchTensor> & declare_output_variable(Size sz, TensorType t, S &&... name)
+  Variable<Tensor> & declare_output_variable(Size sz, TensorType t, S &&... name)
   {
     const auto var_name = variable_name(std::forward<S>(name)...);
     declare_variable(_output_axis, var_name, sz);
-    return *create_variable_view<BatchTensor>(_output_views, var_name, t, sz);
+    return *create_variable_view<Tensor>(_output_views, var_name, t, sz);
   }
 
   /// Declare an output variable that is a list of tensors of fixed size
   template <typename T, typename... S>
-  Variable<BatchTensor> & declare_output_variable_list(Size list_size, S &&... name)
+  Variable<Tensor> & declare_output_variable_list(Size list_size, S &&... name)
   {
     return declare_output_variable(
-        list_size * T::const_base_storage, TensorType::kBatchTensor, std::forward<S>(name)...);
+        list_size * T::const_base_storage, TensorType::kTensor, std::forward<S>(name)...);
   }
 
   /// Declare an item recursively on an axis
@@ -266,8 +266,8 @@ private:
                                      TensorType t = TensorTypeEnum<T>::value,
                                      Size sz = -1)
   {
-    if constexpr (std::is_same_v<T, BatchTensor>)
-      neml_assert(sz > 0, "Allocating a BatchTensor requires a known storage size.");
+    if constexpr (std::is_same_v<T, Tensor>)
+      neml_assert(sz > 0, "Allocating a Tensor requires a known storage size.");
 
     // Make sure we don't duplicate variable allocation
     VariableBase * var_base_ptr = views.query_value(name);
@@ -277,9 +277,9 @@ private:
                 ", but a variable with the same name already exists.");
 
     // Allocate
-    if constexpr (std::is_same_v<T, BatchTensor>)
+    if constexpr (std::is_same_v<T, Tensor>)
     {
-      auto var = std::make_unique<Variable<BatchTensor>>(name, sz, t);
+      auto var = std::make_unique<Variable<Tensor>>(name, sz, t);
       var_base_ptr = views.set_pointer(name, std::move(var));
     }
     else

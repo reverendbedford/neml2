@@ -31,7 +31,7 @@ register_NEML2_object(FillR2);
 OptionSet
 FillR2::expected_options()
 {
-  OptionSet options = UserTensor::expected_options();
+  OptionSet options = UserTensorBase::expected_options();
   options.doc() = "Construct a R2 with a vector of Scalars. The vector length must be 1, 3, 6, or "
                   "9. When vector length is 1, the Scalar value is used to fill the diagonals; "
                   "when vector length is 3, the Scalar values are used to fill the respective "
@@ -47,7 +47,7 @@ FillR2::expected_options()
 
 FillR2::FillR2(const OptionSet & options)
   : R2(fill(options.get<std::vector<CrossRef<Scalar>>>("values"))),
-    UserTensor(options)
+    UserTensorBase(options)
 {
 }
 

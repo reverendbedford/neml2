@@ -26,16 +26,46 @@
 
 namespace neml2
 {
+register_NEML2_object_alias(UserTensor, "Tensor");
+
 OptionSet
 UserTensor::expected_options()
 {
-  OptionSet options = NEML2Object::expected_options();
-  options.section() = "Tensors";
+  OptionSet options = UserTensorBase::expected_options();
+  options.doc() = "Construct a Tensor from a vector of values. The vector will be reshaped "
+                  "according to the specified batch and base shapes.";
+
+  options.set<std::vector<Real>>("values");
+  options.set("values").doc() = "Values in this (flattened) tensor";
+
+  options.set<TensorShape>("batch_shape") = {};
+  options.set("batch_shape").doc() = "Batch shape";
+
+  options.set<TensorShape>("base_shape") = {};
+  options.set("base_shape").doc() = "Base shape";
+
   return options;
 }
 
 UserTensor::UserTensor(const OptionSet & options)
-  : NEML2Object(options)
+  : Tensor(Tensor::empty(options.get<TensorShape>("batch_shape"),
+                         options.get<TensorShape>("base_shape"),
+                         default_tensor_options())),
+    UserTensorBase(options)
 {
+  auto vals = options.get<std::vector<Real>>("values");
+  auto flat = torch::tensor(vals, default_tensor_options());
+  if (vals.size() == size_t(this->base_storage()))
+    this->index_put_({torch::indexing::Ellipsis}, flat.reshape(this->base_sizes()));
+  else if (vals.size() == size_t(utils::storage_size(this->sizes())))
+    this->index_put_({torch::indexing::Ellipsis}, flat.reshape(this->sizes()));
+  else
+    neml_assert(false,
+                "Number of values ",
+                vals.size(),
+                " must equal to either the base storage size ",
+                this->base_storage(),
+                " or the total storage size ",
+                utils::storage_size(this->sizes()));
 }
 } // namespace neml2

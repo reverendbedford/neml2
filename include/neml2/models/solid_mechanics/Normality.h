@@ -45,6 +45,6 @@ protected:
   /// The potential function
   const VariableName _f;
 
-  std::map<VariableName, Variable<BatchTensor> *> _conjugate_pairs;
+  std::map<VariableName, Variable<Tensor> *> _conjugate_pairs;
 };
 } // namespace neml2

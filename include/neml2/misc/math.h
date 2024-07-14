@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/tensors/BatchTensor.h"
+#include "neml2/tensors/Tensor.h"
 
 namespace neml2
 {
@@ -106,15 +106,15 @@ private:
  * @param rmap The reduction map
  * @param rfactors The reduction factors
  * @param dim The base dimension where the reduced axes start
- * @return BatchTensor The reduced tensor
+ * @return Tensor The reduced tensor
  */
-BatchTensor full_to_reduced(const BatchTensor & full,
-                            const torch::Tensor & rmap,
-                            const torch::Tensor & rfactors,
-                            Size dim = 0);
+Tensor full_to_reduced(const Tensor & full,
+                       const torch::Tensor & rmap,
+                       const torch::Tensor & rfactors,
+                       Size dim = 0);
 
 /**
- * @brief Convert a BatchTensor from reduced notation to full notation.
+ * @brief Convert a Tensor from reduced notation to full notation.
  *
  * See @ref full_to_reduced for a detailed explanation.
  *
@@ -122,15 +122,15 @@ BatchTensor full_to_reduced(const BatchTensor & full,
  * @param rmap The unreduction map
  * @param rfactors The unreduction factors
  * @param dim The base dimension where the reduced axes start
- * @return BatchTensor The resulting tensor in full notation.
+ * @return Tensor The resulting tensor in full notation.
  */
-BatchTensor reduced_to_full(const BatchTensor & reduced,
-                            const torch::Tensor & rmap,
-                            const torch::Tensor & rfactors,
-                            Size dim = 0);
+Tensor reduced_to_full(const Tensor & reduced,
+                       const torch::Tensor & rmap,
+                       const torch::Tensor & rfactors,
+                       Size dim = 0);
 
 /**
- * @brief Convert a `BatchTensor` from full notation to Mandel notation.
+ * @brief Convert a `Tensor` from full notation to Mandel notation.
  *
  * The tensor in full notation \p full can have arbitrary batch shape. The optional argument \p dim
  * denotes the base dimension starting from which the conversion should take place.
@@ -143,23 +143,23 @@ BatchTensor reduced_to_full(const BatchTensor & reduced,
  *
  * @param full The input tensor in full notation
  * @param dim The base dimension where the symmetric axes start
- * @return BatchTensor The resulting tensor using Mandel notation to represent the symmetric axes.
+ * @return Tensor The resulting tensor using Mandel notation to represent the symmetric axes.
  */
-BatchTensor full_to_mandel(const BatchTensor & full, Size dim = 0);
+Tensor full_to_mandel(const Tensor & full, Size dim = 0);
 
 /**
- * @brief Convert a BatchTensor from Mandel notation to full notation.
+ * @brief Convert a Tensor from Mandel notation to full notation.
  *
  * See @ref full_to_mandel for a detailed explanation.
  *
  * @param mandel The input tensor in Mandel notation
  * @param dim The base dimension where the symmetric axes start
- * @return BatchTensor The resulting tensor in full notation.
+ * @return Tensor The resulting tensor in full notation.
  */
-BatchTensor mandel_to_full(const BatchTensor & mandel, Size dim = 0);
+Tensor mandel_to_full(const Tensor & mandel, Size dim = 0);
 
 /**
- * @brief Convert a `BatchTensor` from full notation to skew vector notation.
+ * @brief Convert a `Tensor` from full notation to skew vector notation.
  *
  * The tensor in full notation \p full can have arbitrary batch shape. The optional argument \p dim
  * denotes the base dimension starting from which the conversion should take place.
@@ -172,21 +172,21 @@ BatchTensor mandel_to_full(const BatchTensor & mandel, Size dim = 0);
  *
  * @param full The input tensor in full notation
  * @param dim The base dimension where the symmetric axes start
- * @return BatchTensor The resulting tensor using skew notation to represent the skew-symmetric
+ * @return Tensor The resulting tensor using skew notation to represent the skew-symmetric
  * axes.
  */
-BatchTensor full_to_skew(const BatchTensor & full, Size dim = 0);
+Tensor full_to_skew(const Tensor & full, Size dim = 0);
 
 /**
- * @brief Convert a BatchTensor from skew vector notation to full notation.
+ * @brief Convert a Tensor from skew vector notation to full notation.
  *
  * See @ref full_to_skew for a detailed explanation.
  *
  * @param skew The input tensor in skew notation
  * @param dim The base dimension where the symmetric axes start
- * @return BatchTensor The resulting tensor in full notation.
+ * @return Tensor The resulting tensor in full notation.
  */
-BatchTensor skew_to_full(const BatchTensor & skew, Size dim = 0);
+Tensor skew_to_full(const Tensor & skew, Size dim = 0);
 
 /**
  * @brief Use automatic differentiation (AD) to calculate the derivatives w.r.t. to the parameter
@@ -203,13 +203,13 @@ BatchTensor skew_to_full(const BatchTensor & skew, Size dim = 0);
  * One possible (inefficient) workaround is to expand and copy the parameter \p p batch dimensions,
  * e.g., batch_expand_copy, _before_ calculating the output \p y.
  *
- * @param y The `BatchTensor` to to be differentiated
+ * @param y The `Tensor` to to be differentiated
  * @param p The parameter to take derivatives with respect to
- * @return BatchTensor \f$\partial y/\partial p\f$
+ * @return Tensor \f$\partial y/\partial p\f$
  */
-BatchTensor jacrev(const BatchTensor & y, const BatchTensor & p);
+Tensor jacrev(const Tensor & y, const Tensor & p);
 
-BatchTensor base_diag_embed(const BatchTensor & a, Size offset = 0, Size d1 = -2, Size d2 = -1);
+Tensor base_diag_embed(const Tensor & a, Size offset = 0, Size d1 = -2, Size d2 = -1);
 
 /// Product w_ik e_kj - e_ik w_kj with e SR2 and w WR2
 SR2 skew_and_sym_to_sym(const SR2 & e, const WR2 & w);
@@ -229,7 +229,7 @@ WSR4 d_multiply_and_make_skew_d_first(const SR2 & b);
 /// Derivative of a_ik b_kj - b_ik a_kj wrt b
 WSR4 d_multiply_and_make_skew_d_second(const SR2 & a);
 
-/// Concatenate a list of BatchTensors
+/// Concatenate a list of Tensors
 template <
     typename Container,
     std::enable_if_t<
@@ -240,31 +240,31 @@ template <
                                       decltype(std::declval<Container>().end())>::iterator_category,
                                   std::input_iterator_tag>,
         int> = 0>
-inline BatchTensor
+inline Tensor
 cat(Container && tensors, Size dim)
 {
   std::vector<torch::Tensor> torch_tensors(tensors.begin(), tensors.end());
-  return BatchTensor(torch::cat(torch_tensors, dim), tensors.begin()->batch_dim());
+  return Tensor(torch::cat(torch_tensors, dim), tensors.begin()->batch_dim());
 }
 
 namespace linalg
 {
 /// Vector norm of a vector. Falls back to math::abs is \p v is a Scalar.
-BatchTensor vector_norm(const BatchTensor & v);
+Tensor vector_norm(const Tensor & v);
 
 /// Inverse of a square matrix
-BatchTensor inv(const BatchTensor & m);
+Tensor inv(const Tensor & m);
 
 /// Solve the linear system A X = B
-BatchTensor solve(const BatchTensor & A, const BatchTensor & B);
+Tensor solve(const Tensor & A, const Tensor & B);
 
-std::tuple<BatchTensor, BatchTensor> lu_factor(const BatchTensor & A, bool pivot = true);
+std::tuple<Tensor, Tensor> lu_factor(const Tensor & A, bool pivot = true);
 
-BatchTensor lu_solve(const BatchTensor & LU,
-                     const BatchTensor & pivots,
-                     const BatchTensor & B,
-                     bool left = true,
-                     bool adjoint = false);
+Tensor lu_solve(const Tensor & LU,
+                const Tensor & pivots,
+                const Tensor & B,
+                bool left = true,
+                bool adjoint = false);
 } // namespace linalg
 } // namespace math
 } // namespace neml2

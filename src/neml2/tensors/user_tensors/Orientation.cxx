@@ -33,7 +33,7 @@ register_NEML2_object(Orientation);
 OptionSet
 Orientation::expected_options()
 {
-  OptionSet options = UserTensor::expected_options();
+  OptionSet options = UserTensorBase::expected_options();
 
   options.doc() = "An orientation, internally defined as a set of Modified Rodrigues parameters "
                   "given by \\f$ r = n \\tan{\\frac{\\theta}{4}} \\f$ with \\f$ n \\f$ the axis of "
@@ -70,7 +70,7 @@ Orientation::expected_options()
 
 Orientation::Orientation(const OptionSet & options)
   : Rot(fill(options)),
-    UserTensor(options)
+    UserTensorBase(options)
 {
 }
 

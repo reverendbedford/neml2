@@ -35,7 +35,7 @@ register_NEML2_object(SymmetryFromOrbifold);
 OptionSet
 SymmetryFromOrbifold::expected_options()
 {
-  OptionSet options = UserTensor::expected_options();
+  OptionSet options = UserTensorBase::expected_options();
   options.doc() = "Returns a tensor of symmetry operations for a given symmetr group represented "
                   "in orbifold notation.";
 
@@ -48,7 +48,7 @@ SymmetryFromOrbifold::expected_options()
 
 SymmetryFromOrbifold::SymmetryFromOrbifold(const OptionSet & options)
   : R2(symmetry_operations_from_orbifold(options.get<std::string>("orbifold"))),
-    UserTensor(options)
+    UserTensorBase(options)
 {
 }
 }

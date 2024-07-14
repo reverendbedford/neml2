@@ -28,7 +28,7 @@
     values = '100.0'
   []
   [strengths]
-    type = BatchTensor
+    type = Tensor
     values = '150 150 150 150 150 150 150 150 150 150 150 150'
     base_shape = '(12)'
   []

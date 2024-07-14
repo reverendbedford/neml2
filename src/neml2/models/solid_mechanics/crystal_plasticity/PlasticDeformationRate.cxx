@@ -84,7 +84,7 @@ PlasticDeformationRate::set_value(bool out, bool dout_din, bool d2out_din2)
 
   if (dout_din)
   {
-    _dp.d(_g) = BatchTensor(_crystal_geometry.M().rotate(R2(_R).batch_unsqueeze(-1)), batch_dim())
+    _dp.d(_g) = Tensor(_crystal_geometry.M().rotate(R2(_R).batch_unsqueeze(-1)), batch_dim())
                     .base_transpose(-2, -1);
     _dp.d(_R) = dp_crystal.drotate(R2(_R));
   }

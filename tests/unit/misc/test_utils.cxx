@@ -25,7 +25,7 @@
 #include <catch2/catch_test_macros.hpp>
 
 #include "neml2/misc/utils.h"
-#include "neml2/tensors/BatchTensor.h"
+#include "neml2/tensors/Tensor.h"
 
 using namespace neml2;
 
@@ -41,10 +41,10 @@ TEST_CASE("utils", "[misc]")
     TensorShape d = {4, 5, 6};
 
     // Create some tensors with the above batch shapes, the base shapes should not matter.
-    auto A = BatchTensor::empty(a, {5, 3}, DTO);
-    auto B = BatchTensor::empty(b, {1, 2}, DTO);
-    auto C = BatchTensor::empty(c, {}, DTO);
-    auto D = BatchTensor::empty(d, {3, 5, 6}, DTO);
+    auto A = Tensor::empty(a, {5, 3}, DTO);
+    auto B = Tensor::empty(b, {1, 2}, DTO);
+    auto C = Tensor::empty(c, {}, DTO);
+    auto D = Tensor::empty(d, {3, 5, 6}, DTO);
 
     REQUIRE(broadcast_batch_dim(A) == 0);
     REQUIRE(broadcast_batch_dim(A, B) == 2);
@@ -57,34 +57,34 @@ TEST_CASE("utils", "[misc]")
     // Broadcastable
     // 1. Same base shapes
     // 2. Batch shapes are broadcastable
-    auto A1 = BatchTensor::empty({1, 2}, {5, 3}, DTO);
-    auto B1 = BatchTensor::empty({1}, {5, 3}, DTO);
+    auto A1 = Tensor::empty({1, 2}, {5, 3}, DTO);
+    auto B1 = Tensor::empty({1}, {5, 3}, DTO);
     REQUIRE(broadcastable(A1, B1));
 
     // Broadcastable
     // 1. Same base shapes
     // 2. Batch shapes (can be empty) are broadcastable
-    auto A2 = BatchTensor::empty({1, 2}, {5, 3}, DTO);
-    auto B2 = BatchTensor::empty({}, {5, 3}, DTO);
+    auto A2 = Tensor::empty({1, 2}, {5, 3}, DTO);
+    auto B2 = Tensor::empty({}, {5, 3}, DTO);
     REQUIRE(broadcastable(A2, B2));
 
     // Not broadcastable: batch-broadcastable but base shapes are different
-    auto A3 = BatchTensor::empty({1, 2}, {5, 3}, DTO);
-    auto B3 = BatchTensor::empty({1}, {1, 3}, DTO);
+    auto A3 = Tensor::empty({1, 2}, {5, 3}, DTO);
+    auto B3 = Tensor::empty({1}, {1, 3}, DTO);
     REQUIRE(!broadcastable(A3, B3));
 
     // Not broadcastable: batch shapes not broadcastable
-    auto A4 = BatchTensor::empty({1, 2}, {5, 3}, DTO);
-    auto B4 = BatchTensor::empty({3, 5}, {5, 3}, DTO);
+    auto A4 = Tensor::empty({1, 2}, {5, 3}, DTO);
+    auto B4 = Tensor::empty({3, 5}, {5, 3}, DTO);
     REQUIRE(!broadcastable(A4, B4));
 
-    auto A = BatchTensor::empty({1, 1, 1}, {5, 3}, DTO);
-    auto B = BatchTensor::empty({5, 1, 2}, {5, 3}, DTO);
-    auto C = BatchTensor::empty({2, 1}, {5, 3}, DTO);
-    auto D = BatchTensor::empty({2, 2}, {5, 3}, DTO);
+    auto A = Tensor::empty({1, 1, 1}, {5, 3}, DTO);
+    auto B = Tensor::empty({5, 1, 2}, {5, 3}, DTO);
+    auto C = Tensor::empty({2, 1}, {5, 3}, DTO);
+    auto D = Tensor::empty({2, 2}, {5, 3}, DTO);
     REQUIRE(broadcastable(A, B, C, D));
 
-    auto E = BatchTensor::empty({3, 1, 1}, {5, 3}, DTO);
+    auto E = Tensor::empty({3, 1, 1}, {5, 3}, DTO);
     REQUIRE(!broadcastable(A, B, C, D, E));
   }
 

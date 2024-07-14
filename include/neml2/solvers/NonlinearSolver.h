@@ -54,7 +54,7 @@ public:
    * @return A boolean indicating whether the solve has succeeded and the number of iterations
    * before convergence.
    */
-  virtual std::tuple<bool, size_t> solve(NonlinearSystem & system, BatchTensor & sol) = 0;
+  virtual std::tuple<bool, size_t> solve(NonlinearSystem & system, Tensor & sol) = 0;
 
   /// Absolute tolerance
   Real atol;

@@ -56,8 +56,7 @@ public:
   ///}@
 
   /// Get a writable reference of a parameter
-  template <typename T,
-            typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<T>, T>>>
+  template <typename T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
   T & get_parameter(const std::string & name);
 
   /// Whether this parameter store has any nonlinear parameter
@@ -100,8 +99,7 @@ protected:
    * @param rawval Buffer value
    * @return Reference to buffer
    */
-  template <typename T,
-            typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<T>, T>>>
+  template <typename T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
   const T & declare_parameter(const std::string & name, const T & rawval);
 
   /**
@@ -118,8 +116,7 @@ protected:
    * parameter.
    * @return T The value of the registered model parameter.
    */
-  template <typename T,
-            typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<T>, T>>>
+  template <typename T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
   const T & declare_parameter(const std::string & name, const std::string & input_option_name);
 
   /// Map from nonlinear parameter names to their corresponding variable views

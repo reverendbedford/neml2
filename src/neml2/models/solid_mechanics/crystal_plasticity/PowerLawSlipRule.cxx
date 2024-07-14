@@ -66,17 +66,16 @@ PowerLawSlipRule::set_value(bool out, bool dout_din, bool d2out_din2)
   const auto tau = Scalar(_tau, batch_dim() + 1);
 
   if (out)
-    _g = BatchTensor(_gamma0 * math::pow(abs(rss / tau), _n - 1.0) * rss / tau, batch_dim());
+    _g = Tensor(_gamma0 * math::pow(abs(rss / tau), _n - 1.0) * rss / tau, batch_dim());
 
   if (dout_din)
   {
-    _g.d(_rss) = BatchTensor(
-        math::batch_diag_embed(_gamma0 * _n * math::pow(abs(rss / tau), _n - 1.0) / tau),
-        batch_dim());
-    _g.d(_tau) =
-        BatchTensor(math::batch_diag_embed(-_n * _gamma0 * rss * math::pow(abs(rss), _n - 1.0) /
-                                           math::pow(tau, _n + 1)),
-                    batch_dim());
+    _g.d(_rss) =
+        Tensor(math::batch_diag_embed(_gamma0 * _n * math::pow(abs(rss / tau), _n - 1.0) / tau),
+               batch_dim());
+    _g.d(_tau) = Tensor(math::batch_diag_embed(-_n * _gamma0 * rss * math::pow(abs(rss), _n - 1.0) /
+                                               math::pow(tau, _n + 1)),
+                        batch_dim());
   }
 }
 } // namespace neml2

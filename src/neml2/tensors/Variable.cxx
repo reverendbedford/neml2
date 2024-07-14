@@ -112,7 +112,7 @@ VariableBase::d(const VariableBase & x1, const VariableBase & x2)
 }
 
 void
-Derivative::operator=(const BatchTensor & val)
+Derivative::operator=(const Tensor & val)
 {
   _value.index_put_({torch::indexing::Slice()},
                     val.batch_expand_as(_value).base_reshape(_value.base_sizes()));

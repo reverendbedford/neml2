@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/tensors/BatchTensor.h"
+#include "neml2/tensors/Tensor.h"
 #include "neml2/base/OptionSet.h"
 
 namespace neml2
@@ -53,38 +53,38 @@ public:
   virtual void init_scaling(const bool verbose = false);
 
   /// Apply scaling to the residual
-  BatchTensor scale_residual(const BatchTensor & r) const;
+  Tensor scale_residual(const Tensor & r) const;
   /// Apply scaling to the Jacobian
-  BatchTensor scale_Jacobian(const BatchTensor & J) const;
+  Tensor scale_Jacobian(const Tensor & J) const;
   /// Remove scaling from the search direction, i.e. \f$ J^{-1} r \f$
-  BatchTensor scale_direction(const BatchTensor & p) const;
+  Tensor scale_direction(const Tensor & p) const;
 
   /// Set the solution vector
-  virtual void set_solution(const BatchTensor & x);
+  virtual void set_solution(const Tensor & x);
 
   /// Get the solution vector
-  virtual BatchTensor solution() const { return _solution; }
+  virtual Tensor solution() const { return _solution; }
 
   /// Convenient shortcut to set the current solution, assemble and return the system residual
-  BatchTensor residual(const BatchTensor & x);
+  Tensor residual(const Tensor & x);
   /// Convenient shortcut to assemble and return the system residual
   void residual();
 
   /// Convenient shortcut to set the current solution, assemble and return the system Jacobian
-  BatchTensor Jacobian(const BatchTensor & x);
+  Tensor Jacobian(const Tensor & x);
   /// Convenient shortcut to assemble and return the system Jacobian
   void Jacobian();
 
   /// Convenient shortcut to set the current solution, assemble and return the system residual and Jacobian
-  std::tuple<BatchTensor, BatchTensor> residual_and_Jacobian(const BatchTensor & x);
+  std::tuple<Tensor, Tensor> residual_and_Jacobian(const Tensor & x);
   /// Convenient shortcut to assemble and return the system residual and Jacobian
   void residual_and_Jacobian();
 
-  const BatchTensor & residual_view() const { return _autoscale ? _scaled_residual : _residual; }
-  const BatchTensor & Jacobian_view() const { return _autoscale ? _scaled_Jacobian : _Jacobian; }
+  const Tensor & residual_view() const { return _autoscale ? _scaled_residual : _residual; }
+  const Tensor & Jacobian_view() const { return _autoscale ? _scaled_Jacobian : _Jacobian; }
 
   /// The residual norm
-  BatchTensor residual_norm() const;
+  Tensor residual_norm() const;
 
 protected:
   /**
@@ -99,17 +99,17 @@ protected:
   Size _ndof;
 
   /// View for the solution of this nonlinear system
-  BatchTensor _solution;
+  Tensor _solution;
 
   /// View for the residual of this nonlinear system
-  BatchTensor _residual;
+  Tensor _residual;
 
   /// View for the Jacobian of this nonlinear system
-  BatchTensor _Jacobian;
+  Tensor _Jacobian;
 
-  BatchTensor _scaled_residual;
+  Tensor _scaled_residual;
 
-  BatchTensor _scaled_Jacobian;
+  Tensor _scaled_Jacobian;
 
   /// If true, do automatic scaling
   const bool _autoscale;
@@ -124,9 +124,9 @@ protected:
   bool _scaling_matrices_initialized;
 
   /// Row scaling "matrix" -- since it's a batched diagonal matrix, we are only storing its diagonals
-  BatchTensor _row_scaling;
+  Tensor _row_scaling;
 
   /// Column scaling "matrix" -- since it's a batched diagonal matrix, we are only storing its diagonals
-  BatchTensor _col_scaling;
+  Tensor _col_scaling;
 };
 } // namespace neml2

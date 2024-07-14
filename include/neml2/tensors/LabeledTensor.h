@@ -26,14 +26,14 @@
 
 #include "neml2/misc/types.h"
 #include "neml2/tensors/LabeledAxis.h"
-#include "neml2/tensors/BatchTensor.h"
+#include "neml2/tensors/Tensor.h"
 
 namespace neml2
 {
 /**
  * @brief The primary data structure in NEML2 for working with labeled tensor views.
  *
- * Each LabeledTensor consists of one BatchTensor and one or more LabeledAxis. The
+ * Each LabeledTensor consists of one Tensor and one or more LabeledAxis. The
  * `LabeledTensor<D>` is templated on the base dimension \f$D\f$. LabeledTensor handles the
  * creation, modification, and accessing of labeled tensors.
  *
@@ -51,8 +51,8 @@ public:
                 Size batch_dim,
                 const std::array<const LabeledAxis *, D> & axes);
 
-  /// Construct from a BatchTensor with array of `LabeledAxis`
-  LabeledTensor(const BatchTensor & tensor, const std::array<const LabeledAxis *, D> & axes);
+  /// Construct from a Tensor with array of `LabeledAxis`
+  LabeledTensor(const Tensor & tensor, const std::array<const LabeledAxis *, D> & axes);
 
   /// Copy constructor
   LabeledTensor(const Derived & other);
@@ -62,7 +62,7 @@ public:
 
   /// A potentially dangerous implicit conversion
   // Should we mark it explicit?
-  operator BatchTensor() const;
+  operator Tensor() const;
 
   /// A potentially dangerous implicit conversion
   // Should we mark it explicit?
@@ -104,8 +104,8 @@ public:
 
   /// Get the underlying tensor
   ///@{
-  const BatchTensor & tensor() const { return _tensor; }
-  BatchTensor & tensor() { return _tensor; }
+  const Tensor & tensor() const { return _tensor; }
+  Tensor & tensor() { return _tensor; }
   /// @}
 
   /// Get the tensor options
@@ -143,7 +143,7 @@ public:
   /// Return a labeled view into the tensor.
   /// **No reshaping is done.**
   template <typename... S>
-  BatchTensor operator()(S &&... names) const;
+  Tensor operator()(S &&... names) const;
 
   /// Slice the tensor on the given dimension by a single variable or sub-axis
   Derived slice(Size i, const std::string & name) const;
@@ -159,7 +159,7 @@ public:
   void batch_index_put(indexing::TensorIndices indices, const torch::Tensor & other);
 
   /// Return an index sliced on the batch dimensions
-  BatchTensor base_index(indexing::TensorIndices indices) const;
+  Tensor base_index(indexing::TensorIndices indices) const;
 
   /// Set a index sliced on the batch dimensions to a value
   void base_index_put(indexing::TensorIndices indices, const torch::Tensor & other);
@@ -190,7 +190,7 @@ public:
 
   /// Set and interpret the input as an object
   template <typename T, typename... S>
-  void set(const BatchTensorBase<T> & value, S &&... names)
+  void set(const TensorBase<T> & value, S &&... names)
   {
     (*this)(names...).index_put_(
         {torch::indexing::None},
@@ -199,9 +199,9 @@ public:
 
   /// Set and interpret the input as a list of objects
   template <typename T, typename... S>
-  void set_list(const BatchTensorBase<T> & value, S &&... names)
+  void set_list(const TensorBase<T> & value, S &&... names)
   {
-    this->set(BatchTensor(value, value.batch_dim() - sizeof...(names)), names...);
+    this->set(Tensor(value, value.batch_dim() - sizeof...(names)), names...);
   }
 
   /// Negation
@@ -212,7 +212,7 @@ public:
 
 protected:
   /// The tensor
-  BatchTensor _tensor;
+  Tensor _tensor;
 
   /// The labeled axes of this tensor
   std::array<const LabeledAxis *, D> _axes;
@@ -271,7 +271,7 @@ LabeledTensor<Derived, D>::storage_size_impl(std::index_sequence<I...>, S &&... 
 
 template <class Derived, Size D>
 template <typename... S>
-BatchTensor
+Tensor
 LabeledTensor<Derived, D>::operator()(S &&... names) const
 {
   return base_index(slice_indices(names...));

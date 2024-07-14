@@ -63,7 +63,7 @@ TEST_CASE("Vec", "[tensors]")
       auto vb = v.batch_expand(B);
       auto vpb = vp.batch_expand(B);
 
-      auto apply = [v](const BatchTensor & x) { return v.rotate(Rot(x)); };
+      auto apply = [v](const Tensor & x) { return v.rotate(Rot(x)); };
       auto dvp_dr = finite_differencing_derivative(apply, r);
       auto dvp_drb = dvp_dr.batch_expand(B);
 

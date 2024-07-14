@@ -57,7 +57,7 @@ def_LabeledTensor(py::class_<Derived> & c)
       // totally unrelated class constructor's binding :(
       //  .def(py::init<const torch::Tensor &, Size, const std::array<const LabeledAxis *, D>
       //  &>())
-      .def(py::init<const BatchTensor &, const std::array<const LabeledAxis *, D> &>())
+      .def(py::init<const Tensor &, const std::array<const LabeledAxis *, D> &>())
       .def(py::init<const Derived &>())
       .def("__repr__",
            [](const Derived & self)

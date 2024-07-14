@@ -64,13 +64,13 @@ TrustRegionSubProblem::assemble(bool residual, bool Jacobian)
     _Jacobian = 1.0 / math::pow(np, 3.0) * math::bvv(p, preconditioned_solve(s, p));
 }
 
-BatchTensor
-TrustRegionSubProblem::preconditioned_solve(const Scalar & s, const BatchTensor & v) const
+Tensor
+TrustRegionSubProblem::preconditioned_solve(const Scalar & s, const Tensor & v) const
 {
-  return math::linalg::solve(_JJ + s * BatchTensor::identity(v.base_sizes()[0], _options), v);
+  return math::linalg::solve(_JJ + s * Tensor::identity(v.base_sizes()[0], _options), v);
 }
 
-BatchTensor
+Tensor
 TrustRegionSubProblem::preconditioned_direction(const Scalar & s) const
 {
   return preconditioned_solve(s, _JR);

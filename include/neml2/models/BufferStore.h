@@ -52,8 +52,7 @@ public:
   ///}@
 
   /// Get a writable reference of a buffer
-  template <typename T,
-            typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<T>, T>>>
+  template <typename T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
   T & get_buffer(const std::string & name);
 
 protected:
@@ -77,8 +76,7 @@ protected:
    * @param rawval Buffer value
    * @return Reference to buffer
    */
-  template <typename T,
-            typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<T>, T>>>
+  template <typename T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
   const T & declare_buffer(const std::string & name, const T & rawval);
 
   /**
@@ -95,8 +93,7 @@ protected:
    * buffer.
    * @return T Reference to buffer
    */
-  template <typename T,
-            typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<T>, T>>>
+  template <typename T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
   const T & declare_buffer(const std::string & name, const std::string & input_option_name);
 
 private:

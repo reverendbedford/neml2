@@ -26,7 +26,7 @@
 
 #include "neml2/base/Registry.h"
 #include "neml2/models/Data.h"
-#include "neml2/tensors/BatchTensorBase.h"
+#include "neml2/tensors/TensorBase.h"
 
 namespace neml2
 {
@@ -94,11 +94,10 @@ public:
   /// Accessor for the crystal class symmetry operators
   const R2 & symmetry_operators() const { return _sym_ops; };
 
-  /// Slice a BatchTensor to provide only the batch associated with a slip system
+  /// Slice a Tensor to provide only the batch associated with a slip system
   // The slice happens along the last batch axis
-  template <
-      class Derived,
-      typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<Derived>, Derived>>>
+  template <class Derived,
+            typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<Derived>, Derived>>>
   Derived slip_slice(const Derived & tensor, Size grp) const;
 
 private:

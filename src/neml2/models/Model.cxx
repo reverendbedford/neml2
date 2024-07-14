@@ -106,7 +106,7 @@ Model::setup()
 }
 
 void
-Model::reinit(const BatchTensor & tensor, int deriv_order)
+Model::reinit(const Tensor & tensor, int deriv_order)
 {
   reinit(tensor.batch_sizes(), deriv_order, tensor.device(), tensor.scalar_type());
 }
@@ -170,7 +170,7 @@ Model::allocate_variables(bool in, bool out)
   if (in && is_nonlinear_system())
   {
     _ndof = output_axis().storage_size("residual");
-    _solution = BatchTensor::empty(batch_sizes(), _ndof, options());
+    _solution = Tensor::empty(batch_sizes(), _ndof, options());
   }
 
   for (auto submodel : registered_models())
@@ -233,7 +233,7 @@ Model::zero()
 }
 
 void
-Model::set_solution(const BatchTensor & x)
+Model::set_solution(const Tensor & x)
 {
   NonlinearSystem::set_solution(x);
 
@@ -459,7 +459,7 @@ Model::extract_derivatives(bool retain_graph, bool create_graph, bool allow_unus
   if (output_storage().tensor().requires_grad())
     for (Size i = 0; i < output_storage().base_sizes()[0]; i++)
     {
-      auto grad_outputs = BatchTensor::zeros_like(output_storage());
+      auto grad_outputs = Tensor::zeros_like(output_storage());
       grad_outputs.index_put_({torch::indexing::Ellipsis, i}, 1.0);
       for (auto && [name, var] : input_views())
       {

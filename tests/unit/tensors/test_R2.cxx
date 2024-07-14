@@ -188,7 +188,7 @@ TEST_CASE("R2", "[tensors]")
       auto Tb = T.batch_expand(B);
       auto Tpb = Tp.batch_expand(B);
 
-      auto apply = [T](const BatchTensor & x) { return T.rotate(Rot(x)); };
+      auto apply = [T](const Tensor & x) { return T.rotate(Rot(x)); };
       auto dTp_dr = finite_differencing_derivative(apply, r);
       auto dTp_drb = dTp_dr.batch_expand(B);
 

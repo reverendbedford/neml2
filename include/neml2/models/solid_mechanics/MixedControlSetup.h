@@ -44,7 +44,7 @@ protected:
    * control <= _threshold -> strain control
    * control > _threshold -> stress control
    */
-  const BatchTensor _threshold;
+  const Tensor _threshold;
 
   /// Actual input control signal
   const Variable<SR2> & _control;

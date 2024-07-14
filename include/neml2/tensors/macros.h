@@ -26,9 +26,9 @@
 
 /// Macros for writing generic code blocks for all tensor types
 ///@{
-#define FOR_ALL_BATCHTENSORBASE(f)                                                                 \
+#define FOR_ALL_TensorBASE(f)                                                                      \
   FOR_ALL_FIXEDDIMTENSOR(f);                                                                       \
-  f(BatchTensor)
+  f(Tensor)
 
 #define FOR_ALL_FIXEDDIMTENSOR(f)                                                                  \
   FOR_ALL_VECBASE(f);                                                                              \
@@ -58,7 +58,7 @@
 
 /// Similar macros but end with comma instead of semicolon
 ///@{
-#define FOR_ALL_BATCHTENSORBASE_COMMA(f) FOR_ALL_FIXEDDIMTENSOR_COMMA(f), f(BatchTensor)
+#define FOR_ALL_TensorBASE_COMMA(f) FOR_ALL_FIXEDDIMTENSOR_COMMA(f), f(Tensor)
 
 #define FOR_ALL_FIXEDDIMTENSOR_COMMA(f)                                                            \
   FOR_ALL_VECBASE_COMMA(f), FOR_ALL_R2BASE_COMMA(f), f(Scalar), f(SR2), f(R3), f(SFR3), f(R4),     \

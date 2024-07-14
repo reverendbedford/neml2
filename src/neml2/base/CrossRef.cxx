@@ -44,17 +44,17 @@ CrossRef<torch::Tensor>::operator torch::Tensor() const
 }
 
 template <>
-CrossRef<BatchTensor>::operator BatchTensor() const
+CrossRef<Tensor>::operator Tensor() const
 {
   try
   {
     // If it is just a number, we can still create a Scalar out of it
-    return BatchTensor::full({}, {}, utils::parse<Real>(_raw_str), default_tensor_options());
+    return Tensor::full({}, {}, utils::parse<Real>(_raw_str), default_tensor_options());
   }
   catch (const ParserException & e)
   {
-    // Conversion to a number failed, so it might be the name of another BatchTensor
-    return Factory::get_object<BatchTensor>("Tensors", _raw_str);
+    // Conversion to a number failed, so it might be the name of another Tensor
+    return Factory::get_object<Tensor>("Tensors", _raw_str);
   }
 }
 

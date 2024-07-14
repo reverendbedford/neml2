@@ -37,9 +37,9 @@ LinspaceFixedDimTensor<T>::expected_options()
   // Trim 6 chars to remove 'neml2::'
   auto tensor_type = utils::demangle(typeid(T).name()).substr(7);
 
-  OptionSet options = UserTensor::expected_options();
+  OptionSet options = UserTensorBase::expected_options();
   options.doc() = "Construct a " + tensor_type +
-                  " linearly spaced on the batch dimensions. See neml2::BatchTensorBase::linspace "
+                  " linearly spaced on the batch dimensions. See neml2::TensorBase::linspace "
                   "for a detailed explanation.";
 
   options.set<CrossRef<T>>("start");
@@ -67,7 +67,7 @@ LinspaceFixedDimTensor<T>::LinspaceFixedDimTensor(const OptionSet & options)
                   options.get<Size>("nstep"),
                   options.get<Size>("dim"),
                   options.get<Size>("batch_dim"))),
-    UserTensor(options)
+    UserTensorBase(options)
 {
 }
 

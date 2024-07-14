@@ -50,5 +50,5 @@ def_Scalar(py::class_<Scalar> & c)
       .def(py::self / T())                                                                         \
       .def("__pow__", [](const Scalar & a, const T & b) { return math::pow(a, b); })               \
       .def("__rpow__", [](const Scalar & b, const T & a) { return math::pow(a, b); })
-  FOR_ALL_BATCHTENSORBASE(SCALAR_OP);
+  FOR_ALL_TensorBASE(SCALAR_OP);
 }

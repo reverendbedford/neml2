@@ -155,7 +155,7 @@ HITParser::extract_option(hit::Node * n, OptionSet & options) const
         extract_option_t(VariableName);
         extract_option_t(EnumSelection);
         extract_option_t(CrossRef<torch::Tensor>);
-        FOR_ALL_BATCHTENSORBASE(extract_option_t_cr);
+        FOR_ALL_TensorBASE(extract_option_t_cr);
         // LCOV_EXCL_START
         else neml_assert(false, "Unsupported option type for option ", n->fullpath());
         // LCOV_EXCL_STOP

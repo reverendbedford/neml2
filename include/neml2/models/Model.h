@@ -81,7 +81,7 @@ public:
    * @brief Allocate storage and setup views for all the variables of this model and recursively all
    * of the sub-models. See the other overload for detailed description.
    */
-  virtual void reinit(const BatchTensor & tensor, int deriv_order);
+  virtual void reinit(const Tensor & tensor, int deriv_order);
 
   /**
    * @brief Allocate storage and setup views for all the variables of this model and recursively all
@@ -237,7 +237,7 @@ protected:
   virtual void zero();
 
   /// Set \p x as the current solution of the nonlinear system
-  virtual void set_solution(const BatchTensor & x) override;
+  virtual void set_solution(const Tensor & x) override;
 
   /// The map between input -> output, and optionally its derivatives
   virtual void set_value(bool out, bool dout_din, bool d2out_din2) = 0;

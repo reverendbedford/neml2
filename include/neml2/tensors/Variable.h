@@ -74,10 +74,10 @@ public:
   /// @}
 
   /// Raw flattened variable value
-  const BatchTensor & raw_value() const { return _raw_value; }
+  const Tensor & raw_value() const { return _raw_value; }
 
   /// Variable value of the logical shape
-  virtual const BatchTensor tensor() const = 0;
+  virtual const Tensor tensor() const = 0;
 
   /// Name of this variable
   const VariableName & name() const { return _name; }
@@ -111,13 +111,13 @@ protected:
   TensorShape _batch_sizes;
 
   /// The raw (flattened) variable value
-  BatchTensor _raw_value;
+  Tensor _raw_value;
 
   /// The derivative of this variable w.r.t. arguments.
-  std::map<VariableName, BatchTensor> _dvalue_d;
+  std::map<VariableName, Tensor> _dvalue_d;
 
   /// The second derivative of this variable w.r.t. arguments.
-  std::map<VariableName, std::map<VariableName, BatchTensor>> _d2value_d;
+  std::map<VariableName, std::map<VariableName, Tensor>> _d2value_d;
 
   /// The value storage that this variable is viewing into
   const LabeledVector * _value_storage;
@@ -137,7 +137,7 @@ template <typename T>
 class Variable : public VariableBase
 {
 public:
-  template <typename T2 = T, typename = typename std::enable_if_t<!std::is_same_v<BatchTensor, T2>>>
+  template <typename T2 = T, typename = typename std::enable_if_t<!std::is_same_v<Tensor, T2>>>
   Variable(const VariableName & name_in, TensorType type = TensorTypeEnum<T2>::value)
     : VariableBase(name_in),
       _type(type),
@@ -145,10 +145,10 @@ public:
   {
   }
 
-  template <typename T2 = T, typename = typename std::enable_if_t<std::is_same_v<BatchTensor, T2>>>
+  template <typename T2 = T, typename = typename std::enable_if_t<std::is_same_v<Tensor, T2>>>
   Variable(const VariableName & name_in,
            TensorShapeRef base_shape,
-           TensorType type = TensorType::kBatchTensor)
+           TensorType type = TensorType::kTensor)
     : VariableBase(name_in),
       _type(type),
       _base_sizes(base_shape.vec())
@@ -188,7 +188,7 @@ public:
    * Note that this is an in-place operation, and so we must reshape (flatten base dimensions of) \p
    * val and modify raw_value.
    */
-  void operator=(const BatchTensor & val)
+  void operator=(const Tensor & val)
   {
     _value.index_put_({torch::indexing::Slice()},
                       val.batch_expand(batch_sizes()).base_reshape(base_sizes()));
@@ -198,7 +198,7 @@ public:
   const T & value() const { return _value; }
 
   /// Variable value of the logical shape
-  virtual const BatchTensor tensor() const override { return _value; }
+  virtual const Tensor tensor() const override { return _value; }
 
   virtual TensorType type() const override { return _type; }
 
@@ -214,8 +214,8 @@ public:
     _sizes = utils::add_shapes(batch_shape, _base_sizes);
   }
 
-  template <typename T2 = T, typename = typename std::enable_if_t<!std::is_same_v<T2, BatchTensor>>>
-  operator BatchTensor() const
+  template <typename T2 = T, typename = typename std::enable_if_t<!std::is_same_v<T2, Tensor>>>
+  operator Tensor() const
   {
     return _value;
   }
@@ -237,17 +237,17 @@ protected:
 class Derivative
 {
 public:
-  Derivative(BatchTensor & val)
+  Derivative(Tensor & val)
     : _value(val)
   {
   }
 
-  const BatchTensor & value() const { return _value; }
+  const Tensor & value() const { return _value; }
 
-  void operator=(const BatchTensor & val);
+  void operator=(const Tensor & val);
 
 private:
-  BatchTensor & _value;
+  Tensor & _value;
 };
 
 // Everything below is just for convenience: We just forward operations to the the variable values

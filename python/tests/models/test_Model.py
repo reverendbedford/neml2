@@ -26,7 +26,7 @@ import pytest
 from pathlib import Path
 import torch
 import neml2
-from neml2.tensors import BatchTensor, LabeledVector
+from neml2.tensors import Tensor, LabeledVector
 from neml2.tensors import LabeledAxisAccessor as AA
 
 
@@ -68,7 +68,7 @@ def test_value():
     model = neml2.load_model(pwd / "test_Model.i", "model")
 
     a = torch.linspace(0, 1, 8).expand(5, 2, 8)
-    x = BatchTensor(a, 2)
+    x = Tensor(a, 2)
     model.reinit(x.batch.shape)
     x = LabeledVector(x, [model.input_axis()])
 
@@ -85,7 +85,7 @@ def test_value_and_dvalue():
     model = neml2.load_model(pwd / "test_Model.i", "model")
 
     a = torch.linspace(0, 1, 8).expand(5, 2, 8)
-    x = BatchTensor(a, 2)
+    x = Tensor(a, 2)
     model.reinit(x.batch.shape, 1)
     x = LabeledVector(x, [model.input_axis()])
 

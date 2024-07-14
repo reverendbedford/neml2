@@ -55,13 +55,13 @@
     nstep = 100
   []
   [A0]
-    type = BatchTensor
+    type = Tensor
     values = "1e-6 1e-6 1e-6 1e-6 1e-6 1e-6 1e-6 1e-6 1e-6
               1e-6 1e-6 1e-6 1e-6 1e-6 1e-6 1e-6 1e-6 1e-6"
     base_shape = '(2,3,3)'
   []
   [A1]
-    type = BatchTensor
+    type = Tensor
     values = "1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6
               1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6
               1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6
@@ -71,7 +71,7 @@
     base_shape = '(2,3,3,4)'
   []
   [A2]
-    type = BatchTensor
+    type = Tensor
     values = "1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6
               1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6
               1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6
@@ -81,22 +81,22 @@
     base_shape = '(2,3,3,4)'
   []
   [s_lb]
-    type = BatchTensor
+    type = Tensor
     values = '0 50'
     base_shape = (2)
   []
   [s_ub]
-    type = BatchTensor
+    type = Tensor
     values = '50 100'
     base_shape = (2)
   []
   [T_lb]
-    type = BatchTensor
+    type = Tensor
     values = '0 300 600'
     base_shape = (3)
   []
   [T_ub]
-    type = BatchTensor
+    type = Tensor
     values = '300 600 1000'
     base_shape = (3)
   []

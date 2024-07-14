@@ -24,17 +24,17 @@
 
 #pragma once
 
-#include "neml2/tensors/BatchTensor.h"
+#include "neml2/tensors/Tensor.h"
 
 namespace neml2
 {
 /**
- * @brief FixedDimTensor inherits from BatchTensorBase and additionally templates on the base shape.
+ * @brief FixedDimTensor inherits from TensorBase and additionally templates on the base shape.
  *
  * @tparam S Base shape
  */
 template <class Derived, Size... S>
-class FixedDimTensor : public BatchTensorBase<Derived>
+class FixedDimTensor : public TensorBase<Derived>
 {
 public:
   /// The base shape
@@ -55,8 +55,8 @@ public:
   /// Construct from another torch::Tensor and infer batch dimension
   FixedDimTensor(const torch::Tensor & tensor);
 
-  /// Implicit conversion to a BatchTensor and loses information on the fixed base shape
-  operator BatchTensor() const;
+  /// Implicit conversion to a Tensor and loses information on the fixed base shape
+  operator Tensor() const;
 
   /// Unbatched empty tensor
   [[nodiscard]] static Derived
@@ -88,7 +88,7 @@ public:
        const torch::TensorOptions & options = default_tensor_options());
 
   /// Derived tensor classes should define identity_map where appropriate
-  [[nodiscard]] static BatchTensor identity_map(const torch::TensorOptions &)
+  [[nodiscard]] static Tensor identity_map(const torch::TensorOptions &)
   {
     throw NEMLException("Not implemented");
   }
@@ -100,7 +100,7 @@ public:
 
 template <class Derived, Size... S>
 FixedDimTensor<Derived, S...>::FixedDimTensor(const torch::Tensor & tensor, Size batch_dim)
-  : BatchTensorBase<Derived>(tensor, batch_dim)
+  : TensorBase<Derived>(tensor, batch_dim)
 {
   neml_assert_dbg(this->base_sizes() == const_base_sizes,
                   "Base shape mismatch: trying to create a tensor with base shape ",
@@ -111,7 +111,7 @@ FixedDimTensor<Derived, S...>::FixedDimTensor(const torch::Tensor & tensor, Size
 
 template <class Derived, Size... S>
 FixedDimTensor<Derived, S...>::FixedDimTensor(const torch::Tensor & tensor)
-  : BatchTensorBase<Derived>(tensor, tensor.dim() - const_base_dim)
+  : TensorBase<Derived>(tensor, tensor.dim() - const_base_dim)
 {
   neml_assert_dbg(this->base_sizes() == const_base_sizes,
                   "Base shape mismatch: trying to create a tensor with base shape ",
@@ -121,9 +121,9 @@ FixedDimTensor<Derived, S...>::FixedDimTensor(const torch::Tensor & tensor)
 }
 
 template <class Derived, Size... S>
-FixedDimTensor<Derived, S...>::operator BatchTensor() const
+FixedDimTensor<Derived, S...>::operator Tensor() const
 {
-  return BatchTensor(*this, this->batch_dim());
+  return Tensor(*this, this->batch_dim());
 }
 
 template <class Derived, Size... S>

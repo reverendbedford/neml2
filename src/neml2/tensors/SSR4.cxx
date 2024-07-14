@@ -135,7 +135,7 @@ SSR4::transpose_minor() const
 SSR4
 SSR4::transpose_major() const
 {
-  return BatchTensorBase<SSR4>::base_transpose(0, 1);
+  return TensorBase<SSR4>::base_transpose(0, 1);
 }
 
 SR2

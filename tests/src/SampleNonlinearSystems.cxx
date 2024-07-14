@@ -33,7 +33,7 @@ TestNonlinearSystem::TestNonlinearSystem(const OptionSet & options)
 }
 
 void
-TestNonlinearSystem::reinit(const BatchTensor & x)
+TestNonlinearSystem::reinit(const Tensor & x)
 {
   neml_assert_dbg(x.base_dim() == 1, "Trial solution must be one dimensional");
 
@@ -42,8 +42,8 @@ TestNonlinearSystem::reinit(const BatchTensor & x)
 
   _ndof = x.base_sizes()[0];
   _solution = x.clone();
-  _residual = BatchTensor::zeros(_batch_sizes, {_ndof}, _options);
-  _Jacobian = BatchTensor::zeros(_batch_sizes, {_ndof, _ndof}, _options);
+  _residual = Tensor::zeros(_batch_sizes, {_ndof}, _options);
+  _Jacobian = Tensor::zeros(_batch_sizes, {_ndof, _ndof}, _options);
 }
 
 PowerTestSystem::PowerTestSystem(const OptionSet & options)
@@ -65,10 +65,10 @@ PowerTestSystem::assemble(bool residual, bool Jacobian)
                                (i + 1) * math::pow(_solution.base_index({i}), Scalar(i, _options)));
 }
 
-BatchTensor
+Tensor
 PowerTestSystem::exact_solution() const
 {
-  return BatchTensor::ones(_batch_sizes, {_ndof}, _options);
+  return Tensor::ones(_batch_sizes, {_ndof}, _options);
 }
 
 RosenbrockTestSystem::RosenbrockTestSystem(const OptionSet & options)
@@ -109,20 +109,20 @@ RosenbrockTestSystem::assemble(bool residual, bool Jacobian)
 
     auto d1 = -400 * s_x0n1;
     auto H = torch::diag_embed(d1, -1) + torch::diag_embed(d1, 1);
-    auto diagonal = BatchTensor::zeros_like(_solution);
+    auto diagonal = Tensor::zeros_like(_solution);
 
     diagonal.base_index_put({0}, 1200 * math::pow(x0, 2.0) - 400.0 * x1 + 2);
     diagonal.base_index_put({-1}, Scalar(200.0, _options));
     diagonal.base_index_put({indexing::Slice(1, -1)},
                             202 + 1200 * math::pow(s_x11, 2.0) - 400 * s_x2);
 
-    _Jacobian = BatchTensor(torch::diag_embed(diagonal) + H, _solution.batch_dim());
+    _Jacobian = Tensor(torch::diag_embed(diagonal) + H, _solution.batch_dim());
   }
 }
 
-BatchTensor
+Tensor
 RosenbrockTestSystem::exact_solution() const
 {
-  return BatchTensor::ones(_batch_sizes, {_ndof}, _options);
+  return Tensor::ones(_batch_sizes, {_ndof}, _options);
 }
 }

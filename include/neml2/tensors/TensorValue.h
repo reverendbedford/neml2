@@ -23,13 +23,13 @@
 // THE SOFTWARE.
 #pragma once
 
-#include "neml2/tensors/BatchTensor.h"
+#include "neml2/tensors/Tensor.h"
 #include "neml2/misc/parser_utils.h"
 
 namespace neml2
 {
 /**
- * @brief The base class to allow us to set up a polymorphic container of BatchTensors. The concrete
+ * @brief The base class to allow us to set up a polymorphic container of Tensors. The concrete
  * definitions will be templated on the actual tensor type.
  *
  */
@@ -41,11 +41,11 @@ public:
   /// Send the value to the target options
   virtual void to(const torch::TensorOptions &) = 0;
 
-  /// Convert the parameter value to a BatchTensor
-  virtual operator BatchTensor() const = 0;
+  /// Convert the parameter value to a Tensor
+  virtual operator Tensor() const = 0;
 
   /// Set the parameter value
-  virtual void set(const BatchTensor & val) = 0;
+  virtual void set(const Tensor & val) = 0;
 };
 
 /// Concrete definition of tensor value
@@ -62,9 +62,9 @@ public:
 
   virtual void to(const torch::TensorOptions & options) override { _value = _value.to(options); }
 
-  virtual operator BatchTensor() const override { return _value; }
+  virtual operator Tensor() const override { return _value; }
 
-  template <typename T2 = T, typename = typename std::enable_if_t<!std::is_same_v<T2, BatchTensor>>>
+  template <typename T2 = T, typename = typename std::enable_if_t<!std::is_same_v<T2, Tensor>>>
   operator T() const
   {
     return _value;
@@ -72,7 +72,7 @@ public:
 
   T & value() { return _value; }
 
-  virtual void set(const BatchTensor & val) override { _value = val; }
+  virtual void set(const Tensor & val) override { _value = val; }
 
 private:
   T _value;

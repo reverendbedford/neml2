@@ -43,7 +43,7 @@ MixedControlSetup::expected_options()
       "The name of the control signal.  Values less than the threshold are "
       "strain control, greater are stress control";
 
-  options.set<CrossRef<BatchTensor>>("threshold") = "0.5";
+  options.set<CrossRef<Tensor>>("threshold") = "0.5";
   options.set("threshold").doc() = "The threshold to switch between strain and stress control";
 
   options.set_input<VariableName>("mixed_state") = VariableName("state", "mixed_state");
@@ -65,7 +65,7 @@ MixedControlSetup::expected_options()
 
 MixedControlSetup::MixedControlSetup(const OptionSet & options)
   : Model(options),
-    _threshold(options.get<CrossRef<BatchTensor>>("threshold")),
+    _threshold(options.get<CrossRef<Tensor>>("threshold")),
     _control(declare_input_variable<SR2>("control")),
     _fixed_values(declare_input_variable<SR2>("fixed_values")),
     _mixed_state(declare_input_variable<SR2>("mixed_state")),
@@ -106,10 +106,10 @@ MixedControlSetup::make_operators(const SR2 & control) const
   auto stress_select = control > _threshold;
 
   // This also converts these to floats
-  auto ones_stress = BatchTensor(strain_select.to(_stress.tensor().options()), control.batch_dim());
-  auto ones_strain = BatchTensor::ones_like(control) - ones_stress;
+  auto ones_stress = Tensor(strain_select.to(_stress.tensor().options()), control.batch_dim());
+  auto ones_strain = Tensor::ones_like(control) - ones_stress;
 
-  // auto dstrain = SSR4(BatchTensor(torch::diag_embed(ones_stress), batch_dim()));
+  // auto dstrain = SSR4(Tensor(torch::diag_embed(ones_stress), batch_dim()));
   auto dstrain = math::base_diag_embed(ones_stress);
   auto dstress = math::base_diag_embed(ones_strain);
 

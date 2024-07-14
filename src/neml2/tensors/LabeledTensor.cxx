@@ -42,7 +42,7 @@ LabeledTensor<Derived, D>::LabeledTensor(const torch::Tensor & tensor,
 }
 
 template <class Derived, Size D>
-LabeledTensor<Derived, D>::LabeledTensor(const BatchTensor & tensor,
+LabeledTensor<Derived, D>::LabeledTensor(const Tensor & tensor,
                                          const std::array<const LabeledAxis *, D> & axes)
   : _tensor(tensor),
     _axes(axes)
@@ -67,7 +67,7 @@ LabeledTensor<Derived, D>::operator=(const Derived & other)
 }
 
 template <class Derived, Size D>
-LabeledTensor<Derived, D>::operator BatchTensor() const
+LabeledTensor<Derived, D>::operator Tensor() const
 {
   return _tensor;
 }
@@ -90,14 +90,14 @@ LabeledTensor<Derived, D>::empty(TensorShapeRef batch_size,
                  axes.end(),
                  std::back_inserter(s),
                  [](const LabeledAxis * axis) { return axis->storage_size(); });
-  return Derived(BatchTensor::empty(batch_size, s, options), axes);
+  return Derived(Tensor::empty(batch_size, s, options), axes);
 }
 
 template <class Derived, Size D>
 Derived
 LabeledTensor<Derived, D>::empty_like(const Derived & other)
 {
-  return Derived(BatchTensor::empty_like(other), other.axes());
+  return Derived(Tensor::empty_like(other), other.axes());
 }
 
 template <class Derived, Size D>
@@ -112,14 +112,14 @@ LabeledTensor<Derived, D>::zeros(TensorShapeRef batch_size,
                  axes.end(),
                  std::back_inserter(s),
                  [](const LabeledAxis * axis) { return axis->storage_size(); });
-  return Derived(BatchTensor::zeros(batch_size, s, options), axes);
+  return Derived(Tensor::zeros(batch_size, s, options), axes);
 }
 
 template <class Derived, Size D>
 Derived
 LabeledTensor<Derived, D>::zeros_like(const Derived & other)
 {
-  return Derived(BatchTensor::zeros_like(other), other.axes());
+  return Derived(Tensor::zeros_like(other), other.axes());
 }
 
 template <class Derived, Size D>
@@ -214,7 +214,7 @@ LabeledTensor<Derived, D>::batch_index_put(indexing::TensorIndices indices,
 }
 
 template <class Derived, Size D>
-BatchTensor
+Tensor
 LabeledTensor<Derived, D>::base_index(indexing::TensorIndices indices) const
 {
   return _tensor.base_index(indices);

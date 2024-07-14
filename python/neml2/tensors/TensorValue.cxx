@@ -35,23 +35,22 @@ def_TensorValueBase(py::module_ & m)
 {
   py::class_<TensorValueBase>(m, "TensorValueBase")
       .def("set", &TensorValueBase::set)
-      // The following accessors/modifiers should mirror BatchTensorBase.h
-      .def("tensor", [](const TensorValueBase & self) { return BatchTensor(self); })
-      .def("defined", [](const TensorValueBase & self) { return BatchTensor(self).defined(); })
-      .def("batched", [](const TensorValueBase & self) { return BatchTensor(self).batched(); })
-      .def("dim", [](const TensorValueBase & self) { return BatchTensor(self).dim(); })
+      // The following accessors/modifiers should mirror TensorBase.h
+      .def("tensor", [](const TensorValueBase & self) { return Tensor(self); })
+      .def("defined", [](const TensorValueBase & self) { return Tensor(self).defined(); })
+      .def("batched", [](const TensorValueBase & self) { return Tensor(self).batched(); })
+      .def("dim", [](const TensorValueBase & self) { return Tensor(self).dim(); })
       .def_property_readonly("shape",
-                             [](const TensorValueBase & self) { return BatchTensor(self).sizes(); })
+                             [](const TensorValueBase & self) { return Tensor(self).sizes(); })
       .def_property_readonly(
-          "dtype", [](const TensorValueBase & self) { return BatchTensor(self).scalar_type(); })
-      .def_property_readonly(
-          "device", [](const TensorValueBase & self) { return BatchTensor(self).device(); })
+          "dtype", [](const TensorValueBase & self) { return Tensor(self).scalar_type(); })
+      .def_property_readonly("device",
+                             [](const TensorValueBase & self) { return Tensor(self).device(); })
       .def_property_readonly("requires_grad",
                              [](const TensorValueBase & self)
-                             { return BatchTensor(self).requires_grad(); })
+                             { return Tensor(self).requires_grad(); })
       .def("requires_grad_",
-           [](const TensorValueBase & self, bool req)
-           { return BatchTensor(self).requires_grad_(req); })
+           [](const TensorValueBase & self, bool req) { return Tensor(self).requires_grad_(req); })
       .def_property_readonly("grad",
-                             [](const TensorValueBase & self) { return BatchTensor(self).grad(); });
+                             [](const TensorValueBase & self) { return Tensor(self).grad(); });
 }

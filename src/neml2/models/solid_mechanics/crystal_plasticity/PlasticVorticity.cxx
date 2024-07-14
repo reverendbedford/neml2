@@ -83,7 +83,7 @@ PlasticVorticity::set_value(bool out, bool dout_din, bool d2out_din2)
   if (dout_din)
   {
     _Wp.d(_gamma_dot) =
-        BatchTensor(_crystal_geometry.W().rotate(R2(_R).batch_unsqueeze(-1)), batch_dim())
+        Tensor(_crystal_geometry.W().rotate(R2(_R).batch_unsqueeze(-1)), batch_dim())
             .base_transpose(-1, -2);
     _Wp.d(_R) = Wp_crystal.drotate(R2(_R));
   }

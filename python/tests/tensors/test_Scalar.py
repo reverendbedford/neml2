@@ -26,7 +26,7 @@ import pytest
 
 # fixtures
 from common import *
-from test_BatchTensorBase import sample, _A, _B, _C, base_shape
+from test_TensorBase import sample, _A, _B, _C, base_shape
 
 from neml2.tensors import Scalar
 

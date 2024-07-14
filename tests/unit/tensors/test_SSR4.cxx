@@ -175,7 +175,7 @@ TEST_CASE("SSR4", "[tensors]")
 
     SECTION("drotate")
     {
-      auto apply = [T](const BatchTensor & x) { return T.rotate(Rot(x)); };
+      auto apply = [T](const Tensor & x) { return T.rotate(Rot(x)); };
       auto dTp_dr = finite_differencing_derivative(apply, r);
       auto dTp_drb = dTp_dr.batch_expand(B);
 

@@ -61,7 +61,7 @@ NewtonWithLineSearch::NewtonWithLineSearch(const OptionSet & options)
 }
 
 void
-NewtonWithLineSearch::update(NonlinearSystem & system, BatchTensor & x)
+NewtonWithLineSearch::update(NonlinearSystem & system, Tensor & x)
 {
   auto dx = solve_direction(system);
 
@@ -71,9 +71,7 @@ NewtonWithLineSearch::update(NonlinearSystem & system, BatchTensor & x)
 }
 
 void
-NewtonWithLineSearch::linesearch(NonlinearSystem & system,
-                                 const BatchTensor & x,
-                                 const BatchTensor & dx)
+NewtonWithLineSearch::linesearch(NonlinearSystem & system, const Tensor & x, const Tensor & dx)
 {
   _alpha = Scalar::ones(x.batch_sizes(), x.options());
 

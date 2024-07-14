@@ -27,7 +27,7 @@
 #include "neml2/tensors/macros.h"
 #include "neml2/tensors/TensorValue.h"
 
-#include "python/neml2/tensors/BatchTensorBase.h"
+#include "python/neml2/tensors/TensorBase.h"
 #include "python/neml2/tensors/FixedDimTensor.h"
 #include "python/neml2/tensors/VecBase.h"
 #include "python/neml2/tensors/R2Base.h"
@@ -38,7 +38,7 @@ using namespace neml2;
 
 // Forward declarations
 #define TENSOR_CUSTOM_DEF_FWD(T) void def_##T(py::class_<T> &)
-FOR_ALL_BATCHTENSORBASE(TENSOR_CUSTOM_DEF_FWD);
+FOR_ALL_TensorBASE(TENSOR_CUSTOM_DEF_FWD);
 
 void def_LabeledAxisAccessor(py::module_ & m);
 void def_LabeledAxis(py::module_ & m);
@@ -60,7 +60,7 @@ PYBIND11_MODULE(tensors, m)
 {
   m.doc() = "NEML2 primitive tensor types";
 
-  // Declare all the BatchTensorBase derived tensors
+  // Declare all the TensorBase derived tensors
   // This is as simple as calling py::class_, but it is important to do this for ALL tensors up
   // front. The reason is for typing: Once we build the neml2 python library with all the necessary
   // bindings, we will have to extract all the typing information (mostly function signature) from
@@ -68,18 +68,18 @@ PYBIND11_MODULE(tensors, m)
   // purpose. For a type to be deducible by pybind11-stubgen, a concrete definition of the binding
   // class must exist at the point of method definition. Therefore, we need to first create all the
   // class definitions before creating method bindings that use them as arguments.
-#define BATCHTENSORBASE_DECL(T) auto c_##T = py::class_<T>(m, #T);
-  FOR_ALL_BATCHTENSORBASE(BATCHTENSORBASE_DECL);
+#define TensorBASE_DECL(T) auto c_##T = py::class_<T>(m, #T);
+  FOR_ALL_TensorBASE(TensorBASE_DECL);
 
   // All of them have BatchView and BaseView
 #define BATCHVIEW_DEF(T) def_BatchView<T>(m, #T "BatchView");
-  FOR_ALL_BATCHTENSORBASE(BATCHVIEW_DEF);
+  FOR_ALL_TensorBASE(BATCHVIEW_DEF);
 #define BASEVIEW_DEF(T) def_BaseView<T>(m, #T "BaseView");
-  FOR_ALL_BATCHTENSORBASE(BASEVIEW_DEF);
+  FOR_ALL_TensorBASE(BASEVIEW_DEF);
 
-  // Common methods decorated by BatchTensorBase
-#define BATCHTENSORBASE_DEF(T) def_BatchTensorBase<T>(c_##T);
-  FOR_ALL_BATCHTENSORBASE(BATCHTENSORBASE_DEF);
+  // Common methods decorated by TensorBase
+#define TensorBASE_DEF(T) def_TensorBase<T>(c_##T);
+  FOR_ALL_TensorBASE(TensorBASE_DEF);
 
   // Common methods decorated by FixedDimTensor
 #define FIXEDDIMTENSOR_DEF(T) def_FixedDimTensor<T>(c_##T);
@@ -95,7 +95,7 @@ PYBIND11_MODULE(tensors, m)
 
   // Tensor specific methods
 #define TENSOR_CUSTOM_DEF(T) def_##T(c_##T);
-  FOR_ALL_BATCHTENSORBASE(TENSOR_CUSTOM_DEF);
+  FOR_ALL_TensorBASE(TENSOR_CUSTOM_DEF);
 
   // Labeled tensors
   def_LabeledAxisAccessor(m);

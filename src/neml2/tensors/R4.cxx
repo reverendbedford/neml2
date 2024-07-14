@@ -79,18 +79,18 @@ R4::operator()(Size i, Size j, Size k, Size l) const
 R4
 R4::transpose(Size d1, Size d2) const
 {
-  return BatchTensorBase<R4>::base_transpose(d1, d2);
+  return TensorBase<R4>::base_transpose(d1, d2);
 }
 
 R4
 R4::transpose_minor() const
 {
-  return BatchTensorBase<R4>::base_transpose(0, 1).base_transpose(2, 3);
+  return TensorBase<R4>::base_transpose(0, 1).base_transpose(2, 3);
 }
 
 R4
 R4::transpose_major() const
 {
-  return BatchTensorBase<R4>::base_transpose(0, 2).base_transpose(1, 3);
+  return TensorBase<R4>::base_transpose(0, 2).base_transpose(1, 3);
 }
 } // namespace neml2

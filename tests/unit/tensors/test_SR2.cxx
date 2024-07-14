@@ -106,7 +106,7 @@ TEST_CASE("SR2", "[tensors]")
       auto I = SR2::identity_map(DTO);
       auto a = SR2(torch::rand(utils::add_shapes(B, 6), DTO));
 
-      auto apply = [](const BatchTensor & x) { return x; };
+      auto apply = [](const Tensor & x) { return x; };
       auto da_da = finite_differencing_derivative(apply, a);
 
       REQUIRE(torch::allclose(I, da_da));
@@ -131,7 +131,7 @@ TEST_CASE("SR2", "[tensors]")
     SECTION("drotate")
     {
       // Rodrigues vector
-      auto apply_r = [T](const BatchTensor & x) { return T.rotate(Rot(x)); };
+      auto apply_r = [T](const Tensor & x) { return T.rotate(Rot(x)); };
       auto dTp_dr = finite_differencing_derivative(apply_r, r);
       auto dTp_drb = dTp_dr.batch_expand(B);
 
@@ -143,7 +143,7 @@ TEST_CASE("SR2", "[tensors]")
       // Rotation matrix
       auto R = R2(r);
       auto Rb = R2(rb);
-      auto apply_R = [T](const BatchTensor & x) { return T.rotate(R2(x)); };
+      auto apply_R = [T](const Tensor & x) { return T.rotate(R2(x)); };
       auto dTp_dR = finite_differencing_derivative(apply_R, R);
       auto dTp_dRb = dTp_dR.batch_expand(B);
 

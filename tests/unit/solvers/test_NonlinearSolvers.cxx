@@ -50,7 +50,7 @@ TEMPLATE_LIST_TEST_CASE("NonlinearSolvers", "[solvers]", solver_types)
     SECTION("power")
     {
       // Initial guess
-      auto x = BatchTensor::full(batch_sz, nbase, 2.0, default_tensor_options());
+      auto x = Tensor::full(batch_sz, nbase, 2.0, default_tensor_options());
 
       // Create the nonlinear system
       auto options = PowerTestSystem::expected_options();
@@ -66,7 +66,7 @@ TEMPLATE_LIST_TEST_CASE("NonlinearSolvers", "[solvers]", solver_types)
     SECTION("Rosenbrock")
     {
       // Initial guess
-      auto x = BatchTensor::full(batch_sz, nbase, 0.75, default_tensor_options());
+      auto x = Tensor::full(batch_sz, nbase, 0.75, default_tensor_options());
 
       // Create the nonlinear system
       auto options = RosenbrockTestSystem::expected_options();
@@ -83,7 +83,7 @@ TEMPLATE_LIST_TEST_CASE("NonlinearSolvers", "[solvers]", solver_types)
   SECTION("automatic scaling")
   {
     // Initial guess
-    auto x = BatchTensor::full(batch_sz, nbase, 2.0, default_tensor_options());
+    auto x = Tensor::full(batch_sz, nbase, 2.0, default_tensor_options());
 
     // Create the nonlinear system (with automatic scaling)
     auto options = PowerTestSystem::expected_options();

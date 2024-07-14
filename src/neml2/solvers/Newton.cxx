@@ -45,7 +45,7 @@ Newton::Newton(const OptionSet & options)
 }
 
 std::tuple<bool, size_t>
-Newton::solve(NonlinearSystem & system, BatchTensor & x)
+Newton::solve(NonlinearSystem & system, Tensor & x)
 {
   // The initial residual for relative convergence check
   system.residual();
@@ -102,7 +102,7 @@ Newton::converged(size_t itr, const torch::Tensor & nR, const torch::Tensor & nR
 }
 
 void
-Newton::update(NonlinearSystem & system, BatchTensor & x)
+Newton::update(NonlinearSystem & system, Tensor & x)
 {
   auto dx = solve_direction(system);
 
@@ -111,13 +111,13 @@ Newton::update(NonlinearSystem & system, BatchTensor & x)
 }
 
 void
-Newton::final_update(NonlinearSystem & system, BatchTensor & x)
+Newton::final_update(NonlinearSystem & system, Tensor & x)
 {
   auto dx = solve_direction(system);
   x += system.scale_direction(dx);
 }
 
-BatchTensor
+Tensor
 Newton::solve_direction(const NonlinearSystem & system)
 {
   // Special case when this is a scalar system

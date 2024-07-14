@@ -37,7 +37,7 @@ ZerosFixedDimTensor<T>::expected_options()
   // Trim 6 chars to remove 'neml2::'
   auto tensor_type = utils::demangle(typeid(T).name()).substr(7);
 
-  OptionSet options = UserTensor::expected_options();
+  OptionSet options = UserTensorBase::expected_options();
   options.doc() = "Construct a " + tensor_type + " with given batch shape filled with zeros.";
 
   options.set<TensorShape>("batch_shape") = {};
@@ -49,7 +49,7 @@ ZerosFixedDimTensor<T>::expected_options()
 template <typename T>
 ZerosFixedDimTensor<T>::ZerosFixedDimTensor(const OptionSet & options)
   : T(T::zeros(options.get<TensorShape>("batch_shape"), default_tensor_options())),
-    UserTensor(options)
+    UserTensorBase(options)
 {
 }
 

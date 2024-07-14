@@ -31,7 +31,7 @@ register_NEML2_object(FillRot);
 OptionSet
 FillRot::expected_options()
 {
-  OptionSet options = UserTensor::expected_options();
+  OptionSet options = UserTensorBase::expected_options();
   options.doc() = "Construct a Rot from a vector of Scalars.";
 
   options.set<std::vector<CrossRef<Scalar>>>("values");
@@ -46,7 +46,7 @@ FillRot::expected_options()
 FillRot::FillRot(const OptionSet & options)
   : Rot(fill(options.get<std::vector<CrossRef<Scalar>>>("values"),
              options.get<std::string>("method"))),
-    UserTensor(options)
+    UserTensorBase(options)
 {
 }
 
