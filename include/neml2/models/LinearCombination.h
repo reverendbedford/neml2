@@ -29,12 +29,12 @@
 namespace neml2
 {
 template <typename T>
-class SumModel : public Model
+class LinearCombination : public Model
 {
 public:
   static OptionSet expected_options();
 
-  SumModel(const OptionSet & options);
+  LinearCombination(const OptionSet & options);
 
 protected:
   void set_value(bool out, bool dout_din, bool d2out_din2) override;
@@ -46,9 +46,12 @@ protected:
   std::vector<const Variable<T> *> _from;
 
   /// Scaling coefficient for each term
-  std::vector<const Scalar *> _coefs;
+  const Scalar & _coef;
+
+private:
+  Scalar make_coef(const OptionSet & options) const;
 };
 
-typedef SumModel<Scalar> ScalarSumModel;
-typedef SumModel<SR2> SR2SumModel;
+typedef LinearCombination<Scalar> ScalarLinearCombination;
+typedef LinearCombination<SR2> SR2LinearCombination;
 } // namespace neml2

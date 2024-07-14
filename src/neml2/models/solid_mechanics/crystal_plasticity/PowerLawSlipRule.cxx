@@ -24,6 +24,7 @@
 
 #include "neml2/models/solid_mechanics/crystal_plasticity/PowerLawSlipRule.h"
 #include "neml2/models/solid_mechanics/crystal_plasticity/SlipRule.h"
+#include "neml2/misc/math.h"
 
 namespace neml2
 {

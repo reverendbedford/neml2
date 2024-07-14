@@ -23,15 +23,15 @@
 // THE SOFTWARE.
 #include <catch2/catch_test_macros.hpp>
 
-#include "neml2/models/SumModel.h"
+#include "neml2/models/LinearCombination.h"
 
 using namespace neml2;
 
 TEST_CASE("Factory", "[base]")
 {
-  auto options = ScalarSumModel::expected_options();
+  auto options = ScalarLinearCombination::expected_options();
   options.name() = "example";
-  options.type() = "ScalarSumModel";
+  options.type() = "ScalarLinearCombination";
   options.set<std::vector<VariableName>>("from_var") = {VariableName("state", "A"),
                                                         VariableName("state", "substate", "B")};
   options.set<VariableName>("to_var") = VariableName("state", "outsub", "C");
@@ -41,7 +41,7 @@ TEST_CASE("Factory", "[base]")
 
   Factory::clear();
   Factory::load(all_options);
-  auto & summodel = Factory::get_object<ScalarSumModel>("Models", "example");
+  auto & summodel = Factory::get_object<ScalarLinearCombination>("Models", "example");
 
   REQUIRE(summodel.input_axis().has_subaxis("state"));
   REQUIRE(summodel.input_axis().subaxis("state").has_subaxis("substate"));

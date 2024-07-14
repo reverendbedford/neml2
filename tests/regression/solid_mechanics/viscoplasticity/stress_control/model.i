@@ -141,7 +141,7 @@
     stress = 'forces/S'
   []
   [total_strain]
-    type = SR2SumModel
+    type = SR2LinearCombination
     to_var = 'state/E'
     from_var = 'state/internal/Ee state/internal/Ep'
   []

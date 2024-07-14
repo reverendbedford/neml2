@@ -87,6 +87,19 @@ ImplicitUpdate::check_AD_limitation() const
 }
 
 void
+ImplicitUpdate::setup_output_views()
+{
+  Model::setup_output_views();
+
+  if (requires_grad())
+  {
+    _ds_dsn = derivative_storage()("state", "old_state");
+    _ds_df = derivative_storage()("state", "forces");
+    _ds_dfn = derivative_storage()("state", "old_forces");
+  }
+}
+
+void
 ImplicitUpdate::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   neml_assert_dbg(!d2out_din2, "This model does not define the second derivatives.");
@@ -122,17 +135,13 @@ ImplicitUpdate::set_value(bool out, bool dout_din, bool d2out_din2)
       // IFT requires dresidual/dinput evaluated at the solution:
       _model.prepare();
       _model.value_and_dvalue();
-      auto & partials = _model.derivative_storage();
+      auto && [dr_ds, dr_dsn, dr_df, dr_dfn] = _model.nonlinear_system_derivatives();
 
       // The actual IFT:
-      LabeledMatrix J = partials.slice(1, "state");
-      auto [LU, pivot] = math::linalg::lu_factor(J);
-      derivative_storage()("state", "old_state")
-          .copy_(-math::linalg::lu_solve(LU, pivot, partials.slice(1, "old_state")));
-      derivative_storage()("state", "forces")
-          .copy_(-math::linalg::lu_solve(LU, pivot, partials.slice(1, "forces")));
-      derivative_storage()("state", "old_forces")
-          .copy_(-math::linalg::lu_solve(LU, pivot, partials.slice(1, "old_forces")));
+      auto [LU, pivot] = math::linalg::lu_factor(dr_ds);
+      _ds_dsn.index_put_({torch::indexing::Slice()}, -math::linalg::lu_solve(LU, pivot, dr_dsn));
+      _ds_df.index_put_({torch::indexing::Slice()}, -math::linalg::lu_solve(LU, pivot, dr_df));
+      _ds_dfn.index_put_({torch::indexing::Slice()}, -math::linalg::lu_solve(LU, pivot, dr_dfn));
     }
   }
 }

@@ -25,6 +25,7 @@
 #include "neml2/tensors/user_tensors/Orientation.h"
 
 #include "neml2/tensors/Quaternion.h"
+#include "neml2/misc/math.h"
 
 namespace neml2
 {

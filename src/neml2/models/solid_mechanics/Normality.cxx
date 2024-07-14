@@ -73,6 +73,20 @@ Normality::Normality(const OptionSet & options)
 }
 
 void
+Normality::setup_output_views()
+{
+  Model::setup_output_views();
+
+  for (auto && [ivar, var] : _conjugate_pairs)
+  {
+    _f_deriv_views[ivar] = _model.derivative_storage()(_f, ivar);
+    if (requires_grad())
+      for (auto && [jvar, j] : input_views())
+        _f_secderiv_views[ivar][jvar] = _model.second_derivative_storage()(_f, ivar, jvar);
+  }
+}
+
+void
 Normality::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   neml_assert_dbg(!d2out_din2, "Normality doesn't implement second derivatives.");
@@ -87,11 +101,11 @@ Normality::set_value(bool out, bool dout_din, bool d2out_din2)
   for (auto && [ivar, var] : _conjugate_pairs)
   {
     if (out)
-      (*var) = _model.derivative_storage()(_f, ivar);
+      (*var) = _f_deriv_views[ivar];
 
     if (dout_din)
       for (auto && [jvar, j] : input_views())
-        var->d(j) = _model.second_derivative_storage()(_f, ivar, jvar);
+        var->d(j) = _f_secderiv_views[ivar][jvar];
   }
 }
 } // namespace neml2

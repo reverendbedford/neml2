@@ -28,6 +28,7 @@
 
 #include "neml2/tensors/tensors.h"
 #include "neml2/tensors/list_tensors.h"
+#include "neml2/misc/math.h"
 
 namespace neml2
 {
@@ -72,7 +73,7 @@ SumSlipRates::set_value(bool out, bool dout_din, bool d2out_din2)
   const auto g = Scalar(_g, batch_dim() + 1);
 
   if (out)
-    _sg = math::abs(g).batch_sum(-1);
+    _sg = math::batch_sum(math::abs(g), -1);
 
   if (dout_din)
     _sg.d(_g) = Tensor(math::sign(g), batch_dim()).base_unsqueeze(0);

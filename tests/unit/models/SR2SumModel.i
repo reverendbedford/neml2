@@ -27,7 +27,7 @@
 
 [Models]
   [model]
-    type = SR2SumModel
+    type = SR2LinearCombination
     from_var = 'state/A state/substate/B'
     to_var = 'state/outsub/C'
   []

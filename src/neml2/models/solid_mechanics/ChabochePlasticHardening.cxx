@@ -24,6 +24,7 @@
 
 #include "neml2/models/solid_mechanics/ChabochePlasticHardening.h"
 #include "neml2/tensors/SSR4.h"
+#include "neml2/misc/math.h"
 
 namespace neml2
 {

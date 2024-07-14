@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 #include "neml2/models/solid_mechanics/RateIndependentPlasticFlowConstraint.h"
+#include "neml2/misc/math.h"
 
 namespace neml2
 {

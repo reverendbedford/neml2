@@ -59,7 +59,7 @@
     invariant_type = 'I1'
   []
   [sum]
-    type = ScalarSumModel
+    type = ScalarLinearCombination
     from_var = 'state/foo state/bar state/baz_tr'
     to_var = 'state/sum'
   []

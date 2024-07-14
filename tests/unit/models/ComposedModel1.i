@@ -24,7 +24,7 @@
     variable = 'bar'
   []
   [residual_sum]
-    type = ScalarSumModel
+    type = ScalarLinearCombination
     from_var = 'residual/foo residual/bar'
     to_var = 'residual/foo_bar'
   []

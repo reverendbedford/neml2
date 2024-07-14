@@ -27,6 +27,7 @@
 
 #include "neml2/tensors/tensors.h"
 #include "neml2/tensors/list_tensors.h"
+#include "neml2/misc/math.h"
 
 namespace neml2
 {
@@ -75,7 +76,7 @@ PlasticVorticity::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   neml_assert_dbg(!d2out_din2, "Second derivative not implemented.");
 
-  const auto Wp_crystal = (Scalar(_gamma_dot.value()) * _crystal_geometry.W()).list_sum();
+  const auto Wp_crystal = math::batch_sum(Scalar(_gamma_dot.value()) * _crystal_geometry.W(), -1);
 
   if (out)
     _Wp = Wp_crystal.rotate(R2(_R));

@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 #include "neml2/models/ArrheniusParameter.h"
+#include "neml2/misc/math.h"
 
 namespace neml2
 {

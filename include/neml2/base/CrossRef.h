@@ -54,6 +54,11 @@ class CrossRef
 public:
   CrossRef() = default;
 
+  CrossRef(const std::string & raw)
+    : _raw_str(raw)
+  {
+  }
+
   /**
    * @brief Assignment operator
    *

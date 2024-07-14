@@ -74,6 +74,9 @@ public:
   /// Whether this model defines one or more nonlinear equations to be solved
   virtual bool is_nonlinear_system() const { return _nonlinear_system; }
 
+  std::tuple<const Tensor &, const Tensor &, const Tensor &, const Tensor &>
+  nonlinear_system_derivatives() const;
+
   /// Whether inferece mode is on
   bool inference_mode() const { return _inference_mode; }
 
@@ -329,6 +332,9 @@ private:
 
   /// Whether this is a nonlinear system
   bool _nonlinear_system;
+
+  /// Derivatives of the nonlinear system
+  Tensor _dr_ds, _dr_dsn, _dr_df, _dr_dfn;
 
 #ifndef NDEBUG
   /// Whether this model has been evaluated in the current forward pass

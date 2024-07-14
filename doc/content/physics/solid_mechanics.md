@@ -131,7 +131,7 @@ The Perzyna model is implemented by the object `PerzynaPlasticFlowRate`. A compl
 ```
 [Models]
   [elastic_strain]
-    type = SR2SumModel
+    type = SR2LinearCombination
     from_var = 'forces/E state/internal/Ep'
     to_var = 'state/internal/Ee'
     coefficients = '1 -1'
@@ -289,7 +289,7 @@ Below is an example input file defining a yield function with \f$ J_2 \f$ flow a
     hardening_modulus = 1000
   []
   [overstress]
-    type = SR2SumModel
+    type = SR2LinearCombination
     from_var = 'state/internal/S state/internal/X'
     to_var = 'state/internal/O'
     coefficients = '1 -1'
@@ -314,7 +314,7 @@ An alternative way of introducing hardening is through back stresses. Instead of
 ```python
 [Models]
   [overstress]
-    type = SR2SumModel
+    type = SR2LinearCombination
     from_var = 'state/internal/S state/internal/X1 state/internal/X2'
     to_var = 'state/internal/O'
     coefficients = '1 -1 -1'
@@ -348,7 +348,7 @@ Isotropic hardening, kinematic hardening, and back stresses are all optional and
     back_stress = 'state/internal/X0'
   []
   [overstress]
-    type = SR2SumModel
+    type = SR2LinearCombination
     from_var = 'state/internal/S state/internal/X0 state/internal/X1 state/internal/X2'
     to_var = 'state/internal/O'
     coefficients = '1 -1 -1 -1'

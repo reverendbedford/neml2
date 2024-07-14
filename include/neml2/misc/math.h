@@ -229,22 +229,185 @@ WSR4 d_multiply_and_make_skew_d_first(const SR2 & b);
 /// Derivative of a_ik b_kj - b_ik a_kj wrt b
 WSR4 d_multiply_and_make_skew_d_second(const SR2 & a);
 
-/// Concatenate a list of Tensors
-template <
-    typename Container,
-    std::enable_if_t<
-        std::is_convertible_v<typename std::iterator_traits<
-                                  decltype(std::declval<Container>().begin())>::iterator_category,
-                              std::input_iterator_tag> &&
-            std::is_convertible_v<typename std::iterator_traits<
-                                      decltype(std::declval<Container>().end())>::iterator_category,
-                                  std::input_iterator_tag>,
-        int> = 0>
-inline Tensor
-cat(Container && tensors, Size dim)
+template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
+T
+batch_cat(const std::vector<T> & tensors, Size d = 0)
 {
   std::vector<torch::Tensor> torch_tensors(tensors.begin(), tensors.end());
-  return Tensor(torch::cat(torch_tensors, dim), tensors.begin()->batch_dim());
+  auto d2 = d >= 0 ? d : d - tensors.begin()->base_dim();
+  return T(torch::cat(torch_tensors, d2), tensors.begin()->batch_dim());
+}
+
+template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
+T
+base_cat(const std::vector<T> & tensors, Size d = 0)
+{
+  std::vector<torch::Tensor> torch_tensors(tensors.begin(), tensors.end());
+  auto d2 = d < 0 ? d : d + tensors.begin()->batch_dim();
+  return T(torch::cat(torch_tensors, d2), tensors.begin()->batch_dim());
+}
+template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
+T
+batch_stack(const std::vector<T> & tensors, Size d = 0)
+{
+  std::vector<torch::Tensor> torch_tensors(tensors.begin(), tensors.end());
+  auto d2 = d >= 0 ? d : d - tensors.begin()->base_dim();
+  return T(torch::stack(torch_tensors, d2), tensors.begin()->batch_dim() + 1);
+}
+
+template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
+neml2::Tensor
+base_stack(const std::vector<T> & tensors, Size d = 0)
+{
+  std::vector<torch::Tensor> torch_tensors(tensors.begin(), tensors.end());
+  auto d2 = d < 0 ? d : d + tensors.begin()->batch_dim();
+  return T(torch::stack(torch_tensors, d2), tensors.begin()->batch_dim());
+}
+
+template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
+T
+batch_sum(const T & a, Size d = 0)
+{
+  neml_assert_dbg(a.batch_dim() > 0, "Must have a batch dimension to sum along");
+  auto d2 = d >= 0 ? d : d - a.base_dim();
+  return T(torch::sum(a, d2), a.batch_dim() - 1);
+}
+
+template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
+T
+base_sum(const T & a, Size d = 0)
+{
+  auto d2 = d < 0 ? d : d + a.batch_dim();
+  return T(torch::sum(a, d2), a.batch_dim());
+}
+
+template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
+T
+pow(const T & a, const Real & n)
+{
+  return T(torch::pow(a, n), a.batch_dim());
+}
+
+template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
+T
+pow(const Real & a, const T & n)
+{
+  return T(torch::pow(a, n), n.batch_dim());
+}
+
+template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
+T
+pow(const T & a, const T & n)
+{
+  neml_assert_broadcastable_dbg(a, n);
+  return T(torch::pow(a, n), broadcast_batch_dim(a, n));
+}
+
+template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
+T
+sign(const T & a)
+{
+  return T(torch::sign(a), a.batch_dim());
+}
+
+template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
+T
+cosh(const T & a)
+{
+  return T(torch::cosh(a), a.batch_dim());
+}
+
+template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
+T
+sinh(const T & a)
+{
+  return T(torch::sinh(a), a.batch_dim());
+}
+
+template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
+T
+tanh(const T & a)
+{
+  return T(torch::tanh(a), a.batch_dim());
+}
+
+template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
+T
+where(const torch::Tensor & condition, const T & a, const T & b)
+{
+  neml_assert_broadcastable_dbg(a, b);
+  return T(torch::where(condition, a, b), broadcast_batch_dim(a, b));
+}
+
+/**
+ * This is (almost) equivalent to Torch's heaviside, except that the Torch's version is not
+ * differentiable (back-propagatable). I said "almost" because torch::heaviside allows you to set
+ * the return value in the case of input == 0. Our implementation always return 0.5 when the input
+ * == 0.
+ */
+template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
+T
+heaviside(const T & a)
+{
+  return (sign(a) + 1.0) / 2.0;
+}
+
+template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
+T
+macaulay(const T & a)
+{
+  return T(torch::Tensor(a) * torch::Tensor(heaviside(a)), a.batch_dim());
+}
+
+template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
+T
+dmacaulay(const T & a)
+{
+  return heaviside(a);
+}
+
+template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
+T
+sqrt(const T & a)
+{
+  return T(torch::sqrt(a), a.batch_dim());
+}
+
+template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
+T
+exp(const T & a)
+{
+  return T(torch::exp(a), a.batch_dim());
+}
+
+template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
+T
+abs(const T & a)
+{
+  return T(torch::abs(a), a.batch_dim());
+}
+
+template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
+T
+diff(const T & a, Size n = 1, Size dim = -1)
+{
+  return T(torch::diff(a, n, dim), a.batch_dim());
+}
+
+template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
+T
+batch_diag_embed(const T & a, Size offset = 0, Size d1 = -2, Size d2 = -1)
+{
+  return T(torch::diag_embed(
+               a, offset, d1 < 0 ? d1 - a.base_dim() : d1, d2 < 0 ? d2 - a.base_dim() : d2),
+           a.batch_dim() + 1);
+}
+
+template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
+T
+log(const T & a)
+{
+  return T(torch::log(a), a.batch_dim());
 }
 
 namespace linalg

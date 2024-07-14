@@ -109,7 +109,7 @@
     flow_rate = 'state/internal/gamma_rate_rd'
   []
   [flowrate]
-    type = ScalarSumModel
+    type = ScalarLinearCombination
     from_var = 'state/internal/gamma_rate_ri state/internal/gamma_rate_rd'
     to_var = 'state/internal/gamma_rate'
     coefficients = '0.5 0.5'

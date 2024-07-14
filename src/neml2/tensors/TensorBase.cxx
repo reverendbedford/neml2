@@ -106,7 +106,7 @@ TensorBase<Derived>::logspace(
     const Derived & start, const Derived & end, Size nstep, Size dim, Size batch_dim, Real base)
 {
   auto exponent = Derived::linspace(start, end, nstep, dim, batch_dim);
-  return math::pow(base, exponent);
+  return Derived(torch::pow(base, exponent), exponent.batch_dim());
 }
 
 template <class Derived>
@@ -332,22 +332,6 @@ Derived
 TensorBase<Derived>::operator-() const
 {
   return Derived(-torch::Tensor(*this), _batch_dim);
-}
-
-template <class Derived>
-Derived
-TensorBase<Derived>::batch_sum(Size d) const
-{
-  neml_assert_dbg(_batch_dim > 0, "Must have a batch dimension to sum along");
-  auto d2 = d >= 0 ? d : d - base_dim();
-  return Derived(torch::sum(*this, d2), _batch_dim - 1);
-}
-
-template <class Derived>
-Derived
-TensorBase<Derived>::list_sum() const
-{
-  return batch_sum(-1);
 }
 
 #define TensorBASE_INSTANTIATE(T) template class TensorBase<T>

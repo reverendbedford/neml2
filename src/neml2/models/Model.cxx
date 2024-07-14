@@ -105,6 +105,13 @@ Model::setup()
   setup_layout();
 }
 
+std::tuple<const Tensor &, const Tensor &, const Tensor &, const Tensor &>
+Model::nonlinear_system_derivatives() const
+{
+  neml_assert_dbg(is_nonlinear_system(), "This is not a nonlinear system");
+  return {_dr_ds, _dr_dsn, _dr_df, _dr_dfn};
+}
+
 void
 Model::reinit(const Tensor & tensor, int deriv_order)
 {
@@ -200,6 +207,14 @@ Model::setup_output_views()
 {
   VariableStore::setup_output_views(true, requires_grad(), requires_2nd_grad());
   setup_submodel_output_views();
+
+  if (is_nonlinear_system() && requires_grad())
+  {
+    _dr_ds = derivative_storage()("residual", "state");
+    _dr_dsn = derivative_storage()("residual", "old_state");
+    _dr_df = derivative_storage()("residual", "forces");
+    _dr_dfn = derivative_storage()("residual", "old_forces");
+  }
 }
 
 void

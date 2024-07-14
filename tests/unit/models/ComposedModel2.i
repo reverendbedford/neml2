@@ -30,7 +30,7 @@
     variable = 'bar'
   []
   [residual_sum1]
-    type = ScalarSumModel
+    type = ScalarLinearCombination
     from_var = 'residual/foo residual/bar'
     to_var = 'residual/foo_bar'
   []
@@ -43,7 +43,7 @@
     variable = 'baz'
   []
   [residual_sum2]
-    type = ScalarSumModel
+    type = ScalarLinearCombination
     from_var = 'residual/foo_bar residual/baz'
     to_var = 'residual/foo_bar_baz'
   []

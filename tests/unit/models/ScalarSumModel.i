@@ -12,7 +12,7 @@
 
 [Models]
   [model]
-    type = ScalarSumModel
+    type = ScalarLinearCombination
     from_var = 'state/A state/substate/B'
     to_var = 'state/outsub/C'
   []

@@ -27,6 +27,7 @@
 
 #include "neml2/tensors/tensors.h"
 #include "neml2/tensors/list_tensors.h"
+#include "neml2/misc/math.h"
 
 namespace neml2
 {
@@ -77,7 +78,7 @@ PlasticDeformationRate::set_value(bool out, bool dout_din, bool d2out_din2)
 
   // Grab the input
   const auto g = Scalar(_g, batch_dim() + 1);
-  const auto dp_crystal = (g * _crystal_geometry.M()).list_sum();
+  const auto dp_crystal = math::batch_sum(g * _crystal_geometry.M(), -1);
 
   if (out)
     _dp = dp_crystal.rotate(R2(_R));

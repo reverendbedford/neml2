@@ -307,7 +307,7 @@ void
 ComposedModel::apply_chain_rule(Model * i)
 {
   auto dpin_din =
-      LabeledMatrix(math::cat(_dpin_din_views[i], -2), {&i->input_axis(), &input_axis()});
+      LabeledMatrix(math::base_cat(_dpin_din_views[i]), {&i->input_axis(), &input_axis()});
   _dpout_din[i].copy_(i->derivative_storage().chain(dpin_din));
 }
 
@@ -315,8 +315,8 @@ void
 ComposedModel::apply_second_order_chain_rule(Model * i)
 {
   auto dpin_din =
-      LabeledMatrix(math::cat(_dpin_din_views[i], -2), {&i->input_axis(), &input_axis()});
-  auto d2pin_din2 = LabeledTensor3D(math::cat(_d2pin_din2_views[i], -3),
+      LabeledMatrix(math::base_cat(_dpin_din_views[i]), {&i->input_axis(), &input_axis()});
+  auto d2pin_din2 = LabeledTensor3D(math::base_cat(_d2pin_din2_views[i]),
                                     {&i->input_axis(), &input_axis(), &input_axis()});
   _dpout_din[i].copy_(i->derivative_storage().chain(dpin_din));
   _d2pout_din2[i].copy_(

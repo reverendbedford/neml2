@@ -22,17 +22,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/models/SumModel.h"
+#include "neml2/models/LinearCombination.h"
 #include "neml2/tensors/SSR4.h"
+#include "neml2/misc/math.h"
 
 namespace neml2
 {
-register_NEML2_object(ScalarSumModel);
-register_NEML2_object(SR2SumModel);
+register_NEML2_object(ScalarLinearCombination);
+register_NEML2_object(SR2LinearCombination);
 
 template <typename T>
 OptionSet
-SumModel<T>::expected_options()
+LinearCombination<T>::expected_options()
 {
   // This is the only way of getting tensor type in a static method like this...
   // Trim 6 chars to remove 'neml2::'
@@ -49,58 +50,52 @@ SumModel<T>::expected_options()
   options.set_output<VariableName>("to_var");
   options.set("to_var").doc() = "The sum";
 
-  options.set_parameter<std::vector<CrossRef<Scalar>>>("coefficients") = {};
+  options.set_parameter<std::vector<CrossRef<Scalar>>>("coefficients") = {CrossRef<Scalar>("1")};
   options.set("coefficients").doc() = "Weights associated with each variable";
 
   return options;
 }
 
 template <typename T>
-SumModel<T>::SumModel(const OptionSet & options)
+LinearCombination<T>::LinearCombination(const OptionSet & options)
   : Model(options),
-    _to(declare_output_variable<T>("to_var"))
+    _to(declare_output_variable<T>("to_var")),
+    _coef(declare_parameter("c", make_coef(options)))
 {
   for (auto fv : options.get<std::vector<VariableName>>("from_var"))
     _from.push_back(&declare_input_variable<T>(fv));
+}
 
-  // The number of coefficients can be 0, 1, or N
-  //  - 0: The _coefs vector will be filled with ones
-  //  - 1: The _coefs vector will be filled with _coefs[0]
-  //  - N: N must be equal to the length of _from
+template <typename T>
+Scalar
+LinearCombination<T>::make_coef(const OptionSet & options) const
+{
   const auto coefs_in = options.get<std::vector<CrossRef<Scalar>>>("coefficients");
-  const auto N = _from.size();
-  if (coefs_in.size() == 0)
-    _coefs = std::vector<const Scalar *>(
-        N, &declare_parameter("c", Scalar(1.0, default_tensor_options())));
-  else if (coefs_in.size() == 1)
-    _coefs = std::vector<const Scalar *>(N, &declare_parameter("c", Scalar(coefs_in[0])));
-  else
-  {
-    neml_assert(coefs_in.size() == N,
-                "Number of coefficients must be 0, 1, or N, where N is the number of 'from_var'.");
-    _coefs.resize(N);
-    for (size_t i = 0; i < N; i++)
-      _coefs[i] = &declare_parameter("c_" + utils::stringify(i), Scalar(coefs_in[i]));
-  }
+  const std::vector<Scalar> coefs(coefs_in.begin(), coefs_in.end());
+  return math::batch_stack(coefs, -1);
 }
 
 template <typename T>
 void
-SumModel<T>::set_value(bool out, bool dout_din, bool d2out_din2)
+LinearCombination<T>::set_value(bool out, bool dout_din, bool d2out_din2)
 {
-  const auto N = _from.size();
+  const Size N = _from.size();
 
   if (out)
   {
-    auto sum = T::zeros(_to.batch_sizes(), options());
-    for (size_t i = 0; i < N; i++)
-      sum += (*_coefs[i]) * (*_from[i]);
-    _to = sum;
+    std::vector<T> vals;
+    for (auto from_var : _from)
+      vals.push_back(from_var->value());
+
+    _to = math::batch_sum(_coef * math::batch_stack(vals, -1), -1);
   }
 
   if (dout_din)
-    for (size_t i = 0; i < N; i++)
-      _to.d(*_from[i]) = (*_coefs[i]) * T::identity_map(options());
+  {
+    const auto deriv = _coef * T::identity_map(options()).batch_expand(N);
+    for (Size i = 0; i < N; i++)
+      _to.d(*_from[i]) = deriv.batch_index({indexing::Ellipsis, i});
+  }
 
   if (d2out_din2)
   {
@@ -108,6 +103,6 @@ SumModel<T>::set_value(bool out, bool dout_din, bool d2out_din2)
   }
 }
 
-template class SumModel<Scalar>;
-template class SumModel<SR2>;
+template class LinearCombination<Scalar>;
+template class LinearCombination<SR2>;
 } // namespace neml2

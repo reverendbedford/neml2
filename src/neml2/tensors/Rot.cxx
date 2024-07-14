@@ -31,6 +31,7 @@
 #include "neml2/tensors/R4.h"
 #include "neml2/tensors/SSR4.h"
 #include "neml2/tensors/WR2.h"
+#include "neml2/misc/math.h"
 
 namespace neml2
 {
