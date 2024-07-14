@@ -35,7 +35,7 @@ namespace neml2
 
 // Forward declarations
 template <class Derived>
-void def_FixedDimTensor(py::class_<Derived> & c);
+void def_LogicalTensor(py::class_<Derived> & c);
 
 } // namespace neml2
 
@@ -48,7 +48,7 @@ namespace neml2
 
 template <class Derived>
 void
-def_FixedDimTensor(py::class_<Derived> & c)
+def_LogicalTensor(py::class_<Derived> & c)
 {
   // Ctors, conversions, accessors etc.
   c.def(py::init<const torch::Tensor &>());

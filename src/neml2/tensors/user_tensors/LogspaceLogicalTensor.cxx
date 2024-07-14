@@ -22,37 +22,59 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/tensors/user_tensors/OnesFixedDimTensor.h"
+#include "neml2/tensors/user_tensors/LogspaceLogicalTensor.h"
 
 namespace neml2
 {
-#define ONESFIXEDDIMTENSOR_REGISTER(T) register_NEML2_object_alias(Ones##T, "Ones" #T)
-FOR_ALL_FIXEDDIMTENSOR(ONESFIXEDDIMTENSOR_REGISTER);
+#define LOGSPACELogicalTensor_REGISTER(T) register_NEML2_object_alias(Logspace##T, "Logspace" #T)
+FOR_ALL_LogicalTensor(LOGSPACELogicalTensor_REGISTER);
 
 template <typename T>
 OptionSet
-OnesFixedDimTensor<T>::expected_options()
+LogspaceLogicalTensor<T>::expected_options()
 {
   // This is the only way of getting tensor type in a static method like this...
   // Trim 6 chars to remove 'neml2::'
   auto tensor_type = utils::demangle(typeid(T).name()).substr(7);
 
   OptionSet options = UserTensorBase::expected_options();
-  options.doc() = "Construct a " + tensor_type + " with given batch shape filled with ones.";
+  options.doc() = "Construct a " + tensor_type +
+                  " with exponents linearly spaced on the batch dimensions. See "
+                  "neml2::TensorBase::logspace for a detailed explanation.";
 
-  options.set<TensorShape>("batch_shape") = {};
-  options.set("batch_shape").doc() = "Batch shape";
+  options.set<CrossRef<T>>("start");
+  options.set("start").doc() = "The starting tensor";
+
+  options.set<CrossRef<T>>("end");
+  options.set("end").doc() = "The ending tensor";
+
+  options.set<Size>("nstep");
+  options.set("nstep").doc() = "The number of steps with even spacing along the new dimension";
+
+  options.set<Size>("dim") = 0;
+  options.set("dim").doc() = "Where to insert the new dimension";
+
+  options.set<Size>("batch_dim") = -1;
+  options.set("batch_dim").doc() = "Batch dimension of the output";
+
+  options.set<Real>("base") = 10;
+  options.set("base").doc() = "Exponent base";
 
   return options;
 }
 
 template <typename T>
-OnesFixedDimTensor<T>::OnesFixedDimTensor(const OptionSet & options)
-  : T(T::ones(options.get<TensorShape>("batch_shape"), default_tensor_options())),
+LogspaceLogicalTensor<T>::LogspaceLogicalTensor(const OptionSet & options)
+  : T(T::logspace(options.get<CrossRef<T>>("start"),
+                  options.get<CrossRef<T>>("end"),
+                  options.get<Size>("nstep"),
+                  options.get<Size>("dim"),
+                  options.get<Size>("batch_dim"),
+                  options.get<Real>("base"))),
     UserTensorBase(options)
 {
 }
 
-#define ONESFIXEDDIMTENSOR_INSTANTIATE_FIXEDDIMTENSOR(T) template class OnesFixedDimTensor<T>
-FOR_ALL_FIXEDDIMTENSOR(ONESFIXEDDIMTENSOR_INSTANTIATE_FIXEDDIMTENSOR);
+#define LOGSPACELogicalTensor_INSTANTIATE_LogicalTensor(T) template class LogspaceLogicalTensor<T>
+FOR_ALL_LogicalTensor(LOGSPACELogicalTensor_INSTANTIATE_LogicalTensor);
 } // namespace neml2

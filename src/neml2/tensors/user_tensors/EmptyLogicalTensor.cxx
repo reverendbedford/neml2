@@ -22,23 +22,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/tensors/user_tensors/ZerosFixedDimTensor.h"
+#include "neml2/tensors/user_tensors/EmptyLogicalTensor.h"
 
 namespace neml2
 {
-#define ZEROSFIXEDDIMTENSOR_REGISTER(T) register_NEML2_object_alias(Zeros##T, "Zeros" #T)
-FOR_ALL_FIXEDDIMTENSOR(ZEROSFIXEDDIMTENSOR_REGISTER);
+#define EMPTYLogicalTensor_REGISTER(T) register_NEML2_object_alias(Empty##T, "Empty" #T)
+FOR_ALL_LogicalTensor(EMPTYLogicalTensor_REGISTER);
 
 template <typename T>
 OptionSet
-ZerosFixedDimTensor<T>::expected_options()
+EmptyLogicalTensor<T>::expected_options()
 {
   // This is the only way of getting tensor type in a static method like this...
   // Trim 6 chars to remove 'neml2::'
   auto tensor_type = utils::demangle(typeid(T).name()).substr(7);
 
   OptionSet options = UserTensorBase::expected_options();
-  options.doc() = "Construct a " + tensor_type + " with given batch shape filled with zeros.";
+  options.doc() = "Construct an empty " + tensor_type +
+                  " with given batch shape. Tensor values are **undefined** after construction.";
 
   options.set<TensorShape>("batch_shape") = {};
   options.set("batch_shape").doc() = "Batch shape";
@@ -47,12 +48,12 @@ ZerosFixedDimTensor<T>::expected_options()
 }
 
 template <typename T>
-ZerosFixedDimTensor<T>::ZerosFixedDimTensor(const OptionSet & options)
-  : T(T::zeros(options.get<TensorShape>("batch_shape"), default_tensor_options())),
+EmptyLogicalTensor<T>::EmptyLogicalTensor(const OptionSet & options)
+  : T(T::empty(options.get<TensorShape>("batch_shape"), default_tensor_options())),
     UserTensorBase(options)
 {
 }
 
-#define ZEROSFIXEDDIMTENSOR_INSTANTIATE_FIXEDDIMTENSOR(T) template class ZerosFixedDimTensor<T>
-FOR_ALL_FIXEDDIMTENSOR(ZEROSFIXEDDIMTENSOR_INSTANTIATE_FIXEDDIMTENSOR);
+#define EMPTYLogicalTensor_INSTANTIATE_LogicalTensor(T) template class EmptyLogicalTensor<T>
+FOR_ALL_LogicalTensor(EMPTYLogicalTensor_INSTANTIATE_LogicalTensor);
 } // namespace neml2

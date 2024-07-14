@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/tensors/FixedDimTensor.h"
+#include "neml2/tensors/LogicalTensor.h"
 
 namespace neml2
 {
@@ -36,10 +36,10 @@ class R4;
  *
  * Mandel notation/reduced skew is used, and so the logical storage space is (3, 3).
  */
-class WWR4 : public FixedDimTensor<WWR4, 3, 3>
+class WWR4 : public LogicalTensor<WWR4, 3, 3>
 {
 public:
-  using FixedDimTensor<WWR4, 3, 3>::FixedDimTensor;
+  using LogicalTensor<WWR4, 3, 3>::LogicalTensor;
   WWR4(const R4 & F);
 
   /// Create the identity tensor \f$\delta_{ij}\delta_{kl}\f$

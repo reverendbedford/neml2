@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/tensors/FixedDimTensor.h"
+#include "neml2/tensors/LogicalTensor.h"
 
 namespace neml2
 {
@@ -34,10 +34,10 @@ namespace neml2
  * The logical storage space is (), i.e., scalar.
  *
  */
-class Scalar : public FixedDimTensor<Scalar>
+class Scalar : public LogicalTensor<Scalar>
 {
 public:
-  using FixedDimTensor<Scalar>::FixedDimTensor;
+  using LogicalTensor<Scalar>::LogicalTensor;
 
   Scalar(Real init, const torch::TensorOptions & options);
 

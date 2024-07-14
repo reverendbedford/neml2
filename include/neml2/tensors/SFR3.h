@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/tensors/FixedDimTensor.h"
+#include "neml2/tensors/LogicalTensor.h"
 
 namespace neml2
 {
@@ -34,9 +34,9 @@ namespace neml2
  * Mandel notation is used for the first two symmetry dimensions, and so the logical storage space
  * is (6, 3).
  */
-class SFR3 : public FixedDimTensor<SFR3, 6, 3>
+class SFR3 : public LogicalTensor<SFR3, 6, 3>
 {
 public:
-  using FixedDimTensor<SFR3, 6, 3>::FixedDimTensor;
+  using LogicalTensor<SFR3, 6, 3>::LogicalTensor;
 };
 } // namespace neml2

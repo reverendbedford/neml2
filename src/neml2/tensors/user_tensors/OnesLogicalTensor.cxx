@@ -22,33 +22,37 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
-
-#include "neml2/tensors/user_tensors/UserTensorBase.h"
-
-#include "neml2/tensors/tensors.h"
+#include "neml2/tensors/user_tensors/OnesLogicalTensor.h"
 
 namespace neml2
 {
-/**
- * @brief Create a full FixedDimTensor of type T from the input file.
- *
- * @tparam T The concrete tensor derived from FixedDimTensor
- */
+#define ONESLogicalTensor_REGISTER(T) register_NEML2_object_alias(Ones##T, "Ones" #T)
+FOR_ALL_LogicalTensor(ONESLogicalTensor_REGISTER);
+
 template <typename T>
-class FullFixedDimTensor : public T, public UserTensorBase
+OptionSet
+OnesLogicalTensor<T>::expected_options()
 {
-public:
-  static OptionSet expected_options();
+  // This is the only way of getting tensor type in a static method like this...
+  // Trim 6 chars to remove 'neml2::'
+  auto tensor_type = utils::demangle(typeid(T).name()).substr(7);
 
-  /**
-   * @brief Construct a new FullFixedDimTensor object
-   *
-   * @param options The options extracted from the input file.
-   */
-  FullFixedDimTensor(const OptionSet & options);
-};
+  OptionSet options = UserTensorBase::expected_options();
+  options.doc() = "Construct a " + tensor_type + " with given batch shape filled with ones.";
 
-#define FULLFIXEDDIMTENSOR_TYPEDEF(T) typedef FullFixedDimTensor<T> Full##T
-FOR_ALL_FIXEDDIMTENSOR(FULLFIXEDDIMTENSOR_TYPEDEF);
+  options.set<TensorShape>("batch_shape") = {};
+  options.set("batch_shape").doc() = "Batch shape";
+
+  return options;
+}
+
+template <typename T>
+OnesLogicalTensor<T>::OnesLogicalTensor(const OptionSet & options)
+  : T(T::ones(options.get<TensorShape>("batch_shape"), default_tensor_options())),
+    UserTensorBase(options)
+{
+}
+
+#define ONESLogicalTensor_INSTANTIATE_LogicalTensor(T) template class OnesLogicalTensor<T>
+FOR_ALL_LogicalTensor(ONESLogicalTensor_INSTANTIATE_LogicalTensor);
 } // namespace neml2

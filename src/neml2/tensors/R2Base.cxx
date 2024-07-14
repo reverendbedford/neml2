@@ -211,7 +211,7 @@ template <class Derived>
 Scalar
 R2Base<Derived>::operator()(Size i, Size j) const
 {
-  return FixedDimTensor<Derived, 3, 3>::base_index({i, j});
+  return LogicalTensor<Derived, 3, 3>::base_index({i, j});
 }
 
 template <class Derived>

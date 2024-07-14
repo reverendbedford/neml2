@@ -159,7 +159,7 @@ ParameterStore::declare_parameter(const std::string & name, const std::string & 
       "parameter.");
 }
 
-#define PARAMETERSTORE_INTANTIATE_FIXEDDIMTENSOR(T)                                                \
+#define PARAMETERSTORE_INTANTIATE_LogicalTensor(T)                                                 \
   template const T & ParameterStore::declare_parameter<T>(const std::string &, const std::string &)
-FOR_ALL_FIXEDDIMTENSOR(PARAMETERSTORE_INTANTIATE_FIXEDDIMTENSOR);
+FOR_ALL_LogicalTensor(PARAMETERSTORE_INTANTIATE_LogicalTensor);
 } // namespace neml2

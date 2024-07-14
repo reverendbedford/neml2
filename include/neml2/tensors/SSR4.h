@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/tensors/FixedDimTensor.h"
+#include "neml2/tensors/LogicalTensor.h"
 
 namespace neml2
 {
@@ -40,10 +40,10 @@ class Rot;
  *
  * Mandel notation is used, and so the logical storage space is (6, 6).
  */
-class SSR4 : public FixedDimTensor<SSR4, 6, 6>
+class SSR4 : public LogicalTensor<SSR4, 6, 6>
 {
 public:
-  using FixedDimTensor<SSR4, 6, 6>::FixedDimTensor;
+  using LogicalTensor<SSR4, 6, 6>::LogicalTensor;
 
   /// Initialize with the symmetrized fourth order tensor
   SSR4(const R4 & T);

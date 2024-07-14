@@ -22,33 +22,37 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
-
-#include "neml2/tensors/user_tensors/UserTensorBase.h"
-
-#include "neml2/tensors/tensors.h"
+#include "neml2/tensors/user_tensors/ZerosLogicalTensor.h"
 
 namespace neml2
 {
-/**
- * @brief Create a zeros FixedDimTensor of type T from the input file.
- *
- * @tparam T The concrete tensor derived from FixedDimTensor
- */
+#define ZEROSLogicalTensor_REGISTER(T) register_NEML2_object_alias(Zeros##T, "Zeros" #T)
+FOR_ALL_LogicalTensor(ZEROSLogicalTensor_REGISTER);
+
 template <typename T>
-class ZerosFixedDimTensor : public T, public UserTensorBase
+OptionSet
+ZerosLogicalTensor<T>::expected_options()
 {
-public:
-  static OptionSet expected_options();
+  // This is the only way of getting tensor type in a static method like this...
+  // Trim 6 chars to remove 'neml2::'
+  auto tensor_type = utils::demangle(typeid(T).name()).substr(7);
 
-  /**
-   * @brief Construct a new ZerosFixedDimTensor object
-   *
-   * @param options The options extracted from the input file.
-   */
-  ZerosFixedDimTensor(const OptionSet & options);
-};
+  OptionSet options = UserTensorBase::expected_options();
+  options.doc() = "Construct a " + tensor_type + " with given batch shape filled with zeros.";
 
-#define ZEROSFIXEDDIMTENSOR_TYPEDEF(T) typedef ZerosFixedDimTensor<T> Zeros##T
-FOR_ALL_FIXEDDIMTENSOR(ZEROSFIXEDDIMTENSOR_TYPEDEF);
+  options.set<TensorShape>("batch_shape") = {};
+  options.set("batch_shape").doc() = "Batch shape";
+
+  return options;
+}
+
+template <typename T>
+ZerosLogicalTensor<T>::ZerosLogicalTensor(const OptionSet & options)
+  : T(T::zeros(options.get<TensorShape>("batch_shape"), default_tensor_options())),
+    UserTensorBase(options)
+{
+}
+
+#define ZEROSLogicalTensor_INSTANTIATE_LogicalTensor(T) template class ZerosLogicalTensor<T>
+FOR_ALL_LogicalTensor(ZEROSLogicalTensor_INSTANTIATE_LogicalTensor);
 } // namespace neml2

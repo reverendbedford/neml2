@@ -29,12 +29,12 @@
 namespace neml2
 {
 /**
- * @brief FixedDimTensor inherits from TensorBase and additionally templates on the base shape.
+ * @brief LogicalTensor inherits from TensorBase and additionally templates on the base shape.
  *
  * @tparam S Base shape
  */
 template <class Derived, Size... S>
-class FixedDimTensor : public TensorBase<Derived>
+class LogicalTensor : public TensorBase<Derived>
 {
 public:
   /// The base shape
@@ -47,13 +47,13 @@ public:
   static inline const Size const_base_storage = utils::storage_size({S...});
 
   /// Default constructor
-  FixedDimTensor() = default;
+  LogicalTensor() = default;
 
   /// Construct from another torch::Tensor given batch dimension
-  explicit FixedDimTensor(const torch::Tensor & tensor, Size batch_dim);
+  explicit LogicalTensor(const torch::Tensor & tensor, Size batch_dim);
 
   /// Construct from another torch::Tensor and infer batch dimension
-  FixedDimTensor(const torch::Tensor & tensor);
+  LogicalTensor(const torch::Tensor & tensor);
 
   /// Implicit conversion to a Tensor and loses information on the fixed base shape
   operator Tensor() const;
@@ -99,7 +99,7 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 
 template <class Derived, Size... S>
-FixedDimTensor<Derived, S...>::FixedDimTensor(const torch::Tensor & tensor, Size batch_dim)
+LogicalTensor<Derived, S...>::LogicalTensor(const torch::Tensor & tensor, Size batch_dim)
   : TensorBase<Derived>(tensor, batch_dim)
 {
   neml_assert_dbg(this->base_sizes() == const_base_sizes,
@@ -110,7 +110,7 @@ FixedDimTensor<Derived, S...>::FixedDimTensor(const torch::Tensor & tensor, Size
 }
 
 template <class Derived, Size... S>
-FixedDimTensor<Derived, S...>::FixedDimTensor(const torch::Tensor & tensor)
+LogicalTensor<Derived, S...>::LogicalTensor(const torch::Tensor & tensor)
   : TensorBase<Derived>(tensor, tensor.dim() - const_base_dim)
 {
   neml_assert_dbg(this->base_sizes() == const_base_sizes,
@@ -121,22 +121,22 @@ FixedDimTensor<Derived, S...>::FixedDimTensor(const torch::Tensor & tensor)
 }
 
 template <class Derived, Size... S>
-FixedDimTensor<Derived, S...>::operator Tensor() const
+LogicalTensor<Derived, S...>::operator Tensor() const
 {
   return Tensor(*this, this->batch_dim());
 }
 
 template <class Derived, Size... S>
 Derived
-FixedDimTensor<Derived, S...>::empty(const torch::TensorOptions & options)
+LogicalTensor<Derived, S...>::empty(const torch::TensorOptions & options)
 {
   return Derived(torch::empty(const_base_sizes, options), 0);
 }
 
 template <class Derived, Size... S>
 Derived
-FixedDimTensor<Derived, S...>::empty(TensorShapeRef batch_shape,
-                                     const torch::TensorOptions & options)
+LogicalTensor<Derived, S...>::empty(TensorShapeRef batch_shape,
+                                    const torch::TensorOptions & options)
 {
   return Derived(torch::empty(utils::add_shapes(batch_shape, const_base_sizes), options),
                  batch_shape.size());
@@ -144,15 +144,15 @@ FixedDimTensor<Derived, S...>::empty(TensorShapeRef batch_shape,
 
 template <class Derived, Size... S>
 Derived
-FixedDimTensor<Derived, S...>::zeros(const torch::TensorOptions & options)
+LogicalTensor<Derived, S...>::zeros(const torch::TensorOptions & options)
 {
   return Derived(torch::zeros(const_base_sizes, options), 0);
 }
 
 template <class Derived, Size... S>
 Derived
-FixedDimTensor<Derived, S...>::zeros(TensorShapeRef batch_shape,
-                                     const torch::TensorOptions & options)
+LogicalTensor<Derived, S...>::zeros(TensorShapeRef batch_shape,
+                                    const torch::TensorOptions & options)
 {
   return Derived(torch::zeros(utils::add_shapes(batch_shape, const_base_sizes), options),
                  batch_shape.size());
@@ -160,15 +160,14 @@ FixedDimTensor<Derived, S...>::zeros(TensorShapeRef batch_shape,
 
 template <class Derived, Size... S>
 Derived
-FixedDimTensor<Derived, S...>::ones(const torch::TensorOptions & options)
+LogicalTensor<Derived, S...>::ones(const torch::TensorOptions & options)
 {
   return Derived(torch::ones(const_base_sizes, options), 0);
 }
 
 template <class Derived, Size... S>
 Derived
-FixedDimTensor<Derived, S...>::ones(TensorShapeRef batch_shape,
-                                    const torch::TensorOptions & options)
+LogicalTensor<Derived, S...>::ones(TensorShapeRef batch_shape, const torch::TensorOptions & options)
 {
   return Derived(torch::ones(utils::add_shapes(batch_shape, const_base_sizes), options),
                  batch_shape.size());
@@ -176,16 +175,16 @@ FixedDimTensor<Derived, S...>::ones(TensorShapeRef batch_shape,
 
 template <class Derived, Size... S>
 Derived
-FixedDimTensor<Derived, S...>::full(Real init, const torch::TensorOptions & options)
+LogicalTensor<Derived, S...>::full(Real init, const torch::TensorOptions & options)
 {
   return Derived(torch::full(const_base_sizes, init, options), 0);
 }
 
 template <class Derived, Size... S>
 Derived
-FixedDimTensor<Derived, S...>::full(TensorShapeRef batch_shape,
-                                    Real init,
-                                    const torch::TensorOptions & options)
+LogicalTensor<Derived, S...>::full(TensorShapeRef batch_shape,
+                                   Real init,
+                                   const torch::TensorOptions & options)
 {
   return Derived(torch::full(utils::add_shapes(batch_shape, const_base_sizes), init, options),
                  batch_shape.size());

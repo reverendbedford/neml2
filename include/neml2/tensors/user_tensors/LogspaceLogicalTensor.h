@@ -22,43 +22,33 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/tensors/user_tensors/FullFixedDimTensor.h"
+#pragma once
+
+#include "neml2/tensors/user_tensors/UserTensorBase.h"
+
+#include "neml2/tensors/tensors.h"
 
 namespace neml2
 {
-#define FULLFIXEDDIMTENSOR_REGISTER(T) register_NEML2_object_alias(Full##T, "Full" #T)
-FOR_ALL_FIXEDDIMTENSOR(FULLFIXEDDIMTENSOR_REGISTER);
-
+/**
+ * @brief Create a logspace LogicalTensor of type T from the input file.
+ *
+ * @tparam T The concrete tensor derived from LogicalTensor
+ */
 template <typename T>
-OptionSet
-FullFixedDimTensor<T>::expected_options()
+class LogspaceLogicalTensor : public T, public UserTensorBase
 {
-  // This is the only way of getting tensor type in a static method like this...
-  // Trim 6 chars to remove 'neml2::'
-  auto tensor_type = utils::demangle(typeid(T).name()).substr(7);
+public:
+  static OptionSet expected_options();
 
-  OptionSet options = UserTensorBase::expected_options();
-  options.doc() =
-      "Construct a full " + tensor_type + " with given batch shape filled with a given value.";
+  /**
+   * @brief Construct a new LogspaceLogicalTensor object
+   *
+   * @param options The options extracted from the input file.
+   */
+  LogspaceLogicalTensor(const OptionSet & options);
+};
 
-  options.set<TensorShape>("batch_shape") = {};
-  options.set("batch_shape").doc() = "Batch shape";
-
-  options.set<Real>("value");
-  options.set("value").doc() = "Value used to fill the tensor";
-
-  return options;
-}
-
-template <typename T>
-FullFixedDimTensor<T>::FullFixedDimTensor(const OptionSet & options)
-  : T(T::full(options.get<TensorShape>("batch_shape"),
-              options.get<Real>("value"),
-              default_tensor_options())),
-    UserTensorBase(options)
-{
-}
-
-#define FULLFIXEDDIMTENSOR_INSTANTIATE_FIXEDDIMTENSOR(T) template class FullFixedDimTensor<T>
-FOR_ALL_FIXEDDIMTENSOR(FULLFIXEDDIMTENSOR_INSTANTIATE_FIXEDDIMTENSOR);
+#define LOGSPACELogicalTensor_TYPEDEF(T) typedef LogspaceLogicalTensor<T> Logspace##T
+FOR_ALL_LogicalTensor(LOGSPACELogicalTensor_TYPEDEF);
 } // namespace neml2

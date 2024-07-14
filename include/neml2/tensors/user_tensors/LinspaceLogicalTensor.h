@@ -31,24 +31,24 @@
 namespace neml2
 {
 /**
- * @brief Create raw tensor of type T from the input file.
+ * @brief Create a linspace LogicalTensor of type T from the input file.
  *
- * @tparam T The concrete tensor derived from TensorBase
+ * @tparam T The concrete tensor derived from LogicalTensor
  */
 template <typename T>
-class UserFixedDimTensor : public T, public UserTensorBase
+class LinspaceLogicalTensor : public T, public UserTensorBase
 {
 public:
   static OptionSet expected_options();
 
   /**
-   * @brief Construct a new UserFixedDimTensor object
+   * @brief Construct a new LinspaceLogicalTensor object
    *
    * @param options The options extracted from the input file.
    */
-  UserFixedDimTensor(const OptionSet & options);
+  LinspaceLogicalTensor(const OptionSet & options);
 };
 
-#define USERFIXEDDIMTENSOR_TYPEDEF(T) typedef UserFixedDimTensor<T> User##T
-FOR_ALL_FIXEDDIMTENSOR(USERFIXEDDIMTENSOR_TYPEDEF);
+#define LINSPACELogicalTensor_TYPEDEF(T) typedef LinspaceLogicalTensor<T> Linspace##T
+FOR_ALL_LogicalTensor(LINSPACELogicalTensor_TYPEDEF);
 } // namespace neml2

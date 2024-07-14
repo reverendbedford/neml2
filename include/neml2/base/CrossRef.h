@@ -123,9 +123,9 @@ CrossRef<torch::Tensor>::operator torch::Tensor() const;
 template <>
 CrossRef<Tensor>::operator Tensor() const;
 
-#define CROSSREF_SPECIALIZE_FIXEDDIMTENSOR(T)                                                      \
+#define CROSSREF_SPECIALIZE_LogicalTensor(T)                                                       \
   template <>                                                                                      \
   CrossRef<T>::operator T() const
 
-FOR_ALL_FIXEDDIMTENSOR(CROSSREF_SPECIALIZE_FIXEDDIMTENSOR);
+FOR_ALL_LogicalTensor(CROSSREF_SPECIALIZE_LogicalTensor);
 } // namespace neml2

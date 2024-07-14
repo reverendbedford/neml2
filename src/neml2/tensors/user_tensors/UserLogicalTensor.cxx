@@ -22,56 +22,56 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/tensors/user_tensors/LinspaceFixedDimTensor.h"
+#include "neml2/tensors/user_tensors/UserLogicalTensor.h"
 
 namespace neml2
 {
-#define LINSPACEFIXEDDIMTENSOR_REGISTER(T) register_NEML2_object_alias(Linspace##T, "Linspace" #T)
-FOR_ALL_FIXEDDIMTENSOR(LINSPACEFIXEDDIMTENSOR_REGISTER);
+#define USERLogicalTensor_REGISTER(T) register_NEML2_object_alias(User##T, #T)
+FOR_ALL_LogicalTensor(USERLogicalTensor_REGISTER);
 
 template <typename T>
 OptionSet
-LinspaceFixedDimTensor<T>::expected_options()
+UserLogicalTensor<T>::expected_options()
 {
   // This is the only way of getting tensor type in a static method like this...
   // Trim 6 chars to remove 'neml2::'
   auto tensor_type = utils::demangle(typeid(T).name()).substr(7);
 
   OptionSet options = UserTensorBase::expected_options();
-  options.doc() = "Construct a " + tensor_type +
-                  " linearly spaced on the batch dimensions. See neml2::TensorBase::linspace "
-                  "for a detailed explanation.";
+  options.doc() =
+      "Construct a " + tensor_type +
+      " from a vector values. The vector will be reshaped according to the specified batch shape.";
 
-  options.set<CrossRef<T>>("start");
-  options.set("start").doc() = "The starting tensor";
+  options.set<std::vector<Real>>("values");
+  options.set("values").doc() = "Values in this (flattened) tensor";
 
-  options.set<CrossRef<T>>("end");
-  options.set("end").doc() = "The ending tensor";
-
-  options.set<Size>("nstep");
-  options.set("nstep").doc() = "The number of steps with even spacing along the new dimension";
-
-  options.set<Size>("dim") = 0;
-  options.set("dim").doc() = "Where to insert the new dimension";
-
-  options.set<Size>("batch_dim") = -1;
-  options.set("batch_dim").doc() = "Batch dimension of the output";
+  options.set<TensorShape>("batch_shape") = {};
+  options.set("batch_shape").doc() = "Batch shape";
 
   return options;
 }
 
 template <typename T>
-LinspaceFixedDimTensor<T>::LinspaceFixedDimTensor(const OptionSet & options)
-  : T(T::linspace(options.get<CrossRef<T>>("start"),
-                  options.get<CrossRef<T>>("end"),
-                  options.get<Size>("nstep"),
-                  options.get<Size>("dim"),
-                  options.get<Size>("batch_dim"))),
+UserLogicalTensor<T>::UserLogicalTensor(const OptionSet & options)
+  : T(T::empty(options.get<TensorShape>("batch_shape"), default_tensor_options())),
     UserTensorBase(options)
 {
+  auto vals = options.get<std::vector<Real>>("values");
+  auto flat = torch::tensor(vals, default_tensor_options());
+  if (vals.size() == size_t(this->base_storage()))
+    this->index_put_({torch::indexing::Ellipsis}, flat.reshape(this->base_sizes()));
+  else if (vals.size() == size_t(utils::storage_size(this->sizes())))
+    this->index_put_({torch::indexing::Ellipsis}, flat.reshape(this->sizes()));
+  else
+    neml_assert(false,
+                "Number of values ",
+                vals.size(),
+                " must equal to either the base storage size ",
+                this->base_storage(),
+                " or the total storage size ",
+                utils::storage_size(this->sizes()));
 }
 
-#define LINSPACEFIXEDDIMTENSOR_INSTANTIATE_FIXEDDIMTENSOR(T)                                       \
-  template class LinspaceFixedDimTensor<T>
-FOR_ALL_FIXEDDIMTENSOR(LINSPACEFIXEDDIMTENSOR_INSTANTIATE_FIXEDDIMTENSOR);
+#define USERLogicalTensor_INSTANTIATE_LogicalTensor(T) template class UserLogicalTensor<T>
+FOR_ALL_LogicalTensor(USERLogicalTensor_INSTANTIATE_LogicalTensor);
 } // namespace neml2

@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/tensors/FixedDimTensor.h"
+#include "neml2/tensors/LogicalTensor.h"
 
 namespace neml2
 {
@@ -40,10 +40,10 @@ class Scalar;
  * Currently we only use this for data storage, so the only
  * method needed is to convert it to an R2
  */
-class Quaternion : public FixedDimTensor<Quaternion, 4>
+class Quaternion : public LogicalTensor<Quaternion, 4>
 {
 public:
-  using FixedDimTensor<Quaternion, 4>::FixedDimTensor;
+  using LogicalTensor<Quaternion, 4>::LogicalTensor;
 
   /// fill with four scalars
   static Quaternion fill(const Scalar & s, const Scalar & q1, const Scalar & q2, const Scalar & q3);

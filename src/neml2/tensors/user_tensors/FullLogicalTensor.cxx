@@ -22,16 +22,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/tensors/user_tensors/UserFixedDimTensor.h"
+#include "neml2/tensors/user_tensors/FullLogicalTensor.h"
 
 namespace neml2
 {
-#define USERFIXEDDIMTENSOR_REGISTER(T) register_NEML2_object_alias(User##T, #T)
-FOR_ALL_FIXEDDIMTENSOR(USERFIXEDDIMTENSOR_REGISTER);
+#define FULLLogicalTensor_REGISTER(T) register_NEML2_object_alias(Full##T, "Full" #T)
+FOR_ALL_LogicalTensor(FULLLogicalTensor_REGISTER);
 
 template <typename T>
 OptionSet
-UserFixedDimTensor<T>::expected_options()
+FullLogicalTensor<T>::expected_options()
 {
   // This is the only way of getting tensor type in a static method like this...
   // Trim 6 chars to remove 'neml2::'
@@ -39,39 +39,26 @@ UserFixedDimTensor<T>::expected_options()
 
   OptionSet options = UserTensorBase::expected_options();
   options.doc() =
-      "Construct a " + tensor_type +
-      " from a vector values. The vector will be reshaped according to the specified batch shape.";
-
-  options.set<std::vector<Real>>("values");
-  options.set("values").doc() = "Values in this (flattened) tensor";
+      "Construct a full " + tensor_type + " with given batch shape filled with a given value.";
 
   options.set<TensorShape>("batch_shape") = {};
   options.set("batch_shape").doc() = "Batch shape";
+
+  options.set<Real>("value");
+  options.set("value").doc() = "Value used to fill the tensor";
 
   return options;
 }
 
 template <typename T>
-UserFixedDimTensor<T>::UserFixedDimTensor(const OptionSet & options)
-  : T(T::empty(options.get<TensorShape>("batch_shape"), default_tensor_options())),
+FullLogicalTensor<T>::FullLogicalTensor(const OptionSet & options)
+  : T(T::full(options.get<TensorShape>("batch_shape"),
+              options.get<Real>("value"),
+              default_tensor_options())),
     UserTensorBase(options)
 {
-  auto vals = options.get<std::vector<Real>>("values");
-  auto flat = torch::tensor(vals, default_tensor_options());
-  if (vals.size() == size_t(this->base_storage()))
-    this->index_put_({torch::indexing::Ellipsis}, flat.reshape(this->base_sizes()));
-  else if (vals.size() == size_t(utils::storage_size(this->sizes())))
-    this->index_put_({torch::indexing::Ellipsis}, flat.reshape(this->sizes()));
-  else
-    neml_assert(false,
-                "Number of values ",
-                vals.size(),
-                " must equal to either the base storage size ",
-                this->base_storage(),
-                " or the total storage size ",
-                utils::storage_size(this->sizes()));
 }
 
-#define USERFIXEDDIMTENSOR_INSTANTIATE_FIXEDDIMTENSOR(T) template class UserFixedDimTensor<T>
-FOR_ALL_FIXEDDIMTENSOR(USERFIXEDDIMTENSOR_INSTANTIATE_FIXEDDIMTENSOR);
+#define FULLLogicalTensor_INSTANTIATE_LogicalTensor(T) template class FullLogicalTensor<T>
+FOR_ALL_LogicalTensor(FULLLogicalTensor_INSTANTIATE_LogicalTensor);
 } // namespace neml2

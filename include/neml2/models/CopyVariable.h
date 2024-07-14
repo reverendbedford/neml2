@@ -50,6 +50,6 @@ protected:
   const Variable<T> & _from;
 };
 
-#define COPYVARIABLE_TYPEDEF_FIXEDDIMTENSOR(T) typedef CopyVariable<T> Copy##T
-FOR_ALL_FIXEDDIMTENSOR(COPYVARIABLE_TYPEDEF_FIXEDDIMTENSOR);
+#define COPYVARIABLE_TYPEDEF_LogicalTensor(T) typedef CopyVariable<T> Copy##T
+FOR_ALL_LogicalTensor(COPYVARIABLE_TYPEDEF_LogicalTensor);
 } // namespace neml2

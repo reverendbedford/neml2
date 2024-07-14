@@ -32,9 +32,9 @@ using namespace neml2;
 void
 def_Tensor(py::class_<Tensor> & c)
 {
-  // All FixedDimTensors are convertible to Tensor
-#define Tensor_FROM_FIXEDDIMTENSOR(T) c.def(py::init<T>());
-  FOR_ALL_FIXEDDIMTENSOR(Tensor_FROM_FIXEDDIMTENSOR);
+  // All LogicalTensors are convertible to Tensor
+#define Tensor_FROM_LogicalTensor(T) c.def(py::init<T>());
+  FOR_ALL_LogicalTensor(Tensor_FROM_LogicalTensor);
 
   // Static methods
   c.def_static(

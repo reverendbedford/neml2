@@ -25,37 +25,44 @@
 #include <catch2/catch_test_macros.hpp>
 
 #include "utils.h"
-#include "neml2/tensors/user_tensors/FullFixedDimTensor.h"
+#include "neml2/tensors/user_tensors/LinspaceLogicalTensor.h"
 #include "neml2/tensors/tensors.h"
 
 using namespace neml2;
 
-#define test_FullFixedDimTensor(tensor_type, tensor_name, batch_shape, value)                      \
-  SECTION("Full" #tensor_type)                                                                     \
+#define test_LinspaceLogicalTensor(tensor_type, tensor_name, batch_shape, nstep, dim)              \
+  SECTION("Linspace" #tensor_type)                                                                 \
   {                                                                                                \
     const auto tensor_name = Factory::get_object_ptr<tensor_type>("Tensors", #tensor_name);        \
+    const auto tensor_name##_start =                                                               \
+        Factory::get_object_ptr<tensor_type>("Tensors", #tensor_name "0");                         \
+    const auto tensor_name##_end =                                                                 \
+        Factory::get_object_ptr<tensor_type>("Tensors", #tensor_name "1");                         \
+    const auto tensor_name##_correct =                                                             \
+        tensor_type::linspace(*tensor_name##_start, *tensor_name##_end, nstep, dim);               \
     REQUIRE(tensor_name->batch_sizes() == batch_shape);                                            \
     REQUIRE(tensor_name->base_sizes() == tensor_type::const_base_sizes);                           \
-    REQUIRE(torch::allclose(*tensor_name,                                                          \
-                            tensor_type::full(batch_shape, value, default_tensor_options())));     \
+    REQUIRE(torch::allclose(*tensor_name, tensor_name##_correct));                                 \
   }                                                                                                \
   static_assert(true)
 
-TEST_CASE("FullFixedDimTensor", "[tensors/user_tensors]")
+TEST_CASE("LinspaceLogicalTensor", "[tensors/user_tensors]")
 {
-  load_model("unit/tensors/user_tensors/test_FullFixedDimTensor.i");
+  load_model("unit/tensors/user_tensors/test_LinspaceLogicalTensor.i");
 
-  TensorShape B{2, 1};
+  TensorShape B{100, 2, 1};
+  Size nstep = 100;
+  Size dim = 0;
 
-  test_FullFixedDimTensor(Scalar, a, B, 1.3);
-  test_FullFixedDimTensor(Vec, b, B, 1.3);
-  test_FullFixedDimTensor(Rot, c, B, 1.3);
-  test_FullFixedDimTensor(R2, d, B, 1.3);
-  test_FullFixedDimTensor(SR2, e, B, 1.3);
-  test_FullFixedDimTensor(R3, f, B, 1.3);
-  test_FullFixedDimTensor(SFR3, g, B, 1.3);
-  test_FullFixedDimTensor(R4, h, B, 1.3);
-  test_FullFixedDimTensor(SSR4, i, B, 1.3);
-  test_FullFixedDimTensor(R5, j, B, 1.3);
-  test_FullFixedDimTensor(SSFR5, k, B, 1.3);
+  test_LinspaceLogicalTensor(Scalar, a, B, nstep, dim);
+  test_LinspaceLogicalTensor(Vec, b, B, nstep, dim);
+  test_LinspaceLogicalTensor(Rot, c, B, nstep, dim);
+  test_LinspaceLogicalTensor(R2, d, B, nstep, dim);
+  test_LinspaceLogicalTensor(SR2, e, B, nstep, dim);
+  test_LinspaceLogicalTensor(R3, f, B, nstep, dim);
+  test_LinspaceLogicalTensor(SFR3, g, B, nstep, dim);
+  test_LinspaceLogicalTensor(R4, h, B, nstep, dim);
+  test_LinspaceLogicalTensor(SSR4, i, B, nstep, dim);
+  test_LinspaceLogicalTensor(R5, j, B, nstep, dim);
+  test_LinspaceLogicalTensor(SSFR5, k, B, nstep, dim);
 }

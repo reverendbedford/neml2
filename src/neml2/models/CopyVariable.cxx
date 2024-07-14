@@ -26,8 +26,8 @@
 
 namespace neml2
 {
-#define COPYVARIABLE_REGISTER_FIXEDDIMTENSOR(T) register_NEML2_object(Copy##T)
-FOR_ALL_FIXEDDIMTENSOR(COPYVARIABLE_REGISTER_FIXEDDIMTENSOR);
+#define COPYVARIABLE_REGISTER_LogicalTensor(T) register_NEML2_object(Copy##T)
+FOR_ALL_LogicalTensor(COPYVARIABLE_REGISTER_LogicalTensor);
 
 template <typename T>
 OptionSet
@@ -69,6 +69,6 @@ CopyVariable<T>::set_value(bool out, bool dout_din, bool d2out_din2)
   }
 }
 
-#define COPYVARIABLE_INSTANTIATE_FIXEDDIMTENSOR(T) template class CopyVariable<T>
-FOR_ALL_FIXEDDIMTENSOR(COPYVARIABLE_INSTANTIATE_FIXEDDIMTENSOR);
+#define COPYVARIABLE_INSTANTIATE_LogicalTensor(T) template class CopyVariable<T>
+FOR_ALL_LogicalTensor(COPYVARIABLE_INSTANTIATE_LogicalTensor);
 } // namespace neml2

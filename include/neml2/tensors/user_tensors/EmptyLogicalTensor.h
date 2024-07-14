@@ -31,24 +31,24 @@
 namespace neml2
 {
 /**
- * @brief Create an empty FixedDimTensor of type T from the input file.
+ * @brief Create an empty LogicalTensor of type T from the input file.
  *
- * @tparam T The concrete tensor derived from FixedDimTensor
+ * @tparam T The concrete tensor derived from LogicalTensor
  */
 template <typename T>
-class EmptyFixedDimTensor : public T, public UserTensorBase
+class EmptyLogicalTensor : public T, public UserTensorBase
 {
 public:
   static OptionSet expected_options();
 
   /**
-   * @brief Construct a new EmptyFixedDimTensor object
+   * @brief Construct a new EmptyLogicalTensor object
    *
    * @param options The options extracted from the input file.
    */
-  EmptyFixedDimTensor(const OptionSet & options);
+  EmptyLogicalTensor(const OptionSet & options);
 };
 
-#define EMPTYFIXEDDIMTENSOR_TYPEDEF(T) typedef EmptyFixedDimTensor<T> Empty##T
-FOR_ALL_FIXEDDIMTENSOR(EMPTYFIXEDDIMTENSOR_TYPEDEF);
+#define EMPTYLogicalTensor_TYPEDEF(T) typedef EmptyLogicalTensor<T> Empty##T
+FOR_ALL_LogicalTensor(EMPTYLogicalTensor_TYPEDEF);
 } // namespace neml2

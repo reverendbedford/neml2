@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/tensors/FixedDimTensor.h"
+#include "neml2/tensors/LogicalTensor.h"
 
 namespace neml2
 {
@@ -46,10 +46,10 @@ class VecBase;
  * The logical storage space is (3, 3).
  */
 template <class Derived>
-class R2Base : public FixedDimTensor<Derived, 3, 3>
+class R2Base : public LogicalTensor<Derived, 3, 3>
 {
 public:
-  using FixedDimTensor<Derived, 3, 3>::FixedDimTensor;
+  using LogicalTensor<Derived, 3, 3>::LogicalTensor;
 
   /// Conversion operator to symmetric second order tensor
   explicit operator SR2() const;

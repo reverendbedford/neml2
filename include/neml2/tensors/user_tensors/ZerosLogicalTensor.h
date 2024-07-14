@@ -31,24 +31,24 @@
 namespace neml2
 {
 /**
- * @brief Create a logspace FixedDimTensor of type T from the input file.
+ * @brief Create a zeros LogicalTensor of type T from the input file.
  *
- * @tparam T The concrete tensor derived from FixedDimTensor
+ * @tparam T The concrete tensor derived from LogicalTensor
  */
 template <typename T>
-class LogspaceFixedDimTensor : public T, public UserTensorBase
+class ZerosLogicalTensor : public T, public UserTensorBase
 {
 public:
   static OptionSet expected_options();
 
   /**
-   * @brief Construct a new LogspaceFixedDimTensor object
+   * @brief Construct a new ZerosLogicalTensor object
    *
    * @param options The options extracted from the input file.
    */
-  LogspaceFixedDimTensor(const OptionSet & options);
+  ZerosLogicalTensor(const OptionSet & options);
 };
 
-#define LOGSPACEFIXEDDIMTENSOR_TYPEDEF(T) typedef LogspaceFixedDimTensor<T> Logspace##T
-FOR_ALL_FIXEDDIMTENSOR(LOGSPACEFIXEDDIMTENSOR_TYPEDEF);
+#define ZEROSLogicalTensor_TYPEDEF(T) typedef ZerosLogicalTensor<T> Zeros##T
+FOR_ALL_LogicalTensor(ZEROSLogicalTensor_TYPEDEF);
 } // namespace neml2

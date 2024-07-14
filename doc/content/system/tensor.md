@@ -31,7 +31,7 @@ neml2_assert(batch_sz == TensorShape{5, 2});
 
 ### Statically shaped tensors {#statically-shaped-tensor}
 
-[FixedDimTensor](@ref neml2::FixedDimTensor) is the parent class for all the tensor types with a *fixed* base shape. It is templated on the base shape of the tensor. NEML2 offers a rich collection of primitive tensor types inherited from `FixedDimTensor`. Currently implemented primitive tensor types are summarized below
+[LogicalTensor](@ref neml2::LogicalTensor) is the parent class for all tensor types with a *fixed* base shape. It is templated on the base shape of the tensor. NEML2 offers a rich collection of primitive tensor types inherited from `LogicalTensor`. Currently implemented primitive tensor types are summarized in the following table.
 
 | Tensor type                            | Base shape        | Description                                                      |
 | :------------------------------------- | :---------------- | :--------------------------------------------------------------- |

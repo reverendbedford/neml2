@@ -28,7 +28,7 @@
 #include "neml2/tensors/TensorValue.h"
 
 #include "python/neml2/tensors/TensorBase.h"
-#include "python/neml2/tensors/FixedDimTensor.h"
+#include "python/neml2/tensors/LogicalTensor.h"
 #include "python/neml2/tensors/VecBase.h"
 #include "python/neml2/tensors/R2Base.h"
 #include "python/neml2/base/Storage.h"
@@ -81,9 +81,9 @@ PYBIND11_MODULE(tensors, m)
 #define TensorBASE_DEF(T) def_TensorBase<T>(c_##T);
   FOR_ALL_TensorBASE(TensorBASE_DEF);
 
-  // Common methods decorated by FixedDimTensor
-#define FIXEDDIMTENSOR_DEF(T) def_FixedDimTensor<T>(c_##T);
-  FOR_ALL_FIXEDDIMTENSOR(FIXEDDIMTENSOR_DEF);
+  // Common methods decorated by LogicalTensor
+#define LogicalTensor_DEF(T) def_LogicalTensor<T>(c_##T);
+  FOR_ALL_LogicalTensor(LogicalTensor_DEF);
 
   // Common methods decorated by VecBase
 #define VECBASE_DEF(T) def_VecBase<T>(c_##T);

@@ -25,37 +25,35 @@
 #include <catch2/catch_test_macros.hpp>
 
 #include "utils.h"
-#include "neml2/tensors/user_tensors/ZerosFixedDimTensor.h"
+#include "neml2/tensors/user_tensors/EmptyLogicalTensor.h"
 #include "neml2/tensors/tensors.h"
 
 using namespace neml2;
 
-#define test_ZerosFixedDimTensor(tensor_type, tensor_name, batch_shape)                            \
-  SECTION("Zeros" #tensor_type)                                                                    \
+#define test_EmptyLogicalTensor(tensor_type, tensor_name, batch_shape)                             \
+  SECTION("Empty" #tensor_type)                                                                    \
   {                                                                                                \
     const auto tensor_name = Factory::get_object_ptr<tensor_type>("Tensors", #tensor_name);        \
     REQUIRE(tensor_name->batch_sizes() == batch_shape);                                            \
     REQUIRE(tensor_name->base_sizes() == tensor_type::const_base_sizes);                           \
-    REQUIRE(                                                                                       \
-        torch::allclose(*tensor_name, tensor_type::zeros(batch_shape, default_tensor_options()))); \
   }                                                                                                \
   static_assert(true)
 
-TEST_CASE("ZerosFixedDimTensor", "[tensors/user_tensors]")
+TEST_CASE("EmptyLogicalTensor", "[tensors/user_tensors]")
 {
-  load_model("unit/tensors/user_tensors/test_ZerosFixedDimTensor.i");
+  load_model("unit/tensors/user_tensors/test_EmptyLogicalTensor.i");
 
   TensorShape B{2, 1};
 
-  test_ZerosFixedDimTensor(Scalar, a, B);
-  test_ZerosFixedDimTensor(Vec, b, B);
-  test_ZerosFixedDimTensor(Rot, c, B);
-  test_ZerosFixedDimTensor(R2, d, B);
-  test_ZerosFixedDimTensor(SR2, e, B);
-  test_ZerosFixedDimTensor(R3, f, B);
-  test_ZerosFixedDimTensor(SFR3, g, B);
-  test_ZerosFixedDimTensor(R4, h, B);
-  test_ZerosFixedDimTensor(SSR4, i, B);
-  test_ZerosFixedDimTensor(R5, j, B);
-  test_ZerosFixedDimTensor(SSFR5, k, B);
+  test_EmptyLogicalTensor(Scalar, a, B);
+  test_EmptyLogicalTensor(Vec, b, B);
+  test_EmptyLogicalTensor(Rot, c, B);
+  test_EmptyLogicalTensor(R2, d, B);
+  test_EmptyLogicalTensor(SR2, e, B);
+  test_EmptyLogicalTensor(R3, f, B);
+  test_EmptyLogicalTensor(SFR3, g, B);
+  test_EmptyLogicalTensor(R4, h, B);
+  test_EmptyLogicalTensor(SSR4, i, B);
+  test_EmptyLogicalTensor(R5, j, B);
+  test_EmptyLogicalTensor(SSFR5, k, B);
 }

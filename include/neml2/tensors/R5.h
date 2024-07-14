@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/tensors/FixedDimTensor.h"
+#include "neml2/tensors/LogicalTensor.h"
 
 namespace neml2
 {
@@ -33,9 +33,9 @@ namespace neml2
  *
  * The logical storage space is (3, 3, 3, 3, 3).
  */
-class R5 : public FixedDimTensor<R5, 3, 3, 3, 3, 3>
+class R5 : public LogicalTensor<R5, 3, 3, 3, 3, 3>
 {
 public:
-  using FixedDimTensor<R5, 3, 3, 3, 3, 3>::FixedDimTensor;
+  using LogicalTensor<R5, 3, 3, 3, 3, 3>::LogicalTensor;
 };
 } // namespace neml2

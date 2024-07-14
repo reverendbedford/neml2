@@ -25,15 +25,15 @@
 #include <catch2/catch_test_macros.hpp>
 
 #include "utils.h"
-#include "neml2/tensors/user_tensors/UserFixedDimTensor.h"
+#include "neml2/tensors/user_tensors/UserLogicalTensor.h"
 
 using namespace neml2;
 
-TEST_CASE("UserFixedDimTensor", "[tensors/user_tensors]")
+TEST_CASE("UserLogicalTensor", "[tensors/user_tensors]")
 {
   SECTION("load and reshape correctly")
   {
-    load_model("unit/tensors/user_tensors/test_UserFixedDimTensor.i");
+    load_model("unit/tensors/user_tensors/test_UserLogicalTensor.i");
 
     const auto user_Scalar = Factory::get_object_ptr<Scalar>("Tensors", "Scalar");
     REQUIRE(user_Scalar->batch_sizes() == TensorShape{3, 2});

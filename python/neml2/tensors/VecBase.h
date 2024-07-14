@@ -26,7 +26,7 @@
 
 #include <pybind11/operators.h>
 
-#include "python/neml2/tensors/FixedDimTensor.h"
+#include "python/neml2/tensors/LogicalTensor.h"
 
 namespace py = pybind11;
 

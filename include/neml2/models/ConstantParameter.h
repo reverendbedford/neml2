@@ -46,8 +46,7 @@ protected:
   const T & _value;
 };
 
-#define CONSTANTPARAMETER_TYPEDEF_FIXEDDIMTENSOR(T)                                                \
-  typedef ConstantParameter<T> T##ConstantParameter
-FOR_ALL_FIXEDDIMTENSOR(CONSTANTPARAMETER_TYPEDEF_FIXEDDIMTENSOR);
+#define CONSTANTPARAMETER_TYPEDEF_LogicalTensor(T) typedef ConstantParameter<T> T##ConstantParameter
+FOR_ALL_LogicalTensor(CONSTANTPARAMETER_TYPEDEF_LogicalTensor);
 
 } // namespace neml2

@@ -22,7 +22,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "python/neml2/tensors/FixedDimTensor.h"
+#include "python/neml2/tensors/LogicalTensor.h"
 
 namespace py = pybind11;
 using namespace neml2;

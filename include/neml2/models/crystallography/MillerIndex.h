@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/tensors/FixedDimTensor.h"
+#include "neml2/tensors/LogicalTensor.h"
 
 #include <string>
 
@@ -34,10 +34,10 @@ class Vec;
 /// Represention of a crystal direction or plane a Miller Index
 // I delibrately made this not inherit from VecBase but we could
 // reconsider that later on
-class MillerIndex : public FixedDimTensor<MillerIndex, 3>
+class MillerIndex : public LogicalTensor<MillerIndex, 3>
 {
 public:
-  using FixedDimTensor<MillerIndex, 3>::FixedDimTensor;
+  using LogicalTensor<MillerIndex, 3>::LogicalTensor;
 
   /// Most likely construction method -- make from three ints
   static MillerIndex fill(Integer a,
