@@ -27,6 +27,8 @@
 #include <pybind11/operators.h>
 #include <pybind11/stl.h>
 
+#include <torch/python.h>
+
 #include "neml2/tensors/LabeledTensor.h"
 
 namespace py = pybind11;
@@ -71,6 +73,7 @@ def_LabeledTensor(py::class_<Derived> & c)
              return os.str();
            })
       .def("tensor", [](const Derived & self) { return self.tensor(); })
+      .def("torch", [](const Derived & self) { return torch::Tensor(self); })
       .def("axis", &Derived::axis, py::return_value_policy::reference);
 }
 

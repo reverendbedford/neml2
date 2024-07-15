@@ -24,62 +24,62 @@
 
 import pytest
 
-from neml2.tensors import LabeledAxisAccessor
+from neml2.tensors import LabeledAxisAccessor as LAA
 
 
 def test_ctors():
-    A = LabeledAxisAccessor()
+    A = LAA()
     assert str(A) == ""
 
-    A = LabeledAxisAccessor("state")
+    A = LAA("state")
     assert str(A) == "state"
 
-    A = LabeledAxisAccessor("force")
+    A = LAA("force")
     assert str(A) == "force"
 
-    A = LabeledAxisAccessor("state", "stress")
+    A = LAA("state/stress")
     assert str(A) == "state/stress"
 
-    A = LabeledAxisAccessor("state", "internal", "gamma")
+    A = LAA("state/internal/gamma")
     assert str(A) == "state/internal/gamma"
 
 
 def test_empty():
-    A = LabeledAxisAccessor()
-    B = LabeledAxisAccessor("state", "stress")
+    A = LAA()
+    B = LAA("state/stress")
     assert A.empty()
     assert not B.empty()
 
 
 def test_size():
-    A = LabeledAxisAccessor()
-    B = LabeledAxisAccessor("state", "stress")
+    A = LAA()
+    B = LAA("state/stress")
     assert A.size() == 0
     assert B.size() == 2
 
 
 def test_with_suffix():
-    A = LabeledAxisAccessor("state", "stress")
-    B = LabeledAxisAccessor("state", "stress_foo")
+    A = LAA("state/stress")
+    B = LAA("state/stress_foo")
     assert A.with_suffix("_foo") == B
 
 
 def test_append():
-    A = LabeledAxisAccessor("state")
-    B = LabeledAxisAccessor("foo", "bar")
-    C = LabeledAxisAccessor("state", "foo", "bar")
+    A = LAA("state")
+    B = LAA("foo/bar")
+    C = LAA("state/foo/bar")
     assert A.append(B) == C
 
 
 def test_on():
-    A = LabeledAxisAccessor("stress")
-    B = LabeledAxisAccessor("residual", "stress")
-    assert A.on(LabeledAxisAccessor("residual")) == B
+    A = LAA("stress")
+    B = LAA("residual/stress")
+    assert A.on(LAA("residual")) == B
 
 
 def test_start_with():
-    A = LabeledAxisAccessor("internal", "stress", "foo")
-    B = LabeledAxisAccessor("internal", "stress")
-    C = LabeledAxisAccessor("residual", "stress")
+    A = LAA("internal/stress/foo")
+    B = LAA("internal/stress")
+    C = LAA("residual/stress")
     assert A.start_with(B)
     assert not A.start_with(C)

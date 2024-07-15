@@ -43,23 +43,23 @@ def test_named_ctors(tensor_options):
     # zeros
     A = Scalar.zeros(**tensor_options)
     assert A.batch.dim() == 0
-    assert torch.allclose(A.tensor(), torch.zeros(batch_shape, **tensor_options))
+    assert torch.allclose(A.torch(), torch.zeros(batch_shape, **tensor_options))
     A = Scalar.zeros(batch_shape, **tensor_options)
     assert A.batch.dim() == len(batch_shape)
-    assert torch.allclose(A.tensor(), torch.zeros(shape, **tensor_options))
+    assert torch.allclose(A.torch(), torch.zeros(shape, **tensor_options))
 
     # ones
     A = Scalar.ones(**tensor_options)
     assert A.batch.dim() == 0
-    assert torch.allclose(A.tensor(), torch.ones(batch_shape, **tensor_options))
+    assert torch.allclose(A.torch(), torch.ones(batch_shape, **tensor_options))
     A = Scalar.ones(batch_shape, **tensor_options)
     assert A.batch.dim() == len(batch_shape)
-    assert torch.allclose(A.tensor(), torch.ones(shape, **tensor_options))
+    assert torch.allclose(A.torch(), torch.ones(shape, **tensor_options))
 
     # full
     A = Scalar.full(1.1, **tensor_options)
     assert A.batch.dim() == 0
-    assert torch.allclose(A.tensor(), torch.full(batch_shape, 1.1, **tensor_options))
+    assert torch.allclose(A.torch(), torch.full(batch_shape, 1.1, **tensor_options))
     A = Scalar.full(batch_shape, 2.3, **tensor_options)
     assert A.batch.dim() == len(batch_shape)
-    assert torch.allclose(A.tensor(), torch.full(shape, 2.3, **tensor_options))
+    assert torch.allclose(A.torch(), torch.full(shape, 2.3, **tensor_options))

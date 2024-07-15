@@ -44,16 +44,14 @@ def test_parameter_gradient():
 
     # Say I want to get the parameter gradient on the flow viscosity
     p = model.named_parameters()["flow_rate.eta"]
-    p.set(Tensor.full((), 100, requires_grad=True))
+    p.requires_grad_(True)
 
     # Evaluate the model
     y = model.value(x)
 
     # Evaluate the loss function
-    # First .tensor() converts LabeledVector to Tensor
-    # Second .tensor() converts Tensor to torch.Tensor
-    f = torch.norm(y.tensor().tensor())
+    f = torch.norm(y.torch())
 
     # Get the parameter gradient
     f.backward()
-    assert math.isclose(p.tensor().grad.item(), 0.023917, rel_tol=1e-6, abs_tol=1e-6)
+    assert math.isclose(p.grad.item(), 0.023917, rel_tol=1e-6, abs_tol=1e-6)

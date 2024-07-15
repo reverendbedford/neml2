@@ -52,10 +52,22 @@ def_Model(py::module_ & m)
           py::return_value_policy::reference)
       .def("value", [](Model & self, const LabeledVector & x) { return self.value(x); })
       .def("value_and_dvalue", py::overload_cast<const LabeledVector &>(&Model::value_and_dvalue))
-      .def(
-          "named_parameters",
-          [](Model & self) { return &self.named_parameters(); },
-          py::return_value_policy::reference);
+      .def("named_parameters",
+           [](Model & self)
+           {
+             std::map<std::string, Tensor> params;
+             for (auto && [pname, pval] : self.named_parameters())
+               params[utils::stringify(pname)] = Tensor(pval);
+             return params;
+           })
+      .def("named_buffers",
+           [](Model & self)
+           {
+             std::map<std::string, Tensor> buffers;
+             for (auto && [bname, bval] : self.named_buffers())
+               buffers[utils::stringify(bname)] = Tensor(bval);
+             return buffers;
+           });
 
   // Make Model manufacturable
   auto factory = (py::class_<Factory>)py::module_::import("neml2.base").attr("Factory");

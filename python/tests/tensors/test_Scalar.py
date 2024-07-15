@@ -40,45 +40,45 @@ def test_named_ctors(tensor_options):
 @pytest.mark.parametrize("batch_shape", [(), (2, 5, 3, 2)])
 def test_binary_ops(batch_shape, sample, tensor_options):
     s = Scalar.full(batch_shape, 0.5, **tensor_options)
-    s0 = s.tensor()[((...,) + (None,) * sample.base.dim())]
-    sample0 = sample.tensor()
+    s0 = s.torch()[((...,) + (None,) * sample.base.dim())]
+    sample0 = sample.torch()
 
     # add
     result = s + sample
     correct = s0 + sample0
-    assert torch.allclose(result.tensor(), correct)
+    assert torch.allclose(result.torch(), correct)
     result = sample + s
     correct = sample0 + s0
-    assert torch.allclose(result.tensor(), correct)
+    assert torch.allclose(result.torch(), correct)
 
     # sub
     result = s - sample
     correct = s0 - sample0
-    assert torch.allclose(result.tensor(), correct)
+    assert torch.allclose(result.torch(), correct)
     result = sample - s
     correct = sample0 - s0
-    assert torch.allclose(result.tensor(), correct)
+    assert torch.allclose(result.torch(), correct)
 
     # mul
     result = s * sample
     correct = s0 * sample0
-    assert torch.allclose(result.tensor(), correct)
+    assert torch.allclose(result.torch(), correct)
     result = sample * s
     correct = sample0 * s0
-    assert torch.allclose(result.tensor(), correct)
+    assert torch.allclose(result.torch(), correct)
 
     # div
     result = s / sample
     correct = s0 / sample0
-    assert torch.allclose(result.tensor(), correct)
+    assert torch.allclose(result.torch(), correct)
     result = sample / s
     correct = sample0 / s0
-    assert torch.allclose(result.tensor(), correct)
+    assert torch.allclose(result.torch(), correct)
 
     # pow
     result = s**sample
     correct = s0**sample0
-    assert torch.allclose(result.tensor(), correct, equal_nan=True)
+    assert torch.allclose(result.torch(), correct, equal_nan=True)
     result = sample**s
     correct = sample0**s0
-    assert torch.allclose(result.tensor(), correct, equal_nan=True)
+    assert torch.allclose(result.torch(), correct, equal_nan=True)

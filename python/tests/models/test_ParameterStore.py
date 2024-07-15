@@ -41,8 +41,8 @@ def test_named_parameters():
     nu = model.named_parameters()["nu"]
 
     # Parameters should have the correct value
-    assert torch.allclose(E.tensor().tensor(), torch.tensor(100.0, dtype=torch.float64))
-    assert torch.allclose(nu.tensor().tensor(), torch.tensor(0.3, dtype=torch.float64))
+    assert torch.allclose(E.torch(), torch.tensor(100.0, dtype=torch.float64))
+    assert torch.allclose(nu.torch(), torch.tensor(0.3, dtype=torch.float64))
 
 
 def test_parameter_derivative():
@@ -74,10 +74,10 @@ def test_parameter_derivative():
 
     # Forward
     y = model.value(x)
-    assert y.tensor().requires_grad
+    assert y.torch().requires_grad
 
     # dy/dp * x
-    y.tensor().tensor().backward(gradient=x.tensor().tensor())
+    y.torch().backward(gradient=x.torch())
     assert torch.allclose(E.grad, torch.tensor(1.1105769561746945, dtype=torch.float64))
     assert torch.allclose(
         nu.grad, torch.tensor(503.51332861533353, dtype=torch.float64)

@@ -90,11 +90,11 @@ def test_basic(sample, base_shape, tensor_options):
     # From a torch.Tensor and a batch dim
     A0 = torch.ones(3, 4, 5, 6, **tensor_options)
     A = Tensor(A0, 2)
-    assert torch.allclose(A.tensor(), A0)
+    assert torch.allclose(A.torch(), A0)
 
     # From another Tensor
     A = Tensor(sample)
-    assert torch.allclose(A.tensor(), sample.tensor())
+    assert torch.allclose(A.torch(), sample.torch())
 
     # Basic properties
     assert sample.batched() == (sample.dim() > len(base_shape))
@@ -102,7 +102,7 @@ def test_basic(sample, base_shape, tensor_options):
 
 def test_batch_view(sample, base_shape):
     sample0 = sample.clone()
-    Z = sample.tensor()
+    Z = sample.torch()
 
     # dimension
     batch_dim = sample.batch.dim()
@@ -113,36 +113,36 @@ def test_batch_view(sample, base_shape):
     assert batch_shape == sample.shape[: sample.batch.dim()]
 
     # __getitem__
-    assert torch.allclose(sample.batch[None].tensor(), Z[None])
-    assert torch.allclose(sample.batch[...].tensor(), Z[...])
+    assert torch.allclose(sample.batch[None].torch(), Z[None])
+    assert torch.allclose(sample.batch[...].torch(), Z[...])
     if sample.batched():
-        assert torch.allclose(sample.batch[0].tensor(), Z[0])
-        assert torch.allclose(sample.batch[0:5:2].tensor(), Z[0:5:2])
-        assert torch.allclose(sample.batch[:, 0].tensor(), Z[:, 0])
+        assert torch.allclose(sample.batch[0].torch(), Z[0])
+        assert torch.allclose(sample.batch[0:5:2].torch(), Z[0:5:2])
+        assert torch.allclose(sample.batch[:, 0].torch(), Z[:, 0])
 
     # __setitem__
     sample0.batch[...] = Z + 1.3
-    assert torch.allclose(sample0.tensor(), Z + 1.3)
+    assert torch.allclose(sample0.torch(), Z + 1.3)
 
     # expand
     B = sample.batch.expand((10, 2) + batch_shape)
-    assert torch.allclose(B.tensor(), Z.expand((10, 2) + Z.shape))
+    assert torch.allclose(B.torch(), Z.expand((10, 2) + Z.shape))
 
     # unsqueeze
     B = sample.batch.unsqueeze(0)
-    assert torch.allclose(B.tensor(), Z.unsqueeze(0))
+    assert torch.allclose(B.torch(), Z.unsqueeze(0))
     B = sample.batch.unsqueeze(-1)
-    assert torch.allclose(B.tensor(), Z.unsqueeze(batch_dim))
+    assert torch.allclose(B.torch(), Z.unsqueeze(batch_dim))
 
     # transpose
     if batch_dim >= 2:
         B = sample.batch.transpose(0, 1)
-        assert torch.allclose(B.tensor(), torch.transpose(Z, 0, 1))
+        assert torch.allclose(B.torch(), torch.transpose(Z, 0, 1))
 
 
 def test_base_view(sample, base_shape):
     sample0 = sample.clone()
-    Z = sample.tensor()
+    Z = sample.torch()
     batch_dim = sample.batch.dim()
 
     # dimension
@@ -154,30 +154,30 @@ def test_base_view(sample, base_shape):
 
     # __getitem__
     I = (slice(None),) * batch_dim
-    assert torch.allclose(sample.base[None].tensor(), Z[I + (None,)])
-    assert torch.allclose(sample.base[...].tensor(), Z[I + (...,)])
+    assert torch.allclose(sample.base[None].torch(), Z[I + (None,)])
+    assert torch.allclose(sample.base[...].torch(), Z[I + (...,)])
     if sample.batched():
-        assert torch.allclose(sample.base[0].tensor(), Z[I + (0,)])
-        assert torch.allclose(sample.base[0:5:2].tensor(), Z[I + (slice(0, 5, 2),)])
-        assert torch.allclose(sample.base[:, 0].tensor(), Z[I + (slice(None), 0)])
+        assert torch.allclose(sample.base[0].torch(), Z[I + (0,)])
+        assert torch.allclose(sample.base[0:5:2].torch(), Z[I + (slice(0, 5, 2),)])
+        assert torch.allclose(sample.base[:, 0].torch(), Z[I + (slice(None), 0)])
 
     # __setitem__
     sample0.base[...] = Z + 1.3
-    assert torch.allclose(sample0.tensor(), Z + 1.3)
+    assert torch.allclose(sample0.torch(), Z + 1.3)
 
     # expand
     B = sample.base.expand((7, 2, 2, 3))
-    assert torch.allclose(B.tensor(), Z.expand(*((-1,) * batch_dim) + (7, 2, 2, 3)))
+    assert torch.allclose(B.torch(), Z.expand(*((-1,) * batch_dim) + (7, 2, 2, 3)))
 
     # unsqueeze
     B = sample.base.unsqueeze(0)
-    assert torch.allclose(B.tensor(), Z.unsqueeze(batch_dim))
+    assert torch.allclose(B.torch(), Z.unsqueeze(batch_dim))
     B = sample.base.unsqueeze(-1)
-    assert torch.allclose(B.tensor(), Z.unsqueeze(-1))
+    assert torch.allclose(B.torch(), Z.unsqueeze(-1))
 
     # transpose
     B = sample.base.transpose(0, 1)
-    assert torch.allclose(B.tensor(), torch.transpose(Z, batch_dim, batch_dim + 1))
+    assert torch.allclose(B.torch(), torch.transpose(Z, batch_dim, batch_dim + 1))
 
 
 def test_binary_ops(_A, _B, _C):
@@ -231,26 +231,26 @@ def test_named_ctors(_A, _B, _C, tensor_options):
     # zeros_like
     A = Tensor.zeros_like(_A)
     assert A.batch.dim() == _A.batch.dim()
-    assert torch.allclose(A.tensor(), torch.zeros_like(_A.tensor()))
+    assert torch.allclose(A.torch(), torch.zeros_like(_A.torch()))
     B = Tensor.zeros_like(_B)
     assert B.batch.dim() == _B.batch.dim()
-    assert torch.allclose(B.tensor(), torch.zeros_like(_B.tensor()))
+    assert torch.allclose(B.torch(), torch.zeros_like(_B.torch()))
 
     # ones_like
     A = Tensor.ones_like(_A)
     assert A.batch.dim() == _A.batch.dim()
-    assert torch.allclose(A.tensor(), torch.ones_like(_A.tensor()))
+    assert torch.allclose(A.torch(), torch.ones_like(_A.torch()))
     B = Tensor.ones_like(_B)
     assert B.batch.dim() == _B.batch.dim()
-    assert torch.allclose(B.tensor(), torch.ones_like(_B.tensor()))
+    assert torch.allclose(B.torch(), torch.ones_like(_B.torch()))
 
     # full_like
     A = Tensor.full_like(_A, 1.1)
     assert A.batch.dim() == _A.batch.dim()
-    assert torch.allclose(A.tensor(), torch.full_like(_A.tensor(), 1.1))
+    assert torch.allclose(A.torch(), torch.full_like(_A.torch(), 1.1))
     B = Tensor.full_like(_B, 2.3)
     assert B.batch.dim() == _B.batch.dim()
-    assert torch.allclose(B.tensor(), torch.full_like(_B.tensor(), 2.3))
+    assert torch.allclose(B.torch(), torch.full_like(_B.torch(), 2.3))
 
     # linspace
     A = Tensor.linspace(_A, _B, 100)

@@ -229,8 +229,7 @@ def_TensorBase(py::class_<Derived> & c)
           [](Derived * self, NEML2_TENSOR_OPTIONS_VARGS) { return self->to(NEML2_TENSOR_OPTIONS); },
           py::kw_only(),
           PY_ARG_TENSOR_OPTIONS)
-      // The following accessors/modifiers should also be implemented in TensorValue.cxx
-      .def("tensor", [](const Derived & self) { return torch::Tensor(self); })
+      .def("torch", [](const Derived & self) { return torch::Tensor(self); })
       .def("defined", &Derived::defined)
       .def("batched", &Derived::batched)
       .def("dim", &Derived::dim)

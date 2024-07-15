@@ -41,18 +41,18 @@ def test_input_axis():
     model = neml2.load_model(pwd / "test_Model.i", "model")
     input_axis = model.input_axis()
     assert input_axis.storage_size() == 8
-    assert input_axis.has_subaxis(AA("forces"))
-    assert input_axis.has_variable(AA("forces", "t"))
-    assert input_axis.has_subaxis(AA("old_forces"))
-    assert input_axis.has_variable(AA("old_forces", "t"))
-    assert input_axis.has_subaxis(AA("old_state"))
-    assert input_axis.has_variable(AA("old_state", "foo"))
-    assert input_axis.has_variable(AA("old_state", "bar"))
-    assert input_axis.has_subaxis(AA("state"))
-    assert input_axis.has_variable(AA("state", "foo"))
-    assert input_axis.has_variable(AA("state", "foo_rate"))
-    assert input_axis.has_variable(AA("state", "bar"))
-    assert input_axis.has_variable(AA("state", "bar_rate"))
+    assert input_axis.has_subaxis("forces")
+    assert input_axis.has_variable("forces/t")
+    assert input_axis.has_subaxis("old_forces")
+    assert input_axis.has_variable("old_forces/t")
+    assert input_axis.has_subaxis("old_state")
+    assert input_axis.has_variable("old_state/foo")
+    assert input_axis.has_variable("old_state/bar")
+    assert input_axis.has_subaxis("state")
+    assert input_axis.has_variable("state/foo")
+    assert input_axis.has_variable("state/foo_rate")
+    assert input_axis.has_variable("state/bar")
+    assert input_axis.has_variable("state/bar_rate")
 
 
 def test_output_axis():
@@ -60,7 +60,7 @@ def test_output_axis():
     model = neml2.load_model(pwd / "test_Model.i", "model")
     output_axis = model.output_axis()
     assert output_axis.storage_size() == 1
-    assert output_axis.has_variable(AA("residual", "foo_bar"))
+    assert output_axis.has_variable("residual/foo_bar")
 
 
 def test_value():
@@ -76,7 +76,7 @@ def test_value():
     assert y.tensor().batch.shape == (5, 2)
     assert y.tensor().base.shape == (1,)
     assert torch.allclose(
-        y.tensor().tensor(), torch.tensor(0.9591836144729537, dtype=torch.float64)
+        y.torch(), torch.tensor(0.9591836144729537, dtype=torch.float64)
     )
 
 
@@ -93,10 +93,10 @@ def test_value_and_dvalue():
     assert y.tensor().batch.shape == (5, 2)
     assert y.tensor().base.shape == (1,)
     assert torch.allclose(
-        y.tensor().tensor(), torch.tensor(0.9591836144729537, dtype=torch.float64)
+        y.torch(), torch.tensor(0.9591836144729537, dtype=torch.float64)
     )
     assert torch.allclose(
-        dy_dx.tensor().tensor(),
+        dy_dx.torch(),
         torch.tensor(
             [
                 -1.7142857313156128,
