@@ -22,16 +22,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/tensors/user_tensors/UserLogicalTensor.h"
+#include "neml2/tensors/user_tensors/UserPrimitiveTensor.h"
 
 namespace neml2
 {
-#define USERLogicalTensor_REGISTER(T) register_NEML2_object_alias(User##T, #T)
-FOR_ALL_LOGICALTENSOR(USERLogicalTensor_REGISTER);
+#define USERPrimitiveTensor_REGISTER(T) register_NEML2_object_alias(User##T, #T)
+FOR_ALL_PRIMITIVETENSOR(USERPrimitiveTensor_REGISTER);
 
 template <typename T>
 OptionSet
-UserLogicalTensor<T>::expected_options()
+UserPrimitiveTensor<T>::expected_options()
 {
   // This is the only way of getting tensor type in a static method like this...
   // Trim 6 chars to remove 'neml2::'
@@ -52,7 +52,7 @@ UserLogicalTensor<T>::expected_options()
 }
 
 template <typename T>
-UserLogicalTensor<T>::UserLogicalTensor(const OptionSet & options)
+UserPrimitiveTensor<T>::UserPrimitiveTensor(const OptionSet & options)
   : T(T::empty(options.get<TensorShape>("batch_shape"), default_tensor_options())),
     UserTensorBase(options)
 {
@@ -72,6 +72,6 @@ UserLogicalTensor<T>::UserLogicalTensor(const OptionSet & options)
                 utils::storage_size(this->sizes()));
 }
 
-#define USERLogicalTensor_INSTANTIATE_LogicalTensor(T) template class UserLogicalTensor<T>
-FOR_ALL_LOGICALTENSOR(USERLogicalTensor_INSTANTIATE_LogicalTensor);
+#define USERPrimitiveTensor_INSTANTIATE_PrimitiveTensor(T) template class UserPrimitiveTensor<T>
+FOR_ALL_PRIMITIVETENSOR(USERPrimitiveTensor_INSTANTIATE_PrimitiveTensor);
 } // namespace neml2

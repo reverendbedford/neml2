@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/tensors/LogicalTensor.h"
+#include "neml2/tensors/PrimitiveTensor.h"
 
 namespace neml2
 {
@@ -37,10 +37,10 @@ class R2;
  *
  * The logical storage space is (3, 3, 3).
  */
-class R3 : public LogicalTensor<R3, 3, 3, 3>
+class R3 : public PrimitiveTensor<R3, 3, 3, 3>
 {
 public:
-  using LogicalTensor<R3, 3, 3, 3>::LogicalTensor;
+  using PrimitiveTensor<R3, 3, 3, 3>::PrimitiveTensor;
 
   /// Alternating symbol
   [[nodiscard]] static R3

@@ -58,7 +58,7 @@ CrossRef<Tensor>::operator Tensor() const
   }
 }
 
-#define CROSSREF_SPECIALIZE_LogicalTensor_IMPL(T)                                                  \
+#define CROSSREF_SPECIALIZE_PrimitiveTensor_IMPL(T)                                                \
   template <>                                                                                      \
   CrossRef<T>::operator T() const                                                                  \
   {                                                                                                \
@@ -73,5 +73,5 @@ CrossRef<Tensor>::operator Tensor() const
   }                                                                                                \
   static_assert(true)
 
-FOR_ALL_LOGICALTENSOR(CROSSREF_SPECIALIZE_LogicalTensor_IMPL);
+FOR_ALL_PRIMITIVETENSOR(CROSSREF_SPECIALIZE_PrimitiveTensor_IMPL);
 } // namesace neml2

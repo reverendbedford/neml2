@@ -50,7 +50,7 @@ Quaternion::fill(const Scalar & s, const Scalar & q1, const Scalar & q2, const S
 Scalar
 Quaternion::operator()(Size i) const
 {
-  return LogicalTensor<Quaternion, 4>::base_index({i});
+  return PrimitiveTensor<Quaternion, 4>::base_index({i});
 }
 
 R2

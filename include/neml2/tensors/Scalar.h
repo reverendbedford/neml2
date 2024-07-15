@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/tensors/LogicalTensor.h"
+#include "neml2/tensors/PrimitiveTensor.h"
 
 namespace neml2
 {
@@ -34,10 +34,10 @@ namespace neml2
  * The logical storage space is (), i.e., scalar.
  *
  */
-class Scalar : public LogicalTensor<Scalar>
+class Scalar : public PrimitiveTensor<Scalar>
 {
 public:
-  using LogicalTensor<Scalar>::LogicalTensor;
+  using PrimitiveTensor<Scalar>::PrimitiveTensor;
 
   Scalar(Real init, const torch::TensorOptions & options);
 

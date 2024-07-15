@@ -25,35 +25,44 @@
 #include <catch2/catch_test_macros.hpp>
 
 #include "utils.h"
-#include "neml2/tensors/user_tensors/EmptyLogicalTensor.h"
+#include "neml2/tensors/user_tensors/LinspacePrimitiveTensor.h"
 #include "neml2/tensors/tensors.h"
 
 using namespace neml2;
 
-#define test_EmptyLogicalTensor(tensor_type, tensor_name, batch_shape)                             \
-  SECTION("Empty" #tensor_type)                                                                    \
+#define test_LinspacePrimitiveTensor(tensor_type, tensor_name, batch_shape, nstep, dim)              \
+  SECTION("Linspace" #tensor_type)                                                                 \
   {                                                                                                \
     const auto tensor_name = Factory::get_object_ptr<tensor_type>("Tensors", #tensor_name);        \
+    const auto tensor_name##_start =                                                               \
+        Factory::get_object_ptr<tensor_type>("Tensors", #tensor_name "0");                         \
+    const auto tensor_name##_end =                                                                 \
+        Factory::get_object_ptr<tensor_type>("Tensors", #tensor_name "1");                         \
+    const auto tensor_name##_correct =                                                             \
+        tensor_type::linspace(*tensor_name##_start, *tensor_name##_end, nstep, dim);               \
     REQUIRE(tensor_name->batch_sizes() == batch_shape);                                            \
     REQUIRE(tensor_name->base_sizes() == tensor_type::const_base_sizes);                           \
+    REQUIRE(torch::allclose(*tensor_name, tensor_name##_correct));                                 \
   }                                                                                                \
   static_assert(true)
 
-TEST_CASE("EmptyLogicalTensor", "[tensors/user_tensors]")
+TEST_CASE("LinspacePrimitiveTensor", "[tensors/user_tensors]")
 {
-  load_model("unit/tensors/user_tensors/test_EmptyLogicalTensor.i");
+  load_model("unit/tensors/user_tensors/test_LinspacePrimitiveTensor.i");
 
-  TensorShape B{2, 1};
+  TensorShape B{100, 2, 1};
+  Size nstep = 100;
+  Size dim = 0;
 
-  test_EmptyLogicalTensor(Scalar, a, B);
-  test_EmptyLogicalTensor(Vec, b, B);
-  test_EmptyLogicalTensor(Rot, c, B);
-  test_EmptyLogicalTensor(R2, d, B);
-  test_EmptyLogicalTensor(SR2, e, B);
-  test_EmptyLogicalTensor(R3, f, B);
-  test_EmptyLogicalTensor(SFR3, g, B);
-  test_EmptyLogicalTensor(R4, h, B);
-  test_EmptyLogicalTensor(SSR4, i, B);
-  test_EmptyLogicalTensor(R5, j, B);
-  test_EmptyLogicalTensor(SSFR5, k, B);
+  test_LinspacePrimitiveTensor(Scalar, a, B, nstep, dim);
+  test_LinspacePrimitiveTensor(Vec, b, B, nstep, dim);
+  test_LinspacePrimitiveTensor(Rot, c, B, nstep, dim);
+  test_LinspacePrimitiveTensor(R2, d, B, nstep, dim);
+  test_LinspacePrimitiveTensor(SR2, e, B, nstep, dim);
+  test_LinspacePrimitiveTensor(R3, f, B, nstep, dim);
+  test_LinspacePrimitiveTensor(SFR3, g, B, nstep, dim);
+  test_LinspacePrimitiveTensor(R4, h, B, nstep, dim);
+  test_LinspacePrimitiveTensor(SSR4, i, B, nstep, dim);
+  test_LinspacePrimitiveTensor(R5, j, B, nstep, dim);
+  test_LinspacePrimitiveTensor(SSFR5, k, B, nstep, dim);
 }

@@ -22,23 +22,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/tensors/user_tensors/OnesLogicalTensor.h"
+#include "neml2/tensors/user_tensors/ZerosPrimitiveTensor.h"
 
 namespace neml2
 {
-#define ONESLogicalTensor_REGISTER(T) register_NEML2_object_alias(Ones##T, "Ones" #T)
-FOR_ALL_LOGICALTENSOR(ONESLogicalTensor_REGISTER);
+#define ZEROSPrimitiveTensor_REGISTER(T) register_NEML2_object_alias(Zeros##T, "Zeros" #T)
+FOR_ALL_PRIMITIVETENSOR(ZEROSPrimitiveTensor_REGISTER);
 
 template <typename T>
 OptionSet
-OnesLogicalTensor<T>::expected_options()
+ZerosPrimitiveTensor<T>::expected_options()
 {
   // This is the only way of getting tensor type in a static method like this...
   // Trim 6 chars to remove 'neml2::'
   auto tensor_type = utils::demangle(typeid(T).name()).substr(7);
 
   OptionSet options = UserTensorBase::expected_options();
-  options.doc() = "Construct a " + tensor_type + " with given batch shape filled with ones.";
+  options.doc() = "Construct a " + tensor_type + " with given batch shape filled with zeros.";
 
   options.set<TensorShape>("batch_shape") = {};
   options.set("batch_shape").doc() = "Batch shape";
@@ -47,12 +47,12 @@ OnesLogicalTensor<T>::expected_options()
 }
 
 template <typename T>
-OnesLogicalTensor<T>::OnesLogicalTensor(const OptionSet & options)
-  : T(T::ones(options.get<TensorShape>("batch_shape"), default_tensor_options())),
+ZerosPrimitiveTensor<T>::ZerosPrimitiveTensor(const OptionSet & options)
+  : T(T::zeros(options.get<TensorShape>("batch_shape"), default_tensor_options())),
     UserTensorBase(options)
 {
 }
 
-#define ONESLogicalTensor_INSTANTIATE_LogicalTensor(T) template class OnesLogicalTensor<T>
-FOR_ALL_LOGICALTENSOR(ONESLogicalTensor_INSTANTIATE_LogicalTensor);
+#define ZEROSPrimitiveTensor_INSTANTIATE_PrimitiveTensor(T) template class ZerosPrimitiveTensor<T>
+FOR_ALL_PRIMITIVETENSOR(ZEROSPrimitiveTensor_INSTANTIATE_PrimitiveTensor);
 } // namespace neml2

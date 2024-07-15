@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/tensors/LogicalTensor.h"
+#include "neml2/tensors/PrimitiveTensor.h"
 #include "neml2/tensors/Scalar.h"
 #include "neml2/tensors/R2.h"
 
@@ -39,10 +39,10 @@ class R3;
  * The logical storage space is (3). This class provides common operations for vector.
  */
 template <class Derived>
-class VecBase : public LogicalTensor<Derived, 3>
+class VecBase : public PrimitiveTensor<Derived, 3>
 {
 public:
-  using LogicalTensor<Derived, 3>::LogicalTensor;
+  using PrimitiveTensor<Derived, 3>::PrimitiveTensor;
 
   [[nodiscard]] static Derived
   fill(const Real & v1,

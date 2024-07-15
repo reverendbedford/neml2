@@ -22,16 +22,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/tensors/user_tensors/LogspaceLogicalTensor.h"
+#include "neml2/tensors/user_tensors/LogspacePrimitiveTensor.h"
 
 namespace neml2
 {
-#define LOGSPACELogicalTensor_REGISTER(T) register_NEML2_object_alias(Logspace##T, "Logspace" #T)
-FOR_ALL_LOGICALTENSOR(LOGSPACELogicalTensor_REGISTER);
+#define LOGSPACEPrimitiveTensor_REGISTER(T) register_NEML2_object_alias(Logspace##T, "Logspace" #T)
+FOR_ALL_PRIMITIVETENSOR(LOGSPACEPrimitiveTensor_REGISTER);
 
 template <typename T>
 OptionSet
-LogspaceLogicalTensor<T>::expected_options()
+LogspacePrimitiveTensor<T>::expected_options()
 {
   // This is the only way of getting tensor type in a static method like this...
   // Trim 6 chars to remove 'neml2::'
@@ -64,7 +64,7 @@ LogspaceLogicalTensor<T>::expected_options()
 }
 
 template <typename T>
-LogspaceLogicalTensor<T>::LogspaceLogicalTensor(const OptionSet & options)
+LogspacePrimitiveTensor<T>::LogspacePrimitiveTensor(const OptionSet & options)
   : T(T::logspace(options.get<CrossRef<T>>("start"),
                   options.get<CrossRef<T>>("end"),
                   options.get<Size>("nstep"),
@@ -75,6 +75,7 @@ LogspaceLogicalTensor<T>::LogspaceLogicalTensor(const OptionSet & options)
 {
 }
 
-#define LOGSPACELogicalTensor_INSTANTIATE_LogicalTensor(T) template class LogspaceLogicalTensor<T>
-FOR_ALL_LOGICALTENSOR(LOGSPACELogicalTensor_INSTANTIATE_LogicalTensor);
+#define LOGSPACEPrimitiveTensor_INSTANTIATE_PrimitiveTensor(T)                                     \
+  template class LogspacePrimitiveTensor<T>
+FOR_ALL_PRIMITIVETENSOR(LOGSPACEPrimitiveTensor_INSTANTIATE_PrimitiveTensor);
 } // namespace neml2

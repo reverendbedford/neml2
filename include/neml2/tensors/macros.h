@@ -27,10 +27,10 @@
 /// Macros for writing generic code blocks for all tensor types
 ///@{
 #define FOR_ALL_TENSORBASE(f)                                                                      \
-  FOR_ALL_LOGICALTENSOR(f);                                                                        \
+  FOR_ALL_PRIMITIVETENSOR(f);                                                                      \
   f(Tensor)
 
-#define FOR_ALL_LOGICALTENSOR(f)                                                                   \
+#define FOR_ALL_PRIMITIVETENSOR(f)                                                                 \
   FOR_ALL_VECBASE(f);                                                                              \
   FOR_ALL_R2BASE(f);                                                                               \
   f(Scalar);                                                                                       \
@@ -58,9 +58,9 @@
 
 /// Similar macros but end with comma instead of semicolon
 ///@{
-#define FOR_ALL_TENSORBASE_COMMA(f) FOR_ALL_LOGICALTENSOR_COMMA(f), f(Tensor)
+#define FOR_ALL_TENSORBASE_COMMA(f) FOR_ALL_PRIMITIVETENSOR_COMMA(f), f(Tensor)
 
-#define FOR_ALL_LOGICALTENSOR_COMMA(f)                                                             \
+#define FOR_ALL_PRIMITIVETENSOR_COMMA(f)                                                           \
   FOR_ALL_VECBASE_COMMA(f), FOR_ALL_R2BASE_COMMA(f), f(Scalar), f(SR2), f(R3), f(SFR3), f(R4),     \
       f(SSR4), f(SFFR4), f(SWR4), f(WSR4), f(WWR4), f(R5), f(SSFR5), f(Quaternion), f(MillerIndex)
 

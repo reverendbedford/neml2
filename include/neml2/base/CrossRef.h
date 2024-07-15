@@ -128,9 +128,9 @@ CrossRef<torch::Tensor>::operator torch::Tensor() const;
 template <>
 CrossRef<Tensor>::operator Tensor() const;
 
-#define CROSSREF_SPECIALIZE_LogicalTensor(T)                                                       \
+#define CROSSREF_SPECIALIZE_PrimitiveTensor(T)                                                     \
   template <>                                                                                      \
   CrossRef<T>::operator T() const
 
-FOR_ALL_LOGICALTENSOR(CROSSREF_SPECIALIZE_LogicalTensor);
+FOR_ALL_PRIMITIVETENSOR(CROSSREF_SPECIALIZE_PrimitiveTensor);
 } // namespace neml2

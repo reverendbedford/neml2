@@ -25,37 +25,45 @@
 #include <catch2/catch_test_macros.hpp>
 
 #include "utils.h"
-#include "neml2/tensors/user_tensors/ZerosLogicalTensor.h"
+#include "neml2/tensors/user_tensors/LogspacePrimitiveTensor.h"
 #include "neml2/tensors/tensors.h"
 
 using namespace neml2;
 
-#define test_ZerosLogicalTensor(tensor_type, tensor_name, batch_shape)                             \
-  SECTION("Zeros" #tensor_type)                                                                    \
+#define test_LogspacePrimitiveTensor(tensor_type, tensor_name, batch_shape, nstep, dim, base)        \
+  SECTION("Logspace" #tensor_type)                                                                 \
   {                                                                                                \
     const auto tensor_name = Factory::get_object_ptr<tensor_type>("Tensors", #tensor_name);        \
+    const auto tensor_name##_start =                                                               \
+        Factory::get_object_ptr<tensor_type>("Tensors", #tensor_name "0");                         \
+    const auto tensor_name##_end =                                                                 \
+        Factory::get_object_ptr<tensor_type>("Tensors", #tensor_name "1");                         \
+    const auto tensor_name##_correct =                                                             \
+        tensor_type::logspace(*tensor_name##_start, *tensor_name##_end, nstep, dim, -1, base);     \
     REQUIRE(tensor_name->batch_sizes() == batch_shape);                                            \
     REQUIRE(tensor_name->base_sizes() == tensor_type::const_base_sizes);                           \
-    REQUIRE(                                                                                       \
-        torch::allclose(*tensor_name, tensor_type::zeros(batch_shape, default_tensor_options()))); \
+    REQUIRE(torch::allclose(*tensor_name, tensor_name##_correct));                                 \
   }                                                                                                \
   static_assert(true)
 
-TEST_CASE("ZerosLogicalTensor", "[tensors/user_tensors]")
+TEST_CASE("LogspacePrimitiveTensor", "[tensors/user_tensors]")
 {
-  load_model("unit/tensors/user_tensors/test_ZerosLogicalTensor.i");
+  load_model("unit/tensors/user_tensors/test_LogspacePrimitiveTensor.i");
 
-  TensorShape B{2, 1};
+  TensorShape B{100, 2, 1};
+  Size nstep = 100;
+  Size dim = 0;
+  Real base = 10;
 
-  test_ZerosLogicalTensor(Scalar, a, B);
-  test_ZerosLogicalTensor(Vec, b, B);
-  test_ZerosLogicalTensor(Rot, c, B);
-  test_ZerosLogicalTensor(R2, d, B);
-  test_ZerosLogicalTensor(SR2, e, B);
-  test_ZerosLogicalTensor(R3, f, B);
-  test_ZerosLogicalTensor(SFR3, g, B);
-  test_ZerosLogicalTensor(R4, h, B);
-  test_ZerosLogicalTensor(SSR4, i, B);
-  test_ZerosLogicalTensor(R5, j, B);
-  test_ZerosLogicalTensor(SSFR5, k, B);
+  test_LogspacePrimitiveTensor(Scalar, a, B, nstep, dim, base);
+  test_LogspacePrimitiveTensor(Vec, b, B, nstep, dim, base);
+  test_LogspacePrimitiveTensor(Rot, c, B, nstep, dim, base);
+  test_LogspacePrimitiveTensor(R2, d, B, nstep, dim, base);
+  test_LogspacePrimitiveTensor(SR2, e, B, nstep, dim, base);
+  test_LogspacePrimitiveTensor(R3, f, B, nstep, dim, base);
+  test_LogspacePrimitiveTensor(SFR3, g, B, nstep, dim, base);
+  test_LogspacePrimitiveTensor(R4, h, B, nstep, dim, base);
+  test_LogspacePrimitiveTensor(SSR4, i, B, nstep, dim, base);
+  test_LogspacePrimitiveTensor(R5, j, B, nstep, dim, base);
+  test_LogspacePrimitiveTensor(SSFR5, k, B, nstep, dim, base);
 }

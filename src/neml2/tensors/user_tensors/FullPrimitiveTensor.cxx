@@ -22,16 +22,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/tensors/user_tensors/FullLogicalTensor.h"
+#include "neml2/tensors/user_tensors/FullPrimitiveTensor.h"
 
 namespace neml2
 {
-#define FULLLogicalTensor_REGISTER(T) register_NEML2_object_alias(Full##T, "Full" #T)
-FOR_ALL_LOGICALTENSOR(FULLLogicalTensor_REGISTER);
+#define FULLPrimitiveTensor_REGISTER(T) register_NEML2_object_alias(Full##T, "Full" #T)
+FOR_ALL_PRIMITIVETENSOR(FULLPrimitiveTensor_REGISTER);
 
 template <typename T>
 OptionSet
-FullLogicalTensor<T>::expected_options()
+FullPrimitiveTensor<T>::expected_options()
 {
   // This is the only way of getting tensor type in a static method like this...
   // Trim 6 chars to remove 'neml2::'
@@ -51,7 +51,7 @@ FullLogicalTensor<T>::expected_options()
 }
 
 template <typename T>
-FullLogicalTensor<T>::FullLogicalTensor(const OptionSet & options)
+FullPrimitiveTensor<T>::FullPrimitiveTensor(const OptionSet & options)
   : T(T::full(options.get<TensorShape>("batch_shape"),
               options.get<Real>("value"),
               default_tensor_options())),
@@ -59,6 +59,6 @@ FullLogicalTensor<T>::FullLogicalTensor(const OptionSet & options)
 {
 }
 
-#define FULLLogicalTensor_INSTANTIATE_LogicalTensor(T) template class FullLogicalTensor<T>
-FOR_ALL_LOGICALTENSOR(FULLLogicalTensor_INSTANTIATE_LogicalTensor);
+#define FULLPrimitiveTensor_INSTANTIATE_PrimitiveTensor(T) template class FullPrimitiveTensor<T>
+FOR_ALL_PRIMITIVETENSOR(FULLPrimitiveTensor_INSTANTIATE_PrimitiveTensor);
 } // namespace neml2

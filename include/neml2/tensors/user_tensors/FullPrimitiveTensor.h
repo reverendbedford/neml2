@@ -31,24 +31,24 @@
 namespace neml2
 {
 /**
- * @brief Create a logspace LogicalTensor of type T from the input file.
+ * @brief Create a full PrimitiveTensor of type T from the input file.
  *
- * @tparam T The concrete tensor derived from LogicalTensor
+ * @tparam T The concrete tensor derived from PrimitiveTensor
  */
 template <typename T>
-class LogspaceLogicalTensor : public T, public UserTensorBase
+class FullPrimitiveTensor : public T, public UserTensorBase
 {
 public:
   static OptionSet expected_options();
 
   /**
-   * @brief Construct a new LogspaceLogicalTensor object
+   * @brief Construct a new FullPrimitiveTensor object
    *
    * @param options The options extracted from the input file.
    */
-  LogspaceLogicalTensor(const OptionSet & options);
+  FullPrimitiveTensor(const OptionSet & options);
 };
 
-#define LOGSPACELogicalTensor_TYPEDEF(T) typedef LogspaceLogicalTensor<T> Logspace##T
-FOR_ALL_LOGICALTENSOR(LOGSPACELogicalTensor_TYPEDEF);
+#define FULLPrimitiveTensor_TYPEDEF(T) typedef FullPrimitiveTensor<T> Full##T
+FOR_ALL_PRIMITIVETENSOR(FULLPrimitiveTensor_TYPEDEF);
 } // namespace neml2

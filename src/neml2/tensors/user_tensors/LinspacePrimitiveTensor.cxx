@@ -22,16 +22,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/tensors/user_tensors/LinspaceLogicalTensor.h"
+#include "neml2/tensors/user_tensors/LinspacePrimitiveTensor.h"
 
 namespace neml2
 {
-#define LINSPACELogicalTensor_REGISTER(T) register_NEML2_object_alias(Linspace##T, "Linspace" #T)
-FOR_ALL_LOGICALTENSOR(LINSPACELogicalTensor_REGISTER);
+#define LINSPACEPrimitiveTensor_REGISTER(T) register_NEML2_object_alias(Linspace##T, "Linspace" #T)
+FOR_ALL_PRIMITIVETENSOR(LINSPACEPrimitiveTensor_REGISTER);
 
 template <typename T>
 OptionSet
-LinspaceLogicalTensor<T>::expected_options()
+LinspacePrimitiveTensor<T>::expected_options()
 {
   // This is the only way of getting tensor type in a static method like this...
   // Trim 6 chars to remove 'neml2::'
@@ -61,7 +61,7 @@ LinspaceLogicalTensor<T>::expected_options()
 }
 
 template <typename T>
-LinspaceLogicalTensor<T>::LinspaceLogicalTensor(const OptionSet & options)
+LinspacePrimitiveTensor<T>::LinspacePrimitiveTensor(const OptionSet & options)
   : T(T::linspace(options.get<CrossRef<T>>("start"),
                   options.get<CrossRef<T>>("end"),
                   options.get<Size>("nstep"),
@@ -71,6 +71,7 @@ LinspaceLogicalTensor<T>::LinspaceLogicalTensor(const OptionSet & options)
 {
 }
 
-#define LINSPACELogicalTensor_INSTANTIATE_LogicalTensor(T) template class LinspaceLogicalTensor<T>
-FOR_ALL_LOGICALTENSOR(LINSPACELogicalTensor_INSTANTIATE_LogicalTensor);
+#define LINSPACEPrimitiveTensor_INSTANTIATE_PrimitiveTensor(T)                                     \
+  template class LinspacePrimitiveTensor<T>
+FOR_ALL_PRIMITIVETENSOR(LINSPACEPrimitiveTensor_INSTANTIATE_PrimitiveTensor);
 } // namespace neml2

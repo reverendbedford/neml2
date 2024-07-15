@@ -25,37 +25,37 @@
 #include <catch2/catch_test_macros.hpp>
 
 #include "utils.h"
-#include "neml2/tensors/user_tensors/FullLogicalTensor.h"
+#include "neml2/tensors/user_tensors/OnesPrimitiveTensor.h"
 #include "neml2/tensors/tensors.h"
 
 using namespace neml2;
 
-#define test_FullLogicalTensor(tensor_type, tensor_name, batch_shape, value)                       \
-  SECTION("Full" #tensor_type)                                                                     \
+#define test_OnesPrimitiveTensor(tensor_type, tensor_name, batch_shape)                              \
+  SECTION("Ones" #tensor_type)                                                                     \
   {                                                                                                \
     const auto tensor_name = Factory::get_object_ptr<tensor_type>("Tensors", #tensor_name);        \
     REQUIRE(tensor_name->batch_sizes() == batch_shape);                                            \
     REQUIRE(tensor_name->base_sizes() == tensor_type::const_base_sizes);                           \
-    REQUIRE(torch::allclose(*tensor_name,                                                          \
-                            tensor_type::full(batch_shape, value, default_tensor_options())));     \
+    REQUIRE(                                                                                       \
+        torch::allclose(*tensor_name, tensor_type::ones(batch_shape, default_tensor_options())));  \
   }                                                                                                \
   static_assert(true)
 
-TEST_CASE("FullLogicalTensor", "[tensors/user_tensors]")
+TEST_CASE("OnesPrimitiveTensor", "[tensors/user_tensors]")
 {
-  load_model("unit/tensors/user_tensors/test_FullLogicalTensor.i");
+  load_model("unit/tensors/user_tensors/test_OnesPrimitiveTensor.i");
 
   TensorShape B{2, 1};
 
-  test_FullLogicalTensor(Scalar, a, B, 1.3);
-  test_FullLogicalTensor(Vec, b, B, 1.3);
-  test_FullLogicalTensor(Rot, c, B, 1.3);
-  test_FullLogicalTensor(R2, d, B, 1.3);
-  test_FullLogicalTensor(SR2, e, B, 1.3);
-  test_FullLogicalTensor(R3, f, B, 1.3);
-  test_FullLogicalTensor(SFR3, g, B, 1.3);
-  test_FullLogicalTensor(R4, h, B, 1.3);
-  test_FullLogicalTensor(SSR4, i, B, 1.3);
-  test_FullLogicalTensor(R5, j, B, 1.3);
-  test_FullLogicalTensor(SSFR5, k, B, 1.3);
+  test_OnesPrimitiveTensor(Scalar, a, B);
+  test_OnesPrimitiveTensor(Vec, b, B);
+  test_OnesPrimitiveTensor(Rot, c, B);
+  test_OnesPrimitiveTensor(R2, d, B);
+  test_OnesPrimitiveTensor(SR2, e, B);
+  test_OnesPrimitiveTensor(R3, f, B);
+  test_OnesPrimitiveTensor(SFR3, g, B);
+  test_OnesPrimitiveTensor(R4, h, B);
+  test_OnesPrimitiveTensor(SSR4, i, B);
+  test_OnesPrimitiveTensor(R5, j, B);
+  test_OnesPrimitiveTensor(SSFR5, k, B);
 }

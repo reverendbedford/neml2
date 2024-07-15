@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/tensors/LogicalTensor.h"
+#include "neml2/tensors/PrimitiveTensor.h"
 
 namespace neml2
 {
@@ -33,9 +33,9 @@ namespace neml2
  *
  * Mandel notation is used, and so the logical storage space is (6, 3, 3).
  */
-class SFFR4 : public LogicalTensor<SFFR4, 6, 3, 3>
+class SFFR4 : public PrimitiveTensor<SFFR4, 6, 3, 3>
 {
 public:
-  using LogicalTensor<SFFR4, 6, 3, 3>::LogicalTensor;
+  using PrimitiveTensor<SFFR4, 6, 3, 3>::PrimitiveTensor;
 };
 } // namespace neml2

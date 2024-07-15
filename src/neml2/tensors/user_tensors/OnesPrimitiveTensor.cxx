@@ -22,33 +22,37 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
-
-#include "neml2/tensors/user_tensors/UserTensorBase.h"
-
-#include "neml2/tensors/tensors.h"
+#include "neml2/tensors/user_tensors/OnesPrimitiveTensor.h"
 
 namespace neml2
 {
-/**
- * @brief Create a ones LogicalTensor of type T from the input file.
- *
- * @tparam T The concrete tensor derived from LogicalTensor
- */
+#define ONESPrimitiveTensor_REGISTER(T) register_NEML2_object_alias(Ones##T, "Ones" #T)
+FOR_ALL_PRIMITIVETENSOR(ONESPrimitiveTensor_REGISTER);
+
 template <typename T>
-class OnesLogicalTensor : public T, public UserTensorBase
+OptionSet
+OnesPrimitiveTensor<T>::expected_options()
 {
-public:
-  static OptionSet expected_options();
+  // This is the only way of getting tensor type in a static method like this...
+  // Trim 6 chars to remove 'neml2::'
+  auto tensor_type = utils::demangle(typeid(T).name()).substr(7);
 
-  /**
-   * @brief Construct a new OnesLogicalTensor object
-   *
-   * @param options The options extracted from the input file.
-   */
-  OnesLogicalTensor(const OptionSet & options);
-};
+  OptionSet options = UserTensorBase::expected_options();
+  options.doc() = "Construct a " + tensor_type + " with given batch shape filled with ones.";
 
-#define ONESLogicalTensor_TYPEDEF(T) typedef OnesLogicalTensor<T> Ones##T
-FOR_ALL_LOGICALTENSOR(ONESLogicalTensor_TYPEDEF);
+  options.set<TensorShape>("batch_shape") = {};
+  options.set("batch_shape").doc() = "Batch shape";
+
+  return options;
+}
+
+template <typename T>
+OnesPrimitiveTensor<T>::OnesPrimitiveTensor(const OptionSet & options)
+  : T(T::ones(options.get<TensorShape>("batch_shape"), default_tensor_options())),
+    UserTensorBase(options)
+{
+}
+
+#define ONESPrimitiveTensor_INSTANTIATE_PrimitiveTensor(T) template class OnesPrimitiveTensor<T>
+FOR_ALL_PRIMITIVETENSOR(ONESPrimitiveTensor_INSTANTIATE_PrimitiveTensor);
 } // namespace neml2

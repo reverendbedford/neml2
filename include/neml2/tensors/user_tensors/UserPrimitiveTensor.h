@@ -22,38 +22,33 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/tensors/user_tensors/EmptyLogicalTensor.h"
+#pragma once
+
+#include "neml2/tensors/user_tensors/UserTensorBase.h"
+
+#include "neml2/tensors/tensors.h"
 
 namespace neml2
 {
-#define EMPTYLogicalTensor_REGISTER(T) register_NEML2_object_alias(Empty##T, "Empty" #T)
-FOR_ALL_LOGICALTENSOR(EMPTYLogicalTensor_REGISTER);
-
+/**
+ * @brief Create raw tensor of type T from the input file.
+ *
+ * @tparam T The concrete tensor derived from TensorBase
+ */
 template <typename T>
-OptionSet
-EmptyLogicalTensor<T>::expected_options()
+class UserPrimitiveTensor : public T, public UserTensorBase
 {
-  // This is the only way of getting tensor type in a static method like this...
-  // Trim 6 chars to remove 'neml2::'
-  auto tensor_type = utils::demangle(typeid(T).name()).substr(7);
+public:
+  static OptionSet expected_options();
 
-  OptionSet options = UserTensorBase::expected_options();
-  options.doc() = "Construct an empty " + tensor_type +
-                  " with given batch shape. Tensor values are **undefined** after construction.";
+  /**
+   * @brief Construct a new UserPrimitiveTensor object
+   *
+   * @param options The options extracted from the input file.
+   */
+  UserPrimitiveTensor(const OptionSet & options);
+};
 
-  options.set<TensorShape>("batch_shape") = {};
-  options.set("batch_shape").doc() = "Batch shape";
-
-  return options;
-}
-
-template <typename T>
-EmptyLogicalTensor<T>::EmptyLogicalTensor(const OptionSet & options)
-  : T(T::empty(options.get<TensorShape>("batch_shape"), default_tensor_options())),
-    UserTensorBase(options)
-{
-}
-
-#define EMPTYLogicalTensor_INSTANTIATE_LogicalTensor(T) template class EmptyLogicalTensor<T>
-FOR_ALL_LOGICALTENSOR(EMPTYLogicalTensor_INSTANTIATE_LogicalTensor);
+#define USERPrimitiveTensor_TYPEDEF(T) typedef UserPrimitiveTensor<T> User##T
+FOR_ALL_PRIMITIVETENSOR(USERPrimitiveTensor_TYPEDEF);
 } // namespace neml2

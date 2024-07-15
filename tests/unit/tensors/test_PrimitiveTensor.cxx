@@ -38,14 +38,14 @@
 
 using namespace neml2;
 
-TEST_CASE("LogicalTensor", "[tensors]")
+TEST_CASE("PrimitiveTensor", "[tensors]")
 {
   const auto & DTO = default_tensor_options();
 
   TensorShape B = {5, 3, 1, 2}; // batch shape
   Size Bn = B.size();           // batch dimension
 
-  SECTION("class LogicalTensor")
+  SECTION("class PrimitiveTensor")
   {
     SECTION("const_base_sizes")
     {
@@ -75,7 +75,7 @@ TEST_CASE("LogicalTensor", "[tensors]")
       REQUIRE(SSFR5::const_base_dim == 3);
     }
 
-    SECTION("LogicalTensor")
+    SECTION("PrimitiveTensor")
     {
       SECTION("default")
       {

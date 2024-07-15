@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/tensors/LogicalTensor.h"
+#include "neml2/tensors/PrimitiveTensor.h"
 
 namespace neml2
 {
@@ -36,10 +36,10 @@ class R4;
  *
  * Mandel notation/reduced skew is used, and so the logical storage space is (6, 3).
  */
-class SWR4 : public LogicalTensor<SWR4, 6, 3>
+class SWR4 : public PrimitiveTensor<SWR4, 6, 3>
 {
 public:
-  using LogicalTensor<SWR4, 6, 3>::LogicalTensor;
+  using PrimitiveTensor<SWR4, 6, 3>::PrimitiveTensor;
   SWR4(const R4 & F);
 };
 

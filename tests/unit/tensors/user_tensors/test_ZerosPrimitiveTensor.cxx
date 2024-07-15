@@ -25,37 +25,37 @@
 #include <catch2/catch_test_macros.hpp>
 
 #include "utils.h"
-#include "neml2/tensors/user_tensors/OnesLogicalTensor.h"
+#include "neml2/tensors/user_tensors/ZerosPrimitiveTensor.h"
 #include "neml2/tensors/tensors.h"
 
 using namespace neml2;
 
-#define test_OnesLogicalTensor(tensor_type, tensor_name, batch_shape)                              \
-  SECTION("Ones" #tensor_type)                                                                     \
+#define test_ZerosPrimitiveTensor(tensor_type, tensor_name, batch_shape)                             \
+  SECTION("Zeros" #tensor_type)                                                                    \
   {                                                                                                \
     const auto tensor_name = Factory::get_object_ptr<tensor_type>("Tensors", #tensor_name);        \
     REQUIRE(tensor_name->batch_sizes() == batch_shape);                                            \
     REQUIRE(tensor_name->base_sizes() == tensor_type::const_base_sizes);                           \
     REQUIRE(                                                                                       \
-        torch::allclose(*tensor_name, tensor_type::ones(batch_shape, default_tensor_options())));  \
+        torch::allclose(*tensor_name, tensor_type::zeros(batch_shape, default_tensor_options()))); \
   }                                                                                                \
   static_assert(true)
 
-TEST_CASE("OnesLogicalTensor", "[tensors/user_tensors]")
+TEST_CASE("ZerosPrimitiveTensor", "[tensors/user_tensors]")
 {
-  load_model("unit/tensors/user_tensors/test_OnesLogicalTensor.i");
+  load_model("unit/tensors/user_tensors/test_ZerosPrimitiveTensor.i");
 
   TensorShape B{2, 1};
 
-  test_OnesLogicalTensor(Scalar, a, B);
-  test_OnesLogicalTensor(Vec, b, B);
-  test_OnesLogicalTensor(Rot, c, B);
-  test_OnesLogicalTensor(R2, d, B);
-  test_OnesLogicalTensor(SR2, e, B);
-  test_OnesLogicalTensor(R3, f, B);
-  test_OnesLogicalTensor(SFR3, g, B);
-  test_OnesLogicalTensor(R4, h, B);
-  test_OnesLogicalTensor(SSR4, i, B);
-  test_OnesLogicalTensor(R5, j, B);
-  test_OnesLogicalTensor(SSFR5, k, B);
+  test_ZerosPrimitiveTensor(Scalar, a, B);
+  test_ZerosPrimitiveTensor(Vec, b, B);
+  test_ZerosPrimitiveTensor(Rot, c, B);
+  test_ZerosPrimitiveTensor(R2, d, B);
+  test_ZerosPrimitiveTensor(SR2, e, B);
+  test_ZerosPrimitiveTensor(R3, f, B);
+  test_ZerosPrimitiveTensor(SFR3, g, B);
+  test_ZerosPrimitiveTensor(R4, h, B);
+  test_ZerosPrimitiveTensor(SSR4, i, B);
+  test_ZerosPrimitiveTensor(R5, j, B);
+  test_ZerosPrimitiveTensor(SSFR5, k, B);
 }

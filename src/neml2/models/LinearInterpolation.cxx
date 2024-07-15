@@ -29,7 +29,7 @@ namespace neml2
 {
 #define LINEARINTERPOLATION_REGISTER(T)                                                            \
   register_NEML2_object_alias(T##LinearInterpolation, #T "LinearInterpolation")
-FOR_ALL_LOGICALTENSOR(LINEARINTERPOLATION_REGISTER);
+FOR_ALL_PRIMITIVETENSOR(LINEARINTERPOLATION_REGISTER);
 
 template <typename T>
 OptionSet
@@ -83,6 +83,6 @@ LinearInterpolation<T>::set_value(bool out, bool dout_din, bool d2out_din2)
   }
 }
 
-#define LINEARINTERPOLATION_INSTANTIATE_LogicalTensor(T) template class LinearInterpolation<T>
-FOR_ALL_LOGICALTENSOR(LINEARINTERPOLATION_INSTANTIATE_LogicalTensor);
+#define LINEARINTERPOLATION_INSTANTIATE_PrimitiveTensor(T) template class LinearInterpolation<T>
+FOR_ALL_PRIMITIVETENSOR(LINEARINTERPOLATION_INSTANTIATE_PrimitiveTensor);
 } // namespace neml2

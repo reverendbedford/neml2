@@ -26,8 +26,8 @@
 
 namespace neml2
 {
-#define COPYVARIABLE_REGISTER_LogicalTensor(T) register_NEML2_object(Copy##T)
-FOR_ALL_LOGICALTENSOR(COPYVARIABLE_REGISTER_LogicalTensor);
+#define COPYVARIABLE_REGISTER_PrimitiveTensor(T) register_NEML2_object(Copy##T)
+FOR_ALL_PRIMITIVETENSOR(COPYVARIABLE_REGISTER_PrimitiveTensor);
 
 template <typename T>
 OptionSet
@@ -69,6 +69,6 @@ CopyVariable<T>::set_value(bool out, bool dout_din, bool d2out_din2)
   }
 }
 
-#define COPYVARIABLE_INSTANTIATE_LogicalTensor(T) template class CopyVariable<T>
-FOR_ALL_LOGICALTENSOR(COPYVARIABLE_INSTANTIATE_LogicalTensor);
+#define COPYVARIABLE_INSTANTIATE_PrimitiveTensor(T) template class CopyVariable<T>
+FOR_ALL_PRIMITIVETENSOR(COPYVARIABLE_INSTANTIATE_PrimitiveTensor);
 } // namespace neml2

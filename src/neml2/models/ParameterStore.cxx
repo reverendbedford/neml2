@@ -159,7 +159,7 @@ ParameterStore::declare_parameter(const std::string & name, const std::string & 
       "parameter.");
 }
 
-#define PARAMETERSTORE_INTANTIATE_LogicalTensor(T)                                                 \
+#define PARAMETERSTORE_INTANTIATE_PrimitiveTensor(T)                                               \
   template const T & ParameterStore::declare_parameter<T>(const std::string &, const std::string &)
-FOR_ALL_LOGICALTENSOR(PARAMETERSTORE_INTANTIATE_LogicalTensor);
+FOR_ALL_PRIMITIVETENSOR(PARAMETERSTORE_INTANTIATE_PrimitiveTensor);
 } // namespace neml2

@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/tensors/LogicalTensor.h"
+#include "neml2/tensors/PrimitiveTensor.h"
 
 namespace neml2
 {
@@ -39,10 +39,10 @@ class WWR4;
  *
  * The logical storage space is (3, 3, 3, 3).
  */
-class R4 : public LogicalTensor<R4, 3, 3, 3, 3>
+class R4 : public PrimitiveTensor<R4, 3, 3, 3, 3>
 {
 public:
-  using LogicalTensor<R4, 3, 3, 3, 3>::LogicalTensor;
+  using PrimitiveTensor<R4, 3, 3, 3, 3>::PrimitiveTensor;
 
   R4(const SSR4 & T);
 

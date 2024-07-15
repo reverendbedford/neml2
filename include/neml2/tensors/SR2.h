@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/tensors/LogicalTensor.h"
+#include "neml2/tensors/PrimitiveTensor.h"
 
 namespace neml2
 {
@@ -42,10 +42,10 @@ class WR2;
  *
  * Mandel notation is used, and so the logical storage space is (6).
  */
-class SR2 : public LogicalTensor<SR2, 6>
+class SR2 : public PrimitiveTensor<SR2, 6>
 {
 public:
-  using LogicalTensor<SR2, 6>::LogicalTensor;
+  using PrimitiveTensor<SR2, 6>::PrimitiveTensor;
 
   /// Symmetrize an R2 then fill
   SR2(const R2 & T);
