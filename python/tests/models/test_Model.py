@@ -35,33 +35,6 @@ def test_get_model():
     neml2.get_model("model")
 
 
-def test_input_axis():
-    pwd = Path(__file__).parent
-    model = neml2.load_model(pwd / "test_Model.i", "model")
-    input_axis = model.input_axis()
-    assert input_axis.storage_size() == 8
-    assert input_axis.has_subaxis("forces")
-    assert input_axis.has_variable("forces/t")
-    assert input_axis.has_subaxis("old_forces")
-    assert input_axis.has_variable("old_forces/t")
-    assert input_axis.has_subaxis("old_state")
-    assert input_axis.has_variable("old_state/foo")
-    assert input_axis.has_variable("old_state/bar")
-    assert input_axis.has_subaxis("state")
-    assert input_axis.has_variable("state/foo")
-    assert input_axis.has_variable("state/foo_rate")
-    assert input_axis.has_variable("state/bar")
-    assert input_axis.has_variable("state/bar_rate")
-
-
-def test_output_axis():
-    pwd = Path(__file__).parent
-    model = neml2.load_model(pwd / "test_Model.i", "model")
-    output_axis = model.output_axis()
-    assert output_axis.storage_size() == 1
-    assert output_axis.has_variable("residual/foo_bar")
-
-
 def test_value():
     pwd = Path(__file__).parent
     model = neml2.load_model(pwd / "test_Model.i", "model")

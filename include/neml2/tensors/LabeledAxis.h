@@ -56,6 +56,18 @@ class LabeledAxis
 public:
   typedef std::unordered_map<std::string, std::pair<Size, Size>> AxisLayout;
 
+  // Custom comparator for sorting assembly indices
+  struct AssemblySliceCmp
+  {
+    bool operator()(const indexing::TensorIndex & a, const indexing::TensorIndex & b) const
+    {
+      neml_assert(a.is_slice() && b.is_slice(), "Comparator must be used on slices");
+      neml_assert(a.slice().step().expect_int() == 1 && b.slice().step().expect_int() == 1,
+                  "Slices must have step == 1");
+      return a.slice().start().expect_int() < b.slice().start().expect_int();
+    }
+  };
+
   /// Empty constructor
   LabeledAxis();
 
@@ -106,14 +118,11 @@ public:
    */
   void setup_layout();
 
-  /// Number of items
-  size_t nitem() const { return nvariable() + nsubaxis(); }
-
   /// Number of variables
-  size_t nvariable() const { return _variables.size(); }
+  size_t nvariable(bool recursive = true) const;
 
   /// Number of subaxes
-  size_t nsubaxis() const { return _subaxes.size(); }
+  size_t nsubaxis(bool recursive = false) const;
 
   /// Does the item exist?
   bool has_item(const LabeledAxisAccessor & name) const
@@ -138,10 +147,8 @@ public:
   /// Check the existence of a subaxis by its LabeledAxisAccessor
   bool has_subaxis(const LabeledAxisAccessor & s) const;
 
-  /// Get the (total) storage size of *this* axis
-  Size storage_size() const { return _offset; }
-  /// Get the storage size of an item by its LabeledAxisAccessor
-  Size storage_size(const LabeledAxisAccessor & accessor) const;
+  /// Get the total storage size of *this* axis or the storage size of an item
+  Size storage_size(const LabeledAxisAccessor & accessor = {}) const;
 
   /// Get the layout
   const AxisLayout & layout() const { return _layout; }
@@ -156,23 +163,27 @@ public:
   std::vector<std::pair<indexing::TensorIndex, indexing::TensorIndex>>
   common_indices(const LabeledAxis & other, bool recursive = true) const;
 
-  /// Get the item names
-  std::vector<std::string> item_names() const;
+  /// Sort a set of LabeledAxisAccessors by their indices
+  std::vector<LabeledAxisAccessor>
+  sort_by_assembly_order(const std::set<LabeledAxisAccessor> &) const;
 
   /// Get the variables
   const std::map<std::string, Size> & variables() const { return _variables; }
 
+  /// Get the variable names
+  std::set<LabeledAxisAccessor> variable_names(bool recursive = true) const;
+
   /// Get the subaxes
   const std::map<std::string, std::shared_ptr<LabeledAxis>> & subaxes() const { return _subaxes; }
 
-  /// Get the variable accessors
-  std::set<LabeledAxisAccessor> variable_accessors(bool recursive = false,
-                                                   const LabeledAxisAccessor & subaxis = {}) const;
+  /// Get subaxes' names
+  std::set<LabeledAxisAccessor> subaxis_names(bool recursive = false) const;
 
   /// Get a sub-axis
-  const LabeledAxis & subaxis(const std::string & name) const;
+  const LabeledAxis & subaxis(const LabeledAxisAccessor & name) const;
+
   /// Get a sub-axis
-  LabeledAxis & subaxis(const std::string & name);
+  LabeledAxis & subaxis(const LabeledAxisAccessor & name);
 
   /// Check to see if two LabeledAxis objects are equivalent
   bool equals(const LabeledAxis & other) const;
@@ -214,10 +225,9 @@ private:
                       Size offseta,
                       Size offsetb) const;
 
-  void variable_accessors(std::set<LabeledAxisAccessor> & accessors,
-                          LabeledAxisAccessor cur,
-                          bool recursive,
-                          const LabeledAxisAccessor & subaxis) const;
+  void variable_names(std::set<LabeledAxisAccessor> & accessors,
+                      LabeledAxisAccessor cur,
+                      bool recursive) const;
 
   /// Variables and their sizes
   std::map<std::string, Size> _variables;

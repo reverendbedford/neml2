@@ -46,15 +46,15 @@ VariableBase::setup_views(const LabeledVector * value,
   if (deriv)
   {
     _derivative_storage = deriv;
-    for (auto arg : _derivative_storage->axis(1).variable_accessors(true))
+    for (auto arg : _derivative_storage->axis(1).variable_names())
       _dvalue_d[arg] = (*_derivative_storage)(name(), arg);
   }
 
   if (secderiv)
   {
     _second_derivative_storage = secderiv;
-    for (auto arg1 : _second_derivative_storage->axis(1).variable_accessors(true))
-      for (auto arg2 : _second_derivative_storage->axis(2).variable_accessors(true))
+    for (auto arg1 : _second_derivative_storage->axis(1).variable_names())
+      for (auto arg2 : _second_derivative_storage->axis(2).variable_names())
         _d2value_d[arg1][arg2] = (*_second_derivative_storage)(name(), arg1, arg2);
   }
 }

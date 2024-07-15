@@ -317,12 +317,12 @@ TransientDriver::result() const
 
   // Dump input variables into a Module
   auto res_in = std::make_shared<torch::nn::Module>();
-  for (auto var : result_in_cpu.axis(0).variable_accessors(/*recursive=*/true))
+  for (auto var : result_in_cpu.axis(0).variable_names())
     res_in->register_buffer(utils::stringify(var), result_in_cpu(var).clone());
 
   // Dump output variables into a Module
   auto res_out = std::make_shared<torch::nn::Module>();
-  for (auto var : result_out_cpu.axis(0).variable_accessors(/*recursive=*/true))
+  for (auto var : result_out_cpu.axis(0).variable_names())
     res_out->register_buffer(utils::stringify(var), result_out_cpu(var).clone());
 
   // Combine input and output

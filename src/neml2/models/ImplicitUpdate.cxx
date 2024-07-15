@@ -72,7 +72,7 @@ ImplicitUpdate::ImplicitUpdate(const OptionSet & options)
   //      already been taken care of by the `register_model` call.
   //   2. Output variables of the "implicit_model" on the "residual" subaxis should be *provided* by
   //      *this* model.
-  for (auto var : _model.output_axis().subaxis("residual").variable_accessors(/*recursive=*/true))
+  for (auto var : _model.output_axis().subaxis("residual").variable_names())
     declare_output_variable(_model.output_axis().subaxis("residual").storage_size(var),
                             _model.output_view(var.on("residual"))->type(),
                             var.on("state"));

@@ -57,7 +57,7 @@ allclose(const LabeledVector & a, const LabeledVector & b, Real rtol, Real atol)
   if (a.axis(0) != b.axis(0))
     return false;
 
-  for (auto var : a.axis(0).variable_accessors(true))
+  for (auto var : a.axis(0).variable_names())
     if (!torch::allclose(a(var), b(var), rtol, atol))
       return false;
 

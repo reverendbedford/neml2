@@ -39,7 +39,6 @@ TEST_CASE("LabeledAxis", "[tensors]")
       {
         LabeledAxis a;
         a.setup_layout();
-        REQUIRE(a.nitem() == 0);
         REQUIRE(a.nvariable() == 0);
         REQUIRE(a.nsubaxis() == 0);
         REQUIRE(a.storage_size() == 0);
@@ -56,8 +55,8 @@ TEST_CASE("LabeledAxis", "[tensors]")
 
         LabeledAxis b(a);
         b.setup_layout();
-        REQUIRE(b.nitem() == 3);
-        REQUIRE(b.nvariable() == 2);
+        REQUIRE(b.nvariable() == 4);
+        REQUIRE(b.nvariable(false) == 2);
         REQUIRE(b.nsubaxis() == 1);
         REQUIRE(b.storage_size() == 14);
       }
@@ -70,8 +69,8 @@ TEST_CASE("LabeledAxis", "[tensors]")
       a.add("foo", 13);
       a.add(i, 3);
       a.setup_layout();
-      REQUIRE(a.nitem() == 2);
-      REQUIRE(a.nvariable() == 1);
+      REQUIRE(a.nvariable() == 2);
+      REQUIRE(a.nvariable(false) == 1);
       REQUIRE(a.nsubaxis() == 1);
       REQUIRE(a.storage_size() == 16);
     }
@@ -102,7 +101,6 @@ TEST_CASE("LabeledAxis", "[tensors]")
       a.remove("r2t1");
       a.remove("scalar1");
       a.setup_layout();
-      REQUIRE(a.nitem() == 3);
       REQUIRE(a.nvariable() == 3);
       REQUIRE(a.nsubaxis() == 0);
       REQUIRE(a.storage_size() == 8);
@@ -120,7 +118,6 @@ TEST_CASE("LabeledAxis", "[tensors]")
       a.add(j, 3);
       a.clear();
       a.setup_layout();
-      REQUIRE(a.nitem() == 0);
       REQUIRE(a.nvariable() == 0);
       REQUIRE(a.nsubaxis() == 0);
       REQUIRE(a.storage_size() == 0);
@@ -212,21 +209,20 @@ TEST_CASE("LabeledAxis", "[tensors]")
       a.subaxis("sub1").subaxis("sub2").add<SR2>("r2t");
       a.setup_layout();
 
-      REQUIRE(a.nitem() == 3);
-      REQUIRE(a.nvariable() == 2);
+      REQUIRE(a.nvariable() == 6);
+      REQUIRE(a.nvariable(false) == 2);
       REQUIRE(a.nsubaxis() == 1);
       REQUIRE(a.storage_size() == 21);
       REQUIRE(a.storage_size("scalar") == 1);
       REQUIRE(a.storage_size("r2t") == 6);
 
-      REQUIRE(a.subaxis("sub1").nitem() == 3);
-      REQUIRE(a.subaxis("sub1").nvariable() == 2);
+      REQUIRE(a.subaxis("sub1").nvariable() == 4);
+      REQUIRE(a.subaxis("sub1").nvariable(false) == 2);
       REQUIRE(a.subaxis("sub1").nsubaxis() == 1);
       REQUIRE(a.subaxis("sub1").storage_size() == 14);
       REQUIRE(a.subaxis("sub1").storage_size("scalar") == 1);
       REQUIRE(a.subaxis("sub1").storage_size("r2t") == 6);
 
-      REQUIRE(a.subaxis("sub1").subaxis("sub2").nitem() == 2);
       REQUIRE(a.subaxis("sub1").subaxis("sub2").nvariable() == 2);
       REQUIRE(a.subaxis("sub1").subaxis("sub2").nsubaxis() == 0);
       REQUIRE(a.subaxis("sub1").subaxis("sub2").storage_size() == 7);
@@ -250,7 +246,6 @@ TEST_CASE("LabeledAxis", "[tensors]")
       // scalar5
       // r2t2
 
-      REQUIRE(a.nitem() == 4);
       REQUIRE(a.nvariable() == 4);
       REQUIRE(a.nsubaxis() == 0);
       REQUIRE(a.storage_size() == 9);

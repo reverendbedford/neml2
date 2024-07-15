@@ -85,8 +85,8 @@ Model::preflight() const
                          "have sub-axis 'state'."));
     else
     {
-      auto s_vars = output_axis().subaxis("state").variable_accessors(/*recursive=*/true);
-      for (auto var : input_axis().subaxis("old_state").variable_accessors(/*recursive=*/true))
+      auto s_vars = output_axis().subaxis("state").variable_names();
+      for (auto var : input_axis().subaxis("old_state").variable_names())
         if (!s_vars.count(var))
           errors.push_back(make_diagnosis(name(),
                                           ": input axis has old state named ",
@@ -447,13 +447,13 @@ Model::registered_model(const std::string & name) const
 const std::set<VariableName>
 Model::consumed_items() const
 {
-  return input_axis().variable_accessors(true);
+  return input_axis().variable_names();
 }
 
 const std::set<VariableName>
 Model::provided_items() const
 {
-  return output_axis().variable_accessors(true);
+  return output_axis().variable_names();
 }
 
 void

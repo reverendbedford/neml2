@@ -179,6 +179,18 @@ LabeledAxis::setup_layout()
   }
 }
 
+size_t
+LabeledAxis::nvariable(bool recursive) const
+{
+  return variable_names(recursive).size();
+}
+
+size_t
+LabeledAxis::nsubaxis(bool recursive) const
+{
+  return subaxis_names(recursive).size();
+}
+
 bool
 LabeledAxis::has_variable(const LabeledAxisAccessor & var) const
 {
@@ -214,26 +226,22 @@ LabeledAxis::has_subaxis(const LabeledAxisAccessor & s) const
 }
 
 Size
-LabeledAxis::storage_size(const LabeledAxisAccessor & accessor) const
+LabeledAxis::storage_size(const LabeledAxisAccessor & name) const
 {
-  return storage_size(accessor.begin(), accessor.end());
-}
+  if (name.empty())
+    return _offset;
 
-Size
-LabeledAxis::storage_size(const LabeledAxisAccessor::const_iterator & cur,
-                          const LabeledAxisAccessor::const_iterator & end) const
-{
-  if (cur == end - 1)
+  if (name.size() == 1)
   {
-    if (_variables.count(*cur))
-      return _variables.at(*cur);
-    else if (_subaxes.count(*cur))
-      return _subaxes.at(*cur)->storage_size();
+    if (_variables.count(name.vec()[0]))
+      return _variables.at(name.vec()[0]);
+    else if (_subaxes.count(name.vec()[0]))
+      return _subaxes.at(name.vec()[0])->storage_size();
 
-    neml_assert_dbg(false, "Trying to find the storage size of a non-existent item named ", *cur);
+    neml_assert_dbg(false, "Trying to find the storage size of a non-existent item named ", name);
   }
 
-  return subaxis(*cur).storage_size(cur + 1, end);
+  return subaxis(name.vec()[0]).storage_size(name.slice(1));
 }
 
 indexing::TensorIndex
@@ -318,63 +326,76 @@ LabeledAxis::common_indices(const LabeledAxis & other,
                              offsetb + other._layout.at(name).first);
 }
 
-std::vector<std::string>
-LabeledAxis::item_names() const
+std::vector<LabeledAxisAccessor>
+LabeledAxis::sort_by_assembly_order(const std::set<LabeledAxisAccessor> & names) const
 {
-  std::vector<std::string> names;
-  for (const auto & item : _layout)
-    names.push_back(item.first);
-  return names;
+  neml_assert(_offset > 0, "The LabeledAxis either is empty or has not been setup");
+
+  std::map<indexing::TensorIndex, const LabeledAxisAccessor &, AssemblySliceCmp> index_names;
+  for (const auto & name : names)
+    index_names.emplace(indices(name), name);
+
+  std::vector<LabeledAxisAccessor> sorted;
+  for (const auto & [idx, name] : index_names)
+    sorted.push_back(name);
+
+  return sorted;
 }
 
 std::set<LabeledAxisAccessor>
-LabeledAxis::variable_accessors(bool recursive, const LabeledAxisAccessor & subaxis) const
+LabeledAxis::variable_names(bool recursive) const
 {
   std::set<LabeledAxisAccessor> accessors;
-  variable_accessors(accessors, {}, recursive, subaxis);
+
+  // Insert local variables
+  for (auto & [var, sz] : _variables)
+    accessors.insert(var);
+
+  // Insert variables on subaxes
+  if (recursive)
+    for (auto & [name, axis] : _subaxes)
+      for (auto & var : axis->variable_names(true))
+        accessors.insert(var.on(name));
+
   return accessors;
 }
 
-void
-LabeledAxis::variable_accessors(std::set<LabeledAxisAccessor> & accessors,
-                                LabeledAxisAccessor cur,
-                                bool recursive,
-                                const LabeledAxisAccessor & subaxis) const
+std::set<LabeledAxisAccessor>
+LabeledAxis::subaxis_names(bool recursive) const
 {
-  for (auto & var : _variables)
+  std::set<LabeledAxisAccessor> accessors;
+
+  for (auto & [name, axis] : _subaxes)
   {
-    LabeledAxisAccessor var_accessor{{var.first}};
-    var_accessor = var_accessor.on(cur);
-    if (subaxis.empty())
-      accessors.insert(var_accessor);
-    else if (var_accessor.slice(0, subaxis.size()) == subaxis)
-      accessors.insert(var_accessor);
+    // Insert local subaxes
+    accessors.insert(name);
+    // Insert sub-subaxes
+    if (recursive)
+      for (auto & subname : axis->subaxis_names(true))
+        accessors.insert(subname.on(name));
   }
 
-  if (recursive)
-    for (auto & [name, axis] : _subaxes)
-    {
-      auto next = cur.append(name);
-      axis->variable_accessors(accessors, next, recursive, subaxis);
-    }
+  return accessors;
 }
 
 const LabeledAxis &
-LabeledAxis::subaxis(const std::string & name) const
+LabeledAxis::subaxis(const LabeledAxisAccessor & name) const
 {
-  neml_assert_dbg(
-      _subaxes.count(name), "In LabeledAxis::subaxis, no subaxis matches given name ", name);
-
-  return *_subaxes.at(name);
+  return const_cast<LabeledAxis *>(this)->subaxis(name);
 }
 
 LabeledAxis &
-LabeledAxis::subaxis(const std::string & name)
+LabeledAxis::subaxis(const LabeledAxisAccessor & name)
 {
-  neml_assert_dbg(
-      _subaxes.count(name), "In LabeledAxis::subaxis, no subaxis matches given name ", name);
+  neml_assert(!name.empty(), "sub-axis name cannot be empty");
+  neml_assert_dbg(_subaxes.count(name.vec()[0]),
+                  "In LabeledAxis::subaxis, no subaxis matches given name ",
+                  name);
 
-  return *_subaxes.at(name);
+  if (name.size() > 1)
+    return _subaxes[name.vec()[0]]->subaxis(name.slice(1));
+
+  return *_subaxes[name.vec()[0]];
 }
 
 bool
@@ -406,7 +427,7 @@ operator<<(std::ostream & os, const LabeledAxis & axis)
   // Collect variable names and indices
   size_t max_var_name_length = 0;
   std::map<std::string, indexing::TensorIndex> vars;
-  for (auto var : axis.variable_accessors(true))
+  for (auto var : axis.variable_names(true))
   {
     auto var_name = utils::stringify(var);
     if (var_name.size() > max_var_name_length)

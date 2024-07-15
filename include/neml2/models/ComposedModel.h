@@ -65,18 +65,6 @@ protected:
   void set_value(bool, bool, bool) override;
 
 private:
-  // Custom comparator for sorting assembly indices
-  struct SliceCmp
-  {
-    bool operator()(const indexing::TensorIndex & a, const indexing::TensorIndex & b) const
-    {
-      neml_assert(a.is_slice() && b.is_slice(), "Comparator must be used on slices");
-      neml_assert(a.slice().step().expect_int() == 1 && b.slice().step().expect_int() == 1,
-                  "Slices must have step == 1");
-      return a.slice().start().expect_int() < b.slice().start().expect_int();
-    }
-  };
-
   /// Helper method to evaluate one single model in the threaded set_value loop
   void set_value_async(Model * i, bool out, bool dout_din, bool d2out_din2);
 
@@ -97,7 +85,9 @@ private:
 
   /// Assembly indices
   std::map<Model *,
-           std::map<indexing::TensorIndex, std::pair<Model *, indexing::TensorIndex>, SliceCmp>>
+           std::map<indexing::TensorIndex,
+                    std::pair<Model *, indexing::TensorIndex>,
+                    LabeledAxis::AssemblySliceCmp>>
       _assembly_indices;
 
   /// Cache for partial derivatives of model inputs w.r.t. total input
