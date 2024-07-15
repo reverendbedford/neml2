@@ -238,6 +238,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aceceb0612a7031fca2adaa7602eee57e" id="r_aceceb0612a7031fca2adaa7602eee57e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1VariableBase.html">VariableBase</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aceceb0612a7031fca2adaa7602eee57e">output_view</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">VariableName</a> &amp;)</td></tr>
 <tr class="memdesc:aceceb0612a7031fca2adaa7602eee57e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the view of an output variable.  <br /></td></tr>
 <tr class="separator:aceceb0612a7031fca2adaa7602eee57e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee14f0d794434b8838a88a6cba9c7c91" id="r_aee14f0d794434b8838a88a6cba9c7c91"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceneml2.html#a9b44248b88341f8c9cafe5d9d822a443">TensorType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aee14f0d794434b8838a88a6cba9c7c91">input_type</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">VariableName</a> &amp;) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:aee14f0d794434b8838a88a6cba9c7c91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the variable type of an input variable.  <br /></td></tr>
+<tr class="separator:aee14f0d794434b8838a88a6cba9c7c91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad60c2f74edf33867d25d929620cdecdb" id="r_ad60c2f74edf33867d25d929620cdecdb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceneml2.html#a9b44248b88341f8c9cafe5d9d822a443">TensorType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad60c2f74edf33867d25d929620cdecdb">output_type</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">VariableName</a> &amp;) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:ad60c2f74edf33867d25d929620cdecdb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the variable type of an output variable.  <br /></td></tr>
+<tr class="separator:ad60c2f74edf33867d25d929620cdecdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:af8d8cebde25a68f326a90076c1719d8e" id="r_af8d8cebde25a68f326a90076c1719d8e"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T  = Tensor&gt; </td></tr>
 <tr class="memitem:af8d8cebde25a68f326a90076c1719d8e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Variable.html">Variable</a>&lt; T &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#af8d8cebde25a68f326a90076c1719d8e">get_input_variable</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">VariableName</a> &amp;name)</td></tr>
@@ -1041,6 +1047,25 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T  = T
 
 </div>
 </div>
+<a id="aee14f0d794434b8838a88a6cba9c7c91" name="aee14f0d794434b8838a88a6cba9c7c91"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee14f0d794434b8838a88a6cba9c7c91">&#9670;&#160;</a></span>input_type()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceneml2.html#a9b44248b88341f8c9cafe5d9d822a443">TensorType</a> input_type </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">VariableName</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the variable type of an input variable. </p>
+
+</div>
+</div>
 <a id="a5d689f734b3d59b333eff9c4420e963e" name="a5d689f734b3d59b333eff9c4420e963e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5d689f734b3d59b333eff9c4420e963e">&#9670;&#160;</a></span>input_view()</h2>
 
@@ -1210,6 +1235,25 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T  = T
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad60c2f74edf33867d25d929620cdecdb" name="ad60c2f74edf33867d25d929620cdecdb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad60c2f74edf33867d25d929620cdecdb">&#9670;&#160;</a></span>output_type()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceneml2.html#a9b44248b88341f8c9cafe5d9d822a443">TensorType</a> output_type </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">VariableName</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the variable type of an output variable. </p>
 
 </div>
 </div>

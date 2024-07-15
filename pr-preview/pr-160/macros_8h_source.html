@@ -143,11 +143,11 @@ $(function(){initNavTree('macros_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="preprocessor">#define FOR_ALL_TensorBASE(f)                                                                      \</span></div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="preprocessor">  FOR_ALL_LogicalTensor(f);                                                                        \</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="preprocessor">#define FOR_ALL_TENSORBASE(f)                                                                      \</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="preprocessor">  FOR_ALL_LOGICALTENSOR(f);                                                                        \</span></div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="preprocessor">  f(Tensor)</span></div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="preprocessor">#define FOR_ALL_LogicalTensor(f)                                                                   \</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="preprocessor">#define FOR_ALL_LOGICALTENSOR(f)                                                                   \</span></div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="preprocessor">  FOR_ALL_VECBASE(f);                                                                              \</span></div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">  FOR_ALL_R2BASE(f);                                                                               \</span></div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">  f(Scalar);                                                                                       \</span></div>
@@ -172,9 +172,9 @@ $(function(){initNavTree('macros_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="preprocessor">#define FOR_ALL_R2BASE(f) f(R2)</span></div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="preprocessor">#define FOR_ALL_TensorBASE_COMMA(f) FOR_ALL_LogicalTensor_COMMA(f), f(Tensor)</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="preprocessor">#define FOR_ALL_TENSORBASE_COMMA(f) FOR_ALL_LOGICALTENSOR_COMMA(f), f(Tensor)</span></div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="preprocessor">#define FOR_ALL_LogicalTensor_COMMA(f)                                                             \</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="preprocessor">#define FOR_ALL_LOGICALTENSOR_COMMA(f)                                                             \</span></div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="preprocessor">  FOR_ALL_VECBASE_COMMA(f), FOR_ALL_R2BASE_COMMA(f), f(Scalar), f(SR2), f(R3), f(SFR3), f(R4),     \</span></div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="preprocessor">      f(SSR4), f(SFFR4), f(SWR4), f(WSR4), f(WWR4), f(R5), f(SSFR5), f(Quaternion), f(MillerIndex)</span></div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
