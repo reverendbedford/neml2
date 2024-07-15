@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['parse_0',['parse',['../classbase_1_1HITParser.html#ae0b23414e24a5fbe92fecf34245efe7b',1,'base::HITParser']]],
-  ['philosophy_1',['Features and design philosophy',['../index.html#autotoc_md3',1,'']]]
+  ['quaternion_0',['Quaternion',['../classtensors_1_1Quaternion.html',1,'tensors']]],
+  ['quaternionbaseview_1',['QuaternionBaseView',['../classtensors_1_1QuaternionBaseView.html',1,'tensors']]],
+  ['quaternionbatchview_2',['QuaternionBatchView',['../classtensors_1_1QuaternionBatchView.html',1,'tensors']]],
+  ['quick_20installation_3',['Quick installation',['../index.html#autotoc_md2',1,'']]]
 ];

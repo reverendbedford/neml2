@@ -32,6 +32,5 @@ var searchData=
   ['isotropichardening_29',['IsotropicHardening',['../classneml2_1_1IsotropicHardening.html#aa1a9bb4383495d684fe4c362ebcfe33e',1,'neml2::IsotropicHardening']]],
   ['item_30',['Item',['../structneml2_1_1DependencyResolver_1_1Item.html#a074775c49141f1a9e781f88ded075ead',1,'neml2::DependencyResolver::Item']]],
   ['item_5fconsumers_31',['item_consumers',['../classneml2_1_1DependencyResolver.html#a201b2fcc14bade0611c6d90841748bec',1,'neml2::DependencyResolver']]],
-  ['item_5fnames_32',['item_names',['../classneml2_1_1LabeledAxis.html#a819d9fd1f38963fb549b3f2710896c4d',1,'neml2::LabeledAxis']]],
-  ['item_5fproviders_33',['item_providers',['../classneml2_1_1DependencyResolver.html#af1717716528c1f3fee2ab3b3314d767e',1,'neml2::DependencyResolver']]]
+  ['item_5fproviders_32',['item_providers',['../classneml2_1_1DependencyResolver.html#af1717716528c1f3fee2ab3b3314d767e',1,'neml2::DependencyResolver']]]
 ];

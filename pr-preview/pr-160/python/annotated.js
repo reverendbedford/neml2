@@ -59,8 +59,6 @@ var annotated =
       [ "Tensor", "classtensors_1_1Tensor.html", "classtensors_1_1Tensor" ],
       [ "TensorBaseView", "classtensors_1_1TensorBaseView.html", "classtensors_1_1TensorBaseView" ],
       [ "TensorBatchView", "classtensors_1_1TensorBatchView.html", "classtensors_1_1TensorBatchView" ],
-      [ "TensorValueBase", "classtensors_1_1TensorValueBase.html", "classtensors_1_1TensorValueBase" ],
-      [ "TensorValueStorage", "classtensors_1_1TensorValueStorage.html", "classtensors_1_1TensorValueStorage" ],
       [ "Vec", "classtensors_1_1Vec.html", "classtensors_1_1Vec" ],
       [ "VecBaseView", "classtensors_1_1VecBaseView.html", "classtensors_1_1VecBaseView" ],
       [ "VecBatchView", "classtensors_1_1VecBatchView.html", "classtensors_1_1VecBatchView" ],

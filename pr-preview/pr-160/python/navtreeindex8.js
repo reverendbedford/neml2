@@ -1,5 +1,10 @@
 var NAVTREEINDEX8 =
 {
+"classtensors_1_1Scalar.html#a69386b06a2b8195dddb19b55dfd546d3":[8,2,25,60],
+"classtensors_1_1Scalar.html#a6b67a7096a476f872e800be4a9feb647":[8,2,25,81],
+"classtensors_1_1Scalar.html#a6c473406fb744d689106b5c22955b8e0":[8,2,25,240],
+"classtensors_1_1Scalar.html#a6cf95527e2ee7ede1473960b0131cbf3":[8,2,25,211],
+"classtensors_1_1Scalar.html#a6d65585f61268135ce36bfee211ebf58":[8,2,25,68],
 "classtensors_1_1Scalar.html#a6d6bd9898b4fc9b87133e5a2fbda288d":[8,2,25,137],
 "classtensors_1_1Scalar.html#a6e93f455d7d8fd6241d56b83469b9956":[8,2,25,27],
 "classtensors_1_1Scalar.html#a7107569c753a36c97454a94a3837fb11":[8,2,25,220],
@@ -117,7 +122,7 @@ var NAVTREEINDEX8 =
 "classtensors_1_1Scalar.html#ad4dd570047b0c84605c73c339a8600ba":[8,2,25,101],
 "classtensors_1_1Scalar.html#ad4f2593b439ce8753c22f533d90d3901":[8,2,25,128],
 "classtensors_1_1Scalar.html#ad7f6216bc83ee7d63ccd54db393adb0a":[8,2,25,184],
-"classtensors_1_1Scalar.html#ad80a32bd67afe8cd2b39231a033cb929":[8,2,25,245],
+"classtensors_1_1Scalar.html#ad80a32bd67afe8cd2b39231a033cb929":[8,2,25,244],
 "classtensors_1_1Scalar.html#ad9100877947ad04faafa2adfcfefcb4e":[8,2,25,167],
 "classtensors_1_1Scalar.html#ad9f1a4b901c360be03699bb7f2adfcd5":[8,2,25,170],
 "classtensors_1_1Scalar.html#ada667247f7f8a24fbfbde032fa56733c":[8,2,25,230],
@@ -244,10 +249,5 @@ var NAVTREEINDEX8 =
 "classtensors_1_1ScalarBatchView.html#ab90770428b710db17ccb9c7c9ff2c335":[8,2,27,14],
 "classtensors_1_1ScalarBatchView.html#ac74afcc534eae96fb048710a0e7686e8":[8,2,27,8],
 "classtensors_1_1ScalarBatchView.html#ac93bd8bd539511c74322b2cb8dca572a":[8,2,27,20],
-"classtensors_1_1ScalarBatchView.html#ad00a122e27dc4f135cf2328073c80060":[8,2,27,25],
-"classtensors_1_1ScalarBatchView.html#ad0bfee3b4e905508ae67a8f129f7b413":[8,2,27,11],
-"classtensors_1_1ScalarBatchView.html#ad1906643b56fbec86a98d6958b4759a8":[8,2,27,1],
-"classtensors_1_1ScalarBatchView.html#ad8ed2a90d2b0cfbacbc6328085b23070":[8,2,27,6],
-"classtensors_1_1ScalarBatchView.html#ad95658c7be393aed001036ee929a42ae":[8,2,27,30],
-"classtensors_1_1ScalarBatchView.html#ad9f4bce894e0267718c27bce7e305b96":[8,2,27,4]
+"classtensors_1_1ScalarBatchView.html#ad00a122e27dc4f135cf2328073c80060":[8,2,27,25]
 };

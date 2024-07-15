@@ -1,6 +1,5 @@
 var NAVTREEINDEX5 =
 {
-"structneml2_1_1DependencyResolver_1_1Item.html#a018c1f77300f359f81d16a37794750e4":[7,0,15,0,4],
 "structneml2_1_1DependencyResolver_1_1Item.html#a074775c49141f1a9e781f88ded075ead":[7,0,15,0,0],
 "structneml2_1_1DependencyResolver_1_1Item.html#a5804e07e92c89e317bf1f4d1fb50c10a":[7,0,15,0,2],
 "structneml2_1_1DependencyResolver_1_1Item.html#a748fcab89ce8cd1a63d69b0182bda979":[7,0,15,0,3],
@@ -14,6 +13,8 @@ var NAVTREEINDEX5 =
 "structneml2_1_1IntraOpThread.html#a05e8d4243ca271107bbe87a69074b2ea":[7,0,44,1],
 "structneml2_1_1IntraOpThread.html#a9fc0e31010ebcbef333be3eabf21cc4f":[7,0,44,0],
 "structneml2_1_1IntraOpThread.html#ad6d821ba8f0566c6622cf8d3fbfd2577":[7,0,44,2],
+"structneml2_1_1LabeledAxis_1_1AssemblySliceCmp.html":[7,0,53,0],
+"structneml2_1_1LabeledAxis_1_1AssemblySliceCmp.html#a586b37c166d802c22e45d905db1cefa4":[7,0,53,0,0],
 "structneml2_1_1LabeledTensor_1_1variable__type.html":[7,0,56,0],
 "structneml2_1_1LabeledTensor_1_1variable__type.html#a565429e62c1d4fd084335146ba778e17":[7,0,56,0,0],
 "structneml2_1_1OptionSet_1_1Metadata.html":[7,0,88,0],

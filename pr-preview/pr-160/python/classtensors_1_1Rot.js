@@ -56,6 +56,6 @@ var classtensors_1_1Rot =
     [ "rotate", "classtensors_1_1Rot.html#a68993c47c30fd4182709c028337b2d8f", null ],
     [ "rotate", "classtensors_1_1Rot.html#a68993c47c30fd4182709c028337b2d8f", null ],
     [ "shape", "classtensors_1_1Rot.html#a43080b242de156a5409d4b58fc7d0c9c", null ],
-    [ "tensor", "classtensors_1_1Rot.html#a4fae821ed59cde7cab083dde1bdcd8c7", null ],
-    [ "to", "classtensors_1_1Rot.html#ae9eb4db828d001035a014dbefca20d41", null ]
+    [ "to", "classtensors_1_1Rot.html#ae9eb4db828d001035a014dbefca20d41", null ],
+    [ "torch", "classtensors_1_1Rot.html#a3de4f960605091b71aa501d96171b3c1", null ]
 ];

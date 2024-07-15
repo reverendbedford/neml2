@@ -35,6 +35,6 @@ var classtensors_1_1SFR3 =
     [ "requires_grad", "classtensors_1_1SFR3.html#aa29879cd7288410c6dcf2cca2e37aa0f", null ],
     [ "requires_grad_", "classtensors_1_1SFR3.html#abc5944a8aa210bfceceb00812b61a350", null ],
     [ "shape", "classtensors_1_1SFR3.html#a43080b242de156a5409d4b58fc7d0c9c", null ],
-    [ "tensor", "classtensors_1_1SFR3.html#a4fae821ed59cde7cab083dde1bdcd8c7", null ],
-    [ "to", "classtensors_1_1SFR3.html#aa9e6fa9eef7a5e88729e48b94db205b5", null ]
+    [ "to", "classtensors_1_1SFR3.html#aa9e6fa9eef7a5e88729e48b94db205b5", null ],
+    [ "torch", "classtensors_1_1SFR3.html#a3de4f960605091b71aa501d96171b3c1", null ]
 ];

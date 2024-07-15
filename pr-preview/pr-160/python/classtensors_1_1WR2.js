@@ -53,6 +53,6 @@ var classtensors_1_1WR2 =
     [ "requires_grad_", "classtensors_1_1WR2.html#abc5944a8aa210bfceceb00812b61a350", null ],
     [ "rotate", "classtensors_1_1WR2.html#a729da653014d0eb7ec2b5f11c76645f0", null ],
     [ "shape", "classtensors_1_1WR2.html#a43080b242de156a5409d4b58fc7d0c9c", null ],
-    [ "tensor", "classtensors_1_1WR2.html#a4fae821ed59cde7cab083dde1bdcd8c7", null ],
-    [ "to", "classtensors_1_1WR2.html#abdde001f67589aa5f7edbacab76c09ef", null ]
+    [ "to", "classtensors_1_1WR2.html#abdde001f67589aa5f7edbacab76c09ef", null ],
+    [ "torch", "classtensors_1_1WR2.html#a3de4f960605091b71aa501d96171b3c1", null ]
 ];

@@ -50,7 +50,6 @@ var searchData=
   ['isotropicmandelstress_47',['IsotropicMandelStress',['../classneml2_1_1IsotropicMandelStress.html',1,'IsotropicMandelStress'],['../syntax-models.html#isotropicmandelstress',1,'IsotropicMandelStress']]],
   ['item_48',['Item',['../structneml2_1_1DependencyResolver_1_1Item.html',1,'DependencyResolver&lt; Node, ItemType &gt;::Item'],['../structneml2_1_1DependencyResolver_1_1Item.html#a074775c49141f1a9e781f88ded075ead',1,'neml2::DependencyResolver::Item::Item()']]],
   ['item_5fconsumers_49',['item_consumers',['../classneml2_1_1DependencyResolver.html#a201b2fcc14bade0611c6d90841748bec',1,'neml2::DependencyResolver']]],
-  ['item_5fnames_50',['item_names',['../classneml2_1_1LabeledAxis.html#a819d9fd1f38963fb549b3f2710896c4d',1,'neml2::LabeledAxis']]],
-  ['item_5fproviders_51',['item_providers',['../classneml2_1_1DependencyResolver.html#af1717716528c1f3fee2ab3b3314d767e',1,'neml2::DependencyResolver']]],
-  ['iterator_52',['iterator',['../classneml2_1_1OptionSet.html#afdf01fb87be3acfa8803454bb61270f9',1,'neml2::OptionSet::iterator'],['../classneml2_1_1Storage.html#aca80dd27f24b2a043729bccd035811d8',1,'neml2::Storage::iterator'],['../classneml2_1_1LabeledAxisAccessor.html#a7fb774c9a97dbe8771a3d8ced2ce77e7',1,'neml2::LabeledAxisAccessor::iterator']]]
+  ['item_5fproviders_50',['item_providers',['../classneml2_1_1DependencyResolver.html#af1717716528c1f3fee2ab3b3314d767e',1,'neml2::DependencyResolver']]],
+  ['iterator_51',['iterator',['../classneml2_1_1OptionSet.html#afdf01fb87be3acfa8803454bb61270f9',1,'neml2::OptionSet::iterator'],['../classneml2_1_1Storage.html#aca80dd27f24b2a043729bccd035811d8',1,'neml2::Storage::iterator'],['../classneml2_1_1LabeledAxisAccessor.html#a7fb774c9a97dbe8771a3d8ced2ce77e7',1,'neml2::LabeledAxisAccessor::iterator']]]
 ];

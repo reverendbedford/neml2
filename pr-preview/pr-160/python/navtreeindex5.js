@@ -1,5 +1,10 @@
 var NAVTREEINDEX5 =
 {
+"classtensors_1_1SFR3.html#acca1e87e47f8481d95c9d91c565592c0":[8,2,31,2],
+"classtensors_1_1SFR3.html#ad601af34128fe2f201b84d545ec62085":[8,2,31,25],
+"classtensors_1_1SFR3.html#ad7a9269dd911aac80039d748ddb5a2fa":[8,2,31,23],
+"classtensors_1_1SFR3.html#adb290a80e821af049c2c47f59f21c8c6":[8,2,31,19],
+"classtensors_1_1SFR3.html#ae07f7930f92d3591c93e2381cd5be285":[8,2,31,17],
 "classtensors_1_1SFR3.html#ae10cb5f4810b7a1b8cae32efac3baa85":[8,2,31,18],
 "classtensors_1_1SFR3.html#aea815b0c6c23fc48a11ee0404b782c7a":[8,2,31,12],
 "classtensors_1_1SFR3.html#af5e33e40178eb2202be20050a46d1f67":[8,2,31,4],
@@ -106,15 +111,15 @@ var NAVTREEINDEX5 =
 "classtensors_1_1SFR3BatchView.html#af03a5ff6f37190fde013eb20d78001fa":[8,2,33,3],
 "classtensors_1_1SFR3BatchView.html#afb3bc31ec635dac08eeddd13906f5c07":[8,2,33,42],
 "classtensors_1_1SR2.html":[8,2,34],
-"classtensors_1_1SR2.html#a042a89040d090126783d2a0c774535c3":[8,2,34,36],
+"classtensors_1_1SR2.html#a042a89040d090126783d2a0c774535c3":[8,2,34,35],
 "classtensors_1_1SR2.html#a20863ede217d8ac65f26a84b118e9841":[8,2,34,27],
 "classtensors_1_1SR2.html#a2b4f4684e1321c4c7015ec5dac09c82e":[8,2,34,16],
 "classtensors_1_1SR2.html#a35536134a6ceb1e866faf188992e9c9f":[8,2,34,29],
+"classtensors_1_1SR2.html#a3de4f960605091b71aa501d96171b3c1":[8,2,34,36],
 "classtensors_1_1SR2.html#a3edaf99b573ed8b27c1ae252f6987f25":[8,2,34,14],
 "classtensors_1_1SR2.html#a4054fc2ef35ab65f8a663804985d3a84":[8,2,34,15],
 "classtensors_1_1SR2.html#a43080b242de156a5409d4b58fc7d0c9c":[8,2,34,34],
 "classtensors_1_1SR2.html#a4f23ac09ae87619a0f06e9b932a84ecd":[8,2,34,24],
-"classtensors_1_1SR2.html#a4fae821ed59cde7cab083dde1bdcd8c7":[8,2,34,35],
 "classtensors_1_1SR2.html#a4fb6609bd2f3071aa70e131ded737500":[8,2,34,2],
 "classtensors_1_1SR2.html#a5eba84d267f52548d5d5ceff6f0fc28f":[8,2,34,28],
 "classtensors_1_1SR2.html#a6375bc8532483f0608943ba214aea4fc":[8,2,34,21],
@@ -244,10 +249,5 @@ var NAVTREEINDEX5 =
 "classtensors_1_1SR2BatchView.html#af03a5ff6f37190fde013eb20d78001fa":[8,2,36,3],
 "classtensors_1_1SR2BatchView.html#af2862d83e24103538424042907a0cdec":[8,2,36,47],
 "classtensors_1_1SR2BatchView.html#afb3bc31ec635dac08eeddd13906f5c07":[8,2,36,42],
-"classtensors_1_1SSFR5.html":[8,2,37],
-"classtensors_1_1SSFR5.html#a0c4a9463f29a5f3d0951ccf73f63df0b":[8,2,37,25],
-"classtensors_1_1SSFR5.html#a17c6d437834c553e1bb04cd208481612":[8,2,37,18],
-"classtensors_1_1SSFR5.html#a28effc46e0fde18850f68b8aaeead3b3":[8,2,37,2],
-"classtensors_1_1SSFR5.html#a2e6bc6116432bcb85f0d62ae6c994fe8":[8,2,37,5],
-"classtensors_1_1SSFR5.html#a35536134a6ceb1e866faf188992e9c9f":[8,2,37,29]
+"classtensors_1_1SSFR5.html":[8,2,37]
 };

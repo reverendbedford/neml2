@@ -1,6 +1,5 @@
 var NAVTREEINDEX4 =
 {
-"classneml2_1_1TotalStrain.html#af5600a36813e455aefee72bec1d574fb":[7,0,136,1],
 "classneml2_1_1Transformable.html":[7,0,137],
 "classneml2_1_1Transformable.html#aace864da3c19badf28c3ae1390bfbb99":[7,0,137,1],
 "classneml2_1_1Transformable.html#abf90d5d78122068de834c6da6257b524":[7,0,137,0],
@@ -249,5 +248,6 @@ var NAVTREEINDEX4 =
 "python-package.html":[2,2],
 "python/annotated.html":[8],
 "solid-mechanics.html":[6,0],
-"structneml2_1_1DependencyResolver_1_1Item.html":[7,0,15,0]
+"structneml2_1_1DependencyResolver_1_1Item.html":[7,0,15,0],
+"structneml2_1_1DependencyResolver_1_1Item.html#a018c1f77300f359f81d16a37794750e4":[7,0,15,0,4]
 };
