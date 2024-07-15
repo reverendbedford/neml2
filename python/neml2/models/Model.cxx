@@ -50,8 +50,59 @@ def_Model(py::module_ & m)
           "output_axis",
           [](const Model & self) { return &self.output_axis(); },
           py::return_value_policy::reference)
-      .def("value", [](Model & self, const LabeledVector & x) { return self.value(x); })
-      .def("value_and_dvalue", py::overload_cast<const LabeledVector &>(&Model::value_and_dvalue))
+      .def("value",
+           [](Model & self, py::object x)
+           {
+             // Check if it is a torch.Tensor, if it is, we can wrap it as a LabeledVector since we
+             // know a LabeledVector has base_dim == 1.
+             if (THPVariable_Check(x.ptr()))
+             {
+               auto & x_torch = THPVariable_Unpack(x.ptr());
+               auto y = self.value(LabeledVector(x_torch, x_torch.dim() - 1, {&self.input_axis()}));
+               return py::cast(torch::Tensor(y));
+             }
+
+             // Check if it is a neml2.Tensor
+             try
+             {
+               auto y = self.value(LabeledVector(x.cast<Tensor>(), {&self.input_axis()}));
+               return py::cast(y.tensor());
+             }
+             catch (py::cast_error &)
+             {
+             }
+
+             // Otherwise, hope it is a LabeledVector
+             return py::cast(self.value(x.cast<LabeledVector>()));
+           })
+      .def("value_and_dvalue",
+           [](Model & self, py::object x)
+           {
+             // Check if it is a torch.Tensor, if it is, we can wrap it as a LabeledVector since we
+             // know a LabeledVector has base_dim == 1.
+             if (THPVariable_Check(x.ptr()))
+             {
+               auto & x_torch = THPVariable_Unpack(x.ptr());
+               auto [y, dy_dx] = self.value_and_dvalue(
+                   LabeledVector(x_torch, x_torch.dim() - 1, {&self.input_axis()}));
+               return py::make_tuple(torch::Tensor(y), torch::Tensor(dy_dx));
+             }
+
+             // Check if it is a neml2.Tensor
+             try
+             {
+               auto [y, dy_dx] =
+                   self.value_and_dvalue(LabeledVector(x.cast<Tensor>(), {&self.input_axis()}));
+               return py::make_tuple(y.tensor(), dy_dx.tensor());
+             }
+             catch (py::cast_error &)
+             {
+             }
+
+             // Otherwise, hope it is a LabeledVector
+             auto [y, dy_dx] = self.value_and_dvalue(x.cast<LabeledVector>());
+             return py::make_tuple(y, dy_dx);
+           })
       .def("named_parameters",
            [](Model & self)
            {

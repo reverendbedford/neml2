@@ -26,8 +26,7 @@ import pytest
 from pathlib import Path
 import torch
 import neml2
-from neml2.tensors import Tensor, LabeledVector
-from neml2.tensors import LabeledAxisAccessor as AA
+from neml2.tensors import Tensor, LabeledVector, LabeledMatrix
 
 
 def test_get_model():
@@ -72,12 +71,27 @@ def test_value():
     model.reinit(x.batch.shape)
     x = LabeledVector(x, [model.input_axis()])
 
+    y_correct = torch.tensor(0.9591836144729537, dtype=torch.float64)
+
+    # Evaluate the model using a torch.Tensor
+    y = model.value(x.torch())
+    assert isinstance(y, torch.Tensor)
+    assert y.shape == (5, 2, 1)
+    assert torch.allclose(y, y_correct)
+
+    # Evaluate the model using a neml2.Tensor
+    y = model.value(x.tensor())
+    assert isinstance(y, Tensor)
+    assert y.batch.shape == (5, 2)
+    assert y.base.shape == (1,)
+    assert torch.allclose(y.torch(), y_correct)
+
+    # Evaluate the model using a neml2.LabeledVector
     y = model.value(x)
+    assert isinstance(y, LabeledVector)
     assert y.tensor().batch.shape == (5, 2)
     assert y.tensor().base.shape == (1,)
-    assert torch.allclose(
-        y.torch(), torch.tensor(0.9591836144729537, dtype=torch.float64)
-    )
+    assert torch.allclose(y.torch(), y_correct)
 
 
 def test_value_and_dvalue():
@@ -89,25 +103,48 @@ def test_value_and_dvalue():
     model.reinit(x.batch.shape, 1)
     x = LabeledVector(x, [model.input_axis()])
 
+    y_correct = torch.tensor(0.9591836144729537, dtype=torch.float64)
+    dy_dx_correct = torch.tensor(
+        [
+            -1.7142857313156128,
+            1.7142857313156128,
+            -1.0,
+            -1.0,
+            1.0,
+            0.1428571492433548,
+            1.0,
+            0.1428571492433548,
+        ],
+        dtype=torch.float64,
+    )
+
+    # Evaluate the model using a torch.Tensor
+    y, dy_dx = model.value_and_dvalue(x.torch())
+    assert isinstance(y, torch.Tensor)
+    assert isinstance(dy_dx, torch.Tensor)
+    assert y.shape == (5, 2, 1)
+    assert dy_dx.shape == (5, 2, 1, 8)
+    assert torch.allclose(y, y_correct)
+    assert torch.allclose(dy_dx, dy_dx_correct)
+
+    # Evaluate the model using a neml2.Tensor
+    y, dy_dx = model.value_and_dvalue(x.tensor())
+    assert isinstance(y, Tensor)
+    assert isinstance(dy_dx, Tensor)
+    assert y.batch.shape == (5, 2)
+    assert y.base.shape == (1,)
+    assert dy_dx.batch.shape == (5, 2)
+    assert dy_dx.base.shape == (1, 8)
+    assert torch.allclose(y.torch(), y_correct)
+    assert torch.allclose(dy_dx.torch(), dy_dx_correct)
+
+    # Evaluate the model using a neml2.LabeledVector
     y, dy_dx = model.value_and_dvalue(x)
+    assert isinstance(y, LabeledVector)
+    assert isinstance(dy_dx, LabeledMatrix)
     assert y.tensor().batch.shape == (5, 2)
     assert y.tensor().base.shape == (1,)
-    assert torch.allclose(
-        y.torch(), torch.tensor(0.9591836144729537, dtype=torch.float64)
-    )
-    assert torch.allclose(
-        dy_dx.torch(),
-        torch.tensor(
-            [
-                -1.7142857313156128,
-                1.7142857313156128,
-                -1.0,
-                -1.0,
-                1.0,
-                0.1428571492433548,
-                1.0,
-                0.1428571492433548,
-            ],
-            dtype=torch.float64,
-        ),
-    )
+    assert dy_dx.tensor().batch.shape == (5, 2)
+    assert dy_dx.tensor().base.shape == (1, 8)
+    assert torch.allclose(y.torch(), y_correct)
+    assert torch.allclose(dy_dx.torch(), dy_dx_correct)
