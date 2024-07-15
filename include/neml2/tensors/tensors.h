@@ -55,7 +55,7 @@ namespace neml2
 // Enum for tensor type introspection
 enum class TensorType : int8_t
 {
-  FOR_ALL_TensorBASE_COMMA(_tensor_type_enum),
+  FOR_ALL_TENSORBASE_COMMA(_tensor_type_enum),
   kUknown
 };
 
@@ -72,7 +72,7 @@ struct TensorTypeEnum
   {                                                                                                \
     static constexpr TensorType value = TensorType::k##T;                                          \
   }
-FOR_ALL_TensorBASE(_tensor_type_enum_specialize);
+FOR_ALL_TENSORBASE(_tensor_type_enum_specialize);
 
 // Stringify the tensor type enum
 std::ostream & operator<<(std::ostream & os, const TensorType & t);

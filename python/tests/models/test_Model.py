@@ -26,13 +26,32 @@ import pytest
 from pathlib import Path
 import torch
 import neml2
-from neml2.tensors import Tensor, LabeledVector, LabeledMatrix
+from neml2.tensors import Tensor, LabeledVector, LabeledMatrix, TensorType
 
 
 def test_get_model():
     pwd = Path(__file__).parent
     neml2.load_input(pwd / "test_Model.i")
     neml2.get_model("model")
+
+
+def test_input_type():
+    pwd = Path(__file__).parent
+    neml2.load_input(pwd / "test_training.i")
+    model = neml2.get_model("model")
+    assert model.input_type("forces/E") == TensorType.SR2
+    assert model.input_type("forces/t") == TensorType.Scalar
+    assert model.input_type("old_forces/E") == TensorType.SR2
+    assert model.input_type("old_forces/t") == TensorType.Scalar
+    assert model.input_type("state/S") == TensorType.SR2
+    assert model.input_type("old_state/S") == TensorType.SR2
+
+
+def test_output_type():
+    pwd = Path(__file__).parent
+    neml2.load_input(pwd / "test_training.i")
+    model = neml2.get_model("model")
+    assert model.output_type("state/S") == TensorType.SR2
 
 
 def test_value():

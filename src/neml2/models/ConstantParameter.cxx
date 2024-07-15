@@ -64,6 +64,6 @@ ConstantParameter<T>::set_value(bool out, bool dout_din, bool d2out_din2)
 
 #define CONSTANTPARAMETER_REGISTER(T)                                                              \
   register_NEML2_object_alias(T##ConstantParameter, #T "ConstantParameter")
-FOR_ALL_LogicalTensor(CONSTANTPARAMETER_REGISTER);
+FOR_ALL_LOGICALTENSOR(CONSTANTPARAMETER_REGISTER);
 
 } // namespace neml2

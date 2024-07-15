@@ -27,7 +27,7 @@
 namespace neml2
 {
 #define ONESLogicalTensor_REGISTER(T) register_NEML2_object_alias(Ones##T, "Ones" #T)
-FOR_ALL_LogicalTensor(ONESLogicalTensor_REGISTER);
+FOR_ALL_LOGICALTENSOR(ONESLogicalTensor_REGISTER);
 
 template <typename T>
 OptionSet
@@ -54,5 +54,5 @@ OnesLogicalTensor<T>::OnesLogicalTensor(const OptionSet & options)
 }
 
 #define ONESLogicalTensor_INSTANTIATE_LogicalTensor(T) template class OnesLogicalTensor<T>
-FOR_ALL_LogicalTensor(ONESLogicalTensor_INSTANTIATE_LogicalTensor);
+FOR_ALL_LOGICALTENSOR(ONESLogicalTensor_INSTANTIATE_LogicalTensor);
 } // namespace neml2

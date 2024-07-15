@@ -160,7 +160,7 @@ def_BatchView(py::module_ & m, const std::string & name)
       .def("__setitem__",                                                                          \
            [](BatchView<Derived> * self, at::indexing::TensorIndex index, const T & src)           \
            { self->index_put({index}, src); })
-  FOR_ALL_TensorBASE(TensorBASE_BATCHVIEW_SETITEM);
+  FOR_ALL_TENSORBASE(TensorBASE_BATCHVIEW_SETITEM);
 }
 
 template <class Derived>
@@ -194,7 +194,7 @@ def_BaseView(py::module_ & m, const std::string & name)
       .def("__setitem__",                                                                          \
            [](BaseView<Derived> * self, at::indexing::TensorIndex index, const T & src)            \
            { self->index_put({index}, src); })
-  FOR_ALL_TensorBASE(TensorBASE_BASEVIEW_SETITEM);
+  FOR_ALL_TENSORBASE(TensorBASE_BASEVIEW_SETITEM);
 }
 
 template <class Derived>

@@ -139,6 +139,11 @@ public:
   /// Get the view of an output variable
   VariableBase * output_view(const VariableName &);
 
+  /// Get the variable type of an input variable
+  TensorType input_type(const VariableName &) const;
+  /// Get the variable type of an output variable
+  TensorType output_type(const VariableName &) const;
+
 protected:
   /// Cache the variable's batch shape
   virtual void cache(TensorShapeRef batch_shape);

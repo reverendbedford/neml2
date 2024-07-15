@@ -27,7 +27,7 @@
 namespace neml2
 {
 #define LINSPACELogicalTensor_REGISTER(T) register_NEML2_object_alias(Linspace##T, "Linspace" #T)
-FOR_ALL_LogicalTensor(LINSPACELogicalTensor_REGISTER);
+FOR_ALL_LOGICALTENSOR(LINSPACELogicalTensor_REGISTER);
 
 template <typename T>
 OptionSet
@@ -72,5 +72,5 @@ LinspaceLogicalTensor<T>::LinspaceLogicalTensor(const OptionSet & options)
 }
 
 #define LINSPACELogicalTensor_INSTANTIATE_LogicalTensor(T) template class LinspaceLogicalTensor<T>
-FOR_ALL_LogicalTensor(LINSPACELogicalTensor_INSTANTIATE_LogicalTensor);
+FOR_ALL_LOGICALTENSOR(LINSPACELogicalTensor_INSTANTIATE_LogicalTensor);
 } // namespace neml2

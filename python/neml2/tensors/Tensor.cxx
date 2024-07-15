@@ -34,7 +34,7 @@ def_Tensor(py::class_<Tensor> & c)
 {
   // All LogicalTensors are convertible to Tensor
 #define Tensor_FROM_LogicalTensor(T) c.def(py::init<T>());
-  FOR_ALL_LogicalTensor(Tensor_FROM_LogicalTensor);
+  FOR_ALL_LOGICALTENSOR(Tensor_FROM_LogicalTensor);
 
   // Static methods
   c.def_static(

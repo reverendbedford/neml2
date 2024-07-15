@@ -50,5 +50,5 @@ public:
 };
 
 #define LOGSPACELogicalTensor_TYPEDEF(T) typedef LogspaceLogicalTensor<T> Logspace##T
-FOR_ALL_LogicalTensor(LOGSPACELogicalTensor_TYPEDEF);
+FOR_ALL_LOGICALTENSOR(LOGSPACELogicalTensor_TYPEDEF);
 } // namespace neml2

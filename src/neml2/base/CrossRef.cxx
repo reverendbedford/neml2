@@ -73,5 +73,5 @@ CrossRef<Tensor>::operator Tensor() const
   }                                                                                                \
   static_assert(true)
 
-FOR_ALL_LogicalTensor(CROSSREF_SPECIALIZE_LogicalTensor_IMPL);
+FOR_ALL_LOGICALTENSOR(CROSSREF_SPECIALIZE_LogicalTensor_IMPL);
 } // namesace neml2

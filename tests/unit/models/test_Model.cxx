@@ -34,14 +34,14 @@ TEST_CASE("Model", "[models]")
   load_model("unit/models/ComposedModel3.i");
   auto & model = Factory::get_object<Model>("Models", "model");
 
-  REQUIRE(model.input_view({"forces", "t"})->type() == TensorType::kScalar);
-  REQUIRE(model.input_view({"forces", "temperature"})->type() == TensorType::kScalar);
-  REQUIRE(model.input_view({"old_forces", "t"})->type() == TensorType::kScalar);
-  REQUIRE(model.input_view({"old_state", "bar"})->type() == TensorType::kScalar);
-  REQUIRE(model.input_view({"old_state", "baz"})->type() == TensorType::kSR2);
-  REQUIRE(model.input_view({"old_state", "foo"})->type() == TensorType::kScalar);
-  REQUIRE(model.input_view({"state", "bar"})->type() == TensorType::kScalar);
-  REQUIRE(model.input_view({"state", "baz"})->type() == TensorType::kSR2);
-  REQUIRE(model.input_view({"state", "foo"})->type() == TensorType::kScalar);
-  REQUIRE(model.output_view({"state", "sum"})->type() == TensorType::kScalar);
+  REQUIRE(model.input_type({"forces", "t"}) == TensorType::kScalar);
+  REQUIRE(model.input_type({"forces", "temperature"}) == TensorType::kScalar);
+  REQUIRE(model.input_type({"old_forces", "t"}) == TensorType::kScalar);
+  REQUIRE(model.input_type({"old_state", "bar"}) == TensorType::kScalar);
+  REQUIRE(model.input_type({"old_state", "baz"}) == TensorType::kSR2);
+  REQUIRE(model.input_type({"old_state", "foo"}) == TensorType::kScalar);
+  REQUIRE(model.input_type({"state", "bar"}) == TensorType::kScalar);
+  REQUIRE(model.input_type({"state", "baz"}) == TensorType::kSR2);
+  REQUIRE(model.input_type({"state", "foo"}) == TensorType::kScalar);
+  REQUIRE(model.output_type({"state", "sum"}) == TensorType::kScalar);
 }

@@ -27,7 +27,7 @@
 namespace neml2
 {
 #define EMPTYLogicalTensor_REGISTER(T) register_NEML2_object_alias(Empty##T, "Empty" #T)
-FOR_ALL_LogicalTensor(EMPTYLogicalTensor_REGISTER);
+FOR_ALL_LOGICALTENSOR(EMPTYLogicalTensor_REGISTER);
 
 template <typename T>
 OptionSet
@@ -55,5 +55,5 @@ EmptyLogicalTensor<T>::EmptyLogicalTensor(const OptionSet & options)
 }
 
 #define EMPTYLogicalTensor_INSTANTIATE_LogicalTensor(T) template class EmptyLogicalTensor<T>
-FOR_ALL_LogicalTensor(EMPTYLogicalTensor_INSTANTIATE_LogicalTensor);
+FOR_ALL_LOGICALTENSOR(EMPTYLogicalTensor_INSTANTIATE_LogicalTensor);
 } // namespace neml2

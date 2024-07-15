@@ -50,5 +50,5 @@ public:
 };
 
 #define LINSPACELogicalTensor_TYPEDEF(T) typedef LinspaceLogicalTensor<T> Linspace##T
-FOR_ALL_LogicalTensor(LINSPACELogicalTensor_TYPEDEF);
+FOR_ALL_LOGICALTENSOR(LINSPACELogicalTensor_TYPEDEF);
 } // namespace neml2

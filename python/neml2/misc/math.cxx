@@ -54,5 +54,5 @@ PYBIND11_MODULE(math, m)
       .def("exp", &math::exp<T>)                                                                   \
       .def("abs", &math::abs<T>)
 
-  FOR_ALL_TensorBASE(MATH_DEF_TensorBASE);
+  FOR_ALL_TENSORBASE(MATH_DEF_TensorBASE);
 }

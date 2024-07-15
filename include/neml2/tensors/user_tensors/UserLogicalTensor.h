@@ -50,5 +50,5 @@ public:
 };
 
 #define USERLogicalTensor_TYPEDEF(T) typedef UserLogicalTensor<T> User##T
-FOR_ALL_LogicalTensor(USERLogicalTensor_TYPEDEF);
+FOR_ALL_LOGICALTENSOR(USERLogicalTensor_TYPEDEF);
 } // namespace neml2

@@ -42,5 +42,5 @@ NonlinearParameter<T>::NonlinearParameter(const OptionSet & options)
 }
 
 #define NONLINEARPARAMETER_INSTANTIATE_LogicalTensor(T) template class NonlinearParameter<T>
-FOR_ALL_LogicalTensor(NONLINEARPARAMETER_INSTANTIATE_LogicalTensor);
+FOR_ALL_LOGICALTENSOR(NONLINEARPARAMETER_INSTANTIATE_LogicalTensor);
 } // namespace neml2

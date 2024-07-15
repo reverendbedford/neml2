@@ -50,5 +50,5 @@ public:
 };
 
 #define FULLLogicalTensor_TYPEDEF(T) typedef FullLogicalTensor<T> Full##T
-FOR_ALL_LogicalTensor(FULLLogicalTensor_TYPEDEF);
+FOR_ALL_LOGICALTENSOR(FULLLogicalTensor_TYPEDEF);
 } // namespace neml2

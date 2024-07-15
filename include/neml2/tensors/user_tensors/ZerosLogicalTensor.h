@@ -50,5 +50,5 @@ public:
 };
 
 #define ZEROSLogicalTensor_TYPEDEF(T) typedef ZerosLogicalTensor<T> Zeros##T
-FOR_ALL_LogicalTensor(ZEROSLogicalTensor_TYPEDEF);
+FOR_ALL_LOGICALTENSOR(ZEROSLogicalTensor_TYPEDEF);
 } // namespace neml2

@@ -27,7 +27,7 @@
 namespace neml2
 {
 #define ZEROSLogicalTensor_REGISTER(T) register_NEML2_object_alias(Zeros##T, "Zeros" #T)
-FOR_ALL_LogicalTensor(ZEROSLogicalTensor_REGISTER);
+FOR_ALL_LOGICALTENSOR(ZEROSLogicalTensor_REGISTER);
 
 template <typename T>
 OptionSet
@@ -54,5 +54,5 @@ ZerosLogicalTensor<T>::ZerosLogicalTensor(const OptionSet & options)
 }
 
 #define ZEROSLogicalTensor_INSTANTIATE_LogicalTensor(T) template class ZerosLogicalTensor<T>
-FOR_ALL_LogicalTensor(ZEROSLogicalTensor_INSTANTIATE_LogicalTensor);
+FOR_ALL_LOGICALTENSOR(ZEROSLogicalTensor_INSTANTIATE_LogicalTensor);
 } // namespace neml2

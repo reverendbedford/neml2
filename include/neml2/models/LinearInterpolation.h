@@ -121,5 +121,5 @@ LinearInterpolation<T>::mask(const T2 & in, const torch::Tensor & m) const
 
 #define LINEARINTERPOLATION_TYPEDEF_LogicalTensor(T)                                               \
   typedef LinearInterpolation<T> T##LinearInterpolation
-FOR_ALL_LogicalTensor(LINEARINTERPOLATION_TYPEDEF_LogicalTensor);
+FOR_ALL_LOGICALTENSOR(LINEARINTERPOLATION_TYPEDEF_LogicalTensor);
 } // namespace neml2

@@ -132,5 +132,5 @@ CrossRef<Tensor>::operator Tensor() const;
   template <>                                                                                      \
   CrossRef<T>::operator T() const
 
-FOR_ALL_LogicalTensor(CROSSREF_SPECIALIZE_LogicalTensor);
+FOR_ALL_LOGICALTENSOR(CROSSREF_SPECIALIZE_LogicalTensor);
 } // namespace neml2

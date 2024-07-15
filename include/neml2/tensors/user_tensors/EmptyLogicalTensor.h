@@ -50,5 +50,5 @@ public:
 };
 
 #define EMPTYLogicalTensor_TYPEDEF(T) typedef EmptyLogicalTensor<T> Empty##T
-FOR_ALL_LogicalTensor(EMPTYLogicalTensor_TYPEDEF);
+FOR_ALL_LOGICALTENSOR(EMPTYLogicalTensor_TYPEDEF);
 } // namespace neml2

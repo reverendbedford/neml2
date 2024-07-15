@@ -51,5 +51,5 @@ protected:
 };
 
 #define COPYVARIABLE_TYPEDEF_LogicalTensor(T) typedef CopyVariable<T> Copy##T
-FOR_ALL_LogicalTensor(COPYVARIABLE_TYPEDEF_LogicalTensor);
+FOR_ALL_LOGICALTENSOR(COPYVARIABLE_TYPEDEF_LogicalTensor);
 } // namespace neml2

@@ -50,6 +50,8 @@ def_Model(py::module_ & m)
           "output_axis",
           [](const Model & self) { return &self.output_axis(); },
           py::return_value_policy::reference)
+      .def("input_type", &Model::input_type, py::arg("variable"))
+      .def("output_type", &Model::output_type, py::arg("variable"))
       .def("value",
            [](Model & self, py::object x)
            {

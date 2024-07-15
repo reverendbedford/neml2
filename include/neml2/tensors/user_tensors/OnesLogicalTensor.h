@@ -50,5 +50,5 @@ public:
 };
 
 #define ONESLogicalTensor_TYPEDEF(T) typedef OnesLogicalTensor<T> Ones##T
-FOR_ALL_LogicalTensor(ONESLogicalTensor_TYPEDEF);
+FOR_ALL_LOGICALTENSOR(ONESLogicalTensor_TYPEDEF);
 } // namespace neml2

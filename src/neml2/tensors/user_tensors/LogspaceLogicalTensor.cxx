@@ -27,7 +27,7 @@
 namespace neml2
 {
 #define LOGSPACELogicalTensor_REGISTER(T) register_NEML2_object_alias(Logspace##T, "Logspace" #T)
-FOR_ALL_LogicalTensor(LOGSPACELogicalTensor_REGISTER);
+FOR_ALL_LOGICALTENSOR(LOGSPACELogicalTensor_REGISTER);
 
 template <typename T>
 OptionSet
@@ -76,5 +76,5 @@ LogspaceLogicalTensor<T>::LogspaceLogicalTensor(const OptionSet & options)
 }
 
 #define LOGSPACELogicalTensor_INSTANTIATE_LogicalTensor(T) template class LogspaceLogicalTensor<T>
-FOR_ALL_LogicalTensor(LOGSPACELogicalTensor_INSTANTIATE_LogicalTensor);
+FOR_ALL_LOGICALTENSOR(LOGSPACELogicalTensor_INSTANTIATE_LogicalTensor);
 } // namespace neml2

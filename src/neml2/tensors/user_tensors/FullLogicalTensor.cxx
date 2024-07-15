@@ -27,7 +27,7 @@
 namespace neml2
 {
 #define FULLLogicalTensor_REGISTER(T) register_NEML2_object_alias(Full##T, "Full" #T)
-FOR_ALL_LogicalTensor(FULLLogicalTensor_REGISTER);
+FOR_ALL_LOGICALTENSOR(FULLLogicalTensor_REGISTER);
 
 template <typename T>
 OptionSet
@@ -60,5 +60,5 @@ FullLogicalTensor<T>::FullLogicalTensor(const OptionSet & options)
 }
 
 #define FULLLogicalTensor_INSTANTIATE_LogicalTensor(T) template class FullLogicalTensor<T>
-FOR_ALL_LogicalTensor(FULLLogicalTensor_INSTANTIATE_LogicalTensor);
+FOR_ALL_LOGICALTENSOR(FULLLogicalTensor_INSTANTIATE_LogicalTensor);
 } // namespace neml2

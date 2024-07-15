@@ -47,6 +47,6 @@ protected:
 };
 
 #define CONSTANTPARAMETER_TYPEDEF_LogicalTensor(T) typedef ConstantParameter<T> T##ConstantParameter
-FOR_ALL_LogicalTensor(CONSTANTPARAMETER_TYPEDEF_LogicalTensor);
+FOR_ALL_LOGICALTENSOR(CONSTANTPARAMETER_TYPEDEF_LogicalTensor);
 
 } // namespace neml2

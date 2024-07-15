@@ -65,6 +65,22 @@ VariableStore::output_view(const VariableName & name)
   return _output_views.query_value(name);
 }
 
+TensorType
+VariableStore::input_type(const VariableName & name) const
+{
+  auto var_ptr = _input_views.query_value(name);
+  neml_assert(var_ptr, "Input variable ", name, " does not exist.");
+  return var_ptr->type();
+}
+
+TensorType
+VariableStore::output_type(const VariableName & name) const
+{
+  auto var_ptr = _output_views.query_value(name);
+  neml_assert(var_ptr, "Output variable ", name, " does not exist.");
+  return var_ptr->type();
+}
+
 void
 VariableStore::cache(TensorShapeRef batch_shape)
 {
