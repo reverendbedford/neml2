@@ -1,5 +1,8 @@
 var NAVTREEINDEX4 =
 {
+"classneml2_1_1TotalStrain.html#a63c501b03adb7fbe45b9c3581ddadb93":[7,0,136,0],
+"classneml2_1_1TotalStrain.html#a8b0a6b9e49b8415503d75d386e467ee0":[7,0,136,5],
+"classneml2_1_1TotalStrain.html#abb3bca2ba6b81fe9b5bdb9e7d5227631":[7,0,136,3],
 "classneml2_1_1TotalStrain.html#af5600a36813e455aefee72bec1d574fb":[7,0,136,1],
 "classneml2_1_1Transformable.html":[7,0,137],
 "classneml2_1_1Transformable.html#aace864da3c19badf28c3ae1390bfbb99":[7,0,137,1],
@@ -246,8 +249,5 @@ var NAVTREEINDEX4 =
 "index.html#autotoc_md3":[0,0,1],
 "input-file.html":[2,0],
 "install.html":[1],
-"naming-conventions.html":[3,0],
-"pages.html":[],
-"python-package.html":[2,2],
-"python/annotated.html":[8]
+"naming-conventions.html":[3,0]
 };

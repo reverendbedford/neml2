@@ -1,7 +1,8 @@
 var annotated =
 [
     [ "base", "namespacebase.html", [
-      [ "Model", "classbase_1_1Model.html", "classbase_1_1Model" ]
+      [ "Model", "classbase_1_1Model.html", "classbase_1_1Model" ],
+      [ "TensorValue", "classbase_1_1TensorValue.html", "classbase_1_1TensorValue" ]
     ] ],
     [ "tensors", "namespacetensors.html", [
       [ "LabeledAxis", "classtensors_1_1LabeledAxis.html", "classtensors_1_1LabeledAxis" ],

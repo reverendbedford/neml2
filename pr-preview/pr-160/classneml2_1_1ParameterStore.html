@@ -241,10 +241,15 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:abc82f8ba66323ff70034ff7dd080e2b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6750577b57d440ebbb40fab5b4076a52" id="r_a6750577b57d440ebbb40fab5b4076a52"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Storage.html">Storage</a>&lt; std::string, <a class="el" href="classneml2_1_1TensorValueBase.html">TensorValueBase</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6750577b57d440ebbb40fab5b4076a52">named_parameters</a> ()</td></tr>
 <tr class="separator:a6750577b57d440ebbb40fab5b4076a52"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac9d1e2479ec0f6bbae1cca7d71848d27" id="r_ac9d1e2479ec0f6bbae1cca7d71848d27"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;T&gt;, T&gt;&gt;&gt; </td></tr>
-<tr class="memitem:ac9d1e2479ec0f6bbae1cca7d71848d27"><td class="memTemplItemLeft" align="right" valign="top">T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ac9d1e2479ec0f6bbae1cca7d71848d27">get_parameter</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;name)</td></tr>
-<tr class="memdesc:ac9d1e2479ec0f6bbae1cca7d71848d27"><td class="mdescLeft">&#160;</td><td class="mdescRight">}@  <br /></td></tr>
-<tr class="separator:ac9d1e2479ec0f6bbae1cca7d71848d27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1fdcb02ea1c3d6e1828424ccd400fa36" id="r_a1fdcb02ea1c3d6e1828424ccd400fa36"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1fdcb02ea1c3d6e1828424ccd400fa36">set_parameter</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;)</td></tr>
+<tr class="memdesc:a1fdcb02ea1c3d6e1828424ccd400fa36"><td class="mdescLeft">&#160;</td><td class="mdescRight">}@  <br /></td></tr>
+<tr class="separator:a1fdcb02ea1c3d6e1828424ccd400fa36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d96d9f92a985de65651abf452cb49a2" id="r_a2d96d9f92a985de65651abf452cb49a2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2d96d9f92a985de65651abf452cb49a2">set_parameters</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> std::map&lt; std::string, <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &gt; &amp;)</td></tr>
+<tr class="memdesc:a2d96d9f92a985de65651abf452cb49a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set values for parameters.  <br /></td></tr>
+<tr class="separator:a2d96d9f92a985de65651abf452cb49a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c1f0318b14b2c89f483e10161c3c10c" id="r_a8c1f0318b14b2c89f483e10161c3c10c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1TensorValueBase.html">TensorValueBase</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8c1f0318b14b2c89f483e10161c3c10c">get_parameter</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;name)</td></tr>
+<tr class="memdesc:a8c1f0318b14b2c89f483e10161c3c10c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a writable reference of a parameter.  <br /></td></tr>
+<tr class="separator:a8c1f0318b14b2c89f483e10161c3c10c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a751fe1ea5451edbaa7daf11eeade2dc7" id="r_a751fe1ea5451edbaa7daf11eeade2dc7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a751fe1ea5451edbaa7daf11eeade2dc7">has_nl_param</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
 <tr class="memdesc:a751fe1ea5451edbaa7daf11eeade2dc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether this parameter store has any nonlinear parameter.  <br /></td></tr>
 <tr class="separator:a751fe1ea5451edbaa7daf11eeade2dc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -388,16 +393,14 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T , <a
 
 </div>
 </div>
-<a id="ac9d1e2479ec0f6bbae1cca7d71848d27" name="ac9d1e2479ec0f6bbae1cca7d71848d27"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac9d1e2479ec0f6bbae1cca7d71848d27">&#9670;&#160;</a></span>get_parameter()</h2>
+<a id="a8c1f0318b14b2c89f483e10161c3c10c" name="a8c1f0318b14b2c89f483e10161c3c10c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c1f0318b14b2c89f483e10161c3c10c">&#9670;&#160;</a></span>get_parameter()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T , <a class="el" href="classneml2_1_1CrossRef.html">typename</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">T &amp; get_parameter </td>
+          <td class="memname"><a class="el" href="classneml2_1_1TensorValueBase.html">TensorValueBase</a> &amp; get_parameter </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em></span></td><td>)</td>
           <td></td>
@@ -405,8 +408,7 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T , <a
       </table>
 </div><div class="memdoc">
 
-<p>}@ </p>
-<p>Get a writable reference of a parameter </p>
+<p>Get a writable reference of a parameter. </p>
 
 </div>
 </div>
@@ -588,6 +590,49 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T , <a
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a1fdcb02ea1c3d6e1828424ccd400fa36" name="a1fdcb02ea1c3d6e1828424ccd400fa36"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1fdcb02ea1c3d6e1828424ccd400fa36">&#9670;&#160;</a></span>set_parameter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">void</a> set_parameter </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>value</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>}@ </p>
+<p>Set the value for a parameter </p>
+
+</div>
+</div>
+<a id="a2d96d9f92a985de65651abf452cb49a2" name="a2d96d9f92a985de65651abf452cb49a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d96d9f92a985de65651abf452cb49a2">&#9670;&#160;</a></span>set_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">void</a> set_parameters </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::map&lt; std::string, <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>param_values</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set values for parameters. </p>
 
 </div>
 </div>

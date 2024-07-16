@@ -1,5 +1,8 @@
 var NAVTREEINDEX5 =
 {
+"pages.html":[],
+"python-package.html":[2,2],
+"python/annotated.html":[8],
 "solid-mechanics.html":[6,0],
 "structneml2_1_1DependencyResolver_1_1Item.html":[7,0,15,0],
 "structneml2_1_1DependencyResolver_1_1Item.html#a018c1f77300f359f81d16a37794750e4":[7,0,15,0,4],

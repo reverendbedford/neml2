@@ -235,10 +235,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a2d8918197af1017ee852aec5b073d18b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78126926df4e0803472743590d0d0c07" id="r_a78126926df4e0803472743590d0d0c07"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Storage.html">Storage</a>&lt; std::string, <a class="el" href="classneml2_1_1TensorValueBase.html">TensorValueBase</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a78126926df4e0803472743590d0d0c07">named_buffers</a> ()</td></tr>
 <tr class="separator:a78126926df4e0803472743590d0d0c07"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90d9e45426181dfb84c53ad7b94db6cb" id="r_a90d9e45426181dfb84c53ad7b94db6cb"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;T&gt;, T&gt;&gt;&gt; </td></tr>
-<tr class="memitem:a90d9e45426181dfb84c53ad7b94db6cb"><td class="memTemplItemLeft" align="right" valign="top">T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a90d9e45426181dfb84c53ad7b94db6cb">get_buffer</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;name)</td></tr>
-<tr class="memdesc:a90d9e45426181dfb84c53ad7b94db6cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">}@  <br /></td></tr>
-<tr class="separator:a90d9e45426181dfb84c53ad7b94db6cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc4b2c74e4e1d6c046206f03b8527b4c" id="r_afc4b2c74e4e1d6c046206f03b8527b4c"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;T&gt;, T&gt;&gt;&gt; </td></tr>
+<tr class="memitem:afc4b2c74e4e1d6c046206f03b8527b4c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1TensorValue.html">TensorValue</a>&lt; T &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#afc4b2c74e4e1d6c046206f03b8527b4c">get_buffer</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;name)</td></tr>
+<tr class="memdesc:afc4b2c74e4e1d6c046206f03b8527b4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">}@  <br /></td></tr>
+<tr class="separator:afc4b2c74e4e1d6c046206f03b8527b4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0706a7bfaf65ab80f363db3abba749b2" id="r_a0706a7bfaf65ab80f363db3abba749b2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0706a7bfaf65ab80f363db3abba749b2">send_buffers_to</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> torch::TensorOptions &amp;options)</td></tr>
 <tr class="memdesc:a0706a7bfaf65ab80f363db3abba749b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send all buffers to <code>options</code>.  <br /></td></tr>
 <tr class="separator:a0706a7bfaf65ab80f363db3abba749b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -370,8 +370,8 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T , <a
 
 </div>
 </div>
-<a id="a90d9e45426181dfb84c53ad7b94db6cb" name="a90d9e45426181dfb84c53ad7b94db6cb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a90d9e45426181dfb84c53ad7b94db6cb">&#9670;&#160;</a></span>get_buffer()</h2>
+<a id="afc4b2c74e4e1d6c046206f03b8527b4c" name="afc4b2c74e4e1d6c046206f03b8527b4c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc4b2c74e4e1d6c046206f03b8527b4c">&#9670;&#160;</a></span>get_buffer()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -379,7 +379,7 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T , <a
 template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T , <a class="el" href="classneml2_1_1CrossRef.html">typename</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">T &amp; get_buffer </td>
+          <td class="memname"><a class="el" href="classneml2_1_1TensorValue.html">TensorValue</a>&lt; T &gt; &amp; get_buffer </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em></span></td><td>)</td>
           <td></td>
