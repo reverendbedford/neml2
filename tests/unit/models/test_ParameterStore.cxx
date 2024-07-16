@@ -51,16 +51,16 @@ TEST_CASE("ParameterStore", "[models]")
     SECTION("get_parameter")
     {
       auto & params = model.named_parameters();
-      auto & E = model.get_parameter<Scalar>("E");
-      auto & nu = model.get_parameter<Scalar>("nu");
+      auto & E = model.get_parameter("E");
+      auto & nu = model.get_parameter("nu");
 
-      REQUIRE(E.batch_sizes() == TensorShape());
-      REQUIRE(nu.batch_sizes() == TensorShape());
+      REQUIRE(Tensor(E).batch_sizes() == TensorShape());
+      REQUIRE(Tensor(nu).batch_sizes() == TensorShape());
 
       // Modifying the individual parameter references should affect values stored in the parameter
       // dictionary.
-      E = E.batch_expand_copy({1, 2});
-      nu = nu.batch_expand_copy({5, 1});
+      E = Scalar::full({1, 2}, 1.0);
+      nu = Scalar::full({5, 1}, 0.3);
       REQUIRE(Tensor(params["E"]).batch_sizes() == TensorShape{1, 2});
       REQUIRE(Tensor(params["nu"]).batch_sizes() == TensorShape{5, 1});
 
@@ -75,8 +75,8 @@ TEST_CASE("ParameterStore", "[models]")
   SECTION("jacrev")
   {
     // Make sure torch AD can be used to get parameter derivatives
-    auto & E = model.get_parameter<Scalar>("E");
-    auto & nu = model.get_parameter<Scalar>("nu");
+    auto & E = model.get_parameter("E");
+    auto & nu = model.get_parameter("nu");
 
     // First prepare some arbitrary input
     auto Ee = SR2::fill(0.09, 0.04, -0.02);
@@ -95,8 +95,8 @@ TEST_CASE("ParameterStore", "[models]")
 
     SECTION("Jacobians are correct")
     {
-      E = E.batch_expand_copy(batch_shape);
-      nu = nu.batch_expand_copy(batch_shape);
+      E = Scalar::full(batch_shape, 1.0);
+      nu = Scalar::full(batch_shape, 0.3);
 
       E.requires_grad_(true);
       nu.requires_grad_(true);
@@ -116,7 +116,7 @@ TEST_CASE("ParameterStore", "[models]")
             auto S = y(VariableName("state", "S"));
             return S;
           },
-          E.clone());
+          Tensor(E).clone());
       const auto dS_dnu_FD = finite_differencing_derivative(
           [&](const Tensor & nup)
           {
@@ -125,7 +125,7 @@ TEST_CASE("ParameterStore", "[models]")
             auto S = y(VariableName("state", "S"));
             return S;
           },
-          nu.clone());
+          Tensor(nu).clone());
       REQUIRE(torch::allclose(dS_dnu_exact, dS_dnu_FD));
     }
   }

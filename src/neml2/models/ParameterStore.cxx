@@ -41,7 +41,31 @@ ParameterStore::send_parameters_to(const torch::TensorOptions & options)
   neml_assert(_object->host() == _object, "This method should only be called on the host model.");
 
   for (auto && [name, param] : _param_values)
-    param.to(options);
+    param.to_(options);
+}
+
+void
+ParameterStore::set_parameter(const std::string & name, const Tensor & value)
+{
+  neml_assert(_object->host() == _object, "This method should only be called on the host model.");
+
+  neml_assert(named_parameters().has_key(name), "There is no parameter named ", name);
+  named_parameters()[name] = value;
+}
+
+void
+ParameterStore::set_parameters(const std::map<std::string, Tensor> & param_values)
+{
+  for (auto & [name, value] : param_values)
+    set_parameter(name, value);
+}
+
+TensorValueBase &
+ParameterStore::get_parameter(const std::string & name)
+{
+  auto base_ptr = _param_values.query_value(name);
+  neml_assert(base_ptr, "Parameter named ", name, " does not exist.");
+  return *base_ptr;
 }
 
 const VariableBase *

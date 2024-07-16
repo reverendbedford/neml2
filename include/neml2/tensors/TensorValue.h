@@ -24,7 +24,6 @@
 #pragma once
 
 #include "neml2/tensors/Tensor.h"
-#include "neml2/misc/parser_utils.h"
 
 namespace neml2
 {
@@ -39,13 +38,16 @@ public:
   virtual ~TensorValueBase() = default;
 
   /// Send the value to the target options
-  virtual void to(const torch::TensorOptions &) = 0;
+  virtual void to_(const torch::TensorOptions &) = 0;
+
+  /// Require grad
+  virtual void requires_grad_(bool req = true) = 0;
 
   /// Convert the parameter value to a Tensor
   virtual operator Tensor() const = 0;
 
-  /// Set the parameter value
-  virtual void set(const Tensor & val) = 0;
+  /// assignment operator
+  virtual void operator=(const Tensor & val) = 0;
 };
 
 /// Concrete definition of tensor value
@@ -55,24 +57,20 @@ class TensorValue : public TensorValueBase
 public:
   TensorValue() = default;
 
-  TensorValue(const T & value)
+  explicit TensorValue(const T & value)
     : _value(value)
   {
   }
 
-  virtual void to(const torch::TensorOptions & options) override { _value = _value.to(options); }
+  virtual void to_(const torch::TensorOptions & options) override { _value = _value.to(options); }
+
+  virtual void requires_grad_(bool req = true) override { _value.requires_grad_(req); }
 
   virtual operator Tensor() const override { return _value; }
 
-  template <typename T2 = T, typename = typename std::enable_if_t<!std::is_same_v<T2, Tensor>>>
-  operator T() const
-  {
-    return _value;
-  }
+  virtual void operator=(const Tensor & val) override { _value = T(val); }
 
   T & value() { return _value; }
-
-  virtual void set(const Tensor & val) override { _value = val; }
 
 private:
   T _value;

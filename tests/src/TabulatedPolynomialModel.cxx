@@ -24,8 +24,8 @@
 
 #include "TabulatedPolynomialModel.h"
 
-using namespace neml2;
-
+namespace neml2
+{
 register_NEML2_object(TabulatedPolynomialModel);
 
 OptionSet
@@ -122,4 +122,5 @@ TabulatedPolynomialModel::set_value(bool out, bool dout_din, bool d2out_din2)
     _s1_dot = Scalar(y.index({torch::indexing::Ellipsis, 1}));
     _s2_dot = Scalar(y.index({torch::indexing::Ellipsis, 2}));
   }
+}
 }

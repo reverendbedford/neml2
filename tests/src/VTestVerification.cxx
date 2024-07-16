@@ -24,6 +24,7 @@
 
 #include "VTestVerification.h"
 #include "neml2/drivers/TransientDriver.h"
+#include "neml2/misc/parser_utils.h"
 
 namespace neml2
 {

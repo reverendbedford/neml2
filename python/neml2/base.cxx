@@ -38,12 +38,9 @@ PYBIND11_MODULE(base, m)
 
   py::module_::import("neml2.tensors");
 
-  // Define neml2.base.Model
+  // Definitions
   auto model_cls = py::class_<Model, std::shared_ptr<Model>>(m, "Model");
-
-  // Expose std::filesystem::path
-  // py::class_<std::filesystem::path>(m, "Path").def(py::init<std::string>());
-  // py::implicitly_convertible<std::string, std::filesystem::path>();
+  auto tensor_value_cls = py::class_<TensorValueBase>(m, "TensorValue");
 
   // Factory methods
   m.def("load_input", &load_input, py::arg("path"), py::arg("cli_args") = "");
@@ -67,7 +64,20 @@ PYBIND11_MODULE(base, m)
         py::arg("enable_AD") = true,
         py::return_value_policy::reference);
 
-  // neml2.base.Model methods
+  // neml2.base.TensorValue
+  tensor_value_cls
+      .def("torch", [](const TensorValueBase & self) { return torch::Tensor(Tensor(self)); })
+      .def("tensor", [](const TensorValueBase & self) { return Tensor(self); })
+      .def_property_readonly("requires_grad",
+                             [](const TensorValueBase & self)
+                             { return Tensor(self).requires_grad(); })
+      .def("requires_grad_",
+           [](TensorValueBase & self, bool req) { return self.requires_grad_(req); })
+      .def("set_", [](TensorValueBase & self, const Tensor & val) { self = val; })
+      .def_property_readonly("grad",
+                             [](const TensorValueBase & self) { return Tensor(self).grad(); });
+
+  // neml2.base.Model
   model_cls.def_property_readonly("is_AD_enabled", &Model::is_AD_enabled)
       .def_property_readonly("is_AD_disabled", &Model::is_AD_disabled)
       .def("reinit",
@@ -140,20 +150,27 @@ PYBIND11_MODULE(base, m)
              auto [y, dy_dx] = self.value_and_dvalue(x.cast<LabeledVector>());
              return py::make_tuple(y, dy_dx);
            })
-      .def("named_parameters",
-           [](Model & self)
-           {
-             std::map<std::string, Tensor> params;
-             for (auto && [pname, pval] : self.named_parameters())
-               params[utils::stringify(pname)] = Tensor(pval);
-             return params;
-           })
-      .def("named_buffers",
-           [](Model & self)
-           {
-             std::map<std::string, Tensor> buffers;
-             for (auto && [bname, bval] : self.named_buffers())
-               buffers[utils::stringify(bname)] = Tensor(bval);
-             return buffers;
-           });
+      .def(
+          "named_parameters",
+          [](Model & self)
+          {
+            std::map<std::string, TensorValueBase *> params;
+            for (auto && [pname, pval] : self.named_parameters())
+              params[pname] = &pval;
+            return params;
+          },
+          py::return_value_policy::reference)
+      .def(
+          "named_buffers",
+          [](Model & self)
+          {
+            std::map<std::string, TensorValueBase *> buffers;
+            for (auto && [bname, bval] : self.named_buffers())
+              buffers[bname] = &bval;
+            return buffers;
+          },
+          py::return_value_policy::reference)
+      .def("get_parameter", &Model::get_parameter, py::return_value_policy::reference)
+      .def("set_parameter", &Model::set_parameter)
+      .def("set_parameters", &Model::set_parameters);
 }

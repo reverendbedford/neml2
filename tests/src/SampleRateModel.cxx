@@ -25,8 +25,8 @@
 #include "SampleRateModel.h"
 #include "neml2/tensors/SSR4.h"
 
-using namespace neml2;
-
+namespace neml2
+{
 register_NEML2_object(SampleRateModel);
 
 SampleRateModel::SampleRateModel(const OptionSet & options)
@@ -38,9 +38,9 @@ SampleRateModel::SampleRateModel(const OptionSet & options)
     foo_dot(declare_output_variable<Scalar>("state", "foo_rate")),
     bar_dot(declare_output_variable<Scalar>("state", "bar_rate")),
     baz_dot(declare_output_variable<SR2>("state", "baz_rate")),
-    _a(declare_parameter("a", Scalar(-0.01, default_tensor_options()))),
-    _b(declare_parameter("b", Scalar(-0.5, default_tensor_options()))),
-    _c(declare_parameter("c", Scalar(-0.9, default_tensor_options())))
+    _a(declare_parameter<Scalar>("a", Scalar(-0.01, default_tensor_options()))),
+    _b(declare_parameter<Scalar>("b", Scalar(-0.5, default_tensor_options()))),
+    _c(declare_parameter<Scalar>("c", Scalar(-0.9, default_tensor_options())))
 {
 }
 
@@ -75,4 +75,5 @@ SampleRateModel::set_value(bool out, bool dout_din, bool d2out_din2)
     baz_dot.d(baz) = (foo + bar) * (T - 3) * SR2::identity_map(options());
     baz_dot.d(T) = (foo + bar) * baz;
   }
+}
 }

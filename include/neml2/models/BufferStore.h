@@ -53,7 +53,7 @@ public:
 
   /// Get a writable reference of a buffer
   template <typename T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
-  T & get_buffer(const std::string & name);
+  TensorValue<T> & get_buffer(const std::string & name);
 
 protected:
   /**
@@ -111,7 +111,7 @@ private:
 };
 
 template <typename T, typename>
-T &
+TensorValue<T> &
 BufferStore::get_buffer(const std::string & name)
 {
   neml_assert(_object->host() == _object, "This method should only be called on the host model.");
@@ -120,7 +120,7 @@ BufferStore::get_buffer(const std::string & name)
   neml_assert(base_ptr, "Buffer named ", name, " does not exist.");
   auto ptr = dynamic_cast<TensorValue<T> *>(base_ptr);
   neml_assert_dbg(ptr, "Internal error: Failed to cast buffer to a concrete type.");
-  return ptr->value();
+  return *ptr;
 }
 
 template <typename T, typename>
@@ -132,7 +132,7 @@ BufferStore::declare_buffer(const std::string & name, const T & rawval)
 
   // If the buffer already exists, return its reference
   if (_buffer_values.has_key(name))
-    return get_buffer<T>(name);
+    return get_buffer<T>(name).value();
 
   auto val = std::make_unique<TensorValue<T>>(rawval);
   auto base_ptr = _buffer_values.set_pointer(name, std::move(val));

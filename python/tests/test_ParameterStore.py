@@ -44,6 +44,61 @@ def test_named_parameters():
     assert torch.allclose(nu.torch(), torch.tensor(0.3, dtype=torch.float64))
 
 
+def test_get_parameter():
+    pwd = Path(__file__).parent
+    model = neml2.load_model(pwd / "test_ParameterStore.i", "model")
+
+    # Setup variable views with batch shape (5,2)
+    model.reinit([5, 2])
+
+    # This model has two parameters
+    E = model.get_parameter("E")
+    nu = model.get_parameter("nu")
+
+    # Parameters should have the correct value
+    assert torch.allclose(E.torch(), torch.tensor(100.0, dtype=torch.float64))
+    assert torch.allclose(nu.torch(), torch.tensor(0.3, dtype=torch.float64))
+
+
+def test_set_parameter():
+    pwd = Path(__file__).parent
+    model = neml2.load_model(pwd / "test_ParameterStore.i", "model")
+
+    # Setup variable views with batch shape (5,2)
+    model.reinit([5, 2])
+
+    # This model has two parameters
+    E = model.get_parameter("E")
+    nu = model.get_parameter("nu")
+
+    # This model has two parameters
+    model.set_parameter("E", neml2.Scalar.full(200.0))
+    model.set_parameter("nu", neml2.Scalar.full(0.2))
+
+    # Parameters should have the correct value
+    assert torch.allclose(E.torch(), torch.tensor(200.0, dtype=torch.float64))
+    assert torch.allclose(nu.torch(), torch.tensor(0.2, dtype=torch.float64))
+
+
+def test_set_parameters():
+    pwd = Path(__file__).parent
+    model = neml2.load_model(pwd / "test_ParameterStore.i", "model")
+
+    # Setup variable views with batch shape (5,2)
+    model.reinit([5, 2])
+
+    # This model has two parameters
+    E = model.get_parameter("E")
+    nu = model.get_parameter("nu")
+
+    # This model has two parameters
+    model.set_parameters({"E": neml2.Scalar.full(200.0), "nu": neml2.Scalar.full(0.2)})
+
+    # Parameters should have the correct value
+    assert torch.allclose(E.torch(), torch.tensor(200.0, dtype=torch.float64))
+    assert torch.allclose(nu.torch(), torch.tensor(0.2, dtype=torch.float64))
+
+
 def test_parameter_derivative():
     pwd = Path(__file__).parent
     model = neml2.load_model(pwd / "test_ParameterStore.i", "model")

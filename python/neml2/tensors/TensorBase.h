@@ -153,14 +153,14 @@ def_BatchView(py::module_ & m, const std::string & name)
                .def("transpose", &BatchView<Derived>::transpose);
 
   // The setter should also take any primitive tensor type
-#define TensorBASE_BATCHVIEW_SETITEM(T)                                                            \
+#define TENSORBASE_BATCHVIEW_SETITEM(T)                                                            \
   c.def("__setitem__",                                                                             \
         [](BatchView<Derived> * self, indexing::TensorIndices index, const T & src)                \
         { self->index_put(index, src); })                                                          \
       .def("__setitem__",                                                                          \
            [](BatchView<Derived> * self, at::indexing::TensorIndex index, const T & src)           \
            { self->index_put({index}, src); })
-  FOR_ALL_TENSORBASE(TensorBASE_BATCHVIEW_SETITEM);
+  FOR_ALL_TENSORBASE(TENSORBASE_BATCHVIEW_SETITEM);
 }
 
 template <class Derived>
@@ -187,14 +187,14 @@ def_BaseView(py::module_ & m, const std::string & name)
                .def("storage", &BaseView<Derived>::storage);
 
   // The setter should also take any primitive tensor type
-#define TensorBASE_BASEVIEW_SETITEM(T)                                                             \
+#define TENSORBASE_BASEVIEW_SETITEM(T)                                                             \
   c.def("__setitem__",                                                                             \
         [](BaseView<Derived> * self, indexing::TensorIndices index, const T & src)                 \
         { self->index_put(index, src); })                                                          \
       .def("__setitem__",                                                                          \
            [](BaseView<Derived> * self, at::indexing::TensorIndex index, const T & src)            \
            { self->index_put({index}, src); })
-  FOR_ALL_TENSORBASE(TensorBASE_BASEVIEW_SETITEM);
+  FOR_ALL_TENSORBASE(TENSORBASE_BASEVIEW_SETITEM);
 }
 
 template <class Derived>

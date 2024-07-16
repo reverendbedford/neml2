@@ -45,7 +45,7 @@ PYBIND11_MODULE(math, m)
   // Templated methods
   // These methods are special because the argument could be anything derived from TensorBase,
   // so we need to bind every possible instantiation.
-#define MATH_DEF_TensorBASE(T)                                                                     \
+#define MATH_DEF_TENSORBASE(T)                                                                     \
   m.def("sign", &math::sign<T>)                                                                    \
       .def("heaviside", &math::heaviside<T>)                                                       \
       .def("macaulay", &math::macaulay<T>)                                                         \
@@ -54,5 +54,5 @@ PYBIND11_MODULE(math, m)
       .def("exp", &math::exp<T>)                                                                   \
       .def("abs", &math::abs<T>)
 
-  FOR_ALL_TENSORBASE(MATH_DEF_TensorBASE);
+  FOR_ALL_TENSORBASE(MATH_DEF_TENSORBASE);
 }

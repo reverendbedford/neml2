@@ -334,6 +334,6 @@ TensorBase<Derived>::operator-() const
   return Derived(-torch::Tensor(*this), _batch_dim);
 }
 
-#define TensorBASE_INSTANTIATE(T) template class TensorBase<T>
-FOR_ALL_TENSORBASE(TensorBASE_INSTANTIATE);
+#define TENSORBASE_INSTANTIATE(T) template class TensorBase<T>
+FOR_ALL_TENSORBASE(TENSORBASE_INSTANTIATE);
 } // end namespace neml2

@@ -236,13 +236,13 @@ ModelUnitTest::check_parameter_derivatives(Model & model)
   {
     auto pval = Tensor(param).batch_expand_copy(_batch_shape);
     pval.requires_grad_(true);
-    param.set(pval);
+    param = pval;
     auto out = model.value(_in);
     auto exact = math::jacrev(out, Tensor(param));
     auto numerical = finite_differencing_derivative(
         [&, &param = param](const Tensor & x)
         {
-          param.set(x);
+          param = x;
           return model.value(_in);
         },
         Tensor(param));

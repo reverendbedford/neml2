@@ -43,7 +43,7 @@ TEST_CASE("training")
 
   // Request parameter gradient
   auto & p = model.named_parameters()["yield.sy"];
-  p.set(Scalar(5, default_tensor_options().requires_grad(true)));
+  p = Scalar(5, default_tensor_options().requires_grad(true));
 
   // Initial state
   auto force0 = torch::tensor({0.0, 0.0, 0.01, -0.01, -0.01, 0.02, 0.0}, default_tensor_options())

@@ -55,9 +55,14 @@ public:
   Storage<std::string, TensorValueBase> & named_parameters();
   ///}@
 
+  /// Set the value for a parameter
+  void set_parameter(const std::string &, const Tensor &);
+
+  /// Set values for parameters
+  void set_parameters(const std::map<std::string, Tensor> &);
+
   /// Get a writable reference of a parameter
-  template <typename T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
-  T & get_parameter(const std::string & name);
+  TensorValueBase & get_parameter(const std::string & name);
 
   /// Whether this parameter store has any nonlinear parameter
   bool has_nl_param() const { return !_nl_params.empty(); }
@@ -140,31 +145,24 @@ private:
 };
 
 template <typename T, typename>
-T &
-ParameterStore::get_parameter(const std::string & name)
-{
-  neml_assert(_object->host() == _object, "This method should only be called on the host model.");
-
-  auto base_ptr = _param_values.query_value(name);
-  neml_assert(base_ptr, "Parameter named ", name, " does not exist.");
-  auto ptr = dynamic_cast<TensorValue<T> *>(base_ptr);
-  neml_assert_dbg(ptr, "Internal error: Failed to cast parameter to a concrete type.");
-  return ptr->value();
-}
-
-template <typename T, typename>
 const T &
 ParameterStore::declare_parameter(const std::string & name, const T & rawval)
 {
   if (_object->host() != _object)
     return _object->host<ParameterStore>()->declare_parameter(_object->name() + "." + name, rawval);
 
-  // If the parameter already exists, return its reference
-  if (_param_values.has_key(name))
-    return get_parameter<T>(name);
+  TensorValueBase * base_ptr;
 
-  auto val = std::make_unique<TensorValue<T>>(rawval);
-  auto base_ptr = _param_values.set_pointer(name, std::move(val));
+  // If the parameter already exists, get it
+  if (_param_values.has_key(name))
+    base_ptr = &get_parameter(name);
+  // If the parameter doesn't exist, create it
+  else
+  {
+    auto val = std::make_unique<TensorValue<T>>(rawval);
+    base_ptr = _param_values.set_pointer(name, std::move(val));
+  }
+
   auto ptr = dynamic_cast<TensorValue<T> *>(base_ptr);
   neml_assert(ptr, "Internal error: Failed to cast parameter to a concrete type.");
   return ptr->value();
