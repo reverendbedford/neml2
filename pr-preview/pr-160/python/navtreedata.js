@@ -64,18 +64,18 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "../annotated.html",
-"classtensors_1_1Quaternion.html#acb632072001de789afacec5d090910de",
-"classtensors_1_1R2BatchView.html#adf3e049b7e15518e913bfedf9a1eb46f",
-"classtensors_1_1R4BatchView.html#a43080b242de156a5409d4b58fc7d0c9c",
-"classtensors_1_1RotBaseView.html#a4fcf9a97d657b8fdc33f5b8bcf9891c6",
-"classtensors_1_1SFR3.html#ac119a9b157a44be08a4684dd696c4aac",
-"classtensors_1_1SR2BatchView.html#afb3bc31ec635dac08eeddd13906f5c07",
-"classtensors_1_1SSR4BatchView.html#a7d8eea8bee26003ffc2e878fa310e34e",
-"classtensors_1_1Scalar.html#a66e26fcbb34535d67af26061c6eafd78",
-"classtensors_1_1ScalarBatchView.html#ac93bd8bd539511c74322b2cb8dca572a",
-"classtensors_1_1VecBaseView.html#a35536134a6ceb1e866faf188992e9c9f",
-"classtensors_1_1WSR4.html#a17b17be82a3b3834b3cb10303b163536",
-"classtensors_1_1WWR4BatchView.html#a9103db766c5e729f5ccf114923eeecaa"
+"classtensors_1_1Quaternion.html#af242e4228acc43d041f9e3b53cee3ed2",
+"classtensors_1_1R2BatchView.html#afb3bc31ec635dac08eeddd13906f5c07",
+"classtensors_1_1R4BatchView.html#a754421ed29c9e1df44df3f8f6011cc71",
+"classtensors_1_1RotBaseView.html#a7edb3a02c1f73876958efdd69d9be081",
+"classtensors_1_1SFR3.html#ae07f7930f92d3591c93e2381cd5be285",
+"classtensors_1_1SSFR5.html#a35536134a6ceb1e866faf188992e9c9f",
+"classtensors_1_1SSR4BatchView.html#a9a74d70993ac53bc0355d7a0815bdc90",
+"classtensors_1_1Scalar.html#a6d65585f61268135ce36bfee211ebf58",
+"classtensors_1_1ScalarBatchView.html#ad9f4bce894e0267718c27bce7e305b96",
+"classtensors_1_1VecBaseView.html#a710151a602d01e87d32504f3386d0ae6",
+"classtensors_1_1WSR4.html#a4f23ac09ae87619a0f06e9b932a84ecd",
+"classtensors_1_1WWR4BatchView.html#ab5cf2f1baa55950f080ba85ad93f38cb"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

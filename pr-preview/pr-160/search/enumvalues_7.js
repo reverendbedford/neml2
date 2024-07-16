@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['output_0',['OUTPUT',['../namespaceneml2.html#ab600865ffa5d3681d723ef019d109535a50a87f0d71f7221582dad4bf507a0f34',1,'neml2']]]
+  ['solving_0',['SOLVING',['../classneml2_1_1Model.html#aca8133200c1122e29b87b314d82604ebab09b6d718c535c4d6fe77cc69ae8de0b',1,'neml2::Model']]]
 ];

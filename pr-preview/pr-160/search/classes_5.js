@@ -10,6 +10,6 @@ var searchData=
   ['flowrule_7',['FlowRule',['../classneml2_1_1FlowRule.html',1,'neml2']]],
   ['forcerate_8',['ForceRate',['../classneml2_1_1ForceRate.html',1,'neml2']]],
   ['forwardeulertimeintegration_9',['ForwardEulerTimeIntegration',['../classneml2_1_1ForwardEulerTimeIntegration.html',1,'neml2']]],
-  ['fulllogicaltensor_10',['FullLogicalTensor',['../classneml2_1_1FullLogicalTensor.html',1,'neml2']]],
+  ['fullprimitivetensor_10',['FullPrimitiveTensor',['../classneml2_1_1FullPrimitiveTensor.html',1,'neml2']]],
   ['fulltensor_11',['FullTensor',['../classneml2_1_1FullTensor.html',1,'neml2']]]
 ];

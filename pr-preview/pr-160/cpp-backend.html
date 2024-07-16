@@ -115,7 +115,7 @@ $(function(){initNavTree('cpp-backend.html',''); initResizable(); });
 <div class="toc"><h3>Table of Contents</h3>
 <ul><li class="level1"><a href="#autotoc_md34">Loading a model from an input file</a></li>
 <li class="level1"><a href="#autotoc_md35">Evaluate the model</a></li>
-<li class="level1"><a href="#inference-mode">Inference Mode</a></li>
+<li class="level1"><a href="#disable-ad">Enable/disable automatic differentiation</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md__2home_2runner_2work_2neml2_2neml2_2doc_2content_2user_2cpp"></a></p>
@@ -141,8 +141,7 @@ Loading a model from an input file</h1>
 <div class="line"><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespaceneml2.html">neml2</a>;</div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">main</a>() {</div>
-<div class="line">  load_model(<span class="stringliteral">&quot;input.i&quot;</span>);</div>
-<div class="line">  <span class="keyword">auto</span> &amp; model = get_model(<span class="stringliteral">&quot;model&quot;</span>);</div>
+<div class="line">  <span class="keyword">auto</span> &amp; model = load_model(<span class="stringliteral">&quot;input.i&quot;</span>, <span class="stringliteral">&quot;model&quot;</span>);</div>
 <div class="line"> </div>
 <div class="line">  <span class="comment">// ...</span></div>
 <div class="line"> </div>
@@ -162,12 +161,12 @@ Evaluate the model</h1>
 <div class="line"><a class="code hl_class" href="classneml2_1_1CrossRef.html">in</a>.batch_index_put({2}, SR2::fill(0.3, -0.2, 0.05, -0.1, -0.3, 0.1));</div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">auto</span> <a class="code hl_class" href="classneml2_1_1CrossRef.html">out</a> = model.value(<a class="code hl_class" href="classneml2_1_1CrossRef.html">in</a>);</div>
-</div><!-- fragment --><h1><a class="anchor" id="inference-mode"></a>
-Inference Mode</h1>
-<p>By default, inference mode is disabled. During every model evaluation, variables are re-allocated, and variable views are reconfigured. This default behavior avoids in-place operations and is mandatory to use PyTorch automatic differentiation (AD) (i.e. for parameter gradient or AD forward operator).</p>
-<p>The default behavior is flexible. However, if PyTorch AD is not needed, i.e., once the model is fully calibrated, the variable reallocation and view reconfiguration can be skipped. The inference mode is designed for that purpose.</p>
-<p>When inference mode is activated, no function graph is built, tensor version numbers are not incremented, and the variables and variable views are setup once and for all, all of which speed up evaluation. See <a href="https://pytorch.org/cppdocs/notes/inference_mode.html">https://pytorch.org/cppdocs/notes/inference_mode.html</a> for more details.</p>
-<p>To enable inference mode, use the optional second argument passed to <code><a class="el" href="namespaceneml2.html#ac3b81673a16c8a5de7e361a938aa89ae" title="A convenient function to manufacture a neml2::Model.">neml2::get_model</a></code>, i.e. </p><div class="fragment"><div class="line"><span class="keyword">auto</span> &amp; model = get_model(<span class="stringliteral">&quot;model&quot;</span>, <span class="comment">/*inference_mode=*/</span><span class="keyword">true</span>);</div>
+</div><!-- fragment --><h1><a class="anchor" id="disable-ad"></a>
+Enable/disable automatic differentiation</h1>
+<p>By default, automatic differentiation is enabled. During every model evaluation, variables are re-allocated, and variable views are reconfigured. This default behavior avoids in-place operations and is mandatory to use PyTorch automatic differentiation (AD) (i.e. for parameter gradient or AD forward operator).</p>
+<p>The default behavior is flexible and powerful. However, if PyTorch AD is not needed, i.e., once the model is fully calibrated/trained, the variable reallocation and view reconfiguration can be skipped. The <code>enable_AD</code> option is designed for that purpose.</p>
+<p>When AD is disabled, no function graph is built, tensor version numbers are not incremented, and the variables and variable views are setup once and for all, all of which speed up evaluation. Furthermore, this mode is fully compatible with PyTorch's <a href="https://pytorch.org/cppdocs/notes/inference_mode.html">inference mode</a></p>
+<p>To disable AD, use the optional second argument passed to <code><a class="el" href="namespaceneml2.html#a78df4c4065e754df9577bd89ee062af8" title="A convenient function to manufacture a neml2::Model.">neml2::get_model</a></code>, i.e. </p><div class="fragment"><div class="line"><span class="keyword">auto</span> &amp; model = get_model(<span class="stringliteral">&quot;model&quot;</span>, <span class="comment">/*disable_AD=*/</span><span class="keyword">true</span>);</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

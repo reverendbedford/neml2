@@ -6,7 +6,7 @@ var searchData=
   ['get_5fdoutput_5fdinput_3',['get_doutput_dinput',['../classneml2_1_1Model.html#a04e2b6ccc0f018be2893f2a916b1d828',1,'neml2::Model']]],
   ['get_5finput_5fvariable_4',['get_input_variable',['../classneml2_1_1VariableStore.html#af8d8cebde25a68f326a90076c1719d8e',1,'neml2::VariableStore::get_input_variable(const VariableName &amp;name)'],['../classneml2_1_1VariableStore.html#a1aba32af3dbef1fa4b95d0d49c84c276',1,'neml2::VariableStore::get_input_variable(const VariableName &amp;name) const']]],
   ['get_5flist_5',['get_list',['../classneml2_1_1LabeledTensor.html#acae3f183ffc9ad6f6c72af32162b0437',1,'neml2::LabeledTensor']]],
-  ['get_5fmodel_6',['get_model',['../namespaceneml2.html#ac3b81673a16c8a5de7e361a938aa89ae',1,'neml2']]],
+  ['get_5fmodel_6',['get_model',['../namespaceneml2.html#a78df4c4065e754df9577bd89ee062af8',1,'neml2']]],
   ['get_5fobject_7',['get_object',['../classneml2_1_1Factory.html#a74bb9b4d395d11402735117f5aef4d7b',1,'neml2::Factory']]],
   ['get_5fobject_5fptr_8',['get_object_ptr',['../classneml2_1_1Factory.html#a95c47d292bea9037c83f2320ec3582db',1,'neml2::Factory']]],
   ['get_5foutput_9',['get_output',['../classneml2_1_1Model.html#a230166c77b24a5d909bb8c878684a8bb',1,'neml2::Model']]],

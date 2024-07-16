@@ -6,7 +6,6 @@ var searchData=
   ['millerindex_3',['MillerIndex',['../classtensors_1_1MillerIndex.html',1,'MillerIndex'],['../classtensors_1_1TensorType.html#a9a843305636fe78cc05418f8a94b83fe',1,'tensors.TensorType.MillerIndex']]],
   ['millerindexbaseview_4',['MillerIndexBaseView',['../classtensors_1_1MillerIndexBaseView.html',1,'tensors']]],
   ['millerindexbatchview_5',['MillerIndexBatchView',['../classtensors_1_1MillerIndexBatchView.html',1,'tensors']]],
-  ['model_6',['Model',['../classmodels_1_1Model.html',1,'models']]],
-  ['model_20library_20version_202_7',['The New Engineering Material model Library, version 2',['../index.html#autotoc_md1',1,'']]],
-  ['models_8',['models',['../namespacemodels.html',1,'']]]
+  ['model_6',['Model',['../classbase_1_1Model.html',1,'base']]],
+  ['model_20library_20version_202_7',['The New Engineering Material model Library, version 2',['../index.html#autotoc_md1',1,'']]]
 ];

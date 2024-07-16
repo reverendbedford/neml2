@@ -254,9 +254,11 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a9952cc25d72ad689c212a71290a62eb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87d2023e2c814ee7ce722808c9912a45" id="r_a87d2023e2c814ee7ce722808c9912a45"><td class="memItemLeft" align="right" valign="top">std::tuple&lt; <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a87d2023e2c814ee7ce722808c9912a45">nonlinear_system_derivatives</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
 <tr class="separator:a87d2023e2c814ee7ce722808c9912a45"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf2ff21a25f82da2cafb6970e5d41a96" id="r_aaf2ff21a25f82da2cafb6970e5d41a96"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaf2ff21a25f82da2cafb6970e5d41a96">inference_mode</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
-<tr class="memdesc:aaf2ff21a25f82da2cafb6970e5d41a96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether inferece mode is on.  <br /></td></tr>
-<tr class="separator:aaf2ff21a25f82da2cafb6970e5d41a96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4d7e8b0482c876c6f1ab180a5a88145" id="r_ab4d7e8b0482c876c6f1ab180a5a88145"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab4d7e8b0482c876c6f1ab180a5a88145">is_AD_enabled</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:ab4d7e8b0482c876c6f1ab180a5a88145"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether AD is enabled/disabled.  <br /></td></tr>
+<tr class="separator:ab4d7e8b0482c876c6f1ab180a5a88145"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f6f1851cae8fb2c2e29b748c07a01dd" id="r_a9f6f1851cae8fb2c2e29b748c07a01dd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9f6f1851cae8fb2c2e29b748c07a01dd">is_AD_disabled</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="separator:a9f6f1851cae8fb2c2e29b748c07a01dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add0302a95f0f0bb555a626603ef86472" id="r_add0302a95f0f0bb555a626603ef86472"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#add0302a95f0f0bb555a626603ef86472">reinit</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;tensor, <a class="el" href="classneml2_1_1CrossRef.html">int</a> <a class="el" href="classneml2_1_1CrossRef.html">deriv_order</a>)</td></tr>
 <tr class="memdesc:add0302a95f0f0bb555a626603ef86472"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate storage and setup views for all the variables of this model and recursively all of the sub-models. See the other overload for detailed description.  <br /></td></tr>
 <tr class="separator:add0302a95f0f0bb555a626603ef86472"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1206,33 +1208,6 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="aaf2ff21a25f82da2cafb6970e5d41a96" name="aaf2ff21a25f82da2cafb6970e5d41a96"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaf2ff21a25f82da2cafb6970e5d41a96">&#9670;&#160;</a></span>inference_mode()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">bool</a> inference_mode </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Whether inferece mode is on. </p>
-
-</div>
-</div>
 <a id="a154163b56ffff4b922c3e6c9fda31bc9" name="a154163b56ffff4b922c3e6c9fda31bc9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a154163b56ffff4b922c3e6c9fda31bc9">&#9670;&#160;</a></span>input_requires_grad_()</h2>
 
@@ -1249,6 +1224,58 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Set requires_grad for the input variables. </p>
+
+</div>
+</div>
+<a id="a9f6f1851cae8fb2c2e29b748c07a01dd" name="a9f6f1851cae8fb2c2e29b748c07a01dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f6f1851cae8fb2c2e29b748c07a01dd">&#9670;&#160;</a></span>is_AD_disabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">bool</a> is_AD_disabled </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab4d7e8b0482c876c6f1ab180a5a88145" name="ab4d7e8b0482c876c6f1ab180a5a88145"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4d7e8b0482c876c6f1ab180a5a88145">&#9670;&#160;</a></span>is_AD_enabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">bool</a> is_AD_enabled </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether AD is enabled/disabled. </p>
 
 </div>
 </div>

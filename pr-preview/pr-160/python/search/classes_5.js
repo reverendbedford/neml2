@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['quaternion_0',['Quaternion',['../classtensors_1_1Quaternion.html',1,'tensors']]],
-  ['quaternionbaseview_1',['QuaternionBaseView',['../classtensors_1_1QuaternionBaseView.html',1,'tensors']]],
-  ['quaternionbatchview_2',['QuaternionBatchView',['../classtensors_1_1QuaternionBatchView.html',1,'tensors']]]
+  ['tensor_0',['Tensor',['../classtensors_1_1Tensor.html',1,'tensors']]],
+  ['tensorbaseview_1',['TensorBaseView',['../classtensors_1_1TensorBaseView.html',1,'tensors']]],
+  ['tensorbatchview_2',['TensorBatchView',['../classtensors_1_1TensorBatchView.html',1,'tensors']]],
+  ['tensortype_3',['TensorType',['../classtensors_1_1TensorType.html',1,'tensors']]]
 ];

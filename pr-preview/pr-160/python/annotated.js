@@ -1,13 +1,7 @@
 var annotated =
 [
     [ "base", "namespacebase.html", [
-      [ "Factory", "classbase_1_1Factory.html", null ],
-      [ "HITParser", "classbase_1_1HITParser.html", "classbase_1_1HITParser" ],
-      [ "OptionCollection", "classbase_1_1OptionCollection.html", "classbase_1_1OptionCollection" ],
-      [ "OptionSet", "classbase_1_1OptionSet.html", "classbase_1_1OptionSet" ]
-    ] ],
-    [ "models", "namespacemodels.html", [
-      [ "Model", "classmodels_1_1Model.html", "classmodels_1_1Model" ]
+      [ "Model", "classbase_1_1Model.html", "classbase_1_1Model" ]
     ] ],
     [ "tensors", "namespacetensors.html", [
       [ "LabeledAxis", "classtensors_1_1LabeledAxis.html", "classtensors_1_1LabeledAxis" ],

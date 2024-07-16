@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['buffer_0',['BUFFER',['../namespaceneml2.html#ab600865ffa5d3681d723ef019d109535a17de626bcae5109bb2f7a66dfc4a8a1d',1,'neml2']]]
+  ['for_5fall_5ftensorbase_5fcomma_0',['FOR_ALL_TENSORBASE_COMMA',['../namespaceneml2.html#a9b44248b88341f8c9cafe5d9d822a443a6c51418de157b011117e28b5e664dbfc',1,'neml2']]]
 ];

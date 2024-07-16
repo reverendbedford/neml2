@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['labeledaxis_0',['LabeledAxis',['../classtensors_1_1LabeledAxis.html',1,'tensors']]],
-  ['labeledaxisaccessor_1',['LabeledAxisAccessor',['../classtensors_1_1LabeledAxisAccessor.html',1,'tensors']]],
-  ['labeledmatrix_2',['LabeledMatrix',['../classtensors_1_1LabeledMatrix.html',1,'tensors']]],
-  ['labeledvector_3',['LabeledVector',['../classtensors_1_1LabeledVector.html',1,'tensors']]]
+  ['quaternion_0',['Quaternion',['../classtensors_1_1Quaternion.html',1,'tensors']]],
+  ['quaternionbaseview_1',['QuaternionBaseView',['../classtensors_1_1QuaternionBaseView.html',1,'tensors']]],
+  ['quaternionbatchview_2',['QuaternionBatchView',['../classtensors_1_1QuaternionBatchView.html',1,'tensors']]]
 ];

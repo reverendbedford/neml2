@@ -9,7 +9,6 @@ var searchData=
   ['has_5fvariable_6',['has_variable',['../classneml2_1_1LabeledAxis.html#ae36396800f93c30c42bb89d35470fc97',1,'neml2::LabeledAxis::has_variable(const LabeledAxisAccessor &amp;var) const'],['../classneml2_1_1LabeledAxis.html#af390bf36bafcb18f29c32ab5d320c8c4',1,'neml2::LabeledAxis::has_variable(const LabeledAxisAccessor &amp;var) const']]],
   ['heaviside_7',['heaviside',['../namespaceneml2_1_1math.html#a306715f66891be553106fd497e7ff66b',1,'neml2::math']]],
   ['hexagonal_8',['hexagonal',['../namespaceneml2_1_1crystallography_1_1crystal__symmetry__operators.html#a72170f90d94422c54abd369cd09e5a79',1,'neml2::crystallography::crystal_symmetry_operators']]],
-  ['hit_9',['HIT',['../namespaceneml2.html#a4c55c16d7c784070b26231f015e33a10ad4cf8619fedf804702c72835be555da0',1,'neml2']]],
-  ['hitparser_10',['HITParser',['../classneml2_1_1HITParser.html',1,'HITParser'],['../classneml2_1_1HITParser.html#ac21422f081569eb193b0f35f406574be',1,'neml2::HITParser::HITParser()']]],
-  ['host_11',['host',['../classneml2_1_1NEML2Object.html#a253b40cc691e6ea7d49648f990242573',1,'neml2::NEML2Object::host() const'],['../classneml2_1_1NEML2Object.html#aaeee19eb1c12dcdf793e38464d038f12',1,'neml2::NEML2Object::host()']]]
+  ['hitparser_9',['HITParser',['../classneml2_1_1HITParser.html',1,'HITParser'],['../classneml2_1_1HITParser.html#ac21422f081569eb193b0f35f406574be',1,'neml2::HITParser::HITParser()']]],
+  ['host_10',['host',['../classneml2_1_1NEML2Object.html#a253b40cc691e6ea7d49648f990242573',1,'neml2::NEML2Object::host() const'],['../classneml2_1_1NEML2Object.html#aaeee19eb1c12dcdf793e38464d038f12',1,'neml2::NEML2Object::host()']]]
 ];
