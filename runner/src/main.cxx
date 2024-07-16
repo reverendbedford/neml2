@@ -70,7 +70,7 @@ main(int argc, char * argv[])
     // Run the model
     try
     {
-      neml2::load_driver(input, drivername);
+      neml2::load_input(input, additional_cliargs);
       auto & driver = neml2::Factory::get_object<neml2::Driver>("Drivers", drivername);
 
       {
