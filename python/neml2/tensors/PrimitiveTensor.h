@@ -51,10 +51,9 @@ void
 def_PrimitiveTensor(py::class_<Derived> & c)
 {
   // Ctors, conversions, accessors etc.
-  c.def(py::init<const torch::Tensor &>());
-
-  // Implicit conversion
-  py::implicitly_convertible<Derived, Tensor>();
+  c.def(py::init<const torch::Tensor &>())
+      .def("torch", [](const Derived & self) { return torch::Tensor(self); })
+      .def("tensor", [](const Derived & self) { return Tensor(self); });
 
   // Static methods
   c.def_static(
