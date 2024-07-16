@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 #include <pybind11/pybind11.h>
+#include <pybind11/stl/filesystem.h>
 
 #include "python/neml2/types.h"
 #include "neml2/models/Model.h"
@@ -40,6 +41,10 @@ PYBIND11_MODULE(base, m)
   // Define neml2.base.Model
   auto model_cls = py::class_<Model, std::shared_ptr<Model>>(m, "Model");
 
+  // Expose std::filesystem::path
+  // py::class_<std::filesystem::path>(m, "Path").def(py::init<std::string>());
+  // py::implicitly_convertible<std::string, std::filesystem::path>();
+
   // Factory methods
   m.def("load_input", &load_input, py::arg("path"), py::arg("cli_args") = "");
   m.def("reload_input", &reload_input, py::arg("path"), py::arg("cli_args") = "");
@@ -47,13 +52,20 @@ PYBIND11_MODULE(base, m)
         &get_model,
         py::arg("model"),
         py::arg("enable_AD") = true,
-        py::arg("force_create") = true);
-  m.def("load_model", &load_model, py::arg("path"), py::arg("model"), py::arg("enable_AD") = true);
+        py::arg("force_create") = true,
+        py::return_value_policy::reference);
+  m.def("load_model",
+        &load_model,
+        py::arg("path"),
+        py::arg("model"),
+        py::arg("enable_AD") = true,
+        py::return_value_policy::reference);
   m.def("reload_model",
         &reload_model,
         py::arg("path"),
         py::arg("model"),
-        py::arg("enable_AD") = true);
+        py::arg("enable_AD") = true,
+        py::return_value_policy::reference);
 
   // neml2.base.Model methods
   model_cls.def_property_readonly("is_AD_enabled", &Model::is_AD_enabled)

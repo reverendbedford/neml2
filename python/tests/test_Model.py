@@ -36,7 +36,7 @@ def test_get_model():
     model1 = neml2.get_model("model")
     assert model1.is_AD_enabled
 
-    model2 = neml2.get_model("model", True)
+    model2 = neml2.get_model("model", enable_AD=False)
     assert not model2.is_AD_enabled
 
 

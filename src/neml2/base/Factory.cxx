@@ -36,7 +36,7 @@ load_input(const std::filesystem::path & path, const std::string & additional_in
   OptionCollection oc;
 
   // For now we only support HIT
-  if (utils::end_with(path, ".i"))
+  if (utils::end_with(path.string(), ".i"))
   {
     HITParser parser;
     oc = parser.parse(path, additional_input);
