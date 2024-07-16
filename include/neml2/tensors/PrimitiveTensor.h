@@ -136,7 +136,7 @@ PrimitiveTensor<Derived, S...>::empty(const torch::TensorOptions & options)
 template <class Derived, Size... S>
 Derived
 PrimitiveTensor<Derived, S...>::empty(TensorShapeRef batch_shape,
-                                    const torch::TensorOptions & options)
+                                      const torch::TensorOptions & options)
 {
   return Derived(torch::empty(utils::add_shapes(batch_shape, const_base_sizes), options),
                  batch_shape.size());
@@ -152,7 +152,7 @@ PrimitiveTensor<Derived, S...>::zeros(const torch::TensorOptions & options)
 template <class Derived, Size... S>
 Derived
 PrimitiveTensor<Derived, S...>::zeros(TensorShapeRef batch_shape,
-                                    const torch::TensorOptions & options)
+                                      const torch::TensorOptions & options)
 {
   return Derived(torch::zeros(utils::add_shapes(batch_shape, const_base_sizes), options),
                  batch_shape.size());
@@ -167,7 +167,8 @@ PrimitiveTensor<Derived, S...>::ones(const torch::TensorOptions & options)
 
 template <class Derived, Size... S>
 Derived
-PrimitiveTensor<Derived, S...>::ones(TensorShapeRef batch_shape, const torch::TensorOptions & options)
+PrimitiveTensor<Derived, S...>::ones(TensorShapeRef batch_shape,
+                                     const torch::TensorOptions & options)
 {
   return Derived(torch::ones(utils::add_shapes(batch_shape, const_base_sizes), options),
                  batch_shape.size());
@@ -183,8 +184,8 @@ PrimitiveTensor<Derived, S...>::full(Real init, const torch::TensorOptions & opt
 template <class Derived, Size... S>
 Derived
 PrimitiveTensor<Derived, S...>::full(TensorShapeRef batch_shape,
-                                   Real init,
-                                   const torch::TensorOptions & options)
+                                     Real init,
+                                     const torch::TensorOptions & options)
 {
   return Derived(torch::full(utils::add_shapes(batch_shape, const_base_sizes), init, options),
                  batch_shape.size());
