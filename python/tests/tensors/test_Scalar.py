@@ -27,19 +27,18 @@ import pytest
 # fixtures
 from common import *
 from test_TensorBase import sample, _A, _B, _C, base_shape
-
-from neml2.tensors import Scalar
+import neml2
 
 
 def test_named_ctors(tensor_options):
     # identity_map
-    A = Scalar.identity_map(**tensor_options)
+    A = neml2.Scalar.identity_map(**tensor_options)
     assert A.batch.dim() == 0
 
 
 @pytest.mark.parametrize("batch_shape", [(), (2, 5, 3, 2)])
 def test_binary_ops(batch_shape, sample, tensor_options):
-    s = Scalar.full(batch_shape, 0.5, **tensor_options)
+    s = neml2.Scalar.full(batch_shape, 0.5, **tensor_options)
     s0 = s.torch()[((...,) + (None,) * sample.base.dim())]
     sample0 = sample.torch()
 

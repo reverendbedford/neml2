@@ -26,8 +26,7 @@ import pytest
 
 # fixtures
 from common import *
-
-from neml2.tensors import Tensor
+import neml2
 
 
 def test_named_ctors(tensor_options):
@@ -36,40 +35,40 @@ def test_named_ctors(tensor_options):
     shape = batch_shape + base_shape
 
     # empty
-    A = Tensor.empty(base_shape, **tensor_options)
+    A = neml2.Tensor.empty(base_shape, **tensor_options)
     assert A.batch.dim() == 0
-    A = Tensor.empty(batch_shape, base_shape, **tensor_options)
+    A = neml2.Tensor.empty(batch_shape, base_shape, **tensor_options)
     assert A.batch.dim() == len(batch_shape)
 
     # zeros
-    A = Tensor.zeros(base_shape, **tensor_options)
+    A = neml2.Tensor.zeros(base_shape, **tensor_options)
     assert A.batch.dim() == 0
     assert torch.allclose(A.torch(), torch.zeros(base_shape, **tensor_options))
-    A = Tensor.zeros(batch_shape, base_shape, **tensor_options)
+    A = neml2.Tensor.zeros(batch_shape, base_shape, **tensor_options)
     assert A.batch.dim() == len(batch_shape)
     assert torch.allclose(A.torch(), torch.zeros(shape, **tensor_options))
 
     # ones
-    A = Tensor.ones(base_shape, **tensor_options)
+    A = neml2.Tensor.ones(base_shape, **tensor_options)
     assert A.batch.dim() == 0
     assert torch.allclose(A.torch(), torch.ones(base_shape, **tensor_options))
-    A = Tensor.ones(batch_shape, base_shape, **tensor_options)
+    A = neml2.Tensor.ones(batch_shape, base_shape, **tensor_options)
     assert A.batch.dim() == len(batch_shape)
     assert torch.allclose(A.torch(), torch.ones(shape, **tensor_options))
 
     # full
-    A = Tensor.full(base_shape, 1.1, **tensor_options)
+    A = neml2.Tensor.full(base_shape, 1.1, **tensor_options)
     assert A.batch.dim() == 0
     assert torch.allclose(A.torch(), torch.full(base_shape, 1.1, **tensor_options))
-    A = Tensor.full(batch_shape, base_shape, 2.3, **tensor_options)
+    A = neml2.Tensor.full(batch_shape, base_shape, 2.3, **tensor_options)
     assert A.batch.dim() == len(batch_shape)
     assert torch.allclose(A.torch(), torch.full(shape, 2.3, **tensor_options))
 
     # identity
-    A = Tensor.identity(5, **tensor_options)
+    A = neml2.Tensor.identity(5, **tensor_options)
     assert A.batch.dim() == 0
     assert torch.allclose(A.torch(), torch.eye(5, **tensor_options))
-    A = Tensor.identity(batch_shape, 5, **tensor_options)
+    A = neml2.Tensor.identity(batch_shape, 5, **tensor_options)
     assert A.batch.dim() == len(batch_shape)
     assert torch.allclose(
         A.torch(), torch.eye(5, **tensor_options).expand(batch_shape + (-1, -1))
@@ -79,7 +78,7 @@ def test_named_ctors(tensor_options):
 def test_views(tensor_options):
     batch_shape = (2, 3)
     base_shape = (3, 1, 2)
-    A = Tensor.full(batch_shape, base_shape, 2.3, **tensor_options)
+    A = neml2.Tensor.full(batch_shape, base_shape, 2.3, **tensor_options)
     A_torch = A.torch()
 
     assert A.device == A_torch.device

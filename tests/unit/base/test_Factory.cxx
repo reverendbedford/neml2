@@ -40,7 +40,7 @@ TEST_CASE("Factory", "[base]")
   all_options["Models"]["example"] = options;
 
   Factory::clear();
-  Factory::load(all_options);
+  Factory::load_options(all_options);
   auto & summodel = Factory::get_object<ScalarLinearCombination>("Models", "example");
 
   REQUIRE(summodel.input_axis().has_subaxis("state"));

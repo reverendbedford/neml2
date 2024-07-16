@@ -24,17 +24,40 @@
 
 #include <pybind11/pybind11.h>
 
-#include "python/neml2/misc/types.h"
+#include "python/neml2/types.h"
 #include "neml2/models/Model.h"
 #include "neml2/base/Factory.h"
 
 namespace py = pybind11;
 using namespace neml2;
 
-void
-def_Model(py::module_ & m)
+PYBIND11_MODULE(base, m)
 {
-  py::class_<Model, std::shared_ptr<Model>>(m, "Model")
+  m.doc() = "NEML2 Python bindings";
+
+  py::module_::import("neml2.tensors");
+
+  // Define neml2.base.Model
+  auto model_cls = py::class_<Model, std::shared_ptr<Model>>(m, "Model");
+
+  // Factory methods
+  m.def("load_input", &load_input, py::arg("path"), py::arg("cli_args") = "");
+  m.def("reload_input", &reload_input, py::arg("path"), py::arg("cli_args") = "");
+  m.def("get_model",
+        &get_model,
+        py::arg("model"),
+        py::arg("enable_AD") = true,
+        py::arg("force_create") = true);
+  m.def("load_model", &load_model, py::arg("path"), py::arg("model"), py::arg("enable_AD") = true);
+  m.def("reload_model",
+        &reload_model,
+        py::arg("path"),
+        py::arg("model"),
+        py::arg("enable_AD") = true);
+
+  // neml2.base.Model methods
+  model_cls.def_property_readonly("is_AD_enabled", &Model::is_AD_enabled)
+      .def_property_readonly("is_AD_disabled", &Model::is_AD_disabled)
       .def("reinit",
            py::overload_cast<TensorShapeRef, int, const torch::Device &, const torch::Dtype &>(
                &Model::reinit),
@@ -121,10 +144,4 @@ def_Model(py::module_ & m)
                buffers[utils::stringify(bname)] = Tensor(bval);
              return buffers;
            });
-
-  // Make Model manufacturable
-  auto factory = (py::class_<Factory>)py::module_::import("neml2.base").attr("Factory");
-  factory.def_static("get_model",
-                     [](const std::string & name)
-                     { return Factory::get_object_ptr<Model>("Models", name); });
 }

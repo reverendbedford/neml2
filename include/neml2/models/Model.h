@@ -77,8 +77,9 @@ public:
   std::tuple<const Tensor &, const Tensor &, const Tensor &, const Tensor &>
   nonlinear_system_derivatives() const;
 
-  /// Whether inferece mode is on
-  bool inference_mode() const { return _inference_mode; }
+  /// Whether AD is enabled/disabled
+  bool is_AD_enabled() const { return _enable_AD; }
+  bool is_AD_disabled() const { return !_enable_AD; }
 
   /**
    * @brief Allocate storage and setup views for all the variables of this model and recursively all
@@ -273,7 +274,7 @@ protected:
     extra_opts.set<NEML2Object *>("_host") = host();
     extra_opts.set<int>("_extra_derivative_order") = extra_deriv_order;
     extra_opts.set<bool>("_nonlinear_system") = nonlinear;
-    extra_opts.set<bool>("_inference_mode") = input_options().get<bool>("_inference_mode");
+    extra_opts.set<bool>("_enable_AD") = input_options().get<bool>("_enable_AD");
 
     auto model = Factory::get_object_ptr<Model>("Models", name, extra_opts);
 
@@ -341,7 +342,7 @@ private:
   bool _evaluated_once;
 #endif
 
-  /// Whether the evaluation uses inference mode
-  const bool _inference_mode;
+  /// Whether automatic differentiation is enabled
+  const bool _enable_AD;
 };
 } // namespace neml2

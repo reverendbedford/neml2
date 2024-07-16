@@ -30,7 +30,7 @@
 
 using namespace neml2;
 
-#define test_LinspacePrimitiveTensor(tensor_type, tensor_name, batch_shape, nstep, dim)              \
+#define test_LinspacePrimitiveTensor(tensor_type, tensor_name, batch_shape, nstep, dim)            \
   SECTION("Linspace" #tensor_type)                                                                 \
   {                                                                                                \
     const auto tensor_name = Factory::get_object_ptr<tensor_type>("Tensors", #tensor_name);        \
@@ -48,7 +48,7 @@ using namespace neml2;
 
 TEST_CASE("LinspacePrimitiveTensor", "[tensors/user_tensors]")
 {
-  load_model("unit/tensors/user_tensors/test_LinspacePrimitiveTensor.i");
+  reload_input("unit/tensors/user_tensors/test_LinspacePrimitiveTensor.i");
 
   TensorShape B{100, 2, 1};
   Size nstep = 100;

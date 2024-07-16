@@ -30,7 +30,7 @@
 
 using namespace neml2;
 
-#define test_OnesPrimitiveTensor(tensor_type, tensor_name, batch_shape)                              \
+#define test_OnesPrimitiveTensor(tensor_type, tensor_name, batch_shape)                            \
   SECTION("Ones" #tensor_type)                                                                     \
   {                                                                                                \
     const auto tensor_name = Factory::get_object_ptr<tensor_type>("Tensors", #tensor_name);        \
@@ -43,7 +43,7 @@ using namespace neml2;
 
 TEST_CASE("OnesPrimitiveTensor", "[tensors/user_tensors]")
 {
-  load_model("unit/tensors/user_tensors/test_OnesPrimitiveTensor.i");
+  reload_input("unit/tensors/user_tensors/test_OnesPrimitiveTensor.i");
 
   TensorShape B{2, 1};
 

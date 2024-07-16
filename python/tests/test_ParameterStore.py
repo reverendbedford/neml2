@@ -26,7 +26,6 @@ import pytest
 from pathlib import Path
 import torch
 import neml2
-from neml2.tensors import Tensor, SR2, LabeledVector
 
 
 def test_named_parameters():
@@ -50,10 +49,10 @@ def test_parameter_derivative():
     model = neml2.load_model(pwd / "test_ParameterStore.i", "model")
 
     # Strain of batch shape (5,2)
-    e = SR2(torch.tensor([0.1, 0.2, 0.05, 0, 0, 0]).expand(5, 2, 6))
+    e = neml2.SR2(torch.tensor([0.1, 0.2, 0.05, 0, 0, 0]).expand(5, 2, 6))
 
     # The input vector only contains strain
-    x = LabeledVector(Tensor(e), [model.input_axis()])
+    x = neml2.LabeledVector(neml2.Tensor(e), [model.input_axis()])
 
     # Setup variable views
     model.reinit(x.tensor().batch.shape)

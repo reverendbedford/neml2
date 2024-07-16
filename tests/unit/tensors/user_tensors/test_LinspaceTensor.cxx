@@ -31,7 +31,7 @@ using namespace neml2;
 
 TEST_CASE("LinspaceTensor", "[tensors/user_tensors]")
 {
-  load_model("unit/tensors/user_tensors/test_LinspaceTensor.i");
+  reload_input("unit/tensors/user_tensors/test_LinspaceTensor.i");
 
   SECTION("LinspaceTensor")
   {

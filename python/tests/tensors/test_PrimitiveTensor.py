@@ -23,11 +23,8 @@
 # THE SOFTWARE.
 
 import pytest
-
-# fixtures
 from common import *
-
-from neml2.tensors import Scalar
+import neml2
 
 
 def test_named_ctors(tensor_options):
@@ -35,31 +32,31 @@ def test_named_ctors(tensor_options):
     shape = batch_shape
 
     # empty
-    A = Scalar.empty(**tensor_options)
+    A = neml2.Scalar.empty(**tensor_options)
     assert A.batch.dim() == 0
-    A = Scalar.empty(batch_shape, **tensor_options)
+    A = neml2.Scalar.empty(batch_shape, **tensor_options)
     assert A.batch.dim() == len(batch_shape)
 
     # zeros
-    A = Scalar.zeros(**tensor_options)
+    A = neml2.Scalar.zeros(**tensor_options)
     assert A.batch.dim() == 0
     assert torch.allclose(A.torch(), torch.zeros(batch_shape, **tensor_options))
-    A = Scalar.zeros(batch_shape, **tensor_options)
+    A = neml2.Scalar.zeros(batch_shape, **tensor_options)
     assert A.batch.dim() == len(batch_shape)
     assert torch.allclose(A.torch(), torch.zeros(shape, **tensor_options))
 
     # ones
-    A = Scalar.ones(**tensor_options)
+    A = neml2.Scalar.ones(**tensor_options)
     assert A.batch.dim() == 0
     assert torch.allclose(A.torch(), torch.ones(batch_shape, **tensor_options))
-    A = Scalar.ones(batch_shape, **tensor_options)
+    A = neml2.Scalar.ones(batch_shape, **tensor_options)
     assert A.batch.dim() == len(batch_shape)
     assert torch.allclose(A.torch(), torch.ones(shape, **tensor_options))
 
     # full
-    A = Scalar.full(1.1, **tensor_options)
+    A = neml2.Scalar.full(1.1, **tensor_options)
     assert A.batch.dim() == 0
     assert torch.allclose(A.torch(), torch.full(batch_shape, 1.1, **tensor_options))
-    A = Scalar.full(batch_shape, 2.3, **tensor_options)
+    A = neml2.Scalar.full(batch_shape, 2.3, **tensor_options)
     assert A.batch.dim() == len(batch_shape)
     assert torch.allclose(A.torch(), torch.full(shape, 2.3, **tensor_options))

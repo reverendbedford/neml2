@@ -33,14 +33,14 @@ TEST_CASE("SolidMechanicsDriver", "[SolidMechanicsDriver]")
 {
   SECTION("strain control")
   {
-    load_model("unit/drivers/solid_mechanics/test_SolidMechanicsDriver_strain.i");
+    reload_input("unit/drivers/solid_mechanics/test_SolidMechanicsDriver_strain.i");
     auto & driver = Factory::get_object<SolidMechanicsDriver>("Drivers", "driver");
     REQUIRE(driver.run());
   }
 
   SECTION("stress control")
   {
-    load_model("unit/drivers/solid_mechanics/test_SolidMechanicsDriver_stress.i");
+    reload_input("unit/drivers/solid_mechanics/test_SolidMechanicsDriver_stress.i");
     auto & driver = Factory::get_object<SolidMechanicsDriver>("Drivers", "driver");
     REQUIRE(driver.run());
   }

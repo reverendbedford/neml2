@@ -46,7 +46,7 @@ ModelUnitTest::expected_options()
   options.set<bool>("check_AD_derivatives") = true;
   options.set<bool>("check_parameter_derivatives") = false;
   options.set<bool>("check_cuda") = true;
-  options.set<bool>("check_inference") = true;
+  options.set<bool>("check_disable_AD") = true;
   options.set<std::vector<VariableName>>("input_batch_tensor_names");
   options.set<std::vector<CrossRef<Tensor>>>("input_batch_tensor_values");
   options.set<std::vector<VariableName>>("output_batch_tensor_names");
@@ -81,7 +81,7 @@ ModelUnitTest::expected_options()
 ModelUnitTest::ModelUnitTest(const OptionSet & options)
   : Driver(options),
     _model(get_model(options.get<std::string>("model"), false)),
-    _model_inference(get_model(options.get<std::string>("model"), true)),
+    _model_disable_AD(get_model(options.get<std::string>("model"), true)),
     _batch_shape(options.get<TensorShape>("batch_shape")),
     _check_values(options.get<bool>("check_values")),
     _check_1st_deriv(options.get<bool>("check_first_derivatives")),
@@ -91,7 +91,7 @@ ModelUnitTest::ModelUnitTest(const OptionSet & options)
     _check_AD_derivs(options.get<bool>("check_AD_derivatives")),
     _check_param_derivs(options.get<bool>("check_parameter_derivatives")),
     _check_cuda(options.get<bool>("check_cuda")),
-    _check_inference(options.get<bool>("check_inference")),
+    _check_disable_AD(options.get<bool>("check_disable_AD")),
     _deriv_order(-1),
     _out_rtol(options.get<Real>("output_rel_tol")),
     _out_atol(options.get<Real>("output_abs_tol")),
@@ -130,8 +130,8 @@ ModelUnitTest::run()
   if (!run(_model))
     return false;
 
-  if (_check_inference)
-    if (!run(_model_inference))
+  if (_check_disable_AD)
+    if (!run(_model_disable_AD))
       return false;
 
   return true;
@@ -165,8 +165,8 @@ ModelUnitTest::check_all(Model & model)
   if (_check_2nd_deriv)
     check_second_derivatives(model, false, false);
 
-  // AD is not supported in inference mode
-  if (!model.inference_mode())
+  // When AD is enabled
+  if (model.is_AD_enabled())
   {
     if (_check_AD_1st_deriv)
       check_derivatives(model, true, true);

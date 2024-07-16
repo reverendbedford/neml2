@@ -32,7 +32,12 @@ from neml2.tensors import Tensor, LabeledVector, LabeledMatrix, TensorType
 def test_get_model():
     pwd = Path(__file__).parent
     neml2.load_input(pwd / "test_Model.i")
-    neml2.get_model("model")
+
+    model1 = neml2.get_model("model")
+    assert model1.is_AD_enabled
+
+    model2 = neml2.get_model("model", True)
+    assert not model2.is_AD_enabled
 
 
 def test_input_type():

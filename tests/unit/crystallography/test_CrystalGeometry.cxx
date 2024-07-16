@@ -41,8 +41,7 @@ TEST_CASE("CrystalGeometry", "[crystallography]")
   const auto & DTO = default_tensor_options();
 
   // Load all the models in
-  Factory::clear();
-  load_model(fs::absolute("unit/crystallography/test_CrystalGeometry.i"));
+  reload_input(fs::absolute("unit/crystallography/test_CrystalGeometry.i"));
 
   SECTION("Simple FCC cubic model, but defined with the full input")
   {

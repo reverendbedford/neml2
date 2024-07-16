@@ -68,7 +68,7 @@ nbatch = 20
     prescribed_temperatures = 'temperatures'
     predictor = LINEAR_EXTRAPOLATION
     save_as = 'result.pt'
-    inference_mode = false
+    enable_AD = true
   []
   [regression]
     type = TransientRegression

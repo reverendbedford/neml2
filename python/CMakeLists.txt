@@ -16,17 +16,11 @@ macro(add_submodule mname msrcs)
   install(TARGETS ${mname} LIBRARY DESTINATION .)
 endmacro()
 
-# macro for defining a submodule with source files automatically discovered from a given directory
-macro(add_submodule_dir mname)
-  file(GLOB_RECURSE msrcs neml2/${mname}/*.cxx)
-  add_submodule(${mname} "${msrcs}")
-endmacro()
-
-# Actually add the submodules (using the above macros)
-add_submodule_dir(base)
-add_submodule_dir(tensors)
-add_submodule_dir(models)
-add_submodule(math neml2/misc/math.cxx)
+# Actually define the submodules
+add_submodule(base neml2/base.cxx)
+add_submodule(math neml2/math.cxx)
+file(GLOB_RECURSE tensors_srcs neml2/tensors/*.cxx)
+add_submodule(tensors "${tensors_srcs}")
 
 # Artifacts
 configure_file(neml2/__init__.py ${NEML2_BINARY_DIR}/python/neml2/__init__.py COPYONLY)

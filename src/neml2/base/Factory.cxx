@@ -24,17 +24,56 @@
 
 #include "neml2/base/Factory.h"
 #include "neml2/base/Registry.h"
+#include "neml2/base/HITParser.h"
 #include "neml2/base/Settings.h"
 #include "neml2/models/Model.h"
 
 namespace neml2
 {
+void
+load_input(const std::filesystem::path & path, const std::string & additional_input)
+{
+  OptionCollection oc;
+
+  // For now we only support HIT
+  if (utils::end_with(path, ".i"))
+  {
+    HITParser parser;
+    oc = parser.parse(path, additional_input);
+  }
+  else
+    throw NEMLException("Unsupported parser type");
+
+  Factory::load_options(oc);
+}
+
+void
+reload_input(const std::filesystem::path & path, const std::string & additional_input)
+{
+  Factory::clear();
+  load_input(path, additional_input);
+}
+
 Model &
-get_model(const std::string & mname, bool inference_mode, bool force_create)
+get_model(const std::string & mname, bool enable_ad, bool force_create)
 {
   OptionSet extra_opts;
-  extra_opts.set<bool>("_inference_mode") = inference_mode;
+  extra_opts.set<bool>("_enable_AD") = enable_ad;
   return Factory::get_object<Model>("Models", mname, extra_opts, force_create);
+}
+
+Model &
+load_model(const std::filesystem::path & path, const std::string & mname, bool enable_ad)
+{
+  load_input(path);
+  return get_model(mname, enable_ad);
+}
+
+Model &
+reload_model(const std::filesystem::path & path, const std::string & mname, bool enable_ad)
+{
+  Factory::clear();
+  return load_model(path, mname, enable_ad);
 }
 
 Factory &
@@ -45,7 +84,7 @@ Factory::get()
 }
 
 void
-Factory::load(const OptionCollection & all_options)
+Factory::load_options(const OptionCollection & all_options)
 {
   auto & factory = get();
 

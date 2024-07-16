@@ -26,7 +26,6 @@ from pathlib import Path
 import math
 import torch
 import neml2
-from neml2.tensors import LabeledVector, Tensor
 
 
 def test_parameter_gradient():
@@ -40,7 +39,7 @@ def test_parameter_gradient():
     # Define the input
     ndof = 26
     x = torch.linspace(0, 0.2, ndof).expand(*B, -1)
-    x = LabeledVector(Tensor(x, len(B)), [model.input_axis()])
+    x = neml2.LabeledVector(neml2.Tensor(x, len(B)), [model.input_axis()])
 
     # Say I want to get the parameter gradient on the flow viscosity
     p = model.named_parameters()["flow_rate.eta"]

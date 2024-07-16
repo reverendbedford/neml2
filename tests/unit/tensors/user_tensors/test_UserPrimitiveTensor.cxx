@@ -33,7 +33,7 @@ TEST_CASE("UserPrimitiveTensor", "[tensors/user_tensors]")
 {
   SECTION("load and reshape correctly")
   {
-    load_model("unit/tensors/user_tensors/test_UserPrimitiveTensor.i");
+    reload_input("unit/tensors/user_tensors/test_UserPrimitiveTensor.i");
 
     const auto user_Scalar = Factory::get_object_ptr<Scalar>("Tensors", "Scalar");
     REQUIRE(user_Scalar->batch_sizes() == TensorShape{3, 2});

@@ -115,9 +115,8 @@ TEST_CASE("SymmetryFromOrbifold", "[tensors]")
   auto matrix_operations = [ops](std::string a)
   { return std::get<0>(ops.at(a)).index({torch::tensor(std::get<1>(ops.at(a)))}); };
 
-  // Load all the models in
-  Factory::clear();
-  load_model(fs::absolute("unit/crystallography/user_tensors/test_SymmetryFromOrbifold.i"));
+  // Load input file
+  reload_input(fs::absolute("unit/crystallography/user_tensors/test_SymmetryFromOrbifold.i"));
 
   auto fmt_name = [](std::string cls) { return "class_" + cls; };
 

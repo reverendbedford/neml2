@@ -24,7 +24,7 @@
 
 import pytest
 
-from neml2.tensors import LabeledAxisAccessor as LAA
+from neml2 import LabeledAxisAccessor as LAA
 
 
 def test_ctors():

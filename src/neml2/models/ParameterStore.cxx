@@ -133,8 +133,7 @@ ParameterStore::declare_parameter(const std::string & name, const std::string & 
 
         OptionSet extra_opts;
         extra_opts.set<NEML2Object *>("_host") = model->host();
-        extra_opts.set<bool>("_inference_mode") =
-            model->input_options().get<bool>("_inference_mode");
+        extra_opts.set<bool>("_enable_AD") = model->input_options().get<bool>("_enable_AD");
         auto pname = _options.get<CrossRef<T>>(input_option_name).raw();
         auto & nl_param = Factory::get_object<NonlinearParameter<T>>(
             "Models", pname, extra_opts, /*force_create=*/false);

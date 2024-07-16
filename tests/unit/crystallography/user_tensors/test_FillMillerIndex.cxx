@@ -32,7 +32,7 @@ using namespace neml2::crystallography;
 
 TEST_CASE("FillMillerIndex", "[crystallography/user_tensors]")
 {
-  load_model("unit/crystallography/user_tensors/test_FillMillerIndex.i");
+  reload_input("unit/crystallography/user_tensors/test_FillMillerIndex.i");
 
   const auto valid_1 = Factory::get_object_ptr<MillerIndex>("Tensors", "v1");
   const auto correct_1 = MillerIndex::fill(1, 2, 3);

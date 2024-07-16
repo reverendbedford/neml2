@@ -24,7 +24,7 @@
 
 import pytest
 import torch
-from neml2.tensors import *
+import neml2
 
 
 def _stringify_fixture(v):

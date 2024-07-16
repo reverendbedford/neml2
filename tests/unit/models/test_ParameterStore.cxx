@@ -33,8 +33,7 @@ using namespace neml2;
 
 TEST_CASE("ParameterStore", "[models]")
 {
-  load_model("unit/models/solid_mechanics/LinearIsotropicElasticity.i");
-  auto & model = Factory::get_object<Model>("Models", "model");
+  auto & model = reload_model("unit/models/solid_mechanics/LinearIsotropicElasticity.i", "model");
   auto batch_shape = TensorShape{5, 2};
   model.reinit(batch_shape);
 
@@ -134,8 +133,7 @@ TEST_CASE("ParameterStore", "[models]")
 
 TEST_CASE("Nested parameter registration")
 {
-  load_model("unit/models/test_ParameterStore.i");
-  auto & model = Factory::get_object<Model>("Models", "model");
+  auto & model = reload_model("unit/models/test_ParameterStore.i", "model");
 
   const auto & params = model.named_parameters();
   REQUIRE(params.has_key("E1.value"));

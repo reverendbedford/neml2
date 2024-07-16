@@ -34,7 +34,7 @@ TEST_CASE("UserTensor", "[tensors/user_tensors]")
 {
   SECTION("load and reshape correctly")
   {
-    load_model("unit/tensors/user_tensors/test_UserTensor.i");
+    reload_input("unit/tensors/user_tensors/test_UserTensor.i");
 
     const auto a = Factory::get_object_ptr<Tensor>("Tensors", "a");
     const auto a_correct = torch::tensor({{{1, 2, 3}, {4, 5, 6}}, {{7, 8, 9}, {10, 11, 12}}},
@@ -67,7 +67,7 @@ TEST_CASE("UserTensor", "[tensors/user_tensors]")
 
   SECTION("error on invalid shape")
   {
-    load_model("unit/tensors/user_tensors/test_UserTensor_error.i");
+    reload_input("unit/tensors/user_tensors/test_UserTensor_error.i");
 
     REQUIRE_THROWS_WITH(
         Factory::get_object_ptr<Tensor>("Tensors", "a"),

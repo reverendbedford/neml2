@@ -27,9 +27,7 @@ from functools import reduce
 
 # fixtures
 from common import *
-
-
-from neml2.tensors import Tensor
+import neml2
 
 
 @pytest.fixture
@@ -48,7 +46,7 @@ def _A(base_shape, tensor_options):
     storage = reduce((lambda x, y: x * y), base_shape, 1)
     sample = torch.arange(storage, **tensor_options).reshape(base_shape)
     sample = (sample - torch.mean(sample) + 1.1) / storage
-    return Tensor(sample, 0)
+    return neml2.Tensor(sample, 0)
 
 
 @pytest.fixture
@@ -61,7 +59,7 @@ def _B(base_shape, tensor_options):
     storage = reduce((lambda x, y: x * y), shape, 1)
     sample = torch.arange(storage, **tensor_options).reshape(shape)
     sample = (sample - torch.mean(sample) - 0.5) / storage
-    return Tensor(sample, 3)
+    return neml2.Tensor(sample, 3)
 
 
 @pytest.fixture
@@ -74,7 +72,7 @@ def _C(base_shape, tensor_options):
     storage = reduce((lambda x, y: x * y), shape, 1)
     sample = torch.arange(storage, **tensor_options).reshape(shape)
     sample = (sample - torch.mean(sample) + 0.3) / storage
-    return Tensor(sample, 4)
+    return neml2.Tensor(sample, 4)
 
 
 @pytest.fixture(params=["_A", "_B", "_C"], ids=["A", "B", "C"])
@@ -84,16 +82,16 @@ def sample(request, tensor_options):
 
 def test_basic(sample, base_shape, tensor_options):
     # Default c'tor
-    A = Tensor()
+    A = neml2.Tensor()
     assert not A.defined()
 
     # From a torch.Tensor and a batch dim
     A0 = torch.ones(3, 4, 5, 6, **tensor_options)
-    A = Tensor(A0, 2)
+    A = neml2.Tensor(A0, 2)
     assert torch.allclose(A.torch(), A0)
 
     # From another Tensor
-    A = Tensor(sample)
+    A = neml2.Tensor(sample)
     assert torch.allclose(A.torch(), sample.torch())
 
     # Basic properties
@@ -223,43 +221,43 @@ def test_unary_ops(sample):
 
 def test_named_ctors(_A, _B, _C, tensor_options):
     # empty_like
-    A = Tensor.empty_like(_A)
+    A = neml2.Tensor.empty_like(_A)
     assert A.batch.dim() == _A.batch.dim()
-    B = Tensor.empty_like(_B)
+    B = neml2.Tensor.empty_like(_B)
     assert B.batch.dim() == _B.batch.dim()
 
     # zeros_like
-    A = Tensor.zeros_like(_A)
+    A = neml2.Tensor.zeros_like(_A)
     assert A.batch.dim() == _A.batch.dim()
     assert torch.allclose(A.torch(), torch.zeros_like(_A.torch()))
-    B = Tensor.zeros_like(_B)
+    B = neml2.Tensor.zeros_like(_B)
     assert B.batch.dim() == _B.batch.dim()
     assert torch.allclose(B.torch(), torch.zeros_like(_B.torch()))
 
     # ones_like
-    A = Tensor.ones_like(_A)
+    A = neml2.Tensor.ones_like(_A)
     assert A.batch.dim() == _A.batch.dim()
     assert torch.allclose(A.torch(), torch.ones_like(_A.torch()))
-    B = Tensor.ones_like(_B)
+    B = neml2.Tensor.ones_like(_B)
     assert B.batch.dim() == _B.batch.dim()
     assert torch.allclose(B.torch(), torch.ones_like(_B.torch()))
 
     # full_like
-    A = Tensor.full_like(_A, 1.1)
+    A = neml2.Tensor.full_like(_A, 1.1)
     assert A.batch.dim() == _A.batch.dim()
     assert torch.allclose(A.torch(), torch.full_like(_A.torch(), 1.1))
-    B = Tensor.full_like(_B, 2.3)
+    B = neml2.Tensor.full_like(_B, 2.3)
     assert B.batch.dim() == _B.batch.dim()
     assert torch.allclose(B.torch(), torch.full_like(_B.torch(), 2.3))
 
     # linspace
-    A = Tensor.linspace(_A, _B, 100)
+    A = neml2.Tensor.linspace(_A, _B, 100)
     assert A.batch.dim() == 4
-    B = Tensor.linspace(_B, _C, 100)
+    B = neml2.Tensor.linspace(_B, _C, 100)
     assert B.batch.dim() == 5
 
     # logspace
-    A = Tensor.logspace(_A, _B, 100)
+    A = neml2.Tensor.logspace(_A, _B, 100)
     assert A.batch.dim() == 4
-    B = Tensor.logspace(_B, _C, 100)
+    B = neml2.Tensor.logspace(_B, _C, 100)
     assert B.batch.dim() == 5

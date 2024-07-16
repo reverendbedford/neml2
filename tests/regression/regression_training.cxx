@@ -35,8 +35,7 @@ TEST_CASE("training")
   // This regression test loads a NEML2 model as if it is being used as an external library/package.
   // A parameter gradient is requested before the model is called twice, after which backward() is
   // called on the objective function to propagate the gradient onto the parameter.
-  load_model("regression/regression_training.i");
-  auto & model = Factory::get_object<Model>("Models", "model");
+  auto & model = reload_model("regression/regression_training.i", "model");
 
   // Reinitialize the model to have the correct batch shape and derivative order
   Size nbatch = 2;

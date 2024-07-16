@@ -56,7 +56,7 @@ TEST_CASE("solid mechanics")
       try
       {
         // Load and run the model
-        load_model(test.filename());
+        reload_input(test.filename());
         auto & driver = Factory::get_object<Driver>("Drivers", "verification");
         REQUIRE(driver.run());
       }

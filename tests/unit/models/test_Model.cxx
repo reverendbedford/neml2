@@ -31,8 +31,7 @@ using namespace neml2;
 
 TEST_CASE("Model", "[models]")
 {
-  load_model("unit/models/ComposedModel3.i");
-  auto & model = Factory::get_object<Model>("Models", "model");
+  auto & model = reload_model("unit/models/ComposedModel3.i", "model");
 
   REQUIRE(model.input_type({"forces", "t"}) == TensorType::kScalar);
   REQUIRE(model.input_type({"forces", "temperature"}) == TensorType::kScalar);

@@ -31,8 +31,7 @@ Assuming the above input file is named "input_file.i", the C++ code snippet belo
 using namespace neml2;
 
 int main() {
-  load_model("input.i");
-  auto & model = get_model("model");
+  auto & model = load_model("input.i", "model");
 
   // ...
 
@@ -60,15 +59,15 @@ Finally, the following code constructs the 3 input strains `in` and performs 3 m
   auto out = model.value(in);
 ```
 
-## Inference Mode {#inference-mode}
+## Enable/disable automatic differentiation {#disable-ad}
 
-By default, inference mode is disabled. During every model evaluation, variables are re-allocated, and variable views are reconfigured. This default behavior avoids in-place operations and is mandatory to use PyTorch automatic differentiation (AD) (i.e. for parameter gradient or AD forward operator).
+By default, automatic differentiation is enabled. During every model evaluation, variables are re-allocated, and variable views are reconfigured. This default behavior avoids in-place operations and is mandatory to use PyTorch automatic differentiation (AD) (i.e. for parameter gradient or AD forward operator).
 
-The default behavior is flexible. However, if PyTorch AD is not needed, i.e., once the model is fully calibrated, the variable reallocation and view reconfiguration can be skipped. The inference mode is designed for that purpose.
+The default behavior is flexible and powerful. However, if PyTorch AD is not needed, i.e., once the model is fully calibrated/trained, the variable reallocation and view reconfiguration can be skipped. The `enable_AD` option is designed for that purpose.
 
-When inference mode is activated, no function graph is built, tensor version numbers are not incremented, and the variables and variable views are setup once and for all, all of which speed up evaluation. See https://pytorch.org/cppdocs/notes/inference_mode.html for more details.
+When AD is disabled, no function graph is built, tensor version numbers are not incremented, and the variables and variable views are setup once and for all, all of which speed up evaluation. Furthermore, this mode is fully compatible with PyTorch's [inference mode](https://pytorch.org/cppdocs/notes/inference_mode.html)
 
-To enable inference mode, use the optional second argument passed to `neml2::get_model`, i.e.
+To disable AD, use the optional second argument passed to `neml2::get_model`, i.e.
 ```cpp
-auto & model = get_model("model", /*inference_mode=*/true);
+auto & model = get_model("model", /*disable_AD=*/true);
 ```

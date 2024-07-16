@@ -42,13 +42,13 @@ Model::expected_options()
   options.set<bool>("_use_AD_second_derivative") = false;
   options.set<int>("_extra_derivative_order") = 0;
   options.set<bool>("_nonlinear_system") = false;
-  options.set<bool>("_inference_mode") = false;
+  options.set<bool>("_enable_AD") = true;
 
   options.set("_use_AD_first_derivative").suppressed() = true;
   options.set("_use_AD_second_derivative").suppressed() = true;
   options.set("_extra_derivative_order").suppressed() = true;
   options.set("_nonlinear_system").suppressed() = true;
-  options.set("_inference_mode").suppressed() = true;
+  options.set("_enable_AD").suppressed() = true;
 
   return options;
 }
@@ -64,7 +64,7 @@ Model::Model(const OptionSet & options)
     _deriv_order(-1),
     _extra_deriv_order(options.get<int>("_extra_derivative_order")),
     _nonlinear_system(options.get<bool>("_nonlinear_system")),
-    _inference_mode(options.get<bool>("_inference_mode"))
+    _enable_AD(options.get<bool>("_enable_AD"))
 {
 }
 
@@ -152,7 +152,7 @@ Model::reinit(bool in, bool out)
 void
 Model::prepare()
 {
-  if (_inference_mode)
+  if (is_AD_disabled())
     zero();
   else
     reinit(false, true);
@@ -280,7 +280,7 @@ Model::check_AD_limitation() const
   if (_AD_1st_deriv && !_AD_2nd_deriv)
     throw NEMLException("AD derivative is requested, but AD second derivative is not requested.");
   if (_AD_1st_deriv || _AD_2nd_deriv)
-    neml_assert(!_inference_mode, "Inference mode does not support AD");
+    neml_assert(is_AD_enabled(), "AD is requested but not enabled");
 }
 
 void
@@ -364,7 +364,7 @@ Model::value()
 {
   check_inplace_dbg();
   {
-    c10::InferenceMode guard(_inference_mode);
+    c10::InferenceMode guard(is_AD_disabled());
     set_value(true, false, false);
   }
 }
@@ -379,7 +379,7 @@ Model::value_and_dvalue()
 
   if (!_AD_1st_deriv)
   {
-    c10::InferenceMode guard(_inference_mode);
+    c10::InferenceMode guard(is_AD_disabled());
     set_value(true, true, false);
   }
   else
@@ -401,7 +401,7 @@ Model::value_and_dvalue_and_d2value()
 
   if (!_AD_2nd_deriv)
   {
-    c10::InferenceMode guard(_inference_mode);
+    c10::InferenceMode guard(is_AD_disabled());
     set_value(true, true, true);
   }
   else
@@ -425,10 +425,12 @@ void
 Model::check_inplace_dbg()
 {
 #ifndef NDEBUG
-  neml_assert_dbg(_inference_mode || !_evaluated_once,
-                  "During the non-inference mode forward pass, model '",
+  neml_assert_dbg(!_enable_AD || !_evaluated_once,
+                  "Model '",
                   name(),
-                  "' is being evaluated a second time");
+                  "' is being evaluated a second time, which could lead to in-place modification "
+                  "of function graph. If you do not need to use automatic differentiation, set "
+                  "enable_AD = false to avoid this error.");
   _evaluated_once = true;
 #endif
 }

@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 #pragma once
 
+#include <filesystem>
 #include "neml2/base/NEML2Object.h"
 #include "neml2/misc/error.h"
 #include "neml2/base/OptionCollection.h"
@@ -34,15 +35,57 @@ class Model;
 class Settings;
 
 /**
+ * @brief A convenient function to parse all options from an input file
+ *
+ * Previously loaded input options will be discarded!
+ *
+ * @param path Path to the input file to be parsed
+ * @param additional_input Additional cliargs to pass to the parser
+ */
+void load_input(const std::filesystem::path & path, const std::string & additional_input = "");
+
+/**
+ * @brief Similar to neml2::load_input, but additionally clear the Factory before loading the
+ * options, therefore all previously loaded models become dangling.
+ *
+ * Previously loaded input options will be discarded!
+ *
+ * @param path Path to the input file to be parsed
+ * @param additional_input Additional cliargs to pass to the parser
+ */
+void reload_input(const std::filesystem::path & path, const std::string & additional_input = "");
+
+/**
  * @brief A convenient function to manufacture a neml2::Model
  *
  * The input file must have already been parsed and loaded.
  *
  * @param mname Name of the model
- * @param inferece_mode The inference mode
+ * @param enable_ad Enable automatic differentiation
  * @param force_create Whether to force create the model even if one has already been manufactured
  */
-Model & get_model(const std::string & mname, bool inferece_mode = false, bool force_create = true);
+Model & get_model(const std::string & mname, bool enable_ad = true, bool force_create = true);
+
+/**
+ * @brief A convenient function to load an input file and get a model
+ *
+ * @param path Path to the input file to be parsed
+ * @param mname Name of the model
+ * @param enable_ad Enable automatic differentiation
+ */
+Model &
+load_model(const std::filesystem::path & path, const std::string & mname, bool enable_ad = true);
+
+/**
+ * @brief Similar to neml2::load_model, but additionally clear the Factory before loading the model,
+ * therefore all previously loaded models become dangling.
+ *
+ * @param path Path to the input file to be parsed
+ * @param mname Name of the model
+ * @param enable_ad Enable automatic differentiation
+ */
+Model &
+reload_model(const std::filesystem::path & path, const std::string & mname, bool enable_ad = true);
 
 /**
  * The factory is responsible for:
@@ -105,12 +148,9 @@ public:
    *
    * @param all_options The collection of all the options of the objects to be manufactured.
    */
-  static void load(const OptionCollection & all_options);
+  static void load_options(const OptionCollection & all_options);
 
-  /**
-   * @brief Destruct all the objects.
-   *
-   */
+  /// @brief Destruct all the objects.
   static void clear();
 
   /**
