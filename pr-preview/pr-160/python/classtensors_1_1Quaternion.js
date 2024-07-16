@@ -35,6 +35,8 @@ var classtensors_1_1Quaternion =
     [ "requires_grad", "classtensors_1_1Quaternion.html#aa29879cd7288410c6dcf2cca2e37aa0f", null ],
     [ "requires_grad_", "classtensors_1_1Quaternion.html#abc5944a8aa210bfceceb00812b61a350", null ],
     [ "shape", "classtensors_1_1Quaternion.html#a43080b242de156a5409d4b58fc7d0c9c", null ],
+    [ "tensor", "classtensors_1_1Quaternion.html#a1b71e090e1aac169ef1f148e9542fae4", null ],
     [ "to", "classtensors_1_1Quaternion.html#a3c4336151cd2e3249a3883c8351c285c", null ],
+    [ "torch", "classtensors_1_1Quaternion.html#a3de4f960605091b71aa501d96171b3c1", null ],
     [ "torch", "classtensors_1_1Quaternion.html#a3de4f960605091b71aa501d96171b3c1", null ]
 ];

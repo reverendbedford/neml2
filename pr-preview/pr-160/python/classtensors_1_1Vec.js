@@ -50,7 +50,9 @@ var classtensors_1_1Vec =
     [ "requires_grad_", "classtensors_1_1Vec.html#abc5944a8aa210bfceceb00812b61a350", null ],
     [ "rotate", "classtensors_1_1Vec.html#a8275388776b89092c0e5297fe7725b78", null ],
     [ "shape", "classtensors_1_1Vec.html#a43080b242de156a5409d4b58fc7d0c9c", null ],
+    [ "tensor", "classtensors_1_1Vec.html#a1b71e090e1aac169ef1f148e9542fae4", null ],
     [ "to", "classtensors_1_1Vec.html#a4774cedea2842b7b9cf44479f1cdb625", null ],
+    [ "torch", "classtensors_1_1Vec.html#a3de4f960605091b71aa501d96171b3c1", null ],
     [ "torch", "classtensors_1_1Vec.html#a3de4f960605091b71aa501d96171b3c1", null ],
     [ "transform", "classtensors_1_1Vec.html#a5e9fd2d65f823b64bd8cc7e930ad390e", null ]
 ];
