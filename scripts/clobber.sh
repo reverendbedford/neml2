@@ -25,7 +25,7 @@
 # THE SOFTWARE.
 
 # files to clobber
-files=$(git ls-files . ':!:_deps' ':!:.vscode' ':!:.env' --ignored --exclude-standard --others --directory)
+files=$(git ls-files . ':!:_deps' ':!:.vscode' ':!:.env' --ignored --exclude-standard --others)
 
 # remove files
 rm -rf ${files[@]}
