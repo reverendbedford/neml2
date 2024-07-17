@@ -14,7 +14,7 @@ var searchData=
   ['inbound_5fitems_11',['inbound_items',['../classneml2_1_1DependencyResolver.html#a1a9d9fec50cf186c13a8e3f68ab8f2ba',1,'neml2::DependencyResolver']]],
   ['indentation_12',['indentation',['../namespaceneml2_1_1utils.html#a83b2c23d00993fd3cf60dd9979fb5e4f',1,'neml2::utils']]],
   ['indexing_13',['Tensor indexing',['../system-tensors.html#tensor-indexing',1,'']]],
-  ['indices_14',['indices',['../classneml2_1_1LabeledAxis.html#a53bcc40242da2cdf14fa1a3454c799af',1,'neml2::LabeledAxis::indices(const LabeledAxisAccessor &amp;accessor) const'],['../classneml2_1_1LabeledAxis.html#a461644a55897b47d5ff43e91538f2117',1,'neml2::LabeledAxis::indices(const LabeledAxis &amp;other, bool recursive=true, bool inclusive=true) const']]],
+  ['indices_14',['indices',['../classneml2_1_1LabeledAxis.html#a53bcc40242da2cdf14fa1a3454c799af',1,'neml2::LabeledAxis']]],
   ['init_5fscaling_15',['init_scaling',['../classneml2_1_1NonlinearSystem.html#a713c51e9741d73a5bb43fa5436c28aa6',1,'neml2::NonlinearSystem']]],
   ['inner_16',['inner',['../classneml2_1_1SR2.html#a3ad9dd7df338ec8cf86da3f7e5da2ed6',1,'neml2::SR2']]],
   ['input_17',['INPUT',['../namespaceneml2.html#ab600865ffa5d3681d723ef019d109535aa84cc046d48610b05c21fd3670d0c829',1,'neml2']]],

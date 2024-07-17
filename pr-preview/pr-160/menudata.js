@@ -49,5 +49,9 @@ var menudata={children:[
 {text:"Driver",url:"system-drivers.html"}]},
 {text:"Physics Documentation",url:"usergroup4.html",children:[
 {text:"Solid Mechanics",url:"solid-mechanics.html"}]},
-{text:"C++ API Reference",url:"annotated.html"},
-{text:"Python API Reference",url:"python/annotated.html"}]}
+{text:"C++ API Reference",url:"usergroup5.html",children:[
+{text:"Namespaces",url:"namespaces.html"},
+{text:"Classes",url:"annotated.html"}]},
+{text:"Python API Reference",url:"usergroup6.html",children:[
+{text:"Namespaces",url:"python/namespaces.html"},
+{text:"Classes",url:"python/annotated.html"}]}]}

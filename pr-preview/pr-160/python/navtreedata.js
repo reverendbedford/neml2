@@ -56,26 +56,44 @@ var NAVTREE =
     [ "Physics Documentation", "usergroup4.html", [
       [ "Solid Mechanics", "../solid-mechanics.html", null ]
     ] ],
-    [ "C++ API Reference", "../annotated.html", null ],
-    [ "Python API Reference", "annotated.html", "annotated" ]
+    [ "C++ API Reference", "usergroup5.html", [
+      [ "Namespaces", "../namespaces.html", null ],
+      [ "Classes", "../annotated.html", null ]
+    ] ],
+    [ "Python API Reference", "usergroup6.html", [
+      [ "Namespaces", "namespaces.html", "namespaces" ],
+      [ "Classes", "annotated.html", "annotated" ]
+    ] ]
   ] ]
 ];
 
 var NAVTREEINDEX =
 [
 "../annotated.html",
-"classtensors_1_1Quaternion.html#a6c473406fb744d689106b5c22955b8e0",
-"classtensors_1_1R2BatchView.html#a898f15ca11473ec6406c0aa4b16fafbd",
-"classtensors_1_1R4BaseView.html#ad0bfee3b4e905508ae67a8f129f7b413",
-"classtensors_1_1Rot.html#aa29879cd7288410c6dcf2cca2e37aa0f",
-"classtensors_1_1SFFR4BatchView.html#ac74afcc534eae96fb048710a0e7686e8",
-"classtensors_1_1SR2BaseView.html#aeb277e63e56c5bb054baebc086fc4045",
-"classtensors_1_1SSR4BaseView.html#a2c51b76aa4c970a721ff560d3af20b2e",
-"classtensors_1_1Scalar.html#a1b71e090e1aac169ef1f148e9542fae4",
-"classtensors_1_1Tensor.html#a7288ad1bb50f506ce0898fef55b411b6",
-"classtensors_1_1VecBaseView.html#adf3e049b7e15518e913bfedf9a1eb46f",
-"classtensors_1_1WSR4.html#aac28ca36673931b4ce74e608155dba41",
-"classtensors_1_1WWR4BatchView.html#ad95658c7be393aed001036ee929a42ae"
+"classtensors_1_1MillerIndexBaseView.html#a291cf91b893b7bf50a66d4a6702149e7",
+"classtensors_1_1Quaternion.html#aac28ca36673931b4ce74e608155dba41",
+"classtensors_1_1R2.html#a3de4f960605091b71aa501d96171b3c1",
+"classtensors_1_1R2BatchView.html#ac93bd8bd539511c74322b2cb8dca572a",
+"classtensors_1_1R3BatchView.html#a6289b1b2f5a8a05e97e2cee522049068",
+"classtensors_1_1R4BaseView.html#af03a5ff6f37190fde013eb20d78001fa",
+"classtensors_1_1R5BaseView.html#ab2fcbe4dedb2db4f6474278be34510b6",
+"classtensors_1_1Rot.html#ad3576baf9b55cc1897835225c032643f",
+"classtensors_1_1SFFR4.html#a43080b242de156a5409d4b58fc7d0c9c",
+"classtensors_1_1SFFR4BatchView.html#ae019f0eab707b18f69d4e343ef331c7f",
+"classtensors_1_1SFR3BatchView.html#aa67f376033ddbfd78eae8e1e9ee83809",
+"classtensors_1_1SR2BatchView.html#a291cf91b893b7bf50a66d4a6702149e7",
+"classtensors_1_1SSFR5BaseView.html#ad9f4bce894e0267718c27bce7e305b96",
+"classtensors_1_1SSR4BaseView.html#a7d582491158ffeb2f38dcaa6ced0452d",
+"classtensors_1_1SWR4BaseView.html",
+"classtensors_1_1Scalar.html#a2e6bc6116432bcb85f0d62ae6c994fe8",
+"classtensors_1_1ScalarBaseView.html#a43080b242de156a5409d4b58fc7d0c9c",
+"classtensors_1_1Tensor.html#aac28ca36673931b4ce74e608155dba41",
+"classtensors_1_1TensorType.html",
+"classtensors_1_1VecBatchView.html#a11a7c5eec40cedcbe6607a47b8991563",
+"classtensors_1_1WR2BaseView.html#a5516bea1295ab2674e28fd1c33eeee8f",
+"classtensors_1_1WSR4.html#ae07f7930f92d3591c93e2381cd5be285",
+"classtensors_1_1WWR4.html#a785f0a01ccfb16823306f8ed99ffbbf7",
+"namespacebase.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

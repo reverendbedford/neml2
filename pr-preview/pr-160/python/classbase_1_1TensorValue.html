@@ -115,20 +115,31 @@ $(function(){initNavTree('classbase_1_1TensorValue.html',''); initResizable(); }
   <div class="headertitle"><div class="title">TensorValue Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<table class="memberdecls">
+
+<p>The interface for working with tensor values (parameters, buffers, etc.) managed by models.  
+ <a href="#details">More...</a></p>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The interface for working with tensor values (parameters, buffers, etc.) managed by models. </p>
+</div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ab8c7a0f1e3e4f83486fa2916dc55b45d" id="r_ab8c7a0f1e3e4f83486fa2916dc55b45d"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab8c7a0f1e3e4f83486fa2916dc55b45d">requires_grad_</a> (self, bool arg0)</td></tr>
-<tr class="separator:ab8c7a0f1e3e4f83486fa2916dc55b45d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2bfc1ed4f9ace9af84ca1c4b3be1ce38" id="r_a2bfc1ed4f9ace9af84ca1c4b3be1ce38"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2bfc1ed4f9ace9af84ca1c4b3be1ce38">requires_grad_</a> (self, bool req=True)</td></tr>
+<tr class="memdesc:a2bfc1ed4f9ace9af84ca1c4b3be1ce38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the requires_grad property of the underlying tensor.  <br /></td></tr>
+<tr class="separator:a2bfc1ed4f9ace9af84ca1c4b3be1ce38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0abbbc1f93e288b1ce6463994018bffa" id="r_a0abbbc1f93e288b1ce6463994018bffa"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0abbbc1f93e288b1ce6463994018bffa">set_</a> (self, <a class="el" href="classtensors_1_1Tensor.html">tensors.Tensor</a> arg0)</td></tr>
+<tr class="memdesc:a0abbbc1f93e288b1ce6463994018bffa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modify the underlying tensor data.  <br /></td></tr>
 <tr class="separator:a0abbbc1f93e288b1ce6463994018bffa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3b89f32fb52c5a65b069e57cb17c187" id="r_ac3b89f32fb52c5a65b069e57cb17c187"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensors_1_1Tensor.html">tensors.Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac3b89f32fb52c5a65b069e57cb17c187">tensor</a> (self)</td></tr>
+<tr class="memdesc:ac3b89f32fb52c5a65b069e57cb17c187"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert this to a <a class="el" href="classtensors_1_1Tensor.html">tensors.Tensor</a>.  <br /></td></tr>
 <tr class="separator:ac3b89f32fb52c5a65b069e57cb17c187"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3de4f960605091b71aa501d96171b3c1" id="r_a3de4f960605091b71aa501d96171b3c1"><td class="memItemLeft" align="right" valign="top">torch.Tensor&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3de4f960605091b71aa501d96171b3c1">torch</a> (self)</td></tr>
+<tr class="memdesc:a3de4f960605091b71aa501d96171b3c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert this to a torch.Tensor.  <br /></td></tr>
 <tr class="separator:a3de4f960605091b71aa501d96171b3c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c473406fb744d689106b5c22955b8e0" id="r_a6c473406fb744d689106b5c22955b8e0"><td class="memItemLeft" align="right" valign="top">torch.Tensor&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6c473406fb744d689106b5c22955b8e0">grad</a> (self)</td></tr>
+<tr class="memdesc:a6c473406fb744d689106b5c22955b8e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the accumulated vector-Jacobian product after a backward propagation.  <br /></td></tr>
 <tr class="separator:a6c473406fb744d689106b5c22955b8e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa29879cd7288410c6dcf2cca2e37aa0f" id="r_aa29879cd7288410c6dcf2cca2e37aa0f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa29879cd7288410c6dcf2cca2e37aa0f">requires_grad</a> (self)</td></tr>
+<tr class="memdesc:aa29879cd7288410c6dcf2cca2e37aa0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value of the boolean requires_grad property of the underlying tensor.  <br /></td></tr>
 <tr class="separator:aa29879cd7288410c6dcf2cca2e37aa0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -147,6 +158,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Retrieve the accumulated vector-Jacobian product after a backward propagation. </p>
+
 </div>
 </div>
 <a id="aa29879cd7288410c6dcf2cca2e37aa0f" name="aa29879cd7288410c6dcf2cca2e37aa0f"></a>
@@ -164,10 +177,12 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Value of the boolean requires_grad property of the underlying tensor. </p>
+
 </div>
 </div>
-<a id="ab8c7a0f1e3e4f83486fa2916dc55b45d" name="ab8c7a0f1e3e4f83486fa2916dc55b45d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab8c7a0f1e3e4f83486fa2916dc55b45d">&#9670;&#160;</a></span>requires_grad_()</h2>
+<a id="a2bfc1ed4f9ace9af84ca1c4b3be1ce38" name="a2bfc1ed4f9ace9af84ca1c4b3be1ce38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2bfc1ed4f9ace9af84ca1c4b3be1ce38">&#9670;&#160;</a></span>requires_grad_()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -180,10 +195,12 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>arg0</em></span>&#160;)</td>
+          <td class="paramtype">bool </td>          <td class="paramname"><span class="paramname"><em>req</em><span class="paramdefsep"> = </span><span class="paramdefval">True</span></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Set the requires_grad property of the underlying tensor. </p>
 
 </div>
 </div>
@@ -206,6 +223,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Modify the underlying tensor data. </p>
+
 </div>
 </div>
 <a id="ac3b89f32fb52c5a65b069e57cb17c187" name="ac3b89f32fb52c5a65b069e57cb17c187"></a>
@@ -223,6 +242,9 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Convert this to a <a class="el" href="classtensors_1_1Tensor.html">tensors.Tensor</a>. </p>
+<p>This conversion takes ownership of the tensor, and so any modification to the returned <a class="el" href="classtensors_1_1Tensor.html">tensors.Tensor</a> does not affect the original tensors.TensorValue. Use tensors.TensorValue.set_ instead to modify the tensor value. </p>
+
 </div>
 </div>
 <a id="a3de4f960605091b71aa501d96171b3c1" name="a3de4f960605091b71aa501d96171b3c1"></a>
@@ -239,6 +261,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Convert this to a torch.Tensor. </p>
+<p>This conversion takes ownership of the tensor, and so any modification to the returned torch.Tensor does not affect the original tensors.TensorValue. Use tensors.TensorValue.set_ instead to modify the tensor value. </p>
 
 </div>
 </div>

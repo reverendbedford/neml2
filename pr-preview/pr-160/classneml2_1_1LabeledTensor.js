@@ -2,7 +2,7 @@ var classneml2_1_1LabeledTensor =
 [
     [ "variable_type", "structneml2_1_1LabeledTensor_1_1variable__type.html", "structneml2_1_1LabeledTensor_1_1variable__type" ],
     [ "LabeledTensor", "classneml2_1_1LabeledTensor.html#a2001baf22112901bed4a41caa0d4dc46", null ],
-    [ "LabeledTensor", "classneml2_1_1LabeledTensor.html#ac3dead2e259ef1d3531e9ca9113fd2d3", null ],
+    [ "LabeledTensor", "classneml2_1_1LabeledTensor.html#a5dc3abe88adefcb00e3b3a437c7bb48e", null ],
     [ "LabeledTensor", "classneml2_1_1LabeledTensor.html#acd06015a3f6320db2a8014989cbfe51f", null ],
     [ "LabeledTensor", "classneml2_1_1LabeledTensor.html#a8a943be70cc3cf2838b3b4adb3b66c07", null ],
     [ "axes", "classneml2_1_1LabeledTensor.html#afec8dac6ca9571d6393480a14f80b5e6", null ],

@@ -11,7 +11,7 @@ var searchData=
   ['improper_5frotation_5ftransform_8',['improper_rotation_transform',['../namespaceneml2.html#a7ef80b46bb72d2f83fb06c6e0a505adb',1,'neml2']]],
   ['inbound_5fitems_9',['inbound_items',['../classneml2_1_1DependencyResolver.html#a1a9d9fec50cf186c13a8e3f68ab8f2ba',1,'neml2::DependencyResolver']]],
   ['indentation_10',['indentation',['../namespaceneml2_1_1utils.html#a83b2c23d00993fd3cf60dd9979fb5e4f',1,'neml2::utils']]],
-  ['indices_11',['indices',['../classneml2_1_1LabeledAxis.html#a53bcc40242da2cdf14fa1a3454c799af',1,'neml2::LabeledAxis::indices(const LabeledAxisAccessor &amp;accessor) const'],['../classneml2_1_1LabeledAxis.html#a461644a55897b47d5ff43e91538f2117',1,'neml2::LabeledAxis::indices(const LabeledAxis &amp;other, bool recursive=true, bool inclusive=true) const']]],
+  ['indices_11',['indices',['../classneml2_1_1LabeledAxis.html#a53bcc40242da2cdf14fa1a3454c799af',1,'neml2::LabeledAxis']]],
   ['init_5fscaling_12',['init_scaling',['../classneml2_1_1NonlinearSystem.html#a713c51e9741d73a5bb43fa5436c28aa6',1,'neml2::NonlinearSystem']]],
   ['inner_13',['inner',['../classneml2_1_1SR2.html#a3ad9dd7df338ec8cf86da3f7e5da2ed6',1,'neml2::SR2']]],
   ['input_5faxis_14',['input_axis',['../classneml2_1_1VariableStore.html#ae45725d41908c7d7263e46c8f3a9073e',1,'neml2::VariableStore::input_axis()'],['../classneml2_1_1VariableStore.html#aa0d85fd96f860ba66fdbaa982b89b780',1,'neml2::VariableStore::input_axis() const']]],

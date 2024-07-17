@@ -115,36 +115,52 @@ $(function(){initNavTree('classbase_1_1Model.html',''); initResizable(); });
   <div class="headertitle"><div class="title">Model Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<table class="memberdecls">
+
+<p>A thin wrapper around neml2::Model.  
+ <a href="#details">More...</a></p>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>A thin wrapper around neml2::Model. </p>
+</div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ab2f6cf769d5b6434233b9f43308e9934" id="r_ab2f6cf769d5b6434233b9f43308e9934"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classbase_1_1TensorValue.html">TensorValue</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab2f6cf769d5b6434233b9f43308e9934">get_parameter</a> (self, str arg0)</td></tr>
+<tr class="memdesc:ab2f6cf769d5b6434233b9f43308e9934"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a model parameter given its name.  <br /></td></tr>
 <tr class="separator:ab2f6cf769d5b6434233b9f43308e9934"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afbbc96065eb742fa5cd67dd1dc7dd535" id="r_afbbc96065eb742fa5cd67dd1dc7dd535"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensors_1_1LabeledAxis.html">tensors.LabeledAxis</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afbbc96065eb742fa5cd67dd1dc7dd535">input_axis</a> (self)</td></tr>
+<tr class="memdesc:afbbc96065eb742fa5cd67dd1dc7dd535"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input axis of the model.  <br /></td></tr>
 <tr class="separator:afbbc96065eb742fa5cd67dd1dc7dd535"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f94506b6413ac9df21ac0300ba24d9a" id="r_a6f94506b6413ac9df21ac0300ba24d9a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensors_1_1TensorType.html">tensors.TensorType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6f94506b6413ac9df21ac0300ba24d9a">input_type</a> (self, <a class="el" href="classtensors_1_1LabeledAxisAccessor.html">tensors.LabeledAxisAccessor</a> variable)</td></tr>
+<tr class="memdesc:a6f94506b6413ac9df21ac0300ba24d9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Introspect the underlying tensor type of an input variable.  <br /></td></tr>
 <tr class="separator:a6f94506b6413ac9df21ac0300ba24d9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab95c1191de8ec3715c56e0eb951aa73c" id="r_ab95c1191de8ec3715c56e0eb951aa73c"><td class="memItemLeft" align="right" valign="top">dict[str, <a class="el" href="classbase_1_1TensorValue.html">TensorValue</a>]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab95c1191de8ec3715c56e0eb951aa73c">named_buffers</a> (self)</td></tr>
+<tr class="memdesc:ab95c1191de8ec3715c56e0eb951aa73c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the model buffers.  <br /></td></tr>
 <tr class="separator:ab95c1191de8ec3715c56e0eb951aa73c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af049d440baa401a2c05c4324310ce535" id="r_af049d440baa401a2c05c4324310ce535"><td class="memItemLeft" align="right" valign="top">dict[str, <a class="el" href="classbase_1_1TensorValue.html">TensorValue</a>]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af049d440baa401a2c05c4324310ce535">named_parameters</a> (self)</td></tr>
+<tr class="memdesc:af049d440baa401a2c05c4324310ce535"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the model parameters.  <br /></td></tr>
 <tr class="separator:af049d440baa401a2c05c4324310ce535"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7d66176cb1088e4a0d603c7c84f8c54" id="r_af7d66176cb1088e4a0d603c7c84f8c54"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensors_1_1LabeledAxis.html">tensors.LabeledAxis</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af7d66176cb1088e4a0d603c7c84f8c54">output_axis</a> (self)</td></tr>
+<tr class="memdesc:af7d66176cb1088e4a0d603c7c84f8c54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input axis of the model.  <br /></td></tr>
 <tr class="separator:af7d66176cb1088e4a0d603c7c84f8c54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ba29945714788bcba5e34fdb030772a" id="r_a1ba29945714788bcba5e34fdb030772a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensors_1_1TensorType.html">tensors.TensorType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1ba29945714788bcba5e34fdb030772a">output_type</a> (self, <a class="el" href="classtensors_1_1LabeledAxisAccessor.html">tensors.LabeledAxisAccessor</a> variable)</td></tr>
+<tr class="memdesc:a1ba29945714788bcba5e34fdb030772a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Introspect the underlying tensor type of an output variable.  <br /></td></tr>
 <tr class="separator:a1ba29945714788bcba5e34fdb030772a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae56129a5de23cb944131ab26d3db4645" id="r_ae56129a5de23cb944131ab26d3db4645"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae56129a5de23cb944131ab26d3db4645">reinit</a> (self, tuple[int,...] batch_shape, int deriv_order=0, torch.device device=..., torch.dtype dtype=...)</td></tr>
+<tr class="memdesc:ae56129a5de23cb944131ab26d3db4645"><td class="mdescLeft">&#160;</td><td class="mdescRight">(Re)initialize the model with given batch shape, derivative order, device, and dtype.  <br /></td></tr>
 <tr class="separator:ae56129a5de23cb944131ab26d3db4645"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3afb1b1b08ed04f3701c1007a1c5c8d7" id="r_a3afb1b1b08ed04f3701c1007a1c5c8d7"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3afb1b1b08ed04f3701c1007a1c5c8d7">set_parameter</a> (self, str arg0, <a class="el" href="classtensors_1_1Tensor.html">tensors.Tensor</a> arg1)</td></tr>
+<tr class="memdesc:a3afb1b1b08ed04f3701c1007a1c5c8d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the value for a model parameter.  <br /></td></tr>
 <tr class="separator:a3afb1b1b08ed04f3701c1007a1c5c8d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4da0b18241d91d9bcf5d92d7e35079ea" id="r_a4da0b18241d91d9bcf5d92d7e35079ea"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4da0b18241d91d9bcf5d92d7e35079ea">set_parameters</a> (self, dict[str, <a class="el" href="classtensors_1_1Tensor.html">tensors.Tensor</a>] arg0)</td></tr>
+<tr class="memdesc:a4da0b18241d91d9bcf5d92d7e35079ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the values for multiple model parameters.  <br /></td></tr>
 <tr class="separator:a4da0b18241d91d9bcf5d92d7e35079ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a228fadaac9d96aa86875a51a2344c0e7" id="r_a228fadaac9d96aa86875a51a2344c0e7"><td class="memItemLeft" align="right" valign="top">typing.Any&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a228fadaac9d96aa86875a51a2344c0e7">value</a> (self, typing.Any arg0)</td></tr>
+<tr class="memdesc:a228fadaac9d96aa86875a51a2344c0e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluate the model with given input and return the output.  <br /></td></tr>
 <tr class="separator:a228fadaac9d96aa86875a51a2344c0e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a103c35376af930260dd74691270031fc" id="r_a103c35376af930260dd74691270031fc"><td class="memItemLeft" align="right" valign="top">tuple&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a103c35376af930260dd74691270031fc">value_and_dvalue</a> (self, typing.Any arg0)</td></tr>
+<tr class="memdesc:a103c35376af930260dd74691270031fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluate the model with given input and return the output as well the first derivative.  <br /></td></tr>
 <tr class="separator:a103c35376af930260dd74691270031fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad313b7f7b925da79ca78941cbe14324a" id="r_ad313b7f7b925da79ca78941cbe14324a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad313b7f7b925da79ca78941cbe14324a">is_AD_disabled</a> (self)</td></tr>
-<tr class="separator:ad313b7f7b925da79ca78941cbe14324a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac650847551fe3dc3217093e1f30a0ff" id="r_aac650847551fe3dc3217093e1f30a0ff"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aac650847551fe3dc3217093e1f30a0ff">is_AD_enabled</a> (self)</td></tr>
+<tr class="memdesc:aac650847551fe3dc3217093e1f30a0ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether automatic differentiation is enabled for this model.  <br /></td></tr>
 <tr class="separator:aac650847551fe3dc3217093e1f30a0ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -167,6 +183,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Get a model parameter given its name. </p>
+
 </div>
 </div>
 <a id="afbbc96065eb742fa5cd67dd1dc7dd535" name="afbbc96065eb742fa5cd67dd1dc7dd535"></a>
@@ -183,6 +201,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Input axis of the model. </p>
+<p>The axis contains information on variable names and their associated slicing indices. </p>
 
 </div>
 </div>
@@ -205,22 +226,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-</div>
-</div>
-<a id="ad313b7f7b925da79ca78941cbe14324a" name="ad313b7f7b925da79ca78941cbe14324a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad313b7f7b925da79ca78941cbe14324a">&#9670;&#160;</a></span>is_AD_disabled()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"> bool is_AD_disabled </td>
-          <td>(</td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
+<p>Introspect the underlying tensor type of an input variable. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtensors_1_1TensorType.html" title="Members:">tensors.TensorType</a> </dd></dl>
 
 </div>
 </div>
@@ -239,6 +246,9 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Whether automatic differentiation is enabled for this model. </p>
+<p>This property cannot be modified once the model is created. Use the <code>enable_AD</code> option of <a class="el" href="namespacebase.html#a598342e05a229dd7172903a9a131fc34" title="A convenient function to load an input file and get a model.">base.load_model</a> or <a class="el" href="namespacebase.html#a47dc10eb9f756543982ec55d233b3bb8" title="Create a models.Model from given input options.">base.get_model</a> to control this property. </p>
+
 </div>
 </div>
 <a id="ab95c1191de8ec3715c56e0eb951aa73c" name="ab95c1191de8ec3715c56e0eb951aa73c"></a>
@@ -255,6 +265,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Get the model buffers. </p>
+<p>The keys of the returned dictionary are the buffers' names. </p>
 
 </div>
 </div>
@@ -273,6 +286,9 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Get the model parameters. </p>
+<p>The keys of the returned dictionary are the parameters' names. </p>
+
 </div>
 </div>
 <a id="af7d66176cb1088e4a0d603c7c84f8c54" name="af7d66176cb1088e4a0d603c7c84f8c54"></a>
@@ -289,6 +305,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Input axis of the model. </p>
+<p>The axis contains information on variable names and their associated slicing indices. </p>
 
 </div>
 </div>
@@ -310,6 +329,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Introspect the underlying tensor type of an output variable. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classtensors_1_1TensorType.html" title="Members:">tensors.TensorType</a> </dd></dl>
 
 </div>
 </div>
@@ -347,6 +369,17 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>(Re)initialize the model with given batch shape, derivative order, device, and dtype. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">batch_shape</td><td>Batch shape used to allocate input, output, and derivative storage </td></tr>
+    <tr><td class="paramname">deriv_order</td><td>An integer ranging from 0-2. When set to 0, only the output storage will be allocated; when set to 1, both the output and the first derivative storage are allocated; when set to 2, the second derivative storage is additionally allocated. </td></tr>
+    <tr><td class="paramname">device</td><td>Device on which the model will be evaluated. All parameters, buffers, and custom data are synced to the given device. </td></tr>
+    <tr><td class="paramname">dtype</td><td>Floating point scalar type used throughout the model. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a3afb1b1b08ed04f3701c1007a1c5c8d7" name="a3afb1b1b08ed04f3701c1007a1c5c8d7"></a>
@@ -373,6 +406,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Set the value for a model parameter. </p>
+
 </div>
 </div>
 <a id="a4da0b18241d91d9bcf5d92d7e35079ea" name="a4da0b18241d91d9bcf5d92d7e35079ea"></a>
@@ -393,6 +428,8 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Set the values for multiple model parameters. </p>
 
 </div>
 </div>
@@ -415,6 +452,9 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Evaluate the model with given input and return the output. </p>
+<p>Note that the input can either be of type torch.Tensor, <a class="el" href="classtensors_1_1Tensor.html">tensors.Tensor</a>, or <a class="el" href="classtensors_1_1LabeledVector.html">tensors.LabeledVector</a>. The returned output will be of the covariant type of the input. </p>
+
 </div>
 </div>
 <a id="a103c35376af930260dd74691270031fc" name="a103c35376af930260dd74691270031fc"></a>
@@ -435,6 +475,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Evaluate the model with given input and return the output as well the first derivative. </p>
+<p>Note that the input can either be of type torch.Tensor, <a class="el" href="classtensors_1_1Tensor.html">tensors.Tensor</a>, or <a class="el" href="classtensors_1_1LabeledVector.html">tensors.LabeledVector</a>. The returned output and derivative will be of the covariant type of the input. </p>
 
 </div>
 </div>

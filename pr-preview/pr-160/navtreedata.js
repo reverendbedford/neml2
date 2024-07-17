@@ -56,19 +56,31 @@ var NAVTREE =
     [ "Physics Documentation", "usergroup4.html", [
       [ "Solid Mechanics", "solid-mechanics.html", null ]
     ] ],
-    [ "C++ API Reference", "annotated.html", "annotated" ],
-    [ "Python API Reference", "python/annotated.html", null ]
+    [ "C++ API Reference", "usergroup5.html", [
+      [ "Namespaces", "namespaces.html", "namespaces" ],
+      [ "Classes", "annotated.html", "annotated" ]
+    ] ],
+    [ "Python API Reference", "usergroup6.html", [
+      [ "Namespaces", "python/namespaces.html", null ],
+      [ "Classes", "python/annotated.html", null ]
+    ] ]
   ] ]
 ];
 
 var NAVTREEINDEX =
 [
 "annotated.html",
+"classneml2_1_1ElasticStrain.html#a1d600f3bc2696fadd8db2397ebdcc048",
 "classneml2_1_1KocksMeckingActivationEnergy.html",
-"classneml2_1_1Model.html#ab4d7e8b0482c876c6f1ab180a5a88145",
-"classneml2_1_1PlasticFlowRate.html#a80c8360f09cd1bd0c50eb1a2f1c4cb63",
-"classneml2_1_1TotalStrain.html#a63c501b03adb7fbe45b9c3581ddadb93",
-"pages.html"
+"classneml2_1_1LabeledTensor.html#ac331193399284d393e0b9493c96a9cb7",
+"classneml2_1_1Model.html#aca8133200c1122e29b87b314d82604eb",
+"classneml2_1_1OnesTensor.html",
+"classneml2_1_1PlasticVorticity.html#a413e23ccc5275e2f1f2e6ebaa24b9947",
+"classneml2_1_1SlipRule.html",
+"classneml2_1_1Transformable.html",
+"classneml2_1_1VariableStore.html#a760352c8487d6e0798fb4f5977e5e1b2",
+"namespaceneml2.html#a1a8fd94a004bd819f1c735510b875fc9",
+"namespaceneml2_1_1math.html#a7980b18b83a7f3670c45e6a765959024"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
