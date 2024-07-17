@@ -46,10 +46,8 @@ public:
   /// Default constructor
   LabeledTensor() = default;
 
-  /// Construct from a Tensor with batch dim and array of `LabeledAxis`
-  LabeledTensor(const torch::Tensor & tensor,
-                Size batch_dim,
-                const std::array<const LabeledAxis *, D> & axes);
+  /// Construct from a torch::Tensor and array of `LabeledAxis`
+  LabeledTensor(const torch::Tensor & tensor, const std::array<const LabeledAxis *, D> & axes);
 
   /// Construct from a Tensor with array of `LabeledAxis`
   LabeledTensor(const Tensor & tensor, const std::array<const LabeledAxis *, D> & axes);

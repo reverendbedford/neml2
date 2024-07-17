@@ -75,40 +75,6 @@ TEST_CASE("LabeledAxis", "[tensors]")
       REQUIRE(a.storage_size() == 16);
     }
 
-    SECTION("rename")
-    {
-      LabeledAxis a;
-      LabeledAxisAccessor i("a", "b");
-      LabeledAxisAccessor j("a", "c");
-      a.add(i, 2);
-      a.add(j, 3);
-      a.rename("a", "d");
-      a.subaxis("d").rename("b", "a");
-      a.setup_layout();
-      REQUIRE(a.has_subaxis("d"));
-      REQUIRE(a.subaxis("d").has_variable("a"));
-      REQUIRE(a.subaxis("d").has_variable("c"));
-    }
-
-    SECTION("remove")
-    {
-      LabeledAxis a;
-      a.add<Scalar>("scalar1");
-      a.add<Scalar>("scalar2");
-      a.add<Scalar>("scalar3");
-      a.add<SR2>("r2t1");
-      a.add<SR2>("r2t2");
-      a.remove("r2t1");
-      a.remove("scalar1");
-      a.setup_layout();
-      REQUIRE(a.nvariable() == 3);
-      REQUIRE(a.nsubaxis() == 0);
-      REQUIRE(a.storage_size() == 8);
-      REQUIRE(a.storage_size("scalar2") == 1);
-      REQUIRE(a.storage_size("scalar3") == 1);
-      REQUIRE(a.storage_size("r2t2") == 6);
-    }
-
     SECTION("clear")
     {
       LabeledAxis a;
@@ -121,29 +87,6 @@ TEST_CASE("LabeledAxis", "[tensors]")
       REQUIRE(a.nvariable() == 0);
       REQUIRE(a.nsubaxis() == 0);
       REQUIRE(a.storage_size() == 0);
-    }
-
-    SECTION("merge")
-    {
-      LabeledAxis a;
-      LabeledAxisAccessor i("a", "b");
-      LabeledAxisAccessor j("c");
-      a.add(i, 2);
-      a.add(j, 3);
-
-      LabeledAxis b;
-      LabeledAxisAccessor k("a", "d");
-      LabeledAxisAccessor l("c");
-      b.add(k, 2);
-      b.add(l, 3);
-
-      a.merge(b);
-
-      a.setup_layout();
-      b.setup_layout();
-      REQUIRE(a.has_variable("c"));
-      REQUIRE(a.subaxis("a").has_variable("b"));
-      REQUIRE(a.subaxis("a").has_variable("d"));
     }
 
     SECTION("has_item")
@@ -233,26 +176,13 @@ TEST_CASE("LabeledAxis", "[tensors]")
     SECTION("chained modifiers")
     {
       LabeledAxis a;
-      a.add<Scalar>("scalar1");
-      a.add<Scalar>("scalar2");
-      a.add<Scalar>("scalar3");
-      a.add<SR2>("r2t1");
+      a.add<Scalar>("scalar1").add<Scalar>("scalar2").add<Scalar>("scalar3").add<SR2>("r2t1");
       a.add<SR2>("r2t2");
-      a.add<Scalar>("scalar4").remove("r2t1").rename("scalar4", "scalar5").remove("scalar2");
+      a.add<Scalar>("scalar4");
       a.setup_layout();
-
-      // scalar1
-      // scalar3
-      // scalar5
-      // r2t2
-
-      REQUIRE(a.nvariable() == 4);
+      REQUIRE(a.nvariable() == 6);
       REQUIRE(a.nsubaxis() == 0);
-      REQUIRE(a.storage_size() == 9);
-      REQUIRE(a.storage_size("scalar1") == 1);
-      REQUIRE(a.storage_size("scalar3") == 1);
-      REQUIRE(a.storage_size("scalar5") == 1);
-      REQUIRE(a.storage_size("r2t2") == 6);
+      REQUIRE(a.storage_size() == 16);
     }
 
     SECTION("indices")

@@ -68,11 +68,11 @@ LabeledAxisAccessor::with_suffix(const std::string & suffix) const
 LabeledAxisAccessor
 LabeledAxisAccessor::append(const LabeledAxisAccessor & axis) const
 {
-  return axis.on(*this);
+  return axis.prepend(*this);
 }
 
 LabeledAxisAccessor
-LabeledAxisAccessor::on(const LabeledAxisAccessor & axis) const
+LabeledAxisAccessor::prepend(const LabeledAxisAccessor & axis) const
 {
   auto new_names = axis._item_names;
   new_names.insert(new_names.end(), _item_names.begin(), _item_names.end());

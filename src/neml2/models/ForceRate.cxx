@@ -52,11 +52,11 @@ template <typename T>
 ForceRate<T>::ForceRate(const OptionSet & options)
   : Model(options),
     _df_dt(declare_output_variable<T>(
-        options.get<VariableName>("force").with_suffix("_rate").on("forces"))),
-    _f(declare_input_variable<T>(options.get<VariableName>("force").on("forces"))),
-    _fn(declare_input_variable<T>(options.get<VariableName>("force").on("old_forces"))),
-    _t(declare_input_variable<Scalar>(options.get<VariableName>("time").on("forces"))),
-    _tn(declare_input_variable<Scalar>(options.get<VariableName>("time").on("old_forces")))
+        options.get<VariableName>("force").with_suffix("_rate").prepend("forces"))),
+    _f(declare_input_variable<T>(options.get<VariableName>("force").prepend("forces"))),
+    _fn(declare_input_variable<T>(options.get<VariableName>("force").prepend("old_forces"))),
+    _t(declare_input_variable<Scalar>(options.get<VariableName>("time").prepend("forces"))),
+    _tn(declare_input_variable<Scalar>(options.get<VariableName>("time").prepend("old_forces")))
 {
 }
 

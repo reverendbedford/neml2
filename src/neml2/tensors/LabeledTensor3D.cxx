@@ -68,7 +68,6 @@ LabeledTensor3D::chain(const LabeledTensor3D & other,
   // If all the sizes are correct then executing the chain rule is pretty easy
   return LabeledTensor3D(torch::einsum("...ipq,...pj,...qk", {*this, dother, dother}) +
                              torch::einsum("...ip,...pjk", {dself, other}),
-                         broadcast_batch_dim(*this, other, dself, dother),
                          {&axis(0), &other.axis(1), &other.axis(2)});
 }
 } // namespace neml2

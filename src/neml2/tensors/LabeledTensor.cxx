@@ -32,9 +32,8 @@ namespace neml2
 {
 template <class Derived, Size D>
 LabeledTensor<Derived, D>::LabeledTensor(const torch::Tensor & tensor,
-                                         Size batch_dim,
                                          const std::array<const LabeledAxis *, D> & axes)
-  : _tensor(tensor, batch_dim),
+  : _tensor(tensor, tensor.dim() - D),
     _axes(axes)
 {
   // Check that the size of the tensor was compatible

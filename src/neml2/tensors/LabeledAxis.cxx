@@ -64,94 +64,13 @@ LabeledAxis::add(LabeledAxis & axis,
   }
 }
 
-LabeledAxis &
-LabeledAxis::rename(const std::string & original, const std::string & rename)
-{
-  // This could be a variable name
-  auto var = _variables.find(original);
-  if (var != _variables.end())
-  {
-    auto sz = var->second;
-    _variables.erase(var);
-    _variables.emplace(rename, sz);
-    return *this;
-  }
-
-  // or a sub-axis name
-  auto subaxis = _subaxes.find(original);
-  if (subaxis != _subaxes.end())
-  {
-    auto axis = subaxis->second;
-    _subaxes.erase(subaxis);
-    _subaxes.emplace(rename, axis);
-    return *this;
-  }
-
-  return *this;
-}
-
-LabeledAxis &
-LabeledAxis::remove(const std::string & name)
-{
-  // This could be a variable name
-  auto count = _variables.erase(name);
-  if (count)
-    return *this;
-
-  // or a sub-axis name
-  count += _subaxes.erase(name);
-
-  // If nothing has been removed, we should probably notify the user.
-  neml_assert_dbg(count, "Nothing removed in LabeledAxis::remove, did you mispell the name?");
-
-  return *this;
-}
-
-LabeledAxis &
+void
 LabeledAxis::clear()
 {
   _variables.clear();
   _subaxes.clear();
   _layout.clear();
   _offset = 0;
-
-  return *this;
-}
-
-std::vector<LabeledAxisAccessor>
-LabeledAxis::merge(LabeledAxis & other)
-{
-  std::vector<LabeledAxisAccessor> merged_vars;
-  merge(other, {}, merged_vars);
-  return merged_vars;
-}
-
-void
-LabeledAxis::merge(LabeledAxis & other,
-                   std::vector<std::string> subaxes,
-                   std::vector<LabeledAxisAccessor> & merged_vars)
-{
-  // First merge the variables
-  for (const auto & [name, sz] : other._variables)
-    if (!has_variable(name))
-    {
-      _variables.emplace(name, sz);
-      auto new_var = subaxes;
-      new_var.push_back(name);
-      merged_vars.push_back({new_var});
-    }
-
-  // Then merge the subaxes
-  for (auto & [name, subaxis] : other._subaxes)
-  {
-    auto found = _subaxes.find(name);
-    if (found == _subaxes.end())
-      _subaxes.emplace(name, std::make_shared<LabeledAxis>());
-
-    auto new_subaxes = subaxes;
-    new_subaxes.push_back(name);
-    _subaxes[name]->merge(*subaxis, new_subaxes, merged_vars);
-  }
 }
 
 void
@@ -355,7 +274,7 @@ LabeledAxis::variable_names(bool recursive) const
   if (recursive)
     for (auto & [name, axis] : _subaxes)
       for (auto & var : axis->variable_names(true))
-        accessors.insert(var.on(name));
+        accessors.insert(var.prepend(name));
 
   return accessors;
 }
@@ -372,7 +291,7 @@ LabeledAxis::subaxis_names(bool recursive) const
     // Insert sub-subaxes
     if (recursive)
       for (auto & subname : axis->subaxis_names(true))
-        accessors.insert(subname.on(name));
+        accessors.insert(subname.prepend(name));
   }
 
   return accessors;

@@ -55,11 +55,11 @@ ForwardEulerTimeIntegration<T>::ForwardEulerTimeIntegration(const OptionSet & op
   : Model(options),
     _var_name(options.get<VariableName>("variable")),
     _var_rate_name(_var_name.with_suffix("_rate")),
-    _s(declare_output_variable<T>(_var_name.on("state"))),
-    _ds_dt(declare_input_variable<T>(_var_rate_name.on("state"))),
-    _sn(declare_input_variable<T>(_var_name.on("old_state"))),
-    _t(declare_input_variable<Scalar>(options.get<VariableName>("time").on("forces"))),
-    _tn(declare_input_variable<Scalar>(options.get<VariableName>("time").on("old_forces")))
+    _s(declare_output_variable<T>(_var_name.prepend("state"))),
+    _ds_dt(declare_input_variable<T>(_var_rate_name.prepend("state"))),
+    _sn(declare_input_variable<T>(_var_name.prepend("old_state"))),
+    _t(declare_input_variable<Scalar>(options.get<VariableName>("time").prepend("forces"))),
+    _tn(declare_input_variable<Scalar>(options.get<VariableName>("time").prepend("old_forces")))
 {
 }
 

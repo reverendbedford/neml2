@@ -47,15 +47,15 @@ def test_ctors():
 def test_empty():
     A = LAA()
     B = LAA("state/stress")
-    assert A.empty()
-    assert not B.empty()
+    assert not A
+    assert B
 
 
-def test_size():
+def test_len():
     A = LAA()
     B = LAA("state/stress")
-    assert A.size() == 0
-    assert B.size() == 2
+    assert len(A) == 0
+    assert len(B) == 2
 
 
 def test_with_suffix():
@@ -71,10 +71,10 @@ def test_append():
     assert A.append(B) == C
 
 
-def test_on():
+def test_prepend():
     A = LAA("stress")
     B = LAA("residual/stress")
-    assert A.on(LAA("residual")) == B
+    assert A.prepend(LAA("residual")) == B
 
 
 def test_start_with():

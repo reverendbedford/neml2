@@ -62,12 +62,12 @@ BackwardEulerTimeIntegration<T>::BackwardEulerTimeIntegration(const OptionSet & 
     _var_rate_name(options.get<LabeledAxisAccessor>("variable_rate").empty()
                        ? _var_name.with_suffix("_rate")
                        : options.get<LabeledAxisAccessor>("variable_rate")),
-    _r(declare_output_variable<T>(_var_name.on("residual"))),
-    _ds_dt(declare_input_variable<T>(_var_rate_name.on("state"))),
-    _s(declare_input_variable<T>(_var_name.on("state"))),
-    _sn(declare_input_variable<T>(_var_name.on("old_state"))),
-    _t(declare_input_variable<Scalar>(options.get<VariableName>("time").on("forces"))),
-    _tn(declare_input_variable<Scalar>(options.get<VariableName>("time").on("old_forces")))
+    _r(declare_output_variable<T>(_var_name.prepend("residual"))),
+    _ds_dt(declare_input_variable<T>(_var_rate_name.prepend("state"))),
+    _s(declare_input_variable<T>(_var_name.prepend("state"))),
+    _sn(declare_input_variable<T>(_var_name.prepend("old_state"))),
+    _t(declare_input_variable<Scalar>(options.get<VariableName>("time").prepend("forces"))),
+    _tn(declare_input_variable<Scalar>(options.get<VariableName>("time").prepend("old_forces")))
 {
 }
 

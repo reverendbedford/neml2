@@ -111,14 +111,14 @@ public:
 
   size_t size() const;
 
-  /// Append a suffix to the item name.
+  /// Append a suffix to the final item name.
   LabeledAxisAccessor with_suffix(const std::string & suffix) const;
 
-  /// Add a new item
+  /// Append another accessor
   LabeledAxisAccessor append(const LabeledAxisAccessor & axis) const;
 
-  /// Re-mount the LabeledAxisAccessor on an axis by the axis accessor
-  LabeledAxisAccessor on(const LabeledAxisAccessor & axis) const;
+  /// Prepend another accessor
+  LabeledAxisAccessor prepend(const LabeledAxisAccessor & axis) const;
 
   /// Remove the leading \p n items from the labels.
   LabeledAxisAccessor slice(size_t n) const;

@@ -67,9 +67,9 @@ TEST_CASE("LabeledAxisAccessor", "[tensors]")
 
     SECTION("on")
     {
-      REQUIRE(a.on("x").vec() == c10::SmallVector<std::string>{"x", "a", "b", "c"});
+      REQUIRE(a.prepend("x").vec() == c10::SmallVector<std::string>{"x", "a", "b", "c"});
       LabeledAxisAccessor b("d", "e", "f");
-      REQUIRE(a.on(b).vec() == c10::SmallVector<std::string>{"d", "e", "f", "a", "b", "c"});
+      REQUIRE(a.prepend(b).vec() == c10::SmallVector<std::string>{"d", "e", "f", "a", "b", "c"});
     }
 
     SECTION("slice")

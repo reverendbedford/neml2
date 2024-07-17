@@ -41,15 +41,15 @@ def_LabeledAxisAccessor(py::module_ & m)
   c.def(py::init<>())
       .def(py::init([](const std::string & str) { return utils::parse<LabeledAxisAccessor>(str); }))
       .def(py::init<const LabeledAxisAccessor &>())
-      .def("empty", &LabeledAxisAccessor::empty)
-      .def("size", &LabeledAxisAccessor::size)
       .def("with_suffix", &LabeledAxisAccessor::with_suffix)
       .def("append", &LabeledAxisAccessor::append)
-      .def("on", &LabeledAxisAccessor::on)
+      .def("prepend", &LabeledAxisAccessor::prepend)
       .def("start_with", &LabeledAxisAccessor::start_with);
 
   // Operators
   c.def("__repr__", [](const LabeledAxisAccessor & self) { return utils::stringify(self); })
+      .def("__bool__", [](const LabeledAxisAccessor & self) { return !self.empty(); })
+      .def("__len__", [](const LabeledAxisAccessor & self) { return self.size(); })
       .def("__hash__",
            [](const LabeledAxisAccessor & self)
            { return py::hash(py::cast(utils::stringify(self))); })

@@ -52,7 +52,7 @@ RateIndependentPlasticFlowConstraint::RateIndependentPlasticFlowConstraint(
     _fp(declare_input_variable<Scalar>("yield_function")),
     _gamma_dot(declare_input_variable<Scalar>("flow_rate")),
     _r(declare_output_variable<Scalar>(
-        options.get<VariableName>("flow_rate").slice(1).on("residual")))
+        options.get<VariableName>("flow_rate").slice(1).prepend("residual")))
 {
 }
 

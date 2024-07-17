@@ -51,12 +51,12 @@ StateRate<T>::expected_options()
 template <typename T>
 StateRate<T>::StateRate(const OptionSet & options)
   : Model(options),
-    _s(declare_input_variable<T>(options.get<VariableName>("state").on("state"))),
-    _sn(declare_input_variable<T>(options.get<VariableName>("state").on("old_state"))),
-    _t(declare_input_variable<Scalar>(options.get<VariableName>("time").on("forces"))),
-    _tn(declare_input_variable<Scalar>(options.get<VariableName>("time").on("old_forces"))),
+    _s(declare_input_variable<T>(options.get<VariableName>("state").prepend("state"))),
+    _sn(declare_input_variable<T>(options.get<VariableName>("state").prepend("old_state"))),
+    _t(declare_input_variable<Scalar>(options.get<VariableName>("time").prepend("forces"))),
+    _tn(declare_input_variable<Scalar>(options.get<VariableName>("time").prepend("old_forces"))),
     _ds_dt(declare_output_variable<T>(
-        options.get<VariableName>("state").with_suffix("_rate").on("state")))
+        options.get<VariableName>("state").with_suffix("_rate").prepend("state")))
 {
 }
 

@@ -74,8 +74,8 @@ ImplicitUpdate::ImplicitUpdate(const OptionSet & options)
   //      *this* model.
   for (auto var : _model.output_axis().subaxis("residual").variable_names())
     declare_output_variable(_model.output_axis().subaxis("residual").storage_size(var),
-                            _model.output_view(var.on("residual"))->type(),
-                            var.on("state"));
+                            _model.output_view(var.prepend("residual"))->type(),
+                            var.prepend("state"));
 }
 
 void

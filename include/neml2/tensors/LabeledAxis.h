@@ -101,17 +101,8 @@ public:
   /// Add an arbitrary variable using a `LabeledAxisAccessor`
   LabeledAxis & add(const LabeledAxisAccessor & accessor, Size sz);
 
-  /// Change the label of an item
-  LabeledAxis & rename(const std::string & original, const std::string & rename);
-
-  /// Remove an item
-  LabeledAxis & remove(const std::string & name);
-
-  /// Clear everything
-  LabeledAxis & clear();
-
-  /// Merge with another `LabeledAxis`.
-  std::vector<LabeledAxisAccessor> merge(LabeledAxis & other);
+  /// Clear all internal data
+  void clear();
 
   /**
    * Setup the layout of all items recursively. The layout of each item is contiguous in memory.
@@ -155,9 +146,6 @@ public:
 
   /// Get the indices of a specific item by a `LabeledAxisAccessor`
   indexing::TensorIndex indices(const LabeledAxisAccessor & accessor) const;
-  /// Get the indices using another `LabeledAxis`.
-  indexing::TensorIndex
-  indices(const LabeledAxis & other, bool recursive = true, bool inclusive = true) const;
 
   /// Get the common indices of two `LabeledAxis`s
   std::vector<std::pair<indexing::TensorIndex, indexing::TensorIndex>>
@@ -196,10 +184,6 @@ private:
            const LabeledAxisAccessor::const_iterator & cur,
            const LabeledAxisAccessor::const_iterator & end) const;
 
-  void merge(LabeledAxis & other,
-             std::vector<std::string> subaxes,
-             std::vector<LabeledAxisAccessor> & merged_vars);
-
   /// Helper method to recursively find the storage size of a variable
   Size storage_size(const LabeledAxisAccessor::const_iterator & cur,
                     const LabeledAxisAccessor::const_iterator & end) const;
@@ -224,10 +208,6 @@ private:
                       std::vector<Size> & idxb,
                       Size offseta,
                       Size offsetb) const;
-
-  void variable_names(std::set<LabeledAxisAccessor> & accessors,
-                      LabeledAxisAccessor cur,
-                      bool recursive) const;
 
   /// Variables and their sizes
   std::map<std::string, Size> _variables;
