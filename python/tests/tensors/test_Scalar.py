@@ -75,9 +75,6 @@ def test_binary_ops(batch_shape, sample, tensor_options):
     assert torch.allclose(result.torch(), correct)
 
     # pow
-    result = s**sample
-    correct = s0**sample0
-    assert torch.allclose(result.torch(), correct, equal_nan=True)
     result = sample**s
     correct = sample0**s0
     assert torch.allclose(result.torch(), correct, equal_nan=True)

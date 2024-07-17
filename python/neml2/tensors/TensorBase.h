@@ -210,15 +210,15 @@ def_TensorBase(py::class_<Derived> & c)
       .def("__str__",
            [classname](const Derived & self)
            {
-             return "<" + classname + " of shape " + utils::stringify(self.batch_sizes()) +
-                    utils::stringify(self.base_sizes()) + ">";
+             return utils::stringify(self) + '\n' + "<" + classname + " of shape " +
+                    utils::stringify(self.batch_sizes()) + utils::stringify(self.base_sizes()) +
+                    ">";
            })
       .def("__repr__",
-           [](const Derived & self)
+           [classname](const Derived & self)
            {
-             return utils::stringify(self) + '\n' +
-                    "Batch shape: " + utils::stringify(self.batch_sizes()) + '\n' +
-                    " Base shape: " + utils::stringify(self.base_sizes());
+             return "<" + classname + " of shape " + utils::stringify(self.batch_sizes()) +
+                    utils::stringify(self.base_sizes()) + ">";
            })
       .def_property_readonly("batch", [](Derived * self) { return new BatchView<Derived>(self); })
       .def_property_readonly("base", [](Derived * self) { return new BaseView<Derived>(self); })
@@ -243,20 +243,23 @@ def_TensorBase(py::class_<Derived> & c)
   // Binary, unary operators
   c.def(float() + py::self)
       .def(py::self + float())
+      .def(py::self + Scalar())
       .def(py::self + py::self)
       .def(float() - py::self)
       .def(py::self - float())
+      .def(py::self - Scalar())
       .def(py::self - py::self)
       .def(float() * py::self)
       .def(py::self * float())
+      .def(py::self * Scalar())
       .def(float() / py::self)
       .def(py::self / float())
+      .def(py::self / Scalar())
       .def(py::self / py::self)
       .def(-py::self)
       .def("__pow__", [](const Derived & a, float b) { return math::pow(a, b); })
       .def("__pow__", [](const Derived & a, const Scalar & b) { return math::pow(a, b); })
-      .def("__rpow__", [](const Derived & b, float a) { return math::pow(a, b); })
-      .def("__pow__", [](const Derived & a, const Derived & b) { return math::pow(a, b); });
+      .def("__rpow__", [](const Derived & a, float b) { return math::pow(b, a); });
 
   // Static methods
   c.def_static("empty_like", &Derived::empty_like)

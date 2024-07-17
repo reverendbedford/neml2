@@ -72,8 +72,8 @@ def test_set_parameter():
     nu = model.get_parameter("nu")
 
     # This model has two parameters
-    model.set_parameter("E", neml2.Scalar.full(200.0).tensor())
-    model.set_parameter("nu", neml2.Scalar.full(0.2).tensor())
+    model.set_parameter("E", neml2.Scalar.full(200.0))
+    model.set_parameter("nu", neml2.Scalar.full(0.2))
 
     # Parameters should have the correct value
     assert torch.allclose(E.torch(), torch.tensor(200.0, dtype=torch.float64))
@@ -94,8 +94,8 @@ def test_set_parameters():
     # This model has two parameters
     model.set_parameters(
         {
-            "E": neml2.Scalar.full(200.0).tensor(),
-            "nu": neml2.Scalar.full(0.2).tensor(),
+            "E": neml2.Scalar.full(200.0),
+            "nu": neml2.Scalar.full(0.2),
         }
     )
 

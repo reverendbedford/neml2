@@ -70,33 +70,33 @@ PYBIND11_MODULE(tensors, m)
   // purpose. For a type to be deducible by pybind11-stubgen, a concrete definition of the binding
   // class must exist at the point of method definition. Therefore, we need to first create all the
   // class definitions before creating method bindings that use them as arguments.
-#define TENSORBASE_DECL(T) auto c_##T = py::class_<T>(m, #T);
+#define TENSORBASE_DECL(T) auto c_##T = py::class_<T>(m, #T)
   FOR_ALL_TENSORBASE(TENSORBASE_DECL);
 
   // All of them have BatchView and BaseView
-#define BATCHVIEW_DEF(T) def_BatchView<T>(m, #T "BatchView");
+#define BATCHVIEW_DEF(T) def_BatchView<T>(m, #T "BatchView")
   FOR_ALL_TENSORBASE(BATCHVIEW_DEF);
-#define BASEVIEW_DEF(T) def_BaseView<T>(m, #T "BaseView");
+#define BASEVIEW_DEF(T) def_BaseView<T>(m, #T "BaseView")
   FOR_ALL_TENSORBASE(BASEVIEW_DEF);
 
   // Common methods decorated by TensorBase
-#define TENSORBASE_DEF(T) def_TensorBase<T>(c_##T);
+#define TENSORBASE_DEF(T) def_TensorBase<T>(c_##T)
   FOR_ALL_TENSORBASE(TENSORBASE_DEF);
 
   // Common methods decorated by PrimitiveTensor
-#define PRIMITIVETENSOR_DEF(T) def_PrimitiveTensor<T>(c_##T);
+#define PRIMITIVETENSOR_DEF(T) def_PrimitiveTensor<T>(c_##T)
   FOR_ALL_PRIMITIVETENSOR(PRIMITIVETENSOR_DEF);
 
   // Common methods decorated by VecBase
-#define VECBASE_DEF(T) def_VecBase<T>(c_##T);
+#define VECBASE_DEF(T) def_VecBase<T>(c_##T)
   FOR_ALL_VECBASE(VECBASE_DEF);
 
   // Common methods decorated by R2Base
-#define R2BASE_DEF(T) def_R2Base<T>(c_##T);
+#define R2BASE_DEF(T) def_R2Base<T>(c_##T)
   FOR_ALL_R2BASE(R2BASE_DEF);
 
   // Tensor specific methods
-#define TENSOR_CUSTOM_DEF(T) def_##T(c_##T);
+#define TENSOR_CUSTOM_DEF(T) def_##T(c_##T)
   FOR_ALL_TENSORBASE(TENSOR_CUSTOM_DEF);
 
   // Labeled tensors

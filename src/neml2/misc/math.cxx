@@ -304,6 +304,19 @@ d_multiply_and_make_skew_d_second(const SR2 & a)
                  torch::einsum("...ia,...bj->...ijab", {I, A})));
 }
 
+Tensor
+pow(const Real & a, const Tensor & n)
+{
+  return Tensor(torch::pow(a, n), n.batch_dim());
+}
+
+Tensor
+pow(const Tensor & a, const Tensor & n)
+{
+  neml_assert_broadcastable_dbg(a, n);
+  return Tensor(torch::pow(a, n), broadcast_batch_dim(a, n));
+}
+
 namespace linalg
 {
 Tensor

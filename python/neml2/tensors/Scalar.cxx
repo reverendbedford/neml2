@@ -39,16 +39,10 @@ def_Scalar(py::class_<Scalar> & c)
 
 // Binary, unary operators
 #define SCALAR_OP(T)                                                                               \
-  c.def(T() + py::self)                                                                            \
-      .def(py::self + T())                                                                         \
-      .def(T() - py::self)                                                                         \
+  c.def(py::self + T())                                                                            \
       .def(py::self - T())                                                                         \
-      .def(T() * py::self)                                                                         \
       .def(py::self * T())                                                                         \
       .def(py::self * py::self)                                                                    \
-      .def(T() / py::self)                                                                         \
-      .def(py::self / T())                                                                         \
-      .def("__pow__", [](const Scalar & a, const T & b) { return math::pow(a, b); })               \
-      .def("__rpow__", [](const Scalar & b, const T & a) { return math::pow(a, b); })
+      .def(py::self / T())
   FOR_ALL_TENSORBASE(SCALAR_OP);
 }

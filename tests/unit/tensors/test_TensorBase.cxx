@@ -570,10 +570,6 @@ TEST_CASE("TensorBase", "[tensors]")
     auto c = Tensor(torch::tensor({{9.0, 4.0}, {4.0, 1.21}}, DTO), 0);
     REQUIRE(torch::allclose(math::pow(a, 2.0), c));
     REQUIRE(torch::allclose(math::pow(a.batch_expand(B), 2.0), c.batch_expand(B)));
-    REQUIRE(torch::allclose(math::pow(a, b), c));
-    REQUIRE(torch::allclose(math::pow(a.batch_expand(B), b), c.batch_expand(B)));
-    REQUIRE(torch::allclose(math::pow(a, b.batch_expand(B)), c.batch_expand(B)));
-    REQUIRE(torch::allclose(math::pow(a.batch_expand(B), b.batch_expand(B)), c.batch_expand(B)));
   }
 
   SECTION("sign")

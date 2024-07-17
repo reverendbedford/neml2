@@ -143,7 +143,6 @@ operator/(const Scalar & a, const Derived & b)
 namespace math
 {
 template <class Derived,
-          typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
           typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<Derived>, Derived>>>
 Derived
 pow(const Derived & a, const Scalar & n)
@@ -152,18 +151,6 @@ pow(const Derived & a, const Scalar & n)
   indexing::TensorIndices net{torch::indexing::Ellipsis};
   net.insert(net.end(), a.base_dim(), torch::indexing::None);
   return Derived(torch::pow(a, n.index(net)), broadcast_batch_dim(a, n));
-}
-
-template <class Derived,
-          typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
-          typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<Derived>, Derived>>>
-Derived
-pow(const Scalar & a, const Derived & n)
-{
-  neml_assert_batch_broadcastable_dbg(a, n);
-  indexing::TensorIndices net{torch::indexing::Ellipsis};
-  net.insert(net.end(), n.base_dim(), torch::indexing::None);
-  return Derived(torch::pow(a.index(net), n), broadcast_batch_dim(a, n));
 }
 }
 } // namespace neml2

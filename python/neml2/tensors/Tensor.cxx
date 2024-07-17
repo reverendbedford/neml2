@@ -123,4 +123,7 @@ def_Tensor(py::class_<Tensor> & c)
           py::arg("n"),
           py::kw_only(),
           PY_ARG_TENSOR_OPTIONS);
+
+  // Operators
+  c.def("__pow__", [](const Tensor & a, const Tensor & b) { return math::pow(a, b); });
 }
