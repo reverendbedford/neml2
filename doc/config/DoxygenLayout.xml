@@ -32,8 +32,14 @@
     <tab type="usergroup" title="Physics Documentation">
       <tab type="user" url="@ref solid-mechanics" title="Solid Mechanics"/>
     </tab>
-    <tab type="classlist" visible="yes" title="C++ API Reference" intro=""/>
-    <tab type="user" url="python/annotated.html" title="Python API Reference"/>
+    <tab type="usergroup" title="C++ API Reference">
+      <tab type="namespacelist" visible="yes" title="Namespaces" intro=""/>
+      <tab type="classlist" visible="yes" title="Classes" intro=""/>
+    </tab>
+    <tab type="usergroup" title="Python API Reference">
+      <tab type="user" url="python/namespaces.html" title="Namespaces"/>
+      <tab type="user" url="python/annotated.html" title="Classes"/>
+    </tab>
   </navindex>
 
   <!-- Layout definition for a class page -->

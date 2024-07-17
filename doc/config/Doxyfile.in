@@ -17,7 +17,7 @@ CASE_SENSE_NAMES       = YES
 HIDE_SCOPE_NAMES       = YES
 SHOW_USED_FILES        = NO
 SHOW_FILES             = NO
-SHOW_NAMESPACES        = NO
+SHOW_NAMESPACES        = YES
 LAYOUT_FILE            = ${NEML2_SOURCE_DIR}/doc/config/DoxygenLayout.xml
 
 #---------------------------------------------------------------------------
