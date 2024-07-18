@@ -360,7 +360,7 @@ TEST_CASE("TensorBase", "[tensors]")
       auto c = torch::rand({3, 2, 1, 3}, DTO);
       indexing::TensorIndices ia = {2, indexing::Ellipsis, indexing::Slice(), indexing::Slice()};
       indexing::TensorIndices ib = {2, indexing::Ellipsis};
-      b.batch_index_put(ib, c);
+      b.batch_index_put_(ib, c);
       REQUIRE(torch::allclose(a.index(ia), c));
     }
 
@@ -375,7 +375,7 @@ TEST_CASE("TensorBase", "[tensors]")
                                     indexing::Slice(),
                                     indexing::Slice(1, indexing::None)};
       indexing::TensorIndices ib = {indexing::Slice(), indexing::Slice(1, indexing::None)};
-      b.base_index_put(ib, c);
+      b.base_index_put_(ib, c);
       REQUIRE(torch::allclose(a.index(ia), c));
     }
 
@@ -385,7 +385,6 @@ TEST_CASE("TensorBase", "[tensors]")
       TensorShape s = {5, 8, 2, 2, 5};
       auto a = Tensor::full(s0, {3, 3}, 5.25324, DTO);
       auto b = a.batch_expand(s);
-      REQUIRE(b.storage().data_ptr() == a.storage().data_ptr());
       REQUIRE(b.batch_sizes() == s);
       REQUIRE(b.base_sizes() == a.base_sizes());
       REQUIRE(torch::sum(a - b).item<Real>() == Catch::Approx(0));
@@ -397,7 +396,6 @@ TEST_CASE("TensorBase", "[tensors]")
       TensorShape s = {2, 7, 3, 1, 3};
       auto a = Tensor::full({5, 1, 5}, s0, 1.32145, DTO);
       auto b = a.base_expand(s);
-      REQUIRE(b.storage().data_ptr() == a.storage().data_ptr());
       REQUIRE(b.batch_sizes() == a.batch_sizes());
       REQUIRE(b.base_sizes() == s);
       // This is fun, as a and b are NOT broadcastable based on our broadcasting rules for batched

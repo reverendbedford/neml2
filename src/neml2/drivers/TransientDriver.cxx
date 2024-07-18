@@ -224,7 +224,7 @@ TransientDriver::update_forces()
   if (_model.input_axis().has_variable(_time_name))
   {
     auto current_time = _time.batch_index({_step_count});
-    _in.set(current_time, _time_name);
+    _in.base_index_put_(_time_name, current_time);
   }
 }
 
@@ -259,9 +259,9 @@ TransientDriver::apply_predictor()
       // Otherwise linearly extrapolate in time
       else
       {
-        auto t = _in.get<Scalar>(_time_name);
-        auto t_n = _result_in.get<Scalar>(_time_name).batch_index({_step_count - 1});
-        auto t_nm1 = _result_in.get<Scalar>(_time_name).batch_index({_step_count - 2});
+        auto t = _in.reinterpret<Scalar>(_time_name);
+        auto t_n = _result_in.reinterpret<Scalar>(_time_name).batch_index({_step_count - 1});
+        auto t_nm1 = _result_in.reinterpret<Scalar>(_time_name).batch_index({_step_count - 2});
         auto dt = t - t_n;
         auto dt_n = t_n - t_nm1;
 
@@ -278,10 +278,12 @@ TransientDriver::apply_predictor()
 
   if (cp && (_step_count == 1))
   {
-    SR2 D = _in.get<SR2>(std::vector<std::string>{"forces", "deformation_rate"});
-    auto t = _in.get<Scalar>(_time_name);
-    auto t_n = _result_in.get<Scalar>(_time_name).batch_index({_step_count - 1});
-    _in.set(D * (t - t_n) * _cp_elastic_scale, std::vector<std::string>{"state", "elastic_strain"});
+    VariableName D_name("forces", "deformation_rate");
+    VariableName E_name("state", "elastic_strain");
+    SR2 D = _in.reinterpret<SR2>(D_name);
+    auto t = _in.reinterpret<Scalar>(_time_name);
+    auto t_n = _result_in.reinterpret<Scalar>(_time_name).batch_index({_step_count - 1});
+    _in.base_index_put_(E_name, D * (t - t_n) * _cp_elastic_scale);
   }
 }
 
@@ -294,13 +296,13 @@ TransientDriver::solve_step()
 void
 TransientDriver::store_input()
 {
-  _result_in.batch_index_put({_step_count}, _in);
+  _result_in.batch_index_put_({_step_count}, _in);
 }
 
 void
 TransientDriver::store_output()
 {
-  _result_out.batch_index_put({_step_count}, _out);
+  _result_out.batch_index_put_({_step_count}, _out);
 }
 
 std::string
@@ -318,12 +320,12 @@ TransientDriver::result() const
   // Dump input variables into a Module
   auto res_in = std::make_shared<torch::nn::Module>();
   for (auto var : result_in_cpu.axis(0).variable_names())
-    res_in->register_buffer(utils::stringify(var), result_in_cpu(var).clone());
+    res_in->register_buffer(utils::stringify(var), result_in_cpu.base_index(var).clone());
 
   // Dump output variables into a Module
   auto res_out = std::make_shared<torch::nn::Module>();
   for (auto var : result_out_cpu.axis(0).variable_names())
-    res_out->register_buffer(utils::stringify(var), result_out_cpu(var).clone());
+    res_out->register_buffer(utils::stringify(var), result_out_cpu.base_index(var).clone());
 
   // Combine input and output
   torch::nn::ModuleDict res;

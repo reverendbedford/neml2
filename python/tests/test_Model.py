@@ -61,7 +61,7 @@ def test_output_type():
 
 def test_value():
     pwd = Path(__file__).parent
-    model = neml2.load_model(pwd / "test_Model.i", "model")
+    model = neml2.reload_model(pwd / "test_Model.i", "model")
 
     a = torch.linspace(0, 1, 8).expand(5, 2, 8)
     x = Tensor(a, 2)
@@ -86,14 +86,14 @@ def test_value():
     # Evaluate the model using a neml2.LabeledVector
     y = model.value(x)
     assert isinstance(y, LabeledVector)
-    assert y.tensor().batch.shape == (5, 2)
-    assert y.tensor().base.shape == (1,)
+    assert y.batch.shape == (5, 2)
+    assert y.base.shape == (1,)
     assert torch.allclose(y.torch(), y_correct)
 
 
 def test_value_and_dvalue():
     pwd = Path(__file__).parent
-    model = neml2.load_model(pwd / "test_Model.i", "model")
+    model = neml2.reload_model(pwd / "test_Model.i", "model")
 
     a = torch.linspace(0, 1, 8).expand(5, 2, 8)
     x = Tensor(a, 2)
@@ -139,9 +139,9 @@ def test_value_and_dvalue():
     y, dy_dx = model.value_and_dvalue(x)
     assert isinstance(y, LabeledVector)
     assert isinstance(dy_dx, LabeledMatrix)
-    assert y.tensor().batch.shape == (5, 2)
-    assert y.tensor().base.shape == (1,)
-    assert dy_dx.tensor().batch.shape == (5, 2)
-    assert dy_dx.tensor().base.shape == (1, 8)
+    assert y.batch.shape == (5, 2)
+    assert y.base.shape == (1,)
+    assert dy_dx.batch.shape == (5, 2)
+    assert dy_dx.base.shape == (1, 8)
     assert torch.allclose(y.torch(), y_correct)
     assert torch.allclose(dy_dx.torch(), dy_dx_correct)

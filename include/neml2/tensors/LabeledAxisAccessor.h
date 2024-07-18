@@ -28,6 +28,7 @@
 #include <iostream>
 
 #include <c10/util/SmallVector.h>
+#include <c10/util/ArrayRef.h>
 
 namespace neml2
 {
@@ -67,28 +68,14 @@ public:
     (_item_names.push_back(names), ...);
   }
 
-  // note: The enable_if restricts Container to types other than std::string that have a .begin()
-  // and .end() that return valid input iterators.
-  template <
-      typename Container,
-      std::enable_if_t<!std::is_convertible_v<Container, std::string> &&
-                           std::is_convertible_v<
-                               typename std::iterator_traits<
-                                   decltype(std::declval<Container>().begin())>::iterator_category,
-                               std::input_iterator_tag> &&
-                           std::is_convertible_v<
-                               typename std::iterator_traits<
-                                   decltype(std::declval<Container>().end())>::iterator_category,
-                               std::input_iterator_tag>,
-                       int> = 0>
-  LabeledAxisAccessor(Container && c)
+  template <typename Container,
+            typename = std::enable_if_t<!std::is_convertible_v<Container, std::string>>>
+  LabeledAxisAccessor(const Container & c)
   {
     _item_names.append(c.begin(), c.end());
     for (const auto & name : _item_names)
       validate_item_name(name);
   }
-
-  LabeledAxisAccessor(const LabeledAxisAccessor & other);
 
   /// Begin and end iterators to the underlying data.
   ///@{
@@ -99,9 +86,6 @@ public:
   const_iterator begin() const { return const_iterator(_item_names.begin()); }
   const_iterator end() const { return const_iterator(_item_names.end()); }
   ///@}
-
-  /// Assignment operator
-  LabeledAxisAccessor & operator=(const LabeledAxisAccessor & other);
 
   explicit operator std::vector<std::string>() const;
 
@@ -153,4 +137,11 @@ bool operator<(const LabeledAxisAccessor & a, const LabeledAxisAccessor & b);
  * item names delimited by "/".
  */
 std::ostream & operator<<(std::ostream & os, const LabeledAxisAccessor & accessor);
+
+namespace indexing
+{
+using TensorLabel = LabeledAxisAccessor;
+using TensorLabels = c10::SmallVector<LabeledAxisAccessor>;
+using TensorLabelsRef = c10::ArrayRef<LabeledAxisAccessor>;
+} // namespace indexing
 } // namespace neml2

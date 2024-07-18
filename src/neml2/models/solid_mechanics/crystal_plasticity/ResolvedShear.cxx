@@ -74,8 +74,8 @@ ResolvedShear::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   neml_assert_dbg(!d2out_din2, "Second derivative not implemented.");
 
-  const auto S = SR2(_S).list_unsqueeze();
-  const auto R = R2(_R).list_unsqueeze();
+  const auto S = SR2(_S).batch_unsqueeze(-1);
+  const auto R = R2(_R).batch_unsqueeze(-1);
 
   if (out)
     _rss = Tensor(_crystal_geometry.M().rotate(R).inner(S), batch_dim());

@@ -35,5 +35,7 @@ def_LabeledMatrix(py::module_ & m)
 {
   auto c = py::class_<LabeledMatrix>(m, "LabeledMatrix");
 
+  def_LabeledBatchView<LabeledMatrix>(m, "LabeledMatrixBatchView");
+  def_LabeledBaseView<LabeledMatrix>(m, "LabeledMatrixBaseView");
   def_LabeledTensor<LabeledMatrix, 2>(c);
 }

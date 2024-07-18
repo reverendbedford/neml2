@@ -110,6 +110,27 @@ TensorBase<Derived>::logspace(
 }
 
 template <class Derived>
+Derived
+TensorBase<Derived>::clone(torch::MemoryFormat memory_format) const
+{
+  return Derived(torch::Tensor::clone(memory_format), _batch_dim);
+}
+
+template <class Derived>
+Derived
+TensorBase<Derived>::detach() const
+{
+  return Derived(torch::Tensor::detach(), _batch_dim);
+}
+
+template <class Derived>
+Derived
+TensorBase<Derived>::to(const torch::TensorOptions & options) const
+{
+  return Derived(torch::Tensor::to(options), _batch_dim);
+}
+
+template <class Derived>
 bool
 TensorBase<Derived>::batched() const
 {
@@ -119,13 +140,6 @@ TensorBase<Derived>::batched() const
 template <class Derived>
 Size
 TensorBase<Derived>::batch_dim() const
-{
-  return _batch_dim;
-}
-
-template <class Derived>
-Size &
-TensorBase<Derived>::batch_dim()
 {
   return _batch_dim;
 }
@@ -174,16 +188,17 @@ TensorBase<Derived>::base_storage() const
 
 template <class Derived>
 Derived
-TensorBase<Derived>::batch_index(indexing::TensorIndices indices) const
+TensorBase<Derived>::batch_index(indexing::TensorIndicesRef indices) const
 {
-  indices.insert(indices.end(), base_dim(), torch::indexing::Slice());
-  auto res = this->index(indices);
+  indexing::TensorIndices indices_vec(indices);
+  indices_vec.insert(indices_vec.end(), base_dim(), torch::indexing::Slice());
+  auto res = this->index(indices_vec);
   return Derived(res, res.dim() - base_dim());
 }
 
 template <class Derived>
 neml2::Tensor
-TensorBase<Derived>::base_index(const indexing::TensorIndices & indices) const
+TensorBase<Derived>::base_index(indexing::TensorIndicesRef indices) const
 {
   indexing::TensorIndices indices2(batch_dim(), torch::indexing::Slice());
   indices2.insert(indices2.end(), indices.begin(), indices.end());
@@ -192,16 +207,18 @@ TensorBase<Derived>::base_index(const indexing::TensorIndices & indices) const
 
 template <class Derived>
 void
-TensorBase<Derived>::batch_index_put(indexing::TensorIndices indices, const torch::Tensor & other)
+TensorBase<Derived>::batch_index_put_(indexing::TensorIndicesRef indices,
+                                      const torch::Tensor & other)
 {
-  indices.insert(indices.end(), base_dim(), torch::indexing::Slice());
-  this->index_put_(indices, other);
+  indexing::TensorIndices indices_vec(indices);
+  indices_vec.insert(indices_vec.end(), base_dim(), torch::indexing::Slice());
+  this->index_put_(indices_vec, other);
 }
 
 template <class Derived>
 void
-TensorBase<Derived>::base_index_put(const indexing::TensorIndices & indices,
-                                    const torch::Tensor & other)
+TensorBase<Derived>::base_index_put_(indexing::TensorIndicesRef indices,
+                                     const torch::Tensor & other)
 {
   indexing::TensorIndices indices2(batch_dim(), torch::indexing::Slice());
   indices2.insert(indices2.end(), indices.begin(), indices.end());
@@ -265,13 +282,6 @@ TensorBase<Derived>::batch_unsqueeze(Size d) const
 }
 
 template <class Derived>
-Derived
-TensorBase<Derived>::list_unsqueeze() const
-{
-  return batch_unsqueeze(-1);
-}
-
-template <class Derived>
 neml2::Tensor
 TensorBase<Derived>::base_unsqueeze(Size d) const
 {
@@ -295,36 +305,6 @@ TensorBase<Derived>::base_transpose(Size d1, Size d2) const
   return neml2::Tensor(
       torch::Tensor::transpose(d1 < 0 ? d1 : _batch_dim + d1, d2 < 0 ? d2 : _batch_dim + d2),
       _batch_dim);
-}
-
-template <class Derived>
-neml2::Tensor
-TensorBase<Derived>::base_movedim(Size d1, Size d2) const
-{
-  return neml2::Tensor(
-      torch::Tensor::movedim(d1 < 0 ? d1 : _batch_dim + d1, d2 < 0 ? d2 : _batch_dim + d2),
-      _batch_dim);
-}
-
-template <class Derived>
-Derived
-TensorBase<Derived>::clone(torch::MemoryFormat memory_format) const
-{
-  return Derived(torch::Tensor::clone(memory_format), _batch_dim);
-}
-
-template <class Derived>
-Derived
-TensorBase<Derived>::detach() const
-{
-  return Derived(torch::Tensor::detach(), _batch_dim);
-}
-
-template <class Derived>
-Derived
-TensorBase<Derived>::to(const torch::TensorOptions & options) const
-{
-  return Derived(torch::Tensor::to(options), _batch_dim);
 }
 
 template <class Derived>

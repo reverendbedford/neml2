@@ -28,6 +28,9 @@
 #include <torch/csrc/utils/tensor_dtypes.h>
 #include <torch/csrc/DynamicTypes.h>
 
+#include "neml2/misc/types.h"
+#include "neml2/tensors/LabeledAxisAccessor.h"
+
 #define NEML2_TENSOR_OPTIONS_VARGS                                                                 \
   const torch::Dtype &dtype, const torch::Device &device, bool requires_grad
 
@@ -80,22 +83,22 @@ public:
 };
 
 /**
- * @brief This specialization exposes SmallVector
+ * @brief This specialization exposes neml2::indexing::TensorShape
  */
-template <typename T>
-struct type_caster<c10::SmallVector<T>>
+template <>
+struct type_caster<neml2::TensorShape>
 {
 public:
-  PYBIND11_TYPE_CASTER(c10::SmallVector<T>, const_name("list"));
+  PYBIND11_TYPE_CASTER(neml2::TensorShape, const_name("[int, ...]"));
 
   bool load(handle src, bool)
   {
-    // if src is a tuple
+    // if src is an iterable
     if (isinstance<iterable>(src))
     {
       auto src_iterable = reinterpret_borrow<iterable>(src);
       for (auto item : src_iterable)
-        value.push_back(item.cast<T>());
+        value.push_back(item.cast<neml2::Size>());
       return true;
     }
 
@@ -103,7 +106,80 @@ public:
   }
 
   static handle
-  cast(const c10::SmallVector<T> & src, return_value_policy /* policy */, handle /* parent */)
+  cast(const neml2::TensorShape & src, return_value_policy /* policy */, handle /* parent */)
+  {
+    list l;
+    for (const auto & val : src)
+      l.append(val);
+    return l;
+  }
+};
+
+/**
+ * @brief This specialization exposes neml2::indexing::TensorIndices
+ */
+template <>
+struct type_caster<neml2::indexing::TensorIndices>
+{
+public:
+  PYBIND11_TYPE_CASTER(neml2::indexing::TensorIndices, const_name("[Any, ...]"));
+
+  bool load(handle src, bool)
+  {
+    // if src is an iterable
+    if (isinstance<iterable>(src))
+    {
+      auto src_iterable = reinterpret_borrow<iterable>(src);
+      for (auto item : src_iterable)
+        value.push_back(item.cast<neml2::indexing::TensorIndex>());
+      return true;
+    }
+
+    return false;
+  }
+
+  static handle cast(const neml2::indexing::TensorIndices & src,
+                     return_value_policy /* policy */,
+                     handle /* parent */)
+  {
+    list l;
+    for (const auto & val : src)
+      l.append(val);
+    return l;
+  }
+};
+
+/**
+ * @brief This specialization exposes neml2::indexing::TensorLabels
+ */
+template <>
+struct type_caster<neml2::indexing::TensorLabels>
+{
+public:
+  PYBIND11_TYPE_CASTER(neml2::indexing::TensorLabels, const_name("[str, ...]"));
+
+  bool load(handle src, bool)
+  {
+    // do not treat str as an iterable, otherwise "forces/t" will get parsed into individual
+    // characters...
+    if (isinstance<str>(src))
+      return false;
+
+    // if src is an iterable
+    if (isinstance<iterable>(src))
+    {
+      auto src_iterable = reinterpret_borrow<iterable>(src);
+      for (auto item : src_iterable)
+        value.push_back(item.cast<neml2::indexing::TensorLabel>());
+      return true;
+    }
+
+    return false;
+  }
+
+  static handle cast(const neml2::indexing::TensorIndices & src,
+                     return_value_policy /* policy */,
+                     handle /* parent */)
   {
     list l;
     for (const auto & val : src)

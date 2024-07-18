@@ -52,9 +52,9 @@ Finally, the following code constructs the 3 input strains `in` and performs 3 m
 ```cpp
   auto in = LabeledVector::empty({3}, {model.input_axis()});
 
-  in.batch_index_put({0}, SR2::fill(0.1, 0.2, 0.3, -0.1, -0.1, 0.2));
-  in.batch_index_put({1}, SR2::fill(0.2, 0.2, 0.1, -0.1, -0.2, -0.5));
-  in.batch_index_put({2}, SR2::fill(0.3, -0.2, 0.05, -0.1, -0.3, 0.1));
+  in.batch_index_put_({0}, SR2::fill(0.1, 0.2, 0.3, -0.1, -0.1, 0.2));
+  in.batch_index_put_({1}, SR2::fill(0.2, 0.2, 0.1, -0.1, -0.2, -0.5));
+  in.batch_index_put_({2}, SR2::fill(0.3, -0.2, 0.05, -0.1, -0.3, 0.1));
 
   auto out = model.value(in);
 ```

@@ -108,7 +108,7 @@ public:
     }
     if (src.is_boolean())
       return src.boolean() ? Py_True : Py_False;
-    throw std::invalid_argument("Invalid tensor index");
+    return {};
   }
 };
 }

@@ -224,7 +224,7 @@ ComposedModel::setup_output_views()
     {
       _dpin_din_views[i].clear();
       for (auto & [i1, dep_i2] : _assembly_indices[i])
-        _dpin_din_views[i].push_back(_dpout_din[dep_i2.first].base_index({dep_i2.second}));
+        _dpin_din_views[i].push_back(_dpout_din[dep_i2.first].tensor().base_index({dep_i2.second}));
     }
 
     // Setup views for d2pin/din2
@@ -232,7 +232,8 @@ ComposedModel::setup_output_views()
     {
       _d2pin_din2_views[i].clear();
       for (auto & [i1, dep_i2] : _assembly_indices[i])
-        _d2pin_din2_views[i].push_back(_d2pout_din2[dep_i2.first].base_index({dep_i2.second}));
+        _d2pin_din2_views[i].push_back(
+            _d2pout_din2[dep_i2.first].tensor().base_index({dep_i2.second}));
     }
   }
 }

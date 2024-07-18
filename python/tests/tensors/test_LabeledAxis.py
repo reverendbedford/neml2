@@ -25,13 +25,12 @@
 
 import pytest
 from pathlib import Path
-import torch
 import neml2
 
 
 def test_axis_properties():
     pwd = Path(__file__).parent
-    model = neml2.load_model(pwd / "test_LabeledAxis.i", "model")
+    model = neml2.reload_model(pwd / "test_LabeledAxis.i", "model")
     input_axis = model.input_axis()
     output_axis = model.output_axis()
 
@@ -47,7 +46,7 @@ def test_axis_properties():
 
 def test_has_variable():
     pwd = Path(__file__).parent
-    model = neml2.load_model(pwd / "test_LabeledAxis.i", "model")
+    model = neml2.reload_model(pwd / "test_LabeledAxis.i", "model")
     input_axis = model.input_axis()
     output_axis = model.output_axis()
     assert input_axis.has_variable("forces/t")
@@ -65,7 +64,7 @@ def test_has_variable():
 
 def test_has_subaxis():
     pwd = Path(__file__).parent
-    model = neml2.load_model(pwd / "test_LabeledAxis.i", "model")
+    model = neml2.reload_model(pwd / "test_LabeledAxis.i", "model")
     input_axis = model.input_axis()
     output_axis = model.output_axis()
     assert input_axis.has_subaxis("state")
@@ -79,7 +78,7 @@ def test_has_subaxis():
 
 def test_variable_names():
     pwd = Path(__file__).parent
-    model = neml2.load_model(pwd / "test_LabeledAxis.i", "model")
+    model = neml2.reload_model(pwd / "test_LabeledAxis.i", "model")
     assert model.input_axis().variable_names() == [
         "forces/t",
         "old_forces/t",
@@ -95,7 +94,7 @@ def test_variable_names():
 
 def test_subaxis_names():
     pwd = Path(__file__).parent
-    model = neml2.load_model(pwd / "test_LabeledAxis.i", "model")
+    model = neml2.reload_model(pwd / "test_LabeledAxis.i", "model")
     assert model.input_axis().subaxis_names() == [
         "forces",
         "old_forces",

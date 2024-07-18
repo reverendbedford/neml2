@@ -30,7 +30,7 @@ import neml2
 
 def test_parameter_gradient():
     pwd = Path(__file__).parent
-    model = neml2.load_model(pwd / "test_training.i", "model")
+    model = neml2.reload_model(pwd / "test_training.i", "model")
 
     # Initialize the model with the correct batch shape
     B = (2, 5)

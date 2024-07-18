@@ -96,8 +96,8 @@ NewtonWithLineSearch::linesearch(NonlinearSystem & system, const Tensor & x, con
     if (torch::all(stop).item<bool>())
       break;
 
-    _alpha.batch_index_put({torch::logical_not(stop)},
-                           _alpha.batch_index({torch::logical_not(stop)}) / _linesearch_sigma);
+    _alpha.batch_index_put_({torch::logical_not(stop)},
+                            _alpha.batch_index({torch::logical_not(stop)}) / _linesearch_sigma);
   }
 }
 

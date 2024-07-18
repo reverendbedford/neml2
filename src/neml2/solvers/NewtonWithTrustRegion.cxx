@@ -133,12 +133,12 @@ NewtonWithTrustRegion::update(NonlinearSystem & system, Tensor & x)
   auto rho = red_a / red_b;
 
   // Adjust the trust region based on the quality of the subproblem
-  _delta.batch_index_put({rho < _reduce_criteria},
-                         _reduce_factor * _delta.batch_index({rho < _reduce_criteria}));
-  _delta.batch_index_put({rho > _expand_criteria},
-                         torch::clamp(_expand_factor * _delta.batch_index({rho > _expand_criteria}),
-                                      c10::nullopt,
-                                      _delta_max));
+  _delta.batch_index_put_({rho < _reduce_criteria},
+                          _reduce_factor * _delta.batch_index({rho < _reduce_criteria}));
+  _delta.batch_index_put_(
+      {rho > _expand_criteria},
+      torch::clamp(
+          _expand_factor * _delta.batch_index({rho > _expand_criteria}), c10::nullopt, _delta_max));
 
   // Accept or reject the current step
   auto accept = (rho >= _accept_criteria).unsqueeze(-1);

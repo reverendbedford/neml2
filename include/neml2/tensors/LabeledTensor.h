@@ -58,13 +58,11 @@ public:
   /// Assignment operator
   void operator=(const Derived & other);
 
-  /// A potentially dangerous implicit conversion
-  // Should we mark it explicit?
+  /// Implicit conversion
+  ///@{
   operator Tensor() const;
-
-  /// A potentially dangerous implicit conversion
-  // Should we mark it explicit?
   operator torch::Tensor() const;
+  ///@}
 
   /// Setup new empty storage
   [[nodiscard]] static Derived
@@ -72,33 +70,11 @@ public:
         const std::array<const LabeledAxis *, D> & axes,
         const torch::TensorOptions & options = default_tensor_options());
 
-  /// Setup new empty storage like another LabeledTensor
-  [[nodiscard]] static Derived empty_like(const Derived & other);
-
   /// Setup new storage with zeros
   [[nodiscard]] static Derived
   zeros(TensorShapeRef batch_shape,
         const std::array<const LabeledAxis *, D> & axes,
         const torch::TensorOptions & options = default_tensor_options());
-
-  /// Setup new storage with zeros like another LabeledTensor
-  [[nodiscard]] static Derived zeros_like(const Derived & other);
-
-  /// Clone this LabeledTensor
-  Derived clone(torch::MemoryFormat memory_format = torch::MemoryFormat::Contiguous) const;
-
-  /// Copy the value from another tensor
-  template <typename T>
-  void copy_(const T & other);
-
-  /// Return a copy without gradient graphs
-  Derived detach() const;
-
-  /// Detach from gradient graphs
-  void detach_();
-
-  /// Zero out this tensor
-  void zero_();
 
   /// Get the underlying tensor
   ///@{
@@ -106,107 +82,83 @@ public:
   Tensor & tensor() { return _tensor; }
   /// @}
 
-  /// Get the tensor options
-  torch::TensorOptions options() const { return _tensor.options(); }
+  /// Meta operations
+  // These methods mirror TensorBase
+  ///@{
+  /// Clone this LabeledTensor
+  Derived clone(torch::MemoryFormat memory_format = torch::MemoryFormat::Contiguous) const;
+  /// Return a copy without gradient graphs
+  Derived detach() const;
+  /// Detach from gradient graphs
+  void detach_();
+  /// Change tensor options
+  Derived to(const torch::TensorOptions & options) const;
+  /// Copy another tensor
+  void copy_(const torch::Tensor & other);
+  /// Set all entries to zero
+  void zero_();
+  /// Get the requires_grad property
+  bool requires_grad() const;
+  /// Set the requires_grad property
+  void requires_grad_(bool req = true);
+  /// Negation
+  Derived operator-() const;
+  ///@}
 
+  /// Tensor information
+  // These methods mirror TensorBase
+  ///@{
+  /// Tensor options
+  torch::TensorOptions options() const;
+  /// Tensor options
+  torch::Dtype scalar_type() const;
+  /// Tensor options
+  torch::Device device() const;
+  /// Number of tensor dimensions
+  Size dim() const;
+  /// Tensor shape
+  TensorShapeRef sizes() const;
+  /// Tensor shape
+  Size size(Size dim) const;
+  /// Whether the tensor is batched
+  bool batched() const;
   /// Return the number of batch dimensions
   Size batch_dim() const;
-
   /// Return the number of base dimensions
-  Size base_dim() const;
-
+  constexpr Size base_dim() const { return D; }
   /// Return the batch size
   TensorShapeRef batch_sizes() const;
-
+  /// Return the length of some batch axis
+  Size batch_size(Size index) const;
   /// Return the base size
   TensorShapeRef base_sizes() const;
+  /// Return the length of some base axis
+  Size base_size(Size index) const;
+  /// Return the flattened storage needed just for the base indices
+  Size base_storage() const;
+  ///@}
+
+  /// Getter and setter
+  // These methods mirror TensorBase
+  ///@{
+  /// Get a tensor by slicing on the batch dimensions
+  Derived batch_index(indexing::TensorIndicesRef indices) const;
+  /// Get a tensor by slicing on the base dimensions
+  Tensor base_index(indexing::TensorLabelsRef labels) const;
+  /// Set values by slicing on the batch dimensions
+  void batch_index_put_(indexing::TensorIndicesRef indices, const torch::Tensor & other);
+  /// Set values by slicing on the base dimensions
+  void base_index_put_(indexing::TensorLabelsRef labels, const Tensor & other);
+  ///@}
+
+  /// Get a tensor by slicing on the base dimensions AND reinterpret it as a primitive tensor
+  template <typename T, typename = std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
+  T reinterpret(indexing::TensorLabelsRef indices) const;
 
   /// Get all the labeled axes
   const std::array<const LabeledAxis *, D> & axes() const { return _axes; }
-
   /// Get a specific labeled axis
   const LabeledAxis & axis(Size i = 0) const { return *_axes[i]; }
-
-  /// How to slice the tensor given the names on each axis
-  template <typename... S>
-  indexing::TensorIndices slice_indices(S &&... names) const;
-
-  /// The shape of the entire LabeledTensor
-  TensorShapeRef storage_size() const;
-
-  /// The shape of a sub-block specified by the names on each dimension
-  template <typename... S>
-  TensorShape storage_size(S &&... names) const;
-
-  /// Return a labeled view into the tensor.
-  /// **No reshaping is done.**
-  template <typename... S>
-  Tensor operator()(S &&... names) const;
-
-  /// Slice the tensor on the given dimension by a single variable or sub-axis
-  Derived slice(Size i, const std::string & name) const;
-
-  /// Get the sub-block labeled by the given sub-axis names
-  template <typename... S>
-  Derived block(S &&... names) const;
-
-  /// Get a batch
-  Derived batch_index(indexing::TensorIndices indices) const;
-
-  /// Set a index sliced on the batch dimensions to a value
-  void batch_index_put(indexing::TensorIndices indices, const torch::Tensor & other);
-
-  /// Return an index sliced on the batch dimensions
-  Tensor base_index(indexing::TensorIndices indices) const;
-
-  /// Set a index sliced on the batch dimensions to a value
-  void base_index_put(indexing::TensorIndices indices, const torch::Tensor & other);
-
-  /// Template setup for appropriate variable types
-  template <typename T>
-  struct variable_type
-  {
-    typedef T type;
-  };
-
-  /// Get and interpret the view as an object
-  template <typename T, typename... S>
-  typename variable_type<T>::type get(S &&... names) const
-  {
-    return T((*this)(names...).view(utils::add_shapes(batch_sizes(), T::const_base_sizes)),
-             batch_dim());
-  }
-
-  /// Get and interpret the view as a list of objects
-  template <typename T, typename... S>
-  typename variable_type<T>::type get_list(S &&... names) const
-  {
-    return T(((*this)(names...))
-                 .reshape(utils::add_shapes(this->batch_sizes(), -1, T::const_base_sizes)),
-             this->batch_dim() + sizeof...(names));
-  }
-
-  /// Set and interpret the input as an object
-  template <typename T, typename... S>
-  void set(const TensorBase<T> & value, S &&... names)
-  {
-    (*this)(names...).index_put_(
-        {torch::indexing::None},
-        value.reshape(utils::add_shapes(value.batch_sizes(), storage_size(names...))));
-  }
-
-  /// Set and interpret the input as a list of objects
-  template <typename T, typename... S>
-  void set_list(const TensorBase<T> & value, S &&... names)
-  {
-    this->set(Tensor(value, value.batch_dim() - sizeof...(names)), names...);
-  }
-
-  /// Negation
-  Derived operator-() const;
-
-  /// Change tensor options
-  Derived to(const torch::TensorOptions & options) const;
 
 protected:
   /// The tensor
@@ -216,80 +168,18 @@ protected:
   std::array<const LabeledAxis *, D> _axes;
 
 private:
-  template <std::size_t... I, typename... S>
-  indexing::TensorIndices slice_indices_impl(std::index_sequence<I...>, S &&... names) const;
+  /// Get the storage shape for the slices
+  TensorShape storage_shape(indexing::TensorLabelsRef) const;
 
-  template <std::size_t... I, typename... S>
-  TensorShape storage_size_impl(std::index_sequence<I...>, S &&... names) const;
-
-  template <std::size_t... I, typename... S>
-  Derived block_impl(std::index_sequence<I...>, S &&... names) const;
+  /// Get slicing indices given the names on each axis
+  indexing::TensorIndices labels_to_indices(indexing::TensorLabelsRef) const;
 };
 
 template <class Derived, Size D>
-template <typename T>
-void
-LabeledTensor<Derived, D>::copy_(const T & other)
+template <typename T, typename>
+T
+LabeledTensor<Derived, D>::reinterpret(indexing::TensorLabelsRef indices) const
 {
-  _tensor.copy_(other);
-}
-
-template <class Derived, Size D>
-template <typename... S>
-indexing::TensorIndices
-LabeledTensor<Derived, D>::slice_indices(S &&... names) const
-{
-  return slice_indices_impl(std::make_index_sequence<sizeof...(names)>(),
-                            std::forward<S>(names)...);
-}
-
-template <class Derived, Size D>
-template <std::size_t... I, typename... S>
-indexing::TensorIndices
-LabeledTensor<Derived, D>::slice_indices_impl(std::index_sequence<I...>, S &&... names) const
-{
-  return {_axes[I]->indices(names)...};
-}
-
-template <class Derived, Size D>
-template <typename... S>
-TensorShape
-LabeledTensor<Derived, D>::storage_size(S &&... names) const
-{
-  return storage_size_impl(std::make_index_sequence<D>(), std::forward<S>(names)...);
-}
-
-template <class Derived, Size D>
-template <std::size_t... I, typename... S>
-TensorShape
-LabeledTensor<Derived, D>::storage_size_impl(std::index_sequence<I...>, S &&... names) const
-{
-  return {_axes[I]->storage_size(names)...};
-}
-
-template <class Derived, Size D>
-template <typename... S>
-Tensor
-LabeledTensor<Derived, D>::operator()(S &&... names) const
-{
-  return base_index(slice_indices(names...));
-}
-
-template <class Derived, Size D>
-template <typename... S>
-Derived
-LabeledTensor<Derived, D>::block(S &&... names) const
-{
-  return block_impl(std::make_index_sequence<sizeof...(names)>(), std::forward<S>(names)...);
-}
-
-template <class Derived, Size D>
-template <std::size_t... I, typename... S>
-Derived
-LabeledTensor<Derived, D>::block_impl(std::index_sequence<I...>, S &&... names) const
-{
-  indexing::TensorIndices idx = {_axes[I]->indices(names)...};
-  std::array<const LabeledAxis *, D> new_axes = {&_axes[I]->subaxis(names)...};
-  return Derived(_tensor.base_index(idx), new_axes);
+  return base_index(indices).base_reshape(T::const_base_sizes);
 }
 } // namespace neml2

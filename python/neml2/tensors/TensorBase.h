@@ -36,7 +36,6 @@ namespace py = pybind11;
 
 namespace neml2
 {
-
 // Forward declarations
 template <class Derived>
 void def_BatchView(py::module_ & m, const std::string & name);
@@ -58,27 +57,18 @@ public:
     : _data(data)
   {
   }
-  /// Return the number of batch dimensions
+  // These methods mirror TensorBase (the batch_xxx ones)
   Size dim() const { return _data->batch_dim(); }
-  /// Return the batch size
   TensorShapeRef sizes() const { return _data->batch_sizes(); }
-  /// Get a batch
-  Derived index(indexing::TensorIndices indices) const { return _data->batch_index(indices); }
-  /// Set a index sliced on the batch dimensions to a value
-  void index_put(indexing::TensorIndices indices, const torch::Tensor & other)
+  Derived index(const indexing::TensorIndices & i) const { return _data->batch_index(i); }
+  void index_put_(const indexing::TensorIndices & i, const torch::Tensor & t)
   {
-    _data->batch_index_put(indices, other);
+    _data->batch_index_put_(i, t);
   }
-  /// Return a new view of the tensor with values broadcast along the batch dimensions.
-  Derived expand(TensorShapeRef batch_size) const { return _data->batch_expand(batch_size); }
-  /// Return a new tensor with values broadcast along the batch dimensions.
-  Derived expand_copy(TensorShapeRef batch_size) const
-  {
-    return _data->batch_expand_copy(batch_size);
-  }
-  /// Unsqueeze a batch dimension
+  Derived expand(TensorShapeRef s) const { return _data->batch_expand(s); }
+  Derived expand_copy(TensorShapeRef s) const { return _data->batch_expand_copy(s); }
+  Derived reshape(TensorShapeRef s) const { return _data->batch_reshape(s); }
   Derived unsqueeze(Size d) const { return _data->batch_unsqueeze(d); }
-  /// Transpose two batch dimensions
   Derived transpose(Size d1, Size d2) const { return _data->batch_transpose(d1, d2); }
 
 private:
@@ -98,26 +88,19 @@ public:
     : _data(data)
   {
   }
-  /// Return the number of base dimensions
+  // These methods mirror TensorBase (the base_xxx ones)
   Size dim() const { return _data->base_dim(); }
-  /// Return the base size
   TensorShapeRef sizes() const { return _data->base_sizes(); }
-  /// Get a base
-  Tensor index(indexing::TensorIndices indices) const { return _data->base_index(indices); }
-  /// Set a index sliced on the base dimensions to a value
-  void index_put(indexing::TensorIndices indices, const torch::Tensor & other)
+  Derived index(const indexing::TensorIndices & i) const { return _data->base_index(i); }
+  void index_put_(const indexing::TensorIndices & i, const torch::Tensor & t)
   {
-    _data->base_index_put(indices, other);
+    _data->base_index_put_(i, t);
   }
-  /// Return a new view of the tensor with values broadcast along the base dimensions.
-  Derived expand(TensorShapeRef base_size) const { return _data->base_expand(base_size); }
-  /// Return a new tensor with values broadcast along the base dimensions.
-  Derived expand_copy(TensorShapeRef base_size) const { return _data->base_expand_copy(base_size); }
-  /// Unsqueeze a base dimension
+  Derived expand(TensorShapeRef s) const { return _data->base_expand(s); }
+  Derived expand_copy(TensorShapeRef s) const { return _data->base_expand_copy(s); }
+  Derived reshape(TensorShapeRef s) const { return _data->base_reshape(s); }
   Derived unsqueeze(Size d) const { return _data->base_unsqueeze(d); }
-  /// Transpose two base dimensions
   Derived transpose(Size d1, Size d2) const { return _data->base_transpose(d1, d2); }
-  /// Return the flattened storage needed just for the base indices
   Size storage() const { return _data->base_storage(); }
 
 private:
@@ -134,67 +117,63 @@ template <class Derived>
 void
 def_BatchView(py::module_ & m, const std::string & name)
 {
-  auto c = py::class_<BatchView<Derived>>(m, name.c_str())
-               .def(py::init<Derived *>())
-               .def("dim", &BatchView<Derived>::dim)
-               .def_property_readonly("shape", &BatchView<Derived>::sizes)
-               .def("__getitem__", &BatchView<Derived>::index)
-               .def("__getitem__",
-                    [](BatchView<Derived> * self, at::indexing::TensorIndex index)
-                    { return self->index({index}); })
-               .def("__setitem__", &BatchView<Derived>::index_put)
-               .def("__setitem__",
-                    [](BatchView<Derived> * self,
-                       at::indexing::TensorIndex index,
-                       const torch::Tensor & src) { return self->index_put({index}, src); })
-               .def("expand", &BatchView<Derived>::expand)
-               .def("expand_copy", &BatchView<Derived>::expand_copy)
-               .def("unsqueeze", &BatchView<Derived>::unsqueeze)
-               .def("transpose", &BatchView<Derived>::transpose);
-
-  // The setter should also take any primitive tensor type
-#define TENSORBASE_BATCHVIEW_SETITEM(T)                                                            \
-  c.def("__setitem__",                                                                             \
-        [](BatchView<Derived> * self, indexing::TensorIndices index, const T & src)                \
-        { self->index_put(index, src); })                                                          \
-      .def("__setitem__",                                                                          \
-           [](BatchView<Derived> * self, at::indexing::TensorIndex index, const T & src)           \
-           { self->index_put({index}, src); })
-  FOR_ALL_TENSORBASE(TENSORBASE_BATCHVIEW_SETITEM);
+  auto c =
+      py::class_<BatchView<Derived>>(m, name.c_str())
+          .def(py::init<Derived *>())
+          .def("dim", &BatchView<Derived>::dim)
+          .def_property_readonly("shape", &BatchView<Derived>::sizes)
+          .def("__getitem__", &BatchView<Derived>::index)
+          .def("__getitem__",
+               [](BatchView<Derived> * self, at::indexing::TensorIndex index)
+               { return self->index({index}); })
+          .def("__setitem__", &BatchView<Derived>::index_put_)
+          .def("__setitem__",
+               [](BatchView<Derived> * self,
+                  at::indexing::TensorIndex index,
+                  const torch::Tensor & src) { return self->index_put_({index}, src); })
+          .def("__setitem__",
+               [](BatchView<Derived> * self,
+                  const indexing::TensorIndices & indices,
+                  const Tensor & src) { return self->index_put_(indices, src); })
+          .def("__setitem__",
+               [](BatchView<Derived> * self, at::indexing::TensorIndex index, const Tensor & src)
+               { return self->index_put_({index}, src); })
+          .def("expand", &BatchView<Derived>::expand)
+          .def("expand_copy", &BatchView<Derived>::expand_copy)
+          .def("unsqueeze", &BatchView<Derived>::unsqueeze)
+          .def("transpose", &BatchView<Derived>::transpose);
 }
 
 template <class Derived>
 void
 def_BaseView(py::module_ & m, const std::string & name)
 {
-  auto c = py::class_<BaseView<Derived>>(m, name.c_str())
-               .def(py::init<Derived *>())
-               .def("dim", &BaseView<Derived>::dim)
-               .def_property_readonly("shape", &BaseView<Derived>::sizes)
-               .def("__getitem__", &BaseView<Derived>::index)
-               .def("__getitem__",
-                    [](BaseView<Derived> * self, at::indexing::TensorIndex index)
-                    { return self->index({index}); })
-               .def("__setitem__", &BaseView<Derived>::index_put)
-               .def("__setitem__",
-                    [](BaseView<Derived> * self,
-                       at::indexing::TensorIndex index,
-                       const torch::Tensor & src) { self->index_put({index}, src); })
-               .def("expand", &BaseView<Derived>::expand)
-               .def("expand_copy", &BaseView<Derived>::expand_copy)
-               .def("unsqueeze", &BaseView<Derived>::unsqueeze)
-               .def("transpose", &BaseView<Derived>::transpose)
-               .def("storage", &BaseView<Derived>::storage);
-
-  // The setter should also take any primitive tensor type
-#define TENSORBASE_BASEVIEW_SETITEM(T)                                                             \
-  c.def("__setitem__",                                                                             \
-        [](BaseView<Derived> * self, indexing::TensorIndices index, const T & src)                 \
-        { self->index_put(index, src); })                                                          \
-      .def("__setitem__",                                                                          \
-           [](BaseView<Derived> * self, at::indexing::TensorIndex index, const T & src)            \
-           { self->index_put({index}, src); })
-  FOR_ALL_TENSORBASE(TENSORBASE_BASEVIEW_SETITEM);
+  auto c =
+      py::class_<BaseView<Derived>>(m, name.c_str())
+          .def(py::init<Derived *>())
+          .def("dim", &BaseView<Derived>::dim)
+          .def_property_readonly("shape", &BaseView<Derived>::sizes)
+          .def("__getitem__", &BaseView<Derived>::index)
+          .def("__getitem__",
+               [](BaseView<Derived> * self, at::indexing::TensorIndex index)
+               { return self->index({index}); })
+          .def("__setitem__", &BaseView<Derived>::index_put_)
+          .def("__setitem__",
+               [](BaseView<Derived> * self,
+                  at::indexing::TensorIndex index,
+                  const torch::Tensor & src) { self->index_put_({index}, src); })
+          .def("__setitem__",
+               [](BaseView<Derived> * self,
+                  const indexing::TensorIndices & indices,
+                  const Tensor & src) { return self->index_put_(indices, src); })
+          .def("__setitem__",
+               [](BaseView<Derived> * self, at::indexing::TensorIndex index, const Tensor & src)
+               { return self->index_put_({index}, src); })
+          .def("expand", &BaseView<Derived>::expand)
+          .def("expand_copy", &BaseView<Derived>::expand_copy)
+          .def("unsqueeze", &BaseView<Derived>::unsqueeze)
+          .def("transpose", &BaseView<Derived>::transpose)
+          .def("storage", &BaseView<Derived>::storage);
 }
 
 template <class Derived>
@@ -220,20 +199,23 @@ def_TensorBase(py::class_<Derived> & c)
              return "<" + classname + " of shape " + utils::stringify(self.batch_sizes()) +
                     utils::stringify(self.base_sizes()) + ">";
            })
+      .def("torch", [](const Derived & self) { return torch::Tensor(self); })
       .def_property_readonly("batch", [](Derived * self) { return new BatchView<Derived>(self); })
       .def_property_readonly("base", [](Derived * self) { return new BaseView<Derived>(self); })
       .def("clone", [](Derived * self) { return self->clone(); })
       .def("detach", &Derived::detach)
+      .def("detach_", &Derived::detach_)
       .def(
           "to",
           [](Derived * self, NEML2_TENSOR_OPTIONS_VARGS) { return self->to(NEML2_TENSOR_OPTIONS); },
           py::kw_only(),
           PY_ARG_TENSOR_OPTIONS)
-      .def("torch", [](const Derived & self) { return torch::Tensor(self); })
+      .def("copy_", &Derived::copy_)
+      .def("zero_", &Derived::zero_)
       .def("defined", &Derived::defined)
-      .def("batched", &Derived::batched)
       .def("dim", &Derived::dim)
       .def_property_readonly("shape", &Derived::sizes)
+      .def("batched", &Derived::batched)
       .def_property_readonly("dtype", &Derived::scalar_type)
       .def_property_readonly("device", &Derived::device)
       .def("requires_grad_", &Derived::requires_grad_)

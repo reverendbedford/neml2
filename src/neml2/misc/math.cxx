@@ -229,7 +229,7 @@ jacrev(const Tensor & y, const Tensor & p)
                                                /*create_graph=*/false,
                                                /*allow_unused=*/false)[0];
     if (dyfi_dp.defined())
-      dyf_dp.base_index_put({i, torch::indexing::Ellipsis}, dyfi_dp);
+      dyf_dp.base_index_put_({i, torch::indexing::Ellipsis}, dyfi_dp);
   }
 
   // Reshape the derivative back to the correct shape

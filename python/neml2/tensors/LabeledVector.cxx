@@ -35,5 +35,7 @@ def_LabeledVector(py::module_ & m)
 {
   auto c = py::class_<LabeledVector>(m, "LabeledVector");
 
+  def_LabeledBatchView<LabeledVector>(m, "LabeledVectorBatchView");
+  def_LabeledBaseView<LabeledVector>(m, "LabeledVectorBaseView");
   def_LabeledTensor<LabeledVector, 1>(c);
 }

@@ -40,14 +40,14 @@ VariableBase::setup_views(const LabeledVector * value,
   if (value)
   {
     _value_storage = value;
-    _raw_value = (*_value_storage)(name());
+    _raw_value = _value_storage->base_index(name());
   }
 
   if (deriv)
   {
     _derivative_storage = deriv;
     for (auto arg : _derivative_storage->axis(1).variable_names())
-      _dvalue_d[arg] = (*_derivative_storage)(name(), arg);
+      _dvalue_d[arg] = _derivative_storage->base_index({name(), arg});
   }
 
   if (secderiv)
@@ -55,7 +55,7 @@ VariableBase::setup_views(const LabeledVector * value,
     _second_derivative_storage = secderiv;
     for (auto arg1 : _second_derivative_storage->axis(1).variable_names())
       for (auto arg2 : _second_derivative_storage->axis(2).variable_names())
-        _d2value_d[arg1][arg2] = (*_second_derivative_storage)(name(), arg1, arg2);
+        _d2value_d[arg1][arg2] = _second_derivative_storage->base_index({name(), arg1, arg2});
   }
 }
 

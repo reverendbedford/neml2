@@ -34,7 +34,7 @@ LabeledTensor3D::accumulate(const LabeledTensor3D & other, bool recursive)
   neml_assert_dbg(axis(2) == other.axis(2), "Can only accumulate 3D tensors with conformal z axes");
   const auto indices0 = axis(0).common_indices(other.axis(0), recursive);
   for (const auto & [idxi, idxi_other] : indices0)
-    _tensor.base_index({idxi}) += other.base_index({idxi_other});
+    _tensor.base_index({idxi}) += other.tensor().base_index({idxi_other});
 }
 
 void
@@ -44,7 +44,7 @@ LabeledTensor3D::fill(const LabeledTensor3D & other, bool recursive)
   neml_assert_dbg(axis(2) == other.axis(2), "Can only accumulate 3D tensors with conformal z axes");
   const auto indices0 = axis(0).common_indices(other.axis(0), recursive);
   for (const auto & [idxi, idxi_other] : indices0)
-    _tensor.base_index_put({idxi}, other.base_index({idxi_other}));
+    _tensor.base_index_put_({idxi}, other.tensor().base_index({idxi_other}));
 }
 
 LabeledTensor3D

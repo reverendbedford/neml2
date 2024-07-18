@@ -79,10 +79,11 @@ Normality::setup_output_views()
 
   for (auto && [ivar, var] : _conjugate_pairs)
   {
-    _f_deriv_views[ivar] = _model.derivative_storage()(_f, ivar);
+    _f_deriv_views[ivar] = _model.derivative_storage().base_index({_f, ivar});
     if (requires_grad())
       for (auto && [jvar, j] : input_views())
-        _f_secderiv_views[ivar][jvar] = _model.second_derivative_storage()(_f, ivar, jvar);
+        _f_secderiv_views[ivar][jvar] =
+            _model.second_derivative_storage().base_index({_f, ivar, jvar});
   }
 }
 

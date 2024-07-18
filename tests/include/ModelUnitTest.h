@@ -56,7 +56,7 @@ private:
                 vars.size(),
                 " variables.");
     for (size_t i = 0; i < vars.size(); i++)
-      vec.set(T(vals[i]), vars[i]);
+      vec.base_index_put_(vars[i], T(vals[i]));
   }
 
   void check_all(Model & model);

@@ -30,7 +30,7 @@ import neml2
 
 def test_named_parameters():
     pwd = Path(__file__).parent
-    model = neml2.load_model(pwd / "test_ParameterStore.i", "model")
+    model = neml2.reload_model(pwd / "test_ParameterStore.i", "model")
 
     # Setup variable views with batch shape (5,2)
     model.reinit([5, 2])
@@ -46,7 +46,7 @@ def test_named_parameters():
 
 def test_get_parameter():
     pwd = Path(__file__).parent
-    model = neml2.load_model(pwd / "test_ParameterStore.i", "model")
+    model = neml2.reload_model(pwd / "test_ParameterStore.i", "model")
 
     # Setup variable views with batch shape (5,2)
     model.reinit([5, 2])
@@ -62,7 +62,7 @@ def test_get_parameter():
 
 def test_set_parameter():
     pwd = Path(__file__).parent
-    model = neml2.load_model(pwd / "test_ParameterStore.i", "model")
+    model = neml2.reload_model(pwd / "test_ParameterStore.i", "model")
 
     # Setup variable views with batch shape (5,2)
     model.reinit([5, 2])
@@ -82,7 +82,7 @@ def test_set_parameter():
 
 def test_set_parameters():
     pwd = Path(__file__).parent
-    model = neml2.load_model(pwd / "test_ParameterStore.i", "model")
+    model = neml2.reload_model(pwd / "test_ParameterStore.i", "model")
 
     # Setup variable views with batch shape (5,2)
     model.reinit([5, 2])
@@ -106,7 +106,7 @@ def test_set_parameters():
 
 def test_parameter_derivative():
     pwd = Path(__file__).parent
-    model = neml2.load_model(pwd / "test_ParameterStore.i", "model")
+    model = neml2.reload_model(pwd / "test_ParameterStore.i", "model")
 
     # Strain of batch shape (5,2)
     e = neml2.SR2(torch.tensor([0.1, 0.2, 0.05, 0, 0, 0]).expand(5, 2, 6))
@@ -115,7 +115,7 @@ def test_parameter_derivative():
     x = neml2.LabeledVector(neml2.Tensor(e), [model.input_axis()])
 
     # Setup variable views
-    model.reinit(x.tensor().batch.shape)
+    model.reinit(x.batch.shape)
 
     # This model has two parameters
     E = model.named_parameters()["E"]

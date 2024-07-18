@@ -210,10 +210,10 @@ Model::setup_output_views()
 
   if (is_nonlinear_system() && requires_grad())
   {
-    _dr_ds = derivative_storage()("residual", "state");
-    _dr_dsn = derivative_storage()("residual", "old_state");
-    _dr_df = derivative_storage()("residual", "forces");
-    _dr_dfn = derivative_storage()("residual", "old_forces");
+    _dr_ds = derivative_storage().base_index({"residual", "state"});
+    _dr_dsn = derivative_storage().base_index({"residual", "old_state"});
+    _dr_df = derivative_storage().base_index({"residual", "forces"});
+    _dr_dfn = derivative_storage().base_index({"residual", "old_forces"});
   }
 }
 
@@ -229,9 +229,9 @@ Model::setup_nonlinear_system()
 {
   if (is_nonlinear_system())
   {
-    _residual = output_storage()("residual");
+    _residual = output_storage().base_index({"residual"});
     if (requires_grad())
-      _Jacobian = derivative_storage()("residual", "state");
+      _Jacobian = derivative_storage().base_index({"residual", "state"});
   }
 
   for (auto submodel : registered_models())
@@ -489,7 +489,7 @@ Model::extract_derivatives(bool retain_graph, bool create_graph, bool allow_unus
 
         if (dyi_dvar.defined())
         {
-          derivative_storage().base_index_put(
+          derivative_storage().tensor().base_index_put_(
               {i, input_axis().indices(name)},
               dyi_dvar.reshape(utils::add_shapes(batch_sizes(), var.base_storage())));
         }
@@ -516,7 +516,7 @@ Model::extract_second_derivatives(bool retain_graph, bool create_graph, bool all
                                                    create_graph,
                                                    allow_unused)[0];
           if (dydxij_dvar.defined())
-            second_derivative_storage().base_index_put(
+            second_derivative_storage().tensor().base_index_put_(
                 {i, j, input_axis().indices(name)},
                 dydxij_dvar.reshape(utils::add_shapes(batch_sizes(), var.base_storage())));
         }

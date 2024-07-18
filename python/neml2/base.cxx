@@ -76,7 +76,7 @@ Create a models.Model from given input options. The input file must have
 already been parsed and loaded.
 
 @param model Name of the model
-@param enable_ad Enable automatic differentiation
+@param enable_AD Enable automatic differentiation
 @param force_create Whether to force create the model even if one has already been created
 )");
   m.def("load_model",
@@ -96,7 +96,7 @@ base.get_model if you need finer control over the model creation behavior.
 
 @param path Path to the input file to be parsed
 @param model Name of the model
-@param enable_ad Enable automatic differentiation
+@param enable_AD Enable automatic differentiation
 )");
   m.def("reload_model",
         &reload_model,
@@ -113,7 +113,7 @@ where it is desirable to deallocate models on-the-fly.
 
 @param path Path to the input file to be parsed
 @param model Name of the model
-@param enable_ad Enable automatic differentiation
+@param enable_AD Enable automatic differentiation
 )");
 
   // neml2.base.TensorValue

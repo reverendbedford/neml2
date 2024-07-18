@@ -27,18 +27,6 @@
 
 namespace neml2
 {
-LabeledAxisAccessor::LabeledAxisAccessor(const LabeledAxisAccessor & other)
-  : LabeledAxisAccessor(other._item_names)
-{
-}
-
-LabeledAxisAccessor &
-LabeledAxisAccessor::operator=(const LabeledAxisAccessor & other)
-{
-  _item_names = other._item_names;
-  return *this;
-}
-
 LabeledAxisAccessor::operator std::vector<std::string>() const
 {
   std::vector<std::string> v(_item_names.begin(), _item_names.end());

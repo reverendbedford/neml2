@@ -53,11 +53,6 @@ TEST_CASE("list_tensors", "[tensors]")
     // A standard, unlisted R2
     auto c = R2::fill(3.0, DTO).batch_expand(B);
 
-    SECTION("list unsqueeze")
-    {
-      REQUIRE(c.list_unsqueeze().sizes() == utils::add_shapes(B, neml2::TensorShape{1}, BS));
-    }
-
     auto binary_operator = [](const R2 & a, const R2 & b) { return a * b; };
 
     SECTION("outer product, first is a list")

@@ -86,7 +86,7 @@ TEST_CASE("ParameterStore", "[models]")
     {
       E.requires_grad_(true);
       auto y = model.value(x);
-      auto S = y(VariableName("state", "S"));
+      auto S = y.base_index(VariableName("state", "S"));
       REQUIRE_THROWS_WITH(
           math::jacrev(S, E),
           Catch::Matchers::ContainsSubstring("The batch shape of the parameter must be the "
@@ -101,7 +101,7 @@ TEST_CASE("ParameterStore", "[models]")
       E.requires_grad_(true);
       nu.requires_grad_(true);
       auto y = model.value(x);
-      auto S = y(VariableName("state", "S"));
+      auto S = y.base_index(VariableName("state", "S"));
 
       // Parameter gradients from torch AD
       const auto dS_dE_exact = math::jacrev(S, E);
@@ -113,7 +113,7 @@ TEST_CASE("ParameterStore", "[models]")
           {
             E = Ep;
             auto y = model.value(x);
-            auto S = y(VariableName("state", "S"));
+            auto S = y.base_index(VariableName("state", "S"));
             return S;
           },
           Tensor(E).clone());
@@ -122,7 +122,7 @@ TEST_CASE("ParameterStore", "[models]")
           {
             nu = nup;
             auto y = model.value(x);
-            auto S = y(VariableName("state", "S"));
+            auto S = y.base_index(VariableName("state", "S"));
             return S;
           },
           Tensor(nu).clone());

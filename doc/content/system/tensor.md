@@ -31,7 +31,7 @@ neml2_assert(batch_sz == TensorShape{5, 2});
 
 ### Statically shaped tensors {#statically-shaped-tensor}
 
-[PrimitiveTensor](@ref neml2::PrimitiveTensor) is the parent class for all tensor types with a *fixed* base shape. It is templated on the base shape of the tensor. NEML2 offers a rich collection of primitive tensor types inherited from `PrimitiveTensor`. Currently implemented primitive tensor types are summarized in the following table.
+neml2::PrimitiveTensor is the parent class for all tensor types with a *fixed* base shape. It is templated on the base shape of the tensor. NEML2 offers a rich collection of primitive tensor types inherited from `PrimitiveTensor`. Currently implemented primitive tensor types are summarized in the following table.
 
 | Tensor type                            | Base shape        | Description                                                      |
 | :------------------------------------- | :---------------- | :--------------------------------------------------------------- |
@@ -101,7 +101,7 @@ To address this challenge, NEML2 creates *views*, instead of copies, of tensors 
 > \f]
 > Otherwise, it will not be possible to view self tensor as shape without copying it.
 
-In NEML2, use [base_index](@ref neml2::TensorBase::base_index) for indexing the base dimensions and [batch_index](@ref neml2::TensorBase::batch_index) for indexing the batch dimensions:
+In NEML2, use neml2::TensorBase::base_index for indexing the base dimensions and neml2::TensorBase::batch_index for indexing the batch dimensions:
 ```cpp
 Tensor A(torch::tensor({{2, 3, 4}, {-1, -2, 3}, {6, 9, 7}}), 1);
 // A = [[  2  3  4]
@@ -115,13 +115,13 @@ Tensor C = A.base_index({indexing::Slice(1, 3)});
 //      [ -2  3]
 //      [  9  7]]
 ```
-To modify the content of a tensor, use [base_index_put](@ref neml2::TensorBase::base_index_put) or [batch_index_put](@ref neml2::TensorBase::batch_index_put):
+To modify the content of a tensor, use neml2::TensorBase::base_index_put_ or neml2::TensorBase::batch_index_put_:
 ```cpp
-A.base_index_put({Slice(1, 3)}, torch::ones({3, 2}));
+A.base_index_put_({Slice(1, 3)}, torch::ones({3, 2}));
 // A = [[  2  1  1]
 //      [ -1  1  1]
 //      [  6  1  1]]
-A.batch_index_put({Slice(0, 2)}, torch::zeros({2, 3}));
+A.batch_index_put_({Slice(0, 2)}, torch::zeros({2, 3}));
 // A = [[  0  0  0]
 //      [  0  0  0]
 //      [  6  1  1]]
@@ -188,9 +188,4 @@ Refer to the documentation for a complete list of APIs for creating and modifyin
 
 [LabeledTensor](@ref neml2::LabeledTensor) is the primary data structure in NEML2 for working with labeled tensor views. Each `LabeledTensor` consists of one `Tensor` and one or more `LabeledAxis`s. The `LabeledTensor` is templated on the base dimension \f$D\f$. [LabeledVector](@ref neml2::LabeledVector) and [LabeledMatrix](@ref neml2::LabeledMatrix) are the two most widely used data structures in NEML2.
 
-`LabeledTensor` handles the creation, modification, and accessing of labeled tensors. Recall that all primitive data types in a labeled tensor are flattened, e.g., a symmetric fourth order tensor of type `SSR4` with batch size `(5)` and base size `(6, 6)` are flattened to have base size `(36)` in the labeled tensor. The documentation provides a complete list of APIs. The commonly used methods are
-- [operator()](@ref neml2::LabeledTensor::operator()()) for retrieving a labeled view into the raw (flattened) data without reshaping
-- [get](@ref neml2::LabeledTensor::get) for retrieving a labeled view and reshaping it to the correct shape
-- [set](@ref neml2::LabeledTensor::set) for setting values for a labeled view
-- [slice](@ref neml2::LabeledTensor::slice) for slicing a sub-axis along a specific base dimension
-- [block](@ref neml2::LabeledTensor::block) for sub-indexing the `LabeledTensor` with \f$D\f$ sub-axis names
+`LabeledTensor` handles the creation, modification, and accessing of labeled tensors. Recall that all primitive data types in a labeled tensor are flattened, e.g., a symmetric fourth order tensor of type `SSR4` with batch size `(5)` and base size `(6, 6)` are flattened to have base size `(36)` in the labeled tensor. The documentation provides a complete list of APIs.

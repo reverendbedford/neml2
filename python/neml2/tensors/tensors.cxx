@@ -25,6 +25,7 @@
 #include <pybind11/pybind11.h>
 
 #include "neml2/tensors/macros.h"
+// #include "neml2/tensors/LabeledAxisAccessor.h"
 
 #include "python/neml2/tensors/TensorBase.h"
 #include "python/neml2/tensors/PrimitiveTensor.h"
@@ -42,16 +43,6 @@ void def_LabeledAxisAccessor(py::module_ & m);
 void def_LabeledAxis(py::module_ & m);
 void def_LabeledVector(py::module_ & m);
 void def_LabeledMatrix(py::module_ & m);
-
-// Instantiate global types
-namespace pybind11
-{
-namespace detail
-{
-template struct type_caster<c10::SmallVector<Size>>;
-template struct type_caster<c10::SmallVector<at::indexing::TensorIndex>>;
-}
-}
 
 PYBIND11_MODULE(tensors, m)
 {

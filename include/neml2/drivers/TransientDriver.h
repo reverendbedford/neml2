@@ -152,7 +152,7 @@ private:
               const std::vector<CrossRef<T>> & ic_values)
   {
     for (size_t i = 0; i < ic_names.size(); i++)
-      _out.set(T(ic_values[i]), ic_names[i]);
+      _out.base_index_put_(ic_names[i], T(ic_values[i]));
   }
 };
 } // namespace neml2

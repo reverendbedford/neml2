@@ -82,11 +82,11 @@ finite_differencing_derivative(F && f,
     dx.index_put_({dx < aeps}, aeps);
 
     auto xf1 = xf.clone();
-    xf1.base_index_put({i}, xf1.base_index({i}) + dx);
+    xf1.base_index_put_({i}, xf1.base_index({i}) + dx);
     auto x1 = Tensor(xf1.reshape(x.sizes()), x.batch_dim());
 
     auto y1 = Tensor(f(x1)).clone();
-    dy_dxf.base_index_put({indexing::Ellipsis, i}, (y1 - y0) / dx);
+    dy_dxf.base_index_put_({indexing::Ellipsis, i}, (y1 - y0) / dx);
   }
 
   // Reshape the derivative back to the correct shape

@@ -97,100 +97,107 @@ public:
                                         Size batch_dim = -1,
                                         Real base = 10);
 
+  /// Meta operations
+  // These methods should be mirrored in LabeledTensor
+  ///@{
+  /// Clone (take ownership)
+  Derived clone(torch::MemoryFormat memory_format = torch::MemoryFormat::Contiguous) const;
+  /// Discard function graph
+  Derived detach() const;
+  /// Detach from gradient graphs in place
+  using torch::Tensor::detach_;
+  /// Change tensor options
+  Derived to(const torch::TensorOptions & options) const;
+  /// Copy another tensor
+  using torch::Tensor::copy_;
+  /// Set all entries to zero
+  using torch::Tensor::zero_;
+  /// Get the requires_grad property
+  using torch::Tensor::requires_grad;
+  /// Set the requires_grad property
+  using torch::Tensor::requires_grad_;
+  /// Negation
+  Derived operator-() const;
+  ///@}
+
+  /// Tensor information
+  // These methods should be mirrored in LabeledTensor
+  ///@{
+  /// Tensor options
+  using torch::Tensor::options;
+  /// Scalar type
+  using torch::Tensor::scalar_type;
+  /// Device
+  using torch::Tensor::device;
+  /// Number of tensor dimensions
+  using torch::Tensor::dim;
+  /// Tensor shape
+  using torch::Tensor::sizes;
+  /// Size of a dimension
+  using torch::Tensor::size;
   /// Whether the tensor is batched
   bool batched() const;
-
   /// Return the number of batch dimensions
   Size batch_dim() const;
-
-  /// Return a writable reference to the batch dimension
-  Size & batch_dim();
-
   /// Return the number of base dimensions
   Size base_dim() const;
-
   /// Return the batch size
   TensorShapeRef batch_sizes() const;
-
-  /// Return the length of some batch axis
+  /// Return the size of a batch axis
   Size batch_size(Size index) const;
-
   /// Return the base size
   TensorShapeRef base_sizes() const;
-
-  /// Return the length of some base axis
+  /// Return the size of a base axis
   Size base_size(Size index) const;
-
   /// Return the flattened storage needed just for the base indices
   Size base_storage() const;
+  ///@}
 
-  /// Get a batch
-  Derived batch_index(indexing::TensorIndices indices) const;
+  /// Getter and setter
+  // These methods should be mirrored in LabeledTensor
+  ///@{
+  /// Regular tensor indexing
+  using torch::Tensor::index;
+  using torch::Tensor::index_put_;
+  /// Get a tensor by slicing on the batch dimensions
+  Derived batch_index(indexing::TensorIndicesRef indices) const;
+  /// Get a tensor by slicing on the base dimensions
+  neml2::Tensor base_index(indexing::TensorIndicesRef indices) const;
+  /// Set values by slicing on the batch dimensions
+  void batch_index_put_(indexing::TensorIndicesRef indices, const torch::Tensor & other);
+  /// Set values by slicing on the base dimensions
+  void base_index_put_(indexing::TensorIndicesRef indices, const torch::Tensor & other);
+  ///@}
 
-  /// Return an index sliced on the base dimensions
-  neml2::Tensor base_index(const indexing::TensorIndices & indices) const;
-
-  /// Set a index sliced on the batch dimensions to a value
-  void batch_index_put(indexing::TensorIndices indices, const torch::Tensor & other);
-
-  /// Set a index sliced on the base dimensions to a value
-  void base_index_put(const indexing::TensorIndices & indices, const torch::Tensor & other);
-
+  /// Modifiers
+  ///@{
   /// Return a new view of the tensor with values broadcast along the batch dimensions.
   Derived batch_expand(TensorShapeRef batch_size) const;
-
   /// Return a new view of the tensor with values broadcast along the base dimensions.
   neml2::Tensor base_expand(TensorShapeRef base_size) const;
-
   /// Expand the batch to have the same shape as another tensor
   template <class Derived2>
   Derived batch_expand_as(const Derived2 & other) const;
-
   /// Expand the base to have the same shape as another tensor
   template <class Derived2>
   Derived2 base_expand_as(const Derived2 & other) const;
-
   /// Return a new tensor with values broadcast along the batch dimensions.
   Derived batch_expand_copy(TensorShapeRef batch_size) const;
-
   /// Return a new tensor with values broadcast along the base dimensions.
   neml2::Tensor base_expand_copy(TensorShapeRef base_size) const;
-
   /// Reshape batch dimensions
   Derived batch_reshape(TensorShapeRef batch_shape) const;
-
   /// Reshape base dimensions
   neml2::Tensor base_reshape(TensorShapeRef base_shape) const;
-
   /// Unsqueeze a batch dimension
   Derived batch_unsqueeze(Size d) const;
-
-  /// Unsqueeze on the special list batch dimension
-  Derived list_unsqueeze() const;
-
   /// Unsqueeze a base dimension
   neml2::Tensor base_unsqueeze(Size d) const;
-
   /// Transpose two batch dimensions
   Derived batch_transpose(Size d1, Size d2) const;
-
   /// Transpose two base dimensions
   neml2::Tensor base_transpose(Size d1, Size d2) const;
-
-  /// Move two base dimensions
-  neml2::Tensor base_movedim(Size d1, Size d2) const;
-
-  /// Clone (take ownership)
-  Derived clone(torch::MemoryFormat memory_format = torch::MemoryFormat::Contiguous) const;
-
-  /// Discard function graph
-  Derived detach() const;
-
-  /// Send to options
-  Derived to(const torch::TensorOptions & options) const;
-
-  /// Negation
-  Derived operator-() const;
+  ///@}
 
 private:
   /// Number of batch dimensions. The first `_batch_dim` dimensions are considered batch dimensions.

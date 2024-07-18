@@ -93,9 +93,9 @@ ImplicitUpdate::setup_output_views()
 
   if (requires_grad())
   {
-    _ds_dsn = derivative_storage()("state", "old_state");
-    _ds_df = derivative_storage()("state", "forces");
-    _ds_dfn = derivative_storage()("state", "old_forces");
+    _ds_dsn = derivative_storage().base_index({"state", "old_state"});
+    _ds_df = derivative_storage().base_index({"state", "forces"});
+    _ds_dfn = derivative_storage().base_index({"state", "old_forces"});
   }
 }
 

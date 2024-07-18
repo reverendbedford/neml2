@@ -187,18 +187,18 @@ SolidMechanicsDriver::update_forces()
   TransientDriver::update_forces();
 
   auto current_driving_force = _driving_force.batch_index({_step_count});
-  _in.set(current_driving_force, _driving_force_name);
+  _in.base_index_put_(_driving_force_name, current_driving_force);
 
   if (_temperature_prescribed)
   {
     auto current_temperature = _temperature.batch_index({_step_count});
-    _in.set(current_temperature, _temperature_name);
+    _in.base_index_put_(_temperature_name, current_temperature);
   }
 
   if (_control == "MIXED")
   {
     auto current_control = _control_signal.batch_index({_step_count});
-    _in.set(current_control, _control_name);
+    _in.base_index_put_(_control_name, current_control);
   }
 }
 }

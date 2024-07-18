@@ -31,14 +31,15 @@ namespace neml2
 using Real = double;
 using Integer = int;
 using Size = int64_t;
-using TensorShape = c10::SmallVector<Size>;
+using TensorShape = torch::SmallVector<Size>;
 using TensorShapeRef = torch::IntArrayRef;
 
-// Bring in at::indexing
+// Bring in torch::indexing
 namespace indexing
 {
-using namespace at::indexing;
-using TensorIndices = c10::SmallVector<TensorIndex>;
+using namespace torch::indexing;
+using TensorIndices = torch::SmallVector<TensorIndex>;
+using TensorIndicesRef = torch::ArrayRef<TensorIndex>;
 }
 
 /**

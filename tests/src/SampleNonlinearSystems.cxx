@@ -57,13 +57,13 @@ PowerTestSystem::assemble(bool residual, bool Jacobian)
 {
   if (residual)
     for (Size i = 0; i < _ndof; i++)
-      _residual.base_index_put({i},
-                               math::pow(_solution.base_index({i}), Scalar(i + 1, _options)) - 1.0);
+      _residual.base_index_put_(
+          {i}, math::pow(_solution.base_index({i}), Scalar(i + 1, _options)) - 1.0);
 
   if (Jacobian)
     for (Size i = 0; i < _ndof; i++)
-      _Jacobian.base_index_put({i, i},
-                               (i + 1) * math::pow(_solution.base_index({i}), Scalar(i, _options)));
+      _Jacobian.base_index_put_(
+          {i, i}, (i + 1) * math::pow(_solution.base_index({i}), Scalar(i, _options)));
 }
 
 Tensor
@@ -92,11 +92,11 @@ RosenbrockTestSystem::assemble(bool residual, bool Jacobian)
     auto xn1 = _solution.base_index({-1});
     auto xn2 = _solution.base_index({-2});
 
-    _residual.base_index_put({indexing::Slice(1, -1)},
-                             200 * (xm - math::pow(xm_m1, 2.0)) -
-                                 400 * (xm_p1 - math::pow(xm, 2.0)) * xm - 2 * (1 - xm));
-    _residual.base_index_put({0}, -400 * x0 * (x1 - math::pow(x0, 2.0)) - 2 * (1 - x0));
-    _residual.base_index_put({-1}, 200.0 * (xn1 - math::pow(xn2, 2.0)));
+    _residual.base_index_put_({indexing::Slice(1, -1)},
+                              200 * (xm - math::pow(xm_m1, 2.0)) -
+                                  400 * (xm_p1 - math::pow(xm, 2.0)) * xm - 2 * (1 - xm));
+    _residual.base_index_put_({0}, -400 * x0 * (x1 - math::pow(x0, 2.0)) - 2 * (1 - x0));
+    _residual.base_index_put_({-1}, 200.0 * (xn1 - math::pow(xn2, 2.0)));
   }
 
   if (Jacobian)
@@ -112,10 +112,10 @@ RosenbrockTestSystem::assemble(bool residual, bool Jacobian)
     auto H = torch::diag_embed(d1, -1) + torch::diag_embed(d1, 1);
     auto diagonal = Tensor::zeros_like(_solution);
 
-    diagonal.base_index_put({0}, 1200 * math::pow(x0, 2.0) - 400.0 * x1 + 2);
-    diagonal.base_index_put({-1}, Scalar(200.0, _options));
-    diagonal.base_index_put({indexing::Slice(1, -1)},
-                            202 + 1200 * math::pow(s_x11, 2.0) - 400 * s_x2);
+    diagonal.base_index_put_({0}, 1200 * math::pow(x0, 2.0) - 400.0 * x1 + 2);
+    diagonal.base_index_put_({-1}, Scalar(200.0, _options));
+    diagonal.base_index_put_({indexing::Slice(1, -1)},
+                             202 + 1200 * math::pow(s_x11, 2.0) - 400 * s_x2);
 
     _Jacobian = Tensor(torch::diag_embed(diagonal) + H, _solution.batch_dim());
   }
