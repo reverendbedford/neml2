@@ -49,7 +49,6 @@ add_custom_target(syntax-python
   WORKING_DIRECTORY ${NEML2_BINARY_DIR}/python
   COMMAND ${CMAKE_COMMAND} -E make_directory ${NEML2_BINARY_DIR}/doc/content/python
   COMMAND PYTHONPATH=. pybind11-stubgen -o ${NEML2_BINARY_DIR}/doc/content/python neml2
-  COMMAND PYTHONPATH=. pybind11-stubgen -o ${NEML2_BINARY_DIR}/doc/content/python neml2.math
   COMMAND ${Python_EXECUTABLE} ${NEML2_SOURCE_DIR}/scripts/fixup_pystub.py ${NEML2_BINARY_DIR}/doc/content/python/neml2
   VERBATIM
 )

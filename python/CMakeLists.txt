@@ -22,9 +22,24 @@ add_submodule(math neml2/math.cxx)
 file(GLOB_RECURSE tensors_srcs neml2/tensors/*.cxx)
 add_submodule(tensors "${tensors_srcs}")
 
+# Extract stub
+add_custom_target(python-stub ALL
+  DEPENDS base math tensors
+  WORKING_DIRECTORY ${NEML2_BINARY_DIR}/python
+  COMMAND PYTHONPATH=. pybind11-stubgen -o . neml2
+  VERBATIM
+)
+
 # Artifacts
 configure_file(neml2/__init__.py ${NEML2_BINARY_DIR}/python/neml2/__init__.py COPYONLY)
-install(FILES neml2/__init__.py DESTINATION .)
+install(FILES
+  neml2/__init__.py
+  ${NEML2_BINARY_DIR}/python/neml2/__init__.pyi
+  ${NEML2_BINARY_DIR}/python/neml2/base.pyi
+  ${NEML2_BINARY_DIR}/python/neml2/math.pyi
+  ${NEML2_BINARY_DIR}/python/neml2/tensors.pyi
+  DESTINATION .
+)
 
 # Tests
 if(NEML2_TESTS)

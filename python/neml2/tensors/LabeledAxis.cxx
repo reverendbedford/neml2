@@ -63,7 +63,10 @@ def_LabeledAxis(py::module_ & m)
                    "subaxis_names",
                    [](const LabeledAxis & self, bool recursive)
                    {
-                     auto subaxes = self.sort_by_assembly_order(self.subaxis_names(recursive));
+                     auto subaxes_unsrt = self.subaxis_names(recursive);
+                     auto subaxes = recursive ? std::vector<LabeledAxisAccessor>(
+                                                    subaxes_unsrt.begin(), subaxes_unsrt.end())
+                                              : self.sort_by_assembly_order(subaxes_unsrt);
                      std::vector<std::string> subaxis_names;
                      for (const auto & subaxis : subaxes)
                        subaxis_names.push_back(utils::stringify(subaxis));

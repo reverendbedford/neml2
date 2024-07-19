@@ -6,4 +6,3 @@ FILE_PATTERNS          = *.pyi
 EXTENSION_MAPPING      = pyi=Python
 WARN_LOGFILE           = ${NEML2_BINARY_DIR}/doc/doxygen.python.log
 LAYOUT_FILE            = ${NEML2_SOURCE_DIR}/doc/config/DoxygenLayoutPython.xml
-PYTHON_DOCSTRING       = NO

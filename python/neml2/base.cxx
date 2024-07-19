@@ -52,8 +52,8 @@ PYBIND11_MODULE(base, m)
 Parse all options from an input file. Note that Previously loaded input options
 will be discarded.
 
-@param path Path to the input file to be parsed
-@param cli_args Additional command-line arguments to pass to the parser
+:param path:     Path to the input file to be parsed
+:parma cli_args: Additional command-line arguments to pass to the parser
 )");
   m.def("reload_input", &reload_input, py::arg("path"), py::arg("cli_args") = "", R"(
 Similar to base.load_input, except that this function additionally clears the
@@ -62,8 +62,8 @@ factory so that previously retrieved models are deleted.
 This function is only needed if you load and evaluate models inside a for-loop,
 where it is desirable to deallocate models on-the-fly.
 
-@param path Path to the input file to be parsed
-@param cli_args Additional command-line arguments to pass to the parser
+:param path:     Path to the input file to be parsed
+:param cli_args: Additional command-line arguments to pass to the parser
 )");
   m.def("get_model",
         &get_model,
@@ -75,9 +75,9 @@ where it is desirable to deallocate models on-the-fly.
 Create a models.Model from given input options. The input file must have
 already been parsed and loaded.
 
-@param model Name of the model
-@param enable_AD Enable automatic differentiation
-@param force_create Whether to force create the model even if one has already been created
+:param model:        Name of the model
+:param enable_AD:    Enable automatic differentiation
+:param force_create: Whether to force create the model even if one has already been created
 )");
   m.def("load_model",
         &load_model,
@@ -94,9 +94,9 @@ additional command-line arguments and will force the creation of a new
 models.Model even if one has already been created. Use base.load_input and
 base.get_model if you need finer control over the model creation behavior.
 
-@param path Path to the input file to be parsed
-@param model Name of the model
-@param enable_AD Enable automatic differentiation
+:param path:      Path to the input file to be parsed
+:param model:     Name of the model
+:param enable_AD: Enable automatic differentiation
 )");
   m.def("reload_model",
         &reload_model,
@@ -111,9 +111,9 @@ factory so that previously retrieved models are deleted.
 This function is only needed if you load and evaluate models inside a for-loop,
 where it is desirable to deallocate models on-the-fly.
 
-@param path Path to the input file to be parsed
-@param model Name of the model
-@param enable_AD Enable automatic differentiation
+:param path:     Path to the input file to be parsed
+:param model:    Name of the model
+:param enable_AD Enable automatic differentiation
 )");
 
   // neml2.base.TensorValue
@@ -174,14 +174,13 @@ tensors.TensorValue.set_ instead to modify the tensor value.
            R"(
 (Re)initialize the model with given batch shape, derivative order, device, and dtype.
 
-@param batch_shape Batch shape used to allocate input, output, and derivative storage
-@param deriv_order An integer ranging from 0-2. When set to 0, only the output
-                   storage will be allocated; when set to 1, both the output
-                   and the first derivative storage are allocated; when set to
-                   2, the second derivative storage is additionally allocated.
-@param device Device on which the model will be evaluated. All parameters,
-              buffers, and custom data are synced to the given device.
-@param dtype Floating point scalar type used throughout the model.
+:param batch_shape: Batch shape used to allocate input, output, and derivative storage
+:param deriv_order: An integer ranging from 0-2. When set to 0, only the output storage
+    will be allocated; when set to 1, both the output and the first derivative storage
+    are allocated; when set to 2, the second derivative storage is additionally allocated.
+:param device:      Device on which the model will be evaluated. All parameters, buffers,
+    and custom data are synced to the given device.
+:param dtype:       Floating point scalar type used throughout the model.
 )")
       .def(
           "input_axis",
