@@ -20,7 +20,7 @@ var searchData=
   ['contains_17',['contains',['../classneml2_1_1OptionSet.html#aed2de1246f44b7ea4e8da063d01023c5',1,'neml2::OptionSet::contains(const std::string &amp;) const'],['../classneml2_1_1OptionSet.html#adf8549346580e1da32a26f913e264abc',1,'neml2::OptionSet::contains(const std::string &amp;) const']]],
   ['contract_5fk_18',['contract_k',['../classneml2_1_1R3.html#a97967a9a5c2b635d4c4bb8463fb0cdef',1,'neml2::R3']]],
   ['converged_19',['converged',['../classneml2_1_1Newton.html#ab566bf36abba6792d14d6106479bff59',1,'neml2::Newton']]],
-  ['copy_5f_20',['copy_',['../classneml2_1_1LabeledTensor.html#aff4f04ae0366eac467014605b9b4c6d4',1,'neml2::LabeledTensor']]],
+  ['copy_5f_20',['copy_',['../classneml2_1_1LabeledTensor.html#aa730022d5ff6ed08b3ed68fef89db140',1,'neml2::LabeledTensor']]],
   ['copyvariable_21',['CopyVariable',['../classneml2_1_1CopyVariable.html#aa84d9718bbbbdca89c8ef6656c637ab1',1,'neml2::CopyVariable']]],
   ['cosh_22',['cosh',['../namespaceneml2_1_1math.html#a232b264595b9b39e416188284a3663fb',1,'neml2::math']]],
   ['create_5fobject_23',['create_object',['../classneml2_1_1Factory.html#a39a2492155a44988c111b4391c1843ed',1,'neml2::Factory']]],

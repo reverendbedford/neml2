@@ -1,7 +1,7 @@
 var searchData=
 [
   ['labeledaxis_0',['LabeledAxis',['../classneml2_1_1LabeledAxis.html#a7cc0dfa3c0189f6c006d06b809956bca',1,'neml2::LabeledAxis::LabeledAxis()'],['../classneml2_1_1LabeledAxis.html#a9de682a78e95d7a54dade88157f6c407',1,'neml2::LabeledAxis::LabeledAxis(const LabeledAxis &amp;other)']]],
-  ['labeledaxisaccessor_1',['LabeledAxisAccessor',['../classneml2_1_1LabeledAxisAccessor.html#ad2b3c93540dbf9dcbe9a76153246fb80',1,'neml2::LabeledAxisAccessor::LabeledAxisAccessor()=default'],['../classneml2_1_1LabeledAxisAccessor.html#a63073ca6e8c8a3fe09cae5b0955b7304',1,'neml2::LabeledAxisAccessor::LabeledAxisAccessor(const char *name, S &amp;&amp;... names)'],['../classneml2_1_1LabeledAxisAccessor.html#a1f77bf7bf555848fcb277b5a9010a670',1,'neml2::LabeledAxisAccessor::LabeledAxisAccessor(const std::string &amp;name, S &amp;&amp;... names)'],['../classneml2_1_1LabeledAxisAccessor.html#ab84ce45a20af07cb6895420fdfdcf3b1',1,'neml2::LabeledAxisAccessor::LabeledAxisAccessor(Container &amp;&amp;c)'],['../classneml2_1_1LabeledAxisAccessor.html#aaf0a89e382d859e41956cb2c4cac8157',1,'neml2::LabeledAxisAccessor::LabeledAxisAccessor(const LabeledAxisAccessor &amp;other)']]],
+  ['labeledaxisaccessor_1',['LabeledAxisAccessor',['../classneml2_1_1LabeledAxisAccessor.html#ad2b3c93540dbf9dcbe9a76153246fb80',1,'neml2::LabeledAxisAccessor::LabeledAxisAccessor()=default'],['../classneml2_1_1LabeledAxisAccessor.html#a63073ca6e8c8a3fe09cae5b0955b7304',1,'neml2::LabeledAxisAccessor::LabeledAxisAccessor(const char *name, S &amp;&amp;... names)'],['../classneml2_1_1LabeledAxisAccessor.html#a1f77bf7bf555848fcb277b5a9010a670',1,'neml2::LabeledAxisAccessor::LabeledAxisAccessor(const std::string &amp;name, S &amp;&amp;... names)'],['../classneml2_1_1LabeledAxisAccessor.html#af3156d95ef0c2621303c48d6408a2325',1,'neml2::LabeledAxisAccessor::LabeledAxisAccessor(const Container &amp;c)']]],
   ['labeledaxisaccessor_3a_3aoperator_20std_3a_3avector_3c_20std_3a_3astring_20_3e_2',['vector&lt; std::string &gt;',['../namespaceneml2.html#a4b97b8fd7b11e49f4f6ee38f70440cb1',1,'neml2']]],
   ['labeledtensor_3',['LabeledTensor',['../classneml2_1_1LabeledTensor.html#a2001baf22112901bed4a41caa0d4dc46',1,'neml2::LabeledTensor::LabeledTensor()=default'],['../classneml2_1_1LabeledTensor.html#a5dc3abe88adefcb00e3b3a437c7bb48e',1,'neml2::LabeledTensor::LabeledTensor(const torch::Tensor &amp;tensor, const std::array&lt; const LabeledAxis *, D &gt; &amp;axes)'],['../classneml2_1_1LabeledTensor.html#acd06015a3f6320db2a8014989cbfe51f',1,'neml2::LabeledTensor::LabeledTensor(const Tensor &amp;tensor, const std::array&lt; const LabeledAxis *, D &gt; &amp;axes)'],['../classneml2_1_1LabeledTensor.html#a8a943be70cc3cf2838b3b4adb3b66c07',1,'neml2::LabeledTensor::LabeledTensor(const Derived &amp;other)']]],
   ['largedeformationincrementalsolidmechanicsdriver_4',['LargeDeformationIncrementalSolidMechanicsDriver',['../classneml2_1_1LargeDeformationIncrementalSolidMechanicsDriver.html#acfda6d2af2dee55e4337cb83a7359992',1,'neml2::LargeDeformationIncrementalSolidMechanicsDriver']]],
@@ -20,14 +20,13 @@ var searchData=
   ['list_5fderivative_5fouter_5fproduct_5fa_17',['list_derivative_outer_product_a',['../namespaceneml2.html#a829b81978f139fe6203946c292ef4a9a',1,'neml2']]],
   ['list_5fderivative_5fouter_5fproduct_5fab_18',['list_derivative_outer_product_ab',['../namespaceneml2.html#a757bea80125dd3f4605a70ef8e624ce0',1,'neml2']]],
   ['list_5fderivative_5fouter_5fproduct_5fb_19',['list_derivative_outer_product_b',['../namespaceneml2.html#a325aa9b1176c283e68c42d31562a40eb',1,'neml2']]],
-  ['list_5funsqueeze_20',['list_unsqueeze',['../classneml2_1_1TensorBase.html#ad58907686e8b8e8e4ec31125cdc919c0',1,'neml2::TensorBase']]],
-  ['load_5finput_21',['load_input',['../namespaceneml2.html#ae26cd3cedac7d43bddad9f8502bbe6bf',1,'neml2']]],
-  ['load_5fmodel_22',['load_model',['../namespaceneml2.html#a0e8c7aeae6d7c24a44a404965d5b5fa3',1,'neml2']]],
-  ['load_5foptions_23',['load_options',['../classneml2_1_1Factory.html#ac15b1f4db97b6302883e1e055ad39894',1,'neml2::Factory']]],
-  ['log_24',['log',['../namespaceneml2_1_1math.html#a7160a3cce2d8d7d330414a7db59b02df',1,'neml2::math']]],
-  ['logspace_25',['logspace',['../classneml2_1_1TensorBase.html#a396a6aaae5bd291fe8c1af7a37fe3c54',1,'neml2::TensorBase']]],
-  ['logspaceprimitivetensor_26',['LogspacePrimitiveTensor',['../classneml2_1_1LogspacePrimitiveTensor.html#a99955c15054eef498a60a32e3bc94173',1,'neml2::LogspacePrimitiveTensor']]],
-  ['logspacetensor_27',['LogspaceTensor',['../classneml2_1_1LogspaceTensor.html#a2d644bc9b408dac8fe8e7657f90f376e',1,'neml2::LogspaceTensor']]],
-  ['lu_5ffactor_28',['lu_factor',['../namespaceneml2_1_1math_1_1linalg.html#afd13db89ffc0ecc54cdd5db9a3b12852',1,'neml2::math::linalg']]],
-  ['lu_5fsolve_29',['lu_solve',['../namespaceneml2_1_1math_1_1linalg.html#a7fe76b6d65cdbae3f875f54bbc1d61d6',1,'neml2::math::linalg']]]
+  ['load_5finput_20',['load_input',['../namespaceneml2.html#ae26cd3cedac7d43bddad9f8502bbe6bf',1,'neml2']]],
+  ['load_5fmodel_21',['load_model',['../namespaceneml2.html#a0e8c7aeae6d7c24a44a404965d5b5fa3',1,'neml2']]],
+  ['load_5foptions_22',['load_options',['../classneml2_1_1Factory.html#ac15b1f4db97b6302883e1e055ad39894',1,'neml2::Factory']]],
+  ['log_23',['log',['../namespaceneml2_1_1math.html#a7160a3cce2d8d7d330414a7db59b02df',1,'neml2::math']]],
+  ['logspace_24',['logspace',['../classneml2_1_1TensorBase.html#a396a6aaae5bd291fe8c1af7a37fe3c54',1,'neml2::TensorBase']]],
+  ['logspaceprimitivetensor_25',['LogspacePrimitiveTensor',['../classneml2_1_1LogspacePrimitiveTensor.html#a99955c15054eef498a60a32e3bc94173',1,'neml2::LogspacePrimitiveTensor']]],
+  ['logspacetensor_26',['LogspaceTensor',['../classneml2_1_1LogspaceTensor.html#a2d644bc9b408dac8fe8e7657f90f376e',1,'neml2::LogspaceTensor']]],
+  ['lu_5ffactor_27',['lu_factor',['../namespaceneml2_1_1math_1_1linalg.html#afd13db89ffc0ecc54cdd5db9a3b12852',1,'neml2::math::linalg']]],
+  ['lu_5fsolve_28',['lu_solve',['../namespaceneml2_1_1math_1_1linalg.html#a7fe76b6d65cdbae3f875f54bbc1d61d6',1,'neml2::math::linalg']]]
 ];

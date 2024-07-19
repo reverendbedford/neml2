@@ -32,8 +32,10 @@ var classtensors_1_1R2 =
     [ "batch", "classtensors_1_1R2.html#ac2b31d9c9aa328ce60ccd7e940a2bf84", null ],
     [ "batched", "classtensors_1_1R2.html#a4f23ac09ae87619a0f06e9b932a84ecd", null ],
     [ "clone", "classtensors_1_1R2.html#ac0a15cd97f305a80cb86aa3be963978e", null ],
+    [ "copy_", "classtensors_1_1R2.html#ab8bf916ffcdfe2a2b3ed574aca6d6fe1", null ],
     [ "defined", "classtensors_1_1R2.html#a785f0a01ccfb16823306f8ed99ffbbf7", null ],
     [ "detach", "classtensors_1_1R2.html#a0aa5b56f1aca8f721916c9f8ea215549", null ],
+    [ "detach_", "classtensors_1_1R2.html#ad4a4859a16a37513b1dba6bae4170dd7", null ],
     [ "device", "classtensors_1_1R2.html#a5eba84d267f52548d5d5ceff6f0fc28f", null ],
     [ "dim", "classtensors_1_1R2.html#a35536134a6ceb1e866faf188992e9c9f", null ],
     [ "drotate", "classtensors_1_1R2.html#afe6a9bc3cd948e469c59a88ce5365c77", null ],
@@ -48,5 +50,6 @@ var classtensors_1_1R2 =
     [ "to", "classtensors_1_1R2.html#ad46576aef57cb11e601a85816b0231a2", null ],
     [ "torch", "classtensors_1_1R2.html#a3de4f960605091b71aa501d96171b3c1", null ],
     [ "torch", "classtensors_1_1R2.html#a3de4f960605091b71aa501d96171b3c1", null ],
-    [ "transpose", "classtensors_1_1R2.html#af7b98aa7770fa5787c33bcf260b76095", null ]
+    [ "transpose", "classtensors_1_1R2.html#af7b98aa7770fa5787c33bcf260b76095", null ],
+    [ "zero_", "classtensors_1_1R2.html#a60c9df390da28cbca1ff851faa17355f", null ]
 ];

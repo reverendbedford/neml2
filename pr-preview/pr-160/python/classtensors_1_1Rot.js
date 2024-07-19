@@ -32,11 +32,13 @@ var classtensors_1_1Rot =
     [ "batch", "classtensors_1_1Rot.html#ac87ccb6ec251118d86beafb4298abda1", null ],
     [ "batched", "classtensors_1_1Rot.html#a4f23ac09ae87619a0f06e9b932a84ecd", null ],
     [ "clone", "classtensors_1_1Rot.html#aeefa8edd698bdf0627fb493a9b198021", null ],
+    [ "copy_", "classtensors_1_1Rot.html#ab8bf916ffcdfe2a2b3ed574aca6d6fe1", null ],
     [ "cross", "classtensors_1_1Rot.html#a17ed12eb74058d56d228d15db2d81831", null ],
     [ "cross", "classtensors_1_1Rot.html#a23aefa963da7c159f4a42e7843560a75", null ],
     [ "cross", "classtensors_1_1Rot.html#a8d11c592260ad32876ba15c506aabd5f", null ],
     [ "defined", "classtensors_1_1Rot.html#a785f0a01ccfb16823306f8ed99ffbbf7", null ],
     [ "detach", "classtensors_1_1Rot.html#ad3576baf9b55cc1897835225c032643f", null ],
+    [ "detach_", "classtensors_1_1Rot.html#ad4a4859a16a37513b1dba6bae4170dd7", null ],
     [ "deuler_rodrigues", "classtensors_1_1Rot.html#a478c7c4a9cb483c64873354b675409ec", null ],
     [ "device", "classtensors_1_1Rot.html#a5eba84d267f52548d5d5ceff6f0fc28f", null ],
     [ "dim", "classtensors_1_1Rot.html#a35536134a6ceb1e866faf188992e9c9f", null ],
@@ -62,5 +64,6 @@ var classtensors_1_1Rot =
     [ "tensor", "classtensors_1_1Rot.html#a1b71e090e1aac169ef1f148e9542fae4", null ],
     [ "to", "classtensors_1_1Rot.html#ae9eb4db828d001035a014dbefca20d41", null ],
     [ "torch", "classtensors_1_1Rot.html#a3de4f960605091b71aa501d96171b3c1", null ],
-    [ "torch", "classtensors_1_1Rot.html#a3de4f960605091b71aa501d96171b3c1", null ]
+    [ "torch", "classtensors_1_1Rot.html#a3de4f960605091b71aa501d96171b3c1", null ],
+    [ "zero_", "classtensors_1_1Rot.html#a60c9df390da28cbca1ff851faa17355f", null ]
 ];

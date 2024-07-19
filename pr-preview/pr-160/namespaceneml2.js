@@ -2,7 +2,11 @@ var namespaceneml2 =
 [
     [ "crystallography", "namespaceneml2_1_1crystallography.html", "namespaceneml2_1_1crystallography" ],
     [ "indexing", "namespaceneml2_1_1indexing.html", [
-      [ "TensorIndices", "namespaceneml2_1_1indexing.html#ab01afa980ae062f21a6d443c7353be09", null ]
+      [ "TensorIndices", "namespaceneml2_1_1indexing.html#a569bfdb5cbcaadc1b70b166490905485", null ],
+      [ "TensorIndicesRef", "namespaceneml2_1_1indexing.html#ab43a509ee56c034361ceaf342c50e1de", null ],
+      [ "TensorLabel", "namespaceneml2_1_1indexing.html#aa74272192c173079e37ba5755522e3fa", null ],
+      [ "TensorLabels", "namespaceneml2_1_1indexing.html#aa38adab7206ebf45be6c3a8b280a3407", null ],
+      [ "TensorLabelsRef", "namespaceneml2_1_1indexing.html#a1b8360361b2c76d8e0fb1dd8e3e5c7c5", null ]
     ] ],
     [ "math", "namespaceneml2_1_1math.html", "namespaceneml2_1_1math" ],
     [ "utils", "namespaceneml2_1_1utils.html", [
@@ -208,7 +212,7 @@ var namespaceneml2 =
     [ "SR2ForwardEulerTimeIntegration", "namespaceneml2.html#a666fea4dda5768f37f8a850a594c0ae8", null ],
     [ "SR2LinearCombination", "namespaceneml2.html#a273def6f4878430476cfcd93e78f3d79", null ],
     [ "SR2StateRate", "namespaceneml2.html#a35fa8475a419ac6120c314acbe0eb304", null ],
-    [ "TensorShape", "namespaceneml2.html#aae367c4199a7e8faacb63ebfb4031a0d", null ],
+    [ "TensorShape", "namespaceneml2.html#a5908f75279a9bcad4d887c3995933a98", null ],
     [ "TensorShapeRef", "namespaceneml2.html#abc271f879dc471e533dca66b1fd32f60", null ],
     [ "VariableName", "namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54", null ],
     [ "VecBackwardEulerTimeIntegration", "namespaceneml2.html#af4df2e3c6859b4f6c5fe93944ad2a8ba", null ],

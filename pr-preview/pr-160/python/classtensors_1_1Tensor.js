@@ -47,8 +47,10 @@ var classtensors_1_1Tensor =
     [ "batch", "classtensors_1_1Tensor.html#ae2aa7dbadd1c37eec328b917dc56078f", null ],
     [ "batched", "classtensors_1_1Tensor.html#a4f23ac09ae87619a0f06e9b932a84ecd", null ],
     [ "clone", "classtensors_1_1Tensor.html#a7b85bfb82f32d570f21d8448b6da3e97", null ],
+    [ "copy_", "classtensors_1_1Tensor.html#ab8bf916ffcdfe2a2b3ed574aca6d6fe1", null ],
     [ "defined", "classtensors_1_1Tensor.html#a785f0a01ccfb16823306f8ed99ffbbf7", null ],
     [ "detach", "classtensors_1_1Tensor.html#a92d5d02960cb29021012f73d09eb2d9a", null ],
+    [ "detach_", "classtensors_1_1Tensor.html#ad4a4859a16a37513b1dba6bae4170dd7", null ],
     [ "device", "classtensors_1_1Tensor.html#a5eba84d267f52548d5d5ceff6f0fc28f", null ],
     [ "dim", "classtensors_1_1Tensor.html#a35536134a6ceb1e866faf188992e9c9f", null ],
     [ "dtype", "classtensors_1_1Tensor.html#aac28ca36673931b4ce74e608155dba41", null ],
@@ -57,5 +59,6 @@ var classtensors_1_1Tensor =
     [ "requires_grad_", "classtensors_1_1Tensor.html#abc5944a8aa210bfceceb00812b61a350", null ],
     [ "shape", "classtensors_1_1Tensor.html#a43080b242de156a5409d4b58fc7d0c9c", null ],
     [ "to", "classtensors_1_1Tensor.html#a7288ad1bb50f506ce0898fef55b411b6", null ],
-    [ "torch", "classtensors_1_1Tensor.html#a3de4f960605091b71aa501d96171b3c1", null ]
+    [ "torch", "classtensors_1_1Tensor.html#a3de4f960605091b71aa501d96171b3c1", null ],
+    [ "zero_", "classtensors_1_1Tensor.html#a60c9df390da28cbca1ff851faa17355f", null ]
 ];

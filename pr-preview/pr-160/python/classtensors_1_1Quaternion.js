@@ -29,8 +29,10 @@ var classtensors_1_1Quaternion =
     [ "batch", "classtensors_1_1Quaternion.html#a8e81a1ccae819fb4b6a022815f886810", null ],
     [ "batched", "classtensors_1_1Quaternion.html#a4f23ac09ae87619a0f06e9b932a84ecd", null ],
     [ "clone", "classtensors_1_1Quaternion.html#a3d1c9963971d97691fc3a0c31eb27e3e", null ],
+    [ "copy_", "classtensors_1_1Quaternion.html#ab8bf916ffcdfe2a2b3ed574aca6d6fe1", null ],
     [ "defined", "classtensors_1_1Quaternion.html#a785f0a01ccfb16823306f8ed99ffbbf7", null ],
     [ "detach", "classtensors_1_1Quaternion.html#aef43ea2a7932dae7110ddfb3e10f2209", null ],
+    [ "detach_", "classtensors_1_1Quaternion.html#ad4a4859a16a37513b1dba6bae4170dd7", null ],
     [ "device", "classtensors_1_1Quaternion.html#a5eba84d267f52548d5d5ceff6f0fc28f", null ],
     [ "dim", "classtensors_1_1Quaternion.html#a35536134a6ceb1e866faf188992e9c9f", null ],
     [ "dtype", "classtensors_1_1Quaternion.html#aac28ca36673931b4ce74e608155dba41", null ],
@@ -41,5 +43,6 @@ var classtensors_1_1Quaternion =
     [ "tensor", "classtensors_1_1Quaternion.html#a1b71e090e1aac169ef1f148e9542fae4", null ],
     [ "to", "classtensors_1_1Quaternion.html#a3c4336151cd2e3249a3883c8351c285c", null ],
     [ "torch", "classtensors_1_1Quaternion.html#a3de4f960605091b71aa501d96171b3c1", null ],
-    [ "torch", "classtensors_1_1Quaternion.html#a3de4f960605091b71aa501d96171b3c1", null ]
+    [ "torch", "classtensors_1_1Quaternion.html#a3de4f960605091b71aa501d96171b3c1", null ],
+    [ "zero_", "classtensors_1_1Quaternion.html#a60c9df390da28cbca1ff851faa17355f", null ]
 ];

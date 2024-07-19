@@ -218,7 +218,7 @@ Tensor indexing</h2>
 </p>
 <p> Otherwise, it will not be possible to view self tensor as shape without copying it. </p>
 </blockquote>
-<p>In NEML2, use <a class="el" href="classneml2_1_1TensorBase.html#aeafc5562d6928fbdbc871352d059abd7">base_index</a> for indexing the base dimensions and <a class="el" href="classneml2_1_1TensorBase.html#a5c3560d166a008f22698b825e6c66b65">batch_index</a> for indexing the batch dimensions: </p><div class="fragment"><div class="line">Tensor A(torch::tensor({{2, 3, 4}, {-1, -2, 3}, {6, 9, 7}}), 1);</div>
+<p>In NEML2, use <a class="el" href="classneml2_1_1TensorBase.html#aefc1893a238f1f58f082a0f560f7a524">base_index</a> for indexing the base dimensions and <a class="el" href="classneml2_1_1TensorBase.html#a27fea0fe6db55ec7c5077db8494b5c71">batch_index</a> for indexing the batch dimensions: </p><div class="fragment"><div class="line">Tensor A(torch::tensor({{2, 3, 4}, {-1, -2, 3}, {6, 9, 7}}), 1);</div>
 <div class="line"><span class="comment">// A = [[  2  3  4]</span></div>
 <div class="line"><span class="comment">//      [ -1 -2  3]</span></div>
 <div class="line"><span class="comment">//      [  6  9  7]]</span></div>
@@ -229,11 +229,11 @@ Tensor indexing</h2>
 <div class="line"><span class="comment">// C = [[  3  4]</span></div>
 <div class="line"><span class="comment">//      [ -2  3]</span></div>
 <div class="line"><span class="comment">//      [  9  7]]</span></div>
-</div><!-- fragment --><p> To modify the content of a tensor, use <a class="el" href="classneml2_1_1TensorBase.html#ae6f140f76d18e80955de45515bc5e3f0">base_index_put</a> or <a class="el" href="classneml2_1_1TensorBase.html#a4d61c6894d38069f135760b1896bbd5c">batch_index_put</a>: </p><div class="fragment"><div class="line">A.base_index_put({Slice(1, 3)}, torch::ones({3, 2}));</div>
+</div><!-- fragment --><p> To modify the content of a tensor, use base_index_put or batch_index_put: </p><div class="fragment"><div class="line">A.base_index_put_({Slice(1, 3)}, torch::ones({3, 2}));</div>
 <div class="line"><span class="comment">// A = [[  2  1  1]</span></div>
 <div class="line"><span class="comment">//      [ -1  1  1]</span></div>
 <div class="line"><span class="comment">//      [  6  1  1]]</span></div>
-<div class="line">A.batch_index_put({Slice(0, 2)}, torch::zeros({2, 3}));</div>
+<div class="line">A.batch_index_put_({Slice(0, 2)}, torch::zeros({2, 3}));</div>
 <div class="line"><span class="comment">// A = [[  0  0  0]</span></div>
 <div class="line"><span class="comment">//      [  0  0  0]</span></div>
 <div class="line"><span class="comment">//      [  6  1  1]]</span></div>
@@ -286,11 +286,11 @@ Tensor labeling</h2>
 <p>Refer to the documentation for a complete list of APIs for creating and modifying a <a class="el" href="classneml2_1_1LabeledAxis.html">LabeledAxis</a>.</p>
 <p><a class="el" href="classneml2_1_1LabeledTensor.html">LabeledTensor</a> is the primary data structure in NEML2 for working with labeled tensor views. Each <code>LabeledTensor</code> consists of one <code>Tensor</code> and one or more <code>LabeledAxis</code>s. The <code>LabeledTensor</code> is templated on the base dimension \(D\). <a class="el" href="classneml2_1_1LabeledVector.html">LabeledVector</a> and <a class="el" href="classneml2_1_1LabeledMatrix.html">LabeledMatrix</a> are the two most widely used data structures in NEML2.</p>
 <p><code>LabeledTensor</code> handles the creation, modification, and accessing of labeled tensors. Recall that all primitive data types in a labeled tensor are flattened, e.g., a symmetric fourth order tensor of type <code>SSR4</code> with batch size <code>(5)</code> and base size <code>(6, 6)</code> are flattened to have base size <code>(36)</code> in the labeled tensor. The documentation provides a complete list of APIs. The commonly used methods are</p><ul>
-<li><a class="el" href="classneml2_1_1LabeledTensor.html#aa0490d14ba07d754e6755012b61c1d20">operator()</a> for retrieving a labeled view into the raw (flattened) data without reshaping</li>
-<li><a class="el" href="classneml2_1_1LabeledTensor.html#afec36430e0f802eeccaf877e68d6f553">get</a> for retrieving a labeled view and reshaping it to the correct shape</li>
-<li><a class="el" href="classneml2_1_1LabeledTensor.html#aa2c72b8b634d48e25e6a2f31584b6ac7">set</a> for setting values for a labeled view</li>
-<li><a class="el" href="classneml2_1_1LabeledTensor.html#adb36afb3d8a2235f5b66401ac9b1f3b0">slice</a> for slicing a sub-axis along a specific base dimension</li>
-<li><a class="el" href="classneml2_1_1LabeledTensor.html#a73978d4287506808ddd5adea60eda28f">block</a> for sub-indexing the <code>LabeledTensor</code> with \(D\) sub-axis names </li>
+<li>operator() for retrieving a labeled view into the raw (flattened) data without reshaping</li>
+<li>get for retrieving a labeled view and reshaping it to the correct shape</li>
+<li>set for setting values for a labeled view</li>
+<li>slice for slicing a sub-axis along a specific base dimension</li>
+<li>block for sub-indexing the <code>LabeledTensor</code> with \(D\) sub-axis names </li>
 </ul>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->

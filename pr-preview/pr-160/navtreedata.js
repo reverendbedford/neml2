@@ -72,14 +72,14 @@ var NAVTREEINDEX =
 "annotated.html",
 "classneml2_1_1ElasticStrain.html#a1d600f3bc2696fadd8db2397ebdcc048",
 "classneml2_1_1KocksMeckingActivationEnergy.html",
-"classneml2_1_1LabeledTensor.html#ac331193399284d393e0b9493c96a9cb7",
-"classneml2_1_1Model.html#aca8133200c1122e29b87b314d82604eb",
-"classneml2_1_1OnesTensor.html",
-"classneml2_1_1PlasticVorticity.html#a413e23ccc5275e2f1f2e6ebaa24b9947",
-"classneml2_1_1SlipRule.html",
-"classneml2_1_1Transformable.html",
-"classneml2_1_1VariableStore.html#a760352c8487d6e0798fb4f5977e5e1b2",
-"namespaceneml2.html#a1a8fd94a004bd819f1c735510b875fc9",
+"classneml2_1_1LabeledTensor.html#a8eb6187532e8b425e95f3957f193fc58",
+"classneml2_1_1Model.html#ac81b25c4962b603fd3dac69ce57319c0",
+"classneml2_1_1OnesPrimitiveTensor.html#af28bc6a436c519b33268208711caeae3",
+"classneml2_1_1PlasticVorticity.html",
+"classneml2_1_1SingleSlipStrengthMap.html#af6722733e345ea202f70b9bfce474191",
+"classneml2_1_1Transformable.html#abf90d5d78122068de834c6da6257b524",
+"classneml2_1_1VariableStore.html#a8904f518623a00911fe1d5278c801994",
+"namespaceneml2.html#a23a6e0bca94e11a10be22b8a111ef27e",
 "namespaceneml2_1_1math.html#a7980b18b83a7f3670c45e6a765959024"
 ];
 

@@ -29,8 +29,10 @@ var classtensors_1_1MillerIndex =
     [ "batch", "classtensors_1_1MillerIndex.html#ac3c21f7d3eeabbbb24bf96dd99adba5f", null ],
     [ "batched", "classtensors_1_1MillerIndex.html#a4f23ac09ae87619a0f06e9b932a84ecd", null ],
     [ "clone", "classtensors_1_1MillerIndex.html#a27a27a07b5a672091ac13f8e6350588b", null ],
+    [ "copy_", "classtensors_1_1MillerIndex.html#ab8bf916ffcdfe2a2b3ed574aca6d6fe1", null ],
     [ "defined", "classtensors_1_1MillerIndex.html#a785f0a01ccfb16823306f8ed99ffbbf7", null ],
     [ "detach", "classtensors_1_1MillerIndex.html#ad508d696e63fdc2065a512145affc59d", null ],
+    [ "detach_", "classtensors_1_1MillerIndex.html#ad4a4859a16a37513b1dba6bae4170dd7", null ],
     [ "device", "classtensors_1_1MillerIndex.html#a5eba84d267f52548d5d5ceff6f0fc28f", null ],
     [ "dim", "classtensors_1_1MillerIndex.html#a35536134a6ceb1e866faf188992e9c9f", null ],
     [ "dtype", "classtensors_1_1MillerIndex.html#aac28ca36673931b4ce74e608155dba41", null ],
@@ -41,5 +43,6 @@ var classtensors_1_1MillerIndex =
     [ "tensor", "classtensors_1_1MillerIndex.html#a1b71e090e1aac169ef1f148e9542fae4", null ],
     [ "to", "classtensors_1_1MillerIndex.html#aac97e4a616c61eadb5f46dfc94bb51b4", null ],
     [ "torch", "classtensors_1_1MillerIndex.html#a3de4f960605091b71aa501d96171b3c1", null ],
-    [ "torch", "classtensors_1_1MillerIndex.html#a3de4f960605091b71aa501d96171b3c1", null ]
+    [ "torch", "classtensors_1_1MillerIndex.html#a3de4f960605091b71aa501d96171b3c1", null ],
+    [ "zero_", "classtensors_1_1MillerIndex.html#a60c9df390da28cbca1ff851faa17355f", null ]
 ];
