@@ -77,13 +77,13 @@ var NAVTREEINDEX =
 "classtensors_1_1Rot.html#a35536134a6ceb1e866faf188992e9c9f",
 "classtensors_1_1SFFR4.html#af9c8cb84fc0cae8a0e685f8ccd1bb87f",
 "classtensors_1_1SR2.html#a6c473406fb744d689106b5c22955b8e0",
-"classtensors_1_1SSFR5BatchView.html#ada6be7744ab4a60d178e6302436d620a",
+"classtensors_1_1SSFR5BatchView.html#ad3086cc2c2e496079ee0cb7101efcdd2",
 "classtensors_1_1SWR4.html#af7a94346af7ca7266cef3de0b461611d",
 "classtensors_1_1Scalar.html#aa84b4995d95e2ee63be8ec90dce52e21",
 "classtensors_1_1Tensor.html#adbbe333047577bc781202a0199166a56",
-"classtensors_1_1VecBaseView.html#a581e2deb0fab20305da87e729147a8f3",
+"classtensors_1_1VecBaseView.html#a7f0df3f16d01543ae18ece40db47be4c",
 "classtensors_1_1WSR4.html#a5eba84d267f52548d5d5ceff6f0fc28f",
-"classtensors_1_1WWR4BatchView.html#a0012c4081c02477ed35045e71f9be94a"
+"classtensors_1_1WWR4BatchView.html#a06cdae8e564737ce1065bd7d3c33f7bc"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

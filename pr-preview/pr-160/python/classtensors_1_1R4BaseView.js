@@ -1,12 +1,12 @@
 var classtensors_1_1R4BaseView =
 [
     [ "__init__", "classtensors_1_1R4BaseView.html#a71de21201ec25a660c491c994cf5fbc2", null ],
-    [ "__getitem__", "classtensors_1_1R4BaseView.html#a0b9770e15c7ddfef23c71c949e21bd0d", null ],
-    [ "__getitem__", "classtensors_1_1R4BaseView.html#a28cecf6fb0f4d82bfc311dec2f2defb7", null ],
-    [ "__setitem__", "classtensors_1_1R4BaseView.html#a31215f3256524888d69d4f2aa866fb12", null ],
-    [ "__setitem__", "classtensors_1_1R4BaseView.html#ab2af0e97a53f8a5899a4f4c17abf87f9", null ],
-    [ "__setitem__", "classtensors_1_1R4BaseView.html#a0012c4081c02477ed35045e71f9be94a", null ],
-    [ "__setitem__", "classtensors_1_1R4BaseView.html#a581e2deb0fab20305da87e729147a8f3", null ],
+    [ "__getitem__", "classtensors_1_1R4BaseView.html#a4b4edc4e587eb6d8b1837b91d1933d11", null ],
+    [ "__getitem__", "classtensors_1_1R4BaseView.html#af23662e9ed4bc92dc9cce374c73ff6bf", null ],
+    [ "__setitem__", "classtensors_1_1R4BaseView.html#ad3086cc2c2e496079ee0cb7101efcdd2", null ],
+    [ "__setitem__", "classtensors_1_1R4BaseView.html#a7f0df3f16d01543ae18ece40db47be4c", null ],
+    [ "__setitem__", "classtensors_1_1R4BaseView.html#a754421ed29c9e1df44df3f8f6011cc71", null ],
+    [ "__setitem__", "classtensors_1_1R4BaseView.html#a291cf91b893b7bf50a66d4a6702149e7", null ],
     [ "dim", "classtensors_1_1R4BaseView.html#a35536134a6ceb1e866faf188992e9c9f", null ],
     [ "expand", "classtensors_1_1R4BaseView.html#a2bd4df5fa2927e5f3bab4b1ca6d349ab", null ],
     [ "expand_copy", "classtensors_1_1R4BaseView.html#aec522901b2e61b1fa9467928d24c57a4", null ],

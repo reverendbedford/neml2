@@ -143,7 +143,7 @@ Dynamically shaped tensor</h2>
 <div class="line">neml2_assert(batch_sz == TensorShape{5, 2});</div>
 </div><!-- fragment --><h2><a class="anchor" id="statically-shaped-tensor"></a>
 Statically shaped tensors</h2>
-<p><a class="el" href="classneml2_1_1PrimitiveTensor.html">PrimitiveTensor</a> is the parent class for all tensor types with a <em>fixed</em> base shape. It is templated on the base shape of the tensor. NEML2 offers a rich collection of primitive tensor types inherited from <code>PrimitiveTensor</code>. Currently implemented primitive tensor types are summarized in the following table.</p>
+<p><a class="el" href="classneml2_1_1PrimitiveTensor.html" title="PrimitiveTensor inherits from TensorBase and additionally templates on the base shape.">neml2::PrimitiveTensor</a> is the parent class for all tensor types with a <em>fixed</em> base shape. It is templated on the base shape of the tensor. NEML2 offers a rich collection of primitive tensor types inherited from <code>PrimitiveTensor</code>. Currently implemented primitive tensor types are summarized in the following table.</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadLeft">Tensor type   </th><th class="markdownTableHeadLeft">Base shape   </th><th class="markdownTableHeadLeft">Description    </th></tr>
@@ -218,7 +218,7 @@ Tensor indexing</h2>
 </p>
 <p> Otherwise, it will not be possible to view self tensor as shape without copying it. </p>
 </blockquote>
-<p>In NEML2, use <a class="el" href="classneml2_1_1TensorBase.html#aefc1893a238f1f58f082a0f560f7a524">base_index</a> for indexing the base dimensions and <a class="el" href="classneml2_1_1TensorBase.html#a27fea0fe6db55ec7c5077db8494b5c71">batch_index</a> for indexing the batch dimensions: </p><div class="fragment"><div class="line">Tensor A(torch::tensor({{2, 3, 4}, {-1, -2, 3}, {6, 9, 7}}), 1);</div>
+<p>In NEML2, use <a class="el" href="classneml2_1_1TensorBase.html#aefc1893a238f1f58f082a0f560f7a524" title="Get a tensor by slicing on the base dimensions.">neml2::TensorBase::base_index</a> for indexing the base dimensions and <a class="el" href="classneml2_1_1TensorBase.html#a27fea0fe6db55ec7c5077db8494b5c71" title="Get a tensor by slicing on the batch dimensions.">neml2::TensorBase::batch_index</a> for indexing the batch dimensions: </p><div class="fragment"><div class="line">Tensor A(torch::tensor({{2, 3, 4}, {-1, -2, 3}, {6, 9, 7}}), 1);</div>
 <div class="line"><span class="comment">// A = [[  2  3  4]</span></div>
 <div class="line"><span class="comment">//      [ -1 -2  3]</span></div>
 <div class="line"><span class="comment">//      [  6  9  7]]</span></div>
@@ -229,7 +229,7 @@ Tensor indexing</h2>
 <div class="line"><span class="comment">// C = [[  3  4]</span></div>
 <div class="line"><span class="comment">//      [ -2  3]</span></div>
 <div class="line"><span class="comment">//      [  9  7]]</span></div>
-</div><!-- fragment --><p> To modify the content of a tensor, use base_index_put or batch_index_put: </p><div class="fragment"><div class="line">A.base_index_put_({Slice(1, 3)}, torch::ones({3, 2}));</div>
+</div><!-- fragment --><p> To modify the content of a tensor, use <a class="el" href="classneml2_1_1TensorBase.html#ad57d6e32d1a2d8bebb1fcc8c138994aa" title="Set values by slicing on the base dimensions.">neml2::TensorBase::base_index_put_</a> or <a class="el" href="classneml2_1_1TensorBase.html#ac53a73747ac6bf6b22ee08cd15dc676a" title="Set values by slicing on the batch dimensions.">neml2::TensorBase::batch_index_put_</a>: </p><div class="fragment"><div class="line">A.base_index_put_({Slice(1, 3)}, torch::ones({3, 2}));</div>
 <div class="line"><span class="comment">// A = [[  2  1  1]</span></div>
 <div class="line"><span class="comment">//      [ -1  1  1]</span></div>
 <div class="line"><span class="comment">//      [  6  1  1]]</span></div>
@@ -285,13 +285,7 @@ Tensor labeling</h2>
 </blockquote>
 <p>Refer to the documentation for a complete list of APIs for creating and modifying a <a class="el" href="classneml2_1_1LabeledAxis.html">LabeledAxis</a>.</p>
 <p><a class="el" href="classneml2_1_1LabeledTensor.html">LabeledTensor</a> is the primary data structure in NEML2 for working with labeled tensor views. Each <code>LabeledTensor</code> consists of one <code>Tensor</code> and one or more <code>LabeledAxis</code>s. The <code>LabeledTensor</code> is templated on the base dimension \(D\). <a class="el" href="classneml2_1_1LabeledVector.html">LabeledVector</a> and <a class="el" href="classneml2_1_1LabeledMatrix.html">LabeledMatrix</a> are the two most widely used data structures in NEML2.</p>
-<p><code>LabeledTensor</code> handles the creation, modification, and accessing of labeled tensors. Recall that all primitive data types in a labeled tensor are flattened, e.g., a symmetric fourth order tensor of type <code>SSR4</code> with batch size <code>(5)</code> and base size <code>(6, 6)</code> are flattened to have base size <code>(36)</code> in the labeled tensor. The documentation provides a complete list of APIs. The commonly used methods are</p><ul>
-<li>operator() for retrieving a labeled view into the raw (flattened) data without reshaping</li>
-<li>get for retrieving a labeled view and reshaping it to the correct shape</li>
-<li>set for setting values for a labeled view</li>
-<li>slice for slicing a sub-axis along a specific base dimension</li>
-<li>block for sub-indexing the <code>LabeledTensor</code> with \(D\) sub-axis names </li>
-</ul>
+<p><code>LabeledTensor</code> handles the creation, modification, and accessing of labeled tensors. Recall that all primitive data types in a labeled tensor are flattened, e.g., a symmetric fourth order tensor of type <code>SSR4</code> with batch size <code>(5)</code> and base size <code>(6, 6)</code> are flattened to have base size <code>(36)</code> in the labeled tensor. The documentation provides a complete list of APIs. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
