@@ -58,7 +58,7 @@ CrossRef<Tensor>::operator Tensor() const
   }
 }
 
-#define CROSSREF_SPECIALIZE_PRIMITIVETENSOR(T)                                                     \
+#define CROSSREF_SPECIALIZE_PRIMITIVETENSOR_IMPL(T)                                                \
   template <>                                                                                      \
   CrossRef<T>::operator T() const                                                                  \
   {                                                                                                \
@@ -73,15 +73,5 @@ CrossRef<Tensor>::operator Tensor() const
   }                                                                                                \
   static_assert(true)
 
-FOR_ALL_PRIMITIVETENSOR(CROSSREF_SPECIALIZE_PRIMITIVETENSOR);
-
-// Instantiations
-template <>
-CrossRef<torch::Tensor>::operator torch::Tensor() const;
-template <>
-CrossRef<Tensor>::operator Tensor() const;
-#define CROSSREF_INSTANTIATE_PRIMITIVETENSOR(T)                                                    \
-  template <>                                                                                      \
-  CrossRef<T>::operator T() const
-FOR_ALL_PRIMITIVETENSOR(CROSSREF_INSTANTIATE_PRIMITIVETENSOR);
+FOR_ALL_PRIMITIVETENSOR(CROSSREF_SPECIALIZE_PRIMITIVETENSOR_IMPL);
 } // namesace neml2
