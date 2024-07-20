@@ -259,6 +259,13 @@ $(function(){initNavTree('syntax-tensors.html',''); initResizable(); });
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_content_2syntax_2tensors"></a></p>
+<dl class="section note"><dt>Note</dt><dd>Clicking on the option with a triangle bullet ▸ next to it will expand/collapse its detailed information.</dd>
+<dd>
+Type name written in PascalCase typically refer to a NEML2 object type, oftentimes a primitive tensor type.</dd>
+<dd>
+The 🔗 symbol denotes that the option can <a class="el" href="input-file.html#cross-referencing">cross-reference</a> another object.</dd>
+<dd>
+You can always use <code>Ctrl</code>+<code>F</code> or <code>Cmd</code>+<code>F</code> to search the entire page.</dd></dl>
 <h1><a class="anchor" id="autotoc_md42"></a>
 Available objects and their input file syntax</h1>
 <p>Refer to <a class="el" href="system-tensors.html">System Documentation</a> for detailed explanation about this system.</p>
@@ -269,7 +276,7 @@ EmptyMillerIndex</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1EmptyPrimitiveTensor.html">link</a></p>
@@ -280,7 +287,7 @@ EmptyQuaternion</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1EmptyPrimitiveTensor.html">link</a></p>
@@ -291,7 +298,7 @@ EmptyR2</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1EmptyPrimitiveTensor.html">link</a></p>
@@ -302,7 +309,7 @@ EmptyR3</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1EmptyPrimitiveTensor.html">link</a></p>
@@ -313,7 +320,7 @@ EmptyR4</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1EmptyPrimitiveTensor.html">link</a></p>
@@ -324,7 +331,7 @@ EmptyR5</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1EmptyPrimitiveTensor.html">link</a></p>
@@ -335,7 +342,7 @@ EmptyRot</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1EmptyPrimitiveTensor.html">link</a></p>
@@ -346,7 +353,7 @@ EmptySFFR4</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1EmptyPrimitiveTensor.html">link</a></p>
@@ -357,7 +364,7 @@ EmptySFR3</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1EmptyPrimitiveTensor.html">link</a></p>
@@ -368,7 +375,7 @@ EmptySR2</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1EmptyPrimitiveTensor.html">link</a></p>
@@ -379,7 +386,7 @@ EmptySSFR5</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1EmptyPrimitiveTensor.html">link</a></p>
@@ -390,7 +397,7 @@ EmptySSR4</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1EmptyPrimitiveTensor.html">link</a></p>
@@ -401,7 +408,7 @@ EmptySWR4</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1EmptyPrimitiveTensor.html">link</a></p>
@@ -412,7 +419,7 @@ EmptyScalar</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1EmptyPrimitiveTensor.html">link</a></p>
@@ -423,7 +430,7 @@ EmptyTensor</h2>
 <code>base_shape</code> Base shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -431,7 +438,7 @@ EmptyTensor</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1EmptyTensor.html">link</a></p>
@@ -442,7 +449,7 @@ EmptyVec</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1EmptyPrimitiveTensor.html">link</a></p>
@@ -453,7 +460,7 @@ EmptyWR2</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1EmptyPrimitiveTensor.html">link</a></p>
@@ -464,7 +471,7 @@ EmptyWSR4</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1EmptyPrimitiveTensor.html">link</a></p>
@@ -475,7 +482,7 @@ EmptyWWR4</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1EmptyPrimitiveTensor.html">link</a></p>
@@ -486,7 +493,7 @@ FillMillerIndex</h2>
 <code>values</code> List of integers defining a Miller index</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;int&gt; </li>
+<li><u>Type</u>: list of number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1crystallography_1_1FillMillerIndex.html">link</a></p>
@@ -497,7 +504,7 @@ FillR2</h2>
 <code>values</code> Scalars used to fill the R2</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;Scalar&gt; </li>
+<li><u>Type</u>: list of Scalar 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FillR2.html">link</a></p>
@@ -517,7 +524,7 @@ FillRot</h2>
 <code>values</code> Scalars used to fill the Rot</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;Scalar&gt; </li>
+<li><u>Type</u>: list of Scalar 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FillRot.html">link</a></p>
@@ -528,7 +535,7 @@ FillSR2</h2>
 <code>values</code> Scalars used to fill the R2</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;Scalar&gt; </li>
+<li><u>Type</u>: list of Scalar 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FillSR2.html">link</a></p>
@@ -539,7 +546,7 @@ FillWR2</h2>
 <code>values</code> Scalars used to fill the WR2</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;Scalar&gt; </li>
+<li><u>Type</u>: list of Scalar 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FillWR2.html">link</a></p>
@@ -550,7 +557,7 @@ FullMillerIndex</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -558,7 +565,7 @@ FullMillerIndex</h2>
 <code>value</code> Value used to fill the tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FullPrimitiveTensor.html">link</a></p>
@@ -569,7 +576,7 @@ FullQuaternion</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -577,7 +584,7 @@ FullQuaternion</h2>
 <code>value</code> Value used to fill the tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FullPrimitiveTensor.html">link</a></p>
@@ -588,7 +595,7 @@ FullR2</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -596,7 +603,7 @@ FullR2</h2>
 <code>value</code> Value used to fill the tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FullPrimitiveTensor.html">link</a></p>
@@ -607,7 +614,7 @@ FullR3</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -615,7 +622,7 @@ FullR3</h2>
 <code>value</code> Value used to fill the tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FullPrimitiveTensor.html">link</a></p>
@@ -626,7 +633,7 @@ FullR4</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -634,7 +641,7 @@ FullR4</h2>
 <code>value</code> Value used to fill the tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FullPrimitiveTensor.html">link</a></p>
@@ -645,7 +652,7 @@ FullR5</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -653,7 +660,7 @@ FullR5</h2>
 <code>value</code> Value used to fill the tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FullPrimitiveTensor.html">link</a></p>
@@ -664,7 +671,7 @@ FullRot</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -672,7 +679,7 @@ FullRot</h2>
 <code>value</code> Value used to fill the tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FullPrimitiveTensor.html">link</a></p>
@@ -683,7 +690,7 @@ FullSFFR4</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -691,7 +698,7 @@ FullSFFR4</h2>
 <code>value</code> Value used to fill the tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FullPrimitiveTensor.html">link</a></p>
@@ -702,7 +709,7 @@ FullSFR3</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -710,7 +717,7 @@ FullSFR3</h2>
 <code>value</code> Value used to fill the tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FullPrimitiveTensor.html">link</a></p>
@@ -721,7 +728,7 @@ FullSR2</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -729,7 +736,7 @@ FullSR2</h2>
 <code>value</code> Value used to fill the tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FullPrimitiveTensor.html">link</a></p>
@@ -740,7 +747,7 @@ FullSSFR5</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -748,7 +755,7 @@ FullSSFR5</h2>
 <code>value</code> Value used to fill the tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FullPrimitiveTensor.html">link</a></p>
@@ -759,7 +766,7 @@ FullSSR4</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -767,7 +774,7 @@ FullSSR4</h2>
 <code>value</code> Value used to fill the tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FullPrimitiveTensor.html">link</a></p>
@@ -778,7 +785,7 @@ FullSWR4</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -786,7 +793,7 @@ FullSWR4</h2>
 <code>value</code> Value used to fill the tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FullPrimitiveTensor.html">link</a></p>
@@ -797,7 +804,7 @@ FullScalar</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -805,7 +812,7 @@ FullScalar</h2>
 <code>value</code> Value used to fill the tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FullPrimitiveTensor.html">link</a></p>
@@ -816,7 +823,7 @@ FullTensor</h2>
 <code>base_shape</code> Base shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -824,7 +831,7 @@ FullTensor</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -832,7 +839,7 @@ FullTensor</h2>
 <code>value</code> Value used to fill the tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FullTensor.html">link</a></p>
@@ -843,7 +850,7 @@ FullVec</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -851,7 +858,7 @@ FullVec</h2>
 <code>value</code> Value used to fill the tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FullPrimitiveTensor.html">link</a></p>
@@ -862,7 +869,7 @@ FullWR2</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -870,7 +877,7 @@ FullWR2</h2>
 <code>value</code> Value used to fill the tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FullPrimitiveTensor.html">link</a></p>
@@ -881,7 +888,7 @@ FullWSR4</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -889,7 +896,7 @@ FullWSR4</h2>
 <code>value</code> Value used to fill the tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FullPrimitiveTensor.html">link</a></p>
@@ -900,7 +907,7 @@ FullWWR4</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -908,7 +915,7 @@ FullWWR4</h2>
 <code>value</code> Value used to fill the tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FullPrimitiveTensor.html">link</a></p>
@@ -919,7 +926,7 @@ IdentityTensor</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -927,7 +934,7 @@ IdentityTensor</h2>
 <code>n</code> Diagonal size of the identity tensor, i.e., base shape of the identity tensor will be (n,n)</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1IdentityTensor.html">link</a></p>
@@ -938,7 +945,7 @@ LinspaceMillerIndex</h2>
 <code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
 </ul>
 </details>
@@ -947,7 +954,7 @@ LinspaceMillerIndex</h2>
 <code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -955,7 +962,7 @@ LinspaceMillerIndex</h2>
 <code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: MillerIndex </li>
+<li><u>Type</u>: MillerIndex 🔗 </li>
 </ul>
 </details>
 <details >
@@ -963,7 +970,7 @@ LinspaceMillerIndex</h2>
 <code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -971,7 +978,7 @@ LinspaceMillerIndex</h2>
 <code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: MillerIndex </li>
+<li><u>Type</u>: MillerIndex 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspacePrimitiveTensor.html">link</a></p>
@@ -982,7 +989,7 @@ LinspaceQuaternion</h2>
 <code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
 </ul>
 </details>
@@ -991,7 +998,7 @@ LinspaceQuaternion</h2>
 <code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -999,7 +1006,7 @@ LinspaceQuaternion</h2>
 <code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Quaternion </li>
+<li><u>Type</u>: Quaternion 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1007,7 +1014,7 @@ LinspaceQuaternion</h2>
 <code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1015,7 +1022,7 @@ LinspaceQuaternion</h2>
 <code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Quaternion </li>
+<li><u>Type</u>: Quaternion 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspacePrimitiveTensor.html">link</a></p>
@@ -1026,7 +1033,7 @@ LinspaceR2</h2>
 <code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
 </ul>
 </details>
@@ -1035,7 +1042,7 @@ LinspaceR2</h2>
 <code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1043,7 +1050,7 @@ LinspaceR2</h2>
 <code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: R2 </li>
+<li><u>Type</u>: R2 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1051,7 +1058,7 @@ LinspaceR2</h2>
 <code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1059,7 +1066,7 @@ LinspaceR2</h2>
 <code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: R2 </li>
+<li><u>Type</u>: R2 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspacePrimitiveTensor.html">link</a></p>
@@ -1070,7 +1077,7 @@ LinspaceR3</h2>
 <code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
 </ul>
 </details>
@@ -1079,7 +1086,7 @@ LinspaceR3</h2>
 <code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1087,7 +1094,7 @@ LinspaceR3</h2>
 <code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: R3 </li>
+<li><u>Type</u>: R3 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1095,7 +1102,7 @@ LinspaceR3</h2>
 <code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1103,7 +1110,7 @@ LinspaceR3</h2>
 <code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: R3 </li>
+<li><u>Type</u>: R3 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspacePrimitiveTensor.html">link</a></p>
@@ -1114,7 +1121,7 @@ LinspaceR4</h2>
 <code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
 </ul>
 </details>
@@ -1123,7 +1130,7 @@ LinspaceR4</h2>
 <code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1131,7 +1138,7 @@ LinspaceR4</h2>
 <code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: R4 </li>
+<li><u>Type</u>: R4 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1139,7 +1146,7 @@ LinspaceR4</h2>
 <code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1147,7 +1154,7 @@ LinspaceR4</h2>
 <code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: R4 </li>
+<li><u>Type</u>: R4 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspacePrimitiveTensor.html">link</a></p>
@@ -1158,7 +1165,7 @@ LinspaceR5</h2>
 <code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
 </ul>
 </details>
@@ -1167,7 +1174,7 @@ LinspaceR5</h2>
 <code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1175,7 +1182,7 @@ LinspaceR5</h2>
 <code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: R5 </li>
+<li><u>Type</u>: R5 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1183,7 +1190,7 @@ LinspaceR5</h2>
 <code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1191,7 +1198,7 @@ LinspaceR5</h2>
 <code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: R5 </li>
+<li><u>Type</u>: R5 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspacePrimitiveTensor.html">link</a></p>
@@ -1202,7 +1209,7 @@ LinspaceRot</h2>
 <code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
 </ul>
 </details>
@@ -1211,7 +1218,7 @@ LinspaceRot</h2>
 <code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1219,7 +1226,7 @@ LinspaceRot</h2>
 <code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Rot </li>
+<li><u>Type</u>: Rot 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1227,7 +1234,7 @@ LinspaceRot</h2>
 <code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1235,7 +1242,7 @@ LinspaceRot</h2>
 <code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Rot </li>
+<li><u>Type</u>: Rot 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspacePrimitiveTensor.html">link</a></p>
@@ -1246,7 +1253,7 @@ LinspaceSFFR4</h2>
 <code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
 </ul>
 </details>
@@ -1255,7 +1262,7 @@ LinspaceSFFR4</h2>
 <code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1263,7 +1270,7 @@ LinspaceSFFR4</h2>
 <code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: SFFR4 </li>
+<li><u>Type</u>: SFFR4 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1271,7 +1278,7 @@ LinspaceSFFR4</h2>
 <code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1279,7 +1286,7 @@ LinspaceSFFR4</h2>
 <code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: SFFR4 </li>
+<li><u>Type</u>: SFFR4 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspacePrimitiveTensor.html">link</a></p>
@@ -1290,7 +1297,7 @@ LinspaceSFR3</h2>
 <code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
 </ul>
 </details>
@@ -1299,7 +1306,7 @@ LinspaceSFR3</h2>
 <code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1307,7 +1314,7 @@ LinspaceSFR3</h2>
 <code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: SFR3 </li>
+<li><u>Type</u>: SFR3 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1315,7 +1322,7 @@ LinspaceSFR3</h2>
 <code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1323,7 +1330,7 @@ LinspaceSFR3</h2>
 <code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: SFR3 </li>
+<li><u>Type</u>: SFR3 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspacePrimitiveTensor.html">link</a></p>
@@ -1334,7 +1341,7 @@ LinspaceSR2</h2>
 <code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
 </ul>
 </details>
@@ -1343,7 +1350,7 @@ LinspaceSR2</h2>
 <code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1351,7 +1358,7 @@ LinspaceSR2</h2>
 <code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: SR2 </li>
+<li><u>Type</u>: SR2 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1359,7 +1366,7 @@ LinspaceSR2</h2>
 <code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1367,7 +1374,7 @@ LinspaceSR2</h2>
 <code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: SR2 </li>
+<li><u>Type</u>: SR2 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspacePrimitiveTensor.html">link</a></p>
@@ -1378,7 +1385,7 @@ LinspaceSSFR5</h2>
 <code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
 </ul>
 </details>
@@ -1387,7 +1394,7 @@ LinspaceSSFR5</h2>
 <code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1395,7 +1402,7 @@ LinspaceSSFR5</h2>
 <code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: SSFR5 </li>
+<li><u>Type</u>: SSFR5 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1403,7 +1410,7 @@ LinspaceSSFR5</h2>
 <code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1411,7 +1418,7 @@ LinspaceSSFR5</h2>
 <code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: SSFR5 </li>
+<li><u>Type</u>: SSFR5 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspacePrimitiveTensor.html">link</a></p>
@@ -1422,7 +1429,7 @@ LinspaceSSR4</h2>
 <code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
 </ul>
 </details>
@@ -1431,7 +1438,7 @@ LinspaceSSR4</h2>
 <code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1439,7 +1446,7 @@ LinspaceSSR4</h2>
 <code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: SSR4 </li>
+<li><u>Type</u>: SSR4 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1447,7 +1454,7 @@ LinspaceSSR4</h2>
 <code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1455,7 +1462,7 @@ LinspaceSSR4</h2>
 <code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: SSR4 </li>
+<li><u>Type</u>: SSR4 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspacePrimitiveTensor.html">link</a></p>
@@ -1466,7 +1473,7 @@ LinspaceSWR4</h2>
 <code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
 </ul>
 </details>
@@ -1475,7 +1482,7 @@ LinspaceSWR4</h2>
 <code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1483,7 +1490,7 @@ LinspaceSWR4</h2>
 <code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: SWR4 </li>
+<li><u>Type</u>: SWR4 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1491,7 +1498,7 @@ LinspaceSWR4</h2>
 <code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1499,7 +1506,7 @@ LinspaceSWR4</h2>
 <code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: SWR4 </li>
+<li><u>Type</u>: SWR4 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspacePrimitiveTensor.html">link</a></p>
@@ -1510,7 +1517,7 @@ LinspaceScalar</h2>
 <code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
 </ul>
 </details>
@@ -1519,7 +1526,7 @@ LinspaceScalar</h2>
 <code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1527,7 +1534,7 @@ LinspaceScalar</h2>
 <code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1535,7 +1542,7 @@ LinspaceScalar</h2>
 <code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1543,7 +1550,7 @@ LinspaceScalar</h2>
 <code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspacePrimitiveTensor.html">link</a></p>
@@ -1554,7 +1561,7 @@ LinspaceTensor</h2>
 <code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
 </ul>
 </details>
@@ -1563,7 +1570,7 @@ LinspaceTensor</h2>
 <code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -1571,7 +1578,7 @@ LinspaceTensor</h2>
 <code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1579,7 +1586,7 @@ LinspaceTensor</h2>
 <code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Tensor </li>
+<li><u>Type</u>: Tensor 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1587,7 +1594,7 @@ LinspaceTensor</h2>
 <code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1595,7 +1602,7 @@ LinspaceTensor</h2>
 <code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Tensor </li>
+<li><u>Type</u>: Tensor 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspaceTensor.html">link</a></p>
@@ -1606,7 +1613,7 @@ LinspaceVec</h2>
 <code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
 </ul>
 </details>
@@ -1615,7 +1622,7 @@ LinspaceVec</h2>
 <code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1623,7 +1630,7 @@ LinspaceVec</h2>
 <code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Vec </li>
+<li><u>Type</u>: Vec 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1631,7 +1638,7 @@ LinspaceVec</h2>
 <code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1639,7 +1646,7 @@ LinspaceVec</h2>
 <code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Vec </li>
+<li><u>Type</u>: Vec 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspacePrimitiveTensor.html">link</a></p>
@@ -1650,7 +1657,7 @@ LinspaceWR2</h2>
 <code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
 </ul>
 </details>
@@ -1659,7 +1666,7 @@ LinspaceWR2</h2>
 <code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1667,7 +1674,7 @@ LinspaceWR2</h2>
 <code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: WR2 </li>
+<li><u>Type</u>: WR2 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1675,7 +1682,7 @@ LinspaceWR2</h2>
 <code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1683,7 +1690,7 @@ LinspaceWR2</h2>
 <code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: WR2 </li>
+<li><u>Type</u>: WR2 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspacePrimitiveTensor.html">link</a></p>
@@ -1694,7 +1701,7 @@ LinspaceWSR4</h2>
 <code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
 </ul>
 </details>
@@ -1703,7 +1710,7 @@ LinspaceWSR4</h2>
 <code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1711,7 +1718,7 @@ LinspaceWSR4</h2>
 <code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: WSR4 </li>
+<li><u>Type</u>: WSR4 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1719,7 +1726,7 @@ LinspaceWSR4</h2>
 <code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1727,7 +1734,7 @@ LinspaceWSR4</h2>
 <code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: WSR4 </li>
+<li><u>Type</u>: WSR4 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspacePrimitiveTensor.html">link</a></p>
@@ -1738,7 +1745,7 @@ LinspaceWWR4</h2>
 <code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
 </ul>
 </details>
@@ -1747,7 +1754,7 @@ LinspaceWWR4</h2>
 <code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1755,7 +1762,7 @@ LinspaceWWR4</h2>
 <code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: WWR4 </li>
+<li><u>Type</u>: WWR4 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1763,7 +1770,7 @@ LinspaceWWR4</h2>
 <code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1771,7 +1778,7 @@ LinspaceWWR4</h2>
 <code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: WWR4 </li>
+<li><u>Type</u>: WWR4 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspacePrimitiveTensor.html">link</a></p>
@@ -1782,7 +1789,7 @@ LogspaceMillerIndex</h2>
 <code>base</code> Exponent base</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 10 </li>
 </ul>
 </details>
@@ -1791,7 +1798,7 @@ LogspaceMillerIndex</h2>
 <code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
 </ul>
 </details>
@@ -1800,7 +1807,7 @@ LogspaceMillerIndex</h2>
 <code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1808,7 +1815,7 @@ LogspaceMillerIndex</h2>
 <code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: MillerIndex </li>
+<li><u>Type</u>: MillerIndex 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1816,7 +1823,7 @@ LogspaceMillerIndex</h2>
 <code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1824,7 +1831,7 @@ LogspaceMillerIndex</h2>
 <code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: MillerIndex </li>
+<li><u>Type</u>: MillerIndex 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspacePrimitiveTensor.html">link</a></p>
@@ -1835,7 +1842,7 @@ LogspaceQuaternion</h2>
 <code>base</code> Exponent base</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 10 </li>
 </ul>
 </details>
@@ -1844,7 +1851,7 @@ LogspaceQuaternion</h2>
 <code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
 </ul>
 </details>
@@ -1853,7 +1860,7 @@ LogspaceQuaternion</h2>
 <code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1861,7 +1868,7 @@ LogspaceQuaternion</h2>
 <code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Quaternion </li>
+<li><u>Type</u>: Quaternion 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1869,7 +1876,7 @@ LogspaceQuaternion</h2>
 <code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1877,7 +1884,7 @@ LogspaceQuaternion</h2>
 <code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Quaternion </li>
+<li><u>Type</u>: Quaternion 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspacePrimitiveTensor.html">link</a></p>
@@ -1888,7 +1895,7 @@ LogspaceR2</h2>
 <code>base</code> Exponent base</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 10 </li>
 </ul>
 </details>
@@ -1897,7 +1904,7 @@ LogspaceR2</h2>
 <code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
 </ul>
 </details>
@@ -1906,7 +1913,7 @@ LogspaceR2</h2>
 <code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1914,7 +1921,7 @@ LogspaceR2</h2>
 <code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: R2 </li>
+<li><u>Type</u>: R2 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1922,7 +1929,7 @@ LogspaceR2</h2>
 <code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1930,7 +1937,7 @@ LogspaceR2</h2>
 <code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: R2 </li>
+<li><u>Type</u>: R2 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspacePrimitiveTensor.html">link</a></p>
@@ -1941,7 +1948,7 @@ LogspaceR3</h2>
 <code>base</code> Exponent base</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 10 </li>
 </ul>
 </details>
@@ -1950,7 +1957,7 @@ LogspaceR3</h2>
 <code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
 </ul>
 </details>
@@ -1959,7 +1966,7 @@ LogspaceR3</h2>
 <code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1967,7 +1974,7 @@ LogspaceR3</h2>
 <code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: R3 </li>
+<li><u>Type</u>: R3 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1975,7 +1982,7 @@ LogspaceR3</h2>
 <code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1983,7 +1990,7 @@ LogspaceR3</h2>
 <code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: R3 </li>
+<li><u>Type</u>: R3 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspacePrimitiveTensor.html">link</a></p>
@@ -1994,7 +2001,7 @@ LogspaceR4</h2>
 <code>base</code> Exponent base</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 10 </li>
 </ul>
 </details>
@@ -2003,7 +2010,7 @@ LogspaceR4</h2>
 <code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
 </ul>
 </details>
@@ -2012,7 +2019,7 @@ LogspaceR4</h2>
 <code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -2020,7 +2027,7 @@ LogspaceR4</h2>
 <code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: R4 </li>
+<li><u>Type</u>: R4 🔗 </li>
 </ul>
 </details>
 <details >
@@ -2028,7 +2035,7 @@ LogspaceR4</h2>
 <code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -2036,7 +2043,7 @@ LogspaceR4</h2>
 <code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: R4 </li>
+<li><u>Type</u>: R4 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspacePrimitiveTensor.html">link</a></p>
@@ -2047,7 +2054,7 @@ LogspaceR5</h2>
 <code>base</code> Exponent base</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 10 </li>
 </ul>
 </details>
@@ -2056,7 +2063,7 @@ LogspaceR5</h2>
 <code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
 </ul>
 </details>
@@ -2065,7 +2072,7 @@ LogspaceR5</h2>
 <code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -2073,7 +2080,7 @@ LogspaceR5</h2>
 <code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: R5 </li>
+<li><u>Type</u>: R5 🔗 </li>
 </ul>
 </details>
 <details >
@@ -2081,7 +2088,7 @@ LogspaceR5</h2>
 <code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -2089,7 +2096,7 @@ LogspaceR5</h2>
 <code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: R5 </li>
+<li><u>Type</u>: R5 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspacePrimitiveTensor.html">link</a></p>
@@ -2100,7 +2107,7 @@ LogspaceRot</h2>
 <code>base</code> Exponent base</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 10 </li>
 </ul>
 </details>
@@ -2109,7 +2116,7 @@ LogspaceRot</h2>
 <code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
 </ul>
 </details>
@@ -2118,7 +2125,7 @@ LogspaceRot</h2>
 <code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -2126,7 +2133,7 @@ LogspaceRot</h2>
 <code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Rot </li>
+<li><u>Type</u>: Rot 🔗 </li>
 </ul>
 </details>
 <details >
@@ -2134,7 +2141,7 @@ LogspaceRot</h2>
 <code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -2142,7 +2149,7 @@ LogspaceRot</h2>
 <code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Rot </li>
+<li><u>Type</u>: Rot 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspacePrimitiveTensor.html">link</a></p>
@@ -2153,7 +2160,7 @@ LogspaceSFFR4</h2>
 <code>base</code> Exponent base</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 10 </li>
 </ul>
 </details>
@@ -2162,7 +2169,7 @@ LogspaceSFFR4</h2>
 <code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
 </ul>
 </details>
@@ -2171,7 +2178,7 @@ LogspaceSFFR4</h2>
 <code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -2179,7 +2186,7 @@ LogspaceSFFR4</h2>
 <code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: SFFR4 </li>
+<li><u>Type</u>: SFFR4 🔗 </li>
 </ul>
 </details>
 <details >
@@ -2187,7 +2194,7 @@ LogspaceSFFR4</h2>
 <code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -2195,7 +2202,7 @@ LogspaceSFFR4</h2>
 <code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: SFFR4 </li>
+<li><u>Type</u>: SFFR4 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspacePrimitiveTensor.html">link</a></p>
@@ -2206,7 +2213,7 @@ LogspaceSFR3</h2>
 <code>base</code> Exponent base</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 10 </li>
 </ul>
 </details>
@@ -2215,7 +2222,7 @@ LogspaceSFR3</h2>
 <code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
 </ul>
 </details>
@@ -2224,7 +2231,7 @@ LogspaceSFR3</h2>
 <code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -2232,7 +2239,7 @@ LogspaceSFR3</h2>
 <code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: SFR3 </li>
+<li><u>Type</u>: SFR3 🔗 </li>
 </ul>
 </details>
 <details >
@@ -2240,7 +2247,7 @@ LogspaceSFR3</h2>
 <code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -2248,7 +2255,7 @@ LogspaceSFR3</h2>
 <code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: SFR3 </li>
+<li><u>Type</u>: SFR3 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspacePrimitiveTensor.html">link</a></p>
@@ -2259,7 +2266,7 @@ LogspaceSR2</h2>
 <code>base</code> Exponent base</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 10 </li>
 </ul>
 </details>
@@ -2268,7 +2275,7 @@ LogspaceSR2</h2>
 <code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
 </ul>
 </details>
@@ -2277,7 +2284,7 @@ LogspaceSR2</h2>
 <code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -2285,7 +2292,7 @@ LogspaceSR2</h2>
 <code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: SR2 </li>
+<li><u>Type</u>: SR2 🔗 </li>
 </ul>
 </details>
 <details >
@@ -2293,7 +2300,7 @@ LogspaceSR2</h2>
 <code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -2301,7 +2308,7 @@ LogspaceSR2</h2>
 <code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: SR2 </li>
+<li><u>Type</u>: SR2 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspacePrimitiveTensor.html">link</a></p>
@@ -2312,7 +2319,7 @@ LogspaceSSFR5</h2>
 <code>base</code> Exponent base</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 10 </li>
 </ul>
 </details>
@@ -2321,7 +2328,7 @@ LogspaceSSFR5</h2>
 <code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
 </ul>
 </details>
@@ -2330,7 +2337,7 @@ LogspaceSSFR5</h2>
 <code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -2338,7 +2345,7 @@ LogspaceSSFR5</h2>
 <code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: SSFR5 </li>
+<li><u>Type</u>: SSFR5 🔗 </li>
 </ul>
 </details>
 <details >
@@ -2346,7 +2353,7 @@ LogspaceSSFR5</h2>
 <code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -2354,7 +2361,7 @@ LogspaceSSFR5</h2>
 <code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: SSFR5 </li>
+<li><u>Type</u>: SSFR5 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspacePrimitiveTensor.html">link</a></p>
@@ -2365,7 +2372,7 @@ LogspaceSSR4</h2>
 <code>base</code> Exponent base</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 10 </li>
 </ul>
 </details>
@@ -2374,7 +2381,7 @@ LogspaceSSR4</h2>
 <code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
 </ul>
 </details>
@@ -2383,7 +2390,7 @@ LogspaceSSR4</h2>
 <code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -2391,7 +2398,7 @@ LogspaceSSR4</h2>
 <code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: SSR4 </li>
+<li><u>Type</u>: SSR4 🔗 </li>
 </ul>
 </details>
 <details >
@@ -2399,7 +2406,7 @@ LogspaceSSR4</h2>
 <code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -2407,7 +2414,7 @@ LogspaceSSR4</h2>
 <code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: SSR4 </li>
+<li><u>Type</u>: SSR4 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspacePrimitiveTensor.html">link</a></p>
@@ -2418,7 +2425,7 @@ LogspaceSWR4</h2>
 <code>base</code> Exponent base</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 10 </li>
 </ul>
 </details>
@@ -2427,7 +2434,7 @@ LogspaceSWR4</h2>
 <code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
 </ul>
 </details>
@@ -2436,7 +2443,7 @@ LogspaceSWR4</h2>
 <code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -2444,7 +2451,7 @@ LogspaceSWR4</h2>
 <code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: SWR4 </li>
+<li><u>Type</u>: SWR4 🔗 </li>
 </ul>
 </details>
 <details >
@@ -2452,7 +2459,7 @@ LogspaceSWR4</h2>
 <code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -2460,7 +2467,7 @@ LogspaceSWR4</h2>
 <code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: SWR4 </li>
+<li><u>Type</u>: SWR4 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspacePrimitiveTensor.html">link</a></p>
@@ -2471,7 +2478,7 @@ LogspaceScalar</h2>
 <code>base</code> Exponent base</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 10 </li>
 </ul>
 </details>
@@ -2480,7 +2487,7 @@ LogspaceScalar</h2>
 <code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
 </ul>
 </details>
@@ -2489,7 +2496,7 @@ LogspaceScalar</h2>
 <code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -2497,7 +2504,7 @@ LogspaceScalar</h2>
 <code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -2505,7 +2512,7 @@ LogspaceScalar</h2>
 <code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -2513,7 +2520,7 @@ LogspaceScalar</h2>
 <code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspacePrimitiveTensor.html">link</a></p>
@@ -2524,7 +2531,7 @@ LogspaceTensor</h2>
 <code>base</code> Exponent base</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 10 </li>
 </ul>
 </details>
@@ -2533,7 +2540,7 @@ LogspaceTensor</h2>
 <code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
 </ul>
 </details>
@@ -2542,7 +2549,7 @@ LogspaceTensor</h2>
 <code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -2550,7 +2557,7 @@ LogspaceTensor</h2>
 <code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Tensor </li>
+<li><u>Type</u>: Tensor 🔗 </li>
 </ul>
 </details>
 <details >
@@ -2558,7 +2565,7 @@ LogspaceTensor</h2>
 <code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -2566,7 +2573,7 @@ LogspaceTensor</h2>
 <code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Tensor </li>
+<li><u>Type</u>: Tensor 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspaceTensor.html">link</a></p>
@@ -2577,7 +2584,7 @@ LogspaceVec</h2>
 <code>base</code> Exponent base</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 10 </li>
 </ul>
 </details>
@@ -2586,7 +2593,7 @@ LogspaceVec</h2>
 <code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
 </ul>
 </details>
@@ -2595,7 +2602,7 @@ LogspaceVec</h2>
 <code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -2603,7 +2610,7 @@ LogspaceVec</h2>
 <code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Vec </li>
+<li><u>Type</u>: Vec 🔗 </li>
 </ul>
 </details>
 <details >
@@ -2611,7 +2618,7 @@ LogspaceVec</h2>
 <code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -2619,7 +2626,7 @@ LogspaceVec</h2>
 <code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Vec </li>
+<li><u>Type</u>: Vec 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspacePrimitiveTensor.html">link</a></p>
@@ -2630,7 +2637,7 @@ LogspaceWR2</h2>
 <code>base</code> Exponent base</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 10 </li>
 </ul>
 </details>
@@ -2639,7 +2646,7 @@ LogspaceWR2</h2>
 <code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
 </ul>
 </details>
@@ -2648,7 +2655,7 @@ LogspaceWR2</h2>
 <code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -2656,7 +2663,7 @@ LogspaceWR2</h2>
 <code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: WR2 </li>
+<li><u>Type</u>: WR2 🔗 </li>
 </ul>
 </details>
 <details >
@@ -2664,7 +2671,7 @@ LogspaceWR2</h2>
 <code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -2672,7 +2679,7 @@ LogspaceWR2</h2>
 <code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: WR2 </li>
+<li><u>Type</u>: WR2 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspacePrimitiveTensor.html">link</a></p>
@@ -2683,7 +2690,7 @@ LogspaceWSR4</h2>
 <code>base</code> Exponent base</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 10 </li>
 </ul>
 </details>
@@ -2692,7 +2699,7 @@ LogspaceWSR4</h2>
 <code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
 </ul>
 </details>
@@ -2701,7 +2708,7 @@ LogspaceWSR4</h2>
 <code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -2709,7 +2716,7 @@ LogspaceWSR4</h2>
 <code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: WSR4 </li>
+<li><u>Type</u>: WSR4 🔗 </li>
 </ul>
 </details>
 <details >
@@ -2717,7 +2724,7 @@ LogspaceWSR4</h2>
 <code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -2725,7 +2732,7 @@ LogspaceWSR4</h2>
 <code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: WSR4 </li>
+<li><u>Type</u>: WSR4 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspacePrimitiveTensor.html">link</a></p>
@@ -2736,7 +2743,7 @@ LogspaceWWR4</h2>
 <code>base</code> Exponent base</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 10 </li>
 </ul>
 </details>
@@ -2745,7 +2752,7 @@ LogspaceWWR4</h2>
 <code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
 </ul>
 </details>
@@ -2754,7 +2761,7 @@ LogspaceWWR4</h2>
 <code>dim</code> Where to insert the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -2762,7 +2769,7 @@ LogspaceWWR4</h2>
 <code>end</code> The ending tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: WWR4 </li>
+<li><u>Type</u>: WWR4 🔗 </li>
 </ul>
 </details>
 <details >
@@ -2770,7 +2777,7 @@ LogspaceWWR4</h2>
 <code>nstep</code> The number of steps with even spacing along the new dimension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -2778,7 +2785,7 @@ LogspaceWWR4</h2>
 <code>start</code> The starting tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: WWR4 </li>
+<li><u>Type</u>: WWR4 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspacePrimitiveTensor.html">link</a></p>
@@ -2789,7 +2796,7 @@ MillerIndex</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -2797,7 +2804,7 @@ MillerIndex</h2>
 <code>values</code> Values in this (flattened) tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;double&gt; </li>
+<li><u>Type</u>: list of number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1UserPrimitiveTensor.html">link</a></p>
@@ -2808,7 +2815,7 @@ OnesMillerIndex</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OnesPrimitiveTensor.html">link</a></p>
@@ -2819,7 +2826,7 @@ OnesQuaternion</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OnesPrimitiveTensor.html">link</a></p>
@@ -2830,7 +2837,7 @@ OnesR2</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OnesPrimitiveTensor.html">link</a></p>
@@ -2841,7 +2848,7 @@ OnesR3</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OnesPrimitiveTensor.html">link</a></p>
@@ -2852,7 +2859,7 @@ OnesR4</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OnesPrimitiveTensor.html">link</a></p>
@@ -2863,7 +2870,7 @@ OnesR5</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OnesPrimitiveTensor.html">link</a></p>
@@ -2874,7 +2881,7 @@ OnesRot</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OnesPrimitiveTensor.html">link</a></p>
@@ -2885,7 +2892,7 @@ OnesSFFR4</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OnesPrimitiveTensor.html">link</a></p>
@@ -2896,7 +2903,7 @@ OnesSFR3</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OnesPrimitiveTensor.html">link</a></p>
@@ -2907,7 +2914,7 @@ OnesSR2</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OnesPrimitiveTensor.html">link</a></p>
@@ -2918,7 +2925,7 @@ OnesSSFR5</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OnesPrimitiveTensor.html">link</a></p>
@@ -2929,7 +2936,7 @@ OnesSSR4</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OnesPrimitiveTensor.html">link</a></p>
@@ -2940,7 +2947,7 @@ OnesSWR4</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OnesPrimitiveTensor.html">link</a></p>
@@ -2951,7 +2958,7 @@ OnesScalar</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OnesPrimitiveTensor.html">link</a></p>
@@ -2962,7 +2969,7 @@ OnesTensor</h2>
 <code>base_shape</code> Base shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -2970,7 +2977,7 @@ OnesTensor</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OnesTensor.html">link</a></p>
@@ -2981,7 +2988,7 @@ OnesVec</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OnesPrimitiveTensor.html">link</a></p>
@@ -2992,7 +2999,7 @@ OnesWR2</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OnesPrimitiveTensor.html">link</a></p>
@@ -3003,7 +3010,7 @@ OnesWSR4</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OnesPrimitiveTensor.html">link</a></p>
@@ -3014,7 +3021,7 @@ OnesWWR4</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1OnesPrimitiveTensor.html">link</a></p>
@@ -3061,7 +3068,7 @@ Orientation</h2>
 <code>quantity</code> Number (batch size) of random orientations</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: unsigned int</li>
+<li><u>Type</u>: unsigned number</li>
 <li><u>Default</u>: 1 </li>
 </ul>
 </details>
@@ -3070,7 +3077,7 @@ Orientation</h2>
 <code>random_seed</code> Random seed for random angle generation</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: long</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
 </ul>
 </details>
@@ -3079,7 +3086,7 @@ Orientation</h2>
 <code>values</code> Input Euler angles, as a flattened n-by-3 matrix</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;double&gt; </li>
+<li><u>Type</u>: list of number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1Orientation.html">link</a></p>
@@ -3090,7 +3097,7 @@ Quaternion</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -3098,7 +3105,7 @@ Quaternion</h2>
 <code>values</code> Values in this (flattened) tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;double&gt; </li>
+<li><u>Type</u>: list of number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1UserPrimitiveTensor.html">link</a></p>
@@ -3109,7 +3116,7 @@ R2</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -3117,7 +3124,7 @@ R2</h2>
 <code>values</code> Values in this (flattened) tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;double&gt; </li>
+<li><u>Type</u>: list of number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1UserPrimitiveTensor.html">link</a></p>
@@ -3128,7 +3135,7 @@ R3</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -3136,7 +3143,7 @@ R3</h2>
 <code>values</code> Values in this (flattened) tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;double&gt; </li>
+<li><u>Type</u>: list of number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1UserPrimitiveTensor.html">link</a></p>
@@ -3147,7 +3154,7 @@ R4</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -3155,7 +3162,7 @@ R4</h2>
 <code>values</code> Values in this (flattened) tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;double&gt; </li>
+<li><u>Type</u>: list of number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1UserPrimitiveTensor.html">link</a></p>
@@ -3166,7 +3173,7 @@ R5</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -3174,7 +3181,7 @@ R5</h2>
 <code>values</code> Values in this (flattened) tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;double&gt; </li>
+<li><u>Type</u>: list of number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1UserPrimitiveTensor.html">link</a></p>
@@ -3185,7 +3192,7 @@ Rot</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -3193,7 +3200,7 @@ Rot</h2>
 <code>values</code> Values in this (flattened) tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;double&gt; </li>
+<li><u>Type</u>: list of number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1UserPrimitiveTensor.html">link</a></p>
@@ -3204,7 +3211,7 @@ SFFR4</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -3212,7 +3219,7 @@ SFFR4</h2>
 <code>values</code> Values in this (flattened) tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;double&gt; </li>
+<li><u>Type</u>: list of number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1UserPrimitiveTensor.html">link</a></p>
@@ -3223,7 +3230,7 @@ SFR3</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -3231,7 +3238,7 @@ SFR3</h2>
 <code>values</code> Values in this (flattened) tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;double&gt; </li>
+<li><u>Type</u>: list of number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1UserPrimitiveTensor.html">link</a></p>
@@ -3242,7 +3249,7 @@ SR2</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -3250,7 +3257,7 @@ SR2</h2>
 <code>values</code> Values in this (flattened) tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;double&gt; </li>
+<li><u>Type</u>: list of number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1UserPrimitiveTensor.html">link</a></p>
@@ -3261,7 +3268,7 @@ SSFR5</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -3269,7 +3276,7 @@ SSFR5</h2>
 <code>values</code> Values in this (flattened) tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;double&gt; </li>
+<li><u>Type</u>: list of number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1UserPrimitiveTensor.html">link</a></p>
@@ -3280,7 +3287,7 @@ SSR4</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -3288,7 +3295,7 @@ SSR4</h2>
 <code>values</code> Values in this (flattened) tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;double&gt; </li>
+<li><u>Type</u>: list of number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1UserPrimitiveTensor.html">link</a></p>
@@ -3299,7 +3306,7 @@ SWR4</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -3307,7 +3314,7 @@ SWR4</h2>
 <code>values</code> Values in this (flattened) tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;double&gt; </li>
+<li><u>Type</u>: list of number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1UserPrimitiveTensor.html">link</a></p>
@@ -3318,7 +3325,7 @@ Scalar</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -3326,7 +3333,7 @@ Scalar</h2>
 <code>values</code> Values in this (flattened) tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;double&gt; </li>
+<li><u>Type</u>: list of number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1UserPrimitiveTensor.html">link</a></p>
@@ -3348,7 +3355,7 @@ Tensor</h2>
 <code>base_shape</code> Base shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -3356,7 +3363,7 @@ Tensor</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -3364,7 +3371,7 @@ Tensor</h2>
 <code>values</code> Values in this (flattened) tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;double&gt; </li>
+<li><u>Type</u>: list of number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1UserTensor.html">link</a></p>
@@ -3375,7 +3382,7 @@ Vec</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -3383,7 +3390,7 @@ Vec</h2>
 <code>values</code> Values in this (flattened) tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;double&gt; </li>
+<li><u>Type</u>: list of number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1UserPrimitiveTensor.html">link</a></p>
@@ -3394,7 +3401,7 @@ WR2</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -3402,7 +3409,7 @@ WR2</h2>
 <code>values</code> Values in this (flattened) tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;double&gt; </li>
+<li><u>Type</u>: list of number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1UserPrimitiveTensor.html">link</a></p>
@@ -3413,7 +3420,7 @@ WSR4</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -3421,7 +3428,7 @@ WSR4</h2>
 <code>values</code> Values in this (flattened) tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;double&gt; </li>
+<li><u>Type</u>: list of number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1UserPrimitiveTensor.html">link</a></p>
@@ -3432,7 +3439,7 @@ WWR4</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -3440,7 +3447,7 @@ WWR4</h2>
 <code>values</code> Values in this (flattened) tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;double&gt; </li>
+<li><u>Type</u>: list of number </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1UserPrimitiveTensor.html">link</a></p>
@@ -3451,7 +3458,7 @@ ZerosMillerIndex</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ZerosPrimitiveTensor.html">link</a></p>
@@ -3462,7 +3469,7 @@ ZerosQuaternion</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ZerosPrimitiveTensor.html">link</a></p>
@@ -3473,7 +3480,7 @@ ZerosR2</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ZerosPrimitiveTensor.html">link</a></p>
@@ -3484,7 +3491,7 @@ ZerosR3</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ZerosPrimitiveTensor.html">link</a></p>
@@ -3495,7 +3502,7 @@ ZerosR4</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ZerosPrimitiveTensor.html">link</a></p>
@@ -3506,7 +3513,7 @@ ZerosR5</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ZerosPrimitiveTensor.html">link</a></p>
@@ -3517,7 +3524,7 @@ ZerosRot</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ZerosPrimitiveTensor.html">link</a></p>
@@ -3528,7 +3535,7 @@ ZerosSFFR4</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ZerosPrimitiveTensor.html">link</a></p>
@@ -3539,7 +3546,7 @@ ZerosSFR3</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ZerosPrimitiveTensor.html">link</a></p>
@@ -3550,7 +3557,7 @@ ZerosSR2</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ZerosPrimitiveTensor.html">link</a></p>
@@ -3561,7 +3568,7 @@ ZerosSSFR5</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ZerosPrimitiveTensor.html">link</a></p>
@@ -3572,7 +3579,7 @@ ZerosSSR4</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ZerosPrimitiveTensor.html">link</a></p>
@@ -3583,7 +3590,7 @@ ZerosSWR4</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ZerosPrimitiveTensor.html">link</a></p>
@@ -3594,7 +3601,7 @@ ZerosScalar</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ZerosPrimitiveTensor.html">link</a></p>
@@ -3605,7 +3612,7 @@ ZerosTensor</h2>
 <code>base_shape</code> Base shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -3613,7 +3620,7 @@ ZerosTensor</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ZerosTensor.html">link</a></p>
@@ -3624,7 +3631,7 @@ ZerosVec</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ZerosPrimitiveTensor.html">link</a></p>
@@ -3635,7 +3642,7 @@ ZerosWR2</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ZerosPrimitiveTensor.html">link</a></p>
@@ -3646,7 +3653,7 @@ ZerosWSR4</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ZerosPrimitiveTensor.html">link</a></p>
@@ -3657,7 +3664,7 @@ ZerosWWR4</h2>
 <code>batch_shape</code> Batch shape</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: c10::SmallVector&lt;long, 6u&gt; </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ZerosPrimitiveTensor.html">link</a> </p>

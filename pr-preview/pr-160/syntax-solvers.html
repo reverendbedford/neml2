@@ -121,6 +121,13 @@ $(function(){initNavTree('syntax-solvers.html',''); initResizable(); });
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_content_2syntax_2solvers"></a></p>
+<dl class="section note"><dt>Note</dt><dd>Clicking on the option with a triangle bullet ▸ next to it will expand/collapse its detailed information.</dd>
+<dd>
+Type name written in PascalCase typically refer to a NEML2 object type, oftentimes a primitive tensor type.</dd>
+<dd>
+The 🔗 symbol denotes that the option can <a class="el" href="input-file.html#cross-referencing">cross-reference</a> another object.</dd>
+<dd>
+You can always use <code>Ctrl</code>+<code>F</code> or <code>Cmd</code>+<code>F</code> to search the entire page.</dd></dl>
 <h1><a class="anchor" id="autotoc_md41"></a>
 Available objects and their input file syntax</h1>
 <p>Refer to <a class="el" href="system-solvers.html">System Documentation</a> for detailed explanation about this system.</p>
@@ -131,7 +138,7 @@ Newton</h2>
 <code>abs_tol</code> Absolute tolerance in the convergence criteria</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 1e-10 </li>
 </ul>
 </details>
@@ -140,7 +147,7 @@ Newton</h2>
 <code>max_its</code> Maximum number of iterations allowed before issuing an error/exception</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: unsigned int</li>
+<li><u>Type</u>: unsigned number</li>
 <li><u>Default</u>: 100 </li>
 </ul>
 </details>
@@ -149,7 +156,7 @@ Newton</h2>
 <code>rel_tol</code> Relative tolerance in the convergence criteria</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 1e-08 </li>
 </ul>
 </details>
@@ -170,7 +177,7 @@ NewtonWithLineSearch</h2>
 <code>abs_tol</code> Absolute tolerance in the convergence criteria</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 1e-10 </li>
 </ul>
 </details>
@@ -179,7 +186,7 @@ NewtonWithLineSearch</h2>
 <code>linesearch_cutback</code> Linesearch cut-back factor when the current scale factor cannot sufficiently reduce the residual.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 2 </li>
 </ul>
 </details>
@@ -188,7 +195,7 @@ NewtonWithLineSearch</h2>
 <code>linesearch_stopping_criteria</code> The lineseach tolerance slightly relaxing the definition of residual decrease</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 0.001 </li>
 </ul>
 </details>
@@ -197,7 +204,7 @@ NewtonWithLineSearch</h2>
 <code>max_its</code> Maximum number of iterations allowed before issuing an error/exception</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: unsigned int</li>
+<li><u>Type</u>: unsigned number</li>
 <li><u>Default</u>: 100 </li>
 </ul>
 </details>
@@ -206,7 +213,7 @@ NewtonWithLineSearch</h2>
 <code>max_linesearch_iterations</code> Maximum allowable linesearch iterations. No error is produced upon reaching the maximum number of iterations, and the scale factor in the last iteration is used to scale the step.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: unsigned int</li>
+<li><u>Type</u>: unsigned number</li>
 <li><u>Default</u>: 10 </li>
 </ul>
 </details>
@@ -215,7 +222,7 @@ NewtonWithLineSearch</h2>
 <code>rel_tol</code> Relative tolerance in the convergence criteria</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 1e-08 </li>
 </ul>
 </details>
@@ -236,7 +243,7 @@ NewtonWithTrustRegion</h2>
 <code>abs_tol</code> Absolute tolerance in the convergence criteria</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 1e-10 </li>
 </ul>
 </details>
@@ -245,7 +252,7 @@ NewtonWithTrustRegion</h2>
 <code>accept_criteria</code> Reject the current step when the merit function reduction is below this threshold</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 0.1 </li>
 </ul>
 </details>
@@ -254,7 +261,7 @@ NewtonWithTrustRegion</h2>
 <code>delta_0</code> Initial trust region radius</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 1 </li>
 </ul>
 </details>
@@ -263,7 +270,7 @@ NewtonWithTrustRegion</h2>
 <code>delta_max</code> Maximum trust region radius</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 10 </li>
 </ul>
 </details>
@@ -272,7 +279,7 @@ NewtonWithTrustRegion</h2>
 <code>expand_criteria</code> The trust region radius is increased when the merit function reduction is above this threshold</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 0.75 </li>
 </ul>
 </details>
@@ -281,7 +288,7 @@ NewtonWithTrustRegion</h2>
 <code>expand_factor</code> Factor to apply when increasing the trust region radius</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 2 </li>
 </ul>
 </details>
@@ -290,7 +297,7 @@ NewtonWithTrustRegion</h2>
 <code>max_its</code> Maximum number of iterations allowed before issuing an error/exception</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: unsigned int</li>
+<li><u>Type</u>: unsigned number</li>
 <li><u>Default</u>: 100 </li>
 </ul>
 </details>
@@ -299,7 +306,7 @@ NewtonWithTrustRegion</h2>
 <code>reduce_criteria</code> The trust region radius is reduced when the merit function reduction is below this threshold</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 0.25 </li>
 </ul>
 </details>
@@ -308,7 +315,7 @@ NewtonWithTrustRegion</h2>
 <code>reduce_factor</code> Factor to apply when reducing the trust region radius</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 0.25 </li>
 </ul>
 </details>
@@ -317,7 +324,7 @@ NewtonWithTrustRegion</h2>
 <code>rel_tol</code> Relative tolerance in the convergence criteria</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 1e-08 </li>
 </ul>
 </details>
@@ -326,7 +333,7 @@ NewtonWithTrustRegion</h2>
 <code>subproblem_abs_tol</code> Absolute tolerance used for the quadratic sub-problem</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 1e-08 </li>
 </ul>
 </details>
@@ -335,7 +342,7 @@ NewtonWithTrustRegion</h2>
 <code>subproblem_max_its</code> Maximum number of allowable iterations when solving the quadratic sub-problem</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: unsigned int</li>
+<li><u>Type</u>: unsigned number</li>
 <li><u>Default</u>: 10 </li>
 </ul>
 </details>
@@ -344,7 +351,7 @@ NewtonWithTrustRegion</h2>
 <code>subproblem_rel_tol</code> Relative tolerance used for the quadratic sub-problem</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 1e-06 </li>
 </ul>
 </details>

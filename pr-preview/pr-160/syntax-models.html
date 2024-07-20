@@ -157,7 +157,7 @@ $(function(){initNavTree('syntax-models.html',''); initResizable(); });
 <li class="level2"><a href="#millerindexlinearinterpolation">MillerIndexLinearInterpolation</a></li>
 <li class="level2"><a href="#mixedcontrolsetup">MixedControlSetup</a></li>
 <li class="level2"><a href="#normality">Normality</a></li>
-<li class="level2"><a href="#olevskysinteringstress">OlevskySinteringStress</a></li>
+<li class="level2"><a href="#olevskysnumbereringstress">OlevskySnumbereringStress</a></li>
 <li class="level2"><a href="#orientationrate">OrientationRate</a></li>
 <li class="level2"><a href="#overstress">OverStress</a></li>
 <li class="level2"><a href="#perzynaplasticflowrate">PerzynaPlasticFlowRate</a></li>
@@ -174,7 +174,7 @@ $(function(){initNavTree('syntax-models.html',''); initResizable(); });
 <li class="level2"><a href="#r4linearinterpolation">R4LinearInterpolation</a></li>
 <li class="level2"><a href="#r5constantparameter">R5ConstantParameter</a></li>
 <li class="level2"><a href="#r5linearinterpolation">R5LinearInterpolation</a></li>
-<li class="level2"><a href="#rateindependentplasticflowconstraint">RateIndependentPlasticFlowConstraint</a></li>
+<li class="level2"><a href="#rateindependentplasticflowconstranumber">RateIndependentPlasticFlowConstranumber</a></li>
 <li class="level2"><a href="#resolvedshear">ResolvedShear</a></li>
 <li class="level2"><a href="#rotconstantparameter">RotConstantParameter</a></li>
 <li class="level2"><a href="#rotlinearinterpolation">RotLinearInterpolation</a></li>
@@ -227,6 +227,13 @@ $(function(){initNavTree('syntax-models.html',''); initResizable(); });
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_content_2syntax_2models"></a></p>
+<dl class="section note"><dt>Note</dt><dd>Clicking on the option with a triangle bullet ▸ next to it will expand/collapse its detailed information.</dd>
+<dd>
+Type name written in PascalCase typically refer to a NEML2 object type, oftentimes a primitive tensor type.</dd>
+<dd>
+The 🔗 symbol denotes that the option can <a class="el" href="input-file.html#cross-referencing">cross-reference</a> another object.</dd>
+<dd>
+You can always use <code>Ctrl</code>+<code>F</code> or <code>Cmd</code>+<code>F</code> to search the entire page.</dd></dl>
 <p>The following symbols are used throughout the documentation to denote different components of function definition.</p><ul>
 <li>🇮: input variable</li>
 <li>🇴: output variable</li>
@@ -243,7 +250,7 @@ ArrheniusParameter</h2>
 <code>activation_energy</code> 🇵 Activation energy</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -251,7 +258,7 @@ ArrheniusParameter</h2>
 <code>ideal_gas_constant</code> The ideal gas constant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -259,7 +266,7 @@ ArrheniusParameter</h2>
 <code>reference_value</code> 🇵 Reference value</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -267,7 +274,7 @@ ArrheniusParameter</h2>
 <code>temperature</code> 🇮 Temperature</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: forces/T </li>
 </ul>
 </details>
@@ -279,7 +286,7 @@ AssociativeIsotropicPlasticHardening</h2>
 <code>equivalent_plastic_strain_rate</code> 🇴 Rate of equivalent plastic strain</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/ep_rate </li>
 </ul>
 </details>
@@ -288,7 +295,7 @@ AssociativeIsotropicPlasticHardening</h2>
 <code>flow_rate</code> 🇮 Flow rate</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/gamma_rate </li>
 </ul>
 </details>
@@ -297,7 +304,7 @@ AssociativeIsotropicPlasticHardening</h2>
 <code>isotropic_hardening_direction</code> 🇮 Direction of associative isotropic hardening which can be calculated using Normality.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/Nk </li>
 </ul>
 </details>
@@ -309,7 +316,7 @@ AssociativeKinematicPlasticHardening</h2>
 <code>flow_rate</code> 🇮 Flow rate</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/gamma_rate </li>
 </ul>
 </details>
@@ -318,7 +325,7 @@ AssociativeKinematicPlasticHardening</h2>
 <code>kinematic_hardening_direction</code> 🇮 Direction of associative kinematic hardening which can be calculated using Normality.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/NX </li>
 </ul>
 </details>
@@ -327,7 +334,7 @@ AssociativeKinematicPlasticHardening</h2>
 <code>kinematic_plastic_strain_rate</code> 🇴 Rate of kinematic plastic strain</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/Kp_rate </li>
 </ul>
 </details>
@@ -339,7 +346,7 @@ AssociativePlasticFlow</h2>
 <code>flow_direction</code> 🇮 Flow direction which can be calculated using Normality</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/NM </li>
 </ul>
 </details>
@@ -348,7 +355,7 @@ AssociativePlasticFlow</h2>
 <code>flow_rate</code> 🇮 Flow rate</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/gamma_rate </li>
 </ul>
 </details>
@@ -357,7 +364,7 @@ AssociativePlasticFlow</h2>
 <code>plastic_strain_rate</code> 🇴 Rate of plastic strain</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/Ep_rate </li>
 </ul>
 </details>
@@ -369,7 +376,7 @@ ChabochePlasticHardening</h2>
 <code>A</code> 🇵 Static recovery prefactor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -377,7 +384,7 @@ ChabochePlasticHardening</h2>
 <code>C</code> 🇵 Kinematic hardening coefficient</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -385,7 +392,7 @@ ChabochePlasticHardening</h2>
 <code>a</code> 🇵 Static recovery exponent</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -393,7 +400,7 @@ ChabochePlasticHardening</h2>
 <code>back_stress</code> 🇮 Back stress</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/X </li>
 </ul>
 </details>
@@ -402,7 +409,7 @@ ChabochePlasticHardening</h2>
 <code>flow_direction</code> 🇮 Flow direction</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/NM </li>
 </ul>
 </details>
@@ -411,7 +418,7 @@ ChabochePlasticHardening</h2>
 <code>flow_rate</code> 🇮 Flow rate</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/gamma_rate </li>
 </ul>
 </details>
@@ -420,7 +427,7 @@ ChabochePlasticHardening</h2>
 <code>g</code> 🇵 Dynamic recovery coefficient</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ChabochePlasticHardening.html">link</a></p>
@@ -431,7 +438,7 @@ ComposedModel</h2>
 <code>additional_outputs</code> 🇴 Extra output variables to be extracted from the composed model in addition to the ones identified through dependency resolution.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;VariableName&gt; </li>
+<li><u>Type</u>: list of variable name </li>
 </ul>
 </details>
 <details >
@@ -457,7 +464,7 @@ ComposedModel</h2>
 <code>automatic_scaling_miter</code> Maximum number of automatic scaling iterations. No error is produced upon reaching the maximum number of scaling iterations, and the scaling matrices obtained at the last iteration are used to scale the nonlinear system.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: unsigned int</li>
+<li><u>Type</u>: unsigned number</li>
 <li><u>Default</u>: 20 </li>
 </ul>
 </details>
@@ -466,7 +473,7 @@ ComposedModel</h2>
 <code>automatic_scaling_tol</code> Tolerance used in iteratively updating the scaling matrices.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 0.01 </li>
 </ul>
 </details>
@@ -475,7 +482,7 @@ ComposedModel</h2>
 <code>models</code> Models being composed together</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;string&gt; </li>
+<li><u>Type</u>: list of string </li>
 </ul>
 </details>
 <details >
@@ -483,7 +490,7 @@ ComposedModel</h2>
 <code>priority</code> Priorities of models in decreasing order. A model with higher priority will be evaluated first. This is useful for breaking cyclic dependency.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;string&gt; </li>
+<li><u>Type</u>: list of string </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ComposedModel.html">link</a></p>
@@ -494,7 +501,7 @@ CopyMillerIndex</h2>
 <code>from</code> 🇮 Variable to copy value from</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -502,7 +509,7 @@ CopyMillerIndex</h2>
 <code>to</code> 🇴 Variable to copy value to</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
@@ -513,7 +520,7 @@ CopyQuaternion</h2>
 <code>from</code> 🇮 Variable to copy value from</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -521,7 +528,7 @@ CopyQuaternion</h2>
 <code>to</code> 🇴 Variable to copy value to</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
@@ -532,7 +539,7 @@ CopyR2</h2>
 <code>from</code> 🇮 Variable to copy value from</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -540,7 +547,7 @@ CopyR2</h2>
 <code>to</code> 🇴 Variable to copy value to</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
@@ -551,7 +558,7 @@ CopyR3</h2>
 <code>from</code> 🇮 Variable to copy value from</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -559,7 +566,7 @@ CopyR3</h2>
 <code>to</code> 🇴 Variable to copy value to</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
@@ -570,7 +577,7 @@ CopyR4</h2>
 <code>from</code> 🇮 Variable to copy value from</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -578,7 +585,7 @@ CopyR4</h2>
 <code>to</code> 🇴 Variable to copy value to</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
@@ -589,7 +596,7 @@ CopyR5</h2>
 <code>from</code> 🇮 Variable to copy value from</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -597,7 +604,7 @@ CopyR5</h2>
 <code>to</code> 🇴 Variable to copy value to</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
@@ -608,7 +615,7 @@ CopyRot</h2>
 <code>from</code> 🇮 Variable to copy value from</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -616,7 +623,7 @@ CopyRot</h2>
 <code>to</code> 🇴 Variable to copy value to</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
@@ -627,7 +634,7 @@ CopySFFR4</h2>
 <code>from</code> 🇮 Variable to copy value from</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -635,7 +642,7 @@ CopySFFR4</h2>
 <code>to</code> 🇴 Variable to copy value to</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
@@ -646,7 +653,7 @@ CopySFR3</h2>
 <code>from</code> 🇮 Variable to copy value from</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -654,7 +661,7 @@ CopySFR3</h2>
 <code>to</code> 🇴 Variable to copy value to</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
@@ -665,7 +672,7 @@ CopySR2</h2>
 <code>from</code> 🇮 Variable to copy value from</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -673,7 +680,7 @@ CopySR2</h2>
 <code>to</code> 🇴 Variable to copy value to</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
@@ -684,7 +691,7 @@ CopySSFR5</h2>
 <code>from</code> 🇮 Variable to copy value from</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -692,7 +699,7 @@ CopySSFR5</h2>
 <code>to</code> 🇴 Variable to copy value to</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
@@ -703,7 +710,7 @@ CopySSR4</h2>
 <code>from</code> 🇮 Variable to copy value from</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -711,7 +718,7 @@ CopySSR4</h2>
 <code>to</code> 🇴 Variable to copy value to</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
@@ -722,7 +729,7 @@ CopySWR4</h2>
 <code>from</code> 🇮 Variable to copy value from</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -730,7 +737,7 @@ CopySWR4</h2>
 <code>to</code> 🇴 Variable to copy value to</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
@@ -741,7 +748,7 @@ CopyScalar</h2>
 <code>from</code> 🇮 Variable to copy value from</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -749,7 +756,7 @@ CopyScalar</h2>
 <code>to</code> 🇴 Variable to copy value to</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
@@ -760,7 +767,7 @@ CopyVec</h2>
 <code>from</code> 🇮 Variable to copy value from</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -768,7 +775,7 @@ CopyVec</h2>
 <code>to</code> 🇴 Variable to copy value to</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
@@ -779,7 +786,7 @@ CopyWR2</h2>
 <code>from</code> 🇮 Variable to copy value from</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -787,7 +794,7 @@ CopyWR2</h2>
 <code>to</code> 🇴 Variable to copy value to</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
@@ -798,7 +805,7 @@ CopyWSR4</h2>
 <code>from</code> 🇮 Variable to copy value from</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -806,7 +813,7 @@ CopyWSR4</h2>
 <code>to</code> 🇴 Variable to copy value to</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
@@ -817,7 +824,7 @@ CopyWWR4</h2>
 <code>from</code> 🇮 Variable to copy value from</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -825,7 +832,7 @@ CopyWWR4</h2>
 <code>to</code> 🇴 Variable to copy value to</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
@@ -836,7 +843,7 @@ ElasticStrain</h2>
 <code>elastic_strain</code> 🇴 Elastic strain</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/Ee </li>
 </ul>
 </details>
@@ -845,7 +852,7 @@ ElasticStrain</h2>
 <code>plastic_strain</code> 🇮 Plastic strain</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/Ep </li>
 </ul>
 </details>
@@ -863,7 +870,7 @@ ElasticStrain</h2>
 <code>total_strain</code> 🇮 Total strain</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: forces/E </li>
 </ul>
 </details>
@@ -875,7 +882,7 @@ ElasticStrainRate</h2>
 <code>deformation_rate</code> 🇮 Name of the deformation rate</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: forces/deformation_rate </li>
 </ul>
 </details>
@@ -884,7 +891,7 @@ ElasticStrainRate</h2>
 <code>elastic_strain</code> 🇮 Name of the elastic strain</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/elastic_strain </li>
 </ul>
 </details>
@@ -893,7 +900,7 @@ ElasticStrainRate</h2>
 <code>elastic_strain_rate</code> 🇴 Name of the elastic strain rate</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/elastic_strain_rate </li>
 </ul>
 </details>
@@ -902,7 +909,7 @@ ElasticStrainRate</h2>
 <code>plastic_deformation_rate</code> 🇮 Name of the plastic deformation rate</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/plastic_deformation_rate </li>
 </ul>
 </details>
@@ -911,7 +918,7 @@ ElasticStrainRate</h2>
 <code>vorticity</code> 🇮 Name of the vorticity</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: forces/vorticity </li>
 </ul>
 </details>
@@ -923,7 +930,7 @@ FixOrientation</h2>
 <code>input_orientation</code> 🇮 Name of input tensor of orientations to operate on.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/orientation </li>
 </ul>
 </details>
@@ -932,7 +939,7 @@ FixOrientation</h2>
 <code>output_orientation</code> 🇴 Name of output tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/orientation </li>
 </ul>
 </details>
@@ -941,7 +948,7 @@ FixOrientation</h2>
 <code>threshold</code> Threshold value for translating to the shadow parameters</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 1 </li>
 </ul>
 </details>
@@ -953,7 +960,7 @@ GTNYieldFunction</h2>
 <code>flow_invariant</code> 🇮 Effective stress driving plastic flow</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/se </li>
 </ul>
 </details>
@@ -962,7 +969,7 @@ GTNYieldFunction</h2>
 <code>isotropic_hardening</code> 🇮 Isotropic hardening</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -970,7 +977,7 @@ GTNYieldFunction</h2>
 <code>poro_invariant</code> 🇮 Effective stress driving porous flow</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/sp </li>
 </ul>
 </details>
@@ -979,7 +986,7 @@ GTNYieldFunction</h2>
 <code>q1</code> 🇵 Parameter controlling the balance/competition between plastic flow and void evolution.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -987,7 +994,7 @@ GTNYieldFunction</h2>
 <code>q2</code> 🇵 Void evolution rate</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -995,7 +1002,7 @@ GTNYieldFunction</h2>
 <code>q3</code> 🇵 Pore pressure</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1003,7 +1010,7 @@ GTNYieldFunction</h2>
 <code>void_fraction</code> 🇮 Void fraction (porosity)</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/f </li>
 </ul>
 </details>
@@ -1012,7 +1019,7 @@ GTNYieldFunction</h2>
 <code>yield_function</code> 🇴 Yield function</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/fp </li>
 </ul>
 </details>
@@ -1021,7 +1028,7 @@ GTNYieldFunction</h2>
 <code>yield_stress</code> 🇮 Yield stress</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1GTNYieldFunction.html">link</a></p>
@@ -1032,7 +1039,7 @@ GursonCavitation</h2>
 <code>plastic_strain_rate</code> 🇮 Plastic strain rate</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/Ep_rate </li>
 </ul>
 </details>
@@ -1041,7 +1048,7 @@ GursonCavitation</h2>
 <code>void_fraction</code> 🇮 Void fraction (porosity)</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/f </li>
 </ul>
 </details>
@@ -1050,7 +1057,7 @@ GursonCavitation</h2>
 <code>void_fraction_rate</code> 🇴 Rate of void evolution</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/f_rate </li>
 </ul>
 </details>
@@ -1081,7 +1088,7 @@ IsotropicMandelStress</h2>
 <code>cauchy_stress</code> 🇮 Cauchy stress</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/S </li>
 </ul>
 </details>
@@ -1090,7 +1097,7 @@ IsotropicMandelStress</h2>
 <code>mandel_stress</code> 🇴 Mandel stress</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/M </li>
 </ul>
 </details>
@@ -1102,7 +1109,7 @@ KocksMeckingActivationEnergy</h2>
 <code>activation_energy</code> 🇮 Output name of the activation energy</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: forces/g </li>
 </ul>
 </details>
@@ -1111,7 +1118,7 @@ KocksMeckingActivationEnergy</h2>
 <code>b</code> Magnitude of the Burgers vector</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1119,7 +1126,7 @@ KocksMeckingActivationEnergy</h2>
 <code>eps0</code> Reference strain rate</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1127,7 +1134,7 @@ KocksMeckingActivationEnergy</h2>
 <code>k</code> The Boltzmann constant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1135,7 +1142,7 @@ KocksMeckingActivationEnergy</h2>
 <code>shear_modulus</code> 🇵 The shear modulus</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1143,7 +1150,7 @@ KocksMeckingActivationEnergy</h2>
 <code>strain_rate</code> 🇮 Name of the effective strain rate</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: forces/effective_strain_rate </li>
 </ul>
 </details>
@@ -1152,7 +1159,7 @@ KocksMeckingActivationEnergy</h2>
 <code>temperature</code> 🇮 Absolute temperature</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: forces/T </li>
 </ul>
 </details>
@@ -1164,7 +1171,7 @@ KocksMeckingFlowSwitch</h2>
 <code>activation_energy</code> 🇮 The input name of the activation energy</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: forces/g </li>
 </ul>
 </details>
@@ -1173,7 +1180,7 @@ KocksMeckingFlowSwitch</h2>
 <code>flow_rate</code> 🇴 Output name for the mixed flow rate</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/gamma_rate </li>
 </ul>
 </details>
@@ -1182,7 +1189,7 @@ KocksMeckingFlowSwitch</h2>
 <code>g0</code> 🇵 Critical value of activation energy</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1190,7 +1197,7 @@ KocksMeckingFlowSwitch</h2>
 <code>rate_dependent_flow_rate</code> 🇮 Input name of the rate dependent flow rate</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/rd_rate </li>
 </ul>
 </details>
@@ -1199,7 +1206,7 @@ KocksMeckingFlowSwitch</h2>
 <code>rate_independent_flow_rate</code> 🇮 Input name of the rate independent flow rate</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/ri_rate </li>
 </ul>
 </details>
@@ -1208,7 +1215,7 @@ KocksMeckingFlowSwitch</h2>
 <code>sharpness</code> A steepness parameter that controls the tanh mixing of the models. Higher values gives a sharper transition.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 1 </li>
 </ul>
 </details>
@@ -1220,7 +1227,7 @@ KocksMeckingFlowViscosity</h2>
 <code>A</code> 🇵 The Kocks-Mecking slope parameter</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1228,7 +1235,7 @@ KocksMeckingFlowViscosity</h2>
 <code>B</code> 🇵 The Kocks-Mecking intercept parameter</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1236,7 +1243,7 @@ KocksMeckingFlowViscosity</h2>
 <code>b</code> The Burgers vector</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1244,7 +1251,7 @@ KocksMeckingFlowViscosity</h2>
 <code>eps0</code> The reference strain rate</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1252,7 +1259,7 @@ KocksMeckingFlowViscosity</h2>
 <code>k</code> Boltzmann constant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1260,7 +1267,7 @@ KocksMeckingFlowViscosity</h2>
 <code>shear_modulus</code> 🇵 The shear modulus</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1268,7 +1275,7 @@ KocksMeckingFlowViscosity</h2>
 <code>temperature</code> 🇮 Absolute temperature</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: forces/T </li>
 </ul>
 </details>
@@ -1280,7 +1287,7 @@ KocksMeckingRateSensitivity</h2>
 <code>A</code> 🇵 The Kocks-Mecking slope parameter</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1288,7 +1295,7 @@ KocksMeckingRateSensitivity</h2>
 <code>b</code> The Burgers vector</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1296,7 +1303,7 @@ KocksMeckingRateSensitivity</h2>
 <code>k</code> Boltzmann constant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double </li>
+<li><u>Type</u>: number </li>
 </ul>
 </details>
 <details >
@@ -1304,7 +1311,7 @@ KocksMeckingRateSensitivity</h2>
 <code>shear_modulus</code> 🇵 The shear modulus</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1312,7 +1319,7 @@ KocksMeckingRateSensitivity</h2>
 <code>temperature</code> 🇮 Absolute temperature</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: forces/T </li>
 </ul>
 </details>
@@ -1324,7 +1331,7 @@ KocksMeckingYieldStress</h2>
 <code>C</code> 🇵 The Kocks-Mecking horizontal intercept</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1332,7 +1339,7 @@ KocksMeckingYieldStress</h2>
 <code>shear_modulus</code> 🇵 The shear modulus</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1KocksMeckingYieldStress.html">link</a></p>
@@ -1352,7 +1359,7 @@ LinearIsotropicElasticity</h2>
 <code>poisson_ratio</code> 🇵 Poisson's ratio</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1369,7 +1376,7 @@ LinearIsotropicElasticity</h2>
 <code>strain</code> 🇮 Elastic strain</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/Ee </li>
 </ul>
 </details>
@@ -1378,7 +1385,7 @@ LinearIsotropicElasticity</h2>
 <code>stress</code> 🇴 Stress</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/S </li>
 </ul>
 </details>
@@ -1387,7 +1394,7 @@ LinearIsotropicElasticity</h2>
 <code>youngs_modulus</code> 🇵 Young's modulus</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearIsotropicElasticity.html">link</a></p>
@@ -1398,7 +1405,7 @@ LinearIsotropicHardening</h2>
 <code>equivalent_plastic_strain</code> 🇮 Equivalent plastic strain</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/ep </li>
 </ul>
 </details>
@@ -1407,7 +1414,7 @@ LinearIsotropicHardening</h2>
 <code>hardening_modulus</code> 🇵 Hardening modulus</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1415,7 +1422,7 @@ LinearIsotropicHardening</h2>
 <code>isotropic_hardening</code> 🇴 Isotropic hardening</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/k </li>
 </ul>
 </details>
@@ -1427,7 +1434,7 @@ LinearKinematicHardening</h2>
 <code>back_stress</code> 🇴 Back stress</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/X </li>
 </ul>
 </details>
@@ -1436,7 +1443,7 @@ LinearKinematicHardening</h2>
 <code>hardening_modulus</code> 🇵 Hardening modulus</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1444,7 +1451,7 @@ LinearKinematicHardening</h2>
 <code>kinematic_plastic_strain</code> 🇮 Kinematic plastic strain</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/Kp </li>
 </ul>
 </details>
@@ -1456,7 +1463,7 @@ LinearSingleSlipHardeningRule</h2>
 <code>hardening_slope</code> 🇵 Hardening rate</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1464,7 +1471,7 @@ LinearSingleSlipHardeningRule</h2>
 <code>slip_hardening</code> 🇮 Name of current values of slip hardening</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/slip_hardening </li>
 </ul>
 </details>
@@ -1473,7 +1480,7 @@ LinearSingleSlipHardeningRule</h2>
 <code>slip_hardening_rate</code> 🇴 Name of tensor to output the slip system hardening rates into</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/slip_hardening_rate </li>
 </ul>
 </details>
@@ -1482,7 +1489,7 @@ LinearSingleSlipHardeningRule</h2>
 <code>sum_slip_rates</code> 🇮 Name of tensor containing the sum of the slip rates</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/sum_slip_rates </li>
 </ul>
 </details>
@@ -1494,7 +1501,7 @@ MillerIndexConstantParameter</h2>
 <code>value</code> 🇵 The constant value of the parameter</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: MillerIndex </li>
+<li><u>Type</u>: MillerIndex 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ConstantParameter.html">link</a></p>
@@ -1505,7 +1512,7 @@ MillerIndexLinearInterpolation</h2>
 <code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1513,7 +1520,7 @@ MillerIndexLinearInterpolation</h2>
 <code>argument</code> Argument used to query the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -1521,7 +1528,7 @@ MillerIndexLinearInterpolation</h2>
 <code>ordinate</code> MillerIndex defining the ordinate values of the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: MillerIndex </li>
+<li><u>Type</u>: MillerIndex 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
@@ -1532,7 +1539,7 @@ MixedControlSetup</h2>
 <code>cauchy_stress</code> 🇴 The name of the Cauchy stress tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/S </li>
 </ul>
 </details>
@@ -1541,7 +1548,7 @@ MixedControlSetup</h2>
 <code>control</code> 🇮 The name of the control signal. Values less than the threshold are strain control, greater are stress control</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: forces/control </li>
 </ul>
 </details>
@@ -1550,7 +1557,7 @@ MixedControlSetup</h2>
 <code>fixed_values</code> 🇮 The name of the fixed values, i.e. the actual strain or stress values being imposed on the model</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: forces/fixed_values </li>
 </ul>
 </details>
@@ -1559,7 +1566,7 @@ MixedControlSetup</h2>
 <code>mixed_state</code> 🇮 The name of the mixed state tensor. This holds the conjugate values to those being controlled</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/mixed_state </li>
 </ul>
 </details>
@@ -1568,7 +1575,7 @@ MixedControlSetup</h2>
 <code>strain</code> 🇴 The name of the strain tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: forces/E </li>
 </ul>
 </details>
@@ -1577,7 +1584,7 @@ MixedControlSetup</h2>
 <code>threshold</code> The threshold to switch between strain and stress control</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Tensor</li>
+<li><u>Type</u>: Tensor 🔗</li>
 <li><u>Default</u>: 0.5 </li>
 </ul>
 </details>
@@ -1589,7 +1596,7 @@ Normality</h2>
 <code>from</code> Function arguments to take derivatives w.r.t.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;VariableName&gt; </li>
+<li><u>Type</u>: list of variable name </li>
 </ul>
 </details>
 <details >
@@ -1597,7 +1604,7 @@ Normality</h2>
 <code>function</code> Function to take derivative</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -1613,18 +1620,18 @@ Normality</h2>
 <code>to</code> 🇴 Variables to store the first derivatives</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;VariableName&gt; </li>
+<li><u>Type</u>: list of variable name </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1Normality.html">link</a></p>
-<h2><a class="anchor" id="olevskysinteringstress"></a>
-OlevskySinteringStress</h2>
+<h2><a class="anchor" id="olevskysnumbereringstress"></a>
+OlevskySnumbereringStress</h2>
 <p>Define the Olevsky-Skorohod sintering stress to be used in conjunction with poroplasticity yield functions such as the GTNYieldFunction. The sintering stress is defined as \( \sigma_s = 3 \dfrac{\gamma}{r} \phi^2 \), where \( \gamma \) is the surface tension, \( r \) is the size of the particles/powders, and \( \phi \) is the void fraction. </p><details >
 <summary >
 <code>particle_radius</code> 🇵 Particle radius</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1632,7 +1639,7 @@ OlevskySinteringStress</h2>
 <code>sintering_stress</code> 🇴 Sintering stress</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/ss </li>
 </ul>
 </details>
@@ -1641,7 +1648,7 @@ OlevskySinteringStress</h2>
 <code>surface_tension</code> 🇵 Surface tension</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1649,7 +1656,7 @@ OlevskySinteringStress</h2>
 <code>void_fraction</code> 🇮 Void fraction</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/f </li>
 </ul>
 </details>
@@ -1661,7 +1668,7 @@ OrientationRate</h2>
 <code>elastic_strain</code> 🇮 The name of the elastic strain tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/elastic_strain </li>
 </ul>
 </details>
@@ -1670,7 +1677,7 @@ OrientationRate</h2>
 <code>orientation_rate</code> 🇴 The name of the orientation rate (spin)</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/orientation_rate </li>
 </ul>
 </details>
@@ -1679,7 +1686,7 @@ OrientationRate</h2>
 <code>plastic_deformation_rate</code> 🇮 The name of the plastic deformation rate</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/plastic_deformation_rate </li>
 </ul>
 </details>
@@ -1688,7 +1695,7 @@ OrientationRate</h2>
 <code>plastic_vorticity</code> 🇮 The name of the plastic vorticity</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/plastic_vorticity </li>
 </ul>
 </details>
@@ -1697,7 +1704,7 @@ OrientationRate</h2>
 <code>vorticity</code> 🇮 The name of the voriticty tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: forces/vorticity </li>
 </ul>
 </details>
@@ -1709,7 +1716,7 @@ OverStress</h2>
 <code>back_stress</code> 🇮 Back stress</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/X </li>
 </ul>
 </details>
@@ -1718,7 +1725,7 @@ OverStress</h2>
 <code>mandel_stress</code> 🇮 Mandel stress</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/M </li>
 </ul>
 </details>
@@ -1727,7 +1734,7 @@ OverStress</h2>
 <code>over_stress</code> 🇴 Over stress</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/O </li>
 </ul>
 </details>
@@ -1739,7 +1746,7 @@ PerzynaPlasticFlowRate</h2>
 <code>exponent</code> 🇵 Power-law exponent</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1747,7 +1754,7 @@ PerzynaPlasticFlowRate</h2>
 <code>flow_rate</code> 🇴 Flow rate</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/gamma_rate </li>
 </ul>
 </details>
@@ -1756,7 +1763,7 @@ PerzynaPlasticFlowRate</h2>
 <code>reference_stress</code> 🇵 Reference stress</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1764,7 +1771,7 @@ PerzynaPlasticFlowRate</h2>
 <code>yield_function</code> 🇮 Yield function</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/fp </li>
 </ul>
 </details>
@@ -1785,7 +1792,7 @@ PlasticDeformationRate</h2>
 <code>orientation</code> 🇮 The name of the orientation matrix tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/orientation_matrix </li>
 </ul>
 </details>
@@ -1794,7 +1801,7 @@ PlasticDeformationRate</h2>
 <code>plastic_deformation_rate</code> 🇴 The name of the plastic deformation rate tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/plastic_deformation_rate </li>
 </ul>
 </details>
@@ -1803,7 +1810,7 @@ PlasticDeformationRate</h2>
 <code>slip_rates</code> 🇮 The name of the tensor containg the current slip rates</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/slip_rates </li>
 </ul>
 </details>
@@ -1824,7 +1831,7 @@ PlasticVorticity</h2>
 <code>orientation</code> 🇮 The name of the orientation matrix tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/orientation_matrix </li>
 </ul>
 </details>
@@ -1833,7 +1840,7 @@ PlasticVorticity</h2>
 <code>plastic_vorticity</code> 🇴 The name of the plastic vorticity tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/plastic_vorticity </li>
 </ul>
 </details>
@@ -1842,7 +1849,7 @@ PlasticVorticity</h2>
 <code>slip_rates</code> 🇮 The name of the tensor containg the current slip rates</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/slip_rates </li>
 </ul>
 </details>
@@ -1863,7 +1870,7 @@ PowerLawSlipRule</h2>
 <code>gamma0</code> 🇵 Reference slip rate</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1871,7 +1878,7 @@ PowerLawSlipRule</h2>
 <code>n</code> 🇵 Rate sensitivity exponent</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1879,7 +1886,7 @@ PowerLawSlipRule</h2>
 <code>resolved_shears</code> 🇮 Name of the resolved shear tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/resolved_shears </li>
 </ul>
 </details>
@@ -1888,7 +1895,7 @@ PowerLawSlipRule</h2>
 <code>slip_rates</code> 🇴 Name of the slip rate tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/slip_rates </li>
 </ul>
 </details>
@@ -1897,7 +1904,7 @@ PowerLawSlipRule</h2>
 <code>slip_strengths</code> 🇮 Name of the tensor containing the slip system strengths</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/slip_strengths </li>
 </ul>
 </details>
@@ -1909,7 +1916,7 @@ QuaternionConstantParameter</h2>
 <code>value</code> 🇵 The constant value of the parameter</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Quaternion </li>
+<li><u>Type</u>: Quaternion 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ConstantParameter.html">link</a></p>
@@ -1920,7 +1927,7 @@ QuaternionLinearInterpolation</h2>
 <code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1928,7 +1935,7 @@ QuaternionLinearInterpolation</h2>
 <code>argument</code> Argument used to query the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -1936,7 +1943,7 @@ QuaternionLinearInterpolation</h2>
 <code>ordinate</code> Quaternion defining the ordinate values of the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Quaternion </li>
+<li><u>Type</u>: Quaternion 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
@@ -1947,7 +1954,7 @@ R2ConstantParameter</h2>
 <code>value</code> 🇵 The constant value of the parameter</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: R2 </li>
+<li><u>Type</u>: R2 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ConstantParameter.html">link</a></p>
@@ -1958,7 +1965,7 @@ R2LinearInterpolation</h2>
 <code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1966,7 +1973,7 @@ R2LinearInterpolation</h2>
 <code>argument</code> Argument used to query the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -1974,7 +1981,7 @@ R2LinearInterpolation</h2>
 <code>ordinate</code> R2 defining the ordinate values of the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: R2 </li>
+<li><u>Type</u>: R2 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
@@ -1985,7 +1992,7 @@ R3ConstantParameter</h2>
 <code>value</code> 🇵 The constant value of the parameter</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: R3 </li>
+<li><u>Type</u>: R3 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ConstantParameter.html">link</a></p>
@@ -1996,7 +2003,7 @@ R3LinearInterpolation</h2>
 <code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -2004,7 +2011,7 @@ R3LinearInterpolation</h2>
 <code>argument</code> Argument used to query the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -2012,7 +2019,7 @@ R3LinearInterpolation</h2>
 <code>ordinate</code> R3 defining the ordinate values of the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: R3 </li>
+<li><u>Type</u>: R3 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
@@ -2023,7 +2030,7 @@ R4ConstantParameter</h2>
 <code>value</code> 🇵 The constant value of the parameter</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: R4 </li>
+<li><u>Type</u>: R4 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ConstantParameter.html">link</a></p>
@@ -2034,7 +2041,7 @@ R4LinearInterpolation</h2>
 <code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -2042,7 +2049,7 @@ R4LinearInterpolation</h2>
 <code>argument</code> Argument used to query the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -2050,7 +2057,7 @@ R4LinearInterpolation</h2>
 <code>ordinate</code> R4 defining the ordinate values of the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: R4 </li>
+<li><u>Type</u>: R4 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
@@ -2061,7 +2068,7 @@ R5ConstantParameter</h2>
 <code>value</code> 🇵 The constant value of the parameter</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: R5 </li>
+<li><u>Type</u>: R5 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ConstantParameter.html">link</a></p>
@@ -2072,7 +2079,7 @@ R5LinearInterpolation</h2>
 <code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -2080,7 +2087,7 @@ R5LinearInterpolation</h2>
 <code>argument</code> Argument used to query the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -2088,12 +2095,12 @@ R5LinearInterpolation</h2>
 <code>ordinate</code> R5 defining the ordinate values of the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: R5 </li>
+<li><u>Type</u>: R5 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
-<h2><a class="anchor" id="rateindependentplasticflowconstraint"></a>
-RateIndependentPlasticFlowConstraint</h2>
+<h2><a class="anchor" id="rateindependentplasticflowconstranumber"></a>
+RateIndependentPlasticFlowConstranumber</h2>
 <p>Solve the consistent plasticity yield envelope by solving the equivalent complementarity condition </p><p class="formulaDsp">
 \[ r = \dot{\gamma} - f^p - \sqrt{{\dot{\gamma}}^2 + {f^p}^2} \]
 </p>
@@ -2102,7 +2109,7 @@ RateIndependentPlasticFlowConstraint</h2>
 <code>flow_rate</code> 🇮 Flow rate</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/gamma_rate </li>
 </ul>
 </details>
@@ -2111,7 +2118,7 @@ RateIndependentPlasticFlowConstraint</h2>
 <code>yield_function</code> 🇮 Yield function</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/fp </li>
 </ul>
 </details>
@@ -2132,7 +2139,7 @@ ResolvedShear</h2>
 <code>orientation</code> 🇮 The name of the orientation matrix</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/orientation_matrix </li>
 </ul>
 </details>
@@ -2141,7 +2148,7 @@ ResolvedShear</h2>
 <code>resolved_shears</code> 🇴 The name of the resolved shears</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/resolved_shears </li>
 </ul>
 </details>
@@ -2150,7 +2157,7 @@ ResolvedShear</h2>
 <code>stress</code> 🇮 The name of the Cauchy stress tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/cauchy_stress </li>
 </ul>
 </details>
@@ -2162,7 +2169,7 @@ RotConstantParameter</h2>
 <code>value</code> 🇵 The constant value of the parameter</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Rot </li>
+<li><u>Type</u>: Rot 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ConstantParameter.html">link</a></p>
@@ -2173,7 +2180,7 @@ RotLinearInterpolation</h2>
 <code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -2181,7 +2188,7 @@ RotLinearInterpolation</h2>
 <code>argument</code> Argument used to query the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -2189,7 +2196,7 @@ RotLinearInterpolation</h2>
 <code>ordinate</code> Rot defining the ordinate values of the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Rot </li>
+<li><u>Type</u>: Rot 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
@@ -2200,7 +2207,7 @@ RotationMatrix</h2>
 <code>from</code> 🇮 Rot to convert</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -2208,7 +2215,7 @@ RotationMatrix</h2>
 <code>to</code> 🇴 R2 to store the resulting rotation matrix</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1RotationMatrix.html">link</a></p>
@@ -2219,7 +2226,7 @@ SFFR4ConstantParameter</h2>
 <code>value</code> 🇵 The constant value of the parameter</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: SFFR4 </li>
+<li><u>Type</u>: SFFR4 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ConstantParameter.html">link</a></p>
@@ -2230,7 +2237,7 @@ SFFR4LinearInterpolation</h2>
 <code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -2238,7 +2245,7 @@ SFFR4LinearInterpolation</h2>
 <code>argument</code> Argument used to query the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -2246,7 +2253,7 @@ SFFR4LinearInterpolation</h2>
 <code>ordinate</code> SFFR4 defining the ordinate values of the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: SFFR4 </li>
+<li><u>Type</u>: SFFR4 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
@@ -2257,7 +2264,7 @@ SFR3ConstantParameter</h2>
 <code>value</code> 🇵 The constant value of the parameter</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: SFR3 </li>
+<li><u>Type</u>: SFR3 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ConstantParameter.html">link</a></p>
@@ -2268,7 +2275,7 @@ SFR3LinearInterpolation</h2>
 <code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -2276,7 +2283,7 @@ SFR3LinearInterpolation</h2>
 <code>argument</code> Argument used to query the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -2284,7 +2291,7 @@ SFR3LinearInterpolation</h2>
 <code>ordinate</code> SFR3 defining the ordinate values of the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: SFR3 </li>
+<li><u>Type</u>: SFR3 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
@@ -2304,7 +2311,7 @@ SR2BackwardEulerTimeIntegration</h2>
 <code>automatic_scaling_miter</code> Maximum number of automatic scaling iterations. No error is produced upon reaching the maximum number of scaling iterations, and the scaling matrices obtained at the last iteration are used to scale the nonlinear system.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: unsigned int</li>
+<li><u>Type</u>: unsigned number</li>
 <li><u>Default</u>: 20 </li>
 </ul>
 </details>
@@ -2313,7 +2320,7 @@ SR2BackwardEulerTimeIntegration</h2>
 <code>automatic_scaling_tol</code> Tolerance used in iteratively updating the scaling matrices.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 0.01 </li>
 </ul>
 </details>
@@ -2322,7 +2329,7 @@ SR2BackwardEulerTimeIntegration</h2>
 <code>time</code> 🇮 Time</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: t </li>
 </ul>
 </details>
@@ -2331,7 +2338,7 @@ SR2BackwardEulerTimeIntegration</h2>
 <code>variable</code> 🇴 Variable being integrated</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -2339,7 +2346,7 @@ SR2BackwardEulerTimeIntegration</h2>
 <code>variable_rate</code> 🇮 Variable rate</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1BackwardEulerTimeIntegration.html">link</a></p>
@@ -2350,7 +2357,7 @@ SR2ConstantParameter</h2>
 <code>value</code> 🇵 The constant value of the parameter</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: SR2 </li>
+<li><u>Type</u>: SR2 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ConstantParameter.html">link</a></p>
@@ -2361,7 +2368,7 @@ SR2ForceRate</h2>
 <code>force</code> 🇴 The force variable to take time derivative with</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -2369,7 +2376,7 @@ SR2ForceRate</h2>
 <code>time</code> 🇮 Time</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: t </li>
 </ul>
 </details>
@@ -2381,7 +2388,7 @@ SR2ForwardEulerTimeIntegration</h2>
 <code>time</code> 🇮 Time</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: t </li>
 </ul>
 </details>
@@ -2390,7 +2397,7 @@ SR2ForwardEulerTimeIntegration</h2>
 <code>variable</code> 🇴 Variable being integrated</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ForwardEulerTimeIntegration.html">link</a></p>
@@ -2401,7 +2408,7 @@ SR2Invariant</h2>
 <code>invariant</code> 🇴 Invariant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -2417,7 +2424,7 @@ SR2Invariant</h2>
 <code>tensor</code> 🇮 SR2 which is used to calculate the invariant of</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1SR2Invariant.html">link</a></p>
@@ -2428,7 +2435,7 @@ SR2LinearCombination</h2>
 <code>coefficients</code> 🇵 Weights associated with each variable</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;Scalar&gt;</li>
+<li><u>Type</u>: list of Scalar 🔗</li>
 <li><u>Default</u>: 1 </li>
 </ul>
 </details>
@@ -2437,7 +2444,7 @@ SR2LinearCombination</h2>
 <code>from_var</code> 🇮 SR2 tensors to be summed</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;VariableName&gt; </li>
+<li><u>Type</u>: list of variable name </li>
 </ul>
 </details>
 <details >
@@ -2445,7 +2452,7 @@ SR2LinearCombination</h2>
 <code>to_var</code> 🇴 The sum</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearCombination.html">link</a></p>
@@ -2456,7 +2463,7 @@ SR2LinearInterpolation</h2>
 <code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -2464,7 +2471,7 @@ SR2LinearInterpolation</h2>
 <code>argument</code> Argument used to query the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -2472,7 +2479,7 @@ SR2LinearInterpolation</h2>
 <code>ordinate</code> SR2 defining the ordinate values of the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: SR2 </li>
+<li><u>Type</u>: SR2 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
@@ -2483,7 +2490,7 @@ SR2StateRate</h2>
 <code>state</code> 🇮 The state variable to take time derivative with</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -2491,7 +2498,7 @@ SR2StateRate</h2>
 <code>time</code> 🇮 Time</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: t </li>
 </ul>
 </details>
@@ -2503,7 +2510,7 @@ SSFR5ConstantParameter</h2>
 <code>value</code> 🇵 The constant value of the parameter</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: SSFR5 </li>
+<li><u>Type</u>: SSFR5 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ConstantParameter.html">link</a></p>
@@ -2514,7 +2521,7 @@ SSFR5LinearInterpolation</h2>
 <code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -2522,7 +2529,7 @@ SSFR5LinearInterpolation</h2>
 <code>argument</code> Argument used to query the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -2530,7 +2537,7 @@ SSFR5LinearInterpolation</h2>
 <code>ordinate</code> SSFR5 defining the ordinate values of the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: SSFR5 </li>
+<li><u>Type</u>: SSFR5 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
@@ -2541,7 +2548,7 @@ SSR4ConstantParameter</h2>
 <code>value</code> 🇵 The constant value of the parameter</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: SSR4 </li>
+<li><u>Type</u>: SSR4 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ConstantParameter.html">link</a></p>
@@ -2552,7 +2559,7 @@ SSR4LinearInterpolation</h2>
 <code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -2560,7 +2567,7 @@ SSR4LinearInterpolation</h2>
 <code>argument</code> Argument used to query the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -2568,7 +2575,7 @@ SSR4LinearInterpolation</h2>
 <code>ordinate</code> SSR4 defining the ordinate values of the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: SSR4 </li>
+<li><u>Type</u>: SSR4 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
@@ -2579,7 +2586,7 @@ SWR4ConstantParameter</h2>
 <code>value</code> 🇵 The constant value of the parameter</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: SWR4 </li>
+<li><u>Type</u>: SWR4 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ConstantParameter.html">link</a></p>
@@ -2590,7 +2597,7 @@ SWR4LinearInterpolation</h2>
 <code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -2598,7 +2605,7 @@ SWR4LinearInterpolation</h2>
 <code>argument</code> Argument used to query the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -2606,7 +2613,7 @@ SWR4LinearInterpolation</h2>
 <code>ordinate</code> SWR4 defining the ordinate values of the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: SWR4 </li>
+<li><u>Type</u>: SWR4 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
@@ -2626,7 +2633,7 @@ ScalarBackwardEulerTimeIntegration</h2>
 <code>automatic_scaling_miter</code> Maximum number of automatic scaling iterations. No error is produced upon reaching the maximum number of scaling iterations, and the scaling matrices obtained at the last iteration are used to scale the nonlinear system.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: unsigned int</li>
+<li><u>Type</u>: unsigned number</li>
 <li><u>Default</u>: 20 </li>
 </ul>
 </details>
@@ -2635,7 +2642,7 @@ ScalarBackwardEulerTimeIntegration</h2>
 <code>automatic_scaling_tol</code> Tolerance used in iteratively updating the scaling matrices.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 0.01 </li>
 </ul>
 </details>
@@ -2644,7 +2651,7 @@ ScalarBackwardEulerTimeIntegration</h2>
 <code>time</code> 🇮 Time</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: t </li>
 </ul>
 </details>
@@ -2653,7 +2660,7 @@ ScalarBackwardEulerTimeIntegration</h2>
 <code>variable</code> 🇴 Variable being integrated</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -2661,7 +2668,7 @@ ScalarBackwardEulerTimeIntegration</h2>
 <code>variable_rate</code> 🇮 Variable rate</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1BackwardEulerTimeIntegration.html">link</a></p>
@@ -2672,7 +2679,7 @@ ScalarConstantParameter</h2>
 <code>value</code> 🇵 The constant value of the parameter</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ConstantParameter.html">link</a></p>
@@ -2683,7 +2690,7 @@ ScalarForceRate</h2>
 <code>force</code> 🇴 The force variable to take time derivative with</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -2691,7 +2698,7 @@ ScalarForceRate</h2>
 <code>time</code> 🇮 Time</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: t </li>
 </ul>
 </details>
@@ -2703,7 +2710,7 @@ ScalarForwardEulerTimeIntegration</h2>
 <code>time</code> 🇮 Time</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: t </li>
 </ul>
 </details>
@@ -2712,7 +2719,7 @@ ScalarForwardEulerTimeIntegration</h2>
 <code>variable</code> 🇴 Variable being integrated</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ForwardEulerTimeIntegration.html">link</a></p>
@@ -2723,7 +2730,7 @@ ScalarLinearCombination</h2>
 <code>coefficients</code> 🇵 Weights associated with each variable</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;Scalar&gt;</li>
+<li><u>Type</u>: list of Scalar 🔗</li>
 <li><u>Default</u>: 1 </li>
 </ul>
 </details>
@@ -2732,7 +2739,7 @@ ScalarLinearCombination</h2>
 <code>from_var</code> 🇮 Scalar tensors to be summed</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;VariableName&gt; </li>
+<li><u>Type</u>: list of variable name </li>
 </ul>
 </details>
 <details >
@@ -2740,7 +2747,7 @@ ScalarLinearCombination</h2>
 <code>to_var</code> 🇴 The sum</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearCombination.html">link</a></p>
@@ -2751,7 +2758,7 @@ ScalarLinearInterpolation</h2>
 <code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -2759,7 +2766,7 @@ ScalarLinearInterpolation</h2>
 <code>argument</code> Argument used to query the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -2767,7 +2774,7 @@ ScalarLinearInterpolation</h2>
 <code>ordinate</code> Scalar defining the ordinate values of the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
@@ -2778,7 +2785,7 @@ ScalarStateRate</h2>
 <code>state</code> 🇮 The state variable to take time derivative with</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -2786,7 +2793,7 @@ ScalarStateRate</h2>
 <code>time</code> 🇮 Time</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: t </li>
 </ul>
 </details>
@@ -2798,7 +2805,7 @@ SingleSlipStrengthMap</h2>
 <code>constant_strength</code> 🇵 The constant slip system strength</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -2815,7 +2822,7 @@ SingleSlipStrengthMap</h2>
 <code>slip_hardening</code> 🇮 The name of the evovling, scalar strength</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/slip_hardening </li>
 </ul>
 </details>
@@ -2824,7 +2831,7 @@ SingleSlipStrengthMap</h2>
 <code>slip_strengths</code> 🇴 Name of the slip system strengths</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/slip_strengths </li>
 </ul>
 </details>
@@ -2845,7 +2852,7 @@ SumSlipRates</h2>
 <code>slip_rates</code> 🇮 The name of individual slip rates</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/slip_rates </li>
 </ul>
 </details>
@@ -2854,7 +2861,7 @@ SumSlipRates</h2>
 <code>sum_slip_rates</code> 🇴 The outut name for the scalar sum of the slip rates</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/sum_slip_rates </li>
 </ul>
 </details>
@@ -2866,7 +2873,7 @@ ThermalEigenstrain</h2>
 <code>CTE</code> 🇵 Coefficient of thermal expansion</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -2874,7 +2881,7 @@ ThermalEigenstrain</h2>
 <code>eigenstrain</code> 🇴 Eigenstrain</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: forces/Eg </li>
 </ul>
 </details>
@@ -2883,7 +2890,7 @@ ThermalEigenstrain</h2>
 <code>reference_temperature</code> 🇧 Reference (stress-free) temperature</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -2891,7 +2898,7 @@ ThermalEigenstrain</h2>
 <code>temperature</code> 🇮 Temperature</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: forces/T </li>
 </ul>
 </details>
@@ -2903,7 +2910,7 @@ TotalStrain</h2>
 <code>elastic_strain</code> 🇮 Elastic strain</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/Ee </li>
 </ul>
 </details>
@@ -2912,7 +2919,7 @@ TotalStrain</h2>
 <code>plastic_strain</code> 🇮 Plastic strain</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/Ep </li>
 </ul>
 </details>
@@ -2930,7 +2937,7 @@ TotalStrain</h2>
 <code>total_strain</code> 🇴 Total strain</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/E </li>
 </ul>
 </details>
@@ -2951,7 +2958,7 @@ VecBackwardEulerTimeIntegration</h2>
 <code>automatic_scaling_miter</code> Maximum number of automatic scaling iterations. No error is produced upon reaching the maximum number of scaling iterations, and the scaling matrices obtained at the last iteration are used to scale the nonlinear system.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: unsigned int</li>
+<li><u>Type</u>: unsigned number</li>
 <li><u>Default</u>: 20 </li>
 </ul>
 </details>
@@ -2960,7 +2967,7 @@ VecBackwardEulerTimeIntegration</h2>
 <code>automatic_scaling_tol</code> Tolerance used in iteratively updating the scaling matrices.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 0.01 </li>
 </ul>
 </details>
@@ -2969,7 +2976,7 @@ VecBackwardEulerTimeIntegration</h2>
 <code>time</code> 🇮 Time</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: t </li>
 </ul>
 </details>
@@ -2978,7 +2985,7 @@ VecBackwardEulerTimeIntegration</h2>
 <code>variable</code> 🇴 Variable being integrated</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -2986,7 +2993,7 @@ VecBackwardEulerTimeIntegration</h2>
 <code>variable_rate</code> 🇮 Variable rate</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1BackwardEulerTimeIntegration.html">link</a></p>
@@ -2997,7 +3004,7 @@ VecConstantParameter</h2>
 <code>value</code> 🇵 The constant value of the parameter</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Vec </li>
+<li><u>Type</u>: Vec 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ConstantParameter.html">link</a></p>
@@ -3008,7 +3015,7 @@ VecLinearInterpolation</h2>
 <code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -3016,7 +3023,7 @@ VecLinearInterpolation</h2>
 <code>argument</code> Argument used to query the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -3024,7 +3031,7 @@ VecLinearInterpolation</h2>
 <code>ordinate</code> Vec defining the ordinate values of the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Vec </li>
+<li><u>Type</u>: Vec 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
@@ -3035,7 +3042,7 @@ VoceIsotropicHardening</h2>
 <code>equivalent_plastic_strain</code> 🇮 Equivalent plastic strain</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/ep </li>
 </ul>
 </details>
@@ -3044,7 +3051,7 @@ VoceIsotropicHardening</h2>
 <code>isotropic_hardening</code> 🇴 Isotropic hardening</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/k </li>
 </ul>
 </details>
@@ -3053,7 +3060,7 @@ VoceIsotropicHardening</h2>
 <code>saturated_hardening</code> 🇵 Saturated isotropic hardening</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -3061,7 +3068,7 @@ VoceIsotropicHardening</h2>
 <code>saturation_rate</code> 🇵 Hardening saturation rate</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1VoceIsotropicHardening.html">link</a></p>
@@ -3072,7 +3079,7 @@ VoceSingleSlipHardeningRule</h2>
 <code>initial_slope</code> 🇵 The initial rate of hardening</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -3080,7 +3087,7 @@ VoceSingleSlipHardeningRule</h2>
 <code>saturated_hardening</code> 🇵 The final, saturated value of the slip system strength</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -3088,7 +3095,7 @@ VoceSingleSlipHardeningRule</h2>
 <code>slip_hardening</code> 🇮 Name of current values of slip hardening</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/slip_hardening </li>
 </ul>
 </details>
@@ -3097,7 +3104,7 @@ VoceSingleSlipHardeningRule</h2>
 <code>slip_hardening_rate</code> 🇴 Name of tensor to output the slip system hardening rates into</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/slip_hardening_rate </li>
 </ul>
 </details>
@@ -3106,7 +3113,7 @@ VoceSingleSlipHardeningRule</h2>
 <code>sum_slip_rates</code> 🇮 Name of tensor containing the sum of the slip rates</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/sum_slip_rates </li>
 </ul>
 </details>
@@ -3118,7 +3125,7 @@ WR2ConstantParameter</h2>
 <code>value</code> 🇵 The constant value of the parameter</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: WR2 </li>
+<li><u>Type</u>: WR2 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ConstantParameter.html">link</a></p>
@@ -3129,7 +3136,7 @@ WR2ExplicitExponentialTimeIntegration</h2>
 <code>time</code> 🇮 Time</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: t </li>
 </ul>
 </details>
@@ -3138,7 +3145,7 @@ WR2ExplicitExponentialTimeIntegration</h2>
 <code>variable</code> 🇴 Variable being integrated</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1WR2ExplicitExponentialTimeIntegration.html">link</a></p>
@@ -3158,7 +3165,7 @@ WR2ImplicitExponentialTimeIntegration</h2>
 <code>automatic_scaling_miter</code> Maximum number of automatic scaling iterations. No error is produced upon reaching the maximum number of scaling iterations, and the scaling matrices obtained at the last iteration are used to scale the nonlinear system.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: unsigned int</li>
+<li><u>Type</u>: unsigned number</li>
 <li><u>Default</u>: 20 </li>
 </ul>
 </details>
@@ -3167,7 +3174,7 @@ WR2ImplicitExponentialTimeIntegration</h2>
 <code>automatic_scaling_tol</code> Tolerance used in iteratively updating the scaling matrices.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 0.01 </li>
 </ul>
 </details>
@@ -3176,7 +3183,7 @@ WR2ImplicitExponentialTimeIntegration</h2>
 <code>time</code> 🇮 Time</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: t </li>
 </ul>
 </details>
@@ -3185,7 +3192,7 @@ WR2ImplicitExponentialTimeIntegration</h2>
 <code>variable</code> 🇴 Variable being integrated</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1WR2ImplicitExponentialTimeIntegration.html">link</a></p>
@@ -3196,7 +3203,7 @@ WR2LinearInterpolation</h2>
 <code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -3204,7 +3211,7 @@ WR2LinearInterpolation</h2>
 <code>argument</code> Argument used to query the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -3212,7 +3219,7 @@ WR2LinearInterpolation</h2>
 <code>ordinate</code> WR2 defining the ordinate values of the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: WR2 </li>
+<li><u>Type</u>: WR2 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
@@ -3223,7 +3230,7 @@ WSR4ConstantParameter</h2>
 <code>value</code> 🇵 The constant value of the parameter</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: WSR4 </li>
+<li><u>Type</u>: WSR4 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ConstantParameter.html">link</a></p>
@@ -3234,7 +3241,7 @@ WSR4LinearInterpolation</h2>
 <code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -3242,7 +3249,7 @@ WSR4LinearInterpolation</h2>
 <code>argument</code> Argument used to query the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -3250,7 +3257,7 @@ WSR4LinearInterpolation</h2>
 <code>ordinate</code> WSR4 defining the ordinate values of the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: WSR4 </li>
+<li><u>Type</u>: WSR4 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
@@ -3261,7 +3268,7 @@ WWR4ConstantParameter</h2>
 <code>value</code> 🇵 The constant value of the parameter</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: WWR4 </li>
+<li><u>Type</u>: WWR4 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ConstantParameter.html">link</a></p>
@@ -3272,7 +3279,7 @@ WWR4LinearInterpolation</h2>
 <code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -3280,7 +3287,7 @@ WWR4LinearInterpolation</h2>
 <code>argument</code> Argument used to query the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -3288,7 +3295,7 @@ WWR4LinearInterpolation</h2>
 <code>ordinate</code> WWR4 defining the ordinate values of the interpolant</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: WWR4 </li>
+<li><u>Type</u>: WWR4 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
@@ -3299,7 +3306,7 @@ YieldFunction</h2>
 <code>effective_stress</code> 🇮 Effective stress</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/s </li>
 </ul>
 </details>
@@ -3308,7 +3315,7 @@ YieldFunction</h2>
 <code>isotropic_hardening</code> 🇮 Isotropic hardening</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName </li>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -3316,7 +3323,7 @@ YieldFunction</h2>
 <code>yield_function</code> 🇴 Yield function</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/fp </li>
 </ul>
 </details>
@@ -3325,7 +3332,7 @@ YieldFunction</h2>
 <code>yield_stress</code> 🇵 Yield stress</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1YieldFunction.html">link</a> </p>

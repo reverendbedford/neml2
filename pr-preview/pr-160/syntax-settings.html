@@ -119,6 +119,13 @@ $(function(){initNavTree('syntax-settings.html',''); initResizable(); });
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_content_2syntax_2settings"></a></p>
+<dl class="section note"><dt>Note</dt><dd>Clicking on the option with a triangle bullet ▸ next to it will expand/collapse its detailed information.</dd>
+<dd>
+Type name written in PascalCase typically refer to a NEML2 object type, oftentimes a primitive tensor type.</dd>
+<dd>
+The 🔗 symbol denotes that the option can <a class="el" href="input-file.html#cross-referencing">cross-reference</a> another object.</dd>
+<dd>
+You can always use <code>Ctrl</code>+<code>F</code> or <code>Cmd</code>+<code>F</code> to search the entire page.</dd></dl>
 <h1><a class="anchor" id="autotoc_md40"></a>
 Available objects and their input file syntax</h1>
 <p>Refer to <a class="el" href="system-settings.html">System Documentation</a> for detailed explanation about this system.</p>
@@ -156,7 +163,7 @@ Settings</h2>
 <code>interop_threads</code> Number threads used for inter-ops parallelism. If set to 0, defaults to number of CPU cores.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: unsigned int </li>
+<li><u>Type</u>: unsigned number </li>
 </ul>
 </details>
 <details >
@@ -164,7 +171,7 @@ Settings</h2>
 <code>intraop_threads</code> Number threads used for intra-ops parallelism. If set to 0, defaults to number of CPU cores.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: unsigned int </li>
+<li><u>Type</u>: unsigned number </li>
 </ul>
 </details>
 <details >
@@ -172,7 +179,7 @@ Settings</h2>
 <code>machine_precision</code> Machine precision used at various places to workaround singularities like division-by-zero.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 1e-15 </li>
 </ul>
 </details>
@@ -181,7 +188,7 @@ Settings</h2>
 <code>tighter_tolerance</code> A tighter tolerance used in various algorithms.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 1e-12 </li>
 </ul>
 </details>
@@ -190,7 +197,7 @@ Settings</h2>
 <code>tolerance</code> Tolerance used in various algorithms.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 1e-06 </li>
 </ul>
 </details>
