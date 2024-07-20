@@ -67,11 +67,12 @@ public:
   /// Create a wrapper representing the second derivative d2y/dx2
   Derivative d(const VariableBase & x1, const VariableBase & x2);
 
-  ///@{ Accessors for storage
+  /// @returns value storage
   const LabeledVector & value_storage() const;
+  /// @returns derivative storage
   const LabeledMatrix & derivative_storage() const;
+  /// @returns second derivative storage
   const LabeledTensor3D & second_derivative_storage() const;
-  /// @}
 
   /// Raw flattened variable value
   const Tensor & raw_value() const { return _raw_value; }

@@ -26,8 +26,8 @@
 
 namespace neml2
 {
-#define FULLPrimitiveTensor_REGISTER(T) register_NEML2_object_alias(Full##T, "Full" #T)
-FOR_ALL_PRIMITIVETENSOR(FULLPrimitiveTensor_REGISTER);
+#define FULLPRIMITIVETENSOR_REGISTER(T) register_NEML2_object_alias(Full##T, "Full" #T)
+FOR_ALL_PRIMITIVETENSOR(FULLPRIMITIVETENSOR_REGISTER);
 
 template <typename T>
 OptionSet
@@ -59,6 +59,6 @@ FullPrimitiveTensor<T>::FullPrimitiveTensor(const OptionSet & options)
 {
 }
 
-#define FULLPrimitiveTensor_INSTANTIATE_PrimitiveTensor(T) template class FullPrimitiveTensor<T>
-FOR_ALL_PRIMITIVETENSOR(FULLPrimitiveTensor_INSTANTIATE_PrimitiveTensor);
+#define FULLPRIMITIVETENSOR_INSTANTIATE_PRIMITIVETENSOR(T) template class FullPrimitiveTensor<T>
+FOR_ALL_PRIMITIVETENSOR(FULLPRIMITIVETENSOR_INSTANTIATE_PRIMITIVETENSOR);
 } // namespace neml2

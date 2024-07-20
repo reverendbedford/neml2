@@ -41,6 +41,6 @@ NonlinearParameter<T>::NonlinearParameter(const OptionSet & options)
 {
 }
 
-#define NONLINEARPARAMETER_INSTANTIATE_PrimitiveTensor(T) template class NonlinearParameter<T>
-FOR_ALL_PRIMITIVETENSOR(NONLINEARPARAMETER_INSTANTIATE_PrimitiveTensor);
+#define NONLINEARPARAMETER_INSTANTIATE_PRIMITIVETENSOR(T) template class NonlinearParameter<T>
+FOR_ALL_PRIMITIVETENSOR(NONLINEARPARAMETER_INSTANTIATE_PRIMITIVETENSOR);
 } // namespace neml2

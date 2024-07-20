@@ -49,6 +49,6 @@ public:
   LogspacePrimitiveTensor(const OptionSet & options);
 };
 
-#define LOGSPACEPrimitiveTensor_TYPEDEF(T) typedef LogspacePrimitiveTensor<T> Logspace##T
-FOR_ALL_PRIMITIVETENSOR(LOGSPACEPrimitiveTensor_TYPEDEF);
+#define LOGSPACEPRIMITIVETENSOR_TYPEDEF(T) typedef LogspacePrimitiveTensor<T> Logspace##T
+FOR_ALL_PRIMITIVETENSOR(LOGSPACEPRIMITIVETENSOR_TYPEDEF);
 } // namespace neml2

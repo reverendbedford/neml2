@@ -26,8 +26,8 @@
 
 namespace neml2
 {
-#define LOGSPACEPrimitiveTensor_REGISTER(T) register_NEML2_object_alias(Logspace##T, "Logspace" #T)
-FOR_ALL_PRIMITIVETENSOR(LOGSPACEPrimitiveTensor_REGISTER);
+#define LOGSPACEPRIMITIVETENSOR_REGISTER(T) register_NEML2_object_alias(Logspace##T, "Logspace" #T)
+FOR_ALL_PRIMITIVETENSOR(LOGSPACEPRIMITIVETENSOR_REGISTER);
 
 template <typename T>
 OptionSet
@@ -75,7 +75,7 @@ LogspacePrimitiveTensor<T>::LogspacePrimitiveTensor(const OptionSet & options)
 {
 }
 
-#define LOGSPACEPrimitiveTensor_INSTANTIATE_PrimitiveTensor(T)                                     \
+#define LOGSPACEPRIMITIVETENSOR_INSTANTIATE_PRIMITIVETENSOR(T)                                     \
   template class LogspacePrimitiveTensor<T>
-FOR_ALL_PRIMITIVETENSOR(LOGSPACEPrimitiveTensor_INSTANTIATE_PrimitiveTensor);
+FOR_ALL_PRIMITIVETENSOR(LOGSPACEPRIMITIVETENSOR_INSTANTIATE_PRIMITIVETENSOR);
 } // namespace neml2

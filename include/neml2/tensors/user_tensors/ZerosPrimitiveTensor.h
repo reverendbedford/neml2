@@ -49,6 +49,6 @@ public:
   ZerosPrimitiveTensor(const OptionSet & options);
 };
 
-#define ZEROSPrimitiveTensor_TYPEDEF(T) typedef ZerosPrimitiveTensor<T> Zeros##T
-FOR_ALL_PRIMITIVETENSOR(ZEROSPrimitiveTensor_TYPEDEF);
+#define ZEROSPRIMITIVETENSOR_TYPEDEF(T) typedef ZerosPrimitiveTensor<T> Zeros##T
+FOR_ALL_PRIMITIVETENSOR(ZEROSPRIMITIVETENSOR_TYPEDEF);
 } // namespace neml2

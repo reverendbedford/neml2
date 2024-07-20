@@ -49,6 +49,6 @@ public:
   LinspacePrimitiveTensor(const OptionSet & options);
 };
 
-#define LINSPACEPrimitiveTensor_TYPEDEF(T) typedef LinspacePrimitiveTensor<T> Linspace##T
-FOR_ALL_PRIMITIVETENSOR(LINSPACEPrimitiveTensor_TYPEDEF);
+#define LINSPACEPRIMITIVETENSOR_TYPEDEF(T) typedef LinspacePrimitiveTensor<T> Linspace##T
+FOR_ALL_PRIMITIVETENSOR(LINSPACEPRIMITIVETENSOR_TYPEDEF);
 } // namespace neml2

@@ -49,6 +49,6 @@ public:
   UserPrimitiveTensor(const OptionSet & options);
 };
 
-#define USERPrimitiveTensor_TYPEDEF(T) typedef UserPrimitiveTensor<T> User##T
-FOR_ALL_PRIMITIVETENSOR(USERPrimitiveTensor_TYPEDEF);
+#define USERPRIMITIVETENSOR_TYPEDEF(T) typedef UserPrimitiveTensor<T> User##T
+FOR_ALL_PRIMITIVETENSOR(USERPRIMITIVETENSOR_TYPEDEF);
 } // namespace neml2

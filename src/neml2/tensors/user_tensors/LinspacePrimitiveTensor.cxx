@@ -26,8 +26,8 @@
 
 namespace neml2
 {
-#define LINSPACEPrimitiveTensor_REGISTER(T) register_NEML2_object_alias(Linspace##T, "Linspace" #T)
-FOR_ALL_PRIMITIVETENSOR(LINSPACEPrimitiveTensor_REGISTER);
+#define LINSPACEPRIMITIVETENSOR_REGISTER(T) register_NEML2_object_alias(Linspace##T, "Linspace" #T)
+FOR_ALL_PRIMITIVETENSOR(LINSPACEPRIMITIVETENSOR_REGISTER);
 
 template <typename T>
 OptionSet
@@ -71,7 +71,7 @@ LinspacePrimitiveTensor<T>::LinspacePrimitiveTensor(const OptionSet & options)
 {
 }
 
-#define LINSPACEPrimitiveTensor_INSTANTIATE_PrimitiveTensor(T)                                     \
+#define LINSPACEPRIMITIVETENSOR_INSTANTIATE_PRIMITIVETENSOR(T)                                     \
   template class LinspacePrimitiveTensor<T>
-FOR_ALL_PRIMITIVETENSOR(LINSPACEPrimitiveTensor_INSTANTIATE_PrimitiveTensor);
+FOR_ALL_PRIMITIVETENSOR(LINSPACEPRIMITIVETENSOR_INSTANTIATE_PRIMITIVETENSOR);
 } // namespace neml2

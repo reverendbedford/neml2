@@ -49,6 +49,6 @@ public:
   EmptyPrimitiveTensor(const OptionSet & options);
 };
 
-#define EMPTYPrimitiveTensor_TYPEDEF(T) typedef EmptyPrimitiveTensor<T> Empty##T
-FOR_ALL_PRIMITIVETENSOR(EMPTYPrimitiveTensor_TYPEDEF);
+#define EMPTYPRIMITIVETENSOR_TYPEDEF(T) typedef EmptyPrimitiveTensor<T> Empty##T
+FOR_ALL_PRIMITIVETENSOR(EMPTYPRIMITIVETENSOR_TYPEDEF);
 } // namespace neml2

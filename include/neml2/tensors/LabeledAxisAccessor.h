@@ -77,10 +77,15 @@ public:
       validate_item_name(name);
   }
 
-  /// Begin and end iterators to the underlying data.
-  ///@{
   using iterator = c10::SmallVector<std::string>::iterator;
   using const_iterator = c10::SmallVector<std::string>::const_iterator;
+
+  /**
+   * @name Iterators
+   *
+   * Begin and end iterators for the underlying data.
+   */
+  ///@{
   iterator begin() { return iterator(_item_names.begin()); }
   iterator end() { return iterator(_item_names.end()); }
   const_iterator begin() const { return const_iterator(_item_names.begin()); }

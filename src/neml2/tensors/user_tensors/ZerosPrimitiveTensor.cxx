@@ -26,8 +26,8 @@
 
 namespace neml2
 {
-#define ZEROSPrimitiveTensor_REGISTER(T) register_NEML2_object_alias(Zeros##T, "Zeros" #T)
-FOR_ALL_PRIMITIVETENSOR(ZEROSPrimitiveTensor_REGISTER);
+#define ZEROSPRIMITIVETENSOR_REGISTER(T) register_NEML2_object_alias(Zeros##T, "Zeros" #T)
+FOR_ALL_PRIMITIVETENSOR(ZEROSPRIMITIVETENSOR_REGISTER);
 
 template <typename T>
 OptionSet
@@ -53,6 +53,6 @@ ZerosPrimitiveTensor<T>::ZerosPrimitiveTensor(const OptionSet & options)
 {
 }
 
-#define ZEROSPrimitiveTensor_INSTANTIATE_PrimitiveTensor(T) template class ZerosPrimitiveTensor<T>
-FOR_ALL_PRIMITIVETENSOR(ZEROSPrimitiveTensor_INSTANTIATE_PrimitiveTensor);
+#define ZEROSPRIMITIVETENSOR_INSTANTIATE_PRIMITIVETENSOR(T) template class ZerosPrimitiveTensor<T>
+FOR_ALL_PRIMITIVETENSOR(ZEROSPRIMITIVETENSOR_INSTANTIATE_PRIMITIVETENSOR);
 } // namespace neml2

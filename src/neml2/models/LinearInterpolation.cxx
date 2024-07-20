@@ -83,6 +83,6 @@ LinearInterpolation<T>::set_value(bool out, bool dout_din, bool d2out_din2)
   }
 }
 
-#define LINEARINTERPOLATION_INSTANTIATE_PrimitiveTensor(T) template class LinearInterpolation<T>
-FOR_ALL_PRIMITIVETENSOR(LINEARINTERPOLATION_INSTANTIATE_PrimitiveTensor);
+#define LINEARINTERPOLATION_INSTANTIATE_PRIMITIVETENSOR(T) template class LinearInterpolation<T>
+FOR_ALL_PRIMITIVETENSOR(LINEARINTERPOLATION_INSTANTIATE_PRIMITIVETENSOR);
 } // namespace neml2

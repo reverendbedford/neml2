@@ -58,8 +58,8 @@ public:
   /// Assignment operator
   void operator=(const Derived & other);
 
-  /// Implicit conversion
   ///@{
+  /// Implicit conversion
   operator Tensor() const;
   operator torch::Tensor() const;
   ///@}
@@ -76,13 +76,13 @@ public:
         const std::array<const LabeledAxis *, D> & axes,
         const torch::TensorOptions & options = default_tensor_options());
 
-  /// Get the underlying tensor
   ///@{
+  /// Get the underlying tensor
   const Tensor & tensor() const { return _tensor; }
   Tensor & tensor() { return _tensor; }
   /// @}
 
-  /// Meta operations
+  /// @name Meta operations
   // These methods mirror TensorBase
   ///@{
   /// Clone this LabeledTensor
@@ -105,7 +105,7 @@ public:
   Derived operator-() const;
   ///@}
 
-  /// Tensor information
+  /// @name Tensor information
   // These methods mirror TensorBase
   ///@{
   /// Tensor options
@@ -138,7 +138,7 @@ public:
   Size base_storage() const;
   ///@}
 
-  /// Getter and setter
+  /// @name Getter and setter
   // These methods mirror TensorBase
   ///@{
   /// Get a tensor by slicing on the batch dimensions

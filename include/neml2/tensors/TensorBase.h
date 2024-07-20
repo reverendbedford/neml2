@@ -97,7 +97,7 @@ public:
                                         Size batch_dim = -1,
                                         Real base = 10);
 
-  /// Meta operations
+  /// @name Meta operations
   // These methods should be mirrored in LabeledTensor
   ///@{
   /// Clone (take ownership)
@@ -120,7 +120,7 @@ public:
   Derived operator-() const;
   ///@}
 
-  /// Tensor information
+  /// @name Tensor information
   // These methods should be mirrored in LabeledTensor
   ///@{
   /// Tensor options
@@ -153,7 +153,7 @@ public:
   Size base_storage() const;
   ///@}
 
-  /// Getter and setter
+  /// @name Getter and setter
   // These methods should be mirrored in LabeledTensor
   ///@{
   /// Regular tensor indexing
@@ -169,7 +169,7 @@ public:
   void base_index_put_(indexing::TensorIndicesRef indices, const torch::Tensor & other);
   ///@}
 
-  /// Modifiers
+  /// @name Modifiers
   ///@{
   /// Return a new view of the tensor with values broadcast along the batch dimensions.
   Derived batch_expand(TensorShapeRef batch_size) const;

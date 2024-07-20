@@ -49,6 +49,6 @@ public:
   FullPrimitiveTensor(const OptionSet & options);
 };
 
-#define FULLPrimitiveTensor_TYPEDEF(T) typedef FullPrimitiveTensor<T> Full##T
-FOR_ALL_PRIMITIVETENSOR(FULLPrimitiveTensor_TYPEDEF);
+#define FULLPRIMITIVETENSOR_TYPEDEF(T) typedef FullPrimitiveTensor<T> Full##T
+FOR_ALL_PRIMITIVETENSOR(FULLPRIMITIVETENSOR_TYPEDEF);
 } // namespace neml2

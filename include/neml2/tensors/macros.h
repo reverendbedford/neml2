@@ -24,7 +24,7 @@
 
 #pragma once
 
-/// Macros for writing generic code blocks for all tensor types
+/// @name Macros for all tensor types with semicolon as the separator
 ///@{
 #define FOR_ALL_TENSORBASE(f)                                                                      \
   FOR_ALL_PRIMITIVETENSOR(f);                                                                      \
@@ -56,7 +56,7 @@
 #define FOR_ALL_R2BASE(f) f(R2)
 ///@}
 
-/// Similar macros but end with comma instead of semicolon
+/// @name Macros for all tensor types with comma as the separator
 ///@{
 #define FOR_ALL_TENSORBASE_COMMA(f) FOR_ALL_PRIMITIVETENSOR_COMMA(f), f(Tensor)
 

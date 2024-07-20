@@ -64,11 +64,11 @@ public:
    */
   friend std::stringstream & operator>>(std::stringstream & in, EnumSelection &);
 
-  /// Test for (in)equality
-  ///@{
+  /// Test for inequality
   bool operator==(const EnumSelection & other) const;
+
+  /// Test for inequality
   bool operator!=(const EnumSelection & other) const;
-  ///@}
 
   /// Poor man's reflection implementation
   operator std::string() const { return _selection; }

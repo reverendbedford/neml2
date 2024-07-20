@@ -26,8 +26,8 @@
 
 namespace neml2
 {
-#define ONESPrimitiveTensor_REGISTER(T) register_NEML2_object_alias(Ones##T, "Ones" #T)
-FOR_ALL_PRIMITIVETENSOR(ONESPrimitiveTensor_REGISTER);
+#define ONESPRIMITIVETENSOR_REGISTER(T) register_NEML2_object_alias(Ones##T, "Ones" #T)
+FOR_ALL_PRIMITIVETENSOR(ONESPRIMITIVETENSOR_REGISTER);
 
 template <typename T>
 OptionSet
@@ -53,6 +53,6 @@ OnesPrimitiveTensor<T>::OnesPrimitiveTensor(const OptionSet & options)
 {
 }
 
-#define ONESPrimitiveTensor_INSTANTIATE_PrimitiveTensor(T) template class OnesPrimitiveTensor<T>
-FOR_ALL_PRIMITIVETENSOR(ONESPrimitiveTensor_INSTANTIATE_PrimitiveTensor);
+#define ONESPRIMITIVETENSOR_INSTANTIATE_PRIMITIVETENSOR(T) template class OnesPrimitiveTensor<T>
+FOR_ALL_PRIMITIVETENSOR(ONESPRIMITIVETENSOR_INSTANTIATE_PRIMITIVETENSOR);
 } // namespace neml2

@@ -43,6 +43,8 @@ using TensorIndicesRef = torch::ArrayRef<TensorIndex>;
 }
 
 /**
+ * @name RAII style default tensor options
+ *
  * The factory methods like `torch::arange`, `torch::ones`, `torch::zeros`, `torch::rand` etc.
  * accept a common argument to configure the properties of the tensor being created. We predefine
  * a default tensor configuration in NEML2. This default configuration is consistently used
@@ -64,15 +66,14 @@ torch::Dtype & default_integer_dtype();
 torch::Device & default_device();
 ///@}
 
+/// @name RAII style default tolerances
+// TODO: make this depend on the current dtype
+///@{
 /// Machine precision
-// TODO: make this depend on the current dtype
 Real & machine_precision();
-
 /// The tolerance used in various algorithms
-// TODO: make this depend on the current dtype
 Real & tolerance();
-
 /// A tighter tolerance used in various algorithms
-// TODO: make this depend on the current dtype
 Real & tighter_tolerance();
+///@}
 } // namespace neml2

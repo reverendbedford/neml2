@@ -49,6 +49,6 @@ public:
   OnesPrimitiveTensor(const OptionSet & options);
 };
 
-#define ONESPrimitiveTensor_TYPEDEF(T) typedef OnesPrimitiveTensor<T> Ones##T
-FOR_ALL_PRIMITIVETENSOR(ONESPrimitiveTensor_TYPEDEF);
+#define ONESPRIMITIVETENSOR_TYPEDEF(T) typedef OnesPrimitiveTensor<T> Ones##T
+FOR_ALL_PRIMITIVETENSOR(ONESPRIMITIVETENSOR_TYPEDEF);
 } // namespace neml2

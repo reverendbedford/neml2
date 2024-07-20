@@ -69,6 +69,6 @@ CopyVariable<T>::set_value(bool out, bool dout_din, bool d2out_din2)
   }
 }
 
-#define COPYVARIABLE_INSTANTIATE_PrimitiveTensor(T) template class CopyVariable<T>
-FOR_ALL_PRIMITIVETENSOR(COPYVARIABLE_INSTANTIATE_PrimitiveTensor);
+#define COPYVARIABLE_INSTANTIATE_PRIMITIVETENSOR(T) template class CopyVariable<T>
+FOR_ALL_PRIMITIVETENSOR(COPYVARIABLE_INSTANTIATE_PRIMITIVETENSOR);
 } // namespace neml2

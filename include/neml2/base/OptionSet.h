@@ -56,17 +56,25 @@ enum class FType : int8_t
   BUFFER
 };
 
-///@{
 /**
+ * @name Helper functions for printing
+ *
  * Helper functions for printing scalar, vector, vector of vector. Called from
  * OptionSet::Option<T>::print(...).
  */
+///@{
 template <typename P>
 void print_helper(std::ostream & os, const P *);
 template <typename P>
 void print_helper(std::ostream & os, const std::vector<P> *);
 template <typename P>
 void print_helper(std::ostream & os, const std::vector<std::vector<P>> *);
+/// Specialization so that we don't print out unprintable characters
+template <>
+void print_helper(std::ostream & os, const char *);
+/// Specialization so that we don't print out unprintable characters
+template <>
+void print_helper(std::ostream & os, const unsigned char *);
 ///@}
 
 bool options_compatible(const OptionSet & opts, const OptionSet & additional_opts);
@@ -152,11 +160,11 @@ public:
   public:
     virtual ~OptionBase() = default;
 
-    /// Test for option (in)equality
-    ///@{
+    /// Test for option equality
     virtual bool operator==(const OptionBase & other) const = 0;
+
+    /// Test for option inequality
     virtual bool operator!=(const OptionBase & other) const = 0;
-    ///@}
 
     /// A readonly reference to the option's name
     const std::string & name() const { return _metadata.name; }
@@ -321,17 +329,18 @@ public:
   template <typename T, FType f = FType::NONE>
   T & set(const std::string &);
 
-  /// Convenient methods to create/set an option and mark it with the corresponding neml2::FType
-  ///@{
+  /// Convenient method to set an option and mark it as neml2::FType::INPUT
   template <typename T>
   T & set_input(const std::string &);
+  /// Convenient method to set an option and mark it as neml2::FType::OUTPUT
   template <typename T>
   T & set_output(const std::string &);
+  /// Convenient method to set an option and mark it as neml2::FType::PARAMETER
   template <typename T>
   T & set_parameter(const std::string &);
+  /// Convenient method to set an option and mark it as neml2::FType::BUFFER
   template <typename T>
   T & set_buffer(const std::string &);
-  ///@}
 
   OptionBase & set(const std::string &);
 
@@ -548,7 +557,6 @@ template <>
 inline void
 print_helper(std::ostream & os, const char * option)
 {
-  // Specialization so that we don't print out unprintable characters
   os << static_cast<int>(*option);
 }
 
@@ -556,7 +564,6 @@ template <>
 inline void
 print_helper(std::ostream & os, const unsigned char * option)
 {
-  // Specialization so that we don't print out unprintable characters
   os << static_cast<int>(*option);
 }
 
