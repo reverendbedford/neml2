@@ -302,6 +302,13 @@ void
 Model::set_input(const LabeledVector & in)
 {
   neml_assert_batch_broadcastable(in, input_storage());
+  neml_assert(in.base_storage() == input_storage().base_storage(),
+              "The provided input has base storage size ",
+              in.base_storage(),
+              ", but the model's input storage expects a base storage size of ",
+              input_storage().base_storage(),
+              ". Make sure the model has been initialized using `reinit` and that the provided "
+              "input has the correct size.");
   neml_assert_dbg(in.axis(0) == input_axis(),
                   "Incompatible input axis. The model has input axis: \n",
                   input_axis(),
