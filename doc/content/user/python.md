@@ -12,11 +12,11 @@ model = neml2.load_model("input.i", "model")
 
 model.reinit(3)
 
-x = LabeledVector.empty(3, [model.input_axis()])
+x = neml2.LabeledVector.empty(3, [model.input_axis()])
 
-x.batch[0] = SR2.fill([0.1, 0.2, 0.3, -0.1, -0.1, 0.2])
-x.batch[1] = SR2.fill([0.2, 0.2, 0.1, -0.1, -0.2, -0.5])
-x.batch[2] = SR2.fill([0.3, -0.2, 0.05, -0.1, -0.3, 0.1])
+x.batch[0] = neml2.SR2.fill([0.1, 0.2, 0.3, -0.1, -0.1, 0.2])
+x.batch[1] = neml2.SR2.fill([0.2, 0.2, 0.1, -0.1, -0.2, -0.5])
+x.batch[2] = neml2.SR2.fill([0.3, -0.2, 0.05, -0.1, -0.3, 0.1])
 
 y = model.value(x)
 ```

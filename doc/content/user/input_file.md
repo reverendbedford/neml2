@@ -41,12 +41,15 @@ All NEML2 capabilities that can be defined through the input file fall under a n
 ```
 defines a tensor named "E" under the `[Tensors]` block and a model named "elasticity" under the `[Models]` block. Notice that an object (in this case the tensor named "E" under the `[Tensors]` section) can be referenced by an input option (in this case "youngs_modulus") by its name, and this mechanism is referred to as [cross-referencing](@ref cross-referencing). The [Syntax Documentation](@ref syntax-tensors) provides a complete list of objects that can be defined by an input file. The [System Documentation](@ref system-tensors) provides detailed explanation of each system.
 
+\note
+The ordering of objects, i.e., the sequence objects appear in the input file, does not change their behavior.
+
 ## Special syntax
 
 **Boolean**: Oftentimes the behavior of the object is preferrably controlled by a boolean flag. However, since the HIT format only allows (array of) integer, floating-point number, and string, a special syntax shall be reserved for boolean values. In NEML2 input files, a string with value "true" can be parsed into a boolean `true`, and a string with value "false" can be parsed into a boolean `false`.
 
 \note
-On the other hand, other commonly used boolean flags such as "on"/"off", "1"/"0", "True"/"False", etc., cannot be parsed into boolean values. Trying to do so will raise an execption.
+On the other hand, other commonly used boolean flags such as "on"/"off", "1"/"0", "True"/"False", etc., cannot be parsed into boolean values.
 
 **Variable name**: NEML2 material models work with named variables to assign physical meanings to different slices of a tensor (see e.g. [Tensor Labeling](@ref tensor-labeling)). A fully qualified variable name can be parsed from a string, and the delimiter "/" signifies nested sub-axes. For example, the string "forces/t" can be parsed into a variable named "t" defined on the sub-axis named "forces".
 

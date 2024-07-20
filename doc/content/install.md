@@ -43,6 +43,9 @@ No action is needed to manually obtain the optional dependencies. The compatible
 
 ## Build and install
 
+\note
+NEML2 is available both as a C++ library and as a Python package. Instructions for building and installing each variant are provided below. If you only need one of them, the other can be skipped.
+
 ### C++ backend
 
 First, obtain the NEML2 source code.
@@ -79,7 +82,7 @@ For more fine-grained control over the configure, build, and install commands, p
 
 NEML2 also provides an _experimental_ Python package which provides bindings for the primitive tensors and parsers for deserializing and running material models. Package source distributions are available on PyPI, but package wheels are currently not built and uploaded to PyPI.
 
-To install the NEML2 Python package, run the following command at the repository's root.
+To install the NEML2 Python package, run the following command at the repository's root. Note that unlike the C++ backend, we do not expose any interface for customizing the build. The default configuration is already optimized for building the Python package.
 
 ```
 pip install -v .
@@ -91,7 +94,7 @@ The command installs a package named `%neml2` to the site-packages directory, an
 import neml2
 ```
 
-For security reasons, static analysis tools and IDEs for Python usually refuse to extract function signature, type hints, etc. from bindary extensions such as the NEML2 Python bindings. As a workaround, "stubs" can be generated a priori to make them less opaque. The NEML2 python package works well with `pybind11-stubgen` for that purpose. Stubs can be generated using the following command:
+For security reasons, static analysis tools and IDEs for Python usually refuse to extract function signature, type hints, etc. from binary extensions such as the NEML2 Python bindings. As a workaround, "stubs" can be generated a priori to make them less opaque. The NEML2 python package works well with `pybind11-stubgen` for that purpose. Stubs can be generated using the following command:
 
 ```
 pip install pybind11-stubgen
@@ -125,6 +128,8 @@ Commonly used configuration options are summarized below. Default options are <u
 | NEML2_RUNNER_AS_PROFILER | ON, <u>OFF</u>                                              | Make the runner a profiler by linking against gperftools                                  |
 | NEML2_DOC                | ON, <u>OFF</u>                                              | Create the documentation target                                                           |
 | NEML2_PYBIND             | ON, <u>OFF</u>                                              | Create the Python bindings target                                                         |
+
+Visual Studio Code users are encouraged to use the predefined [CMake variants](https://vector-of-bool.github.io/docs/vscode-cmake-tools/variants.html) in `cmake-variants.yaml` to configure the build.
 
 ## CMake integration {#install-cmake-integration}
 

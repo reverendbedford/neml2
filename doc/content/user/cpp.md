@@ -23,15 +23,12 @@ The input file defines two parameters: Young's modulus of 100 and Poisson's rati
 Assuming the above input file is named "input_file.i", the C++ code snippet below parses the input file and loads the material model (into the heap).
 
 ```cpp
-#include "neml2/base/Parser.h"
 #include "neml2/base/Factory.h"
 #include "neml2/models/Model.h"
 #include "neml2/tensors/tensors.h"
 
-using namespace neml2;
-
 int main() {
-  auto & model = load_model("input.i", "model");
+  auto & model = neml2::load_model("input.i", "model");
 
   // ...
 
@@ -50,11 +47,11 @@ Suppose we want to perform 3 material updates simultaneously, the model should b
 Finally, the following code constructs the 3 input strains `in` and performs 3 material updates _simultaneously_. Output stresses are stored in the tensor `out`.
 
 ```cpp
-  auto in = LabeledVector::empty({3}, {model.input_axis()});
+  auto in = neml2::LabeledVector::empty({3}, {model.input_axis()});
 
-  in.batch_index_put_({0}, SR2::fill(0.1, 0.2, 0.3, -0.1, -0.1, 0.2));
-  in.batch_index_put_({1}, SR2::fill(0.2, 0.2, 0.1, -0.1, -0.2, -0.5));
-  in.batch_index_put_({2}, SR2::fill(0.3, -0.2, 0.05, -0.1, -0.3, 0.1));
+  in.batch_index_put_({0}, neml2::SR2::fill(0.1, 0.2, 0.3, -0.1, -0.1, 0.2));
+  in.batch_index_put_({1}, neml2::SR2::fill(0.2, 0.2, 0.1, -0.1, -0.2, -0.5));
+  in.batch_index_put_({2}, neml2::SR2::fill(0.3, -0.2, 0.05, -0.1, -0.3, 0.1));
 
   auto out = model.value(in);
 ```
@@ -69,5 +66,5 @@ When AD is disabled, no function graph is built, tensor version numbers are not 
 
 To disable AD, use the optional second argument passed to `neml2::get_model`, i.e.
 ```cpp
-auto & model = get_model("model", /*disable_AD=*/true);
+auto & model = neml2::get_model("model", /*disable_AD=*/true);
 ```
