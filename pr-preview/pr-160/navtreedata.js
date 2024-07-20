@@ -80,7 +80,7 @@ var NAVTREEINDEX =
 "classneml2_1_1TransientDriver.html",
 "classneml2_1_1VariableStore.html#a8b8fe16c29c1eba2824c95158c8f1995",
 "namespaceneml2.html#a24e36302c88a7b82b5fa37c76108e24d",
-"namespaceneml2_1_1math.html#a7b5be1404151d1d8f7f57241c790553b"
+"namespaceneml2_1_1math.html#a7980b18b83a7f3670c45e6a765959024"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
