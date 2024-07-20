@@ -50,6 +50,6 @@ protected:
   const Variable<T> & _from;
 };
 
-#define COPYVARIABLE_TYPEDEF_PrimitiveTensor(T) typedef CopyVariable<T> Copy##T
-FOR_ALL_PRIMITIVETENSOR(COPYVARIABLE_TYPEDEF_PrimitiveTensor);
+#define COPYVARIABLE_TYPEDEF_PRIMITIVETENSOR(T) typedef CopyVariable<T> Copy##T
+FOR_ALL_PRIMITIVETENSOR(COPYVARIABLE_TYPEDEF_PRIMITIVETENSOR);
 } // namespace neml2

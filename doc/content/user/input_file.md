@@ -45,7 +45,8 @@ defines a tensor named "E" under the `[Tensors]` block and a model named "elasti
 
 **Boolean**: Oftentimes the behavior of the object is preferrably controlled by a boolean flag. However, since the HIT format only allows (array of) integer, floating-point number, and string, a special syntax shall be reserved for boolean values. In NEML2 input files, a string with value "true" can be parsed into a boolean `true`, and a string with value "false" can be parsed into a boolean `false`.
 
-> On the other hand, other commonly used boolean flags such as "on"/"off", "1"/"0", "True"/"False", etc., cannot be parsed into boolean values. Trying to do so will trigger a `ParserException`.
+\note
+On the other hand, other commonly used boolean flags such as "on"/"off", "1"/"0", "True"/"False", etc., cannot be parsed into boolean values. Trying to do so will raise an execption.
 
 **Variable name**: NEML2 material models work with named variables to assign physical meanings to different slices of a tensor (see e.g. [Tensor Labeling](@ref tensor-labeling)). A fully qualified variable name can be parsed from a string, and the delimiter "/" signifies nested sub-axes. For example, the string "forces/t" can be parsed into a variable named "t" defined on the sub-axis named "forces".
 

@@ -111,9 +111,9 @@ factory so that previously retrieved models are deleted.
 This function is only needed if you load and evaluate models inside a for-loop,
 where it is desirable to deallocate models on-the-fly.
 
-:param path:     Path to the input file to be parsed
-:param model:    Name of the model
-:param enable_AD Enable automatic differentiation
+:param path:      Path to the input file to be parsed
+:param model:     Name of the model
+:param enable_AD: Enable automatic differentiation
 )");
 
   // neml2.base.TensorValue

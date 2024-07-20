@@ -117,7 +117,7 @@ parse_vector_vector(const std::string & raw_str)
   return vals;
 }
 
-// @{ template specializations for parse
+// template specializations for special options types
 template <>
 void parse_<bool>(bool &, const std::string & raw_str);
 /// This special one is for the evil std::vector<bool>!
@@ -127,6 +127,5 @@ template <>
 void parse_<TensorShape>(TensorShape &, const std::string & raw_str);
 template <>
 void parse_<VariableName>(VariableName &, const std::string & raw_str);
-// @}
 } // namespace utils
 } // namespace neml2

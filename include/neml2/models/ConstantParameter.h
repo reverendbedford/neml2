@@ -46,8 +46,8 @@ protected:
   const T & _value;
 };
 
-#define CONSTANTPARAMETER_TYPEDEF_PrimitiveTensor(T)                                               \
+#define CONSTANTPARAMETER_TYPEDEF_PRIMITIVETENSOR(T)                                               \
   typedef ConstantParameter<T> T##ConstantParameter
-FOR_ALL_PRIMITIVETENSOR(CONSTANTPARAMETER_TYPEDEF_PrimitiveTensor);
+FOR_ALL_PRIMITIVETENSOR(CONSTANTPARAMETER_TYPEDEF_PRIMITIVETENSOR);
 
 } // namespace neml2

@@ -18,13 +18,15 @@ Other PyTorch releases with a few minor versions around are likely to be compati
 - **Recommended**: If you choose to download PyTorch using conda or pip, the NEML2 CMake script can automatically detect and use the PyTorch installation.
 - If you choose to download libTorch or build PyTorch from source, you will need to set `LIBTORCH_DIR` to be the location of libTorch when using CMake to configure NEML2.
 
-If no PyTorch installation can be detected and `LIBTORCH_DIR` is not set at configure time, the NEML2 CMake script will automatically download and use the libTorch obtained from the official website. Note, however, that this method only works on Linux and Mac systems.
+\note
+The libTorch distributions from the official website come with two flavors: "Pre-cxx11 ABI" and "cxx11 ABI". Both variants are supported by NEML2. If you are unsure, we recommend the one with "cxx11 ABI".
 
-> The libTorch distributions from the official website come with two flavors: "Pre-cxx11 ABI" and "cxx11 ABI". Both variants are supported by NEML2. If you are unsure, we recommend the one with "cxx11 ABI".
+If no PyTorch installation can be detected and `LIBTORCH_DIR` is not set at configure time, the NEML2 CMake script will automatically download and use the libTorch obtained from the official website. Note, however, that this method only works on Linux and Mac systems.
 
 ### Optional dependencies
 
-*No action is needed to manually obtain the optional dependencies.* The compatible optional dependencies will be automatically downloaded and configured by CMake depending on the build customization.
+\note
+No action is needed to manually obtain the optional dependencies. The compatible optional dependencies will be automatically downloaded and configured by CMake depending on the build customization.
 
 - [HIT](https://github.com/idaholab/moose/tree/master/framework/contrib/hit) for input file parsing.
 - [WASP](https://code.ornl.gov/neams-workbench/wasp) as the lexing and parsing backend for HIT.
@@ -37,6 +39,7 @@ If no PyTorch installation can be detected and `LIBTORCH_DIR` is not set at conf
 - Python packages
   - [pytest](https://docs.pytest.org/en/stable/index.html) for testing Pythin bindings
   - [PyYAML](https://pyyaml.org/) for extracting syntax documentation
+  - [pybind11-stubgen](https://github.com/sizmailov/pybind11-stubgen) for extracting stubs from Python bindings
 
 ## Build and install
 

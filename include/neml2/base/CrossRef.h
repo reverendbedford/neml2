@@ -30,8 +30,11 @@
 
 namespace neml2
 {
+// Forward decl
 template <typename T>
 class CrossRef;
+
+/// Stream into a CrossRef (used by Parsers to extract input options)
 template <typename T>
 std::stringstream & operator>>(std::stringstream &, CrossRef<T> &);
 
@@ -121,16 +124,4 @@ operator>>(std::stringstream & ss, CrossRef<T> & cr)
   ss >> cr._raw_str;
   return ss;
 }
-
-template <>
-CrossRef<torch::Tensor>::operator torch::Tensor() const;
-
-template <>
-CrossRef<Tensor>::operator Tensor() const;
-
-#define CROSSREF_SPECIALIZE_PrimitiveTensor(T)                                                     \
-  template <>                                                                                      \
-  CrossRef<T>::operator T() const
-
-FOR_ALL_PRIMITIVETENSOR(CROSSREF_SPECIALIZE_PrimitiveTensor);
 } // namespace neml2

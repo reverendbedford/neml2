@@ -88,7 +88,7 @@ end_with(std::string_view str, std::string_view suffix)
 
 template <>
 void
-parse_<bool>(bool & val, const std::string & raw_str)
+parse_(bool & val, const std::string & raw_str)
 {
   std::string str_val = parse<std::string>(raw_str);
   if (str_val == "true")
@@ -111,7 +111,7 @@ parse_vector_(std::vector<bool> & vals, const std::string & raw_str)
 
 template <>
 void
-parse_<VariableName>(VariableName & val, const std::string & raw_str)
+parse_(VariableName & val, const std::string & raw_str)
 {
   auto tokens = split(raw_str, "/ \t\n\v\f\r");
   val = VariableName(tokens);
@@ -119,7 +119,7 @@ parse_<VariableName>(VariableName & val, const std::string & raw_str)
 
 template <>
 void
-parse_<TensorShape>(TensorShape & val, const std::string & raw_str)
+parse_(TensorShape & val, const std::string & raw_str)
 {
   if (!start_with(raw_str, "(") || !end_with(raw_str, ")"))
     throw ParserException("Trying to parse " + raw_str +
