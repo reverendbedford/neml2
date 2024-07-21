@@ -1,5 +1,7 @@
 var NAVTREEINDEX11 =
 {
+"namespaceneml2_1_1math.html#a6eae274fd964f8d792e0f69ca2997668":[7,0,0,2,12],
+"namespaceneml2_1_1math.html#a6f16035a4f6e497c60030314b858a9f6":[7,0,0,2,21],
 "namespaceneml2_1_1math.html#a709fc81ec1c8420f4c910b5d207a5371":[7,0,0,2,3],
 "namespaceneml2_1_1math.html#a7160a3cce2d8d7d330414a7db59b02df":[7,0,0,2,27],
 "namespaceneml2_1_1math.html#a7980b18b83a7f3670c45e6a765959024":[7,0,0,2,15],

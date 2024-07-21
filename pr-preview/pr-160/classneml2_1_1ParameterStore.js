@@ -1,7 +1,7 @@
 var classneml2_1_1ParameterStore =
 [
     [ "ParameterStore", "classneml2_1_1ParameterStore.html#a233b712320dc941443b9c5845d8368c9", null ],
-    [ "declare_parameter", "classneml2_1_1ParameterStore.html#a5cb5791c69e85a9c8fd1fed5656784de", null ],
+    [ "declare_parameter", "classneml2_1_1ParameterStore.html#a45ea9f3f0dc9c3da04b9ec963bac80a2", null ],
     [ "declare_parameter", "classneml2_1_1ParameterStore.html#ac44196489c29d0a5f8e1c6d6399d6b4e", null ],
     [ "get_parameter", "classneml2_1_1ParameterStore.html#a8c1f0318b14b2c89f483e10161c3c10c", null ],
     [ "has_nl_param", "classneml2_1_1ParameterStore.html#a751fe1ea5451edbaa7daf11eeade2dc7", null ],

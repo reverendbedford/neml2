@@ -14,6 +14,7 @@ var classneml2_1_1Model =
     [ "cache", "classneml2_1_1Model.html#ae660012c5e2ad77153104c13be5e2bcb", null ],
     [ "check_AD_limitation", "classneml2_1_1Model.html#a9eabf4a633f4808a36ccd1267b477f47", null ],
     [ "check_inplace_dbg", "classneml2_1_1Model.html#a1c21b5442da0b801681b1b2b4cd89667", null ],
+    [ "check_input", "classneml2_1_1Model.html#a0e8b7b1bc791e2d261b74415d55b3864", null ],
     [ "consumed_items", "classneml2_1_1Model.html#adadf7cfaa539cd29c57118d735ec1193", null ],
     [ "get_d2output_dinput2", "classneml2_1_1Model.html#a266eb5da16fd21f487f704e356a3bbe9", null ],
     [ "get_doutput_dinput", "classneml2_1_1Model.html#a04e2b6ccc0f018be2893f2a916b1d828", null ],

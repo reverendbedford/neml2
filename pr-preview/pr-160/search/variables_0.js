@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['_5fa_0',['_a',['../classneml2_1_1ChabochePlasticHardening.html#acf58f2aef0242d23d4987636441e8e5f',1,'neml2::ChabochePlasticHardening']]],
-  ['_5fa_1',['_A',['../classneml2_1_1ChabochePlasticHardening.html#aa775118c65c301671a6cd0991439bf0f',1,'neml2::ChabochePlasticHardening::_A'],['../classneml2_1_1KocksMeckingFlowViscosity.html#aa775118c65c301671a6cd0991439bf0f',1,'neml2::KocksMeckingFlowViscosity::_A'],['../classneml2_1_1KocksMeckingRateSensitivity.html#aa775118c65c301671a6cd0991439bf0f',1,'neml2::KocksMeckingRateSensitivity::_A'],['../classneml2_1_1SR2Invariant.html#a82fe4277490b7dacb95c50e887b06d44',1,'neml2::SR2Invariant::_A']]],
+  ['_5fa_0',['_A',['../classneml2_1_1ChabochePlasticHardening.html#aa775118c65c301671a6cd0991439bf0f',1,'neml2::ChabochePlasticHardening::_A'],['../classneml2_1_1KocksMeckingFlowViscosity.html#aa775118c65c301671a6cd0991439bf0f',1,'neml2::KocksMeckingFlowViscosity::_A'],['../classneml2_1_1KocksMeckingRateSensitivity.html#aa775118c65c301671a6cd0991439bf0f',1,'neml2::KocksMeckingRateSensitivity::_A'],['../classneml2_1_1SR2Invariant.html#a82fe4277490b7dacb95c50e887b06d44',1,'neml2::SR2Invariant::_A']]],
+  ['_5fa_1',['_a',['../classneml2_1_1ChabochePlasticHardening.html#acf58f2aef0242d23d4987636441e8e5f',1,'neml2::ChabochePlasticHardening']]],
   ['_5faccept_5fcriteria_2',['_accept_criteria',['../classneml2_1_1NewtonWithTrustRegion.html#ab54880b6a2a9a3700e0f83a8ff9ad763',1,'neml2::NewtonWithTrustRegion']]],
   ['_5fad_5f1st_5fderiv_3',['_AD_1st_deriv',['../classneml2_1_1Model.html#a972285be81a9e41a4adcdec6cbdaf69f',1,'neml2::Model']]],
   ['_5fad_5f2nd_5fderiv_4',['_AD_2nd_deriv',['../classneml2_1_1Model.html#a47193d2d14f1c32d608190382e516e06',1,'neml2::Model']]],
@@ -45,8 +45,8 @@ var searchData=
   ['_5fenable_5fad_42',['_enable_AD',['../classneml2_1_1TransientDriver.html#aca5367bb196548fc147ba2c1e9565de3',1,'neml2::TransientDriver']]],
   ['_5fep_43',['_ep',['../classneml2_1_1IsotropicHardening.html#acb1d8d5cc3d18f5bb60c7dbe0728b2e6',1,'neml2::IsotropicHardening']]],
   ['_5fep_44',['_Ep',['../classneml2_1_1ElasticStrain.html#a4b8695f14874a316dc7d93af30520000',1,'neml2::ElasticStrain::_Ep'],['../classneml2_1_1TotalStrain.html#a4b8695f14874a316dc7d93af30520000',1,'neml2::TotalStrain::_Ep']]],
-  ['_5fep_5fdot_45',['_ep_dot',['../classneml2_1_1AssociativeIsotropicPlasticHardening.html#a29f9ef5c99a58053e14aca4ee1e2d923',1,'neml2::AssociativeIsotropicPlasticHardening']]],
-  ['_5fep_5fdot_46',['_Ep_dot',['../classneml2_1_1AssociativePlasticFlow.html#acf6c9bfeea8662440eb4e6efafefcfc6',1,'neml2::AssociativePlasticFlow::_Ep_dot'],['../classneml2_1_1GursonCavitation.html#a62cc1814664e9a296ac21c04030075d2',1,'neml2::GursonCavitation::_Ep_dot']]],
+  ['_5fep_5fdot_45',['_Ep_dot',['../classneml2_1_1AssociativePlasticFlow.html#acf6c9bfeea8662440eb4e6efafefcfc6',1,'neml2::AssociativePlasticFlow::_Ep_dot'],['../classneml2_1_1GursonCavitation.html#a62cc1814664e9a296ac21c04030075d2',1,'neml2::GursonCavitation::_Ep_dot']]],
+  ['_5fep_5fdot_46',['_ep_dot',['../classneml2_1_1AssociativeIsotropicPlasticHardening.html#a29f9ef5c99a58053e14aca4ee1e2d923',1,'neml2::AssociativeIsotropicPlasticHardening']]],
   ['_5feps0_47',['_eps0',['../classneml2_1_1KocksMeckingActivationEnergy.html#afe6dd66140c15a4156257d0e7b335297',1,'neml2::KocksMeckingActivationEnergy::_eps0'],['../classneml2_1_1KocksMeckingFlowViscosity.html#afe6dd66140c15a4156257d0e7b335297',1,'neml2::KocksMeckingFlowViscosity::_eps0']]],
   ['_5feps_5fdot_48',['_eps_dot',['../classneml2_1_1KocksMeckingActivationEnergy.html#a02bb0b6d6d3c81e7c121abd2ffd0eae4',1,'neml2::KocksMeckingActivationEnergy']]],
   ['_5feta_49',['_eta',['../classneml2_1_1PerzynaPlasticFlowRate.html#a5c1a06269fb52414b3fde0459663c21b',1,'neml2::PerzynaPlasticFlowRate']]],
