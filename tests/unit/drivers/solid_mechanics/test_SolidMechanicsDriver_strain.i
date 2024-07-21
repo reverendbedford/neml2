@@ -9,7 +9,7 @@
     type = LinspaceScalar
     start = 0
     end = end_time
-    nstep = 100
+    nstep = 10
   []
   [exx]
     type = FullScalar
@@ -34,7 +34,7 @@
     type = LinspaceSR2
     start = 0
     end = max_strain
-    nstep = 100
+    nstep = 10
   []
 []
 

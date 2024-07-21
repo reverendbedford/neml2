@@ -28,6 +28,7 @@
 
 namespace neml2
 {
+// LCOV_EXCL_START
 std::map<std::string, std::map<std::string, unsigned long>> &
 timed_sections()
 {
@@ -53,4 +54,5 @@ TimedSection::~TimedSection()
     timed_sections()[_section][_name] += dt;
   }
 }
+// LCOV_EXCL_STOP
 }

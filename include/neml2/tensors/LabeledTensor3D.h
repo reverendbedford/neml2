@@ -39,10 +39,6 @@ class LabeledTensor3D : public LabeledTensor<LabeledTensor3D, 3>
 public:
   using LabeledTensor<LabeledTensor3D, 3>::LabeledTensor;
 
-  /// Add another tensor into this tensor.
-  /// The item set of the other tensor must be a subset of this tensor's item set.
-  void accumulate(const LabeledTensor3D & other, bool recursive = true);
-
   /// Fill another tensor into this tensor.
   /// The item set of the other tensor must be a subset of this tensor's item set.
   void fill(const LabeledTensor3D & other, bool recursive = true);

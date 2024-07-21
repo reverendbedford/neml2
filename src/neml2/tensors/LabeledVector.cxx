@@ -34,14 +34,6 @@ LabeledVector::slice(const std::string & name) const
 }
 
 void
-LabeledVector::accumulate(const LabeledVector & other, bool recursive)
-{
-  const auto indices = axis(0).common_indices(other.axis(0), recursive);
-  for (const auto & [idx, idx_other] : indices)
-    _tensor.base_index({idx}) += other.tensor().base_index({idx_other});
-}
-
-void
 LabeledVector::fill(const LabeledVector & other, bool recursive)
 {
   const auto indices = axis(0).common_indices(other.axis(0), recursive);

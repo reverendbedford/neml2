@@ -44,18 +44,11 @@ public:
                                 const LabeledAxis & axis,
                                 const torch::TensorOptions & options = default_tensor_options());
 
-  /// Add another matrix into this matrix.
-  /// The item set of the other matrix must be a subset of this matrix's item set.
-  void accumulate(const LabeledMatrix & other, bool recursive = true);
-
   /// Fill another matrix into this matrix.
   /// The item set of the other matrix must be a subset of this matrix's item set.
   void fill(const LabeledMatrix & other, bool recursive = true);
 
   /// Chain rule product of two derivatives
   LabeledMatrix chain(const LabeledMatrix & other) const;
-
-  /// Invert a LabeledMatrix for use in an implicit function derivative
-  LabeledMatrix inverse() const;
 };
 } // namespace neml2

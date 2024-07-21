@@ -33,19 +33,75 @@ using namespace neml2;
 
 TEST_CASE("LabeledTensor", "[tensors]")
 {
+  Size nbatch = 10;
+
+  LabeledAxis info1;
+  info1.add<SR2>("first").add<Scalar>("second").add<Scalar>("third");
+  info1.setup_layout();
+
+  LabeledAxis info2;
+  info2.add<Scalar>("first").add<SR2>("second");
+  info2.setup_layout();
+
+  SECTION("copy constructor")
+  {
+    auto A = LabeledMatrix::zeros(nbatch, {&info1, &info2});
+    auto B = A;
+    B.base_index_put_({"third", "second"}, Tensor::ones({1, 6}).batch_expand(nbatch));
+    REQUIRE(torch::allclose(A, B));
+    REQUIRE(A.axis(0) == B.axis(0));
+    REQUIRE(A.axis(1) == B.axis(1));
+  }
+
+  SECTION("copy assignment operator")
+  {
+    auto A = LabeledMatrix::zeros(nbatch, {&info1, &info2});
+    LabeledMatrix B;
+    B = A;
+    B.base_index_put_({"third", "second"}, Tensor::ones({1, 6}).batch_expand(nbatch));
+    REQUIRE(torch::allclose(A, B));
+    REQUIRE(A.axis(0) == B.axis(0));
+    REQUIRE(A.axis(1) == B.axis(1));
+  }
+
+  SECTION("tensor information")
+  {
+    auto A = LabeledMatrix::zeros(nbatch, {&info1, &info2});
+    REQUIRE(A.scalar_type() == default_dtype());
+    REQUIRE(A.device() == default_device());
+    REQUIRE(A.dim() == 3);
+    REQUIRE(TensorShape(A.sizes()) == TensorShape{nbatch, 8, 7});
+    REQUIRE(A.size(0) == nbatch);
+    REQUIRE(A.size(1) == 8);
+    REQUIRE(A.size(2) == 7);
+    REQUIRE(A.batched());
+    REQUIRE(A.batch_dim() == 1);
+    REQUIRE(TensorShape(A.batch_sizes()) == TensorShape{nbatch});
+    REQUIRE(A.batch_size(0) == nbatch);
+    REQUIRE(A.base_dim() == 2);
+    REQUIRE(TensorShape(A.base_sizes()) == TensorShape{8, 7});
+    REQUIRE(A.base_size(0) == 8);
+    REQUIRE(A.base_size(1) == 7);
+    REQUIRE(A.base_storage() == 56);
+  }
+
+  SECTION("batch_index")
+  {
+    SECTION("1D LabeledTensor")
+    {
+      auto A = LabeledVector::zeros(nbatch, {&info1});
+      REQUIRE(A.batch_index({0}).sizes() == TensorShapeRef({8}));
+    }
+
+    SECTION("2D LabeledTensor")
+    {
+      auto A = LabeledMatrix::zeros(nbatch, {&info1, &info2});
+      REQUIRE(A.batch_index({0}).sizes() == TensorShapeRef({8, 7}));
+    }
+  }
+
   SECTION("base_index")
   {
-    Size nbatch = 10;
-
-    // Setup the Label
-    LabeledAxis info1;
-    info1.add<SR2>("first").add<Scalar>("second").add<Scalar>("third");
-    info1.setup_layout();
-
-    LabeledAxis info2;
-    info2.add<Scalar>("first").add<SR2>("second");
-    info2.setup_layout();
-
     SECTION("1D LabeledTensor")
     {
       auto A = LabeledVector::zeros(nbatch, {&info1});
@@ -68,17 +124,6 @@ TEST_CASE("LabeledTensor", "[tensors]")
 
   SECTION("reinterpret")
   {
-    Size nbatch = 10;
-
-    // Setup the Label
-    LabeledAxis info1;
-    info1.add<SR2>("first").add<Scalar>("second").add<Scalar>("third");
-    info1.setup_layout();
-
-    LabeledAxis info2;
-    info2.add<Scalar>("first").add<SR2>("second");
-    info2.setup_layout();
-
     SECTION("1D LabeledTensor")
     {
       auto A = LabeledVector::zeros(nbatch, {&info1});
@@ -100,17 +145,6 @@ TEST_CASE("LabeledTensor", "[tensors]")
 
   SECTION("base_index_put_")
   {
-    Size nbatch = 10;
-
-    // Setup the Label
-    LabeledAxis info1;
-    info1.add<SR2>("first").add<Scalar>("second").add<Scalar>("third");
-    info1.setup_layout();
-
-    LabeledAxis info2;
-    info2.add<Scalar>("first").add<SR2>("second");
-    info2.setup_layout();
-
     SECTION("logically 1D LabeledTensor")
     {
       auto A = LabeledVector::zeros(nbatch, {&info1});
@@ -136,17 +170,6 @@ TEST_CASE("LabeledTensor", "[tensors]")
 
   SECTION("clone")
   {
-    Size nbatch = 10;
-
-    // Setup the Label
-    LabeledAxis info1;
-    info1.add<SR2>("first").add<Scalar>("second").add<Scalar>("third");
-    info1.setup_layout();
-
-    LabeledAxis info2;
-    info2.add<Scalar>("first").add<SR2>("second");
-    info2.setup_layout();
-
     auto A = LabeledMatrix::zeros(nbatch, {&info1, &info2});
     auto B = A.clone();
 

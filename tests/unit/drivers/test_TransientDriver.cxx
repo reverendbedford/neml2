@@ -21,3 +21,28 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+
+#include <catch2/catch_test_macros.hpp>
+
+#include "utils.h"
+#include "neml2/drivers/TransientDriver.h"
+
+using namespace neml2;
+
+TEST_CASE("TransientDriver", "[TransientDriver]")
+{
+  SECTION("predictor = PREVIOUS_STATE")
+  {
+    reload_input("unit/drivers/test_TransientDriver.i");
+    auto & driver = Factory::get_object<Driver>("Drivers", "driver");
+    REQUIRE(driver.run());
+  }
+
+  SECTION("predictor = LINEAR_EXTRAPOLATION")
+  {
+    reload_input("unit/drivers/test_TransientDriver.i",
+                 "Drivers/driver/predictor=LINEAR_EXTRAPOLATION");
+    auto & driver = Factory::get_object<Driver>("Drivers", "driver");
+    REQUIRE(driver.run());
+  }
+}

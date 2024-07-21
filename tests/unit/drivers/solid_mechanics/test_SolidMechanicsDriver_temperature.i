@@ -11,29 +11,41 @@
     end = end_time
     nstep = 10
   []
-  [sxx]
+  [exx]
     type = FullScalar
     batch_shape = '(20)'
     value = 0.1
   []
-  [syy]
+  [eyy]
     type = FullScalar
     batch_shape = '(20)'
     value = -0.05
   []
-  [szz]
+  [ezz]
     type = FullScalar
     batch_shape = '(20)'
     value = -0.05
   []
-  [max_stress]
+  [max_strain]
     type = FillSR2
-    values = 'sxx syy szz'
+    values = 'exx eyy ezz'
   []
-  [stresses]
+  [strains]
     type = LinspaceSR2
     start = 0
-    end = max_stress
+    end = max_strain
+    nstep = 10
+  []
+  [end_temperature]
+    type = LinspaceScalar
+    start = 500
+    end = 1000
+    nstep = 20
+  []
+  [temperatures]
+    type = LinspaceScalar
+    start = 400
+    end = end_temperature
     nstep = 10
   []
 []
@@ -43,32 +55,37 @@
     type = SolidMechanicsDriver
     model = 'model'
     times = 'times'
-    prescribed_stresses = 'stresses'
-    control = 'STRESS'
-    save_as = 'unit/drivers/solid_mechanics/test_SolidMechanicsDriver_stress.pt'
+    prescribed_strains = 'strains'
+    prescribed_temperatures = 'temperatures'
+    save_as = 'unit/drivers/solid_mechanics/test_SolidMechanicsDriver_temperature.pt'
   []
 []
 
 [Models]
   [force_rate]
     type = SR2ForceRate
-    force = 'S'
+    force = 'E'
   []
-  [strain_rate]
+  [youngs_modulus_T]
+    type = ArrheniusParameter
+    temperature = 'forces/T'
+    reference_value = 1e5
+    activation_energy = 1e3
+    ideal_gas_constant = 8.314
+  []
+  [stress_rate]
     type = LinearIsotropicElasticity
-    youngs_modulus = 1e5
+    youngs_modulus = 'youngs_modulus_T'
     poisson_ratio = 0.3
     rate_form = true
-    compliance = true
-    stress = 'forces/S'
-    strain = 'state/E'
+    strain = 'forces/E'
   []
   [integrate]
     type = SR2ForwardEulerTimeIntegration
-    variable = 'E'
+    variable = 'S'
   []
   [model]
     type = ComposedModel
-    models = 'force_rate strain_rate integrate'
+    models = 'force_rate stress_rate integrate'
   []
 []

@@ -37,15 +37,6 @@ LabeledMatrix::identity(TensorShapeRef batch_size,
 }
 
 void
-LabeledMatrix::accumulate(const LabeledMatrix & other, bool recursive)
-{
-  neml_assert_dbg(axis(1) == other.axis(1), "Can only accumulate matrices with conformal y axes");
-  const auto indices0 = axis(0).common_indices(other.axis(0), recursive);
-  for (const auto & [idxi, idxi_other] : indices0)
-    _tensor.base_index({idxi}) += other.tensor().base_index({idxi_other});
-}
-
-void
 LabeledMatrix::fill(const LabeledMatrix & other, bool recursive)
 {
   neml_assert_dbg(axis(1) == other.axis(1), "Can only accumulate matrices with conformal y axes");
@@ -67,14 +58,5 @@ LabeledMatrix::chain(const LabeledMatrix & other) const
 
   // If all the sizes are correct then executing the chain rule is pretty easy
   return LabeledMatrix(math::bmm(*this, other), {&axis(0), &other.axis(1)});
-}
-
-LabeledMatrix
-LabeledMatrix::inverse() const
-{
-  neml_assert_dbg(axis(0).storage_size() == axis(1).storage_size(),
-                  "Can only invert square derivatives");
-
-  return LabeledMatrix(math::linalg::inv(tensor()), {&axis(1), &axis(0)});
 }
 } // namespace neml2
