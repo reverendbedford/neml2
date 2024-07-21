@@ -104,7 +104,7 @@
     prescribed_control = 'control'
     save_as = 'result.pt'
     prescribed_temperatures = 'temperatures'
-    control = "MIXED"
+    control = 'MIXED'
   []
   [regression]
     type = TransientRegression
