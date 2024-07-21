@@ -161,6 +161,9 @@ public:
   /// Tell this model to use AD to get derivatives
   void use_AD_derivatives(bool first = true, bool second = true);
 
+  /// Check if the input has valid shape
+  virtual void check_input(const LabeledVector & in) const;
+
   /// Set \p in to be the input of this model
   virtual void set_input(const LabeledVector & in);
 

@@ -64,7 +64,7 @@ KocksMeckingActivationEnergy::expected_options()
 
 KocksMeckingActivationEnergy::KocksMeckingActivationEnergy(const OptionSet & options)
   : Model(options),
-    _mu(declare_parameter<Scalar>("shear_modulus", "shear_modulus")),
+    _mu(declare_parameter<Scalar>("mu", "shear_modulus", /*allow_nonlinear=*/true)),
     _eps0(options.get<Real>("eps0")),
     _k(options.get<Real>("k")),
     _b3(options.get<Real>("b") * options.get<Real>("b") * options.get<Real>("b")),
@@ -86,7 +86,7 @@ KocksMeckingActivationEnergy::set_value(bool out, bool dout_din, bool d2out_din2
   {
     _g.d(_T) = _k / (_mu * _b3) * math::log(_eps0 / _eps_dot);
     _g.d(_eps_dot) = -_k * _T / (_mu * _b3 * _eps_dot);
-    if (const auto mu = nl_param("shear_modulus"))
+    if (const auto mu = nl_param("mu"))
       _g.d(*mu) = -_k * _T / (_b3 * _mu * _mu) * math::log(_eps0 / _eps_dot);
   }
 }

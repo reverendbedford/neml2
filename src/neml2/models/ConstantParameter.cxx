@@ -45,7 +45,7 @@ ConstantParameter<T>::expected_options()
 template <typename T>
 ConstantParameter<T>::ConstantParameter(const OptionSet & options)
   : NonlinearParameter<T>(options),
-    _value(this->template declare_parameter<T>("value", "value"))
+    _value(this->template declare_parameter<T>("value", "value", /*allow_nonlinear=*/true))
 {
 }
 

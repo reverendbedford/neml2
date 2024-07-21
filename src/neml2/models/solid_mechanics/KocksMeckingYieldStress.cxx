@@ -48,8 +48,8 @@ KocksMeckingYieldStress::expected_options()
 
 KocksMeckingYieldStress::KocksMeckingYieldStress(const OptionSet & options)
   : NonlinearParameter<Scalar>(options),
-    _C(declare_parameter<Scalar>("C", "C")),
-    _mu(declare_parameter<Scalar>("mu", "shear_modulus"))
+    _C(declare_parameter<Scalar>("C", "C", /*allow_nonlinear=*/true)),
+    _mu(declare_parameter<Scalar>("mu", "shear_modulus", /*allow_nonlinear=*/true))
 {
 }
 

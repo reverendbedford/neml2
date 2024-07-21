@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_all.hpp>
 
 #include "utils.h"
 #include "neml2/models/Model.h"
@@ -32,6 +33,22 @@ using namespace neml2;
 TEST_CASE("Model", "[models]")
 {
   auto & model = reload_model("unit/models/ComposedModel3.i", "model");
+
+  SECTION("check_input")
+  {
+    model.reinit({5, 2});
+
+    // Input has incorrect batch shape
+    auto in1 = LabeledVector::empty({2, 5}, {&model.input_axis()});
+    REQUIRE_THROWS_WITH(model.value(in1),
+                        Catch::Matchers::ContainsSubstring("The provided input has batch shape"));
+
+    // Input has correct batch shape but incorrect base shape
+    auto in2 = LabeledVector::empty({2}, {&model.output_axis()});
+    REQUIRE_THROWS_WITH(
+        model.value(in2),
+        Catch::Matchers::ContainsSubstring("The provided input has base storage size"));
+  }
 
   SECTION("input_type")
   {

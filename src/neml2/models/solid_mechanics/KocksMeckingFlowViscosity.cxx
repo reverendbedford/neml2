@@ -66,9 +66,9 @@ KocksMeckingFlowViscosity::expected_options()
 
 KocksMeckingFlowViscosity::KocksMeckingFlowViscosity(const OptionSet & options)
   : NonlinearParameter<Scalar>(options),
-    _A(declare_parameter<Scalar>("A", "A")),
-    _B(declare_parameter<Scalar>("B", "B")),
-    _mu(declare_parameter<Scalar>("mu", "shear_modulus")),
+    _A(declare_parameter<Scalar>("A", "A", /*allow_nonlinear=*/true)),
+    _B(declare_parameter<Scalar>("B", "B", /*allow_nonlinear=*/true)),
+    _mu(declare_parameter<Scalar>("mu", "shear_modulus", /*allow_nonlinear=*/true)),
     _eps0(options.get<Real>("eps0")),
     _k(options.get<Real>("k")),
     _b3(options.get<Real>("b") * options.get<Real>("b") * options.get<Real>("b")),

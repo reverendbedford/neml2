@@ -130,7 +130,9 @@ ParameterStore::named_nonlinear_parameter_models(bool recursive) const
 
 template <typename T, typename>
 const T &
-ParameterStore::declare_parameter(const std::string & name, const std::string & input_option_name)
+ParameterStore::declare_parameter(const std::string & name,
+                                  const std::string & input_option_name,
+                                  bool allow_nonlinear)
 {
   if (_options.contains<T>(input_option_name))
     return declare_parameter(name, _options.get<T>(input_option_name));
@@ -148,12 +150,25 @@ ParameterStore::declare_parameter(const std::string & name, const std::string & 
         // Note that nonlinear parameter should only exist inside a Model.
         auto model = dynamic_cast<Model *>(this);
         neml_assert(model,
-                    "Trying to declare a parameter named ",
+                    "Object '",
+                    _object->name(),
+                    "' is trying to declare a parameter named ",
                     name,
                     ". It is not a plain tensor value nor a cross-referenced parameter "
                     "value. Hence I am guessing you are declaring a *nonlinear* parameter. "
                     "However, nonlinear parameter should only be declared by a model, and this "
                     "object does not appear to be a model.");
+
+        neml_assert(allow_nonlinear,
+                    "In model '",
+                    model->name(),
+                    "' of type ",
+                    model->type(),
+                    ", the input option '",
+                    input_option_name,
+                    "' is referencing a nonlinear parameter. However, nonlinear coupling "
+                    "has not been implemented for this parameter. If this is intended, please "
+                    "consider opening an issue on GitHub including this error message.");
 
         OptionSet extra_opts;
         extra_opts.set<NEML2Object *>("_host") = model->host();
@@ -168,21 +183,23 @@ ParameterStore::declare_parameter(const std::string & name, const std::string & 
       }
       catch (const NEMLException & e2)
       {
-        std::cerr << e1.what() << std::endl;
-        std::cerr << e2.what() << std::endl;
+        throw NEMLException(
+            "Object '" + _object->name() + "' of type " + _object->type() +
+            " is trying to register a parameter named '" + name + "' from input option '" +
+            input_option_name + "'.\n\nParsing it as a plain tensor type failed with message:\n" +
+            e1.what() + "\n\nParsing it as a nonlinear parameter failed with message:\n" +
+            e2.what() +
+            "\n\nIn addition to the above error messages, make sure you provided the correct "
+            "parameter name, option name, and parameter type.");
       }
     }
   }
 
-  throw NEMLException(
-      "Trying to register parameter named " + name + " from input option named " +
-      input_option_name + " of type " + utils::demangle(typeid(T).name()) +
-      ". Make sure you provided the correct parameter name, option name, and parameter type. Note "
-      "that the parameter type can either be a plain type, a cross-reference, or a nonlinear "
-      "parameter.");
+  throw NEMLException("Internal error in declare_parameter");
 }
 
 #define PARAMETERSTORE_INTANTIATE_PrimitiveTensor(T)                                               \
-  template const T & ParameterStore::declare_parameter<T>(const std::string &, const std::string &)
+  template const T & ParameterStore::declare_parameter<T>(                                         \
+      const std::string &, const std::string &, bool)
 FOR_ALL_PRIMITIVETENSOR(PARAMETERSTORE_INTANTIATE_PrimitiveTensor);
 } // namespace neml2

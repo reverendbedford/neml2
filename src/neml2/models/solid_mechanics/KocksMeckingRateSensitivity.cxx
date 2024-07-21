@@ -55,8 +55,8 @@ KocksMeckingRateSensitivity::expected_options()
 
 KocksMeckingRateSensitivity::KocksMeckingRateSensitivity(const OptionSet & options)
   : NonlinearParameter<Scalar>(options),
-    _A(declare_parameter<Scalar>("A", "A")),
-    _mu(declare_parameter<Scalar>("mu", "shear_modulus")),
+    _A(declare_parameter<Scalar>("A", "A", /*allow_nonlinear=*/true)),
+    _mu(declare_parameter<Scalar>("mu", "shear_modulus", /*allow_nonlinear=*/true)),
     _k(options.get<Real>("k")),
     _b3(options.get<Real>("b") * options.get<Real>("b") * options.get<Real>("b")),
     _T(declare_input_variable<Scalar>("temperature"))

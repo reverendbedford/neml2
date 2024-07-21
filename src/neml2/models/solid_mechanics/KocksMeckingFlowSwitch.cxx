@@ -63,7 +63,7 @@ KocksMeckingFlowSwitch::expected_options()
 
 KocksMeckingFlowSwitch::KocksMeckingFlowSwitch(const OptionSet & options)
   : Model(options),
-    _g0(declare_parameter<Scalar>("g0", "g0")),
+    _g0(declare_parameter<Scalar>("g0", "g0", /*allow_nonlinear=*/true)),
     _g(declare_input_variable<Scalar>("activation_energy")),
     _sharp(options.get<Real>("sharpness")),
     _ri_flow(declare_input_variable<Scalar>("rate_independent_flow_rate")),

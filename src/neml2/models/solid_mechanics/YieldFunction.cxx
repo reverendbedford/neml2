@@ -59,7 +59,7 @@ YieldFunction::YieldFunction(const OptionSet & options)
            ? nullptr
            : &declare_input_variable<Scalar>("isotropic_hardening")),
     _f(declare_output_variable<Scalar>("yield_function")),
-    _sy(declare_parameter<Scalar>("sy", "yield_stress"))
+    _sy(declare_parameter<Scalar>("sy", "yield_stress", /*allow_nonlinear=*/true))
 {
 }
 

@@ -119,10 +119,13 @@ protected:
    * @param name Name of the model parameter.
    * @param input_option_name Name of the input option that defines the value of the model
    * parameter.
+   * @param allow_nonlinear Whether allows coupling with a nonlinear parameter
    * @return T The value of the registered model parameter.
    */
   template <typename T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
-  const T & declare_parameter(const std::string & name, const std::string & input_option_name);
+  const T & declare_parameter(const std::string & name,
+                              const std::string & input_option_name,
+                              bool allow_nonlinear = false);
 
   /// Map from nonlinear parameter names to their corresponding variable views
   std::map<std::string, const VariableBase *> _nl_params;

@@ -299,22 +299,32 @@ Model::use_AD_derivatives(bool first, bool second)
 }
 
 void
-Model::set_input(const LabeledVector & in)
+Model::check_input(const LabeledVector & in) const
 {
-  neml_assert_batch_broadcastable(in, input_storage());
+  neml_assert(utils::sizes_broadcastable(in.batch_sizes(), batch_sizes()),
+              "The provided input has batch shape ",
+              in.batch_sizes(),
+              " which cannot be broadcast to the model's batch shape ",
+              batch_sizes(),
+              ". Make sure the model has been initialized using `reinit` and that the provided "
+              "input has the correct shape.");
   neml_assert(in.base_storage() == input_storage().base_storage(),
               "The provided input has base storage size ",
               in.base_storage(),
               ", but the model's input storage expects a base storage size of ",
               input_storage().base_storage(),
               ". Make sure the model has been initialized using `reinit` and that the provided "
-              "input has the correct size.");
+              "input has the correct shape.");
+}
+
+void
+Model::set_input(const LabeledVector & in)
+{
   neml_assert_dbg(in.axis(0) == input_axis(),
                   "Incompatible input axis. The model has input axis: \n",
                   input_axis(),
                   "The input vector has axis: \n",
                   in.axis(0));
-
   input_storage().copy_(in.tensor().batch_expand(batch_sizes()).clone());
 }
 
@@ -339,6 +349,7 @@ Model::get_d2output_dinput2()
 LabeledVector
 Model::value(const LabeledVector & in)
 {
+  check_input(in);
   set_input(in);
   prepare();
 
@@ -349,6 +360,7 @@ Model::value(const LabeledVector & in)
 std::tuple<LabeledVector, LabeledMatrix>
 Model::value_and_dvalue(const LabeledVector & in)
 {
+  check_input(in);
   set_input(in);
   prepare();
 
@@ -359,6 +371,7 @@ Model::value_and_dvalue(const LabeledVector & in)
 std::tuple<LabeledVector, LabeledMatrix, LabeledTensor3D>
 Model::value_and_dvalue_and_d2value(const LabeledVector & in)
 {
+  check_input(in);
   set_input(in);
   prepare();
 

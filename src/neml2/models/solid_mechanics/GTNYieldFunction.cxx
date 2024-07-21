@@ -83,10 +83,10 @@ GTNYieldFunction::GTNYieldFunction(const OptionSet & options)
     _h(options.get<VariableName>("isotropic_hardening").empty()
            ? nullptr
            : &declare_input_variable<Scalar>("isotropic_hardening")),
-    _s0(declare_parameter<Scalar>("sy", "yield_stress")),
-    _q1(declare_parameter<Scalar>("q1", "q1")),
-    _q2(declare_parameter<Scalar>("q2", "q2")),
-    _q3(declare_parameter<Scalar>("q3", "q3"))
+    _s0(declare_parameter<Scalar>("sy", "yield_stress", /*allow_nonlinear=*/true)),
+    _q1(declare_parameter<Scalar>("q1", "q1", /*allow_nonlinear=*/true)),
+    _q2(declare_parameter<Scalar>("q2", "q2", /*allow_nonlinear=*/true)),
+    _q3(declare_parameter<Scalar>("q3", "q3", /*allow_nonlinear=*/true))
 {
 }
 
