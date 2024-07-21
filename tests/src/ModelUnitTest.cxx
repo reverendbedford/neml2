@@ -252,7 +252,7 @@ ModelUnitTest::check_AD_parameter_derivatives(Model & model)
   for (auto && [name, param] : model.named_parameters())
   {
     auto numerical = finite_differencing_derivative(
-        [&](const Tensor & x)
+        [&, &name = name](const Tensor & x)
         {
           auto p0 = Tensor(model.get_parameter(name)).clone();
           model.set_parameter(name, x);
