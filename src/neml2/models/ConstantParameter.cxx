@@ -26,6 +26,8 @@
 
 namespace neml2
 {
+#define CONSTANTPARAMETER_REGISTER(T) register_NEML2_object(T##ConstantParameter)
+FOR_ALL_PRIMITIVETENSOR(CONSTANTPARAMETER_REGISTER);
 
 template <typename T>
 OptionSet
@@ -61,9 +63,4 @@ ConstantParameter<T>::set_value(bool out, bool dout_din, bool d2out_din2)
   // This is zero
   (void)d2out_din2;
 }
-
-#define CONSTANTPARAMETER_REGISTER(T)                                                              \
-  register_NEML2_object_alias(T##ConstantParameter, #T "ConstantParameter")
-FOR_ALL_PRIMITIVETENSOR(CONSTANTPARAMETER_REGISTER);
-
 } // namespace neml2

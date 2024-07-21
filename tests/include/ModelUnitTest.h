@@ -63,7 +63,7 @@ private:
   void check_values(Model & model);
   void check_derivatives(Model & model, bool first, bool second);
   void check_second_derivatives(Model & model, bool first, bool second);
-  void check_parameter_derivatives(Model & model);
+  void check_AD_parameter_derivatives(Model & model);
 
   Model & _model;
   Model & _model_disable_AD;
@@ -74,7 +74,7 @@ private:
   const bool _check_AD_1st_deriv;
   const bool _check_AD_2nd_deriv;
   const bool _check_AD_derivs;
-  const bool _check_param_derivs;
+  const bool _check_AD_param_derivs;
   const bool _check_cuda;
   const bool _check_disable_AD;
 

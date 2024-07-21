@@ -60,19 +60,19 @@ template <typename T>
 LinearCombination<T>::LinearCombination(const OptionSet & options)
   : Model(options),
     _to(declare_output_variable<T>("to_var")),
-    _coef(declare_parameter<Scalar>("c", make_coef(options)))
+    _coef(declare_parameter<Tensor>("c", make_coef(options)))
 {
   for (auto fv : options.get<std::vector<VariableName>>("from_var"))
     _from.push_back(&declare_input_variable<T>(fv));
 }
 
 template <typename T>
-Scalar
+Tensor
 LinearCombination<T>::make_coef(const OptionSet & options) const
 {
   const auto coefs_in = options.get<std::vector<CrossRef<Scalar>>>("coefficients");
   const std::vector<Scalar> coefs(coefs_in.begin(), coefs_in.end());
-  return math::batch_stack(coefs, -1);
+  return math::base_stack(coefs);
 }
 
 template <typename T>
@@ -87,12 +87,12 @@ LinearCombination<T>::set_value(bool out, bool dout_din, bool d2out_din2)
     for (auto from_var : _from)
       vals.push_back(from_var->value());
 
-    _to = math::batch_sum(_coef * math::batch_stack(vals, -1), -1);
+    _to = math::batch_sum(Scalar(_coef) * math::batch_stack(vals, -1), -1);
   }
 
   if (dout_din)
   {
-    const auto deriv = _coef * T::identity_map(options()).batch_expand(N);
+    const auto deriv = Scalar(_coef) * T::identity_map(options()).batch_expand(N);
     for (Size i = 0; i < N; i++)
       _to.d(*_from[i]) = deriv.batch_index({indexing::Ellipsis, i});
   }

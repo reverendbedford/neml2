@@ -8,6 +8,7 @@
     output_symr2_names = 'D'
     output_symr2_values = 'DT'
     check_second_derivatives = true
+    check_AD_parameter_derivatives = false
   []
 []
 

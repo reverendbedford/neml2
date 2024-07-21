@@ -49,7 +49,7 @@ KocksMeckingYieldStress::expected_options()
 KocksMeckingYieldStress::KocksMeckingYieldStress(const OptionSet & options)
   : NonlinearParameter<Scalar>(options),
     _C(declare_parameter<Scalar>("C", "C")),
-    _mu(declare_parameter<Scalar>("shear_modulus", "shear_modulus"))
+    _mu(declare_parameter<Scalar>("mu", "shear_modulus"))
 {
 }
 
@@ -61,7 +61,7 @@ KocksMeckingYieldStress::set_value(bool out, bool dout_din, bool d2out_din2)
 
   if (dout_din)
   {
-    if (const auto mu = nl_param("shear_modulus"))
+    if (const auto mu = nl_param("mu"))
       _p.d(*mu) = math::exp(_C);
 
     if (const auto C = nl_param("C"))
@@ -73,8 +73,12 @@ KocksMeckingYieldStress::set_value(bool out, bool dout_din, bool d2out_din2)
     if (const auto C = nl_param("C"))
     {
       _p.d(*C, *C) = _mu * math::exp(_C);
-      if (const auto mu = nl_param("shear_modulus"))
+
+      if (const auto mu = nl_param("mu"))
+      {
         _p.d(*C, *mu) = math::exp(_C);
+        _p.d(*mu, *C) = math::exp(_C);
+      }
     }
   }
 }

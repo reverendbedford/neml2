@@ -22,36 +22,48 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
-
-#include "neml2/models/Model.h"
+#include "neml2/models/InputParameter.h"
 
 namespace neml2
 {
+#define INPUTPARAMETER_REGISTER(T) register_NEML2_object(T##InputParameter)
+FOR_ALL_PRIMITIVETENSOR(INPUTPARAMETER_REGISTER);
+
 template <typename T>
-class LinearCombination : public Model
+OptionSet
+InputParameter<T>::expected_options()
 {
-public:
-  static OptionSet expected_options();
+  OptionSet options = NonlinearParameter<T>::expected_options();
+  options.doc() = "A parameter that is defined through an input variable. This essentially "
+                  "converts a nonlinear parameter to an input variable";
+  options.set_input<VariableName>("from");
+  options.set("from").doc() = "The input variable that defines this nonlinear parameter";
+  return options;
+}
 
-  LinearCombination(const OptionSet & options);
+template <typename T>
+InputParameter<T>::InputParameter(const OptionSet & options)
+  : NonlinearParameter<T>(options),
+    _input_var(this->template declare_input_variable<T>("from"))
+{
+  neml_assert(utils::stringify(_input_var.name()) != this->name(),
+              "InputParameter must use an input variable name different from the parameter name. "
+              "They both has name '",
+              this->name(),
+              "'.");
+}
 
-protected:
-  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+template <typename T>
+void
+InputParameter<T>::set_value(bool out, bool dout_din, bool d2out_din2)
+{
+  if (out)
+    this->_p = _input_var.value();
 
-  /// Sum of all the input variables
-  Variable<T> & _to;
+  if (dout_din)
+    this->_p.d(_input_var) = T::identity_map(this->options());
 
-  /// The input variables (to be summed)
-  std::vector<const Variable<T> *> _from;
-
-  /// Scaling coefficient for each term
-  const Tensor & _coef;
-
-private:
-  Tensor make_coef(const OptionSet & options) const;
-};
-
-typedef LinearCombination<Scalar> ScalarLinearCombination;
-typedef LinearCombination<SR2> SR2LinearCombination;
+  // This is zero
+  (void)d2out_din2;
+}
 } // namespace neml2

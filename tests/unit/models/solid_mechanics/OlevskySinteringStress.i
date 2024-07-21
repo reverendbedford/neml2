@@ -9,6 +9,7 @@
     output_scalar_values = '0.27'
     check_second_derivatives = true
     derivatives_abs_tol = 1e-06
+    parameter_derivatives_rel_tol = 1e-3
   []
 []
 

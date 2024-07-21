@@ -215,22 +215,23 @@ jacrev(const Tensor & y, const Tensor & p)
 
   neml_assert_dbg(yf.base_dim() == 1, "Flattened output must be flat.");
 
-  auto dyf_dp = Tensor::empty(
+  auto dyf_dp = Tensor::zeros(
       yf.batch_sizes(), utils::add_shapes(yf.base_sizes(), p.base_sizes()), yf.options());
 
-  for (Size i = 0; i < yf.base_sizes()[0]; i++)
-  {
-    auto v = Tensor::zeros_like(yf);
-    v.index_put_({torch::indexing::Ellipsis, i}, 1.0);
-    const auto dyfi_dp = torch::autograd::grad({yf},
-                                               {p},
-                                               {v},
-                                               /*retain_graph=*/true,
-                                               /*create_graph=*/false,
-                                               /*allow_unused=*/false)[0];
-    if (dyfi_dp.defined())
-      dyf_dp.base_index_put_({i, torch::indexing::Ellipsis}, dyfi_dp);
-  }
+  if (yf.requires_grad())
+    for (Size i = 0; i < yf.base_sizes()[0]; i++)
+    {
+      auto v = Tensor::zeros_like(yf);
+      v.index_put_({torch::indexing::Ellipsis, i}, 1.0);
+      const auto dyfi_dp = torch::autograd::grad({yf},
+                                                 {p},
+                                                 {v},
+                                                 /*retain_graph=*/true,
+                                                 /*create_graph=*/false,
+                                                 /*allow_unused=*/false)[0];
+      if (dyfi_dp.defined())
+        dyf_dp.base_index_put_({i, torch::indexing::Ellipsis}, dyfi_dp);
+    }
 
   // Reshape the derivative back to the correct shape
   const auto dy_dp =

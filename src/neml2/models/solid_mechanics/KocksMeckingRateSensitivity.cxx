@@ -56,7 +56,7 @@ KocksMeckingRateSensitivity::expected_options()
 KocksMeckingRateSensitivity::KocksMeckingRateSensitivity(const OptionSet & options)
   : NonlinearParameter<Scalar>(options),
     _A(declare_parameter<Scalar>("A", "A")),
-    _mu(declare_parameter<Scalar>("shear_modulus", "shear_modulus")),
+    _mu(declare_parameter<Scalar>("mu", "shear_modulus")),
     _k(options.get<Real>("k")),
     _b3(options.get<Real>("b") * options.get<Real>("b") * options.get<Real>("b")),
     _T(declare_input_variable<Scalar>("temperature"))
@@ -72,10 +72,10 @@ KocksMeckingRateSensitivity::set_value(bool out, bool dout_din, bool d2out_din2)
   if (dout_din)
   {
     _p.d(_T) = _b3 * _mu / (_A * _k * _T * _T);
-    if (const auto mu = nl_param("shear_modulus"))
+    if (const auto mu = nl_param("mu"))
       _p.d(*mu) = -_b3 / (_A * _k * _T);
     if (const auto A = nl_param("A"))
-      _p.d(*A) = -_b3 * _mu / (_A * _A * _k * _T);
+      _p.d(*A) = _b3 * _mu / (_A * _A * _k * _T);
   }
 
   if (d2out_din2)

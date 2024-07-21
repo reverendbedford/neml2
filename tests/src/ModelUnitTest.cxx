@@ -44,7 +44,7 @@ ModelUnitTest::expected_options()
   options.set<bool>("check_AD_first_derivatives") = true;
   options.set<bool>("check_AD_second_derivatives") = true;
   options.set<bool>("check_AD_derivatives") = true;
-  options.set<bool>("check_parameter_derivatives") = false;
+  options.set<bool>("check_AD_parameter_derivatives") = true;
   options.set<bool>("check_cuda") = true;
   options.set<bool>("check_disable_AD") = true;
   options.set<std::vector<VariableName>>("input_batch_tensor_names");
@@ -89,7 +89,7 @@ ModelUnitTest::ModelUnitTest(const OptionSet & options)
     _check_AD_1st_deriv(options.get<bool>("check_AD_first_derivatives")),
     _check_AD_2nd_deriv(options.get<bool>("check_AD_second_derivatives")),
     _check_AD_derivs(options.get<bool>("check_AD_derivatives")),
-    _check_param_derivs(options.get<bool>("check_parameter_derivatives")),
+    _check_AD_param_derivs(options.get<bool>("check_AD_parameter_derivatives")),
     _check_cuda(options.get<bool>("check_cuda")),
     _check_disable_AD(options.get<bool>("check_disable_AD")),
     _deriv_order(-1),
@@ -177,8 +177,8 @@ ModelUnitTest::check_all(Model & model)
     if (_check_AD_derivs)
       check_second_derivatives(model, true, true);
 
-    if (_check_param_derivs)
-      check_parameter_derivatives(model);
+    if (_check_AD_param_derivs)
+      check_AD_parameter_derivatives(model);
   }
 }
 
@@ -230,28 +230,43 @@ ModelUnitTest::check_second_derivatives(Model & model, bool first, bool second)
 }
 
 void
-ModelUnitTest::check_parameter_derivatives(Model & model)
+ModelUnitTest::check_AD_parameter_derivatives(Model & model)
 {
+  // Turn on AD for parameters
   for (auto && [name, param] : model.named_parameters())
   {
-    auto pval = Tensor(param).batch_expand_copy(_batch_shape);
-    pval.requires_grad_(true);
-    param = pval;
-    auto out = model.value(_in);
-    auto exact = math::jacrev(out, Tensor(param));
+    auto param_expanded = Tensor(param).batch_expand_copy(model.batch_sizes());
+    param = param_expanded;
+    param.requires_grad_(true);
+  }
+
+  // Evaluate the model
+  auto out = model.value(_in);
+
+  // Extract AD parameter derivatives
+  std::map<std::string, Tensor> exact;
+  for (auto && [name, param] : model.named_parameters())
+    exact[name] = math::jacrev(out, param);
+
+  // Compare results against FD
+  for (auto && [name, param] : model.named_parameters())
+  {
     auto numerical = finite_differencing_derivative(
-        [&, &param = param](const Tensor & x)
+        [&](const Tensor & x)
         {
-          param = x;
-          return model.value(_in);
+          auto p0 = Tensor(model.get_parameter(name)).clone();
+          model.set_parameter(name, x);
+          auto out = model.value(_in);
+          model.set_parameter(name, p0);
+          return out;
         },
-        Tensor(param));
-    neml_assert(torch::allclose(exact, numerical, _param_rtol, _param_atol),
+        param);
+    neml_assert(torch::allclose(exact[name], numerical, _param_rtol, _param_atol),
                 "The model gives derivatives for parameter '",
                 name,
                 "' that are different from those given by finite "
                 "differencing. The model gives:\n",
-                exact,
+                exact[name],
                 "\nFinite differencing gives:\n",
                 numerical);
   }

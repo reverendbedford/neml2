@@ -198,7 +198,7 @@ ComposedModel::allocate_variables(bool in, bool out)
       _dpout_din[this] = LabeledMatrix::identity(batch_sizes(), input_axis(), options());
       for (auto i : registered_models())
         _dpout_din[i] =
-            LabeledMatrix::empty(batch_sizes(), {&i->output_axis(), &input_axis()}, options());
+            LabeledMatrix::zeros(batch_sizes(), {&i->output_axis(), &input_axis()}, options());
     }
 
     if (requires_2nd_grad())
@@ -206,7 +206,7 @@ ComposedModel::allocate_variables(bool in, bool out)
       _d2pout_din2[this] = LabeledTensor3D::zeros(
           batch_sizes(), {&input_axis(), &input_axis(), &input_axis()}, options());
       for (auto i : registered_models())
-        _d2pout_din2[i] = LabeledTensor3D::empty(
+        _d2pout_din2[i] = LabeledTensor3D::zeros(
             batch_sizes(), {&i->output_axis(), &input_axis(), &input_axis()}, options());
     }
   }
@@ -307,6 +307,9 @@ ComposedModel::set_value_async(Model * i, bool out, bool dout_din, bool d2out_di
 void
 ComposedModel::apply_chain_rule(Model * i)
 {
+  if (_dpin_din_views[i].empty())
+    return;
+
   auto dpin_din =
       LabeledMatrix(math::base_cat(_dpin_din_views[i]), {&i->input_axis(), &input_axis()});
   _dpout_din[i].copy_(i->derivative_storage().chain(dpin_din));
@@ -315,6 +318,9 @@ ComposedModel::apply_chain_rule(Model * i)
 void
 ComposedModel::apply_second_order_chain_rule(Model * i)
 {
+  if (_dpin_din_views[i].empty())
+    return;
+
   auto dpin_din =
       LabeledMatrix(math::base_cat(_dpin_din_views[i]), {&i->input_axis(), &input_axis()});
   auto d2pin_din2 = LabeledTensor3D(math::base_cat(_d2pin_din2_views[i]),

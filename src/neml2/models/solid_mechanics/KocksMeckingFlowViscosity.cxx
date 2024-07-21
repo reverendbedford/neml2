@@ -68,7 +68,7 @@ KocksMeckingFlowViscosity::KocksMeckingFlowViscosity(const OptionSet & options)
   : NonlinearParameter<Scalar>(options),
     _A(declare_parameter<Scalar>("A", "A")),
     _B(declare_parameter<Scalar>("B", "B")),
-    _mu(declare_parameter<Scalar>("shear_modulus", "shear_modulus")),
+    _mu(declare_parameter<Scalar>("mu", "shear_modulus")),
     _eps0(options.get<Real>("eps0")),
     _k(options.get<Real>("k")),
     _b3(options.get<Real>("b") * options.get<Real>("b") * options.get<Real>("b")),
@@ -95,7 +95,7 @@ KocksMeckingFlowViscosity::set_value(bool out, bool dout_din, bool d2out_din2)
       _p.d(*B) = math::exp(_B) * _mu * post;
 
     if (const auto mu = nl_param("mu"))
-      _p.d(*mu) = math::exp(_B) * post * (_b3 * _mu - _A * _k * _T * std::log(_eps0)) / (_b3 * _mu);
+      _p.d(*mu) = math::exp(_B) * post * (1.0 - _A * _k * _T * std::log(_eps0) / (_b3 * _mu));
   }
 
   if (d2out_din2)
@@ -104,8 +104,8 @@ KocksMeckingFlowViscosity::set_value(bool out, bool dout_din, bool d2out_din2)
     _p.d(_T, _T) = math::pow(_A * _k * std::log(_eps0) / _b3, 2.0) * math::exp(_B) * post / _mu;
 
     if (const auto A = nl_param("A"))
-      _p.d(_T, *A) = math::exp(_B) * _k * std::log(_eps0) * post * (_A * _k * _T + _b3 * _mu) /
-                     (_b3 * _b3 * _mu);
+      _p.d(_T, *A) = math::exp(_B) * _k * std::log(_eps0) * post / _b3 *
+                     (std::log(_eps0) * _A * _k * _T / (_b3 * _mu) + 1.0);
 
     if (const auto B = nl_param("B"))
       _p.d(_T, *B) = _A * math::exp(_B) * _k * std::log(_eps0) * post / _b3;
@@ -117,8 +117,8 @@ KocksMeckingFlowViscosity::set_value(bool out, bool dout_din, bool d2out_din2)
     // A
     if (const auto A = nl_param("A"))
     {
-      _p.d(*A, _T) = math::exp(_B) * _k * std::log(_eps0) * post * (_A * _k * _T + _b3 * _mu) /
-                     (_b3 * _b3 * _mu);
+      _p.d(*A, _T) = math::exp(_B) * _k * std::log(_eps0) * post / _b3 *
+                     (std::log(_eps0) * _A * _k * _T / (_b3 * _mu) + 1.0);
 
       _p.d(*A, *A) = math::exp(_B) * math::pow(_k * _T * std::log(_eps0) / _b3, 2.0) * post / _mu;
 
@@ -151,7 +151,7 @@ KocksMeckingFlowViscosity::set_value(bool out, bool dout_din, bool d2out_din2)
       _p.d(*mu, _T) =
           -math::exp(_B) * math::pow(_A * _k * std::log(_eps0) / (_b3 * _mu), 2.0) * _T * post;
 
-      if (const auto A = nl_param("A)"))
+      if (const auto A = nl_param("A"))
         _p.d(*mu, *A) =
             -_A * math::exp(_B) * math::pow(_k * _T * std::log(_eps0) / (_b3 * _mu), 2.0) * post;
 

@@ -2,19 +2,18 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    batch_shape = '(2,2)'
+    batch_shape = '(10)'
+    input_scalar_names = 'params/sy'
+    input_scalar_values = '50'
     input_symr2_names = 'state/internal/M'
     input_symr2_values = 'M'
-    input_scalar_names = 'forces/T'
-    input_scalar_values = '550'
     output_scalar_names = 'state/internal/fp'
-    output_scalar_values = '102.5057'
-    derivatives_abs_tol = 1e-06
-    check_second_derivatives = true
+    output_scalar_values = '99.8876'
     check_AD_first_derivatives = false
     check_AD_second_derivatives = false
     check_AD_derivatives = false
-    check_AD_parameter_derivatives = false
+    check_second_derivatives = true
+    derivatives_abs_tol = 1e-06
   []
 []
 
@@ -23,38 +22,22 @@
     type = FillSR2
     values = '40 120 80 10 10 90'
   []
-  [T_data]
-    type = LinspaceScalar
-    start = 273.15
-    end = 2000
-    nstep = 10
-    dim = 0
-  []
-  [s0_data]
-    type = LinspaceScalar
-    start = 50
-    end = 30
-    nstep = 10
-    dim = 0
-  []
 []
 
 [Models]
+  [sy]
+    type = ScalarInputParameter
+    from = 'params/sy'
+  []
   [vonmises]
     type = SR2Invariant
     invariant_type = 'VONMISES'
     tensor = 'state/internal/M'
     invariant = 'state/internal/s'
   []
-  [s0]
-    type = ScalarLinearInterpolation
-    argument = 'forces/T'
-    abscissa = 'T_data'
-    ordinate = 's0_data'
-  []
   [yield]
     type = YieldFunction
-    yield_stress = 's0'
+    yield_stress = 'sy'
   []
   [model]
     type = ComposedModel

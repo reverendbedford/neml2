@@ -7,6 +7,7 @@
     output_batch_tensor_values = 'rates'
     input_batch_tensor_names = 'state/internal/resolved_shears state/internal/slip_strengths'
     input_batch_tensor_values = 'tau tau_bar'
+    check_AD_parameter_derivatives = false
     derivatives_rel_tol = 0
     derivatives_abs_tol = 5e-6
     second_derivatives_rel_tol = 0

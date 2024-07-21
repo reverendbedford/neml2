@@ -24,34 +24,27 @@
 
 #pragma once
 
-#include "neml2/models/Model.h"
+#include "neml2/models/NonlinearParameter.h"
 
 namespace neml2
 {
+/**
+ * @brief A parameter that is defined by an input variable
+ */
 template <typename T>
-class LinearCombination : public Model
+class InputParameter : public NonlinearParameter<T>
 {
 public:
   static OptionSet expected_options();
 
-  LinearCombination(const OptionSet & options);
+  InputParameter(const OptionSet & options);
 
 protected:
   void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
-  /// Sum of all the input variables
-  Variable<T> & _to;
-
-  /// The input variables (to be summed)
-  std::vector<const Variable<T> *> _from;
-
-  /// Scaling coefficient for each term
-  const Tensor & _coef;
-
-private:
-  Tensor make_coef(const OptionSet & options) const;
+  const Variable<T> & _input_var;
 };
 
-typedef LinearCombination<Scalar> ScalarLinearCombination;
-typedef LinearCombination<SR2> SR2LinearCombination;
+#define INPUTPARAMETER_TYPEDEF_PRIMITIVETENSOR(T) typedef InputParameter<T> T##InputParameter
+FOR_ALL_PRIMITIVETENSOR(INPUTPARAMETER_TYPEDEF_PRIMITIVETENSOR);
 } // namespace neml2
