@@ -642,6 +642,12 @@ Functions</h2></td></tr>
 <tr class="separator:afb0d855576075b8f5d9edf82ca426ef4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e477c0e944a51cf5584de44a315cb15" id="r_a7e477c0e944a51cf5584de44a315cb15"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7e477c0e944a51cf5584de44a315cb15">register_NEML2_object</a> (<a class="el" href="classneml2_1_1SolidMechanicsDriver.html">SolidMechanicsDriver</a>)</td></tr>
 <tr class="separator:a7e477c0e944a51cf5584de44a315cb15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4cc04b41a4a39d17f26099be93ef949f" id="r_a4cc04b41a4a39d17f26099be93ef949f"><td class="memItemLeft" align="right" valign="top">std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4cc04b41a4a39d17f26099be93ef949f">buffer_name_separator</a> ()</td></tr>
+<tr class="memdesc:a4cc04b41a4a39d17f26099be93ef949f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default nested buffer name separator.  <br /></td></tr>
+<tr class="separator:a4cc04b41a4a39d17f26099be93ef949f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb7e5f3cc4d212e6fb605d1e51a55684" id="r_acb7e5f3cc4d212e6fb605d1e51a55684"><td class="memItemLeft" align="right" valign="top">std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acb7e5f3cc4d212e6fb605d1e51a55684">parameter_name_separator</a> ()</td></tr>
+<tr class="memdesc:acb7e5f3cc4d212e6fb605d1e51a55684"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default nested parameter name separator.  <br /></td></tr>
+<tr class="separator:acb7e5f3cc4d212e6fb605d1e51a55684"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa5f9f3b60d3062c65722a7cab317e0ca" id="r_aa5f9f3b60d3062c65722a7cab317e0ca"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa5f9f3b60d3062c65722a7cab317e0ca">register_NEML2_object</a> (<a class="el" href="classneml2_1_1ArrheniusParameter.html">ArrheniusParameter</a>)</td></tr>
 <tr class="separator:aa5f9f3b60d3062c65722a7cab317e0ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d1a748ac4f63d4b4fc190f0aa34a7f9" id="r_a7d1a748ac4f63d4b4fc190f0aa34a7f9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7d1a748ac4f63d4b4fc190f0aa34a7f9">register_NEML2_object</a> (<a class="el" href="#a6a0f6b0733d45b89f075a07811e0dd93">ScalarBackwardEulerTimeIntegration</a>)</td></tr>
@@ -1087,7 +1093,7 @@ Functions</h2></td></tr>
 <tr class="memitem:a1a06a4be486c5f22ba8542ff361e2be0" id="r_a1a06a4be486c5f22ba8542ff361e2be0"><td class="memItemLeft" align="right" valign="top">torch::Device &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1a06a4be486c5f22ba8542ff361e2be0">default_device</a> ()</td></tr>
 <tr class="memdesc:a1a06a4be486c5f22ba8542ff361e2be0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default device.  <br /></td></tr>
 <tr class="separator:a1a06a4be486c5f22ba8542ff361e2be0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">RAII style default tolerances</div></td></tr>
+<tr><td colspan="2"><div class="groupHeader">Default tolerances</div></td></tr>
 <tr class="memitem:a7ed9e5d4e37beced5aab31ecc7c9938c" id="r_a7ed9e5d4e37beced5aab31ecc7c9938c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7ed9e5d4e37beced5aab31ecc7c9938c">machine_precision</a> ()</td></tr>
 <tr class="separator:a7ed9e5d4e37beced5aab31ecc7c9938c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa138593f5c695e43a899bd4ccbe0d793" id="r_aa138593f5c695e43a899bd4ccbe0d793"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa138593f5c695e43a899bd4ccbe0d793">tolerance</a> ()</td></tr>
@@ -1510,6 +1516,25 @@ template&lt;class... T&gt; </div>
 <li>Base shapes are the same</li>
 <li>Batch shapes are broadcastable (see sizes_broadcastable) </li>
 </ol>
+
+</div>
+</div>
+<a id="a4cc04b41a4a39d17f26099be93ef949f" name="a4cc04b41a4a39d17f26099be93ef949f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4cc04b41a4a39d17f26099be93ef949f">&#9670;&#160;</a></span>buffer_name_separator()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string &amp; buffer_name_separator </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Default nested buffer name separator. </p>
 
 </div>
 </div>
@@ -3865,6 +3890,25 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T &gt;
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="acb7e5f3cc4d212e6fb605d1e51a55684" name="acb7e5f3cc4d212e6fb605d1e51a55684"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb7e5f3cc4d212e6fb605d1e51a55684">&#9670;&#160;</a></span>parameter_name_separator()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string &amp; parameter_name_separator </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Default nested parameter name separator. </p>
 
 </div>
 </div>

@@ -133,6 +133,15 @@ Available objects and their input file syntax</h1>
 Settings</h2>
 <p>Global settings for tensors, models, etc. </p><details >
 <summary >
+<code>buffer_name_separator</code> Nested buffer name separator. The default is '.'. For example, a sub-model 'foo' which declares a buffer 'bar' will have a buffer named 'foo.bar'.</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: string</li>
+<li><u>Default</u>: . </li>
+</ul>
+</details>
+<details >
+<summary >
 <code>default_device</code> Default device on which tensors are created and models are evaluated. The string supplied must follow the following schema: (cpu|cuda)[:&lt;device-index&gt;] where cpu or cuda specifies the device type, and :&lt;device-index&gt; optionally specifies a device index. For example, device='cpu' sets the target compute device to be CPU, and device='cuda:1' sets the target compute device to be CUDA with device ID 1.</summary>
 <p></p>
 <ul>
@@ -181,6 +190,15 @@ Settings</h2>
 <ul>
 <li><u>Type</u>: number</li>
 <li><u>Default</u>: 1e-15 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>parameter_name_separator</code> Parameter name separator. The default is '.'. For example, a sub-model 'foo' which declares a parameter 'bar' will have a parameter named 'foo.bar'.</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: string</li>
+<li><u>Default</u>: . </li>
 </ul>
 </details>
 <details >

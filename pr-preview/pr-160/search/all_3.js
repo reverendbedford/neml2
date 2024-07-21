@@ -48,11 +48,12 @@ var searchData=
   ['broadcasting_45',['Tensor broadcasting',['../system-tensors.html#tensor-broadcasting',1,'']]],
   ['buffer_46',['BUFFER',['../namespaceneml2.html#ab600865ffa5d3681d723ef019d109535a17de626bcae5109bb2f7a66dfc4a8a1d',1,'neml2']]],
   ['buffer_47',['Buffer',['../system-data.html#autotoc_md29',1,'']]],
-  ['bufferstore_48',['BufferStore',['../classneml2_1_1BufferStore.html',1,'BufferStore'],['../classneml2_1_1BufferStore.html#ac9a0513f22b822f9513059d10d072124',1,'neml2::BufferStore::BufferStore()']]],
-  ['build_20and_20install_49',['Build and install',['../install.html#autotoc_md11',1,'']]],
-  ['build_20customization_50',['Build customization',['../install.html#install-build-customization',1,'']]],
-  ['builder_51',['builder',['../classneml2_1_1Registry.html#a5e569192804822d0600e223341202e0a',1,'neml2::Registry']]],
-  ['buildptr_52',['BuildPtr',['../namespaceneml2.html#af62feabaf2151de89d0a76a2995f8b4d',1,'neml2']]],
-  ['burgers_53',['burgers',['../classneml2_1_1crystallography_1_1CrystalGeometry.html#a6e6ca00752e0b1f1e377b78c81df8d1c',1,'neml2::crystallography::CrystalGeometry']]],
-  ['bvv_54',['bvv',['../namespaceneml2_1_1math.html#ad1e6d18c57469ef034e57bde0e6cfdf6',1,'neml2::math']]]
+  ['buffer_5fname_5fseparator_48',['buffer_name_separator',['../namespaceneml2.html#a4cc04b41a4a39d17f26099be93ef949f',1,'neml2']]],
+  ['bufferstore_49',['BufferStore',['../classneml2_1_1BufferStore.html',1,'BufferStore'],['../classneml2_1_1BufferStore.html#ac9a0513f22b822f9513059d10d072124',1,'neml2::BufferStore::BufferStore()']]],
+  ['build_20and_20install_50',['Build and install',['../install.html#autotoc_md11',1,'']]],
+  ['build_20customization_51',['Build customization',['../install.html#install-build-customization',1,'']]],
+  ['builder_52',['builder',['../classneml2_1_1Registry.html#a5e569192804822d0600e223341202e0a',1,'neml2::Registry']]],
+  ['buildptr_53',['BuildPtr',['../namespaceneml2.html#af62feabaf2151de89d0a76a2995f8b4d',1,'neml2']]],
+  ['burgers_54',['burgers',['../classneml2_1_1crystallography_1_1CrystalGeometry.html#a6e6ca00752e0b1f1e377b78c81df8d1c',1,'neml2::crystallography::CrystalGeometry']]],
+  ['bvv_55',['bvv',['../namespaceneml2_1_1math.html#ad1e6d18c57469ef034e57bde0e6cfdf6',1,'neml2::math']]]
 ];

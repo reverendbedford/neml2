@@ -42,8 +42,9 @@ var searchData=
   ['broadcast_5fbatch_5fdim_39',['broadcast_batch_dim',['../namespaceneml2.html#a2f8a7cea74c152236bf4d4bc627a0528',1,'neml2::broadcast_batch_dim(T &amp;&amp;...)'],['../namespaceneml2.html#a940c6f63f558db714f43e5b271e5fcf9',1,'neml2::broadcast_batch_dim(T &amp;&amp;... tensor)']]],
   ['broadcast_5fsizes_40',['broadcast_sizes',['../namespaceneml2_1_1utils.html#a288a351a0307f62ac8db5ea64dea8a63',1,'neml2::utils']]],
   ['broadcastable_41',['broadcastable',['../namespaceneml2.html#a36e466553cc4e968e9176bb270a9d651',1,'neml2']]],
-  ['bufferstore_42',['BufferStore',['../classneml2_1_1BufferStore.html#ac9a0513f22b822f9513059d10d072124',1,'neml2::BufferStore']]],
-  ['builder_43',['builder',['../classneml2_1_1Registry.html#a5e569192804822d0600e223341202e0a',1,'neml2::Registry']]],
-  ['burgers_44',['burgers',['../classneml2_1_1crystallography_1_1CrystalGeometry.html#a6e6ca00752e0b1f1e377b78c81df8d1c',1,'neml2::crystallography::CrystalGeometry']]],
-  ['bvv_45',['bvv',['../namespaceneml2_1_1math.html#ad1e6d18c57469ef034e57bde0e6cfdf6',1,'neml2::math']]]
+  ['buffer_5fname_5fseparator_42',['buffer_name_separator',['../namespaceneml2.html#a4cc04b41a4a39d17f26099be93ef949f',1,'neml2']]],
+  ['bufferstore_43',['BufferStore',['../classneml2_1_1BufferStore.html#ac9a0513f22b822f9513059d10d072124',1,'neml2::BufferStore']]],
+  ['builder_44',['builder',['../classneml2_1_1Registry.html#a5e569192804822d0600e223341202e0a',1,'neml2::Registry']]],
+  ['burgers_45',['burgers',['../classneml2_1_1crystallography_1_1CrystalGeometry.html#a6e6ca00752e0b1f1e377b78c81df8d1c',1,'neml2::crystallography::CrystalGeometry']]],
+  ['bvv_46',['bvv',['../namespaceneml2_1_1math.html#ad1e6d18c57469ef034e57bde0e6cfdf6',1,'neml2::math']]]
 ];

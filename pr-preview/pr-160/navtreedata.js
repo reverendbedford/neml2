@@ -80,7 +80,7 @@ var NAVTREEINDEX =
 "classneml2_1_1Transformable.html#abf90d5d78122068de834c6da6257b524",
 "classneml2_1_1VariableStore.html#a8904f518623a00911fe1d5278c801994",
 "namespaceneml2.html#a24a6c67253a2771b39558e5c140dc8a7",
-"namespaceneml2_1_1math.html#a6eae274fd964f8d792e0f69ca2997668"
+"namespaceneml2_1_1math.html#a4f786742a329413a503d3a6ad76243fb"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
