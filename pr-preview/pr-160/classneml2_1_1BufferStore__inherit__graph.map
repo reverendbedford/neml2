@@ -4,8 +4,8 @@
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="114,1633,148,1633,148,1639,114,1639"/>
 <area shape="rect" id="Node000003" href="$classneml2_1_1Model.html" title="The base class for all constitutive models." alt="" coords="285,1082,347,1107"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="180,1609,309,1107,314,1108,185,1610"/>
-<area shape="rect" id="Node000069" href="$classneml2_1_1crystallography_1_1CrystalGeometry.html" title="Defines the geometry of a crystal system This includes a basic definition of the crystal lattice,..." alt="" coords="249,1647,383,1673"/>
-<area shape="poly" id="edge47_Node000002_Node000069" title=" " alt="" coords="215,1640,249,1646,249,1651,214,1645"/>
+<area shape="rect" id="Node000070" href="$classneml2_1_1crystallography_1_1CrystalGeometry.html" title="Defines the geometry of a crystal system This includes a basic definition of the crystal lattice,..." alt="" coords="249,1647,383,1673"/>
+<area shape="poly" id="edge47_Node000002_Node000070" title=" " alt="" coords="215,1640,249,1646,249,1651,214,1645"/>
 <area shape="rect" id="Node000004" href="$classneml2_1_1NonlinearParameter.html" title=" " alt="" coords="485,5,637,45"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="316,1068,327,857,349,535,364,372,383,228,404,118,416,80,429,57,454,37,484,27,486,32,457,42,433,60,421,82,409,119,388,229,370,373,354,536,332,857,321,1069"/>
 <area shape="rect" id="Node000009" href="$classneml2_1_1BackwardEulerTimeIntegration.html" title=" " alt="" coords="431,70,692,95"/>
@@ -52,48 +52,48 @@
 <area shape="poly" id="edge25_Node000003_Node000039" title=" " alt="" coords="361,1087,488,1074,489,1079,362,1093"/>
 <area shape="rect" id="Node000040" href="$classneml2_1_1NonlinearParameter.html" title="The base class for nonlinear parameters." alt="" coords="466,1106,657,1131"/>
 <area shape="poly" id="edge26_Node000003_Node000040" title=" " alt="" coords="361,1096,466,1107,466,1112,361,1102"/>
-<area shape="rect" id="Node000044" href="$classneml2_1_1Normality.html" title=" " alt="" coords="518,1155,605,1181"/>
-<area shape="poly" id="edge27_Node000003_Node000044" title=" " alt="" coords="356,1111,431,1141,518,1160,517,1165,430,1147,354,1116"/>
-<area shape="rect" id="Node000045" href="$classneml2_1_1OlevskySinteringStress.html" title=" " alt="" coords="475,1205,647,1230"/>
-<area shape="poly" id="edge28_Node000003_Node000045" title=" " alt="" coords="339,1116,379,1155,404,1175,432,1191,476,1206,474,1211,430,1196,401,1179,376,1159,335,1119"/>
-<area shape="rect" id="Node000046" href="$classneml2_1_1OrientationRate.html" title="Calculate the orientation rate from the crystal model kinetics." alt="" coords="499,1254,624,1279"/>
-<area shape="poly" id="edge29_Node000003_Node000046" title=" " alt="" coords="331,1118,370,1181,399,1214,432,1240,464,1254,499,1262,498,1267,463,1260,429,1245,395,1218,366,1184,327,1121"/>
-<area shape="rect" id="Node000047" href="$classneml2_1_1OverStress.html" title=" " alt="" coords="515,1303,608,1329"/>
-<area shape="poly" id="edge30_Node000003_Node000047" title=" " alt="" coords="327,1120,341,1159,362,1205,393,1252,411,1272,432,1290,451,1300,472,1308,515,1314,514,1319,471,1313,449,1305,429,1294,407,1276,388,1255,358,1208,336,1161,322,1122"/>
-<area shape="rect" id="Node000048" href="$classneml2_1_1PlasticDeformationRate.html" title="Plastic deformation rate with the default kinetics." alt="" coords="473,1353,650,1378"/>
-<area shape="poly" id="edge31_Node000003_Node000048" title=" " alt="" coords="324,1120,335,1168,355,1228,387,1289,408,1316,432,1339,452,1351,473,1358,471,1363,449,1356,429,1343,404,1320,382,1292,350,1230,329,1169,319,1121"/>
-<area shape="rect" id="Node000049" href="$classneml2_1_1PlasticFlowRate.html" title=" " alt="" coords="498,1402,625,1427"/>
-<area shape="poly" id="edge32_Node000003_Node000049" title=" " alt="" coords="322,1121,330,1178,348,1251,362,1289,381,1326,404,1360,432,1389,463,1405,499,1413,497,1418,462,1410,429,1393,400,1363,376,1328,357,1291,343,1252,324,1179,316,1122"/>
-<area shape="rect" id="Node000051" href="$classneml2_1_1PlasticVorticity.html" title="Calculate the plastic vorticity with the default crystal kinetics." alt="" coords="502,1451,621,1477"/>
-<area shape="poly" id="edge33_Node000003_Node000051" title=" " alt="" coords="320,1121,325,1186,341,1272,355,1318,375,1362,400,1403,432,1438,448,1448,465,1456,502,1463,501,1468,463,1461,445,1453,429,1442,396,1406,370,1365,350,1320,336,1274,320,1187,315,1121"/>
-<area shape="rect" id="Node000052" href="$classneml2_1_1RateIndependentPlasticFlowConstraint.html" title=" " alt="" coords="458,1501,665,1541"/>
-<area shape="poly" id="edge34_Node000003_Node000052" title=" " alt="" coords="319,1121,322,1194,336,1293,350,1346,370,1397,397,1445,432,1487,459,1505,456,1509,429,1491,393,1448,365,1400,345,1347,331,1294,316,1194,314,1121"/>
-<area shape="rect" id="Node000053" href="$classneml2_1_1ResolvedShear.html" title="Calculate the resolved shears." alt="" coords="502,1566,621,1591"/>
-<area shape="poly" id="edge35_Node000003_Node000053" title=" " alt="" coords="323,1121,335,1217,358,1347,373,1413,390,1472,410,1520,433,1551,448,1562,465,1570,502,1578,501,1583,463,1575,445,1567,429,1555,406,1522,385,1474,368,1414,353,1348,330,1218,318,1122"/>
-<area shape="rect" id="Node000054" href="$classneml2_1_1RotationMatrix.html" title="Convert a Rodrigues vector (Rot) to a second order tensor (R2)." alt="" coords="502,1615,621,1641"/>
-<area shape="poly" id="edge36_Node000003_Node000054" title=" " alt="" coords="322,1121,333,1227,354,1372,369,1446,387,1512,408,1566,433,1602,447,1613,465,1621,502,1628,501,1633,463,1626,445,1618,429,1606,404,1569,382,1514,364,1447,349,1373,328,1227,317,1122"/>
-<area shape="rect" id="Node000055" href="$classneml2_1_1SR2Invariant.html" title=" " alt="" coords="509,1665,614,1690"/>
-<area shape="poly" id="edge37_Node000003_Node000055" title=" " alt="" coords="322,1121,331,1236,351,1396,366,1477,384,1551,406,1612,419,1634,433,1651,449,1663,468,1671,509,1678,508,1683,466,1677,446,1668,429,1655,415,1637,401,1614,379,1553,360,1479,346,1397,326,1236,316,1121"/>
-<area shape="rect" id="Node000056" href="$classneml2_1_1SingleSlipHardeningRule.html" title="Any slip rule where all systems share the same strength." alt="" coords="470,1714,653,1739"/>
-<area shape="poly" id="edge38_Node000003_Node000056" title=" " alt="" coords="321,1121,329,1244,347,1419,362,1509,381,1590,404,1657,418,1682,433,1701,450,1714,471,1722,469,1727,447,1718,429,1705,413,1685,399,1659,376,1592,357,1510,342,1420,324,1245,316,1121"/>
-<area shape="rect" id="Node000059" href="$classneml2_1_1SlipRule.html" title="Parent class of slip rules, mapping from resolved shear and internal state to slip rates." alt="" coords="524,1763,599,1789"/>
-<area shape="poly" id="edge39_Node000003_Node000059" title=" " alt="" coords="323,1121,339,1262,366,1463,399,1650,416,1716,433,1750,452,1764,476,1773,524,1777,523,1782,475,1778,450,1769,429,1754,411,1717,393,1651,360,1464,334,1263,317,1122"/>
-<area shape="rect" id="Node000061" href="$classneml2_1_1SlipStrengthMap.html" title="Parent class of maps between internal variables and the slip system strengths." alt="" coords="497,1813,626,1838"/>
-<area shape="poly" id="edge40_Node000003_Node000061" title=" " alt="" coords="322,1121,338,1272,364,1488,397,1691,415,1762,424,1786,433,1800,446,1810,462,1818,497,1826,496,1831,460,1823,443,1815,429,1803,419,1788,410,1764,392,1692,359,1489,332,1273,317,1122"/>
-<area shape="rect" id="Node000063" href="$classneml2_1_1StateRate.html" title=" " alt="" coords="499,1862,623,1887"/>
-<area shape="poly" id="edge41_Node000003_Node000063" title=" " alt="" coords="323,1121,374,1525,407,1743,422,1816,433,1849,447,1860,463,1868,499,1875,498,1880,461,1873,444,1864,428,1852,416,1818,402,1744,369,1525,318,1122"/>
-<area shape="rect" id="Node000064" href="$classneml2_1_1SumSlipRates.html" title="A helper model to calculate the sum of the absolute value of the slip rates." alt="" coords="505,1911,617,1937"/>
-<area shape="poly" id="edge42_Node000003_Node000064" title=" " alt="" coords="323,1121,379,1556,413,1791,425,1867,433,1899,448,1910,466,1918,506,1925,505,1930,465,1923,445,1915,428,1901,420,1869,407,1792,374,1557,318,1121"/>
-<area shape="rect" id="Node000065" href="$classneml2_1_1TotalStrain.html" title=" " alt="" coords="516,1961,607,1986"/>
-<area shape="poly" id="edge43_Node000003_Node000065" title=" " alt="" coords="323,1121,379,1583,412,1833,425,1915,433,1948,450,1961,471,1969,516,1975,515,1980,470,1974,448,1966,428,1951,420,1916,407,1834,374,1583,318,1122"/>
-<area shape="rect" id="Node000066" href="$classneml2_1_1WR2ExplicitExponentialTimeIntegration.html" title="Explicit exponential time integration for rotations." alt="" coords="456,2011,667,2051"/>
-<area shape="poly" id="edge44_Node000003_Node000066" title=" " alt="" coords="323,1121,384,1613,433,1997,458,2015,454,2020,428,2000,378,1614,318,1121"/>
-<area shape="rect" id="Node000067" href="$classneml2_1_1WR2ImplicitExponentialTimeIntegration.html" title="Implicit exponential time integration for rotations." alt="" coords="456,2075,667,2115"/>
-<area shape="poly" id="edge45_Node000003_Node000067" title=" " alt="" coords="323,1121,385,1636,389,1733,390,1858,393,1921,401,1979,413,2027,433,2061,457,2079,454,2084,429,2064,409,2029,396,1980,388,1921,385,1858,383,1733,380,1636,318,1121"/>
-<area shape="rect" id="Node000068" href="$classneml2_1_1YieldFunction.html" title=" " alt="" coords="507,2139,616,2165"/>
-<area shape="poly" id="edge46_Node000003_Node000068" title=" " alt="" coords="323,1121,385,1636,387,1747,386,1892,389,1964,396,2031,410,2086,420,2108,433,2125,448,2137,466,2146,507,2153,506,2158,465,2151,445,2142,429,2128,416,2110,405,2088,391,2032,384,1965,381,1892,382,1747,380,1636,318,1121"/>
+<area shape="rect" id="Node000045" href="$classneml2_1_1Normality.html" title=" " alt="" coords="518,1155,605,1181"/>
+<area shape="poly" id="edge27_Node000003_Node000045" title=" " alt="" coords="356,1111,431,1141,518,1160,517,1165,430,1147,354,1116"/>
+<area shape="rect" id="Node000046" href="$classneml2_1_1OlevskySinteringStress.html" title=" " alt="" coords="475,1205,647,1230"/>
+<area shape="poly" id="edge28_Node000003_Node000046" title=" " alt="" coords="339,1116,379,1155,404,1175,432,1191,476,1206,474,1211,430,1196,401,1179,376,1159,335,1119"/>
+<area shape="rect" id="Node000047" href="$classneml2_1_1OrientationRate.html" title="Calculate the orientation rate from the crystal model kinetics." alt="" coords="499,1254,624,1279"/>
+<area shape="poly" id="edge29_Node000003_Node000047" title=" " alt="" coords="331,1118,370,1181,399,1214,432,1240,464,1254,499,1262,498,1267,463,1260,429,1245,395,1218,366,1184,327,1121"/>
+<area shape="rect" id="Node000048" href="$classneml2_1_1OverStress.html" title=" " alt="" coords="515,1303,608,1329"/>
+<area shape="poly" id="edge30_Node000003_Node000048" title=" " alt="" coords="327,1120,341,1159,362,1205,393,1252,411,1272,432,1290,451,1300,472,1308,515,1314,514,1319,471,1313,449,1305,429,1294,407,1276,388,1255,358,1208,336,1161,322,1122"/>
+<area shape="rect" id="Node000049" href="$classneml2_1_1PlasticDeformationRate.html" title="Plastic deformation rate with the default kinetics." alt="" coords="473,1353,650,1378"/>
+<area shape="poly" id="edge31_Node000003_Node000049" title=" " alt="" coords="324,1120,335,1168,355,1228,387,1289,408,1316,432,1339,452,1351,473,1358,471,1363,449,1356,429,1343,404,1320,382,1292,350,1230,329,1169,319,1121"/>
+<area shape="rect" id="Node000050" href="$classneml2_1_1PlasticFlowRate.html" title=" " alt="" coords="498,1402,625,1427"/>
+<area shape="poly" id="edge32_Node000003_Node000050" title=" " alt="" coords="322,1121,330,1178,348,1251,362,1289,381,1326,404,1360,432,1389,463,1405,499,1413,497,1418,462,1410,429,1393,400,1363,376,1328,357,1291,343,1252,324,1179,316,1122"/>
+<area shape="rect" id="Node000052" href="$classneml2_1_1PlasticVorticity.html" title="Calculate the plastic vorticity with the default crystal kinetics." alt="" coords="502,1451,621,1477"/>
+<area shape="poly" id="edge33_Node000003_Node000052" title=" " alt="" coords="320,1121,325,1186,341,1272,355,1318,375,1362,400,1403,432,1438,448,1448,465,1456,502,1463,501,1468,463,1461,445,1453,429,1442,396,1406,370,1365,350,1320,336,1274,320,1187,315,1121"/>
+<area shape="rect" id="Node000053" href="$classneml2_1_1RateIndependentPlasticFlowConstraint.html" title=" " alt="" coords="458,1501,665,1541"/>
+<area shape="poly" id="edge34_Node000003_Node000053" title=" " alt="" coords="319,1121,322,1194,336,1293,350,1346,370,1397,397,1445,432,1487,459,1505,456,1509,429,1491,393,1448,365,1400,345,1347,331,1294,316,1194,314,1121"/>
+<area shape="rect" id="Node000054" href="$classneml2_1_1ResolvedShear.html" title="Calculate the resolved shears." alt="" coords="502,1566,621,1591"/>
+<area shape="poly" id="edge35_Node000003_Node000054" title=" " alt="" coords="323,1121,335,1217,358,1347,373,1413,390,1472,410,1520,433,1551,448,1562,465,1570,502,1578,501,1583,463,1575,445,1567,429,1555,406,1522,385,1474,368,1414,353,1348,330,1218,318,1122"/>
+<area shape="rect" id="Node000055" href="$classneml2_1_1RotationMatrix.html" title="Convert a Rodrigues vector (Rot) to a second order tensor (R2)." alt="" coords="502,1615,621,1641"/>
+<area shape="poly" id="edge36_Node000003_Node000055" title=" " alt="" coords="322,1121,333,1227,354,1372,369,1446,387,1512,408,1566,433,1602,447,1613,465,1621,502,1628,501,1633,463,1626,445,1618,429,1606,404,1569,382,1514,364,1447,349,1373,328,1227,317,1122"/>
+<area shape="rect" id="Node000056" href="$classneml2_1_1SR2Invariant.html" title=" " alt="" coords="509,1665,614,1690"/>
+<area shape="poly" id="edge37_Node000003_Node000056" title=" " alt="" coords="322,1121,331,1236,351,1396,366,1477,384,1551,406,1612,419,1634,433,1651,449,1663,468,1671,509,1678,508,1683,466,1677,446,1668,429,1655,415,1637,401,1614,379,1553,360,1479,346,1397,326,1236,316,1121"/>
+<area shape="rect" id="Node000057" href="$classneml2_1_1SingleSlipHardeningRule.html" title="Any slip rule where all systems share the same strength." alt="" coords="470,1714,653,1739"/>
+<area shape="poly" id="edge38_Node000003_Node000057" title=" " alt="" coords="321,1121,329,1244,347,1419,362,1509,381,1590,404,1657,418,1682,433,1701,450,1714,471,1722,469,1727,447,1718,429,1705,413,1685,399,1659,376,1592,357,1510,342,1420,324,1245,316,1121"/>
+<area shape="rect" id="Node000060" href="$classneml2_1_1SlipRule.html" title="Parent class of slip rules, mapping from resolved shear and internal state to slip rates." alt="" coords="524,1763,599,1789"/>
+<area shape="poly" id="edge39_Node000003_Node000060" title=" " alt="" coords="323,1121,339,1262,366,1463,399,1650,416,1716,433,1750,452,1764,476,1773,524,1777,523,1782,475,1778,450,1769,429,1754,411,1717,393,1651,360,1464,334,1263,317,1122"/>
+<area shape="rect" id="Node000062" href="$classneml2_1_1SlipStrengthMap.html" title="Parent class of maps between internal variables and the slip system strengths." alt="" coords="497,1813,626,1838"/>
+<area shape="poly" id="edge40_Node000003_Node000062" title=" " alt="" coords="322,1121,338,1272,364,1488,397,1691,415,1762,424,1786,433,1800,446,1810,462,1818,497,1826,496,1831,460,1823,443,1815,429,1803,419,1788,410,1764,392,1692,359,1489,332,1273,317,1122"/>
+<area shape="rect" id="Node000064" href="$classneml2_1_1StateRate.html" title=" " alt="" coords="499,1862,623,1887"/>
+<area shape="poly" id="edge41_Node000003_Node000064" title=" " alt="" coords="323,1121,374,1525,407,1743,422,1816,433,1849,447,1860,463,1868,499,1875,498,1880,461,1873,444,1864,428,1852,416,1818,402,1744,369,1525,318,1122"/>
+<area shape="rect" id="Node000065" href="$classneml2_1_1SumSlipRates.html" title="A helper model to calculate the sum of the absolute value of the slip rates." alt="" coords="505,1911,617,1937"/>
+<area shape="poly" id="edge42_Node000003_Node000065" title=" " alt="" coords="323,1121,379,1556,413,1791,425,1867,433,1899,448,1910,466,1918,506,1925,505,1930,465,1923,445,1915,428,1901,420,1869,407,1792,374,1557,318,1121"/>
+<area shape="rect" id="Node000066" href="$classneml2_1_1TotalStrain.html" title=" " alt="" coords="516,1961,607,1986"/>
+<area shape="poly" id="edge43_Node000003_Node000066" title=" " alt="" coords="323,1121,379,1583,412,1833,425,1915,433,1948,450,1961,471,1969,516,1975,515,1980,470,1974,448,1966,428,1951,420,1916,407,1834,374,1583,318,1122"/>
+<area shape="rect" id="Node000067" href="$classneml2_1_1WR2ExplicitExponentialTimeIntegration.html" title="Explicit exponential time integration for rotations." alt="" coords="456,2011,667,2051"/>
+<area shape="poly" id="edge44_Node000003_Node000067" title=" " alt="" coords="323,1121,384,1613,433,1997,458,2015,454,2020,428,2000,378,1614,318,1121"/>
+<area shape="rect" id="Node000068" href="$classneml2_1_1WR2ImplicitExponentialTimeIntegration.html" title="Implicit exponential time integration for rotations." alt="" coords="456,2075,667,2115"/>
+<area shape="poly" id="edge45_Node000003_Node000068" title=" " alt="" coords="323,1121,385,1636,389,1733,390,1858,393,1921,401,1979,413,2027,433,2061,457,2079,454,2084,429,2064,409,2029,396,1980,388,1921,385,1858,383,1733,380,1636,318,1121"/>
+<area shape="rect" id="Node000069" href="$classneml2_1_1YieldFunction.html" title=" " alt="" coords="507,2139,616,2165"/>
+<area shape="poly" id="edge46_Node000003_Node000069" title=" " alt="" coords="323,1121,385,1636,387,1747,386,1892,389,1964,396,2031,410,2086,420,2108,433,2125,448,2137,466,2146,507,2153,506,2158,465,2151,445,2142,429,2128,416,2110,405,2088,391,2032,384,1965,381,1892,382,1747,380,1636,318,1121"/>
 <area shape="rect" id="Node000005" href="$classneml2_1_1ArrheniusParameter.html" title="A scalar&#45;valued parameter following an Arrhenius type relation." alt="" coords="740,13,891,38"/>
 <area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="651,23,740,23,740,28,651,28"/>
-<area shape="rect" id="Node000070" href="$classneml2_1_1crystallography_1_1CubicCrystal.html" title="Specialized crystal geometry for cubic crystals." alt="" coords="509,2189,613,2214"/>
-<area shape="poly" id="edge48_Node000069_Node000070" title=" " alt="" coords="322,1687,333,1794,354,1942,369,2016,387,2084,408,2139,433,2175,449,2187,468,2195,510,2202,509,2207,467,2201,447,2192,429,2179,403,2141,382,2086,363,2018,348,1943,327,1795,317,1687"/>
+<area shape="rect" id="Node000071" href="$classneml2_1_1crystallography_1_1CubicCrystal.html" title="Specialized crystal geometry for cubic crystals." alt="" coords="509,2189,613,2214"/>
+<area shape="poly" id="edge48_Node000070_Node000071" title=" " alt="" coords="322,1687,333,1794,354,1942,369,2016,387,2084,408,2139,433,2175,449,2187,468,2195,510,2202,509,2207,467,2201,447,2192,429,2179,403,2141,382,2086,363,2018,348,1943,327,1795,317,1687"/>
 </map>

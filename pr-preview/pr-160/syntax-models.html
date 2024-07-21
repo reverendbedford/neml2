@@ -154,6 +154,7 @@ $(function(){initNavTree('syntax-models.html',''); initResizable(); });
 <li class="level2"><a href="#linearkinematichardening">LinearKinematicHardening</a></li>
 <li class="level2"><a href="#linearsinglesliphardeningrule">LinearSingleSlipHardeningRule</a></li>
 <li class="level2"><a href="#millerindexconstantparameter">MillerIndexConstantParameter</a></li>
+<li class="level2"><a href="#millerindexinputparameter">MillerIndexInputParameter</a></li>
 <li class="level2"><a href="#millerindexlinearinterpolation">MillerIndexLinearInterpolation</a></li>
 <li class="level2"><a href="#mixedcontrolsetup">MixedControlSetup</a></li>
 <li class="level2"><a href="#normality">Normality</a></li>
@@ -165,42 +166,55 @@ $(function(){initNavTree('syntax-models.html',''); initResizable(); });
 <li class="level2"><a href="#plasticvorticity">PlasticVorticity</a></li>
 <li class="level2"><a href="#powerlawsliprule">PowerLawSlipRule</a></li>
 <li class="level2"><a href="#quaternionconstantparameter">QuaternionConstantParameter</a></li>
+<li class="level2"><a href="#quaternioninputparameter">QuaternionInputParameter</a></li>
 <li class="level2"><a href="#quaternionlinearinterpolation">QuaternionLinearInterpolation</a></li>
 <li class="level2"><a href="#r2constantparameter">R2ConstantParameter</a></li>
+<li class="level2"><a href="#r2inputparameter">R2InputParameter</a></li>
 <li class="level2"><a href="#r2linearinterpolation">R2LinearInterpolation</a></li>
 <li class="level2"><a href="#r3constantparameter">R3ConstantParameter</a></li>
+<li class="level2"><a href="#r3inputparameter">R3InputParameter</a></li>
 <li class="level2"><a href="#r3linearinterpolation">R3LinearInterpolation</a></li>
 <li class="level2"><a href="#r4constantparameter">R4ConstantParameter</a></li>
+<li class="level2"><a href="#r4inputparameter">R4InputParameter</a></li>
 <li class="level2"><a href="#r4linearinterpolation">R4LinearInterpolation</a></li>
 <li class="level2"><a href="#r5constantparameter">R5ConstantParameter</a></li>
+<li class="level2"><a href="#r5inputparameter">R5InputParameter</a></li>
 <li class="level2"><a href="#r5linearinterpolation">R5LinearInterpolation</a></li>
 <li class="level2"><a href="#rateindependentplasticflowconstranumber">RateIndependentPlasticFlowConstranumber</a></li>
 <li class="level2"><a href="#resolvedshear">ResolvedShear</a></li>
 <li class="level2"><a href="#rotconstantparameter">RotConstantParameter</a></li>
+<li class="level2"><a href="#rotinputparameter">RotInputParameter</a></li>
 <li class="level2"><a href="#rotlinearinterpolation">RotLinearInterpolation</a></li>
 <li class="level2"><a href="#rotationmatrix">RotationMatrix</a></li>
 <li class="level2"><a href="#sffr4constantparameter">SFFR4ConstantParameter</a></li>
+<li class="level2"><a href="#sffr4inputparameter">SFFR4InputParameter</a></li>
 <li class="level2"><a href="#sffr4linearinterpolation">SFFR4LinearInterpolation</a></li>
 <li class="level2"><a href="#sfr3constantparameter">SFR3ConstantParameter</a></li>
+<li class="level2"><a href="#sfr3inputparameter">SFR3InputParameter</a></li>
 <li class="level2"><a href="#sfr3linearinterpolation">SFR3LinearInterpolation</a></li>
 <li class="level2"><a href="#sr2backwardeulertimeintegration">SR2BackwardEulerTimeIntegration</a></li>
 <li class="level2"><a href="#sr2constantparameter">SR2ConstantParameter</a></li>
 <li class="level2"><a href="#sr2forcerate">SR2ForceRate</a></li>
 <li class="level2"><a href="#sr2forwardeulertimeintegration">SR2ForwardEulerTimeIntegration</a></li>
+<li class="level2"><a href="#sr2inputparameter">SR2InputParameter</a></li>
 <li class="level2"><a href="#sr2invariant">SR2Invariant</a></li>
 <li class="level2"><a href="#sr2linearcombination">SR2LinearCombination</a></li>
 <li class="level2"><a href="#sr2linearinterpolation">SR2LinearInterpolation</a></li>
 <li class="level2"><a href="#sr2staterate">SR2StateRate</a></li>
 <li class="level2"><a href="#ssfr5constantparameter">SSFR5ConstantParameter</a></li>
+<li class="level2"><a href="#ssfr5inputparameter">SSFR5InputParameter</a></li>
 <li class="level2"><a href="#ssfr5linearinterpolation">SSFR5LinearInterpolation</a></li>
 <li class="level2"><a href="#ssr4constantparameter">SSR4ConstantParameter</a></li>
+<li class="level2"><a href="#ssr4inputparameter">SSR4InputParameter</a></li>
 <li class="level2"><a href="#ssr4linearinterpolation">SSR4LinearInterpolation</a></li>
 <li class="level2"><a href="#swr4constantparameter">SWR4ConstantParameter</a></li>
+<li class="level2"><a href="#swr4inputparameter">SWR4InputParameter</a></li>
 <li class="level2"><a href="#swr4linearinterpolation">SWR4LinearInterpolation</a></li>
 <li class="level2"><a href="#scalarbackwardeulertimeintegration">ScalarBackwardEulerTimeIntegration</a></li>
 <li class="level2"><a href="#scalarconstantparameter">ScalarConstantParameter</a></li>
 <li class="level2"><a href="#scalarforcerate">ScalarForceRate</a></li>
 <li class="level2"><a href="#scalarforwardeulertimeintegration">ScalarForwardEulerTimeIntegration</a></li>
+<li class="level2"><a href="#scalarinputparameter">ScalarInputParameter</a></li>
 <li class="level2"><a href="#scalarlinearcombination">ScalarLinearCombination</a></li>
 <li class="level2"><a href="#scalarlinearinterpolation">ScalarLinearInterpolation</a></li>
 <li class="level2"><a href="#scalarstaterate">ScalarStateRate</a></li>
@@ -210,16 +224,20 @@ $(function(){initNavTree('syntax-models.html',''); initResizable(); });
 <li class="level2"><a href="#totalstrain">TotalStrain</a></li>
 <li class="level2"><a href="#vecbackwardeulertimeintegration">VecBackwardEulerTimeIntegration</a></li>
 <li class="level2"><a href="#vecconstantparameter">VecConstantParameter</a></li>
+<li class="level2"><a href="#vecinputparameter">VecInputParameter</a></li>
 <li class="level2"><a href="#veclinearinterpolation">VecLinearInterpolation</a></li>
 <li class="level2"><a href="#voceisotropichardening">VoceIsotropicHardening</a></li>
 <li class="level2"><a href="#vocesinglesliphardeningrule">VoceSingleSlipHardeningRule</a></li>
 <li class="level2"><a href="#wr2constantparameter">WR2ConstantParameter</a></li>
 <li class="level2"><a href="#wr2explicitexponentialtimeintegration">WR2ExplicitExponentialTimeIntegration</a></li>
 <li class="level2"><a href="#wr2implicitexponentialtimeintegration">WR2ImplicitExponentialTimeIntegration</a></li>
+<li class="level2"><a href="#wr2inputparameter">WR2InputParameter</a></li>
 <li class="level2"><a href="#wr2linearinterpolation">WR2LinearInterpolation</a></li>
 <li class="level2"><a href="#wsr4constantparameter">WSR4ConstantParameter</a></li>
+<li class="level2"><a href="#wsr4inputparameter">WSR4InputParameter</a></li>
 <li class="level2"><a href="#wsr4linearinterpolation">WSR4LinearInterpolation</a></li>
 <li class="level2"><a href="#wwr4constantparameter">WWR4ConstantParameter</a></li>
+<li class="level2"><a href="#wwr4inputparameter">WWR4InputParameter</a></li>
 <li class="level2"><a href="#wwr4linearinterpolation">WWR4LinearInterpolation</a></li>
 <li class="level2"><a href="#yieldfunction">YieldFunction</a></li>
 </ul>
@@ -1505,6 +1523,17 @@ MillerIndexConstantParameter</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ConstantParameter.html">link</a></p>
+<h2><a class="anchor" id="millerindexinputparameter"></a>
+MillerIndexInputParameter</h2>
+<p>A parameter that is defined through an input variable. This essentially converts a nonlinear parameter to an input variable </p><details >
+<summary >
+<code>from</code> 🇮 The input variable that defines this nonlinear parameter</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1InputParameter.html">link</a></p>
 <h2><a class="anchor" id="millerindexlinearinterpolation"></a>
 MillerIndexLinearInterpolation</h2>
 <p>Interpolate a MillerIndex as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
@@ -1920,6 +1949,17 @@ QuaternionConstantParameter</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ConstantParameter.html">link</a></p>
+<h2><a class="anchor" id="quaternioninputparameter"></a>
+QuaternionInputParameter</h2>
+<p>A parameter that is defined through an input variable. This essentially converts a nonlinear parameter to an input variable </p><details >
+<summary >
+<code>from</code> 🇮 The input variable that defines this nonlinear parameter</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1InputParameter.html">link</a></p>
 <h2><a class="anchor" id="quaternionlinearinterpolation"></a>
 QuaternionLinearInterpolation</h2>
 <p>Interpolate a Quaternion as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
@@ -1958,6 +1998,17 @@ R2ConstantParameter</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ConstantParameter.html">link</a></p>
+<h2><a class="anchor" id="r2inputparameter"></a>
+R2InputParameter</h2>
+<p>A parameter that is defined through an input variable. This essentially converts a nonlinear parameter to an input variable </p><details >
+<summary >
+<code>from</code> 🇮 The input variable that defines this nonlinear parameter</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1InputParameter.html">link</a></p>
 <h2><a class="anchor" id="r2linearinterpolation"></a>
 R2LinearInterpolation</h2>
 <p>Interpolate a R2 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
@@ -1996,6 +2047,17 @@ R3ConstantParameter</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ConstantParameter.html">link</a></p>
+<h2><a class="anchor" id="r3inputparameter"></a>
+R3InputParameter</h2>
+<p>A parameter that is defined through an input variable. This essentially converts a nonlinear parameter to an input variable </p><details >
+<summary >
+<code>from</code> 🇮 The input variable that defines this nonlinear parameter</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1InputParameter.html">link</a></p>
 <h2><a class="anchor" id="r3linearinterpolation"></a>
 R3LinearInterpolation</h2>
 <p>Interpolate a R3 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
@@ -2034,6 +2096,17 @@ R4ConstantParameter</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ConstantParameter.html">link</a></p>
+<h2><a class="anchor" id="r4inputparameter"></a>
+R4InputParameter</h2>
+<p>A parameter that is defined through an input variable. This essentially converts a nonlinear parameter to an input variable </p><details >
+<summary >
+<code>from</code> 🇮 The input variable that defines this nonlinear parameter</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1InputParameter.html">link</a></p>
 <h2><a class="anchor" id="r4linearinterpolation"></a>
 R4LinearInterpolation</h2>
 <p>Interpolate a R4 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
@@ -2072,6 +2145,17 @@ R5ConstantParameter</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ConstantParameter.html">link</a></p>
+<h2><a class="anchor" id="r5inputparameter"></a>
+R5InputParameter</h2>
+<p>A parameter that is defined through an input variable. This essentially converts a nonlinear parameter to an input variable </p><details >
+<summary >
+<code>from</code> 🇮 The input variable that defines this nonlinear parameter</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1InputParameter.html">link</a></p>
 <h2><a class="anchor" id="r5linearinterpolation"></a>
 R5LinearInterpolation</h2>
 <p>Interpolate a R5 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
@@ -2173,6 +2257,17 @@ RotConstantParameter</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ConstantParameter.html">link</a></p>
+<h2><a class="anchor" id="rotinputparameter"></a>
+RotInputParameter</h2>
+<p>A parameter that is defined through an input variable. This essentially converts a nonlinear parameter to an input variable </p><details >
+<summary >
+<code>from</code> 🇮 The input variable that defines this nonlinear parameter</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1InputParameter.html">link</a></p>
 <h2><a class="anchor" id="rotlinearinterpolation"></a>
 RotLinearInterpolation</h2>
 <p>Interpolate a Rot as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
@@ -2230,6 +2325,17 @@ SFFR4ConstantParameter</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ConstantParameter.html">link</a></p>
+<h2><a class="anchor" id="sffr4inputparameter"></a>
+SFFR4InputParameter</h2>
+<p>A parameter that is defined through an input variable. This essentially converts a nonlinear parameter to an input variable </p><details >
+<summary >
+<code>from</code> 🇮 The input variable that defines this nonlinear parameter</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1InputParameter.html">link</a></p>
 <h2><a class="anchor" id="sffr4linearinterpolation"></a>
 SFFR4LinearInterpolation</h2>
 <p>Interpolate a SFFR4 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
@@ -2268,6 +2374,17 @@ SFR3ConstantParameter</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ConstantParameter.html">link</a></p>
+<h2><a class="anchor" id="sfr3inputparameter"></a>
+SFR3InputParameter</h2>
+<p>A parameter that is defined through an input variable. This essentially converts a nonlinear parameter to an input variable </p><details >
+<summary >
+<code>from</code> 🇮 The input variable that defines this nonlinear parameter</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1InputParameter.html">link</a></p>
 <h2><a class="anchor" id="sfr3linearinterpolation"></a>
 SFR3LinearInterpolation</h2>
 <p>Interpolate a SFR3 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
@@ -2401,6 +2518,17 @@ SR2ForwardEulerTimeIntegration</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ForwardEulerTimeIntegration.html">link</a></p>
+<h2><a class="anchor" id="sr2inputparameter"></a>
+SR2InputParameter</h2>
+<p>A parameter that is defined through an input variable. This essentially converts a nonlinear parameter to an input variable </p><details >
+<summary >
+<code>from</code> 🇮 The input variable that defines this nonlinear parameter</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1InputParameter.html">link</a></p>
 <h2><a class="anchor" id="sr2invariant"></a>
 SR2Invariant</h2>
 <p>Calculate the invariant of a symmetric second order tensor (of type SR2). </p><details >
@@ -2514,6 +2642,17 @@ SSFR5ConstantParameter</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ConstantParameter.html">link</a></p>
+<h2><a class="anchor" id="ssfr5inputparameter"></a>
+SSFR5InputParameter</h2>
+<p>A parameter that is defined through an input variable. This essentially converts a nonlinear parameter to an input variable </p><details >
+<summary >
+<code>from</code> 🇮 The input variable that defines this nonlinear parameter</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1InputParameter.html">link</a></p>
 <h2><a class="anchor" id="ssfr5linearinterpolation"></a>
 SSFR5LinearInterpolation</h2>
 <p>Interpolate a SSFR5 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
@@ -2552,6 +2691,17 @@ SSR4ConstantParameter</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ConstantParameter.html">link</a></p>
+<h2><a class="anchor" id="ssr4inputparameter"></a>
+SSR4InputParameter</h2>
+<p>A parameter that is defined through an input variable. This essentially converts a nonlinear parameter to an input variable </p><details >
+<summary >
+<code>from</code> 🇮 The input variable that defines this nonlinear parameter</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1InputParameter.html">link</a></p>
 <h2><a class="anchor" id="ssr4linearinterpolation"></a>
 SSR4LinearInterpolation</h2>
 <p>Interpolate a SSR4 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
@@ -2590,6 +2740,17 @@ SWR4ConstantParameter</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ConstantParameter.html">link</a></p>
+<h2><a class="anchor" id="swr4inputparameter"></a>
+SWR4InputParameter</h2>
+<p>A parameter that is defined through an input variable. This essentially converts a nonlinear parameter to an input variable </p><details >
+<summary >
+<code>from</code> 🇮 The input variable that defines this nonlinear parameter</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1InputParameter.html">link</a></p>
 <h2><a class="anchor" id="swr4linearinterpolation"></a>
 SWR4LinearInterpolation</h2>
 <p>Interpolate a SWR4 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
@@ -2723,6 +2884,17 @@ ScalarForwardEulerTimeIntegration</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ForwardEulerTimeIntegration.html">link</a></p>
+<h2><a class="anchor" id="scalarinputparameter"></a>
+ScalarInputParameter</h2>
+<p>A parameter that is defined through an input variable. This essentially converts a nonlinear parameter to an input variable </p><details >
+<summary >
+<code>from</code> 🇮 The input variable that defines this nonlinear parameter</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1InputParameter.html">link</a></p>
 <h2><a class="anchor" id="scalarlinearcombination"></a>
 ScalarLinearCombination</h2>
 <p>Calculate linear combination of multiple Scalar tensors as \( u = c_i v_i \) (Einstein summation assumed), where \( c_i \) are the coefficients, and \( v_i \) are the variables to be summed. </p><details >
@@ -3008,6 +3180,17 @@ VecConstantParameter</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ConstantParameter.html">link</a></p>
+<h2><a class="anchor" id="vecinputparameter"></a>
+VecInputParameter</h2>
+<p>A parameter that is defined through an input variable. This essentially converts a nonlinear parameter to an input variable </p><details >
+<summary >
+<code>from</code> 🇮 The input variable that defines this nonlinear parameter</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1InputParameter.html">link</a></p>
 <h2><a class="anchor" id="veclinearinterpolation"></a>
 VecLinearInterpolation</h2>
 <p>Interpolate a Vec as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
@@ -3196,6 +3379,17 @@ WR2ImplicitExponentialTimeIntegration</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1WR2ImplicitExponentialTimeIntegration.html">link</a></p>
+<h2><a class="anchor" id="wr2inputparameter"></a>
+WR2InputParameter</h2>
+<p>A parameter that is defined through an input variable. This essentially converts a nonlinear parameter to an input variable </p><details >
+<summary >
+<code>from</code> 🇮 The input variable that defines this nonlinear parameter</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1InputParameter.html">link</a></p>
 <h2><a class="anchor" id="wr2linearinterpolation"></a>
 WR2LinearInterpolation</h2>
 <p>Interpolate a WR2 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
@@ -3234,6 +3428,17 @@ WSR4ConstantParameter</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ConstantParameter.html">link</a></p>
+<h2><a class="anchor" id="wsr4inputparameter"></a>
+WSR4InputParameter</h2>
+<p>A parameter that is defined through an input variable. This essentially converts a nonlinear parameter to an input variable </p><details >
+<summary >
+<code>from</code> 🇮 The input variable that defines this nonlinear parameter</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1InputParameter.html">link</a></p>
 <h2><a class="anchor" id="wsr4linearinterpolation"></a>
 WSR4LinearInterpolation</h2>
 <p>Interpolate a WSR4 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
@@ -3272,6 +3477,17 @@ WWR4ConstantParameter</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ConstantParameter.html">link</a></p>
+<h2><a class="anchor" id="wwr4inputparameter"></a>
+WWR4InputParameter</h2>
+<p>A parameter that is defined through an input variable. This essentially converts a nonlinear parameter to an input variable </p><details >
+<summary >
+<code>from</code> 🇮 The input variable that defines this nonlinear parameter</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1InputParameter.html">link</a></p>
 <h2><a class="anchor" id="wwr4linearinterpolation"></a>
 WWR4LinearInterpolation</h2>
 <p>Interpolate a WWR4 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >

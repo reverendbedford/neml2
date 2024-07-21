@@ -50,6 +50,7 @@ var annotated =
       [ "HITParser", "classneml2_1_1HITParser.html", "classneml2_1_1HITParser" ],
       [ "IdentityTensor", "classneml2_1_1IdentityTensor.html", "classneml2_1_1IdentityTensor" ],
       [ "ImplicitUpdate", "classneml2_1_1ImplicitUpdate.html", "classneml2_1_1ImplicitUpdate" ],
+      [ "InputParameter", "classneml2_1_1InputParameter.html", "classneml2_1_1InputParameter" ],
       [ "InterOpThread", "structneml2_1_1InterOpThread.html", "structneml2_1_1InterOpThread" ],
       [ "Interpolation", "classneml2_1_1Interpolation.html", "classneml2_1_1Interpolation" ],
       [ "IntraOpThread", "structneml2_1_1IntraOpThread.html", "structneml2_1_1IntraOpThread" ],

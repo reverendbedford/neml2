@@ -4,7 +4,7 @@ var searchData=
   ['b2_1',['b2',['../classneml2_1_1crystallography_1_1CrystalGeometry.html#aaeae1915bcb84e9930187460b04bce4a',1,'neml2::crystallography::CrystalGeometry']]],
   ['b3_2',['b3',['../classneml2_1_1crystallography_1_1CrystalGeometry.html#a1a69d02a437f1229f6d787976bde8299',1,'neml2::crystallography::CrystalGeometry']]],
   ['backwardeulertimeintegration_3',['BackwardEulerTimeIntegration',['../classneml2_1_1BackwardEulerTimeIntegration.html#a6a9a6dadaa82c2a4274c992a34760913',1,'neml2::BackwardEulerTimeIntegration']]],
-  ['base_5fcat_4',['base_cat',['../namespaceneml2_1_1math.html#a71a7894e553f4eebfd4268a9c1bf2209',1,'neml2::math']]],
+  ['base_5fcat_4',['base_cat',['../namespaceneml2_1_1math.html#a709fc81ec1c8420f4c910b5d207a5371',1,'neml2::math']]],
   ['base_5fdiag_5fembed_5',['base_diag_embed',['../namespaceneml2_1_1math.html#a675a34cc7bef7ebff607e1074e6be019',1,'neml2::math']]],
   ['base_5fdim_6',['base_dim',['../classneml2_1_1LabeledTensor.html#aa26e2487a3916120dbabe63157bc0dc4',1,'neml2::LabeledTensor::base_dim()'],['../classneml2_1_1TensorBase.html#acb11eadbec4055bd80ff68880f0be9cb',1,'neml2::TensorBase::base_dim()'],['../classneml2_1_1VariableBase.html#acb11eadbec4055bd80ff68880f0be9cb',1,'neml2::VariableBase::base_dim()']]],
   ['base_5fexpand_7',['base_expand',['../classneml2_1_1TensorBase.html#a5dd2fee7c647bc49995c9b866d82bc01',1,'neml2::TensorBase']]],

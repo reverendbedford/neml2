@@ -9,7 +9,7 @@ var namespaceneml2_1_1math =
     ] ],
     [ "ConstantTensors", "structneml2_1_1math_1_1ConstantTensors.html", "structneml2_1_1math_1_1ConstantTensors" ],
     [ "abs", "namespaceneml2_1_1math.html#a9dcfa2c754f2a9b623034f2da8d20cac", null ],
-    [ "base_cat", "namespaceneml2_1_1math.html#a71a7894e553f4eebfd4268a9c1bf2209", null ],
+    [ "base_cat", "namespaceneml2_1_1math.html#a709fc81ec1c8420f4c910b5d207a5371", null ],
     [ "base_diag_embed", "namespaceneml2_1_1math.html#a675a34cc7bef7ebff607e1074e6be019", null ],
     [ "base_stack", "namespaceneml2_1_1math.html#a95fa94fb82b06201337892baddb82ad7", null ],
     [ "base_sum", "namespaceneml2_1_1math.html#aadca1c4a03ac82d317a779891db24347", null ],

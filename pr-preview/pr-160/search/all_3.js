@@ -7,7 +7,7 @@ var searchData=
   ['back_20stress_4',['Back stress',['../solid-mechanics.html#autotoc_md24',1,'']]],
   ['backend_5',['Backend',['../cpp-backend.html',1,'C++ Backend'],['../install.html#autotoc_md12',1,'C++ backend'],['../install.html#autotoc_md14',1,'C++ backend']]],
   ['backwardeulertimeintegration_6',['BackwardEulerTimeIntegration',['../classneml2_1_1BackwardEulerTimeIntegration.html',1,'BackwardEulerTimeIntegration&lt; T &gt;'],['../classneml2_1_1BackwardEulerTimeIntegration.html#a6a9a6dadaa82c2a4274c992a34760913',1,'neml2::BackwardEulerTimeIntegration::BackwardEulerTimeIntegration()']]],
-  ['base_5fcat_7',['base_cat',['../namespaceneml2_1_1math.html#a71a7894e553f4eebfd4268a9c1bf2209',1,'neml2::math']]],
+  ['base_5fcat_7',['base_cat',['../namespaceneml2_1_1math.html#a709fc81ec1c8420f4c910b5d207a5371',1,'neml2::math']]],
   ['base_5fdiag_5fembed_8',['base_diag_embed',['../namespaceneml2_1_1math.html#a675a34cc7bef7ebff607e1074e6be019',1,'neml2::math']]],
   ['base_5fdim_9',['base_dim',['../classneml2_1_1LabeledTensor.html#aa26e2487a3916120dbabe63157bc0dc4',1,'neml2::LabeledTensor::base_dim()'],['../classneml2_1_1TensorBase.html#acb11eadbec4055bd80ff68880f0be9cb',1,'neml2::TensorBase::base_dim()'],['../classneml2_1_1VariableBase.html#acb11eadbec4055bd80ff68880f0be9cb',1,'neml2::VariableBase::base_dim()']]],
   ['base_5fexpand_10',['base_expand',['../classneml2_1_1TensorBase.html#a5dd2fee7c647bc49995c9b866d82bc01',1,'neml2::TensorBase']]],
