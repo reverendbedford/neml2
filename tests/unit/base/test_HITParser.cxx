@@ -59,6 +59,8 @@ TEST_CASE("HITParser", "[base]")
         REQUIRE(settings.get<Real>("machine_precision") == Catch::Approx(0.5));
         REQUIRE(settings.get<Real>("tolerance") == Catch::Approx(0.1));
         REQUIRE(settings.get<Real>("tighter_tolerance") == Catch::Approx(0.01));
+        REQUIRE(settings.get<std::string>("buffer_name_separator") == "::");
+        REQUIRE(settings.get<std::string>("parameter_name_separator") == "::");
       }
 
       SECTION("default values")

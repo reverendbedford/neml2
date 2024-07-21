@@ -152,7 +152,8 @@ const T &
 ParameterStore::declare_parameter(const std::string & name, const T & rawval)
 {
   if (_object->host() != _object)
-    return _object->host<ParameterStore>()->declare_parameter(_object->name() + "." + name, rawval);
+    return _object->host<ParameterStore>()->declare_parameter(
+        _object->name() + parameter_name_separator() + name, rawval);
 
   TensorValueBase * base_ptr;
 

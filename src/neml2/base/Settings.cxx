@@ -83,6 +83,16 @@ Settings::expected_options()
   options.set("intraop_threads").doc() = "Number threads used for intra-ops parallelism. If set to "
                                          "0, defaults to number of CPU cores.";
 
+  options.set<std::string>("buffer_name_separator") = ".";
+  options.set("buffer_name_separator").doc() = "Nested buffer name separator. The default is '.'. "
+                                               "For example, a sub-model 'foo' which declares "
+                                               "a buffer 'bar' will have a buffer named 'foo.bar'.";
+
+  options.set<std::string>("parameter_name_separator") = ".";
+  options.set("parameter_name_separator").doc() =
+      "Parameter name separator. The default is '.'. For example, a sub-model 'foo' which declares "
+      "a parameter 'bar' will have a parameter named 'foo.bar'.";
+
   return options;
 }
 
@@ -114,5 +124,9 @@ Settings::Settings(const OptionSet & options)
   auto num_intraop_threads = options.get<unsigned int>("intraop_threads");
   if (num_intraop_threads > 0)
     at::set_num_threads(num_intraop_threads);
+
+  // Buffer/parameter name separator
+  buffer_name_separator() = options.get<std::string>("buffer_name_separator");
+  parameter_name_separator() = options.get<std::string>("parameter_name_separator");
 }
 } // namespace neml2

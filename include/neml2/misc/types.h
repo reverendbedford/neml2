@@ -66,7 +66,7 @@ torch::Dtype & default_integer_dtype();
 torch::Device & default_device();
 ///@}
 
-/// @name RAII style default tolerances
+/// @name Default tolerances
 // TODO: make this depend on the current dtype
 ///@{
 /// Machine precision
@@ -76,4 +76,9 @@ Real & tolerance();
 /// A tighter tolerance used in various algorithms
 Real & tighter_tolerance();
 ///@}
+
+/// Default nested buffer name separator
+std::string & buffer_name_separator();
+/// Default nested parameter name separator
+std::string & parameter_name_separator();
 } // namespace neml2

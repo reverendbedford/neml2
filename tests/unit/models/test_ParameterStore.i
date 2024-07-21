@@ -1,3 +1,7 @@
+[Settings]
+  parameter_name_separator = '::'
+[]
+
 [Models]
   [E1]
     type = ScalarConstantParameter

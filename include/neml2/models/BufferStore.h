@@ -128,7 +128,8 @@ const T &
 BufferStore::declare_buffer(const std::string & name, const T & rawval)
 {
   if (_object->host() != _object)
-    return _object->host<BufferStore>()->declare_buffer(_object->name() + "." + name, rawval);
+    return _object->host<BufferStore>()->declare_buffer(
+        _object->name() + buffer_name_separator() + name, rawval);
 
   // If the buffer already exists, return its reference
   if (_buffer_values.has_key(name))

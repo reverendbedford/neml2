@@ -136,11 +136,11 @@ TEST_CASE("Nested parameter registration")
   auto & model = reload_model("unit/models/test_ParameterStore.i", "model");
 
   const auto & params = model.named_parameters();
-  REQUIRE(params.has_key("E1.value"));
-  REQUIRE(params.has_key("E2.value"));
-  REQUIRE(params.has_key("E3.value"));
-  REQUIRE(params.has_key("elasticity1.nu"));
-  REQUIRE(params.has_key("elasticity2.nu"));
-  REQUIRE(params.has_key("elasticity2_another.nu"));
-  REQUIRE(params.has_key("elasticity3.nu"));
+  REQUIRE(params.has_key("E1::value"));
+  REQUIRE(params.has_key("E2::value"));
+  REQUIRE(params.has_key("E3::value"));
+  REQUIRE(params.has_key("elasticity1::nu"));
+  REQUIRE(params.has_key("elasticity2::nu"));
+  REQUIRE(params.has_key("elasticity2_another::nu"));
+  REQUIRE(params.has_key("elasticity3::nu"));
 }
