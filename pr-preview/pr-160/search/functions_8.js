@@ -25,7 +25,7 @@ var searchData=
   ['interpolation_22',['Interpolation',['../classneml2_1_1Interpolation.html#ae93944622c422f9620c8f5ae9507014d',1,'neml2::Interpolation']]],
   ['intraopthread_23',['IntraOpThread',['../structneml2_1_1IntraOpThread.html#a9fc0e31010ebcbef333be3eabf21cc4f',1,'neml2::IntraOpThread']]],
   ['inv_24',['inv',['../namespaceneml2_1_1math_1_1linalg.html#aa300036a4e5e38d3f281ef7fb90117e2',1,'neml2::math::linalg']]],
-  ['inverse_25',['inverse',['../classneml2_1_1LabeledMatrix.html#afb7b9dd9dea7d8f46ad6c0c487f62162',1,'neml2::LabeledMatrix::inverse()'],['../classneml2_1_1R2Base.html#a7a6e6f1cd384914419098d991dcb01ab',1,'neml2::R2Base::inverse()'],['../classneml2_1_1Rot.html#abffd3c77e357fdb6bba600b7ddfc71de',1,'neml2::Rot::inverse()'],['../classneml2_1_1SR2.html#a10f5d3e2712813d457e0d9db36d9e376',1,'neml2::SR2::inverse()'],['../classneml2_1_1SSR4.html#af5c7db1e5339197b69ada00f31b9ff49',1,'neml2::SSR4::inverse()']]],
+  ['inverse_25',['inverse',['../classneml2_1_1R2Base.html#a7a6e6f1cd384914419098d991dcb01ab',1,'neml2::R2Base::inverse()'],['../classneml2_1_1Rot.html#abffd3c77e357fdb6bba600b7ddfc71de',1,'neml2::Rot::inverse()'],['../classneml2_1_1SR2.html#a10f5d3e2712813d457e0d9db36d9e376',1,'neml2::SR2::inverse()'],['../classneml2_1_1SSR4.html#af5c7db1e5339197b69ada00f31b9ff49',1,'neml2::SSR4::inverse()']]],
   ['inversion_5ftransform_26',['inversion_transform',['../namespaceneml2.html#a543a9159631aeae31a7cccd1b6e41a50',1,'neml2']]],
   ['is_5fad_5fdisabled_27',['is_AD_disabled',['../classneml2_1_1Model.html#a9f6f1851cae8fb2c2e29b748c07a01dd',1,'neml2::Model']]],
   ['is_5fad_5fenabled_28',['is_AD_enabled',['../classneml2_1_1Model.html#ab4d7e8b0482c876c6f1ab180a5a88145',1,'neml2::Model']]],
