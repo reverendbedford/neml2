@@ -1,8 +1,10 @@
-# Overview
+# NEML2
 
 [![Documentation](https://github.com/reverendbedford/neml2/actions/workflows/build_docs.yml/badge.svg?branch=main)](https://reverendbedford.github.io/neml2/) [![tests](https://github.com/reverendbedford/neml2/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/reverendbedford/neml2/actions/workflows/tests.yml)
 
-## The New Engineering Material model Library, version 2
+## Overview
+
+### The New Engineering Material model Library, version 2
 
 NEML2 is an offshoot of [NEML](https://github.com/Argonne-National-Laboratory/neml), an earlier material modeling code developed at Argonne National Laboratory.
 Like its predecessor, NEML2 provides a flexible, modular way to build material models from smaller blocks.

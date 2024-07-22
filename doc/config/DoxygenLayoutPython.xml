@@ -1,7 +1,7 @@
 <doxygenlayout version="1.0">
   <!-- Navigation index tabs for HTML output -->
   <navindex>
-    <tab type="mainpage" visible="yes" title="Overview"/>
+    <tab type="mainpage" visible="yes"/>
     <tab type="user" url="../install.html" title="Installation Guide"/>
     <tab type="usergroup" title="User Guide">
       <tab type="user" url="../input-file.html" title="Input File"/>
