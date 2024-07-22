@@ -87,14 +87,21 @@ tighter_tolerance()
 std::string &
 buffer_name_separator()
 {
-  static std::string _buffer_name_sep = ".";
-  return _buffer_name_sep;
+  static std::string _buffer_sep = ".";
+  return _buffer_sep;
 }
 
 std::string &
 parameter_name_separator()
 {
-  static std::string _param_name_sep = ".";
-  return _param_name_sep;
+  static std::string _param_sep = ".";
+  return _param_sep;
+}
+
+bool &
+currently_solving_nonlinear_system()
+{
+  static bool _solving_nl_sys = false;
+  return _solving_nl_sys;
 }
 } // namespace neml2

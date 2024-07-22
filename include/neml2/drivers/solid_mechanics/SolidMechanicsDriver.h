@@ -44,9 +44,10 @@ public:
    */
   SolidMechanicsDriver(const OptionSet & options);
 
+  void diagnose(std::vector<Diagnosis> &) const override;
+
 protected:
   virtual void update_forces() override;
-  void check_integrity() const override;
 
   /**
    * @brief The control method to drive the constitutive update.

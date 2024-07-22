@@ -86,7 +86,7 @@ BackwardEulerTimeIntegration<T>::set_value(bool out, bool dout_din, bool d2out_d
     {
       _r.d(_s) = I;
       _r.d(_ds_dt) = -I * (_t - _tn);
-      if (Model::stage == Model::Stage::UPDATING)
+      if (!currently_solving_nonlinear_system())
       {
         _r.d(_sn) = -I;
         _r.d(_t) = -_ds_dt;
@@ -98,7 +98,7 @@ BackwardEulerTimeIntegration<T>::set_value(bool out, bool dout_din, bool d2out_d
     {
       _r.d(_ds_dt, _t) = -I;
       _r.d(_ds_dt, _tn) = I;
-      if (Model::stage == Model::Stage::UPDATING)
+      if (!currently_solving_nonlinear_system())
       {
         _r.d(_t, _ds_dt) = -I;
         _r.d(_tn, _ds_dt) = I;

@@ -65,14 +65,14 @@ Settings::expected_options()
       "device='cpu' sets the target compute device to be CPU, and device='cuda:1' sets the target "
       "compute device to be CUDA with device ID 1.";
 
-  options.set<Real>("machine_precision") = 1E-15;
+  options.set<Real>("machine_precision") = machine_precision();
   options.set("machine_precision").doc() =
       "Machine precision used at various places to workaround singularities like division-by-zero.";
 
-  options.set<Real>("tolerance") = 1e-6;
+  options.set<Real>("tolerance") = tolerance();
   options.set("tolerance").doc() = "Tolerance used in various algorithms.";
 
-  options.set<Real>("tighter_tolerance") = 1E-12;
+  options.set<Real>("tighter_tolerance") = tighter_tolerance();
   options.set("tighter_tolerance").doc() = "A tighter tolerance used in various algorithms.";
 
   options.set<unsigned int>("interop_threads") = 0;
@@ -83,12 +83,12 @@ Settings::expected_options()
   options.set("intraop_threads").doc() = "Number threads used for intra-ops parallelism. If set to "
                                          "0, defaults to number of CPU cores.";
 
-  options.set<std::string>("buffer_name_separator") = ".";
+  options.set<std::string>("buffer_name_separator") = buffer_name_separator();
   options.set("buffer_name_separator").doc() = "Nested buffer name separator. The default is '.'. "
                                                "For example, a sub-model 'foo' which declares "
                                                "a buffer 'bar' will have a buffer named 'foo.bar'.";
 
-  options.set<std::string>("parameter_name_separator") = ".";
+  options.set<std::string>("parameter_name_separator") = parameter_name_separator();
   options.set("parameter_name_separator").doc() =
       "Parameter name separator. The default is '.'. For example, a sub-model 'foo' which declares "
       "a parameter 'bar' will have a parameter named 'foo.bar'.";
@@ -128,5 +128,8 @@ Settings::Settings(const OptionSet & options)
   // Buffer/parameter name separator
   buffer_name_separator() = options.get<std::string>("buffer_name_separator");
   parameter_name_separator() = options.get<std::string>("parameter_name_separator");
+
+  // Not solving anything right now
+  currently_solving_nonlinear_system() = false;
 }
 } // namespace neml2

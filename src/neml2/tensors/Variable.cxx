@@ -26,6 +26,20 @@
 
 namespace neml2
 {
+VariableBase::VariableBase(const VariableName & name_in)
+  : _name(name_in),
+    _value_storage(nullptr),
+    _derivative_storage(nullptr),
+    _second_derivative_storage(nullptr),
+    _is_state(_name.start_with("state")),
+    _is_old_state(_name.start_with("old_state")),
+    _is_forces(_name.start_with("forces")),
+    _is_old_forces(_name.start_with("old_forces")),
+    _is_residual(_name.start_with("residual")),
+    _is_other(!_is_state && !_is_old_state && !_is_forces && !_is_old_forces && !_is_residual)
+{
+}
+
 void
 VariableBase::cache(TensorShapeRef batch_shape)
 {
@@ -89,6 +103,18 @@ VariableBase::d(const VariableBase & x)
                   " does not depend on ",
                   x.name());
 
+#ifndef NDEBUG
+  if (currently_solving_nonlinear_system())
+    neml_assert_dbg(
+        !x.name().start_with("forces") && !x.name().start_with("old_forces") &&
+            !x.name().start_with("old_state"),
+        "During implicit solve, it is not necessary to calculate derivative with respect to "
+        "non-state variables. This error is triggered by an attempt to set the derivative of ",
+        name(),
+        " with respect to ",
+        x.name());
+#endif
+
   return Derivative(_dvalue_d[x.name()]);
 }
 
@@ -107,6 +133,21 @@ VariableBase::d(const VariableBase & x1, const VariableBase & x2)
                   x1.name(),
                   ") does not depend on ",
                   x2.name());
+
+#ifndef NDEBUG
+  if (currently_solving_nonlinear_system())
+    neml_assert_dbg(
+        !x1.name().start_with("forces") && !x1.name().start_with("old_forces") &&
+            !x1.name().start_with("old_state") && !x2.name().start_with("forces") &&
+            !x2.name().start_with("old_forces") && !x2.name().start_with("old_state"),
+        "During implicit solve, it is not necessary to calculate derivative with respect to "
+        "non-state variables. This error is triggered by an attempt to set the derivative of ",
+        name(),
+        " with respect to ",
+        x1.name(),
+        " and ",
+        x2.name());
+#endif
 
   return Derivative(_d2value_d[x1.name()][x2.name()]);
 }

@@ -48,6 +48,8 @@ class LabeledAxisAccessor
 public:
   LabeledAxisAccessor() = default;
 
+  ~LabeledAxisAccessor() {}
+
   template <typename... S>
   LabeledAxisAccessor(const char * name, S &&... names)
   {

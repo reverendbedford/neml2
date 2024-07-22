@@ -24,6 +24,7 @@
 
 #include "neml2/models/ImplicitUpdate.h"
 #include "neml2/misc/math.h"
+#include "neml2/base/guards.h"
 
 namespace neml2
 {
@@ -81,7 +82,7 @@ ImplicitUpdate::ImplicitUpdate(const OptionSet & options)
 void
 ImplicitUpdate::check_AD_limitation() const
 {
-  neml_assert_dbg(!_AD_1st_deriv && !_AD_2nd_deriv,
+  neml_assert_dbg(!using_AD_1st_derivative() && !using_AD_2nd_derivative(),
                   "ImplicitUpdate does not support AD because it uses in-place operations to "
                   "iteratively update the trial solution until convergence.");
 }
@@ -119,12 +120,16 @@ ImplicitUpdate::set_value(bool out, bool dout_din, bool d2out_din2)
 
   if (out || dout_din)
   {
+    // Solution
+    Tensor sol;
+
     // Solve for the next state
-    Model::stage = Model::Stage::SOLVING;
-    auto sol = _model.solution().clone();
-    auto [succeeded, iters] = _solver.solve(_model, sol);
-    neml_assert(succeeded, "Nonlinear solve failed.");
-    Model::stage = Model::Stage::UPDATING;
+    {
+      SolvingNonlinearSystem guard_solving;
+      sol = _model.solution().clone();
+      auto [succeeded, iters] = _solver.solve(_model, sol);
+      neml_assert(succeeded, "Nonlinear solve failed.");
+    }
 
     if (out)
       output_storage().copy_(sol);
@@ -135,7 +140,7 @@ ImplicitUpdate::set_value(bool out, bool dout_din, bool d2out_din2)
       // IFT requires dresidual/dinput evaluated at the solution:
       _model.prepare();
       _model.value_and_dvalue();
-      auto && [dr_ds, dr_dsn, dr_df, dr_dfn] = _model.nonlinear_system_derivatives();
+      auto && [dr_ds, dr_dsn, dr_df, dr_dfn] = _model.get_system_matrices();
 
       // The actual IFT:
       auto [LU, pivot] = math::linalg::lu_factor(dr_ds);

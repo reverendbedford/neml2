@@ -27,6 +27,7 @@
 #include "neml2/base/HITParser.h"
 #include "neml2/base/Settings.h"
 #include "neml2/models/Model.h"
+#include "neml2/drivers/Driver.h"
 
 namespace neml2
 {
@@ -74,6 +75,12 @@ reload_model(const std::filesystem::path & path, const std::string & mname, bool
 {
   Factory::clear();
   return load_model(path, mname, enable_ad);
+}
+
+Driver &
+get_driver(const std::string & dname)
+{
+  return Factory::get_object<Driver>("Drivers", dname);
 }
 
 Factory &

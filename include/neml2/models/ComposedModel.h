@@ -74,6 +74,9 @@ private:
   /// Helper method to recursively apply second order chain rule
   void apply_second_order_chain_rule(Model * model);
 
+  /// Helper to rethrow exceptions collected from other threads
+  void rethrow_exceptions() const;
+
   /// Additional outbound items in the dependency graph
   const std::vector<VariableName> _additional_outputs;
 
@@ -104,5 +107,8 @@ private:
 
   /// Threaded evaluation results of sub-models
   std::map<Model *, std::future<void>> _async_results;
+
+  /// Threaded evaluation exceptions of sub-models
+  static std::map<std::thread::id, std::exception_ptr> _async_exceptions;
 };
 } // namespace neml2

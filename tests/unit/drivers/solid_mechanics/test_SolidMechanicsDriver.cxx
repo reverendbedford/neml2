@@ -34,28 +34,32 @@ TEST_CASE("SolidMechanicsDriver", "[SolidMechanicsDriver]")
   SECTION("strain control")
   {
     reload_input("unit/drivers/solid_mechanics/test_SolidMechanicsDriver_strain.i");
-    auto & driver = Factory::get_object<Driver>("Drivers", "driver");
+    auto & driver = get_driver("driver");
+    throw_diagnostics(driver);
     REQUIRE(driver.run());
   }
 
   SECTION("stress control")
   {
     reload_input("unit/drivers/solid_mechanics/test_SolidMechanicsDriver_stress.i");
-    auto & driver = Factory::get_object<Driver>("Drivers", "driver");
+    auto & driver = get_driver("driver");
+    throw_diagnostics(driver);
     REQUIRE(driver.run());
   }
 
   SECTION("mixed control")
   {
     reload_input("unit/drivers/solid_mechanics/test_SolidMechanicsDriver_mixed.i");
-    auto & driver = Factory::get_object<Driver>("Drivers", "driver");
+    auto & driver = get_driver("driver");
+    throw_diagnostics(driver);
     REQUIRE(driver.run());
   }
 
   SECTION("temperature dependent")
   {
     reload_input("unit/drivers/solid_mechanics/test_SolidMechanicsDriver_temperature.i");
-    auto & driver = Factory::get_object<Driver>("Drivers", "driver");
+    auto & driver = get_driver("driver");
+    throw_diagnostics(driver);
     REQUIRE(driver.run());
   }
 
@@ -63,7 +67,8 @@ TEST_CASE("SolidMechanicsDriver", "[SolidMechanicsDriver]")
   {
     reload_input(
         "unit/drivers/solid_mechanics/test_LargeDeformationIncrementalSolidMechanicsDriver.i");
-    auto & driver = Factory::get_object<Driver>("Drivers", "driver");
+    auto & driver = get_driver("driver");
+    throw_diagnostics(driver);
     REQUIRE(driver.run());
   }
 }

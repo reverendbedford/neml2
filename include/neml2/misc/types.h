@@ -67,7 +67,6 @@ torch::Device & default_device();
 ///@}
 
 /// @name Default tolerances
-// TODO: make this depend on the current dtype
 ///@{
 /// Machine precision
 Real & machine_precision();
@@ -81,4 +80,12 @@ Real & tighter_tolerance();
 std::string & buffer_name_separator();
 /// Default nested parameter name separator
 std::string & parameter_name_separator();
+
+/**
+ * A model can be _implicit. An implicit model need to be "solved": the state variables should be
+ * iteratively updated until the residual becomes zero. During the solve, we only need derivatives
+ * with respect to the input state. Therefore, the model can/should avoid unnecessary computations
+ * by examining whether the current evaluation is part of the solve.
+ */
+bool & currently_solving_nonlinear_system();
 } // namespace neml2

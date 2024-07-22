@@ -27,6 +27,7 @@
 #include "neml2/base/Registry.h"
 #include "neml2/base/NEML2Object.h"
 #include "neml2/base/Factory.h"
+#include "neml2/base/DiagnosticsInterface.h"
 #include "neml2/models/Model.h"
 #include <filesystem>
 
@@ -41,7 +42,7 @@ namespace neml2
  * @brief The Driver drives the execution of a NEML2 Model.
  *
  */
-class Driver : public NEML2Object
+class Driver : public NEML2Object, public DiagnosticsInterface
 {
 public:
   static OptionSet expected_options();
@@ -53,13 +54,12 @@ public:
    */
   Driver(const OptionSet & options);
 
+  virtual void diagnose(std::vector<Diagnosis> &) const override {}
+
   /// Let the driver run, return \p true upon successful completion, and return \p false otherwise.
   virtual bool run() = 0;
 
 protected:
-  /// Check the integrity of the set up.
-  virtual void check_integrity() const {}
-
   /// Whether to print out additional (debugging) information during the execution.
   bool _verbose;
 };

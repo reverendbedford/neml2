@@ -27,11 +27,13 @@
 #include "neml2/base/NEML2Object.h"
 #include "neml2/misc/error.h"
 #include "neml2/base/OptionCollection.h"
+#include "neml2/base/DiagnosticsInterface.h"
 
 namespace neml2
 {
 // Forward decl
 class Model;
+class Driver;
 class Settings;
 
 /**
@@ -86,6 +88,15 @@ load_model(const std::filesystem::path & path, const std::string & mname, bool e
  */
 Model &
 reload_model(const std::filesystem::path & path, const std::string & mname, bool enable_ad = true);
+
+/**
+ * @brief A convenient function to manufacture a neml2::Driver
+ *
+ * The input file must have already been parsed and loaded.
+ *
+ * @param dname Name of the driver
+ */
+Driver & get_driver(const std::string & dname);
 
 /**
  * The factory is responsible for:

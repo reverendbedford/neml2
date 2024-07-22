@@ -90,47 +90,57 @@ LargeDeformationIncrementalSolidMechanicsDriver::LargeDeformationIncrementalSoli
 
   _driving_force = _driving_force.to(_device);
   _vorticity = _vorticity.to(_device);
-
-  check_integrity();
 }
 
 void
-LargeDeformationIncrementalSolidMechanicsDriver::check_integrity() const
+LargeDeformationIncrementalSolidMechanicsDriver::diagnose(std::vector<Diagnosis> & diagnoses) const
 {
-  TransientDriver::check_integrity();
-  neml_assert(
+  TransientDriver::diagnose(diagnoses);
+
+  diagnostic_assert(
+      diagnoses,
       _driving_force.dim() == 3,
       "Input deformation rate/stress rate should have dimension 3 but instead has dimension",
       _driving_force.dim());
-  neml_assert(_time.sizes()[0] == _driving_force.sizes()[0],
-              "Input deformation rate/stress rate and time should have the same number of time "
-              "steps. The input "
-              "time has ",
-              _time.sizes()[0],
-              " time steps, while the input deformation rate/stress rate has ",
-              _driving_force.sizes()[0],
-              " time steps");
-  neml_assert(_vorticity.sizes()[0] == _driving_force.sizes()[0],
-              "Input vorticity and deformation rate/stress rate should have the same number of "
-              "time steps.  The input vorticity "
-              "has ",
-              _vorticity.sizes()[0],
-              " time steps, while the input deformation rate/stress rate has ",
-              _driving_force.sizes()[0],
-              " time steps");
-  neml_assert(_time.sizes()[1] == _driving_force.sizes()[1],
-              "Input deformation rate/stress rate and time should have the same batch size. The "
-              "input time has a "
-              "batch size of ",
-              _time.sizes()[1],
-              " while the input strain/stress has a batch size of ",
-              _driving_force.sizes()[1]);
-  neml_assert(_driving_force.sizes()[2] == 6,
-              "Input strain/stress should have final dimension 6 but instead has final dimension ",
-              _driving_force.sizes()[2]);
-  neml_assert(_vorticity.sizes()[2] == 3,
-              "Input vorticity should have final dimension 3, but instead has final dimension ",
-              _vorticity.sizes()[2]);
+  diagnostic_assert(
+      diagnoses,
+      _time.sizes()[0] == _driving_force.sizes()[0],
+      "Input deformation rate/stress rate and time should have the same number of time "
+      "steps. The input "
+      "time has ",
+      _time.sizes()[0],
+      " time steps, while the input deformation rate/stress rate has ",
+      _driving_force.sizes()[0],
+      " time steps");
+  diagnostic_assert(
+      diagnoses,
+      _vorticity.sizes()[0] == _driving_force.sizes()[0],
+      "Input vorticity and deformation rate/stress rate should have the same number of "
+      "time steps.  The input vorticity "
+      "has ",
+      _vorticity.sizes()[0],
+      " time steps, while the input deformation rate/stress rate has ",
+      _driving_force.sizes()[0],
+      " time steps");
+  diagnostic_assert(
+      diagnoses,
+      _time.sizes()[1] == _driving_force.sizes()[1],
+      "Input deformation rate/stress rate and time should have the same batch size. The "
+      "input time has a "
+      "batch size of ",
+      _time.sizes()[1],
+      " while the input strain/stress has a batch size of ",
+      _driving_force.sizes()[1]);
+  diagnostic_assert(
+      diagnoses,
+      _driving_force.sizes()[2] == 6,
+      "Input strain/stress should have final dimension 6 but instead has final dimension ",
+      _driving_force.sizes()[2]);
+  diagnostic_assert(
+      diagnoses,
+      _vorticity.sizes()[2] == 3,
+      "Input vorticity should have final dimension 3, but instead has final dimension ",
+      _vorticity.sizes()[2]);
 }
 
 void

@@ -289,6 +289,7 @@ private:
     }
     else
     {
+      (void)t;
       auto var = std::make_unique<Variable<T>>(name);
       var_base_ptr = views.set_pointer(name, std::move(var));
     }

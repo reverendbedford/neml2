@@ -28,6 +28,8 @@
 
 namespace neml2
 {
+std::map<std::thread::id, std::exception_ptr> ComposedModel::_async_exceptions = {};
+
 register_NEML2_object(ComposedModel);
 
 OptionSet
@@ -259,6 +261,7 @@ ComposedModel::setup_submodel_input_views(VariableStore * host)
 void
 ComposedModel::set_value(bool out, bool dout_din, bool d2out_din2)
 {
+  _async_exceptions.clear();
   _async_results.clear();
   for (auto i : registered_models())
     _async_results[i] = std::async(
@@ -266,6 +269,9 @@ ComposedModel::set_value(bool out, bool dout_din, bool d2out_din2)
 
   for (auto && [i, future] : _async_results)
     future.wait();
+
+  // Rethrow exceptions raised from other threads to the main thread
+  rethrow_exceptions();
 
   for (auto model : _dependency.end_nodes())
   {
@@ -283,25 +289,53 @@ ComposedModel::set_value(bool out, bool dout_din, bool d2out_din2)
 void
 ComposedModel::set_value_async(Model * i, bool out, bool dout_din, bool d2out_din2)
 {
-  // Wait for dependent models
-  if (_dependency.node_providers().count(i))
-    for (auto dep : _dependency.node_providers().at(i))
-      _async_results[dep].wait();
+  try
+  {
+    // Wait for dependent models
+    if (_dependency.node_providers().count(i))
+      for (auto dep : _dependency.node_providers().at(i))
+        _async_results[dep].wait();
 
-  if (out && !dout_din && !d2out_din2)
-    i->value();
-  else if (out && dout_din && !d2out_din2)
-    i->value_and_dvalue();
-  else if (out && dout_din && d2out_din2)
-    i->value_and_dvalue_and_d2value();
-  else
-    throw NEMLException("Unsupported call signature to set_value");
+    if (out && !dout_din && !d2out_din2)
+      i->value();
+    else if (out && dout_din && !d2out_din2)
+      i->value_and_dvalue();
+    else if (out && dout_din && d2out_din2)
+      i->value_and_dvalue_and_d2value();
+    else
+      throw NEMLException("Unsupported call signature to set_value");
 
-  if (dout_din && !d2out_din2)
-    apply_chain_rule(i);
+    if (dout_din && !d2out_din2)
+      apply_chain_rule(i);
 
-  if (d2out_din2)
-    apply_second_order_chain_rule(i);
+    if (d2out_din2)
+      apply_second_order_chain_rule(i);
+  }
+  catch (...)
+  {
+    _async_exceptions[std::this_thread::get_id()] = std::current_exception();
+  }
+}
+
+void
+ComposedModel::rethrow_exceptions() const
+{
+  if (!_async_exceptions.empty())
+  {
+    std::stringstream error;
+    for (auto & [tid, eptr] : _async_exceptions)
+      try
+      {
+        std::rethrow_exception(eptr);
+      }
+      catch (const std::exception & e)
+      {
+        error << "During threaded ComposedModel evaluation for '" << name()
+              << "', one thread threw an exception with the following message:\n"
+              << e.what() << "\n\n";
+      }
+    throw NEMLException(error.str());
+  }
 }
 
 void

@@ -40,13 +40,7 @@ class Derivative;
 class VariableBase
 {
 public:
-  VariableBase(const VariableName & name_in)
-    : _name(name_in),
-      _value_storage(nullptr),
-      _derivative_storage(nullptr),
-      _second_derivative_storage(nullptr)
-  {
-  }
+  VariableBase(const VariableName & name_in);
 
   virtual ~VariableBase() = default;
 
@@ -104,6 +98,16 @@ public:
   /// Variable type
   virtual TensorType type() const = 0;
 
+  /// @name Subaxis
+  ///@{
+  bool is_state() const { return _is_state; }
+  bool is_old_state() const { return _is_old_state; }
+  bool is_forces() const { return _is_forces; }
+  bool is_old_forces() const { return _is_old_forces; }
+  bool is_residual() const { return _is_residual; }
+  bool is_other() const { return _is_other; }
+  ///@}
+
 protected:
   /// Name of the variable
   const VariableName _name;
@@ -128,6 +132,16 @@ protected:
 
   /// The second derivative storage that this variable is viewing into
   const LabeledTensor3D * _second_derivative_storage;
+
+  /// @name subaxis
+  ///@{
+  const bool _is_state;
+  const bool _is_old_state;
+  const bool _is_forces;
+  const bool _is_old_forces;
+  const bool _is_residual;
+  const bool _is_other;
+  ///@}
 };
 
 /**

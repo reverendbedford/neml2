@@ -136,18 +136,16 @@ TransientDriver::TransientDriver(const OptionSet & options)
 }
 
 void
-TransientDriver::check_integrity() const
+TransientDriver::diagnose(std::vector<Diagnosis> & diagnoses) const
 {
-  Driver::check_integrity();
+  _model.diagnose(diagnoses);
 
-  auto errors = _model.preflight();
-  // For now, let's throw one error at a time...
-  if (!errors.empty())
-    throw errors[0];
+  Driver::diagnose(diagnoses);
 
-  neml_assert(_time.dim() == 2,
-              "Input time should have dimension 2 but instead has dimension ",
-              _time.dim());
+  diagnostic_assert(diagnoses,
+                    _time.dim() == 2,
+                    "Input time should have dimension 2 but instead has dimension ",
+                    _time.dim());
 }
 
 bool

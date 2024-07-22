@@ -22,29 +22,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <catch2/catch_test_macros.hpp>
+#include "neml2/base/DiagnosticsInterface.h"
 
-#include "utils.h"
-#include "neml2/drivers/TransientDriver.h"
-
-using namespace neml2;
-
-TEST_CASE("TransientDriver", "[TransientDriver]")
+namespace neml2
 {
-  SECTION("predictor = PREVIOUS_STATE")
-  {
-    reload_input("unit/drivers/test_TransientDriver.i");
-    auto & driver = get_driver("driver");
-    throw_diagnostics(driver);
-    REQUIRE(driver.run());
-  }
+void
+throw_diagnostics(const DiagnosticsInterface & patient)
+{
+  std::vector<Diagnosis> diagnoses;
+  patient.diagnose(diagnoses);
 
-  SECTION("predictor = LINEAR_EXTRAPOLATION")
+  if (!diagnoses.empty())
   {
-    reload_input("unit/drivers/test_TransientDriver.i",
-                 "Drivers/driver/predictor=LINEAR_EXTRAPOLATION");
-    auto & driver = get_driver("driver");
-    throw_diagnostics(driver);
-    REQUIRE(driver.run());
+    std::stringstream message;
+    for (auto & diagnosis : diagnoses)
+      message << diagnosis.what() << "\n\n";
+    throw NEMLException(message.str());
   }
 }
+
+DiagnosticsInterface::DiagnosticsInterface(NEML2Object * object)
+  : _object(object)
+{
+}
+} // namespace neml2

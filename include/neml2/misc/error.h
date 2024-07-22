@@ -45,20 +45,11 @@ protected:
   std::string _msg;
 };
 
-class Diagnosis : public NEMLException
-{
-public:
-  using NEMLException::NEMLException;
-};
-
 template <typename... Args>
 void neml_assert(bool assertion, Args &&... args);
 
 template <typename... Args>
 void neml_assert_dbg(bool assertion, Args &&... args);
-
-template <typename... Args>
-Diagnosis make_diagnosis(Args &&... args);
 
 namespace internal
 {
@@ -87,15 +78,6 @@ neml_assert_dbg([[maybe_unused]] bool assertion, [[maybe_unused]] Args &&... arg
 #ifndef NDEBUG
   neml_assert(assertion, args...);
 #endif
-}
-
-template <typename... Args>
-Diagnosis
-make_diagnosis(Args &&... args)
-{
-  std::ostringstream oss;
-  internal::stream_all(oss, std::forward<Args>(args)...);
-  return Diagnosis(oss.str().data());
 }
 
 namespace internal

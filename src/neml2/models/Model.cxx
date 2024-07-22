@@ -27,8 +27,6 @@
 
 namespace neml2
 {
-Model::Stage Model::stage = UPDATING;
-
 OptionSet
 Model::expected_options()
 {
@@ -58,44 +56,32 @@ Model::Model(const OptionSet & options)
     ParameterStore(options, this),
     VariableStore(options, this),
     NonlinearSystem(options),
-    _AD_1st_deriv(options.get<bool>("_use_AD_first_derivative")),
-    _AD_2nd_deriv(options.get<bool>("_use_AD_second_derivative")),
+    DiagnosticsInterface(this),
     _options(default_tensor_options()),
+    _nonlinear_system(options.get<bool>("_nonlinear_system")),
     _deriv_order(-1),
     _extra_deriv_order(options.get<int>("_extra_derivative_order")),
-    _nonlinear_system(options.get<bool>("_nonlinear_system")),
-    _enable_AD(options.get<bool>("_enable_AD"))
+    _enable_AD(options.get<bool>("_enable_AD")),
+    _AD_1st_deriv(options.get<bool>("_use_AD_first_derivative")),
+    _AD_2nd_deriv(options.get<bool>("_use_AD_second_derivative"))
 {
 }
 
-std::vector<Diagnosis>
-Model::preflight() const
+void
+Model::diagnose(std::vector<Diagnosis> & diagnoses) const
 {
-  neml_assert(host() == this, "This method should only be called on the host model.");
-
-  std::vector<Diagnosis> errors;
+  for (auto submodel : registered_models())
+    submodel->diagnose(diagnoses);
 
   // Check for statefulness
-  if (input_axis().has_subaxis("old_state"))
-  {
-    if (!output_axis().has_subaxis("state"))
-      errors.push_back(
-          make_diagnosis(name(),
-                         ": input axis has sub-axis 'old_state', but output axis does not "
-                         "have sub-axis 'state'."));
-    else
-    {
-      auto s_vars = output_axis().subaxis("state").variable_names();
+  if (this == host())
+    if (input_axis().has_subaxis("old_state"))
       for (auto var : input_axis().subaxis("old_state").variable_names())
-        if (!s_vars.count(var))
-          errors.push_back(make_diagnosis(name(),
-                                          ": input axis has old state named ",
-                                          var,
-                                          ", but it doesn't exist on the output axis."));
-    }
-  }
-
-  return errors;
+        diagnostic_assert(diagnoses,
+                          output_axis().has_variable(var.prepend("state")),
+                          "Input axis has old state variable ",
+                          var,
+                          ", but the corresponding output state variable doesn't exist.");
 }
 
 void
@@ -106,7 +92,7 @@ Model::setup()
 }
 
 std::tuple<const Tensor &, const Tensor &, const Tensor &, const Tensor &>
-Model::nonlinear_system_derivatives() const
+Model::get_system_matrices() const
 {
   neml_assert_dbg(is_nonlinear_system(), "This is not a nonlinear system");
   return {_dr_ds, _dr_dsn, _dr_df, _dr_dfn};

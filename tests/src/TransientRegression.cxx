@@ -57,6 +57,7 @@ TransientRegression::TransientRegression(const OptionSet & options)
 bool
 TransientRegression::run()
 {
+  throw_diagnostics(_driver);
   _driver.run();
 
   // Verify the result

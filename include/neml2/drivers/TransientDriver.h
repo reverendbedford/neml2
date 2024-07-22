@@ -49,6 +49,8 @@ public:
    */
   TransientDriver(const OptionSet & options);
 
+  virtual void diagnose(std::vector<Diagnosis> &) const override;
+
   bool run() override;
 
   const Model & model() const { return _model; }
@@ -65,8 +67,6 @@ public:
   virtual torch::nn::ModuleDict result() const;
 
 protected:
-  virtual void check_integrity() const override;
-
   /// Solve the initial value problem
   virtual bool solve();
 

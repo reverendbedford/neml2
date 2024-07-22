@@ -40,6 +40,7 @@ Driver::expected_options()
 
 Driver::Driver(const OptionSet & options)
   : NEML2Object(options),
+    DiagnosticsInterface(this),
     _verbose(options.get<bool>("verbose"))
 {
 }

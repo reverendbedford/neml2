@@ -58,7 +58,8 @@ TEST_CASE("models")
       {
         // Load and run the model
         reload_input(test.filename());
-        auto & driver = Factory::get_object<Driver>("Drivers", "unit");
+        auto & driver = get_driver("unit");
+        throw_diagnostics(driver);
         REQUIRE(driver.run());
       }
       catch (...)

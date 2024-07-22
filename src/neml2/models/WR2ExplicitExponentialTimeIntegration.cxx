@@ -76,7 +76,7 @@ WR2ExplicitExponentialTimeIntegration::set_value(bool out, bool dout_din, bool d
   {
     const auto de = (_s_dot * dt).dexp();
     _s.d(_s_dot) = Rot(_sn).drotate(inc) * de * dt;
-    if (Model::stage == Model::Stage::UPDATING)
+    if (!currently_solving_nonlinear_system())
     {
       _s.d(_sn) = Rot(_sn).drotate_self(inc);
       _s.d(_t) = Rot(_sn).drotate(inc) * de * Vec(_s_dot.value());

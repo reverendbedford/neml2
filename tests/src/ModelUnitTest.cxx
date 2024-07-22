@@ -80,8 +80,8 @@ ModelUnitTest::expected_options()
 
 ModelUnitTest::ModelUnitTest(const OptionSet & options)
   : Driver(options),
-    _model(get_model(options.get<std::string>("model"), false)),
-    _model_disable_AD(get_model(options.get<std::string>("model"), true)),
+    _model(get_model(options.get<std::string>("model"), true)),
+    _model_disable_AD(get_model(options.get<std::string>("model"), false)),
     _batch_shape(options.get<TensorShape>("batch_shape")),
     _check_values(options.get<bool>("check_values")),
     _check_1st_deriv(options.get<bool>("check_first_derivatives")),

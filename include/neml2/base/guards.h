@@ -30,6 +30,8 @@
 #include <map>
 #include <chrono>
 
+#include "neml2/misc/types.h"
+
 namespace neml2
 {
 // Timed section
@@ -45,6 +47,20 @@ private:
   const std::string _name;
   const std::string _section;
   const std::chrono::time_point<std::chrono::high_resolution_clock> _t0;
+};
+
+// Guard a region where implicit solve is being performed
+struct SolvingNonlinearSystem
+{
+  SolvingNonlinearSystem()
+    : prev_bool(currently_solving_nonlinear_system())
+  {
+    currently_solving_nonlinear_system() = true;
+  }
+
+  ~SolvingNonlinearSystem() { currently_solving_nonlinear_system() = prev_bool; }
+
+  const bool prev_bool;
 };
 
 // A RAII guard that sets number of interop threads for a local region

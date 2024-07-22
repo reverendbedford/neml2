@@ -77,7 +77,7 @@ ForwardEulerTimeIntegration<T>::set_value(bool out, bool dout_din, bool d2out_di
     if (dout_din)
     {
       _s.d(_ds_dt) = I * (_t - _tn);
-      if (Model::stage == Model::Stage::UPDATING)
+      if (!currently_solving_nonlinear_system())
       {
         _s.d(_sn) = I;
         _s.d(_t) = _ds_dt;
@@ -86,7 +86,7 @@ ForwardEulerTimeIntegration<T>::set_value(bool out, bool dout_din, bool d2out_di
     }
 
     if (d2out_din2)
-      if (Model::stage == Model::Stage::UPDATING)
+      if (!currently_solving_nonlinear_system())
       {
         _s.d(_ds_dt, _t) = I;
         _s.d(_ds_dt, _tn) = -I;
