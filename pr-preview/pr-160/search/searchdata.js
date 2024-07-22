@@ -9,7 +9,7 @@ var indexSectionsWithContent =
   6: "fst",
   7: "bfiknopsu",
   8: "cop",
-  9: "bcdfgimnopst"
+  9: "bcdfgimnpst"
 };
 
 var indexSectionNames =

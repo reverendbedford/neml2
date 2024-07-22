@@ -25,7 +25,11 @@
 var NAVTREE =
 [
   [ "NEML2", "index.html", [
-    [ "Overview", "index.html", "index" ],
+    [ "Overview", "index.html#autotoc_md1", [
+      [ "The New Engineering Material model Library, version 2", "index.html#autotoc_md2", null ],
+      [ "Quick installation", "index.html#autotoc_md3", null ],
+      [ "Features and design philosophy", "index.html#autotoc_md4", null ]
+    ] ],
     [ "Installation Guide", "../install.html", null ],
     [ "User Guide", "usergroup0.html", [
       [ "Input File", "../input-file.html", null ],

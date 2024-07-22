@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['package_0',['Python Package',['../python-package.html',1,'']]],
-  ['python_20package_1',['Python Package',['../python-package.html',1,'']]]
+  ['settings_0',['Settings',['../syntax-settings.html',1,'[Settings]'],['../system-settings.html',1,'Settings']]],
+  ['solid_20mechanics_1',['Solid Mechanics',['../solid-mechanics.html',1,'']]],
+  ['solver_2',['Solver',['../system-solvers.html',1,'']]],
+  ['solvers_3',['[Solvers]',['../syntax-solvers.html',1,'']]]
 ];
