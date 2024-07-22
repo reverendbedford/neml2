@@ -1,9 +1,5 @@
 var classneml2_1_1Model =
 [
-    [ "Stage", "classneml2_1_1Model.html#aca8133200c1122e29b87b314d82604eb", [
-      [ "SOLVING", "classneml2_1_1Model.html#aca8133200c1122e29b87b314d82604ebab09b6d718c535c4d6fe77cc69ae8de0b", null ],
-      [ "UPDATING", "classneml2_1_1Model.html#aca8133200c1122e29b87b314d82604ebac10be9b18b215c436b592c0834af413e", null ]
-    ] ],
     [ "Model", "classneml2_1_1Model.html#aec637141dc1379fd56d05cf1b7cb10ee", null ],
     [ "allocate_variables", "classneml2_1_1Model.html#acbfa6a53c3c8f83c47a47c5722ebbb27", null ],
     [ "allocate_variables", "classneml2_1_1Model.html#a7dc095de073b164ed8262cac2aa0f632", null ],
@@ -16,16 +12,16 @@ var classneml2_1_1Model =
     [ "check_inplace_dbg", "classneml2_1_1Model.html#a1c21b5442da0b801681b1b2b4cd89667", null ],
     [ "check_input", "classneml2_1_1Model.html#a0e8b7b1bc791e2d261b74415d55b3864", null ],
     [ "consumed_items", "classneml2_1_1Model.html#adadf7cfaa539cd29c57118d735ec1193", null ],
+    [ "device", "classneml2_1_1Model.html#a6f544bdd9dcc8c96c34281e459760b4e", null ],
+    [ "diagnose", "classneml2_1_1Model.html#a2003b2f696b07451045fddd2c5189cc1", null ],
     [ "get_d2output_dinput2", "classneml2_1_1Model.html#a266eb5da16fd21f487f704e356a3bbe9", null ],
     [ "get_doutput_dinput", "classneml2_1_1Model.html#a04e2b6ccc0f018be2893f2a916b1d828", null ],
     [ "get_output", "classneml2_1_1Model.html#a230166c77b24a5d909bb8c878684a8bb", null ],
-    [ "input_requires_grad_", "classneml2_1_1Model.html#a154163b56ffff4b922c3e6c9fda31bc9", null ],
+    [ "get_system_matrices", "classneml2_1_1Model.html#a5fbeedc6e0b18f1ba3ae3d69d469033c", null ],
     [ "is_AD_disabled", "classneml2_1_1Model.html#a9f6f1851cae8fb2c2e29b748c07a01dd", null ],
     [ "is_AD_enabled", "classneml2_1_1Model.html#ab4d7e8b0482c876c6f1ab180a5a88145", null ],
     [ "is_nonlinear_system", "classneml2_1_1Model.html#a9952cc25d72ad689c212a71290a62eb6", null ],
-    [ "nonlinear_system_derivatives", "classneml2_1_1Model.html#a87d2023e2c814ee7ce722808c9912a45", null ],
     [ "options", "classneml2_1_1Model.html#a761d77eb7c81c3e93b34bfe6caf4b132", null ],
-    [ "preflight", "classneml2_1_1Model.html#ad878f13ac7d38f86f8e142e35419e572", null ],
     [ "prepare", "classneml2_1_1Model.html#a1825b40ca3bc3a1ba67fdb58fac5015c", null ],
     [ "provided_items", "classneml2_1_1Model.html#ae209446ae484a69eaf9e68d40f9c92f3", null ],
     [ "register_model", "classneml2_1_1Model.html#a9ab0087ee546f83a6759eac8c8f9aefe", null ],
@@ -36,6 +32,7 @@ var classneml2_1_1Model =
     [ "reinit", "classneml2_1_1Model.html#a601e188b0c9b855c08a36ba396dae1d6", null ],
     [ "requires_2nd_grad", "classneml2_1_1Model.html#a6842d7ca2f405942169ca5f3858854a6", null ],
     [ "requires_grad", "classneml2_1_1Model.html#a2502181e68a65aa25c0478bbaaac341d", null ],
+    [ "scalar_type", "classneml2_1_1Model.html#a355b7cd72942e5fd3632756af81f2ce2", null ],
     [ "set_input", "classneml2_1_1Model.html#aac96fadadaf78fec2e476b2a423de411", null ],
     [ "set_solution", "classneml2_1_1Model.html#a679f0dde73dc90d4389c2364083a4b33", null ],
     [ "set_value", "classneml2_1_1Model.html#a6a028925dc10166ea6426fc4d7635ad2", null ],
@@ -59,7 +56,5 @@ var classneml2_1_1Model =
     [ "zero", "classneml2_1_1Model.html#ad37893cc54715a9474d706beaf7bbb06", null ],
     [ "ComposedModel", "classneml2_1_1Model.html#a0415245a59cfbcab2c75c07836ce752c", null ],
     [ "ParameterStore", "classneml2_1_1Model.html#a6d0153a21afe2fe9ebf7dda41cb464a3", null ],
-    [ "_AD_1st_deriv", "classneml2_1_1Model.html#a972285be81a9e41a4adcdec6cbdaf69f", null ],
-    [ "_AD_2nd_deriv", "classneml2_1_1Model.html#a47193d2d14f1c32d608190382e516e06", null ],
     [ "_registered_models", "classneml2_1_1Model.html#a3c97529c21f71bb6268fb4e45ec97dcb", null ]
 ];

@@ -112,7 +112,6 @@ $(function(){initNavTree('classneml2_1_1Driver.html',''); initResizable(); });
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classneml2_1_1Driver-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Driver Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div></div>
@@ -133,8 +132,10 @@ Inheritance diagram for Driver:</div>
 <area shape="rect" title="The Driver drives the execution of a NEML2 Model." alt="" coords="190,79,253,104"/>
 <area shape="rect" href="classneml2_1_1TransientDriver.html" title="The driver for a transient initial&#45;value problem." alt="" coords="161,152,282,177"/>
 <area shape="poly" title=" " alt="" coords="224,118,224,152,219,152,219,118"/>
-<area shape="rect" href="classneml2_1_1NEML2Object.html" title="The base class of all &quot;manufacturable&quot; objects in the NEML2 library." alt="" coords="167,5,276,31"/>
-<area shape="poly" title=" " alt="" coords="224,44,224,79,219,79,219,44"/>
+<area shape="rect" href="classneml2_1_1NEML2Object.html" title="The base class of all &quot;manufacturable&quot; objects in the NEML2 library." alt="" coords="88,5,197,31"/>
+<area shape="poly" title=" " alt="" coords="167,38,210,76,207,80,164,42"/>
+<area shape="rect" href="classneml2_1_1DiagnosticsInterface.html" title="Interface for object making diagnostics about common setup errors." alt="" coords="222,5,378,31"/>
+<area shape="poly" title=" " alt="" coords="279,42,236,80,232,76,275,38"/>
 <area shape="rect" href="classneml2_1_1LargeDeformationIncrementalSolidMechanicsDriver.html" title="The transient driver specialized for solid mechanics problems." alt="" coords="5,225,224,265"/>
 <area shape="poly" title=" " alt="" coords="196,188,142,227,139,223,193,183"/>
 <area shape="rect" href="classneml2_1_1SolidMechanicsDriver.html" title="The transient driver specialized for solid mechanics problems." alt="" coords="248,233,411,258"/>
@@ -147,6 +148,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a490912852a8e295d1f16b07793ddabc2" id="r_a490912852a8e295d1f16b07793ddabc2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a490912852a8e295d1f16b07793ddabc2">Driver</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1OptionSet.html">OptionSet</a> &amp;options)</td></tr>
 <tr class="memdesc:a490912852a8e295d1f16b07793ddabc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new <a class="el" href="classneml2_1_1Driver.html" title="The Driver drives the execution of a NEML2 Model.">Driver</a> object.  <br /></td></tr>
 <tr class="separator:a490912852a8e295d1f16b07793ddabc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5d6a096571aad18262e88dbfa66e482" id="r_ae5d6a096571aad18262e88dbfa66e482"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae5d6a096571aad18262e88dbfa66e482">diagnose</a> (std::vector&lt; <a class="el" href="classneml2_1_1Diagnosis.html">Diagnosis</a> &gt; &amp;) <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">override</a></td></tr>
+<tr class="memdesc:ae5d6a096571aad18262e88dbfa66e482"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check for common problems.  <br /></td></tr>
+<tr class="separator:ae5d6a096571aad18262e88dbfa66e482"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a819646ee5d77f3209ee8d1f36bdaf5ce" id="r_a819646ee5d77f3209ee8d1f36bdaf5ce"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a819646ee5d77f3209ee8d1f36bdaf5ce">run</a> ()=0</td></tr>
 <tr class="memdesc:a819646ee5d77f3209ee8d1f36bdaf5ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Let the driver run, return <code>true</code> upon successful completion, and return <code>false</code> otherwise.  <br /></td></tr>
 <tr class="separator:a819646ee5d77f3209ee8d1f36bdaf5ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -181,6 +185,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aaeee19eb1c12dcdf793e38464d038f12 inherit pub_methods_classneml2_1_1NEML2Object"><td class="memTemplItemLeft" align="right" valign="top">T *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classneml2_1_1NEML2Object.html#aaeee19eb1c12dcdf793e38464d038f12">host</a> ()</td></tr>
 <tr class="memdesc:aaeee19eb1c12dcdf793e38464d038f12 inherit pub_methods_classneml2_1_1NEML2Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a writable pointer to the host.  <br /></td></tr>
 <tr class="separator:aaeee19eb1c12dcdf793e38464d038f12 inherit pub_methods_classneml2_1_1NEML2Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classneml2_1_1DiagnosticsInterface"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classneml2_1_1DiagnosticsInterface')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classneml2_1_1DiagnosticsInterface.html">DiagnosticsInterface</a></td></tr>
+<tr class="memitem:a8376ca2c29f137a13a59962ceea883f2 inherit pub_methods_classneml2_1_1DiagnosticsInterface" id="r_a8376ca2c29f137a13a59962ceea883f2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1DiagnosticsInterface.html#a8376ca2c29f137a13a59962ceea883f2">DiagnosticsInterface</a> (<a class="el" href="classneml2_1_1NEML2Object.html">NEML2Object</a> *<a class="el" href="classneml2_1_1CrossRef.html">object</a>)</td></tr>
+<tr class="separator:a8376ca2c29f137a13a59962ceea883f2 inherit pub_methods_classneml2_1_1DiagnosticsInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30aa3cc8d35e3fc8ccc38577f878a590 inherit pub_methods_classneml2_1_1DiagnosticsInterface" id="r_a30aa3cc8d35e3fc8ccc38577f878a590"><td class="memTemplParams" colspan="2">template&lt;typename... Args&gt; </td></tr>
+<tr class="memitem:a30aa3cc8d35e3fc8ccc38577f878a590 inherit pub_methods_classneml2_1_1DiagnosticsInterface"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classneml2_1_1DiagnosticsInterface.html#a30aa3cc8d35e3fc8ccc38577f878a590">diagnostic_assert</a> (std::vector&lt; <a class="el" href="classneml2_1_1Diagnosis.html">Diagnosis</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">diagnoses</a>, <a class="el" href="classneml2_1_1CrossRef.html">bool</a> <a class="el" href="classneml2_1_1CrossRef.html">assertion</a>, <a class="el" href="classneml2_1_1CrossRef.html">Args</a> &amp;&amp;... <a class="el" href="classneml2_1_1CrossRef.html">args</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="separator:a30aa3cc8d35e3fc8ccc38577f878a590 inherit pub_methods_classneml2_1_1DiagnosticsInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -189,12 +199,6 @@ Static Public Member Functions</h2></td></tr>
 <tr class="inherit_header pub_static_methods_classneml2_1_1NEML2Object"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_static_methods_classneml2_1_1NEML2Object')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classneml2_1_1NEML2Object.html">NEML2Object</a></td></tr>
 <tr class="memitem:acec712ff48d4c0884a1362c116f3257a inherit pub_static_methods_classneml2_1_1NEML2Object" id="r_acec712ff48d4c0884a1362c116f3257a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">static</a> <a class="el" href="classneml2_1_1OptionSet.html">OptionSet</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1NEML2Object.html#acec712ff48d4c0884a1362c116f3257a">expected_options</a> ()</td></tr>
 <tr class="separator:acec712ff48d4c0884a1362c116f3257a inherit pub_static_methods_classneml2_1_1NEML2Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
-Protected Member Functions</h2></td></tr>
-<tr class="memitem:a81630807948efd345368efe839826ecc" id="r_a81630807948efd345368efe839826ecc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a81630807948efd345368efe839826ecc">check_integrity</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
-<tr class="memdesc:a81630807948efd345368efe839826ecc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check the integrity of the set up.  <br /></td></tr>
-<tr class="separator:a81630807948efd345368efe839826ecc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -229,8 +233,8 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a81630807948efd345368efe839826ecc" name="a81630807948efd345368efe839826ecc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a81630807948efd345368efe839826ecc">&#9670;&#160;</a></span>check_integrity()</h2>
+<a id="ae5d6a096571aad18262e88dbfa66e482" name="ae5d6a096571aad18262e88dbfa66e482"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5d6a096571aad18262e88dbfa66e482">&#9670;&#160;</a></span>diagnose()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -239,22 +243,27 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a> check_integrity </td>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a> diagnose </td>
           <td>(</td>
-          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="classneml2_1_1Diagnosis.html">Diagnosis</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Check the integrity of the set up. </p>
+<p>Check for common problems. </p>
+<p>This method serves as the entry point for diagnosing common problems in object setup. The idea behind this method is that while some errors could be detected at construction time, i.e., when the object's constructor is called, it doesn't hinder other objects' creation. We therefore would like to defer the detection of errors until after all objects have been created, collect all errors at once, and present the user with a complete understanding of all errors encountered.</p>
+<p>Note, however, if an error could interfere with other objects' creation, it should be raised right away inside the constructor, instead of inside this method.</p>
+<dl class="section return"><dt>Returns</dt><dd>A vector of exceptions of type <a class="el" href="classneml2_1_1Diagnosis.html" title="Exception type reserved for diagnostics, so as to not conceptually clash with other exceptions.">Diagnosis</a> for each of the detected problem. </dd></dl>
 
-<p>Reimplemented in <a class="el" href="classneml2_1_1LargeDeformationIncrementalSolidMechanicsDriver.html#aa73805ac3f59361d0ac05c230a42abd3">LargeDeformationIncrementalSolidMechanicsDriver</a>, <a class="el" href="classneml2_1_1SolidMechanicsDriver.html#aa73805ac3f59361d0ac05c230a42abd3">SolidMechanicsDriver</a>, and <a class="el" href="classneml2_1_1TransientDriver.html#aa73805ac3f59361d0ac05c230a42abd3">TransientDriver</a>.</p>
+<p>Implements <a class="el" href="classneml2_1_1DiagnosticsInterface.html#ac9fd9e54969b711311c66596aa2b2e12">DiagnosticsInterface</a>.</p>
+
+<p>Reimplemented in <a class="el" href="classneml2_1_1LargeDeformationIncrementalSolidMechanicsDriver.html#a2003b2f696b07451045fddd2c5189cc1">LargeDeformationIncrementalSolidMechanicsDriver</a>, <a class="el" href="classneml2_1_1SolidMechanicsDriver.html#a2003b2f696b07451045fddd2c5189cc1">SolidMechanicsDriver</a>, and <a class="el" href="classneml2_1_1TransientDriver.html#a2003b2f696b07451045fddd2c5189cc1">TransientDriver</a>.</p>
 
 </div>
 </div>

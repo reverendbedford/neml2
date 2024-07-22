@@ -377,42 +377,43 @@ $(function(){initNavTree('VariableStore_8h_source.html',''); initResizable(); })
 <div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>    }</div>
 <div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>    <span class="keywordflow">else</span></div>
 <div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>    {</div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>      <span class="keyword">auto</span> var = std::make_unique&lt;Variable&lt;T&gt;&gt;(name);</div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>      var_base_ptr = views.set_pointer(name, std::move(var));</div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>    }</div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span> </div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>    <span class="comment">// Cast it to the concrete type</span></div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>    <span class="keyword">auto</span> var_ptr = <span class="keyword">dynamic_cast&lt;</span>Variable&lt;T&gt; *<span class="keyword">&gt;</span>(var_base_ptr);</div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>    <a class="code hl_function" href="namespaceneml2.html#aff159a9e16da5dae0dd544b4d0e7eb83">neml_assert</a>(</div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>        var_ptr, <span class="stringliteral">&quot;Internal error: Failed to cast variable &quot;</span>, name, <span class="stringliteral">&quot; to its concrete type.&quot;</span>);</div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span> </div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>    <span class="keywordflow">return</span> var_ptr;</div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>  }</div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span> </div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>  NEML2Object * _object;</div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span> </div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>  <span class="keyword">const</span> OptionSet _options;</div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span> </div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>  Storage&lt;std::string, LabeledAxis&gt; _axes;</div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span> </div>
-<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>  Storage&lt;VariableName, VariableBase&gt; _input_views;</div>
-<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span> </div>
-<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>  Storage&lt;VariableName, VariableBase&gt; _output_views;</div>
-<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span> </div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>  LabeledAxis &amp; _input_axis;</div>
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span> </div>
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>  LabeledAxis &amp; _output_axis;</div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span> </div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>  LabeledVector _in;</div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span> </div>
-<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>  LabeledVector _out;</div>
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span> </div>
-<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>  LabeledMatrix _dout_din;</div>
-<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span> </div>
-<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>  LabeledTensor3D _d2out_din2;</div>
-<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>};</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>      (void)t;</div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>      <span class="keyword">auto</span> var = std::make_unique&lt;Variable&lt;T&gt;&gt;(name);</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>      var_base_ptr = views.set_pointer(name, std::move(var));</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>    }</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span> </div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>    <span class="comment">// Cast it to the concrete type</span></div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>    <span class="keyword">auto</span> var_ptr = <span class="keyword">dynamic_cast&lt;</span>Variable&lt;T&gt; *<span class="keyword">&gt;</span>(var_base_ptr);</div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>    <a class="code hl_function" href="namespaceneml2.html#aff159a9e16da5dae0dd544b4d0e7eb83">neml_assert</a>(</div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>        var_ptr, <span class="stringliteral">&quot;Internal error: Failed to cast variable &quot;</span>, name, <span class="stringliteral">&quot; to its concrete type.&quot;</span>);</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span> </div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>    <span class="keywordflow">return</span> var_ptr;</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>  }</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span> </div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>  NEML2Object * _object;</div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span> </div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>  <span class="keyword">const</span> OptionSet _options;</div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span> </div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>  Storage&lt;std::string, LabeledAxis&gt; _axes;</div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span> </div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>  Storage&lt;VariableName, VariableBase&gt; _input_views;</div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span> </div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>  Storage&lt;VariableName, VariableBase&gt; _output_views;</div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span> </div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>  LabeledAxis &amp; _input_axis;</div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span> </div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>  LabeledAxis &amp; _output_axis;</div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span> </div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>  LabeledVector _in;</div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span> </div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>  LabeledVector _out;</div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span> </div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>  LabeledMatrix _dout_din;</div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span> </div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>  LabeledTensor3D _d2out_din2;</div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>};</div>
 </div>
-<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>} <span class="comment">// namespace neml2</span></div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>} <span class="comment">// namespace neml2</span></div>
 <div class="ttc" id="aclassneml2_1_1CrossRef_html"><div class="ttname"><a href="classneml2_1_1CrossRef.html">neml2::CrossRef</a></div><div class="ttdoc">The wrapper (decorator) for cross-referencing unresolved values at parse time.</div><div class="ttdef"><b>Definition</b> CrossRef.h:56</div></div>
 <div class="ttc" id="aclassneml2_1_1LabeledAxisAccessor_html"><div class="ttname"><a href="classneml2_1_1LabeledAxisAccessor.html">neml2::LabeledAxisAccessor</a></div><div class="ttdoc">The accessor containing all the information needed to access an item in a LabeledAxis.</div><div class="ttdef"><b>Definition</b> LabeledAxisAccessor.h:47</div></div>
 <div class="ttc" id="aclassneml2_1_1LabeledAxis_html"><div class="ttname"><a href="classneml2_1_1LabeledAxis.html">neml2::LabeledAxis</a></div><div class="ttdoc">A labeled axis used to associate layout of a tensor with human-interpretable names.</div><div class="ttdef"><b>Definition</b> LabeledAxis.h:55</div></div>
@@ -470,7 +471,7 @@ $(function(){initNavTree('VariableStore_8h_source.html',''); initResizable(); })
 <div class="ttc" id="anamespaceneml2_html_a90023c4b9c19cd471d4603a07a52954e"><div class="ttname"><a href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">neml2::Size</a></div><div class="ttdeci">int64_t Size</div><div class="ttdef"><b>Definition</b> types.h:33</div></div>
 <div class="ttc" id="anamespaceneml2_html_a9b44248b88341f8c9cafe5d9d822a443"><div class="ttname"><a href="namespaceneml2.html#a9b44248b88341f8c9cafe5d9d822a443">neml2::TensorType</a></div><div class="ttdeci">TensorType</div><div class="ttdef"><b>Definition</b> tensors.h:57</div></div>
 <div class="ttc" id="anamespaceneml2_html_abc271f879dc471e533dca66b1fd32f60"><div class="ttname"><a href="namespaceneml2.html#abc271f879dc471e533dca66b1fd32f60">neml2::TensorShapeRef</a></div><div class="ttdeci">torch::IntArrayRef TensorShapeRef</div><div class="ttdef"><b>Definition</b> types.h:35</div></div>
-<div class="ttc" id="anamespaceneml2_html_aff159a9e16da5dae0dd544b4d0e7eb83"><div class="ttname"><a href="namespaceneml2.html#aff159a9e16da5dae0dd544b4d0e7eb83">neml2::neml_assert</a></div><div class="ttdeci">void neml_assert(bool assertion, Args &amp;&amp;... args)</div><div class="ttdef"><b>Definition</b> error.h:73</div></div>
+<div class="ttc" id="anamespaceneml2_html_aff159a9e16da5dae0dd544b4d0e7eb83"><div class="ttname"><a href="namespaceneml2.html#aff159a9e16da5dae0dd544b4d0e7eb83">neml2::neml_assert</a></div><div class="ttdeci">void neml_assert(bool assertion, Args &amp;&amp;... args)</div><div class="ttdef"><b>Definition</b> error.h:64</div></div>
 <div class="ttc" id="astructneml2_1_1TensorTypeEnum_html_ace0cbb377722ed14322e96a314947539"><div class="ttname"><a href="structneml2_1_1TensorTypeEnum.html#ace0cbb377722ed14322e96a314947539">neml2::TensorTypeEnum::value</a></div><div class="ttdeci">static constexpr TensorType value</div><div class="ttdef"><b>Definition</b> tensors.h:65</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

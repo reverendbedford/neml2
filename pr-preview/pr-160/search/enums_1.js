@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['stage_0',['Stage',['../classneml2_1_1Model.html#aca8133200c1122e29b87b314d82604eb',1,'neml2::Model']]]
+  ['tensortype_0',['TensorType',['../namespaceneml2.html#a9b44248b88341f8c9cafe5d9d822a443',1,'neml2']]]
 ];

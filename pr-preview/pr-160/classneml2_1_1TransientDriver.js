@@ -4,7 +4,7 @@ var classneml2_1_1TransientDriver =
     [ "advance_step", "classneml2_1_1TransientDriver.html#a11ffdacce9a30259ed9a8575c223c536", null ],
     [ "apply_ic", "classneml2_1_1TransientDriver.html#af685bbe85bec624e671b138b972b8e50", null ],
     [ "apply_predictor", "classneml2_1_1TransientDriver.html#a4e60c62b56859976b7a755b393a928b2", null ],
-    [ "check_integrity", "classneml2_1_1TransientDriver.html#aa73805ac3f59361d0ac05c230a42abd3", null ],
+    [ "diagnose", "classneml2_1_1TransientDriver.html#a2003b2f696b07451045fddd2c5189cc1", null ],
     [ "model", "classneml2_1_1TransientDriver.html#a13dfbdd8c00d5c134b09bf2ab3cfa1e5", null ],
     [ "output", "classneml2_1_1TransientDriver.html#ac54a71acc6f2347370c143fad2357914", null ],
     [ "result", "classneml2_1_1TransientDriver.html#a8fb659df7408566ded216ff17534a98f", null ],

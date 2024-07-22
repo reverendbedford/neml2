@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['value_0',['value',['../structneml2_1_1DependencyResolver_1_1Item.html#aa0a617dccf1769d5ead7dcf9e23d8894',1,'neml2::DependencyResolver::Item::value'],['../structneml2_1_1TensorTypeEnum.html#ace0cbb377722ed14322e96a314947539',1,'neml2::TensorTypeEnum::value'],['../classneml2_1_1Model.html#a512f18460521794a4be56bbe4103a094',1,'neml2::Model::value(const LabeledVector &amp;in)'],['../classneml2_1_1Model.html#ac6bb8acedf7c5fd0edc83fd9386083c1',1,'neml2::Model::value()'],['../classneml2_1_1TensorValue.html#ab49416ba38b750a3ac3a320185f5224f',1,'neml2::TensorValue::value()'],['../classneml2_1_1Variable.html#ab5d906b55180c260032ce43d6c5d4d06',1,'neml2::Variable::value()'],['../classneml2_1_1Derivative.html#a9020bad766c8d9fe01ae711c920191fb',1,'neml2::Derivative::value()']]],
-  ['value_5fand_5fdvalue_1',['value_and_dvalue',['../classneml2_1_1Model.html#ac81b25c4962b603fd3dac69ce57319c0',1,'neml2::Model::value_and_dvalue(const LabeledVector &amp;in)'],['../classneml2_1_1Model.html#ad021b73a0687f1416fb1791729b97e07',1,'neml2::Model::value_and_dvalue()']]],
-  ['value_5fand_5fdvalue_5fand_5fd2value_2',['value_and_dvalue_and_d2value',['../classneml2_1_1Model.html#aae192fceb1a47041cf713c65169bd474',1,'neml2::Model::value_and_dvalue_and_d2value(const LabeledVector &amp;in)'],['../classneml2_1_1Model.html#a326e09c3f398872d1bfec46b02377111',1,'neml2::Model::value_and_dvalue_and_d2value()']]],
+  ['value_0',['value',['../structneml2_1_1DependencyResolver_1_1Item.html#aa0a617dccf1769d5ead7dcf9e23d8894',1,'neml2::DependencyResolver::Item::value'],['../structneml2_1_1TensorTypeEnum.html#ace0cbb377722ed14322e96a314947539',1,'neml2::TensorTypeEnum::value'],['../classneml2_1_1Model.html#ac6bb8acedf7c5fd0edc83fd9386083c1',1,'neml2::Model::value()'],['../classneml2_1_1Model.html#a512f18460521794a4be56bbe4103a094',1,'neml2::Model::value(const LabeledVector &amp;in)'],['../classneml2_1_1TensorValue.html#ab49416ba38b750a3ac3a320185f5224f',1,'neml2::TensorValue::value()'],['../classneml2_1_1Variable.html#ab5d906b55180c260032ce43d6c5d4d06',1,'neml2::Variable::value()'],['../classneml2_1_1Derivative.html#a9020bad766c8d9fe01ae711c920191fb',1,'neml2::Derivative::value()']]],
+  ['value_5fand_5fdvalue_1',['value_and_dvalue',['../classneml2_1_1Model.html#ad021b73a0687f1416fb1791729b97e07',1,'neml2::Model::value_and_dvalue()'],['../classneml2_1_1Model.html#ac81b25c4962b603fd3dac69ce57319c0',1,'neml2::Model::value_and_dvalue(const LabeledVector &amp;in)']]],
+  ['value_5fand_5fdvalue_5fand_5fd2value_2',['value_and_dvalue_and_d2value',['../classneml2_1_1Model.html#a326e09c3f398872d1bfec46b02377111',1,'neml2::Model::value_and_dvalue_and_d2value()'],['../classneml2_1_1Model.html#aae192fceb1a47041cf713c65169bd474',1,'neml2::Model::value_and_dvalue_and_d2value(const LabeledVector &amp;in)']]],
   ['value_5fstorage_3',['value_storage',['../classneml2_1_1VariableBase.html#a53c194147230fd3cf837480460173e40',1,'neml2::VariableBase']]],
   ['value_5ftype_4',['value_type',['../structneml2_1_1Storage_1_1DereferenceIterator.html#a6b68a3a6daf97aada59c4b29f0ba881a',1,'neml2::Storage::DereferenceIterator']]],
   ['values_5ftype_5',['values_type',['../classneml2_1_1Storage.html#aa0223e50085f8df042a5de5d8e18bdba',1,'neml2::Storage']]],
@@ -22,9 +22,9 @@ var searchData=
   ['variablename_19',['VariableName',['../namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54',1,'neml2']]],
   ['variables_20',['variables',['../classneml2_1_1LabeledAxis.html#a995e6a25bea15f9edc653f2f15c99c08',1,'neml2::LabeledAxis']]],
   ['variablestore_21',['VariableStore',['../classneml2_1_1VariableStore.html',1,'VariableStore'],['../classneml2_1_1VariableStore.html#afe643dd67460aba7f4092cd9cee1a130',1,'neml2::VariableStore::VariableStore()']]],
-  ['vec_22',['Vec',['../classneml2_1_1Vec.html',1,'Vec'],['../classneml2_1_1Vec.html#aa69f2a3f859de9dc04a1c397779dd2c3',1,'neml2::Vec::Vec()']]],
+  ['vec_22',['Vec',['../classneml2_1_1Vec.html',1,'neml2']]],
   ['vec_23',['vec',['../classneml2_1_1LabeledAxisAccessor.html#adf530e2062ae5cc2a1064ab8a8e7708c',1,'neml2::LabeledAxisAccessor']]],
-  ['vec_24',['Vec',['../syntax-tensors.html#vec',1,'']]],
+  ['vec_24',['Vec',['../classneml2_1_1Vec.html#aa69f2a3f859de9dc04a1c397779dd2c3',1,'neml2::Vec::Vec()'],['../syntax-tensors.html#vec',1,'Vec']]],
   ['vecbackwardeulertimeintegration_25',['VecBackwardEulerTimeIntegration',['../namespaceneml2.html#af4df2e3c6859b4f6c5fe93944ad2a8ba',1,'neml2::VecBackwardEulerTimeIntegration'],['../syntax-models.html#vecbackwardeulertimeintegration',1,'VecBackwardEulerTimeIntegration']]],
   ['vecbase_26',['VecBase',['../classneml2_1_1VecBase.html',1,'neml2']]],
   ['vecbase_3c_20rot_20_3e_27',['VecBase&lt; Rot &gt;',['../classneml2_1_1VecBase.html',1,'neml2']]],

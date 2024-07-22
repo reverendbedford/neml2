@@ -8,5 +8,6 @@ var searchData=
   ['dereferenceiterator_5',['DereferenceIterator',['../structneml2_1_1Storage_1_1DereferenceIterator.html',1,'neml2::Storage']]],
   ['derivative_6',['Derivative',['../classneml2_1_1Derivative.html',1,'neml2']]],
   ['diagnosis_7',['Diagnosis',['../classneml2_1_1Diagnosis.html',1,'neml2']]],
-  ['driver_8',['Driver',['../classneml2_1_1Driver.html',1,'neml2']]]
+  ['diagnosticsinterface_8',['DiagnosticsInterface',['../classneml2_1_1DiagnosticsInterface.html',1,'neml2']]],
+  ['driver_9',['Driver',['../classneml2_1_1Driver.html',1,'neml2']]]
 ];
