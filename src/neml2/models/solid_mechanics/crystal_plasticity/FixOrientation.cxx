@@ -42,10 +42,10 @@ FixOrientation::expected_options()
       "to 1.0 by default and replacing all the orientations that exceed this limit "
       "with their shadow parameters values.";
 
-  options.set_input<VariableName>("input_orientation") = VariableName("state", "orientation");
+  options.set_input("input_orientation") = VariableName("state", "orientation");
   options.set("input_orientation").doc() = "Name of input tensor of orientations to operate on.";
 
-  options.set_output<VariableName>("output_orientation") = VariableName("state", "orientation");
+  options.set_output("output_orientation") = VariableName("state", "orientation");
   options.set("output_orientation").doc() = "Name of output tensor";
 
   options.set<Real>("threshold") = 1.0;
@@ -72,10 +72,13 @@ FixOrientation::set_value(bool out, bool dout_din, bool d2out_din2)
         (Rot(_input).norm_sq() < _threshold).unsqueeze(-1), Rot(_input), Rot(_input).shadow());
 
   if (dout_din)
-  {
-    const auto I = R2::identity(options());
-    _output.d(_input) = math::where(
-        (Rot(_input).norm_sq() < _threshold).unsqueeze(-1).unsqueeze(-1), I, Rot(_input).dshadow());
-  }
+    if (_input.is_dependent())
+    {
+      const auto I = R2::identity(options());
+      _output.d(_input) =
+          math::where((Rot(_input).norm_sq() < _threshold).unsqueeze(-1).unsqueeze(-1),
+                      I,
+                      Rot(_input).dshadow());
+    }
 }
 } // namespace neml2

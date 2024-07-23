@@ -33,10 +33,13 @@ VariableBase::VariableBase(const VariableName & name_in)
     _second_derivative_storage(nullptr),
     _is_state(_name.start_with("state")),
     _is_old_state(_name.start_with("old_state")),
-    _is_forces(_name.start_with("forces")),
-    _is_old_forces(_name.start_with("old_forces")),
+    _is_force(_name.start_with("forces")),
+    _is_old_force(_name.start_with("old_forces")),
     _is_residual(_name.start_with("residual")),
-    _is_other(!_is_state && !_is_old_state && !_is_forces && !_is_old_forces && !_is_residual)
+    _is_parameter(_name.start_with("parameters")),
+    _is_other(!_is_state && !_is_old_state && !_is_force && !_is_old_force && !_is_residual &&
+              !_is_parameter),
+    _is_solve_dependent(_is_state || _is_residual || _is_parameter)
 {
 }
 
@@ -94,6 +97,12 @@ VariableBase::second_derivative_storage() const
   return *_second_derivative_storage;
 }
 
+bool
+VariableBase::is_dependent() const
+{
+  return !currently_solving_nonlinear_system() || is_solve_dependent();
+}
+
 Derivative
 VariableBase::d(const VariableBase & x)
 {
@@ -103,17 +112,13 @@ VariableBase::d(const VariableBase & x)
                   " does not depend on ",
                   x.name());
 
-#ifndef NDEBUG
-  if (currently_solving_nonlinear_system())
-    neml_assert_dbg(
-        !x.name().start_with("forces") && !x.name().start_with("old_forces") &&
-            !x.name().start_with("old_state"),
-        "During implicit solve, it is not necessary to calculate derivative with respect to "
-        "non-state variables. This error is triggered by an attempt to set the derivative of ",
-        name(),
-        " with respect to ",
-        x.name());
-#endif
+  neml_assert_dbg(
+      x.is_dependent(),
+      "During implicit solve, it is not necessary to calculate derivative with respect to "
+      "non-state variables. This error is triggered by an attempt to set the derivative of ",
+      name(),
+      " with respect to ",
+      x.name());
 
   return Derivative(_dvalue_d[x.name()]);
 }
@@ -134,20 +139,15 @@ VariableBase::d(const VariableBase & x1, const VariableBase & x2)
                   ") does not depend on ",
                   x2.name());
 
-#ifndef NDEBUG
-  if (currently_solving_nonlinear_system())
-    neml_assert_dbg(
-        !x1.name().start_with("forces") && !x1.name().start_with("old_forces") &&
-            !x1.name().start_with("old_state") && !x2.name().start_with("forces") &&
-            !x2.name().start_with("old_forces") && !x2.name().start_with("old_state"),
-        "During implicit solve, it is not necessary to calculate derivative with respect to "
-        "non-state variables. This error is triggered by an attempt to set the derivative of ",
-        name(),
-        " with respect to ",
-        x1.name(),
-        " and ",
-        x2.name());
-#endif
+  neml_assert_dbg(
+      x1.is_dependent() || x2.is_dependent(),
+      "During implicit solve, it is not necessary to calculate derivative with respect to "
+      "non-state variables. This error is triggered by an attempt to set the derivative of ",
+      name(),
+      " with respect to ",
+      x1.name(),
+      " and ",
+      x2.name());
 
   return Derivative(_d2value_d[x1.name()][x2.name()]);
 }

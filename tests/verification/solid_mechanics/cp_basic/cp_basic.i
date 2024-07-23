@@ -93,8 +93,8 @@
     type = LinearIsotropicElasticity
     youngs_modulus = 1e5
     poisson_ratio = 0.25
-    strain = "state/elastic_strain"
-    stress = "state/internal/cauchy_stress"
+    strain = 'state/elastic_strain'
+    stress = 'state/internal/cauchy_stress'
   []
   [resolved_shear]
     type = ResolvedShear
@@ -130,15 +130,15 @@
   []
   [integrate_slip_hardening]
     type = ScalarBackwardEulerTimeIntegration
-    variable = 'internal/slip_hardening'
+    variable = 'state/internal/slip_hardening'
   []
   [integrate_elastic_strain]
     type = SR2BackwardEulerTimeIntegration
-    variable = 'elastic_strain'
+    variable = 'state/elastic_strain'
   []
   [integrate_orientation]
     type = WR2ImplicitExponentialTimeIntegration
-    variable = 'orientation'
+    variable = 'state/orientation'
   []
 
   [implicit_rate]

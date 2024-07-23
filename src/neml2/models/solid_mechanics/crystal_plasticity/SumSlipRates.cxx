@@ -41,11 +41,10 @@ SumSlipRates::expected_options()
   options.doc() = "Calculates the sum of the absolute value of all the slip rates as \\f$ "
                   "\\sum_{i=1}^{n_{slip}} \\left| \\dot{\\gamma}_i \\right| \\f$.";
 
-  options.set_input<VariableName>("slip_rates") = VariableName("state", "internal", "slip_rates");
+  options.set_input("slip_rates") = VariableName("state", "internal", "slip_rates");
   options.set("slip_rates").doc() = "The name of individual slip rates";
 
-  options.set_output<VariableName>("sum_slip_rates") =
-      VariableName("state", "internal", "sum_slip_rates");
+  options.set_output("sum_slip_rates") = VariableName("state", "internal", "sum_slip_rates");
   options.set("sum_slip_rates").doc() = "The outut name for the scalar sum of the slip rates";
 
   options.set<std::string>("crystal_geometry_name") = "crystal_geometry";
@@ -76,7 +75,8 @@ SumSlipRates::set_value(bool out, bool dout_din, bool d2out_din2)
     _sg = math::batch_sum(math::abs(g), -1);
 
   if (dout_din)
-    _sg.d(_g) = Tensor(math::sign(g), batch_dim()).base_unsqueeze(0);
+    if (_g.is_dependent())
+      _sg.d(_g) = Tensor(math::sign(g), batch_dim()).base_unsqueeze(0);
 }
 
 } // namespace neml2

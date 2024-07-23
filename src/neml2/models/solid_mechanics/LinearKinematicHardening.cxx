@@ -55,7 +55,8 @@ LinearKinematicHardening::set_value(bool out, bool dout_din, bool d2out_din2)
     _X = _H * _Kp;
 
   if (dout_din)
-    _X.d(_Kp) = _H * SR2::identity_map(options());
+    if (_Kp.is_dependent())
+      _X.d(_Kp) = _H * SR2::identity_map(options());
 
   if (d2out_din2)
   {

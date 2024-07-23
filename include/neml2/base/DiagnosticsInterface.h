@@ -30,6 +30,7 @@ namespace neml2
 {
 // Forward decl
 class DiagnosticsInterface;
+class VariableBase;
 
 /// Exception type reserved for diagnostics, so as to not conceptually clash with other exceptions
 class Diagnosis : public NEMLException
@@ -39,7 +40,7 @@ public:
 };
 
 /// Raise diagnostics as exception, if any
-void throw_diagnostics(const DiagnosticsInterface &);
+void diagnose(const DiagnosticsInterface &);
 
 /// Interface for object making diagnostics about common setup errors
 class DiagnosticsInterface
@@ -66,6 +67,18 @@ public:
 
   template <typename... Args>
   void diagnostic_assert(std::vector<Diagnosis> & diagnoses, bool assertion, Args &&... args) const;
+
+  void diagnostic_assert_state(std::vector<Diagnosis> & diagnoses, const VariableBase & v) const;
+  void diagnostic_assert_old_state(std::vector<Diagnosis> & diagnoses,
+                                   const VariableBase & v) const;
+  void diagnostic_assert_force(std::vector<Diagnosis> & diagnoses, const VariableBase & v) const;
+  void diagnostic_assert_old_force(std::vector<Diagnosis> & diagnoses,
+                                   const VariableBase & v) const;
+  void diagnostic_assert_residual(std::vector<Diagnosis> & diagnoses, const VariableBase & v) const;
+  void diagnostic_check_input_variable(std::vector<Diagnosis> & diagnoses,
+                                       const VariableBase & v) const;
+  void diagnostic_check_output_variable(std::vector<Diagnosis> & diagnoses,
+                                        const VariableBase & v) const;
 
 private:
   NEML2Object * _object;

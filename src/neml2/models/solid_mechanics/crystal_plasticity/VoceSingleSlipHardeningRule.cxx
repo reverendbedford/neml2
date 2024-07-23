@@ -64,8 +64,11 @@ VoceSingleSlipHardeningRule::set_value(bool out, bool dout_din, bool d2out_din2)
 
   if (dout_din)
   {
-    _tau_dot.d(_tau) = -_theta_0 / _tau_f * _gamma_dot_sum;
-    _tau_dot.d(_gamma_dot_sum) = _theta_0 * (1 - _tau / _tau_f);
+    if (_tau.is_dependent())
+      _tau_dot.d(_tau) = -_theta_0 / _tau_f * _gamma_dot_sum;
+
+    if (_gamma_dot_sum.is_dependent())
+      _tau_dot.d(_gamma_dot_sum) = _theta_0 * (1 - _tau / _tau_f);
   }
 }
 } // namespace neml2

@@ -166,7 +166,7 @@ NonlinearSystem::residual(const Tensor & x)
 {
   set_solution(x);
   residual();
-  return residual_view();
+  return get_residual();
 }
 
 void
@@ -174,8 +174,7 @@ NonlinearSystem::residual()
 {
   assemble(true, false);
 
-  if (_autoscale)
-    _scaled_residual = scale_residual(_residual);
+  _scaled_residual = _autoscale ? scale_residual(_residual) : _residual.clone();
 }
 
 Tensor
@@ -183,7 +182,7 @@ NonlinearSystem::Jacobian(const Tensor & x)
 {
   set_solution(x);
   Jacobian();
-  return Jacobian_view();
+  return get_Jacobian();
 }
 
 void
@@ -191,8 +190,7 @@ NonlinearSystem::Jacobian()
 {
   assemble(false, true);
 
-  if (_autoscale)
-    _scaled_Jacobian = scale_Jacobian(_Jacobian);
+  _scaled_Jacobian = _autoscale ? scale_Jacobian(_Jacobian) : _Jacobian.clone();
 }
 
 std::tuple<Tensor, Tensor>
@@ -200,7 +198,7 @@ NonlinearSystem::residual_and_Jacobian(const Tensor & x)
 {
   set_solution(x);
   residual_and_Jacobian();
-  return {residual_view(), Jacobian_view()};
+  return {get_residual(), get_Jacobian()};
 }
 
 void
@@ -208,16 +206,13 @@ NonlinearSystem::residual_and_Jacobian()
 {
   assemble(true, true);
 
-  if (_autoscale)
-  {
-    _scaled_residual = scale_residual(_residual);
-    _scaled_Jacobian = scale_Jacobian(_Jacobian);
-  }
+  _scaled_residual = _autoscale ? scale_residual(_residual) : _residual.clone();
+  _scaled_Jacobian = _autoscale ? scale_Jacobian(_Jacobian) : _Jacobian.clone();
 }
 
 Tensor
 NonlinearSystem::residual_norm() const
 {
-  return math::linalg::vector_norm(residual_view());
+  return math::linalg::vector_norm(get_residual());
 }
 } // namespace neml2

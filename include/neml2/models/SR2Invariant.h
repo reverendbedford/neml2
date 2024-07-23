@@ -31,6 +31,15 @@ namespace neml2
 class SR2Invariant : public Model
 {
 public:
+  enum class IType
+  {
+    I1,
+    I2,
+    VONMISES,
+    EFFECTIVE_STRAIN,
+    INVALID
+  };
+
   static OptionSet expected_options();
 
   SR2Invariant(const OptionSet & options);
@@ -38,7 +47,7 @@ public:
 protected:
   void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
-  const std::string _type;
+  const IType _type;
 
   /// Input second order tensor
   const Variable<SR2> & _A;

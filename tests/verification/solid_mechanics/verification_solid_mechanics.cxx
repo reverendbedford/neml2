@@ -58,7 +58,7 @@ TEST_CASE("solid mechanics")
         // Load and run the model
         reload_input(test.filename());
         auto & driver = get_driver("verification");
-        throw_diagnostics(driver);
+        diagnose(driver);
         REQUIRE(driver.run());
       }
       catch (...)

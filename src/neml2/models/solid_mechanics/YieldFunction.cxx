@@ -40,13 +40,13 @@ YieldFunction::expected_options()
   options.set_parameter<CrossRef<Scalar>>("yield_stress");
   options.set("yield_stress").doc() = "Yield stress";
 
-  options.set_input<VariableName>("effective_stress") = VariableName("state", "internal", "s");
+  options.set_input("effective_stress") = VariableName("state", "internal", "s");
   options.set("effective_stress").doc() = "Effective stress";
 
-  options.set_input<VariableName>("isotropic_hardening");
+  options.set_input("isotropic_hardening");
   options.set("isotropic_hardening").doc() = "Isotropic hardening";
 
-  options.set_output<VariableName>("yield_function") = VariableName("state", "internal", "fp");
+  options.set_output("yield_function") = VariableName("state", "internal", "fp");
   options.set("yield_function").doc() = "Yield function";
 
   return options;
@@ -78,7 +78,8 @@ YieldFunction::set_value(bool out, bool dout_din, bool d2out_din2)
   {
     auto I = Scalar::identity_map(options());
 
-    _f.d(_s) = std::sqrt(2.0 / 3.0) * I;
+    if (_s.is_dependent())
+      _f.d(_s) = std::sqrt(2.0 / 3.0) * I;
 
     if (_h)
       _f.d(*_h) = -std::sqrt(2.0 / 3.0) * I;

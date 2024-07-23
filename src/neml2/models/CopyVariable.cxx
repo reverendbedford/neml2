@@ -26,8 +26,8 @@
 
 namespace neml2
 {
-#define COPYVARIABLE_REGISTER_PrimitiveTensor(T) register_NEML2_object(Copy##T)
-FOR_ALL_PRIMITIVETENSOR(COPYVARIABLE_REGISTER_PrimitiveTensor);
+#define COPYVARIABLE_REGISTER_PRIMITIVETENSOR(T) register_NEML2_object(Copy##T)
+FOR_ALL_PRIMITIVETENSOR(COPYVARIABLE_REGISTER_PRIMITIVETENSOR);
 
 template <typename T>
 OptionSet
@@ -36,10 +36,10 @@ CopyVariable<T>::expected_options()
   OptionSet options = Model::expected_options();
   options.doc() = "Copy the value from one variable to another.";
 
-  options.set_input<VariableName>("from");
+  options.set_input("from");
   options.set("from").doc() = "Variable to copy value from";
 
-  options.set_output<VariableName>("to");
+  options.set_output("to");
   options.set("to").doc() = "Variable to copy value to";
 
   return options;
@@ -60,8 +60,9 @@ CopyVariable<T>::set_value(bool out, bool dout_din, bool d2out_din2)
   if (out)
     _to = T(_from);
 
-  if (dout_din)
-    _to.d(_from) = T::identity_map(options());
+  if (_from.is_dependent())
+    if (dout_din)
+      _to.d(_from) = T::identity_map(options());
 
   if (d2out_din2)
   {

@@ -58,6 +58,7 @@ LinearSingleSlipHardeningRule::set_value(bool out, bool dout_din, bool d2out_din
     _tau_dot = _theta * _gamma_dot_sum;
 
   if (dout_din)
-    _tau_dot.d(_gamma_dot_sum) = _theta;
+    if (_gamma_dot_sum.is_dependent())
+      _tau_dot.d(_gamma_dot_sum) = _theta;
 }
 } // namespace neml2

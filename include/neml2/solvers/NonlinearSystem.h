@@ -80,8 +80,8 @@ public:
   /// Convenient shortcut to assemble and return the system residual and Jacobian
   void residual_and_Jacobian();
 
-  const Tensor & residual_view() const { return _autoscale ? _scaled_residual : _residual; }
-  const Tensor & Jacobian_view() const { return _autoscale ? _scaled_Jacobian : _Jacobian; }
+  const Tensor & get_residual() const { return _scaled_residual; }
+  const Tensor & get_Jacobian() const { return _scaled_Jacobian; }
 
   /// The residual norm
   Tensor residual_norm() const;

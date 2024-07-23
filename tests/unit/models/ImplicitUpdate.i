@@ -11,12 +11,7 @@
     output_scalar_values = '-1.43918 -2.55098'
     output_symr2_names = 'state/baz'
     output_symr2_values = '0'
-    check_values = true
-    check_first_derivatives = true
-    check_second_derivatives = false
     check_AD_first_derivatives = false
-    check_AD_second_derivatives = false
-    check_AD_derivatives = false
   []
 []
 
@@ -25,7 +20,7 @@
     type = Newton
     abs_tol = 1e-10
     rel_tol = 1e-08
-    max_its = 100
+    max_its = 20
   []
 []
 
@@ -35,15 +30,15 @@
   []
   [integrate_foo]
     type = ScalarBackwardEulerTimeIntegration
-    variable = 'foo'
+    variable = 'state/foo'
   []
   [integrate_bar]
     type = ScalarBackwardEulerTimeIntegration
-    variable = 'bar'
+    variable = 'state/bar'
   []
   [integrate_baz]
     type = SR2BackwardEulerTimeIntegration
-    variable = 'baz'
+    variable = 'state/baz'
   []
   [implicit_rate]
     type = ComposedModel

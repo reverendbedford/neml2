@@ -22,31 +22,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/models/ForwardEulerTimeIntegration.h"
+#include "neml2/models/VariableRate.h"
 #include "neml2/tensors/SSR4.h"
 
 namespace neml2
 {
-register_NEML2_object(ScalarForwardEulerTimeIntegration);
-register_NEML2_object(VecForwardEulerTimeIntegration);
-register_NEML2_object(SR2ForwardEulerTimeIntegration);
+register_NEML2_object(ScalarVariableRate);
+register_NEML2_object(VecVariableRate);
+register_NEML2_object(SR2VariableRate);
 
 template <typename T>
 OptionSet
-ForwardEulerTimeIntegration<T>::expected_options()
+VariableRate<T>::expected_options()
 {
   OptionSet options = Model::expected_options();
-  options.doc() =
-      "Perform forward Euler time integration defined as \\f$ s = s_n + (t - t_n) \\dot{s} "
-      "\\f$, where \\f$s\\f$ is the variable being integrated, \\f$\\dot{s}\\f$ is the variable "
-      "rate, and \\f$t\\f$ is time. Subscripts \\f$n\\f$ denote quantities from the previous time "
-      "step.";
+  options.doc() = "Calculate the first order discrete time derivative of a variable as \\f$ "
+                  "\\dot{f} = \\frac{f-f_n}{t-t_n} \\f$, where \\f$ f \\f$ is the force variable, "
+                  "and \\f$ t \\f$ is time.";
 
-  options.set_output("variable");
-  options.set("variable").doc() = "Variable being integrated";
+  options.set_output("rate");
+  options.set("rate").doc() = "The variable's rate of change";
 
-  options.set_input("rate");
-  options.set("rate").doc() = "Variable rate of change";
+  options.set_input("variable");
+  options.set("variable").doc() = "The variable to take time derivative with";
 
   options.set_input("time") = VariableName("forces", "t");
   options.set("time").doc() = "Time";
@@ -55,53 +53,57 @@ ForwardEulerTimeIntegration<T>::expected_options()
 }
 
 template <typename T>
-ForwardEulerTimeIntegration<T>::ForwardEulerTimeIntegration(const OptionSet & options)
+VariableRate<T>::VariableRate(const OptionSet & options)
   : Model(options),
-    _s(declare_output_variable<T>("variable")),
-    _sn(declare_input_variable<T>(_s.name().old())),
-    _ds_dt(options.get<VariableName>("rate").empty()
-               ? declare_input_variable<T>(_s.name().with_suffix("_rate"))
-               : declare_input_variable<T>("rate")),
+    _v(declare_input_variable<T>("variable")),
+    _vn(declare_input_variable<T>(_v.name().old())),
     _t(declare_input_variable<Scalar>("time")),
-    _tn(declare_input_variable<Scalar>(_t.name().old()))
+    _tn(declare_input_variable<Scalar>(_t.name().old())),
+    _dv_dt(options.get<VariableName>("rate").empty()
+               ? declare_output_variable<T>(_v.name().with_suffix("_rate"))
+               : declare_output_variable<T>("rate"))
 {
 }
 
 template <typename T>
 void
-ForwardEulerTimeIntegration<T>::diagnose(std::vector<Diagnosis> & diagnoses) const
+VariableRate<T>::diagnose(std::vector<Diagnosis> & diagnoses) const
 {
   Model::diagnose(diagnoses);
-  diagnostic_assert_state(diagnoses, _s);
-  diagnostic_assert_state(diagnoses, _ds_dt);
   diagnostic_assert_force(diagnoses, _t);
 }
 
 template <typename T>
 void
-ForwardEulerTimeIntegration<T>::set_value(bool out, bool dout_din, bool d2out_din2)
+VariableRate<T>::set_value(bool out, bool dout_din, bool d2out_din2)
 {
-  neml_assert(!d2out_din2, "ForwardEulerTimeIntegration does not implement second derivatives");
+  neml_assert(!d2out_din2, "VariableRate does not implement second derivatives");
+
+  auto dv = _v - _vn;
+  auto dt = _t - _tn;
 
   if (out)
-    _s = _sn + _ds_dt * (_t - _tn);
+    _dv_dt = dv / dt;
 
   if (dout_din)
   {
     auto I = T::identity_map(options());
 
-    _s.d(_ds_dt) = I * (_t - _tn);
+    if (_v.is_dependent())
+      _dv_dt.d(_v) = I / dt;
+
+    if (_vn.is_dependent())
+      _dv_dt.d(_vn) = -I / dt;
 
     if (currently_solving_nonlinear_system())
       return;
 
-    _s.d(_sn) = I;
-    _s.d(_t) = _ds_dt;
-    _s.d(_tn) = -_ds_dt;
+    _dv_dt.d(_t) = -dv / dt / dt;
+    _dv_dt.d(_tn) = dv / dt / dt;
   }
 }
 
-template class ForwardEulerTimeIntegration<Scalar>;
-template class ForwardEulerTimeIntegration<Vec>;
-template class ForwardEulerTimeIntegration<SR2>;
+template class VariableRate<Scalar>;
+template class VariableRate<Vec>;
+template class VariableRate<SR2>;
 } // namespace neml2

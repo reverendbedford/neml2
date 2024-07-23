@@ -32,11 +32,10 @@ KinematicHardening::expected_options()
   OptionSet options = Model::expected_options();
   options.doc() = "Map kinematic plastic strain to back stress";
 
-  options.set_input<VariableName>("kinematic_plastic_strain") =
-      VariableName("state", "internal", "Kp");
+  options.set_input("kinematic_plastic_strain") = VariableName("state", "internal", "Kp");
   options.set("kinematic_plastic_strain").doc() = "Kinematic plastic strain";
 
-  options.set_output<VariableName>("back_stress") = VariableName("state", "internal", "X");
+  options.set_output("back_stress") = VariableName("state", "internal", "X");
   options.set("back_stress").doc() = "Back stress";
 
   return options;

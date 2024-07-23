@@ -73,6 +73,15 @@ Model::diagnose(std::vector<Diagnosis> & diagnoses) const
   for (auto submodel : registered_models())
     submodel->diagnose(diagnoses);
 
+  // Make sure variables are defined on the reserved subaxes
+  for (auto && [name, var] : input_views())
+    diagnostic_check_input_variable(diagnoses, var);
+  for (auto && [name, var] : output_views())
+    diagnostic_check_output_variable(diagnoses, var);
+
+  if (is_nonlinear_system())
+    diagnose_nl_sys(diagnoses);
+
   // Check for statefulness
   if (this == host())
     if (input_axis().has_subaxis("old_state"))
@@ -82,6 +91,31 @@ Model::diagnose(std::vector<Diagnosis> & diagnoses) const
                           "Input axis has old state variable ",
                           var,
                           ", but the corresponding output state variable doesn't exist.");
+}
+
+void
+Model::diagnose_nl_sys(std::vector<Diagnosis> & diagnoses) const
+{
+  for (auto submodel : registered_models())
+    submodel->diagnose_nl_sys(diagnoses);
+
+  // Check if any input variable is solve-dependent
+  bool input_solve_dep = false;
+  for (auto && [name, var] : input_views())
+    if (var.is_solve_dependent())
+      input_solve_dep = true;
+
+  // If any input variable is solve-dependent, ALL output variables must be solve-dependent!
+  if (input_solve_dep)
+    for (auto && [name, var] : output_views())
+      diagnostic_assert(
+          diagnoses,
+          var.is_solve_dependent(),
+          "This model is part of a nonlinear system. At least one of the input variables is "
+          "solve-dependent, so all output variables MUST be solve-dependent, i.e., they must be on "
+          "one of the following sub-axes: state, residual, parameters. However, got output "
+          "variable ",
+          name);
 }
 
 void
@@ -354,6 +388,17 @@ Model::value_and_dvalue(const LabeledVector & in)
   return {get_output(), get_doutput_dinput()};
 }
 
+LabeledMatrix
+Model::dvalue(const LabeledVector & in)
+{
+  check_input(in);
+  set_input(in);
+  prepare();
+
+  dvalue();
+  return get_doutput_dinput();
+}
+
 std::tuple<LabeledVector, LabeledMatrix, LabeledTensor3D>
 Model::value_and_dvalue_and_d2value(const LabeledVector & in)
 {
@@ -363,6 +408,28 @@ Model::value_and_dvalue_and_d2value(const LabeledVector & in)
 
   value_and_dvalue_and_d2value();
   return {get_output(), get_doutput_dinput(), get_d2output_dinput2()};
+}
+
+std::tuple<LabeledMatrix, LabeledTensor3D>
+Model::dvalue_and_d2value(const LabeledVector & in)
+{
+  check_input(in);
+  set_input(in);
+  prepare();
+
+  dvalue_and_d2value();
+  return {get_doutput_dinput(), get_d2output_dinput2()};
+}
+
+LabeledTensor3D
+Model::d2value(const LabeledVector & in)
+{
+  check_input(in);
+  set_input(in);
+  prepare();
+
+  d2value();
+  return get_d2output_dinput2();
 }
 
 void
@@ -397,6 +464,27 @@ Model::value_and_dvalue()
 }
 
 void
+Model::dvalue()
+{
+  neml_assert_dbg(requires_grad(),
+                  "dvalue() is called but derivative storage hasn't been allocated.");
+
+  check_inplace_dbg();
+
+  if (!_AD_1st_deriv)
+  {
+    c10::InferenceMode guard(is_AD_disabled());
+    set_value(false, true, false);
+  }
+  else
+  {
+    input_requires_grad_();
+    set_value(true, false, false);
+    extract_derivatives(/*retain_graph=*/true, /*create_graph=*/false, /*allow_unused=*/true);
+  }
+}
+
+void
 Model::value_and_dvalue_and_d2value()
 {
   neml_assert_dbg(requires_2nd_grad(),
@@ -416,6 +504,67 @@ Model::value_and_dvalue_and_d2value()
 
     if (!_AD_1st_deriv)
       set_value(true, true, false);
+    else
+    {
+      set_value(true, false, false);
+      extract_derivatives(/*retain_graph=*/true, /*create_graph=*/true, /*allow_unused=*/true);
+    }
+
+    extract_second_derivatives(
+        /*retain_graph=*/true, /*create_graph=*/false, /*allow_unused=*/true);
+  }
+}
+
+void
+Model::dvalue_and_d2value()
+{
+  neml_assert_dbg(requires_2nd_grad(),
+                  "dvalue_and_d2value() is called but second derivative storage hasn't "
+                  "been allocated.");
+
+  check_inplace_dbg();
+
+  if (!_AD_2nd_deriv)
+  {
+    c10::InferenceMode guard(is_AD_disabled());
+    set_value(false, true, true);
+  }
+  else
+  {
+    input_requires_grad_();
+
+    if (!_AD_1st_deriv)
+      set_value(false, true, false);
+    else
+    {
+      set_value(true, false, false);
+      extract_derivatives(/*retain_graph=*/true, /*create_graph=*/true, /*allow_unused=*/true);
+    }
+
+    extract_second_derivatives(
+        /*retain_graph=*/true, /*create_graph=*/false, /*allow_unused=*/true);
+  }
+}
+
+void
+Model::d2value()
+{
+  neml_assert_dbg(requires_2nd_grad(),
+                  "d2value() is called but second derivative storage hasn't been allocated.");
+
+  check_inplace_dbg();
+
+  if (!_AD_2nd_deriv)
+  {
+    c10::InferenceMode guard(is_AD_disabled());
+    set_value(false, false, true);
+  }
+  else
+  {
+    input_requires_grad_();
+
+    if (!_AD_1st_deriv)
+      set_value(false, true, false);
     else
     {
       set_value(true, false, false);
@@ -471,8 +620,10 @@ Model::assemble(bool residual, bool Jacobian)
 
   if (residual && !Jacobian)
     value();
-  else if (Jacobian)
+  else if (residual && Jacobian)
     value_and_dvalue();
+  else if (!residual && Jacobian)
+    dvalue();
 }
 
 void

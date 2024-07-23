@@ -28,25 +28,36 @@
 
 namespace neml2
 {
-class TotalStrain : public Model
+template <typename T>
+class VariableRate : public Model
 {
 public:
   static OptionSet expected_options();
 
-  TotalStrain(const OptionSet & options);
+  VariableRate(const OptionSet & options);
+
+  virtual void diagnose(std::vector<Diagnosis> & diagnoses) const override;
 
 protected:
   void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
-  const bool _rate_form;
+  /// Current variable value
+  const Variable<T> & _v;
 
-  /// Elastic strain (rate)
-  const Variable<SR2> & _Ee;
+  /// Old variable value
+  const Variable<T> & _vn;
 
-  /// Plastic strain (rate)
-  const Variable<SR2> & _Ep;
+  /// Current time
+  const Variable<Scalar> & _t;
 
-  /// Total strain (rate)
-  Variable<SR2> & _E;
+  /// Old time
+  const Variable<Scalar> & _tn;
+
+  /// Variable rate
+  Variable<T> & _dv_dt;
 };
+
+typedef VariableRate<Scalar> ScalarVariableRate;
+typedef VariableRate<Vec> VecVariableRate;
+typedef VariableRate<SR2> SR2VariableRate;
 } // namespace neml2

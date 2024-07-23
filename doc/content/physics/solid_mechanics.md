@@ -92,7 +92,7 @@ This complementarity condition is implemented by the object `RateIndependentPlas
   []
   [integrate_Ep]
     type = SR2BackwardEulerTimeIntegration
-    variable = 'internal/Ep'
+    variable = 'state/internal/Ep'
   []
   [consistency]
     type = RateIndependentPlasticFlowConstraint
@@ -172,7 +172,7 @@ The Perzyna model is implemented by the object `PerzynaPlasticFlowRate`. A compl
   []
   [integrate_Ep]
     type = SR2BackwardEulerTimeIntegration
-    variable = 'internal/Ep'
+    variable = 'state/internal/Ep'
   []
   [implicit_rate]
     type = ComposedModel

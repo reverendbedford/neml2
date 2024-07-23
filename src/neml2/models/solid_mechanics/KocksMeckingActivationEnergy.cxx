@@ -51,13 +51,13 @@ KocksMeckingActivationEnergy::expected_options()
   options.set<Real>("b");
   options.set("b").doc() = "Magnitude of the Burgers vector";
 
-  options.set_input<VariableName>("temperature") = VariableName("forces", "T");
+  options.set_input("temperature") = VariableName("forces", "T");
   options.set("temperature").doc() = "Absolute temperature";
 
-  options.set_input<VariableName>("strain_rate") = VariableName("forces", "effective_strain_rate");
+  options.set_input("strain_rate") = VariableName("forces", "effective_strain_rate");
   options.set("strain_rate").doc() = "Name of the effective strain rate";
 
-  options.set_input<VariableName>("activation_energy") = VariableName("forces", "g");
+  options.set_output("activation_energy") = VariableName("forces", "g");
   options.set("activation_energy").doc() = "Output name of the activation energy";
   return options;
 }
@@ -84,8 +84,12 @@ KocksMeckingActivationEnergy::set_value(bool out, bool dout_din, bool d2out_din2
 
   if (dout_din)
   {
-    _g.d(_T) = _k / (_mu * _b3) * math::log(_eps0 / _eps_dot);
-    _g.d(_eps_dot) = -_k * _T / (_mu * _b3 * _eps_dot);
+    if (_T.is_dependent())
+      _g.d(_T) = _k / (_mu * _b3) * math::log(_eps0 / _eps_dot);
+
+    if (_eps_dot.is_dependent())
+      _g.d(_eps_dot) = -_k * _T / (_mu * _b3 * _eps_dot);
+
     if (const auto mu = nl_param("mu"))
       _g.d(*mu) = -_k * _T / (_b3 * _mu * _mu) * math::log(_eps0 / _eps_dot);
   }

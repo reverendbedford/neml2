@@ -58,7 +58,7 @@ KocksMeckingFlowViscosity::expected_options()
   options.set<Real>("b");
   options.set("b").doc() = "The Burgers vector";
 
-  options.set_input<VariableName>("temperature") = VariableName("forces", "T");
+  options.set_input("temperature") = VariableName("forces", "T");
   options.set("temperature").doc() = "Absolute temperature";
 
   return options;
@@ -86,7 +86,8 @@ KocksMeckingFlowViscosity::set_value(bool out, bool dout_din, bool d2out_din2)
 
   if (dout_din)
   {
-    _p.d(_T) = _A * math::exp(_B) * _k * std::log(_eps0) * post / _b3;
+    if (_T.is_dependent())
+      _p.d(_T) = _A * math::exp(_B) * _k * std::log(_eps0) * post / _b3;
 
     if (const auto A = nl_param("A"))
       _p.d(*A) = math::exp(_B) * _k * _T * std::log(_eps0) * post / _b3;
@@ -101,24 +102,28 @@ KocksMeckingFlowViscosity::set_value(bool out, bool dout_din, bool d2out_din2)
   if (d2out_din2)
   {
     // T
-    _p.d(_T, _T) = math::pow(_A * _k * std::log(_eps0) / _b3, 2.0) * math::exp(_B) * post / _mu;
+    if (_T.is_dependent())
+    {
+      _p.d(_T, _T) = math::pow(_A * _k * std::log(_eps0) / _b3, 2.0) * math::exp(_B) * post / _mu;
 
-    if (const auto A = nl_param("A"))
-      _p.d(_T, *A) = math::exp(_B) * _k * std::log(_eps0) * post / _b3 *
-                     (std::log(_eps0) * _A * _k * _T / (_b3 * _mu) + 1.0);
+      if (const auto A = nl_param("A"))
+        _p.d(_T, *A) = math::exp(_B) * _k * std::log(_eps0) * post / _b3 *
+                       (std::log(_eps0) * _A * _k * _T / (_b3 * _mu) + 1.0);
 
-    if (const auto B = nl_param("B"))
-      _p.d(_T, *B) = _A * math::exp(_B) * _k * std::log(_eps0) * post / _b3;
+      if (const auto B = nl_param("B"))
+        _p.d(_T, *B) = _A * math::exp(_B) * _k * std::log(_eps0) * post / _b3;
 
-    if (const auto mu = nl_param("mu"))
-      _p.d(_T, *mu) =
-          -math::pow(_A * _k * std::log(_eps0) / (_b3 * _mu), 2.0) * math::exp(_B) * _T * post;
+      if (const auto mu = nl_param("mu"))
+        _p.d(_T, *mu) =
+            -math::pow(_A * _k * std::log(_eps0) / (_b3 * _mu), 2.0) * math::exp(_B) * _T * post;
+    }
 
     // A
     if (const auto A = nl_param("A"))
     {
-      _p.d(*A, _T) = math::exp(_B) * _k * std::log(_eps0) * post / _b3 *
-                     (std::log(_eps0) * _A * _k * _T / (_b3 * _mu) + 1.0);
+      if (_T.is_dependent())
+        _p.d(*A, _T) = math::exp(_B) * _k * std::log(_eps0) * post / _b3 *
+                       (std::log(_eps0) * _A * _k * _T / (_b3 * _mu) + 1.0);
 
       _p.d(*A, *A) = math::exp(_B) * math::pow(_k * _T * std::log(_eps0) / _b3, 2.0) * post / _mu;
 
@@ -133,7 +138,8 @@ KocksMeckingFlowViscosity::set_value(bool out, bool dout_din, bool d2out_din2)
     // B
     if (const auto B = nl_param("B"))
     {
-      _p.d(*B, _T) = _A * math::exp(_B) * _k * std::log(_eps0) * post / _b3;
+      if (_T.is_dependent())
+        _p.d(*B, _T) = _A * math::exp(_B) * _k * std::log(_eps0) * post / _b3;
 
       if (const auto A = nl_param("A"))
         _p.d(*B, *A) = math::exp(_B) * _k * _T * std::log(_eps0) * post / _b3;
@@ -148,8 +154,9 @@ KocksMeckingFlowViscosity::set_value(bool out, bool dout_din, bool d2out_din2)
     // mu
     if (const auto mu = nl_param("mu"))
     {
-      _p.d(*mu, _T) =
-          -math::exp(_B) * math::pow(_A * _k * std::log(_eps0) / (_b3 * _mu), 2.0) * _T * post;
+      if (_T.is_dependent())
+        _p.d(*mu, _T) =
+            -math::exp(_B) * math::pow(_A * _k * std::log(_eps0) / (_b3 * _mu), 2.0) * _T * post;
 
       if (const auto A = nl_param("A"))
         _p.d(*mu, *A) =

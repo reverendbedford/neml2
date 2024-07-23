@@ -48,7 +48,8 @@ IsotropicMandelStress::set_value(bool out, bool dout_din, bool d2out_din2)
     _M = SR2(_S);
 
   if (dout_din)
-    _M.d(_S) = SR2::identity_map(options());
+    if (_S.is_dependent())
+      _M.d(_S) = SR2::identity_map(options());
 
   if (d2out_din2)
   {

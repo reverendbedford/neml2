@@ -47,7 +47,7 @@ ArrheniusParameter::expected_options()
   options.set<Real>("ideal_gas_constant");
   options.set("ideal_gas_constant").doc() = "The ideal gas constant";
 
-  options.set_input<VariableName>("temperature") = VariableName("forces", "T");
+  options.set_input("temperature") = VariableName("forces", "T");
   options.set("temperature").doc() = "Temperature";
 
   return options;
@@ -70,15 +70,16 @@ ArrheniusParameter::set_value(bool out, bool dout_din, bool d2out_din2)
   if (out)
     _p = p;
 
-  if (dout_din || d2out_din2)
-  {
-    const auto dp_dT = p * _Q / _R / _T / _T;
+  if (_T.is_dependent())
+    if (dout_din || d2out_din2)
+    {
+      const auto dp_dT = p * _Q / _R / _T / _T;
 
-    if (dout_din)
-      _p.d(_T) = dp_dT;
+      if (dout_din)
+        _p.d(_T) = dp_dT;
 
-    if (d2out_din2)
-      _p.d(_T, _T) = dp_dT * _Q / _R / _T / _T - 2 * p * _Q / _R / _T / _T / _T;
-  }
+      if (d2out_din2)
+        _p.d(_T, _T) = dp_dT * _Q / _R / _T / _T - 2 * p * _Q / _R / _T / _T / _T;
+    }
 }
 } // namespace neml2

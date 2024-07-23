@@ -42,21 +42,19 @@ KocksMeckingFlowSwitch::expected_options()
   options.set_parameter<CrossRef<Scalar>>("g0");
   options.set("g0").doc() = "Critical value of activation energy";
 
-  options.set_input<VariableName>("activation_energy") = VariableName("forces", "g");
+  options.set_input("activation_energy") = VariableName("forces", "g");
   options.set("activation_energy").doc() = "The input name of the activation energy";
 
   options.set<Real>("sharpness") = 1.0;
   options.set("sharpness").doc() = "A steepness parameter that controls the tanh mixing of the "
                                    "models.  Higher values gives a sharper transition.";
 
-  options.set_input<VariableName>("rate_independent_flow_rate") =
-      VariableName("state", "internal", "ri_rate");
+  options.set_input("rate_independent_flow_rate") = VariableName("state", "internal", "ri_rate");
   options.set("rate_independent_flow_rate").doc() = "Input name of the rate independent flow rate";
-  options.set_input<VariableName>("rate_dependent_flow_rate") =
-      VariableName("state", "internal", "rd_rate");
+  options.set_input("rate_dependent_flow_rate") = VariableName("state", "internal", "rd_rate");
   options.set("rate_dependent_flow_rate").doc() = "Input name of the rate dependent flow rate";
 
-  options.set_output<VariableName>("flow_rate") = VariableName("state", "internal", "gamma_rate");
+  options.set_output("flow_rate") = VariableName("state", "internal", "gamma_rate");
   options.set("flow_rate").doc() = "Output name for the mixed flow rate";
   return options;
 }
@@ -80,17 +78,19 @@ KocksMeckingFlowSwitch::set_value(bool out, bool dout_din, bool d2out_din2)
   auto sig = (math::tanh(_sharp * (_g - _g0)) + 1.0) / 2.0;
 
   if (out)
-  {
     _gamma_dot = sig * _rd_flow + (1.0 - sig) * _ri_flow;
-  }
+
   if (dout_din)
   {
     _gamma_dot.d(_rd_flow) = sig;
     _gamma_dot.d(_ri_flow) = 1.0 - sig;
+
     auto partial = 0.5 * _sharp * math::pow(1.0 / math::cosh(_sharp * (_g - _g0)), 2.0);
     auto deriv = partial * (_rd_flow - _ri_flow);
 
-    _gamma_dot.d(_g) = deriv;
+    if (_g.is_dependent())
+      _gamma_dot.d(_g) = deriv;
+
     if (const auto g0 = nl_param("g0"))
       _gamma_dot.d(*g0) = -deriv;
   }

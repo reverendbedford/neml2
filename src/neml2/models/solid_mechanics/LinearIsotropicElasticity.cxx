@@ -59,6 +59,8 @@ LinearIsotropicElasticity::LinearIsotropicElasticity(const OptionSet & options)
 void
 LinearIsotropicElasticity::set_value(bool out, bool dout_din, bool d2out_din2)
 {
+  neml_assert_dbg(!d2out_din2, "LinearIsotropicElasticity doesn't implement second derivatives.");
+
   // We need to work with the bulk modulus K and the shear modulus G so that the expression for
   // stiffness and compliance can be unified:
   const auto K = _E / 3 / (1 - 2 * _nu);
@@ -76,7 +78,9 @@ LinearIsotropicElasticity::set_value(bool out, bool dout_din, bool d2out_din2)
   {
     const auto I = SSR4::identity_vol(options());
     const auto J = SSR4::identity_dev(options());
-    _to.d(_from) = vf * I + df * J;
+
+    if (_from.is_dependent())
+      _to.d(_from) = vf * I + df * J;
 
     if (E)
     {
@@ -90,53 +94,6 @@ LinearIsotropicElasticity::set_value(bool out, bool dout_din, bool d2out_din2)
       const auto dvf_dnu = _compliance ? -2 / _E : 2 * _E / (1 - 2 * _nu) / (1 - 2 * _nu);
       const auto ddf_dnu = _compliance ? 1 / _E : -_E / (1 + _nu) / (1 + _nu);
       _to.d(*nu) = dvf_dnu * SR2(_from).vol() + ddf_dnu * SR2(_from).dev();
-    }
-  }
-
-  if (d2out_din2)
-  {
-    const auto I = SSR4::identity_vol(options());
-    const auto J = SSR4::identity_dev(options());
-
-    if (E)
-    {
-      const auto dvf_dE = _compliance ? -(1 - 2 * _nu) / _E / _E : 1 / (1 - 2 * _nu);
-      const auto ddf_dE = _compliance ? -(1 + _nu) / _E / _E : 1 / (1 + _nu);
-      const auto deriv = dvf_dE * I + ddf_dE * J;
-      _to.d(_from, *E) = deriv;
-      _to.d(*E, _from) = deriv;
-    }
-
-    if (nu)
-    {
-      const auto dvf_dnu = _compliance ? -2 / _E : 2 * _E / (1 - 2 * _nu) / (1 - 2 * _nu);
-      const auto ddf_dnu = _compliance ? 1 / _E : -_E / (1 + _nu) / (1 + _nu);
-      const auto deriv = dvf_dnu * I + ddf_dnu * J;
-      _to.d(_from, *nu) = deriv;
-      _to.d(*nu, _from) = deriv;
-    }
-
-    if (E && _compliance)
-    {
-      const auto d2vf_dE2 = 2 * (1 - 2 * _nu) / _E / _E / _E;
-      const auto d2df_dE2 = 2 * (1 + _nu) / _E / _E / _E;
-      _to.d(*E, *E) = d2vf_dE2 * SR2(_from).vol() + d2df_dE2 * SR2(_from).dev();
-    }
-
-    if (nu && !_compliance)
-    {
-      const auto d2vf_dnu2 = 8 * _E / math::pow(1 - 2 * _nu, 3);
-      const auto d2df_dnu2 = 2 * _E / math::pow(1 + _nu, 3);
-      _to.d(*nu, *nu) = d2vf_dnu2 * SR2(_from).vol() + d2df_dnu2 * SR2(_from).dev();
-    }
-
-    if (E && nu)
-    {
-      const auto d2vf_dEdnu = _compliance ? 2 / _E / _E : 2 / (1 - 2 * _nu) / (1 - 2 * _nu);
-      const auto d2df_dEdnu = _compliance ? -1 / _E / _E : -1 / (1 + _nu) / (1 + _nu);
-      const auto deriv = d2vf_dEdnu * SR2(_from).vol() + d2df_dEdnu * SR2(_from).dev();
-      _to.d(*E, *nu) = deriv;
-      _to.d(*nu, *E) = deriv;
     }
   }
 }

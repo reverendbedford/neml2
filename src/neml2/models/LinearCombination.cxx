@@ -29,6 +29,7 @@
 namespace neml2
 {
 register_NEML2_object(ScalarLinearCombination);
+register_NEML2_object(VecLinearCombination);
 register_NEML2_object(SR2LinearCombination);
 
 template <typename T>
@@ -44,14 +45,19 @@ LinearCombination<T>::expected_options()
                   " tensors as \\f$ u = c_i v_i \\f$ (Einstein summation assumed), where \\f$ c_i "
                   "\\f$ are the coefficients, and \\f$ v_i \\f$ are the variables to be summed.";
 
-  options.set_input<std::vector<VariableName>>("from_var");
+  options.set<std::vector<VariableName>>("from_var");
   options.set("from_var").doc() = tensor_type + " tensors to be summed";
 
-  options.set_output<VariableName>("to_var");
+  options.set_output("to_var");
   options.set("to_var").doc() = "The sum";
 
   options.set_parameter<std::vector<CrossRef<Scalar>>>("coefficients") = {CrossRef<Scalar>("1")};
   options.set("coefficients").doc() = "Weights associated with each variable";
+
+  options.set<bool>("coefficients_as_parameters") = false;
+  options.set("coefficients_as_parameters").doc() =
+      "By default, the coefficients are declared as buffers. Set this option to true to declare "
+      "them as (trainable) parameters.";
 
   return options;
 }
@@ -60,7 +66,9 @@ template <typename T>
 LinearCombination<T>::LinearCombination(const OptionSet & options)
   : Model(options),
     _to(declare_output_variable<T>("to_var")),
-    _coef(declare_parameter<Tensor>("c", make_coef(options)))
+    _coef_as_param(options.get<bool>("coefficients_as_parameters")),
+    _coef(_coef_as_param ? declare_parameter<Tensor>("c", make_coef(options))
+                         : declare_buffer<Tensor>("c", make_coef(options)))
 {
   for (auto fv : options.get<std::vector<VariableName>>("from_var"))
     _from.push_back(&declare_input_variable<T>(fv));
@@ -94,7 +102,8 @@ LinearCombination<T>::set_value(bool out, bool dout_din, bool d2out_din2)
   {
     const auto deriv = Scalar(_coef) * T::identity_map(options()).batch_expand(N);
     for (Size i = 0; i < N; i++)
-      _to.d(*_from[i]) = deriv.batch_index({indexing::Ellipsis, i});
+      if (_from[i]->is_dependent())
+        _to.d(*_from[i]) = deriv.batch_index({indexing::Ellipsis, i});
   }
 
   if (d2out_din2)
@@ -104,5 +113,6 @@ LinearCombination<T>::set_value(bool out, bool dout_din, bool d2out_din2)
 }
 
 template class LinearCombination<Scalar>;
+template class LinearCombination<Vec>;
 template class LinearCombination<SR2>;
 } // namespace neml2

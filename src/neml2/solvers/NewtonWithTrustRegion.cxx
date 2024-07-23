@@ -191,8 +191,8 @@ Scalar
 NewtonWithTrustRegion::merit_function_reduction(const NonlinearSystem & system,
                                                 const Tensor & p) const
 {
-  auto Jp = math::bmv(system.Jacobian_view(), p);
-  return -math::bvv(system.residual_view(), Jp) - 0.5 * math::bvv(Jp, Jp);
+  auto Jp = math::bmv(system.get_Jacobian(), p);
+  return -math::bvv(system.get_residual(), Jp) - 0.5 * math::bvv(Jp, Jp);
 }
 
 } // namespace neml2

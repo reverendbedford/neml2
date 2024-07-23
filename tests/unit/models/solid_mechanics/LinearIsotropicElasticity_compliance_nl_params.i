@@ -9,10 +9,7 @@
     input_symr2_values = 'S'
     output_symr2_names = 'state/internal/Ee'
     output_symr2_values = 'Ee'
-    check_second_derivatives = true
     check_AD_first_derivatives = false
-    check_AD_second_derivatives = false
-    check_AD_derivatives = false
   []
 []
 

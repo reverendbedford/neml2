@@ -33,8 +33,8 @@ void
 def_Tensor(py::class_<Tensor> & c)
 {
   // All PrimitiveTensors are convertible to Tensor
-#define Tensor_FROM_PrimitiveTensor(T) c.def(py::init<T>());
-  FOR_ALL_PRIMITIVETENSOR(Tensor_FROM_PrimitiveTensor);
+#define Tensor_FROM_PRIMITIVETENSOR(T) c.def(py::init<T>());
+  FOR_ALL_PRIMITIVETENSOR(Tensor_FROM_PRIMITIVETENSOR);
 
   // Static methods
   c.def_static(

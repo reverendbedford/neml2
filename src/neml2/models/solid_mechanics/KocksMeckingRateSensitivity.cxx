@@ -48,7 +48,7 @@ KocksMeckingRateSensitivity::expected_options()
   options.set<Real>("b");
   options.set("b").doc() = "The Burgers vector";
 
-  options.set_input<VariableName>("temperature") = VariableName("forces", "T");
+  options.set_input("temperature") = VariableName("forces", "T");
   options.set("temperature").doc() = "Absolute temperature";
   return options;
 }
@@ -71,7 +71,8 @@ KocksMeckingRateSensitivity::set_value(bool out, bool dout_din, bool d2out_din2)
 
   if (dout_din)
   {
-    _p.d(_T) = _b3 * _mu / (_A * _k * _T * _T);
+    if (_T.is_dependent())
+      _p.d(_T) = _b3 * _mu / (_A * _k * _T * _T);
     if (const auto mu = nl_param("mu"))
       _p.d(*mu) = -_b3 / (_A * _k * _T);
     if (const auto A = nl_param("A"))
@@ -81,22 +82,31 @@ KocksMeckingRateSensitivity::set_value(bool out, bool dout_din, bool d2out_din2)
   if (d2out_din2)
   {
     // T, T
-    _p.d(_T, _T) = -2.0 * _b3 * _mu / (_A * _k * _T * _T * _T);
+    if (_T.is_dependent())
+      _p.d(_T, _T) = -2.0 * _b3 * _mu / (_A * _k * _T * _T * _T);
+
     if (const auto A = nl_param("A"))
     {
       // A, A
       _p.d(*A, *A) = -2.0 * _b3 * _mu / (_A * _A * _A * _k * _T);
       // A, T and T, A
-      auto AT = -_b3 * _mu / (_A * _A * _k * _T * _T);
-      _p.d(*A, _T) = AT;
-      _p.d(_T, *A) = AT;
+      if (_T.is_dependent())
+      {
+        auto AT = -_b3 * _mu / (_A * _A * _k * _T * _T);
+        _p.d(*A, _T) = AT;
+        _p.d(_T, *A) = AT;
+      }
     }
+
     if (const auto mu = nl_param("mu"))
     {
       // mu, T and T, mu
-      auto MT = _b3 / (_A * _k * _T * _T);
-      _p.d(*mu, _T) = MT;
-      _p.d(_T, *mu) = MT;
+      if (_T.is_dependent())
+      {
+        auto MT = _b3 / (_A * _k * _T * _T);
+        _p.d(*mu, _T) = MT;
+        _p.d(_T, *mu) = MT;
+      }
 
       if (const auto A = nl_param("A"))
       {

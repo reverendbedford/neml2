@@ -12,8 +12,6 @@
     derivatives_abs_tol = 1e-06
     check_second_derivatives = true
     check_AD_first_derivatives = false
-    check_AD_second_derivatives = false
-    check_AD_derivatives = false
   []
 []
 

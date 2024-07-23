@@ -90,33 +90,35 @@ nbatch = 20
   # Compute the invariant plastic flow direction since we are doing J2 radial return
   #####################################################################################
   [trial_elastic_strain]
-    type = ElasticStrain
-    plastic_strain = 'old_state/Ep'
-    elastic_strain = 'state/Ee'
+    type = SR2LinearCombination
+    from_var = 'forces/E old_state/Ep'
+    to_var = 'forces/Ee'
+    coefficients = '1 -1'
   []
-  [cauchy_stress]
+  [trial_cauchy_stress]
     type = LinearIsotropicElasticity
     youngs_modulus = 1e5
     poisson_ratio = 0.3
-    strain = 'state/Ee'
-    stress = 'state/S'
+    strain = 'forces/Ee'
+    stress = 'forces/S'
   []
-  [flow_direction]
+  [trial_flow_direction]
     type = J2FlowDirection
-    mandel_stress = 'state/S'
+    mandel_stress = 'forces/S'
     flow_direction = 'forces/N'
   []
   [trial_state]
     type = ComposedModel
-    models = 'trial_elastic_strain cauchy_stress flow_direction'
+    models = 'trial_elastic_strain trial_cauchy_stress trial_flow_direction'
   []
 
   #####################################################################################
   # Stress update
   #####################################################################################
   [ep_rate]
-    type = ScalarStateRate
-    state = 'ep'
+    type = ScalarVariableRate
+    variable = 'state/ep'
+    rate = 'state/ep_rate'
   []
   [plastic_strain_rate]
     type = AssociativePlasticFlow
@@ -126,16 +128,24 @@ nbatch = 20
   []
   [plastic_strain]
     type = SR2ForwardEulerTimeIntegration
-    variable = 'Ep'
+    variable = 'state/Ep'
   []
   [plastic_update]
     type = ComposedModel
     models = 'ep_rate plastic_strain_rate plastic_strain'
   []
   [elastic_strain]
-    type = ElasticStrain
-    plastic_strain = 'state/Ep'
-    elastic_strain = 'state/Ee'
+    type = SR2LinearCombination
+    from_var = 'forces/E state/Ep'
+    to_var = 'state/Ee'
+    coefficients = '1 -1'
+  []
+  [cauchy_stress]
+    type = LinearIsotropicElasticity
+    youngs_modulus = 1e5
+    poisson_ratio = 0.3
+    strain = 'state/Ee'
+    stress = 'state/S'
   []
   [stress_update]
     type = ComposedModel
@@ -164,15 +174,15 @@ nbatch = 20
   []
   [integrate_ep]
     type = ScalarBackwardEulerTimeIntegration
-    variable = 'ep'
+    variable = 'state/ep'
   []
   [integrate_G]
     type = ScalarBackwardEulerTimeIntegration
-    variable = 'G'
+    variable = 'state/G'
   []
   [integrate_C]
     type = ScalarBackwardEulerTimeIntegration
-    variable = 'C'
+    variable = 'state/C'
   []
   [rate]
     type = ComposedModel

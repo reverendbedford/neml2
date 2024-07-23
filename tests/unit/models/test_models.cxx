@@ -59,7 +59,7 @@ TEST_CASE("models")
         // Load and run the model
         reload_input(test.filename());
         auto & driver = get_driver("unit");
-        throw_diagnostics(driver);
+        diagnose(driver);
         REQUIRE(driver.run());
       }
       catch (...)

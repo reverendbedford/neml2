@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 #include "neml2/models/solid_mechanics/Normality.h"
+#include "neml2/base/guards.h"
 
 namespace neml2
 {
@@ -44,7 +45,7 @@ Normality::expected_options()
   options.set<std::vector<VariableName>>("from");
   options.set("from").doc() = "Function arguments to take derivatives w.r.t.";
 
-  options.set_output<std::vector<VariableName>>("to");
+  options.set<std::vector<VariableName>>("to");
   options.set("to").doc() = "Variables to store the first derivatives";
 
   return options;
@@ -92,12 +93,13 @@ Normality::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   neml_assert_dbg(!d2out_din2, "Normality doesn't implement second derivatives.");
 
-  // All we do here is simply mapping the derivatives.
-  // However, let's consider all the cases to make it as efficient as possible.
-  if (out && !dout_din)
-    _model.value_and_dvalue();
-  else
-    _model.value_and_dvalue_and_d2value();
+  {
+    SolvingNonlinearSystem not_solving(false);
+    if (out && !dout_din)
+      _model.dvalue();
+    else
+      _model.dvalue_and_d2value();
+  }
 
   for (auto && [ivar, var] : _conjugate_pairs)
   {
@@ -106,7 +108,8 @@ Normality::set_value(bool out, bool dout_din, bool d2out_din2)
 
     if (dout_din)
       for (auto && [jvar, j] : input_views())
-        var->d(j) = _f_secderiv_views[ivar][jvar];
+        if (j.is_dependent())
+          var->d(j) = _f_secderiv_views[ivar][jvar];
   }
 }
 } // namespace neml2

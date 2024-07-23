@@ -197,11 +197,13 @@
   [effective_strain_rate]
     type = SR2Invariant
     invariant_type = 'EFFECTIVE_STRAIN'
-    tensor = 'forces/E_rate'
-    invariant = 'forces/effective_strain_rate'
+    tensor = 'state/E_rate'
+    invariant = 'state/effective_strain_rate'
   []
   [g]
     type = KocksMeckingActivationEnergy
+    activation_energy = 'state/g'
+    strain_rate = 'state/effective_strain_rate'
     shear_modulus = 'mu'
     k = 1.38064e-20
     b = 2.474e-7
@@ -209,6 +211,7 @@
   []
   [flowrate]
     type = KocksMeckingFlowSwitch
+    activation_energy = 'state/g'
     g0 = 0.538
     rate_independent_flow_rate = 'state/internal/gamma_rate_ri'
     rate_dependent_flow_rate = 'state/internal/gamma_rate_rd'
@@ -221,12 +224,15 @@
     type = AssociativeIsotropicPlasticHardening
   []
   [Erate]
-    type = SR2ForceRate
-    force = 'E'
+    type = SR2VariableRate
+    variable = 'state/E'
+    rate = 'state/E_rate'
   []
   [Eerate]
-    type = ElasticStrain
-    rate_form = true
+    type = SR2LinearCombination
+    from_var = 'state/E_rate state/internal/Ep_rate'
+    to_var = 'state/internal/Ee_rate'
+    coefficients = '1 -1'
   []
   [elasticity]
     type = LinearIsotropicElasticity
@@ -236,22 +242,14 @@
   []
   [integrate_stress]
     type = SR2BackwardEulerTimeIntegration
-    variable = 'S'
+    variable = 'state/S'
   []
   [integrate_ep]
     type = ScalarBackwardEulerTimeIntegration
-    variable = 'internal/ep'
+    variable = 'state/internal/ep'
   []
   [mixed]
     type = MixedControlSetup
-  []
-  [mixed_old]
-    type = MixedControlSetup
-    control = "old_forces/control"
-    mixed_state = "old_state/mixed_state"
-    fixed_values = "old_forces/fixed_values"
-    cauchy_stress = "old_state/S"
-    strain = "old_forces/E"
   []
   [rename]
     type = CopySR2
@@ -264,21 +262,16 @@
               mandel_stress vonmises
               yield yield_zero normality eprate Eprate Erate Eerate
               ri_flowrate rd_flowrate flowrate integrate_ep integrate_stress effective_strain_rate
-              mixed mixed_old rename"
+              mixed rename"
   []
   [model_mixed]
     type = ImplicitUpdate
     implicit_model = 'surface'
     solver = 'newton'
   []
-  [mixed_output]
-    type = MixedControlSetup
-    cauchy_stress = 'output/stress'
-    strain = 'output/strain'
-  []
   [model]
     type = ComposedModel
-    models = 'model_mixed mixed_output'
+    models = 'model_mixed mixed'
     additional_outputs = 'state/mixed_state'
   []
 []

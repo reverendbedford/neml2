@@ -228,7 +228,7 @@ jacrev(const Tensor & y, const Tensor & p)
                                                  {v},
                                                  /*retain_graph=*/true,
                                                  /*create_graph=*/false,
-                                                 /*allow_unused=*/false)[0];
+                                                 /*allow_unused=*/true)[0];
       if (dyfi_dp.defined())
         dyf_dp.base_index_put_({i, torch::indexing::Ellipsis}, dyfi_dp);
     }

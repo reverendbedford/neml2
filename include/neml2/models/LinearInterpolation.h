@@ -119,7 +119,7 @@ LinearInterpolation<T>::mask(const T2 & in, const torch::Tensor & m) const
       in_expand.batch_sizes().slice(0, in_expand.batch_dim() - 1), in.base_sizes()));
 }
 
-#define LINEARINTERPOLATION_TYPEDEF_PRIMITIVETENSOR(T)                                             \
-  typedef LinearInterpolation<T> T##LinearInterpolation
-FOR_ALL_PRIMITIVETENSOR(LINEARINTERPOLATION_TYPEDEF_PRIMITIVETENSOR);
+typedef LinearInterpolation<Scalar> ScalarLinearInterpolation;
+typedef LinearInterpolation<Vec> VecLinearInterpolation;
+typedef LinearInterpolation<SR2> SR2LinearInterpolation;
 } // namespace neml2

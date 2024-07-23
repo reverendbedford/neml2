@@ -63,7 +63,7 @@ VTestVerification::VTestVerification(const OptionSet & options)
 bool
 VTestVerification::run()
 {
-  throw_diagnostics(_driver);
+  neml2::diagnose(_driver);
   _driver.run();
 
   // Verify the variable values against the references

@@ -38,7 +38,7 @@ ThermalEigenstrain::expected_options()
       "\\alpha \\f$ is the coefficient of thermal expansion (CTE), \\f$ T \\f$ is the temperature, "
       "and \\f$ T_0 \\f$ is the reference (stress-free) temperature.";
 
-  options.set_input<VariableName>("temperature") = VariableName("forces", "T");
+  options.set_input("temperature") = VariableName("forces", "T");
   options.set("temperature").doc() = "Temperature";
 
   options.set_buffer<CrossRef<Scalar>>("reference_temperature");
@@ -65,7 +65,8 @@ ThermalEigenstrain::set_value(bool out, bool dout_din, bool d2out_din2)
     _eg = _alpha * (_T - _T0) * SR2::identity(options());
 
   if (dout_din)
-    _eg.d(_T) = _alpha * SR2::identity(options());
+    if (_T.is_dependent())
+      _eg.d(_T) = _alpha * SR2::identity(options());
 
   if (d2out_din2)
   {

@@ -14,6 +14,6 @@
 [Models]
   [model]
     type = ScalarBackwardEulerTimeIntegration
-    variable = 'foo'
+    variable = 'state/foo'
   []
 []

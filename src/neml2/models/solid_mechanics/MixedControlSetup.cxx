@@ -38,7 +38,7 @@ MixedControlSetup::expected_options()
       "fixed_values (the input strain or stress) and the mixed_state (the conjugate stress or "
       "strain values) into the stress and strain tensors used by the model.";
 
-  options.set_input<VariableName>("control") = VariableName("forces", "control");
+  options.set_input("control") = VariableName("forces", "control");
   options.set("control").doc() =
       "The name of the control signal.  Values less than the threshold are "
       "strain control, greater are stress control";
@@ -46,18 +46,18 @@ MixedControlSetup::expected_options()
   options.set<CrossRef<Tensor>>("threshold") = "0.5";
   options.set("threshold").doc() = "The threshold to switch between strain and stress control";
 
-  options.set_input<VariableName>("mixed_state") = VariableName("state", "mixed_state");
+  options.set_input("mixed_state") = VariableName("state", "mixed_state");
   options.set("mixed_state").doc() = "The name of the mixed state tensor. This holds the conjugate "
                                      "values to those being controlled";
 
-  options.set_input<VariableName>("fixed_values") = VariableName("forces", "fixed_values");
+  options.set_input("fixed_values") = VariableName("forces", "fixed_values");
   options.set("fixed_values").doc() = "The name of the fixed values, i.e. the actual strain or "
                                       "stress values being imposed on the model";
 
-  options.set_output<VariableName>("cauchy_stress") = VariableName("state", "S");
+  options.set_output("cauchy_stress") = VariableName("state", "S");
   options.set("cauchy_stress").doc() = "The name of the Cauchy stress tensor";
 
-  options.set_output<VariableName>("strain") = VariableName("forces", "E");
+  options.set_output("strain") = VariableName("state", "E");
   options.set("strain").doc() = "The name of the strain tensor";
 
   return options;
@@ -88,11 +88,17 @@ MixedControlSetup::set_value(bool out, bool dout_din, bool d2out_din2)
 
   if (dout_din)
   {
-    _stress.d(_fixed_values) = dstress;
-    _stress.d(_mixed_state) = dstrain;
+    if (_fixed_values.is_dependent())
+    {
+      _stress.d(_fixed_values) = dstress;
+      _strain.d(_fixed_values) = dstrain;
+    }
 
-    _strain.d(_fixed_values) = dstrain;
-    _strain.d(_mixed_state) = dstress;
+    if (_mixed_state.is_dependent())
+    {
+      _stress.d(_mixed_state) = dstrain;
+      _strain.d(_mixed_state) = dstress;
+    }
   }
 
   // All zero

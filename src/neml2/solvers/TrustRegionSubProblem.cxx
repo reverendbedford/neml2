@@ -42,8 +42,8 @@ TrustRegionSubProblem::reinit(const NonlinearSystem & system, const Scalar & del
   _residual = Scalar::empty(_batch_sizes, _options);
   _Jacobian = Scalar::empty(_batch_sizes, _options);
 
-  _R = system.residual_view().clone();
-  _J = system.Jacobian_view().clone();
+  _R = system.get_residual();
+  _J = system.get_Jacobian();
   _delta = delta.clone();
 
   _JJ = math::bmm(_J.base_transpose(0, 1), _J);

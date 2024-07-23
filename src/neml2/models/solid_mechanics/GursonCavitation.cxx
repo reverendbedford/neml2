@@ -36,15 +36,13 @@ GursonCavitation::expected_options()
   options.doc() = "Local mass balance used in conjunction with the GTNYieldFunction, \\f$ "
                   "\\dot{\\phi} = (1-\\phi) \\dot{\\varepsilon}_p \\f$.";
 
-  options.set_input<VariableName>("plastic_strain_rate") =
-      VariableName("state", "internal", "Ep_rate");
+  options.set_input("plastic_strain_rate") = VariableName("state", "internal", "Ep_rate");
   options.set("plastic_strain_rate").doc() = "Plastic strain rate";
 
-  options.set_input<VariableName>("void_fraction") = VariableName("state", "internal", "f");
+  options.set_input("void_fraction") = VariableName("state", "internal", "f");
   options.set("void_fraction").doc() = "Void fraction (porosity)";
 
-  options.set_output<VariableName>("void_fraction_rate") =
-      VariableName("state", "internal", "f_rate");
+  options.set_output("void_fraction_rate") = VariableName("state", "internal", "f_rate");
   options.set("void_fraction_rate").doc() = "Rate of void evolution";
 
   return options;
@@ -61,27 +59,22 @@ GursonCavitation::GursonCavitation(const OptionSet & options)
 void
 GursonCavitation::set_value(bool out, bool dout_din, bool d2out_din2)
 {
+  neml_assert_dbg(!d2out_din2, "GursonCavitation doesn't implement second derivatives.");
+
   const auto ep_dot = SR2(_Ep_dot).tr();
 
   if (out)
     _phi_dot = (1 - _phi) * ep_dot;
 
-  if (dout_din || d2out_din2)
+  if (dout_din)
   {
     const auto I = SR2::identity(options());
 
-    if (dout_din)
-    {
+    if (_phi.is_dependent())
       _phi_dot.d(_phi) = -ep_dot;
-      _phi_dot.d(_Ep_dot) = I * (1 - _phi);
-    }
 
-    // No idea if this will ever be used, but why not as it's easy?
-    if (d2out_din2)
-    {
-      _phi_dot.d(_phi, _Ep_dot) = -I;
-      _phi_dot.d(_Ep_dot, _phi) = -I;
-    }
+    if (_Ep_dot.is_dependent())
+      _phi_dot.d(_Ep_dot) = I * (1 - _phi);
   }
 }
 } // namespace neml2

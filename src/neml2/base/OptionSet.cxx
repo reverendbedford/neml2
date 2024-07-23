@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 #include "neml2/base/OptionSet.h"
+#include "neml2/tensors/LabeledAxisAccessor.h"
 
 namespace neml2
 {
@@ -70,6 +71,18 @@ OptionSet::set(const std::string & name)
               *this);
 
   return *_values[name];
+}
+
+LabeledAxisAccessor &
+OptionSet::set_input(const std::string & name)
+{
+  return set<LabeledAxisAccessor, FType::INPUT>(name);
+}
+
+LabeledAxisAccessor &
+OptionSet::set_output(const std::string & name)
+{
+  return set<LabeledAxisAccessor, FType::OUTPUT>(name);
 }
 
 void

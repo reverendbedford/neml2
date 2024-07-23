@@ -44,14 +44,14 @@ PlasticDeformationRate::expected_options()
                   "\\f$ the slip rate on the ith slip system, \\f$Q \\f$ the orientation, \\f$ d_i "
                   "\\f$ the slip system direction, and \\f$ n_i \\f$ the slip system normal.";
 
-  options.set_output<VariableName>("plastic_deformation_rate") =
+  options.set_output("plastic_deformation_rate") =
       VariableName("state", "internal", "plastic_deformation_rate");
   options.set("plastic_deformation_rate").doc() = "The name of the plastic deformation rate tensor";
 
-  options.set_input<VariableName>("orientation") = VariableName("state", "orientation_matrix");
+  options.set_input("orientation") = VariableName("state", "orientation_matrix");
   options.set("orientation").doc() = "The name of the orientation matrix tensor";
 
-  options.set_input<VariableName>("slip_rates") = VariableName("state", "internal", "slip_rates");
+  options.set_input("slip_rates") = VariableName("state", "internal", "slip_rates");
   options.set("slip_rates").doc() = "The name of the tensor containg the current slip rates";
 
   options.set<std::string>("crystal_geometry_name") = "crystal_geometry";
@@ -85,9 +85,12 @@ PlasticDeformationRate::set_value(bool out, bool dout_din, bool d2out_din2)
 
   if (dout_din)
   {
-    _dp.d(_g) = Tensor(_crystal_geometry.M().rotate(R2(_R).batch_unsqueeze(-1)), batch_dim())
-                    .base_transpose(-2, -1);
-    _dp.d(_R) = dp_crystal.drotate(R2(_R));
+    if (_g.is_dependent())
+      _dp.d(_g) = Tensor(_crystal_geometry.M().rotate(R2(_R).batch_unsqueeze(-1)), batch_dim())
+                      .base_transpose(-2, -1);
+
+    if (_R.is_dependent())
+      _dp.d(_R) = dp_crystal.drotate(R2(_R));
   }
 }
 } // namespace neml2

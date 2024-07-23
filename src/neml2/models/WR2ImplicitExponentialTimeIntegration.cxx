@@ -44,10 +44,13 @@ WR2ImplicitExponentialTimeIntegration::expected_options()
 
   NonlinearSystem::enable_automatic_scaling(options);
 
-  options.set_output<VariableName>("variable");
+  options.set_input("variable");
   options.set("variable").doc() = "Variable being integrated";
 
-  options.set_input<VariableName>("time") = VariableName("t");
+  options.set_input("rate");
+  options.set("rate").doc() = "Variable rate";
+
+  options.set_input("time") = VariableName("forces", "t");
   options.set("time").doc() = "Time";
 
   return options;
@@ -56,15 +59,24 @@ WR2ImplicitExponentialTimeIntegration::expected_options()
 WR2ImplicitExponentialTimeIntegration::WR2ImplicitExponentialTimeIntegration(
     const OptionSet & options)
   : Model(options),
-    _var_name(options.get<VariableName>("variable")),
-    _var_rate_name(_var_name.with_suffix("_rate")),
-    _r(declare_output_variable<Vec>(_var_name.prepend("residual"))),
-    _s_dot(declare_input_variable<WR2>(_var_rate_name.prepend("state"))),
-    _s(declare_input_variable<Rot>(_var_name.prepend("state"))),
-    _sn(declare_input_variable<Rot>(_var_name.prepend("old_state"))),
-    _t(declare_input_variable<Scalar>(options.get<VariableName>("time").prepend("forces"))),
-    _tn(declare_input_variable<Scalar>(options.get<VariableName>("time").prepend("old_forces")))
+    _s(declare_input_variable<Rot>("variable")),
+    _sn(declare_input_variable<Rot>(_s.name().old())),
+    _s_dot(options.get<VariableName>("rate").empty()
+               ? declare_input_variable<WR2>(_s.name().with_suffix("_rate"))
+               : declare_input_variable<WR2>("rate")),
+    _t(declare_input_variable<Scalar>("time")),
+    _tn(declare_input_variable<Scalar>(_t.name().old())),
+    _r(declare_output_variable<Vec>(_s.name().remount("residual")))
 {
+}
+
+void
+WR2ImplicitExponentialTimeIntegration::diagnose(std::vector<Diagnosis> & diagnoses) const
+{
+  Model::diagnose(diagnoses);
+  diagnostic_assert_state(diagnoses, _s);
+  diagnostic_assert_state(diagnoses, _s_dot);
+  diagnostic_assert_force(diagnoses, _t);
 }
 
 void
@@ -83,12 +95,13 @@ WR2ImplicitExponentialTimeIntegration::set_value(bool out, bool dout_din, bool d
     const auto de = (_s_dot * dt).dexp();
     _r.d(_s) = R2::identity(options());
     _r.d(_s_dot) = -Rot(_sn).drotate(inc) * de * dt;
-    if (!currently_solving_nonlinear_system())
-    {
-      _r.d(_sn) = -Rot(_sn).drotate_self(inc);
-      _r.d(_t) = -Rot(_sn).drotate(inc) * de * Vec(_s_dot.value());
-      _r.d(_tn) = Rot(_sn).drotate(inc) * de * Vec(_s_dot.value());
-    }
+
+    if (currently_solving_nonlinear_system())
+      return;
+
+    _r.d(_sn) = -Rot(_sn).drotate_self(inc);
+    _r.d(_t) = -Rot(_sn).drotate(inc) * de * Vec(_s_dot.value());
+    _r.d(_tn) = Rot(_sn).drotate(inc) * de * Vec(_s_dot.value());
   }
 }
 } // namespace neml2

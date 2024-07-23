@@ -1,11 +1,11 @@
 [Models]
   [foo]
     type = ScalarBackwardEulerTimeIntegration
-    variable = 'foo'
+    variable = 'state/foo'
   []
   [bar]
     type = ScalarBackwardEulerTimeIntegration
-    variable = 'bar'
+    variable = 'state/bar'
   []
   [baz]
     type = ScalarLinearCombination

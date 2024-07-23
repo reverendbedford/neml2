@@ -38,12 +38,11 @@ AssociativeIsotropicPlasticHardening::expected_options()
                    "is the equivalent plastic strain, \\f$ \\dot{\\gamma} \\f$ is the flow rate, "
                    "\\f$ f \\f$ is the yield function, and \\f$ k \\f$ is the isotropic hardening.";
 
-  options.set_input<VariableName>("isotropic_hardening_direction") =
-      VariableName("state", "internal", "Nk");
+  options.set_input("isotropic_hardening_direction") = VariableName("state", "internal", "Nk");
   options.set("isotropic_hardening_direction").doc() =
       "Direction of associative isotropic hardening which can be calculated using Normality.";
 
-  options.set_output<VariableName>("equivalent_plastic_strain_rate") =
+  options.set_output("equivalent_plastic_strain_rate") =
       VariableName("state", "internal", "ep_rate");
   options.set("equivalent_plastic_strain_rate").doc() = "Rate of equivalent plastic strain";
 
@@ -61,6 +60,9 @@ AssociativeIsotropicPlasticHardening::AssociativeIsotropicPlasticHardening(
 void
 AssociativeIsotropicPlasticHardening::set_value(bool out, bool dout_din, bool d2out_din2)
 {
+  neml_assert_dbg(!d2out_din2,
+                  "AssociativeIsotropicPlasticHardening doesn't implement second derivatives.");
+
   // For associative flow,
   // ep_dot = - gamma_dot * Nk
   //     Nk = df/dk
@@ -70,16 +72,11 @@ AssociativeIsotropicPlasticHardening::set_value(bool out, bool dout_din, bool d2
 
   if (dout_din)
   {
-    _ep_dot.d(_gamma_dot) = -_Nk;
-    _ep_dot.d(_Nk) = -_gamma_dot;
-  }
+    if (_gamma_dot.is_dependent())
+      _ep_dot.d(_gamma_dot) = -_Nk;
 
-  if (d2out_din2)
-  {
-    // I don't know when this will be useful, but since it's easy...
-    auto I = Scalar::identity_map(options());
-    _ep_dot.d(_gamma_dot, _Nk) = -I;
-    _ep_dot.d(_Nk, _gamma_dot) = -I;
+    if (_Nk.is_dependent())
+      _ep_dot.d(_Nk) = -_gamma_dot;
   }
 }
 } // namespace neml2

@@ -36,8 +36,7 @@ SlipStrengthMap::expected_options()
   OptionSet options = Model::expected_options();
   options.doc() = "Map between internal variables the slip system strengths.";
 
-  options.set_output<VariableName>("slip_strengths") =
-      VariableName("state", "internal", "slip_strengths");
+  options.set_output("slip_strengths") = VariableName("state", "internal", "slip_strengths");
   options.set("slip_strengths").doc() = "Name of the slip system strengths";
 
   options.set<std::string>("crystal_geometry_name") = "crystal_geometry";
@@ -54,5 +53,4 @@ SlipStrengthMap::SlipStrengthMap(const OptionSet & options)
     _tau(declare_output_variable_list<Scalar>(_crystal_geometry.nslip(), "slip_strengths"))
 {
 }
-
 } // namespace neml2

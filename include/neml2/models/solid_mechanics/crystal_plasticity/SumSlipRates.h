@@ -41,12 +41,6 @@ public:
 
   SumSlipRates(const OptionSet & options);
 
-  /// Input: list of slip rates
-  const VariableName slip_rates;
-
-  /// Output: sum of the absolute values
-  const VariableName sum_slip_rates;
-
 protected:
   /// Calculate the sum and the derivatives
   void set_value(bool out, bool dout_din, bool d2out_din2) override;

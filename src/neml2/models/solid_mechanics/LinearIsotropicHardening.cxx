@@ -54,7 +54,8 @@ LinearIsotropicHardening::set_value(bool out, bool dout_din, bool d2out_din2)
     _h = _K * _ep;
 
   if (dout_din)
-    _h.d(_ep) = _K;
+    if (_ep.is_dependent())
+      _h.d(_ep) = _K;
 
   if (d2out_din2)
   {

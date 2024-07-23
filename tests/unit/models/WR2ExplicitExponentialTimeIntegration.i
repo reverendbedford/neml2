@@ -10,15 +10,13 @@
     input_scalar_values = '1.3 1.1'
     output_rot_names = 'state/foo'
     output_rot_values = 'foo'
-    check_AD_derivatives = false
-    check_AD_second_derivatives = false
   []
 []
 
 [Models]
   [model]
     type = WR2ExplicitExponentialTimeIntegration
-    variable = 'foo'
+    variable = 'state/foo'
   []
 []
 

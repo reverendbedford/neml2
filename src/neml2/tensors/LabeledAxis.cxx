@@ -42,7 +42,8 @@ LabeledAxis::LabeledAxis(const LabeledAxis & other)
 LabeledAxis &
 LabeledAxis::add(const LabeledAxisAccessor & accessor, Size sz)
 {
-  add(*this, sz, accessor.begin(), accessor.end());
+  if (!accessor.empty())
+    add(*this, sz, accessor.begin(), accessor.end());
   return *this;
 }
 

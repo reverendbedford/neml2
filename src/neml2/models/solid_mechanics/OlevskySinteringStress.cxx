@@ -38,10 +38,10 @@ OlevskySinteringStress::expected_options()
                   "\\f$ \\gamma \\f$ is the surface tension, \\f$ r \\f$ is the size of the "
                   "particles/powders, and \\f$ \\phi \\f$ is the void fraction.";
 
-  options.set_output<VariableName>("sintering_stress") = VariableName("state", "internal", "ss");
+  options.set_output("sintering_stress") = VariableName("state", "internal", "ss");
   options.set("sintering_stress").doc() = "Sintering stress";
 
-  options.set_input<VariableName>("void_fraction") = VariableName("state", "internal", "f");
+  options.set_input("void_fraction") = VariableName("state", "internal", "f");
   options.set("void_fraction").doc() = "Void fraction";
 
   options.set_parameter<CrossRef<Scalar>>("surface_tension");
@@ -69,9 +69,11 @@ OlevskySinteringStress::set_value(bool out, bool dout_din, bool d2out_din2)
     _s = 3 * _gamma * _phi * _phi / _r;
 
   if (dout_din)
-    _s.d(_phi) = 6 * _gamma * _phi / _r;
+    if (_phi.is_dependent())
+      _s.d(_phi) = 6 * _gamma * _phi / _r;
 
   if (d2out_din2)
-    _s.d(_phi, _phi) = 6 * _gamma / _r;
+    if (_phi.is_dependent())
+      _s.d(_phi, _phi) = 6 * _gamma / _r;
 }
 } // namespace neml2

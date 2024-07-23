@@ -121,10 +121,10 @@ Tensor
 Newton::solve_direction(const NonlinearSystem & system)
 {
   // Special case when this is a scalar system
-  if (system.residual_view().base_dim() == 0)
-    return -system.residual_view() / system.Jacobian_view();
+  if (system.get_residual().base_dim() == 0)
+    return -system.get_residual() / system.get_Jacobian();
 
-  return -math::linalg::solve(system.Jacobian_view(), system.residual_view());
+  return -math::linalg::solve(system.get_Jacobian(), system.get_residual());
 }
 
 } // namespace neml2

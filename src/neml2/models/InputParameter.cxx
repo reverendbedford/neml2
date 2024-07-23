@@ -36,7 +36,7 @@ InputParameter<T>::expected_options()
   OptionSet options = NonlinearParameter<T>::expected_options();
   options.doc() = "A parameter that is defined through an input variable. This essentially "
                   "converts a nonlinear parameter to an input variable";
-  options.set_input<VariableName>("from");
+  options.set_input("from");
   options.set("from").doc() = "The input variable that defines this nonlinear parameter";
   return options;
 }
@@ -61,7 +61,8 @@ InputParameter<T>::set_value(bool out, bool dout_din, bool d2out_din2)
     this->_p = _input_var.value();
 
   if (dout_din)
-    this->_p.d(_input_var) = T::identity_map(this->options());
+    if (_input_var.is_dependent())
+      this->_p.d(_input_var) = T::identity_map(this->options());
 
   // This is zero
   (void)d2out_din2;

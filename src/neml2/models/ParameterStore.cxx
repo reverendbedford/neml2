@@ -176,7 +176,7 @@ ParameterStore::declare_parameter(const std::string & name,
         auto pname = _options.get<CrossRef<T>>(input_option_name).raw();
         auto & nl_param = Factory::get_object<NonlinearParameter<T>>(
             "Models", pname, extra_opts, /*force_create=*/false);
-        model->template declare_input_variable<T>(VariableName(pname));
+        model->template declare_input_variable<T>(VariableName(pname).prepend("parameters"));
         _nl_params[name] = &nl_param.param();
         _nl_param_models[name] = &nl_param;
         return nl_param.param().value();
@@ -198,8 +198,8 @@ ParameterStore::declare_parameter(const std::string & name,
   throw NEMLException("Internal error in declare_parameter");
 }
 
-#define PARAMETERSTORE_INTANTIATE_PrimitiveTensor(T)                                               \
+#define PARAMETERSTORE_INTANTIATE_PRIMITIVETENSOR(T)                                               \
   template const T & ParameterStore::declare_parameter<T>(                                         \
       const std::string &, const std::string &, bool)
-FOR_ALL_PRIMITIVETENSOR(PARAMETERSTORE_INTANTIATE_PrimitiveTensor);
+FOR_ALL_PRIMITIVETENSOR(PARAMETERSTORE_INTANTIATE_PRIMITIVETENSOR);
 } // namespace neml2

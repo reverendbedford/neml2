@@ -46,7 +46,7 @@ ComposedModel::expected_options()
   options.set<std::vector<std::string>>("models");
   options.set("models").doc() = "Models being composed together";
 
-  options.set_output<std::vector<VariableName>>("additional_outputs");
+  options.set<std::vector<VariableName>>("additional_outputs");
   options.set("additional_outputs").doc() =
       "Extra output variables to be extracted from the composed model in addition to the ones "
       "identified through dependency resolution.";
@@ -298,9 +298,9 @@ ComposedModel::set_value_async(Model * i, bool out, bool dout_din, bool d2out_di
 
     if (out && !dout_din && !d2out_din2)
       i->value();
-    else if (out && dout_din && !d2out_din2)
+    else if (dout_din && !d2out_din2)
       i->value_and_dvalue();
-    else if (out && dout_din && d2out_din2)
+    else if (d2out_din2)
       i->value_and_dvalue_and_d2value();
     else
       throw NEMLException("Unsupported call signature to set_value");

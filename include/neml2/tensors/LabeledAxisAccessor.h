@@ -117,8 +117,14 @@ public:
   /// Extract out the labels from \p n1 to \p n2
   LabeledAxisAccessor slice(size_t n1, size_t n2) const;
 
+  /// A combination of slice and prepend
+  LabeledAxisAccessor remount(const LabeledAxisAccessor & axis, size_t n = 1) const;
+
   /// Check if this accessor begins with another accessor
   bool start_with(const LabeledAxisAccessor & axis) const;
+
+  /// Returns the "old" counterpart
+  LabeledAxisAccessor old() const;
 
 private:
   /// Throws if the item name has invalid format

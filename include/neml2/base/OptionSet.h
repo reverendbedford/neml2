@@ -37,6 +37,7 @@ namespace neml2
 {
 // Forward decl
 class OptionSet;
+class LabeledAxisAccessor;
 
 /**
  * @brief Role in a function definition
@@ -321,6 +322,7 @@ public:
 
   const OptionBase & get(const std::string &) const;
 
+  ///@{
   /**
    * \returns A writable reference to the specified option value. This method will create the option
    * if it does not exist, so it can be used to define options which will later be accessed with the
@@ -328,21 +330,19 @@ public:
    */
   template <typename T, FType f = FType::NONE>
   T & set(const std::string &);
+  OptionBase & set(const std::string &);
+  ///@}
 
-  /// Convenient method to set an option and mark it as neml2::FType::INPUT
-  template <typename T>
-  T & set_input(const std::string &);
-  /// Convenient method to set an option and mark it as neml2::FType::OUTPUT
-  template <typename T>
-  T & set_output(const std::string &);
-  /// Convenient method to set an option and mark it as neml2::FType::PARAMETER
+  /// @name Convenient methods to request an input variable
+  LabeledAxisAccessor & set_input(const std::string &);
+  /// @name Convenient methods to request an output variable
+  LabeledAxisAccessor & set_output(const std::string &);
+  /// Convenient method to request a parameter
   template <typename T>
   T & set_parameter(const std::string &);
-  /// Convenient method to set an option and mark it as neml2::FType::BUFFER
+  /// Convenient method to request a buffer
   template <typename T>
   T & set_buffer(const std::string &);
-
-  OptionBase & set(const std::string &);
 
   /// The type of the map that we store internally
   typedef std::map<std::string, std::unique_ptr<OptionBase>, std::less<>> map_type;
@@ -515,20 +515,6 @@ OptionSet::set(const std::string & name)
   auto ptr = dynamic_cast<Option<T> *>(_values[name].get());
   ptr->ftype() = F;
   return ptr->set();
-}
-
-template <typename T>
-T &
-OptionSet::set_input(const std::string & name)
-{
-  return set<T, FType::INPUT>(name);
-}
-
-template <typename T>
-T &
-OptionSet::set_output(const std::string & name)
-{
-  return set<T, FType::OUTPUT>(name);
 }
 
 template <typename T>

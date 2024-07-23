@@ -27,9 +27,9 @@
 
 namespace neml2
 {
-#define LINEARINTERPOLATION_REGISTER(T)                                                            \
-  register_NEML2_object_alias(T##LinearInterpolation, #T "LinearInterpolation")
-FOR_ALL_PRIMITIVETENSOR(LINEARINTERPOLATION_REGISTER);
+register_NEML2_object(ScalarLinearInterpolation);
+register_NEML2_object(VecLinearInterpolation);
+register_NEML2_object(SR2LinearInterpolation);
 
 template <typename T>
 OptionSet
@@ -75,7 +75,8 @@ LinearInterpolation<T>::set_value(bool out, bool dout_din, bool d2out_din2)
   }
 
   if (dout_din)
-    this->_p.d(this->_x) = si;
+    if (this->_x.is_dependent())
+      this->_p.d(this->_x) = si;
 
   if (d2out_din2)
   {
@@ -83,6 +84,7 @@ LinearInterpolation<T>::set_value(bool out, bool dout_din, bool d2out_din2)
   }
 }
 
-#define LINEARINTERPOLATION_INSTANTIATE_PRIMITIVETENSOR(T) template class LinearInterpolation<T>
-FOR_ALL_PRIMITIVETENSOR(LINEARINTERPOLATION_INSTANTIATE_PRIMITIVETENSOR);
+template class LinearInterpolation<Scalar>;
+template class LinearInterpolation<Vec>;
+template class LinearInterpolation<SR2>;
 } // namespace neml2

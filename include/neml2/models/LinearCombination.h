@@ -45,6 +45,9 @@ protected:
   /// The input variables (to be summed)
   std::vector<const Variable<T> *> _from;
 
+  /// Whether to declare coefficients as parameters
+  const bool _coef_as_param;
+
   /// Scaling coefficient for each term
   const Tensor & _coef;
 
@@ -53,5 +56,6 @@ private:
 };
 
 typedef LinearCombination<Scalar> ScalarLinearCombination;
+typedef LinearCombination<Vec> VecLinearCombination;
 typedef LinearCombination<SR2> SR2LinearCombination;
 } // namespace neml2

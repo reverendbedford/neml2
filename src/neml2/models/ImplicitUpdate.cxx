@@ -104,9 +104,6 @@ void
 ImplicitUpdate::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   neml_assert_dbg(!d2out_din2, "This model does not define the second derivatives.");
-  neml_assert_dbg(
-      !dout_din || out,
-      "ImplicitUpdate: requires the value and the first derivatives to be computed together.");
 
   // Apply initial guess
   LabeledVector sol0(_model.solution(), {&output_axis()});
@@ -118,36 +115,33 @@ ImplicitUpdate::set_value(bool out, bool dout_din, bool d2out_din2)
   // Perform automatic scaling
   _model.init_scaling(_solver.verbose);
 
-  if (out || dout_din)
+  // Solution
+  Tensor sol;
+
+  // Solve for the next state
   {
-    // Solution
-    Tensor sol;
+    SolvingNonlinearSystem solving;
+    sol = _model.solution().clone();
+    auto [succeeded, iters] = _solver.solve(_model, sol);
+    neml_assert(succeeded, "Nonlinear solve failed.");
+  }
 
-    // Solve for the next state
-    {
-      SolvingNonlinearSystem guard_solving;
-      sol = _model.solution().clone();
-      auto [succeeded, iters] = _solver.solve(_model, sol);
-      neml_assert(succeeded, "Nonlinear solve failed.");
-    }
+  if (out)
+    output_storage().copy_(sol);
 
-    if (out)
-      output_storage().copy_(sol);
+  // Use the implicit function theorem (IFT) to calculate the other derivatives
+  if (dout_din)
+  {
+    // IFT requires dresidual/dinput evaluated at the solution:
+    _model.prepare();
+    _model.dvalue();
+    auto && [dr_ds, dr_dsn, dr_df, dr_dfn] = _model.get_system_matrices();
 
-    // Use the implicit function theorem (IFT) to calculate the other derivatives
-    if (dout_din)
-    {
-      // IFT requires dresidual/dinput evaluated at the solution:
-      _model.prepare();
-      _model.value_and_dvalue();
-      auto && [dr_ds, dr_dsn, dr_df, dr_dfn] = _model.get_system_matrices();
-
-      // The actual IFT:
-      auto [LU, pivot] = math::linalg::lu_factor(dr_ds);
-      _ds_dsn.index_put_({torch::indexing::Slice()}, -math::linalg::lu_solve(LU, pivot, dr_dsn));
-      _ds_df.index_put_({torch::indexing::Slice()}, -math::linalg::lu_solve(LU, pivot, dr_df));
-      _ds_dfn.index_put_({torch::indexing::Slice()}, -math::linalg::lu_solve(LU, pivot, dr_dfn));
-    }
+    // The actual IFT:
+    auto [LU, pivot] = math::linalg::lu_factor(dr_ds);
+    _ds_dsn.index_put_({torch::indexing::Slice()}, -math::linalg::lu_solve(LU, pivot, dr_dsn));
+    _ds_df.index_put_({torch::indexing::Slice()}, -math::linalg::lu_solve(LU, pivot, dr_df));
+    _ds_dfn.index_put_({torch::indexing::Slice()}, -math::linalg::lu_solve(LU, pivot, dr_dfn));
   }
 }
 } // namespace neml2

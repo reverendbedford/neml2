@@ -185,15 +185,15 @@
   []
   [integrate_slip_hardening]
     type = ScalarBackwardEulerTimeIntegration
-    variable = 'internal/slip_hardening'
+    variable = 'state/internal/slip_hardening'
   []
   [integrate_elastic_strain]
     type = SR2BackwardEulerTimeIntegration
-    variable = 'elastic_strain'
+    variable = 'state/elastic_strain'
   []
   [integrate_orientation]
     type = WR2ImplicitExponentialTimeIntegration
-    variable = 'orientation'
+    variable = 'state/orientation'
   []
 
   [implicit_rate]

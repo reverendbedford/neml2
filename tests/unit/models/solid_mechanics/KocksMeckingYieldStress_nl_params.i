@@ -5,7 +5,7 @@
     batch_shape = '(5)'
     input_scalar_names = 'params/mu params/C'
     input_scalar_values = 'mu_in C_in'
-    output_scalar_names = 'p'
+    output_scalar_names = 'parameters/p'
     output_scalar_values = 'p_correct'
     check_second_derivatives = true
     check_AD_first_derivatives = false

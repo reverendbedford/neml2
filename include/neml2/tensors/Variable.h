@@ -102,11 +102,17 @@ public:
   ///@{
   bool is_state() const { return _is_state; }
   bool is_old_state() const { return _is_old_state; }
-  bool is_forces() const { return _is_forces; }
-  bool is_old_forces() const { return _is_old_forces; }
+  bool is_force() const { return _is_force; }
+  bool is_old_force() const { return _is_old_force; }
   bool is_residual() const { return _is_residual; }
+  bool is_parameter() const { return _is_parameter; }
   bool is_other() const { return _is_other; }
+  bool is_solve_dependent() const { return _is_solve_dependent; }
   ///@}
+
+  /// Check if the derivative with respect to this variable should be evaluated
+  // Note that the check depends on whether we are currently solving nonlinear system
+  bool is_dependent() const;
 
 protected:
   /// Name of the variable
@@ -137,10 +143,12 @@ protected:
   ///@{
   const bool _is_state;
   const bool _is_old_state;
-  const bool _is_forces;
-  const bool _is_old_forces;
+  const bool _is_force;
+  const bool _is_old_force;
   const bool _is_residual;
+  const bool _is_parameter;
   const bool _is_other;
+  const bool _is_solve_dependent;
   ///@}
 };
 

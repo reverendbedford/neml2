@@ -12,8 +12,6 @@
     output_symr2_values = 'NM NX'
     output_abs_tol = 1e-4
     check_AD_first_derivatives = false
-    check_AD_second_derivatives = false
-    check_AD_derivatives = false
   []
 []
 
@@ -38,7 +36,10 @@
 
 [Models]
   [overstress]
-    type = OverStress
+    type = SR2LinearCombination
+    to_var = 'state/internal/O'
+    from_var = 'state/internal/M state/internal/X'
+    coefficients = '1 -1'
   []
   [vonmises]
     type = SR2Invariant

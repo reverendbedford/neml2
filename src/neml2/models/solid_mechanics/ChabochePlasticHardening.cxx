@@ -44,10 +44,10 @@ ChabochePlasticHardening::expected_options()
       "direction, \\f$ \\dot{\\gamma} \\f$ is the flow rate, and \\f$ C \\f$, \\f$ g \\f$, \\f$ A "
       "\\f$, and \\f$ a \\f$ are material parameters.";
 
-  options.set_input<VariableName>("back_stress") = VariableName("state", "internal", "X");
+  options.set_input("back_stress") = VariableName("state", "internal", "X");
   options.set("back_stress").doc() = "Back stress";
 
-  options.set_input<VariableName>("flow_direction") = VariableName("state", "internal", "NM");
+  options.set_input("flow_direction") = VariableName("state", "internal", "NM");
   options.set("flow_direction").doc() = "Flow direction";
 
   options.set_parameter<CrossRef<Scalar>>("C");
@@ -80,7 +80,8 @@ ChabochePlasticHardening::ChabochePlasticHardening(const OptionSet & options)
 void
 ChabochePlasticHardening::set_value(bool out, bool dout_din, bool d2out_din2)
 {
-  neml_assert_dbg(!d2out_din2, "Chaboche model doesn't implement second derivatives.");
+  neml_assert_dbg(!d2out_din2,
+                  "ChabochePlasticHardening model doesn't implement second derivatives.");
 
   // The effective stress
   auto s = SR2(_X).norm(machine_precision());
@@ -98,10 +99,15 @@ ChabochePlasticHardening::set_value(bool out, bool dout_din, bool d2out_din2)
   {
     auto I = SR2::identity_map(options());
 
-    _X_dot.d(_gamma_dot) = g_term;
-    _X_dot.d(_NM) = 2.0 / 3.0 * _C * _gamma_dot * I;
-    _X_dot.d(_X) = -_g * _gamma_dot * I -
-                   _A * math::pow(s, _a - 3) * ((_a - 1) * SR2(_X).outer(SR2(_X)) + s * s * I);
+    if (_gamma_dot.is_dependent())
+      _X_dot.d(_gamma_dot) = g_term;
+
+    if (_NM.is_dependent())
+      _X_dot.d(_NM) = 2.0 / 3.0 * _C * _gamma_dot * I;
+
+    if (_X.is_dependent())
+      _X_dot.d(_X) = -_g * _gamma_dot * I -
+                     _A * math::pow(s, _a - 3) * ((_a - 1) * SR2(_X).outer(SR2(_X)) + s * s * I);
   }
 }
 

@@ -60,9 +60,11 @@ VoceIsotropicHardening::set_value(bool out, bool dout_din, bool d2out_din2)
     _h = _R * (-math::exp(-_d * _ep) + 1.0);
 
   if (dout_din)
-    _h.d(_ep) = _R * _d * math::exp(-_d * _ep);
+    if (_ep.is_dependent())
+      _h.d(_ep) = _R * _d * math::exp(-_d * _ep);
 
   if (d2out_din2)
-    _h.d(_ep, _ep) = -_R * _d * _d * math::exp(-_d * _ep);
+    if (_ep.is_dependent())
+      _h.d(_ep, _ep) = -_R * _d * _d * math::exp(-_d * _ep);
 }
 } // namespace neml2

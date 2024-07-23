@@ -112,11 +112,11 @@
   []
   [integrate_ep]
     type = ScalarBackwardEulerTimeIntegration
-    variable = 'internal/ep'
+    variable = 'state/internal/ep'
   []
   [integrate_Ep]
     type = SR2BackwardEulerTimeIntegration
-    variable = 'internal/Ep'
+    variable = 'state/internal/Ep'
   []
   [surface]
     type = ComposedModel

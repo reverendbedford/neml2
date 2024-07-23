@@ -5,7 +5,7 @@
     batch_shape = '(2,5,2)'
     input_scalar_names = 'forces/T'
     input_scalar_values = '300'
-    output_scalar_names = 'E'
+    output_scalar_names = 'parameters/E'
     output_scalar_values = '188911.6020499754'
     check_second_derivatives = true
     check_AD_parameter_derivatives = false

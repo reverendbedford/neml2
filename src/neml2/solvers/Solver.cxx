@@ -32,7 +32,7 @@ Solver::expected_options()
   OptionSet options = NEML2Object::expected_options();
   options.section() = "Solvers";
 
-  options.set<bool>("verbose");
+  options.set<bool>("verbose") = false;
   options.set("verbose").doc() = "Verbosity of the solver";
 
   return options;

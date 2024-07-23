@@ -10,8 +10,6 @@
     input_scalar_values = '1.3 1.1'
     output_rot_names = 'residual/foo'
     output_rot_values = 'res'
-    check_AD_derivatives = false
-    check_AD_second_derivatives = false
     output_rel_tol = 1e-4
   []
 []
@@ -19,7 +17,7 @@
 [Models]
   [model]
     type = WR2ImplicitExponentialTimeIntegration
-    variable = 'foo'
+    variable = 'state/foo'
   []
 []
 

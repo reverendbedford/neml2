@@ -5,7 +5,7 @@
     batch_shape = '(5)'
     input_scalar_names = 'forces/T params/A params/B params/mu'
     input_scalar_values = '1000 A_in B_in mu_in'
-    output_scalar_names = 'p'
+    output_scalar_names = 'parameters/p'
     output_scalar_values = 'p_correct'
     check_second_derivatives = true
     check_AD_first_derivatives = false

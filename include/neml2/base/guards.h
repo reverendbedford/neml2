@@ -52,10 +52,10 @@ private:
 // Guard a region where implicit solve is being performed
 struct SolvingNonlinearSystem
 {
-  SolvingNonlinearSystem()
+  SolvingNonlinearSystem(bool solving = true)
     : prev_bool(currently_solving_nonlinear_system())
   {
-    currently_solving_nonlinear_system() = true;
+    currently_solving_nonlinear_system() = solving;
   }
 
   ~SolvingNonlinearSystem() { currently_solving_nonlinear_system() = prev_bool; }

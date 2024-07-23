@@ -75,7 +75,7 @@ NewtonWithLineSearch::linesearch(NonlinearSystem & system, const Tensor & x, con
 {
   _alpha = Scalar::ones(x.batch_sizes(), x.options());
 
-  const auto & R = system.residual_view();
+  const auto & R = system.get_residual();
   auto R0 = R.clone();
   auto nR02 = math::bvv(R0, R0);
 

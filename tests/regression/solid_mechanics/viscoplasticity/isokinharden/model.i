@@ -72,7 +72,10 @@
     type = IsotropicMandelStress
   []
   [overstress]
-    type = OverStress
+    type = SR2LinearCombination
+    to_var = 'state/internal/O'
+    from_var = 'state/internal/M state/internal/X'
+    coefficients = '1 -1'
   []
   [vonmises]
     type = SR2Invariant
@@ -111,12 +114,15 @@
     type = AssociativePlasticFlow
   []
   [Erate]
-    type = SR2ForceRate
-    force = 'E'
+    type = SR2VariableRate
+    variable = 'forces/E'
+    rate = 'forces/E_rate'
   []
   [Eerate]
-    type = ElasticStrain
-    rate_form = true
+    type = SR2LinearCombination
+    from_var = 'forces/E_rate state/internal/Ep_rate'
+    to_var = 'state/internal/Ee_rate'
+    coefficients = '1 -1'
   []
   [elasticity]
     type = LinearIsotropicElasticity
@@ -126,15 +132,15 @@
   []
   [integrate_ep]
     type = ScalarBackwardEulerTimeIntegration
-    variable = 'internal/ep'
+    variable = 'state/internal/ep'
   []
   [integrate_Kp]
     type = SR2BackwardEulerTimeIntegration
-    variable = 'internal/Kp'
+    variable = 'state/internal/Kp'
   []
   [integrate_stress]
     type = SR2BackwardEulerTimeIntegration
-    variable = 'S'
+    variable = 'state/S'
   []
   [implicit_rate]
     type = ComposedModel

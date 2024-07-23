@@ -65,6 +65,9 @@ public:
 
   virtual void diagnose(std::vector<Diagnosis> &) const override;
 
+  /// Additional diagnostics for a nonlinear system
+  void diagnose_nl_sys(std::vector<Diagnosis> & diagnoses) const;
+
   /// Whether this model defines one or more nonlinear equations to be solved
   virtual bool is_nonlinear_system() const { return _nonlinear_system; }
 
@@ -139,15 +142,27 @@ public:
   virtual void value();
   /// Evalute the model and compute its derivative
   virtual void value_and_dvalue();
+  /// Evalute the derivative
+  virtual void dvalue();
   /// Evalute the model and compute its first and second derivatives
   virtual void value_and_dvalue_and_d2value();
+  /// Evalute the second derivatives
+  virtual void d2value();
+  /// Evalute the first and second derivatives
+  virtual void dvalue_and_d2value();
   /// Convenient shortcut to construct and return the model value
   virtual LabeledVector value(const LabeledVector & in);
   /// Convenient shortcut to construct and return the model value and its derivative
   virtual std::tuple<LabeledVector, LabeledMatrix> value_and_dvalue(const LabeledVector & in);
+  /// Convenient shortcut to construct and return the derivative
+  virtual LabeledMatrix dvalue(const LabeledVector & in);
   /// Convenient shortcut to construct and return the model's value, first and second derivative
   virtual std::tuple<LabeledVector, LabeledMatrix, LabeledTensor3D>
   value_and_dvalue_and_d2value(const LabeledVector & in);
+  /// Convenient shortcut to construct and return the model's second derivative
+  virtual LabeledTensor3D d2value(const LabeledVector & in);
+  /// Convenient shortcut to construct and return the model's first and second derivative
+  virtual std::tuple<LabeledMatrix, LabeledTensor3D> dvalue_and_d2value(const LabeledVector & in);
 
   /// Declaration of nonlinear parameters may require manipulation of input
   friend class ParameterStore;

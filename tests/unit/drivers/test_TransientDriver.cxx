@@ -35,7 +35,7 @@ TEST_CASE("TransientDriver", "[TransientDriver]")
   {
     reload_input("unit/drivers/test_TransientDriver.i");
     auto & driver = get_driver("driver");
-    throw_diagnostics(driver);
+    diagnose(driver);
     REQUIRE(driver.run());
   }
 
@@ -44,7 +44,7 @@ TEST_CASE("TransientDriver", "[TransientDriver]")
     reload_input("unit/drivers/test_TransientDriver.i",
                  "Drivers/driver/predictor=LINEAR_EXTRAPOLATION");
     auto & driver = get_driver("driver");
-    throw_diagnostics(driver);
+    diagnose(driver);
     REQUIRE(driver.run());
   }
 }

@@ -51,8 +51,9 @@
 
 [Models]
   [force_rate]
-    type = SR2ForceRate
-    force = 'S'
+    type = SR2VariableRate
+    variable = 'forces/S'
+    rate = 'forces/S_rate'
   []
   [strain_rate]
     type = LinearIsotropicElasticity
@@ -65,7 +66,7 @@
   []
   [integrate]
     type = SR2ForwardEulerTimeIntegration
-    variable = 'E'
+    variable = 'state/E'
   []
   [model]
     type = ComposedModel

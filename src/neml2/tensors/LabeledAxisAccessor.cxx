@@ -24,6 +24,7 @@
 
 #include "neml2/tensors/LabeledAxisAccessor.h"
 #include "neml2/misc/error.h"
+#include "neml2/misc/parser_utils.h"
 
 namespace neml2
 {
@@ -70,6 +71,7 @@ LabeledAxisAccessor::prepend(const LabeledAxisAccessor & axis) const
 LabeledAxisAccessor
 LabeledAxisAccessor::slice(size_t n) const
 {
+  neml_assert(size() >= n, "cannot apply slice");
   c10::SmallVector<std::string> new_names(_item_names.begin() + n, _item_names.end());
   return new_names;
 }
@@ -77,8 +79,16 @@ LabeledAxisAccessor::slice(size_t n) const
 LabeledAxisAccessor
 LabeledAxisAccessor::slice(size_t n1, size_t n2) const
 {
+  neml_assert(size() >= n1, "cannot apply slice");
+  neml_assert(size() >= n2, "cannot apply slice");
   c10::SmallVector<std::string> new_names(_item_names.begin() + n1, _item_names.begin() + n2);
   return new_names;
+}
+
+LabeledAxisAccessor
+LabeledAxisAccessor::remount(const LabeledAxisAccessor & axis, size_t n) const
+{
+  return slice(n).prepend(axis);
 }
 
 bool
@@ -87,9 +97,22 @@ LabeledAxisAccessor::start_with(const LabeledAxisAccessor & axis) const
   return slice(0, axis.size()) == axis;
 }
 
+LabeledAxisAccessor
+LabeledAxisAccessor::old() const
+{
+  neml_assert(_item_names.size() >= 1, "variable name length must be at least 1");
+  if (start_with("state"))
+    return remount("old_state");
+  else if (start_with("forces"))
+    return remount("old_forces");
+  throw NEMLException("Unable to find old counterpart of variable named '" +
+                      utils::stringify(*this) + "'");
+}
+
 void
 LabeledAxisAccessor::validate_item_name(const std::string & name) const
 {
+  neml_assert(!name.empty(), "Empty item variable name");
   const auto x = name.find_first_of(" .,;/\t\n\v\f\r");
   neml_assert(x == std::string::npos,
               "Invalid item name: ",

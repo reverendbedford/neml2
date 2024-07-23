@@ -42,8 +42,8 @@ ModelUnitTest::expected_options()
   options.set<bool>("check_first_derivatives") = true;
   options.set<bool>("check_second_derivatives") = false;
   options.set<bool>("check_AD_first_derivatives") = true;
-  options.set<bool>("check_AD_second_derivatives") = true;
-  options.set<bool>("check_AD_derivatives") = true;
+  options.set<bool>("check_AD_second_derivatives") = false;
+  options.set<bool>("check_AD_derivatives") = false;
   options.set<bool>("check_AD_parameter_derivatives") = true;
   options.set<bool>("check_cuda") = true;
   options.set<bool>("check_disable_AD") = true;
@@ -201,6 +201,7 @@ void
 ModelUnitTest::check_derivatives(Model & model, bool first, bool second)
 {
   model.use_AD_derivatives(first, second);
+
   auto exact = std::get<1>(model.value_and_dvalue(_in));
   auto numerical = finite_differencing_derivative(
       [this, &model](const Tensor & x) { return model.value(LabeledVector(x, _in.axes())); }, _in);
@@ -210,6 +211,14 @@ ModelUnitTest::check_derivatives(Model & model, bool first, bool second)
               exact.tensor(),
               "\nFinite differencing gives:\n",
               numerical);
+
+  auto exact2 = model.dvalue(_in);
+  neml_assert(
+      torch::allclose(exact, exact2, _deriv_rtol, _deriv_atol),
+      "Derivatives computed by value_and_dvalue and dvalue disagree. valud_and_dvalue yields:\n",
+      exact.tensor(),
+      "\ndvalue yields:\n",
+      exact2.tensor());
 }
 
 void
@@ -227,6 +236,22 @@ ModelUnitTest::check_second_derivatives(Model & model, bool first, bool second)
               exact.tensor(),
               "\nFinite differencing gives:\n",
               numerical);
+
+  auto exact2 = std::get<1>(model.dvalue_and_d2value(_in));
+  neml_assert(torch::allclose(exact, exact2, _deriv_rtol, _deriv_atol),
+              "Second derivatives computed by value_and_dvalue_and_d2value and dvalue_and_d2value "
+              "disagree. value_and_dvalue_and_d2value yields:\n",
+              exact.tensor(),
+              "\nvalue_and_d2value yields:\n",
+              exact2.tensor());
+
+  auto exact3 = model.d2value(_in);
+  neml_assert(torch::allclose(exact, exact3, _deriv_rtol, _deriv_atol),
+              "Second derivatives computed by value_and_dvalue_and_d2value and d2value "
+              "disagree. value_and_dvalue_and_d2value yields:\n",
+              exact.tensor(),
+              "\nd2value yields:\n",
+              exact3.tensor());
 }
 
 void
