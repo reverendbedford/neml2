@@ -1,5 +1,7 @@
 var NAVTREEINDEX11 =
 {
+"namespaceneml2_1_1crystallography.html#a889dd34ef17120f33dff9713e302f5d6":[8,0,0,0,5],
+"namespaceneml2_1_1crystallography.html#a8feb6cc94216570732e6967d2e198c7e":[8,0,0,0,7],
 "namespaceneml2_1_1crystallography.html#ab2aa1766ea6875c2d3d3ae3d07574485":[8,0,0,0,6],
 "namespaceneml2_1_1crystallography.html#addab1d4919f14a270f6e7a14b0974843":[8,0,0,0,9],
 "namespaceneml2_1_1crystallography_1_1crystal__symmetry__operators.html":[8,0,0,0,0],

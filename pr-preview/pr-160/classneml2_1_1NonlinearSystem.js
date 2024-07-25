@@ -5,6 +5,8 @@ var classneml2_1_1NonlinearSystem =
     [ "get_Jacobian", "classneml2_1_1NonlinearSystem.html#ae07a32b3446f5f877012aeb5b8c71733", null ],
     [ "get_residual", "classneml2_1_1NonlinearSystem.html#a882af93d60bef817cd048660c7db9215", null ],
     [ "init_scaling", "classneml2_1_1NonlinearSystem.html#a713c51e9741d73a5bb43fa5436c28aa6", null ],
+    [ "is_AD_disabled", "classneml2_1_1NonlinearSystem.html#a57b929c022986ec5d10ec9efda7cf243", null ],
+    [ "is_AD_enabled", "classneml2_1_1NonlinearSystem.html#a64da65d387e821fe686c69a8ef8c8164", null ],
     [ "Jacobian", "classneml2_1_1NonlinearSystem.html#accde6e3f3ac0e13f42520c08755400f7", null ],
     [ "Jacobian", "classneml2_1_1NonlinearSystem.html#a564c60f3e6410451e9e4126fcddf7d49", null ],
     [ "residual", "classneml2_1_1NonlinearSystem.html#a917637260d1c476b998378aadf943fe6", null ],

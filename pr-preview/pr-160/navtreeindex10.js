@@ -1,5 +1,7 @@
 var NAVTREEINDEX10 =
 {
+"index.html":[],
+"index.html#autotoc_md1":[0],
 "index.html#autotoc_md2":[0,0],
 "index.html#autotoc_md3":[0,1],
 "index.html#autotoc_md4":[0,2],
@@ -247,7 +249,5 @@ var NAVTREEINDEX10 =
 "namespaceneml2.html#aff159a9e16da5dae0dd544b4d0e7eb83":[8,0,0,242],
 "namespaceneml2_1_1crystallography.html":[8,0,0,0],
 "namespaceneml2_1_1crystallography.html#a15dd992592bf8ce08d6a8cd84c6e15cb":[8,0,0,0,8],
-"namespaceneml2_1_1crystallography.html#a2a8634e10751e0d7000cbcb18b9b0db3":[8,0,0,0,10],
-"namespaceneml2_1_1crystallography.html#a889dd34ef17120f33dff9713e302f5d6":[8,0,0,0,5],
-"namespaceneml2_1_1crystallography.html#a8feb6cc94216570732e6967d2e198c7e":[8,0,0,0,7]
+"namespaceneml2_1_1crystallography.html#a2a8634e10751e0d7000cbcb18b9b0db3":[8,0,0,0,10]
 };
