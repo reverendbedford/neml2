@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['tensortype_0',['TensorType',['../namespaceneml2.html#a9b44248b88341f8c9cafe5d9d822a443',1,'neml2']]]
+  ['itype_0',['IType',['../classneml2_1_1SR2Invariant.html#a979d38b05f49ac1c94292c258ed4fb36',1,'neml2::SR2Invariant']]]
 ];

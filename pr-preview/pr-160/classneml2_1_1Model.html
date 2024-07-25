@@ -127,10 +127,110 @@ $(function(){initNavTree('classneml2_1_1Model.html',''); initResizable(); });
 <p>A model maps some input to output. The forward operator (and its derivative) is defined in the method <code>set_value</code>. All concrete models must provide the implementation of the forward operator by overriding the <code>set_value</code> method. </p>
 </div>
 <p><code>#include &lt;<a class="el" href="Model_8h_source.html">Model.h</a>&gt;</code></p>
-
-<p>Inherits enable_shared_from_this&lt; Model &gt;, <a class="el" href="classneml2_1_1Data.html">Data</a>, <a class="el" href="classneml2_1_1ParameterStore.html">ParameterStore</a>, <a class="el" href="classneml2_1_1VariableStore.html">VariableStore</a>, <a class="el" href="classneml2_1_1NonlinearSystem.html">NonlinearSystem</a>, <a class="el" href="classneml2_1_1DependencyDefinition.html">DependencyDefinition&lt; VariableName &gt;</a>, and <a class="el" href="classneml2_1_1DiagnosticsInterface.html">DiagnosticsInterface</a>.</p>
-
-<p>Inherited by <a class="el" href="classneml2_1_1NonlinearParameter.html">NonlinearParameter&lt; Scalar &gt;</a>, <a class="el" href="classneml2_1_1BackwardEulerTimeIntegration.html">BackwardEulerTimeIntegration&lt; T &gt;</a>, <a class="el" href="classneml2_1_1ComposedModel.html">ComposedModel</a>, <a class="el" href="classneml2_1_1CopyVariable.html">CopyVariable&lt; T &gt;</a>, <a class="el" href="classneml2_1_1Eigenstrain.html">Eigenstrain</a>, <a class="el" href="classneml2_1_1ElasticStrain.html">ElasticStrain</a>, <a class="el" href="classneml2_1_1ElasticStrainRate.html">ElasticStrainRate</a>, <a class="el" href="classneml2_1_1Elasticity.html">Elasticity</a>, <a class="el" href="classneml2_1_1FixOrientation.html">FixOrientation</a>, <a class="el" href="classneml2_1_1FlowRule.html">FlowRule</a>, <a class="el" href="classneml2_1_1ForceRate.html">ForceRate&lt; T &gt;</a>, <a class="el" href="classneml2_1_1ForwardEulerTimeIntegration.html">ForwardEulerTimeIntegration&lt; T &gt;</a>, <a class="el" href="classneml2_1_1GTNYieldFunction.html">GTNYieldFunction</a>, <a class="el" href="classneml2_1_1GursonCavitation.html">GursonCavitation</a>, <a class="el" href="classneml2_1_1ImplicitUpdate.html">ImplicitUpdate</a>, <a class="el" href="classneml2_1_1IsotropicHardening.html">IsotropicHardening</a>, <a class="el" href="classneml2_1_1KinematicHardening.html">KinematicHardening</a>, <a class="el" href="classneml2_1_1KocksMeckingActivationEnergy.html">KocksMeckingActivationEnergy</a>, <a class="el" href="classneml2_1_1KocksMeckingFlowSwitch.html">KocksMeckingFlowSwitch</a>, <a class="el" href="classneml2_1_1LinearCombination.html">LinearCombination&lt; T &gt;</a>, <a class="el" href="classneml2_1_1MandelStress.html">MandelStress</a>, <a class="el" href="classneml2_1_1MixedControlSetup.html">MixedControlSetup</a>, <a class="el" href="classneml2_1_1NonlinearParameter.html">NonlinearParameter&lt; T &gt;</a>, <a class="el" href="classneml2_1_1Normality.html">Normality</a>, <a class="el" href="classneml2_1_1OlevskySinteringStress.html">OlevskySinteringStress</a>, <a class="el" href="classneml2_1_1OrientationRate.html">OrientationRate</a>, <a class="el" href="classneml2_1_1OverStress.html">OverStress</a>, <a class="el" href="classneml2_1_1PlasticDeformationRate.html">PlasticDeformationRate</a>, <a class="el" href="classneml2_1_1PlasticFlowRate.html">PlasticFlowRate</a>, <a class="el" href="classneml2_1_1PlasticVorticity.html">PlasticVorticity</a>, <a class="el" href="classneml2_1_1RateIndependentPlasticFlowConstraint.html">RateIndependentPlasticFlowConstraint</a>, <a class="el" href="classneml2_1_1ResolvedShear.html">ResolvedShear</a>, <a class="el" href="classneml2_1_1RotationMatrix.html">RotationMatrix</a>, <a class="el" href="classneml2_1_1SR2Invariant.html">SR2Invariant</a>, <a class="el" href="classneml2_1_1SingleSlipHardeningRule.html">SingleSlipHardeningRule</a>, <a class="el" href="classneml2_1_1SlipRule.html">SlipRule</a>, <a class="el" href="classneml2_1_1SlipStrengthMap.html">SlipStrengthMap</a>, <a class="el" href="classneml2_1_1StateRate.html">StateRate&lt; T &gt;</a>, <a class="el" href="classneml2_1_1SumSlipRates.html">SumSlipRates</a>, <a class="el" href="classneml2_1_1TotalStrain.html">TotalStrain</a>, <a class="el" href="classneml2_1_1WR2ExplicitExponentialTimeIntegration.html">WR2ExplicitExponentialTimeIntegration</a>, <a class="el" href="classneml2_1_1WR2ImplicitExponentialTimeIntegration.html">WR2ImplicitExponentialTimeIntegration</a>, and <a class="el" href="classneml2_1_1YieldFunction.html">YieldFunction</a>.</p>
+<div class="dynheader">
+Inheritance diagram for Model:</div>
+<div class="dyncontent">
+<div class="center"><img src="classneml2_1_1Model__inherit__graph.png" border="0" usemap="#aModel_inherit__map" alt="Inheritance graph"/></div>
+<map name="aModel_inherit__map" id="aModel_inherit__map">
+<area shape="rect" title="The base class for all constitutive models." alt="" coords="377,958,440,983"/>
+<area shape="rect" href="classneml2_1_1NonlinearParameter.html" title=" " alt="" coords="543,5,695,45"/>
+<area shape="poly" title=" " alt="" coords="408,944,413,756,425,473,436,331,449,205,465,109,475,76,486,56,511,36,542,26,543,31,514,41,490,59,480,78,470,110,454,206,441,331,431,474,418,756,413,945"/>
+<area shape="rect" href="classneml2_1_1BackwardEulerTimeIntegration.html" title=" " alt="" coords="488,70,749,95"/>
+<area shape="poly" title=" " alt="" coords="408,944,413,764,426,497,436,363,449,244,466,155,475,124,486,105,500,93,503,97,490,108,480,126,471,156,455,245,442,363,431,497,418,764,413,944"/>
+<area shape="rect" href="classneml2_1_1ComposedModel.html" title=" " alt="" coords="553,119,684,145"/>
+<area shape="poly" title=" " alt="" coords="408,944,414,773,428,522,438,396,451,285,467,201,476,172,486,154,500,142,517,134,553,126,554,131,519,139,503,147,490,158,481,174,472,202,456,286,443,396,433,522,419,773,413,944"/>
+<area shape="rect" href="classneml2_1_1CopyVariable.html" title="Copy the value of a variable into another variable." alt="" coords="545,169,692,194"/>
+<area shape="poly" title=" " alt="" coords="408,944,415,783,429,547,440,430,452,326,468,247,476,220,486,204,513,185,545,176,546,182,515,190,490,207,481,222,473,248,458,327,445,430,435,548,420,783,414,945"/>
+<area shape="rect" href="classneml2_1_1Eigenstrain.html" title=" " alt="" coords="571,218,666,243"/>
+<area shape="poly" title=" " alt="" coords="408,944,416,791,431,572,454,366,469,293,477,268,486,253,504,239,526,230,570,224,571,229,527,235,507,243,490,256,482,271,474,295,459,367,436,573,421,792,414,944"/>
+<area shape="rect" href="classneml2_1_1ElasticStrainRate.html" title="Calculate the elastic strain rate from crystal model kinematics." alt="" coords="552,267,685,293"/>
+<area shape="poly" title=" " alt="" coords="409,944,417,801,432,597,455,407,470,340,477,317,486,302,500,291,516,282,551,274,552,280,518,287,503,295,490,306,482,319,475,341,461,408,438,598,422,801,414,944"/>
+<area shape="rect" href="classneml2_1_1Elasticity.html" title=" " alt="" coords="577,317,660,342"/>
+<area shape="poly" title=" " alt="" coords="407,944,407,819,415,641,424,550,438,467,459,398,471,372,486,351,506,337,529,328,577,323,577,328,531,333,509,341,490,355,476,374,463,400,443,468,429,551,420,642,412,819,412,944"/>
+<area shape="rect" href="classneml2_1_1FixOrientation.html" title="Swap orientation plane when the singularity at &#160;is met with the modified Rodrigues vector." alt="" coords="561,366,676,391"/>
+<area shape="poly" title=" " alt="" coords="407,944,408,828,418,665,427,582,441,506,460,444,472,419,486,401,502,388,521,380,561,372,562,378,523,385,505,393,490,405,477,422,465,446,446,507,433,583,423,666,414,828,412,944"/>
+<area shape="rect" href="classneml2_1_1FlowRule.html" title=" " alt="" coords="577,415,660,441"/>
+<area shape="poly" title=" " alt="" coords="407,944,410,836,421,688,431,613,444,545,462,489,474,467,486,450,506,435,530,427,577,422,578,427,531,432,509,440,490,454,478,470,467,491,450,546,436,614,426,689,416,836,413,944"/>
+<area shape="rect" href="classneml2_1_1ForwardEulerTimeIntegration.html" title=" " alt="" coords="494,465,743,490"/>
+<area shape="poly" title=" " alt="" coords="408,944,412,846,424,713,434,646,447,584,464,534,486,500,501,488,504,492,490,503,469,536,452,586,439,647,429,714,418,847,413,945"/>
+<area shape="rect" href="classneml2_1_1GTNYieldFunction.html" title=" " alt="" coords="550,514,687,539"/>
+<area shape="poly" title=" " alt="" coords="408,944,414,855,427,737,438,677,450,623,466,579,486,549,516,530,549,522,550,527,518,535,490,553,471,581,456,625,443,678,433,737,420,856,414,944"/>
+<area shape="rect" href="classneml2_1_1GursonCavitation.html" title=" " alt="" coords="551,563,686,589"/>
+<area shape="poly" title=" " alt="" coords="409,944,417,865,431,761,453,663,468,624,486,598,516,579,551,571,552,577,518,584,490,602,473,627,459,664,436,762,422,865,414,945"/>
+<area shape="rect" href="classneml2_1_1ImplicitUpdate.html" title=" " alt="" coords="559,613,678,638"/>
+<area shape="poly" title=" " alt="" coords="410,944,419,874,435,785,457,702,470,670,486,647,502,636,520,628,558,620,559,625,522,633,505,640,490,651,475,672,462,704,440,787,424,875,415,945"/>
+<area shape="rect" href="classneml2_1_1IsotropicHardening.html" title=" " alt="" coords="546,662,691,687"/>
+<area shape="poly" title=" " alt="" coords="406,944,409,891,419,825,429,789,443,755,462,724,486,697,514,680,545,672,547,677,516,685,490,701,466,727,448,758,434,791,424,826,414,892,412,944"/>
+<area shape="rect" href="classneml2_1_1KinematicHardening.html" title=" " alt="" coords="541,711,696,737"/>
+<area shape="poly" title=" " alt="" coords="408,944,414,900,426,847,449,792,466,767,486,746,512,731,540,722,542,727,514,735,490,750,470,771,454,795,431,848,419,901,414,945"/>
+<area shape="rect" href="classneml2_1_1KocksMeckingActivationEnergy.html" title=" " alt="" coords="505,761,732,786"/>
+<area shape="poly" title=" " alt="" coords="411,944,420,909,434,869,456,829,486,795,505,784,508,789,490,799,460,832,439,871,425,911,417,945"/>
+<area shape="rect" href="classneml2_1_1KocksMeckingFlowSwitch.html" title=" " alt="" coords="524,810,713,835"/>
+<area shape="poly" title=" " alt="" coords="416,944,442,893,462,866,487,844,523,828,525,833,489,849,466,870,447,895,421,946"/>
+<area shape="rect" href="classneml2_1_1LinearCombination.html" title=" " alt="" coords="527,859,710,885"/>
+<area shape="poly" title=" " alt="" coords="426,945,453,918,487,894,526,879,528,884,489,898,456,922,430,949"/>
+<area shape="rect" href="classneml2_1_1MandelStress.html" title=" " alt="" coords="563,909,674,934"/>
+<area shape="poly" title=" " alt="" coords="452,954,487,944,562,928,563,933,489,949,454,959"/>
+<area shape="rect" href="classneml2_1_1MixedControlSetup.html" title=" " alt="" coords="546,958,691,983"/>
+<area shape="poly" title=" " alt="" coords="454,968,546,968,546,973,454,973"/>
+<area shape="rect" href="classneml2_1_1NonlinearParameter.html" title="The base class for nonlinear parameters." alt="" coords="523,1007,714,1033"/>
+<area shape="poly" title=" " alt="" coords="454,983,489,993,540,1005,539,1010,487,999,452,988"/>
+<area shape="rect" href="classneml2_1_1Normality.html" title=" " alt="" coords="575,1057,662,1082"/>
+<area shape="poly" title=" " alt="" coords="430,992,456,1020,489,1043,533,1058,576,1065,575,1070,531,1063,487,1048,453,1024,426,996"/>
+<area shape="rect" href="classneml2_1_1OlevskySinteringStress.html" title=" " alt="" coords="533,1106,705,1131"/>
+<area shape="poly" title=" " alt="" coords="421,995,447,1046,466,1071,490,1092,510,1103,533,1111,532,1116,508,1108,486,1097,462,1075,442,1049,416,997"/>
+<area shape="rect" href="classneml2_1_1OrientationRate.html" title="Calculate the orientation rate from the crystal model kinetics." alt="" coords="556,1155,681,1181"/>
+<area shape="poly" title=" " alt="" coords="417,996,425,1030,439,1070,460,1109,490,1142,521,1158,556,1166,555,1171,519,1163,486,1146,456,1112,434,1072,420,1032,411,998"/>
+<area shape="rect" href="classneml2_1_1PlasticDeformationRate.html" title="Plastic deformation rate with the default kinetics." alt="" coords="530,1205,707,1230"/>
+<area shape="poly" title=" " alt="" coords="414,997,419,1040,431,1093,454,1147,470,1171,490,1191,509,1204,531,1211,529,1216,507,1208,486,1195,466,1174,449,1149,426,1095,414,1041,408,997"/>
+<area shape="rect" href="classneml2_1_1PlasticFlowRate.html" title=" " alt="" coords="555,1254,682,1279"/>
+<area shape="poly" title=" " alt="" coords="412,997,414,1049,424,1116,434,1150,448,1183,466,1214,490,1241,521,1258,556,1266,555,1271,519,1263,486,1245,462,1217,443,1186,429,1152,419,1117,409,1050,406,997"/>
+<area shape="rect" href="classneml2_1_1PlasticVorticity.html" title="Calculate the plastic vorticity with the default crystal kinetics." alt="" coords="559,1303,678,1329"/>
+<area shape="poly" title=" " alt="" coords="415,997,424,1066,440,1155,462,1238,475,1269,490,1290,505,1301,522,1309,559,1316,558,1321,520,1314,502,1306,486,1294,470,1272,457,1239,435,1156,419,1067,410,997"/>
+<area shape="rect" href="classneml2_1_1RateIndependentPlasticFlowConstraint.html" title=" " alt="" coords="515,1353,722,1393"/>
+<area shape="poly" title=" " alt="" coords="415,997,422,1076,437,1179,459,1277,474,1314,490,1339,517,1358,514,1362,486,1343,469,1317,454,1278,432,1180,417,1077,409,998"/>
+<area shape="rect" href="classneml2_1_1ResolvedShear.html" title="Calculate the resolved shears." alt="" coords="559,1418,678,1443"/>
+<area shape="poly" title=" " alt="" coords="414,997,419,1089,432,1211,442,1273,455,1328,471,1373,490,1404,505,1415,522,1423,560,1430,558,1436,520,1428,502,1419,486,1407,466,1376,450,1330,437,1274,427,1212,414,1089,408,998"/>
+<area shape="rect" href="classneml2_1_1RotationMatrix.html" title="Convert a Rodrigues vector (Rot) to a second order tensor (R2)." alt="" coords="559,1467,678,1493"/>
+<area shape="poly" title=" " alt="" coords="413,997,417,1098,428,1236,438,1305,451,1369,469,1420,490,1454,505,1466,522,1473,559,1481,558,1486,520,1478,502,1470,486,1458,464,1422,446,1370,433,1306,423,1236,412,1098,408,997"/>
+<area shape="rect" href="classneml2_1_1SR2Invariant.html" title=" " alt="" coords="566,1517,671,1542"/>
+<area shape="poly" title=" " alt="" coords="413,997,415,1107,425,1260,435,1337,448,1408,467,1465,478,1487,490,1503,506,1516,525,1524,566,1530,566,1536,524,1529,503,1521,486,1507,473,1490,462,1467,443,1409,430,1338,420,1260,410,1107,407,997"/>
+<area shape="rect" href="classneml2_1_1SingleSlipHardeningRule.html" title="Any slip rule where all systems share the same strength." alt="" coords="527,1566,710,1591"/>
+<area shape="poly" title=" " alt="" coords="412,998,413,1117,422,1284,432,1370,446,1447,465,1511,477,1535,490,1553,507,1566,528,1574,526,1579,505,1571,486,1557,472,1538,460,1513,440,1448,426,1370,417,1285,408,1117,407,998"/>
+<area shape="rect" href="classneml2_1_1SlipRule.html" title="Parent class of slip rules, mapping from resolved shear and internal state to slip rates." alt="" coords="581,1615,656,1641"/>
+<area shape="poly" title=" " alt="" coords="414,997,423,1133,439,1326,462,1506,475,1569,490,1602,510,1617,533,1625,581,1629,581,1635,532,1630,507,1621,486,1606,470,1570,456,1507,434,1327,417,1134,409,997"/>
+<area shape="rect" href="classneml2_1_1SlipStrengthMap.html" title="Parent class of maps between internal variables and the slip system strengths." alt="" coords="554,1665,683,1690"/>
+<area shape="poly" title=" " alt="" coords="414,997,422,1144,437,1352,460,1547,474,1615,482,1638,490,1652,503,1663,519,1670,554,1678,553,1683,517,1675,501,1667,486,1655,477,1640,469,1617,455,1548,432,1352,417,1144,409,998"/>
+<area shape="rect" href="classneml2_1_1SumSlipRates.html" title="A helper model to calculate the sum of the absolute value of the slip rates." alt="" coords="563,1714,675,1739"/>
+<area shape="poly" title=" " alt="" coords="414,997,421,1152,436,1377,446,1489,459,1587,473,1662,482,1686,490,1701,505,1713,523,1721,563,1728,562,1733,522,1726,502,1718,486,1704,477,1688,468,1663,453,1588,441,1489,430,1377,415,1153,408,997"/>
+<area shape="rect" href="classneml2_1_1VariableRate.html" title=" " alt="" coords="547,1763,690,1789"/>
+<area shape="poly" title=" " alt="" coords="413,997,420,1162,434,1402,444,1523,457,1628,472,1708,481,1735,490,1750,516,1768,548,1776,547,1781,514,1773,486,1754,476,1737,467,1709,452,1629,439,1523,429,1403,415,1163,408,998"/>
+<area shape="rect" href="classneml2_1_1WR2ExplicitExponentialTimeIntegration.html" title="Explicit exponential time integration for rotations." alt="" coords="513,1813,724,1853"/>
+<area shape="poly" title=" " alt="" coords="413,997,419,1171,433,1427,444,1555,456,1668,472,1754,481,1782,490,1800,515,1818,511,1822,486,1803,476,1785,467,1755,451,1669,438,1556,428,1427,414,1171,408,997"/>
+<area shape="rect" href="classneml2_1_1WR2ImplicitExponentialTimeIntegration.html" title="Implicit exponential time integration for rotations." alt="" coords="513,1877,724,1917"/>
+<area shape="poly" title=" " alt="" coords="413,997,418,1183,431,1459,441,1598,455,1721,471,1814,480,1845,490,1864,515,1882,511,1887,486,1867,475,1847,466,1815,449,1721,436,1598,426,1459,413,1183,408,997"/>
+<area shape="rect" href="classneml2_1_1YieldFunction.html" title=" " alt="" coords="564,1942,673,1967"/>
+<area shape="poly" title=" " alt="" coords="413,997,417,1194,429,1491,438,1641,452,1774,469,1874,479,1908,490,1928,505,1940,524,1949,564,1956,563,1961,522,1954,502,1945,486,1931,474,1910,464,1875,447,1774,433,1642,423,1491,412,1194,408,997"/>
+<area shape="rect" title=" " alt="" coords="169,795,323,835"/>
+<area shape="poly" title=" " alt="" coords="324,840,331,845,357,872,379,903,405,957,400,959,374,906,353,875,328,849,321,844"/>
+<area shape="rect" href="classneml2_1_1Data.html" title=" " alt="" coords="219,859,273,885"/>
+<area shape="poly" title=" " alt="" coords="287,877,331,894,371,925,399,956,395,959,367,929,328,898,285,882"/>
+<area shape="rect" href="classneml2_1_1NEML2Object.html" title="The base class of all &quot;manufacturable&quot; objects in the NEML2 library." alt="" coords="5,835,115,861"/>
+<area shape="poly" title=" " alt="" coords="129,854,219,866,219,871,128,859"/>
+<area shape="rect" href="classneml2_1_1BufferStore.html" title="Interface for object which can store buffers." alt="" coords="13,885,107,910"/>
+<area shape="poly" title=" " alt="" coords="121,886,219,873,220,878,121,892"/>
+<area shape="rect" href="classneml2_1_1ParameterStore.html" title="Interface for object which can store parameters." alt="" coords="185,909,307,934"/>
+<area shape="poly" title=" " alt="" coords="302,935,378,959,376,964,301,941"/>
+<area shape="rect" href="classneml2_1_1VariableStore.html" title=" " alt="" coords="191,958,301,983"/>
+<area shape="poly" title=" " alt="" coords="314,968,377,968,377,973,314,973"/>
+<area shape="rect" href="classneml2_1_1NonlinearSystem.html" title="Definition of a nonlinear system of equations." alt="" coords="179,1007,313,1033"/>
+<area shape="poly" title=" " alt="" coords="304,1001,329,993,376,978,378,983,330,999,305,1006"/>
+<area shape="rect" href="classneml2_1_1DependencyDefinition.html" title=" " alt="" coords="163,1057,329,1097"/>
+<area shape="poly" title=" " alt="" coords="318,1049,328,1043,366,1012,395,982,399,985,370,1016,331,1048,320,1054"/>
+<area shape="rect" href="classneml2_1_1DiagnosticsInterface.html" title="Interface for object making diagnostics about common setup errors." alt="" coords="168,1122,324,1147"/>
+<area shape="poly" title=" " alt="" coords="318,1114,328,1107,356,1077,377,1043,401,983,406,985,382,1045,360,1081,331,1111,321,1118"/>
+</map>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -140,6 +240,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2003b2f696b07451045fddd2c5189cc1" id="r_a2003b2f696b07451045fddd2c5189cc1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2003b2f696b07451045fddd2c5189cc1">diagnose</a> (std::vector&lt; <a class="el" href="classneml2_1_1Diagnosis.html">Diagnosis</a> &gt; &amp;) <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">override</a></td></tr>
 <tr class="memdesc:a2003b2f696b07451045fddd2c5189cc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check for common problems.  <br /></td></tr>
 <tr class="separator:a2003b2f696b07451045fddd2c5189cc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad37d027199cbb9a15f786fc45282f947" id="r_ad37d027199cbb9a15f786fc45282f947"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad37d027199cbb9a15f786fc45282f947">diagnose_nl_sys</a> (std::vector&lt; <a class="el" href="classneml2_1_1Diagnosis.html">Diagnosis</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">diagnoses</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:ad37d027199cbb9a15f786fc45282f947"><td class="mdescLeft">&#160;</td><td class="mdescRight">Additional diagnostics for a nonlinear system.  <br /></td></tr>
+<tr class="separator:ad37d027199cbb9a15f786fc45282f947"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9952cc25d72ad689c212a71290a62eb6" id="r_a9952cc25d72ad689c212a71290a62eb6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9952cc25d72ad689c212a71290a62eb6">is_nonlinear_system</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
 <tr class="memdesc:a9952cc25d72ad689c212a71290a62eb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether this model defines one or more nonlinear equations to be solved.  <br /></td></tr>
 <tr class="separator:a9952cc25d72ad689c212a71290a62eb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -188,18 +291,36 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad021b73a0687f1416fb1791729b97e07" id="r_ad021b73a0687f1416fb1791729b97e07"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad021b73a0687f1416fb1791729b97e07">value_and_dvalue</a> ()</td></tr>
 <tr class="memdesc:ad021b73a0687f1416fb1791729b97e07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evalute the model and compute its derivative.  <br /></td></tr>
 <tr class="separator:ad021b73a0687f1416fb1791729b97e07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1fc1517bd0ad889c1387565048b266f0" id="r_a1fc1517bd0ad889c1387565048b266f0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1fc1517bd0ad889c1387565048b266f0">dvalue</a> ()</td></tr>
+<tr class="memdesc:a1fc1517bd0ad889c1387565048b266f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evalute the derivative.  <br /></td></tr>
+<tr class="separator:a1fc1517bd0ad889c1387565048b266f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a326e09c3f398872d1bfec46b02377111" id="r_a326e09c3f398872d1bfec46b02377111"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a326e09c3f398872d1bfec46b02377111">value_and_dvalue_and_d2value</a> ()</td></tr>
 <tr class="memdesc:a326e09c3f398872d1bfec46b02377111"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evalute the model and compute its first and second derivatives.  <br /></td></tr>
 <tr class="separator:a326e09c3f398872d1bfec46b02377111"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f0cae301bce3ce20f1f07dedfc9de03" id="r_a5f0cae301bce3ce20f1f07dedfc9de03"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5f0cae301bce3ce20f1f07dedfc9de03">d2value</a> ()</td></tr>
+<tr class="memdesc:a5f0cae301bce3ce20f1f07dedfc9de03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evalute the second derivatives.  <br /></td></tr>
+<tr class="separator:a5f0cae301bce3ce20f1f07dedfc9de03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31e5e1caf5dabf3ef9b0acde583ae5c6" id="r_a31e5e1caf5dabf3ef9b0acde583ae5c6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a31e5e1caf5dabf3ef9b0acde583ae5c6">dvalue_and_d2value</a> ()</td></tr>
+<tr class="memdesc:a31e5e1caf5dabf3ef9b0acde583ae5c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evalute the first and second derivatives.  <br /></td></tr>
+<tr class="separator:a31e5e1caf5dabf3ef9b0acde583ae5c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a512f18460521794a4be56bbe4103a094" id="r_a512f18460521794a4be56bbe4103a094"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1LabeledVector.html">LabeledVector</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a512f18460521794a4be56bbe4103a094">value</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledVector.html">LabeledVector</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">in</a>)</td></tr>
 <tr class="memdesc:a512f18460521794a4be56bbe4103a094"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenient shortcut to construct and return the model value.  <br /></td></tr>
 <tr class="separator:a512f18460521794a4be56bbe4103a094"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac81b25c4962b603fd3dac69ce57319c0" id="r_ac81b25c4962b603fd3dac69ce57319c0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> std::tuple&lt; <a class="el" href="classneml2_1_1LabeledVector.html">LabeledVector</a>, <a class="el" href="classneml2_1_1LabeledMatrix.html">LabeledMatrix</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac81b25c4962b603fd3dac69ce57319c0">value_and_dvalue</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledVector.html">LabeledVector</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">in</a>)</td></tr>
 <tr class="memdesc:ac81b25c4962b603fd3dac69ce57319c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenient shortcut to construct and return the model value and its derivative.  <br /></td></tr>
 <tr class="separator:ac81b25c4962b603fd3dac69ce57319c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a746171d8d8b828c76143df8fc9fae8b1" id="r_a746171d8d8b828c76143df8fc9fae8b1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1LabeledMatrix.html">LabeledMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a746171d8d8b828c76143df8fc9fae8b1">dvalue</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledVector.html">LabeledVector</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">in</a>)</td></tr>
+<tr class="memdesc:a746171d8d8b828c76143df8fc9fae8b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenient shortcut to construct and return the derivative.  <br /></td></tr>
+<tr class="separator:a746171d8d8b828c76143df8fc9fae8b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae192fceb1a47041cf713c65169bd474" id="r_aae192fceb1a47041cf713c65169bd474"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> std::tuple&lt; <a class="el" href="classneml2_1_1LabeledVector.html">LabeledVector</a>, <a class="el" href="classneml2_1_1LabeledMatrix.html">LabeledMatrix</a>, <a class="el" href="classneml2_1_1LabeledTensor3D.html">LabeledTensor3D</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aae192fceb1a47041cf713c65169bd474">value_and_dvalue_and_d2value</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledVector.html">LabeledVector</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">in</a>)</td></tr>
 <tr class="memdesc:aae192fceb1a47041cf713c65169bd474"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenient shortcut to construct and return the model's value, first and second derivative.  <br /></td></tr>
 <tr class="separator:aae192fceb1a47041cf713c65169bd474"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47f0a43f8a2cb5a719b94e4673a16cae" id="r_a47f0a43f8a2cb5a719b94e4673a16cae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1LabeledTensor3D.html">LabeledTensor3D</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a47f0a43f8a2cb5a719b94e4673a16cae">d2value</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledVector.html">LabeledVector</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">in</a>)</td></tr>
+<tr class="memdesc:a47f0a43f8a2cb5a719b94e4673a16cae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenient shortcut to construct and return the model's second derivative.  <br /></td></tr>
+<tr class="separator:a47f0a43f8a2cb5a719b94e4673a16cae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04a1a05a265d4b56d5c3d0d0c504580d" id="r_a04a1a05a265d4b56d5c3d0d0c504580d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> std::tuple&lt; <a class="el" href="classneml2_1_1LabeledMatrix.html">LabeledMatrix</a>, <a class="el" href="classneml2_1_1LabeledTensor3D.html">LabeledTensor3D</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a04a1a05a265d4b56d5c3d0d0c504580d">dvalue_and_d2value</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledVector.html">LabeledVector</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">in</a>)</td></tr>
+<tr class="memdesc:a04a1a05a265d4b56d5c3d0d0c504580d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenient shortcut to construct and return the model's first and second derivative.  <br /></td></tr>
+<tr class="separator:a04a1a05a265d4b56d5c3d0d0c504580d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Model options</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p><a class="el" href="classneml2_1_1Storage.html">Storage</a> batch dimension </p>
 </div></td></tr>
@@ -391,10 +512,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a74465843b80bbe89e6ef9c70ab53d998 inherit pub_methods_classneml2_1_1NonlinearSystem" id="r_a74465843b80bbe89e6ef9c70ab53d998"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1NonlinearSystem.html#a74465843b80bbe89e6ef9c70ab53d998">residual_and_Jacobian</a> ()</td></tr>
 <tr class="memdesc:a74465843b80bbe89e6ef9c70ab53d998 inherit pub_methods_classneml2_1_1NonlinearSystem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenient shortcut to assemble and return the system residual and Jacobian.  <br /></td></tr>
 <tr class="separator:a74465843b80bbe89e6ef9c70ab53d998 inherit pub_methods_classneml2_1_1NonlinearSystem"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a65f5940076ca4e9e5624df4daef72fdf inherit pub_methods_classneml2_1_1NonlinearSystem" id="r_a65f5940076ca4e9e5624df4daef72fdf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1NonlinearSystem.html#a65f5940076ca4e9e5624df4daef72fdf">residual_view</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
-<tr class="separator:a65f5940076ca4e9e5624df4daef72fdf inherit pub_methods_classneml2_1_1NonlinearSystem"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6704c709a5f396ba06997cea1fb84309 inherit pub_methods_classneml2_1_1NonlinearSystem" id="r_a6704c709a5f396ba06997cea1fb84309"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1NonlinearSystem.html#a6704c709a5f396ba06997cea1fb84309">Jacobian_view</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
-<tr class="separator:a6704c709a5f396ba06997cea1fb84309 inherit pub_methods_classneml2_1_1NonlinearSystem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a882af93d60bef817cd048660c7db9215 inherit pub_methods_classneml2_1_1NonlinearSystem" id="r_a882af93d60bef817cd048660c7db9215"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1NonlinearSystem.html#a882af93d60bef817cd048660c7db9215">get_residual</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="separator:a882af93d60bef817cd048660c7db9215 inherit pub_methods_classneml2_1_1NonlinearSystem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae07a32b3446f5f877012aeb5b8c71733 inherit pub_methods_classneml2_1_1NonlinearSystem" id="r_ae07a32b3446f5f877012aeb5b8c71733"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1NonlinearSystem.html#ae07a32b3446f5f877012aeb5b8c71733">get_Jacobian</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="separator:ae07a32b3446f5f877012aeb5b8c71733 inherit pub_methods_classneml2_1_1NonlinearSystem"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1e7bcd42fb4c23bac026417e5cb3b85 inherit pub_methods_classneml2_1_1NonlinearSystem" id="r_af1e7bcd42fb4c23bac026417e5cb3b85"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1NonlinearSystem.html#af1e7bcd42fb4c23bac026417e5cb3b85">residual_norm</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
 <tr class="memdesc:af1e7bcd42fb4c23bac026417e5cb3b85 inherit pub_methods_classneml2_1_1NonlinearSystem"><td class="mdescLeft">&#160;</td><td class="mdescRight">The residual norm.  <br /></td></tr>
 <tr class="separator:af1e7bcd42fb4c23bac026417e5cb3b85 inherit pub_methods_classneml2_1_1NonlinearSystem"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -404,6 +525,20 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a30aa3cc8d35e3fc8ccc38577f878a590 inherit pub_methods_classneml2_1_1DiagnosticsInterface" id="r_a30aa3cc8d35e3fc8ccc38577f878a590"><td class="memTemplParams" colspan="2">template&lt;typename... Args&gt; </td></tr>
 <tr class="memitem:a30aa3cc8d35e3fc8ccc38577f878a590 inherit pub_methods_classneml2_1_1DiagnosticsInterface"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classneml2_1_1DiagnosticsInterface.html#a30aa3cc8d35e3fc8ccc38577f878a590">diagnostic_assert</a> (std::vector&lt; <a class="el" href="classneml2_1_1Diagnosis.html">Diagnosis</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">diagnoses</a>, <a class="el" href="classneml2_1_1CrossRef.html">bool</a> <a class="el" href="classneml2_1_1CrossRef.html">assertion</a>, <a class="el" href="classneml2_1_1CrossRef.html">Args</a> &amp;&amp;... <a class="el" href="classneml2_1_1CrossRef.html">args</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
 <tr class="separator:a30aa3cc8d35e3fc8ccc38577f878a590 inherit pub_methods_classneml2_1_1DiagnosticsInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abdd0ee0aad1fbf6d5bd45ab86d8af1f8 inherit pub_methods_classneml2_1_1DiagnosticsInterface" id="r_abdd0ee0aad1fbf6d5bd45ab86d8af1f8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1DiagnosticsInterface.html#abdd0ee0aad1fbf6d5bd45ab86d8af1f8">diagnostic_assert_state</a> (std::vector&lt; <a class="el" href="classneml2_1_1Diagnosis.html">Diagnosis</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">diagnoses</a>, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1VariableBase.html">VariableBase</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">v</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="separator:abdd0ee0aad1fbf6d5bd45ab86d8af1f8 inherit pub_methods_classneml2_1_1DiagnosticsInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f36b668a2436e7873e516ad3b8d9003 inherit pub_methods_classneml2_1_1DiagnosticsInterface" id="r_a9f36b668a2436e7873e516ad3b8d9003"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1DiagnosticsInterface.html#a9f36b668a2436e7873e516ad3b8d9003">diagnostic_assert_old_state</a> (std::vector&lt; <a class="el" href="classneml2_1_1Diagnosis.html">Diagnosis</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">diagnoses</a>, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1VariableBase.html">VariableBase</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">v</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="separator:a9f36b668a2436e7873e516ad3b8d9003 inherit pub_methods_classneml2_1_1DiagnosticsInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab252f36257a4781b527c6104858d6584 inherit pub_methods_classneml2_1_1DiagnosticsInterface" id="r_ab252f36257a4781b527c6104858d6584"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1DiagnosticsInterface.html#ab252f36257a4781b527c6104858d6584">diagnostic_assert_force</a> (std::vector&lt; <a class="el" href="classneml2_1_1Diagnosis.html">Diagnosis</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">diagnoses</a>, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1VariableBase.html">VariableBase</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">v</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="separator:ab252f36257a4781b527c6104858d6584 inherit pub_methods_classneml2_1_1DiagnosticsInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abad12b0828f63606c49e56fb9b156641 inherit pub_methods_classneml2_1_1DiagnosticsInterface" id="r_abad12b0828f63606c49e56fb9b156641"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1DiagnosticsInterface.html#abad12b0828f63606c49e56fb9b156641">diagnostic_assert_old_force</a> (std::vector&lt; <a class="el" href="classneml2_1_1Diagnosis.html">Diagnosis</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">diagnoses</a>, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1VariableBase.html">VariableBase</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">v</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="separator:abad12b0828f63606c49e56fb9b156641 inherit pub_methods_classneml2_1_1DiagnosticsInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad0c63ae583018382b4d344c0c93f7d4 inherit pub_methods_classneml2_1_1DiagnosticsInterface" id="r_aad0c63ae583018382b4d344c0c93f7d4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1DiagnosticsInterface.html#aad0c63ae583018382b4d344c0c93f7d4">diagnostic_assert_residual</a> (std::vector&lt; <a class="el" href="classneml2_1_1Diagnosis.html">Diagnosis</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">diagnoses</a>, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1VariableBase.html">VariableBase</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">v</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="separator:aad0c63ae583018382b4d344c0c93f7d4 inherit pub_methods_classneml2_1_1DiagnosticsInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a304c1c9823640628bbab7ad6a90da838 inherit pub_methods_classneml2_1_1DiagnosticsInterface" id="r_a304c1c9823640628bbab7ad6a90da838"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1DiagnosticsInterface.html#a304c1c9823640628bbab7ad6a90da838">diagnostic_check_input_variable</a> (std::vector&lt; <a class="el" href="classneml2_1_1Diagnosis.html">Diagnosis</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">diagnoses</a>, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1VariableBase.html">VariableBase</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">v</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="separator:a304c1c9823640628bbab7ad6a90da838 inherit pub_methods_classneml2_1_1DiagnosticsInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4001695ae660910ca6afdcf2994f7efd inherit pub_methods_classneml2_1_1DiagnosticsInterface" id="r_a4001695ae660910ca6afdcf2994f7efd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1DiagnosticsInterface.html#a4001695ae660910ca6afdcf2994f7efd">diagnostic_check_output_variable</a> (std::vector&lt; <a class="el" href="classneml2_1_1Diagnosis.html">Diagnosis</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">diagnoses</a>, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1VariableBase.html">VariableBase</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">v</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="separator:a4001695ae660910ca6afdcf2994f7efd inherit pub_methods_classneml2_1_1DiagnosticsInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -1026,6 +1161,60 @@ Friends</h2></td></tr>
 
 </div>
 </div>
+<a id="a5f0cae301bce3ce20f1f07dedfc9de03" name="a5f0cae301bce3ce20f1f07dedfc9de03"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f0cae301bce3ce20f1f07dedfc9de03">&#9670;&#160;</a></span>d2value() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">void</a> d2value </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Evalute the second derivatives. </p>
+
+</div>
+</div>
+<a id="a47f0a43f8a2cb5a719b94e4673a16cae" name="a47f0a43f8a2cb5a719b94e4673a16cae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47f0a43f8a2cb5a719b94e4673a16cae">&#9670;&#160;</a></span>d2value() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1LabeledTensor3D.html">LabeledTensor3D</a> d2value </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledVector.html">LabeledVector</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>in</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convenient shortcut to construct and return the model's second derivative. </p>
+
+</div>
+</div>
 <a id="a6f544bdd9dcc8c96c34281e459760b4e" name="a6f544bdd9dcc8c96c34281e459760b4e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6f544bdd9dcc8c96c34281e459760b4e">&#9670;&#160;</a></span>device()</h2>
 
@@ -1082,6 +1271,135 @@ Friends</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>A vector of exceptions of type <a class="el" href="classneml2_1_1Diagnosis.html" title="Exception type reserved for diagnostics, so as to not conceptually clash with other exceptions.">Diagnosis</a> for each of the detected problem. </dd></dl>
 
 <p>Implements <a class="el" href="classneml2_1_1DiagnosticsInterface.html#ac9fd9e54969b711311c66596aa2b2e12">DiagnosticsInterface</a>.</p>
+
+<p>Reimplemented in <a class="el" href="classneml2_1_1BackwardEulerTimeIntegration.html#aec4b2bcafb1752418187d36995ede628">BackwardEulerTimeIntegration&lt; T &gt;</a>, <a class="el" href="classneml2_1_1ForwardEulerTimeIntegration.html#aec4b2bcafb1752418187d36995ede628">ForwardEulerTimeIntegration&lt; T &gt;</a>, <a class="el" href="classneml2_1_1VariableRate.html#aec4b2bcafb1752418187d36995ede628">VariableRate&lt; T &gt;</a>, <a class="el" href="classneml2_1_1WR2ExplicitExponentialTimeIntegration.html#aec4b2bcafb1752418187d36995ede628">WR2ExplicitExponentialTimeIntegration</a>, and <a class="el" href="classneml2_1_1WR2ImplicitExponentialTimeIntegration.html#aec4b2bcafb1752418187d36995ede628">WR2ImplicitExponentialTimeIntegration</a>.</p>
+
+</div>
+</div>
+<a id="ad37d027199cbb9a15f786fc45282f947" name="ad37d027199cbb9a15f786fc45282f947"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad37d027199cbb9a15f786fc45282f947">&#9670;&#160;</a></span>diagnose_nl_sys()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">void</a> diagnose_nl_sys </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="classneml2_1_1Diagnosis.html">Diagnosis</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>diagnoses</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Additional diagnostics for a nonlinear system. </p>
+
+</div>
+</div>
+<a id="a1fc1517bd0ad889c1387565048b266f0" name="a1fc1517bd0ad889c1387565048b266f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1fc1517bd0ad889c1387565048b266f0">&#9670;&#160;</a></span>dvalue() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">void</a> dvalue </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Evalute the derivative. </p>
+
+</div>
+</div>
+<a id="a746171d8d8b828c76143df8fc9fae8b1" name="a746171d8d8b828c76143df8fc9fae8b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a746171d8d8b828c76143df8fc9fae8b1">&#9670;&#160;</a></span>dvalue() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1LabeledMatrix.html">LabeledMatrix</a> dvalue </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledVector.html">LabeledVector</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>in</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convenient shortcut to construct and return the derivative. </p>
+
+</div>
+</div>
+<a id="a31e5e1caf5dabf3ef9b0acde583ae5c6" name="a31e5e1caf5dabf3ef9b0acde583ae5c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31e5e1caf5dabf3ef9b0acde583ae5c6">&#9670;&#160;</a></span>dvalue_and_d2value() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">void</a> dvalue_and_d2value </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Evalute the first and second derivatives. </p>
+
+</div>
+</div>
+<a id="a04a1a05a265d4b56d5c3d0d0c504580d" name="a04a1a05a265d4b56d5c3d0d0c504580d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04a1a05a265d4b56d5c3d0d0c504580d">&#9670;&#160;</a></span>dvalue_and_d2value() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::tuple&lt; <a class="el" href="classneml2_1_1LabeledMatrix.html">LabeledMatrix</a>, <a class="el" href="classneml2_1_1LabeledTensor3D.html">LabeledTensor3D</a> &gt; dvalue_and_d2value </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledVector.html">LabeledVector</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>in</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convenient shortcut to construct and return the model's first and second derivative. </p>
 
 </div>
 </div>
@@ -1747,7 +2065,7 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T , <a
 
 <p>The map between input -&gt; output, and optionally its derivatives. </p>
 
-<p>Implemented in <a class="el" href="classneml2_1_1SingleSlipStrengthMap.html#af6722733e345ea202f70b9bfce474191">SingleSlipStrengthMap</a>, <a class="el" href="classneml2_1_1ArrheniusParameter.html#af5600a36813e455aefee72bec1d574fb">ArrheniusParameter</a>, <a class="el" href="classneml2_1_1BackwardEulerTimeIntegration.html#af5600a36813e455aefee72bec1d574fb">BackwardEulerTimeIntegration&lt; T &gt;</a>, <a class="el" href="classneml2_1_1ConstantParameter.html#af5600a36813e455aefee72bec1d574fb">ConstantParameter&lt; T &gt;</a>, <a class="el" href="classneml2_1_1CopyVariable.html#af5600a36813e455aefee72bec1d574fb">CopyVariable&lt; T &gt;</a>, <a class="el" href="classneml2_1_1ForceRate.html#af5600a36813e455aefee72bec1d574fb">ForceRate&lt; T &gt;</a>, <a class="el" href="classneml2_1_1ForwardEulerTimeIntegration.html#af5600a36813e455aefee72bec1d574fb">ForwardEulerTimeIntegration&lt; T &gt;</a>, <a class="el" href="classneml2_1_1ImplicitUpdate.html#af5600a36813e455aefee72bec1d574fb">ImplicitUpdate</a>, <a class="el" href="classneml2_1_1InputParameter.html#af5600a36813e455aefee72bec1d574fb">InputParameter&lt; T &gt;</a>, <a class="el" href="classneml2_1_1LinearCombination.html#af5600a36813e455aefee72bec1d574fb">LinearCombination&lt; T &gt;</a>, <a class="el" href="classneml2_1_1LinearInterpolation.html#af5600a36813e455aefee72bec1d574fb">LinearInterpolation&lt; T &gt;</a>, <a class="el" href="classneml2_1_1RotationMatrix.html#af5600a36813e455aefee72bec1d574fb">RotationMatrix</a>, <a class="el" href="classneml2_1_1AssociativeIsotropicPlasticHardening.html#af5600a36813e455aefee72bec1d574fb">AssociativeIsotropicPlasticHardening</a>, <a class="el" href="classneml2_1_1AssociativeKinematicPlasticHardening.html#af5600a36813e455aefee72bec1d574fb">AssociativeKinematicPlasticHardening</a>, <a class="el" href="classneml2_1_1AssociativePlasticFlow.html#af5600a36813e455aefee72bec1d574fb">AssociativePlasticFlow</a>, <a class="el" href="classneml2_1_1ChabochePlasticHardening.html#af5600a36813e455aefee72bec1d574fb">ChabochePlasticHardening</a>, <a class="el" href="classneml2_1_1ElasticStrainRate.html#af5600a36813e455aefee72bec1d574fb">ElasticStrainRate</a>, <a class="el" href="classneml2_1_1FixOrientation.html#af5600a36813e455aefee72bec1d574fb">FixOrientation</a>, <a class="el" href="classneml2_1_1LinearSingleSlipHardeningRule.html#af5600a36813e455aefee72bec1d574fb">LinearSingleSlipHardeningRule</a>, <a class="el" href="classneml2_1_1OrientationRate.html#af5600a36813e455aefee72bec1d574fb">OrientationRate</a>, <a class="el" href="classneml2_1_1PlasticDeformationRate.html#af5600a36813e455aefee72bec1d574fb">PlasticDeformationRate</a>, <a class="el" href="classneml2_1_1PlasticVorticity.html#af5600a36813e455aefee72bec1d574fb">PlasticVorticity</a>, <a class="el" href="classneml2_1_1PowerLawSlipRule.html#af5600a36813e455aefee72bec1d574fb">PowerLawSlipRule</a>, <a class="el" href="classneml2_1_1ResolvedShear.html#af5600a36813e455aefee72bec1d574fb">ResolvedShear</a>, <a class="el" href="classneml2_1_1SumSlipRates.html#af5600a36813e455aefee72bec1d574fb">SumSlipRates</a>, <a class="el" href="classneml2_1_1VoceSingleSlipHardeningRule.html#af5600a36813e455aefee72bec1d574fb">VoceSingleSlipHardeningRule</a>, <a class="el" href="classneml2_1_1ElasticStrain.html#af5600a36813e455aefee72bec1d574fb">ElasticStrain</a>, <a class="el" href="classneml2_1_1GTNYieldFunction.html#af5600a36813e455aefee72bec1d574fb">GTNYieldFunction</a>, <a class="el" href="classneml2_1_1GursonCavitation.html#af5600a36813e455aefee72bec1d574fb">GursonCavitation</a>, <a class="el" href="classneml2_1_1IsotropicMandelStress.html#af5600a36813e455aefee72bec1d574fb">IsotropicMandelStress</a>, <a class="el" href="classneml2_1_1KocksMeckingActivationEnergy.html#af5600a36813e455aefee72bec1d574fb">KocksMeckingActivationEnergy</a>, <a class="el" href="classneml2_1_1KocksMeckingFlowSwitch.html#af5600a36813e455aefee72bec1d574fb">KocksMeckingFlowSwitch</a>, <a class="el" href="classneml2_1_1KocksMeckingFlowViscosity.html#af5600a36813e455aefee72bec1d574fb">KocksMeckingFlowViscosity</a>, <a class="el" href="classneml2_1_1KocksMeckingRateSensitivity.html#af5600a36813e455aefee72bec1d574fb">KocksMeckingRateSensitivity</a>, <a class="el" href="classneml2_1_1KocksMeckingYieldStress.html#af5600a36813e455aefee72bec1d574fb">KocksMeckingYieldStress</a>, <a class="el" href="classneml2_1_1LinearIsotropicElasticity.html#af5600a36813e455aefee72bec1d574fb">LinearIsotropicElasticity</a>, <a class="el" href="classneml2_1_1LinearIsotropicHardening.html#af5600a36813e455aefee72bec1d574fb">LinearIsotropicHardening</a>, <a class="el" href="classneml2_1_1LinearKinematicHardening.html#af5600a36813e455aefee72bec1d574fb">LinearKinematicHardening</a>, <a class="el" href="classneml2_1_1MixedControlSetup.html#af5600a36813e455aefee72bec1d574fb">MixedControlSetup</a>, <a class="el" href="classneml2_1_1Normality.html#af5600a36813e455aefee72bec1d574fb">Normality</a>, <a class="el" href="classneml2_1_1OlevskySinteringStress.html#af5600a36813e455aefee72bec1d574fb">OlevskySinteringStress</a>, <a class="el" href="classneml2_1_1OverStress.html#af5600a36813e455aefee72bec1d574fb">OverStress</a>, <a class="el" href="classneml2_1_1PerzynaPlasticFlowRate.html#af5600a36813e455aefee72bec1d574fb">PerzynaPlasticFlowRate</a>, <a class="el" href="classneml2_1_1RateIndependentPlasticFlowConstraint.html#af5600a36813e455aefee72bec1d574fb">RateIndependentPlasticFlowConstraint</a>, <a class="el" href="classneml2_1_1TotalStrain.html#af5600a36813e455aefee72bec1d574fb">TotalStrain</a>, <a class="el" href="classneml2_1_1VoceIsotropicHardening.html#af5600a36813e455aefee72bec1d574fb">VoceIsotropicHardening</a>, <a class="el" href="classneml2_1_1YieldFunction.html#af5600a36813e455aefee72bec1d574fb">YieldFunction</a>, <a class="el" href="classneml2_1_1SR2Invariant.html#af5600a36813e455aefee72bec1d574fb">SR2Invariant</a>, <a class="el" href="classneml2_1_1StateRate.html#af5600a36813e455aefee72bec1d574fb">StateRate&lt; T &gt;</a>, <a class="el" href="classneml2_1_1WR2ExplicitExponentialTimeIntegration.html#af5600a36813e455aefee72bec1d574fb">WR2ExplicitExponentialTimeIntegration</a>, <a class="el" href="classneml2_1_1WR2ImplicitExponentialTimeIntegration.html#af5600a36813e455aefee72bec1d574fb">WR2ImplicitExponentialTimeIntegration</a>, <a class="el" href="classneml2_1_1ComposedModel.html#ae6396730f8e20adc1c9d3875c473acdd">ComposedModel</a>, and <a class="el" href="classneml2_1_1ThermalEigenstrain.html#ae6396730f8e20adc1c9d3875c473acdd">ThermalEigenstrain</a>.</p>
+<p>Implemented in <a class="el" href="classneml2_1_1SingleSlipStrengthMap.html#af6722733e345ea202f70b9bfce474191">SingleSlipStrengthMap</a>, <a class="el" href="classneml2_1_1ArrheniusParameter.html#af5600a36813e455aefee72bec1d574fb">ArrheniusParameter</a>, <a class="el" href="classneml2_1_1BackwardEulerTimeIntegration.html#af5600a36813e455aefee72bec1d574fb">BackwardEulerTimeIntegration&lt; T &gt;</a>, <a class="el" href="classneml2_1_1ConstantParameter.html#af5600a36813e455aefee72bec1d574fb">ConstantParameter&lt; T &gt;</a>, <a class="el" href="classneml2_1_1CopyVariable.html#af5600a36813e455aefee72bec1d574fb">CopyVariable&lt; T &gt;</a>, <a class="el" href="classneml2_1_1ForwardEulerTimeIntegration.html#af5600a36813e455aefee72bec1d574fb">ForwardEulerTimeIntegration&lt; T &gt;</a>, <a class="el" href="classneml2_1_1ImplicitUpdate.html#af5600a36813e455aefee72bec1d574fb">ImplicitUpdate</a>, <a class="el" href="classneml2_1_1InputParameter.html#af5600a36813e455aefee72bec1d574fb">InputParameter&lt; T &gt;</a>, <a class="el" href="classneml2_1_1LinearCombination.html#af5600a36813e455aefee72bec1d574fb">LinearCombination&lt; T &gt;</a>, <a class="el" href="classneml2_1_1LinearInterpolation.html#af5600a36813e455aefee72bec1d574fb">LinearInterpolation&lt; T &gt;</a>, <a class="el" href="classneml2_1_1RotationMatrix.html#af5600a36813e455aefee72bec1d574fb">RotationMatrix</a>, <a class="el" href="classneml2_1_1AssociativeIsotropicPlasticHardening.html#af5600a36813e455aefee72bec1d574fb">AssociativeIsotropicPlasticHardening</a>, <a class="el" href="classneml2_1_1AssociativeKinematicPlasticHardening.html#af5600a36813e455aefee72bec1d574fb">AssociativeKinematicPlasticHardening</a>, <a class="el" href="classneml2_1_1AssociativePlasticFlow.html#af5600a36813e455aefee72bec1d574fb">AssociativePlasticFlow</a>, <a class="el" href="classneml2_1_1ChabochePlasticHardening.html#af5600a36813e455aefee72bec1d574fb">ChabochePlasticHardening</a>, <a class="el" href="classneml2_1_1ElasticStrainRate.html#af5600a36813e455aefee72bec1d574fb">ElasticStrainRate</a>, <a class="el" href="classneml2_1_1FixOrientation.html#af5600a36813e455aefee72bec1d574fb">FixOrientation</a>, <a class="el" href="classneml2_1_1LinearSingleSlipHardeningRule.html#af5600a36813e455aefee72bec1d574fb">LinearSingleSlipHardeningRule</a>, <a class="el" href="classneml2_1_1OrientationRate.html#af5600a36813e455aefee72bec1d574fb">OrientationRate</a>, <a class="el" href="classneml2_1_1PlasticDeformationRate.html#af5600a36813e455aefee72bec1d574fb">PlasticDeformationRate</a>, <a class="el" href="classneml2_1_1PlasticVorticity.html#af5600a36813e455aefee72bec1d574fb">PlasticVorticity</a>, <a class="el" href="classneml2_1_1PowerLawSlipRule.html#af5600a36813e455aefee72bec1d574fb">PowerLawSlipRule</a>, <a class="el" href="classneml2_1_1ResolvedShear.html#af5600a36813e455aefee72bec1d574fb">ResolvedShear</a>, <a class="el" href="classneml2_1_1SumSlipRates.html#af5600a36813e455aefee72bec1d574fb">SumSlipRates</a>, <a class="el" href="classneml2_1_1VoceSingleSlipHardeningRule.html#af5600a36813e455aefee72bec1d574fb">VoceSingleSlipHardeningRule</a>, <a class="el" href="classneml2_1_1GTNYieldFunction.html#af5600a36813e455aefee72bec1d574fb">GTNYieldFunction</a>, <a class="el" href="classneml2_1_1GursonCavitation.html#af5600a36813e455aefee72bec1d574fb">GursonCavitation</a>, <a class="el" href="classneml2_1_1IsotropicMandelStress.html#af5600a36813e455aefee72bec1d574fb">IsotropicMandelStress</a>, <a class="el" href="classneml2_1_1KocksMeckingActivationEnergy.html#af5600a36813e455aefee72bec1d574fb">KocksMeckingActivationEnergy</a>, <a class="el" href="classneml2_1_1KocksMeckingFlowSwitch.html#af5600a36813e455aefee72bec1d574fb">KocksMeckingFlowSwitch</a>, <a class="el" href="classneml2_1_1KocksMeckingFlowViscosity.html#af5600a36813e455aefee72bec1d574fb">KocksMeckingFlowViscosity</a>, <a class="el" href="classneml2_1_1KocksMeckingRateSensitivity.html#af5600a36813e455aefee72bec1d574fb">KocksMeckingRateSensitivity</a>, <a class="el" href="classneml2_1_1KocksMeckingYieldStress.html#af5600a36813e455aefee72bec1d574fb">KocksMeckingYieldStress</a>, <a class="el" href="classneml2_1_1LinearIsotropicElasticity.html#af5600a36813e455aefee72bec1d574fb">LinearIsotropicElasticity</a>, <a class="el" href="classneml2_1_1LinearIsotropicHardening.html#af5600a36813e455aefee72bec1d574fb">LinearIsotropicHardening</a>, <a class="el" href="classneml2_1_1LinearKinematicHardening.html#af5600a36813e455aefee72bec1d574fb">LinearKinematicHardening</a>, <a class="el" href="classneml2_1_1MixedControlSetup.html#af5600a36813e455aefee72bec1d574fb">MixedControlSetup</a>, <a class="el" href="classneml2_1_1Normality.html#af5600a36813e455aefee72bec1d574fb">Normality</a>, <a class="el" href="classneml2_1_1OlevskySinteringStress.html#af5600a36813e455aefee72bec1d574fb">OlevskySinteringStress</a>, <a class="el" href="classneml2_1_1PerzynaPlasticFlowRate.html#af5600a36813e455aefee72bec1d574fb">PerzynaPlasticFlowRate</a>, <a class="el" href="classneml2_1_1RateIndependentPlasticFlowConstraint.html#af5600a36813e455aefee72bec1d574fb">RateIndependentPlasticFlowConstraint</a>, <a class="el" href="classneml2_1_1VoceIsotropicHardening.html#af5600a36813e455aefee72bec1d574fb">VoceIsotropicHardening</a>, <a class="el" href="classneml2_1_1YieldFunction.html#af5600a36813e455aefee72bec1d574fb">YieldFunction</a>, <a class="el" href="classneml2_1_1SR2Invariant.html#af5600a36813e455aefee72bec1d574fb">SR2Invariant</a>, <a class="el" href="classneml2_1_1VariableRate.html#af5600a36813e455aefee72bec1d574fb">VariableRate&lt; T &gt;</a>, <a class="el" href="classneml2_1_1WR2ExplicitExponentialTimeIntegration.html#af5600a36813e455aefee72bec1d574fb">WR2ExplicitExponentialTimeIntegration</a>, <a class="el" href="classneml2_1_1WR2ImplicitExponentialTimeIntegration.html#af5600a36813e455aefee72bec1d574fb">WR2ImplicitExponentialTimeIntegration</a>, <a class="el" href="classneml2_1_1ComposedModel.html#ae6396730f8e20adc1c9d3875c473acdd">ComposedModel</a>, and <a class="el" href="classneml2_1_1ThermalEigenstrain.html#ae6396730f8e20adc1c9d3875c473acdd">ThermalEigenstrain</a>.</p>
 
 </div>
 </div>

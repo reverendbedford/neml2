@@ -26,9 +26,8 @@ var searchData=
   ['tensorvaluebase_23',['TensorValueBase',['../classneml2_1_1TensorValueBase.html',1,'neml2']]],
   ['thermaleigenstrain_24',['ThermalEigenstrain',['../classneml2_1_1ThermalEigenstrain.html',1,'neml2']]],
   ['timedsection_25',['TimedSection',['../structneml2_1_1TimedSection.html',1,'neml2']]],
-  ['totalstrain_26',['TotalStrain',['../classneml2_1_1TotalStrain.html',1,'neml2']]],
-  ['transformable_27',['Transformable',['../classneml2_1_1Transformable.html',1,'neml2']]],
-  ['transformable_3c_20vec_20_3e_28',['Transformable&lt; Vec &gt;',['../classneml2_1_1Transformable.html',1,'neml2']]],
-  ['transientdriver_29',['TransientDriver',['../classneml2_1_1TransientDriver.html',1,'neml2']]],
-  ['trustregionsubproblem_30',['TrustRegionSubProblem',['../classneml2_1_1TrustRegionSubProblem.html',1,'neml2']]]
+  ['transformable_26',['Transformable',['../classneml2_1_1Transformable.html',1,'neml2']]],
+  ['transformable_3c_20vec_20_3e_27',['Transformable&lt; Vec &gt;',['../classneml2_1_1Transformable.html',1,'neml2']]],
+  ['transientdriver_28',['TransientDriver',['../classneml2_1_1TransientDriver.html',1,'neml2']]],
+  ['trustregionsubproblem_29',['TrustRegionSubProblem',['../classneml2_1_1TrustRegionSubProblem.html',1,'neml2']]]
 ];

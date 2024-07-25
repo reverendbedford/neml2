@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['none_0',['NONE',['../namespaceneml2.html#ab600865ffa5d3681d723ef019d109535ab50339a10e1de285ac99d4c3990b8693',1,'neml2']]]
+  ['kuknown_0',['kUknown',['../namespaceneml2.html#a9b44248b88341f8c9cafe5d9d822a443aa938666e7a4985ce45a25b2435fceb2f',1,'neml2']]]
 ];
