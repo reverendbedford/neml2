@@ -183,7 +183,7 @@
     g0 = 0.538
     rate_independent_flow_rate = 'state/internal/gamma_rate_ri'
     rate_dependent_flow_rate = 'state/internal/gamma_rate_rd'
-    sharpness = 500.0
+    sharpness = 100.0
   []
   [Eprate]
     type = AssociativePlasticFlow

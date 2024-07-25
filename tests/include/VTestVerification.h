@@ -37,10 +37,12 @@ public:
 
   VTestVerification(const OptionSet & options);
 
+  virtual void diagnose(std::vector<Diagnosis> & diagnoses) const override;
+
   bool run() override;
 
 private:
-  bool allclose(const std::string & var, torch::Tensor ref) const;
+  void compare(const std::string & var, torch::Tensor ref, std::ostringstream & err) const;
 
   /// The driver that will run the NEML2 model
   TransientDriver & _driver;

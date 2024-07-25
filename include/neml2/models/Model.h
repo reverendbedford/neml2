@@ -126,9 +126,7 @@ public:
   virtual const std::set<VariableName> provided_items() const override;
 
   /// Whether AD is enabled
-  bool is_AD_enabled() const { return _enable_AD; }
-  /// Whether AD is disabled
-  bool is_AD_disabled() const { return !_enable_AD; }
+  virtual bool is_AD_enabled() const override { return _enable_AD; }
   /// Whether this model is using AD to get 1st derivatives
   bool using_AD_1st_derivative() const { return _AD_1st_deriv; }
   /// Whether this model is using AD to get 2nd derivatives

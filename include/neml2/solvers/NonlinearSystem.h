@@ -86,6 +86,11 @@ public:
   /// The residual norm
   Tensor residual_norm() const;
 
+  /// Whether AD is enabled
+  virtual bool is_AD_enabled() const { return true; }
+  /// Whether AD is disabled
+  virtual bool is_AD_disabled() const final { return !is_AD_enabled(); }
+
 protected:
   /**
    * @brief Compute the residual and Jacobian

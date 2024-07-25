@@ -40,6 +40,8 @@ public:
 
   TransientRegression(const OptionSet & options);
 
+  virtual void diagnose(std::vector<Diagnosis> & diagnoses) const override;
+
   bool run() override;
 
 private:

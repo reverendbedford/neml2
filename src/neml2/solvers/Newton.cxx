@@ -55,9 +55,12 @@ Newton::solve(NonlinearSystem & system, Tensor & x)
   // Check for initial convergence
   if (converged(0, nR0, nR0))
   {
-    // TODO: The final update is only necessary if we use AD
-    system.Jacobian();
-    final_update(system, x);
+    // The final update is only necessary if we use AD
+    if (system.is_AD_enabled())
+    {
+      system.Jacobian();
+      final_update(system, x);
+    }
     return {true, 0};
   }
 
@@ -78,9 +81,12 @@ Newton::solve(NonlinearSystem & system, Tensor & x)
     // Check for convergence
     if (converged(i, nR, nR0))
     {
-      // TODO: The final update is only necessary if we use AD
-      system.Jacobian();
-      final_update(system, x);
+      // The final update is only necessary if we use AD
+      if (system.is_AD_enabled())
+      {
+        system.Jacobian();
+        final_update(system, x);
+      }
       return {true, i};
     }
   }

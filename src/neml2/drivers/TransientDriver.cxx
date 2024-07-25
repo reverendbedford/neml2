@@ -138,10 +138,8 @@ TransientDriver::TransientDriver(const OptionSet & options)
 void
 TransientDriver::diagnose(std::vector<Diagnosis> & diagnoses) const
 {
-  _model.diagnose(diagnoses);
-
   Driver::diagnose(diagnoses);
-
+  _model.diagnose(diagnoses);
   diagnostic_assert(diagnoses,
                     _time.dim() == 2,
                     "Input time should have dimension 2 but instead has dimension ",

@@ -51,13 +51,23 @@ TransientRegression::TransientRegression(const OptionSet & options)
     _rtol(options.get<Real>("rtol")),
     _atol(options.get<Real>("atol"))
 {
-  neml_assert(fs::exists(_reference), "Reference file '", _reference.string(), "' does not exist.");
+}
+
+void
+TransientRegression::diagnose(std::vector<Diagnosis> & diagnoses) const
+{
+  Driver::diagnose(diagnoses);
+  _driver.diagnose(diagnoses);
+  diagnostic_assert(diagnoses,
+                    fs::exists(_reference),
+                    "Reference file '",
+                    _reference.string(),
+                    "' does not exist.");
 }
 
 bool
 TransientRegression::run()
 {
-  neml2::diagnose(_driver);
   _driver.run();
 
   // Verify the result
