@@ -94,15 +94,7 @@ The command installs a package named `%neml2` to the site-packages directory, an
 import neml2
 ```
 
-For security reasons, static analysis tools and IDEs for Python usually refuse to extract function signature, type hints, etc. from binary extensions such as the NEML2 Python bindings. As a workaround, "stubs" can be generated a priori to make them less opaque. The NEML2 python package works well with `pybind11-stubgen` for that purpose. Stubs can be generated using the following command:
-
-```
-pip install pybind11-stubgen
-pybind11-stubgen neml2
-```
-
-Refer to the [pybind11-stubgen documentation](https://pypi.org/project/pybind11-stubgen/) for more command-line options. Most static analysis tools and IDEs can understand the stubs and therefore provide the full set of features.
-
+For security reasons, static analysis tools and IDEs for Python usually refuse to extract function signature, type hints, etc. from binary extensions such as the NEML2 Python bindings. As a workaround, NEML2 automatically generates "stubs" using `pybind11-stubgen` immediately after Python bindings are built to make them less opaque. Refer to the [pybind11-stubgen documentation](https://pypi.org/project/pybind11-stubgen/) for more information.
 
 ## Build customization {#install-build-customization}
 

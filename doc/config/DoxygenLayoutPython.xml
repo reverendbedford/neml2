@@ -32,6 +32,7 @@
     <tab type="usergroup" title="Physics Documentation">
       <tab type="user" url="../solid-mechanics.html" title="Solid Mechanics"/>
     </tab>
+    <tab type="user" url="../faq.html" title="Frequently Asked Questions"/>
     <tab type="usergroup" title="C++ API Reference">
       <tab type="user" url="../namespaces.html" title="Namespaces"/>
       <tab type="user" url="../annotated.html" title="Classes"/>

@@ -43,7 +43,11 @@ main(int argc, char * argv[])
       .help("additional command-line arguments to pass to the input file parser");
 
   // Optional arguments
-  program.add_argument("-t", "--time")
+  auto & excl_group = program.add_mutually_exclusive_group();
+  excl_group.add_argument("-d", "--diagnose")
+      .help("run diagnostics on common problems and exit (without further execution)")
+      .flag();
+  excl_group.add_argument("-t", "--time")
       .help("output the elapsed wall time during model evaluation")
       .flag();
 
@@ -72,6 +76,24 @@ main(int argc, char * argv[])
     {
       neml2::load_input(input, additional_cliargs);
       auto & driver = neml2::Factory::get_object<neml2::Driver>("Drivers", drivername);
+
+      if (program["--diagnose"] == true)
+      {
+        std::cout << "Running diagnostics on input file '" << input << "' driver '" << drivername
+                  << "'...\n";
+        try
+        {
+          neml2::diagnose(driver);
+        }
+        catch (const neml2::NEMLException & e)
+        {
+          std::cout << "Found the following potential issues(s):\n";
+          std::cout << e.what() << std::endl;
+          return 0;
+        }
+        std::cout << "No issue identified :)\n";
+        return 0;
+      }
 
       {
         neml2::TimedSection ts(drivername, "Driver::run");
