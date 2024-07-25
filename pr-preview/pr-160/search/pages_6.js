@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['mechanics_0',['Solid Mechanics',['../solid-mechanics.html',1,'']]],
-  ['model_1',['Model',['../custom-model.html',1,'Custom Model'],['../system-models.html',1,'Model']]],
-  ['models_2',['[Models]',['../syntax-models.html',1,'']]]
+  ['input_20file_0',['Input File',['../input-file.html',1,'']]],
+  ['installation_20guide_1',['Installation Guide',['../install.html',1,'']]]
 ];

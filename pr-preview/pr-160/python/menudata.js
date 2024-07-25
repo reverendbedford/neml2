@@ -49,6 +49,7 @@ var menudata={children:[
 {text:"Driver",url:"../system-drivers.html"}]},
 {text:"Physics Documentation",url:"usergroup4.html",children:[
 {text:"Solid Mechanics",url:"../solid-mechanics.html"}]},
+{text:"Frequently Asked Questions",url:"../faq.html"},
 {text:"C++ API Reference",url:"usergroup5.html",children:[
 {text:"Namespaces",url:"../namespaces.html"},
 {text:"Classes",url:"../annotated.html"}]},

@@ -60,6 +60,7 @@ var NAVTREE =
     [ "Physics Documentation", "usergroup4.html", [
       [ "Solid Mechanics", "../solid-mechanics.html", null ]
     ] ],
+    [ "Frequently Asked Questions", "../faq.html", null ],
     [ "C++ API Reference", "usergroup5.html", [
       [ "Namespaces", "../namespaces.html", null ],
       [ "Classes", "../annotated.html", null ]

@@ -60,6 +60,7 @@ var NAVTREE =
     [ "Physics Documentation", "usergroup4.html", [
       [ "Solid Mechanics", "solid-mechanics.html", null ]
     ] ],
+    [ "Frequently Asked Questions", "faq.html", null ],
     [ "C++ API Reference", "usergroup5.html", [
       [ "Namespaces", "namespaces.html", "namespaces" ],
       [ "Classes", "annotated.html", "annotated" ]
@@ -83,8 +84,8 @@ var NAVTREEINDEX =
 "classneml2_1_1SingleSlipStrengthMap.html#a3aa4e79a23979001be36c6b409a4ce4c",
 "classneml2_1_1TransientDriver.html#a325904b16457ae0b7a1233c206df9053",
 "classneml2_1_1VariableStore.html#a2d2e29f41191ea798a556db8e88a6f84",
-"index.html#autotoc_md3",
-"namespaceneml2_1_1crystallography.html#addab1d4919f14a270f6e7a14b0974843"
+"index.html#autotoc_md2",
+"namespaceneml2_1_1crystallography.html#ab2aa1766ea6875c2d3d3ae3d07574485"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

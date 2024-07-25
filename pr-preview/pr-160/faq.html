@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>NEML2: [Data]</title>
+<title>NEML2: Frequently Asked Questions</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -83,7 +83,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('syntax-data.html',''); initResizable(); });
+$(function(){initNavTree('faq.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -109,89 +109,30 @@ $(function(){initNavTree('syntax-data.html',''); initResizable(); });
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">[Data]</div></div>
+  <div class="headertitle"><div class="title">Frequently Asked Questions</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md39">Available objects and their input file syntax</a><ul><li class="level2"><a href="#crystalgeometry">CrystalGeometry</a></li>
-<li class="level2"><a href="#cubiccrystal">CubicCrystal</a></li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="textblock"><p><a class="anchor" id="md_content_2syntax_2data"></a></p>
-<dl class="section note"><dt>Note</dt><dd>Clicking on the option with a triangle bullet ▸ next to it will expand/collapse its detailed information.</dd>
-<dd>
-Type name written in PascalCase typically refer to a NEML2 object type, oftentimes a primitive tensor type.</dd>
-<dd>
-The 🔗 symbol denotes that the option can <a class="el" href="input-file.html#cross-referencing">cross-reference</a> another object.</dd>
-<dd>
-You can always use <code>Ctrl</code>+<code>F</code> or <code>Cmd</code>+<code>F</code> to search the entire page.</dd></dl>
-<h1><a class="anchor" id="autotoc_md39"></a>
-Available objects and their input file syntax</h1>
-<p>Refer to <a class="el" href="system-data.html">System Documentation</a> for detailed explanation about this system.</p>
-<h2><a class="anchor" id="crystalgeometry"></a>
-CrystalGeometry</h2>
-<p>A Data object storing basic crystallographic information for a given crystal system. </p><details >
-<summary >
-<code>crystal_class</code> The set of symmetry operations defining the crystal class.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: R2 🔗 </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>lattice_vectors</code> The three lattice vectors defining the crystal translational symmetry</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: Vec 🔗 </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>slip_directions</code> A list of Miller indices defining the slip directions</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: MillerIndex 🔗 </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>slip_planes</code> A list of Miller indices defining the slip planes</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: MillerIndex 🔗 </li>
-</ul>
-</details>
-<p>Detailed documentation <a class="el" href="classneml2_1_1crystallography_1_1CrystalGeometry.html">link</a></p>
-<h2><a class="anchor" id="cubiccrystal"></a>
-CubicCrystal</h2>
-<p>A specialization of the general CrystalGeometry class defining a cubic crystal system. </p><details >
-<summary >
-<code>lattice_parameter</code> The lattice parameter</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: Scalar 🔗 </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>slip_directions</code> A list of Miller indices defining the slip directions</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: MillerIndex 🔗 </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>slip_planes</code> A list of Miller indices defining the slip planes</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: MillerIndex 🔗 </li>
-</ul>
-</details>
-<p>Detailed documentation <a class="el" href="classneml2_1_1crystallography_1_1CubicCrystal.html">link</a> </p>
+<div class="textblock"><p><a class="anchor" id="md__2home_2runner_2work_2neml2_2neml2_2doc_2content_2faq"></a> </p>
+<h1><a class="anchor" id="autotoc_md8"></a>
+How do I run a NEML2 input file?</h1>
+<p>NEML2 is designed as a <em>library</em>, not a <em>program</em>: The core library itself cannot be used as a standalone program to parse and evaluate a material model defined in an input file. However, we acknowledge this common need and therefore provide two convenient options for users to effectively use NEML2 as a standalone program:</p><ol type="1">
+<li>The NEML2 Runner: As documented in <a class="el" href="install.html#install-build-customization">build customization</a>, the <code>NEML2_RUNNER</code> CMake option can be turned on to create a simple runner for parsing, diagnosing, running and profiling NEML2 material models. Once the runner is built, an executable will be placed inside the <code>runner</code> directory under the build directory. Invoking the executable without any additional argument or with the <code>-h</code> or <code>--help</code> argument will print out the usage message: <div class="fragment"><div class="line">driver: 1 argument(s) expected. 0 provided.</div>
+<div class="line">Usage: runner [--help] [--version] [--diagnose] [--time] input driver additional_args</div>
+<div class="line"> </div>
+<div class="line">Positional arguments:</div>
+<div class="line">  input            path to the input file</div>
+<div class="line">  driver           name of the driver in the input file</div>
+<div class="line">  additional_args  additional command-line arguments to pass to the input file parser [nargs: 0 or more]</div>
+<div class="line"> </div>
+<div class="line">Optional arguments:</div>
+<div class="line">  -h, --help       shows help message and exits</div>
+<div class="line">  -v, --version    prints version information and exits</div>
+<div class="line">  -d, --diagnose   run diagnostics on common problems and exit (without further execution)</div>
+<div class="line">  -t, --time       output the elapsed wall time during model evaluation</div>
+</div><!-- fragment --></li>
+<li>The NEML2 Pyton package: As mentioned in the <a class="el" href="install.html">installation guide</a>, NEML2 also provides an <em>experimental</em> Python package which provides bindings for the primitive tensors and parsers for deserializing and running material models. Once the NEML2 Python package is successfully installed, one can follow the <a class="el" href="python-package.html">user guide for NEML2 Python package</a> to evaluate material models with given inputs.</li>
+</ol>
+<p>In addition to the above options, one can always write a simple C++ program and link against NEML2. Boilerplate for the C++ program can be found in the <a class="el" href="cpp-backend.html">user guide</a>, and CMake integration is documented in the <a class="el" href="install.html#install-cmake-integration">installation guide</a>. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

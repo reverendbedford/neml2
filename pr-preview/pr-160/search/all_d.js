@@ -49,7 +49,7 @@ var searchData=
   ['load_5finput_46',['load_input',['../namespaceneml2.html#ae26cd3cedac7d43bddad9f8502bbe6bf',1,'neml2']]],
   ['load_5fmodel_47',['load_model',['../namespaceneml2.html#a0e8c7aeae6d7c24a44a404965d5b5fa3',1,'neml2']]],
   ['load_5foptions_48',['load_options',['../classneml2_1_1Factory.html#ac15b1f4db97b6302883e1e055ad39894',1,'neml2::Factory']]],
-  ['loading_20a_20model_20from_20an_20input_20file_49',['Loading a model from an input file',['../cpp-backend.html#autotoc_md35',1,'']]],
+  ['loading_20a_20model_20from_20an_20input_20file_49',['Loading a model from an input file',['../cpp-backend.html#autotoc_md36',1,'']]],
   ['log_50',['log',['../namespaceneml2_1_1math.html#a7160a3cce2d8d7d330414a7db59b02df',1,'neml2::math']]],
   ['logspace_51',['logspace',['../classneml2_1_1TensorBase.html#a396a6aaae5bd291fe8c1af7a37fe3c54',1,'neml2::TensorBase']]],
   ['logspacemillerindex_52',['LogspaceMillerIndex',['../syntax-tensors.html#logspacemillerindex',1,'']]],

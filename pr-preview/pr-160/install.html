@@ -113,33 +113,33 @@ $(function(){initNavTree('install.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md8">Prerequisites</a></li>
-<li class="level1"><a href="#autotoc_md9">Dependencies</a><ul><li class="level2"><a href="#autotoc_md10">Required dependencies</a></li>
-<li class="level2"><a href="#autotoc_md11">Optional dependencies</a></li>
+<ul><li class="level1"><a href="#autotoc_md9">Prerequisites</a></li>
+<li class="level1"><a href="#autotoc_md10">Dependencies</a><ul><li class="level2"><a href="#autotoc_md11">Required dependencies</a></li>
+<li class="level2"><a href="#autotoc_md12">Optional dependencies</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md12">Build and install</a><ul><li class="level2"><a href="#autotoc_md13">C++ backend</a></li>
-<li class="level2"><a href="#autotoc_md14">Python package</a></li>
+<li class="level1"><a href="#autotoc_md13">Build and install</a><ul><li class="level2"><a href="#autotoc_md14">C++ backend</a></li>
+<li class="level2"><a href="#autotoc_md15">Python package</a></li>
 </ul>
 </li>
 <li class="level1"><a href="#install-build-customization">Build customization</a></li>
 <li class="level1"><a href="#install-cmake-integration">CMake integration</a></li>
-<li class="level1"><a href="#install-testing">Testing</a><ul><li class="level2"><a href="#autotoc_md15">C++ backend</a></li>
-<li class="level2"><a href="#autotoc_md16">Python package</a></li>
+<li class="level1"><a href="#install-testing">Testing</a><ul><li class="level2"><a href="#autotoc_md16">C++ backend</a></li>
+<li class="level2"><a href="#autotoc_md17">Python package</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md__2home_2runner_2work_2neml2_2neml2_2doc_2content_2install"></a></p>
-<h1><a class="anchor" id="autotoc_md8"></a>
+<h1><a class="anchor" id="autotoc_md9"></a>
 Prerequisites</h1>
 <p>Compiling the NEML2 core library requires</p><ul>
 <li>A C++ compiler with C++17 support</li>
 <li>CMake &gt;= 3.28</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md9"></a>
+<h1><a class="anchor" id="autotoc_md10"></a>
 Dependencies</h1>
-<h2><a class="anchor" id="autotoc_md10"></a>
+<h2><a class="anchor" id="autotoc_md11"></a>
 Required dependencies</h2>
 <ul>
 <li><a href="https://pytorch.org/get-started/locally/">PyTorch</a>, version 2.2.2.</li>
@@ -150,7 +150,7 @@ Required dependencies</h2>
 </ul>
 <dl class="section note"><dt>Note</dt><dd>The libTorch distributions from the official website come with two flavors: "Pre-cxx11 ABI" and "cxx11 ABI". Both variants are supported by NEML2. If you are unsure, we recommend the one with "cxx11 ABI".</dd></dl>
 <p>If no PyTorch installation can be detected and <code>LIBTORCH_DIR</code> is not set at configure time, the NEML2 CMake script will automatically download and use the libTorch obtained from the official website. Note, however, that this method only works on Linux and Mac systems.</p>
-<h2><a class="anchor" id="autotoc_md11"></a>
+<h2><a class="anchor" id="autotoc_md12"></a>
 Optional dependencies</h2>
 <dl class="section note"><dt>Note</dt><dd>No action is needed to manually obtain the optional dependencies. The compatible optional dependencies will be automatically downloaded and configured by CMake depending on the build customization.</dd></dl>
 <ul>
@@ -169,10 +169,10 @@ Optional dependencies</h2>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md12"></a>
+<h1><a class="anchor" id="autotoc_md13"></a>
 Build and install</h1>
 <dl class="section note"><dt>Note</dt><dd>NEML2 is available both as a C++ library and as a Python package. Instructions for building and installing each variant are provided below. If you only need one of them, the other can be skipped.</dd></dl>
-<h2><a class="anchor" id="autotoc_md13"></a>
+<h2><a class="anchor" id="autotoc_md14"></a>
 C++ backend</h2>
 <p>First, obtain the NEML2 source code.</p>
 <div class="fragment"><div class="line">git clone https://github.com/reverendbedford/neml2.git</div>
@@ -186,17 +186,14 @@ C++ backend</h2>
 <p>The compiled NEML2 can be installed as a system library.</p>
 <div class="fragment"><div class="line">cmake --install build</div>
 </div><!-- fragment --><p>For more fine-grained control over the configure, build, and install commands, please refer to the <a href="https://cmake.org/cmake/help/latest/manual/cmake.1.html">CMake documentation</a>.</p>
-<h2><a class="anchor" id="autotoc_md14"></a>
+<h2><a class="anchor" id="autotoc_md15"></a>
 Python package</h2>
 <p>NEML2 also provides an <em>experimental</em> Python package which provides bindings for the primitive tensors and parsers for deserializing and running material models. Package source distributions are available on PyPI, but package wheels are currently not built and uploaded to PyPI.</p>
 <p>To install the NEML2 Python package, run the following command at the repository's root. Note that unlike the C++ backend, we do not expose any interface for customizing the build. The default configuration is already optimized for building the Python package.</p>
 <div class="fragment"><div class="line">pip install -v .</div>
 </div><!-- fragment --><p>The command installs a package named <code>neml2</code> to the site-packages directory, and so it can be imported in Python scripts using</p>
 <div class="fragment"><div class="line"><span class="keyword">import</span> neml2</div>
-</div><!-- fragment --><p>For security reasons, static analysis tools and IDEs for Python usually refuse to extract function signature, type hints, etc. from binary extensions such as the NEML2 Python bindings. As a workaround, "stubs" can be generated a priori to make them less opaque. The NEML2 python package works well with <code>pybind11-stubgen</code> for that purpose. Stubs can be generated using the following command:</p>
-<div class="fragment"><div class="line">pip install pybind11-stubgen</div>
-<div class="line">pybind11-stubgen neml2</div>
-</div><!-- fragment --><p>Refer to the <a href="https://pypi.org/project/pybind11-stubgen/">pybind11-stubgen documentation</a> for more command-line options. Most static analysis tools and IDEs can understand the stubs and therefore provide the full set of features.</p>
+</div><!-- fragment --><p>For security reasons, static analysis tools and IDEs for Python usually refuse to extract function signature, type hints, etc. from binary extensions such as the NEML2 Python bindings. As a workaround, NEML2 automatically generates "stubs" using <code>pybind11-stubgen</code> immediately after Python bindings are built to make them less opaque. Refer to the <a href="https://pypi.org/project/pybind11-stubgen/">pybind11-stubgen documentation</a> for more information.</p>
 <h1><a class="anchor" id="install-build-customization"></a>
 Build customization</h1>
 <p>Additional configuration options can be passed via command line using the <code>-DOPTION</code> or <code>-DOPTION=ON</code> format. For example,</p>
@@ -249,7 +246,7 @@ CMake integration</h1>
 <div class="line">target_link_libraries(foo neml2)</div>
 </div><!-- fragment --><h1><a class="anchor" id="install-testing"></a>
 Testing</h1>
-<h2><a class="anchor" id="autotoc_md15"></a>
+<h2><a class="anchor" id="autotoc_md16"></a>
 C++ backend</h2>
 <p>By default when <code>NEML2_TESTS</code> is set to <code>ON</code>, three test suites are built under the specified build directory:</p>
 <ul>
@@ -260,7 +257,7 @@ C++ backend</h2>
 <p>The tests assume the working directory to be the <code>tests</code> directory relative to the repository root. For Visual Studio Code users, the <a href="https://github.com/matepek/vscode-catch2-test-adapter">C++ TestMate</a> extension can be used to automatically discover and run tests. In the extension settings, the "Working Directory" variable should be modified to <code>${workspaceFolder}/tests</code>. The <code>settings.json</code> file shall contain the following entry: </p><div class="fragment"><div class="line">{</div>
 <div class="line">  &quot;testMate.cpp.test.workingDirectory&quot;: &quot;${workspaceFolder}/tests&quot;,</div>
 <div class="line">}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md16"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md17"></a>
 Python package</h2>
 <p>A collection of tests are available under <code>python/tests</code> to ensure the NEML2 Python package is working correctly. For Visual Studio Code users, the <a href="https://github.com/Microsoft/vscode-python">Python</a> extension can be used to automatically discover and run tests. In the extension settings, the "Pytest Enabled" variable shall be set to true. In addition, "pytestArgs" shall provide the location of tests, i.e. "${workspaceFolder}/python/tests". The <code>settings.json</code> file shall contain the following entries: </p><div class="fragment"><div class="line">{</div>
 <div class="line">  &quot;python.testing.pytestEnabled&quot;: true,</div>

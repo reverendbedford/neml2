@@ -113,25 +113,25 @@ $(function(){initNavTree('solid-mechanics.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md17">Elasticity</a></li>
-<li class="level1"><a href="#autotoc_md18">Plasticity (macroscale)</a><ul><li class="level2"><a href="#autotoc_md19">Consistent plasticity</a></li>
-<li class="level2"><a href="#autotoc_md20">Viscoplasticity</a></li>
-<li class="level2"><a href="#autotoc_md21">Effective stress</a></li>
-<li class="level2"><a href="#autotoc_md22">Perfectly Plastic Yield function</a></li>
-<li class="level2"><a href="#autotoc_md23">Isotropic hardening</a></li>
-<li class="level2"><a href="#autotoc_md24">Kinematic hardening</a></li>
-<li class="level2"><a href="#autotoc_md25">Back stress</a></li>
-<li class="level2"><a href="#autotoc_md26">Mixed hardening</a></li>
-<li class="level2"><a href="#autotoc_md27">Flow rules</a></li>
+<ul><li class="level1"><a href="#autotoc_md18">Elasticity</a></li>
+<li class="level1"><a href="#autotoc_md19">Plasticity (macroscale)</a><ul><li class="level2"><a href="#autotoc_md20">Consistent plasticity</a></li>
+<li class="level2"><a href="#autotoc_md21">Viscoplasticity</a></li>
+<li class="level2"><a href="#autotoc_md22">Effective stress</a></li>
+<li class="level2"><a href="#autotoc_md23">Perfectly Plastic Yield function</a></li>
+<li class="level2"><a href="#autotoc_md24">Isotropic hardening</a></li>
+<li class="level2"><a href="#autotoc_md25">Kinematic hardening</a></li>
+<li class="level2"><a href="#autotoc_md26">Back stress</a></li>
+<li class="level2"><a href="#autotoc_md27">Mixed hardening</a></li>
+<li class="level2"><a href="#autotoc_md28">Flow rules</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md28">Mixed stress/strain control</a></li>
-<li class="level1"><a href="#autotoc_md29">Crystal plasticity</a></li>
+<li class="level1"><a href="#autotoc_md29">Mixed stress/strain control</a></li>
+<li class="level1"><a href="#autotoc_md30">Crystal plasticity</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md__2home_2runner_2work_2neml2_2neml2_2doc_2content_2physics_2solid__mechanics"></a></p>
 <p>The solid mechanics physics module is a collection objects serving as building blocks for composing material models for solids. Each category of the material model is explained below, with both the mathematical formulations and example input files.</p>
-<h1><a class="anchor" id="autotoc_md17"></a>
+<h1><a class="anchor" id="autotoc_md18"></a>
 Elasticity</h1>
 <p>Elasticity models describe the relationship between stress \( \boldsymbol{\sigma} \) and strain \( \boldsymbol{\varepsilon} \) without any history-dependent (internal) state variables. In general, the stress-strain relation can be written as</p>
 <p class="formulaDsp">
@@ -154,7 +154,7 @@ Elasticity</h1>
 <div class="line">    poisson_ratio = 0.3</div>
 <div class="line">  []</div>
 <div class="line">[]</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md18"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md19"></a>
 Plasticity (macroscale)</h1>
 <p>Generally speaking, plasticity models describe (oftentimes irreversible and dissipative) history-dependent deformation of solid materials. The plastic deformation is governed by the plastic loading/unloading conditions (or more generally the Karush-Kuhn-Tucker conditions):</p>
 <p class="formulaDsp">
@@ -163,7 +163,7 @@ Plasticity (macroscale)</h1>
 \end{align*}
 </p>
 <p>where \( f^p \) is the yield function, and \( \gamma \) is the consistency parameter.</p>
-<h2><a class="anchor" id="autotoc_md19"></a>
+<h2><a class="anchor" id="autotoc_md20"></a>
 Consistent plasticity</h2>
 <p>Consistent plasticity refers to the family of (macroscale) plasticity models that solve the plastic loading/unloading conditions (or the KKT conditions) exactly (up to machine precision).</p>
 <blockquote class="doxtable">
@@ -233,7 +233,7 @@ Consistent plasticity</h2>
 <div class="line">    additional_outputs = &#39;state/internal/Ep&#39;</div>
 <div class="line">  []</div>
 <div class="line">[]</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md20"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md21"></a>
 Viscoplasticity</h2>
 <p>Viscoplasticity models regularize the KKT conditions by introducing approximations to the constraints. A widely adopted approximation is the Perzyna model where rate sensitivity is baked into the approximation following a power-law relation:</p>
 <p class="formulaDsp">
@@ -305,7 +305,7 @@ Viscoplasticity</h2>
 <div class="line">    additional_outputs = &#39;state/internal/Ep&#39;</div>
 <div class="line">  []</div>
 <div class="line">[]</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md21"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md22"></a>
 Effective stress</h2>
 <p>The effective stress is a measure of stress describing how the plastic deformation "flows". For example, the widely-used \( J_2 \) plasticity uses the von Mises stress as the stress measure, i.e.,</p>
 <p class="formulaDsp">
@@ -323,7 +323,7 @@ Effective stress</h2>
 <div class="line">    invariant = <span class="stringliteral">&#39;state/internal/s&#39;</span></div>
 <div class="line">  []</div>
 <div class="line">[]</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md22"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md23"></a>
 Perfectly Plastic Yield function</h2>
 <p>For perfectly plastic materials, the yield function only depends on the effective stress and a constant yield stress, i.e., the envelope does not shrink or expand depending on the loading history.</p>
 <p class="formulaDsp">
@@ -344,7 +344,7 @@ Perfectly Plastic Yield function</h2>
 <div class="line">    yield_stress = 5</div>
 <div class="line">  []</div>
 <div class="line">[]</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md23"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md24"></a>
 Isotropic hardening</h2>
 <p>The equivalent plastic strain \( \bar{\varepsilon}^p \) is a scalar-valued internal variable that can be introduced to control the shape of the yield function. The isotropic strain hardening \( k \) is controlled by the accumulated equivalent plastic strain, and enters the yield function as</p>
 <p class="formulaDsp">
@@ -370,7 +370,7 @@ Isotropic hardening</h2>
 <div class="line">    isotropic_hardening = <span class="stringliteral">&#39;state/internal/k&#39;</span></div>
 <div class="line">  []</div>
 <div class="line">[]</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md24"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md25"></a>
 Kinematic hardening</h2>
 <p>The kinematic plastic strain \( \boldsymbol{K}^p \) is a tensor-valued internal variable that can be introduced to control the shape of the yield function. The kinematic hardening \( X \) is controlled by the accumulated kinematic plastic strain, and the effective stress is defined in terms of the over stress. In case of \( J_2 \), the effective stress can be rewritten as</p>
 <p class="formulaDsp">
@@ -403,7 +403,7 @@ Kinematic hardening</h2>
 <div class="line">    yield_stress = 5</div>
 <div class="line">  []</div>
 <div class="line">[]</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md25"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md26"></a>
 Back stress</h2>
 <p>An alternative way of introducing hardening is through back stresses. Instead of modeling the accumulation of kinematic plastic strain, back stress models directly describe the evolution of back stress. An example input file defining a yield function with \( J_2 \) flow and two back stresses is shown below.</p>
 <div class="fragment"><div class="line">[Models]</div>
@@ -424,7 +424,7 @@ Back stress</h2>
 <div class="line">    yield_stress = 5</div>
 <div class="line">  []</div>
 <div class="line">[]</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md26"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md27"></a>
 Mixed hardening</h2>
 <p>Isotropic hardening, kinematic hardening, and back stresses are all optional and can be "mixed" in the definition of a yield function. The example input file below shows a yield function with \( J_2 \) flow, isotropic hardening, kinematic hardening, and two back stresses.</p>
 <div class="fragment"><div class="line">[Models]</div>
@@ -455,7 +455,7 @@ Mixed hardening</h2>
 <div class="line">    isotropic_hardening = <span class="stringliteral">&#39;state/internal/k&#39;</span></div>
 <div class="line">  []</div>
 <div class="line">[]</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md27"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md28"></a>
 Flow rules</h2>
 <p>Flow rules are required to map from the consistency parameter \( \gamma \) to various internal variables describing the state of hardening, such as the equivalent plastic strain \( \bar{\varepsilon}^p \), the kinematic plastic strain \( \boldsymbol{K}^p \), and the back stress \( \boldsymbol{X} \).</p>
 <p>Associative flow rules define flow directions variationally according to the principle of maximum dissipation, i.e.,</p>
@@ -488,7 +488,7 @@ Flow rules</h2>
 <div class="line">  []</div>
 <div class="line">[]</div>
 </div><!-- fragment --><p>In the above example, a model named "normality" is used to compute the associative flow directions, and the rates of the internal variables are mapped using the rate of the consistency parameter and each of the associative flow direction. The cross-referenced model named "flow" (omitted in the example) is the composition of models defining the yield function \( f^p \) in terms of the variational arguments \( \boldsymbol{\sigma} \), \( k \), and \( \boldsymbol{X} \).</p>
-<h1><a class="anchor" id="autotoc_md28"></a>
+<h1><a class="anchor" id="autotoc_md29"></a>
 Mixed stress/strain control</h1>
 <p>NEML2 models can be setup to take as input strain and provide stress or take as input stress and provide strain. With some additional work, a model that "natively" works in either strain or stress control can be modified to work under mixed stress/strain control.</p>
 <p>Mixed control here means that some components of the strain tensor and some components of the stress tensor are provided as input and the model must solve for the conjugate, missing components of stress or strain.</p>
@@ -518,7 +518,7 @@ Mixed stress/strain control</h1>
 <div class="line">  cauchy_stress = <span class="stringliteral">&#39;output/stress&#39;</span></div>
 <div class="line">  strain = <span class="stringliteral">&#39;output/strain&#39;</span></div>
 <div class="line">[]</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md29"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md30"></a>
 Crystal plasticity</h1>
 <p>NEML2 adopts an incremental rate-form view of crystal plasticity. The fundemental kinematics derive from the rate expansion of the elastic-plastic multiplactive split:</p>
 <p class="formulaDsp">
