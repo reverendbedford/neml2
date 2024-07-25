@@ -48,8 +48,6 @@ nt = 100
     times = 'times'
     prescribed_strains = 'strains'
     save_as = 'result.pt'
-    show_input_axis = true
-    show_output_axis = true
   []
   [regression]
     type = TransientRegression

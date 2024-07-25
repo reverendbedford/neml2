@@ -110,6 +110,7 @@
     type = TransientRegression
     driver = 'driver'
     reference = 'gold/result.pt'
+    atol = 1e-7 # some entries of input.state/internal/gamma_rate_ri is close to machine precision
   []
 []
 
