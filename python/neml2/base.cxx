@@ -115,6 +115,28 @@ where it is desirable to deallocate models on-the-fly.
 :param model:     Name of the model
 :param enable_AD: Enable automatic differentiation
 )");
+  m.def(
+      "diagnose",
+      [](const Model & m)
+      {
+        try
+        {
+          diagnose(m);
+        }
+        catch (const NEMLException & e)
+        {
+          return e.what();
+        }
+        return "";
+      },
+      py::arg("model"),
+      R"(
+Diagnose common issues in model setup.
+
+:param model: Model to be diagnosed
+:return: An empty string if no potential issue has been identified. Otherwise,
+returns a string containing all identified issues.
+)");
 
   // neml2.base.TensorValue
   tensor_value_cls
