@@ -94,7 +94,7 @@ DiagnosticsInterface::diagnostic_check_input_variable(std::vector<Diagnosis> & d
   diagnostic_assert(diagnoses,
                     v.is_state() || v.is_old_state() || v.is_force() || v.is_old_force() ||
                         v.is_residual() || v.is_parameter(),
-                    "Variable ",
+                    "Input variable ",
                     v.name(),
                     " must be on one of the following sub-axes: state, old_state, forces, "
                     "old_forces, residual, parameters.");
@@ -107,7 +107,7 @@ DiagnosticsInterface::diagnostic_check_output_variable(std::vector<Diagnosis> & 
   diagnostic_assert(
       diagnoses,
       v.is_state() || v.is_force() || v.is_residual() || v.is_parameter(),
-      "Variable ",
+      "Output variable ",
       v.name(),
       " must be on one of the following sub-axes: state, forces, residual, parameters.");
 }
