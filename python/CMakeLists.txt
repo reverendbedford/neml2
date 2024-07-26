@@ -32,8 +32,10 @@ add_custom_target(python-stub ALL
 
 # Artifacts
 configure_file(neml2/__init__.py ${NEML2_BINARY_DIR}/python/neml2/__init__.py COPYONLY)
+configure_file(neml2/visualize.py ${NEML2_BINARY_DIR}/python/neml2/visualize.py COPYONLY)
 install(FILES
   neml2/__init__.py
+  neml2/visualize.py
   ${NEML2_BINARY_DIR}/python/neml2/__init__.pyi
   ${NEML2_BINARY_DIR}/python/neml2/base.pyi
   ${NEML2_BINARY_DIR}/python/neml2/math.pyi
