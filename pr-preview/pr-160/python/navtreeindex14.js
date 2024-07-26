@@ -1,5 +1,13 @@
 var NAVTREEINDEX14 =
 {
+"classtensors_1_1WWR4BatchView.html#a06cdae8e564737ce1065bd7d3c33f7bc":[9,1,1,65,9],
+"classtensors_1_1WWR4BatchView.html#a06cdae8e564737ce1065bd7d3c33f7bc":[9,0,2,65,9],
+"classtensors_1_1WWR4BatchView.html#a291cf91b893b7bf50a66d4a6702149e7":[9,0,2,65,6],
+"classtensors_1_1WWR4BatchView.html#a291cf91b893b7bf50a66d4a6702149e7":[9,1,1,65,6],
+"classtensors_1_1WWR4BatchView.html#a35536134a6ceb1e866faf188992e9c9f":[9,0,2,65,7],
+"classtensors_1_1WWR4BatchView.html#a35536134a6ceb1e866faf188992e9c9f":[9,1,1,65,7],
+"classtensors_1_1WWR4BatchView.html#a35b43af105d3ad9501b61688129ad148":[9,1,1,65,1],
+"classtensors_1_1WWR4BatchView.html#a35b43af105d3ad9501b61688129ad148":[9,0,2,65,1],
 "classtensors_1_1WWR4BatchView.html#a4109b1d2dc4ac828e0b98e30962ce4a9":[9,0,2,65,11],
 "classtensors_1_1WWR4BatchView.html#a4109b1d2dc4ac828e0b98e30962ce4a9":[9,1,1,65,11],
 "classtensors_1_1WWR4BatchView.html#a43080b242de156a5409d4b58fc7d0c9c":[9,0,2,65,10],

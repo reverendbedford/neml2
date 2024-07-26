@@ -26,7 +26,7 @@ var searchData=
   ['dependencyresolver_23',['DependencyResolver',['../classneml2_1_1DependencyResolver.html#a355819888f9c9e2cecf8d7ff2f28aa88',1,'neml2::DependencyResolver']]],
   ['dereferenceiterator_24',['DereferenceIterator',['../structneml2_1_1Storage_1_1DereferenceIterator.html#aff1ef965010b2a4c8744ad33d8412342',1,'neml2::Storage::DereferenceIterator']]],
   ['derivative_25',['Derivative',['../classneml2_1_1Derivative.html#a472e58565db5f43c320535561e7444f7',1,'neml2::Derivative']]],
-  ['derivative_5fstorage_26',['derivative_storage',['../classneml2_1_1VariableStore.html#a1ed74d73fce62d022f68bdcc31cc5303',1,'neml2::VariableStore::derivative_storage()'],['../classneml2_1_1VariableStore.html#aa68c0cd79e201d97b9f14883783032a3',1,'neml2::VariableStore::derivative_storage() const'],['../classneml2_1_1VariableBase.html#aa68c0cd79e201d97b9f14883783032a3',1,'neml2::VariableBase::derivative_storage()']]],
+  ['derivative_5fstorage_26',['derivative_storage',['../classneml2_1_1VariableStore.html#a1ed74d73fce62d022f68bdcc31cc5303',1,'neml2::VariableStore::derivative_storage()'],['../classneml2_1_1VariableStore.html#aa68c0cd79e201d97b9f14883783032a3',1,'neml2::VariableStore::derivative_storage() const']]],
   ['det_27',['det',['../classneml2_1_1SR2.html#a6fdb9df3c5acea53dc685442380c169c',1,'neml2::SR2']]],
   ['detach_28',['detach',['../classneml2_1_1LabeledTensor.html#a55c462dc8ad0f78b6bf92e98c9cb5932',1,'neml2::LabeledTensor::detach()'],['../classneml2_1_1TensorBase.html#a55c462dc8ad0f78b6bf92e98c9cb5932',1,'neml2::TensorBase::detach()']]],
   ['detach_5f_29',['detach_',['../classneml2_1_1LabeledTensor.html#ac331193399284d393e0b9493c96a9cb7',1,'neml2::LabeledTensor']]],

@@ -1,7 +1,7 @@
 var classneml2_1_1Variable =
 [
-    [ "Variable", "classneml2_1_1Variable.html#a55c052aa9a055932ae0f516074866514", null ],
-    [ "Variable", "classneml2_1_1Variable.html#adc1fb5d435861cfea8e14995c4773acb", null ],
+    [ "Variable", "classneml2_1_1Variable.html#acea26132afb01dbb55c331138fa5cdce", null ],
+    [ "Variable", "classneml2_1_1Variable.html#a474c10dd4c36c37fb5e6a42cfec955bb", null ],
     [ "Variable", "classneml2_1_1Variable.html#afa2557f05957e6420fafbb2a56f26717", null ],
     [ "base_sizes", "classneml2_1_1Variable.html#aa9c80bdd72cc223b6a1bdccb0a0658c5", null ],
     [ "cache", "classneml2_1_1Variable.html#a3add2b5b4efde14d8d5c97ae802c86bf", null ],
@@ -12,6 +12,7 @@ var classneml2_1_1Variable =
     [ "operator=", "classneml2_1_1Variable.html#a8d16bfb5041979d974e00600840fcf21", null ],
     [ "requires_grad_", "classneml2_1_1Variable.html#a426f80d390276f554432a1698f5cce29", null ],
     [ "setup_views", "classneml2_1_1Variable.html#a5cde2f3a1f02db93e639f0ce765bc0db", null ],
+    [ "setup_views", "classneml2_1_1Variable.html#a1b08d5d4fece6b78588ad9441cd905e2", null ],
     [ "sizes", "classneml2_1_1Variable.html#ad86039703d857aaee9fb9736008f7601", null ],
     [ "tensor", "classneml2_1_1Variable.html#aa373fe769310476a747ff149d47f7529", null ],
     [ "type", "classneml2_1_1Variable.html#af8591747ce135c9b7e231a307dd503e2", null ],

@@ -66,7 +66,8 @@ var searchData=
   ['output_5faxis_63',['output_axis',['../classneml2_1_1VariableStore.html#a5211b18ee35729050e2d1d237a73c655',1,'neml2::VariableStore::output_axis()'],['../classneml2_1_1VariableStore.html#ad8bc07b5cd84ef12faff46908cbd2918',1,'neml2::VariableStore::output_axis() const']]],
   ['output_5fstorage_64',['output_storage',['../classneml2_1_1VariableStore.html#a3458910b69c5b699a60878d2bef2ec7d',1,'neml2::VariableStore::output_storage()'],['../classneml2_1_1VariableStore.html#a2150903577c9e97f2e9b211b4f6bca33',1,'neml2::VariableStore::output_storage() const']]],
   ['output_5ftype_65',['output_type',['../classneml2_1_1VariableStore.html#ad60c2f74edf33867d25d929620cdecdb',1,'neml2::VariableStore']]],
-  ['output_5fview_66',['output_view',['../classneml2_1_1VariableStore.html#aceceb0612a7031fca2adaa7602eee57e',1,'neml2::VariableStore']]],
-  ['output_5fviews_67',['output_views',['../classneml2_1_1VariableStore.html#a2d2e29f41191ea798a556db8e88a6f84',1,'neml2::VariableStore::output_views()'],['../classneml2_1_1VariableStore.html#a23feb8ff91b6db93e26cdc502f081f08',1,'neml2::VariableStore::output_views() const']]],
-  ['overview_68',['Overview',['../index.html#autotoc_md1',1,'']]]
+  ['output_5fvariable_66',['output_variable',['../classneml2_1_1VariableStore.html#af7960a9527883575a69430c9ef72e2be',1,'neml2::VariableStore']]],
+  ['output_5fvariables_67',['output_variables',['../classneml2_1_1VariableStore.html#a65b47df3889c6f0dbaf787aedcac8431',1,'neml2::VariableStore::output_variables()'],['../classneml2_1_1VariableStore.html#a70eff9f056eb0b240dbc347b1f45b340',1,'neml2::VariableStore::output_variables() const']]],
+  ['overview_68',['Overview',['../index.html#autotoc_md1',1,'']]],
+  ['owner_69',['owner',['../classneml2_1_1VariableBase.html#a28b2fa0d0c4beb36109f137cda6a13e2',1,'neml2::VariableBase']]]
 ];

@@ -35,7 +35,7 @@ var classneml2_1_1Model =
     [ "registered_models", "classneml2_1_1Model.html#a399e7aa4d4dce8b472ec5d591759b62f", null ],
     [ "reinit", "classneml2_1_1Model.html#ad52d80cba6877aef39a6373d88f2fd79", null ],
     [ "reinit", "classneml2_1_1Model.html#add0302a95f0f0bb555a626603ef86472", null ],
-    [ "reinit", "classneml2_1_1Model.html#a601e188b0c9b855c08a36ba396dae1d6", null ],
+    [ "reinit", "classneml2_1_1Model.html#a47b27495b71355c67dda05d1072fc935", null ],
     [ "requires_2nd_grad", "classneml2_1_1Model.html#a6842d7ca2f405942169ca5f3858854a6", null ],
     [ "requires_grad", "classneml2_1_1Model.html#a2502181e68a65aa25c0478bbaaac341d", null ],
     [ "scalar_type", "classneml2_1_1Model.html#a355b7cd72942e5fd3632756af81f2ce2", null ],

@@ -1,6 +1,6 @@
 var classneml2_1_1VariableBase =
 [
-    [ "VariableBase", "classneml2_1_1VariableBase.html#a04de2e2824ff98b50c6bf927c7914529", null ],
+    [ "VariableBase", "classneml2_1_1VariableBase.html#a788479d3b778f5d93b3d8efcf5346d8c", null ],
     [ "~VariableBase", "classneml2_1_1VariableBase.html#a11c5fe28b4558368c4e40dd53523aadb", null ],
     [ "base_dim", "classneml2_1_1VariableBase.html#acb11eadbec4055bd80ff68880f0be9cb", null ],
     [ "base_sizes", "classneml2_1_1VariableBase.html#ac4f5864f0d769b9c1674be47e3b34767", null ],
@@ -10,7 +10,6 @@ var classneml2_1_1VariableBase =
     [ "cache", "classneml2_1_1VariableBase.html#af4cfc5e0639b534d48804fb85bf7c49c", null ],
     [ "d", "classneml2_1_1VariableBase.html#a10ff4de5741449235907f3976d6db50c", null ],
     [ "d", "classneml2_1_1VariableBase.html#a0662c2ecd16419d37c0b6805e6f1065b", null ],
-    [ "derivative_storage", "classneml2_1_1VariableBase.html#aa68c0cd79e201d97b9f14883783032a3", null ],
     [ "is_dependent", "classneml2_1_1VariableBase.html#ab7bfd4b8325b48540744cd5a95a6acae", null ],
     [ "is_force", "classneml2_1_1VariableBase.html#acc348d929ff852dcc19a90665c90203f", null ],
     [ "is_old_force", "classneml2_1_1VariableBase.html#a131f9ec0218970bfafb7c2070fc7d1fa", null ],
@@ -21,17 +20,17 @@ var classneml2_1_1VariableBase =
     [ "is_solve_dependent", "classneml2_1_1VariableBase.html#a86b4759cb72a574e455a04fe93c23f0c", null ],
     [ "is_state", "classneml2_1_1VariableBase.html#a2669d1f91b798f16b2d82c7d6726c277", null ],
     [ "name", "classneml2_1_1VariableBase.html#aa9705fe094f6261829017ddc444d2343", null ],
+    [ "owner", "classneml2_1_1VariableBase.html#a28b2fa0d0c4beb36109f137cda6a13e2", null ],
     [ "raw_value", "classneml2_1_1VariableBase.html#a643435787c8e0caa19cd5d4b111db68a", null ],
     [ "requires_grad_", "classneml2_1_1VariableBase.html#af8504997c6c6efee4c0f4b4131002ba0", null ],
-    [ "second_derivative_storage", "classneml2_1_1VariableBase.html#a358580fb3a4e74990f5a309dc60aa1a3", null ],
     [ "setup_views", "classneml2_1_1VariableBase.html#a9af5a4c323d926a00b6009f33439b679", null ],
+    [ "setup_views", "classneml2_1_1VariableBase.html#a1bd925e74bdacb3e47e3c875be2ab56d", null ],
     [ "sizes", "classneml2_1_1VariableBase.html#aa21c81bb185f7208a7c73f7f21f1fd59", null ],
+    [ "src", "classneml2_1_1VariableBase.html#a44a2b8a88a19d00794bd92f7390099e4", null ],
     [ "tensor", "classneml2_1_1VariableBase.html#ab732915201a716a8117f031d165a8da8", null ],
     [ "type", "classneml2_1_1VariableBase.html#ad92ce6276da9f2ba19a0120603b89fc6", null ],
-    [ "value_storage", "classneml2_1_1VariableBase.html#a53c194147230fd3cf837480460173e40", null ],
     [ "_batch_sizes", "classneml2_1_1VariableBase.html#a4e8f0f7edd364690725346a90949b79c", null ],
     [ "_d2value_d", "classneml2_1_1VariableBase.html#a76a7112833bedd002997729c248543bd", null ],
-    [ "_derivative_storage", "classneml2_1_1VariableBase.html#a32e44b763b4b7f9fc9fb4704c58db1ec", null ],
     [ "_dvalue_d", "classneml2_1_1VariableBase.html#ae331eeb127c05232ddba27bbcf879a53", null ],
     [ "_is_force", "classneml2_1_1VariableBase.html#a89cb2ccf38cc83a10c4ffa6e4bb862b8", null ],
     [ "_is_old_force", "classneml2_1_1VariableBase.html#a7f74e0f6870c96a4c80b4c53edf7a07b", null ],
@@ -42,7 +41,7 @@ var classneml2_1_1VariableBase =
     [ "_is_solve_dependent", "classneml2_1_1VariableBase.html#aa261ba91f5ab16926b1ac47b8075f39d", null ],
     [ "_is_state", "classneml2_1_1VariableBase.html#a3d2214ad790e5041651c85b8f14906ae", null ],
     [ "_name", "classneml2_1_1VariableBase.html#ac292f47461a7635b09b8b40a2dc4d8bb", null ],
+    [ "_owner", "classneml2_1_1VariableBase.html#a1ac34bf4001a0b87cfdf4166bb2c4aec", null ],
     [ "_raw_value", "classneml2_1_1VariableBase.html#a69a55d80df38e827821020ffaf3fc488", null ],
-    [ "_second_derivative_storage", "classneml2_1_1VariableBase.html#a9fde8e3141e98a91c4055e84a0bafd1b", null ],
-    [ "_value_storage", "classneml2_1_1VariableBase.html#a08a82594e073a7506247e4d48338aab0", null ]
+    [ "_src", "classneml2_1_1VariableBase.html#aaa903c252333ba316413cfcb69c273c3", null ]
 ];

@@ -147,8 +147,8 @@ Inheritance diagram for VariableBase:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a04de2e2824ff98b50c6bf927c7914529" id="r_a04de2e2824ff98b50c6bf927c7914529"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a04de2e2824ff98b50c6bf927c7914529">VariableBase</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">VariableName</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">name_in</a>)</td></tr>
-<tr class="separator:a04de2e2824ff98b50c6bf927c7914529"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a788479d3b778f5d93b3d8efcf5346d8c" id="r_a788479d3b778f5d93b3d8efcf5346d8c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a788479d3b778f5d93b3d8efcf5346d8c">VariableBase</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">VariableName</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">name_in</a>, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Model.html">Model</a> *<a class="el" href="#a28b2fa0d0c4beb36109f137cda6a13e2">owner</a>)</td></tr>
+<tr class="separator:a788479d3b778f5d93b3d8efcf5346d8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a11c5fe28b4558368c4e40dd53523aadb" id="r_a11c5fe28b4558368c4e40dd53523aadb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a11c5fe28b4558368c4e40dd53523aadb">~VariableBase</a> ()=<a class="el" href="classneml2_1_1CrossRef.html">default</a></td></tr>
 <tr class="separator:a11c5fe28b4558368c4e40dd53523aadb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4cfc5e0639b534d48804fb85bf7c49c" id="r_af4cfc5e0639b534d48804fb85bf7c49c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af4cfc5e0639b534d48804fb85bf7c49c">cache</a> (<a class="el" href="namespaceneml2.html#abc271f879dc471e533dca66b1fd32f60">TensorShapeRef</a> <a class="el" href="classneml2_1_1CrossRef.html">batch_shape</a>)</td></tr>
@@ -157,6 +157,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9af5a4c323d926a00b6009f33439b679" id="r_a9af5a4c323d926a00b6009f33439b679"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9af5a4c323d926a00b6009f33439b679">setup_views</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledVector.html">LabeledVector</a> *value, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledMatrix.html">LabeledMatrix</a> *<a class="el" href="classneml2_1_1CrossRef.html">deriv</a>=<a class="el" href="classneml2_1_1CrossRef.html">nullptr</a>, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledTensor3D.html">LabeledTensor3D</a> *<a class="el" href="classneml2_1_1CrossRef.html">secderiv</a>=<a class="el" href="classneml2_1_1CrossRef.html">nullptr</a>)</td></tr>
 <tr class="memdesc:a9af5a4c323d926a00b6009f33439b679"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setup the variable's views into blocks of the storage.  <br /></td></tr>
 <tr class="separator:a9af5a4c323d926a00b6009f33439b679"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1bd925e74bdacb3e47e3c875be2ab56d" id="r_a1bd925e74bdacb3e47e3c875be2ab56d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1bd925e74bdacb3e47e3c875be2ab56d">setup_views</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1VariableBase.html">VariableBase</a> *<a class="el" href="classneml2_1_1CrossRef.html">other</a>)</td></tr>
+<tr class="memdesc:a1bd925e74bdacb3e47e3c875be2ab56d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setup the variable's views following another variable.  <br /></td></tr>
+<tr class="separator:a1bd925e74bdacb3e47e3c875be2ab56d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af8504997c6c6efee4c0f4b4131002ba0" id="r_af8504997c6c6efee4c0f4b4131002ba0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af8504997c6c6efee4c0f4b4131002ba0">requires_grad_</a> (<a class="el" href="classneml2_1_1CrossRef.html">bool</a> <a class="el" href="classneml2_1_1CrossRef.html">req</a>=<a class="el" href="classneml2_1_1CrossRef.html">true</a>)=0</td></tr>
 <tr class="memdesc:af8504997c6c6efee4c0f4b4131002ba0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set requires_grad for the underlying storage.  <br /></td></tr>
 <tr class="separator:af8504997c6c6efee4c0f4b4131002ba0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -166,12 +169,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0662c2ecd16419d37c0b6805e6f1065b" id="r_a0662c2ecd16419d37c0b6805e6f1065b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Derivative.html">Derivative</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0662c2ecd16419d37c0b6805e6f1065b">d</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1VariableBase.html">VariableBase</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">x1</a>, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1VariableBase.html">VariableBase</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">x2</a>)</td></tr>
 <tr class="memdesc:a0662c2ecd16419d37c0b6805e6f1065b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a wrapper representing the second derivative d2y/dx2.  <br /></td></tr>
 <tr class="separator:a0662c2ecd16419d37c0b6805e6f1065b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a53c194147230fd3cf837480460173e40" id="r_a53c194147230fd3cf837480460173e40"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledVector.html">LabeledVector</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a53c194147230fd3cf837480460173e40">value_storage</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
-<tr class="separator:a53c194147230fd3cf837480460173e40"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa68c0cd79e201d97b9f14883783032a3" id="r_aa68c0cd79e201d97b9f14883783032a3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledMatrix.html">LabeledMatrix</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa68c0cd79e201d97b9f14883783032a3">derivative_storage</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
-<tr class="separator:aa68c0cd79e201d97b9f14883783032a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a358580fb3a4e74990f5a309dc60aa1a3" id="r_a358580fb3a4e74990f5a309dc60aa1a3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledTensor3D.html">LabeledTensor3D</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a358580fb3a4e74990f5a309dc60aa1a3">second_derivative_storage</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
-<tr class="separator:a358580fb3a4e74990f5a309dc60aa1a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a643435787c8e0caa19cd5d4b111db68a" id="r_a643435787c8e0caa19cd5d4b111db68a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a643435787c8e0caa19cd5d4b111db68a">raw_value</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
 <tr class="memdesc:a643435787c8e0caa19cd5d4b111db68a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Raw flattened variable value.  <br /></td></tr>
 <tr class="separator:a643435787c8e0caa19cd5d4b111db68a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -181,6 +178,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa9705fe094f6261829017ddc444d2343" id="r_aa9705fe094f6261829017ddc444d2343"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">VariableName</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa9705fe094f6261829017ddc444d2343">name</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
 <tr class="memdesc:aa9705fe094f6261829017ddc444d2343"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name of this variable.  <br /></td></tr>
 <tr class="separator:aa9705fe094f6261829017ddc444d2343"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28b2fa0d0c4beb36109f137cda6a13e2" id="r_a28b2fa0d0c4beb36109f137cda6a13e2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Model.html">Model</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a28b2fa0d0c4beb36109f137cda6a13e2">owner</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:a28b2fa0d0c4beb36109f137cda6a13e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The owner of this variable.  <br /></td></tr>
+<tr class="separator:a28b2fa0d0c4beb36109f137cda6a13e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44a2b8a88a19d00794bd92f7390099e4" id="r_a44a2b8a88a19d00794bd92f7390099e4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1VariableBase.html">VariableBase</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a44a2b8a88a19d00794bd92f7390099e4">src</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:a44a2b8a88a19d00794bd92f7390099e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The source variable.  <br /></td></tr>
+<tr class="separator:a44a2b8a88a19d00794bd92f7390099e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6980c3dd58aff939091347ef0b0159f5" id="r_a6980c3dd58aff939091347ef0b0159f5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceneml2.html#abc271f879dc471e533dca66b1fd32f60">TensorShapeRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6980c3dd58aff939091347ef0b0159f5">batch_sizes</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
 <tr class="memdesc:a6980c3dd58aff939091347ef0b0159f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Batch shape.  <br /></td></tr>
 <tr class="separator:a6980c3dd58aff939091347ef0b0159f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -211,6 +214,9 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:ac292f47461a7635b09b8b40a2dc4d8bb" id="r_ac292f47461a7635b09b8b40a2dc4d8bb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">VariableName</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac292f47461a7635b09b8b40a2dc4d8bb">_name</a></td></tr>
 <tr class="memdesc:ac292f47461a7635b09b8b40a2dc4d8bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name of the variable.  <br /></td></tr>
 <tr class="separator:ac292f47461a7635b09b8b40a2dc4d8bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ac34bf4001a0b87cfdf4166bb2c4aec" id="r_a1ac34bf4001a0b87cfdf4166bb2c4aec"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Model.html">Model</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1ac34bf4001a0b87cfdf4166bb2c4aec">_owner</a></td></tr>
+<tr class="memdesc:a1ac34bf4001a0b87cfdf4166bb2c4aec"><td class="mdescLeft">&#160;</td><td class="mdescRight">The model which declared this variable.  <br /></td></tr>
+<tr class="separator:a1ac34bf4001a0b87cfdf4166bb2c4aec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e8f0f7edd364690725346a90949b79c" id="r_a4e8f0f7edd364690725346a90949b79c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceneml2.html#a5908f75279a9bcad4d887c3995933a98">TensorShape</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4e8f0f7edd364690725346a90949b79c">_batch_sizes</a></td></tr>
 <tr class="memdesc:a4e8f0f7edd364690725346a90949b79c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Batch shape of this variable.  <br /></td></tr>
 <tr class="separator:a4e8f0f7edd364690725346a90949b79c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -223,15 +229,9 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:a76a7112833bedd002997729c248543bd" id="r_a76a7112833bedd002997729c248543bd"><td class="memItemLeft" align="right" valign="top">std::map&lt; <a class="el" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">VariableName</a>, std::map&lt; <a class="el" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">VariableName</a>, <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a76a7112833bedd002997729c248543bd">_d2value_d</a></td></tr>
 <tr class="memdesc:a76a7112833bedd002997729c248543bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">The second derivative of this variable w.r.t. arguments.  <br /></td></tr>
 <tr class="separator:a76a7112833bedd002997729c248543bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a08a82594e073a7506247e4d48338aab0" id="r_a08a82594e073a7506247e4d48338aab0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledVector.html">LabeledVector</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a08a82594e073a7506247e4d48338aab0">_value_storage</a></td></tr>
-<tr class="memdesc:a08a82594e073a7506247e4d48338aab0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The value storage that this variable is viewing into.  <br /></td></tr>
-<tr class="separator:a08a82594e073a7506247e4d48338aab0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32e44b763b4b7f9fc9fb4704c58db1ec" id="r_a32e44b763b4b7f9fc9fb4704c58db1ec"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledMatrix.html">LabeledMatrix</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a32e44b763b4b7f9fc9fb4704c58db1ec">_derivative_storage</a></td></tr>
-<tr class="memdesc:a32e44b763b4b7f9fc9fb4704c58db1ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">The derivative storage that this variable is viewing into.  <br /></td></tr>
-<tr class="separator:a32e44b763b4b7f9fc9fb4704c58db1ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9fde8e3141e98a91c4055e84a0bafd1b" id="r_a9fde8e3141e98a91c4055e84a0bafd1b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledTensor3D.html">LabeledTensor3D</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9fde8e3141e98a91c4055e84a0bafd1b">_second_derivative_storage</a></td></tr>
-<tr class="memdesc:a9fde8e3141e98a91c4055e84a0bafd1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The second derivative storage that this variable is viewing into.  <br /></td></tr>
-<tr class="separator:a9fde8e3141e98a91c4055e84a0bafd1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa903c252333ba316413cfcb69c273c3" id="r_aaa903c252333ba316413cfcb69c273c3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1VariableBase.html">VariableBase</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaa903c252333ba316413cfcb69c273c3">_src</a></td></tr>
+<tr class="memdesc:aaa903c252333ba316413cfcb69c273c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The source variable this variable follows.  <br /></td></tr>
+<tr class="separator:aaa903c252333ba316413cfcb69c273c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">Subaxis</h2></td></tr>
 <tr class="memitem:a3d2214ad790e5041651c85b8f14906ae" id="r_a3d2214ad790e5041651c85b8f14906ae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3d2214ad790e5041651c85b8f14906ae">_is_state</a></td></tr>
@@ -268,8 +268,8 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:a86b4759cb72a574e455a04fe93c23f0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a04de2e2824ff98b50c6bf927c7914529" name="a04de2e2824ff98b50c6bf927c7914529"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a04de2e2824ff98b50c6bf927c7914529">&#9670;&#160;</a></span>VariableBase()</h2>
+<a id="a788479d3b778f5d93b3d8efcf5346d8c" name="a788479d3b778f5d93b3d8efcf5346d8c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a788479d3b778f5d93b3d8efcf5346d8c">&#9670;&#160;</a></span>VariableBase()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -277,8 +277,12 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="classneml2_1_1VariableBase.html">VariableBase</a> </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">VariableName</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>name_in</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">VariableName</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>name_in</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Model.html">Model</a> *</td>          <td class="paramname"><span class="paramname"><em>owner</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -516,24 +520,6 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Create a wrapper representing the second derivative d2y/dx2. </p>
-
-</div>
-</div>
-<a id="aa68c0cd79e201d97b9f14883783032a3" name="aa68c0cd79e201d97b9f14883783032a3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa68c0cd79e201d97b9f14883783032a3">&#9670;&#160;</a></span>derivative_storage()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledMatrix.html">LabeledMatrix</a> &amp; derivative_storage </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>derivative storage </dd></dl>
 
 </div>
 </div>
@@ -783,6 +769,33 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a28b2fa0d0c4beb36109f137cda6a13e2" name="a28b2fa0d0c4beb36109f137cda6a13e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28b2fa0d0c4beb36109f137cda6a13e2">&#9670;&#160;</a></span>owner()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Model.html">Model</a> &amp; owner </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The owner of this variable. </p>
+
+</div>
+</div>
 <a id="a643435787c8e0caa19cd5d4b111db68a" name="a643435787c8e0caa19cd5d4b111db68a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a643435787c8e0caa19cd5d4b111db68a">&#9670;&#160;</a></span>raw_value()</h2>
 
@@ -839,26 +852,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a358580fb3a4e74990f5a309dc60aa1a3" name="a358580fb3a4e74990f5a309dc60aa1a3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a358580fb3a4e74990f5a309dc60aa1a3">&#9670;&#160;</a></span>second_derivative_storage()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledTensor3D.html">LabeledTensor3D</a> &amp; second_derivative_storage </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>second derivative storage </dd></dl>
-
-</div>
-</div>
 <a id="a9af5a4c323d926a00b6009f33439b679" name="a9af5a4c323d926a00b6009f33439b679"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9af5a4c323d926a00b6009f33439b679">&#9670;&#160;</a></span>setup_views()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9af5a4c323d926a00b6009f33439b679">&#9670;&#160;</a></span>setup_views() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -895,6 +890,35 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a1bd925e74bdacb3e47e3c875be2ab56d" name="a1bd925e74bdacb3e47e3c875be2ab56d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1bd925e74bdacb3e47e3c875be2ab56d">&#9670;&#160;</a></span>setup_views() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">void</a> setup_views </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1VariableBase.html">VariableBase</a> *</td>          <td class="paramname"><span class="paramname"><em>other</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Setup the variable's views following another variable. </p>
+
+<p>Reimplemented in <a class="el" href="classneml2_1_1Variable.html#a1b08d5d4fece6b78588ad9441cd905e2">Variable&lt; T &gt;</a>, <a class="el" href="classneml2_1_1Variable.html#a1b08d5d4fece6b78588ad9441cd905e2">Variable&lt; neml2::R2 &gt;</a>, <a class="el" href="classneml2_1_1Variable.html#a1b08d5d4fece6b78588ad9441cd905e2">Variable&lt; neml2::Rot &gt;</a>, <a class="el" href="classneml2_1_1Variable.html#a1b08d5d4fece6b78588ad9441cd905e2">Variable&lt; neml2::Scalar &gt;</a>, <a class="el" href="classneml2_1_1Variable.html#a1b08d5d4fece6b78588ad9441cd905e2">Variable&lt; neml2::SR2 &gt;</a>, <a class="el" href="classneml2_1_1Variable.html#a1b08d5d4fece6b78588ad9441cd905e2">Variable&lt; neml2::Tensor &gt;</a>, <a class="el" href="classneml2_1_1Variable.html#a1b08d5d4fece6b78588ad9441cd905e2">Variable&lt; neml2::Vec &gt;</a>, <a class="el" href="classneml2_1_1Variable.html#a1b08d5d4fece6b78588ad9441cd905e2">Variable&lt; neml2::WR2 &gt;</a>, and <a class="el" href="classneml2_1_1Variable.html#a1b08d5d4fece6b78588ad9441cd905e2">Variable&lt; Scalar &gt;</a>.</p>
+
+</div>
+</div>
 <a id="aa21c81bb185f7208a7c73f7f21f1fd59" name="aa21c81bb185f7208a7c73f7f21f1fd59"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa21c81bb185f7208a7c73f7f21f1fd59">&#9670;&#160;</a></span>sizes()</h2>
 
@@ -921,6 +945,33 @@ Protected Attributes</h2></td></tr>
 <p>Total shape. </p>
 
 <p>Implemented in <a class="el" href="classneml2_1_1Variable.html#ad86039703d857aaee9fb9736008f7601">Variable&lt; T &gt;</a>, <a class="el" href="classneml2_1_1Variable.html#ad86039703d857aaee9fb9736008f7601">Variable&lt; neml2::R2 &gt;</a>, <a class="el" href="classneml2_1_1Variable.html#ad86039703d857aaee9fb9736008f7601">Variable&lt; neml2::Rot &gt;</a>, <a class="el" href="classneml2_1_1Variable.html#ad86039703d857aaee9fb9736008f7601">Variable&lt; neml2::Scalar &gt;</a>, <a class="el" href="classneml2_1_1Variable.html#ad86039703d857aaee9fb9736008f7601">Variable&lt; neml2::SR2 &gt;</a>, <a class="el" href="classneml2_1_1Variable.html#ad86039703d857aaee9fb9736008f7601">Variable&lt; neml2::Tensor &gt;</a>, <a class="el" href="classneml2_1_1Variable.html#ad86039703d857aaee9fb9736008f7601">Variable&lt; neml2::Vec &gt;</a>, <a class="el" href="classneml2_1_1Variable.html#ad86039703d857aaee9fb9736008f7601">Variable&lt; neml2::WR2 &gt;</a>, and <a class="el" href="classneml2_1_1Variable.html#ad86039703d857aaee9fb9736008f7601">Variable&lt; Scalar &gt;</a>.</p>
+
+</div>
+</div>
+<a id="a44a2b8a88a19d00794bd92f7390099e4" name="a44a2b8a88a19d00794bd92f7390099e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44a2b8a88a19d00794bd92f7390099e4">&#9670;&#160;</a></span>src()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1VariableBase.html">VariableBase</a> * src </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The source variable. </p>
 
 </div>
 </div>
@@ -982,24 +1033,6 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a53c194147230fd3cf837480460173e40" name="a53c194147230fd3cf837480460173e40"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a53c194147230fd3cf837480460173e40">&#9670;&#160;</a></span>value_storage()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledVector.html">LabeledVector</a> &amp; value_storage </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>value storage </dd></dl>
-
-</div>
-</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a id="a4e8f0f7edd364690725346a90949b79c" name="a4e8f0f7edd364690725346a90949b79c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4e8f0f7edd364690725346a90949b79c">&#9670;&#160;</a></span>_batch_sizes</h2>
@@ -1046,30 +1079,6 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>The second derivative of this variable w.r.t. arguments. </p>
-
-</div>
-</div>
-<a id="a32e44b763b4b7f9fc9fb4704c58db1ec" name="a32e44b763b4b7f9fc9fb4704c58db1ec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a32e44b763b4b7f9fc9fb4704c58db1ec">&#9670;&#160;</a></span>_derivative_storage</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledMatrix.html">LabeledMatrix</a>* _derivative_storage</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>The derivative storage that this variable is viewing into. </p>
 
 </div>
 </div>
@@ -1297,6 +1306,30 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a1ac34bf4001a0b87cfdf4166bb2c4aec" name="a1ac34bf4001a0b87cfdf4166bb2c4aec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ac34bf4001a0b87cfdf4166bb2c4aec">&#9670;&#160;</a></span>_owner</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Model.html">Model</a>* _owner</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The model which declared this variable. </p>
+
+</div>
+</div>
 <a id="a69a55d80df38e827821020ffaf3fc488" name="a69a55d80df38e827821020ffaf3fc488"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a69a55d80df38e827821020ffaf3fc488">&#9670;&#160;</a></span>_raw_value</h2>
 
@@ -1321,8 +1354,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a9fde8e3141e98a91c4055e84a0bafd1b" name="a9fde8e3141e98a91c4055e84a0bafd1b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9fde8e3141e98a91c4055e84a0bafd1b">&#9670;&#160;</a></span>_second_derivative_storage</h2>
+<a id="aaa903c252333ba316413cfcb69c273c3" name="aaa903c252333ba316413cfcb69c273c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa903c252333ba316413cfcb69c273c3">&#9670;&#160;</a></span>_src</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1331,7 +1364,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledTensor3D.html">LabeledTensor3D</a>* _second_derivative_storage</td>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1VariableBase.html">VariableBase</a>* _src</td>
         </tr>
       </table>
   </td>
@@ -1341,31 +1374,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>The second derivative storage that this variable is viewing into. </p>
-
-</div>
-</div>
-<a id="a08a82594e073a7506247e4d48338aab0" name="a08a82594e073a7506247e4d48338aab0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a08a82594e073a7506247e4d48338aab0">&#9670;&#160;</a></span>_value_storage</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledVector.html">LabeledVector</a>* _value_storage</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>The value storage that this variable is viewing into. </p>
+<p>The source variable this variable follows. </p>
 
 </div>
 </div>
