@@ -36,11 +36,12 @@ using VariableName = LabeledAxisAccessor;
 
 // Forward declarations
 class Derivative;
+class Model;
 
 class VariableBase
 {
 public:
-  VariableBase(const VariableName & name_in);
+  VariableBase(const VariableName & name_in, const Model * owner);
 
   virtual ~VariableBase() = default;
 
@@ -52,6 +53,9 @@ public:
                            const LabeledMatrix * deriv = nullptr,
                            const LabeledTensor3D * secderiv = nullptr);
 
+  /// Setup the variable's views following another variable
+  virtual void setup_views(const VariableBase * other);
+
   /// Set requires_grad for the underlying storage
   virtual void requires_grad_(bool req = true) = 0;
 
@@ -61,13 +65,6 @@ public:
   /// Create a wrapper representing the second derivative d2y/dx2
   Derivative d(const VariableBase & x1, const VariableBase & x2);
 
-  /// @returns value storage
-  const LabeledVector & value_storage() const;
-  /// @returns derivative storage
-  const LabeledMatrix & derivative_storage() const;
-  /// @returns second derivative storage
-  const LabeledTensor3D & second_derivative_storage() const;
-
   /// Raw flattened variable value
   const Tensor & raw_value() const { return _raw_value; }
 
@@ -76,6 +73,12 @@ public:
 
   /// Name of this variable
   const VariableName & name() const { return _name; }
+
+  /// The owner of this variable
+  const Model & owner() const { return *_owner; }
+
+  /// The source variable
+  const VariableBase * src() const { return _src; }
 
   /// Batch shape
   TensorShapeRef batch_sizes() const { return _batch_sizes; }
@@ -118,6 +121,9 @@ protected:
   /// Name of the variable
   const VariableName _name;
 
+  /// The model which declared this variable
+  const Model * _owner;
+
   /// Batch shape of this variable
   TensorShape _batch_sizes;
 
@@ -130,14 +136,8 @@ protected:
   /// The second derivative of this variable w.r.t. arguments.
   std::map<VariableName, std::map<VariableName, Tensor>> _d2value_d;
 
-  /// The value storage that this variable is viewing into
-  const LabeledVector * _value_storage;
-
-  /// The derivative storage that this variable is viewing into
-  const LabeledMatrix * _derivative_storage;
-
-  /// The second derivative storage that this variable is viewing into
-  const LabeledTensor3D * _second_derivative_storage;
+  /// The source variable this variable follows
+  const VariableBase * _src;
 
   /// @name subaxis
   ///@{
@@ -161,8 +161,10 @@ class Variable : public VariableBase
 {
 public:
   template <typename T2 = T, typename = typename std::enable_if_t<!std::is_same_v<Tensor, T2>>>
-  Variable(const VariableName & name_in, TensorType type = TensorTypeEnum<T2>::value)
-    : VariableBase(name_in),
+  Variable(const VariableName & name_in,
+           const Model * owner,
+           TensorType type = TensorTypeEnum<T2>::value)
+    : VariableBase(name_in, owner),
       _type(type),
       _base_sizes(T::const_base_sizes)
   {
@@ -170,9 +172,10 @@ public:
 
   template <typename T2 = T, typename = typename std::enable_if_t<std::is_same_v<Tensor, T2>>>
   Variable(const VariableName & name_in,
+           const Model * owner,
            TensorShapeRef base_shape,
            TensorType type = TensorType::kTensor)
-    : VariableBase(name_in),
+    : VariableBase(name_in, owner),
       _type(type),
       _base_sizes(base_shape.vec())
   {
@@ -185,6 +188,12 @@ public:
     VariableBase::setup_views(value, deriv, secderiv);
     if (value)
       _value = T(_raw_value.view(sizes()), batch_dim());
+  }
+
+  virtual void setup_views(const VariableBase * other) override
+  {
+    VariableBase::setup_views(other);
+    _value = T(_raw_value.view(sizes()), batch_dim());
   }
 
   virtual void requires_grad_(bool req = true) override { _value.requires_grad_(req); }

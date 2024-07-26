@@ -23,14 +23,14 @@
 // THE SOFTWARE.
 
 #include "neml2/tensors/Variable.h"
+#include "neml2/models/Model.h"
 
 namespace neml2
 {
-VariableBase::VariableBase(const VariableName & name_in)
+VariableBase::VariableBase(const VariableName & name_in, const Model * owner)
   : _name(name_in),
-    _value_storage(nullptr),
-    _derivative_storage(nullptr),
-    _second_derivative_storage(nullptr),
+    _owner(owner),
+    _src(nullptr),
     _is_state(_name.start_with("state")),
     _is_old_state(_name.start_with("old_state")),
     _is_force(_name.start_with("forces")),
@@ -55,46 +55,30 @@ VariableBase::setup_views(const LabeledVector * value,
                           const LabeledTensor3D * secderiv)
 {
   if (value)
-  {
-    _value_storage = value;
-    _raw_value = _value_storage->base_index(name());
-  }
+    _raw_value = value->base_index(name());
 
   if (deriv)
-  {
-    _derivative_storage = deriv;
-    for (auto arg : _derivative_storage->axis(1).variable_names())
-      _dvalue_d[arg] = _derivative_storage->base_index({name(), arg});
-  }
+    for (auto arg : deriv->axis(1).variable_names())
+      _dvalue_d[arg] = deriv->base_index({name(), arg});
 
   if (secderiv)
+    for (auto arg1 : secderiv->axis(1).variable_names())
+      for (auto arg2 : secderiv->axis(2).variable_names())
+        _d2value_d[arg1][arg2] = secderiv->base_index({name(), arg1, arg2});
+}
+
+void
+VariableBase::setup_views(const VariableBase * other)
+{
+  neml_assert(other, "Variable cannot follow a nullptr");
+
+  if (other->src())
+    setup_views(other->src());
+  else
   {
-    _second_derivative_storage = secderiv;
-    for (auto arg1 : _second_derivative_storage->axis(1).variable_names())
-      for (auto arg2 : _second_derivative_storage->axis(2).variable_names())
-        _d2value_d[arg1][arg2] = _second_derivative_storage->base_index({name(), arg1, arg2});
+    _src = other;
+    _raw_value = Tensor(other->raw_value().view(sizes()), batch_dim());
   }
-}
-
-const LabeledVector &
-VariableBase::value_storage() const
-{
-  neml_assert_dbg(_value_storage, "Variable value storage not initialized.");
-  return *_value_storage;
-}
-
-const LabeledMatrix &
-VariableBase::derivative_storage() const
-{
-  neml_assert_dbg(_derivative_storage, "Variable derivative storage not initialized.");
-  return *_derivative_storage;
-}
-
-const LabeledTensor3D &
-VariableBase::second_derivative_storage() const
-{
-  neml_assert_dbg(_second_derivative_storage, "Variable 2nd derivative storage not initialized.");
-  return *_second_derivative_storage;
 }
 
 bool

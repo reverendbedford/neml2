@@ -96,7 +96,7 @@ public:
    * @param device Device on which the model will be evaluated
    * @param dtype Number type, e.g., torch::kFloat32, torch::kFloat64, etc
    */
-  virtual void reinit(TensorShapeRef batch_shape,
+  virtual void reinit(TensorShapeRef batch_shape = {},
                       int deriv_order = 0,
                       const torch::Device & device = default_device(),
                       const torch::Dtype & dtype = default_dtype());
@@ -269,7 +269,7 @@ protected:
     auto model = Factory::get_object_ptr<Model>("Models", name, extra_opts);
 
     if (merge_input)
-      for (auto && [name, var] : model->input_views())
+      for (auto && [name, var] : model->input_variables())
         declare_input_variable(var.base_storage(), var.type(), name);
 
     _registered_models.push_back(model.get());

@@ -33,10 +33,13 @@
 
 namespace neml2
 {
+// Foward decl
+class Model;
+
 class VariableStore
 {
 public:
-  VariableStore(const OptionSet & options, NEML2Object * object);
+  VariableStore(const OptionSet & options, Model * object);
 
   LabeledAxis & declare_axis(const std::string & name);
 
@@ -84,60 +87,60 @@ public:
         var_ptr, "Output variable ", name, " exist but cannot be cast to the requested type.");
     return *var_ptr;
   }
-  /// @}
+  ///@}
 
   ///@{
   /// Definition of the input variables
   LabeledAxis & input_axis() { return _input_axis; }
   const LabeledAxis & input_axis() const { return _input_axis; }
-  /// @}
+  ///@}
 
   ///@{
   /// Which variables this object defines as output
   LabeledAxis & output_axis() { return _output_axis; }
   const LabeledAxis & output_axis() const { return _output_axis; }
-  /// @}
+  ///@}
 
   ///@{
   /// Input variable views
-  Storage<VariableName, VariableBase> & input_views() { return _input_views; }
-  const Storage<VariableName, VariableBase> & input_views() const { return _input_views; }
-  /// @}
+  Storage<VariableName, VariableBase> & input_variables() { return _input_views; }
+  const Storage<VariableName, VariableBase> & input_variables() const { return _input_views; }
+  ///@}
 
   ///@{
   /// Output variable views
-  Storage<VariableName, VariableBase> & output_views() { return _output_views; }
-  const Storage<VariableName, VariableBase> & output_views() const { return _output_views; }
-  /// @}
+  Storage<VariableName, VariableBase> & output_variables() { return _output_views; }
+  const Storage<VariableName, VariableBase> & output_variables() const { return _output_views; }
+  ///@}
 
   ///@{
   /// Input storage
   LabeledVector & input_storage() { return _in; }
   const LabeledVector & input_storage() const { return _in; }
-  /// @}
+  ///@}
 
   ///@{
   /// Output storage
   LabeledVector & output_storage() { return _out; }
   const LabeledVector & output_storage() const { return _out; }
-  /// @}
+  ///@}
 
   ///@{
   /// Derivative storage
   LabeledMatrix & derivative_storage() { return _dout_din; }
   const LabeledMatrix & derivative_storage() const { return _dout_din; }
-  /// @}
+  ///@}
 
   ///@{
   /// Second derivative storage
   LabeledTensor3D & second_derivative_storage() { return _d2out_din2; }
   const LabeledTensor3D & second_derivative_storage() const { return _d2out_din2; }
-  /// @}
+  ///@}
 
   /// Get the view of an input variable
-  VariableBase * input_view(const VariableName &);
+  VariableBase * input_variable(const VariableName &);
   /// Get the view of an output variable
-  VariableBase * output_view(const VariableName &);
+  VariableBase * output_variable(const VariableName &);
 
   /// Get the variable type of an input variable
   TensorType input_type(const VariableName &) const;
@@ -284,13 +287,13 @@ private:
     // Allocate
     if constexpr (std::is_same_v<T, Tensor>)
     {
-      auto var = std::make_unique<Variable<Tensor>>(name, sz, t);
+      auto var = std::make_unique<Variable<Tensor>>(name, _object, sz, t);
       var_base_ptr = views.set_pointer(name, std::move(var));
     }
     else
     {
       (void)t;
-      auto var = std::make_unique<Variable<T>>(name);
+      auto var = std::make_unique<Variable<T>>(name, _object);
       var_base_ptr = views.set_pointer(name, std::move(var));
     }
 
@@ -302,7 +305,7 @@ private:
     return var_ptr;
   }
 
-  NEML2Object * _object;
+  Model * _object;
 
   /**
    * @brief Parsed input file options. These options are useful for example when we declare a

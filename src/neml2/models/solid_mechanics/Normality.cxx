@@ -69,7 +69,7 @@ Normality::Normality(const OptionSet & options)
   {
     auto sz = _model.output_axis().storage_size(_f) * _model.input_axis().storage_size(from[i]);
     _conjugate_pairs.emplace(from[i],
-                             &declare_output_variable(sz, input_view(from[i])->type(), to[i]));
+                             &declare_output_variable(sz, input_variable(from[i])->type(), to[i]));
   }
 }
 
@@ -82,7 +82,7 @@ Normality::setup_output_views()
   {
     _f_deriv_views[ivar] = _model.derivative_storage().base_index({_f, ivar});
     if (requires_grad())
-      for (auto && [jvar, j] : input_views())
+      for (auto && [jvar, j] : input_variables())
         _f_secderiv_views[ivar][jvar] =
             _model.second_derivative_storage().base_index({_f, ivar, jvar});
   }
@@ -107,7 +107,7 @@ Normality::set_value(bool out, bool dout_din, bool d2out_din2)
       (*var) = _f_deriv_views[ivar];
 
     if (dout_din)
-      for (auto && [jvar, j] : input_views())
+      for (auto && [jvar, j] : input_variables())
         if (j.is_dependent())
           var->d(j) = _f_secderiv_views[ivar][jvar];
   }

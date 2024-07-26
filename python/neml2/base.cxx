@@ -157,7 +157,8 @@ tensors.TensorValue.set_ instead to modify the tensor value.
           "Retrieve the accumulated vector-Jacobian product after a backward propagation.");
 
   // neml2.base.Model
-  model_cls
+  model_cls.def_property_readonly("name", &Model::name, "Name of the model")
+      .def_property_readonly("type", &Model::type, "Type of the model")
       .def_property_readonly(
           "is_AD_enabled",
           &Model::is_AD_enabled,
@@ -167,7 +168,7 @@ tensors.TensorValue.set_ instead to modify the tensor value.
       .def("reinit",
            py::overload_cast<TensorShapeRef, int, const torch::Device &, const torch::Dtype &>(
                &Model::reinit),
-           py::arg("batch_shape"),
+           py::arg("batch_shape") = TensorShapeRef{},
            py::arg("deriv_order") = 0,
            py::arg("device") = torch::Device(default_device()),
            py::arg("dtype") = torch::Dtype(default_dtype()),
@@ -288,11 +289,33 @@ tensors.TensorValue.set_ instead to modify the tensor value.
           },
           py::return_value_policy::reference,
           "Get the model buffers. The keys of the returned dictionary are the buffers' names.")
+      .def(
+          "named_submodels",
+          [](const Model & self)
+          {
+            std::map<std::string, Model *> submodels;
+            for (auto submodel : self.registered_models())
+              submodels[submodel->name()] = submodel;
+            return submodels;
+          },
+          py::return_value_policy::reference,
+          "Get the sub-models registered to this model")
       .def("get_parameter",
            &Model::get_parameter,
            py::return_value_policy::reference,
            "Get a model parameter given its name")
       .def("set_parameter", &Model::set_parameter, "Set the value for a model parameter")
+      .def("set_parameters", &Model::set_parameters, "Set the values for multiple model parameters")
       .def(
-          "set_parameters", &Model::set_parameters, "Set the values for multiple model parameters");
+          "dependency",
+          [](const Model & self)
+          {
+            std::map<std::string, const Model *> deps;
+            for (auto && [name, var] : self.input_variables())
+              if (var.src())
+                deps[utils::stringify(name)] = &var.src()->owner();
+            return deps;
+          },
+          py::return_value_policy::reference,
+          "Get the dictionary describing this model's dependency information, if any.");
 }

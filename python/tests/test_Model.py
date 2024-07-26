@@ -31,7 +31,7 @@ from neml2.tensors import Tensor, LabeledVector, LabeledMatrix, TensorType
 
 def test_get_model():
     pwd = Path(__file__).parent
-    neml2.load_input(pwd / "test_Model.i")
+    neml2.reload_input(pwd / "test_Model.i")
 
     model1 = neml2.get_model("model")
     assert model1.is_AD_enabled
@@ -42,7 +42,7 @@ def test_get_model():
 
 def test_input_type():
     pwd = Path(__file__).parent
-    neml2.load_input(pwd / "test_training.i")
+    neml2.reload_input(pwd / "test_training.i")
     model = neml2.get_model("model")
     assert model.input_type("forces/E") == TensorType.SR2
     assert model.input_type("forces/t") == TensorType.Scalar
@@ -54,9 +54,30 @@ def test_input_type():
 
 def test_output_type():
     pwd = Path(__file__).parent
-    neml2.load_input(pwd / "test_training.i")
-    model = neml2.get_model("model")
+    model = neml2.reload_model(pwd / "test_training.i", "model")
     assert model.output_type("state/S") == TensorType.SR2
+
+
+def test_dependency():
+    pwd = Path(__file__).parent
+    model = neml2.reload_model(pwd / "test_Model.i", "model")
+    model.reinit()
+    submodels = model.named_submodels()
+
+    assert submodels["foo"].dependency()["forces/t"].name == "model"
+    assert submodels["foo"].dependency()["old_forces/t"].name == "model"
+    assert submodels["foo"].dependency()["old_state/foo"].name == "model"
+    assert submodels["foo"].dependency()["state/foo"].name == "model"
+    assert submodels["foo"].dependency()["state/foo_rate"].name == "model"
+
+    assert submodels["bar"].dependency()["forces/t"].name == "model"
+    assert submodels["bar"].dependency()["old_forces/t"].name == "model"
+    assert submodels["bar"].dependency()["old_state/bar"].name == "model"
+    assert submodels["bar"].dependency()["state/bar"].name == "model"
+    assert submodels["bar"].dependency()["state/bar_rate"].name == "model"
+
+    assert submodels["baz"].dependency()["residual/foo"].name == "foo"
+    assert submodels["baz"].dependency()["residual/bar"].name == "bar"
 
 
 def test_value():

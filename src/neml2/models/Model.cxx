@@ -74,9 +74,9 @@ Model::diagnose(std::vector<Diagnosis> & diagnoses) const
     submodel->diagnose(diagnoses);
 
   // Make sure variables are defined on the reserved subaxes
-  for (auto && [name, var] : input_views())
+  for (auto && [name, var] : input_variables())
     diagnostic_check_input_variable(diagnoses, var);
-  for (auto && [name, var] : output_views())
+  for (auto && [name, var] : output_variables())
     diagnostic_check_output_variable(diagnoses, var);
 
   if (is_nonlinear_system())
@@ -101,13 +101,13 @@ Model::diagnose_nl_sys(std::vector<Diagnosis> & diagnoses) const
 
   // Check if any input variable is solve-dependent
   bool input_solve_dep = false;
-  for (auto && [name, var] : input_views())
+  for (auto && [name, var] : input_variables())
     if (var.is_solve_dependent())
       input_solve_dep = true;
 
   // If any input variable is solve-dependent, ALL output variables must be solve-dependent!
   if (input_solve_dep)
-    for (auto && [name, var] : output_views())
+    for (auto && [name, var] : output_variables())
       diagnostic_assert(
           diagnoses,
           var.is_solve_dependent(),
@@ -164,9 +164,9 @@ Model::reinit(bool in, bool out)
   allocate_variables(in, out);
 
   // Setup variable views
-  setup_input_views(this);
   setup_output_views();
   setup_nonlinear_system();
+  setup_input_views(this);
 }
 
 void
@@ -216,8 +216,8 @@ Model::setup_submodel_input_views(VariableStore * host)
 {
   for (auto submodel : registered_models())
   {
-    for (auto && [name, var] : submodel->input_views())
-      var.setup_views(&host->input_view(name)->value_storage());
+    for (auto && [name, var] : submodel->input_variables())
+      var.setup_views(host->input_variable(name));
     submodel->setup_submodel_input_views(submodel);
   }
 }
@@ -306,7 +306,7 @@ Model::check_AD_limitation() const
 void
 Model::input_requires_grad_(bool req)
 {
-  for (auto && [name, var] : input_views())
+  for (auto && [name, var] : input_variables())
     var.requires_grad_(req);
 }
 
@@ -635,7 +635,7 @@ Model::extract_derivatives(bool retain_graph, bool create_graph, bool allow_unus
     {
       auto grad_outputs = Tensor::zeros_like(output_storage());
       grad_outputs.index_put_({torch::indexing::Ellipsis, i}, 1.0);
-      for (auto && [name, var] : input_views())
+      for (auto && [name, var] : input_variables())
       {
         auto dyi_dvar = torch::autograd::grad({output_storage()},
                                               {var.tensor()},
@@ -664,7 +664,7 @@ Model::extract_second_derivatives(bool retain_graph, bool create_graph, bool all
       {
         auto grad_outputs = torch::zeros_like(derivative_storage());
         grad_outputs.index_put_({torch::indexing::Ellipsis, i, j}, 1.0);
-        for (auto && [name, var] : input_views())
+        for (auto && [name, var] : input_variables())
         {
           auto dydxij_dvar = torch::autograd::grad({derivative_storage()},
                                                    {var.tensor()},

@@ -80,7 +80,7 @@ public:
   /// Get the underlying tensor
   const Tensor & tensor() const { return _tensor; }
   Tensor & tensor() { return _tensor; }
-  /// @}
+  ///@}
 
   /// @name Meta operations
   // These methods mirror TensorBase

@@ -113,7 +113,7 @@ ComposedModel::ComposedModel(const OptionSet & options)
   {
     auto var = item.value;
     auto sz = item.parent->input_axis().storage_size(var);
-    auto type = item.parent->input_view(var)->type();
+    auto type = item.parent->input_variable(var)->type();
 
     if (input_axis().has_variable(var))
       neml_assert(input_axis().storage_size(var) == sz,
@@ -129,7 +129,7 @@ ComposedModel::ComposedModel(const OptionSet & options)
   {
     auto var = item.value;
     auto sz = item.parent->output_axis().storage_size(var);
-    auto type = item.parent->output_view(var)->type();
+    auto type = item.parent->output_variable(var)->type();
     neml_assert(!output_axis().has_variable(var),
                 "Multiple sub-models in a ComposedModel define the same output variable ",
                 var);
@@ -247,12 +247,14 @@ ComposedModel::setup_submodel_input_views(VariableStore * host)
   {
     for (const auto & item : _dependency.inbound_items())
       if (item.parent == submodel)
-        submodel->input_view(item.value)
-            ->setup_views(&host->input_view(item.value)->value_storage());
+        submodel->input_variable(item.value)->setup_views(host->input_variable(item.value));
 
     for (const auto & [item, providers] : _dependency.item_providers())
       if (item.parent == submodel)
-        submodel->input_view(item.value)->setup_views(&providers.begin()->parent->output_storage());
+      {
+        auto depmodel = providers.begin()->parent;
+        submodel->input_variable(item.value)->setup_views(depmodel->output_variable(item.value));
+      }
 
     submodel->setup_submodel_input_views(submodel);
   }

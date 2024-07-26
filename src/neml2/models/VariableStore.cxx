@@ -23,10 +23,11 @@
 // THE SOFTWARE.
 
 #include "neml2/models/VariableStore.h"
+#include "neml2/models/Model.h"
 
 namespace neml2
 {
-VariableStore::VariableStore(const OptionSet & options, NEML2Object * object)
+VariableStore::VariableStore(const OptionSet & options, Model * object)
   : _object(object),
     _options(options),
     _input_axis(declare_axis("input")),
@@ -54,13 +55,13 @@ VariableStore::setup_layout()
 }
 
 VariableBase *
-VariableStore::input_view(const VariableName & name)
+VariableStore::input_variable(const VariableName & name)
 {
   return _input_views.query_value(name);
 }
 
 VariableBase *
-VariableStore::output_view(const VariableName & name)
+VariableStore::output_variable(const VariableName & name)
 {
   return _output_views.query_value(name);
 }
@@ -84,9 +85,9 @@ VariableStore::output_type(const VariableName & name) const
 void
 VariableStore::cache(TensorShapeRef batch_shape)
 {
-  for (auto && [name, var] : input_views())
+  for (auto && [name, var] : input_variables())
     var.cache(batch_shape);
-  for (auto && [name, var] : output_views())
+  for (auto && [name, var] : output_variables())
     var.cache(batch_shape);
 }
 
@@ -120,19 +121,19 @@ VariableStore::setup_input_views(VariableStore * host)
   neml_assert_dbg(host || _object->host<VariableStore>() == host,
                   "setup_input_views called on a non-host model without specifying the host as an "
                   "argument");
-  for (auto && [name, var] : input_views())
+  for (auto && [name, var] : input_variables())
   {
     if (_object->host<VariableStore>() == host)
       var.setup_views(&host->input_storage());
     else
-      var.setup_views(&host->input_view(name)->value_storage());
+      var.setup_views(host->input_variable(name));
   }
 }
 
 void
 VariableStore::setup_output_views(bool out, bool dout_din, bool d2out_din2)
 {
-  for (auto && [name, var] : output_views())
+  for (auto && [name, var] : output_variables())
     var.setup_views(out ? &_out : nullptr,
                     dout_din ? &_dout_din : nullptr,
                     d2out_din2 ? &_d2out_din2 : nullptr);
