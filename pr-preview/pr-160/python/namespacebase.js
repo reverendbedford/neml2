@@ -2,6 +2,7 @@ var namespacebase =
 [
     [ "Model", "classbase_1_1Model.html", "classbase_1_1Model" ],
     [ "TensorValue", "classbase_1_1TensorValue.html", "classbase_1_1TensorValue" ],
+    [ "diagnose", "namespacebase.html#a5b798cd4613a7ec46ef1f66bbb7cd71d", null ],
     [ "get_model", "namespacebase.html#a47dc10eb9f756543982ec55d233b3bb8", null ],
     [ "load_input", "namespacebase.html#ace7f785332701c986866f2b4468894b6", null ],
     [ "load_model", "namespacebase.html#a598342e05a229dd7172903a9a131fc34", null ],
