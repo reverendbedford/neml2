@@ -54,20 +54,12 @@ ImplicitUpdate::ImplicitUpdate(const OptionSet & options)
                                  /*nonlinear=*/true)),
     _solver(Factory::get_object<NonlinearSolver>("Solvers", options.get<std::string>("solver")))
 {
-  // Make sure the nonlinear system is square
-  neml_assert(_model.input_axis().has_subaxis("state"),
-              "The implicit model's input should have a state subaxis. The input axis is\n",
-              _model.input_axis());
   neml_assert(_model.output_axis().has_subaxis("residual"),
-              "The implicit model's output should have a residual subaxis. The output axis is\n",
-              _model.output_axis());
-  neml_assert(_model.input_axis().subaxis("state") == _model.output_axis().subaxis("residual"),
-              "The implicit model should have conformal trial state and residual. The input state "
-              "subaxis is\n",
-              _model.input_axis().subaxis("state"),
-              "\nThe output residual subaxis is\n",
-              _model.output_axis().subaxis("residual"));
-
+              "The implicit model'",
+              _model.name(),
+              "' registered in '",
+              name(),
+              "' does not have the residual output axis.");
   // Take care of dependency registration:
   //   1. Input variables of the "implicit_model" should be *consumed* by *this* model. This has
   //      already been taken care of by the `register_model` call.
@@ -77,6 +69,26 @@ ImplicitUpdate::ImplicitUpdate(const OptionSet & options)
     declare_output_variable(_model.output_axis().subaxis("residual").storage_size(var),
                             _model.output_variable(var.prepend("residual"))->type(),
                             var.prepend("state"));
+}
+
+void
+ImplicitUpdate::diagnose(std::vector<Diagnosis> & diagnoses) const
+{
+  Model::diagnose(diagnoses);
+  diagnostic_assert(diagnoses,
+                    _model.output_axis().nsubaxis() == 1,
+                    "The implicit model's output contains non-residual subaxis");
+  diagnostic_assert(diagnoses,
+                    _model.input_axis().has_subaxis("state"),
+                    "The implicit model's input does not have a state subaxis");
+  diagnostic_assert(
+      diagnoses,
+      _model.input_axis().subaxis("state") == _model.output_axis().subaxis("residual"),
+      "The implicit model should have conformal trial state and residual. The input state "
+      "subaxis is\n",
+      _model.input_axis().subaxis("state"),
+      "\nThe output residual subaxis is\n",
+      _model.output_axis().subaxis("residual"));
 }
 
 void
@@ -94,9 +106,14 @@ ImplicitUpdate::setup_output_views()
 
   if (requires_grad())
   {
-    _ds_dsn = derivative_storage().base_index({"state", "old_state"});
-    _ds_df = derivative_storage().base_index({"state", "forces"});
-    _ds_dfn = derivative_storage().base_index({"state", "old_forces"});
+    if (input_axis().has_old_state())
+      _ds_dsn = derivative_storage().base_index({"state", "old_state"});
+    if (input_axis().has_forces())
+      _ds_df = derivative_storage().base_index({"state", "forces"});
+    if (input_axis().has_old_forces())
+      _ds_dfn = derivative_storage().base_index({"state", "old_forces"});
+    if (input_axis().has_parameters())
+      _ds_dp = derivative_storage().base_index({"state", "parameters"});
   }
 }
 
@@ -135,13 +152,18 @@ ImplicitUpdate::set_value(bool out, bool dout_din, bool d2out_din2)
     // IFT requires dresidual/dinput evaluated at the solution:
     _model.prepare();
     _model.dvalue();
-    auto && [dr_ds, dr_dsn, dr_df, dr_dfn] = _model.get_system_matrices();
+    auto && [dr_ds, dr_dsn, dr_df, dr_dfn, dr_dp] = _model.get_system_matrices();
 
     // The actual IFT:
     auto [LU, pivot] = math::linalg::lu_factor(dr_ds);
-    _ds_dsn.index_put_({torch::indexing::Slice()}, -math::linalg::lu_solve(LU, pivot, dr_dsn));
-    _ds_df.index_put_({torch::indexing::Slice()}, -math::linalg::lu_solve(LU, pivot, dr_df));
-    _ds_dfn.index_put_({torch::indexing::Slice()}, -math::linalg::lu_solve(LU, pivot, dr_dfn));
+    if (input_axis().has_old_state())
+      _ds_dsn.index_put_({torch::indexing::Slice()}, -math::linalg::lu_solve(LU, pivot, dr_dsn));
+    if (input_axis().has_forces())
+      _ds_df.index_put_({torch::indexing::Slice()}, -math::linalg::lu_solve(LU, pivot, dr_df));
+    if (input_axis().has_old_forces())
+      _ds_dfn.index_put_({torch::indexing::Slice()}, -math::linalg::lu_solve(LU, pivot, dr_dfn));
+    if (input_axis().has_parameters())
+      _ds_dp.index_put_({torch::indexing::Slice()}, -math::linalg::lu_solve(LU, pivot, dr_dp));
   }
 }
 } // namespace neml2

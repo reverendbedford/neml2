@@ -109,6 +109,16 @@ public:
    */
   void setup_layout();
 
+  /// Check the existence of reserved subaxes
+  ///@{
+  bool has_state() const { return _has_state; }
+  bool has_old_state() const { return _has_old_state; }
+  bool has_forces() const { return _has_forces; }
+  bool has_old_forces() const { return _has_old_forces; }
+  bool has_residual() const { return _has_residual; }
+  bool has_parameters() const { return _has_parameters; }
+  ///@}
+
   /// Number of variables
   size_t nvariable(bool recursive = true) const;
 
@@ -227,6 +237,16 @@ private:
   // Similar considerations as `_layout`, i.e., the _offset will be zero during the setup stage,
   // and will have a fixed (hopefully correct) size after the layout have been setup.
   Size _offset;
+
+  /// Flags for reserved subaxes
+  ///@{
+  bool _has_state;
+  bool _has_old_state;
+  bool _has_forces;
+  bool _has_old_forces;
+  bool _has_residual;
+  bool _has_parameters;
+  ///@}
 };
 
 std::ostream & operator<<(std::ostream & os, const LabeledAxis & info);

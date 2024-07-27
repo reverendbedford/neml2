@@ -36,6 +36,8 @@ public:
 
   ImplicitUpdate(const OptionSet & name);
 
+  virtual void diagnose(std::vector<Diagnosis> & diagnoses) const override;
+
   virtual void check_AD_limitation() const override;
 
   virtual void setup_output_views() override;
@@ -51,6 +53,6 @@ protected:
 
 private:
   /// Derivative views to avoid slicing during evaluation
-  Tensor _ds_dsn, _ds_df, _ds_dfn;
+  Tensor _ds_dsn, _ds_df, _ds_dfn, _ds_dp;
 };
 } // namespace neml2

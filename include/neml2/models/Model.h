@@ -72,7 +72,7 @@ public:
   virtual bool is_nonlinear_system() const { return _nonlinear_system; }
 
   /// Get assembled system
-  std::tuple<const Tensor &, const Tensor &, const Tensor &, const Tensor &>
+  std::tuple<const Tensor &, const Tensor &, const Tensor &, const Tensor &, const Tensor &>
   get_system_matrices() const;
 
   /**
@@ -330,7 +330,7 @@ private:
   bool _AD_2nd_deriv;
 
   /// Derivatives of the nonlinear system
-  Tensor _dr_ds, _dr_dsn, _dr_df, _dr_dfn;
+  Tensor _dr_ds, _dr_dsn, _dr_df, _dr_dfn, _dr_dp;
 
 #ifndef NDEBUG
   /// Whether this model has been evaluated in the current forward pass

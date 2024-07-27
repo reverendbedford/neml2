@@ -125,11 +125,11 @@ Model::setup()
   setup_layout();
 }
 
-std::tuple<const Tensor &, const Tensor &, const Tensor &, const Tensor &>
+std::tuple<const Tensor &, const Tensor &, const Tensor &, const Tensor &, const Tensor &>
 Model::get_system_matrices() const
 {
   neml_assert_dbg(is_nonlinear_system(), "This is not a nonlinear system");
-  return {_dr_ds, _dr_dsn, _dr_df, _dr_dfn};
+  return {_dr_ds, _dr_dsn, _dr_df, _dr_dfn, _dr_dp};
 }
 
 void
@@ -230,10 +230,16 @@ Model::setup_output_views()
 
   if (is_nonlinear_system() && requires_grad())
   {
-    _dr_ds = derivative_storage().base_index({"residual", "state"});
-    _dr_dsn = derivative_storage().base_index({"residual", "old_state"});
-    _dr_df = derivative_storage().base_index({"residual", "forces"});
-    _dr_dfn = derivative_storage().base_index({"residual", "old_forces"});
+    if (input_axis().has_state())
+      _dr_ds = derivative_storage().base_index({"residual", "state"});
+    if (input_axis().has_old_state())
+      _dr_dsn = derivative_storage().base_index({"residual", "old_state"});
+    if (input_axis().has_forces())
+      _dr_df = derivative_storage().base_index({"residual", "forces"});
+    if (input_axis().has_old_forces())
+      _dr_dfn = derivative_storage().base_index({"residual", "old_forces"});
+    if (input_axis().has_parameters())
+      _dr_dp = derivative_storage().base_index({"residual", "parameters"});
   }
 }
 

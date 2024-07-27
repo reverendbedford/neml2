@@ -71,7 +71,6 @@ def test_output_type():
 def test_dependency():
     pwd = Path(__file__).parent
     model = neml2.reload_model(pwd / "test_Model.i", "model")
-    model.reinit()
     submodels = model.named_submodels()
 
     assert submodels["foo"].dependency()["forces/t"].name == "model"

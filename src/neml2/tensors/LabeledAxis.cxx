@@ -97,6 +97,13 @@ LabeledAxis::setup_layout()
     _layout.emplace(name, range);
     _offset += axis->storage_size();
   }
+
+  _has_state = _subaxes.count("state");
+  _has_old_state = _subaxes.count("old_state");
+  _has_forces = _subaxes.count("forces");
+  _has_old_forces = _subaxes.count("old_forces");
+  _has_residual = _subaxes.count("residual");
+  _has_parameters = _subaxes.count("parameters");
 }
 
 size_t
