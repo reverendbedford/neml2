@@ -24,7 +24,7 @@ var classneml2_1_1Model =
     [ "get_d2output_dinput2", "classneml2_1_1Model.html#a266eb5da16fd21f487f704e356a3bbe9", null ],
     [ "get_doutput_dinput", "classneml2_1_1Model.html#a04e2b6ccc0f018be2893f2a916b1d828", null ],
     [ "get_output", "classneml2_1_1Model.html#a230166c77b24a5d909bb8c878684a8bb", null ],
-    [ "get_system_matrices", "classneml2_1_1Model.html#a5fbeedc6e0b18f1ba3ae3d69d469033c", null ],
+    [ "get_system_matrices", "classneml2_1_1Model.html#a1060c26a0f406f5d019b306da72def25", null ],
     [ "is_AD_enabled", "classneml2_1_1Model.html#a2f0ece10b73afdc69a4fd813dffec630", null ],
     [ "is_nonlinear_system", "classneml2_1_1Model.html#a9952cc25d72ad689c212a71290a62eb6", null ],
     [ "options", "classneml2_1_1Model.html#a761d77eb7c81c3e93b34bfe6caf4b132", null ],

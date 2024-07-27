@@ -144,7 +144,7 @@ Loading a model from an input file</h1>
 <div class="line"> </div>
 <div class="line">  <span class="keywordflow">return</span> 0;</div>
 <div class="line">}</div>
-<div class="ttc" id="anamespaceneml2_html_a0e8c7aeae6d7c24a44a404965d5b5fa3"><div class="ttname"><a href="namespaceneml2.html#a0e8c7aeae6d7c24a44a404965d5b5fa3">neml2::load_model</a></div><div class="ttdeci">Model &amp; load_model(const std::filesystem::path &amp;path, const std::string &amp;mname, bool enable_ad)</div><div class="ttdoc">A convenient function to load an input file and get a model.</div><div class="ttdef"><b>Definition</b> Factory.cxx:67</div></div>
+<div class="ttc" id="anamespaceneml2_html_a0e8c7aeae6d7c24a44a404965d5b5fa3"><div class="ttname"><a href="namespaceneml2.html#a0e8c7aeae6d7c24a44a404965d5b5fa3">neml2::load_model</a></div><div class="ttdeci">Model &amp; load_model(const std::filesystem::path &amp;path, const std::string &amp;mname, bool enable_ad)</div><div class="ttdoc">A convenient function to load an input file and get a model.</div><div class="ttdef"><b>Definition</b> Factory.cxx:69</div></div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md37"></a>
 Evaluate the model</h1>
 <p>Suppose we want to perform 3 material updates simultaneously, the model should be initialized using the <a class="el" href="classneml2_1_1Model.html#add0302a95f0f0bb555a626603ef86472" title="Allocate storage and setup views for all the variables of this model and recursively all of the sub-m...">neml2::Model::reinit</a> method with the correct batch shape (refer to the <a class="el" href="system-tensors.html">tensor system documentation</a> for more detailed explanation on the term "batch"):</p>
