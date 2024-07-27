@@ -125,8 +125,8 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a5b798cd4613a7ec46ef1f66bbb7cd71d" id="r_a5b798cd4613a7ec46ef1f66bbb7cd71d"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5b798cd4613a7ec46ef1f66bbb7cd71d">diagnose</a> (<a class="el" href="classbase_1_1Model.html">Model</a> model)</td></tr>
-<tr class="separator:a5b798cd4613a7ec46ef1f66bbb7cd71d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb7d3de7cb90b5c15582380453716027" id="r_acb7d3de7cb90b5c15582380453716027"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acb7d3de7cb90b5c15582380453716027">diagnose</a> (<a class="el" href="classbase_1_1Model.html">Model</a> model)</td></tr>
+<tr class="separator:acb7d3de7cb90b5c15582380453716027"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47dc10eb9f756543982ec55d233b3bb8" id="r_a47dc10eb9f756543982ec55d233b3bb8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classbase_1_1Model.html">Model</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a47dc10eb9f756543982ec55d233b3bb8">get_model</a> (str model, bool enable_AD=True, bool force_create=True)</td></tr>
 <tr class="separator:a47dc10eb9f756543982ec55d233b3bb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace7f785332701c986866f2b4468894b6" id="r_ace7f785332701c986866f2b4468894b6"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ace7f785332701c986866f2b4468894b6">load_input</a> (os.PathLike path, str cli_args='')</td></tr>
@@ -141,25 +141,23 @@ Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><pre class="fragment">NEML2 Python bindings
 </pre> </div><h2 class="groupheader">Function Documentation</h2>
-<a id="a5b798cd4613a7ec46ef1f66bbb7cd71d" name="a5b798cd4613a7ec46ef1f66bbb7cd71d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5b798cd4613a7ec46ef1f66bbb7cd71d">&#9670;&#160;</a></span>diagnose()</h2>
+<a id="acb7d3de7cb90b5c15582380453716027" name="acb7d3de7cb90b5c15582380453716027"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb7d3de7cb90b5c15582380453716027">&#9670;&#160;</a></span>diagnose()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"> str diagnose </td>
+          <td class="memname"> None diagnose </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classbase_1_1Model.html">Model</a></td>          <td class="paramname"><span class="paramname"><em>model</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Diagnose common issues in model setup.
+<pre class="fragment">Diagnose common issues in model setup. Raises a runtime error including all identified issues, if any.
 
 :param model: Model to be diagnosed
-:return: An empty string if no potential issue has been identified. Otherwise,
-returns a string containing all identified issues.
 </pre> 
 </div>
 </div>
