@@ -160,9 +160,6 @@
   [elastic_stretch]
     type = ElasticStrainRate
   []
-  [plastic_spin]
-    type = PlasticVorticity
-  []
   [plastic_deformation_rate]
     type = PlasticDeformationRate
   []
@@ -194,7 +191,7 @@
   [implicit_rate_1]
     type = ComposedModel
     models = "euler_rodrigues_1 elasticity_1 resolved_shear
-              elastic_stretch plastic_deformation_rate plastic_spin
+              elastic_stretch plastic_deformation_rate
               sum_slip_rates slip_rule slip_strength voce_hardening
               integrate_slip_hardening integrate_elastic_strain"
   []
@@ -222,6 +219,9 @@
   [orientation_rate]
     type = OrientationRate
     elastic_strain = 'forces/tmp/elastic_strain'
+  []
+  [plastic_spin]
+    type = PlasticVorticity
   []
   [slip_strength_2]
     type = SingleSlipStrengthMap

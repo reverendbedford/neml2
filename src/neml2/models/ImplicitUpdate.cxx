@@ -77,10 +77,16 @@ ImplicitUpdate::diagnose(std::vector<Diagnosis> & diagnoses) const
   Model::diagnose(diagnoses);
   diagnostic_assert(diagnoses,
                     _model.output_axis().nsubaxis() == 1,
-                    "The implicit model's output contains non-residual subaxis");
+                    "The implicit model's output contains non-residual subaxis:\n",
+                    _model.output_axis());
   diagnostic_assert(diagnoses,
-                    _model.input_axis().has_subaxis("state"),
-                    "The implicit model's input does not have a state subaxis");
+                    _model.input_axis().has_state(),
+                    "The implicit model's input does not have a state subaxis:\n",
+                    _model.input_axis());
+  diagnostic_assert(diagnoses,
+                    !_model.input_axis().has_residual(),
+                    "The implicit model's input cannot have a residual subaxis:\n",
+                    _model.input_axis());
   diagnostic_assert(
       diagnoses,
       _model.input_axis().subaxis("state") == _model.output_axis().subaxis("residual"),
