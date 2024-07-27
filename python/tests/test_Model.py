@@ -43,11 +43,9 @@ def test_get_model():
 def test_diagnose():
     pwd = Path(__file__).parent
     model = neml2.load_model(pwd / "test_Model_diagnose.i", "model")
-    diagnoses = neml2.diagnose(model)
-    assert (
-        "This model is part of a nonlinear system. At least one of the input variables is solve-dependent, so all output variables MUST be solve-dependent"
-        in diagnoses
-    )
+    expected_error = "This model is part of a nonlinear system. At least one of the input variables is solve-dependent, so all output variables MUST be solve-dependent"
+    with pytest.raises(RuntimeError, match=expected_error):
+        neml2.diagnose(model)
 
 
 def test_input_type():

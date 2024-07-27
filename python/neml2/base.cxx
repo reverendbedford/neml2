@@ -117,25 +117,12 @@ where it is desirable to deallocate models on-the-fly.
 )");
   m.def(
       "diagnose",
-      [](const Model & m)
-      {
-        try
-        {
-          diagnose(m);
-        }
-        catch (const NEMLException & e)
-        {
-          return e.what();
-        }
-        return "";
-      },
+      [](const Model & m) { diagnose(m); },
       py::arg("model"),
       R"(
-Diagnose common issues in model setup.
+Diagnose common issues in model setup. Raises a runtime error including all identified issues, if any.
 
 :param model: Model to be diagnosed
-:return: An empty string if no potential issue has been identified. Otherwise,
-returns a string containing all identified issues.
 )");
 
   // neml2.base.TensorValue
