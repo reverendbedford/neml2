@@ -7,7 +7,7 @@ var searchData=
   ['values_5ftype_4',['values_type',['../classneml2_1_1Storage.html#aa0223e50085f8df042a5de5d8e18bdba',1,'neml2::Storage']]],
   ['variable_5',['Variable',['../classneml2_1_1Variable.html',1,'Variable&lt; T &gt;'],['../classneml2_1_1Variable.html#acea26132afb01dbb55c331138fa5cdce',1,'neml2::Variable::Variable(const VariableName &amp;name_in, const Model *owner, TensorType type=TensorTypeEnum&lt; T2 &gt;::value)'],['../classneml2_1_1Variable.html#a474c10dd4c36c37fb5e6a42cfec955bb',1,'neml2::Variable::Variable(const VariableName &amp;name_in, const Model *owner, TensorShapeRef base_shape, TensorType type=TensorType::kTensor)'],['../classneml2_1_1Variable.html#afa2557f05957e6420fafbb2a56f26717',1,'neml2::Variable::Variable(const Variable&lt; T &gt; &amp;)']]],
   ['variable_20declaration_6',['Variable declaration',['../custom-model.html#custom-model-variable-declaration',1,'']]],
-  ['variable_20naming_20conventions_7',['Variable naming conventions',['../naming-conventions.html#autotoc_md6',1,'']]],
+  ['variable_20naming_20conventions_7',['Variable naming conventions',['../naming-conventions.html#autotoc_md8',1,'']]],
   ['variable_3c_20neml2_3a_3ar2_20_3e_8',['Variable&lt; neml2::R2 &gt;',['../classneml2_1_1Variable.html',1,'neml2']]],
   ['variable_3c_20neml2_3a_3arot_20_3e_9',['Variable&lt; neml2::Rot &gt;',['../classneml2_1_1Variable.html',1,'neml2']]],
   ['variable_3c_20neml2_3a_3ascalar_20_3e_10',['Variable&lt; neml2::Scalar &gt;',['../classneml2_1_1Variable.html',1,'neml2']]],
@@ -40,9 +40,10 @@ var searchData=
   ['verbose_37',['verbose',['../classneml2_1_1Solver.html#a087685f54898c5180dd954bfc1e5fb1f',1,'neml2::Solver']]],
   ['verification_20tests_38',['Verification tests',['../testing.html#testing-verification-tests',1,'']]],
   ['version_202_39',['The New Engineering Material model Library, version 2',['../index.html#autotoc_md2',1,'']]],
-  ['viscoplasticity_40',['Viscoplasticity',['../solid-mechanics.html#autotoc_md21',1,'']]],
-  ['voceisotropichardening_41',['VoceIsotropicHardening',['../classneml2_1_1VoceIsotropicHardening.html',1,'VoceIsotropicHardening'],['../classneml2_1_1VoceIsotropicHardening.html#a654bb13e32847efd903cf8bf5d101829',1,'neml2::VoceIsotropicHardening::VoceIsotropicHardening()'],['../syntax-models.html#voceisotropichardening',1,'VoceIsotropicHardening']]],
-  ['vocesinglesliphardeningrule_42',['VoceSingleSlipHardeningRule',['../classneml2_1_1VoceSingleSlipHardeningRule.html',1,'VoceSingleSlipHardeningRule'],['../classneml2_1_1VoceSingleSlipHardeningRule.html#a6ca33d27bed25ccabfa2a8f34c8a060f',1,'neml2::VoceSingleSlipHardeningRule::VoceSingleSlipHardeningRule()'],['../syntax-models.html#vocesinglesliphardeningrule',1,'VoceSingleSlipHardeningRule']]],
-  ['vol_43',['vol',['../classneml2_1_1SR2.html#ad0bef00f6b9d8b2ba9adce9c373c7b2e',1,'neml2::SR2']]],
-  ['vonmises_44',['VONMISES',['../classneml2_1_1SR2Invariant.html#a979d38b05f49ac1c94292c258ed4fb36a64af7596b9f83e64122fdcc92dda8765',1,'neml2::SR2Invariant']]]
+  ['viscoplasticity_40',['Viscoplasticity',['../solid-mechanics.html#autotoc_md23',1,'']]],
+  ['visualization_41',['Model visualization',['../model-visualization.html',1,'']]],
+  ['voceisotropichardening_42',['VoceIsotropicHardening',['../classneml2_1_1VoceIsotropicHardening.html',1,'VoceIsotropicHardening'],['../classneml2_1_1VoceIsotropicHardening.html#a654bb13e32847efd903cf8bf5d101829',1,'neml2::VoceIsotropicHardening::VoceIsotropicHardening()'],['../syntax-models.html#voceisotropichardening',1,'VoceIsotropicHardening']]],
+  ['vocesinglesliphardeningrule_43',['VoceSingleSlipHardeningRule',['../classneml2_1_1VoceSingleSlipHardeningRule.html',1,'VoceSingleSlipHardeningRule'],['../classneml2_1_1VoceSingleSlipHardeningRule.html#a6ca33d27bed25ccabfa2a8f34c8a060f',1,'neml2::VoceSingleSlipHardeningRule::VoceSingleSlipHardeningRule()'],['../syntax-models.html#vocesinglesliphardeningrule',1,'VoceSingleSlipHardeningRule']]],
+  ['vol_44',['vol',['../classneml2_1_1SR2.html#ad0bef00f6b9d8b2ba9adce9c373c7b2e',1,'neml2::SR2']]],
+  ['vonmises_45',['VONMISES',['../classneml2_1_1SR2Invariant.html#a979d38b05f49ac1c94292c258ed4fb36a64af7596b9f83e64122fdcc92dda8765',1,'neml2::SR2Invariant']]]
 ];

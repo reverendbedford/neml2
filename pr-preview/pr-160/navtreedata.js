@@ -39,7 +39,8 @@ var NAVTREE =
     [ "Developer Guide", "usergroup1.html", [
       [ "Naming Conventions", "naming-conventions.html", null ],
       [ "Custom Model", "custom-model.html", null ],
-      [ "Testing", "testing.html", null ]
+      [ "Testing", "testing.html", null ],
+      [ "Model Visualization", "model-visualization.html", null ]
     ] ],
     [ "Syntax Documentation", "usergroup2.html", [
       [ "[Settings]", "syntax-settings.html", null ],
@@ -85,7 +86,7 @@ var NAVTREEINDEX =
 "classneml2_1_1TransientDriver.html#a13e985ad52b47ea908d95dd37258d885",
 "classneml2_1_1VariableStore.html",
 "classneml2_1_1crystallography_1_1CubicCrystal.html",
-"namespaceneml2.html#af3be63f57cace189eee9ea8e3eaa79f1"
+"namespaceneml2.html#af2dfd736935783dab23c336c69529156"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

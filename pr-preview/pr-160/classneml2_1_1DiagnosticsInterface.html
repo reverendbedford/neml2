@@ -231,9 +231,9 @@ Inheritance diagram for DiagnosticsInterface:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a8376ca2c29f137a13a59962ceea883f2" id="r_a8376ca2c29f137a13a59962ceea883f2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8376ca2c29f137a13a59962ceea883f2">DiagnosticsInterface</a> (<a class="el" href="classneml2_1_1NEML2Object.html">NEML2Object</a> *<a class="el" href="classneml2_1_1CrossRef.html">object</a>)</td></tr>
 <tr class="separator:a8376ca2c29f137a13a59962ceea883f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac9fd9e54969b711311c66596aa2b2e12" id="r_ac9fd9e54969b711311c66596aa2b2e12"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac9fd9e54969b711311c66596aa2b2e12">diagnose</a> (std::vector&lt; <a class="el" href="classneml2_1_1Diagnosis.html">Diagnosis</a> &gt; &amp;) <a class="el" href="classneml2_1_1CrossRef.html">const</a> =0</td></tr>
-<tr class="memdesc:ac9fd9e54969b711311c66596aa2b2e12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check for common problems.  <br /></td></tr>
-<tr class="separator:ac9fd9e54969b711311c66596aa2b2e12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea7b448cba27b6ac47ca4b99edf60bd4" id="r_aea7b448cba27b6ac47ca4b99edf60bd4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aea7b448cba27b6ac47ca4b99edf60bd4">diagnose</a> (std::vector&lt; <a class="el" href="classneml2_1_1Diagnosis.html">Diagnosis</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">diagnoses</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a> =0</td></tr>
+<tr class="memdesc:aea7b448cba27b6ac47ca4b99edf60bd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check for common problems.  <br /></td></tr>
+<tr class="separator:aea7b448cba27b6ac47ca4b99edf60bd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30aa3cc8d35e3fc8ccc38577f878a590" id="r_a30aa3cc8d35e3fc8ccc38577f878a590"><td class="memTemplParams" colspan="2">template&lt;typename... Args&gt; </td></tr>
 <tr class="memitem:a30aa3cc8d35e3fc8ccc38577f878a590"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a30aa3cc8d35e3fc8ccc38577f878a590">diagnostic_assert</a> (std::vector&lt; <a class="el" href="classneml2_1_1Diagnosis.html">Diagnosis</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">diagnoses</a>, <a class="el" href="classneml2_1_1CrossRef.html">bool</a> <a class="el" href="classneml2_1_1CrossRef.html">assertion</a>, <a class="el" href="classneml2_1_1CrossRef.html">Args</a> &amp;&amp;... <a class="el" href="classneml2_1_1CrossRef.html">args</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
 <tr class="separator:a30aa3cc8d35e3fc8ccc38577f878a590"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -271,8 +271,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ac9fd9e54969b711311c66596aa2b2e12" name="ac9fd9e54969b711311c66596aa2b2e12"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac9fd9e54969b711311c66596aa2b2e12">&#9670;&#160;</a></span>diagnose()</h2>
+<a id="aea7b448cba27b6ac47ca4b99edf60bd4" name="aea7b448cba27b6ac47ca4b99edf60bd4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea7b448cba27b6ac47ca4b99edf60bd4">&#9670;&#160;</a></span>diagnose()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -283,7 +283,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a> diagnose </td>
           <td>(</td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="classneml2_1_1Diagnosis.html">Diagnosis</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="classneml2_1_1Diagnosis.html">Diagnosis</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>diagnoses</em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -297,7 +297,12 @@ Public Member Functions</h2></td></tr>
 <p>Check for common problems. </p>
 <p>This method serves as the entry point for diagnosing common problems in object setup. The idea behind this method is that while some errors could be detected at construction time, i.e., when the object's constructor is called, it doesn't hinder other objects' creation. We therefore would like to defer the detection of errors until after all objects have been created, collect all errors at once, and present the user with a complete understanding of all errors encountered.</p>
 <p>Note, however, if an error could interfere with other objects' creation, it should be raised right away inside the constructor, instead of inside this method.</p>
-<dl class="section return"><dt>Returns</dt><dd>A vector of exceptions of type <a class="el" href="classneml2_1_1Diagnosis.html" title="Exception type reserved for diagnostics, so as to not conceptually clash with other exceptions.">Diagnosis</a> for each of the detected problem. </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">diagnoses</td><td>A vector of exceptions of type <a class="el" href="classneml2_1_1Diagnosis.html" title="Exception type reserved for diagnostics, so as to not conceptually clash with other exceptions.">Diagnosis</a> for each of the detected problem. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p>Implemented in <a class="el" href="classneml2_1_1Driver.html#ae5d6a096571aad18262e88dbfa66e482">Driver</a>, <a class="el" href="classneml2_1_1LargeDeformationIncrementalSolidMechanicsDriver.html#a2003b2f696b07451045fddd2c5189cc1">LargeDeformationIncrementalSolidMechanicsDriver</a>, <a class="el" href="classneml2_1_1SolidMechanicsDriver.html#a2003b2f696b07451045fddd2c5189cc1">SolidMechanicsDriver</a>, <a class="el" href="classneml2_1_1TransientDriver.html#a2003b2f696b07451045fddd2c5189cc1">TransientDriver</a>, <a class="el" href="classneml2_1_1Model.html#a2003b2f696b07451045fddd2c5189cc1">Model</a>, <a class="el" href="classneml2_1_1BackwardEulerTimeIntegration.html#aec4b2bcafb1752418187d36995ede628">BackwardEulerTimeIntegration&lt; T &gt;</a>, <a class="el" href="classneml2_1_1ForwardEulerTimeIntegration.html#aec4b2bcafb1752418187d36995ede628">ForwardEulerTimeIntegration&lt; T &gt;</a>, <a class="el" href="classneml2_1_1ImplicitUpdate.html#aec4b2bcafb1752418187d36995ede628">ImplicitUpdate</a>, <a class="el" href="classneml2_1_1VariableRate.html#aec4b2bcafb1752418187d36995ede628">VariableRate&lt; T &gt;</a>, <a class="el" href="classneml2_1_1WR2ExplicitExponentialTimeIntegration.html#aec4b2bcafb1752418187d36995ede628">WR2ExplicitExponentialTimeIntegration</a>, and <a class="el" href="classneml2_1_1WR2ImplicitExponentialTimeIntegration.html#aec4b2bcafb1752418187d36995ede628">WR2ImplicitExponentialTimeIntegration</a>.</p>
 

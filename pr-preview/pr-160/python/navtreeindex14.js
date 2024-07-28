@@ -1,5 +1,6 @@
 var NAVTREEINDEX14 =
 {
+"classtensors_1_1WWR4BatchView.html":[9,0,2,65],
 "classtensors_1_1WWR4BatchView.html#a06cdae8e564737ce1065bd7d3c33f7bc":[9,1,1,65,9],
 "classtensors_1_1WWR4BatchView.html#a06cdae8e564737ce1065bd7d3c33f7bc":[9,0,2,65,9],
 "classtensors_1_1WWR4BatchView.html#a291cf91b893b7bf50a66d4a6702149e7":[9,0,2,65,6],

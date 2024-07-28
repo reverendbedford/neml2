@@ -32,7 +32,8 @@ var menudata={children:[
 {text:"Developer Guide",url:"usergroup1.html",children:[
 {text:"Naming Conventions",url:"../naming-conventions.html"},
 {text:"Custom Model",url:"../custom-model.html"},
-{text:"Testing",url:"../testing.html"}]},
+{text:"Testing",url:"../testing.html"},
+{text:"Model Visualization",url:"../model-visualization.html"}]},
 {text:"Syntax Documentation",url:"usergroup2.html",children:[
 {text:"[Settings]",url:"../syntax-settings.html"},
 {text:"[Tensors]",url:"../syntax-tensors.html"},
