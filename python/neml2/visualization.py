@@ -112,11 +112,16 @@ def _add_model(graph, model):
     _add_variables(graph, model, True)
     _add_variables(graph, model, False)
 
-    for _, submodel in model.named_submodels().items():
-        _add_submodel(graph, submodel)
-        _link_variables(graph, submodel, True)
-        _link_variables(graph, submodel, False)
-        _link_output_variables(graph, submodel, model)
+    if model.type == "ComposedModel":
+        for _, submodel in model.named_submodels().items():
+            _add_submodel(graph, submodel)
+            _link_variables(graph, submodel, True)
+            _link_variables(graph, submodel, False)
+            _link_output_variables(graph, submodel, model)
+    else:
+        _add_modelname(graph, model)
+        _link_variables(graph, model, True)
+        _link_variables(graph, model, False)
 
 
 def _add_submodel(graph, model):
@@ -124,14 +129,16 @@ def _add_submodel(graph, model):
     with graph.subgraph(name=cname) as mgraph:
         mgraph.attr(**submodel_attributes)
         mgraph.node_attr.update(submodel_node_attributes)
-        # add model name
-        mgraph.node(
-            model.name,
-            label=model.name + "\\n[{}]".format(model.type),
-            **submodel_name_node_attributes,
-        )
-        # add output variables
+        _add_modelname(mgraph, model)
         _add_variables(mgraph, model, False)
+
+
+def _add_modelname(graph, model):
+    graph.node(
+        model.name,
+        label=model.name + "\\n[{}]".format(model.type),
+        **submodel_name_node_attributes,
+    )
 
 
 def _add_variables(graph, model, input):
@@ -198,7 +205,7 @@ def _link_variables(graph, model, input):
             mname = model.name
             xname = "output"
             vname = "{}_{}_{}".format(mname, xname, var)
-            graph.edge(model.name, vname, **input_edge_attributes)
+            graph.edge(model.name, vname, **output_edge_attributes)
 
 
 def _link_output_variables(graph, submodel, model):

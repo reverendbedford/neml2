@@ -61,9 +61,9 @@ public:
    * Note, however, if an error could interfere with other objects' creation, it should be raised
    * right away inside the constructor, instead of inside this method.
    *
-   * @returns A vector of exceptions of type Diagnosis for each of the detected problem.
+   * @param diagnoses A vector of exceptions of type Diagnosis for each of the detected problem.
    */
-  virtual void diagnose(std::vector<Diagnosis> &) const = 0;
+  virtual void diagnose(std::vector<Diagnosis> & diagnoses) const = 0;
 
   template <typename... Args>
   void diagnostic_assert(std::vector<Diagnosis> & diagnoses, bool assertion, Args &&... args) const;

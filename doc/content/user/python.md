@@ -3,6 +3,8 @@
 \note
 The NEML2 Python package is experimental. APIs are expected to change.
 
+## Load and evaluate a model from input file
+
 With the NEML2 Python package, the same input file in the other [tutorial](#cpp-backend) can be directly used in a Python script. The Python APIs closely ressembles the C++ APIs. For example, the previous C++ example translates to the following Python script.
 
 ```python
