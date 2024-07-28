@@ -170,7 +170,7 @@ NEML2 relies on the Python interface of [Graphviz](https://graphviz.readthedocs.
 import neml2
 from neml2.visualization import render
 
-model = neml2.load_model("input_file.i", "euler_rodrigues_1")
+model = neml2.load_model("input.i", "euler_rodrigues_1")
 render(model, outfile="graph.svg")
 ```
 The `render` function calls [`graphviz.render`](https://graphviz.readthedocs.io/en/stable/api.html#graphviz.render) behind the scenes, and additional arguments and keyword arguments are forwarded without modification. By default, an intermediate graphviz source file (written in the DOT language) with suffix `.gz` and the rendered output specified by `outfile` are generated. Customization of the graph will be discussed later. NEML2 provides some sensible default settings which generates the graph below.
@@ -191,7 +191,7 @@ The dependency graph of a composed model can also be visualized using a similar 
 import neml2
 from neml2.visualization import render
 
-model = neml2.load_model("input_file.i", "implicit_rate_1")
+model = neml2.load_model("input.i", "implicit_rate_1")
 render(model, outfile="graph.svg")
 ```
 Note the model name is changed to "implicit_rate_1" which is a composed model. The generated graph is shown below.
@@ -206,3 +206,29 @@ The svg and pdf output formats allow arbitrary zooming without loss of resolutio
 For Visual Studio Code users, the [Graphviz Interactive Preview](https://marketplace.visualstudio.com/items?itemName=tintinweb.graphviz-interactive-preview) extension can be used to directly preview the graphviz source code. The extension supports useful postprocessing operations such as node highlighting and filtering. For example, the following screenshot demonstrates upstream highlight of an intermediate output variable `state/internal/sum_slip_rates`.
 
 ![Graph of a composed model with upstream highlighting](asset/graph_highlight.svg){html: width=85%}
+
+## Customizing graph style
+
+The generated graph is highly customizable. All controllable attributes are available in the data class `Configuration`. The configuration can be modified with an instance of the data class, i.e.
+```python
+import neml2
+from neml2.visualization import render, Configuration
+
+model = neml2.load_model("input.i", "implicit_rate_1")
+
+config = Configuration()
+config.global_attributes["fontname"] = "Times-Roman"
+config.global_node_attributes["fontname"] = "Arial"
+config.global_edge_attributes["arrowhead"] = "empty"
+config.submodel_name_node_attributes["color"] = "#bf0036"
+config.submodel_name_node_attributes["fillcolor"] = "#bf003650"
+config.input_node_attributes["color"] = "#00540150"
+config.input_node_attributes["fillcolor"] = "#00540115"
+config.output_node_attributes["color"] = "#8800ff50"
+config.output_node_attributes["fillcolor"] = "#8800ff15"
+
+render(model, outfile="graph.svg")
+```
+The font names, arrow head style, and node fill colors are modified from their default values. The generated graph is shown below.
+
+![Graph of a composed model with custom style](asset/graph_custom.svg){html: width=85%}
