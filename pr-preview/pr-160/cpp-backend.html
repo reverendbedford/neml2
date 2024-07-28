@@ -113,13 +113,13 @@ $(function(){initNavTree('cpp-backend.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md38">Loading a model from an input file</a></li>
-<li class="level1"><a href="#autotoc_md39">Evaluate the model</a></li>
+<ul><li class="level1"><a href="#autotoc_md39">Loading a model from an input file</a></li>
+<li class="level1"><a href="#autotoc_md40">Evaluate the model</a></li>
 <li class="level1"><a href="#disable-ad">Enable/disable automatic differentiation</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md__2home_2runner_2work_2neml2_2neml2_2doc_2content_2user_2cpp"></a></p>
-<h1><a class="anchor" id="autotoc_md38"></a>
+<h1><a class="anchor" id="autotoc_md39"></a>
 Loading a model from an input file</h1>
 <p>The following input file defines a linear isotropic elasticity material model:</p>
 <div class="fragment"><div class="line">[Models]</div>
@@ -145,7 +145,7 @@ Loading a model from an input file</h1>
 <div class="line">  <span class="keywordflow">return</span> 0;</div>
 <div class="line">}</div>
 <div class="ttc" id="anamespaceneml2_html_a0e8c7aeae6d7c24a44a404965d5b5fa3"><div class="ttname"><a href="namespaceneml2.html#a0e8c7aeae6d7c24a44a404965d5b5fa3">neml2::load_model</a></div><div class="ttdeci">Model &amp; load_model(const std::filesystem::path &amp;path, const std::string &amp;mname, bool enable_ad)</div><div class="ttdoc">A convenient function to load an input file and get a model.</div><div class="ttdef"><b>Definition</b> Factory.cxx:69</div></div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md39"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md40"></a>
 Evaluate the model</h1>
 <p>Suppose we want to perform 3 material updates simultaneously, the model should be initialized using the <a class="el" href="classneml2_1_1Model.html#add0302a95f0f0bb555a626603ef86472" title="Allocate storage and setup views for all the variables of this model and recursively all of the sub-m...">neml2::Model::reinit</a> method with the correct batch shape (refer to the <a class="el" href="system-tensors.html">tensor system documentation</a> for more detailed explanation on the term "batch"):</p>
 <div class="fragment"><div class="line">model.reinit({3});</div>

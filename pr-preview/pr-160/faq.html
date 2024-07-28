@@ -113,7 +113,7 @@ $(function(){initNavTree('faq.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md__2home_2runner_2work_2neml2_2neml2_2doc_2content_2faq"></a> </p>
-<h1><a class="anchor" id="autotoc_md10"></a>
+<h1><a class="anchor" id="autotoc_md11"></a>
 How do I run a NEML2 input file?</h1>
 <p>NEML2 is designed as a <em>library</em>, not a <em>program</em>: The core library itself cannot be used as a standalone program to parse and evaluate a material model defined in an input file. However, we acknowledge this common need and therefore provide two convenient options for users to effectively use NEML2 as a standalone program:</p><ol type="1">
 <li>The NEML2 Runner: As documented in <a class="el" href="install.html#install-build-customization">build customization</a>, the <code>NEML2_RUNNER</code> CMake option can be turned on to create a simple runner for parsing, diagnosing, running and profiling NEML2 material models. Once the runner is built, an executable will be placed inside the <code>runner</code> directory under the build directory. Invoking the executable without any additional argument or with the <code>-h</code> or <code>--help</code> argument will print out the usage message: <div class="fragment"><div class="line">driver: 1 argument(s) expected. 0 provided.</div>

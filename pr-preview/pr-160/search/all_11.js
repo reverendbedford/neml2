@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['package_0',['Package',['../python-package.html',1,'Python Package'],['../install.html#autotoc_md17',1,'Python package'],['../install.html#autotoc_md19',1,'Python package']]],
+  ['package_0',['Package',['../python-package.html',1,'Python Package'],['../install.html#autotoc_md18',1,'Python package'],['../install.html#autotoc_md20',1,'Python package']]],
   ['pad_5fappend_1',['pad_append',['../namespaceneml2_1_1utils.html#af4fa4d2efafc64820cdeeb6d33747fd9',1,'neml2::utils']]],
   ['pad_5fprepend_2',['pad_prepend',['../namespaceneml2_1_1utils.html#a2880e22e1dda381473bf23cdd5642a3d',1,'neml2::utils']]],
   ['param_3',['param',['../classneml2_1_1NonlinearParameter.html#a5c879e002c77db15b313f3d9f283979b',1,'neml2::NonlinearParameter']]],
@@ -22,14 +22,14 @@ var searchData=
   ['parser_19',['Parser',['../classneml2_1_1Parser.html',1,'Parser'],['../classneml2_1_1Parser.html#a4fb6c48eb8714d188c78f891adf803fb',1,'neml2::Parser::Parser()']]],
   ['parserexception_20',['ParserException',['../classneml2_1_1ParserException.html',1,'ParserException'],['../classneml2_1_1ParserException.html#a79c8394790a689cc82212df05b3e089c',1,'neml2::ParserException::ParserException()']]],
   ['path_21',['path',['../structneml2_1_1OptionSet_1_1Metadata.html#a4d455efceee21e97d8e21ee40e9b4a20',1,'neml2::OptionSet::Metadata::path'],['../classneml2_1_1NEML2Object.html#ab00e03d2eef5a496bd9c62006fcaf9e1',1,'neml2::NEML2Object::path()'],['../classneml2_1_1OptionSet.html#ab00e03d2eef5a496bd9c62006fcaf9e1',1,'neml2::OptionSet::path() const'],['../classneml2_1_1OptionSet.html#ad038412f559f57e1729f968660265824',1,'neml2::OptionSet::path()']]],
-  ['perfectly_20plastic_20yield_20function_22',['Perfectly Plastic Yield function',['../solid-mechanics.html#autotoc_md25',1,'']]],
+  ['perfectly_20plastic_20yield_20function_22',['Perfectly Plastic Yield function',['../solid-mechanics.html#autotoc_md26',1,'']]],
   ['perzynaplasticflowrate_23',['PerzynaPlasticFlowRate',['../classneml2_1_1PerzynaPlasticFlowRate.html',1,'PerzynaPlasticFlowRate'],['../classneml2_1_1PerzynaPlasticFlowRate.html#a9a27eb45a3ec6117fb32dfcc33bb9aea',1,'neml2::PerzynaPlasticFlowRate::PerzynaPlasticFlowRate()'],['../syntax-models.html#perzynaplasticflowrate',1,'PerzynaPlasticFlowRate']]],
   ['philosophy_24',['Features and design philosophy',['../index.html#autotoc_md4',1,'']]],
-  ['plastic_20yield_20function_25',['Perfectly Plastic Yield function',['../solid-mechanics.html#autotoc_md25',1,'']]],
+  ['plastic_20yield_20function_25',['Perfectly Plastic Yield function',['../solid-mechanics.html#autotoc_md26',1,'']]],
   ['plasticdeformationrate_26',['PlasticDeformationRate',['../classneml2_1_1PlasticDeformationRate.html',1,'PlasticDeformationRate'],['../classneml2_1_1PlasticDeformationRate.html#aa37e9a6b54efebbf9f799c5114c2bed6',1,'neml2::PlasticDeformationRate::PlasticDeformationRate()'],['../syntax-models.html#plasticdeformationrate',1,'PlasticDeformationRate']]],
   ['plasticflowrate_27',['PlasticFlowRate',['../classneml2_1_1PlasticFlowRate.html',1,'PlasticFlowRate'],['../classneml2_1_1PlasticFlowRate.html#a80c8360f09cd1bd0c50eb1a2f1c4cb63',1,'neml2::PlasticFlowRate::PlasticFlowRate()']]],
-  ['plasticity_28',['Plasticity',['../solid-mechanics.html#autotoc_md22',1,'Consistent plasticity'],['../solid-mechanics.html#autotoc_md32',1,'Crystal plasticity']]],
-  ['plasticity_20macroscale_29',['Plasticity (macroscale)',['../solid-mechanics.html#autotoc_md21',1,'']]],
+  ['plasticity_28',['Plasticity',['../solid-mechanics.html#autotoc_md23',1,'Consistent plasticity'],['../solid-mechanics.html#autotoc_md33',1,'Crystal plasticity']]],
+  ['plasticity_20macroscale_29',['Plasticity (macroscale)',['../solid-mechanics.html#autotoc_md22',1,'']]],
   ['plasticvorticity_30',['PlasticVorticity',['../classneml2_1_1PlasticVorticity.html',1,'PlasticVorticity'],['../classneml2_1_1PlasticVorticity.html#a413e23ccc5275e2f1f2e6ebaa24b9947',1,'neml2::PlasticVorticity::PlasticVorticity()'],['../syntax-models.html#plasticvorticity',1,'PlasticVorticity']]],
   ['pow_31',['pow',['../namespaceneml2_1_1math.html#ac649246fade84cc9c7b2694082614ee1',1,'neml2::math::pow(const Real &amp;a, const Tensor &amp;n)'],['../namespaceneml2_1_1math.html#a36f58851aae0b38fdc81b7ad18251b33',1,'neml2::math::pow(const Tensor &amp;a, const Tensor &amp;n)'],['../namespaceneml2_1_1math.html#aa56e9fcd886e48846bfff5a38af3f00d',1,'neml2::math::pow(const T &amp;a, const Real &amp;n)'],['../namespaceneml2_1_1math.html#ac6fe20e739b68a40f7accb8758d94524',1,'neml2::math::pow(const Derived &amp;a, const Scalar &amp;n)']]],
   ['powerlawsliprule_32',['PowerLawSlipRule',['../classneml2_1_1PowerLawSlipRule.html',1,'PowerLawSlipRule'],['../classneml2_1_1PowerLawSlipRule.html#a2d3075db2c674c90b8485db750c3766f',1,'neml2::PowerLawSlipRule::PowerLawSlipRule()'],['../syntax-models.html#powerlawsliprule',1,'PowerLawSlipRule']]],
@@ -37,7 +37,7 @@ var searchData=
   ['preconditioned_5fsolve_34',['preconditioned_solve',['../classneml2_1_1TrustRegionSubProblem.html#a94249531de502762035496ba1d17a42e',1,'neml2::TrustRegionSubProblem']]],
   ['prepare_35',['prepare',['../classneml2_1_1Model.html#a1825b40ca3bc3a1ba67fdb58fac5015c',1,'neml2::Model::prepare()'],['../classneml2_1_1Newton.html#a0df2b320d04aa039f49bb7f2743f8535',1,'neml2::Newton::prepare()'],['../classneml2_1_1NewtonWithTrustRegion.html#a810c956ade73c01ff47e3b1fe551293b',1,'neml2::NewtonWithTrustRegion::prepare()']]],
   ['prepend_36',['prepend',['../classneml2_1_1LabeledAxisAccessor.html#a54a0457553ab1f399991a41c36b13b1f',1,'neml2::LabeledAxisAccessor']]],
-  ['prerequisites_37',['Prerequisites',['../install.html#autotoc_md11',1,'']]],
+  ['prerequisites_37',['Prerequisites',['../install.html#autotoc_md12',1,'']]],
   ['prev_5fbool_38',['prev_bool',['../structneml2_1_1SolvingNonlinearSystem.html#ad5fcb4e83a8cece704346724a64eaec1',1,'neml2::SolvingNonlinearSystem']]],
   ['prev_5fnum_39',['prev_num',['../structneml2_1_1InterOpThread.html#ad6d821ba8f0566c6622cf8d3fbfd2577',1,'neml2::InterOpThread::prev_num'],['../structneml2_1_1IntraOpThread.html#ad6d821ba8f0566c6622cf8d3fbfd2577',1,'neml2::IntraOpThread::prev_num']]],
   ['primitivetensor_40',['PrimitiveTensor',['../classneml2_1_1PrimitiveTensor.html',1,'PrimitiveTensor&lt; Derived, S &gt;'],['../classneml2_1_1PrimitiveTensor.html#aedc0ef5ac905bf1062fa5622f690200f',1,'neml2::PrimitiveTensor::PrimitiveTensor()=default'],['../classneml2_1_1PrimitiveTensor.html#a59aabca7546bcc77cbf40520231766c4',1,'neml2::PrimitiveTensor::PrimitiveTensor(const torch::Tensor &amp;tensor, Size batch_dim)'],['../classneml2_1_1PrimitiveTensor.html#a4756e0063ef10eec74bd2c5c94c4ea5b',1,'neml2::PrimitiveTensor::PrimitiveTensor(const torch::Tensor &amp;tensor)']]],
@@ -66,5 +66,5 @@ var searchData=
   ['proper_5frotation_5ftransform_63',['proper_rotation_transform',['../namespaceneml2.html#af3be63f57cace189eee9ea8e3eaa79f1',1,'neml2']]],
   ['provided_5fitems_64',['provided_items',['../classneml2_1_1DependencyDefinition.html#a68d708e45070c9a72c5e35218fcd8b8b',1,'neml2::DependencyDefinition::provided_items()'],['../classneml2_1_1Model.html#ae209446ae484a69eaf9e68d40f9c92f3',1,'neml2::Model::provided_items()']]],
   ['python_20package_65',['Python Package',['../python-package.html',1,'']]],
-  ['python_20package_66',['Python package',['../install.html#autotoc_md17',1,'Python package'],['../install.html#autotoc_md19',1,'Python package']]]
+  ['python_20package_66',['Python package',['../install.html#autotoc_md18',1,'Python package'],['../install.html#autotoc_md20',1,'Python package']]]
 ];
