@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-# Copyright 2023, UChicago Argonne, LLC
+# Copyright 2024, UChicago Argonne, LLC
 # All Rights Reserved
 # Software Name: NEML2 -- the New Engineering material Model Library, version 2
 # By: Argonne National Laboratory
@@ -130,8 +130,8 @@ if __name__ == "__main__":
     extensions = {".h": "//", ".cxx": "//", ".py": "#", ".sh": "#"}
     additional_files = {}
 
-    exclude_dirs = ["extern"]
-    exclude_files = ["__init__.py", "setup.py"]
+    exclude_dirs = []
+    exclude_files = []
 
     rootdir = Path(".")
 
@@ -140,7 +140,7 @@ if __name__ == "__main__":
     ).stdout
 
     copyright = Path(rootdir / "LICENSE").read_text()
-    print("The copyright statement is")
+    print("The copyright statement is:\n")
     print(copyright)
 
     success = True
