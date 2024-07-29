@@ -39,7 +39,6 @@ operator<<(std::ostream & os, const OptionCollection & p)
   size_t width = 79;
   auto toprule = std::string(width, '=');
   auto midrule = std::string(width, '-');
-  auto bottomrule = toprule;
 
   for (auto && [section, obj_options] : p.data())
   {

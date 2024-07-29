@@ -29,12 +29,12 @@ list(APPEND CMAKE_MODULE_PATH ${NEML2_SOURCE_DIR}/cmake/Modules) # CMake modules
 set(CMAKE_CXX_FLAGS_COVERAGE "-O0 -fprofile-arcs -ftest-coverage" CACHE STRING "Flags used by C++ compiler during coverage builds." FORCE)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-option(NEML2_TESTS "Build NEML2 tests" ON)
-option(NEML2_RUNNER "Build a simple runner for benchmarking, profiling, debugging, etc." OFF)
-option(NEML2_PYBIND "Build NEML2 Python bindings" OFF)
-option(NEML2_DOC "Build NEML2 documentation (html)" OFF)
-option(NEML2_CLANG_TIDY "Enable clang-tidy" OFF)
-option(NEML2_CLANG_TIDY_PATH "Path to the clang-tidy executable" "clang-tidy")
+set(NEML2_TESTS ON CACHE BOOL "Build NEML2 tests")
+set(NEML2_RUNNER OFF CACHE BOOL "Build a simple runner for benchmarking, profiling, debugging, etc.")
+set(NEML2_PYBIND OFF CACHE BOOL "Build NEML2 Python bindings")
+set(NEML2_DOC OFF CACHE BOOL "Build NEML2 documentation (html)")
+set(NEML2_CLANG_TIDY OFF CACHE BOOL "Enable clang-tidy linting")
+set(NEML2_CLANG_TIDY_PATH "clang-tidy" CACHE STRING "Path to the clang-tidy executable")
 
 # ----------------------------------------------------------------------------
 # Dependencies and 3rd party packages

@@ -46,8 +46,8 @@ jobs:
           clang-format-version: "17"
           check-path: ${{ matrix.path }}
   clang-tidy:
-    needs: clang-format
-    runs-on: macos-12
+    name: Linting
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
