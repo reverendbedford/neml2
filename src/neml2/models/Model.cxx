@@ -63,8 +63,11 @@ Model::Model(const OptionSet & options)
     _extra_deriv_order(options.get<int>("_extra_derivative_order")),
     _enable_AD(options.get<bool>("_enable_AD")),
     _AD_1st_deriv(options.get<bool>("_use_AD_first_derivative")),
-    _AD_2nd_deriv(options.get<bool>("_use_AD_second_derivative")),
+    _AD_2nd_deriv(options.get<bool>("_use_AD_second_derivative"))
+#ifndef NDEBUG
+    ,
     _evaluated_once(false)
+#endif
 {
 }
 
