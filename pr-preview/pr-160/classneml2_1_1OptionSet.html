@@ -142,10 +142,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a6fa3c684ca51dd6ef087c7cc60d4703f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1bc9c5aafad6d681547ed24cfa05e0da" id="r_a1bc9c5aafad6d681547ed24cfa05e0da"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1bc9c5aafad6d681547ed24cfa05e0da">~OptionSet</a> ()=<a class="el" href="classneml2_1_1CrossRef.html">default</a></td></tr>
 <tr class="separator:a1bc9c5aafad6d681547ed24cfa05e0da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae914b12d80756703f9db91af1783ce76" id="r_ae914b12d80756703f9db91af1783ce76"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1OptionSet.html">OptionSet</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae914b12d80756703f9db91af1783ce76">operator=</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1OptionSet.html">OptionSet</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">source</a>)</td></tr>
+<tr class="memitem:ae914b12d80756703f9db91af1783ce76" id="r_ae914b12d80756703f9db91af1783ce76"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1OptionSet.html">OptionSet</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae914b12d80756703f9db91af1783ce76">operator=</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1OptionSet.html">OptionSet</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">source</a>)</td></tr>
 <tr class="memdesc:ae914b12d80756703f9db91af1783ce76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. Deep copy.  <br /></td></tr>
 <tr class="separator:ae914b12d80756703f9db91af1783ce76"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf66b5d5efcdc0d044a2b719d8c2b574" id="r_abf66b5d5efcdc0d044a2b719d8c2b574"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abf66b5d5efcdc0d044a2b719d8c2b574">operator+=</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1OptionSet.html">OptionSet</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">source</a>)</td></tr>
+<tr class="memitem:abf66b5d5efcdc0d044a2b719d8c2b574" id="r_abf66b5d5efcdc0d044a2b719d8c2b574"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abf66b5d5efcdc0d044a2b719d8c2b574">operator+=</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1OptionSet.html">OptionSet</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">source</a>)</td></tr>
 <tr class="separator:abf66b5d5efcdc0d044a2b719d8c2b574"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a24dcbf29c0d6cd766009a182a6484e3b" id="r_a24dcbf29c0d6cd766009a182a6484e3b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a24dcbf29c0d6cd766009a182a6484e3b">name</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
 <tr class="memdesc:a24dcbf29c0d6cd766009a182a6484e3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">A readonly reference to the option set's name.  <br /></td></tr>
@@ -655,9 +655,6 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T &gt;
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">void</a> <a class="el" href="classneml2_1_1CrossRef.html">operator</a>+= </td>
@@ -666,11 +663,6 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T &gt;
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 <p>Addition/Assignment operator. Inserts copies of all options from <code>source</code>. Any options of the same name already in <code>this</code> are replaced. </p>
 
@@ -681,9 +673,6 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T &gt;
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classneml2_1_1OptionSet.html">OptionSet</a> &amp; <a class="el" href="classneml2_1_1CrossRef.html">operator</a>= </td>
@@ -692,11 +681,6 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T &gt;
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Assignment operator. Deep copy. </p>

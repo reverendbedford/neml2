@@ -11,7 +11,7 @@ var searchData=
   ['identity_5ftransform_8',['identity_transform',['../namespaceneml2.html#a39a831b3b804b5bc0192039c259a1ad0',1,'neml2']]],
   ['identity_5fvol_9',['identity_vol',['../classneml2_1_1SSR4.html#ab661cf10a393827b93c567453b32205a',1,'neml2::SSR4']]],
   ['identitytensor_10',['IdentityTensor',['../classneml2_1_1IdentityTensor.html',1,'IdentityTensor'],['../classneml2_1_1IdentityTensor.html#a0cc9b7e4153af76d06ac9d930f9ed00a',1,'neml2::IdentityTensor::IdentityTensor()'],['../syntax-tensors.html#identitytensor',1,'IdentityTensor']]],
-  ['implicitupdate_11',['ImplicitUpdate',['../classneml2_1_1ImplicitUpdate.html',1,'ImplicitUpdate'],['../classneml2_1_1ImplicitUpdate.html#a5b24ff1e1c2d72a80212adf9aab58b7c',1,'neml2::ImplicitUpdate::ImplicitUpdate()'],['../syntax-models.html#implicitupdate',1,'ImplicitUpdate']]],
+  ['implicitupdate_11',['ImplicitUpdate',['../classneml2_1_1ImplicitUpdate.html',1,'ImplicitUpdate'],['../classneml2_1_1ImplicitUpdate.html#a523e148da6bfb30b0e0ae9d64553de9e',1,'neml2::ImplicitUpdate::ImplicitUpdate()'],['../syntax-models.html#implicitupdate',1,'ImplicitUpdate']]],
   ['improper_5frotation_5ftransform_12',['improper_rotation_transform',['../namespaceneml2.html#a7ef80b46bb72d2f83fb06c6e0a505adb',1,'neml2']]],
   ['in_20code_20documentation_13',['In-code documentation',['../custom-model.html#custom-model-in-code-documentation',1,'']]],
   ['inbound_5fitems_14',['inbound_items',['../classneml2_1_1DependencyResolver.html#a1a9d9fec50cf186c13a8e3f68ab8f2ba',1,'neml2::DependencyResolver']]],

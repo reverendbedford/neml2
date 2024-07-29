@@ -25,12 +25,12 @@ var classneml2_1_1LabeledAxis =
     [ "nvariable", "classneml2_1_1LabeledAxis.html#a0772d451eb2dbe83ae966ef46bb6772c", null ],
     [ "setup_layout", "classneml2_1_1LabeledAxis.html#aacd1f1cb625061037d2564e63fdd8bd6", null ],
     [ "sort_by_assembly_order", "classneml2_1_1LabeledAxis.html#a1bb93c0ab8b8ac23a773ef92ee568641", null ],
-    [ "storage_size", "classneml2_1_1LabeledAxis.html#a7f5286c79f3ba0a387101023d1c8b4b4", null ],
+    [ "storage_size", "classneml2_1_1LabeledAxis.html#a5cb8bc328d765fe6f5b8cf45e1e7b33d", null ],
     [ "subaxes", "classneml2_1_1LabeledAxis.html#a97b9ffc40ac08969eb969ecb6fa28459", null ],
     [ "subaxis", "classneml2_1_1LabeledAxis.html#a390b6fe333989685b93c6b33d1c3ec28", null ],
     [ "subaxis", "classneml2_1_1LabeledAxis.html#af734852a6d58f2ac48d9374a5279e7e1", null ],
     [ "subaxis_names", "classneml2_1_1LabeledAxis.html#ae05bca15bc3c3bda98dcfa494a666048", null ],
     [ "variable_names", "classneml2_1_1LabeledAxis.html#a67811bbd3f9b786e11b6c4a753d93084", null ],
     [ "variables", "classneml2_1_1LabeledAxis.html#a995e6a25bea15f9edc653f2f15c99c08", null ],
-    [ "operator<<", "classneml2_1_1LabeledAxis.html#ab702b420398239f81db6ab1c1f9d2dcb", null ]
+    [ "operator<<", "classneml2_1_1LabeledAxis.html#a6fa377c963f85d494232051f922d51f8", null ]
 ];

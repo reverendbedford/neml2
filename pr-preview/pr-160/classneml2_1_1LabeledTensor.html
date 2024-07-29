@@ -147,9 +147,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8a943be70cc3cf2838b3b4adb3b66c07" id="r_a8a943be70cc3cf2838b3b4adb3b66c07"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8a943be70cc3cf2838b3b4adb3b66c07">LabeledTensor</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">other</a>)</td></tr>
 <tr class="memdesc:a8a943be70cc3cf2838b3b4adb3b66c07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <br /></td></tr>
 <tr class="separator:a8a943be70cc3cf2838b3b4adb3b66c07"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d98cc288adfeef8352aa115205d9df9" id="r_a0d98cc288adfeef8352aa115205d9df9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0d98cc288adfeef8352aa115205d9df9">operator=</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">other</a>)</td></tr>
-<tr class="memdesc:a0d98cc288adfeef8352aa115205d9df9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator.  <br /></td></tr>
-<tr class="separator:a0d98cc288adfeef8352aa115205d9df9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdf64fd2c62df9528ef48c99bbc7d590" id="r_afdf64fd2c62df9528ef48c99bbc7d590"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1LabeledTensor.html">LabeledTensor</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">Derived</a>, <a class="el" href="classneml2_1_1CrossRef.html">D</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afdf64fd2c62df9528ef48c99bbc7d590">operator=</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">other</a>)</td></tr>
+<tr class="memdesc:afdf64fd2c62df9528ef48c99bbc7d590"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator.  <br /></td></tr>
+<tr class="separator:afdf64fd2c62df9528ef48c99bbc7d590"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a580019aecc682504acacc3f4ca7b3001" id="r_a580019aecc682504acacc3f4ca7b3001"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;T&gt;, T&gt;&gt;&gt; </td></tr>
 <tr class="memitem:a580019aecc682504acacc3f4ca7b3001"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a580019aecc682504acacc3f4ca7b3001">reinterpret</a> (<a class="el" href="namespaceneml2_1_1indexing.html#a1b8360361b2c76d8e0fb1dd8e3e5c7c5">indexing::TensorLabelsRef</a> indices) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
 <tr class="memdesc:a580019aecc682504acacc3f4ca7b3001"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a tensor by slicing on the base dimensions AND reinterpret it as a primitive tensor.  <br /></td></tr>
@@ -227,15 +227,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6980c3dd58aff939091347ef0b0159f5" id="r_a6980c3dd58aff939091347ef0b0159f5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceneml2.html#abc271f879dc471e533dca66b1fd32f60">TensorShapeRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6980c3dd58aff939091347ef0b0159f5">batch_sizes</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
 <tr class="memdesc:a6980c3dd58aff939091347ef0b0159f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the batch size.  <br /></td></tr>
 <tr class="separator:a6980c3dd58aff939091347ef0b0159f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5032d54173ea547b4746d0b5b35442d0" id="r_a5032d54173ea547b4746d0b5b35442d0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5032d54173ea547b4746d0b5b35442d0">batch_size</a> (<a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a> index) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
-<tr class="memdesc:a5032d54173ea547b4746d0b5b35442d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the length of some batch axis.  <br /></td></tr>
-<tr class="separator:a5032d54173ea547b4746d0b5b35442d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a269c191aac380979e95a62d81dc476b0" id="r_a269c191aac380979e95a62d81dc476b0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a269c191aac380979e95a62d81dc476b0">batch_size</a> (<a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a> d) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:a269c191aac380979e95a62d81dc476b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the length of some batch axis.  <br /></td></tr>
+<tr class="separator:a269c191aac380979e95a62d81dc476b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad119635009e213bf9836d432993113eb" id="r_ad119635009e213bf9836d432993113eb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceneml2.html#abc271f879dc471e533dca66b1fd32f60">TensorShapeRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad119635009e213bf9836d432993113eb">base_sizes</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
 <tr class="memdesc:ad119635009e213bf9836d432993113eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the base size.  <br /></td></tr>
 <tr class="separator:ad119635009e213bf9836d432993113eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8eb6187532e8b425e95f3957f193fc58" id="r_a8eb6187532e8b425e95f3957f193fc58"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8eb6187532e8b425e95f3957f193fc58">base_size</a> (<a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a> index) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
-<tr class="memdesc:a8eb6187532e8b425e95f3957f193fc58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the length of some base axis.  <br /></td></tr>
-<tr class="separator:a8eb6187532e8b425e95f3957f193fc58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64e31a6300ab1c3e4bd4cc338d39bc47" id="r_a64e31a6300ab1c3e4bd4cc338d39bc47"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a64e31a6300ab1c3e4bd4cc338d39bc47">base_size</a> (<a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a> d) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:a64e31a6300ab1c3e4bd4cc338d39bc47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the length of some base axis.  <br /></td></tr>
+<tr class="separator:a64e31a6300ab1c3e4bd4cc338d39bc47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a40f9f85dd2f9e7fa571e774bf9331cfb" id="r_a40f9f85dd2f9e7fa571e774bf9331cfb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a40f9f85dd2f9e7fa571e774bf9331cfb">base_storage</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
 <tr class="memdesc:a40f9f85dd2f9e7fa571e774bf9331cfb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the flattened storage needed just for the base indices.  <br /></td></tr>
 <tr class="separator:a40f9f85dd2f9e7fa571e774bf9331cfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -505,8 +505,8 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class=
 
 </div>
 </div>
-<a id="a8eb6187532e8b425e95f3957f193fc58" name="a8eb6187532e8b425e95f3957f193fc58"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8eb6187532e8b425e95f3957f193fc58">&#9670;&#160;</a></span>base_size()</h2>
+<a id="a64e31a6300ab1c3e4bd4cc338d39bc47" name="a64e31a6300ab1c3e4bd4cc338d39bc47"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64e31a6300ab1c3e4bd4cc338d39bc47">&#9670;&#160;</a></span>base_size()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -516,7 +516,7 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class=
         <tr>
           <td class="memname"><a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a> base_size </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a></td>          <td class="paramname"><span class="paramname"><em>index</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a></td>          <td class="paramname"><span class="paramname"><em>d</em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -634,8 +634,8 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class=
 
 </div>
 </div>
-<a id="a5032d54173ea547b4746d0b5b35442d0" name="a5032d54173ea547b4746d0b5b35442d0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5032d54173ea547b4746d0b5b35442d0">&#9670;&#160;</a></span>batch_size()</h2>
+<a id="a269c191aac380979e95a62d81dc476b0" name="a269c191aac380979e95a62d81dc476b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a269c191aac380979e95a62d81dc476b0">&#9670;&#160;</a></span>batch_size()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -645,7 +645,7 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class=
         <tr>
           <td class="memname"><a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a> batch_size </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a></td>          <td class="paramname"><span class="paramname"><em>index</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a></td>          <td class="paramname"><span class="paramname"><em>d</em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -920,8 +920,8 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class=
 
 </div>
 </div>
-<a id="a0d98cc288adfeef8352aa115205d9df9" name="a0d98cc288adfeef8352aa115205d9df9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0d98cc288adfeef8352aa115205d9df9">&#9670;&#160;</a></span>operator=()</h2>
+<a id="afdf64fd2c62df9528ef48c99bbc7d590" name="afdf64fd2c62df9528ef48c99bbc7d590"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afdf64fd2c62df9528ef48c99bbc7d590">&#9670;&#160;</a></span>operator=()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -929,7 +929,7 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class=
 template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a> D&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">void</a> <a class="el" href="classneml2_1_1CrossRef.html">operator</a>= </td>
+          <td class="memname"><a class="el" href="classneml2_1_1LabeledTensor.html">LabeledTensor</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">Derived</a>, <a class="el" href="classneml2_1_1CrossRef.html">D</a> &gt; &amp; <a class="el" href="classneml2_1_1CrossRef.html">operator</a>= </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>other</em></span></td><td>)</td>
           <td></td>

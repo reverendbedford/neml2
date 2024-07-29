@@ -1,9 +1,9 @@
 var namespaceneml2_1_1crystallography =
 [
     [ "crystal_symmetry_operators", "namespaceneml2_1_1crystallography_1_1crystal__symmetry__operators.html", [
-      [ "cubic", "namespaceneml2_1_1crystallography_1_1crystal__symmetry__operators.html#ab5c7c19b0f39a7c22b0f05dc3572a699", null ],
-      [ "hexagonal", "namespaceneml2_1_1crystallography_1_1crystal__symmetry__operators.html#a72170f90d94422c54abd369cd09e5a79", null ],
-      [ "tetragonal", "namespaceneml2_1_1crystallography_1_1crystal__symmetry__operators.html#a98561da1a7b10a7c855c01d5901d46d9", null ],
+      [ "cubic", "namespaceneml2_1_1crystallography_1_1crystal__symmetry__operators.html#a8db7d1d818ed37bdd1abbc2cae808321", null ],
+      [ "hexagonal", "namespaceneml2_1_1crystallography_1_1crystal__symmetry__operators.html#a45f14304802d67be8a52fdd6a74e4e3a", null ],
+      [ "tetragonal", "namespaceneml2_1_1crystallography_1_1crystal__symmetry__operators.html#a60a6a4c69c8ef5194b22d5b645262c3b", null ],
       [ "a", "namespaceneml2_1_1crystallography_1_1crystal__symmetry__operators.html#a395e2cc5edd48653ef7fcd5c455ee6ab", null ],
       [ "b", "namespaceneml2_1_1crystallography_1_1crystal__symmetry__operators.html#a80d125ed558bdb7fe69c75ac9a674a54", null ],
       [ "h", "namespaceneml2_1_1crystallography_1_1crystal__symmetry__operators.html#a7cf47d5a6e2dc752fd52463ecf7f6cdf", null ],
