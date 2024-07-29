@@ -56,11 +56,11 @@ FillR2::fill(const std::vector<CrossRef<Scalar>> & values) const
 {
   if (values.size() == 1)
     return R2::fill(values[0]);
-  else if (values.size() == 3)
+  if (values.size() == 3)
     return R2::fill(values[0], values[1], values[2]);
-  else if (values.size() == 6)
+  if (values.size() == 6)
     return R2::fill(values[0], values[1], values[2], values[3], values[4], values[5]);
-  else if (values.size() == 9)
+  if (values.size() == 9)
     return R2::fill(values[0],
                     values[1],
                     values[2],
@@ -70,11 +70,11 @@ FillR2::fill(const std::vector<CrossRef<Scalar>> & values) const
                     values[6],
                     values[7],
                     values[8]);
-  else
-    neml_assert(false,
-                "Number of values must be 1, 3, 6, or 9, but ",
-                values.size(),
-                " values are provided.");
+
+  neml_assert(false,
+              "Number of values must be 1, 3, 6, or 9, but ",
+              values.size(),
+              " values are provided.");
 
   return R2();
 }

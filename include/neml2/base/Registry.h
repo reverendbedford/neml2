@@ -30,12 +30,13 @@ namespace neml2
 /// Add a NEML2Object to the registry.  classname is the (unquoted)
 /// c++ class.  Each object/class should only be registered once.
 #define register_NEML2_object(classname)                                                           \
-  static char dummyvar_for_registering_obj_##classname = Registry::add<classname>(#classname)
+  static const char dummyvar_for_registering_obj_##classname = Registry::add<classname>(#classname)
 
 /// Add a NEML2Object to the registry and associate it with a given name.  classname is the
 /// (unquoted) c++ class.  Each object/class should only be registered once.
 #define register_NEML2_object_alias(classname, registryname)                                       \
-  static char dummyvar_for_registering_obj_##classname = Registry::add<classname>(registryname)
+  static const char dummyvar_for_registering_obj_##classname =                                     \
+      Registry::add<classname>(registryname)
 
 class NEML2Object;
 

@@ -38,7 +38,7 @@ Tensor::empty(const TensorShapeRef & batch_shape,
               const torch::TensorOptions & options)
 {
   return Tensor(torch::empty(utils::add_shapes(batch_shape, base_shape), options),
-                batch_shape.size());
+                Size(batch_shape.size()));
 }
 
 Tensor
@@ -53,7 +53,7 @@ Tensor::zeros(const TensorShapeRef & batch_shape,
               const torch::TensorOptions & options)
 {
   return Tensor(torch::zeros(utils::add_shapes(batch_shape, base_shape), options),
-                batch_shape.size());
+                Size(batch_shape.size()));
 }
 
 Tensor
@@ -68,7 +68,7 @@ Tensor::ones(const TensorShapeRef & batch_shape,
              const torch::TensorOptions & options)
 {
   return Tensor(torch::ones(utils::add_shapes(batch_shape, base_shape), options),
-                batch_shape.size());
+                Size(batch_shape.size()));
 }
 
 Tensor
@@ -84,7 +84,7 @@ Tensor::full(const TensorShapeRef & batch_shape,
              const torch::TensorOptions & options)
 {
   return Tensor(torch::full(utils::add_shapes(batch_shape, base_shape), init, options),
-                batch_shape.size());
+                Size(batch_shape.size()));
 }
 
 Tensor

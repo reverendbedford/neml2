@@ -149,7 +149,7 @@ public:
   bool has_subaxis(const LabeledAxisAccessor & s) const;
 
   /// Get the total storage size of *this* axis or the storage size of an item
-  Size storage_size(const LabeledAxisAccessor & accessor = {}) const;
+  Size storage_size(const LabeledAxisAccessor & name = {}) const;
 
   /// Get the layout
   const AxisLayout & layout() const { return _layout; }
@@ -186,7 +186,7 @@ public:
   /// Check to see if two LabeledAxis objects are equivalent
   bool equals(const LabeledAxis & other) const;
 
-  friend std::ostream & operator<<(std::ostream & os, const LabeledAxis & info);
+  friend std::ostream & operator<<(std::ostream & os, const LabeledAxis & axis);
 
 private:
   void add(LabeledAxis & axis,
@@ -249,7 +249,7 @@ private:
   ///@}
 };
 
-std::ostream & operator<<(std::ostream & os, const LabeledAxis & info);
+std::ostream & operator<<(std::ostream & os, const LabeledAxis & axis);
 
 bool operator==(const LabeledAxis & a, const LabeledAxis & b);
 

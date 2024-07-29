@@ -49,11 +49,11 @@ FillWR2::FillWR2(const OptionSet & options)
 WR2
 FillWR2::fill(const std::vector<CrossRef<Scalar>> & values) const
 {
-  if (values.size() == 3)
-    return WR2::fill(values[0], values[1], values[2]);
-  else
-    neml_assert(false, "Number of values must be 3, but ", values.size(), " values are provided.");
+  neml_assert(values.size() == 3,
+              "Number of values must be 3, but ",
+              values.size(),
+              " values are provided.");
 
-  return WR2();
+  return WR2::fill(values[0], values[1], values[2]);
 }
 } // namespace neml2

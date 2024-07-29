@@ -56,7 +56,7 @@ public:
   LabeledTensor(const Derived & other);
 
   /// Assignment operator
-  void operator=(const Derived & other);
+  LabeledTensor<Derived, D> & operator=(const Derived & other);
 
   ///@{
   /// Implicit conversion
@@ -129,11 +129,11 @@ public:
   /// Return the batch size
   TensorShapeRef batch_sizes() const;
   /// Return the length of some batch axis
-  Size batch_size(Size index) const;
+  Size batch_size(Size d) const;
   /// Return the base size
   TensorShapeRef base_sizes() const;
   /// Return the length of some base axis
-  Size base_size(Size index) const;
+  Size base_size(Size d) const;
   /// Return the flattened storage needed just for the base indices
   Size base_storage() const;
   ///@}

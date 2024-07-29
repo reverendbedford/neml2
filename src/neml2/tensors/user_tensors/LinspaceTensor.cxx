@@ -67,7 +67,7 @@ LinspaceTensor::LinspaceTensor(const OptionSet & options)
     UserTensorBase(options)
 {
   auto bs = options.get<TensorShape>("batch_expand");
-  if (bs.size() > 0)
+  if (!bs.empty())
     this->batch_expand(bs);
 }
 } // namespace neml2

@@ -78,10 +78,10 @@ PerzynaPlasticFlowRate::set_value(bool out, bool dout_din, bool d2out_din2)
       if (_f.is_dependent())
         _gamma_dot.d(_f) = dgamma_dot_df;
 
-      if (const auto eta = nl_param("eta"))
+      if (const auto * const eta = nl_param("eta"))
         _gamma_dot.d(*eta) = -_n * gamma_dot / _eta;
 
-      if (const auto n = nl_param("n"))
+      if (const auto * const n = nl_param("n"))
         _gamma_dot.d(*n) = gamma_dot * math::log(f_abs / _eta);
     }
   }

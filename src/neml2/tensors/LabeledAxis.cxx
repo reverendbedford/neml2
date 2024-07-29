@@ -27,7 +27,13 @@
 namespace neml2
 {
 LabeledAxis::LabeledAxis()
-  : _offset(0)
+  : _offset(0),
+    _has_state(false),
+    _has_old_state(false),
+    _has_forces(false),
+    _has_old_forces(false),
+    _has_residual(false),
+    _has_parameters(false)
 {
 }
 
@@ -35,7 +41,13 @@ LabeledAxis::LabeledAxis(const LabeledAxis & other)
   : _variables(other._variables),
     _subaxes(other._subaxes),
     _layout(other._layout),
-    _offset(other._offset)
+    _offset(other._offset),
+    _has_state(other._has_state),
+    _has_old_state(other._has_old_state),
+    _has_forces(other._has_forces),
+    _has_old_forces(other._has_old_forces),
+    _has_residual(other._has_residual),
+    _has_parameters(other._has_parameters)
 {
 }
 
@@ -128,11 +140,10 @@ LabeledAxis::has_variable(const LabeledAxisAccessor & var) const
   {
     if (has_subaxis(var.vec()[0]))
       return subaxis(var.vec()[0]).has_variable(var.slice(1));
-    else
-      return false;
+    return false;
   }
-  else
-    return _variables.count(var.vec()[0]);
+
+  return _variables.count(var.vec()[0]);
 }
 
 bool
@@ -145,11 +156,10 @@ LabeledAxis::has_subaxis(const LabeledAxisAccessor & s) const
   {
     if (has_subaxis(s.vec()[0]))
       return subaxis(s.vec()[0]).has_subaxis(s.slice(1));
-    else
-      return false;
+    return false;
   }
-  else
-    return _subaxes.count(s.vec()[0]);
+
+  return _subaxes.count(s.vec()[0]);
 }
 
 Size
@@ -162,7 +172,8 @@ LabeledAxis::storage_size(const LabeledAxisAccessor & name) const
   {
     if (_variables.count(name.vec()[0]))
       return _variables.at(name.vec()[0]);
-    else if (_subaxes.count(name.vec()[0]))
+
+    if (_subaxes.count(name.vec()[0]))
       return _subaxes.at(name.vec()[0])->storage_size();
 
     neml_assert_dbg(false, "Trying to find the storage size of a non-existent item named ", name);
@@ -275,13 +286,13 @@ LabeledAxis::variable_names(bool recursive) const
   std::set<LabeledAxisAccessor> accessors;
 
   // Insert local variables
-  for (auto & [var, sz] : _variables)
+  for (const auto & [var, sz] : _variables)
     accessors.insert(var);
 
   // Insert variables on subaxes
   if (recursive)
-    for (auto & [name, axis] : _subaxes)
-      for (auto & var : axis->variable_names(true))
+    for (const auto & [name, axis] : _subaxes)
+      for (const auto & var : axis->variable_names(true))
         accessors.insert(var.prepend(name));
 
   return accessors;
@@ -292,13 +303,13 @@ LabeledAxis::subaxis_names(bool recursive) const
 {
   std::set<LabeledAxisAccessor> accessors;
 
-  for (auto & [name, axis] : _subaxes)
+  for (const auto & [name, axis] : _subaxes)
   {
     // Insert local subaxes
     accessors.insert(name);
     // Insert sub-subaxes
     if (recursive)
-      for (auto & subname : axis->subaxis_names(true))
+      for (const auto & subname : axis->subaxis_names(true))
         accessors.insert(subname.prepend(name));
   }
 
@@ -308,6 +319,7 @@ LabeledAxis::subaxis_names(bool recursive) const
 const LabeledAxis &
 LabeledAxis::subaxis(const LabeledAxisAccessor & name) const
 {
+  // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
   return const_cast<LabeledAxis *>(this)->subaxis(name);
 }
 
@@ -339,11 +351,14 @@ LabeledAxis::equals(const LabeledAxis & other) const
     return false;
 
   // For subaxes, it's a little bit tricky as we need to compare the dereferenced axes.
-  for (auto & [name, axis] : _subaxes)
+  for (const auto & [name, axis] : _subaxes)
+  {
     if (other._subaxes.count(name) == 0)
       return false;
-    else if (*other._subaxes.at(name) != *axis)
+
+    if (*other._subaxes.at(name) != *axis)
       return false;
+  }
 
   return true;
 }
@@ -365,6 +380,7 @@ operator<<(std::ostream & os, const LabeledAxis & axis)
   // Print variables with right alignment
   for (auto var = vars.begin(); var != vars.end(); var++)
   {
+    // NOLINTNEXTLINE(*-narrowing-conversions)
     os << std::setw(max_var_name_length) << var->first << ": " << var->second;
     if (std::next(var) != vars.end())
       os << std::endl;

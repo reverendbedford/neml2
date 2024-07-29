@@ -1,0 +1,24 @@
+---
+Checks: >
+  clang-diagnostic-*,
+  clang-analyzer-*,
+  cppcoreguidelines-*,
+  -cppcoreguidelines-avoid-magic-numbers,
+  -cppcoreguidelines-macro-usage,
+  -cppcoreguidelines-slicing,
+  -cppcoreguidelines-pro-bounds-constant-array-index,
+  bugprone-*,
+  -bugprone-easily-swappable-parameters,
+  readability-*,
+  -readability-braces-around-statements,
+  -readability-named-parameter,
+  -readability-identifier-length,
+  -readability-magic-numbers,
+  -readability-implicit-bool-conversion,
+  -readability-use-anyofallof,
+  -readability-convert-member-functions-to-static,
+  -readability-function-cognitive-complexity
+WarningsAsErrors: "*"
+HeaderFilterRegex: ""
+---
+

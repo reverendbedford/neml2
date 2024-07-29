@@ -43,10 +43,7 @@ options_compatible(const OptionSet & opts, const OptionSet & additional_opts)
 bool
 OptionSet::contains(const std::string & name) const
 {
-  OptionSet::const_iterator it = _values.find(name);
-  if (it != _values.end())
-    return true;
-  return false;
+  return _values.find(name) != _values.end();
 }
 
 const OptionSet::OptionBase &

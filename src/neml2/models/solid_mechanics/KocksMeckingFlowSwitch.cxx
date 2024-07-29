@@ -91,7 +91,7 @@ KocksMeckingFlowSwitch::set_value(bool out, bool dout_din, bool d2out_din2)
     if (_g.is_dependent())
       _gamma_dot.d(_g) = deriv;
 
-    if (const auto g0 = nl_param("g0"))
+    if (const auto * const g0 = nl_param("g0"))
       _gamma_dot.d(*g0) = -deriv;
   }
 }

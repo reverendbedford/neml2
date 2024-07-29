@@ -72,11 +72,12 @@ LabeledTensor<Derived, D>::LabeledTensor(const Derived & other)
 }
 
 template <class Derived, Size D>
-void
+LabeledTensor<Derived, D> &
 LabeledTensor<Derived, D>::operator=(const Derived & other)
 {
   _tensor = other.tensor();
   _axes = other.axes();
+  return *this;
 }
 
 template <class Derived, Size D>
@@ -93,7 +94,7 @@ LabeledTensor<Derived, D>::operator torch::Tensor() const
 
 template <class Derived, Size D>
 Derived
-LabeledTensor<Derived, D>::empty(TensorShapeRef batch_size,
+LabeledTensor<Derived, D>::empty(TensorShapeRef batch_shape,
                                  const std::array<const LabeledAxis *, D> & axes,
                                  const torch::TensorOptions & options)
 {
@@ -103,12 +104,12 @@ LabeledTensor<Derived, D>::empty(TensorShapeRef batch_size,
                  axes.end(),
                  std::back_inserter(s),
                  [](const LabeledAxis * axis) { return axis->storage_size(); });
-  return Derived(Tensor::empty(batch_size, s, options), axes);
+  return Derived(Tensor::empty(batch_shape, s, options), axes);
 }
 
 template <class Derived, Size D>
 Derived
-LabeledTensor<Derived, D>::zeros(TensorShapeRef batch_size,
+LabeledTensor<Derived, D>::zeros(TensorShapeRef batch_shape,
                                  const std::array<const LabeledAxis *, D> & axes,
                                  const torch::TensorOptions & options)
 {
@@ -118,7 +119,7 @@ LabeledTensor<Derived, D>::zeros(TensorShapeRef batch_size,
                  axes.end(),
                  std::back_inserter(s),
                  [](const LabeledAxis * axis) { return axis->storage_size(); });
-  return Derived(Tensor::zeros(batch_size, s, options), axes);
+  return Derived(Tensor::zeros(batch_shape, s, options), axes);
 }
 
 template <class Derived, Size D>

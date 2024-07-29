@@ -63,14 +63,15 @@ Model::Model(const OptionSet & options)
     _extra_deriv_order(options.get<int>("_extra_derivative_order")),
     _enable_AD(options.get<bool>("_enable_AD")),
     _AD_1st_deriv(options.get<bool>("_use_AD_first_derivative")),
-    _AD_2nd_deriv(options.get<bool>("_use_AD_second_derivative"))
+    _AD_2nd_deriv(options.get<bool>("_use_AD_second_derivative")),
+    _evaluated_once(false)
 {
 }
 
 void
 Model::diagnose(std::vector<Diagnosis> & diagnoses) const
 {
-  for (auto submodel : registered_models())
+  for (auto * submodel : registered_models())
     submodel->diagnose(diagnoses);
 
   // Make sure variables are defined on the reserved subaxes
@@ -96,7 +97,7 @@ Model::diagnose(std::vector<Diagnosis> & diagnoses) const
 void
 Model::diagnose_nl_sys(std::vector<Diagnosis> & diagnoses) const
 {
-  for (auto submodel : registered_models())
+  for (auto * submodel : registered_models())
     submodel->diagnose_nl_sys(diagnoses);
 
   // Check if any input variable is solve-dependent
@@ -200,7 +201,7 @@ Model::allocate_variables(bool in, bool out)
     _solution = Tensor::empty(batch_sizes(), _ndof, options());
   }
 
-  for (auto submodel : registered_models())
+  for (auto * submodel : registered_models())
     submodel->allocate_variables(in, out);
 }
 
@@ -214,7 +215,7 @@ Model::setup_input_views(VariableStore * host)
 void
 Model::setup_submodel_input_views(VariableStore * host)
 {
-  for (auto submodel : registered_models())
+  for (auto * submodel : registered_models())
   {
     for (auto && [name, var] : submodel->input_variables())
       var.setup_views(host->input_variable(name));
@@ -246,7 +247,7 @@ Model::setup_output_views()
 void
 Model::setup_submodel_output_views()
 {
-  for (auto submodel : registered_models())
+  for (auto * submodel : registered_models())
     submodel->setup_output_views();
 }
 
@@ -260,7 +261,7 @@ Model::setup_nonlinear_system()
       _Jacobian = derivative_storage().base_index({"residual", "state"});
   }
 
-  for (auto submodel : registered_models())
+  for (auto * submodel : registered_models())
     submodel->setup_nonlinear_system();
 }
 
@@ -269,7 +270,7 @@ Model::zero()
 {
   VariableStore::zero(requires_grad(), requires_2nd_grad());
 
-  for (auto submodel : registered_models())
+  for (auto * submodel : registered_models())
     submodel->zero();
 }
 
@@ -296,7 +297,7 @@ Model::cache(TensorShapeRef batch_shape,
 
   _options = default_tensor_options().device(device).dtype(dtype);
 
-  for (auto submodel : registered_models())
+  for (auto * submodel : registered_models())
     submodel->cache(batch_shape, _deriv_order, device, dtype);
 }
 
@@ -599,7 +600,7 @@ Model::check_inplace_dbg()
 Model *
 Model::registered_model(const std::string & name) const
 {
-  for (auto submodel : _registered_models)
+  for (auto * submodel : _registered_models)
     if (submodel->name() == name)
       return submodel;
 
@@ -607,13 +608,13 @@ Model::registered_model(const std::string & name) const
                       "'");
 }
 
-const std::set<VariableName>
+std::set<VariableName>
 Model::consumed_items() const
 {
   return input_axis().variable_names();
 }
 
-const std::set<VariableName>
+std::set<VariableName>
 Model::provided_items() const
 {
   return output_axis().variable_names();

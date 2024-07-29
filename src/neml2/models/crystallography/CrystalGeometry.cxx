@@ -127,6 +127,7 @@ CrystalGeometry::nslip() const
 Size
 CrystalGeometry::nslip_groups() const
 {
+  // NOLINTNEXTLINE(*-narrowing-conversions)
   return _slip_offsets.size() - 1;
 }
 

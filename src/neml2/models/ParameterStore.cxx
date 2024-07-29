@@ -56,14 +56,14 @@ ParameterStore::set_parameter(const std::string & name, const Tensor & value)
 void
 ParameterStore::set_parameters(const std::map<std::string, Tensor> & param_values)
 {
-  for (auto & [name, value] : param_values)
+  for (const auto & [name, value] : param_values)
     set_parameter(name, value);
 }
 
 TensorValueBase &
 ParameterStore::get_parameter(const std::string & name)
 {
-  auto base_ptr = _param_values.query_value(name);
+  auto * base_ptr = _param_values.query_value(name);
   neml_assert(base_ptr, "Parameter named ", name, " does not exist.");
   return *base_ptr;
 }
@@ -88,11 +88,11 @@ ParameterStore::named_nonlinear_parameters(bool recursive) const
   if (!recursive)
     return _nl_params;
 
-  auto model = dynamic_cast<const Model *>(this);
+  const auto * model = dynamic_cast<const Model *>(this);
   neml_assert(model, "Only models support recursive nonlinear parameter declaration");
 
   auto all_nl_params = _nl_params;
-  for (auto submodel : model->registered_models())
+  for (auto * submodel : model->registered_models())
   {
     auto sub_nl_params = submodel->named_nonlinear_parameters(true);
     all_nl_params.insert(sub_nl_params.begin(), sub_nl_params.end());
@@ -111,11 +111,11 @@ ParameterStore::named_nonlinear_parameter_models(bool recursive) const
   if (!recursive)
     return _nl_param_models;
 
-  auto model = dynamic_cast<const Model *>(this);
+  const auto * model = dynamic_cast<const Model *>(this);
   neml_assert(model, "Only models support recursive nonlinear parameter declaration");
 
   auto all_nl_param_models = _nl_param_models;
-  for (auto submodel : model->registered_models())
+  for (auto * submodel : model->registered_models())
   {
     auto sub_nl_param_models = submodel->named_nonlinear_parameter_models(true);
     all_nl_param_models.insert(sub_nl_param_models.begin(), sub_nl_param_models.end());
@@ -136,7 +136,8 @@ ParameterStore::declare_parameter(const std::string & name,
 {
   if (_options.contains<T>(input_option_name))
     return declare_parameter(name, _options.get<T>(input_option_name));
-  else if (_options.contains<CrossRef<T>>(input_option_name))
+
+  if (_options.contains<CrossRef<T>>(input_option_name))
   {
     try
     {
@@ -148,7 +149,7 @@ ParameterStore::declare_parameter(const std::string & name,
       {
         // Handle the case of *nonlinear* parameter.
         // Note that nonlinear parameter should only exist inside a Model.
-        auto model = dynamic_cast<Model *>(this);
+        auto * model = dynamic_cast<Model *>(this);
         neml_assert(model,
                     "Object '",
                     _object->name(),

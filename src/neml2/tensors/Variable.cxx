@@ -136,10 +136,11 @@ VariableBase::d(const VariableBase & x1, const VariableBase & x2)
   return Derivative(_d2value_d[x1.name()][x2.name()]);
 }
 
-void
+Derivative &
 Derivative::operator=(const Tensor & val)
 {
   _value.index_put_({torch::indexing::Slice()},
                     val.batch_expand_as(_value).base_reshape(_value.base_sizes()));
+  return *this;
 }
 }

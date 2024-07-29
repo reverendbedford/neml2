@@ -34,7 +34,7 @@ class ImplicitUpdate : public Model
 public:
   static OptionSet expected_options();
 
-  ImplicitUpdate(const OptionSet & name);
+  ImplicitUpdate(const OptionSet & options);
 
   virtual void diagnose(std::vector<Diagnosis> & diagnoses) const override;
 

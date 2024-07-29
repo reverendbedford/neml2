@@ -61,20 +61,20 @@ KocksMeckingYieldStress::set_value(bool out, bool dout_din, bool d2out_din2)
 
   if (dout_din)
   {
-    if (const auto mu = nl_param("mu"))
+    if (const auto * const mu = nl_param("mu"))
       _p.d(*mu) = math::exp(_C);
 
-    if (const auto C = nl_param("C"))
+    if (const auto * const C = nl_param("C"))
       _p.d(*C) = _mu * math::exp(_C);
   }
 
   if (d2out_din2)
   {
-    if (const auto C = nl_param("C"))
+    if (const auto * const C = nl_param("C"))
     {
       _p.d(*C, *C) = _mu * math::exp(_C);
 
-      if (const auto mu = nl_param("mu"))
+      if (const auto * const mu = nl_param("mu"))
       {
         _p.d(*C, *mu) = math::exp(_C);
         _p.d(*mu, *C) = math::exp(_C);

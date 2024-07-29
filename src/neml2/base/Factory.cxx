@@ -120,10 +120,10 @@ void
 Factory::print(std::ostream & os)
 {
   const auto & all_objects = get()._objects;
-  for (auto & [section, objects] : all_objects)
+  for (const auto & [section, objects] : all_objects)
   {
     os << "- " << section << ":" << std::endl;
-    for (auto & object : objects)
+    for (const auto & object : objects)
       os << "   " << object.first << ": " << object.second.size() << std::endl;
   }
 }

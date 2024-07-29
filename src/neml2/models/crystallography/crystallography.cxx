@@ -33,7 +33,7 @@ namespace crystallography
 {
 namespace crystal_symmetry_operators
 {
-const torch::Tensor
+torch::Tensor
 tetragonal(const torch::TensorOptions & options)
 {
   return torch::tensor({{o, z, z, z},
@@ -47,7 +47,7 @@ tetragonal(const torch::TensorOptions & options)
                        options);
 }
 
-const torch::Tensor
+torch::Tensor
 hexagonal(const torch::TensorOptions & options)
 {
   return torch::tensor({{o, z, z, z},
@@ -65,7 +65,7 @@ hexagonal(const torch::TensorOptions & options)
                        options);
 }
 
-const torch::Tensor
+torch::Tensor
 cubic(const torch::TensorOptions & options)
 {
   return torch::tensor({{o, z, z, z},   {h, h, h, h},    {-h, h, h, h},  {h, -h, h, h},
@@ -82,63 +82,49 @@ R2
 symmetry_operations_from_orbifold(std::string orbifold, const torch::TensorOptions & options)
 {
   if (orbifold == "432")
-  {
     return transform_from_quaternion(Quaternion(crystal_symmetry_operators::cubic(options)));
-  }
-  else if (orbifold == "23")
-  {
+
+  if (orbifold == "23")
     return transform_from_quaternion(
         Quaternion(crystal_symmetry_operators::cubic(options).index({indexing::Slice(0, 12)})));
-  }
-  else if (orbifold == "622")
-  {
+
+  if (orbifold == "622")
     return transform_from_quaternion(Quaternion(crystal_symmetry_operators::hexagonal(options)));
-  }
-  else if (orbifold == "32")
-  {
+
+  if (orbifold == "32")
     return transform_from_quaternion(Quaternion(torch::cat(
         {crystal_symmetry_operators::hexagonal(options).index({indexing::Slice(0, 3)}),
          crystal_symmetry_operators::hexagonal(options).index({indexing::Slice(9, 12)})})));
-  }
-  else if (orbifold == "6")
-  {
+
+  if (orbifold == "6")
     return transform_from_quaternion(
         Quaternion(crystal_symmetry_operators::hexagonal(options).index({indexing::Slice(0, 6)})));
-  }
-  else if (orbifold == "3")
-  {
+
+  if (orbifold == "3")
     return transform_from_quaternion(
         Quaternion(crystal_symmetry_operators::hexagonal(options).index({indexing::Slice(0, 3)})));
-  }
-  else if (orbifold == "42")
-  {
+
+  if (orbifold == "42")
     return transform_from_quaternion(Quaternion(crystal_symmetry_operators::tetragonal(options)));
-  }
-  else if (orbifold == "4")
-  {
+
+  if (orbifold == "4")
     return transform_from_quaternion(Quaternion(torch::cat(
         {crystal_symmetry_operators::tetragonal(options).index({indexing::Slice(0, 1)}),
          crystal_symmetry_operators::tetragonal(options).index({indexing::Slice(3, 6)})})));
-  }
-  else if (orbifold == "222")
-  {
+
+  if (orbifold == "222")
     return transform_from_quaternion(
         Quaternion(crystal_symmetry_operators::tetragonal(options).index({indexing::Slice(0, 4)})));
-  }
-  else if (orbifold == "2")
-  {
+
+  if (orbifold == "2")
     return transform_from_quaternion(
         Quaternion(crystal_symmetry_operators::tetragonal(options).index({indexing::Slice(0, 2)})));
-  }
-  else if (orbifold == "1")
-  {
+
+  if (orbifold == "1")
     return transform_from_quaternion(
         Quaternion(crystal_symmetry_operators::tetragonal(options).index({indexing::Slice(0, 1)})));
-  }
-  else
-  {
-    throw NEMLException("Unknown crystal class " + orbifold);
-  }
+
+  throw NEMLException("Unknown crystal class " + orbifold);
 }
 
 Vec

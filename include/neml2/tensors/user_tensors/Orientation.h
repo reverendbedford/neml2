@@ -54,7 +54,7 @@ private:
                         std::string angle_type) const;
 
   /// Fill from rotation matrices
-  Rot fill_matrix(const R2 & vals) const;
+  Rot fill_matrix(const R2 & M) const;
 
   /// Fill some number of random orientations
   Rot fill_random(unsigned int n, Size random_seed) const;

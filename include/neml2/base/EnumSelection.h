@@ -62,7 +62,7 @@ public:
    * The input stream operator shall be the only entry point to modify the selection other than the
    * assignment operator
    */
-  friend std::stringstream & operator>>(std::stringstream & in, EnumSelection &);
+  friend std::stringstream & operator>>(std::stringstream & ss, EnumSelection &);
 
   /// Test for inequality
   bool operator==(const EnumSelection & other) const;

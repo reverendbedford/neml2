@@ -5,6 +5,21 @@ file(GLOB_RECURSE SRCS *.cxx)
 add_library(neml2 SHARED ${SRCS})
 set_target_properties(neml2 PROPERTIES INSTALL_RPATH "${EXEC_DIR};${Torch_LINK_DIRECTORIES}")
 
+if(NEML2_CLANG_TIDY)
+  find_program(NEML2_CLANG_TIDY_EXE NAMES ${NEML2_CLANG_TIDY_PATH})
+
+  if(NEML2_CLANG_TIDY_EXE)
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+      set(CLANG_TIDY_COMMAND "${NEML2_CLANG_TIDY_EXE}")
+      set_target_properties(neml2 PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_COMMAND}")
+    else()
+      message(WARNING "NEML2_CLANG_TIDY ignored because compiler is not clang")
+    endif()
+  else()
+    message(WARNING "NEML2_CLANG_TIDY ignored because no clang-tidy executable can be found.")
+  endif()
+endif()
+
 # NEML2 (private) compile options
 target_compile_options(neml2 PRIVATE -Wall -Wextra -pedantic -Werror)
 

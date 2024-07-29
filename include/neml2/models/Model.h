@@ -121,9 +121,9 @@ public:
   Model * registered_model(const std::string & name) const;
 
   /// The variables that this model depends on
-  virtual const std::set<VariableName> consumed_items() const override;
+  virtual std::set<VariableName> consumed_items() const override;
   /// The variables that this model defines as part of its output
-  virtual const std::set<VariableName> provided_items() const override;
+  virtual std::set<VariableName> provided_items() const override;
 
   /// Whether AD is enabled
   virtual bool is_AD_enabled() const override { return _enable_AD; }

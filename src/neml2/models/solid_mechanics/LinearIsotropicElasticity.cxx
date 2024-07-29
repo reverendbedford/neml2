@@ -71,8 +71,8 @@ LinearIsotropicElasticity::set_value(bool out, bool dout_din, bool d2out_din2)
   if (out)
     _to = vf * SR2(_from).vol() + df * SR2(_from).dev();
 
-  const auto E = nl_param("E");
-  const auto nu = nl_param("nu");
+  const auto * const E = nl_param("E");
+  const auto * const nu = nl_param("nu");
 
   if (dout_din)
   {

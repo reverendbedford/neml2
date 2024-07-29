@@ -31,6 +31,7 @@ operator<<(std::ostream & os, const TensorType & t)
 {
 #define _stringify_tensor_type(T) else if (t == TensorType::k##T) os << #T
 
+  // NOLINTNEXTLINE(readability-simplify-boolean-expr)
   if (false)
     ;
   FOR_ALL_TENSORBASE(_stringify_tensor_type);

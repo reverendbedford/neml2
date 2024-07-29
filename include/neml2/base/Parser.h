@@ -41,7 +41,7 @@ public:
   Parser() = default;
 
   /// Known top-level sections in the input file
-  static std::vector<std::string> sections;
+  static const std::vector<std::string> sections;
 
   /**
    * @brief Deserialize a file.

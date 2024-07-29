@@ -33,6 +33,8 @@ option(NEML2_TESTS "Build NEML2 tests" ON)
 option(NEML2_RUNNER "Build a simple runner for benchmarking, profiling, debugging, etc." OFF)
 option(NEML2_PYBIND "Build NEML2 Python bindings" OFF)
 option(NEML2_DOC "Build NEML2 documentation (html)" OFF)
+option(NEML2_CLANG_TIDY "Enable clang-tidy" OFF)
+option(NEML2_CLANG_TIDY_PATH "Path to the clang-tidy executable" "clang-tidy")
 
 # ----------------------------------------------------------------------------
 # Dependencies and 3rd party packages

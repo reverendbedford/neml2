@@ -75,11 +75,11 @@ Settings::expected_options()
   options.set<Real>("tighter_tolerance") = 1E-12;
   options.set("tighter_tolerance").doc() = "A tighter tolerance used in various algorithms.";
 
-  options.set<unsigned int>("interop_threads") = 0;
+  options.set<int>("interop_threads") = 0;
   options.set("interop_threads").doc() = "Number threads used for inter-ops parallelism. If set to "
                                          "0, defaults to number of CPU cores.";
 
-  options.set<unsigned int>("intraop_threads") = 0;
+  options.set<int>("intraop_threads") = 0;
   options.set("intraop_threads").doc() = "Number threads used for intra-ops parallelism. If set to "
                                          "0, defaults to number of CPU cores.";
 
@@ -116,12 +116,12 @@ Settings::Settings(const OptionSet & options)
   tighter_tolerance() = options.get<Real>("tighter_tolerance");
 
   // Inter-ops threading
-  auto num_interop_threads = options.get<unsigned int>("interop_threads");
+  auto num_interop_threads = options.get<int>("interop_threads");
   if (num_interop_threads > 0)
     at::set_num_interop_threads(num_interop_threads);
 
   // Intra-ops threading
-  auto num_intraop_threads = options.get<unsigned int>("intraop_threads");
+  auto num_intraop_threads = options.get<int>("intraop_threads");
   if (num_intraop_threads > 0)
     at::set_num_threads(num_intraop_threads);
 

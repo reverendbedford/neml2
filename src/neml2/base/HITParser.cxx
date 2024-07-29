@@ -69,18 +69,18 @@ HITParser::parse(const std::filesystem::path & filename, const std::string & add
   OptionCollection all_options;
 
   // Extract global settings
-  auto settings_node = root->find("Settings");
+  auto * settings_node = root->find("Settings");
   if (settings_node)
     extract_options(settings_node, all_options.settings());
 
   // Loop over each known section and extract options for each object
   for (const auto & section : Parser::sections)
   {
-    auto section_node = root->find(section);
+    auto * section_node = root->find(section);
     if (section_node)
     {
       auto objects = section_node->children(hit::NodeType::Section);
-      for (auto object : objects)
+      for (auto * object : objects)
       {
         auto options = extract_object_options(object, section_node);
         all_options[section][options.name()] = options;
@@ -111,11 +111,12 @@ HITParser::extract_object_options(hit::Node * object, hit::Node * section) const
 void
 HITParser::extract_options(hit::Node * object, OptionSet & options) const
 {
-  for (auto node : object->children(hit::NodeType::Field))
+  for (auto * node : object->children(hit::NodeType::Field))
     if (node->path() != "type")
       extract_option(node, options);
 }
 
+// NOLINTBEGIN
 void
 HITParser::extract_option(hit::Node * n, OptionSet & options) const
 {
@@ -165,4 +166,5 @@ HITParser::extract_option(hit::Node * n, OptionSet & options) const
     neml_assert(found, "Unused option ", n->fullpath());
   }
 }
+// NOLINTEND
 } // namespace neml2

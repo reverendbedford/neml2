@@ -116,26 +116,26 @@ GTNYieldFunction::set_value(bool out, bool dout_din, bool d2out_din2)
                   _q1 * _phi * _q2 * _sp / math::pow(sf, 2.0) * math::sinh(_q2 / 2.0 * _sp / sf);
 
     // Handle the case of nonlinear parameters
-    if (const auto sy = nl_param("sy"))
+    if (const auto * const sy = nl_param("sy"))
       _f.d(*sy) = -2 * math::pow(Scalar(_se), 2.0) / math::pow(sf, 3.0) -
                   _q1 * _phi * _q2 * _sp / math::pow(sf, 2.0) * math::sinh(_q2 / 2.0 * _sp / sf);
 
-    if (const auto q1 = nl_param("q1"))
+    if (const auto * const q1 = nl_param("q1"))
       _f.d(*q1) = 2.0 * _phi * math::cosh(_q2 / 2.0 * _sp / sf);
 
-    if (const auto q2 = nl_param("q2"))
+    if (const auto * const q2 = nl_param("q2"))
       _f.d(*q2) = _q1 * _phi * _sp / sf * math::sinh(_q2 / 2.0 * _sp / sf);
 
-    if (const auto q3 = nl_param("q3"))
+    if (const auto * const q3 = nl_param("q3"))
       _f.d(*q3) = -math::pow(Scalar(_phi), 2.0);
   }
 
   if (d2out_din2)
   {
-    const auto sy = nl_param("sy");
-    const auto q1 = nl_param("q1");
-    const auto q2 = nl_param("q2");
-    const auto q3 = nl_param("q3");
+    const auto * const sy = nl_param("sy");
+    const auto * const q1 = nl_param("q1");
+    const auto * const q2 = nl_param("q2");
+    const auto * const q3 = nl_param("q3");
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //

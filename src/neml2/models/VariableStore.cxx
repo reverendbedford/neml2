@@ -69,7 +69,7 @@ VariableStore::output_variable(const VariableName & name)
 TensorType
 VariableStore::input_type(const VariableName & name) const
 {
-  auto var_ptr = _input_views.query_value(name);
+  const auto * var_ptr = _input_views.query_value(name);
   neml_assert(var_ptr, "Input variable ", name, " does not exist.");
   return var_ptr->type();
 }
@@ -77,7 +77,7 @@ VariableStore::input_type(const VariableName & name) const
 TensorType
 VariableStore::output_type(const VariableName & name) const
 {
-  auto var_ptr = _output_views.query_value(name);
+  const auto * var_ptr = _output_views.query_value(name);
   neml_assert(var_ptr, "Output variable ", name, " does not exist.");
   return var_ptr->type();
 }

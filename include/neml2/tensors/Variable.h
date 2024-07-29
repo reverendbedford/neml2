@@ -276,7 +276,7 @@ public:
 
   const Tensor & value() const { return _value; }
 
-  void operator=(const Tensor & val);
+  Derivative & operator=(const Tensor & val);
 
 private:
   Tensor & _value;

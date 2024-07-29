@@ -55,27 +55,25 @@ FillRot::fill(const std::vector<CrossRef<Scalar>> & values, const std::string & 
 {
   if (method == "modified")
   {
-    if (values.size() == 3)
-      return Rot::fill(values[0], values[1], values[2]);
-    else
-      neml_assert(
-          false, "Number of values must be 3, but ", values.size(), " values are provided.");
+    neml_assert(values.size() == 3,
+                "Number of values must be 3, but ",
+                values.size(),
+                " values are provided.");
+    return Rot::fill(values[0], values[1], values[2]);
   }
-  else if (method == "standard")
+
+  if (method == "standard")
   {
-    if (values.size() == 3)
-    {
-      auto ns = values[0] * values[0] + values[1] * values[1] + values[2] * values[2];
-      auto f = Scalar(torch::sqrt(torch::Tensor(ns) + torch::tensor(1.0, ns.dtype())) +
-                      torch::tensor(1.0, ns.dtype()));
-      return Rot::fill(values[0] / f, values[1] / f, values[2] / f);
-    }
-    else
-      neml_assert(
-          false, "Number of values must be 3, but ", values.size(), " values are provided.");
+    neml_assert(values.size() == 3,
+                "Number of values must be 3, but ",
+                values.size(),
+                " values are provided.");
+    auto ns = values[0] * values[0] + values[1] * values[1] + values[2] * values[2];
+    auto f = Scalar(torch::sqrt(torch::Tensor(ns) + torch::tensor(1.0, ns.dtype())) +
+                    torch::tensor(1.0, ns.dtype()));
+    return Rot::fill(values[0] / f, values[1] / f, values[2] / f);
   }
-  else
-    throw NEMLException("Unknown Rot fill type " + method);
-  return Rot();
+
+  throw NEMLException("Unknown Rot fill type " + method);
 }
 } // namespace neml2

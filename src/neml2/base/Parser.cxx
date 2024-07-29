@@ -28,5 +28,6 @@
 
 namespace neml2
 {
-std::vector<std::string> Parser::sections = {"Tensors", "Solvers", "Data", "Models", "Drivers"};
+const std::vector<std::string> Parser::sections = {
+    "Tensors", "Solvers", "Data", "Models", "Drivers"};
 } // namespace neml2

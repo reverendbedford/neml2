@@ -212,8 +212,8 @@ Orientation::expand_as_needed(const Rot & input, unsigned int inp_size) const
 {
   if (inp_size > 1)
     return input.batch_expand({inp_size});
-  else
-    return input;
+
+  return input;
 }
 
 } // namespace neml2

@@ -125,7 +125,7 @@ NewtonWithTrustRegion::update(NonlinearSystem & system, Tensor & x)
 
   // Actual reduction in the objective function
   auto xp = x + system.scale_direction(p);
-  auto [Rp, Jp] = system.residual_and_Jacobian(xp);
+  system.residual_and_Jacobian(xp);
   auto nRp = system.residual_norm();
   auto red_a = 0.5 * torch::pow(nR, 2.0) - 0.5 * torch::pow(nRp, 2.0);
 

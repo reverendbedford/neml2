@@ -90,7 +90,7 @@ KocksMeckingActivationEnergy::set_value(bool out, bool dout_din, bool d2out_din2
     if (_eps_dot.is_dependent())
       _g.d(_eps_dot) = -_k * _T / (_mu * _b3 * _eps_dot);
 
-    if (const auto mu = nl_param("mu"))
+    if (const auto * const mu = nl_param("mu"))
       _g.d(*mu) = -_k * _T / (_b3 * _mu * _mu) * math::log(_eps0 / _eps_dot);
   }
 }

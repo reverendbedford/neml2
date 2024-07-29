@@ -40,9 +40,9 @@ class DependencyDefinition
 {
 public:
   /// What this object consumes
-  virtual const std::set<T> consumed_items() const = 0;
+  virtual std::set<T> consumed_items() const = 0;
 
   /// What this object provides
-  virtual const std::set<T> provided_items() const = 0;
+  virtual std::set<T> provided_items() const = 0;
 };
 } // namespace neml2

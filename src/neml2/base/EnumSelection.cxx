@@ -72,6 +72,7 @@ EnumSelection::EnumSelection(const std::vector<std::string> & candidates,
               "Invalid default selection for EnumSelection. Candidates are ",
               candidates_str());
 
+  // NOLINTNEXTLINE(cppcoreguidelines-prefer-member-initializer)
   _value = _values[_selection];
 }
 
@@ -97,6 +98,7 @@ EnumSelection::EnumSelection(const std::vector<std::string> & candidates,
               "Invalid default selection for EnumSelection. Candidates are ",
               candidates_str());
 
+  // NOLINTNEXTLINE(cppcoreguidelines-prefer-member-initializer)
   _value = _values[_selection];
 }
 

@@ -28,8 +28,6 @@
 
 namespace neml2
 {
-std::map<std::thread::id, std::exception_ptr> ComposedModel::_async_exceptions = {};
-
 register_NEML2_object(ComposedModel);
 
 OptionSet
@@ -84,12 +82,12 @@ ComposedModel::ComposedModel(const OptionSet & options)
   // evaluate the nonlinar parameter over and over again!
   auto submodels = registered_models();
   if (_auto_nl_param)
-    for (auto submodel : submodels)
+    for (auto * submodel : submodels)
       for (auto && [pname, pmodel] : submodel->named_nonlinear_parameter_models(/*recursive=*/true))
         _registered_models.push_back(pmodel);
 
   // Add registered models as nodes in the dependency resolver
-  for (auto submodel : registered_models())
+  for (auto * submodel : registered_models())
     _dependency.add_node(submodel);
   for (const auto & var : _additional_outputs)
     _dependency.add_additional_outbound_item(var);
@@ -138,7 +136,7 @@ ComposedModel::ComposedModel(const OptionSet & options)
   }
 
   // Declare nonlinear parameters
-  for (auto submodel : submodels)
+  for (auto * submodel : submodels)
   {
     for (auto && [pname, param] : submodel->named_nonlinear_parameters(/*recursive=*/true))
       if (input_axis().has_variable(param->name()))
@@ -155,13 +153,13 @@ ComposedModel::setup()
   Model::setup();
 
   // Setup assembly indices
-  for (auto i : registered_models())
+  for (auto * i : registered_models())
   {
     for (auto [i1, i2] : i->input_axis().common_indices(input_axis()))
       _assembly_indices[i].insert_or_assign(i1, std::make_pair(this, i2));
 
     if (_dependency.node_providers().count(i))
-      for (auto dep : _dependency.node_providers().at(i))
+      for (auto * dep : _dependency.node_providers().at(i))
         for (auto [i1, i2] : i->input_axis().common_indices(dep->output_axis()))
           _assembly_indices[i].insert_or_assign(i1, std::make_pair(dep, i2));
   }
@@ -198,7 +196,7 @@ ComposedModel::allocate_variables(bool in, bool out)
     if (requires_grad())
     {
       _dpout_din[this] = LabeledMatrix::identity(batch_sizes(), input_axis(), options());
-      for (auto i : registered_models())
+      for (auto * i : registered_models())
         _dpout_din[i] =
             LabeledMatrix::zeros(batch_sizes(), {&i->output_axis(), &input_axis()}, options());
     }
@@ -207,7 +205,7 @@ ComposedModel::allocate_variables(bool in, bool out)
     {
       _d2pout_din2[this] = LabeledTensor3D::zeros(
           batch_sizes(), {&input_axis(), &input_axis(), &input_axis()}, options());
-      for (auto i : registered_models())
+      for (auto * i : registered_models())
         _d2pout_din2[i] = LabeledTensor3D::zeros(
             batch_sizes(), {&i->output_axis(), &input_axis(), &input_axis()}, options());
     }
@@ -219,7 +217,7 @@ ComposedModel::setup_output_views()
 {
   Model::setup_output_views();
 
-  for (auto i : registered_models())
+  for (auto * i : registered_models())
   {
     // Setup views for dpin/din
     if (requires_grad())
@@ -243,7 +241,7 @@ ComposedModel::setup_output_views()
 void
 ComposedModel::setup_submodel_input_views(VariableStore * host)
 {
-  for (auto submodel : registered_models())
+  for (auto * submodel : registered_models())
   {
     for (const auto & item : _dependency.inbound_items())
       if (item.parent == submodel)
@@ -252,7 +250,7 @@ ComposedModel::setup_submodel_input_views(VariableStore * host)
     for (const auto & [item, providers] : _dependency.item_providers())
       if (item.parent == submodel)
       {
-        auto depmodel = providers.begin()->parent;
+        auto * depmodel = providers.begin()->parent;
         submodel->input_variable(item.value)->setup_views(depmodel->output_variable(item.value));
       }
 
@@ -265,7 +263,7 @@ ComposedModel::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   _async_exceptions.clear();
   _async_results.clear();
-  for (auto i : registered_models())
+  for (auto * i : registered_models())
     _async_results[i] = std::async(
         std::launch::deferred, &ComposedModel::set_value_async, this, i, out, dout_din, d2out_din2);
 
@@ -275,7 +273,7 @@ ComposedModel::set_value(bool out, bool dout_din, bool d2out_din2)
   // Rethrow exceptions raised from other threads to the main thread
   rethrow_exceptions();
 
-  for (auto model : _dependency.end_nodes())
+  for (auto * model : _dependency.end_nodes())
   {
     if (out)
       output_storage().fill(model->output_storage());
@@ -295,7 +293,7 @@ ComposedModel::set_value_async(Model * i, bool out, bool dout_din, bool d2out_di
   {
     // Wait for dependent models
     if (_dependency.node_providers().count(i))
-      for (auto dep : _dependency.node_providers().at(i))
+      for (auto * dep : _dependency.node_providers().at(i))
         _async_results[dep].wait();
 
     if (out && !dout_din && !d2out_din2)
@@ -325,7 +323,7 @@ ComposedModel::rethrow_exceptions() const
   if (!_async_exceptions.empty())
   {
     std::stringstream error;
-    for (auto & [tid, eptr] : _async_exceptions)
+    for (const auto & [tid, eptr] : _async_exceptions)
       try
       {
         std::rethrow_exception(eptr);

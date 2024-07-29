@@ -120,6 +120,8 @@ Commonly used configuration options are summarized below. Default options are <u
 | NEML2_RUNNER_AS_PROFILER | ON, <u>OFF</u>                                              | Make the runner a profiler by linking against gperftools                                  |
 | NEML2_DOC                | ON, <u>OFF</u>                                              | Create the documentation target                                                           |
 | NEML2_PYBIND             | ON, <u>OFF</u>                                              | Create the Python bindings target                                                         |
+| NEML2_CLANG_TIDY         | ON, <u>OFF</u>                                              | Run clang-tidy linting diagnostics                                                        |
+| NEML2_CLANG_TIDY_PATH    | <u>"clang-tidy"</u>                                         | Path to clang-tidy executable                                                             |
 
 Visual Studio Code users are encouraged to use the predefined [CMake variants](https://vector-of-bool.github.io/docs/vscode-cmake-tools/variants.html) in `cmake-variants.yaml` to configure the build.
 
