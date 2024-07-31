@@ -48,6 +48,10 @@ public:
 
   virtual void setup() override;
 
+  using AssemblyIndices = std::map<indexing::TensorIndex,
+                                   std::pair<indexing::TensorIndex, Model *>,
+                                   LabeledAxis::AssemblySliceCmp>;
+
 protected:
   virtual void allocate_variables(bool in, bool out) override;
 
@@ -65,6 +69,9 @@ protected:
   void set_value(bool, bool, bool) override;
 
 private:
+  /// Consolidate assembly indices
+  AssemblyIndices consolidate(const AssemblyIndices & indices) const;
+
   /// Helper method to evaluate one single model in the threaded set_value loop
   void set_value_async(Model * i, bool out, bool dout_din, bool d2out_din2);
 
@@ -87,11 +94,7 @@ private:
   DependencyResolver<Model, VariableName> _dependency;
 
   /// Assembly indices
-  std::map<Model *,
-           std::map<indexing::TensorIndex,
-                    std::pair<Model *, indexing::TensorIndex>,
-                    LabeledAxis::AssemblySliceCmp>>
-      _assembly_indices;
+  std::map<Model *, AssemblyIndices> _assembly_indices;
 
   /// Cache for partial derivatives of model inputs w.r.t. total input
   std::map<Model *, std::vector<Tensor>> _dpin_din_views;

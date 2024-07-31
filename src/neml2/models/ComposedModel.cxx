@@ -155,14 +155,73 @@ ComposedModel::setup()
   // Setup assembly indices
   for (auto * i : registered_models())
   {
-    for (auto [i1, i2] : i->input_axis().common_indices(input_axis()))
-      _assembly_indices[i].insert_or_assign(i1, std::make_pair(this, i2));
+    AssemblyIndices assy_idx;
 
-    if (_dependency.node_providers().count(i))
-      for (auto * dep : _dependency.node_providers().at(i))
-        for (auto [i1, i2] : i->input_axis().common_indices(dep->output_axis()))
-          _assembly_indices[i].insert_or_assign(i1, std::make_pair(dep, i2));
+    for (auto var : i->input_axis().variable_names())
+    {
+      auto i1 = i->input_axis().indices(var);
+      if (input_axis().has_variable(var))
+      {
+        auto i2 = input_axis().indices(var);
+        assy_idx.insert_or_assign(i1, std::make_pair(i2, this));
+      }
+
+      if (_dependency.node_providers().count(i))
+        for (auto * dep : _dependency.node_providers().at(i))
+          if (dep->output_axis().has_variable(var))
+          {
+            auto i2 = dep->output_axis().indices(var);
+            assy_idx.insert_or_assign(i1, std::make_pair(i2, dep));
+          }
+    }
+
+    _assembly_indices[i] = consolidate(assy_idx);
   }
+}
+
+ComposedModel::AssemblyIndices
+ComposedModel::consolidate(const AssemblyIndices & indices) const
+{
+  ComposedModel::AssemblyIndices assy_idx;
+  if (indices.empty())
+    return assy_idx;
+
+  // Unpack the assembly indices
+  std::vector<indexing::TensorIndex> indices1, indices2;
+  std::vector<Model *> models;
+  for (auto & [i1, i2_dep] : indices)
+  {
+    indices1.push_back(i1);
+    indices2.push_back(i2_dep.first);
+    models.push_back(i2_dep.second);
+  }
+
+  // Consolidated indices
+  std::vector<indexing::TensorIndex> cindices1{indices1[0]}, cindices2{indices2[0]};
+  std::vector<Model *> cmodels{models[0]};
+  for (size_t i = 1; i < models.size(); i++)
+  {
+    auto & end_idx1 = cindices1.back();
+    auto & end_idx2 = cindices2.back();
+    // If the indices are contiguous and the models are the same, we can consolidate these indices
+    if (end_idx2.slice().stop() == indices2[i].slice().start() && cmodels.back() == models[i])
+    {
+      end_idx1 = indexing::Slice(end_idx1.slice().start(), indices1[i].slice().stop());
+      end_idx2 = indexing::Slice(end_idx2.slice().start(), indices2[i].slice().stop());
+    }
+    // otherwise just push them to the back
+    else
+    {
+      cindices1.push_back(indices1[i]);
+      cindices2.push_back(indices2[i]);
+      cmodels.push_back(models[i]);
+    }
+  }
+
+  // Return assembly indices
+  for (size_t i = 0; i < cmodels.size(); i++)
+    assy_idx.emplace(cindices1[i], std::make_pair(cindices2[i], cmodels[i]));
+  return assy_idx;
 }
 
 void
@@ -223,17 +282,17 @@ ComposedModel::setup_output_views()
     if (requires_grad())
     {
       _dpin_din_views[i].clear();
-      for (auto & [i1, dep_i2] : _assembly_indices[i])
-        _dpin_din_views[i].push_back(_dpout_din[dep_i2.first].tensor().base_index({dep_i2.second}));
+      for (auto & [i1, i2_dep] : _assembly_indices[i])
+        _dpin_din_views[i].push_back(_dpout_din[i2_dep.second].tensor().base_index({i2_dep.first}));
     }
 
     // Setup views for d2pin/din2
     if (requires_2nd_grad())
     {
       _d2pin_din2_views[i].clear();
-      for (auto & [i1, dep_i2] : _assembly_indices[i])
+      for (auto & [i1, i2_dep] : _assembly_indices[i])
         _d2pin_din2_views[i].push_back(
-            _d2pout_din2[dep_i2.first].tensor().base_index({dep_i2.second}));
+            _d2pout_din2[i2_dep.second].tensor().base_index({i2_dep.first}));
     }
   }
 }
