@@ -1,5 +1,6 @@
 var classneml2_1_1ComposedModel =
 [
+    [ "AssemblyIndices", "classneml2_1_1ComposedModel.html#a883d7e0dee4e483397a9267e2e261ea1", null ],
     [ "ComposedModel", "classneml2_1_1ComposedModel.html#a61d3a5cb5bea001c7e1d07bd027b21d3", null ],
     [ "allocate_variables", "classneml2_1_1ComposedModel.html#a57f6185364b24edc2e376c9fc0693e05", null ],
     [ "check_AD_limitation", "classneml2_1_1ComposedModel.html#a95baeffb6a3f93db7c85923a8798d686", null ],
