@@ -187,9 +187,10 @@ ComposedModel::consolidate(const AssemblyIndices & indices) const
     return assy_idx;
 
   // Unpack the assembly indices
-  std::vector<indexing::TensorIndex> indices1, indices2;
+  std::vector<indexing::TensorIndex> indices1;
+  std::vector<indexing::TensorIndex> indices2;
   std::vector<Model *> models;
-  for (auto & [i1, i2_dep] : indices)
+  for (const auto & [i1, i2_dep] : indices)
   {
     indices1.push_back(i1);
     indices2.push_back(i2_dep.first);
@@ -197,7 +198,8 @@ ComposedModel::consolidate(const AssemblyIndices & indices) const
   }
 
   // Consolidated indices
-  std::vector<indexing::TensorIndex> cindices1{indices1[0]}, cindices2{indices2[0]};
+  std::vector<indexing::TensorIndex> cindices1{indices1[0]};
+  std::vector<indexing::TensorIndex> cindices2{indices2[0]};
   std::vector<Model *> cmodels{models[0]};
   for (size_t i = 1; i < models.size(); i++)
   {
