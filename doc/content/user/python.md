@@ -23,4 +23,4 @@ x.batch[2] = neml2.SR2.fill([0.3, -0.2, 0.05, -0.1, -0.3, 0.1])
 y = model.value(x)
 ```
 
-As is the same in the equivalent C++ example, the above Python script parses the input file named "input.i", loads the linear elasticity model named "model", constructs 3 strain tensors, and finally performs the 3 material updates simultaneously.
+All is the same in the equivalent C++ example, the above Python script parses the input file named "input.i", loads the linear elasticity model named "model", constructs 3 strain tensors, and finally performs the 3 material updates simultaneously.

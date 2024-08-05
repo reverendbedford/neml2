@@ -2,7 +2,7 @@
 
 [TOC]
 
-It is of paramount importance to ensure the correctness of the implementation. NEML2 offers 4 types of tests for different purposes.
+It is of paramount importance to ensure the correctness of the implementation. NEML2 offers four types of tests for different purposes.
 
 ## Catch tests {#testing-catch-tests}
 
