@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['tensor_0',['Tensor',['../system-tensors.html',1,'']]],
-  ['tensors_1',['[Tensors]',['../syntax-tensors.html',1,'']]]
+  ['input_20file_0',['Input File',['../input-file.html',1,'']]],
+  ['installation_20guide_1',['Installation Guide',['../install.html',1,'']]]
 ];

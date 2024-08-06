@@ -130,10 +130,18 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ad553c45ef4e48d9becca62b1d64d9b5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1287211273e90db35ca5685b3ce7af54" id="r_a1287211273e90db35ca5685b3ce7af54"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1287211273e90db35ca5685b3ce7af54">has_variable</a> (self, <a class="el" href="classtensors_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a> arg0)</td></tr>
 <tr class="separator:a1287211273e90db35ca5685b3ce7af54"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6dd162f8848d25b8cd6b0385d29d7df4" id="r_a6dd162f8848d25b8cd6b0385d29d7df4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6dd162f8848d25b8cd6b0385d29d7df4">storage_size</a> (self)</td></tr>
-<tr class="separator:a6dd162f8848d25b8cd6b0385d29d7df4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2943287461ec4c209023a8ab31749187" id="r_a2943287461ec4c209023a8ab31749187"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensors_1_1LabeledAxis.html">LabeledAxis</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2943287461ec4c209023a8ab31749187">subaxis</a> (self, str arg0)</td></tr>
-<tr class="separator:a2943287461ec4c209023a8ab31749187"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41bde5c51327f947798a6ad350f38226" id="r_a41bde5c51327f947798a6ad350f38226"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a41bde5c51327f947798a6ad350f38226">nsubaxis</a> (self, bool recursive=False)</td></tr>
+<tr class="separator:a41bde5c51327f947798a6ad350f38226"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9918b77178b67899428ebbb825f830f" id="r_af9918b77178b67899428ebbb825f830f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af9918b77178b67899428ebbb825f830f">nvariable</a> (self, bool recursive=True)</td></tr>
+<tr class="separator:af9918b77178b67899428ebbb825f830f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a782d43e5aa12ce00304d1f6cfa2a46e5" id="r_a782d43e5aa12ce00304d1f6cfa2a46e5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a782d43e5aa12ce00304d1f6cfa2a46e5">storage_size</a> (self, <a class="el" href="classtensors_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a> item=...)</td></tr>
+<tr class="separator:a782d43e5aa12ce00304d1f6cfa2a46e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94617b7ab247306b3b778d9e55dab281" id="r_a94617b7ab247306b3b778d9e55dab281"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensors_1_1LabeledAxis.html">LabeledAxis</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a94617b7ab247306b3b778d9e55dab281">subaxis</a> (self, <a class="el" href="classtensors_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a> arg0)</td></tr>
+<tr class="separator:a94617b7ab247306b3b778d9e55dab281"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb5f2e0bf0244828e1cd2e787d341824" id="r_adb5f2e0bf0244828e1cd2e787d341824"><td class="memItemLeft" align="right" valign="top">list[str]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adb5f2e0bf0244828e1cd2e787d341824">subaxis_names</a> (self, bool recursive=False)</td></tr>
+<tr class="separator:adb5f2e0bf0244828e1cd2e787d341824"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a879516bb72304665d2d1bd50f10d86c1" id="r_a879516bb72304665d2d1bd50f10d86c1"><td class="memItemLeft" align="right" valign="top">list[str]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a879516bb72304665d2d1bd50f10d86c1">variable_names</a> (self, bool recursive=True)</td></tr>
+<tr class="separator:a879516bb72304665d2d1bd50f10d86c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a15529ed48adc0778a853b380699fad95" name="a15529ed48adc0778a853b380699fad95"></a>
@@ -258,8 +266,50 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a6dd162f8848d25b8cd6b0385d29d7df4" name="a6dd162f8848d25b8cd6b0385d29d7df4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6dd162f8848d25b8cd6b0385d29d7df4">&#9670;&#160;</a></span>storage_size()</h2>
+<a id="a41bde5c51327f947798a6ad350f38226" name="a41bde5c51327f947798a6ad350f38226"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41bde5c51327f947798a6ad350f38226">&#9670;&#160;</a></span>nsubaxis()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"> int nsubaxis </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool </td>          <td class="paramname"><span class="paramname"><em>recursive</em><span class="paramdefsep"> = </span><span class="paramdefval">False</span></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af9918b77178b67899428ebbb825f830f" name="af9918b77178b67899428ebbb825f830f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9918b77178b67899428ebbb825f830f">&#9670;&#160;</a></span>nvariable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"> int nvariable </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool </td>          <td class="paramname"><span class="paramname"><em>recursive</em><span class="paramdefsep"> = </span><span class="paramdefval">True</span></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a782d43e5aa12ce00304d1f6cfa2a46e5" name="a782d43e5aa12ce00304d1f6cfa2a46e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a782d43e5aa12ce00304d1f6cfa2a46e5">&#9670;&#160;</a></span>storage_size()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -267,16 +317,20 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname"> int storage_size </td>
           <td>(</td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em></span></td><td>)</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="classtensors_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a> </td>          <td class="paramname"><span class="paramname"><em>item</em><span class="paramdefsep"> = </span><span class="paramdefval">...</span></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a2943287461ec4c209023a8ab31749187" name="a2943287461ec4c209023a8ab31749187"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2943287461ec4c209023a8ab31749187">&#9670;&#160;</a></span>subaxis()</h2>
+<a id="a94617b7ab247306b3b778d9e55dab281" name="a94617b7ab247306b3b778d9e55dab281"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a94617b7ab247306b3b778d9e55dab281">&#9670;&#160;</a></span>subaxis()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -289,7 +343,49 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">str</td>          <td class="paramname"><span class="paramname"><em>arg0</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="classtensors_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a></td>          <td class="paramname"><span class="paramname"><em>arg0</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="adb5f2e0bf0244828e1cd2e787d341824" name="adb5f2e0bf0244828e1cd2e787d341824"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb5f2e0bf0244828e1cd2e787d341824">&#9670;&#160;</a></span>subaxis_names()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"> list[str] subaxis_names </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool </td>          <td class="paramname"><span class="paramname"><em>recursive</em><span class="paramdefsep"> = </span><span class="paramdefval">False</span></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a879516bb72304665d2d1bd50f10d86c1" name="a879516bb72304665d2d1bd50f10d86c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a879516bb72304665d2d1bd50f10d86c1">&#9670;&#160;</a></span>variable_names()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"> list[str] variable_names </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool </td>          <td class="paramname"><span class="paramname"><em>recursive</em><span class="paramdefsep"> = </span><span class="paramdefval">True</span></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">

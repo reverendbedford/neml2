@@ -117,7 +117,7 @@ $(function(){initNavTree('WSR4_8h_source.html',''); initResizable(); });
   <div class="headertitle"><div class="title">WSR4.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// Copyright 2023, UChicago Argonne, LLC</span></div>
+<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// Copyright 2024, UChicago Argonne, LLC</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// All Rights Reserved</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">// Software Name: NEML2 -- the New Engineering material Model Library, version 2</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">// By: Argonne National Laboratory</span></div>
@@ -143,29 +143,29 @@ $(function(){initNavTree('WSR4_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#include &quot;neml2/tensors/FixedDimTensor.h&quot;</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#include &quot;neml2/tensors/PrimitiveTensor.h&quot;</span></div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceneml2.html">neml2</a></div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>{</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="keyword">class </span>R4;</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
 <div class="foldopen" id="foldopen00039" data-start="{" data-end="};">
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="classneml2_1_1WSR4.html">   39</a></span><span class="keyword">class </span><a class="code hl_class" href="classneml2_1_1WSR4.html">WSR4</a> : <span class="keyword">public</span> <a class="code hl_class" href="classneml2_1_1FixedDimTensor.html">FixedDimTensor</a>&lt;WSR4, 3, 6&gt;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="classneml2_1_1WSR4.html">   39</a></span><span class="keyword">class </span><a class="code hl_class" href="classneml2_1_1WSR4.html">WSR4</a> : <span class="keyword">public</span> <a class="code hl_class" href="classneml2_1_1PrimitiveTensor.html">PrimitiveTensor</a>&lt;WSR4, 3, 6&gt;</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>{</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keyword">using </span><a class="code hl_class" href="classneml2_1_1FixedDimTensor.html">FixedDimTensor</a>&lt;<a class="code hl_function" href="classneml2_1_1WSR4.html#a5ed8a8dad51cca66ccaa68c5191990a1">WSR4</a>, 3, 6&gt;<a class="code hl_function" href="classneml2_1_1FixedDimTensor.html#a52e97dd6553605c72153d6fa6d1c7518">::FixedDimTensor</a>;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keyword">using </span><a class="code hl_class" href="classneml2_1_1PrimitiveTensor.html">PrimitiveTensor</a>&lt;<a class="code hl_function" href="classneml2_1_1WSR4.html#a5ed8a8dad51cca66ccaa68c5191990a1">WSR4</a>, 3, 6&gt;<a class="code hl_function" href="classneml2_1_1PrimitiveTensor.html#aedc0ef5ac905bf1062fa5622f690200f">::PrimitiveTensor</a>;</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <a class="code hl_function" href="classneml2_1_1WSR4.html#a5ed8a8dad51cca66ccaa68c5191990a1">WSR4</a>(<span class="keyword">const</span> <a class="code hl_class" href="classneml2_1_1R4.html">R4</a> &amp; <a class="code hl_class" href="classneml2_1_1CrossRef.html">F</a>);</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>};</div>
 </div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>} <span class="comment">// namespace neml2</span></div>
-<div class="ttc" id="aclassneml2_1_1CrossRef_html"><div class="ttname"><a href="classneml2_1_1CrossRef.html">neml2::CrossRef</a></div><div class="ttdoc">The wrapper (decorator) for cross-referencing unresolved values at parse time.</div><div class="ttdef"><b>Definition</b> CrossRef.h:52</div></div>
-<div class="ttc" id="aclassneml2_1_1FixedDimTensor_html"><div class="ttname"><a href="classneml2_1_1FixedDimTensor.html">neml2::FixedDimTensor</a></div><div class="ttdoc">FixedDimTensor inherits from BatchTensorBase and additionally templates on the base shape.</div><div class="ttdef"><b>Definition</b> FixedDimTensor.h:38</div></div>
-<div class="ttc" id="aclassneml2_1_1FixedDimTensor_html_a52e97dd6553605c72153d6fa6d1c7518"><div class="ttname"><a href="classneml2_1_1FixedDimTensor.html#a52e97dd6553605c72153d6fa6d1c7518">neml2::FixedDimTensor&lt; WSR4, 3, 6 &gt;::FixedDimTensor</a></div><div class="ttdeci">FixedDimTensor()=default</div><div class="ttdoc">Default constructor.</div></div>
+<div class="ttc" id="aclassneml2_1_1CrossRef_html"><div class="ttname"><a href="classneml2_1_1CrossRef.html">neml2::CrossRef</a></div><div class="ttdoc">The wrapper (decorator) for cross-referencing unresolved values at parse time.</div><div class="ttdef"><b>Definition</b> CrossRef.h:56</div></div>
+<div class="ttc" id="aclassneml2_1_1PrimitiveTensor_html"><div class="ttname"><a href="classneml2_1_1PrimitiveTensor.html">neml2::PrimitiveTensor</a></div><div class="ttdoc">PrimitiveTensor inherits from TensorBase and additionally templates on the base shape.</div><div class="ttdef"><b>Definition</b> PrimitiveTensor.h:38</div></div>
+<div class="ttc" id="aclassneml2_1_1PrimitiveTensor_html_aedc0ef5ac905bf1062fa5622f690200f"><div class="ttname"><a href="classneml2_1_1PrimitiveTensor.html#aedc0ef5ac905bf1062fa5622f690200f">neml2::PrimitiveTensor&lt; WSR4, 3, 6 &gt;::PrimitiveTensor</a></div><div class="ttdeci">PrimitiveTensor()=default</div><div class="ttdoc">Default constructor.</div></div>
 <div class="ttc" id="aclassneml2_1_1R4_html"><div class="ttname"><a href="classneml2_1_1R4.html">neml2::R4</a></div><div class="ttdoc">The (logical) full fourth order tensor.</div><div class="ttdef"><b>Definition</b> R4.h:43</div></div>
 <div class="ttc" id="aclassneml2_1_1WSR4_html"><div class="ttname"><a href="classneml2_1_1WSR4.html">neml2::WSR4</a></div><div class="ttdoc">The (logical) symmetric fourth order tensor, with skew symmetry in the first two dimensionss and symm...</div><div class="ttdef"><b>Definition</b> WSR4.h:40</div></div>
 <div class="ttc" id="aclassneml2_1_1WSR4_html_a5ed8a8dad51cca66ccaa68c5191990a1"><div class="ttname"><a href="classneml2_1_1WSR4.html#a5ed8a8dad51cca66ccaa68c5191990a1">neml2::WSR4::WSR4</a></div><div class="ttdeci">WSR4(const R4 &amp;F)</div><div class="ttdef"><b>Definition</b> WSR4.cxx:32</div></div>
-<div class="ttc" id="anamespaceneml2_html"><div class="ttname"><a href="namespaceneml2.html">neml2</a></div><div class="ttdef"><b>Definition</b> CrossRef.cxx:32</div></div>
+<div class="ttc" id="anamespaceneml2_html"><div class="ttname"><a href="namespaceneml2.html">neml2</a></div><div class="ttdef"><b>Definition</b> CrossRef.cxx:30</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

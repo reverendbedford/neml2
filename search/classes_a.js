@@ -10,13 +10,14 @@ var searchData=
   ['labeledtensor_3c_20labeledvector_2c_201_20_3e_7',['LabeledTensor&lt; LabeledVector, 1 &gt;',['../classneml2_1_1LabeledTensor.html',1,'neml2']]],
   ['labeledvector_8',['LabeledVector',['../classneml2_1_1LabeledVector.html',1,'neml2']]],
   ['largedeformationincrementalsolidmechanicsdriver_9',['LargeDeformationIncrementalSolidMechanicsDriver',['../classneml2_1_1LargeDeformationIncrementalSolidMechanicsDriver.html',1,'neml2']]],
-  ['linearinterpolation_10',['LinearInterpolation',['../classneml2_1_1LinearInterpolation.html',1,'neml2']]],
-  ['linearisotropicelasticity_11',['LinearIsotropicElasticity',['../classneml2_1_1LinearIsotropicElasticity.html',1,'neml2']]],
-  ['linearisotropichardening_12',['LinearIsotropicHardening',['../classneml2_1_1LinearIsotropicHardening.html',1,'neml2']]],
-  ['linearkinematichardening_13',['LinearKinematicHardening',['../classneml2_1_1LinearKinematicHardening.html',1,'neml2']]],
-  ['linearsinglesliphardeningrule_14',['LinearSingleSlipHardeningRule',['../classneml2_1_1LinearSingleSlipHardeningRule.html',1,'neml2']]],
-  ['linspacebatchtensor_15',['LinspaceBatchTensor',['../classneml2_1_1LinspaceBatchTensor.html',1,'neml2']]],
-  ['linspacefixeddimtensor_16',['LinspaceFixedDimTensor',['../classneml2_1_1LinspaceFixedDimTensor.html',1,'neml2']]],
-  ['logspacebatchtensor_17',['LogspaceBatchTensor',['../classneml2_1_1LogspaceBatchTensor.html',1,'neml2']]],
-  ['logspacefixeddimtensor_18',['LogspaceFixedDimTensor',['../classneml2_1_1LogspaceFixedDimTensor.html',1,'neml2']]]
+  ['linearcombination_10',['LinearCombination',['../classneml2_1_1LinearCombination.html',1,'neml2']]],
+  ['linearinterpolation_11',['LinearInterpolation',['../classneml2_1_1LinearInterpolation.html',1,'neml2']]],
+  ['linearisotropicelasticity_12',['LinearIsotropicElasticity',['../classneml2_1_1LinearIsotropicElasticity.html',1,'neml2']]],
+  ['linearisotropichardening_13',['LinearIsotropicHardening',['../classneml2_1_1LinearIsotropicHardening.html',1,'neml2']]],
+  ['linearkinematichardening_14',['LinearKinematicHardening',['../classneml2_1_1LinearKinematicHardening.html',1,'neml2']]],
+  ['linearsinglesliphardeningrule_15',['LinearSingleSlipHardeningRule',['../classneml2_1_1LinearSingleSlipHardeningRule.html',1,'neml2']]],
+  ['linspaceprimitivetensor_16',['LinspacePrimitiveTensor',['../classneml2_1_1LinspacePrimitiveTensor.html',1,'neml2']]],
+  ['linspacetensor_17',['LinspaceTensor',['../classneml2_1_1LinspaceTensor.html',1,'neml2']]],
+  ['logspaceprimitivetensor_18',['LogspacePrimitiveTensor',['../classneml2_1_1LogspacePrimitiveTensor.html',1,'neml2']]],
+  ['logspacetensor_19',['LogspaceTensor',['../classneml2_1_1LogspaceTensor.html',1,'neml2']]]
 ];

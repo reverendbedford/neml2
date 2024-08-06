@@ -23,25 +23,37 @@
  @licend  The above is the entire license notice for the JavaScript code in this file
 */
 var menudata={children:[
-{text:"Overview",url:"index.html"},
+{text:"Main Page",url:"index.html"},
 {text:"Installation Guide",url:"../install.html"},
-{text:"Getting Started",url:"../getting-started.html"},
-{text:"Syntax Documentation",url:"usergroup0.html",children:[
+{text:"User Guide",url:"usergroup0.html",children:[
+{text:"Input File",url:"../input-file.html"},
+{text:"C++ Backend",url:"../cpp-backend.html"},
+{text:"Python Package",url:"../python-package.html"}]},
+{text:"Developer Guide",url:"usergroup1.html",children:[
+{text:"Naming Conventions",url:"../naming-conventions.html"},
+{text:"Custom Model",url:"../custom-model.html"},
+{text:"Testing",url:"../testing.html"},
+{text:"Model Visualization",url:"../model-visualization.html"}]},
+{text:"Syntax Documentation",url:"usergroup2.html",children:[
 {text:"[Settings]",url:"../syntax-settings.html"},
 {text:"[Tensors]",url:"../syntax-tensors.html"},
 {text:"[Models]",url:"../syntax-models.html"},
 {text:"[Solvers]",url:"../syntax-solvers.html"},
 {text:"[Data]",url:"../syntax-data.html"},
 {text:"[Drivers]",url:"../syntax-drivers.html"}]},
-{text:"System Documentation",url:"usergroup1.html",children:[
+{text:"System Documentation",url:"usergroup3.html",children:[
 {text:"Settings",url:"../system-settings.html"},
 {text:"Tensor",url:"../system-tensors.html"},
 {text:"Model",url:"../system-models.html"},
 {text:"Solver",url:"../system-solvers.html"},
 {text:"Data",url:"../system-data.html"},
 {text:"Driver",url:"../system-drivers.html"}]},
-{text:"Physics Documentation",url:"usergroup2.html",children:[
+{text:"Physics Documentation",url:"usergroup4.html",children:[
 {text:"Solid Mechanics",url:"../solid-mechanics.html"}]},
-{text:"Developer Guide",url:"../dev.html"},
-{text:"C++ API Reference",url:"../annotated.html"},
-{text:"Python API Reference",url:"annotated.html"}]}
+{text:"Frequently Asked Questions",url:"../faq.html"},
+{text:"C++ API Reference",url:"usergroup5.html",children:[
+{text:"Namespaces",url:"../namespaces.html"},
+{text:"Classes",url:"../annotated.html"}]},
+{text:"Python API Reference",url:"usergroup6.html",children:[
+{text:"Namespaces",url:"namespaces.html"},
+{text:"Classes",url:"annotated.html"}]}]}

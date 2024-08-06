@@ -9,7 +9,7 @@ var classneml2_1_1SR2 =
     [ "inverse", "classneml2_1_1SR2.html#a10f5d3e2712813d457e0d9db36d9e376", null ],
     [ "norm", "classneml2_1_1SR2.html#ac00d16c9e75c43b909d9840eb1809606", null ],
     [ "norm_sq", "classneml2_1_1SR2.html#aa34d9c66769904faf822a8e5a39ead76", null ],
-    [ "operator()", "classneml2_1_1SR2.html#aa5f82f64039681cac927a7c7e198dd28", null ],
+    [ "operator()", "classneml2_1_1SR2.html#a2c021cc8eeb338a80d72568ef601a2bb", null ],
     [ "outer", "classneml2_1_1SR2.html#a4314b6d6fbc5cd3301bca3b8935863f8", null ],
     [ "rotate", "classneml2_1_1SR2.html#a6caf08d7ceb740974af73657a1d05ff0", null ],
     [ "rotate", "classneml2_1_1SR2.html#a7e1f73f0157ba49ae7ba5b7f169ea956", null ],

@@ -1,7 +1,7 @@
 var classneml2_1_1SolidMechanicsDriver =
 [
     [ "SolidMechanicsDriver", "classneml2_1_1SolidMechanicsDriver.html#a58cc7909ad8c7808e9437f02b0817b55", null ],
-    [ "check_integrity", "classneml2_1_1SolidMechanicsDriver.html#aa73805ac3f59361d0ac05c230a42abd3", null ],
+    [ "diagnose", "classneml2_1_1SolidMechanicsDriver.html#a2003b2f696b07451045fddd2c5189cc1", null ],
     [ "update_forces", "classneml2_1_1SolidMechanicsDriver.html#aab075b25feb32c0a14f95554aa06ffc9", null ],
     [ "_control", "classneml2_1_1SolidMechanicsDriver.html#a2fd8913fddde093c64379b03767c6e5e", null ],
     [ "_control_name", "classneml2_1_1SolidMechanicsDriver.html#a6ec8f3de0deb3db1e3c0dad8c49e0cb9", null ],

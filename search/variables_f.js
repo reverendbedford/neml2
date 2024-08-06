@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['value_0',['value',['../structneml2_1_1DependencyResolver_1_1Item.html#aa0a617dccf1769d5ead7dcf9e23d8894',1,'neml2::DependencyResolver::Item']]],
-  ['verbose_1',['verbose',['../classneml2_1_1Solver.html#a087685f54898c5180dd954bfc1e5fb1f',1,'neml2::Solver']]]
+  ['type_0',['type',['../structneml2_1_1OptionSet_1_1OptionBase_1_1Metadata.html#a75b160f574a0be26114bae2c7686a5e1',1,'neml2::OptionSet::OptionBase::Metadata::type'],['../structneml2_1_1OptionSet_1_1Metadata.html#a75b160f574a0be26114bae2c7686a5e1',1,'neml2::OptionSet::Metadata::type']]]
 ];

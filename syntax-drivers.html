@@ -113,14 +113,21 @@ $(function(){initNavTree('syntax-drivers.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md36">Available objects and their input file syntax</a><ul><li class="level2"><a href="#largedeformationincrementalsolidmechanicsdriver">LargeDeformationIncrementalSolidMechanicsDriver</a></li>
+<ul><li class="level1"><a href="#autotoc_md44">Available objects and their input file syntax</a><ul><li class="level2"><a href="#largedeformationincrementalsolidmechanicsdriver">LargeDeformationIncrementalSolidMechanicsDriver</a></li>
 <li class="level2"><a href="#solidmechanicsdriver">SolidMechanicsDriver</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_content_2syntax_2drivers"></a></p>
-<h1><a class="anchor" id="autotoc_md36"></a>
+<dl class="section note"><dt>Note</dt><dd>Clicking on the option with a triangle bullet ▸ next to it will expand/collapse its detailed information.</dd>
+<dd>
+Type name written in PascalCase typically refer to a NEML2 object type, oftentimes a primitive tensor type.</dd>
+<dd>
+The 🔗 symbol denotes that the option can <a class="el" href="input-file.html#cross-referencing">cross-reference</a> another object.</dd>
+<dd>
+You can always use <code>Ctrl</code>+<code>F</code> or <code>Cmd</code>+<code>F</code> to search the entire page.</dd></dl>
+<h1><a class="anchor" id="autotoc_md44"></a>
 Available objects and their input file syntax</h1>
 <p>Refer to <a class="el" href="system-drivers.html">System Documentation</a> for detailed explanation about this system.</p>
 <h2><a class="anchor" id="largedeformationincrementalsolidmechanicsdriver"></a>
@@ -130,7 +137,7 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 <code>cauchy_stress_rate</code> Cauchy stress rate</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: forces/cauchy_stress_rate </li>
 </ul>
 </details>
@@ -148,7 +155,7 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 <code>cp_elastic_scale</code> Elastic step scale factor used in the 'CP_' predictors</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 1 </li>
 </ul>
 </details>
@@ -157,7 +164,7 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 <code>deformation_rate</code> Deformation rate</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: forces/deformation_rate </li>
 </ul>
 </details>
@@ -172,10 +179,19 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
+<code>enable_AD</code> Enable automatic differentiation</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: bool</li>
+<li><u>Default</u>: false </li>
+</ul>
+</details>
+<details >
+<summary >
 <code>ic_rot_names</code> Apply initial conditions to these Rot variables</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;VariableName&gt; </li>
+<li><u>Type</u>: list of variable name </li>
 </ul>
 </details>
 <details >
@@ -183,7 +199,7 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 <code>ic_rot_values</code> Initial condition values for the Rot variables</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;Rot&gt; </li>
+<li><u>Type</u>: list of Rot 🔗 </li>
 </ul>
 </details>
 <details >
@@ -191,7 +207,7 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 <code>ic_scalar_names</code> Apply initial conditions to these Scalar variables</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;VariableName&gt; </li>
+<li><u>Type</u>: list of variable name </li>
 </ul>
 </details>
 <details >
@@ -199,7 +215,7 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 <code>ic_scalar_values</code> Initial condition values for the Scalar variables</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;Scalar&gt; </li>
+<li><u>Type</u>: list of Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -207,7 +223,7 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 <code>ic_sr2_names</code> Apply initial conditions to these SR2 variables</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;VariableName&gt; </li>
+<li><u>Type</u>: list of variable name </li>
 </ul>
 </details>
 <details >
@@ -215,7 +231,7 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 <code>ic_sr2_values</code> Initial condition values for the SR2 variables</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;SR2&gt; </li>
+<li><u>Type</u>: list of SR2 🔗 </li>
 </ul>
 </details>
 <details >
@@ -240,7 +256,7 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 <code>prescribed_cauchy_stress_rate</code> Prescribed cauchy stress rate (when control = STRESS)</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Tensor </li>
+<li><u>Type</u>: Tensor 🔗 </li>
 </ul>
 </details>
 <details >
@@ -248,7 +264,7 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 <code>prescribed_deformation_rate</code> Prescribed deformation rate (when control = STRAIN)</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Tensor </li>
+<li><u>Type</u>: Tensor 🔗 </li>
 </ul>
 </details>
 <details >
@@ -256,7 +272,7 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 <code>prescribed_vorticity</code> Prescribed vorticity</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Tensor </li>
+<li><u>Type</u>: Tensor 🔗 </li>
 </ul>
 </details>
 <details >
@@ -299,7 +315,7 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 <code>time</code> Time</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: forces/t </li>
 </ul>
 </details>
@@ -308,7 +324,7 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 <code>times</code> Time steps to perform the material update. The times tensor must have exactly 2 dimensions. The first dimension represents time steps, and the second dimension represents batches (i.e., how many material models to update simultaneously).</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Tensor </li>
+<li><u>Type</u>: Tensor 🔗 </li>
 </ul>
 </details>
 <details >
@@ -325,7 +341,7 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 <code>vorticity</code> Vorticity</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: forces/vorticity </li>
 </ul>
 </details>
@@ -337,7 +353,7 @@ SolidMechanicsDriver</h2>
 <code>cauchy_stress</code> Cauchy stress</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: forces/S </li>
 </ul>
 </details>
@@ -355,7 +371,7 @@ SolidMechanicsDriver</h2>
 <code>control_name</code> The name of the control signal on the input axis</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: forces/control </li>
 </ul>
 </details>
@@ -364,7 +380,7 @@ SolidMechanicsDriver</h2>
 <code>cp_elastic_scale</code> Elastic step scale factor used in the 'CP_' predictors</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: double</li>
+<li><u>Type</u>: number</li>
 <li><u>Default</u>: 1 </li>
 </ul>
 </details>
@@ -379,10 +395,19 @@ SolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
+<code>enable_AD</code> Enable automatic differentiation</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: bool</li>
+<li><u>Default</u>: false </li>
+</ul>
+</details>
+<details >
+<summary >
 <code>fixed_values</code> Name of fixed values (when control = MIXED)</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: forces/fixed_values </li>
 </ul>
 </details>
@@ -391,7 +416,7 @@ SolidMechanicsDriver</h2>
 <code>ic_rot_names</code> Apply initial conditions to these Rot variables</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;VariableName&gt; </li>
+<li><u>Type</u>: list of variable name </li>
 </ul>
 </details>
 <details >
@@ -399,7 +424,7 @@ SolidMechanicsDriver</h2>
 <code>ic_rot_values</code> Initial condition values for the Rot variables</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;Rot&gt; </li>
+<li><u>Type</u>: list of Rot 🔗 </li>
 </ul>
 </details>
 <details >
@@ -407,7 +432,7 @@ SolidMechanicsDriver</h2>
 <code>ic_scalar_names</code> Apply initial conditions to these Scalar variables</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;VariableName&gt; </li>
+<li><u>Type</u>: list of variable name </li>
 </ul>
 </details>
 <details >
@@ -415,7 +440,7 @@ SolidMechanicsDriver</h2>
 <code>ic_scalar_values</code> Initial condition values for the Scalar variables</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;Scalar&gt; </li>
+<li><u>Type</u>: list of Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -423,7 +448,7 @@ SolidMechanicsDriver</h2>
 <code>ic_sr2_names</code> Apply initial conditions to these SR2 variables</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;VariableName&gt; </li>
+<li><u>Type</u>: list of variable name </li>
 </ul>
 </details>
 <details >
@@ -431,7 +456,7 @@ SolidMechanicsDriver</h2>
 <code>ic_sr2_values</code> Initial condition values for the SR2 variables</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: vector&lt;SR2&gt; </li>
+<li><u>Type</u>: list of SR2 🔗 </li>
 </ul>
 </details>
 <details >
@@ -456,7 +481,7 @@ SolidMechanicsDriver</h2>
 <code>prescribed_control</code> The actual values of the control signal. 0 implies strain control, 1 implies stress control</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Tensor </li>
+<li><u>Type</u>: Tensor 🔗 </li>
 </ul>
 </details>
 <details >
@@ -464,7 +489,7 @@ SolidMechanicsDriver</h2>
 <code>prescribed_mixed_conditions</code> The fixed, controlled values provided as user input for the mixed control case. Where the control signal is 0 these are strain values, where it is 1 these are stress values</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Tensor </li>
+<li><u>Type</u>: Tensor 🔗 </li>
 </ul>
 </details>
 <details >
@@ -472,7 +497,7 @@ SolidMechanicsDriver</h2>
 <code>prescribed_strains</code> Prescribed strain (when control = STRAIN)</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Tensor </li>
+<li><u>Type</u>: Tensor 🔗 </li>
 </ul>
 </details>
 <details >
@@ -480,7 +505,7 @@ SolidMechanicsDriver</h2>
 <code>prescribed_stresses</code> Prescribed stress (when control = STRESS)</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Tensor </li>
+<li><u>Type</u>: Tensor 🔗 </li>
 </ul>
 </details>
 <details >
@@ -488,7 +513,7 @@ SolidMechanicsDriver</h2>
 <code>prescribed_temperatures</code> Actual prescibed temperature values, when providing temperatures to the model</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Tensor </li>
+<li><u>Type</u>: Tensor 🔗 </li>
 </ul>
 </details>
 <details >
@@ -531,7 +556,7 @@ SolidMechanicsDriver</h2>
 <code>temperature</code> Name of temperature</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: forces/T </li>
 </ul>
 </details>
@@ -540,7 +565,7 @@ SolidMechanicsDriver</h2>
 <code>time</code> Time</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: forces/t </li>
 </ul>
 </details>
@@ -549,7 +574,7 @@ SolidMechanicsDriver</h2>
 <code>times</code> Time steps to perform the material update. The times tensor must have exactly 2 dimensions. The first dimension represents time steps, and the second dimension represents batches (i.e., how many material models to update simultaneously).</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Tensor </li>
+<li><u>Type</u>: Tensor 🔗 </li>
 </ul>
 </details>
 <details >
@@ -557,7 +582,7 @@ SolidMechanicsDriver</h2>
 <code>total_strain</code> Total strain</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: VariableName</li>
+<li><u>Type</u>: variable name</li>
 <li><u>Default</u>: forces/E </li>
 </ul>
 </details>

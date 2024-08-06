@@ -25,10 +25,24 @@
 var NAVTREE =
 [
   [ "NEML2", "index.html", [
-    [ "Overview", "index.html", "index" ],
+    [ "Overview", "index.html#autotoc_md1", [
+      [ "The New Engineering Material model Library, version 2", "index.html#autotoc_md2", null ],
+      [ "Quick installation", "index.html#autotoc_md3", null ],
+      [ "Features and design philosophy", "index.html#autotoc_md4", null ]
+    ] ],
     [ "Installation Guide", "install.html", null ],
-    [ "Getting Started", "getting-started.html", null ],
-    [ "Syntax Documentation", "usergroup0.html", [
+    [ "User Guide", "usergroup0.html", [
+      [ "Input File", "input-file.html", null ],
+      [ "C++ Backend", "cpp-backend.html", null ],
+      [ "Python Package", "python-package.html", null ]
+    ] ],
+    [ "Developer Guide", "usergroup1.html", [
+      [ "Naming Conventions", "naming-conventions.html", null ],
+      [ "Custom Model", "custom-model.html", null ],
+      [ "Testing", "testing.html", null ],
+      [ "Model Visualization", "model-visualization.html", null ]
+    ] ],
+    [ "Syntax Documentation", "usergroup2.html", [
       [ "[Settings]", "syntax-settings.html", null ],
       [ "[Tensors]", "syntax-tensors.html", null ],
       [ "[Models]", "syntax-models.html", null ],
@@ -36,7 +50,7 @@ var NAVTREE =
       [ "[Data]", "syntax-data.html", null ],
       [ "[Drivers]", "syntax-drivers.html", null ]
     ] ],
-    [ "System Documentation", "usergroup1.html", [
+    [ "System Documentation", "usergroup3.html", [
       [ "Settings", "system-settings.html", null ],
       [ "Tensor", "system-tensors.html", null ],
       [ "Model", "system-models.html", null ],
@@ -44,23 +58,35 @@ var NAVTREE =
       [ "Data", "system-data.html", null ],
       [ "Driver", "system-drivers.html", null ]
     ] ],
-    [ "Physics Documentation", "usergroup2.html", [
+    [ "Physics Documentation", "usergroup4.html", [
       [ "Solid Mechanics", "solid-mechanics.html", null ]
     ] ],
-    [ "Developer Guide", "dev.html", null ],
-    [ "C++ API Reference", "annotated.html", "annotated" ],
-    [ "Python API Reference", "python/annotated.html", null ]
+    [ "Frequently Asked Questions", "faq.html", null ],
+    [ "C++ API Reference", "usergroup5.html", [
+      [ "Namespaces", "namespaces.html", "namespaces" ],
+      [ "Classes", "annotated.html", "annotated" ]
+    ] ],
+    [ "Python API Reference", "usergroup6.html", [
+      [ "Namespaces", "python/namespaces.html", null ],
+      [ "Classes", "python/annotated.html", null ]
+    ] ]
   ] ]
 ];
 
 var NAVTREEINDEX =
 [
 "annotated.html",
-"classneml2_1_1GTNYieldFunction.html#ae4111034621a15ce3bd4b82dee26a72d",
-"classneml2_1_1Model.html#a306c6fb1cd21dd211b6f9087842c543d",
-"classneml2_1_1PlasticDeformationRate.html#a6008b9d35a22d9cc57748b75b938d5aa",
-"classneml2_1_1TransientDriver.html#ab751051b1545cd408cec6e352cf57486",
-"syntax-drivers.html"
+"classneml2_1_1DiagnosticsInterface.html#aea7b448cba27b6ac47ca4b99edf60bd4",
+"classneml2_1_1KinematicHardening.html#a6df033465cd1c6c1e970a9d5a9e75479",
+"classneml2_1_1LabeledTensor.html#a63c61e19a8f60cdee48047d1157bb82e",
+"classneml2_1_1Model.html#a6a9472c7bed0214f6cd6cc93060d51eb",
+"classneml2_1_1Normality.html#a7233801c9edfbc77916a68bb631d57e0",
+"classneml2_1_1PlasticDeformationRate.html#acb5a518c8c67efaae23a8c2b6cb72e2d",
+"classneml2_1_1Settings.html",
+"classneml2_1_1TransientDriver.html#a13dfbdd8c00d5c134b09bf2ab3cfa1e5",
+"classneml2_1_1VariableRate.html#af5600a36813e455aefee72bec1d574fb",
+"classneml2_1_1crystallography_1_1CrystalGeometry.html#afa04e2089c13f09174f05f01068b0947",
+"namespaceneml2.html#aec23c48520256c2362133edcead88cdd"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

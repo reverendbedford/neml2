@@ -1,6 +1,7 @@
 var classneml2_1_1WR2ExplicitExponentialTimeIntegration =
 [
     [ "WR2ExplicitExponentialTimeIntegration", "classneml2_1_1WR2ExplicitExponentialTimeIntegration.html#a87b18f571db9bc8b7cc36280b1e9c485", null ],
+    [ "diagnose", "classneml2_1_1WR2ExplicitExponentialTimeIntegration.html#aec4b2bcafb1752418187d36995ede628", null ],
     [ "set_value", "classneml2_1_1WR2ExplicitExponentialTimeIntegration.html#af5600a36813e455aefee72bec1d574fb", null ],
     [ "_s", "classneml2_1_1WR2ExplicitExponentialTimeIntegration.html#a55ad50232e5744e670a37cd2fd8c0e47", null ],
     [ "_s_dot", "classneml2_1_1WR2ExplicitExponentialTimeIntegration.html#a41b9116df8c30b29b4a31538064825b3", null ],

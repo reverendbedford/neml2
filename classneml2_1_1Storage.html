@@ -156,7 +156,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ac893681bb1eb5b74798ec69361a986a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab1763e5b3bb93978e1d4849a6a4f7d95" id="r_ab1763e5b3bb93978e1d4849a6a4f7d95"><td class="memItemLeft" align="right" valign="top">T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab1763e5b3bb93978e1d4849a6a4f7d95">set_pointer</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">I</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">i</a>, std::unique_ptr&lt; T &gt; &amp;&amp;<a class="el" href="classneml2_1_1CrossRef.html">ptr</a>)</td></tr>
 <tr class="separator:ab1763e5b3bb93978e1d4849a6a4f7d95"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr><td colspan="2"><div class="groupHeader">Iterators</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p>Begin and end iterators to the underlying data.</p>
+<p>Note that dereferencing these iterators may lead to an assertion or the dereference of a nullptr whether or not the underlying data is initialized. </p>
+</div></td></tr>
 <tr class="memitem:ad69bd11391be1a1dba5c8202259664f8" id="r_ad69bd11391be1a1dba5c8202259664f8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#aca80dd27f24b2a043729bccd035811d8">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad69bd11391be1a1dba5c8202259664f8">begin</a> ()</td></tr>
 <tr class="separator:ad69bd11391be1a1dba5c8202259664f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acad38d52497a975bfb6f2f6acd76631f" id="r_acad38d52497a975bfb6f2f6acd76631f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#aca80dd27f24b2a043729bccd035811d8">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acad38d52497a975bfb6f2f6acd76631f">end</a> ()</td></tr>
@@ -332,8 +335,6 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a cla
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Begin and end iterators to the underlying data.</p>
-<p>Note that dereferencing these iterators may lead to an assertion or the dereference of a nullptr whether or not the underlying data is initialized. </p>
 
 </div>
 </div>
