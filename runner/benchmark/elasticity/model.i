@@ -1,11 +1,3 @@
-interop_threads = 0
-intraop_threads = 0
-
-[Settings]
-  interop_threads = ${interop_threads}
-  intraop_threads = ${intraop_threads}
-[]
-
 [Tensors]
   [end_time]
     type = LogspaceScalar

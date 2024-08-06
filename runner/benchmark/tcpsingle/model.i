@@ -1,11 +1,3 @@
-interop_threads = 0
-intraop_threads = 0
-
-[Settings]
-  interop_threads = ${interop_threads}
-  intraop_threads = ${intraop_threads}
-[]
-
 [Tensors]
   [end_time]
     type = FullScalar
@@ -16,7 +8,7 @@ intraop_threads = 0
     type = LinspaceScalar
     start = 0
     end = end_time
-    nstep = ${ntime}
+    nstep = 100
   []
   [dxx]
     type = FullScalar
@@ -41,7 +33,7 @@ intraop_threads = 0
     type = LinspaceSR2
     start = deformation_rate_single
     end = deformation_rate_single
-    nstep = ${ntime}
+    nstep = 100
   []
 
   [w1]
@@ -67,7 +59,7 @@ intraop_threads = 0
     type = LinspaceWR2
     start = vorticity_single
     end = vorticity_single
-    nstep = ${ntime}
+    nstep = 100
   []
   [a]
     type = Scalar
@@ -83,9 +75,8 @@ intraop_threads = 0
   []
   [initial_orientation]
     type = Orientation
-    input_type = "random"
     quantity = ${nbatch}
-    random_seed = 25
+    values = '30 60 45'
     normalize = true
   []
 []
@@ -108,9 +99,11 @@ intraop_threads = 0
 [Solvers]
   [newton]
     type = NewtonWithLineSearch
+    max_its = 500
     linesearch_cutback = 2.0
     linesearch_stopping_criteria = 1.0e-3
     max_linesearch_iterations = 5
+    rel_tol = 1e-4
   []
 []
 
@@ -191,13 +184,9 @@ intraop_threads = 0
     implicit_model = 'implicit_rate'
     solver = 'newton'
   []
-  [fix_orientation]
-    type = FixOrientation
-  []
   [model_with_stress]
     type = ComposedModel
-    models = 'model fix_orientation elasticity'
-    priority = 'model fix_orientation'
+    models = 'model elasticity'
     additional_outputs = 'state/elastic_strain'
   []
 []
