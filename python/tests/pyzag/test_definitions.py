@@ -44,3 +44,27 @@ class TestCorrectlyDefinedModel(unittest.TestCase):
                     ].torch(),
                 )
             )
+
+    def test_update_parameter(self):
+        self.assertTrue(torch.allclose(self.pmodel.elasticity_E, torch.tensor(1e5)))
+        self.assertTrue(
+            torch.allclose(
+                self.pmodel.model.named_parameters()["elasticity.E"].torch(),
+                self.pmodel.elasticity_E,
+            )
+        )
+        self.pmodel.elasticity_E.data = torch.tensor(1.2e5)
+        self.pmodel._update_parameter_values()
+        self.assertTrue(torch.allclose(self.pmodel.elasticity_E, torch.tensor(1.2e5)))
+        self.assertTrue(
+            torch.allclose(
+                self.pmodel.model.named_parameters()["elasticity.E"].torch(),
+                self.pmodel.elasticity_E,
+            )
+        )
+
+    def test_nstate(self):
+        self.assertEqual(self.pmodel.nstate, 7)
+
+    def test_nforce(self):
+        self.assertEqual(self.pmodel.nforce, 7)
