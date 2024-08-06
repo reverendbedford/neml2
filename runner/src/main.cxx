@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -24,6 +24,7 @@
 
 #include "neml2/base/Parser.h"
 #include "neml2/base/Factory.h"
+#include "neml2/base/guards.h"
 #include "neml2/drivers/Driver.h"
 
 #include <argparse/argparse.hpp>
@@ -42,7 +43,11 @@ main(int argc, char * argv[])
       .help("additional command-line arguments to pass to the input file parser");
 
   // Optional arguments
-  program.add_argument("-t", "--time")
+  auto & excl_group = program.add_mutually_exclusive_group();
+  excl_group.add_argument("-d", "--diagnose")
+      .help("run diagnostics on common problems and exit (without further execution)")
+      .flag();
+  excl_group.add_argument("-t", "--time")
       .help("output the elapsed wall time during model evaluation")
       .flag();
 
@@ -69,19 +74,42 @@ main(int argc, char * argv[])
     // Run the model
     try
     {
-      neml2::load_model(input, additional_cliargs);
+      neml2::load_input(input, additional_cliargs);
       auto & driver = neml2::Factory::get_object<neml2::Driver>("Drivers", drivername);
+
+      if (program["--diagnose"] == true)
+      {
+        std::cout << "Running diagnostics on input file '" << input << "' driver '" << drivername
+                  << "'...\n";
+        try
+        {
+          neml2::diagnose(driver);
+        }
+        catch (const neml2::NEMLException & e)
+        {
+          std::cout << "Found the following potential issues(s):\n";
+          std::cout << e.what() << std::endl;
+          return 0;
+        }
+        std::cout << "No issue identified :)\n";
+        return 0;
+      }
+
+      {
+        neml2::TimedSection ts(drivername, "Driver::run");
+        driver.run();
+      }
 
       if (program["--time"] == true)
       {
-        auto t1 = std::chrono::high_resolution_clock::now();
-        driver.run();
-        auto t2 = std::chrono::high_resolution_clock::now();
-        auto dt = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
-        std::cout << "Elapsed wall time: " << dt << " ms" << std::endl;
+        std::cout << "Elapsed wall time\n";
+        for (const auto & [section, object_times] : neml2::timed_sections())
+        {
+          std::cout << "  " << section << std::endl;
+          for (const auto & [object, time] : object_times)
+            std::cout << "    " << object << ": " << time << " ms" << std::endl;
+        }
       }
-      else
-        driver.run();
     }
     catch (const std::exception & err)
     {

@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -32,10 +32,10 @@ Elasticity::expected_options()
   OptionSet options = Model::expected_options();
   options.doc() = "Relate elastic strain to stress";
 
-  options.set<VariableName>("strain") = VariableName("state", "internal", "Ee");
+  options.set_input("strain") = VariableName("state", "internal", "Ee");
   options.set("strain").doc() = "Elastic strain";
 
-  options.set<VariableName>("stress") = VariableName("state", "S");
+  options.set_output("stress") = VariableName("state", "S");
   options.set("stress").doc() = "Stress";
 
   options.set<bool>("compliance") = false;

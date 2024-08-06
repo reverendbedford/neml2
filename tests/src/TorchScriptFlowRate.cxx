@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -64,7 +64,7 @@ TorchScriptFlowRate::TorchScriptFlowRate(const OptionSet & options)
 }
 
 void
-TorchScriptFlowRate::reinit(TorchShapeRef batch_shape,
+TorchScriptFlowRate::reinit(TensorShapeRef batch_shape,
                             int deriv_order,
                             const torch::Device & device,
                             const torch::Dtype & dtype)

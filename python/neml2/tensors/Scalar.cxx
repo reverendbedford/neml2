@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -22,7 +22,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "python/neml2/tensors/FixedDimTensor.h"
+#include "python/neml2/tensors/PrimitiveTensor.h"
 
 namespace py = pybind11;
 using namespace neml2;
@@ -39,16 +39,10 @@ def_Scalar(py::class_<Scalar> & c)
 
 // Binary, unary operators
 #define SCALAR_OP(T)                                                                               \
-  c.def(T() + py::self)                                                                            \
-      .def(py::self + T())                                                                         \
-      .def(T() - py::self)                                                                         \
+  c.def(py::self + T())                                                                            \
       .def(py::self - T())                                                                         \
-      .def(T() * py::self)                                                                         \
       .def(py::self * T())                                                                         \
       .def(py::self * py::self)                                                                    \
-      .def(T() / py::self)                                                                         \
-      .def(py::self / T())                                                                         \
-      .def("__pow__", [](const Scalar & a, const T & b) { return math::pow(a, b); })               \
-      .def("__rpow__", [](const Scalar & b, const T & a) { return math::pow(a, b); })
-  FOR_ALL_BATCHTENSORBASE(SCALAR_OP);
+      .def(py::self / T())
+  FOR_ALL_TENSORBASE(SCALAR_OP);
 }

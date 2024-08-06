@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -24,6 +24,7 @@
 
 #include "neml2/models/solid_mechanics/LinearIsotropicElasticity.h"
 #include "neml2/tensors/SSR4.h"
+#include "neml2/misc/math.h"
 
 namespace neml2
 {
@@ -39,10 +40,10 @@ LinearIsotropicElasticity::expected_options()
                    "respectively. For convenience, this object only requests Young's modulus and "
                    "Poisson's ratio, and handles the Lame parameter conversion behind the scenes.";
 
-  options.set<CrossRef<Scalar>>("youngs_modulus");
+  options.set_parameter<CrossRef<Scalar>>("youngs_modulus");
   options.set("youngs_modulus").doc() = "Young's modulus";
 
-  options.set<CrossRef<Scalar>>("poisson_ratio");
+  options.set_parameter<CrossRef<Scalar>>("poisson_ratio");
   options.set("poisson_ratio").doc() = "Poisson's ratio";
 
   return options;
@@ -50,14 +51,16 @@ LinearIsotropicElasticity::expected_options()
 
 LinearIsotropicElasticity::LinearIsotropicElasticity(const OptionSet & options)
   : Elasticity(options),
-    _E(declare_parameter<Scalar>("E", "youngs_modulus")),
-    _nu(declare_parameter<Scalar>("nu", "poisson_ratio"))
+    _E(declare_parameter<Scalar>("E", "youngs_modulus", /*allow_nonlinear=*/true)),
+    _nu(declare_parameter<Scalar>("nu", "poisson_ratio", /*allow_nonlinear=*/true))
 {
 }
 
 void
-LinearIsotropicElasticity::set_value(bool out, bool dout_din, bool /*d2out_din2*/)
+LinearIsotropicElasticity::set_value(bool out, bool dout_din, bool d2out_din2)
 {
+  neml_assert_dbg(!d2out_din2, "LinearIsotropicElasticity doesn't implement second derivatives.");
+
   // We need to work with the bulk modulus K and the shear modulus G so that the expression for
   // stiffness and compliance can be unified:
   const auto K = _E / 3 / (1 - 2 * _nu);
@@ -68,11 +71,30 @@ LinearIsotropicElasticity::set_value(bool out, bool dout_din, bool /*d2out_din2*
   if (out)
     _to = vf * SR2(_from).vol() + df * SR2(_from).dev();
 
+  const auto * const E = nl_param("E");
+  const auto * const nu = nl_param("nu");
+
   if (dout_din)
   {
     const auto I = SSR4::identity_vol(options());
     const auto J = SSR4::identity_dev(options());
-    _to.d(_from) = vf * I + df * J;
+
+    if (_from.is_dependent())
+      _to.d(_from) = vf * I + df * J;
+
+    if (E)
+    {
+      const auto dvf_dE = _compliance ? -(1 - 2 * _nu) / _E / _E : 1 / (1 - 2 * _nu);
+      const auto ddf_dE = _compliance ? -(1 + _nu) / _E / _E : 1 / (1 + _nu);
+      _to.d(*E) = dvf_dE * SR2(_from).vol() + ddf_dE * SR2(_from).dev();
+    }
+
+    if (nu)
+    {
+      const auto dvf_dnu = _compliance ? -2 / _E : 2 * _E / (1 - 2 * _nu) / (1 - 2 * _nu);
+      const auto ddf_dnu = _compliance ? 1 / _E : -_E / (1 + _nu) / (1 + _nu);
+      _to.d(*nu) = dvf_dnu * SR2(_from).vol() + ddf_dnu * SR2(_from).dev();
+    }
   }
 }
 } // namespace neml2

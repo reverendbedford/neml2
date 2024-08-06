@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -25,6 +25,7 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_all.hpp>
 
+#include "neml2/misc/utils.h"
 #include "neml2/base/EnumSelection.h"
 
 using namespace neml2;
@@ -51,6 +52,9 @@ TEST_CASE("EnumSelection", "[base]")
     EnumSelection es2({"a", "bb", "cccc"}, {-1, -2, -5}, "cccc");
     REQUIRE(std::string(es2) == "cccc");
     REQUIRE(int(es2) == -5);
+
+    EnumSelection es3 = es2;
+    REQUIRE(es3 == es2);
   }
 
   SECTION("Modify selection")
@@ -63,6 +67,9 @@ TEST_CASE("EnumSelection", "[base]")
     ss >> es;
     REQUIRE(std::string(es) == "c");
     REQUIRE(int(es) == 1);
+
+    std::stringstream ss2("d");
+    REQUIRE_THROWS_WITH(ss2 >> es, Catch::Matchers::ContainsSubstring("Invalid selection"));
   }
 
   SECTION("Test for (in)equality")
@@ -94,6 +101,19 @@ TEST_CASE("EnumSelection", "[base]")
     EnumSelection es1({"a", "b", "c"}, {5, 2, 1}, "a");
     auto value = es1.as<SomeEnum>();
     REQUIRE(value == SomeEnum::a);
+  }
+
+  SECTION("stringify")
+  {
+    enum class SomeEnum : int
+    {
+      a = 5,
+      b = 2,
+      c = 1
+    };
+
+    EnumSelection es1({"a", "b", "c"}, {5, 2, 1}, "a");
+    REQUIRE(utils::stringify(es1) == "a");
   }
 
   SECTION("Errors")

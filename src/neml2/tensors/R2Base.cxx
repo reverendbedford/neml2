@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -209,9 +209,9 @@ R2Base<Derived>::drotate(const R2 & R) const
 
 template <class Derived>
 Scalar
-R2Base<Derived>::operator()(TorchSize i, TorchSize j) const
+R2Base<Derived>::operator()(Size i, Size j) const
 {
-  return FixedDimTensor<Derived, 3, 3>::base_index({i, j});
+  return PrimitiveTensor<Derived, 3, 3>::base_index({i, j});
 }
 
 template <class Derived>
@@ -225,7 +225,7 @@ template <class Derived>
 Derived
 R2Base<Derived>::transpose() const
 {
-  return BatchTensorBase<Derived>::base_transpose(0, 1);
+  return TensorBase<Derived>::base_transpose(0, 1);
 }
 
 template <class Derived1, class Derived2, typename, typename>

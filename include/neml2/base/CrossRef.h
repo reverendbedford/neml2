@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -24,13 +24,17 @@
 
 #pragma once
 
-#include <cstddef>
+#include "neml2/tensors/tensors.h"
+
 #include <sstream>
 
 namespace neml2
 {
+// Forward decl
 template <typename T>
 class CrossRef;
+
+/// Stream into a CrossRef (used by Parsers to extract input options)
 template <typename T>
 std::stringstream & operator>>(std::stringstream &, CrossRef<T> &);
 
@@ -52,6 +56,11 @@ class CrossRef
 {
 public:
   CrossRef() = default;
+
+  CrossRef(const std::string & raw)
+    : _raw_str(raw)
+  {
+  }
 
   /**
    * @brief Assignment operator
@@ -84,6 +93,16 @@ private:
   /// The raw string literal.
   std::string _raw_str;
 };
+
+// Specializations
+template <>
+CrossRef<torch::Tensor>::operator torch::Tensor() const;
+template <>
+CrossRef<Tensor>::operator Tensor() const;
+#define CROSSREF_SPECIALIZE_PRIMITIVETENSOR(T)                                                     \
+  template <>                                                                                      \
+  CrossRef<T>::operator T() const
+FOR_ALL_PRIMITIVETENSOR(CROSSREF_SPECIALIZE_PRIMITIVETENSOR);
 } // namespace neml2
 
 ///////////////////////////////////////////////////////////////////////////////

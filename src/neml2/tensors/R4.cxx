@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -71,26 +71,26 @@ R4::drotate(const Rot & r) const
 }
 
 Scalar
-R4::operator()(TorchSize i, TorchSize j, TorchSize k, TorchSize l) const
+R4::operator()(Size i, Size j, Size k, Size l) const
 {
   return base_index({i, j, k, l});
 }
 
 R4
-R4::transpose(TorchSize d1, TorchSize d2) const
+R4::transpose(Size d1, Size d2) const
 {
-  return BatchTensorBase<R4>::base_transpose(d1, d2);
+  return TensorBase<R4>::base_transpose(d1, d2);
 }
 
 R4
 R4::transpose_minor() const
 {
-  return BatchTensorBase<R4>::base_transpose(0, 1).base_transpose(2, 3);
+  return TensorBase<R4>::base_transpose(0, 1).base_transpose(2, 3);
 }
 
 R4
 R4::transpose_major() const
 {
-  return BatchTensorBase<R4>::base_transpose(0, 2).base_transpose(1, 3);
+  return TensorBase<R4>::base_transpose(0, 2).base_transpose(1, 3);
 }
 } // namespace neml2

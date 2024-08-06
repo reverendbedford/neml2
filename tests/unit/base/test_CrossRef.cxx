@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -27,6 +27,7 @@
 
 #include "utils.h"
 #include "neml2/misc/math.h"
+#include "neml2/base/CrossRef.h"
 
 using namespace neml2;
 
@@ -34,7 +35,7 @@ TEST_CASE("CrossRef", "[base]")
 {
   SECTION("Scalar cross-reference")
   {
-    load_model("unit/base/test_CrossRef_Scalar.i");
+    reload_input("unit/base/test_CrossRef_Scalar.i");
 
     const auto auto_3 = Factory::get_object_ptr<SR2>("Tensors", "auto_3_crossref");
 
@@ -55,7 +56,7 @@ TEST_CASE("CrossRef", "[base]")
 
   SECTION("empty scalar")
   {
-    REQUIRE_THROWS_WITH(load_model("unit/base/test_CrossRef_empty_Scalar.i"),
+    REQUIRE_THROWS_WITH(reload_input("unit/base/test_CrossRef_empty_Scalar.i"),
                         Catch::Matchers::ContainsSubstring("Failed to parse '' as a"));
   }
 
@@ -75,7 +76,7 @@ TEST_CASE("CrossRef", "[base]")
 
   SECTION("empty tensor")
   {
-    REQUIRE_THROWS_WITH(load_model("unit/base/test_CrossRef_empty_Tensor.i"),
+    REQUIRE_THROWS_WITH(reload_input("unit/base/test_CrossRef_empty_Tensor.i"),
                         Catch::Matchers::ContainsSubstring("Failed to parse '' as a"));
   }
 }

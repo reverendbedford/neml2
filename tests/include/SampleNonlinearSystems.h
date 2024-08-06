@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -33,11 +33,11 @@ class TestNonlinearSystem : public NonlinearSystem
 public:
   TestNonlinearSystem(const OptionSet & options);
 
-  virtual void reinit(const BatchTensor & x);
-  virtual BatchTensor exact_solution() const = 0;
+  virtual void reinit(const Tensor & x);
+  virtual Tensor exact_solution() const = 0;
 
 protected:
-  TorchShape _batch_sizes;
+  TensorShape _batch_sizes;
   torch::TensorOptions _options;
 };
 
@@ -46,7 +46,7 @@ class PowerTestSystem : public TestNonlinearSystem
 public:
   PowerTestSystem(const OptionSet & options);
 
-  virtual BatchTensor exact_solution() const override;
+  virtual Tensor exact_solution() const override;
 
 protected:
   virtual void assemble(bool, bool) override;
@@ -57,7 +57,7 @@ class RosenbrockTestSystem : public TestNonlinearSystem
 public:
   RosenbrockTestSystem(const neml2::OptionSet & options);
 
-  virtual neml2::BatchTensor exact_solution() const override;
+  virtual neml2::Tensor exact_solution() const override;
 
 protected:
   virtual void assemble(bool, bool) override;

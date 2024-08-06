@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -35,21 +35,29 @@ SR2Invariant::expected_options()
   OptionSet options = Model::expected_options();
   options.doc() = "Calculate the invariant of a symmetric second order tensor (of type SR2).";
 
-  options.set<VariableName>("tensor");
+  options.set_input("tensor");
   options.set("tensor").doc() = "SR2 which is used to calculate the invariant of";
 
-  options.set<VariableName>("invariant");
+  options.set_output("invariant");
   options.set("invariant").doc() = "Invariant";
 
-  options.set<std::string>("invariant_type");
-  options.set("invariant_type").doc() = "Type of invariant. Options are I1, I2, and VONMISES.";
+  EnumSelection type_selection({"I1", "I2", "VONMISES", "EFFECTIVE_STRAIN", "INVALID"},
+                               {static_cast<int>(SR2Invariant::IType::I1),
+                                static_cast<int>(SR2Invariant::IType::I2),
+                                static_cast<int>(SR2Invariant::IType::VONMISES),
+                                static_cast<int>(SR2Invariant::IType::EFFECTIVE_STRAIN),
+                                static_cast<int>(SR2Invariant::IType::INVALID)},
+                               "INVALID");
+  options.set<EnumSelection>("invariant_type") = type_selection;
+  options.set("invariant_type").doc() =
+      "Type of invariant. Options are: " + type_selection.candidates_str();
 
   return options;
 }
 
 SR2Invariant::SR2Invariant(const OptionSet & options)
   : Model(options),
-    _type(options.get<std::string>("invariant_type")),
+    _type(options.get<EnumSelection>("invariant_type").as<IType>()),
     _A(declare_input_variable<SR2>("tensor")),
     _invariant(declare_output_variable<Scalar>("invariant"))
 {
@@ -60,26 +68,37 @@ SR2Invariant::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   auto A = SR2(_A);
 
-  if (_type == "I1")
+  if (_type == IType::I1)
   {
     if (out)
       _invariant = A.tr();
+
+    if (!_A.is_dependent())
+      return;
+
     if (dout_din)
       _invariant.d(_A) = SR2::identity(options());
+
     if (d2out_din2)
     {
       // zero
     }
   }
-  else if (_type == "I2")
+  else if (_type == IType::I2)
   {
     if (out)
       _invariant = (A.tr() * A.tr() - A.inner(A)) / 2.0;
+
+    if (!_A.is_dependent())
+      return;
+
     if (dout_din || d2out_din2)
     {
       auto I2 = SR2::identity(options());
+
       if (dout_din)
         _invariant.d(_A) = A.tr() * I2 - A;
+
       if (d2out_din2)
       {
         auto I2xI2 = SSR4::identity(options());
@@ -88,18 +107,24 @@ SR2Invariant::set_value(bool out, bool dout_din, bool d2out_din2)
       }
     }
   }
-  else if (_type == "VONMISES")
+  else if (_type == IType::VONMISES)
   {
     auto S = A.dev();
     Scalar vm = std::sqrt(3.0 / 2.0) * S.norm(machine_precision());
 
     if (out)
       _invariant = vm;
+
+    if (!_A.is_dependent())
+      return;
+
     if (dout_din || d2out_din2)
     {
       auto dvm_dA = 3.0 / 2.0 * S / vm;
+
       if (dout_din)
         _invariant.d(_A) = dvm_dA;
+
       if (d2out_din2)
       {
         auto I = SSR4::identity_sym(options());
@@ -108,12 +133,15 @@ SR2Invariant::set_value(bool out, bool dout_din, bool d2out_din2)
       }
     }
   }
-  else if (_type == "EFFECTIVE_STRAIN")
+  else if (_type == IType::EFFECTIVE_STRAIN)
   {
     Scalar r = std::sqrt(2.0 / 3.0) * A.norm(machine_precision());
 
     if (out)
       _invariant = r;
+
+    if (!_A.is_dependent())
+      return;
 
     if (dout_din || d2out_din2)
     {
@@ -128,6 +156,7 @@ SR2Invariant::set_value(bool out, bool dout_din, bool d2out_din2)
     }
   }
   else
-    throw NEMLException("Unsupported invariant type: " + _type);
+    throw NEMLException("Unsupported invariant type: " +
+                        std::string(input_options().get<EnumSelection>("invariant_type")));
 }
 } // namespace neml2

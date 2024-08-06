@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -29,6 +29,11 @@
 #include "neml2/base/Storage.h"
 #include "neml2/tensors/TensorValue.h"
 
+// The following are not directly used by BufferStore itself.
+// We put them here so that derived classes can add expected options of these types.
+#include "neml2/base/CrossRef.h"
+#include "neml2/base/EnumSelection.h"
+
 namespace neml2
 {
 /// Interface for object which can store buffers
@@ -37,8 +42,8 @@ class BufferStore
 public:
   BufferStore(const OptionSet & options, NEML2Object * object);
 
-  /// @returns the buffer storage
   ///@{
+  /// @returns the buffer storage
   const Storage<std::string, TensorValueBase> & named_buffers() const
   {
     return const_cast<BufferStore *>(this)->named_buffers();
@@ -47,9 +52,8 @@ public:
   ///}@
 
   /// Get a writable reference of a buffer
-  template <typename T,
-            typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<T>, T>>>
-  T & get_buffer(const std::string & name);
+  template <typename T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
+  TensorValue<T> & get_buffer(const std::string & name);
 
 protected:
   /**
@@ -72,8 +76,7 @@ protected:
    * @param rawval Buffer value
    * @return Reference to buffer
    */
-  template <typename T,
-            typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<T>, T>>>
+  template <typename T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
   const T & declare_buffer(const std::string & name, const T & rawval);
 
   /**
@@ -90,8 +93,7 @@ protected:
    * buffer.
    * @return T Reference to buffer
    */
-  template <typename T,
-            typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<T>, T>>>
+  template <typename T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
   const T & declare_buffer(const std::string & name, const std::string & input_option_name);
 
 private:
@@ -109,7 +111,7 @@ private:
 };
 
 template <typename T, typename>
-T &
+TensorValue<T> &
 BufferStore::get_buffer(const std::string & name)
 {
   neml_assert(_object->host() == _object, "This method should only be called on the host model.");
@@ -118,7 +120,7 @@ BufferStore::get_buffer(const std::string & name)
   neml_assert(base_ptr, "Buffer named ", name, " does not exist.");
   auto ptr = dynamic_cast<TensorValue<T> *>(base_ptr);
   neml_assert_dbg(ptr, "Internal error: Failed to cast buffer to a concrete type.");
-  return ptr->value();
+  return *ptr;
 }
 
 template <typename T, typename>
@@ -126,11 +128,12 @@ const T &
 BufferStore::declare_buffer(const std::string & name, const T & rawval)
 {
   if (_object->host() != _object)
-    return _object->host<BufferStore>()->declare_buffer(_object->name() + "." + name, rawval);
+    return _object->host<BufferStore>()->declare_buffer(
+        _object->name() + buffer_name_separator() + name, rawval);
 
   // If the buffer already exists, return its reference
   if (_buffer_values.has_key(name))
-    return get_buffer<T>(name);
+    return get_buffer<T>(name).value();
 
   auto val = std::make_unique<TensorValue<T>>(rawval);
   auto base_ptr = _buffer_values.set_pointer(name, std::move(val));

@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -27,15 +27,13 @@
 #include "neml2/tensors/Transformable.h"
 #include "neml2/tensors/tensors.h"
 
-using namespace torch::indexing;
-
 namespace neml2
 {
 namespace crystallography
 {
 namespace crystal_symmetry_operators
 {
-const torch::Tensor
+torch::Tensor
 tetragonal(const torch::TensorOptions & options)
 {
   return torch::tensor({{o, z, z, z},
@@ -49,7 +47,7 @@ tetragonal(const torch::TensorOptions & options)
                        options);
 }
 
-const torch::Tensor
+torch::Tensor
 hexagonal(const torch::TensorOptions & options)
 {
   return torch::tensor({{o, z, z, z},
@@ -67,7 +65,7 @@ hexagonal(const torch::TensorOptions & options)
                        options);
 }
 
-const torch::Tensor
+torch::Tensor
 cubic(const torch::TensorOptions & options)
 {
   return torch::tensor({{o, z, z, z},   {h, h, h, h},    {-h, h, h, h},  {h, -h, h, h},
@@ -84,63 +82,49 @@ R2
 symmetry_operations_from_orbifold(std::string orbifold, const torch::TensorOptions & options)
 {
   if (orbifold == "432")
-  {
     return transform_from_quaternion(Quaternion(crystal_symmetry_operators::cubic(options)));
-  }
-  else if (orbifold == "23")
-  {
+
+  if (orbifold == "23")
     return transform_from_quaternion(
-        Quaternion(crystal_symmetry_operators::cubic(options).index({Slice(0, 12)})));
-  }
-  else if (orbifold == "622")
-  {
+        Quaternion(crystal_symmetry_operators::cubic(options).index({indexing::Slice(0, 12)})));
+
+  if (orbifold == "622")
     return transform_from_quaternion(Quaternion(crystal_symmetry_operators::hexagonal(options)));
-  }
-  else if (orbifold == "32")
-  {
-    return transform_from_quaternion(Quaternion(
-        torch::cat({crystal_symmetry_operators::hexagonal(options).index({Slice(0, 3)}),
-                    crystal_symmetry_operators::hexagonal(options).index({Slice(9, 12)})})));
-  }
-  else if (orbifold == "6")
-  {
+
+  if (orbifold == "32")
+    return transform_from_quaternion(Quaternion(torch::cat(
+        {crystal_symmetry_operators::hexagonal(options).index({indexing::Slice(0, 3)}),
+         crystal_symmetry_operators::hexagonal(options).index({indexing::Slice(9, 12)})})));
+
+  if (orbifold == "6")
     return transform_from_quaternion(
-        Quaternion(crystal_symmetry_operators::hexagonal(options).index({Slice(0, 6)})));
-  }
-  else if (orbifold == "3")
-  {
+        Quaternion(crystal_symmetry_operators::hexagonal(options).index({indexing::Slice(0, 6)})));
+
+  if (orbifold == "3")
     return transform_from_quaternion(
-        Quaternion(crystal_symmetry_operators::hexagonal(options).index({Slice(0, 3)})));
-  }
-  else if (orbifold == "42")
-  {
+        Quaternion(crystal_symmetry_operators::hexagonal(options).index({indexing::Slice(0, 3)})));
+
+  if (orbifold == "42")
     return transform_from_quaternion(Quaternion(crystal_symmetry_operators::tetragonal(options)));
-  }
-  else if (orbifold == "4")
-  {
-    return transform_from_quaternion(Quaternion(
-        torch::cat({crystal_symmetry_operators::tetragonal(options).index({Slice(0, 1)}),
-                    crystal_symmetry_operators::tetragonal(options).index({Slice(3, 6)})})));
-  }
-  else if (orbifold == "222")
-  {
+
+  if (orbifold == "4")
+    return transform_from_quaternion(Quaternion(torch::cat(
+        {crystal_symmetry_operators::tetragonal(options).index({indexing::Slice(0, 1)}),
+         crystal_symmetry_operators::tetragonal(options).index({indexing::Slice(3, 6)})})));
+
+  if (orbifold == "222")
     return transform_from_quaternion(
-        Quaternion(crystal_symmetry_operators::tetragonal(options).index({Slice(0, 4)})));
-  }
-  else if (orbifold == "2")
-  {
+        Quaternion(crystal_symmetry_operators::tetragonal(options).index({indexing::Slice(0, 4)})));
+
+  if (orbifold == "2")
     return transform_from_quaternion(
-        Quaternion(crystal_symmetry_operators::tetragonal(options).index({Slice(0, 2)})));
-  }
-  else if (orbifold == "1")
-  {
+        Quaternion(crystal_symmetry_operators::tetragonal(options).index({indexing::Slice(0, 2)})));
+
+  if (orbifold == "1")
     return transform_from_quaternion(
-        Quaternion(crystal_symmetry_operators::tetragonal(options).index({Slice(0, 1)})));
-  }
-  else
-  {
-    throw NEMLException("Unknown crystal class " + orbifold);
-  }
+        Quaternion(crystal_symmetry_operators::tetragonal(options).index({indexing::Slice(0, 1)})));
+
+  throw NEMLException("Unknown crystal class " + orbifold);
 }
 
 Vec
@@ -154,7 +138,7 @@ unique_bidirectional(const R2 & ops, const Vec & inp)
   // list of Vecs aren't convertable into a TensorList
   std::vector<torch::Tensor> unique{torch::Tensor(options.batch_index({0}))};
   Vec unique_vecs = Vec(torch::stack(unique));
-  for (TorchSize i = 1; i < options.batch_sizes()[0]; i++)
+  for (Size i = 1; i < options.batch_sizes()[0]; i++)
   {
     auto vi = options.batch_index({i});
     // Compares list of vectors to vector to figure out if any are the same

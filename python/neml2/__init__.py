@@ -1,32 +1,29 @@
+# Copyright 2024, UChicago Argonne, LLC
+# All Rights Reserved
+# Software Name: NEML2 -- the New Engineering material Model Library, version 2
+# By: Argonne National Laboratory
+# OPEN SOURCE LICENSE (MIT)
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+
 import torch
 
-from .base import HITParser
-from .base import Factory
-from .models import Model
-
-
-def load_input(filename, addtional_args=""):
-    """
-    Load an input file. Two things happen behind the scenes:
-    1. A HITParser is used to extract all options from the input file.
-    2. The extracted options are sent to the Factory
-
-    Note this method does NOT actually manufacture the objects.
-    Objects are manufactured when they are retrieved using the methods below.
-    """
-    parser = HITParser()
-    oc = parser.parse(filename, addtional_args)
-    Factory.clear()
-    Factory.load(oc)
-
-
-get_model = Factory.get_model
-
-
-def load_model(filename, model, additional_args=""):
-    """
-    Load an input file and return the model with the specified name.
-    This is equivalent to calling load_input and then get_model.
-    """
-    load_input(filename, additional_args)
-    return get_model(model)
+from .base import *
+from .tensors import *
+from .math import *

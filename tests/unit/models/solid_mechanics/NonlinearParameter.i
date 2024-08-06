@@ -14,6 +14,7 @@
     check_AD_first_derivatives = false
     check_AD_second_derivatives = false
     check_AD_derivatives = false
+    check_AD_parameter_derivatives = false
   []
 []
 
@@ -57,6 +58,6 @@
   []
   [model]
     type = ComposedModel
-    models = 's0 vonmises yield'
+    models = 'vonmises yield'
   []
 []

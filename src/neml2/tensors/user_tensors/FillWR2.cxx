@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -31,7 +31,7 @@ register_NEML2_object(FillWR2);
 OptionSet
 FillWR2::expected_options()
 {
-  OptionSet options = UserTensor::expected_options();
+  OptionSet options = UserTensorBase::expected_options();
   options.doc() = "Construct a Rot from a vector of Scalars.";
 
   options.set<std::vector<CrossRef<Scalar>>>("values");
@@ -42,18 +42,18 @@ FillWR2::expected_options()
 
 FillWR2::FillWR2(const OptionSet & options)
   : WR2(fill(options.get<std::vector<CrossRef<Scalar>>>("values"))),
-    UserTensor(options)
+    UserTensorBase(options)
 {
 }
 
 WR2
 FillWR2::fill(const std::vector<CrossRef<Scalar>> & values) const
 {
-  if (values.size() == 3)
-    return WR2::fill(values[0], values[1], values[2]);
-  else
-    neml_assert(false, "Number of values must be 3, but ", values.size(), " values are provided.");
+  neml_assert(values.size() == 3,
+              "Number of values must be 3, but ",
+              values.size(),
+              " values are provided.");
 
-  return WR2();
+  return WR2::fill(values[0], values[1], values[2]);
 }
 } // namespace neml2

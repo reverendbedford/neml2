@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -31,7 +31,7 @@ Eigenstrain::expected_options()
 {
   OptionSet options = Model::expected_options();
 
-  options.set<VariableName>("eigenstrain") = VariableName("forces", "Eg");
+  options.set_output("eigenstrain") = VariableName("forces", "Eg");
   options.set("eigenstrain").doc() = "Eigenstrain";
 
   return options;

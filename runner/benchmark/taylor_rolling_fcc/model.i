@@ -1,3 +1,11 @@
+interop_threads = 0
+intraop_threads = 0
+
+[Settings]
+  interop_threads = ${interop_threads}
+  intraop_threads = ${intraop_threads}
+[]
+
 [Tensors]
   [end_time]
     type = FullScalar
@@ -162,15 +170,15 @@
   []
   [integrate_slip_hardening]
     type = ScalarBackwardEulerTimeIntegration
-    variable = 'internal/slip_hardening'
+    variable = 'state/internal/slip_hardening'
   []
   [integrate_elastic_strain]
     type = SR2BackwardEulerTimeIntegration
-    variable = 'elastic_strain'
+    variable = 'state/elastic_strain'
   []
   [integrate_orientation]
     type = WR2ImplicitExponentialTimeIntegration
-    variable = 'orientation'
+    variable = 'state/orientation'
   []
 
   [implicit_rate]

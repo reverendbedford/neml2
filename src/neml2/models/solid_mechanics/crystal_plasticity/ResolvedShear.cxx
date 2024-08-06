@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -43,14 +43,13 @@ ResolvedShear::expected_options()
                   "stress \\f$ Q \\f$ is the orientation matrix, \\f$ d_i \\f$ is the slip "
                   "direction, and \\f$ n_i \\f$ is the slip system normal.";
 
-  options.set<VariableName>("resolved_shears") =
-      VariableName("state", "internal", "resolved_shears");
+  options.set_output("resolved_shears") = VariableName("state", "internal", "resolved_shears");
   options.set("resolved_shears").doc() = "The name of the resolved shears";
 
-  options.set<VariableName>("stress") = VariableName("state", "internal", "cauchy_stress");
+  options.set_input("stress") = VariableName("state", "internal", "cauchy_stress");
   options.set("stress").doc() = "The name of the Cauchy stress tensor";
 
-  options.set<VariableName>("orientation") = VariableName("state", "orientation_matrix");
+  options.set_input("orientation") = VariableName("state", "orientation_matrix");
   options.set("orientation").doc() = "The name of the orientation matrix";
 
   options.set<std::string>("crystal_geometry_name") = "crystal_geometry";
@@ -74,19 +73,22 @@ ResolvedShear::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   neml_assert_dbg(!d2out_din2, "Second derivative not implemented.");
 
-  const auto S = SR2(_S).list_unsqueeze();
-  const auto R = R2(_R).list_unsqueeze();
+  const auto S = SR2(_S).batch_unsqueeze(-1);
+  const auto R = R2(_R).batch_unsqueeze(-1);
 
   if (out)
-    _rss = BatchTensor(_crystal_geometry.M().rotate(R).inner(S), batch_dim());
+    _rss = Tensor(_crystal_geometry.M().rotate(R).inner(S), batch_dim());
 
   if (dout_din)
   {
-    _rss.d(_S) = BatchTensor(_crystal_geometry.M().rotate(R), batch_dim());
-    _rss.d(_R) =
-        BatchTensor(SR2(_crystal_geometry.M().drotate(R).movedim(-3, -1))
-                        .inner(SR2(_S).batch_unsqueeze(-1).batch_unsqueeze(-1).batch_unsqueeze(-1)),
-                    batch_dim());
+    if (_S.is_dependent())
+      _rss.d(_S) = Tensor(_crystal_geometry.M().rotate(R), batch_dim());
+
+    if (_R.is_dependent())
+      _rss.d(_R) =
+          Tensor(SR2(_crystal_geometry.M().drotate(R).movedim(-3, -1))
+                     .inner(SR2(_S).batch_unsqueeze(-1).batch_unsqueeze(-1).batch_unsqueeze(-1)),
+                 batch_dim());
   }
 }
 

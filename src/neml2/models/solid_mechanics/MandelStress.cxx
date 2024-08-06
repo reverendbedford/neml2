@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -32,10 +32,10 @@ MandelStress::expected_options()
   OptionSet options = Model::expected_options();
   options.doc() = "Map Cauchy stress to Mandel stress";
 
-  options.set<VariableName>("cauchy_stress") = VariableName("state", "S");
+  options.set_input("cauchy_stress") = VariableName("state", "S");
   options.set("cauchy_stress").doc() = "Cauchy stress";
 
-  options.set<VariableName>("mandel_stress") = VariableName("state", "internal", "M");
+  options.set_output("mandel_stress") = VariableName("state", "internal", "M");
   options.set("mandel_stress").doc() = "Mandel stress";
 
   return options;

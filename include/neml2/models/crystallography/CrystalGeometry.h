@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -26,7 +26,7 @@
 
 #include "neml2/base/Registry.h"
 #include "neml2/models/Data.h"
-#include "neml2/tensors/BatchTensorBase.h"
+#include "neml2/tensors/TensorBase.h"
 
 namespace neml2
 {
@@ -71,11 +71,11 @@ public:
   Vec b3() const;
 
   /// Total number of slip systems
-  TorchSize nslip() const;
+  Size nslip() const;
   /// Number of slip groups
-  TorchSize nslip_groups() const;
+  Size nslip_groups() const;
   /// Number of slip systems in a given group
-  TorchSize nslip_in_group(TorchSize i) const;
+  Size nslip_in_group(Size i) const;
 
   /// Accessor for the slip directions
   const Vec & cartesian_slip_directions() const { return _cartesian_slip_directions; };
@@ -94,25 +94,24 @@ public:
   /// Accessor for the crystal class symmetry operators
   const R2 & symmetry_operators() const { return _sym_ops; };
 
-  /// Slice a BatchTensor to provide only the batch associated with a slip system
+  /// Slice a Tensor to provide only the batch associated with a slip system
   // The slice happens along the last batch axis
-  template <
-      class Derived,
-      typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<Derived>, Derived>>>
-  Derived slip_slice(const Derived & tensor, TorchSize grp) const;
+  template <class Derived,
+            typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<Derived>, Derived>>>
+  Derived slip_slice(const Derived & tensor, Size grp) const;
 
 private:
   /// Delegated constructor to setup schmid tensors and slice indices at once
   CrystalGeometry(const OptionSet & options,
                   const R2 & cclass,
                   const Vec & lattice_vectors,
-                  std::tuple<Vec, Vec, Scalar, std::vector<TorchSize>> slip_data);
+                  std::tuple<Vec, Vec, Scalar, std::vector<Size>> slip_data);
 
   /// Helper to setup reciprocal lattice
   static Vec make_reciprocal_lattice(const Vec & lattice_vectors);
 
   /// Helper to setup slip systems
-  static std::tuple<Vec, Vec, Scalar, std::vector<TorchSize>>
+  static std::tuple<Vec, Vec, Scalar, std::vector<Size>>
   setup_schmid_tensors(const Vec & A,
                        const R2 & cls,
                        const MillerIndex & slip_directions,
@@ -140,7 +139,7 @@ private:
   /// Burgers vector lengths
   const Scalar & _burgers;
   /// Offsets into batch tensors for each slip group
-  const std::vector<TorchSize> _slip_offsets;
+  const std::vector<Size> _slip_offsets;
 
   /// Output: full Schmid tensor for each slip system
   const R2 & _A;
@@ -152,7 +151,7 @@ private:
 
 template <class Derived, typename>
 Derived
-CrystalGeometry::slip_slice(const Derived & tensor, TorchSize grp) const
+CrystalGeometry::slip_slice(const Derived & tensor, Size grp) const
 {
   neml_assert_dbg(grp < nslip_groups());
   return tensor.batch_index({torch::indexing::Ellipsis,

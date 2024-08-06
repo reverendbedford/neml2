@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -40,7 +40,7 @@ R3::levi_civita(const torch::TensorOptions & options)
 }
 
 Scalar
-R3::operator()(TorchSize i, TorchSize j, TorchSize k) const
+R3::operator()(Size i, Size j, Size k) const
 {
   return base_index({i, j, k});
 }

@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -24,19 +24,27 @@
 
 #pragma once
 
-#include "neml2/base/config.h"
+#include <torch/types.h>
 
 namespace neml2
 {
-typedef double Real;
-typedef int Integer;
-typedef int64_t TorchSize;
-typedef std::vector<TorchSize> TorchShape;
-typedef torch::IntArrayRef TorchShapeRef;
-typedef at::indexing::TensorIndex TorchIndex;
-typedef std::vector<at::indexing::TensorIndex> TorchSlice;
+using Real = double;
+using Integer = int;
+using Size = int64_t;
+using TensorShape = torch::SmallVector<Size>;
+using TensorShapeRef = torch::IntArrayRef;
+
+// Bring in torch::indexing
+namespace indexing
+{
+using namespace torch::indexing;
+using TensorIndices = torch::SmallVector<TensorIndex>;
+using TensorIndicesRef = torch::ArrayRef<TensorIndex>;
+}
 
 /**
+ * @name RAII style default tensor options
+ *
  * The factory methods like `torch::arange`, `torch::ones`, `torch::zeros`, `torch::rand` etc.
  * accept a common argument to configure the properties of the tensor being created. We predefine
  * a default tensor configuration in NEML2. This default configuration is consistently used
@@ -58,16 +66,26 @@ torch::Dtype & default_integer_dtype();
 torch::Device & default_device();
 ///@}
 
+/// @name Default tolerances
+///@{
 /// Machine precision
-// TODO: make this depend on the current dtype
 Real & machine_precision();
-
 /// The tolerance used in various algorithms
-// TODO: make this depend on the current dtype
 Real & tolerance();
-
 /// A tighter tolerance used in various algorithms
-// TODO: make this depend on the current dtype
 Real & tighter_tolerance();
+///@}
 
+/// Default nested buffer name separator
+std::string & buffer_name_separator();
+/// Default nested parameter name separator
+std::string & parameter_name_separator();
+
+/**
+ * A model can be _implicit. An implicit model need to be "solved": the state variables should be
+ * iteratively updated until the residual becomes zero. During the solve, we only need derivatives
+ * with respect to the input state. Therefore, the model can/should avoid unnecessary computations
+ * by examining whether the current evaluation is part of the solve.
+ */
+bool & currently_solving_nonlinear_system();
 } // namespace neml2

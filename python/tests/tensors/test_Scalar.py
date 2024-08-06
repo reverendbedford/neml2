@@ -1,4 +1,4 @@
-# Copyright 2023, UChicago Argonne, LLC
+# Copyright 2024, UChicago Argonne, LLC
 # All Rights Reserved
 # Software Name: NEML2 -- the New Engineering material Model Library, version 2
 # By: Argonne National Laboratory
@@ -26,59 +26,55 @@ import pytest
 
 # fixtures
 from common import *
-from test_BatchTensorBase import sample, _A, _B, _C, base_shape
-
-from neml2.tensors import Scalar
+from test_TensorBase import sample, _A, _B, _C, base_shape
+import neml2
 
 
 def test_named_ctors(tensor_options):
     # identity_map
-    A = Scalar.identity_map(**tensor_options)
+    A = neml2.Scalar.identity_map(**tensor_options)
     assert A.batch.dim() == 0
 
 
 @pytest.mark.parametrize("batch_shape", [(), (2, 5, 3, 2)])
 def test_binary_ops(batch_shape, sample, tensor_options):
-    s = Scalar.full(batch_shape, 0.5, **tensor_options)
-    s0 = s.tensor()[((...,) + (None,) * sample.base.dim())]
-    sample0 = sample.tensor()
+    s = neml2.Scalar.full(batch_shape, 0.5, **tensor_options)
+    s0 = s.torch()[((...,) + (None,) * sample.base.dim())]
+    sample0 = sample.torch()
 
     # add
     result = s + sample
     correct = s0 + sample0
-    assert torch.allclose(result.tensor(), correct)
+    assert torch.allclose(result.torch(), correct)
     result = sample + s
     correct = sample0 + s0
-    assert torch.allclose(result.tensor(), correct)
+    assert torch.allclose(result.torch(), correct)
 
     # sub
     result = s - sample
     correct = s0 - sample0
-    assert torch.allclose(result.tensor(), correct)
+    assert torch.allclose(result.torch(), correct)
     result = sample - s
     correct = sample0 - s0
-    assert torch.allclose(result.tensor(), correct)
+    assert torch.allclose(result.torch(), correct)
 
     # mul
     result = s * sample
     correct = s0 * sample0
-    assert torch.allclose(result.tensor(), correct)
+    assert torch.allclose(result.torch(), correct)
     result = sample * s
     correct = sample0 * s0
-    assert torch.allclose(result.tensor(), correct)
+    assert torch.allclose(result.torch(), correct)
 
     # div
     result = s / sample
     correct = s0 / sample0
-    assert torch.allclose(result.tensor(), correct)
+    assert torch.allclose(result.torch(), correct)
     result = sample / s
     correct = sample0 / s0
-    assert torch.allclose(result.tensor(), correct)
+    assert torch.allclose(result.torch(), correct)
 
     # pow
-    result = s**sample
-    correct = s0**sample0
-    assert torch.allclose(result.tensor(), correct, equal_nan=True)
     result = sample**s
     correct = sample0**s0
-    assert torch.allclose(result.tensor(), correct, equal_nan=True)
+    assert torch.allclose(result.torch(), correct, equal_nan=True)

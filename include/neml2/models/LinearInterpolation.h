@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -97,7 +97,7 @@ private:
   T2 mask(const T2 & in, const torch::Tensor & m) const;
 
   /// Batch shape of the interpolant, excluding the last dimension which is the interpolation axis
-  const TorchShape _interp_batch_sizes;
+  const TensorShape _interp_batch_sizes;
   /// Starting abscissa of each interval
   const Scalar & _X0;
   /// Ending abscissa of each interval
@@ -119,7 +119,7 @@ LinearInterpolation<T>::mask(const T2 & in, const torch::Tensor & m) const
       in_expand.batch_sizes().slice(0, in_expand.batch_dim() - 1), in.base_sizes()));
 }
 
-#define LINEARINTERPOLATION_TYPEDEF_FIXEDDIMTENSOR(T)                                              \
-  typedef LinearInterpolation<T> T##LinearInterpolation
-FOR_ALL_FIXEDDIMTENSOR(LINEARINTERPOLATION_TYPEDEF_FIXEDDIMTENSOR);
+typedef LinearInterpolation<Scalar> ScalarLinearInterpolation;
+typedef LinearInterpolation<Vec> VecLinearInterpolation;
+typedef LinearInterpolation<SR2> SR2LinearInterpolation;
 } // namespace neml2

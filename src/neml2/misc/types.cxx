@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -82,5 +82,26 @@ tighter_tolerance()
 {
   static Real _tighter_tolerance = 1E-12;
   return _tighter_tolerance;
+}
+
+std::string &
+buffer_name_separator()
+{
+  static std::string _buffer_sep = ".";
+  return _buffer_sep;
+}
+
+std::string &
+parameter_name_separator()
+{
+  static std::string _param_sep = ".";
+  return _param_sep;
+}
+
+bool &
+currently_solving_nonlinear_system()
+{
+  static bool _solving_nl_sys = false;
+  return _solving_nl_sys;
 }
 } // namespace neml2

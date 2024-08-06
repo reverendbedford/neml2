@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -24,29 +24,15 @@
 
 #include "neml2/tensors/LabeledAxisAccessor.h"
 #include "neml2/misc/error.h"
+#include "neml2/misc/parser_utils.h"
 
 namespace neml2
 {
-LabeledAxisAccessor::LabeledAxisAccessor(const std::vector<std::string> & names)
-  : _item_names(names)
+LabeledAxisAccessor::operator std::vector<std::string>() const
 {
-  for (const auto & name : _item_names)
-    validate_item_name(name);
+  std::vector<std::string> v(_item_names.begin(), _item_names.end());
+  return v;
 }
-
-LabeledAxisAccessor::LabeledAxisAccessor(const LabeledAxisAccessor & other)
-  : LabeledAxisAccessor(other._item_names)
-{
-}
-
-LabeledAxisAccessor &
-LabeledAxisAccessor::operator=(const LabeledAxisAccessor & other)
-{
-  _item_names = other._item_names;
-  return *this;
-}
-
-LabeledAxisAccessor::operator std::vector<std::string>() const { return _item_names; }
 
 bool
 LabeledAxisAccessor::empty() const
@@ -71,11 +57,11 @@ LabeledAxisAccessor::with_suffix(const std::string & suffix) const
 LabeledAxisAccessor
 LabeledAxisAccessor::append(const LabeledAxisAccessor & axis) const
 {
-  return axis.on(*this);
+  return axis.prepend(*this);
 }
 
 LabeledAxisAccessor
-LabeledAxisAccessor::on(const LabeledAxisAccessor & axis) const
+LabeledAxisAccessor::prepend(const LabeledAxisAccessor & axis) const
 {
   auto new_names = axis._item_names;
   new_names.insert(new_names.end(), _item_names.begin(), _item_names.end());
@@ -85,18 +71,24 @@ LabeledAxisAccessor::on(const LabeledAxisAccessor & axis) const
 LabeledAxisAccessor
 LabeledAxisAccessor::slice(size_t n) const
 {
-  auto new_names = _item_names;
-  new_names.erase(new_names.begin(), new_names.begin() + n);
+  neml_assert(size() >= n, "cannot apply slice");
+  c10::SmallVector<std::string> new_names(_item_names.begin() + n, _item_names.end());
   return new_names;
 }
 
 LabeledAxisAccessor
 LabeledAxisAccessor::slice(size_t n1, size_t n2) const
 {
-  auto new_names = _item_names;
-  new_names.erase(new_names.begin() + n2, new_names.end());
-  new_names.erase(new_names.begin(), new_names.begin() + n1);
+  neml_assert(size() >= n1, "cannot apply slice");
+  neml_assert(size() >= n2, "cannot apply slice");
+  c10::SmallVector<std::string> new_names(_item_names.begin() + n1, _item_names.begin() + n2);
   return new_names;
+}
+
+LabeledAxisAccessor
+LabeledAxisAccessor::remount(const LabeledAxisAccessor & axis, size_t n) const
+{
+  return slice(n).prepend(axis);
 }
 
 bool
@@ -105,9 +97,23 @@ LabeledAxisAccessor::start_with(const LabeledAxisAccessor & axis) const
   return slice(0, axis.size()) == axis;
 }
 
+LabeledAxisAccessor
+LabeledAxisAccessor::old() const
+{
+  // NOLINTNEXTLINE(readability-container-size-empty)
+  neml_assert(_item_names.size() >= 1, "variable name length must be at least 1");
+  if (start_with("state"))
+    return remount("old_state");
+  if (start_with("forces"))
+    return remount("old_forces");
+  throw NEMLException("Unable to find old counterpart of variable named '" +
+                      utils::stringify(*this) + "'");
+}
+
 void
 LabeledAxisAccessor::validate_item_name(const std::string & name) const
 {
+  neml_assert(!name.empty(), "Empty item variable name");
   const auto x = name.find_first_of(" .,;/\t\n\v\f\r");
   neml_assert(x == std::string::npos,
               "Invalid item name: ",

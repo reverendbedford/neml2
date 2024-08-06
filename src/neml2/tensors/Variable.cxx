@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -23,11 +23,28 @@
 // THE SOFTWARE.
 
 #include "neml2/tensors/Variable.h"
+#include "neml2/models/Model.h"
 
 namespace neml2
 {
+VariableBase::VariableBase(const VariableName & name_in, const Model * owner)
+  : _name(name_in),
+    _owner(owner),
+    _src(nullptr),
+    _is_state(_name.start_with("state")),
+    _is_old_state(_name.start_with("old_state")),
+    _is_force(_name.start_with("forces")),
+    _is_old_force(_name.start_with("old_forces")),
+    _is_residual(_name.start_with("residual")),
+    _is_parameter(_name.start_with("parameters")),
+    _is_other(!_is_state && !_is_old_state && !_is_force && !_is_old_force && !_is_residual &&
+              !_is_parameter),
+    _is_solve_dependent(_is_state || _is_residual || _is_parameter)
+{
+}
+
 void
-VariableBase::cache(TorchShapeRef batch_shape)
+VariableBase::cache(TensorShapeRef batch_shape)
 {
   _batch_sizes = batch_shape.vec();
 }
@@ -38,64 +55,36 @@ VariableBase::setup_views(const LabeledVector * value,
                           const LabeledTensor3D * secderiv)
 {
   if (value)
-    _value_storage = value;
+    _raw_value = value->base_index(name());
 
   if (deriv)
-    _derivative_storage = deriv;
+    for (auto arg : deriv->axis(1).variable_names())
+      _dvalue_d[arg] = deriv->base_index({name(), arg});
 
   if (secderiv)
-    _second_derivative_storage = secderiv;
+    for (auto arg1 : secderiv->axis(1).variable_names())
+      for (auto arg2 : secderiv->axis(2).variable_names())
+        _d2value_d[arg1][arg2] = secderiv->base_index({name(), arg1, arg2});
 }
 
 void
 VariableBase::setup_views(const VariableBase * other)
 {
-  neml_assert(other, "other != nullptr");
-  setup_views(other->_value_storage, other->_derivative_storage, other->_second_derivative_storage);
+  neml_assert(other, "Variable cannot follow a nullptr");
+
+  if (other->src())
+    setup_views(other->src());
+  else
+  {
+    _src = other;
+    _raw_value = Tensor(other->raw_value().view(sizes()), batch_dim());
+  }
 }
 
-void
-VariableBase::reinit_views(bool out, bool dout_din, bool d2out_din2)
+bool
+VariableBase::is_dependent() const
 {
-  if (out)
-    neml_assert(_value_storage, "Variable value storage not initialized.");
-  if (dout_din)
-    neml_assert(_derivative_storage, "Variable derivative storage not initialized.");
-  if (d2out_din2)
-    neml_assert(_second_derivative_storage, "Variable second derivative storage not initialized.");
-
-  if (out)
-    _raw_value = (*_value_storage)(name());
-
-  if (dout_din)
-    for (const auto & arg : args())
-      _dvalue_d[arg] = (*_derivative_storage)(name(), arg);
-
-  if (d2out_din2)
-    for (const auto & arg1 : args())
-      for (const auto & arg2 : args())
-        _d2value_d[arg1][arg2] = (*_second_derivative_storage)(name(), arg1, arg2);
-}
-
-const LabeledVector &
-VariableBase::value_storage() const
-{
-  neml_assert_dbg(_value_storage, "Variable value storage not initialized.");
-  return *_value_storage;
-}
-
-const LabeledMatrix &
-VariableBase::derivative_storage() const
-{
-  neml_assert_dbg(_derivative_storage, "Variable derivative storage not initialized.");
-  return *_derivative_storage;
-}
-
-const LabeledTensor3D &
-VariableBase::second_derivative_storage() const
-{
-  neml_assert_dbg(_second_derivative_storage, "Variable 2nd derivative storage not initialized.");
-  return *_second_derivative_storage;
+  return !currently_solving_nonlinear_system() || is_solve_dependent();
 }
 
 Derivative
@@ -106,6 +95,14 @@ VariableBase::d(const VariableBase & x)
                   name(),
                   " does not depend on ",
                   x.name());
+
+  neml_assert_dbg(
+      x.is_dependent(),
+      "During implicit solve, it is not necessary to calculate derivative with respect to "
+      "non-state variables. This error is triggered by an attempt to set the derivative of ",
+      name(),
+      " with respect to ",
+      x.name());
 
   return Derivative(_dvalue_d[x.name()]);
 }
@@ -126,13 +123,24 @@ VariableBase::d(const VariableBase & x1, const VariableBase & x2)
                   ") does not depend on ",
                   x2.name());
 
+  neml_assert_dbg(
+      x1.is_dependent() || x2.is_dependent(),
+      "During implicit solve, it is not necessary to calculate derivative with respect to "
+      "non-state variables. This error is triggered by an attempt to set the derivative of ",
+      name(),
+      " with respect to ",
+      x1.name(),
+      " and ",
+      x2.name());
+
   return Derivative(_d2value_d[x1.name()][x2.name()]);
 }
 
-void
-Derivative::operator=(const BatchTensor & val)
+Derivative &
+Derivative::operator=(const Tensor & val)
 {
   _value.index_put_({torch::indexing::Slice()},
                     val.batch_expand_as(_value).base_reshape(_value.base_sizes()));
+  return *this;
 }
 }

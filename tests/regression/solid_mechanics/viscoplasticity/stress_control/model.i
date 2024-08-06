@@ -112,11 +112,11 @@
   []
   [integrate_ep]
     type = ScalarBackwardEulerTimeIntegration
-    variable = 'internal/ep'
+    variable = 'state/internal/ep'
   []
   [integrate_Ep]
     type = SR2BackwardEulerTimeIntegration
-    variable = 'internal/Ep'
+    variable = 'state/internal/Ep'
   []
   [surface]
     type = ComposedModel
@@ -141,7 +141,7 @@
     stress = 'forces/S'
   []
   [total_strain]
-    type = SR2SumModel
+    type = SR2LinearCombination
     to_var = 'state/E'
     from_var = 'state/internal/Ee state/internal/Ep'
   []

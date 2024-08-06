@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -34,7 +34,7 @@ register_NEML2_object(FillMillerIndex);
 OptionSet
 FillMillerIndex::expected_options()
 {
-  OptionSet options = UserTensor::expected_options();
+  OptionSet options = UserTensorBase::expected_options();
   options.doc() = "Fills a tensor of Miller indices from a list of integers. Use -1 instead of "
                   "\\f$ \\bar{1} \\f$.";
 
@@ -45,7 +45,7 @@ FillMillerIndex::expected_options()
 
 FillMillerIndex::FillMillerIndex(const OptionSet & options)
   : MillerIndex(fill(options.get<std::vector<Integer>>("values"))),
-    UserTensor(options)
+    UserTensorBase(options)
 {
 }
 

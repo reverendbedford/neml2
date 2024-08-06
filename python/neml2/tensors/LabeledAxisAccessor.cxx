@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -27,6 +27,7 @@
 
 #include "neml2/tensors/LabeledAxisAccessor.h"
 #include "neml2/misc/utils.h"
+#include "neml2/misc/parser_utils.h"
 
 namespace py = pybind11;
 using namespace neml2;
@@ -38,22 +39,25 @@ def_LabeledAxisAccessor(py::module_ & m)
 
   // Ctors
   c.def(py::init<>())
-      .def(py::init<const std::string &>())
-      .def(py::init<const std::string &, const std::string &>())
-      .def(py::init<const std::string &, const std::string &, const std::string &>())
-      .def(py::init<const std::vector<std::string> &>())
+      .def(py::init([](const std::string & str) { return utils::parse<LabeledAxisAccessor>(str); }))
       .def(py::init<const LabeledAxisAccessor &>())
-      .def("empty", &LabeledAxisAccessor::empty)
-      .def("size", &LabeledAxisAccessor::size)
       .def("with_suffix", &LabeledAxisAccessor::with_suffix)
       .def("append", &LabeledAxisAccessor::append)
-      .def("on", &LabeledAxisAccessor::on)
+      .def("prepend", &LabeledAxisAccessor::prepend)
       .def("start_with", &LabeledAxisAccessor::start_with);
 
   // Operators
   c.def("__repr__", [](const LabeledAxisAccessor & self) { return utils::stringify(self); })
+      .def("__bool__", [](const LabeledAxisAccessor & self) { return !self.empty(); })
+      .def("__len__", [](const LabeledAxisAccessor & self) { return self.size(); })
+      .def("__hash__",
+           [](const LabeledAxisAccessor & self)
+           { return py::hash(py::cast(utils::stringify(self))); })
       .def("__eq__",
            [](const LabeledAxisAccessor & a, const LabeledAxisAccessor & b) { return a == b; })
       .def("__ne__",
            [](const LabeledAxisAccessor & a, const LabeledAxisAccessor & b) { return a == b; });
+
+  // Make LabeledAxisAccessor implicitly convertible from py::str
+  py::implicitly_convertible<std::string, LabeledAxisAccessor>();
 }

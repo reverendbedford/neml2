@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -23,14 +23,13 @@
 // THE SOFTWARE.
 
 #include "neml2/models/LinearInterpolation.h"
-
-using namespace torch::indexing;
+#include "neml2/misc/math.h"
 
 namespace neml2
 {
-#define LINEARINTERPOLATION_REGISTER(T)                                                            \
-  register_NEML2_object_alias(T##LinearInterpolation, #T "LinearInterpolation")
-FOR_ALL_FIXEDDIMTENSOR(LINEARINTERPOLATION_REGISTER);
+register_NEML2_object(ScalarLinearInterpolation);
+register_NEML2_object(VecLinearInterpolation);
+register_NEML2_object(SR2LinearInterpolation);
 
 template <typename T>
 OptionSet
@@ -47,11 +46,12 @@ LinearInterpolation<T>::LinearInterpolation(const OptionSet & options)
     _interp_batch_sizes(
         utils::broadcast_sizes(this->_X.batch_sizes().slice(0, this->_X.batch_dim() - 1),
                                this->_Y.batch_sizes().slice(0, this->_Y.batch_dim() - 1))),
-    _X0(this->template declare_buffer<Scalar>("X0",
-                                              this->_X.batch_index({Ellipsis, Slice(None, -1)}))),
-    _X1(this->template declare_buffer<Scalar>("X1",
-                                              this->_X.batch_index({Ellipsis, Slice(1, None)}))),
-    _Y0(this->template declare_buffer<T>("Y0", this->_Y.batch_index({Ellipsis, Slice(None, -1)}))),
+    _X0(this->template declare_buffer<Scalar>(
+        "X0", this->_X.batch_index({indexing::Ellipsis, indexing::Slice(indexing::None, -1)}))),
+    _X1(this->template declare_buffer<Scalar>(
+        "X1", this->_X.batch_index({indexing::Ellipsis, indexing::Slice(1, indexing::None)}))),
+    _Y0(this->template declare_buffer<T>(
+        "Y0", this->_Y.batch_index({indexing::Ellipsis, indexing::Slice(indexing::None, -1)}))),
     _slope(this->template declare_buffer<T>("S",
                                             math::diff(this->_Y, 1, this->_Y.batch_dim() - 1) /
                                                 math::diff(this->_X, 1, this->_X.batch_dim() - 1)))
@@ -75,7 +75,8 @@ LinearInterpolation<T>::set_value(bool out, bool dout_din, bool d2out_din2)
   }
 
   if (dout_din)
-    this->_p.d(this->_x) = si;
+    if (this->_x.is_dependent())
+      this->_p.d(this->_x) = si;
 
   if (d2out_din2)
   {
@@ -83,6 +84,7 @@ LinearInterpolation<T>::set_value(bool out, bool dout_din, bool d2out_din2)
   }
 }
 
-#define LINEARINTERPOLATION_INSTANTIATE_FIXEDDIMTENSOR(T) template class LinearInterpolation<T>
-FOR_ALL_FIXEDDIMTENSOR(LINEARINTERPOLATION_INSTANTIATE_FIXEDDIMTENSOR);
+template class LinearInterpolation<Scalar>;
+template class LinearInterpolation<Vec>;
+template class LinearInterpolation<SR2>;
 } // namespace neml2

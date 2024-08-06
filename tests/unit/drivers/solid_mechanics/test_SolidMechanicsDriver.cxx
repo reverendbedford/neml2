@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -33,15 +33,42 @@ TEST_CASE("SolidMechanicsDriver", "[SolidMechanicsDriver]")
 {
   SECTION("strain control")
   {
-    load_model("unit/drivers/solid_mechanics/test_SolidMechanicsDriver_strain.i");
-    auto & driver = Factory::get_object<SolidMechanicsDriver>("Drivers", "driver");
+    reload_input("unit/drivers/solid_mechanics/test_SolidMechanicsDriver_strain.i");
+    auto & driver = get_driver("driver");
+    diagnose(driver);
     REQUIRE(driver.run());
   }
 
   SECTION("stress control")
   {
-    load_model("unit/drivers/solid_mechanics/test_SolidMechanicsDriver_stress.i");
-    auto & driver = Factory::get_object<SolidMechanicsDriver>("Drivers", "driver");
+    reload_input("unit/drivers/solid_mechanics/test_SolidMechanicsDriver_stress.i");
+    auto & driver = get_driver("driver");
+    diagnose(driver);
+    REQUIRE(driver.run());
+  }
+
+  SECTION("mixed control")
+  {
+    reload_input("unit/drivers/solid_mechanics/test_SolidMechanicsDriver_mixed.i");
+    auto & driver = get_driver("driver");
+    diagnose(driver);
+    REQUIRE(driver.run());
+  }
+
+  SECTION("temperature dependent")
+  {
+    reload_input("unit/drivers/solid_mechanics/test_SolidMechanicsDriver_temperature.i");
+    auto & driver = get_driver("driver");
+    diagnose(driver);
+    REQUIRE(driver.run());
+  }
+
+  SECTION("large deformation incremental")
+  {
+    reload_input(
+        "unit/drivers/solid_mechanics/test_LargeDeformationIncrementalSolidMechanicsDriver.i");
+    auto & driver = get_driver("driver");
+    diagnose(driver);
     REQUIRE(driver.run());
   }
 }

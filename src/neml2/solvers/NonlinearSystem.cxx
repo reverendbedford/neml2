@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -67,7 +67,8 @@ NonlinearSystem::enable_automatic_scaling(OptionSet & options)
 }
 
 NonlinearSystem::NonlinearSystem(const OptionSet & options)
-  : _autoscale(options.get<bool>("automatic_scaling")),
+  : _ndof(0),
+    _autoscale(options.get<bool>("automatic_scaling")),
     _autoscale_tol(options.get<Real>("automatic_scaling_tol")),
     _autoscale_miter(options.get<unsigned int>("automatic_scaling_miter")),
     _scaling_matrices_initialized(false)
@@ -83,14 +84,12 @@ NonlinearSystem::init_scaling(const bool verbose)
   if (_scaling_matrices_initialized)
     return;
 
-  using namespace torch::indexing;
-
   // First compute the Jacobian
   assemble(false, true);
 
   auto Jp = _Jacobian.clone();
-  _row_scaling = BatchTensor::ones_like(_solution);
-  _col_scaling = BatchTensor::ones_like(_solution);
+  _row_scaling = Tensor::ones_like(_solution);
+  _col_scaling = Tensor::ones_like(_solution);
 
   if (verbose)
     std::cout << "Before automatic scaling cond(J) = " << std::scientific
@@ -108,14 +107,14 @@ NonlinearSystem::init_scaling(const bool verbose)
       break;
 
     // scale rows and columns
-    for (TorchSize i = 0; i < _ndof; i++)
+    for (Size i = 0; i < _ndof; i++)
     {
       auto ar = 1.0 / torch::sqrt(torch::max(Jp.base_index({i})));
-      auto ac = 1.0 / torch::sqrt(torch::max(Jp.base_index({Slice(), i})));
+      auto ac = 1.0 / torch::sqrt(torch::max(Jp.base_index({indexing::Slice(), i})));
       _row_scaling.base_index({i}) *= ar;
       _col_scaling.base_index({i}) *= ac;
       Jp.base_index({i}) *= ar;
-      Jp.base_index({Slice(), i}) *= ac;
+      Jp.base_index({indexing::Slice(), i}) *= ac;
     }
   }
 
@@ -126,8 +125,8 @@ NonlinearSystem::init_scaling(const bool verbose)
               << torch::max(torch::linalg_cond(Jp)).item<Real>() << std::endl;
 }
 
-BatchTensor
-NonlinearSystem::scale_residual(const BatchTensor & r) const
+Tensor
+NonlinearSystem::scale_residual(const Tensor & r) const
 {
   neml_assert_dbg(
       _autoscale == _scaling_matrices_initialized,
@@ -136,8 +135,8 @@ NonlinearSystem::scale_residual(const BatchTensor & r) const
   return _row_scaling * r;
 }
 
-BatchTensor
-NonlinearSystem::scale_Jacobian(const BatchTensor & J) const
+Tensor
+NonlinearSystem::scale_Jacobian(const Tensor & J) const
 {
   neml_assert_dbg(
       _autoscale == _scaling_matrices_initialized,
@@ -147,8 +146,8 @@ NonlinearSystem::scale_Jacobian(const BatchTensor & J) const
                    math::base_diag_embed(_col_scaling));
 }
 
-BatchTensor
-NonlinearSystem::scale_direction(const BatchTensor & p) const
+Tensor
+NonlinearSystem::scale_direction(const Tensor & p) const
 {
   neml_assert_dbg(
       _autoscale == _scaling_matrices_initialized,
@@ -158,17 +157,17 @@ NonlinearSystem::scale_direction(const BatchTensor & p) const
 }
 
 void
-NonlinearSystem::set_solution(const BatchTensor & x)
+NonlinearSystem::set_solution(const Tensor & x)
 {
   _solution.variable_data().copy_(x);
 }
 
-BatchTensor
-NonlinearSystem::residual(const BatchTensor & x)
+Tensor
+NonlinearSystem::residual(const Tensor & x)
 {
   set_solution(x);
   residual();
-  return residual_view();
+  return get_residual();
 }
 
 void
@@ -176,16 +175,15 @@ NonlinearSystem::residual()
 {
   assemble(true, false);
 
-  if (_autoscale)
-    _scaled_residual = scale_residual(_residual);
+  _scaled_residual = _autoscale ? scale_residual(_residual) : _residual.clone();
 }
 
-BatchTensor
-NonlinearSystem::Jacobian(const BatchTensor & x)
+Tensor
+NonlinearSystem::Jacobian(const Tensor & x)
 {
   set_solution(x);
   Jacobian();
-  return Jacobian_view();
+  return get_Jacobian();
 }
 
 void
@@ -193,16 +191,15 @@ NonlinearSystem::Jacobian()
 {
   assemble(false, true);
 
-  if (_autoscale)
-    _scaled_Jacobian = scale_Jacobian(_Jacobian);
+  _scaled_Jacobian = _autoscale ? scale_Jacobian(_Jacobian) : _Jacobian.clone();
 }
 
-std::tuple<BatchTensor, BatchTensor>
-NonlinearSystem::residual_and_Jacobian(const BatchTensor & x)
+std::tuple<Tensor, Tensor>
+NonlinearSystem::residual_and_Jacobian(const Tensor & x)
 {
   set_solution(x);
   residual_and_Jacobian();
-  return {residual_view(), Jacobian_view()};
+  return {get_residual(), get_Jacobian()};
 }
 
 void
@@ -210,16 +207,13 @@ NonlinearSystem::residual_and_Jacobian()
 {
   assemble(true, true);
 
-  if (_autoscale)
-  {
-    _scaled_residual = scale_residual(_residual);
-    _scaled_Jacobian = scale_Jacobian(_Jacobian);
-  }
+  _scaled_residual = _autoscale ? scale_residual(_residual) : _residual.clone();
+  _scaled_Jacobian = _autoscale ? scale_Jacobian(_Jacobian) : _Jacobian.clone();
 }
 
-BatchTensor
+Tensor
 NonlinearSystem::residual_norm() const
 {
-  return math::linalg::vector_norm(residual_view());
+  return math::linalg::vector_norm(get_residual());
 }
 } // namespace neml2

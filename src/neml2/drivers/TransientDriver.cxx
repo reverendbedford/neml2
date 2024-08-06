@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -37,6 +37,9 @@ TransientDriver::expected_options()
 
   options.set<std::string>("model");
   options.set("model").doc() = "The material model to be updated by the driver";
+
+  options.set<bool>("enable_AD") = false;
+  options.set("enable_AD").doc() = "Enable automatic differentiation";
 
   options.set<CrossRef<torch::Tensor>>("times");
   options.set("times").doc() =
@@ -100,7 +103,8 @@ TransientDriver::expected_options()
 
 TransientDriver::TransientDriver(const OptionSet & options)
   : Driver(options),
-    _model(Factory::get_object<Model>("Models", options.get<std::string>("model"))),
+    _enable_AD(options.get<bool>("enable_AD")),
+    _model(get_model(options.get<std::string>("model"), _enable_AD)),
     _device(options.get<std::string>("device")),
     _time(options.get<CrossRef<torch::Tensor>>("times"), 2),
     _step_count(0),
@@ -132,18 +136,14 @@ TransientDriver::TransientDriver(const OptionSet & options)
 }
 
 void
-TransientDriver::check_integrity() const
+TransientDriver::diagnose(std::vector<Diagnosis> & diagnoses) const
 {
-  Driver::check_integrity();
-
-  auto errors = _model.preflight();
-  // For now, let's throw one error at a time...
-  if (!errors.empty())
-    throw errors[0];
-
-  neml_assert(_time.dim() == 2,
-              "Input time should have dimension 2 but instead has dimension ",
-              _time.dim());
+  Driver::diagnose(diagnoses);
+  _model.diagnose(diagnoses);
+  diagnostic_assert(diagnoses,
+                    _time.dim() == 2,
+                    "Input time should have dimension 2 but instead has dimension ",
+                    _time.dim());
 }
 
 bool
@@ -217,8 +217,11 @@ TransientDriver::advance_step()
 void
 TransientDriver::update_forces()
 {
-  auto current_time = _time.batch_index({_step_count});
-  _in.set(current_time, _time_name);
+  if (_model.input_axis().has_variable(_time_name))
+  {
+    auto current_time = _time.batch_index({_step_count});
+    _in.base_index_put_(_time_name, current_time);
+  }
 }
 
 void
@@ -252,9 +255,9 @@ TransientDriver::apply_predictor()
       // Otherwise linearly extrapolate in time
       else
       {
-        auto t = _in.get<Scalar>(_time_name);
-        auto t_n = _result_in.get<Scalar>(_time_name).batch_index({_step_count - 1});
-        auto t_nm1 = _result_in.get<Scalar>(_time_name).batch_index({_step_count - 2});
+        auto t = _in.reinterpret<Scalar>(_time_name);
+        auto t_n = _result_in.reinterpret<Scalar>(_time_name).batch_index({_step_count - 1});
+        auto t_nm1 = _result_in.reinterpret<Scalar>(_time_name).batch_index({_step_count - 2});
         auto dt = t - t_n;
         auto dt_n = t_n - t_nm1;
 
@@ -271,10 +274,12 @@ TransientDriver::apply_predictor()
 
   if (cp && (_step_count == 1))
   {
-    SR2 D = _in.get<SR2>(std::vector<std::string>{"forces", "deformation_rate"});
-    auto t = _in.get<Scalar>(_time_name);
-    auto t_n = _result_in.get<Scalar>(_time_name).batch_index({_step_count - 1});
-    _in.set(D * (t - t_n) * _cp_elastic_scale, std::vector<std::string>{"state", "elastic_strain"});
+    VariableName D_name("forces", "deformation_rate");
+    VariableName E_name("state", "elastic_strain");
+    SR2 D = _in.reinterpret<SR2>(D_name);
+    auto t = _in.reinterpret<Scalar>(_time_name);
+    auto t_n = _result_in.reinterpret<Scalar>(_time_name).batch_index({_step_count - 1});
+    _in.base_index_put_(E_name, D * (t - t_n) * _cp_elastic_scale);
   }
 }
 
@@ -287,13 +292,13 @@ TransientDriver::solve_step()
 void
 TransientDriver::store_input()
 {
-  _result_in.batch_index_put({_step_count}, _in);
+  _result_in.batch_index_put_({_step_count}, _in);
 }
 
 void
 TransientDriver::store_output()
 {
-  _result_out.batch_index_put({_step_count}, _out);
+  _result_out.batch_index_put_({_step_count}, _out);
 }
 
 std::string
@@ -310,13 +315,13 @@ TransientDriver::result() const
 
   // Dump input variables into a Module
   auto res_in = std::make_shared<torch::nn::Module>();
-  for (auto var : result_in_cpu.axis(0).variable_accessors(/*recursive=*/true))
-    res_in->register_buffer(utils::stringify(var), result_in_cpu(var).clone());
+  for (auto var : result_in_cpu.axis(0).variable_names())
+    res_in->register_buffer(utils::stringify(var), result_in_cpu.base_index(var).clone());
 
   // Dump output variables into a Module
   auto res_out = std::make_shared<torch::nn::Module>();
-  for (auto var : result_out_cpu.axis(0).variable_accessors(/*recursive=*/true))
-    res_out->register_buffer(utils::stringify(var), result_out_cpu(var).clone());
+  for (auto var : result_out_cpu.axis(0).variable_names())
+    res_out->register_buffer(utils::stringify(var), result_out_cpu.base_index(var).clone());
 
   // Combine input and output
   torch::nn::ModuleDict res;

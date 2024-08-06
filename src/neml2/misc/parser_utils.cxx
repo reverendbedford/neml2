@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -23,7 +23,7 @@
 // THE SOFTWARE.
 
 #include "neml2/misc/parser_utils.h"
-#include <cxxabi.h>
+#include "neml2/tensors/Variable.h"
 
 namespace neml2
 {
@@ -40,15 +40,6 @@ operator>>(std::stringstream & in, torch::Tensor & /**/)
 {
   throw ParserException("Cannot parse torch::Tensor");
   return in;
-}
-
-std::string
-demangle(const char * name)
-{
-  int status = -4;
-  std::unique_ptr<char, void (*)(void *)> res{abi::__cxa_demangle(name, NULL, NULL, &status),
-                                              std::free};
-  return (status == 0) ? res.get() : name;
 }
 
 std::vector<std::string>
@@ -97,7 +88,7 @@ end_with(std::string_view str, std::string_view suffix)
 
 template <>
 void
-parse_<bool>(bool & val, const std::string & raw_str)
+parse_(bool & val, const std::string & raw_str)
 {
   std::string str_val = parse<std::string>(raw_str);
   if (str_val == "true")
@@ -120,7 +111,7 @@ parse_vector_(std::vector<bool> & vals, const std::string & raw_str)
 
 template <>
 void
-parse_<VariableName>(VariableName & val, const std::string & raw_str)
+parse_(VariableName & val, const std::string & raw_str)
 {
   auto tokens = split(raw_str, "/ \t\n\v\f\r");
   val = VariableName(tokens);
@@ -128,7 +119,7 @@ parse_<VariableName>(VariableName & val, const std::string & raw_str)
 
 template <>
 void
-parse_<TorchShape>(TorchShape & val, const std::string & raw_str)
+parse_(TensorShape & val, const std::string & raw_str)
 {
   if (!start_with(raw_str, "(") || !end_with(raw_str, ")"))
     throw ParserException("Trying to parse " + raw_str +
@@ -139,7 +130,7 @@ parse_<TorchShape>(TorchShape & val, const std::string & raw_str)
 
   val.clear();
   for (auto & token : tokens)
-    val.push_back(parse<TorchSize>(token));
+    val.push_back(parse<Size>(token));
 }
 } // namespace utils
 } // namespace neml2

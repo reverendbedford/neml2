@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -65,17 +65,17 @@ TEST_CASE("parser_utils", "[misc]")
                           Catch::Matchers::ContainsSubstring("Cannot parse torch::Tensor"));
     }
 
-    SECTION("TorchShape")
+    SECTION("TensorShape")
     {
-      REQUIRE(utils::parse<TorchShape>("(1,2,3,4,5,6)") == TorchShape{1, 2, 3, 4, 5, 6});
-      REQUIRE(utils::parse<TorchShape>("(1,2,3)") == TorchShape{1, 2, 3});
-      REQUIRE(utils::parse<TorchShape>("(1,2,3,)") == TorchShape{1, 2, 3});
-      REQUIRE(utils::parse<TorchShape>("(,1,2,3)") == TorchShape{1, 2, 3});
-      REQUIRE(utils::parse<TorchShape>("(,1,2,3,)") == TorchShape{1, 2, 3});
-      REQUIRE(utils::parse<TorchShape>("( ,  1, 2, 3 , )") == TorchShape{1, 2, 3});
-      REQUIRE(utils::parse<TorchShape>("()") == TorchShape{});
+      REQUIRE(utils::parse<TensorShape>("(1,2,3,4,5,6)") == TensorShape{1, 2, 3, 4, 5, 6});
+      REQUIRE(utils::parse<TensorShape>("(1,2,3)") == TensorShape{1, 2, 3});
+      REQUIRE(utils::parse<TensorShape>("(1,2,3,)") == TensorShape{1, 2, 3});
+      REQUIRE(utils::parse<TensorShape>("(,1,2,3)") == TensorShape{1, 2, 3});
+      REQUIRE(utils::parse<TensorShape>("(,1,2,3,)") == TensorShape{1, 2, 3});
+      REQUIRE(utils::parse<TensorShape>("( ,  1, 2, 3 , )") == TensorShape{1, 2, 3});
+      REQUIRE(utils::parse<TensorShape>("()") == TensorShape{});
       REQUIRE_THROWS_WITH(
-          utils::parse<TorchShape>("1"),
+          utils::parse<TensorShape>("1"),
           Catch::Matchers::ContainsSubstring("a shape must start with '(' and end with ')'"));
     }
 

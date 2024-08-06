@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 #include "neml2/models/solid_mechanics/KocksMeckingYieldStress.h"
+#include "neml2/misc/math.h"
 
 namespace neml2
 {
@@ -37,9 +38,9 @@ KocksMeckingYieldStress::expected_options()
                   "\\mu \\f$ with \\f$ \\mu \\f$ the shear modulus and \\f$ C \\f$ the horizontal "
                   "intercept from the Kocks-Mecking diagram.";
 
-  options.set<CrossRef<Scalar>>("C");
+  options.set_parameter<CrossRef<Scalar>>("C");
   options.set("C").doc() = "The Kocks-Mecking horizontal intercept";
-  options.set<CrossRef<Scalar>>("shear_modulus");
+  options.set_parameter<CrossRef<Scalar>>("shear_modulus");
   options.set("shear_modulus").doc() = "The shear modulus";
 
   return options;
@@ -47,8 +48,8 @@ KocksMeckingYieldStress::expected_options()
 
 KocksMeckingYieldStress::KocksMeckingYieldStress(const OptionSet & options)
   : NonlinearParameter<Scalar>(options),
-    _C(declare_parameter<Scalar>("C", "C")),
-    _mu(declare_parameter<Scalar>("shear_modulus", "shear_modulus"))
+    _C(declare_parameter<Scalar>("C", "C", /*allow_nonlinear=*/true)),
+    _mu(declare_parameter<Scalar>("mu", "shear_modulus", /*allow_nonlinear=*/true))
 {
 }
 
@@ -60,20 +61,24 @@ KocksMeckingYieldStress::set_value(bool out, bool dout_din, bool d2out_din2)
 
   if (dout_din)
   {
-    if (const auto mu = nl_param("shear_modulus"))
+    if (const auto * const mu = nl_param("mu"))
       _p.d(*mu) = math::exp(_C);
 
-    if (const auto C = nl_param("C"))
+    if (const auto * const C = nl_param("C"))
       _p.d(*C) = _mu * math::exp(_C);
   }
 
   if (d2out_din2)
   {
-    if (const auto C = nl_param("C"))
+    if (const auto * const C = nl_param("C"))
     {
       _p.d(*C, *C) = _mu * math::exp(_C);
-      if (const auto mu = nl_param("shear_modulus"))
+
+      if (const auto * const mu = nl_param("mu"))
+      {
         _p.d(*C, *mu) = math::exp(_C);
+        _p.d(*mu, *C) = math::exp(_C);
+      }
     }
   }
 }

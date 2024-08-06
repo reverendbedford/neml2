@@ -16,21 +16,32 @@ macro(add_submodule mname msrcs)
   install(TARGETS ${mname} LIBRARY DESTINATION .)
 endmacro()
 
-# macro for defining a submodule with source files automatically discovered from a given directory
-macro(add_submodule_dir mname)
-  file(GLOB_RECURSE msrcs neml2/${mname}/*.cxx)
-  add_submodule(${mname} "${msrcs}")
-endmacro()
+# Actually define the submodules
+add_submodule(base neml2/base.cxx)
+add_submodule(math neml2/math.cxx)
+file(GLOB_RECURSE tensors_srcs neml2/tensors/*.cxx)
+add_submodule(tensors "${tensors_srcs}")
 
-# Actually add the submodules (using the above macros)
-add_submodule_dir(base)
-add_submodule_dir(tensors)
-add_submodule_dir(models)
-add_submodule(math neml2/misc/math.cxx)
+# Extract stub
+add_custom_target(python-stub ALL
+  DEPENDS base math tensors
+  WORKING_DIRECTORY ${NEML2_BINARY_DIR}/python
+  COMMAND PYTHONPATH=. pybind11-stubgen -o . neml2
+  VERBATIM
+)
 
 # Artifacts
 configure_file(neml2/__init__.py ${NEML2_BINARY_DIR}/python/neml2/__init__.py COPYONLY)
-install(FILES neml2/__init__.py DESTINATION .)
+configure_file(neml2/visualization.py ${NEML2_BINARY_DIR}/python/neml2/visualization.py COPYONLY)
+install(FILES
+  neml2/__init__.py
+  neml2/visualization.py
+  ${NEML2_BINARY_DIR}/python/neml2/__init__.pyi
+  ${NEML2_BINARY_DIR}/python/neml2/base.pyi
+  ${NEML2_BINARY_DIR}/python/neml2/math.pyi
+  ${NEML2_BINARY_DIR}/python/neml2/tensors.pyi
+  DESTINATION .
+)
 
 # Tests
 if(NEML2_TESTS)

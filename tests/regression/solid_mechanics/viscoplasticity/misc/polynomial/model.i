@@ -55,13 +55,13 @@
     nstep = 100
   []
   [A0]
-    type = BatchTensor
+    type = Tensor
     values = "1e-6 1e-6 1e-6 1e-6 1e-6 1e-6 1e-6 1e-6 1e-6
               1e-6 1e-6 1e-6 1e-6 1e-6 1e-6 1e-6 1e-6 1e-6"
     base_shape = '(2,3,3)'
   []
   [A1]
-    type = BatchTensor
+    type = Tensor
     values = "1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6
               1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6
               1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6
@@ -71,7 +71,7 @@
     base_shape = '(2,3,3,4)'
   []
   [A2]
-    type = BatchTensor
+    type = Tensor
     values = "1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6
               1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6
               1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6
@@ -81,22 +81,22 @@
     base_shape = '(2,3,3,4)'
   []
   [s_lb]
-    type = BatchTensor
+    type = Tensor
     values = '0 50'
     base_shape = (2)
   []
   [s_ub]
-    type = BatchTensor
+    type = Tensor
     values = '50 100'
     base_shape = (2)
   []
   [T_lb]
-    type = BatchTensor
+    type = Tensor
     values = '0 300 600'
     base_shape = (3)
   []
   [T_ub]
-    type = BatchTensor
+    type = Tensor
     values = '300 600 1000'
     base_shape = (3)
   []
@@ -110,6 +110,7 @@
     prescribed_strains = 'strains'
     prescribed_temperatures = 'temperatures'
     save_as = 'result.pt'
+    enable_AD = true
   []
   [regression]
     type = TransientRegression
@@ -131,33 +132,35 @@
   # Compute the invariant plastic flow direction since we are doing J2 radial return
   #####################################################################################
   [trial_elastic_strain]
-    type = ElasticStrain
-    plastic_strain = 'old_state/Ep'
-    elastic_strain = 'state/Ee'
+    type = SR2LinearCombination
+    from_var = 'forces/E old_state/Ep'
+    to_var = 'forces/Ee'
+    coefficients = '1 -1'
   []
-  [cauchy_stress]
+  [trial_cauchy_stress]
     type = LinearIsotropicElasticity
     youngs_modulus = 1e5
     poisson_ratio = 0.3
-    strain = 'state/Ee'
-    stress = 'state/S'
+    strain = 'forces/Ee'
+    stress = 'forces/S'
   []
-  [flow_direction]
+  [trial_flow_direction]
     type = J2FlowDirection
-    mandel_stress = 'state/S'
+    mandel_stress = 'forces/S'
     flow_direction = 'forces/N'
   []
   [trial_state]
     type = ComposedModel
-    models = 'trial_elastic_strain cauchy_stress flow_direction'
+    models = 'trial_elastic_strain trial_cauchy_stress trial_flow_direction'
   []
 
   #####################################################################################
   # Stress update
   #####################################################################################
   [ep_rate]
-    type = ScalarStateRate
-    state = 'ep'
+    type = ScalarVariableRate
+    variable = 'state/ep'
+    rate = 'state/ep_rate'
   []
   [plastic_strain_rate]
     type = AssociativePlasticFlow
@@ -167,16 +170,24 @@
   []
   [plastic_strain]
     type = SR2ForwardEulerTimeIntegration
-    variable = 'Ep'
+    variable = 'state/Ep'
   []
   [plastic_update]
     type = ComposedModel
     models = 'ep_rate plastic_strain_rate plastic_strain'
   []
   [elastic_strain]
-    type = ElasticStrain
-    plastic_strain = 'state/Ep'
-    elastic_strain = 'state/Ee'
+    type = SR2LinearCombination
+    from_var = 'forces/E state/Ep'
+    to_var = 'state/Ee'
+    coefficients = '1 -1'
+  []
+  [cauchy_stress]
+    type = LinearIsotropicElasticity
+    youngs_modulus = 1e5
+    poisson_ratio = 0.3
+    strain = 'state/Ee'
+    stress = 'state/S'
   []
   [stress_update]
     type = ComposedModel
@@ -211,15 +222,15 @@
   []
   [integrate_ep]
     type = ScalarBackwardEulerTimeIntegration
-    variable = 'ep'
+    variable = 'state/ep'
   []
   [integrate_s1]
     type = ScalarBackwardEulerTimeIntegration
-    variable = 's1'
+    variable = 'state/s1'
   []
   [integrate_s2]
     type = ScalarBackwardEulerTimeIntegration
-    variable = 's2'
+    variable = 'state/s2'
   []
   [rate]
     type = ComposedModel

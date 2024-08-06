@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -35,6 +35,8 @@ public:
 
   Normality(const OptionSet & options);
 
+  virtual void setup_output_views() override;
+
 protected:
   /// The flow direction
   void set_value(bool out, bool dout_din, bool d2out_din2) override;
@@ -45,6 +47,13 @@ protected:
   /// The potential function
   const VariableName _f;
 
-  std::map<VariableName, Variable<BatchTensor> *> _conjugate_pairs;
+  std::map<VariableName, Variable<Tensor> *> _conjugate_pairs;
+
+protected:
+  /// Cached derivative views to avoid slicing during evaluation
+  std::map<VariableName, Tensor> _f_deriv_views;
+
+  /// Cached second derivative views to avoid slicing during evaluation
+  std::map<VariableName, std::map<VariableName, Tensor>> _f_secderiv_views;
 };
 } // namespace neml2

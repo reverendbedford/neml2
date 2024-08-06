@@ -9,7 +9,7 @@
     type = LinspaceScalar
     start = 0
     end = end_time
-    nstep = 100
+    nstep = 10
   []
   [sxx]
     type = FullScalar
@@ -34,7 +34,7 @@
     type = LinspaceSR2
     start = 0
     end = max_stress
-    nstep = 100
+    nstep = 10
   []
 []
 
@@ -51,8 +51,9 @@
 
 [Models]
   [force_rate]
-    type = SR2ForceRate
-    force = 'S'
+    type = SR2VariableRate
+    variable = 'forces/S'
+    rate = 'forces/S_rate'
   []
   [strain_rate]
     type = LinearIsotropicElasticity
@@ -65,7 +66,7 @@
   []
   [integrate]
     type = SR2ForwardEulerTimeIntegration
-    variable = 'E'
+    variable = 'state/E'
   []
   [model]
     type = ComposedModel

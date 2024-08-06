@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -28,6 +28,7 @@
 namespace neml2
 {
 register_NEML2_object(ScalarForwardEulerTimeIntegration);
+register_NEML2_object(VecForwardEulerTimeIntegration);
 register_NEML2_object(SR2ForwardEulerTimeIntegration);
 
 template <typename T>
@@ -41,10 +42,13 @@ ForwardEulerTimeIntegration<T>::expected_options()
       "rate, and \\f$t\\f$ is time. Subscripts \\f$n\\f$ denote quantities from the previous time "
       "step.";
 
-  options.set<VariableName>("variable");
+  options.set_output("variable");
   options.set("variable").doc() = "Variable being integrated";
 
-  options.set<VariableName>("time") = VariableName("t");
+  options.set_input("rate");
+  options.set("rate").doc() = "Variable rate of change";
+
+  options.set_input("time") = VariableName("forces", "t");
   options.set("time").doc() = "Time";
 
   return options;
@@ -53,49 +57,51 @@ ForwardEulerTimeIntegration<T>::expected_options()
 template <typename T>
 ForwardEulerTimeIntegration<T>::ForwardEulerTimeIntegration(const OptionSet & options)
   : Model(options),
-    _var_name(options.get<VariableName>("variable")),
-    _var_rate_name(_var_name.with_suffix("_rate")),
-    _s(declare_output_variable<T>(_var_name.on("state"))),
-    _ds_dt(declare_input_variable<T>(_var_rate_name.on("state"))),
-    _sn(declare_input_variable<T>(_var_name.on("old_state"))),
-    _t(declare_input_variable<Scalar>(options.get<VariableName>("time").on("forces"))),
-    _tn(declare_input_variable<Scalar>(options.get<VariableName>("time").on("old_forces")))
+    _s(declare_output_variable<T>("variable")),
+    _sn(declare_input_variable<T>(_s.name().old())),
+    _ds_dt(options.get<VariableName>("rate").empty()
+               ? declare_input_variable<T>(_s.name().with_suffix("_rate"))
+               : declare_input_variable<T>("rate")),
+    _t(declare_input_variable<Scalar>("time")),
+    _tn(declare_input_variable<Scalar>(_t.name().old()))
 {
+}
+
+template <typename T>
+void
+ForwardEulerTimeIntegration<T>::diagnose(std::vector<Diagnosis> & diagnoses) const
+{
+  Model::diagnose(diagnoses);
+  diagnostic_assert_state(diagnoses, _s);
+  diagnostic_assert_state(diagnoses, _ds_dt);
+  diagnostic_assert_force(diagnoses, _t);
 }
 
 template <typename T>
 void
 ForwardEulerTimeIntegration<T>::set_value(bool out, bool dout_din, bool d2out_din2)
 {
+  neml_assert(!d2out_din2, "ForwardEulerTimeIntegration does not implement second derivatives");
+
   if (out)
     _s = _sn + _ds_dt * (_t - _tn);
 
-  if (dout_din || d2out_din2)
+  if (dout_din)
   {
     auto I = T::identity_map(options());
 
-    if (dout_din)
-    {
-      _s.d(_ds_dt) = I * (_t - _tn);
-      if (Model::stage == Model::Stage::UPDATING)
-      {
-        _s.d(_sn) = I;
-        _s.d(_t) = _ds_dt;
-        _s.d(_tn) = -_ds_dt;
-      }
-    }
+    _s.d(_ds_dt) = I * (_t - _tn);
 
-    if (d2out_din2)
-      if (Model::stage == Model::Stage::UPDATING)
-      {
-        _s.d(_ds_dt, _t) = I;
-        _s.d(_ds_dt, _tn) = -I;
-        _s.d(_t, _ds_dt) = I;
-        _s.d(_tn, _ds_dt) = -I;
-      }
+    if (currently_solving_nonlinear_system())
+      return;
+
+    _s.d(_sn) = I;
+    _s.d(_t) = _ds_dt;
+    _s.d(_tn) = -_ds_dt;
   }
 }
 
 template class ForwardEulerTimeIntegration<Scalar>;
+template class ForwardEulerTimeIntegration<Vec>;
 template class ForwardEulerTimeIntegration<SR2>;
 } // namespace neml2

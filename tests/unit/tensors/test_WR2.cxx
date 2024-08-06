@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -35,7 +35,7 @@ TEST_CASE("WR2", "[tensors]")
   torch::manual_seed(42);
   const auto & DTO = default_tensor_options();
 
-  TorchShape B = {5, 3, 1, 2}; // batch shape
+  TensorShape B = {5, 3, 1, 2}; // batch shape
 
   SECTION("class WR2")
   {
@@ -69,7 +69,7 @@ TEST_CASE("WR2", "[tensors]")
       auto I = WR2::identity_map(DTO);
       auto a = WR2(torch::rand(utils::add_shapes(B, 3), DTO));
 
-      auto apply = [](const BatchTensor & x) { return x; };
+      auto apply = [](const Tensor & x) { return x; };
       auto da_da = finite_differencing_derivative(apply, a);
 
       REQUIRE(torch::allclose(I, da_da));
@@ -95,7 +95,7 @@ TEST_CASE("WR2", "[tensors]")
     SECTION("drotate")
     {
       // Rodrigues vector
-      auto apply_r = [w](const BatchTensor & x) { return w.rotate(Rot(x)); };
+      auto apply_r = [w](const Tensor & x) { return w.rotate(Rot(x)); };
       auto dwp_dr = finite_differencing_derivative(apply_r, r);
       auto dwp_drb = dwp_dr.batch_expand(B);
 
@@ -105,7 +105,7 @@ TEST_CASE("WR2", "[tensors]")
       // Rotation matrix
       auto R = R2(r);
       auto Rb = R2(rb);
-      auto apply_R = [w](const BatchTensor & x) { return w.rotate(R2(x)); };
+      auto apply_R = [w](const Tensor & x) { return w.rotate(R2(x)); };
       auto dwp_dR = finite_differencing_derivative(apply_R, R);
       auto dwp_dRb = dwp_dR.batch_expand(B);
 
@@ -172,11 +172,10 @@ TEST_CASE("WR2", "[tensors]")
 
     SECTION("operator()")
     {
-      using namespace torch::indexing;
       auto a = WR2(torch::rand(utils::add_shapes(B, 3), DTO));
       auto b = R2(a);
-      for (TorchSize i = 0; i < 3; i++)
-        for (TorchSize j = 0; j < 3; j++)
+      for (Size i = 0; i < 3; i++)
+        for (Size j = 0; j < 3; j++)
           REQUIRE(torch::allclose(a(i, j), b(i, j)));
     }
   }

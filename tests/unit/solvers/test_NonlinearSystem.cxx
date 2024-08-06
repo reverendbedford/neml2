@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -32,9 +32,9 @@ using namespace neml2;
 TEST_CASE("NonlinearSystem", "[solvers]")
 {
   // Initial guess
-  TorchShape batch_sz = {2};
-  TorchSize nbase = 4;
-  auto x0 = BatchTensor::full(batch_sz, nbase, 2.0, default_tensor_options());
+  TensorShape batch_sz = {2};
+  Size nbase = 4;
+  auto x0 = Tensor::full(batch_sz, nbase, 2.0, default_tensor_options());
 
   // Create the nonlinear system
   auto options = PowerTestSystem::expected_options();

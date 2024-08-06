@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -86,6 +86,7 @@ public:
   using const_iterator = DereferenceIterator<typename values_type::const_iterator>;
 
   /**
+   * @name Iterators
    * Begin and end iterators to the underlying data.
    *
    * Note that dereferencing these iterators may lead to an assertion
@@ -99,6 +100,7 @@ public:
   const_iterator end() const { return const_iterator(_values.end()); }
   ///@}
 
+  ///@{
   /**
    * @returns A reference to the underlying data at index \p i.
    *
@@ -108,7 +110,6 @@ public:
    * You can check whether or not the underlying data is intialized
    * with has_key(i).
    */
-  ///@{
   T & operator[](const I & i) const
   {
     neml_assert_dbg(has_key(i),
@@ -137,13 +138,13 @@ public:
    */
   bool has_key(const I & i) const { return _values.count(i); }
 
+  ///@{
   /**
    * @returns A pointer to the underlying data at index \p i
    *
    * The pointer will be nullptr if !has_key(i), that is, if the
    * unique_ptr at index \p i is not initialized
    */
-  ///@{
   const T * query_value(const I & i) const { return has_key(i) ? pointer_value(i).get() : nullptr; }
   T * query_value(const I & i)
   {

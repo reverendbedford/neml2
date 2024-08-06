@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -25,8 +25,6 @@
 #include "neml2/base/CrossRef.h"
 #include "neml2/base/Factory.h"
 #include "neml2/misc/parser_utils.h"
-#include "neml2/tensors/tensors.h"
-#include "neml2/tensors/macros.h"
 
 namespace neml2
 {
@@ -46,22 +44,21 @@ CrossRef<torch::Tensor>::operator torch::Tensor() const
 }
 
 template <>
-CrossRef<BatchTensor>::operator BatchTensor() const
+CrossRef<Tensor>::operator Tensor() const
 {
   try
   {
     // If it is just a number, we can still create a Scalar out of it
-    return BatchTensor::full({}, {}, utils::parse<Real>(_raw_str), default_tensor_options());
+    return Tensor::full({}, {}, utils::parse<Real>(_raw_str), default_tensor_options());
   }
   catch (const ParserException & e)
   {
-    // Conversion to a number failed, so it might be the name of another BatchTensor
-    return Factory::get_object<BatchTensor>("Tensors", _raw_str);
+    // Conversion to a number failed, so it might be the name of another Tensor
+    return Factory::get_object<Tensor>("Tensors", _raw_str);
   }
 }
 
-template class CrossRef<torch::Tensor>;
-#define CROSSREF_SPECIALIZE_FIXEDDIMTENSOR(T)                                                      \
+#define CROSSREF_SPECIALIZE_PRIMITIVETENSOR_IMPL(T)                                                \
   template <>                                                                                      \
   CrossRef<T>::operator T() const                                                                  \
   {                                                                                                \
@@ -76,5 +73,5 @@ template class CrossRef<torch::Tensor>;
   }                                                                                                \
   static_assert(true)
 
-FOR_ALL_FIXEDDIMTENSOR(CROSSREF_SPECIALIZE_FIXEDDIMTENSOR);
+FOR_ALL_PRIMITIVETENSOR(CROSSREF_SPECIALIZE_PRIMITIVETENSOR_IMPL);
 } // namesace neml2

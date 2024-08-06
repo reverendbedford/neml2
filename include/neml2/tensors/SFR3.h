@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/tensors/FixedDimTensor.h"
+#include "neml2/tensors/PrimitiveTensor.h"
 
 namespace neml2
 {
@@ -34,9 +34,9 @@ namespace neml2
  * Mandel notation is used for the first two symmetry dimensions, and so the logical storage space
  * is (6, 3).
  */
-class SFR3 : public FixedDimTensor<SFR3, 6, 3>
+class SFR3 : public PrimitiveTensor<SFR3, 6, 3>
 {
 public:
-  using FixedDimTensor<SFR3, 6, 3>::FixedDimTensor;
+  using PrimitiveTensor<SFR3, 6, 3>::PrimitiveTensor;
 };
 } // namespace neml2

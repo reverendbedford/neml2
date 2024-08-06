@@ -19,6 +19,16 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  copyright:
+    name: Copyright check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.8"
+      - name: Check to see if source files have the correct copyright header
+        run: ./scripts/check_copyright.py
   clang-format:
     name: Formatting Check
     runs-on: ubuntu-latest
@@ -35,16 +45,31 @@ jobs:
         with:
           clang-format-version: "17"
           check-path: ${{ matrix.path }}
-  copyright:
-    name: Copyright check
+  clang-tidy:
+    name: Linting
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: recursive
       - uses: actions/setup-python@v5
         with:
           python-version: "3.8"
-      - name: Check to see if source files have the correct copyright header
-        run: ./scripts/check_copyright.py
+      - uses: jwlawson/actions-setup-cmake@v2
+        with:
+          cmake-version: "3.28"
+      - run: pip install torch==2.2.2
+      - run: |
+          cmake \
+            -DCMAKE_BUILD_TYPE=Debug \
+            -DNEML2_TESTS=OFF \
+            -DNEML2_RUNNER=OFF \
+            -DNEML2_PYBIND=OFF \
+            -DNEML2_DOC=OFF \
+            -DNEML2_CLANG_TIDY=ON \
+            -B build \
+            .
+      - run: cmake --build build --target all -j 2 --
   build-test:
     needs: clang-format
     strategy:

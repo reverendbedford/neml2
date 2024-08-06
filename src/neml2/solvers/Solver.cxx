@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -32,7 +32,7 @@ Solver::expected_options()
   OptionSet options = NEML2Object::expected_options();
   options.section() = "Solvers";
 
-  options.set<bool>("verbose");
+  options.set<bool>("verbose") = false;
   options.set("verbose").doc() = "Verbosity of the solver";
 
   return options;

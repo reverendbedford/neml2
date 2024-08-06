@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -25,6 +25,9 @@
 #include "neml2/misc/math.h"
 #include "neml2/misc/error.h"
 #include "neml2/tensors/tensors.h"
+
+#include <torch/autograd.h>
+#include <torch/linalg.h>
 
 namespace neml2
 {
@@ -106,61 +109,57 @@ ConstantTensors::skew_to_full_factor()
   return get()._skew_to_full_factor;
 }
 
-BatchTensor
-full_to_reduced(const BatchTensor & full,
+Tensor
+full_to_reduced(const Tensor & full,
                 const torch::Tensor & rmap,
                 const torch::Tensor & rfactors,
-                TorchSize dim)
+                Size dim)
 {
-  using namespace torch::indexing;
-
   auto batch_dim = full.batch_dim();
   auto starting_dim = batch_dim + dim;
   auto trailing_dim = full.dim() - starting_dim - 2; // 2 comes from the reduced axes (3,3)
   auto starting_shape = full.sizes().slice(0, starting_dim);
   auto trailing_shape = full.sizes().slice(starting_dim + 2);
 
-  TorchSlice net(starting_dim, None);
-  net.push_back(Ellipsis);
-  net.insert(net.end(), trailing_dim, None);
+  indexing::TensorIndices net(starting_dim, indexing::None);
+  net.push_back(indexing::Ellipsis);
+  net.insert(net.end(), trailing_dim, indexing::None);
   auto map =
       rmap.index(net).expand(utils::add_shapes(starting_shape, rmap.sizes()[0], trailing_shape));
   auto factor = rfactors.to(full).index(net);
 
-  return BatchTensor(
+  return Tensor(
       factor * torch::gather(full.reshape(utils::add_shapes(starting_shape, 9, trailing_shape)),
                              starting_dim,
                              map),
       batch_dim);
 }
 
-BatchTensor
-reduced_to_full(const BatchTensor & reduced,
+Tensor
+reduced_to_full(const Tensor & reduced,
                 const torch::Tensor & rmap,
                 const torch::Tensor & rfactors,
-                TorchSize dim)
+                Size dim)
 {
-  using namespace torch::indexing;
-
   auto batch_dim = reduced.batch_dim();
   auto starting_dim = batch_dim + dim;
   auto trailing_dim = reduced.dim() - starting_dim - 1; // There's only 1 axis to unsqueeze
   auto starting_shape = reduced.sizes().slice(0, starting_dim);
   auto trailing_shape = reduced.sizes().slice(starting_dim + 1);
 
-  TorchSlice net(starting_dim, None);
-  net.push_back(Ellipsis);
-  net.insert(net.end(), trailing_dim, None);
+  indexing::TensorIndices net(starting_dim, indexing::None);
+  net.push_back(indexing::Ellipsis);
+  net.insert(net.end(), trailing_dim, indexing::None);
   auto map = rmap.index(net).expand(utils::add_shapes(starting_shape, 9, trailing_shape));
   auto factor = rfactors.to(reduced).index(net);
 
-  return BatchTensor((factor * torch::gather(reduced, starting_dim, map))
-                         .reshape(utils::add_shapes(starting_shape, 3, 3, trailing_shape)),
-                     batch_dim);
+  return Tensor((factor * torch::gather(reduced, starting_dim, map))
+                    .reshape(utils::add_shapes(starting_shape, 3, 3, trailing_shape)),
+                batch_dim);
 }
 
-BatchTensor
-full_to_mandel(const BatchTensor & full, TorchSize dim)
+Tensor
+full_to_mandel(const Tensor & full, Size dim)
 {
   return full_to_reduced(
       full,
@@ -169,8 +168,8 @@ full_to_mandel(const BatchTensor & full, TorchSize dim)
       dim);
 }
 
-BatchTensor
-mandel_to_full(const BatchTensor & mandel, TorchSize dim)
+Tensor
+mandel_to_full(const Tensor & mandel, Size dim)
 {
   return reduced_to_full(
       mandel,
@@ -179,8 +178,8 @@ mandel_to_full(const BatchTensor & mandel, TorchSize dim)
       dim);
 }
 
-BatchTensor
-full_to_skew(const BatchTensor & full, TorchSize dim)
+Tensor
+full_to_skew(const Tensor & full, Size dim)
 {
   return full_to_reduced(
       full,
@@ -189,8 +188,8 @@ full_to_skew(const BatchTensor & full, TorchSize dim)
       dim);
 }
 
-BatchTensor
-skew_to_full(const BatchTensor & skew, TorchSize dim)
+Tensor
+skew_to_full(const Tensor & skew, Size dim)
 {
   return reduced_to_full(
       skew,
@@ -199,8 +198,8 @@ skew_to_full(const BatchTensor & skew, TorchSize dim)
       dim);
 }
 
-BatchTensor
-jacrev(const BatchTensor & y, const BatchTensor & p)
+Tensor
+jacrev(const Tensor & y, const Tensor & p)
 {
   neml_assert(p.batch_sizes() == y.batch_sizes(),
               "The batch shape of the parameter must be the same as the batch shape "
@@ -210,41 +209,42 @@ jacrev(const BatchTensor & y, const BatchTensor & p)
               y.batch_sizes());
 
   // flatten y to handle arbitrarily shaped output
-  auto yf = BatchTensor(
-      y.reshape(utils::add_shapes(y.batch_sizes(), utils::storage_size(y.base_sizes()))),
-      y.batch_dim());
+  auto yf =
+      Tensor(y.reshape(utils::add_shapes(y.batch_sizes(), utils::storage_size(y.base_sizes()))),
+             y.batch_dim());
 
   neml_assert_dbg(yf.base_dim() == 1, "Flattened output must be flat.");
 
-  auto dyf_dp = BatchTensor::empty(
+  auto dyf_dp = Tensor::zeros(
       yf.batch_sizes(), utils::add_shapes(yf.base_sizes(), p.base_sizes()), yf.options());
 
-  for (TorchSize i = 0; i < yf.base_sizes()[0]; i++)
-  {
-    auto v = BatchTensor::zeros_like(yf);
-    v.index_put_({torch::indexing::Ellipsis, i}, 1.0);
-    const auto dyfi_dp = torch::autograd::grad({yf},
-                                               {p},
-                                               {v},
-                                               /*retain_graph=*/true,
-                                               /*create_graph=*/false,
-                                               /*allow_unused=*/false)[0];
-    if (dyfi_dp.defined())
-      dyf_dp.base_index_put({i, torch::indexing::Ellipsis}, dyfi_dp);
-  }
+  if (yf.requires_grad())
+    for (Size i = 0; i < yf.base_sizes()[0]; i++)
+    {
+      auto v = Tensor::zeros_like(yf);
+      v.index_put_({torch::indexing::Ellipsis, i}, 1.0);
+      const auto dyfi_dp = torch::autograd::grad({yf},
+                                                 {p},
+                                                 {v},
+                                                 /*retain_graph=*/true,
+                                                 /*create_graph=*/false,
+                                                 /*allow_unused=*/true)[0];
+      if (dyfi_dp.defined())
+        dyf_dp.base_index_put_({i, torch::indexing::Ellipsis}, dyfi_dp);
+    }
 
   // Reshape the derivative back to the correct shape
-  const auto dy_dp = BatchTensor(
-      dyf_dp.reshape(utils::add_shapes(y.batch_sizes(), y.base_sizes(), p.base_sizes())),
-      y.batch_dim());
+  const auto dy_dp =
+      Tensor(dyf_dp.reshape(utils::add_shapes(y.batch_sizes(), y.base_sizes(), p.base_sizes())),
+             y.batch_dim());
 
   return dy_dp;
 }
 
-BatchTensor
-base_diag_embed(const BatchTensor & a, TorchSize offset, TorchSize d1, TorchSize d2)
+Tensor
+base_diag_embed(const Tensor & a, Size offset, Size d1, Size d2)
 {
-  return BatchTensor(
+  return Tensor(
       torch::diag_embed(
           a, offset, d1 < 0 ? d1 : d1 + a.batch_dim() + 1, d2 < 0 ? d2 : d2 + a.batch_dim() + 1),
       a.batch_dim());
@@ -305,10 +305,23 @@ d_multiply_and_make_skew_d_second(const SR2 & a)
                  torch::einsum("...ia,...bj->...ijab", {I, A})));
 }
 
+Tensor
+pow(const Real & a, const Tensor & n)
+{
+  return Tensor(torch::pow(a, n), n.batch_dim());
+}
+
+Tensor
+pow(const Tensor & a, const Tensor & n)
+{
+  neml_assert_broadcastable_dbg(a, n);
+  return Tensor(torch::pow(a, n), broadcast_batch_dim(a, n));
+}
+
 namespace linalg
 {
-BatchTensor
-vector_norm(const BatchTensor & v)
+Tensor
+vector_norm(const Tensor & v)
 {
   neml_assert_dbg(v.base_dim() == 0 || v.base_dim() == 1,
                   "v in vector_norm has base dimension ",
@@ -319,32 +332,34 @@ vector_norm(const BatchTensor & v)
   if (v.base_dim() == 0)
     return math::abs(v);
 
-  return BatchTensor(torch::linalg::vector_norm(
-                         v, /*order=*/2, /*dim=*/-1, /*keepdim=*/false, /*dtype=*/c10::nullopt),
-                     v.batch_dim());
+  return Tensor(torch::linalg::vector_norm(
+                    v, /*order=*/2, /*dim=*/-1, /*keepdim=*/false, /*dtype=*/c10::nullopt),
+                v.batch_dim());
 }
 
-BatchTensor
-solve(const BatchTensor & A, const BatchTensor & B)
+Tensor
+inv(const Tensor & m)
 {
-  return BatchTensor(torch::linalg::solve(A, B, /*left=*/true), A.batch_dim());
+  return Tensor(torch::linalg::inv(m), m.batch_dim());
 }
 
-std::tuple<BatchTensor, BatchTensor>
-lu_factor(const BatchTensor & A, bool pivot)
+Tensor
+solve(const Tensor & A, const Tensor & B)
+{
+  return Tensor(torch::linalg::solve(A, B, /*left=*/true), A.batch_dim());
+}
+
+std::tuple<Tensor, Tensor>
+lu_factor(const Tensor & A, bool pivot)
 {
   auto [LU, pivots] = torch::linalg_lu_factor(A, pivot);
-  return {BatchTensor(LU, A.batch_dim()), BatchTensor(pivots, A.batch_dim())};
+  return {Tensor(LU, A.batch_dim()), Tensor(pivots, A.batch_dim())};
 }
 
-BatchTensor
-lu_solve(const BatchTensor & LU,
-         const BatchTensor & pivots,
-         const BatchTensor & B,
-         bool left,
-         bool adjoint)
+Tensor
+lu_solve(const Tensor & LU, const Tensor & pivots, const Tensor & B, bool left, bool adjoint)
 {
-  return BatchTensor(torch::linalg_lu_solve(LU, pivots, B, left, adjoint), B.batch_dim());
+  return Tensor(torch::linalg_lu_solve(LU, pivots, B, left, adjoint), B.batch_dim());
 }
 } // namespace linalg
 } // namespace math

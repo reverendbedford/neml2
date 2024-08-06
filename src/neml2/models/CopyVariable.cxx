@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -26,8 +26,8 @@
 
 namespace neml2
 {
-#define COPYVARIABLE_REGISTER_FIXEDDIMTENSOR(T) register_NEML2_object(Copy##T)
-FOR_ALL_FIXEDDIMTENSOR(COPYVARIABLE_REGISTER_FIXEDDIMTENSOR);
+#define COPYVARIABLE_REGISTER_PRIMITIVETENSOR(T) register_NEML2_object(Copy##T)
+FOR_ALL_PRIMITIVETENSOR(COPYVARIABLE_REGISTER_PRIMITIVETENSOR);
 
 template <typename T>
 OptionSet
@@ -36,10 +36,10 @@ CopyVariable<T>::expected_options()
   OptionSet options = Model::expected_options();
   options.doc() = "Copy the value from one variable to another.";
 
-  options.set<VariableName>("from");
+  options.set_input("from");
   options.set("from").doc() = "Variable to copy value from";
 
-  options.set<VariableName>("to");
+  options.set_output("to");
   options.set("to").doc() = "Variable to copy value to";
 
   return options;
@@ -60,8 +60,9 @@ CopyVariable<T>::set_value(bool out, bool dout_din, bool d2out_din2)
   if (out)
     _to = T(_from);
 
-  if (dout_din)
-    _to.d(_from) = T::identity_map(options());
+  if (_from.is_dependent())
+    if (dout_din)
+      _to.d(_from) = T::identity_map(options());
 
   if (d2out_din2)
   {
@@ -69,6 +70,6 @@ CopyVariable<T>::set_value(bool out, bool dout_din, bool d2out_din2)
   }
 }
 
-#define COPYVARIABLE_INSTANTIATE_FIXEDDIMTENSOR(T) template class CopyVariable<T>
-FOR_ALL_FIXEDDIMTENSOR(COPYVARIABLE_INSTANTIATE_FIXEDDIMTENSOR);
+#define COPYVARIABLE_INSTANTIATE_PRIMITIVETENSOR(T) template class CopyVariable<T>
+FOR_ALL_PRIMITIVETENSOR(COPYVARIABLE_INSTANTIATE_PRIMITIVETENSOR);
 } // namespace neml2

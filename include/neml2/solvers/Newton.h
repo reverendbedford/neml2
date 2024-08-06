@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -42,11 +42,11 @@ public:
 
   Newton(const OptionSet & options);
 
-  virtual std::tuple<bool, size_t> solve(NonlinearSystem & system, BatchTensor & x) override;
+  virtual std::tuple<bool, size_t> solve(NonlinearSystem & system, Tensor & x) override;
 
 protected:
   /// Prepare solver internal data before the iterative update
-  virtual void prepare(const NonlinearSystem & /*system*/, const BatchTensor & /*x*/) {}
+  virtual void prepare(const NonlinearSystem & /*system*/, const Tensor & /*x*/) {}
 
   /**
    * @brief Check for convergence. The current iteration is said to be converged if the residual
@@ -62,12 +62,12 @@ protected:
   virtual bool converged(size_t itr, const torch::Tensor & nR, const torch::Tensor & nR0) const;
 
   /// Update trial solution
-  virtual void update(NonlinearSystem & system, BatchTensor & x);
+  virtual void update(NonlinearSystem & system, Tensor & x);
 
   /// Do a final update to track AD function graph
-  virtual void final_update(NonlinearSystem & system, BatchTensor & x);
+  virtual void final_update(NonlinearSystem & system, Tensor & x);
 
   /// Find the current update direction
-  virtual BatchTensor solve_direction(const NonlinearSystem & system);
+  virtual Tensor solve_direction(const NonlinearSystem & system);
 };
 } // namespace neml2

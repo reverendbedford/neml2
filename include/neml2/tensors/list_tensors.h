@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -24,33 +24,33 @@
 
 #pragma once
 
-#include "neml2/tensors/BatchTensor.h"
+#include "neml2/tensors/Tensor.h"
 
 namespace neml2
 {
 /// @brief outer product on lists, where the first input is a list tensor
 template <typename F, typename T1, typename T2>
-BatchTensor
+Tensor
 list_derivative_outer_product_a(F && f, const T1 & a, const T2 & b)
 {
-  return BatchTensor(f(a, b.list_unsqueeze()), b.batch_dim());
+  return Tensor(f(a, b.batch_unsqueeze(-1)), b.batch_dim());
 }
 
 /// @brief outer product on lists, where the second input is a list tensor
 template <typename F, typename T1, typename T2>
-BatchTensor
+Tensor
 list_derivative_outer_product_b(F && f, const T1 & a, const T2 & b)
 {
-  return BatchTensor(f(a.list_unsqueeze(), b), a.batch_dim()).base_movedim(0, a.base_dim());
+  return Tensor(f(a.batch_unsqueeze(-1), b), a.batch_dim()).base_transpose(0, a.base_dim());
 }
 
 /// @brief outer product on lists where both inputs are list tensors
 template <typename F, typename T1, typename T2>
-BatchTensor
+Tensor
 list_derivative_outer_product_ab(F && f, const T1 & a, const T2 & b)
 {
-  return BatchTensor(f(a.batch_unsqueeze(-1), b.batch_unsqueeze(-2)), a.batch_dim() - 1)
-      .base_movedim(1, 1 + a.base_dim());
+  return Tensor(f(a.batch_unsqueeze(-1), b.batch_unsqueeze(-2)), a.batch_dim() - 1)
+      .base_transpose(1, 1 + a.base_dim());
 }
 
 } // namespace neml2

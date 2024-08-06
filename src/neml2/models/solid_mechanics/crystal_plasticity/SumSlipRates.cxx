@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -28,6 +28,7 @@
 
 #include "neml2/tensors/tensors.h"
 #include "neml2/tensors/list_tensors.h"
+#include "neml2/misc/math.h"
 
 namespace neml2
 {
@@ -40,10 +41,10 @@ SumSlipRates::expected_options()
   options.doc() = "Calculates the sum of the absolute value of all the slip rates as \\f$ "
                   "\\sum_{i=1}^{n_{slip}} \\left| \\dot{\\gamma}_i \\right| \\f$.";
 
-  options.set<VariableName>("slip_rates") = VariableName("state", "internal", "slip_rates");
+  options.set_input("slip_rates") = VariableName("state", "internal", "slip_rates");
   options.set("slip_rates").doc() = "The name of individual slip rates";
 
-  options.set<VariableName>("sum_slip_rates") = VariableName("state", "internal", "sum_slip_rates");
+  options.set_output("sum_slip_rates") = VariableName("state", "internal", "sum_slip_rates");
   options.set("sum_slip_rates").doc() = "The outut name for the scalar sum of the slip rates";
 
   options.set<std::string>("crystal_geometry_name") = "crystal_geometry";
@@ -71,10 +72,11 @@ SumSlipRates::set_value(bool out, bool dout_din, bool d2out_din2)
   const auto g = Scalar(_g, batch_dim() + 1);
 
   if (out)
-    _sg = math::abs(g).batch_sum(-1);
+    _sg = math::batch_sum(math::abs(g), -1);
 
   if (dout_din)
-    _sg.d(_g) = BatchTensor(math::sign(g), batch_dim()).base_unsqueeze(0);
+    if (_g.is_dependent())
+      _sg.d(_g) = Tensor(math::sign(g), batch_dim()).base_unsqueeze(0);
 }
 
 } // namespace neml2

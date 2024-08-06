@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 #include "neml2/models/solid_mechanics/VoceIsotropicHardening.h"
+#include "neml2/misc/math.h"
 
 namespace neml2
 {
@@ -36,10 +37,10 @@ VoceIsotropicHardening::expected_options()
                   "\\right] \\f$, where \\f$ R \\f$ is the isotropic hardening upon saturation, "
                   "and \\f$ d \\f$ is the hardening rate.";
 
-  options.set<CrossRef<Scalar>>("saturated_hardening");
+  options.set_parameter<CrossRef<Scalar>>("saturated_hardening");
   options.set("saturated_hardening").doc() = "Saturated isotropic hardening";
 
-  options.set<CrossRef<Scalar>>("saturation_rate");
+  options.set_parameter<CrossRef<Scalar>>("saturation_rate");
   options.set("saturation_rate").doc() = "Hardening saturation rate";
 
   return options;
@@ -59,9 +60,11 @@ VoceIsotropicHardening::set_value(bool out, bool dout_din, bool d2out_din2)
     _h = _R * (-math::exp(-_d * _ep) + 1.0);
 
   if (dout_din)
-    _h.d(_ep) = _R * _d * math::exp(-_d * _ep);
+    if (_ep.is_dependent())
+      _h.d(_ep) = _R * _d * math::exp(-_d * _ep);
 
   if (d2out_din2)
-    _h.d(_ep, _ep) = -_R * _d * _d * math::exp(-_d * _ep);
+    if (_ep.is_dependent())
+      _h.d(_ep, _ep) = -_R * _d * _d * math::exp(-_d * _ep);
 }
 } // namespace neml2

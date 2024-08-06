@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -115,66 +115,86 @@ SolidMechanicsDriver::SolidMechanicsDriver(const OptionSet & options)
 
   if (_temperature_prescribed)
     _temperature = _temperature.to(_device);
-
-  check_integrity();
 }
 
 void
-SolidMechanicsDriver::check_integrity() const
+SolidMechanicsDriver::diagnose(std::vector<Diagnosis> & diagnoses) const
 {
-  TransientDriver::check_integrity();
-  neml_assert(_driving_force.dim() == 3,
-              "Input strain/stress should have dimension 3 but instead has dimension",
-              _driving_force.dim());
-  neml_assert(_time.sizes()[0] == _driving_force.sizes()[0],
-              "Input strain/stress and time should have the same number of time steps. The input "
-              "time has ",
-              _time.sizes()[0],
-              " time steps, while the input strain/stress has ",
-              _driving_force.sizes()[0],
-              " time steps");
-  neml_assert(_time.sizes()[1] == _driving_force.sizes()[1],
-              "Input strain/stress and time should have the same batch size. The input time has a "
-              "batch size of ",
-              _time.sizes()[1],
-              " while the input strain/stress has a batch size of ",
-              _driving_force.sizes()[1]);
-  neml_assert(_driving_force.sizes()[2] == 6,
-              "Input strain/stress should have final dimension 6 but instead has final dimension ",
-              _driving_force.sizes()[2]);
+  TransientDriver::diagnose(diagnoses);
+
+  diagnostic_assert(diagnoses,
+                    _driving_force.dim() == 3,
+                    "Input strain/stress should have dimension 3 but instead has dimension",
+                    _driving_force.dim());
+
+  diagnostic_assert(
+      diagnoses,
+      _time.sizes()[0] == _driving_force.sizes()[0],
+      "Input strain/stress and time should have the same number of time steps. The input "
+      "time has ",
+      _time.sizes()[0],
+      " time steps, while the input strain/stress has ",
+      _driving_force.sizes()[0],
+      " time steps");
+
+  diagnostic_assert(
+      diagnoses,
+      _time.sizes()[1] == _driving_force.sizes()[1],
+      "Input strain/stress and time should have the same batch size. The input time has a "
+      "batch size of ",
+      _time.sizes()[1],
+      " while the input strain/stress has a batch size of ",
+      _driving_force.sizes()[1]);
+
+  diagnostic_assert(
+      diagnoses,
+      _driving_force.sizes()[2] == 6,
+      "Input strain/stress should have final dimension 6 but instead has final dimension ",
+      _driving_force.sizes()[2]);
 
   if (_temperature_prescribed)
   {
-    neml_assert(_temperature.batch_dim() == 2,
-                "Input temperature should have 2 batch dimensions but instead has batch dimension",
-                _temperature.batch_dim());
-    neml_assert(_time.sizes()[0] == _temperature.sizes()[0],
-                "Input temperature and time should have the same number of time steps. The input "
-                "time has ",
-                _time.sizes()[0],
-                " time steps, while the input temperature has ",
-                _temperature.sizes()[0],
-                " time steps");
-    neml_assert(_time.sizes()[1] == _temperature.sizes()[1],
-                "Input temperature and time should have the same batch size. The input time has a "
-                "batch size of ",
-                _time.sizes()[1],
-                " while the input temperature has a batch size of ",
-                _temperature.sizes()[1]);
+    diagnostic_assert(
+        diagnoses,
+        _temperature.batch_dim() == 2,
+        "Input temperature should have 2 batch dimensions but instead has batch dimension",
+        _temperature.batch_dim());
+
+    diagnostic_assert(
+        diagnoses,
+        _time.sizes()[0] == _temperature.sizes()[0],
+        "Input temperature and time should have the same number of time steps. The input "
+        "time has ",
+        _time.sizes()[0],
+        " time steps, while the input temperature has ",
+        _temperature.sizes()[0],
+        " time steps");
+
+    diagnostic_assert(
+        diagnoses,
+        _time.sizes()[1] == _temperature.sizes()[1],
+        "Input temperature and time should have the same batch size. The input time has a "
+        "batch size of ",
+        _time.sizes()[1],
+        " while the input temperature has a batch size of ",
+        _temperature.sizes()[1]);
   }
 
   if (_control == "MIXED")
   {
-    neml_assert(
+    diagnostic_assert(
+        diagnoses,
         _control_signal.batch_dim() == 2,
         "Input control signal should have 2 batch dimensions but instead has batch dimension",
         _control_signal.batch_dim());
-    neml_assert(
+    diagnostic_assert(
+        diagnoses,
         _control_signal.sizes()[0] == _time.sizes()[0],
         "Input control signal should have the same number of steps steps as time, but instead has",
         _control_signal.sizes()[0],
         "time steps");
-    neml_assert(
+    diagnostic_assert(
+        diagnoses,
         _control_signal.sizes()[1] == _time.sizes()[1],
         "Input control signal should have the same batch size as time, but instead has batch size",
         _control_signal.sizes()[1]);
@@ -187,18 +207,18 @@ SolidMechanicsDriver::update_forces()
   TransientDriver::update_forces();
 
   auto current_driving_force = _driving_force.batch_index({_step_count});
-  _in.set(current_driving_force, _driving_force_name);
+  _in.base_index_put_(_driving_force_name, current_driving_force);
 
   if (_temperature_prescribed)
   {
     auto current_temperature = _temperature.batch_index({_step_count});
-    _in.set(current_temperature, _temperature_name);
+    _in.base_index_put_(_temperature_name, current_temperature);
   }
 
   if (_control == "MIXED")
   {
     auto current_control = _control_signal.batch_index({_step_count});
-    _in.set(current_control, _control_name);
+    _in.base_index_put_(_control_name, current_control);
   }
 }
 }

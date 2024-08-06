@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -57,14 +57,14 @@ protected:
   /// Extract options for the subproblem solver
   OptionSet subproblem_solver_options(const OptionSet &) const;
 
-  virtual void prepare(const NonlinearSystem & system, const BatchTensor & x) override;
+  virtual void prepare(const NonlinearSystem & system, const Tensor & x) override;
 
-  virtual void update(NonlinearSystem & system, BatchTensor & x) override;
+  virtual void update(NonlinearSystem & system, Tensor & x) override;
 
-  virtual BatchTensor solve_direction(const NonlinearSystem & system) override;
+  virtual Tensor solve_direction(const NonlinearSystem & system) override;
 
   /// Reduction in the merit function
-  Scalar merit_function_reduction(const NonlinearSystem & system, const BatchTensor & p) const;
+  Scalar merit_function_reduction(const NonlinearSystem & system, const Tensor & p) const;
 
   /// Trust-region subproblem
   TrustRegionSubProblem _subproblem;

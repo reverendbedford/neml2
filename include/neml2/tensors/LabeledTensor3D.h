@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -38,10 +38,6 @@ class LabeledTensor3D : public LabeledTensor<LabeledTensor3D, 3>
 {
 public:
   using LabeledTensor<LabeledTensor3D, 3>::LabeledTensor;
-
-  /// Add another tensor into this tensor.
-  /// The item set of the other tensor must be a subset of this tensor's item set.
-  void accumulate(const LabeledTensor3D & other, bool recursive = true);
 
   /// Fill another tensor into this tensor.
   /// The item set of the other tensor must be a subset of this tensor's item set.

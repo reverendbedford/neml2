@@ -69,8 +69,100 @@ nt = 100
   # prior to radial return
   ###############################################################################
   [trial_elastic_strain]
-    type = ElasticStrain
-    plastic_strain = 'old_state/internal/Ep'
+    type = SR2LinearCombination
+    from_var = 'forces/E old_state/internal/Ep'
+    to_var = 'forces/Ee_trial'
+    coefficients = '1 -1'
+  []
+  [trial_cauchy_stress]
+    type = LinearIsotropicElasticity
+    youngs_modulus = 1e5
+    poisson_ratio = 0.3
+    strain = 'forces/Ee_trial'
+    stress = 'forces/S_trial'
+  []
+  [trial_mandel_stress]
+    type = IsotropicMandelStress
+    cauchy_stress = 'forces/S_trial'
+    mandel_stress = 'forces/M_trial'
+  []
+  [trial_isoharden]
+    type = LinearIsotropicHardening
+    equivalent_plastic_strain = 'old_state/internal/ep'
+    isotropic_hardening = 'forces/k_trial'
+    hardening_modulus = 1000
+  []
+  [trial_kinharden]
+    type = LinearKinematicHardening
+    kinematic_plastic_strain = 'old_state/internal/Kp'
+    back_stress = 'forces/X_trial'
+    hardening_modulus = 1000
+  []
+  [trial_overstress]
+    type = SR2LinearCombination
+    to_var = 'forces/O_trial'
+    from_var = 'forces/M_trial forces/X_trial'
+    coefficients = '1 -1'
+  []
+  [trial_vonmises]
+    type = SR2Invariant
+    invariant_type = 'VONMISES'
+    tensor = 'forces/O_trial'
+    invariant = 'forces/s_trial'
+  []
+  [trial_yield]
+    type = YieldFunction
+    yield_stress = 5
+    yield_function = 'forces/fp_trial'
+    effective_stress = 'forces/s_trial'
+    isotropic_hardening = 'forces/k_trial'
+  []
+  [trial_flow]
+    type = ComposedModel
+    models = 'trial_overstress trial_vonmises trial_yield'
+  []
+  [trial_normality]
+    type = Normality
+    model = 'trial_flow'
+    function = 'forces/fp_trial'
+    from = 'forces/M_trial forces/k_trial forces/X_trial'
+    to = 'forces/NM forces/Nk forces/NX'
+  []
+  [trial_state]
+    type = ComposedModel
+    models = "trial_elastic_strain trial_cauchy_stress trial_mandel_stress
+              trial_isoharden trial_kinharden trial_normality"
+  []
+  ###############################################################################
+  # The actual radial return:
+  # Since the flow directions are invariant, we only need to integrate
+  # the consistency parameter.
+  ###############################################################################
+  [isoharden]
+    type = LinearIsotropicHardening
+    hardening_modulus = 1000
+  []
+  [kinharden]
+    type = LinearKinematicHardening
+    hardening_modulus = 1000
+  []
+  [trial_flow_rate]
+    type = ScalarVariableRate
+    variable = 'state/internal/gamma'
+  []
+  [plastic_strain_rate]
+    type = AssociativePlasticFlow
+    flow_direction = 'forces/NM'
+  []
+  [plastic_strain]
+    type = SR2ForwardEulerTimeIntegration
+    variable = 'state/internal/Ep'
+  []
+  [elastic_strain]
+    type = SR2LinearCombination
+    from_var = 'forces/E state/internal/Ep'
+    to_var = 'state/internal/Ee'
+    coefficients = '1 -1'
   []
   [cauchy_stress]
     type = LinearIsotropicElasticity
@@ -80,18 +172,11 @@ nt = 100
   [mandel_stress]
     type = IsotropicMandelStress
   []
-  [trial_isoharden]
-    type = LinearIsotropicHardening
-    equivalent_plastic_strain = 'old_state/internal/ep'
-    hardening_modulus = 1000
-  []
-  [trial_kinharden]
-    type = LinearKinematicHardening
-    kinematic_plastic_strain = 'old_state/internal/Kp'
-    hardening_modulus = 1000
-  []
   [overstress]
-    type = OverStress
+    type = SR2LinearCombination
+    to_var = 'state/internal/O'
+    from_var = 'state/internal/M state/internal/X'
+    coefficients = '1 -1'
   []
   [vonmises]
     type = SR2Invariant
@@ -104,53 +189,13 @@ nt = 100
     yield_stress = 5
     isotropic_hardening = 'state/internal/k'
   []
-  [flow]
-    type = ComposedModel
-    models = 'overstress vonmises yield'
-  []
-  [normality]
-    type = Normality
-    model = 'flow'
-    function = 'state/internal/fp'
-    from = 'state/internal/M state/internal/k state/internal/X'
-    to = 'forces/NM forces/Nk forces/NX'
-  []
-  [trial_state]
-    type = ComposedModel
-    models = "trial_elastic_strain cauchy_stress mandel_stress
-              trial_isoharden trial_kinharden normality"
-  []
-  ###############################################################################
-  # The actual radial return:
-  # Since the flow directions are invariant, we only need to integrate
-  # the consistency parameter.
-  ###############################################################################
-  [trial_flow_rate]
-    type = ScalarStateRate
-    state = 'internal/gamma'
-  []
-  [plastic_strain_rate]
-    type = AssociativePlasticFlow
-    flow_direction = 'forces/NM'
-  []
-  [plastic_strain]
-    type = SR2ForwardEulerTimeIntegration
-    variable = 'internal/Ep'
-  []
-  [elastic_strain]
-    type = ElasticStrain
-  []
   [equivalent_plastic_strain_rate]
     type = AssociativeIsotropicPlasticHardening
     isotropic_hardening_direction = 'forces/Nk'
   []
   [equivalent_plastic_strain]
     type = ScalarForwardEulerTimeIntegration
-    variable = 'internal/ep'
-  []
-  [isoharden]
-    type = LinearIsotropicHardening
-    hardening_modulus = 1000
+    variable = 'state/internal/ep'
   []
   [kinematic_plastic_strain_rate]
     type = AssociativeKinematicPlasticHardening
@@ -158,11 +203,7 @@ nt = 100
   []
   [kinematic_plastic_strain]
     type = SR2ForwardEulerTimeIntegration
-    variable = 'internal/Kp'
-  []
-  [kinharden]
-    type = LinearKinematicHardening
-    hardening_modulus = 1000
+    variable = 'state/internal/Kp'
   []
   [surface]
     type = ComposedModel
@@ -179,7 +220,7 @@ nt = 100
   []
   [integrate_gamma]
     type = ScalarBackwardEulerTimeIntegration
-    variable = 'internal/gamma'
+    variable = 'state/internal/gamma'
   []
   [implicit_rate]
     type = ComposedModel

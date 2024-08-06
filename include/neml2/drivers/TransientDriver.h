@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -25,9 +25,11 @@
 #pragma once
 
 #include "neml2/drivers/Driver.h"
-#include <filesystem>
-
 #include "neml2/tensors/tensors.h"
+
+#include <filesystem>
+#include <torch/nn/modules/container/moduledict.h>
+#include <torch/serialize.h>
 
 namespace neml2
 {
@@ -47,7 +49,11 @@ public:
    */
   TransientDriver(const OptionSet & options);
 
+  virtual void diagnose(std::vector<Diagnosis> &) const override;
+
   bool run() override;
+
+  const Model & model() const { return _model; }
 
   /// The destination file/path to save the results.
   virtual std::string save_as_path() const;
@@ -61,8 +67,6 @@ public:
   virtual torch::nn::ModuleDict result() const;
 
 protected:
-  virtual void check_integrity() const override;
-
   /// Solve the initial value problem
   virtual bool solve();
 
@@ -86,6 +90,8 @@ protected:
   /// Save the results into the destination file/path.
   virtual void output() const;
 
+  /// Whether to disable automatic differentiation
+  const bool _enable_AD;
   /// The model which the driver uses to perform constitutive updates.
   Model & _model;
   /// The device on which to evaluate the model
@@ -94,13 +100,13 @@ protected:
   /// The current time
   Scalar _time;
   /// The current step count
-  TorchSize _step_count;
+  Size _step_count;
   /// VariableName for the time
   VariableName _time_name;
   /// Total number of steps
-  TorchSize _nsteps;
+  Size _nsteps;
   /// The batch size
-  TorchSize _nbatch;
+  Size _nbatch;
   /// The input to the constitutive model
   LabeledVector & _in;
   /// The output of the constitutive model
@@ -146,7 +152,7 @@ private:
               const std::vector<CrossRef<T>> & ic_values)
   {
     for (size_t i = 0; i < ic_names.size(); i++)
-      _out.set(T(ic_values[i]), ic_names[i]);
+      _out.base_index_put_(ic_names[i], T(ic_values[i]));
   }
 };
 } // namespace neml2

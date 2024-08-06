@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -25,6 +25,7 @@
 #pragma once
 
 #include "neml2/solvers/NonlinearSystem.h"
+#include "neml2/tensors/Scalar.h"
 
 namespace neml2
 {
@@ -41,31 +42,31 @@ public:
 
   virtual void reinit(const NonlinearSystem & system, const Scalar & delta);
 
-  BatchTensor preconditioned_direction(const Scalar & s) const;
+  Tensor preconditioned_direction(const Scalar & s) const;
 
 protected:
   virtual void assemble(bool residual, bool Jacobian) override;
 
-  BatchTensor preconditioned_solve(const Scalar & s, const BatchTensor & v) const;
+  Tensor preconditioned_solve(const Scalar & s, const Tensor & v) const;
 
-  TorchShape _batch_sizes;
+  TensorShape _batch_sizes;
 
   torch::TensorOptions _options;
 
 private:
   /// Residual of the underlying nonlinear problem
-  BatchTensor _R;
+  Tensor _R;
 
   /// Jacobian of the underlying nonlinear problem
-  BatchTensor _J;
+  Tensor _J;
 
   /// The trust region radius
   Scalar _delta;
 
   /// Temporary Jacobian-Jacobian product
-  BatchTensor _JJ;
+  Tensor _JJ;
 
   /// Temporary Jacobian-Residual product
-  BatchTensor _JR;
+  Tensor _JR;
 };
 } // namespace neml2

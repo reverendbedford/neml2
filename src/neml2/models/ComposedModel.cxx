@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -23,6 +23,8 @@
 // THE SOFTWARE.
 
 #include "neml2/models/ComposedModel.h"
+#include "neml2/misc/math.h"
+#include <thread>
 
 namespace neml2
 {
@@ -52,34 +54,40 @@ ComposedModel::expected_options()
       "Priorities of models in decreasing order. A model with higher priority will be evaluated "
       "first. This is useful for breaking cyclic dependency.";
 
+  options.set<bool>("automatic_nonlinear_parameter") = true;
+  options.set("automatic_nonlinear_parameter").doc() =
+      "Whether to automatically add dependent nonlinear parameters";
+
   return options;
 }
 
 ComposedModel::ComposedModel(const OptionSet & options)
   : Model(options),
-    _additional_outputs(options.get<std::vector<VariableName>>("additional_outputs"))
+    _additional_outputs(options.get<std::vector<VariableName>>("additional_outputs")),
+    _auto_nl_param(options.get<bool>("automatic_nonlinear_parameter"))
 {
+  // Each sub-model shall have _independent_ output storage. This is because the same model could
+  // be registered as a sub-model by different models, and it could be evaluated with _different_
+  // input, and hence yields _different_ output values.
   for (const auto & model_name : options.get<std::vector<std::string>>("models"))
-  {
-    // Each sub-model shall have _independent_ output storage. This is because the same model could
-    // be registered as a sub-model by different models, and it could be evaluated with _different_
-    // input, and hence yields _different_ output values.
-    auto & submodel =
-        register_model<Model>(model_name, 0, /*nonlinear=*/false, /*merge_input=*/false);
+    register_model<Model>(model_name, 0, /*nonlinear=*/false, /*merge_input=*/false);
 
-    // Each sub-model may have nonlinear parameters. In our design, nonlinear parameters _are_
-    // models. Since we do not want to put the burden of adding nonlinear parameters in the input
-    // file through the option 'models', we should do more behind the scenes to register them for
-    // the user.
-    //
-    // Registering nonlinear parameters here ensures dependency resolution. And if a nonlinear
-    // parameter is registered by multiple models (which is very possible), we won't have to
-    // evaluate the nonlinar parameter over and over again!
-    register_nonlinear_params(submodel);
-  }
+  // Each sub-model may have nonlinear parameters. In our design, nonlinear parameters _are_
+  // models. Since we do not want to put the burden of "adding nonlinear parameters in the input
+  // file through the option 'models'" on users, we should do more behind the scenes to register
+  // them.
+  //
+  // Registering nonlinear parameters here ensures dependency resolution. And if a nonlinear
+  // parameter is registered by multiple models (which is very possible), we won't have to
+  // evaluate the nonlinar parameter over and over again!
+  auto submodels = registered_models();
+  if (_auto_nl_param)
+    for (auto * submodel : submodels)
+      for (auto && [pname, pmodel] : submodel->named_nonlinear_parameter_models(/*recursive=*/true))
+        _registered_models.push_back(pmodel);
 
   // Add registered models as nodes in the dependency resolver
-  for (auto submodel : registered_models())
+  for (auto * submodel : registered_models())
     _dependency.add_node(submodel);
   for (const auto & var : _additional_outputs)
     _dependency.add_additional_outbound_item(var);
@@ -103,6 +111,7 @@ ComposedModel::ComposedModel(const OptionSet & options)
   {
     auto var = item.value;
     auto sz = item.parent->input_axis().storage_size(var);
+    auto type = item.parent->input_variable(var)->type();
 
     if (input_axis().has_variable(var))
       neml_assert(input_axis().storage_size(var) == sz,
@@ -110,7 +119,7 @@ ComposedModel::ComposedModel(const OptionSet & options)
                   var,
                   ", but with different shape/storage size.");
     else
-      declare_input_variable(sz, var);
+      declare_input_variable(sz, type, var);
   }
 
   // Register output variables
@@ -118,30 +127,103 @@ ComposedModel::ComposedModel(const OptionSet & options)
   {
     auto var = item.value;
     auto sz = item.parent->output_axis().storage_size(var);
+    auto type = item.parent->output_variable(var)->type();
     neml_assert(!output_axis().has_variable(var),
                 "Multiple sub-models in a ComposedModel define the same output variable ",
                 var);
 
-    declare_output_variable(sz, var);
+    declare_output_variable(sz, type, var);
+  }
+
+  // Declare nonlinear parameters
+  for (auto * submodel : submodels)
+  {
+    for (auto && [pname, param] : submodel->named_nonlinear_parameters(/*recursive=*/true))
+      if (input_axis().has_variable(param->name()))
+        _nl_params[pname] = param;
+    for (auto && [pname, pmodel] : submodel->named_nonlinear_parameter_models(/*recursive=*/true))
+      if (_nl_params.count(pname))
+        _nl_param_models[pname] = pmodel;
   }
 }
 
 void
-ComposedModel::register_nonlinear_params(Model & m)
+ComposedModel::setup()
 {
+  Model::setup();
 
-  for (auto && [pname, param] : m.nl_params())
+  // Setup assembly indices
+  for (auto * i : registered_models())
   {
-    neml_assert_dbg(param->name().size() == 1, "Internal parameter name error");
+    AssemblyIndices assy_idx;
 
-    OptionSet extra_opts;
-    extra_opts.set<NEML2Object *>("_host") = m.host();
-    auto submodel = Factory::get_object_ptr<Model>("Models", param->name().vec()[0], extra_opts);
-    _registered_models.push_back(submodel.get());
+    for (auto var : i->input_axis().variable_names())
+    {
+      auto i1 = i->input_axis().indices(var);
+      if (input_axis().has_variable(var))
+      {
+        auto i2 = input_axis().indices(var);
+        assy_idx.insert_or_assign(i1, std::make_pair(i2, this));
+      }
 
-    // Nonlinear parameters could be nested...
-    register_nonlinear_params(*submodel);
+      if (_dependency.node_providers().count(i))
+        for (auto * dep : _dependency.node_providers().at(i))
+          if (dep->output_axis().has_variable(var))
+          {
+            auto i2 = dep->output_axis().indices(var);
+            assy_idx.insert_or_assign(i1, std::make_pair(i2, dep));
+          }
+    }
+
+    _assembly_indices[i] = consolidate(assy_idx);
   }
+}
+
+ComposedModel::AssemblyIndices
+ComposedModel::consolidate(const AssemblyIndices & indices) const
+{
+  ComposedModel::AssemblyIndices assy_idx;
+  if (indices.empty())
+    return assy_idx;
+
+  // Unpack the assembly indices
+  std::vector<indexing::TensorIndex> indices1;
+  std::vector<indexing::TensorIndex> indices2;
+  std::vector<Model *> models;
+  for (const auto & [i1, i2_dep] : indices)
+  {
+    indices1.push_back(i1);
+    indices2.push_back(i2_dep.first);
+    models.push_back(i2_dep.second);
+  }
+
+  // Consolidated indices
+  std::vector<indexing::TensorIndex> cindices1{indices1[0]};
+  std::vector<indexing::TensorIndex> cindices2{indices2[0]};
+  std::vector<Model *> cmodels{models[0]};
+  for (size_t i = 1; i < models.size(); i++)
+  {
+    auto & end_idx1 = cindices1.back();
+    auto & end_idx2 = cindices2.back();
+    // If the indices are contiguous and the models are the same, we can consolidate these indices
+    if (end_idx2.slice().stop() == indices2[i].slice().start() && cmodels.back() == models[i])
+    {
+      end_idx1 = indexing::Slice(end_idx1.slice().start(), indices1[i].slice().stop());
+      end_idx2 = indexing::Slice(end_idx2.slice().start(), indices2[i].slice().stop());
+    }
+    // otherwise just push them to the back
+    else
+    {
+      cindices1.push_back(indices1[i]);
+      cindices2.push_back(indices2[i]);
+      cmodels.push_back(models[i]);
+    }
+  }
+
+  // Return assembly indices
+  for (size_t i = 0; i < cmodels.size(); i++)
+    assy_idx.emplace(cindices1[i], std::make_pair(cindices2[i], cmodels[i]));
+  return assy_idx;
 }
 
 void
@@ -153,57 +235,106 @@ ComposedModel::check_AD_limitation() const
         "_use_AD_second_derivative should be set to false.");
 }
 
-void
-ComposedModel::allocate_variables(int deriv_order, bool options_changed)
+std::map<std::string, const VariableBase *>
+ComposedModel::named_nonlinear_parameters(bool /*recursive*/) const
 {
-  Model::allocate_variables(deriv_order, options_changed);
+  return _nl_params;
+}
 
-  if (options_changed)
-    _din_din = LabeledMatrix::identity(batch_sizes(), input_axis(), options());
+std::map<std::string, Model *>
+ComposedModel::named_nonlinear_parameter_models(bool /*recursive*/) const
+{
+  return _nl_param_models;
 }
 
 void
-ComposedModel::setup_submodel_input_views()
+ComposedModel::allocate_variables(bool in, bool out)
 {
-  for (auto submodel : registered_models())
+  Model::allocate_variables(in, out);
+
+  if (out)
+  {
+    if (requires_grad())
+    {
+      _dpout_din[this] = LabeledMatrix::identity(batch_sizes(), input_axis(), options());
+      for (auto * i : registered_models())
+        _dpout_din[i] =
+            LabeledMatrix::zeros(batch_sizes(), {&i->output_axis(), &input_axis()}, options());
+    }
+
+    if (requires_2nd_grad())
+    {
+      _d2pout_din2[this] = LabeledTensor3D::zeros(
+          batch_sizes(), {&input_axis(), &input_axis(), &input_axis()}, options());
+      for (auto * i : registered_models())
+        _d2pout_din2[i] = LabeledTensor3D::zeros(
+            batch_sizes(), {&i->output_axis(), &input_axis(), &input_axis()}, options());
+    }
+  }
+}
+
+void
+ComposedModel::setup_output_views()
+{
+  Model::setup_output_views();
+
+  for (auto * i : registered_models())
+  {
+    // Setup views for dpin/din
+    if (requires_grad())
+    {
+      _dpin_din_views[i].clear();
+      for (auto & [i1, i2_dep] : _assembly_indices[i])
+        _dpin_din_views[i].push_back(_dpout_din[i2_dep.second].tensor().base_index({i2_dep.first}));
+    }
+
+    // Setup views for d2pin/din2
+    if (requires_2nd_grad())
+    {
+      _d2pin_din2_views[i].clear();
+      for (auto & [i1, i2_dep] : _assembly_indices[i])
+        _d2pin_din2_views[i].push_back(
+            _d2pout_din2[i2_dep.second].tensor().base_index({i2_dep.first}));
+    }
+  }
+}
+
+void
+ComposedModel::setup_submodel_input_views(VariableStore * host)
+{
+  for (auto * submodel : registered_models())
   {
     for (const auto & item : _dependency.inbound_items())
       if (item.parent == submodel)
-        item.parent->input_view(item.value)->setup_views(input_view(item.value));
+        submodel->input_variable(item.value)->setup_views(host->input_variable(item.value));
 
     for (const auto & [item, providers] : _dependency.item_providers())
       if (item.parent == submodel)
-        item.parent->input_view(item.value)
-            ->setup_views(&providers.begin()->parent->output_storage());
+      {
+        auto * depmodel = providers.begin()->parent;
+        submodel->input_variable(item.value)->setup_views(depmodel->output_variable(item.value));
+      }
 
-    submodel->setup_submodel_input_views();
+    submodel->setup_submodel_input_views(submodel);
   }
 }
 
 void
 ComposedModel::set_value(bool out, bool dout_din, bool d2out_din2)
 {
-  clear_chain_rule_cache();
+  _async_exceptions.clear();
+  _async_results.clear();
+  for (auto * i : registered_models())
+    _async_results[i] = std::async(
+        std::launch::deferred, &ComposedModel::set_value_async, this, i, out, dout_din, d2out_din2);
 
-  for (auto i : registered_models())
-  {
-    if (out && !dout_din && !d2out_din2)
-      i->value();
-    else if (out && dout_din && !d2out_din2)
-      i->value_and_dvalue();
-    else if (out && dout_din && d2out_din2)
-      i->value_and_dvalue_and_d2value();
-    else
-      throw NEMLException("Unsupported call signature to set_value");
+  for (auto && [i, future] : _async_results)
+    future.wait();
 
-    if (dout_din && !d2out_din2)
-      apply_chain_rule(i);
+  // Rethrow exceptions raised from other threads to the main thread
+  rethrow_exceptions();
 
-    if (d2out_din2)
-      apply_second_order_chain_rule(i);
-  }
-
-  for (auto model : _dependency.end_nodes())
+  for (auto * model : _dependency.end_nodes())
   {
     if (out)
       output_storage().fill(model->output_storage());
@@ -214,41 +345,84 @@ ComposedModel::set_value(bool out, bool dout_din, bool d2out_din2)
     if (d2out_din2)
       second_derivative_storage().fill(_d2pout_din2[model]);
   }
+}
 
-  clear_chain_rule_cache();
+void
+ComposedModel::set_value_async(Model * i, bool out, bool dout_din, bool d2out_din2)
+{
+  try
+  {
+    // Wait for dependent models
+    if (_dependency.node_providers().count(i))
+      for (auto * dep : _dependency.node_providers().at(i))
+        _async_results[dep].wait();
+
+    if (out && !dout_din && !d2out_din2)
+      i->value();
+    else if (dout_din && !d2out_din2)
+      i->value_and_dvalue();
+    else if (d2out_din2)
+      i->value_and_dvalue_and_d2value();
+    else
+      throw NEMLException("Unsupported call signature to set_value");
+
+    if (dout_din && !d2out_din2)
+      apply_chain_rule(i);
+
+    if (d2out_din2)
+      apply_second_order_chain_rule(i);
+  }
+  catch (...)
+  {
+    _async_exceptions[std::this_thread::get_id()] = std::current_exception();
+  }
+}
+
+void
+ComposedModel::rethrow_exceptions() const
+{
+  if (!_async_exceptions.empty())
+  {
+    std::stringstream error;
+    for (const auto & [tid, eptr] : _async_exceptions)
+      try
+      {
+        std::rethrow_exception(eptr);
+      }
+      catch (const std::exception & e)
+      {
+        error << "During threaded ComposedModel evaluation for '" << name()
+              << "', one thread threw an exception with the following message:\n"
+              << e.what() << "\n\n";
+      }
+    throw NEMLException(error.str());
+  }
 }
 
 void
 ComposedModel::apply_chain_rule(Model * i)
 {
-  auto dpin_din = LabeledMatrix::empty(batch_sizes(), {&i->input_axis(), &input_axis()}, options());
-  dpin_din.fill(_din_din);
+  if (_dpin_din_views[i].empty())
+    return;
 
-  if (_dependency.node_providers().count(i))
-    for (auto dep : _dependency.node_providers().at(i))
-      dpin_din.fill(_dpout_din[dep]);
-
-  _dpout_din[i] = i->derivative_storage().chain(dpin_din);
+  auto dpin_din =
+      LabeledMatrix(math::base_cat(_dpin_din_views[i]), {&i->input_axis(), &input_axis()});
+  _dpout_din[i].copy_(i->derivative_storage().chain(dpin_din));
 }
 
 void
 ComposedModel::apply_second_order_chain_rule(Model * i)
 {
-  auto dpin_din = LabeledMatrix::empty(batch_sizes(), {&i->input_axis(), &input_axis()}, options());
-  auto d2pin_din2 = LabeledTensor3D::zeros(
-      batch_sizes(), {&i->input_axis(), &input_axis(), &input_axis()}, options());
-  dpin_din.fill(_din_din);
+  if (_dpin_din_views[i].empty())
+    return;
 
-  if (_dependency.node_providers().count(i))
-    for (auto dep : _dependency.node_providers().at(i))
-    {
-      dpin_din.fill(_dpout_din[dep]);
-      d2pin_din2.fill(_d2pout_din2[dep]);
-    }
-
-  _dpout_din[i] = i->derivative_storage().chain(dpin_din);
-  _d2pout_din2[i] =
-      i->second_derivative_storage().chain(d2pin_din2, i->derivative_storage(), dpin_din);
+  auto dpin_din =
+      LabeledMatrix(math::base_cat(_dpin_din_views[i]), {&i->input_axis(), &input_axis()});
+  auto d2pin_din2 = LabeledTensor3D(math::base_cat(_d2pin_din2_views[i]),
+                                    {&i->input_axis(), &input_axis(), &input_axis()});
+  _dpout_din[i].copy_(i->derivative_storage().chain(dpin_din));
+  _d2pout_din2[i].copy_(
+      i->second_derivative_storage().chain(d2pin_din2, i->derivative_storage(), dpin_din));
 }
 
 } // namespace neml2

@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -35,60 +35,55 @@ TEST_CASE("list_tensors", "[tensors]")
   torch::manual_seed(42);
   const auto & DTO = default_tensor_options();
 
-  TorchShape B = {5, 3, 1, 2}; // batch shape
-  TorchSize l1 = 6;            // First list size
-  TorchSize l2 = 4;            // Second list size
+  TensorShape B = {5, 3, 1, 2}; // batch shape
+  Size l1 = 6;                  // First list size
+  Size l2 = 4;                  // Second list size
 
-  TorchShape BS = {3, 3}; // Base shape
+  TensorShape BS = {3, 3}; // Base shape
 
   SECTION("Base size same as input sizes")
   {
 
     // A list of R2s
-    auto a = R2::fill(1.0, DTO).batch_expand(utils::add_shapes(B, neml2::TorchShape{l1}));
+    auto a = R2::fill(1.0, DTO).batch_expand(utils::add_shapes(B, neml2::TensorShape{l1}));
 
     // Another list of R2s
-    auto b = R2::fill(1.0, DTO).batch_expand(utils::add_shapes(B, neml2::TorchShape{l2}));
+    auto b = R2::fill(1.0, DTO).batch_expand(utils::add_shapes(B, neml2::TensorShape{l2}));
 
     // A standard, unlisted R2
     auto c = R2::fill(3.0, DTO).batch_expand(B);
-
-    SECTION("list unsqueeze")
-    {
-      REQUIRE(c.list_unsqueeze().sizes() == utils::add_shapes(B, neml2::TorchShape{1}, BS));
-    }
 
     auto binary_operator = [](const R2 & a, const R2 & b) { return a * b; };
 
     SECTION("outer product, first is a list")
     {
       REQUIRE(list_derivative_outer_product_a(binary_operator, a, c).sizes() ==
-              utils::add_shapes(B, neml2::TorchShape{l1}, BS));
+              utils::add_shapes(B, neml2::TensorShape{l1}, BS));
     }
 
     SECTION("outer product, second is a list")
     {
       REQUIRE(list_derivative_outer_product_b(binary_operator, c, a).sizes() ==
-              utils::add_shapes(B, BS, neml2::TorchShape{l1}));
+              utils::add_shapes(B, BS, neml2::TensorShape{l1}));
     }
 
     SECTION("outer product, both are lists")
     {
       REQUIRE(list_derivative_outer_product_ab(binary_operator, a, b).sizes() ==
-              utils::add_shapes(B, neml2::TorchShape{l1}, BS, neml2::TorchShape{l2}));
+              utils::add_shapes(B, neml2::TensorShape{l1}, BS, neml2::TensorShape{l2}));
     }
   }
 
   SECTION("Base size same as ones of input sizes")
   {
     // A list of R2s
-    auto a_list = R2::fill(2.0, DTO).batch_expand(utils::add_shapes(B, neml2::TorchShape{l1}));
+    auto a_list = R2::fill(2.0, DTO).batch_expand(utils::add_shapes(B, neml2::TensorShape{l1}));
 
     // A standard R2
     auto a_nolist = R2::fill(2.0, DTO).batch_expand(B);
 
     // A list of scalars
-    auto b_list = Scalar(3.0, DTO).batch_expand(utils::add_shapes(B, neml2::TorchShape{l2}));
+    auto b_list = Scalar(3.0, DTO).batch_expand(utils::add_shapes(B, neml2::TensorShape{l2}));
 
     // A standard scalar
     auto b_nolist = Scalar(3.0, DTO).batch_expand(B);
@@ -98,34 +93,34 @@ TEST_CASE("list_tensors", "[tensors]")
     SECTION("outer product, list x not")
     {
       REQUIRE(list_derivative_outer_product_a(binary_operator, a_list, b_nolist).sizes() ==
-              utils::add_shapes(B, neml2::TorchShape{l1}, neml2::TorchShape{3, 3}));
+              utils::add_shapes(B, neml2::TensorShape{l1}, neml2::TensorShape{3, 3}));
     }
 
     SECTION("outer product, not x list")
     {
       REQUIRE(list_derivative_outer_product_b(binary_operator, a_nolist, b_list).sizes() ==
-              utils::add_shapes(B, neml2::TorchShape{3, 3}, neml2::TorchShape{l2}));
+              utils::add_shapes(B, neml2::TensorShape{3, 3}, neml2::TensorShape{l2}));
     }
 
     SECTION("outer product, list x list")
     {
       REQUIRE(list_derivative_outer_product_ab(binary_operator, a_list, b_list).sizes() ==
               utils::add_shapes(
-                  B, neml2::TorchShape{l1}, neml2::TorchShape{3, 3}, neml2::TorchShape{l2}));
+                  B, neml2::TensorShape{l1}, neml2::TensorShape{3, 3}, neml2::TensorShape{l2}));
     }
   }
 
   SECTION("None of the sizes are the same")
   {
     // A list of R2s
-    auto b_list = R2::fill(2.0, DTO).batch_expand(utils::add_shapes(B, neml2::TorchShape{l2}));
+    auto b_list = R2::fill(2.0, DTO).batch_expand(utils::add_shapes(B, neml2::TensorShape{l2}));
 
     // A standard R2
     auto b_nolist = R2::fill(2.0, DTO).batch_expand(B);
 
     // A list of Rots
     auto a_list =
-        Rot::fill(1.2, 3.1, -2.1, DTO).batch_expand(utils::add_shapes(B, neml2::TorchShape{l1}));
+        Rot::fill(1.2, 3.1, -2.1, DTO).batch_expand(utils::add_shapes(B, neml2::TensorShape{l1}));
 
     // A standard Rot
     auto a_nolist = Rot::fill(1.2, 3.1, -2.1, DTO).batch_expand(B);
@@ -135,19 +130,19 @@ TEST_CASE("list_tensors", "[tensors]")
     SECTION("outer product, list x not")
     {
       REQUIRE(list_derivative_outer_product_a(binary_operator, a_list, b_nolist).sizes() ==
-              utils::add_shapes(B, neml2::TorchShape{l1, 3}, neml2::TorchShape{3, 3}));
+              utils::add_shapes(B, neml2::TensorShape{l1, 3}, neml2::TensorShape{3, 3}));
     }
 
     SECTION("outer product, not x list")
     {
       REQUIRE(list_derivative_outer_product_b(binary_operator, a_nolist, b_list).sizes() ==
-              utils::add_shapes(B, neml2::TorchShape{3}, neml2::TorchShape{l2, 3, 3}));
+              utils::add_shapes(B, neml2::TensorShape{3}, neml2::TensorShape{l2, 3, 3}));
     }
 
     SECTION("outer product, list x list")
     {
       REQUIRE(list_derivative_outer_product_ab(binary_operator, a_list, b_list).sizes() ==
-              utils::add_shapes(B, neml2::TorchShape{l1, 3}, neml2::TorchShape{l2, 3, 3}));
+              utils::add_shapes(B, neml2::TensorShape{l1, 3}, neml2::TensorShape{l2, 3, 3}));
     }
   }
 }

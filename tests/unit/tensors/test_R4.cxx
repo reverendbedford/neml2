@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -34,7 +34,7 @@ TEST_CASE("R4", "[R4]")
   torch::manual_seed(42);
   const auto & DTO = default_tensor_options();
 
-  TorchShape B = {5, 3, 1, 2}; // batch shape
+  TensorShape B = {5, 3, 1, 2}; // batch shape
 
   SECTION("class R4")
   {
@@ -124,10 +124,10 @@ TEST_CASE("R4", "[R4]")
       auto u = R4(torch::rand(utils::add_shapes(B, 3, 3, 3, 3), DTO));
       auto s1 = (u + u.transpose_minor() + u.transpose(0, 1) + u.transpose(2, 3)) / 4.0;
       auto s2 = R4(SSR4(u));
-      for (TorchSize i = 0; i < 3; i++)
-        for (TorchSize j = 0; j < 3; j++)
-          for (TorchSize k = 0; k < 3; k++)
-            for (TorchSize l = 0; l < 3; l++)
+      for (Size i = 0; i < 3; i++)
+        for (Size j = 0; j < 3; j++)
+          for (Size k = 0; k < 3; k++)
+            for (Size l = 0; l < 3; l++)
               REQUIRE(torch::allclose(s1(i, j, k, l), s2(i, j, k, l)));
     }
 
@@ -135,10 +135,10 @@ TEST_CASE("R4", "[R4]")
     {
       auto u = R4(torch::rand(utils::add_shapes(B, 3, 3, 3, 3), DTO));
       auto ut = u.transpose_minor();
-      for (TorchSize i = 0; i < 3; i++)
-        for (TorchSize j = 0; j < 3; j++)
-          for (TorchSize k = 0; k < 3; k++)
-            for (TorchSize l = 0; l < 3; l++)
+      for (Size i = 0; i < 3; i++)
+        for (Size j = 0; j < 3; j++)
+          for (Size k = 0; k < 3; k++)
+            for (Size l = 0; l < 3; l++)
               REQUIRE(torch::allclose(u(i, j, k, l), ut(j, i, l, k)));
     }
 
@@ -146,10 +146,10 @@ TEST_CASE("R4", "[R4]")
     {
       auto u = R4(torch::rand(utils::add_shapes(B, 3, 3, 3, 3), DTO));
       auto ut = u.transpose_major();
-      for (TorchSize i = 0; i < 3; i++)
-        for (TorchSize j = 0; j < 3; j++)
-          for (TorchSize k = 0; k < 3; k++)
-            for (TorchSize l = 0; l < 3; l++)
+      for (Size i = 0; i < 3; i++)
+        for (Size j = 0; j < 3; j++)
+          for (Size k = 0; k < 3; k++)
+            for (Size l = 0; l < 3; l++)
               REQUIRE(torch::allclose(u(i, j, k, l), ut(k, l, i, j)));
     }
   }

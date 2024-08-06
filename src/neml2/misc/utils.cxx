@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -23,30 +23,38 @@
 // THE SOFTWARE.
 
 #include "neml2/misc/utils.h"
+#include <cxxabi.h>
 
 namespace neml2
 {
 namespace utils
 {
-TorchSize
-storage_size(TorchShapeRef shape)
+std::string
+demangle(const char * name)
 {
-  TorchSize sz = 1;
-  return std::accumulate(shape.begin(), shape.end(), sz, std::multiplies<TorchSize>());
+  // c10 already has an implementation, let's not reinvent the wheels
+  return c10::demangle(name);
 }
 
-TorchShape
-pad_prepend(TorchShapeRef s, TorchSize dim, TorchSize pad)
+Size
+storage_size(TensorShapeRef shape)
 {
-  auto s2 = s.vec();
+  Size sz = 1;
+  return std::accumulate(shape.begin(), shape.end(), sz, std::multiplies<Size>());
+}
+
+TensorShape
+pad_prepend(TensorShapeRef s, Size dim, Size pad)
+{
+  TensorShape s2(s);
   s2.insert(s2.begin(), dim - s.size(), pad);
   return s2;
 }
 
-TorchShape
-pad_append(TorchShapeRef s, TorchSize dim, TorchSize pad)
+TensorShape
+pad_append(TensorShapeRef s, Size dim, Size pad)
 {
-  auto s2 = s.vec();
+  TensorShape s2(s);
   s2.insert(s2.end(), dim - s.size(), pad);
   return s2;
 }
@@ -65,8 +73,8 @@ indentation(int level, int indent)
 
 namespace details
 {
-TorchShape
-add_shapes_impl(TorchShape & net)
+TensorShape
+add_shapes_impl(TensorShape & net)
 {
   return std::move(net);
 }

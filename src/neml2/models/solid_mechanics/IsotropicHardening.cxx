@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -32,10 +32,10 @@ IsotropicHardening::expected_options()
   OptionSet options = Model::expected_options();
   options.doc() = "Map equivalent plastic strain to isotropic hardening";
 
-  options.set<VariableName>("equivalent_plastic_strain") = VariableName("state", "internal", "ep");
+  options.set_input("equivalent_plastic_strain") = VariableName("state", "internal", "ep");
   options.set("equivalent_plastic_strain").doc() = "Equivalent plastic strain";
 
-  options.set<VariableName>("isotropic_hardening") = VariableName("state", "internal", "k");
+  options.set_output("isotropic_hardening") = VariableName("state", "internal", "k");
   options.set("isotropic_hardening").doc() = "Isotropic hardening";
 
   return options;

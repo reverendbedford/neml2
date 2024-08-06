@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-# Copyright 2023, UChicago Argonne, LLC
+# Copyright 2024, UChicago Argonne, LLC
 # All Rights Reserved
 # Software Name: NEML2 -- the New Engineering material Model Library, version 2
 # By: Argonne National Laboratory
@@ -31,6 +31,7 @@ from pathlib import Path
 
 
 def demangle(type):
+    type = type.replace("c10::SmallVector<long, 6u>", "tensor shape")
     type = type.replace(
         "std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >",
         "std::string",
@@ -39,8 +40,13 @@ def demangle(type):
     type = type.replace("neml2::", "")
     type = type.replace("std::", "")
     type = type.replace("at::", "")
-    type = re.sub("CrossRef<(.+)>", r"\1", type)
-    type = type.replace("LabeledAxisAccessor", "VariableName")
+    type = re.sub("CrossRef<(.+)>", r"\1 🔗", type)
+    type = type.replace("LabeledAxisAccessor", "variable name")
+    type = re.sub("vector<(.+)>", r"list of \1", type)
+    # Call all integral/floating point types "number", as this syntax documentation faces the general audience potentially without computer science background
+    type = type.replace("int", "number")
+    type = type.replace("long", "number")
+    type = type.replace("double", "number")
 
     return type
 
@@ -54,6 +60,44 @@ def postprocess(value, type):
 def get_sections(syntax):
     sections = [params["section"] for type, params in syntax.items()]
     return list(dict.fromkeys(sections))
+
+
+def ftype_icon(ftype):
+    if ftype == "INPUT":
+        return "🇮"
+    elif ftype == "OUTPUT":
+        return "🇴"
+    elif ftype == "PARAMETER":
+        return "🇵"
+    elif ftype == "BUFFER":
+        return "🇧"
+
+    return ""
+
+
+def section_prologue(section):
+    prologue = """\\note
+Clicking on the option with a triangle bullet ▸ next to it will expand/collapse its detailed information.
+
+\\note
+Type name written in PascalCase typically refer to a NEML2 object type, oftentimes a primitive tensor type.
+
+\\note
+The 🔗 symbol denotes that the option can [cross-reference](@ref cross-referencing) another object.
+
+\\note
+You can always use `Ctrl`+`F` or `Cmd`+`F` to search the entire page.
+
+"""
+    if section == "Models":
+        prologue += """The following symbols are used throughout the documentation to denote different components of function definition.
+- 🇮: input variable
+- 🇴: output variable
+- 🇵: parameter
+- 🇧: buffer
+"""
+
+    return prologue
 
 
 if __name__ == "__main__":
@@ -76,6 +120,8 @@ if __name__ == "__main__":
                     "# [{}] {{#{}}}\n\n".format(section, "syntax-" + section.lower())
                 )
                 stream.write("[TOC]\n\n")
+                stream.write(section_prologue(section))
+                stream.write("\n")
                 stream.write("## Available objects and their input file syntax\n\n")
                 stream.write(
                     "Refer to [System Documentation](@ref system-{}) for detailed explanation about this system.\n\n".format(
@@ -125,9 +171,10 @@ if __name__ == "__main__":
                                 )
                             )
                         else:
+
                             stream.write(
-                                "  <summary>`{}` {}</summary>\n\n".format(
-                                    param_name, info["doc"]
+                                "  <summary>`{}` {} {}</summary>\n\n".format(
+                                    param_name, ftype_icon(info["ftype"]), info["doc"]
                                 )
                             )
                             if "\\f" in info["doc"]:

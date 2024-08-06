@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -28,31 +28,6 @@
 
 namespace neml2
 {
-std::vector<std::string> Parser::sections = {"Tensors", "Solvers", "Data", "Models", "Drivers"};
-
-void
-load_model(const std::string & path, const std::string & additional_input, ParserType ptype)
-{
-  // We are being forward looking here
-  if (ptype == ParserType::AUTO)
-  {
-    if (utils::end_with(path, ".i"))
-      ptype = ParserType::HIT;
-    else if (utils::end_with(path, ".xml"))
-      ptype = ParserType::XML;
-    else if (utils::end_with(path, ".yml"))
-      ptype = ParserType::YAML;
-  }
-
-  // but for now we only support HIT
-  if (ptype == ParserType::HIT)
-  {
-    HITParser parser;
-
-    Factory::clear();
-    Factory::load(parser.parse(path, additional_input));
-  }
-  else
-    neml_assert(false, "Unsupported parser type");
-}
+const std::vector<std::string> Parser::sections = {
+    "Tensors", "Solvers", "Data", "Models", "Drivers"};
 } // namespace neml2

@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -37,10 +37,10 @@ NonlinearParameter<T>::expected_options()
 template <typename T>
 NonlinearParameter<T>::NonlinearParameter(const OptionSet & options)
   : Model(options),
-    _p(declare_output_variable<T>(VariableName(name())))
+    _p(declare_output_variable<T>(VariableName(name()).prepend("parameters")))
 {
 }
 
-#define NONLINEARPARAMETER_INSTANTIATE_FIXEDDIMTENSOR(T) template class NonlinearParameter<T>
-FOR_ALL_FIXEDDIMTENSOR(NONLINEARPARAMETER_INSTANTIATE_FIXEDDIMTENSOR);
+#define NONLINEARPARAMETER_INSTANTIATE_PRIMITIVETENSOR(T) template class NonlinearParameter<T>
+FOR_ALL_PRIMITIVETENSOR(NONLINEARPARAMETER_INSTANTIATE_PRIMITIVETENSOR);
 } // namespace neml2

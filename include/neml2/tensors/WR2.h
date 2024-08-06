@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -48,7 +48,7 @@ public:
   WR2(const R2 & T);
 
   /// Accessor
-  Scalar operator()(TorchSize i, TorchSize j) const;
+  Scalar operator()(Size i, Size j) const;
 
   /// Exponential map to make this into a rotation (Rot)
   Rot exp() const;

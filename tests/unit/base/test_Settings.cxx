@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -42,13 +42,19 @@ TEST_CASE("Settings", "[Settings]")
   REQUIRE(machine_precision() == Catch::Approx(1e-15));
   REQUIRE(tolerance() == Catch::Approx(1e-6));
   REQUIRE(tighter_tolerance() == Catch::Approx(1e-12));
+  REQUIRE(buffer_name_separator() == ".");
+  REQUIRE(parameter_name_separator() == ".");
 
   // Apply the global settings
   Settings(all_options.settings());
+
+  // After applying the global settings
   REQUIRE(default_dtype() == torch::kFloat16);
   REQUIRE(default_integer_dtype() == torch::kInt32);
   REQUIRE(default_device() == torch::Device("cuda:1"));
   REQUIRE(machine_precision() == Catch::Approx(0.5));
   REQUIRE(tolerance() == Catch::Approx(0.1));
   REQUIRE(tighter_tolerance() == Catch::Approx(0.01));
+  REQUIRE(buffer_name_separator() == "::");
+  REQUIRE(parameter_name_separator() == "::");
 }

@@ -18,13 +18,15 @@ Other PyTorch releases with a few minor versions around are likely to be compati
 - **Recommended**: If you choose to download PyTorch using conda or pip, the NEML2 CMake script can automatically detect and use the PyTorch installation.
 - If you choose to download libTorch or build PyTorch from source, you will need to set `LIBTORCH_DIR` to be the location of libTorch when using CMake to configure NEML2.
 
-If no PyTorch installation can be detected and `LIBTORCH_DIR` is not set at configure time, the NEML2 CMake script will automatically download and use the libTorch obtained from the official website. Note, however, that this method only works on Linux and Mac systems.
+\note
+The libTorch distributions from the official website come with two flavors: "Pre-cxx11 ABI" and "cxx11 ABI". Both variants are supported by NEML2. If you are unsure, we recommend the one with "cxx11 ABI".
 
-> The libTorch distributions from the official website come with two flavors: "Pre-cxx11 ABI" and "cxx11 ABI". Both variants are supported by NEML2. If you are unsure, we recommend the one with "cxx11 ABI".
+If no PyTorch installation can be detected and `LIBTORCH_DIR` is not set at configure time, the NEML2 CMake script will automatically download and use the libTorch obtained from the official website. Note, however, that this method only works on Linux and Mac systems.
 
 ### Optional dependencies
 
-*No action is needed to manually obtain the optional dependencies.* The compatible optional dependencies will be automatically downloaded and configured by CMake depending on the build customization.
+\note
+No action is needed to manually obtain the optional dependencies. The compatible optional dependencies will be automatically downloaded and configured by CMake depending on the build customization.
 
 - [HIT](https://github.com/idaholab/moose/tree/master/framework/contrib/hit) for input file parsing.
 - [WASP](https://code.ornl.gov/neams-workbench/wasp) as the lexing and parsing backend for HIT.
@@ -35,12 +37,14 @@ If no PyTorch installation can be detected and `LIBTORCH_DIR` is not set at conf
 - [argparse](https://github.com/p-ranav/argparse) for command-line argument parsing.
 - [pybind11](https://github.com/pybind/pybind11) for building Python bindings.
 - Python packages
-  - pytest
-  - pandas
-  - matplotlib
-  - PyYAML
+  - [pytest](https://docs.pytest.org/en/stable/index.html) for testing Pythin bindings
+  - [PyYAML](https://pyyaml.org/) for extracting syntax documentation
+  - [pybind11-stubgen](https://github.com/sizmailov/pybind11-stubgen) for extracting stubs from Python bindings
 
 ## Build and install
+
+\note
+NEML2 is available both as a C++ library and as a Python package. Instructions for building and installing each variant are provided below. If you only need one of them, the other can be skipped.
 
 ### C++ backend
 
@@ -52,7 +56,7 @@ cd neml2
 git checkout main
 ```
 
-Then, configure NEML2. See [build customization](#build-customization) for possible configuration options.
+Then, configure NEML2. See [build customization](#install-build-customization) for possible configuration options.
 
 ```
 cmake -B build .
@@ -78,7 +82,7 @@ For more fine-grained control over the configure, build, and install commands, p
 
 NEML2 also provides an _experimental_ Python package which provides bindings for the primitive tensors and parsers for deserializing and running material models. Package source distributions are available on PyPI, but package wheels are currently not built and uploaded to PyPI.
 
-To install the NEML2 Python package, run the following command at the repository's root.
+To install the NEML2 Python package, run the following command at the repository's root. Note that unlike the C++ backend, we do not expose any interface for customizing the build. The default configuration is already optimized for building the Python package.
 
 ```
 pip install -v .
@@ -90,17 +94,9 @@ The command installs a package named `%neml2` to the site-packages directory, an
 import neml2
 ```
 
-For security reasons, static analysis tools and IDEs for Python usually refuse to extract function signature, type hints, etc. from bindary extensions such as the NEML2 Python bindings. As a workaround, "stubs" can be generated a priori to make them less opaque. The NEML2 python package works well with `pybind11-stubgen` for that purpose. Stubs can be generated using the following command:
+For security reasons, static analysis tools and IDEs for Python usually refuse to extract function signature, type hints, etc. from binary extensions such as the NEML2 Python bindings. As a workaround, NEML2 automatically generates "stubs" using `pybind11-stubgen` immediately after Python bindings are built to make them less opaque. Refer to the [pybind11-stubgen documentation](https://pypi.org/project/pybind11-stubgen/) for more information.
 
-```
-pip install pybind11-stubgen
-pybind11-stubgen neml2
-```
-
-Refer to the [pybind11-stubgen documentation](https://pypi.org/project/pybind11-stubgen/) for more command-line options. Most static analysis tools and IDEs can understand the stubs and therefore provide the full set of features.
-
-
-## Build customization {#build-customization}
+## Build customization {#install-build-customization}
 
 Additional configuration options can be passed via command line using the `-DOPTION` or `-DOPTION=ON` format. For example,
 
@@ -124,8 +120,12 @@ Commonly used configuration options are summarized below. Default options are <u
 | NEML2_RUNNER_AS_PROFILER | ON, <u>OFF</u>                                              | Make the runner a profiler by linking against gperftools                                  |
 | NEML2_DOC                | ON, <u>OFF</u>                                              | Create the documentation target                                                           |
 | NEML2_PYBIND             | ON, <u>OFF</u>                                              | Create the Python bindings target                                                         |
+| NEML2_CLANG_TIDY         | ON, <u>OFF</u>                                              | Run clang-tidy linting diagnostics                                                        |
+| NEML2_CLANG_TIDY_PATH    | <u>"clang-tidy"</u>                                         | Path to clang-tidy executable                                                             |
 
-## CMake integration {#cmake-integration}
+Visual Studio Code users are encouraged to use the predefined [CMake variants](https://vector-of-bool.github.io/docs/vscode-cmake-tools/variants.html) in `cmake-variants.yaml` to configure the build.
+
+## CMake integration {#install-cmake-integration}
 
 Integrating NEML2 into a project that already uses CMake is fairly straightforward. The following CMakeLists.txt snippet links NEML2 into the target executable called `foo`:
 
@@ -151,7 +151,7 @@ add_executable(foo main.cxx)
 target_link_libraries(foo neml2)
 ```
 
-## Testing {#testing}
+## Testing {#install-testing}
 
 ### C++ backend
 
@@ -161,10 +161,23 @@ By default when `NEML2_TESTS` is set to `ON`, three test suites are built under 
 - `tests/regression/regression_tests`: Collection of tests to avoid regression.
 - `tests/verification/verification_tests`: Collection of verification problems.
 
-The tests assume the working directory to be the `tests` directory relative to the repository root. For Visual Studio Code users, the [C++ TestMate](https://github.com/matepek/vscode-catch2-test-adapter) extension can be used to automatically discover and run tests. In the extension settings, the "Working Directory" variable should be modified to `${workspaceFolder}/tests`.
+The tests assume the working directory to be the `tests` directory relative to the repository root. For Visual Studio Code users, the [C++ TestMate](https://github.com/matepek/vscode-catch2-test-adapter) extension can be used to automatically discover and run tests. In the extension settings, the "Working Directory" variable should be modified to `${workspaceFolder}/tests`. The `settings.json` file shall contain the following entry:
+```json
+{
+  "testMate.cpp.test.workingDirectory": "${workspaceFolder}/tests",
+}
+```
 
 ### Python package
 
-A collection of tests are available under `python/tests` to ensure the NEML2 Python package is working correctly. For Visual Studio Code users, the [Python](https://github.com/Microsoft/vscode-python) extension can be used to automatically discover and run tests. In the extension settings, the "Pytest Enabled" variable shall be set to true.
+A collection of tests are available under `python/tests` to ensure the NEML2 Python package is working correctly. For Visual Studio Code users, the [Python](https://github.com/Microsoft/vscode-python) extension can be used to automatically discover and run tests. In the extension settings, the "Pytest Enabled" variable shall be set to true. In addition, "pytestArgs" shall provide the location of tests, i.e. "${workspaceFolder}/python/tests". The `settings.json` file shall contain the following entries:
+```json
+{
+  "python.testing.pytestEnabled": true,
+  "python.testing.pytestArgs": [
+    "${workspaceFolder}/python/tests"
+  ],
+}
+```
 
 If the Python bindings are built (with `NEML2_PYBIND` set to `ON`) but are not installed to the site-packages directory, pytest will not be able to import the %neml2 package unless the environment variable `PYTHONPATH` is modified according to the specified build directory. For Visual Studio Code users, create a `.env` file in the repository's root and include an entry `PYTHONPATH=build/python` (assuming the build directory is `build`), and the Python extension will be able to import the NEML2 Python package.

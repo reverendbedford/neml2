@@ -1,0 +1,67 @@
+interop_threads = 0
+intraop_threads = 0
+
+[Settings]
+  interop_threads = ${interop_threads}
+  intraop_threads = ${intraop_threads}
+[]
+
+[Tensors]
+  [end_time]
+    type = LogspaceScalar
+    start = 5
+    end = 5
+    nstep = ${nbatch}
+  []
+  [times]
+    type = LinspaceScalar
+    start = 0
+    end = end_time
+    nstep = 100
+  []
+  [exx]
+    type = FullScalar
+    batch_shape = '(${nbatch})'
+    value = 0.1
+  []
+  [eyy]
+    type = FullScalar
+    batch_shape = '(${nbatch})'
+    value = -0.05
+  []
+  [ezz]
+    type = FullScalar
+    batch_shape = '(${nbatch})'
+    value = -0.05
+  []
+  [max_strain]
+    type = FillSR2
+    values = 'exx eyy ezz'
+  []
+  [strains]
+    type = LinspaceSR2
+    start = 0
+    end = max_strain
+    nstep = 100
+  []
+[]
+
+[Drivers]
+  [driver]
+    type = SolidMechanicsDriver
+    model = 'model'
+    times = 'times'
+    prescribed_strains = 'strains'
+    device = ${device}
+  []
+[]
+
+[Models]
+  [model]
+    type = LinearIsotropicElasticity
+    youngs_modulus = 1e3
+    poisson_ratio = 0.3
+    strain = 'forces/E'
+    stress = 'state/S'
+  []
+[]

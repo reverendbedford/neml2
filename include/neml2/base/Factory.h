@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -23,14 +23,81 @@
 // THE SOFTWARE.
 #pragma once
 
-#include "neml2/base/Registry.h"
+#include <filesystem>
 #include "neml2/base/NEML2Object.h"
-#include "neml2/base/Settings.h"
 #include "neml2/misc/error.h"
 #include "neml2/base/OptionCollection.h"
+#include "neml2/base/DiagnosticsInterface.h"
 
 namespace neml2
 {
+// Forward decl
+class Model;
+class Driver;
+class Settings;
+
+/**
+ * @brief A convenient function to parse all options from an input file
+ *
+ * Previously loaded input options will be discarded!
+ *
+ * @param path Path to the input file to be parsed
+ * @param additional_input Additional cliargs to pass to the parser
+ */
+void load_input(const std::filesystem::path & path, const std::string & additional_input = "");
+
+/**
+ * @brief Similar to neml2::load_input, but additionally clear the Factory before loading the
+ * options, therefore all previously loaded models become dangling.
+ *
+ * Previously loaded input options will be discarded!
+ *
+ * @param path Path to the input file to be parsed
+ * @param additional_input Additional cliargs to pass to the parser
+ */
+void reload_input(const std::filesystem::path & path, const std::string & additional_input = "");
+
+/**
+ * @brief A convenient function to manufacture a neml2::Model
+ *
+ * The input file must have already been parsed and loaded.
+ *
+ * @param mname Name of the model
+ * @param enable_ad Enable automatic differentiation
+ * @param force_create Whether to force create the model even if one has already been manufactured
+ */
+Model & get_model(const std::string & mname, bool enable_ad = true, bool force_create = true);
+
+/**
+ * @brief A convenient function to load an input file and get a model
+ *
+ * @param path Path to the input file to be parsed
+ * @param mname Name of the model
+ * @param enable_ad Enable automatic differentiation
+ */
+Model &
+load_model(const std::filesystem::path & path, const std::string & mname, bool enable_ad = true);
+
+/**
+ * @brief Similar to neml2::load_model, but additionally clear the Factory before loading the model,
+ * therefore all previously loaded models become dangling.
+ *
+ * @param path Path to the input file to be parsed
+ * @param mname Name of the model
+ * @param enable_ad Enable automatic differentiation
+ */
+Model &
+reload_model(const std::filesystem::path & path, const std::string & mname, bool enable_ad = true);
+
+/**
+ * @brief A convenient function to manufacture a neml2::Driver
+ *
+ * The input file must have already been parsed and loaded.
+ *
+ * @param dname Name of the driver
+ */
+Driver & get_driver(const std::string & dname);
+
 /**
  * The factory is responsible for:
  * 1. retriving a NEML2Object given the object name as a std::string
@@ -62,7 +129,7 @@ public:
   static std::shared_ptr<T> get_object_ptr(const std::string & section,
                                            const std::string & name,
                                            const OptionSet & additional_options = OptionSet(),
-                                           bool force_create = false);
+                                           bool force_create = true);
 
   /**
    * @brief Retrive an object reference under the given section with the given object name.
@@ -84,7 +151,7 @@ public:
   static T & get_object(const std::string & section,
                         const std::string & name,
                         const OptionSet & additional_options = OptionSet(),
-                        bool force_create = false);
+                        bool force_create = true);
 
   /**
    * @brief Provide all objects' options to the factory. The factory is ready to manufacture
@@ -92,12 +159,9 @@ public:
    *
    * @param all_options The collection of all the options of the objects to be manufactured.
    */
-  static void load(const OptionCollection & all_options);
+  static void load_options(const OptionCollection & all_options);
 
-  /**
-   * @brief Destruct all the objects.
-   *
-   */
+  /// @brief Destruct all the objects.
   static void clear();
 
   /**
@@ -142,41 +206,23 @@ Factory::get_object_ptr(const std::string & section,
   // Easy if it already exists
   if (!force_create)
     if (factory._objects.count(section) && factory._objects.at(section).count(name))
-    {
-      const auto & neml2_obj = factory._objects[section][name].back();
-
-      // Error on option clash (these errors should only be developer-facing)
-      for (const auto & [key, value] : additional_options)
+      for (const auto & neml2_obj : factory._objects[section][name])
       {
-        neml_assert_dbg(neml2_obj->input_options().contains(key),
-                        "While retrieving object named '",
-                        name,
-                        "' under section ",
-                        section,
-                        ", additional option '",
-                        key,
-                        "'");
-        neml_assert_dbg(neml2_obj->input_options().get(key) == *value,
-                        "While retrieving object named '",
-                        name,
-                        "' under section ",
-                        section,
-                        ", encountered option clash for '",
-                        key,
-                        "'");
+        // Check for option clash
+        if (!options_compatible(neml2_obj->input_options(), additional_options))
+          continue;
+
+        // Check for object type
+        auto obj = std::dynamic_pointer_cast<T>(neml2_obj);
+        neml_assert(obj != nullptr,
+                    "Found object named ",
+                    name,
+                    " under section ",
+                    section,
+                    ". But dynamic cast failed. Did you specify the correct object type?");
+
+        return obj;
       }
-
-      // Check for object type
-      auto obj = std::dynamic_pointer_cast<T>(neml2_obj);
-      neml_assert(obj != nullptr,
-                  "Found object named ",
-                  name,
-                  " under section ",
-                  section,
-                  ". But dynamic cast failed. Did you specify the correct object type?");
-
-      return obj;
-    }
 
   // Otherwise try to create it
   for (auto & options : factory._all_options[section])
@@ -194,7 +240,9 @@ Factory::get_object_ptr(const std::string & section,
               " under section ",
               section);
 
-  return Factory::get_object_ptr<T>(section, name, OptionSet(), false);
+  auto obj = std::dynamic_pointer_cast<T>(factory._objects[section][name].back());
+  neml_assert(obj != nullptr, "Internal error: Factory failed to create object ", name);
+  return obj;
 }
 
 template <class T>

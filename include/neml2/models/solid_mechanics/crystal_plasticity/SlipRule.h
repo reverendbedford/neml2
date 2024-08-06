@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -46,12 +46,12 @@ protected:
   const crystallography::CrystalGeometry & _crystal_geometry;
 
   /// Slip rates
-  Variable<BatchTensor> & _g;
+  Variable<Tensor> & _g;
 
   /// Resolved shears
-  const Variable<BatchTensor> & _rss;
+  const Variable<Tensor> & _rss;
 
   /// Slip strengths, mapped from internal variables
-  const Variable<BatchTensor> & _tau;
+  const Variable<Tensor> & _tau;
 };
 } // namespace neml2

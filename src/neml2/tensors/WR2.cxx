@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -40,9 +40,9 @@ WR2::WR2(const R2 & T)
 }
 
 Scalar
-WR2::operator()(TorchSize i, TorchSize j) const
+WR2::operator()(Size i, Size j) const
 {
-  TorchSize a = math::skew_reverse_index[i][j];
+  Size a = math::skew_reverse_index[i][j];
   return base_index({a}) * math::skew_factor[i][j];
 }
 

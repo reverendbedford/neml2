@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -31,11 +31,12 @@
 #include "neml2/tensors/R4.h"
 #include "neml2/tensors/SSR4.h"
 #include "neml2/tensors/WR2.h"
+#include "neml2/misc/math.h"
 
 namespace neml2
 {
 Rot::Rot(const Vec & v)
-  : Rot(BatchTensor(v))
+  : Rot(Tensor(v))
 {
 }
 

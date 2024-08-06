@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -24,7 +24,6 @@
 
 #pragma once
 
-#include <torch/torch.h>
 #include "neml2/tensors/R2.h"
 
 namespace neml2
@@ -41,13 +40,13 @@ constexpr Real o = 1.0;
 constexpr Real z = 0.0;
 
 /// @brief  tetragonal symmetry operators
-const torch::Tensor tetragonal(const torch::TensorOptions & options = default_tensor_options());
+torch::Tensor tetragonal(const torch::TensorOptions & options = default_tensor_options());
 
 /// @brief hexagonal symmetry operators
-const torch::Tensor hexagonal(const torch::TensorOptions & options = default_tensor_options());
+torch::Tensor hexagonal(const torch::TensorOptions & options = default_tensor_options());
 
 /// @brief cubic symmetry operators
-const torch::Tensor cubic(const torch::TensorOptions & options = default_tensor_options());
+torch::Tensor cubic(const torch::TensorOptions & options = default_tensor_options());
 } // namespace crystal_symmetry_operators
 
 /// Helper function to return the symmetry operators given the Orbifold notation

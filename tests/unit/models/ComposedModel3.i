@@ -9,12 +9,7 @@
     input_symr2_values = '0'
     output_scalar_names = 'state/sum'
     output_scalar_values = '-3.9902'
-    check_values = true
-    check_first_derivatives = true
-    check_second_derivatives = false
     check_AD_first_derivatives = false
-    check_AD_second_derivatives = false
-    check_AD_derivatives = false
   []
 []
 
@@ -33,15 +28,15 @@
   []
   [integrate_foo]
     type = ScalarBackwardEulerTimeIntegration
-    variable = 'foo'
+    variable = 'state/foo'
   []
   [integrate_bar]
     type = ScalarBackwardEulerTimeIntegration
-    variable = 'bar'
+    variable = 'state/bar'
   []
   [integrate_baz]
     type = SR2BackwardEulerTimeIntegration
-    variable = 'baz'
+    variable = 'state/baz'
   []
   [implicit_rate]
     type = ComposedModel
@@ -59,7 +54,7 @@
     invariant_type = 'I1'
   []
   [sum]
-    type = ScalarSumModel
+    type = ScalarLinearCombination
     from_var = 'state/foo state/bar state/baz_tr'
     to_var = 'state/sum'
   []

@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -31,7 +31,7 @@ register_NEML2_object(FillSR2);
 OptionSet
 FillSR2::expected_options()
 {
-  OptionSet options = UserTensor::expected_options();
+  OptionSet options = UserTensorBase::expected_options();
   options.doc() = "Construct a R2 with a vector of Scalars. The vector length must be 1, 3, or 6. "
                   "See the full documentation on neml2::SR2 on the dispatch of fill method. When "
                   "vector length is 1, the Scalar value is used to fill the diagonals; when vector "
@@ -47,7 +47,7 @@ FillSR2::expected_options()
 
 FillSR2::FillSR2(const OptionSet & options)
   : SR2(fill(options.get<std::vector<CrossRef<Scalar>>>("values"))),
-    UserTensor(options)
+    UserTensorBase(options)
 {
 }
 
@@ -56,13 +56,13 @@ FillSR2::fill(const std::vector<CrossRef<Scalar>> & values) const
 {
   if (values.size() == 1)
     return SR2::fill(values[0]);
-  else if (values.size() == 3)
+  if (values.size() == 3)
     return SR2::fill(values[0], values[1], values[2]);
-  else if (values.size() == 6)
+  if (values.size() == 6)
     return SR2::fill(values[0], values[1], values[2], values[3], values[4], values[5]);
-  else
-    neml_assert(
-        false, "Number of values must be 1, 3, or 6, but ", values.size(), " values are provided.");
+
+  neml_assert(
+      false, "Number of values must be 1, 3, or 6, but ", values.size(), " values are provided.");
 
   return SR2();
 }

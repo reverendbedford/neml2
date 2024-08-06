@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/tensors/user_tensors/UserTensor.h"
+#include "neml2/tensors/user_tensors/UserTensorBase.h"
 
 #include "neml2/tensors/R2.h"
 
@@ -35,7 +35,7 @@ namespace crystallography
 /**
  * @brief Provide the correct symmetry operators for a given crystal class
  */
-class SymmetryFromOrbifold : public R2, public UserTensor
+class SymmetryFromOrbifold : public R2, public UserTensorBase
 {
 public:
   static OptionSet expected_options();

@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -33,119 +33,143 @@ using namespace neml2;
 
 TEST_CASE("LabeledTensor", "[tensors]")
 {
-  SECTION("operator()")
+  Size nbatch = 10;
+
+  LabeledAxis info1;
+  info1.add<SR2>("first").add<Scalar>("second").add<Scalar>("third");
+  info1.setup_layout();
+
+  LabeledAxis info2;
+  info2.add<Scalar>("first").add<SR2>("second");
+  info2.setup_layout();
+
+  SECTION("copy constructor")
   {
-    TorchSize nbatch = 10;
+    auto A = LabeledMatrix::zeros(nbatch, {&info1, &info2});
+    auto B = A;
+    B.base_index_put_({"third", "second"}, Tensor::ones({1, 6}).batch_expand(nbatch));
+    REQUIRE(torch::allclose(A, B));
+    REQUIRE(A.axis(0) == B.axis(0));
+    REQUIRE(A.axis(1) == B.axis(1));
+  }
 
-    // Setup the Label
-    LabeledAxis info1;
-    info1.add<SR2>("first").add<Scalar>("second").add<Scalar>("third");
-    info1.setup_layout();
+  SECTION("copy assignment operator")
+  {
+    auto A = LabeledMatrix::zeros(nbatch, {&info1, &info2});
+    LabeledMatrix B;
+    B = A;
+    B.base_index_put_({"third", "second"}, Tensor::ones({1, 6}).batch_expand(nbatch));
+    REQUIRE(torch::allclose(A, B));
+    REQUIRE(A.axis(0) == B.axis(0));
+    REQUIRE(A.axis(1) == B.axis(1));
+  }
 
-    LabeledAxis info2;
-    info2.add<Scalar>("first").add<SR2>("second");
-    info2.setup_layout();
+  SECTION("tensor information")
+  {
+    auto A = LabeledMatrix::zeros(nbatch, {&info1, &info2});
+    REQUIRE(A.scalar_type() == default_dtype());
+    REQUIRE(A.device() == default_device());
+    REQUIRE(A.dim() == 3);
+    REQUIRE(TensorShape(A.sizes()) == TensorShape{nbatch, 8, 7});
+    REQUIRE(A.size(0) == nbatch);
+    REQUIRE(A.size(1) == 8);
+    REQUIRE(A.size(2) == 7);
+    REQUIRE(A.batched());
+    REQUIRE(A.batch_dim() == 1);
+    REQUIRE(TensorShape(A.batch_sizes()) == TensorShape{nbatch});
+    REQUIRE(A.batch_size(0) == nbatch);
+    REQUIRE(A.base_dim() == 2);
+    REQUIRE(TensorShape(A.base_sizes()) == TensorShape{8, 7});
+    REQUIRE(A.base_size(0) == 8);
+    REQUIRE(A.base_size(1) == 7);
+    REQUIRE(A.base_storage() == 56);
+  }
 
-    SECTION("logically 1D LabeledTensor")
+  SECTION("batch_index")
+  {
+    SECTION("1D LabeledTensor")
     {
       auto A = LabeledVector::zeros(nbatch, {&info1});
-      REQUIRE(A("first").sizes() == TorchShapeRef({nbatch, 6}));
-      REQUIRE(A("second").sizes() == TorchShapeRef({nbatch, 1}));
-      REQUIRE(A("third").sizes() == TorchShapeRef({nbatch, 1}));
+      REQUIRE(A.batch_index({0}).sizes() == TensorShapeRef({8}));
     }
 
-    SECTION("logically 2D LabeledTensor")
+    SECTION("2D LabeledTensor")
     {
       auto A = LabeledMatrix::zeros(nbatch, {&info1, &info2});
-      REQUIRE(A("first", "first").sizes() == TorchShapeRef({nbatch, 6, 1}));
-      REQUIRE(A("first", "second").sizes() == TorchShapeRef({nbatch, 6, 6}));
-      REQUIRE(A("second", "first").sizes() == TorchShapeRef({nbatch, 1, 1}));
-      REQUIRE(A("second", "second").sizes() == TorchShapeRef({nbatch, 1, 6}));
-      REQUIRE(A("third", "first").sizes() == TorchShapeRef({nbatch, 1, 1}));
-      REQUIRE(A("third", "second").sizes() == TorchShapeRef({nbatch, 1, 6}));
+      REQUIRE(A.batch_index({0}).sizes() == TensorShapeRef({8, 7}));
     }
   }
 
-  SECTION("get")
+  SECTION("base_index")
   {
-    TorchSize nbatch = 10;
-
-    // Setup the Label
-    LabeledAxis info1;
-    info1.add<SR2>("first").add<Scalar>("second").add<Scalar>("third");
-    info1.setup_layout();
-
-    LabeledAxis info2;
-    info2.add<Scalar>("first").add<SR2>("second");
-    info2.setup_layout();
-
-    SECTION("logically 1D LabeledTensor")
+    SECTION("1D LabeledTensor")
     {
       auto A = LabeledVector::zeros(nbatch, {&info1});
-      REQUIRE(A.get<SR2>("first").sizes() == TorchShapeRef({nbatch, 6}));
-      REQUIRE(A.get<Scalar>("second").sizes() == TorchShapeRef({nbatch}));
-      REQUIRE(A.get<Scalar>("third").sizes() == TorchShapeRef({nbatch}));
+      REQUIRE(A.base_index({"first"}).sizes() == TensorShapeRef({nbatch, 6}));
+      REQUIRE(A.base_index({"second"}).sizes() == TensorShapeRef({nbatch, 1}));
+      REQUIRE(A.base_index({"third"}).sizes() == TensorShapeRef({nbatch, 1}));
     }
 
-    SECTION("logically 2D LabeledTensor")
+    SECTION("2D LabeledTensor")
     {
       auto A = LabeledMatrix::zeros(nbatch, {&info1, &info2});
-      REQUIRE(A.get<SR2>("first", "first").sizes() == TorchShapeRef({nbatch, 6}));
-      REQUIRE(A.get<Scalar>("second", "first").sizes() == TorchShapeRef({nbatch}));
-      REQUIRE(A.get<SR2>("second", "second").sizes() == TorchShapeRef({nbatch, 6}));
-      REQUIRE(A.get<Scalar>("third", "first").sizes() == TorchShapeRef({nbatch}));
-      REQUIRE(A.get<SR2>("third", "second").sizes() == TorchShapeRef({nbatch, 6}));
+      REQUIRE(A.base_index({"first", "first"}).sizes() == TensorShapeRef({nbatch, 6, 1}));
+      REQUIRE(A.base_index({"first", "second"}).sizes() == TensorShapeRef({nbatch, 6, 6}));
+      REQUIRE(A.base_index({"second", "first"}).sizes() == TensorShapeRef({nbatch, 1, 1}));
+      REQUIRE(A.base_index({"second", "second"}).sizes() == TensorShapeRef({nbatch, 1, 6}));
+      REQUIRE(A.base_index({"third", "first"}).sizes() == TensorShapeRef({nbatch, 1, 1}));
+      REQUIRE(A.base_index({"third", "second"}).sizes() == TensorShapeRef({nbatch, 1, 6}));
     }
   }
 
-  SECTION("set")
+  SECTION("reinterpret")
   {
-    TorchSize nbatch = 10;
+    SECTION("1D LabeledTensor")
+    {
+      auto A = LabeledVector::zeros(nbatch, {&info1});
+      REQUIRE(A.reinterpret<SR2>({"first"}).sizes() == TensorShapeRef({nbatch, 6}));
+      REQUIRE(A.reinterpret<Scalar>({"second"}).sizes() == TensorShapeRef({nbatch}));
+      REQUIRE(A.reinterpret<Scalar>({"third"}).sizes() == TensorShapeRef({nbatch}));
+    }
 
-    // Setup the Label
-    LabeledAxis info1;
-    info1.add<SR2>("first").add<Scalar>("second").add<Scalar>("third");
-    info1.setup_layout();
+    SECTION("2D LabeledTensor")
+    {
+      auto A = LabeledMatrix::zeros(nbatch, {&info1, &info2});
+      REQUIRE(A.reinterpret<SR2>({"first", "first"}).sizes() == TensorShapeRef({nbatch, 6}));
+      REQUIRE(A.reinterpret<Scalar>({"second", "first"}).sizes() == TensorShapeRef({nbatch}));
+      REQUIRE(A.reinterpret<SR2>({"second", "second"}).sizes() == TensorShapeRef({nbatch, 6}));
+      REQUIRE(A.reinterpret<Scalar>({"third", "first"}).sizes() == TensorShapeRef({nbatch}));
+      REQUIRE(A.reinterpret<SR2>({"third", "second"}).sizes() == TensorShapeRef({nbatch, 6}));
+    }
+  }
 
-    LabeledAxis info2;
-    info2.add<Scalar>("first").add<SR2>("second");
-    info2.setup_layout();
-
+  SECTION("base_index_put_")
+  {
     SECTION("logically 1D LabeledTensor")
     {
       auto A = LabeledVector::zeros(nbatch, {&info1});
-      A.set(BatchTensor::ones(6).batch_expand(nbatch), "first");
-      REQUIRE(torch::sum(A("first")).item<double>() == Catch::Approx(nbatch * 6));
-      REQUIRE(torch::sum(A("second")).item<double>() == Catch::Approx(0));
-      REQUIRE(torch::sum(A("third")).item<double>() == Catch::Approx(0));
+      A.base_index_put_({"first"}, Tensor::ones(6).batch_expand(nbatch));
+      REQUIRE(torch::sum(A.base_index({"first"})).item<double>() == Catch::Approx(nbatch * 6));
+      REQUIRE(torch::sum(A.base_index({"second"})).item<double>() == Catch::Approx(0));
+      REQUIRE(torch::sum(A.base_index({"third"})).item<double>() == Catch::Approx(0));
     }
 
     SECTION("logically 2D LabeledTensor")
     {
       auto A = LabeledMatrix::zeros(nbatch, {&info1, &info2});
-      A.set(BatchTensor::ones({1, 6}).batch_expand(nbatch), "third", "second");
-      REQUIRE(torch::sum(A("first", "first")).item<double>() == Catch::Approx(0));
-      REQUIRE(torch::sum(A("first", "second")).item<double>() == Catch::Approx(0));
-      REQUIRE(torch::sum(A("second", "first")).item<double>() == Catch::Approx(0));
-      REQUIRE(torch::sum(A("second", "second")).item<double>() == Catch::Approx(0));
-      REQUIRE(torch::sum(A("third", "first")).item<double>() == Catch::Approx(0));
-      REQUIRE(torch::sum(A("third", "second")).item<double>() == Catch::Approx(nbatch * 6));
+      A.base_index_put_({"third", "second"}, Tensor::ones({1, 6}).batch_expand(nbatch));
+      REQUIRE(torch::sum(A.base_index({"first", "first"})).item<double>() == Catch::Approx(0));
+      REQUIRE(torch::sum(A.base_index({"first", "second"})).item<double>() == Catch::Approx(0));
+      REQUIRE(torch::sum(A.base_index({"second", "first"})).item<double>() == Catch::Approx(0));
+      REQUIRE(torch::sum(A.base_index({"second", "second"})).item<double>() == Catch::Approx(0));
+      REQUIRE(torch::sum(A.base_index({"third", "first"})).item<double>() == Catch::Approx(0));
+      REQUIRE(torch::sum(A.base_index({"third", "second"})).item<double>() ==
+              Catch::Approx(nbatch * 6));
     }
   }
 
   SECTION("clone")
   {
-    TorchSize nbatch = 10;
-
-    // Setup the Label
-    LabeledAxis info1;
-    info1.add<SR2>("first").add<Scalar>("second").add<Scalar>("third");
-    info1.setup_layout();
-
-    LabeledAxis info2;
-    info2.add<Scalar>("first").add<SR2>("second");
-    info2.setup_layout();
-
     auto A = LabeledMatrix::zeros(nbatch, {&info1, &info2});
     auto B = A.clone();
 
@@ -154,47 +178,9 @@ TEST_CASE("LabeledTensor", "[tensors]")
     REQUIRE(torch::allclose(A.tensor(), B.tensor()));
 
     // Since B is a deep copy, modifying B shouldn't affect A.
-    B.set(BatchTensor::ones({1, 6}).batch_expand(nbatch), "third", "second");
-    REQUIRE(torch::sum(A("third", "second")).item<double>() == Catch::Approx(0));
-    REQUIRE(torch::sum(B("third", "second")).item<double>() == Catch::Approx(nbatch * 6));
-  }
-
-  SECTION("slice")
-  {
-    TorchSize nbatch = 10;
-
-    // Setup the Label
-    LabeledAxis info1;
-    info1.add<SR2>("first").add<Scalar>("second").add<Scalar>("third");
-    info1.add<LabeledAxis>("sub1").add<LabeledAxis>("sub2");
-    info1.subaxis("sub1").add<SR2>("first").add<Scalar>("second");
-    info1.subaxis("sub2").add<Scalar>("first").add<Scalar>("second");
-    info1.setup_layout();
-
-    LabeledAxis info2;
-    info2.add<Scalar>("first").add<SR2>("second");
-    info2.setup_layout();
-
-    SECTION("logically 1D LabeledTensor")
-    {
-      auto A = LabeledVector::zeros(nbatch, {&info1});
-      A.set(2.3 * BatchTensor::ones(7).batch_expand(nbatch), "sub1");
-      auto B = A.slice("sub1");
-      REQUIRE(torch::sum(B("first")).item<double>() == Catch::Approx(nbatch * 6 * 2.3));
-      REQUIRE(torch::sum(B("second")).item<double>() == Catch::Approx(nbatch * 2.3));
-    }
-
-    SECTION("logically 2D LabeledTensor")
-    {
-      auto A = LabeledMatrix::zeros(nbatch, {&info1, &info2});
-      A.set(-1.9 * BatchTensor::ones({7, 6}).batch_expand(nbatch), "sub1", "second");
-      auto B = A.slice(0, "sub1");
-      REQUIRE(torch::sum(B("first", "first")).item<double>() == Catch::Approx(0));
-      REQUIRE(torch::sum(B("first", "second")).item<double>() ==
-              Catch::Approx(nbatch * 6 * 6 * -1.9));
-      REQUIRE(torch::sum(B("second", "first")).item<double>() == Catch::Approx(0));
-      REQUIRE(torch::sum(B("second", "second")).item<double>() ==
-              Catch::Approx(nbatch * 1 * 6 * -1.9));
-    }
+    B.base_index_put_({"third", "second"}, Tensor::ones({1, 6}).batch_expand(nbatch));
+    REQUIRE(torch::sum(A.base_index({"third", "second"})).item<double>() == Catch::Approx(0));
+    REQUIRE(torch::sum(B.base_index({"third", "second"})).item<double>() ==
+            Catch::Approx(nbatch * 6));
   }
 }

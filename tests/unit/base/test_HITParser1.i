@@ -9,6 +9,8 @@ day = 'day'
   machine_precision = 0.5
   tolerance = 0.1
   tighter_tolerance = 0.01
+  buffer_name_separator = '::'
+  parameter_name_separator = '::'
 []
 
 [Models]

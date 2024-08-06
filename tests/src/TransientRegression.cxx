@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -51,7 +51,18 @@ TransientRegression::TransientRegression(const OptionSet & options)
     _rtol(options.get<Real>("rtol")),
     _atol(options.get<Real>("atol"))
 {
-  neml_assert(fs::exists(_reference), "Reference file '", _reference.string(), "' does not exist.");
+}
+
+void
+TransientRegression::diagnose(std::vector<Diagnosis> & diagnoses) const
+{
+  Driver::diagnose(diagnoses);
+  _driver.diagnose(diagnoses);
+  diagnostic_assert(diagnoses,
+                    fs::exists(_reference),
+                    "Reference file '",
+                    _reference.string(),
+                    "' does not exist.");
 }
 
 bool

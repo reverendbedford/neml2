@@ -110,7 +110,7 @@ nstep = 100
     CTE = 1e-6
   []
   [elastic_strain]
-    type = SR2SumModel
+    type = SR2LinearCombination
     to_var = 'state/internal/Ee'
     from_var = 'forces/E state/internal/Ep forces/Eg'
     coefficients = '1 -1 -1'
@@ -136,7 +136,7 @@ nstep = 100
     invariant = 'state/internal/sh'
   []
   [sp]
-    type = ScalarSumModel
+    type = ScalarLinearCombination
     to_var = 'state/internal/sp'
     from_var = 'state/internal/sh state/internal/ss'
     coefficients = '1 -1'
@@ -158,7 +158,8 @@ nstep = 100
   []
   [flow]
     type = ComposedModel
-    models = 'q1 j2 sh sp yield'
+    models = 'j2 sh sp yield'
+    automatic_nonlinear_parameter = false
   []
   [flow_rate]
     type = PerzynaPlasticFlowRate
@@ -183,15 +184,15 @@ nstep = 100
   []
   [integrate_Ep]
     type = SR2BackwardEulerTimeIntegration
-    variable = 'internal/Ep'
+    variable = 'state/internal/Ep'
   []
   [integrate_ep]
     type = ScalarBackwardEulerTimeIntegration
-    variable = 'internal/ep'
+    variable = 'state/internal/ep'
   []
   [integrate_void]
     type = ScalarBackwardEulerTimeIntegration
-    variable = 'internal/f'
+    variable = 'state/internal/f'
   []
   [surface]
     type = ComposedModel

@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -24,11 +24,13 @@
 
 #pragma once
 
-#define FOR_ALL_BATCHTENSORBASE(f)                                                                 \
-  FOR_ALL_FIXEDDIMTENSOR(f);                                                                       \
-  f(BatchTensor)
+/// @name Macros for all tensor types with semicolon as the separator
+///@{
+#define FOR_ALL_TENSORBASE(f)                                                                      \
+  FOR_ALL_PRIMITIVETENSOR(f);                                                                      \
+  f(Tensor)
 
-#define FOR_ALL_FIXEDDIMTENSOR(f)                                                                  \
+#define FOR_ALL_PRIMITIVETENSOR(f)                                                                 \
   FOR_ALL_VECBASE(f);                                                                              \
   FOR_ALL_R2BASE(f);                                                                               \
   f(Scalar);                                                                                       \
@@ -52,3 +54,17 @@
   f(WR2)
 
 #define FOR_ALL_R2BASE(f) f(R2)
+///@}
+
+/// @name Macros for all tensor types with comma as the separator
+///@{
+#define FOR_ALL_TENSORBASE_COMMA(f) FOR_ALL_PRIMITIVETENSOR_COMMA(f), f(Tensor)
+
+#define FOR_ALL_PRIMITIVETENSOR_COMMA(f)                                                           \
+  FOR_ALL_VECBASE_COMMA(f), FOR_ALL_R2BASE_COMMA(f), f(Scalar), f(SR2), f(R3), f(SFR3), f(R4),     \
+      f(SSR4), f(SFFR4), f(SWR4), f(WSR4), f(WWR4), f(R5), f(SSFR5), f(Quaternion), f(MillerIndex)
+
+#define FOR_ALL_VECBASE_COMMA(f) f(Vec), f(Rot), f(WR2)
+
+#define FOR_ALL_R2BASE_COMMA(f) f(R2)
+///@}

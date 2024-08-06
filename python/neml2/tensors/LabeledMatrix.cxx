@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -35,5 +35,7 @@ def_LabeledMatrix(py::module_ & m)
 {
   auto c = py::class_<LabeledMatrix>(m, "LabeledMatrix");
 
+  def_LabeledBatchView<LabeledMatrix>(m, "LabeledMatrixBatchView");
+  def_LabeledBaseView<LabeledMatrix>(m, "LabeledMatrixBaseView");
   def_LabeledTensor<LabeledMatrix, 2>(c);
 }

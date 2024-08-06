@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 #include "neml2/models/solid_mechanics/KocksMeckingFlowViscosity.h"
+#include "neml2/misc/math.h"
 
 namespace neml2
 {
@@ -42,11 +43,11 @@ KocksMeckingFlowViscosity::expected_options()
       "\\f$ T \\f$ absolute temperature, \\f$ A \\f$ the Kocks-Mecking slope parameter, and \\f$ B "
       "\\f$ the Kocks-Mecking intercept parameter.";
 
-  options.set<CrossRef<Scalar>>("A");
+  options.set_parameter<CrossRef<Scalar>>("A");
   options.set("A").doc() = "The Kocks-Mecking slope parameter";
-  options.set<CrossRef<Scalar>>("B");
+  options.set_parameter<CrossRef<Scalar>>("B");
   options.set("B").doc() = "The Kocks-Mecking intercept parameter";
-  options.set<CrossRef<Scalar>>("shear_modulus");
+  options.set_parameter<CrossRef<Scalar>>("shear_modulus");
   options.set("shear_modulus").doc() = "The shear modulus";
 
   options.set<Real>("eps0");
@@ -57,7 +58,7 @@ KocksMeckingFlowViscosity::expected_options()
   options.set<Real>("b");
   options.set("b").doc() = "The Burgers vector";
 
-  options.set<VariableName>("temperature") = VariableName("forces", "T");
+  options.set_input("temperature") = VariableName("forces", "T");
   options.set("temperature").doc() = "Absolute temperature";
 
   return options;
@@ -65,9 +66,9 @@ KocksMeckingFlowViscosity::expected_options()
 
 KocksMeckingFlowViscosity::KocksMeckingFlowViscosity(const OptionSet & options)
   : NonlinearParameter<Scalar>(options),
-    _A(declare_parameter<Scalar>("A", "A")),
-    _B(declare_parameter<Scalar>("B", "B")),
-    _mu(declare_parameter<Scalar>("shear_modulus", "shear_modulus")),
+    _A(declare_parameter<Scalar>("A", "A", /*allow_nonlinear=*/true)),
+    _B(declare_parameter<Scalar>("B", "B", /*allow_nonlinear=*/true)),
+    _mu(declare_parameter<Scalar>("mu", "shear_modulus", /*allow_nonlinear=*/true)),
     _eps0(options.get<Real>("eps0")),
     _k(options.get<Real>("k")),
     _b3(options.get<Real>("b") * options.get<Real>("b") * options.get<Real>("b")),
@@ -85,76 +86,83 @@ KocksMeckingFlowViscosity::set_value(bool out, bool dout_din, bool d2out_din2)
 
   if (dout_din)
   {
-    _p.d(_T) = _A * math::exp(_B) * _k * std::log(_eps0) * post / _b3;
+    if (_T.is_dependent())
+      _p.d(_T) = _A * math::exp(_B) * _k * std::log(_eps0) * post / _b3;
 
-    if (const auto A = nl_param("A"))
+    if (const auto * const A = nl_param("A"))
       _p.d(*A) = math::exp(_B) * _k * _T * std::log(_eps0) * post / _b3;
 
-    if (const auto B = nl_param("B"))
+    if (const auto * const B = nl_param("B"))
       _p.d(*B) = math::exp(_B) * _mu * post;
 
-    if (const auto mu = nl_param("mu"))
-      _p.d(*mu) = math::exp(_B) * post * (_b3 * _mu - _A * _k * _T * std::log(_eps0)) / (_b3 * _mu);
+    if (const auto * const mu = nl_param("mu"))
+      _p.d(*mu) = math::exp(_B) * post * (1.0 - _A * _k * _T * std::log(_eps0) / (_b3 * _mu));
   }
 
   if (d2out_din2)
   {
     // T
-    _p.d(_T, _T) = math::pow(_A * _k * std::log(_eps0) / _b3, 2.0) * math::exp(_B) * post / _mu;
+    if (_T.is_dependent())
+    {
+      _p.d(_T, _T) = math::pow(_A * _k * std::log(_eps0) / _b3, 2.0) * math::exp(_B) * post / _mu;
 
-    if (const auto A = nl_param("A"))
-      _p.d(_T, *A) = math::exp(_B) * _k * std::log(_eps0) * post * (_A * _k * _T + _b3 * _mu) /
-                     (_b3 * _b3 * _mu);
+      if (const auto * const A = nl_param("A"))
+        _p.d(_T, *A) = math::exp(_B) * _k * std::log(_eps0) * post / _b3 *
+                       (std::log(_eps0) * _A * _k * _T / (_b3 * _mu) + 1.0);
 
-    if (const auto B = nl_param("B"))
-      _p.d(_T, *B) = _A * math::exp(_B) * _k * std::log(_eps0) * post / _b3;
+      if (const auto * const B = nl_param("B"))
+        _p.d(_T, *B) = _A * math::exp(_B) * _k * std::log(_eps0) * post / _b3;
 
-    if (const auto mu = nl_param("mu"))
-      _p.d(_T, *mu) =
-          -math::pow(_A * _k * std::log(_eps0) / (_b3 * _mu), 2.0) * math::exp(_B) * _T * post;
+      if (const auto * const mu = nl_param("mu"))
+        _p.d(_T, *mu) =
+            -math::pow(_A * _k * std::log(_eps0) / (_b3 * _mu), 2.0) * math::exp(_B) * _T * post;
+    }
 
     // A
-    if (const auto A = nl_param("A"))
+    if (const auto * const A = nl_param("A"))
     {
-      _p.d(*A, _T) = math::exp(_B) * _k * std::log(_eps0) * post * (_A * _k * _T + _b3 * _mu) /
-                     (_b3 * _b3 * _mu);
+      if (_T.is_dependent())
+        _p.d(*A, _T) = math::exp(_B) * _k * std::log(_eps0) * post / _b3 *
+                       (std::log(_eps0) * _A * _k * _T / (_b3 * _mu) + 1.0);
 
       _p.d(*A, *A) = math::exp(_B) * math::pow(_k * _T * std::log(_eps0) / _b3, 2.0) * post / _mu;
 
-      if (const auto B = nl_param("B"))
+      if (const auto * const B = nl_param("B"))
         _p.d(*A, *B) = math::exp(_B) * _k * _T * std::log(_eps0) * post / _b3;
 
-      if (const auto mu = nl_param("mu"))
+      if (const auto * const mu = nl_param("mu"))
         _p.d(*A, *mu) =
             -_A * math::exp(_B) * math::pow(_k * _T * std::log(_eps0) / (_b3 * _mu), 2.0) * post;
     }
 
     // B
-    if (const auto B = nl_param("B"))
+    if (const auto * const B = nl_param("B"))
     {
-      _p.d(*B, _T) = _A * math::exp(_B) * _k * std::log(_eps0) * post / _b3;
+      if (_T.is_dependent())
+        _p.d(*B, _T) = _A * math::exp(_B) * _k * std::log(_eps0) * post / _b3;
 
-      if (const auto A = nl_param("A"))
+      if (const auto * const A = nl_param("A"))
         _p.d(*B, *A) = math::exp(_B) * _k * _T * std::log(_eps0) * post / _b3;
 
       _p.d(*B, *B) = math::exp(_B) * _mu * post;
 
-      if (const auto mu = nl_param("mu"))
+      if (const auto * const mu = nl_param("mu"))
         _p.d(*B, *mu) =
             math::exp(_B) * post * (_b3 * _mu - _A * _k * _T * std::log(_eps0)) / (_b3 * _mu);
     }
 
     // mu
-    if (const auto mu = nl_param("mu"))
+    if (const auto * const mu = nl_param("mu"))
     {
-      _p.d(*mu, _T) =
-          -math::exp(_B) * math::pow(_A * _k * std::log(_eps0) / (_b3 * _mu), 2.0) * _T * post;
+      if (_T.is_dependent())
+        _p.d(*mu, _T) =
+            -math::exp(_B) * math::pow(_A * _k * std::log(_eps0) / (_b3 * _mu), 2.0) * _T * post;
 
-      if (const auto A = nl_param("A)"))
+      if (const auto * const A = nl_param("A"))
         _p.d(*mu, *A) =
             -_A * math::exp(_B) * math::pow(_k * _T * std::log(_eps0) / (_b3 * _mu), 2.0) * post;
 
-      if (const auto B = nl_param("B"))
+      if (const auto * const B = nl_param("B"))
         _p.d(*mu, *B) =
             math::exp(_B) * post * (_b3 * _mu - _A * _k * _T * std::log(_eps0)) / (_b3 * _mu);
 

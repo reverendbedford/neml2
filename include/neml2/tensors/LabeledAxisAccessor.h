@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -27,6 +27,9 @@
 #include <vector>
 #include <iostream>
 
+#include <c10/util/SmallVector.h>
+#include <c10/util/ArrayRef.h>
+
 namespace neml2
 {
 /**
@@ -44,6 +47,8 @@ class LabeledAxisAccessor
 {
 public:
   LabeledAxisAccessor() = default;
+
+  ~LabeledAxisAccessor() {}
 
   template <typename... S>
   LabeledAxisAccessor(const char * name, S &&... names)
@@ -65,29 +70,46 @@ public:
     (_item_names.push_back(names), ...);
   }
 
-  LabeledAxisAccessor(const std::vector<std::string> & names);
+  template <typename Container,
+            typename = std::enable_if_t<!std::is_convertible_v<Container, std::string>>>
+  LabeledAxisAccessor(const Container & c)
+  {
+    _item_names.append(c.begin(), c.end());
+    for (const auto & name : _item_names)
+      validate_item_name(name);
+  }
 
-  LabeledAxisAccessor(const LabeledAxisAccessor & other);
+  using iterator = c10::SmallVector<std::string>::iterator;
+  using const_iterator = c10::SmallVector<std::string>::const_iterator;
 
-  /// Assignment operator
-  LabeledAxisAccessor & operator=(const LabeledAxisAccessor & other);
+  /**
+   * @name Iterators
+   *
+   * Begin and end iterators for the underlying data.
+   */
+  ///@{
+  iterator begin() { return iterator(_item_names.begin()); }
+  iterator end() { return iterator(_item_names.end()); }
+  const_iterator begin() const { return const_iterator(_item_names.begin()); }
+  const_iterator end() const { return const_iterator(_item_names.end()); }
+  ///@}
 
-  operator std::vector<std::string>() const;
+  explicit operator std::vector<std::string>() const;
 
-  const std::vector<std::string> & vec() const { return _item_names; }
+  const c10::SmallVector<std::string> & vec() const { return _item_names; }
 
   bool empty() const;
 
   size_t size() const;
 
-  /// Append a suffix to the item name.
+  /// Append a suffix to the final item name.
   LabeledAxisAccessor with_suffix(const std::string & suffix) const;
 
-  /// Add a new item
+  /// Append another accessor
   LabeledAxisAccessor append(const LabeledAxisAccessor & axis) const;
 
-  /// Re-mount the LabeledAxisAccessor on an axis by the axis accessor
-  LabeledAxisAccessor on(const LabeledAxisAccessor & axis) const;
+  /// Prepend another accessor
+  LabeledAxisAccessor prepend(const LabeledAxisAccessor & axis) const;
 
   /// Remove the leading \p n items from the labels.
   LabeledAxisAccessor slice(size_t n) const;
@@ -95,14 +117,20 @@ public:
   /// Extract out the labels from \p n1 to \p n2
   LabeledAxisAccessor slice(size_t n1, size_t n2) const;
 
+  /// A combination of slice and prepend
+  LabeledAxisAccessor remount(const LabeledAxisAccessor & axis, size_t n = 1) const;
+
   /// Check if this accessor begins with another accessor
   bool start_with(const LabeledAxisAccessor & axis) const;
+
+  /// Returns the "old" counterpart
+  LabeledAxisAccessor old() const;
 
 private:
   /// Throws if the item name has invalid format
   void validate_item_name(const std::string &) const;
 
-  std::vector<std::string> _item_names;
+  c10::SmallVector<std::string> _item_names;
 };
 
 /// Compare for equality between two LabeledAxisAccessor
@@ -122,4 +150,11 @@ bool operator<(const LabeledAxisAccessor & a, const LabeledAxisAccessor & b);
  * item names delimited by "/".
  */
 std::ostream & operator<<(std::ostream & os, const LabeledAxisAccessor & accessor);
+
+namespace indexing
+{
+using TensorLabel = LabeledAxisAccessor;
+using TensorLabels = c10::SmallVector<LabeledAxisAccessor>;
+using TensorLabelsRef = c10::ArrayRef<LabeledAxisAccessor>;
+} // namespace indexing
 } // namespace neml2

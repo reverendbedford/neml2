@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -24,16 +24,25 @@
 
 #pragma once
 
-#include "neml2/base/Registry.h"
-#include "neml2/base/NEML2Object.h"
+#include "neml2/tensors/user_tensors/UserTensorBase.h"
+
+#include "neml2/tensors/Tensor.h"
 
 namespace neml2
 {
-class UserTensor : public NEML2Object
+/**
+ * @brief Create raw Tensor from the input file.
+ */
+class UserTensor : public Tensor, public UserTensorBase
 {
 public:
   static OptionSet expected_options();
 
+  /**
+   * @brief Construct a new UserTensor object
+   *
+   * @param options The options extracted from the input file.
+   */
   UserTensor(const OptionSet & options);
 };
 } // namespace neml2

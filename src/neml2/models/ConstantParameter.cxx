@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -26,6 +26,8 @@
 
 namespace neml2
 {
+#define CONSTANTPARAMETER_REGISTER(T) register_NEML2_object(T##ConstantParameter)
+FOR_ALL_PRIMITIVETENSOR(CONSTANTPARAMETER_REGISTER);
 
 template <typename T>
 OptionSet
@@ -35,7 +37,7 @@ ConstantParameter<T>::expected_options()
   options.doc() = "A parameter that is just a constant value, generally used to refer to a "
                   "parameter in more than one downstream object.";
 
-  options.set<CrossRef<T>>("value");
+  options.set_parameter<CrossRef<T>>("value");
   options.set("value").doc() = "The constant value of the parameter";
   return options;
 }
@@ -43,7 +45,7 @@ ConstantParameter<T>::expected_options()
 template <typename T>
 ConstantParameter<T>::ConstantParameter(const OptionSet & options)
   : NonlinearParameter<T>(options),
-    _value(this->template declare_parameter<T>("value", "value"))
+    _value(this->template declare_parameter<T>("value", "value", /*allow_nonlinear=*/true))
 {
 }
 
@@ -61,9 +63,4 @@ ConstantParameter<T>::set_value(bool out, bool dout_din, bool d2out_din2)
   // This is zero
   (void)d2out_din2;
 }
-
-#define CONSTANTPARAMETER_REGISTER(T)                                                              \
-  register_NEML2_object_alias(T##ConstantParameter, #T "ConstantParameter")
-FOR_ALL_FIXEDDIMTENSOR(CONSTANTPARAMETER_REGISTER);
-
 } // namespace neml2

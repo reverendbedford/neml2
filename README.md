@@ -1,12 +1,14 @@
-# Overview
+# NEML2
 
 [![Documentation](https://github.com/reverendbedford/neml2/actions/workflows/build_docs.yml/badge.svg?branch=main)](https://reverendbedford.github.io/neml2/) [![tests](https://github.com/reverendbedford/neml2/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/reverendbedford/neml2/actions/workflows/tests.yml)
 
-## The New Engineering Material model Library, version 2
+## Overview
+
+### The New Engineering Material model Library, version 2
 
 NEML2 is an offshoot of [NEML](https://github.com/Argonne-National-Laboratory/neml), an earlier material modeling code developed at Argonne National Laboratory.
 Like its predecessor, NEML2 provides a flexible, modular way to build material models from smaller blocks.
-Unlike its predecessor, NEML2 vectorizes the material update to efficiently run on GPUs.  NEML2 is built on top of [PyTorch](https://pytorch.org/cppdocs/) to provide GPU support, and this also means that NEML2 models have all the features of a PyTorch module (i.e. `torch.nn.module`).  So, for example, users can take derivatives of the model with respect to parameters using automatic differentiation.
+Unlike its predecessor, NEML2 vectorizes the material update to efficiently run on GPUs. In addition, NEML2 models can use [PyTorch](https://pytorch.org/cppdocs/) as the backend to provide first-class support for automatic differentiation, operator fusion, lazy tensor evaluation, inference mode, etc.
 
 NEML2 is provided as open source software under a MIT [license](https://raw.githubusercontent.com/reverendbedford/neml2/main/LICENSE).
 

@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -25,7 +25,9 @@
 #pragma once
 
 #include "neml2/drivers/Driver.h"
+
 #include <filesystem>
+#include <torch/jit.h>
 
 namespace neml2
 {
@@ -37,6 +39,8 @@ public:
   static OptionSet expected_options();
 
   TransientRegression(const OptionSet & options);
+
+  virtual void diagnose(std::vector<Diagnosis> & diagnoses) const override;
 
   bool run() override;
 

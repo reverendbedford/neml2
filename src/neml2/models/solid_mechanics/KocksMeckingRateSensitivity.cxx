@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -38,9 +38,9 @@ KocksMeckingRateSensitivity::expected_options()
       "\\f$ the shear modulus, \\f$ b \\f$ the Burgers vector, \\f$  k\\f$ the Boltzmann constant, "
       "\\f$ T \\f$ absolute temperature, and \\f$ A \\f$ the Kocks-Mecking slope parameter.";
 
-  options.set<CrossRef<Scalar>>("A");
+  options.set_parameter<CrossRef<Scalar>>("A");
   options.set("A").doc() = "The Kocks-Mecking slope parameter";
-  options.set<CrossRef<Scalar>>("shear_modulus");
+  options.set_parameter<CrossRef<Scalar>>("shear_modulus");
   options.set("shear_modulus").doc() = "The shear modulus";
 
   options.set<Real>("k");
@@ -48,15 +48,15 @@ KocksMeckingRateSensitivity::expected_options()
   options.set<Real>("b");
   options.set("b").doc() = "The Burgers vector";
 
-  options.set<VariableName>("temperature") = VariableName("forces", "T");
+  options.set_input("temperature") = VariableName("forces", "T");
   options.set("temperature").doc() = "Absolute temperature";
   return options;
 }
 
 KocksMeckingRateSensitivity::KocksMeckingRateSensitivity(const OptionSet & options)
   : NonlinearParameter<Scalar>(options),
-    _A(declare_parameter<Scalar>("A", "A")),
-    _mu(declare_parameter<Scalar>("shear_modulus", "shear_modulus")),
+    _A(declare_parameter<Scalar>("A", "A", /*allow_nonlinear=*/true)),
+    _mu(declare_parameter<Scalar>("mu", "shear_modulus", /*allow_nonlinear=*/true)),
     _k(options.get<Real>("k")),
     _b3(options.get<Real>("b") * options.get<Real>("b") * options.get<Real>("b")),
     _T(declare_input_variable<Scalar>("temperature"))
@@ -71,34 +71,44 @@ KocksMeckingRateSensitivity::set_value(bool out, bool dout_din, bool d2out_din2)
 
   if (dout_din)
   {
-    _p.d(_T) = _b3 * _mu / (_A * _k * _T * _T);
-    if (const auto mu = nl_param("shear_modulus"))
+    if (_T.is_dependent())
+      _p.d(_T) = _b3 * _mu / (_A * _k * _T * _T);
+    if (const auto * const mu = nl_param("mu"))
       _p.d(*mu) = -_b3 / (_A * _k * _T);
-    if (const auto A = nl_param("A"))
-      _p.d(*A) = -_b3 * _mu / (_A * _A * _k * _T);
+    if (const auto * const A = nl_param("A"))
+      _p.d(*A) = _b3 * _mu / (_A * _A * _k * _T);
   }
 
   if (d2out_din2)
   {
     // T, T
-    _p.d(_T, _T) = -2.0 * _b3 * _mu / (_A * _k * _T * _T * _T);
-    if (const auto A = nl_param("A"))
+    if (_T.is_dependent())
+      _p.d(_T, _T) = -2.0 * _b3 * _mu / (_A * _k * _T * _T * _T);
+
+    if (const auto * const A = nl_param("A"))
     {
       // A, A
       _p.d(*A, *A) = -2.0 * _b3 * _mu / (_A * _A * _A * _k * _T);
       // A, T and T, A
-      auto AT = -_b3 * _mu / (_A * _A * _k * _T * _T);
-      _p.d(*A, _T) = AT;
-      _p.d(_T, *A) = AT;
+      if (_T.is_dependent())
+      {
+        auto AT = -_b3 * _mu / (_A * _A * _k * _T * _T);
+        _p.d(*A, _T) = AT;
+        _p.d(_T, *A) = AT;
+      }
     }
-    if (const auto mu = nl_param("mu"))
+
+    if (const auto * const mu = nl_param("mu"))
     {
       // mu, T and T, mu
-      auto MT = _b3 / (_A * _k * _T * _T);
-      _p.d(*mu, _T) = MT;
-      _p.d(_T, *mu) = MT;
+      if (_T.is_dependent())
+      {
+        auto MT = _b3 / (_A * _k * _T * _T);
+        _p.d(*mu, _T) = MT;
+        _p.d(_T, *mu) = MT;
+      }
 
-      if (const auto A = nl_param("A"))
+      if (const auto * const A = nl_param("A"))
       {
         // mu, A and A, mu
         auto MA = _b3 / (_A * _A * _k * _T);

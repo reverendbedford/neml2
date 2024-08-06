@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -46,9 +46,10 @@ public:
    */
   LargeDeformationIncrementalSolidMechanicsDriver(const OptionSet & options);
 
+  void diagnose(std::vector<Diagnosis> &) const override;
+
 protected:
   virtual void update_forces() override;
-  void check_integrity() const override;
 
   /**
    * @brief The control method to drive the constitutive update.

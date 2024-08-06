@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -23,16 +23,27 @@
 // THE SOFTWARE.
 
 #include "neml2/base/OptionSet.h"
+#include "neml2/tensors/LabeledAxisAccessor.h"
 
 namespace neml2
 {
 bool
+options_compatible(const OptionSet & opts, const OptionSet & additional_opts)
+{
+  for (const auto & [key, value] : additional_opts)
+  {
+    if (!opts.contains(key))
+      return false;
+    if (opts.get(key) != *value)
+      return false;
+  }
+  return true;
+}
+
+bool
 OptionSet::contains(const std::string & name) const
 {
-  OptionSet::const_iterator it = _values.find(name);
-  if (it != _values.end())
-    return true;
-  return false;
+  return _values.find(name) != _values.end();
 }
 
 const OptionSet::OptionBase &
@@ -57,6 +68,18 @@ OptionSet::set(const std::string & name)
               *this);
 
   return *_values[name];
+}
+
+LabeledAxisAccessor &
+OptionSet::set_input(const std::string & name)
+{
+  return set<LabeledAxisAccessor, FType::INPUT>(name);
+}
+
+LabeledAxisAccessor &
+OptionSet::set_output(const std::string & name)
+{
+  return set<LabeledAxisAccessor, FType::OUTPUT>(name);
 }
 
 void
@@ -102,6 +125,7 @@ OptionSet::print(std::ostream & os) const
   {
     os << "  " << it->first << ":\n";
     os << "    type: " << it->second->type() << '\n';
+    os << "    ftype: " << it->second->ftype() << '\n';
     if (it->second->doc().empty())
       os << "    doc:\n";
     else
@@ -115,6 +139,25 @@ OptionSet::print(std::ostream & os) const
     if (++it != _values.end())
       os << '\n';
   }
+}
+
+std::ostream &
+operator<<(std::ostream & os, FType f)
+{
+  if (f == FType::NONE)
+    os << "NONE";
+  else if (f == FType::INPUT)
+    os << "INPUT";
+  else if (f == FType::OUTPUT)
+    os << "OUTPUT";
+  else if (f == FType::PARAMETER)
+    os << "PARAMETER";
+  else if (f == FType::BUFFER)
+    os << "BUFFER";
+  else
+    throw NEMLException("Unknown FType");
+
+  return os;
 }
 
 std::ostream &

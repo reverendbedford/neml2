@@ -109,7 +109,7 @@
     flow_rate = 'state/internal/gamma_rate_rd'
   []
   [flowrate]
-    type = ScalarSumModel
+    type = ScalarLinearCombination
     from_var = 'state/internal/gamma_rate_ri state/internal/gamma_rate_rd'
     to_var = 'state/internal/gamma_rate'
     coefficients = '0.5 0.5'
@@ -121,12 +121,15 @@
     type = AssociativeIsotropicPlasticHardening
   []
   [Erate]
-    type = SR2ForceRate
-    force = 'E'
+    type = SR2VariableRate
+    variable = 'forces/E'
+    rate = 'forces/E_rate'
   []
   [Eerate]
-    type = ElasticStrain
-    rate_form = true
+    type = SR2LinearCombination
+    from_var = 'forces/E_rate state/internal/Ep_rate'
+    to_var = 'state/internal/Ee_rate'
+    coefficients = '1 -1'
   []
   [elasticity]
     type = LinearIsotropicElasticity
@@ -136,11 +139,11 @@
   []
   [integrate_stress]
     type = SR2BackwardEulerTimeIntegration
-    variable = 'S'
+    variable = 'state/S'
   []
   [integrate_ep]
     type = ScalarBackwardEulerTimeIntegration
-    variable = 'internal/ep'
+    variable = 'state/internal/ep'
   []
   [surface]
     type = ComposedModel

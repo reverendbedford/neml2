@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -36,7 +36,7 @@ LinearKinematicHardening::expected_options()
   options.doc() += " following a linear relationship, i.e., \\f$ \\boldsymbol{X} = H "
                    "\\boldsymbol{K}_p \\f$ where \\f$ H \\f$ is the hardening modulus.";
 
-  options.set<CrossRef<Scalar>>("hardening_modulus");
+  options.set_parameter<CrossRef<Scalar>>("hardening_modulus");
   options.set("hardening_modulus").doc() = "Hardening modulus";
 
   return options;
@@ -55,7 +55,8 @@ LinearKinematicHardening::set_value(bool out, bool dout_din, bool d2out_din2)
     _X = _H * _Kp;
 
   if (dout_din)
-    _X.d(_Kp) = _H * SR2::identity_map(options());
+    if (_Kp.is_dependent())
+      _X.d(_Kp) = _H * SR2::identity_map(options());
 
   if (d2out_din2)
   {

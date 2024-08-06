@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -23,8 +23,8 @@
 // THE SOFTWARE.
 
 #include "neml2/solvers/NewtonWithTrustRegion.h"
-#include <iomanip>
 #include "neml2/misc/math.h"
+#include <iomanip>
 
 namespace neml2
 {
@@ -109,13 +109,13 @@ NewtonWithTrustRegion::subproblem_solver_options(const OptionSet & options) cons
 }
 
 void
-NewtonWithTrustRegion::prepare(const NonlinearSystem & /*system*/, const BatchTensor & x)
+NewtonWithTrustRegion::prepare(const NonlinearSystem & /*system*/, const Tensor & x)
 {
   _delta = Scalar::full(x.batch_sizes(), _delta_0, x.options());
 }
 
 void
-NewtonWithTrustRegion::update(NonlinearSystem & system, BatchTensor & x)
+NewtonWithTrustRegion::update(NonlinearSystem & system, Tensor & x)
 {
   auto p = solve_direction(system);
 
@@ -125,7 +125,7 @@ NewtonWithTrustRegion::update(NonlinearSystem & system, BatchTensor & x)
 
   // Actual reduction in the objective function
   auto xp = x + system.scale_direction(p);
-  auto [Rp, Jp] = system.residual_and_Jacobian(xp);
+  system.residual_and_Jacobian(xp);
   auto nRp = system.residual_norm();
   auto red_a = 0.5 * torch::pow(nR, 2.0) - 0.5 * torch::pow(nRp, 2.0);
 
@@ -133,12 +133,12 @@ NewtonWithTrustRegion::update(NonlinearSystem & system, BatchTensor & x)
   auto rho = red_a / red_b;
 
   // Adjust the trust region based on the quality of the subproblem
-  _delta.batch_index_put({rho < _reduce_criteria},
-                         _reduce_factor * _delta.batch_index({rho < _reduce_criteria}));
-  _delta.batch_index_put({rho > _expand_criteria},
-                         torch::clamp(_expand_factor * _delta.batch_index({rho > _expand_criteria}),
-                                      c10::nullopt,
-                                      _delta_max));
+  _delta.batch_index_put_({rho < _reduce_criteria},
+                          _reduce_factor * _delta.batch_index({rho < _reduce_criteria}));
+  _delta.batch_index_put_(
+      {rho > _expand_criteria},
+      torch::clamp(
+          _expand_factor * _delta.batch_index({rho > _expand_criteria}), c10::nullopt, _delta_max));
 
   // Accept or reject the current step
   auto accept = (rho >= _accept_criteria).unsqueeze(-1);
@@ -148,7 +148,7 @@ NewtonWithTrustRegion::update(NonlinearSystem & system, BatchTensor & x)
   {
     std::cout << "     RHO MIN/MAX            : " << std::scientific << torch::min(rho).item<Real>()
               << "/" << std::scientific << torch::max(rho).item<Real>() << std::endl;
-    std::cout << "     ACCEPTANCE RATE        : " << torch::sum(accept).item<TorchSize>() << "/"
+    std::cout << "     ACCEPTANCE RATE        : " << torch::sum(accept).item<Size>() << "/"
               << utils::storage_size(_delta.batch_sizes()) << std::endl;
     std::cout << "     ADJUSTED DELTA MIN/MAX : " << std::scientific
               << torch::min(_delta).item<Real>() << "/" << std::scientific
@@ -159,7 +159,7 @@ NewtonWithTrustRegion::update(NonlinearSystem & system, BatchTensor & x)
   system.set_solution(x);
 }
 
-BatchTensor
+Tensor
 NewtonWithTrustRegion::solve_direction(const NonlinearSystem & system)
 {
   // The full Newton step
@@ -169,32 +169,30 @@ NewtonWithTrustRegion::solve_direction(const NonlinearSystem & system)
   _subproblem.reinit(system, _delta);
   auto s = _subproblem.solution().clone();
   auto [succeeded, iters] = _subproblem_solver.solve(_subproblem, s);
-  s = BatchTensor(torch::clamp(s, 0.0), s.batch_dim());
+  s = Tensor(torch::clamp(s, 0.0), s.batch_dim());
   auto p_trust = -_subproblem.preconditioned_direction(s);
 
   // Now select between the two... Basically take the full Newton step whenever possible
   auto newton_inside_trust_region =
-      (torch::linalg::vector_norm(p_newton, 2, -1, false, c10::nullopt) <= math::sqrt(2.0 * _delta))
-          .unsqueeze(-1);
+      (math::linalg::vector_norm(p_newton) <= math::sqrt(2.0 * _delta)).unsqueeze(-1);
 
   // Do some printing if verbose
   if (verbose)
   {
     std::cout << "     TRUST-REGION ITERATIONS: " << iters << std::endl;
-    std::cout << "     ACTIVE CONSTRAINTS     : " << torch::sum(s > 0).item<TorchSize>() << "/"
+    std::cout << "     ACTIVE CONSTRAINTS     : " << torch::sum(s > 0).item<Size>() << "/"
               << utils::storage_size(s.batch_sizes()) << std::endl;
   }
 
-  return BatchTensor(torch::where(newton_inside_trust_region, p_newton, p_trust),
-                     p_newton.batch_dim());
+  return Tensor(torch::where(newton_inside_trust_region, p_newton, p_trust), p_newton.batch_dim());
 }
 
 Scalar
 NewtonWithTrustRegion::merit_function_reduction(const NonlinearSystem & system,
-                                                const BatchTensor & p) const
+                                                const Tensor & p) const
 {
-  auto Jp = math::bmv(system.Jacobian_view(), p);
-  return -math::bvv(system.residual_view(), Jp) - 0.5 * math::bvv(Jp, Jp);
+  auto Jp = math::bmv(system.get_Jacobian(), p);
+  return -math::bvv(system.get_residual(), Jp) - 0.5 * math::bvv(Jp, Jp);
 }
 
 } // namespace neml2

@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -37,7 +37,7 @@ LinearSingleSlipHardeningRule::expected_options()
                   "\\sum_{i=1}^{n_{slip}} \\left| \\dot{\\gamma}_i \\right| \\f$ where \\f$ "
                   "\\theta \\f$ is the hardening slope.";
 
-  options.set<CrossRef<Scalar>>("hardening_slope");
+  options.set_parameter<CrossRef<Scalar>>("hardening_slope");
   options.set("hardening_slope").doc() = "Hardening rate";
 
   return options;
@@ -58,6 +58,7 @@ LinearSingleSlipHardeningRule::set_value(bool out, bool dout_din, bool d2out_din
     _tau_dot = _theta * _gamma_dot_sum;
 
   if (dout_din)
-    _tau_dot.d(_gamma_dot_sum) = _theta;
+    if (_gamma_dot_sum.is_dependent())
+      _tau_dot.d(_gamma_dot_sum) = _theta;
 }
 } // namespace neml2

@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -32,7 +32,7 @@ using namespace neml2;
 
 TEST_CASE("LabeledAxisAccessor", "[tensors]")
 {
-  LabeledAxisAccessor a{{"a", "b", "c"}};
+  LabeledAxisAccessor a("a", "b", "c");
 
   SECTION("struct LabeledAxisAccessor")
   {
@@ -42,7 +42,7 @@ TEST_CASE("LabeledAxisAccessor", "[tensors]")
                           Catch::Matchers::ContainsSubstring("Invalid item name"));
     }
 
-    SECTION("vec") { REQUIRE(a.vec() == std::vector<std::string>{"a", "b", "c"}); }
+    SECTION("vec") { REQUIRE(a.vec() == c10::SmallVector<std::string>{"a", "b", "c"}); }
 
     SECTION("empty")
     {
@@ -57,26 +57,26 @@ TEST_CASE("LabeledAxisAccessor", "[tensors]")
 
     SECTION("with_suffix")
     {
-      REQUIRE(a.with_suffix("s").vec() == std::vector<std::string>{"a", "b", "cs"});
+      REQUIRE(a.with_suffix("s").vec() == c10::SmallVector<std::string>{"a", "b", "cs"});
     }
 
     SECTION("append")
     {
-      REQUIRE(a.append("d").vec() == std::vector<std::string>{"a", "b", "c", "d"});
+      REQUIRE(a.append("d").vec() == c10::SmallVector<std::string>{"a", "b", "c", "d"});
     }
 
     SECTION("on")
     {
-      REQUIRE(a.on("x").vec() == std::vector<std::string>{"x", "a", "b", "c"});
-      LabeledAxisAccessor b{{"d", "e", "f"}};
-      REQUIRE(a.on(b).vec() == std::vector<std::string>{"d", "e", "f", "a", "b", "c"});
+      REQUIRE(a.prepend("x").vec() == c10::SmallVector<std::string>{"x", "a", "b", "c"});
+      LabeledAxisAccessor b("d", "e", "f");
+      REQUIRE(a.prepend(b).vec() == c10::SmallVector<std::string>{"d", "e", "f", "a", "b", "c"});
     }
 
     SECTION("slice")
     {
-      REQUIRE(a.slice(1).vec() == std::vector<std::string>{"b", "c"});
-      REQUIRE(a.slice(1, 3).vec() == std::vector<std::string>{"b", "c"});
-      REQUIRE(a.slice(0, 2).vec() == std::vector<std::string>{"a", "b"});
+      REQUIRE(a.slice(1).vec() == c10::SmallVector<std::string>{"b", "c"});
+      REQUIRE(a.slice(1, 3).vec() == c10::SmallVector<std::string>{"b", "c"});
+      REQUIRE(a.slice(0, 2).vec() == c10::SmallVector<std::string>{"a", "b"});
     }
   }
 

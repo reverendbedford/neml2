@@ -10,6 +10,17 @@ libneml2:
         NEML2_RUNNER: OFF
         NEML2_PYBIND: OFF
         NEML2_DOC: OFF
+        NEML2_CLANG_TIDY: OFF
+    clang-tidy:
+      short: Development (C++) w/ clang-tidy
+      long: Development (C++) with clang-tidy diagnostics enabled
+      buildType: Debug
+      settings:
+        NEML2_TESTS: OFF
+        NEML2_RUNNER: OFF
+        NEML2_PYBIND: OFF
+        NEML2_DOC: OFF
+        NEML2_CLANG_TIDY: ON
     development-python:
       short: Development (C++ and Python)
       long: Build for C++ and Python binding development
@@ -19,6 +30,7 @@ libneml2:
         NEML2_RUNNER: OFF
         NEML2_PYBIND: ON
         NEML2_DOC: OFF
+        NEML2_CLANG_TIDY: OFF
     benchmarking:
       short: Benchmarking
       long: Build the runner for benchmarking and profiling
@@ -29,6 +41,7 @@ libneml2:
         NEML2_RUNNER_AS_PROFILER: ON
         NEML2_PYBIND: OFF
         NEML2_DOC: OFF
+        NEML2_CLANG_TIDY: OFF
     coverage:
       short: Coverage
       long: Build unit tests with coverage flags
@@ -41,13 +54,14 @@ libneml2:
         NEML2_RUNNER: OFF
         NEML2_PYBIND: OFF
         NEML2_DOC: OFF
+        NEML2_CLANG_TIDY: OFF
     production:
       short: Production
       long: Build for production release
       buildType: RelWithDebInfo
       settings:
-        CMAKE_UNITY_BUILD: ON
         NEML2_TESTS: OFF
         NEML2_RUNNER: OFF
         NEML2_PYBIND: ON
         NEML2_DOC: ON
+        NEML2_CLANG_TIDY: OFF

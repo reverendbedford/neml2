@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -34,19 +34,11 @@ LabeledVector::slice(const std::string & name) const
 }
 
 void
-LabeledVector::accumulate(const LabeledVector & other, bool recursive)
-{
-  const auto indices = axis(0).common_indices(other.axis(0), recursive);
-  for (const auto & [idx, idx_other] : indices)
-    _tensor.base_index({idx}) += other.base_index({idx_other});
-}
-
-void
 LabeledVector::fill(const LabeledVector & other, bool recursive)
 {
   const auto indices = axis(0).common_indices(other.axis(0), recursive);
   for (const auto & [idx, idx_other] : indices)
-    _tensor.base_index_put({idx}, other.base_index({idx_other}));
+    _tensor.base_index_put_({idx}, other.tensor().base_index({idx_other}));
 }
 
 namespace utils
@@ -57,8 +49,8 @@ allclose(const LabeledVector & a, const LabeledVector & b, Real rtol, Real atol)
   if (a.axis(0) != b.axis(0))
     return false;
 
-  for (auto var : a.axis(0).variable_accessors(true))
-    if (!torch::allclose(a(var), b(var), rtol, atol))
+  for (auto var : a.axis(0).variable_names())
+    if (!torch::allclose(a.base_index(var), b.base_index(var), rtol, atol))
       return false;
 
   return true;

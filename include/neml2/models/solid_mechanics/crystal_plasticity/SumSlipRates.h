@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -41,12 +41,6 @@ public:
 
   SumSlipRates(const OptionSet & options);
 
-  /// Input: list of slip rates
-  const VariableName slip_rates;
-
-  /// Output: sum of the absolute values
-  const VariableName sum_slip_rates;
-
 protected:
   /// Calculate the sum and the derivatives
   void set_value(bool out, bool dout_din, bool d2out_din2) override;
@@ -58,6 +52,6 @@ protected:
   Variable<Scalar> & _sg;
 
   /// Slip rates
-  const Variable<BatchTensor> & _g;
+  const Variable<Tensor> & _g;
 };
 } // namespace neml2

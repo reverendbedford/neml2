@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -37,10 +37,13 @@ WR2ExplicitExponentialTimeIntegration::expected_options()
                   "update can be written as \\f$ s = \\exp\\left[ (t-t_n)\\dot{s}\\right] \\circ "
                   "s_n \\f$, where \\f$ \\circ \\f$ denotes the rotation operator.";
 
-  options.set<VariableName>("variable");
+  options.set_output("variable");
   options.set("variable").doc() = "Variable being integrated";
 
-  options.set<VariableName>("time") = VariableName("t");
+  options.set_input("rate");
+  options.set("rate").doc() = "Variable rate of change";
+
+  options.set_input("time") = VariableName("forces", "t");
   options.set("time").doc() = "Time";
 
   return options;
@@ -49,14 +52,23 @@ WR2ExplicitExponentialTimeIntegration::expected_options()
 WR2ExplicitExponentialTimeIntegration::WR2ExplicitExponentialTimeIntegration(
     const OptionSet & options)
   : Model(options),
-    _var_name(options.get<VariableName>("variable")),
-    _var_rate_name(_var_name.with_suffix("_rate")),
-    _s(declare_output_variable<Rot>(_var_name.on("state"))),
-    _s_dot(declare_input_variable<WR2>(_var_rate_name.on("state"))),
-    _sn(declare_input_variable<Rot>(_var_name.on("old_state"))),
-    _t(declare_input_variable<Scalar>(options.get<VariableName>("time").on("forces"))),
-    _tn(declare_input_variable<Scalar>(options.get<VariableName>("time").on("old_forces")))
+    _s(declare_output_variable<Rot>("variable")),
+    _sn(declare_input_variable<Rot>(_s.name().old())),
+    _s_dot(options.get<VariableName>("rate").empty()
+               ? declare_input_variable<WR2>(_s.name().with_suffix("_rate"))
+               : declare_input_variable<WR2>("rate")),
+    _t(declare_input_variable<Scalar>("time")),
+    _tn(declare_input_variable<Scalar>(_t.name().old()))
 {
+}
+
+void
+WR2ExplicitExponentialTimeIntegration::diagnose(std::vector<Diagnosis> & diagnoses) const
+{
+  Model::diagnose(diagnoses);
+  diagnostic_assert_state(diagnoses, _s);
+  diagnostic_assert_state(diagnoses, _s_dot);
+  diagnostic_assert_force(diagnoses, _t);
 }
 
 void
@@ -76,12 +88,13 @@ WR2ExplicitExponentialTimeIntegration::set_value(bool out, bool dout_din, bool d
   {
     const auto de = (_s_dot * dt).dexp();
     _s.d(_s_dot) = Rot(_sn).drotate(inc) * de * dt;
-    if (Model::stage == Model::Stage::UPDATING)
-    {
-      _s.d(_sn) = Rot(_sn).drotate_self(inc);
-      _s.d(_t) = Rot(_sn).drotate(inc) * de * Vec(_s_dot.value());
-      _s.d(_tn) = -Rot(_sn).drotate(inc) * de * Vec(_s_dot.value());
-    }
+
+    if (currently_solving_nonlinear_system())
+      return;
+
+    _s.d(_sn) = Rot(_sn).drotate_self(inc);
+    _s.d(_t) = Rot(_sn).drotate(inc) * de * Vec(_s_dot.value());
+    _s.d(_tn) = -Rot(_sn).drotate(inc) * de * Vec(_s_dot.value());
   }
 }
 

@@ -28,7 +28,10 @@
 
 [Models]
   [overstress]
-    type = OverStress
+    type = SR2LinearCombination
+    to_var = 'state/internal/O'
+    from_var = 'state/internal/M state/internal/X'
+    coefficients = '1 -1'
   []
   [vonmises]
     type = SR2Invariant

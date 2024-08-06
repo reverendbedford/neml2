@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -41,10 +41,10 @@ public:
   OptionCollection() = default;
 
   /// Get global settings
-  ///@{
   OptionSet & settings() { return _settings; }
+
+  /// Get global settings
   const OptionSet & settings() const { return _settings; }
-  ///@}
 
   /// Implicit conversion to an STL map.
   operator std::map<std::string, std::map<std::string, OptionSet>>() const { return _data; }

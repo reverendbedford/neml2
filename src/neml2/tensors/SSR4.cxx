@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -113,7 +113,7 @@ SSR4::drotate(const Rot & r) const
 }
 
 Scalar
-SSR4::operator()(TorchSize i, TorchSize j, TorchSize k, TorchSize l) const
+SSR4::operator()(Size i, Size j, Size k, Size l) const
 {
   const auto a = math::mandel_reverse_index[i][j];
   const auto b = math::mandel_reverse_index[k][l];
@@ -123,7 +123,7 @@ SSR4::operator()(TorchSize i, TorchSize j, TorchSize k, TorchSize l) const
 SSR4
 SSR4::inverse() const
 {
-  return SSR4(torch::linalg::inv(*this), batch_dim());
+  return math::linalg::inv(*this);
 }
 
 SSR4
@@ -135,7 +135,7 @@ SSR4::transpose_minor() const
 SSR4
 SSR4::transpose_major() const
 {
-  return BatchTensorBase<SSR4>::base_transpose(0, 1);
+  return TensorBase<SSR4>::base_transpose(0, 1);
 }
 
 SR2

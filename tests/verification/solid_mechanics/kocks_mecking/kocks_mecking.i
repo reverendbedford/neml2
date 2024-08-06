@@ -147,6 +147,7 @@
   []
   [g]
     type = KocksMeckingActivationEnergy
+    activation_energy = 'state/g'
     shear_modulus = 'mu'
     k = 1.38064e-20
     b = 2.48e-7
@@ -154,8 +155,9 @@
   []
   [flowrate]
     type = KocksMeckingFlowSwitch
+    activation_energy = 'state/g'
     g0 = 0.3708
-    rate_independent_flow_rate = 'state/internal/gamma_rate_ri' 
+    rate_independent_flow_rate = 'state/internal/gamma_rate_ri'
     rate_dependent_flow_rate = 'state/internal/gamma_rate_rd'
     sharpness = 500.0
   []
@@ -166,12 +168,15 @@
     type = AssociativeIsotropicPlasticHardening
   []
   [Erate]
-    type = SR2ForceRate
-    force = 'E'
+    type = SR2VariableRate
+    variable = 'forces/E'
+    rate = 'forces/E_rate'
   []
   [Eerate]
-    type = ElasticStrain
-    rate_form = true
+    type = SR2LinearCombination
+    from_var = 'forces/E_rate state/internal/Ep_rate'
+    to_var = 'state/internal/Ee_rate'
+    coefficients = '1 -1'
   []
   [modulus]
     type = ScalarLinearInterpolation
@@ -187,11 +192,11 @@
   []
   [integrate_stress]
     type = SR2BackwardEulerTimeIntegration
-    variable = 'S'
+    variable = 'state/S'
   []
   [integrate_ep]
     type = ScalarBackwardEulerTimeIntegration
-    variable = 'internal/ep'
+    variable = 'state/internal/ep'
   []
   [surface]
     type = ComposedModel

@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -42,8 +42,8 @@ TrustRegionSubProblem::reinit(const NonlinearSystem & system, const Scalar & del
   _residual = Scalar::empty(_batch_sizes, _options);
   _Jacobian = Scalar::empty(_batch_sizes, _options);
 
-  _R = system.residual_view().clone();
-  _J = system.Jacobian_view().clone();
+  _R = system.get_residual();
+  _J = system.get_Jacobian();
   _delta = delta.clone();
 
   _JJ = math::bmm(_J.base_transpose(0, 1), _J);
@@ -64,13 +64,13 @@ TrustRegionSubProblem::assemble(bool residual, bool Jacobian)
     _Jacobian = 1.0 / math::pow(np, 3.0) * math::bvv(p, preconditioned_solve(s, p));
 }
 
-BatchTensor
-TrustRegionSubProblem::preconditioned_solve(const Scalar & s, const BatchTensor & v) const
+Tensor
+TrustRegionSubProblem::preconditioned_solve(const Scalar & s, const Tensor & v) const
 {
-  return math::linalg::solve(_JJ + s * BatchTensor::identity(v.base_sizes()[0], _options), v);
+  return math::linalg::solve(_JJ + s * Tensor::identity(v.base_sizes()[0], _options), v);
 }
 
-BatchTensor
+Tensor
 TrustRegionSubProblem::preconditioned_direction(const Scalar & s) const
 {
   return preconditioned_solve(s, _JR);

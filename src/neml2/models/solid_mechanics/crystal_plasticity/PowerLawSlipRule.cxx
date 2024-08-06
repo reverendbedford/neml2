@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -24,6 +24,7 @@
 
 #include "neml2/models/solid_mechanics/crystal_plasticity/PowerLawSlipRule.h"
 #include "neml2/models/solid_mechanics/crystal_plasticity/SlipRule.h"
+#include "neml2/misc/math.h"
 
 namespace neml2
 {
@@ -40,10 +41,10 @@ PowerLawSlipRule::expected_options()
       "resolved shear, \\f$ \\hat{\\tau}_i \\f$ the slip system strength, \\f$ n \\f$ the rate "
       "senstivity, and \\f$ \\dot{\\gamma}_0 \\f$ a reference slip rate.";
 
-  options.set<CrossRef<Scalar>>("gamma0");
+  options.set_parameter<CrossRef<Scalar>>("gamma0");
   options.set("gamma0").doc() = "Reference slip rate";
 
-  options.set<CrossRef<Scalar>>("n");
+  options.set_parameter<CrossRef<Scalar>>("n");
   options.set("n").doc() = "Rate sensitivity exponent";
 
   return options;
@@ -66,17 +67,20 @@ PowerLawSlipRule::set_value(bool out, bool dout_din, bool d2out_din2)
   const auto tau = Scalar(_tau, batch_dim() + 1);
 
   if (out)
-    _g = BatchTensor(_gamma0 * math::pow(abs(rss / tau), _n - 1.0) * rss / tau, batch_dim());
+    _g = Tensor(_gamma0 * math::pow(abs(rss / tau), _n - 1.0) * rss / tau, batch_dim());
 
   if (dout_din)
   {
-    _g.d(_rss) = BatchTensor(
-        math::batch_diag_embed(_gamma0 * _n * math::pow(abs(rss / tau), _n - 1.0) / tau),
-        batch_dim());
-    _g.d(_tau) =
-        BatchTensor(math::batch_diag_embed(-_n * _gamma0 * rss * math::pow(abs(rss), _n - 1.0) /
-                                           math::pow(tau, _n + 1)),
-                    batch_dim());
+    if (_rss.is_dependent())
+      _g.d(_rss) =
+          Tensor(math::batch_diag_embed(_gamma0 * _n * math::pow(abs(rss / tau), _n - 1.0) / tau),
+                 batch_dim());
+
+    if (_tau.is_dependent())
+      _g.d(_tau) =
+          Tensor(math::batch_diag_embed(-_n * _gamma0 * rss * math::pow(abs(rss), _n - 1.0) /
+                                        math::pow(tau, _n + 1)),
+                 batch_dim());
   }
 }
 } // namespace neml2

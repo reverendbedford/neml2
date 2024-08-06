@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -29,6 +29,7 @@
 
 namespace neml2
 {
+
 /**
  * Two tensors are said to be broadcastable if
  * 1. Base shapes are the same
@@ -43,7 +44,7 @@ bool broadcastable(T &&... tensors);
  * This should be as simple as the maximum batch_dim() among all arguments.
  */
 template <class... T>
-TorchSize broadcast_batch_dim(T &&...);
+Size broadcast_batch_dim(T &&...);
 
 /**
  * @brief A helper function to assert that all tensors are broadcastable
@@ -87,6 +88,9 @@ void neml_assert_batch_broadcastable_dbg(T &&...);
 
 namespace utils
 {
+/// Demangle a piece of cxx abi type information
+std::string demangle(const char * name);
+
 /// Check if all shapes are the *same*.
 template <class... T>
 bool sizes_same(T &&... shapes);
@@ -105,7 +109,7 @@ bool sizes_broadcastable(T &&... shapes);
  * @brief Return the broadcast shape of all the shapes.
  */
 template <class... T>
-TorchShape broadcast_sizes(T &&... shapes);
+TensorShape broadcast_sizes(T &&... shapes);
 
 /**
  * @brief The flattened storage size of a tensor with given shape
@@ -119,10 +123,10 @@ TorchShape broadcast_sizes(T &&... shapes);
  * storage_size({5, 1, 1}) == 5;
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
-TorchSize storage_size(TorchShapeRef shape);
+Size storage_size(TensorShapeRef shape);
 
 template <typename... S>
-TorchShape add_shapes(S &&... shape);
+TensorShape add_shapes(S &&... shape);
 
 /**
  * @brief Pad shape \p s to dimension \p dim by prepending sizes of \p pad.
@@ -130,9 +134,9 @@ TorchShape add_shapes(S &&... shape);
  * @param s The original shape to pad
  * @param dim The resulting dimension
  * @param pad The values used to pad the shape, default to 1
- * @return TorchShape The padded shape with dimension \p dim
+ * @return TensorShape The padded shape with dimension \p dim
  */
-TorchShape pad_prepend(TorchShapeRef s, TorchSize dim, TorchSize pad = 1);
+TensorShape pad_prepend(TensorShapeRef s, Size dim, Size pad = 1);
 
 /**
  * @brief Pad shape \p s to dimension \p dim by appending sizes of \p pad.
@@ -140,9 +144,9 @@ TorchShape pad_prepend(TorchShapeRef s, TorchSize dim, TorchSize pad = 1);
  * @param s The original shape to pad
  * @param dim The resulting dimension
  * @param pad The values used to pad the shape, default to 1
- * @return TorchShape The padded shape with dimension \p dim
+ * @return TensorShape The padded shape with dimension \p dim
  */
-TorchShape pad_append(TorchShapeRef s, TorchSize dim, TorchSize pad = 1);
+TensorShape pad_append(TensorShapeRef s, Size dim, Size pad = 1);
 
 std::string indentation(int level, int indent = 2);
 
@@ -152,9 +156,9 @@ std::string stringify(const T & t);
 namespace details
 {
 template <typename... S>
-TorchShape add_shapes_impl(TorchShape &, TorchShapeRef, S &&...);
+TensorShape add_shapes_impl(TensorShape &, TensorShapeRef, S &&...);
 
-TorchShape add_shapes_impl(TorchShape &);
+TensorShape add_shapes_impl(TensorShape &);
 } // namespace details
 } // namespace utils
 } // namespace neml2
@@ -175,7 +179,7 @@ broadcastable(T &&... tensors)
 }
 
 template <class... T>
-TorchSize
+Size
 broadcast_batch_dim(T &&... tensor)
 {
   return std::max({tensor.batch_dim()...});
@@ -238,7 +242,7 @@ template <class... T>
 bool
 sizes_same(T &&... shapes)
 {
-  auto all_shapes = std::vector<TorchShapeRef>{shapes...};
+  auto all_shapes = std::vector<TensorShapeRef>{shapes...};
   for (size_t i = 0; i < all_shapes.size() - 1; i++)
     if (all_shapes[i] != all_shapes[i + 1])
       return false;
@@ -250,11 +254,11 @@ bool
 sizes_broadcastable(T &&... shapes)
 {
   auto dim = std::max({shapes.size()...});
-  auto all_shapes_padded = std::vector<TorchShape>{pad_prepend(shapes, dim)...};
+  auto all_shapes_padded = std::vector<TensorShape>{pad_prepend(shapes, dim)...};
 
   for (size_t i = 0; i < dim; i++)
   {
-    TorchSize max_sz = 1;
+    Size max_sz = 1;
     for (const auto & s : all_shapes_padded)
     {
       if (max_sz == 1)
@@ -272,14 +276,14 @@ sizes_broadcastable(T &&... shapes)
 }
 
 template <class... T>
-TorchShape
+TensorShape
 broadcast_sizes(T &&... shapes)
 {
   neml_assert_dbg(sizes_broadcastable(shapes...), "Shapes not broadcastable: ", shapes...);
 
   auto dim = std::max({shapes.size()...});
-  auto all_shapes_padded = std::vector<TorchShape>{pad_prepend(shapes, dim)...};
-  auto bshape = TorchShape(dim, 1);
+  auto all_shapes_padded = std::vector<TensorShape>{pad_prepend(shapes, dim)...};
+  auto bshape = TensorShape(dim, 1);
 
   for (size_t i = 0; i < dim; i++)
     for (const auto & s : all_shapes_padded)
@@ -290,10 +294,10 @@ broadcast_sizes(T &&... shapes)
 }
 
 template <typename... S>
-TorchShape
+TensorShape
 add_shapes(S &&... shape)
 {
-  TorchShape net;
+  TensorShape net;
   return details::add_shapes_impl(net, std::forward<S>(shape)...);
 }
 
@@ -316,8 +320,8 @@ stringify(const bool & t)
 namespace details
 {
 template <typename... S>
-TorchShape
-add_shapes_impl(TorchShape & net, TorchShapeRef s, S &&... rest)
+TensorShape
+add_shapes_impl(TensorShape & net, TensorShapeRef s, S &&... rest)
 {
   net.insert(net.end(), s.begin(), s.end());
   return add_shapes_impl(net, std::forward<S>(rest)...);

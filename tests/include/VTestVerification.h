@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -37,10 +37,12 @@ public:
 
   VTestVerification(const OptionSet & options);
 
+  virtual void diagnose(std::vector<Diagnosis> & diagnoses) const override;
+
   bool run() override;
 
 private:
-  bool allclose(const std::string & var, torch::Tensor ref) const;
+  void compare(const std::string & var, torch::Tensor ref, std::ostringstream & err) const;
 
   /// The driver that will run the NEML2 model
   TransientDriver & _driver;

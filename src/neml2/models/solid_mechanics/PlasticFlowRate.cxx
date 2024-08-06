@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -31,10 +31,10 @@ PlasticFlowRate::expected_options()
 {
   OptionSet options = Model::expected_options();
 
-  options.set<VariableName>("yield_function") = VariableName("state", "internal", "fp");
+  options.set_input("yield_function") = VariableName("state", "internal", "fp");
   options.set("yield_function").doc() = "Yield function";
 
-  options.set<VariableName>("flow_rate") = VariableName("state", "internal", "gamma_rate");
+  options.set_output("flow_rate") = VariableName("state", "internal", "gamma_rate");
   options.set("flow_rate").doc() = "Flow rate";
 
   return options;

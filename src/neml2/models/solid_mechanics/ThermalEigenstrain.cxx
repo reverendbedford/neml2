@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -38,13 +38,13 @@ ThermalEigenstrain::expected_options()
       "\\alpha \\f$ is the coefficient of thermal expansion (CTE), \\f$ T \\f$ is the temperature, "
       "and \\f$ T_0 \\f$ is the reference (stress-free) temperature.";
 
-  options.set<VariableName>("temperature") = VariableName("forces", "T");
+  options.set_input("temperature") = VariableName("forces", "T");
   options.set("temperature").doc() = "Temperature";
 
-  options.set<CrossRef<Scalar>>("reference_temperature");
+  options.set_buffer<CrossRef<Scalar>>("reference_temperature");
   options.set("reference_temperature").doc() = "Reference (stress-free) temperature";
 
-  options.set<CrossRef<Scalar>>("CTE");
+  options.set_parameter<CrossRef<Scalar>>("CTE");
   options.set("CTE").doc() = "Coefficient of thermal expansion";
 
   return options;
@@ -53,7 +53,7 @@ ThermalEigenstrain::expected_options()
 ThermalEigenstrain::ThermalEigenstrain(const OptionSet & options)
   : Eigenstrain(options),
     _T(declare_input_variable<Scalar>("temperature")),
-    _T0(declare_parameter<Scalar>("T0", "reference_temperature")),
+    _T0(declare_buffer<Scalar>("T0", "reference_temperature")),
     _alpha(declare_parameter<Scalar>("alpha", "CTE"))
 {
 }
@@ -65,7 +65,8 @@ ThermalEigenstrain::set_value(bool out, bool dout_din, bool d2out_din2)
     _eg = _alpha * (_T - _T0) * SR2::identity(options());
 
   if (dout_din)
-    _eg.d(_T) = _alpha * SR2::identity(options());
+    if (_T.is_dependent())
+      _eg.d(_T) = _alpha * SR2::identity(options());
 
   if (d2out_din2)
   {

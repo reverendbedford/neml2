@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -31,7 +31,7 @@ using namespace neml2;
 
 TEST_CASE("FillSR2", "[tensors/user_tensors]")
 {
-  load_model("unit/tensors/user_tensors/test_FillSR2.i");
+  reload_input("unit/tensors/user_tensors/test_FillSR2.i");
 
   const auto auto_1 = Factory::get_object_ptr<SR2>("Tensors", "1");
   const auto auto_1_correct = SR2::fill(1);

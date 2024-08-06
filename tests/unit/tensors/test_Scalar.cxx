@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -34,7 +34,7 @@ TEST_CASE("Scalar", "[tensors]")
   torch::manual_seed(42);
   const auto & DTO = default_tensor_options();
 
-  TorchShape B = {5, 3, 1, 2}; // batch shape
+  TensorShape B = {5, 3, 1, 2}; // batch shape
 
   SECTION("class Scalar")
   {
@@ -50,7 +50,7 @@ TEST_CASE("Scalar", "[tensors]")
       auto I = Scalar::identity_map(DTO);
       auto a = Scalar(torch::rand(B, DTO));
 
-      auto apply = [](const BatchTensor & x) { return x; };
+      auto apply = [](const Tensor & x) { return x; };
       auto da_da = finite_differencing_derivative(apply, a);
 
       REQUIRE(torch::allclose(I, da_da));
@@ -60,8 +60,8 @@ TEST_CASE("Scalar", "[tensors]")
   SECTION("operator+")
   {
     Scalar a(3.3, DTO);
-    auto b = BatchTensor::full({3, 2, 1}, -5.2, DTO);
-    auto c = BatchTensor::full({3, 2, 1}, -1.9, DTO);
+    auto b = Tensor::full({3, 2, 1}, -5.2, DTO);
+    auto c = Tensor::full({3, 2, 1}, -1.9, DTO);
 
     REQUIRE(torch::allclose(a + b, c));
     REQUIRE(torch::allclose(a.batch_expand(B) + b, c.batch_expand(B)));
@@ -77,8 +77,8 @@ TEST_CASE("Scalar", "[tensors]")
   SECTION("operator-")
   {
     Scalar a(3.3, DTO);
-    auto b = BatchTensor::full({3, 2, 1}, -5.2, DTO);
-    auto c = BatchTensor::full({3, 2, 1}, 8.5, DTO);
+    auto b = Tensor::full({3, 2, 1}, -5.2, DTO);
+    auto c = Tensor::full({3, 2, 1}, 8.5, DTO);
 
     REQUIRE(torch::allclose(a - b, c));
     REQUIRE(torch::allclose(a.batch_expand(B) - b, c.batch_expand(B)));
@@ -94,8 +94,8 @@ TEST_CASE("Scalar", "[tensors]")
   SECTION("operator*")
   {
     Scalar a(3.3, DTO);
-    auto b = BatchTensor::full({3, 2, 1}, -5.2, DTO);
-    auto c = BatchTensor::full({3, 2, 1}, -17.16, DTO);
+    auto b = Tensor::full({3, 2, 1}, -5.2, DTO);
+    auto c = Tensor::full({3, 2, 1}, -17.16, DTO);
 
     REQUIRE(torch::allclose(a * b, c));
     REQUIRE(torch::allclose(a.batch_expand(B) * b, c.batch_expand(B)));
@@ -111,8 +111,8 @@ TEST_CASE("Scalar", "[tensors]")
   SECTION("operator/")
   {
     Scalar a(3.3, DTO);
-    auto b = BatchTensor::full({3, 2, 1}, -5.2, DTO);
-    auto c = BatchTensor::full({3, 2, 1}, -0.6346153846153846, DTO);
+    auto b = Tensor::full({3, 2, 1}, -5.2, DTO);
+    auto c = Tensor::full({3, 2, 1}, -0.6346153846153846, DTO);
 
     REQUIRE(torch::allclose(a / b, c));
     REQUIRE(torch::allclose(a.batch_expand(B) / b, c.batch_expand(B)));
@@ -128,8 +128,8 @@ TEST_CASE("Scalar", "[tensors]")
   SECTION("pow")
   {
     Scalar a(3.3, DTO);
-    auto b = BatchTensor::full({2, 2}, 2.0, DTO);
-    auto c = BatchTensor::full({2, 2}, 9.849155306759329, DTO);
+    auto b = Tensor::full({2, 2}, 2.0, DTO);
+    auto c = Tensor::full({2, 2}, 9.849155306759329, DTO);
     REQUIRE(torch::allclose(math::pow(b, a), c));
     REQUIRE(torch::allclose(math::pow(b.batch_expand(B), a), c.batch_expand(B)));
     REQUIRE(torch::allclose(math::pow(b, a.batch_expand(B)), c.batch_expand(B)));

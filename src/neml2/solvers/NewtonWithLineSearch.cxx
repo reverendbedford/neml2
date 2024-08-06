@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -61,7 +61,7 @@ NewtonWithLineSearch::NewtonWithLineSearch(const OptionSet & options)
 }
 
 void
-NewtonWithLineSearch::update(NonlinearSystem & system, BatchTensor & x)
+NewtonWithLineSearch::update(NonlinearSystem & system, Tensor & x)
 {
   auto dx = solve_direction(system);
 
@@ -71,13 +71,11 @@ NewtonWithLineSearch::update(NonlinearSystem & system, BatchTensor & x)
 }
 
 void
-NewtonWithLineSearch::linesearch(NonlinearSystem & system,
-                                 const BatchTensor & x,
-                                 const BatchTensor & dx)
+NewtonWithLineSearch::linesearch(NonlinearSystem & system, const Tensor & x, const Tensor & dx)
 {
   _alpha = Scalar::ones(x.batch_sizes(), x.options());
 
-  const auto & R = system.residual_view();
+  const auto & R = system.get_residual();
   auto R0 = R.clone();
   auto nR02 = math::bvv(R0, R0);
 
@@ -98,8 +96,8 @@ NewtonWithLineSearch::linesearch(NonlinearSystem & system,
     if (torch::all(stop).item<bool>())
       break;
 
-    _alpha.batch_index_put({torch::logical_not(stop)},
-                           _alpha.batch_index({torch::logical_not(stop)}) / _linesearch_sigma);
+    _alpha.batch_index_put_({torch::logical_not(stop)},
+                            _alpha.batch_index({torch::logical_not(stop)}) / _linesearch_sigma);
   }
 }
 

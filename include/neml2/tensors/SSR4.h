@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/tensors/FixedDimTensor.h"
+#include "neml2/tensors/PrimitiveTensor.h"
 
 namespace neml2
 {
@@ -40,10 +40,10 @@ class Rot;
  *
  * Mandel notation is used, and so the logical storage space is (6, 6).
  */
-class SSR4 : public FixedDimTensor<SSR4, 6, 6>
+class SSR4 : public PrimitiveTensor<SSR4, 6, 6>
 {
 public:
-  using FixedDimTensor<SSR4, 6, 6>::FixedDimTensor;
+  using PrimitiveTensor<SSR4, 6, 6>::PrimitiveTensor;
 
   /// Initialize with the symmetrized fourth order tensor
   SSR4(const R4 & T);
@@ -70,7 +70,7 @@ public:
   SSFR5 drotate(const Rot & r) const;
 
   /// Accessor
-  Scalar operator()(TorchSize i, TorchSize j, TorchSize k, TorchSize l) const;
+  Scalar operator()(Size i, Size j, Size k, Size l) const;
 
   // Inversion
   SSR4 inverse() const;

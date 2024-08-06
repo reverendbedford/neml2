@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -36,6 +36,8 @@ public:
 
   ForwardEulerTimeIntegration(const OptionSet & options);
 
+  virtual void diagnose(std::vector<Diagnosis> & diagnoses) const override;
+
 private:
   const VariableName _var_name;
   const VariableName _var_rate_name;
@@ -46,11 +48,11 @@ protected:
   /// Current variable value
   Variable<T> & _s;
 
-  /// Current variable rate
-  const Variable<T> & _ds_dt;
-
   /// Old variable value
   const Variable<T> & _sn;
+
+  /// Current variable rate
+  const Variable<T> & _ds_dt;
 
   /// Current time
   const Variable<Scalar> & _t;
@@ -60,5 +62,6 @@ protected:
 };
 
 typedef ForwardEulerTimeIntegration<Scalar> ScalarForwardEulerTimeIntegration;
+typedef ForwardEulerTimeIntegration<Vec> VecForwardEulerTimeIntegration;
 typedef ForwardEulerTimeIntegration<SR2> SR2ForwardEulerTimeIntegration;
 } // namespace neml2

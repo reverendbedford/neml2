@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -37,18 +37,48 @@ def_LabeledAxis(py::module_ & m)
   // Note that we do not want to expose constructors and modifiers as a neml2::Model typically owns
   // its axes, and so the constructor and modifier bindings introduce ambiguity in ownership, i.e.
   // should C++ or Python own this LabeledAxis?
-  auto c =
-      py::class_<LabeledAxis>(m, "LabeledAxis")
-          .def("has_item", &LabeledAxis::has_item)
-          .def("has_variable",
-               [](const LabeledAxis & self, const LabeledAxisAccessor & name)
-               { return self.has_variable(name); })
-          .def("has_subaxis", &LabeledAxis::has_subaxis)
-          .def("storage_size", [](const LabeledAxis & self) { return self.storage_size(); })
-          .def(
-              "subaxis",
-              [](const LabeledAxis & self, const std::string & name) { return self.subaxis(name); },
-              py::return_value_policy::reference);
+  auto c = py::class_<LabeledAxis>(m, "LabeledAxis")
+               .def("has_item", &LabeledAxis::has_item)
+               .def("has_variable",
+                    [](const LabeledAxis & self, const LabeledAxisAccessor & name)
+                    { return self.has_variable(name); })
+               .def("has_subaxis", &LabeledAxis::has_subaxis)
+               .def(
+                   "subaxis",
+                   [](const LabeledAxis & self, const LabeledAxisAccessor & name)
+                   { return self.subaxis(name); },
+                   py::return_value_policy::reference)
+               .def(
+                   "variable_names",
+                   [](const LabeledAxis & self, bool recursive)
+                   {
+                     auto vars = self.sort_by_assembly_order(self.variable_names(recursive));
+                     std::vector<std::string> var_names;
+                     for (const auto & var : vars)
+                       var_names.push_back(utils::stringify(var));
+                     return var_names;
+                   },
+                   py::arg("recursive") = true)
+               .def(
+                   "subaxis_names",
+                   [](const LabeledAxis & self, bool recursive)
+                   {
+                     auto subaxes_unsrt = self.subaxis_names(recursive);
+                     auto subaxes = recursive ? std::vector<LabeledAxisAccessor>(
+                                                    subaxes_unsrt.begin(), subaxes_unsrt.end())
+                                              : self.sort_by_assembly_order(subaxes_unsrt);
+                     std::vector<std::string> subaxis_names;
+                     for (const auto & subaxis : subaxes)
+                       subaxis_names.push_back(utils::stringify(subaxis));
+                     return subaxis_names;
+                   },
+                   py::arg("recursive") = false)
+               .def("storage_size",
+                    py::overload_cast<const LabeledAxisAccessor &>(&LabeledAxis::storage_size,
+                                                                   py::const_),
+                    py::arg("item") = LabeledAxisAccessor())
+               .def("nvariable", &LabeledAxis::nvariable, py::arg("recursive") = true)
+               .def("nsubaxis", &LabeledAxis::nsubaxis, py::arg("recursive") = false);
 
   // Operators
   c.def("__repr__", [](const LabeledAxis & self) { return utils::stringify(self); })

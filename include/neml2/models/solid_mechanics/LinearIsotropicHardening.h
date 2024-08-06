@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -29,7 +29,7 @@
 namespace neml2
 {
 /**
- * @brief Simple linear map between equivalent strain and hardening
+ * @brief Simple linear map between equivalent strain and isotropic hardening
  *
  */
 class LinearIsotropicHardening : public IsotropicHardening
@@ -42,6 +42,7 @@ public:
 protected:
   void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
+  /// The linear isotropic hardening modulus
   const Scalar & _K;
 };
 } // namespace neml2

@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -46,6 +46,6 @@ BufferStore::send_buffers_to(const torch::TensorOptions & options)
   neml_assert(_object->host() == _object, "This method should only be called on the host model.");
 
   for (auto && [name, buffer] : _buffer_values)
-    buffer.to(options);
+    buffer.to_(options);
 }
 } // namespace neml2

@@ -30,7 +30,6 @@ doc/html
 build
 _deps
 __pycache__
-config.h
 conftest.py
 *.pyi
 neml2.egg-info
@@ -39,3 +38,14 @@ src/neml2/base/config.h
 install
 conftest.py
 .env
+*.pdf
+
+# For MOOSE in-source build
+.libs
+*.la
+*.so*
+*.lo
+*.lo.d
+
+# graphviz
+*.gv

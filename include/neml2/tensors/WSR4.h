@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/tensors/FixedDimTensor.h"
+#include "neml2/tensors/PrimitiveTensor.h"
 
 namespace neml2
 {
@@ -36,10 +36,10 @@ class R4;
  *
  * Mandel notation/reduced skew is used, and so the logical storage space is (3, 6).
  */
-class WSR4 : public FixedDimTensor<WSR4, 3, 6>
+class WSR4 : public PrimitiveTensor<WSR4, 3, 6>
 {
 public:
-  using FixedDimTensor<WSR4, 3, 6>::FixedDimTensor;
+  using PrimitiveTensor<WSR4, 3, 6>::PrimitiveTensor;
   WSR4(const R4 & F);
 };
 

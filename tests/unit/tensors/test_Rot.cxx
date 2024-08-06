@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -33,7 +33,7 @@ TEST_CASE("Rot", "[tensors]")
 {
   const auto & DTO = default_tensor_options();
 
-  TorchShape B = {5, 3, 1, 2}; // batch shape
+  TensorShape B = {5, 3, 1, 2}; // batch shape
 
   SECTION("class Rot")
   {
@@ -74,7 +74,7 @@ TEST_CASE("Rot", "[tensors]")
     SECTION("deuler_rodrigues")
     {
       auto a = Rot::fill(0.13991834, 0.18234513, 0.85043991, DTO);
-      auto apply = [](const BatchTensor & x) { return Rot(x).euler_rodrigues(); };
+      auto apply = [](const Tensor & x) { return Rot(x).euler_rodrigues(); };
       auto dA_da = finite_differencing_derivative(apply, a);
 
       REQUIRE(torch::allclose(a.deuler_rodrigues(), dA_da, 1.0e-4));
@@ -95,7 +95,7 @@ TEST_CASE("Rot", "[tensors]")
       SECTION("concept") { REQUIRE(torch::allclose(a.euler_rodrigues(), b.euler_rodrigues())); }
       SECTION("derivative")
       {
-        auto apply = [](const BatchTensor & x) { return Rot(x).shadow(); };
+        auto apply = [](const Tensor & x) { return Rot(x).shadow(); };
         auto dA = finite_differencing_derivative(apply, a);
         REQUIRE(torch::allclose(a.dshadow(), dA, 1.0e-4));
       }
@@ -125,7 +125,7 @@ TEST_CASE("Rot", "[tensors]")
       auto rb = r.batch_expand(B);
       auto vb = v.batch_expand(B);
 
-      auto apply = [v](const BatchTensor & x) { return v.rotate(Rot(x)); };
+      auto apply = [v](const Tensor & x) { return v.rotate(Rot(x)); };
       auto dvp_dr = finite_differencing_derivative(apply, r);
       auto dvp_drb = dvp_dr.batch_expand(B);
 

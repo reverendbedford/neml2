@@ -37,7 +37,7 @@
     values = '0.00499066 -0.0249533 0.03493462'
   []
   [gamma]
-    type = LinspaceBatchTensor
+    type = LinspaceTensor
     start = -0.1
     end = 0.2
     nstep = 12

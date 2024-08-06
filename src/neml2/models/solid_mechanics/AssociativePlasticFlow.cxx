@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -40,10 +40,10 @@ AssociativePlasticFlow::expected_options()
       "strain, \\f$ \\dot{\\gamma} \\f$ is the flow rate, \\f$ f \\f$ is the yield function, and "
       "\\f$ \\boldsymbol{M} \\f$ is the Mandel stress.";
 
-  options.set<VariableName>("flow_direction") = VariableName("state", "internal", "NM");
+  options.set_input("flow_direction") = VariableName("state", "internal", "NM");
   options.set("flow_direction").doc() = "Flow direction which can be calculated using Normality";
 
-  options.set<VariableName>("plastic_strain_rate") = VariableName("state", "internal", "Ep_rate");
+  options.set_output("plastic_strain_rate") = VariableName("state", "internal", "Ep_rate");
   options.set("plastic_strain_rate").doc() = "Rate of plastic strain";
 
   return options;
@@ -59,6 +59,8 @@ AssociativePlasticFlow::AssociativePlasticFlow(const OptionSet & options)
 void
 AssociativePlasticFlow::set_value(bool out, bool dout_din, bool d2out_din2)
 {
+  neml_assert_dbg(!d2out_din2, "AssociativePlasticFlow doesn't implement second derivatives.");
+
   // For associative flow,
   // Ep_dot = gamma_dot * NM
   //     NM = df/dM
@@ -66,22 +68,15 @@ AssociativePlasticFlow::set_value(bool out, bool dout_din, bool d2out_din2)
   if (out)
     _Ep_dot = _gamma_dot * _NM;
 
-  if (dout_din || d2out_din2)
+  if (dout_din)
   {
     auto I = SR2::identity_map(options());
 
-    if (dout_din)
-    {
+    if (_gamma_dot.is_dependent())
       _Ep_dot.d(_gamma_dot) = _NM;
-      _Ep_dot.d(_NM) = _gamma_dot * I;
-    }
 
-    if (d2out_din2)
-    {
-      // I don't know when this will be useful, but since it's easy...
-      _Ep_dot.d(_gamma_dot, _NM) = I;
-      _Ep_dot.d(_NM, _gamma_dot) = I;
-    }
+    if (_NM.is_dependent())
+      _Ep_dot.d(_NM) = _gamma_dot * I;
   }
 }
 } // namespace neml2

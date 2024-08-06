@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -43,13 +43,13 @@ BackwardEulerTimeIntegration<T>::expected_options()
 
   NonlinearSystem::enable_automatic_scaling(options);
 
-  options.set<VariableName>("variable");
+  options.set_input("variable");
   options.set("variable").doc() = "Variable being integrated";
 
-  options.set<VariableName>("variable_rate");
-  options.set("variable_rate").doc() = "Variable rate";
+  options.set_input("rate");
+  options.set("rate").doc() = "Variable rate";
 
-  options.set<VariableName>("time") = VariableName("t");
+  options.set_input("time") = VariableName("forces", "t");
   options.set("time").doc() = "Time";
 
   return options;
@@ -58,52 +58,49 @@ BackwardEulerTimeIntegration<T>::expected_options()
 template <typename T>
 BackwardEulerTimeIntegration<T>::BackwardEulerTimeIntegration(const OptionSet & options)
   : Model(options),
-    _var_name(options.get<VariableName>("variable")),
-    _var_rate_name(options.get<LabeledAxisAccessor>("variable_rate").empty()
-                       ? _var_name.with_suffix("_rate")
-                       : options.get<LabeledAxisAccessor>("variable_rate")),
-    _r(declare_output_variable<T>(_var_name.on("residual"))),
-    _ds_dt(declare_input_variable<T>(_var_rate_name.on("state"))),
-    _s(declare_input_variable<T>(_var_name.on("state"))),
-    _sn(declare_input_variable<T>(_var_name.on("old_state"))),
-    _t(declare_input_variable<Scalar>(options.get<VariableName>("time").on("forces"))),
-    _tn(declare_input_variable<Scalar>(options.get<VariableName>("time").on("old_forces")))
+    _s(declare_input_variable<T>("variable")),
+    _sn(declare_input_variable<T>(_s.name().old())),
+    _ds_dt(options.get<VariableName>("rate").empty()
+               ? declare_input_variable<T>(_s.name().with_suffix("_rate"))
+               : declare_input_variable<T>("rate")),
+    _t(declare_input_variable<Scalar>("time")),
+    _tn(declare_input_variable<Scalar>(_t.name().old())),
+    _r(declare_output_variable<T>(_s.name().remount("residual")))
 {
+}
+
+template <typename T>
+void
+BackwardEulerTimeIntegration<T>::diagnose(std::vector<Diagnosis> & diagnoses) const
+{
+  Model::diagnose(diagnoses);
+  diagnostic_assert_state(diagnoses, _s);
+  diagnostic_assert_state(diagnoses, _ds_dt);
+  diagnostic_assert_force(diagnoses, _t);
 }
 
 template <typename T>
 void
 BackwardEulerTimeIntegration<T>::set_value(bool out, bool dout_din, bool d2out_din2)
 {
+  neml_assert(!d2out_din2, "BackwardEulerTimeIntegration does not implement second derivatives");
+
   if (out)
     _r = _s - _sn - _ds_dt * (_t - _tn);
 
-  if (dout_din || d2out_din2)
+  if (dout_din)
   {
-    auto I = BatchTensor::identity(T::const_base_storage, options());
+    auto I = T::identity_map(options());
 
-    if (dout_din)
-    {
-      _r.d(_s) = I;
-      _r.d(_ds_dt) = -I * (_t - _tn);
-      if (Model::stage == Model::Stage::UPDATING)
-      {
-        _r.d(_sn) = -I;
-        _r.d(_t) = -_ds_dt;
-        _r.d(_tn) = _ds_dt;
-      }
-    }
+    _r.d(_s) = I;
+    _r.d(_ds_dt) = -I * (_t - _tn);
 
-    if (d2out_din2)
-    {
-      _r.d(_ds_dt, _t) = -I;
-      _r.d(_ds_dt, _tn) = I;
-      if (Model::stage == Model::Stage::UPDATING)
-      {
-        _r.d(_t, _ds_dt) = -I;
-        _r.d(_tn, _ds_dt) = I;
-      }
-    }
+    if (currently_solving_nonlinear_system())
+      return;
+
+    _r.d(_sn) = -I;
+    _r.d(_t) = -_ds_dt;
+    _r.d(_tn) = _ds_dt;
   }
 }
 

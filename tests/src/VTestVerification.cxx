@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -24,6 +24,7 @@
 
 #include "VTestVerification.h"
 #include "neml2/drivers/TransientDriver.h"
+#include "neml2/misc/parser_utils.h"
 
 namespace neml2
 {
@@ -51,12 +52,20 @@ VTestVerification::VTestVerification(const OptionSet & options)
     _atol(options.get<Real>("atol")),
     _taylor_average(options.get<bool>("taylor_average"))
 {
-  neml_assert(_variables.size() == _references.size(),
-              "Must provide the same number of variables and reference variables. ",
-              _variables.size(),
-              " variables provided, while ",
-              _references.size(),
-              " reference variables provided.");
+}
+
+void
+VTestVerification::diagnose(std::vector<Diagnosis> & diagnoses) const
+{
+  Driver::diagnose(diagnoses);
+  _driver.diagnose(diagnoses);
+  diagnostic_assert(diagnoses,
+                    _variables.size() == _references.size(),
+                    "Must provide the same number of variables and reference variables. ",
+                    _variables.size(),
+                    " variables provided, while ",
+                    _references.size(),
+                    " reference variables provided.");
 }
 
 bool
@@ -65,15 +74,20 @@ VTestVerification::run()
   _driver.run();
 
   // Verify the variable values against the references
+  std::ostringstream err;
   for (size_t i = 0; i < _variables.size(); i++)
-    if (!allclose(_variables[i], _references[i]))
-      return false;
+    compare(_variables[i], _references[i], err);
+
+  auto err_msg = err.str();
+  neml_assert(err_msg.empty(), err_msg);
 
   return true;
 }
 
-bool
-VTestVerification::allclose(const std::string & var, torch::Tensor ref) const
+void
+VTestVerification::compare(const std::string & var,
+                           torch::Tensor ref,
+                           std::ostringstream & err) const
 {
   // NEML2 results
   const auto res = _driver.result();
@@ -93,8 +107,11 @@ VTestVerification::allclose(const std::string & var, torch::Tensor ref) const
 
   // Check
   if (!torch::allclose(comp, ref, _rtol, _atol))
-    return false;
-
-  return true;
+  {
+    auto diff = torch::abs(comp - ref) - _rtol * torch::abs(ref);
+    err << "Result has wrong value for variable " << var
+        << ". Maximum mixed difference = " << std::scientific << diff.max().item<Real>()
+        << " > atol = " << std::scientific << _atol << "\n";
+  }
 }
 }

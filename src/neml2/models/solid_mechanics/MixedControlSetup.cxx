@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -38,26 +38,26 @@ MixedControlSetup::expected_options()
       "fixed_values (the input strain or stress) and the mixed_state (the conjugate stress or "
       "strain values) into the stress and strain tensors used by the model.";
 
-  options.set<VariableName>("control") = VariableName("forces", "control");
+  options.set_input("control") = VariableName("forces", "control");
   options.set("control").doc() =
       "The name of the control signal.  Values less than the threshold are "
       "strain control, greater are stress control";
 
-  options.set<CrossRef<BatchTensor>>("threshold") = "0.5";
+  options.set<CrossRef<Tensor>>("threshold") = "0.5";
   options.set("threshold").doc() = "The threshold to switch between strain and stress control";
 
-  options.set<VariableName>("mixed_state") = VariableName("state", "mixed_state");
+  options.set_input("mixed_state") = VariableName("state", "mixed_state");
   options.set("mixed_state").doc() = "The name of the mixed state tensor. This holds the conjugate "
                                      "values to those being controlled";
 
-  options.set<VariableName>("fixed_values") = VariableName("forces", "fixed_values");
+  options.set_input("fixed_values") = VariableName("forces", "fixed_values");
   options.set("fixed_values").doc() = "The name of the fixed values, i.e. the actual strain or "
                                       "stress values being imposed on the model";
 
-  options.set<VariableName>("cauchy_stress") = VariableName("state", "S");
+  options.set_output("cauchy_stress") = VariableName("state", "S");
   options.set("cauchy_stress").doc() = "The name of the Cauchy stress tensor";
 
-  options.set<VariableName>("strain") = VariableName("forces", "E");
+  options.set_output("strain") = VariableName("state", "E");
   options.set("strain").doc() = "The name of the strain tensor";
 
   return options;
@@ -65,7 +65,7 @@ MixedControlSetup::expected_options()
 
 MixedControlSetup::MixedControlSetup(const OptionSet & options)
   : Model(options),
-    _threshold(options.get<CrossRef<BatchTensor>>("threshold")),
+    _threshold(options.get<CrossRef<Tensor>>("threshold")),
     _control(declare_input_variable<SR2>("control")),
     _fixed_values(declare_input_variable<SR2>("fixed_values")),
     _mixed_state(declare_input_variable<SR2>("mixed_state")),
@@ -88,11 +88,17 @@ MixedControlSetup::set_value(bool out, bool dout_din, bool d2out_din2)
 
   if (dout_din)
   {
-    _stress.d(_fixed_values) = dstress;
-    _stress.d(_mixed_state) = dstrain;
+    if (_fixed_values.is_dependent())
+    {
+      _stress.d(_fixed_values) = dstress;
+      _strain.d(_fixed_values) = dstrain;
+    }
 
-    _strain.d(_fixed_values) = dstrain;
-    _strain.d(_mixed_state) = dstress;
+    if (_mixed_state.is_dependent())
+    {
+      _stress.d(_mixed_state) = dstrain;
+      _strain.d(_mixed_state) = dstress;
+    }
   }
 
   // All zero
@@ -106,10 +112,10 @@ MixedControlSetup::make_operators(const SR2 & control) const
   auto stress_select = control > _threshold;
 
   // This also converts these to floats
-  auto ones_stress = BatchTensor(strain_select.to(_stress.tensor().options()), control.batch_dim());
-  auto ones_strain = BatchTensor::ones_like(control) - ones_stress;
+  auto ones_stress = Tensor(strain_select.to(_stress.tensor().options()), control.batch_dim());
+  auto ones_strain = Tensor::ones_like(control) - ones_stress;
 
-  // auto dstrain = SSR4(BatchTensor(torch::diag_embed(ones_stress), batch_dim()));
+  // auto dstrain = SSR4(Tensor(torch::diag_embed(ones_stress), batch_dim()));
   auto dstrain = math::base_diag_embed(ones_stress);
   auto dstress = math::base_diag_embed(ones_strain);
 

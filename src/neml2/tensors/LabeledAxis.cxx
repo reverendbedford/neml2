@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -27,7 +27,13 @@
 namespace neml2
 {
 LabeledAxis::LabeledAxis()
-  : _offset(0)
+  : _offset(0),
+    _has_state(false),
+    _has_old_state(false),
+    _has_forces(false),
+    _has_old_forces(false),
+    _has_residual(false),
+    _has_parameters(false)
 {
 }
 
@@ -35,22 +41,29 @@ LabeledAxis::LabeledAxis(const LabeledAxis & other)
   : _variables(other._variables),
     _subaxes(other._subaxes),
     _layout(other._layout),
-    _offset(other._offset)
+    _offset(other._offset),
+    _has_state(other._has_state),
+    _has_old_state(other._has_old_state),
+    _has_forces(other._has_forces),
+    _has_old_forces(other._has_old_forces),
+    _has_residual(other._has_residual),
+    _has_parameters(other._has_parameters)
 {
 }
 
 LabeledAxis &
-LabeledAxis::add(const LabeledAxisAccessor & accessor, TorchSize sz)
+LabeledAxis::add(const LabeledAxisAccessor & accessor, Size sz)
 {
-  add(*this, sz, accessor.vec().begin(), accessor.vec().end());
+  if (!accessor.empty())
+    add(*this, sz, accessor.begin(), accessor.end());
   return *this;
 }
 
 void
 LabeledAxis::add(LabeledAxis & axis,
-                 TorchSize sz,
-                 const std::vector<std::string>::const_iterator & cur,
-                 const std::vector<std::string>::const_iterator & end) const
+                 Size sz,
+                 const LabeledAxisAccessor::const_iterator & cur,
+                 const LabeledAxisAccessor::const_iterator & end) const
 {
   if (cur == end - 1)
   {
@@ -64,94 +77,13 @@ LabeledAxis::add(LabeledAxis & axis,
   }
 }
 
-LabeledAxis &
-LabeledAxis::rename(const std::string & original, const std::string & rename)
-{
-  // This could be a variable name
-  auto var = _variables.find(original);
-  if (var != _variables.end())
-  {
-    auto sz = var->second;
-    _variables.erase(var);
-    _variables.emplace(rename, sz);
-    return *this;
-  }
-
-  // or a sub-axis name
-  auto subaxis = _subaxes.find(original);
-  if (subaxis != _subaxes.end())
-  {
-    auto axis = subaxis->second;
-    _subaxes.erase(subaxis);
-    _subaxes.emplace(rename, axis);
-    return *this;
-  }
-
-  return *this;
-}
-
-LabeledAxis &
-LabeledAxis::remove(const std::string & name)
-{
-  // This could be a variable name
-  auto count = _variables.erase(name);
-  if (count)
-    return *this;
-
-  // or a sub-axis name
-  count += _subaxes.erase(name);
-
-  // If nothing has been removed, we should probably notify the user.
-  neml_assert_dbg(count, "Nothing removed in LabeledAxis::remove, did you mispell the name?");
-
-  return *this;
-}
-
-LabeledAxis &
+void
 LabeledAxis::clear()
 {
   _variables.clear();
   _subaxes.clear();
   _layout.clear();
   _offset = 0;
-
-  return *this;
-}
-
-std::vector<LabeledAxisAccessor>
-LabeledAxis::merge(LabeledAxis & other)
-{
-  std::vector<LabeledAxisAccessor> merged_vars;
-  merge(other, {}, merged_vars);
-  return merged_vars;
-}
-
-void
-LabeledAxis::merge(LabeledAxis & other,
-                   std::vector<std::string> subaxes,
-                   std::vector<LabeledAxisAccessor> & merged_vars)
-{
-  // First merge the variables
-  for (const auto & [name, sz] : other._variables)
-    if (!has_variable(name))
-    {
-      _variables.emplace(name, sz);
-      auto new_var = subaxes;
-      new_var.push_back(name);
-      merged_vars.push_back({new_var});
-    }
-
-  // Then merge the subaxes
-  for (auto & [name, subaxis] : other._subaxes)
-  {
-    auto found = _subaxes.find(name);
-    if (found == _subaxes.end())
-      _subaxes.emplace(name, std::make_shared<LabeledAxis>());
-
-    auto new_subaxes = subaxes;
-    new_subaxes.push_back(name);
-    _subaxes[name]->merge(*subaxis, new_subaxes, merged_vars);
-  }
 }
 
 void
@@ -163,7 +95,7 @@ LabeledAxis::setup_layout()
   // First emplace all the variables
   for (auto & [name, sz] : _variables)
   {
-    std::pair<TorchSize, TorchSize> range = {_offset, _offset + sz};
+    std::pair<Size, Size> range = {_offset, _offset + sz};
     _layout.emplace(name, range);
     _offset += sz;
   }
@@ -173,10 +105,29 @@ LabeledAxis::setup_layout()
   {
     // Setup the sub-axis if necessary
     axis->setup_layout();
-    std::pair<TorchSize, TorchSize> range = {_offset, _offset + axis->storage_size()};
+    std::pair<Size, Size> range = {_offset, _offset + axis->storage_size()};
     _layout.emplace(name, range);
     _offset += axis->storage_size();
   }
+
+  _has_state = _subaxes.count("state");
+  _has_old_state = _subaxes.count("old_state");
+  _has_forces = _subaxes.count("forces");
+  _has_old_forces = _subaxes.count("old_forces");
+  _has_residual = _subaxes.count("residual");
+  _has_parameters = _subaxes.count("parameters");
+}
+
+size_t
+LabeledAxis::nvariable(bool recursive) const
+{
+  return variable_names(recursive).size();
+}
+
+size_t
+LabeledAxis::nsubaxis(bool recursive) const
+{
+  return subaxis_names(recursive).size();
 }
 
 bool
@@ -189,11 +140,10 @@ LabeledAxis::has_variable(const LabeledAxisAccessor & var) const
   {
     if (has_subaxis(var.vec()[0]))
       return subaxis(var.vec()[0]).has_variable(var.slice(1));
-    else
-      return false;
+    return false;
   }
-  else
-    return _variables.count(var.vec()[0]);
+
+  return _variables.count(var.vec()[0]);
 }
 
 bool
@@ -206,49 +156,45 @@ LabeledAxis::has_subaxis(const LabeledAxisAccessor & s) const
   {
     if (has_subaxis(s.vec()[0]))
       return subaxis(s.vec()[0]).has_subaxis(s.slice(1));
-    else
-      return false;
+    return false;
   }
-  else
-    return _subaxes.count(s.vec()[0]);
+
+  return _subaxes.count(s.vec()[0]);
 }
 
-TorchSize
-LabeledAxis::storage_size(const LabeledAxisAccessor & accessor) const
+Size
+LabeledAxis::storage_size(const LabeledAxisAccessor & name) const
 {
-  return storage_size(accessor.vec().begin(), accessor.vec().end());
-}
+  if (name.empty())
+    return _offset;
 
-TorchSize
-LabeledAxis::storage_size(const std::vector<std::string>::const_iterator & cur,
-                          const std::vector<std::string>::const_iterator & end) const
-{
-  if (cur == end - 1)
+  if (name.size() == 1)
   {
-    if (_variables.count(*cur))
-      return _variables.at(*cur);
-    else if (_subaxes.count(*cur))
-      return _subaxes.at(*cur)->storage_size();
+    if (_variables.count(name.vec()[0]))
+      return _variables.at(name.vec()[0]);
 
-    neml_assert_dbg(false, "Trying to find the storage size of a non-existent item named ", *cur);
+    if (_subaxes.count(name.vec()[0]))
+      return _subaxes.at(name.vec()[0])->storage_size();
+
+    neml_assert_dbg(false, "Trying to find the storage size of a non-existent item named ", name);
   }
 
-  return subaxis(*cur).storage_size(cur + 1, end);
+  return subaxis(name.vec()[0]).storage_size(name.slice(1));
 }
 
-TorchIndex
+indexing::TensorIndex
 LabeledAxis::indices(const LabeledAxisAccessor & accessor) const
 {
   if (accessor.empty())
     return torch::indexing::Slice();
 
-  return indices(0, accessor.vec().begin(), accessor.vec().end());
+  return indices(0, accessor.begin(), accessor.end());
 }
 
-TorchIndex
-LabeledAxis::indices(TorchSize offset,
-                     const std::vector<std::string>::const_iterator & cur,
-                     const std::vector<std::string>::const_iterator & end) const
+indexing::TensorIndex
+LabeledAxis::indices(Size offset,
+                     const LabeledAxisAccessor::const_iterator & cur,
+                     const LabeledAxisAccessor::const_iterator & end) const
 {
   neml_assert_dbg(_layout.count(*cur), "Axis/variable named ", *cur, " does not exist.");
   const auto & [rbegin, rend] = _layout.at(*cur);
@@ -258,14 +204,12 @@ LabeledAxis::indices(TorchSize offset,
   return subaxis(*cur).indices(offset + rbegin, cur + 1, end);
 }
 
-std::vector<std::pair<TorchIndex, TorchIndex>>
+std::vector<std::pair<indexing::TensorIndex, indexing::TensorIndex>>
 LabeledAxis::common_indices(const LabeledAxis & other, bool recursive) const
 {
-  using namespace torch::indexing;
-
-  std::vector<std::pair<TorchIndex, TorchIndex>> indices;
-  std::vector<TorchSize> idxa;
-  std::vector<TorchSize> idxb;
+  std::vector<std::pair<indexing::TensorIndex, indexing::TensorIndex>> indices;
+  std::vector<Size> idxa;
+  std::vector<Size> idxb;
   common_indices(other, recursive, idxa, idxb, 0, 0);
 
   if (idxa.empty())
@@ -280,12 +224,12 @@ LabeledAxis::common_indices(const LabeledAxis & other, bool recursive) const
       j += 2;
     else
     {
-      indices.push_back({Slice(idxa[i], idxa[j]), Slice(idxb[i], idxb[j])});
+      indices.push_back({indexing::Slice(idxa[i], idxa[j]), indexing::Slice(idxb[i], idxb[j])});
       i = j + 1;
       j = i + 1;
     }
   }
-  indices.push_back({Slice(idxa[i], idxa[j]), Slice(idxb[i], idxb[j])});
+  indices.push_back({indexing::Slice(idxa[i], idxa[j]), indexing::Slice(idxb[i], idxb[j])});
 
   return indices;
 }
@@ -293,10 +237,10 @@ LabeledAxis::common_indices(const LabeledAxis & other, bool recursive) const
 void
 LabeledAxis::common_indices(const LabeledAxis & other,
                             bool recursive,
-                            std::vector<TorchSize> & idxa,
-                            std::vector<TorchSize> & idxb,
-                            TorchSize offseta,
-                            TorchSize offsetb) const
+                            std::vector<Size> & idxa,
+                            std::vector<Size> & idxb,
+                            Size offseta,
+                            Size offsetb) const
 {
   for (const auto & [name, sz] : _variables)
     if (other.has_variable(name))
@@ -320,63 +264,77 @@ LabeledAxis::common_indices(const LabeledAxis & other,
                              offsetb + other._layout.at(name).first);
 }
 
-std::vector<std::string>
-LabeledAxis::item_names() const
+std::vector<LabeledAxisAccessor>
+LabeledAxis::sort_by_assembly_order(const std::set<LabeledAxisAccessor> & names) const
 {
-  std::vector<std::string> names;
-  for (const auto & item : _layout)
-    names.push_back(item.first);
-  return names;
+  neml_assert(_offset > 0, "The LabeledAxis either is empty or has not been setup");
+
+  std::map<indexing::TensorIndex, const LabeledAxisAccessor &, AssemblySliceCmp> index_names;
+  for (const auto & name : names)
+    index_names.emplace(indices(name), name);
+
+  std::vector<LabeledAxisAccessor> sorted;
+  for (const auto & [idx, name] : index_names)
+    sorted.push_back(name);
+
+  return sorted;
 }
 
 std::set<LabeledAxisAccessor>
-LabeledAxis::variable_accessors(bool recursive, const LabeledAxisAccessor & subaxis) const
+LabeledAxis::variable_names(bool recursive) const
 {
   std::set<LabeledAxisAccessor> accessors;
-  variable_accessors(accessors, {}, recursive, subaxis);
+
+  // Insert local variables
+  for (const auto & [var, sz] : _variables)
+    accessors.insert(var);
+
+  // Insert variables on subaxes
+  if (recursive)
+    for (const auto & [name, axis] : _subaxes)
+      for (const auto & var : axis->variable_names(true))
+        accessors.insert(var.prepend(name));
+
   return accessors;
 }
 
-void
-LabeledAxis::variable_accessors(std::set<LabeledAxisAccessor> & accessors,
-                                LabeledAxisAccessor cur,
-                                bool recursive,
-                                const LabeledAxisAccessor & subaxis) const
+std::set<LabeledAxisAccessor>
+LabeledAxis::subaxis_names(bool recursive) const
 {
-  for (auto & var : _variables)
+  std::set<LabeledAxisAccessor> accessors;
+
+  for (const auto & [name, axis] : _subaxes)
   {
-    LabeledAxisAccessor var_accessor{{var.first}};
-    var_accessor = var_accessor.on(cur);
-    if (subaxis.empty())
-      accessors.insert(var_accessor);
-    else if (var_accessor.slice(0, subaxis.size()) == subaxis)
-      accessors.insert(var_accessor);
+    // Insert local subaxes
+    accessors.insert(name);
+    // Insert sub-subaxes
+    if (recursive)
+      for (const auto & subname : axis->subaxis_names(true))
+        accessors.insert(subname.prepend(name));
   }
 
-  if (recursive)
-    for (auto & [name, axis] : _subaxes)
-    {
-      auto next = cur.append(name);
-      axis->variable_accessors(accessors, next, recursive, subaxis);
-    }
+  return accessors;
 }
 
 const LabeledAxis &
-LabeledAxis::subaxis(const std::string & name) const
+LabeledAxis::subaxis(const LabeledAxisAccessor & name) const
 {
-  neml_assert_dbg(
-      _subaxes.count(name), "In LabeledAxis::subaxis, no subaxis matches given name ", name);
-
-  return *_subaxes.at(name);
+  // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
+  return const_cast<LabeledAxis *>(this)->subaxis(name);
 }
 
 LabeledAxis &
-LabeledAxis::subaxis(const std::string & name)
+LabeledAxis::subaxis(const LabeledAxisAccessor & name)
 {
-  neml_assert_dbg(
-      _subaxes.count(name), "In LabeledAxis::subaxis, no subaxis matches given name ", name);
+  neml_assert(!name.empty(), "sub-axis name cannot be empty");
+  neml_assert_dbg(_subaxes.count(name.vec()[0]),
+                  "In LabeledAxis::subaxis, no subaxis matches given name ",
+                  name);
 
-  return *_subaxes.at(name);
+  if (name.size() > 1)
+    return _subaxes[name.vec()[0]]->subaxis(name.slice(1));
+
+  return *_subaxes[name.vec()[0]];
 }
 
 bool
@@ -393,11 +351,14 @@ LabeledAxis::equals(const LabeledAxis & other) const
     return false;
 
   // For subaxes, it's a little bit tricky as we need to compare the dereferenced axes.
-  for (auto & [name, axis] : _subaxes)
+  for (const auto & [name, axis] : _subaxes)
+  {
     if (other._subaxes.count(name) == 0)
       return false;
-    else if (*other._subaxes.at(name) != *axis)
+
+    if (*other._subaxes.at(name) != *axis)
       return false;
+  }
 
   return true;
 }
@@ -407,8 +368,8 @@ operator<<(std::ostream & os, const LabeledAxis & axis)
 {
   // Collect variable names and indices
   size_t max_var_name_length = 0;
-  std::map<std::string, TorchIndex> vars;
-  for (auto var : axis.variable_accessors(true))
+  std::map<std::string, indexing::TensorIndex> vars;
+  for (auto var : axis.variable_names(true))
   {
     auto var_name = utils::stringify(var);
     if (var_name.size() > max_var_name_length)
@@ -419,42 +380,13 @@ operator<<(std::ostream & os, const LabeledAxis & axis)
   // Print variables with right alignment
   for (auto var = vars.begin(); var != vars.end(); var++)
   {
+    // NOLINTNEXTLINE(*-narrowing-conversions)
     os << std::setw(max_var_name_length) << var->first << ": " << var->second;
     if (std::next(var) != vars.end())
       os << std::endl;
   }
 
   return os;
-}
-
-void
-LabeledAxis::to_dot(
-    std::ostream & os, int & id, std::string axis_name, bool subgraph, bool node_handle) const
-{
-  // Preemble
-  os << (subgraph ? "subgraph " : "graph ");
-  os << "cluster_" << id++ << " ";
-  os << "{\n";
-  os << "label = \"" << axis_name << "\"\n";
-  os << "bgcolor = lightgrey\n";
-
-  // The axis should have an invisible node so that I can draw arrows
-  if (node_handle)
-    os << "\"" << axis_name << "\" [label = \"\", style = invis]\n";
-
-  // Write all the variables
-  for (const auto & [name, sz] : _variables)
-  {
-    os << "\"" << axis_name + " " + name << "\" ";
-    os << "[style = filled, color = white, shape = Square, ";
-    os << "label = \"" << name + " [" << sz << "]\"]\n";
-  }
-
-  // Write all the subaxes
-  for (const auto & [name, subaxis] : _subaxes)
-    subaxis->to_dot(os, id, axis_name + " " + name, true);
-
-  os << "}\n";
 }
 
 bool

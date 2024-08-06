@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -43,21 +43,20 @@ OrientationRate::expected_options()
       "plastic vorticity, \\f$ d^p \\f$ is the plastic deformation rate, and \\f$ \\varepsilon "
       "\\f$ is the elastic stretch.";
 
-  options.set<VariableName>("orientation_rate") = VariableName("state", "orientation_rate");
+  options.set_output("orientation_rate") = VariableName("state", "orientation_rate");
   options.set("orientation_rate").doc() = "The name of the orientation rate (spin)";
 
-  options.set<VariableName>("elastic_strain") = VariableName("state", "elastic_strain");
+  options.set_input("elastic_strain") = VariableName("state", "elastic_strain");
   options.set("elastic_strain").doc() = "The name of the elastic strain tensor";
 
-  options.set<VariableName>("vorticity") = VariableName("forces", "vorticity");
+  options.set_input("vorticity") = VariableName("forces", "vorticity");
   options.set("vorticity").doc() = "The name of the voriticty tensor";
 
-  options.set<VariableName>("plastic_deformation_rate") =
+  options.set_input("plastic_deformation_rate") =
       VariableName("state", "internal", "plastic_deformation_rate");
   options.set("plastic_deformation_rate").doc() = "The name of the plastic deformation rate";
 
-  options.set<VariableName>("plastic_vorticity") =
-      VariableName("state", "internal", "plastic_vorticity");
+  options.set_input("plastic_vorticity") = VariableName("state", "internal", "plastic_vorticity");
   options.set("plastic_vorticity").doc() = "The name of the plastic vorticity";
   return options;
 }
@@ -83,10 +82,18 @@ OrientationRate::set_value(bool out, bool dout_din, bool d2out_din2)
   if (dout_din)
   {
     const auto I = WWR4::identity(options());
-    _R_dot.d(_e) = math::d_multiply_and_make_skew_d_second(SR2(_dp));
-    _R_dot.d(_w) = I;
-    _R_dot.d(_dp) = math::d_multiply_and_make_skew_d_first(SR2(_e));
-    _R_dot.d(_wp) = -I;
+
+    if (_e.is_dependent())
+      _R_dot.d(_e) = math::d_multiply_and_make_skew_d_second(SR2(_dp));
+
+    if (_w.is_dependent())
+      _R_dot.d(_w) = I;
+
+    if (_dp.is_dependent())
+      _R_dot.d(_dp) = math::d_multiply_and_make_skew_d_first(SR2(_e));
+
+    if (_wp.is_dependent())
+      _R_dot.d(_wp) = -I;
   }
 }
 } // namespace neml2

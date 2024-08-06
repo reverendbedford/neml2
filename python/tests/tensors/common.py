@@ -1,4 +1,4 @@
-# Copyright 2023, UChicago Argonne, LLC
+# Copyright 2024, UChicago Argonne, LLC
 # All Rights Reserved
 # Software Name: NEML2 -- the New Engineering material Model Library, version 2
 # By: Argonne National Laboratory
@@ -24,7 +24,7 @@
 
 import pytest
 import torch
-from neml2.tensors import *
+import neml2
 
 
 def _stringify_fixture(v):
@@ -65,9 +65,9 @@ def tensor_options(dtype, device, requires_grad):
 
 def assert_binary_op(func, x, y):
     assert torch.allclose(
-        func(x, y).tensor(), func(x.tensor(), y.tensor()), equal_nan=True
+        func(x, y).torch(), func(x.torch(), y.torch()), equal_nan=True
     )
 
 
 def assert_unary_op(func, x):
-    assert torch.allclose(func(x).tensor(), func(x.tensor()), equal_nan=True)
+    assert torch.allclose(func(x).torch(), func(x.torch()), equal_nan=True)

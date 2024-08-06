@@ -44,7 +44,10 @@
 
 [Models]
   [elastic_strain]
-    type = ElasticStrain
+    type = SR2LinearCombination
+    from_var = 'forces/E state/internal/Ep'
+    to_var = 'state/internal/Ee'
+    coefficients = '1 -1'
   []
   [elasticity]
     type = LinearIsotropicElasticity
@@ -80,7 +83,7 @@
   []
   [integrate_Ep]
     type = SR2BackwardEulerTimeIntegration
-    variable = 'internal/Ep'
+    variable = 'state/internal/Ep'
   []
   [consistency]
     type = RateIndependentPlasticFlowConstraint

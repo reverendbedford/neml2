@@ -45,7 +45,7 @@
   [verification]
     type = VTestVerification
     driver = 'driver'
-    variables = 'output.output/stress output.output/strain'
+    variables = 'output.state/S output.state/E'
     references = 'stresses strains'
     atol = 1e-5
     rtol = 1e-5
@@ -65,7 +65,7 @@
     saturation_rate = 1.2
   []
   [kinharden]
-    type = SR2SumModel
+    type = SR2LinearCombination
     from_var = 'state/internal/X1 state/internal/X2'
     to_var = 'state/internal/X'
   []
@@ -73,7 +73,10 @@
     type = IsotropicMandelStress
   []
   [overstress]
-    type = OverStress
+    type = SR2LinearCombination
+    to_var = 'state/internal/O'
+    from_var = 'state/internal/M state/internal/X'
+    coefficients = '1 -1'
   []
   [vonmises]
     type = SR2Invariant
@@ -125,12 +128,15 @@
     type = AssociativePlasticFlow
   []
   [Erate]
-    type = SR2ForceRate
-    force = 'E'
+    type = SR2VariableRate
+    variable = 'state/E'
+    rate = 'state/E_rate'
   []
   [Eerate]
-    type = ElasticStrain
-    rate_form = true
+    type = SR2LinearCombination
+    from_var = 'state/E_rate state/internal/Ep_rate'
+    to_var = 'state/internal/Ee_rate'
+    coefficients = '1 -1'
   []
   [elasticity]
     type = LinearIsotropicElasticity
@@ -140,53 +146,40 @@
   []
   [integrate_ep]
     type = ScalarBackwardEulerTimeIntegration
-    variable = 'internal/ep'
+    variable = 'state/internal/ep'
   []
   [integrate_X1]
     type = SR2BackwardEulerTimeIntegration
-    variable = 'internal/X1'
+    variable = 'state/internal/X1'
   []
   [integrate_X2]
     type = SR2BackwardEulerTimeIntegration
-    variable = 'internal/X2'
+    variable = 'state/internal/X2'
   []
   [integrate_stress]
     type = SR2BackwardEulerTimeIntegration
-    variable = 'S'
+    variable = 'state/S'
   []
   [mixed]
     type = MixedControlSetup
   []
-  [mixed_old]
-    type = MixedControlSetup
-    control = "old_forces/control"
-    mixed_state = "old_state/mixed_state"
-    fixed_values = "old_forces/fixed_values"
-    cauchy_stress = "old_state/S"
-    strain = "old_forces/E"
-  []
   [rename]
     type = CopySR2
-    from = "residual/S"
-    to = "residual/mixed_state"
+    from = 'residual/S'
+    to = 'residual/mixed_state'
   []
   [implicit_rate]
     type = ComposedModel
-    models = 'isoharden kinharden mandel_stress overstress vonmises yield normality flow_rate eprate Eprate X1rate X2rate Erate Eerate elasticity integrate_stress integrate_ep integrate_X1 integrate_X2 mixed mixed_old rename'
+    models = 'isoharden kinharden mandel_stress overstress vonmises yield normality flow_rate eprate Eprate X1rate X2rate Erate Eerate elasticity integrate_stress integrate_ep integrate_X1 integrate_X2 mixed rename'
   []
   [model]
     type = ImplicitUpdate
     implicit_model = 'implicit_rate'
     solver = 'newton'
   []
-  [mixed_output]
-    type = MixedControlSetup
-    cauchy_stress = 'output/stress'
-    strain = 'output/strain'
-  []
   [model_with_output]
     type = ComposedModel
-    models = 'model mixed_output'
+    models = 'model mixed'
     additional_outputs = 'state/mixed_state'
   []
 []

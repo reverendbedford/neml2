@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -32,10 +32,10 @@ OptionSet
 LinearIsotropicHardening::expected_options()
 {
   OptionSet options = IsotropicHardening::expected_options();
-  options.doc() += " following a linear relationship, i.e., \\f$ k = H \\varepsilon_p \\f$ where "
-                   "\\f$ H \\f$ is the hardening modulus.";
+  options.doc() += " following a linear relationship, i.e., \\f$ h = K \\varepsilon_p \\f$ where "
+                   "\\f$ K \\f$ is the hardening modulus.";
 
-  options.set<CrossRef<Scalar>>("hardening_modulus");
+  options.set_parameter<CrossRef<Scalar>>("hardening_modulus");
   options.set("hardening_modulus").doc() = "Hardening modulus";
 
   return options;
@@ -54,7 +54,8 @@ LinearIsotropicHardening::set_value(bool out, bool dout_din, bool d2out_din2)
     _h = _K * _ep;
 
   if (dout_din)
-    _h.d(_ep) = _K;
+    if (_ep.is_dependent())
+      _h.d(_ep) = _K;
 
   if (d2out_din2)
   {

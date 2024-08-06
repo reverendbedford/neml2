@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/tensors/FixedDimTensor.h"
+#include "neml2/tensors/PrimitiveTensor.h"
 #include "neml2/tensors/Scalar.h"
 #include "neml2/tensors/R2.h"
 
@@ -39,10 +39,10 @@ class R3;
  * The logical storage space is (3). This class provides common operations for vector.
  */
 template <class Derived>
-class VecBase : public FixedDimTensor<Derived, 3>
+class VecBase : public PrimitiveTensor<Derived, 3>
 {
 public:
-  using FixedDimTensor<Derived, 3>::FixedDimTensor;
+  using PrimitiveTensor<Derived, 3>::PrimitiveTensor;
 
   [[nodiscard]] static Derived
   fill(const Real & v1,
@@ -57,7 +57,7 @@ public:
   identity_map(const torch::TensorOptions & options = default_tensor_options());
 
   /// Accessor
-  Scalar operator()(TorchSize i) const;
+  Scalar operator()(Size i) const;
 
   /// dot product
   template <class Derived2>

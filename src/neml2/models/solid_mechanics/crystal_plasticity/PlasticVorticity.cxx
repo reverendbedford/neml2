@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -27,6 +27,7 @@
 
 #include "neml2/tensors/tensors.h"
 #include "neml2/tensors/list_tensors.h"
+#include "neml2/misc/math.h"
 
 namespace neml2
 {
@@ -43,14 +44,13 @@ PlasticVorticity::expected_options()
                   "\\f$ the slip rate on the ith slip system, \\f$Q \\f$ the orientation, \\f$ d_i "
                   "\\f$ the slip system direction, and \\f$ n_i \\f$ the slip system normal.";
 
-  options.set<VariableName>("plastic_vorticity") =
-      VariableName("state", "internal", "plastic_vorticity");
+  options.set_output("plastic_vorticity") = VariableName("state", "internal", "plastic_vorticity");
   options.set("plastic_vorticity").doc() = "The name of the plastic vorticity tensor";
 
-  options.set<VariableName>("orientation") = VariableName("state", "orientation_matrix");
+  options.set_input("orientation") = VariableName("state", "orientation_matrix");
   options.set("orientation").doc() = "The name of the orientation matrix tensor";
 
-  options.set<VariableName>("slip_rates") = VariableName("state", "internal", "slip_rates");
+  options.set_input("slip_rates") = VariableName("state", "internal", "slip_rates");
   options.set("slip_rates").doc() = "The name of the tensor containg the current slip rates";
 
   options.set<std::string>("crystal_geometry_name") = "crystal_geometry";
@@ -75,17 +75,20 @@ PlasticVorticity::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   neml_assert_dbg(!d2out_din2, "Second derivative not implemented.");
 
-  const auto Wp_crystal = (Scalar(_gamma_dot.value()) * _crystal_geometry.W()).list_sum();
+  const auto Wp_crystal = math::batch_sum(Scalar(_gamma_dot.value()) * _crystal_geometry.W(), -1);
 
   if (out)
     _Wp = Wp_crystal.rotate(R2(_R));
 
   if (dout_din)
   {
-    _Wp.d(_gamma_dot) =
-        BatchTensor(_crystal_geometry.W().rotate(R2(_R).batch_unsqueeze(-1)), batch_dim())
-            .base_transpose(-1, -2);
-    _Wp.d(_R) = Wp_crystal.drotate(R2(_R));
+    if (_gamma_dot.is_dependent())
+      _Wp.d(_gamma_dot) =
+          Tensor(_crystal_geometry.W().rotate(R2(_R).batch_unsqueeze(-1)), batch_dim())
+              .base_transpose(-1, -2);
+
+    if (_R.is_dependent())
+      _Wp.d(_R) = Wp_crystal.drotate(R2(_R));
   }
 }
 } // namespace neml2

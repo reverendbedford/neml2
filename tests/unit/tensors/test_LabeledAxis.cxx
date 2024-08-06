@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -39,7 +39,6 @@ TEST_CASE("LabeledAxis", "[tensors]")
       {
         LabeledAxis a;
         a.setup_layout();
-        REQUIRE(a.nitem() == 0);
         REQUIRE(a.nvariable() == 0);
         REQUIRE(a.nsubaxis() == 0);
         REQUIRE(a.storage_size() == 0);
@@ -56,8 +55,8 @@ TEST_CASE("LabeledAxis", "[tensors]")
 
         LabeledAxis b(a);
         b.setup_layout();
-        REQUIRE(b.nitem() == 3);
-        REQUIRE(b.nvariable() == 2);
+        REQUIRE(b.nvariable() == 4);
+        REQUIRE(b.nvariable(false) == 2);
         REQUIRE(b.nsubaxis() == 1);
         REQUIRE(b.storage_size() == 14);
       }
@@ -70,45 +69,10 @@ TEST_CASE("LabeledAxis", "[tensors]")
       a.add("foo", 13);
       a.add(i, 3);
       a.setup_layout();
-      REQUIRE(a.nitem() == 2);
-      REQUIRE(a.nvariable() == 1);
+      REQUIRE(a.nvariable() == 2);
+      REQUIRE(a.nvariable(false) == 1);
       REQUIRE(a.nsubaxis() == 1);
       REQUIRE(a.storage_size() == 16);
-    }
-
-    SECTION("rename")
-    {
-      LabeledAxis a;
-      LabeledAxisAccessor i("a", "b");
-      LabeledAxisAccessor j("a", "c");
-      a.add(i, 2);
-      a.add(j, 3);
-      a.rename("a", "d");
-      a.subaxis("d").rename("b", "a");
-      a.setup_layout();
-      REQUIRE(a.has_subaxis("d"));
-      REQUIRE(a.subaxis("d").has_variable("a"));
-      REQUIRE(a.subaxis("d").has_variable("c"));
-    }
-
-    SECTION("remove")
-    {
-      LabeledAxis a;
-      a.add<Scalar>("scalar1");
-      a.add<Scalar>("scalar2");
-      a.add<Scalar>("scalar3");
-      a.add<SR2>("r2t1");
-      a.add<SR2>("r2t2");
-      a.remove("r2t1");
-      a.remove("scalar1");
-      a.setup_layout();
-      REQUIRE(a.nitem() == 3);
-      REQUIRE(a.nvariable() == 3);
-      REQUIRE(a.nsubaxis() == 0);
-      REQUIRE(a.storage_size() == 8);
-      REQUIRE(a.storage_size("scalar2") == 1);
-      REQUIRE(a.storage_size("scalar3") == 1);
-      REQUIRE(a.storage_size("r2t2") == 6);
     }
 
     SECTION("clear")
@@ -120,33 +84,9 @@ TEST_CASE("LabeledAxis", "[tensors]")
       a.add(j, 3);
       a.clear();
       a.setup_layout();
-      REQUIRE(a.nitem() == 0);
       REQUIRE(a.nvariable() == 0);
       REQUIRE(a.nsubaxis() == 0);
       REQUIRE(a.storage_size() == 0);
-    }
-
-    SECTION("merge")
-    {
-      LabeledAxis a;
-      LabeledAxisAccessor i("a", "b");
-      LabeledAxisAccessor j("c");
-      a.add(i, 2);
-      a.add(j, 3);
-
-      LabeledAxis b;
-      LabeledAxisAccessor k("a", "d");
-      LabeledAxisAccessor l("c");
-      b.add(k, 2);
-      b.add(l, 3);
-
-      a.merge(b);
-
-      a.setup_layout();
-      b.setup_layout();
-      REQUIRE(a.has_variable("c"));
-      REQUIRE(a.subaxis("a").has_variable("b"));
-      REQUIRE(a.subaxis("a").has_variable("d"));
     }
 
     SECTION("has_item")
@@ -212,21 +152,20 @@ TEST_CASE("LabeledAxis", "[tensors]")
       a.subaxis("sub1").subaxis("sub2").add<SR2>("r2t");
       a.setup_layout();
 
-      REQUIRE(a.nitem() == 3);
-      REQUIRE(a.nvariable() == 2);
+      REQUIRE(a.nvariable() == 6);
+      REQUIRE(a.nvariable(false) == 2);
       REQUIRE(a.nsubaxis() == 1);
       REQUIRE(a.storage_size() == 21);
       REQUIRE(a.storage_size("scalar") == 1);
       REQUIRE(a.storage_size("r2t") == 6);
 
-      REQUIRE(a.subaxis("sub1").nitem() == 3);
-      REQUIRE(a.subaxis("sub1").nvariable() == 2);
+      REQUIRE(a.subaxis("sub1").nvariable() == 4);
+      REQUIRE(a.subaxis("sub1").nvariable(false) == 2);
       REQUIRE(a.subaxis("sub1").nsubaxis() == 1);
       REQUIRE(a.subaxis("sub1").storage_size() == 14);
       REQUIRE(a.subaxis("sub1").storage_size("scalar") == 1);
       REQUIRE(a.subaxis("sub1").storage_size("r2t") == 6);
 
-      REQUIRE(a.subaxis("sub1").subaxis("sub2").nitem() == 2);
       REQUIRE(a.subaxis("sub1").subaxis("sub2").nvariable() == 2);
       REQUIRE(a.subaxis("sub1").subaxis("sub2").nsubaxis() == 0);
       REQUIRE(a.subaxis("sub1").subaxis("sub2").storage_size() == 7);
@@ -237,27 +176,13 @@ TEST_CASE("LabeledAxis", "[tensors]")
     SECTION("chained modifiers")
     {
       LabeledAxis a;
-      a.add<Scalar>("scalar1");
-      a.add<Scalar>("scalar2");
-      a.add<Scalar>("scalar3");
-      a.add<SR2>("r2t1");
+      a.add<Scalar>("scalar1").add<Scalar>("scalar2").add<Scalar>("scalar3").add<SR2>("r2t1");
       a.add<SR2>("r2t2");
-      a.add<Scalar>("scalar4").remove("r2t1").rename("scalar4", "scalar5").remove("scalar2");
+      a.add<Scalar>("scalar4");
       a.setup_layout();
-
-      // scalar1
-      // scalar3
-      // scalar5
-      // r2t2
-
-      REQUIRE(a.nitem() == 4);
-      REQUIRE(a.nvariable() == 4);
+      REQUIRE(a.nvariable() == 6);
       REQUIRE(a.nsubaxis() == 0);
-      REQUIRE(a.storage_size() == 9);
-      REQUIRE(a.storage_size("scalar1") == 1);
-      REQUIRE(a.storage_size("scalar3") == 1);
-      REQUIRE(a.storage_size("scalar5") == 1);
-      REQUIRE(a.storage_size("r2t2") == 6);
+      REQUIRE(a.storage_size() == 16);
     }
 
     SECTION("indices")
@@ -282,7 +207,7 @@ TEST_CASE("LabeledAxis", "[tensors]")
       REQUIRE(torch::allclose(idx.index(a.indices("r2t")), torch::arange(0, 6)));
       REQUIRE(torch::allclose(idx.index(a.indices("sub1")), torch::arange(7, 21)));
 
-      LabeledAxisAccessor i{{"sub1", "sub2", "r2t"}};
+      LabeledAxisAccessor i("sub1", "sub2", "r2t");
       REQUIRE(torch::allclose(idx.index(a.indices(i)), torch::arange(14, 20)));
     }
   }

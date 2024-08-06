@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -32,10 +32,10 @@ KinematicHardening::expected_options()
   OptionSet options = Model::expected_options();
   options.doc() = "Map kinematic plastic strain to back stress";
 
-  options.set<VariableName>("kinematic_plastic_strain") = VariableName("state", "internal", "Kp");
+  options.set_input("kinematic_plastic_strain") = VariableName("state", "internal", "Kp");
   options.set("kinematic_plastic_strain").doc() = "Kinematic plastic strain";
 
-  options.set<VariableName>("back_stress") = VariableName("state", "internal", "X");
+  options.set_output("back_stress") = VariableName("state", "internal", "X");
   options.set("back_stress").doc() = "Back stress";
 
   return options;

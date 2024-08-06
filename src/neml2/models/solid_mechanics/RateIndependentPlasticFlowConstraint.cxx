@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 #include "neml2/models/solid_mechanics/RateIndependentPlasticFlowConstraint.h"
+#include "neml2/misc/math.h"
 
 namespace neml2
 {
@@ -36,10 +37,10 @@ RateIndependentPlasticFlowConstraint::expected_options()
                   "complementarity condition \\f[ r = \\dot{\\gamma} - f^p - "
                   "\\sqrt{{\\dot{\\gamma}}^2 + {f^p}^2} \\f]";
 
-  options.set<VariableName>("yield_function") = VariableName("state", "internal", "fp");
+  options.set_input("yield_function") = VariableName("state", "internal", "fp");
   options.set("yield_function").doc() = "Yield function";
 
-  options.set<VariableName>("flow_rate") = VariableName("state", "internal", "gamma_rate");
+  options.set_input("flow_rate") = VariableName("state", "internal", "gamma_rate");
   options.set("flow_rate").doc() = "Flow rate";
 
   return options;
@@ -50,8 +51,7 @@ RateIndependentPlasticFlowConstraint::RateIndependentPlasticFlowConstraint(
   : Model(options),
     _fp(declare_input_variable<Scalar>("yield_function")),
     _gamma_dot(declare_input_variable<Scalar>("flow_rate")),
-    _r(declare_output_variable<Scalar>(
-        options.get<VariableName>("flow_rate").slice(1).on("residual")))
+    _r(declare_output_variable<Scalar>(_gamma_dot.name().remount("residual")))
 {
 }
 
@@ -68,8 +68,13 @@ RateIndependentPlasticFlowConstraint::set_value(bool out, bool dout_din, bool d2
   if (dout_din)
   {
     const auto I = Scalar::identity_map(options());
-    _r.d(_gamma_dot) = I - _gamma_dot / math::sqrt(_gamma_dot * _gamma_dot + _fp * _fp);
-    _r.d(_fp) = -I - _fp / math::sqrt(_gamma_dot * _gamma_dot + _fp * _fp);
+
+    if (_gamma_dot.is_dependent())
+      _r.d(_gamma_dot) =
+          I - _gamma_dot / math::sqrt(_gamma_dot * _gamma_dot + _fp * _fp + machine_precision());
+
+    if (_fp.is_dependent())
+      _r.d(_fp) = -I - _fp / math::sqrt(_gamma_dot * _gamma_dot + _fp * _fp + machine_precision());
   }
 }
 

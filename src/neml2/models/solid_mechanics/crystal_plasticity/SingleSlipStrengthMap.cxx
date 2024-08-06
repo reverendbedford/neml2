@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -39,10 +39,10 @@ SingleSlipStrengthMap::expected_options()
       "i, \\f$ \\bar{\\tau} \\f$ is an evolving slip system strength (one value of all systems), "
       "defined by another object, and \\f$ \\tau_0 \\f$ is a constant strength.";
 
-  options.set<VariableName>("slip_hardening") = VariableName("state", "internal", "slip_hardening");
+  options.set_input("slip_hardening") = VariableName("state", "internal", "slip_hardening");
   options.set("slip_hardening").doc() = "The name of the evovling, scalar strength";
 
-  options.set<CrossRef<Scalar>>("constant_strength");
+  options.set_parameter<CrossRef<Scalar>>("constant_strength");
   options.set("constant_strength").doc() = "The constant slip system strength";
 
   return options;
@@ -64,6 +64,7 @@ SingleSlipStrengthMap::set_value(bool out, bool dout_din, bool d2out_din2)
     _tau = (_tau_bar + _tau_const).base_unsqueeze(0).base_expand_as(_tau.value());
 
   if (dout_din)
-    _tau.d(_tau_bar) = Scalar::ones(options()).base_expand_as(_tau.d(_tau_bar).value());
+    if (_tau_bar.is_dependent())
+      _tau.d(_tau_bar) = Scalar::ones(options()).base_expand_as(_tau.d(_tau_bar).value());
 }
 } // namespace neml2

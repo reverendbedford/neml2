@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -35,10 +35,10 @@ RotationMatrix::expected_options()
   options.doc() =
       "Convert a Rot (rotation represented in Rodrigues format) to R2 (a full rotation matrix).";
 
-  options.set<VariableName>("from");
+  options.set_input("from");
   options.set("from").doc() = "Rot to convert";
 
-  options.set<VariableName>("to");
+  options.set_output("to");
   options.set("to").doc() = "R2 to store the resulting rotation matrix";
 
   return options;
@@ -60,6 +60,7 @@ RotationMatrix::set_value(bool out, bool dout_din, bool d2out_din2)
     _to = Rot(_from).euler_rodrigues();
 
   if (dout_din)
-    _to.d(_from) = Rot(_from).deuler_rodrigues();
+    if (_from.is_dependent())
+      _to.d(_from) = Rot(_from).deuler_rodrigues();
 }
 } // namespace neml2

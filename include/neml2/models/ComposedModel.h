@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -27,6 +27,8 @@
 #include "neml2/models/Model.h"
 #include "neml2/base/DependencyResolver.h"
 
+#include <future>
+
 namespace neml2
 {
 class ComposedModel : public Model
@@ -38,11 +40,20 @@ public:
 
   virtual void check_AD_limitation() const override;
 
-protected:
-  /// Recursively register sub-model's nonlinar parameters
-  void register_nonlinear_params(Model & m);
+  virtual std::map<std::string, const VariableBase *>
+  named_nonlinear_parameters(bool recursive = false) const override;
 
-  virtual void allocate_variables(int deriv_order, bool options_changed) override;
+  virtual std::map<std::string, Model *>
+  named_nonlinear_parameter_models(bool recursive = false) const override;
+
+  virtual void setup() override;
+
+  using AssemblyIndices = std::map<indexing::TensorIndex,
+                                   std::pair<indexing::TensorIndex, Model *>,
+                                   LabeledAxis::AssemblySliceCmp>;
+
+protected:
+  virtual void allocate_variables(bool in, bool out) override;
 
   /**
    * Setup each of the sub-model's input views. Note the logic is different from the base class's.
@@ -51,36 +62,56 @@ protected:
    * all the copying when passing a sub-model's output as another sub-model's input.
    *
    */
-  virtual void setup_submodel_input_views() override;
+  virtual void setup_submodel_input_views(VariableStore * host) override;
+
+  virtual void setup_output_views() override;
 
   void set_value(bool, bool, bool) override;
 
 private:
-  void clear_chain_rule_cache()
-  {
-    _dpout_din.clear();
-    _d2pout_din2.clear();
-  }
+  /// Consolidate assembly indices
+  AssemblyIndices consolidate(const AssemblyIndices & indices) const;
+
+  /// Helper method to evaluate one single model in the threaded set_value loop
+  void set_value_async(Model * i, bool out, bool dout_din, bool d2out_din2);
 
   /// Helper method to recursively apply chain rule
-  void apply_chain_rule(Model * model);
+  void apply_chain_rule(Model * i);
 
   /// Helper method to recursively apply second order chain rule
-  void apply_second_order_chain_rule(Model * model);
+  void apply_second_order_chain_rule(Model * i);
+
+  /// Helper to rethrow exceptions collected from other threads
+  void rethrow_exceptions() const;
 
   /// Additional outbound items in the dependency graph
   const std::vector<VariableName> _additional_outputs;
 
+  /// Whether to automatically add nonlinear parameters
+  const bool _auto_nl_param;
+
   /// Helper to resolve model dependency
   DependencyResolver<Model, VariableName> _dependency;
 
-  /// Starting point of chain rule
-  LabeledMatrix _din_din;
+  /// Assembly indices
+  std::map<Model *, AssemblyIndices> _assembly_indices;
+
+  /// Cache for partial derivatives of model inputs w.r.t. total input
+  std::map<Model *, std::vector<Tensor>> _dpin_din_views;
 
   /// Cache for partial derivatives of model outputs w.r.t. total input
   std::map<Model *, LabeledMatrix> _dpout_din;
 
+  /// Cache for second partial derivatives of model inputs w.r.t. total input
+  std::map<Model *, std::vector<Tensor>> _d2pin_din2_views;
+
   /// Cache for second partial derivatives of model outputs w.r.t. total input
   std::map<Model *, LabeledTensor3D> _d2pout_din2;
+
+  /// Threaded evaluation results of sub-models
+  std::map<Model *, std::future<void>> _async_results;
+
+  /// Threaded evaluation exceptions of sub-models
+  std::map<std::thread::id, std::exception_ptr> _async_exceptions;
 };
 } // namespace neml2

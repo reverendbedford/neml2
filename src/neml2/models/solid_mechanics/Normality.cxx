@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 #include "neml2/models/solid_mechanics/Normality.h"
+#include "neml2/base/guards.h"
 
 namespace neml2
 {
@@ -67,7 +68,23 @@ Normality::Normality(const OptionSet & options)
   for (size_t i = 0; i < from.size(); i++)
   {
     auto sz = _model.output_axis().storage_size(_f) * _model.input_axis().storage_size(from[i]);
-    _conjugate_pairs.emplace(from[i], &declare_output_variable(sz, to[i]));
+    _conjugate_pairs.emplace(from[i],
+                             &declare_output_variable(sz, input_variable(from[i])->type(), to[i]));
+  }
+}
+
+void
+Normality::setup_output_views()
+{
+  Model::setup_output_views();
+
+  for (auto && [ivar, var] : _conjugate_pairs)
+  {
+    _f_deriv_views[ivar] = _model.derivative_storage().base_index({_f, ivar});
+    if (requires_grad())
+      for (auto && [jvar, j] : input_variables())
+        _f_secderiv_views[ivar][jvar] =
+            _model.second_derivative_storage().base_index({_f, ivar, jvar});
   }
 }
 
@@ -76,21 +93,23 @@ Normality::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   neml_assert_dbg(!d2out_din2, "Normality doesn't implement second derivatives.");
 
-  // All we do here is simply mapping the derivatives.
-  // However, let's consider all the cases to make it as efficient as possible.
-  if (out && !dout_din)
-    _model.value_and_dvalue();
-  else
-    _model.value_and_dvalue_and_d2value();
+  {
+    SolvingNonlinearSystem not_solving(false);
+    if (out && !dout_din)
+      _model.dvalue();
+    else
+      _model.dvalue_and_d2value();
+  }
 
   for (auto && [ivar, var] : _conjugate_pairs)
   {
     if (out)
-      (*var) = _model.derivative_storage()(_f, ivar);
+      (*var) = _f_deriv_views[ivar];
 
     if (dout_din)
-      for (auto && [jvar, j] : input_views())
-        var->d(j) = _model.second_derivative_storage()(_f, ivar, jvar);
+      for (auto && [jvar, j] : input_variables())
+        if (j.is_dependent())
+          var->d(j) = _f_secderiv_views[ivar][jvar];
   }
 }
 } // namespace neml2

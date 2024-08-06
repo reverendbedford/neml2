@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -38,16 +38,16 @@ OlevskySinteringStress::expected_options()
                   "\\f$ \\gamma \\f$ is the surface tension, \\f$ r \\f$ is the size of the "
                   "particles/powders, and \\f$ \\phi \\f$ is the void fraction.";
 
-  options.set<VariableName>("sintering_stress") = VariableName("state", "internal", "ss");
+  options.set_output("sintering_stress") = VariableName("state", "internal", "ss");
   options.set("sintering_stress").doc() = "Sintering stress";
 
-  options.set<VariableName>("void_fraction") = VariableName("state", "internal", "f");
+  options.set_input("void_fraction") = VariableName("state", "internal", "f");
   options.set("void_fraction").doc() = "Void fraction";
 
-  options.set<CrossRef<Scalar>>("surface_tension");
+  options.set_parameter<CrossRef<Scalar>>("surface_tension");
   options.set("surface_tension").doc() = "Surface tension";
 
-  options.set<CrossRef<Scalar>>("particle_radius");
+  options.set_parameter<CrossRef<Scalar>>("particle_radius");
   options.set("particle_radius").doc() = "Particle radius";
 
   return options;
@@ -69,9 +69,11 @@ OlevskySinteringStress::set_value(bool out, bool dout_din, bool d2out_din2)
     _s = 3 * _gamma * _phi * _phi / _r;
 
   if (dout_din)
-    _s.d(_phi) = 6 * _gamma * _phi / _r;
+    if (_phi.is_dependent())
+      _s.d(_phi) = 6 * _gamma * _phi / _r;
 
   if (d2out_din2)
-    _s.d(_phi, _phi) = 6 * _gamma / _r;
+    if (_phi.is_dependent())
+      _s.d(_phi, _phi) = 6 * _gamma / _r;
 }
 } // namespace neml2

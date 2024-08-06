@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -33,7 +33,7 @@ FlowRule::expected_options()
   options.doc() = "Map the flow rate (i.e., the consistency parameter in the KKT conditions) to "
                   "the rate of internal variables.";
 
-  options.set<VariableName>("flow_rate") = VariableName("state", "internal", "gamma_rate");
+  options.set_input("flow_rate") = VariableName("state", "internal", "gamma_rate");
   options.set("flow_rate").doc() = "Flow rate";
 
   return options;

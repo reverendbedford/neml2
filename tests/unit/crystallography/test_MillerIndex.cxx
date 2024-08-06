@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -35,7 +35,7 @@ TEST_CASE("MillerIndex", "[crystallography]")
   const auto & DTO = default_tensor_options();
   const auto & IDTO = default_integer_tensor_options();
 
-  TorchShape B = {5, 3, 1, 2}; // batch shape
+  TensorShape B = {5, 3, 1, 2}; // batch shape
 
   auto m = MillerIndex::fill(1, 2, -1, IDTO);
   auto mb = m.batch_expand(B);

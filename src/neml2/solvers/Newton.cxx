@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -45,7 +45,7 @@ Newton::Newton(const OptionSet & options)
 }
 
 std::tuple<bool, size_t>
-Newton::solve(NonlinearSystem & system, BatchTensor & x)
+Newton::solve(NonlinearSystem & system, Tensor & x)
 {
   // The initial residual for relative convergence check
   system.residual();
@@ -55,9 +55,12 @@ Newton::solve(NonlinearSystem & system, BatchTensor & x)
   // Check for initial convergence
   if (converged(0, nR0, nR0))
   {
-    // TODO: The final update is only necessary if we use AD
-    system.Jacobian();
-    final_update(system, x);
+    // The final update is only necessary if we use AD
+    if (system.is_AD_enabled())
+    {
+      system.Jacobian();
+      final_update(system, x);
+    }
     return {true, 0};
   }
 
@@ -78,9 +81,12 @@ Newton::solve(NonlinearSystem & system, BatchTensor & x)
     // Check for convergence
     if (converged(i, nR, nR0))
     {
-      // TODO: The final update is only necessary if we use AD
-      system.Jacobian();
-      final_update(system, x);
+      // The final update is only necessary if we use AD
+      if (system.is_AD_enabled())
+      {
+        system.Jacobian();
+        final_update(system, x);
+      }
       return {true, i};
     }
   }
@@ -102,7 +108,7 @@ Newton::converged(size_t itr, const torch::Tensor & nR, const torch::Tensor & nR
 }
 
 void
-Newton::update(NonlinearSystem & system, BatchTensor & x)
+Newton::update(NonlinearSystem & system, Tensor & x)
 {
   auto dx = solve_direction(system);
 
@@ -111,20 +117,20 @@ Newton::update(NonlinearSystem & system, BatchTensor & x)
 }
 
 void
-Newton::final_update(NonlinearSystem & system, BatchTensor & x)
+Newton::final_update(NonlinearSystem & system, Tensor & x)
 {
   auto dx = solve_direction(system);
   x += system.scale_direction(dx);
 }
 
-BatchTensor
+Tensor
 Newton::solve_direction(const NonlinearSystem & system)
 {
   // Special case when this is a scalar system
-  if (system.residual_view().base_dim() == 0)
-    return -system.residual_view() / system.Jacobian_view();
+  if (system.get_residual().base_dim() == 0)
+    return -system.get_residual() / system.get_Jacobian();
 
-  return -math::linalg::solve(system.Jacobian_view(), system.residual_view());
+  return -math::linalg::solve(system.get_Jacobian(), system.get_residual());
 }
 
 } // namespace neml2

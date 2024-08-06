@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -49,7 +49,7 @@ public:
    * @brief Override the base implementation to additionally send the model loaded from torch script
    * to different device and dtype.
    */
-  virtual void reinit(TorchShapeRef batch_shape,
+  virtual void reinit(TensorShapeRef batch_shape,
                       int deriv_order = 0,
                       const torch::Device & device = default_device(),
                       const torch::Dtype & dtype = default_dtype()) override;

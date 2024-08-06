@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -37,6 +37,8 @@ public:
 
   BackwardEulerTimeIntegration(const OptionSet & options);
 
+  virtual void diagnose(std::vector<Diagnosis> & diagnoses) const override;
+
 private:
   const VariableName _var_name;
   const VariableName _var_rate_name;
@@ -44,23 +46,23 @@ private:
 protected:
   void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
-  /// Residual
-  Variable<T> & _r;
-
-  /// Variable rate
-  const Variable<T> & _ds_dt;
-
   /// Current variable value
   const Variable<T> & _s;
 
   /// Old variable value
   const Variable<T> & _sn;
 
+  /// Variable rate
+  const Variable<T> & _ds_dt;
+
   /// Current time
   const Variable<Scalar> & _t;
 
   /// Old time
   const Variable<Scalar> & _tn;
+
+  /// Residual
+  Variable<T> & _r;
 };
 
 typedef BackwardEulerTimeIntegration<Scalar> ScalarBackwardEulerTimeIntegration;

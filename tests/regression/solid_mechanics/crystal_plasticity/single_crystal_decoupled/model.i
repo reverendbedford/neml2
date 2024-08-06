@@ -160,9 +160,6 @@
   [elastic_stretch]
     type = ElasticStrainRate
   []
-  [plastic_spin]
-    type = PlasticVorticity
-  []
   [plastic_deformation_rate]
     type = PlasticDeformationRate
   []
@@ -185,16 +182,16 @@
   []
   [integrate_slip_hardening]
     type = ScalarBackwardEulerTimeIntegration
-    variable = 'internal/slip_hardening'
+    variable = 'state/internal/slip_hardening'
   []
   [integrate_elastic_strain]
     type = SR2BackwardEulerTimeIntegration
-    variable = 'elastic_strain'
+    variable = 'state/elastic_strain'
   []
   [implicit_rate_1]
     type = ComposedModel
     models = "euler_rodrigues_1 elasticity_1 resolved_shear
-              elastic_stretch plastic_deformation_rate plastic_spin
+              elastic_stretch plastic_deformation_rate
               sum_slip_rates slip_rule slip_strength voce_hardening
               integrate_slip_hardening integrate_elastic_strain"
   []
@@ -223,6 +220,9 @@
     type = OrientationRate
     elastic_strain = 'forces/tmp/elastic_strain'
   []
+  [plastic_spin]
+    type = PlasticVorticity
+  []
   [slip_strength_2]
     type = SingleSlipStrengthMap
     constant_strength = 50.0
@@ -230,7 +230,7 @@
   []
   [integrate_orientation]
     type = WR2ImplicitExponentialTimeIntegration
-    variable = 'orientation'
+    variable = 'state/orientation'
   []
   [implicit_rate_2]
     type = ComposedModel

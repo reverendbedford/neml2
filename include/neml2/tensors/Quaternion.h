@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/tensors/FixedDimTensor.h"
+#include "neml2/tensors/PrimitiveTensor.h"
 
 namespace neml2
 {
@@ -40,10 +40,10 @@ class Scalar;
  * Currently we only use this for data storage, so the only
  * method needed is to convert it to an R2
  */
-class Quaternion : public FixedDimTensor<Quaternion, 4>
+class Quaternion : public PrimitiveTensor<Quaternion, 4>
 {
 public:
-  using FixedDimTensor<Quaternion, 4>::FixedDimTensor;
+  using PrimitiveTensor<Quaternion, 4>::PrimitiveTensor;
 
   /// fill with four scalars
   static Quaternion fill(const Scalar & s, const Scalar & q1, const Scalar & q2, const Scalar & q3);
@@ -56,7 +56,7 @@ public:
                          const torch::TensorOptions & options = default_tensor_options());
 
   /// Accessor
-  Scalar operator()(TorchSize i) const;
+  Scalar operator()(Size i) const;
 
   /// Convert to R2
   R2 to_R2() const;

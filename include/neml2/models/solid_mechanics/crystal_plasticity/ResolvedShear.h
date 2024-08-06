@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -49,7 +49,7 @@ protected:
   const crystallography::CrystalGeometry & _crystal_geometry;
 
   /// Resolved shear stresses
-  Variable<BatchTensor> & _rss;
+  Variable<Tensor> & _rss;
 
   /// Stress
   const Variable<SR2> & _S;

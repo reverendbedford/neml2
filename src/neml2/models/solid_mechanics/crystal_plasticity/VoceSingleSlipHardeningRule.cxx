@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -39,9 +39,9 @@ VoceSingleSlipHardeningRule::expected_options()
                   "saturated, maximum value of the slip system strength, and \\f$ \\dot{\\gamma}_i "
                   "\\f$ is the slip rate on each system.";
 
-  options.set<CrossRef<Scalar>>("initial_slope");
+  options.set_parameter<CrossRef<Scalar>>("initial_slope");
   options.set("initial_slope").doc() = "The initial rate of hardening";
-  options.set<CrossRef<Scalar>>("saturated_hardening");
+  options.set_parameter<CrossRef<Scalar>>("saturated_hardening");
   options.set("saturated_hardening").doc() =
       "The final, saturated value of the slip system strength";
   return options;
@@ -64,8 +64,11 @@ VoceSingleSlipHardeningRule::set_value(bool out, bool dout_din, bool d2out_din2)
 
   if (dout_din)
   {
-    _tau_dot.d(_tau) = -_theta_0 / _tau_f * _gamma_dot_sum;
-    _tau_dot.d(_gamma_dot_sum) = _theta_0 * (1 - _tau / _tau_f);
+    if (_tau.is_dependent())
+      _tau_dot.d(_tau) = -_theta_0 / _tau_f * _gamma_dot_sum;
+
+    if (_gamma_dot_sum.is_dependent())
+      _tau_dot.d(_gamma_dot_sum) = _theta_0 * (1 - _tau / _tau_f);
   }
 }
 } // namespace neml2

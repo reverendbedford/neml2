@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -57,8 +57,9 @@ TEST_CASE("models")
       try
       {
         // Load and run the model
-        load_model(test.filename());
-        auto & driver = Factory::get_object<Driver>("Drivers", "unit");
+        reload_input(test.filename());
+        auto & driver = get_driver("unit");
+        diagnose(driver);
         REQUIRE(driver.run());
       }
       catch (...)

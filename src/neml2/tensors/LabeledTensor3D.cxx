@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -25,20 +25,8 @@
 #include "neml2/tensors/LabeledTensor3D.h"
 #include "neml2/tensors/LabeledMatrix.h"
 
-using namespace torch::indexing;
-
 namespace neml2
 {
-void
-LabeledTensor3D::accumulate(const LabeledTensor3D & other, bool recursive)
-{
-  neml_assert_dbg(axis(1) == other.axis(1), "Can only accumulate 3D tensors with conformal y axes");
-  neml_assert_dbg(axis(2) == other.axis(2), "Can only accumulate 3D tensors with conformal z axes");
-  const auto indices0 = axis(0).common_indices(other.axis(0), recursive);
-  for (const auto & [idxi, idxi_other] : indices0)
-    _tensor.base_index({idxi}) += other.base_index({idxi_other});
-}
-
 void
 LabeledTensor3D::fill(const LabeledTensor3D & other, bool recursive)
 {
@@ -46,7 +34,7 @@ LabeledTensor3D::fill(const LabeledTensor3D & other, bool recursive)
   neml_assert_dbg(axis(2) == other.axis(2), "Can only accumulate 3D tensors with conformal z axes");
   const auto indices0 = axis(0).common_indices(other.axis(0), recursive);
   for (const auto & [idxi, idxi_other] : indices0)
-    _tensor.base_index_put({idxi}, other.base_index({idxi_other}));
+    _tensor.base_index_put_({idxi}, other.tensor().base_index({idxi_other}));
 }
 
 LabeledTensor3D
@@ -70,7 +58,6 @@ LabeledTensor3D::chain(const LabeledTensor3D & other,
   // If all the sizes are correct then executing the chain rule is pretty easy
   return LabeledTensor3D(torch::einsum("...ipq,...pj,...qk", {*this, dother, dother}) +
                              torch::einsum("...ip,...pjk", {dself, other}),
-                         broadcast_batch_dim(*this, other, dself, dother),
                          {&axis(0), &other.axis(1), &other.axis(2)});
 }
 } // namespace neml2

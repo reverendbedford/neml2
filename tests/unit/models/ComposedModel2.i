@@ -13,24 +13,21 @@
                            1.3 1.1"
     output_scalar_names = 'residual/foo_bar_baz'
     output_scalar_values = '1.0'
-    check_second_derivatives = true
     check_AD_first_derivatives = false
-    check_AD_second_derivatives = false
-    check_AD_derivatives = false
   []
 []
 
 [Models]
   [integrate_foo]
     type = ScalarBackwardEulerTimeIntegration
-    variable = 'foo'
+    variable = 'state/foo'
   []
   [integrate_bar]
     type = ScalarBackwardEulerTimeIntegration
-    variable = 'bar'
+    variable = 'state/bar'
   []
   [residual_sum1]
-    type = ScalarSumModel
+    type = ScalarLinearCombination
     from_var = 'residual/foo residual/bar'
     to_var = 'residual/foo_bar'
   []
@@ -40,10 +37,10 @@
   []
   [integrate_baz]
     type = ScalarBackwardEulerTimeIntegration
-    variable = 'baz'
+    variable = 'state/baz'
   []
   [residual_sum2]
-    type = ScalarSumModel
+    type = ScalarLinearCombination
     from_var = 'residual/foo_bar residual/baz'
     to_var = 'residual/foo_bar_baz'
   []

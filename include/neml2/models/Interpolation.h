@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -76,7 +76,7 @@ Interpolation<T>::expected_options()
                   " as a function of the given argument. See neml2::Interpolation for rules on "
                   "shapes of the interpolant and the argument.";
 
-  options.set<VariableName>("argument");
+  options.set_input("argument");
   options.set("argument").doc() = "Argument used to query the interpolant";
 
   options.set<CrossRef<Scalar>>("abscissa");

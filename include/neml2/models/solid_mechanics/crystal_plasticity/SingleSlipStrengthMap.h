@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -39,7 +39,7 @@ public:
 
 protected:
   /// Set the slip system strengths and associated derivatives
-  void set_value(bool out, bool dou2_din, bool d2out_din2) override;
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
   /// Slip hardening variable
   const Variable<Scalar> & _tau_bar;

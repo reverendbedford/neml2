@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/tensors/FixedDimTensor.h"
+#include "neml2/tensors/PrimitiveTensor.h"
 
 namespace neml2
 {
@@ -34,10 +34,10 @@ namespace neml2
  * The logical storage space is (), i.e., scalar.
  *
  */
-class Scalar : public FixedDimTensor<Scalar>
+class Scalar : public PrimitiveTensor<Scalar>
 {
 public:
-  using FixedDimTensor<Scalar>::FixedDimTensor;
+  using PrimitiveTensor<Scalar>::PrimitiveTensor;
 
   Scalar(Real init, const torch::TensorOptions & options);
 
@@ -47,73 +47,67 @@ public:
 };
 
 /// Absolute value
-// I don't understand why, but apparently without this the BatchTensor abs and aten::abs (i.e. the
+// I don't understand why, but apparently without this the Tensor abs and aten::abs (i.e. the
 // torch native abs) are ambiguous
 Scalar abs(const Scalar & a);
 
-template <
-    class Derived,
-    typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
-    typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<Derived>, Derived>>>
+template <class Derived,
+          typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
+          typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<Derived>, Derived>>>
 Derived
 operator+(const Derived & a, const Scalar & b)
 {
   neml_assert_batch_broadcastable_dbg(a, b);
-  TorchSlice net{torch::indexing::Ellipsis};
+  indexing::TensorIndices net{torch::indexing::Ellipsis};
   net.insert(net.end(), a.base_dim(), torch::indexing::None);
   return Derived(torch::operator+(a, b.index(net)), broadcast_batch_dim(a, b));
 }
 
-template <
-    class Derived,
-    typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
-    typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<Derived>, Derived>>>
+template <class Derived,
+          typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
+          typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<Derived>, Derived>>>
 Derived
 operator+(const Scalar & a, const Derived & b)
 {
   return b + a;
 }
 
-template <
-    class Derived,
-    typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
-    typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<Derived>, Derived>>>
+template <class Derived,
+          typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
+          typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<Derived>, Derived>>>
 Derived
 operator-(const Derived & a, const Scalar & b)
 {
   neml_assert_batch_broadcastable_dbg(a, b);
-  TorchSlice net{torch::indexing::Ellipsis};
+  indexing::TensorIndices net{torch::indexing::Ellipsis};
   net.insert(net.end(), a.base_dim(), torch::indexing::None);
   return Derived(torch::operator-(a, b.index(net)), broadcast_batch_dim(a, b));
 }
 
-template <
-    class Derived,
-    typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
-    typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<Derived>, Derived>>>
+template <class Derived,
+          typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
+          typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<Derived>, Derived>>>
 Derived
 operator-(const Scalar & a, const Derived & b)
 {
   return -b + a;
 }
 
-template <
-    class Derived,
-    typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
-    typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<Derived>, Derived>>>
+template <class Derived,
+          typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
+          typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<Derived>, Derived>>>
 Derived
 operator*(const Derived & a, const Scalar & b)
 {
   neml_assert_batch_broadcastable_dbg(a, b);
-  TorchSlice net{torch::indexing::Ellipsis};
+  indexing::TensorIndices net{torch::indexing::Ellipsis};
   net.insert(net.end(), a.base_dim(), torch::indexing::None);
   return Derived(torch::operator*(a, b.index(net)), broadcast_batch_dim(a, b));
 }
 
-template <
-    class Derived,
-    typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
-    typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<Derived>, Derived>>>
+template <class Derived,
+          typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
+          typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<Derived>, Derived>>>
 Derived
 operator*(const Scalar & a, const Derived & b)
 {
@@ -122,58 +116,41 @@ operator*(const Scalar & a, const Derived & b)
 
 Scalar operator*(const Scalar & a, const Scalar & b);
 
-template <
-    class Derived,
-    typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
-    typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<Derived>, Derived>>>
+template <class Derived,
+          typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
+          typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<Derived>, Derived>>>
 Derived
 operator/(const Derived & a, const Scalar & b)
 {
   neml_assert_batch_broadcastable_dbg(a, b);
-  TorchSlice net{torch::indexing::Ellipsis};
+  indexing::TensorIndices net{torch::indexing::Ellipsis};
   net.insert(net.end(), a.base_dim(), torch::indexing::None);
   return Derived(torch::operator/(a, b.index(net)), broadcast_batch_dim(a, b));
 }
 
-template <
-    class Derived,
-    typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
-    typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<Derived>, Derived>>>
+template <class Derived,
+          typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
+          typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<Derived>, Derived>>>
 Derived
 operator/(const Scalar & a, const Derived & b)
 {
   neml_assert_batch_broadcastable_dbg(a, b);
-  TorchSlice net{torch::indexing::Ellipsis};
+  indexing::TensorIndices net{torch::indexing::Ellipsis};
   net.insert(net.end(), b.base_dim(), torch::indexing::None);
   return Derived(torch::operator/(a.index(net), b), broadcast_batch_dim(a, b));
 }
 
 namespace math
 {
-template <
-    class Derived,
-    typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
-    typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<Derived>, Derived>>>
+template <class Derived,
+          typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<Derived>, Derived>>>
 Derived
 pow(const Derived & a, const Scalar & n)
 {
   neml_assert_batch_broadcastable_dbg(a, n);
-  TorchSlice net{torch::indexing::Ellipsis};
+  indexing::TensorIndices net{torch::indexing::Ellipsis};
   net.insert(net.end(), a.base_dim(), torch::indexing::None);
   return Derived(torch::pow(a, n.index(net)), broadcast_batch_dim(a, n));
-}
-
-template <
-    class Derived,
-    typename = typename std::enable_if_t<!std::is_same_v<Derived, Scalar>>,
-    typename = typename std::enable_if_t<std::is_base_of_v<BatchTensorBase<Derived>, Derived>>>
-Derived
-pow(const Scalar & a, const Derived & n)
-{
-  neml_assert_batch_broadcastable_dbg(a, n);
-  TorchSlice net{torch::indexing::Ellipsis};
-  net.insert(net.end(), n.base_dim(), torch::indexing::None);
-  return Derived(torch::pow(a.index(net), n), broadcast_batch_dim(a, n));
 }
 }
 } // namespace neml2

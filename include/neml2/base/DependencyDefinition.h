@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -40,9 +40,9 @@ class DependencyDefinition
 {
 public:
   /// What this object consumes
-  virtual const std::set<T> consumed_items() const = 0;
+  virtual std::set<T> consumed_items() const = 0;
 
   /// What this object provides
-  virtual const std::set<T> provided_items() const = 0;
+  virtual std::set<T> provided_items() const = 0;
 };
 } // namespace neml2

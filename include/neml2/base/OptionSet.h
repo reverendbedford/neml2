@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -24,9 +24,7 @@
 
 #pragma once
 
-#include "neml2/misc/error.h"
-#include "neml2/misc/types.h"
-#include "neml2/misc/parser_utils.h"
+#include "neml2/misc/utils.h"
 
 #include <map>
 #include <sstream>
@@ -37,18 +35,54 @@
 
 namespace neml2
 {
-///@{
+// Forward decl
+class OptionSet;
+class LabeledAxisAccessor;
+
 /**
+ * @brief Role in a function definition
+ *
+ * NONE is the default value,
+ * INPUT stands for input variable,
+ * OUTPUT stands for output variable,
+ * PARAMETER stands for parameter (could request AD),
+ * BUFFER stands for buffer.
+ */
+enum class FType : int8_t
+{
+  NONE,
+  INPUT,
+  OUTPUT,
+  PARAMETER,
+  BUFFER
+};
+
+/**
+ * @name Helper functions for printing
+ *
  * Helper functions for printing scalar, vector, vector of vector. Called from
  * OptionSet::Option<T>::print(...).
  */
+///@{
 template <typename P>
 void print_helper(std::ostream & os, const P *);
 template <typename P>
 void print_helper(std::ostream & os, const std::vector<P> *);
 template <typename P>
 void print_helper(std::ostream & os, const std::vector<std::vector<P>> *);
+/// Specialization so that we don't print out unprintable characters
+template <>
+void print_helper(std::ostream & os, const char *);
+/// Specialization so that we don't print out unprintable characters
+template <>
+void print_helper(std::ostream & os, const unsigned char *);
 ///@}
+
+bool options_compatible(const OptionSet & opts, const OptionSet & additional_opts);
+
+// Streaming operators
+std::ostream & operator<<(std::ostream & os, FType);
+std::ostream & operator<<(std::ostream & os, const OptionSet & p);
 
 /**
  * @brief A custom map-like data structure. The keys are strings, and the values can be
@@ -66,14 +100,14 @@ public:
   virtual ~OptionSet() = default;
 
   /// Assignment operator. Deep copy
-  virtual OptionSet & operator=(const OptionSet & source);
+  OptionSet & operator=(const OptionSet & source);
 
   /**
    * Addition/Assignment operator.  Inserts copies of all options
    * from \p source.  Any options of the same name already in \p
    * this are replaced.
    */
-  virtual void operator+=(const OptionSet & source);
+  void operator+=(const OptionSet & source);
 
   /// A readonly reference to the option set's name
   const std::string & name() const { return _metadata.name; }
@@ -130,11 +164,20 @@ public:
     /// Test for option equality
     virtual bool operator==(const OptionBase & other) const = 0;
 
+    /// Test for option inequality
+    virtual bool operator!=(const OptionBase & other) const = 0;
+
     /// A readonly reference to the option's name
     const std::string & name() const { return _metadata.name; }
 
     /// A readonly reference to the option's type
     const std::string & type() const { return _metadata.type; }
+
+    /// A readonly reference to the option's ftype
+    const FType & ftype() const { return _metadata.ftype; }
+
+    /// A writable reference to the option's ftype
+    FType & ftype() { return _metadata.ftype; }
 
     /// A readonly reference to the option's docstring
     const std::string & doc() const { return _metadata.doc; }
@@ -190,14 +233,24 @@ public:
        */
       std::string type = "";
       /**
+       * @brief Option's role in defining the function
+       *
+       * Since the syntax documentation is automatically extracted from options defined by
+       * neml2::NEML2Object::expected_options, there is no way for us to tell, at the time of syntax
+       * extraction, whether a variable name is used for the model's input variable, output
+       * variable. This metadata information defines such missing information. See neml2::FType for
+       * enum values.
+       */
+      FType ftype = FType::NONE;
+      /**
        * @brief Option's doc string
        *
-       * When we build the documentation for NEML2, we automatically extract the syntax and convert
-       * it to a markdown file. The syntax of NEML2 is just the collection of expected options of
-       * all the registered objects. Doxygen will then render the markdown syntax to the target
-       * output format, e.g., html, tex, etc. This implies that the docstring can contain anything
-       * that the Doxygen's markdown renderer can understand. For more information, see
-       * https://www.doxygen.nl/manual/markdown.html
+       * When we build the documentation for NEML2, we automatically extract the syntax and
+       * convert it to a markdown file. The syntax of NEML2 is just the collection of expected
+       * options of all the registered objects. Doxygen will then render the markdown syntax to
+       * the target output format, e.g., html, tex, etc. This implies that the docstring can
+       * contain anything that the Doxygen's markdown renderer can understand. For more
+       * information, see https://www.doxygen.nl/manual/markdown.html
        */
       std::string doc = "";
       /**
@@ -213,9 +266,12 @@ public:
 
       bool operator==(const Metadata & other) const
       {
-        return name == other.name && type == other.type && doc == other.doc &&
-               suppressed == other.suppressed;
+        return name == other.name && type == other.type && ftype == other.ftype &&
+               doc == other.doc && suppressed == other.suppressed;
       }
+
+      bool operator!=(const Metadata & other) const { return !(*this == other); }
+
     } _metadata;
   };
 
@@ -235,6 +291,8 @@ public:
     }
 
     virtual bool operator==(const OptionBase & other) const override;
+
+    virtual bool operator!=(const OptionBase & other) const override;
 
     /**
      * \returns A read-only reference to the option value
@@ -264,15 +322,27 @@ public:
 
   const OptionBase & get(const std::string &) const;
 
+  ///@{
   /**
    * \returns A writable reference to the specified option value. This method will create the option
    * if it does not exist, so it can be used to define options which will later be accessed with the
    * \p get() member.
    */
-  template <typename T>
+  template <typename T, FType f = FType::NONE>
   T & set(const std::string &);
-
   OptionBase & set(const std::string &);
+  ///@}
+
+  /// @name Convenient methods to request an input variable
+  LabeledAxisAccessor & set_input(const std::string &);
+  /// @name Convenient methods to request an output variable
+  LabeledAxisAccessor & set_output(const std::string &);
+  /// Convenient method to request a parameter
+  template <typename T>
+  T & set_parameter(const std::string &);
+  /// Convenient method to request a buffer
+  template <typename T>
+  T & set_buffer(const std::string &);
 
   /// The type of the map that we store internally
   typedef std::map<std::string, std::unique_ptr<OptionBase>, std::less<>> map_type;
@@ -385,6 +455,13 @@ OptionSet::Option<T>::operator==(const OptionBase & other) const
   return (_metadata == other_ptr->_metadata) && (other_ptr->get() == this->get());
 }
 
+template <typename T>
+bool
+OptionSet::Option<T>::operator!=(const OptionBase & other) const
+{
+  return !(*this == other);
+}
+
 // LCOV_EXCL_START
 template <typename T>
 void
@@ -403,8 +480,6 @@ OptionSet::Option<T>::clone() const
   copy->_metadata = this->_metadata;
   return copy;
 }
-
-std::ostream & operator<<(std::ostream & os, const OptionSet & p);
 
 template <typename T>
 bool
@@ -431,14 +506,29 @@ OptionSet::get(const std::string & name) const
   return ptr->get();
 }
 
-template <typename T>
+template <typename T, FType F>
 T &
 OptionSet::set(const std::string & name)
 {
   if (!this->contains<T>(name))
     _values[name] = std::make_unique<Option<T>>(name);
   auto ptr = dynamic_cast<Option<T> *>(_values[name].get());
+  ptr->ftype() = F;
   return ptr->set();
+}
+
+template <typename T>
+T &
+OptionSet::set_parameter(const std::string & name)
+{
+  return set<T, FType::PARAMETER>(name);
+}
+
+template <typename T>
+T &
+OptionSet::set_buffer(const std::string & name)
+{
+  return set<T, FType::BUFFER>(name);
 }
 
 // LCOV_EXCL_START
@@ -453,7 +543,6 @@ template <>
 inline void
 print_helper(std::ostream & os, const char * option)
 {
-  // Specialization so that we don't print out unprintable characters
   os << static_cast<int>(*option);
 }
 
@@ -461,7 +550,6 @@ template <>
 inline void
 print_helper(std::ostream & os, const unsigned char * option)
 {
-  // Specialization so that we don't print out unprintable characters
   os << static_cast<int>(*option);
 }
 

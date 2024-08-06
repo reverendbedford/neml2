@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -34,12 +34,6 @@ public:
   static OptionSet expected_options();
 
   AssociativeIsotropicPlasticHardening(const OptionSet & options);
-
-  /// Accessor for the isotropic hardening direction
-  const VariableName isotropic_hardening_direction;
-
-  /// Accessor for the plastic strain rate
-  const VariableName equivalent_plastic_strain_rate;
 
 protected:
   void set_value(bool out, bool dout_din, bool d2out_din2) override;

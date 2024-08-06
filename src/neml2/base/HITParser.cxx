@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -23,13 +23,13 @@
 // THE SOFTWARE.
 
 #include "neml2/base/HITParser.h"
+#include "neml2/base/Registry.h"
 #include "neml2/base/Factory.h"
 #include "neml2/base/CrossRef.h"
 #include "neml2/base/Settings.h"
 #include "neml2/base/EnumSelection.h"
 #include "neml2/tensors/LabeledAxis.h"
 #include "neml2/tensors/tensors.h"
-#include "neml2/tensors/macros.h"
 #include <memory>
 
 namespace neml2
@@ -69,18 +69,18 @@ HITParser::parse(const std::filesystem::path & filename, const std::string & add
   OptionCollection all_options;
 
   // Extract global settings
-  auto settings_node = root->find("Settings");
+  auto * settings_node = root->find("Settings");
   if (settings_node)
     extract_options(settings_node, all_options.settings());
 
   // Loop over each known section and extract options for each object
   for (const auto & section : Parser::sections)
   {
-    auto section_node = root->find(section);
+    auto * section_node = root->find(section);
     if (section_node)
     {
       auto objects = section_node->children(hit::NodeType::Section);
-      for (auto object : objects)
+      for (auto * object : objects)
       {
         auto options = extract_object_options(object, section_node);
         all_options[section][options.name()] = options;
@@ -111,11 +111,12 @@ HITParser::extract_object_options(hit::Node * object, hit::Node * section) const
 void
 HITParser::extract_options(hit::Node * object, OptionSet & options) const
 {
-  for (auto node : object->children(hit::NodeType::Field))
+  for (auto * node : object->children(hit::NodeType::Field))
     if (node->path() != "type")
       extract_option(node, options);
 }
 
+// NOLINTBEGIN
 void
 HITParser::extract_option(hit::Node * n, OptionSet & options) const
 {
@@ -145,17 +146,17 @@ HITParser::extract_option(hit::Node * n, OptionSet & options) const
 
         if (false)
           ;
-        extract_option_t(TorchShape);
+        extract_option_t(TensorShape);
         extract_option_t(bool);
         extract_option_t(int);
         extract_option_t(unsigned int);
-        extract_option_t(TorchSize);
+        extract_option_t(Size);
         extract_option_t(Real);
         extract_option_t(std::string);
         extract_option_t(VariableName);
         extract_option_t(EnumSelection);
         extract_option_t(CrossRef<torch::Tensor>);
-        FOR_ALL_BATCHTENSORBASE(extract_option_t_cr);
+        FOR_ALL_TENSORBASE(extract_option_t_cr);
         // LCOV_EXCL_START
         else neml_assert(false, "Unsupported option type for option ", n->fullpath());
         // LCOV_EXCL_STOP
@@ -165,4 +166,5 @@ HITParser::extract_option(hit::Node * n, OptionSet & options) const
     neml_assert(found, "Unused option ", n->fullpath());
   }
 }
+// NOLINTEND
 } // namespace neml2

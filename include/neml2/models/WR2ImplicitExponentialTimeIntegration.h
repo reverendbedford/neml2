@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -37,6 +37,8 @@ public:
 
   WR2ImplicitExponentialTimeIntegration(const OptionSet & options);
 
+  virtual void diagnose(std::vector<Diagnosis> & diagnoses) const override;
+
 private:
   /// Variable name
   const VariableName _var_name;
@@ -48,22 +50,22 @@ protected:
   /// Perform the update by defining the nonlinear residual and it's derivatives
   void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
-  /// Nonlinear residual
-  Variable<Vec> & _r;
-
-  /// Current variable spin rate
-  const Variable<WR2> & _s_dot;
-
   /// Current guess at next value
   const Variable<Rot> & _s;
 
   /// Previous value
   const Variable<Rot> & _sn;
 
+  /// Current variable spin rate
+  const Variable<WR2> & _s_dot;
+
   /// Current time
   const Variable<Scalar> & _t;
 
   /// Previous time
   const Variable<Scalar> & _tn;
+
+  /// Nonlinear residual
+  Variable<Vec> & _r;
 };
 } // namespace neml2

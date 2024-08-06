@@ -1,4 +1,4 @@
-// Copyright 2023, UChicago Argonne, LLC
+// Copyright 2024, UChicago Argonne, LLC
 // All Rights Reserved
 // Software Name: NEML2 -- the New Engineering material Model Library, version 2
 // By: Argonne National Laboratory
@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "neml2/tensors/FixedDimTensor.h"
+#include "neml2/tensors/PrimitiveTensor.h"
 
 #include <string>
 
@@ -34,10 +34,10 @@ class Vec;
 /// Represention of a crystal direction or plane a Miller Index
 // I delibrately made this not inherit from VecBase but we could
 // reconsider that later on
-class MillerIndex : public FixedDimTensor<MillerIndex, 3>
+class MillerIndex : public PrimitiveTensor<MillerIndex, 3>
 {
 public:
-  using FixedDimTensor<MillerIndex, 3>::FixedDimTensor;
+  using PrimitiveTensor<MillerIndex, 3>::PrimitiveTensor;
 
   /// Most likely construction method -- make from three ints
   static MillerIndex fill(Integer a,
