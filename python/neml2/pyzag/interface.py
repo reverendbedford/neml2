@@ -316,15 +316,15 @@ class NEML2PyzagModel(nonlinear.NonlinearRecursiveFunction):
         J_old_reduced = neml2.LabeledMatrix(
             J.base[self.residual_axis, self.old_prefix + self.state_axis],
             [
-                self.model.output_axis().subaxis(self.residual_axis),
-                self.model.input_axis().subaxis(self.old_prefix + self.state_axis),
+                output_axis,
+                reduced_input_axis,
             ],
         )
         J_old_full = neml2.LabeledMatrix.zeros(
             J_new.shape[:-2],
             [
-                self.model.output_axis().subaxis(self.residual_axis),
-                self.model.input_axis().subaxis(self.state_axis),
+                output_axis,
+                full_input_axis,
             ],
             device=J_new.device,
         )
