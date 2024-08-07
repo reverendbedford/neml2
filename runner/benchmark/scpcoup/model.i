@@ -1,37 +1,30 @@
-interop_threads = 0
-intraop_threads = 0
-
-[Settings]
-  interop_threads = ${interop_threads}
-  intraop_threads = ${intraop_threads}
-[]
-
 [Tensors]
   [end_time]
-    type = FullScalar
-    value = 5000
-    batch_shape = '(${nbatch})'
+    type = LinspaceScalar
+    start = 1
+    end = 10
+    nstep = ${nbatch}
   []
   [times]
     type = LinspaceScalar
     start = 0
     end = end_time
-    nstep = ${ntime}
+    nstep = 100
   []
   [dxx]
     type = FullScalar
     batch_shape = '(${nbatch})'
-    value = 0.0
+    value = 0.1
   []
   [dyy]
     type = FullScalar
     batch_shape = '(${nbatch})'
-    value = 0.0001
+    value = -0.05
   []
   [dzz]
     type = FullScalar
     batch_shape = '(${nbatch})'
-    value = -0.0001
+    value = -0.05
   []
   [deformation_rate_single]
     type = FillSR2
@@ -41,23 +34,23 @@ intraop_threads = 0
     type = LinspaceSR2
     start = deformation_rate_single
     end = deformation_rate_single
-    nstep = ${ntime}
+    nstep = 100
   []
 
   [w1]
     type = FullScalar
     batch_shape = '(${nbatch})'
-    value = 0.0
+    value = 0.1
   []
   [w2]
     type = FullScalar
     batch_shape = '(${nbatch})'
-    value = 0.0
+    value = -0.05
   []
   [w3]
     type = FullScalar
     batch_shape = '(${nbatch})'
-    value = 0.0
+    value = -0.05
   []
   [vorticity_single]
     type = FillWR2
@@ -67,8 +60,9 @@ intraop_threads = 0
     type = LinspaceWR2
     start = vorticity_single
     end = vorticity_single
-    nstep = ${ntime}
+    nstep = 100
   []
+
   [a]
     type = Scalar
     values = '1.0'
@@ -81,11 +75,30 @@ intraop_threads = 0
     type = FillMillerIndex
     values = '1 1 1'
   []
+
+  [R1]
+    type = LinspaceScalar
+    start = 0
+    end = 0.75
+    nstep = ${nbatch}
+  []
+  [R2]
+    type = LinspaceScalar
+    start = 0
+    end = -0.25
+    nstep = ${nbatch}
+  []
+  [R3]
+    type = LinspaceScalar
+    start = -0.1
+    end = 0.1
+    nstep = ${nbatch}
+  []
+
   [initial_orientation]
-    type = Orientation
-    quantity = ${nbatch}
-    values = '30 60 45'
-    normalize = true
+    type = FillRot
+    values = 'R1 R2 R3'
+    method = 'standard'
   []
 []
 
@@ -99,19 +112,15 @@ intraop_threads = 0
     ic_rot_names = 'state/orientation'
     ic_rot_values = 'initial_orientation'
     predictor = 'CP_PREVIOUS_STATE'
+    cp_elastic_scale = 0.1
     device = ${device}
-    cp_elastic_scale = 0.05
   []
 []
 
 [Solvers]
   [newton]
     type = NewtonWithLineSearch
-    max_its = 500
-    linesearch_cutback = 2.0
-    linesearch_stopping_criteria = 1.0e-3
     max_linesearch_iterations = 5
-    rel_tol = 1e-4
   []
 []
 
@@ -133,7 +142,7 @@ intraop_threads = 0
   [elasticity]
     type = LinearIsotropicElasticity
     youngs_modulus = 1e5
-    poisson_ratio = 0.3
+    poisson_ratio = 0.25
     strain = "state/elastic_strain"
     stress = "state/internal/cauchy_stress"
   []
@@ -157,17 +166,17 @@ intraop_threads = 0
   []
   [slip_rule]
     type = PowerLawSlipRule
-    n = 6.0
-    gamma0 = 1.0
+    n = 8.0
+    gamma0 = 2.0e-1
   []
   [slip_strength]
     type = SingleSlipStrengthMap
-    constant_strength = 30.0
+    constant_strength = 50.0
   []
   [voce_hardening]
     type = VoceSingleSlipHardeningRule
     initial_slope = 500.0
-    saturated_hardening = 10.0
+    saturated_hardening = 50.0
   []
   [integrate_slip_hardening]
     type = ScalarBackwardEulerTimeIntegration
@@ -184,8 +193,10 @@ intraop_threads = 0
 
   [implicit_rate]
     type = ComposedModel
-    models = 'euler_rodrigues elasticity orientation_rate resolved_shear elastic_stretch plastic_deformation_rate plastic_spin sum_slip_rates slip_rule slip_strength voce_hardening integrate_slip_hardening integrate_elastic_strain integrate_orientation'
-    automatic_scaling = true
+    models = "euler_rodrigues elasticity orientation_rate resolved_shear
+              elastic_stretch plastic_deformation_rate plastic_spin
+              sum_slip_rates slip_rule slip_strength voce_hardening
+              integrate_slip_hardening integrate_elastic_strain integrate_orientation"
   []
   [model]
     type = ImplicitUpdate
