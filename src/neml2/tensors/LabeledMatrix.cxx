@@ -51,7 +51,11 @@ LabeledMatrix::fill(const LabeledMatrix & other, bool common_first, bool recursi
                   "Can only accumulate matrices with conformal common axes");
   const auto indices = axis(o_ind).common_indices(other.axis(o_ind), recursive);
   for (const auto & [idxi, idxi_other] : indices)
-    _tensor.base_index_put_({idxi}, other.tensor().base_index({idxi_other}));
+    if (common_first)
+      _tensor.base_index_put_({torch::indexing::Ellipsis, idxi},
+                              other.tensor().base_index({torch::indexing::Ellipsis, idxi_other}));
+    else
+      _tensor.base_index_put_({idxi}, other.tensor().base_index({idxi_other}));
 }
 
 LabeledMatrix
