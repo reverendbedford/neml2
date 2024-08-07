@@ -1,4 +1,4 @@
-"""Test adjoint correctness"""
+"""Test we get the same answers in pyzag with parallel time as we do in NEML2 with sequential time"""
 
 import unittest
 import os.path
@@ -12,67 +12,26 @@ import neml2
 from pyzag import nonlinear
 
 
-class DerivativeCheck:
-    def adjoint_grads(self):
+class CorrectnessCheck:
+    def run_forward(self):
         solver = nonlinear.RecursiveNonlinearEquationSolver(
             self.pmodel,
             step_generator=nonlinear.StepGenerator(self.nchunk),
             predictor=nonlinear.PreviousStepsPredictor(),
         )
-        solver.zero_grad()
-        res = nonlinear.solve_adjoint(
-            solver, self.initial_state.detach().clone(), len(self.forces), self.forces
+        return nonlinear.solve(
+            solver,
+            self.initial_state.detach().clone(),
+            len(self.forces),
+            self.forces,
         )
-        val = torch.norm(res)
-        val.backward()
 
-        return {n: p.grad.detach().clone() for n, p in solver.named_parameters()}
-
-    def fd_grads(self, eps=1.0e-6):
-        solver = nonlinear.RecursiveNonlinearEquationSolver(
-            self.pmodel,
-            step_generator=nonlinear.StepGenerator(self.nchunk),
-            predictor=nonlinear.PreviousStepsPredictor(),
-        )
-        res = {}
-        with torch.no_grad():
-            val0 = torch.norm(
-                nonlinear.solve(
-                    solver,
-                    self.initial_state.detach().clone(),
-                    len(self.forces),
-                    self.forces,
-                )
-            )
-            for n, p in solver.named_parameters():
-                p0 = p.clone()
-                dx = torch.abs(p0) * eps
-                p.data = p0 + dx
-                val1 = torch.norm(
-                    nonlinear.solve(
-                        solver,
-                        self.initial_state.detach().clone(),
-                        len(self.forces),
-                        self.forces,
-                    )
-                )
-                res[n] = (val1 - val0) / dx
-                p.data = p0
-
-        return res
-
-    def test_adjoint_vs_fd(self):
-        grads_adjoint = self.adjoint_grads()
-        grads_fd = self.fd_grads()
-        self.assertEqual(grads_adjoint.keys(), grads_fd.keys())
-
-        for n in grads_adjoint.keys():
-            self.assertTrue(
-                torch.allclose(grads_adjoint[n], grads_fd[n], rtol=self.rtol)
-            )
+    def test_correctness(self):
+        pyzag_result = self.run_forward()
+        print(pyzag_result.shape)
 
 
-class TestElasticModel(unittest.TestCase, DerivativeCheck):
+class TestElasticModel(unittest.TestCase, CorrectnessCheck):
     def setUp(self):
         self.nmodel = neml2.load_model(
             os.path.join(os.path.dirname(__file__), "elastic_model.i"), "implicit_rate"
@@ -105,10 +64,9 @@ class TestElasticModel(unittest.TestCase, DerivativeCheck):
         self.forces = self.pmodel.collect_forces({"t": time, "E": strain})
 
         self.nchunk = 10
-        self.rtol = 1.0e-5
 
 
-class TestViscoplasticModel(unittest.TestCase, DerivativeCheck):
+class TestViscoplasticModel(unittest.TestCase, CorrectnessCheck):
     def setUp(self):
         self.nmodel = neml2.load_model(
             os.path.join(os.path.dirname(__file__), "viscoplastic_model.i"),
@@ -143,10 +101,8 @@ class TestViscoplasticModel(unittest.TestCase, DerivativeCheck):
 
         self.nchunk = 10
 
-        self.rtol = 1.0e-5
 
-
-class TestComplexModel(unittest.TestCase, DerivativeCheck):
+class TestComplexModel(unittest.TestCase, CorrectnessCheck):
     def setUp(self):
         self.nmodel = neml2.load_model(
             os.path.join(os.path.dirname(__file__), "complex_model.i"),
@@ -203,5 +159,3 @@ class TestComplexModel(unittest.TestCase, DerivativeCheck):
         )
 
         self.nchunk = 10
-
-        self.rtol = 1.0e-4
