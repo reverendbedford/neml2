@@ -37,7 +37,7 @@ class DerivativeCheck:
         res = {}
         with torch.no_grad():
             val0 = torch.norm(
-                nonlinear.solve_adjoint(
+                nonlinear.solve(
                     solver,
                     self.initial_state.detach().clone(),
                     len(self.forces),
@@ -49,7 +49,12 @@ class DerivativeCheck:
                 dx = torch.abs(p0) * eps
                 p.data = p0 + dx
                 val1 = torch.norm(
-                    nonlinear.solve_adjoint(solver, len(self.forces), self.forces)
+                    nonlinear.solve(
+                        solver,
+                        self.initial_state.detach().clone(),
+                        len(self.forces),
+                        self.forces,
+                    )
                 )
                 res[n] = (val1 - val0) / dx
                 p.data = p0
@@ -192,3 +197,5 @@ class TestComplexModel(unittest.TestCase, DerivativeCheck):
                 "T": temperatures,
             }
         )
+
+        self.nchunk = 10
