@@ -241,23 +241,32 @@ class NEML2PyzagModel(nonlinear.NonlinearRecursiveFunction):
         Args:
             J (LabeledMatrix): full jacobian from the NEML model
         """
+        # This one is easy because state and residual always share all variables
         J_new = J.base[self.residual_axis, self.state_axis].torch()
+
         # Now we need to pad the variables not in old_state with zeros
-        J_old_reduced = neml2.tensors.LabeledMatrix(
+        output_axis = self.model.output_axis().subaxis(self.residual_axis)
+        full_input_axis = self.model.input_axis().subaxis(self.state_axis)
+        reduced_input_axis = self.model.input_axis().subaxis(
+            self.old_prefix + self.state_axis
+        )
+
+        J_old_reduced = neml2.LabeledMatrix(
             J.base[self.residual_axis, self.old_prefix + self.state_axis],
             [
-                self.model.output_axis().subaxis(self.residual_axis),
-                self.model.input_axis().subaxis(self.old_prefix + self.state_axis),
+                output_axis,
+                reduced_input_axis,
             ],
         )
-        J_old_full = neml2.tensors.LabeledMatrix.zeros(
+        J_old_full = neml2.LabeledMatrix.zeros(
             J_new.shape[:-2],
             [
-                self.model.output_axis().subaxis(self.residual_axis),
-                self.model.input_axis().subaxis(self.state_axis),
+                output_axis,
+                full_input_axis,
             ],
             device=J_new.device,
         )
+
         J_old_full.fill(J_old_reduced, common_first=True)
 
         return torch.stack([J_old_full.torch(), J_new])
