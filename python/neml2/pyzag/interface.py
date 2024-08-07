@@ -1,9 +1,29 @@
 from pyzag import nonlinear
 
+import neml2
 from neml2.tensors import Tensor
 from neml2.tensors import LabeledAxisAccessor as AA
 
 import torch
+
+
+def assemble_vector(axis, tensors):
+    """Assemble a LabeledVector from a collection of tensors
+
+    Args:
+        axis (LabeledAxis): axis to use to setup LabeledVector
+        tensor (dict of torch.tensor): dictionary mapping names to tensors
+    """
+    random_tensor = next(iter(tensors.values()))
+    batch_shape = random_tensor.shape[:-1]
+    device = random_tensor.device
+
+    vector = neml2.LabeledVector.zeros(batch_shape, [axis], device=device)
+
+    for name, value in tensors.items():
+        vector.base[name] = Tensor(value, len(batch_shape))
+
+    return vector
 
 
 class NEML2PyzagModel(nonlinear.NonlinearRecursiveFunction):
@@ -73,10 +93,10 @@ class NEML2PyzagModel(nonlinear.NonlinearRecursiveFunction):
         self.model.set_parameters(
             {
                 self.parameter_name_map[n]: Tensor(
-                    p.data,
-                    Tensor(
-                        self.model.get_parameter(self.parameter_name_map[n])
-                    ).batch.dim(),
+                    p,
+                    self.model.get_parameter(self.parameter_name_map[n])
+                    .tensor()
+                    .batch.dim(),
                 )
                 for n, p in self.named_parameters()
             }
@@ -114,6 +134,28 @@ class NEML2PyzagModel(nonlinear.NonlinearRecursiveFunction):
         for name in self.model.input_axis().subaxis(self.state_axis).variable_names():
             self.model.output_axis().subaxis(self.residual_axis).has_variable(AA(name))
 
+        # Everything in old_state should be in state (but not the other way around)
+        for name in (
+            self.model.input_axis()
+            .subaxis(self.old_prefix + self.state_axis)
+            .variable_names()
+        ):
+            if not self.model.input_axis().subaxis(self.state_axis).has_variable(name):
+                raise ValueError(
+                    "State variable %s is in old state but not in state" % name
+                )
+
+        # Everything in old_forces should be in forces (but not the other way around)
+        for name in (
+            self.model.input_axis()
+            .subaxis(self.old_prefix + self.forces_axis)
+            .variable_names()
+        ):
+            if not self.model.input_axis().subaxis(self.forces_axis).has_variable(name):
+                raise ValueError(
+                    "Force variable %s is in old forces but not in forces" % name
+                )
+
     @property
     def nstate(self):
         return self.model.input_axis().subaxis("state").storage_size()
@@ -122,11 +164,121 @@ class NEML2PyzagModel(nonlinear.NonlinearRecursiveFunction):
     def nforce(self):
         return self.model.input_axis().subaxis("forces").storage_size()
 
+    def collect_forces(self, tensor_dict):
+        """Assemble the forces from a dictionary of tensors
+
+        Args:
+            tensor_dict (dict of tensors): dictionary of tensors containing the forces
+        """
+        return assemble_vector(
+            self.model.input_axis().subaxis(self.forces_axis), tensor_dict
+        ).torch()
+
+    def collect_state(self, tensor_dict):
+        """Assemble the state from a dictionary of tensors
+
+        Args:
+            tensor_dict (dict of tensors): dictionary of tensors containing the forces
+        """
+        return assemble_vector(
+            self.model.input_axis().subaxis(self.state_axis), tensor_dict
+        ).torch()
+
+    def _reduce_axis(self, reduce_axis, full_axis, full_tensor):
+        """Reduce a tensor spanning full_axis to only the vars on reduce_axis
+
+        Args:
+            reduce_axis (LabeledAxis): reduced set of variables
+            full_axis (LabeledAxis): full set of variables
+            full_tensor (torch.tensor): tensor representing the full set of variables
+        """
+
+        batch_shape = full_tensor.shape[:-1]
+        full = neml2.LabeledVector(full_tensor, [full_axis])
+        reduced = neml2.LabeledVector.zeros(
+            batch_shape, [reduce_axis], device=full_tensor.device
+        )
+        reduced.fill(full)
+
+        return reduced.tensor()
+
+    def _assemble_input(self, state, forces):
+        """Assemble the model input from the flat tensors
+
+        Args:
+            state (torch.tensor): tensor containing the model state
+            forces (torch.tensor): tensor containing the model forces
+        """
+        batch_shape = (state.shape[0] - self.lookback,) + state.shape[1:-1]
+        bdim = len(batch_shape)
+
+        input = neml2.LabeledVector.zeros(
+            batch_shape, [self.model.input_axis()], device=state.device
+        )
+
+        input.base[self.state_axis] = Tensor(state[self.lookback :], bdim)
+        # This deals with variables not in old_state
+        input.base[self.old_prefix + self.state_axis] = self._reduce_axis(
+            self.model.input_axis().subaxis(self.old_prefix + self.state_axis),
+            self.model.input_axis().subaxis(self.state_axis),
+            state[: -self.lookback],
+        )
+        input.base[self.forces_axis] = Tensor(forces[self.lookback :], bdim)
+        # This deals with variables not in old_forces
+        input.base[self.old_prefix + self.forces_axis] = self._reduce_axis(
+            self.model.input_axis().subaxis(self.old_prefix + self.forces_axis),
+            self.model.input_axis().subaxis(self.forces_axis),
+            forces[: -self.lookback],
+        )
+
+        self.model.reinit(input.batch.shape, 1)
+
+        return input
+
+    def _extract_jacobian(self, J):
+        """Extract the Jacobian components we need from the NEML output
+
+        Args:
+            J (LabeledMatrix): full jacobian from the NEML model
+        """
+        J_new = J.base[self.residual_axis, self.state_axis].torch()
+        # Now we need to pad the variables not in old_state with zeros
+        J_old_reduced = neml2.tensors.LabeledMatrix(
+            J.base[self.residual_axis, self.old_prefix + self.state_axis],
+            [
+                self.model.output_axis().subaxis(self.residual_axis),
+                self.model.input_axis().subaxis(self.old_prefix + self.state_axis),
+            ],
+        )
+        J_old_full = neml2.tensors.LabeledMatrix.zeros(
+            J_new.shape[:-2],
+            [
+                self.model.output_axis().subaxis(self.residual_axis),
+                self.model.input_axis().subaxis(self.state_axis),
+            ],
+            device=J_new.device,
+        )
+        J_old_full.fill(J_old_reduced, common_first=True)
+
+        return torch.stack([J_old_full.torch(), J_new])
+
     def forward(self, state, forces):
-        """Actually call th NEML2 model and return the residual and Jacobian
+        """Actually call the NEML2 model and return the residual and Jacobian
 
         Args:
             state (torch.tensor): tensor with the flattened state
             forces (torch.tensor): tensor with the flattened forces
+
+        The helper methods `collect_forces` and `collect_state` can be used to
+        assemble individual tensors into the flattened state and forces tensor
         """
-        pass
+        # Make a big LabeledVector with the input
+        x = self._assemble_input(state, forces)
+
+        # Update the parameter values
+        self._update_parameter_values()
+
+        # Call the model
+        y, J = self.model.value_and_dvalue(x)
+
+        return y.torch(), self._extract_jacobian(J)

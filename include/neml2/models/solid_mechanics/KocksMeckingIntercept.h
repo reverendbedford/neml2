@@ -24,31 +24,30 @@
 
 #pragma once
 
-#include "neml2/tensors/LabeledTensor.h"
+#include "neml2/models/NonlinearParameter.h"
 
 namespace neml2
 {
-class LabeledVector;
-
 /**
- * @brief A single-batched, logically 2D LabeledTensor.
- *
+ * @brief A scalar-valued parameter defined by (C_B) / A
  */
-class LabeledMatrix : public LabeledTensor<LabeledMatrix, 2>
+class KocksMeckingIntercept : public NonlinearParameter<Scalar>
 {
 public:
-  using LabeledTensor<LabeledMatrix, 2>::LabeledTensor;
+  static OptionSet expected_options();
 
-  /// Create a labeled identity tensor
-  static LabeledMatrix identity(TensorShapeRef batch_size,
-                                const LabeledAxis & axis,
-                                const torch::TensorOptions & options = default_tensor_options());
+  KocksMeckingIntercept(const OptionSet & options);
 
-  /// Fill another matrix into this matrix.
-  /// The item set of the other matrix must be a subset of this matrix's item set.
-  void fill(const LabeledMatrix & other, bool common_first = false, bool recursive = true);
+protected:
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
-  /// Chain rule product of two derivatives
-  LabeledMatrix chain(const LabeledMatrix & other) const;
+  /// KM A
+  const Scalar & _A;
+
+  /// KM B
+  const Scalar & _B;
+
+  /// KM C
+  const Scalar & _C;
 };
-} // namespace neml2
+}
