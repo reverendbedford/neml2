@@ -34,6 +34,7 @@ void
 def_LabeledVector(py::module_ & m)
 {
   auto c = py::class_<LabeledVector>(m, "LabeledVector");
+  c.def("fill", &LabeledVector::fill, py::arg("other"), py::arg("recursive") = true);
 
   def_LabeledBatchView<LabeledVector>(m, "LabeledVectorBatchView");
   def_LabeledBaseView<LabeledVector>(m, "LabeledVectorBaseView");
