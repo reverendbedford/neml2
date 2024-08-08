@@ -12,150 +12,58 @@ import neml2
 from pyzag import nonlinear
 
 
-class CorrectnessCheck:
-    def run_forward(self):
-        solver = nonlinear.RecursiveNonlinearEquationSolver(
-            self.pmodel,
-            step_generator=nonlinear.StepGenerator(self.nchunk),
-            predictor=nonlinear.PreviousStepsPredictor(),
-        )
-        return nonlinear.solve(
-            solver,
-            self.initial_state.detach().clone(),
-            len(self.forces),
-            self.forces,
-        )
+nchunk = 10
 
+models = ["elastic_model", "viscoplastic_model", "complex_model"]
+
+
+class TestCorrectness(unittest.TestCase):
     def test_correctness(self):
-        pyzag_result = self.run_forward()
-        print(pyzag_result.shape)
+        for i, model in enumerate(models):
+            with self.subTest(i=i):
+                self.run_model(model)
 
-
-class TestElasticModel(unittest.TestCase, CorrectnessCheck):
-    def setUp(self):
-        self.nmodel = neml2.load_model(
-            os.path.join(os.path.dirname(__file__), "elastic_model.i"), "implicit_rate"
-        )
-        self.pmodel = interface.NEML2PyzagModel(self.nmodel)
-
-        self.nbatch = 20
-        self.ntime = 100
-
-        end_time = torch.logspace(-1, -5, self.nbatch)
-        time = torch.stack(
-            [torch.linspace(0, et, self.ntime) for et in end_time]
-        ).T.unsqueeze(-1)
-        strain = (
-            torch.stack(
-                [
-                    torch.linspace(0, 0.1, self.ntime),
-                    torch.linspace(0, -0.05, self.ntime),
-                    torch.linspace(0, -0.05, self.ntime),
-                    torch.zeros(self.ntime),
-                    torch.zeros(self.ntime),
-                    torch.zeros(self.ntime),
-                ]
-            )
-            .T[:, None]
-            .expand(-1, self.nbatch, -1)
-        )
-
-        self.initial_state = torch.zeros((self.nbatch, 6))
-        self.forces = self.pmodel.collect_forces({"t": time, "E": strain})
-
-        self.nchunk = 10
-
-
-class TestViscoplasticModel(unittest.TestCase, CorrectnessCheck):
-    def setUp(self):
-        self.nmodel = neml2.load_model(
-            os.path.join(os.path.dirname(__file__), "viscoplastic_model.i"),
+    def run_model(self, model_name):
+        nmodel = neml2.load_model(
+            os.path.join(os.path.dirname(__file__), model_name + ".i"),
             "implicit_rate",
         )
-        self.pmodel = interface.NEML2PyzagModel(self.nmodel)
+        model = interface.NEML2PyzagModel(nmodel)
 
-        self.nbatch = 20
-        self.ntime = 100
-
-        end_time = torch.logspace(-1, -5, self.nbatch)
-        time = torch.stack(
-            [torch.linspace(0, et, self.ntime) for et in end_time]
-        ).T.unsqueeze(-1)
-        strain = (
-            torch.stack(
-                [
-                    torch.linspace(0, 0.1, self.ntime),
-                    torch.linspace(0, -0.05, self.ntime),
-                    torch.linspace(0, -0.05, self.ntime),
-                    torch.zeros(self.ntime),
-                    torch.zeros(self.ntime),
-                    torch.zeros(self.ntime),
-                ]
-            )
-            .T[:, None]
-            .expand(-1, self.nbatch, -1)
+        results = torch.jit.load(
+            os.path.join(os.path.dirname(__file__), "result_" + model_name + ".pt")
         )
 
-        self.initial_state = torch.zeros((self.nbatch, 7))
-        self.forces = self.pmodel.collect_forces({"t": time, "E": strain})
+        modules = dict(results.named_modules())
+        input = dict(modules["input"].named_buffers())
+        output = dict(modules["output"].named_buffers())
 
-        self.nchunk = 10
-
-
-class TestComplexModel(unittest.TestCase, CorrectnessCheck):
-    def setUp(self):
-        self.nmodel = neml2.load_model(
-            os.path.join(os.path.dirname(__file__), "complex_model.i"),
-            "model",
-        )
-        self.pmodel = interface.NEML2PyzagModel(
-            self.nmodel, exclude_parameters=["yield_zero.sy"]
-        )
-
-        self.nbatch = 20
-        self.ntime = 100
-
-        end_time = torch.logspace(-1, -5, self.nbatch)
-        time = torch.stack(
-            [torch.linspace(0, et, self.ntime) for et in end_time]
-        ).T.unsqueeze(-1)
-        conditions = (
-            torch.stack(
-                [
-                    torch.linspace(0, 0.1, self.ntime),
-                    torch.linspace(0, -50, self.ntime),
-                    torch.linspace(0, -0.025, self.ntime),
-                    torch.linspace(0, 0.15, self.ntime),
-                    torch.linspace(0, 75.0, self.ntime),
-                    torch.linspace(0, 0.05, self.ntime),
-                ]
-            )
-            .T[:, None]
-            .expand(-1, self.nbatch, -1)
-        )
-
-        control = torch.zeros((self.ntime, self.nbatch, 6))
-        control[..., 1] = 1.0
-        control[..., 4] = 1.0
-
-        temperatures = torch.stack(
+        forces = torch.cat(
             [
-                torch.linspace(T1, T2, self.ntime)
-                for T1, T2 in zip(
-                    torch.linspace(300, 500, self.nbatch),
-                    torch.linspace(600, 1200, self.nbatch),
-                )
-            ]
-        ).T.unsqueeze(-1)
-
-        self.initial_state = torch.zeros((self.nbatch, 8))
-        self.forces = self.pmodel.collect_forces(
-            {
-                "t": time,
-                "control": control,
-                "fixed_values": conditions,
-                "T": temperatures,
-            }
+                input["forces/" + n]
+                for n in model.model.input_axis().subaxis("forces").variable_names()
+            ],
+            dim=-1,
+        )
+        state = torch.cat(
+            [
+                output["state/" + n]
+                for n in model.model.input_axis().subaxis("state").variable_names()
+            ],
+            dim=-1,
         )
 
-        self.nchunk = 10
+        solver = nonlinear.RecursiveNonlinearEquationSolver(
+            model,
+            step_generator=nonlinear.StepGenerator(nchunk),
+            predictor=nonlinear.PreviousStepsPredictor(),
+        )
+        with torch.no_grad():
+            results = nonlinear.solve(
+                solver,
+                state[0],
+                len(forces),
+                forces,
+            )
+
+        self.assertTrue(torch.allclose(state, results))

@@ -150,12 +150,11 @@ class TestComplexModel(unittest.TestCase, DerivativeCheck):
     def setUp(self):
         self.nmodel = neml2.load_model(
             os.path.join(os.path.dirname(__file__), "complex_model.i"),
-            "model",
+            "implicit_rate",
         )
         self.pmodel = interface.NEML2PyzagModel(
-            self.nmodel, exclude_parameters=["yield_zero.sy"]
+            self.nmodel, exclude_parameters=["yield_zero.sy", "mu.X", "mu.Y"]
         )
-
         self.nbatch = 20
         self.ntime = 100
 
