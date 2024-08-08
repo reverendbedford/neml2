@@ -1,11 +1,3 @@
-interop_threads = 0
-intraop_threads = 0
-
-[Settings]
-  interop_threads = ${interop_threads}
-  intraop_threads = ${intraop_threads}
-[]
-
 [Tensors]
   [end_time]
     type = LogspaceScalar
@@ -70,7 +62,7 @@ intraop_threads = 0
   []
   [kinharden]
     type = SR2LinearCombination
-    from_var = 'state/internal/X1 state/internal/X2'
+    from_var = 'state/internal/X1 state/internal/X2 state/internal/X3 state/internal/X4'
     to_var = 'state/internal/X'
   []
   [mandel_stress]
@@ -128,6 +120,22 @@ intraop_threads = 0
     A = 1e-10
     a = 3.2
   []
+  [X3rate]
+    type = ChabochePlasticHardening
+    back_stress = 'state/internal/X3'
+    C = 10000
+    g = 100
+    A = 1e-8
+    a = 1.2
+  []
+  [X4rate]
+    type = ChabochePlasticHardening
+    back_stress = 'state/internal/X4'
+    C = 1000
+    g = 9
+    A = 1e-10
+    a = 3.2
+  []
   [Eprate]
     type = AssociativePlasticFlow
   []
@@ -160,13 +168,23 @@ intraop_threads = 0
     type = SR2BackwardEulerTimeIntegration
     variable = 'state/internal/X2'
   []
+  [integrate_X3]
+    type = SR2BackwardEulerTimeIntegration
+    variable = 'state/internal/X3'
+  []
+  [integrate_X4]
+    type = SR2BackwardEulerTimeIntegration
+    variable = 'state/internal/X4'
+  []
   [integrate_stress]
     type = SR2BackwardEulerTimeIntegration
     variable = 'state/S'
   []
   [implicit_rate]
     type = ComposedModel
-    models = 'isoharden kinharden mandel_stress overstress vonmises yield normality flow_rate eprate Eprate X1rate X2rate Erate Eerate elasticity integrate_stress integrate_ep integrate_X1 integrate_X2'
+    models = "isoharden kinharden mandel_stress overstress vonmises yield normality
+              flow_rate eprate Eprate X1rate X2rate X3rate X4rate Erate Eerate elasticity
+              integrate_stress integrate_ep integrate_X1 integrate_X2 integrate_X3 integrate_X4"
   []
   [model]
     type = ImplicitUpdate

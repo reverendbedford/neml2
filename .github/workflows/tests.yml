@@ -148,6 +148,18 @@ jobs:
             -B build \
             .
       - run: cmake --build build --target all -j 2 --
+      - run: ./build/runner/runner runner/benchmark/elasticity/model.i driver nbatch=1 device=cpu
+      - run: ./build/runner/runner runner/benchmark/radret/model.i driver nbatch=1 device=cpu
+      - run: ./build/runner/runner runner/benchmark/isoharden/model.i driver nbatch=1 device=cpu
+      - run: ./build/runner/runner runner/benchmark/chaboche2/model.i driver nbatch=1 device=cpu
+      - run: ./build/runner/runner runner/benchmark/chaboche4/model.i driver nbatch=1 device=cpu
+      - run: ./build/runner/runner runner/benchmark/chaboche6/model.i driver nbatch=1 device=cpu
+      - run: ./build/runner/runner runner/benchmark/gtntheig/model.i driver nbatch=1 device=cpu
+      - run: ./build/runner/runner runner/benchmark/scpcoup/model.i driver nbatch=1 device=cpu
+      - run: ./build/runner/runner runner/benchmark/scpdecoup/model.i driver nbatch=1 device=cpu
+      - run: ./build/runner/runner runner/benchmark/scpdecoupexp/model.i driver nbatch=1 device=cpu
+      - run: ./build/runner/runner runner/benchmark/tcpsingle/model.i driver nbatch=1 device=cpu
+      - run: ./build/runner/runner runner/benchmark/tcprandom/model.i driver nbatch=1 device=cpu
   coverage:
     name: Code coverage check
     needs: clang-format
