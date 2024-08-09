@@ -29,7 +29,7 @@
 namespace neml2
 {
 /**
- * @brief A scalar-valued parameter defined by (C_B) / A
+ * @brief A scalar-valued parameter defined by (C-B) / A
  */
 class KocksMeckingIntercept : public NonlinearParameter<Scalar>
 {

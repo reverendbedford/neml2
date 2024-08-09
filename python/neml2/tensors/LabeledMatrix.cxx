@@ -34,11 +34,6 @@ void
 def_LabeledMatrix(py::module_ & m)
 {
   auto c = py::class_<LabeledMatrix>(m, "LabeledMatrix");
-  c.def("fill",
-        &LabeledMatrix::fill,
-        py::arg("other"),
-        py::arg("common_first") = false,
-        py::arg("resursive") = true);
 
   def_LabeledBatchView<LabeledMatrix>(m, "LabeledMatrixBatchView");
   def_LabeledBaseView<LabeledMatrix>(m, "LabeledMatrixBaseView");

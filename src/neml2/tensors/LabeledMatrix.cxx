@@ -36,28 +36,6 @@ LabeledMatrix::identity(TensorShapeRef batch_size,
   return LabeledMatrix(Tensor::identity(batch_size, axis.storage_size(), options), {&axis, &axis});
 }
 
-void
-LabeledMatrix::fill(const LabeledMatrix & other, bool common_first, bool recursive)
-{
-  Size c_ind = 1;
-  Size o_ind = 0;
-  if (common_first)
-  {
-    c_ind = 0;
-    o_ind = 1;
-  }
-
-  neml_assert_dbg(axis(c_ind) == other.axis(c_ind),
-                  "Can only accumulate matrices with conformal common axes");
-  const auto indices = axis(o_ind).common_indices(other.axis(o_ind), recursive);
-  for (const auto & [idxi, idxi_other] : indices)
-    if (common_first)
-      _tensor.base_index_put_({torch::indexing::Ellipsis, idxi},
-                              other.tensor().base_index({torch::indexing::Ellipsis, idxi_other}));
-    else
-      _tensor.base_index_put_({idxi}, other.tensor().base_index({idxi_other}));
-}
-
 LabeledMatrix
 LabeledMatrix::chain(const LabeledMatrix & other) const
 {

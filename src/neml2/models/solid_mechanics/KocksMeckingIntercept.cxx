@@ -38,13 +38,13 @@ KocksMeckingIntercept::expected_options()
   options.doc() = "The critical value of the normalized activation energy given by \\f$ g_0 "
                   "\\frac{C-B}{A} \\f$";
 
-  options.set<CrossRef<Scalar>>("A");
+  options.set_parameter<CrossRef<Scalar>>("A");
   options.set("A").doc() = "The Kocks-Mecking slope";
 
-  options.set<CrossRef<Scalar>>("B");
+  options.set_parameter<CrossRef<Scalar>>("B");
   options.set("B").doc() = "The Kocks-Mecking intercept";
 
-  options.set<CrossRef<Scalar>>("C");
+  options.set_parameter<CrossRef<Scalar>>("C");
   options.set("C").doc() = "The Kocks-Mecking horizontal value";
 
   return options;
