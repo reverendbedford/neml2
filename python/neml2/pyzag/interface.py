@@ -1,24 +1,55 @@
+# Copyright 2024, UChicago Argonne, LLC
+# All Rights Reserved
+# Software Name: NEML2 -- the New Engineering material Model Library, version 2
+# By: Argonne National Laboratory
+# OPEN SOURCE LICENSE (MIT)
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+
 from pyzag import nonlinear
 
 import neml2
 from neml2.tensors import Tensor
-from neml2.tensors import LabeledAxisAccessor as AA
 
 import torch
 
 
-def assemble_vector(axis, tensors):
+def assemble_vector(axis, tensors, warn_unused=True):
     """Assemble a LabeledVector from a collection of tensors
 
     Args:
         axis (LabeledAxis): axis to use to setup LabeledVector
         tensor (dict of torch.tensor): dictionary mapping names to tensors
+
+    Keyword Args:
+        warned_unused (bool, default True): throw a warning if there is a missing or extra variable in tensors
     """
     random_tensor = next(iter(tensors.values()))
     batch_shape = random_tensor.shape[:-1]
     device = random_tensor.device
 
     vector = neml2.LabeledVector.zeros(batch_shape, [axis], device=device)
+
+    if warn_unused and set(tensors.keys()) != set(axis.variable_names()):
+        raise Warning(
+            "Tensor names in provided tensors dict do not match the variable names on the axis"
+        )
 
     for name, value in tensors.items():
         vector.base[name] = Tensor(value, len(batch_shape))
@@ -115,8 +146,10 @@ class NEML2PyzagModel(nonlinear.NonlinearRecursiveFunction):
                 "Wrapped NEML2 model should only have 4 subaxes on the input axis"
             )
         for axis in should_axes:
-            if not self.model.input_axis().has_subaxis(AA(axis)):
-                raise ValueError("Wrapped NEML2 model missing input subaxis %s" % axis)
+            if not self.model.input_axis().has_subaxis(axis):
+                raise ValueError(
+                    "Wrapped NEML2 model missing input subaxis {}".format(axis)
+                )
 
         # Output axis should just have the residual
         if self.model.output_axis().nsubaxis() != 1:
@@ -124,15 +157,25 @@ class NEML2PyzagModel(nonlinear.NonlinearRecursiveFunction):
                 "Wrapped NEML2 model should only have 1 subaxes on the output axis"
             )
 
-        if not self.model.output_axis().has_subaxis(AA(self.residual_axis)):
+        if not self.model.output_axis().has_subaxis(self.residual_axis):
             raise ValueError(
-                "Wrapped NEML2 model is missing required output subaxis %s"
-                % self.residual_axis
+                "Wrapped NEML2 model is missing required output subaxis {}".format(
+                    self.residual_axis
+                )
             )
 
         # And all the variables on state should match the variables in the residual
         for name in self.model.input_axis().subaxis(self.state_axis).variable_names():
-            self.model.output_axis().subaxis(self.residual_axis).has_variable(AA(name))
+            if (
+                not self.model.output_axis()
+                .subaxis(self.residual_axis)
+                .has_variable(name)
+            ):
+                raise ValueError(
+                    "State variable {} is on the input state axis but not in the output residual axis".format(
+                        name
+                    )
+                )
 
         # Everything in old_state should be in state (but not the other way around)
         for name in (
@@ -142,7 +185,7 @@ class NEML2PyzagModel(nonlinear.NonlinearRecursiveFunction):
         ):
             if not self.model.input_axis().subaxis(self.state_axis).has_variable(name):
                 raise ValueError(
-                    "State variable %s is in old state but not in state" % name
+                    "State variable {} is in old state but not in state".format(name)
                 )
 
         # Everything in old_forces should be in forces (but not the other way around)
@@ -153,7 +196,7 @@ class NEML2PyzagModel(nonlinear.NonlinearRecursiveFunction):
         ):
             if not self.model.input_axis().subaxis(self.forces_axis).has_variable(name):
                 raise ValueError(
-                    "Force variable %s is in old forces but not in forces" % name
+                    "Force variable {} is in old forces but not in forces".format(name)
                 )
 
     @property
@@ -261,7 +304,7 @@ class NEML2PyzagModel(nonlinear.NonlinearRecursiveFunction):
             device=J_new.device,
         )
 
-        J_old_full.fill(J_old_reduced, common_first=True)
+        J_old_full.fill(J_old_reduced, odim=1)
 
         return torch.stack([J_old_full.torch(), J_new])
 
