@@ -160,6 +160,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8dde6c6807f7190d271b655fe0264b61" id="r_a8dde6c6807f7190d271b655fe0264b61"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledAxis.html">LabeledAxis</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8dde6c6807f7190d271b655fe0264b61">axis</a> (<a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a> <a class="el" href="classneml2_1_1CrossRef.html">i</a>=0) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
 <tr class="memdesc:a8dde6c6807f7190d271b655fe0264b61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a specific labeled axis.  <br /></td></tr>
 <tr class="separator:a8dde6c6807f7190d271b655fe0264b61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0aad50e287f7ca653a318f895e3d5a31" id="r_a0aad50e287f7ca653a318f895e3d5a31"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0aad50e287f7ca653a318f895e3d5a31">fill</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">other</a>, <a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a> <a class="el" href="classneml2_1_1CrossRef.html">odim</a>=0, <a class="el" href="classneml2_1_1CrossRef.html">bool</a> <a class="el" href="classneml2_1_1CrossRef.html">recursive</a>=<a class="el" href="classneml2_1_1CrossRef.html">true</a>)</td></tr>
+<tr class="memdesc:a0aad50e287f7ca653a318f895e3d5a31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fill with another <a class="el" href="classneml2_1_1LabeledTensor.html" title="The primary data structure in NEML2 for working with labeled tensor views.">LabeledTensor</a> that matches this one on all but one axis.  <br /></td></tr>
+<tr class="separator:a0aad50e287f7ca653a318f895e3d5a31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:a928e5d4a51212df6035182ef39ef5094" id="r_a928e5d4a51212df6035182ef39ef5094"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a928e5d4a51212df6035182ef39ef5094">operator Tensor</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
 <tr class="separator:a928e5d4a51212df6035182ef39ef5094"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -857,6 +860,44 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class=
 </div><div class="memdoc">
 
 <p>Setup new empty storage. </p>
+
+</div>
+</div>
+<a id="a0aad50e287f7ca653a318f895e3d5a31" name="a0aad50e287f7ca653a318f895e3d5a31"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0aad50e287f7ca653a318f895e3d5a31">&#9670;&#160;</a></span>fill()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a> D&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">void</a> fill </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>other</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a></td>          <td class="paramname"><span class="paramname"><em>odim</em><span class="paramdefsep"> = </span><span class="paramdefval">0</span>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">bool</a></td>          <td class="paramname"><span class="paramname"><em>recursive</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="classneml2_1_1CrossRef.html">true</a></span></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Fill with another <a class="el" href="classneml2_1_1LabeledTensor.html" title="The primary data structure in NEML2 for working with labeled tensor views.">LabeledTensor</a> that matches this one on all but one axis. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">Derived</td><td>The <a class="el" href="classneml2_1_1LabeledTensor.html" title="The primary data structure in NEML2 for working with labeled tensor views.">LabeledTensor</a> to fill from </td></tr>
+    <tr><td class="paramname">Size</td><td>The common axis, default 0 </td></tr>
+    <tr><td class="paramname">bool</td><td>If true, fill recursively down subaxes </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

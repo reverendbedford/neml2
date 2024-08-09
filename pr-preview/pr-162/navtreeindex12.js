@@ -1,7 +1,5 @@
 var NAVTREEINDEX12 =
 {
-"testing.html":[3,2],
-"usergroup0.html":[2],
 "usergroup1.html":[3],
 "usergroup2.html":[4],
 "usergroup3.html":[5],

@@ -84,7 +84,7 @@
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="472,89,530,63,595,39,637,28,638,33,597,45,532,68,474,93"/>
 <area shape="rect" id="Node000005" href="$classneml2_1_1KocksMeckingFlowViscosity.html" title="A scalar&#45;valued parameter defined by (mu0 &#45; D/(exp(T0/T)&#45;1)) * exp(_C)" alt="" coords="601,55,806,80"/>
 <area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="507,99,629,77,630,83,508,104"/>
-<area shape="rect" id="Node000006" href="$classneml2_1_1KocksMeckingIntercept.html" title="A scalar&#45;valued parameter defined by (C_B) / A." alt="" coords="617,104,790,129"/>
+<area shape="rect" id="Node000006" href="$classneml2_1_1KocksMeckingIntercept.html" title="A scalar&#45;valued parameter defined by (C&#45;B) / A." alt="" coords="617,104,790,129"/>
 <area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="507,114,616,114,616,119,507,119"/>
 <area shape="rect" id="Node000007" href="$classneml2_1_1KocksMeckingRateSensitivity.html" title="A scalar&#45;valued parameter defined by (mu0 &#45; D/(exp(T0/T)&#45;1)) * exp(_C)" alt="" coords="596,153,811,179"/>
 <area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="508,129,630,151,629,156,507,135"/>

@@ -1,7 +1,5 @@
 var NAVTREEINDEX10 =
 {
-"classneml2_1_1crystallography_1_1CrystalGeometry.html#aa63e379f76e36296fce9dfe991eceba8":[8,1,0,0,0,13],
-"classneml2_1_1crystallography_1_1CrystalGeometry.html#aa7b95df30a89dea7395524d959e4996d":[8,0,0,0,1,5],
 "classneml2_1_1crystallography_1_1CrystalGeometry.html#aa7b95df30a89dea7395524d959e4996d":[8,1,0,0,0,5],
 "classneml2_1_1crystallography_1_1CrystalGeometry.html#aaacc7ffad04337bcf7fff32c8648caba":[8,1,0,0,0,15],
 "classneml2_1_1crystallography_1_1CrystalGeometry.html#aaacc7ffad04337bcf7fff32c8648caba":[8,0,0,0,1,15],
@@ -249,5 +247,7 @@ var NAVTREEINDEX10 =
 "namespaceneml2.html#ad67221fa98f81c77651d798d304479b1":[8,0,0,246],
 "namespaceneml2.html#ad7d8fe790dcd6ce58311d096930072c0":[8,0,0,300],
 "namespaceneml2.html#ad8251db5a3e5669906b2ec76458b93de":[8,0,0,365],
-"namespaceneml2.html#adee07563fdc49c7dccb7096f4f88bd66":[8,0,0,203]
+"namespaceneml2.html#adee07563fdc49c7dccb7096f4f88bd66":[8,0,0,203],
+"namespaceneml2.html#ae0fddfc43baed0ce3f0c6568fd8c3745":[8,0,0,328],
+"namespaceneml2.html#ae1f26e23ce55bb798a8762071a563849":[8,0,0,195]
 };
