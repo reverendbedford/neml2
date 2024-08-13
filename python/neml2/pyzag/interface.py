@@ -123,13 +123,11 @@ class NEML2PyzagModel(nonlinear.NonlinearRecursiveFunction):
         """Copy over new parameter values"""
         self.model.set_parameters(
             {
-                self.parameter_name_map[n]: Tensor(
-                    p,
-                    self.model.get_parameter(self.parameter_name_map[n])
-                    .tensor()
-                    .batch.dim(),
+                neml_name: Tensor(
+                    getattr(self, orig_name),
+                    self.model.get_parameter(neml_name).tensor().batch.dim(),
                 )
-                for n, p in self.named_parameters()
+                for orig_name, neml_name in self.parameter_name_map.items()
             }
         )
 
@@ -274,7 +272,9 @@ class NEML2PyzagModel(nonlinear.NonlinearRecursiveFunction):
             forces[: -self.lookback],
         )
 
-        self.model.reinit(input.batch.shape, 1)
+        self.model.reinit(
+            batch_shape=input.batch.shape, deriv_order=1, device=forces.device
+        )
 
         return input
 
