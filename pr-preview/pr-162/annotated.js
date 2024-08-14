@@ -127,6 +127,7 @@ var annotated =
       [ "SingleSlipStrengthMap", "classneml2_1_1SingleSlipStrengthMap.html", "classneml2_1_1SingleSlipStrengthMap" ],
       [ "SlipRule", "classneml2_1_1SlipRule.html", "classneml2_1_1SlipRule" ],
       [ "SlipStrengthMap", "classneml2_1_1SlipStrengthMap.html", "classneml2_1_1SlipStrengthMap" ],
+      [ "SmoothLinearInterpolation", "classneml2_1_1SmoothLinearInterpolation.html", "classneml2_1_1SmoothLinearInterpolation" ],
       [ "SolidMechanicsDriver", "classneml2_1_1SolidMechanicsDriver.html", "classneml2_1_1SolidMechanicsDriver" ],
       [ "Solver", "classneml2_1_1Solver.html", "classneml2_1_1Solver" ],
       [ "SolvingNonlinearSystem", "structneml2_1_1SolvingNonlinearSystem.html", "structneml2_1_1SolvingNonlinearSystem" ],
