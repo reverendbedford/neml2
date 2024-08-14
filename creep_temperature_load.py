@@ -208,7 +208,7 @@ if __name__ == "__main__":
     ep = outputs[..., 12].squeeze()
     times = prescribed_t.squeeze()
     strainrate = torch.diff(strain, dim=0) / torch.diff(times, dim=0)
-    t0 = times[1, 0].item()
+    t0 = prescribed_t[1, 0, 0, 0, 0].item()
     norm = colors.Normalize(vmin=np.min(temperature), vmax=np.max(temperature))
     sm = cm.ScalarMappable(norm=norm)
 
@@ -223,7 +223,7 @@ if __name__ == "__main__":
     ax.set_xlim(tramp * 1.1 / 3600)
     fig.tight_layout()
     fig.colorbar(sm, ax=ax, label="Temperature (K)")
-    fig.savefig("strainrate2.pdf")
+    fig.savefig("strainrate3.pdf")
 
     fig, ax = plt.subplots()
     for i, T in enumerate(temperature):
@@ -232,4 +232,4 @@ if __name__ == "__main__":
     ax.set_xlim(tramp * 1.1 / 3600)
     fig.tight_layout()
     fig.colorbar(sm, ax=ax, label="Temperature (K)")
-    fig.savefig("eqpstrain2.pdf")
+    fig.savefig("eqpstrain3.pdf")
