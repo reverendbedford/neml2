@@ -8,7 +8,7 @@
     output_scalar_names = 'parameters/E'
     output_scalar_values = '188911.6020499754'
     check_second_derivatives = true
-    check_AD_parameter_derivatives = false
+    check_AD_parameter_derivatives = true
   []
 []
 
