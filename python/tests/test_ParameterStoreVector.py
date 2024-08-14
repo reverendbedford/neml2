@@ -22,130 +22,166 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import pytest
+import unittest
 from pathlib import Path
 import torch
 import neml2
 
 
-def test_named_parameters():
-    pwd = Path(__file__).parent
-    model = neml2.reload_model(pwd / "test_ParameterStoreVector.i", "model")
+class TestLinearCombination(unittest.TestCase):
+    def setUp(self):
+        pwd = Path(__file__).parent
+        self.model = neml2.reload_model(pwd / "test_ParameterStoreVector.i", "model2")
 
-    # Setup variable views with batch shape (5,2)
-    model.reinit([5, 2])
+    def test_parameter_derivative(self):
+        # Batch shape 5 (shape 5,4)
+        inp = torch.tensor(
+            [
+                [0.2, 2.5, 0.3, 0.1],
+                [-0.5, 0.4, 0.2, -1.4],
+                [2.5, 1.8, 0.6, 3.2],
+                [-10.0, 11.0, 12.0, 6.8],
+                [1.0, 2.0, 3.0, 7.2],
+            ]
+        )
 
-    # This model has two parameters
-    X = model.named_parameters()["X"]
-    Y = model.named_parameters()["Y"]
+        # The input vector only contains input
+        x = neml2.LabeledVector(neml2.Tensor(inp, 1), [self.model.input_axis()])
 
-    # Parameters should have the correct value
-    assert torch.allclose(
-        X.torch(), torch.tensor([0.0, 1.0, 2.0, 3.0], dtype=torch.float64)
-    )
-    assert torch.allclose(
-        Y.torch(), torch.tensor([2.0, -1.0, 5.0, 10.0], dtype=torch.float64)
-    )
+        # Setup variable views
+        self.model.reinit(x.batch.shape)
 
+        coefs = self.model.get_parameter("c")
+        coefs.requires_grad_(True)
 
-def test_get_parameter():
-    pwd = Path(__file__).parent
-    model = neml2.reload_model(pwd / "test_ParameterStoreVector.i", "model")
+        # Forward
+        y = self.model.value(x)
+        v = torch.norm(y.torch())
+        v.backward()
 
-    # Setup variable views with batch shape (5,2)
-    model.reinit([5, 2])
-
-    # This model has two parameters
-    X = model.get_parameter("X")
-    Y = model.get_parameter("Y")
-
-    # Parameters should have the correct value
-    assert torch.allclose(
-        X.torch(), torch.tensor([0.0, 1.0, 2.0, 3.0], dtype=torch.float64)
-    )
-    assert torch.allclose(
-        Y.torch(), torch.tensor([2.0, -1.0, 5.0, 10.0], dtype=torch.float64)
-    )
+        self.assertIsNotNone(coefs.grad)
 
 
-def test_set_parameter():
-    pwd = Path(__file__).parent
-    model = neml2.reload_model(pwd / "test_ParameterStoreVector.i", "model")
+class TestLinearInterpolation(unittest.TestCase):
+    def setUp(self):
+        pwd = Path(__file__).parent
+        self.model = neml2.reload_model(pwd / "test_ParameterStoreVector.i", "model")
 
-    # Setup variable views with batch shape (5,2)
-    model.reinit([5, 2])
+    def test_named_parameters(self):
+        # Setup variable views with batch shape (5,2)
+        self.model.reinit([5, 2])
 
-    # This model has two parameters
-    X = model.get_parameter("X")
-    Y = model.get_parameter("Y")
+        # This model has two parameters
+        X = self.model.named_parameters()["X"]
+        Y = self.model.named_parameters()["Y"]
 
-    # This model has two parameters
-    model.set_parameter("X", neml2.Scalar.full(200.0))
-    model.set_parameter("Y", neml2.Scalar.full(0.2))
+        # Parameters should have the correct value
+        self.assertTrue(
+            torch.allclose(
+                X.torch(), torch.tensor([0.0, 1.0, 2.0, 3.0], dtype=torch.float64)
+            )
+        )
+        self.assertTrue(
+            torch.allclose(
+                Y.torch(), torch.tensor([2.0, -1.0, 5.0, 10.0], dtype=torch.float64)
+            )
+        )
 
-    # Parameters should have the correct value
-    assert torch.allclose(X.torch(), torch.tensor(200.0, dtype=torch.float64))
-    assert torch.allclose(Y.torch(), torch.tensor(0.2, dtype=torch.float64))
+    def test_get_parameter(self):
+        # Setup variable views with batch shape (5,2)
+        self.model.reinit([5, 2])
 
+        # This model has two parameters
+        X = self.model.get_parameter("X")
+        Y = self.model.get_parameter("Y")
 
-def test_set_parameters():
-    pwd = Path(__file__).parent
-    model = neml2.reload_model(pwd / "test_ParameterStoreVector.i", "model")
+        # Parameters should have the correct value
+        self.assertTrue(
+            torch.allclose(
+                X.torch(), torch.tensor([0.0, 1.0, 2.0, 3.0], dtype=torch.float64)
+            )
+        )
+        self.assertTrue(
+            torch.allclose(
+                Y.torch(), torch.tensor([2.0, -1.0, 5.0, 10.0], dtype=torch.float64)
+            )
+        )
 
-    # Setup variable views with batch shape (5,2)
-    model.reinit([5, 2])
+    def test_set_parameter(self):
+        # Setup variable views with batch shape (5,2)
+        self.model.reinit([5, 2])
 
-    # This model has two parameters
-    X = model.get_parameter("X")
-    Y = model.get_parameter("Y")
+        # This model has two parameters
+        X = self.model.get_parameter("X")
+        Y = self.model.get_parameter("Y")
 
-    # This model has two parameters
-    model.set_parameters(
-        {
-            "X": neml2.Scalar.full(200.0),
-            "Y": neml2.Scalar.full(0.2),
-        }
-    )
+        # This model has two parameters
+        self.model.set_parameter("X", neml2.Scalar.full(200.0))
+        self.model.set_parameter("Y", neml2.Scalar.full(0.2))
 
-    # Parameters should have the correct value
-    assert torch.allclose(X.torch(), torch.tensor(200.0, dtype=torch.float64))
-    assert torch.allclose(Y.torch(), torch.tensor(0.2, dtype=torch.float64))
+        # Parameters should have the correct value
+        self.assertTrue(
+            torch.allclose(X.torch(), torch.tensor(200.0, dtype=torch.float64))
+        )
+        self.assertTrue(
+            torch.allclose(Y.torch(), torch.tensor(0.2, dtype=torch.float64))
+        )
 
+    def test_set_parameters(self):
+        # Setup variable views with batch shape (5,2)
+        self.model.reinit([5, 2])
 
-def test_parameter_derivative():
-    pwd = Path(__file__).parent
-    model = neml2.reload_model(pwd / "test_ParameterStoreVector.i", "model")
+        # This model has two parameters
+        X = self.model.get_parameter("X")
+        Y = self.model.get_parameter("Y")
 
-    inp = torch.tensor(
-        [[0.2, 2.5, 0.3, 1.2, 0.5], [0.1, 2.5, 1.2, 1.3, 1.5]]
-    ).unsqueeze(-1)
+        # This model has two parameters
+        self.model.set_parameters(
+            {
+                "X": neml2.Scalar.full(200.0),
+                "Y": neml2.Scalar.full(0.2),
+            }
+        )
 
-    # The input vector only contains input
-    x = neml2.LabeledVector(neml2.Tensor(inp, 2), [model.input_axis()])
+        # Parameters should have the correct value
+        self.assertTrue(
+            torch.allclose(X.torch(), torch.tensor(200.0, dtype=torch.float64))
+        )
+        self.assertTrue(
+            torch.allclose(Y.torch(), torch.tensor(0.2, dtype=torch.float64))
+        )
 
-    # Setup variable views
-    model.reinit(x.batch.shape)
+    def test_parameter_derivative(self):
+        inp = torch.tensor(
+            [[0.2, 2.5, 0.3, 1.2, 0.5], [0.1, 2.5, 1.2, 1.3, 1.5]]
+        ).unsqueeze(-1)
 
-    # This model has two parameters
-    X = model.named_parameters()["X"]
-    Y = model.named_parameters()["Y"]
+        # The input vector only contains input
+        x = neml2.LabeledVector(neml2.Tensor(inp, 2), [self.model.input_axis()])
 
-    # Model parameters do not require grad by default
-    assert not X.requires_grad
-    assert not Y.requires_grad
+        # Setup variable views
+        self.model.reinit(x.batch.shape)
 
-    # Set parameters to requires_grad=True
-    X.requires_grad_(True)
-    Y.requires_grad_(True)
-    assert X.requires_grad
-    assert Y.requires_grad
+        # This model has two parameters
+        X = self.model.named_parameters()["X"]
+        Y = self.model.named_parameters()["Y"]
 
-    # Forward
-    y = model.value(x)
-    assert y.torch().requires_grad
+        # Model parameters do not require grad by default
+        self.assertFalse(X.requires_grad)
+        self.assertFalse(Y.requires_grad)
 
-    # dy/dp * x
-    y.torch().backward(gradient=x.torch())
+        # Set parameters to requires_grad=True
+        X.requires_grad_(True)
+        Y.requires_grad_(True)
+        self.assertTrue(X.requires_grad)
+        self.assertTrue(Y.requires_grad)
 
-    assert X.grad is not None
-    assert Y.grad is not None
+        # Forward
+        y = self.model.value(x)
+        self.assertTrue(y.torch().requires_grad)
+
+        # dy/dp * x
+        y.torch().backward(gradient=x.torch())
+
+        self.assertIsNotNone(X.grad)
+        self.assertIsNotNone(Y.grad)
