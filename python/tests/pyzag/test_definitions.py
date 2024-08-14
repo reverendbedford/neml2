@@ -94,7 +94,7 @@ class TestCorrectlyDefinedModel(unittest.TestCase):
         self.assertEqual(self.pmodel.nforce, 7)
 
 
-class SetVectorParameter(unittest.TestCase):
+class TestSetVectorParameter(unittest.TestCase):
 
     def setUp(self):
         self.nmodel = neml2.load_model(
@@ -102,16 +102,35 @@ class SetVectorParameter(unittest.TestCase):
         )
         self.pmodel = interface.NEML2PyzagModel(self.nmodel)
 
-    def test_set(self):
+    def test_set_vector(self):
         self.assertTrue(
             torch.allclose(
                 self.pmodel.mu_Y, self.nmodel.named_parameters()["mu.Y"].torch()
             )
         )
         self.pmodel.mu_Y = torch.nn.Parameter(torch.ones_like(self.pmodel.mu_Y))
+        self.pmodel._update_parameter_values()
         self.assertTrue(torch.allclose(self.pmodel.mu_Y, torch.tensor(1.0)))
         self.assertTrue(
             torch.allclose(
                 self.nmodel.named_parameters()["mu.Y"].torch(), torch.tensor(1.0)
+            )
+        )
+
+    def test_set_scalar(self):
+        self.assertTrue(torch.allclose(self.pmodel.elasticity_E, torch.tensor(1e5)))
+        self.assertTrue(
+            torch.allclose(
+                self.pmodel.model.named_parameters()["elasticity.E"].torch(),
+                self.pmodel.elasticity_E,
+            )
+        )
+        self.pmodel.elasticity_E.data = torch.tensor(1.2e5)
+        self.pmodel._update_parameter_values()
+        self.assertTrue(torch.allclose(self.pmodel.elasticity_E, torch.tensor(1.2e5)))
+        self.assertTrue(
+            torch.allclose(
+                self.pmodel.model.named_parameters()["elasticity.E"].torch(),
+                self.pmodel.elasticity_E,
             )
         )
