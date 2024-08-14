@@ -116,10 +116,12 @@ def test_parameter_derivative():
     pwd = Path(__file__).parent
     model = neml2.reload_model(pwd / "test_ParameterStoreVector.i", "model")
 
-    inp = neml2.Scalar(torch.ones((5, 2)) * 1.2)
+    inp = torch.tensor(
+        [[0.2, 2.5, 0.3, 1.2, 0.5], [0.1, 2.5, 1.2, 1.3, 1.5]]
+    ).unsqueeze(-1)
 
     # The input vector only contains input
-    x = neml2.LabeledVector(neml2.Tensor(inp), [model.input_axis()])
+    x = neml2.LabeledVector(neml2.Tensor(inp, 2), [model.input_axis()])
 
     # Setup variable views
     model.reinit(x.batch.shape)
