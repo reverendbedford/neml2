@@ -92,3 +92,26 @@ class TestCorrectlyDefinedModel(unittest.TestCase):
 
     def test_nforce(self):
         self.assertEqual(self.pmodel.nforce, 7)
+
+
+class SetVectorParameter(unittest.TestCase):
+
+    def setUp(self):
+        self.nmodel = neml2.load_model(
+            os.path.join(os.path.dirname(__file__), "complex_model.i"), "implicit_rate"
+        )
+        self.pmodel = interface.NEML2PyzagModel(self.nmodel)
+
+    def test_set(self):
+        self.assertTrue(
+            torch.allclose(
+                self.pmodel.mu_Y, self.nmodel.named_parameters()["mu.Y"].torch()
+            )
+        )
+        self.pmodel.mu_Y = torch.nn.Parameter(torch.ones_like(self.pmodel.mu_Y))
+        self.assertTrue(torch.allclose(self.pmodel.mu_Y, torch.tensor(1.0)))
+        self.assertTrue(
+            torch.allclose(
+                self.nmodel.named_parameters()["mu.Y"].torch(), torch.tensor(1.0)
+            )
+        )
