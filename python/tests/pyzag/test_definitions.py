@@ -35,6 +35,43 @@ import torch
 torch.set_default_dtype(torch.double)
 
 
+class TestChangeParameterShape(unittest.TestCase):
+    def setUp(self):
+        self.nmodel = neml2.load_model(
+            os.path.join(os.path.dirname(__file__), "correct_model.i"), "implicit_rate"
+        )
+        self.pmodel = interface.NEML2PyzagModel(
+            self.nmodel, exclude_parameters=["elasticity.nu"]
+        )
+
+    def test_update_parameter(self):
+        self.pmodel.elasticity_E.data = torch.tensor(1.2e5).expand(10)
+        self.pmodel._update_parameter_values()
+        self.assertTrue(
+            torch.allclose(
+                self.pmodel.model.named_parameters()["elasticity.E"].torch(),
+                self.pmodel.elasticity_E,
+            )
+        )
+        self.assertEqual(
+            self.pmodel.model.get_parameter("elasticity.E").tensor().batch.shape, (10,)
+        )
+
+        # Now go back
+        self.pmodel.elasticity_E.data = torch.tensor(1.3e5)
+        self.pmodel._update_parameter_values()
+        self.assertTrue(
+            torch.allclose(
+                self.pmodel.model.named_parameters()["elasticity.E"].torch(),
+                self.pmodel.elasticity_E,
+            )
+        )
+        self.assertEqual(
+            self.pmodel.model.get_parameter("elasticity.E").tensor().batch.shape,
+            tuple(),
+        )
+
+
 class TestCorrectlyDefinedModel(unittest.TestCase):
     def setUp(self):
         self.nmodel = neml2.load_model(

@@ -253,6 +253,8 @@ class NEML2PyzagModel(nonlinear.NonlinearRecursiveFunction):
         batch_shape = (state.shape[0] - self.lookback,) + state.shape[1:-1]
         bdim = len(batch_shape)
 
+        self.model.reinit(batch_shape=batch_shape, deriv_order=1, device=forces.device)
+
         input = neml2.LabeledVector.zeros(
             batch_shape, [self.model.input_axis()], device=state.device
         )
@@ -270,10 +272,6 @@ class NEML2PyzagModel(nonlinear.NonlinearRecursiveFunction):
             self.model.input_axis().subaxis(self.old_prefix + self.forces_axis),
             self.model.input_axis().subaxis(self.forces_axis),
             forces[: -self.lookback],
-        )
-
-        self.model.reinit(
-            batch_shape=input.batch.shape, deriv_order=1, device=forces.device
         )
 
         return input
