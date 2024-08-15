@@ -121,12 +121,17 @@ class NEML2PyzagModel(nonlinear.NonlinearRecursiveFunction):
 
     def _update_parameter_values(self):
         """Copy over new parameter values"""
+
+        # We may need to update the batch shapes, so this lambda sorts out the correct shape
+        def make_tensor(orig_name, neml_name):
+            new_value = getattr(self, orig_name)
+            current_value = self.model.get_parameter(neml_name)
+            batch_dim = new_value.dim() - current_value.tensor().base.dim()
+            return Tensor(new_value.clone(), batch_dim)
+
         self.model.set_parameters(
             {
-                neml_name: Tensor(
-                    getattr(self, orig_name),
-                    self.model.get_parameter(neml_name).tensor().batch.dim(),
-                )
+                neml_name: make_tensor(orig_name, neml_name)
                 for orig_name, neml_name in self.parameter_name_map.items()
             }
         )
@@ -316,11 +321,11 @@ class NEML2PyzagModel(nonlinear.NonlinearRecursiveFunction):
         The helper methods `collect_forces` and `collect_state` can be used to
         assemble individual tensors into the flattened state and forces tensor
         """
-        # Make a big LabeledVector with the input
-        x = self._assemble_input(state, forces)
-
         # Update the parameter values
         self._update_parameter_values()
+
+        # Make a big LabeledVector with the input
+        x = self._assemble_input(state, forces)
 
         # Call the model
         y, J = self.model.value_and_dvalue(x)

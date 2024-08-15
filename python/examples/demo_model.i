@@ -21,7 +21,7 @@
   []
   [d_values]
     type = Scalar
-    values = '10.0 5.0 2.0 1.0'
+    values = '30.0 20.0 15.0 12.0'
     batch_shape = '(4)'
   []
 []
