@@ -3,10 +3,10 @@
     type = ModelUnitTest
     model = 'model'
     batch_shape = '(10)'
-    input_scalar_names = 'state/internal/ep params/R params/theta0'
-    input_scalar_values = '0.1 100.0 110'
-    output_scalar_names = 'state/internal/k'
-    output_scalar_values = '10.416586470347177'
+    input_scalar_names = 'state/internal/gamma_rate params/R params/theta0 state/internal/k'
+    input_scalar_values = '0.1 100.0 110 50.0'
+    output_scalar_names = 'state/internal/k_rate'
+    output_scalar_values = '5.5'
     check_AD_first_derivatives = false
   []
 []

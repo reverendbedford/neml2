@@ -32,11 +32,14 @@ register_NEML2_object(SlopeSaturationVoceIsotropicHardening);
 OptionSet
 SlopeSaturationVoceIsotropicHardening::expected_options()
 {
-  OptionSet options = IsotropicHardening::expected_options();
-  options.doc() = "SlopeSaturationVoce isotropic hardening model, \\f$ h = R \\left[ 1 - "
-                  "\\exp(-\\theta_0 \\varepsilon_p / R) "
-                  "\\right] \\f$, where \\f$ R \\f$ is the isotropic hardening upon saturation, "
+  OptionSet options = FlowRule::expected_options();
+  options.doc() = "SlopeSaturationVoce isotropic hardening model, \\f$ \\dot{h} = \\theta_0 "
+                  "\\left(1 - \\frac{h}{R} \\right) \\varepsilon_p \\f$, where \\f$ R \\f$ is the "
+                  "isotropic hardening upon saturation, "
                   "and \\f$ \\theta_0 \\f$ is the initial hardening rate.";
+
+  options.set_input("isotropic_hardening") = VariableName("state", "internal", "k");
+  options.set("isotropic_hardening").doc() = "Isotropic hardening variable";
 
   options.set_parameter<CrossRef<Scalar>>("saturated_hardening");
   options.set("saturated_hardening").doc() = "Saturated isotropic hardening";
@@ -48,7 +51,9 @@ SlopeSaturationVoceIsotropicHardening::expected_options()
 
 SlopeSaturationVoceIsotropicHardening::SlopeSaturationVoceIsotropicHardening(
     const OptionSet & options)
-  : IsotropicHardening(options),
+  : FlowRule(options),
+    _h(declare_input_variable<Scalar>("isotropic_hardening")),
+    _h_dot(declare_output_variable<Scalar>(_h.name().with_suffix("_rate"))),
     _R(declare_parameter<Scalar>("R", "saturated_hardening", true)),
     _theta0(declare_parameter<Scalar>("theta0", "initial_hardening_rate", true))
 {
@@ -57,23 +62,26 @@ SlopeSaturationVoceIsotropicHardening::SlopeSaturationVoceIsotropicHardening(
 void
 SlopeSaturationVoceIsotropicHardening::set_value(bool out, bool dout_din, bool d2out_din2)
 {
+  neml_assert_dbg(
+      !d2out_din2,
+      "SlopeSaturationVoceIsotropicHardening model doesn't implement second derivatives.");
+
   if (out)
-    _h = _R * (-math::exp(-_theta0 / _R * _ep) + 1.0);
+    _h_dot = _theta0 * (1.0 - _h / _R) * _gamma_dot;
 
   if (dout_din)
   {
-    if (_ep.is_dependent())
-      _h.d(_ep) = _theta0 * math::exp(-_theta0 / _R * _ep);
+    if (_gamma_dot.is_dependent())
+      _h_dot.d(_gamma_dot) = _theta0 * (1.0 - _h / _R);
+
+    if (_h.is_dependent())
+      _h_dot.d(_h) = -_theta0 / _R * _gamma_dot;
 
     if (const auto * const R = nl_param("R"))
-      _h.d(*R) = 1.0 - (math::exp(-_theta0 * _ep / _R) * (_theta0 * _ep + _R)) / _R;
+      _h_dot.d(*R) = _gamma_dot * _h * _theta0 / (_R * _R);
 
     if (const auto * const theta0 = nl_param("theta0"))
-      _h.d(*theta0) = _ep * math::exp(-_theta0 * _ep / _R);
+      _h_dot.d(*theta0) = (1.0 - _h / _R) * _gamma_dot;
   }
-
-  if (d2out_din2)
-    if (_ep.is_dependent())
-      _h.d(_ep, _ep) = -_theta0 * _theta0 * math::exp(-_theta0 / _R * _ep) / _R;
 }
 } // namespace neml2
