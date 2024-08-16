@@ -70,10 +70,10 @@ ChabochePlasticHardening::ChabochePlasticHardening(const OptionSet & options)
     _X(declare_input_variable<SR2>("back_stress")),
     _NM(declare_input_variable<SR2>("flow_direction")),
     _X_dot(declare_output_variable<SR2>(_X.name().with_suffix("_rate"))),
-    _C(declare_parameter<Scalar>("C", "C")),
-    _g(declare_parameter<Scalar>("g", "g")),
-    _A(declare_parameter<Scalar>("A", "A")),
-    _a(declare_parameter<Scalar>("a", "a"))
+    _C(declare_parameter<Scalar>("C", "C", true)),
+    _g(declare_parameter<Scalar>("g", "g", true)),
+    _A(declare_parameter<Scalar>("A", "A", true)),
+    _a(declare_parameter<Scalar>("a", "a", true))
 {
 }
 
@@ -108,6 +108,18 @@ ChabochePlasticHardening::set_value(bool out, bool dout_din, bool d2out_din2)
     if (_X.is_dependent())
       _X_dot.d(_X) = -_g * _gamma_dot * I -
                      _A * math::pow(s, _a - 3) * ((_a - 1) * SR2(_X).outer(SR2(_X)) + s * s * I);
+
+    if (const auto * const C = nl_param("C"))
+      _X_dot.d(*C) = 2.0 / 3.0 * _NM * _gamma_dot;
+
+    if (const auto * const g = nl_param("g"))
+      _X_dot.d(*g) = -_X * _gamma_dot;
+
+    if (const auto * const A = nl_param("A"))
+      _X_dot.d(*A) = -math::pow(s, _a - 1) * _X;
+
+    if (const auto * const a = nl_param("a"))
+      _X_dot.d(*a) = -_A * _X * math::pow(s, _a - 1) * math::log(s);
   }
 }
 
