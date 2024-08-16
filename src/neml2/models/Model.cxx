@@ -296,7 +296,13 @@ Model::cache(TensorShapeRef batch_shape,
   _batch_sizes = batch_shape.empty() ? TensorShape{1} : TensorShape(batch_shape);
   VariableStore::cache(_batch_sizes);
 
-  _deriv_order = std::max(deriv_order + _extra_deriv_order, _deriv_order);
+  auto deriv_order_new = deriv_order + _extra_deriv_order;
+
+  // Nonlinear system requires the first derivatives to be solved
+  if (is_nonlinear_system())
+    deriv_order_new = std::max(deriv_order_new, 1);
+
+  _deriv_order = std::max(deriv_order_new, _deriv_order);
 
   _options = default_tensor_options().device(device).dtype(dtype);
 
@@ -456,7 +462,8 @@ void
 Model::value_and_dvalue()
 {
   neml_assert_dbg(requires_grad(),
-                  "value_and_dvalue() is called but derivative storage hasn't been allocated.");
+                  name(),
+                  ": value_and_dvalue() is called but derivative storage hasn't been allocated.");
 
   check_inplace_dbg();
 
@@ -477,7 +484,8 @@ void
 Model::dvalue()
 {
   neml_assert_dbg(requires_grad(),
-                  "dvalue() is called but derivative storage hasn't been allocated.");
+                  name(),
+                  ": dvalue() is called but derivative storage hasn't been allocated.");
 
   check_inplace_dbg();
 
@@ -498,7 +506,8 @@ void
 Model::value_and_dvalue_and_d2value()
 {
   neml_assert_dbg(requires_2nd_grad(),
-                  "value_and_dvalue_and_d2value() is called but second derivative storage hasn't "
+                  name(),
+                  ": value_and_dvalue_and_d2value() is called but second derivative storage hasn't "
                   "been allocated.");
 
   check_inplace_dbg();
@@ -529,7 +538,8 @@ void
 Model::dvalue_and_d2value()
 {
   neml_assert_dbg(requires_2nd_grad(),
-                  "dvalue_and_d2value() is called but second derivative storage hasn't "
+                  name(),
+                  ": dvalue_and_d2value() is called but second derivative storage hasn't "
                   "been allocated.");
 
   check_inplace_dbg();
@@ -560,7 +570,8 @@ void
 Model::d2value()
 {
   neml_assert_dbg(requires_2nd_grad(),
-                  "d2value() is called but second derivative storage hasn't been allocated.");
+                  name(),
+                  ": d2value() is called but second derivative storage hasn't been allocated.");
 
   check_inplace_dbg();
 
