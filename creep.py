@@ -107,19 +107,10 @@ if __name__ == "__main__":
     model = neml2.load_model(pwd / "creep.i", "model")
 
     # Batch shape is (ntemperature, nsmax, nmaterial)
-    T_smax = {
-        300: [46, 50, 54],
-        310: [46, 50, 54],
-        320: [46, 50, 54],
-        340: [46, 50, 54],
-        380: [46, 50, 54],
-        460: [46, 50, 54],
-        620: [46, 50, 54],
-        940: [46, 50, 54],
-    }
-    temperature = list(T_smax.keys())
+    smax = [50]
+    temperature = [620]
     ntemperature = len(temperature)
-    nsmax = len(T_smax[300])
+    nsmax = len(smax)
     nmaterial = 1
     B = (ntemperature, nsmax, nmaterial)
 
@@ -177,15 +168,15 @@ if __name__ == "__main__":
     prescribed_t = torch.cat(
         [torch.linspace(0, tramp, nramp), torch.logspace(1, 6, nload) + tramp]
     )[..., None, None, None].expand(ntime, *B)[..., None]
-    prescribed_T = torch.empty(ntime, *B, 1)
     prescribed_S = torch.zeros(ntime, *B, 6)
-    for i, (T, smax) in enumerate(T_smax.items()):
+    for i, s in enumerate(smax):
+        prescribed_Sx = torch.cat(
+            [torch.linspace(0, s, nramp), torch.full((nload,), s)]
+        )[..., None, None]
+        prescribed_S[:, :, i, :, 0] = prescribed_Sx
+    prescribed_T = torch.empty((70, *B, 1))
+    for i, T in enumerate(temperature):
         prescribed_T[:, i] = T
-        for j, s in enumerate(smax):
-            prescribed_Sx = torch.cat(
-                [torch.linspace(0, s, nramp), torch.full((nload,), s)]
-            )[..., None]
-            prescribed_S[:, i, j, :, 0] = prescribed_Sx
 
     # Initial plastic strains are zero
     initial_Ep = torch.zeros(6)
@@ -208,31 +199,24 @@ if __name__ == "__main__":
     ep = outputs[..., 12].squeeze()
     times = prescribed_t.squeeze()
     strainrate = torch.diff(strain, dim=0) / torch.diff(times, dim=0)
-    t0 = prescribed_t[1, 0, 0, 0, 0].item()
-    norm = colors.Normalize(vmin=np.min(temperature), vmax=np.max(temperature))
-    sm = cm.ScalarMappable(norm=norm, cmap="rainbow")
+    t0 = times[1].item()
 
     fig, ax = plt.subplots()
-    for i, T in enumerate(temperature):
-        ax.plot(
-            times[1:, i] / 3600,
-            strainrate[:, i] * 100 * 3600,
-            "-",
-            color=sm.to_rgba(T),
-        )
+    ax.plot(times[1:] / 3600, strainrate * 100 * 3600, "k-")
     ax.set(
-        xscale="log", yscale="log", xlabel="Time (hr)", ylabel="Strain rate (\\%/hr)"
+        xscale="log",
+        yscale="log",
+        xlabel="Time (hr)",
+        ylabel="Strain rate (\\%/hr)",
     )
     ax.set_xlim(tramp * 1.1 / 3600)
     ax.set_ylim(4e-6, 2e2)
     fig.tight_layout()
-    fig.colorbar(sm, ax=ax, label="Temperature (K)")
-    fig.savefig("strainrate3.png")
-    fig.savefig("strainrate3.pdf")
+    fig.savefig("strainrate1.png")
+    fig.savefig("strainrate1.pdf")
 
     fig, ax = plt.subplots()
-    for i, T in enumerate(temperature):
-        ax.plot(times[1:, i] / 3600, ep[1:, i], "-", color=sm.to_rgba(T))
+    ax.plot(times[1:] / 3600, ep[1:], "k-")
     ax.set(
         xscale="log",
         yscale="log",
@@ -242,6 +226,5 @@ if __name__ == "__main__":
     ax.set_xlim(tramp * 1.1 / 3600)
     ax.set_ylim(1e-10, 1e3)
     fig.tight_layout()
-    fig.colorbar(sm, ax=ax, label="Temperature (K)")
-    fig.savefig("eqpstrain3.png")
-    fig.savefig("eqpstrain3.pdf")
+    fig.savefig("eqpstrain1.png")
+    fig.savefig("eqpstrain1.pdf")

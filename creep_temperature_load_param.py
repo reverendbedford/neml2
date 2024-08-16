@@ -118,14 +118,18 @@ if __name__ == "__main__":
         940: [46, 50, 54],
     }
     temperature = list(T_smax.keys())
+    sy = [5, 10, 15]
     ntemperature = len(temperature)
     nsmax = len(T_smax[300])
-    nmaterial = 1
+    nmaterial = len(sy)
     B = (ntemperature, nsmax, nmaterial)
 
     # Initialize the model with the correct batch shape
     # Derivative order is 0 since we don't care about dy/dx, we only need parameter gradient dy/dp
     model.reinit(batch_shape=B, deriv_order=0)
+
+    # Set parameter
+    model.set_parameter("yield.sy", neml2.Scalar(torch.tensor(sy), 1))
 
     ########################################
     # input axis:
@@ -204,44 +208,58 @@ if __name__ == "__main__":
     )
 
     # We can then plot strain and strain rate
-    strain = outputs[..., 0].squeeze()
-    ep = outputs[..., 12].squeeze()
-    times = prescribed_t.squeeze()
-    strainrate = torch.diff(strain, dim=0) / torch.diff(times, dim=0)
-    t0 = prescribed_t[1, 0, 0, 0, 0].item()
+    fig1, ax1 = plt.subplots()
+    fig2, ax2 = plt.subplots()
+
     norm = colors.Normalize(vmin=np.min(temperature), vmax=np.max(temperature))
     sm = cm.ScalarMappable(norm=norm, cmap="rainbow")
+    lss = ["-", "--", "-."]
 
-    fig, ax = plt.subplots()
-    for i, T in enumerate(temperature):
-        ax.plot(
-            times[1:, i] / 3600,
-            strainrate[:, i] * 100 * 3600,
-            "-",
-            color=sm.to_rgba(T),
-        )
-    ax.set(
-        xscale="log", yscale="log", xlabel="Time (hr)", ylabel="Strain rate (\\%/hr)"
+    for p in range(nmaterial):
+        strain = outputs[..., p, 0].squeeze()
+        ep = outputs[..., p, 12].squeeze()
+        times = prescribed_t[..., p, 0].squeeze()
+        strainrate = torch.diff(strain, dim=0) / torch.diff(times, dim=0)
+        t0 = prescribed_t[1, 0, 0, p, 0].item()
+
+        for i, T in enumerate(temperature):
+            ax1.plot(
+                times[1:, i] / 3600,
+                strainrate[:, i] * 100 * 3600,
+                lss[p],
+                color=sm.to_rgba(T),
+            )
+
+        for i, T in enumerate(temperature):
+            ax2.plot(
+                times[1:, i] / 3600,
+                ep[1:, i],
+                lss[p],
+                color=sm.to_rgba(T),
+            )
+
+    ax1.set(
+        xscale="log",
+        yscale="log",
+        xlabel="Time (hr)",
+        ylabel="Strain rate (\\%/hr)",
     )
-    ax.set_xlim(tramp * 1.1 / 3600)
-    ax.set_ylim(4e-6, 2e2)
-    fig.tight_layout()
-    fig.colorbar(sm, ax=ax, label="Temperature (K)")
-    fig.savefig("strainrate3.png")
-    fig.savefig("strainrate3.pdf")
+    ax1.set_xlim(tramp * 1.1 / 3600)
+    ax1.set_ylim(4e-6, 2e2)
+    fig1.tight_layout()
+    fig1.colorbar(sm, ax=ax1, label="Temperature (K)")
+    fig1.savefig("strainrate4.png")
+    fig1.savefig("strainrate4.pdf")
 
-    fig, ax = plt.subplots()
-    for i, T in enumerate(temperature):
-        ax.plot(times[1:, i] / 3600, ep[1:, i], "-", color=sm.to_rgba(T))
-    ax.set(
+    ax2.set(
         xscale="log",
         yscale="log",
         xlabel="Time (hr)",
         ylabel="Equivalent plastic strain",
     )
-    ax.set_xlim(tramp * 1.1 / 3600)
-    ax.set_ylim(1e-10, 1e3)
-    fig.tight_layout()
-    fig.colorbar(sm, ax=ax, label="Temperature (K)")
-    fig.savefig("eqpstrain3.png")
-    fig.savefig("eqpstrain3.pdf")
+    ax2.set_xlim(tramp * 1.1 / 3600)
+    ax2.set_ylim(1e-10, 1e3)
+    fig2.tight_layout()
+    fig2.colorbar(sm, ax=ax2, label="Temperature (K)")
+    fig2.savefig("eqpstrain4.png")
+    fig2.savefig("eqpstrain4.pdf")

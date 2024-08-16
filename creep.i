@@ -13,8 +13,8 @@
   []
   [isoharden]
     type = VoceIsotropicHardening
-    saturated_hardening = 100
-    saturation_rate = 500
+    saturated_hardening = 20
+    saturation_rate = 50
   []
   [yield]
     type = YieldFunction
@@ -30,7 +30,7 @@
   []
   [flow_rate]
     type = PerzynaPlasticFlowRate
-    reference_stress = 100
+    reference_stress = 150
     exponent = 'n'
   []
   [flow]

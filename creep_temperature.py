@@ -210,7 +210,7 @@ if __name__ == "__main__":
     strainrate = torch.diff(strain, dim=0) / torch.diff(times, dim=0)
     t0 = times[1, 0].item()
     norm = colors.Normalize(vmin=np.min(temperature), vmax=np.max(temperature))
-    sm = cm.ScalarMappable(norm=norm)
+    sm = cm.ScalarMappable(norm=norm, cmap="rainbow")
 
     fig, ax = plt.subplots()
     for i, T in enumerate(temperature):
@@ -218,18 +218,30 @@ if __name__ == "__main__":
             times[1:, i] / 3600, strainrate[:, i] * 100 * 3600, "-", color=sm.to_rgba(T)
         )
     ax.set(
-        xscale="log", yscale="log", xlabel="Time (hr)", ylabel="Strain rate (\\%/hr)"
+        xscale="log",
+        yscale="log",
+        xlabel="Time (hr)",
+        ylabel="Strain rate (\\%/hr)",
     )
     ax.set_xlim(tramp * 1.1 / 3600)
+    ax.set_ylim(4e-6, 2e2)
     fig.tight_layout()
     fig.colorbar(sm, ax=ax, label="Temperature (K)")
+    fig.savefig("strainrate2.png")
     fig.savefig("strainrate2.pdf")
 
     fig, ax = plt.subplots()
     for i, T in enumerate(temperature):
         ax.plot(times[1:, i] / 3600, ep[1:, i], "-", color=sm.to_rgba(T))
-    ax.set(xscale="log", xlabel="Time (hr)", ylabel="Equivalent plastic strain")
+    ax.set(
+        xscale="log",
+        yscale="log",
+        xlabel="Time (hr)",
+        ylabel="Equivalent plastic strain",
+    )
     ax.set_xlim(tramp * 1.1 / 3600)
+    ax.set_ylim(1e-10, 1e3)
     fig.tight_layout()
     fig.colorbar(sm, ax=ax, label="Temperature (K)")
+    fig.savefig("eqpstrain2.png")
     fig.savefig("eqpstrain2.pdf")
