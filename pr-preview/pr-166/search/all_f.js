@@ -42,7 +42,7 @@ var searchData=
   ['nonlinearsystem_39',['NonlinearSystem',['../classneml2_1_1NonlinearSystem.html',1,'NonlinearSystem'],['../classneml2_1_1NonlinearSystem.html#a596124ec7dce0384ee6e74070aa574dc',1,'neml2::NonlinearSystem::NonlinearSystem()']]],
   ['norm_40',['norm',['../classneml2_1_1SR2.html#ac00d16c9e75c43b909d9840eb1809606',1,'neml2::SR2::norm()'],['../classneml2_1_1VecBase.html#ad840f5d7d824ab9d442511c61c8f6b77',1,'neml2::VecBase::norm()']]],
   ['norm_5fsq_41',['norm_sq',['../classneml2_1_1SR2.html#aa34d9c66769904faf822a8e5a39ead76',1,'neml2::SR2::norm_sq()'],['../classneml2_1_1VecBase.html#aa34d9c66769904faf822a8e5a39ead76',1,'neml2::VecBase::norm_sq()']]],
-  ['normality_42',['Normality',['../classneml2_1_1Normality.html',1,'Normality'],['../classneml2_1_1Normality.html#a8b48f7f0d9485d40f132c34df7ae1030',1,'neml2::Normality::Normality()']]],
+  ['normality_42',['Normality',['../classneml2_1_1Normality.html',1,'Normality'],['../classneml2_1_1Normality.html#a8b48f7f0d9485d40f132c34df7ae1030',1,'neml2::Normality::Normality()'],['../syntax-models.html#normality',1,'Normality']]],
   ['nslip_43',['nslip',['../classneml2_1_1crystallography_1_1CrystalGeometry.html#aa63e379f76e36296fce9dfe991eceba8',1,'neml2::crystallography::CrystalGeometry']]],
   ['nslip_5fgroups_44',['nslip_groups',['../classneml2_1_1crystallography_1_1CrystalGeometry.html#ab720de7f1de5b40b20d7bcc67a8fbf25',1,'neml2::crystallography::CrystalGeometry']]],
   ['nslip_5fin_5fgroup_45',['nslip_in_group',['../classneml2_1_1crystallography_1_1CrystalGeometry.html#aaacc7ffad04337bcf7fff32c8648caba',1,'neml2::crystallography::CrystalGeometry']]],
