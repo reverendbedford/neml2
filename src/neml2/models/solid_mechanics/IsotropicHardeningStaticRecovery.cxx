@@ -22,73 +22,69 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/models/solid_mechanics/SlopeSaturationVoceIsotropicHardening.h"
+#include "neml2/models/solid_mechanics/IsotropicHardeningStaticRecovery.h"
 #include "neml2/misc/math.h"
 
 namespace neml2
 {
-register_NEML2_object(SlopeSaturationVoceIsotropicHardening);
+register_NEML2_object(IsotropicHardeningStaticRecovery);
 
 OptionSet
-SlopeSaturationVoceIsotropicHardening::expected_options()
+IsotropicHardeningStaticRecovery::expected_options()
 {
-  OptionSet options = FlowRule::expected_options();
-  options.doc() = "SlopeSaturationVoce isotropic hardening model, \\f$ \\dot{h} = \\theta_0 "
-                  "\\left(1 - \\frac{h}{R} \\right) \\varepsilon_p \\f$, where \\f$ R \\f$ is the "
-                  "isotropic hardening upon saturation, "
-                  "and \\f$ \\theta_0 \\f$ is the initial hardening rate.";
+  OptionSet options = Model::expected_options();
+  options.doc() = "Static recovery for isotropic hardening of the form "
+                  "\\f$ \\dot{k} = -\\left(\\frac{\\lVert k \\rVert}{\\tau}\\right)^(n-1) "
+                  "\\frac{k}{\\tau} \\f$";
 
   options.set_input("isotropic_hardening") = VariableName("state", "internal", "k");
   options.set("isotropic_hardening").doc() = "Isotropic hardening variable";
 
   options.set_input("isotropic_hardening_rate");
   options.set("isotropic_hardening_rate").doc() =
-      "Rate of isotropic hardening, defaults to isotropic_hardening + _rate";
+      "Rate of isotropic hardening, defaults to isotropic_hardening + _recovery_rate";
 
-  options.set_parameter<CrossRef<Scalar>>("saturated_hardening");
-  options.set("saturated_hardening").doc() = "Saturated isotropic hardening";
-  options.set_parameter<CrossRef<Scalar>>("initial_hardening_rate");
-  options.set("initial_hardening_rate").doc() = "Initial hardening rate";
+  options.set_parameter<CrossRef<Scalar>>("tau");
+  options.set("tau").doc() = "Recovery rate";
+  options.set_parameter<CrossRef<Scalar>>("n");
+  options.set("n").doc() = "Recovery exponent";
 
   return options;
 }
 
-SlopeSaturationVoceIsotropicHardening::SlopeSaturationVoceIsotropicHardening(
-    const OptionSet & options)
-  : FlowRule(options),
+IsotropicHardeningStaticRecovery::IsotropicHardeningStaticRecovery(const OptionSet & options)
+  : Model(options),
     _h(declare_input_variable<Scalar>("isotropic_hardening")),
     _h_dot(declare_output_variable<Scalar>(
         options.get<VariableName>("isotropic_hardening_rate").empty()
-            ? _h.name().with_suffix("_rate")
+            ? _h.name().with_suffix("_recovery_rate")
             : options.get<VariableName>("isotropic_hardening_rate"))),
-    _R(declare_parameter<Scalar>("R", "saturated_hardening", true)),
-    _theta0(declare_parameter<Scalar>("theta0", "initial_hardening_rate", true))
+    _tau(declare_parameter<Scalar>("tau", "tau", true)),
+    _n(declare_parameter<Scalar>("n", "n", true))
 {
 }
 
 void
-SlopeSaturationVoceIsotropicHardening::set_value(bool out, bool dout_din, bool d2out_din2)
+IsotropicHardeningStaticRecovery::set_value(bool out, bool dout_din, bool d2out_din2)
 {
-  neml_assert_dbg(
-      !d2out_din2,
-      "SlopeSaturationVoceIsotropicHardening model doesn't implement second derivatives.");
+  neml_assert_dbg(!d2out_din2,
+                  "IsotropicHardeningStaticRecovery model doesn't implement second derivatives.");
 
   if (out)
-    _h_dot = _theta0 * (1.0 - _h / _R) * _gamma_dot;
+    _h_dot = -math::pow(math::abs(Scalar(_h)) / _tau, _n - 1.0) * _h / _tau;
 
   if (dout_din)
   {
-    if (_gamma_dot.is_dependent())
-      _h_dot.d(_gamma_dot) = _theta0 * (1.0 - _h / _R);
-
     if (_h.is_dependent())
-      _h_dot.d(_h) = -_theta0 / _R * _gamma_dot;
+      _h_dot.d(_h) = -_n * math::pow(math::abs(_h / _tau), _n - 1) / math::abs(_tau);
 
-    if (const auto * const R = nl_param("R"))
-      _h_dot.d(*R) = _gamma_dot * _h * _theta0 / (_R * _R);
+    if (const auto * const tau = nl_param("tau"))
+      _h_dot.d(*tau) =
+          _n * _h * math::pow(_tau, -1 - _n) * math::pow(math::abs(Scalar(_h)), _n - 1);
 
-    if (const auto * const theta0 = nl_param("theta0"))
-      _h_dot.d(*theta0) = (1.0 - _h / _R) * _gamma_dot;
+    if (const auto * const n = nl_param("n"))
+      _h_dot.d(*n) = -_h * math::pow(_tau, -_n) * math::pow(math::abs(Scalar(_h)), _n - 1) *
+                     math::log(math::abs(Scalar(_h)) / _tau);
   }
 }
 } // namespace neml2
