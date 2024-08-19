@@ -1,58 +1,3 @@
-[Tensors]
-  [end_time]
-    type = LogspaceScalar
-    start = -1
-    end = 5
-    nstep = 20
-  []
-  [times]
-    type = LinspaceScalar
-    start = 0
-    end = end_time
-    nstep = 100
-  []
-  [exx]
-    type = FullScalar
-    batch_shape = '(20)'
-    value = 0.1
-  []
-  [eyy]
-    type = FullScalar
-    batch_shape = '(20)'
-    value = -0.05
-  []
-  [ezz]
-    type = FullScalar
-    batch_shape = '(20)'
-    value = -0.05
-  []
-  [max_strain]
-    type = FillSR2
-    values = 'exx eyy ezz'
-  []
-  [strains]
-    type = LinspaceSR2
-    start = 0
-    end = max_strain
-    nstep = 100
-  []
-[]
-
-[Drivers]
-  [driver]
-    type = SolidMechanicsDriver
-    model = 'model'
-    times = 'times'
-    prescribed_strains = 'strains'
-    save_as = 'result.pt'
-  []
-  [regression]
-    type = TransientRegression
-    driver = 'driver'
-    reference = 'gold/result.pt'
-  []
-[]
-
 [Solvers]
   [newton]
     type = Newton
@@ -113,17 +58,17 @@
     type = ChabochePlasticHardening
     back_stress = 'state/internal/X1'
     C = 10000
-    g = 200
-    A = 1e-2
-    a = 2
+    g = 100
+    A = 1e-8
+    a = 1.2
   []
   [X2rate]
     type = ChabochePlasticHardening
     back_stress = 'state/internal/X2'
     C = 1000
-    g = 20
-    A = 1e-3
-    a = 4
+    g = 9
+    A = 1e-10
+    a = 3.2
   []
   [Eprate]
     type = AssociativePlasticFlow
