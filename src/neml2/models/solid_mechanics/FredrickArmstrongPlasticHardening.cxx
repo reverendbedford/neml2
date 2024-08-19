@@ -39,7 +39,7 @@ FredrickArmstrongPlasticHardening::expected_options()
       "Chaboche "
       "model, back stress is directly treated as an internal variable. Rate of back stress is "
       "given as \\f$ \\dot{\\boldsymbol{X}} = \\left( \\frac{2}{3} C \\frac{\\partial f}{\\partial "
-      "\\boldsymbol{M}} - g \\boldsymbol{X} \\right) \\dot{\\gamma}f$."
+      "\\boldsymbol{M}} - g \\boldsymbol{X} \\right) \\dot{\\gamma} \\f$."
       "\\f$ \\frac{\\partial f}{\\partial \\boldsymbol{M}} \\f$ is the flow "
       "direction, \\f$ \\dot{\\gamma} \\f$ is the flow rate, and \\f$ C \\f$ and \\f$ g \\f$ are "
       "material parameters.";
