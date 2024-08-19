@@ -47,6 +47,9 @@ FredrickArmstrongPlasticHardening::expected_options()
   options.set_input("back_stress") = VariableName("state", "internal", "X");
   options.set("back_stress").doc() = "Back stress";
 
+  options.set_output("back_stress_rate");
+  options.set("back_stress_rate").doc() = "Back stress rate, defaults to back_stress + _rate";
+
   options.set_input("flow_direction") = VariableName("state", "internal", "NM");
   options.set("flow_direction").doc() = "Flow direction";
 
@@ -63,7 +66,9 @@ FredrickArmstrongPlasticHardening::FredrickArmstrongPlasticHardening(const Optio
   : FlowRule(options),
     _X(declare_input_variable<SR2>("back_stress")),
     _NM(declare_input_variable<SR2>("flow_direction")),
-    _X_dot(declare_output_variable<SR2>(_X.name().with_suffix("_rate"))),
+    _X_dot(declare_output_variable<SR2>(options.get<VariableName>("back_stress_rate").empty()
+                                            ? _X.name().with_suffix("_rate")
+                                            : options.get<VariableName>("back_stress_rate"))),
     _C(declare_parameter<Scalar>("C", "C", true)),
     _g(declare_parameter<Scalar>("g", "g", true))
 {
