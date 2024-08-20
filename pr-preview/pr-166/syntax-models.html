@@ -378,7 +378,7 @@ AssociativePlasticFlow</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1AssociativePlasticFlow.html">link</a></p>
 <h2><a class="anchor" id="chabocheplastichardening"></a>
 ChabochePlasticHardening</h2>
-<p>Map the flow rate (i.e., the consistency parameter in the KKT conditions) to the rate of internal variables. This object defines the non-associative Fredrick-Armstrong kinematic hardening. In the model, back stress is directly treated as an internal variable. Rate of back stress is given as \( \dot{\boldsymbol{X}} = \left( \frac{2}{3} C \frac{\partial f}{\partial \boldsymbol{M}} - g \boldsymbol{X} \right) \dot{\gamma} \). \( \frac{\partial f}{\partial \boldsymbol{M}} \) is the flow direction, \( \dot{\gamma} \) is the flow rate, and \( C \) and \( g \) are material parameters. This object defines the non-associative Chaboche kinematic hardening. In the Chaboche model, back stress is directly treated as an internal variable. Rate of back stress is given as \( \dot{\boldsymbol{X}} = \left( \frac{2}{3} C \frac{\partial f}{\partial \boldsymbol{M}} - g \boldsymbol{X} \right) \dot{\gamma} - A \lVert \boldsymbol{X} \rVert^{a - 1} \boldsymbol{X} \), including kinematic hardening, dynamic recovery, and static recovery. \( \frac{\partial f}{\partial \boldsymbol{M}} \) is the flow direction, \( \dot{\gamma} \) is the flow rate, and \( C \), \( g \), \( A \), and \( a \) are material parameters. </p><details >
+<p>Map the flow rate (i.e., the consistency parameter in the KKT conditions) to the rate of internal variables. This object defines the non-associative Fredrick-Armstrong kinematic hardening. In the model, back stress is directly treated as an internal variable. Rate of back stress is given as \( \dot{\boldsymbol{X}} = \left( \frac{2}{3} C \frac{\partial f}{\partial \boldsymbol{M}} - g \boldsymbol{X} \right) \dot{\gamma} \). \( \frac{\partial f}{\partial \boldsymbol{M}} \) is the flow direction, \( \dot{\gamma} \) is the flow rate, and \( C \) and \( g \) are material parameters. The complete Chaboche model adds static recovery terms \( - A \lVert \boldsymbol{X} \rVert^{a - 1} \boldsymbol{X} \), so the model includes kinematic hardening, dynamic recovery, and static recovery. \( A \) and \( a \) are additional material parameters. </p><details >
 <summary >
 <code>A</code> 🇵 Static recovery prefactor</summary>
 <p></p>
@@ -1840,7 +1840,7 @@ PlasticVorticity</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1PlasticVorticity.html">link</a></p>
 <h2><a class="anchor" id="powerlawisotropichardeningstaticrecovery"></a>
 PowerLawIsotropicHardeningStaticRecovery</h2>
-<p>Static recovery for isotropic hardening of the form \( \dot{k} = -\left(\frac{\lVert k \rVert}{\tau}\right)^(n-1) \frac{k}{\tau} \) </p><details >
+<p>This particular model implements a power law recovery of the type \( \dot{k} = -\left(\frac{\lVert k \rVert}{\tau}\right)^{n-1} \frac{k}{\tau} \) </p><details >
 <summary >
 <code>isotropic_hardening</code> 🇮 Isotropic hardening variable</summary>
 <p></p>
@@ -1876,7 +1876,7 @@ PowerLawIsotropicHardeningStaticRecovery</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1PowerLawIsotropicHardeningStaticRecovery.html">link</a></p>
 <h2><a class="anchor" id="powerlawkinematichardeningstaticrecovery"></a>
 PowerLawKinematicHardeningStaticRecovery</h2>
-<p>This object defines kinematic hardening static recovery on a backstress termThis object defines kinematic hardening static recovery on a backstress term as \( \dot{X} = - \left(\frac{\lVert X \rVert}{\tau}\right)^(n-1) \frac{X}{\tau} \)where \( n \) is the power law recovery exponent and \(\tau\) is the recovery rate. </p><details >
+<p>This object defines kinematic hardening static recovery on a backstress term. This particular model uses a power law for recovery \( \dot{X} = - \left(\frac{\lVert X \rVert}{\tau}\right)^{n-1} \frac{X}{\tau} \)where \( n \) is the power law recovery exponent and \(\tau\) is the recovery rate. </p><details >
 <summary >
 <code>back_stress</code> 🇮 Back stress</summary>
 <p></p>
@@ -2871,7 +2871,7 @@ SingleSlipStrengthMap</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1SingleSlipStrengthMap.html">link</a></p>
 <h2><a class="anchor" id="slopesaturationvoceisotropichardening"></a>
 SlopeSaturationVoceIsotropicHardening</h2>
-<p>SlopeSaturationVoce isotropic hardening model, \( \dot{h} = \theta_0 \left(1 - \frac{h}{R} \right) \varepsilon_p \), where \( R \) is the isotropic hardening upon saturation, and \( \theta_0 \) is the initial hardening rate. </p><details >
+<p>SlopeSaturationVoce isotropic hardening model, \( \dot{h} = \theta_0 \left(1 - \frac{h}{R} \right) \varepsilon_p \), where \( R \) is the isotropic hardening upon saturation, and \( \theta_0 \) is the initial hardening rate. In addition to the reparameterization, this model differences from the <code>VoceIsotropicHardening</code> model in that it defines the hardening rate in a non-assocative manner. This is sometimes handy, for example in supplementing the model with static recovery. </p><details >
 <summary >
 <code>flow_rate</code> 🇮 Flow rate</summary>
 <p></p>
