@@ -76,17 +76,18 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"classneml2_1_1DiagnosticsInterface.html#aea7b448cba27b6ac47ca4b99edf60bd4",
-"classneml2_1_1KinematicHardening.html#a6df033465cd1c6c1e970a9d5a9e75479",
-"classneml2_1_1LabeledTensor.html#a63c61e19a8f60cdee48047d1157bb82e",
-"classneml2_1_1Model.html#a6a9472c7bed0214f6cd6cc93060d51eb",
-"classneml2_1_1Normality.html#a7233801c9edfbc77916a68bb631d57e0",
-"classneml2_1_1PlasticDeformationRate.html#acb5a518c8c67efaae23a8c2b6cb72e2d",
-"classneml2_1_1Settings.html",
-"classneml2_1_1TransientDriver.html#a13dfbdd8c00d5c134b09bf2ab3cfa1e5",
-"classneml2_1_1VariableRate.html#af5600a36813e455aefee72bec1d574fb",
-"classneml2_1_1crystallography_1_1CrystalGeometry.html#afa04e2089c13f09174f05f01068b0947",
-"namespaceneml2.html#aec23c48520256c2362133edcead88cdd"
+"classneml2_1_1Driver.html#ae5d6a096571aad18262e88dbfa66e482",
+"classneml2_1_1IsotropicHardeningStaticRecovery.html#aa474a26ca36c3b6b25bf47e26914bc41",
+"classneml2_1_1LabeledTensor.html#a355b7cd72942e5fd3632756af81f2ce2",
+"classneml2_1_1Model.html#a47f0a43f8a2cb5a719b94e4673a16cae",
+"classneml2_1_1NonlinearSystem.html#ae2b5276faf5229a29a50138f0278ac5b",
+"classneml2_1_1ParserException.html#a79c8394790a689cc82212df05b3e089c",
+"classneml2_1_1SR2Invariant.html#a979d38b05f49ac1c94292c258ed4fb36a64af7596b9f83e64122fdcc92dda8765",
+"classneml2_1_1TensorBase.html#af14a57551daf430b20ae37d854421201",
+"classneml2_1_1VariableBase.html#a55b77c6f6ee70bdabfd351e234d0bcf7",
+"classneml2_1_1WR2ImplicitExponentialTimeIntegration.html#ad634b09929757bdf5e2d7ad261ccec1e",
+"namespaceneml2.html#a8b71795164c810d68aa7bbb1d720ebc7",
+"structneml2_1_1OptionSet_1_1Metadata.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -41,7 +41,8 @@ var searchData=
   ['is_5fstate_38',['is_state',['../classneml2_1_1VariableBase.html#a2669d1f91b798f16b2d82c7d6726c277',1,'neml2::VariableBase']]],
   ['isotropic_5fe_5fnu_39',['isotropic_E_nu',['../classneml2_1_1SSR4.html#ad318e161a620ac1bb046547a9151d421',1,'neml2::SSR4::isotropic_E_nu(const Scalar &amp;E, const Scalar &amp;nu)'],['../classneml2_1_1SSR4.html#a59ee7b3e3b14a4957f5621abfd8e3d9c',1,'neml2::SSR4::isotropic_E_nu(const Real &amp;E, const Real &amp;nu, const torch::TensorOptions &amp;options=default_tensor_options())']]],
   ['isotropichardening_40',['IsotropicHardening',['../classneml2_1_1IsotropicHardening.html#aa1a9bb4383495d684fe4c362ebcfe33e',1,'neml2::IsotropicHardening']]],
-  ['item_41',['Item',['../structneml2_1_1DependencyResolver_1_1Item.html#a074775c49141f1a9e781f88ded075ead',1,'neml2::DependencyResolver::Item']]],
-  ['item_5fconsumers_42',['item_consumers',['../classneml2_1_1DependencyResolver.html#a201b2fcc14bade0611c6d90841748bec',1,'neml2::DependencyResolver']]],
-  ['item_5fproviders_43',['item_providers',['../classneml2_1_1DependencyResolver.html#af1717716528c1f3fee2ab3b3314d767e',1,'neml2::DependencyResolver']]]
+  ['isotropichardeningstaticrecovery_41',['IsotropicHardeningStaticRecovery',['../classneml2_1_1IsotropicHardeningStaticRecovery.html#a8a19cd6eaa12b7992fae66918f834dda',1,'neml2::IsotropicHardeningStaticRecovery']]],
+  ['item_42',['Item',['../structneml2_1_1DependencyResolver_1_1Item.html#a074775c49141f1a9e781f88ded075ead',1,'neml2::DependencyResolver::Item']]],
+  ['item_5fconsumers_43',['item_consumers',['../classneml2_1_1DependencyResolver.html#a201b2fcc14bade0611c6d90841748bec',1,'neml2::DependencyResolver']]],
+  ['item_5fproviders_44',['item_providers',['../classneml2_1_1DependencyResolver.html#af1717716528c1f3fee2ab3b3314d767e',1,'neml2::DependencyResolver']]]
 ];

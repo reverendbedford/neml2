@@ -29,5 +29,6 @@ var searchData=
   ['transformable_26',['Transformable',['../classneml2_1_1Transformable.html',1,'neml2']]],
   ['transformable_3c_20vec_20_3e_27',['Transformable&lt; Vec &gt;',['../classneml2_1_1Transformable.html',1,'neml2']]],
   ['transientdriver_28',['TransientDriver',['../classneml2_1_1TransientDriver.html',1,'neml2']]],
-  ['trustregionsubproblem_29',['TrustRegionSubProblem',['../classneml2_1_1TrustRegionSubProblem.html',1,'neml2']]]
+  ['trustregionsubproblem_29',['TrustRegionSubProblem',['../classneml2_1_1TrustRegionSubProblem.html',1,'neml2']]],
+  ['twostagethermalannealing_30',['TwoStageThermalAnnealing',['../classneml2_1_1TwoStageThermalAnnealing.html',1,'neml2']]]
 ];
