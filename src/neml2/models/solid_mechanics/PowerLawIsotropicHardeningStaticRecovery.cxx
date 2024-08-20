@@ -33,8 +33,8 @@ OptionSet
 PowerLawIsotropicHardeningStaticRecovery::expected_options()
 {
   OptionSet options = IsotropicHardeningStaticRecovery::expected_options();
-  options.doc() = "Static recovery for isotropic hardening of the form "
-                  "\\f$ \\dot{k} = -\\left(\\frac{\\lVert k \\rVert}{\\tau}\\right)^(n-1) "
+  options.doc() = " This particular model implements a power law recovery of the type "
+                  "\\f$ \\dot{k} = -\\left(\\frac{\\lVert k \\rVert}{\\tau}\\right)^{n-1} "
                   "\\frac{k}{\\tau} \\f$";
 
   options.set_parameter<CrossRef<Scalar>>("tau");

@@ -31,7 +31,7 @@ OptionSet
 IsotropicHardeningStaticRecovery::expected_options()
 {
   OptionSet options = Model::expected_options();
-  options.doc() = "Static recovery for isotropic hardening";
+  options.doc() = "Static recovery for isotropic hardening.";
 
   options.set_input("isotropic_hardening") = VariableName("state", "internal", "k");
   options.set("isotropic_hardening").doc() = "Isotropic hardening variable";

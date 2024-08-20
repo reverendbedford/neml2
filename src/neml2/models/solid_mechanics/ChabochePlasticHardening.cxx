@@ -35,14 +35,10 @@ ChabochePlasticHardening::expected_options()
 {
   OptionSet options = FredrickArmstrongPlasticHardening::expected_options();
   options.doc() +=
-      " This object defines the non-associative Chaboche kinematic hardening. In the Chaboche "
-      "model, back stress is directly treated as an internal variable. Rate of back stress is "
-      "given as \\f$ \\dot{\\boldsymbol{X}} = \\left( \\frac{2}{3} C \\frac{\\partial f}{\\partial "
-      "\\boldsymbol{M}} - g \\boldsymbol{X} \\right) \\dot{\\gamma} - A \\lVert \\boldsymbol{X} "
-      "\\rVert^{a - 1} \\boldsymbol{X} \\f$, including kinematic hardening, dynamic recovery, and "
-      "static recovery. \\f$ \\frac{\\partial f}{\\partial \\boldsymbol{M}} \\f$ is the flow "
-      "direction, \\f$ \\dot{\\gamma} \\f$ is the flow rate, and \\f$ C \\f$, \\f$ g \\f$, \\f$ A "
-      "\\f$, and \\f$ a \\f$ are material parameters.";
+      " The complete Chaboche model adds static recovery terms \\f$ - A \\lVert \\boldsymbol{X} "
+      "\\rVert^{a - 1} \\boldsymbol{X} \\f$, so the model includes kinematic hardening, dynamic "
+      "recovery, and static recovery.  \\f$ A \\f$ and \\f$ a \\f$ are additional material "
+      "parameters.";
 
   options.set_parameter<CrossRef<Scalar>>("A");
   options.set("A").doc() = "Static recovery prefactor";

@@ -35,8 +35,8 @@ PowerLawKinematicHardeningStaticRecovery::expected_options()
 {
   OptionSet options = KinematicHardeningStaticRecovery::expected_options();
   options.doc() +=
-      "This object defines kinematic hardening static recovery on a backstress term as "
-      "\\f$ \\dot{X} = - \\left(\\frac{\\lVert X \\rVert}{\\tau}\\right)^(n-1) \\frac{X}{\\tau} "
+      " This particular model uses a power law for recovery "
+      "\\f$ \\dot{X} = - \\left(\\frac{\\lVert X \\rVert}{\\tau}\\right)^{n-1} \\frac{X}{\\tau} "
       "\\f$"
       "where \\f$ n \\f$ is the power law recovery exponent and \\f$\\tau\\f$ is the recovery "
       "rate.";

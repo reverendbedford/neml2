@@ -36,7 +36,11 @@ SlopeSaturationVoceIsotropicHardening::expected_options()
   options.doc() = "SlopeSaturationVoce isotropic hardening model, \\f$ \\dot{h} = \\theta_0 "
                   "\\left(1 - \\frac{h}{R} \\right) \\varepsilon_p \\f$, where \\f$ R \\f$ is the "
                   "isotropic hardening upon saturation, "
-                  "and \\f$ \\theta_0 \\f$ is the initial hardening rate.";
+                  "and \\f$ \\theta_0 \\f$ is the initial hardening rate. "
+                  "In addition to the reparameterization, this model differences from the "
+                  "`VoceIsotropicHardening` model in that it defines the hardening rate in a "
+                  "non-assocative manner.  This is sometimes handy, for example in supplementing "
+                  "the model with static recovery.";
 
   options.set_input("isotropic_hardening") = VariableName("state", "internal", "k");
   options.set("isotropic_hardening").doc() = "Isotropic hardening variable";
