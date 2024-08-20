@@ -28,18 +28,39 @@
 
 namespace neml2
 {
-class IsotropicHardeningStaticRecovery : public Model
+template <typename T>
+class TwoStageThermalAnnealing : public Model
 {
 public:
   static OptionSet expected_options();
 
-  IsotropicHardeningStaticRecovery(const OptionSet & options);
+  TwoStageThermalAnnealing(const OptionSet & options);
 
 protected:
-  /// Isotropic hardening variable
-  const Variable<Scalar> & _h;
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
-  /// Rate of isotropic hardening
-  Variable<Scalar> & _h_dot;
+  /// Original, unmodified rate
+  const Variable<T> & _base_rate;
+
+  /// Actual base hardening variable
+  const Variable<T> & _base_h;
+
+  /// Annealed rate
+  Variable<T> & _modified_rate;
+
+  /// The temperature
+  const Variable<Scalar> & _T;
+
+  /// First stage temperature
+  const Scalar & _T1;
+
+  /// Second stage temperature
+  const Scalar & _T2;
+
+  /// Second stage annealing rate
+  const Scalar & _tau;
 };
+
+typedef TwoStageThermalAnnealing<Scalar> ScalarTwoStageThermalAnnealing;
+typedef TwoStageThermalAnnealing<SR2> SR2TwoStageThermalAnnealing;
 } // namespace neml2

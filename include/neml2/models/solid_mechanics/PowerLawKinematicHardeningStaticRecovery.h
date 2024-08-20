@@ -24,22 +24,22 @@
 
 #pragma once
 
-#include "neml2/models/Model.h"
+#include "neml2/models/solid_mechanics/KinematicHardeningStaticRecovery.h"
 
 namespace neml2
 {
-class IsotropicHardeningStaticRecovery : public Model
+class PowerLawKinematicHardeningStaticRecovery : public KinematicHardeningStaticRecovery
 {
 public:
   static OptionSet expected_options();
 
-  IsotropicHardeningStaticRecovery(const OptionSet & options);
+  PowerLawKinematicHardeningStaticRecovery(const OptionSet & options);
 
 protected:
-  /// Isotropic hardening variable
-  const Variable<Scalar> & _h;
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
-  /// Rate of isotropic hardening
-  Variable<Scalar> & _h_dot;
+  const Scalar & _tau;
+  const Scalar & _n;
 };
+
 } // namespace neml2

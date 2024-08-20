@@ -35,7 +35,7 @@
     from = 'params/n'
   []
   [model0]
-    type = KinematicHardeningStaticRecovery
+    type = PowerLawKinematicHardeningStaticRecovery
     tau = 'tau'
     n = 'n'
   []

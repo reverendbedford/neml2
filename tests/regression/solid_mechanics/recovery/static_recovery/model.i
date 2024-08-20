@@ -67,7 +67,7 @@
     isotropic_hardening_rate = 'state/internal/k_rate_base'
   []
   [isoharden_recovery]
-    type = IsotropicHardeningStaticRecovery
+    type = PowerLawIsotropicHardeningStaticRecovery
     n = 2.0
     tau = 1000.0
   []
@@ -126,7 +126,7 @@
     g = 100
   []
   [X1_recovery]
-    type = KinematicHardeningStaticRecovery
+    type = PowerLawKinematicHardeningStaticRecovery
     back_stress = 'state/internal/X1'
     n = 2.0
     tau = 1000.0
@@ -145,7 +145,7 @@
     g = 9
   []
   [X2_recovery]
-    type = KinematicHardeningStaticRecovery
+    type = PowerLawKinematicHardeningStaticRecovery
     back_stress = 'state/internal/X2'
     n = 2.5
     tau = 500.0

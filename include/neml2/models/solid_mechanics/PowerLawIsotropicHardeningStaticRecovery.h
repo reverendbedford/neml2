@@ -24,43 +24,21 @@
 
 #pragma once
 
-#include "neml2/models/Model.h"
+#include "neml2/models/solid_mechanics/IsotropicHardeningStaticRecovery.h"
 
 namespace neml2
 {
-template <typename T>
-class ThermalAnnealing : public Model
+class PowerLawIsotropicHardeningStaticRecovery : public IsotropicHardeningStaticRecovery
 {
 public:
   static OptionSet expected_options();
 
-  ThermalAnnealing(const OptionSet & options);
+  PowerLawIsotropicHardeningStaticRecovery(const OptionSet & options);
 
 protected:
   void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
-  /// Original, unmodified rate
-  const Variable<T> & _base_rate;
-
-  /// Actual base hardening variable
-  const Variable<T> & _base_h;
-
-  /// Annealed rate
-  Variable<T> & _modified_rate;
-
-  /// The temperature
-  const Variable<Scalar> & _T;
-
-  /// First stage temperature
-  const Scalar & _T1;
-
-  /// Second stage temperature
-  const Scalar & _T2;
-
-  /// Second stage annealing rate
   const Scalar & _tau;
+  const Scalar & _n;
 };
-
-typedef ThermalAnnealing<Scalar> ScalarThermalAnnealing;
-typedef ThermalAnnealing<SR2> SR2ThermalAnnealing;
 } // namespace neml2

@@ -86,7 +86,7 @@
     isotropic_hardening_rate = 'state/internal/k_rate_base'
   []
   [isoharden_recovery]
-    type = IsotropicHardeningStaticRecovery
+    type = PowerLawIsotropicHardeningStaticRecovery
     n = 2.0
     tau = 1000.0
   []
@@ -97,7 +97,7 @@
     coefficients = '1 1'
   []
   [anneal_isoharden]
-    type = ScalarThermalAnnealing
+    type = ScalarTwoStageThermalAnnealing
     base_rate = 'state/internal/k_rate_before_anneal'
     base = 'state/internal/k'
     modified_rate = 'state/internal/k_rate'
@@ -155,7 +155,7 @@
     g = 100
   []
   [X1_recovery]
-    type = KinematicHardeningStaticRecovery
+    type = PowerLawKinematicHardeningStaticRecovery
     back_stress = 'state/internal/X1'
     n = 2.0
     tau = 1000.0
@@ -167,7 +167,7 @@
     coefficients = '1 1'
   []
   [anneal_X1]
-    type = SR2ThermalAnnealing
+    type = SR2TwoStageThermalAnnealing
     base_rate = 'state/internal/X1_rate_before_anneal'
     base = 'state/internal/X1'
     modified_rate = 'state/internal/X1_rate'
@@ -184,7 +184,7 @@
     g = 9
   []
   [X2_recovery]
-    type = KinematicHardeningStaticRecovery
+    type = PowerLawKinematicHardeningStaticRecovery
     back_stress = 'state/internal/X2'
     n = 2.5
     tau = 500.0
@@ -196,7 +196,7 @@
     coefficients = '1 1'
   []
   [anneal_X2]
-    type = SR2ThermalAnnealing
+    type = SR2TwoStageThermalAnnealing
     base_rate = 'state/internal/X2_rate_before_anneal'
     base = 'state/internal/X2'
     modified_rate = 'state/internal/X2_rate'

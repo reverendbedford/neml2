@@ -13,7 +13,7 @@
 
 [Models]
   [model]
-    type = ScalarThermalAnnealing
+    type = ScalarTwoStageThermalAnnealing
     base_rate = 'state/internal/k_rate_unmodified'
     base = 'state/internal/k'
     modified_rate = 'state/internal/k_rate'

@@ -36,16 +36,11 @@ public:
   KinematicHardeningStaticRecovery(const OptionSet & options);
 
 protected:
-  void set_value(bool out, bool dout_din, bool d2out_din2) override;
-
   /// Back stress
   const Variable<SR2> & _X;
 
   /// Rate of back stress
   Variable<SR2> & _X_dot;
-
-  const Scalar & _tau;
-  const Scalar & _n;
 };
 
 } // namespace neml2

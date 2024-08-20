@@ -22,17 +22,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/models/solid_mechanics/ThermalAnnealing.h"
+#include "neml2/models/solid_mechanics/TwoStageThermalAnnealing.h"
 #include "neml2/misc/math.h"
 
 namespace neml2
 {
-register_NEML2_object(ScalarThermalAnnealing);
-register_NEML2_object(SR2ThermalAnnealing);
+register_NEML2_object(ScalarTwoStageThermalAnnealing);
+register_NEML2_object(SR2TwoStageThermalAnnealing);
 
 template <typename T>
 OptionSet
-ThermalAnnealing<T>::expected_options()
+TwoStageThermalAnnealing<T>::expected_options()
 {
   // This is the only way of getting tensor type in a static method like this...
   // Trim 6 chars to remove 'neml2::'
@@ -73,7 +73,7 @@ ThermalAnnealing<T>::expected_options()
 }
 
 template <typename T>
-ThermalAnnealing<T>::ThermalAnnealing(const OptionSet & options)
+TwoStageThermalAnnealing<T>::TwoStageThermalAnnealing(const OptionSet & options)
   : Model(options),
     _base_rate(declare_input_variable<T>("base_rate")),
     _base_h(declare_input_variable<T>("base")),
@@ -87,32 +87,31 @@ ThermalAnnealing<T>::ThermalAnnealing(const OptionSet & options)
 
 template <typename T>
 void
-ThermalAnnealing<T>::set_value(bool out, bool dout_din, bool d2out_din2)
+TwoStageThermalAnnealing<T>::set_value(bool out, bool dout_din, bool d2out_din2)
 {
-  neml_assert_dbg(!d2out_din2, "ThermalAnnealing model doesn't implement second derivatives.");
+  neml_assert_dbg(!d2out_din2,
+                  "TwoStageThermalAnnealing model doesn't implement second derivatives.");
+
+  auto one = Scalar::ones_like(_T);
+  auto zero = Scalar::zeros_like(_T);
+  auto base_region = math::where(_T < _T1, one, zero);
+  auto recover_region = math::where(_T >= _T2, one, zero);
 
   if (out)
-  {
-    auto base_region = Scalar(torch::where(_T < _T1, 1.0, 0.0), batch_dim());
-    auto recover_region = Scalar(torch::where(_T >= _T2, 1.0, 0.0), batch_dim());
     _modified_rate = base_region * _base_rate + recover_region * -_base_h / _tau;
-  }
 
   if (dout_din)
   {
     auto I = T::identity_map(options());
 
     if (_base_rate.is_dependent())
-      _modified_rate.d(_base_rate) = Scalar(torch::where(_T < _T1, 1.0, 0.0), batch_dim()) * I;
+      _modified_rate.d(_base_rate) = base_region * I;
 
     if (_base_h.is_dependent())
-      _modified_rate.d(_base_h) =
-          Scalar(torch::where(_T < _T1, 0.0, torch::where(_T < _T2, 0.0, -1.0 / _tau)),
-                 batch_dim()) *
-          I;
+      _modified_rate.d(_base_h) = -recover_region * I / _tau;
   }
 }
 
-template class ThermalAnnealing<Scalar>;
-template class ThermalAnnealing<SR2>;
+template class TwoStageThermalAnnealing<Scalar>;
+template class TwoStageThermalAnnealing<SR2>;
 } // namespace neml2

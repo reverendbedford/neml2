@@ -36,7 +36,6 @@ FredrickArmstrongPlasticHardening::expected_options()
   OptionSet options = FlowRule::expected_options();
   options.doc() +=
       " This object defines the non-associative Fredrick-Armstrong kinematic hardening. In the "
-      "Chaboche "
       "model, back stress is directly treated as an internal variable. Rate of back stress is "
       "given as \\f$ \\dot{\\boldsymbol{X}} = \\left( \\frac{2}{3} C \\frac{\\partial f}{\\partial "
       "\\boldsymbol{M}} - g \\boldsymbol{X} \\right) \\dot{\\gamma} \\f$."
@@ -86,10 +85,7 @@ FredrickArmstrongPlasticHardening::set_value(bool out, bool dout_din, bool d2out
   auto g_term = 2.0 / 3.0 * _C * _NM - _g * _X;
 
   if (out)
-  {
-    // The static recovery term
     _X_dot = g_term * _gamma_dot;
-  }
 
   if (dout_din)
   {

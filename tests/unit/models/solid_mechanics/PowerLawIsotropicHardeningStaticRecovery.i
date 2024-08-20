@@ -21,7 +21,7 @@
     from = 'params/tau'
   []
   [model0]
-    type = IsotropicHardeningStaticRecovery
+    type = PowerLawIsotropicHardeningStaticRecovery
     tau = 'tau'
     n = 'n'
   []

@@ -16,7 +16,7 @@
 
 [Models]
   [model]
-    type = SR2ThermalAnnealing
+    type = SR2TwoStageThermalAnnealing
     base_rate = 'state/internal/k_rate_unmodified'
     base = 'state/internal/k'
     modified_rate = 'state/internal/k_rate'
