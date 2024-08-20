@@ -7,6 +7,7 @@ var searchData=
   ['interpolation_4',['Interpolation',['../classneml2_1_1Interpolation.html',1,'neml2']]],
   ['intraopthread_5',['IntraOpThread',['../structneml2_1_1IntraOpThread.html',1,'neml2']]],
   ['isotropichardening_6',['IsotropicHardening',['../classneml2_1_1IsotropicHardening.html',1,'neml2']]],
-  ['isotropicmandelstress_7',['IsotropicMandelStress',['../classneml2_1_1IsotropicMandelStress.html',1,'neml2']]],
-  ['item_8',['Item',['../structneml2_1_1DependencyResolver_1_1Item.html',1,'neml2::DependencyResolver']]]
+  ['isotropichardeningstaticrecovery_7',['IsotropicHardeningStaticRecovery',['../classneml2_1_1IsotropicHardeningStaticRecovery.html',1,'neml2']]],
+  ['isotropicmandelstress_8',['IsotropicMandelStress',['../classneml2_1_1IsotropicMandelStress.html',1,'neml2']]],
+  ['item_9',['Item',['../structneml2_1_1DependencyResolver_1_1Item.html',1,'neml2::DependencyResolver']]]
 ];

@@ -139,6 +139,7 @@ $(function(){initNavTree('syntax-models.html',''); initResizable(); });
 <li class="level2"><a href="#copywwr4">CopyWWR4</a></li>
 <li class="level2"><a href="#elasticstrainrate">ElasticStrainRate</a></li>
 <li class="level2"><a href="#fixorientation">FixOrientation</a></li>
+<li class="level2"><a href="#fredrickarmstrongplastichardening">FredrickArmstrongPlasticHardening</a></li>
 <li class="level2"><a href="#gtnyieldfunction">GTNYieldFunction</a></li>
 <li class="level2"><a href="#gursoncavitation">GursonCavitation</a></li>
 <li class="level2"><a href="#implicitupdate">ImplicitUpdate</a></li>
@@ -162,6 +163,8 @@ $(function(){initNavTree('syntax-models.html',''); initResizable(); });
 <li class="level2"><a href="#perzynaplasticflowrate">PerzynaPlasticFlowRate</a></li>
 <li class="level2"><a href="#plasticdeformationrate">PlasticDeformationRate</a></li>
 <li class="level2"><a href="#plasticvorticity">PlasticVorticity</a></li>
+<li class="level2"><a href="#powerlawisotropichardeningstaticrecovery">PowerLawIsotropicHardeningStaticRecovery</a></li>
+<li class="level2"><a href="#powerlawkinematichardeningstaticrecovery">PowerLawKinematicHardeningStaticRecovery</a></li>
 <li class="level2"><a href="#powerlawsliprule">PowerLawSlipRule</a></li>
 <li class="level2"><a href="#quaternionconstantparameter">QuaternionConstantParameter</a></li>
 <li class="level2"><a href="#quaternioninputparameter">QuaternionInputParameter</a></li>
@@ -190,6 +193,7 @@ $(function(){initNavTree('syntax-models.html',''); initResizable(); });
 <li class="level2"><a href="#sr2linearcombination">SR2LinearCombination</a></li>
 <li class="level2"><a href="#sr2linearinterpolation">SR2LinearInterpolation</a></li>
 <li class="level2"><a href="#sr2smoothlinearinterpolation">SR2SmoothLinearInterpolation</a></li>
+<li class="level2"><a href="#sr2twostagethermalannealing">SR2TwoStageThermalAnnealing</a></li>
 <li class="level2"><a href="#sr2variablerate">SR2VariableRate</a></li>
 <li class="level2"><a href="#ssfr5constantparameter">SSFR5ConstantParameter</a></li>
 <li class="level2"><a href="#ssfr5inputparameter">SSFR5InputParameter</a></li>
@@ -204,8 +208,10 @@ $(function(){initNavTree('syntax-models.html',''); initResizable(); });
 <li class="level2"><a href="#scalarlinearcombination">ScalarLinearCombination</a></li>
 <li class="level2"><a href="#scalarlinearinterpolation">ScalarLinearInterpolation</a></li>
 <li class="level2"><a href="#scalarsmoothlinearinterpolation">ScalarSmoothLinearInterpolation</a></li>
+<li class="level2"><a href="#scalartwostagethermalannealing">ScalarTwoStageThermalAnnealing</a></li>
 <li class="level2"><a href="#scalarvariablerate">ScalarVariableRate</a></li>
 <li class="level2"><a href="#singleslipstrengthmap">SingleSlipStrengthMap</a></li>
+<li class="level2"><a href="#slopesaturationvoceisotropichardening">SlopeSaturationVoceIsotropicHardening</a></li>
 <li class="level2"><a href="#sumsliprates">SumSlipRates</a></li>
 <li class="level2"><a href="#thermaleigenstrain">ThermalEigenstrain</a></li>
 <li class="level2"><a href="#vecbackwardeulertimeintegration">VecBackwardEulerTimeIntegration</a></li>
@@ -376,7 +382,7 @@ AssociativePlasticFlow</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1AssociativePlasticFlow.html">link</a></p>
 <h2><a class="anchor" id="chabocheplastichardening"></a>
 ChabochePlasticHardening</h2>
-<p>Map the flow rate (i.e., the consistency parameter in the KKT conditions) to the rate of internal variables. This object defines the non-associative Chaboche kinematic hardening. In the Chaboche model, back stress is directly treated as an internal variable. Rate of back stress is given as \( \dot{\boldsymbol{X}} = \left( \frac{2}{3} C \frac{\partial f}{\partial \boldsymbol{M}} - g \boldsymbol{X} \right) \dot{\gamma} - A \lVert \boldsymbol{X} \rVert^{a - 1} \boldsymbol{X} \), including kinematic hardening, dynamic recovery, and static recovery. \( \frac{\partial f}{\partial \boldsymbol{M}} \) is the flow direction, \( \dot{\gamma} \) is the flow rate, and \( C \), \( g \), \( A \), and \( a \) are material parameters. </p><details >
+<p>Map the flow rate (i.e., the consistency parameter in the KKT conditions) to the rate of internal variables. This object defines the non-associative Fredrick-Armstrong kinematic hardening. In the model, back stress is directly treated as an internal variable. Rate of back stress is given as \( \dot{\boldsymbol{X}} = \left( \frac{2}{3} C \frac{\partial f}{\partial \boldsymbol{M}} - g \boldsymbol{X} \right) \dot{\gamma} \). \( \frac{\partial f}{\partial \boldsymbol{M}} \) is the flow direction, \( \dot{\gamma} \) is the flow rate, and \( C \) and \( g \) are material parameters. The complete Chaboche model adds static recovery terms \( - A \lVert \boldsymbol{X} \rVert^{a - 1} \boldsymbol{X} \), so the model includes kinematic hardening, dynamic recovery, and static recovery. \( A \) and \( a \) are additional material parameters. </p><details >
 <summary >
 <code>A</code> 🇵 Static recovery prefactor</summary>
 <p></p>
@@ -407,6 +413,14 @@ ChabochePlasticHardening</h2>
 <ul>
 <li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/internal/X </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>back_stress_rate</code> 🇴 Back stress rate, defaults to back_stress + _rate</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name </li>
 </ul>
 </details>
 <details >
@@ -919,6 +933,60 @@ FixOrientation</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FixOrientation.html">link</a></p>
+<h2><a class="anchor" id="fredrickarmstrongplastichardening"></a>
+FredrickArmstrongPlasticHardening</h2>
+<p>Map the flow rate (i.e., the consistency parameter in the KKT conditions) to the rate of internal variables. This object defines the non-associative Fredrick-Armstrong kinematic hardening. In the model, back stress is directly treated as an internal variable. Rate of back stress is given as \( \dot{\boldsymbol{X}} = \left( \frac{2}{3} C \frac{\partial f}{\partial \boldsymbol{M}} - g \boldsymbol{X} \right) \dot{\gamma} \). \( \frac{\partial f}{\partial \boldsymbol{M}} \) is the flow direction, \( \dot{\gamma} \) is the flow rate, and \( C \) and \( g \) are material parameters. </p><details >
+<summary >
+<code>C</code> 🇵 Kinematic hardening coefficient</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: Scalar 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>back_stress</code> 🇮 Back stress</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name</li>
+<li><u>Default</u>: state/internal/X </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>back_stress_rate</code> 🇴 Back stress rate, defaults to back_stress + _rate</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>flow_direction</code> 🇮 Flow direction</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name</li>
+<li><u>Default</u>: state/internal/NM </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>flow_rate</code> 🇮 Flow rate</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name</li>
+<li><u>Default</u>: state/internal/gamma_rate </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>g</code> 🇵 Dynamic recovery coefficient</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: Scalar 🔗 </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1FredrickArmstrongPlasticHardening.html">link</a></p>
 <h2><a class="anchor" id="gtnyieldfunction"></a>
 GTNYieldFunction</h2>
 <p>Gurson-Tvergaard-Needleman yield function for poroplasticity. The yield function is defined as \( f = \left( \frac{\bar{\sigma}}{\sigma_y + k} \right)^2 + 2 q_1 \phi \cosh \left( \frac{1}{2} q_2 \frac{3\sigma_h-\sigma_s}{\sigma_y + k} \right) - \left( q_3 \phi^2 + 1 \right) \), where \( \bar{\sigma} \) is the von Mises stress, \( \sigma_y \) is the yield stress, \( k \) is isotropic hardening, \( \phi \) is the porosity, \( \sigma_h \) is the hydrostatic stress, and \( \sigma_s \) is the void growth back stress (sintering stress). \( q_1 \), \( q_2 \), and \( q_3 \) are parameters controlling the yield mechanisms. </p><details >
@@ -1801,6 +1869,78 @@ PlasticVorticity</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1PlasticVorticity.html">link</a></p>
+<h2><a class="anchor" id="powerlawisotropichardeningstaticrecovery"></a>
+PowerLawIsotropicHardeningStaticRecovery</h2>
+<p>This particular model implements a power law recovery of the type \( \dot{k} = -\left(\frac{\lVert k \rVert}{\tau}\right)^{n-1} \frac{k}{\tau} \) </p><details >
+<summary >
+<code>isotropic_hardening</code> 🇮 Isotropic hardening variable</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name</li>
+<li><u>Default</u>: state/internal/k </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>isotropic_hardening_rate</code> 🇮 Rate of isotropic hardening, defaults to isotropic_hardening + _recovery_rate</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>n</code> 🇵 Recovery exponent</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: Scalar 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>tau</code> 🇵 Recovery rate</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: Scalar 🔗 </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1PowerLawIsotropicHardeningStaticRecovery.html">link</a></p>
+<h2><a class="anchor" id="powerlawkinematichardeningstaticrecovery"></a>
+PowerLawKinematicHardeningStaticRecovery</h2>
+<p>This object defines kinematic hardening static recovery on a backstress term. This particular model uses a power law for recovery \( \dot{X} = - \left(\frac{\lVert X \rVert}{\tau}\right)^{n-1} \frac{X}{\tau} \)where \( n \) is the power law recovery exponent and \(\tau\) is the recovery rate. </p><details >
+<summary >
+<code>back_stress</code> 🇮 Back stress</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name</li>
+<li><u>Default</u>: state/internal/X </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>back_stress_rate</code> 🇴 Back stress rate, defaults to back_stress + _recovery_rate</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>n</code> 🇵 Static recovery exponent</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: Scalar 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>tau</code> 🇵 Static recovery rate</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: Scalar 🔗 </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1PowerLawKinematicHardeningStaticRecovery.html">link</a></p>
 <h2><a class="anchor" id="powerlawsliprule"></a>
 PowerLawSlipRule</h2>
 <p>Power law slip rule defined as \( \dot{\gamma}_i = \dot{\gamma}_0 \left| \frac{\tau_i}{\hat{\tau}_i} \right|^{n-1} \frac{\tau_i}{\hat{\tau}_i} \) with \( \dot{\gamma}_i \) the slip rate on system \( i \), \( \tau_i \) the resolved shear, \( \hat{\tau}_i \) the slip system strength, \( n \) the rate senstivity, and \( \dot{\gamma}_0 \) a reference slip rate. </p><details >
@@ -2347,6 +2487,66 @@ SR2SmoothLinearInterpolation</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1SmoothLinearInterpolation.html">link</a></p>
+<h2><a class="anchor" id="sr2twostagethermalannealing"></a>
+SR2TwoStageThermalAnnealing</h2>
+<p>Thermal annealing recovery for a hardening variable of type SR2.For temperatures below \( T_1 \) the model keeps the base model hardenign rate.For temperatures above \(T_1\) but below \(T_2 \) the model zeros the hardening rate.For temperatures above \(T_2\) the model replaces the hardening rate with \( \dot{h} = \frac{-h}{\tau} \) where \( \tau \) is the rate of recovery. </p><details >
+<summary >
+<code>T1</code> 🇵 First stage annealing temperature</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: Scalar 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>T2</code> 🇵 Second stage annealing temperature</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: Scalar 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>base</code> 🇮 Underlying base hardening variable</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>base_rate</code> 🇮 Base hardening rate</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>modified_rate</code> 🇴 Output for the modified hardening rate.</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>tau</code> 🇵 Recovery rate for second stage annealing.</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: Scalar 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>temperature</code> 🇮 Temperature</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name</li>
+<li><u>Default</u>: forces/T </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1TwoStageThermalAnnealing.html">link</a></p>
 <h2><a class="anchor" id="sr2variablerate"></a>
 SR2VariableRate</h2>
 <p>Calculate the first order discrete time derivative of a variable as \( \dot{f} = \frac{f-f_n}{t-t_n} \), where \( f \) is the force variable, and \( t \) is time. </p><details >
@@ -2646,6 +2846,66 @@ ScalarSmoothLinearInterpolation</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1SmoothLinearInterpolation.html">link</a></p>
+<h2><a class="anchor" id="scalartwostagethermalannealing"></a>
+ScalarTwoStageThermalAnnealing</h2>
+<p>Thermal annealing recovery for a hardening variable of type Scalar.For temperatures below \( T_1 \) the model keeps the base model hardenign rate.For temperatures above \(T_1\) but below \(T_2 \) the model zeros the hardening rate.For temperatures above \(T_2\) the model replaces the hardening rate with \( \dot{h} = \frac{-h}{\tau} \) where \( \tau \) is the rate of recovery. </p><details >
+<summary >
+<code>T1</code> 🇵 First stage annealing temperature</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: Scalar 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>T2</code> 🇵 Second stage annealing temperature</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: Scalar 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>base</code> 🇮 Underlying base hardening variable</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>base_rate</code> 🇮 Base hardening rate</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>modified_rate</code> 🇴 Output for the modified hardening rate.</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>tau</code> 🇵 Recovery rate for second stage annealing.</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: Scalar 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>temperature</code> 🇮 Temperature</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name</li>
+<li><u>Default</u>: forces/T </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1TwoStageThermalAnnealing.html">link</a></p>
 <h2><a class="anchor" id="scalarvariablerate"></a>
 ScalarVariableRate</h2>
 <p>Calculate the first order discrete time derivative of a variable as \( \dot{f} = \frac{f-f_n}{t-t_n} \), where \( f \) is the force variable, and \( t \) is time. </p><details >
@@ -2712,6 +2972,51 @@ SingleSlipStrengthMap</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1SingleSlipStrengthMap.html">link</a></p>
+<h2><a class="anchor" id="slopesaturationvoceisotropichardening"></a>
+SlopeSaturationVoceIsotropicHardening</h2>
+<p>SlopeSaturationVoce isotropic hardening model, \( \dot{h} = \theta_0 \left(1 - \frac{h}{R} \right) \varepsilon_p \), where \( R \) is the isotropic hardening upon saturation, and \( \theta_0 \) is the initial hardening rate. In addition to the reparameterization, this model differences from the <code>VoceIsotropicHardening</code> model in that it defines the hardening rate in a non-assocative manner. This is sometimes handy, for example in supplementing the model with static recovery. </p><details >
+<summary >
+<code>flow_rate</code> 🇮 Flow rate</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name</li>
+<li><u>Default</u>: state/internal/gamma_rate </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>initial_hardening_rate</code> 🇵 Initial hardening rate</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: Scalar 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>isotropic_hardening</code> 🇮 Isotropic hardening variable</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name</li>
+<li><u>Default</u>: state/internal/k </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>isotropic_hardening_rate</code> 🇮 Rate of isotropic hardening, defaults to isotropic_hardening + _rate</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>saturated_hardening</code> 🇵 Saturated isotropic hardening</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: Scalar 🔗 </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1SlopeSaturationVoceIsotropicHardening.html">link</a></p>
 <h2><a class="anchor" id="sumsliprates"></a>
 SumSlipRates</h2>
 <p>Calculates the sum of the absolute value of all the slip rates as \( \sum_{i=1}^{n_{slip}} \left| \dot{\gamma}_i \right| \). </p><details >
