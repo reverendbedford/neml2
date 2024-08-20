@@ -22,24 +22,35 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
-
-#include "neml2/models/solid_mechanics/FredrickArmstrongPlasticHardening.h"
+#include "neml2/models/solid_mechanics/IsotropicHardeningStaticRecovery.h"
+#include "neml2/misc/math.h"
 
 namespace neml2
 {
-class ChabochePlasticHardening : public FredrickArmstrongPlasticHardening
+OptionSet
+IsotropicHardeningStaticRecovery::expected_options()
 {
-public:
-  static OptionSet expected_options();
+  OptionSet options = Model::expected_options();
+  options.doc() = "Static recovery for isotropic hardening.";
 
-  ChabochePlasticHardening(const OptionSet & options);
+  options.set_input("isotropic_hardening") = VariableName("state", "internal", "k");
+  options.set("isotropic_hardening").doc() = "Isotropic hardening variable";
 
-protected:
-  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+  options.set_input("isotropic_hardening_rate");
+  options.set("isotropic_hardening_rate").doc() =
+      "Rate of isotropic hardening, defaults to isotropic_hardening + _recovery_rate";
 
-  const Scalar & _A;
-  const Scalar & _a;
-};
+  return options;
+}
+
+IsotropicHardeningStaticRecovery::IsotropicHardeningStaticRecovery(const OptionSet & options)
+  : Model(options),
+    _h(declare_input_variable<Scalar>("isotropic_hardening")),
+    _h_dot(declare_output_variable<Scalar>(
+        options.get<VariableName>("isotropic_hardening_rate").empty()
+            ? _h.name().with_suffix("_recovery_rate")
+            : options.get<VariableName>("isotropic_hardening_rate")))
+{
+}
 
 } // namespace neml2

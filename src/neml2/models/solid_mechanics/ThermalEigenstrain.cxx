@@ -54,7 +54,7 @@ ThermalEigenstrain::ThermalEigenstrain(const OptionSet & options)
   : Eigenstrain(options),
     _T(declare_input_variable<Scalar>("temperature")),
     _T0(declare_buffer<Scalar>("T0", "reference_temperature")),
-    _alpha(declare_parameter<Scalar>("alpha", "CTE"))
+    _alpha(declare_parameter<Scalar>("alpha", "CTE", true))
 {
 }
 
@@ -65,12 +65,22 @@ ThermalEigenstrain::set_value(bool out, bool dout_din, bool d2out_din2)
     _eg = _alpha * (_T - _T0) * SR2::identity(options());
 
   if (dout_din)
+  {
     if (_T.is_dependent())
       _eg.d(_T) = _alpha * SR2::identity(options());
 
+    if (const auto * const alpha = nl_param("alpha"))
+      _eg.d(*alpha) = (_T - _T0) * SR2::identity(options());
+  }
+
   if (d2out_din2)
   {
-    // zero
+    if (_T.is_dependent())
+      if (const auto * const alpha = nl_param("alpha"))
+      {
+        _eg.d(_T, *alpha) = SR2::identity(options());
+        _eg.d(*alpha, _T) = SR2::identity(options());
+      }
   }
 }
 } // namespace neml2

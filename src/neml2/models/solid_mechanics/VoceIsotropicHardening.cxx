@@ -39,7 +39,6 @@ VoceIsotropicHardening::expected_options()
 
   options.set_parameter<CrossRef<Scalar>>("saturated_hardening");
   options.set("saturated_hardening").doc() = "Saturated isotropic hardening";
-
   options.set_parameter<CrossRef<Scalar>>("saturation_rate");
   options.set("saturation_rate").doc() = "Hardening saturation rate";
 
@@ -48,8 +47,8 @@ VoceIsotropicHardening::expected_options()
 
 VoceIsotropicHardening::VoceIsotropicHardening(const OptionSet & options)
   : IsotropicHardening(options),
-    _R(declare_parameter<Scalar>("R", "saturated_hardening")),
-    _d(declare_parameter<Scalar>("d", "saturation_rate"))
+    _R(declare_parameter<Scalar>("R", "saturated_hardening", true)),
+    _d(declare_parameter<Scalar>("d", "saturation_rate", true))
 {
 }
 
@@ -60,8 +59,16 @@ VoceIsotropicHardening::set_value(bool out, bool dout_din, bool d2out_din2)
     _h = _R * (-math::exp(-_d * _ep) + 1.0);
 
   if (dout_din)
+  {
     if (_ep.is_dependent())
       _h.d(_ep) = _R * _d * math::exp(-_d * _ep);
+
+    if (const auto * const R = nl_param("R"))
+      _h.d(*R) = -math::exp(-_d * _ep) + 1.0;
+
+    if (const auto * const d = nl_param("d"))
+      _h.d(*d) = _ep * _R * math::exp(-_d * _ep);
+  }
 
   if (d2out_din2)
     if (_ep.is_dependent())

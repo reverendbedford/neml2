@@ -24,22 +24,43 @@
 
 #pragma once
 
-#include "neml2/models/solid_mechanics/FredrickArmstrongPlasticHardening.h"
+#include "neml2/models/Model.h"
 
 namespace neml2
 {
-class ChabochePlasticHardening : public FredrickArmstrongPlasticHardening
+template <typename T>
+class TwoStageThermalAnnealing : public Model
 {
 public:
   static OptionSet expected_options();
 
-  ChabochePlasticHardening(const OptionSet & options);
+  TwoStageThermalAnnealing(const OptionSet & options);
 
 protected:
   void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
-  const Scalar & _A;
-  const Scalar & _a;
+  /// Original, unmodified rate
+  const Variable<T> & _base_rate;
+
+  /// Actual base hardening variable
+  const Variable<T> & _base_h;
+
+  /// Annealed rate
+  Variable<T> & _modified_rate;
+
+  /// The temperature
+  const Variable<Scalar> & _T;
+
+  /// First stage temperature
+  const Scalar & _T1;
+
+  /// Second stage temperature
+  const Scalar & _T2;
+
+  /// Second stage annealing rate
+  const Scalar & _tau;
 };
 
+typedef TwoStageThermalAnnealing<Scalar> ScalarTwoStageThermalAnnealing;
+typedef TwoStageThermalAnnealing<SR2> SR2TwoStageThermalAnnealing;
 } // namespace neml2

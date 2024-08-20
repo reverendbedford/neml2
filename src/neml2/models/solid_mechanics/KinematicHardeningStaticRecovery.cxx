@@ -22,24 +22,35 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
-
-#include "neml2/models/solid_mechanics/FredrickArmstrongPlasticHardening.h"
+#include "neml2/models/solid_mechanics/KinematicHardeningStaticRecovery.h"
+#include "neml2/tensors/SSR4.h"
+#include "neml2/misc/math.h"
 
 namespace neml2
 {
-class ChabochePlasticHardening : public FredrickArmstrongPlasticHardening
+OptionSet
+KinematicHardeningStaticRecovery::expected_options()
 {
-public:
-  static OptionSet expected_options();
+  OptionSet options = Model::expected_options();
+  options.doc() += "This object defines kinematic hardening static recovery on a backstress term.";
 
-  ChabochePlasticHardening(const OptionSet & options);
+  options.set_input("back_stress") = VariableName("state", "internal", "X");
+  options.set("back_stress").doc() = "Back stress";
 
-protected:
-  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+  options.set_output("back_stress_rate");
+  options.set("back_stress_rate").doc() =
+      "Back stress rate, defaults to back_stress + _recovery_rate";
 
-  const Scalar & _A;
-  const Scalar & _a;
-};
+  return options;
+}
+
+KinematicHardeningStaticRecovery::KinematicHardeningStaticRecovery(const OptionSet & options)
+  : Model(options),
+    _X(declare_input_variable<SR2>("back_stress")),
+    _X_dot(declare_output_variable<SR2>(options.get<VariableName>("back_stress_rate").empty()
+                                            ? _X.name().with_suffix("_recovery_rate")
+                                            : options.get<VariableName>("back_stress_rate")))
+{
+}
 
 } // namespace neml2

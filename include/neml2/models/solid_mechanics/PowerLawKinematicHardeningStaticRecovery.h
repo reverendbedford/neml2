@@ -24,22 +24,22 @@
 
 #pragma once
 
-#include "neml2/models/solid_mechanics/FredrickArmstrongPlasticHardening.h"
+#include "neml2/models/solid_mechanics/KinematicHardeningStaticRecovery.h"
 
 namespace neml2
 {
-class ChabochePlasticHardening : public FredrickArmstrongPlasticHardening
+class PowerLawKinematicHardeningStaticRecovery : public KinematicHardeningStaticRecovery
 {
 public:
   static OptionSet expected_options();
 
-  ChabochePlasticHardening(const OptionSet & options);
+  PowerLawKinematicHardeningStaticRecovery(const OptionSet & options);
 
 protected:
   void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
-  const Scalar & _A;
-  const Scalar & _a;
+  const Scalar & _tau;
+  const Scalar & _n;
 };
 
 } // namespace neml2

@@ -24,22 +24,31 @@
 
 #pragma once
 
-#include "neml2/models/solid_mechanics/FredrickArmstrongPlasticHardening.h"
+#include "neml2/models/solid_mechanics/FlowRule.h"
 
 namespace neml2
 {
-class ChabochePlasticHardening : public FredrickArmstrongPlasticHardening
+class FredrickArmstrongPlasticHardening : public FlowRule
 {
 public:
   static OptionSet expected_options();
 
-  ChabochePlasticHardening(const OptionSet & options);
+  FredrickArmstrongPlasticHardening(const OptionSet & options);
 
 protected:
   void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
-  const Scalar & _A;
-  const Scalar & _a;
+  /// Back stress
+  const Variable<SR2> & _X;
+
+  /// Flow direction
+  const Variable<SR2> & _NM;
+
+  /// Rate of back stress
+  Variable<SR2> & _X_dot;
+
+  const Scalar & _C;
+  const Scalar & _g;
 };
 
 } // namespace neml2
