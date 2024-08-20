@@ -1,5 +1,7 @@
 <map id="IsotropicHardeningStaticRecovery" name="IsotropicHardeningStaticRecovery">
 <area shape="rect" id="Node000001" title=" " alt="" coords="488,161,671,201"/>
+<area shape="rect" id="Node000012" href="$classneml2_1_1PowerLawIsotropicHardeningStaticRecovery.html" title=" " alt="" coords="719,161,929,201"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="684,179,719,179,719,184,684,184"/>
 <area shape="rect" id="Node000002" href="$classneml2_1_1Model.html" title="The base class for all constitutive models." alt="" coords="377,169,440,194"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="454,179,488,179,488,184,454,184"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="169,5,323,45"/>

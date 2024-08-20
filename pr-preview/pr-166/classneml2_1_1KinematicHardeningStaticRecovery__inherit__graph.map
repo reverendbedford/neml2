@@ -1,5 +1,7 @@
 <map id="KinematicHardeningStaticRecovery" name="KinematicHardeningStaticRecovery">
 <area shape="rect" id="Node000001" title=" " alt="" coords="488,161,680,201"/>
+<area shape="rect" id="Node000012" href="$classneml2_1_1PowerLawKinematicHardeningStaticRecovery.html" title=" " alt="" coords="728,161,949,201"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="694,179,728,179,728,184,694,184"/>
 <area shape="rect" id="Node000002" href="$classneml2_1_1Model.html" title="The base class for all constitutive models." alt="" coords="377,169,440,194"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="454,179,488,179,488,184,454,184"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="169,5,323,45"/>
