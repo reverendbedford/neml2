@@ -248,17 +248,14 @@ class NEML2PyzagModel(nonlinear.NonlinearRecursiveFunction):
 
         return reduced.tensor()
 
-    def _assemble_input(self, state, forces):
+    def _assemble_input(self, batch_shape, state, forces):
         """Assemble the model input from the flat tensors
 
         Args:
             state (torch.tensor): tensor containing the model state
             forces (torch.tensor): tensor containing the model forces
         """
-        batch_shape = (state.shape[0] - self.lookback,) + state.shape[1:-1]
         bdim = len(batch_shape)
-
-        self.model.reinit(batch_shape=batch_shape, deriv_order=1, device=forces.device)
 
         input = neml2.LabeledVector.zeros(
             batch_shape, [self.model.input_axis()], device=state.device
@@ -325,9 +322,43 @@ class NEML2PyzagModel(nonlinear.NonlinearRecursiveFunction):
         self._update_parameter_values()
 
         # Make a big LabeledVector with the input
-        x = self._assemble_input(state, forces)
+        batch_shape = (state.shape[0] - self.lookback,) + state.shape[1:-1]
+        self.model.reinit(batch_shape=batch_shape, deriv_order=1, device=forces.device)
+        x = self._assemble_input(batch_shape, state, forces)
 
         # Call the model
         y, J = self.model.value_and_dvalue(x)
 
         return y.torch(), self._extract_jacobian(J)
+
+
+class JITNEML2PyzagModel(NEML2PyzagModel):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # model_cahce is a dictionary from batch shape to jit'ed models
+        self.model_cache = {}
+
+    def forward(self, state, forces):
+        self._update_parameter_values()
+
+        batch_shape = (state.shape[0] - self.lookback,) + state.shape[1:-1]
+        x = self._assemble_input(batch_shape, state, forces)
+
+        if batch_shape not in self.model_cache:
+            self.model.reinit(
+                batch_shape=batch_shape, deriv_order=1, device=forces.device
+            )
+
+            def _adapter(x):
+                y, J = self.model.value_and_dvalue(x)
+                J = neml2.LabeledMatrix(
+                    J, [self.model.output_axis(), self.model.input_axis()]
+                )
+                return y, self._extract_jacobian(J)
+
+            self.model_cache[batch_shape] = torch.jit.trace(_adapter, x.torch())
+
+        model = self.model_cache[batch_shape]
+
+        r, J = model(x.torch())
+        return r, J
