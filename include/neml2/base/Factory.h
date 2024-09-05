@@ -161,6 +161,9 @@ public:
    */
   static void load_options(const OptionCollection & all_options);
 
+  /// Get the loaded options
+  static const OptionCollection & loaded_options();
+
   /// @brief Destruct all the objects.
   static void clear();
 

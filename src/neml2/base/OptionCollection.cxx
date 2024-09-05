@@ -32,6 +32,12 @@ OptionCollection::operator[](const std::string & section)
   return _data[section];
 }
 
+const std::map<std::string, OptionSet> &
+OptionCollection::operator[](const std::string & section) const
+{
+  return _data.at(section);
+}
+
 // LCOV_EXCL_START
 std::ostream &
 operator<<(std::ostream & os, const OptionCollection & p)

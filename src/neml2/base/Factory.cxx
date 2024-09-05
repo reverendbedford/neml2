@@ -103,6 +103,13 @@ Factory::load_options(const OptionCollection & all_options)
   factory._settings = Settings(all_options.settings());
 }
 
+const OptionCollection &
+Factory::loaded_options()
+{
+  auto & factory = get();
+  return factory._all_options;
+}
+
 void
 Factory::create_object(const std::string & section, const OptionSet & options)
 {

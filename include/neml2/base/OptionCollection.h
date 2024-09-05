@@ -52,6 +52,9 @@ public:
   /// Get all the object options under a specific section.
   std::map<std::string, OptionSet> & operator[](const std::string & section);
 
+  /// Get all the object options under a specific section.
+  const std::map<std::string, OptionSet> & operator[](const std::string & section) const;
+
   /// Get a read-only reference to the underlying data structure.
   const std::map<std::string, std::map<std::string, OptionSet>> & data() const { return _data; }
 
