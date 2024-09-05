@@ -24,8 +24,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+NEML2_DIR=$(dirname "$SCRIPT_DIR")
+
+# go to the git root
+cd $NEML2_DIR
+
 # files to clobber
-files=$(git ls-files . ':!:_deps' ':!:.vscode' ':!:.env' --ignored --exclude-standard --others)
+FILES=$(git ls-files . ':!:_deps' ':!:.vscode' ':!:.env' --ignored --exclude-standard --others)
 
 # remove files
-rm -rf ${files[@]}
+echo "Removing the following files..."
+printf "%s\n" "${FILES[@]}"
+rm -rf ${FILES[@]}
+
