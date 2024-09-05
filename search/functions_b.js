@@ -23,10 +23,11 @@ var searchData=
   ['load_5finput_20',['load_input',['../namespaceneml2.html#ae26cd3cedac7d43bddad9f8502bbe6bf',1,'neml2']]],
   ['load_5fmodel_21',['load_model',['../namespaceneml2.html#a0e8c7aeae6d7c24a44a404965d5b5fa3',1,'neml2']]],
   ['load_5foptions_22',['load_options',['../classneml2_1_1Factory.html#ac15b1f4db97b6302883e1e055ad39894',1,'neml2::Factory']]],
-  ['log_23',['log',['../namespaceneml2_1_1math.html#a7160a3cce2d8d7d330414a7db59b02df',1,'neml2::math']]],
-  ['logspace_24',['logspace',['../classneml2_1_1TensorBase.html#a396a6aaae5bd291fe8c1af7a37fe3c54',1,'neml2::TensorBase']]],
-  ['logspaceprimitivetensor_25',['LogspacePrimitiveTensor',['../classneml2_1_1LogspacePrimitiveTensor.html#a99955c15054eef498a60a32e3bc94173',1,'neml2::LogspacePrimitiveTensor']]],
-  ['logspacetensor_26',['LogspaceTensor',['../classneml2_1_1LogspaceTensor.html#a2d644bc9b408dac8fe8e7657f90f376e',1,'neml2::LogspaceTensor']]],
-  ['lu_5ffactor_27',['lu_factor',['../namespaceneml2_1_1math_1_1linalg.html#afd13db89ffc0ecc54cdd5db9a3b12852',1,'neml2::math::linalg']]],
-  ['lu_5fsolve_28',['lu_solve',['../namespaceneml2_1_1math_1_1linalg.html#a7fe76b6d65cdbae3f875f54bbc1d61d6',1,'neml2::math::linalg']]]
+  ['loaded_5foptions_23',['loaded_options',['../classneml2_1_1Factory.html#aa2dc97f7b33e2fd19ae5cff3e072a34e',1,'neml2::Factory']]],
+  ['log_24',['log',['../namespaceneml2_1_1math.html#a7160a3cce2d8d7d330414a7db59b02df',1,'neml2::math']]],
+  ['logspace_25',['logspace',['../classneml2_1_1TensorBase.html#a396a6aaae5bd291fe8c1af7a37fe3c54',1,'neml2::TensorBase']]],
+  ['logspaceprimitivetensor_26',['LogspacePrimitiveTensor',['../classneml2_1_1LogspacePrimitiveTensor.html#a99955c15054eef498a60a32e3bc94173',1,'neml2::LogspacePrimitiveTensor']]],
+  ['logspacetensor_27',['LogspaceTensor',['../classneml2_1_1LogspaceTensor.html#a2d644bc9b408dac8fe8e7657f90f376e',1,'neml2::LogspaceTensor']]],
+  ['lu_5ffactor_28',['lu_factor',['../namespaceneml2_1_1math_1_1linalg.html#afd13db89ffc0ecc54cdd5db9a3b12852',1,'neml2::math::linalg']]],
+  ['lu_5fsolve_29',['lu_solve',['../namespaceneml2_1_1math_1_1linalg.html#a7fe76b6d65cdbae3f875f54bbc1d61d6',1,'neml2::math::linalg']]]
 ];

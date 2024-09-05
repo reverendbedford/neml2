@@ -1,5 +1,7 @@
 var NAVTREEINDEX12 =
 {
+"structneml2_1_1OptionSet_1_1Metadata.html#a9b45b3e13bd9167aab02e17e08916231":[8,0,0,92,0,1],
+"structneml2_1_1OptionSet_1_1Metadata.html#a9b45b3e13bd9167aab02e17e08916231":[8,1,0,90,0,1],
 "structneml2_1_1OptionSet_1_1Metadata.html#aa88337e1fed53d16f8618a6359b61a82":[8,1,0,90,0,3],
 "structneml2_1_1OptionSet_1_1Metadata.html#aa88337e1fed53d16f8618a6359b61a82":[8,0,0,92,0,3],
 "structneml2_1_1OptionSet_1_1Metadata.html#ac8e209bb8281e6d4f33902463115f4aa":[8,0,0,92,0,0],

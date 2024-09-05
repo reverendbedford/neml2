@@ -1,5 +1,7 @@
 var NAVTREEINDEX11 =
 {
+"namespaceneml2.html#a8ef9141f823ee94f0db123cd8b87c91c":[8,0,0,225],
+"namespaceneml2.html#a8f0dc857649f5bdee16a960497801fca":[8,0,0,335],
 "namespaceneml2.html#a8fb03923ef01133282631a96e5ac0a82":[8,0,0,207],
 "namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e":[8,0,0,175],
 "namespaceneml2.html#a903c9ca082246abfa54599dfff8c3947":[8,0,0,359],
@@ -247,7 +249,5 @@ var NAVTREEINDEX11 =
 "structneml2_1_1OptionSet_1_1Metadata.html#a4d455efceee21e97d8e21ee40e9b4a20":[8,1,0,90,0,2],
 "structneml2_1_1OptionSet_1_1Metadata.html#a4d455efceee21e97d8e21ee40e9b4a20":[8,0,0,92,0,2],
 "structneml2_1_1OptionSet_1_1Metadata.html#a75b160f574a0be26114bae2c7686a5e1":[8,0,0,92,0,4],
-"structneml2_1_1OptionSet_1_1Metadata.html#a75b160f574a0be26114bae2c7686a5e1":[8,1,0,90,0,4],
-"structneml2_1_1OptionSet_1_1Metadata.html#a9b45b3e13bd9167aab02e17e08916231":[8,0,0,92,0,1],
-"structneml2_1_1OptionSet_1_1Metadata.html#a9b45b3e13bd9167aab02e17e08916231":[8,1,0,90,0,1]
+"structneml2_1_1OptionSet_1_1Metadata.html#a75b160f574a0be26114bae2c7686a5e1":[8,1,0,90,0,4]
 };
