@@ -86,8 +86,8 @@ var NAVTREEINDEX =
 "classneml2_1_1TensorBase.html#aefc1893a238f1f58f082a0f560f7a524",
 "classneml2_1_1VariableBase.html#a4e8f0f7edd364690725346a90949b79c",
 "classneml2_1_1WR2ImplicitExponentialTimeIntegration.html#a959beff300393acb59ff0c7d7ab3ac21",
-"namespaceneml2.html#a89220371249db2005cf0fdd56eca0b04",
-"structneml2_1_1LabeledAxis_1_1AssemblySliceCmp.html#a586b37c166d802c22e45d905db1cefa4"
+"namespaceneml2.html#a8ef9141f823ee94f0db123cd8b87c91c",
+"structneml2_1_1OptionSet_1_1Metadata.html#a9b45b3e13bd9167aab02e17e08916231"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
