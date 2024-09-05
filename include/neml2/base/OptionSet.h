@@ -57,26 +57,33 @@ enum class FType : int8_t
   BUFFER
 };
 
+namespace details
+{
 /**
  * @name Helper functions for printing
  *
  * Helper functions for printing scalar, vector, vector of vector. Called from
  * OptionSet::Option<T>::print(...).
+ *
+ * The leading underscore does NOT conform to our naming convention. It is there to avoid ambiguity
+ * with customers who try to inject a function with the same name into our namespace, which is
+ * unusual but possible with a `using namespace` in the global scope.
  */
 ///@{
 template <typename P>
-void print_helper(std::ostream & os, const P *);
+void _print_helper(std::ostream & os, const P *);
 template <typename P>
-void print_helper(std::ostream & os, const std::vector<P> *);
+void _print_helper(std::ostream & os, const std::vector<P> *);
 template <typename P>
-void print_helper(std::ostream & os, const std::vector<std::vector<P>> *);
+void _print_helper(std::ostream & os, const std::vector<std::vector<P>> *);
 /// Specialization so that we don't print out unprintable characters
 template <>
-void print_helper(std::ostream & os, const char *);
+void _print_helper(std::ostream & os, const char *);
 /// Specialization so that we don't print out unprintable characters
 template <>
-void print_helper(std::ostream & os, const unsigned char *);
+void _print_helper(std::ostream & os, const unsigned char *);
 ///@}
+}
 
 bool options_compatible(const OptionSet & opts, const OptionSet & additional_opts);
 
@@ -467,7 +474,7 @@ template <typename T>
 void
 OptionSet::Option<T>::print(std::ostream & os) const
 {
-  print_helper(os, static_cast<const T *>(&_value));
+  details::_print_helper(os, static_cast<const T *>(&_value));
 }
 // LCOV_EXCL_STOP
 
@@ -531,31 +538,33 @@ OptionSet::set_buffer(const std::string & name)
   return set<T, FType::BUFFER>(name);
 }
 
+namespace details
+{
 // LCOV_EXCL_START
 template <typename P>
 void
-print_helper(std::ostream & os, const P * option)
+_print_helper(std::ostream & os, const P * option)
 {
   os << *option;
 }
 
 template <>
 inline void
-print_helper(std::ostream & os, const char * option)
+_print_helper(std::ostream & os, const char * option)
 {
   os << static_cast<int>(*option);
 }
 
 template <>
 inline void
-print_helper(std::ostream & os, const unsigned char * option)
+_print_helper(std::ostream & os, const unsigned char * option)
 {
   os << static_cast<int>(*option);
 }
 
 template <typename P>
 void
-print_helper(std::ostream & os, const std::vector<P> * option)
+_print_helper(std::ostream & os, const std::vector<P> * option)
 {
   for (const auto & p : *option)
     os << p << " ";
@@ -563,11 +572,12 @@ print_helper(std::ostream & os, const std::vector<P> * option)
 
 template <typename P>
 void
-print_helper(std::ostream & os, const std::vector<std::vector<P>> * option)
+_print_helper(std::ostream & os, const std::vector<std::vector<P>> * option)
 {
   for (const auto & pv : *option)
     for (const auto & p : pv)
       os << p << " ";
 }
+} // namespace details
 // LCOV_EXCL_STOP
 } // namespace neml2
