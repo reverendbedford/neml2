@@ -41,14 +41,27 @@ TEST_CASE("Factory", "[base]")
 
   Factory::clear();
   Factory::load_options(all_options);
-  auto & summodel = Factory::get_object<ScalarLinearCombination>("Models", "example");
 
-  REQUIRE(summodel.input_axis().has_subaxis("state"));
-  REQUIRE(summodel.input_axis().subaxis("state").has_subaxis("substate"));
-  REQUIRE(summodel.input_axis().subaxis("state").has_variable<Scalar>("A"));
-  REQUIRE(summodel.input_axis().subaxis("state").subaxis("substate").has_variable<Scalar>("B"));
+  SECTION("get_object")
+  {
+    auto & summodel = Factory::get_object<ScalarLinearCombination>("Models", "example");
 
-  REQUIRE(summodel.output_axis().has_subaxis("state"));
-  REQUIRE(summodel.output_axis().subaxis("state").has_subaxis("outsub"));
-  REQUIRE(summodel.output_axis().subaxis("state").subaxis("outsub").has_variable<Scalar>("C"));
+    REQUIRE(summodel.input_axis().has_subaxis("state"));
+    REQUIRE(summodel.input_axis().subaxis("state").has_subaxis("substate"));
+    REQUIRE(summodel.input_axis().subaxis("state").has_variable<Scalar>("A"));
+    REQUIRE(summodel.input_axis().subaxis("state").subaxis("substate").has_variable<Scalar>("B"));
+
+    REQUIRE(summodel.output_axis().has_subaxis("state"));
+    REQUIRE(summodel.output_axis().subaxis("state").has_subaxis("outsub"));
+    REQUIRE(summodel.output_axis().subaxis("state").subaxis("outsub").has_variable<Scalar>("C"));
+  }
+
+  SECTION("loaded_options")
+  {
+    const auto & all_opts = Factory::loaded_options();
+    const auto & opts = all_opts["Models"].at("example");
+    REQUIRE(opts.contains("from_var"));
+    REQUIRE(opts.contains("to_var"));
+    REQUIRE(!opts.contains("non_existent"));
+  }
 }
