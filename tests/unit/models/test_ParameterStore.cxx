@@ -57,6 +57,9 @@ TEST_CASE("ParameterStore", "[models]")
       REQUIRE(Tensor(E).batch_sizes() == TensorShape());
       REQUIRE(Tensor(nu).batch_sizes() == TensorShape());
 
+      REQUIRE(E.type() == TensorType::kScalar);
+      REQUIRE(nu.type() == TensorType::kScalar);
+
       // Modifying the individual parameter references should affect values stored in the parameter
       // dictionary.
       E = Scalar::full({1, 2}, 1.0);

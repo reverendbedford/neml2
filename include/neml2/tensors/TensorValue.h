@@ -48,6 +48,9 @@ public:
 
   /// assignment operator
   virtual void operator=(const Tensor & val) = 0;
+
+  /// Tensor type
+  virtual TensorType type() const = 0;
 };
 
 /// Concrete definition of tensor value
@@ -69,6 +72,8 @@ public:
   virtual operator Tensor() const override { return _value; }
 
   virtual void operator=(const Tensor & val) override { _value = T(val); }
+
+  virtual TensorType type() const override { return TensorTypeEnum<T>::value; }
 
   T & value() { return _value; }
 
