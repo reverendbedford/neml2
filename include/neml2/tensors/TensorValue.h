@@ -23,7 +23,7 @@
 // THE SOFTWARE.
 #pragma once
 
-#include "neml2/tensors/Tensor.h"
+#include "neml2/tensors/tensors.h"
 
 namespace neml2
 {
