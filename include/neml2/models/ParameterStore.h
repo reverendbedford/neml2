@@ -64,6 +64,9 @@ public:
   /// Get a writable reference of a parameter
   TensorValueBase & get_parameter(const std::string & name);
 
+  /// Get a read-only reference of a parameter
+  const TensorValueBase & get_parameter(const std::string & name) const;
+
   /// Whether this parameter store has any nonlinear parameter
   bool has_nl_param() const { return !_nl_params.empty(); }
 

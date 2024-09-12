@@ -68,6 +68,14 @@ ParameterStore::get_parameter(const std::string & name)
   return *base_ptr;
 }
 
+const TensorValueBase &
+ParameterStore::get_parameter(const std::string & name) const
+{
+  const auto * base_ptr = _param_values.query_value(name);
+  neml_assert(base_ptr, "Parameter named ", name, " does not exist.");
+  return *base_ptr;
+}
+
 const VariableBase *
 ParameterStore::nl_param(const std::string & name) const
 {
