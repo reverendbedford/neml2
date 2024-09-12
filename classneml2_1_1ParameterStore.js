@@ -4,6 +4,7 @@ var classneml2_1_1ParameterStore =
     [ "declare_parameter", "classneml2_1_1ParameterStore.html#a45ea9f3f0dc9c3da04b9ec963bac80a2", null ],
     [ "declare_parameter", "classneml2_1_1ParameterStore.html#ac44196489c29d0a5f8e1c6d6399d6b4e", null ],
     [ "get_parameter", "classneml2_1_1ParameterStore.html#a8c1f0318b14b2c89f483e10161c3c10c", null ],
+    [ "get_parameter", "classneml2_1_1ParameterStore.html#a60154f948f092f7b1484a3148c9ed316", null ],
     [ "has_nl_param", "classneml2_1_1ParameterStore.html#a751fe1ea5451edbaa7daf11eeade2dc7", null ],
     [ "named_nonlinear_parameter_models", "classneml2_1_1ParameterStore.html#acb70851fd1d9e0aea750255eac26cc02", null ],
     [ "named_nonlinear_parameters", "classneml2_1_1ParameterStore.html#ad293bd46f1e0a0c2620c29b6df3708f3", null ],

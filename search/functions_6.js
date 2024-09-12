@@ -12,7 +12,7 @@ var searchData=
   ['get_5fobject_5fptr_9',['get_object_ptr',['../classneml2_1_1Factory.html#a95c47d292bea9037c83f2320ec3582db',1,'neml2::Factory']]],
   ['get_5foutput_10',['get_output',['../classneml2_1_1Model.html#a230166c77b24a5d909bb8c878684a8bb',1,'neml2::Model']]],
   ['get_5foutput_5fvariable_11',['get_output_variable',['../classneml2_1_1VariableStore.html#a25e939c2523954864422594a22b8868c',1,'neml2::VariableStore::get_output_variable(const VariableName &amp;name)'],['../classneml2_1_1VariableStore.html#a1d19a82de162b265d6706f525dde9ea5',1,'neml2::VariableStore::get_output_variable(const VariableName &amp;name) const']]],
-  ['get_5fparameter_12',['get_parameter',['../classneml2_1_1ParameterStore.html#a8c1f0318b14b2c89f483e10161c3c10c',1,'neml2::ParameterStore']]],
+  ['get_5fparameter_12',['get_parameter',['../classneml2_1_1ParameterStore.html#a8c1f0318b14b2c89f483e10161c3c10c',1,'neml2::ParameterStore::get_parameter(const std::string &amp;name)'],['../classneml2_1_1ParameterStore.html#a60154f948f092f7b1484a3148c9ed316',1,'neml2::ParameterStore::get_parameter(const std::string &amp;name) const']]],
   ['get_5fresidual_13',['get_residual',['../classneml2_1_1NonlinearSystem.html#a882af93d60bef817cd048660c7db9215',1,'neml2::NonlinearSystem']]],
   ['get_5fsystem_5fmatrices_14',['get_system_matrices',['../classneml2_1_1Model.html#a1060c26a0f406f5d019b306da72def25',1,'neml2::Model']]],
   ['gtnyieldfunction_15',['GTNYieldFunction',['../classneml2_1_1GTNYieldFunction.html#af58c56c00ee14094ef09c2943a4bc417',1,'neml2::GTNYieldFunction']]],
