@@ -309,10 +309,11 @@ tensors.TensorValue.set_ instead to modify the tensor value.
           },
           py::return_value_policy::reference,
           "Get the sub-models registered to this model")
-      .def("get_parameter",
-           &Model::get_parameter,
-           py::return_value_policy::reference,
-           "Get a model parameter given its name")
+      .def(
+          "get_parameter",
+          [](Model & self, const std::string & name) { return &self.get_parameter(name); },
+          py::return_value_policy::reference,
+          "Get a model parameter given its name")
       .def("set_parameter", &Model::set_parameter, "Set the value for a model parameter")
       .def("set_parameters", &Model::set_parameters, "Set the values for multiple model parameters")
       .def(
