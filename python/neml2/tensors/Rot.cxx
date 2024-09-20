@@ -49,4 +49,8 @@ def_Rot(py::class_<Rot> & c)
       [](NEML2_TENSOR_OPTIONS_VARGS) { return Rot::identity(NEML2_TENSOR_OPTIONS); },
       py::kw_only(),
       PY_ARG_TENSOR_OPTIONS);
+  c.def_static("fill_euler_angles", &Rot::fill_euler_angles);
+  c.def_static("fill_matrix", &Rot::fill_matrix);
+  c.def_static("fill_random", &Rot::fill_random);
+  c.def_static("fill_rodrigues", &Rot::fill_rodrigues);
 }
