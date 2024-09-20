@@ -38,7 +38,8 @@ def_Rot(py::class_<Rot> & c)
       .def("euler_rodrigues", &Rot::euler_rodrigues)
       .def("deuler_rodrigues", &Rot::deuler_rodrigues)
       .def("rotate", &Rot::rotate)
-      .def("drotate", &Rot::drotate);
+      .def("drotate", &Rot::drotate)
+      .def("shadow", &Rot::shadow);
 
   // Operators
   c.def(py::self * py::self);
