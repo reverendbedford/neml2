@@ -22,48 +22,41 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "J2FlowDirection.h"
-#include "neml2/tensors/SSR4.h"
+#pragma once
+
+#include "neml2/models/Model.h"
 
 namespace neml2
 {
-register_NEML2_object(J2FlowDirection);
-
-OptionSet
-J2FlowDirection::expected_options()
+/**
+ * @brief Update a trial stress under assumption of isotropic linear elasticity
+ *
+ * This allows the construction of fully scalar return mapping modles for
+ * isotropic materials.
+ */
+class ScalarTrialStressUpdate : public Model
 {
-  auto options = Model::expected_options();
-  options.set<VariableName>("mandel_stress") = VariableName("state", "M");
-  options.set<VariableName>("flow_direction") = VariableName("state", "NM");
-  return options;
-}
+public:
+  static OptionSet expected_options();
 
-J2FlowDirection::J2FlowDirection(const OptionSet & options)
-  : Model(options),
-    _M(declare_input_variable<SR2>("mandel_stress")),
-    _N(declare_output_variable<SR2>("flow_direction"))
-{
-}
+  ScalarTrialStressUpdate(const OptionSet & options);
 
-void
-J2FlowDirection::set_value(bool out, bool dout_din, bool d2out_din2)
-{
-  neml_assert_dbg(!d2out_din2, "Second derivatives not implemented");
+protected:
+  /// compute updated trial stress
+  virtual void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
-  auto S = SR2(_M).dev();
-  auto vm = std::sqrt(3.0 / 2.0) * S.norm(machine_precision());
-  auto dvm_dM = 3.0 / 2.0 * S / vm;
+  // input variables
+  const Variable<Scalar> & _elastic_trial_stress;
+  const Variable<Scalar> & _inelastic_strain;
+  const Variable<Scalar> & _inelastic_strain_old;
 
-  if (out)
-  {
-    _N = dvm_dM;
-  }
+  // output variables
+  Variable<Scalar> & _updated_trial_stress;
 
-  if (dout_din)
-  {
-    auto I = SSR4::identity_sym(options());
-    auto J = SSR4::identity_dev(options());
-    _N.d(_M) = 3.0 / 2.0 * (I - 2.0 / 3.0 * dvm_dM.outer(dvm_dM)) * J / vm;
-  }
-}
+  /// Young's modulus
+  const Scalar & _E;
+
+  /// Poisson's ratio
+  const Scalar & _nu;
+};
 } // namespace neml2
