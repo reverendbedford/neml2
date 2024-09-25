@@ -167,11 +167,11 @@ nbatch = 20
     poisson_ratio = 0.3
     elastic_trial_stress = 'forces/s'
     inelastic_strain = 'state/ep'
-    updated_trial_stress = 'state/se'
+    updated_trial_stress = 'state/s'
   []
   [rom]
     type = TorchScriptFlowRate
-    von_mises_stress = 'state/se'
+    von_mises_stress = 'state/s'
     temperature = 'forces/T'
     internal_state_1 = 'state/G'
     internal_state_2 = 'state/C'
@@ -208,7 +208,7 @@ nbatch = 20
   #####################################################################################
   [model]
     type = ComposedModel
-    models = 'trial_state radial_return plastic_update stress_update rom'
-    additional_outputs = 'forces/s state/ep_rate state/G_rate state/C_rate  state/ep state/G state/C state/S state/Ep'
+    models = 'trial_state radial_return plastic_update stress_update trial_stress_update rom'
+    additional_outputs = 'state/s state/ep_rate state/G_rate state/C_rate state/ep state/G state/C state/S state/Ep'
   []
 []
