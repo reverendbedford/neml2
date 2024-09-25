@@ -25,6 +25,7 @@
 #pragma once
 
 #include <torch/python.h>
+#include <torch/version.h>
 #include <torch/csrc/utils/tensor_dtypes.h>
 #include <torch/csrc/DynamicTypes.h>
 
@@ -45,6 +46,7 @@ namespace pybind11
 {
 namespace detail
 {
+#if TORCH_VERSION_MAJOR < 2 || (TORCH_VERSION_MAJOR == 2 && TORCH_VERSION_MINOR < 4)
 /**
  * @brief This specialization enables type conversion between Python object <--> torch::Dtype
  */
@@ -81,6 +83,7 @@ public:
     return handle(reinterpret_cast<PyObject *>(torch::getTHPDtype(src)));
   }
 };
+#endif
 
 /**
  * @brief This specialization exposes neml2::indexing::TensorShape

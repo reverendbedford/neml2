@@ -22,32 +22,46 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/tensors/LabeledMatrix.h"
-#include "neml2/tensors/LabeledVector.h"
-#include "neml2/misc/math.h"
+#pragma once
+
+#include "neml2/models/Interpolation.h"
 
 namespace neml2
 {
-LabeledMatrix
-LabeledMatrix::identity(TensorShapeRef batch_size,
-                        const LabeledAxis & axis,
-                        const torch::TensorOptions & options)
+/**
+ * @brief Regularized version of neml2::LinearInterpolation rendered fully differentiable
+ */
+template <typename T>
+class SmoothLinearInterpolation : public Interpolation<T>
 {
-  return LabeledMatrix(Tensor::identity(batch_size, axis.storage_size(), options), {&axis, &axis});
-}
+public:
+  static OptionSet expected_options();
 
-LabeledMatrix
-LabeledMatrix::chain(const LabeledMatrix & other) const
-{
-  // This function expresses a chain rule, which is just a dot product between the values of this
-  // and the values of the input The main annoyance is just getting the names correct
+  SmoothLinearInterpolation(const OptionSet & options);
 
-  // Check that we are conformal
-  neml_assert_dbg(batch_sizes() == other.batch_sizes(),
-                  "LabeledMatrix batch sizes are not the same");
-  neml_assert_dbg(axis(1) == other.axis(0), "Labels are not conformal");
+protected:
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
-  // If all the sizes are correct then executing the chain rule is pretty easy
-  return LabeledMatrix(math::bmm(*this, other), {&axis(0), &other.axis(1)});
-}
+private:
+  /// @returns the smooth interpolation factor given the interval offset between 0 and 1
+  Scalar smooth_interp_factor(const Scalar & x) const;
+
+  /// @returns the first derivative of the smooth interpolation function
+  Scalar d_smooth_interp_factor(const Scalar & x) const;
+
+  /// Sharpness of the smooth interpolation
+  const Real _k;
+  /// Starting abscissa of each interval
+  const Scalar & _X0;
+  /// Ending abscissa of each interval
+  const Scalar & _X1;
+  /// Starting ordinate of each interval
+  const T & _Y0;
+  /// Ending ordinate of each interval
+  const T & _Y1;
+};
+
+typedef SmoothLinearInterpolation<Scalar> ScalarSmoothLinearInterpolation;
+typedef SmoothLinearInterpolation<Vec> VecSmoothLinearInterpolation;
+typedef SmoothLinearInterpolation<SR2> SR2SmoothLinearInterpolation;
 } // namespace neml2
