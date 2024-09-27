@@ -19,6 +19,7 @@ endmacro()
 # Actually define the submodules
 add_submodule(base neml2/base.cxx)
 add_submodule(math neml2/math.cxx)
+add_submodule(crystallography neml2/crystallography.cxx)
 file(GLOB_RECURSE tensors_srcs neml2/tensors/*.cxx)
 add_submodule(tensors "${tensors_srcs}")
 
@@ -35,14 +36,19 @@ configure_file(neml2/__init__.py ${NEML2_BINARY_DIR}/python/neml2/__init__.py CO
 configure_file(neml2/visualization.py ${NEML2_BINARY_DIR}/python/neml2/visualization.py COPYONLY)
 configure_file(neml2/pyzag/__init__.py ${NEML2_BINARY_DIR}/python/neml2/pyzag/__init__.py COPYONLY)
 configure_file(neml2/pyzag/interface.py ${NEML2_BINARY_DIR}/python/neml2/pyzag/interface.py COPYONLY)
+configure_file(neml2/plotting/__init__.py ${NEML2_BINARY_DIR}/python/neml2/plotting/__init__.py COPYONLY)
+configure_file(neml2/plotting/polefigure.py ${NEML2_BINARY_DIR}/python/neml2/plotting/polefigure.py COPYONLY)
 install(FILES
   neml2/__init__.py
   neml2/visualization.py
   neml2/pyzag/__init__.py
   neml2/pyzag/interface.py
+  neml2/plotting/__init__.py
+  neml2/plotting/polefigure.py
   ${NEML2_BINARY_DIR}/python/neml2/__init__.pyi
   ${NEML2_BINARY_DIR}/python/neml2/base.pyi
   ${NEML2_BINARY_DIR}/python/neml2/math.pyi
+  ${NEML2_BINARY_DIR}/python/neml2/crystallography.pyi
   ${NEML2_BINARY_DIR}/python/neml2/tensors.pyi
   DESTINATION .
 )
