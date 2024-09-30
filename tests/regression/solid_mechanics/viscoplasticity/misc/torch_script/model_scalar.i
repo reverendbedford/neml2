@@ -1,47 +1,50 @@
+ntime = 100
+nbatch = 20
+
 [Tensors]
   [end_time]
     type = LogspaceScalar
-    start = -3
-    end = -3
-    nstep = 20
+    start = 0
+    end = 1
+    nstep = ${nbatch}
   []
   [times]
     type = LinspaceScalar
     start = 0
     end = end_time
-    nstep = 100
+    nstep = ${ntime}
   []
   [start_temperature]
     type = LinspaceScalar
-    start = 100
-    end = 1000
-    nstep = 20
+    start = 300
+    end = 500
+    nstep = ${nbatch}
   []
   [end_temperature]
     type = LinspaceScalar
-    start = 200
-    end = 1500
-    nstep = 20
+    start = 1800
+    end = 1200
+    nstep = ${nbatch}
   []
   [temperatures]
     type = LinspaceScalar
     start = start_temperature
     end = end_temperature
-    nstep = 100
+    nstep = ${ntime}
   []
   [exx]
     type = FullScalar
-    batch_shape = '(20)'
+    batch_shape = '(${nbatch})'
     value = 0.1
   []
   [eyy]
     type = FullScalar
-    batch_shape = '(20)'
+    batch_shape = '(${nbatch})'
     value = -0.05
   []
   [ezz]
     type = FullScalar
-    batch_shape = '(20)'
+    batch_shape = '(${nbatch})'
     value = -0.05
   []
   [max_strain]
@@ -52,53 +55,7 @@
     type = LinspaceSR2
     start = 0
     end = max_strain
-    nstep = 100
-  []
-  [A0]
-    type = Tensor
-    values = "1e-6 1e-6 1e-6 1e-6 1e-6 1e-6 1e-6 1e-6 1e-6
-              1e-6 1e-6 1e-6 1e-6 1e-6 1e-6 1e-6 1e-6 1e-6"
-    base_shape = '(2,3,3)'
-  []
-  [A1]
-    type = Tensor
-    values = "1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6
-              1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6
-              1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6
-              1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6
-              1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6
-              1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6"
-    base_shape = '(2,3,3,4)'
-  []
-  [A2]
-    type = Tensor
-    values = "1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6
-              1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6
-              1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6
-              1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6
-              1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6
-              1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6 1e-6 2e-6 3e-6 4e-6"
-    base_shape = '(2,3,3,4)'
-  []
-  [s_lb]
-    type = Tensor
-    values = '0 50'
-    base_shape = (2)
-  []
-  [s_ub]
-    type = Tensor
-    values = '50 100'
-    base_shape = (2)
-  []
-  [T_lb]
-    type = Tensor
-    values = '0 300 600'
-    base_shape = (3)
-  []
-  [T_ub]
-    type = Tensor
-    values = '300 600 1000'
-    base_shape = (3)
+    nstep = ${ntime}
   []
 []
 
@@ -109,6 +66,7 @@
     times = 'times'
     prescribed_strains = 'strains'
     prescribed_temperatures = 'temperatures'
+    predictor = LINEAR_EXTRAPOLATION
     save_as = 'result.pt'
     enable_AD = true
   []
@@ -133,8 +91,8 @@
   #####################################################################################
   [trial_elastic_strain]
     type = SR2LinearCombination
-    from_var = 'forces/E old_state/Ep'
     to_var = 'forces/Ee'
+    from_var = 'forces/E old_state/Ep'
     coefficients = '1 -1'
   []
   [trial_cauchy_stress]
@@ -149,9 +107,15 @@
     mandel_stress = 'forces/S'
     flow_direction = 'forces/N'
   []
+  [vonmises]
+    type = SR2Invariant
+    invariant_type = 'VONMISES'
+    tensor = 'forces/S'
+    invariant = 'forces/s'
+  []
   [trial_state]
     type = ComposedModel
-    models = 'trial_elastic_strain trial_cauchy_stress trial_flow_direction'
+    models = 'trial_elastic_strain trial_cauchy_stress trial_flow_direction vonmises'
   []
 
   #####################################################################################
@@ -197,45 +161,41 @@
   #####################################################################################
   # Compute the rates of equivalent plastic strain and internal variables
   #####################################################################################
-  [vonmises]
-    type = SR2Invariant
-    invariant_type = 'VONMISES'
-    tensor = 'state/S'
-    invariant = 'state/s'
+  [trial_stress_update]
+    type = LinearIsotropicElasticJ2TrialStressUpdate
+    youngs_modulus = 1e5
+    poisson_ratio = 0.3
+    elastic_trial_stress = 'forces/s'
+    inelastic_strain = 'state/ep'
+    updated_trial_stress = 'state/s'
   []
   [rom]
-    type = TabulatedPolynomialModel
+    type = TorchScriptFlowRate
     von_mises_stress = 'state/s'
     temperature = 'forces/T'
-    internal_state_1 = 'state/s1'
-    internal_state_2 = 'state/s2'
+    internal_state_1 = 'state/G'
+    internal_state_2 = 'state/C'
     equivalent_plastic_strain_rate = 'state/ep_rate'
-    internal_state_1_rate = 'state/s1_rate'
-    internal_state_2_rate = 'state/s2_rate'
-    A0 = 'A0'
-    A1 = 'A1'
-    A2 = 'A2'
-    stress_tile_lower_bounds = 's_lb'
-    stress_tile_upper_bounds = 's_ub'
-    temperature_tile_lower_bounds = 'T_lb'
-    temperature_tile_upper_bounds = 'T_ub'
+    internal_state_1_rate = 'state/G_rate'
+    internal_state_2_rate = 'state/C_rate'
+    torch_script = 'gold/surrogate.pt'
   []
   [integrate_ep]
     type = ScalarBackwardEulerTimeIntegration
     variable = 'state/ep'
   []
-  [integrate_s1]
+  [integrate_G]
     type = ScalarBackwardEulerTimeIntegration
-    variable = 'state/s1'
+    variable = 'state/G'
   []
-  [integrate_s2]
+  [integrate_C]
     type = ScalarBackwardEulerTimeIntegration
-    variable = 'state/s2'
+    variable = 'state/C'
   []
   [rate]
     type = ComposedModel
-    models = "plastic_update stress_update vonmises rom
-              integrate_ep integrate_s1 integrate_s2"
+    models = "trial_stress_update rom
+              integrate_ep integrate_G integrate_C"
   []
   [radial_return]
     type = ImplicitUpdate
@@ -248,7 +208,7 @@
   #####################################################################################
   [model]
     type = ComposedModel
-    models = 'trial_state radial_return plastic_update stress_update'
-    additional_outputs = 'state/ep state/Ep'
+    models = 'trial_state radial_return plastic_update stress_update trial_stress_update rom'
+    additional_outputs = 'state/s state/ep_rate state/G_rate state/C_rate state/ep state/G state/C state/S state/Ep'
   []
 []

@@ -22,48 +22,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "J2FlowDirection.h"
-#include "neml2/tensors/SSR4.h"
+#pragma once
+
+#include "neml2/models/Model.h"
 
 namespace neml2
 {
-register_NEML2_object(J2FlowDirection);
-
-OptionSet
-J2FlowDirection::expected_options()
+/// The plastic flow direction assuming an associative J2 flow.
+class AssociativeJ2FlowDirection : public Model
 {
-  auto options = Model::expected_options();
-  options.set<VariableName>("mandel_stress") = VariableName("state", "M");
-  options.set<VariableName>("flow_direction") = VariableName("state", "NM");
-  return options;
-}
+public:
+  static OptionSet expected_options();
 
-J2FlowDirection::J2FlowDirection(const OptionSet & options)
-  : Model(options),
-    _M(declare_input_variable<SR2>("mandel_stress")),
-    _N(declare_output_variable<SR2>("flow_direction"))
-{
-}
+  AssociativeJ2FlowDirection(const OptionSet & options);
 
-void
-J2FlowDirection::set_value(bool out, bool dout_din, bool d2out_din2)
-{
-  neml_assert_dbg(!d2out_din2, "Second derivatives not implemented");
+protected:
+  virtual void set_value(bool, bool, bool) override;
 
-  auto S = SR2(_M).dev();
-  auto vm = std::sqrt(3.0 / 2.0) * S.norm(machine_precision());
-  auto dvm_dM = 3.0 / 2.0 * S / vm;
+  /// Mandel stress
+  const Variable<SR2> & _M;
 
-  if (out)
-  {
-    _N = dvm_dM;
-  }
-
-  if (dout_din)
-  {
-    auto I = SSR4::identity_sym(options());
-    auto J = SSR4::identity_dev(options());
-    _N.d(_M) = 3.0 / 2.0 * (I - 2.0 / 3.0 * dvm_dM.outer(dvm_dM)) * J / vm;
-  }
-}
+  /// Flow direction
+  Variable<SR2> & _N;
+};
 } // namespace neml2
