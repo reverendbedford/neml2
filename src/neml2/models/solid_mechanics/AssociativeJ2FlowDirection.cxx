@@ -22,23 +22,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/models/J2FlowDirection.h"
+#include "neml2/models/solid_mechanics/AssociativeJ2FlowDirection.h"
 #include "neml2/tensors/SSR4.h"
 
 namespace neml2
 {
-register_NEML2_object(J2FlowDirection);
+register_NEML2_object(AssociativeJ2FlowDirection);
 
 OptionSet
-J2FlowDirection::expected_options()
+AssociativeJ2FlowDirection::expected_options()
 {
   auto options = Model::expected_options();
+  options.doc() = "The plastic flow direction assuming an associative J2 flow.";
+
   options.set<VariableName>("mandel_stress") = VariableName("state", "M");
+  options.set("mandel_stress").doc() = "Mandel stress";
+
   options.set<VariableName>("flow_direction") = VariableName("state", "NM");
+  options.set("flow_direction").doc() = "Flow direction";
+
   return options;
 }
 
-J2FlowDirection::J2FlowDirection(const OptionSet & options)
+AssociativeJ2FlowDirection::AssociativeJ2FlowDirection(const OptionSet & options)
   : Model(options),
     _M(declare_input_variable<SR2>("mandel_stress")),
     _N(declare_output_variable<SR2>("flow_direction"))
@@ -46,7 +52,7 @@ J2FlowDirection::J2FlowDirection(const OptionSet & options)
 }
 
 void
-J2FlowDirection::set_value(bool out, bool dout_din, bool d2out_din2)
+AssociativeJ2FlowDirection::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   neml_assert_dbg(!d2out_din2, "Second derivatives not implemented");
 
@@ -60,10 +66,13 @@ J2FlowDirection::set_value(bool out, bool dout_din, bool d2out_din2)
   }
 
   if (dout_din)
-  {
-    auto I = SSR4::identity_sym(options());
-    auto J = SSR4::identity_dev(options());
-    _N.d(_M) = 3.0 / 2.0 * (I - 2.0 / 3.0 * dvm_dM.outer(dvm_dM)) * J / vm;
-  }
+    if (_M.is_dependent())
+    {
+      auto I = SSR4::identity_sym(options());
+      auto J = SSR4::identity_dev(options());
+
+      if (dout_din)
+        _N.d(_M) = 3.0 / 2.0 * (I - 2.0 / 3.0 * dvm_dM.outer(dvm_dM)) * J / vm;
+    }
 }
 } // namespace neml2

@@ -145,7 +145,7 @@
     stress = 'forces/S'
   []
   [trial_flow_direction]
-    type = J2FlowDirection
+    type = AssociativeJ2FlowDirection
     mandel_stress = 'forces/S'
     flow_direction = 'forces/N'
   []
