@@ -103,7 +103,7 @@ nbatch = 20
     stress = 'forces/S'
   []
   [trial_flow_direction]
-    type = J2FlowDirection
+    type = AssociativeJ2FlowDirection
     mandel_stress = 'forces/S'
     flow_direction = 'forces/N'
   []
@@ -162,7 +162,7 @@ nbatch = 20
   # Compute the rates of equivalent plastic strain and internal variables
   #####################################################################################
   [trial_stress_update]
-    type = ScalarTrialStressUpdate
+    type = LinearIsotropicElasticJ2TrialStressUpdate
     youngs_modulus = 1e5
     poisson_ratio = 0.3
     elastic_trial_stress = 'forces/s'

@@ -28,35 +28,21 @@
 
 namespace neml2
 {
-/**
- * @brief Update a trial stress under assumption of isotropic linear elasticity
- *
- * This allows the construction of fully scalar return mapping modles for
- * isotropic materials.
- */
-class ScalarTrialStressUpdate : public Model
+/// The plastic flow direction assuming an associative J2 flow.
+class AssociativeJ2FlowDirection : public Model
 {
 public:
   static OptionSet expected_options();
 
-  ScalarTrialStressUpdate(const OptionSet & options);
+  AssociativeJ2FlowDirection(const OptionSet & options);
 
 protected:
-  /// compute updated trial stress
-  virtual void set_value(bool out, bool dout_din, bool d2out_din2) override;
+  virtual void set_value(bool, bool, bool) override;
 
-  // input variables
-  const Variable<Scalar> & _elastic_trial_stress;
-  const Variable<Scalar> & _inelastic_strain;
-  const Variable<Scalar> & _inelastic_strain_old;
+  /// Mandel stress
+  const Variable<SR2> & _M;
 
-  // output variables
-  Variable<Scalar> & _updated_trial_stress;
-
-  /// Young's modulus
-  const Scalar & _E;
-
-  /// Poisson's ratio
-  const Scalar & _nu;
+  /// Flow direction
+  Variable<SR2> & _N;
 };
 } // namespace neml2
