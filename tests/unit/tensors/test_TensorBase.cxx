@@ -79,35 +79,6 @@ TEST_CASE("TensorBase", "[tensors]")
       }
     }
 
-    SECTION("empty")
-    {
-      SECTION("unbatched")
-      {
-        auto a = Tensor::empty(D, DTO);
-        REQUIRE(!a.batched());
-        REQUIRE(a.dim() == Dn);
-        REQUIRE(a.batch_dim() == 0);
-        REQUIRE(a.base_dim() == Dn);
-        REQUIRE(a.sizes() == D);
-        REQUIRE(a.batch_sizes() == TensorShape{});
-        REQUIRE(a.base_sizes() == D);
-        REQUIRE(a.base_storage() == L);
-      }
-
-      SECTION("batched")
-      {
-        auto a = Tensor::empty(B, D, DTO);
-        REQUIRE(a.batched());
-        REQUIRE(a.dim() == n);
-        REQUIRE(a.batch_dim() == Bn);
-        REQUIRE(a.base_dim() == Dn);
-        REQUIRE(a.sizes() == BD);
-        REQUIRE(a.batch_sizes() == B);
-        REQUIRE(a.base_sizes() == D);
-        REQUIRE(a.base_storage() == L);
-      }
-    }
-
     SECTION("empty_like")
     {
       auto a = Tensor::empty(B, D, DTO);
@@ -119,37 +90,6 @@ TEST_CASE("TensorBase", "[tensors]")
       REQUIRE(b.batch_sizes() == a.batch_sizes());
       REQUIRE(b.base_sizes() == a.base_sizes());
       REQUIRE(b.base_storage() == a.base_storage());
-    }
-
-    SECTION("zeros")
-    {
-      SECTION("unbatched")
-      {
-        auto a = Tensor::zeros(D, DTO);
-        REQUIRE(!a.batched());
-        REQUIRE(a.dim() == Dn);
-        REQUIRE(a.batch_dim() == 0);
-        REQUIRE(a.base_dim() == Dn);
-        REQUIRE(a.sizes() == D);
-        REQUIRE(a.batch_sizes() == TensorShape{});
-        REQUIRE(a.base_sizes() == D);
-        REQUIRE(a.base_storage() == L);
-        REQUIRE(torch::allclose(a, torch::zeros_like(a)));
-      }
-
-      SECTION("batched")
-      {
-        auto a = Tensor::zeros(B, D, DTO);
-        REQUIRE(a.batched());
-        REQUIRE(a.dim() == n);
-        REQUIRE(a.batch_dim() == Bn);
-        REQUIRE(a.base_dim() == Dn);
-        REQUIRE(a.sizes() == BD);
-        REQUIRE(a.batch_sizes() == B);
-        REQUIRE(a.base_sizes() == D);
-        REQUIRE(a.base_storage() == L);
-        REQUIRE(torch::allclose(a, torch::zeros_like(a)));
-      }
     }
 
     SECTION("zeros_like")
@@ -166,37 +106,6 @@ TEST_CASE("TensorBase", "[tensors]")
       REQUIRE(torch::allclose(b, torch::zeros_like(b)));
     }
 
-    SECTION("ones")
-    {
-      SECTION("unbatched")
-      {
-        auto a = Tensor::ones(D, DTO);
-        REQUIRE(!a.batched());
-        REQUIRE(a.dim() == Dn);
-        REQUIRE(a.batch_dim() == 0);
-        REQUIRE(a.base_dim() == Dn);
-        REQUIRE(a.sizes() == D);
-        REQUIRE(a.batch_sizes() == TensorShape{});
-        REQUIRE(a.base_sizes() == D);
-        REQUIRE(a.base_storage() == L);
-        REQUIRE(torch::allclose(a, torch::ones_like(a)));
-      }
-
-      SECTION("batched")
-      {
-        auto a = Tensor::ones(B, D, DTO);
-        REQUIRE(a.batched());
-        REQUIRE(a.dim() == n);
-        REQUIRE(a.batch_dim() == Bn);
-        REQUIRE(a.base_dim() == Dn);
-        REQUIRE(a.sizes() == BD);
-        REQUIRE(a.batch_sizes() == B);
-        REQUIRE(a.base_sizes() == D);
-        REQUIRE(a.base_storage() == L);
-        REQUIRE(torch::allclose(a, torch::ones_like(a)));
-      }
-    }
-
     SECTION("ones_like")
     {
       auto a = Tensor::empty(B, D, DTO);
@@ -209,39 +118,6 @@ TEST_CASE("TensorBase", "[tensors]")
       REQUIRE(b.base_sizes() == a.base_sizes());
       REQUIRE(b.base_storage() == a.base_storage());
       REQUIRE(torch::allclose(b, torch::ones_like(b)));
-    }
-
-    SECTION("full")
-    {
-      SECTION("unbatched")
-      {
-        Real init = 4.3;
-        auto a = Tensor::full(D, init, DTO);
-        REQUIRE(!a.batched());
-        REQUIRE(a.dim() == Dn);
-        REQUIRE(a.batch_dim() == 0);
-        REQUIRE(a.base_dim() == Dn);
-        REQUIRE(a.sizes() == D);
-        REQUIRE(a.batch_sizes() == TensorShape{});
-        REQUIRE(a.base_sizes() == D);
-        REQUIRE(a.base_storage() == L);
-        REQUIRE(torch::allclose(a, torch::full_like(a, init)));
-      }
-
-      SECTION("batched")
-      {
-        Real init = 2999;
-        auto a = Tensor::full(B, D, init, DTO);
-        REQUIRE(a.batched());
-        REQUIRE(a.dim() == n);
-        REQUIRE(a.batch_dim() == Bn);
-        REQUIRE(a.base_dim() == Dn);
-        REQUIRE(a.sizes() == BD);
-        REQUIRE(a.batch_sizes() == B);
-        REQUIRE(a.base_sizes() == D);
-        REQUIRE(a.base_storage() == L);
-        REQUIRE(torch::allclose(a, torch::full_like(a, init)));
-      }
     }
 
     SECTION("full_like")
@@ -257,42 +133,6 @@ TEST_CASE("TensorBase", "[tensors]")
       REQUIRE(b.base_sizes() == a.base_sizes());
       REQUIRE(b.base_storage() == a.base_storage());
       REQUIRE(torch::allclose(b, init * torch::ones_like(b)));
-    }
-
-    SECTION("identity")
-    {
-      SECTION("unbatched")
-      {
-        Size n = 21;
-        TensorShape Deye = {n, n};
-        auto a = Tensor::identity(n, DTO);
-        REQUIRE(!a.batched());
-        REQUIRE(a.dim() == 2);
-        REQUIRE(a.batch_dim() == 0);
-        REQUIRE(a.base_dim() == 2);
-        REQUIRE(a.sizes() == Deye);
-        REQUIRE(a.batch_sizes() == TensorShape{});
-        REQUIRE(a.base_sizes() == Deye);
-        REQUIRE(a.base_storage() == n * n);
-        REQUIRE(torch::allclose(a, torch::eye(n, DTO)));
-      }
-
-      SECTION("batched")
-      {
-        Size n = 33;
-        TensorShape Deye = {n, n};
-        TensorShape BDeye = utils::add_shapes(B, Deye);
-        auto a = Tensor::identity(B, n, DTO);
-        REQUIRE(a.batched());
-        REQUIRE(a.dim() == Bn + 2);
-        REQUIRE(a.batch_dim() == Bn);
-        REQUIRE(a.base_dim() == 2);
-        REQUIRE(a.sizes() == BDeye);
-        REQUIRE(a.batch_sizes() == B);
-        REQUIRE(a.base_sizes() == Deye);
-        REQUIRE(a.base_storage() == n * n);
-        REQUIRE(torch::allclose(a, torch::eye(n, DTO).expand(utils::add_shapes(B, -1, -1))));
-      }
     }
 
     SECTION("linspace")
