@@ -58,9 +58,12 @@ TEST_CASE("jit", "[jit]")
 
 TEST_CASE("StaticGraphFunction", "[jit]")
 {
-  auto f = [](torch::Tensor & x) -> std::tuple<torch::Tensor> { return {x + 1}; };
-  auto f_jit = neml2::jit::StaticGraphFunction<std::tuple<torch::Tensor>, torch::Tensor>(
-      "f", f, std::make_tuple(torch::ones({1, 2, 3})));
-  auto [y] = f_jit(torch::full({2, 3}, 5.0));
-  REQUIRE(torch::allclose(y, torch::full({2, 3}, 6.0)));
+  SECTION("basic")
+  {
+    auto f = [](torch::Tensor & x) -> std::tuple<torch::Tensor> { return {x + 1}; };
+    auto f_jit = neml2::jit::StaticGraphFunction<std::tuple<torch::Tensor>, torch::Tensor>(
+        "f", f, std::make_tuple(torch::ones({1, 2, 3})));
+    auto [y] = f_jit(torch::full({2, 3}, 5.0));
+    REQUIRE(torch::allclose(y, torch::full({2, 3}, 6.0)));
+  }
 }

@@ -65,7 +65,7 @@ TEST_CASE("utils", "[misc]")
     // 1. Same base shapes
     // 2. Batch shapes (can be empty) are broadcastable
     auto A2 = Tensor::empty({1, 2}, {5, 3}, DTO);
-    auto B2 = Tensor::empty({}, {5, 3}, DTO);
+    auto B2 = Tensor::empty(TensorShape{}, {5, 3}, DTO);
     REQUIRE(broadcastable(A2, B2));
 
     // Not broadcastable: batch-broadcastable but base shapes are different

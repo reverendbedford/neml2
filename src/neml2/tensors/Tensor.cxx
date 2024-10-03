@@ -23,18 +23,19 @@
 // THE SOFTWARE.
 
 #include "neml2/tensors/Tensor.h"
+#include "neml2/jit/utils.h"
 
 namespace neml2
 {
 Tensor
-Tensor::empty(const TensorShapeRef & base_shape, const torch::TensorOptions & options)
+Tensor::empty(TensorShapeRef base_shape, const torch::TensorOptions & options)
 {
   return Tensor(torch::empty(base_shape, options), 0);
 }
 
 Tensor
-Tensor::empty(const TensorShapeRef & batch_shape,
-              const TensorShapeRef & base_shape,
+Tensor::empty(TensorShapeRef batch_shape,
+              TensorShapeRef base_shape,
               const torch::TensorOptions & options)
 {
   return Tensor(torch::empty(utils::add_shapes(batch_shape, base_shape), options),
@@ -42,14 +43,30 @@ Tensor::empty(const TensorShapeRef & batch_shape,
 }
 
 Tensor
-Tensor::zeros(const TensorShapeRef & base_shape, const torch::TensorOptions & options)
+Tensor::empty(const torch::Tensor & batch_shape,
+              TensorShapeRef base_shape,
+              const torch::TensorOptions & options)
+{
+  neml_assert_tracing();
+
+  // Record batch shape
+  auto batch_shape_vec = jit::tensor_to_shape(batch_shape);
+  for (Size i = 0; i < (Size)batch_shape_vec.size(); ++i)
+    torch::jit::tracer::ArgumentStash::stashIntArrayRefElem(
+        "size", batch_shape_vec.size() + base_shape.size(), i, batch_shape.index({i}));
+
+  return Tensor::empty(batch_shape_vec, base_shape, options);
+}
+
+Tensor
+Tensor::zeros(TensorShapeRef base_shape, const torch::TensorOptions & options)
 {
   return Tensor(torch::zeros(base_shape, options), 0);
 }
 
 Tensor
-Tensor::zeros(const TensorShapeRef & batch_shape,
-              const TensorShapeRef & base_shape,
+Tensor::zeros(TensorShapeRef batch_shape,
+              TensorShapeRef base_shape,
               const torch::TensorOptions & options)
 {
   return Tensor(torch::zeros(utils::add_shapes(batch_shape, base_shape), options),
@@ -57,14 +74,14 @@ Tensor::zeros(const TensorShapeRef & batch_shape,
 }
 
 Tensor
-Tensor::ones(const TensorShapeRef & base_shape, const torch::TensorOptions & options)
+Tensor::ones(TensorShapeRef base_shape, const torch::TensorOptions & options)
 {
   return Tensor(torch::ones(base_shape, options), 0);
 }
 
 Tensor
-Tensor::ones(const TensorShapeRef & batch_shape,
-             const TensorShapeRef & base_shape,
+Tensor::ones(TensorShapeRef batch_shape,
+             TensorShapeRef base_shape,
              const torch::TensorOptions & options)
 {
   return Tensor(torch::ones(utils::add_shapes(batch_shape, base_shape), options),
@@ -72,14 +89,14 @@ Tensor::ones(const TensorShapeRef & batch_shape,
 }
 
 Tensor
-Tensor::full(const TensorShapeRef & base_shape, Real init, const torch::TensorOptions & options)
+Tensor::full(TensorShapeRef base_shape, Real init, const torch::TensorOptions & options)
 {
   return Tensor(torch::full(base_shape, init, options), 0);
 }
 
 Tensor
-Tensor::full(const TensorShapeRef & batch_shape,
-             const TensorShapeRef & base_shape,
+Tensor::full(TensorShapeRef batch_shape,
+             TensorShapeRef base_shape,
              Real init,
              const torch::TensorOptions & options)
 {
@@ -94,7 +111,7 @@ Tensor::identity(Size n, const torch::TensorOptions & options)
 }
 
 Tensor
-Tensor::identity(const TensorShapeRef & batch_shape, Size n, const torch::TensorOptions & options)
+Tensor::identity(TensorShapeRef batch_shape, Size n, const torch::TensorOptions & options)
 {
   return identity(n, options).batch_expand_copy(batch_shape);
 }

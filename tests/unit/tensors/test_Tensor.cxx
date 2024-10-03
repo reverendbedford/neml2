@@ -25,6 +25,7 @@
 #include <catch2/catch_test_macros.hpp>
 
 #include "neml2/tensors/Tensor.h"
+#include "neml2/jit/StaticGraphFunction.h"
 
 using namespace neml2;
 
@@ -66,6 +67,16 @@ TEST_CASE("Tensor", "[tensors]")
       REQUIRE(a.batch_sizes() == B);
       REQUIRE(a.base_sizes() == D);
       REQUIRE(a.base_storage() == L);
+    }
+
+    SECTION("jit")
+    {
+      auto f = [&D, &DTO](torch::Tensor & batch_shape) -> std::tuple<torch::Tensor>
+      { return {Tensor::empty(batch_shape, D, DTO)}; };
+      auto f_jit = neml2::jit::StaticGraphFunction<std::tuple<torch::Tensor>, torch::Tensor>(
+          "f", f, std::make_tuple(torch::tensor({2, 3}, DTO.dtype(torch::kInt64))));
+      auto [y] = f_jit(torch::tensor({5, 2}, DTO.dtype(torch::kInt64)));
+      REQUIRE(TensorShape(y.sizes()) == utils::add_shapes(TensorShape{5, 2}, D));
     }
   }
 
