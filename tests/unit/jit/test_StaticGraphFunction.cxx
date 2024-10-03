@@ -25,15 +25,42 @@
 #include <catch2/catch_test_macros.hpp>
 
 #include "neml2/jit/StaticGraphFunction.h"
+#include "neml2/tensors/Tensor.h"
 
-using namespace neml2;
+TEST_CASE("jit", "[jit]")
+{
+  SECTION("tuple_to_stack")
+  {
+    auto tuple =
+        std::make_tuple(torch::ones({1, 3, 2}), torch::ones({1, 2, 3}), torch::ones({5, 6}));
+
+    auto stack = neml2::jit::tuple_to_stack(tuple);
+
+    REQUIRE(torch::allclose(stack[0].toTensor(), torch::ones({1, 3, 2})));
+    REQUIRE(torch::allclose(stack[1].toTensor(), torch::ones({1, 2, 3})));
+    REQUIRE(torch::allclose(stack[2].toTensor(), torch::ones({5, 6})));
+  }
+
+  SECTION("stack_to_tuple")
+  {
+    torch::jit::Stack stack;
+    stack.push_back(torch::ones({1, 3, 2}));
+    stack.push_back(torch::ones({1, 2, 3}));
+    stack.push_back(torch::ones({5, 6}));
+
+    auto [a, b, c] = neml2::jit::stack_to_tuple<torch::Tensor, torch::Tensor, torch::Tensor>(stack);
+
+    REQUIRE(torch::allclose(a, torch::ones({1, 3, 2})));
+    REQUIRE(torch::allclose(b, torch::ones({1, 2, 3})));
+    REQUIRE(torch::allclose(c, torch::ones({5, 6})));
+  }
+}
 
 TEST_CASE("StaticGraphFunction", "[jit]")
 {
-  auto f = [](torch::jit::Stack inputs) -> torch::jit::Stack
-  {
-    auto x = inputs[0].toTensor();
-    return x.reshape({x.size(0), 3, 2});
-  };
-  auto f_jit = StaticGraphFunction("f", f, torch::rand({1, 6}));
+  auto f = [](torch::Tensor & x) -> std::tuple<torch::Tensor> { return {x + 1}; };
+  auto f_jit = neml2::jit::StaticGraphFunction<std::tuple<torch::Tensor>, torch::Tensor>(
+      "f", f, std::make_tuple(torch::ones({1, 2, 3})));
+  auto [y] = f_jit(torch::full({2, 3}, 5.0));
+  REQUIRE(torch::allclose(y, torch::full({2, 3}, 6.0)));
 }

@@ -27,12 +27,12 @@
 
 #include "utils.h"
 #include "neml2/models/Model.h"
+#include "neml2/jit/StaticGraphFunction.h"
 
 using namespace neml2;
 
 TEST_CASE("Model", "[models]")
 {
-
   SECTION("check_input")
   {
     auto & model = reload_model("unit/models/ComposedModel3.i", "model");
@@ -117,5 +117,49 @@ TEST_CASE("Model", "[models]")
               "This model is part of a nonlinear system. At least one of the input variables is "
               "solve-dependent, so all output variables MUST be solve-dependent"));
     }
+  }
+
+  SECTION("traceability")
+  {
+    auto & model = reload_model("unit/models/SR2LinearCombination.i", "model");
+    auto B = TensorShape{5, 2};
+    auto n = model.input_axis().storage_size();
+    auto S = utils::add_shapes(B, n);
+    model.reinit(B);
+
+    // Trace the forward operator
+    auto forward = [&model](torch::Tensor & x) -> std::tuple<torch::Tensor>
+    { return {torch::Tensor(model.value(LabeledVector(x, {&model.input_axis()})))}; };
+    auto forward_jit = neml2::jit::StaticGraphFunction<std::tuple<torch::Tensor>, torch::Tensor>(
+        "model.forward", forward, std::make_tuple(torch::zeros(S)));
+
+    // Traced forward operator should give results matching those given by the original one
+    auto [y] = forward_jit(torch::ones(S));
+    auto y_ref = model.value(LabeledVector(torch::ones(S), {&model.input_axis()}));
+    REQUIRE(torch::allclose(y, y_ref));
+
+    forward_jit.function().graph()->dump();
+  }
+
+  SECTION("generalizability")
+  {
+    auto & model = reload_model("unit/models/SR2LinearCombination.i", "model");
+    auto B = TensorShape{5, 2};
+    auto n = model.input_axis().storage_size();
+    auto S = utils::add_shapes(B, n);
+    model.reinit({1, 1});
+
+    // Trace the forward operator
+    auto forward = [&model](torch::Tensor & x) -> std::tuple<torch::Tensor>
+    { return {torch::Tensor(model.value(LabeledVector(x, {&model.input_axis()})))}; };
+    auto forward_jit = neml2::jit::StaticGraphFunction<std::tuple<torch::Tensor>, torch::Tensor>(
+        "model.forward", forward, std::make_tuple(torch::zeros({1, 1, n})));
+
+    // Traced forward operator should give results matching those given by the original one
+    auto [y] = forward_jit(torch::ones(S));
+    auto y_ref = model.value(LabeledVector(torch::ones({1, 1, n}), {&model.input_axis()}));
+    REQUIRE(torch::allclose(y, y_ref));
+
+    forward_jit.function().graph()->dump();
   }
 }

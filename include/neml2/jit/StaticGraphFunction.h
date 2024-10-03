@@ -27,21 +27,40 @@
 #include <torch/csrc/jit/frontend/tracer.h>
 #include <torch/jit.h>
 
+#include "neml2/misc/error.h"
+
 namespace neml2
 {
+namespace jit
+{
+/// Convert a tuple into a stack
+template <typename... Args>
+torch::jit::Stack tuple_to_stack(const std::tuple<Args...> & tuple);
+
+/// Convert a stack into a tuple (the stack is consumed)
+template <typename... Args>
+std::tuple<Args...> stack_to_tuple(torch::jit::Stack & stack);
+
+namespace details
+{
+template <size_t i, typename... Args>
+void stack_to_tuple_impl(torch::jit::Stack & stack, std::tuple<Args...> & tuple);
+}
+
 /**
  * @brief A traced function with static call signature (input and output types determined at
  * compile-time).
  *
- * @tparam OutputTypes Tuple of output types
- * @tparam InputTypes Tuple of input types
+ * @tparam OutputType Output type
+ * @tparam InputTypes Input types
  */
-template <typename OutputTypes, typename InputTypes>
+template <typename OutputType, typename... InputTypes>
 class StaticGraphFunction
 {
 public:
   /**
-   * @brief Construct a new StaticGraphFunction object by tracing the given function with the given
+   * @brief Construct a new StaticGraphFunction object by tracing the given function with the
+   given
    * example inputs
    *
    * @param name Function name
@@ -49,30 +68,23 @@ public:
    * @param x Example inputs
    */
   StaticGraphFunction(c10::QualifiedName name,
-                      const std::function<OutputTypes(InputTypes)> & f,
-                      const InputTypes & x);
+                      const std::function<OutputType(InputTypes &...)> & f,
+                      const std::tuple<InputTypes...> & x);
 
   /// Call the traced function and return the outputs
-  template <typename... Args>
-  OutputTypes operator()(Args &&... args);
+  OutputType operator()(InputTypes &&... args);
+
+  /// Return the underlying graph function
+  const torch::jit::GraphFunction & function() const { return _graph_function; }
+
+  /// Return the underlying graph function
+  torch::jit::GraphFunction & function() { return _graph_function; }
 
 private:
   /// Helper to create the traced function graph
-  std::shared_ptr<torch::jit::Graph> create_graph(const std::function<OutputTypes(InputTypes)> & f,
-                                                  const InputTypes & x) const;
-
-  /// Helper to create the stack for the tracer
-  torch::jit::Stack make_stack(const InputTypes & x) const;
-
-  /// Helper to recursively extract outputs from the stack
-  template <size_t i>
-  void extract_outputs(torch::jit::Stack & stack, OutputTypes & y) const
-  {
-    using T = typename std::tuple_element<i, OutputTypes>::type;
-    std::get<i>(y) = std::move(stack[i]).template to<T>();
-    if constexpr (i > 0)
-      extract_outputs<i - 1>(stack, y);
-  }
+  std::shared_ptr<torch::jit::Graph>
+  create_graph(const std::function<OutputType(InputTypes &...)> & f,
+               const std::tuple<InputTypes...> & x) const;
 
   /// The function responsible for handling the function call
   torch::jit::GraphFunction _graph_function;
@@ -81,53 +93,83 @@ private:
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Implementation
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template <typename OutputTypes, typename InputTypes>
-StaticGraphFunction<OutputTypes, InputTypes>::StaticGraphFunction(
-    c10::QualifiedName name, const std::function<OutputTypes(InputTypes)> & f, const InputTypes & x)
-  : _graph_function(name, std::move(create_graph()), nullptr)
-{
-}
 
-template <typename OutputTypes, typename InputTypes>
 template <typename... Args>
-OutputTypes
-StaticGraphFunction<OutputTypes, InputTypes>::operator()(Args &&... args)
+torch::jit::Stack
+tuple_to_stack(const std::tuple<Args...> & tuple)
 {
-  auto x = std::make_tuple(std::forward<Args>(args)...);
-  auto stack = make_stack(x);
-  _graph_function.run(stack);
-  OutputTypes y;
-  neml_assert_dbg(stack.size() == std::tuple_size_v<OutputTypes>,
-                  "Number of outputs on the stack does not match the expected number of outputs");
-  extract_outputs<std::tuple_size_v<OutputTypes> - 1>(stack, y);
-  torch::jit::drop(stack, stack.size());
-  return y;
+  torch::jit::Stack stack;
+  stack.reserve(sizeof...(Args));
+  std::apply([&stack](auto &&... args)
+             { (stack.push_back(std::forward<decltype(args)>(args)), ...); },
+             tuple);
+  return stack;
 }
 
-template <typename OutputTypes, typename InputTypes>
+template <typename... Args>
+std::tuple<Args...>
+stack_to_tuple(torch::jit::Stack & stack)
+{
+  std::tuple<Args...> tuple;
+  details::stack_to_tuple_impl<sizeof...(Args) - 1, Args...>(stack, tuple);
+  stack.clear();
+  return tuple;
+}
+
+namespace details
+{
+template <size_t i, typename... Args>
+void
+stack_to_tuple_impl(torch::jit::Stack & stack, std::tuple<Args...> & tuple)
+{
+  using T = typename std::tuple_element_t<i, std::tuple<Args...>>;
+  std::get<i>(tuple) = std::move(stack[i]).template to<T>();
+  if constexpr (i > 0)
+    stack_to_tuple_impl<i - 1, Args...>(stack, tuple);
+}
+}
+
+template <typename OutputType, typename... InputTypes>
+StaticGraphFunction<OutputType, InputTypes...>::StaticGraphFunction(
+    c10::QualifiedName name,
+    const std::function<OutputType(InputTypes &...)> & f,
+    const std::tuple<InputTypes...> & x)
+  : _graph_function(name, std::move(create_graph(f, x)), nullptr)
+{
+}
+
+template <typename OutputType, typename... InputTypes>
+OutputType
+StaticGraphFunction<OutputType, InputTypes...>::operator()(InputTypes &&... args)
+{
+  auto stack = tuple_to_stack(std::make_tuple(std::forward<InputTypes>(args)...));
+  _graph_function.run(stack);
+  neml_assert_dbg(stack.size() == std::tuple_size_v<OutputType>,
+                  "Number of outputs on the stack does not match the expected number of outputs");
+  OutputType output;
+  details::stack_to_tuple_impl<std::tuple_size_v<OutputType> - 1>(stack, output);
+  return output;
+}
+
+template <typename OutputType, typename... InputTypes>
 std::shared_ptr<torch::jit::Graph>
-StaticGraphFunction<OutputTypes, InputTypes>::create_graph(
-    const std::function<OutputTypes(InputTypes)> & f, const InputTypes & x) const
+StaticGraphFunction<OutputType, InputTypes...>::create_graph(
+    const std::function<OutputType(InputTypes &...)> & f, const std::tuple<InputTypes...> & x) const
 {
   auto var_name_lookup_fn = [](const torch::autograd::Variable & /*var*/) -> std::string
   { return ""; };
-  return std::move(std::get<0>(torch::jit::tracer::trace(make_stack(x),
-                                                         f,
+  auto f_wrap = [&f](torch::jit::Stack inputs) -> torch::jit::Stack
+  {
+    auto x = stack_to_tuple<InputTypes...>(inputs);
+    return tuple_to_stack(std::apply(f, x));
+  };
+  return std::move(std::get<0>(torch::jit::tracer::trace(tuple_to_stack(x),
+                                                         f_wrap,
                                                          var_name_lookup_fn,
                                                          /*strict=*/true,
                                                          /*force_outplace*/ false))
                        ->graph);
 }
 
-template <typename OutputTypes, typename InputTypes>
-torch::jit::Stack
-StaticGraphFunction<OutputTypes, InputTypes>::make_stack(const InputTypes & x) const
-{
-  torch::jit::Stack stack;
-  stack.reserve(std::tuple_size_v<InputTypes>);
-  std::apply(
-      [&stack](auto &&... args) { (stack.push_back(std::forward<decltype(args)>(args)), ...); }, x);
-  return stack;
-}
-
+} // namespace jit
 } // namespace neml2
