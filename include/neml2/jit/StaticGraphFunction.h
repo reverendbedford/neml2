@@ -57,7 +57,7 @@ public:
                       const std::tuple<InputTypes...> & x);
 
   /// Call the traced function and return the outputs
-  OutputType operator()(InputTypes &&... args);
+  OutputType operator()(const InputTypes &... args);
 
   /// Return the underlying graph function
   const torch::jit::GraphFunction & function() const { return _graph_function; }
@@ -90,9 +90,9 @@ StaticGraphFunction<OutputType, InputTypes...>::StaticGraphFunction(
 
 template <typename OutputType, typename... InputTypes>
 OutputType
-StaticGraphFunction<OutputType, InputTypes...>::operator()(InputTypes &&... args)
+StaticGraphFunction<OutputType, InputTypes...>::operator()(const InputTypes &... args)
 {
-  auto stack = tuple_to_stack(std::make_tuple(std::forward<InputTypes>(args)...));
+  auto stack = tuple_to_stack(std::make_tuple(args...));
   _graph_function.run(stack);
   neml_assert_dbg(stack.size() == std::tuple_size_v<OutputType>,
                   "Number of outputs on the stack does not match the expected number of outputs");

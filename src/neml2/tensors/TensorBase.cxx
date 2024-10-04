@@ -158,6 +158,7 @@ TraceableTensorShape
 TensorBase<Derived>::batch_sizes() const
 {
   // Put the batch sizes into the traced graph if we are tracing
+  // TODO: This should be optimized
   if (torch::jit::tracer::isTracing())
   {
     std::vector<torch::Tensor> sizes;
