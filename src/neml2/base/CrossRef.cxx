@@ -49,7 +49,7 @@ CrossRef<Tensor>::operator Tensor() const
   try
   {
     // If it is just a number, we can still create a Scalar out of it
-    return Tensor::full({}, {}, utils::parse<Real>(_raw_str), default_tensor_options());
+    return Scalar::full(utils::parse<Real>(_raw_str), default_tensor_options());
   }
   catch (const ParserException & e)
   {

@@ -143,23 +143,25 @@ TEST_CASE("Model", "[models]")
 
   SECTION("generalizability")
   {
-    auto & model = reload_model("unit/models/SR2LinearCombination.i", "model");
-    auto B = TensorShape{5, 2};
-    auto n = model.input_axis().storage_size();
-    auto S = utils::add_shapes(B, n);
-    model.reinit({1, 1});
+    SECTION("reinit")
+    {
+      auto & model = reload_model("unit/models/SR2LinearCombination.i", "model");
+      auto B = TensorShape{5, 2};
 
-    // Trace the forward operator
-    auto forward = [&model](torch::Tensor & x) -> std::tuple<torch::Tensor>
-    { return {torch::Tensor(model.value(LabeledVector(x, {&model.input_axis()})))}; };
-    auto forward_jit = neml2::jit::StaticGraphFunction<std::tuple<torch::Tensor>, torch::Tensor>(
-        "model.forward", forward, std::make_tuple(torch::zeros({1, 1, n})));
+      // Trace just the reinit method
+      auto forward = [&model](torch::Tensor & batch_shape) -> std::tuple<torch::Tensor>
+      {
+        model.reinit(batch_shape);
+        return {model.output_storage()};
+      };
+      auto forward_jit = neml2::jit::StaticGraphFunction<std::tuple<torch::Tensor>, torch::Tensor>(
+          "model.forward", forward, std::make_tuple(torch::tensor({1, 1}, torch::kInt64)));
 
-    // Traced forward operator should give results matching those given by the original one
-    auto [y] = forward_jit(torch::ones(S));
-    auto y_ref = model.value(LabeledVector(torch::ones({1, 1, n}), {&model.input_axis()}));
-    REQUIRE(torch::allclose(y, y_ref));
+      // Allocation should be generalizable
+      auto [y] = forward_jit(torch::tensor({5, 2}, torch::kInt64));
+      REQUIRE(TensorShape(y.sizes()) == TensorShape{5, 2, model.output_axis().storage_size()});
 
-    forward_jit.function().graph()->dump();
+      forward_jit.function().graph()->dump();
+    }
   }
 }

@@ -51,6 +51,14 @@ pad_prepend(TensorShapeRef s, Size dim, Size pad)
   return s2;
 }
 
+torch::Tensor
+pad_prepend(const torch::Tensor & s, Size dim, Size pad)
+{
+  neml_assert(s.scalar_type() == torch::kInt64, "pad_prepend: shape must be of type int64");
+  neml_assert(s.dim() == 1, "pad_prepend: shape must be 1D");
+  return torch::cat({torch::full({dim - s.size(0)}, pad, s.options()), s});
+}
+
 TensorShape
 pad_append(TensorShapeRef s, Size dim, Size pad)
 {

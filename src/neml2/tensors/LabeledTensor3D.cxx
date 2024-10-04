@@ -48,9 +48,12 @@ LabeledTensor3D::chain(const LabeledTensor3D & other,
   // (d2y/dx2)_{ijk} = (d2y/du2)_{ipq} (du/dx)_{pj} (du/dx)_{qk} + (dy/du)_{ip} (d2u/dx2)_{pjk}
 
   // Make sure we are conformal
-  neml_assert_dbg(batch_sizes() == other.batch_sizes(), "Batch sizes are not the same");
-  neml_assert_dbg(batch_sizes() == dself.batch_sizes(), "Batch sizes are not the same");
-  neml_assert_dbg(batch_sizes() == dother.batch_sizes(), "Batch sizes are not the same");
+  neml_assert_dbg(batch_sizes().concrete() == other.batch_sizes().concrete(),
+                  "Batch sizes are not the same");
+  neml_assert_dbg(batch_sizes().concrete() == dself.batch_sizes().concrete(),
+                  "Batch sizes are not the same");
+  neml_assert_dbg(batch_sizes().concrete() == dother.batch_sizes().concrete(),
+                  "Batch sizes are not the same");
   neml_assert_dbg(axis(1) == axis(2), "Self labels are not conformal");
   neml_assert_dbg(other.axis(1) == other.axis(2), "Other labels are not conformal");
   neml_assert_dbg(axis(2) == other.axis(0), "Self and other labels are not conformal");

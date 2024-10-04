@@ -46,9 +46,6 @@ torch::jit::Stack tuple_to_stack(const std::tuple<Args...> & tuple);
 template <typename... Args>
 std::tuple<Args...> stack_to_tuple(torch::jit::Stack & stack);
 
-/// Convert a tensor into a shape vector
-TensorShape tensor_to_shape(const torch::Tensor & tensor);
-
 namespace details
 {
 template <size_t i, typename... Args>

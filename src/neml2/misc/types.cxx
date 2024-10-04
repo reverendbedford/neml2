@@ -23,9 +23,114 @@
 // THE SOFTWARE.
 
 #include "neml2/misc/types.h"
+#include "neml2/misc/error.h"
 
 namespace neml2
 {
+TraceableTensorShape::TraceableTensorShape(TensorShapeRef shape)
+  : std::variant<TensorShape, torch::Tensor>(TensorShape(shape.begin(), shape.end()))
+{
+}
+
+TraceableTensorShape::TraceableTensorShape(Size shape)
+  : std::variant<TensorShape, torch::Tensor>(TensorShape{shape})
+{
+}
+
+TraceableTensorShape::TraceableTensorShape(const std::initializer_list<Size> & shape)
+  : std::variant<TensorShape, torch::Tensor>(TensorShape(shape))
+{
+}
+
+const torch::Tensor *
+TraceableTensorShape::traceable() const noexcept
+{
+  return std::get_if<torch::Tensor>(this);
+}
+
+Size
+TraceableTensorShape::size() const
+{
+  if (const auto * const t = traceable())
+  {
+    ensure_shape();
+    return t->size(0);
+  }
+  return std::get<TensorShape>(*this).size();
+}
+
+TraceableTensorShape
+TraceableTensorShape::slice(Size start, Size end) const
+{
+  if (const auto * const t = traceable())
+  {
+    ensure_shape();
+    return t->index({indexing::Slice(start, end)});
+  }
+
+  const auto & shape = std::get<TensorShape>(*this);
+  return TensorShape(shape.begin() + start, shape.begin() + end);
+}
+
+TraceableTensorShape
+TraceableTensorShape::slice(Size N) const
+{
+  if (const auto * const t = traceable())
+  {
+    ensure_shape();
+    return t->index({indexing::Slice(N)});
+  }
+
+  const auto & shape = std::get<TensorShape>(*this);
+  return TensorShape(shape.begin() + N, shape.end());
+}
+
+TensorShape
+TraceableTensorShape::concrete() const
+{
+  if (const auto * const shape = traceable())
+  {
+    ensure_shape();
+    TensorShape shape_vec;
+    for (Size i = 0; i < shape->size(0); ++i)
+      shape_vec.push_back(shape->index({i}).item<Size>());
+    return shape_vec;
+  }
+
+  return std::get<TensorShape>(*this);
+}
+
+void
+TraceableTensorShape::ensure_shape() const
+{
+  if (const auto * const shape = traceable())
+  {
+    neml_assert(shape->scalar_type() == torch::kInt64,
+                "TraceableTensorShape: shape must be of type int64");
+    neml_assert(shape->dim() == 1, "TraceableTensorShape: shape must be 1D");
+  }
+}
+
+const torch::Tensor *
+TraceableSize::traceable() const noexcept
+{
+  return std::get_if<torch::Tensor>(this);
+}
+
+Size
+TraceableSize::concrete() const
+{
+  if (const auto * const size = traceable())
+  {
+    neml_assert_dbg(size->scalar_type() == torch::kInt64,
+                    "TraceableSize: size must be of type int64");
+    neml_assert_dbg(size->dim() == 0, "TraceableSize: shape must be 0D");
+    return size->item<Size>();
+  }
+
+  return std::get<Size>(*this);
+}
+
 torch::TensorOptions &
 default_tensor_options()
 {

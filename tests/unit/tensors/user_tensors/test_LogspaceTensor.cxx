@@ -36,7 +36,7 @@ TEST_CASE("LogspaceTensor", "[tensors/user_tensors]")
   SECTION("LogspaceTensor")
   {
     const auto a = Factory::get_object_ptr<Tensor>("Tensors", "a");
-    REQUIRE(a->batch_sizes() == TensorShape{100, 2, 1});
+    REQUIRE(a->batch_sizes().concrete() == TensorShape{100, 2, 1});
     REQUIRE(a->base_sizes() == TensorShape{2, 3});
 
     const auto a0 = Factory::get_object_ptr<Tensor>("Tensors", "a0");

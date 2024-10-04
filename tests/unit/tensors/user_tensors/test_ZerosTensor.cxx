@@ -36,7 +36,7 @@ TEST_CASE("ZerosTensor", "[tensors/user_tensors]")
   SECTION("ZerosTensor")
   {
     const auto a = Factory::get_object_ptr<Tensor>("Tensors", "a");
-    REQUIRE(a->batch_sizes() == TensorShape{2, 1});
+    REQUIRE(a->batch_sizes().concrete() == TensorShape{2, 1});
     REQUIRE(a->base_sizes() == TensorShape{2, 3});
     REQUIRE(torch::allclose(*a, Tensor::zeros({2, 1}, {2, 3}, default_tensor_options())));
   }

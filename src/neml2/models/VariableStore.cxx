@@ -29,7 +29,8 @@ namespace neml2
 {
 VariableStore::VariableStore(const OptionSet & options, Model * object)
   : _object(object),
-    _options(options),
+    _input_options(options),
+    _options(default_tensor_options()),
     _input_axis(declare_axis("input")),
     _output_axis(declare_axis("output"))
 {
@@ -83,8 +84,16 @@ VariableStore::output_type(const VariableName & name) const
 }
 
 void
-VariableStore::cache(TensorShapeRef batch_shape)
+VariableStore::cache(const TraceableTensorShape & batch_shape,
+                     const torch::Device & device,
+                     const torch::Dtype & dtype)
 {
+  const auto batch_shape_vec = batch_shape.concrete();
+  neml_assert(!batch_shape_vec.empty(), "Batch shape must be non-empty");
+  _batch_sizes = batch_shape;
+
+  _options = default_tensor_options().device(device).dtype(dtype);
+
   for (auto && [name, var] : input_variables())
     var.cache(batch_shape);
   for (auto && [name, var] : output_variables())
@@ -92,7 +101,7 @@ VariableStore::cache(TensorShapeRef batch_shape)
 }
 
 void
-VariableStore::allocate_variables(TensorShapeRef batch_shape,
+VariableStore::allocate_variables(const TraceableTensorShape & batch_shape,
                                   const torch::TensorOptions & options,
                                   bool in,
                                   bool out,

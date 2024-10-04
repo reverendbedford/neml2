@@ -25,6 +25,8 @@
 #include "neml2/tensors/TensorBase.h"
 #include "neml2/tensors/tensors.h"
 
+#include "neml2/jit/utils.h"
+
 namespace neml2
 {
 template <class Derived>
@@ -152,17 +154,30 @@ TensorBase<Derived>::base_dim() const
 }
 
 template <class Derived>
-TensorShapeRef
+TraceableTensorShape
 TensorBase<Derived>::batch_sizes() const
 {
+  // Put the batch sizes into the traced graph if we are tracing
+  if (torch::jit::tracer::isTracing())
+  {
+    std::vector<torch::Tensor> sizes;
+    for (Size i = 0; i < _batch_dim; ++i)
+      sizes.push_back(torch::jit::tracer::getSizeOf(*this, i));
+    return torch::stack(sizes);
+  }
+
   return sizes().slice(0, _batch_dim);
 }
 
 template <class Derived>
-Size
+TraceableSize
 TensorBase<Derived>::batch_size(Size index) const
 {
-  return batch_sizes()[index >= 0 ? index : index + batch_dim()];
+  // Put the batch size into the traced graph if we are tracing
+  if (torch::jit::tracer::isTracing())
+    return torch::jit::tracer::getSizeOf(*this, index >= 0 ? index : index + batch_dim());
+
+  return size(index >= 0 ? index : index + batch_dim());
 }
 
 template <class Derived>
@@ -227,50 +242,70 @@ TensorBase<Derived>::base_index_put_(indexing::TensorIndicesRef indices,
 
 template <class Derived>
 Derived
-TensorBase<Derived>::batch_expand(TensorShapeRef batch_size) const
+TensorBase<Derived>::batch_expand(const TraceableTensorShape & batch_shape) const
 {
   // We don't want to touch the base dimensions, so put -1 for them.
-  auto net = batch_size.vec();
+  auto net = batch_shape.concrete();
   net.insert(net.end(), base_dim(), -1);
-  return Derived(expand(net), batch_size.size());
+
+  // Record the batch sizes in the traced graph if we are tracing
+  if (const auto * const t = batch_shape.traceable())
+    for (Size i = 0; i < batch_shape.size(); ++i)
+      torch::jit::tracer::ArgumentStash::stashIntArrayRefElem("size", net.size(), i, t->index({i}));
+
+  return Derived(expand(net), batch_shape.size());
 }
 
 template <class Derived>
 neml2::Tensor
-TensorBase<Derived>::base_expand(TensorShapeRef base_size) const
+TensorBase<Derived>::base_expand(TensorShapeRef batch_shape) const
 {
   // We don't want to touch the batch dimensions, so put -1 for them.
-  auto net = base_size.vec();
+  auto net = batch_shape.vec();
   net.insert(net.begin(), batch_dim(), -1);
   return neml2::Tensor(expand(net), batch_dim());
 }
 
 template <class Derived>
 Derived
-TensorBase<Derived>::batch_expand_copy(TensorShapeRef batch_size) const
+TensorBase<Derived>::batch_expand_copy(const TraceableTensorShape & batch_shape) const
 {
-  return Derived(batch_expand(batch_size).contiguous(), batch_size.size());
+  return Derived(batch_expand(batch_shape).contiguous(), batch_shape.size());
 }
 
 template <class Derived>
 neml2::Tensor
-TensorBase<Derived>::base_expand_copy(TensorShapeRef base_size) const
+TensorBase<Derived>::base_expand_copy(TensorShapeRef batch_shape) const
 {
-  return neml2::Tensor(base_expand(base_size).contiguous(), batch_dim());
+  return neml2::Tensor(base_expand(batch_shape).contiguous(), batch_dim());
 }
 
 template <class Derived>
 Derived
-TensorBase<Derived>::batch_reshape(TensorShapeRef batch_shape) const
+TensorBase<Derived>::batch_reshape(const TraceableTensorShape & batch_shape) const
 {
-  return Derived(reshape(utils::add_shapes(batch_shape, base_sizes())), _batch_dim);
+  // Record the batch sizes in the traced graph if we are tracing
+  if (const auto * const t = batch_shape.traceable())
+    for (Size i = 0; i < batch_shape.size(); ++i)
+      torch::jit::tracer::ArgumentStash::stashIntArrayRefElem(
+          "shape", batch_shape.size() + base_dim(), i, t->index({i}));
+
+  return Derived(reshape(utils::add_shapes(batch_shape.concrete(), base_sizes())), _batch_dim);
 }
 
 template <class Derived>
 neml2::Tensor
 TensorBase<Derived>::base_reshape(TensorShapeRef base_shape) const
 {
-  return neml2::Tensor(reshape(utils::add_shapes(batch_sizes(), base_shape)), _batch_dim);
+  auto batch_shape = batch_sizes();
+
+  // Record the batch sizes in the traced graph if we are tracing
+  if (const auto * const t = batch_shape.traceable())
+    for (Size i = 0; i < batch_shape.size(); ++i)
+      torch::jit::tracer::ArgumentStash::stashIntArrayRefElem(
+          "shape", batch_shape.size() + base_shape.size(), i, t->index({i}));
+
+  return neml2::Tensor(reshape(utils::add_shapes(batch_shape.concrete(), base_shape)), _batch_dim);
 }
 
 template <class Derived>

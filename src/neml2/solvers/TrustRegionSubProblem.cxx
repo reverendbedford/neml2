@@ -35,7 +35,7 @@ TrustRegionSubProblem::TrustRegionSubProblem(const OptionSet & options)
 void
 TrustRegionSubProblem::reinit(const NonlinearSystem & system, const Scalar & delta)
 {
-  _batch_sizes = delta.batch_sizes().vec();
+  _batch_sizes = delta.batch_sizes();
   _options = delta.options();
 
   _solution = Scalar::zeros(_batch_sizes, _options);

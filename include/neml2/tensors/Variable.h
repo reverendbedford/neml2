@@ -46,7 +46,7 @@ public:
   virtual ~VariableBase() = default;
 
   /// Cache the variable's batch shape
-  virtual void cache(TensorShapeRef batch_shape);
+  virtual void cache(const TraceableTensorShape & batch_shape);
 
   /// Setup the variable's views into blocks of the storage
   virtual void setup_views(const LabeledVector * value,
@@ -81,7 +81,7 @@ public:
   const VariableBase * src() const { return _src; }
 
   /// Batch shape
-  TensorShapeRef batch_sizes() const { return _batch_sizes; }
+  const TraceableTensorShape & batch_sizes() const { return _batch_sizes; }
 
   /// Base shape
   virtual TensorShapeRef base_sizes() const = 0;
@@ -125,7 +125,7 @@ protected:
   const Model * _owner;
 
   /// Batch shape of this variable
-  TensorShape _batch_sizes;
+  TraceableTensorShape _batch_sizes;
 
   /// The raw (flattened) variable value
   Tensor _raw_value;
@@ -187,13 +187,13 @@ public:
   {
     VariableBase::setup_views(value, deriv, secderiv);
     if (value)
-      _value = T(_raw_value.view(sizes()), batch_dim());
+      _value = T(_raw_value.base_reshape(base_sizes()), batch_dim());
   }
 
   virtual void setup_views(const VariableBase * other) override
   {
     VariableBase::setup_views(other);
-    _value = T(_raw_value.view(sizes()), batch_dim());
+    _value = T(_raw_value.base_reshape(base_sizes()), batch_dim());
   }
 
   virtual void requires_grad_(bool req = true) override { _value.requires_grad_(req); }
@@ -240,10 +240,11 @@ public:
   operator T() const { return _value; }
 
   /// Set the batch shape and base shape according to \p val
-  virtual void cache(TensorShapeRef batch_shape) override
+  virtual void cache(const TraceableTensorShape & batch_shape) override
   {
     VariableBase::cache(batch_shape);
-    _sizes = utils::add_shapes(batch_shape, _base_sizes);
+    // TODO: make this traceable
+    _sizes = utils::add_shapes(batch_shape.concrete(), _base_sizes);
   }
 
   template <typename T2 = T, typename = typename std::enable_if_t<!std::is_same_v<T2, Tensor>>>

@@ -29,11 +29,11 @@
 namespace neml2
 {
 LabeledMatrix
-LabeledMatrix::identity(TensorShapeRef batch_size,
+LabeledMatrix::identity(const TraceableTensorShape & batch_shape,
                         const LabeledAxis & axis,
                         const torch::TensorOptions & options)
 {
-  return LabeledMatrix(Tensor::identity(batch_size, axis.storage_size(), options), {&axis, &axis});
+  return LabeledMatrix(Tensor::identity(batch_shape, axis.storage_size(), options), {&axis, &axis});
 }
 
 void
@@ -52,7 +52,7 @@ LabeledMatrix::chain(const LabeledMatrix & other) const
   // and the values of the input The main annoyance is just getting the names correct
 
   // Check that we are conformal
-  neml_assert_dbg(batch_sizes() == other.batch_sizes(),
+  neml_assert_dbg(batch_sizes().concrete() == other.batch_sizes().concrete(),
                   "LabeledMatrix batch sizes are not the same");
   neml_assert_dbg(axis(1) == other.axis(0), "Labels are not conformal");
 

@@ -40,28 +40,28 @@ TEST_CASE("UserTensor", "[tensors/user_tensors]")
     const auto a_correct = torch::tensor({{{1, 2, 3}, {4, 5, 6}}, {{7, 8, 9}, {10, 11, 12}}},
                                          default_tensor_options());
     REQUIRE(torch::allclose(*a, a_correct));
-    REQUIRE(a->batch_sizes() == TensorShape{2});
+    REQUIRE(a->batch_sizes().concrete() == TensorShape{2});
     REQUIRE(a->base_sizes() == TensorShape{2, 3});
 
     const auto b = Factory::get_object_ptr<Tensor>("Tensors", "b");
     const auto b_correct = torch::tensor({{{1, 2, 3}, {4, 5, 6}}, {{7, 8, 9}, {10, 11, 12}}},
                                          default_tensor_options());
     REQUIRE(torch::allclose(*b, b_correct));
-    REQUIRE(b->batch_sizes() == TensorShape{});
+    REQUIRE(b->batch_sizes().concrete() == TensorShape{});
     REQUIRE(b->base_sizes() == TensorShape{2, 2, 3});
 
     const auto c = Factory::get_object_ptr<Tensor>("Tensors", "c");
     const auto c_correct = torch::tensor({{{1, 2, 3}, {4, 5, 6}}, {{7, 8, 9}, {10, 11, 12}}},
                                          default_tensor_options());
     REQUIRE(torch::allclose(*c, c_correct));
-    REQUIRE(c->batch_sizes() == TensorShape{2, 2, 3});
+    REQUIRE(c->batch_sizes().concrete() == TensorShape{2, 2, 3});
     REQUIRE(c->base_sizes() == TensorShape{});
 
     const auto d = Factory::get_object_ptr<Tensor>("Tensors", "d");
     const auto d_correct =
         torch::tensor({{{1, 2, 3}, {4, 5, 6}}, {{1, 2, 3}, {4, 5, 6}}}, default_tensor_options());
     REQUIRE(torch::allclose(*d, d_correct));
-    REQUIRE(d->batch_sizes() == TensorShape{2});
+    REQUIRE(d->batch_sizes().concrete() == TensorShape{2});
     REQUIRE(d->base_sizes() == TensorShape{2, 3});
   }
 

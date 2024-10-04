@@ -44,9 +44,9 @@ VariableBase::VariableBase(const VariableName & name_in, const Model * owner)
 }
 
 void
-VariableBase::cache(TensorShapeRef batch_shape)
+VariableBase::cache(const TraceableTensorShape & batch_shape)
 {
-  _batch_sizes = batch_shape.vec();
+  _batch_sizes = batch_shape;
 }
 
 void
@@ -77,7 +77,7 @@ VariableBase::setup_views(const VariableBase * other)
   else
   {
     _src = other;
-    _raw_value = Tensor(other->raw_value().view(sizes()), batch_dim());
+    _raw_value = Tensor(other->raw_value().base_reshape(base_sizes()), batch_dim());
   }
 }
 

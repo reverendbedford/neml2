@@ -60,7 +60,7 @@ TEST_CASE("TensorBase", "[tensors]")
         REQUIRE(a.batch_dim() == Bn);
         REQUIRE(a.base_dim() == Dn);
         REQUIRE(a.sizes() == BD);
-        REQUIRE(a.batch_sizes() == B);
+        REQUIRE(a.batch_sizes().concrete() == B);
         REQUIRE(a.base_sizes() == D);
         REQUIRE(a.base_storage() == L);
       }
@@ -73,7 +73,7 @@ TEST_CASE("TensorBase", "[tensors]")
         REQUIRE(b.batch_dim() == a.batch_dim());
         REQUIRE(b.base_dim() == a.base_dim());
         REQUIRE(b.sizes() == a.sizes());
-        REQUIRE(b.batch_sizes() == a.batch_sizes());
+        REQUIRE(b.batch_sizes().concrete() == a.batch_sizes().concrete());
         REQUIRE(b.base_sizes() == a.base_sizes());
         REQUIRE(b.base_storage() == a.base_storage());
       }
@@ -87,7 +87,7 @@ TEST_CASE("TensorBase", "[tensors]")
       REQUIRE(b.batch_dim() == a.batch_dim());
       REQUIRE(b.base_dim() == a.base_dim());
       REQUIRE(b.sizes() == a.sizes());
-      REQUIRE(b.batch_sizes() == a.batch_sizes());
+      REQUIRE(b.batch_sizes().concrete() == a.batch_sizes().concrete());
       REQUIRE(b.base_sizes() == a.base_sizes());
       REQUIRE(b.base_storage() == a.base_storage());
     }
@@ -100,7 +100,7 @@ TEST_CASE("TensorBase", "[tensors]")
       REQUIRE(b.batch_dim() == a.batch_dim());
       REQUIRE(b.base_dim() == a.base_dim());
       REQUIRE(b.sizes() == a.sizes());
-      REQUIRE(b.batch_sizes() == a.batch_sizes());
+      REQUIRE(b.batch_sizes().concrete() == a.batch_sizes().concrete());
       REQUIRE(b.base_sizes() == a.base_sizes());
       REQUIRE(b.base_storage() == a.base_storage());
       REQUIRE(torch::allclose(b, torch::zeros_like(b)));
@@ -114,7 +114,7 @@ TEST_CASE("TensorBase", "[tensors]")
       REQUIRE(b.batch_dim() == a.batch_dim());
       REQUIRE(b.base_dim() == a.base_dim());
       REQUIRE(b.sizes() == a.sizes());
-      REQUIRE(b.batch_sizes() == a.batch_sizes());
+      REQUIRE(b.batch_sizes().concrete() == a.batch_sizes().concrete());
       REQUIRE(b.base_sizes() == a.base_sizes());
       REQUIRE(b.base_storage() == a.base_storage());
       REQUIRE(torch::allclose(b, torch::ones_like(b)));
@@ -129,7 +129,7 @@ TEST_CASE("TensorBase", "[tensors]")
       REQUIRE(b.batch_dim() == a.batch_dim());
       REQUIRE(b.base_dim() == a.base_dim());
       REQUIRE(b.sizes() == a.sizes());
-      REQUIRE(b.batch_sizes() == a.batch_sizes());
+      REQUIRE(b.batch_sizes().concrete() == a.batch_sizes().concrete());
       REQUIRE(b.base_sizes() == a.base_sizes());
       REQUIRE(b.base_storage() == a.base_storage());
       REQUIRE(torch::allclose(b, init * torch::ones_like(b)));
@@ -150,7 +150,7 @@ TEST_CASE("TensorBase", "[tensors]")
       REQUIRE(c.batch_dim() == Bn + 1);
       REQUIRE(c.base_dim() == Dn);
       REQUIRE(c.sizes() == BD_new);
-      REQUIRE(c.batch_sizes() == B_new);
+      REQUIRE(c.batch_sizes().concrete() == B_new);
       REQUIRE(c.base_sizes() == D);
       REQUIRE(c.base_storage() == L);
     }
@@ -225,7 +225,7 @@ TEST_CASE("TensorBase", "[tensors]")
       TensorShape s = {5, 8, 2, 2, 5};
       auto a = Tensor::full(s0, {3, 3}, 5.25324, DTO);
       auto b = a.batch_expand(s);
-      REQUIRE(b.batch_sizes() == s);
+      REQUIRE(b.batch_sizes().concrete() == s);
       REQUIRE(b.base_sizes() == a.base_sizes());
       REQUIRE(torch::sum(a - b).item<Real>() == Catch::Approx(0));
     }
@@ -236,7 +236,7 @@ TEST_CASE("TensorBase", "[tensors]")
       TensorShape s = {2, 7, 3, 1, 3};
       auto a = Tensor::full({5, 1, 5}, s0, 1.32145, DTO);
       auto b = a.base_expand(s);
-      REQUIRE(b.batch_sizes() == a.batch_sizes());
+      REQUIRE(b.batch_sizes().concrete() == a.batch_sizes().concrete());
       REQUIRE(b.base_sizes() == s);
       // This is fun, as a and b are NOT broadcastable based on our broadcasting rules for batched
       // tensors because they have different base shapes. However, they _should_ be broadcastable
@@ -252,7 +252,7 @@ TEST_CASE("TensorBase", "[tensors]")
       auto a = Tensor::full(s0, {3, 3}, 5.25324, DTO);
       auto b = Tensor::full(s, {5}, 3.33, DTO); // base shapes can differ!
       auto c = a.batch_expand_as(b);
-      REQUIRE(c.batch_sizes() == s);
+      REQUIRE(c.batch_sizes().concrete() == s);
       REQUIRE(c.base_sizes() == a.base_sizes());
     }
 
@@ -263,7 +263,7 @@ TEST_CASE("TensorBase", "[tensors]")
       auto a = Tensor::full({5, 1, 5}, s0, 1.32145, DTO);
       auto b = Tensor::full({3, 2, 1}, s, 3.33, DTO); // batch shapes can differ!
       auto c = a.base_expand_as(b);
-      REQUIRE(c.batch_sizes() == a.batch_sizes());
+      REQUIRE(c.batch_sizes().concrete() == a.batch_sizes().concrete());
       REQUIRE(c.base_sizes() == s);
     }
 
@@ -273,7 +273,7 @@ TEST_CASE("TensorBase", "[tensors]")
       TensorShape s = {5, 8, 2, 2, 5};
       auto a = Tensor::full(s0, {3, 3}, 5.25324, DTO);
       auto b = a.batch_expand_copy(s);
-      REQUIRE(b.batch_sizes() == s);
+      REQUIRE(b.batch_sizes().concrete() == s);
       REQUIRE(b.base_sizes() == a.base_sizes());
       REQUIRE(torch::sum(a - b).item<Real>() == Catch::Approx(0));
     }
@@ -284,7 +284,7 @@ TEST_CASE("TensorBase", "[tensors]")
       TensorShape s = {2, 7, 3, 1, 3};
       auto a = Tensor::full({5, 1, 5}, s0, 1.32145, DTO);
       auto b = a.base_expand_copy(s);
-      REQUIRE(b.batch_sizes() == a.batch_sizes());
+      REQUIRE(b.batch_sizes().concrete() == a.batch_sizes().concrete());
       REQUIRE(b.base_sizes() == s);
       // This is fun, as a and b are NOT broadcastable based on our broadcasting rules for batched
       // tensors because they have different base shapes. However, they _should_ be broadcastable
@@ -298,15 +298,15 @@ TEST_CASE("TensorBase", "[tensors]")
       auto a = Tensor::full({2, 5}, {3, 3}, 5.25324, DTO);
 
       auto a1 = a.batch_unsqueeze(0);
-      REQUIRE(a1.batch_sizes() == TensorShape{1, 2, 5});
+      REQUIRE(a1.batch_sizes().concrete() == TensorShape{1, 2, 5});
       REQUIRE(a1.base_sizes() == a.base_sizes());
 
       auto a2 = a.batch_unsqueeze(1);
-      REQUIRE(a2.batch_sizes() == TensorShape{2, 1, 5});
+      REQUIRE(a2.batch_sizes().concrete() == TensorShape{2, 1, 5});
       REQUIRE(a2.base_sizes() == a.base_sizes());
 
       auto a3 = a.batch_unsqueeze(-2);
-      REQUIRE(a3.batch_sizes() == TensorShape{2, 1, 5});
+      REQUIRE(a3.batch_sizes().concrete() == TensorShape{2, 1, 5});
       REQUIRE(a3.base_sizes() == a.base_sizes());
     }
 
@@ -315,15 +315,15 @@ TEST_CASE("TensorBase", "[tensors]")
       auto a = Tensor::full({2, 5}, {3, 3}, 5.25324, DTO);
 
       auto a1 = a.base_unsqueeze(0);
-      REQUIRE(a1.batch_sizes() == a.batch_sizes());
+      REQUIRE(a1.batch_sizes().concrete() == a.batch_sizes().concrete());
       REQUIRE(a1.base_sizes() == TensorShape{1, 3, 3});
 
       auto a2 = a.base_unsqueeze(1);
-      REQUIRE(a2.batch_sizes() == a.batch_sizes());
+      REQUIRE(a2.batch_sizes().concrete() == a.batch_sizes().concrete());
       REQUIRE(a2.base_sizes() == TensorShape{3, 1, 3});
 
       auto a3 = a.base_unsqueeze(-2);
-      REQUIRE(a3.batch_sizes() == a.batch_sizes());
+      REQUIRE(a3.batch_sizes().concrete() == a.batch_sizes().concrete());
       REQUIRE(a3.base_sizes() == TensorShape{3, 1, 3});
     }
 
@@ -331,7 +331,7 @@ TEST_CASE("TensorBase", "[tensors]")
     {
       auto a = Tensor::full({2, 3, 5, 2}, {3, 3}, 5.25324, DTO);
       auto b = a.batch_transpose(1, 3);
-      REQUIRE(b.batch_sizes() == TensorShape{2, 2, 5, 3});
+      REQUIRE(b.batch_sizes().concrete() == TensorShape{2, 2, 5, 3});
       REQUIRE(b.base_sizes() == a.base_sizes());
     }
 
@@ -339,7 +339,7 @@ TEST_CASE("TensorBase", "[tensors]")
     {
       auto a = Tensor::full({3, 3}, {5, 3, 5, 2}, 5.25324, DTO);
       auto b = a.base_transpose(0, 3);
-      REQUIRE(b.batch_sizes() == a.batch_sizes());
+      REQUIRE(b.batch_sizes().concrete() == a.batch_sizes().concrete());
       REQUIRE(b.base_sizes() == TensorShape{2, 3, 5, 5});
     }
   }
@@ -347,7 +347,7 @@ TEST_CASE("TensorBase", "[tensors]")
   SECTION("operator+")
   {
     auto a = Tensor(torch::tensor({{3.1, 2.2}, {2.2, -1.1}}, DTO), 0);
-    auto b = Tensor::full({}, {2, 2}, 2.0, DTO);
+    auto b = Tensor::full(TensorShape{}, {2, 2}, 2.0, DTO);
     auto c = Tensor(torch::tensor({{5.1, 4.2}, {4.2, 0.9}}, DTO), 0);
     REQUIRE(torch::allclose(a + 2.0, c));
     REQUIRE(torch::allclose(a.batch_expand(B) + 2.0, c.batch_expand(B)));
@@ -362,7 +362,7 @@ TEST_CASE("TensorBase", "[tensors]")
   SECTION("operator-")
   {
     auto a = Tensor(torch::tensor({{3.1, 2.2}, {2.2, -1.1}}, DTO), 0);
-    auto b = Tensor::full({}, {2, 2}, 2.0, DTO);
+    auto b = Tensor::full(TensorShape{}, {2, 2}, 2.0, DTO);
     auto c = Tensor(torch::tensor({{1.1, 0.2}, {0.2, -3.1}}, DTO), 0);
     REQUIRE(torch::allclose(a - 2.0, c));
     REQUIRE(torch::allclose(a.batch_expand(B) - 2.0, c.batch_expand(B)));
@@ -377,7 +377,7 @@ TEST_CASE("TensorBase", "[tensors]")
   SECTION("operator*")
   {
     auto a = Tensor(torch::tensor({{3.1, 2.2}, {2.2, -1.1}}, DTO), 0);
-    auto b = Tensor::full({}, {2, 2}, 2.0, DTO);
+    auto b = Tensor::full(TensorShape{}, {2, 2}, 2.0, DTO);
     auto c = Tensor(torch::tensor({{6.2, 4.4}, {4.4, -2.2}}, DTO), 0);
     REQUIRE(torch::allclose(a * 2.0, c));
     REQUIRE(torch::allclose(a.batch_expand(B) * 2.0, c.batch_expand(B)));
@@ -388,7 +388,7 @@ TEST_CASE("TensorBase", "[tensors]")
   SECTION("operator/")
   {
     auto a = Tensor(torch::tensor({{3.1, 2.2}, {2.2, -1.1}}, DTO), 0);
-    auto b = Tensor::full({}, {2, 2}, 2.0, DTO);
+    auto b = Tensor::full(TensorShape{}, {2, 2}, 2.0, DTO);
     auto c = Tensor(torch::tensor({{1.55, 1.1}, {1.1, -0.55}}, DTO), 0);
     auto cinv = Tensor(1.0 / torch::tensor({{1.55, 1.1}, {1.1, -0.55}}, DTO), 0);
     REQUIRE(torch::allclose(a / 2.0, c));
@@ -404,7 +404,7 @@ TEST_CASE("TensorBase", "[tensors]")
   SECTION("pow")
   {
     auto a = Tensor(torch::tensor({{3.0, 2.0}, {2.0, -1.1}}, DTO), 0);
-    auto b = Tensor::full({}, {2, 2}, 2.0, DTO);
+    auto b = Tensor::full(TensorShape{}, {2, 2}, 2.0, DTO);
     auto c = Tensor(torch::tensor({{9.0, 4.0}, {4.0, 1.21}}, DTO), 0);
     REQUIRE(torch::allclose(math::pow(a, 2.0), c));
     REQUIRE(torch::allclose(math::pow(a.batch_expand(B), 2.0), c.batch_expand(B)));

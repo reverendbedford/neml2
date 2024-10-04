@@ -89,7 +89,7 @@ TEST_CASE("PrimitiveTensor", "[tensors]")
         auto b = R5(a, Bn);
         REQUIRE(b.batch_dim() == Bn);
         REQUIRE(b.base_dim() == R5::const_base_dim);
-        REQUIRE(b.batch_sizes() == B);
+        REQUIRE(b.batch_sizes().concrete() == B);
         REQUIRE(b.base_sizes() == R5::const_base_sizes);
         REQUIRE(b.base_storage() == R5::const_base_storage);
 
@@ -106,7 +106,7 @@ TEST_CASE("PrimitiveTensor", "[tensors]")
         auto b = R5(a);
         REQUIRE(b.batch_dim() == Bn);
         REQUIRE(b.base_dim() == R5::const_base_dim);
-        REQUIRE(b.batch_sizes() == B);
+        REQUIRE(b.batch_sizes().concrete() == B);
         REQUIRE(b.base_sizes() == R5::const_base_sizes);
         REQUIRE(b.base_storage() == R5::const_base_storage);
 
@@ -126,7 +126,7 @@ TEST_CASE("PrimitiveTensor", "[tensors]")
         REQUIRE(!a.batched());
         REQUIRE(a.batch_dim() == 0);
         REQUIRE(a.base_dim() == R5::const_base_dim);
-        REQUIRE(a.batch_sizes() == TensorShape{});
+        REQUIRE(a.batch_sizes().concrete() == TensorShape{});
         REQUIRE(a.base_sizes() == R5::const_base_sizes);
         REQUIRE(a.base_storage() == R5::const_base_storage);
       }
@@ -137,7 +137,7 @@ TEST_CASE("PrimitiveTensor", "[tensors]")
         REQUIRE(a.batched());
         REQUIRE(a.batch_dim() == Bn);
         REQUIRE(a.base_dim() == R5::const_base_dim);
-        REQUIRE(a.batch_sizes() == B);
+        REQUIRE(a.batch_sizes().concrete() == B);
         REQUIRE(a.base_sizes() == R5::const_base_sizes);
         REQUIRE(a.base_storage() == R5::const_base_storage);
       }
@@ -151,7 +151,7 @@ TEST_CASE("PrimitiveTensor", "[tensors]")
         REQUIRE(!a.batched());
         REQUIRE(a.batch_dim() == 0);
         REQUIRE(a.base_dim() == R5::const_base_dim);
-        REQUIRE(a.batch_sizes() == TensorShape{});
+        REQUIRE(a.batch_sizes().concrete() == TensorShape{});
         REQUIRE(a.base_sizes() == R5::const_base_sizes);
         REQUIRE(a.base_storage() == R5::const_base_storage);
         REQUIRE(torch::allclose(a, torch::zeros_like(a)));
@@ -163,7 +163,7 @@ TEST_CASE("PrimitiveTensor", "[tensors]")
         REQUIRE(a.batched());
         REQUIRE(a.batch_dim() == Bn);
         REQUIRE(a.base_dim() == R5::const_base_dim);
-        REQUIRE(a.batch_sizes() == B);
+        REQUIRE(a.batch_sizes().concrete() == B);
         REQUIRE(a.base_sizes() == R5::const_base_sizes);
         REQUIRE(a.base_storage() == R5::const_base_storage);
         REQUIRE(torch::allclose(a, torch::zeros_like(a)));
@@ -178,7 +178,7 @@ TEST_CASE("PrimitiveTensor", "[tensors]")
         REQUIRE(!a.batched());
         REQUIRE(a.batch_dim() == 0);
         REQUIRE(a.base_dim() == R5::const_base_dim);
-        REQUIRE(a.batch_sizes() == TensorShape{});
+        REQUIRE(a.batch_sizes().concrete() == TensorShape{});
         REQUIRE(a.base_sizes() == R5::const_base_sizes);
         REQUIRE(a.base_storage() == R5::const_base_storage);
         REQUIRE(torch::allclose(a, torch::ones_like(a)));
@@ -190,7 +190,7 @@ TEST_CASE("PrimitiveTensor", "[tensors]")
         REQUIRE(a.batched());
         REQUIRE(a.batch_dim() == Bn);
         REQUIRE(a.base_dim() == R5::const_base_dim);
-        REQUIRE(a.batch_sizes() == B);
+        REQUIRE(a.batch_sizes().concrete() == B);
         REQUIRE(a.base_sizes() == R5::const_base_sizes);
         REQUIRE(a.base_storage() == R5::const_base_storage);
         REQUIRE(torch::allclose(a, torch::ones_like(a)));
@@ -206,7 +206,7 @@ TEST_CASE("PrimitiveTensor", "[tensors]")
         REQUIRE(!a.batched());
         REQUIRE(a.batch_dim() == 0);
         REQUIRE(a.base_dim() == R5::const_base_dim);
-        REQUIRE(a.batch_sizes() == TensorShape{});
+        REQUIRE(a.batch_sizes().concrete() == TensorShape{});
         REQUIRE(a.base_sizes() == R5::const_base_sizes);
         REQUIRE(a.base_storage() == R5::const_base_storage);
         REQUIRE(torch::allclose(a, torch::full_like(a, init)));
@@ -219,7 +219,7 @@ TEST_CASE("PrimitiveTensor", "[tensors]")
         REQUIRE(a.batched());
         REQUIRE(a.batch_dim() == Bn);
         REQUIRE(a.base_dim() == R5::const_base_dim);
-        REQUIRE(a.batch_sizes() == B);
+        REQUIRE(a.batch_sizes().concrete() == B);
         REQUIRE(a.base_sizes() == R5::const_base_sizes);
         REQUIRE(a.base_storage() == R5::const_base_storage);
         REQUIRE(torch::allclose(a, torch::full_like(a, init)));

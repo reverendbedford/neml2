@@ -25,6 +25,7 @@
 #pragma once
 
 #include <torch/types.h>
+#include <variant>
 
 namespace neml2
 {
@@ -33,6 +34,57 @@ using Integer = int;
 using Size = int64_t;
 using TensorShape = torch::SmallVector<Size>;
 using TensorShapeRef = torch::IntArrayRef;
+
+/**
+ * @brief Traceable tensor shape
+ *
+ * A tensor shape can be either a concrete shape or a traceable tensor. This is useful when we need
+ * to trace a function graph and let it generalize to other batch shapes.
+ */
+struct TraceableTensorShape : public std::variant<TensorShape, torch::Tensor>
+{
+  using std::variant<TensorShape, torch::Tensor>::variant;
+
+  TraceableTensorShape(TensorShapeRef shape);
+  TraceableTensorShape(Size shape);
+  TraceableTensorShape(const std::initializer_list<Size> & shape);
+
+  /// @return a pointer to the traceable tensor if it is traceable, otherwise nullptr
+  const torch::Tensor * traceable() const noexcept;
+
+  /// @return the dimension, i.e., the length of this shape
+  Size size() const;
+
+  /// Slice the shape, semantically the same as ArrayRef::slice, but traceable.
+  TraceableTensorShape slice(Size start, Size end) const;
+
+  /// Chop-off the first N elements of the shape, semantically the same as ArrayRef::slice, but traceable.
+  TraceableTensorShape slice(Size N) const;
+
+  /// @return the concrete shape (without any traceable information)
+  TensorShape concrete() const;
+
+private:
+  /// Make sure the traceable tensor is 1D and of type int64
+  void ensure_shape() const;
+};
+
+/**
+ * @brief Traceable size
+ *
+ * Similar to neml2::TraceableTensorShape, but only for a single dimension.
+ * @see neml2::TraceableTensorShape
+ */
+struct TraceableSize : public std::variant<Size, torch::Tensor>
+{
+  using std::variant<Size, torch::Tensor>::variant;
+
+  /// @return a pointer to the traceable size if it is traceable, otherwise nullptr
+  const torch::Tensor * traceable() const noexcept;
+
+  /// @return the concrete size (without any traceable information)
+  Size concrete() const;
+};
 
 // Bring in torch::indexing
 namespace indexing

@@ -142,9 +142,9 @@ public:
   /// Return the number of base dimensions
   Size base_dim() const;
   /// Return the batch size
-  TensorShapeRef batch_sizes() const;
+  TraceableTensorShape batch_sizes() const;
   /// Return the size of a batch axis
-  Size batch_size(Size index) const;
+  TraceableSize batch_size(Size index) const;
   /// Return the base size
   TensorShapeRef base_sizes() const;
   /// Return the size of a base axis
@@ -172,7 +172,7 @@ public:
   /// @name Modifiers
   ///@{
   /// Return a new view of the tensor with values broadcast along the batch dimensions.
-  Derived batch_expand(TensorShapeRef batch_size) const;
+  Derived batch_expand(const TraceableTensorShape & batch_size) const;
   /// Return a new view of the tensor with values broadcast along the base dimensions.
   neml2::Tensor base_expand(TensorShapeRef base_size) const;
   /// Expand the batch to have the same shape as another tensor
@@ -182,11 +182,11 @@ public:
   template <class Derived2>
   Derived2 base_expand_as(const Derived2 & other) const;
   /// Return a new tensor with values broadcast along the batch dimensions.
-  Derived batch_expand_copy(TensorShapeRef batch_size) const;
+  Derived batch_expand_copy(const TraceableTensorShape & batch_size) const;
   /// Return a new tensor with values broadcast along the base dimensions.
   neml2::Tensor base_expand_copy(TensorShapeRef base_size) const;
   /// Reshape batch dimensions
-  Derived batch_reshape(TensorShapeRef batch_shape) const;
+  Derived batch_reshape(const TraceableTensorShape & batch_shape) const;
   /// Reshape base dimensions
   neml2::Tensor base_reshape(TensorShapeRef base_shape) const;
   /// Unsqueeze a batch dimension

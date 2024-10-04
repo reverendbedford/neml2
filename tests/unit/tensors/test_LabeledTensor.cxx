@@ -76,8 +76,8 @@ TEST_CASE("LabeledTensor", "[tensors]")
     REQUIRE(A.size(2) == 7);
     REQUIRE(A.batched());
     REQUIRE(A.batch_dim() == 1);
-    REQUIRE(TensorShape(A.batch_sizes()) == TensorShape{nbatch});
-    REQUIRE(A.batch_size(0) == nbatch);
+    REQUIRE(A.batch_sizes().concrete() == TensorShape{nbatch});
+    REQUIRE(A.batch_size(0).concrete() == nbatch);
     REQUIRE(A.base_dim() == 2);
     REQUIRE(TensorShape(A.base_sizes()) == TensorShape{8, 7});
     REQUIRE(A.base_size(0) == 8);

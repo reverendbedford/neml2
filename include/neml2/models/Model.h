@@ -77,12 +77,6 @@ public:
 
   /**
    * @brief Allocate storage and setup views for all the variables of this model and recursively all
-   * of the sub-models. See the other overload for detailed description.
-   */
-  virtual void reinit(const Tensor & tensor, int deriv_order);
-
-  /**
-   * @brief Allocate storage and setup views for all the variables of this model and recursively all
    * of the sub-models.
    *
    * This method must be called before any call to the forward operators, e.g., value, dvalue,
@@ -96,24 +90,10 @@ public:
    * @param device Device on which the model will be evaluated
    * @param dtype Number type, e.g., torch::kFloat32, torch::kFloat64, etc
    */
-  virtual void reinit(TensorShapeRef batch_shape = {},
+  virtual void reinit(const TraceableTensorShape & batch_shape = TensorShape{1},
                       int deriv_order = 0,
                       const torch::Device & device = default_device(),
                       const torch::Dtype & dtype = default_dtype());
-
-  /// @name Model options
-  ///@{
-  /// Storage batch dimension
-  Size batch_dim() const { return _batch_sizes.size(); }
-  /// Storage batch shape
-  TensorShapeRef batch_sizes() const { return _batch_sizes; }
-  /// Storage tensor options
-  const torch::TensorOptions & options() const { return _options; }
-  /// Storage scalar type
-  torch::Dtype scalar_type() const { return _options.dtype().toScalarType(); }
-  /// Storage device
-  torch::Device device() const { return _options.device(); }
-  ///@}
 
   /// The models that may be used during the evaluation of this model
   const std::vector<Model *> & registered_models() const { return _registered_models; }
@@ -200,7 +180,7 @@ protected:
    */
   virtual void reinit(bool in, bool out);
   using VariableStore::cache;
-  virtual void cache(TensorShapeRef batch_shape,
+  virtual void cache(const TraceableTensorShape & batch_shape,
                      int deriv_order,
                      const torch::Device & device,
                      const torch::Dtype & dtype);
@@ -289,12 +269,6 @@ private:
   /// Helper method to extract second derivatives after back propagation
   void extract_second_derivatives(bool retain_graph, bool create_graph, bool allow_unused);
   ///@}
-
-  /// This model's batch shape
-  TensorShape _batch_sizes;
-
-  /// This model's tensor options
-  torch::TensorOptions _options;
 
   /// Whether this is a nonlinear system
   bool _nonlinear_system;

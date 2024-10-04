@@ -89,6 +89,20 @@ public:
   }
   ///@}
 
+  /// @name Tensor options
+  ///@{
+  /// Storage batch dimension
+  Size batch_dim() const { return _batch_sizes.size(); }
+  /// Storage batch shape
+  const TraceableTensorShape & batch_sizes() const { return _batch_sizes; }
+  /// Storage tensor options
+  const torch::TensorOptions & options() const { return _options; }
+  /// Storage scalar type
+  torch::Dtype scalar_type() const { return _options.dtype().toScalarType(); }
+  /// Storage device
+  torch::Device device() const { return _options.device(); }
+  ///@}
+
   ///@{
   /// Definition of the input variables
   LabeledAxis & input_axis() { return _input_axis; }
@@ -148,8 +162,10 @@ public:
   TensorType output_type(const VariableName &) const;
 
 protected:
-  /// Cache the variable's batch shape
-  virtual void cache(TensorShapeRef batch_shape);
+  /// Cache the variable's batch shape, device, and dtype
+  virtual void cache(const TraceableTensorShape & batch_shape,
+                     const torch::Device & device,
+                     const torch::Dtype & dtype);
 
   /**
    * @brief Allocate variable storages given the batch shape and tensor options
@@ -161,7 +177,7 @@ protected:
    * @param dout_din Whether to allocate tensor storage for the first derivatives
    * @param d2out_din2 Whether to allocate tensor storage for the second derivatives
    */
-  virtual void allocate_variables(TensorShapeRef batch_shape,
+  virtual void allocate_variables(const TraceableTensorShape & batch_shape,
                                   const torch::TensorOptions & options,
                                   bool in,
                                   bool out,
@@ -259,8 +275,8 @@ private:
 
     if constexpr (sizeof...(name) == 1 && std::is_convertible_v<FirstType, std::string>)
     {
-      if (_options.contains<VariableName>(name...))
-        return _options.get<VariableName>(name...);
+      if (_input_options.contains<VariableName>(name...))
+        return _input_options.get<VariableName>(name...);
       return VariableName(std::forward<S>(name)...);
     }
     else
@@ -312,7 +328,13 @@ private:
    * variable using an input option name.
    *
    */
-  const OptionSet _options;
+  const OptionSet _input_options;
+
+  /// This model's batch shape
+  TraceableTensorShape _batch_sizes;
+
+  /// This model's tensor options
+  torch::TensorOptions _options;
 
   /// All the declared axes
   Storage<std::string, LabeledAxis> _axes;

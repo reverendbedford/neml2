@@ -38,7 +38,7 @@ TestNonlinearSystem::reinit(const Tensor & x)
 {
   neml_assert_dbg(x.base_dim() == 1, "Trial solution must be one dimensional");
 
-  _batch_sizes = x.batch_sizes().vec();
+  _batch_sizes = x.batch_sizes();
   _options = x.options();
 
   _ndof = x.base_sizes()[0];

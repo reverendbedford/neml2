@@ -54,8 +54,8 @@ TEST_CASE("ParameterStore", "[models]")
       auto & E = model.get_parameter("E");
       auto & nu = model.get_parameter("nu");
 
-      REQUIRE(Tensor(E).batch_sizes() == TensorShape());
-      REQUIRE(Tensor(nu).batch_sizes() == TensorShape());
+      REQUIRE(Tensor(E).batch_sizes().concrete() == TensorShape());
+      REQUIRE(Tensor(nu).batch_sizes().concrete() == TensorShape());
 
       REQUIRE(E.type() == TensorType::kScalar);
       REQUIRE(nu.type() == TensorType::kScalar);
@@ -64,8 +64,8 @@ TEST_CASE("ParameterStore", "[models]")
       // dictionary.
       E = Scalar::full({1, 2}, 1.0);
       nu = Scalar::full({5, 1}, 0.3);
-      REQUIRE(Tensor(params["E"]).batch_sizes() == TensorShape{1, 2});
-      REQUIRE(Tensor(params["nu"]).batch_sizes() == TensorShape{5, 1});
+      REQUIRE(Tensor(params["E"]).batch_sizes().concrete() == TensorShape{1, 2});
+      REQUIRE(Tensor(params["nu"]).batch_sizes().concrete() == TensorShape{5, 1});
 
       // Same thing say when the user wants to use torch AD
       E.requires_grad_(true);

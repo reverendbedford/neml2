@@ -39,20 +39,4 @@ neml_assert_tracing_dbg()
   neml_assert_tracing();
 #endif
 }
-
-namespace jit
-{
-TensorShape
-tensor_to_shape(const torch::Tensor & tensor)
-{
-  neml_assert_dbg(tensor.scalar_type() == torch::kInt64,
-                  "tensor_to_shape: tensor must be of type int64");
-  neml_assert_dbg(tensor.dim() == 1, "tensor_to_shape: tensor must be 1D");
-
-  TensorShape shape;
-  for (size_t i = 0; i < (size_t)tensor.size(0); ++i)
-    shape.push_back(tensor[i].item<Size>());
-  return shape;
-}
-} // namespace jit
 } // namespace neml2

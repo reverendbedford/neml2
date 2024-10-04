@@ -51,7 +51,7 @@ TEST_CASE("Tensor", "[tensors]")
       REQUIRE(a.batch_dim() == 0);
       REQUIRE(a.base_dim() == Dn);
       REQUIRE(a.sizes() == D);
-      REQUIRE(a.batch_sizes() == TensorShape{});
+      REQUIRE(a.batch_sizes().concrete() == TensorShape{});
       REQUIRE(a.base_sizes() == D);
       REQUIRE(a.base_storage() == L);
     }
@@ -64,7 +64,7 @@ TEST_CASE("Tensor", "[tensors]")
       REQUIRE(a.batch_dim() == Bn);
       REQUIRE(a.base_dim() == Dn);
       REQUIRE(a.sizes() == BD);
-      REQUIRE(a.batch_sizes() == B);
+      REQUIRE(a.batch_sizes().concrete() == B);
       REQUIRE(a.base_sizes() == D);
       REQUIRE(a.base_storage() == L);
     }
@@ -90,7 +90,7 @@ TEST_CASE("Tensor", "[tensors]")
       REQUIRE(a.batch_dim() == 0);
       REQUIRE(a.base_dim() == Dn);
       REQUIRE(a.sizes() == D);
-      REQUIRE(a.batch_sizes() == TensorShape{});
+      REQUIRE(a.batch_sizes().concrete() == TensorShape{});
       REQUIRE(a.base_sizes() == D);
       REQUIRE(a.base_storage() == L);
       REQUIRE(torch::allclose(a, torch::zeros_like(a)));
@@ -104,10 +104,20 @@ TEST_CASE("Tensor", "[tensors]")
       REQUIRE(a.batch_dim() == Bn);
       REQUIRE(a.base_dim() == Dn);
       REQUIRE(a.sizes() == BD);
-      REQUIRE(a.batch_sizes() == B);
+      REQUIRE(a.batch_sizes().concrete() == B);
       REQUIRE(a.base_sizes() == D);
       REQUIRE(a.base_storage() == L);
       REQUIRE(torch::allclose(a, torch::zeros_like(a)));
+    }
+
+    SECTION("jit")
+    {
+      auto f = [&D, &DTO](torch::Tensor & batch_shape) -> std::tuple<torch::Tensor>
+      { return {Tensor::zeros(batch_shape, D, DTO)}; };
+      auto f_jit = neml2::jit::StaticGraphFunction<std::tuple<torch::Tensor>, torch::Tensor>(
+          "f", f, std::make_tuple(torch::tensor({2, 3}, DTO.dtype(torch::kInt64))));
+      auto [y] = f_jit(torch::tensor({5, 2}, DTO.dtype(torch::kInt64)));
+      REQUIRE(torch::allclose(y, Tensor::zeros({5, 2}, D, DTO)));
     }
   }
 
@@ -121,7 +131,7 @@ TEST_CASE("Tensor", "[tensors]")
       REQUIRE(a.batch_dim() == 0);
       REQUIRE(a.base_dim() == Dn);
       REQUIRE(a.sizes() == D);
-      REQUIRE(a.batch_sizes() == TensorShape{});
+      REQUIRE(a.batch_sizes().concrete() == TensorShape{});
       REQUIRE(a.base_sizes() == D);
       REQUIRE(a.base_storage() == L);
       REQUIRE(torch::allclose(a, torch::ones_like(a)));
@@ -135,10 +145,20 @@ TEST_CASE("Tensor", "[tensors]")
       REQUIRE(a.batch_dim() == Bn);
       REQUIRE(a.base_dim() == Dn);
       REQUIRE(a.sizes() == BD);
-      REQUIRE(a.batch_sizes() == B);
+      REQUIRE(a.batch_sizes().concrete() == B);
       REQUIRE(a.base_sizes() == D);
       REQUIRE(a.base_storage() == L);
       REQUIRE(torch::allclose(a, torch::ones_like(a)));
+    }
+
+    SECTION("jit")
+    {
+      auto f = [&D, &DTO](torch::Tensor & batch_shape) -> std::tuple<torch::Tensor>
+      { return {Tensor::ones(batch_shape, D, DTO)}; };
+      auto f_jit = neml2::jit::StaticGraphFunction<std::tuple<torch::Tensor>, torch::Tensor>(
+          "f", f, std::make_tuple(torch::tensor({2, 3}, DTO.dtype(torch::kInt64))));
+      auto [y] = f_jit(torch::tensor({5, 2}, DTO.dtype(torch::kInt64)));
+      REQUIRE(torch::allclose(y, Tensor::ones({5, 2}, D, DTO)));
     }
   }
 
@@ -153,7 +173,7 @@ TEST_CASE("Tensor", "[tensors]")
       REQUIRE(a.batch_dim() == 0);
       REQUIRE(a.base_dim() == Dn);
       REQUIRE(a.sizes() == D);
-      REQUIRE(a.batch_sizes() == TensorShape{});
+      REQUIRE(a.batch_sizes().concrete() == TensorShape{});
       REQUIRE(a.base_sizes() == D);
       REQUIRE(a.base_storage() == L);
       REQUIRE(torch::allclose(a, torch::full_like(a, init)));
@@ -168,10 +188,20 @@ TEST_CASE("Tensor", "[tensors]")
       REQUIRE(a.batch_dim() == Bn);
       REQUIRE(a.base_dim() == Dn);
       REQUIRE(a.sizes() == BD);
-      REQUIRE(a.batch_sizes() == B);
+      REQUIRE(a.batch_sizes().concrete() == B);
       REQUIRE(a.base_sizes() == D);
       REQUIRE(a.base_storage() == L);
       REQUIRE(torch::allclose(a, torch::full_like(a, init)));
+    }
+
+    SECTION("jit")
+    {
+      auto f = [&D, &DTO](torch::Tensor & batch_shape) -> std::tuple<torch::Tensor>
+      { return {Tensor::full(batch_shape, D, 0.11, DTO)}; };
+      auto f_jit = neml2::jit::StaticGraphFunction<std::tuple<torch::Tensor>, torch::Tensor>(
+          "f", f, std::make_tuple(torch::tensor({2, 3}, DTO.dtype(torch::kInt64))));
+      auto [y] = f_jit(torch::tensor({5, 2}, DTO.dtype(torch::kInt64)));
+      REQUIRE(torch::allclose(y, Tensor::full({5, 2}, D, 0.11, DTO)));
     }
   }
 
@@ -187,7 +217,7 @@ TEST_CASE("Tensor", "[tensors]")
       REQUIRE(a.batch_dim() == 0);
       REQUIRE(a.base_dim() == 2);
       REQUIRE(a.sizes() == Deye);
-      REQUIRE(a.batch_sizes() == TensorShape{});
+      REQUIRE(a.batch_sizes().concrete() == TensorShape{});
       REQUIRE(a.base_sizes() == Deye);
       REQUIRE(a.base_storage() == n * n);
       REQUIRE(torch::allclose(a, torch::eye(n, DTO)));
@@ -204,7 +234,7 @@ TEST_CASE("Tensor", "[tensors]")
       REQUIRE(a.batch_dim() == Bn);
       REQUIRE(a.base_dim() == 2);
       REQUIRE(a.sizes() == BDeye);
-      REQUIRE(a.batch_sizes() == B);
+      REQUIRE(a.batch_sizes().concrete() == B);
       REQUIRE(a.base_sizes() == Deye);
       REQUIRE(a.base_storage() == n * n);
       REQUIRE(torch::allclose(a, torch::eye(n, DTO).expand(utils::add_shapes(B, -1, -1))));

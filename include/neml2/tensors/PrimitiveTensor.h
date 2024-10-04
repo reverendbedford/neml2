@@ -63,27 +63,28 @@ public:
   empty(const torch::TensorOptions & options = default_tensor_options());
   /// Empty tensor given batch shape
   [[nodiscard]] static Derived
-  empty(TensorShapeRef batch_shape,
+  empty(const TraceableTensorShape & batch_shape,
         const torch::TensorOptions & options = default_tensor_options());
   /// Unbatched zero tensor
   [[nodiscard]] static Derived
   zeros(const torch::TensorOptions & options = default_tensor_options());
   /// Zero tensor given batch shape
   [[nodiscard]] static Derived
-  zeros(TensorShapeRef batch_shape,
+  zeros(const TraceableTensorShape & batch_shape,
         const torch::TensorOptions & options = default_tensor_options());
   /// Unbatched unit tensor
   [[nodiscard]] static Derived
   ones(const torch::TensorOptions & options = default_tensor_options());
   /// Unit tensor given batch shape
   [[nodiscard]] static Derived
-  ones(TensorShapeRef batch_shape, const torch::TensorOptions & options = default_tensor_options());
+  ones(const TraceableTensorShape & batch_shape,
+       const torch::TensorOptions & options = default_tensor_options());
   /// Unbatched tensor filled with a given value given base shape
   [[nodiscard]] static Derived
   full(Real init, const torch::TensorOptions & options = default_tensor_options());
   /// Full tensor given batch shape
   [[nodiscard]] static Derived
-  full(TensorShapeRef batch_shape,
+  full(const TraceableTensorShape & batch_shape,
        Real init,
        const torch::TensorOptions & options = default_tensor_options());
 
@@ -135,11 +136,10 @@ PrimitiveTensor<Derived, S...>::empty(const torch::TensorOptions & options)
 
 template <class Derived, Size... S>
 Derived
-PrimitiveTensor<Derived, S...>::empty(TensorShapeRef batch_shape,
+PrimitiveTensor<Derived, S...>::empty(const TraceableTensorShape & batch_shape,
                                       const torch::TensorOptions & options)
 {
-  return Derived(torch::empty(utils::add_shapes(batch_shape, const_base_sizes), options),
-                 batch_shape.size());
+  return Derived(Tensor::empty(batch_shape, const_base_sizes, options), batch_shape.size());
 }
 
 template <class Derived, Size... S>
@@ -151,11 +151,10 @@ PrimitiveTensor<Derived, S...>::zeros(const torch::TensorOptions & options)
 
 template <class Derived, Size... S>
 Derived
-PrimitiveTensor<Derived, S...>::zeros(TensorShapeRef batch_shape,
+PrimitiveTensor<Derived, S...>::zeros(const TraceableTensorShape & batch_shape,
                                       const torch::TensorOptions & options)
 {
-  return Derived(torch::zeros(utils::add_shapes(batch_shape, const_base_sizes), options),
-                 batch_shape.size());
+  return Derived(Tensor::zeros(batch_shape, const_base_sizes, options), batch_shape.size());
 }
 
 template <class Derived, Size... S>
@@ -167,11 +166,10 @@ PrimitiveTensor<Derived, S...>::ones(const torch::TensorOptions & options)
 
 template <class Derived, Size... S>
 Derived
-PrimitiveTensor<Derived, S...>::ones(TensorShapeRef batch_shape,
+PrimitiveTensor<Derived, S...>::ones(const TraceableTensorShape & batch_shape,
                                      const torch::TensorOptions & options)
 {
-  return Derived(torch::ones(utils::add_shapes(batch_shape, const_base_sizes), options),
-                 batch_shape.size());
+  return Derived(Tensor::ones(batch_shape, const_base_sizes, options), batch_shape.size());
 }
 
 template <class Derived, Size... S>
@@ -183,11 +181,10 @@ PrimitiveTensor<Derived, S...>::full(Real init, const torch::TensorOptions & opt
 
 template <class Derived, Size... S>
 Derived
-PrimitiveTensor<Derived, S...>::full(TensorShapeRef batch_shape,
+PrimitiveTensor<Derived, S...>::full(const TraceableTensorShape & batch_shape,
                                      Real init,
                                      const torch::TensorOptions & options)
 {
-  return Derived(torch::full(utils::add_shapes(batch_shape, const_base_sizes), init, options),
-                 batch_shape.size());
+  return Derived(Tensor::full(batch_shape, const_base_sizes, init, options), batch_shape.size());
 }
 } // namespace neml2

@@ -57,7 +57,6 @@ Model::Model(const OptionSet & options)
     VariableStore(options, this),
     NonlinearSystem(options),
     DiagnosticsInterface(this),
-    _options(default_tensor_options()),
     _nonlinear_system(options.get<bool>("_nonlinear_system")),
     _deriv_order(-1),
     _extra_deriv_order(options.get<int>("_extra_derivative_order")),
@@ -137,13 +136,7 @@ Model::get_system_matrices() const
 }
 
 void
-Model::reinit(const Tensor & tensor, int deriv_order)
-{
-  reinit(tensor.batch_sizes(), deriv_order, tensor.device(), tensor.scalar_type());
-}
-
-void
-Model::reinit(TensorShapeRef batch_shape,
+Model::reinit(const TraceableTensorShape & batch_shape,
               int deriv_order,
               const torch::Device & device,
               const torch::Dtype & dtype)
@@ -288,13 +281,12 @@ Model::set_solution(const Tensor & x)
 }
 
 void
-Model::cache(TensorShapeRef batch_shape,
+Model::cache(const TraceableTensorShape & batch_shape,
              int deriv_order,
              const torch::Device & device,
              const torch::Dtype & dtype)
 {
-  _batch_sizes = batch_shape.empty() ? TensorShape{1} : TensorShape(batch_shape);
-  VariableStore::cache(_batch_sizes);
+  VariableStore::cache(batch_shape, device, dtype);
 
   auto deriv_order_new = deriv_order + _extra_deriv_order;
 
@@ -303,8 +295,6 @@ Model::cache(TensorShapeRef batch_shape,
     deriv_order_new = std::max(deriv_order_new, 1);
 
   _deriv_order = std::max(deriv_order_new, _deriv_order);
-
-  _options = default_tensor_options().device(device).dtype(dtype);
 
   for (auto * submodel : registered_models())
     submodel->cache(batch_shape, _deriv_order, device, dtype);
@@ -337,11 +327,11 @@ Model::use_AD_derivatives(bool first, bool second)
 void
 Model::check_input(const LabeledVector & in) const
 {
-  neml_assert(utils::sizes_broadcastable(in.batch_sizes(), batch_sizes()),
+  neml_assert(utils::sizes_broadcastable(in.batch_sizes().concrete(), batch_sizes().concrete()),
               "The provided input has batch shape ",
-              in.batch_sizes(),
+              in.batch_sizes().concrete(),
               " which cannot be broadcast to the model's batch shape ",
-              batch_sizes(),
+              batch_sizes().concrete(),
               ". Make sure the model has been initialized using `reinit` and that the provided "
               "input has the correct shape.");
   neml_assert(in.base_storage() == input_storage().base_storage(),
@@ -658,19 +648,17 @@ Model::extract_derivatives(bool retain_graph, bool create_graph, bool allow_unus
       grad_outputs.index_put_({torch::indexing::Ellipsis, i}, 1.0);
       for (auto && [name, var] : input_variables())
       {
-        auto dyi_dvar = torch::autograd::grad({output_storage()},
-                                              {var.tensor()},
-                                              {grad_outputs},
-                                              retain_graph,
-                                              create_graph,
-                                              allow_unused)[0];
+        auto dyi_dvar = Tensor(torch::autograd::grad({output_storage()},
+                                                     {var.tensor()},
+                                                     {grad_outputs},
+                                                     retain_graph,
+                                                     create_graph,
+                                                     allow_unused)[0],
+                               batch_dim());
 
         if (dyi_dvar.defined())
-        {
           derivative_storage().tensor().base_index_put_(
-              {i, input_axis().indices(name)},
-              dyi_dvar.reshape(utils::add_shapes(batch_sizes(), var.base_storage())));
-        }
+              {i, input_axis().indices(name)}, dyi_dvar.base_reshape({var.base_storage()}));
       }
     }
 }
@@ -687,16 +675,16 @@ Model::extract_second_derivatives(bool retain_graph, bool create_graph, bool all
         grad_outputs.index_put_({torch::indexing::Ellipsis, i, j}, 1.0);
         for (auto && [name, var] : input_variables())
         {
-          auto dydxij_dvar = torch::autograd::grad({derivative_storage()},
-                                                   {var.tensor()},
-                                                   {grad_outputs},
-                                                   retain_graph,
-                                                   create_graph,
-                                                   allow_unused)[0];
+          auto dydxij_dvar = Tensor(torch::autograd::grad({derivative_storage()},
+                                                          {var.tensor()},
+                                                          {grad_outputs},
+                                                          retain_graph,
+                                                          create_graph,
+                                                          allow_unused)[0],
+                                    batch_dim());
           if (dydxij_dvar.defined())
             second_derivative_storage().tensor().base_index_put_(
-                {i, j, input_axis().indices(name)},
-                dydxij_dvar.reshape(utils::add_shapes(batch_sizes(), var.base_storage())));
+                {i, j, input_axis().indices(name)}, dydxij_dvar.base_reshape({var.base_storage()}));
         }
       }
 }

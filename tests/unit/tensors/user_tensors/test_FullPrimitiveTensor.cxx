@@ -34,7 +34,7 @@ using namespace neml2;
   SECTION("Full" #tensor_type)                                                                     \
   {                                                                                                \
     const auto tensor_name = Factory::get_object_ptr<tensor_type>("Tensors", #tensor_name);        \
-    REQUIRE(tensor_name->batch_sizes() == batch_shape);                                            \
+    REQUIRE(tensor_name->batch_sizes().concrete() == batch_shape);                                 \
     REQUIRE(tensor_name->base_sizes() == tensor_type::const_base_sizes);                           \
     REQUIRE(torch::allclose(*tensor_name,                                                          \
                             tensor_type::full(batch_shape, value, default_tensor_options())));     \

@@ -38,12 +38,7 @@ public:
   empty(TensorShapeRef base_shape, const torch::TensorOptions & options = default_tensor_options());
   /// Empty tensor given batch and base shapes
   [[nodiscard]] static Tensor
-  empty(TensorShapeRef batch_shape,
-        TensorShapeRef base_shape,
-        const torch::TensorOptions & options = default_tensor_options());
-  /// Empty tensor given batch (represented as Tensor for tracing) and base shapes
-  [[nodiscard]] static Tensor
-  empty(const torch::Tensor & batch_shape,
+  empty(const TraceableTensorShape & batch_shape,
         TensorShapeRef base_shape,
         const torch::TensorOptions & options = default_tensor_options());
   /// Unbatched tensor filled with zeros given base shape
@@ -51,14 +46,14 @@ public:
   zeros(TensorShapeRef base_shape, const torch::TensorOptions & options = default_tensor_options());
   /// Zero tensor given batch and base shapes
   [[nodiscard]] static Tensor
-  zeros(TensorShapeRef batch_shape,
+  zeros(const TraceableTensorShape & batch_shape,
         TensorShapeRef base_shape,
         const torch::TensorOptions & options = default_tensor_options());
   /// Unbatched tensor filled with ones given base shape
   [[nodiscard]] static Tensor ones(TensorShapeRef base_shape,
                                    const torch::TensorOptions & options = default_tensor_options());
   /// Unit tensor given batch and base shapes
-  [[nodiscard]] static Tensor ones(TensorShapeRef batch_shape,
+  [[nodiscard]] static Tensor ones(const TraceableTensorShape & batch_shape,
                                    TensorShapeRef base_shape,
                                    const torch::TensorOptions & options = default_tensor_options());
   /// Unbatched tensor filled with a given value given base shape
@@ -66,7 +61,7 @@ public:
                                    Real init,
                                    const torch::TensorOptions & options = default_tensor_options());
   /// Full tensor given batch and base shapes
-  [[nodiscard]] static Tensor full(TensorShapeRef batch_shape,
+  [[nodiscard]] static Tensor full(const TraceableTensorShape & batch_shape,
                                    TensorShapeRef base_shape,
                                    Real init,
                                    const torch::TensorOptions & options = default_tensor_options());
@@ -75,7 +70,7 @@ public:
   identity(Size n, const torch::TensorOptions & options = default_tensor_options());
   /// Identity tensor given batch shape and base length
   [[nodiscard]] static Tensor
-  identity(TensorShapeRef batch_shape,
+  identity(const TraceableTensorShape & batch_shape,
            Size n,
            const torch::TensorOptions & options = default_tensor_options());
 };

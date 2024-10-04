@@ -64,7 +64,7 @@ TorchScriptFlowRate::TorchScriptFlowRate(const OptionSet & options)
 }
 
 void
-TorchScriptFlowRate::reinit(TensorShapeRef batch_shape,
+TorchScriptFlowRate::reinit(const TraceableTensorShape & batch_shape,
                             int deriv_order,
                             const torch::Device & device,
                             const torch::Dtype & dtype)

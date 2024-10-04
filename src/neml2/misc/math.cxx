@@ -201,19 +201,15 @@ skew_to_full(const Tensor & skew, Size dim)
 Tensor
 jacrev(const Tensor & y, const Tensor & p)
 {
-  neml_assert(p.batch_sizes() == y.batch_sizes(),
+  neml_assert(p.batch_sizes().concrete() == y.batch_sizes().concrete(),
               "The batch shape of the parameter must be the same as the batch shape "
               "of the output. However, the batch shape of the parameter is ",
-              p.batch_sizes(),
+              p.batch_sizes().concrete(),
               ", and the batch shape of the output is ",
-              y.batch_sizes());
+              y.batch_sizes().concrete());
 
   // flatten y to handle arbitrarily shaped output
-  auto yf =
-      Tensor(y.reshape(utils::add_shapes(y.batch_sizes(), utils::storage_size(y.base_sizes()))),
-             y.batch_dim());
-
-  neml_assert_dbg(yf.base_dim() == 1, "Flattened output must be flat.");
+  auto yf = y.base_reshape(y.base_storage());
 
   auto dyf_dp = Tensor::zeros(
       yf.batch_sizes(), utils::add_shapes(yf.base_sizes(), p.base_sizes()), yf.options());
@@ -234,9 +230,7 @@ jacrev(const Tensor & y, const Tensor & p)
     }
 
   // Reshape the derivative back to the correct shape
-  const auto dy_dp =
-      Tensor(dyf_dp.reshape(utils::add_shapes(y.batch_sizes(), y.base_sizes(), p.base_sizes())),
-             y.batch_dim());
+  const auto dy_dp = dyf_dp.base_reshape(utils::add_shapes(y.base_sizes(), p.base_sizes()));
 
   return dy_dp;
 }
