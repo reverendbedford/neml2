@@ -159,13 +159,13 @@ TensorBase<Derived>::batch_sizes() const
 {
   // Put the batch sizes into the traced graph if we are tracing
   // TODO: This should be optimized
-  if (torch::jit::tracer::isTracing())
-  {
-    std::vector<torch::Tensor> sizes;
-    for (Size i = 0; i < _batch_dim; ++i)
-      sizes.push_back(torch::jit::tracer::getSizeOf(*this, i));
-    return torch::stack(sizes);
-  }
+  // if (torch::jit::tracer::isTracing())
+  // {
+  //   std::vector<torch::Tensor> sizes;
+  //   for (Size i = 0; i < _batch_dim; ++i)
+  //     sizes.push_back(torch::jit::tracer::getSizeOf(*this, i));
+  //   return torch::stack(sizes);
+  // }
 
   return sizes().slice(0, _batch_dim);
 }
@@ -175,8 +175,8 @@ TraceableSize
 TensorBase<Derived>::batch_size(Size index) const
 {
   // Put the batch size into the traced graph if we are tracing
-  if (torch::jit::tracer::isTracing())
-    return torch::jit::tracer::getSizeOf(*this, index >= 0 ? index : index + batch_dim());
+  // if (torch::jit::tracer::isTracing())
+  //   return torch::jit::tracer::getSizeOf(*this, index >= 0 ? index : index + batch_dim());
 
   return size(index >= 0 ? index : index + batch_dim());
 }

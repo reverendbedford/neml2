@@ -174,14 +174,18 @@ tensors.TensorValue.set_ instead to modify the tensor value.
           "Whether automatic differentiation is enabled for this model. This property cannot be "
           "modified once the model is created. Use the `enable_AD` option of base.load_model or "
           "base.get_model to control this property.")
-      .def("reinit",
-           py::overload_cast<TensorShapeRef, int, const torch::Device &, const torch::Dtype &>(
-               &Model::reinit),
-           py::arg("batch_shape") = TensorShapeRef{},
-           py::arg("deriv_order") = 0,
-           py::arg("device") = torch::Device(default_device()),
-           py::arg("dtype") = torch::Dtype(default_dtype()),
-           R"(
+      .def(
+          "reinit",
+          [](Model & self,
+             TensorShapeRef s,
+             int d,
+             const torch::Device & dev,
+             const torch::Dtype & dtype) { self.reinit(s, d, dev, dtype); },
+          py::arg("batch_shape") = TensorShapeRef{1},
+          py::arg("deriv_order") = 0,
+          py::arg("device") = torch::Device(default_device()),
+          py::arg("dtype") = torch::Dtype(default_dtype()),
+          R"(
 (Re)initialize the model with given batch shape, derivative order, device, and dtype.
 
 :param batch_shape: Batch shape used to allocate input, output, and derivative storage

@@ -168,13 +168,10 @@ TEST_CASE("Model", "[models]")
       // AND give correct results
       model.reinit({5, 2});
       REQUIRE(torch::allclose(y, model.value(LabeledVector(x, {&model.input_axis()}))));
-
-      forward_jit.function().graph()->dump();
     }
 
     SECTION("dvalue")
     {
-      torch::jit::setTensorExprDynamicShapeFusionEnabled(true);
       auto & model = reload_model("unit/models/chaboche.i",
                                   "implicit_rate",
                                   /*enable_ad=*/false);
@@ -204,17 +201,12 @@ TEST_CASE("Model", "[models]")
 
       // Derivative operator should be generalizable
       auto x = torch::rand({20, 50, model.input_axis().storage_size()});
-      // auto [y] = forward_jit(x);
-      // REQUIRE(TensorShape(y.sizes()) ==
-      //         TensorShape{
-      //             20, 50, model.output_axis().storage_size(),
-      //             model.input_axis().storage_size()});
+      auto y_ref = model.value(LabeledVector(x, {&model.input_axis()}));
+      auto [y] = forward_jit(x);
+      REQUIRE(TensorShape(y.sizes()) == TensorShape{20, 50, model.output_axis().storage_size()});
+      REQUIRE(torch::allclose(y, y_ref));
 
-      // AND give correct results
-      // auto y_ref = model.dvalue(LabeledVector(x, {&model.input_axis()}));
-      // REQUIRE(torch::allclose(y, y_ref));
-
-      // forward_jit.function().graph()->dump();
+      forward_jit.function().graph()->dump();
 
       {
         neml2::TimedSection ts("original", "dvalue");
@@ -233,13 +225,6 @@ TEST_CASE("Model", "[models]")
       }
 
       std::cout << "dvalue (JIT):      " << neml2::timed_sections()["dvalue"]["JIT"] << " ms\n";
-
-      std::cout << "torch::jit::tensorExprFuserEnabled() = " << torch::jit::tensorExprFuserEnabled()
-                << std::endl;
-      std::cout << "torch::jit::tensorExprDynamicShapeFusionEnabled() = "
-                << torch::jit::tensorExprDynamicShapeFusionEnabled() << std::endl;
-      std::cout << "torch::jit::texprReductionsEnabled() = " << torch::jit::texprReductionsEnabled()
-                << std::endl;
 
       // forward_jit.function().graph()->dump();
     }

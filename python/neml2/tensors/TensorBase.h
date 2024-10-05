@@ -59,7 +59,7 @@ public:
   }
   // These methods mirror TensorBase (the batch_xxx ones)
   Size dim() const { return _data->batch_dim(); }
-  TensorShapeRef sizes() const { return _data->batch_sizes(); }
+  TensorShape sizes() const { return _data->batch_sizes().concrete(); }
   Derived index(const indexing::TensorIndices & i) const { return _data->batch_index(i); }
   void index_put_(const indexing::TensorIndices & i, const torch::Tensor & t)
   {
@@ -190,13 +190,14 @@ def_TensorBase(py::class_<Derived> & c)
            [classname](const Derived & self)
            {
              return utils::stringify(self) + '\n' + "<" + classname + " of shape " +
-                    utils::stringify(self.batch_sizes()) + utils::stringify(self.base_sizes()) +
-                    ">";
+                    utils::stringify(self.batch_sizes().concrete()) +
+                    utils::stringify(self.base_sizes()) + ">";
            })
       .def("__repr__",
            [classname](const Derived & self)
            {
-             return "<" + classname + " of shape " + utils::stringify(self.batch_sizes()) +
+             return "<" + classname + " of shape " +
+                    utils::stringify(self.batch_sizes().concrete()) +
                     utils::stringify(self.base_sizes()) + ">";
            })
       .def("torch", [](const Derived & self) { return torch::Tensor(self); })
