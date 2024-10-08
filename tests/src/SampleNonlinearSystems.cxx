@@ -117,7 +117,7 @@ RosenbrockTestSystem::assemble(bool residual, bool Jacobian)
     diagonal.base_index_put_({indexing::Slice(1, -1)},
                              202 + 1200 * math::pow(s_x11, 2.0) - 400 * s_x2);
 
-    _Jacobian = Tensor(torch::diag_embed(diagonal) + H, _solution.batch_dim());
+    _Jacobian = Tensor(torch::diag_embed(diagonal) + H, _solution.batch_sizes());
   }
 }
 

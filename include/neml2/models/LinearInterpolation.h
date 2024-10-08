@@ -112,7 +112,7 @@ T2
 LinearInterpolation<T>::mask(const T2 & in, const Tensor & m) const
 {
   auto in_expand = in.batch_expand(m.batch_sizes());
-  auto in_mask = Tensor(in_expand.index({m}), this->batch_dim());
+  auto in_mask = Tensor(in_expand.index({m}), this->batch_sizes());
   return in_mask.base_reshape(in.base_sizes());
 }
 

@@ -77,6 +77,12 @@ public:
 
   /**
    * @brief Allocate storage and setup views for all the variables of this model and recursively all
+   * of the sub-models. See the other overload for detailed description.
+   */
+  virtual void reinit(const Tensor & tensor, int deriv_order);
+
+  /**
+   * @brief Allocate storage and setup views for all the variables of this model and recursively all
    * of the sub-models.
    *
    * This method must be called before any call to the forward operators, e.g., value, dvalue,
@@ -90,7 +96,7 @@ public:
    * @param device Device on which the model will be evaluated
    * @param dtype Number type, e.g., torch::kFloat32, torch::kFloat64, etc
    */
-  virtual void reinit(const TraceableTensorShape & batch_shape = TensorShape{1},
+  virtual void reinit(const TraceableTensorShape & batch_shape = {1},
                       int deriv_order = 0,
                       const torch::Device & device = default_device(),
                       const torch::Dtype & dtype = default_dtype());

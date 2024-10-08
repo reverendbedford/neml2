@@ -187,13 +187,13 @@ public:
   {
     VariableBase::setup_views(value, deriv, secderiv);
     if (value)
-      _value = T(_raw_value.base_reshape(base_sizes()), batch_dim());
+      _value = T(_raw_value.base_reshape(base_sizes()), batch_sizes());
   }
 
   virtual void setup_views(const VariableBase * other) override
   {
     VariableBase::setup_views(other);
-    _value = T(_raw_value.base_reshape(base_sizes()), batch_dim());
+    _value = T(_raw_value.base_reshape(base_sizes()), batch_sizes());
   }
 
   virtual void requires_grad_(bool req = true) override { _value.requires_grad_(req); }

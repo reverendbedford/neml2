@@ -77,7 +77,7 @@ VariableBase::setup_views(const VariableBase * other)
   else
   {
     _src = other;
-    _raw_value = Tensor(other->raw_value().base_reshape(base_sizes()), batch_dim());
+    _raw_value = Tensor(other->raw_value().base_reshape(base_sizes()), batch_sizes());
   }
 }
 

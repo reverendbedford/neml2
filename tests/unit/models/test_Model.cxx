@@ -30,8 +30,6 @@
 #include "neml2/jit/StaticGraphFunction.h"
 #include "neml2/base/guards.h"
 
-#include <torch/csrc/jit/passes/tensorexpr_fuser.h>
-
 using namespace neml2;
 
 TEST_CASE("Model", "[models]")
@@ -144,89 +142,49 @@ TEST_CASE("Model", "[models]")
 
     SECTION("value")
     {
-      auto & model = reload_model("unit/models/SR2LinearCombination.i", "model");
+      // auto & model = reload_model("unit/models/SR2LinearCombination.i", "model");
+      auto & model = reload_model("unit/models/chaboche.i", "implicit_rate", false);
 
       // Trace the value method
-      auto forward = [&model](torch::Tensor & batch_shape,
-                              torch::Tensor & x) -> std::tuple<torch::Tensor>
-      {
-        model.reinit(batch_shape);
-        return {model.value(LabeledVector(x, {&model.input_axis()}))};
-      };
-      auto forward_jit =
-          neml2::jit::StaticGraphFunction<std::tuple<torch::Tensor>, torch::Tensor, torch::Tensor>(
-              "model.value",
-              forward,
-              std::make_tuple(torch::tensor({1, 1}, torch::kInt64),
-                              torch::ones({1, 1, model.input_axis().storage_size()})));
-
-      // Forward operator should be generalizable
-      auto x = torch::full({5, 2, model.input_axis().storage_size()}, 2.5);
-      auto [y] = forward_jit(torch::tensor({5, 2}, torch::kInt64), x);
-      REQUIRE(TensorShape(y.sizes()) == TensorShape{5, 2, model.output_axis().storage_size()});
-
-      // AND give correct results
-      model.reinit({5, 2});
-      REQUIRE(torch::allclose(y, model.value(LabeledVector(x, {&model.input_axis()}))));
-    }
-
-    SECTION("dvalue")
-    {
-      auto & model = reload_model("unit/models/chaboche.i",
-                                  "implicit_rate",
-                                  /*enable_ad=*/false);
-
-      // Trace the dvalue method
       auto forward = [&model](torch::Tensor & x) -> std::tuple<torch::Tensor>
       {
-        model.reinit({20, 50}, /*deriv_order=*/1);
+        model.reinit(utils::extract_batch_sizes(x, 2));
         return {model.value(LabeledVector(x, {&model.input_axis()}))};
       };
       auto forward_jit = neml2::jit::StaticGraphFunction<std::tuple<torch::Tensor>, torch::Tensor>(
-          "model.dvalue",
-          forward,
-          std::make_tuple(torch::rand({20, 50, model.input_axis().storage_size()})));
+          "model.value", forward, {torch::rand({1, 1, model.input_axis().storage_size()})});
 
-      // // Derivative operator should be generalizable
-      // auto x = torch::full({5, 2, model.input_axis().storage_size()}, 2.5);
-      // auto [y] = forward_jit(torch::tensor({5, 2}, torch::kInt64), x);
-      // REQUIRE(
-      //     TensorShape(y.sizes()) ==
-      //     TensorShape{5, 2, model.output_axis().storage_size(),
-      //     model.input_axis().storage_size()});
-
-      // // AND give correct results
-      // model.reinit({5, 2}, /*deriv_order=*/1);
-      // REQUIRE(torch::allclose(y, model.dvalue(LabeledVector(x, {&model.input_axis()}))));
-
-      // Derivative operator should be generalizable
+      // Forward operator should be generalizable
       auto x = torch::rand({20, 50, model.input_axis().storage_size()});
-      auto y_ref = model.value(LabeledVector(x, {&model.input_axis()}));
       auto [y] = forward_jit(x);
       REQUIRE(TensorShape(y.sizes()) == TensorShape{20, 50, model.output_axis().storage_size()});
-      REQUIRE(torch::allclose(y, y_ref));
 
-      forward_jit.function().graph()->dump();
-
-      {
-        neml2::TimedSection ts("original", "dvalue");
-        torch::InferenceMode guard;
-        for (size_t i = 0; i < 1000; i++)
-          auto y = model.value(LabeledVector(x, {&model.input_axis()}));
-      }
-      std::cout << "dvalue (original): " << neml2::timed_sections()["dvalue"]["original"]
-                << " ms\n";
-
-      {
-        neml2::TimedSection ts("JIT", "dvalue");
-        torch::InferenceMode guard;
-        for (size_t i = 0; i < 1000; i++)
-          auto [y] = forward_jit(x);
-      }
-
-      std::cout << "dvalue (JIT):      " << neml2::timed_sections()["dvalue"]["JIT"] << " ms\n";
+      // AND give correct results
+      model.reinit({20, 50});
+      REQUIRE(torch::allclose(y, model.value(LabeledVector(x, {&model.input_axis()}))));
 
       // forward_jit.function().graph()->dump();
+
+      Size N = 1000;
+      x = torch::rand({N, 20, 50, model.input_axis().storage_size()});
+
+      {
+        TimedSection ts("original", "model.value");
+        for (Size i = 0; i < N; ++i)
+        {
+          model.reinit({20, 50});
+          model.value(LabeledVector(x.index({i}), {&model.input_axis()}));
+        }
+      }
+      std::cout << "original: " << timed_sections()["model.value"]["original"] << std::endl;
+
+      {
+        torch::InferenceMode inf;
+        TimedSection ts("jit", "model.value");
+        for (Size i = 0; i < N; ++i)
+          forward_jit(x.index({i}));
+      }
+      std::cout << "jit:      " << timed_sections()["model.value"]["jit"] << std::endl;
     }
   }
 }

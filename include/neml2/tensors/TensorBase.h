@@ -48,8 +48,11 @@ public:
   /// Default constructor
   TensorBase() = default;
 
-  /// Construct from another torch::Tensor
+  /// Construct from another torch::Tensor with given batch dimension
   TensorBase(const torch::Tensor & tensor, Size batch_dim);
+
+  /// Construct from another torch::Tensor with given batch shape
+  TensorBase(const torch::Tensor & tensor, const TraceableTensorShape & batch_shape);
 
   /// Copy constructor
   TensorBase(const Derived & tensor);
@@ -142,7 +145,7 @@ public:
   /// Return the number of base dimensions
   Size base_dim() const;
   /// Return the batch size
-  TraceableTensorShape batch_sizes() const;
+  const TraceableTensorShape & batch_sizes() const;
   /// Return the size of a batch axis
   TraceableSize batch_size(Size index) const;
   /// Return the base size
@@ -202,6 +205,9 @@ public:
 private:
   /// Number of batch dimensions. The first `_batch_dim` dimensions are considered batch dimensions.
   Size _batch_dim;
+
+  /// Batch shape
+  TraceableTensorShape _batch_sizes;
 };
 
 template <class Derived>
@@ -225,7 +231,7 @@ template <class Derived,
 Derived
 operator+(const Derived & a, const Real & b)
 {
-  return Derived(torch::operator+(a, b), a.batch_dim());
+  return Derived(torch::operator+(a, b), a.batch_sizes());
 }
 
 template <class Derived,
@@ -250,7 +256,7 @@ template <class Derived,
 Derived
 operator-(const Derived & a, const Real & b)
 {
-  return Derived(torch::operator-(a, b), a.batch_dim());
+  return Derived(torch::operator-(a, b), a.batch_sizes());
 }
 
 template <class Derived,
@@ -275,7 +281,7 @@ template <class Derived,
 Derived
 operator*(const Derived & a, const Real & b)
 {
-  return Derived(torch::operator*(a, b), a.batch_dim());
+  return Derived(torch::operator*(a, b), a.batch_sizes());
 }
 
 template <class Derived,
@@ -291,7 +297,7 @@ template <class Derived,
 Derived
 operator/(const Derived & a, const Real & b)
 {
-  return Derived(torch::operator/(a, b), a.batch_dim());
+  return Derived(torch::operator/(a, b), a.batch_sizes());
 }
 
 template <class Derived,
@@ -299,7 +305,7 @@ template <class Derived,
 Derived
 operator/(const Real & a, const Derived & b)
 {
-  return Derived(torch::operator/(a, b), b.batch_dim());
+  return Derived(torch::operator/(a, b), b.batch_sizes());
 }
 
 template <class Derived,

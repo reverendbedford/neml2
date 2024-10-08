@@ -79,7 +79,7 @@ ChabochePlasticHardening::set_value(bool out, bool dout_din, bool d2out_din2)
     auto I = SR2::identity_map(options());
 
     if (_X.is_dependent())
-      _X_dot.d(_X) = SSR4(_X_dot.d(_X).value(), batch_dim()) -
+      _X_dot.d(_X) = SSR4(_X_dot.d(_X).value()) -
                      _A * math::pow(s, _a - 3) * ((_a - 1) * SR2(_X).outer(SR2(_X)) + s * s * I);
 
     if (const auto * const A = nl_param("A"))

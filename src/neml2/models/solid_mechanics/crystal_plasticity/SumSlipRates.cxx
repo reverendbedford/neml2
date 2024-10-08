@@ -76,7 +76,7 @@ SumSlipRates::set_value(bool out, bool dout_din, bool d2out_din2)
 
   if (dout_din)
     if (_g.is_dependent())
-      _sg.d(_g) = Tensor(math::sign(g), batch_dim()).base_unsqueeze(0);
+      _sg.d(_g) = Tensor(math::sign(g), batch_sizes()).base_unsqueeze(0);
 }
 
 } // namespace neml2

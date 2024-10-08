@@ -52,8 +52,14 @@ public:
   /// Construct from another torch::Tensor given batch dimension
   explicit PrimitiveTensor(const torch::Tensor & tensor, Size batch_dim);
 
-  /// Construct from another torch::Tensor and infer batch dimension
+  /// Construct from another torch::Tensor given batch shape
+  explicit PrimitiveTensor(const torch::Tensor & tensor, const TraceableTensorShape & batch_shape);
+
+  /// Construct from another torch::Tensor and infer batch shape
   PrimitiveTensor(const torch::Tensor & tensor);
+
+  /// Construct from another neml2::Tensor and infer batch shape
+  PrimitiveTensor(const Tensor & tensor);
 
   /// Implicit conversion to a Tensor and loses information on the fixed base shape
   operator Tensor() const;
@@ -111,6 +117,18 @@ PrimitiveTensor<Derived, S...>::PrimitiveTensor(const torch::Tensor & tensor, Si
 }
 
 template <class Derived, Size... S>
+PrimitiveTensor<Derived, S...>::PrimitiveTensor(const torch::Tensor & tensor,
+                                                const TraceableTensorShape & batch_shape)
+  : TensorBase<Derived>(tensor, batch_shape)
+{
+  neml_assert_dbg(this->base_sizes() == const_base_sizes,
+                  "Base shape mismatch: trying to create a tensor with base shape ",
+                  const_base_sizes,
+                  " from a tensor with base shape ",
+                  this->base_sizes());
+}
+
+template <class Derived, Size... S>
 PrimitiveTensor<Derived, S...>::PrimitiveTensor(const torch::Tensor & tensor)
   : TensorBase<Derived>(tensor, tensor.dim() - const_base_dim)
 {
@@ -122,9 +140,20 @@ PrimitiveTensor<Derived, S...>::PrimitiveTensor(const torch::Tensor & tensor)
 }
 
 template <class Derived, Size... S>
+PrimitiveTensor<Derived, S...>::PrimitiveTensor(const Tensor & tensor)
+  : TensorBase<Derived>(tensor, tensor.batch_sizes())
+{
+  neml_assert_dbg(this->base_sizes() == const_base_sizes,
+                  "Base shape mismatch: trying to create a tensor with base shape ",
+                  const_base_sizes,
+                  " from a tensor with shape ",
+                  tensor.sizes());
+}
+
+template <class Derived, Size... S>
 PrimitiveTensor<Derived, S...>::operator Tensor() const
 {
-  return Tensor(*this, this->batch_dim());
+  return Tensor(*this, this->batch_sizes());
 }
 
 template <class Derived, Size... S>
@@ -139,7 +168,7 @@ Derived
 PrimitiveTensor<Derived, S...>::empty(const TraceableTensorShape & batch_shape,
                                       const torch::TensorOptions & options)
 {
-  return Derived(Tensor::empty(batch_shape, const_base_sizes, options), batch_shape.size());
+  return Derived(Tensor::empty(batch_shape, const_base_sizes, options), batch_shape);
 }
 
 template <class Derived, Size... S>
@@ -154,7 +183,7 @@ Derived
 PrimitiveTensor<Derived, S...>::zeros(const TraceableTensorShape & batch_shape,
                                       const torch::TensorOptions & options)
 {
-  return Derived(Tensor::zeros(batch_shape, const_base_sizes, options), batch_shape.size());
+  return Derived(Tensor::zeros(batch_shape, const_base_sizes, options), batch_shape);
 }
 
 template <class Derived, Size... S>
@@ -169,7 +198,7 @@ Derived
 PrimitiveTensor<Derived, S...>::ones(const TraceableTensorShape & batch_shape,
                                      const torch::TensorOptions & options)
 {
-  return Derived(Tensor::ones(batch_shape, const_base_sizes, options), batch_shape.size());
+  return Derived(Tensor::ones(batch_shape, const_base_sizes, options), batch_shape);
 }
 
 template <class Derived, Size... S>
@@ -185,6 +214,6 @@ PrimitiveTensor<Derived, S...>::full(const TraceableTensorShape & batch_shape,
                                      Real init,
                                      const torch::TensorOptions & options)
 {
-  return Derived(Tensor::full(batch_shape, const_base_sizes, init, options), batch_shape.size());
+  return Derived(Tensor::full(batch_shape, const_base_sizes, init, options), batch_shape);
 }
 } // namespace neml2

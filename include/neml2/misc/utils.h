@@ -117,6 +117,8 @@ TensorShape broadcast_sizes(T &&... shapes);
 // template <class... TraceableTensorShape>
 // TensorShape broadcast_traceable_sizes(TraceableTensorShape &&... shapes);
 
+TraceableTensorShape extract_batch_sizes(const torch::Tensor & tensor, Size batch_dim);
+
 /**
  * @brief The flattened storage size of a tensor with given shape
  *

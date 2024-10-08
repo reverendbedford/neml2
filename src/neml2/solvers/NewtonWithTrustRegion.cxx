@@ -169,7 +169,7 @@ NewtonWithTrustRegion::solve_direction(const NonlinearSystem & system)
   _subproblem.reinit(system, _delta);
   auto s = _subproblem.solution().clone();
   auto [succeeded, iters] = _subproblem_solver.solve(_subproblem, s);
-  s = Tensor(torch::clamp(s, 0.0), s.batch_dim());
+  s = Tensor(torch::clamp(s, 0.0), s.batch_sizes());
   auto p_trust = -_subproblem.preconditioned_direction(s);
 
   // Now select between the two... Basically take the full Newton step whenever possible
@@ -184,7 +184,8 @@ NewtonWithTrustRegion::solve_direction(const NonlinearSystem & system)
               << utils::storage_size(s.batch_sizes().concrete()) << std::endl;
   }
 
-  return Tensor(torch::where(newton_inside_trust_region, p_newton, p_trust), p_newton.batch_dim());
+  return Tensor(torch::where(newton_inside_trust_region, p_newton, p_trust),
+                p_newton.batch_sizes());
 }
 
 Scalar

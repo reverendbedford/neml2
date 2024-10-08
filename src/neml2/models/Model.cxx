@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 #include "neml2/models/Model.h"
+#include "neml2/jit/utils.h"
 #include <torch/autograd.h>
 
 namespace neml2
@@ -133,6 +134,12 @@ Model::get_system_matrices() const
 {
   neml_assert_dbg(is_nonlinear_system(), "This is not a nonlinear system");
   return {_dr_ds, _dr_dsn, _dr_df, _dr_dfn, _dr_dp};
+}
+
+void
+Model::reinit(const Tensor & tensor, int deriv_order)
+{
+  reinit(tensor.batch_sizes(), deriv_order, tensor.device(), tensor.scalar_type());
 }
 
 void
@@ -654,7 +661,7 @@ Model::extract_derivatives(bool retain_graph, bool create_graph, bool allow_unus
                                                      retain_graph,
                                                      create_graph,
                                                      allow_unused)[0],
-                               batch_dim());
+                               batch_sizes());
 
         if (dyi_dvar.defined())
           derivative_storage().tensor().base_index_put_(
@@ -681,7 +688,7 @@ Model::extract_second_derivatives(bool retain_graph, bool create_graph, bool all
                                                           retain_graph,
                                                           create_graph,
                                                           allow_unused)[0],
-                                    batch_dim());
+                                    batch_sizes());
           if (dydxij_dvar.defined())
             second_derivative_storage().tensor().base_index_put_(
                 {i, j, input_axis().indices(name)}, dydxij_dvar.base_reshape({var.base_storage()}));

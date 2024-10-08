@@ -132,7 +132,7 @@ full_to_reduced(const Tensor & full,
       factor * torch::gather(full.reshape(utils::add_shapes(starting_shape, 9, trailing_shape)),
                              starting_dim,
                              map),
-      batch_dim);
+      full.batch_sizes());
 }
 
 Tensor
@@ -155,7 +155,7 @@ reduced_to_full(const Tensor & reduced,
 
   return Tensor((factor * torch::gather(reduced, starting_dim, map))
                     .reshape(utils::add_shapes(starting_shape, 3, 3, trailing_shape)),
-                batch_dim);
+                reduced.batch_sizes());
 }
 
 Tensor
@@ -241,7 +241,7 @@ base_diag_embed(const Tensor & a, Size offset, Size d1, Size d2)
   return Tensor(
       torch::diag_embed(
           a, offset, d1 < 0 ? d1 : d1 + a.batch_dim() + 1, d2 < 0 ? d2 : d2 + a.batch_dim() + 1),
-      a.batch_dim());
+      a.batch_sizes());
 }
 
 SR2
@@ -302,7 +302,7 @@ d_multiply_and_make_skew_d_second(const SR2 & a)
 Tensor
 pow(const Real & a, const Tensor & n)
 {
-  return Tensor(torch::pow(a, n), n.batch_dim());
+  return Tensor(torch::pow(a, n), n.batch_sizes());
 }
 
 Tensor
@@ -328,32 +328,32 @@ vector_norm(const Tensor & v)
 
   return Tensor(torch::linalg::vector_norm(
                     v, /*order=*/2, /*dim=*/-1, /*keepdim=*/false, /*dtype=*/c10::nullopt),
-                v.batch_dim());
+                v.batch_sizes());
 }
 
 Tensor
 inv(const Tensor & m)
 {
-  return Tensor(torch::linalg::inv(m), m.batch_dim());
+  return Tensor(torch::linalg::inv(m), m.batch_sizes());
 }
 
 Tensor
 solve(const Tensor & A, const Tensor & B)
 {
-  return Tensor(torch::linalg::solve(A, B, /*left=*/true), A.batch_dim());
+  return Tensor(torch::linalg::solve(A, B, /*left=*/true), A.batch_sizes());
 }
 
 std::tuple<Tensor, Tensor>
 lu_factor(const Tensor & A, bool pivot)
 {
   auto [LU, pivots] = torch::linalg_lu_factor(A, pivot);
-  return {Tensor(LU, A.batch_dim()), Tensor(pivots, A.batch_dim())};
+  return {Tensor(LU, A.batch_sizes()), Tensor(pivots, A.batch_sizes())};
 }
 
 Tensor
 lu_solve(const Tensor & LU, const Tensor & pivots, const Tensor & B, bool left, bool adjoint)
 {
-  return Tensor(torch::linalg_lu_solve(LU, pivots, B, left, adjoint), B.batch_dim());
+  return Tensor(torch::linalg_lu_solve(LU, pivots, B, left, adjoint), B.batch_sizes());
 }
 } // namespace linalg
 } // namespace math

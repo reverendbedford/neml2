@@ -32,7 +32,8 @@ namespace neml2
 template <class Derived>
 TensorBase<Derived>::TensorBase(const torch::Tensor & tensor, Size batch_dim)
   : torch::Tensor(tensor),
-    _batch_dim(batch_dim)
+    _batch_dim(batch_dim),
+    _batch_sizes(utils::extract_batch_sizes(tensor, batch_dim))
 {
   neml_assert_dbg((Size)sizes().size() >= _batch_dim,
                   "Tensor dimension ",
@@ -42,9 +43,24 @@ TensorBase<Derived>::TensorBase(const torch::Tensor & tensor, Size batch_dim)
 }
 
 template <class Derived>
+TensorBase<Derived>::TensorBase(const torch::Tensor & tensor,
+                                const TraceableTensorShape & batch_sizes)
+  : torch::Tensor(tensor),
+    _batch_dim(batch_sizes.size()),
+    _batch_sizes(batch_sizes)
+{
+  neml_assert_dbg(TensorShape(sizes()) == utils::add_shapes(batch_sizes.concrete(), base_sizes()),
+                  "Tensor of shape ",
+                  sizes(),
+                  " cannot be constructed with batch shape ",
+                  batch_sizes.concrete());
+}
+
+template <class Derived>
 TensorBase<Derived>::TensorBase(const Derived & tensor)
   : torch::Tensor(tensor),
-    _batch_dim(tensor.batch_dim())
+    _batch_dim(tensor.batch_dim()),
+    _batch_sizes(tensor.batch_sizes())
 {
 }
 
@@ -52,28 +68,28 @@ template <class Derived>
 Derived
 TensorBase<Derived>::empty_like(const Derived & other)
 {
-  return Derived(torch::empty_like(other), other.batch_dim());
+  return Derived(torch::empty_like(other), other.batch_sizes());
 }
 
 template <class Derived>
 Derived
 TensorBase<Derived>::zeros_like(const Derived & other)
 {
-  return Derived(torch::zeros_like(other), other.batch_dim());
+  return Derived(torch::zeros_like(other), other.batch_sizes());
 }
 
 template <class Derived>
 Derived
 TensorBase<Derived>::ones_like(const Derived & other)
 {
-  return Derived(torch::ones_like(other), other.batch_dim());
+  return Derived(torch::ones_like(other), other.batch_sizes());
 }
 
 template <class Derived>
 Derived
 TensorBase<Derived>::full_like(const Derived & other, Real init)
 {
-  return Derived(torch::full_like(other, init), other.batch_dim());
+  return Derived(torch::full_like(other, init), other.batch_sizes());
 }
 
 template <class Derived>
@@ -99,7 +115,7 @@ TensorBase<Derived>::linspace(
     res = res + steps * diff;
   }
 
-  return Derived(res, batch_dim >= 0 ? batch_dim : res.batch_dim());
+  return Derived(res, batch_dim >= 0 ? batch_dim : res.batch_sizes());
 }
 
 template <class Derived>
@@ -108,28 +124,28 @@ TensorBase<Derived>::logspace(
     const Derived & start, const Derived & end, Size nstep, Size dim, Size batch_dim, Real base)
 {
   auto exponent = Derived::linspace(start, end, nstep, dim, batch_dim);
-  return Derived(torch::pow(base, exponent), exponent.batch_dim());
+  return Derived(torch::pow(base, exponent), exponent.batch_sizes());
 }
 
 template <class Derived>
 Derived
 TensorBase<Derived>::clone(torch::MemoryFormat memory_format) const
 {
-  return Derived(torch::Tensor::clone(memory_format), _batch_dim);
+  return Derived(torch::Tensor::clone(memory_format), batch_sizes());
 }
 
 template <class Derived>
 Derived
 TensorBase<Derived>::detach() const
 {
-  return Derived(torch::Tensor::detach(), _batch_dim);
+  return Derived(torch::Tensor::detach(), batch_sizes());
 }
 
 template <class Derived>
 Derived
 TensorBase<Derived>::to(const torch::TensorOptions & options) const
 {
-  return Derived(torch::Tensor::to(options), _batch_dim);
+  return Derived(torch::Tensor::to(options), batch_sizes());
 }
 
 template <class Derived>
@@ -154,20 +170,10 @@ TensorBase<Derived>::base_dim() const
 }
 
 template <class Derived>
-TraceableTensorShape
+const TraceableTensorShape &
 TensorBase<Derived>::batch_sizes() const
 {
-  // Put the batch sizes into the traced graph if we are tracing
-  // TODO: This should be optimized
-  // if (torch::jit::tracer::isTracing())
-  // {
-  //   std::vector<torch::Tensor> sizes;
-  //   for (Size i = 0; i < _batch_dim; ++i)
-  //     sizes.push_back(torch::jit::tracer::getSizeOf(*this, i));
-  //   return torch::stack(sizes);
-  // }
-
-  return sizes().slice(0, _batch_dim);
+  return _batch_sizes;
 }
 
 template <class Derived>
@@ -175,8 +181,8 @@ TraceableSize
 TensorBase<Derived>::batch_size(Size index) const
 {
   // Put the batch size into the traced graph if we are tracing
-  // if (torch::jit::tracer::isTracing())
-  //   return torch::jit::tracer::getSizeOf(*this, index >= 0 ? index : index + batch_dim());
+  if (torch::jit::tracer::isTracing())
+    return torch::jit::tracer::getSizeOf(*this, index >= 0 ? index : index + batch_dim());
 
   return size(index >= 0 ? index : index + batch_dim());
 }
@@ -218,7 +224,7 @@ TensorBase<Derived>::base_index(indexing::TensorIndicesRef indices) const
 {
   indexing::TensorIndices indices2(batch_dim(), torch::indexing::Slice());
   indices2.insert(indices2.end(), indices.begin(), indices.end());
-  return neml2::Tensor(this->index(indices2), batch_dim());
+  return neml2::Tensor(this->index(indices2), batch_sizes());
 }
 
 template <class Derived>
@@ -250,9 +256,9 @@ TensorBase<Derived>::batch_expand(const TraceableTensorShape & batch_shape) cons
   net.insert(net.end(), base_dim(), -1);
 
   // Record the batch sizes in the traced graph if we are tracing
-  if (const auto * const t = batch_shape.traceable())
-    for (Size i = 0; i < batch_shape.size(); ++i)
-      torch::jit::tracer::ArgumentStash::stashIntArrayRefElem("size", net.size(), i, t->index({i}));
+  for (Size i = 0; i < (Size)batch_shape.size(); ++i)
+    if (const auto * const si = batch_shape[i].traceable())
+      torch::jit::tracer::ArgumentStash::stashIntArrayRefElem("size", net.size(), i, *si);
 
   return Derived(expand(net), batch_shape.size());
 }
@@ -264,21 +270,21 @@ TensorBase<Derived>::base_expand(TensorShapeRef batch_shape) const
   // We don't want to touch the batch dimensions, so put -1 for them.
   auto net = batch_shape.vec();
   net.insert(net.begin(), batch_dim(), -1);
-  return neml2::Tensor(expand(net), batch_dim());
+  return neml2::Tensor(expand(net), batch_sizes());
 }
 
 template <class Derived>
 Derived
 TensorBase<Derived>::batch_expand_copy(const TraceableTensorShape & batch_shape) const
 {
-  return Derived(batch_expand(batch_shape).contiguous(), batch_shape.size());
+  return Derived(batch_expand(batch_shape).contiguous(), batch_shape);
 }
 
 template <class Derived>
 neml2::Tensor
 TensorBase<Derived>::base_expand_copy(TensorShapeRef batch_shape) const
 {
-  return neml2::Tensor(base_expand(batch_shape).contiguous(), batch_dim());
+  return neml2::Tensor(base_expand(batch_shape).contiguous(), batch_sizes());
 }
 
 template <class Derived>
@@ -286,12 +292,12 @@ Derived
 TensorBase<Derived>::batch_reshape(const TraceableTensorShape & batch_shape) const
 {
   // Record the batch sizes in the traced graph if we are tracing
-  if (const auto * const t = batch_shape.traceable())
-    for (Size i = 0; i < batch_shape.size(); ++i)
+  for (Size i = 0; i < (Size)batch_shape.size(); ++i)
+    if (const auto * const si = batch_shape[i].traceable())
       torch::jit::tracer::ArgumentStash::stashIntArrayRefElem(
-          "shape", batch_shape.size() + base_dim(), i, t->index({i}));
+          "shape", batch_shape.size() + base_dim(), i, *si);
 
-  return Derived(reshape(utils::add_shapes(batch_shape.concrete(), base_sizes())), _batch_dim);
+  return Derived(reshape(utils::add_shapes(batch_shape.concrete(), base_sizes())), batch_shape);
 }
 
 template <class Derived>
@@ -301,12 +307,13 @@ TensorBase<Derived>::base_reshape(TensorShapeRef base_shape) const
   auto batch_shape = batch_sizes();
 
   // Record the batch sizes in the traced graph if we are tracing
-  if (const auto * const t = batch_shape.traceable())
-    for (Size i = 0; i < batch_shape.size(); ++i)
+  for (Size i = 0; i < (Size)batch_shape.size(); ++i)
+    if (const auto * const si = batch_shape[i].traceable())
       torch::jit::tracer::ArgumentStash::stashIntArrayRefElem(
-          "shape", batch_shape.size() + base_shape.size(), i, t->index({i}));
+          "shape", batch_shape.size() + base_shape.size(), i, *si);
 
-  return neml2::Tensor(reshape(utils::add_shapes(batch_shape.concrete(), base_shape)), _batch_dim);
+  return neml2::Tensor(reshape(utils::add_shapes(batch_shape.concrete(), base_shape)),
+                       batch_sizes());
 }
 
 template <class Derived>
@@ -322,7 +329,7 @@ neml2::Tensor
 TensorBase<Derived>::base_unsqueeze(Size d) const
 {
   auto d2 = d < 0 ? d : d + batch_dim();
-  return neml2::Tensor(torch::Tensor::unsqueeze(d2), batch_dim());
+  return neml2::Tensor(torch::Tensor::unsqueeze(d2), batch_sizes());
 }
 
 template <class Derived>
@@ -340,14 +347,14 @@ TensorBase<Derived>::base_transpose(Size d1, Size d2) const
 {
   return neml2::Tensor(
       torch::Tensor::transpose(d1 < 0 ? d1 : _batch_dim + d1, d2 < 0 ? d2 : _batch_dim + d2),
-      _batch_dim);
+      batch_sizes());
 }
 
 template <class Derived>
 Derived
 TensorBase<Derived>::operator-() const
 {
-  return Derived(-torch::Tensor(*this), _batch_dim);
+  return Derived(-torch::Tensor(*this), batch_sizes());
 }
 
 #define TENSORBASE_INSTANTIATE(T) template class TensorBase<T>

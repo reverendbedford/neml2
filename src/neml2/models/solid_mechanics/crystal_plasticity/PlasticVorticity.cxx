@@ -84,7 +84,7 @@ PlasticVorticity::set_value(bool out, bool dout_din, bool d2out_din2)
   {
     if (_gamma_dot.is_dependent())
       _Wp.d(_gamma_dot) =
-          Tensor(_crystal_geometry.W().rotate(R2(_R).batch_unsqueeze(-1)), batch_dim())
+          Tensor(_crystal_geometry.W().rotate(R2(_R).batch_unsqueeze(-1)), batch_sizes())
               .base_transpose(-1, -2);
 
     if (_R.is_dependent())
