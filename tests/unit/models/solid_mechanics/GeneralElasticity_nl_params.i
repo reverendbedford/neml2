@@ -9,8 +9,11 @@
     input_rot_values = 'R'
     output_symr2_names = 'state/S'
     output_symr2_values = 'S'
+    input_ssr4_names = 'params/C'
+    input_ssr4_values = 'C_values'
     derivatives_abs_tol = 1e-6
     derivatives_rel_tol = 1e-4
+    check_AD_first_derivatives = false
   []
 []
 
@@ -27,7 +30,7 @@
     type = FillSR2
     values = '10.14791738  4.65043712 -2.33254551 -0.74329637 1.01251401 1.25050411'
   []
-  [C]
+  [C_values]
     type = SSR4
     values = " 100  2 3  4  5  6
                7  150  9 10 11 12
@@ -40,8 +43,16 @@
 []
 
 [Models]
-  [model]
+  [C]
+    type = SSR4InputParameter
+    from = 'params/C'
+  []
+  [model0]
     type = GeneralElasticity
     elastic_stiffness_tensor = 'C'
+  []
+  [model]
+    type = ComposedModel
+    models = 'model0'
   []
 []

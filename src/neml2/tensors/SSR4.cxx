@@ -101,6 +101,13 @@ SSR4::isotropic_E_nu(const Real & E, const Real & nu, const torch::TensorOptions
   return SSR4::isotropic_E_nu(Scalar(E, options), Scalar(nu, options));
 }
 
+SSSSR8
+SSR4::identity_map(const torch::TensorOptions & options)
+{
+  auto I = torch::eye(6, options);
+  return torch::einsum("ik,jl", {I, I});
+}
+
 SSR4
 SSR4::rotate(const Rot & r) const
 {
