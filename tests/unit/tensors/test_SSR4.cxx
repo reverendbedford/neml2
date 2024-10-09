@@ -197,6 +197,12 @@ TEST_CASE("SSR4", "[tensors]")
       REQUIRE(torch::allclose(Tb.drotate_self(r), dT_dTb, /*rtol=*/1.0e-4, /*atol=*/1e-4));
     }
 
+    SECTION("inverse")
+    {
+      auto Ti = T.inverse();
+      REQUIRE(torch::allclose(T * Ti, torch::eye(6, DTO)));
+    }
+
     SECTION("dinverse")
     {
       auto apply = [](const Tensor & x) { return SSR4(x).inverse(); };
@@ -205,6 +211,17 @@ TEST_CASE("SSR4", "[tensors]")
 
       REQUIRE(torch::allclose(T.dinverse(), dTi_dT, /*rtol=*/1e-4, /*atol=*/1e-4));
       REQUIRE(torch::allclose(Tb.dinverse(), dTi_dTb, 1.0e-4, 1.0e-4));
+    }
+
+    SECTION("identity_map")
+    {
+      auto I = SSR4::identity_map(DTO);
+      auto a = SSR4(torch::rand(utils::add_shapes(B, 6, 6), DTO));
+
+      auto apply = [](const Tensor & x) { return x; };
+      auto da_da = finite_differencing_derivative(apply, a);
+
+      REQUIRE(torch::allclose(I, da_da));
     }
   }
 

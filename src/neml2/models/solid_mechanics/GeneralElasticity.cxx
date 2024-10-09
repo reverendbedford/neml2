@@ -55,6 +55,7 @@ GeneralElasticity::set_value(bool out, bool dout_din, bool d2out_din2)
   neml_assert_dbg(!d2out_din2, "GeneralElasticity doesn't implement second derivatives.");
 
   auto A = _T.rotate(_R);
+
   if (_compliance)
     A = A.inverse();
 
@@ -69,9 +70,10 @@ GeneralElasticity::set_value(bool out, bool dout_din, bool d2out_din2)
     if (_R.is_dependent())
     {
       if (_compliance)
-        _to.d(_R) = neml2::Tensor(
-            torch::einsum("...ijkl,...klm,...j", {_T.dinverse(), _T.drotate(_R), SR2(_from)}),
-            batch_dim());
+        _to.d(_R) =
+            neml2::Tensor(torch::einsum("...ijkl,...klm,...j",
+                                        {_T.rotate(_R).dinverse(), _T.drotate(_R), SR2(_from)}),
+                          batch_dim());
       else
         _to.d(_R) =
             neml2::Tensor(torch::einsum("...ijk,...j", {_T.drotate(_R), SR2(_from)}), batch_dim());
@@ -81,7 +83,8 @@ GeneralElasticity::set_value(bool out, bool dout_din, bool d2out_din2)
     {
       if (_compliance)
         _to.d(*T) = neml2::Tensor(
-            torch::einsum("...ijkl,...klmn,...j", {_T.dinverse(), _T.drotate_self(_R), SR2(_from)}),
+            torch::einsum("...ijkl,...klmn,...j",
+                          {_T.rotate(_R).dinverse(), _T.drotate_self(_R), SR2(_from)}),
             batch_dim());
       else
         _to.d(*T) = neml2::Tensor(torch::einsum("...ijkl,...j", {_T.drotate_self(_R), SR2(_from)}),
