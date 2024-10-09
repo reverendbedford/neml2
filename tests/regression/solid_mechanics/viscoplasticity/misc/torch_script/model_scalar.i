@@ -61,14 +61,13 @@ nbatch = 20
 
 [Drivers]
   [driver]
-    type = SolidMechanicsDriver
+    type = SDTSolidMechanicsDriver
     model = 'model'
-    times = 'times'
-    prescribed_strains = 'strains'
-    prescribed_temperatures = 'temperatures'
+    prescribed_time = 'times'
+    prescribed_strain = 'strains'
+    prescribed_temperature = 'temperatures'
     predictor = LINEAR_EXTRAPOLATION
     save_as = 'result.pt'
-    enable_AD = true
   []
   [regression]
     type = TransientRegression

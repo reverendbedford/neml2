@@ -24,64 +24,49 @@
 
 #pragma once
 
-#include "neml2/drivers/TransientDriver.h"
+#include "neml2/drivers/solid_mechanics/SolidMechanicsDriver.h"
 
 #include "neml2/tensors/WR2.h"
 
 namespace neml2
 {
-/**
- * @brief The transient driver specialized for solid mechanics problems.
- *
- */
-class LargeDeformationIncrementalSolidMechanicsDriver : public TransientDriver
+/// Large deformation incremental solid mechanics driver
+class LDISolidMechanicsDriver : public SolidMechanicsDriver
 {
 public:
   static OptionSet expected_options();
 
-  /**
-   * @brief Construct a new LargeDeformationIncrementalSolidMechanicsDriver object
-   *
-   * @param options The options extracted from the input file
-   */
-  LargeDeformationIncrementalSolidMechanicsDriver(const OptionSet & options);
+  LDISolidMechanicsDriver(const OptionSet & options);
+
+  void setup() override;
 
   void diagnose(std::vector<Diagnosis> &) const override;
 
 protected:
-  virtual void update_forces() override;
+  void init_strain_control(const OptionSet & options) override;
+  void init_stress_control(const OptionSet & options) override;
+  virtual void init_vorticity_control(const OptionSet & options);
 
-  /**
-   * @brief The control method to drive the constitutive update.
-   *
-   * STRAIN: Use strain control to drive the update.
-   * STRESS: Use stress control to drive the update.
-   */
-  std::string _control;
+  void update_forces() override;
 
-  /**
-   * The value of the driving force, depending on `_control` this is either the prescribed strain or
-   * the prescribed stress.
-   */
-  SR2 _driving_force;
+  void apply_predictor() override;
 
-  /**
-   * The name of the driving force, depending on `_control` this is either the prescribed strain or
-   * the prescribed stress.
-   */
-  VariableName _driving_force_name;
-
-  /**
-   * The name of the total vorticity
-   */
-  VariableName _vorticity_name;
-
+  ///@{
   /// Whether vorticity is prescribed
   const bool _vorticity_prescribed;
-
-  /**
-   * The value of the (total) vorticity
-   */
+  /// The name of the total vorticity
+  VariableName _vorticity_name;
+  /// The value of the (total) vorticity
   WR2 _vorticity;
+  ///@}
+
+  ///@{
+  /// Whether to perform the CP warmup
+  const bool _cp_warmup;
+  /// Scale value for initial cp warmup
+  const Real _cp_warmup_elastic_scale;
+  /// Name of the elastic strain variable for the CP warmup
+  const VariableName _cp_warmup_elastic_strain;
+  ///@}
 };
 }

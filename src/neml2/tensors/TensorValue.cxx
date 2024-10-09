@@ -22,20 +22,46 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <pybind11/pybind11.h>
+#include "neml2/tensors/TensorValue.h"
+#include "neml2/tensors/tensors.h"
 
-#include "python/neml2/tensors/LabeledTensor.h"
-#include "neml2/tensors/LabeledVector.h"
-
-namespace py = pybind11;
-using namespace neml2;
-
-void
-def_LabeledVector(py::module_ & m)
+namespace neml2
 {
-  auto c = py::class_<LabeledVector>(m, "LabeledVector");
-
-  def_LabeledBatchView<LabeledVector>(m, "LabeledVectorBatchView");
-  def_LabeledBaseView<LabeledVector>(m, "LabeledVectorBaseView");
-  def_LabeledTensor<LabeledVector, 1>(c);
+template <typename T>
+void
+TensorValue<T>::to_(const torch::TensorOptions & options)
+{
+  _value = _value.to(options);
 }
+
+template <typename T>
+void
+TensorValue<T>::requires_grad_(bool req)
+{
+  _value.requires_grad_(req);
+}
+
+template <typename T>
+TensorValue<T>::operator Tensor() const
+{
+  return _value;
+}
+
+template <typename T>
+void
+TensorValue<T>::operator=(const Tensor & val)
+{
+  _value = T(val);
+}
+
+template <typename T>
+TensorType
+TensorValue<T>::type() const
+{
+  return TensorTypeEnum<T>::value;
+}
+
+#define INSTANTIATE_TENSORVALUE(T) template class TensorValue<T>
+FOR_ALL_TENSORBASE(INSTANTIATE_TENSORVALUE);
+#undef INSTANTIATE_TENSORVALUE
+} // namespace neml2
