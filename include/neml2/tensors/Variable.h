@@ -45,61 +45,26 @@ public:
 
   virtual ~VariableBase() = default;
 
-  /// Cache the variable's batch shape
-  virtual void cache(TensorShapeRef batch_shape);
-
-  /// Setup the variable's views into blocks of the storage
-  virtual void setup_views(const LabeledVector * value,
-                           const LabeledMatrix * deriv = nullptr,
-                           const LabeledTensor3D * secderiv = nullptr);
-
-  /// Setup the variable's views following another variable
-  virtual void setup_views(const VariableBase * other);
-
-  /// Set requires_grad for the underlying storage
-  virtual void requires_grad_(bool req = true) = 0;
-
-  /// Create a wrapper representing the derivative dy/dx
-  Derivative d(const VariableBase & x);
-
-  /// Create a wrapper representing the second derivative d2y/dx2
-  Derivative d(const VariableBase & x1, const VariableBase & x2);
-
-  /// Raw flattened variable value
-  const Tensor & raw_value() const { return _raw_value; }
-
-  /// Variable value of the logical shape
-  virtual const Tensor tensor() const = 0;
-
   /// Name of this variable
   const VariableName & name() const { return _name; }
 
-  /// The owner of this variable
+  /// The Model who declared this variable
   const Model & owner() const { return *_owner; }
 
   /// The source variable
   const VariableBase * src() const { return _src; }
 
-  /// Batch shape
-  TensorShapeRef batch_sizes() const { return _batch_sizes; }
-
-  /// Base shape
-  virtual TensorShapeRef base_sizes() const = 0;
-
-  /// Batch dimension
-  Size batch_dim() const { return _batch_sizes.size(); }
-
-  /// Base dimension
-  Size base_dim() const { return base_sizes().size(); }
-
-  /// Base storage
-  Size base_storage() const { return utils::storage_size(base_sizes()); }
-
-  /// Total shape
-  virtual TensorShapeRef sizes() const = 0;
-
   /// Variable type
   virtual TensorType type() const = 0;
+
+  /// Get raw flattened variable value
+  const Tensor & get_raw() const;
+
+  /// Set raw flattened variable value
+  virtual void set_raw(const Tensor & val);
+
+  /// Variable value of the logical shape
+  virtual const Tensor tensor() const = 0;
 
   /// @name Subaxis
   ///@{
@@ -122,22 +87,13 @@ protected:
   const VariableName _name;
 
   /// The model which declared this variable
-  const Model * _owner;
-
-  /// Batch shape of this variable
-  TensorShape _batch_sizes;
-
-  /// The raw (flattened) variable value
-  Tensor _raw_value;
-
-  /// The derivative of this variable w.r.t. arguments.
-  std::map<VariableName, Tensor> _dvalue_d;
-
-  /// The second derivative of this variable w.r.t. arguments.
-  std::map<VariableName, std::map<VariableName, Tensor>> _d2value_d;
+  const Model * const _owner;
 
   /// The source variable this variable follows
   const VariableBase * _src;
+
+  /// The raw (flattened) variable value
+  Tensor _raw_value;
 
   /// @name subaxis
   ///@{
