@@ -118,15 +118,14 @@ SSSSR8
 SSR4::drotate_self(const Rot & r) const
 {
   auto R = r.euler_rodrigues();
-  auto Tsym = (torch::einsum("...ma,...nb,...oc,...pd", {R, R, R, R}) +
-               torch::einsum("...mb,...na,...od,...pc", {R, R, R, R}) +
-               torch::einsum("...mb,...na,...oc,...pd", {R, R, R, R}) +
-               torch::einsum("...ma,...nb,...od,...pc", {R, R, R, R})) /
-              4.0;
-  return math::full_to_mandel(
-      math::full_to_mandel(math::full_to_mandel(math::full_to_mandel(R8(Tsym, batch_dim()), 0), 1),
-                           2),
-      3);
+  auto Tsym = 0.25 * (torch::einsum("...ma,...nb,...oc,...pd->...mnopabcd", {R, R, R, R}) +
+                      torch::einsum("...mb,...na,...od,...pc->...mnopabcd", {R, R, R, R}) +
+                      torch::einsum("...mb,...na,...oc,...pd->...mnopabcd", {R, R, R, R}) +
+                      torch::einsum("...ma,...nb,...od,...pc->...mnopabcd", {R, R, R, R}));
+  return SSSSR8(math::full_to_mandel(
+      math::full_to_mandel(
+          math::full_to_mandel(math::full_to_mandel(R8(Tsym, R.batch_dim()), 0), 1), 2),
+      3));
 }
 
 Scalar

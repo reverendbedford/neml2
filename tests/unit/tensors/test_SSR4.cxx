@@ -191,10 +191,10 @@ TEST_CASE("SSR4", "[tensors]")
       auto dT_dT = finite_differencing_derivative(apply, T);
       auto dT_dTb = dT_dT.batch_expand(B);
 
-      std::cout << dT_dT << std::endl;
-      std::cout << T.drotate_self(r) << std::endl;
-
       REQUIRE(torch::allclose(T.drotate_self(r), dT_dT, 1.0e-4, 1.0e-4));
+      REQUIRE(torch::allclose(Tb.drotate_self(r), dT_dTb, 1.0e-4, 1.0e-4));
+      REQUIRE(torch::allclose(T.drotate_self(rb), dT_dTb, /*rtol=*/1.0e-4, /*atol=*/1e-4));
+      REQUIRE(torch::allclose(Tb.drotate_self(r), dT_dTb, /*rtol=*/1.0e-4, /*atol=*/1e-4));
     }
 
     SECTION("dinverse")
