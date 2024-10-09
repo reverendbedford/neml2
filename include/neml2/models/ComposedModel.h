@@ -53,7 +53,7 @@ public:
                                    LabeledAxis::AssemblySliceCmp>;
 
 protected:
-  virtual void allocate_variables(bool in, bool out) override;
+  virtual void allocate_variables() override;
 
   /**
    * Setup each of the sub-model's input views. Note the logic is different from the base class's.

@@ -156,8 +156,7 @@ ImplicitUpdate::set_value(bool out, bool dout_din, bool d2out_din2)
   if (dout_din)
   {
     // IFT requires dresidual/dinput evaluated at the solution:
-    _model.prepare();
-    _model.dvalue();
+    _model.dvalue(sol);
     auto && [dr_ds, dr_dsn, dr_df, dr_dfn, dr_dp] = _model.get_system_matrices();
 
     // The actual IFT:

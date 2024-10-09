@@ -248,28 +248,25 @@ ComposedModel::named_nonlinear_parameter_models(bool /*recursive*/) const
 }
 
 void
-ComposedModel::allocate_variables(bool in, bool out)
+ComposedModel::allocate_variables()
 {
-  Model::allocate_variables(in, out);
+  Model::allocate_variables();
 
-  if (out)
+  if (requires_grad())
   {
-    if (requires_grad())
-    {
-      _dpout_din[this] = LabeledMatrix::identity(batch_sizes(), input_axis(), options());
-      for (auto * i : registered_models())
-        _dpout_din[i] =
-            LabeledMatrix::zeros(batch_sizes(), {&i->output_axis(), &input_axis()}, options());
-    }
+    _dpout_din[this] = LabeledMatrix::identity(batch_sizes(), input_axis(), options());
+    for (auto * i : registered_models())
+      _dpout_din[i] =
+          LabeledMatrix::zeros(batch_sizes(), {&i->output_axis(), &input_axis()}, options());
+  }
 
-    if (requires_2nd_grad())
-    {
-      _d2pout_din2[this] = LabeledTensor3D::zeros(
-          batch_sizes(), {&input_axis(), &input_axis(), &input_axis()}, options());
-      for (auto * i : registered_models())
-        _d2pout_din2[i] = LabeledTensor3D::zeros(
-            batch_sizes(), {&i->output_axis(), &input_axis(), &input_axis()}, options());
-    }
+  if (requires_2nd_grad())
+  {
+    _d2pout_din2[this] = LabeledTensor3D::zeros(
+        batch_sizes(), {&input_axis(), &input_axis(), &input_axis()}, options());
+    for (auto * i : registered_models())
+      _d2pout_din2[i] = LabeledTensor3D::zeros(
+          batch_sizes(), {&i->output_axis(), &input_axis(), &input_axis()}, options());
   }
 }
 

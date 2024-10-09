@@ -190,9 +190,6 @@ protected:
   /// Tell each output variable view which tensor storage(s) to view into
   virtual void setup_output_views(bool out, bool dout_din, bool d2out_din2);
 
-  /// Zero out derivative and second derivative storage
-  virtual void zero(bool dout_din, bool d2out_din2);
-
   /// Declare an input variable
   template <typename T, typename... S>
   const Variable<T> & declare_input_variable(S &&... name)

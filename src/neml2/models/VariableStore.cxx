@@ -147,14 +147,4 @@ VariableStore::setup_output_views(bool out, bool dout_din, bool d2out_din2)
                     dout_din ? &_dout_din : nullptr,
                     d2out_din2 ? &_d2out_din2 : nullptr);
 }
-
-void
-VariableStore::zero(bool dout_din, bool d2out_din2)
-{
-  if (dout_din)
-    _dout_din.zero_();
-
-  if (d2out_din2)
-    _d2out_din2.zero_();
-}
 } // namespace neml2

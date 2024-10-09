@@ -147,10 +147,7 @@ TEST_CASE("Model", "[models]")
 
       // Trace the value method
       auto forward = [&model](torch::Tensor & x) -> std::tuple<torch::Tensor>
-      {
-        model.reinit(utils::extract_batch_sizes(x, 2));
-        return {model.value(LabeledVector(x, {&model.input_axis()}))};
-      };
+      { return {model.value(LabeledVector(x, {&model.input_axis()}))}; };
       auto forward_jit = neml2::jit::StaticGraphFunction<std::tuple<torch::Tensor>, torch::Tensor>(
           "model.value", forward, {torch::rand({1, 1, model.input_axis().storage_size()})});
 

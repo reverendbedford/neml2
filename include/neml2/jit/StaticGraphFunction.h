@@ -117,7 +117,7 @@ StaticGraphFunction<OutputType, InputTypes...>::create_graph(
                                                          f_wrap,
                                                          var_name_lookup_fn,
                                                          /*strict=*/true,
-                                                         /*force_outplace=*/true))
+                                                         /*force_outplace=*/false))
                        ->graph);
 }
 

@@ -64,14 +64,11 @@ TorchScriptFlowRate::TorchScriptFlowRate(const OptionSet & options)
 }
 
 void
-TorchScriptFlowRate::reinit(const TraceableTensorShape & batch_shape,
-                            int deriv_order,
-                            const torch::Device & device,
-                            const torch::Dtype & dtype)
+TorchScriptFlowRate::reinit(const Tensor & example_input, int deriv_order)
 {
-  Model::reinit(batch_shape, deriv_order, device, dtype);
-  _surrogate->to(device);
-  _surrogate->to(dtype);
+  Model::reinit(example_input, deriv_order);
+  _surrogate->to(device());
+  _surrogate->to(scalar_type());
 }
 
 void

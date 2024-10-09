@@ -79,7 +79,7 @@ public:
    * @brief Allocate storage and setup views for all the variables of this model and recursively all
    * of the sub-models. See the other overload for detailed description.
    */
-  virtual void reinit(const Tensor & tensor, int deriv_order);
+  virtual void reinit(const Tensor & example_input, int deriv_order);
 
   /**
    * @brief Allocate storage and setup views for all the variables of this model and recursively all
@@ -120,8 +120,6 @@ public:
   /// Tell this model to use AD to get derivatives
   void use_AD_derivatives(bool first = true, bool second = true);
 
-  /// Prepare for evaluation
-  void prepare();
   /// Evalute the model
   virtual void value();
   /// Evalute the model and compute its derivative
@@ -135,18 +133,18 @@ public:
   /// Evalute the first and second derivatives
   virtual void dvalue_and_d2value();
   /// Convenient shortcut to construct and return the model value
-  virtual LabeledVector value(const LabeledVector & in);
+  virtual LabeledVector value(const Tensor & in);
   /// Convenient shortcut to construct and return the model value and its derivative
-  virtual std::tuple<LabeledVector, LabeledMatrix> value_and_dvalue(const LabeledVector & in);
+  virtual std::tuple<LabeledVector, LabeledMatrix> value_and_dvalue(const Tensor & in);
   /// Convenient shortcut to construct and return the derivative
-  virtual LabeledMatrix dvalue(const LabeledVector & in);
+  virtual LabeledMatrix dvalue(const Tensor & in);
   /// Convenient shortcut to construct and return the model's value, first and second derivative
   virtual std::tuple<LabeledVector, LabeledMatrix, LabeledTensor3D>
-  value_and_dvalue_and_d2value(const LabeledVector & in);
+  value_and_dvalue_and_d2value(const Tensor & in);
   /// Convenient shortcut to construct and return the model's second derivative
-  virtual LabeledTensor3D d2value(const LabeledVector & in);
+  virtual LabeledTensor3D d2value(const Tensor & in);
   /// Convenient shortcut to construct and return the model's first and second derivative
-  virtual std::tuple<LabeledMatrix, LabeledTensor3D> dvalue_and_d2value(const LabeledVector & in);
+  virtual std::tuple<LabeledMatrix, LabeledTensor3D> dvalue_and_d2value(const Tensor & in);
 
   /// Declaration of nonlinear parameters may require manipulation of input
   friend class ParameterStore;
@@ -175,16 +173,9 @@ protected:
   virtual void check_AD_limitation() const;
   /// Check for potential in-place operation
   void check_inplace_dbg();
-  /// Check if the input has valid shape
-  virtual void check_input(const LabeledVector & in) const;
 
   /// @name Model reinitialization and setup
   ///@{
-  /**
-   * @brief Allocate storage and setup views for all the variables of this model and recursively all
-   * of the sub-models. See the other overload for detailed description.
-   */
-  virtual void reinit(bool in, bool out);
   using VariableStore::cache;
   virtual void cache(const TraceableTensorShape & batch_shape,
                      int deriv_order,
@@ -196,7 +187,7 @@ protected:
   bool requires_2nd_grad() const { return _deriv_order >= 2; }
   using VariableStore::allocate_variables;
   /// Call VariableStore::allocate_variables recursively on all submodels
-  virtual void allocate_variables(bool in, bool out);
+  virtual void allocate_variables();
   /// Call VariableStore::setup_input_views recursively on all submodels
   virtual void setup_input_views(VariableStore * host = nullptr) override;
   virtual void setup_submodel_input_views(VariableStore * host);
@@ -209,11 +200,8 @@ protected:
 
   /// @name Model (pre-)evaluation
   ///@{
-  /// Call VariableStore::zero recursively on all submodels
-  using VariableStore::zero;
-  virtual void zero();
   /// Set \p in to be the input of this model
-  virtual void set_input(const LabeledVector & in);
+  virtual void set_input(const Tensor & in);
   /// Set \p x as the current solution of the nonlinear system
   virtual void set_solution(const Tensor & x) override;
   /// The map between input -> output, and optionally its derivatives

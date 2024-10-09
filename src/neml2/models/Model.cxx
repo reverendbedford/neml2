@@ -137,9 +137,28 @@ Model::get_system_matrices() const
 }
 
 void
-Model::reinit(const Tensor & tensor, int deriv_order)
+Model::reinit(const Tensor & example_input, int deriv_order)
 {
-  reinit(tensor.batch_sizes(), deriv_order, tensor.device(), tensor.scalar_type());
+  neml_assert(host() == this, "This method should only be called on the host model.");
+
+  // Cache configuration
+  cache(example_input.batch_sizes(),
+        deriv_order,
+        example_input.device(),
+        example_input.scalar_type());
+
+  // Sync buffers and parameters
+  send_buffers_to(options());
+  send_parameters_to(options());
+
+  // Set input
+  set_input(example_input);
+
+  // Allocate variable storage and setup variable views
+  allocate_variables();
+  setup_output_views();
+  setup_nonlinear_system();
+  setup_input_views(this);
 }
 
 void
@@ -148,42 +167,14 @@ Model::reinit(const TraceableTensorShape & batch_shape,
               const torch::Device & device,
               const torch::Dtype & dtype)
 {
-  neml_assert(host() == this, "This method should only be called on the host model.");
-
-  // Cache configuration
-  cache(batch_shape, deriv_order, device, dtype);
-
-  // Sync buffers and parameters
-  send_buffers_to(options());
-  send_parameters_to(options());
-
-  // Allocate variable storage and set up variable views
-  reinit(/*in=*/true, /*out=*/true);
+  reinit(Tensor::empty(batch_shape,
+                       input_axis().storage_size(),
+                       default_tensor_options().device(device).dtype(dtype)),
+         deriv_order);
 }
 
 void
-Model::reinit(bool in, bool out)
-{
-  // Allocate variable storage
-  allocate_variables(in, out);
-
-  // Setup variable views
-  setup_output_views();
-  setup_nonlinear_system();
-  setup_input_views(this);
-}
-
-void
-Model::prepare()
-{
-  if (is_AD_disabled())
-    zero();
-  else
-    reinit(false, true);
-}
-
-void
-Model::allocate_variables(bool in, bool out)
+Model::allocate_variables()
 {
 #ifndef NDEBUG
   _evaluated_once = false;
@@ -193,19 +184,19 @@ Model::allocate_variables(bool in, bool out)
 
   VariableStore::allocate_variables(batch_sizes(),
                                     options(),
-                                    /*in=*/in,
-                                    /*out=*/out,
-                                    /*dout_din=*/out && requires_grad(),
-                                    /*d2out_din2=*/out && requires_2nd_grad());
+                                    /*in=*/false,
+                                    /*out=*/true,
+                                    /*dout_din=*/requires_grad(),
+                                    /*d2out_din2=*/requires_2nd_grad());
 
-  if (in && is_nonlinear_system())
+  if (is_nonlinear_system())
   {
     _ndof = output_axis().storage_size("residual");
     _solution = Tensor::empty(batch_sizes(), _ndof, options());
   }
 
   for (auto * submodel : registered_models())
-    submodel->allocate_variables(in, out);
+    submodel->allocate_variables();
 }
 
 void
@@ -269,15 +260,6 @@ Model::setup_nonlinear_system()
 }
 
 void
-Model::zero()
-{
-  VariableStore::zero(requires_grad(), requires_2nd_grad());
-
-  for (auto * submodel : registered_models())
-    submodel->zero();
-}
-
-void
 Model::set_solution(const Tensor & x)
 {
   NonlinearSystem::set_solution(x);
@@ -332,33 +314,16 @@ Model::use_AD_derivatives(bool first, bool second)
 }
 
 void
-Model::check_input(const LabeledVector & in) const
+Model::set_input(const Tensor & in)
 {
-  neml_assert(utils::sizes_broadcastable(in.batch_sizes().concrete(), batch_sizes().concrete()),
-              "The provided input has batch shape ",
-              in.batch_sizes().concrete(),
-              " which cannot be broadcast to the model's batch shape ",
-              batch_sizes().concrete(),
-              ". Make sure the model has been initialized using `reinit` and that the provided "
-              "input has the correct shape.");
-  neml_assert(in.base_storage() == input_storage().base_storage(),
+  neml_assert(in.base_storage() == input_axis().storage_size(),
               "The provided input has base storage size ",
               in.base_storage(),
               ", but the model's input storage expects a base storage size of ",
-              input_storage().base_storage(),
+              input_axis().storage_size(),
               ". Make sure the model has been initialized using `reinit` and that the provided "
               "input has the correct shape.");
-}
-
-void
-Model::set_input(const LabeledVector & in)
-{
-  neml_assert_dbg(in.axis(0) == input_axis(),
-                  "Incompatible input axis. The model has input axis: \n",
-                  input_axis(),
-                  "The input vector has axis: \n",
-                  in.axis(0));
-  input_storage().copy_(in.tensor().batch_expand(batch_sizes()).clone());
+  input_storage() = LabeledVector(in.clone(), {&input_axis()});
 }
 
 LabeledVector
@@ -380,67 +345,49 @@ Model::get_d2output_dinput2()
 }
 
 LabeledVector
-Model::value(const LabeledVector & in)
+Model::value(const Tensor & in)
 {
-  check_input(in);
-  set_input(in);
-  prepare();
-
+  reinit(in, 0);
   value();
   return get_output();
 }
 
 std::tuple<LabeledVector, LabeledMatrix>
-Model::value_and_dvalue(const LabeledVector & in)
+Model::value_and_dvalue(const Tensor & in)
 {
-  check_input(in);
-  set_input(in);
-  prepare();
-
+  reinit(in, 1);
   value_and_dvalue();
   return {get_output(), get_doutput_dinput()};
 }
 
 LabeledMatrix
-Model::dvalue(const LabeledVector & in)
+Model::dvalue(const Tensor & in)
 {
-  check_input(in);
-  set_input(in);
-  prepare();
-
+  reinit(in, 1);
   dvalue();
   return get_doutput_dinput();
 }
 
 std::tuple<LabeledVector, LabeledMatrix, LabeledTensor3D>
-Model::value_and_dvalue_and_d2value(const LabeledVector & in)
+Model::value_and_dvalue_and_d2value(const Tensor & in)
 {
-  check_input(in);
-  set_input(in);
-  prepare();
-
+  reinit(in, 2);
   value_and_dvalue_and_d2value();
   return {get_output(), get_doutput_dinput(), get_d2output_dinput2()};
 }
 
 std::tuple<LabeledMatrix, LabeledTensor3D>
-Model::dvalue_and_d2value(const LabeledVector & in)
+Model::dvalue_and_d2value(const Tensor & in)
 {
-  check_input(in);
-  set_input(in);
-  prepare();
-
+  reinit(in, 2);
   dvalue_and_d2value();
   return {get_doutput_dinput(), get_d2output_dinput2()};
 }
 
 LabeledTensor3D
-Model::d2value(const LabeledVector & in)
+Model::d2value(const Tensor & in)
 {
-  check_input(in);
-  set_input(in);
-  prepare();
-
+  reinit(in, 2);
   d2value();
   return get_d2output_dinput2();
 }
@@ -634,8 +581,6 @@ Model::provided_items() const
 void
 Model::assemble(bool residual, bool Jacobian)
 {
-  prepare();
-
   if (residual && !Jacobian)
     value();
   else if (residual && Jacobian)
