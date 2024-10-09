@@ -60,7 +60,7 @@ public:
   }
   // These methods mirror LabeledTensor (the batch_xxx ones)
   Size dim() const { return _data->batch_dim(); }
-  TensorShapeRef sizes() const { return _data->batch_sizes(); }
+  TensorShape sizes() const { return _data->batch_sizes().concrete(); }
   Derived index(const indexing::TensorIndices & i) const { return _data->batch_index(i); }
   void index_put_(const indexing::TensorIndices & i, const torch::Tensor & t)
   {
@@ -175,7 +175,7 @@ def_LabeledTensor(py::class_<Derived> & c)
              for (Size i = 0; i < D; i++)
                os << "Axis " << i << ":\n" << self.axis(i) << "\n\n";
              os << self.tensor() << '\n';
-             os << "Batch shape: " << self.batch_sizes() << '\n';
+             os << "Batch shape: " << self.batch_sizes().concrete() << '\n';
              os << " Base shape: " << self.base_sizes() << '\n';
              return os.str();
            })
@@ -208,7 +208,7 @@ def_LabeledTensor(py::class_<Derived> & c)
   // Static methods
   c.def_static(
        "empty",
-       [](const TensorShapeRef & batch_shape,
+       [](TensorShapeRef batch_shape,
           const std::array<const LabeledAxis *, D> & axes,
           NEML2_TENSOR_OPTIONS_VARGS)
        { return Derived::empty(batch_shape, axes, NEML2_TENSOR_OPTIONS); },
@@ -218,7 +218,7 @@ def_LabeledTensor(py::class_<Derived> & c)
        PY_ARG_TENSOR_OPTIONS)
       .def_static(
           "zeros",
-          [](const TensorShapeRef & batch_shape,
+          [](TensorShapeRef batch_shape,
              const std::array<const LabeledAxis *, D> & axes,
              NEML2_TENSOR_OPTIONS_VARGS)
           { return Derived::zeros(batch_shape, axes, NEML2_TENSOR_OPTIONS); },

@@ -38,11 +38,11 @@ LabeledTensor<Derived, D>::LabeledTensor(const torch::Tensor & tensor,
 {
   // Check that the size of the tensor was compatible
   for (Size i = 0; i < D; i++)
-    neml_assert_dbg(base_size(i) == _axes[i]->storage_size(),
+    neml_assert_dbg(base_size(i) == _axes[i]->size(),
                     "LabeledTensor does not have the right size at dimension ",
                     i,
                     ". Expected ",
-                    _axes[i]->storage_size(),
+                    _axes[i]->size(),
                     ", got ",
                     base_size(i));
 }
@@ -55,11 +55,11 @@ LabeledTensor<Derived, D>::LabeledTensor(const Tensor & tensor,
 {
   // Check that the size of the tensor was compatible
   for (Size i = 0; i < D; i++)
-    neml_assert_dbg(base_size(i) == _axes[i]->storage_size(),
+    neml_assert_dbg(base_size(i) == _axes[i]->size(),
                     "LabeledTensor does not have the right size at dimension ",
                     i,
                     ". Expected ",
-                    _axes[i]->storage_size(),
+                    _axes[i]->size(),
                     ", got ",
                     base_size(i));
 }
@@ -94,7 +94,7 @@ LabeledTensor<Derived, D>::operator torch::Tensor() const
 
 template <class Derived, Size D>
 Derived
-LabeledTensor<Derived, D>::empty(TensorShapeRef batch_shape,
+LabeledTensor<Derived, D>::empty(const TraceableTensorShape & batch_shape,
                                  const std::array<const LabeledAxis *, D> & axes,
                                  const torch::TensorOptions & options)
 {
@@ -103,13 +103,13 @@ LabeledTensor<Derived, D>::empty(TensorShapeRef batch_shape,
   std::transform(axes.begin(),
                  axes.end(),
                  std::back_inserter(s),
-                 [](const LabeledAxis * axis) { return axis->storage_size(); });
+                 [](const LabeledAxis * axis) { return axis->size(); });
   return Derived(Tensor::empty(batch_shape, s, options), axes);
 }
 
 template <class Derived, Size D>
 Derived
-LabeledTensor<Derived, D>::zeros(TensorShapeRef batch_shape,
+LabeledTensor<Derived, D>::zeros(const TraceableTensorShape & batch_shape,
                                  const std::array<const LabeledAxis *, D> & axes,
                                  const torch::TensorOptions & options)
 {
@@ -118,7 +118,7 @@ LabeledTensor<Derived, D>::zeros(TensorShapeRef batch_shape,
   std::transform(axes.begin(),
                  axes.end(),
                  std::back_inserter(s),
-                 [](const LabeledAxis * axis) { return axis->storage_size(); });
+                 [](const LabeledAxis * axis) { return axis->size(); });
   return Derived(Tensor::zeros(batch_shape, s, options), axes);
 }
 
@@ -242,14 +242,14 @@ LabeledTensor<Derived, D>::batch_dim() const
 }
 
 template <class Derived, Size D>
-TensorShapeRef
+const TraceableTensorShape &
 LabeledTensor<Derived, D>::batch_sizes() const
 {
   return _tensor.batch_sizes();
 }
 
 template <class Derived, Size D>
-Size
+TraceableSize
 LabeledTensor<Derived, D>::batch_size(Size d) const
 {
   return _tensor.batch_size(d);
@@ -302,9 +302,7 @@ template <class Derived, Size D>
 void
 LabeledTensor<Derived, D>::base_index_put_(indexing::TensorLabelsRef labels, const Tensor & other)
 {
-  _tensor.base_index_put_(
-      labels_to_indices(labels),
-      other.reshape(utils::add_shapes(other.batch_sizes(), storage_shape(labels))));
+  _tensor.base_index_put_(labels_to_indices(labels), other.base_reshape({storage_shape(labels)}));
 }
 
 template <class Derived, Size D>
@@ -313,7 +311,10 @@ LabeledTensor<Derived, D>::storage_shape(indexing::TensorLabelsRef labels) const
 {
   TensorShape s(labels.size());
   for (size_t i = 0; i < labels.size(); i++)
-    s[i] = _axes[i]->storage_size(labels[i]);
+  {
+    neml_assert_dbg(_axes[i], "LabeledTensor has uninitialized axis at base dimension ", i);
+    s[i] = _axes[i]->size(labels[i]);
+  }
   return s;
 }
 
@@ -324,7 +325,10 @@ LabeledTensor<Derived, D>::labels_to_indices(indexing::TensorLabelsRef labels) c
   neml_assert_dbg(labels.size() == D, "Wrong label size, must be ", D, ", got ", labels.size());
   indexing::TensorIndices indices;
   for (size_t i = 0; i < labels.size(); i++)
-    indices.push_back(_axes[i]->indices(labels[i]));
+  {
+    neml_assert_dbg(_axes[i], "LabeledTensor has uninitialized axis at base dimension ", i);
+    indices.push_back(_axes[i]->slice(labels[i]));
+  }
   return indices;
 }
 

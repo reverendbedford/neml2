@@ -38,47 +38,16 @@ def_LabeledAxis(py::module_ & m)
   // its axes, and so the constructor and modifier bindings introduce ambiguity in ownership, i.e.
   // should C++ or Python own this LabeledAxis?
   auto c = py::class_<LabeledAxis>(m, "LabeledAxis")
-               .def("has_item", &LabeledAxis::has_item)
-               .def("has_variable",
-                    [](const LabeledAxis & self, const LabeledAxisAccessor & name)
-                    { return self.has_variable(name); })
-               .def("has_subaxis", &LabeledAxis::has_subaxis)
-               .def(
-                   "subaxis",
-                   [](const LabeledAxis & self, const LabeledAxisAccessor & name)
-                   { return self.subaxis(name); },
-                   py::return_value_policy::reference)
-               .def(
-                   "variable_names",
-                   [](const LabeledAxis & self, bool recursive)
-                   {
-                     auto vars = self.sort_by_assembly_order(self.variable_names(recursive));
-                     std::vector<std::string> var_names;
-                     for (const auto & var : vars)
-                       var_names.push_back(utils::stringify(var));
-                     return var_names;
-                   },
-                   py::arg("recursive") = true)
-               .def(
-                   "subaxis_names",
-                   [](const LabeledAxis & self, bool recursive)
-                   {
-                     auto subaxes_unsrt = self.subaxis_names(recursive);
-                     auto subaxes = recursive ? std::vector<LabeledAxisAccessor>(
-                                                    subaxes_unsrt.begin(), subaxes_unsrt.end())
-                                              : self.sort_by_assembly_order(subaxes_unsrt);
-                     std::vector<std::string> subaxis_names;
-                     for (const auto & subaxis : subaxes)
-                       subaxis_names.push_back(utils::stringify(subaxis));
-                     return subaxis_names;
-                   },
-                   py::arg("recursive") = false)
-               .def("storage_size",
-                    py::overload_cast<const LabeledAxisAccessor &>(&LabeledAxis::storage_size,
-                                                                   py::const_),
-                    py::arg("item") = LabeledAxisAccessor())
-               .def("nvariable", &LabeledAxis::nvariable, py::arg("recursive") = true)
-               .def("nsubaxis", &LabeledAxis::nsubaxis, py::arg("recursive") = false);
+               .def("has_state", &LabeledAxis::has_state)
+               .def("has_old_state", &LabeledAxis::has_old_state)
+               .def("has_forces", &LabeledAxis::has_forces)
+               .def("has_old_forces", &LabeledAxis::has_old_forces)
+               .def("has_residual", &LabeledAxis::has_residual)
+               .def("has_parameters", &LabeledAxis::has_parameters)
+               .def("size", py::overload_cast<>(&LabeledAxis::size, py::const_))
+               .def("size",
+                    py::overload_cast<const LabeledAxisAccessor &>(&LabeledAxis::size, py::const_),
+                    py::arg("name"));
 
   // Operators
   c.def("__repr__", [](const LabeledAxis & self) { return utils::stringify(self); })

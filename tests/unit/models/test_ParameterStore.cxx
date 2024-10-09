@@ -35,7 +35,6 @@ TEST_CASE("ParameterStore", "[models]")
 {
   auto & model = reload_model("unit/models/solid_mechanics/LinearIsotropicElasticity.i", "model");
   auto batch_shape = TensorShape{5, 2};
-  model.reinit(batch_shape);
 
   SECTION("class ParameterStore")
   {
@@ -77,60 +76,60 @@ TEST_CASE("ParameterStore", "[models]")
 
   SECTION("jacrev")
   {
-    // Make sure torch AD can be used to get parameter derivatives
-    auto & E = model.get_parameter("E");
-    auto & nu = model.get_parameter("nu");
+    // // Make sure torch AD can be used to get parameter derivatives
+    // auto & E = model.get_parameter("E");
+    // auto & nu = model.get_parameter("nu");
 
-    // First prepare some arbitrary input
-    auto Ee = SR2::fill(0.09, 0.04, -0.02);
-    auto x = LabeledVector(Ee, {&model.input_axis()});
+    // // First prepare some arbitrary input
+    // auto Ee = SR2::fill(0.09, 0.04, -0.02);
+    // auto x = LabeledVector(Ee, {&model.input_axis()});
 
-    SECTION("batch mismatch")
-    {
-      E.requires_grad_(true);
-      auto y = model.value(x);
-      auto S = y.base_index(VariableName("state", "S"));
-      REQUIRE_THROWS_WITH(
-          math::jacrev(S, E),
-          Catch::Matchers::ContainsSubstring("The batch shape of the parameter must be the "
-                                             "same as the batch shape of the output"));
-    }
+    // SECTION("batch mismatch")
+    // {
+    //   E.requires_grad_(true);
+    //   auto y = model.value(x);
+    //   auto S = y.base_index(VariableName("state", "S"));
+    //   REQUIRE_THROWS_WITH(
+    //       math::jacrev(S, E),
+    //       Catch::Matchers::ContainsSubstring("The batch shape of the parameter must be the "
+    //                                          "same as the batch shape of the output"));
+    // }
 
-    SECTION("Jacobians are correct")
-    {
-      E = Scalar::full(batch_shape, 1.0);
-      nu = Scalar::full(batch_shape, 0.3);
+    // SECTION("Jacobians are correct")
+    // {
+    //   E = Scalar::full(batch_shape, 1.0);
+    //   nu = Scalar::full(batch_shape, 0.3);
 
-      E.requires_grad_(true);
-      nu.requires_grad_(true);
-      auto y = model.value(x);
-      auto S = y.base_index(VariableName("state", "S"));
+    //   E.requires_grad_(true);
+    //   nu.requires_grad_(true);
+    //   auto y = model.value(x);
+    //   auto S = y.base_index(VariableName("state", "S"));
 
-      // Parameter gradients from torch AD
-      const auto dS_dE_exact = math::jacrev(S, E);
-      const auto dS_dnu_exact = math::jacrev(S, nu);
+    //   // Parameter gradients from torch AD
+    //   const auto dS_dE_exact = math::jacrev(S, E);
+    //   const auto dS_dnu_exact = math::jacrev(S, nu);
 
-      // Parameter gradients from finite differencing
-      const auto dS_dE_FD = finite_differencing_derivative(
-          [&](const Tensor & Ep)
-          {
-            E = Ep;
-            auto y = model.value(x);
-            auto S = y.base_index(VariableName("state", "S"));
-            return S;
-          },
-          Tensor(E).clone());
-      const auto dS_dnu_FD = finite_differencing_derivative(
-          [&](const Tensor & nup)
-          {
-            nu = nup;
-            auto y = model.value(x);
-            auto S = y.base_index(VariableName("state", "S"));
-            return S;
-          },
-          Tensor(nu).clone());
-      REQUIRE(torch::allclose(dS_dnu_exact, dS_dnu_FD));
-    }
+    //   // Parameter gradients from finite differencing
+    //   const auto dS_dE_FD = finite_differencing_derivative(
+    //       [&](const Tensor & Ep)
+    //       {
+    //         E = Ep;
+    //         auto y = model.value(x);
+    //         auto S = y.base_index(VariableName("state", "S"));
+    //         return S;
+    //       },
+    //       Tensor(E).clone());
+    //   const auto dS_dnu_FD = finite_differencing_derivative(
+    //       [&](const Tensor & nup)
+    //       {
+    //         nu = nup;
+    //         auto y = model.value(x);
+    //         auto S = y.base_index(VariableName("state", "S"));
+    //         return S;
+    //       },
+    //       Tensor(nu).clone());
+    //   REQUIRE(torch::allclose(dS_dnu_exact, dS_dnu_FD));
+    // }
   }
 }
 

@@ -23,7 +23,6 @@
 // THE SOFTWARE.
 
 #include "neml2/tensors/LabeledMatrix.h"
-#include "neml2/tensors/LabeledVector.h"
 #include "neml2/misc/math.h"
 
 namespace neml2
@@ -33,30 +32,118 @@ LabeledMatrix::identity(TensorShapeRef batch_size,
                         const LabeledAxis & axis,
                         const torch::TensorOptions & options)
 {
-  return LabeledMatrix(Tensor::identity(batch_size, axis.storage_size(), options), {&axis, &axis});
+  return LabeledMatrix(Tensor::identity(batch_size, axis.size(), options), {&axis, &axis});
 }
 
 void
-LabeledMatrix::fill(const LabeledMatrix & other, bool recursive)
+LabeledMatrix::fill(const LabeledMatrix & /*other*/)
 {
-  neml_assert_dbg(axis(1) == other.axis(1), "Can only accumulate matrices with conformal y axes");
-  const auto indices = axis(0).common_indices(other.axis(0), recursive);
-  for (const auto & [idxi, idxi_other] : indices)
-    _tensor.base_index_put_({idxi}, other.tensor().base_index({idxi_other}));
+  // neml_assert_dbg(axis(1) == other.axis(1), "Can only accumulate matrices with conformal y
+  // axes"); const auto indices = axis(0).common_indices(other.axis(0), recursive); for (const auto
+  // & [idxi, idxi_other] : indices)
+  //   _tensor.base_index_put_({idxi}, other.tensor().base_index({idxi_other}));
+}
+
+std::map<LabeledAxisAccessor, LabeledMatrix>
+LabeledMatrix::split(Size dim) const
+{
+  std::map<LabeledAxisAccessor, LabeledMatrix> ret;
+
+  const auto keys = axis(dim).subaxis_names();
+  const auto vals = tensor().split(axis(dim).subaxis_sizes(), batch_dim() + dim);
+  for (std::size_t i = 0; i < keys.size(); ++i)
+    ret[axis(dim).qualify(keys[i])] = LabeledMatrix(
+        Tensor(vals[i], batch_sizes()),
+        {dim == 0 ? axis(0).subaxes()[i] : &axis(0), dim == 1 ? axis(1).subaxes()[i] : &axis(1)});
+
+  return ret;
+}
+
+std::map<LabeledAxisAccessor, std::map<LabeledAxisAccessor, Tensor>>
+LabeledMatrix::disassemble() const
+{
+  std::map<LabeledAxisAccessor, std::map<LabeledAxisAccessor, Tensor>> ret;
+
+  const auto yvars = axis(0).variable_names();
+  const auto xvars = axis(1).variable_names();
+  const auto rows = tensor().split(axis(0).variable_sizes(), -2);
+  for (std::size_t i = 0; i < yvars.size(); ++i)
+  {
+    const auto vals = rows[i].split(axis(1).variable_sizes(), -1);
+    for (std::size_t j = 0; j < xvars.size(); ++j)
+      ret[axis(0).qualify(yvars[i])][axis(1).qualify(xvars[j])] = Tensor(vals[j], batch_sizes());
+  }
+
+  return ret;
 }
 
 LabeledMatrix
-LabeledMatrix::chain(const LabeledMatrix & other) const
+LabeledMatrix::assemble(
+    const std::map<LabeledAxisAccessor, std::map<LabeledAxisAccessor, Tensor>> & vals_dict,
+    const LabeledAxis & yaxis,
+    const LabeledAxis & xaxis)
 {
-  // This function expresses a chain rule, which is just a dot product between the values of this
-  // and the values of the input The main annoyance is just getting the names correct
+  const auto yvars = yaxis.variable_names();
+  const auto xvars = xaxis.variable_names();
 
-  // Check that we are conformal
-  neml_assert_dbg(batch_sizes() == other.batch_sizes(),
-                  "LabeledMatrix batch sizes are not the same");
-  neml_assert_dbg(axis(1) == other.axis(0), "Labels are not conformal");
+  // Assemble columns of each row
+  std::vector<Tensor> rows(yvars.size());
+  for (std::size_t i = 0; i < yvars.size(); ++i)
+  {
+    const auto vals_row = vals_dict.find(yaxis.qualify(yvars[i]));
+    if (vals_row == vals_dict.end())
+      continue;
 
-  // If all the sizes are correct then executing the chain rule is pretty easy
-  return LabeledMatrix(math::bmm(*this, other), {&axis(0), &other.axis(1)});
+    // Look up variable values from the given dictionary.
+    // If a variable is not found, tensor at that position remains undefined, and all undefiend
+    // tensor will later be filled with zeros.
+    std::vector<Tensor> vals(xvars.size());
+    for (std::size_t j = 0; j < xvars.size(); ++j)
+    {
+      const auto val = vals_row->second.find(xaxis.qualify(xvars[j]));
+      if (val != vals_row->second.end())
+      {
+        neml_assert_dbg(val->second.base_dim() == 2,
+                        "During matrix assembly, found a tensor associated with variables ",
+                        yvars[i],
+                        "/",
+                        xvars[j],
+                        " with base dimension ",
+                        val->second.base_dim(),
+                        ". Expected base dimension of 2.");
+        vals[j] = val->second;
+      }
+    }
+
+    // Broadcast batch shape and find the common dtype and device.
+    const auto batch_sizes = utils::broadcast_batch_sizes(vals);
+    const auto options =
+        torch::TensorOptions().dtype(utils::same_dtype(vals)).device(utils::same_device(vals));
+
+    // Expand defined tensors with the broadcast batch shape and fill undefined tensors with zeros.
+    for (std::size_t j = 0; j < xvars.size(); ++j)
+      if (vals[j].defined())
+        vals[j] = vals[j].batch_expand(batch_sizes);
+      else
+        vals[j] = Tensor::zeros(
+            batch_sizes, {yaxis.variable_sizes()[i], xaxis.variable_sizes()[j]}, options);
+
+    rows[i] = math::base_cat(vals, -1);
+  }
+
+  // Assemble rows
+  // Broadcast batch shape and find the common dtype and device.
+  const auto batch_sizes = utils::broadcast_batch_sizes(rows);
+  const auto options =
+      torch::TensorOptions().dtype(utils::same_dtype(rows)).device(utils::same_device(rows));
+
+  // Expand defined tensors with the broadcast batch shape and fill undefined tensors with zeros.
+  for (std::size_t i = 0; i < yvars.size(); ++i)
+    if (rows[i].defined())
+      rows[i] = rows[i].batch_expand(batch_sizes);
+    else
+      rows[i] = Tensor::zeros(batch_sizes, {yaxis.variable_sizes()[i], xaxis.size()}, options);
+
+  return LabeledMatrix(math::base_cat(rows, -2), {&yaxis, &xaxis});
 }
 } // namespace neml2

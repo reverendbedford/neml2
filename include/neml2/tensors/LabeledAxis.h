@@ -25,89 +25,37 @@
 #pragma once
 
 #include <unordered_map>
-#include <type_traits>
 
-#include "neml2/misc/types.h"
-
+#include "neml2/misc/utils.h"
 #include "neml2/tensors/LabeledAxisAccessor.h"
-#include "neml2/tensors/Scalar.h"
-#include "neml2/tensors/SR2.h"
 
 namespace neml2
 {
+class LabeledAxis;
+
 /**
  * @brief A *labeled* axis used to associate layout of a tensor with human-interpretable names.
  *
  * A logically one-dimensional tensor requires one LabeledAxis, two-dimensional tensor requires two
  * LabeledAxis, and so on. See @ref tensor-labeling for a detailed explanation of tensor labeling.
  *
- * All the LabeledAxis modifiers can only be used during the setup stage. Calling any modifiers
- * after the setup stage is forbidden and will result in a runtime error in Debug mode.
- *
- * All the modifiers return the modified LabeledAxis by reference, so modifiers can be chained.
- * For example
- * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~{.cpp}
- * LabeledAxis labels = input().clone();
- * labels.add<SR2>("stress").rename("stress", "stress1").remove("stress1");
- * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * Variables and axes can only be added during the setup stage. Adding items after the setup stage
+ * is forbidden and will result in a runtime error in Debug mode.
  */
 class LabeledAxis
 {
 public:
-  typedef std::unordered_map<std::string, std::pair<Size, Size>> AxisLayout;
-
-  // Custom comparator for sorting assembly indices
-  struct AssemblySliceCmp
-  {
-    bool operator()(const indexing::TensorIndex & a, const indexing::TensorIndex & b) const
-    {
-      neml_assert(a.is_slice() && b.is_slice(), "Comparator must be used on slices");
-      neml_assert(a.slice().step().expect_int() == 1 && b.slice().step().expect_int() == 1,
-                  "Slices must have step == 1");
-      return a.slice().start().expect_int() < b.slice().start().expect_int();
-    }
-  };
-
   /// Empty constructor
-  LabeledAxis();
+  LabeledAxis() = default;
 
-  /// (Shallow) copy constructor
-  LabeledAxis(const LabeledAxis & other);
+  /// Sub-axis constructor
+  LabeledAxis(const LabeledAxisAccessor & prefix);
 
-  /// Add a variable or subaxis
-  template <typename T>
-  LabeledAxis & add(const LabeledAxisAccessor & accessor)
-  {
-    // Add an empty subaxis
-    if constexpr (std::is_same_v<LabeledAxis, T>)
-    {
-      if (!accessor.empty() && !has_subaxis(accessor.slice(0, 1)))
-      {
-        _subaxes.emplace(accessor.vec()[0], std::make_shared<LabeledAxis>());
-        subaxis(accessor.vec()[0]).add<LabeledAxis>(accessor.slice(1));
-      }
-      return *this;
-    }
-    else
-    {
-      // The storage is *flat* -- will need to reshape when we return!
-      // All NEML2 primitive data types will have the member const_base_sizes
-      auto sz = utils::storage_size(T::const_base_sizes);
-      add(accessor, sz);
-      return *this;
-    }
-  }
+  /// Whether the axis has been set up
+  bool is_setup() const { return _setup; }
 
-  /// Add an arbitrary variable using a `LabeledAxisAccessor`
-  LabeledAxis & add(const LabeledAxisAccessor & accessor, Size sz);
-
-  /// Clear all internal data
-  void clear();
-
-  /**
-   * Setup the layout of all items recursively. The layout of each item is contiguous in memory.
-   */
-  void setup_layout();
+  /// Return the fully qualified name of an item (i.e. this axis is a sub-axis)
+  LabeledAxisAccessor qualify(const LabeledAxisAccessor & accessor) const;
 
   /// Check the existence of reserved subaxes
   ///@{
@@ -119,133 +67,149 @@ public:
   bool has_parameters() const { return _has_parameters; }
   ///@}
 
-  /// Number of variables
-  size_t nvariable(bool recursive = true) const;
+  /// Add a sub-axis
+  LabeledAxis & add_subaxis(const std::string & name);
 
-  /// Number of subaxes
-  size_t nsubaxis(bool recursive = false) const;
+  /// Add a variable with known storage size
+  void add_variable(const LabeledAxisAccessor & name, Size sz);
 
-  /// Does the item exist?
-  bool has_item(const LabeledAxisAccessor & name) const
-  {
-    return has_variable(name) || has_subaxis(name);
-  }
-
-  /// Does the variable of a given primitive type exist?
+  /// Add a variable
   template <typename T>
-  bool has_variable(const LabeledAxisAccessor & var) const
+  void add_variable(const LabeledAxisAccessor & name)
   {
-    if (!has_variable(var))
-      return false;
-
-    // also check size
-    return storage_size(var) == utils::storage_size(T::const_base_sizes);
+    auto sz = utils::storage_size(T::const_base_sizes);
+    add_variable(name, sz);
   }
 
-  /// Check the existence of a variable by its LabeledAxisAccessor
-  bool has_variable(const LabeledAxisAccessor & var) const;
+  /// Setup the layout of all items recursively.
+  void setup_layout();
 
-  /// Check the existence of a subaxis by its LabeledAxisAccessor
-  bool has_subaxis(const LabeledAxisAccessor & s) const;
+  /// Get the storage size of the entire axis
+  Size size() const;
 
-  /// Get the total storage size of *this* axis or the storage size of an item
-  Size storage_size(const LabeledAxisAccessor & name = {}) const;
+  /// Get the storage size of a variable or a local sub-axis
+  Size size(const LabeledAxisAccessor & name) const;
 
-  /// Get the layout
-  const AxisLayout & layout() const { return _layout; }
+  /// Get the slicing indices of a variable or a local sub-axis
+  indexing::Slice slice(const LabeledAxisAccessor & name) const;
 
-  /// Get the indices of a specific item by a `LabeledAxisAccessor`
-  indexing::TensorIndex indices(const LabeledAxisAccessor & accessor) const;
-
-  /// Get the common indices of two `LabeledAxis`s
-  std::vector<std::pair<indexing::TensorIndex, indexing::TensorIndex>>
-  common_indices(const LabeledAxis & other, bool recursive = true) const;
-
-  /// Sort a set of LabeledAxisAccessors by their indices
-  std::vector<LabeledAxisAccessor>
-  sort_by_assembly_order(const std::set<LabeledAxisAccessor> &) const;
-
-  /// Get the variables
-  const std::map<std::string, Size> & variables() const { return _variables; }
-
+  /// Get variable information
+  ///@{
+  /// Number of variables
+  std::size_t nvariable() const;
+  /// Check the existence of a variable by its name
+  bool has_variable(const LabeledAxisAccessor & name) const;
+  /// Get the assembly ID of a variable
+  std::size_t variable_id(const LabeledAxisAccessor & name) const;
   /// Get the variable names
-  std::set<LabeledAxisAccessor> variable_names(bool recursive = true) const;
+  const std::vector<LabeledAxisAccessor> & variable_names() const;
+  /// Get the variable slicing indices (in assembly order)
+  const std::vector<indexing::Slice> & variable_slices() const;
+  /// Get the slicing indices of a variable by name
+  const indexing::Slice & variable_slice(const LabeledAxisAccessor & name) const;
+  /// Get the variable storage sizes (in assembly order)
+  const std::vector<Size> & variable_sizes() const;
+  /// Get the storage size of a variable by name
+  Size variable_size(const LabeledAxisAccessor & name) const;
+  ///@}
 
-  /// Get the subaxes
-  const std::map<std::string, std::shared_ptr<LabeledAxis>> & subaxes() const { return _subaxes; }
-
-  /// Get subaxes' names
-  std::set<LabeledAxisAccessor> subaxis_names(bool recursive = false) const;
-
-  /// Get a sub-axis
+  /// Get sub-axis information
+  ///@{
+  /// Number of subaxes
+  std::size_t nsubaxis() const;
+  /// Check the existence of a subaxis by its name
+  bool has_subaxis(const LabeledAxisAccessor & name) const;
+  /// Get the assembly ID of a sub-axis
+  std::size_t subaxis_id(const std::string & name) const;
+  /// Get the sub-axes (in assembly order)
+  const std::vector<const LabeledAxis *> & subaxes() const;
+  /// Get a sub-axis by name
   const LabeledAxis & subaxis(const LabeledAxisAccessor & name) const;
-
-  /// Get a sub-axis
+  /// Get a sub-axis by name
   LabeledAxis & subaxis(const LabeledAxisAccessor & name);
+  /// Get the sub-axis names
+  const std::vector<std::string> & subaxis_names() const;
+  /// Get the sub-axis slicing indices (in assembly order)
+  const std::vector<indexing::Slice> & subaxis_slices() const;
+  /// Get the slicing indices of a sub-axis by name
+  indexing::Slice subaxis_slice(const LabeledAxisAccessor & name) const;
+  /// Get the sub-axis storage sizes (in assembly order)
+  const std::vector<Size> & subaxis_sizes() const;
+  /// Get the storage size of a sub-axis by name
+  Size subaxis_size(const LabeledAxisAccessor & name) const;
+  ///@}
 
-  /// Check to see if two LabeledAxis objects are equivalent
+  /// Check to see if two axes are equivalent
   bool equals(const LabeledAxis & other) const;
 
   friend std::ostream & operator<<(std::ostream & os, const LabeledAxis & axis);
 
 private:
-  void add(LabeledAxis & axis,
-           Size sz,
-           const LabeledAxisAccessor::const_iterator & cur,
-           const LabeledAxisAccessor::const_iterator & end) const;
+  /// Cache the existence of a reserved subaxis
+  void cache_reserved_subaxis(const std::string & axis_name);
 
-  /// Helper method to recursively find the storage size of a variable
-  Size storage_size(const LabeledAxisAccessor::const_iterator & cur,
-                    const LabeledAxisAccessor::const_iterator & end) const;
+  /// Ensure that the axis has been setup
+  void ensure_setup_dbg() const;
 
-  /// Helper method to recursively consume the sub-axis names of a `LabeledAxisAccessor` to get the
-  /// indices of a variable.
-  indexing::TensorIndex indices(Size offset,
-                                const LabeledAxisAccessor::const_iterator & cur,
-                                const LabeledAxisAccessor::const_iterator & end) const;
+  /// Whether the axis has been setup
+  bool _setup = false;
 
-  /// Helper method to (recursively) index this axis using another axis
-  void indices(const LabeledAxis & other,
-               bool recursive,
-               bool inclusive,
-               std::vector<Size> & idx,
-               Size offset) const;
+  /// Prefix used to generate fully qualified item names
+  const LabeledAxisAccessor _prefix;
 
-  /// Get the common indices of two `LabeledAxis`s
-  void common_indices(const LabeledAxis & other,
-                      bool recursive,
-                      std::vector<Size> & idxa,
-                      std::vector<Size> & idxb,
-                      Size offseta,
-                      Size offsetb) const;
+  /// The total storage size of the axis
+  Size _size = 0;
 
   /// Variables and their sizes
   std::map<std::string, Size> _variables;
 
   /// Sub-axes
-  // Each sub-axis can contain its own variables and sub-axes
   std::map<std::string, std::shared_ptr<LabeledAxis>> _subaxes;
 
-  /// The layout of this `LabeledAxis`, i.e. the name-to-indexing::TensorIndices map
-  // After all the `LabeledAxis`s are setup, we need to setup the layout once and only once. This is
-  // important for performance considerations, as we need to use the layout to construct many,
-  // many LabeledVector and LabeledMatrix at runtime, and so we don't want to waste time on setting
-  // up the layout over and over again.
-  AxisLayout _layout;
+  /**
+   * @brief Variable maps for assembly purposes
+   *
+   * These maps are set up by neml2::LabeledAxis::setup_layout.
+   * These maps include variables from all sub-axes (recursively).
+   */
+  ///@{
+  /// Map from variable names to their assembly ID
+  std::map<LabeledAxisAccessor, std::size_t> _variable_to_id_map;
+  /// Map from assembly ID to variable names
+  std::vector<LabeledAxisAccessor> _id_to_variable_map;
+  /// Map from assembly ID to variable storage size
+  std::vector<Size> _id_to_variable_size_map;
+  /// Map from assembly ID to variable slicing indices
+  std::vector<indexing::Slice> _id_to_variable_slice_map;
+  ///@}
 
-  /// The total storage size of the axis.
-  // Similar considerations as `_layout`, i.e., the _offset will be zero during the setup stage,
-  // and will have a fixed (hopefully correct) size after the layout have been setup.
-  Size _offset;
+  /**
+   * @brief Sub-axis maps for assembly purposes
+   *
+   * These maps are set up by neml2::LabeledAxis::setup_layout.
+   * These maps ONLY include local sub-axes.
+   */
+  ///@{
+  /// Map from assembly ID to sub-axes
+  std::vector<const LabeledAxis *> _sorted_subaxes;
+  /// Map from sub-axis names to their assembly ID
+  std::map<std::string, std::size_t> _subaxis_to_id_map;
+  /// Map from assembly ID to sub-axis names
+  std::vector<std::string> _id_to_subaxis_map;
+  /// Map from assembly ID to sub-axis storage size
+  std::vector<Size> _id_to_subaxis_size_map;
+  /// Map from assembly ID to sub-axis slicing indices
+  std::vector<indexing::Slice> _id_to_subaxis_slice_map;
+  ///@}
 
   /// Flags for reserved subaxes
   ///@{
-  bool _has_state;
-  bool _has_old_state;
-  bool _has_forces;
-  bool _has_old_forces;
-  bool _has_residual;
-  bool _has_parameters;
+  bool _has_state = false;
+  bool _has_old_state = false;
+  bool _has_forces = false;
+  bool _has_old_forces = false;
+  bool _has_residual = false;
+  bool _has_parameters = false;
   ///@}
 };
 

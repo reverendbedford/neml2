@@ -26,331 +26,394 @@
 
 namespace neml2
 {
-LabeledAxis::LabeledAxis()
-  : _offset(0),
-    _has_state(false),
-    _has_old_state(false),
-    _has_forces(false),
-    _has_old_forces(false),
-    _has_residual(false),
-    _has_parameters(false)
+LabeledAxis::LabeledAxis(const LabeledAxisAccessor & prefix)
+  : _prefix(prefix)
 {
 }
 
-LabeledAxis::LabeledAxis(const LabeledAxis & other)
-  : _variables(other._variables),
-    _subaxes(other._subaxes),
-    _layout(other._layout),
-    _offset(other._offset),
-    _has_state(other._has_state),
-    _has_old_state(other._has_old_state),
-    _has_forces(other._has_forces),
-    _has_old_forces(other._has_old_forces),
-    _has_residual(other._has_residual),
-    _has_parameters(other._has_parameters)
+LabeledAxisAccessor
+LabeledAxis::qualify(const LabeledAxisAccessor & accessor) const
 {
+  return accessor.prepend(_prefix);
 }
 
 LabeledAxis &
-LabeledAxis::add(const LabeledAxisAccessor & accessor, Size sz)
+LabeledAxis::add_subaxis(const std::string & name)
 {
-  if (!accessor.empty())
-    add(*this, sz, accessor.begin(), accessor.end());
-  return *this;
+  neml_assert(!_setup, "Cannot modify a sub-axis after the axis has been set up.");
+  neml_assert(
+      _variables.count(name) == 0, "Cannot add a subaxis with the same name as a variable: ", name);
+  auto [subaxis, success] =
+      _subaxes.emplace(name, std::make_shared<LabeledAxis>(_prefix.append(name)));
+  if (success)
+    cache_reserved_subaxis(name);
+  return *(subaxis->second);
 }
 
 void
-LabeledAxis::add(LabeledAxis & axis,
-                 Size sz,
-                 const LabeledAxisAccessor::const_iterator & cur,
-                 const LabeledAxisAccessor::const_iterator & end) const
+LabeledAxis::add_variable(const LabeledAxisAccessor & name, Size sz)
 {
-  if (cur == end - 1)
+  neml_assert(!_setup, "Cannot modify a sub-axis after the axis has been set up.");
+  neml_assert(!name.empty(), "Cannot add a variable with empty name.");
+
+  if (name.size() == 1)
   {
-    if (!axis.has_variable(*cur))
-      axis._variables.emplace(*cur, sz);
+    neml_assert(_variables.count(name[0]) == 0 && _subaxes.count(name[0]) == 0,
+                "Cannot add a variable with the same name as an existing variable or a sub-axis: '",
+                name[0],
+                "'");
+    _variables.emplace(name[0], sz);
   }
   else
-  {
-    axis.add<LabeledAxis>(*cur);
-    add(axis.subaxis(*cur), sz, cur + 1, end);
-  }
-}
-
-void
-LabeledAxis::clear()
-{
-  _variables.clear();
-  _subaxes.clear();
-  _layout.clear();
-  _offset = 0;
+    add_subaxis(name[0]).add_variable(name.slice(1), sz);
 }
 
 void
 LabeledAxis::setup_layout()
 {
-  _offset = 0;
-  _layout.clear();
+  // Clear internal data that may have been constructed from previous setup_layout calls
+  _size = 0;
 
-  // First emplace all the variables
+  _variable_to_id_map.clear();
+  _id_to_variable_map.clear();
+  _id_to_variable_size_map.clear();
+  _id_to_variable_slice_map.clear();
+
+  _sorted_subaxes.clear();
+  _subaxis_to_id_map.clear();
+  _id_to_subaxis_map.clear();
+  _id_to_subaxis_size_map.clear();
+  _id_to_subaxis_slice_map.clear();
+
+  // Set up variable assembly IDs and slicing indices
   for (auto & [name, sz] : _variables)
   {
-    std::pair<Size, Size> range = {_offset, _offset + sz};
-    _layout.emplace(name, range);
-    _offset += sz;
+    _variable_to_id_map.emplace(name, _variable_to_id_map.size());
+    _id_to_variable_map.push_back(name);
+    _id_to_variable_size_map.push_back(sz);
+    _id_to_variable_slice_map.push_back({_size, _size + sz});
+    _size += sz;
   }
 
-  // Then subaxes
+  // Set up subaxes
   for (auto & [name, axis] : _subaxes)
   {
-    // Setup the sub-axis if necessary
     axis->setup_layout();
-    std::pair<Size, Size> range = {_offset, _offset + axis->storage_size()};
-    _layout.emplace(name, range);
-    _offset += axis->storage_size();
+    auto sz = axis->size();
+    _sorted_subaxes.push_back(axis.get());
+    _subaxis_to_id_map.emplace(name, _subaxis_to_id_map.size());
+    _id_to_subaxis_map.push_back(name);
+    _id_to_subaxis_size_map.push_back(sz);
+    _id_to_subaxis_slice_map.push_back({_size, _size + sz});
+    _size += sz;
+
+    // Merge variable maps
+    for (const auto & var_name : axis->_id_to_variable_map)
+    {
+      auto var_id = axis->_variable_to_id_map.at(var_name);
+      auto full_name = var_name.prepend(name);
+      _variable_to_id_map.emplace(full_name, _variable_to_id_map.size());
+      _id_to_variable_map.push_back(full_name);
+      _id_to_variable_size_map.push_back(axis->_id_to_variable_size_map[var_id]);
+
+      // Slice is relative to the sub-axis, so we need to shift it
+      const auto & slice = axis->_id_to_variable_slice_map[var_id];
+      auto offset = _id_to_subaxis_slice_map.back().start();
+      auto new_slice = indexing::Slice(slice.start() + offset, slice.stop() + offset);
+      _id_to_variable_slice_map.push_back(new_slice);
+    }
   }
 
-  _has_state = _subaxes.count("state");
-  _has_old_state = _subaxes.count("old_state");
-  _has_forces = _subaxes.count("forces");
-  _has_old_forces = _subaxes.count("old_forces");
-  _has_residual = _subaxes.count("residual");
-  _has_parameters = _subaxes.count("parameters");
-}
-
-size_t
-LabeledAxis::nvariable(bool recursive) const
-{
-  return variable_names(recursive).size();
-}
-
-size_t
-LabeledAxis::nsubaxis(bool recursive) const
-{
-  return subaxis_names(recursive).size();
-}
-
-bool
-LabeledAxis::has_variable(const LabeledAxisAccessor & var) const
-{
-  if (var.empty())
-    return false;
-
-  if (var.vec().size() > 1)
-  {
-    if (has_subaxis(var.vec()[0]))
-      return subaxis(var.vec()[0]).has_variable(var.slice(1));
-    return false;
-  }
-
-  return _variables.count(var.vec()[0]);
-}
-
-bool
-LabeledAxis::has_subaxis(const LabeledAxisAccessor & s) const
-{
-  if (s.empty())
-    return false;
-
-  if (s.vec().size() > 1)
-  {
-    if (has_subaxis(s.vec()[0]))
-      return subaxis(s.vec()[0]).has_subaxis(s.slice(1));
-    return false;
-  }
-
-  return _subaxes.count(s.vec()[0]);
+  // Finished set up
+  _setup = true;
 }
 
 Size
-LabeledAxis::storage_size(const LabeledAxisAccessor & name) const
+LabeledAxis::size() const
 {
-  if (name.empty())
-    return _offset;
+  // If the axis has been set up, return the cached size
+  if (_setup)
+    return _size;
 
+  // Otherwise, calculate the size
+  Size sz = 0;
+  for (const auto & [name, var_sz] : _variables)
+    sz += var_sz;
+  for (const auto & [name, axis] : _subaxes)
+    sz += axis->size();
+  return sz;
+}
+
+Size
+LabeledAxis::size(const LabeledAxisAccessor & name) const
+{
+  neml_assert(!name.empty(), "Cannot get the size of an item with an empty name.");
+
+  // If the name has length 1, it must be a variable or a local sub-axis
   if (name.size() == 1)
   {
-    if (_variables.count(name.vec()[0]))
-      return _variables.at(name.vec()[0]);
+    const auto var = _variables.find(name[0]);
+    if (var != _variables.end())
+      return var->second;
 
-    if (_subaxes.count(name.vec()[0]))
-      return _subaxes.at(name.vec()[0])->storage_size();
-
-    neml_assert_dbg(false, "Trying to find the storage size of a non-existent item named ", name);
+    const auto subaxis = _subaxes.find(name[0]);
+    neml_assert(subaxis != _subaxes.end(),
+                "Item named '",
+                name,
+                "' is neither a variable nor a local sub-axis on axis:\n",
+                *this);
+    return subaxis->second->size();
   }
 
-  return subaxis(name.vec()[0]).storage_size(name.slice(1));
+  // Otherwise, the item must be on a sub-axis
+  const auto subaxis = _subaxes.find(name[0]);
+  neml_assert(subaxis != _subaxes.end(),
+              "Item named '",
+              name,
+              "' is neither a variable nor a sub-axis on axis:\n",
+              *this);
+  return subaxis->second->size(name.slice(1));
 }
 
-indexing::TensorIndex
-LabeledAxis::indices(const LabeledAxisAccessor & accessor) const
+indexing::Slice
+LabeledAxis::slice(const LabeledAxisAccessor & name) const
 {
-  if (accessor.empty())
-    return torch::indexing::Slice();
+  ensure_setup_dbg();
+  neml_assert(!name.empty(), "Cannot get the slice of an item with an empty name.");
 
-  return indices(0, accessor.begin(), accessor.end());
+  // If the name is a variable
+  if (has_variable(name))
+    return variable_slice(name);
+
+  // Otherwise, the name must be a sub-axis
+  neml_assert_dbg(has_subaxis(name[0]),
+                  "Item named '",
+                  name,
+                  "' is neither a variable nor a sub-axis on axis:\n",
+                  *this);
+  return subaxis_slice(name);
 }
 
-indexing::TensorIndex
-LabeledAxis::indices(Size offset,
-                     const LabeledAxisAccessor::const_iterator & cur,
-                     const LabeledAxisAccessor::const_iterator & end) const
+std::size_t
+LabeledAxis::nvariable() const
 {
-  neml_assert_dbg(_layout.count(*cur), "Axis/variable named ", *cur, " does not exist.");
-  const auto & [rbegin, rend] = _layout.at(*cur);
-  if (cur == end - 1)
-    return torch::indexing::Slice(offset + rbegin, offset + rend);
+  // If axis has been set up, return the cached number of variables
+  if (_setup)
+    return _id_to_variable_map.size();
 
-  return subaxis(*cur).indices(offset + rbegin, cur + 1, end);
-}
-
-std::vector<std::pair<indexing::TensorIndex, indexing::TensorIndex>>
-LabeledAxis::common_indices(const LabeledAxis & other, bool recursive) const
-{
-  std::vector<std::pair<indexing::TensorIndex, indexing::TensorIndex>> indices;
-  std::vector<Size> idxa;
-  std::vector<Size> idxb;
-  common_indices(other, recursive, idxa, idxb, 0, 0);
-
-  if (idxa.empty())
-    return indices;
-
-  // We could be smart and merge contiguous indices
-  size_t i = 0;
-  size_t j = 1;
-  while (j < idxa.size() - 1)
-  {
-    if (idxa[j] == idxa[j + 1] && idxb[j] == idxb[j + 1])
-      j += 2;
-    else
-    {
-      indices.push_back({indexing::Slice(idxa[i], idxa[j]), indexing::Slice(idxb[i], idxb[j])});
-      i = j + 1;
-      j = i + 1;
-    }
-  }
-  indices.push_back({indexing::Slice(idxa[i], idxa[j]), indexing::Slice(idxb[i], idxb[j])});
-
-  return indices;
-}
-
-void
-LabeledAxis::common_indices(const LabeledAxis & other,
-                            bool recursive,
-                            std::vector<Size> & idxa,
-                            std::vector<Size> & idxb,
-                            Size offseta,
-                            Size offsetb) const
-{
-  for (const auto & [name, sz] : _variables)
-    if (other.has_variable(name))
-    {
-      auto && [begina, enda] = _layout.at(name);
-      idxa.push_back(offseta + begina);
-      idxa.push_back(offseta + enda);
-      auto && [beginb, endb] = other._layout.at(name);
-      idxb.push_back(offsetb + beginb);
-      idxb.push_back(offsetb + endb);
-    }
-
-  if (recursive)
-    for (const auto & [name, axis] : _subaxes)
-      if (other.has_subaxis(name))
-        axis->common_indices(other.subaxis(name),
-                             true,
-                             idxa,
-                             idxb,
-                             offseta + _layout.at(name).first,
-                             offsetb + other._layout.at(name).first);
-}
-
-std::vector<LabeledAxisAccessor>
-LabeledAxis::sort_by_assembly_order(const std::set<LabeledAxisAccessor> & names) const
-{
-  neml_assert(_offset > 0, "The LabeledAxis either is empty or has not been setup");
-
-  std::map<indexing::TensorIndex, const LabeledAxisAccessor &, AssemblySliceCmp> index_names;
-  for (const auto & name : names)
-    index_names.emplace(indices(name), name);
-
-  std::vector<LabeledAxisAccessor> sorted;
-  for (const auto & [idx, name] : index_names)
-    sorted.push_back(name);
-
-  return sorted;
-}
-
-std::set<LabeledAxisAccessor>
-LabeledAxis::variable_names(bool recursive) const
-{
-  std::set<LabeledAxisAccessor> accessors;
-
-  // Insert local variables
-  for (const auto & [var, sz] : _variables)
-    accessors.insert(var);
-
-  // Insert variables on subaxes
-  if (recursive)
-    for (const auto & [name, axis] : _subaxes)
-      for (const auto & var : axis->variable_names(true))
-        accessors.insert(var.prepend(name));
-
-  return accessors;
-}
-
-std::set<LabeledAxisAccessor>
-LabeledAxis::subaxis_names(bool recursive) const
-{
-  std::set<LabeledAxisAccessor> accessors;
-
+  // Otherwise, calculate the number of variables
+  std::size_t nvar = _variables.size();
   for (const auto & [name, axis] : _subaxes)
+    nvar += axis->nvariable();
+  return nvar;
+}
+
+bool
+LabeledAxis::has_variable(const LabeledAxisAccessor & name) const
+{
+  neml_assert(!name.empty(), "Variable name cannot be empty.");
+
+  // If axis has been set up, return the cached existence
+  if (_setup)
+    return std::find(_id_to_variable_map.begin(), _id_to_variable_map.end(), name) !=
+           _id_to_variable_map.end();
+
+  // Otherwise, check the existence of the variable
+  if (name.size() == 1)
+    return _variables.find(name[0]) != _variables.end();
+
+  const auto subaxis = _subaxes.find(name[0]);
+  return subaxis != _subaxes.end() && subaxis->second->has_variable(name.slice(1));
+}
+
+std::size_t
+LabeledAxis::variable_id(const LabeledAxisAccessor & name) const
+{
+  ensure_setup_dbg();
+  neml_assert(!name.empty(), "Cannot get the ID of a variable with an empty name.");
+  const auto id = _variable_to_id_map.find(name);
+  neml_assert(id != _variable_to_id_map.end(),
+              "Variable named '",
+              name,
+              "' does not exist on axis:\n",
+              *this);
+  return id->second;
+}
+
+const std::vector<LabeledAxisAccessor> &
+LabeledAxis::variable_names() const
+{
+  ensure_setup_dbg();
+  return _id_to_variable_map;
+}
+
+const std::vector<indexing::Slice> &
+LabeledAxis::variable_slices() const
+{
+  ensure_setup_dbg();
+  return _id_to_variable_slice_map;
+}
+
+const indexing::Slice &
+LabeledAxis::variable_slice(const LabeledAxisAccessor & name) const
+{
+  ensure_setup_dbg();
+  return _id_to_variable_slice_map.at(variable_id(name));
+}
+
+const std::vector<Size> &
+LabeledAxis::variable_sizes() const
+{
+  ensure_setup_dbg();
+  return _id_to_variable_size_map;
+}
+
+Size
+LabeledAxis::variable_size(const LabeledAxisAccessor & name) const
+{
+  // If axis has been set up, return the cached variable size
+  if (_setup)
+    return _id_to_variable_size_map[variable_id(name)];
+
+  // Otherwise, calculate the variable size
+  if (name.size() == 1)
   {
-    // Insert local subaxes
-    accessors.insert(name);
-    // Insert sub-subaxes
-    if (recursive)
-      for (const auto & subname : axis->subaxis_names(true))
-        accessors.insert(subname.prepend(name));
+    const auto var = _variables.find(name[0]);
+    neml_assert(
+        var != _variables.end(), "Variable named '", name, "' does not exist on axis:\n", *this);
+    return var->second;
   }
 
-  return accessors;
+  const auto subaxis = _subaxes.find(name[0]);
+  neml_assert(
+      subaxis != _subaxes.end(), "Variable named '", name, "' does not exist on axis:\n", *this);
+  return subaxis->second->variable_size(name.slice(1));
+}
+
+std::size_t
+LabeledAxis::nsubaxis() const
+{
+  return _subaxes.size();
+}
+
+bool
+LabeledAxis::has_subaxis(const LabeledAxisAccessor & name) const
+{
+  neml_assert(!name.empty(), "Sub-axis name cannot be empty.");
+
+  const auto subaxis = _subaxes.find(name[0]);
+
+  if (name.size() == 1)
+    return subaxis != _subaxes.end();
+
+  return subaxis->second->has_subaxis(name.slice(1));
+}
+
+std::size_t
+LabeledAxis::subaxis_id(const std::string & name) const
+{
+  ensure_setup_dbg();
+  const auto id = _subaxis_to_id_map.find(name);
+  neml_assert(id != _subaxis_to_id_map.end(),
+              "Sub-axis named '",
+              name,
+              "' does not exist on axis:\n",
+              *this);
+  return id->second;
+}
+
+const std::vector<const LabeledAxis *> &
+LabeledAxis::subaxes() const
+{
+  ensure_setup_dbg();
+  return _sorted_subaxes;
 }
 
 const LabeledAxis &
 LabeledAxis::subaxis(const LabeledAxisAccessor & name) const
 {
-  // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
-  return const_cast<LabeledAxis *>(this)->subaxis(name);
+  neml_assert(!name.empty(), "Sub-axis name cannot be empty.");
+
+  const auto subaxis = _subaxes.find(name[0]);
+  neml_assert(
+      subaxis != _subaxes.end(), "Sub-axis named '", name, "' does not exist on axis:\n", *this);
+
+  if (name.size() == 1)
+    return *subaxis->second;
+
+  return subaxis->second->subaxis(name.slice(1));
 }
 
 LabeledAxis &
 LabeledAxis::subaxis(const LabeledAxisAccessor & name)
 {
-  neml_assert(!name.empty(), "sub-axis name cannot be empty");
-  neml_assert_dbg(_subaxes.count(name.vec()[0]),
-                  "In LabeledAxis::subaxis, no subaxis matches given name ",
-                  name);
+  return const_cast<LabeledAxis &>(std::as_const(*this).subaxis(name));
+}
 
-  if (name.size() > 1)
-    return _subaxes[name.vec()[0]]->subaxis(name.slice(1));
+const std::vector<std::string> &
+LabeledAxis::subaxis_names() const
+{
+  ensure_setup_dbg();
+  return _id_to_subaxis_map;
+}
 
-  return *_subaxes[name.vec()[0]];
+const std::vector<indexing::Slice> &
+LabeledAxis::subaxis_slices() const
+{
+  ensure_setup_dbg();
+  return _id_to_subaxis_slice_map;
+}
+
+indexing::Slice
+LabeledAxis::subaxis_slice(const LabeledAxisAccessor & name) const
+{
+  ensure_setup_dbg();
+
+  // If the name has length 1, it must be a local sub-axis
+  if (name.size() == 1)
+    return _id_to_subaxis_slice_map[subaxis_id(name[0])];
+
+  // Otherwise, the name must be on a sub-axis
+  const auto subaxis = _subaxes.find(name[0]);
+  neml_assert(
+      subaxis != _subaxes.end(), "Sub-axis named '", name, "' does not exist on axis:\n", *this);
+  const auto & slice = subaxis->second->subaxis_slice(name.slice(1));
+  auto offset = _id_to_subaxis_slice_map[subaxis_id(name[0])].start();
+  return {slice.start() + offset, slice.stop() + offset};
+}
+
+const std::vector<Size> &
+LabeledAxis::subaxis_sizes() const
+{
+  ensure_setup_dbg();
+  return _id_to_subaxis_size_map;
+}
+
+Size
+LabeledAxis::subaxis_size(const LabeledAxisAccessor & name) const
+{
+  const auto subaxis = _subaxes.find(name[0]);
+  neml_assert(
+      subaxis != _subaxes.end(), "Sub-axis named '", name, "' does not exist on axis:\n", *this);
+
+  if (name.size() == 1)
+    return subaxis->second->size();
+
+  return subaxis->second->subaxis_size(name.slice(1));
 }
 
 bool
 LabeledAxis::equals(const LabeledAxis & other) const
 {
-  // They must have the same size
-  if (_offset != other._offset)
-    return false;
-
-  // Comparing unordered maps is easy, two maps are equal if they have the same number of
-  // elements and the elements in one container are a permutation of the elements in the other
-  // container
+  // They must have the same set of variables (with the same storage sizes)
   if (_variables != other._variables)
     return false;
 
-  // For subaxes, it's a little bit tricky as we need to compare the dereferenced axes.
+  // They must have the same number of subaxes
+  if (_subaxes.size() != other._subaxes.size())
+    return false;
+
+  // Compare each subaxis
   for (const auto & [name, axis] : _subaxes)
   {
     if (other._subaxes.count(name) == 0)
@@ -363,26 +426,53 @@ LabeledAxis::equals(const LabeledAxis & other) const
   return true;
 }
 
+void
+LabeledAxis::cache_reserved_subaxis(const std::string & axis_name)
+{
+  if (axis_name == "state")
+    _has_state = true;
+  else if (axis_name == "old_state")
+    _has_old_state = true;
+  else if (axis_name == "forces")
+    _has_forces = true;
+  else if (axis_name == "old_forces")
+    _has_old_forces = true;
+  else if (axis_name == "residual")
+    _has_residual = true;
+  else if (axis_name == "parameters")
+    _has_parameters = true;
+}
+
+void
+LabeledAxis::ensure_setup_dbg() const
+{
+  neml_assert_dbg(_setup, "The axis has not been setup yet.");
+}
+
 std::ostream &
 operator<<(std::ostream & os, const LabeledAxis & axis)
 {
-  // Collect variable names and indices
+  // Get unqualified variable names
+  const auto var_names = axis.variable_names();
+
+  // Find the maximum variable name length
   size_t max_var_name_length = 0;
-  std::map<std::string, indexing::TensorIndex> vars;
-  for (auto var : axis.variable_names(true))
+  for (const auto & var_name : var_names)
   {
-    auto var_name = utils::stringify(var);
-    if (var_name.size() > max_var_name_length)
-      max_var_name_length = var_name.size();
-    vars.emplace(var_name, axis.indices(var));
+    const auto var_name_str = utils::stringify(var_name);
+    if (var_name_str.size() > max_var_name_length)
+      max_var_name_length = var_name_str.size();
   }
 
   // Print variables with right alignment
-  for (auto var = vars.begin(); var != vars.end(); var++)
+  for (auto var = var_names.begin(); var != var_names.end(); var++)
   {
-    // NOLINTNEXTLINE(*-narrowing-conversions)
-    os << std::setw(max_var_name_length) << var->first << ": " << var->second;
-    if (std::next(var) != vars.end())
+    if (axis._setup)
+      os << std::setw(3) << std::right << axis.variable_id(*var) << ": ";
+    os << std::setw(max_var_name_length) << std::left << utils::stringify(*var);
+    if (axis._setup)
+      os << " [" << axis.variable_slice(*var) << "]";
+    if (std::next(var) != var_names.end())
       os << std::endl;
   }
 

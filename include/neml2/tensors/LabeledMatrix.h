@@ -28,8 +28,6 @@
 
 namespace neml2
 {
-class LabeledVector;
-
 /**
  * @brief A single-batched, logically 2D LabeledTensor.
  *
@@ -45,10 +43,18 @@ public:
                                 const torch::TensorOptions & options = default_tensor_options());
 
   /// Fill another matrix into this matrix.
-  /// The item set of the other matrix must be a subset of this matrix's item set.
-  void fill(const LabeledMatrix & other, bool recursive = true);
+  void fill(const LabeledMatrix & other);
 
-  /// Chain rule product of two derivatives
-  LabeledMatrix chain(const LabeledMatrix & other) const;
+  /// Split the matrix by subaxes along a given dimension
+  std::map<LabeledAxisAccessor, LabeledMatrix> split(Size dim) const;
+
+  /// Disassemble the matrix into a matrix of matrices (by variables)
+  std::map<LabeledAxisAccessor, std::map<LabeledAxisAccessor, Tensor>> disassemble() const;
+
+  /// Assemble a matrix of matrices
+  static LabeledMatrix
+  assemble(const std::map<LabeledAxisAccessor, std::map<LabeledAxisAccessor, Tensor>> & vals_dict,
+           const LabeledAxis & yaxis,
+           const LabeledAxis & xaxis);
 };
 } // namespace neml2

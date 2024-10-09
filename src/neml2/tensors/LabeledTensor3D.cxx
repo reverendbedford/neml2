@@ -23,41 +23,7 @@
 // THE SOFTWARE.
 
 #include "neml2/tensors/LabeledTensor3D.h"
-#include "neml2/tensors/LabeledMatrix.h"
 
 namespace neml2
 {
-void
-LabeledTensor3D::fill(const LabeledTensor3D & other, bool recursive)
-{
-  neml_assert_dbg(axis(1) == other.axis(1), "Can only accumulate 3D tensors with conformal y axes");
-  neml_assert_dbg(axis(2) == other.axis(2), "Can only accumulate 3D tensors with conformal z axes");
-  const auto indices0 = axis(0).common_indices(other.axis(0), recursive);
-  for (const auto & [idxi, idxi_other] : indices0)
-    _tensor.base_index_put_({idxi}, other.tensor().base_index({idxi_other}));
-}
-
-LabeledTensor3D
-LabeledTensor3D::chain(const LabeledTensor3D & other,
-                       const LabeledMatrix & dself,
-                       const LabeledMatrix & dother) const
-{
-  // This function expresses the second oreder chain rule, which can be expressed as
-  // d2y/dx2 = d2y/du2 du/dx du/dx + dy/du d2u/dx2
-  // In index notation this is
-  // (d2y/dx2)_{ijk} = (d2y/du2)_{ipq} (du/dx)_{pj} (du/dx)_{qk} + (dy/du)_{ip} (d2u/dx2)_{pjk}
-
-  // Make sure we are conformal
-  neml_assert_dbg(batch_sizes() == other.batch_sizes(), "Batch sizes are not the same");
-  neml_assert_dbg(batch_sizes() == dself.batch_sizes(), "Batch sizes are not the same");
-  neml_assert_dbg(batch_sizes() == dother.batch_sizes(), "Batch sizes are not the same");
-  neml_assert_dbg(axis(1) == axis(2), "Self labels are not conformal");
-  neml_assert_dbg(other.axis(1) == other.axis(2), "Other labels are not conformal");
-  neml_assert_dbg(axis(2) == other.axis(0), "Self and other labels are not conformal");
-
-  // If all the sizes are correct then executing the chain rule is pretty easy
-  return LabeledTensor3D(torch::einsum("...ipq,...pj,...qk", {*this, dother, dother}) +
-                             torch::einsum("...ip,...pjk", {dself, other}),
-                         {&axis(0), &other.axis(1), &other.axis(2)});
-}
 } // namespace neml2

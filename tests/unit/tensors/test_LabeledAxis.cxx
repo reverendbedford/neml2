@@ -23,192 +23,383 @@
 // THE SOFTWARE.
 
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/generators/catch_generators_all.hpp>
+#include <catch2/matchers/catch_matchers_templated.hpp>
 
 #include "neml2/tensors/LabeledAxis.h"
 #include "neml2/tensors/tensors.h"
 
 using namespace neml2;
 
+struct EqualsSlice : Catch::Matchers::MatcherGenericBase
+{
+  EqualsSlice(const indexing::Slice & slice)
+    : slice{slice}
+  {
+  }
+
+  bool match(const indexing::Slice & other) const
+  {
+    return slice.start() == other.start() && slice.stop() == other.stop() &&
+           slice.step() == other.step();
+  }
+
+  std::string describe() const override { return "Equals: " + utils::stringify(slice); }
+
+private:
+  const indexing::Slice & slice;
+};
+
 TEST_CASE("LabeledAxis", "[tensors]")
 {
   SECTION("class LabeledAxis")
   {
-    SECTION("LabeledAxis")
+    LabeledAxis a;
+    a.add_variable<Scalar>("scalar");
+    a.add_variable<SR2>("r2t");
+    a.add_subaxis("sub1");
+    a.subaxis("sub1").add_variable<Scalar>("scalar");
+    a.subaxis("sub1").add_variable<SR2>("r2t");
+    a.subaxis("sub1").add_subaxis("sub2");
+    a.subaxis("sub1").subaxis("sub2").add_variable<Scalar>("scalar");
+    a.subaxis("sub1").subaxis("sub2").add_variable<SR2>("r2t");
+    a.subaxis("sub1").add_subaxis("sub3");
+    a.subaxis("sub1").subaxis("sub3").add_variable<Scalar>("scalar");
+    a.subaxis("sub1").subaxis("sub3").add_variable("foo", 5);
+    const auto & sub1 = a.subaxis("sub1");
+    const auto & sub2 = sub1.subaxis("sub2");
+    const auto & sub3 = sub1.subaxis("sub3");
+
+    auto setup = GENERATE(true, false);
+
+    if (setup)
+      a.setup_layout();
+
+    SECTION("is_setup") { REQUIRE(a.is_setup() == setup); }
+
+    SECTION("size")
     {
-      SECTION("default constructor")
+      REQUIRE(a.size() == 27);
+      REQUIRE(a.size("r2t") == 6);
+      REQUIRE(a.size("scalar") == 1);
+      REQUIRE(a.size({"sub1", "r2t"}) == 6);
+      REQUIRE(a.size({"sub1", "scalar"}) == 1);
+      REQUIRE(a.size({"sub1", "sub2", "r2t"}) == 6);
+      REQUIRE(a.size({"sub1", "sub2", "scalar"}) == 1);
+      REQUIRE(a.size({"sub1", "sub3", "foo"}) == 5);
+      REQUIRE(a.size({"sub1", "sub3", "scalar"}) == 1);
+      REQUIRE(a.size("sub1") == 20);
+      REQUIRE(a.size({"sub1", "sub2"}) == 7);
+      REQUIRE(a.size({"sub1", "sub3"}) == 6);
+
+      REQUIRE(sub1.size() == 20);
+      REQUIRE(sub1.size("r2t") == 6);
+      REQUIRE(sub1.size("scalar") == 1);
+      REQUIRE(sub1.size({"sub2", "r2t"}) == 6);
+      REQUIRE(sub1.size({"sub2", "scalar"}) == 1);
+      REQUIRE(sub1.size({"sub3", "foo"}) == 5);
+      REQUIRE(sub1.size({"sub3", "scalar"}) == 1);
+      REQUIRE(sub1.size("sub2") == 7);
+      REQUIRE(sub1.size("sub3") == 6);
+
+      REQUIRE(sub2.size() == 7);
+      REQUIRE(sub2.size("r2t") == 6);
+      REQUIRE(sub2.size("scalar") == 1);
+
+      REQUIRE(sub3.size() == 6);
+      REQUIRE(sub3.size("foo") == 5);
+      REQUIRE(sub3.size("scalar") == 1);
+    }
+
+    SECTION("slice")
+    {
+      if (setup)
       {
-        LabeledAxis a;
-        a.setup_layout();
-        REQUIRE(a.nvariable() == 0);
-        REQUIRE(a.nsubaxis() == 0);
-        REQUIRE(a.storage_size() == 0);
+        REQUIRE_THAT(a.slice("r2t"), EqualsSlice(indexing::Slice(0, 6)));
+        REQUIRE_THAT(a.slice("scalar"), EqualsSlice(indexing::Slice(6, 7)));
+        REQUIRE_THAT(a.slice({"sub1", "r2t"}), EqualsSlice(indexing::Slice(7, 13)));
+        REQUIRE_THAT(a.slice({"sub1", "scalar"}), EqualsSlice(indexing::Slice(13, 14)));
+        REQUIRE_THAT(a.slice({"sub1", "sub2", "r2t"}), EqualsSlice(indexing::Slice(14, 20)));
+        REQUIRE_THAT(a.slice({"sub1", "sub2", "scalar"}), EqualsSlice(indexing::Slice(20, 21)));
+        REQUIRE_THAT(a.slice({"sub1", "sub3", "foo"}), EqualsSlice(indexing::Slice(21, 26)));
+        REQUIRE_THAT(a.slice({"sub1", "sub3", "scalar"}), EqualsSlice(indexing::Slice(26, 27)));
+        REQUIRE_THAT(a.slice("sub1"), EqualsSlice(indexing::Slice(7, 27)));
+        REQUIRE_THAT(a.slice({"sub1", "sub2"}), EqualsSlice(indexing::Slice(14, 21)));
+        REQUIRE_THAT(a.slice({"sub1", "sub3"}), EqualsSlice(indexing::Slice(21, 27)));
+
+        REQUIRE_THAT(sub1.slice("r2t"), EqualsSlice(indexing::Slice(0, 6)));
+        REQUIRE_THAT(sub1.slice("scalar"), EqualsSlice(indexing::Slice(6, 7)));
+        REQUIRE_THAT(sub1.slice({"sub2", "r2t"}), EqualsSlice(indexing::Slice(7, 13)));
+        REQUIRE_THAT(sub1.slice({"sub2", "scalar"}), EqualsSlice(indexing::Slice(13, 14)));
+        REQUIRE_THAT(sub1.slice({"sub3", "foo"}), EqualsSlice(indexing::Slice(14, 19)));
+        REQUIRE_THAT(sub1.slice({"sub3", "scalar"}), EqualsSlice(indexing::Slice(19, 20)));
+        REQUIRE_THAT(sub1.slice("sub2"), EqualsSlice(indexing::Slice(7, 14)));
+        REQUIRE_THAT(sub1.slice("sub3"), EqualsSlice(indexing::Slice(14, 20)));
+
+        REQUIRE_THAT(sub2.slice("r2t"), EqualsSlice(indexing::Slice(0, 6)));
+        REQUIRE_THAT(sub2.slice("scalar"), EqualsSlice(indexing::Slice(6, 7)));
+
+        REQUIRE_THAT(sub3.slice("foo"), EqualsSlice(indexing::Slice(0, 5)));
+        REQUIRE_THAT(sub3.slice("scalar"), EqualsSlice(indexing::Slice(5, 6)));
       }
-
-      SECTION("copy constructor")
-      {
-        LabeledAxis a;
-        a.add<Scalar>("scalar");
-        a.add<SR2>("r2t");
-        a.add<LabeledAxis>("sub");
-        a.subaxis("sub").add<Scalar>("scalar");
-        a.subaxis("sub").add<SR2>("r2t");
-
-        LabeledAxis b(a);
-        b.setup_layout();
-        REQUIRE(b.nvariable() == 4);
-        REQUIRE(b.nvariable(false) == 2);
-        REQUIRE(b.nsubaxis() == 1);
-        REQUIRE(b.storage_size() == 14);
-      }
     }
 
-    SECTION("add")
+    SECTION("nvariable")
     {
-      LabeledAxis a;
-      LabeledAxisAccessor i("a", "b", "c");
-      a.add("foo", 13);
-      a.add(i, 3);
-      a.setup_layout();
-      REQUIRE(a.nvariable() == 2);
-      REQUIRE(a.nvariable(false) == 1);
-      REQUIRE(a.nsubaxis() == 1);
-      REQUIRE(a.storage_size() == 16);
-    }
-
-    SECTION("clear")
-    {
-      LabeledAxis a;
-      LabeledAxisAccessor i("a", "b");
-      LabeledAxisAccessor j("c");
-      a.add(i, 2);
-      a.add(j, 3);
-      a.clear();
-      a.setup_layout();
-      REQUIRE(a.nvariable() == 0);
-      REQUIRE(a.nsubaxis() == 0);
-      REQUIRE(a.storage_size() == 0);
-    }
-
-    SECTION("has_item")
-    {
-      LabeledAxis a;
-      LabeledAxisAccessor i("a", "b");
-      LabeledAxisAccessor j("c");
-      a.add(i, 2);
-      a.add(j, 3);
-      a.setup_layout();
-      REQUIRE(a.has_item("a"));
-      REQUIRE(a.has_item("c"));
-      REQUIRE(!a.has_item("b"));
+      REQUIRE(a.nvariable() == 8);
+      REQUIRE(sub1.nvariable() == 6);
+      REQUIRE(sub2.nvariable() == 2);
+      REQUIRE(sub3.nvariable() == 2);
     }
 
     SECTION("has_variable")
     {
-      LabeledAxis a;
-      LabeledAxisAccessor i("a", "b");
-      LabeledAxisAccessor j("c");
-      a.add(i, 2);
-      a.add(j, 3);
-      a.setup_layout();
-      REQUIRE(!a.has_variable("a"));
-      REQUIRE(!a.has_variable("b"));
-      REQUIRE(a.has_variable("c"));
-      REQUIRE(a.has_variable<Vec>("c"));
-      REQUIRE(a.has_variable<Rot>("c"));
-      REQUIRE(!a.has_variable<SR2>("c"));
-      REQUIRE(a.has_variable(i));
-      REQUIRE(a.has_variable(j));
-      REQUIRE(!a.has_variable(j.with_suffix("baz")));
+      REQUIRE(a.has_variable("r2t"));
+      REQUIRE(a.has_variable("scalar"));
+      REQUIRE(!a.has_variable("foo"));
+      REQUIRE(sub1.has_variable("r2t"));
+      REQUIRE(!sub1.has_variable("foo"));
     }
 
-    SECTION("storage_size")
+    SECTION("variable_id")
     {
-      LabeledAxis a;
-      LabeledAxisAccessor i("a", "b");
-      LabeledAxisAccessor j("c");
-      LabeledAxisAccessor k("a", "d");
-      a.add(i, 2);
-      a.add(j, 3);
-      a.add(k, 3);
-      a.setup_layout();
-      REQUIRE(a.storage_size() == 8);
-      REQUIRE(a.storage_size("a") == 5);
-      REQUIRE(a.storage_size("c") == 3);
-      REQUIRE(a.storage_size(i) == 2);
-      REQUIRE(a.storage_size(j) == 3);
-      REQUIRE(a.storage_size(k) == 3);
+      if (setup)
+      {
+        REQUIRE(a.variable_id("r2t") == 0);
+        REQUIRE(a.variable_id("scalar") == 1);
+        REQUIRE(a.variable_id({"sub1", "r2t"}) == 2);
+        REQUIRE(a.variable_id({"sub1", "scalar"}) == 3);
+        REQUIRE(a.variable_id({"sub1", "sub2", "r2t"}) == 4);
+        REQUIRE(a.variable_id({"sub1", "sub2", "scalar"}) == 5);
+        REQUIRE(a.variable_id({"sub1", "sub3", "foo"}) == 6);
+        REQUIRE(a.variable_id({"sub1", "sub3", "scalar"}) == 7);
+
+        REQUIRE(sub1.variable_id("r2t") == 0);
+        REQUIRE(sub1.variable_id("scalar") == 1);
+        REQUIRE(sub1.variable_id({"sub2", "r2t"}) == 2);
+        REQUIRE(sub1.variable_id({"sub2", "scalar"}) == 3);
+        REQUIRE(sub1.variable_id({"sub3", "foo"}) == 4);
+        REQUIRE(sub1.variable_id({"sub3", "scalar"}) == 5);
+
+        REQUIRE(sub2.variable_id("r2t") == 0);
+        REQUIRE(sub2.variable_id("scalar") == 1);
+
+        REQUIRE(sub3.variable_id("foo") == 0);
+        REQUIRE(sub3.variable_id("scalar") == 1);
+      }
     }
 
-    SECTION("nested subaxis")
+    SECTION("variable_names")
     {
-      LabeledAxis a;
-      a.add<Scalar>("scalar");
-      a.add<SR2>("r2t");
-      a.add<LabeledAxis>("sub1");
-      a.subaxis("sub1").add<Scalar>("scalar");
-      a.subaxis("sub1").add<SR2>("r2t");
-      a.subaxis("sub1").add<LabeledAxis>("sub2");
-      a.subaxis("sub1").subaxis("sub2").add<Scalar>("scalar");
-      a.subaxis("sub1").subaxis("sub2").add<SR2>("r2t");
-      a.setup_layout();
+      if (setup)
+      {
+        REQUIRE(a.variable_names() == std::vector<LabeledAxisAccessor>{"r2t",
+                                                                       "scalar",
+                                                                       {"sub1", "r2t"},
+                                                                       {"sub1", "scalar"},
+                                                                       {"sub1", "sub2", "r2t"},
+                                                                       {"sub1", "sub2", "scalar"},
+                                                                       {"sub1", "sub3", "foo"},
+                                                                       {"sub1", "sub3", "scalar"}});
+        REQUIRE(sub1.variable_names() == std::vector<LabeledAxisAccessor>{"r2t",
+                                                                          "scalar",
+                                                                          {"sub2", "r2t"},
+                                                                          {"sub2", "scalar"},
+                                                                          {"sub3", "foo"},
+                                                                          {"sub3", "scalar"}});
+        REQUIRE(sub2.variable_names() == std::vector<LabeledAxisAccessor>{"r2t", "scalar"});
+        REQUIRE(sub3.variable_names() == std::vector<LabeledAxisAccessor>{"foo", "scalar"});
+      }
+    }
 
-      REQUIRE(a.nvariable() == 6);
-      REQUIRE(a.nvariable(false) == 2);
+    SECTION("variable_slices")
+    {
+      if (setup)
+      {
+        REQUIRE_THAT(a.variable_slices()[0], EqualsSlice(indexing::Slice(0, 6)));
+        REQUIRE_THAT(a.variable_slices()[1], EqualsSlice(indexing::Slice(6, 7)));
+        REQUIRE_THAT(a.variable_slices()[2], EqualsSlice(indexing::Slice(7, 13)));
+        REQUIRE_THAT(a.variable_slices()[3], EqualsSlice(indexing::Slice(13, 14)));
+        REQUIRE_THAT(a.variable_slices()[4], EqualsSlice(indexing::Slice(14, 20)));
+        REQUIRE_THAT(a.variable_slices()[5], EqualsSlice(indexing::Slice(20, 21)));
+        REQUIRE_THAT(a.variable_slices()[6], EqualsSlice(indexing::Slice(21, 26)));
+        REQUIRE_THAT(a.variable_slices()[7], EqualsSlice(indexing::Slice(26, 27)));
+
+        REQUIRE_THAT(sub1.variable_slices()[0], EqualsSlice(indexing::Slice(0, 6)));
+        REQUIRE_THAT(sub1.variable_slices()[1], EqualsSlice(indexing::Slice(6, 7)));
+        REQUIRE_THAT(sub1.variable_slices()[2], EqualsSlice(indexing::Slice(7, 13)));
+        REQUIRE_THAT(sub1.variable_slices()[3], EqualsSlice(indexing::Slice(13, 14)));
+
+        REQUIRE_THAT(sub2.variable_slices()[0], EqualsSlice(indexing::Slice(0, 6)));
+        REQUIRE_THAT(sub2.variable_slices()[1], EqualsSlice(indexing::Slice(6, 7)));
+
+        REQUIRE_THAT(sub3.variable_slices()[0], EqualsSlice(indexing::Slice(0, 5)));
+        REQUIRE_THAT(sub3.variable_slices()[1], EqualsSlice(indexing::Slice(5, 6)));
+      }
+    }
+
+    SECTION("variable_slice")
+    {
+      if (setup)
+      {
+        REQUIRE_THAT(a.variable_slice("r2t"), EqualsSlice(indexing::Slice(0, 6)));
+        REQUIRE_THAT(a.variable_slice("scalar"), EqualsSlice(indexing::Slice(6, 7)));
+        REQUIRE_THAT(a.variable_slice({"sub1", "r2t"}), EqualsSlice(indexing::Slice(7, 13)));
+        REQUIRE_THAT(a.variable_slice({"sub1", "scalar"}), EqualsSlice(indexing::Slice(13, 14)));
+        REQUIRE_THAT(a.variable_slice({"sub1", "sub2", "r2t"}),
+                     EqualsSlice(indexing::Slice(14, 20)));
+        REQUIRE_THAT(a.variable_slice({"sub1", "sub2", "scalar"}),
+                     EqualsSlice(indexing::Slice(20, 21)));
+        REQUIRE_THAT(a.variable_slice({"sub1", "sub3", "foo"}),
+                     EqualsSlice(indexing::Slice(21, 26)));
+        REQUIRE_THAT(a.variable_slice({"sub1", "sub3", "scalar"}),
+                     EqualsSlice(indexing::Slice(26, 27)));
+
+        REQUIRE_THAT(sub1.variable_slice("r2t"), EqualsSlice(indexing::Slice(0, 6)));
+        REQUIRE_THAT(sub1.variable_slice("scalar"), EqualsSlice(indexing::Slice(6, 7)));
+        REQUIRE_THAT(sub1.variable_slice({"sub2", "r2t"}), EqualsSlice(indexing::Slice(7, 13)));
+        REQUIRE_THAT(sub1.variable_slice({"sub2", "scalar"}), EqualsSlice(indexing::Slice(13, 14)));
+        REQUIRE_THAT(sub1.variable_slice({"sub3", "foo"}), EqualsSlice(indexing::Slice(14, 19)));
+        REQUIRE_THAT(sub1.variable_slice({"sub3", "scalar"}), EqualsSlice(indexing::Slice(19, 20)));
+
+        REQUIRE_THAT(sub2.variable_slice("r2t"), EqualsSlice(indexing::Slice(0, 6)));
+        REQUIRE_THAT(sub2.variable_slice("scalar"), EqualsSlice(indexing::Slice(6, 7)));
+
+        REQUIRE_THAT(sub3.variable_slice("foo"), EqualsSlice(indexing::Slice(0, 5)));
+        REQUIRE_THAT(sub3.variable_slice("scalar"), EqualsSlice(indexing::Slice(5, 6)));
+      }
+    }
+
+    SECTION("variable_sizes")
+    {
+      if (setup)
+      {
+        REQUIRE(a.variable_sizes() == std::vector<Size>{6, 1, 6, 1, 6, 1, 5, 1});
+        REQUIRE(sub1.variable_sizes() == std::vector<Size>{6, 1, 6, 1, 5, 1});
+        REQUIRE(sub2.variable_sizes() == std::vector<Size>{6, 1});
+        REQUIRE(sub3.variable_sizes() == std::vector<Size>{5, 1});
+      }
+    }
+
+    SECTION("variable_size")
+    {
+      REQUIRE(a.variable_size("r2t") == 6);
+      REQUIRE(a.variable_size("scalar") == 1);
+      REQUIRE(a.variable_size({"sub1", "r2t"}) == 6);
+      REQUIRE(a.variable_size({"sub1", "scalar"}) == 1);
+      REQUIRE(a.variable_size({"sub1", "sub2", "r2t"}) == 6);
+      REQUIRE(a.variable_size({"sub1", "sub2", "scalar"}) == 1);
+      REQUIRE(a.variable_size({"sub1", "sub3", "foo"}) == 5);
+      REQUIRE(a.variable_size({"sub1", "sub3", "scalar"}) == 1);
+
+      REQUIRE(sub1.variable_size("r2t") == 6);
+      REQUIRE(sub1.variable_size("scalar") == 1);
+      REQUIRE(sub1.variable_size({"sub2", "r2t"}) == 6);
+      REQUIRE(sub1.variable_size({"sub2", "scalar"}) == 1);
+      REQUIRE(sub1.variable_size({"sub3", "foo"}) == 5);
+      REQUIRE(sub1.variable_size({"sub3", "scalar"}) == 1);
+
+      REQUIRE(sub2.variable_size("r2t") == 6);
+      REQUIRE(sub2.variable_size("scalar") == 1);
+
+      REQUIRE(sub3.variable_size("foo") == 5);
+      REQUIRE(sub3.variable_size("scalar") == 1);
+    }
+
+    SECTION("nsubaxis")
+    {
       REQUIRE(a.nsubaxis() == 1);
-      REQUIRE(a.storage_size() == 21);
-      REQUIRE(a.storage_size("scalar") == 1);
-      REQUIRE(a.storage_size("r2t") == 6);
-
-      REQUIRE(a.subaxis("sub1").nvariable() == 4);
-      REQUIRE(a.subaxis("sub1").nvariable(false) == 2);
-      REQUIRE(a.subaxis("sub1").nsubaxis() == 1);
-      REQUIRE(a.subaxis("sub1").storage_size() == 14);
-      REQUIRE(a.subaxis("sub1").storage_size("scalar") == 1);
-      REQUIRE(a.subaxis("sub1").storage_size("r2t") == 6);
-
-      REQUIRE(a.subaxis("sub1").subaxis("sub2").nvariable() == 2);
-      REQUIRE(a.subaxis("sub1").subaxis("sub2").nsubaxis() == 0);
-      REQUIRE(a.subaxis("sub1").subaxis("sub2").storage_size() == 7);
-      REQUIRE(a.subaxis("sub1").subaxis("sub2").storage_size("scalar") == 1);
-      REQUIRE(a.subaxis("sub1").subaxis("sub2").storage_size("r2t") == 6);
+      REQUIRE(sub1.nsubaxis() == 2);
+      REQUIRE(sub2.nsubaxis() == 0);
+      REQUIRE(sub3.nsubaxis() == 0);
     }
 
-    SECTION("chained modifiers")
+    SECTION("has_subaxis")
     {
-      LabeledAxis a;
-      a.add<Scalar>("scalar1").add<Scalar>("scalar2").add<Scalar>("scalar3").add<SR2>("r2t1");
-      a.add<SR2>("r2t2");
-      a.add<Scalar>("scalar4");
-      a.setup_layout();
-      REQUIRE(a.nvariable() == 6);
-      REQUIRE(a.nsubaxis() == 0);
-      REQUIRE(a.storage_size() == 16);
+      REQUIRE(a.has_subaxis("sub1"));
+      REQUIRE(a.has_subaxis({"sub1", "sub2"}));
+      REQUIRE(a.has_subaxis({"sub1", "sub3"}));
+      REQUIRE(!a.has_subaxis("sub2"));
+      REQUIRE(sub1.has_subaxis("sub2"));
+      REQUIRE(sub1.has_subaxis("sub3"));
+      REQUIRE(!sub1.has_subaxis("sub4"));
     }
 
-    SECTION("indices")
+    SECTION("subaxis_id")
     {
-      LabeledAxis a;
-      a.add<Scalar>("scalar");
-      a.add<SR2>("r2t");
-      a.add<LabeledAxis>("sub1");
-      a.subaxis("sub1").add<Scalar>("scalar");
-      a.subaxis("sub1").add<SR2>("r2t");
-      a.subaxis("sub1").add<LabeledAxis>("sub2");
-      a.subaxis("sub1").subaxis("sub2").add<Scalar>("scalar");
-      a.subaxis("sub1").subaxis("sub2").add<SR2>("r2t");
-      a.setup_layout();
+      if (setup)
+      {
+        REQUIRE(a.subaxis_id("sub1") == 0);
+        REQUIRE(sub1.subaxis_id("sub2") == 0);
+        REQUIRE(sub1.subaxis_id("sub3") == 1);
+      }
+    }
 
-      /// The sorted layout is
-      ///  0 1 2 3 4 5   6          7 8 9 10 11 12   13              14 15 16 17 18 19    20
-      /// |----r2t----| |-scalar-| |---sub1/r2t---| |-sub1/scalar-| |--sub1/sub2/r2t--| |-sub1/sub2/scalar-|
+    SECTION("subaxes")
+    {
+      if (setup)
+      {
+        REQUIRE(a.subaxes() == std::vector<const LabeledAxis *>{&sub1});
+        REQUIRE(sub1.subaxes() == std::vector<const LabeledAxis *>{&sub2, &sub3});
+      }
+    }
 
-      auto idx = torch::arange(a.storage_size());
+    SECTION("subaxis")
+    {
+      REQUIRE(&a.subaxis("sub1") == &sub1);
+      REQUIRE(&a.subaxis({"sub1", "sub2"}) == &sub2);
+      REQUIRE(&a.subaxis({"sub1", "sub3"}) == &sub3);
+      REQUIRE(&sub1.subaxis("sub2") == &sub2);
+      REQUIRE(&sub1.subaxis("sub3") == &sub3);
+    }
 
-      REQUIRE(torch::allclose(idx.index(a.indices("r2t")), torch::arange(0, 6)));
-      REQUIRE(torch::allclose(idx.index(a.indices("sub1")), torch::arange(7, 21)));
+    SECTION("subaxis_names")
+    {
+      if (setup)
+      {
+        REQUIRE(a.subaxis_names() == std::vector<std::string>{"sub1"});
+        REQUIRE(sub1.subaxis_names() == std::vector<std::string>{"sub2", "sub3"});
+      }
+    }
 
-      LabeledAxisAccessor i("sub1", "sub2", "r2t");
-      REQUIRE(torch::allclose(idx.index(a.indices(i)), torch::arange(14, 20)));
+    SECTION("subaxis_slices")
+    {
+      if (setup)
+      {
+        REQUIRE_THAT(a.subaxis_slices()[0], EqualsSlice(indexing::Slice(7, 27)));
+        REQUIRE_THAT(sub1.subaxis_slices()[0], EqualsSlice(indexing::Slice(7, 14)));
+        REQUIRE_THAT(sub1.subaxis_slices()[1], EqualsSlice(indexing::Slice(14, 20)));
+      }
+    }
+
+    SECTION("subaxis_slice")
+    {
+      if (setup)
+      {
+        REQUIRE_THAT(a.subaxis_slice("sub1"), EqualsSlice(indexing::Slice(7, 27)));
+        REQUIRE_THAT(a.subaxis_slice({"sub1", "sub2"}), EqualsSlice(indexing::Slice(14, 21)));
+        REQUIRE_THAT(a.subaxis_slice({"sub1", "sub3"}), EqualsSlice(indexing::Slice(21, 27)));
+        REQUIRE_THAT(sub1.subaxis_slice("sub2"), EqualsSlice(indexing::Slice(7, 14)));
+        REQUIRE_THAT(sub1.subaxis_slice("sub3"), EqualsSlice(indexing::Slice(14, 20)));
+      }
+    }
+
+    SECTION("subaxis_sizes")
+    {
+      if (setup)
+      {
+        REQUIRE(a.subaxis_sizes() == std::vector<Size>{20});
+        REQUIRE(sub1.subaxis_sizes() == std::vector<Size>{7, 6});
+      }
+    }
+
+    SECTION("subaxis_size")
+    {
+      REQUIRE(a.subaxis_size("sub1") == 20);
+      REQUIRE(a.subaxis_size({"sub1", "sub2"}) == 7);
+      REQUIRE(a.subaxis_size({"sub1", "sub3"}) == 6);
+      REQUIRE(sub1.subaxis_size("sub2") == 7);
+      REQUIRE(sub1.subaxis_size("sub3") == 6);
     }
   }
 
@@ -217,19 +408,19 @@ TEST_CASE("LabeledAxis", "[tensors]")
     // test1 and test2 are equal:
     // They have the same set of items with same names and storage sizes.
     LabeledAxis test1;
-    test1.add<Scalar>("scalar1");
-    test1.add<SR2>("r2t1");
-    test1.add<Scalar>("scalar2");
-    test1.add<SR2>("r2t2");
-    test1.add<Scalar>("scalar3");
+    test1.add_variable<Scalar>("scalar1");
+    test1.add_variable<SR2>("r2t1");
+    test1.add_variable<Scalar>("scalar2");
+    test1.add_variable<SR2>("r2t2");
+    test1.add_variable<Scalar>("scalar3");
     test1.setup_layout();
 
     LabeledAxis test2;
-    test2.add<SR2>("r2t1");
-    test2.add<Scalar>("scalar3");
-    test2.add<SR2>("r2t2");
-    test2.add<Scalar>("scalar2");
-    test2.add<Scalar>("scalar1");
+    test2.add_variable<SR2>("r2t1");
+    test2.add_variable<Scalar>("scalar3");
+    test2.add_variable<SR2>("r2t2");
+    test2.add_variable<Scalar>("scalar2");
+    test2.add_variable<Scalar>("scalar1");
     test2.setup_layout();
 
     REQUIRE(test1 == test2);
@@ -240,26 +431,26 @@ TEST_CASE("LabeledAxis", "[tensors]")
     // test1 and test2 are equal:
     // They have the same set of items with same names and storage sizes.
     LabeledAxis test1;
-    test1.add<Scalar>("scalar1");
-    test1.add<SR2>("r2t1");
-    test1.add<Scalar>("scalar2");
-    test1.add<SR2>("r2t2");
-    test1.add<Scalar>("scalar3");
+    test1.add_variable<Scalar>("scalar1");
+    test1.add_variable<SR2>("r2t1");
+    test1.add_variable<Scalar>("scalar2");
+    test1.add_variable<SR2>("r2t2");
+    test1.add_variable<Scalar>("scalar3");
     test1.setup_layout();
 
     LabeledAxis test2;
-    test2.add<SR2>("r2t1");
-    test2.add<Scalar>("scalar3");
-    test2.add<SR2>("r2t2");
-    test2.add<Scalar>("scalar2");
-    test2.add<Scalar>("scalar1");
+    test2.add_variable<SR2>("r2t1");
+    test2.add_variable<Scalar>("scalar3");
+    test2.add_variable<SR2>("r2t2");
+    test2.add_variable<Scalar>("scalar2");
+    test2.add_variable<Scalar>("scalar1");
     test2.setup_layout();
 
     // test3 is NOT equal to test1 nor test2
     LabeledAxis test3;
-    test3.add<SR2>("r2t1");
-    test3.add<Scalar>("scalar3");
-    test3.add<SR2>("r2t2");
+    test3.add_variable<SR2>("r2t1");
+    test3.add_variable<Scalar>("scalar3");
+    test3.add_variable<SR2>("r2t2");
     test3.setup_layout();
 
     REQUIRE(test1 != test3);

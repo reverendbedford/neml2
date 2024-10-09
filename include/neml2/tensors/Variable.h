@@ -29,127 +29,194 @@
 #include "neml2/tensors/LabeledVector.h"
 #include "neml2/tensors/LabeledMatrix.h"
 #include "neml2/tensors/LabeledTensor3D.h"
+#include "neml2/base/DependencyResolver.h"
 
 namespace neml2
 {
 using VariableName = LabeledAxisAccessor;
 
 // Forward declarations
-class Derivative;
 class Model;
+class Derivative;
 
 class VariableBase
 {
 public:
-  VariableBase(const VariableName & name_in, const Model * owner);
+  VariableBase(const VariableName & name_in, Model * owner, TensorShapeRef list_shape);
 
   virtual ~VariableBase() = default;
-
-  /// Cache the variable's batch shape
-  virtual void cache(TensorShapeRef batch_shape);
-
-  /// Setup the variable's views into blocks of the storage
-  virtual void setup_views(const LabeledVector * value,
-                           const LabeledMatrix * deriv = nullptr,
-                           const LabeledTensor3D * secderiv = nullptr);
-
-  /// Setup the variable's views following another variable
-  virtual void setup_views(const VariableBase * other);
-
-  /// Set requires_grad for the underlying storage
-  virtual void requires_grad_(bool req = true) = 0;
-
-  /// Create a wrapper representing the derivative dy/dx
-  Derivative d(const VariableBase & x);
-
-  /// Create a wrapper representing the second derivative d2y/dx2
-  Derivative d(const VariableBase & x1, const VariableBase & x2);
-
-  /// Raw flattened variable value
-  const Tensor & raw_value() const { return _raw_value; }
-
-  /// Variable value of the logical shape
-  virtual const Tensor tensor() const = 0;
 
   /// Name of this variable
   const VariableName & name() const { return _name; }
 
-  /// The owner of this variable
+  ///@{
+  /// The Model who declared this variable
   const Model & owner() const { return *_owner; }
+  Model & owner() { return *_owner; }
+  ///@}
 
-  /// The source variable
-  const VariableBase * src() const { return _src; }
-
-  /// Batch shape
-  TensorShapeRef batch_sizes() const { return _batch_sizes; }
-
-  /// Base shape
-  virtual TensorShapeRef base_sizes() const = 0;
-
-  /// Batch dimension
-  Size batch_dim() const { return _batch_sizes.size(); }
-
-  /// Base dimension
-  Size base_dim() const { return base_sizes().size(); }
-
-  /// Base storage
-  Size base_storage() const { return utils::storage_size(base_sizes()); }
-
-  /// Total shape
-  virtual TensorShapeRef sizes() const = 0;
-
-  /// Variable type
+  /// Variable tensor type
   virtual TensorType type() const = 0;
 
   /// @name Subaxis
   ///@{
-  bool is_state() const { return _is_state; }
-  bool is_old_state() const { return _is_old_state; }
-  bool is_force() const { return _is_force; }
-  bool is_old_force() const { return _is_old_force; }
-  bool is_residual() const { return _is_residual; }
-  bool is_parameter() const { return _is_parameter; }
-  bool is_other() const { return _is_other; }
-  bool is_solve_dependent() const { return _is_solve_dependent; }
-  ///@}
-
+  bool is_state() const;
+  bool is_old_state() const;
+  bool is_force() const;
+  bool is_old_force() const;
+  bool is_residual() const;
+  bool is_parameter() const;
+  bool is_solve_dependent() const;
   /// Check if the derivative with respect to this variable should be evaluated
   // Note that the check depends on whether we are currently solving nonlinear system
   bool is_dependent() const;
+  ///@}
 
-protected:
+  /// @name Tensor information
+  // These methods mirror TensorBase
+  ///@{
+  /// Tensor options
+  torch::TensorOptions options() const { return tensor().options(); }
+  /// Scalar type
+  torch::Dtype scalar_type() const { return tensor().scalar_type(); }
+  /// Device
+  torch::Device device() const { return tensor().device(); }
+  /// Number of tensor dimensions
+  Size dim() const { return tensor().dim(); }
+  /// Tensor shape
+  TensorShapeRef sizes() const { return tensor().sizes(); }
+  /// Size of a dimension
+  Size size(Size dim) const { return tensor().size(dim); }
+  /// Whether the tensor is batched
+  bool batched() const { return tensor().batched(); }
+  /// Return the number of batch dimensions
+  Size batch_dim() const { return tensor().batch_dim(); }
+  /// Return the number of list dimensions
+  Size list_dim() const { return list_sizes().size(); }
+  /// Return the number of base dimensions
+  Size base_dim() const { return base_sizes().size(); }
+  /// Return the batch shape
+  TraceableTensorShape batch_sizes() const { return tensor().batch_sizes(); }
+  /// Return the list shape
+  TensorShapeRef list_sizes() const { return _list_sizes; }
+  /// Return the base shape
+  virtual TensorShapeRef base_sizes() const = 0;
+  /// Return the size of a batch axis
+  TraceableSize batch_size(Size dim) const { return tensor().batch_size(dim); }
+  /// Return the size of a base axis
+  Size base_size(Size dim) const { return base_sizes()[dim]; }
+  /// Return the size of a list axis
+  Size list_size(Size dim) const { return list_sizes()[dim]; }
+  /// Base storage of the variable
+  Size base_storage() const { return utils::storage_size(base_sizes()); }
+  /// Assembly storage of the variable
+  Size assembly_storage() const
+  {
+    return utils::storage_size(list_sizes()) * utils::storage_size(base_sizes());
+  }
+  ///@}
+
+  /// Clone this variable
+  virtual std::unique_ptr<VariableBase> clone(const VariableName & name = {},
+                                              Model * owner = nullptr) const = 0;
+
+  /// Reference another variable
+  virtual void ref(const VariableBase & other, bool ref_is_mutable = false) = 0;
+
+  /// Get the referencing variable (returns this if this is a storing variable)
+  virtual const VariableBase * ref() const = 0;
+
+  /// Check if this is an owning variable
+  virtual bool owning() const = 0;
+
+  /// Set the variable value to zero
+  virtual void zero(const torch::TensorOptions & options) = 0;
+
+  /// Set the variable value
+  virtual void set(const Tensor & val) = 0;
+
+  /// Get the variable value (with flattened base dimensions, i.e., for assembly purposes)
+  virtual Tensor get() const = 0;
+
+  /// Get the variable value
+  virtual Tensor tensor() const = 0;
+
+  /// Check if this variable is part of the AD function graph
+  bool requires_grad() const { return tensor().requires_grad(); }
+
+  /// Mark this variable as a leaf variable in tracing function graph for AD
+  virtual void requires_grad_(bool req = true) = 0;
+
+  /// Assignment operator
+  virtual void operator=(const Tensor & val) = 0;
+
+  /// Wrapper for assigning partial derivative
+  Derivative d(const VariableBase & var);
+
+  /// Wrapper for assigning second partial derivative
+  Derivative d(const VariableBase & var1, const VariableBase & var2);
+
+  ///@{
+  /// Request to use AD to calculate the derivative of this variable with respect to another variable
+  void request_AD(const VariableBase & u);
+  void request_AD(const std::vector<const VariableBase *> & us);
+  ///@}
+
+  ///@{
+  /// Request to use AD to calculate the second derivative of this variable with respect to two other variables
+  void request_AD(const VariableBase & u1, const VariableBase & u2);
+  void request_AD(const std::vector<const VariableBase *> & u1s,
+                  const std::vector<const VariableBase *> & u2s);
+  ///@}
+
+  /// Partial derivatives
+  const std::map<VariableName, Tensor> & derivatives() const { return _derivs; }
+  std::map<VariableName, Tensor> & derivatives() { return _derivs; }
+
+  /// Partial second derivatives
+  const std::map<VariableName, std::map<VariableName, Tensor>> & second_derivatives() const
+  {
+    return _sec_derivs;
+  }
+  std::map<VariableName, std::map<VariableName, Tensor>> & second_derivatives()
+  {
+    return _sec_derivs;
+  }
+
+  /// Clear the variable value and derivatives
+  virtual void clear();
+
+  /// Apply first order chain rule
+  void apply_chain_rule(const DependencyResolver<Model, VariableName> &);
+
+  /// Apply second order chain rule
+  void apply_second_order_chain_rule(const DependencyResolver<Model, VariableName> &);
+
   /// Name of the variable
   const VariableName _name;
 
   /// The model which declared this variable
-  const Model * _owner;
+  Model * const _owner;
 
-  /// Batch shape of this variable
-  TensorShape _batch_sizes;
+private:
+  std::map<VariableName, Tensor>
+  total_derivatives(const DependencyResolver<Model, VariableName> & dep,
+                    Model * model,
+                    const VariableName & yvar) const;
 
-  /// The raw (flattened) variable value
-  Tensor _raw_value;
+  std::map<VariableName, std::map<VariableName, Tensor>>
+  total_second_derivatives(const DependencyResolver<Model, VariableName> & dep,
+                           Model * model,
+                           const VariableName & yvar) const;
 
-  /// The derivative of this variable w.r.t. arguments.
-  std::map<VariableName, Tensor> _dvalue_d;
+  /// List shape of the variable
+  const TensorShape _list_sizes;
 
-  /// The second derivative of this variable w.r.t. arguments.
-  std::map<VariableName, std::map<VariableName, Tensor>> _d2value_d;
+  /// Derivatives of this variable with respect to other variables
+  std::map<VariableName, Tensor> _derivs;
 
-  /// The source variable this variable follows
-  const VariableBase * _src;
-
-  /// @name subaxis
-  ///@{
-  const bool _is_state;
-  const bool _is_old_state;
-  const bool _is_force;
-  const bool _is_old_force;
-  const bool _is_residual;
-  const bool _is_parameter;
-  const bool _is_other;
-  const bool _is_solve_dependent;
-  ///@}
+  /// Second derivatives of this variable with respect to other variables
+  std::map<VariableName, std::map<VariableName, Tensor>> _sec_derivs;
 };
 
 /**
@@ -161,51 +228,139 @@ class Variable : public VariableBase
 {
 public:
   template <typename T2 = T, typename = typename std::enable_if_t<!std::is_same_v<Tensor, T2>>>
-  Variable(const VariableName & name_in,
-           const Model * owner,
-           TensorType type = TensorTypeEnum<T2>::value)
-    : VariableBase(name_in, owner),
-      _type(type),
-      _base_sizes(T::const_base_sizes)
+  Variable(const VariableName & name_in, Model * owner, TensorShapeRef list_shape)
+    : VariableBase(name_in, owner, list_shape),
+      _base_sizes(T::const_base_sizes),
+      _ref(nullptr),
+      _ref_is_mutable(false)
   {
   }
 
   template <typename T2 = T, typename = typename std::enable_if_t<std::is_same_v<Tensor, T2>>>
   Variable(const VariableName & name_in,
-           const Model * owner,
-           TensorShapeRef base_shape,
-           TensorType type = TensorType::kTensor)
-    : VariableBase(name_in, owner),
-      _type(type),
-      _base_sizes(base_shape.vec())
+           Model * owner,
+           TensorShapeRef list_shape,
+           TensorShapeRef base_shape)
+    : VariableBase(name_in, owner, list_shape),
+      _base_sizes(base_shape),
+      _ref(nullptr),
+      _ref_is_mutable(false)
   {
   }
 
-  virtual void setup_views(const LabeledVector * value,
-                           const LabeledMatrix * deriv = nullptr,
-                           const LabeledTensor3D * secderiv = nullptr) override
+  TensorType type() const override { return TensorTypeEnum<T>::value; }
+
+  TensorShapeRef base_sizes() const override { return _base_sizes; }
+
+  std::unique_ptr<VariableBase> clone(const VariableName & name = {},
+                                      Model * owner = nullptr) const override
   {
-    VariableBase::setup_views(value, deriv, secderiv);
-    if (value)
-      _value = T(_raw_value.view(sizes()), batch_dim());
+    if constexpr (std::is_same_v<T, Tensor>)
+    {
+      return std::make_unique<Variable<Tensor>>(
+          name.empty() ? this->name() : name, owner ? owner : _owner, list_sizes(), base_sizes());
+    }
+    else
+    {
+      return std::make_unique<Variable<T>>(
+          name.empty() ? this->name() : name, owner ? owner : _owner, list_sizes());
+    }
   }
 
-  virtual void setup_views(const VariableBase * other) override
+  void ref(const VariableBase & var, bool ref_is_mutable = false) override
   {
-    VariableBase::setup_views(other);
-    _value = T(_raw_value.view(sizes()), batch_dim());
+    neml_assert(!_ref,
+                "Variable '",
+                name(),
+                "' cannot reference another variable after it has been assigned a reference.");
+    neml_assert(&var != this, "Variable '", name(), "' cannot reference itself.");
+    neml_assert(var.ref() != this,
+                "Variable '",
+                name(),
+                "' cannot reference a variable that is referencing itself.");
+    const auto * var_ptr = dynamic_cast<const Variable<T> *>(var.ref());
+    neml_assert(var_ptr,
+                "Variable ",
+                name(),
+                " of type ",
+                type(),
+                " failed to reference another variable named ",
+                var.name(),
+                " of type ",
+                var.type(),
+                ": Dynamic cast failure.");
+    _ref = var_ptr;
+    _ref_is_mutable = ref_is_mutable;
   }
 
-  virtual void requires_grad_(bool req = true) override { _value.requires_grad_(req); }
+  const VariableBase * ref() const override { return _ref ? _ref->ref() : this; }
 
-  virtual TensorShapeRef base_sizes() const override { return _base_sizes; }
+  bool owning() const override { return !_ref; }
 
-  virtual TensorShapeRef sizes() const override { return _sizes; }
+  void zero(const torch::TensorOptions & options) override
+  {
+    if (_ref)
+    {
+      neml_assert_dbg(
+          _ref_is_mutable,
+          "Trying to zero a referencing variable, but the referenced variable is not mutable.");
+      const_cast<Variable<T> *>(_ref)->zero(options);
+    }
+    else
+    {
+      if constexpr (std::is_same_v<T, Tensor>)
+        _value = T::zeros(base_sizes(), options);
+      else
+        _value = T::zeros(options);
+    }
+  }
+
+  void set(const Tensor & val) override
+  {
+    if (_ref)
+    {
+      neml_assert_dbg(_ref_is_mutable,
+                      "Trying to assign value to a referencing variable, but the referenced "
+                      "variable is not mutable.");
+      const_cast<Variable<T> *>(_ref)->set(val);
+    }
+    else
+    {
+      _value = T(val.base_reshape(utils::add_shapes(list_sizes(), base_sizes())),
+                 utils::add_traceable_shapes(val.batch_sizes(), list_sizes()));
+    }
+  }
+
+  Tensor get() const override { return tensor().base_flatten(); }
+
+  Tensor tensor() const override
+  {
+    if (_ref)
+      return _ref->tensor();
+
+    neml_assert_dbg(_value.defined(), "Variable '", name(), "' has undefined value.");
+    auto batch_sizes = _value.batch_sizes().slice(0, _value.batch_dim() - list_dim());
+    return Tensor(_value, batch_sizes);
+  }
+
+  /// Suppressed constructor to prevent accidental dereferencing
+  [[deprecated("Variable<T> must be assigned to references -- missing &")]] Variable(
+      const Variable<T> &&)
+  {
+  }
 
   /// Suppressed constructor to prevent accidental dereferencing
   [[deprecated("Variable<T> must be assigned to references -- missing &")]] Variable(
       const Variable<T> &)
   {
+  }
+
+  void requires_grad_(bool req = true) override
+  {
+    if (_ref)
+      const_cast<Variable<T> *>(_ref)->requires_grad_(req);
+    else
+      _value.requires_grad_(req);
   }
 
   /// Suppressed assignment operator to prevent accidental dereferencing
@@ -214,72 +369,87 @@ public:
   {
   }
 
-  /**
-   * @brief Set the raw value to store \p val
-   *
-   * Note that this is an in-place operation, and so we must reshape (flatten base dimensions of) \p
-   * val and modify raw_value.
-   */
-  void operator=(const Tensor & val)
+  /// Set the variable value
+  void operator=(const Tensor & val) override
   {
-    _value.index_put_({torch::indexing::Slice()},
-                      val.batch_expand(batch_sizes()).base_reshape(base_sizes()));
+    if (_ref)
+    {
+      neml_assert_dbg(_ref_is_mutable,
+                      "Trying to assign value to a referencing variable, but the referenced "
+                      "variable is not mutable.");
+      *const_cast<Variable<T> *>(_ref) = val;
+    }
+    else
+      _value = T(val);
   }
 
-  /// Variable value of the logical shape
-  const T & value() const { return _value; }
-
-  /// Variable value of the logical shape
-  virtual const Tensor tensor() const override { return _value; }
-
-  virtual TensorType type() const override { return _type; }
+  /// Variable value
+  const T & value() const { return _ref ? _ref->value() : _value; }
 
   /// Negation
-  T operator-() const { return -_value; }
+  T operator-() const { return -value(); }
 
-  operator T() const { return _value; }
-
-  /// Set the batch shape and base shape according to \p val
-  virtual void cache(TensorShapeRef batch_shape) override
-  {
-    VariableBase::cache(batch_shape);
-    _sizes = utils::add_shapes(batch_shape, _base_sizes);
-  }
+  operator T() const { return value(); }
 
   template <typename T2 = T, typename = typename std::enable_if_t<!std::is_same_v<T2, Tensor>>>
   operator Tensor() const
   {
-    return _value;
+    return value();
+  }
+
+  void clear() override
+  {
+    if (_ref)
+    {
+      neml_assert_dbg(
+          _ref_is_mutable,
+          "Trying to clear a referencing variable, but the referenced variable is not mutable.");
+      const_cast<Variable<T> *>(_ref)->clear();
+    }
+    else
+    {
+      VariableBase::clear();
+      _value = T();
+    }
   }
 
 protected:
-  /// Variable tensor type
-  const TensorType _type;
-
-  /// Base shape of this variable
+  /// Base shape of the variable
   const TensorShape _base_sizes;
 
-  /// Shape of this variable
-  TensorShape _sizes;
+  /// The variable referenced by this (nullptr if this is a storing variable)
+  const Variable<T> * _ref;
 
-  /// Variable value of the logical shape
+  /// Whether mutating the referenced variable is allowed
+  bool _ref_is_mutable;
+
+  /// Variable value (undefined if this is a referencing variable)
   T _value;
 };
 
 class Derivative
 {
 public:
-  Derivative(Tensor & val)
-    : _value(val)
+  Derivative()
+    : _base_sizes({}),
+      _deriv(nullptr)
   {
   }
 
-  const Tensor & value() const { return _value; }
+  Derivative(TensorShapeRef base_sizes, Tensor * deriv)
+    : _base_sizes(base_sizes),
+      _deriv(deriv)
+  {
+  }
 
-  Derivative & operator=(const Tensor & val);
+  void operator=(const Tensor & val);
 
 private:
-  Tensor & _value;
+  /// Base shape of the derivative
+  const TensorShape _base_sizes;
+
+  /// Derivative to write to
+  Tensor * const _deriv;
 };
 
 // Everything below is just for convenience: We just forward operations to the the variable values

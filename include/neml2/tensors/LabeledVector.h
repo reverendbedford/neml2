@@ -42,13 +42,17 @@ public:
   /// Slice the logically 1D tensor by a single sub-axis
   LabeledVector slice(const std::string & name) const;
 
-  /// Fill (override) another vector into this vector.
-  /// The item set of the other vector must be a subset of this vector's item set.
-  void fill(const LabeledVector & other, bool recursive = true);
-};
+  /// Fill another vector into this vector.
+  void fill(const LabeledVector & other);
 
-namespace utils
-{
-bool allclose(const LabeledVector & a, const LabeledVector & b, Real rtol = 1e-5, Real atol = 1e-8);
-} // namespaca utils
+  /// Split the vector by subaxes
+  std::map<LabeledAxisAccessor, LabeledVector> split() const;
+
+  /// Split the vector by variables
+  std::map<LabeledAxisAccessor, Tensor> disassemble() const;
+
+  /// Assemble a vector of vectors
+  static LabeledVector assemble(const std::map<LabeledAxisAccessor, Tensor> & vals_dict,
+                                const LabeledAxis & axis);
+};
 } // namespace neml2

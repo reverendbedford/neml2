@@ -71,7 +71,14 @@ public:
   }
 
   template <typename Container,
-            typename = std::enable_if_t<!std::is_convertible_v<Container, std::string>>>
+            typename = typename std::enable_if_t<
+                !std::is_convertible_v<Container, std::string> &&
+                std::is_convertible_v<typename std::iterator_traits<
+                                          decltype(std::declval<Container>().begin())>::value_type,
+                                      std::string> &&
+                std::is_convertible_v<typename std::iterator_traits<
+                                          decltype(std::declval<Container>().end())>::value_type,
+                                      std::string>>>
   LabeledAxisAccessor(const Container & c)
   {
     _item_names.append(c.begin(), c.end());
@@ -102,6 +109,8 @@ public:
 
   size_t size() const;
 
+  const std::string & operator[](size_t i) const;
+
   /// Append a suffix to the final item name.
   LabeledAxisAccessor with_suffix(const std::string & suffix) const;
 
@@ -112,10 +121,10 @@ public:
   LabeledAxisAccessor prepend(const LabeledAxisAccessor & axis) const;
 
   /// Remove the leading \p n items from the labels.
-  LabeledAxisAccessor slice(size_t n) const;
+  LabeledAxisAccessor slice(int64_t n) const;
 
   /// Extract out the labels from \p n1 to \p n2
-  LabeledAxisAccessor slice(size_t n1, size_t n2) const;
+  LabeledAxisAccessor slice(int64_t n1, int64_t n2) const;
 
   /// A combination of slice and prepend
   LabeledAxisAccessor remount(const LabeledAxisAccessor & axis, size_t n = 1) const;

@@ -28,6 +28,7 @@
 #include "neml2/tensors/LabeledTensor.h"
 #include "neml2/tensors/LabeledVector.h"
 #include "neml2/tensors/LabeledMatrix.h"
+#include "neml2/tensors/tensors.h"
 
 using namespace neml2;
 
@@ -36,11 +37,14 @@ TEST_CASE("LabeledTensor", "[tensors]")
   Size nbatch = 10;
 
   LabeledAxis info1;
-  info1.add<SR2>("first").add<Scalar>("second").add<Scalar>("third");
+  info1.add_variable<SR2>("first");
+  info1.add_variable<Scalar>("second");
+  info1.add_variable<Scalar>("third");
   info1.setup_layout();
 
   LabeledAxis info2;
-  info2.add<Scalar>("first").add<SR2>("second");
+  info2.add_variable<Scalar>("first");
+  info2.add_variable<SR2>("second");
   info2.setup_layout();
 
   SECTION("copy constructor")
@@ -70,16 +74,16 @@ TEST_CASE("LabeledTensor", "[tensors]")
     REQUIRE(A.scalar_type() == default_dtype());
     REQUIRE(A.device() == default_device());
     REQUIRE(A.dim() == 3);
-    REQUIRE(TensorShape(A.sizes()) == TensorShape{nbatch, 8, 7});
+    REQUIRE(A.sizes() == TensorShape{nbatch, 8, 7});
     REQUIRE(A.size(0) == nbatch);
     REQUIRE(A.size(1) == 8);
     REQUIRE(A.size(2) == 7);
     REQUIRE(A.batched());
     REQUIRE(A.batch_dim() == 1);
-    REQUIRE(TensorShape(A.batch_sizes()) == TensorShape{nbatch});
+    REQUIRE(A.batch_sizes() == TensorShape{nbatch});
     REQUIRE(A.batch_size(0) == nbatch);
     REQUIRE(A.base_dim() == 2);
-    REQUIRE(TensorShape(A.base_sizes()) == TensorShape{8, 7});
+    REQUIRE(A.base_sizes() == TensorShape{8, 7});
     REQUIRE(A.base_size(0) == 8);
     REQUIRE(A.base_size(1) == 7);
     REQUIRE(A.base_storage() == 56);

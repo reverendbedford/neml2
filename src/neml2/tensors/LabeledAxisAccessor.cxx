@@ -46,6 +46,12 @@ LabeledAxisAccessor::size() const
   return _item_names.size();
 }
 
+const std::string &
+LabeledAxisAccessor::operator[](size_t i) const
+{
+  return _item_names[i];
+}
+
 LabeledAxisAccessor
 LabeledAxisAccessor::with_suffix(const std::string & suffix) const
 {
@@ -69,18 +75,21 @@ LabeledAxisAccessor::prepend(const LabeledAxisAccessor & axis) const
 }
 
 LabeledAxisAccessor
-LabeledAxisAccessor::slice(size_t n) const
+LabeledAxisAccessor::slice(int64_t n) const
 {
-  neml_assert(size() >= n, "cannot apply slice");
+  n = n < 0 ? size() + n : n;
+  neml_assert(size() >= std::size_t(n), "cannot apply slice");
   c10::SmallVector<std::string> new_names(_item_names.begin() + n, _item_names.end());
   return new_names;
 }
 
 LabeledAxisAccessor
-LabeledAxisAccessor::slice(size_t n1, size_t n2) const
+LabeledAxisAccessor::slice(int64_t n1, int64_t n2) const
 {
-  neml_assert(size() >= n1, "cannot apply slice");
-  neml_assert(size() >= n2, "cannot apply slice");
+  n1 = n1 < 0 ? size() + n1 : n1;
+  n2 = n2 < 0 ? size() + n2 : n2;
+  neml_assert(size() >= std::size_t(n1), "cannot apply slice");
+  neml_assert(size() >= std::size_t(n2), "cannot apply slice");
   c10::SmallVector<std::string> new_names(_item_names.begin() + n1, _item_names.begin() + n2);
   return new_names;
 }
