@@ -30,6 +30,8 @@
 #include "neml2/tensors/R5.h"
 #include "neml2/tensors/SSFR5.h"
 #include "neml2/tensors/Rot.h"
+#include "neml2/tensors/SSSSR8.h"
+#include "neml2/tensors/R8.h"
 
 namespace neml2
 {
@@ -112,6 +114,21 @@ SSR4::drotate(const Rot & r) const
   return math::full_to_mandel(math::full_to_mandel(dR), 1);
 }
 
+SSSSR8
+SSR4::drotate_self(const Rot & r) const
+{
+  auto R = r.euler_rodrigues();
+  auto Tsym = (torch::einsum("...ma,...nb,...oc,...pd", {R, R, R, R}) +
+               torch::einsum("...mb,...na,...od,...pc", {R, R, R, R}) +
+               torch::einsum("...mb,...na,...oc,...pd", {R, R, R, R}) +
+               torch::einsum("...ma,...nb,...od,...pc", {R, R, R, R})) /
+              4.0;
+  return math::full_to_mandel(
+      math::full_to_mandel(math::full_to_mandel(math::full_to_mandel(R8(Tsym, batch_dim()), 0), 1),
+                           2),
+      3);
+}
+
 Scalar
 SSR4::operator()(Size i, Size j, Size k, Size l) const
 {
@@ -124,6 +141,13 @@ SSR4
 SSR4::inverse() const
 {
   return math::linalg::inv(*this);
+}
+
+SSSSR8
+SSR4::dinverse() const
+{
+  auto SI = this->inverse();
+  return -torch::einsum("...ik,...lj->...ijkl", {SI, SI});
 }
 
 SSR4

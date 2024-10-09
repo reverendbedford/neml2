@@ -184,6 +184,28 @@ TEST_CASE("SSR4", "[tensors]")
       REQUIRE(torch::allclose(T.drotate(rb), dTp_drb, /*rtol=*/0, /*atol=*/1e-4));
       REQUIRE(torch::allclose(Tb.drotate(r), dTp_drb, /*rtol=*/0, /*atol=*/1e-4));
     }
+
+    SECTION("drotate_self")
+    {
+      auto apply = [r](const Tensor & x) { return SSR4(x).rotate(r); };
+      auto dT_dT = finite_differencing_derivative(apply, T);
+      auto dT_dTb = dT_dT.batch_expand(B);
+
+      std::cout << dT_dT << std::endl;
+      std::cout << T.drotate_self(r) << std::endl;
+
+      REQUIRE(torch::allclose(T.drotate_self(r), dT_dT, 1.0e-4, 1.0e-4));
+    }
+
+    SECTION("dinverse")
+    {
+      auto apply = [](const Tensor & x) { return SSR4(x).inverse(); };
+      auto dTi_dT = finite_differencing_derivative(apply, T);
+      auto dTi_dTb = dTi_dT.batch_expand(B);
+
+      REQUIRE(torch::allclose(T.dinverse(), dTi_dT, /*rtol=*/1e-4, /*atol=*/1e-4));
+      REQUIRE(torch::allclose(Tb.dinverse(), dTi_dTb, 1.0e-4, 1.0e-4));
+    }
   }
 
   SECTION("operator*")

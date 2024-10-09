@@ -119,6 +119,30 @@ TEST_CASE("R4", "[R4]")
       REQUIRE(torch::allclose(Tb.rotate(r), Tpb));
     }
 
+    SECTION("drotate")
+    {
+      auto apply = [T](const Tensor & x) { return T.rotate(Rot(x)); };
+      auto dTp_dr = finite_differencing_derivative(apply, r);
+      auto dTp_drb = dTp_dr.batch_expand(B);
+
+      REQUIRE(torch::allclose(T.drotate(r), dTp_dr, /*rtol=*/0, /*atol=*/1e-4));
+      REQUIRE(torch::allclose(Tb.drotate(rb), dTp_drb, /*rtol=*/0, /*atol=*/1e-4));
+      REQUIRE(torch::allclose(T.drotate(rb), dTp_drb, /*rtol=*/0, /*atol=*/1e-4));
+      REQUIRE(torch::allclose(Tb.drotate(r), dTp_drb, /*rtol=*/0, /*atol=*/1e-4));
+    }
+
+    SECTION("drotate_self")
+    {
+      auto apply = [r](const Tensor & x) { return R4(x).rotate(r); };
+      auto dT_dT = finite_differencing_derivative(apply, T);
+      auto dT_dTb = dT_dT.batch_expand(B);
+
+      REQUIRE(torch::allclose(T.drotate_self(r), dT_dT, 1.0e-4, 1.0e-4));
+      REQUIRE(torch::allclose(Tb.drotate_self(r), dT_dTb, 1.0e-4, 1.0e-4));
+      REQUIRE(torch::allclose(T.drotate_self(rb), dT_dTb, /*rtol=*/1.0e-4, /*atol=*/1e-4));
+      REQUIRE(torch::allclose(Tb.drotate_self(r), dT_dTb, /*rtol=*/1.0e-4, /*atol=*/1e-4));
+    }
+
     SECTION("operator()")
     {
       auto u = R4(torch::rand(utils::add_shapes(B, 3, 3, 3, 3), DTO));

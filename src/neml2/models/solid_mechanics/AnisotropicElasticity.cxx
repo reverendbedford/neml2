@@ -22,52 +22,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
-
-#include "neml2/tensors/PrimitiveTensor.h"
+#include "neml2/models/solid_mechanics/AnisotropicElasticity.h"
 
 namespace neml2
 {
-class Scalar;
-class SSR4;
-class R5;
-class Rot;
-class WWR4;
-class R8;
-
-/**
- * @brief The (logical) full fourth order tensor.
- *
- * The logical storage space is (3, 3, 3, 3).
- */
-class R4 : public PrimitiveTensor<R4, 3, 3, 3, 3>
+OptionSet
+AnisotropicElasticity::expected_options()
 {
-public:
-  using PrimitiveTensor<R4, 3, 3, 3, 3>::PrimitiveTensor;
+  OptionSet options = Elasticity::expected_options();
+  options.doc() = "Relates elastic strain to stress with some non-isotropic tensor.";
 
-  R4(const SSR4 & T);
+  options.set_input("orientation") = VariableName("state", "orientation");
 
-  R4(const WWR4 & T);
+  return options;
+}
 
-  /// Rotate
-  R4 rotate(const Rot & r) const;
-
-  /// Derivative of the rotated tensor w.r.t. the Rodrigues vector
-  R5 drotate(const Rot & r) const;
-
-  /// Derivative of the rotated tensor w.r.t. itself
-  R8 drotate_self(const Rot & r) const;
-
-  /// Accessor
-  Scalar operator()(Size i, Size j, Size k, Size l) const;
-
-  /// Arbitrary transpose two dimensions
-  R4 transpose(Size d1, Size d2) const;
-
-  /// Transpose minor axes
-  R4 transpose_minor() const;
-
-  /// Transpose major axes
-  R4 transpose_major() const;
-};
+AnisotropicElasticity::AnisotropicElasticity(const OptionSet & options)
+  : Elasticity(options),
+    _R(declare_input_variable<Rot>("orientation"))
+{
+}
 } // namespace neml2

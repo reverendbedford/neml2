@@ -169,6 +169,15 @@ full_to_mandel(const Tensor & full, Size dim)
 }
 
 Tensor
+full_to_mandel_tensor(const torch::TensorOptions & options)
+{
+  auto b = Tensor::zeros({6, 9}, options);
+  auto indices = ConstantTensors::full_to_mandel_map().to(options.dtype(default_integer_dtype()));
+  auto factors = ConstantTensors::full_to_mandel_factor().to(options);
+  return Tensor(b.scatter(1, indices.unsqueeze(-1), factors.unsqueeze(-1)).reshape({6, 3, 3}), 0);
+}
+
+Tensor
 mandel_to_full(const Tensor & mandel, Size dim)
 {
   return reduced_to_full(
@@ -176,6 +185,16 @@ mandel_to_full(const Tensor & mandel, Size dim)
       ConstantTensors::mandel_to_full_map().to(mandel.options().dtype(default_integer_dtype())),
       ConstantTensors::mandel_to_full_factor().to(mandel.options()),
       dim);
+}
+
+Tensor
+mandel_to_full_tensor(const torch::TensorOptions & options)
+{
+  auto b = Tensor::zeros({9, 6}, options);
+  auto indices = ConstantTensors::mandel_to_full_map().to(options.dtype(default_integer_dtype()));
+  auto factors = ConstantTensors::mandel_to_full_factor().to(options);
+
+  return Tensor(b.scatter(1, indices.unsqueeze(-1), factors.unsqueeze(-1)).reshape({3, 3, 6}), 0);
 }
 
 Tensor
