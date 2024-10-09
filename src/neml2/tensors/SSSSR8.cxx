@@ -22,52 +22,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
-
-#include "neml2/tensors/PrimitiveTensor.h"
+#include "neml2/tensors/SSSSR8.h"
 
 namespace neml2
 {
-class Scalar;
-class SSR4;
-class R5;
-class Rot;
-class WWR4;
-class R8;
-
-/**
- * @brief The (logical) full fourth order tensor.
- *
- * The logical storage space is (3, 3, 3, 3).
- */
-class R4 : public PrimitiveTensor<R4, 3, 3, 3, 3>
-{
-public:
-  using PrimitiveTensor<R4, 3, 3, 3, 3>::PrimitiveTensor;
-
-  R4(const SSR4 & T);
-
-  R4(const WWR4 & T);
-
-  /// Rotate
-  R4 rotate(const Rot & r) const;
-
-  /// Derivative of the rotated tensor w.r.t. the Rodrigues vector
-  R5 drotate(const Rot & r) const;
-
-  /// Derivative of the rotated tensor w.r.t. itself
-  R8 drotate_self(const Rot & r) const;
-
-  /// Accessor
-  Scalar operator()(Size i, Size j, Size k, Size l) const;
-
-  /// Arbitrary transpose two dimensions
-  R4 transpose(Size d1, Size d2) const;
-
-  /// Transpose minor axes
-  R4 transpose_minor() const;
-
-  /// Transpose major axes
-  R4 transpose_major() const;
-};
 } // namespace neml2

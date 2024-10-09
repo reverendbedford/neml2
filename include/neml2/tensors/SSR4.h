@@ -33,6 +33,7 @@ class SR2;
 class R4;
 class SSFR5;
 class Rot;
+class SSSSR8;
 
 /**
  * @brief The (logical) symmetric fourth order tensor, with symmetry in the first two dimensionss as
@@ -69,11 +70,17 @@ public:
   /// Derivative of the rotated tensor w.r.t. the Rodrigues vector
   SSFR5 drotate(const Rot & r) const;
 
+  /// Derivative of the rotated tensor w.r.t. itself
+  SSSSR8 drotate_self(const Rot & r) const;
+
   /// Accessor
   Scalar operator()(Size i, Size j, Size k, Size l) const;
 
-  // Inversion
+  /// Inversion
   SSR4 inverse() const;
+
+  /// Derivative of inverse with respect to self
+  SSSSR8 dinverse() const;
 
   /// Transpose minor axes, no-op
   SSR4 transpose_minor() const;
