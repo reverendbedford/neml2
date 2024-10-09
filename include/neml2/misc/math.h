@@ -148,13 +148,6 @@ Tensor reduced_to_full(const Tensor & reduced,
 Tensor full_to_mandel(const Tensor & full, Size dim = 0);
 
 /**
- * @brief Make a tensor that does the full to mandel conversion
- *
- * Contract with the last two indices
- */
-Tensor full_to_mandel_tensor(const torch::TensorOptions & options);
-
-/**
  * @brief Convert a Tensor from Mandel notation to full notation.
  *
  * See @ref full_to_mandel for a detailed explanation.
@@ -164,13 +157,6 @@ Tensor full_to_mandel_tensor(const torch::TensorOptions & options);
  * @return Tensor The resulting tensor in full notation.
  */
 Tensor mandel_to_full(const Tensor & mandel, Size dim = 0);
-
-/**
- * @brief Make a tensor that does the mandel to full conversion
- *
- * Contract with the last index
- */
-Tensor mandel_to_full_tensor(const torch::TensorOptions & options);
 
 /**
  * @brief Convert a `Tensor` from full notation to skew vector notation.

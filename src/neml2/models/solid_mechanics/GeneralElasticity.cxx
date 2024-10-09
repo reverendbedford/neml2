@@ -33,7 +33,7 @@ register_NEML2_object(GeneralElasticity);
 OptionSet
 GeneralElasticity::expected_options()
 {
-  OptionSet options = Elasticity::expected_options();
+  OptionSet options = AnisotropicElasticity::expected_options();
   options.doc() += " This verion implements a general relation using the elasticity tensor, "
                    "expressed as an SSR4 object";
 

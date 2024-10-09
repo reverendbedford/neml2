@@ -28,6 +28,8 @@ namespace py = pybind11;
 using namespace neml2;
 
 void
-def_SSR4(py::class_<SSR4> & /*c*/)
+def_SSR4(py::class_<SSR4> & c)
 {
+  // Methods
+  c.def("rotate", &SSR4::rotate);
 }
