@@ -22,25 +22,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/models/solid_mechanics/AnisotropicElasticity.h"
+#include "python/neml2/tensors/PrimitiveTensor.h"
 
-namespace neml2
-{
-OptionSet
-AnisotropicElasticity::expected_options()
-{
-  OptionSet options = Elasticity::expected_options();
-  options.doc() = "Relates elastic strain to stress with some non-isotropic tensor.";
+namespace py = pybind11;
+using namespace neml2;
 
-  options.set_input("orientation") = VariableName("state", "orientation");
-  options.set("orientation").doc() = "Active convention orientation from reference to current";
-
-  return options;
-}
-
-AnisotropicElasticity::AnisotropicElasticity(const OptionSet & options)
-  : Elasticity(options),
-    _R(declare_input_variable<Rot>("orientation"))
+void
+def_SSSSR8(py::class_<SSSSR8> & /*c*/)
 {
 }
-} // namespace neml2
