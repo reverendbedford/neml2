@@ -114,7 +114,7 @@ IsotropicElasticityTensor::convert_to_mu()
 {
   if ((_p1_type == ParamType::YOUNGS) && (_p2_type == ParamType::POISSONS))
     return std::make_tuple(
-        _p1 / (2 * (1 + _p2)), 1.0 / (2.0 * 2 * _p2), -_p1 / (2 * (1 + _p2) * (1 + _p2)));
+        _p1 / (2 * (1 + _p2)), 1.0 / (2.0 + 2 * _p2), -_p1 / (2 * (1 + _p2) * (1 + _p2)));
   else if ((_p1_type == ParamType::POISSONS) && (_p2_type == ParamType::YOUNGS))
     return std::make_tuple(
         _p2 / (2 * (1 + _p1)), -_p2 / (2 * (1 + _p1) * (1 + _p1)), 1 / (2 + 2 * _p1));
