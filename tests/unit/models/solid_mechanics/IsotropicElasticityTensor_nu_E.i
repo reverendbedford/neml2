@@ -2,7 +2,7 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    batch_shape = '(10)'
+    batch_shape = '()'
     input_scalar_names = 'params/E params/nu'
     input_scalar_values = '100000.0 0.3'
     output_ssr4_names = 'parameters/p'
@@ -34,10 +34,10 @@
   []
   [p]
     type = IsotropicElasticityTensor
-    p1 = 'E'
-    p1_type = 'youngs_modulus'
-    p2 = 'nu'
-    p2_type = 'poissons_ratio'
+    p1 = 'nu'
+    p1_type = 'poissons_ratio'
+    p2 = 'E'
+    p2_type = 'youngs_modulus'
   []
   [model]
     type = ComposedModel
