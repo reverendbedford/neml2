@@ -22,36 +22,60 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "python/neml2/tensors/PrimitiveTensor.h"
+#pragma once
 
-namespace py = pybind11;
-using namespace neml2;
+#include <tuple>
 
-void
-def_SSR4(py::class_<SSR4> & c)
+#include "neml2/models/solid_mechanics/ElasticityTensor.h"
+
+namespace neml2
 {
-  // Methods
-  c.def("rotate", &SSR4::rotate);
+/**
+ * @brief Define an cubic symmetry elasticity tensor in various ways
+ */
+class CubicElasticityTensor : public ElasticityTensor
+{
+public:
+  enum class ParamType
+  {
+    YOUNGS,
+    POISSONS,
+    SHEAR,
+    INVALID
+  };
 
-  // Static methods
-  c.def_static(
-      "identity",
-      [](NEML2_TENSOR_OPTIONS_VARGS) { return SSR4::identity(NEML2_TENSOR_OPTIONS); },
-      py::kw_only(),
-      PY_ARG_TENSOR_OPTIONS);
-  c.def_static(
-      "identity_sym",
-      [](NEML2_TENSOR_OPTIONS_VARGS) { return SSR4::identity_sym(NEML2_TENSOR_OPTIONS); },
-      py::kw_only(),
-      PY_ARG_TENSOR_OPTIONS);
-  c.def_static(
-      "identity_vol",
-      [](NEML2_TENSOR_OPTIONS_VARGS) { return SSR4::identity_vol(NEML2_TENSOR_OPTIONS); },
-      py::kw_only(),
-      PY_ARG_TENSOR_OPTIONS);
-  c.def_static(
-      "identity_dev",
-      [](NEML2_TENSOR_OPTIONS_VARGS) { return SSR4::identity_dev(NEML2_TENSOR_OPTIONS); },
-      py::kw_only(),
-      PY_ARG_TENSOR_OPTIONS);
-}
+  static OptionSet expected_options();
+
+  CubicElasticityTensor(const OptionSet & options);
+
+protected:
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+
+  /// Convert input to Lame parameter C1 with derivatives
+  std::tuple<Scalar, Scalar, Scalar, Scalar> convert_to_C1();
+
+  /// Convert input to Lame parameter C2 with derivatives
+  std::tuple<Scalar, Scalar, Scalar, Scalar> convert_to_C2();
+
+  /// Convert input to Lame parameter C3 with derivatives
+  std::tuple<Scalar, Scalar, Scalar, Scalar> convert_to_C3();
+
+  /// First input parameter
+  const Scalar & _p1;
+
+  /// First parameter type
+  const ParamType _p1_type;
+
+  /// Second input parameter
+  const Scalar & _p2;
+
+  /// Second parameter type
+  const ParamType _p2_type;
+
+  /// Third input parameter
+  const Scalar & _p3;
+
+  /// Third parameter type
+  const ParamType _p3_type;
+};
+} // namespace neml2
