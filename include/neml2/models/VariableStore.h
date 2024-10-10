@@ -39,7 +39,7 @@ class Model;
 class VariableStore
 {
 public:
-  VariableStore(const OptionSet & options);
+  VariableStore(const OptionSet & options, Model * object);
 
   LabeledAxis & declare_axis(const std::string & name);
 
@@ -64,17 +64,18 @@ public:
   const Storage<VariableName, VariableBase> & variables() const { return _variables; }
   ///@}
 
-  /// Get the variable type of an input variable
-  TensorType input_type(const VariableName &) const;
-  /// Get the variable type of an output variable
-  TensorType output_type(const VariableName &) const;
+  /// Query the existence of a variable, @returns nullptr if the variable does not exist
+  ///@{
+  VariableBase * variable(const VariableName &);
+  const VariableBase * variable(const VariableName &) const;
+  ///@}
 
 protected:
   /// Tell each input variable view which tensor storage(s) to view into
-  virtual void setup_input_views(VariableStore * host = nullptr);
+  virtual void reserve_input_variables(VariableStore * host = nullptr);
 
   /// Tell each output variable view which tensor storage(s) to view into
-  virtual void setup_output_views();
+  virtual void reserve_output_variables();
 
   /// Declare an input variable
   template <typename T, typename... S>
@@ -82,7 +83,7 @@ protected:
   {
     const auto var_name = variable_name(std::forward<S>(name)...);
     declare_variable<T>(_input_axis, var_name);
-    return *create_variable_view<T>(var_name);
+    return *create_variable<T>(var_name);
   }
 
   /// Declare an input variable (with unknown base shape at compile time)
@@ -91,7 +92,7 @@ protected:
   {
     const auto var_name = variable_name(std::forward<S>(name)...);
     declare_variable(_input_axis, var_name, sz);
-    return *create_variable_view<Tensor>(var_name, t, sz);
+    return *create_variable<Tensor>(var_name, t, sz);
   }
 
   /// Declare an input variable that is a list of tensors of fixed size
@@ -108,7 +109,7 @@ protected:
   {
     const auto var_name = variable_name(std::forward<S>(name)...);
     declare_variable<T>(_output_axis, var_name);
-    return *create_variable_view<T>(var_name);
+    return *create_variable<T>(var_name);
   }
 
   /// Declare an input variable (with unknown base shape at compile time)
@@ -117,7 +118,7 @@ protected:
   {
     const auto var_name = variable_name(std::forward<S>(name)...);
     declare_variable(_output_axis, var_name, sz);
-    return *create_variable_view<Tensor>(var_name, t, sz);
+    return *create_variable<Tensor>(var_name, t, sz);
   }
 
   /// Declare an output variable that is a list of tensors of fixed size
@@ -165,11 +166,10 @@ private:
       return VariableName(std::forward<S>(name)...);
   }
 
-  // Create a variable view (doesn't setup the view)
+  // Create a variable
   template <typename T>
-  Variable<T> * create_variable_view(const VariableName & name,
-                                     TensorType t = TensorTypeEnum<T>::value,
-                                     Size sz = -1)
+  Variable<T> *
+  create_variable(const VariableName & name, TensorType t = TensorTypeEnum<T>::value, Size sz = -1)
   {
     if constexpr (std::is_same_v<T, Tensor>)
       neml_assert(sz > 0, "Creating a Variable<Tensor> requires a known storage size.");
@@ -185,13 +185,13 @@ private:
     // Allocate
     if constexpr (std::is_same_v<T, Tensor>)
     {
-      auto var = std::make_unique<Variable<Tensor>>(name, this, sz, t);
+      auto var = std::make_unique<Variable<Tensor>>(name, _object, sz, t);
       var_base_ptr = views.set_pointer(name, std::move(var));
     }
     else
     {
       (void)t;
-      auto var = std::make_unique<Variable<T>>(name, this);
+      auto var = std::make_unique<Variable<T>>(name, _object);
       var_base_ptr = views.set_pointer(name, std::move(var));
     }
 
@@ -202,6 +202,12 @@ private:
 
     return var_ptr;
   }
+
+  /// Reserve space for variable
+  void reserve(VariableBase * var);
+
+  /// Model using this interface
+  Model * _object;
 
   /**
    * @brief Parsed input file options. These options are useful for example when we declare a
@@ -223,7 +229,6 @@ private:
   Storage<VariableName, VariableBase> _variables;
 
   /// Tensor storage associated with the variables
-  // Note: These tensors are only allocated in the host model
   ///@{
   /// Flattened variable values
   std::vector<Tensor> _variable_values_raw;

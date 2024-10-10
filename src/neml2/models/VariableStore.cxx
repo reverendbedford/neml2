@@ -55,97 +55,42 @@ VariableStore::setup_layout()
 }
 
 VariableBase *
-VariableStore::input_variable(const VariableName & name)
+VariableStore::variable(const VariableName & name)
 {
-  return _input_views.query_value(name);
+  return _variables.query_value(name);
 }
 
-VariableBase *
-VariableStore::output_variable(const VariableName & name)
+const VariableBase *
+VariableStore::variable(const VariableName & name) const
 {
-  return _output_views.query_value(name);
-}
-
-TensorType
-VariableStore::input_type(const VariableName & name) const
-{
-  const auto * var_ptr = _input_views.query_value(name);
-  neml_assert(var_ptr, "Input variable ", name, " does not exist.");
-  return var_ptr->type();
-}
-
-TensorType
-VariableStore::output_type(const VariableName & name) const
-{
-  const auto * var_ptr = _output_views.query_value(name);
-  neml_assert(var_ptr, "Output variable ", name, " does not exist.");
-  return var_ptr->type();
-}
-
-void
-VariableStore::cache(TensorShapeRef batch_shape)
-{
-  for (auto && [name, var] : input_variables())
-    var.cache(batch_shape);
-  for (auto && [name, var] : output_variables())
-    var.cache(batch_shape);
-}
-
-void
-VariableStore::allocate_variables(TensorShapeRef batch_shape,
-                                  const torch::TensorOptions & options,
-                                  bool in,
-                                  bool out,
-                                  bool dout_din,
-                                  bool d2out_din2)
-{
-  // Allocate input storage only if this is a host model
-  if (in && _object->host() == _object)
-    _in = LabeledVector::zeros(batch_shape, {&input_axis()}, options);
-
-  // Allocate output storage
-  if (out)
-    _out = LabeledVector::zeros(batch_shape, {&output_axis()}, options);
-
-  if (dout_din)
-    _dout_din = LabeledMatrix::zeros(batch_shape, {&output_axis(), &input_axis()}, options);
-
-  if (d2out_din2)
-    _d2out_din2 = LabeledTensor3D::zeros(
-        batch_shape, {&output_axis(), &input_axis(), &input_axis()}, options);
+  return _variables.query_value(name);
 }
 
 void
 VariableStore::setup_input_views(VariableStore * host)
 {
-  neml_assert_dbg(host || _object->host<VariableStore>() == host,
+  neml_assert_dbg(host || _object->host() == host,
                   "setup_input_views called on a non-host model without specifying the host as an "
                   "argument");
-  for (auto && [name, var] : input_variables())
+  for (const auto & varname : input_axis().variable_names())
   {
-    if (_object->host<VariableStore>() == host)
-      var.setup_views(&host->input_storage());
+    auto var = variable(varname);
+    // If I'm the host, reserve the variable here
+    if (_object->host() == host)
+      reserve(var);
+    // otherwise, let the host reserve the variable
     else
-      var.setup_views(host->input_variable(name));
+      host->reserve(var);
   }
 }
 
 void
-VariableStore::setup_output_views(bool out, bool dout_din, bool d2out_din2)
+VariableStore::setup_output_views()
 {
-  for (auto && [name, var] : output_variables())
-    var.setup_views(out ? &_out : nullptr,
-                    dout_din ? &_dout_din : nullptr,
-                    d2out_din2 ? &_d2out_din2 : nullptr);
-}
-
-void
-VariableStore::zero(bool dout_din, bool d2out_din2)
-{
-  if (dout_din)
-    _dout_din.zero_();
-
-  if (d2out_din2)
-    _d2out_din2.zero_();
+  for (const auto & varname : output_axis().variable_names())
+  {
+    auto var = variable(varname);
+    reserve(var);
+  }
 }
 } // namespace neml2
