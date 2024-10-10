@@ -93,6 +93,9 @@ public:
 
   /// Return the derivative of the shadow map
   R2 dshadow() const;
+
+  /// Distance measure between two rotations
+  Scalar dist(const Rot & r) const;
 };
 
 /// Composition of rotations r3 = r1 * r2 (r2 first, then r1)

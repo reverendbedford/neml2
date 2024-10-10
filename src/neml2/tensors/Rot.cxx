@@ -233,6 +233,17 @@ Rot::dshadow() const
   return (2.0 / ns * this->outer(*this) - R2::identity(options())) / ns;
 }
 
+Scalar
+Rot::dist(const Rot & r) const
+{
+  auto q1 = Quaternion(*this);
+  auto q1p = Quaternion(this->shadow());
+  auto q2 = Quaternion(r);
+  auto q2p = Quaternion(r.shadow());
+
+  return q1.dist(q2).minimum(q1.dist(q2p)).minimum(q1p.dist(q2)).minimum(q1p.dist(q2p));
+}
+
 Rot
 operator*(const Rot & r1, const Rot & r2)
 {

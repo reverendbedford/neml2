@@ -141,7 +141,8 @@ def_BatchView(py::module_ & m, const std::string & name)
           .def("expand", &BatchView<Derived>::expand)
           .def("expand_copy", &BatchView<Derived>::expand_copy)
           .def("unsqueeze", &BatchView<Derived>::unsqueeze)
-          .def("transpose", &BatchView<Derived>::transpose);
+          .def("transpose", &BatchView<Derived>::transpose)
+          .def("reshape", &BatchView<Derived>::reshape);
 }
 
 template <class Derived>
@@ -173,7 +174,8 @@ def_BaseView(py::module_ & m, const std::string & name)
           .def("expand_copy", &BaseView<Derived>::expand_copy)
           .def("unsqueeze", &BaseView<Derived>::unsqueeze)
           .def("transpose", &BaseView<Derived>::transpose)
-          .def("storage", &BaseView<Derived>::storage);
+          .def("storage", &BaseView<Derived>::storage)
+          .def("reshape", &BaseView<Derived>::reshape);
 }
 
 template <class Derived>
