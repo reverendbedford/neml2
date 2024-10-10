@@ -54,7 +54,7 @@ Model::expected_options()
 Model::Model(const OptionSet & options)
   : Data(options),
     ParameterStore(options, this),
-    VariableStore(options, this),
+    VariableStore(options),
     NonlinearSystem(options),
     DiagnosticsInterface(this),
     _options(default_tensor_options()),

@@ -35,47 +35,42 @@ namespace neml2
 using VariableName = LabeledAxisAccessor;
 
 // Forward declarations
-class Derivative;
-class Model;
+class VariableStore;
 
 class VariableBase
 {
 public:
-  VariableBase(const VariableName & name_in, const Model * owner);
+  VariableBase(const VariableName & name_in, const VariableStore * owner, TensorType type);
 
   virtual ~VariableBase() = default;
 
   /// Name of this variable
   const VariableName & name() const { return _name; }
 
-  /// The Model who declared this variable
-  const Model & owner() const { return *_owner; }
+  /// The VariableStore who declared this variable
+  const VariableStore & owner() const { return *_owner; }
 
-  /// The source variable
-  const VariableBase * src() const { return _src; }
-
-  /// Variable type
-  virtual TensorType type() const = 0;
+  /// Variable tensor type
+  TensorType type() const { return _type; }
 
   /// Get raw flattened variable value
-  const Tensor & get_raw() const;
+  const Tensor & get_raw_value() const { return *_raw_value; }
 
   /// Set raw flattened variable value
-  virtual void set_raw(const Tensor & val);
+  virtual void set_raw_value(const Tensor & val) { *_raw_value = val; }
 
   /// Variable value of the logical shape
   virtual const Tensor tensor() const = 0;
 
   /// @name Subaxis
   ///@{
-  bool is_state() const { return _is_state; }
-  bool is_old_state() const { return _is_old_state; }
-  bool is_force() const { return _is_force; }
-  bool is_old_force() const { return _is_old_force; }
-  bool is_residual() const { return _is_residual; }
-  bool is_parameter() const { return _is_parameter; }
-  bool is_other() const { return _is_other; }
-  bool is_solve_dependent() const { return _is_solve_dependent; }
+  bool is_state() const;
+  bool is_old_state() const;
+  bool is_force() const;
+  bool is_old_force() const;
+  bool is_residual() const;
+  bool is_parameter() const;
+  bool is_solve_dependent() const;
   ///@}
 
   /// Check if the derivative with respect to this variable should be evaluated
@@ -87,13 +82,19 @@ protected:
   const VariableName _name;
 
   /// The model which declared this variable
-  const Model * const _owner;
+  const VariableStore * const _owner;
 
-  /// The source variable this variable follows
-  const VariableBase * _src;
+  /// Variable tensor type
+  const TensorType _type;
 
-  /// The raw (flattened) variable value
-  Tensor _raw_value;
+  /**
+   * @brief The raw (flattened) variable value
+   *
+   * Note that the concrete variables (i.e., Variable<T>) stores the un-flattened variable value
+   * with the correct base shape. The flattened value and the un-flattened value should always be
+   * in-sync. That is, whenever we update one of them, the other should be updated accordingly.
+   */
+  Tensor * _raw_value;
 
   /// @name subaxis
   ///@{
@@ -120,8 +121,7 @@ public:
   Variable(const VariableName & name_in,
            const Model * owner,
            TensorType type = TensorTypeEnum<T2>::value)
-    : VariableBase(name_in, owner),
-      _type(type),
+    : VariableBase(name_in, owner, type),
       _base_sizes(T::const_base_sizes)
   {
   }
@@ -131,32 +131,10 @@ public:
            const Model * owner,
            TensorShapeRef base_shape,
            TensorType type = TensorType::kTensor)
-    : VariableBase(name_in, owner),
-      _type(type),
-      _base_sizes(base_shape.vec())
+    : VariableBase(name_in, owner, type),
+      _base_sizes(base_shape)
   {
   }
-
-  virtual void setup_views(const LabeledVector * value,
-                           const LabeledMatrix * deriv = nullptr,
-                           const LabeledTensor3D * secderiv = nullptr) override
-  {
-    VariableBase::setup_views(value, deriv, secderiv);
-    if (value)
-      _value = T(_raw_value.view(sizes()), batch_dim());
-  }
-
-  virtual void setup_views(const VariableBase * other) override
-  {
-    VariableBase::setup_views(other);
-    _value = T(_raw_value.view(sizes()), batch_dim());
-  }
-
-  virtual void requires_grad_(bool req = true) override { _value.requires_grad_(req); }
-
-  virtual TensorShapeRef base_sizes() const override { return _base_sizes; }
-
-  virtual TensorShapeRef sizes() const override { return _sizes; }
 
   /// Suppressed constructor to prevent accidental dereferencing
   [[deprecated("Variable<T> must be assigned to references -- missing &")]] Variable(
@@ -170,72 +148,42 @@ public:
   {
   }
 
-  /**
-   * @brief Set the raw value to store \p val
-   *
-   * Note that this is an in-place operation, and so we must reshape (flatten base dimensions of) \p
-   * val and modify raw_value.
-   */
-  void operator=(const Tensor & val)
+  /// Set the variable value
+  void operator=(const T & val)
   {
-    _value.index_put_({torch::indexing::Slice()},
-                      val.batch_expand(batch_sizes()).base_reshape(base_sizes()));
+    *_value = val;
+    *_raw_value = val.base_flatten();
   }
 
-  /// Variable value of the logical shape
-  const T & value() const { return _value; }
+  /// Variable value
+  const T & value() const { return *_value; }
 
-  /// Variable value of the logical shape
-  virtual const Tensor tensor() const override { return _value; }
+  void set_raw_value(const Tensor & val) override
+  {
+    VariableBase::set_raw_value(val);
+    *_value = val.base_reshape(_base_sizes);
+  }
 
-  virtual TensorType type() const override { return _type; }
+  /// Variable value
+  const Tensor tensor() const override { return *_value; }
 
   /// Negation
-  T operator-() const { return -_value; }
+  T operator-() const { return -(*_value); }
 
-  operator T() const { return _value; }
-
-  /// Set the batch shape and base shape according to \p val
-  virtual void cache(TensorShapeRef batch_shape) override
-  {
-    VariableBase::cache(batch_shape);
-    _sizes = utils::add_shapes(batch_shape, _base_sizes);
-  }
+  operator T() const { return *_value; }
 
   template <typename T2 = T, typename = typename std::enable_if_t<!std::is_same_v<T2, Tensor>>>
   operator Tensor() const
   {
-    return _value;
+    return *_value;
   }
 
 protected:
-  /// Variable tensor type
-  const TensorType _type;
-
-  /// Base shape of this variable
+  /// Base shape of the variable
   const TensorShape _base_sizes;
 
-  /// Shape of this variable
-  TensorShape _sizes;
-
   /// Variable value of the logical shape
-  T _value;
-};
-
-class Derivative
-{
-public:
-  Derivative(Tensor & val)
-    : _value(val)
-  {
-  }
-
-  const Tensor & value() const { return _value; }
-
-  Derivative & operator=(const Tensor & val);
-
-private:
-  Tensor & _value;
+  T * _value;
 };
 
 // Everything below is just for convenience: We just forward operations to the the variable values
