@@ -57,6 +57,45 @@ SSR4::identity(const torch::TensorOptions & options)
 }
 
 SSR4
+SSR4::identity_C1(const torch::TensorOptions & options)
+{
+  return SSR4(torch::tensor({{1, 0, 0, 0, 0, 0},
+                             {0, 1, 0, 0, 0, 0},
+                             {0, 0, 1, 0, 0, 0},
+                             {0, 0, 0, 0, 0, 0},
+                             {0, 0, 0, 0, 0, 0},
+                             {0, 0, 0, 0, 0, 0}},
+                            options),
+              0);
+}
+
+SSR4
+SSR4::identity_C2(const torch::TensorOptions & options)
+{
+  return SSR4(torch::tensor({{0, 1, 1, 0, 0, 0},
+                             {1, 0, 1, 0, 0, 0},
+                             {1, 1, 0, 0, 0, 0},
+                             {0, 0, 0, 0, 0, 0},
+                             {0, 0, 0, 0, 0, 0},
+                             {0, 0, 0, 0, 0, 0}},
+                            options),
+              0);
+}
+
+SSR4
+SSR4::identity_C3(const torch::TensorOptions & options)
+{
+  return SSR4(torch::tensor({{0, 0, 0, 0, 0, 0},
+                             {0, 0, 0, 0, 0, 0},
+                             {0, 0, 0, 0, 0, 0},
+                             {0, 0, 0, 1, 0, 0},
+                             {0, 0, 0, 0, 1, 0},
+                             {0, 0, 0, 0, 0, 1}},
+                            options),
+              0);
+}
+
+SSR4
 SSR4::identity_sym(const torch::TensorOptions & options)
 {
   return SSR4(torch::eye(6, options), 0);
@@ -85,20 +124,31 @@ SSR4::isotropic_E_nu(const Scalar & E, const Scalar & nu)
   const auto C2 = nu * pf;
   const auto C4 = (1.0 - 2.0 * nu) * pf;
 
-  return SSR4(torch::stack({torch::stack({C1, C2, C2, zero, zero, zero}, -1),
-                            torch::stack({C2, C1, C2, zero, zero, zero}, -1),
-                            torch::stack({C2, C2, C1, zero, zero, zero}, -1),
-                            torch::stack({zero, zero, zero, C4, zero, zero}, -1),
-                            torch::stack({zero, zero, zero, zero, C4, zero}, -1),
-                            torch::stack({zero, zero, zero, zero, zero, C4}, -1)},
-                           -1),
-              E.batch_dim());
+  return SSR4::fill_C1_C2_C3(C1, C2, C4);
 }
 
 SSR4
 SSR4::isotropic_E_nu(const Real & E, const Real & nu, const torch::TensorOptions & options)
 {
   return SSR4::isotropic_E_nu(Scalar(E, options), Scalar(nu, options));
+}
+
+SSR4
+SSR4::fill_C1_C2_C3(const Scalar & C1, const Scalar & C2, const Scalar & C3)
+{
+  neml_assert_broadcastable_dbg(C1, C2, C3);
+
+  return C1 * identity_C1(C1.options()) + C2 * identity_C2(C2.options()) +
+         C3 * identity_C3(C3.options());
+}
+
+SSR4
+SSR4::fill_C1_C2_C3(const Real & C1,
+                    const Real & C2,
+                    const Real & C3,
+                    const torch::TensorOptions & options)
+{
+  return SSR4::fill_C1_C2_C3(Scalar(C1, options), Scalar(C2, options), Scalar(C3, options));
 }
 
 SSSSR8
