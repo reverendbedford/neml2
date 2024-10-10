@@ -44,6 +44,9 @@ public:
   /// The derivative of a Scalar with respect to itself
   [[nodiscard]] static Scalar
   identity_map(const torch::TensorOptions & options = default_tensor_options());
+
+  /// Minimum between you and another scalar
+  Scalar minimum(const Scalar & b) const;
 };
 
 /// Absolute value
@@ -153,4 +156,5 @@ pow(const Derived & a, const Scalar & n)
   return Derived(torch::pow(a, n.index(net)), broadcast_batch_dim(a, n));
 }
 }
+
 } // namespace neml2
