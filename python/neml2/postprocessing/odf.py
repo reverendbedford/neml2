@@ -21,13 +21,11 @@ class KDEODF(ODF):
 
     Args:
         X (neml2.tensors.Rot): rotations, must have a single batch dimension
-        h (torch.tensor): bandwidth
         kernel (Kernel): kernel function
     """
 
-    def __init__(self, X, h, kernel):
+    def __init__(self, X, kernel):
         super().__init__(X)
-        self.h = h
         self.kernel = kernel
 
     def forward(self, Y):
@@ -39,20 +37,39 @@ class KDEODF(ODF):
         Returns:
             torch.tensor with the probabilities
         """
-        return torch.sum(
-            self.kernel(self.X.dist(Y.batch.unsqueeze(-1)).torch() / self.h), dim=-1
-        ) / (self.n * self.h)
+        dist = self.X.dist(Y.batch.unsqueeze(-1)).torch()
+
+        import matplotlib.pyplot as plt
+
+        return torch.mean(
+            self.kernel(torch.cos(dist / 2.0)),
+            dim=-1,
+        )
 
 
 class Kernel(torch.nn.Module):
-    """Parent class for kernels for KDE reconstruction"""
+    """Parent class for kernels for KDE reconstruction
 
-    def __init__(self):
+    Args:
+        h (torch.tensor): half-width
+    """
+
+    def __init__(self, h):
         super().__init__()
+        self.h = h
 
 
-class CosineKernel(Kernel):
-    """Cosine kernel"""
+class DeLaValleePoussinKernel(Kernel):
+    """De La Vallee Poussin kernel, according to MTEX"""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.kappa = 0.5 * math.log(0.5) / torch.log(torch.cos(self.h / 2))
+        self.c = beta(
+            torch.tensor(1.5, device=self.h.device),
+            torch.tensor(0.5, device=self.h.device),
+        ) / beta(torch.tensor(1.5, device=self.h.device), self.kappa + 0.5)
 
     def forward(self, X):
         """Evaluate the kernel
@@ -60,4 +77,23 @@ class CosineKernel(Kernel):
         Args:
             X (torch.tensor):
         """
-        return torch.cos(X / 2.0) / 2.0
+        return self.c * X ** (2 * self.kappa)
+
+
+def beta(z1, z2):
+    """Calculate the beta function
+
+    Args:
+        z1 (torch.tensor): first input
+        z2 (torch.tensor): second input
+    """
+    return gamma(z1) * gamma(z2) / gamma(z1 + z2)
+
+
+def gamma(z):
+    """Calculate the gamma function
+
+    Args:
+        z (torch.tensor): input
+    """
+    return torch.exp(torch.special.gammaln(z))
