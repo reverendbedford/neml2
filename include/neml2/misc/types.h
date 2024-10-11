@@ -43,6 +43,24 @@ using TensorIndicesRef = torch::ArrayRef<TensorIndex>;
 }
 
 /**
+ * @brief Role in a function definition
+ *
+ * NONE is the default value,
+ * INPUT stands for input variable,
+ * OUTPUT stands for output variable,
+ * PARAMETER stands for parameter (could request AD),
+ * BUFFER stands for buffer.
+ */
+enum class FType : int8_t
+{
+  NONE,
+  INPUT,
+  OUTPUT,
+  PARAMETER,
+  BUFFER
+};
+
+/**
  * @name RAII style default tensor options
  *
  * The factory methods like `torch::arange`, `torch::ones`, `torch::zeros`, `torch::rand` etc.

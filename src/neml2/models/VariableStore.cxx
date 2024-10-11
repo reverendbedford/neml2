@@ -54,43 +54,19 @@ VariableStore::setup_layout()
   output_axis().setup_layout();
 }
 
-VariableBase *
+VariableBase &
 VariableStore::variable(const VariableName & name)
 {
-  return _variables.query_value(name);
+  auto var_ptr = _variables.query_value(name);
+  neml_assert(var_ptr, "Variable ", name, " does not exist in model ", _object->name());
+  return *var_ptr;
 }
 
-const VariableBase *
+const VariableBase &
 VariableStore::variable(const VariableName & name) const
 {
-  return _variables.query_value(name);
-}
-
-void
-VariableStore::setup_input_views(VariableStore * host)
-{
-  neml_assert_dbg(host || _object->host() == host,
-                  "setup_input_views called on a non-host model without specifying the host as an "
-                  "argument");
-  for (const auto & varname : input_axis().variable_names())
-  {
-    auto var = variable(varname);
-    // If I'm the host, reserve the variable here
-    if (_object->host() == host)
-      reserve(var);
-    // otherwise, let the host reserve the variable
-    else
-      host->reserve(var);
-  }
-}
-
-void
-VariableStore::setup_output_views()
-{
-  for (const auto & varname : output_axis().variable_names())
-  {
-    auto var = variable(varname);
-    reserve(var);
-  }
+  const auto var_ptr = _variables.query_value(name);
+  neml_assert(var_ptr, "Variable ", name, " does not exist in model ", _object->name());
+  return *var_ptr;
 }
 } // namespace neml2

@@ -23,15 +23,17 @@
 // THE SOFTWARE.
 
 #include "neml2/tensors/Variable.h"
-#include "neml2/models/VariableStore.h"
+#include "neml2/models/Model.h"
 
 namespace neml2
 {
 VariableBase::VariableBase(const VariableName & name_in,
-                           const VariableStore * owner,
+                           const Model * owner,
+                           FType ftype,
                            TensorType type)
   : _name(name_in),
     _owner(owner),
+    _ftype(ftype),
     _type(type)
 {
 }

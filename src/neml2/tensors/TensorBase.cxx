@@ -40,13 +40,6 @@ TensorBase<Derived>::TensorBase(const torch::Tensor & tensor, Size batch_dim)
 }
 
 template <class Derived>
-TensorBase<Derived>::TensorBase(const Derived & tensor)
-  : torch::Tensor(tensor),
-    _batch_dim(tensor.batch_dim())
-{
-}
-
-template <class Derived>
 Derived
 TensorBase<Derived>::empty_like(const Derived & other)
 {

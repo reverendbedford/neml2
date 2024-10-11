@@ -35,32 +35,29 @@ namespace neml2
 using VariableName = LabeledAxisAccessor;
 
 // Forward declarations
-class VariableStore;
+class Model;
 
 class VariableBase
 {
 public:
-  VariableBase(const VariableName & name_in, const VariableStore * owner, TensorType type);
+  VariableBase(const VariableName & name_in, const Model * owner, FType ftype, TensorType type);
 
   virtual ~VariableBase() = default;
 
   /// Name of this variable
   const VariableName & name() const { return _name; }
 
-  /// The VariableStore who declared this variable
-  const VariableStore & owner() const { return *_owner; }
+  /// The Model who declared this variable
+  const Model & owner() const { return *_owner; }
+
+  /// Variable ftype (role in a function definition)
+  FType ftype() const { return _ftype; }
 
   /// Variable tensor type
   TensorType type() const { return _type; }
 
-  /// Get raw flattened variable value
-  const Tensor & get_raw_value() const { return *_raw_value; }
-
-  /// Set raw flattened variable value
-  virtual void set_raw_value(const Tensor & val) { *_raw_value = val; }
-
-  /// Variable value of the logical shape
-  virtual const Tensor tensor() const = 0;
+  /// Reference another variable
+  virtual void ref(const VariableBase & other) = 0;
 
   /// @name Subaxis
   ///@{
@@ -82,31 +79,13 @@ protected:
   const VariableName _name;
 
   /// The model which declared this variable
-  const VariableStore * const _owner;
+  const Model * const _owner;
+
+  /// Variable ftype (role in a function definition)
+  const FType _ftype;
 
   /// Variable tensor type
   const TensorType _type;
-
-  /**
-   * @brief The raw (flattened) variable value
-   *
-   * Note that the concrete variables (i.e., Variable<T>) stores the un-flattened variable value
-   * with the correct base shape. The flattened value and the un-flattened value should always be
-   * in-sync. That is, whenever we update one of them, the other should be updated accordingly.
-   */
-  Tensor * _raw_value;
-
-  /// @name subaxis
-  ///@{
-  const bool _is_state;
-  const bool _is_old_state;
-  const bool _is_force;
-  const bool _is_old_force;
-  const bool _is_residual;
-  const bool _is_parameter;
-  const bool _is_other;
-  const bool _is_solve_dependent;
-  ///@}
 };
 
 /**
@@ -120,9 +99,11 @@ public:
   template <typename T2 = T, typename = typename std::enable_if_t<!std::is_same_v<Tensor, T2>>>
   Variable(const VariableName & name_in,
            const Model * owner,
+           FType ftype,
            TensorType type = TensorTypeEnum<T2>::value)
-    : VariableBase(name_in, owner, type),
-      _base_sizes(T::const_base_sizes)
+    : VariableBase(name_in, owner, ftype, type),
+      _base_sizes(T::const_base_sizes),
+      _value_ptr(nullptr)
   {
   }
 
@@ -130,10 +111,32 @@ public:
   Variable(const VariableName & name_in,
            const Model * owner,
            TensorShapeRef base_shape,
+           FType ftype,
            TensorType type = TensorType::kTensor)
-    : VariableBase(name_in, owner, type),
-      _base_sizes(base_shape)
+    : VariableBase(name_in, owner, ftype, type),
+      _base_sizes(base_shape),
+      _value_ptr(nullptr)
   {
+  }
+
+  void ref(const VariableBase & var) override
+  {
+    const auto * var_ptr = dynamic_cast<const Variable<T> *>(&var);
+    neml_assert(var_ptr,
+                "Variable ",
+                name(),
+                " of type ",
+                type(),
+                " declared by model ",
+                owner().name(),
+                " failed to reference another variable named ",
+                var.name(),
+                " of type ",
+                var.type(),
+                " declared by model ",
+                var.owner().name(),
+                ": Dynamic cast failure.");
+    _value_ptr = &var_ptr->value();
   }
 
   /// Suppressed constructor to prevent accidental dereferencing
@@ -151,39 +154,35 @@ public:
   /// Set the variable value
   void operator=(const T & val)
   {
-    *_value = val;
-    *_raw_value = val.base_flatten();
+    if (_value_ptr)
+      *_value_ptr = val;
+    else
+      _value = val;
   }
 
   /// Variable value
-  const T & value() const { return *_value; }
-
-  void set_raw_value(const Tensor & val) override
-  {
-    VariableBase::set_raw_value(val);
-    *_value = val.base_reshape(_base_sizes);
-  }
-
-  /// Variable value
-  const Tensor tensor() const override { return *_value; }
+  const T & value() const { return _value_ptr ? *_value_ptr : _value; }
 
   /// Negation
-  T operator-() const { return -(*_value); }
+  T operator-() const { return -value(); }
 
-  operator T() const { return *_value; }
+  operator T() const { return value(); }
 
   template <typename T2 = T, typename = typename std::enable_if_t<!std::is_same_v<T2, Tensor>>>
   operator Tensor() const
   {
-    return *_value;
+    return value();
   }
 
 protected:
   /// Base shape of the variable
   const TensorShape _base_sizes;
 
-  /// Variable value of the logical shape
-  T * _value;
+  /// Variable value (undefined if this is a referencing variable)
+  T _value;
+
+  /// Variable value (nullptr if this is a storing variable)
+  const T * _value_ptr;
 };
 
 // Everything below is just for convenience: We just forward operations to the the variable values

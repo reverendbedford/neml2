@@ -52,7 +52,8 @@ public:
   TensorBase(const torch::Tensor & tensor, Size batch_dim);
 
   /// Copy constructor
-  TensorBase(const Derived & tensor);
+  template <class Derived2>
+  TensorBase(const TensorBase<Derived2> & tensor);
 
   TensorBase(Real) = delete;
 
@@ -203,6 +204,14 @@ private:
   /// Number of batch dimensions. The first `_batch_dim` dimensions are considered batch dimensions.
   Size _batch_dim;
 };
+
+template <class Derived>
+template <class Derived2>
+TensorBase<Derived>::TensorBase(const TensorBase<Derived2> & tensor)
+  : torch::Tensor(tensor),
+    _batch_dim(tensor.batch_dim())
+{
+}
 
 template <class Derived>
 template <class Derived2>

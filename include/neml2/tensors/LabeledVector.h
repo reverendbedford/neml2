@@ -45,6 +45,9 @@ public:
   /// Fill (override) another vector into this vector.
   /// The item set of the other vector must be a subset of this vector's item set.
   void fill(const LabeledVector & other, bool recursive = true);
+
+  /// Split the vector by variables
+  std::map<VariableName, Tensor> split() const;
 };
 
 namespace utils
