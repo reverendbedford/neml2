@@ -41,7 +41,7 @@ LabeledVector::fill(const LabeledVector & other, bool recursive)
     _tensor.base_index_put_({idx}, other.tensor().base_index({idx_other}));
 }
 
-std::map<VariableName, Tensor>
+std::map<LabeledAxisAccessor, Tensor>
 LabeledVector::split() const
 {
   auto vars = axis(0).sort_by_assembly_order(axis(0).variable_names());
@@ -51,7 +51,7 @@ LabeledVector::split() const
 
   auto vals = tensor().split(split_size);
 
-  std::map<VariableName, Tensor> ret;
+  std::map<LabeledAxisAccessor, Tensor> ret;
   for (std::size_t i = 0; i < vars.size(); ++i)
     ret[vars[i]] = Tensor(vals[i], batch_dim());
   return ret;

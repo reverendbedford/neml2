@@ -47,7 +47,7 @@ public:
   void fill(const LabeledVector & other, bool recursive = true);
 
   /// Split the vector by variables
-  std::map<VariableName, Tensor> split() const;
+  std::map<LabeledAxisAccessor, Tensor> split() const;
 };
 
 namespace utils

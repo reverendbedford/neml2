@@ -65,9 +65,6 @@ public:
 
   virtual void diagnose(std::vector<Diagnosis> &) const override;
 
-  /// Additional diagnostics for a nonlinear system
-  void diagnose_nl_sys(std::vector<Diagnosis> & diagnoses) const;
-
   /// Whether this model defines one or more nonlinear equations to be solved
   virtual bool is_nonlinear_system() const { return _nonlinear_system; }
 
@@ -121,12 +118,10 @@ public:
   friend class ComposedModel;
 
 protected:
-  /**
-   * @brief Setup this model.
-   * 1. Setup the layout of the input and output axes.
-   * 2. Setup the arguments of each variable.
-   */
-  virtual void setup() override;
+  void setup() override;
+
+  /// Additional diagnostics for a nonlinear system
+  void diagnose_nl_sys(std::vector<Diagnosis> & diagnoses) const;
 
   /**
    * Validate the currently requested AD settings.
@@ -146,8 +141,6 @@ protected:
 
   /// Set input of the model
   virtual void set_input(const LabeledVector & in);
-  /// Set one input variable value
-  virtual void set_input_variable(const VariableName & var, const Tensor & val);
   /// The map between input -> output, and optionally its derivatives
   virtual void set_value(bool out, bool dout_din, bool d2out_din2) = 0;
 
@@ -174,7 +167,7 @@ protected:
 
     if (merge_input)
       for (const auto varname : model->input_axis().variable_names())
-        input_axis().add(varname, model->input_axis().storage_size(varname));
+        clone_input_variable(model, varname);
 
     _registered_models.push_back(model.get());
     return *(std::dynamic_pointer_cast<T>(model));

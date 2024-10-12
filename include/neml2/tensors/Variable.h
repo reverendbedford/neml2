@@ -56,8 +56,20 @@ public:
   /// Variable tensor type
   TensorType type() const { return _type; }
 
+  /// Base shape of the variable
+  virtual TensorShapeRef base_sizes() const = 0;
+
+  /// Base storage of the variable
+  Size base_storage() const { return utils::storage_size(base_sizes()); }
+
+  /// Clone this variable
+  virtual std::unique_ptr<VariableBase> clone() const = 0;
+
   /// Reference another variable
   virtual void ref(const VariableBase & other) = 0;
+
+  /// Set the variable value (handles reshaping)
+  virtual void set(const Tensor & val) = 0;
 
   /// @name Subaxis
   ///@{
@@ -119,6 +131,13 @@ public:
   {
   }
 
+  TensorShapeRef base_sizes() const override { return _base_sizes; }
+
+  std::unique_ptr<VariableBase> clone() const override
+  {
+    return std::move(std::make_unique<Variable<T>>(name(), &owner(), ftype(), type()));
+  }
+
   void ref(const VariableBase & var) override
   {
     const auto * var_ptr = dynamic_cast<const Variable<T> *>(&var);
@@ -127,16 +146,26 @@ public:
                 name(),
                 " of type ",
                 type(),
-                " declared by model ",
-                owner().name(),
                 " failed to reference another variable named ",
                 var.name(),
                 " of type ",
                 var.type(),
-                " declared by model ",
-                var.owner().name(),
                 ": Dynamic cast failure.");
     _value_ptr = &var_ptr->value();
+  }
+
+  void set(const Tensor & val) override
+  {
+    neml_assert_dbg(val.base_storage() == base_storage(),
+                    "Failed to set value for variable ",
+                    name(),
+                    " of type ",
+                    type(),
+                    ": Expected flattened base storage ",
+                    base_storage(),
+                    ", got ",
+                    val.base_storage());
+    (*this) = T(val.base_reshape(base_sizes()));
   }
 
   /// Suppressed constructor to prevent accidental dereferencing

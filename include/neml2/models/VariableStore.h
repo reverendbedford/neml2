@@ -123,6 +123,48 @@ protected:
         list_size * T::const_base_storage, TensorType::kTensor, std::forward<S>(name)...);
   }
 
+  /// Clone a variable from a given model and put it on the input axis
+  template <typename... S>
+  VariableBase * clone_input_variable(const VariableStore & m, S &&... name)
+  {
+    const auto var_name = variable_name(std::forward<S>(name)...);
+    auto var_clone = m.variable(var_name).clone();
+
+    if (_input_axis.has_variable(var_name))
+      neml_assert(_input_axis.storage_size(var_name) == var_clone->base_storage(),
+                  "Trying to clone a variable ",
+                  var_name,
+                  " with base storage ",
+                  var_clone->base_storage(),
+                  " onto its input axis, but a variable with different storage size ",
+                  _input_axis.storage_size(var_name),
+                  " has already been declared.");
+
+    declare_variable(_input_axis, var_name, var_clone.base_storage());
+    return _variables.set_pointer(var_name, std::move(var_clone));
+  }
+
+  /// Clone a variable from a given model and put it on the output axis
+  template <typename... S>
+  const VariableBase * clone_output_variable(const VariableStore & m, S &&... name)
+  {
+    const auto var_name = variable_name(std::forward<S>(name)...);
+    auto var_clone = m.variable(var_name).clone();
+
+    if (_output_axis.has_variable(var_name))
+      neml_assert(_output_axis.storage_size(var_name) == var_clone->base_storage(),
+                  "Trying to clone a variable ",
+                  var_name,
+                  " with base storage ",
+                  var_clone->base_storage(),
+                  " onto its output axis, but a variable with different storage size ",
+                  _output_axis.storage_size(var_name),
+                  " has already been declared.");
+
+    declare_variable(_output_axis, var_name, var_clone.base_storage());
+    return _variables.set_pointer(var_name, std::move(var_clone));
+  }
+
   /// Declare an item recursively on an axis
   template <typename T>
   void declare_variable(LabeledAxis & axis, const VariableName & var) const

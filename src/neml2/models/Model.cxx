@@ -151,12 +151,7 @@ void
 Model::set_input(const LabeledVector & in)
 {
   for (const auto & [var, val] : in.split())
-    set_input_variable(var, val);
-}
-
-void
-Model::set_input_variable(const VariableName & var, const Tensor & val)
-{
+    variable(var).set(val);
 }
 
 LabeledVector
