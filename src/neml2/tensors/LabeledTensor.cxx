@@ -313,7 +313,10 @@ LabeledTensor<Derived, D>::storage_shape(indexing::TensorLabelsRef labels) const
 {
   TensorShape s(labels.size());
   for (size_t i = 0; i < labels.size(); i++)
+  {
+    neml_assert_dbg(_axes[i], "LabeledTensor has uninitialized axis at base dimension ", i);
     s[i] = _axes[i]->storage_size(labels[i]);
+  }
   return s;
 }
 
@@ -324,7 +327,10 @@ LabeledTensor<Derived, D>::labels_to_indices(indexing::TensorLabelsRef labels) c
   neml_assert_dbg(labels.size() == D, "Wrong label size, must be ", D, ", got ", labels.size());
   indexing::TensorIndices indices;
   for (size_t i = 0; i < labels.size(); i++)
+  {
+    neml_assert_dbg(_axes[i], "LabeledTensor has uninitialized axis at base dimension ", i);
     indices.push_back(_axes[i]->indices(labels[i]));
+  }
   return indices;
 }
 
