@@ -54,10 +54,10 @@ private:
   void set_value_async(Model * i, bool out, bool dout_din, bool d2out_din2);
 
   /// Helper method to recursively apply chain rule
-  void apply_chain_rule(Model * i) {}
+  void apply_chain_rule(Model * /*i*/) {}
 
   /// Helper method to recursively apply second order chain rule
-  void apply_second_order_chain_rule(Model * i) {}
+  void apply_second_order_chain_rule(Model * /*i*/) {}
 
   /// Helper to rethrow exceptions collected from other threads
   void rethrow_exceptions() const;

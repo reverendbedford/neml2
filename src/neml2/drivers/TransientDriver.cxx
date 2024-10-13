@@ -111,8 +111,8 @@ TransientDriver::TransientDriver(const OptionSet & options)
     _time_name(options.get<VariableName>("time")),
     _nsteps(_time.batch_sizes()[0]),
     _nbatch(_time.batch_sizes()[1]),
-    _in(_model.input_storage()),
-    _out(_model.output_storage()),
+    _in(),
+    _out(),
     _predictor(options.get<std::string>("predictor")),
     _save_as(options.get<std::string>("save_as")),
     _show_params(options.get<bool>("show_parameters")),
@@ -128,8 +128,6 @@ TransientDriver::TransientDriver(const OptionSet & options)
     _ic_sr2_values(options.get<std::vector<CrossRef<SR2>>>("ic_sr2_values")),
     _cp_elastic_scale(options.get<Real>("cp_elastic_scale"))
 {
-  _model.reinit({_nbatch}, 0, _device);
-
   _time = _time.to(_device);
   _result_in = _result_in.to(_device);
   _result_out = _result_out.to(_device);

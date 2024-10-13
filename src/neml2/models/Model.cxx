@@ -38,12 +38,10 @@ Model::expected_options()
 
   options.set<bool>("_use_AD_first_derivative") = false;
   options.set<bool>("_use_AD_second_derivative") = false;
-  options.set<int>("_extra_derivative_order") = 0;
   options.set<bool>("_nonlinear_system") = false;
 
   options.set("_use_AD_first_derivative").suppressed() = true;
   options.set("_use_AD_second_derivative").suppressed() = true;
-  options.set("_extra_derivative_order").suppressed() = true;
   options.set("_nonlinear_system").suppressed() = true;
 
   return options;
@@ -52,11 +50,12 @@ Model::expected_options()
 Model::Model(const OptionSet & options)
   : Data(options),
     ParameterStore(options, this),
-    VariableStore(options),
+    VariableStore(options, this),
     NonlinearSystem(options),
     DiagnosticsInterface(this),
-    _options(default_tensor_options()),
     _nonlinear_system(options.get<bool>("_nonlinear_system")),
+    _AD_1st_deriv(options.get<bool>("_use_AD_first_derivative")),
+    _AD_2nd_deriv(options.get<bool>("_use_AD_second_derivative"))
 #ifndef NDEBUG
     ,
     _evaluated_once(false)
@@ -150,6 +149,7 @@ Model::check_input(const LabeledVector & in) const
 void
 Model::set_input(const LabeledVector & in)
 {
+  _options = in.options();
   for (const auto & [var, val] : in.split())
     variable(var).set(val);
 }
@@ -224,10 +224,6 @@ Model::value()
 void
 Model::value_and_dvalue()
 {
-  neml_assert_dbg(requires_grad(),
-                  name(),
-                  ": value_and_dvalue() is called but derivative storage hasn't been allocated.");
-
   ensure_single_evaluation_dbg();
 
   if (!_AD_1st_deriv)
@@ -242,10 +238,6 @@ Model::value_and_dvalue()
 void
 Model::dvalue()
 {
-  neml_assert_dbg(requires_grad(),
-                  name(),
-                  ": dvalue() is called but derivative storage hasn't been allocated.");
-
   ensure_single_evaluation_dbg();
 
   if (!_AD_1st_deriv)
@@ -260,11 +252,6 @@ Model::dvalue()
 void
 Model::value_and_dvalue_and_d2value()
 {
-  neml_assert_dbg(requires_2nd_grad(),
-                  name(),
-                  ": value_and_dvalue_and_d2value() is called but second derivative storage hasn't "
-                  "been allocated.");
-
   ensure_single_evaluation_dbg();
 
   if (!_AD_2nd_deriv)
@@ -288,11 +275,6 @@ Model::value_and_dvalue_and_d2value()
 void
 Model::dvalue_and_d2value()
 {
-  neml_assert_dbg(requires_2nd_grad(),
-                  name(),
-                  ": dvalue_and_d2value() is called but second derivative storage hasn't "
-                  "been allocated.");
-
   ensure_single_evaluation_dbg();
 
   if (!_AD_2nd_deriv)
@@ -315,10 +297,6 @@ Model::dvalue_and_d2value()
 void
 Model::d2value()
 {
-  neml_assert_dbg(requires_2nd_grad(),
-                  name(),
-                  ": d2value() is called but second derivative storage hasn't been allocated.");
-
   ensure_single_evaluation_dbg();
 
   if (!_AD_2nd_deriv)

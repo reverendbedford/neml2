@@ -140,7 +140,7 @@ protected:
                   _input_axis.storage_size(var_name),
                   " has already been declared.");
 
-    declare_variable(_input_axis, var_name, var_clone.base_storage());
+    declare_variable(_input_axis, var_name, var_clone->base_storage());
     return _variables.set_pointer(var_name, std::move(var_clone));
   }
 
@@ -161,7 +161,7 @@ protected:
                   _output_axis.storage_size(var_name),
                   " has already been declared.");
 
-    declare_variable(_output_axis, var_name, var_clone.base_storage());
+    declare_variable(_output_axis, var_name, var_clone->base_storage());
     return _variables.set_pointer(var_name, std::move(var_clone));
   }
 
@@ -215,8 +215,7 @@ private:
     // Make sure we don't duplicate variables
     VariableBase * var_base_ptr = _variables.query_value(name);
     neml_assert(!var_base_ptr,
-                name(),
-                ": Trying to create variable ",
+                "Trying to create variable ",
                 name,
                 ", but a variable with the same name already exists.");
 

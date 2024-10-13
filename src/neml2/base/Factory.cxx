@@ -60,9 +60,7 @@ get_model(const std::string & mname, bool enable_ad, bool force_create)
 {
   OptionSet extra_opts;
   extra_opts.set<bool>("_enable_AD") = enable_ad;
-  auto & model = Factory::get_object<Model>("Models", mname, extra_opts, force_create);
-  model.reinit();
-  return model;
+  return Factory::get_object<Model>("Models", mname, extra_opts, force_create);
 }
 
 Model &

@@ -108,9 +108,9 @@ protected:
   /// The batch size
   Size _nbatch;
   /// The input to the constitutive model
-  LabeledVector & _in;
+  LabeledVector _in;
   /// The output of the constitutive model
-  LabeledVector & _out;
+  LabeledVector _out;
 
   /// The predictor used to set the initial guess
   std::string _predictor;

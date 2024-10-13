@@ -46,7 +46,7 @@ LabeledVector::split() const
 {
   auto vars = axis(0).sort_by_assembly_order(axis(0).variable_names());
   std::vector<Size> split_size;
-  for (const auto var : vars)
+  for (const auto & var : vars)
     split_size.push_back(axis(0).storage_size(var));
 
   auto vals = tensor().split(split_size);

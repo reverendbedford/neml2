@@ -140,13 +140,11 @@ ModelUnitTest::run()
 bool
 ModelUnitTest::run(Model & model)
 {
-  model.reinit(_in, _deriv_order);
   check_all(model);
 
   if (_check_cuda && torch::cuda::is_available())
   {
     _in = _in.to(torch::kCUDA);
-    model.reinit(_in, _deriv_order);
     check_all(model);
   }
 
@@ -260,8 +258,8 @@ ModelUnitTest::check_AD_parameter_derivatives(Model & model)
   // Turn on AD for parameters
   for (auto && [name, param] : model.named_parameters())
   {
-    auto param_expanded = Tensor(param).batch_expand_copy(model.batch_sizes());
-    param = param_expanded;
+    // auto param_expanded = Tensor(param).batch_expand_copy(model.batch_sizes());
+    // param = param_expanded;
     param.requires_grad_(true);
   }
 

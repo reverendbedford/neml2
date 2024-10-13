@@ -56,6 +56,20 @@ public:
   /// Variable tensor type
   TensorType type() const { return _type; }
 
+  /// @name Subaxis
+  ///@{
+  bool is_state() const;
+  bool is_old_state() const;
+  bool is_force() const;
+  bool is_old_force() const;
+  bool is_residual() const;
+  bool is_parameter() const;
+  bool is_solve_dependent() const;
+  /// Check if the derivative with respect to this variable should be evaluated
+  // Note that the check depends on whether we are currently solving nonlinear system
+  bool is_dependent() const;
+  ///@}
+
   /// Base shape of the variable
   virtual TensorShapeRef base_sizes() const = 0;
 
@@ -71,20 +85,14 @@ public:
   /// Set the variable value (handles reshaping)
   virtual void set(const Tensor & val) = 0;
 
-  /// @name Subaxis
-  ///@{
-  bool is_state() const;
-  bool is_old_state() const;
-  bool is_force() const;
-  bool is_old_force() const;
-  bool is_residual() const;
-  bool is_parameter() const;
-  bool is_solve_dependent() const;
-  ///@}
+  /// Derivative
+  Tensor & d(const VariableBase & var) { return _derivs[&var]; }
 
-  /// Check if the derivative with respect to this variable should be evaluated
-  // Note that the check depends on whether we are currently solving nonlinear system
-  bool is_dependent() const;
+  /// Second derivative
+  Tensor & d(const VariableBase & var1, const VariableBase & var2)
+  {
+    return _sec_derivs[&var1][&var2];
+  }
 
 protected:
   /// Name of the variable
@@ -98,6 +106,13 @@ protected:
 
   /// Variable tensor type
   const TensorType _type;
+
+private:
+  /// Derivatives of this variable with respect to other variables
+  std::map<const VariableBase *, Tensor> _derivs;
+
+  /// Second derivatives of this variable with respect to other variables
+  std::map<const VariableBase *, std::map<const VariableBase *, Tensor>> _sec_derivs;
 };
 
 /**
@@ -135,7 +150,11 @@ public:
 
   std::unique_ptr<VariableBase> clone() const override
   {
-    return std::move(std::make_unique<Variable<T>>(name(), &owner(), ftype(), type()));
+    if constexpr (std::is_same_v<T, Tensor>)
+      return std::move(
+          std::make_unique<Variable<T>>(name(), &owner(), base_sizes(), ftype(), type()));
+    else
+      return std::move(std::make_unique<Variable<T>>(name(), &owner(), ftype(), type()));
   }
 
   void ref(const VariableBase & var) override
@@ -183,10 +202,13 @@ public:
   /// Set the variable value
   void operator=(const T & val)
   {
-    if (_value_ptr)
-      *_value_ptr = val;
-    else
-      _value = val;
+    neml_assert_dbg(!_value_ptr,
+                    "Failed to set value for variable ",
+                    name(),
+                    " of type ",
+                    type(),
+                    ": Variable is a reference.");
+    _value = val;
   }
 
   /// Variable value

@@ -120,6 +120,10 @@ public:
 protected:
   void setup() override;
 
+  const torch::TensorOptions & options() const { return _options; }
+  TensorShapeRef batch_sizes() const { return _batch_sizes; }
+  Size batch_dim() const { return _batch_sizes.size(); }
+
   /// Additional diagnostics for a nonlinear system
   void diagnose_nl_sys(std::vector<Diagnosis> & diagnoses) const;
 
@@ -144,6 +148,12 @@ protected:
   /// The map between input -> output, and optionally its derivatives
   virtual void set_value(bool out, bool dout_din, bool d2out_din2) = 0;
 
+  void assemble(bool residual, bool Jacobian) override;
+
+  LabeledVector get_output() const { return LabeledVector(); }
+  LabeledMatrix get_doutput_dinput() const { return LabeledMatrix(); }
+  LabeledTensor3D get_d2output_dinput2() const { return LabeledTensor3D(); }
+
   /**
    * @brief Register a model that the current model may use during its evaluation.
    *
@@ -166,8 +176,8 @@ protected:
     auto model = Factory::get_object_ptr<Model>("Models", name, extra_opts);
 
     if (merge_input)
-      for (const auto varname : model->input_axis().variable_names())
-        clone_input_variable(model, varname);
+      for (const auto & varname : model->input_axis().variable_names())
+        clone_input_variable(*model, varname);
 
     _registered_models.push_back(model.get());
     return *(std::dynamic_pointer_cast<T>(model));
@@ -180,15 +190,30 @@ private:
   /// @name Automatic differentiation
   ///@{
   /// Set requires_grad for the input variables
-  void input_requires_grad_(bool req = true) {}
+  void input_requires_grad_(bool /*req = true*/) {}
   /// Helper method to extract derivatives after back propagation
-  void extract_derivatives(bool retain_graph, bool create_graph, bool allow_unused) {}
+  void extract_derivatives(bool /*retain_graph*/, bool /*create_graph*/, bool /*allow_unused*/) {}
   /// Helper method to extract second derivatives after back propagation
-  void extract_second_derivatives(bool retain_graph, bool create_graph, bool allow_unused) {}
+  void
+  extract_second_derivatives(bool /*retain_graph*/, bool /*create_graph*/, bool /*allow_unused*/)
+  {
+  }
   ///@}
 
   /// Whether this is a nonlinear system
   bool _nonlinear_system;
+
+  /// Whether to use AD to compute 1st derivatives
+  bool _AD_1st_deriv;
+
+  /// Whether to use AD to compute 2nd derivatives
+  bool _AD_2nd_deriv;
+
+  /// Tensor options used in the current evaluation
+  torch::TensorOptions _options;
+
+  /// Batch shape used in the current evaluation
+  TensorShape _batch_sizes;
 
 #ifndef NDEBUG
   /// Whether this model has been evaluated in the current forward pass

@@ -67,7 +67,7 @@ ImplicitUpdate::ImplicitUpdate(const OptionSet & options)
   //      *this* model.
   for (auto var : _model.output_axis().subaxis("residual").variable_names())
     declare_output_variable(_model.output_axis().subaxis("residual").storage_size(var),
-                            _model.output_variable(var.prepend("residual"))->type(),
+                            _model.variable(var.prepend("residual")).type(),
                             var.prepend("state"));
 }
 
@@ -106,70 +106,52 @@ ImplicitUpdate::check_AD_limitation() const
 }
 
 void
-ImplicitUpdate::setup_output_views()
+ImplicitUpdate::set_value(bool /*out*/, bool /*dout_din*/, bool /*d2out_din2*/)
 {
-  Model::setup_output_views();
+  // neml_assert_dbg(!d2out_din2, "This model does not define the second derivatives.");
 
-  if (requires_grad())
-  {
-    if (input_axis().has_old_state())
-      _ds_dsn = derivative_storage().base_index({"state", "old_state"});
-    if (input_axis().has_forces())
-      _ds_df = derivative_storage().base_index({"state", "forces"});
-    if (input_axis().has_old_forces())
-      _ds_dfn = derivative_storage().base_index({"state", "old_forces"});
-    if (input_axis().has_parameters())
-      _ds_dp = derivative_storage().base_index({"state", "parameters"});
-  }
-}
+  // // Apply initial guess
+  // LabeledVector sol0(_model.solution(), {&output_axis()});
+  // sol0.fill(host<VariableStore>()->input_storage());
+  // if (sol0.tensor().requires_grad())
+  //   sol0.detach_();
 
-void
-ImplicitUpdate::set_value(bool out, bool dout_din, bool d2out_din2)
-{
-  neml_assert_dbg(!d2out_din2, "This model does not define the second derivatives.");
+  // // The trial state is used as the initial guess
+  // // Perform automatic scaling
+  // _model.init_scaling(_solver.verbose);
 
-  // Apply initial guess
-  LabeledVector sol0(_model.solution(), {&output_axis()});
-  sol0.fill(host<VariableStore>()->input_storage());
-  if (sol0.tensor().requires_grad())
-    sol0.detach_();
+  // // Solution
+  // Tensor sol;
 
-  // The trial state is used as the initial guess
-  // Perform automatic scaling
-  _model.init_scaling(_solver.verbose);
+  // // Solve for the next state
+  // {
+  //   SolvingNonlinearSystem solving;
+  //   sol = _model.solution().clone();
+  //   auto [succeeded, iters] = _solver.solve(_model, sol);
+  //   neml_assert(succeeded, "Nonlinear solve failed.");
+  // }
 
-  // Solution
-  Tensor sol;
+  // if (out)
+  //   output_storage().copy_(sol);
 
-  // Solve for the next state
-  {
-    SolvingNonlinearSystem solving;
-    sol = _model.solution().clone();
-    auto [succeeded, iters] = _solver.solve(_model, sol);
-    neml_assert(succeeded, "Nonlinear solve failed.");
-  }
+  // // Use the implicit function theorem (IFT) to calculate the other derivatives
+  // if (dout_din)
+  // {
+  //   // IFT requires dresidual/dinput evaluated at the solution:
+  //   _model.prepare();
+  //   _model.dvalue();
+  //   auto && [dr_ds, dr_dsn, dr_df, dr_dfn, dr_dp] = _model.get_system_matrices();
 
-  if (out)
-    output_storage().copy_(sol);
-
-  // Use the implicit function theorem (IFT) to calculate the other derivatives
-  if (dout_din)
-  {
-    // IFT requires dresidual/dinput evaluated at the solution:
-    _model.prepare();
-    _model.dvalue();
-    auto && [dr_ds, dr_dsn, dr_df, dr_dfn, dr_dp] = _model.get_system_matrices();
-
-    // The actual IFT:
-    auto [LU, pivot] = math::linalg::lu_factor(dr_ds);
-    if (input_axis().has_old_state())
-      _ds_dsn.index_put_({torch::indexing::Slice()}, -math::linalg::lu_solve(LU, pivot, dr_dsn));
-    if (input_axis().has_forces())
-      _ds_df.index_put_({torch::indexing::Slice()}, -math::linalg::lu_solve(LU, pivot, dr_df));
-    if (input_axis().has_old_forces())
-      _ds_dfn.index_put_({torch::indexing::Slice()}, -math::linalg::lu_solve(LU, pivot, dr_dfn));
-    if (input_axis().has_parameters())
-      _ds_dp.index_put_({torch::indexing::Slice()}, -math::linalg::lu_solve(LU, pivot, dr_dp));
-  }
+  //   // The actual IFT:
+  //   auto [LU, pivot] = math::linalg::lu_factor(dr_ds);
+  //   if (input_axis().has_old_state())
+  //     _ds_dsn.index_put_({torch::indexing::Slice()}, -math::linalg::lu_solve(LU, pivot, dr_dsn));
+  //   if (input_axis().has_forces())
+  //     _ds_df.index_put_({torch::indexing::Slice()}, -math::linalg::lu_solve(LU, pivot, dr_df));
+  //   if (input_axis().has_old_forces())
+  //     _ds_dfn.index_put_({torch::indexing::Slice()}, -math::linalg::lu_solve(LU, pivot, dr_dfn));
+  //   if (input_axis().has_parameters())
+  //     _ds_dp.index_put_({torch::indexing::Slice()}, -math::linalg::lu_solve(LU, pivot, dr_dp));
+  // }
 }
 } // namespace neml2
