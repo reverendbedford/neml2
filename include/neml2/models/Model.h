@@ -150,7 +150,7 @@ protected:
 
   void assemble(bool residual, bool Jacobian) override;
 
-  LabeledVector get_output() const { return LabeledVector(); }
+  LabeledVector get_output() const;
   LabeledMatrix get_doutput_dinput() const { return LabeledMatrix(); }
   LabeledTensor3D get_d2output_dinput2() const { return LabeledTensor3D(); }
 

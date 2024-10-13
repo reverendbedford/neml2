@@ -24,6 +24,7 @@
 
 #include "neml2/tensors/LabeledVector.h"
 #include "neml2/tensors/LabeledMatrix.h"
+#include "neml2/misc/math.h"
 
 namespace neml2
 {
@@ -49,12 +50,23 @@ LabeledVector::split() const
   for (const auto & var : vars)
     split_size.push_back(axis(0).storage_size(var));
 
-  auto vals = tensor().split(split_size);
+  auto vals = tensor().split(split_size, -1);
 
   std::map<LabeledAxisAccessor, Tensor> ret;
   for (std::size_t i = 0; i < vars.size(); ++i)
     ret[vars[i]] = Tensor(vals[i], batch_dim());
   return ret;
+}
+
+LabeledVector
+LabeledVector::assemble(const std::map<LabeledAxisAccessor, Tensor> & vals,
+                        const LabeledAxis & axis)
+{
+  auto vars = axis.sort_by_assembly_order(axis.variable_names());
+  auto vals_flat = std::vector<Tensor>();
+  for (const auto & var : vars)
+    vals_flat.push_back(vals.at(var).base_flatten());
+  return LabeledVector(math::base_cat(vals_flat, -1), {&axis});
 }
 
 namespace utils

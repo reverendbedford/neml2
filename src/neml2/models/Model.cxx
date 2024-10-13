@@ -150,6 +150,7 @@ void
 Model::set_input(const LabeledVector & in)
 {
   _options = in.options();
+  _batch_sizes = in.batch_sizes();
   for (const auto & [var, val] : in.split())
     variable(var).set(val);
 }
@@ -361,5 +362,15 @@ Model::assemble(bool residual, bool Jacobian)
     value_and_dvalue();
   else if (!residual && Jacobian)
     dvalue();
+}
+
+LabeledVector
+Model::get_output() const
+{
+  std::map<VariableName, Tensor> out;
+  for (const auto && [var, val] : variables())
+    if (val.ftype() == FType::OUTPUT)
+      out[var] = val.get();
+  return LabeledVector::assemble(out, output_axis());
 }
 } // namespace neml2

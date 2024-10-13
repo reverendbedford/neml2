@@ -46,7 +46,6 @@ ModelUnitTest::expected_options()
   options.set<bool>("check_AD_derivatives") = false;
   options.set<bool>("check_AD_parameter_derivatives") = true;
   options.set<bool>("check_cuda") = true;
-  options.set<bool>("check_disable_AD") = true;
   options.set<std::vector<VariableName>>("input_batch_tensor_names");
   options.set<std::vector<CrossRef<Tensor>>>("input_batch_tensor_values");
   options.set<std::vector<VariableName>>("output_batch_tensor_names");
@@ -80,8 +79,7 @@ ModelUnitTest::expected_options()
 
 ModelUnitTest::ModelUnitTest(const OptionSet & options)
   : Driver(options),
-    _model(get_model(options.get<std::string>("model"), true)),
-    _model_disable_AD(get_model(options.get<std::string>("model"), false)),
+    _model(get_model(options.get<std::string>("model"))),
     _batch_shape(options.get<TensorShape>("batch_shape")),
     _check_values(options.get<bool>("check_values")),
     _check_1st_deriv(options.get<bool>("check_first_derivatives")),
@@ -91,7 +89,6 @@ ModelUnitTest::ModelUnitTest(const OptionSet & options)
     _check_AD_derivs(options.get<bool>("check_AD_derivatives")),
     _check_AD_param_derivs(options.get<bool>("check_AD_parameter_derivatives")),
     _check_cuda(options.get<bool>("check_cuda")),
-    _check_disable_AD(options.get<bool>("check_disable_AD")),
     _deriv_order(-1),
     _out_rtol(options.get<Real>("output_rel_tol")),
     _out_atol(options.get<Real>("output_abs_tol")),
@@ -129,10 +126,6 @@ ModelUnitTest::run()
 {
   if (!run(_model))
     return false;
-
-  if (_check_disable_AD)
-    if (!run(_model_disable_AD))
-      return false;
 
   return true;
 }

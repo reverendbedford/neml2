@@ -82,6 +82,9 @@ public:
   /// Reference another variable
   virtual void ref(const VariableBase & other) = 0;
 
+  /// Get the variable value
+  virtual Tensor get() const = 0;
+
   /// Set the variable value (handles reshaping)
   virtual void set(const Tensor & val) = 0;
 
@@ -172,6 +175,8 @@ public:
                 ": Dynamic cast failure.");
     _value_ptr = &var_ptr->value();
   }
+
+  Tensor get() const override { return _value_ptr ? *_value_ptr : _value; }
 
   void set(const Tensor & val) override
   {

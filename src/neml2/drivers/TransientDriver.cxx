@@ -38,9 +38,6 @@ TransientDriver::expected_options()
   options.set<std::string>("model");
   options.set("model").doc() = "The material model to be updated by the driver";
 
-  options.set<bool>("enable_AD") = false;
-  options.set("enable_AD").doc() = "Enable automatic differentiation";
-
   options.set<CrossRef<torch::Tensor>>("times");
   options.set("times").doc() =
       "Time steps to perform the material update. The times tensor must have exactly 2 dimensions. "
@@ -103,8 +100,7 @@ TransientDriver::expected_options()
 
 TransientDriver::TransientDriver(const OptionSet & options)
   : Driver(options),
-    _enable_AD(options.get<bool>("enable_AD")),
-    _model(get_model(options.get<std::string>("model"), _enable_AD)),
+    _model(get_model(options.get<std::string>("model"))),
     _device(options.get<std::string>("device")),
     _time(options.get<CrossRef<torch::Tensor>>("times"), 2),
     _step_count(0),

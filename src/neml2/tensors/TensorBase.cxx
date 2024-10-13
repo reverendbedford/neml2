@@ -301,6 +301,15 @@ TensorBase<Derived>::base_transpose(Size d1, Size d2) const
 }
 
 template <class Derived>
+neml2::Tensor
+TensorBase<Derived>::base_flatten() const
+{
+  TensorShape s(batch_sizes());
+  s.push_back(-1);
+  return neml2::Tensor(reshape(s), _batch_dim);
+}
+
+template <class Derived>
 Derived
 TensorBase<Derived>::operator-() const
 {

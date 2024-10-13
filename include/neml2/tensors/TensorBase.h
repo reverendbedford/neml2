@@ -198,6 +198,8 @@ public:
   Derived batch_transpose(Size d1, Size d2) const;
   /// Transpose two base dimensions
   neml2::Tensor base_transpose(Size d1, Size d2) const;
+  /// Flatten base dimensions
+  neml2::Tensor base_flatten() const;
   ///@}
 
 private:

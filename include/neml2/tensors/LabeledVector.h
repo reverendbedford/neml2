@@ -48,6 +48,9 @@ public:
 
   /// Split the vector by variables
   std::map<LabeledAxisAccessor, Tensor> split() const;
+
+  /// Gather from a map of tensors
+  static LabeledVector assemble(const std::map<LabeledAxisAccessor, Tensor> &, const LabeledAxis &);
 };
 
 namespace utils
