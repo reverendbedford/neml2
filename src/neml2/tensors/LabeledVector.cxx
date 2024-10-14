@@ -59,14 +59,9 @@ LabeledVector::split() const
 }
 
 LabeledVector
-LabeledVector::assemble(const std::map<LabeledAxisAccessor, Tensor> & vals,
-                        const LabeledAxis & axis)
+LabeledVector::assemble(const std::vector<Tensor> & vals, const LabeledAxis & axis)
 {
-  auto vars = axis.sort_by_assembly_order(axis.variable_names());
-  auto vals_flat = std::vector<Tensor>();
-  for (const auto & var : vars)
-    vals_flat.push_back(vals.at(var).base_flatten());
-  return LabeledVector(math::base_cat(vals_flat, -1), {&axis});
+  return LabeledVector(math::base_cat(vals, -1), {&axis});
 }
 
 namespace utils

@@ -69,4 +69,11 @@ VariableStore::variable(const VariableName & name) const
   neml_assert(var_ptr, "Variable ", name, " does not exist in model ", _object->name());
   return *var_ptr;
 }
+
+virtual void
+VariableStore::initialize_derivatives(const std::set<VariableName> & args)
+{
+  for (auto && [name, var] : variables())
+    var.initialize_derivatives(args);
+}
 } // namespace neml2

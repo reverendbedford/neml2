@@ -151,8 +151,14 @@ protected:
   void assemble(bool residual, bool Jacobian) override;
 
   LabeledVector get_output() const;
-  LabeledMatrix get_doutput_dinput() const { return LabeledMatrix(); }
-  LabeledTensor3D get_d2output_dinput2() const { return LabeledTensor3D(); }
+  LabeledMatrix get_doutput_dinput() const;
+  LabeledTensor3D get_d2output_dinput2() const;
+
+  /// Called before each evaluation
+  virtual void prepare();
+
+  /// Called after each evaluation
+  virtual void finalize();
 
   /**
    * @brief Register a model that the current model may use during its evaluation.

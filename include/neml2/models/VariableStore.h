@@ -71,6 +71,12 @@ public:
   ///@}
 
 protected:
+  /// Initialize derivatives for all variables
+  virtual void initialize_derivatives(const std::set<VariableName> &);
+
+  /// Cleanup after evaluation
+  virtual void clear() {}
+
   /// Declare an input variable
   template <typename T, typename... S>
   const Variable<T> & declare_input_variable(S &&... name)

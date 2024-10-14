@@ -65,6 +65,6 @@ SingleSlipStrengthMap::set_value(bool out, bool dout_din, bool d2out_din2)
 
   if (dout_din)
     if (_tau_bar.is_dependent())
-      _tau.d(_tau_bar) = Scalar::ones(options()).base_expand_as(_tau.d(_tau_bar));
+      _tau.d(_tau_bar) = Scalar::ones(options());
 }
 } // namespace neml2

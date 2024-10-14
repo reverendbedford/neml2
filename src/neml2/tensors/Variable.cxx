@@ -85,4 +85,86 @@ VariableBase::is_dependent() const
 {
   return !currently_solving_nonlinear_system() || is_solve_dependent();
 }
+
+Derivative
+VariableBase::d(const VariableBase & var)
+{
+  return Derivative(*this, var);
+}
+
+SecondDerivative
+VariableBase::d(const VariableBase & var1, const VariableBase & var2)
+{
+  return SecondDerivative(*this, var1, var2);
+}
+
+void
+VariableBase::initialize_derivatives(const std::set<VariableName> & args)
+{
+}
+
+void
+Derivative::operator=(const Tensor & val)
+{
+  neml_assert_dbg(_y, "Variable to take derivative of has not been initialized.");
+  neml_assert_dbg(_x, "Variable to take derivative w.r.t. has not been initialized.");
+
+  // Flatten partial derivative
+  const auto dy_dx = val.base_reshape({_y->base_storage(), _x->base_storage()});
+
+  // Apply chain rule
+  for (const auto & [var, dx_dx0] : _x->derivatives())
+  {
+    const auto tmp = math::bmm(dy_dx, dx_dx0);
+    auto & dy_dx0 = _y->derivatives()[var];
+    if (dy_dx0.defined())
+      dy_dx0 += tmp;
+    else
+      dy_dx0 = tmp;
+  }
+
+  // This may look weird:
+  // The second order chain rule is
+  //   (d2y/dx2)_{ijk} = (d2y/du2)_{ipq} (du/dx)_{pj} (du/dx)_{qk} + (dy/du)_{ip} (d2u/dx2)_{pjk}
+  // Note the second term comes from the first partial derivative -- we need to accumulate it here
+  // as we don't keep the first partial derivative
+  for (const auto & [var1, d2x_dx0] : _x->second_derivatives())
+    for (const auto & [var2, d2x_dx02] : d2x_dx0)
+    {
+      const auto tmp = Tensor(torch::einsum("...ip,...pjk", {dy_dx, d2x_dx02}),
+                              broadcast_batch_dim(dy_dx, d2x_dx02));
+      auto & d2y_dx02 = _y->second_derivatives()[var1][var2];
+      if (d2y_dx02.defined())
+        d2y_dx02 += d2y_dx02;
+      else
+        d2y_dx02 = d2y_dx02;
+    }
+}
+
+void
+SecondDerivative::operator=(const Tensor & val)
+{
+  neml_assert_dbg(_y, "Variable to take derivative of has not been initialized.");
+  neml_assert_dbg(_x1, "Variable to take derivative w.r.t. has not been initialized.");
+  neml_assert_dbg(_x2, "Variable to take derivative w.r.t. has not been initialized.");
+
+  // Flatten second partial derivative
+  const auto d2y_dx1x2 =
+      val.base_reshape({_y->base_storage(), _x1->base_storage(), _x2->base_storage()});
+
+  // Apply chain rule
+  //   (d2y/dx2)_{ijk} = (d2y/du2)_{ipq} (du/dx)_{pj} (du/dx)_{qk} + (dy/du)_{ip} (d2u/dx2)_{pjk}
+  // The second term is taken care of by Derivative::operator=
+  for (const auto & [var1, dx1_dx0] : _x1->derivatives())
+    for (const auto & [var2, dx2_dx0] : _x2->derivatives())
+    {
+      const auto tmp = Tensor(torch::einsum("...ipq,...pj,...qk", {d2y_dx1x2, dx1_dx0, dx2_dx0}),
+                              broadcast_batch_dim(d2y_dx1x2, dx1_dx0, dx2_dx0));
+      auto & d2y_dx02 = _y->second_derivatives()[var1][var2];
+      if (d2y_dx02.defined())
+        d2y_dx02 += tmp;
+      else
+        d2y_dx02 = tmp;
+    }
+}
 }

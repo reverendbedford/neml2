@@ -24,6 +24,7 @@
 
 #include "neml2/tensors/LabeledTensor3D.h"
 #include "neml2/tensors/LabeledMatrix.h"
+#include "neml2/misc/math.h"
 
 namespace neml2
 {
@@ -59,5 +60,22 @@ LabeledTensor3D::chain(const LabeledTensor3D & other,
   return LabeledTensor3D(torch::einsum("...ipq,...pj,...qk", {*this, dother, dother}) +
                              torch::einsum("...ip,...pjk", {dself, other}),
                          {&axis(0), &other.axis(1), &other.axis(2)});
+}
+
+LabeledTensor3D
+LabeledTensor3D::assemble(const std::vector<std::vector<std::vector<Tensor>>> & vals,
+                          const LabeledAxis & yaxis,
+                          const LabeledAxis & xaxis1,
+                          const LabeledAxis & xaxis2)
+{
+  auto rows = std::vector<Tensor>(vals.size());
+  for (std::size_t i = 0; i < vals.size(); ++i)
+  {
+    auto cols = std::vector<Tensor>(vals[i].size());
+    for (std::size_t j = 0; j < vals[i].size(); ++j)
+      cols[i] = math::base_cat(vals[i][j], -1);
+    rows[i] = math::base_cat(cols, -2);
+  }
+  return LabeledTensor3D(math::base_cat(rows, -3), {&yaxis, &xaxis1, &xaxis2});
 }
 } // namespace neml2

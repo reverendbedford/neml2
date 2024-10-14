@@ -161,8 +161,12 @@ Model::value(const LabeledVector & in)
   check_input(in);
   set_input(in);
 
+  prepare();
   value();
-  return get_output();
+  const auto y = get_output();
+  finalize();
+
+  return y;
 }
 
 std::tuple<LabeledVector, LabeledMatrix>
@@ -171,8 +175,13 @@ Model::value_and_dvalue(const LabeledVector & in)
   check_input(in);
   set_input(in);
 
+  prepare();
   value_and_dvalue();
-  return {get_output(), get_doutput_dinput()};
+  const auto y = get_output();
+  const auto dy_dx = get_doutput_dinput();
+  finalize();
+
+  return {y, dy_dx};
 }
 
 LabeledMatrix
@@ -181,8 +190,12 @@ Model::dvalue(const LabeledVector & in)
   check_input(in);
   set_input(in);
 
+  prepare();
   dvalue();
-  return get_doutput_dinput();
+  const auto dy_dx = get_doutput_dinput();
+  finalize();
+
+  return dy_dx;
 }
 
 std::tuple<LabeledVector, LabeledMatrix, LabeledTensor3D>
@@ -191,8 +204,14 @@ Model::value_and_dvalue_and_d2value(const LabeledVector & in)
   check_input(in);
   set_input(in);
 
+  prepare();
   value_and_dvalue_and_d2value();
-  return {get_output(), get_doutput_dinput(), get_d2output_dinput2()};
+  const auto y = get_output();
+  const auto dy_dx = get_doutput_dinput();
+  const auto d2y_dx2 = get_d2output_dinput2();
+  finalize();
+
+  return {y, dy_dx, d2y_dx2};
 }
 
 std::tuple<LabeledMatrix, LabeledTensor3D>
@@ -201,8 +220,13 @@ Model::dvalue_and_d2value(const LabeledVector & in)
   check_input(in);
   set_input(in);
 
+  prepare();
   dvalue_and_d2value();
-  return {get_doutput_dinput(), get_d2output_dinput2()};
+  const auto dy_dx = get_doutput_dinput();
+  const auto d2y_dx2 = get_d2output_dinput2();
+  finalize();
+
+  return {dy_dx, d2y_dx2};
 }
 
 LabeledTensor3D
@@ -211,8 +235,12 @@ Model::d2value(const LabeledVector & in)
   check_input(in);
   set_input(in);
 
+  prepare();
   d2value();
-  return get_d2output_dinput2();
+  const auto d2y_dx2 = get_d2output_dinput2();
+  finalize();
+
+  return d2y_dx2;
 }
 
 void
@@ -367,10 +395,65 @@ Model::assemble(bool residual, bool Jacobian)
 LabeledVector
 Model::get_output() const
 {
-  std::map<VariableName, Tensor> out;
-  for (const auto && [var, val] : variables())
-    if (val.ftype() == FType::OUTPUT)
-      out[var] = val.get();
-  return LabeledVector::assemble(out, output_axis());
+  auto vars = output_axis().sort_by_assembly_order(output_axis().variable_names());
+  auto vals_flat = std::vector<Tensor>(vars.size());
+  for (std::size_t i = 0; i < vars.size(); ++i)
+    vals_flat[i] = variable(vars[i]).get().base_flatten();
+  return LabeledVector::assemble(vals_flat, output_axis());
+}
+
+LabeledMatrix
+Model::get_doutput_dinput() const
+{
+  auto yvars = output_axis().sort_by_assembly_order(output_axis().variable_names());
+  auto xvars = input_axis().sort_by_assembly_order(input_axis().variable_names());
+  auto vals_flat = std::vector<std::vector<Tensor>>(yvars.size());
+  for (std::size_t i = 0; i < yvars.size(); ++i)
+  {
+    const auto & derivs = variable(yvars[i]).derivatives();
+    vals_flat[i].resize(xvars.size());
+    for (std::size_t j = 0; j < xvars.size(); ++j)
+      vals_flat[i][j] = derivs.at(xvars[j]);
+  }
+  return LabeledMatrix::assemble(vals_flat, output_axis(), input_axis());
+}
+
+LabeledTensor3D
+Model::get_d2output_dinput2() const
+{
+  auto yvars = output_axis().sort_by_assembly_order(output_axis().variable_names());
+  auto xvars = input_axis().sort_by_assembly_order(input_axis().variable_names());
+  auto vals_flat = std::vector<std::vector<std::vector<Tensor>>>(yvars.size());
+  for (std::size_t i = 0; i < yvars.size(); ++i)
+  {
+    const auto & secderivs = variable(yvars[i]).second_derivatives();
+    vals_flat[i].resize(xvars.size());
+    for (std::size_t j = 0; j < xvars.size(); ++j)
+    {
+      vals_flat[i][j].resize(xvars.size());
+      for (std::size_t k = 0; k < xvars.size(); ++k)
+        vals_flat[i][j][k] = secderivs.at(xvars[j]).at(xvars[k]);
+    }
+  }
+  return LabeledTensor3D::assemble(vals_flat, output_axis(), input_axis(), input_axis());
+}
+
+void
+Model::prepare()
+{
+  VariableStore::initialize_derivatives(input_axis().variable_names());
+  _evaluated_once = false;
+
+  for (auto * submodel : _registered_models)
+    submodel->prepare();
+}
+
+void
+Model::finalize()
+{
+  VariableStore::clear();
+
+  for (auto * submodel : _registered_models)
+    submodel->finalize();
 }
 } // namespace neml2

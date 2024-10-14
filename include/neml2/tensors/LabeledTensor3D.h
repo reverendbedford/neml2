@@ -47,5 +47,11 @@ public:
   LabeledTensor3D chain(const LabeledTensor3D & other,
                         const LabeledMatrix & dself,
                         const LabeledMatrix & dother) const;
+
+  /// Assemble a 3D tensor of tensors
+  static LabeledTensor3D assemble(const std::vector<std::vector<std::vector<Tensor>>> &,
+                                  const LabeledAxis &,
+                                  const LabeledAxis &,
+                                  const LabeledAxis &);
 };
 } // namespace neml2

@@ -50,5 +50,9 @@ public:
 
   /// Chain rule product of two derivatives
   LabeledMatrix chain(const LabeledMatrix & other) const;
+
+  /// Assemble a matrix of tensors
+  static LabeledMatrix
+  assemble(const std::vector<std::vector<Tensor>> &, const LabeledAxis &, const LabeledAxis &);
 };
 } // namespace neml2

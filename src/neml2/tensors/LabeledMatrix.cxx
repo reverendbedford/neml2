@@ -59,4 +59,15 @@ LabeledMatrix::chain(const LabeledMatrix & other) const
   // If all the sizes are correct then executing the chain rule is pretty easy
   return LabeledMatrix(math::bmm(*this, other), {&axis(0), &other.axis(1)});
 }
+
+LabeledMatrix
+LabeledMatrix::assemble(const std::vector<std::vector<Tensor>> & vals,
+                        const LabeledAxis & yaxis,
+                        const LabeledAxis & xaxis)
+{
+  auto rows = std::vector<Tensor>(vals.size());
+  for (std::size_t i = 0; i < vals.size(); ++i)
+    rows[i] = math::base_cat(vals[i], -1);
+  return LabeledMatrix(math::base_cat(rows, -2), {&yaxis, &xaxis});
+}
 } // namespace neml2

@@ -36,6 +36,8 @@ using VariableName = LabeledAxisAccessor;
 
 // Forward declarations
 class Model;
+class Derivative;
+class SecondDerivative;
 
 class VariableBase
 {
@@ -88,13 +90,27 @@ public:
   /// Set the variable value (handles reshaping)
   virtual void set(const Tensor & val) = 0;
 
-  /// Derivative
-  Tensor & d(const VariableBase & var) { return _derivs[&var]; }
+  /// Wrapper for assigning partial derivative
+  Derivative d(const VariableBase & var);
 
-  /// Second derivative
-  Tensor & d(const VariableBase & var1, const VariableBase & var2)
+  /// Wrapper for assigning second partial derivative
+  SecondDerivative d(const VariableBase & var1, const VariableBase & var2);
+
+  /// Initialize derivatives
+  void initialize_derivatives(const std::set<VariableName> & args);
+
+  /// Total derivatives
+  std::map<VariableName, Tensor> & derivatives() { return _derivs; }
+  const std::map<VariableName, Tensor> & derivatives() const { return _derivs; }
+
+  /// Total second derivatives
+  std::map<VariableName, std::map<VariableName, Tensor>> & second_derivatives()
   {
-    return _sec_derivs[&var1][&var2];
+    return _sec_derivs;
+  }
+  const std::map<VariableName, std::map<VariableName, Tensor>> & second_derivatives() const
+  {
+    return _sec_derivs;
   }
 
 protected:
@@ -112,10 +128,10 @@ protected:
 
 private:
   /// Derivatives of this variable with respect to other variables
-  std::map<const VariableBase *, Tensor> _derivs;
+  std::map<VariableName, Tensor> _derivs;
 
   /// Second derivatives of this variable with respect to other variables
-  std::map<const VariableBase *, std::map<const VariableBase *, Tensor>> _sec_derivs;
+  std::map<VariableName, std::map<VariableName, Tensor>> _sec_derivs;
 };
 
 /**
@@ -239,6 +255,53 @@ protected:
 
   /// Variable value (nullptr if this is a storing variable)
   const T * _value_ptr;
+};
+
+class Derivative
+{
+public:
+  Derivative()
+    : _y(nullptr),
+      _x(nullptr)
+  {
+  }
+
+  Derivative(VariableBase & y, const VariableBase & x)
+    : _y(&y),
+      _x(&x)
+  {
+  }
+
+  void operator=(const Tensor & val);
+
+private:
+  VariableBase * const _y;
+  const VariableBase * const _x;
+};
+
+class SecondDerivative
+{
+public:
+  SecondDerivative()
+    : _y(nullptr),
+      _x1(nullptr),
+      _x2(nullptr)
+  {
+  }
+
+  SecondDerivative(VariableBase & y, const VariableBase & x1, const VariableBase & x2)
+    : _y(&y),
+      _x1(&x1),
+      _x2(&x2)
+  {
+  }
+
+  void operator=(const Tensor & val);
+
+private:
+  VariableBase * const _y;
+  const VariableBase * const _x1;
+  const VariableBase * const _x2;
 };
 
 // Everything below is just for convenience: We just forward operations to the the variable values

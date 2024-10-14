@@ -9,7 +9,7 @@
     output_scalar_values = '-1.5'
 
     check_values = true
-    check_first_derivatives = false
+    check_first_derivatives = true
     check_second_derivatives = false
     check_AD_first_derivatives = false
     check_AD_second_derivatives = false
