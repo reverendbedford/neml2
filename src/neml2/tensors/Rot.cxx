@@ -244,6 +244,12 @@ Rot::dist(const Rot & r) const
   return q1.dist(q2).minimum(q1.dist(q2p)).minimum(q1p.dist(q2)).minimum(q1p.dist(q2p));
 }
 
+Scalar
+Rot::dV() const
+{
+  return 8.0 / M_PI * math::pow(1.0 + this->norm_sq(), -3.0);
+}
+
 Rot
 operator*(const Rot & r1, const Rot & r2)
 {

@@ -40,7 +40,8 @@ def_Rot(py::class_<Rot> & c)
       .def("rotate", &Rot::rotate)
       .def("drotate", &Rot::drotate)
       .def("shadow", &Rot::shadow)
-      .def("dist", &Rot::dist);
+      .def("dist", &Rot::dist)
+      .def("dV", &Rot::dV);
 
   // Operators
   c.def(py::self * py::self);
