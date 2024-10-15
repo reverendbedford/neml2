@@ -117,6 +117,54 @@ void
 Model::setup()
 {
   setup_layout();
+
+  if (host() == this)
+  {
+    set_args(this);
+    link_output_variables();
+    link_input_variables();
+  }
+}
+
+void
+Model::set_args(Model * model)
+{
+  _args = model->variables(FType::INPUT);
+  for (auto * submodel : _registered_models)
+    submodel->set_args(submodel);
+}
+
+void
+Model::link_input_variables()
+{
+  for (auto * submodel : _registered_models)
+  {
+    link_input_variables(submodel);
+    submodel->link_input_variables();
+  }
+}
+
+void
+Model::link_input_variables(Model * submodel)
+{
+  for (auto && [name, var] : submodel->variables())
+    if (var.ftype() == FType::INPUT)
+      var.ref(variable(name));
+}
+
+void
+Model::link_output_variables()
+{
+  for (auto * submodel : _registered_models)
+  {
+    link_output_variables(submodel);
+    submodel->link_output_variables();
+  }
+}
+
+void
+Model::link_output_variables(Model * /*submodel*/)
+{
 }
 
 void
@@ -441,12 +489,7 @@ Model::get_d2output_dinput2() const
 void
 Model::prepare()
 {
-  std::vector<const VariableBase *> args;
-  for (auto && [name, var] : variables())
-    if (var.ftype() == FType::INPUT)
-      args.push_back(&var);
-  VariableStore::initialize_derivatives(args, options());
-
+  VariableStore::initialize_derivatives(_args, options());
   _evaluated_once = false;
 
   for (auto * submodel : _registered_models)

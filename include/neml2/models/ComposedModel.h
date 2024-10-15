@@ -47,17 +47,14 @@ public:
   named_nonlinear_parameter_models(bool recursive = false) const override;
 
 protected:
+  void set_args(Model * model) override;
+  void link_input_variables(Model * submodel) override;
+  void link_output_variables(Model * submodel) override;
   void set_value(bool, bool, bool) override;
 
 private:
   /// Helper method to evaluate one single model in the threaded set_value loop
   void set_value_async(Model * i, bool out, bool dout_din, bool d2out_din2);
-
-  /// Helper method to recursively apply chain rule
-  void apply_chain_rule(Model * /*i*/) {}
-
-  /// Helper method to recursively apply second order chain rule
-  void apply_second_order_chain_rule(Model * /*i*/) {}
 
   /// Helper to rethrow exceptions collected from other threads
   void rethrow_exceptions() const;

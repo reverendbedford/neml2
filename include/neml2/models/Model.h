@@ -119,6 +119,11 @@ public:
 
 protected:
   void setup() override;
+  virtual void set_args(Model *);
+  virtual void link_input_variables() final;
+  virtual void link_input_variables(Model * submodel);
+  virtual void link_output_variables() final;
+  virtual void link_output_variables(Model * submodel);
 
   const torch::TensorOptions & options() const { return _options; }
   TensorShapeRef batch_sizes() const { return _batch_sizes; }
@@ -155,7 +160,7 @@ protected:
   LabeledTensor3D get_d2output_dinput2() const;
 
   /// Called before each evaluation
-  virtual void prepare();
+  virtual void prepare() final;
 
   /// Called after each evaluation
   virtual void finalize();
@@ -220,6 +225,9 @@ private:
 
   /// Batch shape used in the current evaluation
   TensorShape _batch_sizes;
+
+  /// Arguments to take derivative with respect to
+  std::vector<const VariableBase *> _args;
 
 #ifndef NDEBUG
   /// Whether this model has been evaluated in the current forward pass

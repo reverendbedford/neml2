@@ -70,6 +70,9 @@ public:
   const VariableBase & variable(const VariableName &) const;
   ///@}
 
+  /// List of variables that match the given ftype
+  std::vector<const VariableBase *> variables(FType) const;
+
 protected:
   /// Initialize derivatives for all variables
   virtual void initialize_derivatives(const std::vector<const VariableBase *> &,

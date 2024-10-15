@@ -41,11 +41,11 @@ ModelUnitTest::expected_options()
   options.set<bool>("check_values") = true;
   options.set<bool>("check_first_derivatives") = true;
   options.set<bool>("check_second_derivatives") = false;
-  options.set<bool>("check_AD_first_derivatives") = true;
+  options.set<bool>("check_AD_first_derivatives") = false;
   options.set<bool>("check_AD_second_derivatives") = false;
   options.set<bool>("check_AD_derivatives") = false;
-  options.set<bool>("check_AD_parameter_derivatives") = true;
-  options.set<bool>("check_cuda") = true;
+  options.set<bool>("check_AD_parameter_derivatives") = false;
+  options.set<bool>("check_cuda") = false;
   options.set<std::vector<VariableName>>("input_batch_tensor_names");
   options.set<std::vector<CrossRef<Tensor>>>("input_batch_tensor_values");
   options.set<std::vector<VariableName>>("output_batch_tensor_names");

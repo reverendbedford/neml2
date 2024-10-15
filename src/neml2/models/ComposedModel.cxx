@@ -148,6 +148,37 @@ ComposedModel::named_nonlinear_parameter_models(bool /*recursive*/) const
 }
 
 void
+ComposedModel::set_args(Model * model)
+{
+  _args = model->variables(FType::INPUT);
+  for (auto * submodel : _registered_models)
+    submodel->set_args(model);
+}
+
+void
+ComposedModel::link_input_variables(Model * submodel)
+{
+  for (const auto & item : _dependency.inbound_items())
+    if (item.parent == submodel)
+      submodel->variable(item.value).ref(variable(item.value));
+
+  for (const auto & [item, providers] : _dependency.item_providers())
+    if (item.parent == submodel)
+    {
+      auto * depmodel = providers.begin()->parent;
+      submodel->variable(item.value).ref(depmodel->variable(item.value));
+    }
+}
+
+void
+ComposedModel::link_output_variables(Model * submodel)
+{
+  for (const auto & item : _dependency.outbound_items())
+    if (item.parent == submodel)
+      variable(item.value).ref(submodel->variable(item.value));
+}
+
+void
 ComposedModel::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   _async_exceptions.clear();
@@ -181,12 +212,6 @@ ComposedModel::set_value_async(Model * i, bool out, bool dout_din, bool d2out_di
       i->value_and_dvalue_and_d2value();
     else
       throw NEMLException("Unsupported call signature to set_value");
-
-    if (dout_din && !d2out_din2)
-      apply_chain_rule(i);
-
-    if (d2out_din2)
-      apply_second_order_chain_rule(i);
   }
   catch (...)
   {

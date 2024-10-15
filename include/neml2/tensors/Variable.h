@@ -215,7 +215,10 @@ public:
   {
     for (auto x1 : args)
     {
-      _derivs[x1->name()] = Tensor::zeros({base_storage(), x1->base_storage()}, options);
+      if (x1->name() == name())
+        _derivs[x1->name()] = Tensor::identity(base_storage(), options);
+      else
+        _derivs[x1->name()] = Tensor::zeros({base_storage(), x1->base_storage()}, options);
       for (auto x2 : args)
         _sec_derivs[x1->name()][x2->name()] =
             Tensor::zeros({base_storage(), x1->base_storage(), x2->base_storage()}, options);
@@ -278,7 +281,15 @@ public:
   void chain1(const Tensor & dy_du, const std::map<VariableName, Tensor> & du_dx) override
   {
     for (const auto & [xvar, du_dx] : du_dx)
-      _derivs[xvar] += math::bmm(dy_du, du_dx);
+    {
+      neml_assert_dbg(_derivs.count(xvar),
+                      "Derivative of variable ",
+                      name(),
+                      " with respect to ",
+                      xvar,
+                      " is not initialized.");
+      _derivs[xvar] = _derivs[xvar] + math::bmm(dy_du, du_dx);
+    }
   }
 
   void chain2a(const Tensor & d2y_du1u2,
@@ -286,19 +297,57 @@ public:
                const std::map<VariableName, Tensor> & du2) override
   {
     for (const auto & [x1var, du1_dxj] : du1)
+    {
+      neml_assert_dbg(_sec_derivs.count(x1var),
+                      "Second derivative of variable ",
+                      name(),
+                      " with respect to ",
+                      x1var,
+                      " is not initialized.");
       for (const auto & [x2var, du2_dxk] : du2)
-        _sec_derivs[x1var][x2var] +=
+      {
+        neml_assert_dbg(_sec_derivs[x1var].count(x2var),
+                        "Second derivative of variable ",
+                        name(),
+                        " with respect to ",
+                        x1var,
+                        " and ",
+                        x2var,
+                        " is not initialized.");
+        _sec_derivs[x1var][x2var] =
+            _sec_derivs[x1var][x2var] +
             Tensor(torch::einsum("...ipq,...pj,...qk", {d2y_du1u2, du1_dxj, du2_dxk}),
                    broadcast_batch_dim(d2y_du1u2, du1_dxj, du2_dxk));
+      }
+    }
   }
 
   void chain2b(const Tensor & dy_du,
                const std::map<VariableName, std::map<VariableName, Tensor>> & d2u) override
   {
     for (const auto & [x1var, d2u_dx1] : d2u)
+    {
+      neml_assert_dbg(_sec_derivs.count(x1var),
+                      "Second derivative of variable ",
+                      name(),
+                      " with respect to ",
+                      x1var,
+                      " is not initialized.");
       for (const auto & [x2var, d2u_dx1x2] : d2u_dx1)
-        _sec_derivs[x1var][x2var] += Tensor(torch::einsum("...ip,...pjk", {dy_du, d2u_dx1x2}),
-                                            broadcast_batch_dim(dy_du, d2u_dx1x2));
+      {
+        neml_assert_dbg(_sec_derivs[x1var].count(x2var),
+                        "Second derivative of variable ",
+                        name(),
+                        " with respect to ",
+                        x1var,
+                        " and ",
+                        x2var,
+                        " is not initialized.");
+        _sec_derivs[x1var][x2var] =
+            _sec_derivs[x1var][x2var] + Tensor(torch::einsum("...ip,...pjk", {dy_du, d2u_dx1x2}),
+                                               broadcast_batch_dim(dy_du, d2u_dx1x2));
+      }
+    }
   }
 
 protected:
