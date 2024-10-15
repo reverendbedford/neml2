@@ -441,7 +441,12 @@ Model::get_d2output_dinput2() const
 void
 Model::prepare()
 {
-  VariableStore::initialize_derivatives(input_axis().variable_names());
+  std::vector<const VariableBase *> args;
+  for (auto && [name, var] : variables())
+    if (var.ftype() == FType::INPUT)
+      args.push_back(&var);
+  VariableStore::initialize_derivatives(args, options());
+
   _evaluated_once = false;
 
   for (auto * submodel : _registered_models)

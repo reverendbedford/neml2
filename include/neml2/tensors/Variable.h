@@ -84,6 +84,9 @@ public:
   /// Reference another variable
   virtual void ref(const VariableBase & other) = 0;
 
+  /// Get the referencing variable
+  virtual const VariableBase * ref() const = 0;
+
   /// Get the variable value
   virtual Tensor get() const = 0;
 
@@ -97,21 +100,25 @@ public:
   SecondDerivative d(const VariableBase & var1, const VariableBase & var2);
 
   /// Initialize derivatives
-  void initialize_derivatives(const std::set<VariableName> & args);
+  virtual void initialize_derivatives(const std::vector<const VariableBase *> & args,
+                                      const torch::TensorOptions & options) = 0;
 
   /// Total derivatives
-  std::map<VariableName, Tensor> & derivatives() { return _derivs; }
-  const std::map<VariableName, Tensor> & derivatives() const { return _derivs; }
+  virtual const std::map<VariableName, Tensor> & derivatives() const = 0;
 
   /// Total second derivatives
-  std::map<VariableName, std::map<VariableName, Tensor>> & second_derivatives()
-  {
-    return _sec_derivs;
-  }
-  const std::map<VariableName, std::map<VariableName, Tensor>> & second_derivatives() const
-  {
-    return _sec_derivs;
-  }
+  virtual const std::map<VariableName, std::map<VariableName, Tensor>> &
+  second_derivatives() const = 0;
+
+  /// Apply first-order chain rule
+  virtual void chain1(const Tensor & dy_du, const std::map<VariableName, Tensor> & du_dx) = 0;
+
+  /// Apply second-order chain rule
+  virtual void chain2a(const Tensor & d2y_du1u2,
+                       const std::map<VariableName, Tensor> & du1_dx,
+                       const std::map<VariableName, Tensor> & du2_dx) = 0;
+  virtual void chain2b(const Tensor & dy_du,
+                       const std::map<VariableName, std::map<VariableName, Tensor>> & d2u_dx2) = 0;
 
 protected:
   /// Name of the variable
@@ -125,13 +132,6 @@ protected:
 
   /// Variable tensor type
   const TensorType _type;
-
-private:
-  /// Derivatives of this variable with respect to other variables
-  std::map<VariableName, Tensor> _derivs;
-
-  /// Second derivatives of this variable with respect to other variables
-  std::map<VariableName, std::map<VariableName, Tensor>> _sec_derivs;
 };
 
 /**
@@ -149,7 +149,7 @@ public:
            TensorType type = TensorTypeEnum<T2>::value)
     : VariableBase(name_in, owner, ftype, type),
       _base_sizes(T::const_base_sizes),
-      _value_ptr(nullptr)
+      _ref(nullptr)
   {
   }
 
@@ -161,7 +161,7 @@ public:
            TensorType type = TensorType::kTensor)
     : VariableBase(name_in, owner, ftype, type),
       _base_sizes(base_shape),
-      _value_ptr(nullptr)
+      _ref(nullptr)
   {
   }
 
@@ -189,10 +189,12 @@ public:
                 " of type ",
                 var.type(),
                 ": Dynamic cast failure.");
-    _value_ptr = &var_ptr->value();
+    _ref = var_ptr;
   }
 
-  Tensor get() const override { return _value_ptr ? *_value_ptr : _value; }
+  const VariableBase * ref() const override { return _ref; }
+
+  Tensor get() const override { return _ref ? _ref->get() : Tensor(_value); }
 
   void set(const Tensor & val) override
   {
@@ -206,6 +208,38 @@ public:
                     ", got ",
                     val.base_storage());
     (*this) = T(val.base_reshape(base_sizes()));
+  }
+
+  void initialize_derivatives(const std::vector<const VariableBase *> & args,
+                              const torch::TensorOptions & options) override
+  {
+    for (auto x1 : args)
+    {
+      _derivs[x1->name()] = Tensor::zeros({base_storage(), x1->base_storage()}, options);
+      for (auto x2 : args)
+        _sec_derivs[x1->name()][x2->name()] =
+            Tensor::zeros({base_storage(), x1->base_storage(), x2->base_storage()}, options);
+    }
+  }
+
+  const std::map<VariableName, Tensor> & derivatives() const override
+  {
+    if (_ref)
+      return _ref->derivatives();
+    return _derivs;
+  }
+
+  const std::map<VariableName, std::map<VariableName, Tensor>> & second_derivatives() const override
+  {
+    if (_ref)
+      return _ref->second_derivatives();
+    return _sec_derivs;
+  }
+
+  /// Suppressed constructor to prevent accidental dereferencing
+  [[deprecated("Variable<T> must be assigned to references -- missing &")]] Variable(
+      const Variable<T> &&)
+  {
   }
 
   /// Suppressed constructor to prevent accidental dereferencing
@@ -223,17 +257,12 @@ public:
   /// Set the variable value
   void operator=(const T & val)
   {
-    neml_assert_dbg(!_value_ptr,
-                    "Failed to set value for variable ",
-                    name(),
-                    " of type ",
-                    type(),
-                    ": Variable is a reference.");
+    neml_assert_dbg(!_ref, "Cannot assign value to a referencing variable.");
     _value = val;
   }
 
   /// Variable value
-  const T & value() const { return _value_ptr ? *_value_ptr : _value; }
+  const T & value() const { return _ref ? _ref->value() : _value; }
 
   /// Negation
   T operator-() const { return -value(); }
@@ -246,15 +275,47 @@ public:
     return value();
   }
 
+  void chain1(const Tensor & dy_du, const std::map<VariableName, Tensor> & du_dx) override
+  {
+    for (const auto & [xvar, du_dx] : du_dx)
+      _derivs[xvar] += math::bmm(dy_du, du_dx);
+  }
+
+  void chain2a(const Tensor & d2y_du1u2,
+               const std::map<VariableName, Tensor> & du1,
+               const std::map<VariableName, Tensor> & du2) override
+  {
+    for (const auto & [x1var, du1_dxj] : du1)
+      for (const auto & [x2var, du2_dxk] : du2)
+        _sec_derivs[x1var][x2var] +=
+            Tensor(torch::einsum("...ipq,...pj,...qk", {d2y_du1u2, du1_dxj, du2_dxk}),
+                   broadcast_batch_dim(d2y_du1u2, du1_dxj, du2_dxk));
+  }
+
+  void chain2b(const Tensor & dy_du,
+               const std::map<VariableName, std::map<VariableName, Tensor>> & d2u) override
+  {
+    for (const auto & [x1var, d2u_dx1] : d2u)
+      for (const auto & [x2var, d2u_dx1x2] : d2u_dx1)
+        _sec_derivs[x1var][x2var] += Tensor(torch::einsum("...ip,...pjk", {dy_du, d2u_dx1x2}),
+                                            broadcast_batch_dim(dy_du, d2u_dx1x2));
+  }
+
 protected:
   /// Base shape of the variable
   const TensorShape _base_sizes;
 
+  /// The variable referenced by this (nullptr if this is a storing variable)
+  const Variable<T> * _ref;
+
   /// Variable value (undefined if this is a referencing variable)
   T _value;
 
-  /// Variable value (nullptr if this is a storing variable)
-  const T * _value_ptr;
+  /// Derivatives of this variable with respect to other variables
+  std::map<VariableName, Tensor> _derivs;
+
+  /// Second derivatives of this variable with respect to other variables
+  std::map<VariableName, std::map<VariableName, Tensor>> _sec_derivs;
 };
 
 class Derivative

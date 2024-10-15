@@ -72,7 +72,8 @@ public:
 
 protected:
   /// Initialize derivatives for all variables
-  virtual void initialize_derivatives(const std::set<VariableName> &);
+  virtual void initialize_derivatives(const std::vector<const VariableBase *> &,
+                                      const torch::TensorOptions &);
 
   /// Cleanup after evaluation
   virtual void clear() {}

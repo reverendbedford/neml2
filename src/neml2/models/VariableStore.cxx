@@ -70,10 +70,12 @@ VariableStore::variable(const VariableName & name) const
   return *var_ptr;
 }
 
-virtual void
-VariableStore::initialize_derivatives(const std::set<VariableName> & args)
+void
+VariableStore::initialize_derivatives(const std::vector<const VariableBase *> & args,
+                                      const torch::TensorOptions & options)
 {
   for (auto && [name, var] : variables())
-    var.initialize_derivatives(args);
+    if (!var.ref())
+      var.initialize_derivatives(args, options);
 }
 } // namespace neml2
