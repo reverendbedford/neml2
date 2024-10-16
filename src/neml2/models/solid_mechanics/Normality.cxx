@@ -53,7 +53,7 @@ Normality::expected_options()
 
 Normality::Normality(const OptionSet & options)
   : Model(options),
-    _model(register_model<Model>(options.get<std::string>("model"), /*extra_deriv_order=*/1)),
+    _model(register_model<Model>(options.get<std::string>("model"))),
     _f(options.get<VariableName>("function"))
 {
   // Set up the conjugate pairs
@@ -66,11 +66,7 @@ Normality::Normality(const OptionSet & options)
               to.size(),
               " variables.");
   for (size_t i = 0; i < from.size(); i++)
-  {
-    auto sz = _model.output_axis().storage_size(_f) * _model.input_axis().storage_size(from[i]);
-    _conjugate_pairs.emplace(from[i],
-                             &declare_output_variable(sz, variable(from[i]).type(), to[i]));
-  }
+    _conjugate_pairs.emplace(from[i], clone_output_variable(_model.variable(from[i]), to[i]));
 }
 
 void
@@ -79,22 +75,30 @@ Normality::set_value(bool out, bool dout_din, bool d2out_din2)
   neml_assert_dbg(!d2out_din2, "Normality doesn't implement second derivatives.");
 
   {
-    SolvingNonlinearSystem not_solving(false);
+    SolvingNonlinearSystem guard(false);
     if (out && !dout_din)
       _model.dvalue();
     else
       _model.dvalue_and_d2value();
   }
 
-  // for (auto && [ivar, var] : _conjugate_pairs)
-  // {
-  //   if (out)
-  //     (*var) = _f_deriv_views[ivar];
+  std::cout << std::endl;
+  std::cout << "In model " << name() << std::endl;
 
-  //   if (dout_din)
-  //     for (auto && [jvar, j] : input_variables())
-  //       if (j.is_dependent())
-  //         var->d(j) = _f_secderiv_views[ivar][jvar];
-  // }
+  const auto & f = _model.variable(_f);
+  for (auto && [ivar, var] : _conjugate_pairs)
+  {
+    if (out)
+    {
+      std::cout << "f.derivatives().at(" << ivar
+                << ").sizes() = " << f.derivatives().at(ivar).sizes() << std::endl;
+      (*var) = f.derivatives().at(ivar);
+    }
+
+    if (dout_din)
+      for (const auto * j : _model.variables(FType::INPUT))
+        if (j->is_dependent())
+          var->d(*j) = f.second_derivatives().at(ivar).at(j->name());
+  }
 }
 } // namespace neml2

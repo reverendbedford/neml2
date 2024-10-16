@@ -73,7 +73,7 @@ LabeledTensor3D::assemble(const std::vector<std::vector<std::vector<Tensor>>> & 
   {
     auto cols = std::vector<Tensor>(vals[i].size());
     for (std::size_t j = 0; j < vals[i].size(); ++j)
-      cols[i] = math::base_cat(vals[i][j], -1);
+      cols[j] = math::base_cat(vals[i][j], -1);
     rows[i] = math::base_cat(cols, -2);
   }
   return LabeledTensor3D(math::base_cat(rows, -3), {&yaxis, &xaxis1, &xaxis2});

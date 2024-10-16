@@ -105,14 +105,17 @@ ComposedModel::ComposedModel(const OptionSet & options)
 
   // Sort the registered models by dependency resolution
   _registered_models = _dependency.resolution();
+  for (auto * m : _registered_models)
+    std::cout << m->name() << " ";
+  std::cout << std::endl;
 
   // Register input variables
   for (const auto & item : _dependency.inbound_items())
-    clone_input_variable(*item.parent, item.value);
+    clone_input_variable(item.parent->variable(item.value));
 
   // Register output variables
   for (const auto & item : _dependency.outbound_items())
-    clone_output_variable(*item.parent, item.value);
+    clone_output_variable(item.parent->variable(item.value));
 
   // Declare nonlinear parameters
   for (auto * submodel : submodels)
@@ -181,17 +184,30 @@ ComposedModel::link_output_variables(Model * submodel)
 void
 ComposedModel::set_value(bool out, bool dout_din, bool d2out_din2)
 {
-  _async_exceptions.clear();
-  _async_results.clear();
+  // _async_exceptions.clear();
+  // _async_results.clear();
+  // for (auto * i : registered_models())
+  //   _async_results[i] = std::async(
+  //       std::launch::deferred, &ComposedModel::set_value_async, this, i, out, dout_din,
+  //       d2out_din2);
+
+  // for (auto && [i, future] : _async_results)
+  //   future.wait();
+
+  // // Rethrow exceptions raised from other threads to the main thread
+  // rethrow_exceptions();
+
   for (auto * i : registered_models())
-    _async_results[i] = std::async(
-        std::launch::deferred, &ComposedModel::set_value_async, this, i, out, dout_din, d2out_din2);
-
-  for (auto && [i, future] : _async_results)
-    future.wait();
-
-  // Rethrow exceptions raised from other threads to the main thread
-  rethrow_exceptions();
+  {
+    if (out && !dout_din && !d2out_din2)
+      i->value();
+    else if (dout_din && !d2out_din2)
+      i->value_and_dvalue();
+    else if (d2out_din2)
+      i->value_and_dvalue_and_d2value();
+    else
+      throw NEMLException("Unsupported call signature to set_value");
+  }
 }
 
 void

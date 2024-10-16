@@ -79,7 +79,9 @@ public:
   Size base_storage() const { return utils::storage_size(base_sizes()); }
 
   /// Clone this variable
-  virtual std::unique_ptr<VariableBase> clone() const = 0;
+  virtual std::unique_ptr<VariableBase> clone(const VariableName & name = {},
+                                              const Model * owner = nullptr,
+                                              FType ftype = FType::NONE) const = 0;
 
   /// Reference another variable
   virtual void ref(const VariableBase & other) = 0;
@@ -92,6 +94,9 @@ public:
 
   /// Set the variable value (handles reshaping)
   virtual void set(const Tensor & val) = 0;
+
+  /// Assignment operator
+  virtual void operator=(const Tensor & val) = 0;
 
   /// Wrapper for assigning partial derivative
   Derivative d(const VariableBase & var);
@@ -167,13 +172,22 @@ public:
 
   TensorShapeRef base_sizes() const override { return _base_sizes; }
 
-  std::unique_ptr<VariableBase> clone() const override
+  std::unique_ptr<VariableBase> clone(const VariableName & name = {},
+                                      const Model * owner = nullptr,
+                                      FType ftype = FType::NONE) const override
   {
     if constexpr (std::is_same_v<T, Tensor>)
       return std::move(
-          std::make_unique<Variable<T>>(name(), &owner(), base_sizes(), ftype(), type()));
+          std::make_unique<Variable<Tensor>>(name.empty() ? this->name() : name,
+                                             owner ? owner : &this->owner(),
+                                             base_sizes(),
+                                             ftype != FType::NONE ? ftype : this->ftype(),
+                                             type()));
     else
-      return std::move(std::make_unique<Variable<T>>(name(), &owner(), ftype(), type()));
+      return std::move(std::make_unique<Variable<T>>(name.empty() ? this->name() : name,
+                                                     owner ? owner : &this->owner(),
+                                                     ftype != FType::NONE ? ftype : this->ftype(),
+                                                     type()));
   }
 
   void ref(const VariableBase & var) override
@@ -258,10 +272,10 @@ public:
   }
 
   /// Set the variable value
-  void operator=(const T & val)
+  void operator=(const Tensor & val) override
   {
     neml_assert_dbg(!_ref, "Cannot assign value to a referencing variable.");
-    _value = val;
+    _value = T(val);
   }
 
   /// Variable value

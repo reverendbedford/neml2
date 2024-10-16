@@ -27,6 +27,8 @@
 
 #include "utils.h"
 #include "neml2/models/Model.h"
+#include "neml2/jit/StaticGraphFunction.h"
+#include "neml2/base/guards.h"
 
 using namespace neml2;
 
@@ -111,5 +113,44 @@ TEST_CASE("Model", "[models]")
               "This model is part of a nonlinear system. At least one of the input variables is "
               "solve-dependent, so all output variables MUST be solve-dependent"));
     }
+  }
+
+  SECTION("profiling")
+  {
+    auto & model = reload_model("unit/models/chaboche.i", "implicit_rate");
+
+    // Trace the value method
+    auto forward = [&model](torch::Tensor & x) -> std::tuple<torch::Tensor>
+    { return {model.value(LabeledVector(x, {&model.input_axis()}))}; };
+    auto forward_jit = neml2::jit::StaticGraphFunction<std::tuple<torch::Tensor>, torch::Tensor>(
+        "model.value", forward, {torch::rand({20, 50, model.input_axis().storage_size()})});
+
+    auto x = torch::rand({20, 50, model.input_axis().storage_size()});
+    auto [y] = forward_jit(x);
+    REQUIRE(TensorShape(y.sizes()) == TensorShape{20, 50, model.output_axis().storage_size()});
+    REQUIRE(torch::allclose(y, model.value(LabeledVector(x, {&model.input_axis()}))));
+
+    // forward_jit.function().graph()->dump();
+
+    // Size N = 1000;
+    // x = torch::rand({N, 20, 50, model.input_axis().storage_size()});
+
+    // {
+    //   TimedSection ts("original", "model.value");
+    //   for (Size i = 0; i < N; ++i)
+    //   {
+    //     model.reinit({20, 50});
+    //     model.value(LabeledVector(x.index({i}), {&model.input_axis()}));
+    //   }
+    // }
+    // std::cout << "original: " << timed_sections()["model.value"]["original"] << std::endl;
+
+    // {
+    //   torch::InferenceMode inf;
+    //   TimedSection ts("jit", "model.value");
+    //   for (Size i = 0; i < N; ++i)
+    //     forward_jit(x.index({i}));
+    // }
+    // std::cout << "jit:      " << timed_sections()["model.value"]["jit"] << std::endl;
   }
 }

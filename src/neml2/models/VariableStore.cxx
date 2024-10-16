@@ -84,15 +84,8 @@ void
 VariableStore::initialize_derivatives(const std::vector<const VariableBase *> & args,
                                       const torch::TensorOptions & options)
 {
-  std::cout << "Initializing derivatives for model " << _object->name() << std::endl;
   for (auto && [name, var] : variables())
-  {
-    std::cout << "  variable " << name << std::endl;
     if (!var.ref())
-    {
       var.initialize_derivatives(args, options);
-      std::cout << "    initialized\n";
-    }
-  }
 }
 } // namespace neml2

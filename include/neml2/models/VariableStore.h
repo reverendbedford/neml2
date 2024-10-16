@@ -133,12 +133,12 @@ protected:
         list_size * T::const_base_storage, TensorType::kTensor, std::forward<S>(name)...);
   }
 
-  /// Clone a variable from a given model and put it on the input axis
-  template <typename... S>
-  VariableBase * clone_input_variable(const VariableStore & m, S &&... name)
+  /// Clone a variable and put it on the input axis
+  const VariableBase * clone_input_variable(const VariableBase & var,
+                                            const VariableName & new_name = {})
   {
-    const auto var_name = variable_name(std::forward<S>(name)...);
-    auto var_clone = m.variable(var_name).clone();
+    auto var_clone = var.clone(new_name, _object, FType::INPUT);
+    const auto var_name = var_clone->name();
 
     if (_input_axis.has_variable(var_name))
       neml_assert(_input_axis.storage_size(var_name) == var_clone->base_storage(),
@@ -146,7 +146,7 @@ protected:
                   var_name,
                   " with base storage ",
                   var_clone->base_storage(),
-                  " onto its input axis, but a variable with different storage size ",
+                  " onto the input axis, but a variable with different storage size ",
                   _input_axis.storage_size(var_name),
                   " has already been declared.");
 
@@ -154,12 +154,11 @@ protected:
     return _variables.set_pointer(var_name, std::move(var_clone));
   }
 
-  /// Clone a variable from a given model and put it on the output axis
-  template <typename... S>
-  const VariableBase * clone_output_variable(const VariableStore & m, S &&... name)
+  /// Clone a variable and put it on the output axis
+  VariableBase * clone_output_variable(const VariableBase & var, const VariableName & new_name = {})
   {
-    const auto var_name = variable_name(std::forward<S>(name)...);
-    auto var_clone = m.variable(var_name).clone();
+    auto var_clone = var.clone(new_name, _object, FType::OUTPUT);
+    const auto var_name = var_clone->name();
 
     if (_output_axis.has_variable(var_name))
       neml_assert(_output_axis.storage_size(var_name) == var_clone->base_storage(),
@@ -167,7 +166,7 @@ protected:
                   var_name,
                   " with base storage ",
                   var_clone->base_storage(),
-                  " onto its output axis, but a variable with different storage size ",
+                  " onto the output axis, but a variable with different storage size ",
                   _output_axis.storage_size(var_name),
                   " has already been declared.");
 

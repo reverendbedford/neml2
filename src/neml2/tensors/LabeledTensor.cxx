@@ -39,7 +39,7 @@ LabeledTensor<Derived, D>::LabeledTensor(const torch::Tensor & tensor,
   // Check that the size of the tensor was compatible
   for (Size i = 0; i < D; i++)
     neml_assert_dbg(base_size(i) == _axes[i]->storage_size(),
-                    "LabeledTensor does not have the right size at dimension ",
+                    "LabeledTensor does not have the right size at base dimension ",
                     i,
                     ". Expected ",
                     _axes[i]->storage_size(),

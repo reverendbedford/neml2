@@ -52,6 +52,10 @@ public:
   /// Construct from another torch::Tensor given batch dimension
   explicit PrimitiveTensor(const torch::Tensor & tensor, Size batch_dim);
 
+  /// Copy constructor
+  template <class Derived2>
+  PrimitiveTensor(const TensorBase<Derived2> & tensor);
+
   /// Construct from another torch::Tensor and infer batch dimension
   PrimitiveTensor(const torch::Tensor & tensor);
 
@@ -107,6 +111,13 @@ PrimitiveTensor<Derived, S...>::PrimitiveTensor(const torch::Tensor & tensor, Si
                   const_base_sizes,
                   " from a tensor with base shape ",
                   this->base_sizes());
+}
+
+template <class Derived, Size... S>
+template <class Derived2>
+PrimitiveTensor<Derived, S...>::PrimitiveTensor(const TensorBase<Derived2> & tensor)
+  : TensorBase<Derived>(tensor)
+{
 }
 
 template <class Derived, Size... S>

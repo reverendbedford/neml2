@@ -187,8 +187,8 @@ protected:
     auto model = Factory::get_object_ptr<Model>("Models", name, extra_opts);
 
     if (merge_input)
-      for (const auto & varname : model->input_axis().variable_names())
-        clone_input_variable(*model, varname);
+      for (const auto * var : model->variables(FType::INPUT))
+        clone_input_variable(*var);
 
     _registered_models.push_back(model.get());
     return *(std::dynamic_pointer_cast<T>(model));

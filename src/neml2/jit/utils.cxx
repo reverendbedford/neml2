@@ -22,29 +22,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
-
-#include "neml2/models/Model.h"
+#include "neml2/jit/utils.h"
 
 namespace neml2
 {
-class Normality : public Model
+void
+neml_assert_tracing()
 {
-public:
-  static OptionSet expected_options();
+  neml_assert(torch::jit::tracer::isTracing(), "Expected to be tracing but not tracing");
+}
 
-  Normality(const OptionSet & options);
-
-protected:
-  /// The flow direction
-  void set_value(bool out, bool dout_din, bool d2out_din2) override;
-
-  /// The model which evaluates the potential function
-  Model & _model;
-
-  /// The potential function
-  const VariableName _f;
-
-  std::map<VariableName, VariableBase *> _conjugate_pairs;
-};
+void
+neml_assert_tracing_dbg()
+{
+#ifndef NDEBUG
+  neml_assert_tracing();
+#endif
+}
 } // namespace neml2
