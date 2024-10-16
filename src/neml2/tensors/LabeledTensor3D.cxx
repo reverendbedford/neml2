@@ -63,19 +63,46 @@ LabeledTensor3D::chain(const LabeledTensor3D & other,
 }
 
 LabeledTensor3D
-LabeledTensor3D::assemble(const std::vector<std::vector<std::vector<Tensor>>> & vals,
+LabeledTensor3D::assemble(TensorShapeRef batch_sizes,
                           const LabeledAxis & yaxis,
                           const LabeledAxis & xaxis1,
-                          const LabeledAxis & xaxis2)
+                          const LabeledAxis & xaxis2,
+                          const torch::TensorOptions & options,
+                          std::vector<std::vector<std::vector<Tensor>>> & vals)
 {
   auto rows = std::vector<Tensor>(vals.size());
+
   for (std::size_t i = 0; i < vals.size(); ++i)
   {
-    auto cols = std::vector<Tensor>(vals[i].size());
-    for (std::size_t j = 0; j < vals[i].size(); ++j)
-      cols[j] = math::base_cat(vals[i][j], -1);
-    rows[i] = math::base_cat(cols, -2);
+    if (!vals[i].size())
+      rows[i] = Tensor::zeros(batch_sizes,
+                              {yaxis.storage_size(i), xaxis1.storage_size(), xaxis2.storage_size()},
+                              options);
+    else
+    {
+      auto cols = std::vector<Tensor>(vals[i].size());
+      for (std::size_t j = 0; j < vals[i].size(); ++j)
+      {
+        if (!vals[i][j].size())
+          cols[j] =
+              Tensor::zeros(batch_sizes,
+                            {yaxis.storage_size(i), xaxis1.storage_size(j), xaxis2.storage_size()},
+                            options);
+        else
+        {
+          for (std::size_t k = 0; k < vals[i][j].size(); ++k)
+            if (!vals[i][j][k].defined())
+              vals[i][j][k] = Tensor::zeros(
+                  batch_sizes,
+                  {yaxis.storage_size(i), xaxis1.storage_size(j), xaxis2.storage_size(k)},
+                  options);
+          cols[j] = math::base_cat(vals[i][j], -1);
+        }
+      }
+      rows[i] = math::base_cat(cols, -2);
+    }
   }
+
   return LabeledTensor3D(math::base_cat(rows, -3), {&yaxis, &xaxis1, &xaxis2});
 }
 } // namespace neml2

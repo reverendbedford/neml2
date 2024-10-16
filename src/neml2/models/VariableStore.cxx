@@ -80,12 +80,38 @@ VariableStore::variables(FType ft) const
   return vars;
 }
 
+std::vector<VariableBase *>
+VariableStore::variables(FType ft)
+{
+  std::vector<VariableBase *> vars;
+  for (auto && [name, var] : variables())
+    if (var.ftype() == ft)
+      vars.push_back(&var);
+  return vars;
+}
+
 void
-VariableStore::initialize_derivatives(const std::vector<const VariableBase *> & args,
-                                      const torch::TensorOptions & options)
+VariableStore::initialize_derivatives(const torch::TensorOptions & options)
+{
+  for (auto * var : variables(FType::INPUT))
+  {
+    neml_assert_dbg(
+        !var->ref(), "Input variable ", var->name(), " is referencing another variable.");
+    var->initialize_derivatives(variables(FType::INPUT), options);
+  }
+}
+
+void
+VariableStore::consolidate_second_derivatives()
+{
+  for (auto * var : variables(FType::OUTPUT))
+    var->consolidate_second_derivatives();
+}
+
+void
+VariableStore::clear()
 {
   for (auto && [name, var] : variables())
-    if (!var.ref())
-      var.initialize_derivatives(args, options);
+    var.clear();
 }
 } // namespace neml2

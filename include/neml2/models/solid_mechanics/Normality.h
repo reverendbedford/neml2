@@ -36,6 +36,8 @@ public:
   Normality(const OptionSet & options);
 
 protected:
+  void link_input_variables(Model * submodel) override;
+
   /// The flow direction
   void set_value(bool out, bool dout_din, bool d2out_din2) override;
 

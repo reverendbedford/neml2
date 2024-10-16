@@ -120,18 +120,9 @@ Model::setup()
 
   if (host() == this)
   {
-    set_args(this);
     link_output_variables();
     link_input_variables();
   }
-}
-
-void
-Model::set_args(Model * model)
-{
-  _args = model->variables(FType::INPUT);
-  for (auto * submodel : _registered_models)
-    submodel->set_args(submodel);
 }
 
 void
@@ -185,18 +176,14 @@ Model::use_AD_derivatives(bool first, bool second)
 }
 
 void
-Model::check_input(const LabeledVector & in) const
+Model::set_input(const LabeledVector & in)
 {
   neml_assert(in.axis() == input_axis(),
               "The provided input has axis: \n",
               in.axis(),
               ", but the model's input axis is: \n",
               input_axis());
-}
 
-void
-Model::set_input(const LabeledVector & in)
-{
   _options = in.options();
   _batch_sizes = in.batch_sizes();
   for (const auto & [var, val] : in.split())
@@ -206,7 +193,6 @@ Model::set_input(const LabeledVector & in)
 LabeledVector
 Model::value(const LabeledVector & in)
 {
-  check_input(in);
   set_input(in);
 
   prepare();
@@ -220,7 +206,6 @@ Model::value(const LabeledVector & in)
 std::tuple<LabeledVector, LabeledMatrix>
 Model::value_and_dvalue(const LabeledVector & in)
 {
-  check_input(in);
   set_input(in);
 
   prepare();
@@ -235,7 +220,6 @@ Model::value_and_dvalue(const LabeledVector & in)
 LabeledMatrix
 Model::dvalue(const LabeledVector & in)
 {
-  check_input(in);
   set_input(in);
 
   prepare();
@@ -249,7 +233,6 @@ Model::dvalue(const LabeledVector & in)
 std::tuple<LabeledVector, LabeledMatrix, LabeledTensor3D>
 Model::value_and_dvalue_and_d2value(const LabeledVector & in)
 {
-  check_input(in);
   set_input(in);
 
   prepare();
@@ -265,7 +248,6 @@ Model::value_and_dvalue_and_d2value(const LabeledVector & in)
 std::tuple<LabeledMatrix, LabeledTensor3D>
 Model::dvalue_and_d2value(const LabeledVector & in)
 {
-  check_input(in);
   set_input(in);
 
   prepare();
@@ -280,7 +262,6 @@ Model::dvalue_and_d2value(const LabeledVector & in)
 LabeledTensor3D
 Model::d2value(const LabeledVector & in)
 {
-  check_input(in);
   set_input(in);
 
   prepare();
@@ -332,7 +313,10 @@ Model::value_and_dvalue_and_d2value()
   ensure_single_evaluation_dbg();
 
   if (!_AD_2nd_deriv)
+  {
     set_value(true, true, true);
+    consolidate_second_derivatives();
+  }
 
   else
   {
@@ -355,7 +339,10 @@ Model::dvalue_and_d2value()
   ensure_single_evaluation_dbg();
 
   if (!_AD_2nd_deriv)
+  {
     set_value(false, true, true);
+    consolidate_second_derivatives();
+  }
   else
   {
     if (!_AD_1st_deriv)
@@ -377,7 +364,10 @@ Model::d2value()
   ensure_single_evaluation_dbg();
 
   if (!_AD_2nd_deriv)
+  {
     set_value(false, false, true);
+    consolidate_second_derivatives();
+  }
   else
   {
     if (!_AD_1st_deriv)
@@ -447,7 +437,7 @@ Model::get_output() const
   auto vals_flat = std::vector<Tensor>(vars.size());
   for (std::size_t i = 0; i < vars.size(); ++i)
     vals_flat[i] = variable(vars[i]).get().base_flatten();
-  return LabeledVector::assemble(vals_flat, output_axis());
+  return LabeledVector::assemble(batch_sizes(), output_axis(), options(), vals_flat);
 }
 
 LabeledMatrix
@@ -461,9 +451,10 @@ Model::get_doutput_dinput() const
     const auto & derivs = variable(yvars[i]).derivatives();
     vals_flat[i].resize(xvars.size());
     for (std::size_t j = 0; j < xvars.size(); ++j)
-      vals_flat[i][j] = derivs.at(xvars[j]);
+      if (derivs.count(xvars[j]))
+        vals_flat[i][j] = derivs.at(xvars[j]);
   }
-  return LabeledMatrix::assemble(vals_flat, output_axis(), input_axis());
+  return LabeledMatrix::assemble(batch_sizes(), output_axis(), input_axis(), options(), vals_flat);
 }
 
 LabeledTensor3D
@@ -477,19 +468,24 @@ Model::get_d2output_dinput2() const
     const auto & secderivs = variable(yvars[i]).second_derivatives();
     vals_flat[i].resize(xvars.size());
     for (std::size_t j = 0; j < xvars.size(); ++j)
-    {
-      vals_flat[i][j].resize(xvars.size());
-      for (std::size_t k = 0; k < xvars.size(); ++k)
-        vals_flat[i][j][k] = secderivs.at(xvars[j]).at(xvars[k]);
-    }
+      if (secderivs.count(xvars[j]))
+      {
+        vals_flat[i][j].resize(xvars.size());
+        for (std::size_t k = 0; k < xvars.size(); ++k)
+          if (secderivs.at(xvars[j]).count(xvars[k]))
+            vals_flat[i][j][k] = secderivs.at(xvars[j]).at(xvars[k]);
+      }
   }
-  return LabeledTensor3D::assemble(vals_flat, output_axis(), input_axis(), input_axis());
+  return LabeledTensor3D::assemble(
+      batch_sizes(), output_axis(), input_axis(), input_axis(), options(), vals_flat);
 }
 
 void
 Model::prepare()
 {
-  VariableStore::initialize_derivatives(_args, options());
+  if (host() == this)
+    VariableStore::initialize_derivatives(options());
+
   _evaluated_once = false;
 
   for (auto * submodel : _registered_models)

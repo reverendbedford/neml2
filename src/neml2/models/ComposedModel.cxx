@@ -151,14 +151,6 @@ ComposedModel::named_nonlinear_parameter_models(bool /*recursive*/) const
 }
 
 void
-ComposedModel::set_args(Model * model)
-{
-  _args = model->variables(FType::INPUT);
-  for (auto * submodel : _registered_models)
-    submodel->set_args(model);
-}
-
-void
 ComposedModel::link_input_variables(Model * submodel)
 {
   for (const auto & item : _dependency.inbound_items())

@@ -49,9 +49,11 @@ public:
                         const LabeledMatrix & dother) const;
 
   /// Assemble a 3D tensor of tensors
-  static LabeledTensor3D assemble(const std::vector<std::vector<std::vector<Tensor>>> &,
-                                  const LabeledAxis &,
-                                  const LabeledAxis &,
-                                  const LabeledAxis &);
+  static LabeledTensor3D assemble(TensorShapeRef batch_sizes,
+                                  const LabeledAxis & yaxis,
+                                  const LabeledAxis & x1axis,
+                                  const LabeledAxis & x2axis,
+                                  const torch::TensorOptions & options,
+                                  std::vector<std::vector<std::vector<Tensor>>> & vals);
 };
 } // namespace neml2

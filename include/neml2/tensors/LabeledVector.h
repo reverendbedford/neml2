@@ -50,7 +50,10 @@ public:
   std::map<LabeledAxisAccessor, Tensor> split() const;
 
   /// Assemble a list of tensors
-  static LabeledVector assemble(const std::vector<Tensor> &, const LabeledAxis &);
+  static LabeledVector assemble(TensorShapeRef batch_sizes,
+                                const LabeledAxis & axis,
+                                const torch::TensorOptions & options,
+                                std::vector<Tensor> & vals);
 };
 
 namespace utils

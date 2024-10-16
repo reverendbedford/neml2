@@ -72,14 +72,17 @@ public:
 
   /// List of variables that match the given ftype
   std::vector<const VariableBase *> variables(FType) const;
+  std::vector<VariableBase *> variables(FType);
 
 protected:
   /// Initialize derivatives for all variables
-  virtual void initialize_derivatives(const std::vector<const VariableBase *> &,
-                                      const torch::TensorOptions &);
+  virtual void initialize_derivatives(const torch::TensorOptions &);
+
+  /// Consolidate second derivatives for all output variables
+  virtual void consolidate_second_derivatives();
 
   /// Cleanup after evaluation
-  virtual void clear() {}
+  virtual void clear();
 
   /// Declare an input variable
   template <typename T, typename... S>

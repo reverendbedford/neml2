@@ -52,7 +52,10 @@ public:
   LabeledMatrix chain(const LabeledMatrix & other) const;
 
   /// Assemble a matrix of tensors
-  static LabeledMatrix
-  assemble(const std::vector<std::vector<Tensor>> &, const LabeledAxis &, const LabeledAxis &);
+  static LabeledMatrix assemble(TensorShapeRef batch_sizes,
+                                const LabeledAxis & yaxis,
+                                const LabeledAxis & xaxis,
+                                const torch::TensorOptions & options,
+                                std::vector<std::vector<Tensor>> & vals);
 };
 } // namespace neml2

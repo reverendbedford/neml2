@@ -182,6 +182,13 @@ LabeledAxis::storage_size(const LabeledAxisAccessor & name) const
   return subaxis(name.vec()[0]).storage_size(name.slice(1));
 }
 
+Size
+LabeledAxis::storage_size(std::size_t i) const
+{
+  auto vars = sort_by_assembly_order(variable_names(true));
+  return storage_size(vars[i]);
+}
+
 indexing::TensorIndex
 LabeledAxis::indices(const LabeledAxisAccessor & accessor) const
 {

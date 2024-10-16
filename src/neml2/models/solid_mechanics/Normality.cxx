@@ -53,7 +53,8 @@ Normality::expected_options()
 
 Normality::Normality(const OptionSet & options)
   : Model(options),
-    _model(register_model<Model>(options.get<std::string>("model"))),
+    _model(register_model<Model>(
+        options.get<std::string>("model"), /*nonlinear=*/false, /*merge_input=*/false)),
     _f(options.get<VariableName>("function"))
 {
   // Set up the conjugate pairs
@@ -65,8 +66,25 @@ Normality::Normality(const OptionSet & options)
               " variables are being mapped to ",
               to.size(),
               " variables.");
+
+  // Declare input variables
+  for (const auto * var : _model.variables(FType::INPUT))
+    if (std::find(from.begin(), from.end(), var->name()) != from.end())
+      clone_input_variable(*var);
+    else
+    {
+      // TODO: Issue a warning and make it possible to suppress the warning
+    }
+
+  // Declare output variables
   for (size_t i = 0; i < from.size(); i++)
     _conjugate_pairs.emplace(from[i], clone_output_variable(_model.variable(from[i]), to[i]));
+}
+
+void
+Normality::link_input_variables(Model * /*submodel*/)
+{
+  // We'd want to break the link so that we can take care of the derivatives manually
 }
 
 void
@@ -82,18 +100,11 @@ Normality::set_value(bool out, bool dout_din, bool d2out_din2)
       _model.dvalue_and_d2value();
   }
 
-  std::cout << std::endl;
-  std::cout << "In model " << name() << std::endl;
-
   const auto & f = _model.variable(_f);
   for (auto && [ivar, var] : _conjugate_pairs)
   {
     if (out)
-    {
-      std::cout << "f.derivatives().at(" << ivar
-                << ").sizes() = " << f.derivatives().at(ivar).sizes() << std::endl;
       (*var) = f.derivatives().at(ivar);
-    }
 
     if (dout_din)
       for (const auto * j : _model.variables(FType::INPUT))

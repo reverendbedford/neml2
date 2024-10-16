@@ -61,13 +61,28 @@ LabeledMatrix::chain(const LabeledMatrix & other) const
 }
 
 LabeledMatrix
-LabeledMatrix::assemble(const std::vector<std::vector<Tensor>> & vals,
+LabeledMatrix::assemble(TensorShapeRef batch_sizes,
                         const LabeledAxis & yaxis,
-                        const LabeledAxis & xaxis)
+                        const LabeledAxis & xaxis,
+                        const torch::TensorOptions & options,
+                        std::vector<std::vector<Tensor>> & vals)
 {
   auto rows = std::vector<Tensor>(vals.size());
+
   for (std::size_t i = 0; i < vals.size(); ++i)
-    rows[i] = math::base_cat(vals[i], -1);
+  {
+    if (!vals[i].size())
+      rows[i] = Tensor::zeros(batch_sizes, {yaxis.storage_size(i), xaxis.storage_size()}, options);
+    else
+    {
+      for (std::size_t j = 0; j < vals[i].size(); ++j)
+        if (!vals[i][j].defined())
+          vals[i][j] =
+              Tensor::zeros(batch_sizes, {yaxis.storage_size(i), xaxis.storage_size(j)}, options);
+      rows[i] = math::base_cat(vals[i], -1);
+    }
+  }
+
   return LabeledMatrix(math::base_cat(rows, -2), {&yaxis, &xaxis});
 }
 } // namespace neml2

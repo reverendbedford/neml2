@@ -150,6 +150,7 @@ public:
 
   /// Get the total storage size of *this* axis or the storage size of an item
   Size storage_size(const LabeledAxisAccessor & name = {}) const;
+  Size storage_size(std::size_t i) const;
 
   /// Get the layout
   const AxisLayout & layout() const { return _layout; }

@@ -47,7 +47,6 @@ public:
   named_nonlinear_parameter_models(bool recursive = false) const override;
 
 protected:
-  void set_args(Model * model) override;
   void link_input_variables(Model * submodel) override;
   void link_output_variables(Model * submodel) override;
   void set_value(bool, bool, bool) override;

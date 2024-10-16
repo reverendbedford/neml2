@@ -119,7 +119,6 @@ public:
 
 protected:
   void setup() override;
-  virtual void set_args(Model *);
   virtual void link_input_variables() final;
   virtual void link_input_variables(Model * submodel);
   virtual void link_output_variables() final;
@@ -225,9 +224,6 @@ private:
 
   /// Batch shape used in the current evaluation
   TensorShape _batch_sizes;
-
-  /// Arguments to take derivative with respect to
-  std::vector<const VariableBase *> _args;
 
 #ifndef NDEBUG
   /// Whether this model has been evaluated in the current forward pass
