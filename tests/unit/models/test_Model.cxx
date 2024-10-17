@@ -168,6 +168,6 @@ TEST_CASE("Model", "[models]")
     }
     std::cout << "jit:        " << timed_sections()["model.value"]["jit"] << std::endl;
 
-    forward_jit.function().graph()->dump();
+    torch::jit::lastExecutedOptimizedGraph()->dump();
   }
 }
