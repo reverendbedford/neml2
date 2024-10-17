@@ -38,8 +38,6 @@ ParameterStore::ParameterStore(const OptionSet & options, NEML2Object * object)
 void
 ParameterStore::send_parameters_to(const torch::TensorOptions & options)
 {
-  neml_assert(_object->host() == _object, "This method should only be called on the host model.");
-
   for (auto && [name, param] : _param_values)
     param.to_(options);
 }

@@ -64,6 +64,16 @@ Model::Model(const OptionSet & options)
 }
 
 void
+Model::to(const torch::TensorOptions & options)
+{
+  send_buffers_to(options);
+  send_parameters_to(options);
+
+  for (auto * submodel : registered_models())
+    submodel->to(options);
+}
+
+void
 Model::diagnose(std::vector<Diagnosis> & diagnoses) const
 {
   for (auto * submodel : registered_models())
@@ -184,10 +194,20 @@ Model::set_input(const LabeledVector & in)
               ", but the model's input axis is: \n",
               input_axis());
 
-  _options = in.options();
-  _batch_sizes = in.batch_sizes();
   for (const auto & [var, val] : in.split())
     variable(var).set(val);
+
+  cache(in.batch_sizes(), in.device(), in.scalar_type());
+}
+
+void
+Model::cache(TensorShapeRef batch_shape, const torch::Device & device, const torch::Dtype & dtype)
+{
+  _batch_sizes = batch_shape;
+  _options = torch::TensorOptions().device(device).dtype(dtype);
+
+  for (auto * submodel : registered_models())
+    submodel->cache(batch_shape, device, dtype);
 }
 
 LabeledVector

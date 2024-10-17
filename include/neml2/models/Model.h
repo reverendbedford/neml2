@@ -63,6 +63,9 @@ public:
    */
   Model(const OptionSet & options);
 
+  /// Send model to a different device or dtype
+  virtual void to(const torch::TensorOptions & options);
+
   virtual void diagnose(std::vector<Diagnosis> &) const override;
 
   /// Whether this model defines one or more nonlinear equations to be solved
@@ -147,6 +150,8 @@ protected:
 
   /// Set input of the model
   virtual void set_input(const LabeledVector & in);
+  /// Cache batch shape, device, and dtype for the current evaluation
+  void cache(TensorShapeRef batch_shape, const torch::Device & device, const torch::Dtype & dtype);
   /// The map between input -> output, and optionally its derivatives
   virtual void set_value(bool out, bool dout_din, bool d2out_din2) = 0;
 
