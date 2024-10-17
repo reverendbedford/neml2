@@ -91,24 +91,6 @@ VariableStore::variables(FType ft)
 }
 
 void
-VariableStore::initialize_derivatives(const torch::TensorOptions & options)
-{
-  for (auto * var : variables(FType::INPUT))
-  {
-    neml_assert_dbg(
-        !var->ref(), "Input variable ", var->name(), " is referencing another variable.");
-    var->initialize_derivatives(variables(FType::INPUT), options);
-  }
-}
-
-void
-VariableStore::consolidate_second_derivatives()
-{
-  for (auto * var : variables(FType::OUTPUT))
-    var->consolidate_second_derivatives();
-}
-
-void
 VariableStore::clear()
 {
   for (auto && [name, var] : variables())

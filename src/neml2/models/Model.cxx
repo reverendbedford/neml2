@@ -313,11 +313,7 @@ Model::value_and_dvalue_and_d2value()
   ensure_single_evaluation_dbg();
 
   if (!_AD_2nd_deriv)
-  {
     set_value(true, true, true);
-    consolidate_second_derivatives();
-  }
-
   else
   {
     if (!_AD_1st_deriv)
@@ -339,10 +335,7 @@ Model::dvalue_and_d2value()
   ensure_single_evaluation_dbg();
 
   if (!_AD_2nd_deriv)
-  {
     set_value(false, true, true);
-    consolidate_second_derivatives();
-  }
   else
   {
     if (!_AD_1st_deriv)
@@ -364,10 +357,7 @@ Model::d2value()
   ensure_single_evaluation_dbg();
 
   if (!_AD_2nd_deriv)
-  {
     set_value(false, false, true);
-    consolidate_second_derivatives();
-  }
   else
   {
     if (!_AD_1st_deriv)
@@ -483,10 +473,9 @@ Model::get_d2output_dinput2() const
 void
 Model::prepare()
 {
-  if (host() == this)
-    VariableStore::initialize_derivatives(options());
-
+#ifndef NDEBUG
   _evaluated_once = false;
+#endif
 
   for (auto * submodel : _registered_models)
     submodel->prepare();

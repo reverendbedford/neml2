@@ -220,20 +220,23 @@ TensorBase<Derived>::base_index_put_(indexing::TensorIndicesRef indices,
 
 template <class Derived>
 Derived
-TensorBase<Derived>::batch_expand(TensorShapeRef batch_size) const
+TensorBase<Derived>::batch_expand(TensorShapeRef batch_shape) const
 {
   // We don't want to touch the base dimensions, so put -1 for them.
-  auto net = batch_size.vec();
+  auto net = batch_shape.vec();
   net.insert(net.end(), base_dim(), -1);
-  return Derived(expand(net), batch_size.size());
+  return Derived(expand(net), batch_shape.size());
 }
 
 template <class Derived>
 neml2::Tensor
-TensorBase<Derived>::base_expand(TensorShapeRef base_size) const
+TensorBase<Derived>::base_expand(TensorShapeRef base_shape) const
 {
+  if (base_sizes() == base_shape)
+    return *this;
+
   // We don't want to touch the batch dimensions, so put -1 for them.
-  auto net = base_size.vec();
+  auto net = base_shape.vec();
   net.insert(net.begin(), batch_dim(), -1);
   return neml2::Tensor(expand(net), batch_dim());
 }
@@ -263,6 +266,9 @@ template <class Derived>
 neml2::Tensor
 TensorBase<Derived>::base_reshape(TensorShapeRef base_shape) const
 {
+  if (base_sizes() == base_shape)
+    return *this;
+
   return neml2::Tensor(reshape(utils::add_shapes(batch_sizes(), base_shape)), _batch_dim);
 }
 
@@ -304,6 +310,9 @@ template <class Derived>
 neml2::Tensor
 TensorBase<Derived>::base_flatten() const
 {
+  if (base_dim() == 1)
+    return *this;
+
   TensorShape s(batch_sizes());
   s.push_back(-1);
   return neml2::Tensor(reshape(s), _batch_dim);

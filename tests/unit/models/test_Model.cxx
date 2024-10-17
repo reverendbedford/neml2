@@ -132,25 +132,22 @@ TEST_CASE("Model", "[models]")
 
     // forward_jit.function().graph()->dump();
 
-    // Size N = 1000;
-    // x = torch::rand({N, 20, 50, model.input_axis().storage_size()});
+    Size N = 1000;
+    x = torch::rand({N, 20, 50, model.input_axis().storage_size()});
 
-    // {
-    //   TimedSection ts("original", "model.value");
-    //   for (Size i = 0; i < N; ++i)
-    //   {
-    //     model.reinit({20, 50});
-    //     model.value(LabeledVector(x.index({i}), {&model.input_axis()}));
-    //   }
-    // }
-    // std::cout << "original: " << timed_sections()["model.value"]["original"] << std::endl;
+    {
+      TimedSection ts("original", "model.value");
+      for (Size i = 0; i < N; ++i)
+        model.value(LabeledVector(x.index({i}), {&model.input_axis()}));
+    }
+    std::cout << "original: " << timed_sections()["model.value"]["original"] << std::endl;
 
-    // {
-    //   torch::InferenceMode inf;
-    //   TimedSection ts("jit", "model.value");
-    //   for (Size i = 0; i < N; ++i)
-    //     forward_jit(x.index({i}));
-    // }
-    // std::cout << "jit:      " << timed_sections()["model.value"]["jit"] << std::endl;
+    {
+      torch::InferenceMode inference;
+      TimedSection ts("jit", "model.value");
+      for (Size i = 0; i < N; ++i)
+        forward_jit(x.index({i}));
+    }
+    std::cout << "jit:      " << timed_sections()["model.value"]["jit"] << std::endl;
   }
 }

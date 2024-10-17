@@ -118,6 +118,11 @@ template <class Derived2>
 PrimitiveTensor<Derived, S...>::PrimitiveTensor(const TensorBase<Derived2> & tensor)
   : TensorBase<Derived>(tensor)
 {
+  neml_assert_dbg(this->base_sizes() == const_base_sizes,
+                  "Base shape mismatch: trying to create a tensor with base shape ",
+                  const_base_sizes,
+                  " from a tensor with base shape ",
+                  this->base_sizes());
 }
 
 template <class Derived, Size... S>

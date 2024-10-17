@@ -75,12 +75,6 @@ public:
   std::vector<VariableBase *> variables(FType);
 
 protected:
-  /// Initialize derivatives for all variables
-  virtual void initialize_derivatives(const torch::TensorOptions &);
-
-  /// Consolidate second derivatives for all output variables
-  virtual void consolidate_second_derivatives();
-
   /// Cleanup after evaluation
   virtual void clear();
 

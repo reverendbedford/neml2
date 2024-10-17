@@ -79,6 +79,8 @@ LabeledMatrix::assemble(TensorShapeRef batch_sizes,
         if (!vals[i][j].defined())
           vals[i][j] =
               Tensor::zeros(batch_sizes, {yaxis.storage_size(i), xaxis.storage_size(j)}, options);
+        else
+          vals[i][j] = vals[i][j].batch_expand(batch_sizes);
       rows[i] = math::base_cat(vals[i], -1);
     }
   }

@@ -89,49 +89,124 @@ VariableBase::is_dependent() const
 Derivative
 VariableBase::d(const VariableBase & var)
 {
-  return Derivative(*this, var);
+  return Derivative({base_storage(), var.base_storage()}, &_derivs[var.name()]);
 }
 
-SecondDerivative
+Derivative
 VariableBase::d(const VariableBase & var1, const VariableBase & var2)
 {
-  return SecondDerivative(*this, var1, var2);
+  return Derivative({base_storage(), var1.base_storage(), var2.base_storage()},
+                    &_sec_derivs[var1.name()][var2.name()]);
+}
+
+void
+VariableBase::clear()
+{
+  _derivs.clear();
+  _sec_derivs.clear();
+}
+
+void
+VariableBase::apply_chain_rule(const DependencyResolver<Model, VariableName> & dep)
+{
+  for (const auto & [model, var] : dep.outbound_items())
+    if (var == name())
+    {
+      _derivs = total_derivatives(dep, model, var);
+      return;
+    }
+}
+
+void
+VariableBase::apply_second_order_chain_rule(const DependencyResolver<Model, VariableName> & dep)
+{
+  for (const auto & [model, var] : dep.outbound_items())
+    if (var == name())
+    {
+      _sec_derivs = total_second_derivatives(dep, model, var);
+      return;
+    }
+}
+
+void
+assign_or_add(Tensor & dest, const Tensor & val)
+{
+  if (dest.defined())
+    dest = dest + val;
+  else
+    dest = val;
+}
+
+std::map<VariableName, Tensor>
+VariableBase::total_derivatives(const DependencyResolver<Model, VariableName> & dep,
+                                Model * model,
+                                const VariableName & yvar) const
+{
+  std::map<VariableName, Tensor> derivs;
+
+  for (const auto & [uvar, dy_du] : model->variable(yvar).derivatives())
+  {
+    if (dep.inbound_items().count({model, uvar}))
+      assign_or_add(derivs[uvar], dy_du);
+    else
+      for (const auto & depu : dep.item_providers().at({model, uvar}))
+        for (const auto & [xvar, du_dx] : total_derivatives(dep, depu.parent, uvar))
+          assign_or_add(derivs[xvar], math::bmm(dy_du, du_dx));
+  }
+
+  return derivs;
+}
+
+std::map<VariableName, std::map<VariableName, Tensor>>
+VariableBase::total_second_derivatives(const DependencyResolver<Model, VariableName> & dep,
+                                       Model * model,
+                                       const VariableName & yvar) const
+{
+  std::map<VariableName, std::map<VariableName, Tensor>> sec_derivs;
+
+  for (const auto & [u1var, d2y_du1] : model->variable(yvar).second_derivatives())
+    for (const auto & [u2var, d2y_du1u2] : d2y_du1)
+    {
+      if (dep.inbound_items().count({model, u1var}) && dep.inbound_items().count({model, u2var}))
+        assign_or_add(sec_derivs[u1var][u2var], d2y_du1u2);
+      else if (dep.inbound_items().count({model, u1var}))
+        for (const auto & depu2 : dep.item_providers().at({model, u2var}))
+          for (const auto & [x2var, du2_dxk] : total_derivatives(dep, depu2.parent, u2var))
+            assign_or_add(sec_derivs[u1var][x2var],
+                          Tensor(torch::einsum("...ijq,...qk", {d2y_du1u2, du2_dxk}),
+                                 broadcast_batch_dim(d2y_du1u2, du2_dxk)));
+      else if (dep.inbound_items().count({model, u2var}))
+        for (const auto & depu1 : dep.item_providers().at({model, u1var}))
+          for (const auto & [x1var, du1_dxj] : total_derivatives(dep, depu1.parent, u1var))
+            assign_or_add(sec_derivs[x1var][u2var],
+                          Tensor(torch::einsum("...ipk,...pj", {d2y_du1u2, du1_dxj}),
+                                 broadcast_batch_dim(d2y_du1u2, du1_dxj)));
+      else
+        for (const auto & depu1 : dep.item_providers().at({model, u1var}))
+          for (const auto & [x1var, du1_dxj] : total_derivatives(dep, depu1.parent, u1var))
+            for (const auto & depu2 : dep.item_providers().at({model, u2var}))
+              for (const auto & [x2var, du2_dxk] : total_derivatives(dep, depu2.parent, u2var))
+                assign_or_add(
+                    sec_derivs[x1var][x2var],
+                    Tensor(torch::einsum("...ipq,...pj,...qk", {d2y_du1u2, du1_dxj, du2_dxk}),
+                           broadcast_batch_dim(d2y_du1u2, du1_dxj, du2_dxk)));
+    }
+
+  for (const auto & [uvar, dy_du] : model->variable(yvar).derivatives())
+    if (!dep.inbound_items().count({model, uvar}))
+      for (const auto & depu : dep.item_providers().at({model, uvar}))
+        for (const auto & [x1var, d2u_dx1] : total_second_derivatives(dep, depu.parent, uvar))
+          for (const auto & [x2var, d2u_dx1x2] : d2u_dx1)
+            assign_or_add(sec_derivs[x1var][x2var],
+                          Tensor(torch::einsum("...ip,...pjk", {dy_du, d2u_dx1x2}),
+                                 broadcast_batch_dim(dy_du, d2u_dx1x2)));
+
+  return sec_derivs;
 }
 
 void
 Derivative::operator=(const Tensor & val)
 {
-  neml_assert_dbg(_y, "Variable to take derivative of has not been initialized.");
-  neml_assert_dbg(_x, "Variable to take derivative w.r.t. has not been initialized.");
-
-  // Flatten partial derivative
-  const auto dy_dx = val.base_reshape({_y->base_storage(), _x->base_storage()});
-
-  // Apply chain rule
-  _y->chain1(dy_dx, _x->derivatives());
-
-  // This may look weird:
-  // The second order chain rule is
-  //   (d2y/dx2)_{ijk} = (d2y/du2)_{ipq} (du/dx)_{pj} (du/dx)_{qk} + (dy/du)_{ip} (d2u/dx2)_{pjk}
-  // Note the second term comes from the first partial derivative -- we need to accumulate it here
-  // as we don't keep the first partial derivative
-  _y->chain2b(dy_dx, _x->second_derivatives());
-}
-
-void
-SecondDerivative::operator=(const Tensor & val)
-{
-  neml_assert_dbg(_y, "Variable to take derivative of has not been initialized.");
-  neml_assert_dbg(_x1, "Variable to take derivative w.r.t. has not been initialized.");
-  neml_assert_dbg(_x2, "Variable to take derivative w.r.t. has not been initialized.");
-
-  // Flatten second partial derivative
-  const auto d2y_dx1x2 =
-      val.base_reshape({_y->base_storage(), _x1->base_storage(), _x2->base_storage()});
-
-  // Apply chain rule
-  //   (d2y/dx2)_{ijk} = (d2y/du2)_{ipq} (du/dx)_{pj} (du/dx)_{qk} + (dy/du)_{ip} (d2u/dx2)_{pjk}
-  // The second term is taken care of by Derivative::operator=
-  _y->chain2a(d2y_dx1x2, _x1->derivatives(), _x2->derivatives());
+  *_deriv = val.base_reshape(_base_sizes);
 }
 }

@@ -67,6 +67,8 @@ LabeledVector::assemble(TensorShapeRef batch_sizes,
   for (std::size_t i = 0; i < vals.size(); ++i)
     if (!vals[i].defined())
       vals[i] = Tensor::zeros(batch_sizes, axis.storage_size(i), options);
+    else
+      vals[i] = vals[i].batch_expand(batch_sizes);
 
   return LabeledVector(math::base_cat(vals, -1), {&axis});
 }

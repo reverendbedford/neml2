@@ -68,13 +68,7 @@ AssociativeIsotropicPlasticHardening::set_value(bool out, bool dout_din, bool d2
   //     Nk = df/dk
 
   if (out)
-  {
-    std::cout << std::endl;
-    std::cout << "In model " << name() << std::endl;
-    std::cout << "_gamma_dot.get().sizes() = " << _gamma_dot.get().sizes() << std::endl;
-    std::cout << "_Nk.get().sizes() = " << _Nk.get().sizes() << std::endl;
     _ep_dot = -_gamma_dot * _Nk;
-  }
 
   if (dout_din)
   {

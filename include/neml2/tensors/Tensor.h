@@ -31,7 +31,18 @@ namespace neml2
 class Tensor : public TensorBase<Tensor>
 {
 public:
-  using TensorBase<Tensor>::TensorBase;
+  /// Default constructor
+  Tensor() = default;
+
+  /// Construct from another torch::Tensor
+  Tensor(const torch::Tensor & tensor, Size batch_dim);
+
+  /// Copy constructor
+  template <class Derived2>
+  Tensor(const TensorBase<Derived2> & tensor)
+    : TensorBase<Tensor>(tensor)
+  {
+  }
 
   /// Unbatched empty tensor given base shape
   [[nodiscard]] static Tensor

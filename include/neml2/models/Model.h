@@ -144,8 +144,6 @@ protected:
   virtual void check_AD_limitation() const;
   /// Make sure the model is evaluated only once
   void ensure_single_evaluation_dbg();
-  /// Check if the input has valid shape
-  virtual void check_input(const LabeledVector & in) const;
 
   /// Set input of the model
   virtual void set_input(const LabeledVector & in);

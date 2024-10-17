@@ -26,6 +26,11 @@
 
 namespace neml2
 {
+Tensor::Tensor(const torch::Tensor & tensor, Size batch_dim)
+  : TensorBase<Tensor>(tensor, batch_dim)
+{
+}
+
 Tensor
 Tensor::empty(const TensorShapeRef & base_shape, const torch::TensorOptions & options)
 {

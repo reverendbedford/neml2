@@ -24,7 +24,6 @@
 
 #include "neml2/models/ComposedModel.h"
 #include "neml2/misc/math.h"
-#include <thread>
 
 namespace neml2
 {
@@ -105,9 +104,6 @@ ComposedModel::ComposedModel(const OptionSet & options)
 
   // Sort the registered models by dependency resolution
   _registered_models = _dependency.resolution();
-  for (auto * m : _registered_models)
-    std::cout << m->name() << " ";
-  std::cout << std::endl;
 
   // Register input variables
   for (const auto & item : _dependency.inbound_items())
@@ -176,19 +172,6 @@ ComposedModel::link_output_variables(Model * submodel)
 void
 ComposedModel::set_value(bool out, bool dout_din, bool d2out_din2)
 {
-  // _async_exceptions.clear();
-  // _async_results.clear();
-  // for (auto * i : registered_models())
-  //   _async_results[i] = std::async(
-  //       std::launch::deferred, &ComposedModel::set_value_async, this, i, out, dout_din,
-  //       d2out_din2);
-
-  // for (auto && [i, future] : _async_results)
-  //   future.wait();
-
-  // // Rethrow exceptions raised from other threads to the main thread
-  // rethrow_exceptions();
-
   for (auto * i : registered_models())
   {
     if (out && !dout_din && !d2out_din2)
@@ -200,51 +183,13 @@ ComposedModel::set_value(bool out, bool dout_din, bool d2out_din2)
     else
       throw NEMLException("Unsupported call signature to set_value");
   }
-}
 
-void
-ComposedModel::set_value_async(Model * i, bool out, bool dout_din, bool d2out_din2)
-{
-  try
-  {
-    // Wait for dependent models
-    if (_dependency.node_providers().count(i))
-      for (auto * dep : _dependency.node_providers().at(i))
-        _async_results[dep].wait();
+  if (dout_din)
+    for (auto * var : variables(FType::OUTPUT))
+      var->apply_chain_rule(_dependency);
 
-    if (out && !dout_din && !d2out_din2)
-      i->value();
-    else if (dout_din && !d2out_din2)
-      i->value_and_dvalue();
-    else if (d2out_din2)
-      i->value_and_dvalue_and_d2value();
-    else
-      throw NEMLException("Unsupported call signature to set_value");
-  }
-  catch (...)
-  {
-    _async_exceptions[std::this_thread::get_id()] = std::current_exception();
-  }
-}
-
-void
-ComposedModel::rethrow_exceptions() const
-{
-  if (!_async_exceptions.empty())
-  {
-    std::stringstream error;
-    for (const auto & [tid, eptr] : _async_exceptions)
-      try
-      {
-        std::rethrow_exception(eptr);
-      }
-      catch (const std::exception & e)
-      {
-        error << "During threaded ComposedModel evaluation for '" << name()
-              << "', one thread threw an exception with the following message:\n"
-              << e.what() << "\n\n";
-      }
-    throw NEMLException(error.str());
-  }
+  if (d2out_din2)
+    for (auto * var : variables(FType::OUTPUT))
+      var->apply_second_order_chain_rule(_dependency);
 }
 } // namespace neml2

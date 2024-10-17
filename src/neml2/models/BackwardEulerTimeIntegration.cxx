@@ -86,16 +86,7 @@ BackwardEulerTimeIntegration<T>::set_value(bool out, bool dout_din, bool d2out_d
   neml_assert(!d2out_din2, "BackwardEulerTimeIntegration does not implement second derivatives");
 
   if (out)
-  {
-    std::cout << std::endl;
-    std::cout << "In model " << name() << std::endl;
-    std::cout << "_s.get().sizes() = " << _s.get().sizes() << std::endl;
-    std::cout << "_sn.get().sizes() = " << _sn.get().sizes() << std::endl;
-    std::cout << "_ds_dt.get().sizes() = " << _ds_dt.get().sizes() << std::endl;
-    std::cout << "_t.get().sizes() = " << _t.get().sizes() << std::endl;
-    std::cout << "_tn.get().sizes() = " << _tn.get().sizes() << std::endl;
     _r = _s - _sn - _ds_dt * (_t - _tn);
-  }
 
   if (dout_din)
   {

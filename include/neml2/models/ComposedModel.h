@@ -52,12 +52,6 @@ protected:
   void set_value(bool, bool, bool) override;
 
 private:
-  /// Helper method to evaluate one single model in the threaded set_value loop
-  void set_value_async(Model * i, bool out, bool dout_din, bool d2out_din2);
-
-  /// Helper to rethrow exceptions collected from other threads
-  void rethrow_exceptions() const;
-
   /// Additional outbound items in the dependency graph
   const std::vector<VariableName> _additional_outputs;
 
@@ -66,11 +60,5 @@ private:
 
   /// Helper to resolve model dependency
   DependencyResolver<Model, VariableName> _dependency;
-
-  /// Threaded evaluation results of sub-models
-  std::map<Model *, std::future<void>> _async_results;
-
-  /// Threaded evaluation exceptions of sub-models
-  std::map<std::thread::id, std::exception_ptr> _async_exceptions;
 };
 } // namespace neml2
