@@ -37,7 +37,7 @@ public:
   virtual Tensor exact_solution() const = 0;
 
 protected:
-  TensorShape _batch_sizes;
+  TraceableTensorShape _batch_sizes;
   torch::TensorOptions _options;
 };
 

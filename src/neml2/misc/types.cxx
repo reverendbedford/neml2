@@ -23,9 +23,108 @@
 // THE SOFTWARE.
 
 #include "neml2/misc/types.h"
+#include "neml2/misc/error.h"
 
 namespace neml2
 {
+const torch::Tensor *
+TraceableSize::traceable() const noexcept
+{
+  return std::get_if<torch::Tensor>(this);
+}
+
+Size
+TraceableSize::concrete() const
+{
+  if (const auto * const size = traceable())
+  {
+    neml_assert_dbg(size->scalar_type() == torch::kInt64,
+                    "TraceableSize: size must be of type int64");
+    neml_assert_dbg(size->dim() == 0, "TraceableSize: shape must be 0D");
+    return size->item<Size>();
+  }
+
+  return std::get<Size>(*this);
+}
+
+bool
+operator==(const TraceableSize & lhs, const TraceableSize & rhs)
+{
+  return lhs.concrete() == rhs.concrete();
+}
+
+bool
+operator!=(const TraceableSize & lhs, const TraceableSize & rhs)
+{
+  return !(lhs == rhs);
+}
+
+std::ostream &
+operator<<(std::ostream & os, const TraceableSize & s)
+{
+  os << s.concrete();
+  return os;
+}
+
+TraceableTensorShape::TraceableTensorShape(const TensorShape & shape)
+{
+  for (const auto & size : shape)
+    emplace_back(size);
+}
+
+TraceableTensorShape::TraceableTensorShape(TensorShapeRef shape)
+{
+  for (const auto & size : shape)
+    emplace_back(size);
+}
+
+TraceableTensorShape::TraceableTensorShape(Size shape)
+  : TraceableTensorShape(TensorShapeRef({shape}))
+{
+}
+
+TraceableTensorShape::TraceableTensorShape(const torch::Tensor & shape)
+{
+  neml_assert_dbg(shape.dim() == 1, "TraceableTensorShape: shape must be 1D");
+  neml_assert_dbg(shape.scalar_type() == torch::kInt64,
+                  "TraceableTensorShape: shape must be of type int64");
+  for (Size i = 0; i < shape.size(0); i++)
+    emplace_back(shape.index({i}));
+}
+
+TraceableTensorShape
+TraceableTensorShape::slice(Size start, Size end) const
+{
+  return TraceableTensorShape(begin() + start, begin() + end);
+}
+
+TraceableTensorShape
+TraceableTensorShape::slice(Size N) const
+{
+  return TraceableTensorShape(begin() + N, end());
+}
+
+TensorShape
+TraceableTensorShape::concrete() const
+{
+  TensorShape s;
+  for (const auto & size : *this)
+    s.push_back(size.concrete());
+  return s;
+}
+
+bool
+operator==(const TraceableTensorShape & lhs, const TraceableTensorShape & rhs)
+{
+  return lhs.concrete() == rhs.concrete();
+}
+
+bool
+operator!=(const TraceableTensorShape & lhs, const TraceableTensorShape & rhs)
+{
+  return !(lhs == rhs);
+}
+
 torch::TensorOptions &
 default_tensor_options()
 {

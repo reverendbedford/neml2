@@ -149,7 +149,7 @@ NewtonWithTrustRegion::update(NonlinearSystem & system, Tensor & x)
     std::cout << "     RHO MIN/MAX            : " << std::scientific << torch::min(rho).item<Real>()
               << "/" << std::scientific << torch::max(rho).item<Real>() << std::endl;
     std::cout << "     ACCEPTANCE RATE        : " << torch::sum(accept).item<Size>() << "/"
-              << utils::storage_size(_delta.batch_sizes()) << std::endl;
+              << utils::storage_size(_delta.batch_sizes().concrete()) << std::endl;
     std::cout << "     ADJUSTED DELTA MIN/MAX : " << std::scientific
               << torch::min(_delta).item<Real>() << "/" << std::scientific
               << torch::max(_delta).item<Real>() << std::endl;
@@ -169,7 +169,7 @@ NewtonWithTrustRegion::solve_direction(const NonlinearSystem & system)
   _subproblem.reinit(system, _delta);
   auto s = _subproblem.solution().clone();
   auto [succeeded, iters] = _subproblem_solver.solve(_subproblem, s);
-  s = Tensor(torch::clamp(s, 0.0), s.batch_dim());
+  s = Tensor(torch::clamp(s, 0.0), s.batch_sizes());
   auto p_trust = -_subproblem.preconditioned_direction(s);
 
   // Now select between the two... Basically take the full Newton step whenever possible
@@ -181,10 +181,11 @@ NewtonWithTrustRegion::solve_direction(const NonlinearSystem & system)
   {
     std::cout << "     TRUST-REGION ITERATIONS: " << iters << std::endl;
     std::cout << "     ACTIVE CONSTRAINTS     : " << torch::sum(s > 0).item<Size>() << "/"
-              << utils::storage_size(s.batch_sizes()) << std::endl;
+              << utils::storage_size(s.batch_sizes().concrete()) << std::endl;
   }
 
-  return Tensor(torch::where(newton_inside_trust_region, p_newton, p_trust), p_newton.batch_dim());
+  return Tensor(torch::where(newton_inside_trust_region, p_newton, p_trust),
+                p_newton.batch_sizes());
 }
 
 Scalar

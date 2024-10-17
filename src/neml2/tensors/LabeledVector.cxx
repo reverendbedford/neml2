@@ -54,12 +54,12 @@ LabeledVector::split() const
 
   std::map<LabeledAxisAccessor, Tensor> ret;
   for (std::size_t i = 0; i < vars.size(); ++i)
-    ret[vars[i]] = Tensor(vals[i], batch_dim());
+    ret[vars[i]] = Tensor(vals[i], batch_sizes());
   return ret;
 }
 
 LabeledVector
-LabeledVector::assemble(TensorShapeRef batch_sizes,
+LabeledVector::assemble(const TraceableTensorShape & batch_sizes,
                         const LabeledAxis & axis,
                         const torch::TensorOptions & options,
                         std::vector<Tensor> & vals)

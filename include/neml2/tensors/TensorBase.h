@@ -48,8 +48,11 @@ public:
   /// Default constructor
   TensorBase() = default;
 
-  /// Construct from another torch::Tensor
+  /// Construct from another torch::Tensor with given batch dimension
   TensorBase(const torch::Tensor & tensor, Size batch_dim);
+
+  /// Construct from another torch::Tensor with given batch shape
+  TensorBase(const torch::Tensor & tensor, const TraceableTensorShape & batch_shape);
 
   /// Copy constructor
   template <class Derived2>
@@ -85,18 +88,13 @@ public:
    * @param end The ending tensor
    * @param nstep The number of steps with even spacing along the new dimension
    * @param dim Where to insert the new dimension
-   * @param batch_dim Batch dimension of the output
    * @return Tensor Linearly spaced tensor
    */
-  [[nodiscard]] static Derived linspace(
-      const Derived & start, const Derived & end, Size nstep, Size dim = 0, Size batch_dim = -1);
+  [[nodiscard]] static Derived
+  linspace(const Derived & start, const Derived & end, Size nstep, Size dim = 0);
   /// log-space equivalent of the linspace named constructor
-  [[nodiscard]] static Derived logspace(const Derived & start,
-                                        const Derived & end,
-                                        Size nstep,
-                                        Size dim = 0,
-                                        Size batch_dim = -1,
-                                        Real base = 10);
+  [[nodiscard]] static Derived
+  logspace(const Derived & start, const Derived & end, Size nstep, Size dim = 0, Real base = 10);
 
   /// @name Meta operations
   // These methods should be mirrored in LabeledTensor
@@ -143,9 +141,9 @@ public:
   /// Return the number of base dimensions
   Size base_dim() const;
   /// Return the batch size
-  TensorShapeRef batch_sizes() const;
+  const TraceableTensorShape & batch_sizes() const;
   /// Return the size of a batch axis
-  Size batch_size(Size index) const;
+  TraceableSize batch_size(Size index) const;
   /// Return the base size
   TensorShapeRef base_sizes() const;
   /// Return the size of a base axis
@@ -173,9 +171,9 @@ public:
   /// @name Modifiers
   ///@{
   /// Return a new view of the tensor with values broadcast along the batch dimensions.
-  Derived batch_expand(TensorShapeRef batch_size) const;
+  Derived batch_expand(const TraceableTensorShape & batch_shape) const;
   /// Return a new view of the tensor with values broadcast along the base dimensions.
-  neml2::Tensor base_expand(TensorShapeRef base_size) const;
+  neml2::Tensor base_expand(TensorShapeRef base_shape) const;
   /// Expand the batch to have the same shape as another tensor
   template <class Derived2>
   Derived batch_expand_as(const Derived2 & other) const;
@@ -183,11 +181,11 @@ public:
   template <class Derived2>
   Derived2 base_expand_as(const Derived2 & other) const;
   /// Return a new tensor with values broadcast along the batch dimensions.
-  Derived batch_expand_copy(TensorShapeRef batch_size) const;
+  Derived batch_expand_copy(const TraceableTensorShape & batch_shape) const;
   /// Return a new tensor with values broadcast along the base dimensions.
-  neml2::Tensor base_expand_copy(TensorShapeRef base_size) const;
+  neml2::Tensor base_expand_copy(TensorShapeRef base_shape) const;
   /// Reshape batch dimensions
-  Derived batch_reshape(TensorShapeRef batch_shape) const;
+  Derived batch_reshape(const TraceableTensorShape & batch_shape) const;
   /// Reshape base dimensions
   neml2::Tensor base_reshape(TensorShapeRef base_shape) const;
   /// Unsqueeze a batch dimension
@@ -205,13 +203,17 @@ public:
 private:
   /// Number of batch dimensions. The first `_batch_dim` dimensions are considered batch dimensions.
   Size _batch_dim;
+
+  /// Traceable batch sizes
+  TraceableTensorShape _batch_sizes;
 };
 
 template <class Derived>
 template <class Derived2>
 TensorBase<Derived>::TensorBase(const TensorBase<Derived2> & tensor)
   : torch::Tensor(tensor),
-    _batch_dim(tensor.batch_dim())
+    _batch_dim(tensor.batch_dim()),
+    _batch_sizes(tensor.batch_sizes())
 {
 }
 
@@ -236,7 +238,7 @@ template <class Derived,
 Derived
 operator+(const Derived & a, const Real & b)
 {
-  return Derived(torch::operator+(a, b), a.batch_dim());
+  return Derived(torch::operator+(a, b), a.batch_sizes());
 }
 
 template <class Derived,
@@ -261,7 +263,7 @@ template <class Derived,
 Derived
 operator-(const Derived & a, const Real & b)
 {
-  return Derived(torch::operator-(a, b), a.batch_dim());
+  return Derived(torch::operator-(a, b), a.batch_sizes());
 }
 
 template <class Derived,
@@ -286,7 +288,7 @@ template <class Derived,
 Derived
 operator*(const Derived & a, const Real & b)
 {
-  return Derived(torch::operator*(a, b), a.batch_dim());
+  return Derived(torch::operator*(a, b), a.batch_sizes());
 }
 
 template <class Derived,
@@ -302,7 +304,7 @@ template <class Derived,
 Derived
 operator/(const Derived & a, const Real & b)
 {
-  return Derived(torch::operator/(a, b), a.batch_dim());
+  return Derived(torch::operator/(a, b), a.batch_sizes());
 }
 
 template <class Derived,
@@ -310,7 +312,7 @@ template <class Derived,
 Derived
 operator/(const Real & a, const Derived & b)
 {
-  return Derived(torch::operator/(a, b), b.batch_dim());
+  return Derived(torch::operator/(a, b), b.batch_sizes());
 }
 
 template <class Derived,

@@ -46,22 +46,7 @@ LabeledMatrix::fill(const LabeledMatrix & other, bool recursive)
 }
 
 LabeledMatrix
-LabeledMatrix::chain(const LabeledMatrix & other) const
-{
-  // This function expresses a chain rule, which is just a dot product between the values of this
-  // and the values of the input The main annoyance is just getting the names correct
-
-  // Check that we are conformal
-  neml_assert_dbg(batch_sizes() == other.batch_sizes(),
-                  "LabeledMatrix batch sizes are not the same");
-  neml_assert_dbg(axis(1) == other.axis(0), "Labels are not conformal");
-
-  // If all the sizes are correct then executing the chain rule is pretty easy
-  return LabeledMatrix(math::bmm(*this, other), {&axis(0), &other.axis(1)});
-}
-
-LabeledMatrix
-LabeledMatrix::assemble(TensorShapeRef batch_sizes,
+LabeledMatrix::assemble(const TraceableTensorShape & batch_sizes,
                         const LabeledAxis & yaxis,
                         const LabeledAxis & xaxis,
                         const torch::TensorOptions & options,

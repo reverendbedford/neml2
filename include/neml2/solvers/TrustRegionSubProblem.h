@@ -49,7 +49,7 @@ protected:
 
   Tensor preconditioned_solve(const Scalar & s, const Tensor & v) const;
 
-  TensorShape _batch_sizes;
+  TraceableTensorShape _batch_sizes;
 
   torch::TensorOptions _options;
 

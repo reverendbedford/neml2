@@ -38,7 +38,7 @@ TestNonlinearSystem::reinit(const Tensor & x)
 {
   neml_assert_dbg(x.base_dim() == 1, "Trial solution must be one dimensional");
 
-  _batch_sizes = x.batch_sizes().vec();
+  _batch_sizes = x.batch_sizes();
   _options = x.options();
 
   _ndof = x.base_sizes()[0];
@@ -117,7 +117,7 @@ RosenbrockTestSystem::assemble(bool residual, bool Jacobian)
     diagonal.base_index_put_({indexing::Slice(1, -1)},
                              202 + 1200 * math::pow(s_x11, 2.0) - 400 * s_x2);
 
-    _Jacobian = Tensor(torch::diag_embed(diagonal) + H, _solution.batch_dim());
+    _Jacobian = Tensor(torch::diag_embed(diagonal) + H, _solution.batch_sizes());
   }
 }
 

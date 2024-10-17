@@ -128,7 +128,7 @@ protected:
   virtual void link_output_variables(Model * submodel);
 
   const torch::TensorOptions & options() const { return _options; }
-  TensorShapeRef batch_sizes() const { return _batch_sizes; }
+  const TraceableTensorShape & batch_sizes() const { return _batch_sizes; }
   Size batch_dim() const { return _batch_sizes.size(); }
 
   /// Additional diagnostics for a nonlinear system
@@ -151,7 +151,9 @@ protected:
   /// Set input of the model
   virtual void set_input(const LabeledVector & in);
   /// Cache batch shape, device, and dtype for the current evaluation
-  void cache(TensorShapeRef batch_shape, const torch::Device & device, const torch::Dtype & dtype);
+  void cache(const TraceableTensorShape & batch_shape,
+             const torch::Device & device,
+             const torch::Dtype & dtype);
   /// The map between input -> output, and optionally its derivatives
   virtual void set_value(bool out, bool dout_din, bool d2out_din2) = 0;
 
@@ -226,7 +228,7 @@ private:
   torch::TensorOptions _options;
 
   /// Batch shape used in the current evaluation
-  TensorShape _batch_sizes;
+  TraceableTensorShape _batch_sizes;
 
 #ifndef NDEBUG
   /// Whether this model has been evaluated in the current forward pass

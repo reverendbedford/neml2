@@ -201,7 +201,9 @@ Model::set_input(const LabeledVector & in)
 }
 
 void
-Model::cache(TensorShapeRef batch_shape, const torch::Device & device, const torch::Dtype & dtype)
+Model::cache(const TraceableTensorShape & batch_shape,
+             const torch::Device & device,
+             const torch::Dtype & dtype)
 {
   _batch_sizes = batch_shape;
   _options = torch::TensorOptions().device(device).dtype(dtype);

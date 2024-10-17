@@ -111,6 +111,10 @@ bool sizes_broadcastable(T &&... shapes);
 template <class... T>
 TensorShape broadcast_sizes(T &&... shapes);
 
+/// @brief Extract the batch shape of a tensor given batch dimension
+/// The extracted batch shape will be _traceable_. @see neml2::TraceableTensorShape
+TraceableTensorShape extract_batch_sizes(const torch::Tensor & tensor, Size batch_dim);
+
 /**
  * @brief The flattened storage size of a tensor with given shape
  *
@@ -137,16 +141,7 @@ TensorShape add_shapes(S &&... shape);
  * @return TensorShape The padded shape with dimension \p dim
  */
 TensorShape pad_prepend(TensorShapeRef s, Size dim, Size pad = 1);
-
-/**
- * @brief Pad shape \p s to dimension \p dim by appending sizes of \p pad.
- *
- * @param s The original shape to pad
- * @param dim The resulting dimension
- * @param pad The values used to pad the shape, default to 1
- * @return TensorShape The padded shape with dimension \p dim
- */
-TensorShape pad_append(TensorShapeRef s, Size dim, Size pad = 1);
+torch::Tensor pad_prepend(const torch::Tensor & s, Size dim, Size pad = 1);
 
 std::string indentation(int level, int indent = 2);
 
@@ -175,7 +170,7 @@ broadcastable(T &&... tensors)
 {
   if (!utils::sizes_same(tensors.base_sizes()...))
     return false;
-  return utils::sizes_broadcastable(tensors.batch_sizes()...);
+  return utils::sizes_broadcastable(tensors.batch_sizes().concrete()...);
 }
 
 template <class... T>
@@ -217,7 +212,7 @@ template <class... T>
 void
 neml_assert_batch_broadcastable(T &&... tensors)
 {
-  neml_assert(utils::sizes_broadcastable(tensors.batch_sizes()...),
+  neml_assert(utils::sizes_broadcastable(tensors.batch_sizes().concrete()...),
               "The ",
               sizeof...(tensors),
               " operands are not batch-broadcastable. The batch shapes are ",
@@ -229,13 +224,14 @@ void
 neml_assert_batch_broadcastable_dbg([[maybe_unused]] T &&... tensors)
 {
 #ifndef NDEBUG
-  neml_assert_dbg(utils::sizes_broadcastable(tensors.batch_sizes()...),
+  neml_assert_dbg(utils::sizes_broadcastable(tensors.batch_sizes().concrete()...),
                   "The ",
                   sizeof...(tensors),
                   " operands are not batch-broadcastable. The batch shapes are ",
                   tensors.batch_sizes()...);
 #endif
 }
+
 namespace utils
 {
 template <class... T>

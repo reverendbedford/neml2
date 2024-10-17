@@ -34,7 +34,6 @@ using namespace neml2;
 
 TEST_CASE("Model", "[models]")
 {
-
   SECTION("check_input")
   {
     auto & model = reload_model("unit/models/ComposedModel3.i", "model");
@@ -115,59 +114,20 @@ TEST_CASE("Model", "[models]")
     }
   }
 
-  SECTION("profiling")
+  SECTION("jit")
   {
-    auto & model = reload_model("unit/models/chaboche.i", "implicit_rate");
-    auto options = default_tensor_options().device(torch::kCUDA);
-    model.to(options);
+    auto & model = reload_model("unit/models/ComposedModel2.i", "model");
 
     // Trace the value method
     auto forward = [&model](torch::Tensor & x) -> std::tuple<torch::Tensor>
-    { return {model.dvalue(LabeledVector(x, {&model.input_axis()}))}; };
+    { return {model.value(LabeledVector(x, {&model.input_axis()}))}; };
     auto forward_jit = neml2::jit::StaticGraphFunction<std::tuple<torch::Tensor>, torch::Tensor>(
-        "model.value",
-        forward,
-        {torch::rand({20, 50, model.input_axis().storage_size()}, options)});
+        "model.value", forward, {torch::rand({1, 1, model.input_axis().storage_size()})});
 
-    auto x = torch::rand({20, 50, model.input_axis().storage_size()}, options);
+    // Traced model should be generalizable and yield the sam result
+    auto x = torch::rand({5, 8, model.input_axis().storage_size()});
     auto [y] = forward_jit(x);
-    // REQUIRE(TensorShape(y.sizes()) == TensorShape{20, 50, model.output_axis().storage_size()});
-    REQUIRE(torch::allclose(y, model.dvalue(LabeledVector(x, {&model.input_axis()}))));
-
-    forward_jit.function().graph()->dump();
-
-    Size N = 1000;
-    Size M = 100;
-    x = torch::rand({N, 20, 50, model.input_axis().storage_size()}, options);
-
-    {
-      TimedSection ts("original", "model.value");
-      for (Size i = 0; i < N; ++i)
-        model.dvalue(LabeledVector(x.index({i}), {&model.input_axis()}));
-    }
-    std::cout << "original:   " << timed_sections()["model.value"]["original"] << std::endl;
-
-    {
-      torch::InferenceMode inference;
-      TimedSection ts("jit warmup", "model.value");
-      std::cout << "warmup ";
-      for (Size i = 0; i < M; ++i)
-      {
-        std::cout << i << " ";
-        forward_jit(x.index({i}));
-      }
-      std::cout << std::endl;
-    }
-    std::cout << "jit warmup: " << timed_sections()["model.value"]["jit warmup"] << std::endl;
-
-    {
-      torch::InferenceMode inference;
-      TimedSection ts("jit", "model.value");
-      for (Size i = 0; i < N; ++i)
-        forward_jit(x.index({i}));
-    }
-    std::cout << "jit:        " << timed_sections()["model.value"]["jit"] << std::endl;
-
-    torch::jit::lastExecutedOptimizedGraph()->dump();
+    REQUIRE(TensorShape(y.sizes()) == TensorShape{5, 8, model.output_axis().storage_size()});
+    REQUIRE(torch::allclose(y, model.value(LabeledVector(x, {&model.input_axis()}))));
   }
 }

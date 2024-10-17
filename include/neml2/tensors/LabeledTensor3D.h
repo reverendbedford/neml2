@@ -43,13 +43,8 @@ public:
   /// The item set of the other tensor must be a subset of this tensor's item set.
   void fill(const LabeledTensor3D & other, bool recursive = true);
 
-  /// Second order chain rule product of two derivatives
-  LabeledTensor3D chain(const LabeledTensor3D & other,
-                        const LabeledMatrix & dself,
-                        const LabeledMatrix & dother) const;
-
   /// Assemble a 3D tensor of tensors
-  static LabeledTensor3D assemble(TensorShapeRef batch_sizes,
+  static LabeledTensor3D assemble(const TraceableTensorShape & batch_sizes,
                                   const LabeledAxis & yaxis,
                                   const LabeledAxis & x1axis,
                                   const LabeledAxis & x2axis,

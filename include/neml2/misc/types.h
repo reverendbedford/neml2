@@ -43,6 +43,64 @@ using TensorIndicesRef = torch::ArrayRef<TensorIndex>;
 }
 
 /**
+ * @brief Traceable size
+ *
+ * Similar to neml2::TraceableTensorShape, but only for a single dimension.
+ * @see neml2::TraceableTensorShape
+ */
+struct TraceableSize : public std::variant<Size, torch::Tensor>
+{
+  using std::variant<Size, torch::Tensor>::variant;
+
+  /// @return a pointer to the torch::Tensor representing the traceable size if it is traceable, otherwise a nullptr
+  const torch::Tensor * traceable() const noexcept;
+
+  /// @return the concrete size (without any traceable information)
+  Size concrete() const;
+};
+
+/// Comparison operators
+///@{
+bool operator==(const TraceableSize & lhs, const TraceableSize & rhs);
+bool operator!=(const TraceableSize & lhs, const TraceableSize & rhs);
+///@}
+
+/// Streaming operator
+std::ostream & operator<<(std::ostream & os, const TraceableSize & s);
+
+/**
+ * @brief Traceable tensor shape
+ *
+ * A tensor shape can be either a concrete shape or a traceable tensor. This is useful when we need
+ * to trace a function graph and let it generalize to other batch shapes.
+ */
+struct TraceableTensorShape : public torch::SmallVector<TraceableSize>
+{
+  using torch::SmallVector<TraceableSize>::SmallVector;
+  using Size = int64_t;
+
+  TraceableTensorShape(const TensorShape & shape);
+  TraceableTensorShape(TensorShapeRef shape);
+  TraceableTensorShape(Size shape);
+  TraceableTensorShape(const torch::Tensor & shape);
+
+  /// Slice the shape, semantically the same as ArrayRef::slice, but traceable.
+  TraceableTensorShape slice(Size start, Size end) const;
+
+  /// Chop-off the first N elements of the shape, semantically the same as ArrayRef::slice, but traceable.
+  TraceableTensorShape slice(Size N) const;
+
+  /// @return the concrete shape (without any traceable information)
+  TensorShape concrete() const;
+};
+
+/// Comparison operators
+///@{
+bool operator==(const TraceableTensorShape & lhs, const TraceableTensorShape & rhs);
+bool operator!=(const TraceableTensorShape & lhs, const TraceableTensorShape & rhs);
+///@}
+
+/**
  * @brief Role in a function definition
  *
  * NONE is the default value,
