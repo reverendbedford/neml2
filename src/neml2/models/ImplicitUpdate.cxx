@@ -64,10 +64,8 @@ ImplicitUpdate::ImplicitUpdate(const OptionSet & options)
   //      already been taken care of by the `register_model` call.
   //   2. Output variables of the "implicit_model" on the "residual" subaxis should be *provided* by
   //      *this* model.
-  for (auto var : _model.output_axis().subaxis("residual").variable_names())
-    declare_output_variable(_model.output_axis().subaxis("residual").storage_size(var),
-                            _model.variable(var.prepend("residual")).type(),
-                            var.prepend("state"));
+  for (const auto * var : _model.variable(FType::OUTPUT))
+    clone_output_variable(*var, var.name().remount("state"));
 }
 
 void
@@ -100,8 +98,7 @@ void
 ImplicitUpdate::check_AD_limitation() const
 {
   neml_assert_dbg(!using_AD_1st_derivative() && !using_AD_2nd_derivative(),
-                  "ImplicitUpdate does not support AD because it uses in-place operations to "
-                  "iteratively update the trial solution until convergence.");
+                  "ImplicitUpdate does not support AD");
 }
 
 void
