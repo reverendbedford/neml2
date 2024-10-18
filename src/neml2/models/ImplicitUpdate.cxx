@@ -64,8 +64,8 @@ ImplicitUpdate::ImplicitUpdate(const OptionSet & options)
   //      already been taken care of by the `register_model` call.
   //   2. Output variables of the "implicit_model" on the "residual" subaxis should be *provided* by
   //      *this* model.
-  for (const auto * var : _model.variable(FType::OUTPUT))
-    clone_output_variable(*var, var.name().remount("state"));
+  for (const auto * var : _model.variables(FType::OUTPUT))
+    clone_output_variable(*var, var->name().remount("state"));
 }
 
 void
