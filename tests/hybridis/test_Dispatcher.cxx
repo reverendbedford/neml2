@@ -29,6 +29,7 @@
 TEST_CASE("Dispatcher", "[hybridis]")
 {
   int argc = 1;
-  char * argv[] = "test";
+  char name[] = "test";
+  char * argv[] = {name};
   hybridis::hello(argc, argv);
 }

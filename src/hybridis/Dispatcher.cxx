@@ -28,7 +28,7 @@
 namespace hybridis
 {
 void
-hello(int argc, char ** argv)
+hello(int argc, char * argv[])
 {
   MPI_Init(&argc, &argv);
   int rank;

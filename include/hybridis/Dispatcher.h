@@ -26,5 +26,5 @@
 
 namespace hybridis
 {
-void hello(int argc, char ** argv);
+void hello(int argc, char * argv[]);
 } // namespace hybridis

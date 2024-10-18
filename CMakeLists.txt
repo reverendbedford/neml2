@@ -121,6 +121,6 @@ if(HYBRIDIS_ENABLE)
       set(HYBRIDIS_TESTS ON CACHE BOOL "Build the Hybridis unit tests")
 
       if(HYBRIDIS_TESTS)
-            add_subdirectory(tests/hybridis)
+            add_subdirectory(tests)
       endif()
 endif()

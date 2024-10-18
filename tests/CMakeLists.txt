@@ -7,26 +7,32 @@ FetchContent_MakeAvailable(Catch2)
 # ----------------------------------------------------------------------------
 # Subdirectories
 # ----------------------------------------------------------------------------
-# Test utilities
-add_subdirectory(src)
+if(NEML2_TESTS)
+      # Test utilities
+      add_subdirectory(src)
 
-# Unit tests
-set(NEML2_UNIT ON CACHE BOOL "Build NEML2 unit tests")
+      # Unit tests
+      set(NEML2_UNIT ON CACHE BOOL "Build NEML2 unit tests")
 
-if(NEML2_UNIT)
-      add_subdirectory(unit)
+      if(NEML2_UNIT)
+            add_subdirectory(unit)
+      endif()
+
+      # Regression tests
+      set(NEML2_REGRESSION ON CACHE BOOL "Build NEML2 regression tests")
+
+      if(NEML2_REGRESSION)
+            add_subdirectory(regression)
+      endif()
+
+      # Verification tests
+      set(NEML2_VERIFICATION ON CACHE BOOL "Build NEML2 verification tests")
+
+      if(NEML2_VERIFICATION)
+            add_subdirectory(verification)
+      endif()
 endif()
 
-# Regression tests
-set(NEML2_REGRESSION ON CACHE BOOL "Build NEML2 regression tests")
-
-if(NEML2_REGRESSION)
-      add_subdirectory(regression)
-endif()
-
-# Verification tests
-set(NEML2_VERIFICATION ON CACHE BOOL "Build NEML2 verification tests")
-
-if(NEML2_VERIFICATION)
-      add_subdirectory(verification)
+if(HYBRIDIS_TESTS)
+      add_subdirectory(hybridis)
 endif()
