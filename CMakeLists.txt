@@ -29,12 +29,8 @@ list(APPEND CMAKE_MODULE_PATH ${NEML2_SOURCE_DIR}/cmake/Modules) # CMake modules
 set(CMAKE_CXX_FLAGS_COVERAGE "-O0 -fprofile-arcs -ftest-coverage" CACHE STRING "Flags used by C++ compiler during coverage builds." FORCE)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(NEML2_TESTS ON CACHE BOOL "Build NEML2 tests")
-set(NEML2_RUNNER OFF CACHE BOOL "Build a simple runner for benchmarking, profiling, debugging, etc.")
-set(NEML2_PYBIND OFF CACHE BOOL "Build NEML2 Python bindings")
-set(NEML2_DOC OFF CACHE BOOL "Build NEML2 documentation (html)")
-set(NEML2_CLANG_TIDY OFF CACHE BOOL "Enable clang-tidy linting")
-set(NEML2_CLANG_TIDY_PATH "clang-tidy" CACHE STRING "Path to the clang-tidy executable")
+set(NEML2_ENABLE ON CACHE BOOL "Building the core NEML2 library")
+set(HYBRIDIS_ENABLE OFF CACHE BOOL "Build the hybridis library")
 
 # ----------------------------------------------------------------------------
 # Dependencies and 3rd party packages
@@ -86,24 +82,45 @@ endif()
 # Subdirectories
 # ----------------------------------------------------------------------------
 # base neml2 library
-add_subdirectory(src/neml2)
+if(NEML2_ENABLE)
+      add_subdirectory(src/neml2)
 
-# tests
-if(NEML2_TESTS)
-      add_subdirectory(tests)
+      # tests
+      set(NEML2_TESTS ON CACHE BOOL "Build NEML2 tests")
+
+      if(NEML2_TESTS)
+            add_subdirectory(tests)
+      endif()
+
+      # runner
+      set(NEML2_RUNNER OFF CACHE BOOL "Build a simple runner for benchmarking, profiling, debugging, etc.")
+
+      if(NEML2_RUNNER)
+            add_subdirectory(runner)
+      endif()
+
+      # Python bindings
+      set(NEML2_PYBIND OFF CACHE BOOL "Build NEML2 Python bindings")
+
+      if(NEML2_PYBIND)
+            add_subdirectory(python)
+      endif()
+
+      # Documentation
+      set(NEML2_DOC OFF CACHE BOOL "Build NEML2 documentation (html)")
+
+      if(NEML2_DOC)
+            add_subdirectory(doc)
+      endif()
 endif()
 
-# runner
-if(NEML2_RUNNER)
-      add_subdirectory(runner)
-endif()
+# Hybridis
+if(HYBRIDIS_ENABLE)
+      add_subdirectory(src/hybridis)
 
-# Python bindings
-if(NEML2_PYBIND)
-      add_subdirectory(python)
-endif()
+      set(HYBRIDIS_TESTS ON CACHE BOOL "Build the Hybridis unit tests")
 
-# Documentation
-if(NEML2_DOC)
-      add_subdirectory(doc)
+      if(HYBRIDIS_TESTS)
+            add_subdirectory(tests/hybridis)
+      endif()
 endif()
