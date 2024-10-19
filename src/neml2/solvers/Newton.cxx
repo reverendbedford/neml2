@@ -90,7 +90,7 @@ Newton::solve(NonlinearSystem & system, const NonlinearSystem::SOL<false> & x0)
     }
   }
 
-  return {RetCode::MAXITER, NonlinearSystem::SOL<false>(), miters};
+  return {RetCode::MAXITER, system.unscale(x), miters};
 }
 
 bool

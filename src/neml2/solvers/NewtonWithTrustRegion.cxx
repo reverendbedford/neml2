@@ -173,20 +173,21 @@ NewtonWithTrustRegion::solve_direction(const NonlinearSystem::RES<true> & r,
   _subproblem.reinit(r, J, _delta);
   auto res = _subproblem_solver.solve(_subproblem,
                                       NonlinearSystem::SOL<false>(Tensor::zeros_like(_delta)));
+
+  // Do some printing if verbose
+  if (verbose)
+  {
+    std::cout << "     TRUST-REGION ITERATIONS: " << res.iterations << std::endl;
+    std::cout << "     ACTIVE CONSTRAINTS     : " << torch::sum(res.solution > 0).item<Size>()
+              << "/" << utils::storage_size(res.solution.batch_sizes().concrete()) << std::endl;
+  }
+
   auto s = Scalar(torch::clamp(res.solution, 0.0), _delta.batch_sizes());
   auto p_trust = -_subproblem.preconditioned_direction(s);
 
   // Now select between the two... Basically take the full Newton step whenever possible
   auto newton_inside_trust_region =
       (math::linalg::vector_norm(p_newton) <= math::sqrt(2.0 * _delta)).unsqueeze(-1);
-
-  // Do some printing if verbose
-  if (verbose)
-  {
-    std::cout << "     TRUST-REGION ITERATIONS: " << res.iterations << std::endl;
-    std::cout << "     ACTIVE CONSTRAINTS     : " << torch::sum(s > 0).item<Size>() << "/"
-              << s.base_storage() << std::endl;
-  }
 
   return NonlinearSystem::SOL<true>(
       Tensor(torch::where(newton_inside_trust_region, p_newton, p_trust), p_newton.batch_sizes()));
