@@ -42,11 +42,11 @@ public:
 
   Newton(const OptionSet & options);
 
-  virtual std::tuple<bool, size_t> solve(NonlinearSystem & system, Tensor & x) override;
+  Result solve(NonlinearSystem & system, const Solution<false> & x0) override;
 
 protected:
   /// Prepare solver internal data before the iterative update
-  virtual void prepare(const NonlinearSystem & /*system*/, const Tensor & /*x*/) {}
+  virtual void prepare(const NonlinearSystem & /*system*/, const Solution<true> & /*x*/) {}
 
   /**
    * @brief Check for convergence. The current iteration is said to be converged if the residual
@@ -62,12 +62,18 @@ protected:
   virtual bool converged(size_t itr, const torch::Tensor & nR, const torch::Tensor & nR0) const;
 
   /// Update trial solution
-  virtual void update(NonlinearSystem & system, Tensor & x);
+  virtual void update(NonlinearSystem & system,
+                      Solution<true> & x,
+                      const Residual<true> & r,
+                      const Jacobian<true> & J) const;
 
   /// Do a final update to track AD function graph
-  virtual void final_update(NonlinearSystem & system, Tensor & x);
+  virtual void final_update(NonlinearSystem & system,
+                            Solution<true> & x,
+                            const Residual<true> & r,
+                            const Jacobian<true> & J) const;
 
   /// Find the current update direction
-  virtual Tensor solve_direction(const NonlinearSystem & system);
+  virtual Solution<true> solve_direction(const Residual<true> & r, const Jacobian<true> & J) const;
 };
 } // namespace neml2

@@ -431,17 +431,6 @@ Model::provided_items() const
   return output_axis().variable_names();
 }
 
-void
-Model::assemble(bool residual, bool Jacobian)
-{
-  if (residual && !Jacobian)
-    value();
-  else if (residual && Jacobian)
-    value_and_dvalue();
-  else if (!residual && Jacobian)
-    dvalue();
-}
-
 LabeledVector
 Model::get_output() const
 {

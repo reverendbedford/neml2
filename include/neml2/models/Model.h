@@ -157,8 +157,6 @@ protected:
   /// The map between input -> output, and optionally its derivatives
   virtual void set_value(bool out, bool dout_din, bool d2out_din2) = 0;
 
-  void assemble(bool residual, bool Jacobian) override;
-
   LabeledVector get_output() const;
   LabeledMatrix get_doutput_dinput() const;
   LabeledTensor3D get_d2output_dinput2() const;
@@ -197,6 +195,9 @@ protected:
     _registered_models.push_back(model.get());
     return *(std::dynamic_pointer_cast<T>(model));
   }
+
+  void set_guess(const Tensor &) override {}
+  void assemble(Tensor *, Tensor *) override {}
 
   /// Models *this* model may use during its evaluation
   std::vector<Model *> _registered_models;

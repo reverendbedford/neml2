@@ -44,6 +44,7 @@ public:
   struct Residual
   {
     Tensor value;
+    operator Tensor() const { return value; }
   };
 
   /**
@@ -54,6 +55,7 @@ public:
   struct Jacobian
   {
     Tensor value;
+    operator Tensor() const { return value; }
   };
 
   /**
@@ -64,6 +66,7 @@ public:
   struct Solution
   {
     Tensor value;
+    operator Tensor() const { return value; }
   };
 
 public:
@@ -116,9 +119,9 @@ public:
   /// Remove scaling to the Jacobian
   Jacobian<false> unscale(const Jacobian<true> & J) const;
   /// Apply scaling to the solution
-  Solution<true> scale(const Solution<false> & p) const;
+  Solution<true> scale(const Solution<false> & u) const;
   /// Remove scaling to the solution
-  Solution<false> unscale(const Solution<true> & p) const;
+  Solution<false> unscale(const Solution<true> & u) const;
 
   /// Set the current guess
   template <bool scaled>
@@ -162,6 +165,9 @@ protected:
 
   /// Column scaling "matrix" -- since it's a batched diagonal matrix, we are only storing its diagonals
   Tensor _col_scaling;
+
+private:
+  void ensure_scaling_matrices_initialized_dbg() const;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -185,7 +191,7 @@ NonlinearSystem::residual(const Solution<scaled> & x)
   Tensor r;
   set_guess(x);
   assemble(&r, nullptr);
-  Residual<false> r_unscaled = {r, false};
+  Residual<false> r_unscaled{r};
   return scaled ? scale(r_unscaled) : r_unscaled;
 }
 
@@ -196,7 +202,7 @@ NonlinearSystem::Jacobian(const Solution<scaled> & x)
   Tensor J;
   set_guess(x);
   assemble(nullptr, &J);
-  Jacobian<false> J_unscaled = {J, false};
+  Jacobian<false> J_unscaled{J};
   return scaled ? scale({J, false}) : J_unscaled;
 }
 
@@ -207,8 +213,8 @@ NonlinearSystem::residual_and_Jacobian(const Solution<scaled> & x)
   Tensor r, J;
   set_guess(x);
   assemble(&r, &J);
-  Residual<false> r_unscaled = {r, false};
-  Jacobian<false> J_unscaled = {J, false};
-  return scaled ? {scale(r_unscaled), scale({J, false})} : {r_unscaled, J_unscaled};
+  Residual<false> r_unscaled{r};
+  Jacobian<false> J_unscaled{J};
+  return scaled ? {scale(r_unscaled), scale(J_unscaled)} : {r_unscaled, J_unscaled};
 }
 } // namespace neml2

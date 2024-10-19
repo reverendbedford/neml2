@@ -43,10 +43,16 @@ public:
 
 protected:
   /// Update trial solution
-  virtual void update(NonlinearSystem & system, Tensor & x) override;
+  void update(NonlinearSystem & system,
+              Solution<true> & x,
+              const Residual<true> & r,
+              const Jacobian<true> & J) const override;
 
   /// Perform Armijo linesearch
-  virtual void linesearch(NonlinearSystem & system, const Tensor & x, const Tensor & dx);
+  virtual Scalar linesearch(NonlinearSystem & system,
+                            const Solution<true> & x,
+                            const Solution<true> & dx,
+                            const Residual<true> & R0) const;
 
   /// Linesearch maximum iterations
   unsigned int _linesearch_miter;
@@ -56,8 +62,5 @@ protected:
 
   /// Stopping criteria for linesearch
   Real _linesearch_c;
-
-  /// The line search parameter
-  Scalar _alpha;
 };
 } // namespace neml2

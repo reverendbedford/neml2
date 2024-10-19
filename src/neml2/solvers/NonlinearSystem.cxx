@@ -75,7 +75,7 @@ NonlinearSystem::NonlinearSystem(const OptionSet & options)
 }
 
 void
-NonlinearSystem::init_scaling(const Solution<false> & x, const bool verbose)
+NonlinearSystem::init_scaling(const NonlinearSystem::Solution<false> & x, const bool verbose)
 {
   if (!_autoscale)
     return;
@@ -134,49 +134,65 @@ NonlinearSystem::ensure_scaling_matrices_initialized_dbg() const
                  : "Automatic scaling is not requested but scaling matrices were initialized.");
 }
 
-Residual<true>
-NonlinearSystem::scale(const Residual<false> & r) const
+NonlinearSystem::Residual<true>
+NonlinearSystem::scale(const NonlinearSystem::Residual<false> & r) const
 {
+  if (!_autoscale)
+    return {r.value};
+
   ensure_scaling_matrices_initialized_dbg();
-  return {_row_scaling * r.value, true};
+  return {_row_scaling * r};
 }
 
-Residual<false>
-NonlinearSystem::unscale(const Residual<true> & r) const
+NonlinearSystem::Residual<false>
+NonlinearSystem::unscale(const NonlinearSystem::Residual<true> & r) const
 {
+  if (!_autoscale)
+    return {r.value};
+
   ensure_scaling_matrices_initialized_dbg();
-  return {r.value / _row_scaling, false};
+  return {r / _row_scaling};
 }
 
-Jacobian<true>
-NonlinearSystem::scale(const Jacobian<false> & J) const
+NonlinearSystem::Jacobian<true>
+NonlinearSystem::scale(const NonlinearSystem::Jacobian<false> & J) const
 {
+  if (!_autoscale)
+    return {J.value};
+
   ensure_scaling_matrices_initialized_dbg();
-  return {math::bmm(math::bmm(math::base_diag_embed(_row_scaling), J.value),
-                    math::base_diag_embed(_col_scaling)),
-          true};
+  return {math::bmm(math::bmm(math::base_diag_embed(_row_scaling), J),
+                    math::base_diag_embed(_col_scaling))};
 }
 
-Jacobian<false>
-NonlinearSystem::unscale(const Jacobian<true> & J) const
+NonlinearSystem::Jacobian<false>
+NonlinearSystem::unscale(const NonlinearSystem::Jacobian<true> & J) const
 {
+  if (!_autoscale)
+    return {J.value};
+
   ensure_scaling_matrices_initialized_dbg();
-  return {math::bmm(math::bmm(math::base_diag_embed(1.0 / _row_scaling), J.value),
-                    math::base_diag_embed(1.0 / _col_scaling)),
-          false};
+  return {math::bmm(math::bmm(math::base_diag_embed(1.0 / _row_scaling), J),
+                    math::base_diag_embed(1.0 / _col_scaling))};
 }
 
-Solution<true>
-NonlinearSystem::scale(const Solution<false> & p) const
+NonlinearSystem::Solution<true>
+NonlinearSystem::scale(const NonlinearSystem::Solution<false> & u) const
 {
+  if (!_autoscale)
+    return {u.value};
+
   ensure_scaling_matrices_initialized_dbg();
-  return {p.value / _col_scaling, true};
+  return {u / _col_scaling};
 }
 
-Solution<false>
-NonlinearSystem::unscale(const Solution<true> & p) const
+NonlinearSystem::Solution<false>
+NonlinearSystem::unscale(const NonlinearSystem::Solution<true> & u) const
 {
+  if (!_autoscale)
+    return {u.value};
+
   ensure_scaling_matrices_initialized_dbg();
-  return {_col_scaling * p.value, false};
+  return {_col_scaling * u};
 }
 } // namespace neml2

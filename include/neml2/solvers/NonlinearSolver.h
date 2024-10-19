@@ -36,6 +36,17 @@ namespace neml2
 class NonlinearSolver : public Solver
 {
 public:
+  struct Result
+  {
+    /// Solution to the nonlinear system
+    const Solution<false> solution;
+    /// Whether the solve has succeeded
+    const bool success;
+    /// Number of iterations before convergence
+    const std::size_t iterations;
+  };
+
+public:
   static OptionSet expected_options();
 
   /**
@@ -49,12 +60,10 @@ public:
    * @brief Solve the given nonlinear system.
    *
    * @param system The nonlinear system of equations.
-   * @param sol The initial solution which will be iteratively updated during the solve. It will be
-   * the solution to the system upon convergence
-   * @return A boolean indicating whether the solve has succeeded and the number of iterations
-   * before convergence.
+   * @param x0 The initial guess
+   * @return see neml2::NonlinearSolver::Result
    */
-  virtual std::tuple<bool, size_t> solve(NonlinearSystem & system, Tensor & sol) = 0;
+  virtual Result solve(NonlinearSystem & system, const Solution<false> & x0) = 0;
 
   /// Absolute tolerance
   Real atol;
