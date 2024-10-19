@@ -67,8 +67,7 @@ NonlinearSystem::enable_automatic_scaling(OptionSet & options)
 }
 
 NonlinearSystem::NonlinearSystem(const OptionSet & options)
-  : _ndof(0),
-    _autoscale(options.get<bool>("automatic_scaling")),
+  : _autoscale(options.get<bool>("automatic_scaling")),
     _autoscale_tol(options.get<Real>("automatic_scaling_tol")),
     _autoscale_miter(options.get<unsigned int>("automatic_scaling_miter")),
     _scaling_matrices_initialized(false)
@@ -76,7 +75,7 @@ NonlinearSystem::NonlinearSystem(const OptionSet & options)
 }
 
 void
-NonlinearSystem::init_scaling(const bool verbose)
+NonlinearSystem::init_scaling(const Solution<false> & x, const bool verbose)
 {
   if (!_autoscale)
     return;
@@ -84,12 +83,13 @@ NonlinearSystem::init_scaling(const bool verbose)
   if (_scaling_matrices_initialized)
     return;
 
-  // First compute the Jacobian
-  assemble(false, true);
+  // First compute the unscaled Jacobian
+  auto J = Jacobian(x);
 
-  auto Jp = _Jacobian.clone();
-  _row_scaling = Tensor::ones_like(_solution);
-  _col_scaling = Tensor::ones_like(_solution);
+  // Initialize the scaling matrices
+  auto Jp = J.value.clone();
+  _row_scaling = Tensor::ones_like(x.value);
+  _col_scaling = Tensor::ones_like(x.value);
 
   if (verbose)
     std::cout << "Before automatic scaling cond(J) = " << std::scientific
@@ -107,7 +107,7 @@ NonlinearSystem::init_scaling(const bool verbose)
       break;
 
     // scale rows and columns
-    for (Size i = 0; i < _ndof; i++)
+    for (Size i = 0; i < x.base_size(-1); i++)
     {
       auto ar = 1.0 / torch::sqrt(torch::max(Jp.base_index({i})));
       auto ac = 1.0 / torch::sqrt(torch::max(Jp.base_index({indexing::Slice(), i})));
@@ -125,95 +125,58 @@ NonlinearSystem::init_scaling(const bool verbose)
               << torch::max(torch::linalg_cond(Jp)).item<Real>() << std::endl;
 }
 
-Tensor
-NonlinearSystem::scale_residual(const Tensor & r) const
+void
+NonlinearSystem::ensure_scaling_matrices_initialized_dbg() const
 {
   neml_assert_dbg(
       _autoscale == _scaling_matrices_initialized,
       _autoscale ? "Automatic scaling is requested but scaling matrices have not been initialized."
                  : "Automatic scaling is not requested but scaling matrices were initialized.");
-  return _row_scaling * r;
 }
 
-Tensor
-NonlinearSystem::scale_Jacobian(const Tensor & J) const
+Residual<true>
+NonlinearSystem::scale(const Residual<false> & r) const
 {
-  neml_assert_dbg(
-      _autoscale == _scaling_matrices_initialized,
-      _autoscale ? "Automatic scaling is requested but scaling matrices have not been initialized."
-                 : "Automatic scaling is not requested but scaling matrices were initialized.");
-  return math::bmm(math::bmm(math::base_diag_embed(_row_scaling), J),
-                   math::base_diag_embed(_col_scaling));
+  ensure_scaling_matrices_initialized_dbg();
+  return {_row_scaling * r.value, true};
 }
 
-Tensor
-NonlinearSystem::scale_direction(const Tensor & p) const
+Residual<false>
+NonlinearSystem::unscale(const Residual<true> & r) const
 {
-  neml_assert_dbg(
-      _autoscale == _scaling_matrices_initialized,
-      _autoscale ? "Automatic scaling is requested but scaling matrices have not been initialized."
-                 : "Automatic scaling is not requested but scaling matrices were initialized.");
-  return _autoscale ? _col_scaling * p : p;
+  ensure_scaling_matrices_initialized_dbg();
+  return {r.value / _row_scaling, false};
 }
 
-void
-NonlinearSystem::set_solution(const Tensor & x)
+Jacobian<true>
+NonlinearSystem::scale(const Jacobian<false> & J) const
 {
-  _solution.variable_data().copy_(x);
+  ensure_scaling_matrices_initialized_dbg();
+  return {math::bmm(math::bmm(math::base_diag_embed(_row_scaling), J.value),
+                    math::base_diag_embed(_col_scaling)),
+          true};
 }
 
-Tensor
-NonlinearSystem::residual(const Tensor & x)
+Jacobian<false>
+NonlinearSystem::unscale(const Jacobian<true> & J) const
 {
-  set_solution(x);
-  residual();
-  return get_residual();
+  ensure_scaling_matrices_initialized_dbg();
+  return {math::bmm(math::bmm(math::base_diag_embed(1.0 / _row_scaling), J.value),
+                    math::base_diag_embed(1.0 / _col_scaling)),
+          false};
 }
 
-void
-NonlinearSystem::residual()
+Solution<true>
+NonlinearSystem::scale(const Solution<false> & p) const
 {
-  assemble(true, false);
-
-  _scaled_residual = _autoscale ? scale_residual(_residual) : _residual.clone();
+  ensure_scaling_matrices_initialized_dbg();
+  return {p.value / _col_scaling, true};
 }
 
-Tensor
-NonlinearSystem::Jacobian(const Tensor & x)
+Solution<false>
+NonlinearSystem::unscale(const Solution<true> & p) const
 {
-  set_solution(x);
-  Jacobian();
-  return get_Jacobian();
-}
-
-void
-NonlinearSystem::Jacobian()
-{
-  assemble(false, true);
-
-  _scaled_Jacobian = _autoscale ? scale_Jacobian(_Jacobian) : _Jacobian.clone();
-}
-
-std::tuple<Tensor, Tensor>
-NonlinearSystem::residual_and_Jacobian(const Tensor & x)
-{
-  set_solution(x);
-  residual_and_Jacobian();
-  return {get_residual(), get_Jacobian()};
-}
-
-void
-NonlinearSystem::residual_and_Jacobian()
-{
-  assemble(true, true);
-
-  _scaled_residual = _autoscale ? scale_residual(_residual) : _residual.clone();
-  _scaled_Jacobian = _autoscale ? scale_Jacobian(_Jacobian) : _Jacobian.clone();
-}
-
-Tensor
-NonlinearSystem::residual_norm() const
-{
-  return math::linalg::vector_norm(get_residual());
+  ensure_scaling_matrices_initialized_dbg();
+  return {_col_scaling * p.value, false};
 }
 } // namespace neml2

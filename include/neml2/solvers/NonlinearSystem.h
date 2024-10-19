@@ -36,6 +36,37 @@ namespace neml2
 class NonlinearSystem
 {
 public:
+  /**
+   * Convenience struct to hold residual to prevent developers from accidentally confuse the scaled
+   * and unscaled residual
+   */
+  template <bool scaled>
+  struct Residual
+  {
+    Tensor value;
+  };
+
+  /**
+   * Convenience struct to hold Jacobian to prevent developers from accidentally confuse the scaled
+   * and unscaled residual
+   */
+  template <bool scaled>
+  struct Jacobian
+  {
+    Tensor value;
+  };
+
+  /**
+   * Convenience struct to hold solution to prevent developers from accidentally confuse the scaled
+   * and unscaled solution (or solution increment, search direction, etc.)
+   */
+  template <bool scaled>
+  struct Solution
+  {
+    Tensor value;
+  };
+
+public:
   static OptionSet expected_options();
 
   static void disable_automatic_scaling(OptionSet & options);
@@ -48,73 +79,71 @@ public:
    * @brief Compute algebraic Jacobian-based automatic scaling following
    * https://cs.stanford.edu/people/paulliu/files/cs517-project.pdf
    *
+   * In a nutshell, given the original linearized system
+   *
+   * \f$ \mathrm{J} \Delta \mathrm{x} = -\mathrm{r} \f$
+   *
+   * Instead of solving for \f$ \Delta \mathrm{x} \f$ directly, we solve for a scaled version of it:
+   *
+   * \f$ \mathrm{J} \mathrm{C} \Delta \mathrm{x}' = -\mathrm{r} \f$
+   *
+   * where \f$ \mathrm{C} \f$ is a diagonal matrix, and apparently \f$ \Delta \mathrm{x} =
+   * \mathrm{C} \Delta \mathrm{x}' \f$. Then, left-multiply both sides by another diagonal matrix
+   * \f$ \mathrm{R} \f$, we get
+   *
+   * \f$ \mathrm{R} \mathrm{J} \mathrm{C} \Delta \mathrm{x}' = -\mathrm{R} \mathrm{r} \f$
+   *
+   * which is equivalent to
+   *
+   * \f$ \mathrm{J}' \Delta \mathrm{x}' = -\mathrm{r}' \f$
+   *
+   * where \f$ \mathrm{J}' = \mathrm{R} \mathrm{J} \mathrm{C} \f$ is the scaled Jacobian, and \f$
+   * \mathrm{r}' = \mathrm{R} \mathrm{r} \f$ is the scaled residual. The goal of automatic scaling
+   * is to find the scaling matrices so that max-norm of the rows and columns of the scaled Jacobian
+   * is as close to 1 as possible.
+   *
+   * @param x Unscaled initial guess used to compute the initial unscaled residual and Jacobian
    * @param verbose Print automatic scaling convergence information
    */
-  virtual void init_scaling(const bool verbose = false);
+  virtual void init_scaling(const Solution<false> & x, const bool verbose = false);
 
   /// Apply scaling to the residual
-  Tensor scale_residual(const Tensor & r) const;
+  Residual<true> scale(const Residual<false> & r) const;
+  /// Remove scaling to the residual
+  Residual<false> unscale(const Residual<true> & r) const;
   /// Apply scaling to the Jacobian
-  Tensor scale_Jacobian(const Tensor & J) const;
-  /// Remove scaling from the search direction, i.e. \f$ J^{-1} r \f$
-  Tensor scale_direction(const Tensor & p) const;
+  Jacobian<true> scale(const Jacobian<false> & J) const;
+  /// Remove scaling to the Jacobian
+  Jacobian<false> unscale(const Jacobian<true> & J) const;
+  /// Apply scaling to the solution
+  Solution<true> scale(const Solution<false> & p) const;
+  /// Remove scaling to the solution
+  Solution<false> unscale(const Solution<true> & p) const;
 
-  /// Set the solution vector
-  virtual void set_solution(const Tensor & x);
-
-  /// Get the solution vector
-  virtual Tensor solution() const { return _solution; }
-
-  /// Convenient shortcut to set the current solution, assemble and return the system residual
-  Tensor residual(const Tensor & x);
-  /// Convenient shortcut to assemble and return the system residual
-  void residual();
-
-  /// Convenient shortcut to set the current solution, assemble and return the system Jacobian
-  Tensor Jacobian(const Tensor & x);
-  /// Convenient shortcut to assemble and return the system Jacobian
-  void Jacobian();
-
-  /// Convenient shortcut to set the current solution, assemble and return the system residual and Jacobian
-  std::tuple<Tensor, Tensor> residual_and_Jacobian(const Tensor & x);
-  /// Convenient shortcut to assemble and return the system residual and Jacobian
-  void residual_and_Jacobian();
-
-  const Tensor & get_residual() const { return _scaled_residual; }
-  const Tensor & get_Jacobian() const { return _scaled_Jacobian; }
-
-  /// The residual norm
-  Tensor residual_norm() const;
-
-  /// Whether AD is enabled
-  virtual bool is_AD_enabled() const { return true; }
-  /// Whether AD is disabled
-  virtual bool is_AD_disabled() const final { return !is_AD_enabled(); }
+  /// Set the current guess
+  template <bool scaled>
+  void set_guess(const Solution<scaled> & x);
+  /// Convenient shortcut to set the current guess, assemble and return the residual
+  template <bool scaled>
+  Residual<scaled> residual(const Solution<scaled> & x);
+  /// Convenient shortcut to set the current guess, assemble and return the Jacobian
+  template <bool scaled>
+  Jacobian<scaled> Jacobian(const Solution<scaled> & x);
+  /// Convenient shortcut to set the current guess, assemble and return the residual and Jacobian
+  template <bool scaled>
+  std::tuple<Residual<scaled>, Jacobian<scaled>> residual_and_Jacobian(const Solution<scaled> & x);
 
 protected:
+  /// Set the _unscaled_ current guess
+  virtual void set_guess(const Tensor & x) = 0;
+
   /**
-   * @brief Compute the residual and Jacobian
+   * @brief Compute the _unscaled_ residual and Jacobian
    *
-   * @param residual Whether residual is requested
-   * @param Jacobian Whether Jacobian is requested
+   * @param r Pointer to the residual vector -- nullptr if not requested
+   * @param J Pointer to the Jacobian matrix -- nullptr if not requested
    */
-  virtual void assemble(bool residual, bool Jacobian) = 0;
-
-  /// Number of degrees of freedom
-  Size _ndof;
-
-  /// View for the solution of this nonlinear system
-  Tensor _solution;
-
-  /// View for the residual of this nonlinear system
-  Tensor _residual;
-
-  /// View for the Jacobian of this nonlinear system
-  Tensor _Jacobian;
-
-  Tensor _scaled_residual;
-
-  Tensor _scaled_Jacobian;
+  virtual void assemble(Tensor * r, Tensor * J) = 0;
 
   /// If true, do automatic scaling
   const bool _autoscale;
@@ -134,4 +163,52 @@ protected:
   /// Column scaling "matrix" -- since it's a batched diagonal matrix, we are only storing its diagonals
   Tensor _col_scaling;
 };
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation
+///////////////////////////////////////////////////////////////////////////////
+
+template <bool scaled>
+void
+NonlinearSystem::set_guess(const Solution<scaled> & x)
+{
+  if constexpr (scaled)
+    set_guess(unscale(x).value);
+  else
+    set_guess(x.value);
+}
+
+template <bool scaled>
+Residual<scaled>
+NonlinearSystem::residual(const Solution<scaled> & x)
+{
+  Tensor r;
+  set_guess(x);
+  assemble(&r, nullptr);
+  Residual<false> r_unscaled = {r, false};
+  return scaled ? scale(r_unscaled) : r_unscaled;
+}
+
+template <bool scaled>
+Jacobian<scaled>
+NonlinearSystem::Jacobian(const Solution<scaled> & x)
+{
+  Tensor J;
+  set_guess(x);
+  assemble(nullptr, &J);
+  Jacobian<false> J_unscaled = {J, false};
+  return scaled ? scale({J, false}) : J_unscaled;
+}
+
+template <bool scaled>
+std::tuple<Residual<scaled>, Jacobian<scaled>>
+NonlinearSystem::residual_and_Jacobian(const Solution<scaled> & x)
+{
+  Tensor r, J;
+  set_guess(x);
+  assemble(&r, &J);
+  Residual<false> r_unscaled = {r, false};
+  Jacobian<false> J_unscaled = {J, false};
+  return scaled ? {scale(r_unscaled), scale({J, false})} : {r_unscaled, J_unscaled};
+}
 } // namespace neml2
