@@ -36,12 +36,22 @@ namespace neml2
 class NonlinearSolver : public Solver
 {
 public:
+  enum class RetCode
+  {
+    /// Solver converged successfully
+    SUCCESS = 0,
+    /// Maximum number of iterations reached (without convergence)
+    MAXITER = 1,
+    /// Solver failed to converge
+    FAILURE = 2
+  };
+
   struct Result
   {
+    /// Solver return code, @see neml2::NonlinearSolver::RetCode
+    const RetCode ret;
     /// Solution to the nonlinear system
-    const Solution<false> solution;
-    /// Whether the solve has succeeded
-    const bool success;
+    const NonlinearSystem::SOL<false> solution;
     /// Number of iterations before convergence
     const std::size_t iterations;
   };
@@ -61,9 +71,9 @@ public:
    *
    * @param system The nonlinear system of equations.
    * @param x0 The initial guess
-   * @return see neml2::NonlinearSolver::Result
+   * @return @see neml2::NonlinearSolver::Result
    */
-  virtual Result solve(NonlinearSystem & system, const Solution<false> & x0) = 0;
+  virtual Result solve(NonlinearSystem & system, const NonlinearSystem::SOL<false> & x0) = 0;
 
   /// Absolute tolerance
   Real atol;

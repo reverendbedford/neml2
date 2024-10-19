@@ -42,11 +42,13 @@ public:
 
   Newton(const OptionSet & options);
 
-  Result solve(NonlinearSystem & system, const Solution<false> & x0) override;
+  Result solve(NonlinearSystem & system, const NonlinearSystem::SOL<false> & x0) override;
 
 protected:
   /// Prepare solver internal data before the iterative update
-  virtual void prepare(const NonlinearSystem & /*system*/, const Solution<true> & /*x*/) {}
+  virtual void prepare(const NonlinearSystem & /*system*/, const NonlinearSystem::SOL<true> & /*x*/)
+  {
+  }
 
   /**
    * @brief Check for convergence. The current iteration is said to be converged if the residual
@@ -63,17 +65,18 @@ protected:
 
   /// Update trial solution
   virtual void update(NonlinearSystem & system,
-                      Solution<true> & x,
-                      const Residual<true> & r,
-                      const Jacobian<true> & J) const;
+                      NonlinearSystem::SOL<true> & x,
+                      const NonlinearSystem::RES<true> & r,
+                      const NonlinearSystem::JAC<true> & J);
 
   /// Do a final update to track AD function graph
   virtual void final_update(NonlinearSystem & system,
-                            Solution<true> & x,
-                            const Residual<true> & r,
-                            const Jacobian<true> & J) const;
+                            NonlinearSystem::SOL<true> & x,
+                            const NonlinearSystem::RES<true> & r,
+                            const NonlinearSystem::JAC<true> & J);
 
   /// Find the current update direction
-  virtual Solution<true> solve_direction(const Residual<true> & r, const Jacobian<true> & J) const;
+  virtual NonlinearSystem::SOL<true> solve_direction(const NonlinearSystem::RES<true> & r,
+                                                     const NonlinearSystem::JAC<true> & J);
 };
 } // namespace neml2

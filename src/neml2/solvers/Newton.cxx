@@ -45,7 +45,7 @@ Newton::Newton(const OptionSet & options)
 }
 
 Newton::Result
-Newton::solve(NonlinearSystem & system, const Solution<false> & x0)
+Newton::solve(NonlinearSystem & system, const NonlinearSystem::SOL<false> & x0)
 {
   // Solve always takes place in the "scaled" space
   auto x = system.scale(x0);
@@ -62,7 +62,7 @@ Newton::solve(NonlinearSystem & system, const Solution<false> & x0)
     if (R.requires_grad())
       final_update(system, x, R, system.Jacobian<true>());
 
-    return {system.unscale(x), true, 0};
+    return {RetCode::SUCCESS, system.unscale(x), 0};
   }
 
   // Prepare any solver internal data before the iterative update
@@ -74,7 +74,7 @@ Newton::solve(NonlinearSystem & system, const Solution<false> & x0)
   // 3. i > miters (failure)
   for (size_t i = 1; i < miters; i++)
   {
-    auto J = system.Jacobian();
+    auto J = system.Jacobian<true>();
     update(system, x, R, J);
     R = system.residual(x);
     nR = math::linalg::vector_norm(R);
@@ -86,11 +86,11 @@ Newton::solve(NonlinearSystem & system, const Solution<false> & x0)
       if (R.requires_grad())
         final_update(system, x, R, system.Jacobian<true>());
 
-      return {system.unscale(x), true, i};
+      return {RetCode::SUCCESS, system.unscale(x), i};
     }
   }
 
-  return {Solution<false>{Tensor()}, false, miters};
+  return {RetCode::MAXITER, NonlinearSystem::SOL<false>(), miters};
 }
 
 bool
@@ -108,30 +108,30 @@ Newton::converged(size_t itr, const torch::Tensor & nR, const torch::Tensor & nR
 
 void
 Newton::update(NonlinearSystem & /*system*/,
-               Solution<true> & x,
-               const Residual<true> & r,
-               const Jacobian<true> & J) const
+               NonlinearSystem::SOL<true> & x,
+               const NonlinearSystem::RES<true> & r,
+               const NonlinearSystem::JAC<true> & J)
 {
-  x.value.variable_data() += solve_direction(r, J);
+  x.variable_data() += solve_direction(r, J);
 }
 
 void
 Newton::final_update(NonlinearSystem & /*system*/,
-                     Solution<true> & x,
-                     const Residual<true> & r,
-                     const Jacobian<true> & J) const
+                     NonlinearSystem::SOL<true> & x,
+                     const NonlinearSystem::RES<true> & r,
+                     const NonlinearSystem::JAC<true> & J)
 {
-  x.value += solve_direction(r, J);
+  x += solve_direction(r, J);
 }
 
-Solution<true>
-Newton::solve_direction(const Residual<true> & r, const Jacobian<true> & J) const
+NonlinearSystem::SOL<true>
+Newton::solve_direction(const NonlinearSystem::RES<true> & r, const NonlinearSystem::JAC<true> & J)
 {
   // Special case when this is a scalar system
-  if (r.value.base_storage() == 1)
-    return -r / J;
+  if (r.base_storage() == 1)
+    return NonlinearSystem::SOL<true>(-Tensor(r) / Tensor(J));
 
-  return -math::linalg::solve(J, r);
+  return NonlinearSystem::SOL<true>(-math::linalg::solve(J, r));
 }
 
 } // namespace neml2

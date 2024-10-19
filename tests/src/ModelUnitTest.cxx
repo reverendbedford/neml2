@@ -157,20 +157,17 @@ ModelUnitTest::check_all(Model & model)
     check_second_derivatives(model, false, false);
 
   // When AD is enabled
-  if (model.is_AD_enabled())
-  {
-    if (_check_AD_1st_deriv)
-      check_derivatives(model, true, true);
+  if (_check_AD_1st_deriv)
+    check_derivatives(model, true, true);
 
-    if (_check_AD_2nd_deriv)
-      check_second_derivatives(model, false, true);
+  if (_check_AD_2nd_deriv)
+    check_second_derivatives(model, false, true);
 
-    if (_check_AD_derivs)
-      check_second_derivatives(model, true, true);
+  if (_check_AD_derivs)
+    check_second_derivatives(model, true, true);
 
-    if (_check_AD_param_derivs)
-      check_AD_parameter_derivatives(model);
-  }
+  if (_check_AD_param_derivs)
+    check_AD_parameter_derivatives(model);
 }
 
 void

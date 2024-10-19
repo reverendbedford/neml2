@@ -62,27 +62,28 @@ NewtonWithLineSearch::NewtonWithLineSearch(const OptionSet & options)
 
 void
 NewtonWithLineSearch::update(NonlinearSystem & system,
-                             Solution<true> & x,
-                             const Residual<true> & r,
-                             const Jacobian<true> & J) const
+                             NonlinearSystem::SOL<true> & x,
+                             const NonlinearSystem::RES<true> & r,
+                             const NonlinearSystem::JAC<true> & J)
 {
   auto dx = solve_direction(r, J);
   auto alpha = linesearch(system, x, dx, r);
-  x.value.variable_data() += alpha * dx;
+  x.variable_data() += alpha * Tensor(dx);
 }
 
 Scalar
 NewtonWithLineSearch::linesearch(NonlinearSystem & system,
-                                 const Solution<true> & x,
-                                 const Solution<true> & dx,
-                                 const Residual<true> & R0) const
+                                 const NonlinearSystem::SOL<true> & x,
+                                 const NonlinearSystem::SOL<true> & dx,
+                                 const NonlinearSystem::RES<true> & R0) const
 {
-  auto alpha = Scalar::ones(x.value.batch_sizes(), x.value.options());
+  auto alpha = Scalar::ones(x.batch_sizes(), x.options());
   const auto nR02 = math::bvv(R0, R0);
 
   for (std::size_t i = 1; i < _linesearch_miter; i++)
   {
-    auto R = system.residual(x + alpha * dx);
+    NonlinearSystem::SOL<true> xp(Tensor(x) + alpha * Tensor(dx));
+    auto R = system.residual(xp);
     auto nR2 = math::bvv(R, R);
     auto crit = nR02 + 2.0 * _linesearch_c * alpha * math::bvv(R0, dx);
     if (verbose)
@@ -99,6 +100,8 @@ NewtonWithLineSearch::linesearch(NonlinearSystem & system,
     alpha.batch_index_put_({torch::logical_not(stop)},
                            alpha.batch_index({torch::logical_not(stop)}) / _linesearch_sigma);
   }
+
+  return alpha;
 }
 
 } // namespace neml2

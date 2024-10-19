@@ -173,8 +173,6 @@ Model::check_AD_limitation() const
 {
   if (_AD_1st_deriv && !_AD_2nd_deriv)
     throw NEMLException("AD derivative is requested, but AD second derivative is not requested.");
-  if (_AD_1st_deriv || _AD_2nd_deriv)
-    neml_assert(is_AD_enabled(), "AD is requested but not enabled");
 }
 
 void

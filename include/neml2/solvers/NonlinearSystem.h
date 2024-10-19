@@ -37,36 +37,69 @@ class NonlinearSystem
 {
 public:
   /**
-   * Convenience struct to hold residual to prevent developers from accidentally confuse the scaled
-   * and unscaled residual
+   * Convenience struct to hold residual to prevent developers from accidentally confusing the
+   * scaled and unscaled residual
    */
   template <bool scaled>
-  struct Residual
+  struct RES : public Tensor
   {
-    Tensor value;
-    operator Tensor() const { return value; }
+    RES() = default;
+
+    /// Conversion from Tensor must be explicit
+    explicit RES(const Tensor & r)
+      : Tensor(r)
+    {
+    }
+
+    /// Conversion between scaled and unscaled must be explicit
+    explicit RES(const RES<!scaled> & r)
+      : Tensor(r)
+    {
+    }
   };
 
   /**
-   * Convenience struct to hold Jacobian to prevent developers from accidentally confuse the scaled
-   * and unscaled residual
+   * Convenience struct to hold Jacobian to prevent developers from accidentally confusing the
+   * scaled and unscaled residual
    */
   template <bool scaled>
-  struct Jacobian
+  struct JAC : public Tensor
   {
-    Tensor value;
-    operator Tensor() const { return value; }
+    JAC() = default;
+
+    /// Conversion from Tensor must be explicit
+    explicit JAC(const Tensor & J)
+      : Tensor(J)
+    {
+    }
+
+    /// Conversion between scaled and unscaled must be explicit
+    explicit JAC(const JAC<!scaled> & J)
+      : Tensor(J)
+    {
+    }
   };
 
   /**
-   * Convenience struct to hold solution to prevent developers from accidentally confuse the scaled
-   * and unscaled solution (or solution increment, search direction, etc.)
+   * Convenience struct to hold solution to prevent developers from accidentally confusing the
+   * scaled and unscaled solution (or solution increment, search direction, etc.)
    */
   template <bool scaled>
-  struct Solution
+  struct SOL : public Tensor
   {
-    Tensor value;
-    operator Tensor() const { return value; }
+    SOL() = default;
+
+    /// Conversion from Tensor must be explicit
+    explicit SOL(const Tensor & u)
+      : Tensor(u)
+    {
+    }
+
+    /// Conversion between scaled and unscaled must be explicit
+    explicit SOL(const SOL<!scaled> & u)
+      : Tensor(u)
+    {
+    }
   };
 
 public:
@@ -108,45 +141,52 @@ public:
    * @param x Unscaled initial guess used to compute the initial unscaled residual and Jacobian
    * @param verbose Print automatic scaling convergence information
    */
-  virtual void init_scaling(const Solution<false> & x, const bool verbose = false);
+  virtual void init_scaling(const SOL<false> & x, const bool verbose = false);
 
   /// Apply scaling to the residual
-  Residual<true> scale(const Residual<false> & r) const;
+  RES<true> scale(const RES<false> & r) const;
   /// Remove scaling to the residual
-  Residual<false> unscale(const Residual<true> & r) const;
+  RES<false> unscale(const RES<true> & r) const;
   /// Apply scaling to the Jacobian
-  Jacobian<true> scale(const Jacobian<false> & J) const;
+  JAC<true> scale(const JAC<false> & J) const;
   /// Remove scaling to the Jacobian
-  Jacobian<false> unscale(const Jacobian<true> & J) const;
+  JAC<false> unscale(const JAC<true> & J) const;
   /// Apply scaling to the solution
-  Solution<true> scale(const Solution<false> & u) const;
+  SOL<true> scale(const SOL<false> & u) const;
   /// Remove scaling to the solution
-  Solution<false> unscale(const Solution<true> & u) const;
+  SOL<false> unscale(const SOL<true> & u) const;
 
   /// Set the current guess
+  virtual void set_guess(const SOL<true> & x) final;
+  /// Set the _unscaled_ current guess
+  virtual void set_guess(const SOL<false> & x) = 0;
+  /// Assemble and return the residual
   template <bool scaled>
-  void set_guess(const Solution<scaled> & x);
+  RES<scaled> residual();
   /// Convenient shortcut to set the current guess, assemble and return the residual
   template <bool scaled>
-  Residual<scaled> residual(const Solution<scaled> & x);
+  RES<scaled> residual(const SOL<scaled> & x);
+  /// Assemble and return the Jacobian
+  template <bool scaled>
+  JAC<scaled> Jacobian();
   /// Convenient shortcut to set the current guess, assemble and return the Jacobian
   template <bool scaled>
-  Jacobian<scaled> Jacobian(const Solution<scaled> & x);
+  JAC<scaled> Jacobian(const SOL<scaled> & x);
+  /// Assemble and return the residual and Jacobian
+  template <bool scaled>
+  std::tuple<RES<scaled>, JAC<scaled>> residual_and_Jacobian();
   /// Convenient shortcut to set the current guess, assemble and return the residual and Jacobian
   template <bool scaled>
-  std::tuple<Residual<scaled>, Jacobian<scaled>> residual_and_Jacobian(const Solution<scaled> & x);
+  std::tuple<RES<scaled>, JAC<scaled>> residual_and_Jacobian(const SOL<scaled> & x);
 
 protected:
-  /// Set the _unscaled_ current guess
-  virtual void set_guess(const Tensor & x) = 0;
-
   /**
    * @brief Compute the _unscaled_ residual and Jacobian
    *
    * @param r Pointer to the residual vector -- nullptr if not requested
    * @param J Pointer to the Jacobian matrix -- nullptr if not requested
    */
-  virtual void assemble(Tensor * r, Tensor * J) = 0;
+  virtual void assemble(RES<false> * r, JAC<false> * J) = 0;
 
   /// If true, do automatic scaling
   const bool _autoscale;
@@ -175,46 +215,63 @@ private:
 ///////////////////////////////////////////////////////////////////////////////
 
 template <bool scaled>
-void
-NonlinearSystem::set_guess(const Solution<scaled> & x)
+NonlinearSystem::RES<scaled>
+NonlinearSystem::residual()
 {
-  if constexpr (scaled)
-    set_guess(unscale(x).value);
-  else
-    set_guess(x.value);
-}
-
-template <bool scaled>
-Residual<scaled>
-NonlinearSystem::residual(const Solution<scaled> & x)
-{
-  Tensor r;
-  set_guess(x);
+  RES<false> r;
   assemble(&r, nullptr);
-  Residual<false> r_unscaled{r};
-  return scaled ? scale(r_unscaled) : r_unscaled;
+  if constexpr (scaled)
+    return scale(r);
+  else
+    return r;
 }
 
 template <bool scaled>
-Jacobian<scaled>
-NonlinearSystem::Jacobian(const Solution<scaled> & x)
+NonlinearSystem::RES<scaled>
+NonlinearSystem::residual(const NonlinearSystem::SOL<scaled> & x)
 {
-  Tensor J;
   set_guess(x);
+  return residual<scaled>();
+}
+
+template <bool scaled>
+NonlinearSystem::JAC<scaled>
+NonlinearSystem::Jacobian()
+{
+  JAC<false> J;
   assemble(nullptr, &J);
-  Jacobian<false> J_unscaled{J};
-  return scaled ? scale({J, false}) : J_unscaled;
+  if constexpr (scaled)
+    return scale(J);
+  else
+    return J;
 }
 
 template <bool scaled>
-std::tuple<Residual<scaled>, Jacobian<scaled>>
-NonlinearSystem::residual_and_Jacobian(const Solution<scaled> & x)
+NonlinearSystem::JAC<scaled>
+NonlinearSystem::Jacobian(const NonlinearSystem::SOL<scaled> & x)
 {
-  Tensor r, J;
   set_guess(x);
+  return Jacobian<scaled>();
+}
+
+template <bool scaled>
+std::tuple<NonlinearSystem::RES<scaled>, NonlinearSystem::JAC<scaled>>
+NonlinearSystem::residual_and_Jacobian()
+{
+  RES<false> r;
+  JAC<false> J;
   assemble(&r, &J);
-  Residual<false> r_unscaled{r};
-  Jacobian<false> J_unscaled{J};
-  return scaled ? {scale(r_unscaled), scale(J_unscaled)} : {r_unscaled, J_unscaled};
+  if constexpr (scaled)
+    return {scale(r), scale(J)};
+  else
+    return {r, J};
+}
+
+template <bool scaled>
+std::tuple<NonlinearSystem::RES<scaled>, NonlinearSystem::JAC<scaled>>
+NonlinearSystem::residual_and_Jacobian(const NonlinearSystem::SOL<scaled> & x)
+{
+  set_guess(x);
+  return residual_and_Jacobian<scaled>();
 }
 } // namespace neml2
