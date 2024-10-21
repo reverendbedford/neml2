@@ -28,7 +28,7 @@ namespace neml2
 {
 BufferStore::BufferStore(const OptionSet & options, NEML2Object * object)
   : _object(object),
-    _options(options)
+    _object_options(options)
 {
 }
 

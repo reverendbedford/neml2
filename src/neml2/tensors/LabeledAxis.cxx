@@ -26,8 +26,9 @@
 
 namespace neml2
 {
-LabeledAxis::LabeledAxis()
-  : _offset(0),
+LabeledAxis::LabeledAxis(const LabeledAxisAccessor & prefix)
+  : _prefix(prefix),
+    _offset(0),
     _has_state(false),
     _has_old_state(false),
     _has_forces(false),
@@ -38,7 +39,8 @@ LabeledAxis::LabeledAxis()
 }
 
 LabeledAxis::LabeledAxis(const LabeledAxis & other)
-  : _variables(other._variables),
+  : _prefix(other._prefix),
+    _variables(other._variables),
     _subaxes(other._subaxes),
     _layout(other._layout),
     _offset(other._offset),
@@ -118,16 +120,24 @@ LabeledAxis::setup_layout()
   _has_parameters = _subaxes.count("parameters");
 }
 
-size_t
+std::size_t
 LabeledAxis::nvariable(bool recursive) const
 {
-  return variable_names(recursive).size();
+  std::size_t n = _variables.size();
+  if (recursive)
+    for (const auto & [name, axis] : _subaxes)
+      n += axis->nvariable(true);
+  return n;
 }
 
-size_t
+std::size_t
 LabeledAxis::nsubaxis(bool recursive) const
 {
-  return subaxis_names(recursive).size();
+  std::size_t n = _subaxes.size();
+  if (recursive)
+    for (const auto & [name, axis] : _subaxes)
+      n += axis->nsubaxis(true);
+  return n;
 }
 
 bool
@@ -272,7 +282,7 @@ LabeledAxis::common_indices(const LabeledAxis & other,
 }
 
 std::vector<LabeledAxisAccessor>
-LabeledAxis::sort_by_assembly_order(const std::set<LabeledAxisAccessor> & names) const
+LabeledAxis::sort_by_assembly_order(const std::vector<LabeledAxisAccessor> & names) const
 {
   neml_assert(_offset > 0, "The LabeledAxis either is empty or has not been setup");
 
@@ -287,38 +297,66 @@ LabeledAxis::sort_by_assembly_order(const std::set<LabeledAxisAccessor> & names)
   return sorted;
 }
 
-std::set<LabeledAxisAccessor>
-LabeledAxis::variable_names(bool recursive) const
+std::vector<LabeledAxisAccessor>
+LabeledAxis::variable_names(bool recursive, bool sort) const
 {
-  std::set<LabeledAxisAccessor> accessors;
+  std::vector<LabeledAxisAccessor> accessors;
 
   // Insert local variables
   for (const auto & [var, sz] : _variables)
-    accessors.insert(var);
+    accessors.push_back(var);
 
   // Insert variables on subaxes
   if (recursive)
     for (const auto & [name, axis] : _subaxes)
-      for (const auto & var : axis->variable_names(true))
-        accessors.insert(var.prepend(name));
+      for (const auto & var : axis->variable_names(true, false))
+        accessors.push_back(var.prepend(name));
+
+  if (sort)
+    return sort_by_assembly_order(accessors);
 
   return accessors;
 }
 
-std::set<LabeledAxisAccessor>
-LabeledAxis::subaxis_names(bool recursive) const
+std::vector<LabeledAxisAccessor>
+LabeledAxis::qualified_variable_names(bool recursive, bool sort) const
 {
-  std::set<LabeledAxisAccessor> accessors;
+  auto accessors = variable_names(recursive, sort);
+
+  for (auto & var : accessors)
+    var = var.prepend(_prefix);
+
+  return accessors;
+}
+
+std::vector<LabeledAxisAccessor>
+LabeledAxis::subaxis_names(bool recursive, bool sort) const
+{
+  std::vector<LabeledAxisAccessor> accessors;
 
   for (const auto & [name, axis] : _subaxes)
   {
     // Insert local subaxes
-    accessors.insert(name);
+    accessors.push_back(name);
     // Insert sub-subaxes
     if (recursive)
       for (const auto & subname : axis->subaxis_names(true))
-        accessors.insert(subname.prepend(name));
+        accessors.push_back(subname.prepend(name));
   }
+
+  if (sort)
+    return sort_by_assembly_order(accessors);
+
+  return accessors;
+}
+
+std::vector<LabeledAxisAccessor>
+LabeledAxis::qualified_subaxis_names(bool recursive, bool sort) const
+{
+  auto accessors = subaxis_names(recursive, sort);
+
+  for (auto & var : accessors)
+    var = var.prepend(_prefix);
 
   return accessors;
 }

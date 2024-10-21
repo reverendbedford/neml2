@@ -105,22 +105,21 @@ Model::diagnose_nl_sys(std::vector<Diagnosis> & diagnoses) const
 
   // Check if any input variable is solve-dependent
   bool input_solve_dep = false;
-  for (auto && [name, var] : variables())
-    if (var.ftype() == FType::INPUT && var.is_solve_dependent())
+  for (auto * var : variables(FType::INPUT))
+    if (var->is_solve_dependent())
       input_solve_dep = true;
 
   // If any input variable is solve-dependent, ALL output variables must be solve-dependent!
   if (input_solve_dep)
-    for (auto && [name, var] : variables())
-      if (var.ftype() == FType::OUTPUT)
-        diagnostic_assert(
-            diagnoses,
-            var.is_solve_dependent(),
-            "This model is part of a nonlinear system. At least one of the input variables is "
-            "solve-dependent, so all output variables MUST be solve-dependent, i.e., they must be "
-            "on one of the following sub-axes: state, residual, parameters. However, got output "
-            "variable ",
-            name);
+    for (auto * var : variables(FType::OUTPUT))
+      diagnostic_assert(
+          diagnoses,
+          var->is_solve_dependent(),
+          "This model is part of a nonlinear system. At least one of the input variables is "
+          "solve-dependent, so all output variables MUST be solve-dependent, i.e., they must be "
+          "on one of the following sub-axes: state, residual, parameters. However, got output "
+          "variable ",
+          var->name());
 }
 
 void
@@ -148,9 +147,8 @@ Model::link_input_variables()
 void
 Model::link_input_variables(Model * submodel)
 {
-  for (auto && [name, var] : submodel->variables())
-    if (var.ftype() == FType::INPUT)
-      var.ref(variable(name));
+  for (auto * var : submodel->variables(FType::INPUT))
+    var->ref(variable(var->name()), submodel->is_nonlinear_system());
 }
 
 void
@@ -184,27 +182,11 @@ Model::use_AD_derivatives(bool first, bool second)
 }
 
 void
-Model::set_input(const LabeledVector & in)
-{
-  neml_assert(in.axis() == input_axis(),
-              "The provided input has axis: \n",
-              in.axis(),
-              ", but the model's input axis is: \n",
-              input_axis());
-
-  for (const auto & [var, val] : in.split())
-    variable(var).set(val);
-
-  cache(in.batch_sizes(), in.device(), in.scalar_type());
-}
-
-void
 Model::cache(const TraceableTensorShape & batch_shape,
              const torch::Device & device,
              const torch::Dtype & dtype)
 {
-  _batch_sizes = batch_shape;
-  _options = torch::TensorOptions().device(device).dtype(dtype);
+  VariableStore::cache(batch_shape, device, dtype);
 
   for (auto * submodel : registered_models())
     submodel->cache(batch_shape, device, dtype);
@@ -213,11 +195,12 @@ Model::cache(const TraceableTensorShape & batch_shape,
 LabeledVector
 Model::value(const LabeledVector & in)
 {
-  set_input(in);
+  assign_values(in);
+  cache(in.batch_sizes(), in.device(), in.scalar_type());
 
   prepare();
   value();
-  const auto y = get_output();
+  const auto y = assemble_values(output_axis());
   finalize();
 
   return y;
@@ -226,12 +209,13 @@ Model::value(const LabeledVector & in)
 std::tuple<LabeledVector, LabeledMatrix>
 Model::value_and_dvalue(const LabeledVector & in)
 {
-  set_input(in);
+  assign_values(in);
+  cache(in.batch_sizes(), in.device(), in.scalar_type());
 
   prepare();
   value_and_dvalue();
-  const auto y = get_output();
-  const auto dy_dx = get_doutput_dinput();
+  const auto y = assemble_values(output_axis());
+  const auto dy_dx = assemble_derivatives(output_axis(), input_axis());
   finalize();
 
   return {y, dy_dx};
@@ -240,11 +224,12 @@ Model::value_and_dvalue(const LabeledVector & in)
 LabeledMatrix
 Model::dvalue(const LabeledVector & in)
 {
-  set_input(in);
+  assign_values(in);
+  cache(in.batch_sizes(), in.device(), in.scalar_type());
 
   prepare();
   dvalue();
-  const auto dy_dx = get_doutput_dinput();
+  const auto dy_dx = assemble_derivatives(output_axis(), input_axis());
   finalize();
 
   return dy_dx;
@@ -253,13 +238,14 @@ Model::dvalue(const LabeledVector & in)
 std::tuple<LabeledVector, LabeledMatrix, LabeledTensor3D>
 Model::value_and_dvalue_and_d2value(const LabeledVector & in)
 {
-  set_input(in);
+  assign_values(in);
+  cache(in.batch_sizes(), in.device(), in.scalar_type());
 
   prepare();
   value_and_dvalue_and_d2value();
-  const auto y = get_output();
-  const auto dy_dx = get_doutput_dinput();
-  const auto d2y_dx2 = get_d2output_dinput2();
+  const auto y = assemble_values(output_axis());
+  const auto dy_dx = assemble_derivatives(output_axis(), input_axis());
+  const auto d2y_dx2 = assemble_second_derivatives(output_axis(), input_axis(), input_axis());
   finalize();
 
   return {y, dy_dx, d2y_dx2};
@@ -268,12 +254,13 @@ Model::value_and_dvalue_and_d2value(const LabeledVector & in)
 std::tuple<LabeledMatrix, LabeledTensor3D>
 Model::dvalue_and_d2value(const LabeledVector & in)
 {
-  set_input(in);
+  assign_values(in);
+  cache(in.batch_sizes(), in.device(), in.scalar_type());
 
   prepare();
   dvalue_and_d2value();
-  const auto dy_dx = get_doutput_dinput();
-  const auto d2y_dx2 = get_d2output_dinput2();
+  const auto dy_dx = assemble_derivatives(output_axis(), input_axis());
+  const auto d2y_dx2 = assemble_second_derivatives(output_axis(), input_axis(), input_axis());
   finalize();
 
   return {dy_dx, d2y_dx2};
@@ -282,11 +269,12 @@ Model::dvalue_and_d2value(const LabeledVector & in)
 LabeledTensor3D
 Model::d2value(const LabeledVector & in)
 {
-  set_input(in);
+  assign_values(in);
+  cache(in.batch_sizes(), in.device(), in.scalar_type());
 
   prepare();
   d2value();
-  const auto d2y_dx2 = get_d2output_dinput2();
+  const auto d2y_dx2 = assemble_second_derivatives(output_axis(), input_axis(), input_axis());
   finalize();
 
   return d2y_dx2;
@@ -420,63 +408,15 @@ Model::registered_model(const std::string & name) const
 std::set<VariableName>
 Model::consumed_items() const
 {
-  return input_axis().variable_names();
+  auto items = input_axis().variable_names(/*recursive=*/true, /*sort=*/false);
+  return {items.begin(), items.end()};
 }
 
 std::set<VariableName>
 Model::provided_items() const
 {
-  return output_axis().variable_names();
-}
-
-LabeledVector
-Model::get_output() const
-{
-  auto vars = output_axis().sort_by_assembly_order(output_axis().variable_names());
-  auto vals_flat = std::vector<Tensor>(vars.size());
-  for (std::size_t i = 0; i < vars.size(); ++i)
-    vals_flat[i] = variable(vars[i]).get().base_flatten();
-  return LabeledVector::assemble(batch_sizes(), output_axis(), options(), vals_flat);
-}
-
-LabeledMatrix
-Model::get_doutput_dinput() const
-{
-  auto yvars = output_axis().sort_by_assembly_order(output_axis().variable_names());
-  auto xvars = input_axis().sort_by_assembly_order(input_axis().variable_names());
-  auto vals_flat = std::vector<std::vector<Tensor>>(yvars.size());
-  for (std::size_t i = 0; i < yvars.size(); ++i)
-  {
-    const auto & derivs = variable(yvars[i]).derivatives();
-    vals_flat[i].resize(xvars.size());
-    for (std::size_t j = 0; j < xvars.size(); ++j)
-      if (derivs.count(xvars[j]))
-        vals_flat[i][j] = derivs.at(xvars[j]);
-  }
-  return LabeledMatrix::assemble(batch_sizes(), output_axis(), input_axis(), options(), vals_flat);
-}
-
-LabeledTensor3D
-Model::get_d2output_dinput2() const
-{
-  auto yvars = output_axis().sort_by_assembly_order(output_axis().variable_names());
-  auto xvars = input_axis().sort_by_assembly_order(input_axis().variable_names());
-  auto vals_flat = std::vector<std::vector<std::vector<Tensor>>>(yvars.size());
-  for (std::size_t i = 0; i < yvars.size(); ++i)
-  {
-    const auto & secderivs = variable(yvars[i]).second_derivatives();
-    vals_flat[i].resize(xvars.size());
-    for (std::size_t j = 0; j < xvars.size(); ++j)
-      if (secderivs.count(xvars[j]))
-      {
-        vals_flat[i][j].resize(xvars.size());
-        for (std::size_t k = 0; k < xvars.size(); ++k)
-          if (secderivs.at(xvars[j]).count(xvars[k]))
-            vals_flat[i][j][k] = secderivs.at(xvars[j]).at(xvars[k]);
-      }
-  }
-  return LabeledTensor3D::assemble(
-      batch_sizes(), output_axis(), input_axis(), input_axis(), options(), vals_flat);
+  auto items = output_axis().variable_names(/*recursive=*/true, /*sort=*/false);
+  return {items.begin(), items.end()};
 }
 
 void
@@ -497,5 +437,33 @@ Model::finalize()
 
   for (auto * submodel : _registered_models)
     submodel->finalize();
+}
+
+void
+Model::set_guess(const SOL<false> & x)
+{
+  assign_values(LabeledVector(x, {&input_axis().subaxis("state")}));
+  cache(x.batch_sizes(), x.device(), x.scalar_type());
+}
+
+void
+Model::assemble(NonlinearSystem::RES<false> * residual, NonlinearSystem::JAC<false> * Jacobian)
+{
+  prepare();
+
+  if (residual && !Jacobian)
+    value();
+  else if (!residual && Jacobian)
+    dvalue();
+  else if (residual && Jacobian)
+    value_and_dvalue();
+
+  if (residual)
+    *residual = RES<false>(assemble_values(output_axis().subaxis("residual")));
+  if (Jacobian)
+    *Jacobian = JAC<false>(
+        assemble_derivatives(output_axis().subaxis("residual"), input_axis().subaxis("state")));
+
+  finalize();
 }
 } // namespace neml2

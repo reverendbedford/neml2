@@ -49,11 +49,11 @@ public:
   struct Result
   {
     /// Solver return code, @see neml2::NonlinearSolver::RetCode
-    const RetCode ret;
+    RetCode ret;
     /// Solution to the nonlinear system
-    const NonlinearSystem::SOL<false> solution;
+    NonlinearSystem::SOL<false> solution;
     /// Number of iterations before convergence
-    const std::size_t iterations;
+    std::size_t iterations;
   };
 
 public:

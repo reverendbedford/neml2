@@ -47,7 +47,7 @@ public:
   void fill(const LabeledVector & other, bool recursive = true);
 
   /// Split the vector by variables
-  std::map<LabeledAxisAccessor, Tensor> split() const;
+  std::map<LabeledAxisAccessor, Tensor> split(bool qualified = true) const;
 
   /// Assemble a list of tensors
   static LabeledVector assemble(const TraceableTensorShape & batch_sizes,

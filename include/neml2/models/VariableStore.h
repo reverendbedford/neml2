@@ -74,7 +74,34 @@ public:
   std::vector<const VariableBase *> variables(FType) const;
   std::vector<VariableBase *> variables(FType);
 
+  /// Assign variable values
+  void assign_values(const LabeledVector & vals);
+
+  /// Assemble (flattened) variable values into a vector
+  LabeledVector assemble_values(const LabeledAxis & axis) const;
+
+  /// Assemble derivatives into a matrix
+  LabeledMatrix assemble_derivatives(const LabeledAxis & yaxis, const LabeledAxis & xaxis) const;
+
+  /// Assemble second derivatives into a 3D tensor
+  LabeledTensor3D assemble_second_derivatives(const LabeledAxis & yaxis,
+                                              const LabeledAxis & x1axis,
+                                              const LabeledAxis & x2axis) const;
+
 protected:
+  /// Cache batch shape, device, and dtype for the current evaluation
+  virtual void cache(const TraceableTensorShape & batch_shape,
+                     const torch::Device & device,
+                     const torch::Dtype & dtype);
+
+  ///@{
+  /// Tensor metadata used in the current evaluation
+  const torch::TensorOptions & options() const { return _options; }
+  const TraceableTensorShape & batch_sizes() const { return _batch_sizes; }
+  TraceableSize batch_size(Size i) const { return _batch_sizes[i]; }
+  Size batch_dim() const { return _batch_sizes.size(); }
+  ///@}
+
   /// Cleanup after evaluation
   virtual void clear();
 
@@ -200,8 +227,8 @@ private:
 
     if constexpr (sizeof...(name) == 1 && std::is_convertible_v<FirstType, std::string>)
     {
-      if (_options.contains<VariableName>(name...))
-        return _options.get<VariableName>(name...);
+      if (_object_options.contains<VariableName>(name...))
+        return _object_options.get<VariableName>(name...);
       return VariableName(std::forward<S>(name)...);
     }
     else
@@ -250,11 +277,12 @@ private:
   Model * _object;
 
   /**
-   * @brief Parsed input file options. These options are useful for example when we declare a
-   * variable using an input option name.
+   * @brief Parsed input file options for this object.
+
+   * These options are useful for example when we declare a variable using an input option name.
    *
    */
-  const OptionSet _options;
+  const OptionSet _object_options;
 
   /// All the declared axes
   Storage<std::string, LabeledAxis> _axes;
@@ -267,5 +295,11 @@ private:
 
   /// Variables
   Storage<VariableName, VariableBase> _variables;
+
+  /// Tensor options used in the current evaluation
+  torch::TensorOptions _options;
+
+  /// Batch shape used in the current evaluation
+  TraceableTensorShape _batch_sizes;
 };
 } // namespace neml2

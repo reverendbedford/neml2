@@ -84,7 +84,7 @@ public:
                                               FType ftype = FType::NONE) const = 0;
 
   /// Reference another variable
-  virtual void ref(const VariableBase & other) = 0;
+  virtual void ref(const VariableBase & other, bool ref_is_mutable = false) = 0;
 
   /// Get the referencing variable
   virtual const VariableBase * ref() const = 0;
@@ -168,7 +168,8 @@ public:
            TensorType type = TensorTypeEnum<T2>::value)
     : VariableBase(name_in, owner, ftype, type),
       _base_sizes(T::const_base_sizes),
-      _ref(nullptr)
+      _ref(nullptr),
+      _ref_is_mutable(false)
   {
   }
 
@@ -180,7 +181,8 @@ public:
            TensorType type = TensorType::kTensor)
     : VariableBase(name_in, owner, ftype, type),
       _base_sizes(base_shape),
-      _ref(nullptr)
+      _ref(nullptr),
+      _ref_is_mutable(false)
   {
   }
 
@@ -204,7 +206,7 @@ public:
                                                      type()));
   }
 
-  void ref(const VariableBase & var) override
+  void ref(const VariableBase & var, bool ref_is_mutable = false) override
   {
     const auto * var_ptr = dynamic_cast<const Variable<T> *>(&var);
     neml_assert(var_ptr,
@@ -218,6 +220,7 @@ public:
                 var.type(),
                 ": Dynamic cast failure.");
     _ref = var_ptr;
+    _ref_is_mutable = ref_is_mutable;
   }
 
   const VariableBase * ref() const override { return _ref; }
@@ -259,8 +262,15 @@ public:
   /// Set the variable value
   void operator=(const Tensor & val) override
   {
-    neml_assert_dbg(!_ref, "Cannot assign value to a referencing variable.");
-    _value = T(val.base_reshape(base_sizes()));
+    if (_ref)
+    {
+      neml_assert_dbg(_ref_is_mutable,
+                      "Trying to assign value to a referencing variable, but the referenced "
+                      "variable is not mutable.");
+      *const_cast<Variable<T> *>(_ref) = val;
+    }
+    else
+      _value = T(val.base_reshape(base_sizes()));
   }
 
   /// Variable value
@@ -291,6 +301,9 @@ protected:
 
   /// The variable referenced by this (nullptr if this is a storing variable)
   const Variable<T> * _ref;
+
+  /// Whether mutating the referenced variable is allowed
+  bool _ref_is_mutable;
 
   /// Variable value (undefined if this is a referencing variable)
   T _value;

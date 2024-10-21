@@ -29,7 +29,7 @@ namespace neml2
 {
 VariableStore::VariableStore(const OptionSet & options, Model * object)
   : _object(object),
-    _options(options),
+    _object_options(options),
     _input_axis(declare_axis("input")),
     _output_axis(declare_axis("output"))
 {
@@ -91,9 +91,77 @@ VariableStore::variables(FType ft)
 }
 
 void
+VariableStore::cache(const TraceableTensorShape & batch_shape,
+                     const torch::Device & device,
+                     const torch::Dtype & dtype)
+{
+  _batch_sizes = batch_shape;
+  _options = torch::TensorOptions().device(device).dtype(dtype);
+}
+
+void
 VariableStore::clear()
 {
   for (auto && [name, var] : variables())
     var.clear();
+}
+
+void
+VariableStore::assign_values(const LabeledVector & vals)
+{
+  for (const auto & [var, val] : vals.split(true))
+    variable(var).set(val);
+}
+
+LabeledVector
+VariableStore::assemble_values(const LabeledAxis & axis) const
+{
+  auto vars = axis.qualified_variable_names();
+  auto vals_flat = std::vector<Tensor>(vars.size());
+  for (std::size_t i = 0; i < vars.size(); ++i)
+    vals_flat[i] = variable(vars[i]).get().base_flatten();
+  return LabeledVector::assemble(batch_sizes(), axis, options(), vals_flat);
+}
+
+LabeledMatrix
+VariableStore::assemble_derivatives(const LabeledAxis & yaxis, const LabeledAxis & xaxis) const
+{
+  auto yvars = yaxis.qualified_variable_names();
+  auto xvars = xaxis.qualified_variable_names();
+  auto vals_flat = std::vector<std::vector<Tensor>>(yvars.size());
+  for (std::size_t i = 0; i < yvars.size(); ++i)
+  {
+    const auto & derivs = variable(yvars[i]).derivatives();
+    vals_flat[i].resize(xvars.size());
+    for (std::size_t j = 0; j < xvars.size(); ++j)
+      if (derivs.count(xvars[j]))
+        vals_flat[i][j] = derivs.at(xvars[j]);
+  }
+  return LabeledMatrix::assemble(batch_sizes(), yaxis, xaxis, options(), vals_flat);
+}
+
+LabeledTensor3D
+VariableStore::assemble_second_derivatives(const LabeledAxis & yaxis,
+                                           const LabeledAxis & x1axis,
+                                           const LabeledAxis & x2axis) const
+{
+  auto yvars = yaxis.qualified_variable_names();
+  auto x1vars = x1axis.qualified_variable_names();
+  auto x2vars = x2axis.qualified_variable_names();
+  auto vals_flat = std::vector<std::vector<std::vector<Tensor>>>(yvars.size());
+  for (std::size_t i = 0; i < yvars.size(); ++i)
+  {
+    const auto & secderivs = variable(yvars[i]).second_derivatives();
+    vals_flat[i].resize(x1vars.size());
+    for (std::size_t j = 0; j < x1vars.size(); ++j)
+      if (secderivs.count(x1vars[j]))
+      {
+        vals_flat[i][j].resize(x2vars.size());
+        for (std::size_t k = 0; k < x2vars.size(); ++k)
+          if (secderivs.at(x1vars[j]).count(x2vars[k]))
+            vals_flat[i][j][k] = secderivs.at(x1vars[j]).at(x2vars[k]);
+      }
+  }
+  return LabeledTensor3D::assemble(batch_sizes(), yaxis, x1axis, x2axis, options(), vals_flat);
 }
 } // namespace neml2

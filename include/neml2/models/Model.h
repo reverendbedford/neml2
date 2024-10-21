@@ -32,10 +32,6 @@
 #include "neml2/models/VariableStore.h"
 #include "neml2/solvers/NonlinearSystem.h"
 
-#include "neml2/tensors/LabeledVector.h"
-#include "neml2/tensors/LabeledMatrix.h"
-#include "neml2/tensors/LabeledTensor3D.h"
-
 namespace neml2
 {
 /**
@@ -127,10 +123,6 @@ protected:
   virtual void link_output_variables() final;
   virtual void link_output_variables(Model * submodel);
 
-  const torch::TensorOptions & options() const { return _options; }
-  const TraceableTensorShape & batch_sizes() const { return _batch_sizes; }
-  Size batch_dim() const { return _batch_sizes.size(); }
-
   /// Additional diagnostics for a nonlinear system
   void diagnose_nl_sys(std::vector<Diagnosis> & diagnoses) const;
 
@@ -148,18 +140,12 @@ protected:
   /// Make sure the model is evaluated only once
   void ensure_single_evaluation_dbg();
 
-  /// Set input of the model
-  virtual void set_input(const LabeledVector & in);
   /// Cache batch shape, device, and dtype for the current evaluation
   void cache(const TraceableTensorShape & batch_shape,
              const torch::Device & device,
-             const torch::Dtype & dtype);
+             const torch::Dtype & dtype) override;
   /// The map between input -> output, and optionally its derivatives
   virtual void set_value(bool out, bool dout_din, bool d2out_din2) = 0;
-
-  LabeledVector get_output() const;
-  LabeledMatrix get_doutput_dinput() const;
-  LabeledTensor3D get_d2output_dinput2() const;
 
   /// Called before each evaluation
   virtual void prepare() final;
@@ -196,8 +182,9 @@ protected:
     return *(std::dynamic_pointer_cast<T>(model));
   }
 
-  void set_guess(const SOL<false> &) override {}
-  void assemble(RES<false> *, JAC<false> *) override {}
+  void set_guess(const SOL<false> &) override;
+
+  void assemble(RES<false> *, JAC<false> *) override;
 
   /// Models *this* model may use during its evaluation
   std::vector<Model *> _registered_models;
@@ -224,12 +211,6 @@ private:
 
   /// Whether to use AD to compute 2nd derivatives
   bool _AD_2nd_deriv;
-
-  /// Tensor options used in the current evaluation
-  torch::TensorOptions _options;
-
-  /// Batch shape used in the current evaluation
-  TraceableTensorShape _batch_sizes;
 
 #ifndef NDEBUG
   /// Whether this model has been evaluated in the current forward pass

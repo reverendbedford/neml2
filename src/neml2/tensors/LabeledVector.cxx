@@ -43,9 +43,9 @@ LabeledVector::fill(const LabeledVector & other, bool recursive)
 }
 
 std::map<LabeledAxisAccessor, Tensor>
-LabeledVector::split() const
+LabeledVector::split(bool qualified) const
 {
-  auto vars = axis(0).sort_by_assembly_order(axis(0).variable_names());
+  auto vars = axis(0).variable_names();
   std::vector<Size> split_size;
   for (const auto & var : vars)
     split_size.push_back(axis(0).storage_size(var));
@@ -53,6 +53,8 @@ LabeledVector::split() const
   auto vals = tensor().split(split_size, -1);
 
   std::map<LabeledAxisAccessor, Tensor> ret;
+  if (qualified)
+    vars = axis(0).qualified_variable_names();
   for (std::size_t i = 0; i < vars.size(); ++i)
     ret[vars[i]] = Tensor(vals[i], batch_sizes());
   return ret;
