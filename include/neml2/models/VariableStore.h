@@ -77,6 +77,9 @@ public:
   /// Assign variable values
   void assign_values(const LabeledVector & vals);
 
+  /// Assign derivatives
+  void assign_derivatives(const LabeledMatrix & derivs);
+
   /// Assemble (flattened) variable values into a vector
   LabeledVector assemble_values(const LabeledAxis & axis) const;
 
@@ -161,18 +164,12 @@ protected:
   const VariableBase * clone_input_variable(const VariableBase & var,
                                             const VariableName & new_name = {})
   {
-    auto var_clone = var.clone(new_name, _object, FType::INPUT);
-    const auto var_name = var_clone->name();
+    neml_assert(&var.owner() != _object, "Trying to clone a variable from the same model.");
 
-    if (_input_axis.has_variable(var_name))
-      neml_assert(_input_axis.storage_size(var_name) == var_clone->base_storage(),
-                  "Trying to clone a variable ",
-                  var_name,
-                  " with base storage ",
-                  var_clone->base_storage(),
-                  " onto the input axis, but a variable with different storage size ",
-                  _input_axis.storage_size(var_name),
-                  " has already been declared.");
+    const auto var_name = new_name.empty() ? var.name() : new_name;
+    const auto * var_exist = _variables.query_value(var_name);
+    const auto ftype = var_exist ? (var_exist->ftype() | FType::INPUT) : FType::INPUT;
+    auto var_clone = var.clone(var_name, _object, ftype);
 
     declare_variable(_input_axis, var_name, var_clone->base_storage());
     return _variables.set_pointer(var_name, std::move(var_clone));
@@ -181,18 +178,12 @@ protected:
   /// Clone a variable and put it on the output axis
   VariableBase * clone_output_variable(const VariableBase & var, const VariableName & new_name = {})
   {
-    auto var_clone = var.clone(new_name, _object, FType::OUTPUT);
-    const auto var_name = var_clone->name();
+    neml_assert(&var.owner() != _object, "Trying to clone a variable from the same model.");
 
-    if (_output_axis.has_variable(var_name))
-      neml_assert(_output_axis.storage_size(var_name) == var_clone->base_storage(),
-                  "Trying to clone a variable ",
-                  var_name,
-                  " with base storage ",
-                  var_clone->base_storage(),
-                  " onto the output axis, but a variable with different storage size ",
-                  _output_axis.storage_size(var_name),
-                  " has already been declared.");
+    const auto var_name = new_name.empty() ? var.name() : new_name;
+    const auto * var_exist = _variables.query_value(var_name);
+    const auto ftype = var_exist ? (var_exist->ftype() | FType::OUTPUT) : FType::OUTPUT;
+    auto var_clone = var.clone(var_name, _object, ftype);
 
     declare_variable(_output_axis, var_name, var_clone->base_storage());
     return _variables.set_pointer(var_name, std::move(var_clone));

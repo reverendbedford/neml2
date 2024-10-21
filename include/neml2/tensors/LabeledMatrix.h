@@ -48,7 +48,13 @@ public:
   /// The item set of the other matrix must be a subset of this matrix's item set.
   void fill(const LabeledMatrix & other, bool recursive = true);
 
-  /// Assemble a matrix of tensors
+  /// Split the matrix by variables
+  std::map<LabeledAxisAccessor, Tensor> split_variables(Size i, bool qualified = true) const;
+
+  /// Split the matrix by subaxes
+  std::map<LabeledAxisAccessor, LabeledMatrix> split_subaxes(Size i, bool qualified = true) const;
+
+  /// Assemble a matrix of matrices
   static LabeledMatrix assemble(const TraceableTensorShape & batch_sizes,
                                 const LabeledAxis & yaxis,
                                 const LabeledAxis & xaxis,

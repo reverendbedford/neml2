@@ -128,21 +128,21 @@ ImplicitUpdate::set_value(bool out, bool dout_din, bool d2out_din2)
   // Use the implicit function theorem (IFT) to calculate the other derivatives
   if (dout_din)
   {
-    // // IFT requires dresidual/dinput evaluated at the solution:
-    // _model.prepare();
-    // _model.dvalue();
-    // auto && [dr_ds, dr_dsn, dr_df, dr_dfn, dr_dp] = _model.get_system_matrices();
+    // // IFT requires Jacobian evaluated at the solution:
+    // const auto derivs = _model.dvalue(s).split_subaxes(1);
+    // const auto dr_ds = derivs.at("state");
+
+    // // Factorize the Jacobian once and for all
+    // const auto [LU, pivot] = math::linalg::lu_factor(dr_ds);
 
     // // The actual IFT:
-    // auto [LU, pivot] = math::linalg::lu_factor(dr_ds);
-    // if (input_axis().has_old_state())
-    //   _ds_dsn.index_put_({torch::indexing::Slice()}, -math::linalg::lu_solve(LU, pivot, dr_dsn));
-    // if (input_axis().has_forces())
-    //   _ds_df.index_put_({torch::indexing::Slice()}, -math::linalg::lu_solve(LU, pivot, dr_df));
-    // if (input_axis().has_old_forces())
-    //   _ds_dfn.index_put_({torch::indexing::Slice()}, -math::linalg::lu_solve(LU, pivot, dr_dfn));
-    // if (input_axis().has_parameters())
-    //   _ds_dp.index_put_({torch::indexing::Slice()}, -math::linalg::lu_solve(LU, pivot, dr_dp));
+    // for (const auto & [subaxis, deriv] : derivs)
+    // {
+    //   if (subaxis == "state")
+    //     continue;
+    //   const auto ds_d = -math::linalg::lu_solve(LU, pivot, deriv);
+    //   assign_derivatives(LabeledMatrix(ds_d, {&output_axis(), &deriv.axis(1)}));
+    // }
   }
 }
 } // namespace neml2

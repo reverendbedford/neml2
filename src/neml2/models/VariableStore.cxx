@@ -75,7 +75,7 @@ VariableStore::variables(FType ft) const
 {
   std::vector<const VariableBase *> vars;
   for (auto && [name, var] : variables())
-    if (var.ftype() == ft)
+    if ((var.ftype() & ft) != FType::NONE)
       vars.push_back(&var);
   return vars;
 }
@@ -85,7 +85,7 @@ VariableStore::variables(FType ft)
 {
   std::vector<VariableBase *> vars;
   for (auto && [name, var] : variables())
-    if (var.ftype() == ft)
+    if ((var.ftype() & ft) != FType::NONE)
       vars.push_back(&var);
   return vars;
 }
@@ -109,8 +109,15 @@ VariableStore::clear()
 void
 VariableStore::assign_values(const LabeledVector & vals)
 {
-  for (const auto & [var, val] : vals.split(true))
+  for (const auto & [var, val] : vals.split_variables(true))
     variable(var).set(val);
+}
+
+void
+VariableStore::assign_derivatives(const LabeledMatrix & /*derivs*/)
+{
+  // for (const auto & [var, val] : vals.split_variables(true))
+  //   variable(var).set(val);
 }
 
 LabeledVector

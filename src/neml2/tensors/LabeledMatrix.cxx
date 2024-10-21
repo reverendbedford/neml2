@@ -45,6 +45,44 @@ LabeledMatrix::fill(const LabeledMatrix & other, bool recursive)
     _tensor.base_index_put_({idxi}, other.tensor().base_index({idxi_other}));
 }
 
+std::map<LabeledAxisAccessor, Tensor>
+LabeledMatrix::split_variables(Size i, bool qualified) const
+{
+  auto vars = axis(i).variable_names();
+  std::vector<Size> split_size;
+  for (const auto & var : vars)
+    split_size.push_back(axis(i).storage_size(var));
+
+  auto vals = tensor().split(split_size, batch_dim() + i);
+
+  std::map<LabeledAxisAccessor, Tensor> ret;
+  if (qualified)
+    vars = axis(i).qualified_variable_names();
+  for (std::size_t i = 0; i < vars.size(); ++i)
+    ret[vars[i]] = Tensor(vals[i], batch_sizes());
+  return ret;
+}
+
+std::map<LabeledAxisAccessor, LabeledMatrix>
+LabeledMatrix::split_subaxes(Size i, bool qualified) const
+{
+  auto subaxes = axis(i).subaxis_names();
+  std::vector<Size> split_size;
+  for (const auto & subaxis : subaxes)
+    split_size.push_back(axis(i).storage_size(subaxis));
+
+  auto vals = tensor().split(split_size, batch_dim() + i);
+
+  std::map<LabeledAxisAccessor, LabeledMatrix> ret;
+  if (qualified)
+    subaxes = axis(i).qualified_subaxis_names();
+  for (std::size_t i = 0; i < subaxes.size(); ++i)
+    ret[subaxes[i]] = LabeledMatrix(Tensor(vals[i], batch_sizes()),
+                                    {i == 0 ? &axis(0).subaxis(subaxes[i]) : &axis(0),
+                                     i == 1 ? &axis(1).subaxis(subaxes[i]) : &axis(1)});
+  return ret;
+}
+
 LabeledMatrix
 LabeledMatrix::assemble(const TraceableTensorShape & batch_sizes,
                         const LabeledAxis & yaxis,

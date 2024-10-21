@@ -47,9 +47,12 @@ public:
   void fill(const LabeledVector & other, bool recursive = true);
 
   /// Split the vector by variables
-  std::map<LabeledAxisAccessor, Tensor> split(bool qualified = true) const;
+  std::map<LabeledAxisAccessor, Tensor> split_variables(bool qualified = true) const;
 
-  /// Assemble a list of tensors
+  /// Split the vector by subaxes
+  std::map<LabeledAxisAccessor, LabeledVector> split_subaxes(bool qualified = true) const;
+
+  /// Assemble a vector of vectors
   static LabeledVector assemble(const TraceableTensorShape & batch_sizes,
                                 const LabeledAxis & axis,
                                 const torch::TensorOptions & options,

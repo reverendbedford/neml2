@@ -25,6 +25,7 @@
 #pragma once
 
 #include <torch/types.h>
+#include "neml2/misc/bitmask_operators.h"
 
 namespace neml2
 {
@@ -111,11 +112,11 @@ bool operator!=(const TraceableTensorShape & lhs, const TraceableTensorShape & r
  */
 enum class FType : int8_t
 {
-  NONE,
-  INPUT,
-  OUTPUT,
-  PARAMETER,
-  BUFFER
+  NONE = 0,
+  INPUT = 1 << 0,
+  OUTPUT = 1 << 1,
+  PARAMETER = 1 << 2,
+  BUFFER = 1 << 3
 };
 
 /**
@@ -165,3 +166,10 @@ std::string & parameter_name_separator();
  */
 bool & currently_solving_nonlinear_system();
 } // namespace neml2
+
+// Enable bitmask operations for FType
+template <>
+struct enable_bitmask_operators<neml2::FType>
+{
+  static const bool enable = true;
+};
