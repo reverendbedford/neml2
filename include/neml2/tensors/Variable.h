@@ -86,7 +86,7 @@ public:
   /// Reference another variable
   virtual void ref(const VariableBase & other, bool ref_is_mutable = false) = 0;
 
-  /// Get the referencing variable
+  /// Get the referencing variable (returns this if this is a storing variable)
   virtual const VariableBase * ref() const = 0;
 
   /// Get the variable value
@@ -195,22 +195,25 @@ public:
                                       FType ftype = FType::NONE) const override
   {
     if constexpr (std::is_same_v<T, Tensor>)
-      return std::move(
-          std::make_unique<Variable<Tensor>>(name.empty() ? this->name() : name,
-                                             owner ? owner : &this->owner(),
-                                             base_sizes(),
-                                             ftype != FType::NONE ? ftype : this->ftype(),
-                                             type()));
+    {
+      return std::make_unique<Variable<Tensor>>(name.empty() ? this->name() : name,
+                                                owner ? owner : &this->owner(),
+                                                base_sizes(),
+                                                ftype != FType::NONE ? ftype : this->ftype(),
+                                                type());
+    }
     else
-      return std::move(std::make_unique<Variable<T>>(name.empty() ? this->name() : name,
-                                                     owner ? owner : &this->owner(),
-                                                     ftype != FType::NONE ? ftype : this->ftype(),
-                                                     type()));
+    {
+      return std::make_unique<Variable<T>>(name.empty() ? this->name() : name,
+                                           owner ? owner : &this->owner(),
+                                           ftype != FType::NONE ? ftype : this->ftype(),
+                                           type());
+    }
   }
 
   void ref(const VariableBase & var, bool ref_is_mutable = false) override
   {
-    const auto * var_ptr = dynamic_cast<const Variable<T> *>(&var);
+    const auto * var_ptr = dynamic_cast<const Variable<T> *>(var.ref());
     neml_assert(var_ptr,
                 "Variable ",
                 name(),
@@ -225,7 +228,7 @@ public:
     _ref_is_mutable = ref_is_mutable;
   }
 
-  const VariableBase * ref() const override { return _ref; }
+  const VariableBase * ref() const override { return _ref ? _ref->ref() : this; }
 
   Tensor get() const override { return _ref ? _ref->get() : Tensor(_value); }
 
