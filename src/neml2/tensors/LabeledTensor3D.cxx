@@ -65,8 +65,6 @@ LabeledTensor3D::assemble(std::vector<std::vector<std::vector<Tensor>>> & vals,
             if (!vals[i][j][k].defined())
               vals[i][j][k] = Tensor::zeros(
                   {yaxis.storage_size(i), xaxis1.storage_size(j), xaxis2.storage_size(k)});
-          // else
-          //   vals[i][j][k] = vals[i][j][k].batch_expand(batch_sizes);
           cols[j] = math::base_cat(vals[i][j], -1);
         }
       }

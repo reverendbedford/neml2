@@ -108,8 +108,6 @@ LabeledMatrix::assemble(std::vector<std::vector<Tensor>> & vals,
       for (std::size_t j = 0; j < vals[i].size(); ++j)
         if (!vals[i][j].defined())
           vals[i][j] = Tensor::zeros({yaxis.storage_size(i), xaxis.storage_size(j)});
-      // else
-      //   vals[i][j] = vals[i][j].batch_expand(batch_sizes);
       rows[i] = math::base_cat(vals[i], -1);
     }
   }
