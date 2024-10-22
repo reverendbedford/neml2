@@ -109,15 +109,15 @@ VariableStore::clear()
 void
 VariableStore::assign_values(const LabeledVector & vals)
 {
-  for (const auto & [var, val] : vals.split_variables(true))
-    variable(var).set(val);
+  for (const auto & [var, val] : vals.split_variables(/*qualified=*/true))
+    variable(var) = val;
 }
 
 void
-VariableStore::assign_derivatives(const LabeledMatrix & /*derivs*/)
+VariableStore::assign_derivatives(const LabeledMatrix & derivs)
 {
-  // for (const auto & [var, val] : vals.split_variables(true))
-  //   variable(var).set(val);
+  for (const auto & [yvar, deriv] : derivs.disassemble_variables(/*qualified=*/true))
+    variable(yvar).derivatives().insert(deriv.begin(), deriv.end());
 }
 
 LabeledVector

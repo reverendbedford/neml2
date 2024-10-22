@@ -46,40 +46,49 @@ LabeledMatrix::fill(const LabeledMatrix & other, bool recursive)
 }
 
 std::map<LabeledAxisAccessor, Tensor>
-LabeledMatrix::split_variables(Size i, bool qualified) const
+LabeledMatrix::split_variables(Size dim, bool qualified) const
 {
-  auto vars = axis(i).variable_names();
-  std::vector<Size> split_size;
-  for (const auto & var : vars)
-    split_size.push_back(axis(i).storage_size(var));
-
-  auto vals = tensor().split(split_size, batch_dim() + i);
-
   std::map<LabeledAxisAccessor, Tensor> ret;
-  if (qualified)
-    vars = axis(i).qualified_variable_names();
+
+  const auto vars = qualified ? axis(dim).qualified_variable_names() : axis(dim).variable_names();
+  const auto vals = tensor().split(axis(dim).variable_sizes(), batch_dim() + dim);
   for (std::size_t i = 0; i < vars.size(); ++i)
     ret[vars[i]] = Tensor(vals[i], batch_sizes());
+
   return ret;
 }
 
 std::map<LabeledAxisAccessor, LabeledMatrix>
-LabeledMatrix::split_subaxes(Size i, bool qualified) const
+LabeledMatrix::split_subaxes(Size dim, bool qualified) const
 {
-  auto subaxes = axis(i).subaxis_names();
-  std::vector<Size> split_size;
-  for (const auto & subaxis : subaxes)
-    split_size.push_back(axis(i).storage_size(subaxis));
-
-  auto vals = tensor().split(split_size, batch_dim() + i);
-
   std::map<LabeledAxisAccessor, LabeledMatrix> ret;
-  if (qualified)
-    subaxes = axis(i).qualified_subaxis_names();
-  for (std::size_t i = 0; i < subaxes.size(); ++i)
-    ret[subaxes[i]] = LabeledMatrix(Tensor(vals[i], batch_sizes()),
-                                    {i == 0 ? &axis(0).subaxis(subaxes[i]) : &axis(0),
-                                     i == 1 ? &axis(1).subaxis(subaxes[i]) : &axis(1)});
+
+  const auto keys = qualified ? axis(dim).qualified_subaxis_names() : axis(dim).subaxis_names();
+  const auto subaxes = axis(dim).subaxis_names();
+  const auto vals = tensor().split(axis(dim).subaxis_sizes(), batch_dim() + dim);
+  for (std::size_t i = 0; i < keys.size(); ++i)
+    ret[keys[i]] = LabeledMatrix(Tensor(vals[i], batch_sizes()),
+                                 {dim == 0 ? &axis(0).subaxis(subaxes[i]) : &axis(0),
+                                  dim == 1 ? &axis(1).subaxis(subaxes[i]) : &axis(1)});
+
+  return ret;
+}
+
+std::map<LabeledAxisAccessor, std::map<LabeledAxisAccessor, Tensor>>
+LabeledMatrix::disassemble_variables(bool qualified) const
+{
+  std::map<LabeledAxisAccessor, std::map<LabeledAxisAccessor, Tensor>> ret;
+
+  const auto yvars = qualified ? axis(0).qualified_variable_names() : axis(0).variable_names();
+  const auto xvars = qualified ? axis(1).qualified_variable_names() : axis(1).variable_names();
+  const auto rows = tensor().split(axis(0).variable_sizes(), -2);
+  for (std::size_t i = 0; i < rows.size(); ++i)
+  {
+    const auto vals = rows[i].split(axis(1).variable_sizes(), -1);
+    for (std::size_t j = 0; j < vals.size(); ++j)
+      ret[yvars[i]][xvars[j]] = Tensor(vals[j], batch_sizes());
+  }
+
   return ret;
 }
 

@@ -123,26 +123,36 @@ ImplicitUpdate::set_value(bool out, bool dout_din, bool d2out_din2)
   }
 
   if (out)
-    assign_values(LabeledVector(res.solution, {&output_axis()}));
+  {
+    // You may be tempted to assign the solution, i.e., res.solution, to the output variables. But
+    // we don't have to. Think about it: The output variables share the same name as those input
+    // variables on the state subaxis, and since we don't duplicate storage for variables with the
+    // same name, they are essentially the same variable with FType::INPUT | FType::OUTPUT. During
+    // the nonlinear solve, we have to iteratively update the guess (i.e., the input variables on
+    // the state subaxis) until convergece. Once the nonlinear system has converged, the input
+    // variables on the state subaxis _must_ contain the solution. Therefore, the output variables
+    // _must_ also contain the solution upon convergence.
+  }
 
   // Use the implicit function theorem (IFT) to calculate the other derivatives
   if (dout_din)
   {
-    // // IFT requires Jacobian evaluated at the solution:
-    // const auto derivs = _model.dvalue(s).split_subaxes(1);
-    // const auto dr_ds = derivs.at("state");
+    // IFT requires the Jacobian evaluated at the solution:
+    const auto s = LabeledVector(Tensor(res.solution), {&_model.input_axis().subaxis("state")});
+    const auto derivs = _model.dvalue(s).split_subaxes(1);
+    const auto dr_ds = derivs.at("state");
 
-    // // Factorize the Jacobian once and for all
-    // const auto [LU, pivot] = math::linalg::lu_factor(dr_ds);
+    // Factorize the Jacobian once and for all
+    const auto [LU, pivot] = math::linalg::lu_factor(dr_ds);
 
-    // // The actual IFT:
-    // for (const auto & [subaxis, deriv] : derivs)
-    // {
-    //   if (subaxis == "state")
-    //     continue;
-    //   const auto ds_d = -math::linalg::lu_solve(LU, pivot, deriv);
-    //   assign_derivatives(LabeledMatrix(ds_d, {&output_axis(), &deriv.axis(1)}));
-    // }
+    // The actual IFT:
+    for (const auto & [subaxis, deriv] : derivs)
+    {
+      if (subaxis == "state")
+        continue;
+      const auto ds_d = -math::linalg::lu_solve(LU, pivot, deriv);
+      assign_derivatives(LabeledMatrix(ds_d, {&output_axis(), &deriv.axis(1)}));
+    }
   }
 }
 } // namespace neml2

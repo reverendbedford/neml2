@@ -92,9 +92,6 @@ public:
   /// Get the variable value
   virtual Tensor get() const = 0;
 
-  /// Set the variable value (handles reshaping)
-  virtual void set(const Tensor & val) = 0;
-
   /// Assignment operator
   virtual void operator=(const Tensor & val) = 0;
 
@@ -106,9 +103,14 @@ public:
 
   /// Partial derivatives
   const std::map<VariableName, Tensor> & derivatives() const { return _derivs; }
+  std::map<VariableName, Tensor> & derivatives() { return _derivs; }
 
   /// Partial second derivatives
   const std::map<VariableName, std::map<VariableName, Tensor>> & second_derivatives() const
+  {
+    return _sec_derivs;
+  }
+  std::map<VariableName, std::map<VariableName, Tensor>> & second_derivatives()
   {
     return _sec_derivs;
   }
@@ -226,20 +228,6 @@ public:
   const VariableBase * ref() const override { return _ref; }
 
   Tensor get() const override { return _ref ? _ref->get() : Tensor(_value); }
-
-  void set(const Tensor & val) override
-  {
-    neml_assert_dbg(val.base_storage() == base_storage(),
-                    "Failed to set value for variable ",
-                    name(),
-                    " of type ",
-                    type(),
-                    ": Expected flattened base storage ",
-                    base_storage(),
-                    ", got ",
-                    val.base_storage());
-    (*this) = T(val.base_reshape(base_sizes()));
-  }
 
   /// Suppressed constructor to prevent accidental dereferencing
   [[deprecated("Variable<T> must be assigned to references -- missing &")]] Variable(

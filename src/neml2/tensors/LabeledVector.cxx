@@ -45,36 +45,27 @@ LabeledVector::fill(const LabeledVector & other, bool recursive)
 std::map<LabeledAxisAccessor, Tensor>
 LabeledVector::split_variables(bool qualified) const
 {
-  auto vars = axis(0).variable_names();
-  std::vector<Size> split_size;
-  for (const auto & var : vars)
-    split_size.push_back(axis(0).storage_size(var));
-
-  auto vals = tensor().split(split_size, -1);
-
   std::map<LabeledAxisAccessor, Tensor> ret;
-  if (qualified)
-    vars = axis(0).qualified_variable_names();
+
+  const auto vars = qualified ? axis(0).qualified_variable_names() : axis(0).variable_names();
+  const auto vals = tensor().split(axis(0).variable_sizes(), -1);
   for (std::size_t i = 0; i < vars.size(); ++i)
     ret[vars[i]] = Tensor(vals[i], batch_sizes());
+
   return ret;
 }
 
 std::map<LabeledAxisAccessor, LabeledVector>
 LabeledVector::split_subaxes(bool qualified) const
 {
-  auto subaxes = axis(0).subaxis_names();
-  std::vector<Size> split_size;
-  for (const auto & subaxis : subaxes)
-    split_size.push_back(axis(0).storage_size(subaxis));
-
-  auto vals = tensor().split(split_size, -1);
-
   std::map<LabeledAxisAccessor, LabeledVector> ret;
-  if (qualified)
-    subaxes = axis(0).qualified_subaxis_names();
+
+  const auto keys = qualified ? axis(0).qualified_subaxis_names() : axis(0).subaxis_names();
+  const auto subaxes = axis(0).subaxis_names();
+  const auto vals = tensor().split(axis(0).subaxis_sizes(), -1);
   for (std::size_t i = 0; i < subaxes.size(); ++i)
-    ret[subaxes[i]] = LabeledVector(Tensor(vals[i], batch_sizes()), {&axis(0).subaxis(subaxes[i])});
+    ret[keys[i]] = LabeledVector(Tensor(vals[i], batch_sizes()), {&axis(0).subaxis(subaxes[i])});
+
   return ret;
 }
 

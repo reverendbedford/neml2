@@ -49,10 +49,14 @@ public:
   void fill(const LabeledMatrix & other, bool recursive = true);
 
   /// Split the matrix by variables
-  std::map<LabeledAxisAccessor, Tensor> split_variables(Size i, bool qualified = true) const;
+  std::map<LabeledAxisAccessor, Tensor> split_variables(Size dim, bool qualified = true) const;
 
   /// Split the matrix by subaxes
-  std::map<LabeledAxisAccessor, LabeledMatrix> split_subaxes(Size i, bool qualified = true) const;
+  std::map<LabeledAxisAccessor, LabeledMatrix> split_subaxes(Size dim, bool qualified = true) const;
+
+  /// Disassemble the matrix into a matrix of matrices (by variables)
+  std::map<LabeledAxisAccessor, std::map<LabeledAxisAccessor, Tensor>>
+  disassemble_variables(bool qualified = true) const;
 
   /// Assemble a matrix of matrices
   static LabeledMatrix assemble(const TraceableTensorShape & batch_sizes,

@@ -172,6 +172,9 @@ public:
   std::vector<LabeledAxisAccessor> qualified_variable_names(bool recursive = true,
                                                             bool sort = true) const;
 
+  /// Get the storage sizes on this axis (by variables)
+  std::vector<Size> variable_sizes() const;
+
   /// Get the subaxes
   const std::map<std::string, std::shared_ptr<LabeledAxis>> & subaxes() const { return _subaxes; }
 
@@ -181,6 +184,9 @@ public:
   /// Get fully qualified subaxes' names
   std::vector<LabeledAxisAccessor> qualified_subaxis_names(bool recursive = false,
                                                            bool sort = true) const;
+
+  /// Get the storage sizes on this axis (by subaxes)
+  std::vector<Size> subaxis_sizes() const;
 
   /// Get a sub-axis
   const LabeledAxis & subaxis(const LabeledAxisAccessor & name) const;

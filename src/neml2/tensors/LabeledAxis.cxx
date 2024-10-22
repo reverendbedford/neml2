@@ -329,6 +329,16 @@ LabeledAxis::qualified_variable_names(bool recursive, bool sort) const
   return accessors;
 }
 
+std::vector<Size>
+LabeledAxis::variable_sizes() const
+{
+  const auto vars = variable_names(true, true);
+  std::vector<Size> sizes;
+  for (const auto & var : vars)
+    sizes.push_back(storage_size(var));
+  return sizes;
+}
+
 std::vector<LabeledAxisAccessor>
 LabeledAxis::subaxis_names(bool recursive, bool sort) const
 {
@@ -359,6 +369,16 @@ LabeledAxis::qualified_subaxis_names(bool recursive, bool sort) const
     var = var.prepend(_prefix);
 
   return accessors;
+}
+
+std::vector<Size>
+LabeledAxis::subaxis_sizes() const
+{
+  const auto subaxes = subaxis_names(false, true);
+  std::vector<Size> sizes;
+  for (const auto & subaxis : subaxes)
+    sizes.push_back(storage_size(subaxis));
+  return sizes;
 }
 
 const LabeledAxis &
