@@ -109,6 +109,10 @@ VariableStore::clear()
 void
 VariableStore::assign_values(const LabeledVector & vals)
 {
+  // The vector could be empty. Let's be lenient in this case, as this is a no-op in the worst case.
+  if (vals.base_size(0) == 0)
+    return;
+
   for (const auto & [var, val] : vals.split_variables(/*qualified=*/true))
     variable(var) = val;
 }
@@ -116,6 +120,10 @@ VariableStore::assign_values(const LabeledVector & vals)
 void
 VariableStore::assign_derivatives(const LabeledMatrix & derivs)
 {
+  // The matrix could be empty. Let's be lenient in this case, as this is a no-op in the worst case.
+  if (derivs.base_size(0) == 0 || derivs.base_size(1) == 0)
+    return;
+
   for (const auto & [yvar, deriv] : derivs.disassemble_variables(/*qualified=*/true))
     variable(yvar).derivatives().insert(deriv.begin(), deriv.end());
 }
@@ -123,6 +131,8 @@ VariableStore::assign_derivatives(const LabeledMatrix & derivs)
 LabeledVector
 VariableStore::assemble_values(const LabeledAxis & axis) const
 {
+  neml_assert_dbg(axis.storage_size(), "Cannot assemble values for an empty axis.");
+
   auto vars = axis.qualified_variable_names();
   auto vals_flat = std::vector<Tensor>(vars.size());
   for (std::size_t i = 0; i < vars.size(); ++i)
@@ -133,6 +143,9 @@ VariableStore::assemble_values(const LabeledAxis & axis) const
 LabeledMatrix
 VariableStore::assemble_derivatives(const LabeledAxis & yaxis, const LabeledAxis & xaxis) const
 {
+  neml_assert_dbg(yaxis.storage_size(), "Cannot assemble derivatives for an empty yaxis.");
+  neml_assert_dbg(xaxis.storage_size(), "Cannot assemble derivatives for an empty xaxis.");
+
   auto yvars = yaxis.qualified_variable_names();
   auto xvars = xaxis.qualified_variable_names();
   auto vals_flat = std::vector<std::vector<Tensor>>(yvars.size());
@@ -152,6 +165,10 @@ VariableStore::assemble_second_derivatives(const LabeledAxis & yaxis,
                                            const LabeledAxis & x1axis,
                                            const LabeledAxis & x2axis) const
 {
+  neml_assert_dbg(yaxis.storage_size(), "Cannot assemble derivatives for an empty yaxis.");
+  neml_assert_dbg(x1axis.storage_size(), "Cannot assemble derivatives for an empty x1axis.");
+  neml_assert_dbg(x2axis.storage_size(), "Cannot assemble derivatives for an empty x2axis.");
+
   auto yvars = yaxis.qualified_variable_names();
   auto x1vars = x1axis.qualified_variable_names();
   auto x2vars = x2axis.qualified_variable_names();
