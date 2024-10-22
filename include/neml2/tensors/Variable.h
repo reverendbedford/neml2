@@ -72,11 +72,38 @@ public:
   bool is_dependent() const;
   ///@}
 
-  /// Base shape of the variable
+  /// @name Tensor information
+  // These methods mirror TensorBase
+  ///@{
+  /// Tensor options
+  torch::TensorOptions options() const { return get().options(); }
+  /// Scalar type
+  torch::Dtype scalar_type() const { return get().scalar_type(); }
+  /// Device
+  torch::Device device() const { return get().device(); }
+  /// Number of tensor dimensions
+  Size dim() const { return get().dim(); }
+  /// Tensor shape
+  TensorShapeRef sizes() const { return get().sizes(); }
+  /// Size of a dimension
+  Size size(Size dim) const { return get().size(dim); }
+  /// Whether the tensor is batched
+  bool batched() const { return get().batched(); }
+  /// Return the number of batch dimensions
+  Size batch_dim() const { return get().batch_dim(); }
+  /// Return the number of base dimensions
+  Size base_dim() const { return base_sizes().size(); }
+  /// Return the batch shape
+  const TraceableTensorShape & batch_sizes() const { return get().batch_sizes(); }
+  /// Return the size of a batch axis
+  TraceableSize batch_size(Size dim) const { return get().batch_size(dim); }
+  /// Return the base shape
   virtual TensorShapeRef base_sizes() const = 0;
-
+  /// Return the size of a base axis
+  Size base_size(Size dim) const { return base_sizes()[dim]; }
   /// Base storage of the variable
   Size base_storage() const { return utils::storage_size(base_sizes()); }
+  ///@}
 
   /// Clone this variable
   virtual std::unique_ptr<VariableBase> clone(const VariableName & name = {},

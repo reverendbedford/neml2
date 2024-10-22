@@ -77,18 +77,16 @@ ResolvedShear::set_value(bool out, bool dout_din, bool d2out_din2)
   const auto R = R2(_R).batch_unsqueeze(-1);
 
   if (out)
-    _rss = Tensor(_crystal_geometry.M().rotate(R).inner(S), batch_sizes());
+    _rss = _crystal_geometry.M().rotate(R).inner(S);
 
   if (dout_din)
   {
     if (_S.is_dependent())
-      _rss.d(_S) = Tensor(_crystal_geometry.M().rotate(R), batch_sizes());
+      _rss.d(_S) = _crystal_geometry.M().rotate(R);
 
     if (_R.is_dependent())
-      _rss.d(_R) =
-          Tensor(SR2(_crystal_geometry.M().drotate(R).movedim(-3, -1))
-                     .inner(SR2(_S).batch_unsqueeze(-1).batch_unsqueeze(-1).batch_unsqueeze(-1)),
-                 batch_sizes());
+      _rss.d(_R) = SR2(_crystal_geometry.M().drotate(R).movedim(-3, -1))
+                       .inner(SR2(_S).batch_unsqueeze(-1).batch_unsqueeze(-1).batch_unsqueeze(-1));
   }
 }
 

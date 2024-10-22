@@ -89,7 +89,7 @@ Normality::set_value(bool out, bool dout_din, bool d2out_din2)
   {
     if (!f.derivatives().count(ivar))
     {
-      (*var) = Tensor::zeros(var->base_sizes(), options());
+      (*var) = Tensor::zeros(var->base_sizes(), f.options());
       continue;
     }
 

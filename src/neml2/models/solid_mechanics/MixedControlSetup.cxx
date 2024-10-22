@@ -112,7 +112,7 @@ MixedControlSetup::make_operators(const SR2 & control) const
   auto stress_select = control > _threshold;
 
   // This also converts these to floats
-  auto ones_stress = Tensor(strain_select.to(options()), batch_sizes());
+  auto ones_stress = Tensor(strain_select.to(control.options()), control.batch_sizes());
   auto ones_strain = Tensor::ones_like(control) - ones_stress;
 
   auto dstrain = math::base_diag_embed(ones_stress);

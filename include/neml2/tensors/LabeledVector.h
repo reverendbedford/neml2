@@ -53,10 +53,7 @@ public:
   std::map<LabeledAxisAccessor, LabeledVector> split_subaxes(bool qualified = true) const;
 
   /// Assemble a vector of vectors
-  static LabeledVector assemble(const TraceableTensorShape & batch_sizes,
-                                const LabeledAxis & axis,
-                                const torch::TensorOptions & options,
-                                std::vector<Tensor> & vals);
+  static LabeledVector assemble(std::vector<Tensor> & vals, const LabeledAxis & axis);
 };
 
 namespace utils

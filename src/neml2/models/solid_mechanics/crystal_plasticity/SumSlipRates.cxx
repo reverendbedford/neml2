@@ -69,14 +69,14 @@ SumSlipRates::set_value(bool out, bool dout_din, bool d2out_din2)
   neml_assert_dbg(!d2out_din2, "Second derivative not implemented.");
 
   // Grab the input
-  const auto g = Scalar(_g, batch_dim() + 1);
+  const auto g = Scalar(_g);
 
   if (out)
     _sg = math::batch_sum(math::abs(g), -1);
 
   if (dout_din)
     if (_g.is_dependent())
-      _sg.d(_g) = Tensor(math::sign(g), batch_sizes()).base_unsqueeze(0);
+      _sg.d(_g) = math::sign(g).base_unsqueeze(0);
 }
 
 } // namespace neml2

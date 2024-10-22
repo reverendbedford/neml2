@@ -181,22 +181,10 @@ Model::use_AD_derivatives(bool first, bool second)
   check_AD_limitation();
 }
 
-void
-Model::cache(const TraceableTensorShape & batch_shape,
-             const torch::Device & device,
-             const torch::Dtype & dtype)
-{
-  VariableStore::cache(batch_shape, device, dtype);
-
-  for (auto * submodel : registered_models())
-    submodel->cache(batch_shape, device, dtype);
-}
-
 LabeledVector
 Model::value(const LabeledVector & in)
 {
   assign_values(in);
-  cache(in.batch_sizes(), in.device(), in.scalar_type());
 
   prepare();
   value();
@@ -210,7 +198,6 @@ std::tuple<LabeledVector, LabeledMatrix>
 Model::value_and_dvalue(const LabeledVector & in)
 {
   assign_values(in);
-  cache(in.batch_sizes(), in.device(), in.scalar_type());
 
   prepare();
   value_and_dvalue();
@@ -225,7 +212,6 @@ LabeledMatrix
 Model::dvalue(const LabeledVector & in)
 {
   assign_values(in);
-  cache(in.batch_sizes(), in.device(), in.scalar_type());
 
   prepare();
   dvalue();
@@ -239,7 +225,6 @@ std::tuple<LabeledVector, LabeledMatrix, LabeledTensor3D>
 Model::value_and_dvalue_and_d2value(const LabeledVector & in)
 {
   assign_values(in);
-  cache(in.batch_sizes(), in.device(), in.scalar_type());
 
   prepare();
   value_and_dvalue_and_d2value();
@@ -255,7 +240,6 @@ std::tuple<LabeledMatrix, LabeledTensor3D>
 Model::dvalue_and_d2value(const LabeledVector & in)
 {
   assign_values(in);
-  cache(in.batch_sizes(), in.device(), in.scalar_type());
 
   prepare();
   dvalue_and_d2value();
@@ -270,7 +254,6 @@ LabeledTensor3D
 Model::d2value(const LabeledVector & in)
 {
   assign_values(in);
-  cache(in.batch_sizes(), in.device(), in.scalar_type());
 
   prepare();
   d2value();
@@ -443,7 +426,6 @@ void
 Model::set_guess(const SOL<false> & x)
 {
   assign_values(LabeledVector(x, {&input_axis().subaxis("state")}));
-  cache(x.batch_sizes(), x.device(), x.scalar_type());
 }
 
 void

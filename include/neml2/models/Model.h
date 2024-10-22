@@ -140,10 +140,6 @@ protected:
   /// Make sure the model is evaluated only once
   void ensure_single_evaluation_dbg();
 
-  /// Cache batch shape, device, and dtype for the current evaluation
-  void cache(const TraceableTensorShape & batch_shape,
-             const torch::Device & device,
-             const torch::Dtype & dtype) override;
   /// The map between input -> output, and optionally its derivatives
   virtual void set_value(bool out, bool dout_din, bool d2out_din2) = 0;
 

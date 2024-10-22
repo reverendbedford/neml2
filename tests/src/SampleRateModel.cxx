@@ -58,7 +58,7 @@ SampleRateModel::set_value(bool out, bool dout_din, bool d2out_din2)
 
   if (dout_din)
   {
-    auto I = SR2::identity(options());
+    auto I = SR2::identity(foo.options());
 
     foo_dot.d(foo) = 2 * foo * T;
     foo_dot.d(bar) = T;
@@ -70,7 +70,7 @@ SampleRateModel::set_value(bool out, bool dout_din, bool d2out_din2)
 
     baz_dot.d(foo) = baz * (T - 3);
     baz_dot.d(bar) = baz * (T - 3);
-    baz_dot.d(baz) = (foo + bar) * (T - 3) * SR2::identity_map(options());
+    baz_dot.d(baz) = (foo + bar) * (T - 3) * SR2::identity_map(foo.options());
 
     if (!currently_solving_nonlinear_system())
     {

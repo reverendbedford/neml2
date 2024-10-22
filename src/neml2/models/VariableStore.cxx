@@ -91,15 +91,6 @@ VariableStore::variables(FType ft)
 }
 
 void
-VariableStore::cache(const TraceableTensorShape & batch_shape,
-                     const torch::Device & device,
-                     const torch::Dtype & dtype)
-{
-  _batch_sizes = batch_shape;
-  _options = torch::TensorOptions().device(device).dtype(dtype);
-}
-
-void
 VariableStore::clear()
 {
   for (auto && [name, var] : variables())
@@ -137,7 +128,7 @@ VariableStore::assemble_values(const LabeledAxis & axis) const
   auto vals_flat = std::vector<Tensor>(vars.size());
   for (std::size_t i = 0; i < vars.size(); ++i)
     vals_flat[i] = variable(vars[i]).get().base_flatten();
-  return LabeledVector::assemble(batch_sizes(), axis, options(), vals_flat);
+  return LabeledVector::assemble(vals_flat, axis);
 }
 
 LabeledMatrix
@@ -157,7 +148,7 @@ VariableStore::assemble_derivatives(const LabeledAxis & yaxis, const LabeledAxis
       if (derivs.count(xvars[j]))
         vals_flat[i][j] = derivs.at(xvars[j]);
   }
-  return LabeledMatrix::assemble(batch_sizes(), yaxis, xaxis, options(), vals_flat);
+  return LabeledMatrix::assemble(vals_flat, yaxis, xaxis);
 }
 
 LabeledTensor3D
@@ -186,6 +177,6 @@ VariableStore::assemble_second_derivatives(const LabeledAxis & yaxis,
             vals_flat[i][j][k] = secderivs.at(x1vars[j]).at(x2vars[k]);
       }
   }
-  return LabeledTensor3D::assemble(batch_sizes(), yaxis, x1axis, x2axis, options(), vals_flat);
+  return LabeledTensor3D::assemble(vals_flat, yaxis, x1axis, x2axis);
 }
 } // namespace neml2

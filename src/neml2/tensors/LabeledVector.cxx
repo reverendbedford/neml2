@@ -70,16 +70,13 @@ LabeledVector::split_subaxes(bool qualified) const
 }
 
 LabeledVector
-LabeledVector::assemble(const TraceableTensorShape & batch_sizes,
-                        const LabeledAxis & axis,
-                        const torch::TensorOptions & options,
-                        std::vector<Tensor> & vals)
+LabeledVector::assemble(std::vector<Tensor> & vals, const LabeledAxis & axis)
 {
   for (std::size_t i = 0; i < vals.size(); ++i)
     if (!vals[i].defined())
-      vals[i] = Tensor::zeros(batch_sizes, axis.storage_size(i), options);
-    else
-      vals[i] = vals[i].batch_expand(batch_sizes);
+      vals[i] = Tensor::zeros(axis.storage_size(i));
+  // else
+  //   vals[i] = vals[i].batch_expand(batch_sizes);
 
   return LabeledVector(math::base_cat(vals, -1), {&axis});
 }

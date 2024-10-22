@@ -59,10 +59,8 @@ public:
   disassemble_variables(bool qualified = true) const;
 
   /// Assemble a matrix of matrices
-  static LabeledMatrix assemble(const TraceableTensorShape & batch_sizes,
+  static LabeledMatrix assemble(std::vector<std::vector<Tensor>> & vals,
                                 const LabeledAxis & yaxis,
-                                const LabeledAxis & xaxis,
-                                const torch::TensorOptions & options,
-                                std::vector<std::vector<Tensor>> & vals);
+                                const LabeledAxis & xaxis);
 };
 } // namespace neml2

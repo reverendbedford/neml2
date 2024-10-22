@@ -44,11 +44,9 @@ public:
   void fill(const LabeledTensor3D & other, bool recursive = true);
 
   /// Assemble a 3D tensor of tensors
-  static LabeledTensor3D assemble(const TraceableTensorShape & batch_sizes,
+  static LabeledTensor3D assemble(std::vector<std::vector<std::vector<Tensor>>> & vals,
                                   const LabeledAxis & yaxis,
-                                  const LabeledAxis & x1axis,
-                                  const LabeledAxis & x2axis,
-                                  const torch::TensorOptions & options,
-                                  std::vector<std::vector<std::vector<Tensor>>> & vals);
+                                  const LabeledAxis & xaxis1,
+                                  const LabeledAxis & xaxis2);
 };
 } // namespace neml2

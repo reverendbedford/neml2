@@ -92,19 +92,6 @@ public:
                                               const LabeledAxis & x2axis) const;
 
 protected:
-  /// Cache batch shape, device, and dtype for the current evaluation
-  virtual void cache(const TraceableTensorShape & batch_shape,
-                     const torch::Device & device,
-                     const torch::Dtype & dtype);
-
-  ///@{
-  /// Tensor metadata used in the current evaluation
-  const torch::TensorOptions & options() const { return _options; }
-  const TraceableTensorShape & batch_sizes() const { return _batch_sizes; }
-  TraceableSize batch_size(Size i) const { return _batch_sizes[i]; }
-  Size batch_dim() const { return _batch_sizes.size(); }
-  ///@}
-
   /// Cleanup after evaluation
   virtual void clear();
 
@@ -286,11 +273,5 @@ private:
 
   /// Variables
   Storage<VariableName, VariableBase> _variables;
-
-  /// Tensor options used in the current evaluation
-  torch::TensorOptions _options;
-
-  /// Batch shape used in the current evaluation
-  TraceableTensorShape _batch_sizes;
 };
 } // namespace neml2

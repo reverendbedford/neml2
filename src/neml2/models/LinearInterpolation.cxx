@@ -60,9 +60,8 @@ void
 LinearInterpolation<T>::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   const auto x = Scalar(this->_x);
-  const auto loc = Tensor(torch::logical_and(torch::gt(x.batch_unsqueeze(-1), _X0),
-                                             torch::le(x.batch_unsqueeze(-1), _X1)),
-                          this->batch_dim() + 1);
+  const auto loc = Scalar(torch::logical_and(torch::gt(x.batch_unsqueeze(-1), _X0),
+                                             torch::le(x.batch_unsqueeze(-1), _X1)));
   const auto si = mask<T>(_slope, loc);
 
   if (out)

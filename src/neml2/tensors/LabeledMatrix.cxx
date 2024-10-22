@@ -93,26 +93,23 @@ LabeledMatrix::disassemble_variables(bool qualified) const
 }
 
 LabeledMatrix
-LabeledMatrix::assemble(const TraceableTensorShape & batch_sizes,
+LabeledMatrix::assemble(std::vector<std::vector<Tensor>> & vals,
                         const LabeledAxis & yaxis,
-                        const LabeledAxis & xaxis,
-                        const torch::TensorOptions & options,
-                        std::vector<std::vector<Tensor>> & vals)
+                        const LabeledAxis & xaxis)
 {
   auto rows = std::vector<Tensor>(vals.size());
 
   for (std::size_t i = 0; i < vals.size(); ++i)
   {
     if (!vals[i].size())
-      rows[i] = Tensor::zeros(batch_sizes, {yaxis.storage_size(i), xaxis.storage_size()}, options);
+      rows[i] = Tensor::zeros({yaxis.storage_size(i), xaxis.storage_size()});
     else
     {
       for (std::size_t j = 0; j < vals[i].size(); ++j)
         if (!vals[i][j].defined())
-          vals[i][j] =
-              Tensor::zeros(batch_sizes, {yaxis.storage_size(i), xaxis.storage_size(j)}, options);
-        else
-          vals[i][j] = vals[i][j].batch_expand(batch_sizes);
+          vals[i][j] = Tensor::zeros({yaxis.storage_size(i), xaxis.storage_size(j)});
+      // else
+      //   vals[i][j] = vals[i][j].batch_expand(batch_sizes);
       rows[i] = math::base_cat(vals[i], -1);
     }
   }

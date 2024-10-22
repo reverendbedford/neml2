@@ -39,21 +39,18 @@ LabeledTensor3D::fill(const LabeledTensor3D & other, bool recursive)
 }
 
 LabeledTensor3D
-LabeledTensor3D::assemble(const TraceableTensorShape & batch_sizes,
+LabeledTensor3D::assemble(std::vector<std::vector<std::vector<Tensor>>> & vals,
                           const LabeledAxis & yaxis,
                           const LabeledAxis & xaxis1,
-                          const LabeledAxis & xaxis2,
-                          const torch::TensorOptions & options,
-                          std::vector<std::vector<std::vector<Tensor>>> & vals)
+                          const LabeledAxis & xaxis2)
 {
   auto rows = std::vector<Tensor>(vals.size());
 
   for (std::size_t i = 0; i < vals.size(); ++i)
   {
     if (!vals[i].size())
-      rows[i] = Tensor::zeros(batch_sizes,
-                              {yaxis.storage_size(i), xaxis1.storage_size(), xaxis2.storage_size()},
-                              options);
+      rows[i] =
+          Tensor::zeros({yaxis.storage_size(i), xaxis1.storage_size(), xaxis2.storage_size()});
     else
     {
       auto cols = std::vector<Tensor>(vals[i].size());
@@ -61,19 +58,15 @@ LabeledTensor3D::assemble(const TraceableTensorShape & batch_sizes,
       {
         if (!vals[i][j].size())
           cols[j] =
-              Tensor::zeros(batch_sizes,
-                            {yaxis.storage_size(i), xaxis1.storage_size(j), xaxis2.storage_size()},
-                            options);
+              Tensor::zeros({yaxis.storage_size(i), xaxis1.storage_size(j), xaxis2.storage_size()});
         else
         {
           for (std::size_t k = 0; k < vals[i][j].size(); ++k)
             if (!vals[i][j][k].defined())
               vals[i][j][k] = Tensor::zeros(
-                  batch_sizes,
-                  {yaxis.storage_size(i), xaxis1.storage_size(j), xaxis2.storage_size(k)},
-                  options);
-            else
-              vals[i][j][k] = vals[i][j][k].batch_expand(batch_sizes);
+                  {yaxis.storage_size(i), xaxis1.storage_size(j), xaxis2.storage_size(k)});
+          // else
+          //   vals[i][j][k] = vals[i][j][k].batch_expand(batch_sizes);
           cols[j] = math::base_cat(vals[i][j], -1);
         }
       }
