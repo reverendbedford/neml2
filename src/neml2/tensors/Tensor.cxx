@@ -27,6 +27,72 @@
 
 namespace neml2
 {
+namespace utils
+{
+TraceableTensorShape
+broadcast_batch_sizes(const std::vector<Tensor> & tensors)
+{
+  Size dim = 0;
+  auto shapes = std::vector<torch::Tensor>{};
+  for (const auto & t : tensors)
+    if (t.defined())
+    {
+      dim = t.batch_dim() > dim ? t.batch_dim() : dim;
+      const auto shape = t.batch_sizes().as_tensor();
+      if (shape.defined())
+        shapes.push_back(shape);
+    }
+  if (shapes.empty())
+    return TraceableTensorShape(TensorShape{});
+  /// Pre-pad ones to the shapes
+  for (std::size_t i = 0; i < shapes.size(); i++)
+    shapes[i] = pad_prepend(shapes[i], dim, 1);
+  /// Braodcast
+  const auto all_shapes = torch::stack(shapes);
+  return std::get<0>(torch::max(all_shapes, 0));
+}
+
+torch::Dtype
+same_dtype(const std::vector<Tensor> & tensors)
+{
+  for (const auto & t : tensors)
+    if (t.defined())
+    {
+#ifndef NDEBUG
+      for (const auto & t2 : tensors)
+        if (t2.defined())
+          neml_assert(t.scalar_type() == t2.scalar_type(),
+                      "same_dtype: all tensors must have the same dtype, but got ",
+                      t.scalar_type(),
+                      " and ",
+                      t2.scalar_type());
+#endif
+      return t.scalar_type();
+    }
+  return default_dtype();
+}
+
+torch::Device
+same_device(const std::vector<Tensor> & tensors)
+{
+  for (const auto & t : tensors)
+    if (t.defined())
+    {
+#ifndef NDEBUG
+      for (const auto & t2 : tensors)
+        if (t2.defined())
+          neml_assert(t.device() == t2.device(),
+                      "same_device: all tensors must have the same device, but got ",
+                      t.device(),
+                      " and ",
+                      t2.device());
+#endif
+      return t.device();
+    }
+  return default_device();
+}
+} // namespace utils
+
 Tensor::Tensor(const torch::Tensor & tensor, Size batch_dim)
   : TensorBase<Tensor>(tensor, batch_dim)
 {

@@ -94,7 +94,7 @@ private:
    * So if some day we relax the 2nd assumption, this method need to be adapted accordingly.
    */
   template <typename T2>
-  T2 mask(const T2 & in, const Tensor & m) const;
+  T2 mask(const T2 & in, const Scalar & m) const;
 
   /// Starting abscissa of each interval
   const Scalar & _X0;
@@ -109,11 +109,11 @@ private:
 template <typename T>
 template <typename T2>
 T2
-LinearInterpolation<T>::mask(const T2 & in, const Tensor & m) const
+LinearInterpolation<T>::mask(const T2 & in, const Scalar & m) const
 {
-  auto in_expand = in.batch_expand(m.batch_sizes());
-  auto in_mask = Tensor(in_expand.index({m}), m.batch_sizes());
-  return in_mask.base_reshape(in.base_sizes());
+  const auto & B = m.batch_sizes();
+  auto res = T2(in.batch_expand(B).index({m}));
+  return T2(in.batch_expand(B).index({m})).batch_reshape(B.slice(0, -1));
 }
 
 typedef LinearInterpolation<Scalar> ScalarLinearInterpolation;

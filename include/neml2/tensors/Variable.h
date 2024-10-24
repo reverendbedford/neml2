@@ -191,11 +191,8 @@ class Variable : public VariableBase
 {
 public:
   template <typename T2 = T, typename = typename std::enable_if_t<!std::is_same_v<Tensor, T2>>>
-  Variable(const VariableName & name_in,
-           const Model * owner,
-           FType ftype,
-           TensorType type = TensorTypeEnum<T2>::value)
-    : VariableBase(name_in, owner, ftype, type),
+  Variable(const VariableName & name_in, const Model * owner, FType ftype)
+    : VariableBase(name_in, owner, ftype, TensorTypeEnum<T2>::value),
       _base_sizes(T::const_base_sizes),
       _ref(nullptr),
       _ref_is_mutable(false)
@@ -205,10 +202,9 @@ public:
   template <typename T2 = T, typename = typename std::enable_if_t<std::is_same_v<Tensor, T2>>>
   Variable(const VariableName & name_in,
            const Model * owner,
-           TensorShapeRef base_shape,
            FType ftype,
-           TensorType type = TensorType::kTensor)
-    : VariableBase(name_in, owner, ftype, type),
+           TensorShapeRef base_shape)
+    : VariableBase(name_in, owner, ftype, TensorTypeEnum<T2>::value),
       _base_sizes(base_shape),
       _ref(nullptr),
       _ref_is_mutable(false)
@@ -225,16 +221,14 @@ public:
     {
       return std::make_unique<Variable<Tensor>>(name.empty() ? this->name() : name,
                                                 owner ? owner : &this->owner(),
-                                                base_sizes(),
                                                 ftype != FType::NONE ? ftype : this->ftype(),
-                                                type());
+                                                base_sizes());
     }
     else
     {
       return std::make_unique<Variable<T>>(name.empty() ? this->name() : name,
                                            owner ? owner : &this->owner(),
-                                           ftype != FType::NONE ? ftype : this->ftype(),
-                                           type());
+                                           ftype != FType::NONE ? ftype : this->ftype());
     }
   }
 

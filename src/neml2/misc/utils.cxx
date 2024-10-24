@@ -41,7 +41,7 @@ TraceableTensorShape
 extract_batch_sizes(const torch::Tensor & tensor, Size batch_dim)
 {
   // Put the batch sizes into the traced graph if we are tracing
-  // TODO: This could be possibly optimized
+  // TODO: This could be optimized
   if (torch::jit::tracer::isTracing())
   {
     TraceableTensorShape sizes;
@@ -71,8 +71,9 @@ pad_prepend(TensorShapeRef s, Size dim, Size pad)
 torch::Tensor
 pad_prepend(const torch::Tensor & s, Size dim, Size pad)
 {
-  neml_assert(s.scalar_type() == torch::kInt64, "pad_prepend: shape must be of type int64");
-  neml_assert(s.dim() == 1, "pad_prepend: shape must be 1D");
+  neml_assert_dbg(s.defined(), "pad_prepend: shape must be defined");
+  neml_assert_dbg(s.scalar_type() == torch::kInt64, "pad_prepend: shape must be of type int64");
+  neml_assert_dbg(s.dim() == 1, "pad_prepend: shape must be 1D");
   return torch::cat({torch::full({dim - s.size(0)}, pad, s.options()), s});
 }
 

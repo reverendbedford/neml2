@@ -28,6 +28,21 @@
 
 namespace neml2
 {
+class Tensor;
+
+namespace utils
+{
+/// @brief Find the broadcast batch shape of all the tensors
+/// The returned batch shape will be _traceable_. @see neml2::TraceableTensorShape
+TraceableTensorShape broadcast_batch_sizes(const std::vector<Tensor> & tensors);
+
+/// Make sure all tensors have the same dtype and return the common dtype
+torch::Dtype same_dtype(const std::vector<Tensor> & tensors);
+
+/// Make sure all tensors have the same device and return the common device
+torch::Device same_device(const std::vector<Tensor> & tensors);
+} // namespace utils
+
 class Tensor : public TensorBase<Tensor>
 {
 public:

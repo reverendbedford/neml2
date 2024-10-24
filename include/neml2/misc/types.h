@@ -58,6 +58,9 @@ struct TraceableSize : public std::variant<Size, torch::Tensor>
 
   /// @return the concrete size (without any traceable information)
   Size concrete() const;
+
+  /// @return the size represented as a scalar tensor (possibly traceable)
+  torch::Tensor as_tensor() const;
 };
 
 /// Comparison operators
@@ -93,6 +96,9 @@ struct TraceableTensorShape : public torch::SmallVector<TraceableSize>
 
   /// @return the concrete shape (without any traceable information)
   TensorShape concrete() const;
+
+  /// @return the shape represented as a scalar tensor (possibly traceable)
+  torch::Tensor as_tensor() const;
 };
 
 /// Comparison operators

@@ -96,55 +96,53 @@ protected:
   virtual void clear();
 
   /// Declare an input variable
-  template <typename T, typename... S>
-  const Variable<T> & declare_input_variable(S &&... name)
+  template <typename T, typename S>
+  const Variable<T> & declare_input_variable(S && name)
   {
-    const auto var_name = variable_name(std::forward<S>(name)...);
+    const auto var_name = variable_name(std::forward<S>(name));
     declare_variable<T>(_input_axis, var_name);
     return *create_variable<T>(var_name, FType::INPUT);
   }
 
   /// Declare an input variable (with unknown base shape at compile time)
-  template <typename... S>
-  const Variable<Tensor> & declare_input_variable(Size sz, TensorType t, S &&... name)
+  template <typename S>
+  const Variable<Tensor> & declare_input_variable(S && name, TensorShapeRef base_sizes)
   {
-    const auto var_name = variable_name(std::forward<S>(name)...);
-    declare_variable(_input_axis, var_name, sz);
-    return *create_variable<Tensor>(var_name, FType::INPUT, t, sz);
+    const auto var_name = variable_name(std::forward<S>(name));
+    declare_variable(_input_axis, var_name, utils::storage_size(base_sizes));
+    return *create_variable<Tensor>(var_name, FType::INPUT, base_sizes);
   }
 
   /// Declare an input variable that is a list of tensors of fixed size
-  template <typename T, typename... S>
-  const Variable<Tensor> & declare_input_variable_list(Size list_size, S &&... name)
+  template <typename T, typename S>
+  const Variable<Tensor> & declare_input_variable_list(S && name, Size list_size)
   {
-    return declare_input_variable(
-        list_size * T::const_base_storage, TensorType::kTensor, std::forward<S>(name)...);
+    return declare_input_variable(std::forward<S>(name), list_size * T::const_base_storage);
   }
 
   /// Declare an output variable
-  template <typename T, typename... S>
-  Variable<T> & declare_output_variable(S &&... name)
+  template <typename T, typename S>
+  Variable<T> & declare_output_variable(S && name)
   {
-    const auto var_name = variable_name(std::forward<S>(name)...);
+    const auto var_name = variable_name(std::forward<S>(name));
     declare_variable<T>(_output_axis, var_name);
     return *create_variable<T>(var_name, FType::OUTPUT);
   }
 
   /// Declare an input variable (with unknown base shape at compile time)
-  template <typename... S>
-  Variable<Tensor> & declare_output_variable(Size sz, TensorType t, S &&... name)
+  template <typename S>
+  Variable<Tensor> & declare_output_variable(S && name, TensorShapeRef base_sizes)
   {
-    const auto var_name = variable_name(std::forward<S>(name)...);
-    declare_variable(_output_axis, var_name, sz);
-    return *create_variable<Tensor>(var_name, FType::OUTPUT, t, sz);
+    const auto var_name = variable_name(std::forward<S>(name));
+    declare_variable(_output_axis, var_name, utils::storage_size(base_sizes));
+    return *create_variable<Tensor>(var_name, FType::OUTPUT, base_sizes);
   }
 
   /// Declare an output variable that is a list of tensors of fixed size
-  template <typename T, typename... S>
-  Variable<Tensor> & declare_output_variable_list(Size list_size, S &&... name)
+  template <typename T, typename S>
+  Variable<Tensor> & declare_output_variable_list(S && name, Size list_size)
   {
-    return declare_output_variable(
-        list_size * T::const_base_storage, TensorType::kTensor, std::forward<S>(name)...);
+    return declare_output_variable(std::forward<S>(name), list_size * T::const_base_storage);
   }
 
   /// Clone a variable and put it on the input axis
@@ -197,31 +195,23 @@ protected:
   }
 
 private:
-  // Helper method to construct variable name in place
-  template <typename... S>
-  VariableName variable_name(S &&... name) const
+  // Helper method to construct variable name
+  template <typename S>
+  VariableName variable_name(S && name) const
   {
-    using FirstType = std::tuple_element_t<0, std::tuple<S...>>;
+    if constexpr (std::is_convertible_v<S, std::string>)
+      if (_object_options.contains<VariableName>(name))
+        return _object_options.get<VariableName>(name);
 
-    if constexpr (sizeof...(name) == 1 && std::is_convertible_v<FirstType, std::string>)
-    {
-      if (_object_options.contains<VariableName>(name...))
-        return _object_options.get<VariableName>(name...);
-      return VariableName(std::forward<S>(name)...);
-    }
-    else
-      return VariableName(std::forward<S>(name)...);
+    return name;
   }
 
   // Create a variable
   template <typename T>
-  Variable<T> * create_variable(const VariableName & name,
-                                FType ft,
-                                TensorType t = TensorTypeEnum<T>::value,
-                                Size sz = -1)
+  Variable<T> * create_variable(const VariableName & name, FType ft, TensorShapeRef base_sizes = {})
   {
     if constexpr (std::is_same_v<T, Tensor>)
-      neml_assert(sz > 0, "Creating a Variable<Tensor> requires a known storage size.");
+      neml_assert(!base_sizes.empty(), "Creating a Variable<Tensor> requires a base shape.");
 
     // Make sure we don't duplicate variables
     VariableBase * var_base_ptr = _variables.query_value(name);
@@ -233,12 +223,11 @@ private:
     // Allocate
     if constexpr (std::is_same_v<T, Tensor>)
     {
-      auto var = std::make_unique<Variable<Tensor>>(name, _object, sz, ft, t);
+      auto var = std::make_unique<Variable<Tensor>>(name, _object, ft, base_sizes);
       var_base_ptr = _variables.set_pointer(name, std::move(var));
     }
     else
     {
-      (void)t;
       auto var = std::make_unique<Variable<T>>(name, _object, ft);
       var_base_ptr = _variables.set_pointer(name, std::move(var));
     }

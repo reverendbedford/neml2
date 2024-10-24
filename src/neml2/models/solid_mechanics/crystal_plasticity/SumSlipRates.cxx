@@ -59,7 +59,7 @@ SumSlipRates::SumSlipRates(const OptionSet & options)
     _crystal_geometry(register_data<crystallography::CrystalGeometry>(
         options.get<std::string>("crystal_geometry_name"))),
     _sg(declare_output_variable<Scalar>("sum_slip_rates")),
-    _g(declare_input_variable_list<Scalar>(_crystal_geometry.nslip(), "slip_rates"))
+    _g(declare_input_variable_list<Scalar>("slip_rates", _crystal_geometry.nslip()))
 {
 }
 

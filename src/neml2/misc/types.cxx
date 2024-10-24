@@ -47,6 +47,15 @@ TraceableSize::concrete() const
   return std::get<Size>(*this);
 }
 
+torch::Tensor
+TraceableSize::as_tensor() const
+{
+  if (const auto * const size = traceable())
+    return *size;
+
+  return torch::tensor(std::get<Size>(*this), torch::kInt64);
+}
+
 bool
 operator==(const TraceableSize & lhs, const TraceableSize & rhs)
 {
@@ -95,12 +104,18 @@ TraceableTensorShape::TraceableTensorShape(const torch::Tensor & shape)
 TraceableTensorShape
 TraceableTensorShape::slice(Size start, Size end) const
 {
+  if (start < 0)
+    start += size();
+  if (end < 0)
+    end += size();
   return TraceableTensorShape(begin() + start, begin() + end);
 }
 
 TraceableTensorShape
 TraceableTensorShape::slice(Size N) const
 {
+  if (N < 0)
+    N += size();
   return TraceableTensorShape(begin() + N, end());
 }
 
@@ -111,6 +126,18 @@ TraceableTensorShape::concrete() const
   for (const auto & size : *this)
     s.push_back(size.concrete());
   return s;
+}
+
+torch::Tensor
+TraceableTensorShape::as_tensor() const
+{
+  if (empty())
+    return torch::Tensor();
+
+  auto sizes = std::vector<torch::Tensor>(size());
+  for (std::size_t i = 0; i < size(); i++)
+    sizes[i] = at(i).as_tensor();
+  return torch::stack(sizes);
 }
 
 bool

@@ -106,6 +106,8 @@ ModelUnitTest::ModelUnitTest(const OptionSet & options)
   fill_vector<WR2>(_in, "input_skewr2_names", "input_skewr2_values");
   fill_vector<Rot>(_in, "input_rot_names", "input_rot_values");
 
+  std::cout << _model.output_axis() << std::endl;
+
   _out = LabeledVector::zeros(_batch_shape, {&_model.output_axis()});
   fill_vector<Tensor>(_out, "output_batch_tensor_names", "output_batch_tensor_values");
   fill_vector<Scalar>(_out, "output_scalar_names", "output_scalar_values");

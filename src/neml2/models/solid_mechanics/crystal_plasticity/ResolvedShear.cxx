@@ -62,7 +62,7 @@ ResolvedShear::ResolvedShear(const OptionSet & options)
   : Model(options),
     _crystal_geometry(register_data<crystallography::CrystalGeometry>(
         options.get<std::string>("crystal_geometry_name"))),
-    _rss(declare_output_variable_list<Scalar>(_crystal_geometry.nslip(), "resolved_shears")),
+    _rss(declare_output_variable_list<Scalar>("resolved_shears", _crystal_geometry.nslip())),
     _S(declare_input_variable<SR2>("stress")),
     _R(declare_input_variable<R2>("orientation"))
 {

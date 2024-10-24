@@ -67,7 +67,7 @@ PlasticDeformationRate::PlasticDeformationRate(const OptionSet & options)
         options.get<std::string>("crystal_geometry_name"))),
     _dp(declare_output_variable<SR2>("plastic_deformation_rate")),
     _R(declare_input_variable<R2>("orientation")),
-    _g(declare_input_variable_list<Scalar>(_crystal_geometry.nslip(), "slip_rates"))
+    _g(declare_input_variable_list<Scalar>("slip_rates", _crystal_geometry.nslip()))
 {
 }
 

@@ -70,17 +70,18 @@ LabeledVector::split_subaxes(bool qualified) const
 }
 
 LabeledVector
-LabeledVector::assemble(const TraceableTensorShape & batch_sizes,
-                        std::vector<Tensor> & vals,
-                        const LabeledAxis & axis)
+LabeledVector::assemble(std::vector<Tensor> & vals, const LabeledAxis & axis)
 {
+  const auto batch_sizes = utils::broadcast_batch_sizes(vals);
+  const auto options =
+      torch::TensorOptions().dtype(utils::same_dtype(vals)).device(utils::same_device(vals));
   for (std::size_t i = 0; i < vals.size(); ++i)
     if (!vals[i].defined())
-      vals[i] = Tensor::zeros(batch_sizes, axis.storage_size(i), vals[0]);
+      vals[i] = Tensor::zeros(batch_sizes, axis.storage_size(i), options);
     else
       vals[i] = vals[i].batch_expand(batch_sizes);
 
-  return LabeledVector(math::base_cat(utils::batch_broadcast(vals), -1), {&axis});
+  return LabeledVector(math::base_cat(vals, -1), {&axis});
 }
 
 namespace utils

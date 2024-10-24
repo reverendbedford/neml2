@@ -48,29 +48,56 @@ LabeledTensor3D::assemble(std::vector<std::vector<std::vector<Tensor>>> & vals,
 
   for (std::size_t i = 0; i < vals.size(); ++i)
   {
-    if (!vals[i].size())
-      rows[i] =
-          Tensor::zeros({yaxis.storage_size(i), xaxis1.storage_size(), xaxis2.storage_size()});
-    else
+    if (!vals[i].empty())
     {
       auto cols = std::vector<Tensor>(vals[i].size());
       for (std::size_t j = 0; j < vals[i].size(); ++j)
       {
-        if (!vals[i][j].size())
-          cols[j] =
-              Tensor::zeros({yaxis.storage_size(i), xaxis1.storage_size(j), xaxis2.storage_size()});
-        else
+        if (!vals[i][j].empty())
         {
+          const auto batch_sizes = utils::broadcast_batch_sizes(vals[i][j]);
+          const auto options = torch::TensorOptions()
+                                   .dtype(utils::same_dtype(vals[i][j]))
+                                   .device(utils::same_device(vals[i][j]));
           for (std::size_t k = 0; k < vals[i][j].size(); ++k)
             if (!vals[i][j][k].defined())
               vals[i][j][k] = Tensor::zeros(
-                  {yaxis.storage_size(i), xaxis1.storage_size(j), xaxis2.storage_size(k)});
+                  batch_sizes,
+                  {yaxis.storage_size(i), xaxis1.storage_size(j), xaxis2.storage_size(k)},
+                  options);
+            else
+              vals[i][j][k] = vals[i][j][k].batch_expand(batch_sizes);
+
           cols[j] = math::base_cat(vals[i][j], -1);
         }
       }
+
+      const auto batch_sizes = utils::broadcast_batch_sizes(cols);
+      const auto options =
+          torch::TensorOptions().dtype(utils::same_dtype(cols)).device(utils::same_device(cols));
+      for (std::size_t j = 0; j < cols.size(); ++j)
+        if (!cols[j].defined())
+          cols[j] =
+              Tensor::zeros(batch_sizes,
+                            {yaxis.storage_size(i), xaxis1.storage_size(j), xaxis2.storage_size()},
+                            options);
+        else
+          cols[j] = cols[j].batch_expand(batch_sizes);
+
       rows[i] = math::base_cat(cols, -2);
     }
   }
+
+  const auto batch_sizes = utils::broadcast_batch_sizes(rows);
+  const auto options =
+      torch::TensorOptions().dtype(utils::same_dtype(rows)).device(utils::same_device(rows));
+  for (std::size_t i = 0; i < rows.size(); ++i)
+    if (!rows[i].defined())
+      rows[i] = Tensor::zeros(batch_sizes,
+                              {yaxis.storage_size(i), xaxis1.storage_size(), xaxis2.storage_size()},
+                              options);
+    else
+      rows[i] = rows[i].batch_expand(batch_sizes);
 
   return LabeledTensor3D(math::base_cat(rows, -3), {&yaxis, &xaxis1, &xaxis2});
 }
