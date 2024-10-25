@@ -97,52 +97,40 @@ protected:
 
   /// Declare an input variable
   template <typename T, typename S>
-  const Variable<T> & declare_input_variable(S && name)
+  const Variable<T> &
+  declare_input_variable(S && name, TensorShapeRef list_sizes = {}, TensorShapeRef base_sizes = {})
   {
-    const auto var_name = variable_name(std::forward<S>(name));
-    declare_variable<T>(_input_axis, var_name);
-    return *create_variable<T>(var_name, FType::INPUT);
-  }
+    if constexpr (!std::is_same_v<T, Tensor>)
+      neml_assert(base_sizes.empty(),
+                  "Creating a Variable of primitive tensor type does not require a base shape.");
 
-  /// Declare an input variable (with unknown base shape at compile time)
-  template <typename S>
-  const Variable<Tensor> & declare_input_variable(S && name, TensorShapeRef base_sizes)
-  {
     const auto var_name = variable_name(std::forward<S>(name));
-    declare_variable(_input_axis, var_name, utils::storage_size(base_sizes));
-    return *create_variable<Tensor>(var_name, FType::INPUT, base_sizes);
-  }
+    const auto list_sz = utils::storage_size(list_sizes);
+    const auto base_sz =
+        std::is_same_v<T, Tensor> ? utils::storage_size(base_sizes) : T::const_base_storage;
+    const auto sz = list_sz * base_sz;
 
-  /// Declare an input variable that is a list of tensors of fixed size
-  template <typename T, typename S>
-  const Variable<Tensor> & declare_input_variable_list(S && name, Size list_size)
-  {
-    return declare_input_variable(std::forward<S>(name), list_size * T::const_base_storage);
+    _input_axis.add(var_name, sz);
+    return *create_variable<T>(var_name, FType::INPUT, list_sizes, base_sizes);
   }
 
   /// Declare an output variable
   template <typename T, typename S>
-  Variable<T> & declare_output_variable(S && name)
+  Variable<T> &
+  declare_output_variable(S && name, TensorShapeRef list_sizes = {}, TensorShapeRef base_sizes = {})
   {
-    const auto var_name = variable_name(std::forward<S>(name));
-    declare_variable<T>(_output_axis, var_name);
-    return *create_variable<T>(var_name, FType::OUTPUT);
-  }
+    if constexpr (!std::is_same_v<T, Tensor>)
+      neml_assert(base_sizes.empty(),
+                  "Creating a Variable of primitive tensor type does not require a base shape.");
 
-  /// Declare an input variable (with unknown base shape at compile time)
-  template <typename S>
-  Variable<Tensor> & declare_output_variable(S && name, TensorShapeRef base_sizes)
-  {
     const auto var_name = variable_name(std::forward<S>(name));
-    declare_variable(_output_axis, var_name, utils::storage_size(base_sizes));
-    return *create_variable<Tensor>(var_name, FType::OUTPUT, base_sizes);
-  }
+    const auto list_sz = utils::storage_size(list_sizes);
+    const auto base_sz =
+        std::is_same_v<T, Tensor> ? utils::storage_size(base_sizes) : T::const_base_storage;
+    const auto sz = list_sz * base_sz;
 
-  /// Declare an output variable that is a list of tensors of fixed size
-  template <typename T, typename S>
-  Variable<Tensor> & declare_output_variable_list(S && name, Size list_size)
-  {
-    return declare_output_variable(std::forward<S>(name), list_size * T::const_base_storage);
+    _output_axis.add(var_name, sz);
+    return *create_variable<T>(var_name, FType::OUTPUT, list_sizes, base_sizes);
   }
 
   /// Clone a variable and put it on the input axis
@@ -156,7 +144,7 @@ protected:
     const auto ftype = var_exist ? (var_exist->ftype() | FType::INPUT) : FType::INPUT;
     auto var_clone = var.clone(var_name, _object, ftype);
 
-    declare_variable(_input_axis, var_name, var_clone->base_storage());
+    _input_axis.add(var_name, var_clone->base_storage());
     return _variables.set_pointer(var_name, std::move(var_clone));
   }
 
@@ -170,28 +158,8 @@ protected:
     const auto ftype = var_exist ? (var_exist->ftype() | FType::OUTPUT) : FType::OUTPUT;
     auto var_clone = var.clone(var_name, _object, ftype);
 
-    declare_variable(_output_axis, var_name, var_clone->base_storage());
+    _output_axis.add(var_name, var_clone->base_storage());
     return _variables.set_pointer(var_name, std::move(var_clone));
-  }
-
-  /// Declare an item recursively on an axis
-  template <typename T>
-  void declare_variable(LabeledAxis & axis, const VariableName & var) const
-  {
-    declare_variable(axis, var, T::const_base_storage);
-  }
-
-  /// Declare an item (with known storage size) recursively on an axis
-  void declare_variable(LabeledAxis & axis, const VariableName & var, Size sz) const
-  {
-    axis.add(var, sz);
-  }
-
-  /// Declare a subaxis recursively on an axis
-  VariableName declare_subaxis(LabeledAxis & axis, const VariableName & subaxis) const
-  {
-    axis.add<LabeledAxis>(subaxis);
-    return subaxis;
   }
 
 private:
@@ -208,10 +176,14 @@ private:
 
   // Create a variable
   template <typename T>
-  Variable<T> * create_variable(const VariableName & name, FType ft, TensorShapeRef base_sizes = {})
+  Variable<T> * create_variable(const VariableName & name,
+                                FType ft,
+                                TensorShapeRef /*list_sizes*/,
+                                TensorShapeRef base_sizes)
   {
-    if constexpr (std::is_same_v<T, Tensor>)
-      neml_assert(!base_sizes.empty(), "Creating a Variable<Tensor> requires a base shape.");
+    if constexpr (!std::is_same_v<T, Tensor>)
+      neml_assert(base_sizes.empty(),
+                  "Creating a Variable of primitive tensor type does not require a base shape.");
 
     // Make sure we don't duplicate variables
     VariableBase * var_base_ptr = _variables.query_value(name);

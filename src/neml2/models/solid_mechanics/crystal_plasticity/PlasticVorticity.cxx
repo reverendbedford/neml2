@@ -66,7 +66,7 @@ PlasticVorticity::PlasticVorticity(const OptionSet & options)
         options.get<std::string>("crystal_geometry_name"))),
     _Wp(declare_output_variable<WR2>("plastic_vorticity")),
     _R(declare_input_variable<R2>("orientation")),
-    _gamma_dot(declare_input_variable_list<Scalar>("slip_rates", _crystal_geometry.nslip()))
+    _gamma_dot(declare_input_variable<Scalar>("slip_rates", _crystal_geometry.nslip()))
 {
 }
 
