@@ -334,6 +334,13 @@ arccos(const T & a)
 
 template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
 T
+arcsin(const T & a)
+{
+  return T(torch::arcsin(a), a.batch_dim());
+}
+
+template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
+T
 where(const torch::Tensor & condition, const T & a, const T & b)
 {
   neml_assert_broadcastable_dbg(a, b);
