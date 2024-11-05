@@ -94,8 +94,11 @@ public:
   /// Return the derivative of the shadow map
   R2 dshadow() const;
 
-  /// Distance measure between two rotations
+  /// Distance measure between two rotations, accounting for shadow mapping
   Scalar dist(const Rot & r) const;
+
+  /// Raw distance formula, not accounting for shadown mapping
+  Scalar gdist(const Rot & r) const;
 
   /// Volume element at locations
   Scalar dV() const;

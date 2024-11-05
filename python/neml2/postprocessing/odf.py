@@ -197,8 +197,6 @@ class KDEODF(ODF):
         """
         dist = self.X.dist(Y.batch.unsqueeze(-1)).torch()
 
-        import matplotlib.pyplot as plt
-
         return torch.mean(
             self.kernel(torch.cos(dist / 2.0)),
             dim=-1,

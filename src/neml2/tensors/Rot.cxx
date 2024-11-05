@@ -236,12 +236,17 @@ Rot::dshadow() const
 Scalar
 Rot::dist(const Rot & r) const
 {
-  auto q1 = Quaternion(*this);
-  auto q1p = Quaternion(this->shadow());
-  auto q2 = Quaternion(r);
-  auto q2p = Quaternion(r.shadow());
+  auto st = this->shadow();
+  auto sr = r.shadow();
 
-  return q1.dist(q2).minimum(q1.dist(q2p)).minimum(q1p.dist(q2)).minimum(q1p.dist(q2p));
+  return this->gdist(r).minimum(this->gdist(sr)).minimum(sr.gdist(r)).minimum(sr.gdist(st));
+}
+
+Scalar
+Rot::gdist(const Rot & r) const
+{
+  return 4.0 * math::arcsin((*this - r).norm() /
+                            math::sqrt((1.0 + this->norm_sq()) * (1.0 + r.norm_sq())));
 }
 
 Scalar
