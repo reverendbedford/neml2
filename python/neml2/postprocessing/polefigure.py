@@ -1,6 +1,10 @@
 from math import sqrt
 
+from functools import reduce
+
 import torch
+
+torch.set_default_dtype(torch.float64)
 
 import matplotlib.pyplot as plt
 
@@ -94,13 +98,17 @@ def pole_figure_points(
         orientations = tensors.Rot(orientations)
 
     # Get all the equivalent poles
-    crystal_symmetry_operators = symmetry_operators_as_R2(crystal_symmetry)
+    crystal_symmetry_operators = symmetry_operators_as_R2(
+        crystal_symmetry, device=orientations.device
+    )
     equivalent_poles = crystal_symmetry_operators * pole
 
     # Move from crystal to sample
     sample_poles = equivalent_poles.rotate(orientations.batch.unsqueeze(-1))
     # Apply sample symmetry
-    sample_symmetry_operators = symmetry_operators_as_R2(sample_symmetry)
+    sample_symmetry_operators = symmetry_operators_as_R2(
+        sample_symmetry, device=orientations.device
+    )
     sample_poles = sample_symmetry_operators * sample_poles.batch.unsqueeze(-1)
 
     # For my reference, at this point we have a tensor of (arbitrary_batch_shape,) + (crystal_symmetry,) + (sample_symmetry,) + (3,)
@@ -125,7 +133,7 @@ def cart2polar(v):
     )
 
 
-def pretty_plot_polefigure(
+def pretty_plot_pole_figure(
     orientations,
     pole,
     projection="stereographic",
@@ -133,7 +141,7 @@ def pretty_plot_polefigure(
     sample_symmetry="1",
     point_size=10.0,
 ):
-    """Project and then make a pretty plot for a polefigure
+    """Project and then make a pretty plot for a pole figure
 
     Args:
         orientations (torch.tensor or neml2.tensors.Rot): tensor of orientations as *modified* Rodrigues
@@ -154,6 +162,7 @@ def pretty_plot_polefigure(
     polar = cart2polar(points)
 
     # Plot
+    plt.figure()
     ax = plt.subplot(111, projection="polar")
     ax.scatter(polar[..., 0].cpu(), polar[..., 1].cpu(), c="k", s=point_size)
 
@@ -163,3 +172,155 @@ def pretty_plot_polefigure(
     ax.get_yaxis().set_visible(False)
     ax.get_xaxis().set_visible(False)
     ax.xaxis.set_minor_locator(plt.NullLocator())
+
+
+class IPFReduction:
+    """Reduce points on the sphere to a fundemental
+
+    Keyword Args:
+        v0 (torch.tensor or tensors.Vec): first limit
+        v1 (torch.tensor or tensors.Vec): second limit
+        v2 (torch.tensor or tensors.Vec): third limit
+    """
+
+    def __init__(
+        self,
+        v0=tensors.Vec(torch.tensor([0, 0, 1.0])),
+        v1=tensors.Vec(torch.tensor([1.0, 0, 1.0])),
+        v2=tensors.Vec(torch.tensor([1.0, 1, 1])),
+    ):
+        # Do some setup
+        if not isinstance(v0, tensors.Vec):
+            v0 = tensors.Vec(v0)
+        if not isinstance(v1, tensors.Vec):
+            v1 = tensors.Vec(v1)
+        if not isinstance(v2, tensors.Vec):
+            v2 = tensors.Vec(v2)
+
+        v0 = v0 / v0.norm()
+        v1 = v1 / v1.norm()
+        v2 = v2 / v2.norm()
+
+        self.v = [v0, v1, v2]
+        self.n = [v0.cross(v1), v1.cross(v2), v2.cross(v0)]
+
+    def __call__(self, v):
+        """Apply the reduction to a set of poles"""
+        keep = reduce(
+            torch.logical_and,
+            [v.dot(n.to(device=v.device)).torch() > 0 for n in self.n],
+        )
+
+        return tensors.Vec(v.torch()[keep])
+
+
+def inverse_pole_figure_points(
+    orientations,
+    direction,
+    projection="stereographic",
+    crystal_symmetry="1",
+    sample_symmetry="1",
+    reduction=IPFReduction(),
+):
+    """Project points onto an inverse pole figure
+
+    Args:
+        orientations (torch.tensor or neml2.tensors.Rot): tensor of orientation as *modified* Rodrigues
+            parameters in the *active* convention with arbitrary batch shape
+        direction (torch.tensor or neml2.tensors.Vec): pole to project, must broadcast with orientations
+
+    Keyword Args:
+        projection (str): which projection to use
+        crystal_symmetry (str): crystal symmetry to apply
+        sample_symmetry (str): sample symmetry to appy
+        reduction (IPFReduction): function to reduce the poles to a fundamental region
+    """
+    # Do some setup
+    if not isinstance(direction, tensors.Vec):
+        direction = tensors.Vec(direction)
+    direction = direction / direction.norm()
+    if not isinstance(orientations, tensors.Rot):
+        orientations = tensors.Rot(orientations)
+
+    # Do the projection
+    sample_symmetry_operators = symmetry_operators_as_R2(
+        sample_symmetry, device=orientations.device
+    )
+    sample_directions = sample_symmetry_operators * direction
+    crystal_directions = sample_directions.rotate(
+        orientations.inverse().batch.unsqueeze(-1)
+    )
+    crystal_symmetry_operators = symmetry_operators_as_R2(
+        crystal_symmetry, device=orientations.device
+    )
+    equivalent_directions = (
+        crystal_symmetry_operators * crystal_directions.batch.unsqueeze(-1)
+    ).torch()
+
+    # Convention keeps the upper hemisphere
+    directions = tensors.Vec(equivalent_directions[equivalent_directions[..., 2] > 0])
+
+    # Reduce to the fundamental region
+    directions = reduction(directions)
+
+    # Project
+    projection = available_projections[projection]
+    return projection(directions.torch())
+
+
+def pretty_plot_inverse_pole_figure(
+    orientations,
+    direction,
+    projection="stereographic",
+    crystal_symmetry="1",
+    sample_symmetry="1",
+    reduction=IPFReduction(),
+    point_size=10.0,
+    axis_labels=["100", "110", "111"],
+    nline=100,
+    lw=2.0,
+):
+    """Project and then make a pretty plot for an inverse pole figure
+
+    Args:
+        orientations (torch.tensor or neml2.tensors.Rot): tensor of orientation as *modified* Rodrigues
+            parameters in the *active* convention with arbitrary batch shape
+        direction (torch.tensor or neml2.tensors.Vec): pole to project, must broadcast with orientations
+
+    Keyword Args:
+        projection (str): which projection to use
+        crystal_symmetry (str): crystal symmetry to apply
+        sample_symmetry (str): sample symmetry to appy
+        reduction (IPFReduction): function to reduce the poles to a fundamental region
+        point_size (float): size of points
+        axis_labels (list of str): labels for the three corners
+        nline (int): resolution for drawing lines
+        lw (float): line width for lines
+    """
+    points = inverse_pole_figure_points(
+        orientations,
+        direction,
+        projection,
+        crystal_symmetry,
+        sample_symmetry,
+        reduction,
+    )
+    projection = available_projections[projection]
+
+    plt.figure()
+    ax = plt.subplot(111)
+    ax.scatter(points.cpu()[:, 0], points.cpu()[:, 1], color="k", s=point_size)
+    ax.axis("off")
+    if axis_labels:
+        plt.text(0.1, 0.11, axis_labels[0], transform=plt.gcf().transFigure)
+        plt.text(0.86, 0.11, axis_labels[1], transform=plt.gcf().transFigure)
+        plt.text(0.74, 0.88, axis_labels[2], transform=plt.gcf().transFigure)
+
+    for i, j in ((0, 1), (1, 2), (2, 0)):
+        v1 = reduction.v[i].torch().cpu()
+        v2 = reduction.v[j].torch().cpu()
+        fs = torch.linspace(0, 1, nline).cpu()
+        pts = v1 * fs.unsqueeze(-1) + v2 * (1.0 - fs).unsqueeze(-1)
+        pts /= torch.linalg.norm(pts, dim=-1).unsqueeze(-1)
+        pts = projection(pts)
+        plt.plot(pts[:, 0], pts[:, 1], "k-", lw=lw)
