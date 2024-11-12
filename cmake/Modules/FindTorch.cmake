@@ -28,7 +28,7 @@ endif()
 # At this point, if LIBTORCH_DIR is still not set, then both plan A and plan B have failed :(
 if(NOT DEFINED LIBTORCH_DIR)
   message(FATAL_ERROR
-    "LIBTORCH_DIR is not set. Please refer to https://reverendbedford.github.io/neml2/install.html for more information.")
+    "LIBTORCH_DIR is not set. Please refer to https://applied-material-modeling.github.io/neml2/install.html for more information.")
 else()
   message(STATUS "Using libTorch at: ${LIBTORCH_DIR}")
   include(NEML2TorchConfig)

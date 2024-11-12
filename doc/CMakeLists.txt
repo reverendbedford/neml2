@@ -65,25 +65,3 @@ add_custom_target(html ALL
   COMMAND ${DOXYGEN_EXECUTABLE} -q DoxyfilePython.sh
   VERBATIM
 )
-
-# ----------------------------------------------------------------------------
-# LaTeX
-# ----------------------------------------------------------------------------
-generate_doxyfile(${NEML2_BINARY_DIR}/doc/DoxyfileLaTeX "config/Doxyfile.in;config/LaTeX.in")
-add_custom_target(latex
-  DEPENDS syntax-cpp
-  WORKING_DIRECTORY ${NEML2_BINARY_DIR}/doc
-  COMMAND ${DOXYGEN_EXECUTABLE} -q DoxyfileLaTeX.sh
-  VERBATIM
-)
-
-# ----------------------------------------------------------------------------
-# PDF
-# ----------------------------------------------------------------------------
-add_custom_target(pdf
-  DEPENDS latex
-  WORKING_DIRECTORY ${NEML2_BINARY_DIR}/doc/build/latex
-  COMMAND ${CMAKE_COMMAND} -E copy_directory ${NEML2_SOURCE_DIR}/doc/content/asset ${NEML2_BINARY_DIR}/doc/build/latex
-  COMMAND latexmk -pdf refman.tex -outdir=${NEML2_BINARY_DIR}/doc/build/pdf -silent
-  VERBATIM
-)
