@@ -25,7 +25,7 @@ Building should be as easy as cloning the repository, configuring with CMake, co
 
 #### Vectorization
 
-NEML2 models can be vectorized, meaning that a large _batch_ of material models can be evaluated simultaneously. The vectorized models can be evaluated on both CPU and GPU. Moreover, NEML2 provides a unified implementation and user interface, for both developers and end users, that work on all supported devices.
+NEML2 models can be vectorized, meaning that a large _batch_ of material models can be evaluated simultaneously. The vectorized models can be evaluated on either CPUs or GPUs/other accelerators. Moreover, NEML2 provides a unified implementation and user interface, for both developers and end users, that work on all supported devices.
 
 #### Multiphysics coupling
 
