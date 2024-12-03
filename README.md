@@ -1,6 +1,6 @@
 # NEML2
 
-[![Documentation](https://github.com/reverendbedford/neml2/actions/workflows/build_docs.yml/badge.svg?branch=main)](https://reverendbedford.github.io/neml2/) [![tests](https://github.com/reverendbedford/neml2/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/reverendbedford/neml2/actions/workflows/tests.yml)
+[![Documentation](https://github.com/applied-material-modeling/neml2/actions/workflows/build_docs.yml/badge.svg?branch=main)](https://applied-material-modeling.github.io/neml2/) [![C++ backend testing](https://github.com/applied-material-modeling/neml2/actions/workflows/cpp.yml/badge.svg?branch=main)](https://github.com/applied-material-modeling/neml2/actions/workflows/cpp.yml) [![Python package testing](https://github.com/applied-material-modeling/neml2/actions/workflows/python.yml/badge.svg?branch=main)](https://github.com/applied-material-modeling/neml2/actions/workflows/python.yml)
 
 ## Overview
 
@@ -10,7 +10,7 @@ NEML2 is an offshoot of [NEML](https://github.com/Argonne-National-Laboratory/ne
 Like its predecessor, NEML2 provides a flexible, modular way to build material models from smaller blocks.
 Unlike its predecessor, NEML2 vectorizes the material update to efficiently run on GPUs. In addition, NEML2 models can use [PyTorch](https://pytorch.org/cppdocs/) as the backend to provide first-class support for automatic differentiation, operator fusion, lazy tensor evaluation, inference mode, etc.
 
-NEML2 is provided as open source software under a MIT [license](https://raw.githubusercontent.com/reverendbedford/neml2/main/LICENSE).
+NEML2 is provided as open source software under a MIT [license](https://raw.githubusercontent.com/applied-material-modeling/neml2/main/LICENSE).
 
 > **Disclaimer**
 >
@@ -19,7 +19,7 @@ NEML2 is provided as open source software under a MIT [license](https://raw.gith
 
 ### Quick installation
 
-Building should be as easy as cloning the repository, configuring with CMake, compiling with `make`, and installing with `make install`. Refer to the [installation guide](https://reverendbedford.github.io/neml2/install.html) for more detailed instructions and finer control over various dependencies as well as other build customization.
+Building should be as easy as cloning the repository, configuring with CMake, compiling with `make`, and installing with `make install`. Refer to the [installation guide](https://applied-material-modeling.github.io/neml2/install.html) for more detailed instructions and finer control over various dependencies as well as other build customization.
 
 ### Features and design philosophy
 

@@ -12,9 +12,9 @@ Compiling the NEML2 core library requires
 
 ### Required dependencies
 
-- [PyTorch](https://pytorch.org/get-started/locally/), version 2.2.2.
+- [PyTorch](https://pytorch.org/get-started/locally/), version 2.5.1.
 
-Other PyTorch releases with a few minor versions around are likely to be compatible. In the PyTorch official download page, several download options are provided: conda, pip, libTorch, and source distribution.
+Recent PyTorch releases within a few minor versions are likely to be compatible. In the PyTorch official download page, several download options are provided: conda, pip, libTorch, and source distribution.
 - **Recommended**: If you choose to download PyTorch using conda or pip, the NEML2 CMake script can automatically detect and use the PyTorch installation.
 - If you choose to download libTorch or build PyTorch from source, you will need to set `LIBTORCH_DIR` to be the location of libTorch when using CMake to configure NEML2.
 
@@ -22,6 +22,9 @@ Other PyTorch releases with a few minor versions around are likely to be compati
 The libTorch distributions from the official website come with two flavors: "Pre-cxx11 ABI" and "cxx11 ABI". Both variants are supported by NEML2. If you are unsure, we recommend the one with "cxx11 ABI".
 
 If no PyTorch installation can be detected and `LIBTORCH_DIR` is not set at configure time, the NEML2 CMake script will automatically download and use the libTorch obtained from the official website. Note, however, that this method only works on Linux and Mac systems.
+
+\note
+We strive to keep up with the rapid development of PyTorch. The NEML2 PyTorch dependency is updated on a quarterly basis. If there is a particular version of PyTorch you'd like to use which is found to be incompatible with NEML2, please feel free to [create an issue](https://github.com/applied-material-modeling/neml2/issues).
 
 ### Optional dependencies
 
@@ -51,7 +54,7 @@ NEML2 is available both as a C++ library and as a Python package. Instructions f
 First, obtain the NEML2 source code.
 
 ```
-git clone https://github.com/reverendbedford/neml2.git
+git clone https://github.com/applied-material-modeling/neml2.git
 cd neml2
 git checkout main
 ```
@@ -142,8 +145,8 @@ Alternatively, you may use CMake's `FetchContent` module to integrate NEML2 into
 ```
 FetchContent_Declare(
   neml2
-  GIT_REPOSITORY https://github.com/reverendbedford/neml2.git
-  GIT_TAG v1.4.0
+  GIT_REPOSITORY https://github.com/applied-material-modeling/neml2.git
+  GIT_TAG v2.0.0
 )
 FetchContent_MakeAvailable(neml2)
 

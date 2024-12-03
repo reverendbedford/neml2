@@ -1,17 +1,10 @@
-name: tests
+name: C++ backend
 
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-permissions:
-  contents: read # Required when overriding permissions
-  pull-requests: write # For posting coverage report
-  checks: write
 
 # Newer commits should cancel old runs
 concurrency:
@@ -26,9 +19,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.8"
+          python-version: "3.9"
       - name: Check to see if source files have the correct copyright header
         run: ./scripts/check_copyright.py
+
   clang-format:
     name: Formatting Check
     runs-on: ubuntu-latest
@@ -45,6 +39,7 @@ jobs:
         with:
           clang-format-version: "17"
           check-path: ${{ matrix.path }}
+
   clang-tidy:
     name: Linting
     runs-on: ubuntu-latest
@@ -54,11 +49,11 @@ jobs:
           submodules: recursive
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.8"
+          python-version: "3.9"
       - uses: jwlawson/actions-setup-cmake@v2
         with:
           cmake-version: "3.28"
-      - run: pip install torch==2.2.2
+      - run: pip install torch==2.5.1
       - run: |
           cmake \
             -DCMAKE_BUILD_TYPE=Debug \
@@ -70,11 +65,16 @@ jobs:
             -B build \
             .
       - run: cmake --build build --target all -j 2 --
+
   build-test:
     needs: clang-format
+    permissions:
+      contents: read
+      checks: write
+      pull-requests: write
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-12]
+        os: [ubuntu-latest, macos-latest]
         btype: [Release, Debug]
         unity: [ON, OFF]
     runs-on: ${{ matrix.os }}
@@ -84,11 +84,11 @@ jobs:
           submodules: recursive
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.8"
+          python-version: "3.9"
       - uses: jwlawson/actions-setup-cmake@v2
         with:
           cmake-version: "3.28"
-      - run: pip install torch==2.2.2
+      - run: pip install torch==2.5.1
       - run: |
           cmake \
             -DCMAKE_BUILD_TYPE=${{ matrix.btype }} \
@@ -107,17 +107,18 @@ jobs:
       - run: cd tests && ../build/tests/verification/verification_tests -r junit > verification_tests.xml
         continue-on-error: true
       - name: Publish Test Results
-        uses: EnricoMi/publish-unit-test-result-action@v2
         if: matrix.os == 'ubuntu-latest'
+        uses: EnricoMi/publish-unit-test-result-action/linux@v2
         with:
           files: tests/*.xml
           check_name: Test Results (${{ matrix.os }}-${{ matrix.btype }}-${{ matrix.unity }})
       - name: Publish Test Results
-        uses: EnricoMi/publish-unit-test-result-action/composite@v2
-        if: matrix.os == 'macos-12'
+        if: matrix.os == 'macos-latest'
+        uses: EnricoMi/publish-unit-test-result-action/macos@v2
         with:
           files: tests/*.xml
           check_name: Test Results (${{ matrix.os }}-${{ matrix.btype }}-${{ matrix.unity }})
+
   build-all:
     needs: clang-format
     runs-on: ubuntu-latest
@@ -131,11 +132,11 @@ jobs:
           submodules: recursive
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.8"
+          python-version: "3.9"
       - uses: jwlawson/actions-setup-cmake@v2
         with:
           cmake-version: "3.28"
-      - run: pip install torch==2.2.2
+      - run: pip install torch==2.5.1
       - run: |
           cmake \
             -DCMAKE_BUILD_TYPE=${{ matrix.btype }} \
@@ -160,81 +161,3 @@ jobs:
       - run: ./build/runner/runner runner/benchmark/scpdecoupexp/model.i driver nbatch=1 device=cpu
       - run: ./build/runner/runner runner/benchmark/tcpsingle/model.i driver nbatch=1 device=cpu
       - run: ./build/runner/runner runner/benchmark/tcprandom/model.i driver nbatch=1 device=cpu
-  coverage:
-    name: Code coverage check
-    needs: clang-format
-    runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.8"
-      - uses: jwlawson/actions-setup-cmake@v2
-        with:
-          cmake-version: "3.28"
-      - run: pip install torch==2.2.2
-      - run: sudo apt install lcov
-      - run: |
-          cmake \
-            -DCMAKE_BUILD_TYPE=Coverage \
-            -DCMAKE_UNITY_BUILD=OFF \
-            -DNEML2_TESTS=ON \
-            -DNEML2_UNIT=ON \
-            -DNEML2_REGRESSION=OFF \
-            -DNEML2_VERIFICATION=OFF \
-            -DNEML2_RUNNER=OFF \
-            -DNEML2_PYBIND=OFF \
-            -DNEML2_DOC=OFF \
-            -B build \
-            .
-      - run: cmake --build build --target all -j 2 --
-      - run: build/scripts/coverage.sh
-      - uses: romeovs/lcov-reporter-action@v0.3.1
-        with:
-          lcov-file: build/coverage/coverage.info
-          github-token: ${{ secrets.PR_ACTION }}
-          delete-old-comments: true
-  cmake-integration:
-    name: Test CMake integration as a subproject
-    needs: clang-format
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-          path: neml2
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.8"
-      - uses: jwlawson/actions-setup-cmake@v2
-        with:
-          cmake-version: "3.28"
-      - run: pip install torch==2.2.2
-      - name: Create a source file for testing purposes
-        run: |
-          echo -e "\
-            #include \"neml2/base/Registry.h\"\n\
-            int main() {\n\
-              return 0;\n\
-            }\
-            " > main.cxx
-      - run: cat main.cxx
-      - name: Create a CMakeLists.txt file for testing purposes
-        run: |
-          echo -e "\
-            cmake_minimum_required(VERSION 3.28)
-            project(FOO)\n\
-            add_subdirectory(neml2)\n\
-            add_executable(foo main.cxx)\n\
-            add_compile_definitions(_GLIBCXX_USE_CXX11_ABI=0)\n\
-            target_link_libraries(foo neml2)\n\
-            " > CMakeLists.txt
-      - run: cat CMakeLists.txt
-      - name: Configure with CMake
-        run: cmake -DNEML2_TESTS=OFF -B build .
-      - name: Compile
-        run: cmake --build build --target all -j 2 --
-      - run: ./build/foo
