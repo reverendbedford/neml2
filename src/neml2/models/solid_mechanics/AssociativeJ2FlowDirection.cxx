@@ -71,8 +71,7 @@ AssociativeJ2FlowDirection::set_value(bool out, bool dout_din, bool d2out_din2)
       auto I = SSR4::identity_sym(options());
       auto J = SSR4::identity_dev(options());
 
-      if (dout_din)
-        _N.d(_M) = 3.0 / 2.0 * (I - 2.0 / 3.0 * dvm_dM.outer(dvm_dM)) * J / vm;
+      _N.d(_M) = 3.0 / 2.0 * (I - 2.0 / 3.0 * dvm_dM.outer(dvm_dM)) * J / vm;
     }
 }
 } // namespace neml2
