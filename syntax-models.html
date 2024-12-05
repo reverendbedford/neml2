@@ -115,6 +115,7 @@ $(function(){initNavTree('syntax-models.html',''); initResizable(); });
 <div class="toc"><h3>Table of Contents</h3>
 <ul><li class="level1"><a href="#autotoc_md45">Available objects and their input file syntax</a><ul><li class="level2"><a href="#arrheniusparameter">ArrheniusParameter</a></li>
 <li class="level2"><a href="#associativeisotropicplastichardening">AssociativeIsotropicPlasticHardening</a></li>
+<li class="level2"><a href="#associativej2flowdirection">AssociativeJ2FlowDirection</a></li>
 <li class="level2"><a href="#associativekinematicplastichardening">AssociativeKinematicPlasticHardening</a></li>
 <li class="level2"><a href="#associativeplasticflow">AssociativePlasticFlow</a></li>
 <li class="level2"><a href="#chabocheplastichardening">ChabochePlasticHardening</a></li>
@@ -149,6 +150,7 @@ $(function(){initNavTree('syntax-models.html',''); initResizable(); });
 <li class="level2"><a href="#kocksmeckingflowviscosity">KocksMeckingFlowViscosity</a></li>
 <li class="level2"><a href="#kocksmeckingratesensitivity">KocksMeckingRateSensitivity</a></li>
 <li class="level2"><a href="#kocksmeckingyieldstress">KocksMeckingYieldStress</a></li>
+<li class="level2"><a href="#linearisotropicelasticj2trialstressupdate">LinearIsotropicElasticJ2TrialStressUpdate</a></li>
 <li class="level2"><a href="#linearisotropicelasticity">LinearIsotropicElasticity</a></li>
 <li class="level2"><a href="#linearisotropichardening">LinearIsotropicHardening</a></li>
 <li class="level2"><a href="#linearkinematichardening">LinearKinematicHardening</a></li>
@@ -316,6 +318,27 @@ AssociativeIsotropicPlasticHardening</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1AssociativeIsotropicPlasticHardening.html">link</a></p>
+<h2><a class="anchor" id="associativej2flowdirection"></a>
+AssociativeJ2FlowDirection</h2>
+<p>The plastic flow direction assuming an associative J2 flow. </p><details >
+<summary >
+<code>flow_direction</code> Flow direction</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name</li>
+<li><u>Default</u>: state/NM </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>mandel_stress</code> Mandel stress</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name</li>
+<li><u>Default</u>: state/M </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1AssociativeJ2FlowDirection.html">link</a></p>
 <h2><a class="anchor" id="associativekinematicplastichardening"></a>
 AssociativeKinematicPlasticHardening</h2>
 <p>Map the flow rate (i.e., the consistency parameter in the KKT conditions) to the rate of internal variables. This object calculates the rate of kinematic plastic strain following associative flow rule, i.e. \( \dot{\boldsymbol{K}}_p = - \dot{\gamma} \frac{\partial f}{\partial \boldsymbol{X}} \), where \( \dot{\boldsymbol{K}}_p \) is the kinematic plastic strain, \( \dot{\gamma} \) is the flow rate, \( f \) is the yield function, and \( \boldsymbol{X} \) is the kinematic hardening. </p><details >
@@ -1373,6 +1396,52 @@ KocksMeckingYieldStress</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1KocksMeckingYieldStress.html">link</a></p>
+<h2><a class="anchor" id="linearisotropicelasticj2trialstressupdate"></a>
+LinearIsotropicElasticJ2TrialStressUpdate</h2>
+<p>Update the trial stress under the assumptions of J2 plasticity and isotropic linear elasticity </p><details >
+<summary >
+<code>elastic_trial_stress</code> 🇮 Initial trial stress assuming a purely elastic step</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name</li>
+<li><u>Default</u>: forces/s </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>equivalent_plastic_strain</code> 🇮 Current guess for the equivalent plastic strain</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name</li>
+<li><u>Default</u>: state/ep </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>poisson_ratio</code> 🇵 Poisson's ratio</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: Scalar 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>updated_trial_stress</code> 🇴 Trial stress corrected for the current increment of plastic deformation</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name</li>
+<li><u>Default</u>: state/s </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>youngs_modulus</code> 🇵 Young's modulus</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: Scalar 🔗 </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1LinearIsotropicElasticJ2TrialStressUpdate.html">link</a></p>
 <h2><a class="anchor" id="linearisotropicelasticity"></a>
 LinearIsotropicElasticity</h2>
 <p>Relate elastic strain to stress for linear isotropic material. \( \boldsymbol{\sigma} = K \tr \boldsymbol{\varepsilon}_e + 2 G \text{dev} \boldsymbol{\varepsilon}_e \), where \( K \) and \( G \) are bulk and shear moduli, respectively. For convenience, this object only requests Young's modulus and Poisson's ratio, and handles the Lame parameter conversion behind the scenes. </p><details >
