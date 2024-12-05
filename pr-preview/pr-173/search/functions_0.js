@@ -19,8 +19,9 @@ var searchData=
   ['as_16',['as',['../classneml2_1_1EnumSelection.html#a0a722d04cee6bf06b968660956d7ebc3',1,'neml2::EnumSelection']]],
   ['assemble_17',['assemble',['../classneml2_1_1Model.html#a09c1379721a903e027e596f15646c1a2',1,'neml2::Model::assemble()'],['../classneml2_1_1NonlinearSystem.html#af8ddb5164cca4931f510ef1c4d623c50',1,'neml2::NonlinearSystem::assemble()'],['../classneml2_1_1TrustRegionSubProblem.html#a09c1379721a903e027e596f15646c1a2',1,'neml2::TrustRegionSubProblem::assemble()']]],
   ['associativeisotropicplastichardening_18',['AssociativeIsotropicPlasticHardening',['../classneml2_1_1AssociativeIsotropicPlasticHardening.html#a9e808379e4c8688c899ff1655b18c4fa',1,'neml2::AssociativeIsotropicPlasticHardening']]],
-  ['associativekinematicplastichardening_19',['AssociativeKinematicPlasticHardening',['../classneml2_1_1AssociativeKinematicPlasticHardening.html#a8b47b8d001aa3a10d675b9b1ea95f60c',1,'neml2::AssociativeKinematicPlasticHardening']]],
-  ['associativeplasticflow_20',['AssociativePlasticFlow',['../classneml2_1_1AssociativePlasticFlow.html#a0252b1e4716dce0ddfa1e3d79bcffeb4',1,'neml2::AssociativePlasticFlow']]],
-  ['axes_21',['axes',['../classneml2_1_1LabeledTensor.html#afec8dac6ca9571d6393480a14f80b5e6',1,'neml2::LabeledTensor']]],
-  ['axis_22',['axis',['../classneml2_1_1LabeledTensor.html#a8dde6c6807f7190d271b655fe0264b61',1,'neml2::LabeledTensor']]]
+  ['associativej2flowdirection_19',['AssociativeJ2FlowDirection',['../classneml2_1_1AssociativeJ2FlowDirection.html#a6c4c8ca917a169b071628ba15a10fa27',1,'neml2::AssociativeJ2FlowDirection']]],
+  ['associativekinematicplastichardening_20',['AssociativeKinematicPlasticHardening',['../classneml2_1_1AssociativeKinematicPlasticHardening.html#a8b47b8d001aa3a10d675b9b1ea95f60c',1,'neml2::AssociativeKinematicPlasticHardening']]],
+  ['associativeplasticflow_21',['AssociativePlasticFlow',['../classneml2_1_1AssociativePlasticFlow.html#a0252b1e4716dce0ddfa1e3d79bcffeb4',1,'neml2::AssociativePlasticFlow']]],
+  ['axes_22',['axes',['../classneml2_1_1LabeledTensor.html#afec8dac6ca9571d6393480a14f80b5e6',1,'neml2::LabeledTensor']]],
+  ['axis_23',['axis',['../classneml2_1_1LabeledTensor.html#a8dde6c6807f7190d271b655fe0264b61',1,'neml2::LabeledTensor']]]
 ];

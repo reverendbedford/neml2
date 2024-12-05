@@ -13,11 +13,12 @@ var searchData=
   ['linearcombination_10',['LinearCombination',['../classneml2_1_1LinearCombination.html',1,'neml2']]],
   ['linearinterpolation_11',['LinearInterpolation',['../classneml2_1_1LinearInterpolation.html',1,'neml2']]],
   ['linearisotropicelasticity_12',['LinearIsotropicElasticity',['../classneml2_1_1LinearIsotropicElasticity.html',1,'neml2']]],
-  ['linearisotropichardening_13',['LinearIsotropicHardening',['../classneml2_1_1LinearIsotropicHardening.html',1,'neml2']]],
-  ['linearkinematichardening_14',['LinearKinematicHardening',['../classneml2_1_1LinearKinematicHardening.html',1,'neml2']]],
-  ['linearsinglesliphardeningrule_15',['LinearSingleSlipHardeningRule',['../classneml2_1_1LinearSingleSlipHardeningRule.html',1,'neml2']]],
-  ['linspaceprimitivetensor_16',['LinspacePrimitiveTensor',['../classneml2_1_1LinspacePrimitiveTensor.html',1,'neml2']]],
-  ['linspacetensor_17',['LinspaceTensor',['../classneml2_1_1LinspaceTensor.html',1,'neml2']]],
-  ['logspaceprimitivetensor_18',['LogspacePrimitiveTensor',['../classneml2_1_1LogspacePrimitiveTensor.html',1,'neml2']]],
-  ['logspacetensor_19',['LogspaceTensor',['../classneml2_1_1LogspaceTensor.html',1,'neml2']]]
+  ['linearisotropicelasticj2trialstressupdate_13',['LinearIsotropicElasticJ2TrialStressUpdate',['../classneml2_1_1LinearIsotropicElasticJ2TrialStressUpdate.html',1,'neml2']]],
+  ['linearisotropichardening_14',['LinearIsotropicHardening',['../classneml2_1_1LinearIsotropicHardening.html',1,'neml2']]],
+  ['linearkinematichardening_15',['LinearKinematicHardening',['../classneml2_1_1LinearKinematicHardening.html',1,'neml2']]],
+  ['linearsinglesliphardeningrule_16',['LinearSingleSlipHardeningRule',['../classneml2_1_1LinearSingleSlipHardeningRule.html',1,'neml2']]],
+  ['linspaceprimitivetensor_17',['LinspacePrimitiveTensor',['../classneml2_1_1LinspacePrimitiveTensor.html',1,'neml2']]],
+  ['linspacetensor_18',['LinspaceTensor',['../classneml2_1_1LinspaceTensor.html',1,'neml2']]],
+  ['logspaceprimitivetensor_19',['LogspacePrimitiveTensor',['../classneml2_1_1LogspacePrimitiveTensor.html',1,'neml2']]],
+  ['logspacetensor_20',['LogspaceTensor',['../classneml2_1_1LogspaceTensor.html',1,'neml2']]]
 ];

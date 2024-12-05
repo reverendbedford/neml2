@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-04 00:00:38</td>
+            <td class="headerValue">2024-12-05 13:48:54</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -106,16 +106,16 @@
 <a name="44"><span class="lineNum">      44 </span>            : namespace utils</a>
 <a name="45"><span class="lineNum">      45 </span>            : {</a>
 <a name="46"><span class="lineNum">      46 </span>            : bool</a>
-<a name="47"><span class="lineNum">      47 </span><span class="lineCov">        180 : allclose(const LabeledVector &amp; a, const LabeledVector &amp; b, Real rtol, Real atol)</span></a>
+<a name="47"><span class="lineNum">      47 </span><span class="lineCov">        184 : allclose(const LabeledVector &amp; a, const LabeledVector &amp; b, Real rtol, Real atol)</span></a>
 <a name="48"><span class="lineNum">      48 </span>            : {</a>
-<a name="49"><span class="lineNum">      49 </span><span class="lineCov">        180 :   if (a.axis(0) != b.axis(0))</span></a>
+<a name="49"><span class="lineNum">      49 </span><span class="lineCov">        184 :   if (a.axis(0) != b.axis(0))</span></a>
 <a name="50"><span class="lineNum">      50 </span><span class="lineNoCov">          0 :     return false;</span></a>
 <a name="51"><span class="lineNum">      51 </span>            : </a>
-<a name="52"><span class="lineNum">      52 </span><span class="lineCov">        370 :   for (auto var : a.axis(0).variable_names())</span></a>
-<a name="53"><span class="lineNum">      53 </span><span class="lineCov">        190 :     if (!torch::allclose(a.base_index(var), b.base_index(var), rtol, atol))</span></a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">        370 :       return false;</span></a>
+<a name="52"><span class="lineNum">      52 </span><span class="lineCov">        378 :   for (auto var : a.axis(0).variable_names())</span></a>
+<a name="53"><span class="lineNum">      53 </span><span class="lineCov">        194 :     if (!torch::allclose(a.base_index(var), b.base_index(var), rtol, atol))</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">        378 :       return false;</span></a>
 <a name="55"><span class="lineNum">      55 </span>            : </a>
-<a name="56"><span class="lineNum">      56 </span><span class="lineCov">        180 :   return true;</span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineCov">        184 :   return true;</span></a>
 <a name="57"><span class="lineNum">      57 </span>            : }</a>
 <a name="58"><span class="lineNum">      58 </span>            : }</a>
 <a name="59"><span class="lineNum">      59 </span>            : } // namespace neml2</a>
