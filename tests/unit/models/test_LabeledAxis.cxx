@@ -50,7 +50,7 @@ private:
   const indexing::Slice & slice;
 };
 
-TEST_CASE("LabeledAxis", "[tensors]")
+TEST_CASE("LabeledAxis", "[models]")
 {
   SECTION("class LabeledAxis")
   {

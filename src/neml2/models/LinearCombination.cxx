@@ -80,7 +80,8 @@ LinearCombination<T>::make_coef(const OptionSet & options) const
 {
   const auto coefs_in = options.get<std::vector<CrossRef<Scalar>>>("coefficients");
   const std::vector<Scalar> coefs(coefs_in.begin(), coefs_in.end());
-  return math::base_stack(coefs);
+  const std::vector<Tensor> coefs_tensors(coefs.begin(), coefs.end());
+  return math::base_stack(coefs_tensors);
 }
 
 template <typename T>

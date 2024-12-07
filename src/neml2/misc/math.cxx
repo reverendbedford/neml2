@@ -292,6 +292,24 @@ d_multiply_and_make_skew_d_second(const SR2 & a)
                  torch::einsum("...ia,...bj->...ijab", {I, A})));
 }
 
+neml2::Tensor
+base_cat(const std::vector<Tensor> & tensors, Size d)
+{
+  neml_assert_dbg(!tensors.empty(), "base_cat must be given at least one tensor");
+  std::vector<torch::Tensor> torch_tensors(tensors.begin(), tensors.end());
+  auto d2 = d < 0 ? d : d + tensors.begin()->batch_dim();
+  return neml2::Tensor(torch::cat(torch_tensors, d2), tensors.begin()->batch_sizes());
+}
+
+neml2::Tensor
+base_stack(const std::vector<Tensor> & tensors, Size d)
+{
+  neml_assert_dbg(!tensors.empty(), "base_stack must be given at least one tensor");
+  std::vector<torch::Tensor> torch_tensors(tensors.begin(), tensors.end());
+  auto d2 = d < 0 ? d : d + tensors.begin()->batch_dim();
+  return neml2::Tensor(torch::stack(torch_tensors, d2), tensors.begin()->batch_sizes());
+}
+
 Tensor
 pow(const Real & a, const Tensor & n)
 {

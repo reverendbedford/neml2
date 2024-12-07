@@ -30,7 +30,7 @@
 
 using namespace neml2;
 
-TEST_CASE("LabeledAxisAccessor", "[tensors]")
+TEST_CASE("LabeledAxisAccessor", "[models]")
 {
   LabeledAxisAccessor a("a", "b", "c");
 

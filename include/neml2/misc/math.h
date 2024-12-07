@@ -241,15 +241,7 @@ batch_cat(const std::vector<T> & tensors, Size d = 0)
   return T(torch::cat(torch_tensors, d2), tensors.begin()->batch_dim());
 }
 
-template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
-neml2::Tensor
-base_cat(const std::vector<T> & tensors, Size d = 0)
-{
-  neml_assert_dbg(!tensors.empty(), "base_cat must be given at least one tensor");
-  std::vector<torch::Tensor> torch_tensors(tensors.begin(), tensors.end());
-  auto d2 = d < 0 ? d : d + tensors.begin()->batch_dim();
-  return neml2::Tensor(torch::cat(torch_tensors, d2), tensors.begin()->batch_sizes());
-}
+neml2::Tensor base_cat(const std::vector<Tensor> & tensors, Size d = 0);
 
 template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
 T
@@ -261,15 +253,7 @@ batch_stack(const std::vector<T> & tensors, Size d = 0)
   return T(torch::stack(torch_tensors, d2), tensors.begin()->batch_dim() + 1);
 }
 
-template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
-neml2::Tensor
-base_stack(const std::vector<T> & tensors, Size d = 0)
-{
-  neml_assert_dbg(!tensors.empty(), "base_stack must be given at least one tensor");
-  std::vector<torch::Tensor> torch_tensors(tensors.begin(), tensors.end());
-  auto d2 = d < 0 ? d : d + tensors.begin()->batch_dim();
-  return neml2::Tensor(torch::stack(torch_tensors, d2), tensors.begin()->batch_sizes());
-}
+neml2::Tensor base_stack(const std::vector<Tensor> & tensors, Size d = 0);
 
 template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
 T
