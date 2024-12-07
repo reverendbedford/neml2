@@ -32,6 +32,50 @@
 namespace py = pybind11;
 using namespace neml2;
 
+std::map<VariableName, Tensor>
+unpack_model_input(const Model & model, py::dict pyinputs)
+{
+  std::vector<VariableName> input_names;
+  std::vector<Tensor> input_values;
+  for (auto && [key, val] : pyinputs)
+  {
+    try
+    {
+      input_names.push_back(key.cast<VariableName>());
+    }
+    catch (py::cast_error &)
+    {
+      throw py::cast_error("neml2.Model.value: Invalid input key type -- dictionary "
+                           "keys must be convertible to neml2.VariableName");
+    }
+
+    try
+    {
+      input_values.push_back(val.cast<Tensor>());
+    }
+    catch (py::cast_error &)
+    {
+      if (THPVariable_Check(val.ptr()))
+      {
+        const auto x = THPVariable_Unpack(val.ptr());
+        const auto & xvar = model.input_variable(input_names.back());
+        const auto batch_dim = x.dim() - xvar.list_dim() - xvar.base_dim();
+        input_values.push_back(Tensor(x, batch_dim));
+      }
+      else
+        throw py::cast_error(
+            "neml2.Model.value: Invalid input value type -- dictionary values must "
+            "be neml2.Tensor or torch.Tensor");
+    }
+  }
+
+  std::map<VariableName, Tensor> inputs;
+  for (size_t i = 0; i < input_names.size(); ++i)
+    inputs[input_names[i]] = input_values[i];
+
+  return inputs;
+}
+
 PYBIND11_MODULE(base, m)
 {
   m.doc() = "NEML2 Python bindings";
@@ -192,4 +236,25 @@ Diagnose common issues in model setup. Raises a runtime error including all iden
       .def("__setattr__", &Model::set_parameter, "Set the value for a model parameter")
       .def(
           "set_parameters", &Model::set_parameters, "Set the values for multiple model parameters");
+
+  // Forward operator APIs
+  model_cls
+      .def("value",
+           [](Model & self, py::dict pyinputs)
+           { return self.value(unpack_model_input(self, pyinputs)); })
+      .def("dvalue",
+           [](Model & self, py::dict pyinputs)
+           { return self.dvalue(unpack_model_input(self, pyinputs)); })
+      .def("d2value",
+           [](Model & self, py::dict pyinputs)
+           { return self.d2value(unpack_model_input(self, pyinputs)); })
+      .def("value_and_dvalue",
+           [](Model & self, py::dict pyinputs)
+           { return self.value_and_dvalue(unpack_model_input(self, pyinputs)); })
+      .def("dvalue_and_d2value",
+           [](Model & self, py::dict pyinputs)
+           { return self.dvalue_and_d2value(unpack_model_input(self, pyinputs)); })
+      .def("value_and_dvalue_and_d2value",
+           [](Model & self, py::dict pyinputs)
+           { return self.value_and_dvalue_and_d2value(unpack_model_input(self, pyinputs)); });
 }
