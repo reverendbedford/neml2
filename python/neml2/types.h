@@ -86,39 +86,6 @@ public:
 #endif
 
 /**
- * @brief This specialization exposes neml2::indexing::TensorShape
- */
-template <>
-struct type_caster<neml2::TensorShape>
-{
-public:
-  PYBIND11_TYPE_CASTER(neml2::TensorShape, const_name("[int, ...]"));
-
-  bool load(handle src, bool)
-  {
-    // if src is an iterable
-    if (isinstance<iterable>(src))
-    {
-      auto src_iterable = reinterpret_borrow<iterable>(src);
-      for (auto item : src_iterable)
-        value.push_back(item.cast<neml2::Size>());
-      return true;
-    }
-
-    return false;
-  }
-
-  static handle
-  cast(const neml2::TensorShape & src, return_value_policy /* policy */, handle /* parent */)
-  {
-    list l;
-    for (const auto & val : src)
-      l.append(val);
-    return l;
-  }
-};
-
-/**
  * @brief This specialization exposes neml2::indexing::TensorIndices
  */
 template <>

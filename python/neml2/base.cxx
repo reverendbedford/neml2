@@ -123,24 +123,12 @@ Diagnose common issues in model setup. Raises a runtime error including all iden
   tensor_value_cls
       .def(
           "torch",
-          [](const TensorValueBase & self) { return torch::Tensor(Tensor(self)).clone(); },
-          R"(
-Convert this to a torch.Tensor.
-
-This conversion takes ownership of the tensor, and so any modification to the
-returned torch.Tensor does not affect the original tensors.TensorValue. Use
-tensors.TensorValue.set_ instead to modify the tensor value.
-)")
+          [](const TensorValueBase & self) { return torch::Tensor(Tensor(self)); },
+          "Convert to a torch.Tensor")
       .def(
           "tensor",
-          [](const TensorValueBase & self) { return Tensor(self).clone(); },
-          R"(
-Convert this to a tensors.Tensor.
-
-This conversion takes ownership of the tensor, and so any modification to the
-returned tensors.Tensor does not affect the original tensors.TensorValue. Use
-tensors.TensorValue.set_ instead to modify the tensor value.
-)")
+          [](const TensorValueBase & self) { return Tensor(self); },
+          "Convert to a tensors.Tensor")
       .def_property_readonly(
           "requires_grad",
           [](const TensorValueBase & self) { return Tensor(self).requires_grad(); },
@@ -197,23 +185,11 @@ tensors.TensorValue.set_ instead to modify the tensor value.
           },
           py::return_value_policy::reference,
           "Get the model buffers. The keys of the returned dictionary are the buffers' names.")
-      .def(
-          "named_submodels",
-          [](const Model & self)
-          {
-            std::map<std::string, Model *> submodels;
-            for (auto submodel : self.registered_models())
-              submodels[submodel->name()] = submodel;
-            return submodels;
-          },
-          py::return_value_policy::reference,
-          "Get the sub-models registered to this model")
-      .def(
-          "get_parameter",
-          [](Model & self, const std::string & name) { return &self.get_parameter(name); },
-          py::return_value_policy::reference,
-          "Get a model parameter given its name")
-      .def("set_parameter", &Model::set_parameter, "Set the value for a model parameter")
+      .def("__getattr__",
+           py::overload_cast<const std::string &>(&Model::get_parameter, py::const_),
+           py::return_value_policy::reference,
+           "Get a model parameter given its name")
+      .def("__setattr__", &Model::set_parameter, "Set the value for a model parameter")
       .def(
           "set_parameters", &Model::set_parameters, "Set the values for multiple model parameters");
 }

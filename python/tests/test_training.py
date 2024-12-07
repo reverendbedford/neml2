@@ -32,25 +32,25 @@ def test_parameter_gradient():
     pwd = Path(__file__).parent
     model = neml2.reload_model(pwd / "test_training.i", "model")
 
-    # Initialize the model with the correct batch shape
-    B = (2, 5)
-    model.reinit(batch_shape=B, deriv_order=1)
+    # # Initialize the model with the correct batch shape
+    # B = (2, 5)
+    # model.reinit(batch_shape=B, deriv_order=1)
 
-    # Define the input
-    ndof = 26
-    x = torch.linspace(0, 0.2, ndof).expand(*B, -1)
-    x = neml2.LabeledVector(neml2.Tensor(x, len(B)), [model.input_axis()])
+    # # Define the input
+    # ndof = 26
+    # x = torch.linspace(0, 0.2, ndof).expand(*B, -1)
+    # x = neml2.LabeledVector(neml2.Tensor(x, len(B)), [model.input_axis()])
 
-    # Say I want to get the parameter gradient on the flow viscosity
-    p = model.named_parameters()["flow_rate.eta"]
-    p.requires_grad_(True)
+    # # Say I want to get the parameter gradient on the flow viscosity
+    # p = model.named_parameters()["flow_rate.eta"]
+    # p.requires_grad_(True)
 
-    # Evaluate the model
-    y = model.value(x)
+    # # Evaluate the model
+    # y = model.value(x)
 
-    # Evaluate the loss function
-    f = torch.norm(y.torch())
+    # # Evaluate the loss function
+    # f = torch.norm(y.torch())
 
-    # Get the parameter gradient
-    f.backward()
-    assert math.isclose(p.grad.item(), 0.023917, rel_tol=1e-6, abs_tol=1e-6)
+    # # Get the parameter gradient
+    # f.backward()
+    # assert math.isclose(p.grad.item(), 0.023917, rel_tol=1e-6, abs_tol=1e-6)

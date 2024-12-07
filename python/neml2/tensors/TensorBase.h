@@ -121,7 +121,15 @@ def_BatchView(py::module_ & m, const std::string & name)
       py::class_<BatchView<Derived>>(m, name.c_str())
           .def(py::init<Derived *>())
           .def("dim", &BatchView<Derived>::dim)
-          .def_property_readonly("shape", &BatchView<Derived>::sizes)
+          .def_property_readonly("shape",
+                                 [](const BatchView<Derived> & self)
+                                 {
+                                   const auto s = self.sizes();
+                                   py::tuple pys(s.size());
+                                   for (std::size_t i = 0; i < s.size(); i++)
+                                     pys[i] = s[i];
+                                   return pys;
+                                 })
           .def("__getitem__", &BatchView<Derived>::index)
           .def("__getitem__",
                [](BatchView<Derived> * self, at::indexing::TensorIndex index)
@@ -190,14 +198,13 @@ def_TensorBase(py::class_<Derived> & c)
            [classname](const Derived & self)
            {
              return utils::stringify(self) + '\n' + "<" + classname + " of shape " +
-                    utils::stringify(self.batch_sizes().concrete()) +
-                    utils::stringify(self.base_sizes()) + ">";
+                    utils::stringify(self.batch_sizes()) + utils::stringify(self.base_sizes()) +
+                    ">";
            })
       .def("__repr__",
            [classname](const Derived & self)
            {
-             return "<" + classname + " of shape " +
-                    utils::stringify(self.batch_sizes().concrete()) +
+             return "<" + classname + " of shape " + utils::stringify(self.batch_sizes()) +
                     utils::stringify(self.base_sizes()) + ">";
            })
       .def("torch", [](const Derived & self) { return torch::Tensor(self); })
