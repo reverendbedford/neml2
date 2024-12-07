@@ -22,7 +22,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/tensors/Variable.h"
+#include "neml2/models/Variable.h"
 #include "neml2/models/Model.h"
 
 namespace neml2

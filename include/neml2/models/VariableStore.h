@@ -26,10 +26,8 @@
 
 #include "neml2/base/NEML2Object.h"
 #include "neml2/base/Storage.h"
-#include "neml2/tensors/Variable.h"
-#include "neml2/tensors/LabeledVector.h"
-#include "neml2/tensors/LabeledMatrix.h"
-#include "neml2/tensors/LabeledTensor3D.h"
+#include "neml2/models/LabeledAxis.h"
+#include "neml2/models/Variable.h"
 
 namespace neml2
 {

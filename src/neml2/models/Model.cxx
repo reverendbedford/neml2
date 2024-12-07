@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 #include "neml2/models/Model.h"
+#include "neml2/models/Assembler.h"
 #include "neml2/base/guards.h"
 #include "neml2/misc/math.h"
 
@@ -346,8 +347,8 @@ Model::provided_items() const
 void
 Model::set_guess(const SOL<false> & x)
 {
-  auto vals = LabeledVector(x, {&input_axis().subaxis("state")}).disassemble();
-  assign_input(vals);
+  const auto sol_assember = VectorAssembler(input_axis().subaxis("state"));
+  assign_input(sol_assember.disassemble(x));
 }
 
 void
@@ -362,16 +363,14 @@ Model::assemble(NonlinearSystem::RES<false> * residual, NonlinearSystem::JAC<fal
 
   if (residual)
   {
-    const auto & axis = output_axis().subaxis("residual");
-    const auto r = LabeledVector::assemble(collect_output(), axis);
-    *residual = RES<false>(r);
+    const auto res_assembler = VectorAssembler(output_axis().subaxis("residual"));
+    *residual = RES<false>(res_assembler.assemble(collect_output()));
   }
   if (Jacobian)
   {
-    const auto & yaxis = output_axis().subaxis("residual");
-    const auto & xaxis = input_axis().subaxis("state");
-    const auto J = LabeledMatrix::assemble(collect_output_derivatives(), yaxis, xaxis);
-    *Jacobian = JAC<false>(J);
+    const auto jac_assembler =
+        MatrixAssembler(output_axis().subaxis("residual"), input_axis().subaxis("state"));
+    *Jacobian = JAC<false>(jac_assembler.assemble(collect_output_derivatives()));
   }
 }
 

@@ -26,7 +26,7 @@
 #include <catch2/generators/catch_generators_all.hpp>
 #include <catch2/matchers/catch_matchers_templated.hpp>
 
-#include "neml2/tensors/LabeledAxis.h"
+#include "neml2/models/LabeledAxis.h"
 #include "neml2/tensors/tensors.h"
 
 using namespace neml2;

@@ -97,7 +97,6 @@ public:
   logspace(const Derived & start, const Derived & end, Size nstep, Size dim = 0, Real base = 10);
 
   /// @name Meta operations
-  // These methods should be mirrored in LabeledTensor
   ///@{
   /// Clone (take ownership)
   Derived clone(torch::MemoryFormat memory_format = torch::MemoryFormat::Contiguous) const;
@@ -120,7 +119,6 @@ public:
   ///@}
 
   /// @name Tensor information
-  // These methods should be mirrored in LabeledTensor
   ///@{
   /// Tensor options
   using torch::Tensor::options;
@@ -153,7 +151,6 @@ public:
   ///@}
 
   /// @name Getter and setter
-  // These methods should be mirrored in LabeledTensor
   ///@{
   /// Regular tensor indexing
   using torch::Tensor::index;

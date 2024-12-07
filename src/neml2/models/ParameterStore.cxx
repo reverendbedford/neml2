@@ -25,7 +25,7 @@
 #include "neml2/models/ParameterStore.h"
 #include "neml2/models/NonlinearParameter.h"
 #include "neml2/tensors/macros.h"
-#include "neml2/tensors/Variable.h"
+#include "neml2/models/Variable.h"
 
 namespace neml2
 {

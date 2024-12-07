@@ -201,13 +201,6 @@ skew_to_full(const Tensor & skew, Size dim)
 Tensor
 jacrev(const Tensor & y, const Tensor & x, bool retain_graph, bool create_graph, bool allow_unused)
 {
-  neml_assert(y.batch_sizes() == x.batch_sizes(),
-              "When using neml2::math::jacrev, the batch shape of the value and argument must "
-              "match. However, the batch shape of the value is ",
-              y.batch_sizes(),
-              ", and the batch shape of the argument (to take derivative w.r.t.) is ",
-              x.batch_sizes());
-
   // Return undefined Tensor if y does not contain any gradient graph
   if (!y.requires_grad())
     return Tensor();

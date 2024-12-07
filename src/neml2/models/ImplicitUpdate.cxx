@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 #include "neml2/models/ImplicitUpdate.h"
+#include "neml2/models/Assembler.h"
 #include "neml2/misc/math.h"
 #include "neml2/base/guards.h"
 
@@ -108,8 +109,8 @@ ImplicitUpdate::set_value(bool out, bool dout_din, bool d2out_din2)
   neml_assert_dbg(!d2out_din2, "This model does not define the second derivatives.");
 
   // The trial state is used as the initial guess
-  auto x0 = NonlinearSystem::SOL<false>(
-      LabeledVector::assemble(_model.collect_input(), _model.input_axis().subaxis("state")));
+  const auto sol_assember = VectorAssembler(_model.input_axis().subaxis("state"));
+  auto x0 = NonlinearSystem::SOL<false>(sol_assember.assemble(_model.collect_input()));
 
   // Perform automatic scaling (using the trial state)
   // TODO: Add an interface to allow user to specify where (and when) to evaluate the Jacobian for
@@ -141,9 +142,9 @@ ImplicitUpdate::set_value(bool out, bool dout_din, bool d2out_din2)
   {
     // IFT requires the Jacobian evaluated at the solution:
     _model.dvalue();
-    const auto J = LabeledMatrix::assemble(
-        _model.collect_output_derivatives(), _model.output_axis(), _model.input_axis());
-    const auto derivs = J.split(1);
+    const auto jac_assembler = MatrixAssembler(_model.output_axis(), _model.input_axis());
+    const auto J = jac_assembler.assemble(_model.collect_output_derivatives());
+    const auto derivs = jac_assembler.split(J).at("residual");
     const auto dr_ds = derivs.at("state");
 
     // Factorize the Jacobian once and for all
@@ -154,9 +155,10 @@ ImplicitUpdate::set_value(bool out, bool dout_din, bool d2out_din2)
     {
       if (subaxis == "state")
         continue;
-      const auto ds_d = LabeledMatrix(-math::linalg::lu_solve(LU, pivot, deriv),
-                                      {&output_axis(), &deriv.axis(1)});
-      assign_output_derivatives(ds_d.disassemble());
+      const auto ift_assembler =
+          MatrixAssembler(output_axis(), _model.input_axis().subaxis(subaxis));
+      assign_output_derivatives(
+          ift_assembler.disassemble(-math::linalg::lu_solve(LU, pivot, deriv)));
     }
   }
 }

@@ -24,17 +24,12 @@
 
 #pragma once
 
-#include "neml2/tensors/LabeledAxisAccessor.h"
+#include "neml2/models/LabeledAxisAccessor.h"
 #include "neml2/tensors/tensors.h"
-#include "neml2/tensors/LabeledVector.h"
-#include "neml2/tensors/LabeledMatrix.h"
-#include "neml2/tensors/LabeledTensor3D.h"
 #include "neml2/base/DependencyResolver.h"
 
 namespace neml2
 {
-using VariableName = LabeledAxisAccessor;
-
 // Forward declarations
 class Model;
 class Derivative;

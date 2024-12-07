@@ -27,7 +27,7 @@
 #include <unordered_map>
 
 #include "neml2/misc/utils.h"
-#include "neml2/tensors/LabeledAxisAccessor.h"
+#include "neml2/models/LabeledAxisAccessor.h"
 
 namespace neml2
 {

@@ -30,7 +30,7 @@
 #include <torch/csrc/DynamicTypes.h>
 
 #include "neml2/misc/types.h"
-#include "neml2/tensors/LabeledAxisAccessor.h"
+#include "neml2/models/LabeledAxisAccessor.h"
 
 #define NEML2_TENSOR_OPTIONS_VARGS                                                                 \
   const torch::Dtype &dtype, const torch::Device &device, bool requires_grad

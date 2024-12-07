@@ -194,15 +194,7 @@ Tensor skew_to_full(const Tensor & skew, Size dim = 0);
  *
  * @warning Torch (and hence NEML2) AD wasn't designed to compute the full Jacobian from the very
  * beginning. Using this method to calculate the full Jacobian is inefficient and is subjected to
- * some restrictions on batch shapes: This method will only work when the output \p y and the
- * argument \p x have the same batch shape.
- *
- * However, in practice, the batch shape of the output \p y and the batch shape of the argument \p
- * x can be different. In that case, calculating the full Jacobian is not possible, and an exception
- * will be thrown.
- *
- * One possible (inefficient) workaround is to expand and copy the argument \p x batch dimensions,
- * e.g., batch_expand_copy, _before_ calculating the output \p y.
+ * some restrictions on batch shapes.
  *
  * @param y The `Tensor` to to be differentiated
  * @param x The argument to take derivatives with respect to

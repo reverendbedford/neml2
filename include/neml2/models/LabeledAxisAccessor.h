@@ -160,6 +160,9 @@ bool operator<(const LabeledAxisAccessor & a, const LabeledAxisAccessor & b);
  */
 std::ostream & operator<<(std::ostream & os, const LabeledAxisAccessor & accessor);
 
+using VariableName = LabeledAxisAccessor;
+using SubaxisName = LabeledAxisAccessor;
+
 namespace indexing
 {
 using TensorLabel = LabeledAxisAccessor;

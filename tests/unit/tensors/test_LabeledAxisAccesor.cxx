@@ -26,7 +26,7 @@
 #include <catch2/matchers/catch_matchers_all.hpp>
 
 #include "neml2/misc/utils.h"
-#include "neml2/tensors/LabeledAxisAccessor.h"
+#include "neml2/models/LabeledAxisAccessor.h"
 
 using namespace neml2;
 

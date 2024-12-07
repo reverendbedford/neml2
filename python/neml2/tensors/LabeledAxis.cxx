@@ -26,7 +26,7 @@
 #include <pybind11/stl.h>
 
 #include "python/neml2/indexing.h"
-#include "neml2/tensors/LabeledAxis.h"
+#include "neml2/models/LabeledAxis.h"
 
 namespace py = pybind11;
 using namespace neml2;
