@@ -22,6 +22,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#pragma once
+
 #include <ATen/core/qualified_name.h>
 #include <torch/csrc/jit/api/function_impl.h>
 

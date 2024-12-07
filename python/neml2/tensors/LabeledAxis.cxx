@@ -25,6 +25,7 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
+#include "python/neml2/indexing.h"
 #include "neml2/tensors/LabeledAxis.h"
 
 namespace py = pybind11;
@@ -37,17 +38,40 @@ def_LabeledAxis(py::module_ & m)
   // Note that we do not want to expose constructors and modifiers as a neml2::Model typically owns
   // its axes, and so the constructor and modifier bindings introduce ambiguity in ownership, i.e.
   // should C++ or Python own this LabeledAxis?
-  auto c = py::class_<LabeledAxis>(m, "LabeledAxis")
-               .def("has_state", &LabeledAxis::has_state)
-               .def("has_old_state", &LabeledAxis::has_old_state)
-               .def("has_forces", &LabeledAxis::has_forces)
-               .def("has_old_forces", &LabeledAxis::has_old_forces)
-               .def("has_residual", &LabeledAxis::has_residual)
-               .def("has_parameters", &LabeledAxis::has_parameters)
-               .def("size", py::overload_cast<>(&LabeledAxis::size, py::const_))
-               .def("size",
-                    py::overload_cast<const LabeledAxisAccessor &>(&LabeledAxis::size, py::const_),
-                    py::arg("name"));
+  auto c =
+      py::class_<LabeledAxis>(m, "LabeledAxis")
+          .def("has_state", &LabeledAxis::has_state)
+          .def("has_old_state", &LabeledAxis::has_old_state)
+          .def("has_forces", &LabeledAxis::has_forces)
+          .def("has_old_forces", &LabeledAxis::has_old_forces)
+          .def("has_residual", &LabeledAxis::has_residual)
+          .def("has_parameters", &LabeledAxis::has_parameters)
+          .def("size", py::overload_cast<>(&LabeledAxis::size, py::const_))
+          .def("size",
+               py::overload_cast<const LabeledAxisAccessor &>(&LabeledAxis::size, py::const_),
+               py::arg("name"))
+          .def("slice", &LabeledAxis::slice, py::arg("name"))
+          .def("nvariable", &LabeledAxis::nvariable)
+          .def("has_variable", &LabeledAxis::has_variable, py::arg("name"))
+          .def("variable_id", &LabeledAxis::variable_id, py::arg("name"))
+          .def("variable_names", &LabeledAxis::variable_names)
+          .def("variable_slices", &LabeledAxis::variable_slices)
+          .def("variable_slice", &LabeledAxis::variable_slice, py::arg("name"))
+          .def("variable_sizes", &LabeledAxis::variable_sizes)
+          .def("variable_size", &LabeledAxis::variable_size, py::arg("name"))
+          .def("nsubaxis", &LabeledAxis::nsubaxis)
+          .def("has_subaxis", &LabeledAxis::has_subaxis, py::arg("name"))
+          .def("subaxis_id", &LabeledAxis::subaxis_id, py::arg("name"))
+          .def("subaxes", &LabeledAxis::subaxes, py::return_value_policy::reference)
+          .def("subaxis",
+               py::overload_cast<const LabeledAxisAccessor &>(&LabeledAxis::subaxis, py::const_),
+               py::arg("name"),
+               py::return_value_policy::reference)
+          .def("subaxis_names", &LabeledAxis::subaxis_names)
+          .def("subaxis_slices", &LabeledAxis::subaxis_slices)
+          .def("subaxis_slice", &LabeledAxis::subaxis_slice, py::arg("name"))
+          .def("subaxis_sizes", &LabeledAxis::subaxis_sizes)
+          .def("subaxis_size", &LabeledAxis::subaxis_size, py::arg("name"));
 
   // Operators
   c.def("__repr__", [](const LabeledAxis & self) { return utils::stringify(self); })
