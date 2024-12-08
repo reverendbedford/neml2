@@ -294,35 +294,33 @@ public:
 
   void zero(const torch::TensorOptions & options) override
   {
-    if (_ref)
-    {
-      neml_assert_dbg(
-          _ref_is_mutable,
-          "Trying to zero a referencing variable, but the referenced variable is not mutable.");
-      const_cast<Variable<T> *>(_ref)->zero(options);
-    }
-    else
+    if (owning())
     {
       if constexpr (std::is_same_v<T, Tensor>)
         _value = T::zeros(base_sizes(), options);
       else
         _value = T::zeros(options);
     }
+    else
+    {
+      neml_assert_dbg(
+          _ref_is_mutable,
+          "Trying to zero a referencing variable, but the referenced variable is not mutable.");
+      const_cast<VariableBase *>(ref())->zero(options);
+    }
   }
 
   void set(const Tensor & val) override
   {
-    if (_ref)
+    if (owning())
+      _value = T(val.base_reshape(utils::add_shapes(list_sizes(), base_sizes())),
+                 utils::add_traceable_shapes(val.batch_sizes(), list_sizes()));
+    else
     {
       neml_assert_dbg(_ref_is_mutable,
                       "Trying to assign value to a referencing variable, but the referenced "
                       "variable is not mutable.");
-      const_cast<Variable<T> *>(_ref)->set(val);
-    }
-    else
-    {
-      _value = T(val.base_reshape(utils::add_shapes(list_sizes(), base_sizes())),
-                 utils::add_traceable_shapes(val.batch_sizes(), list_sizes()));
+      const_cast<VariableBase *>(ref())->set(val);
     }
   }
 
@@ -330,12 +328,14 @@ public:
 
   Tensor tensor() const override
   {
-    if (_ref)
-      return _ref->tensor();
+    if (owning())
+    {
+      neml_assert_dbg(_value.defined(), "Variable '", name(), "' has undefined value.");
+      auto batch_sizes = _value.batch_sizes().slice(0, _value.batch_dim() - list_dim());
+      return Tensor(_value, batch_sizes);
+    }
 
-    neml_assert_dbg(_value.defined(), "Variable '", name(), "' has undefined value.");
-    auto batch_sizes = _value.batch_sizes().slice(0, _value.batch_dim() - list_dim());
-    return Tensor(_value, batch_sizes);
+    return ref()->tensor();
   }
 
   /// Suppressed constructor to prevent accidental dereferencing
@@ -352,10 +352,10 @@ public:
 
   void requires_grad_(bool req = true) override
   {
-    if (_ref)
-      const_cast<Variable<T> *>(_ref)->requires_grad_(req);
-    else
+    if (owning())
       _value.requires_grad_(req);
+    else
+      const_cast<VariableBase *>(ref())->requires_grad_(req);
   }
 
   /// Suppressed assignment operator to prevent accidental dereferencing
@@ -367,19 +367,19 @@ public:
   /// Set the variable value
   void operator=(const Tensor & val) override
   {
-    if (_ref)
+    if (owning())
+      _value = T(val);
+    else
     {
       neml_assert_dbg(_ref_is_mutable,
                       "Trying to assign value to a referencing variable, but the referenced "
                       "variable is not mutable.");
-      *const_cast<Variable<T> *>(_ref) = val;
+      *const_cast<VariableBase *>(ref()) = val;
     }
-    else
-      _value = T(val);
   }
 
   /// Variable value
-  const T & value() const { return _ref ? _ref->value() : _value; }
+  const T & value() const { return owning() ? _value : _ref->value(); }
 
   /// Negation
   T operator-() const { return -value(); }
@@ -394,17 +394,17 @@ public:
 
   void clear() override
   {
-    if (_ref)
+    if (owning())
+    {
+      VariableBase::clear();
+      _value = T();
+    }
+    else
     {
       neml_assert_dbg(
           _ref_is_mutable,
           "Trying to clear a referencing variable, but the referenced variable is not mutable.");
-      const_cast<Variable<T> *>(_ref)->clear();
-    }
-    else
-    {
-      VariableBase::clear();
-      _value = T();
+      const_cast<VariableBase *>(ref())->clear();
     }
   }
 
