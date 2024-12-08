@@ -114,8 +114,9 @@ $(function(){initNavTree('cpp-backend.html',''); initResizable(); });
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
 <ul><li class="level1"><a href="#autotoc_md39">Loading a model from an input file</a></li>
-<li class="level1"><a href="#autotoc_md40">Evaluate the model</a></li>
-<li class="level1"><a href="#disable-ad">Enable/disable automatic differentiation</a></li>
+<li class="level1"><a href="#autotoc_md40">Inspecting model information</a></li>
+<li class="level1"><a href="#autotoc_md41">Evaluate the model</a></li>
+<li class="level1"><a href="#autotoc_md42">Model parameters</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md__2home_2runner_2work_2neml2_2neml2_2doc_2content_2user_2cpp"></a></p>
@@ -131,11 +132,12 @@ Loading a model from an input file</h1>
 <div class="line">    stress = <span class="stringliteral">&#39;state/S&#39;</span></div>
 <div class="line">  []</div>
 <div class="line">[]</div>
-</div><!-- fragment --><p>The input file defines two parameters: Young's modulus of 100 and Poisson's ratio of 0.3. While optional, the input file also sets the variable names of strain and stress to be "forces/E" and "state/S", respectively (refer to the documentation on <a class="el" href="system-tensors.html#tensor-labeling">tensor labeling</a> for variable naming conventions).</p>
+</div><!-- fragment --><p>The input file defines two parameters: Young's modulus of 100 and Poisson's ratio of 0.3. While optional, the input file also sets the variable names of strain and stress to be "forces/E" and "state/S", respectively (refer to the documentation on tensor labeling for variable naming conventions).</p>
 <p>Assuming the above input file is named "input_file.i", the C++ code snippet below parses the input file and loads the material model (into the heap).</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &quot;neml2/base/Factory.h&quot;</span></div>
 <div class="line"><span class="preprocessor">#include &quot;neml2/models/Model.h&quot;</span></div>
 <div class="line"><span class="preprocessor">#include &quot;neml2/tensors/tensors.h&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;neml2/misc/math.h&quot;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> main() {</div>
 <div class="line">  <span class="keyword">auto</span> &amp; model = <a class="code hl_function" href="namespaceneml2.html#a1e499dee97d6a66663f60dd4a65b9f1a">neml2::load_model</a>(<span class="stringliteral">&quot;input.i&quot;</span>, <span class="stringliteral">&quot;model&quot;</span>);</div>
@@ -146,25 +148,57 @@ Loading a model from an input file</h1>
 <div class="line">}</div>
 <div class="ttc" id="anamespaceneml2_html_a1e499dee97d6a66663f60dd4a65b9f1a"><div class="ttname"><a href="namespaceneml2.html#a1e499dee97d6a66663f60dd4a65b9f1a">neml2::load_model</a></div><div class="ttdeci">Model &amp; load_model(const std::filesystem::path &amp;path, const std::string &amp;mname)</div><div class="ttdoc">A convenient function to load an input file and get a model.</div><div class="ttdef"><b>Definition</b> Factory.cxx:66</div></div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md40"></a>
+Inspecting model information</h1>
+<p>Once the model is loaded, it can be streamed to provide a high-level summary of the model, i.e., </p><div class="fragment"><div class="line">std::cout &lt;&lt; model &lt;&lt; std::endl;</div>
+</div><!-- fragment --><p> The example model produces the following summary </p><div class="fragment"><div class="line">Name:       model</div>
+<div class="line">Dtype:      double</div>
+<div class="line">Device:     cpu</div>
+<div class="line">Input:      forces/E [SR2]</div>
+<div class="line">Output:     state/S [SR2]</div>
+<div class="line">Parameters: E [Scalar]</div>
+<div class="line">            nu [Scalar]</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md41"></a>
 Evaluate the model</h1>
-<p>Suppose we want to perform 3 material updates simultaneously, the model should be initialized using the neml2::Model::reinit method with the correct batch shape (refer to the <a class="el" href="system-tensors.html">tensor system documentation</a> for more detailed explanation on the term "batch"):</p>
-<div class="fragment"><div class="line">model.reinit({3});</div>
-</div><!-- fragment --><p>Finally, the following code constructs the 3 input strains <code>in</code> and performs 3 material updates <em>simultaneously</em>. Output stresses are stored in the tensor <code>out</code>.</p>
-<div class="fragment"><div class="line"><span class="keyword">auto</span> in = neml2::LabeledVector::empty({3}, {model.input_axis()});</div>
+<p>Suppose we want to perform 3 material updates simultaneously, the input variables shall have a batch size of 3 (refer to the <a class="el" href="system-tensors.html">tensor system documentation</a> for more detailed explanation on the term "batch"). The following code constructs the 3 input strains and performs 3 material updates <em>simultaneously</em>.</p>
+<div class="fragment"><div class="line"><span class="keyword">auto</span> strain_name = <a class="code hl_typedef" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">neml2::VariableName</a>(<span class="stringliteral">&quot;forces&quot;</span>, <span class="stringliteral">&quot;E&quot;</span>);</div>
+<div class="line"><span class="keyword">auto</span> stress_name = <a class="code hl_typedef" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">neml2::VariableName</a>(<span class="stringliteral">&quot;state&quot;</span>, <span class="stringliteral">&quot;S&quot;</span>);</div>
 <div class="line"> </div>
-<div class="line">in.batch_index_put_({0}, <a class="code hl_function" href="classneml2_1_1SR2.html#af267747e919faf52e046ee51b493ce0d">neml2::SR2::fill</a>(0.1, 0.2, 0.3, -0.1, -0.1, 0.2));</div>
-<div class="line">in.batch_index_put_({1}, <a class="code hl_function" href="classneml2_1_1SR2.html#af267747e919faf52e046ee51b493ce0d">neml2::SR2::fill</a>(0.2, 0.2, 0.1, -0.1, -0.2, -0.5));</div>
-<div class="line">in.batch_index_put_({2}, <a class="code hl_function" href="classneml2_1_1SR2.html#af267747e919faf52e046ee51b493ce0d">neml2::SR2::fill</a>(0.3, -0.2, 0.05, -0.1, -0.3, 0.1));</div>
+<div class="line"><span class="keyword">auto</span> strain1 = <a class="code hl_function" href="classneml2_1_1SR2.html#af267747e919faf52e046ee51b493ce0d">neml2::SR2::fill</a>(0.1, 0.2, 0.3, -0.1, -0.1, 0.2);</div>
+<div class="line"><span class="keyword">auto</span> strain2 = <a class="code hl_function" href="classneml2_1_1SR2.html#af267747e919faf52e046ee51b493ce0d">neml2::SR2::fill</a>(0.2, 0.2, 0.1, -0.1, -0.2, -0.5);</div>
+<div class="line"><span class="keyword">auto</span> strain3 = <a class="code hl_function" href="classneml2_1_1SR2.html#af267747e919faf52e046ee51b493ce0d">neml2::SR2::fill</a>(0.3, -0.2, 0.05, -0.1, -0.3, 0.1);</div>
+<div class="line"><span class="keyword">auto</span> strain = <a class="code hl_function" href="namespaceneml2_1_1math.html#a81a590536ba015864bc8aab1e212d402">neml2::math::batch_stack</a>({strain1, strain2, strain3});</div>
 <div class="line"> </div>
-<div class="line"><span class="keyword">auto</span> out = model.value(in);</div>
+<div class="line"><span class="keyword">auto</span> output = model.value({{strain_name, strain}});</div>
+<div class="line"><span class="keyword">auto</span> stress = output.at(stress_name)</div>
 <div class="ttc" id="aclassneml2_1_1SR2_html_af267747e919faf52e046ee51b493ce0d"><div class="ttname"><a href="classneml2_1_1SR2.html#af267747e919faf52e046ee51b493ce0d">neml2::SR2::fill</a></div><div class="ttdeci">static SR2 fill(const Real &amp;a, const torch::TensorOptions &amp;options=default_tensor_options())</div><div class="ttdoc">Fill the diagonals with a11 = a22 = a33 = a.</div><div class="ttdef"><b>Definition</b> SR2.cxx:46</div></div>
-</div><!-- fragment --><h1><a class="anchor" id="disable-ad"></a>
-Enable/disable automatic differentiation</h1>
-<p>By default, automatic differentiation is enabled. During every model evaluation, variables are re-allocated, and variable views are reconfigured. This default behavior avoids in-place operations and is mandatory to use PyTorch automatic differentiation (AD) (i.e. for parameter gradient or AD forward operator).</p>
-<p>The default behavior is flexible and powerful. However, if PyTorch AD is not needed, i.e., once the model is fully calibrated/trained, the variable reallocation and view reconfiguration can be skipped. The <code>enable_AD</code> option is designed for that purpose.</p>
-<p>When AD is disabled, no function graph is built, tensor version numbers are not incremented, and the variables and variable views are setup once and for all, all of which speed up evaluation. Furthermore, this mode is fully compatible with PyTorch's <a href="https://pytorch.org/cppdocs/notes/inference_mode.html">inference mode</a></p>
-<p>To disable AD, use the optional second argument passed to <code><a class="el" href="namespaceneml2.html#a1f9cda8c1696a4135ec731d2cd4f8ecc" title="A convenient function to manufacture a neml2::Model.">neml2::get_model</a></code>, i.e. </p><div class="fragment"><div class="line"><span class="keyword">auto</span> &amp; model = <a class="code hl_function" href="namespaceneml2.html#a1f9cda8c1696a4135ec731d2cd4f8ecc">neml2::get_model</a>(<span class="stringliteral">&quot;model&quot;</span>, <span class="comment">/*disable_AD=*/</span><span class="keyword">true</span>);</div>
-<div class="ttc" id="anamespaceneml2_html_a1f9cda8c1696a4135ec731d2cd4f8ecc"><div class="ttname"><a href="namespaceneml2.html#a1f9cda8c1696a4135ec731d2cd4f8ecc">neml2::get_model</a></div><div class="ttdeci">Model &amp; get_model(const std::string &amp;mname, bool force_create)</div><div class="ttdoc">A convenient function to manufacture a neml2::Model.</div><div class="ttdef"><b>Definition</b> Factory.cxx:59</div></div>
+<div class="ttc" id="anamespaceneml2_1_1math_html_a81a590536ba015864bc8aab1e212d402"><div class="ttname"><a href="namespaceneml2_1_1math.html#a81a590536ba015864bc8aab1e212d402">neml2::math::batch_stack</a></div><div class="ttdeci">T batch_stack(const std::vector&lt; T &gt; &amp;tensors, Size d=0)</div><div class="ttdef"><b>Definition</b> math.h:248</div></div>
+<div class="ttc" id="anamespaceneml2_html_a5cf0dc3e9d16378ebe48923973730e54"><div class="ttname"><a href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">neml2::VariableName</a></div><div class="ttdeci">LabeledAxisAccessor VariableName</div><div class="ttdef"><b>Definition</b> parser_utils.h:33</div></div>
+</div><!-- fragment --><p>The forward operator is invoked using the <a class="el" href="classneml2_1_1Model.html#ac6bb8acedf7c5fd0edc83fd9386083c1" title="Evalute the model.">neml2::Model::value</a> method which takes a map of <a class="el" href="classneml2_1_1Tensor.html">neml2::Tensor</a> with keys being <a class="el" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">neml2::VariableName</a>. Other forward operator APIs are available to additionally calculate the first and second derivatives of the output variables with respect to the input variables. There exist a total of 6 variants of the forward operator:</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadLeft">Method   </th><th class="markdownTableHeadCenter">Output variable values   </th><th class="markdownTableHeadCenter">1st order derivatives   </th><th class="markdownTableHeadCenter">2nd order derivatives    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft"><a class="el" href="classneml2_1_1Model.html#ac6bb8acedf7c5fd0edc83fd9386083c1" title="Evalute the model.">neml2::Model::value</a>   </td><td class="markdownTableBodyCenter">\(\checkmark\)   </td><td class="markdownTableBodyCenter"></td><td class="markdownTableBodyCenter"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyLeft"><a class="el" href="classneml2_1_1Model.html#a1fc1517bd0ad889c1387565048b266f0" title="Evalute the derivative.">neml2::Model::dvalue</a>   </td><td class="markdownTableBodyCenter"></td><td class="markdownTableBodyCenter">\(\checkmark\)   </td><td class="markdownTableBodyCenter"></td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft"><a class="el" href="classneml2_1_1Model.html#a5f0cae301bce3ce20f1f07dedfc9de03" title="Evalute the second derivatives.">neml2::Model::d2value</a>   </td><td class="markdownTableBodyCenter"></td><td class="markdownTableBodyCenter"></td><td class="markdownTableBodyCenter">\(\checkmark\)    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyLeft"><a class="el" href="classneml2_1_1Model.html#ad021b73a0687f1416fb1791729b97e07" title="Evalute the model and compute its derivative.">neml2::Model::value_and_dvalue</a>   </td><td class="markdownTableBodyCenter">\(\checkmark\)   </td><td class="markdownTableBodyCenter">\(\checkmark\)   </td><td class="markdownTableBodyCenter"></td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft"><a class="el" href="classneml2_1_1Model.html#a31e5e1caf5dabf3ef9b0acde583ae5c6" title="Evalute the first and second derivatives.">neml2::Model::dvalue_and_d2value</a>   </td><td class="markdownTableBodyCenter"></td><td class="markdownTableBodyCenter">\(\checkmark\)   </td><td class="markdownTableBodyCenter">\(\checkmark\)    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyLeft"><a class="el" href="classneml2_1_1Model.html#a326e09c3f398872d1bfec46b02377111" title="Evalute the model and compute its first and second derivatives.">neml2::Model::value_and_dvalue_and_d2value</a>   </td><td class="markdownTableBodyCenter">\(\checkmark\)   </td><td class="markdownTableBodyCenter">\(\checkmark\)   </td><td class="markdownTableBodyCenter">\(\checkmark\)   </td></tr>
+</table>
+<h1><a class="anchor" id="autotoc_md42"></a>
+Model parameters</h1>
+<p>Each model contains zero or more parameters. The parameters are initialized with values specified in the input file. In the above example, the elasticity model contains two parameters: <code>E</code> and <code>nu</code>. Model parameters can be retrieved using the <a class="el" href="classneml2_1_1ParameterStore.html#a8c1f0318b14b2c89f483e10161c3c10c" title="Get a writable reference of a parameter.">neml2::Model::get_parameter</a> method, the parameter value can be updated using the assignment operator, and automatic differentiation can be used to track the derivatives w.r.t. a parameter: </p><div class="fragment"><div class="line"><span class="keyword">auto</span> &amp; E = model.get_parameter(<span class="stringliteral">&quot;E&quot;</span>);</div>
+<div class="line">E = <a class="code hl_function" href="classneml2_1_1PrimitiveTensor.html#a02437fba177741bfc48dc160c8c28676">neml2::Scalar::full</a>(200.0);</div>
+<div class="line">E.requires_grad_();</div>
+<div class="ttc" id="aclassneml2_1_1PrimitiveTensor_html_a02437fba177741bfc48dc160c8c28676"><div class="ttname"><a href="classneml2_1_1PrimitiveTensor.html#a02437fba177741bfc48dc160c8c28676">neml2::PrimitiveTensor&lt; Scalar &gt;::full</a></div><div class="ttdeci">static Scalar full(Real init, const torch::TensorOptions &amp;options=default_tensor_options())</div><div class="ttdoc">Unbatched tensor filled with a given value given base shape.</div><div class="ttdef"><b>Definition</b> PrimitiveTensor.h:208</div></div>
+</div><!-- fragment --><p> Alternatively, the parameter value can be directly updated using the <a class="el" href="classneml2_1_1ParameterStore.html#a1fdcb02ea1c3d6e1828424ccd400fa36" title="}@">neml2::Model::set_parameter</a> or <a class="el" href="classneml2_1_1ParameterStore.html#a2d96d9f92a985de65651abf452cb49a2" title="Set values for parameters.">neml2::Model::set_parameters</a> method: </p><div class="fragment"><div class="line">model.set_parameter(<span class="stringliteral">&quot;E&quot;</span>, <a class="code hl_function" href="classneml2_1_1PrimitiveTensor.html#a02437fba177741bfc48dc160c8c28676">neml2::Scalar::full</a>(200.0));</div>
+</div><!-- fragment --> <div class="fragment"><div class="line">model.set_parameters({{<span class="stringliteral">&quot;E&quot;</span>, <a class="code hl_function" href="classneml2_1_1PrimitiveTensor.html#a02437fba177741bfc48dc160c8c28676">neml2::Scalar::full</a>(200.0)},</div>
+<div class="line">                      {<span class="stringliteral">&quot;nu&quot;</span>, <a class="code hl_function" href="classneml2_1_1PrimitiveTensor.html#a02437fba177741bfc48dc160c8c28676">neml2::Scalar::full</a>(0.25)}});</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

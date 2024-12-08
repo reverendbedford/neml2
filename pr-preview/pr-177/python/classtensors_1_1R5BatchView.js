@@ -1,10 +1,10 @@
 var classtensors_1_1R5BatchView =
 [
     [ "__init__", "classtensors_1_1R5BatchView.html#a55cd976474579327563a07d5c764201e", null ],
-    [ "__getitem__", "classtensors_1_1R5BatchView.html#a495fd8f70407540db80a80e97e980154", null ],
+    [ "__getitem__", "classtensors_1_1R5BatchView.html#adb70a18bd5f5f12b01e3767c1c667b0c", null ],
     [ "__getitem__", "classtensors_1_1R5BatchView.html#adeb793572a8328ad0641d0b1e6520d3d", null ],
-    [ "__setitem__", "classtensors_1_1R5BatchView.html#ad3086cc2c2e496079ee0cb7101efcdd2", null ],
-    [ "__setitem__", "classtensors_1_1R5BatchView.html#a7f0df3f16d01543ae18ece40db47be4c", null ],
+    [ "__setitem__", "classtensors_1_1R5BatchView.html#a0a1b9c91ef6262ae4d30998ae2b27cde", null ],
+    [ "__setitem__", "classtensors_1_1R5BatchView.html#a4dfa71ea0bdca5bb60e587b597f8df83", null ],
     [ "__setitem__", "classtensors_1_1R5BatchView.html#a754421ed29c9e1df44df3f8f6011cc71", null ],
     [ "__setitem__", "classtensors_1_1R5BatchView.html#a291cf91b893b7bf50a66d4a6702149e7", null ],
     [ "dim", "classtensors_1_1R5BatchView.html#a35536134a6ceb1e866faf188992e9c9f", null ],

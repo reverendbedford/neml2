@@ -155,7 +155,7 @@ Functions</h2></td></tr>
 <tr class="memitem:a675a34cc7bef7ebff607e1074e6be019" id="r_a675a34cc7bef7ebff607e1074e6be019"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a675a34cc7bef7ebff607e1074e6be019">base_diag_embed</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;a, <a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a> <a class="el" href="classneml2_1_1CrossRef.html">offset</a>, <a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a> <a class="el" href="classneml2_1_1CrossRef.html">d1</a>, <a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a> <a class="el" href="classneml2_1_1CrossRef.html">d2</a>)</td></tr>
 <tr class="separator:a675a34cc7bef7ebff607e1074e6be019"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a79958938ba92f37e8c1db91a15f8a403" id="r_a79958938ba92f37e8c1db91a15f8a403"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1SR2.html">SR2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a79958938ba92f37e8c1db91a15f8a403">skew_and_sym_to_sym</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1SR2.html">SR2</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">e</a>, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1WR2.html">WR2</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">w</a>)</td></tr>
-<tr class="memdesc:a79958938ba92f37e8c1db91a15f8a403"><td class="mdescLeft">&#160;</td><td class="mdescRight">Product w_ik e_kj - e_ik w_kj with e <a class="el" href="classneml2_1_1SR2.html" title="The (logical) symmetric second order tensor.">SR2</a> and w <a class="el" href="classneml2_1_1WR2.html" title="A skew rank 2, represented as an axial vector.">WR2</a>.  <br /></td></tr>
+<tr class="memdesc:a79958938ba92f37e8c1db91a15f8a403"><td class="mdescLeft">&#160;</td><td class="mdescRight">Product w_ik e_kj - e_ik w_kj with e <a class="el" href="classneml2_1_1SR2.html" title="The symmetric second order tensor.">SR2</a> and w <a class="el" href="classneml2_1_1WR2.html" title="A skew-symmetric second order tensor, represented as an axial vector.">WR2</a>.  <br /></td></tr>
 <tr class="separator:a79958938ba92f37e8c1db91a15f8a403"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ccba74da02a48db36da4981e7cb9c43" id="r_a2ccba74da02a48db36da4981e7cb9c43"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1SSR4.html">SSR4</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2ccba74da02a48db36da4981e7cb9c43">d_skew_and_sym_to_sym_d_sym</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1WR2.html">WR2</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">w</a>)</td></tr>
 <tr class="memdesc:a2ccba74da02a48db36da4981e7cb9c43"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classneml2_1_1Derivative.html">Derivative</a> of w_ik e_kj - e_ik w_kj wrt. e.  <br /></td></tr>
@@ -164,7 +164,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:a25a24cbb6c373ad084418914315e1765"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classneml2_1_1Derivative.html">Derivative</a> of w_ik e_kj - e_ik w_kj wrt. w.  <br /></td></tr>
 <tr class="separator:a25a24cbb6c373ad084418914315e1765"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a81565e709d0982bfa707db6cdb283148" id="r_a81565e709d0982bfa707db6cdb283148"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1WR2.html">WR2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a81565e709d0982bfa707db6cdb283148">multiply_and_make_skew</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1SR2.html">SR2</a> &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1SR2.html">SR2</a> &amp;b)</td></tr>
-<tr class="memdesc:a81565e709d0982bfa707db6cdb283148"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shortcut product a_ik b_kj - b_ik a_kj with both <a class="el" href="classneml2_1_1SR2.html" title="The (logical) symmetric second order tensor.">SR2</a>.  <br /></td></tr>
+<tr class="memdesc:a81565e709d0982bfa707db6cdb283148"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shortcut product a_ik b_kj - b_ik a_kj with both <a class="el" href="classneml2_1_1SR2.html" title="The symmetric second order tensor.">SR2</a>.  <br /></td></tr>
 <tr class="separator:a81565e709d0982bfa707db6cdb283148"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7980b18b83a7f3670c45e6a765959024" id="r_a7980b18b83a7f3670c45e6a765959024"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1WSR4.html">WSR4</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7980b18b83a7f3670c45e6a765959024">d_multiply_and_make_skew_d_first</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1SR2.html">SR2</a> &amp;b)</td></tr>
 <tr class="memdesc:a7980b18b83a7f3670c45e6a765959024"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classneml2_1_1Derivative.html">Derivative</a> of a_ik b_kj - b_ik a_kj wrt a.  <br /></td></tr>
@@ -172,10 +172,14 @@ Functions</h2></td></tr>
 <tr class="memitem:aada6bc629a4d5725e9d3e9854c2824af" id="r_aada6bc629a4d5725e9d3e9854c2824af"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1WSR4.html">WSR4</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aada6bc629a4d5725e9d3e9854c2824af">d_multiply_and_make_skew_d_second</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1SR2.html">SR2</a> &amp;a)</td></tr>
 <tr class="memdesc:aada6bc629a4d5725e9d3e9854c2824af"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classneml2_1_1Derivative.html">Derivative</a> of a_ik b_kj - b_ik a_kj wrt b.  <br /></td></tr>
 <tr class="separator:aada6bc629a4d5725e9d3e9854c2824af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a6caf3efb691e0bfb79c8b545e0bb53" id="r_a3a6caf3efb691e0bfb79c8b545e0bb53"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">neml2::Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3a6caf3efb691e0bfb79c8b545e0bb53">base_cat</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> std::vector&lt; <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">tensors</a>, <a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a> d)</td></tr>
+<tr class="memitem:a3a6caf3efb691e0bfb79c8b545e0bb53" id="r_a3a6caf3efb691e0bfb79c8b545e0bb53"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3a6caf3efb691e0bfb79c8b545e0bb53">base_cat</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> std::vector&lt; <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">tensors</a>, <a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a> d)</td></tr>
 <tr class="separator:a3a6caf3efb691e0bfb79c8b545e0bb53"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa686764124bafd00b9813d705cde943d" id="r_aa686764124bafd00b9813d705cde943d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">neml2::Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa686764124bafd00b9813d705cde943d">base_stack</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> std::vector&lt; <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">tensors</a>, <a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a> d)</td></tr>
+<tr class="memitem:aa686764124bafd00b9813d705cde943d" id="r_aa686764124bafd00b9813d705cde943d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa686764124bafd00b9813d705cde943d">base_stack</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> std::vector&lt; <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">tensors</a>, <a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a> d)</td></tr>
 <tr class="separator:aa686764124bafd00b9813d705cde943d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab68aff7783c66d81161048fc9777ea52" id="r_ab68aff7783c66d81161048fc9777ea52"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab68aff7783c66d81161048fc9777ea52">base_sum</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;a, <a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a> d)</td></tr>
+<tr class="separator:ab68aff7783c66d81161048fc9777ea52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abcdba482b9d58774555a5b9e78f91071" id="r_abcdba482b9d58774555a5b9e78f91071"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abcdba482b9d58774555a5b9e78f91071">base_mean</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;a, <a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a> d)</td></tr>
+<tr class="separator:abcdba482b9d58774555a5b9e78f91071"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac649246fade84cc9c7b2694082614ee1" id="r_ac649246fade84cc9c7b2694082614ee1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac649246fade84cc9c7b2694082614ee1">pow</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="namespaceneml2.html#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">n</a>)</td></tr>
 <tr class="separator:ac649246fade84cc9c7b2694082614ee1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a36f58851aae0b38fdc81b7ad18251b33" id="r_a36f58851aae0b38fdc81b7ad18251b33"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a36f58851aae0b38fdc81b7ad18251b33">pow</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">n</a>)</td></tr>
@@ -200,15 +204,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a1824cafef4f59c38409c5acec314113d" id="r_a1824cafef4f59c38409c5acec314113d"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> T , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;T&gt;, T&gt;&gt;&gt; </td></tr>
 <tr class="memitem:a1824cafef4f59c38409c5acec314113d"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a1824cafef4f59c38409c5acec314113d">batch_sum</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> T &amp;a, <a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a> d=0)</td></tr>
 <tr class="separator:a1824cafef4f59c38409c5acec314113d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aadca1c4a03ac82d317a779891db24347" id="r_aadca1c4a03ac82d317a779891db24347"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> T , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;T&gt;, T&gt;&gt;&gt; </td></tr>
-<tr class="memitem:aadca1c4a03ac82d317a779891db24347"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aadca1c4a03ac82d317a779891db24347">base_sum</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> T &amp;a, <a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a> d=0)</td></tr>
-<tr class="separator:aadca1c4a03ac82d317a779891db24347"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a210f8f29c8909465f57f97bbbdfe6c5b" id="r_a210f8f29c8909465f57f97bbbdfe6c5b"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> T , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;T&gt;, T&gt;&gt;&gt; </td></tr>
 <tr class="memitem:a210f8f29c8909465f57f97bbbdfe6c5b"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a210f8f29c8909465f57f97bbbdfe6c5b">batch_mean</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> T &amp;a, <a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a> d=0)</td></tr>
 <tr class="separator:a210f8f29c8909465f57f97bbbdfe6c5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae792e29b783bf56aed6bb27f1aec8cf" id="r_aae792e29b783bf56aed6bb27f1aec8cf"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> T , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;T&gt;, T&gt;&gt;&gt; </td></tr>
-<tr class="memitem:aae792e29b783bf56aed6bb27f1aec8cf"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aae792e29b783bf56aed6bb27f1aec8cf">base_mean</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> T &amp;a, <a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a> d=0)</td></tr>
-<tr class="separator:aae792e29b783bf56aed6bb27f1aec8cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa56e9fcd886e48846bfff5a38af3f00d" id="r_aa56e9fcd886e48846bfff5a38af3f00d"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> T , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;T&gt;, T&gt;&gt;&gt; </td></tr>
 <tr class="memitem:aa56e9fcd886e48846bfff5a38af3f00d"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aa56e9fcd886e48846bfff5a38af3f00d">pow</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> T &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="namespaceneml2.html#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">n</a>)</td></tr>
 <tr class="separator:aa56e9fcd886e48846bfff5a38af3f00d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -347,23 +345,21 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> T , <a cl
 
 </div>
 </div>
-<a id="aae792e29b783bf56aed6bb27f1aec8cf" name="aae792e29b783bf56aed6bb27f1aec8cf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aae792e29b783bf56aed6bb27f1aec8cf">&#9670;&#160;</a></span>base_mean()</h2>
+<a id="abcdba482b9d58774555a5b9e78f91071" name="abcdba482b9d58774555a5b9e78f91071"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abcdba482b9d58774555a5b9e78f91071">&#9670;&#160;</a></span>base_mean()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> T , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;T&gt;, T&gt;&gt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">T base_mean </td>
+          <td class="memname"><a class="el" href="classneml2_1_1Tensor.html">neml2::Tensor</a> base_mean </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> T &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a></td>          <td class="paramname"><span class="paramname"><em>d</em><span class="paramdefsep"> = </span><span class="paramdefval">0</span></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a></td>          <td class="paramname"><span class="paramname"><em>d</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -391,23 +387,21 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> T , <a cl
 
 </div>
 </div>
-<a id="aadca1c4a03ac82d317a779891db24347" name="aadca1c4a03ac82d317a779891db24347"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aadca1c4a03ac82d317a779891db24347">&#9670;&#160;</a></span>base_sum()</h2>
+<a id="ab68aff7783c66d81161048fc9777ea52" name="ab68aff7783c66d81161048fc9777ea52"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab68aff7783c66d81161048fc9777ea52">&#9670;&#160;</a></span>base_sum()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> T , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;T&gt;, T&gt;&gt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">T base_sum </td>
+          <td class="memname"><a class="el" href="classneml2_1_1Tensor.html">neml2::Tensor</a> base_sum </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> T &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a></td>          <td class="paramname"><span class="paramname"><em>d</em><span class="paramdefsep"> = </span><span class="paramdefval">0</span></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a></td>          <td class="paramname"><span class="paramname"><em>d</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1071,7 +1065,7 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> T , <a cl
       </table>
 </div><div class="memdoc">
 
-<p>Shortcut product a_ik b_kj - b_ik a_kj with both <a class="el" href="classneml2_1_1SR2.html" title="The (logical) symmetric second order tensor.">SR2</a>. </p>
+<p>Shortcut product a_ik b_kj - b_ik a_kj with both <a class="el" href="classneml2_1_1SR2.html" title="The symmetric second order tensor.">SR2</a>. </p>
 
 </div>
 </div>
@@ -1264,7 +1258,7 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> T , <a cl
       </table>
 </div><div class="memdoc">
 
-<p>Product w_ik e_kj - e_ik w_kj with e <a class="el" href="classneml2_1_1SR2.html" title="The (logical) symmetric second order tensor.">SR2</a> and w <a class="el" href="classneml2_1_1WR2.html" title="A skew rank 2, represented as an axial vector.">WR2</a>. </p>
+<p>Product w_ik e_kj - e_ik w_kj with e <a class="el" href="classneml2_1_1SR2.html" title="The symmetric second order tensor.">SR2</a> and w <a class="el" href="classneml2_1_1WR2.html" title="A skew-symmetric second order tensor, represented as an axial vector.">WR2</a>. </p>
 
 </div>
 </div>

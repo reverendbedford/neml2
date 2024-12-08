@@ -366,6 +366,7 @@ var namespaceneml2 =
     [ "operator<<", "namespaceneml2.html#abe5f4914fa546b6fae49a84c4b4f5704", null ],
     [ "operator<<", "namespaceneml2.html#a6fa377c963f85d494232051f922d51f8", null ],
     [ "operator<<", "namespaceneml2.html#a28744810554efbcf455644da31018f08", null ],
+    [ "operator<<", "namespaceneml2.html#adaf729acffee13165dd8eb67cc6b2687", null ],
     [ "operator<<", "namespaceneml2.html#a23a102128ef1ea51570e19de47c31f37", null ],
     [ "operator<<", "namespaceneml2.html#aee91e52a56229f56b7d7427b9d876e84", null ],
     [ "operator<<", "namespaceneml2.html#a3438b30839403ced979d2879b0ff4e4e", null ],

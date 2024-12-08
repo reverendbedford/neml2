@@ -1,6 +1,6 @@
 <map id="SymmetryFromOrbifold" name="SymmetryFromOrbifold">
 <area shape="rect" id="Node000001" title="Provide the correct symmetry operators for a given crystal class." alt="" coords="97,372,272,397"/>
-<area shape="rect" id="Node000002" href="$classneml2_1_1R2.html" title="A basic R2." alt="" coords="112,299,151,324"/>
+<area shape="rect" id="Node000002" href="$classneml2_1_1R2.html" title="Second order tensor without symmetry." alt="" coords="112,299,151,324"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="150,333,178,370,174,373,146,337"/>
 <area shape="rect" id="Node000003" href="$classneml2_1_1R2Base.html" title=" " alt="" coords="56,225,175,251"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="124,263,131,298,126,299,118,265"/>

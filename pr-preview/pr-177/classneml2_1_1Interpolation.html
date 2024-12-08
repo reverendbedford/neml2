@@ -127,8 +127,8 @@ class neml2::Interpolation&lt; T &gt;</div><p>The base class for interpolated no
 <p>The interpolant's batch shape is defined as the broadcasted batch shapes of the abscissa and the ordinate, after excluding the dimensions on which the interpolation happens.</p>
 <p>The general expectations for the batch shapes are:</p><ol type="1">
 <li>The abscissa and the ordinate should be batch-broadcastable.</li>
-<li>The abscissa should always be a <a class="el" href="classneml2_1_1Scalar.html" title="The (logical) scalar.">Scalar</a>. The ordinate can be of any primitive tensor type.</li>
-<li>The input (specified by option "argument") must be a <a class="el" href="classneml2_1_1Scalar.html" title="The (logical) scalar.">Scalar</a>.</li>
+<li>The abscissa should always be a <a class="el" href="classneml2_1_1Scalar.html" title="Scalar.">Scalar</a>. The ordinate can be of any primitive tensor type.</li>
+<li>The input (specified by option "argument") must be a <a class="el" href="classneml2_1_1Scalar.html" title="Scalar.">Scalar</a>.</li>
 <li>The input and the interpolant should be batch-broadcastable.</li>
 <li>Broadcasting the input with the interpolant should not alter its batch shape. </li>
 </ol>

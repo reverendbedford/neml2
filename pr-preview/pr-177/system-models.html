@@ -122,6 +122,10 @@ $(function(){initNavTree('system-models.html',''); initResizable(); });
 </ul>
 </li>
 <li class="level1"><a href="#automatic-differentiation">Automatic differentiation</a></li>
+<li class="level1"><a href="#model-assembly">Model assembly</a><ul><li class="level2"><a href="#axis-labeling">Axis labeling</a></li>
+<li class="level2"><a href="#tensor-assembly">Tensor assembly</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md__2home_2runner_2work_2neml2_2neml2_2doc_2content_2system_2model"></a></p>
@@ -233,8 +237,67 @@ Automatic chain rule</h2>
 </ul>
 <h1><a class="anchor" id="automatic-differentiation"></a>
 Automatic differentiation</h1>
-<p>Deriving and implementing derivatives of the forward operator can be cubersome from times to times. NEML2 offers the option to use automatic differentiation to obtain derivatives. To enable automatic differentiation, simply set the <code>_use_AD_first_derivative</code> and/or the <code>_use_AD_second_derivative</code> options to <code>true</code>.</p>
-<p>Since a composed model uses chain rule to efficiently evaluate the total derivatives, automatic differentiation is disabled for <code>ComposedModel</code>. However, each of the child model can still use AD to calculate the derivatives of its own forward operator. Moreover, AD and non-AD models can be composed together. </p>
+<p>Deriving and implementing derivatives of the forward operator can be cubersome from times to times. NEML2 offers the option to use automatic differentiation (AD) to obtain derivatives. To enable automatic differentiation, one simply need to override the <a class="el" href="classneml2_1_1Model.html#a01c6f29b97001ac40bbac263fdaf3c7e" title="Request to use AD to compute the first derivative of a variable.">neml2::Model::request_AD</a> method and specify which derivatives should be computed using AD: </p><div class="fragment"><div class="line"><span class="keywordtype">void</span></div>
+<div class="line">MyModel::request_AD()</div>
+<div class="line">{</div>
+<div class="line">  std::vector&lt;const VariableBase *&gt; inputs = {&amp;foo, &amp;bar, &amp;baz, &amp;T};</div>
+<div class="line"> </div>
+<div class="line">  <span class="comment">// First derivatives</span></div>
+<div class="line">  foo_dot.request_AD(inputs);</div>
+<div class="line">  bar_dot.request_AD(inputs);</div>
+<div class="line">  baz_dot.request_AD(inputs);</div>
+<div class="line"> </div>
+<div class="line">  <span class="comment">// Second derivatives</span></div>
+<div class="line">  foo_dot.request_AD(inputs, inputs);</div>
+<div class="line">  bar_dot.request_AD(inputs, inputs);</div>
+<div class="line">  baz_dot.request_AD(inputs, inputs);</div>
+<div class="line">}</div>
+</div><!-- fragment --><dl class="section note"><dt>Note</dt><dd>Each model can use a mix of hand-coded derivatives and AD derivatives. However, an error will be raised if hand-coded derivatives are provided for those marked by <a class="el" href="classneml2_1_1VariableBase.html#a55c527e9ff1b59efd3876942c5017a3d">neml2::Variable::request_AD</a>.</dd></dl>
+<p>Since a composed model uses chain rule to efficiently evaluate the total derivatives, automatic differentiation is disabled for <code>ComposedModel</code>. However, each of the child model can still use AD to calculate the <em>partial</em> derivatives of its own forward operator. Moreover, AD and non-AD models can be composed together.</p>
+<h1><a class="anchor" id="model-assembly"></a>
+Model assembly</h1>
+<p>NEML2 stores each variable in contiguous memory, but does not guarantee contiguity across variables. This choice is made to allow for massive asynchronous evaluation (with the help of lazy tensor) and to reduce memory consumption (since variables can have different number of batch shapes). However, this choice is not ideal for a family of nonlinear material models whose constitutive updates require solving one (or more) implicit system of equations. To address such issue, NEML2 offers two mechanisms to facilitate the creation of the implicit system (e.g., its residual and Jacobian):</p><ul>
+<li><a class="el" href="#axis-labeling">Axis labeling</a> for setting up the layout of the implicit system</li>
+<li><a class="el" href="#tensor-assembly">Tensor assembly</a> for assembling and disassembling the implicit system</li>
+</ul>
+<h2><a class="anchor" id="axis-labeling"></a>
+Axis labeling</h2>
+<p>NEML2 provides a data structure named <a class="el" href="classneml2_1_1LabeledAxis.html">LabeledAxis</a> to create a contiguous layout for scattered input/output variables. Typically, each model contains an input axis for input variables and an output axis for output variables.</p>
+<p>The <a class="el" href="classneml2_1_1LabeledAxis.html">LabeledAxis</a> contains all information regarding how the variables of interest should be contiguously laid out. In other words, the labeled axis maintains the mapping between variables and their contiguous slice along an axis. The following naming convention is used:</p><ul>
+<li>Item: A labelable slice of data</li>
+<li>Variable: An item that is also of a <a class="el" href="system-tensors.html#tensor-types">NEML2 primitive tensor type</a></li>
+<li>Sub-axis: An item of type <code>LabeledAxis</code></li>
+</ul>
+<p>So yes, an axis can be labeled recursively, e.g.,</p>
+<div class="fragment"><div class="line">     0 1 2 3 4 5     6     7 8 9 10 11 12   13   14</div>
+<div class="line">/// |-----------| |-----| |              | |  | |  |</div>
+<div class="line">///       a          b    |              | |  | |  |</div>
+<div class="line">/// |-------------------| |--------------| |--| |--|</div>
+<div class="line">///          sub                  a          b    c</div>
+</div><!-- fragment --><p> The above example represents an axis of size 15. This axis has 4 items: <code>a</code>, <code>b</code>, <code>c</code>, and <code>sub</code>.</p><ul>
+<li>"a" is a variable of storage size 6 (possibly of type <code>SR2</code>).</li>
+<li>"b" is a variable of type <code>Scalar</code>.</li>
+<li>"c" is a variable of type <code>Scalar</code>.</li>
+<li>"sub" is a sub-axis of type <code>LabeledAxis</code>. "sub" by itself represents an axis of size 7, containing 2 items:<ul>
+<li>"a" is a variable of storage size 6.</li>
+<li>"b" is a variable of type <code>Scalar</code>.</li>
+</ul>
+</li>
+</ul>
+<p>Duplicate labels are <em>not</em> allowed on the same level of the axis, e.g. "a", "b", "c", and "sub" share the same level and so must be different. However, items on different levels of an axis can share the same label, e.g., "a" on the sub-axis "sub" has the same label as "a" on the main axis. In NEML2 convention, item names are always fully qualified, and a sub-axis is prefixed with a left slash, e.g. item "b" on the sub-axis "sub" can be denoted as "sub/b" on the main axis.</p>
+<dl class="section note"><dt>Note</dt><dd>A label cannot contain: white spaces, quotes, left slash (<code>/</code>), or new line.</dd></dl>
+<p>Due to performance considerations, a <code>LabeledAxis</code> can only be modified, e.g., adding/removing variables and sub-axis, at the time a model is constructed. After the model construction phase, the <code>LabeledAxis</code> associated with that model can no longer be modified over the entire course of the simulation.</p>
+<p>Refer to the documentation for a complete list of APIs for creating and modifying a <a class="el" href="classneml2_1_1LabeledAxis.html">LabeledAxis</a>.</p>
+<h2><a class="anchor" id="tensor-assembly"></a>
+Tensor assembly</h2>
+<p>NEML2 implements two types of "assemblers" to assemble (or disassemble) the implicit system given the axis layout defined by <a class="el" href="classneml2_1_1LabeledAxis.html">LabeledAxis</a>:</p><ul>
+<li><a class="el" href="classneml2_1_1VectorAssembler.html">VectorAssembler</a>: Assemble a map of vectors into a single vector (<a class="el" href="classneml2_1_1VectorAssembler.html#ae9b7e2811d0c034acdf83ab6faabb844" title="Assemble a vector of vectors (by variables)">neml2::VectorAssembler::assemble</a>), or disassemble a single vector into a map of vectors (<a class="el" href="classneml2_1_1VectorAssembler.html#accc64c73211969892397d5b702f5267a" title="Split the vector (by variables)">neml2::VectorAssembler::disassemble</a>).</li>
+<li><a class="el" href="classneml2_1_1MatrixAssembler.html">MatrixAssembler</a>: Assemble a map of map of matrices into a single matrix (<a class="el" href="classneml2_1_1MatrixAssembler.html#a196ebaecadc09dd017993c192a238f12" title="Assemble a matrix of matrices (by variables)">neml2::MatrixAssembler::assemble</a>), or disassemble a single matrix into a map of map of matrices (<a class="el" href="classneml2_1_1MatrixAssembler.html#ab8193f34206083cad20f29e85ba1124e" title="Split the matrix (by variables)">neml2::MatrixAssembler::disassemble</a>).</li>
+</ul>
+<p>The <code>assemble</code> methods take a map (1D map for the vector assembler and 2D map for the matrix assembler) as input argument. The keys of the map are variable names.</p>
+<dl class="section note"><dt>Note</dt><dd>Variable values not provided by the map are filled with zeros.</dd></dl>
+<p>The <a class="el" href="classneml2_1_1VectorAssembler.html">VectorAssembler</a> is useful for working with the residual and solution vectors of the implicit system, and the <a class="el" href="classneml2_1_1MatrixAssembler.html">MatrixAssembler</a> is primarily used to work with the Jacobian matrix of the implicit system.</p>
+<p>In addition to the <code>assemble</code> and <code>disassemble</code> methods, the assemblers also provide a third method called <code>split</code>. The <code>split</code> method is similar to <code>disassemble</code>, but it splits the tensor by subaxes instead of variables. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
