@@ -347,6 +347,7 @@ LabeledAxis::subaxis(const LabeledAxisAccessor & name) const
 LabeledAxis &
 LabeledAxis::subaxis(const LabeledAxisAccessor & name)
 {
+  // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
   return const_cast<LabeledAxis &>(std::as_const(*this).subaxis(name));
 }
 
@@ -469,7 +470,7 @@ operator<<(std::ostream & os, const LabeledAxis & axis)
   {
     if (axis._setup)
       os << std::setw(3) << std::right << axis.variable_id(*var) << ": ";
-    os << std::setw(max_var_name_length) << std::left << utils::stringify(*var);
+    os << std::setw(int(max_var_name_length)) << std::left << utils::stringify(*var);
     if (axis._setup)
       os << " [" << axis.variable_slice(*var) << "]";
     if (std::next(var) != var_names.end())

@@ -50,6 +50,7 @@ public:
   /// @returns the buffer storage
   const Storage<std::string, TensorValueBase> & named_parameters() const
   {
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
     return const_cast<ParameterStore *>(this)->named_parameters();
   }
   Storage<std::string, TensorValueBase> & named_parameters();

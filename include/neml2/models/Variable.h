@@ -306,6 +306,7 @@ public:
       neml_assert_dbg(
           _ref_is_mutable,
           "Trying to zero a referencing variable, but the referenced variable is not mutable.");
+      // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
       const_cast<VariableBase *>(ref())->zero(options);
     }
   }
@@ -320,6 +321,7 @@ public:
       neml_assert_dbg(_ref_is_mutable,
                       "Trying to assign value to a referencing variable, but the referenced "
                       "variable is not mutable.");
+      // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
       const_cast<VariableBase *>(ref())->set(val);
     }
   }
@@ -355,6 +357,7 @@ public:
     if (owning())
       _value.requires_grad_(req);
     else
+      // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
       const_cast<VariableBase *>(ref())->requires_grad_(req);
   }
 
@@ -374,6 +377,7 @@ public:
       neml_assert_dbg(_ref_is_mutable,
                       "Trying to assign value to a referencing variable, but the referenced "
                       "variable is not mutable.");
+      // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
       *const_cast<VariableBase *>(ref()) = val;
     }
   }
@@ -404,6 +408,7 @@ public:
       neml_assert_dbg(
           _ref_is_mutable,
           "Trying to clear a referencing variable, but the referenced variable is not mutable.");
+      // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
       const_cast<VariableBase *>(ref())->clear();
     }
   }

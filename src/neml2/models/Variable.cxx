@@ -250,6 +250,7 @@ VariableBase::total_second_derivatives(const DependencyResolver<Model, VariableN
   return sec_derivs;
 }
 
+// NOLINTNEXTLINE(cppcoreguidelines-c-copy-assignment-signature)
 void
 Derivative::operator=(const Tensor & val)
 {

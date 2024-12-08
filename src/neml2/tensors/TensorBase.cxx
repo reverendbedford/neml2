@@ -46,7 +46,7 @@ template <class Derived>
 TensorBase<Derived>::TensorBase(const torch::Tensor & tensor,
                                 const TraceableTensorShape & batch_shape)
   : torch::Tensor(tensor),
-    _batch_dim(batch_shape.size()),
+    _batch_dim(Size(batch_shape.size())),
     _batch_sizes(batch_shape)
 {
   neml_assert_dbg(batch_sizes() == batch_shape,
@@ -333,9 +333,9 @@ TensorBase<Derived>::batch_expand_copy(const TraceableTensorShape & batch_shape)
 
 template <class Derived>
 neml2::Tensor
-TensorBase<Derived>::base_expand_copy(TensorShapeRef base_size) const
+TensorBase<Derived>::base_expand_copy(TensorShapeRef base_shape) const
 {
-  return neml2::Tensor(base_expand(base_size).contiguous(), batch_sizes());
+  return neml2::Tensor(base_expand(base_shape).contiguous(), batch_sizes());
 }
 
 template <class Derived>

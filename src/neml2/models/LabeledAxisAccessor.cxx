@@ -77,7 +77,7 @@ LabeledAxisAccessor::prepend(const LabeledAxisAccessor & axis) const
 LabeledAxisAccessor
 LabeledAxisAccessor::slice(int64_t n) const
 {
-  n = n < 0 ? size() + n : n;
+  n = n < 0 ? int64_t(size()) + n : n;
   neml_assert(size() >= std::size_t(n), "cannot apply slice");
   c10::SmallVector<std::string> new_names(_item_names.begin() + n, _item_names.end());
   return new_names;
@@ -86,8 +86,8 @@ LabeledAxisAccessor::slice(int64_t n) const
 LabeledAxisAccessor
 LabeledAxisAccessor::slice(int64_t n1, int64_t n2) const
 {
-  n1 = n1 < 0 ? size() + n1 : n1;
-  n2 = n2 < 0 ? size() + n2 : n2;
+  n1 = n1 < 0 ? int64_t(size()) + n1 : n1;
+  n2 = n2 < 0 ? int64_t(size()) + n2 : n2;
   neml_assert(size() >= std::size_t(n1), "cannot apply slice");
   neml_assert(size() >= std::size_t(n2), "cannot apply slice");
   c10::SmallVector<std::string> new_names(_item_names.begin() + n1, _item_names.begin() + n2);
@@ -95,7 +95,7 @@ LabeledAxisAccessor::slice(int64_t n1, int64_t n2) const
 }
 
 LabeledAxisAccessor
-LabeledAxisAccessor::remount(const LabeledAxisAccessor & axis, size_t n) const
+LabeledAxisAccessor::remount(const LabeledAxisAccessor & axis, Size n) const
 {
   return slice(n).prepend(axis);
 }
@@ -103,7 +103,7 @@ LabeledAxisAccessor::remount(const LabeledAxisAccessor & axis, size_t n) const
 bool
 LabeledAxisAccessor::start_with(const LabeledAxisAccessor & axis) const
 {
-  return slice(0, axis.size()) == axis;
+  return slice(0, int64_t(axis.size())) == axis;
 }
 
 LabeledAxisAccessor

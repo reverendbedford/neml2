@@ -168,6 +168,7 @@ void
 Model::request_AD(VariableBase & y, const VariableBase & u)
 {
   _ad_derivs[&y].insert(&u);
+  // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
   _ad_args.insert(const_cast<VariableBase *>(&u));
 }
 
@@ -175,6 +176,7 @@ void
 Model::request_AD(VariableBase & y, const VariableBase & u1, const VariableBase & u2)
 {
   _ad_secderivs[&y][&u1].insert(&u2);
+  // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
   _ad_args.insert(const_cast<VariableBase *>(&u2));
 }
 
@@ -416,8 +418,7 @@ Model::extract_AD_derivatives(bool dout, bool d2out)
       {
         if (!_ad_secderivs.at(y).count(u))
           continue;
-        else
-          create_graph = true;
+        create_graph = true;
       }
 
       const auto dy_du = math::jacrev(y->tensor(),
@@ -458,7 +459,7 @@ Model::extract_AD_derivatives(bool dout, bool d2out)
 std::ostream &
 operator<<(std::ostream & os, const Model & model)
 {
-  bool first;
+  bool first = false;
   const std::string tab = "            ";
 
   os << "Name:       " << model.name() << '\n';

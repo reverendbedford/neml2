@@ -127,7 +127,7 @@ public:
   LabeledAxisAccessor slice(int64_t n1, int64_t n2) const;
 
   /// A combination of slice and prepend
-  LabeledAxisAccessor remount(const LabeledAxisAccessor & axis, size_t n = 1) const;
+  LabeledAxisAccessor remount(const LabeledAxisAccessor & axis, int64_t n = 1) const;
 
   /// Check if this accessor begins with another accessor
   bool start_with(const LabeledAxisAccessor & axis) const;

@@ -116,7 +116,7 @@ Tensor::empty(const TraceableTensorShape & batch_shape,
 {
   // Record batch shape
   for (Size i = 0; i < (Size)batch_shape.size(); ++i)
-    if (auto * const si = batch_shape[i].traceable())
+    if (const auto * const si = batch_shape[i].traceable())
       torch::jit::tracer::ArgumentStash::stashIntArrayRefElem(
           "size", batch_shape.size() + base_shape.size(), i, *si);
 

@@ -105,9 +105,9 @@ TraceableTensorShape
 TraceableTensorShape::slice(Size start, Size end) const
 {
   if (start < 0)
-    start += size();
+    start += Size(size());
   if (end < 0)
-    end += size();
+    end += Size(size());
 
   return TraceableTensorShape(begin() + start, begin() + end);
 }
@@ -116,7 +116,7 @@ TraceableTensorShape
 TraceableTensorShape::slice(Size N) const
 {
   if (N < 0)
-    N += size();
+    N += Size(size());
   return TraceableTensorShape(begin() + N, end());
 }
 

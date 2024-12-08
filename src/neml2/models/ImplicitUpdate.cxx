@@ -100,7 +100,7 @@ ImplicitUpdate::link_output_variables()
 {
   Model::link_output_variables();
   for (auto && [name, var] : output_variables())
-    var.ref(input_variable(name), /*mutable=*/true);
+    var.ref(input_variable(name), /*ref_is_mutable=*/true);
 }
 
 void

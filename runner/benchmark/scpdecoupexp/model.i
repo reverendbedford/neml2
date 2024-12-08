@@ -258,7 +258,7 @@
   # Cache information from sub-system #2
   ############################################################################
   [cache2]
-    type = CopyWR2
+    type = CopyRot
     from = 'state/orientation'
     to = 'forces/tmp/orientation'
   []

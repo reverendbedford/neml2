@@ -58,7 +58,7 @@ VariableStore::setup_layout()
 VariableBase &
 VariableStore::input_variable(const VariableName & name)
 {
-  auto var_ptr = _input_variables.query_value(name);
+  auto * var_ptr = _input_variables.query_value(name);
   neml_assert(var_ptr, "Input variable ", name, " does not exist in model ", _object->name());
   return *var_ptr;
 }
@@ -66,7 +66,7 @@ VariableStore::input_variable(const VariableName & name)
 const VariableBase &
 VariableStore::input_variable(const VariableName & name) const
 {
-  const auto var_ptr = _input_variables.query_value(name);
+  const auto * var_ptr = _input_variables.query_value(name);
   neml_assert(var_ptr, "INput variable ", name, " does not exist in model ", _object->name());
   return *var_ptr;
 }
@@ -74,7 +74,7 @@ VariableStore::input_variable(const VariableName & name) const
 VariableBase &
 VariableStore::output_variable(const VariableName & name)
 {
-  auto var_ptr = _output_variables.query_value(name);
+  auto * var_ptr = _output_variables.query_value(name);
   neml_assert(var_ptr, "Output variable ", name, " does not exist in model ", _object->name());
   return *var_ptr;
 }
@@ -82,7 +82,7 @@ VariableStore::output_variable(const VariableName & name)
 const VariableBase &
 VariableStore::output_variable(const VariableName & name) const
 {
-  const auto var_ptr = _output_variables.query_value(name);
+  const auto * var_ptr = _output_variables.query_value(name);
   neml_assert(var_ptr, "Output variable ", name, " does not exist in model ", _object->name());
   return *var_ptr;
 }
