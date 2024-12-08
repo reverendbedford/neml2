@@ -91,6 +91,19 @@ class Configuration:
 subaxes = ["state", "old_state", "forces", "old_forces", "residual", "parameters"]
 
 
+def compose(model, config=Configuration()):
+    """
+    Compose a model's composition dependency graph in graphviz format.
+    Returns the graph object.
+
+    :param model: Model to render
+    """
+    g = graphviz.Digraph(name="parent")
+    _set_global(g, config)
+    _add_model(g, config, model)
+    return g
+
+
 def render(model, config=Configuration(), *args, **kwargs):
     """
     Render a model's composition dependency graph in graphviz format.
@@ -98,10 +111,7 @@ def render(model, config=Configuration(), *args, **kwargs):
 
     :param model: Model to render
     """
-    g = graphviz.Digraph(name="parent")
-    _set_global(g, config)
-    _add_model(g, config, model)
-    g.render(*args, **kwargs)
+    compose(model, config).render(*args, **kwargs)
 
 
 def _set_global(graph, config):

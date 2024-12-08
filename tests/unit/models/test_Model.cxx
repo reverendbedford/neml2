@@ -97,21 +97,4 @@ TEST_CASE("Model", "[models]")
               "solve-dependent, so all output variables MUST be solve-dependent"));
     }
   }
-
-  SECTION("jit")
-  {
-    // auto & model = reload_model("unit/models/ComposedModel2.i", "model");
-
-    // // Trace the value method
-    // auto forward = [&model](torch::Tensor & x) -> std::tuple<torch::Tensor>
-    // { return {model.value(LabeledVector(x, {&model.input_axis()}))}; };
-    // auto forward_jit = neml2::jit::StaticGraphFunction<std::tuple<torch::Tensor>, torch::Tensor>(
-    //     "model.value", forward, {torch::rand({1, 1, model.input_axis().storage_size()})});
-
-    // // Traced model should be generalizable and yield the sam result
-    // auto x = torch::rand({5, 8, model.input_axis().storage_size()});
-    // auto [y] = forward_jit(x);
-    // REQUIRE(TensorShape(y.sizes()) == TensorShape{5, 8, model.output_axis().storage_size()});
-    // REQUIRE(torch::allclose(y, model.value(LabeledVector(x, {&model.input_axis()}))));
-  }
 }

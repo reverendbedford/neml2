@@ -274,6 +274,19 @@ Diagnose common issues in model setup. Raises a runtime error including all iden
           "Input axis of the model. The axis contains information on variable names and their "
           "associated slicing indices.")
       .def(
+          "input_type",
+          [](const Model & self, const VariableName & name)
+          { return self.input_variable(name).type(); },
+          py::arg("variable"),
+          "Introspect the underlying tensor type of an input variable. @returns tensors.TensorType")
+      .def(
+          "output_type",
+          [](const Model & self, const VariableName & name)
+          { return self.output_variable(name).type(); },
+          py::arg("variable"),
+          "Introspect the underlying tensor type of an output variable. @returns "
+          "tensors.TensorType")
+      .def(
           "named_parameters",
           [](Model & self)
           {
@@ -296,6 +309,17 @@ Diagnose common issues in model setup. Raises a runtime error including all iden
           },
           py::return_value_policy::reference,
           "Get the model buffers. The keys of the returned dictionary are the buffers' names.")
+      .def(
+          "named_submodels",
+          [](const Model & self)
+          {
+            std::map<std::string, Model *> submodels;
+            for (auto submodel : self.registered_models())
+              submodels[submodel->name()] = submodel;
+            return submodels;
+          },
+          py::return_value_policy::reference,
+          "Get the sub-models registered to this model")
       .def("__getattr__",
            py::overload_cast<const std::string &>(&Model::get_parameter, py::const_),
            py::return_value_policy::reference,
@@ -319,7 +343,19 @@ Diagnose common issues in model setup. Raises a runtime error including all iden
            { return self.dvalue_and_d2value(unpack_model_input(self, pyinputs)); })
       .def("value_and_dvalue_and_d2value",
            [](Model & self, py::dict pyinputs)
-           { return self.value_and_dvalue_and_d2value(unpack_model_input(self, pyinputs)); });
+           { return self.value_and_dvalue_and_d2value(unpack_model_input(self, pyinputs)); })
+      .def(
+          "dependency",
+          [](const Model & self)
+          {
+            std::map<std::string, const Model *> deps;
+            for (auto && [name, var] : self.input_variables())
+              if (var.ref() != &var)
+                deps[utils::stringify(name)] = &var.ref()->owner();
+            return deps;
+          },
+          py::return_value_policy::reference,
+          "Get the dictionary describing this model's dependency information, if any.");
 
   // neml2.base.VectorAssembler
   py::class_<VectorAssembler>(m, "VectorAssembler")
