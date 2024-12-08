@@ -568,8 +568,7 @@ void
 _print_helper(std::ostream & os, const std::vector<std::vector<P>> * option)
 {
   for (const auto & pv : *option)
-    for (const auto & p : pv)
-      os << p << " ";
+    _print_helper(os, &pv);
 }
 } // namespace details
 // LCOV_EXCL_STOP
