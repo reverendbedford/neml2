@@ -491,7 +491,7 @@ $(function(){initNavTree('OptionSet_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00560" name="l00560"></a><span class="lineno">  560</span>_print_helper(std::ostream &amp; os, <span class="keyword">const</span> std::vector&lt;bool&gt; * option)</div>
 <div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span>{</div>
 <div class="line"><a id="l00562" name="l00562"></a><span class="lineno">  562</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> p : *option)</div>
-<div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span>    os &lt;&lt; p &lt;&lt; <span class="stringliteral">&quot; &quot;</span>;</div>
+<div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span>    os &lt;&lt; static_cast&lt;bool&gt;(p) &lt;&lt; <span class="stringliteral">&quot; &quot;</span>;</div>
 <div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span>}</div>
 <div class="line"><a id="l00565" name="l00565"></a><span class="lineno">  565</span> </div>
 <div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> P&gt;</div>
