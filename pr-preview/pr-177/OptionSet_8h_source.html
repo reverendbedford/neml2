@@ -499,12 +499,11 @@ $(function(){initNavTree('OptionSet_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00568" name="l00568"></a><span class="lineno">  568</span>_print_helper(std::ostream &amp; os, <span class="keyword">const</span> std::vector&lt;std::vector&lt;P&gt;&gt; * option)</div>
 <div class="line"><a id="l00569" name="l00569"></a><span class="lineno">  569</span>{</div>
 <div class="line"><a id="l00570" name="l00570"></a><span class="lineno">  570</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp; pv : *option)</div>
-<div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span>    for (const auto &amp; p : pv)</div>
-<div class="line"><a id="l00572" name="l00572"></a><span class="lineno">  572</span>      os &lt;&lt; p &lt;&lt; <span class="stringliteral">&quot; &quot;</span>;</div>
-<div class="line"><a id="l00573" name="l00573"></a><span class="lineno">  573</span>}</div>
-<div class="line"><a id="l00574" name="l00574"></a><span class="lineno">  574</span>} <span class="comment">// namespace details</span></div>
-<div class="line"><a id="l00575" name="l00575"></a><span class="lineno">  575</span><span class="comment">// LCOV_EXCL_STOP</span></div>
-<div class="line"><a id="l00576" name="l00576"></a><span class="lineno">  576</span>} <span class="comment">// namespace neml2</span></div>
+<div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span>    _print_helper(os, &amp;pv);</div>
+<div class="line"><a id="l00572" name="l00572"></a><span class="lineno">  572</span>}</div>
+<div class="line"><a id="l00573" name="l00573"></a><span class="lineno">  573</span>} <span class="comment">// namespace details</span></div>
+<div class="line"><a id="l00574" name="l00574"></a><span class="lineno">  574</span><span class="comment">// LCOV_EXCL_STOP</span></div>
+<div class="line"><a id="l00575" name="l00575"></a><span class="lineno">  575</span>} <span class="comment">// namespace neml2</span></div>
 <div class="ttc" id="aclassneml2_1_1CrossRef_html"><div class="ttname"><a href="classneml2_1_1CrossRef.html">neml2::CrossRef</a></div><div class="ttdoc">The wrapper (decorator) for cross-referencing unresolved values at parse time.</div><div class="ttdef"><b>Definition</b> CrossRef.h:56</div></div>
 <div class="ttc" id="aclassneml2_1_1LabeledAxisAccessor_html"><div class="ttname"><a href="classneml2_1_1LabeledAxisAccessor.html">neml2::LabeledAxisAccessor</a></div><div class="ttdoc">The accessor containing all the information needed to access an item in a LabeledAxis.</div><div class="ttdef"><b>Definition</b> LabeledAxisAccessor.h:47</div></div>
 <div class="ttc" id="aclassneml2_1_1OptionSet_1_1OptionBase_html"><div class="ttname"><a href="classneml2_1_1OptionSet_1_1OptionBase.html">neml2::OptionSet::OptionBase</a></div><div class="ttdef"><b>Definition</b> OptionSet.h:152</div></div>
