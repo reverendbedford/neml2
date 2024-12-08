@@ -56,6 +56,9 @@ template <typename P>
 void _print_helper(std::ostream & os, const P *);
 template <typename P>
 void _print_helper(std::ostream & os, const std::vector<P> *);
+/// The evil vector of bool :/
+template <>
+void _print_helper(std::ostream & os, const std::vector<bool> *);
 template <typename P>
 void _print_helper(std::ostream & os, const std::vector<std::vector<P>> *);
 /// Specialization so that we don't print out unprintable characters
@@ -549,6 +552,14 @@ void
 _print_helper(std::ostream & os, const std::vector<P> * option)
 {
   for (const auto & p : *option)
+    os << p << " ";
+}
+
+template <>
+inline void
+_print_helper(std::ostream & os, const std::vector<bool> * option)
+{
+  for (const auto p : *option)
     os << p << " ";
 }
 
