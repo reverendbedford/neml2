@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-08 16:25:26</td>
+            <td class="headerValue">2024-12-08 16:49:52</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">32</td>
@@ -282,10 +282,10 @@
 <a name="220"><span class="lineNum">     220 </span>            : </a>
 <a name="221"><span class="lineNum">     221 </span>            :   // Otherwise, check the existence of the variable</a>
 <a name="222"><span class="lineNum">     222 </span><span class="lineCov">        583 :   if (name.size() == 1)</span></a>
-<a name="223"><span class="lineNum">     223 </span><span class="lineCov">        188 :     return _variables.find(name[0]) != _variables.end();</span></a>
+<a name="223"><span class="lineNum">     223 </span><span class="lineCov">        190 :     return _variables.find(name[0]) != _variables.end();</span></a>
 <a name="224"><span class="lineNum">     224 </span>            : </a>
-<a name="225"><span class="lineNum">     225 </span><span class="lineCov">        395 :   const auto subaxis = _subaxes.find(name[0]);</span></a>
-<a name="226"><span class="lineNum">     226 </span><span class="lineCov">        395 :   return subaxis != _subaxes.end() &amp;&amp; subaxis-&gt;second-&gt;has_variable(name.slice(1));</span></a>
+<a name="225"><span class="lineNum">     225 </span><span class="lineCov">        393 :   const auto subaxis = _subaxes.find(name[0]);</span></a>
+<a name="226"><span class="lineNum">     226 </span><span class="lineCov">        393 :   return subaxis != _subaxes.end() &amp;&amp; subaxis-&gt;second-&gt;has_variable(name.slice(1));</span></a>
 <a name="227"><span class="lineNum">     227 </span>            : }</a>
 <a name="228"><span class="lineNum">     228 </span>            : </a>
 <a name="229"><span class="lineNum">     229 </span>            : std::size_t</a>
@@ -359,14 +359,14 @@
 <a name="297"><span class="lineNum">     297 </span>            : }</a>
 <a name="298"><span class="lineNum">     298 </span>            : </a>
 <a name="299"><span class="lineNum">     299 </span>            : bool</a>
-<a name="300"><span class="lineNum">     300 </span><span class="lineCov">        109 : LabeledAxis::has_subaxis(const LabeledAxisAccessor &amp; name) const</span></a>
+<a name="300"><span class="lineNum">     300 </span><span class="lineCov">         27 : LabeledAxis::has_subaxis(const LabeledAxisAccessor &amp; name) const</span></a>
 <a name="301"><span class="lineNum">     301 </span>            : {</a>
-<a name="302"><span class="lineNum">     302 </span><span class="lineCov">        109 :   neml_assert(!name.empty(), &quot;Sub-axis name cannot be empty.&quot;);</span></a>
+<a name="302"><span class="lineNum">     302 </span><span class="lineCov">         27 :   neml_assert(!name.empty(), &quot;Sub-axis name cannot be empty.&quot;);</span></a>
 <a name="303"><span class="lineNum">     303 </span>            : </a>
-<a name="304"><span class="lineNum">     304 </span><span class="lineCov">        109 :   const auto subaxis = _subaxes.find(name[0]);</span></a>
+<a name="304"><span class="lineNum">     304 </span><span class="lineCov">         27 :   const auto subaxis = _subaxes.find(name[0]);</span></a>
 <a name="305"><span class="lineNum">     305 </span>            : </a>
-<a name="306"><span class="lineNum">     306 </span><span class="lineCov">        109 :   if (name.size() == 1)</span></a>
-<a name="307"><span class="lineNum">     307 </span><span class="lineCov">        105 :     return subaxis != _subaxes.end();</span></a>
+<a name="306"><span class="lineNum">     306 </span><span class="lineCov">         27 :   if (name.size() == 1)</span></a>
+<a name="307"><span class="lineNum">     307 </span><span class="lineCov">         23 :     return subaxis != _subaxes.end();</span></a>
 <a name="308"><span class="lineNum">     308 </span>            : </a>
 <a name="309"><span class="lineNum">     309 </span><span class="lineCov">          4 :   return subaxis-&gt;second-&gt;has_subaxis(name.slice(1));</span></a>
 <a name="310"><span class="lineNum">     310 </span>            : }</a>

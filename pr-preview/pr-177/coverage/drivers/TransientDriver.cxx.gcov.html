@@ -31,13 +31,13 @@
             <td class="headerValue">coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">192</td>
-            <td class="headerCovTableEntry">193</td>
+            <td class="headerCovTableEntry">196</td>
+            <td class="headerCovTableEntry">197</td>
             <td class="headerCovTableEntryHi">99.5 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-08 16:25:26</td>
+            <td class="headerValue">2024-12-08 16:49:52</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">15</td>
@@ -274,159 +274,165 @@
 <a name="212"><span class="lineNum">     212 </span><span class="lineCov">         63 : TransientDriver::advance_step()</span></a>
 <a name="213"><span class="lineNum">     213 </span>            : {</a>
 <a name="214"><span class="lineNum">     214 </span>            :   // State from the previous time step becomes the old state in the current time step</a>
-<a name="215"><span class="lineNum">     215 </span><span class="lineCov">         63 :   const auto input_old_state = _model.input_axis().subaxis(&quot;old_state&quot;);</span></a>
-<a name="216"><span class="lineNum">     216 </span><span class="lineCov">        180 :   for (const auto &amp; var : input_old_state.variable_names())</span></a>
-<a name="217"><span class="lineNum">     217 </span><span class="lineCov">        117 :     _in[var.prepend(&quot;old_state&quot;)] = _result_out[_step_count - 1][var.prepend(&quot;state&quot;)];</span></a>
-<a name="218"><span class="lineNum">     218 </span>            : </a>
-<a name="219"><span class="lineNum">     219 </span>            :   // Forces from the previous time step become the old forces in the current time step</a>
-<a name="220"><span class="lineNum">     220 </span><span class="lineCov">         63 :   const auto input_old_forces = _model.input_axis().subaxis(&quot;old_forces&quot;);</span></a>
-<a name="221"><span class="lineNum">     221 </span><span class="lineCov">        171 :   for (const auto &amp; var : input_old_forces.variable_names())</span></a>
-<a name="222"><span class="lineNum">     222 </span><span class="lineCov">        108 :     _in[var.prepend(&quot;old_forces&quot;)] = _result_in[_step_count - 1][var.prepend(&quot;forces&quot;)];</span></a>
-<a name="223"><span class="lineNum">     223 </span><span class="lineCov">         63 : }</span></a>
-<a name="224"><span class="lineNum">     224 </span>            : </a>
-<a name="225"><span class="lineNum">     225 </span>            : void</a>
-<a name="226"><span class="lineNum">     226 </span><span class="lineCov">         70 : TransientDriver::update_forces()</span></a>
-<a name="227"><span class="lineNum">     227 </span>            : {</a>
-<a name="228"><span class="lineNum">     228 </span><span class="lineCov">         70 :   if (_model.input_axis().has_variable(_time_name))</span></a>
-<a name="229"><span class="lineNum">     229 </span><span class="lineCov">        140 :     _in[_time_name] = _time.batch_index({_step_count});</span></a>
-<a name="230"><span class="lineNum">     230 </span><span class="lineCov">         70 : }</span></a>
-<a name="231"><span class="lineNum">     231 </span>            : </a>
-<a name="232"><span class="lineNum">     232 </span>            : void</a>
-<a name="233"><span class="lineNum">     233 </span><span class="lineCov">          7 : TransientDriver::apply_ic()</span></a>
-<a name="234"><span class="lineNum">     234 </span>            : {</a>
-<a name="235"><span class="lineNum">     235 </span><span class="lineCov">          7 :   set_ic&lt;Scalar&gt;(&quot;ic_scalar_names&quot;, &quot;ic_scalar_values&quot;);</span></a>
-<a name="236"><span class="lineNum">     236 </span><span class="lineCov">          7 :   set_ic&lt;Rot&gt;(&quot;ic_rot_names&quot;, &quot;ic_rot_values&quot;);</span></a>
-<a name="237"><span class="lineNum">     237 </span><span class="lineCov">          7 :   set_ic&lt;SR2&gt;(&quot;ic_sr2_names&quot;, &quot;ic_sr2_values&quot;);</span></a>
-<a name="238"><span class="lineNum">     238 </span>            : </a>
-<a name="239"><span class="lineNum">     239 </span><span class="lineCov">         22 :   for (auto &amp;&amp; [name, var] : _model.output_variables())</span></a>
-<a name="240"><span class="lineNum">     240 </span><span class="lineCov">         15 :     if (!_result_out[0].count(name))</span></a>
-<a name="241"><span class="lineNum">     241 </span><span class="lineCov">         14 :       _result_out[0][name] =</span></a>
-<a name="242"><span class="lineNum">     242 </span><span class="lineCov">         29 :           Tensor::zeros(utils::add_shapes(var.list_sizes(), var.base_sizes())).to(_device);</span></a>
-<a name="243"><span class="lineNum">     243 </span><span class="lineCov">          7 : }</span></a>
+<a name="215"><span class="lineNum">     215 </span><span class="lineCov">         63 :   if (_model.input_axis().has_old_state())</span></a>
+<a name="216"><span class="lineNum">     216 </span>            :   {</a>
+<a name="217"><span class="lineNum">     217 </span><span class="lineCov">         63 :     const auto input_old_state = _model.input_axis().subaxis(&quot;old_state&quot;);</span></a>
+<a name="218"><span class="lineNum">     218 </span><span class="lineCov">        180 :     for (const auto &amp; var : input_old_state.variable_names())</span></a>
+<a name="219"><span class="lineNum">     219 </span><span class="lineCov">        117 :       _in[var.prepend(&quot;old_state&quot;)] = _result_out[_step_count - 1][var.prepend(&quot;state&quot;)];</span></a>
+<a name="220"><span class="lineNum">     220 </span><span class="lineCov">         63 :   }</span></a>
+<a name="221"><span class="lineNum">     221 </span>            : </a>
+<a name="222"><span class="lineNum">     222 </span>            :   // Forces from the previous time step become the old forces in the current time step</a>
+<a name="223"><span class="lineNum">     223 </span><span class="lineCov">         63 :   if (_model.input_axis().has_old_forces())</span></a>
+<a name="224"><span class="lineNum">     224 </span>            :   {</a>
+<a name="225"><span class="lineNum">     225 </span><span class="lineCov">         63 :     const auto input_old_forces = _model.input_axis().subaxis(&quot;old_forces&quot;);</span></a>
+<a name="226"><span class="lineNum">     226 </span><span class="lineCov">        171 :     for (const auto &amp; var : input_old_forces.variable_names())</span></a>
+<a name="227"><span class="lineNum">     227 </span><span class="lineCov">        108 :       _in[var.prepend(&quot;old_forces&quot;)] = _result_in[_step_count - 1][var.prepend(&quot;forces&quot;)];</span></a>
+<a name="228"><span class="lineNum">     228 </span><span class="lineCov">         63 :   }</span></a>
+<a name="229"><span class="lineNum">     229 </span><span class="lineCov">         63 : }</span></a>
+<a name="230"><span class="lineNum">     230 </span>            : </a>
+<a name="231"><span class="lineNum">     231 </span>            : void</a>
+<a name="232"><span class="lineNum">     232 </span><span class="lineCov">         70 : TransientDriver::update_forces()</span></a>
+<a name="233"><span class="lineNum">     233 </span>            : {</a>
+<a name="234"><span class="lineNum">     234 </span><span class="lineCov">         70 :   if (_model.input_axis().has_variable(_time_name))</span></a>
+<a name="235"><span class="lineNum">     235 </span><span class="lineCov">        140 :     _in[_time_name] = _time.batch_index({_step_count});</span></a>
+<a name="236"><span class="lineNum">     236 </span><span class="lineCov">         70 : }</span></a>
+<a name="237"><span class="lineNum">     237 </span>            : </a>
+<a name="238"><span class="lineNum">     238 </span>            : void</a>
+<a name="239"><span class="lineNum">     239 </span><span class="lineCov">          7 : TransientDriver::apply_ic()</span></a>
+<a name="240"><span class="lineNum">     240 </span>            : {</a>
+<a name="241"><span class="lineNum">     241 </span><span class="lineCov">          7 :   set_ic&lt;Scalar&gt;(&quot;ic_scalar_names&quot;, &quot;ic_scalar_values&quot;);</span></a>
+<a name="242"><span class="lineNum">     242 </span><span class="lineCov">          7 :   set_ic&lt;Rot&gt;(&quot;ic_rot_names&quot;, &quot;ic_rot_values&quot;);</span></a>
+<a name="243"><span class="lineNum">     243 </span><span class="lineCov">          7 :   set_ic&lt;SR2&gt;(&quot;ic_sr2_names&quot;, &quot;ic_sr2_values&quot;);</span></a>
 <a name="244"><span class="lineNum">     244 </span>            : </a>
-<a name="245"><span class="lineNum">     245 </span>            : void</a>
-<a name="246"><span class="lineNum">     246 </span><span class="lineCov">         63 : TransientDriver::apply_predictor()</span></a>
-<a name="247"><span class="lineNum">     247 </span>            : {</a>
-<a name="248"><span class="lineNum">     248 </span><span class="lineCov">         63 :   if (!_model.input_axis().has_subaxis(&quot;state&quot;))</span></a>
-<a name="249"><span class="lineNum">     249 </span><span class="lineCov">         27 :     return;</span></a>
+<a name="245"><span class="lineNum">     245 </span><span class="lineCov">         22 :   for (auto &amp;&amp; [name, var] : _model.output_variables())</span></a>
+<a name="246"><span class="lineNum">     246 </span><span class="lineCov">         15 :     if (!_result_out[0].count(name))</span></a>
+<a name="247"><span class="lineNum">     247 </span><span class="lineCov">         14 :       _result_out[0][name] =</span></a>
+<a name="248"><span class="lineNum">     248 </span><span class="lineCov">         29 :           Tensor::zeros(utils::add_shapes(var.list_sizes(), var.base_sizes())).to(_device);</span></a>
+<a name="249"><span class="lineNum">     249 </span><span class="lineCov">          7 : }</span></a>
 <a name="250"><span class="lineNum">     250 </span>            : </a>
-<a name="251"><span class="lineNum">     251 </span><span class="lineCov">         36 :   const auto input_state = _model.input_axis().subaxis(&quot;state&quot;);</span></a>
-<a name="252"><span class="lineNum">     252 </span><span class="lineCov">        117 :   for (const auto &amp; var : input_state.variable_names())</span></a>
-<a name="253"><span class="lineNum">     253 </span><span class="lineCov">         81 :     if (_model.output_axis().has_variable(var.prepend(&quot;state&quot;)))</span></a>
-<a name="254"><span class="lineNum">     254 </span>            :     {</a>
-<a name="255"><span class="lineNum">     255 </span><span class="lineCov">         81 :       if (_predictor == &quot;PREVIOUS_STATE&quot;)</span></a>
-<a name="256"><span class="lineNum">     256 </span><span class="lineCov">         72 :         _in[var.prepend(&quot;state&quot;)] = _result_out[_step_count - 1][var.prepend(&quot;state&quot;)];</span></a>
-<a name="257"><span class="lineNum">     257 </span><span class="lineCov">          9 :       else if (_predictor == &quot;LINEAR_EXTRAPOLATION&quot;)</span></a>
-<a name="258"><span class="lineNum">     258 </span>            :       {</a>
-<a name="259"><span class="lineNum">     259 </span>            :         // Fall back to PREVIOUS_STATE predictor at the 1st time step</a>
-<a name="260"><span class="lineNum">     260 </span><span class="lineCov">          9 :         if (_step_count == 1)</span></a>
-<a name="261"><span class="lineNum">     261 </span><span class="lineCov">          1 :           _in[var.prepend(&quot;state&quot;)] = _result_out[_step_count - 1][var.prepend(&quot;state&quot;)];</span></a>
-<a name="262"><span class="lineNum">     262 </span>            :         // Otherwise linearly extrapolate in time</a>
-<a name="263"><span class="lineNum">     263 </span>            :         else</a>
-<a name="264"><span class="lineNum">     264 </span>            :         {</a>
-<a name="265"><span class="lineNum">     265 </span><span class="lineCov">          8 :           const auto t = Scalar(_in[_time_name]);</span></a>
-<a name="266"><span class="lineNum">     266 </span><span class="lineCov">          8 :           const auto t_n = Scalar(_result_in[_step_count - 1][_time_name]);</span></a>
-<a name="267"><span class="lineNum">     267 </span><span class="lineCov">          8 :           const auto t_nm1 = Scalar(_result_in[_step_count - 2][_time_name]);</span></a>
-<a name="268"><span class="lineNum">     268 </span><span class="lineCov">          8 :           const auto dt = t - t_n;</span></a>
-<a name="269"><span class="lineNum">     269 </span><span class="lineCov">          8 :           const auto dt_n = t_n - t_nm1;</span></a>
-<a name="270"><span class="lineNum">     270 </span>            : </a>
-<a name="271"><span class="lineNum">     271 </span><span class="lineCov">         16 :           const auto s_n = _result_out[_step_count - 1][var.prepend(&quot;state&quot;)];</span></a>
-<a name="272"><span class="lineNum">     272 </span><span class="lineCov">         16 :           const auto s_nm1 = _result_out[_step_count - 2][var.prepend(&quot;state&quot;)];</span></a>
-<a name="273"><span class="lineNum">     273 </span><span class="lineCov">          8 :           _in[var.prepend(&quot;state&quot;)] = s_n + (s_n - s_nm1) / dt_n * dt;</span></a>
-<a name="274"><span class="lineNum">     274 </span><span class="lineCov">          8 :         }</span></a>
-<a name="275"><span class="lineNum">     275 </span>            :       }</a>
-<a name="276"><span class="lineNum">     276 </span>            :       else</a>
-<a name="277"><span class="lineNum">     277 </span><span class="lineNoCov">          0 :         throw NEMLException(&quot;Unrecognized predictor type: &quot; + std::string(_predictor));</span></a>
-<a name="278"><span class="lineNum">     278 </span>            :     }</a>
-<a name="279"><span class="lineNum">     279 </span>            : </a>
-<a name="280"><span class="lineNum">     280 </span><span class="lineCov">         36 :   if (_cp_warmup &amp;&amp; (_step_count == 1))</span></a>
-<a name="281"><span class="lineNum">     281 </span>            :   {</a>
-<a name="282"><span class="lineNum">     282 </span><span class="lineCov">          1 :     const auto D = SR2(_in[_cp_warmup_deformation_rate]);</span></a>
-<a name="283"><span class="lineNum">     283 </span><span class="lineCov">          1 :     const auto t = Scalar(_in[_time_name]);</span></a>
-<a name="284"><span class="lineNum">     284 </span><span class="lineCov">          1 :     const auto t_n = Scalar(_result_in[_step_count - 1][_time_name]);</span></a>
-<a name="285"><span class="lineNum">     285 </span><span class="lineCov">          1 :     _in[_cp_warmup_elastic_strain] = D * (t - t_n) * _cp_warmup_elastic_scale;</span></a>
-<a name="286"><span class="lineNum">     286 </span><span class="lineCov">          1 :   }</span></a>
-<a name="287"><span class="lineNum">     287 </span><span class="lineCov">         36 : }</span></a>
-<a name="288"><span class="lineNum">     288 </span>            : </a>
-<a name="289"><span class="lineNum">     289 </span>            : void</a>
-<a name="290"><span class="lineNum">     290 </span><span class="lineCov">         63 : TransientDriver::solve_step()</span></a>
-<a name="291"><span class="lineNum">     291 </span>            : {</a>
-<a name="292"><span class="lineNum">     292 </span><span class="lineCov">         63 :   _result_out[_step_count] = _model.value(_in);</span></a>
-<a name="293"><span class="lineNum">     293 </span><span class="lineCov">         63 : }</span></a>
+<a name="251"><span class="lineNum">     251 </span>            : void</a>
+<a name="252"><span class="lineNum">     252 </span><span class="lineCov">         63 : TransientDriver::apply_predictor()</span></a>
+<a name="253"><span class="lineNum">     253 </span>            : {</a>
+<a name="254"><span class="lineNum">     254 </span><span class="lineCov">         63 :   if (!_model.input_axis().has_state())</span></a>
+<a name="255"><span class="lineNum">     255 </span><span class="lineCov">         27 :     return;</span></a>
+<a name="256"><span class="lineNum">     256 </span>            : </a>
+<a name="257"><span class="lineNum">     257 </span><span class="lineCov">         36 :   const auto input_state = _model.input_axis().subaxis(&quot;state&quot;);</span></a>
+<a name="258"><span class="lineNum">     258 </span><span class="lineCov">        117 :   for (const auto &amp; var : input_state.variable_names())</span></a>
+<a name="259"><span class="lineNum">     259 </span><span class="lineCov">         81 :     if (_model.output_axis().has_variable(var.prepend(&quot;state&quot;)))</span></a>
+<a name="260"><span class="lineNum">     260 </span>            :     {</a>
+<a name="261"><span class="lineNum">     261 </span><span class="lineCov">         81 :       if (_predictor == &quot;PREVIOUS_STATE&quot;)</span></a>
+<a name="262"><span class="lineNum">     262 </span><span class="lineCov">         72 :         _in[var.prepend(&quot;state&quot;)] = _result_out[_step_count - 1][var.prepend(&quot;state&quot;)];</span></a>
+<a name="263"><span class="lineNum">     263 </span><span class="lineCov">          9 :       else if (_predictor == &quot;LINEAR_EXTRAPOLATION&quot;)</span></a>
+<a name="264"><span class="lineNum">     264 </span>            :       {</a>
+<a name="265"><span class="lineNum">     265 </span>            :         // Fall back to PREVIOUS_STATE predictor at the 1st time step</a>
+<a name="266"><span class="lineNum">     266 </span><span class="lineCov">          9 :         if (_step_count == 1)</span></a>
+<a name="267"><span class="lineNum">     267 </span><span class="lineCov">          1 :           _in[var.prepend(&quot;state&quot;)] = _result_out[_step_count - 1][var.prepend(&quot;state&quot;)];</span></a>
+<a name="268"><span class="lineNum">     268 </span>            :         // Otherwise linearly extrapolate in time</a>
+<a name="269"><span class="lineNum">     269 </span>            :         else</a>
+<a name="270"><span class="lineNum">     270 </span>            :         {</a>
+<a name="271"><span class="lineNum">     271 </span><span class="lineCov">          8 :           const auto t = Scalar(_in[_time_name]);</span></a>
+<a name="272"><span class="lineNum">     272 </span><span class="lineCov">          8 :           const auto t_n = Scalar(_result_in[_step_count - 1][_time_name]);</span></a>
+<a name="273"><span class="lineNum">     273 </span><span class="lineCov">          8 :           const auto t_nm1 = Scalar(_result_in[_step_count - 2][_time_name]);</span></a>
+<a name="274"><span class="lineNum">     274 </span><span class="lineCov">          8 :           const auto dt = t - t_n;</span></a>
+<a name="275"><span class="lineNum">     275 </span><span class="lineCov">          8 :           const auto dt_n = t_n - t_nm1;</span></a>
+<a name="276"><span class="lineNum">     276 </span>            : </a>
+<a name="277"><span class="lineNum">     277 </span><span class="lineCov">         16 :           const auto s_n = _result_out[_step_count - 1][var.prepend(&quot;state&quot;)];</span></a>
+<a name="278"><span class="lineNum">     278 </span><span class="lineCov">         16 :           const auto s_nm1 = _result_out[_step_count - 2][var.prepend(&quot;state&quot;)];</span></a>
+<a name="279"><span class="lineNum">     279 </span><span class="lineCov">          8 :           _in[var.prepend(&quot;state&quot;)] = s_n + (s_n - s_nm1) / dt_n * dt;</span></a>
+<a name="280"><span class="lineNum">     280 </span><span class="lineCov">          8 :         }</span></a>
+<a name="281"><span class="lineNum">     281 </span>            :       }</a>
+<a name="282"><span class="lineNum">     282 </span>            :       else</a>
+<a name="283"><span class="lineNum">     283 </span><span class="lineNoCov">          0 :         throw NEMLException(&quot;Unrecognized predictor type: &quot; + std::string(_predictor));</span></a>
+<a name="284"><span class="lineNum">     284 </span>            :     }</a>
+<a name="285"><span class="lineNum">     285 </span>            : </a>
+<a name="286"><span class="lineNum">     286 </span><span class="lineCov">         36 :   if (_cp_warmup &amp;&amp; (_step_count == 1))</span></a>
+<a name="287"><span class="lineNum">     287 </span>            :   {</a>
+<a name="288"><span class="lineNum">     288 </span><span class="lineCov">          1 :     const auto D = SR2(_in[_cp_warmup_deformation_rate]);</span></a>
+<a name="289"><span class="lineNum">     289 </span><span class="lineCov">          1 :     const auto t = Scalar(_in[_time_name]);</span></a>
+<a name="290"><span class="lineNum">     290 </span><span class="lineCov">          1 :     const auto t_n = Scalar(_result_in[_step_count - 1][_time_name]);</span></a>
+<a name="291"><span class="lineNum">     291 </span><span class="lineCov">          1 :     _in[_cp_warmup_elastic_strain] = D * (t - t_n) * _cp_warmup_elastic_scale;</span></a>
+<a name="292"><span class="lineNum">     292 </span><span class="lineCov">          1 :   }</span></a>
+<a name="293"><span class="lineNum">     293 </span><span class="lineCov">         36 : }</span></a>
 <a name="294"><span class="lineNum">     294 </span>            : </a>
 <a name="295"><span class="lineNum">     295 </span>            : void</a>
-<a name="296"><span class="lineNum">     296 </span><span class="lineCov">         70 : TransientDriver::store_input()</span></a>
+<a name="296"><span class="lineNum">     296 </span><span class="lineCov">         63 : TransientDriver::solve_step()</span></a>
 <a name="297"><span class="lineNum">     297 </span>            : {</a>
-<a name="298"><span class="lineNum">     298 </span><span class="lineCov">         70 :   _result_in[_step_count] = _in;</span></a>
-<a name="299"><span class="lineNum">     299 </span><span class="lineCov">         70 : }</span></a>
+<a name="298"><span class="lineNum">     298 </span><span class="lineCov">         63 :   _result_out[_step_count] = _model.value(_in);</span></a>
+<a name="299"><span class="lineNum">     299 </span><span class="lineCov">         63 : }</span></a>
 <a name="300"><span class="lineNum">     300 </span>            : </a>
-<a name="301"><span class="lineNum">     301 </span>            : std::string</a>
-<a name="302"><span class="lineNum">     302 </span><span class="lineCov">         12 : TransientDriver::save_as_path() const</span></a>
+<a name="301"><span class="lineNum">     301 </span>            : void</a>
+<a name="302"><span class="lineNum">     302 </span><span class="lineCov">         70 : TransientDriver::store_input()</span></a>
 <a name="303"><span class="lineNum">     303 </span>            : {</a>
-<a name="304"><span class="lineNum">     304 </span><span class="lineCov">         12 :   return _save_as;</span></a>
-<a name="305"><span class="lineNum">     305 </span>            : }</a>
+<a name="304"><span class="lineNum">     304 </span><span class="lineCov">         70 :   _result_in[_step_count] = _in;</span></a>
+<a name="305"><span class="lineNum">     305 </span><span class="lineCov">         70 : }</span></a>
 <a name="306"><span class="lineNum">     306 </span>            : </a>
-<a name="307"><span class="lineNum">     307 </span>            : torch::nn::ModuleDict</a>
-<a name="308"><span class="lineNum">     308 </span><span class="lineCov">          5 : TransientDriver::result() const</span></a>
+<a name="307"><span class="lineNum">     307 </span>            : std::string</a>
+<a name="308"><span class="lineNum">     308 </span><span class="lineCov">         12 : TransientDriver::save_as_path() const</span></a>
 <a name="309"><span class="lineNum">     309 </span>            : {</a>
-<a name="310"><span class="lineNum">     310 </span>            :   // Dump input variables into a ModuleList</a>
-<a name="311"><span class="lineNum">     311 </span><span class="lineCov">          5 :   torch::nn::ModuleList res_in;</span></a>
-<a name="312"><span class="lineNum">     312 </span><span class="lineCov">         55 :   for (const auto &amp; in : _result_in)</span></a>
-<a name="313"><span class="lineNum">     313 </span>            :   {</a>
-<a name="314"><span class="lineNum">     314 </span>            :     // Dump input variables at each step into a ModuleDict</a>
-<a name="315"><span class="lineNum">     315 </span><span class="lineCov">         50 :     torch::nn::ModuleDict res_in_step;</span></a>
-<a name="316"><span class="lineNum">     316 </span><span class="lineCov">        414 :     for (auto &amp;&amp; [name, val] : in)</span></a>
-<a name="317"><span class="lineNum">     317 </span><span class="lineCov">        364 :       res_in_step-&gt;register_buffer(utils::stringify(name), val);</span></a>
-<a name="318"><span class="lineNum">     318 </span><span class="lineCov">         50 :     res_in-&gt;push_back(res_in_step);</span></a>
-<a name="319"><span class="lineNum">     319 </span><span class="lineCov">         50 :   }</span></a>
-<a name="320"><span class="lineNum">     320 </span>            : </a>
-<a name="321"><span class="lineNum">     321 </span>            :   // Dump output variables into a ModuleList</a>
-<a name="322"><span class="lineNum">     322 </span><span class="lineCov">          5 :   torch::nn::ModuleList res_out;</span></a>
-<a name="323"><span class="lineNum">     323 </span><span class="lineCov">         55 :   for (const auto &amp; out : _result_out)</span></a>
-<a name="324"><span class="lineNum">     324 </span>            :   {</a>
-<a name="325"><span class="lineNum">     325 </span>            :     // Dump output variables at each step into a ModuleDict</a>
-<a name="326"><span class="lineNum">     326 </span><span class="lineCov">         50 :     torch::nn::ModuleDict res_out_step;</span></a>
-<a name="327"><span class="lineNum">     327 </span><span class="lineCov">        180 :     for (auto &amp;&amp; [name, val] : out)</span></a>
-<a name="328"><span class="lineNum">     328 </span><span class="lineCov">        130 :       res_out_step-&gt;register_buffer(utils::stringify(name), val);</span></a>
-<a name="329"><span class="lineNum">     329 </span><span class="lineCov">         50 :     res_out-&gt;push_back(res_out_step);</span></a>
-<a name="330"><span class="lineNum">     330 </span><span class="lineCov">         50 :   }</span></a>
-<a name="331"><span class="lineNum">     331 </span>            : </a>
-<a name="332"><span class="lineNum">     332 </span>            :   // Combine input and output</a>
-<a name="333"><span class="lineNum">     333 </span><span class="lineCov">          5 :   torch::nn::ModuleDict res;</span></a>
-<a name="334"><span class="lineNum">     334 </span><span class="lineCov">         15 :   res-&gt;update({{&quot;input&quot;, res_in.ptr()}, {&quot;output&quot;, res_out.ptr()}});</span></a>
-<a name="335"><span class="lineNum">     335 </span><span class="lineCov">         10 :   return res;</span></a>
-<a name="336"><span class="lineNum">     336 </span><span class="lineCov">          5 : }</span></a>
+<a name="310"><span class="lineNum">     310 </span><span class="lineCov">         12 :   return _save_as;</span></a>
+<a name="311"><span class="lineNum">     311 </span>            : }</a>
+<a name="312"><span class="lineNum">     312 </span>            : </a>
+<a name="313"><span class="lineNum">     313 </span>            : torch::nn::ModuleDict</a>
+<a name="314"><span class="lineNum">     314 </span><span class="lineCov">          5 : TransientDriver::result() const</span></a>
+<a name="315"><span class="lineNum">     315 </span>            : {</a>
+<a name="316"><span class="lineNum">     316 </span>            :   // Dump input variables into a ModuleList</a>
+<a name="317"><span class="lineNum">     317 </span><span class="lineCov">          5 :   torch::nn::ModuleList res_in;</span></a>
+<a name="318"><span class="lineNum">     318 </span><span class="lineCov">         55 :   for (const auto &amp; in : _result_in)</span></a>
+<a name="319"><span class="lineNum">     319 </span>            :   {</a>
+<a name="320"><span class="lineNum">     320 </span>            :     // Dump input variables at each step into a ModuleDict</a>
+<a name="321"><span class="lineNum">     321 </span><span class="lineCov">         50 :     torch::nn::ModuleDict res_in_step;</span></a>
+<a name="322"><span class="lineNum">     322 </span><span class="lineCov">        414 :     for (auto &amp;&amp; [name, val] : in)</span></a>
+<a name="323"><span class="lineNum">     323 </span><span class="lineCov">        364 :       res_in_step-&gt;register_buffer(utils::stringify(name), val);</span></a>
+<a name="324"><span class="lineNum">     324 </span><span class="lineCov">         50 :     res_in-&gt;push_back(res_in_step);</span></a>
+<a name="325"><span class="lineNum">     325 </span><span class="lineCov">         50 :   }</span></a>
+<a name="326"><span class="lineNum">     326 </span>            : </a>
+<a name="327"><span class="lineNum">     327 </span>            :   // Dump output variables into a ModuleList</a>
+<a name="328"><span class="lineNum">     328 </span><span class="lineCov">          5 :   torch::nn::ModuleList res_out;</span></a>
+<a name="329"><span class="lineNum">     329 </span><span class="lineCov">         55 :   for (const auto &amp; out : _result_out)</span></a>
+<a name="330"><span class="lineNum">     330 </span>            :   {</a>
+<a name="331"><span class="lineNum">     331 </span>            :     // Dump output variables at each step into a ModuleDict</a>
+<a name="332"><span class="lineNum">     332 </span><span class="lineCov">         50 :     torch::nn::ModuleDict res_out_step;</span></a>
+<a name="333"><span class="lineNum">     333 </span><span class="lineCov">        180 :     for (auto &amp;&amp; [name, val] : out)</span></a>
+<a name="334"><span class="lineNum">     334 </span><span class="lineCov">        130 :       res_out_step-&gt;register_buffer(utils::stringify(name), val);</span></a>
+<a name="335"><span class="lineNum">     335 </span><span class="lineCov">         50 :     res_out-&gt;push_back(res_out_step);</span></a>
+<a name="336"><span class="lineNum">     336 </span><span class="lineCov">         50 :   }</span></a>
 <a name="337"><span class="lineNum">     337 </span>            : </a>
-<a name="338"><span class="lineNum">     338 </span>            : void</a>
-<a name="339"><span class="lineNum">     339 </span><span class="lineCov">          5 : TransientDriver::output() const</span></a>
-<a name="340"><span class="lineNum">     340 </span>            : {</a>
-<a name="341"><span class="lineNum">     341 </span><span class="lineCov">          5 :   if (_verbose)</span></a>
-<a name="342"><span class="lineNum">     342 </span>            :     // LCOV_EXCL_START</a>
-<a name="343"><span class="lineNum">     343 </span>            :     std::cout &lt;&lt; &quot;Saving results...&quot; &lt;&lt; std::endl;</a>
-<a name="344"><span class="lineNum">     344 </span>            :   // LCOV_EXCL_STOP</a>
-<a name="345"><span class="lineNum">     345 </span>            : </a>
-<a name="346"><span class="lineNum">     346 </span><span class="lineCov">          5 :   auto cwd = fs::current_path();</span></a>
-<a name="347"><span class="lineNum">     347 </span><span class="lineCov">         10 :   auto out = cwd / save_as_path();</span></a>
-<a name="348"><span class="lineNum">     348 </span>            : </a>
-<a name="349"><span class="lineNum">     349 </span><span class="lineCov">          5 :   if (out.extension() == &quot;.pt&quot;)</span></a>
-<a name="350"><span class="lineNum">     350 </span><span class="lineCov">          5 :     output_pt(out);</span></a>
-<a name="351"><span class="lineNum">     351 </span>            :   else</a>
-<a name="352"><span class="lineNum">     352 </span>            :     // LCOV_EXCL_START</a>
-<a name="353"><span class="lineNum">     353 </span>            :     neml_assert(false, &quot;Unsupported output format: &quot;, out.extension());</a>
-<a name="354"><span class="lineNum">     354 </span>            :   // LCOV_EXCL_STOP</a>
-<a name="355"><span class="lineNum">     355 </span>            : </a>
-<a name="356"><span class="lineNum">     356 </span><span class="lineCov">          5 :   if (_verbose)</span></a>
-<a name="357"><span class="lineNum">     357 </span>            :     // LCOV_EXCL_START</a>
-<a name="358"><span class="lineNum">     358 </span>            :     std::cout &lt;&lt; &quot;Results saved to &quot; &lt;&lt; save_as_path() &lt;&lt; std::endl;</a>
-<a name="359"><span class="lineNum">     359 </span>            :   // LCOV_EXCL_STOP</a>
-<a name="360"><span class="lineNum">     360 </span><span class="lineCov">          5 : }</span></a>
+<a name="338"><span class="lineNum">     338 </span>            :   // Combine input and output</a>
+<a name="339"><span class="lineNum">     339 </span><span class="lineCov">          5 :   torch::nn::ModuleDict res;</span></a>
+<a name="340"><span class="lineNum">     340 </span><span class="lineCov">         15 :   res-&gt;update({{&quot;input&quot;, res_in.ptr()}, {&quot;output&quot;, res_out.ptr()}});</span></a>
+<a name="341"><span class="lineNum">     341 </span><span class="lineCov">         10 :   return res;</span></a>
+<a name="342"><span class="lineNum">     342 </span><span class="lineCov">          5 : }</span></a>
+<a name="343"><span class="lineNum">     343 </span>            : </a>
+<a name="344"><span class="lineNum">     344 </span>            : void</a>
+<a name="345"><span class="lineNum">     345 </span><span class="lineCov">          5 : TransientDriver::output() const</span></a>
+<a name="346"><span class="lineNum">     346 </span>            : {</a>
+<a name="347"><span class="lineNum">     347 </span><span class="lineCov">          5 :   if (_verbose)</span></a>
+<a name="348"><span class="lineNum">     348 </span>            :     // LCOV_EXCL_START</a>
+<a name="349"><span class="lineNum">     349 </span>            :     std::cout &lt;&lt; &quot;Saving results...&quot; &lt;&lt; std::endl;</a>
+<a name="350"><span class="lineNum">     350 </span>            :   // LCOV_EXCL_STOP</a>
+<a name="351"><span class="lineNum">     351 </span>            : </a>
+<a name="352"><span class="lineNum">     352 </span><span class="lineCov">          5 :   auto cwd = fs::current_path();</span></a>
+<a name="353"><span class="lineNum">     353 </span><span class="lineCov">         10 :   auto out = cwd / save_as_path();</span></a>
+<a name="354"><span class="lineNum">     354 </span>            : </a>
+<a name="355"><span class="lineNum">     355 </span><span class="lineCov">          5 :   if (out.extension() == &quot;.pt&quot;)</span></a>
+<a name="356"><span class="lineNum">     356 </span><span class="lineCov">          5 :     output_pt(out);</span></a>
+<a name="357"><span class="lineNum">     357 </span>            :   else</a>
+<a name="358"><span class="lineNum">     358 </span>            :     // LCOV_EXCL_START</a>
+<a name="359"><span class="lineNum">     359 </span>            :     neml_assert(false, &quot;Unsupported output format: &quot;, out.extension());</a>
+<a name="360"><span class="lineNum">     360 </span>            :   // LCOV_EXCL_STOP</a>
 <a name="361"><span class="lineNum">     361 </span>            : </a>
-<a name="362"><span class="lineNum">     362 </span>            : void</a>
-<a name="363"><span class="lineNum">     363 </span><span class="lineCov">          5 : TransientDriver::output_pt(const std::filesystem::path &amp; out) const</span></a>
-<a name="364"><span class="lineNum">     364 </span>            : {</a>
-<a name="365"><span class="lineNum">     365 </span><span class="lineCov">          5 :   torch::save(result(), out);</span></a>
+<a name="362"><span class="lineNum">     362 </span><span class="lineCov">          5 :   if (_verbose)</span></a>
+<a name="363"><span class="lineNum">     363 </span>            :     // LCOV_EXCL_START</a>
+<a name="364"><span class="lineNum">     364 </span>            :     std::cout &lt;&lt; &quot;Results saved to &quot; &lt;&lt; save_as_path() &lt;&lt; std::endl;</a>
+<a name="365"><span class="lineNum">     365 </span>            :   // LCOV_EXCL_STOP</a>
 <a name="366"><span class="lineNum">     366 </span><span class="lineCov">          5 : }</span></a>
-<a name="367"><span class="lineNum">     367 </span>            : } // namespace neml2</a>
+<a name="367"><span class="lineNum">     367 </span>            : </a>
+<a name="368"><span class="lineNum">     368 </span>            : void</a>
+<a name="369"><span class="lineNum">     369 </span><span class="lineCov">          5 : TransientDriver::output_pt(const std::filesystem::path &amp; out) const</span></a>
+<a name="370"><span class="lineNum">     370 </span>            : {</a>
+<a name="371"><span class="lineNum">     371 </span><span class="lineCov">          5 :   torch::save(result(), out);</span></a>
+<a name="372"><span class="lineNum">     372 </span><span class="lineCov">          5 : }</span></a>
+<a name="373"><span class="lineNum">     373 </span>            : } // namespace neml2</a>
 </pre>
       </td>
     </tr>
