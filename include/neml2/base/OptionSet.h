@@ -560,7 +560,7 @@ inline void
 _print_helper(std::ostream & os, const std::vector<bool> * option)
 {
   for (const auto p : *option)
-    os << p << " ";
+    os << static_cast<bool>(p) << " ";
 }
 
 template <typename P>
