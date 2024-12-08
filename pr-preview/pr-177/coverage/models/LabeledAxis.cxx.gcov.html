@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-08 17:29:20</td>
+            <td class="headerValue">2024-12-08 19:12:33</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">32</td>
@@ -282,10 +282,10 @@
 <a name="220"><span class="lineNum">     220 </span>            : </a>
 <a name="221"><span class="lineNum">     221 </span>            :   // Otherwise, check the existence of the variable</a>
 <a name="222"><span class="lineNum">     222 </span><span class="lineCov">        583 :   if (name.size() == 1)</span></a>
-<a name="223"><span class="lineNum">     223 </span><span class="lineCov">        188 :     return _variables.find(name[0]) != _variables.end();</span></a>
+<a name="223"><span class="lineNum">     223 </span><span class="lineCov">        189 :     return _variables.find(name[0]) != _variables.end();</span></a>
 <a name="224"><span class="lineNum">     224 </span>            : </a>
-<a name="225"><span class="lineNum">     225 </span><span class="lineCov">        395 :   const auto subaxis = _subaxes.find(name[0]);</span></a>
-<a name="226"><span class="lineNum">     226 </span><span class="lineCov">        395 :   return subaxis != _subaxes.end() &amp;&amp; subaxis-&gt;second-&gt;has_variable(name.slice(1));</span></a>
+<a name="225"><span class="lineNum">     225 </span><span class="lineCov">        394 :   const auto subaxis = _subaxes.find(name[0]);</span></a>
+<a name="226"><span class="lineNum">     226 </span><span class="lineCov">        394 :   return subaxis != _subaxes.end() &amp;&amp; subaxis-&gt;second-&gt;has_variable(name.slice(1));</span></a>
 <a name="227"><span class="lineNum">     227 </span>            : }</a>
 <a name="228"><span class="lineNum">     228 </span>            : </a>
 <a name="229"><span class="lineNum">     229 </span>            : std::size_t</a>
@@ -409,150 +409,151 @@
 <a name="347"><span class="lineNum">     347 </span>            : LabeledAxis &amp;</a>
 <a name="348"><span class="lineNum">     348 </span><span class="lineCov">       5619 : LabeledAxis::subaxis(const LabeledAxisAccessor &amp; name)</span></a>
 <a name="349"><span class="lineNum">     349 </span>            : {</a>
-<a name="350"><span class="lineNum">     350 </span><span class="lineCov">       5619 :   return const_cast&lt;LabeledAxis &amp;&gt;(std::as_const(*this).subaxis(name));</span></a>
-<a name="351"><span class="lineNum">     351 </span>            : }</a>
-<a name="352"><span class="lineNum">     352 </span>            : </a>
-<a name="353"><span class="lineNum">     353 </span>            : const std::vector&lt;std::string&gt; &amp;</a>
-<a name="354"><span class="lineNum">     354 </span><span class="lineCov">          7 : LabeledAxis::subaxis_names() const</span></a>
-<a name="355"><span class="lineNum">     355 </span>            : {</a>
-<a name="356"><span class="lineNum">     356 </span><span class="lineCov">          7 :   ensure_setup_dbg();</span></a>
-<a name="357"><span class="lineNum">     357 </span><span class="lineCov">          7 :   return _id_to_subaxis_map;</span></a>
-<a name="358"><span class="lineNum">     358 </span>            : }</a>
-<a name="359"><span class="lineNum">     359 </span>            : </a>
-<a name="360"><span class="lineNum">     360 </span>            : const std::vector&lt;indexing::Slice&gt; &amp;</a>
-<a name="361"><span class="lineNum">     361 </span><span class="lineCov">          3 : LabeledAxis::subaxis_slices() const</span></a>
-<a name="362"><span class="lineNum">     362 </span>            : {</a>
-<a name="363"><span class="lineNum">     363 </span><span class="lineCov">          3 :   ensure_setup_dbg();</span></a>
-<a name="364"><span class="lineNum">     364 </span><span class="lineCov">          3 :   return _id_to_subaxis_slice_map;</span></a>
-<a name="365"><span class="lineNum">     365 </span>            : }</a>
-<a name="366"><span class="lineNum">     366 </span>            : </a>
-<a name="367"><span class="lineNum">     367 </span>            : indexing::Slice</a>
-<a name="368"><span class="lineNum">     368 </span><span class="lineCov">         14 : LabeledAxis::subaxis_slice(const LabeledAxisAccessor &amp; name) const</span></a>
-<a name="369"><span class="lineNum">     369 </span>            : {</a>
-<a name="370"><span class="lineNum">     370 </span><span class="lineCov">         14 :   ensure_setup_dbg();</span></a>
-<a name="371"><span class="lineNum">     371 </span>            : </a>
-<a name="372"><span class="lineNum">     372 </span>            :   // If the name has length 1, it must be a local sub-axis</a>
-<a name="373"><span class="lineNum">     373 </span><span class="lineCov">         14 :   if (name.size() == 1)</span></a>
-<a name="374"><span class="lineNum">     374 </span><span class="lineCov">         10 :     return _id_to_subaxis_slice_map[subaxis_id(name[0])];</span></a>
-<a name="375"><span class="lineNum">     375 </span>            : </a>
-<a name="376"><span class="lineNum">     376 </span>            :   // Otherwise, the name must be on a sub-axis</a>
-<a name="377"><span class="lineNum">     377 </span><span class="lineCov">          4 :   const auto subaxis = _subaxes.find(name[0]);</span></a>
-<a name="378"><span class="lineNum">     378 </span><span class="lineCov">          4 :   neml_assert(</span></a>
-<a name="379"><span class="lineNum">     379 </span><span class="lineCov">          4 :       subaxis != _subaxes.end(), &quot;Sub-axis named '&quot;, name, &quot;' does not exist on axis:\n&quot;, *this);</span></a>
-<a name="380"><span class="lineNum">     380 </span><span class="lineCov">          4 :   const auto &amp; slice = subaxis-&gt;second-&gt;subaxis_slice(name.slice(1));</span></a>
-<a name="381"><span class="lineNum">     381 </span><span class="lineCov">          4 :   auto offset = _id_to_subaxis_slice_map[subaxis_id(name[0])].start();</span></a>
-<a name="382"><span class="lineNum">     382 </span><span class="lineCov">          4 :   return {slice.start() + offset, slice.stop() + offset};</span></a>
-<a name="383"><span class="lineNum">     383 </span><span class="lineCov">          4 : }</span></a>
-<a name="384"><span class="lineNum">     384 </span>            : </a>
-<a name="385"><span class="lineNum">     385 </span>            : const std::vector&lt;Size&gt; &amp;</a>
-<a name="386"><span class="lineNum">     386 </span><span class="lineCov">          7 : LabeledAxis::subaxis_sizes() const</span></a>
-<a name="387"><span class="lineNum">     387 </span>            : {</a>
-<a name="388"><span class="lineNum">     388 </span><span class="lineCov">          7 :   ensure_setup_dbg();</span></a>
-<a name="389"><span class="lineNum">     389 </span><span class="lineCov">          7 :   return _id_to_subaxis_size_map;</span></a>
-<a name="390"><span class="lineNum">     390 </span>            : }</a>
-<a name="391"><span class="lineNum">     391 </span>            : </a>
-<a name="392"><span class="lineNum">     392 </span>            : Size</a>
-<a name="393"><span class="lineNum">     393 </span><span class="lineCov">         14 : LabeledAxis::subaxis_size(const LabeledAxisAccessor &amp; name) const</span></a>
-<a name="394"><span class="lineNum">     394 </span>            : {</a>
-<a name="395"><span class="lineNum">     395 </span><span class="lineCov">         14 :   const auto subaxis = _subaxes.find(name[0]);</span></a>
-<a name="396"><span class="lineNum">     396 </span><span class="lineCov">         14 :   neml_assert(</span></a>
-<a name="397"><span class="lineNum">     397 </span><span class="lineCov">         14 :       subaxis != _subaxes.end(), &quot;Sub-axis named '&quot;, name, &quot;' does not exist on axis:\n&quot;, *this);</span></a>
-<a name="398"><span class="lineNum">     398 </span>            : </a>
-<a name="399"><span class="lineNum">     399 </span><span class="lineCov">         14 :   if (name.size() == 1)</span></a>
-<a name="400"><span class="lineNum">     400 </span><span class="lineCov">         10 :     return subaxis-&gt;second-&gt;size();</span></a>
-<a name="401"><span class="lineNum">     401 </span>            : </a>
-<a name="402"><span class="lineNum">     402 </span><span class="lineCov">          4 :   return subaxis-&gt;second-&gt;subaxis_size(name.slice(1));</span></a>
-<a name="403"><span class="lineNum">     403 </span>            : }</a>
-<a name="404"><span class="lineNum">     404 </span>            : </a>
-<a name="405"><span class="lineNum">     405 </span>            : bool</a>
-<a name="406"><span class="lineNum">     406 </span><span class="lineCov">         10 : LabeledAxis::equals(const LabeledAxis &amp; other) const</span></a>
-<a name="407"><span class="lineNum">     407 </span>            : {</a>
-<a name="408"><span class="lineNum">     408 </span>            :   // They must have the same set of variables (with the same storage sizes)</a>
-<a name="409"><span class="lineNum">     409 </span><span class="lineCov">         10 :   if (_variables != other._variables)</span></a>
-<a name="410"><span class="lineNum">     410 </span><span class="lineCov">          2 :     return false;</span></a>
-<a name="411"><span class="lineNum">     411 </span>            : </a>
-<a name="412"><span class="lineNum">     412 </span>            :   // They must have the same number of subaxes</a>
-<a name="413"><span class="lineNum">     413 </span><span class="lineCov">          8 :   if (_subaxes.size() != other._subaxes.size())</span></a>
-<a name="414"><span class="lineNum">     414 </span><span class="lineNoCov">          0 :     return false;</span></a>
-<a name="415"><span class="lineNum">     415 </span>            : </a>
-<a name="416"><span class="lineNum">     416 </span>            :   // Compare each subaxis</a>
-<a name="417"><span class="lineNum">     417 </span><span class="lineCov">         10 :   for (const auto &amp; [name, axis] : _subaxes)</span></a>
-<a name="418"><span class="lineNum">     418 </span>            :   {</a>
-<a name="419"><span class="lineNum">     419 </span><span class="lineCov">          2 :     if (other._subaxes.count(name) == 0)</span></a>
-<a name="420"><span class="lineNum">     420 </span><span class="lineNoCov">          0 :       return false;</span></a>
-<a name="421"><span class="lineNum">     421 </span>            : </a>
-<a name="422"><span class="lineNum">     422 </span><span class="lineCov">          2 :     if (*other._subaxes.at(name) != *axis)</span></a>
-<a name="423"><span class="lineNum">     423 </span><span class="lineNoCov">          0 :       return false;</span></a>
-<a name="424"><span class="lineNum">     424 </span>            :   }</a>
-<a name="425"><span class="lineNum">     425 </span>            : </a>
-<a name="426"><span class="lineNum">     426 </span><span class="lineCov">          8 :   return true;</span></a>
-<a name="427"><span class="lineNum">     427 </span>            : }</a>
-<a name="428"><span class="lineNum">     428 </span>            : </a>
-<a name="429"><span class="lineNum">     429 </span>            : void</a>
-<a name="430"><span class="lineNum">     430 </span><span class="lineCov">       1304 : LabeledAxis::cache_reserved_subaxis(const std::string &amp; axis_name)</span></a>
-<a name="431"><span class="lineNum">     431 </span>            : {</a>
-<a name="432"><span class="lineNum">     432 </span><span class="lineCov">       1304 :   if (axis_name == &quot;state&quot;)</span></a>
-<a name="433"><span class="lineNum">     433 </span><span class="lineCov">        435 :     _has_state = true;</span></a>
-<a name="434"><span class="lineNum">     434 </span><span class="lineCov">        869 :   else if (axis_name == &quot;old_state&quot;)</span></a>
-<a name="435"><span class="lineNum">     435 </span><span class="lineCov">         59 :     _has_old_state = true;</span></a>
-<a name="436"><span class="lineNum">     436 </span><span class="lineCov">        810 :   else if (axis_name == &quot;forces&quot;)</span></a>
-<a name="437"><span class="lineNum">     437 </span><span class="lineCov">        128 :     _has_forces = true;</span></a>
-<a name="438"><span class="lineNum">     438 </span><span class="lineCov">        682 :   else if (axis_name == &quot;old_forces&quot;)</span></a>
-<a name="439"><span class="lineNum">     439 </span><span class="lineCov">         64 :     _has_old_forces = true;</span></a>
-<a name="440"><span class="lineNum">     440 </span><span class="lineCov">        618 :   else if (axis_name == &quot;residual&quot;)</span></a>
-<a name="441"><span class="lineNum">     441 </span><span class="lineCov">         48 :     _has_residual = true;</span></a>
-<a name="442"><span class="lineNum">     442 </span><span class="lineCov">        570 :   else if (axis_name == &quot;parameters&quot;)</span></a>
-<a name="443"><span class="lineNum">     443 </span><span class="lineCov">         83 :     _has_parameters = true;</span></a>
-<a name="444"><span class="lineNum">     444 </span><span class="lineCov">       1304 : }</span></a>
-<a name="445"><span class="lineNum">     445 </span>            : </a>
-<a name="446"><span class="lineNum">     446 </span>            : void</a>
-<a name="447"><span class="lineNum">     447 </span><span class="lineCov">      53179 : LabeledAxis::ensure_setup_dbg() const</span></a>
-<a name="448"><span class="lineNum">     448 </span>            : {</a>
-<a name="449"><span class="lineNum">     449 </span><span class="lineCov">      53179 :   neml_assert_dbg(_setup, &quot;The axis has not been setup yet.&quot;);</span></a>
-<a name="450"><span class="lineNum">     450 </span><span class="lineCov">      53179 : }</span></a>
-<a name="451"><span class="lineNum">     451 </span>            : </a>
-<a name="452"><span class="lineNum">     452 </span>            : std::ostream &amp;</a>
-<a name="453"><span class="lineNum">     453 </span><span class="lineNoCov">          0 : operator&lt;&lt;(std::ostream &amp; os, const LabeledAxis &amp; axis)</span></a>
-<a name="454"><span class="lineNum">     454 </span>            : {</a>
-<a name="455"><span class="lineNum">     455 </span>            :   // Get unqualified variable names</a>
-<a name="456"><span class="lineNum">     456 </span><span class="lineNoCov">          0 :   const auto var_names = axis.variable_names();</span></a>
-<a name="457"><span class="lineNum">     457 </span>            : </a>
-<a name="458"><span class="lineNum">     458 </span>            :   // Find the maximum variable name length</a>
-<a name="459"><span class="lineNum">     459 </span><span class="lineNoCov">          0 :   size_t max_var_name_length = 0;</span></a>
-<a name="460"><span class="lineNum">     460 </span><span class="lineNoCov">          0 :   for (const auto &amp; var_name : var_names)</span></a>
-<a name="461"><span class="lineNum">     461 </span>            :   {</a>
-<a name="462"><span class="lineNum">     462 </span><span class="lineNoCov">          0 :     const auto var_name_str = utils::stringify(var_name);</span></a>
-<a name="463"><span class="lineNum">     463 </span><span class="lineNoCov">          0 :     if (var_name_str.size() &gt; max_var_name_length)</span></a>
-<a name="464"><span class="lineNum">     464 </span><span class="lineNoCov">          0 :       max_var_name_length = var_name_str.size();</span></a>
-<a name="465"><span class="lineNum">     465 </span><span class="lineNoCov">          0 :   }</span></a>
-<a name="466"><span class="lineNum">     466 </span>            : </a>
-<a name="467"><span class="lineNum">     467 </span>            :   // Print variables with right alignment</a>
-<a name="468"><span class="lineNum">     468 </span><span class="lineNoCov">          0 :   for (auto var = var_names.begin(); var != var_names.end(); var++)</span></a>
-<a name="469"><span class="lineNum">     469 </span>            :   {</a>
-<a name="470"><span class="lineNum">     470 </span><span class="lineNoCov">          0 :     if (axis._setup)</span></a>
-<a name="471"><span class="lineNum">     471 </span><span class="lineNoCov">          0 :       os &lt;&lt; std::setw(3) &lt;&lt; std::right &lt;&lt; axis.variable_id(*var) &lt;&lt; &quot;: &quot;;</span></a>
-<a name="472"><span class="lineNum">     472 </span><span class="lineNoCov">          0 :     os &lt;&lt; std::setw(max_var_name_length) &lt;&lt; std::left &lt;&lt; utils::stringify(*var);</span></a>
-<a name="473"><span class="lineNum">     473 </span><span class="lineNoCov">          0 :     if (axis._setup)</span></a>
-<a name="474"><span class="lineNum">     474 </span><span class="lineNoCov">          0 :       os &lt;&lt; &quot; [&quot; &lt;&lt; axis.variable_slice(*var) &lt;&lt; &quot;]&quot;;</span></a>
-<a name="475"><span class="lineNum">     475 </span><span class="lineNoCov">          0 :     if (std::next(var) != var_names.end())</span></a>
-<a name="476"><span class="lineNum">     476 </span><span class="lineNoCov">          0 :       os &lt;&lt; std::endl;</span></a>
-<a name="477"><span class="lineNum">     477 </span>            :   }</a>
-<a name="478"><span class="lineNum">     478 </span>            : </a>
-<a name="479"><span class="lineNum">     479 </span><span class="lineNoCov">          0 :   return os;</span></a>
-<a name="480"><span class="lineNum">     480 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="481"><span class="lineNum">     481 </span>            : </a>
-<a name="482"><span class="lineNum">     482 </span>            : bool</a>
-<a name="483"><span class="lineNum">     483 </span><span class="lineCov">          6 : operator==(const LabeledAxis &amp; a, const LabeledAxis &amp; b)</span></a>
-<a name="484"><span class="lineNum">     484 </span>            : {</a>
-<a name="485"><span class="lineNum">     485 </span><span class="lineCov">          6 :   return a.equals(b);</span></a>
-<a name="486"><span class="lineNum">     486 </span>            : }</a>
-<a name="487"><span class="lineNum">     487 </span>            : </a>
-<a name="488"><span class="lineNum">     488 </span>            : bool</a>
-<a name="489"><span class="lineNum">     489 </span><span class="lineCov">          4 : operator!=(const LabeledAxis &amp; a, const LabeledAxis &amp; b)</span></a>
-<a name="490"><span class="lineNum">     490 </span>            : {</a>
-<a name="491"><span class="lineNum">     491 </span><span class="lineCov">          4 :   return !a.equals(b);</span></a>
-<a name="492"><span class="lineNum">     492 </span>            : }</a>
-<a name="493"><span class="lineNum">     493 </span>            : } // namespace neml2</a>
+<a name="350"><span class="lineNum">     350 </span>            :   // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)</a>
+<a name="351"><span class="lineNum">     351 </span><span class="lineCov">       5619 :   return const_cast&lt;LabeledAxis &amp;&gt;(std::as_const(*this).subaxis(name));</span></a>
+<a name="352"><span class="lineNum">     352 </span>            : }</a>
+<a name="353"><span class="lineNum">     353 </span>            : </a>
+<a name="354"><span class="lineNum">     354 </span>            : const std::vector&lt;std::string&gt; &amp;</a>
+<a name="355"><span class="lineNum">     355 </span><span class="lineCov">          7 : LabeledAxis::subaxis_names() const</span></a>
+<a name="356"><span class="lineNum">     356 </span>            : {</a>
+<a name="357"><span class="lineNum">     357 </span><span class="lineCov">          7 :   ensure_setup_dbg();</span></a>
+<a name="358"><span class="lineNum">     358 </span><span class="lineCov">          7 :   return _id_to_subaxis_map;</span></a>
+<a name="359"><span class="lineNum">     359 </span>            : }</a>
+<a name="360"><span class="lineNum">     360 </span>            : </a>
+<a name="361"><span class="lineNum">     361 </span>            : const std::vector&lt;indexing::Slice&gt; &amp;</a>
+<a name="362"><span class="lineNum">     362 </span><span class="lineCov">          3 : LabeledAxis::subaxis_slices() const</span></a>
+<a name="363"><span class="lineNum">     363 </span>            : {</a>
+<a name="364"><span class="lineNum">     364 </span><span class="lineCov">          3 :   ensure_setup_dbg();</span></a>
+<a name="365"><span class="lineNum">     365 </span><span class="lineCov">          3 :   return _id_to_subaxis_slice_map;</span></a>
+<a name="366"><span class="lineNum">     366 </span>            : }</a>
+<a name="367"><span class="lineNum">     367 </span>            : </a>
+<a name="368"><span class="lineNum">     368 </span>            : indexing::Slice</a>
+<a name="369"><span class="lineNum">     369 </span><span class="lineCov">         14 : LabeledAxis::subaxis_slice(const LabeledAxisAccessor &amp; name) const</span></a>
+<a name="370"><span class="lineNum">     370 </span>            : {</a>
+<a name="371"><span class="lineNum">     371 </span><span class="lineCov">         14 :   ensure_setup_dbg();</span></a>
+<a name="372"><span class="lineNum">     372 </span>            : </a>
+<a name="373"><span class="lineNum">     373 </span>            :   // If the name has length 1, it must be a local sub-axis</a>
+<a name="374"><span class="lineNum">     374 </span><span class="lineCov">         14 :   if (name.size() == 1)</span></a>
+<a name="375"><span class="lineNum">     375 </span><span class="lineCov">         10 :     return _id_to_subaxis_slice_map[subaxis_id(name[0])];</span></a>
+<a name="376"><span class="lineNum">     376 </span>            : </a>
+<a name="377"><span class="lineNum">     377 </span>            :   // Otherwise, the name must be on a sub-axis</a>
+<a name="378"><span class="lineNum">     378 </span><span class="lineCov">          4 :   const auto subaxis = _subaxes.find(name[0]);</span></a>
+<a name="379"><span class="lineNum">     379 </span><span class="lineCov">          4 :   neml_assert(</span></a>
+<a name="380"><span class="lineNum">     380 </span><span class="lineCov">          4 :       subaxis != _subaxes.end(), &quot;Sub-axis named '&quot;, name, &quot;' does not exist on axis:\n&quot;, *this);</span></a>
+<a name="381"><span class="lineNum">     381 </span><span class="lineCov">          4 :   const auto &amp; slice = subaxis-&gt;second-&gt;subaxis_slice(name.slice(1));</span></a>
+<a name="382"><span class="lineNum">     382 </span><span class="lineCov">          4 :   auto offset = _id_to_subaxis_slice_map[subaxis_id(name[0])].start();</span></a>
+<a name="383"><span class="lineNum">     383 </span><span class="lineCov">          4 :   return {slice.start() + offset, slice.stop() + offset};</span></a>
+<a name="384"><span class="lineNum">     384 </span><span class="lineCov">          4 : }</span></a>
+<a name="385"><span class="lineNum">     385 </span>            : </a>
+<a name="386"><span class="lineNum">     386 </span>            : const std::vector&lt;Size&gt; &amp;</a>
+<a name="387"><span class="lineNum">     387 </span><span class="lineCov">          7 : LabeledAxis::subaxis_sizes() const</span></a>
+<a name="388"><span class="lineNum">     388 </span>            : {</a>
+<a name="389"><span class="lineNum">     389 </span><span class="lineCov">          7 :   ensure_setup_dbg();</span></a>
+<a name="390"><span class="lineNum">     390 </span><span class="lineCov">          7 :   return _id_to_subaxis_size_map;</span></a>
+<a name="391"><span class="lineNum">     391 </span>            : }</a>
+<a name="392"><span class="lineNum">     392 </span>            : </a>
+<a name="393"><span class="lineNum">     393 </span>            : Size</a>
+<a name="394"><span class="lineNum">     394 </span><span class="lineCov">         14 : LabeledAxis::subaxis_size(const LabeledAxisAccessor &amp; name) const</span></a>
+<a name="395"><span class="lineNum">     395 </span>            : {</a>
+<a name="396"><span class="lineNum">     396 </span><span class="lineCov">         14 :   const auto subaxis = _subaxes.find(name[0]);</span></a>
+<a name="397"><span class="lineNum">     397 </span><span class="lineCov">         14 :   neml_assert(</span></a>
+<a name="398"><span class="lineNum">     398 </span><span class="lineCov">         14 :       subaxis != _subaxes.end(), &quot;Sub-axis named '&quot;, name, &quot;' does not exist on axis:\n&quot;, *this);</span></a>
+<a name="399"><span class="lineNum">     399 </span>            : </a>
+<a name="400"><span class="lineNum">     400 </span><span class="lineCov">         14 :   if (name.size() == 1)</span></a>
+<a name="401"><span class="lineNum">     401 </span><span class="lineCov">         10 :     return subaxis-&gt;second-&gt;size();</span></a>
+<a name="402"><span class="lineNum">     402 </span>            : </a>
+<a name="403"><span class="lineNum">     403 </span><span class="lineCov">          4 :   return subaxis-&gt;second-&gt;subaxis_size(name.slice(1));</span></a>
+<a name="404"><span class="lineNum">     404 </span>            : }</a>
+<a name="405"><span class="lineNum">     405 </span>            : </a>
+<a name="406"><span class="lineNum">     406 </span>            : bool</a>
+<a name="407"><span class="lineNum">     407 </span><span class="lineCov">         10 : LabeledAxis::equals(const LabeledAxis &amp; other) const</span></a>
+<a name="408"><span class="lineNum">     408 </span>            : {</a>
+<a name="409"><span class="lineNum">     409 </span>            :   // They must have the same set of variables (with the same storage sizes)</a>
+<a name="410"><span class="lineNum">     410 </span><span class="lineCov">         10 :   if (_variables != other._variables)</span></a>
+<a name="411"><span class="lineNum">     411 </span><span class="lineCov">          2 :     return false;</span></a>
+<a name="412"><span class="lineNum">     412 </span>            : </a>
+<a name="413"><span class="lineNum">     413 </span>            :   // They must have the same number of subaxes</a>
+<a name="414"><span class="lineNum">     414 </span><span class="lineCov">          8 :   if (_subaxes.size() != other._subaxes.size())</span></a>
+<a name="415"><span class="lineNum">     415 </span><span class="lineNoCov">          0 :     return false;</span></a>
+<a name="416"><span class="lineNum">     416 </span>            : </a>
+<a name="417"><span class="lineNum">     417 </span>            :   // Compare each subaxis</a>
+<a name="418"><span class="lineNum">     418 </span><span class="lineCov">         10 :   for (const auto &amp; [name, axis] : _subaxes)</span></a>
+<a name="419"><span class="lineNum">     419 </span>            :   {</a>
+<a name="420"><span class="lineNum">     420 </span><span class="lineCov">          2 :     if (other._subaxes.count(name) == 0)</span></a>
+<a name="421"><span class="lineNum">     421 </span><span class="lineNoCov">          0 :       return false;</span></a>
+<a name="422"><span class="lineNum">     422 </span>            : </a>
+<a name="423"><span class="lineNum">     423 </span><span class="lineCov">          2 :     if (*other._subaxes.at(name) != *axis)</span></a>
+<a name="424"><span class="lineNum">     424 </span><span class="lineNoCov">          0 :       return false;</span></a>
+<a name="425"><span class="lineNum">     425 </span>            :   }</a>
+<a name="426"><span class="lineNum">     426 </span>            : </a>
+<a name="427"><span class="lineNum">     427 </span><span class="lineCov">          8 :   return true;</span></a>
+<a name="428"><span class="lineNum">     428 </span>            : }</a>
+<a name="429"><span class="lineNum">     429 </span>            : </a>
+<a name="430"><span class="lineNum">     430 </span>            : void</a>
+<a name="431"><span class="lineNum">     431 </span><span class="lineCov">       1304 : LabeledAxis::cache_reserved_subaxis(const std::string &amp; axis_name)</span></a>
+<a name="432"><span class="lineNum">     432 </span>            : {</a>
+<a name="433"><span class="lineNum">     433 </span><span class="lineCov">       1304 :   if (axis_name == &quot;state&quot;)</span></a>
+<a name="434"><span class="lineNum">     434 </span><span class="lineCov">        435 :     _has_state = true;</span></a>
+<a name="435"><span class="lineNum">     435 </span><span class="lineCov">        869 :   else if (axis_name == &quot;old_state&quot;)</span></a>
+<a name="436"><span class="lineNum">     436 </span><span class="lineCov">         59 :     _has_old_state = true;</span></a>
+<a name="437"><span class="lineNum">     437 </span><span class="lineCov">        810 :   else if (axis_name == &quot;forces&quot;)</span></a>
+<a name="438"><span class="lineNum">     438 </span><span class="lineCov">        128 :     _has_forces = true;</span></a>
+<a name="439"><span class="lineNum">     439 </span><span class="lineCov">        682 :   else if (axis_name == &quot;old_forces&quot;)</span></a>
+<a name="440"><span class="lineNum">     440 </span><span class="lineCov">         64 :     _has_old_forces = true;</span></a>
+<a name="441"><span class="lineNum">     441 </span><span class="lineCov">        618 :   else if (axis_name == &quot;residual&quot;)</span></a>
+<a name="442"><span class="lineNum">     442 </span><span class="lineCov">         48 :     _has_residual = true;</span></a>
+<a name="443"><span class="lineNum">     443 </span><span class="lineCov">        570 :   else if (axis_name == &quot;parameters&quot;)</span></a>
+<a name="444"><span class="lineNum">     444 </span><span class="lineCov">         83 :     _has_parameters = true;</span></a>
+<a name="445"><span class="lineNum">     445 </span><span class="lineCov">       1304 : }</span></a>
+<a name="446"><span class="lineNum">     446 </span>            : </a>
+<a name="447"><span class="lineNum">     447 </span>            : void</a>
+<a name="448"><span class="lineNum">     448 </span><span class="lineCov">      53179 : LabeledAxis::ensure_setup_dbg() const</span></a>
+<a name="449"><span class="lineNum">     449 </span>            : {</a>
+<a name="450"><span class="lineNum">     450 </span><span class="lineCov">      53179 :   neml_assert_dbg(_setup, &quot;The axis has not been setup yet.&quot;);</span></a>
+<a name="451"><span class="lineNum">     451 </span><span class="lineCov">      53179 : }</span></a>
+<a name="452"><span class="lineNum">     452 </span>            : </a>
+<a name="453"><span class="lineNum">     453 </span>            : std::ostream &amp;</a>
+<a name="454"><span class="lineNum">     454 </span><span class="lineNoCov">          0 : operator&lt;&lt;(std::ostream &amp; os, const LabeledAxis &amp; axis)</span></a>
+<a name="455"><span class="lineNum">     455 </span>            : {</a>
+<a name="456"><span class="lineNum">     456 </span>            :   // Get unqualified variable names</a>
+<a name="457"><span class="lineNum">     457 </span><span class="lineNoCov">          0 :   const auto var_names = axis.variable_names();</span></a>
+<a name="458"><span class="lineNum">     458 </span>            : </a>
+<a name="459"><span class="lineNum">     459 </span>            :   // Find the maximum variable name length</a>
+<a name="460"><span class="lineNum">     460 </span><span class="lineNoCov">          0 :   size_t max_var_name_length = 0;</span></a>
+<a name="461"><span class="lineNum">     461 </span><span class="lineNoCov">          0 :   for (const auto &amp; var_name : var_names)</span></a>
+<a name="462"><span class="lineNum">     462 </span>            :   {</a>
+<a name="463"><span class="lineNum">     463 </span><span class="lineNoCov">          0 :     const auto var_name_str = utils::stringify(var_name);</span></a>
+<a name="464"><span class="lineNum">     464 </span><span class="lineNoCov">          0 :     if (var_name_str.size() &gt; max_var_name_length)</span></a>
+<a name="465"><span class="lineNum">     465 </span><span class="lineNoCov">          0 :       max_var_name_length = var_name_str.size();</span></a>
+<a name="466"><span class="lineNum">     466 </span><span class="lineNoCov">          0 :   }</span></a>
+<a name="467"><span class="lineNum">     467 </span>            : </a>
+<a name="468"><span class="lineNum">     468 </span>            :   // Print variables with right alignment</a>
+<a name="469"><span class="lineNum">     469 </span><span class="lineNoCov">          0 :   for (auto var = var_names.begin(); var != var_names.end(); var++)</span></a>
+<a name="470"><span class="lineNum">     470 </span>            :   {</a>
+<a name="471"><span class="lineNum">     471 </span><span class="lineNoCov">          0 :     if (axis._setup)</span></a>
+<a name="472"><span class="lineNum">     472 </span><span class="lineNoCov">          0 :       os &lt;&lt; std::setw(3) &lt;&lt; std::right &lt;&lt; axis.variable_id(*var) &lt;&lt; &quot;: &quot;;</span></a>
+<a name="473"><span class="lineNum">     473 </span><span class="lineNoCov">          0 :     os &lt;&lt; std::setw(int(max_var_name_length)) &lt;&lt; std::left &lt;&lt; utils::stringify(*var);</span></a>
+<a name="474"><span class="lineNum">     474 </span><span class="lineNoCov">          0 :     if (axis._setup)</span></a>
+<a name="475"><span class="lineNum">     475 </span><span class="lineNoCov">          0 :       os &lt;&lt; &quot; [&quot; &lt;&lt; axis.variable_slice(*var) &lt;&lt; &quot;]&quot;;</span></a>
+<a name="476"><span class="lineNum">     476 </span><span class="lineNoCov">          0 :     if (std::next(var) != var_names.end())</span></a>
+<a name="477"><span class="lineNum">     477 </span><span class="lineNoCov">          0 :       os &lt;&lt; std::endl;</span></a>
+<a name="478"><span class="lineNum">     478 </span>            :   }</a>
+<a name="479"><span class="lineNum">     479 </span>            : </a>
+<a name="480"><span class="lineNum">     480 </span><span class="lineNoCov">          0 :   return os;</span></a>
+<a name="481"><span class="lineNum">     481 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="482"><span class="lineNum">     482 </span>            : </a>
+<a name="483"><span class="lineNum">     483 </span>            : bool</a>
+<a name="484"><span class="lineNum">     484 </span><span class="lineCov">          6 : operator==(const LabeledAxis &amp; a, const LabeledAxis &amp; b)</span></a>
+<a name="485"><span class="lineNum">     485 </span>            : {</a>
+<a name="486"><span class="lineNum">     486 </span><span class="lineCov">          6 :   return a.equals(b);</span></a>
+<a name="487"><span class="lineNum">     487 </span>            : }</a>
+<a name="488"><span class="lineNum">     488 </span>            : </a>
+<a name="489"><span class="lineNum">     489 </span>            : bool</a>
+<a name="490"><span class="lineNum">     490 </span><span class="lineCov">          4 : operator!=(const LabeledAxis &amp; a, const LabeledAxis &amp; b)</span></a>
+<a name="491"><span class="lineNum">     491 </span>            : {</a>
+<a name="492"><span class="lineNum">     492 </span><span class="lineCov">          4 :   return !a.equals(b);</span></a>
+<a name="493"><span class="lineNum">     493 </span>            : }</a>
+<a name="494"><span class="lineNum">     494 </span>            : } // namespace neml2</a>
 </pre>
       </td>
     </tr>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-08 17:29:20</td>
+            <td class="headerValue">2024-12-08 19:12:33</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">13</td>
@@ -120,7 +120,7 @@
 <a name="58"><span class="lineNum">      58 </span>            : VariableBase &amp;</a>
 <a name="59"><span class="lineNum">      59 </span><span class="lineCov">      12015 : VariableStore::input_variable(const VariableName &amp; name)</span></a>
 <a name="60"><span class="lineNum">      60 </span>            : {</a>
-<a name="61"><span class="lineNum">      61 </span><span class="lineCov">      12015 :   auto var_ptr = _input_variables.query_value(name);</span></a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">      12015 :   auto * var_ptr = _input_variables.query_value(name);</span></a>
 <a name="62"><span class="lineNum">      62 </span><span class="lineCov">      12015 :   neml_assert(var_ptr, &quot;Input variable &quot;, name, &quot; does not exist in model &quot;, _object-&gt;name());</span></a>
 <a name="63"><span class="lineNum">      63 </span><span class="lineCov">      12015 :   return *var_ptr;</span></a>
 <a name="64"><span class="lineNum">      64 </span>            : }</a>
@@ -128,7 +128,7 @@
 <a name="66"><span class="lineNum">      66 </span>            : const VariableBase &amp;</a>
 <a name="67"><span class="lineNum">      67 </span><span class="lineNoCov">          0 : VariableStore::input_variable(const VariableName &amp; name) const</span></a>
 <a name="68"><span class="lineNum">      68 </span>            : {</a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineNoCov">          0 :   const auto var_ptr = _input_variables.query_value(name);</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineNoCov">          0 :   const auto * var_ptr = _input_variables.query_value(name);</span></a>
 <a name="70"><span class="lineNum">      70 </span><span class="lineNoCov">          0 :   neml_assert(var_ptr, &quot;INput variable &quot;, name, &quot; does not exist in model &quot;, _object-&gt;name());</span></a>
 <a name="71"><span class="lineNum">      71 </span><span class="lineNoCov">          0 :   return *var_ptr;</span></a>
 <a name="72"><span class="lineNum">      72 </span>            : }</a>
@@ -136,7 +136,7 @@
 <a name="74"><span class="lineNum">      74 </span>            : VariableBase &amp;</a>
 <a name="75"><span class="lineNum">      75 </span><span class="lineCov">      16767 : VariableStore::output_variable(const VariableName &amp; name)</span></a>
 <a name="76"><span class="lineNum">      76 </span>            : {</a>
-<a name="77"><span class="lineNum">      77 </span><span class="lineCov">      16767 :   auto var_ptr = _output_variables.query_value(name);</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineCov">      16767 :   auto * var_ptr = _output_variables.query_value(name);</span></a>
 <a name="78"><span class="lineNum">      78 </span><span class="lineCov">      16767 :   neml_assert(var_ptr, &quot;Output variable &quot;, name, &quot; does not exist in model &quot;, _object-&gt;name());</span></a>
 <a name="79"><span class="lineNum">      79 </span><span class="lineCov">      16767 :   return *var_ptr;</span></a>
 <a name="80"><span class="lineNum">      80 </span>            : }</a>
@@ -144,7 +144,7 @@
 <a name="82"><span class="lineNum">      82 </span>            : const VariableBase &amp;</a>
 <a name="83"><span class="lineNum">      83 </span><span class="lineNoCov">          0 : VariableStore::output_variable(const VariableName &amp; name) const</span></a>
 <a name="84"><span class="lineNum">      84 </span>            : {</a>
-<a name="85"><span class="lineNum">      85 </span><span class="lineNoCov">          0 :   const auto var_ptr = _output_variables.query_value(name);</span></a>
+<a name="85"><span class="lineNum">      85 </span><span class="lineNoCov">          0 :   const auto * var_ptr = _output_variables.query_value(name);</span></a>
 <a name="86"><span class="lineNum">      86 </span><span class="lineNoCov">          0 :   neml_assert(var_ptr, &quot;Output variable &quot;, name, &quot; does not exist in model &quot;, _object-&gt;name());</span></a>
 <a name="87"><span class="lineNum">      87 </span><span class="lineNoCov">          0 :   return *var_ptr;</span></a>
 <a name="88"><span class="lineNum">      88 </span>            : }</a>

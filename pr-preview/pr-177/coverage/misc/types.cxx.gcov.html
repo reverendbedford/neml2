@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-08 17:29:20</td>
+            <td class="headerValue">2024-12-08 19:12:33</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">25</td>
@@ -167,9 +167,9 @@
 <a name="105"><span class="lineNum">     105 </span><span class="lineCov">      22250 : TraceableTensorShape::slice(Size start, Size end) const</span></a>
 <a name="106"><span class="lineNum">     106 </span>            : {</a>
 <a name="107"><span class="lineNum">     107 </span><span class="lineCov">      22250 :   if (start &lt; 0)</span></a>
-<a name="108"><span class="lineNum">     108 </span><span class="lineNoCov">          0 :     start += size();</span></a>
+<a name="108"><span class="lineNum">     108 </span><span class="lineNoCov">          0 :     start += Size(size());</span></a>
 <a name="109"><span class="lineNum">     109 </span><span class="lineCov">      22250 :   if (end &lt; 0)</span></a>
-<a name="110"><span class="lineNum">     110 </span><span class="lineCov">       2433 :     end += size();</span></a>
+<a name="110"><span class="lineNum">     110 </span><span class="lineCov">       2433 :     end += Size(size());</span></a>
 <a name="111"><span class="lineNum">     111 </span>            : </a>
 <a name="112"><span class="lineNum">     112 </span><span class="lineCov">      22250 :   return TraceableTensorShape(begin() + start, begin() + end);</span></a>
 <a name="113"><span class="lineNum">     113 </span>            : }</a>
@@ -178,7 +178,7 @@
 <a name="116"><span class="lineNum">     116 </span><span class="lineNoCov">          0 : TraceableTensorShape::slice(Size N) const</span></a>
 <a name="117"><span class="lineNum">     117 </span>            : {</a>
 <a name="118"><span class="lineNum">     118 </span><span class="lineNoCov">          0 :   if (N &lt; 0)</span></a>
-<a name="119"><span class="lineNum">     119 </span><span class="lineNoCov">          0 :     N += size();</span></a>
+<a name="119"><span class="lineNum">     119 </span><span class="lineNoCov">          0 :     N += Size(size());</span></a>
 <a name="120"><span class="lineNum">     120 </span><span class="lineNoCov">          0 :   return TraceableTensorShape(begin() + N, end());</span></a>
 <a name="121"><span class="lineNum">     121 </span>            : }</a>
 <a name="122"><span class="lineNum">     122 </span>            : </a>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-08 17:29:20</td>
+            <td class="headerValue">2024-12-08 19:12:33</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">227</td>
@@ -108,7 +108,7 @@
 <a name="46"><span class="lineNum">      46 </span><span class="lineCov">     287572 : TensorBase&lt;Derived&gt;::TensorBase(const torch::Tensor &amp; tensor,</span></a>
 <a name="47"><span class="lineNum">      47 </span>            :                                 const TraceableTensorShape &amp; batch_shape)</a>
 <a name="48"><span class="lineNum">      48 </span>            :   : torch::Tensor(tensor),</a>
-<a name="49"><span class="lineNum">      49 </span><span class="lineCov">     287572 :     _batch_dim(batch_shape.size()),</span></a>
+<a name="49"><span class="lineNum">      49 </span><span class="lineCov">     287572 :     _batch_dim(Size(batch_shape.size())),</span></a>
 <a name="50"><span class="lineNum">      50 </span><span class="lineCov">     575144 :     _batch_sizes(batch_shape)</span></a>
 <a name="51"><span class="lineNum">      51 </span>            : {</a>
 <a name="52"><span class="lineNum">      52 </span><span class="lineCov">     287572 :   neml_assert_dbg(batch_sizes() == batch_shape,</span></a>
@@ -395,9 +395,9 @@
 <a name="333"><span class="lineNum">     333 </span>            : </a>
 <a name="334"><span class="lineNum">     334 </span>            : template &lt;class Derived&gt;</a>
 <a name="335"><span class="lineNum">     335 </span>            : neml2::Tensor</a>
-<a name="336"><span class="lineNum">     336 </span><span class="lineCov">          1 : TensorBase&lt;Derived&gt;::base_expand_copy(TensorShapeRef base_size) const</span></a>
+<a name="336"><span class="lineNum">     336 </span><span class="lineCov">          1 : TensorBase&lt;Derived&gt;::base_expand_copy(TensorShapeRef base_shape) const</span></a>
 <a name="337"><span class="lineNum">     337 </span>            : {</a>
-<a name="338"><span class="lineNum">     338 </span><span class="lineCov">          1 :   return neml2::Tensor(base_expand(base_size).contiguous(), batch_sizes());</span></a>
+<a name="338"><span class="lineNum">     338 </span><span class="lineCov">          1 :   return neml2::Tensor(base_expand(base_shape).contiguous(), batch_sizes());</span></a>
 <a name="339"><span class="lineNum">     339 </span>            : }</a>
 <a name="340"><span class="lineNum">     340 </span>            : </a>
 <a name="341"><span class="lineNum">     341 </span>            : template &lt;class Derived&gt;</a>

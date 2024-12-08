@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-08 17:29:20</td>
+            <td class="headerValue">2024-12-08 19:12:33</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">5</td>
@@ -162,7 +162,7 @@
 <a name="100"><span class="lineNum">     100 </span>            : {</a>
 <a name="101"><span class="lineNum">     101 </span><span class="lineCov">          8 :   Model::link_output_variables();</span></a>
 <a name="102"><span class="lineNum">     102 </span><span class="lineCov">         27 :   for (auto &amp;&amp; [name, var] : output_variables())</span></a>
-<a name="103"><span class="lineNum">     103 </span><span class="lineCov">         19 :     var.ref(input_variable(name), /*mutable=*/true);</span></a>
+<a name="103"><span class="lineNum">     103 </span><span class="lineCov">         19 :     var.ref(input_variable(name), /*ref_is_mutable=*/true);</span></a>
 <a name="104"><span class="lineNum">     104 </span><span class="lineCov">          8 : }</span></a>
 <a name="105"><span class="lineNum">     105 </span>            : </a>
 <a name="106"><span class="lineNum">     106 </span>            : void</a>
