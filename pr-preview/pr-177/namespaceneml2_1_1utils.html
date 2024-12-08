@@ -120,6 +120,8 @@ Functions</h2></td></tr>
 <tr class="memitem:a3ba2296f4d0b6651c939d04aee140653" id="r_a3ba2296f4d0b6651c939d04aee140653"><td class="memItemLeft" align="right" valign="top">std::stringstream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3ba2296f4d0b6651c939d04aee140653">operator&gt;&gt;</a> (std::stringstream &amp;<a class="el" href="classneml2_1_1CrossRef.html">in</a>, torch::Tensor &amp;)</td></tr>
 <tr class="memdesc:a3ba2296f4d0b6651c939d04aee140653"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a dummy to prevent compilers whining about not know how to &gt;&gt; torch::Tensor.  <br /></td></tr>
 <tr class="separator:a3ba2296f4d0b6651c939d04aee140653"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abad9737bacb2a28566b390bc69117c03" id="r_abad9737bacb2a28566b390bc69117c03"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abad9737bacb2a28566b390bc69117c03">join</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> std::vector&lt; std::string &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">strs</a>, <a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;<a class="el" href="classneml2_1_1CrossRef.html">delim</a>)</td></tr>
+<tr class="separator:abad9737bacb2a28566b390bc69117c03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf55fb05e178e999cef5352ab7ebfcd4" id="r_abf55fb05e178e999cef5352ab7ebfcd4"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abf55fb05e178e999cef5352ab7ebfcd4">split</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;<a class="el" href="classneml2_1_1CrossRef.html">str</a>, <a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;<a class="el" href="classneml2_1_1CrossRef.html">delims</a>)</td></tr>
 <tr class="separator:abf55fb05e178e999cef5352ab7ebfcd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a184623694807dece53a36115f748d45b" id="r_a184623694807dece53a36115f748d45b"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a184623694807dece53a36115f748d45b">trim</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;<a class="el" href="classneml2_1_1CrossRef.html">str</a>, <a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;<a class="el" href="classneml2_1_1CrossRef.html">white_space</a>)</td></tr>
@@ -143,19 +145,28 @@ Functions</h2></td></tr>
 <tr class="memitem:a979982102c0dbd9e9c970d56c96481e3" id="r_a979982102c0dbd9e9c970d56c96481e3"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a979982102c0dbd9e9c970d56c96481e3">demangle</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">char</a> *name)</td></tr>
 <tr class="memdesc:a979982102c0dbd9e9c970d56c96481e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Demangle a piece of cxx abi type information.  <br /></td></tr>
 <tr class="separator:a979982102c0dbd9e9c970d56c96481e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5fddf93626b1b69cde57ccc5e22da1f6" id="r_a5fddf93626b1b69cde57ccc5e22da1f6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structneml2_1_1TraceableTensorShape.html">TraceableTensorShape</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5fddf93626b1b69cde57ccc5e22da1f6">extract_batch_sizes</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> torch::Tensor &amp;tensor, <a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a> batch_dim)</td></tr>
+<tr class="memdesc:a5fddf93626b1b69cde57ccc5e22da1f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract the batch shape of a tensor given batch dimension The extracted batch shape will be <em>traceable</em>.  <br /></td></tr>
+<tr class="separator:a5fddf93626b1b69cde57ccc5e22da1f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a17f90e6a5dea33eb01c88e211fd5bc48" id="r_a17f90e6a5dea33eb01c88e211fd5bc48"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a17f90e6a5dea33eb01c88e211fd5bc48">storage_size</a> (<a class="el" href="namespaceneml2.html#abc271f879dc471e533dca66b1fd32f60">TensorShapeRef</a> <a class="el" href="classneml2_1_1CrossRef.html">shape</a>)</td></tr>
 <tr class="memdesc:a17f90e6a5dea33eb01c88e211fd5bc48"><td class="mdescLeft">&#160;</td><td class="mdescRight">The flattened storage size of a tensor with given shape.  <br /></td></tr>
 <tr class="separator:a17f90e6a5dea33eb01c88e211fd5bc48"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2880e22e1dda381473bf23cdd5642a3d" id="r_a2880e22e1dda381473bf23cdd5642a3d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceneml2.html#a5908f75279a9bcad4d887c3995933a98">TensorShape</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2880e22e1dda381473bf23cdd5642a3d">pad_prepend</a> (<a class="el" href="namespaceneml2.html#abc271f879dc471e533dca66b1fd32f60">TensorShapeRef</a> <a class="el" href="classneml2_1_1CrossRef.html">s</a>, <a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a> dim, <a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a> <a class="el" href="classneml2_1_1CrossRef.html">pad</a>=1)</td></tr>
 <tr class="memdesc:a2880e22e1dda381473bf23cdd5642a3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pad shape <code>s</code> to dimension <code>dim</code> by prepending sizes of <code>pad</code>.  <br /></td></tr>
 <tr class="separator:a2880e22e1dda381473bf23cdd5642a3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af4fa4d2efafc64820cdeeb6d33747fd9" id="r_af4fa4d2efafc64820cdeeb6d33747fd9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceneml2.html#a5908f75279a9bcad4d887c3995933a98">TensorShape</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af4fa4d2efafc64820cdeeb6d33747fd9">pad_append</a> (<a class="el" href="namespaceneml2.html#abc271f879dc471e533dca66b1fd32f60">TensorShapeRef</a> <a class="el" href="classneml2_1_1CrossRef.html">s</a>, <a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a> dim, <a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a> <a class="el" href="classneml2_1_1CrossRef.html">pad</a>=1)</td></tr>
-<tr class="memdesc:af4fa4d2efafc64820cdeeb6d33747fd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pad shape <code>s</code> to dimension <code>dim</code> by appending sizes of <code>pad</code>.  <br /></td></tr>
-<tr class="separator:af4fa4d2efafc64820cdeeb6d33747fd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5aba0e3e1d547dd7520591f071b94fb" id="r_ab5aba0e3e1d547dd7520591f071b94fb"><td class="memItemLeft" align="right" valign="top">torch::Tensor&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab5aba0e3e1d547dd7520591f071b94fb">pad_prepend</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> torch::Tensor &amp;<a class="el" href="classneml2_1_1CrossRef.html">s</a>, <a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a> dim, <a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a> <a class="el" href="classneml2_1_1CrossRef.html">pad</a>)</td></tr>
+<tr class="separator:ab5aba0e3e1d547dd7520591f071b94fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83b2c23d00993fd3cf60dd9979fb5e4f" id="r_a83b2c23d00993fd3cf60dd9979fb5e4f"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a83b2c23d00993fd3cf60dd9979fb5e4f">indentation</a> (<a class="el" href="classneml2_1_1CrossRef.html">int</a> <a class="el" href="classneml2_1_1CrossRef.html">level</a>, <a class="el" href="classneml2_1_1CrossRef.html">int</a> <a class="el" href="classneml2_1_1CrossRef.html">indent</a>)</td></tr>
 <tr class="separator:a83b2c23d00993fd3cf60dd9979fb5e4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46b181f9028f2c615ea51aa580a33f9e" id="r_a46b181f9028f2c615ea51aa580a33f9e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a46b181f9028f2c615ea51aa580a33f9e">allclose</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledVector.html">LabeledVector</a> &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledVector.html">LabeledVector</a> &amp;b, <a class="el" href="namespaceneml2.html#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> rtol, <a class="el" href="namespaceneml2.html#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> atol)</td></tr>
-<tr class="separator:a46b181f9028f2c615ea51aa580a33f9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a214101736bbb02516bdf2343235bb954" id="r_a214101736bbb02516bdf2343235bb954"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structneml2_1_1TraceableTensorShape.html">TraceableTensorShape</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a214101736bbb02516bdf2343235bb954">broadcast_batch_sizes</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> std::vector&lt; <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">tensors</a>)</td></tr>
+<tr class="memdesc:a214101736bbb02516bdf2343235bb954"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find the broadcast batch shape of all the tensors The returned batch shape will be <em>traceable</em>.  <br /></td></tr>
+<tr class="separator:a214101736bbb02516bdf2343235bb954"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1245af5c37bca3b1f040167627b88573" id="r_a1245af5c37bca3b1f040167627b88573"><td class="memItemLeft" align="right" valign="top">torch::Dtype&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1245af5c37bca3b1f040167627b88573">same_dtype</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> std::vector&lt; <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">tensors</a>)</td></tr>
+<tr class="memdesc:a1245af5c37bca3b1f040167627b88573"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make sure all tensors have the same dtype and return the common dtype.  <br /></td></tr>
+<tr class="separator:a1245af5c37bca3b1f040167627b88573"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f07d41a355c249578e52086bf04864b" id="r_a7f07d41a355c249578e52086bf04864b"><td class="memItemLeft" align="right" valign="top">torch::Device&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7f07d41a355c249578e52086bf04864b">same_device</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> std::vector&lt; <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">tensors</a>)</td></tr>
+<tr class="memdesc:a7f07d41a355c249578e52086bf04864b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make sure all tensors have the same device and return the common device.  <br /></td></tr>
+<tr class="separator:a7f07d41a355c249578e52086bf04864b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c3da2797d4e8e4af4e1fb3f5b1f30b9" id="r_a2c3da2797d4e8e4af4e1fb3f5b1f30b9"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T &gt; </td></tr>
 <tr class="memitem:a2c3da2797d4e8e4af4e1fb3f5b1f30b9"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a2c3da2797d4e8e4af4e1fb3f5b1f30b9">parse_</a> (T &amp;<a class="el" href="classneml2_1_1CrossRef.html">val</a>, <a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;<a class="el" href="classneml2_1_1CrossRef.html">raw_str</a>)</td></tr>
 <tr class="separator:a2c3da2797d4e8e4af4e1fb3f5b1f30b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -202,6 +213,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a39eba50b2ce9eee228416c8ab4da7480" id="r_a39eba50b2ce9eee228416c8ab4da7480"><td class="memTemplParams" colspan="2">template&lt;typename... S&gt; </td></tr>
 <tr class="memitem:a39eba50b2ce9eee228416c8ab4da7480"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceneml2.html#a5908f75279a9bcad4d887c3995933a98">TensorShape</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a39eba50b2ce9eee228416c8ab4da7480">add_shapes</a> (<a class="el" href="classneml2_1_1CrossRef.html">S</a> &amp;&amp;... <a class="el" href="classneml2_1_1CrossRef.html">shape</a>)</td></tr>
 <tr class="separator:a39eba50b2ce9eee228416c8ab4da7480"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5038130bc61694a5e72e2db5257367f0" id="r_a5038130bc61694a5e72e2db5257367f0"><td class="memTemplParams" colspan="2">template&lt;typename... S&gt; </td></tr>
+<tr class="memitem:a5038130bc61694a5e72e2db5257367f0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structneml2_1_1TraceableTensorShape.html">TraceableTensorShape</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a5038130bc61694a5e72e2db5257367f0">add_traceable_shapes</a> (<a class="el" href="classneml2_1_1CrossRef.html">S</a> &amp;&amp;... <a class="el" href="classneml2_1_1CrossRef.html">shape</a>)</td></tr>
+<tr class="separator:a5038130bc61694a5e72e2db5257367f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c0b703a10b248b9cb2ac8bc4dfe042d" id="r_a6c0b703a10b248b9cb2ac8bc4dfe042d"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T &gt; </td></tr>
 <tr class="memitem:a6c0b703a10b248b9cb2ac8bc4dfe042d"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a6c0b703a10b248b9cb2ac8bc4dfe042d">stringify</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> T &amp;<a class="el" href="classneml2_1_1CrossRef.html">t</a>)</td></tr>
 <tr class="separator:a6c0b703a10b248b9cb2ac8bc4dfe042d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -229,34 +243,44 @@ template&lt;typename... S&gt; </div>
 
 </div>
 </div>
-<a id="a46b181f9028f2c615ea51aa580a33f9e" name="a46b181f9028f2c615ea51aa580a33f9e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a46b181f9028f2c615ea51aa580a33f9e">&#9670;&#160;</a></span>allclose()</h2>
+<a id="a5038130bc61694a5e72e2db5257367f0" name="a5038130bc61694a5e72e2db5257367f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5038130bc61694a5e72e2db5257367f0">&#9670;&#160;</a></span>add_traceable_shapes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename... S&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structneml2_1_1TraceableTensorShape.html">TraceableTensorShape</a> add_traceable_shapes </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">S</a> &amp;&amp;...</td>          <td class="paramname"><span class="paramname"><em>shape</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a214101736bbb02516bdf2343235bb954" name="a214101736bbb02516bdf2343235bb954"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a214101736bbb02516bdf2343235bb954">&#9670;&#160;</a></span>broadcast_batch_sizes()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">bool</a> allclose </td>
+          <td class="memname"><a class="el" href="structneml2_1_1TraceableTensorShape.html">TraceableTensorShape</a> broadcast_batch_sizes </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledVector.html">LabeledVector</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::vector&lt; <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>tensors</em></span></td><td>)</td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledVector.html">LabeledVector</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespaceneml2.html#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a></td>          <td class="paramname"><span class="paramname"><em>rtol</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespaceneml2.html#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a></td>          <td class="paramname"><span class="paramname"><em>atol</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Find the broadcast batch shape of all the tensors The returned batch shape will be <em>traceable</em>. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structneml2_1_1TraceableTensorShape.html" title="Traceable tensor shape.">neml2::TraceableTensorShape</a> </dd></dl>
+<p>Pre-pad ones to the shapes</p>
+<p>Braodcast</p>
 
 </div>
 </div>
@@ -321,6 +345,30 @@ template&lt;class... T&gt; </div>
 
 </div>
 </div>
+<a id="a5fddf93626b1b69cde57ccc5e22da1f6" name="a5fddf93626b1b69cde57ccc5e22da1f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5fddf93626b1b69cde57ccc5e22da1f6">&#9670;&#160;</a></span>extract_batch_sizes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structneml2_1_1TraceableTensorShape.html">TraceableTensorShape</a> extract_batch_sizes </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> torch::Tensor &amp;</td>          <td class="paramname"><span class="paramname"><em>tensor</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a></td>          <td class="paramname"><span class="paramname"><em>batch_dim</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Extract the batch shape of a tensor given batch dimension The extracted batch shape will be <em>traceable</em>. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structneml2_1_1TraceableTensorShape.html" title="Traceable tensor shape.">neml2::TraceableTensorShape</a> </dd></dl>
+
+</div>
+</div>
 <a id="a83b2c23d00993fd3cf60dd9979fb5e4f" name="a83b2c23d00993fd3cf60dd9979fb5e4f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a83b2c23d00993fd3cf60dd9979fb5e4f">&#9670;&#160;</a></span>indentation()</h2>
 
@@ -336,6 +384,27 @@ template&lt;class... T&gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">int</a></td>          <td class="paramname"><span class="paramname"><em>indent</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abad9737bacb2a28566b390bc69117c03" name="abad9737bacb2a28566b390bc69117c03"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abad9737bacb2a28566b390bc69117c03">&#9670;&#160;</a></span>join()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string join </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::vector&lt; std::string &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>strs</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>delim</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -365,16 +434,16 @@ template&lt;class... T&gt; </div>
 
 </div>
 </div>
-<a id="af4fa4d2efafc64820cdeeb6d33747fd9" name="af4fa4d2efafc64820cdeeb6d33747fd9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af4fa4d2efafc64820cdeeb6d33747fd9">&#9670;&#160;</a></span>pad_append()</h2>
+<a id="ab5aba0e3e1d547dd7520591f071b94fb" name="ab5aba0e3e1d547dd7520591f071b94fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab5aba0e3e1d547dd7520591f071b94fb">&#9670;&#160;</a></span>pad_prepend() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceneml2.html#a5908f75279a9bcad4d887c3995933a98">TensorShape</a> pad_append </td>
+          <td class="memname">torch::Tensor pad_prepend </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceneml2.html#abc271f879dc471e533dca66b1fd32f60">TensorShapeRef</a></td>          <td class="paramname"><span class="paramname"><em>s</em>, </span></td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> torch::Tensor &amp;</td>          <td class="paramname"><span class="paramname"><em>s</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -384,26 +453,15 @@ template&lt;class... T&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a></td>          <td class="paramname"><span class="paramname"><em>pad</em><span class="paramdefsep"> = </span><span class="paramdefval">1</span></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a></td>          <td class="paramname"><span class="paramname"><em>pad</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Pad shape <code>s</code> to dimension <code>dim</code> by appending sizes of <code>pad</code>. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">s</td><td>The original shape to pad </td></tr>
-    <tr><td class="paramname">dim</td><td>The resulting dimension </td></tr>
-    <tr><td class="paramname">pad</td><td>The values used to pad the shape, default to 1 </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>TensorShape The padded shape with dimension <code>dim</code> </dd></dl>
-
 </div>
 </div>
 <a id="a2880e22e1dda381473bf23cdd5642a3d" name="a2880e22e1dda381473bf23cdd5642a3d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2880e22e1dda381473bf23cdd5642a3d">&#9670;&#160;</a></span>pad_prepend()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2880e22e1dda381473bf23cdd5642a3d">&#9670;&#160;</a></span>pad_prepend() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -751,6 +809,44 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T &gt;
 
 </div>
 </div>
+<a id="a7f07d41a355c249578e52086bf04864b" name="a7f07d41a355c249578e52086bf04864b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f07d41a355c249578e52086bf04864b">&#9670;&#160;</a></span>same_device()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">torch::Device same_device </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::vector&lt; <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>tensors</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Make sure all tensors have the same device and return the common device. </p>
+
+</div>
+</div>
+<a id="a1245af5c37bca3b1f040167627b88573" name="a1245af5c37bca3b1f040167627b88573"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1245af5c37bca3b1f040167627b88573">&#9670;&#160;</a></span>same_dtype()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">torch::Dtype same_dtype </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::vector&lt; <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>tensors</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Make sure all tensors have the same dtype and return the common dtype. </p>
+
+</div>
+</div>
 <a id="a0c4d62ed9b91f5973aa7329f37612816" name="a0c4d62ed9b91f5973aa7329f37612816"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0c4d62ed9b91f5973aa7329f37612816">&#9670;&#160;</a></span>sizes_broadcastable()</h2>
 
@@ -857,7 +953,7 @@ template&lt;class... T&gt; </div>
 <div class="line"><a class="code hl_function" href="#a17f90e6a5dea33eb01c88e211fd5bc48">storage_size</a>({1}) == 1;</div>
 <div class="line"><a class="code hl_function" href="#a17f90e6a5dea33eb01c88e211fd5bc48">storage_size</a>({1, 2, 3}) == 6;</div>
 <div class="line"><a class="code hl_function" href="#a17f90e6a5dea33eb01c88e211fd5bc48">storage_size</a>({5, 1, 1}) == 5;</div>
-<div class="ttc" id="anamespaceneml2_1_1utils_html_a17f90e6a5dea33eb01c88e211fd5bc48"><div class="ttname"><a href="#a17f90e6a5dea33eb01c88e211fd5bc48">neml2::utils::storage_size</a></div><div class="ttdeci">Size storage_size(TensorShapeRef shape)</div><div class="ttdoc">The flattened storage size of a tensor with given shape.</div><div class="ttdef"><b>Definition</b> utils.cxx:40</div></div>
+<div class="ttc" id="anamespaceneml2_1_1utils_html_a17f90e6a5dea33eb01c88e211fd5bc48"><div class="ttname"><a href="#a17f90e6a5dea33eb01c88e211fd5bc48">neml2::utils::storage_size</a></div><div class="ttdeci">Size storage_size(TensorShapeRef shape)</div><div class="ttdoc">The flattened storage size of a tensor with given shape.</div><div class="ttdef"><b>Definition</b> utils.cxx:57</div></div>
 </div><!-- fragment --> 
 </div>
 </div>

@@ -1,18 +1,14 @@
 var annotated =
 [
     [ "base", "namespacebase.html", [
+      [ "LabeledAxis", "classbase_1_1LabeledAxis.html", "classbase_1_1LabeledAxis" ],
+      [ "LabeledAxisAccessor", "classbase_1_1LabeledAxisAccessor.html", "classbase_1_1LabeledAxisAccessor" ],
+      [ "MatrixAssembler", "classbase_1_1MatrixAssembler.html", "classbase_1_1MatrixAssembler" ],
       [ "Model", "classbase_1_1Model.html", "classbase_1_1Model" ],
-      [ "TensorValue", "classbase_1_1TensorValue.html", "classbase_1_1TensorValue" ]
+      [ "TensorValue", "classbase_1_1TensorValue.html", "classbase_1_1TensorValue" ],
+      [ "VectorAssembler", "classbase_1_1VectorAssembler.html", "classbase_1_1VectorAssembler" ]
     ] ],
     [ "tensors", "namespacetensors.html", [
-      [ "LabeledAxis", "classtensors_1_1LabeledAxis.html", "classtensors_1_1LabeledAxis" ],
-      [ "LabeledAxisAccessor", "classtensors_1_1LabeledAxisAccessor.html", "classtensors_1_1LabeledAxisAccessor" ],
-      [ "LabeledMatrix", "classtensors_1_1LabeledMatrix.html", "classtensors_1_1LabeledMatrix" ],
-      [ "LabeledMatrixBaseView", "classtensors_1_1LabeledMatrixBaseView.html", "classtensors_1_1LabeledMatrixBaseView" ],
-      [ "LabeledMatrixBatchView", "classtensors_1_1LabeledMatrixBatchView.html", "classtensors_1_1LabeledMatrixBatchView" ],
-      [ "LabeledVector", "classtensors_1_1LabeledVector.html", "classtensors_1_1LabeledVector" ],
-      [ "LabeledVectorBaseView", "classtensors_1_1LabeledVectorBaseView.html", "classtensors_1_1LabeledVectorBaseView" ],
-      [ "LabeledVectorBatchView", "classtensors_1_1LabeledVectorBatchView.html", "classtensors_1_1LabeledVectorBatchView" ],
       [ "MillerIndex", "classtensors_1_1MillerIndex.html", "classtensors_1_1MillerIndex" ],
       [ "MillerIndexBaseView", "classtensors_1_1MillerIndexBaseView.html", "classtensors_1_1MillerIndexBaseView" ],
       [ "MillerIndexBatchView", "classtensors_1_1MillerIndexBatchView.html", "classtensors_1_1MillerIndexBatchView" ],

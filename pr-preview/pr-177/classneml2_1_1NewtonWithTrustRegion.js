@@ -1,12 +1,12 @@
 var classneml2_1_1NewtonWithTrustRegion =
 [
     [ "NewtonWithTrustRegion", "classneml2_1_1NewtonWithTrustRegion.html#a8784ee2d5dffde7c5d2de26d82f26dc6", null ],
-    [ "merit_function_reduction", "classneml2_1_1NewtonWithTrustRegion.html#a741ea68fe8a4ef11b87835e6a9d8610b", null ],
-    [ "prepare", "classneml2_1_1NewtonWithTrustRegion.html#a810c956ade73c01ff47e3b1fe551293b", null ],
-    [ "solve_direction", "classneml2_1_1NewtonWithTrustRegion.html#a64a405753892fee80ffe721b3f87db9b", null ],
+    [ "merit_function_reduction", "classneml2_1_1NewtonWithTrustRegion.html#a179bf5d26271013899c4dbf61348c331", null ],
+    [ "prepare", "classneml2_1_1NewtonWithTrustRegion.html#af4de5e2905bfbbe1aec2c064589ce6d8", null ],
+    [ "solve_direction", "classneml2_1_1NewtonWithTrustRegion.html#a58cfedc66bcce61ee793abc6dccd135b", null ],
     [ "subproblem_options", "classneml2_1_1NewtonWithTrustRegion.html#a6ba2d3f9b0d2f8862ffd76f7f6aacc1d", null ],
     [ "subproblem_solver_options", "classneml2_1_1NewtonWithTrustRegion.html#a3c6b0e7bf794e3b8230aaaa4fc420226", null ],
-    [ "update", "classneml2_1_1NewtonWithTrustRegion.html#ad3d975aaa792d52e93bb14af50cb08b3", null ],
+    [ "update", "classneml2_1_1NewtonWithTrustRegion.html#a9a8489d9e9eb0b40853606f85c7fb311", null ],
     [ "_accept_criteria", "classneml2_1_1NewtonWithTrustRegion.html#ab54880b6a2a9a3700e0f83a8ff9ad763", null ],
     [ "_delta", "classneml2_1_1NewtonWithTrustRegion.html#ab08824e27daafc0ae5561928adac2844", null ],
     [ "_delta_0", "classneml2_1_1NewtonWithTrustRegion.html#a5905abc7435f27a7860795f7abb96340", null ],

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-04 12:08:01</td>
+            <td class="headerValue">2024-12-08 01:46:13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -123,41 +123,41 @@
 <a name="61"><span class="lineNum">      61 </span><span class="lineCov">          6 :   return options;</span></a>
 <a name="62"><span class="lineNum">      62 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="63"><span class="lineNum">      63 </span>            : </a>
-<a name="64"><span class="lineNum">      64 </span><span class="lineCov">          3 : OrientationRate::OrientationRate(const OptionSet &amp; options)</span></a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineCov">          2 : OrientationRate::OrientationRate(const OptionSet &amp; options)</span></a>
 <a name="65"><span class="lineNum">      65 </span>            :   : Model(options),</a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineCov">          6 :     _R_dot(declare_output_variable&lt;WR2&gt;(&quot;orientation_rate&quot;)),</span></a>
-<a name="67"><span class="lineNum">      67 </span><span class="lineCov">          3 :     _e(declare_input_variable&lt;SR2&gt;(&quot;elastic_strain&quot;)),</span></a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">          3 :     _w(declare_input_variable&lt;WR2&gt;(&quot;vorticity&quot;)),</span></a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">          3 :     _dp(declare_input_variable&lt;SR2&gt;(&quot;plastic_deformation_rate&quot;)),</span></a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineCov">          6 :     _wp(declare_input_variable&lt;WR2&gt;(&quot;plastic_vorticity&quot;))</span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineCov">          2 :     _R_dot(declare_output_variable&lt;WR2&gt;(&quot;orientation_rate&quot;)),</span></a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">          2 :     _e(declare_input_variable&lt;SR2&gt;(&quot;elastic_strain&quot;)),</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">          2 :     _w(declare_input_variable&lt;WR2&gt;(&quot;vorticity&quot;)),</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">          2 :     _dp(declare_input_variable&lt;SR2&gt;(&quot;plastic_deformation_rate&quot;)),</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">          4 :     _wp(declare_input_variable&lt;WR2&gt;(&quot;plastic_vorticity&quot;))</span></a>
 <a name="71"><span class="lineNum">      71 </span>            : {</a>
-<a name="72"><span class="lineNum">      72 </span><span class="lineCov">          3 : }</span></a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineCov">          2 : }</span></a>
 <a name="73"><span class="lineNum">      73 </span>            : </a>
 <a name="74"><span class="lineNum">      74 </span>            : void</a>
-<a name="75"><span class="lineNum">      75 </span><span class="lineCov">        349 : OrientationRate::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineCov">        313 : OrientationRate::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
 <a name="76"><span class="lineNum">      76 </span>            : {</a>
-<a name="77"><span class="lineNum">      77 </span><span class="lineCov">        349 :   neml_assert_dbg(!d2out_din2, &quot;Second derivative not implemented.&quot;);</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineCov">        313 :   neml_assert_dbg(!d2out_din2, &quot;Second derivative not implemented.&quot;);</span></a>
 <a name="78"><span class="lineNum">      78 </span>            : </a>
-<a name="79"><span class="lineNum">      79 </span><span class="lineCov">        349 :   if (out)</span></a>
-<a name="80"><span class="lineNum">      80 </span><span class="lineCov">        347 :     _R_dot = _w - _wp + math::multiply_and_make_skew(SR2(_dp), SR2(_e));</span></a>
+<a name="79"><span class="lineNum">      79 </span><span class="lineCov">        313 :   if (out)</span></a>
+<a name="80"><span class="lineNum">      80 </span><span class="lineCov">        312 :     _R_dot = _w - _wp + math::multiply_and_make_skew(SR2(_dp), SR2(_e));</span></a>
 <a name="81"><span class="lineNum">      81 </span>            : </a>
-<a name="82"><span class="lineNum">      82 </span><span class="lineCov">        349 :   if (dout_din)</span></a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineCov">        313 :   if (dout_din)</span></a>
 <a name="83"><span class="lineNum">      83 </span>            :   {</a>
-<a name="84"><span class="lineNum">      84 </span><span class="lineCov">         65 :     const auto I = WWR4::identity(options());</span></a>
+<a name="84"><span class="lineNum">      84 </span><span class="lineCov">         63 :     const auto I = WWR4::identity(_w.options());</span></a>
 <a name="85"><span class="lineNum">      85 </span>            : </a>
-<a name="86"><span class="lineNum">      86 </span><span class="lineCov">         65 :     if (_e.is_dependent())</span></a>
-<a name="87"><span class="lineNum">      87 </span><span class="lineCov">         65 :       _R_dot.d(_e) = math::d_multiply_and_make_skew_d_second(SR2(_dp));</span></a>
+<a name="86"><span class="lineNum">      86 </span><span class="lineCov">         63 :     if (_e.is_dependent())</span></a>
+<a name="87"><span class="lineNum">      87 </span><span class="lineCov">         63 :       _R_dot.d(_e) = math::d_multiply_and_make_skew_d_second(SR2(_dp));</span></a>
 <a name="88"><span class="lineNum">      88 </span>            : </a>
-<a name="89"><span class="lineNum">      89 </span><span class="lineCov">         65 :     if (_w.is_dependent())</span></a>
-<a name="90"><span class="lineNum">      90 </span><span class="lineCov">          4 :       _R_dot.d(_w) = I;</span></a>
+<a name="89"><span class="lineNum">      89 </span><span class="lineCov">         63 :     if (_w.is_dependent())</span></a>
+<a name="90"><span class="lineNum">      90 </span><span class="lineCov">          1 :       _R_dot.d(_w) = I;</span></a>
 <a name="91"><span class="lineNum">      91 </span>            : </a>
-<a name="92"><span class="lineNum">      92 </span><span class="lineCov">         65 :     if (_dp.is_dependent())</span></a>
-<a name="93"><span class="lineNum">      93 </span><span class="lineCov">         65 :       _R_dot.d(_dp) = math::d_multiply_and_make_skew_d_first(SR2(_e));</span></a>
+<a name="92"><span class="lineNum">      92 </span><span class="lineCov">         63 :     if (_dp.is_dependent())</span></a>
+<a name="93"><span class="lineNum">      93 </span><span class="lineCov">         63 :       _R_dot.d(_dp) = math::d_multiply_and_make_skew_d_first(SR2(_e));</span></a>
 <a name="94"><span class="lineNum">      94 </span>            : </a>
-<a name="95"><span class="lineNum">      95 </span><span class="lineCov">         65 :     if (_wp.is_dependent())</span></a>
-<a name="96"><span class="lineNum">      96 </span><span class="lineCov">         65 :       _R_dot.d(_wp) = -I;</span></a>
-<a name="97"><span class="lineNum">      97 </span><span class="lineCov">         65 :   }</span></a>
-<a name="98"><span class="lineNum">      98 </span><span class="lineCov">        349 : }</span></a>
+<a name="95"><span class="lineNum">      95 </span><span class="lineCov">         63 :     if (_wp.is_dependent())</span></a>
+<a name="96"><span class="lineNum">      96 </span><span class="lineCov">         63 :       _R_dot.d(_wp) = -I;</span></a>
+<a name="97"><span class="lineNum">      97 </span><span class="lineCov">         63 :   }</span></a>
+<a name="98"><span class="lineNum">      98 </span><span class="lineCov">        313 : }</span></a>
 <a name="99"><span class="lineNum">      99 </span>            : } // namespace neml2</a>
 </pre>
       </td>

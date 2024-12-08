@@ -31,18 +31,18 @@
             <td class="headerValue">coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">24</td>
-            <td class="headerCovTableEntry">24</td>
-            <td class="headerCovTableEntryHi">100.0 %</td>
+            <td class="headerCovTableEntry">28</td>
+            <td class="headerCovTableEntry">29</td>
+            <td class="headerCovTableEntryHi">96.6 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-04 12:08:01</td>
+            <td class="headerValue">2024-12-08 01:46:13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">30</td>
-            <td class="headerCovTableEntry">36</td>
-            <td class="headerCovTableEntryMed">83.3 %</td>
+            <td class="headerCovTableEntry">42</td>
+            <td class="headerCovTableEntry">54</td>
+            <td class="headerCovTableEntryMed">77.8 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -116,27 +116,41 @@
 <a name="54"><span class="lineNum">      54 </span><span class="lineCov">        108 :   options.set&lt;Size&gt;(&quot;dim&quot;) = 0;</span></a>
 <a name="55"><span class="lineNum">      55 </span><span class="lineCov">        108 :   options.set(&quot;dim&quot;).doc() = &quot;Where to insert the new dimension&quot;;</span></a>
 <a name="56"><span class="lineNum">      56 </span>            : </a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">        108 :   options.set&lt;Size&gt;(&quot;batch_dim&quot;) = -1;</span></a>
-<a name="58"><span class="lineNum">      58 </span><span class="lineCov">        108 :   options.set(&quot;batch_dim&quot;).doc() = &quot;Batch dimension of the output&quot;;</span></a>
-<a name="59"><span class="lineNum">      59 </span>            : </a>
-<a name="60"><span class="lineNum">      60 </span><span class="lineCov">        216 :   return options;</span></a>
-<a name="61"><span class="lineNum">      61 </span><span class="lineCov">        108 : }</span></a>
-<a name="62"><span class="lineNum">      62 </span>            : </a>
-<a name="63"><span class="lineNum">      63 </span>            : template &lt;typename T&gt;</a>
-<a name="64"><span class="lineNum">      64 </span><span class="lineCov">        103 : LinspacePrimitiveTensor&lt;T&gt;::LinspacePrimitiveTensor(const OptionSet &amp; options)</span></a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineCov">        206 :   : T(T::linspace(options.get&lt;CrossRef&lt;T&gt;&gt;(&quot;start&quot;),</span></a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineCov">        206 :                   options.get&lt;CrossRef&lt;T&gt;&gt;(&quot;end&quot;),</span></a>
-<a name="67"><span class="lineNum">      67 </span><span class="lineCov">        206 :                   options.get&lt;Size&gt;(&quot;nstep&quot;),</span></a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">        206 :                   options.get&lt;Size&gt;(&quot;dim&quot;),</span></a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">        206 :                   options.get&lt;Size&gt;(&quot;batch_dim&quot;))),</span></a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineCov">        721 :     UserTensorBase(options)</span></a>
-<a name="71"><span class="lineNum">      71 </span>            : {</a>
-<a name="72"><span class="lineNum">      72 </span><span class="lineCov">        103 : }</span></a>
-<a name="73"><span class="lineNum">      73 </span>            : </a>
-<a name="74"><span class="lineNum">      74 </span>            : #define LINSPACEPRIMITIVETENSOR_INSTANTIATE_PRIMITIVETENSOR(T)                                     \</a>
-<a name="75"><span class="lineNum">      75 </span>            :   template class LinspacePrimitiveTensor&lt;T&gt;</a>
-<a name="76"><span class="lineNum">      76 </span>            : FOR_ALL_PRIMITIVETENSOR(LINSPACEPRIMITIVETENSOR_INSTANTIATE_PRIMITIVETENSOR);</a>
-<a name="77"><span class="lineNum">      77 </span>            : } // namespace neml2</a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineCov">        108 :   options.set&lt;TensorShape&gt;(&quot;batch_expand&quot;) = TensorShape();</span></a>
+<a name="58"><span class="lineNum">      58 </span><span class="lineCov">        108 :   options.set(&quot;batch_expand&quot;).doc() = &quot;After construction, perform an additional batch expanding &quot;</span></a>
+<a name="59"><span class="lineNum">      59 </span>            :                                       &quot;operation into the given batch shape.&quot;;</a>
+<a name="60"><span class="lineNum">      60 </span>            : </a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">        216 :   return options;</span></a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineCov">        108 : }</span></a>
+<a name="63"><span class="lineNum">      63 </span>            : </a>
+<a name="64"><span class="lineNum">      64 </span>            : template &lt;typename T&gt;</a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">         76 : LinspacePrimitiveTensor&lt;T&gt;::LinspacePrimitiveTensor(const OptionSet &amp; options)</span></a>
+<a name="66"><span class="lineNum">      66 </span>            :   : T(make(options)),</a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">         76 :     UserTensorBase(options)</span></a>
+<a name="68"><span class="lineNum">      68 </span>            : {</a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">         76 : }</span></a>
+<a name="70"><span class="lineNum">      70 </span>            : </a>
+<a name="71"><span class="lineNum">      71 </span>            : template &lt;typename T&gt;</a>
+<a name="72"><span class="lineNum">      72 </span>            : T</a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">         76 : LinspacePrimitiveTensor&lt;T&gt;::make(const OptionSet &amp; options) const</span></a>
+<a name="74"><span class="lineNum">      74 </span>            : {</a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineCov">        152 :   auto t = T::linspace(options.get&lt;CrossRef&lt;T&gt;&gt;(&quot;start&quot;),</span></a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineCov">        152 :                        options.get&lt;CrossRef&lt;T&gt;&gt;(&quot;end&quot;),</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineCov">        152 :                        options.get&lt;Size&gt;(&quot;nstep&quot;),</span></a>
+<a name="78"><span class="lineNum">      78 </span><span class="lineCov">        152 :                        options.get&lt;Size&gt;(&quot;dim&quot;));</span></a>
+<a name="79"><span class="lineNum">      79 </span>            : </a>
+<a name="80"><span class="lineNum">      80 </span>            :   // Expand if requested</a>
+<a name="81"><span class="lineNum">      81 </span><span class="lineCov">        152 :   auto S = options.get&lt;TensorShape&gt;(&quot;batch_expand&quot;);</span></a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineCov">         76 :   if (!S.empty())</span></a>
+<a name="83"><span class="lineNum">      83 </span><span class="lineNoCov">          0 :     t = t.batch_expand(S);</span></a>
+<a name="84"><span class="lineNum">      84 </span>            : </a>
+<a name="85"><span class="lineNum">      85 </span><span class="lineCov">        152 :   return t;</span></a>
+<a name="86"><span class="lineNum">      86 </span><span class="lineCov">         76 : }</span></a>
+<a name="87"><span class="lineNum">      87 </span>            : </a>
+<a name="88"><span class="lineNum">      88 </span>            : #define LINSPACEPRIMITIVETENSOR_INSTANTIATE_PRIMITIVETENSOR(T)                                     \</a>
+<a name="89"><span class="lineNum">      89 </span>            :   template class LinspacePrimitiveTensor&lt;T&gt;</a>
+<a name="90"><span class="lineNum">      90 </span>            : FOR_ALL_PRIMITIVETENSOR(LINSPACEPRIMITIVETENSOR_INSTANTIATE_PRIMITIVETENSOR);</a>
+<a name="91"><span class="lineNum">      91 </span>            : } // namespace neml2</a>
 </pre>
       </td>
     </tr>

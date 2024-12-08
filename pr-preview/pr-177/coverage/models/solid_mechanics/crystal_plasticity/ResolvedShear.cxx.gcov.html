@@ -31,13 +31,13 @@
             <td class="headerValue">coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">36</td>
-            <td class="headerCovTableEntry">37</td>
-            <td class="headerCovTableEntryHi">97.3 %</td>
+            <td class="headerCovTableEntry">34</td>
+            <td class="headerCovTableEntry">35</td>
+            <td class="headerCovTableEntryHi">97.1 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-04 12:08:01</td>
+            <td class="headerValue">2024-12-08 01:46:13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -120,39 +120,39 @@
 <a name="58"><span class="lineNum">      58 </span><span class="lineCov">          6 :   return options;</span></a>
 <a name="59"><span class="lineNum">      59 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="60"><span class="lineNum">      60 </span>            : </a>
-<a name="61"><span class="lineNum">      61 </span><span class="lineCov">          3 : ResolvedShear::ResolvedShear(const OptionSet &amp; options)</span></a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">          2 : ResolvedShear::ResolvedShear(const OptionSet &amp; options)</span></a>
 <a name="62"><span class="lineNum">      62 </span>            :   : Model(options),</a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineCov">          9 :     _crystal_geometry(register_data&lt;crystallography::CrystalGeometry&gt;(</span></a>
-<a name="64"><span class="lineNum">      64 </span><span class="lineCov">          3 :         options.get&lt;std::string&gt;(&quot;crystal_geometry_name&quot;))),</span></a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineCov">          3 :     _rss(declare_output_variable_list&lt;Scalar&gt;(_crystal_geometry.nslip(), &quot;resolved_shears&quot;)),</span></a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineCov">          3 :     _S(declare_input_variable&lt;SR2&gt;(&quot;stress&quot;)),</span></a>
-<a name="67"><span class="lineNum">      67 </span><span class="lineCov">          6 :     _R(declare_input_variable&lt;R2&gt;(&quot;orientation&quot;))</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineCov">          6 :     _crystal_geometry(register_data&lt;crystallography::CrystalGeometry&gt;(</span></a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineCov">          2 :         options.get&lt;std::string&gt;(&quot;crystal_geometry_name&quot;))),</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">          2 :     _rss(declare_output_variable&lt;Scalar&gt;(&quot;resolved_shears&quot;, _crystal_geometry.nslip())),</span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineCov">          2 :     _S(declare_input_variable&lt;SR2&gt;(&quot;stress&quot;)),</span></a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">          4 :     _R(declare_input_variable&lt;R2&gt;(&quot;orientation&quot;))</span></a>
 <a name="68"><span class="lineNum">      68 </span>            : {</a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">          3 : }</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">          2 : }</span></a>
 <a name="70"><span class="lineNum">      70 </span>            : </a>
 <a name="71"><span class="lineNum">      71 </span>            : void</a>
-<a name="72"><span class="lineNum">      72 </span><span class="lineCov">        310 : ResolvedShear::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineCov">        302 : ResolvedShear::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
 <a name="73"><span class="lineNum">      73 </span>            : {</a>
-<a name="74"><span class="lineNum">      74 </span><span class="lineCov">        310 :   neml_assert_dbg(!d2out_din2, &quot;Second derivative not implemented.&quot;);</span></a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineCov">        302 :   neml_assert_dbg(!d2out_din2, &quot;Second derivative not implemented.&quot;);</span></a>
 <a name="75"><span class="lineNum">      75 </span>            : </a>
-<a name="76"><span class="lineNum">      76 </span><span class="lineCov">        310 :   const auto S = SR2(_S).batch_unsqueeze(-1);</span></a>
-<a name="77"><span class="lineNum">      77 </span><span class="lineCov">        310 :   const auto R = R2(_R).batch_unsqueeze(-1);</span></a>
-<a name="78"><span class="lineNum">      78 </span>            : </a>
-<a name="79"><span class="lineNum">      79 </span><span class="lineCov">        310 :   if (out)</span></a>
-<a name="80"><span class="lineNum">      80 </span><span class="lineCov">        310 :     _rss = Tensor(_crystal_geometry.M().rotate(R).inner(S), batch_dim());</span></a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineCov">        302 :   const auto D = broadcast_batch_dim(_S, _R);</span></a>
+<a name="77"><span class="lineNum">      77 </span>            : </a>
+<a name="78"><span class="lineNum">      78 </span>            :   // Unsqueeze a batch dimension for slip systems</a>
+<a name="79"><span class="lineNum">      79 </span><span class="lineCov">        302 :   const auto S = SR2(_S).batch_unsqueeze(-1);</span></a>
+<a name="80"><span class="lineNum">      80 </span><span class="lineCov">        302 :   const auto R = R2(_R).batch_unsqueeze(-1);</span></a>
 <a name="81"><span class="lineNum">      81 </span>            : </a>
-<a name="82"><span class="lineNum">      82 </span><span class="lineCov">        310 :   if (dout_din)</span></a>
-<a name="83"><span class="lineNum">      83 </span>            :   {</a>
-<a name="84"><span class="lineNum">      84 </span><span class="lineCov">         65 :     if (_S.is_dependent())</span></a>
-<a name="85"><span class="lineNum">      85 </span><span class="lineCov">         65 :       _rss.d(_S) = Tensor(_crystal_geometry.M().rotate(R), batch_dim());</span></a>
-<a name="86"><span class="lineNum">      86 </span>            : </a>
-<a name="87"><span class="lineNum">      87 </span><span class="lineCov">         65 :     if (_R.is_dependent())</span></a>
-<a name="88"><span class="lineNum">      88 </span><span class="lineCov">         65 :       _rss.d(_R) =</span></a>
-<a name="89"><span class="lineNum">      89 </span><span class="lineCov">        260 :           Tensor(SR2(_crystal_geometry.M().drotate(R).movedim(-3, -1))</span></a>
-<a name="90"><span class="lineNum">      90 </span><span class="lineCov">        130 :                      .inner(SR2(_S).batch_unsqueeze(-1).batch_unsqueeze(-1).batch_unsqueeze(-1)),</span></a>
-<a name="91"><span class="lineNum">      91 </span><span class="lineCov">         65 :                  batch_dim());</span></a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineCov">        302 :   if (out)</span></a>
+<a name="83"><span class="lineNum">      83 </span><span class="lineCov">        302 :     _rss = _crystal_geometry.M().rotate(R).inner(S);</span></a>
+<a name="84"><span class="lineNum">      84 </span>            : </a>
+<a name="85"><span class="lineNum">      85 </span><span class="lineCov">        302 :   if (dout_din)</span></a>
+<a name="86"><span class="lineNum">      86 </span>            :   {</a>
+<a name="87"><span class="lineNum">      87 </span><span class="lineCov">         63 :     if (_S.is_dependent())</span></a>
+<a name="88"><span class="lineNum">      88 </span><span class="lineCov">         63 :       _rss.d(_S) = Tensor(_crystal_geometry.M().rotate(R), D);</span></a>
+<a name="89"><span class="lineNum">      89 </span>            : </a>
+<a name="90"><span class="lineNum">      90 </span><span class="lineCov">         63 :     if (_R.is_dependent())</span></a>
+<a name="91"><span class="lineNum">      91 </span><span class="lineCov">        189 :       _rss.d(_R) = Tensor(torch::einsum(&quot;...ijk,...i&quot;, {_crystal_geometry.M().drotate(R), S}), D);</span></a>
 <a name="92"><span class="lineNum">      92 </span>            :   }</a>
-<a name="93"><span class="lineNum">      93 </span><span class="lineCov">        310 : }</span></a>
+<a name="93"><span class="lineNum">      93 </span><span class="lineCov">        302 : }</span></a>
 <a name="94"><span class="lineNum">      94 </span>            : </a>
 <a name="95"><span class="lineNum">      95 </span>            : } // namespace neml2</a>
 </pre>

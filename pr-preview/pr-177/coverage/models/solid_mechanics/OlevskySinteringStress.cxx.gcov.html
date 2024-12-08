@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-04 12:08:01</td>
+            <td class="headerValue">2024-12-08 01:46:13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -115,29 +115,29 @@
 <a name="53"><span class="lineNum">      53 </span><span class="lineCov">          6 :   return options;</span></a>
 <a name="54"><span class="lineNum">      54 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="55"><span class="lineNum">      55 </span>            : </a>
-<a name="56"><span class="lineNum">      56 </span><span class="lineCov">          2 : OlevskySinteringStress::OlevskySinteringStress(const OptionSet &amp; options)</span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineCov">          1 : OlevskySinteringStress::OlevskySinteringStress(const OptionSet &amp; options)</span></a>
 <a name="57"><span class="lineNum">      57 </span>            :   : Model(options),</a>
-<a name="58"><span class="lineNum">      58 </span><span class="lineCov">          4 :     _s(declare_output_variable&lt;Scalar&gt;(&quot;sintering_stress&quot;)),</span></a>
-<a name="59"><span class="lineNum">      59 </span><span class="lineCov">          2 :     _phi(declare_input_variable&lt;Scalar&gt;(&quot;void_fraction&quot;)),</span></a>
-<a name="60"><span class="lineNum">      60 </span><span class="lineCov">          2 :     _gamma(declare_parameter&lt;Scalar&gt;(&quot;gamma&quot;, &quot;surface_tension&quot;)),</span></a>
-<a name="61"><span class="lineNum">      61 </span><span class="lineCov">          4 :     _r(declare_parameter&lt;Scalar&gt;(&quot;r&quot;, &quot;particle_radius&quot;))</span></a>
+<a name="58"><span class="lineNum">      58 </span><span class="lineCov">          1 :     _s(declare_output_variable&lt;Scalar&gt;(&quot;sintering_stress&quot;)),</span></a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineCov">          1 :     _phi(declare_input_variable&lt;Scalar&gt;(&quot;void_fraction&quot;)),</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineCov">          1 :     _gamma(declare_parameter&lt;Scalar&gt;(&quot;gamma&quot;, &quot;surface_tension&quot;)),</span></a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">          2 :     _r(declare_parameter&lt;Scalar&gt;(&quot;r&quot;, &quot;particle_radius&quot;))</span></a>
 <a name="62"><span class="lineNum">      62 </span>            : {</a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineCov">          2 : }</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineCov">          1 : }</span></a>
 <a name="64"><span class="lineNum">      64 </span>            : </a>
 <a name="65"><span class="lineNum">      65 </span>            : void</a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineCov">         29 : OlevskySinteringStress::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineCov">          7 : OlevskySinteringStress::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
 <a name="67"><span class="lineNum">      67 </span>            : {</a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">         29 :   if (out)</span></a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">         23 :     _s = 3 * _gamma * _phi * _phi / _r;</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">          7 :   if (out)</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">          3 :     _s = 3 * _gamma * _phi * _phi / _r;</span></a>
 <a name="70"><span class="lineNum">      70 </span>            : </a>
-<a name="71"><span class="lineNum">      71 </span><span class="lineCov">         29 :   if (dout_din)</span></a>
-<a name="72"><span class="lineNum">      72 </span><span class="lineCov">         12 :     if (_phi.is_dependent())</span></a>
-<a name="73"><span class="lineNum">      73 </span><span class="lineCov">         12 :       _s.d(_phi) = 6 * _gamma * _phi / _r;</span></a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineCov">          7 :   if (dout_din)</span></a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineCov">          3 :     if (_phi.is_dependent())</span></a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">          3 :       _s.d(_phi) = 6 * _gamma * _phi / _r;</span></a>
 <a name="74"><span class="lineNum">      74 </span>            : </a>
-<a name="75"><span class="lineNum">      75 </span><span class="lineCov">         29 :   if (d2out_din2)</span></a>
-<a name="76"><span class="lineNum">      76 </span><span class="lineCov">          6 :     if (_phi.is_dependent())</span></a>
-<a name="77"><span class="lineNum">      77 </span><span class="lineCov">          6 :       _s.d(_phi, _phi) = 6 * _gamma / _r;</span></a>
-<a name="78"><span class="lineNum">      78 </span><span class="lineCov">         29 : }</span></a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineCov">          7 :   if (d2out_din2)</span></a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineCov">          1 :     if (_phi.is_dependent())</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineCov">          1 :       _s.d(_phi, _phi) = 6 * _gamma / _r;</span></a>
+<a name="78"><span class="lineNum">      78 </span><span class="lineCov">          7 : }</span></a>
 <a name="79"><span class="lineNum">      79 </span>            : } // namespace neml2</a>
 </pre>
       </td>

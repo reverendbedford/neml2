@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['const_5fiterator_0',['const_iterator',['../classneml2_1_1OptionSet.html#a978d425e08b98c074ab7da9b46577dff',1,'neml2::OptionSet::const_iterator'],['../classneml2_1_1Storage.html#a4e2808a5df89d65e613d0e8ac0081181',1,'neml2::Storage::const_iterator'],['../classneml2_1_1LabeledAxisAccessor.html#a2fc8d7e242c9b5c203449904c8c9e914',1,'neml2::LabeledAxisAccessor::const_iterator']]]
+  ['integer_0',['Integer',['../namespaceneml2.html#a1dc165bbe1d2390cd0a21524320cd3eb',1,'neml2']]],
+  ['iterator_1',['iterator',['../classneml2_1_1OptionSet.html#afdf01fb87be3acfa8803454bb61270f9',1,'neml2::OptionSet::iterator'],['../classneml2_1_1Storage.html#aca80dd27f24b2a043729bccd035811d8',1,'neml2::Storage::iterator'],['../classneml2_1_1LabeledAxisAccessor.html#a7fb774c9a97dbe8771a3d8ced2ce77e7',1,'neml2::LabeledAxisAccessor::iterator']]]
 ];

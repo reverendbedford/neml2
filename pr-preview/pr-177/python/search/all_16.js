@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['with_5fsuffix_0',['with_suffix',['../classtensors_1_1LabeledAxisAccessor.html#ae8f81371aa8d4f05e00451c36e811668',1,'tensors::LabeledAxisAccessor']]],
+  ['with_5fsuffix_0',['with_suffix',['../classbase_1_1LabeledAxisAccessor.html#ae8f81371aa8d4f05e00451c36e811668',1,'base::LabeledAxisAccessor']]],
   ['wr2_1',['WR2',['../classtensors_1_1WR2.html',1,'WR2'],['../classtensors_1_1TensorType.html#ac2c1827ae298eb17947881486052018c',1,'tensors.TensorType.WR2']]],
   ['wr2baseview_2',['WR2BaseView',['../classtensors_1_1WR2BaseView.html',1,'tensors']]],
   ['wr2batchview_3',['WR2BatchView',['../classtensors_1_1WR2BatchView.html',1,'tensors']]],

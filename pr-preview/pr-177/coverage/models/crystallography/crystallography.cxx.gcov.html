@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-04 12:08:01</td>
+            <td class="headerValue">2024-12-08 01:46:13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">6</td>
@@ -128,23 +128,23 @@
 <a name="66"><span class="lineNum">      66 </span>            : }</a>
 <a name="67"><span class="lineNum">      67 </span>            : </a>
 <a name="68"><span class="lineNum">      68 </span>            : torch::Tensor</a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">         59 : cubic(const torch::TensorOptions &amp; options)</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">         54 : cubic(const torch::TensorOptions &amp; options)</span></a>
 <a name="70"><span class="lineNum">      70 </span>            : {</a>
-<a name="71"><span class="lineNum">      71 </span><span class="lineCov">       7080 :   return torch::tensor({{o, z, z, z},   {h, h, h, h},    {-h, h, h, h},  {h, -h, h, h},</span></a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineCov">       6480 :   return torch::tensor({{o, z, z, z},   {h, h, h, h},    {-h, h, h, h},  {h, -h, h, h},</span></a>
 <a name="72"><span class="lineNum">      72 </span>            :                         {h, h, -h, h},  {-h, -h, -h, h}, {h, -h, -h, h}, {-h, -h, h, h},</a>
 <a name="73"><span class="lineNum">      73 </span>            :                         {-h, h, -h, h}, {z, z, o, z},    {z, z, z, o},   {z, o, z, z},</a>
 <a name="74"><span class="lineNum">      74 </span>            :                         {z, -a, z, a},  {z, a, z, a},    {a, z, a, z},   {a, z, -a, z},</a>
 <a name="75"><span class="lineNum">      75 </span>            :                         {z, z, -a, a},  {a, a, z, z},    {a, -a, z, z},  {z, z, a, a},</a>
 <a name="76"><span class="lineNum">      76 </span>            :                         {z, -a, a, z},  {a, z, z, -a},   {z, a, a, z},   {a, z, z, a}},</a>
-<a name="77"><span class="lineNum">      77 </span><span class="lineCov">       7139 :                        options);</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineCov">       6534 :                        options);</span></a>
 <a name="78"><span class="lineNum">      78 </span>            : }</a>
 <a name="79"><span class="lineNum">      79 </span>            : } // namespace crystal_symmetry_operators</a>
 <a name="80"><span class="lineNum">      80 </span>            : </a>
 <a name="81"><span class="lineNum">      81 </span>            : R2</a>
-<a name="82"><span class="lineNum">      82 </span><span class="lineCov">         95 : symmetry_operations_from_orbifold(std::string orbifold, const torch::TensorOptions &amp; options)</span></a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineCov">         90 : symmetry_operations_from_orbifold(std::string orbifold, const torch::TensorOptions &amp; options)</span></a>
 <a name="83"><span class="lineNum">      83 </span>            : {</a>
-<a name="84"><span class="lineNum">      84 </span><span class="lineCov">         95 :   if (orbifold == &quot;432&quot;)</span></a>
-<a name="85"><span class="lineNum">      85 </span><span class="lineCov">        110 :     return transform_from_quaternion(Quaternion(crystal_symmetry_operators::cubic(options)));</span></a>
+<a name="84"><span class="lineNum">      84 </span><span class="lineCov">         90 :   if (orbifold == &quot;432&quot;)</span></a>
+<a name="85"><span class="lineNum">      85 </span><span class="lineCov">        100 :     return transform_from_quaternion(Quaternion(crystal_symmetry_operators::cubic(options)));</span></a>
 <a name="86"><span class="lineNum">      86 </span>            : </a>
 <a name="87"><span class="lineNum">      87 </span><span class="lineCov">         40 :   if (orbifold == &quot;23&quot;)</span></a>
 <a name="88"><span class="lineNum">      88 </span>            :     return transform_from_quaternion(</a>
@@ -190,31 +190,31 @@
 <a name="128"><span class="lineNum">     128 </span>            : }</a>
 <a name="129"><span class="lineNum">     129 </span>            : </a>
 <a name="130"><span class="lineNum">     130 </span>            : Vec</a>
-<a name="131"><span class="lineNum">     131 </span><span class="lineCov">         80 : unique_bidirectional(const R2 &amp; ops, const Vec &amp; inp)</span></a>
+<a name="131"><span class="lineNum">     131 </span><span class="lineCov">         70 : unique_bidirectional(const R2 &amp; ops, const Vec &amp; inp)</span></a>
 <a name="132"><span class="lineNum">     132 </span>            : {</a>
-<a name="133"><span class="lineNum">     133 </span><span class="lineCov">         80 :   neml_assert_dbg(inp.batch_dim() == 0);</span></a>
+<a name="133"><span class="lineNum">     133 </span><span class="lineCov">         70 :   neml_assert_dbg(inp.batch_dim() == 0);</span></a>
 <a name="134"><span class="lineNum">     134 </span>            :   // Batched tensor with all possible answers</a>
-<a name="135"><span class="lineNum">     135 </span><span class="lineCov">         80 :   auto options = ops * inp;</span></a>
+<a name="135"><span class="lineNum">     135 </span><span class="lineCov">         70 :   auto options = ops * inp;</span></a>
 <a name="136"><span class="lineNum">     136 </span>            :   // I think we have to go one by one...</a>
 <a name="137"><span class="lineNum">     137 </span>            :   // Slightly annoying that while Vec and torch::Tensor are convertible a</a>
 <a name="138"><span class="lineNum">     138 </span>            :   // list of Vecs aren't convertable into a TensorList</a>
-<a name="139"><span class="lineNum">     139 </span><span class="lineCov">        400 :   std::vector&lt;torch::Tensor&gt; unique{torch::Tensor(options.batch_index({0}))};</span></a>
-<a name="140"><span class="lineNum">     140 </span><span class="lineCov">         80 :   Vec unique_vecs = Vec(torch::stack(unique));</span></a>
-<a name="141"><span class="lineNum">     141 </span><span class="lineCov">       1920 :   for (Size i = 1; i &lt; options.batch_sizes()[0]; i++)</span></a>
+<a name="139"><span class="lineNum">     139 </span><span class="lineCov">        350 :   std::vector&lt;torch::Tensor&gt; unique{torch::Tensor(options.batch_index({0}))};</span></a>
+<a name="140"><span class="lineNum">     140 </span><span class="lineCov">         70 :   Vec unique_vecs = Vec(torch::stack(unique));</span></a>
+<a name="141"><span class="lineNum">     141 </span><span class="lineCov">       1680 :   for (Size i = 1; i &lt; options.batch_size(0).concrete(); i++)</span></a>
 <a name="142"><span class="lineNum">     142 </span>            :   {</a>
-<a name="143"><span class="lineNum">     143 </span><span class="lineCov">       3680 :     auto vi = options.batch_index({i});</span></a>
+<a name="143"><span class="lineNum">     143 </span><span class="lineCov">       3220 :     auto vi = options.batch_index({i});</span></a>
 <a name="144"><span class="lineNum">     144 </span>            :     // Compares list of vectors to vector to figure out if any are the same</a>
-<a name="145"><span class="lineNum">     145 </span><span class="lineCov">       3120 :     auto same = [](const torch::Tensor &amp; a, const torch::Tensor &amp; b)</span></a>
-<a name="146"><span class="lineNum">     146 </span><span class="lineCov">       6240 :     { return torch::any(torch::all(torch::isclose(a, b), 1)); };</span></a>
-<a name="147"><span class="lineNum">     147 </span><span class="lineCov">       1840 :     if (!(same(unique_vecs, vi).item&lt;bool&gt;() || same(unique_vecs, -vi).item&lt;bool&gt;()))</span></a>
+<a name="145"><span class="lineNum">     145 </span><span class="lineCov">       2730 :     auto same = [](const torch::Tensor &amp; a, const torch::Tensor &amp; b)</span></a>
+<a name="146"><span class="lineNum">     146 </span><span class="lineCov">       5460 :     { return torch::any(torch::all(torch::isclose(a, b), 1)); };</span></a>
+<a name="147"><span class="lineNum">     147 </span><span class="lineCov">       1610 :     if (!(same(unique_vecs, vi).item&lt;bool&gt;() || same(unique_vecs, -vi).item&lt;bool&gt;()))</span></a>
 <a name="148"><span class="lineNum">     148 </span>            :     {</a>
-<a name="149"><span class="lineNum">     149 </span><span class="lineCov">        320 :       unique.push_back(torch::Tensor(vi));</span></a>
-<a name="150"><span class="lineNum">     150 </span><span class="lineCov">        320 :       unique_vecs = Vec(torch::stack(unique));</span></a>
+<a name="149"><span class="lineNum">     149 </span><span class="lineCov">        280 :       unique.push_back(torch::Tensor(vi));</span></a>
+<a name="150"><span class="lineNum">     150 </span><span class="lineCov">        280 :       unique_vecs = Vec(torch::stack(unique));</span></a>
 <a name="151"><span class="lineNum">     151 </span>            :     }</a>
-<a name="152"><span class="lineNum">     152 </span><span class="lineCov">       1840 :   }</span></a>
+<a name="152"><span class="lineNum">     152 </span><span class="lineCov">       1610 :   }</span></a>
 <a name="153"><span class="lineNum">     153 </span>            :   // Get the batch of all possible answers</a>
-<a name="154"><span class="lineNum">     154 </span><span class="lineCov">        160 :   return unique_vecs;</span></a>
-<a name="155"><span class="lineNum">     155 </span><span class="lineCov">         80 : }</span></a>
+<a name="154"><span class="lineNum">     154 </span><span class="lineCov">        140 :   return unique_vecs;</span></a>
+<a name="155"><span class="lineNum">     155 </span><span class="lineCov">         70 : }</span></a>
 <a name="156"><span class="lineNum">     156 </span>            : </a>
 <a name="157"><span class="lineNum">     157 </span>            : } // namespace crystallography</a>
 <a name="158"><span class="lineNum">     158 </span>            : } // namespace neml2</a>

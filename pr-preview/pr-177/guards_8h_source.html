@@ -188,7 +188,7 @@ $(function(){initNavTree('guards_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>};</div>
 </div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="comment">// A RAII guard that sets number of interop threads for a local region</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="comment">// Set number of interop threads for a local region</span></div>
 <div class="foldopen" id="foldopen00067" data-start="{" data-end="};">
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="structneml2_1_1InterOpThread.html">   67</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structneml2_1_1InterOpThread.html">InterOpThread</a></div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>{</div>
@@ -207,7 +207,7 @@ $(function(){initNavTree('guards_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>};</div>
 </div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="comment">// A RAII guard that sets number of intraop threads for a local region</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="comment">// Set number of intraop threads for a local region</span></div>
 <div class="foldopen" id="foldopen00082" data-start="{" data-end="};">
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno"><a class="line" href="structneml2_1_1IntraOpThread.html">   82</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structneml2_1_1IntraOpThread.html">IntraOpThread</a></div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>{</div>
@@ -225,10 +225,20 @@ $(function(){initNavTree('guards_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno"><a class="line" href="structneml2_1_1IntraOpThread.html#ad6d821ba8f0566c6622cf8d3fbfd2577">   93</a></span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="structneml2_1_1IntraOpThread.html#ad6d821ba8f0566c6622cf8d3fbfd2577">prev_num</a>;</div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>};</div>
 </div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>}</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="comment">// Global switch for requesting AD for variable derivatives</span></div>
+<div class="foldopen" id="foldopen00097" data-start="{" data-end="};">
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="structneml2_1_1RequestingAD.html">   97</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structneml2_1_1RequestingAD.html">RequestingAD</a></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>{</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno"><a class="line" href="structneml2_1_1RequestingAD.html#a6011e8a072c8819ca0b35635f87d764f">   99</a></span>  <a class="code hl_function" href="structneml2_1_1RequestingAD.html#a6011e8a072c8819ca0b35635f87d764f">RequestingAD</a>() { <a class="code hl_function" href="namespaceneml2.html#a05915efd02f6a88d4fad21dee53969ee">currently_requesting_AD</a>() = <span class="keyword">true</span>; }</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="structneml2_1_1RequestingAD.html#aaa4c2fdc3950d1a76333adfc9de565af">  100</a></span>  <a class="code hl_function" href="structneml2_1_1RequestingAD.html#aaa4c2fdc3950d1a76333adfc9de565af">~RequestingAD</a>() { <a class="code hl_function" href="namespaceneml2.html#a05915efd02f6a88d4fad21dee53969ee">currently_requesting_AD</a>() = <span class="keyword">false</span>; }</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>};</div>
+</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>}</div>
 <div class="ttc" id="aclassneml2_1_1CrossRef_html"><div class="ttname"><a href="classneml2_1_1CrossRef.html">neml2::CrossRef</a></div><div class="ttdoc">The wrapper (decorator) for cross-referencing unresolved values at parse time.</div><div class="ttdef"><b>Definition</b> CrossRef.h:56</div></div>
 <div class="ttc" id="anamespaceneml2_html"><div class="ttname"><a href="namespaceneml2.html">neml2</a></div><div class="ttdef"><b>Definition</b> CrossRef.cxx:30</div></div>
-<div class="ttc" id="anamespaceneml2_html_a6f62d77d8dd6cdf23c2b96a4b2021d5d"><div class="ttname"><a href="namespaceneml2.html#a6f62d77d8dd6cdf23c2b96a4b2021d5d">neml2::currently_solving_nonlinear_system</a></div><div class="ttdeci">bool &amp; currently_solving_nonlinear_system()</div><div class="ttdef"><b>Definition</b> types.cxx:102</div></div>
+<div class="ttc" id="anamespaceneml2_html_a05915efd02f6a88d4fad21dee53969ee"><div class="ttname"><a href="namespaceneml2.html#a05915efd02f6a88d4fad21dee53969ee">neml2::currently_requesting_AD</a></div><div class="ttdeci">bool &amp; currently_requesting_AD()</div><div class="ttdef"><b>Definition</b> types.cxx:236</div></div>
+<div class="ttc" id="anamespaceneml2_html_a6f62d77d8dd6cdf23c2b96a4b2021d5d"><div class="ttname"><a href="namespaceneml2.html#a6f62d77d8dd6cdf23c2b96a4b2021d5d">neml2::currently_solving_nonlinear_system</a></div><div class="ttdeci">bool &amp; currently_solving_nonlinear_system()</div><div class="ttdef"><b>Definition</b> types.cxx:229</div></div>
 <div class="ttc" id="anamespaceneml2_html_ad1f595896cc2ad6a8e1363e840850dcd"><div class="ttname"><a href="namespaceneml2.html#ad1f595896cc2ad6a8e1363e840850dcd">neml2::timed_sections</a></div><div class="ttdeci">std::map&lt; std::string, std::map&lt; std::string, unsigned long &gt; &gt; &amp; timed_sections()</div><div class="ttdef"><b>Definition</b> guards.cxx:33</div></div>
 <div class="ttc" id="astructneml2_1_1InterOpThread_html"><div class="ttname"><a href="structneml2_1_1InterOpThread.html">neml2::InterOpThread</a></div><div class="ttdef"><b>Definition</b> guards.h:68</div></div>
 <div class="ttc" id="astructneml2_1_1InterOpThread_html_a885aa8699457bee25da3976ebc912a52"><div class="ttname"><a href="structneml2_1_1InterOpThread.html#a885aa8699457bee25da3976ebc912a52">neml2::InterOpThread::~InterOpThread</a></div><div class="ttdeci">~InterOpThread()</div><div class="ttdef"><b>Definition</b> guards.h:76</div></div>
@@ -238,6 +248,9 @@ $(function(){initNavTree('guards_8h_source.html',''); initResizable(); });
 <div class="ttc" id="astructneml2_1_1IntraOpThread_html_a05e8d4243ca271107bbe87a69074b2ea"><div class="ttname"><a href="structneml2_1_1IntraOpThread.html#a05e8d4243ca271107bbe87a69074b2ea">neml2::IntraOpThread::~IntraOpThread</a></div><div class="ttdeci">~IntraOpThread()</div><div class="ttdef"><b>Definition</b> guards.h:91</div></div>
 <div class="ttc" id="astructneml2_1_1IntraOpThread_html_a9fc0e31010ebcbef333be3eabf21cc4f"><div class="ttname"><a href="structneml2_1_1IntraOpThread.html#a9fc0e31010ebcbef333be3eabf21cc4f">neml2::IntraOpThread::IntraOpThread</a></div><div class="ttdeci">IntraOpThread(unsigned int num)</div><div class="ttdef"><b>Definition</b> guards.h:84</div></div>
 <div class="ttc" id="astructneml2_1_1IntraOpThread_html_ad6d821ba8f0566c6622cf8d3fbfd2577"><div class="ttname"><a href="structneml2_1_1IntraOpThread.html#ad6d821ba8f0566c6622cf8d3fbfd2577">neml2::IntraOpThread::prev_num</a></div><div class="ttdeci">unsigned int prev_num</div><div class="ttdef"><b>Definition</b> guards.h:93</div></div>
+<div class="ttc" id="astructneml2_1_1RequestingAD_html"><div class="ttname"><a href="structneml2_1_1RequestingAD.html">neml2::RequestingAD</a></div><div class="ttdef"><b>Definition</b> guards.h:98</div></div>
+<div class="ttc" id="astructneml2_1_1RequestingAD_html_a6011e8a072c8819ca0b35635f87d764f"><div class="ttname"><a href="structneml2_1_1RequestingAD.html#a6011e8a072c8819ca0b35635f87d764f">neml2::RequestingAD::RequestingAD</a></div><div class="ttdeci">RequestingAD()</div><div class="ttdef"><b>Definition</b> guards.h:99</div></div>
+<div class="ttc" id="astructneml2_1_1RequestingAD_html_aaa4c2fdc3950d1a76333adfc9de565af"><div class="ttname"><a href="structneml2_1_1RequestingAD.html#aaa4c2fdc3950d1a76333adfc9de565af">neml2::RequestingAD::~RequestingAD</a></div><div class="ttdeci">~RequestingAD()</div><div class="ttdef"><b>Definition</b> guards.h:100</div></div>
 <div class="ttc" id="astructneml2_1_1SolvingNonlinearSystem_html"><div class="ttname"><a href="structneml2_1_1SolvingNonlinearSystem.html">neml2::SolvingNonlinearSystem</a></div><div class="ttdef"><b>Definition</b> guards.h:54</div></div>
 <div class="ttc" id="astructneml2_1_1SolvingNonlinearSystem_html_aaf300fbcfc094bb8dcaa667f1d9854fb"><div class="ttname"><a href="structneml2_1_1SolvingNonlinearSystem.html#aaf300fbcfc094bb8dcaa667f1d9854fb">neml2::SolvingNonlinearSystem::~SolvingNonlinearSystem</a></div><div class="ttdeci">~SolvingNonlinearSystem()</div><div class="ttdef"><b>Definition</b> guards.h:61</div></div>
 <div class="ttc" id="astructneml2_1_1SolvingNonlinearSystem_html_ad5fcb4e83a8cece704346724a64eaec1"><div class="ttname"><a href="structneml2_1_1SolvingNonlinearSystem.html#ad5fcb4e83a8cece704346724a64eaec1">neml2::SolvingNonlinearSystem::prev_bool</a></div><div class="ttdeci">const bool prev_bool</div><div class="ttdef"><b>Definition</b> guards.h:63</div></div>

@@ -31,17 +31,17 @@
             <td class="headerValue">coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">26</td>
-            <td class="headerCovTableEntry">27</td>
-            <td class="headerCovTableEntryHi">96.3 %</td>
+            <td class="headerCovTableEntry">34</td>
+            <td class="headerCovTableEntry">37</td>
+            <td class="headerCovTableEntryHi">91.9 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-04 12:08:01</td>
+            <td class="headerValue">2024-12-08 01:46:13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntry">3</td>
             <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -110,26 +110,46 @@
 <a name="48"><span class="lineNum">      48 </span><span class="lineCov">          6 :   options.set&lt;Size&gt;(&quot;dim&quot;) = 0;</span></a>
 <a name="49"><span class="lineNum">      49 </span><span class="lineCov">          6 :   options.set(&quot;dim&quot;).doc() = &quot;Where to insert the new dimension&quot;;</span></a>
 <a name="50"><span class="lineNum">      50 </span>            : </a>
-<a name="51"><span class="lineNum">      51 </span><span class="lineCov">          6 :   options.set&lt;Size&gt;(&quot;batch_dim&quot;) = -1;</span></a>
-<a name="52"><span class="lineNum">      52 </span><span class="lineCov">          6 :   options.set(&quot;batch_dim&quot;).doc() = &quot;Batch dimension of the output&quot;;</span></a>
+<a name="51"><span class="lineNum">      51 </span><span class="lineCov">          6 :   options.set&lt;Real&gt;(&quot;base&quot;) = 10;</span></a>
+<a name="52"><span class="lineNum">      52 </span><span class="lineCov">          6 :   options.set(&quot;base&quot;).doc() = &quot;Exponent base&quot;;</span></a>
 <a name="53"><span class="lineNum">      53 </span>            : </a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">          6 :   options.set&lt;Real&gt;(&quot;base&quot;) = 10;</span></a>
-<a name="55"><span class="lineNum">      55 </span><span class="lineCov">          6 :   options.set(&quot;base&quot;).doc() = &quot;Exponent base&quot;;</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">          6 :   options.set&lt;Size&gt;(&quot;batch_dim&quot;) = -1;</span></a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineCov">          6 :   options.set(&quot;batch_dim&quot;).doc() = &quot;Batch dimension of the output&quot;;</span></a>
 <a name="56"><span class="lineNum">      56 </span>            : </a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">          6 :   return options;</span></a>
-<a name="58"><span class="lineNum">      58 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="59"><span class="lineNum">      59 </span>            : </a>
-<a name="60"><span class="lineNum">      60 </span><span class="lineCov">          1 : LogspaceTensor::LogspaceTensor(const OptionSet &amp; options)</span></a>
-<a name="61"><span class="lineNum">      61 </span><span class="lineCov">          2 :   : Tensor(Tensor::logspace(options.get&lt;CrossRef&lt;Tensor&gt;&gt;(&quot;start&quot;),</span></a>
-<a name="62"><span class="lineNum">      62 </span><span class="lineCov">          2 :                             options.get&lt;CrossRef&lt;Tensor&gt;&gt;(&quot;end&quot;),</span></a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineCov">          2 :                             options.get&lt;Size&gt;(&quot;nstep&quot;),</span></a>
-<a name="64"><span class="lineNum">      64 </span><span class="lineCov">          2 :                             options.get&lt;Size&gt;(&quot;dim&quot;),</span></a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineCov">          2 :                             options.get&lt;Size&gt;(&quot;batch_dim&quot;),</span></a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineCov">          2 :                             options.get&lt;Real&gt;(&quot;base&quot;))),</span></a>
-<a name="67"><span class="lineNum">      67 </span><span class="lineCov">          8 :     UserTensorBase(options)</span></a>
-<a name="68"><span class="lineNum">      68 </span>            : {</a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">          1 : }</span></a>
-<a name="70"><span class="lineNum">      70 </span>            : } // namespace neml2</a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineCov">          6 :   options.set&lt;TensorShape&gt;(&quot;batch_expand&quot;) = TensorShape();</span></a>
+<a name="58"><span class="lineNum">      58 </span><span class="lineCov">         12 :   options.set(&quot;batch_expand&quot;).doc() = &quot;After construction, perform an additional batch expanding &quot;</span></a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineCov">          6 :                                       &quot;operation into the given batch shape.&quot;;</span></a>
+<a name="60"><span class="lineNum">      60 </span>            : </a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">          6 :   return options;</span></a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="63"><span class="lineNum">      63 </span>            : </a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineCov">          1 : LogspaceTensor::LogspaceTensor(const OptionSet &amp; options)</span></a>
+<a name="65"><span class="lineNum">      65 </span>            :   : Tensor(make(options)),</a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineCov">          1 :     UserTensorBase(options)</span></a>
+<a name="67"><span class="lineNum">      67 </span>            : {</a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">          1 : }</span></a>
+<a name="69"><span class="lineNum">      69 </span>            : </a>
+<a name="70"><span class="lineNum">      70 </span>            : Tensor</a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineCov">          1 : LogspaceTensor::make(const OptionSet &amp; options) const</span></a>
+<a name="72"><span class="lineNum">      72 </span>            : {</a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">          2 :   auto t = Tensor::logspace(options.get&lt;CrossRef&lt;Tensor&gt;&gt;(&quot;start&quot;),</span></a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineCov">          2 :                             options.get&lt;CrossRef&lt;Tensor&gt;&gt;(&quot;end&quot;),</span></a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineCov">          2 :                             options.get&lt;Size&gt;(&quot;nstep&quot;),</span></a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineCov">          7 :                             options.get&lt;Size&gt;(&quot;dim&quot;));</span></a>
+<a name="77"><span class="lineNum">      77 </span>            : </a>
+<a name="78"><span class="lineNum">      78 </span>            :   // Change batch dimension if requested</a>
+<a name="79"><span class="lineNum">      79 </span><span class="lineCov">          1 :   auto B = options.get&lt;Size&gt;(&quot;batch_dim&quot;);</span></a>
+<a name="80"><span class="lineNum">      80 </span><span class="lineCov">          1 :   if (B &gt;= 0)</span></a>
+<a name="81"><span class="lineNum">      81 </span><span class="lineNoCov">          0 :     t = Tensor(t, B);</span></a>
+<a name="82"><span class="lineNum">      82 </span>            : </a>
+<a name="83"><span class="lineNum">      83 </span>            :   // Expand if requested</a>
+<a name="84"><span class="lineNum">      84 </span><span class="lineCov">          2 :   auto S = options.get&lt;TensorShape&gt;(&quot;batch_expand&quot;);</span></a>
+<a name="85"><span class="lineNum">      85 </span><span class="lineCov">          1 :   if (!S.empty())</span></a>
+<a name="86"><span class="lineNum">      86 </span><span class="lineNoCov">          0 :     t = t.batch_expand(S);</span></a>
+<a name="87"><span class="lineNum">      87 </span>            : </a>
+<a name="88"><span class="lineNum">      88 </span><span class="lineCov">          2 :   return t;</span></a>
+<a name="89"><span class="lineNum">      89 </span><span class="lineCov">          1 : }</span></a>
+<a name="90"><span class="lineNum">      90 </span>            : } // namespace neml2</a>
 </pre>
       </td>
     </tr>

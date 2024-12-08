@@ -152,11 +152,38 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>cp_elastic_scale</code> Elastic step scale factor used in the 'CP_' predictors</summary>
+<code>cp_warmup</code> Whether to perform a warm-up step for crystal plasticity models. The warm-up step uses a relaxed/damped elastic predictor for the very first time step.</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: bool</li>
+<li><u>Default</u>: false </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>cp_warmup_deformation_rate</code> Deformation rate name used for the CP warm-up step</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name</li>
+<li><u>Default</u>: forces/deformation_rate </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>cp_warmup_elastic_scale</code> Elastic step scale factor used for the crystal plasticity warm-up step</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: number</li>
 <li><u>Default</u>: 1 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>cp_warmup_elastic_strain</code> Elastic strain name used for the CP warm-up step</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name</li>
+<li><u>Default</u>: state/elastic_strain </li>
 </ul>
 </details>
 <details >
@@ -175,15 +202,6 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 <ul>
 <li><u>Type</u>: string</li>
 <li><u>Default</u>: cpu </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>enable_AD</code> Enable automatic differentiation</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
 </ul>
 </details>
 <details >
@@ -244,10 +262,10 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>predictor</code> Predictor used to set the initial guess for each time step. Options are PREVIOUS_STATE, LINEAR_EXTRAPOLATION, CP_PREVIOUS_STATE, and CP_LINEAR_EXTRAPOLATION. The options prefixed with 'CP_' are specifically designed for crystal plasticity models.</summary>
+<code>predictor</code> Predictor used to set the initial guess for each time step. Options are LINEAR_EXTRAPOLATION PREVIOUS_STATE </summary>
 <p></p>
 <ul>
-<li><u>Type</u>: string</li>
+<li><u>Type</u>: EnumSelection</li>
 <li><u>Default</u>: PREVIOUS_STATE </li>
 </ul>
 </details>
@@ -321,10 +339,10 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>times</code> Time steps to perform the material update. The times tensor must have exactly 2 dimensions. The first dimension represents time steps, and the second dimension represents batches (i.e., how many material models to update simultaneously).</summary>
+<code>times</code> Time steps to perform the material update. The times tensor must have at least one batch dimension representing time steps</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Tensor 🔗 </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -359,10 +377,10 @@ SolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>control</code> External control of the material update. Options are STRAIN and STRESS, for strain control and stress control, respectively.</summary>
+<code>control</code> External control of the material update. Options are MIXED STRESS STRAIN </summary>
 <p></p>
 <ul>
-<li><u>Type</u>: string</li>
+<li><u>Type</u>: EnumSelection</li>
 <li><u>Default</u>: STRAIN </li>
 </ul>
 </details>
@@ -377,11 +395,38 @@ SolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>cp_elastic_scale</code> Elastic step scale factor used in the 'CP_' predictors</summary>
+<code>cp_warmup</code> Whether to perform a warm-up step for crystal plasticity models. The warm-up step uses a relaxed/damped elastic predictor for the very first time step.</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: bool</li>
+<li><u>Default</u>: false </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>cp_warmup_deformation_rate</code> Deformation rate name used for the CP warm-up step</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name</li>
+<li><u>Default</u>: forces/deformation_rate </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>cp_warmup_elastic_scale</code> Elastic step scale factor used for the crystal plasticity warm-up step</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: number</li>
 <li><u>Default</u>: 1 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>cp_warmup_elastic_strain</code> Elastic strain name used for the CP warm-up step</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name</li>
+<li><u>Default</u>: state/elastic_strain </li>
 </ul>
 </details>
 <details >
@@ -391,15 +436,6 @@ SolidMechanicsDriver</h2>
 <ul>
 <li><u>Type</u>: string</li>
 <li><u>Default</u>: cpu </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>enable_AD</code> Enable automatic differentiation</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
 </ul>
 </details>
 <details >
@@ -469,10 +505,10 @@ SolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>predictor</code> Predictor used to set the initial guess for each time step. Options are PREVIOUS_STATE, LINEAR_EXTRAPOLATION, CP_PREVIOUS_STATE, and CP_LINEAR_EXTRAPOLATION. The options prefixed with 'CP_' are specifically designed for crystal plasticity models.</summary>
+<code>predictor</code> Predictor used to set the initial guess for each time step. Options are LINEAR_EXTRAPOLATION PREVIOUS_STATE </summary>
 <p></p>
 <ul>
-<li><u>Type</u>: string</li>
+<li><u>Type</u>: EnumSelection</li>
 <li><u>Default</u>: PREVIOUS_STATE </li>
 </ul>
 </details>
@@ -571,10 +607,10 @@ SolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>times</code> Time steps to perform the material update. The times tensor must have exactly 2 dimensions. The first dimension represents time steps, and the second dimension represents batches (i.e., how many material models to update simultaneously).</summary>
+<code>times</code> Time steps to perform the material update. The times tensor must have at least one batch dimension representing time steps</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Tensor 🔗 </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-04 12:08:01</td>
+            <td class="headerValue">2024-12-08 01:46:13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">4</td>
@@ -106,34 +106,34 @@
 <a name="44"><span class="lineNum">      44 </span>            : Quaternion</a>
 <a name="45"><span class="lineNum">      45 </span><span class="lineCov">          2 : Quaternion::fill(const Scalar &amp; s, const Scalar &amp; q1, const Scalar &amp; q2, const Scalar &amp; q3)</span></a>
 <a name="46"><span class="lineNum">      46 </span>            : {</a>
-<a name="47"><span class="lineNum">      47 </span><span class="lineCov">         12 :   return Quaternion(torch::stack({s, q1, q2, q3}, -1), s.batch_dim());</span></a>
+<a name="47"><span class="lineNum">      47 </span><span class="lineCov">         12 :   return Quaternion(torch::stack({s, q1, q2, q3}, -1), s.batch_sizes());</span></a>
 <a name="48"><span class="lineNum">      48 </span>            : }</a>
 <a name="49"><span class="lineNum">      49 </span>            : </a>
 <a name="50"><span class="lineNum">      50 </span>            : Scalar</a>
-<a name="51"><span class="lineNum">      51 </span><span class="lineCov">       2970 : Quaternion::operator()(Size i) const</span></a>
+<a name="51"><span class="lineNum">      51 </span><span class="lineCov">       2820 : Quaternion::operator()(Size i) const</span></a>
 <a name="52"><span class="lineNum">      52 </span>            : {</a>
-<a name="53"><span class="lineNum">      53 </span><span class="lineCov">       8910 :   return PrimitiveTensor&lt;Quaternion, 4&gt;::base_index({i});</span></a>
+<a name="53"><span class="lineNum">      53 </span><span class="lineCov">       8460 :   return PrimitiveTensor&lt;Quaternion, 4&gt;::base_index({i});</span></a>
 <a name="54"><span class="lineNum">      54 </span>            : }</a>
 <a name="55"><span class="lineNum">      55 </span>            : </a>
 <a name="56"><span class="lineNum">      56 </span>            : R2</a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">         99 : Quaternion::to_R2() const</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineCov">         94 : Quaternion::to_R2() const</span></a>
 <a name="58"><span class="lineNum">      58 </span>            : {</a>
-<a name="59"><span class="lineNum">      59 </span><span class="lineCov">         99 :   const Quaternion &amp; q = *this;</span></a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineCov">         94 :   const Quaternion &amp; q = *this;</span></a>
 <a name="60"><span class="lineNum">      60 </span>            : </a>
-<a name="61"><span class="lineNum">      61 </span><span class="lineCov">        198 :   Scalar v1s = q(1) * q(1);</span></a>
-<a name="62"><span class="lineNum">      62 </span><span class="lineCov">        198 :   Scalar v2s = q(2) * q(2);</span></a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineCov">        198 :   Scalar v3s = q(3) * q(3);</span></a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">        188 :   Scalar v1s = q(1) * q(1);</span></a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineCov">        188 :   Scalar v2s = q(2) * q(2);</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineCov">        188 :   Scalar v3s = q(3) * q(3);</span></a>
 <a name="64"><span class="lineNum">      64 </span>            : </a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineCov">        198 :   return R2::fill(1 - 2 * v2s - 2 * v3s,</span></a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineCov">        198 :                   2 * (q(1) * q(2) - q(3) * q(0)),</span></a>
-<a name="67"><span class="lineNum">      67 </span><span class="lineCov">        198 :                   2 * (q(1) * q(3) + q(2) * q(0)),</span></a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">        198 :                   2 * (q(1) * q(2) + q(3) * q(0)),</span></a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">        198 :                   1 - 2 * v1s - 2 * v3s,</span></a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineCov">        198 :                   2 * (q(2) * q(3) - q(1) * q(0)),</span></a>
-<a name="71"><span class="lineNum">      71 </span><span class="lineCov">        198 :                   2 * (q(1) * q(3) - q(2) * q(0)),</span></a>
-<a name="72"><span class="lineNum">      72 </span><span class="lineCov">        198 :                   2 * (q(2) * q(3) + q(1) * q(0)),</span></a>
-<a name="73"><span class="lineNum">      73 </span><span class="lineCov">        396 :                   1 - 2 * v1s - 2 * v2s);</span></a>
-<a name="74"><span class="lineNum">      74 </span><span class="lineCov">         99 : }</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">        188 :   return R2::fill(1 - 2 * v2s - 2 * v3s,</span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineCov">        188 :                   2 * (q(1) * q(2) - q(3) * q(0)),</span></a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">        188 :                   2 * (q(1) * q(3) + q(2) * q(0)),</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">        188 :                   2 * (q(1) * q(2) + q(3) * q(0)),</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">        188 :                   1 - 2 * v1s - 2 * v3s,</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">        188 :                   2 * (q(2) * q(3) - q(1) * q(0)),</span></a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineCov">        188 :                   2 * (q(1) * q(3) - q(2) * q(0)),</span></a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineCov">        188 :                   2 * (q(2) * q(3) + q(1) * q(0)),</span></a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">        376 :                   1 - 2 * v1s - 2 * v2s);</span></a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineCov">         94 : }</span></a>
 <a name="75"><span class="lineNum">      75 </span>            : } // namespace neml2</a>
 </pre>
       </td>

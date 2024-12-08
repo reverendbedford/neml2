@@ -1,13 +1,5 @@
 var namespacetensors =
 [
-    [ "LabeledAxis", "classtensors_1_1LabeledAxis.html", "classtensors_1_1LabeledAxis" ],
-    [ "LabeledAxisAccessor", "classtensors_1_1LabeledAxisAccessor.html", "classtensors_1_1LabeledAxisAccessor" ],
-    [ "LabeledMatrix", "classtensors_1_1LabeledMatrix.html", "classtensors_1_1LabeledMatrix" ],
-    [ "LabeledMatrixBaseView", "classtensors_1_1LabeledMatrixBaseView.html", "classtensors_1_1LabeledMatrixBaseView" ],
-    [ "LabeledMatrixBatchView", "classtensors_1_1LabeledMatrixBatchView.html", "classtensors_1_1LabeledMatrixBatchView" ],
-    [ "LabeledVector", "classtensors_1_1LabeledVector.html", "classtensors_1_1LabeledVector" ],
-    [ "LabeledVectorBaseView", "classtensors_1_1LabeledVectorBaseView.html", "classtensors_1_1LabeledVectorBaseView" ],
-    [ "LabeledVectorBatchView", "classtensors_1_1LabeledVectorBatchView.html", "classtensors_1_1LabeledVectorBatchView" ],
     [ "MillerIndex", "classtensors_1_1MillerIndex.html", "classtensors_1_1MillerIndex" ],
     [ "MillerIndexBaseView", "classtensors_1_1MillerIndexBaseView.html", "classtensors_1_1MillerIndexBaseView" ],
     [ "MillerIndexBatchView", "classtensors_1_1MillerIndexBatchView.html", "classtensors_1_1MillerIndexBatchView" ],

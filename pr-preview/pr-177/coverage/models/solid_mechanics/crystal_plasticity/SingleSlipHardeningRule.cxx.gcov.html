@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-04 12:08:01</td>
+            <td class="headerValue">2024-12-08 01:46:13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -113,13 +113,13 @@
 <a name="51"><span class="lineNum">      51 </span><span class="lineCov">         12 :   return options;</span></a>
 <a name="52"><span class="lineNum">      52 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="53"><span class="lineNum">      53 </span>            : </a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">          5 : SingleSlipHardeningRule::SingleSlipHardeningRule(const OptionSet &amp; options)</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">          3 : SingleSlipHardeningRule::SingleSlipHardeningRule(const OptionSet &amp; options)</span></a>
 <a name="55"><span class="lineNum">      55 </span>            :   : Model(options),</a>
-<a name="56"><span class="lineNum">      56 </span><span class="lineCov">         10 :     _tau_dot(declare_output_variable&lt;Scalar&gt;(&quot;slip_hardening_rate&quot;)),</span></a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">          5 :     _tau(declare_input_variable&lt;Scalar&gt;(&quot;slip_hardening&quot;)),</span></a>
-<a name="58"><span class="lineNum">      58 </span><span class="lineCov">         10 :     _gamma_dot_sum(declare_input_variable&lt;Scalar&gt;(&quot;sum_slip_rates&quot;))</span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineCov">          3 :     _tau_dot(declare_output_variable&lt;Scalar&gt;(&quot;slip_hardening_rate&quot;)),</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineCov">          3 :     _tau(declare_input_variable&lt;Scalar&gt;(&quot;slip_hardening&quot;)),</span></a>
+<a name="58"><span class="lineNum">      58 </span><span class="lineCov">          6 :     _gamma_dot_sum(declare_input_variable&lt;Scalar&gt;(&quot;sum_slip_rates&quot;))</span></a>
 <a name="59"><span class="lineNum">      59 </span>            : {</a>
-<a name="60"><span class="lineNum">      60 </span><span class="lineCov">          5 : }</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineCov">          3 : }</span></a>
 <a name="61"><span class="lineNum">      61 </span>            : } // namespace neml2</a>
 </pre>
       </td>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-04 12:08:01</td>
+            <td class="headerValue">2024-12-08 01:46:13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -116,15 +116,15 @@
 <a name="54"><span class="lineNum">      54 </span><span class="lineCov">          6 :   return options;</span></a>
 <a name="55"><span class="lineNum">      55 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="56"><span class="lineNum">      56 </span>            : </a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">          3 : SlipRule::SlipRule(const OptionSet &amp; options)</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineCov">          2 : SlipRule::SlipRule(const OptionSet &amp; options)</span></a>
 <a name="58"><span class="lineNum">      58 </span>            :   : Model(options),</a>
-<a name="59"><span class="lineNum">      59 </span><span class="lineCov">          9 :     _crystal_geometry(register_data&lt;crystallography::CrystalGeometry&gt;(</span></a>
-<a name="60"><span class="lineNum">      60 </span><span class="lineCov">          3 :         options.get&lt;std::string&gt;(&quot;crystal_geometry_name&quot;))),</span></a>
-<a name="61"><span class="lineNum">      61 </span><span class="lineCov">          3 :     _g(declare_output_variable_list&lt;Scalar&gt;(_crystal_geometry.nslip(), &quot;slip_rates&quot;)),</span></a>
-<a name="62"><span class="lineNum">      62 </span><span class="lineCov">          3 :     _rss(declare_input_variable_list&lt;Scalar&gt;(_crystal_geometry.nslip(), &quot;resolved_shears&quot;)),</span></a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineCov">          6 :     _tau(declare_input_variable_list&lt;Scalar&gt;(_crystal_geometry.nslip(), &quot;slip_strengths&quot;))</span></a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineCov">          6 :     _crystal_geometry(register_data&lt;crystallography::CrystalGeometry&gt;(</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineCov">          2 :         options.get&lt;std::string&gt;(&quot;crystal_geometry_name&quot;))),</span></a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">          2 :     _g(declare_output_variable&lt;Scalar&gt;(&quot;slip_rates&quot;, _crystal_geometry.nslip())),</span></a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineCov">          2 :     _rss(declare_input_variable&lt;Scalar&gt;(&quot;resolved_shears&quot;, _crystal_geometry.nslip())),</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineCov">          4 :     _tau(declare_input_variable&lt;Scalar&gt;(&quot;slip_strengths&quot;, _crystal_geometry.nslip()))</span></a>
 <a name="64"><span class="lineNum">      64 </span>            : {</a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineCov">          3 : }</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">          2 : }</span></a>
 <a name="66"><span class="lineNum">      66 </span>            : } // namespace neml2</a>
 </pre>
       </td>

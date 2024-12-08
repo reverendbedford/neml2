@@ -8,9 +8,10 @@ var searchData=
   ['mandel_5fto_5ffull_5ffactor_5',['mandel_to_full_factor',['../structneml2_1_1math_1_1ConstantTensors.html#ad5befa3068f9445502e82cc73211621f',1,'neml2::math::ConstantTensors']]],
   ['mandel_5fto_5ffull_5fmap_6',['mandel_to_full_map',['../structneml2_1_1math_1_1ConstantTensors.html#ad918d77f234ff51e1ae849e7bb1059a6',1,'neml2::math::ConstantTensors']]],
   ['mandelstress_7',['MandelStress',['../classneml2_1_1MandelStress.html#ada0110969b6f09c672a95c7e750c7ddc',1,'neml2::MandelStress::MandelStress()'],['../classneml2_1_1IsotropicMandelStress.html#ada0110969b6f09c672a95c7e750c7ddc',1,'neml2::IsotropicMandelStress::MandelStress()']]],
-  ['merit_5ffunction_5freduction_8',['merit_function_reduction',['../classneml2_1_1NewtonWithTrustRegion.html#a741ea68fe8a4ef11b87835e6a9d8610b',1,'neml2::NewtonWithTrustRegion']]],
-  ['mixedcontrolsetup_9',['MixedControlSetup',['../classneml2_1_1MixedControlSetup.html#ab20953605998f5cb4f77ac24128c5d2c',1,'neml2::MixedControlSetup']]],
-  ['model_10',['model',['../classneml2_1_1TransientDriver.html#a13dfbdd8c00d5c134b09bf2ab3cfa1e5',1,'neml2::TransientDriver']]],
+  ['matrixassembler_8',['MatrixAssembler',['../classneml2_1_1MatrixAssembler.html#a7b86f4aebb3b2f5a074def146cc9e5c9',1,'neml2::MatrixAssembler']]],
+  ['merit_5ffunction_5freduction_9',['merit_function_reduction',['../classneml2_1_1NewtonWithTrustRegion.html#a179bf5d26271013899c4dbf61348c331',1,'neml2::NewtonWithTrustRegion']]],
+  ['mixedcontrolsetup_10',['MixedControlSetup',['../classneml2_1_1MixedControlSetup.html#ab20953605998f5cb4f77ac24128c5d2c',1,'neml2::MixedControlSetup']]],
   ['model_11',['Model',['../classneml2_1_1Model.html#aec637141dc1379fd56d05cf1b7cb10ee',1,'neml2::Model']]],
-  ['multiply_5fand_5fmake_5fskew_12',['multiply_and_make_skew',['../namespaceneml2_1_1math.html#a81565e709d0982bfa707db6cdb283148',1,'neml2::math']]]
+  ['model_12',['model',['../classneml2_1_1TransientDriver.html#a13dfbdd8c00d5c134b09bf2ab3cfa1e5',1,'neml2::TransientDriver']]],
+  ['multiply_5fand_5fmake_5fskew_13',['multiply_and_make_skew',['../namespaceneml2_1_1math.html#a81565e709d0982bfa707db6cdb283148',1,'neml2::math']]]
 ];

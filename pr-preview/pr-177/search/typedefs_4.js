@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['key_5ftype_0',['key_type',['../structneml2_1_1Storage_1_1DereferenceIterator.html#a3f88e28e9c8d2ca45c67c1af2225243c',1,'neml2::Storage::DereferenceIterator']]]
+  ['map_5ftype_0',['map_type',['../classneml2_1_1OptionSet.html#a9ee974ce282aac983917df41bc8271db',1,'neml2::OptionSet']]]
 ];

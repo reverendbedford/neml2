@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-04 12:08:01</td>
+            <td class="headerValue">2024-12-08 01:46:13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">29</td>
@@ -114,14 +114,14 @@
 <a name="52"><span class="lineNum">      52 </span><span class="lineCov">        108 : }</span></a>
 <a name="53"><span class="lineNum">      53 </span>            : </a>
 <a name="54"><span class="lineNum">      54 </span>            : template &lt;typename T&gt;</a>
-<a name="55"><span class="lineNum">      55 </span><span class="lineCov">         91 : UserPrimitiveTensor&lt;T&gt;::UserPrimitiveTensor(const OptionSet &amp; options)</span></a>
-<a name="56"><span class="lineNum">      56 </span><span class="lineCov">         91 :   : T(T::empty(options.get&lt;TensorShape&gt;(&quot;batch_shape&quot;), default_tensor_options())),</span></a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">         91 :     UserTensorBase(options)</span></a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineCov">         87 : UserPrimitiveTensor&lt;T&gt;::UserPrimitiveTensor(const OptionSet &amp; options)</span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineCov">        174 :   : T(T::empty(options.get&lt;TensorShape&gt;(&quot;batch_shape&quot;), default_tensor_options())),</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineCov">        174 :     UserTensorBase(options)</span></a>
 <a name="58"><span class="lineNum">      58 </span>            : {</a>
-<a name="59"><span class="lineNum">      59 </span><span class="lineCov">        182 :   auto vals = options.get&lt;std::vector&lt;Real&gt;&gt;(&quot;values&quot;);</span></a>
-<a name="60"><span class="lineNum">      60 </span><span class="lineCov">         91 :   auto flat = torch::tensor(vals, default_tensor_options());</span></a>
-<a name="61"><span class="lineNum">      61 </span><span class="lineCov">         91 :   if (vals.size() == size_t(this-&gt;base_storage()))</span></a>
-<a name="62"><span class="lineNum">      62 </span><span class="lineCov">         94 :     this-&gt;index_put_({torch::indexing::Ellipsis}, flat.reshape(this-&gt;base_sizes()));</span></a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineCov">        174 :   auto vals = options.get&lt;std::vector&lt;Real&gt;&gt;(&quot;values&quot;);</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineCov">         87 :   auto flat = torch::tensor(vals, default_tensor_options());</span></a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">         87 :   if (vals.size() == size_t(this-&gt;base_storage()))</span></a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineCov">         86 :     this-&gt;index_put_({torch::indexing::Ellipsis}, flat.reshape(this-&gt;base_sizes()));</span></a>
 <a name="63"><span class="lineNum">      63 </span><span class="lineCov">         44 :   else if (vals.size() == size_t(utils::storage_size(this-&gt;sizes())))</span></a>
 <a name="64"><span class="lineNum">      64 </span><span class="lineCov">         88 :     this-&gt;index_put_({torch::indexing::Ellipsis}, flat.reshape(this-&gt;sizes()));</span></a>
 <a name="65"><span class="lineNum">      65 </span>            :   else</a>
@@ -132,7 +132,7 @@
 <a name="70"><span class="lineNum">      70 </span><span class="lineNoCov">          0 :                 this-&gt;base_storage(),</span></a>
 <a name="71"><span class="lineNum">      71 </span>            :                 &quot; or the total storage size &quot;,</a>
 <a name="72"><span class="lineNum">      72 </span><span class="lineNoCov">          0 :                 utils::storage_size(this-&gt;sizes()));</span></a>
-<a name="73"><span class="lineNum">      73 </span><span class="lineCov">         91 : }</span></a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">         87 : }</span></a>
 <a name="74"><span class="lineNum">      74 </span>            : </a>
 <a name="75"><span class="lineNum">      75 </span>            : #define USERPRIMITIVETENSOR_INSTANTIATE_PRIMITIVETENSOR(T) template class UserPrimitiveTensor&lt;T&gt;</a>
 <a name="76"><span class="lineNum">      76 </span>            : FOR_ALL_PRIMITIVETENSOR(USERPRIMITIVETENSOR_INSTANTIATE_PRIMITIVETENSOR);</a>

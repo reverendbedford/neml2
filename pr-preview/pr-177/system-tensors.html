@@ -229,7 +229,7 @@ Tensor indexing</h2>
 <div class="line"><span class="comment">// C = [[  3  4]</span></div>
 <div class="line"><span class="comment">//      [ -2  3]</span></div>
 <div class="line"><span class="comment">//      [  9  7]]</span></div>
-</div><!-- fragment --><p> To modify the content of a tensor, use <a class="el" href="classneml2_1_1TensorBase.html#ad57d6e32d1a2d8bebb1fcc8c138994aa" title="Set values by slicing on the base dimensions.">neml2::TensorBase::base_index_put_</a> or <a class="el" href="classneml2_1_1TensorBase.html#ac53a73747ac6bf6b22ee08cd15dc676a" title="Set values by slicing on the batch dimensions.">neml2::TensorBase::batch_index_put_</a>: </p><div class="fragment"><div class="line">A.base_index_put_({Slice(1, 3)}, torch::ones({3, 2}));</div>
+</div><!-- fragment --><p> To modify the content of a tensor, use <a class="el" href="classneml2_1_1TensorBase.html#ad57d6e32d1a2d8bebb1fcc8c138994aa">neml2::TensorBase::base_index_put_</a> or <a class="el" href="classneml2_1_1TensorBase.html#ac53a73747ac6bf6b22ee08cd15dc676a">neml2::TensorBase::batch_index_put_</a>: </p><div class="fragment"><div class="line">A.base_index_put_({Slice(1, 3)}, torch::ones({3, 2}));</div>
 <div class="line"><span class="comment">// A = [[  2  1  1]</span></div>
 <div class="line"><span class="comment">//      [ -1  1  1]</span></div>
 <div class="line"><span class="comment">//      [  6  1  1]]</span></div>
@@ -256,7 +256,7 @@ Tensor labeling</h2>
 <div class="line">               -1.1</div>
 <div class="line">                2.5</div>
 <div class="line">                2.5</div>
-</div><!-- fragment --><p>NEML2 provides a data structure named <a class="el" href="classneml2_1_1LabeledAxis.html">LabeledAxis</a> to facilitate the creation and modification of labels, and a data structure named <a class="el" href="classneml2_1_1LabeledTensor.html">LabeledTensor</a> to facilitate the creation and modification of labeled views.</p>
+</div><!-- fragment --><p>NEML2 provides a data structure named <a class="el" href="classneml2_1_1LabeledAxis.html">LabeledAxis</a> to facilitate the creation and modification of labels, and a data structure named LabeledTensor to facilitate the creation and modification of labeled views.</p>
 <p>The <a class="el" href="classneml2_1_1LabeledAxis.html">LabeledAxis</a> contains all information regarding how an axis of a <code>LabeledTensor</code> is labeled. The following naming convention is used:</p><ul>
 <li>Item: A labelable slice of data</li>
 <li>Variable: An item that is also of a <a class="el" href="#tensor-types">NEML2 primitive tensor type</a></li>
@@ -284,7 +284,7 @@ Tensor labeling</h2>
 <p>Due to performance considerations, a <code>LabeledAxis</code> can only be modified, e.g., adding/removing variables and sub-axis, at the time a model is constructed. After the model construction phase, the <code>LabeledAxis</code> associated with that model can no longer be modified over the entire course of the simulation. </p>
 </blockquote>
 <p>Refer to the documentation for a complete list of APIs for creating and modifying a <a class="el" href="classneml2_1_1LabeledAxis.html">LabeledAxis</a>.</p>
-<p><a class="el" href="classneml2_1_1LabeledTensor.html">LabeledTensor</a> is the primary data structure in NEML2 for working with labeled tensor views. Each <code>LabeledTensor</code> consists of one <code>Tensor</code> and one or more <code>LabeledAxis</code>s. The <code>LabeledTensor</code> is templated on the base dimension \(D\). <a class="el" href="classneml2_1_1LabeledVector.html">LabeledVector</a> and <a class="el" href="classneml2_1_1LabeledMatrix.html">LabeledMatrix</a> are the two most widely used data structures in NEML2.</p>
+<p>LabeledTensor is the primary data structure in NEML2 for working with labeled tensor views. Each <code>LabeledTensor</code> consists of one <code>Tensor</code> and one or more <code>LabeledAxis</code>s. The <code>LabeledTensor</code> is templated on the base dimension \(D\). LabeledVector and LabeledMatrix are the two most widely used data structures in NEML2.</p>
 <p><code>LabeledTensor</code> handles the creation, modification, and accessing of labeled tensors. Recall that all primitive data types in a labeled tensor are flattened, e.g., a symmetric fourth order tensor of type <code>SSR4</code> with batch size <code>(5)</code> and base size <code>(6, 6)</code> are flattened to have base size <code>(36)</code> in the labeled tensor. The documentation provides a complete list of APIs. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->

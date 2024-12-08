@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-04 12:08:01</td>
+            <td class="headerValue">2024-12-08 01:46:13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -107,35 +107,35 @@
 <a name="45"><span class="lineNum">      45 </span><span class="lineCov">          6 :   return options;</span></a>
 <a name="46"><span class="lineNum">      46 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="47"><span class="lineNum">      47 </span>            : </a>
-<a name="48"><span class="lineNum">      48 </span><span class="lineCov">          5 : VoceIsotropicHardening::VoceIsotropicHardening(const OptionSet &amp; options)</span></a>
+<a name="48"><span class="lineNum">      48 </span><span class="lineCov">          3 : VoceIsotropicHardening::VoceIsotropicHardening(const OptionSet &amp; options)</span></a>
 <a name="49"><span class="lineNum">      49 </span>            :   : IsotropicHardening(options),</a>
-<a name="50"><span class="lineNum">      50 </span><span class="lineCov">          5 :     _R(declare_parameter&lt;Scalar&gt;(&quot;R&quot;, &quot;saturated_hardening&quot;, true)),</span></a>
-<a name="51"><span class="lineNum">      51 </span><span class="lineCov">         10 :     _d(declare_parameter&lt;Scalar&gt;(&quot;d&quot;, &quot;saturation_rate&quot;, true))</span></a>
+<a name="50"><span class="lineNum">      50 </span><span class="lineCov">          3 :     _R(declare_parameter&lt;Scalar&gt;(&quot;R&quot;, &quot;saturated_hardening&quot;, true)),</span></a>
+<a name="51"><span class="lineNum">      51 </span><span class="lineCov">          6 :     _d(declare_parameter&lt;Scalar&gt;(&quot;d&quot;, &quot;saturation_rate&quot;, true))</span></a>
 <a name="52"><span class="lineNum">      52 </span>            : {</a>
-<a name="53"><span class="lineNum">      53 </span><span class="lineCov">          5 : }</span></a>
+<a name="53"><span class="lineNum">      53 </span><span class="lineCov">          3 : }</span></a>
 <a name="54"><span class="lineNum">      54 </span>            : </a>
 <a name="55"><span class="lineNum">      55 </span>            : void</a>
-<a name="56"><span class="lineNum">      56 </span><span class="lineCov">        215 : VoceIsotropicHardening::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineCov">        186 : VoceIsotropicHardening::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
 <a name="57"><span class="lineNum">      57 </span>            : {</a>
-<a name="58"><span class="lineNum">      58 </span><span class="lineCov">        215 :   if (out)</span></a>
-<a name="59"><span class="lineNum">      59 </span><span class="lineCov">        209 :     _h = _R * (-math::exp(-_d * _ep) + 1.0);</span></a>
+<a name="58"><span class="lineNum">      58 </span><span class="lineCov">        186 :   if (out)</span></a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineCov">        182 :     _h = _R * (-math::exp(-_d * _ep) + 1.0);</span></a>
 <a name="60"><span class="lineNum">      60 </span>            : </a>
-<a name="61"><span class="lineNum">      61 </span><span class="lineCov">        215 :   if (dout_din)</span></a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">        186 :   if (dout_din)</span></a>
 <a name="62"><span class="lineNum">      62 </span>            :   {</a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineCov">         97 :     if (_ep.is_dependent())</span></a>
-<a name="64"><span class="lineNum">      64 </span><span class="lineCov">         97 :       _h.d(_ep) = _R * _d * math::exp(-_d * _ep);</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineCov">         85 :     if (_ep.is_dependent())</span></a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineCov">         85 :       _h.d(_ep) = _R * _d * math::exp(-_d * _ep);</span></a>
 <a name="65"><span class="lineNum">      65 </span>            : </a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineCov">         97 :     if (const auto * const R = nl_param(&quot;R&quot;))</span></a>
-<a name="67"><span class="lineNum">      67 </span><span class="lineCov">          4 :       _h.d(*R) = -math::exp(-_d * _ep) + 1.0;</span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineCov">         85 :     if (const auto * const R = nl_param(&quot;R&quot;))</span></a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">          1 :       _h.d(*R) = -math::exp(-_d * _ep) + 1.0;</span></a>
 <a name="68"><span class="lineNum">      68 </span>            : </a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">         97 :     if (const auto * const d = nl_param(&quot;d&quot;))</span></a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineCov">          4 :       _h.d(*d) = _ep * _R * math::exp(-_d * _ep);</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">         85 :     if (const auto * const d = nl_param(&quot;d&quot;))</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">          1 :       _h.d(*d) = _ep * _R * math::exp(-_d * _ep);</span></a>
 <a name="71"><span class="lineNum">      71 </span>            :   }</a>
 <a name="72"><span class="lineNum">      72 </span>            : </a>
-<a name="73"><span class="lineNum">      73 </span><span class="lineCov">        215 :   if (d2out_din2)</span></a>
-<a name="74"><span class="lineNum">      74 </span><span class="lineCov">          6 :     if (_ep.is_dependent())</span></a>
-<a name="75"><span class="lineNum">      75 </span><span class="lineCov">          6 :       _h.d(_ep, _ep) = -_R * _d * _d * math::exp(-_d * _ep);</span></a>
-<a name="76"><span class="lineNum">      76 </span><span class="lineCov">        215 : }</span></a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">        186 :   if (d2out_din2)</span></a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineCov">          1 :     if (_ep.is_dependent())</span></a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineCov">          1 :       _h.d(_ep, _ep) = -_R * _d * _d * math::exp(-_d * _ep);</span></a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineCov">        186 : }</span></a>
 <a name="77"><span class="lineNum">      77 </span>            : } // namespace neml2</a>
 </pre>
       </td>

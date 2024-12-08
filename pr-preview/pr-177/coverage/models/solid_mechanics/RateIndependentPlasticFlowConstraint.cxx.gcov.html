@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-04 12:08:01</td>
+            <td class="headerValue">2024-12-08 01:46:13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -108,37 +108,37 @@
 <a name="46"><span class="lineNum">      46 </span><span class="lineCov">          6 :   return options;</span></a>
 <a name="47"><span class="lineNum">      47 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="48"><span class="lineNum">      48 </span>            : </a>
-<a name="49"><span class="lineNum">      49 </span><span class="lineCov">          2 : RateIndependentPlasticFlowConstraint::RateIndependentPlasticFlowConstraint(</span></a>
-<a name="50"><span class="lineNum">      50 </span><span class="lineCov">          2 :     const OptionSet &amp; options)</span></a>
+<a name="49"><span class="lineNum">      49 </span><span class="lineCov">          1 : RateIndependentPlasticFlowConstraint::RateIndependentPlasticFlowConstraint(</span></a>
+<a name="50"><span class="lineNum">      50 </span><span class="lineCov">          1 :     const OptionSet &amp; options)</span></a>
 <a name="51"><span class="lineNum">      51 </span>            :   : Model(options),</a>
-<a name="52"><span class="lineNum">      52 </span><span class="lineCov">          4 :     _fp(declare_input_variable&lt;Scalar&gt;(&quot;yield_function&quot;)),</span></a>
-<a name="53"><span class="lineNum">      53 </span><span class="lineCov">          2 :     _gamma_dot(declare_input_variable&lt;Scalar&gt;(&quot;flow_rate&quot;)),</span></a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">          4 :     _r(declare_output_variable&lt;Scalar&gt;(_gamma_dot.name().remount(&quot;residual&quot;)))</span></a>
+<a name="52"><span class="lineNum">      52 </span><span class="lineCov">          1 :     _fp(declare_input_variable&lt;Scalar&gt;(&quot;yield_function&quot;)),</span></a>
+<a name="53"><span class="lineNum">      53 </span><span class="lineCov">          1 :     _gamma_dot(declare_input_variable&lt;Scalar&gt;(&quot;flow_rate&quot;)),</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">          2 :     _r(declare_output_variable&lt;Scalar&gt;(_gamma_dot.name().remount(&quot;residual&quot;)))</span></a>
 <a name="55"><span class="lineNum">      55 </span>            : {</a>
-<a name="56"><span class="lineNum">      56 </span><span class="lineCov">          2 : }</span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineCov">          1 : }</span></a>
 <a name="57"><span class="lineNum">      57 </span>            : </a>
 <a name="58"><span class="lineNum">      58 </span>            : void</a>
-<a name="59"><span class="lineNum">      59 </span><span class="lineCov">         18 : RateIndependentPlasticFlowConstraint::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineCov">          6 : RateIndependentPlasticFlowConstraint::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
 <a name="60"><span class="lineNum">      60 </span>            : {</a>
-<a name="61"><span class="lineNum">      61 </span><span class="lineCov">         18 :   neml_assert_dbg(!d2out_din2, &quot;Second derivative not implemented.&quot;);</span></a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">          6 :   neml_assert_dbg(!d2out_din2, &quot;Second derivative not implemented.&quot;);</span></a>
 <a name="62"><span class="lineNum">      62 </span>            : </a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineCov">         36 :   const auto FB = _gamma_dot - _fp - math::sqrt(_gamma_dot * _gamma_dot + _fp * _fp);</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineCov">         12 :   const auto FB = _gamma_dot - _fp - math::sqrt(_gamma_dot * _gamma_dot + _fp * _fp);</span></a>
 <a name="64"><span class="lineNum">      64 </span>            : </a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineCov">         18 :   if (out)</span></a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineCov">         16 :     _r = FB;</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">          6 :   if (out)</span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineCov">          5 :     _r = FB;</span></a>
 <a name="67"><span class="lineNum">      67 </span>            : </a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">         18 :   if (dout_din)</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">          6 :   if (dout_din)</span></a>
 <a name="69"><span class="lineNum">      69 </span>            :   {</a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineCov">          4 :     const auto I = Scalar::identity_map(options());</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">          1 :     const auto I = Scalar::identity_map(_gamma_dot.options());</span></a>
 <a name="71"><span class="lineNum">      71 </span>            : </a>
-<a name="72"><span class="lineNum">      72 </span><span class="lineCov">          4 :     if (_gamma_dot.is_dependent())</span></a>
-<a name="73"><span class="lineNum">      73 </span><span class="lineCov">          4 :       _r.d(_gamma_dot) =</span></a>
-<a name="74"><span class="lineNum">      74 </span><span class="lineCov">          8 :           I - _gamma_dot / math::sqrt(_gamma_dot * _gamma_dot + _fp * _fp + machine_precision());</span></a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineCov">          1 :     if (_gamma_dot.is_dependent())</span></a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">          1 :       _r.d(_gamma_dot) =</span></a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineCov">          2 :           I - _gamma_dot / math::sqrt(_gamma_dot * _gamma_dot + _fp * _fp + machine_precision());</span></a>
 <a name="75"><span class="lineNum">      75 </span>            : </a>
-<a name="76"><span class="lineNum">      76 </span><span class="lineCov">          4 :     if (_fp.is_dependent())</span></a>
-<a name="77"><span class="lineNum">      77 </span><span class="lineCov">          4 :       _r.d(_fp) = -I - _fp / math::sqrt(_gamma_dot * _gamma_dot + _fp * _fp + machine_precision());</span></a>
-<a name="78"><span class="lineNum">      78 </span><span class="lineCov">          4 :   }</span></a>
-<a name="79"><span class="lineNum">      79 </span><span class="lineCov">         18 : }</span></a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineCov">          1 :     if (_fp.is_dependent())</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineCov">          1 :       _r.d(_fp) = -I - _fp / math::sqrt(_gamma_dot * _gamma_dot + _fp * _fp + machine_precision());</span></a>
+<a name="78"><span class="lineNum">      78 </span><span class="lineCov">          1 :   }</span></a>
+<a name="79"><span class="lineNum">      79 </span><span class="lineCov">          6 : }</span></a>
 <a name="80"><span class="lineNum">      80 </span>            : </a>
 <a name="81"><span class="lineNum">      81 </span>            : } // namespace neml2</a>
 </pre>
