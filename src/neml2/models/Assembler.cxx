@@ -151,7 +151,7 @@ MatrixAssembler::assemble(
                         vals[j].base_sizes());
         if (!options_defined)
         {
-          options = options.dtype(vals[i].dtype()).device(vals[i].device());
+          options = options.dtype(vals[j].dtype()).device(vals[j].device());
           options_defined = true;
         }
       }

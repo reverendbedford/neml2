@@ -23,11 +23,17 @@
 // THE SOFTWARE.
 
 #include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
 #include <pybind11/stl/filesystem.h>
 
+#include "python/neml2/indexing.h"
 #include "python/neml2/types.h"
-#include "neml2/models/Model.h"
+
 #include "neml2/base/Factory.h"
+#include "neml2/models/Model.h"
+#include "neml2/models/Assembler.h"
+#include "neml2/misc/utils.h"
+#include "neml2/misc/parser_utils.h"
 
 namespace py = pybind11;
 using namespace neml2;
@@ -82,14 +88,16 @@ PYBIND11_MODULE(base, m)
 
   py::module_::import("neml2.tensors");
 
-  // Definitions
-  auto model_cls =
-      py::class_<Model, std::shared_ptr<Model>>(m, "Model", "A thin wrapper around neml2::Model");
+  // "Forward" declarations
+  auto axis_accessor_cls = py::class_<LabeledAxisAccessor>(m, "LabeledAxisAccessor");
+  auto axis_cls = py::class_<LabeledAxis>(m, "LabeledAxis");
   auto tensor_value_cls =
       py::class_<TensorValueBase>(m,
                                   "TensorValue",
                                   "The interface for working with tensor values (parameters, "
                                   "buffers, etc.) managed by models.");
+  auto model_cls =
+      py::class_<Model, std::shared_ptr<Model>>(m, "Model", "A thin wrapper around neml2::Model");
 
   // Factory methods
   m.def("load_input", &load_input, py::arg("path"), py::arg("cli_args") = "", R"(
@@ -163,6 +171,65 @@ Diagnose common issues in model setup. Raises a runtime error including all iden
 :param model: Model to be diagnosed
 )");
 
+  // neml2.base.LabeledAxisAccessor
+  axis_accessor_cls.def(py::init<>())
+      .def(py::init([](const std::string & str) { return utils::parse<LabeledAxisAccessor>(str); }))
+      .def(py::init<const LabeledAxisAccessor &>())
+      .def("with_suffix", &LabeledAxisAccessor::with_suffix)
+      .def("append", &LabeledAxisAccessor::append)
+      .def("prepend", &LabeledAxisAccessor::prepend)
+      .def("start_with", &LabeledAxisAccessor::start_with)
+      .def("__repr__", [](const LabeledAxisAccessor & self) { return utils::stringify(self); })
+      .def("__bool__", [](const LabeledAxisAccessor & self) { return !self.empty(); })
+      .def("__len__", [](const LabeledAxisAccessor & self) { return self.size(); })
+      .def("__hash__",
+           [](const LabeledAxisAccessor & self)
+           { return py::hash(py::cast(utils::stringify(self))); })
+      .def("__eq__",
+           [](const LabeledAxisAccessor & a, const LabeledAxisAccessor & b) { return a == b; })
+      .def("__ne__",
+           [](const LabeledAxisAccessor & a, const LabeledAxisAccessor & b) { return a == b; });
+
+  // Make LabeledAxisAccessor implicitly convertible from py::str
+  py::implicitly_convertible<std::string, LabeledAxisAccessor>();
+
+  // neml2.base.LabeledAxis
+  axis_cls.def("has_state", &LabeledAxis::has_state)
+      .def("has_old_state", &LabeledAxis::has_old_state)
+      .def("has_forces", &LabeledAxis::has_forces)
+      .def("has_old_forces", &LabeledAxis::has_old_forces)
+      .def("has_residual", &LabeledAxis::has_residual)
+      .def("has_parameters", &LabeledAxis::has_parameters)
+      .def("size", py::overload_cast<>(&LabeledAxis::size, py::const_))
+      .def("size",
+           py::overload_cast<const LabeledAxisAccessor &>(&LabeledAxis::size, py::const_),
+           py::arg("name"))
+      .def("slice", &LabeledAxis::slice, py::arg("name"))
+      .def("nvariable", &LabeledAxis::nvariable)
+      .def("has_variable", &LabeledAxis::has_variable, py::arg("name"))
+      .def("variable_id", &LabeledAxis::variable_id, py::arg("name"))
+      .def("variable_names", &LabeledAxis::variable_names)
+      .def("variable_slices", &LabeledAxis::variable_slices)
+      .def("variable_slice", &LabeledAxis::variable_slice, py::arg("name"))
+      .def("variable_sizes", &LabeledAxis::variable_sizes)
+      .def("variable_size", &LabeledAxis::variable_size, py::arg("name"))
+      .def("nsubaxis", &LabeledAxis::nsubaxis)
+      .def("has_subaxis", &LabeledAxis::has_subaxis, py::arg("name"))
+      .def("subaxis_id", &LabeledAxis::subaxis_id, py::arg("name"))
+      .def("subaxes", &LabeledAxis::subaxes, py::return_value_policy::reference)
+      .def("subaxis",
+           py::overload_cast<const LabeledAxisAccessor &>(&LabeledAxis::subaxis, py::const_),
+           py::arg("name"),
+           py::return_value_policy::reference)
+      .def("subaxis_names", &LabeledAxis::subaxis_names)
+      .def("subaxis_slices", &LabeledAxis::subaxis_slices)
+      .def("subaxis_slice", &LabeledAxis::subaxis_slice, py::arg("name"))
+      .def("subaxis_sizes", &LabeledAxis::subaxis_sizes)
+      .def("subaxis_size", &LabeledAxis::subaxis_size, py::arg("name"))
+      .def("__repr__", [](const LabeledAxis & self) { return utils::stringify(self); })
+      .def("__eq__", [](const LabeledAxis & a, const LabeledAxis & b) { return a == b; })
+      .def("__ne__", [](const LabeledAxis & a, const LabeledAxis & b) { return a == b; });
+
   // neml2.base.TensorValue
   tensor_value_cls
       .def(
@@ -234,11 +301,7 @@ Diagnose common issues in model setup. Raises a runtime error including all iden
            py::return_value_policy::reference,
            "Get a model parameter given its name")
       .def("__setattr__", &Model::set_parameter, "Set the value for a model parameter")
-      .def(
-          "set_parameters", &Model::set_parameters, "Set the values for multiple model parameters");
-
-  // Forward operator APIs
-  model_cls
+      .def("set_parameters", &Model::set_parameters, "Set the values for multiple model parameters")
       .def("value",
            [](Model & self, py::dict pyinputs)
            { return self.value(unpack_model_input(self, pyinputs)); })
@@ -257,4 +320,18 @@ Diagnose common issues in model setup. Raises a runtime error including all iden
       .def("value_and_dvalue_and_d2value",
            [](Model & self, py::dict pyinputs)
            { return self.value_and_dvalue_and_d2value(unpack_model_input(self, pyinputs)); });
+
+  // neml2.base.VectorAssembler
+  py::class_<VectorAssembler>(m, "VectorAssembler")
+      .def(py::init<const LabeledAxis &>())
+      .def("assemble", &VectorAssembler::assemble)
+      .def("disassemble", &VectorAssembler::disassemble)
+      .def("split", &VectorAssembler::split);
+
+  // neml2.base.MatrixAssembler
+  py::class_<MatrixAssembler>(m, "MatrixAssembler")
+      .def(py::init<const LabeledAxis &, const LabeledAxis &>())
+      .def("assemble", &MatrixAssembler::assemble)
+      .def("disassemble", &MatrixAssembler::disassemble)
+      .def("split", &MatrixAssembler::split);
 }

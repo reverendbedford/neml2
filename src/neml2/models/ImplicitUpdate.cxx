@@ -100,7 +100,7 @@ ImplicitUpdate::link_output_variables()
 {
   Model::link_output_variables();
   for (auto && [name, var] : output_variables())
-    var.ref(input_variable(name));
+    var.ref(input_variable(name), /*mutable=*/true);
 }
 
 void
@@ -135,6 +135,10 @@ ImplicitUpdate::set_value(bool out, bool dout_din, bool d2out_din2)
     // the state subaxis) until convergece. Once the nonlinear system has converged, the input
     // variables on the state subaxis _must_ contain the solution. Therefore, the output variables
     // _must_ also contain the solution upon convergence.
+
+    // All that being said, if the result has AD graph, we need to propagate the graph to the output
+    if (res.solution.requires_grad())
+      assign_output(sol_assember.disassemble(res.solution));
   }
 
   // Use the implicit function theorem (IFT) to calculate the other derivatives
