@@ -212,14 +212,20 @@ void
 TransientDriver::advance_step()
 {
   // State from the previous time step becomes the old state in the current time step
-  const auto input_old_state = _model.input_axis().subaxis("old_state");
-  for (const auto & var : input_old_state.variable_names())
-    _in[var.prepend("old_state")] = _result_out[_step_count - 1][var.prepend("state")];
+  if (_model.input_axis().has_old_state())
+  {
+    const auto input_old_state = _model.input_axis().subaxis("old_state");
+    for (const auto & var : input_old_state.variable_names())
+      _in[var.prepend("old_state")] = _result_out[_step_count - 1][var.prepend("state")];
+  }
 
   // Forces from the previous time step become the old forces in the current time step
-  const auto input_old_forces = _model.input_axis().subaxis("old_forces");
-  for (const auto & var : input_old_forces.variable_names())
-    _in[var.prepend("old_forces")] = _result_in[_step_count - 1][var.prepend("forces")];
+  if (_model.input_axis().has_old_forces())
+  {
+    const auto input_old_forces = _model.input_axis().subaxis("old_forces");
+    for (const auto & var : input_old_forces.variable_names())
+      _in[var.prepend("old_forces")] = _result_in[_step_count - 1][var.prepend("forces")];
+  }
 }
 
 void
@@ -245,7 +251,7 @@ TransientDriver::apply_ic()
 void
 TransientDriver::apply_predictor()
 {
-  if (!_model.input_axis().has_subaxis("state"))
+  if (!_model.input_axis().has_state())
     return;
 
   const auto input_state = _model.input_axis().subaxis("state");

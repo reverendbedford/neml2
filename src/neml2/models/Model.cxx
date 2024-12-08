@@ -81,7 +81,7 @@ Model::diagnose(std::vector<Diagnosis> & diagnoses) const
 
   // Check for statefulness
   if (this == host())
-    if (input_axis().has_subaxis("old_state"))
+    if (input_axis().has_old_state())
       for (auto var : input_axis().subaxis("old_state").variable_names())
         diagnostic_assert(diagnoses,
                           output_axis().has_variable(var.prepend("state")),

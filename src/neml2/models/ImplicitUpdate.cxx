@@ -54,7 +54,7 @@ ImplicitUpdate::ImplicitUpdate(const OptionSet & options)
                                  /*nonlinear=*/true)),
     _solver(Factory::get_object<NonlinearSolver>("Solvers", options.get<std::string>("solver")))
 {
-  neml_assert(_model.output_axis().has_subaxis("residual"),
+  neml_assert(_model.output_axis().has_residual(),
               "The implicit model'",
               _model.name(),
               "' registered in '",
