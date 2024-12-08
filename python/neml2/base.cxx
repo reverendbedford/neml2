@@ -261,6 +261,7 @@ Diagnose common issues in model setup. Raises a runtime error including all iden
   // neml2.base.Model
   model_cls.def_property_readonly("name", &Model::name, "Name of the model")
       .def_property_readonly("type", &Model::type, "Type of the model")
+      .def("__str__", [](const Model & self) { return utils::stringify(self); })
       .def(
           "input_axis",
           [](const Model & self) { return &self.input_axis(); },

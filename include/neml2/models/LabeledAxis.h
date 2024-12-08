@@ -36,8 +36,9 @@ class LabeledAxis;
 /**
  * @brief A *labeled* axis used to associate layout of a tensor with human-interpretable names.
  *
- * A logically one-dimensional tensor requires one LabeledAxis, two-dimensional tensor requires two
- * LabeledAxis, and so on. See @ref tensor-labeling for a detailed explanation of tensor labeling.
+ * A one-dimensional tensor requires one LabeledAxis, two-dimensional tensor requires two
+ * LabeledAxis, and so on. See @ref model-assembly for a detailed explanation of tensor labeling
+ * and assembly.
  *
  * Variables and axes can only be added during the setup stage. Adding items after the setup stage
  * is forbidden and will result in a runtime error in Debug mode.

@@ -292,7 +292,7 @@ d_multiply_and_make_skew_d_second(const SR2 & a)
                  torch::einsum("...ia,...bj->...ijab", {I, A})));
 }
 
-neml2::Tensor
+Tensor
 base_cat(const std::vector<Tensor> & tensors, Size d)
 {
   neml_assert_dbg(!tensors.empty(), "base_cat must be given at least one tensor");
@@ -301,13 +301,27 @@ base_cat(const std::vector<Tensor> & tensors, Size d)
   return neml2::Tensor(torch::cat(torch_tensors, d2), tensors.begin()->batch_sizes());
 }
 
-neml2::Tensor
+Tensor
 base_stack(const std::vector<Tensor> & tensors, Size d)
 {
   neml_assert_dbg(!tensors.empty(), "base_stack must be given at least one tensor");
   std::vector<torch::Tensor> torch_tensors(tensors.begin(), tensors.end());
   auto d2 = d < 0 ? d : d + tensors.begin()->batch_dim();
   return neml2::Tensor(torch::stack(torch_tensors, d2), tensors.begin()->batch_sizes());
+}
+
+Tensor
+base_sum(const Tensor & a, Size d)
+{
+  auto d2 = d < 0 ? d : d + a.batch_dim();
+  return Tensor(torch::sum(a, d2), a.batch_sizes());
+}
+
+Tensor
+base_mean(const Tensor & a, Size d)
+{
+  auto d2 = d < 0 ? d : d + a.batch_dim();
+  return Tensor(torch::mean(a, d2), a.batch_sizes());
 }
 
 Tensor
@@ -333,7 +347,7 @@ vector_norm(const Tensor & v)
                   v.base_dim(),
                   " instead of 0 or 1.");
 
-  // If the vector is a logical scalar just return its absolute value
+  // If the vector is a scalar just return its absolute value
   if (v.base_dim() == 0)
     return math::abs(v);
 

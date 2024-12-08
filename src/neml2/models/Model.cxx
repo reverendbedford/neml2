@@ -453,4 +453,67 @@ Model::extract_AD_derivatives(bool dout, bool d2out)
       }
   }
 }
+
+// LCOV_EXCL_START
+std::ostream &
+operator<<(std::ostream & os, const Model & model)
+{
+  bool first;
+  const std::string tab = "            ";
+
+  os << "Name:       " << model.name() << '\n';
+  os << "Dtype:      " << model.tensor_options().dtype() << '\n';
+  os << "Device:     " << model.tensor_options().device() << '\n';
+
+  if (!model.input_variables().empty())
+  {
+    os << "Input:      ";
+    first = true;
+    for (auto && [name, var] : model.input_variables())
+    {
+      os << (first ? "" : tab);
+      os << name << " [" << var.type() << "]\n";
+      first = false;
+    }
+  }
+
+  if (!model.input_variables().empty())
+  {
+    os << "Output:     ";
+    first = true;
+    for (auto && [name, var] : model.output_variables())
+    {
+      os << (first ? "" : tab);
+      os << name << " [" << var.type() << "]\n";
+      first = false;
+    }
+  }
+
+  if (!model.named_parameters().empty())
+  {
+    os << "Parameters: ";
+    first = true;
+    for (auto && [name, param] : model.named_parameters())
+    {
+      os << (first ? "" : tab);
+      os << name << " [" << param.type() << "]\n";
+      first = false;
+    }
+  }
+
+  if (!model.named_buffers().empty())
+  {
+    os << "Buffers:    ";
+    first = true;
+    for (auto && [name, buffer] : model.named_buffers())
+    {
+      os << (first ? "" : tab);
+      os << name << " [" << buffer.type() << "]\n";
+      first = false;
+    }
+  }
+
+  return os;
+}
+// LCOV_EXCL_STOP
 } // namespace neml2

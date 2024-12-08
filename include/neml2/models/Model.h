@@ -218,4 +218,6 @@ private:
       _ad_secderivs;
   std::set<VariableBase *> _ad_args;
 };
+
+std::ostream & operator<<(std::ostream & os, const Model & model);
 } // namespace neml2

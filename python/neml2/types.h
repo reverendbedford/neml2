@@ -92,7 +92,7 @@ template <>
 struct type_caster<neml2::indexing::TensorIndices>
 {
 public:
-  PYBIND11_TYPE_CASTER(neml2::indexing::TensorIndices, const_name("[Any, ...]"));
+  PYBIND11_TYPE_CASTER(neml2::indexing::TensorIndices, const_name("list[Any]"));
 
   bool load(handle src, bool)
   {
@@ -126,7 +126,7 @@ template <>
 struct type_caster<neml2::indexing::TensorLabels>
 {
 public:
-  PYBIND11_TYPE_CASTER(neml2::indexing::TensorLabels, const_name("[str, ...]"));
+  PYBIND11_TYPE_CASTER(neml2::indexing::TensorLabels, const_name("list[str]"));
 
   bool load(handle src, bool)
   {

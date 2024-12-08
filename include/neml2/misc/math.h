@@ -264,13 +264,7 @@ batch_sum(const T & a, Size d = 0)
   return T(torch::sum(a, d2), a.batch_sizes().slice(0, -1));
 }
 
-template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
-T
-base_sum(const T & a, Size d = 0)
-{
-  auto d2 = d < 0 ? d : d + a.batch_dim();
-  return T(torch::sum(a, d2), a.batch_sizes());
-}
+neml2::Tensor base_sum(const Tensor & a, Size d);
 
 template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
 T
@@ -281,13 +275,7 @@ batch_mean(const T & a, Size d = 0)
   return T(torch::mean(a, d2), a.batch_sizes().slice(0, -1));
 }
 
-template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
-T
-base_mean(const T & a, Size d = 0)
-{
-  auto d2 = d < 0 ? d : d + a.batch_dim();
-  return T(torch::mean(a, d2), a.batch_sizes());
-}
+neml2::Tensor base_mean(const Tensor & a, Size d);
 
 template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
 T
