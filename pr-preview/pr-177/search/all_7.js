@@ -55,6 +55,5 @@ var searchData=
   ['fullwr2_52',['FullWR2',['../syntax-tensors.html#fullwr2',1,'']]],
   ['fullwsr4_53',['FullWSR4',['../syntax-tensors.html#fullwsr4',1,'']]],
   ['fullwwr4_54',['FullWWR4',['../syntax-tensors.html#fullwwr4',1,'']]],
-  ['function_55',['function',['../classneml2_1_1jit_1_1StaticGraphFunction.html#a6bf70eb813f5281747c5037ed7b32ef1',1,'neml2::jit::StaticGraphFunction::function() const'],['../classneml2_1_1jit_1_1StaticGraphFunction.html#abc367ee454ff10e92b1036ebc57f39ae',1,'neml2::jit::StaticGraphFunction::function()']]],
-  ['function_56',['Perfectly Plastic Yield function',['../solid-mechanics.html#autotoc_md26',1,'']]]
+  ['function_55',['Perfectly Plastic Yield function',['../solid-mechanics.html#autotoc_md26',1,'']]]
 ];

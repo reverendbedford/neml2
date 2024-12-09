@@ -19,12 +19,11 @@ var searchData=
   ['sr2invariant_16',['SR2Invariant',['../classneml2_1_1SR2Invariant.html',1,'neml2']]],
   ['ssfr5_17',['SSFR5',['../classneml2_1_1SSFR5.html',1,'neml2']]],
   ['ssr4_18',['SSR4',['../classneml2_1_1SSR4.html',1,'neml2']]],
-  ['staticgraphfunction_19',['StaticGraphFunction',['../classneml2_1_1jit_1_1StaticGraphFunction.html',1,'neml2::jit']]],
-  ['storage_20',['Storage',['../classneml2_1_1Storage.html',1,'neml2']]],
-  ['storage_3c_20neml2_3a_3alabeledaxisaccessor_2c_20neml2_3a_3avariablebase_20_3e_21',['Storage&lt; neml2::LabeledAxisAccessor, neml2::VariableBase &gt;',['../classneml2_1_1Storage.html',1,'neml2']]],
-  ['storage_3c_20std_3a_3astring_2c_20neml2_3a_3alabeledaxis_20_3e_22',['Storage&lt; std::string, neml2::LabeledAxis &gt;',['../classneml2_1_1Storage.html',1,'neml2']]],
-  ['storage_3c_20std_3a_3astring_2c_20neml2_3a_3atensorvaluebase_20_3e_23',['Storage&lt; std::string, neml2::TensorValueBase &gt;',['../classneml2_1_1Storage.html',1,'neml2']]],
-  ['sumsliprates_24',['SumSlipRates',['../classneml2_1_1SumSlipRates.html',1,'neml2']]],
-  ['swr4_25',['SWR4',['../classneml2_1_1SWR4.html',1,'neml2']]],
-  ['symmetryfromorbifold_26',['SymmetryFromOrbifold',['../classneml2_1_1crystallography_1_1SymmetryFromOrbifold.html',1,'neml2::crystallography']]]
+  ['storage_19',['Storage',['../classneml2_1_1Storage.html',1,'neml2']]],
+  ['storage_3c_20neml2_3a_3alabeledaxisaccessor_2c_20neml2_3a_3avariablebase_20_3e_20',['Storage&lt; neml2::LabeledAxisAccessor, neml2::VariableBase &gt;',['../classneml2_1_1Storage.html',1,'neml2']]],
+  ['storage_3c_20std_3a_3astring_2c_20neml2_3a_3alabeledaxis_20_3e_21',['Storage&lt; std::string, neml2::LabeledAxis &gt;',['../classneml2_1_1Storage.html',1,'neml2']]],
+  ['storage_3c_20std_3a_3astring_2c_20neml2_3a_3atensorvaluebase_20_3e_22',['Storage&lt; std::string, neml2::TensorValueBase &gt;',['../classneml2_1_1Storage.html',1,'neml2']]],
+  ['sumsliprates_23',['SumSlipRates',['../classneml2_1_1SumSlipRates.html',1,'neml2']]],
+  ['swr4_24',['SWR4',['../classneml2_1_1SWR4.html',1,'neml2']]],
+  ['symmetryfromorbifold_25',['SymmetryFromOrbifold',['../classneml2_1_1crystallography_1_1SymmetryFromOrbifold.html',1,'neml2::crystallography']]]
 ];

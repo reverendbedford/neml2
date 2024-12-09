@@ -86,8 +86,8 @@ var NAVTREEINDEX =
 "classneml2_1_1Transformable.html#aace864da3c19badf28c3ae1390bfbb99",
 "classneml2_1_1VariableBase.html#ac697abbe7a5c6fc78336045aeb783f27",
 "classneml2_1_1crystallography_1_1CrystalGeometry.html#a1a69d02a437f1229f6d787976bde8299",
-"namespaceneml2.html#aab0506b2a843ae20b830c9aeb74edc13",
-"structneml2_1_1NonlinearSystem_1_1JAC.html#adf37e074ddad26f9c3e349406cb9b63e"
+"namespaceneml2.html#ab600865ffa5d3681d723ef019d109535a50a87f0d71f7221582dad4bf507a0f34",
+"structneml2_1_1NonlinearSystem_1_1SOL.html#a7abccdc3e6fb38542f98b6820e1fb990"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

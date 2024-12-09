@@ -8,7 +8,6 @@ var namespaceneml2 =
       [ "TensorLabels", "namespaceneml2_1_1indexing.html#aa38adab7206ebf45be6c3a8b280a3407", null ],
       [ "TensorLabelsRef", "namespaceneml2_1_1indexing.html#a1b8360361b2c76d8e0fb1dd8e3e5c7c5", null ]
     ] ],
-    [ "jit", "namespaceneml2_1_1jit.html", "namespaceneml2_1_1jit" ],
     [ "math", "namespaceneml2_1_1math.html", "namespaceneml2_1_1math" ],
     [ "utils", "namespaceneml2_1_1utils.html", [
       [ "add_shapes", "namespaceneml2_1_1utils.html#a39eba50b2ce9eee228416c8ab4da7480", null ],

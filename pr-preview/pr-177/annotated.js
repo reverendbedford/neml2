@@ -7,9 +7,6 @@ var annotated =
         [ "FillMillerIndex", "classneml2_1_1crystallography_1_1FillMillerIndex.html", "classneml2_1_1crystallography_1_1FillMillerIndex" ],
         [ "SymmetryFromOrbifold", "classneml2_1_1crystallography_1_1SymmetryFromOrbifold.html", "classneml2_1_1crystallography_1_1SymmetryFromOrbifold" ]
       ] ],
-      [ "jit", "namespaceneml2_1_1jit.html", [
-        [ "StaticGraphFunction", "classneml2_1_1jit_1_1StaticGraphFunction.html", "classneml2_1_1jit_1_1StaticGraphFunction" ]
-      ] ],
       [ "math", "namespaceneml2_1_1math.html", [
         [ "ConstantTensors", "structneml2_1_1math_1_1ConstantTensors.html", "structneml2_1_1math_1_1ConstantTensors" ]
       ] ],

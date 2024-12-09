@@ -25,6 +25,5 @@ var searchData=
   ['full_5fto_5fskew_5ffactor_22',['full_to_skew_factor',['../structneml2_1_1math_1_1ConstantTensors.html#a2de8afc1199c905ab073639637dbcbef',1,'neml2::math::ConstantTensors']]],
   ['full_5fto_5fskew_5fmap_23',['full_to_skew_map',['../structneml2_1_1math_1_1ConstantTensors.html#a7235a7396557528d5ec5dadef3c0cead',1,'neml2::math::ConstantTensors']]],
   ['fullprimitivetensor_24',['FullPrimitiveTensor',['../classneml2_1_1FullPrimitiveTensor.html#a62e4137b1492b8b19a94cd30edc4a864',1,'neml2::FullPrimitiveTensor']]],
-  ['fulltensor_25',['FullTensor',['../classneml2_1_1FullTensor.html#a954aa5df9dcd01905b718ce98dca217a',1,'neml2::FullTensor']]],
-  ['function_26',['function',['../classneml2_1_1jit_1_1StaticGraphFunction.html#a6bf70eb813f5281747c5037ed7b32ef1',1,'neml2::jit::StaticGraphFunction::function() const'],['../classneml2_1_1jit_1_1StaticGraphFunction.html#abc367ee454ff10e92b1036ebc57f39ae',1,'neml2::jit::StaticGraphFunction::function()']]]
+  ['fulltensor_25',['FullTensor',['../classneml2_1_1FullTensor.html#a954aa5df9dcd01905b718ce98dca217a',1,'neml2::FullTensor']]]
 ];
