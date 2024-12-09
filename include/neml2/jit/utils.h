@@ -37,4 +37,60 @@ void neml_assert_tracing();
 
 /// Assert that we are currently tracing (only effective in debug mode)
 void neml_assert_tracing_dbg();
+
+namespace jit
+{
+/// Convert a tuple into a stack
+template <typename... Args>
+torch::jit::Stack tuple_to_stack(const std::tuple<Args...> & tuple);
+
+/// Convert a stack into a tuple (the stack is consumed)
+template <typename... Args>
+std::tuple<Args...> stack_to_tuple(torch::jit::Stack & stack);
+
+namespace details
+{
+template <size_t i, typename... Args>
+void stack_to_tuple_impl(torch::jit::Stack & stack, std::tuple<Args...> & tuple);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// Implementation
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template <typename... Args>
+torch::jit::Stack
+tuple_to_stack(const std::tuple<Args...> & tuple)
+{
+  torch::jit::Stack stack;
+  stack.reserve(sizeof...(Args));
+  std::apply([&stack](auto &&... args)
+             { (stack.push_back(std::forward<decltype(args)>(args)), ...); },
+             tuple);
+  return stack;
+}
+
+template <typename... Args>
+std::tuple<Args...>
+stack_to_tuple(torch::jit::Stack & stack)
+{
+  std::tuple<Args...> tuple;
+  details::stack_to_tuple_impl<sizeof...(Args) - 1, Args...>(stack, tuple);
+  stack.clear();
+  return tuple;
+}
+
+namespace details
+{
+template <size_t i, typename... Args>
+void
+stack_to_tuple_impl(torch::jit::Stack & stack, std::tuple<Args...> & tuple)
+{
+  using T = typename std::tuple_element_t<i, std::tuple<Args...>>;
+  std::get<i>(tuple) = std::move(stack[i]).template to<T>();
+  if constexpr (i > 0)
+    stack_to_tuple_impl<i - 1, Args...>(stack, tuple);
+}
+} // namespace details
+} // namespace jit
 } // namespace neml2
