@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-09 01:48:51</td>
+            <td class="headerValue">2024-12-09 15:51:06</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">15</td>
@@ -100,12 +100,12 @@
 <a name="38"><span class="lineNum">      38 </span><span class="lineCov">         12 :   options.set&lt;std::string&gt;(&quot;model&quot;);</span></a>
 <a name="39"><span class="lineNum">      39 </span><span class="lineCov">         12 :   options.set(&quot;model&quot;).doc() = &quot;The material model to be updated by the driver&quot;;</span></a>
 <a name="40"><span class="lineNum">      40 </span>            : </a>
-<a name="41"><span class="lineNum">      41 </span><span class="lineCov">         12 :   options.set&lt;CrossRef&lt;Scalar&gt;&gt;(&quot;times&quot;);</span></a>
-<a name="42"><span class="lineNum">      42 </span><span class="lineCov">         24 :   options.set(&quot;times&quot;).doc() = &quot;Time steps to perform the material update. The times tensor must &quot;</span></a>
-<a name="43"><span class="lineNum">      43 </span><span class="lineCov">         12 :                                &quot;have at least one batch dimension representing time steps&quot;;</span></a>
-<a name="44"><span class="lineNum">      44 </span>            : </a>
-<a name="45"><span class="lineNum">      45 </span><span class="lineCov">         12 :   options.set&lt;VariableName&gt;(&quot;time&quot;) = VariableName(&quot;forces&quot;, &quot;t&quot;);</span></a>
-<a name="46"><span class="lineNum">      46 </span><span class="lineCov">         12 :   options.set(&quot;time&quot;).doc() = &quot;Time&quot;;</span></a>
+<a name="41"><span class="lineNum">      41 </span><span class="lineCov">         12 :   options.set&lt;VariableName&gt;(&quot;time&quot;) = VariableName(&quot;forces&quot;, &quot;t&quot;);</span></a>
+<a name="42"><span class="lineNum">      42 </span><span class="lineCov">         12 :   options.set(&quot;time&quot;).doc() = &quot;Time&quot;;</span></a>
+<a name="43"><span class="lineNum">      43 </span><span class="lineCov">         12 :   options.set&lt;CrossRef&lt;Scalar&gt;&gt;(&quot;prescribed_time&quot;);</span></a>
+<a name="44"><span class="lineNum">      44 </span><span class="lineCov">         24 :   options.set(&quot;prescribed_time&quot;).doc() =</span></a>
+<a name="45"><span class="lineNum">      45 </span>            :       &quot;Time steps to perform the material update. The times tensor must &quot;</a>
+<a name="46"><span class="lineNum">      46 </span><span class="lineCov">         12 :       &quot;have at least one batch dimension representing time steps&quot;;</span></a>
 <a name="47"><span class="lineNum">      47 </span>            : </a>
 <a name="48"><span class="lineNum">      48 </span><span class="lineCov">         60 :   EnumSelection predictor_selection({&quot;PREVIOUS_STATE&quot;, &quot;LINEAR_EXTRAPOLATION&quot;}, &quot;PREVIOUS_STATE&quot;);</span></a>
 <a name="49"><span class="lineNum">      49 </span><span class="lineCov">         12 :   options.set&lt;EnumSelection&gt;(&quot;predictor&quot;) = predictor_selection;</span></a>
@@ -169,9 +169,9 @@
 <a name="107"><span class="lineNum">     107 </span>            :   : Driver(options),</a>
 <a name="108"><span class="lineNum">     108 </span><span class="lineCov">          7 :     _model(get_model(options.get&lt;std::string&gt;(&quot;model&quot;))),</span></a>
 <a name="109"><span class="lineNum">     109 </span><span class="lineCov">          7 :     _device(options.get&lt;std::string&gt;(&quot;device&quot;)),</span></a>
-<a name="110"><span class="lineNum">     110 </span><span class="lineCov">          7 :     _time(options.get&lt;CrossRef&lt;Scalar&gt;&gt;(&quot;times&quot;)),</span></a>
-<a name="111"><span class="lineNum">     111 </span><span class="lineCov">          7 :     _step_count(0),</span></a>
-<a name="112"><span class="lineNum">     112 </span><span class="lineCov">          7 :     _time_name(options.get&lt;VariableName&gt;(&quot;time&quot;)),</span></a>
+<a name="110"><span class="lineNum">     110 </span><span class="lineCov">          7 :     _time_name(options.get&lt;VariableName&gt;(&quot;time&quot;)),</span></a>
+<a name="111"><span class="lineNum">     111 </span><span class="lineCov">          7 :     _time(options.get&lt;CrossRef&lt;Scalar&gt;&gt;(&quot;prescribed_time&quot;)),</span></a>
+<a name="112"><span class="lineNum">     112 </span><span class="lineCov">          7 :     _step_count(0),</span></a>
 <a name="113"><span class="lineNum">     113 </span><span class="lineCov">          7 :     _nsteps(_time.batch_size(0).concrete()),</span></a>
 <a name="114"><span class="lineNum">     114 </span><span class="lineCov">          7 :     _predictor(options.get&lt;EnumSelection&gt;(&quot;predictor&quot;)),</span></a>
 <a name="115"><span class="lineNum">     115 </span><span class="lineCov">          7 :     _cp_warmup(options.get&lt;bool&gt;(&quot;cp_warmup&quot;)),</span></a>

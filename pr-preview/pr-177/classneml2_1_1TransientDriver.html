@@ -130,17 +130,19 @@ Inheritance diagram for TransientDriver:</div>
 <div class="dyncontent">
 <div class="center"><img src="classneml2_1_1TransientDriver__inherit__graph.png" border="0" usemap="#aTransientDriver_inherit__map" alt="Inheritance graph"/></div>
 <map name="aTransientDriver_inherit__map" id="aTransientDriver_inherit__map">
-<area shape="rect" title="The driver for a transient initial&#45;value problem." alt="" coords="161,152,282,177"/>
-<area shape="rect" href="classneml2_1_1LargeDeformationIncrementalSolidMechanicsDriver.html" title="The transient driver specialized for solid mechanics problems." alt="" coords="5,225,224,265"/>
-<area shape="poly" title=" " alt="" coords="196,188,142,227,139,223,193,183"/>
-<area shape="rect" href="classneml2_1_1SolidMechanicsDriver.html" title="The transient driver specialized for solid mechanics problems." alt="" coords="248,233,411,258"/>
-<area shape="poly" title=" " alt="" coords="250,183,315,230,312,235,247,188"/>
-<area shape="rect" href="classneml2_1_1Driver.html" title="The Driver drives the execution of a NEML2 Model." alt="" coords="190,79,253,104"/>
-<area shape="poly" title=" " alt="" coords="224,118,224,152,219,152,219,118"/>
-<area shape="rect" href="classneml2_1_1NEML2Object.html" title="The base class of all &quot;manufacturable&quot; objects in the NEML2 library." alt="" coords="88,5,197,31"/>
-<area shape="poly" title=" " alt="" coords="167,38,210,76,207,80,164,42"/>
-<area shape="rect" href="classneml2_1_1DiagnosticsInterface.html" title="Interface for object making diagnostics about common setup errors." alt="" coords="222,5,378,31"/>
-<area shape="poly" title=" " alt="" coords="279,42,236,80,232,76,275,38"/>
+<area shape="rect" title="The driver for a transient initial&#45;value problem." alt="" coords="142,152,263,177"/>
+<area shape="rect" href="classneml2_1_1SolidMechanicsDriver.html" title="The transient driver specialized for solid mechanics problems." alt="" coords="121,225,284,251"/>
+<area shape="poly" title=" " alt="" coords="205,191,205,225,200,225,200,191"/>
+<area shape="rect" href="classneml2_1_1Driver.html" title="The Driver drives the execution of a NEML2 Model." alt="" coords="171,79,234,104"/>
+<area shape="poly" title=" " alt="" coords="205,118,205,152,200,152,200,118"/>
+<area shape="rect" href="classneml2_1_1NEML2Object.html" title="The base class of all &quot;manufacturable&quot; objects in the NEML2 library." alt="" coords="69,5,179,31"/>
+<area shape="poly" title=" " alt="" coords="149,38,192,76,188,80,145,42"/>
+<area shape="rect" href="classneml2_1_1DiagnosticsInterface.html" title="Interface for object making diagnostics about common setup errors." alt="" coords="203,5,359,31"/>
+<area shape="poly" title=" " alt="" coords="260,42,217,80,214,76,257,38"/>
+<area shape="rect" href="classneml2_1_1LDISolidMechanicsDriver.html" title="Large deformation incremental solid mechanics driver." alt="" coords="5,299,189,324"/>
+<area shape="poly" title=" " alt="" coords="176,261,116,301,113,296,173,256"/>
+<area shape="rect" href="classneml2_1_1SDTSolidMechanicsDriver.html" title="Small deformation total solid mechanics driver." alt="" coords="213,299,403,324"/>
+<area shape="poly" title=" " alt="" coords="233,256,292,296,289,301,230,261"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -265,15 +267,15 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:a09b4eef9da8a5e41c86aec1c41ce641d" id="r_a09b4eef9da8a5e41c86aec1c41ce641d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> torch::Device&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a09b4eef9da8a5e41c86aec1c41ce641d">_device</a></td></tr>
 <tr class="memdesc:a09b4eef9da8a5e41c86aec1c41ce641d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The device on which to evaluate the model.  <br /></td></tr>
 <tr class="separator:a09b4eef9da8a5e41c86aec1c41ce641d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a035a1545f574ad10fea7e7845b424c51" id="r_a035a1545f574ad10fea7e7845b424c51"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">VariableName</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a035a1545f574ad10fea7e7845b424c51">_time_name</a></td></tr>
+<tr class="memdesc:a035a1545f574ad10fea7e7845b424c51"><td class="mdescLeft">&#160;</td><td class="mdescRight">VariableName for the time.  <br /></td></tr>
+<tr class="separator:a035a1545f574ad10fea7e7845b424c51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4701496b1cdd58ec942f443ba5c5c637" id="r_a4701496b1cdd58ec942f443ba5c5c637"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Scalar.html">Scalar</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4701496b1cdd58ec942f443ba5c5c637">_time</a></td></tr>
 <tr class="memdesc:a4701496b1cdd58ec942f443ba5c5c637"><td class="mdescLeft">&#160;</td><td class="mdescRight">The current time.  <br /></td></tr>
 <tr class="separator:a4701496b1cdd58ec942f443ba5c5c637"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa26d401a9a8bf99a4b7f167c507aff08" id="r_aa26d401a9a8bf99a4b7f167c507aff08"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa26d401a9a8bf99a4b7f167c507aff08">_step_count</a></td></tr>
 <tr class="memdesc:aa26d401a9a8bf99a4b7f167c507aff08"><td class="mdescLeft">&#160;</td><td class="mdescRight">The current step count.  <br /></td></tr>
 <tr class="separator:aa26d401a9a8bf99a4b7f167c507aff08"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a035a1545f574ad10fea7e7845b424c51" id="r_a035a1545f574ad10fea7e7845b424c51"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">VariableName</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a035a1545f574ad10fea7e7845b424c51">_time_name</a></td></tr>
-<tr class="memdesc:a035a1545f574ad10fea7e7845b424c51"><td class="mdescLeft">&#160;</td><td class="mdescRight">VariableName for the time.  <br /></td></tr>
-<tr class="separator:a035a1545f574ad10fea7e7845b424c51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72566de2bba4cd1f3f0375445bb3821f" id="r_a72566de2bba4cd1f3f0375445bb3821f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a72566de2bba4cd1f3f0375445bb3821f">_nsteps</a></td></tr>
 <tr class="memdesc:a72566de2bba4cd1f3f0375445bb3821f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Total number of steps.  <br /></td></tr>
 <tr class="separator:a72566de2bba4cd1f3f0375445bb3821f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -461,7 +463,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classneml2_1_1Driver.html#ae5d6a096571aad18262e88dbfa66e482">Driver</a>.</p>
 
-<p>Reimplemented in <a class="el" href="classneml2_1_1LargeDeformationIncrementalSolidMechanicsDriver.html#a2003b2f696b07451045fddd2c5189cc1">LargeDeformationIncrementalSolidMechanicsDriver</a>, and <a class="el" href="classneml2_1_1SolidMechanicsDriver.html#a2003b2f696b07451045fddd2c5189cc1">SolidMechanicsDriver</a>.</p>
+<p>Reimplemented in <a class="el" href="classneml2_1_1LDISolidMechanicsDriver.html#a2003b2f696b07451045fddd2c5189cc1">LDISolidMechanicsDriver</a>, and <a class="el" href="classneml2_1_1SolidMechanicsDriver.html#a2003b2f696b07451045fddd2c5189cc1">SolidMechanicsDriver</a>.</p>
 
 </div>
 </div>
@@ -732,7 +734,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Update the driving forces for the current time step. </p>
 
-<p>Reimplemented in <a class="el" href="classneml2_1_1LargeDeformationIncrementalSolidMechanicsDriver.html#aab075b25feb32c0a14f95554aa06ffc9">LargeDeformationIncrementalSolidMechanicsDriver</a>, and <a class="el" href="classneml2_1_1SolidMechanicsDriver.html#aab075b25feb32c0a14f95554aa06ffc9">SolidMechanicsDriver</a>.</p>
+<p>Reimplemented in <a class="el" href="classneml2_1_1LDISolidMechanicsDriver.html#aab075b25feb32c0a14f95554aa06ffc9">LDISolidMechanicsDriver</a>, and <a class="el" href="classneml2_1_1SolidMechanicsDriver.html#aab075b25feb32c0a14f95554aa06ffc9">SolidMechanicsDriver</a>.</p>
 
 </div>
 </div>

@@ -14,5 +14,7 @@ var classneml2_1_1OptionSet_1_1OptionBase =
     [ "suppressed", "classneml2_1_1OptionSet_1_1OptionBase.html#abff04b0bf2df60e4de4af22e520f54c3", null ],
     [ "suppressed", "classneml2_1_1OptionSet_1_1OptionBase.html#a6385b064a833c95ffd156ca3c5fcc03a", null ],
     [ "type", "classneml2_1_1OptionSet_1_1OptionBase.html#a4acb75b8abcd83a41915c116edbd003c", null ],
+    [ "user_specified", "classneml2_1_1OptionSet_1_1OptionBase.html#a286fbacf950cfc23957c3b71411b4b98", null ],
+    [ "user_specified", "classneml2_1_1OptionSet_1_1OptionBase.html#a5d01c8b9138da07c2db03d378c1ee0f7", null ],
     [ "_metadata", "classneml2_1_1OptionSet_1_1OptionBase.html#a64ef0bb0d06cc5ba11c378be53530150", null ]
 ];

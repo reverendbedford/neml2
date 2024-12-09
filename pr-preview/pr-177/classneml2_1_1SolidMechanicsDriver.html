@@ -115,7 +115,7 @@ $(function(){initNavTree('classneml2_1_1SolidMechanicsDriver.html',''); initResi
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classneml2_1_1SolidMechanicsDriver-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">SolidMechanicsDriver Class Reference</div></div>
+  <div class="headertitle"><div class="title">SolidMechanicsDriver Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -123,6 +123,7 @@ $(function(){initNavTree('classneml2_1_1SolidMechanicsDriver.html',''); initResi
  <a href="#details">More...</a></p>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The transient driver specialized for solid mechanics problems. </p>
+<p>Derived classes should implement the <code>update_forces</code> method to update the driving forces based on the assumptions on kinematics, i.e., small vs large deformation, incremental vs total etc. </p>
 </div>
 <p><code>#include &lt;<a class="el" href="SolidMechanicsDriver_8h_source.html">SolidMechanicsDriver.h</a>&gt;</code></p>
 <div class="dynheader">
@@ -130,23 +131,29 @@ Inheritance diagram for SolidMechanicsDriver:</div>
 <div class="dyncontent">
 <div class="center"><img src="classneml2_1_1SolidMechanicsDriver__inherit__graph.png" border="0" usemap="#aSolidMechanicsDriver_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSolidMechanicsDriver_inherit__map" id="aSolidMechanicsDriver_inherit__map">
-<area shape="rect" title="The transient driver specialized for solid mechanics problems." alt="" coords="57,225,220,251"/>
-<area shape="rect" href="classneml2_1_1TransientDriver.html" title="The driver for a transient initial&#45;value problem." alt="" coords="78,152,199,177"/>
-<area shape="poly" title=" " alt="" coords="141,191,141,225,136,225,136,191"/>
-<area shape="rect" href="classneml2_1_1Driver.html" title="The Driver drives the execution of a NEML2 Model." alt="" coords="107,79,170,104"/>
-<area shape="poly" title=" " alt="" coords="141,118,141,152,136,152,136,118"/>
-<area shape="rect" href="classneml2_1_1NEML2Object.html" title="The base class of all &quot;manufacturable&quot; objects in the NEML2 library." alt="" coords="5,5,115,31"/>
-<area shape="poly" title=" " alt="" coords="85,38,128,76,124,80,81,42"/>
-<area shape="rect" href="classneml2_1_1DiagnosticsInterface.html" title="Interface for object making diagnostics about common setup errors." alt="" coords="139,5,295,31"/>
-<area shape="poly" title=" " alt="" coords="196,42,153,80,150,76,193,38"/>
+<area shape="rect" title="The transient driver specialized for solid mechanics problems." alt="" coords="121,225,284,251"/>
+<area shape="rect" href="classneml2_1_1LDISolidMechanicsDriver.html" title="Large deformation incremental solid mechanics driver." alt="" coords="5,299,189,324"/>
+<area shape="poly" title=" " alt="" coords="176,261,116,301,113,296,173,256"/>
+<area shape="rect" href="classneml2_1_1SDTSolidMechanicsDriver.html" title="Small deformation total solid mechanics driver." alt="" coords="213,299,403,324"/>
+<area shape="poly" title=" " alt="" coords="233,256,292,296,289,301,230,261"/>
+<area shape="rect" href="classneml2_1_1TransientDriver.html" title="The driver for a transient initial&#45;value problem." alt="" coords="142,152,263,177"/>
+<area shape="poly" title=" " alt="" coords="205,191,205,225,200,225,200,191"/>
+<area shape="rect" href="classneml2_1_1Driver.html" title="The Driver drives the execution of a NEML2 Model." alt="" coords="171,79,234,104"/>
+<area shape="poly" title=" " alt="" coords="205,118,205,152,200,152,200,118"/>
+<area shape="rect" href="classneml2_1_1NEML2Object.html" title="The base class of all &quot;manufacturable&quot; objects in the NEML2 library." alt="" coords="69,5,179,31"/>
+<area shape="poly" title=" " alt="" coords="149,38,192,76,188,80,145,42"/>
+<area shape="rect" href="classneml2_1_1DiagnosticsInterface.html" title="Interface for object making diagnostics about common setup errors." alt="" coords="203,5,359,31"/>
+<area shape="poly" title=" " alt="" coords="260,42,217,80,214,76,257,38"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a58cc7909ad8c7808e9437f02b0817b55" id="r_a58cc7909ad8c7808e9437f02b0817b55"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a58cc7909ad8c7808e9437f02b0817b55">SolidMechanicsDriver</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1OptionSet.html">OptionSet</a> &amp;options)</td></tr>
-<tr class="memdesc:a58cc7909ad8c7808e9437f02b0817b55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new <a class="el" href="classneml2_1_1SolidMechanicsDriver.html" title="The transient driver specialized for solid mechanics problems.">SolidMechanicsDriver</a> object.  <br /></td></tr>
 <tr class="separator:a58cc7909ad8c7808e9437f02b0817b55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0b73dc40ca33ff933c1f351578a00d0" id="r_ac0b73dc40ca33ff933c1f351578a00d0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac0b73dc40ca33ff933c1f351578a00d0">setup</a> () <a class="el" href="classneml2_1_1CrossRef.html">override</a></td></tr>
+<tr class="memdesc:ac0b73dc40ca33ff933c1f351578a00d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setup this object.  <br /></td></tr>
+<tr class="separator:ac0b73dc40ca33ff933c1f351578a00d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2003b2f696b07451045fddd2c5189cc1" id="r_a2003b2f696b07451045fddd2c5189cc1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2003b2f696b07451045fddd2c5189cc1">diagnose</a> (std::vector&lt; <a class="el" href="classneml2_1_1Diagnosis.html">Diagnosis</a> &gt; &amp;) <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">override</a></td></tr>
 <tr class="memdesc:a2003b2f696b07451045fddd2c5189cc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check for common problems.  <br /></td></tr>
 <tr class="separator:a2003b2f696b07451045fddd2c5189cc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -177,9 +184,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ad9cb8bba430bcfb31348ddfe6b9b00c8 inherit pub_methods_classneml2_1_1NEML2Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a441bfc4cd7b2e4831decc43a22f828c4 inherit pub_methods_classneml2_1_1NEML2Object" id="r_a441bfc4cd7b2e4831decc43a22f828c4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1OptionSet.html">OptionSet</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1NEML2Object.html#a441bfc4cd7b2e4831decc43a22f828c4">input_options</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
 <tr class="separator:a441bfc4cd7b2e4831decc43a22f828c4 inherit pub_methods_classneml2_1_1NEML2Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a43128fa8695ca9394ba69cd759d04b99 inherit pub_methods_classneml2_1_1NEML2Object" id="r_a43128fa8695ca9394ba69cd759d04b99"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1NEML2Object.html#a43128fa8695ca9394ba69cd759d04b99">setup</a> ()</td></tr>
-<tr class="memdesc:a43128fa8695ca9394ba69cd759d04b99 inherit pub_methods_classneml2_1_1NEML2Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setup this object.  <br /></td></tr>
-<tr class="separator:a43128fa8695ca9394ba69cd759d04b99 inherit pub_methods_classneml2_1_1NEML2Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a24dcbf29c0d6cd766009a182a6484e3b inherit pub_methods_classneml2_1_1NEML2Object" id="r_a24dcbf29c0d6cd766009a182a6484e3b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1NEML2Object.html#a24dcbf29c0d6cd766009a182a6484e3b">name</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
 <tr class="memdesc:a24dcbf29c0d6cd766009a182a6484e3b inherit pub_methods_classneml2_1_1NEML2Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">A readonly reference to the object's name.  <br /></td></tr>
 <tr class="separator:a24dcbf29c0d6cd766009a182a6484e3b inherit pub_methods_classneml2_1_1NEML2Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -237,9 +241,18 @@ Static Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:aab075b25feb32c0a14f95554aa06ffc9" id="r_aab075b25feb32c0a14f95554aa06ffc9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aab075b25feb32c0a14f95554aa06ffc9">update_forces</a> () <a class="el" href="classneml2_1_1CrossRef.html">override</a></td></tr>
+<tr class="memitem:aab075b25feb32c0a14f95554aa06ffc9" id="r_aab075b25feb32c0a14f95554aa06ffc9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aab075b25feb32c0a14f95554aa06ffc9">update_forces</a> () <a class="el" href="classneml2_1_1CrossRef.html">override</a></td></tr>
 <tr class="memdesc:aab075b25feb32c0a14f95554aa06ffc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the driving forces for the current time step.  <br /></td></tr>
 <tr class="separator:aab075b25feb32c0a14f95554aa06ffc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:ab84d4d141344d0dce6e3fed2c85a8cf8" id="r_ab84d4d141344d0dce6e3fed2c85a8cf8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab84d4d141344d0dce6e3fed2c85a8cf8">init_strain_control</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1OptionSet.html">OptionSet</a> &amp;)=0</td></tr>
+<tr class="separator:ab84d4d141344d0dce6e3fed2c85a8cf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32d3f95b4b6ad0ee3d83b2fe037589ca" id="r_a32d3f95b4b6ad0ee3d83b2fe037589ca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a32d3f95b4b6ad0ee3d83b2fe037589ca">init_stress_control</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1OptionSet.html">OptionSet</a> &amp;)=0</td></tr>
+<tr class="separator:a32d3f95b4b6ad0ee3d83b2fe037589ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39a8d942227fe262734c2e6db4017e6f" id="r_a39a8d942227fe262734c2e6db4017e6f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a39a8d942227fe262734c2e6db4017e6f">init_mixed_control</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1OptionSet.html">OptionSet</a> &amp;)</td></tr>
+<tr class="separator:a39a8d942227fe262734c2e6db4017e6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a262c015b16f0ad993b27a63ed7729f31" id="r_a262c015b16f0ad993b27a63ed7729f31"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a262c015b16f0ad993b27a63ed7729f31">init_temperature_control</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1OptionSet.html">OptionSet</a> &amp;)</td></tr>
+<tr class="separator:a262c015b16f0ad993b27a63ed7729f31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classneml2_1_1TransientDriver"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_methods_classneml2_1_1TransientDriver')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classneml2_1_1TransientDriver.html">TransientDriver</a></td></tr>
 <tr class="memitem:a08ea7cd998fb14fc3bab9599c83e9c24 inherit pro_methods_classneml2_1_1TransientDriver" id="r_a08ea7cd998fb14fc3bab9599c83e9c24"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1TransientDriver.html#a08ea7cd998fb14fc3bab9599c83e9c24">solve</a> ()</td></tr>
 <tr class="memdesc:a08ea7cd998fb14fc3bab9599c83e9c24 inherit pro_methods_classneml2_1_1TransientDriver"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solve the initial value problem.  <br /></td></tr>
@@ -268,25 +281,27 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:a6f84edf55a200f28b13ef52782d66368" id="r_a6f84edf55a200f28b13ef52782d66368"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1EnumSelection.html">EnumSelection</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6f84edf55a200f28b13ef52782d66368">_control</a></td></tr>
 <tr class="memdesc:a6f84edf55a200f28b13ef52782d66368"><td class="mdescLeft">&#160;</td><td class="mdescRight">The control method to drive the constitutive update.  <br /></td></tr>
 <tr class="separator:a6f84edf55a200f28b13ef52782d66368"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aebdd63e6594d95a4c83de26a2b897233" id="r_aebdd63e6594d95a4c83de26a2b897233"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1SR2.html">SR2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aebdd63e6594d95a4c83de26a2b897233">_driving_force</a></td></tr>
-<tr class="separator:aebdd63e6594d95a4c83de26a2b897233"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:ab85d5fd967db7b3337d09002adfa3a41" id="r_ab85d5fd967db7b3337d09002adfa3a41"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">VariableName</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab85d5fd967db7b3337d09002adfa3a41">_driving_force_name</a></td></tr>
 <tr class="separator:ab85d5fd967db7b3337d09002adfa3a41"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ec8f3de0deb3db1e3c0dad8c49e0cb9" id="r_a6ec8f3de0deb3db1e3c0dad8c49e0cb9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">VariableName</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6ec8f3de0deb3db1e3c0dad8c49e0cb9">_control_name</a></td></tr>
-<tr class="memdesc:a6ec8f3de0deb3db1e3c0dad8c49e0cb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name of the control signal for mixed stress/strain control.  <br /></td></tr>
-<tr class="separator:a6ec8f3de0deb3db1e3c0dad8c49e0cb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc868afdc45d4507ea3b8ee122c88b92" id="r_abc868afdc45d4507ea3b8ee122c88b92"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">VariableName</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abc868afdc45d4507ea3b8ee122c88b92">_temperature_name</a></td></tr>
-<tr class="memdesc:abc868afdc45d4507ea3b8ee122c88b92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name of the temperature variable.  <br /></td></tr>
-<tr class="separator:abc868afdc45d4507ea3b8ee122c88b92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebdd63e6594d95a4c83de26a2b897233" id="r_aebdd63e6594d95a4c83de26a2b897233"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1SR2.html">SR2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aebdd63e6594d95a4c83de26a2b897233">_driving_force</a></td></tr>
+<tr class="memdesc:aebdd63e6594d95a4c83de26a2b897233"><td class="mdescLeft">&#160;</td><td class="mdescRight">The value of the driving force.  <br /></td></tr>
+<tr class="separator:aebdd63e6594d95a4c83de26a2b897233"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:a51ab58cf64a7eb74d6f4ef88c34702f0" id="r_a51ab58cf64a7eb74d6f4ef88c34702f0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">VariableName</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a51ab58cf64a7eb74d6f4ef88c34702f0">_mixed_control_name</a></td></tr>
+<tr class="separator:a51ab58cf64a7eb74d6f4ef88c34702f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5fc2a0e2aa944f08c65096f3df384d9c" id="r_a5fc2a0e2aa944f08c65096f3df384d9c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1SR2.html">SR2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5fc2a0e2aa944f08c65096f3df384d9c">_mixed_control</a></td></tr>
+<tr class="memdesc:a5fc2a0e2aa944f08c65096f3df384d9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Actual control signal, when used for control == "MIXED".  <br /></td></tr>
+<tr class="separator:a5fc2a0e2aa944f08c65096f3df384d9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:aeb7a54ebc1c58aedeef08f884b5f5eba" id="r_aeb7a54ebc1c58aedeef08f884b5f5eba"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeb7a54ebc1c58aedeef08f884b5f5eba">_temperature_prescribed</a></td></tr>
-<tr class="memdesc:aeb7a54ebc1c58aedeef08f884b5f5eba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether temperature is prescribed.  <br /></td></tr>
 <tr class="separator:aeb7a54ebc1c58aedeef08f884b5f5eba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac42cb8919cc74c07895507b8c26a32a6" id="r_ac42cb8919cc74c07895507b8c26a32a6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">VariableName</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac42cb8919cc74c07895507b8c26a32a6">_temperature_name</a></td></tr>
+<tr class="memdesc:ac42cb8919cc74c07895507b8c26a32a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name of the temperature variable.  <br /></td></tr>
+<tr class="separator:ac42cb8919cc74c07895507b8c26a32a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6cda150eeeb217a432bafb913f99512a" id="r_a6cda150eeeb217a432bafb913f99512a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Scalar.html">Scalar</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6cda150eeeb217a432bafb913f99512a">_temperature</a></td></tr>
 <tr class="memdesc:a6cda150eeeb217a432bafb913f99512a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Temperature.  <br /></td></tr>
 <tr class="separator:a6cda150eeeb217a432bafb913f99512a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0053eefc6c5f51e0b253adb9044703fa" id="r_a0053eefc6c5f51e0b253adb9044703fa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1SR2.html">SR2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0053eefc6c5f51e0b253adb9044703fa">_control_signal</a></td></tr>
-<tr class="memdesc:a0053eefc6c5f51e0b253adb9044703fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Actual control signal, when used for control == "MIXED".  <br /></td></tr>
-<tr class="separator:a0053eefc6c5f51e0b253adb9044703fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classneml2_1_1TransientDriver"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classneml2_1_1TransientDriver')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classneml2_1_1TransientDriver.html">TransientDriver</a></td></tr>
 <tr class="memitem:a182326ae4276f4f9d786dacdbdd2bedd inherit pro_attribs_classneml2_1_1TransientDriver" id="r_a182326ae4276f4f9d786dacdbdd2bedd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Model.html">Model</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1TransientDriver.html#a182326ae4276f4f9d786dacdbdd2bedd">_model</a></td></tr>
 <tr class="memdesc:a182326ae4276f4f9d786dacdbdd2bedd inherit pro_attribs_classneml2_1_1TransientDriver"><td class="mdescLeft">&#160;</td><td class="mdescRight">The model which the driver uses to perform constitutive updates.  <br /></td></tr>
@@ -294,15 +309,15 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:a09b4eef9da8a5e41c86aec1c41ce641d inherit pro_attribs_classneml2_1_1TransientDriver" id="r_a09b4eef9da8a5e41c86aec1c41ce641d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> torch::Device&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1TransientDriver.html#a09b4eef9da8a5e41c86aec1c41ce641d">_device</a></td></tr>
 <tr class="memdesc:a09b4eef9da8a5e41c86aec1c41ce641d inherit pro_attribs_classneml2_1_1TransientDriver"><td class="mdescLeft">&#160;</td><td class="mdescRight">The device on which to evaluate the model.  <br /></td></tr>
 <tr class="separator:a09b4eef9da8a5e41c86aec1c41ce641d inherit pro_attribs_classneml2_1_1TransientDriver"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a035a1545f574ad10fea7e7845b424c51 inherit pro_attribs_classneml2_1_1TransientDriver" id="r_a035a1545f574ad10fea7e7845b424c51"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">VariableName</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1TransientDriver.html#a035a1545f574ad10fea7e7845b424c51">_time_name</a></td></tr>
+<tr class="memdesc:a035a1545f574ad10fea7e7845b424c51 inherit pro_attribs_classneml2_1_1TransientDriver"><td class="mdescLeft">&#160;</td><td class="mdescRight">VariableName for the time.  <br /></td></tr>
+<tr class="separator:a035a1545f574ad10fea7e7845b424c51 inherit pro_attribs_classneml2_1_1TransientDriver"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4701496b1cdd58ec942f443ba5c5c637 inherit pro_attribs_classneml2_1_1TransientDriver" id="r_a4701496b1cdd58ec942f443ba5c5c637"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Scalar.html">Scalar</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1TransientDriver.html#a4701496b1cdd58ec942f443ba5c5c637">_time</a></td></tr>
 <tr class="memdesc:a4701496b1cdd58ec942f443ba5c5c637 inherit pro_attribs_classneml2_1_1TransientDriver"><td class="mdescLeft">&#160;</td><td class="mdescRight">The current time.  <br /></td></tr>
 <tr class="separator:a4701496b1cdd58ec942f443ba5c5c637 inherit pro_attribs_classneml2_1_1TransientDriver"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa26d401a9a8bf99a4b7f167c507aff08 inherit pro_attribs_classneml2_1_1TransientDriver" id="r_aa26d401a9a8bf99a4b7f167c507aff08"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1TransientDriver.html#aa26d401a9a8bf99a4b7f167c507aff08">_step_count</a></td></tr>
 <tr class="memdesc:aa26d401a9a8bf99a4b7f167c507aff08 inherit pro_attribs_classneml2_1_1TransientDriver"><td class="mdescLeft">&#160;</td><td class="mdescRight">The current step count.  <br /></td></tr>
 <tr class="separator:aa26d401a9a8bf99a4b7f167c507aff08 inherit pro_attribs_classneml2_1_1TransientDriver"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a035a1545f574ad10fea7e7845b424c51 inherit pro_attribs_classneml2_1_1TransientDriver" id="r_a035a1545f574ad10fea7e7845b424c51"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">VariableName</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1TransientDriver.html#a035a1545f574ad10fea7e7845b424c51">_time_name</a></td></tr>
-<tr class="memdesc:a035a1545f574ad10fea7e7845b424c51 inherit pro_attribs_classneml2_1_1TransientDriver"><td class="mdescLeft">&#160;</td><td class="mdescRight">VariableName for the time.  <br /></td></tr>
-<tr class="separator:a035a1545f574ad10fea7e7845b424c51 inherit pro_attribs_classneml2_1_1TransientDriver"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72566de2bba4cd1f3f0375445bb3821f inherit pro_attribs_classneml2_1_1TransientDriver" id="r_a72566de2bba4cd1f3f0375445bb3821f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1TransientDriver.html#a72566de2bba4cd1f3f0375445bb3821f">_nsteps</a></td></tr>
 <tr class="memdesc:a72566de2bba4cd1f3f0375445bb3821f inherit pro_attribs_classneml2_1_1TransientDriver"><td class="mdescLeft">&#160;</td><td class="mdescRight">Total number of steps.  <br /></td></tr>
 <tr class="separator:a72566de2bba4cd1f3f0375445bb3821f inherit pro_attribs_classneml2_1_1TransientDriver"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -362,14 +377,6 @@ Protected Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Construct a new <a class="el" href="classneml2_1_1SolidMechanicsDriver.html" title="The transient driver specialized for solid mechanics problems.">SolidMechanicsDriver</a> object. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">options</td><td>The options extracted from the input file </td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>
@@ -436,6 +443,141 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a39a8d942227fe262734c2e6db4017e6f" name="a39a8d942227fe262734c2e6db4017e6f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39a8d942227fe262734c2e6db4017e6f">&#9670;&#160;</a></span>init_mixed_control()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">void</a> init_mixed_control </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1OptionSet.html">OptionSet</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>options</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab84d4d141344d0dce6e3fed2c85a8cf8" name="ab84d4d141344d0dce6e3fed2c85a8cf8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab84d4d141344d0dce6e3fed2c85a8cf8">&#9670;&#160;</a></span>init_strain_control()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a> init_strain_control </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1OptionSet.html">OptionSet</a> &amp;</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Control-specific initialization </p>
+
+<p>Implemented in <a class="el" href="classneml2_1_1LDISolidMechanicsDriver.html#ae49f10f01b57db7f9cc24f8bf822f11e">LDISolidMechanicsDriver</a>, and <a class="el" href="classneml2_1_1SDTSolidMechanicsDriver.html#ae49f10f01b57db7f9cc24f8bf822f11e">SDTSolidMechanicsDriver</a>.</p>
+
+</div>
+</div>
+<a id="a32d3f95b4b6ad0ee3d83b2fe037589ca" name="a32d3f95b4b6ad0ee3d83b2fe037589ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32d3f95b4b6ad0ee3d83b2fe037589ca">&#9670;&#160;</a></span>init_stress_control()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a> init_stress_control </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1OptionSet.html">OptionSet</a> &amp;</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="classneml2_1_1LDISolidMechanicsDriver.html#a0fd3546fcdc5147f679ae1f5c78da449">LDISolidMechanicsDriver</a>, and <a class="el" href="classneml2_1_1SDTSolidMechanicsDriver.html#a0fd3546fcdc5147f679ae1f5c78da449">SDTSolidMechanicsDriver</a>.</p>
+
+</div>
+</div>
+<a id="a262c015b16f0ad993b27a63ed7729f31" name="a262c015b16f0ad993b27a63ed7729f31"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a262c015b16f0ad993b27a63ed7729f31">&#9670;&#160;</a></span>init_temperature_control()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">void</a> init_temperature_control </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1OptionSet.html">OptionSet</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>options</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac0b73dc40ca33ff933c1f351578a00d0" name="ac0b73dc40ca33ff933c1f351578a00d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0b73dc40ca33ff933c1f351578a00d0">&#9670;&#160;</a></span>setup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">void</a> setup </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Setup this object. </p>
+<p>This method is called automatically if you use the <a class="el" href="classneml2_1_1Factory.html">Factory</a> method get_object or get_object_ptr, right after construction. This serves as the entry point for things that are not convenient/possible to do at construction time, but are necessary before this object can be used (by others). </p>
+
+<p>Reimplemented from <a class="el" href="classneml2_1_1NEML2Object.html#a43128fa8695ca9394ba69cd759d04b99">NEML2Object</a>.</p>
+
+</div>
+</div>
 <a id="aab075b25feb32c0a14f95554aa06ffc9" name="aab075b25feb32c0a14f95554aa06ffc9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aab075b25feb32c0a14f95554aa06ffc9">&#9670;&#160;</a></span>update_forces()</h2>
 
@@ -491,54 +633,6 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a6ec8f3de0deb3db1e3c0dad8c49e0cb9" name="a6ec8f3de0deb3db1e3c0dad8c49e0cb9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6ec8f3de0deb3db1e3c0dad8c49e0cb9">&#9670;&#160;</a></span>_control_name</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">VariableName</a> _control_name</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Name of the control signal for mixed stress/strain control. </p>
-
-</div>
-</div>
-<a id="a0053eefc6c5f51e0b253adb9044703fa" name="a0053eefc6c5f51e0b253adb9044703fa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0053eefc6c5f51e0b253adb9044703fa">&#9670;&#160;</a></span>_control_signal</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1SR2.html">SR2</a> _control_signal</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Actual control signal, when used for control == "MIXED". </p>
-
-</div>
-</div>
 <a id="aebdd63e6594d95a4c83de26a2b897233" name="aebdd63e6594d95a4c83de26a2b897233"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aebdd63e6594d95a4c83de26a2b897233">&#9670;&#160;</a></span>_driving_force</h2>
 
@@ -558,7 +652,8 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>The value of the driving force, depending on <code>_control</code> this is either the prescribed strain or the prescribed stress. </p>
+
+<p>The value of the driving force. </p>
 
 </div>
 </div>
@@ -581,7 +676,54 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>The name of the driving force, depending on <code>_control</code> this is either the prescribed strain or the prescribed stress. </p>
+<p>The name of the driving force </p>
+
+</div>
+</div>
+<a id="a5fc2a0e2aa944f08c65096f3df384d9c" name="a5fc2a0e2aa944f08c65096f3df384d9c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5fc2a0e2aa944f08c65096f3df384d9c">&#9670;&#160;</a></span>_mixed_control</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1SR2.html">SR2</a> _mixed_control</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Actual control signal, when used for control == "MIXED". </p>
+
+</div>
+</div>
+<a id="a51ab58cf64a7eb74d6f4ef88c34702f0" name="a51ab58cf64a7eb74d6f4ef88c34702f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a51ab58cf64a7eb74d6f4ef88c34702f0">&#9670;&#160;</a></span>_mixed_control_name</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">VariableName</a> _mixed_control_name</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Name of the control signal for mixed stress/strain control </p>
 
 </div>
 </div>
@@ -609,8 +751,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="abc868afdc45d4507ea3b8ee122c88b92" name="abc868afdc45d4507ea3b8ee122c88b92"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abc868afdc45d4507ea3b8ee122c88b92">&#9670;&#160;</a></span>_temperature_name</h2>
+<a id="ac42cb8919cc74c07895507b8c26a32a6" name="ac42cb8919cc74c07895507b8c26a32a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac42cb8919cc74c07895507b8c26a32a6">&#9670;&#160;</a></span>_temperature_name</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -619,7 +761,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">VariableName</a> _temperature_name</td>
+          <td class="memname"><a class="el" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">VariableName</a> _temperature_name</td>
         </tr>
       </table>
   </td>
@@ -652,8 +794,7 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Whether temperature is prescribed. </p>
+<p>Whether temperature is prescribed </p>
 
 </div>
 </div>

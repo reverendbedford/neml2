@@ -2,7 +2,7 @@ var searchData=
 [
   ['labeledaxis_0',['LabeledAxis',['../classneml2_1_1LabeledAxis.html',1,'neml2']]],
   ['labeledaxisaccessor_1',['LabeledAxisAccessor',['../classneml2_1_1LabeledAxisAccessor.html',1,'neml2']]],
-  ['largedeformationincrementalsolidmechanicsdriver_2',['LargeDeformationIncrementalSolidMechanicsDriver',['../classneml2_1_1LargeDeformationIncrementalSolidMechanicsDriver.html',1,'neml2']]],
+  ['ldisolidmechanicsdriver_2',['LDISolidMechanicsDriver',['../classneml2_1_1LDISolidMechanicsDriver.html',1,'neml2']]],
   ['linearcombination_3',['LinearCombination',['../classneml2_1_1LinearCombination.html',1,'neml2']]],
   ['linearinterpolation_4',['LinearInterpolation',['../classneml2_1_1LinearInterpolation.html',1,'neml2']]],
   ['linearisotropicelasticity_5',['LinearIsotropicElasticity',['../classneml2_1_1LinearIsotropicElasticity.html',1,'neml2']]],
