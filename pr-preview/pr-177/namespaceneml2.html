@@ -866,6 +866,8 @@ Functions</h2></td></tr>
 <tr class="separator:a2e73f483d059d2327f195924a0739c54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab0506b2a843ae20b830c9aeb74edc13" id="r_aab0506b2a843ae20b830c9aeb74edc13"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aab0506b2a843ae20b830c9aeb74edc13">assign_or_add</a> (<a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">dest</a>, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">val</a>)</td></tr>
 <tr class="separator:aab0506b2a843ae20b830c9aeb74edc13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98f279f3c19bc275a4bcfc0aa2475b94" id="r_a98f279f3c19bc275a4bcfc0aa2475b94"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a98f279f3c19bc275a4bcfc0aa2475b94">FOR_ALL_TENSORBASE</a> (INSTANTIATE_VARIABLE)</td></tr>
+<tr class="separator:a98f279f3c19bc275a4bcfc0aa2475b94"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab3ed260a161cea0b5c5b08be5d8fced7" id="r_ab3ed260a161cea0b5c5b08be5d8fced7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab3ed260a161cea0b5c5b08be5d8fced7">register_NEML2_object</a> (<a class="el" href="#a02b528e002f334206fd5e4eba92fd753">ScalarVariableRate</a>)</td></tr>
 <tr class="separator:ab3ed260a161cea0b5c5b08be5d8fced7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a470d2f37ba8f07168666064cbffc5633" id="r_a470d2f37ba8f07168666064cbffc5633"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a470d2f37ba8f07168666064cbffc5633">register_NEML2_object</a> (<a class="el" href="#a8756e09cb8eba7dea1046b64b85c8bf6">VecVariableRate</a>)</td></tr>
@@ -2143,7 +2145,7 @@ template&lt;class... T&gt; </div>
 </div>
 </div>
 <a id="ae5dc0f0436baf0e6cc30954004f998e4" name="ae5dc0f0436baf0e6cc30954004f998e4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae5dc0f0436baf0e6cc30954004f998e4">&#9670;&#160;</a></span>FOR_ALL_TENSORBASE() <span class="overload">[1/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5dc0f0436baf0e6cc30954004f998e4">&#9670;&#160;</a></span>FOR_ALL_TENSORBASE() <span class="overload">[1/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2160,7 +2162,7 @@ template&lt;class... T&gt; </div>
 </div>
 </div>
 <a id="a01748f64c6cef2cd5d1fac05a7c778ed" name="a01748f64c6cef2cd5d1fac05a7c778ed"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a01748f64c6cef2cd5d1fac05a7c778ed">&#9670;&#160;</a></span>FOR_ALL_TENSORBASE() <span class="overload">[2/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a01748f64c6cef2cd5d1fac05a7c778ed">&#9670;&#160;</a></span>FOR_ALL_TENSORBASE() <span class="overload">[2/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2177,7 +2179,7 @@ template&lt;class... T&gt; </div>
 </div>
 </div>
 <a id="ac0467bed5f342fac9fee4ec1bdbf2c11" name="ac0467bed5f342fac9fee4ec1bdbf2c11"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac0467bed5f342fac9fee4ec1bdbf2c11">&#9670;&#160;</a></span>FOR_ALL_TENSORBASE() <span class="overload">[3/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0467bed5f342fac9fee4ec1bdbf2c11">&#9670;&#160;</a></span>FOR_ALL_TENSORBASE() <span class="overload">[3/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2193,8 +2195,25 @@ template&lt;class... T&gt; </div>
 
 </div>
 </div>
+<a id="a98f279f3c19bc275a4bcfc0aa2475b94" name="a98f279f3c19bc275a4bcfc0aa2475b94"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98f279f3c19bc275a4bcfc0aa2475b94">&#9670;&#160;</a></span>FOR_ALL_TENSORBASE() <span class="overload">[4/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FOR_ALL_TENSORBASE </td>
+          <td>(</td>
+          <td class="paramtype">INSTANTIATE_VARIABLE</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="ae68b3064586a22cd469ed6be6d1ac317" name="ae68b3064586a22cd469ed6be6d1ac317"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae68b3064586a22cd469ed6be6d1ac317">&#9670;&#160;</a></span>FOR_ALL_TENSORBASE() <span class="overload">[4/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae68b3064586a22cd469ed6be6d1ac317">&#9670;&#160;</a></span>FOR_ALL_TENSORBASE() <span class="overload">[5/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">

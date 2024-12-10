@@ -1,5 +1,6 @@
 var classneml2_1_1VariableBase =
 [
+    [ "VariableBase", "classneml2_1_1VariableBase.html#a57cafb050efed4623c3e7dcb71da3f89", null ],
     [ "VariableBase", "classneml2_1_1VariableBase.html#a72adb9a8e5718ba10827a66a7d2013c6", null ],
     [ "~VariableBase", "classneml2_1_1VariableBase.html#a11c5fe28b4558368c4e40dd53523aadb", null ],
     [ "apply_chain_rule", "classneml2_1_1VariableBase.html#adaaed8a04acb0a329e20be6187260885", null ],

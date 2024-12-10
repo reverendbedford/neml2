@@ -21,7 +21,7 @@ var searchData=
   ['variable_5fsizes_18',['variable_sizes',['../classneml2_1_1LabeledAxis.html#a4adf841e24a6af1addd717f691993608',1,'neml2::LabeledAxis']]],
   ['variable_5fslice_19',['variable_slice',['../classneml2_1_1LabeledAxis.html#afb2ec3490c5ff12f878057183af1b9a9',1,'neml2::LabeledAxis']]],
   ['variable_5fslices_20',['variable_slices',['../classneml2_1_1LabeledAxis.html#a0466aca7cd8a22e6ef371071ddb5f0ae',1,'neml2::LabeledAxis']]],
-  ['variablebase_21',['VariableBase',['../classneml2_1_1VariableBase.html',1,'VariableBase'],['../classneml2_1_1VariableBase.html#a72adb9a8e5718ba10827a66a7d2013c6',1,'neml2::VariableBase::VariableBase()']]],
+  ['variablebase_21',['VariableBase',['../classneml2_1_1VariableBase.html',1,'VariableBase'],['../classneml2_1_1VariableBase.html#a57cafb050efed4623c3e7dcb71da3f89',1,'neml2::VariableBase::VariableBase()=default'],['../classneml2_1_1VariableBase.html#a72adb9a8e5718ba10827a66a7d2013c6',1,'neml2::VariableBase::VariableBase(const VariableName &amp;name_in, Model *owner, TensorShapeRef list_shape)']]],
   ['variablename_22',['VariableName',['../namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54',1,'neml2']]],
   ['variablerate_23',['VariableRate',['../classneml2_1_1VariableRate.html',1,'VariableRate&lt; T &gt;'],['../classneml2_1_1VariableRate.html#a8db7d3c0537d457d33629f45e6d51107',1,'neml2::VariableRate::VariableRate()']]],
   ['variablestore_24',['VariableStore',['../classneml2_1_1VariableStore.html',1,'VariableStore'],['../classneml2_1_1VariableStore.html#aee9a2e9080cf158fe535a56d4ecec295',1,'neml2::VariableStore::VariableStore()']]],
