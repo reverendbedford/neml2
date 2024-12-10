@@ -270,12 +270,14 @@ public:
   /// Suppressed constructor to prevent accidental dereferencing
   [[deprecated("Variable<T> must be assigned to references -- missing &")]] Variable(
       const Variable<T> &&)
+    : VariableBase()
   {
   }
 
   /// Suppressed constructor to prevent accidental dereferencing
   [[deprecated("Variable<T> must be assigned to references -- missing &")]] Variable(
       const Variable<T> &)
+    : VariableBase()
   {
   }
 
