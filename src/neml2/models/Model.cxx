@@ -22,6 +22,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#include <torch/csrc/jit/frontend/tracer.h>
+
 #include "neml2/models/Model.h"
 #include "neml2/models/Assembler.h"
 #include "neml2/base/guards.h"
@@ -38,6 +40,9 @@ Model::expected_options()
 
   options.section() = "Models";
 
+  options.set<bool>("jit") = false;
+  options.set("jit").doc() = "Use JIT compilation for the forward operator";
+
   options.set<bool>("_nonlinear_system") = false;
   options.set("_nonlinear_system").suppressed() = true;
 
@@ -50,7 +55,8 @@ Model::Model(const OptionSet & options)
     VariableStore(options, this),
     NonlinearSystem(options),
     DiagnosticsInterface(this),
-    _nonlinear_system(options.get<bool>("_nonlinear_system"))
+    _nonlinear_system(options.get<bool>("_nonlinear_system")),
+    _jit(options.get<bool>("jit"))
 {
 }
 
@@ -278,7 +284,36 @@ Model::d2value(const std::map<VariableName, Tensor> & in)
 void
 Model::value()
 {
-  set_value(true, false, false);
+  if (!_jit)
+    set_value(true, false, false);
+  else
+  {
+    if (_value_jit)
+    {
+      auto stack = collect_input_stack();
+      _value_jit->run(stack);
+      assign_output_stack(stack, true, false, false);
+    }
+    else
+    {
+      auto disable_name_lookup = [](const torch::Tensor & /*var*/) -> std::string { return ""; };
+      auto forward = [&](torch::jit::Stack inputs) -> torch::jit::Stack
+      {
+        assign_input_stack(inputs);
+        set_value(true, false, false);
+        return collect_output_stack(true, false, false);
+      };
+      auto trace = std::get<0>(torch::jit::tracer::trace(collect_input_stack(),
+                                                         forward,
+                                                         disable_name_lookup,
+                                                         /*strict=*/true,
+                                                         /*force_outplace=*/false));
+      _value_jit = std::make_unique<torch::jit::GraphFunction>(
+          name() + ".value", trace->graph, /*function_creator=*/nullptr);
+      // Rerun this method -- this time using the jitted graph (without tracing)
+      value();
+    }
+  }
 }
 
 void

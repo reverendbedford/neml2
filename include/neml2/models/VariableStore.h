@@ -24,6 +24,8 @@
 
 #pragma once
 
+#include <ATen/core/stack.h>
+
 #include "neml2/base/NEML2Object.h"
 #include "neml2/base/Storage.h"
 #include "neml2/models/LabeledAxis.h"
@@ -89,12 +91,17 @@ public:
   ///@}
 
   ///@{
-  /// Assign variable values
+  /// Assign input variable values
   void assign_input(const std::map<VariableName, Tensor> & vals);
+  /// Assign output variable values
   void assign_output(const std::map<VariableName, Tensor> & vals);
   /// Assign variable derivatives
   void
   assign_output_derivatives(const std::map<VariableName, std::map<VariableName, Tensor>> & derivs);
+  /// Assign stack to input variables
+  void assign_input_stack(const torch::jit::Stack & stack);
+  /// Assign stack to output variables and derivatives
+  void assign_output_stack(const torch::jit::Stack & stack, bool out, bool dout, bool d2out);
   ///@}
 
   ///@{
@@ -106,6 +113,10 @@ public:
   /// Collect variable second derivatives
   std::map<VariableName, std::map<VariableName, std::map<VariableName, Tensor>>>
   collect_output_second_derivatives() const;
+  /// Collect stack from input variables
+  torch::jit::Stack collect_input_stack() const;
+  /// Collect stack from output variables and derivatives
+  torch::jit::Stack collect_output_stack(bool out, bool dout, bool d2out) const;
   ///@}
 
 protected:

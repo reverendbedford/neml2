@@ -24,6 +24,8 @@
 
 #pragma once
 
+#include <torch/csrc/jit/api/function_impl.h>
+
 #include "neml2/base/DependencyDefinition.h"
 #include "neml2/base/DiagnosticsInterface.h"
 
@@ -212,11 +214,21 @@ private:
   /// Whether this is a nonlinear system
   bool _nonlinear_system;
 
+  ///@{
   /// The variables that are requested to be differentiated
   std::map<VariableBase *, std::set<const VariableBase *>> _ad_derivs;
   std::map<VariableBase *, std::map<const VariableBase *, std::set<const VariableBase *>>>
       _ad_secderivs;
   std::set<VariableBase *> _ad_args;
+  ///@}
+
+  /// Whether to use JIT
+  const bool _jit;
+
+  ///@{
+  /// Cached function graphs for forward operators
+  std::unique_ptr<torch::jit::GraphFunction> _value_jit;
+  ///@}
 };
 
 std::ostream & operator<<(std::ostream & os, const Model & model);

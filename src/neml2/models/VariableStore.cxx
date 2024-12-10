@@ -141,6 +141,19 @@ VariableStore::assign_output_derivatives(
     output_variable(yvar).derivatives().insert(deriv.begin(), deriv.end());
 }
 
+void
+VariableStore::assign_input_stack(const torch::jit::Stack & stack)
+{
+}
+
+void
+VariableStore::assign_output_stack(const torch::jit::Stack & /*stack*/,
+                                   bool /*out*/,
+                                   bool /*dout*/,
+                                   bool /*d2out*/)
+{
+}
+
 std::map<VariableName, Tensor>
 VariableStore::collect_input() const
 {
@@ -175,6 +188,18 @@ VariableStore::collect_output_second_derivatives() const
   for (auto && [name, var] : output_variables())
     sec_derivs[name] = var.second_derivatives();
   return sec_derivs;
+}
+
+torch::jit::Stack
+VariableStore::collect_input_stack() const
+{
+  return torch::jit::Stack();
+}
+
+torch::jit::Stack
+VariableStore::collect_output_stack(bool /*out*/, bool /*dout*/, bool /*d2out*/) const
+{
+  return torch::jit::Stack();
 }
 
 } // namespace neml2
