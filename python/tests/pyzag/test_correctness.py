@@ -33,7 +33,7 @@ torch.set_default_dtype(torch.double)
 
 from neml2.pyzag import interface
 import neml2
-from pyzag import nonlinear
+from pyzag import nonlinear, chunktime
 
 
 nchunk = 10
@@ -81,6 +81,7 @@ class TestCorrectness(unittest.TestCase):
             model,
             step_generator=nonlinear.StepGenerator(nchunk),
             predictor=nonlinear.PreviousStepsPredictor(),
+            nonlinear_solver=chunktime.ChunkNewtonRaphson(rtol=1.0e-8, atol=1.0e-10),
         )
         with torch.no_grad():
             results = nonlinear.solve(
