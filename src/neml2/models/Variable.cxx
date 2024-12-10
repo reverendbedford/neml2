@@ -24,6 +24,7 @@
 
 #include "neml2/models/Variable.h"
 #include "neml2/models/Model.h"
+#include "neml2/tensors/tensors.h"
 
 namespace neml2
 {
@@ -249,6 +250,158 @@ VariableBase::total_second_derivatives(const DependencyResolver<Model, VariableN
 
   return sec_derivs;
 }
+
+template <typename T>
+TensorType
+Variable<T>::type() const
+{
+  return TensorTypeEnum<T>::value;
+}
+
+template <typename T>
+std::unique_ptr<VariableBase>
+Variable<T>::clone(const VariableName & name, Model * owner) const
+{
+  if constexpr (std::is_same_v<T, Tensor>)
+  {
+    return std::make_unique<Variable<Tensor>>(
+        name.empty() ? this->name() : name, owner ? owner : _owner, list_sizes(), base_sizes());
+  }
+  else
+  {
+    return std::make_unique<Variable<T>>(
+        name.empty() ? this->name() : name, owner ? owner : _owner, list_sizes());
+  }
+}
+
+template <typename T>
+void
+Variable<T>::ref(const VariableBase & var, bool ref_is_mutable)
+{
+  neml_assert(!_ref,
+              "Variable '",
+              name(),
+              "' cannot reference another variable after it has been assigned a reference.");
+  neml_assert(&var != this, "Variable '", name(), "' cannot reference itself.");
+  neml_assert(var.ref() != this,
+              "Variable '",
+              name(),
+              "' cannot reference a variable that is referencing itself.");
+  const auto * var_ptr = dynamic_cast<const Variable<T> *>(var.ref());
+  neml_assert(var_ptr,
+              "Variable ",
+              name(),
+              " of type ",
+              type(),
+              " failed to reference another variable named ",
+              var.name(),
+              " of type ",
+              var.type(),
+              ": Dynamic cast failure.");
+  _ref = var_ptr;
+  _ref_is_mutable = ref_is_mutable;
+}
+
+template <typename T>
+void
+Variable<T>::zero(const torch::TensorOptions & options)
+{
+  if (owning())
+  {
+    if constexpr (std::is_same_v<T, Tensor>)
+      _value = T::zeros(base_sizes(), options);
+    else
+      _value = T::zeros(options);
+  }
+  else
+  {
+    neml_assert_dbg(
+        _ref_is_mutable,
+        "Trying to zero a referencing variable, but the referenced variable is not mutable.");
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
+    const_cast<VariableBase *>(ref())->zero(options);
+  }
+}
+
+template <typename T>
+void
+Variable<T>::set(const Tensor & val)
+{
+  if (owning())
+    _value = T(val.base_reshape(utils::add_shapes(list_sizes(), base_sizes())),
+               utils::add_traceable_shapes(val.batch_sizes(), list_sizes()));
+  else
+  {
+    neml_assert_dbg(_ref_is_mutable,
+                    "Trying to assign value to a referencing variable, but the referenced "
+                    "variable is not mutable.");
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
+    const_cast<VariableBase *>(ref())->set(val);
+  }
+}
+
+template <typename T>
+Tensor
+Variable<T>::tensor() const
+{
+  if (owning())
+  {
+    neml_assert_dbg(_value.defined(), "Variable '", name(), "' has undefined value.");
+    auto batch_sizes = _value.batch_sizes().slice(0, _value.batch_dim() - list_dim());
+    return Tensor(_value, batch_sizes);
+  }
+
+  return ref()->tensor();
+}
+
+template <typename T>
+void
+Variable<T>::requires_grad_(bool req)
+{
+  if (owning())
+    _value.requires_grad_(req);
+  else
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
+    const_cast<VariableBase *>(ref())->requires_grad_(req);
+}
+
+template <typename T>
+void
+Variable<T>::operator=(const Tensor & val)
+{
+  if (owning())
+    _value = T(val);
+  else
+  {
+    neml_assert_dbg(_ref_is_mutable,
+                    "Trying to assign value to a referencing variable, but the referenced "
+                    "variable is not mutable.");
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
+    *const_cast<VariableBase *>(ref()) = val;
+  }
+}
+
+template <typename T>
+void
+Variable<T>::clear()
+{
+  if (owning())
+  {
+    VariableBase::clear();
+    _value = T();
+  }
+  else
+  {
+    neml_assert_dbg(
+        _ref_is_mutable,
+        "Trying to clear a referencing variable, but the referenced variable is not mutable.");
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
+    const_cast<VariableBase *>(ref())->clear();
+  }
+}
+
+#define INSTANTIATE_VARIABLE(T) template class Variable<T>
+FOR_ALL_TENSORBASE(INSTANTIATE_VARIABLE);
 
 void
 Derivative::operator=(const Tensor & val)

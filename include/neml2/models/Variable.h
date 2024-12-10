@@ -25,18 +25,21 @@
 #pragma once
 
 #include "neml2/models/LabeledAxisAccessor.h"
-#include "neml2/tensors/tensors.h"
 #include "neml2/base/DependencyResolver.h"
+#include "neml2/tensors/Tensor.h"
 
 namespace neml2
 {
 // Forward declarations
 class Model;
 class Derivative;
+enum class TensorType : int8_t;
 
 class VariableBase
 {
 public:
+  VariableBase() = default;
+
   VariableBase(const VariableName & name_in, Model * owner, TensorShapeRef list_shape);
 
   virtual ~VariableBase() = default;
@@ -188,10 +191,10 @@ public:
   void apply_second_order_chain_rule(const DependencyResolver<Model, VariableName> &);
 
   /// Name of the variable
-  const VariableName _name;
+  const VariableName _name = {};
 
   /// The model which declared this variable
-  Model * const _owner;
+  Model * const _owner = nullptr;
 
 private:
   std::map<VariableName, Tensor>
@@ -205,7 +208,7 @@ private:
                            const VariableName & yvar) const;
 
   /// List shape of the variable
-  const TensorShape _list_sizes;
+  const TensorShape _list_sizes = {};
 
   /// Derivatives of this variable with respect to other variables
   std::map<VariableName, Tensor> _derivs;
@@ -243,102 +246,26 @@ public:
   {
   }
 
-  TensorType type() const override { return TensorTypeEnum<T>::value; }
+  TensorType type() const override;
 
   TensorShapeRef base_sizes() const override { return _base_sizes; }
 
   std::unique_ptr<VariableBase> clone(const VariableName & name = {},
-                                      Model * owner = nullptr) const override
-  {
-    if constexpr (std::is_same_v<T, Tensor>)
-    {
-      return std::make_unique<Variable<Tensor>>(
-          name.empty() ? this->name() : name, owner ? owner : _owner, list_sizes(), base_sizes());
-    }
-    else
-    {
-      return std::make_unique<Variable<T>>(
-          name.empty() ? this->name() : name, owner ? owner : _owner, list_sizes());
-    }
-  }
+                                      Model * owner = nullptr) const override;
 
-  void ref(const VariableBase & var, bool ref_is_mutable = false) override
-  {
-    neml_assert(!_ref,
-                "Variable '",
-                name(),
-                "' cannot reference another variable after it has been assigned a reference.");
-    neml_assert(&var != this, "Variable '", name(), "' cannot reference itself.");
-    neml_assert(var.ref() != this,
-                "Variable '",
-                name(),
-                "' cannot reference a variable that is referencing itself.");
-    const auto * var_ptr = dynamic_cast<const Variable<T> *>(var.ref());
-    neml_assert(var_ptr,
-                "Variable ",
-                name(),
-                " of type ",
-                type(),
-                " failed to reference another variable named ",
-                var.name(),
-                " of type ",
-                var.type(),
-                ": Dynamic cast failure.");
-    _ref = var_ptr;
-    _ref_is_mutable = ref_is_mutable;
-  }
+  void ref(const VariableBase & var, bool ref_is_mutable = false) override;
 
   const VariableBase * ref() const override { return _ref ? _ref->ref() : this; }
 
   bool owning() const override { return !_ref; }
 
-  void zero(const torch::TensorOptions & options) override
-  {
-    if (owning())
-    {
-      if constexpr (std::is_same_v<T, Tensor>)
-        _value = T::zeros(base_sizes(), options);
-      else
-        _value = T::zeros(options);
-    }
-    else
-    {
-      neml_assert_dbg(
-          _ref_is_mutable,
-          "Trying to zero a referencing variable, but the referenced variable is not mutable.");
-      // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
-      const_cast<VariableBase *>(ref())->zero(options);
-    }
-  }
+  void zero(const torch::TensorOptions & options) override;
 
-  void set(const Tensor & val) override
-  {
-    if (owning())
-      _value = T(val.base_reshape(utils::add_shapes(list_sizes(), base_sizes())),
-                 utils::add_traceable_shapes(val.batch_sizes(), list_sizes()));
-    else
-    {
-      neml_assert_dbg(_ref_is_mutable,
-                      "Trying to assign value to a referencing variable, but the referenced "
-                      "variable is not mutable.");
-      // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
-      const_cast<VariableBase *>(ref())->set(val);
-    }
-  }
+  void set(const Tensor & val) override;
 
   Tensor get() const override { return tensor().base_flatten(); }
 
-  Tensor tensor() const override
-  {
-    if (owning())
-    {
-      neml_assert_dbg(_value.defined(), "Variable '", name(), "' has undefined value.");
-      auto batch_sizes = _value.batch_sizes().slice(0, _value.batch_dim() - list_dim());
-      return Tensor(_value, batch_sizes);
-    }
-
-    return ref()->tensor();
-  }
+  Tensor tensor() const override;
 
   /// Suppressed constructor to prevent accidental dereferencing
   [[deprecated("Variable<T> must be assigned to references -- missing &")]] Variable(
@@ -352,14 +279,7 @@ public:
   {
   }
 
-  void requires_grad_(bool req = true) override
-  {
-    if (owning())
-      _value.requires_grad_(req);
-    else
-      // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
-      const_cast<VariableBase *>(ref())->requires_grad_(req);
-  }
+  void requires_grad_(bool req = true) override;
 
   /// Suppressed assignment operator to prevent accidental dereferencing
   [[deprecated("Variable<T> must be assigned to references -- missing &")]] void
@@ -368,19 +288,7 @@ public:
   }
 
   /// Set the variable value
-  void operator=(const Tensor & val) override
-  {
-    if (owning())
-      _value = T(val);
-    else
-    {
-      neml_assert_dbg(_ref_is_mutable,
-                      "Trying to assign value to a referencing variable, but the referenced "
-                      "variable is not mutable.");
-      // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
-      *const_cast<VariableBase *>(ref()) = val;
-    }
-  }
+  void operator=(const Tensor & val) override;
 
   /// Variable value
   const T & value() const { return owning() ? _value : _ref->value(); }
@@ -396,22 +304,7 @@ public:
     return value();
   }
 
-  void clear() override
-  {
-    if (owning())
-    {
-      VariableBase::clear();
-      _value = T();
-    }
-    else
-    {
-      neml_assert_dbg(
-          _ref_is_mutable,
-          "Trying to clear a referencing variable, but the referenced variable is not mutable.");
-      // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
-      const_cast<VariableBase *>(ref())->clear();
-    }
-  }
+  void clear() override;
 
 protected:
   /// Base shape of the variable
