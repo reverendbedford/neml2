@@ -35,6 +35,20 @@ VariableBase::VariableBase(const VariableName & name_in, Model * owner, TensorSh
 {
 }
 
+const Model &
+VariableBase::owner() const
+{
+  neml_assert_dbg(_owner, "Owner of variable '", name(), "' has not been defined.");
+  return *_owner;
+}
+
+Model &
+VariableBase::owner()
+{
+  neml_assert_dbg(_owner, "Owner of variable '", name(), "' has not been defined.");
+  return *_owner;
+}
+
 bool
 VariableBase::is_state() const
 {
