@@ -142,7 +142,7 @@ VariableStore::assign_output_derivatives(
 }
 
 void
-VariableStore::assign_input_stack(const torch::jit::Stack & stack)
+VariableStore::assign_input_stack(const torch::jit::Stack & /*stack*/)
 {
 }
 
