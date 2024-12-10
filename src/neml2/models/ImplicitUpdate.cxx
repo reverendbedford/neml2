@@ -93,6 +93,8 @@ ImplicitUpdate::diagnose(std::vector<Diagnosis> & diagnoses) const
       _model.input_axis().subaxis("state"),
       "\nThe output residual subaxis is\n",
       _model.output_axis().subaxis("residual"));
+
+  // std::cout << _model.input_axis().subaxis("state") << std::endl;
 }
 
 void
@@ -116,6 +118,9 @@ ImplicitUpdate::set_value(bool out, bool dout_din, bool d2out_din2)
   // TODO: Add an interface to allow user to specify where (and when) to evaluate the Jacobian for
   // automatic scaling.
   _model.init_scaling(x0, _solver.verbose);
+
+  // std::cout << _model.input_axis().subaxis("state") << std::endl;
+  // exit(2);
 
   // Solve for the next state
   NonlinearSolver::Result res;

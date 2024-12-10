@@ -22,49 +22,42 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/tensors/Scalar.h"
-#include "neml2/misc/math.h"
+#include "neml2/drivers/liquid_infiltration/LiquidInfiltrationDriver.h"
 
 namespace neml2
 {
-Scalar::Scalar(Real init, const torch::TensorOptions & options)
-  : Scalar(Scalar::full(init, options))
+register_NEML2_object(LiquidInfiltrationDriver);
+
+OptionSet
+LiquidInfiltrationDriver::expected_options()
 {
+  OptionSet options = TransientDriver::expected_options();
+
+  options.set<CrossRef<torch::Tensor>>("Prescribed_Liquid_Inlet_Rate");
+  options.set<VariableName>("Liquid_Inlet_Rate") = VariableName("forces", "aInDot");
+  return options;
 }
 
-Scalar
-Scalar::identity_map(const torch::TensorOptions & options)
+LiquidInfiltrationDriver::LiquidInfiltrationDriver(const OptionSet & options)
+  : TransientDriver(options),
+    _driving_force(options.get<CrossRef<torch::Tensor>>("Prescribed_Liquid_Inlet_Rate"), 2),
+    _driving_force_name(options.get<VariableName>("Liquid_Inlet_Rate"))
 {
-  return Scalar::ones(options);
+  _driving_force = _driving_force.to(_device);
 }
 
-Scalar
-operator*(const Scalar & a, const Scalar & b)
+void
+LiquidInfiltrationDriver::diagnose(std::vector<Diagnosis> & diagnoses) const
 {
-  neml_assert_batch_broadcastable_dbg(a, b);
-  return torch::operator*(a, b);
+  TransientDriver::diagnose(diagnoses);
 }
 
-Scalar
-abs(const Scalar & a)
+void
+LiquidInfiltrationDriver::update_forces()
 {
-  return Scalar(torch::abs(a), a.batch_sizes());
-}
+  TransientDriver::update_forces();
 
-namespace math
-{
-Scalar
-sigmoid(const Scalar & a, const Scalar & n)
-{
-  neml_assert_broadcastable_dbg(a, n);
-  return 1.0 / 2.0 * (1.0 + math::tanh(n * a));
+  auto current_driving_force = _driving_force.batch_index({_step_count});
+  _in.base_index_put_(_driving_force_name, current_driving_force);
 }
-
-Scalar
-pow(const Scalar & a, const Scalar & n)
-{
-  neml_assert_broadcastable_dbg(a, n);
-  return torch::pow(a, n);
 }
-} // namespace math
-} // namespace neml2
