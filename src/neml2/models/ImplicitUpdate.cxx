@@ -145,7 +145,7 @@ ImplicitUpdate::set_value(bool out, bool dout_din, bool d2out_din2)
   if (dout_din)
   {
     // IFT requires the Jacobian evaluated at the solution:
-    _model.dvalue();
+    _model.forward(false, true, false);
     const auto jac_assembler = MatrixAssembler(_model.output_axis(), _model.input_axis());
     const auto J = jac_assembler.assemble(_model.collect_output_derivatives());
     const auto derivs = jac_assembler.split(J).at("residual");

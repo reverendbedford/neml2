@@ -11,7 +11,7 @@
     output_symr2_names = 'state/baz_rate'
     output_symr2_values = '145.5'
     check_values = false
-    check_derivatives = false
+    check_derivatives = true
     check_second_derivatives = true
   []
 []

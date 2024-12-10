@@ -28,6 +28,7 @@
 #include "neml2/models/Assembler.h"
 #include "neml2/base/guards.h"
 #include "neml2/misc/math.h"
+#include "neml2/jit/utils.h"
 
 namespace neml2
 {
@@ -40,7 +41,7 @@ Model::expected_options()
 
   options.section() = "Models";
 
-  options.set<bool>("jit") = false;
+  options.set<bool>("jit") = true;
   options.set("jit").doc() = "Use JIT compilation for the forward operator";
 
   options.set<bool>("_nonlinear_system") = false;
@@ -218,13 +219,71 @@ Model::zero_output()
     submodel->zero_output();
 }
 
+std::unique_ptr<torch::jit::GraphFunction> &
+Model::get_traced_function(bool out, bool dout, bool d2out)
+{
+  const std::size_t API_code = (out ? 4 : 0) + (dout ? 2 : 0) + (d2out ? 1 : 0);
+  return _traced_functions[API_code];
+}
+
+void
+Model::forward(bool out, bool dout, bool d2out)
+{
+  if (dout || d2out)
+    enable_AD();
+
+  set_value(out || AD_need_value(dout, d2out), dout, d2out);
+
+  if (dout || d2out)
+    extract_AD_derivatives(dout, d2out);
+
+  return;
+}
+
+void
+Model::forward_maybe_jit(bool out, bool dout, bool d2out)
+{
+  neml_assert_not_tracing_dbg();
+
+  if (!_jit)
+    forward(out, dout, d2out);
+
+  auto & traced_function = get_traced_function(out, dout, d2out);
+  if (traced_function)
+  {
+    auto stack = collect_input_stack();
+    traced_function->run(stack);
+    assign_output_stack(stack, out, dout, d2out);
+  }
+  else
+  {
+    auto disable_name_lookup = [](const torch::Tensor & /*var*/) -> std::string { return ""; };
+    auto forward_wrap = [&](torch::jit::Stack inputs) -> torch::jit::Stack
+    {
+      assign_input_stack(inputs);
+      forward(out, dout, d2out);
+      return collect_output_stack(out, dout, d2out);
+    };
+    auto trace = std::get<0>(torch::jit::tracer::trace(collect_input_stack(),
+                                                       forward_wrap,
+                                                       disable_name_lookup,
+                                                       /*strict=*/false,
+                                                       /*force_outplace=*/false));
+    traced_function = std::make_unique<torch::jit::GraphFunction>(
+        name() + ".forward", trace->graph, /*function_creator=*/nullptr);
+
+    // Rerun this method -- this time using the jitted graph (without tracing)
+    forward_maybe_jit(out, dout, d2out);
+  }
+}
+
 std::map<VariableName, Tensor>
 Model::value(const std::map<VariableName, Tensor> & in)
 {
   zero_input();
   assign_input(in);
   zero_output();
-  value();
+  forward_maybe_jit(true, false, false);
   return collect_output();
 }
 
@@ -234,7 +293,7 @@ Model::value_and_dvalue(const std::map<VariableName, Tensor> & in)
   zero_input();
   assign_input(in);
   zero_output();
-  value_and_dvalue();
+  forward_maybe_jit(true, true, false);
   return {collect_output(), collect_output_derivatives()};
 }
 
@@ -244,7 +303,7 @@ Model::dvalue(const std::map<VariableName, Tensor> & in)
   zero_input();
   assign_input(in);
   zero_output();
-  dvalue();
+  forward_maybe_jit(false, true, false);
   return collect_output_derivatives();
 }
 
@@ -256,7 +315,7 @@ Model::value_and_dvalue_and_d2value(const std::map<VariableName, Tensor> & in)
   zero_input();
   assign_input(in);
   zero_output();
-  value_and_dvalue_and_d2value();
+  forward_maybe_jit(true, true, true);
   return {collect_output(), collect_output_derivatives(), collect_output_second_derivatives()};
 }
 
@@ -267,7 +326,7 @@ Model::dvalue_and_d2value(const std::map<VariableName, Tensor> & in)
   zero_input();
   assign_input(in);
   zero_output();
-  dvalue_and_d2value();
+  forward_maybe_jit(false, true, true);
   return {collect_output_derivatives(), collect_output_second_derivatives()};
 }
 
@@ -277,83 +336,8 @@ Model::d2value(const std::map<VariableName, Tensor> & in)
   zero_input();
   assign_input(in);
   zero_output();
-  d2value();
+  forward_maybe_jit(false, false, true);
   return collect_output_second_derivatives();
-}
-
-void
-Model::value()
-{
-  if (!_jit)
-    set_value(true, false, false);
-  else
-  {
-    if (_value_jit)
-    {
-      auto stack = collect_input_stack();
-      _value_jit->run(stack);
-      assign_output_stack(stack, true, false, false);
-    }
-    else
-    {
-      auto disable_name_lookup = [](const torch::Tensor & /*var*/) -> std::string { return ""; };
-      auto forward = [&](torch::jit::Stack inputs) -> torch::jit::Stack
-      {
-        assign_input_stack(inputs);
-        set_value(true, false, false);
-        return collect_output_stack(true, false, false);
-      };
-      auto trace = std::get<0>(torch::jit::tracer::trace(collect_input_stack(),
-                                                         forward,
-                                                         disable_name_lookup,
-                                                         /*strict=*/true,
-                                                         /*force_outplace=*/false));
-      _value_jit = std::make_unique<torch::jit::GraphFunction>(
-          name() + ".value", trace->graph, /*function_creator=*/nullptr);
-      // Rerun this method -- this time using the jitted graph (without tracing)
-      value();
-    }
-  }
-}
-
-void
-Model::value_and_dvalue()
-{
-  enable_AD();
-  set_value(true, true, false);
-  extract_AD_derivatives(true, false);
-}
-
-void
-Model::dvalue()
-{
-  enable_AD();
-  set_value(AD_need_value(true, false), true, false);
-  extract_AD_derivatives(true, false);
-}
-
-void
-Model::value_and_dvalue_and_d2value()
-{
-  enable_AD();
-  set_value(true, true, true);
-  extract_AD_derivatives(true, true);
-}
-
-void
-Model::dvalue_and_d2value()
-{
-  enable_AD();
-  set_value(AD_need_value(true, true), true, true);
-  extract_AD_derivatives(true, true);
-}
-
-void
-Model::d2value()
-{
-  enable_AD();
-  set_value(AD_need_value(false, true), false, true);
-  extract_AD_derivatives(false, true);
 }
 
 Model *
@@ -391,12 +375,7 @@ Model::set_guess(const SOL<false> & x)
 void
 Model::assemble(NonlinearSystem::RES<false> * residual, NonlinearSystem::JAC<false> * Jacobian)
 {
-  if (residual && !Jacobian)
-    value();
-  else if (!residual && Jacobian)
-    dvalue();
-  else if (residual && Jacobian)
-    value_and_dvalue();
+  forward_maybe_jit(residual, Jacobian, false);
 
   if (residual)
   {
