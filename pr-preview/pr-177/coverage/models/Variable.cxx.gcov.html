@@ -31,18 +31,18 @@
             <td class="headerValue">coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">152</td>
-            <td class="headerCovTableEntry">181</td>
-            <td class="headerCovTableEntryMed">84.0 %</td>
+            <td class="headerCovTableEntry">158</td>
+            <td class="headerCovTableEntry">187</td>
+            <td class="headerCovTableEntryMed">84.5 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-10 15:00:40</td>
+            <td class="headerValue">2024-12-10 15:57:06</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">54</td>
-            <td class="headerCovTableEntry">193</td>
-            <td class="headerCovTableEntryLo">28.0 %</td>
+            <td class="headerCovTableEntry">56</td>
+            <td class="headerCovTableEntry">195</td>
+            <td class="headerCovTableEntryLo">28.7 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -97,380 +97,394 @@
 <a name="35"><span class="lineNum">      35 </span>            : {</a>
 <a name="36"><span class="lineNum">      36 </span><span class="lineCov">       1242 : }</span></a>
 <a name="37"><span class="lineNum">      37 </span>            : </a>
-<a name="38"><span class="lineNum">      38 </span>            : bool</a>
-<a name="39"><span class="lineNum">      39 </span><span class="lineCov">       5848 : VariableBase::is_state() const</span></a>
+<a name="38"><span class="lineNum">      38 </span>            : const Model &amp;</a>
+<a name="39"><span class="lineNum">      39 </span><span class="lineCov">        411 : VariableBase::owner() const</span></a>
 <a name="40"><span class="lineNum">      40 </span>            : {</a>
-<a name="41"><span class="lineNum">      41 </span><span class="lineCov">       5848 :   return _name.start_with(&quot;state&quot;);</span></a>
-<a name="42"><span class="lineNum">      42 </span>            : }</a>
-<a name="43"><span class="lineNum">      43 </span>            : </a>
-<a name="44"><span class="lineNum">      44 </span>            : bool</a>
-<a name="45"><span class="lineNum">      45 </span><span class="lineCov">        167 : VariableBase::is_old_state() const</span></a>
-<a name="46"><span class="lineNum">      46 </span>            : {</a>
-<a name="47"><span class="lineNum">      47 </span><span class="lineCov">        167 :   return _name.start_with(&quot;old_state&quot;);</span></a>
-<a name="48"><span class="lineNum">      48 </span>            : }</a>
-<a name="49"><span class="lineNum">      49 </span>            : </a>
-<a name="50"><span class="lineNum">      50 </span>            : bool</a>
-<a name="51"><span class="lineNum">      51 </span><span class="lineCov">        172 : VariableBase::is_force() const</span></a>
-<a name="52"><span class="lineNum">      52 </span>            : {</a>
-<a name="53"><span class="lineNum">      53 </span><span class="lineCov">        172 :   return _name.start_with(&quot;forces&quot;);</span></a>
-<a name="54"><span class="lineNum">      54 </span>            : }</a>
-<a name="55"><span class="lineNum">      55 </span>            : </a>
-<a name="56"><span class="lineNum">      56 </span>            : bool</a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">         49 : VariableBase::is_old_force() const</span></a>
-<a name="58"><span class="lineNum">      58 </span>            : {</a>
-<a name="59"><span class="lineNum">      59 </span><span class="lineCov">         49 :   return _name.start_with(&quot;old_forces&quot;);</span></a>
-<a name="60"><span class="lineNum">      60 </span>            : }</a>
-<a name="61"><span class="lineNum">      61 </span>            : </a>
-<a name="62"><span class="lineNum">      62 </span>            : bool</a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineCov">        852 : VariableBase::is_residual() const</span></a>
-<a name="64"><span class="lineNum">      64 </span>            : {</a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineCov">        852 :   return _name.start_with(&quot;residual&quot;);</span></a>
-<a name="66"><span class="lineNum">      66 </span>            : }</a>
-<a name="67"><span class="lineNum">      67 </span>            : </a>
-<a name="68"><span class="lineNum">      68 </span>            : bool</a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">        636 : VariableBase::is_parameter() const</span></a>
-<a name="70"><span class="lineNum">      70 </span>            : {</a>
-<a name="71"><span class="lineNum">      71 </span><span class="lineCov">        636 :   return _name.start_with(&quot;parameters&quot;);</span></a>
-<a name="72"><span class="lineNum">      72 </span>            : }</a>
-<a name="73"><span class="lineNum">      73 </span>            : </a>
-<a name="74"><span class="lineNum">      74 </span>            : bool</a>
-<a name="75"><span class="lineNum">      75 </span><span class="lineCov">       5402 : VariableBase::is_solve_dependent() const</span></a>
-<a name="76"><span class="lineNum">      76 </span>            : {</a>
-<a name="77"><span class="lineNum">      77 </span><span class="lineCov">       5402 :   return is_state() || is_residual() || is_parameter();</span></a>
-<a name="78"><span class="lineNum">      78 </span>            : }</a>
-<a name="79"><span class="lineNum">      79 </span>            : </a>
-<a name="80"><span class="lineNum">      80 </span>            : bool</a>
-<a name="81"><span class="lineNum">      81 </span><span class="lineCov">       8662 : VariableBase::is_dependent() const</span></a>
-<a name="82"><span class="lineNum">      82 </span>            : {</a>
-<a name="83"><span class="lineNum">      83 </span><span class="lineCov">       8662 :   return !currently_solving_nonlinear_system() || is_solve_dependent();</span></a>
-<a name="84"><span class="lineNum">      84 </span>            : }</a>
-<a name="85"><span class="lineNum">      85 </span>            : </a>
-<a name="86"><span class="lineNum">      86 </span>            : Derivative</a>
-<a name="87"><span class="lineNum">      87 </span><span class="lineCov">      24032 : VariableBase::d(const VariableBase &amp; var)</span></a>
-<a name="88"><span class="lineNum">      88 </span>            : {</a>
-<a name="89"><span class="lineNum">      89 </span><span class="lineCov">      24032 :   neml_assert_dbg(owning(),</span></a>
-<a name="90"><span class="lineNum">      90 </span>            :                   &quot;Cannot assign derivative to a referencing variable '&quot;,</a>
-<a name="91"><span class="lineNum">      91 </span><span class="lineCov">      24032 :                   name(),</span></a>
-<a name="92"><span class="lineNum">      92 </span>            :                   &quot;' with respect to '&quot;,</a>
-<a name="93"><span class="lineNum">      93 </span><span class="lineCov">      24032 :                   var.name(),</span></a>
-<a name="94"><span class="lineNum">      94 </span>            :                   &quot;'.&quot;);</a>
-<a name="95"><span class="lineNum">      95 </span><span class="lineCov">      24032 :   return Derivative({assembly_storage(), var.assembly_storage()}, &amp;_derivs[var.name()]);</span></a>
-<a name="96"><span class="lineNum">      96 </span>            : }</a>
-<a name="97"><span class="lineNum">      97 </span>            : </a>
-<a name="98"><span class="lineNum">      98 </span>            : Derivative</a>
-<a name="99"><span class="lineNum">      99 </span><span class="lineCov">        287 : VariableBase::d(const VariableBase &amp; var1, const VariableBase &amp; var2)</span></a>
-<a name="100"><span class="lineNum">     100 </span>            : {</a>
-<a name="101"><span class="lineNum">     101 </span><span class="lineCov">        287 :   neml_assert_dbg(owning(),</span></a>
-<a name="102"><span class="lineNum">     102 </span>            :                   &quot;Cannot assign second derivative to a referencing variable '&quot;,</a>
-<a name="103"><span class="lineNum">     103 </span><span class="lineCov">        287 :                   name(),</span></a>
-<a name="104"><span class="lineNum">     104 </span>            :                   &quot;' with respect to '&quot;,</a>
-<a name="105"><span class="lineNum">     105 </span><span class="lineCov">        287 :                   var1.name(),</span></a>
-<a name="106"><span class="lineNum">     106 </span>            :                   &quot;' and '&quot;,</a>
-<a name="107"><span class="lineNum">     107 </span><span class="lineCov">        287 :                   var2.name(),</span></a>
+<a name="41"><span class="lineNum">      41 </span><span class="lineCov">        411 :   neml_assert_dbg(_owner, &quot;Owner of variable '&quot;, name(), &quot;' has not been defined.&quot;);</span></a>
+<a name="42"><span class="lineNum">      42 </span><span class="lineCov">        411 :   return *_owner;</span></a>
+<a name="43"><span class="lineNum">      43 </span>            : }</a>
+<a name="44"><span class="lineNum">      44 </span>            : </a>
+<a name="45"><span class="lineNum">      45 </span>            : Model &amp;</a>
+<a name="46"><span class="lineNum">      46 </span><span class="lineCov">         60 : VariableBase::owner()</span></a>
+<a name="47"><span class="lineNum">      47 </span>            : {</a>
+<a name="48"><span class="lineNum">      48 </span><span class="lineCov">         60 :   neml_assert_dbg(_owner, &quot;Owner of variable '&quot;, name(), &quot;' has not been defined.&quot;);</span></a>
+<a name="49"><span class="lineNum">      49 </span><span class="lineCov">         60 :   return *_owner;</span></a>
+<a name="50"><span class="lineNum">      50 </span>            : }</a>
+<a name="51"><span class="lineNum">      51 </span>            : </a>
+<a name="52"><span class="lineNum">      52 </span>            : bool</a>
+<a name="53"><span class="lineNum">      53 </span><span class="lineCov">       5848 : VariableBase::is_state() const</span></a>
+<a name="54"><span class="lineNum">      54 </span>            : {</a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineCov">       5848 :   return _name.start_with(&quot;state&quot;);</span></a>
+<a name="56"><span class="lineNum">      56 </span>            : }</a>
+<a name="57"><span class="lineNum">      57 </span>            : </a>
+<a name="58"><span class="lineNum">      58 </span>            : bool</a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineCov">        167 : VariableBase::is_old_state() const</span></a>
+<a name="60"><span class="lineNum">      60 </span>            : {</a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">        167 :   return _name.start_with(&quot;old_state&quot;);</span></a>
+<a name="62"><span class="lineNum">      62 </span>            : }</a>
+<a name="63"><span class="lineNum">      63 </span>            : </a>
+<a name="64"><span class="lineNum">      64 </span>            : bool</a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">        172 : VariableBase::is_force() const</span></a>
+<a name="66"><span class="lineNum">      66 </span>            : {</a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">        172 :   return _name.start_with(&quot;forces&quot;);</span></a>
+<a name="68"><span class="lineNum">      68 </span>            : }</a>
+<a name="69"><span class="lineNum">      69 </span>            : </a>
+<a name="70"><span class="lineNum">      70 </span>            : bool</a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineCov">         49 : VariableBase::is_old_force() const</span></a>
+<a name="72"><span class="lineNum">      72 </span>            : {</a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">         49 :   return _name.start_with(&quot;old_forces&quot;);</span></a>
+<a name="74"><span class="lineNum">      74 </span>            : }</a>
+<a name="75"><span class="lineNum">      75 </span>            : </a>
+<a name="76"><span class="lineNum">      76 </span>            : bool</a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineCov">        852 : VariableBase::is_residual() const</span></a>
+<a name="78"><span class="lineNum">      78 </span>            : {</a>
+<a name="79"><span class="lineNum">      79 </span><span class="lineCov">        852 :   return _name.start_with(&quot;residual&quot;);</span></a>
+<a name="80"><span class="lineNum">      80 </span>            : }</a>
+<a name="81"><span class="lineNum">      81 </span>            : </a>
+<a name="82"><span class="lineNum">      82 </span>            : bool</a>
+<a name="83"><span class="lineNum">      83 </span><span class="lineCov">        636 : VariableBase::is_parameter() const</span></a>
+<a name="84"><span class="lineNum">      84 </span>            : {</a>
+<a name="85"><span class="lineNum">      85 </span><span class="lineCov">        636 :   return _name.start_with(&quot;parameters&quot;);</span></a>
+<a name="86"><span class="lineNum">      86 </span>            : }</a>
+<a name="87"><span class="lineNum">      87 </span>            : </a>
+<a name="88"><span class="lineNum">      88 </span>            : bool</a>
+<a name="89"><span class="lineNum">      89 </span><span class="lineCov">       5402 : VariableBase::is_solve_dependent() const</span></a>
+<a name="90"><span class="lineNum">      90 </span>            : {</a>
+<a name="91"><span class="lineNum">      91 </span><span class="lineCov">       5402 :   return is_state() || is_residual() || is_parameter();</span></a>
+<a name="92"><span class="lineNum">      92 </span>            : }</a>
+<a name="93"><span class="lineNum">      93 </span>            : </a>
+<a name="94"><span class="lineNum">      94 </span>            : bool</a>
+<a name="95"><span class="lineNum">      95 </span><span class="lineCov">       8662 : VariableBase::is_dependent() const</span></a>
+<a name="96"><span class="lineNum">      96 </span>            : {</a>
+<a name="97"><span class="lineNum">      97 </span><span class="lineCov">       8662 :   return !currently_solving_nonlinear_system() || is_solve_dependent();</span></a>
+<a name="98"><span class="lineNum">      98 </span>            : }</a>
+<a name="99"><span class="lineNum">      99 </span>            : </a>
+<a name="100"><span class="lineNum">     100 </span>            : Derivative</a>
+<a name="101"><span class="lineNum">     101 </span><span class="lineCov">      24032 : VariableBase::d(const VariableBase &amp; var)</span></a>
+<a name="102"><span class="lineNum">     102 </span>            : {</a>
+<a name="103"><span class="lineNum">     103 </span><span class="lineCov">      24032 :   neml_assert_dbg(owning(),</span></a>
+<a name="104"><span class="lineNum">     104 </span>            :                   &quot;Cannot assign derivative to a referencing variable '&quot;,</a>
+<a name="105"><span class="lineNum">     105 </span><span class="lineCov">      24032 :                   name(),</span></a>
+<a name="106"><span class="lineNum">     106 </span>            :                   &quot;' with respect to '&quot;,</a>
+<a name="107"><span class="lineNum">     107 </span><span class="lineCov">      24032 :                   var.name(),</span></a>
 <a name="108"><span class="lineNum">     108 </span>            :                   &quot;'.&quot;);</a>
-<a name="109"><span class="lineNum">     109 </span><span class="lineCov">       1148 :   return Derivative({assembly_storage(), var1.assembly_storage(), var2.assembly_storage()},</span></a>
-<a name="110"><span class="lineNum">     110 </span><span class="lineCov">        287 :                     &amp;_sec_derivs[var1.name()][var2.name()]);</span></a>
-<a name="111"><span class="lineNum">     111 </span>            : }</a>
-<a name="112"><span class="lineNum">     112 </span>            : </a>
-<a name="113"><span class="lineNum">     113 </span>            : void</a>
-<a name="114"><span class="lineNum">     114 </span><span class="lineNoCov">          0 : VariableBase::request_AD(const VariableBase &amp; u)</span></a>
-<a name="115"><span class="lineNum">     115 </span>            : {</a>
-<a name="116"><span class="lineNum">     116 </span><span class="lineNoCov">          0 :   owner().request_AD(*this, u);</span></a>
-<a name="117"><span class="lineNum">     117 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="118"><span class="lineNum">     118 </span>            : </a>
-<a name="119"><span class="lineNum">     119 </span>            : void</a>
-<a name="120"><span class="lineNum">     120 </span><span class="lineCov">          3 : VariableBase::request_AD(const std::vector&lt;const VariableBase *&gt; &amp; us)</span></a>
-<a name="121"><span class="lineNum">     121 </span>            : {</a>
-<a name="122"><span class="lineNum">     122 </span><span class="lineCov">         15 :   for (const auto &amp; u : us)</span></a>
-<a name="123"><span class="lineNum">     123 </span>            :   {</a>
-<a name="124"><span class="lineNum">     124 </span><span class="lineCov">         12 :     neml_assert(u, &quot;Cannot request AD for a null variable.&quot;);</span></a>
-<a name="125"><span class="lineNum">     125 </span><span class="lineCov">         12 :     owner().request_AD(*this, *u);</span></a>
-<a name="126"><span class="lineNum">     126 </span>            :   }</a>
-<a name="127"><span class="lineNum">     127 </span><span class="lineCov">          3 : }</span></a>
-<a name="128"><span class="lineNum">     128 </span>            : </a>
-<a name="129"><span class="lineNum">     129 </span>            : void</a>
-<a name="130"><span class="lineNum">     130 </span><span class="lineNoCov">          0 : VariableBase::request_AD(const VariableBase &amp; u1, const VariableBase &amp; u2)</span></a>
-<a name="131"><span class="lineNum">     131 </span>            : {</a>
-<a name="132"><span class="lineNum">     132 </span><span class="lineNoCov">          0 :   owner().request_AD(*this, u1, u2);</span></a>
-<a name="133"><span class="lineNum">     133 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="134"><span class="lineNum">     134 </span>            : </a>
-<a name="135"><span class="lineNum">     135 </span>            : void</a>
-<a name="136"><span class="lineNum">     136 </span><span class="lineCov">          3 : VariableBase::request_AD(const std::vector&lt;const VariableBase *&gt; &amp; u1s,</span></a>
-<a name="137"><span class="lineNum">     137 </span>            :                          const std::vector&lt;const VariableBase *&gt; &amp; u2s)</a>
-<a name="138"><span class="lineNum">     138 </span>            : {</a>
-<a name="139"><span class="lineNum">     139 </span><span class="lineCov">         15 :   for (const auto &amp; u1 : u1s)</span></a>
-<a name="140"><span class="lineNum">     140 </span><span class="lineCov">         60 :     for (const auto &amp; u2 : u2s)</span></a>
-<a name="141"><span class="lineNum">     141 </span>            :     {</a>
-<a name="142"><span class="lineNum">     142 </span><span class="lineCov">         48 :       neml_assert(u1, &quot;Cannot request AD for a null variable.&quot;);</span></a>
-<a name="143"><span class="lineNum">     143 </span><span class="lineCov">         48 :       neml_assert(u2, &quot;Cannot request AD for a null variable.&quot;);</span></a>
-<a name="144"><span class="lineNum">     144 </span><span class="lineCov">         48 :       owner().request_AD(*this, *u1, *u2);</span></a>
-<a name="145"><span class="lineNum">     145 </span>            :     }</a>
-<a name="146"><span class="lineNum">     146 </span><span class="lineCov">          3 : }</span></a>
-<a name="147"><span class="lineNum">     147 </span>            : </a>
-<a name="148"><span class="lineNum">     148 </span>            : void</a>
-<a name="149"><span class="lineNum">     149 </span><span class="lineNoCov">          0 : VariableBase::clear()</span></a>
-<a name="150"><span class="lineNum">     150 </span>            : {</a>
-<a name="151"><span class="lineNum">     151 </span><span class="lineNoCov">          0 :   neml_assert_dbg(owning(), &quot;Cannot clear a referencing variable '&quot;, name(), &quot;'.&quot;);</span></a>
-<a name="152"><span class="lineNum">     152 </span><span class="lineNoCov">          0 :   _derivs.clear();</span></a>
-<a name="153"><span class="lineNum">     153 </span><span class="lineNoCov">          0 :   _sec_derivs.clear();</span></a>
-<a name="154"><span class="lineNum">     154 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="155"><span class="lineNum">     155 </span>            : </a>
-<a name="156"><span class="lineNum">     156 </span>            : void</a>
-<a name="157"><span class="lineNum">     157 </span><span class="lineCov">       3787 : VariableBase::apply_chain_rule(const DependencyResolver&lt;Model, VariableName&gt; &amp; dep)</span></a>
-<a name="158"><span class="lineNum">     158 </span>            : {</a>
-<a name="159"><span class="lineNum">     159 </span><span class="lineCov">       6901 :   for (const auto &amp; [model, var] : dep.outbound_items())</span></a>
-<a name="160"><span class="lineNum">     160 </span><span class="lineCov">       6901 :     if (var == name())</span></a>
-<a name="161"><span class="lineNum">     161 </span>            :     {</a>
-<a name="162"><span class="lineNum">     162 </span><span class="lineCov">       3787 :       _derivs = total_derivatives(dep, model, var);</span></a>
-<a name="163"><span class="lineNum">     163 </span><span class="lineCov">       3787 :       return;</span></a>
-<a name="164"><span class="lineNum">     164 </span>            :     }</a>
-<a name="165"><span class="lineNum">     165 </span>            : }</a>
-<a name="166"><span class="lineNum">     166 </span>            : </a>
-<a name="167"><span class="lineNum">     167 </span>            : void</a>
-<a name="168"><span class="lineNum">     168 </span><span class="lineCov">        163 : VariableBase::apply_second_order_chain_rule(const DependencyResolver&lt;Model, VariableName&gt; &amp; dep)</span></a>
-<a name="169"><span class="lineNum">     169 </span>            : {</a>
-<a name="170"><span class="lineNum">     170 </span><span class="lineCov">        163 :   for (const auto &amp; [model, var] : dep.outbound_items())</span></a>
-<a name="171"><span class="lineNum">     171 </span><span class="lineCov">        163 :     if (var == name())</span></a>
-<a name="172"><span class="lineNum">     172 </span>            :     {</a>
-<a name="173"><span class="lineNum">     173 </span><span class="lineCov">        163 :       _sec_derivs = total_second_derivatives(dep, model, var);</span></a>
-<a name="174"><span class="lineNum">     174 </span><span class="lineCov">        163 :       return;</span></a>
-<a name="175"><span class="lineNum">     175 </span>            :     }</a>
-<a name="176"><span class="lineNum">     176 </span>            : }</a>
-<a name="177"><span class="lineNum">     177 </span>            : </a>
-<a name="178"><span class="lineNum">     178 </span>            : void</a>
-<a name="179"><span class="lineNum">     179 </span><span class="lineCov">      53853 : assign_or_add(Tensor &amp; dest, const Tensor &amp; val)</span></a>
-<a name="180"><span class="lineNum">     180 </span>            : {</a>
-<a name="181"><span class="lineNum">     181 </span><span class="lineCov">      53853 :   if (dest.defined())</span></a>
-<a name="182"><span class="lineNum">     182 </span><span class="lineCov">       4678 :     dest = dest + val;</span></a>
-<a name="183"><span class="lineNum">     183 </span>            :   else</a>
-<a name="184"><span class="lineNum">     184 </span><span class="lineCov">      49175 :     dest = val;</span></a>
-<a name="185"><span class="lineNum">     185 </span><span class="lineCov">      53853 : }</span></a>
-<a name="186"><span class="lineNum">     186 </span>            : </a>
-<a name="187"><span class="lineNum">     187 </span>            : std::map&lt;VariableName, Tensor&gt;</a>
-<a name="188"><span class="lineNum">     188 </span><span class="lineCov">      15147 : VariableBase::total_derivatives(const DependencyResolver&lt;Model, VariableName&gt; &amp; dep,</span></a>
-<a name="189"><span class="lineNum">     189 </span>            :                                 Model * model,</a>
-<a name="190"><span class="lineNum">     190 </span>            :                                 const VariableName &amp; yvar) const</a>
-<a name="191"><span class="lineNum">     191 </span>            : {</a>
-<a name="192"><span class="lineNum">     192 </span><span class="lineCov">      15147 :   std::map&lt;VariableName, Tensor&gt; derivs;</span></a>
-<a name="193"><span class="lineNum">     193 </span>            : </a>
-<a name="194"><span class="lineNum">     194 </span><span class="lineCov">      52686 :   for (const auto &amp; [uvar, dy_du] : model-&gt;output_variable(yvar).derivatives())</span></a>
-<a name="195"><span class="lineNum">     195 </span>            :   {</a>
-<a name="196"><span class="lineNum">     196 </span><span class="lineCov">      37539 :     if (dep.inbound_items().count({model, uvar}))</span></a>
-<a name="197"><span class="lineNum">     197 </span><span class="lineCov">      26518 :       assign_or_add(derivs[uvar], dy_du);</span></a>
-<a name="198"><span class="lineNum">     198 </span>            :     else</a>
-<a name="199"><span class="lineNum">     199 </span><span class="lineCov">      22042 :       for (const auto &amp; depu : dep.item_providers().at({model, uvar}))</span></a>
-<a name="200"><span class="lineNum">     200 </span><span class="lineCov">      37454 :         for (const auto &amp; [xvar, du_dx] : total_derivatives(dep, depu.parent, uvar))</span></a>
-<a name="201"><span class="lineNum">     201 </span><span class="lineCov">      37454 :           assign_or_add(derivs[xvar], math::bmm(dy_du, du_dx));</span></a>
-<a name="202"><span class="lineNum">     202 </span>            :   }</a>
-<a name="203"><span class="lineNum">     203 </span>            : </a>
-<a name="204"><span class="lineNum">     204 </span><span class="lineCov">      15147 :   return derivs;</span></a>
-<a name="205"><span class="lineNum">     205 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="206"><span class="lineNum">     206 </span>            : </a>
-<a name="207"><span class="lineNum">     207 </span>            : std::map&lt;VariableName, std::map&lt;VariableName, Tensor&gt;&gt;</a>
-<a name="208"><span class="lineNum">     208 </span><span class="lineCov">        420 : VariableBase::total_second_derivatives(const DependencyResolver&lt;Model, VariableName&gt; &amp; dep,</span></a>
-<a name="209"><span class="lineNum">     209 </span>            :                                        Model * model,</a>
-<a name="210"><span class="lineNum">     210 </span>            :                                        const VariableName &amp; yvar) const</a>
-<a name="211"><span class="lineNum">     211 </span>            : {</a>
-<a name="212"><span class="lineNum">     212 </span><span class="lineCov">        420 :   std::map&lt;VariableName, std::map&lt;VariableName, Tensor&gt;&gt; sec_derivs;</span></a>
-<a name="213"><span class="lineNum">     213 </span>            : </a>
-<a name="214"><span class="lineNum">     214 </span><span class="lineCov">        600 :   for (const auto &amp; [u1var, d2y_du1] : model-&gt;output_variable(yvar).second_derivatives())</span></a>
-<a name="215"><span class="lineNum">     215 </span><span class="lineCov">        419 :     for (const auto &amp; [u2var, d2y_du1u2] : d2y_du1)</span></a>
-<a name="216"><span class="lineNum">     216 </span>            :     {</a>
-<a name="217"><span class="lineNum">     217 </span><span class="lineCov">        239 :       if (dep.inbound_items().count({model, u1var}) &amp;&amp; dep.inbound_items().count({model, u2var}))</span></a>
-<a name="218"><span class="lineNum">     218 </span><span class="lineCov">         93 :         assign_or_add(sec_derivs[u1var][u2var], d2y_du1u2);</span></a>
-<a name="219"><span class="lineNum">     219 </span><span class="lineCov">        146 :       else if (dep.inbound_items().count({model, u1var}))</span></a>
-<a name="220"><span class="lineNum">     220 </span><span class="lineCov">         38 :         for (const auto &amp; depu2 : dep.item_providers().at({model, u2var}))</span></a>
-<a name="221"><span class="lineNum">     221 </span><span class="lineCov">         38 :           for (const auto &amp; [x2var, du2_dxk] : total_derivatives(dep, depu2.parent, u2var))</span></a>
-<a name="222"><span class="lineNum">     222 </span><span class="lineCov">         19 :             assign_or_add(sec_derivs[u1var][x2var],</span></a>
-<a name="223"><span class="lineNum">     223 </span><span class="lineCov">         76 :                           Tensor(torch::einsum(&quot;...ijq,...qk&quot;, {d2y_du1u2, du2_dxk}),</span></a>
-<a name="224"><span class="lineNum">     224 </span><span class="lineCov">         19 :                                  broadcast_batch_dim(d2y_du1u2, du2_dxk)));</span></a>
-<a name="225"><span class="lineNum">     225 </span><span class="lineCov">        127 :       else if (dep.inbound_items().count({model, u2var}))</span></a>
-<a name="226"><span class="lineNum">     226 </span><span class="lineCov">         36 :         for (const auto &amp; depu1 : dep.item_providers().at({model, u1var}))</span></a>
-<a name="227"><span class="lineNum">     227 </span><span class="lineCov">         36 :           for (const auto &amp; [x1var, du1_dxj] : total_derivatives(dep, depu1.parent, u1var))</span></a>
-<a name="228"><span class="lineNum">     228 </span><span class="lineCov">         18 :             assign_or_add(sec_derivs[x1var][u2var],</span></a>
-<a name="229"><span class="lineNum">     229 </span><span class="lineCov">         72 :                           Tensor(torch::einsum(&quot;...ipk,...pj&quot;, {d2y_du1u2, du1_dxj}),</span></a>
-<a name="230"><span class="lineNum">     230 </span><span class="lineCov">         18 :                                  broadcast_batch_dim(d2y_du1u2, du1_dxj)));</span></a>
-<a name="231"><span class="lineNum">     231 </span>            :       else</a>
-<a name="232"><span class="lineNum">     232 </span><span class="lineCov">        218 :         for (const auto &amp; depu1 : dep.item_providers().at({model, u1var}))</span></a>
-<a name="233"><span class="lineNum">     233 </span><span class="lineCov">        302 :           for (const auto &amp; [x1var, du1_dxj] : total_derivatives(dep, depu1.parent, u1var))</span></a>
-<a name="234"><span class="lineNum">     234 </span><span class="lineCov">        386 :             for (const auto &amp; depu2 : dep.item_providers().at({model, u2var}))</span></a>
-<a name="235"><span class="lineNum">     235 </span><span class="lineCov">        554 :               for (const auto &amp; [x2var, du2_dxk] : total_derivatives(dep, depu2.parent, u2var))</span></a>
-<a name="236"><span class="lineNum">     236 </span><span class="lineCov">        361 :                 assign_or_add(</span></a>
-<a name="237"><span class="lineNum">     237 </span><span class="lineCov">        361 :                     sec_derivs[x1var][x2var],</span></a>
-<a name="238"><span class="lineNum">     238 </span><span class="lineCov">       1805 :                     Tensor(torch::einsum(&quot;...ipq,...pj,...qk&quot;, {d2y_du1u2, du1_dxj, du2_dxk}),</span></a>
-<a name="239"><span class="lineNum">     239 </span><span class="lineCov">        302 :                            broadcast_batch_dim(d2y_du1u2, du1_dxj, du2_dxk)));</span></a>
-<a name="240"><span class="lineNum">     240 </span>            :     }</a>
-<a name="241"><span class="lineNum">     241 </span>            : </a>
-<a name="242"><span class="lineNum">     242 </span><span class="lineCov">       1026 :   for (const auto &amp; [uvar, dy_du] : model-&gt;output_variable(yvar).derivatives())</span></a>
-<a name="243"><span class="lineNum">     243 </span><span class="lineCov">        606 :     if (!dep.inbound_items().count({model, uvar}))</span></a>
-<a name="244"><span class="lineNum">     244 </span><span class="lineCov">        514 :       for (const auto &amp; depu : dep.item_providers().at({model, uvar}))</span></a>
-<a name="245"><span class="lineNum">     245 </span><span class="lineCov">        500 :         for (const auto &amp; [x1var, d2u_dx1] : total_second_derivatives(dep, depu.parent, uvar))</span></a>
-<a name="246"><span class="lineNum">     246 </span><span class="lineCov">        654 :           for (const auto &amp; [x2var, d2u_dx1x2] : d2u_dx1)</span></a>
-<a name="247"><span class="lineNum">     247 </span><span class="lineCov">        411 :             assign_or_add(sec_derivs[x1var][x2var],</span></a>
-<a name="248"><span class="lineNum">     248 </span><span class="lineCov">       1644 :                           Tensor(torch::einsum(&quot;...ip,...pjk&quot;, {dy_du, d2u_dx1x2}),</span></a>
-<a name="249"><span class="lineNum">     249 </span><span class="lineCov">        257 :                                  broadcast_batch_dim(dy_du, d2u_dx1x2)));</span></a>
-<a name="250"><span class="lineNum">     250 </span>            : </a>
-<a name="251"><span class="lineNum">     251 </span><span class="lineCov">        420 :   return sec_derivs;</span></a>
-<a name="252"><span class="lineNum">     252 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="253"><span class="lineNum">     253 </span>            : </a>
-<a name="254"><span class="lineNum">     254 </span>            : template &lt;typename T&gt;</a>
-<a name="255"><span class="lineNum">     255 </span>            : TensorType</a>
-<a name="256"><span class="lineNum">     256 </span><span class="lineCov">       1278 : Variable&lt;T&gt;::type() const</span></a>
-<a name="257"><span class="lineNum">     257 </span>            : {</a>
-<a name="258"><span class="lineNum">     258 </span><span class="lineCov">       1278 :   return TensorTypeEnum&lt;T&gt;::value;</span></a>
-<a name="259"><span class="lineNum">     259 </span>            : }</a>
-<a name="260"><span class="lineNum">     260 </span>            : </a>
-<a name="261"><span class="lineNum">     261 </span>            : template &lt;typename T&gt;</a>
-<a name="262"><span class="lineNum">     262 </span>            : std::unique_ptr&lt;VariableBase&gt;</a>
-<a name="263"><span class="lineNum">     263 </span><span class="lineCov">        411 : Variable&lt;T&gt;::clone(const VariableName &amp; name, Model * owner) const</span></a>
-<a name="264"><span class="lineNum">     264 </span>            : {</a>
-<a name="265"><span class="lineNum">     265 </span>            :   if constexpr (std::is_same_v&lt;T, Tensor&gt;)</a>
-<a name="266"><span class="lineNum">     266 </span>            :   {</a>
-<a name="267"><span class="lineNum">     267 </span>            :     return std::make_unique&lt;Variable&lt;Tensor&gt;&gt;(</a>
-<a name="268"><span class="lineNum">     268 </span><span class="lineNoCov">          0 :         name.empty() ? this-&gt;name() : name, owner ? owner : _owner, list_sizes(), base_sizes());</span></a>
-<a name="269"><span class="lineNum">     269 </span>            :   }</a>
-<a name="270"><span class="lineNum">     270 </span>            :   else</a>
-<a name="271"><span class="lineNum">     271 </span>            :   {</a>
-<a name="272"><span class="lineNum">     272 </span>            :     return std::make_unique&lt;Variable&lt;T&gt;&gt;(</a>
-<a name="273"><span class="lineNum">     273 </span><span class="lineCov">        411 :         name.empty() ? this-&gt;name() : name, owner ? owner : _owner, list_sizes());</span></a>
-<a name="274"><span class="lineNum">     274 </span>            :   }</a>
-<a name="275"><span class="lineNum">     275 </span>            : }</a>
-<a name="276"><span class="lineNum">     276 </span>            : </a>
-<a name="277"><span class="lineNum">     277 </span>            : template &lt;typename T&gt;</a>
-<a name="278"><span class="lineNum">     278 </span>            : void</a>
-<a name="279"><span class="lineNum">     279 </span><span class="lineCov">        629 : Variable&lt;T&gt;::ref(const VariableBase &amp; var, bool ref_is_mutable)</span></a>
-<a name="280"><span class="lineNum">     280 </span>            : {</a>
-<a name="281"><span class="lineNum">     281 </span><span class="lineCov">        629 :   neml_assert(!_ref,</span></a>
-<a name="282"><span class="lineNum">     282 </span>            :               &quot;Variable '&quot;,</a>
-<a name="283"><span class="lineNum">     283 </span><span class="lineCov">        629 :               name(),</span></a>
-<a name="284"><span class="lineNum">     284 </span>            :               &quot;' cannot reference another variable after it has been assigned a reference.&quot;);</a>
-<a name="285"><span class="lineNum">     285 </span><span class="lineCov">        629 :   neml_assert(&amp;var != this, &quot;Variable '&quot;, name(), &quot;' cannot reference itself.&quot;);</span></a>
-<a name="286"><span class="lineNum">     286 </span><span class="lineCov">        629 :   neml_assert(var.ref() != this,</span></a>
-<a name="287"><span class="lineNum">     287 </span>            :               &quot;Variable '&quot;,</a>
-<a name="288"><span class="lineNum">     288 </span><span class="lineCov">        629 :               name(),</span></a>
-<a name="289"><span class="lineNum">     289 </span>            :               &quot;' cannot reference a variable that is referencing itself.&quot;);</a>
-<a name="290"><span class="lineNum">     290 </span><span class="lineCov">        629 :   const auto * var_ptr = dynamic_cast&lt;const Variable&lt;T&gt; *&gt;(var.ref());</span></a>
-<a name="291"><span class="lineNum">     291 </span><span class="lineCov">        629 :   neml_assert(var_ptr,</span></a>
-<a name="292"><span class="lineNum">     292 </span>            :               &quot;Variable &quot;,</a>
-<a name="293"><span class="lineNum">     293 </span><span class="lineCov">        629 :               name(),</span></a>
-<a name="294"><span class="lineNum">     294 </span>            :               &quot; of type &quot;,</a>
-<a name="295"><span class="lineNum">     295 </span><span class="lineCov">        629 :               type(),</span></a>
-<a name="296"><span class="lineNum">     296 </span>            :               &quot; failed to reference another variable named &quot;,</a>
-<a name="297"><span class="lineNum">     297 </span><span class="lineCov">        629 :               var.name(),</span></a>
-<a name="298"><span class="lineNum">     298 </span>            :               &quot; of type &quot;,</a>
-<a name="299"><span class="lineNum">     299 </span><span class="lineCov">        629 :               var.type(),</span></a>
-<a name="300"><span class="lineNum">     300 </span>            :               &quot;: Dynamic cast failure.&quot;);</a>
-<a name="301"><span class="lineNum">     301 </span><span class="lineCov">        629 :   _ref = var_ptr;</span></a>
-<a name="302"><span class="lineNum">     302 </span><span class="lineCov">        629 :   _ref_is_mutable = ref_is_mutable;</span></a>
-<a name="303"><span class="lineNum">     303 </span><span class="lineCov">        629 : }</span></a>
-<a name="304"><span class="lineNum">     304 </span>            : </a>
-<a name="305"><span class="lineNum">     305 </span>            : template &lt;typename T&gt;</a>
-<a name="306"><span class="lineNum">     306 </span>            : void</a>
-<a name="307"><span class="lineNum">     307 </span><span class="lineCov">      12939 : Variable&lt;T&gt;::zero(const torch::TensorOptions &amp; options)</span></a>
-<a name="308"><span class="lineNum">     308 </span>            : {</a>
-<a name="309"><span class="lineNum">     309 </span><span class="lineCov">      12939 :   if (owning())</span></a>
-<a name="310"><span class="lineNum">     310 </span>            :   {</a>
-<a name="311"><span class="lineNum">     311 </span>            :     if constexpr (std::is_same_v&lt;T, Tensor&gt;)</a>
-<a name="312"><span class="lineNum">     312 </span><span class="lineNoCov">          0 :       _value = T::zeros(base_sizes(), options);</span></a>
-<a name="313"><span class="lineNum">     313 </span>            :     else</a>
-<a name="314"><span class="lineNum">     314 </span><span class="lineCov">      12939 :       _value = T::zeros(options);</span></a>
-<a name="315"><span class="lineNum">     315 </span>            :   }</a>
-<a name="316"><span class="lineNum">     316 </span>            :   else</a>
-<a name="317"><span class="lineNum">     317 </span>            :   {</a>
-<a name="318"><span class="lineNum">     318 </span><span class="lineNoCov">          0 :     neml_assert_dbg(</span></a>
-<a name="319"><span class="lineNum">     319 </span><span class="lineNoCov">          0 :         _ref_is_mutable,</span></a>
-<a name="320"><span class="lineNum">     320 </span>            :         &quot;Trying to zero a referencing variable, but the referenced variable is not mutable.&quot;);</a>
-<a name="321"><span class="lineNum">     321 </span>            :     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)</a>
-<a name="322"><span class="lineNum">     322 </span><span class="lineNoCov">          0 :     const_cast&lt;VariableBase *&gt;(ref())-&gt;zero(options);</span></a>
-<a name="323"><span class="lineNum">     323 </span>            :   }</a>
-<a name="324"><span class="lineNum">     324 </span><span class="lineCov">      12939 : }</span></a>
-<a name="325"><span class="lineNum">     325 </span>            : </a>
-<a name="326"><span class="lineNum">     326 </span>            : template &lt;typename T&gt;</a>
-<a name="327"><span class="lineNum">     327 </span>            : void</a>
-<a name="328"><span class="lineNum">     328 </span><span class="lineCov">      14802 : Variable&lt;T&gt;::set(const Tensor &amp; val)</span></a>
-<a name="329"><span class="lineNum">     329 </span>            : {</a>
-<a name="330"><span class="lineNum">     330 </span><span class="lineCov">      14802 :   if (owning())</span></a>
-<a name="331"><span class="lineNum">     331 </span><span class="lineCov">      10889 :     _value = T(val.base_reshape(utils::add_shapes(list_sizes(), base_sizes())),</span></a>
-<a name="332"><span class="lineNum">     332 </span><span class="lineCov">      21778 :                utils::add_traceable_shapes(val.batch_sizes(), list_sizes()));</span></a>
-<a name="333"><span class="lineNum">     333 </span>            :   else</a>
-<a name="334"><span class="lineNum">     334 </span>            :   {</a>
-<a name="335"><span class="lineNum">     335 </span><span class="lineCov">       3913 :     neml_assert_dbg(_ref_is_mutable,</span></a>
-<a name="336"><span class="lineNum">     336 </span>            :                     &quot;Trying to assign value to a referencing variable, but the referenced &quot;</a>
-<a name="337"><span class="lineNum">     337 </span>            :                     &quot;variable is not mutable.&quot;);</a>
-<a name="338"><span class="lineNum">     338 </span>            :     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)</a>
-<a name="339"><span class="lineNum">     339 </span><span class="lineCov">       3913 :     const_cast&lt;VariableBase *&gt;(ref())-&gt;set(val);</span></a>
-<a name="340"><span class="lineNum">     340 </span>            :   }</a>
-<a name="341"><span class="lineNum">     341 </span><span class="lineCov">      14802 : }</span></a>
-<a name="342"><span class="lineNum">     342 </span>            : </a>
-<a name="343"><span class="lineNum">     343 </span>            : template &lt;typename T&gt;</a>
-<a name="344"><span class="lineNum">     344 </span>            : Tensor</a>
-<a name="345"><span class="lineNum">     345 </span><span class="lineCov">      34829 : Variable&lt;T&gt;::tensor() const</span></a>
-<a name="346"><span class="lineNum">     346 </span>            : {</a>
-<a name="347"><span class="lineNum">     347 </span><span class="lineCov">      34829 :   if (owning())</span></a>
+<a name="109"><span class="lineNum">     109 </span><span class="lineCov">      24032 :   return Derivative({assembly_storage(), var.assembly_storage()}, &amp;_derivs[var.name()]);</span></a>
+<a name="110"><span class="lineNum">     110 </span>            : }</a>
+<a name="111"><span class="lineNum">     111 </span>            : </a>
+<a name="112"><span class="lineNum">     112 </span>            : Derivative</a>
+<a name="113"><span class="lineNum">     113 </span><span class="lineCov">        287 : VariableBase::d(const VariableBase &amp; var1, const VariableBase &amp; var2)</span></a>
+<a name="114"><span class="lineNum">     114 </span>            : {</a>
+<a name="115"><span class="lineNum">     115 </span><span class="lineCov">        287 :   neml_assert_dbg(owning(),</span></a>
+<a name="116"><span class="lineNum">     116 </span>            :                   &quot;Cannot assign second derivative to a referencing variable '&quot;,</a>
+<a name="117"><span class="lineNum">     117 </span><span class="lineCov">        287 :                   name(),</span></a>
+<a name="118"><span class="lineNum">     118 </span>            :                   &quot;' with respect to '&quot;,</a>
+<a name="119"><span class="lineNum">     119 </span><span class="lineCov">        287 :                   var1.name(),</span></a>
+<a name="120"><span class="lineNum">     120 </span>            :                   &quot;' and '&quot;,</a>
+<a name="121"><span class="lineNum">     121 </span><span class="lineCov">        287 :                   var2.name(),</span></a>
+<a name="122"><span class="lineNum">     122 </span>            :                   &quot;'.&quot;);</a>
+<a name="123"><span class="lineNum">     123 </span><span class="lineCov">       1148 :   return Derivative({assembly_storage(), var1.assembly_storage(), var2.assembly_storage()},</span></a>
+<a name="124"><span class="lineNum">     124 </span><span class="lineCov">        287 :                     &amp;_sec_derivs[var1.name()][var2.name()]);</span></a>
+<a name="125"><span class="lineNum">     125 </span>            : }</a>
+<a name="126"><span class="lineNum">     126 </span>            : </a>
+<a name="127"><span class="lineNum">     127 </span>            : void</a>
+<a name="128"><span class="lineNum">     128 </span><span class="lineNoCov">          0 : VariableBase::request_AD(const VariableBase &amp; u)</span></a>
+<a name="129"><span class="lineNum">     129 </span>            : {</a>
+<a name="130"><span class="lineNum">     130 </span><span class="lineNoCov">          0 :   owner().request_AD(*this, u);</span></a>
+<a name="131"><span class="lineNum">     131 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="132"><span class="lineNum">     132 </span>            : </a>
+<a name="133"><span class="lineNum">     133 </span>            : void</a>
+<a name="134"><span class="lineNum">     134 </span><span class="lineCov">          3 : VariableBase::request_AD(const std::vector&lt;const VariableBase *&gt; &amp; us)</span></a>
+<a name="135"><span class="lineNum">     135 </span>            : {</a>
+<a name="136"><span class="lineNum">     136 </span><span class="lineCov">         15 :   for (const auto &amp; u : us)</span></a>
+<a name="137"><span class="lineNum">     137 </span>            :   {</a>
+<a name="138"><span class="lineNum">     138 </span><span class="lineCov">         12 :     neml_assert(u, &quot;Cannot request AD for a null variable.&quot;);</span></a>
+<a name="139"><span class="lineNum">     139 </span><span class="lineCov">         12 :     owner().request_AD(*this, *u);</span></a>
+<a name="140"><span class="lineNum">     140 </span>            :   }</a>
+<a name="141"><span class="lineNum">     141 </span><span class="lineCov">          3 : }</span></a>
+<a name="142"><span class="lineNum">     142 </span>            : </a>
+<a name="143"><span class="lineNum">     143 </span>            : void</a>
+<a name="144"><span class="lineNum">     144 </span><span class="lineNoCov">          0 : VariableBase::request_AD(const VariableBase &amp; u1, const VariableBase &amp; u2)</span></a>
+<a name="145"><span class="lineNum">     145 </span>            : {</a>
+<a name="146"><span class="lineNum">     146 </span><span class="lineNoCov">          0 :   owner().request_AD(*this, u1, u2);</span></a>
+<a name="147"><span class="lineNum">     147 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="148"><span class="lineNum">     148 </span>            : </a>
+<a name="149"><span class="lineNum">     149 </span>            : void</a>
+<a name="150"><span class="lineNum">     150 </span><span class="lineCov">          3 : VariableBase::request_AD(const std::vector&lt;const VariableBase *&gt; &amp; u1s,</span></a>
+<a name="151"><span class="lineNum">     151 </span>            :                          const std::vector&lt;const VariableBase *&gt; &amp; u2s)</a>
+<a name="152"><span class="lineNum">     152 </span>            : {</a>
+<a name="153"><span class="lineNum">     153 </span><span class="lineCov">         15 :   for (const auto &amp; u1 : u1s)</span></a>
+<a name="154"><span class="lineNum">     154 </span><span class="lineCov">         60 :     for (const auto &amp; u2 : u2s)</span></a>
+<a name="155"><span class="lineNum">     155 </span>            :     {</a>
+<a name="156"><span class="lineNum">     156 </span><span class="lineCov">         48 :       neml_assert(u1, &quot;Cannot request AD for a null variable.&quot;);</span></a>
+<a name="157"><span class="lineNum">     157 </span><span class="lineCov">         48 :       neml_assert(u2, &quot;Cannot request AD for a null variable.&quot;);</span></a>
+<a name="158"><span class="lineNum">     158 </span><span class="lineCov">         48 :       owner().request_AD(*this, *u1, *u2);</span></a>
+<a name="159"><span class="lineNum">     159 </span>            :     }</a>
+<a name="160"><span class="lineNum">     160 </span><span class="lineCov">          3 : }</span></a>
+<a name="161"><span class="lineNum">     161 </span>            : </a>
+<a name="162"><span class="lineNum">     162 </span>            : void</a>
+<a name="163"><span class="lineNum">     163 </span><span class="lineNoCov">          0 : VariableBase::clear()</span></a>
+<a name="164"><span class="lineNum">     164 </span>            : {</a>
+<a name="165"><span class="lineNum">     165 </span><span class="lineNoCov">          0 :   neml_assert_dbg(owning(), &quot;Cannot clear a referencing variable '&quot;, name(), &quot;'.&quot;);</span></a>
+<a name="166"><span class="lineNum">     166 </span><span class="lineNoCov">          0 :   _derivs.clear();</span></a>
+<a name="167"><span class="lineNum">     167 </span><span class="lineNoCov">          0 :   _sec_derivs.clear();</span></a>
+<a name="168"><span class="lineNum">     168 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="169"><span class="lineNum">     169 </span>            : </a>
+<a name="170"><span class="lineNum">     170 </span>            : void</a>
+<a name="171"><span class="lineNum">     171 </span><span class="lineCov">       3787 : VariableBase::apply_chain_rule(const DependencyResolver&lt;Model, VariableName&gt; &amp; dep)</span></a>
+<a name="172"><span class="lineNum">     172 </span>            : {</a>
+<a name="173"><span class="lineNum">     173 </span><span class="lineCov">       6901 :   for (const auto &amp; [model, var] : dep.outbound_items())</span></a>
+<a name="174"><span class="lineNum">     174 </span><span class="lineCov">       6901 :     if (var == name())</span></a>
+<a name="175"><span class="lineNum">     175 </span>            :     {</a>
+<a name="176"><span class="lineNum">     176 </span><span class="lineCov">       3787 :       _derivs = total_derivatives(dep, model, var);</span></a>
+<a name="177"><span class="lineNum">     177 </span><span class="lineCov">       3787 :       return;</span></a>
+<a name="178"><span class="lineNum">     178 </span>            :     }</a>
+<a name="179"><span class="lineNum">     179 </span>            : }</a>
+<a name="180"><span class="lineNum">     180 </span>            : </a>
+<a name="181"><span class="lineNum">     181 </span>            : void</a>
+<a name="182"><span class="lineNum">     182 </span><span class="lineCov">        163 : VariableBase::apply_second_order_chain_rule(const DependencyResolver&lt;Model, VariableName&gt; &amp; dep)</span></a>
+<a name="183"><span class="lineNum">     183 </span>            : {</a>
+<a name="184"><span class="lineNum">     184 </span><span class="lineCov">        163 :   for (const auto &amp; [model, var] : dep.outbound_items())</span></a>
+<a name="185"><span class="lineNum">     185 </span><span class="lineCov">        163 :     if (var == name())</span></a>
+<a name="186"><span class="lineNum">     186 </span>            :     {</a>
+<a name="187"><span class="lineNum">     187 </span><span class="lineCov">        163 :       _sec_derivs = total_second_derivatives(dep, model, var);</span></a>
+<a name="188"><span class="lineNum">     188 </span><span class="lineCov">        163 :       return;</span></a>
+<a name="189"><span class="lineNum">     189 </span>            :     }</a>
+<a name="190"><span class="lineNum">     190 </span>            : }</a>
+<a name="191"><span class="lineNum">     191 </span>            : </a>
+<a name="192"><span class="lineNum">     192 </span>            : void</a>
+<a name="193"><span class="lineNum">     193 </span><span class="lineCov">      53853 : assign_or_add(Tensor &amp; dest, const Tensor &amp; val)</span></a>
+<a name="194"><span class="lineNum">     194 </span>            : {</a>
+<a name="195"><span class="lineNum">     195 </span><span class="lineCov">      53853 :   if (dest.defined())</span></a>
+<a name="196"><span class="lineNum">     196 </span><span class="lineCov">       4678 :     dest = dest + val;</span></a>
+<a name="197"><span class="lineNum">     197 </span>            :   else</a>
+<a name="198"><span class="lineNum">     198 </span><span class="lineCov">      49175 :     dest = val;</span></a>
+<a name="199"><span class="lineNum">     199 </span><span class="lineCov">      53853 : }</span></a>
+<a name="200"><span class="lineNum">     200 </span>            : </a>
+<a name="201"><span class="lineNum">     201 </span>            : std::map&lt;VariableName, Tensor&gt;</a>
+<a name="202"><span class="lineNum">     202 </span><span class="lineCov">      15147 : VariableBase::total_derivatives(const DependencyResolver&lt;Model, VariableName&gt; &amp; dep,</span></a>
+<a name="203"><span class="lineNum">     203 </span>            :                                 Model * model,</a>
+<a name="204"><span class="lineNum">     204 </span>            :                                 const VariableName &amp; yvar) const</a>
+<a name="205"><span class="lineNum">     205 </span>            : {</a>
+<a name="206"><span class="lineNum">     206 </span><span class="lineCov">      15147 :   std::map&lt;VariableName, Tensor&gt; derivs;</span></a>
+<a name="207"><span class="lineNum">     207 </span>            : </a>
+<a name="208"><span class="lineNum">     208 </span><span class="lineCov">      52686 :   for (const auto &amp; [uvar, dy_du] : model-&gt;output_variable(yvar).derivatives())</span></a>
+<a name="209"><span class="lineNum">     209 </span>            :   {</a>
+<a name="210"><span class="lineNum">     210 </span><span class="lineCov">      37539 :     if (dep.inbound_items().count({model, uvar}))</span></a>
+<a name="211"><span class="lineNum">     211 </span><span class="lineCov">      26518 :       assign_or_add(derivs[uvar], dy_du);</span></a>
+<a name="212"><span class="lineNum">     212 </span>            :     else</a>
+<a name="213"><span class="lineNum">     213 </span><span class="lineCov">      22042 :       for (const auto &amp; depu : dep.item_providers().at({model, uvar}))</span></a>
+<a name="214"><span class="lineNum">     214 </span><span class="lineCov">      37454 :         for (const auto &amp; [xvar, du_dx] : total_derivatives(dep, depu.parent, uvar))</span></a>
+<a name="215"><span class="lineNum">     215 </span><span class="lineCov">      37454 :           assign_or_add(derivs[xvar], math::bmm(dy_du, du_dx));</span></a>
+<a name="216"><span class="lineNum">     216 </span>            :   }</a>
+<a name="217"><span class="lineNum">     217 </span>            : </a>
+<a name="218"><span class="lineNum">     218 </span><span class="lineCov">      15147 :   return derivs;</span></a>
+<a name="219"><span class="lineNum">     219 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="220"><span class="lineNum">     220 </span>            : </a>
+<a name="221"><span class="lineNum">     221 </span>            : std::map&lt;VariableName, std::map&lt;VariableName, Tensor&gt;&gt;</a>
+<a name="222"><span class="lineNum">     222 </span><span class="lineCov">        420 : VariableBase::total_second_derivatives(const DependencyResolver&lt;Model, VariableName&gt; &amp; dep,</span></a>
+<a name="223"><span class="lineNum">     223 </span>            :                                        Model * model,</a>
+<a name="224"><span class="lineNum">     224 </span>            :                                        const VariableName &amp; yvar) const</a>
+<a name="225"><span class="lineNum">     225 </span>            : {</a>
+<a name="226"><span class="lineNum">     226 </span><span class="lineCov">        420 :   std::map&lt;VariableName, std::map&lt;VariableName, Tensor&gt;&gt; sec_derivs;</span></a>
+<a name="227"><span class="lineNum">     227 </span>            : </a>
+<a name="228"><span class="lineNum">     228 </span><span class="lineCov">        600 :   for (const auto &amp; [u1var, d2y_du1] : model-&gt;output_variable(yvar).second_derivatives())</span></a>
+<a name="229"><span class="lineNum">     229 </span><span class="lineCov">        419 :     for (const auto &amp; [u2var, d2y_du1u2] : d2y_du1)</span></a>
+<a name="230"><span class="lineNum">     230 </span>            :     {</a>
+<a name="231"><span class="lineNum">     231 </span><span class="lineCov">        239 :       if (dep.inbound_items().count({model, u1var}) &amp;&amp; dep.inbound_items().count({model, u2var}))</span></a>
+<a name="232"><span class="lineNum">     232 </span><span class="lineCov">         93 :         assign_or_add(sec_derivs[u1var][u2var], d2y_du1u2);</span></a>
+<a name="233"><span class="lineNum">     233 </span><span class="lineCov">        146 :       else if (dep.inbound_items().count({model, u1var}))</span></a>
+<a name="234"><span class="lineNum">     234 </span><span class="lineCov">         38 :         for (const auto &amp; depu2 : dep.item_providers().at({model, u2var}))</span></a>
+<a name="235"><span class="lineNum">     235 </span><span class="lineCov">         38 :           for (const auto &amp; [x2var, du2_dxk] : total_derivatives(dep, depu2.parent, u2var))</span></a>
+<a name="236"><span class="lineNum">     236 </span><span class="lineCov">         19 :             assign_or_add(sec_derivs[u1var][x2var],</span></a>
+<a name="237"><span class="lineNum">     237 </span><span class="lineCov">         76 :                           Tensor(torch::einsum(&quot;...ijq,...qk&quot;, {d2y_du1u2, du2_dxk}),</span></a>
+<a name="238"><span class="lineNum">     238 </span><span class="lineCov">         19 :                                  broadcast_batch_dim(d2y_du1u2, du2_dxk)));</span></a>
+<a name="239"><span class="lineNum">     239 </span><span class="lineCov">        127 :       else if (dep.inbound_items().count({model, u2var}))</span></a>
+<a name="240"><span class="lineNum">     240 </span><span class="lineCov">         36 :         for (const auto &amp; depu1 : dep.item_providers().at({model, u1var}))</span></a>
+<a name="241"><span class="lineNum">     241 </span><span class="lineCov">         36 :           for (const auto &amp; [x1var, du1_dxj] : total_derivatives(dep, depu1.parent, u1var))</span></a>
+<a name="242"><span class="lineNum">     242 </span><span class="lineCov">         18 :             assign_or_add(sec_derivs[x1var][u2var],</span></a>
+<a name="243"><span class="lineNum">     243 </span><span class="lineCov">         72 :                           Tensor(torch::einsum(&quot;...ipk,...pj&quot;, {d2y_du1u2, du1_dxj}),</span></a>
+<a name="244"><span class="lineNum">     244 </span><span class="lineCov">         18 :                                  broadcast_batch_dim(d2y_du1u2, du1_dxj)));</span></a>
+<a name="245"><span class="lineNum">     245 </span>            :       else</a>
+<a name="246"><span class="lineNum">     246 </span><span class="lineCov">        218 :         for (const auto &amp; depu1 : dep.item_providers().at({model, u1var}))</span></a>
+<a name="247"><span class="lineNum">     247 </span><span class="lineCov">        302 :           for (const auto &amp; [x1var, du1_dxj] : total_derivatives(dep, depu1.parent, u1var))</span></a>
+<a name="248"><span class="lineNum">     248 </span><span class="lineCov">        386 :             for (const auto &amp; depu2 : dep.item_providers().at({model, u2var}))</span></a>
+<a name="249"><span class="lineNum">     249 </span><span class="lineCov">        554 :               for (const auto &amp; [x2var, du2_dxk] : total_derivatives(dep, depu2.parent, u2var))</span></a>
+<a name="250"><span class="lineNum">     250 </span><span class="lineCov">        361 :                 assign_or_add(</span></a>
+<a name="251"><span class="lineNum">     251 </span><span class="lineCov">        361 :                     sec_derivs[x1var][x2var],</span></a>
+<a name="252"><span class="lineNum">     252 </span><span class="lineCov">       1805 :                     Tensor(torch::einsum(&quot;...ipq,...pj,...qk&quot;, {d2y_du1u2, du1_dxj, du2_dxk}),</span></a>
+<a name="253"><span class="lineNum">     253 </span><span class="lineCov">        302 :                            broadcast_batch_dim(d2y_du1u2, du1_dxj, du2_dxk)));</span></a>
+<a name="254"><span class="lineNum">     254 </span>            :     }</a>
+<a name="255"><span class="lineNum">     255 </span>            : </a>
+<a name="256"><span class="lineNum">     256 </span><span class="lineCov">       1026 :   for (const auto &amp; [uvar, dy_du] : model-&gt;output_variable(yvar).derivatives())</span></a>
+<a name="257"><span class="lineNum">     257 </span><span class="lineCov">        606 :     if (!dep.inbound_items().count({model, uvar}))</span></a>
+<a name="258"><span class="lineNum">     258 </span><span class="lineCov">        514 :       for (const auto &amp; depu : dep.item_providers().at({model, uvar}))</span></a>
+<a name="259"><span class="lineNum">     259 </span><span class="lineCov">        500 :         for (const auto &amp; [x1var, d2u_dx1] : total_second_derivatives(dep, depu.parent, uvar))</span></a>
+<a name="260"><span class="lineNum">     260 </span><span class="lineCov">        654 :           for (const auto &amp; [x2var, d2u_dx1x2] : d2u_dx1)</span></a>
+<a name="261"><span class="lineNum">     261 </span><span class="lineCov">        411 :             assign_or_add(sec_derivs[x1var][x2var],</span></a>
+<a name="262"><span class="lineNum">     262 </span><span class="lineCov">       1644 :                           Tensor(torch::einsum(&quot;...ip,...pjk&quot;, {dy_du, d2u_dx1x2}),</span></a>
+<a name="263"><span class="lineNum">     263 </span><span class="lineCov">        257 :                                  broadcast_batch_dim(dy_du, d2u_dx1x2)));</span></a>
+<a name="264"><span class="lineNum">     264 </span>            : </a>
+<a name="265"><span class="lineNum">     265 </span><span class="lineCov">        420 :   return sec_derivs;</span></a>
+<a name="266"><span class="lineNum">     266 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="267"><span class="lineNum">     267 </span>            : </a>
+<a name="268"><span class="lineNum">     268 </span>            : template &lt;typename T&gt;</a>
+<a name="269"><span class="lineNum">     269 </span>            : TensorType</a>
+<a name="270"><span class="lineNum">     270 </span><span class="lineCov">       1278 : Variable&lt;T&gt;::type() const</span></a>
+<a name="271"><span class="lineNum">     271 </span>            : {</a>
+<a name="272"><span class="lineNum">     272 </span><span class="lineCov">       1278 :   return TensorTypeEnum&lt;T&gt;::value;</span></a>
+<a name="273"><span class="lineNum">     273 </span>            : }</a>
+<a name="274"><span class="lineNum">     274 </span>            : </a>
+<a name="275"><span class="lineNum">     275 </span>            : template &lt;typename T&gt;</a>
+<a name="276"><span class="lineNum">     276 </span>            : std::unique_ptr&lt;VariableBase&gt;</a>
+<a name="277"><span class="lineNum">     277 </span><span class="lineCov">        411 : Variable&lt;T&gt;::clone(const VariableName &amp; name, Model * owner) const</span></a>
+<a name="278"><span class="lineNum">     278 </span>            : {</a>
+<a name="279"><span class="lineNum">     279 </span>            :   if constexpr (std::is_same_v&lt;T, Tensor&gt;)</a>
+<a name="280"><span class="lineNum">     280 </span>            :   {</a>
+<a name="281"><span class="lineNum">     281 </span>            :     return std::make_unique&lt;Variable&lt;Tensor&gt;&gt;(</a>
+<a name="282"><span class="lineNum">     282 </span><span class="lineNoCov">          0 :         name.empty() ? this-&gt;name() : name, owner ? owner : _owner, list_sizes(), base_sizes());</span></a>
+<a name="283"><span class="lineNum">     283 </span>            :   }</a>
+<a name="284"><span class="lineNum">     284 </span>            :   else</a>
+<a name="285"><span class="lineNum">     285 </span>            :   {</a>
+<a name="286"><span class="lineNum">     286 </span>            :     return std::make_unique&lt;Variable&lt;T&gt;&gt;(</a>
+<a name="287"><span class="lineNum">     287 </span><span class="lineCov">        411 :         name.empty() ? this-&gt;name() : name, owner ? owner : _owner, list_sizes());</span></a>
+<a name="288"><span class="lineNum">     288 </span>            :   }</a>
+<a name="289"><span class="lineNum">     289 </span>            : }</a>
+<a name="290"><span class="lineNum">     290 </span>            : </a>
+<a name="291"><span class="lineNum">     291 </span>            : template &lt;typename T&gt;</a>
+<a name="292"><span class="lineNum">     292 </span>            : void</a>
+<a name="293"><span class="lineNum">     293 </span><span class="lineCov">        629 : Variable&lt;T&gt;::ref(const VariableBase &amp; var, bool ref_is_mutable)</span></a>
+<a name="294"><span class="lineNum">     294 </span>            : {</a>
+<a name="295"><span class="lineNum">     295 </span><span class="lineCov">        629 :   neml_assert(!_ref,</span></a>
+<a name="296"><span class="lineNum">     296 </span>            :               &quot;Variable '&quot;,</a>
+<a name="297"><span class="lineNum">     297 </span><span class="lineCov">        629 :               name(),</span></a>
+<a name="298"><span class="lineNum">     298 </span>            :               &quot;' cannot reference another variable after it has been assigned a reference.&quot;);</a>
+<a name="299"><span class="lineNum">     299 </span><span class="lineCov">        629 :   neml_assert(&amp;var != this, &quot;Variable '&quot;, name(), &quot;' cannot reference itself.&quot;);</span></a>
+<a name="300"><span class="lineNum">     300 </span><span class="lineCov">        629 :   neml_assert(var.ref() != this,</span></a>
+<a name="301"><span class="lineNum">     301 </span>            :               &quot;Variable '&quot;,</a>
+<a name="302"><span class="lineNum">     302 </span><span class="lineCov">        629 :               name(),</span></a>
+<a name="303"><span class="lineNum">     303 </span>            :               &quot;' cannot reference a variable that is referencing itself.&quot;);</a>
+<a name="304"><span class="lineNum">     304 </span><span class="lineCov">        629 :   const auto * var_ptr = dynamic_cast&lt;const Variable&lt;T&gt; *&gt;(var.ref());</span></a>
+<a name="305"><span class="lineNum">     305 </span><span class="lineCov">        629 :   neml_assert(var_ptr,</span></a>
+<a name="306"><span class="lineNum">     306 </span>            :               &quot;Variable &quot;,</a>
+<a name="307"><span class="lineNum">     307 </span><span class="lineCov">        629 :               name(),</span></a>
+<a name="308"><span class="lineNum">     308 </span>            :               &quot; of type &quot;,</a>
+<a name="309"><span class="lineNum">     309 </span><span class="lineCov">        629 :               type(),</span></a>
+<a name="310"><span class="lineNum">     310 </span>            :               &quot; failed to reference another variable named &quot;,</a>
+<a name="311"><span class="lineNum">     311 </span><span class="lineCov">        629 :               var.name(),</span></a>
+<a name="312"><span class="lineNum">     312 </span>            :               &quot; of type &quot;,</a>
+<a name="313"><span class="lineNum">     313 </span><span class="lineCov">        629 :               var.type(),</span></a>
+<a name="314"><span class="lineNum">     314 </span>            :               &quot;: Dynamic cast failure.&quot;);</a>
+<a name="315"><span class="lineNum">     315 </span><span class="lineCov">        629 :   _ref = var_ptr;</span></a>
+<a name="316"><span class="lineNum">     316 </span><span class="lineCov">        629 :   _ref_is_mutable = ref_is_mutable;</span></a>
+<a name="317"><span class="lineNum">     317 </span><span class="lineCov">        629 : }</span></a>
+<a name="318"><span class="lineNum">     318 </span>            : </a>
+<a name="319"><span class="lineNum">     319 </span>            : template &lt;typename T&gt;</a>
+<a name="320"><span class="lineNum">     320 </span>            : void</a>
+<a name="321"><span class="lineNum">     321 </span><span class="lineCov">      12939 : Variable&lt;T&gt;::zero(const torch::TensorOptions &amp; options)</span></a>
+<a name="322"><span class="lineNum">     322 </span>            : {</a>
+<a name="323"><span class="lineNum">     323 </span><span class="lineCov">      12939 :   if (owning())</span></a>
+<a name="324"><span class="lineNum">     324 </span>            :   {</a>
+<a name="325"><span class="lineNum">     325 </span>            :     if constexpr (std::is_same_v&lt;T, Tensor&gt;)</a>
+<a name="326"><span class="lineNum">     326 </span><span class="lineNoCov">          0 :       _value = T::zeros(base_sizes(), options);</span></a>
+<a name="327"><span class="lineNum">     327 </span>            :     else</a>
+<a name="328"><span class="lineNum">     328 </span><span class="lineCov">      12939 :       _value = T::zeros(options);</span></a>
+<a name="329"><span class="lineNum">     329 </span>            :   }</a>
+<a name="330"><span class="lineNum">     330 </span>            :   else</a>
+<a name="331"><span class="lineNum">     331 </span>            :   {</a>
+<a name="332"><span class="lineNum">     332 </span><span class="lineNoCov">          0 :     neml_assert_dbg(</span></a>
+<a name="333"><span class="lineNum">     333 </span><span class="lineNoCov">          0 :         _ref_is_mutable,</span></a>
+<a name="334"><span class="lineNum">     334 </span>            :         &quot;Trying to zero a referencing variable, but the referenced variable is not mutable.&quot;);</a>
+<a name="335"><span class="lineNum">     335 </span>            :     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)</a>
+<a name="336"><span class="lineNum">     336 </span><span class="lineNoCov">          0 :     const_cast&lt;VariableBase *&gt;(ref())-&gt;zero(options);</span></a>
+<a name="337"><span class="lineNum">     337 </span>            :   }</a>
+<a name="338"><span class="lineNum">     338 </span><span class="lineCov">      12939 : }</span></a>
+<a name="339"><span class="lineNum">     339 </span>            : </a>
+<a name="340"><span class="lineNum">     340 </span>            : template &lt;typename T&gt;</a>
+<a name="341"><span class="lineNum">     341 </span>            : void</a>
+<a name="342"><span class="lineNum">     342 </span><span class="lineCov">      14802 : Variable&lt;T&gt;::set(const Tensor &amp; val)</span></a>
+<a name="343"><span class="lineNum">     343 </span>            : {</a>
+<a name="344"><span class="lineNum">     344 </span><span class="lineCov">      14802 :   if (owning())</span></a>
+<a name="345"><span class="lineNum">     345 </span><span class="lineCov">      10889 :     _value = T(val.base_reshape(utils::add_shapes(list_sizes(), base_sizes())),</span></a>
+<a name="346"><span class="lineNum">     346 </span><span class="lineCov">      21778 :                utils::add_traceable_shapes(val.batch_sizes(), list_sizes()));</span></a>
+<a name="347"><span class="lineNum">     347 </span>            :   else</a>
 <a name="348"><span class="lineNum">     348 </span>            :   {</a>
-<a name="349"><span class="lineNum">     349 </span><span class="lineCov">      19817 :     neml_assert_dbg(_value.defined(), &quot;Variable '&quot;, name(), &quot;' has undefined value.&quot;);</span></a>
-<a name="350"><span class="lineNum">     350 </span><span class="lineCov">      19817 :     auto batch_sizes = _value.batch_sizes().slice(0, _value.batch_dim() - list_dim());</span></a>
-<a name="351"><span class="lineNum">     351 </span><span class="lineCov">      19817 :     return Tensor(_value, batch_sizes);</span></a>
-<a name="352"><span class="lineNum">     352 </span><span class="lineCov">      19817 :   }</span></a>
-<a name="353"><span class="lineNum">     353 </span>            : </a>
-<a name="354"><span class="lineNum">     354 </span><span class="lineCov">      15012 :   return ref()-&gt;tensor();</span></a>
-<a name="355"><span class="lineNum">     355 </span>            : }</a>
+<a name="349"><span class="lineNum">     349 </span><span class="lineCov">       3913 :     neml_assert_dbg(_ref_is_mutable,</span></a>
+<a name="350"><span class="lineNum">     350 </span>            :                     &quot;Trying to assign value to a referencing variable, but the referenced &quot;</a>
+<a name="351"><span class="lineNum">     351 </span>            :                     &quot;variable is not mutable.&quot;);</a>
+<a name="352"><span class="lineNum">     352 </span>            :     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)</a>
+<a name="353"><span class="lineNum">     353 </span><span class="lineCov">       3913 :     const_cast&lt;VariableBase *&gt;(ref())-&gt;set(val);</span></a>
+<a name="354"><span class="lineNum">     354 </span>            :   }</a>
+<a name="355"><span class="lineNum">     355 </span><span class="lineCov">      14802 : }</span></a>
 <a name="356"><span class="lineNum">     356 </span>            : </a>
 <a name="357"><span class="lineNum">     357 </span>            : template &lt;typename T&gt;</a>
-<a name="358"><span class="lineNum">     358 </span>            : void</a>
-<a name="359"><span class="lineNum">     359 </span><span class="lineCov">        628 : Variable&lt;T&gt;::requires_grad_(bool req)</span></a>
+<a name="358"><span class="lineNum">     358 </span>            : Tensor</a>
+<a name="359"><span class="lineNum">     359 </span><span class="lineCov">      34829 : Variable&lt;T&gt;::tensor() const</span></a>
 <a name="360"><span class="lineNum">     360 </span>            : {</a>
-<a name="361"><span class="lineNum">     361 </span><span class="lineCov">        628 :   if (owning())</span></a>
-<a name="362"><span class="lineNum">     362 </span><span class="lineCov">        628 :     _value.requires_grad_(req);</span></a>
-<a name="363"><span class="lineNum">     363 </span>            :   else</a>
-<a name="364"><span class="lineNum">     364 </span>            :     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)</a>
-<a name="365"><span class="lineNum">     365 </span><span class="lineNoCov">          0 :     const_cast&lt;VariableBase *&gt;(ref())-&gt;requires_grad_(req);</span></a>
-<a name="366"><span class="lineNum">     366 </span><span class="lineCov">        628 : }</span></a>
+<a name="361"><span class="lineNum">     361 </span><span class="lineCov">      34829 :   if (owning())</span></a>
+<a name="362"><span class="lineNum">     362 </span>            :   {</a>
+<a name="363"><span class="lineNum">     363 </span><span class="lineCov">      19817 :     neml_assert_dbg(_value.defined(), &quot;Variable '&quot;, name(), &quot;' has undefined value.&quot;);</span></a>
+<a name="364"><span class="lineNum">     364 </span><span class="lineCov">      19817 :     auto batch_sizes = _value.batch_sizes().slice(0, _value.batch_dim() - list_dim());</span></a>
+<a name="365"><span class="lineNum">     365 </span><span class="lineCov">      19817 :     return Tensor(_value, batch_sizes);</span></a>
+<a name="366"><span class="lineNum">     366 </span><span class="lineCov">      19817 :   }</span></a>
 <a name="367"><span class="lineNum">     367 </span>            : </a>
-<a name="368"><span class="lineNum">     368 </span>            : template &lt;typename T&gt;</a>
-<a name="369"><span class="lineNum">     369 </span>            : void</a>
-<a name="370"><span class="lineNum">     370 </span><span class="lineCov">      25054 : Variable&lt;T&gt;::operator=(const Tensor &amp; val)</span></a>
-<a name="371"><span class="lineNum">     371 </span>            : {</a>
-<a name="372"><span class="lineNum">     372 </span><span class="lineCov">      25054 :   if (owning())</span></a>
-<a name="373"><span class="lineNum">     373 </span><span class="lineCov">      25054 :     _value = T(val);</span></a>
-<a name="374"><span class="lineNum">     374 </span>            :   else</a>
-<a name="375"><span class="lineNum">     375 </span>            :   {</a>
-<a name="376"><span class="lineNum">     376 </span><span class="lineNoCov">          0 :     neml_assert_dbg(_ref_is_mutable,</span></a>
-<a name="377"><span class="lineNum">     377 </span>            :                     &quot;Trying to assign value to a referencing variable, but the referenced &quot;</a>
-<a name="378"><span class="lineNum">     378 </span>            :                     &quot;variable is not mutable.&quot;);</a>
-<a name="379"><span class="lineNum">     379 </span>            :     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)</a>
-<a name="380"><span class="lineNum">     380 </span><span class="lineNoCov">          0 :     *const_cast&lt;VariableBase *&gt;(ref()) = val;</span></a>
-<a name="381"><span class="lineNum">     381 </span>            :   }</a>
-<a name="382"><span class="lineNum">     382 </span><span class="lineCov">      25054 : }</span></a>
-<a name="383"><span class="lineNum">     383 </span>            : </a>
-<a name="384"><span class="lineNum">     384 </span>            : template &lt;typename T&gt;</a>
-<a name="385"><span class="lineNum">     385 </span>            : void</a>
-<a name="386"><span class="lineNum">     386 </span><span class="lineNoCov">          0 : Variable&lt;T&gt;::clear()</span></a>
-<a name="387"><span class="lineNum">     387 </span>            : {</a>
-<a name="388"><span class="lineNum">     388 </span><span class="lineNoCov">          0 :   if (owning())</span></a>
+<a name="368"><span class="lineNum">     368 </span><span class="lineCov">      15012 :   return ref()-&gt;tensor();</span></a>
+<a name="369"><span class="lineNum">     369 </span>            : }</a>
+<a name="370"><span class="lineNum">     370 </span>            : </a>
+<a name="371"><span class="lineNum">     371 </span>            : template &lt;typename T&gt;</a>
+<a name="372"><span class="lineNum">     372 </span>            : void</a>
+<a name="373"><span class="lineNum">     373 </span><span class="lineCov">        628 : Variable&lt;T&gt;::requires_grad_(bool req)</span></a>
+<a name="374"><span class="lineNum">     374 </span>            : {</a>
+<a name="375"><span class="lineNum">     375 </span><span class="lineCov">        628 :   if (owning())</span></a>
+<a name="376"><span class="lineNum">     376 </span><span class="lineCov">        628 :     _value.requires_grad_(req);</span></a>
+<a name="377"><span class="lineNum">     377 </span>            :   else</a>
+<a name="378"><span class="lineNum">     378 </span>            :     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)</a>
+<a name="379"><span class="lineNum">     379 </span><span class="lineNoCov">          0 :     const_cast&lt;VariableBase *&gt;(ref())-&gt;requires_grad_(req);</span></a>
+<a name="380"><span class="lineNum">     380 </span><span class="lineCov">        628 : }</span></a>
+<a name="381"><span class="lineNum">     381 </span>            : </a>
+<a name="382"><span class="lineNum">     382 </span>            : template &lt;typename T&gt;</a>
+<a name="383"><span class="lineNum">     383 </span>            : void</a>
+<a name="384"><span class="lineNum">     384 </span><span class="lineCov">      25054 : Variable&lt;T&gt;::operator=(const Tensor &amp; val)</span></a>
+<a name="385"><span class="lineNum">     385 </span>            : {</a>
+<a name="386"><span class="lineNum">     386 </span><span class="lineCov">      25054 :   if (owning())</span></a>
+<a name="387"><span class="lineNum">     387 </span><span class="lineCov">      25054 :     _value = T(val);</span></a>
+<a name="388"><span class="lineNum">     388 </span>            :   else</a>
 <a name="389"><span class="lineNum">     389 </span>            :   {</a>
-<a name="390"><span class="lineNum">     390 </span><span class="lineNoCov">          0 :     VariableBase::clear();</span></a>
-<a name="391"><span class="lineNum">     391 </span><span class="lineNoCov">          0 :     _value = T();</span></a>
-<a name="392"><span class="lineNum">     392 </span>            :   }</a>
-<a name="393"><span class="lineNum">     393 </span>            :   else</a>
-<a name="394"><span class="lineNum">     394 </span>            :   {</a>
-<a name="395"><span class="lineNum">     395 </span><span class="lineNoCov">          0 :     neml_assert_dbg(</span></a>
-<a name="396"><span class="lineNum">     396 </span><span class="lineNoCov">          0 :         _ref_is_mutable,</span></a>
-<a name="397"><span class="lineNum">     397 </span>            :         &quot;Trying to clear a referencing variable, but the referenced variable is not mutable.&quot;);</a>
-<a name="398"><span class="lineNum">     398 </span>            :     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)</a>
-<a name="399"><span class="lineNum">     399 </span><span class="lineNoCov">          0 :     const_cast&lt;VariableBase *&gt;(ref())-&gt;clear();</span></a>
-<a name="400"><span class="lineNum">     400 </span>            :   }</a>
-<a name="401"><span class="lineNum">     401 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="402"><span class="lineNum">     402 </span>            : </a>
-<a name="403"><span class="lineNum">     403 </span>            : #define INSTANTIATE_VARIABLE(T) template class Variable&lt;T&gt;</a>
-<a name="404"><span class="lineNum">     404 </span>            : FOR_ALL_TENSORBASE(INSTANTIATE_VARIABLE);</a>
-<a name="405"><span class="lineNum">     405 </span>            : </a>
-<a name="406"><span class="lineNum">     406 </span>            : void</a>
-<a name="407"><span class="lineNum">     407 </span><span class="lineCov">      24319 : Derivative::operator=(const Tensor &amp; val)</span></a>
-<a name="408"><span class="lineNum">     408 </span>            : {</a>
-<a name="409"><span class="lineNum">     409 </span><span class="lineCov">      24319 :   *_deriv = val.base_reshape(_base_sizes);</span></a>
-<a name="410"><span class="lineNum">     410 </span><span class="lineCov">      24319 : }</span></a>
-<a name="411"><span class="lineNum">     411 </span>            : }</a>
+<a name="390"><span class="lineNum">     390 </span><span class="lineNoCov">          0 :     neml_assert_dbg(_ref_is_mutable,</span></a>
+<a name="391"><span class="lineNum">     391 </span>            :                     &quot;Trying to assign value to a referencing variable, but the referenced &quot;</a>
+<a name="392"><span class="lineNum">     392 </span>            :                     &quot;variable is not mutable.&quot;);</a>
+<a name="393"><span class="lineNum">     393 </span>            :     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)</a>
+<a name="394"><span class="lineNum">     394 </span><span class="lineNoCov">          0 :     *const_cast&lt;VariableBase *&gt;(ref()) = val;</span></a>
+<a name="395"><span class="lineNum">     395 </span>            :   }</a>
+<a name="396"><span class="lineNum">     396 </span><span class="lineCov">      25054 : }</span></a>
+<a name="397"><span class="lineNum">     397 </span>            : </a>
+<a name="398"><span class="lineNum">     398 </span>            : template &lt;typename T&gt;</a>
+<a name="399"><span class="lineNum">     399 </span>            : void</a>
+<a name="400"><span class="lineNum">     400 </span><span class="lineNoCov">          0 : Variable&lt;T&gt;::clear()</span></a>
+<a name="401"><span class="lineNum">     401 </span>            : {</a>
+<a name="402"><span class="lineNum">     402 </span><span class="lineNoCov">          0 :   if (owning())</span></a>
+<a name="403"><span class="lineNum">     403 </span>            :   {</a>
+<a name="404"><span class="lineNum">     404 </span><span class="lineNoCov">          0 :     VariableBase::clear();</span></a>
+<a name="405"><span class="lineNum">     405 </span><span class="lineNoCov">          0 :     _value = T();</span></a>
+<a name="406"><span class="lineNum">     406 </span>            :   }</a>
+<a name="407"><span class="lineNum">     407 </span>            :   else</a>
+<a name="408"><span class="lineNum">     408 </span>            :   {</a>
+<a name="409"><span class="lineNum">     409 </span><span class="lineNoCov">          0 :     neml_assert_dbg(</span></a>
+<a name="410"><span class="lineNum">     410 </span><span class="lineNoCov">          0 :         _ref_is_mutable,</span></a>
+<a name="411"><span class="lineNum">     411 </span>            :         &quot;Trying to clear a referencing variable, but the referenced variable is not mutable.&quot;);</a>
+<a name="412"><span class="lineNum">     412 </span>            :     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)</a>
+<a name="413"><span class="lineNum">     413 </span><span class="lineNoCov">          0 :     const_cast&lt;VariableBase *&gt;(ref())-&gt;clear();</span></a>
+<a name="414"><span class="lineNum">     414 </span>            :   }</a>
+<a name="415"><span class="lineNum">     415 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="416"><span class="lineNum">     416 </span>            : </a>
+<a name="417"><span class="lineNum">     417 </span>            : #define INSTANTIATE_VARIABLE(T) template class Variable&lt;T&gt;</a>
+<a name="418"><span class="lineNum">     418 </span>            : FOR_ALL_TENSORBASE(INSTANTIATE_VARIABLE);</a>
+<a name="419"><span class="lineNum">     419 </span>            : </a>
+<a name="420"><span class="lineNum">     420 </span>            : void</a>
+<a name="421"><span class="lineNum">     421 </span><span class="lineCov">      24319 : Derivative::operator=(const Tensor &amp; val)</span></a>
+<a name="422"><span class="lineNum">     422 </span>            : {</a>
+<a name="423"><span class="lineNum">     423 </span><span class="lineCov">      24319 :   *_deriv = val.base_reshape(_base_sizes);</span></a>
+<a name="424"><span class="lineNum">     424 </span><span class="lineCov">      24319 : }</span></a>
+<a name="425"><span class="lineNum">     425 </span>            : }</a>
 </pre>
       </td>
     </tr>
