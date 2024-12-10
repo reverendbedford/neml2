@@ -7,6 +7,5 @@ var searchData=
   ['vecforwardeulertimeintegration_4',['VecForwardEulerTimeIntegration',['../namespaceneml2.html#a987d7504c9eefa28a27837b3cf8e983c',1,'neml2']]],
   ['veclinearcombination_5',['VecLinearCombination',['../namespaceneml2.html#ab62e48ab12c1e2e3882f6972ec6a40f3',1,'neml2']]],
   ['veclinearinterpolation_6',['VecLinearInterpolation',['../namespaceneml2.html#a2370832dfc07ec4f0f48246b373dcd5e',1,'neml2']]],
-  ['vecsmoothlinearinterpolation_7',['VecSmoothLinearInterpolation',['../namespaceneml2.html#a0d8a137cac2552f73e6198a6f5c5050d',1,'neml2']]],
-  ['vecvariablerate_8',['VecVariableRate',['../namespaceneml2.html#a8756e09cb8eba7dea1046b64b85c8bf6',1,'neml2']]]
+  ['vecvariablerate_7',['VecVariableRate',['../namespaceneml2.html#a8756e09cb8eba7dea1046b64b85c8bf6',1,'neml2']]]
 ];

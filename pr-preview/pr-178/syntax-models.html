@@ -194,7 +194,6 @@ $(function(){initNavTree('syntax-models.html',''); initResizable(); });
 <li class="level2"><a href="#sr2invariant">SR2Invariant</a></li>
 <li class="level2"><a href="#sr2linearcombination">SR2LinearCombination</a></li>
 <li class="level2"><a href="#sr2linearinterpolation">SR2LinearInterpolation</a></li>
-<li class="level2"><a href="#sr2smoothlinearinterpolation">SR2SmoothLinearInterpolation</a></li>
 <li class="level2"><a href="#sr2twostagethermalannealing">SR2TwoStageThermalAnnealing</a></li>
 <li class="level2"><a href="#sr2variablerate">SR2VariableRate</a></li>
 <li class="level2"><a href="#ssfr5constantparameter">SSFR5ConstantParameter</a></li>
@@ -209,7 +208,6 @@ $(function(){initNavTree('syntax-models.html',''); initResizable(); });
 <li class="level2"><a href="#scalarinputparameter">ScalarInputParameter</a></li>
 <li class="level2"><a href="#scalarlinearcombination">ScalarLinearCombination</a></li>
 <li class="level2"><a href="#scalarlinearinterpolation">ScalarLinearInterpolation</a></li>
-<li class="level2"><a href="#scalarsmoothlinearinterpolation">ScalarSmoothLinearInterpolation</a></li>
 <li class="level2"><a href="#scalartwostagethermalannealing">ScalarTwoStageThermalAnnealing</a></li>
 <li class="level2"><a href="#scalarvariablerate">ScalarVariableRate</a></li>
 <li class="level2"><a href="#singleslipstrengthmap">SingleSlipStrengthMap</a></li>
@@ -222,7 +220,6 @@ $(function(){initNavTree('syntax-models.html',''); initResizable(); });
 <li class="level2"><a href="#vecinputparameter">VecInputParameter</a></li>
 <li class="level2"><a href="#veclinearcombination">VecLinearCombination</a></li>
 <li class="level2"><a href="#veclinearinterpolation">VecLinearInterpolation</a></li>
-<li class="level2"><a href="#vecsmoothlinearinterpolation">VecSmoothLinearInterpolation</a></li>
 <li class="level2"><a href="#vecvariablerate">VecVariableRate</a></li>
 <li class="level2"><a href="#voceisotropichardening">VoceIsotropicHardening</a></li>
 <li class="level2"><a href="#vocesinglesliphardeningrule">VoceSingleSlipHardeningRule</a></li>
@@ -2520,42 +2517,6 @@ SR2LinearInterpolation</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
-<h2><a class="anchor" id="sr2smoothlinearinterpolation"></a>
-SR2SmoothLinearInterpolation</h2>
-<p>Interpolate a SR2 as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
-<summary >
-<code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: Scalar 🔗 </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>argument</code> 🇮 Argument used to query the interpolant</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: variable name </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>ordinate</code> SR2 defining the ordinate values of the interpolant</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: SR2 🔗 </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>sharpness</code> Sharpness of the smooth interpolation. The result aympototes to the discrete interpolation as sharpness gets larger.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: 50 </li>
-</ul>
-</details>
-<p>Detailed documentation <a class="el" href="classneml2_1_1SmoothLinearInterpolation.html">link</a></p>
 <h2><a class="anchor" id="sr2twostagethermalannealing"></a>
 SR2TwoStageThermalAnnealing</h2>
 <p>Thermal annealing recovery for a hardening variable of type SR2.For temperatures below \( T_1 \) the model keeps the base model hardenign rate.For temperatures above \(T_1\) but below \(T_2 \) the model zeros the hardening rate.For temperatures above \(T_2\) the model replaces the hardening rate with \( \dot{h} = \frac{-h}{\tau} \) where \( \tau \) is the rate of recovery. </p><details >
@@ -2879,42 +2840,6 @@ ScalarLinearInterpolation</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
-<h2><a class="anchor" id="scalarsmoothlinearinterpolation"></a>
-ScalarSmoothLinearInterpolation</h2>
-<p>Interpolate a Scalar as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
-<summary >
-<code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: Scalar 🔗 </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>argument</code> 🇮 Argument used to query the interpolant</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: variable name </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>ordinate</code> Scalar defining the ordinate values of the interpolant</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: Scalar 🔗 </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>sharpness</code> Sharpness of the smooth interpolation. The result aympototes to the discrete interpolation as sharpness gets larger.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: 50 </li>
-</ul>
-</details>
-<p>Detailed documentation <a class="el" href="classneml2_1_1SmoothLinearInterpolation.html">link</a></p>
 <h2><a class="anchor" id="scalartwostagethermalannealing"></a>
 ScalarTwoStageThermalAnnealing</h2>
 <p>Thermal annealing recovery for a hardening variable of type Scalar.For temperatures below \( T_1 \) the model keeps the base model hardenign rate.For temperatures above \(T_1\) but below \(T_2 \) the model zeros the hardening rate.For temperatures above \(T_2\) the model replaces the hardening rate with \( \dot{h} = \frac{-h}{\tau} \) where \( \tau \) is the rate of recovery. </p><details >
@@ -3322,42 +3247,6 @@ VecLinearInterpolation</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearInterpolation.html">link</a></p>
-<h2><a class="anchor" id="vecsmoothlinearinterpolation"></a>
-VecSmoothLinearInterpolation</h2>
-<p>Interpolate a Vec as a function of the given argument. See <a class="el" href="classneml2_1_1Interpolation.html" title="The base class for interpolated nonlinear parameter.">neml2::Interpolation</a> for rules on shapes of the interpolant and the argument. This object performs a <em>linear interpolation</em>. </p><details >
-<summary >
-<code>abscissa</code> Scalar defining the abscissa values of the interpolant</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: Scalar 🔗 </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>argument</code> 🇮 Argument used to query the interpolant</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: variable name </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>ordinate</code> Vec defining the ordinate values of the interpolant</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: Vec 🔗 </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>sharpness</code> Sharpness of the smooth interpolation. The result aympototes to the discrete interpolation as sharpness gets larger.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: 50 </li>
-</ul>
-</details>
-<p>Detailed documentation <a class="el" href="classneml2_1_1SmoothLinearInterpolation.html">link</a></p>
 <h2><a class="anchor" id="vecvariablerate"></a>
 VecVariableRate</h2>
 <p>Calculate the first order discrete time derivative of a variable as \( \dot{f} = \frac{f-f_n}{t-t_n} \), where \( f \) is the force variable, and \( t \) is time. </p><details >
