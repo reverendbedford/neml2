@@ -452,14 +452,10 @@ void
 Model::value()
 {
   check_inplace_dbg();
-
-  if (is_AD_disabled())
   {
-    c10::InferenceMode guard;
+    c10::InferenceMode guard(is_AD_disabled());
     set_value(true, false, false);
   }
-  else
-    set_value(true, false, false);
 }
 
 void
@@ -473,13 +469,8 @@ Model::value_and_dvalue()
 
   if (!_AD_1st_deriv)
   {
-    if (is_AD_disabled())
-    {
-      c10::InferenceMode guard;
-      set_value(true, true, false);
-    }
-    else
-      set_value(true, true, false);
+    c10::InferenceMode guard(is_AD_disabled());
+    set_value(true, true, false);
   }
   else
   {
@@ -500,13 +491,8 @@ Model::dvalue()
 
   if (!_AD_1st_deriv)
   {
-    if (is_AD_disabled())
-    {
-      c10::InferenceMode guard;
-      set_value(false, true, false);
-    }
-    else
-      set_value(false, true, false);
+    c10::InferenceMode guard(is_AD_disabled());
+    set_value(false, true, false);
   }
   else
   {
@@ -528,13 +514,8 @@ Model::value_and_dvalue_and_d2value()
 
   if (!_AD_2nd_deriv)
   {
-    if (is_AD_disabled())
-    {
-      c10::InferenceMode guard;
-      set_value(true, true, true);
-    }
-    else
-      set_value(true, true, true);
+    c10::InferenceMode guard(is_AD_disabled());
+    set_value(true, true, true);
   }
   else
   {
@@ -565,13 +546,8 @@ Model::dvalue_and_d2value()
 
   if (!_AD_2nd_deriv)
   {
-    if (is_AD_disabled())
-    {
-      c10::InferenceMode guard;
-      set_value(false, true, true);
-    }
-    else
-      set_value(false, true, true);
+    c10::InferenceMode guard(is_AD_disabled());
+    set_value(false, true, true);
   }
   else
   {
@@ -601,13 +577,8 @@ Model::d2value()
 
   if (!_AD_2nd_deriv)
   {
-    if (is_AD_disabled())
-    {
-      c10::InferenceMode guard;
-      set_value(false, false, true);
-    }
-    else
-      set_value(false, false, true);
+    c10::InferenceMode guard(is_AD_disabled());
+    set_value(false, false, true);
   }
   else
   {
