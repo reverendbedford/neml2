@@ -50,7 +50,7 @@ public:
   ///@{
   /// The Model who declared this variable
   const Model & owner() const;
-  Model & owner();
+  Model & owner() const;
   ///@}
 
   /// Variable tensor type

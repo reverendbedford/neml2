@@ -43,7 +43,7 @@ VariableBase::owner() const
 }
 
 Model &
-VariableBase::owner()
+VariableBase::owner() const
 {
   neml_assert_dbg(_owner, "Owner of variable '", name(), "' has not been defined.");
   return *_owner;
