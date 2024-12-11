@@ -24,6 +24,7 @@ var classneml2_1_1LabeledTensor =
     [ "detach_", "classneml2_1_1LabeledTensor.html#ac331193399284d393e0b9493c96a9cb7", null ],
     [ "device", "classneml2_1_1LabeledTensor.html#a6f544bdd9dcc8c96c34281e459760b4e", null ],
     [ "dim", "classneml2_1_1LabeledTensor.html#a563eb1b917bdfeb60bbbcb2775da3166", null ],
+    [ "fill", "classneml2_1_1LabeledTensor.html#a0aad50e287f7ca653a318f895e3d5a31", null ],
     [ "operator Tensor", "classneml2_1_1LabeledTensor.html#a928e5d4a51212df6035182ef39ef5094", null ],
     [ "Tensor", "classneml2_1_1LabeledTensor.html#a5f2d6817ad000b6a0da23d21c55e81b5", null ],
     [ "operator-", "classneml2_1_1LabeledTensor.html#a63c61e19a8f60cdee48047d1157bb82e", null ],

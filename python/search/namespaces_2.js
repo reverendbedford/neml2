@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['tensors_0',['tensors',['../namespacetensors.html',1,'']]]
+  ['math_0',['math',['../namespacemath.html',1,'']]]
 ];

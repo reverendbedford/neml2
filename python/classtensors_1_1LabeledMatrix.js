@@ -16,6 +16,7 @@ var classtensors_1_1LabeledMatrix =
     [ "device", "classtensors_1_1LabeledMatrix.html#a5eba84d267f52548d5d5ceff6f0fc28f", null ],
     [ "dim", "classtensors_1_1LabeledMatrix.html#a35536134a6ceb1e866faf188992e9c9f", null ],
     [ "dtype", "classtensors_1_1LabeledMatrix.html#aac28ca36673931b4ce74e608155dba41", null ],
+    [ "fill", "classtensors_1_1LabeledMatrix.html#adf5cb63c9e9c1cbb2a5567a4db8b63d4", null ],
     [ "grad", "classtensors_1_1LabeledMatrix.html#a6c473406fb744d689106b5c22955b8e0", null ],
     [ "requires_grad", "classtensors_1_1LabeledMatrix.html#aa29879cd7288410c6dcf2cca2e37aa0f", null ],
     [ "requires_grad_", "classtensors_1_1LabeledMatrix.html#ab8c7a0f1e3e4f83486fa2916dc55b45d", null ],

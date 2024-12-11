@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-05 20:50:07</td>
+            <td class="headerValue">2024-12-11 16:42:39</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">14</td>
@@ -95,12 +95,12 @@
 <a name="33"><span class="lineNum">      33 </span>            : }</a>
 <a name="34"><span class="lineNum">      34 </span>            : </a>
 <a name="35"><span class="lineNum">      35 </span>            : Tensor</a>
-<a name="36"><span class="lineNum">      36 </span><span class="lineCov">        384 : Tensor::empty(const TensorShapeRef &amp; batch_shape,</span></a>
+<a name="36"><span class="lineNum">      36 </span><span class="lineCov">        393 : Tensor::empty(const TensorShapeRef &amp; batch_shape,</span></a>
 <a name="37"><span class="lineNum">      37 </span>            :               const TensorShapeRef &amp; base_shape,</a>
 <a name="38"><span class="lineNum">      38 </span>            :               const torch::TensorOptions &amp; options)</a>
 <a name="39"><span class="lineNum">      39 </span>            : {</a>
-<a name="40"><span class="lineNum">      40 </span><span class="lineCov">        768 :   return Tensor(torch::empty(utils::add_shapes(batch_shape, base_shape), options),</span></a>
-<a name="41"><span class="lineNum">      41 </span><span class="lineCov">       1152 :                 Size(batch_shape.size()));</span></a>
+<a name="40"><span class="lineNum">      40 </span><span class="lineCov">        786 :   return Tensor(torch::empty(utils::add_shapes(batch_shape, base_shape), options),</span></a>
+<a name="41"><span class="lineNum">      41 </span><span class="lineCov">       1179 :                 Size(batch_shape.size()));</span></a>
 <a name="42"><span class="lineNum">      42 </span>            : }</a>
 <a name="43"><span class="lineNum">      43 </span>            : </a>
 <a name="44"><span class="lineNum">      44 </span>            : Tensor</a>
@@ -110,12 +110,12 @@
 <a name="48"><span class="lineNum">      48 </span>            : }</a>
 <a name="49"><span class="lineNum">      49 </span>            : </a>
 <a name="50"><span class="lineNum">      50 </span>            : Tensor</a>
-<a name="51"><span class="lineNum">      51 </span><span class="lineCov">      28857 : Tensor::zeros(const TensorShapeRef &amp; batch_shape,</span></a>
+<a name="51"><span class="lineNum">      51 </span><span class="lineCov">      29352 : Tensor::zeros(const TensorShapeRef &amp; batch_shape,</span></a>
 <a name="52"><span class="lineNum">      52 </span>            :               const TensorShapeRef &amp; base_shape,</a>
 <a name="53"><span class="lineNum">      53 </span>            :               const torch::TensorOptions &amp; options)</a>
 <a name="54"><span class="lineNum">      54 </span>            : {</a>
-<a name="55"><span class="lineNum">      55 </span><span class="lineCov">      57714 :   return Tensor(torch::zeros(utils::add_shapes(batch_shape, base_shape), options),</span></a>
-<a name="56"><span class="lineNum">      56 </span><span class="lineCov">      86571 :                 Size(batch_shape.size()));</span></a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineCov">      58704 :   return Tensor(torch::zeros(utils::add_shapes(batch_shape, base_shape), options),</span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineCov">      88056 :                 Size(batch_shape.size()));</span></a>
 <a name="57"><span class="lineNum">      57 </span>            : }</a>
 <a name="58"><span class="lineNum">      58 </span>            : </a>
 <a name="59"><span class="lineNum">      59 </span>            : Tensor</a>
@@ -150,32 +150,32 @@
 <a name="88"><span class="lineNum">      88 </span>            : }</a>
 <a name="89"><span class="lineNum">      89 </span>            : </a>
 <a name="90"><span class="lineNum">      90 </span>            : Tensor</a>
-<a name="91"><span class="lineNum">      91 </span><span class="lineCov">       1918 : Tensor::identity(Size n, const torch::TensorOptions &amp; options)</span></a>
+<a name="91"><span class="lineNum">      91 </span><span class="lineCov">       1935 : Tensor::identity(Size n, const torch::TensorOptions &amp; options)</span></a>
 <a name="92"><span class="lineNum">      92 </span>            : {</a>
-<a name="93"><span class="lineNum">      93 </span><span class="lineCov">       3836 :   return Tensor(torch::eye(n, options), 0);</span></a>
+<a name="93"><span class="lineNum">      93 </span><span class="lineCov">       3870 :   return Tensor(torch::eye(n, options), 0);</span></a>
 <a name="94"><span class="lineNum">      94 </span>            : }</a>
 <a name="95"><span class="lineNum">      95 </span>            : </a>
 <a name="96"><span class="lineNum">      96 </span>            : Tensor</a>
-<a name="97"><span class="lineNum">      97 </span><span class="lineCov">       1673 : Tensor::identity(const TensorShapeRef &amp; batch_shape, Size n, const torch::TensorOptions &amp; options)</span></a>
+<a name="97"><span class="lineNum">      97 </span><span class="lineCov">       1690 : Tensor::identity(const TensorShapeRef &amp; batch_shape, Size n, const torch::TensorOptions &amp; options)</span></a>
 <a name="98"><span class="lineNum">      98 </span>            : {</a>
-<a name="99"><span class="lineNum">      99 </span><span class="lineCov">       3346 :   return identity(n, options).batch_expand_copy(batch_shape);</span></a>
+<a name="99"><span class="lineNum">      99 </span><span class="lineCov">       3380 :   return identity(n, options).batch_expand_copy(batch_shape);</span></a>
 <a name="100"><span class="lineNum">     100 </span>            : }</a>
 <a name="101"><span class="lineNum">     101 </span>            : </a>
 <a name="102"><span class="lineNum">     102 </span>            : namespace math</a>
 <a name="103"><span class="lineNum">     103 </span>            : {</a>
 <a name="104"><span class="lineNum">     104 </span>            : Tensor</a>
-<a name="105"><span class="lineNum">     105 </span><span class="lineCov">       8613 : bmm(const Tensor &amp; a, const Tensor &amp; b)</span></a>
+<a name="105"><span class="lineNum">     105 </span><span class="lineCov">       8685 : bmm(const Tensor &amp; a, const Tensor &amp; b)</span></a>
 <a name="106"><span class="lineNum">     106 </span>            : {</a>
-<a name="107"><span class="lineNum">     107 </span><span class="lineCov">       8613 :   neml_assert_batch_broadcastable_dbg(a, b);</span></a>
-<a name="108"><span class="lineNum">     108 </span><span class="lineCov">       8613 :   neml_assert_dbg(a.base_dim() == 2,</span></a>
+<a name="107"><span class="lineNum">     107 </span><span class="lineCov">       8685 :   neml_assert_batch_broadcastable_dbg(a, b);</span></a>
+<a name="108"><span class="lineNum">     108 </span><span class="lineCov">       8685 :   neml_assert_dbg(a.base_dim() == 2,</span></a>
 <a name="109"><span class="lineNum">     109 </span>            :                   &quot;The first tensor in bmm has base dimension &quot;,</a>
-<a name="110"><span class="lineNum">     110 </span><span class="lineCov">       8613 :                   a.base_dim(),</span></a>
+<a name="110"><span class="lineNum">     110 </span><span class="lineCov">       8685 :                   a.base_dim(),</span></a>
 <a name="111"><span class="lineNum">     111 </span>            :                   &quot; instead of 2.&quot;);</a>
-<a name="112"><span class="lineNum">     112 </span><span class="lineCov">       8613 :   neml_assert_dbg(b.base_dim() == 2,</span></a>
+<a name="112"><span class="lineNum">     112 </span><span class="lineCov">       8685 :   neml_assert_dbg(b.base_dim() == 2,</span></a>
 <a name="113"><span class="lineNum">     113 </span>            :                   &quot;The second tensor in bmm has base dimension &quot;,</a>
-<a name="114"><span class="lineNum">     114 </span><span class="lineCov">       8613 :                   b.base_dim(),</span></a>
+<a name="114"><span class="lineNum">     114 </span><span class="lineCov">       8685 :                   b.base_dim(),</span></a>
 <a name="115"><span class="lineNum">     115 </span>            :                   &quot; instead of 2.&quot;);</a>
-<a name="116"><span class="lineNum">     116 </span><span class="lineCov">      17226 :   return Tensor(torch::matmul(a, b), broadcast_batch_dim(a, b));</span></a>
+<a name="116"><span class="lineNum">     116 </span><span class="lineCov">      17370 :   return Tensor(torch::matmul(a, b), broadcast_batch_dim(a, b));</span></a>
 <a name="117"><span class="lineNum">     117 </span>            : }</a>
 <a name="118"><span class="lineNum">     118 </span>            : </a>
 <a name="119"><span class="lineNum">     119 </span>            : Tensor</a>

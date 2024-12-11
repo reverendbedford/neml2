@@ -148,6 +148,7 @@ $(function(){initNavTree('syntax-models.html',''); initResizable(); });
 <li class="level2"><a href="#kocksmeckingactivationenergy">KocksMeckingActivationEnergy</a></li>
 <li class="level2"><a href="#kocksmeckingflowswitch">KocksMeckingFlowSwitch</a></li>
 <li class="level2"><a href="#kocksmeckingflowviscosity">KocksMeckingFlowViscosity</a></li>
+<li class="level2"><a href="#kocksmeckingintercept">KocksMeckingIntercept</a></li>
 <li class="level2"><a href="#kocksmeckingratesensitivity">KocksMeckingRateSensitivity</a></li>
 <li class="level2"><a href="#kocksmeckingyieldstress">KocksMeckingYieldStress</a></li>
 <li class="level2"><a href="#linearisotropicelasticj2trialstressupdate">LinearIsotropicElasticJ2TrialStressUpdate</a></li>
@@ -1333,6 +1334,33 @@ KocksMeckingFlowViscosity</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1KocksMeckingFlowViscosity.html">link</a></p>
+<h2><a class="anchor" id="kocksmeckingintercept"></a>
+KocksMeckingIntercept</h2>
+<p>The critical value of the normalized activation energy given by \( g_0 \frac{C-B}{A} \) </p><details >
+<summary >
+<code>A</code> 🇵 The Kocks-Mecking slope</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: Scalar 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>B</code> 🇵 The Kocks-Mecking intercept</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: Scalar 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>C</code> 🇵 The Kocks-Mecking horizontal value</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: Scalar 🔗 </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1KocksMeckingIntercept.html">link</a></p>
 <h2><a class="anchor" id="kocksmeckingratesensitivity"></a>
 KocksMeckingRateSensitivity</h2>
 <p>Calculates the temperature-dependent rate sensitivity for a Perzyna-type model using the Kocks-Mecking model. The value is \( n = \frac{\mu b^3}{k T A} \) with \( \mu \) the shear modulus, \( b \) the Burgers vector, \(  k\) the Boltzmann constant, \( T \) absolute temperature, and \( A \) the Kocks-Mecking slope parameter. </p><details >

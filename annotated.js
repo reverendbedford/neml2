@@ -63,6 +63,7 @@ var annotated =
       [ "KocksMeckingActivationEnergy", "classneml2_1_1KocksMeckingActivationEnergy.html", "classneml2_1_1KocksMeckingActivationEnergy" ],
       [ "KocksMeckingFlowSwitch", "classneml2_1_1KocksMeckingFlowSwitch.html", "classneml2_1_1KocksMeckingFlowSwitch" ],
       [ "KocksMeckingFlowViscosity", "classneml2_1_1KocksMeckingFlowViscosity.html", "classneml2_1_1KocksMeckingFlowViscosity" ],
+      [ "KocksMeckingIntercept", "classneml2_1_1KocksMeckingIntercept.html", "classneml2_1_1KocksMeckingIntercept" ],
       [ "KocksMeckingRateSensitivity", "classneml2_1_1KocksMeckingRateSensitivity.html", "classneml2_1_1KocksMeckingRateSensitivity" ],
       [ "KocksMeckingYieldStress", "classneml2_1_1KocksMeckingYieldStress.html", "classneml2_1_1KocksMeckingYieldStress" ],
       [ "LabeledAxis", "classneml2_1_1LabeledAxis.html", "classneml2_1_1LabeledAxis" ],

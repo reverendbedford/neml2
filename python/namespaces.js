@@ -1,6 +1,7 @@
 var namespaces =
 [
     [ "base", "namespacebase.html", "namespacebase" ],
+    [ "interface", "namespaceinterface.html", "namespaceinterface" ],
     [ "math", "namespacemath.html", [
       [ "abs", "namespacemath.html#a5e314a8055d99b7212de636692e0d90a", null ],
       [ "abs", "namespacemath.html#a629015d1234fcc6c0b8770998f4d5be1", null ],

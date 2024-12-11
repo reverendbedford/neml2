@@ -4,6 +4,9 @@ var annotated =
       [ "Model", "classbase_1_1Model.html", "classbase_1_1Model" ],
       [ "TensorValue", "classbase_1_1TensorValue.html", "classbase_1_1TensorValue" ]
     ] ],
+    [ "interface", "namespaceinterface.html", [
+      [ "NEML2PyzagModel", "classinterface_1_1NEML2PyzagModel.html", "classinterface_1_1NEML2PyzagModel" ]
+    ] ],
     [ "tensors", "namespacetensors.html", [
       [ "LabeledAxis", "classtensors_1_1LabeledAxis.html", "classtensors_1_1LabeledAxis" ],
       [ "LabeledAxisAccessor", "classtensors_1_1LabeledAxisAccessor.html", "classtensors_1_1LabeledAxisAccessor" ],
