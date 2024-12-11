@@ -42,6 +42,10 @@ PYBIND11_MODULE(math, m)
   m.def("bmv", &math::bmv);
   m.def("bvv", &math::bvv);
 
+  // Helpers
+  m.def("full_to_mandel", &math::full_to_mandel, py::arg("full"), py::arg("dim") = 0);
+  m.def("mandel_to_full", &math::mandel_to_full, py::arg("mandel"), py::arg("dim") = 0);
+
   // Templated methods
   // These methods are special because the argument could be anything derived from TensorBase,
   // so we need to bind every possible instantiation.

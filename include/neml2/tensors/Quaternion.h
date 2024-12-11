@@ -30,6 +30,7 @@ namespace neml2
 {
 class R2;
 class Scalar;
+class Rot;
 /**
  * @brief A batched quaternion
  *
@@ -44,6 +45,8 @@ class Quaternion : public PrimitiveTensor<Quaternion, 4>
 {
 public:
   using PrimitiveTensor<Quaternion, 4>::PrimitiveTensor;
+
+  Quaternion(const Rot & r);
 
   /// fill with four scalars
   static Quaternion fill(const Scalar & s, const Scalar & q1, const Scalar & q2, const Scalar & q3);
@@ -60,5 +63,11 @@ public:
 
   /// Convert to R2
   R2 to_R2() const;
+
+  /// Dot product
+  Scalar dot(const Quaternion & q2) const;
+
+  /// Distance measure between two quaternions
+  Scalar dist(const Quaternion & q2) const;
 };
 } // namespace neml2

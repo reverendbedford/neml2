@@ -38,7 +38,10 @@ def_Rot(py::class_<Rot> & c)
       .def("euler_rodrigues", &Rot::euler_rodrigues)
       .def("deuler_rodrigues", &Rot::deuler_rodrigues)
       .def("rotate", &Rot::rotate)
-      .def("drotate", &Rot::drotate);
+      .def("drotate", &Rot::drotate)
+      .def("shadow", &Rot::shadow)
+      .def("dist", &Rot::dist)
+      .def("dV", &Rot::dV);
 
   // Operators
   c.def(py::self * py::self);
@@ -49,4 +52,8 @@ def_Rot(py::class_<Rot> & c)
       [](NEML2_TENSOR_OPTIONS_VARGS) { return Rot::identity(NEML2_TENSOR_OPTIONS); },
       py::kw_only(),
       PY_ARG_TENSOR_OPTIONS);
+  c.def_static("fill_euler_angles", &Rot::fill_euler_angles);
+  c.def_static("fill_matrix", &Rot::fill_matrix);
+  c.def_static("fill_random", &Rot::fill_random);
+  c.def_static("fill_rodrigues", &Rot::fill_rodrigues);
 }

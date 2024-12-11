@@ -118,6 +118,25 @@
   []
 []
 
+[Drivers]
+  [driver]
+    type = SolidMechanicsDriver
+    model = 'model'
+    times = 'times'
+    prescribed_mixed_conditions = 'conditions'
+    prescribed_control = 'control'
+    save_as = 'result_complex_model.pt'
+    prescribed_temperatures = 'temperatures'
+    control = 'MIXED'
+  []
+[]
+
+[Solvers]
+  [newton]
+    type = Newton
+  []
+[]
+
 [Models]
   [A]
     type = ScalarConstantParameter

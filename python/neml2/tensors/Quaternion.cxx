@@ -28,6 +28,12 @@ namespace py = pybind11;
 using namespace neml2;
 
 void
-def_Quaternion(py::class_<Quaternion> & /*m*/)
+def_Quaternion(py::class_<Quaternion> & m)
 {
+  // Ctors, conversions, accessors etc.
+  m.def(py::init<const Rot &>());
+
+  // Methods
+  m.def("dist", &Quaternion::dist);
+  m.def("dot", &Quaternion::dot);
 }

@@ -43,6 +43,8 @@
 #include "neml2/tensors/WSR4.h"
 #include "neml2/tensors/WWR4.h"
 #include "neml2/models/crystallography/MillerIndex.h"
+#include "neml2/tensors/SSSSR8.h"
+#include "neml2/tensors/R8.h"
 
 #include "neml2/tensors/macros.h"
 

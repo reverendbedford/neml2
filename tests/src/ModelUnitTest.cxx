@@ -67,6 +67,11 @@ ModelUnitTest::expected_options()
   options.set<std::vector<CrossRef<Rot>>>("input_rot_values");
   options.set<std::vector<VariableName>>("output_rot_names");
   options.set<std::vector<CrossRef<Rot>>>("output_rot_values");
+  options.set<std::vector<VariableName>>("input_ssr4_names");
+  options.set<std::vector<CrossRef<SSR4>>>("input_ssr4_values");
+  options.set<std::vector<VariableName>>("output_ssr4_names");
+  options.set<std::vector<CrossRef<SSR4>>>("output_ssr4_values");
+
   options.set<Real>("output_rel_tol") = 1e-5;
   options.set<Real>("output_abs_tol") = 1e-8;
   options.set<Real>("derivatives_rel_tol") = 1e-5;
@@ -108,6 +113,7 @@ ModelUnitTest::ModelUnitTest(const OptionSet & options)
   fill_vector<SR2>(_in, "input_symr2_names", "input_symr2_values");
   fill_vector<WR2>(_in, "input_skewr2_names", "input_skewr2_values");
   fill_vector<Rot>(_in, "input_rot_names", "input_rot_values");
+  fill_vector<SSR4>(_in, "input_ssr4_names", "input_ssr4_values");
 
   _out = LabeledVector::zeros(_batch_shape, {&_model.output_axis()});
   fill_vector<Tensor>(_out, "output_batch_tensor_names", "output_batch_tensor_values");
@@ -115,6 +121,7 @@ ModelUnitTest::ModelUnitTest(const OptionSet & options)
   fill_vector<SR2>(_out, "output_symr2_names", "output_symr2_values");
   fill_vector<WR2>(_out, "output_skewr2_names", "output_skewr2_values");
   fill_vector<Rot>(_out, "output_rot_names", "output_rot_values");
+  fill_vector<SSR4>(_out, "output_ssr4_names", "output_ssr4_values");
 
   if (_check_2nd_deriv || _check_AD_2nd_deriv || _check_AD_derivs)
     _deriv_order = 2;

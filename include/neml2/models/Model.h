@@ -260,6 +260,11 @@ protected:
                      bool nonlinear = false,
                      bool merge_input = true)
   {
+    neml_assert(name != this->name(),
+                "Model named '",
+                this->name(),
+                "' is trying to register itself as a sub-model. This is not allowed.");
+
     OptionSet extra_opts;
     extra_opts.set<NEML2Object *>("_host") = host();
     extra_opts.set<int>("_extra_derivative_order") = extra_deriv_order;

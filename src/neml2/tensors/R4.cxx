@@ -31,6 +31,7 @@
 #include "neml2/tensors/R5.h"
 #include "neml2/tensors/Rot.h"
 #include "neml2/tensors/WWR4.h"
+#include "neml2/tensors/R8.h"
 
 namespace neml2
 {
@@ -68,6 +69,19 @@ R4::drotate(const Rot & r) const
   auto res = res1 + res2 + res3 + res4;
 
   return R5(res, broadcast_batch_dim(*this, R, F));
+}
+
+R8
+R4::drotate_self(const Rot & r) const
+{
+  R2 R = r.euler_rodrigues();
+  neml_assert_batch_broadcastable_dbg(*this, R);
+
+  auto res = R8(torch::einsum("...im,...jn,...ko,...lp->...ijklmnop", {R, R, R, R}), R.batch_dim());
+
+  if (res.batch_dim() < this->batch_dim())
+    return res.batch_expand_as(*this);
+  return res;
 }
 
 Scalar

@@ -263,7 +263,7 @@ template <class Derived>
 Derived
 TensorBase<Derived>::batch_reshape(TensorShapeRef batch_shape) const
 {
-  return Derived(reshape(utils::add_shapes(batch_shape, base_sizes())), _batch_dim);
+  return Derived(reshape(utils::add_shapes(batch_shape, base_sizes())), batch_shape.size());
 }
 
 template <class Derived>
