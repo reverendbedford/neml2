@@ -2,6 +2,7 @@
 ##### pip requirements ######
 #
 numpy<2
+pyzag
 -r doc/requirements.txt
 -r scripts/requirements.txt
 -r python/tests/requirements.txt
