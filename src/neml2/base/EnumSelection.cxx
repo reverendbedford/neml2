@@ -41,13 +41,6 @@ operator>>(std::stringstream & ss, EnumSelection & es)
   return ss;
 }
 
-EnumSelection::EnumSelection(const EnumSelection & other)
-  : EnumSelectionBase(other),
-    _selection(other._selection),
-    _value(other._value)
-{
-}
-
 EnumSelection::EnumSelection(const std::vector<std::string> & candidates,
                              const std::string & selection)
   : EnumSelectionBase(candidates)
@@ -63,15 +56,6 @@ EnumSelection::EnumSelection(const std::vector<std::string> & candidates,
   select(selection);
 }
 
-EnumSelection &
-EnumSelection::operator=(const EnumSelection & other)
-{
-  _candidate_map = other._candidate_map;
-  _selection = other._selection;
-  _value = other._value;
-  return *this;
-}
-
 bool
 EnumSelection::operator==(const EnumSelection & other) const
 {
@@ -81,6 +65,18 @@ EnumSelection::operator==(const EnumSelection & other) const
 
 bool
 EnumSelection::operator!=(const EnumSelection & other) const
+{
+  return !(*this == other);
+}
+
+bool
+EnumSelection::operator==(const std::string & other) const
+{
+  return _selection == other;
+}
+
+bool
+EnumSelection::operator!=(const std::string & other) const
 {
   return !(*this == other);
 }

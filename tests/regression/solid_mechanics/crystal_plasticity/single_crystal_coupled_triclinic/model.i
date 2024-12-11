@@ -108,22 +108,22 @@
              57692.30769230767 57692.30769230767 134615.3846153846 8000.0 1000.0 25000.0
              10000.0 4000.0 8000.0 76923.07692307692 2000.0 1000.0
              5000.0 20000.0 1000.0 2000.0 76923.07692307692 1500.0
-             15000.0 2000.0 25000.0 1000.0 1500.0 76923.07692307692" 
+             15000.0 2000.0 25000.0 1000.0 1500.0 76923.07692307692"
   []
 []
 
 [Drivers]
   [driver]
-    type = LargeDeformationIncrementalSolidMechanicsDriver
+    type = LDISolidMechanicsDriver
     model = 'model_with_stress'
-    times = 'times'
+    prescribed_time = 'times'
     prescribed_deformation_rate = 'deformation_rate'
     prescribed_vorticity = 'vorticity'
     ic_rot_names = 'state/orientation'
     ic_rot_values = 'initial_orientation'
-    predictor = 'CP_PREVIOUS_STATE'
+    cp_warmup = true
+    cp_warmup_elastic_scale = 0.1
     save_as = 'result.pt'
-    cp_elastic_scale = 0.1
   []
   [regression]
     type = TransientRegression

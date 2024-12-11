@@ -1,0 +1,4 @@
+-*/_deps/*
+-*/neml2/contrib/*
+-*/tests/*
+-*/torch/*

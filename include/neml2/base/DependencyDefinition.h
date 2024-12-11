@@ -39,6 +39,14 @@ template <typename T>
 class DependencyDefinition
 {
 public:
+  DependencyDefinition() = default;
+
+  DependencyDefinition(DependencyDefinition &&) = delete;
+  DependencyDefinition(const DependencyDefinition &) = delete;
+  DependencyDefinition & operator=(const DependencyDefinition &) = delete;
+  DependencyDefinition & operator=(DependencyDefinition &&) = delete;
+  virtual ~DependencyDefinition() = default;
+
   /// What this object consumes
   virtual std::set<T> consumed_items() const = 0;
 

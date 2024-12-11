@@ -33,8 +33,6 @@ set(NEML2_TESTS ON CACHE BOOL "Build NEML2 tests")
 set(NEML2_RUNNER OFF CACHE BOOL "Build a simple runner for benchmarking, profiling, debugging, etc.")
 set(NEML2_PYBIND OFF CACHE BOOL "Build NEML2 Python bindings")
 set(NEML2_DOC OFF CACHE BOOL "Build NEML2 documentation (html)")
-set(NEML2_CLANG_TIDY OFF CACHE BOOL "Enable clang-tidy linting")
-set(NEML2_CLANG_TIDY_PATH "clang-tidy" CACHE STRING "Path to the clang-tidy executable")
 
 # ----------------------------------------------------------------------------
 # Dependencies and 3rd party packages

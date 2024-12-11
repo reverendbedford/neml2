@@ -28,9 +28,7 @@
 
 #include "neml2/models/crystallography/MillerIndex.h"
 
-namespace neml2
-{
-namespace crystallography
+namespace neml2::crystallography
 {
 /**
  * @brief Create a single-batched "list" of Miller indices
@@ -51,5 +49,4 @@ private:
   /// A helper method to dispatch to the correct fill method based on the number of values.
   MillerIndex fill(const std::vector<Integer> & values) const;
 };
-} // namespace crystallography
 } // namespace neml2

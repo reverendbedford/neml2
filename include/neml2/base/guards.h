@@ -39,8 +39,12 @@ std::map<std::string, std::map<std::string, unsigned long>> & timed_sections();
 
 struct TimedSection
 {
-  TimedSection(const std::string & name, const std::string & section);
+  TimedSection(std::string name, std::string section);
 
+  TimedSection(const TimedSection &) = delete;
+  TimedSection(TimedSection &&) = delete;
+  TimedSection & operator=(const TimedSection &) = delete;
+  TimedSection & operator=(TimedSection &&) = delete;
   ~TimedSection();
 
 private:
@@ -58,38 +62,51 @@ struct SolvingNonlinearSystem
     currently_solving_nonlinear_system() = solving;
   }
 
+  SolvingNonlinearSystem(const SolvingNonlinearSystem &) = delete;
+  SolvingNonlinearSystem(SolvingNonlinearSystem &&) = delete;
+  SolvingNonlinearSystem & operator=(const SolvingNonlinearSystem &) = delete;
+  SolvingNonlinearSystem & operator=(SolvingNonlinearSystem &&) = delete;
   ~SolvingNonlinearSystem() { currently_solving_nonlinear_system() = prev_bool; }
 
   const bool prev_bool;
 };
 
-// A RAII guard that sets number of interop threads for a local region
+// Set number of interop threads for a local region
 struct InterOpThread
 {
-  InterOpThread(unsigned int num)
+  InterOpThread(int num)
     : prev_num(at::get_num_interop_threads())
   {
     if (num > 0)
       at::set_num_interop_threads(num);
   }
 
+  InterOpThread(const InterOpThread &) = delete;
+  InterOpThread(InterOpThread &&) = delete;
+  InterOpThread & operator=(const InterOpThread &) = delete;
+  InterOpThread & operator=(InterOpThread &&) = delete;
   ~InterOpThread() { at::set_num_interop_threads(prev_num); }
 
-  unsigned int prev_num;
+  int prev_num;
 };
 
-// A RAII guard that sets number of intraop threads for a local region
+// Set number of intraop threads for a local region
 struct IntraOpThread
 {
-  IntraOpThread(unsigned int num)
+  IntraOpThread(int num)
     : prev_num(at::get_num_threads())
   {
     if (num > 0)
       at::set_num_threads(num);
   }
 
+  IntraOpThread(const IntraOpThread &) = delete;
+  IntraOpThread(IntraOpThread &&) = delete;
+  IntraOpThread & operator=(const IntraOpThread &) = delete;
+  IntraOpThread & operator=(IntraOpThread &&) = delete;
   ~IntraOpThread() { at::set_num_threads(prev_num); }
 
-  unsigned int prev_num;
+  int prev_num;
 };
+
 }

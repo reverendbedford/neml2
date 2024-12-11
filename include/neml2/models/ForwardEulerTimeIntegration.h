@@ -36,7 +36,7 @@ public:
 
   ForwardEulerTimeIntegration(const OptionSet & options);
 
-  virtual void diagnose(std::vector<Diagnosis> & diagnoses) const override;
+  void diagnose(std::vector<Diagnosis> & diagnoses) const override;
 
 private:
   const VariableName _var_name;

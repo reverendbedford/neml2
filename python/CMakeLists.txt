@@ -17,7 +17,7 @@ macro(add_submodule mname msrcs)
 endmacro()
 
 # Actually define the submodules
-add_submodule(base neml2/base.cxx)
+add_submodule(core neml2/core.cxx)
 add_submodule(math neml2/math.cxx)
 add_submodule(crystallography neml2/crystallography.cxx)
 file(GLOB_RECURSE tensors_srcs neml2/tensors/*.cxx)
@@ -25,7 +25,7 @@ add_submodule(tensors "${tensors_srcs}")
 
 # Extract stub
 add_custom_target(python-stub ALL
-  DEPENDS base math tensors crystallography
+  DEPENDS core math tensors crystallography
   WORKING_DIRECTORY ${NEML2_BINARY_DIR}/python
   COMMAND PYTHONPATH=. pybind11-stubgen -o . neml2
   VERBATIM
@@ -48,7 +48,7 @@ install(FILES
   neml2/postprocessing/polefigure.py
   neml2/postprocessing/odf.py
   ${NEML2_BINARY_DIR}/python/neml2/__init__.pyi
-  ${NEML2_BINARY_DIR}/python/neml2/base.pyi
+  ${NEML2_BINARY_DIR}/python/neml2/core.pyi
   ${NEML2_BINARY_DIR}/python/neml2/math.pyi
   ${NEML2_BINARY_DIR}/python/neml2/crystallography.pyi
   ${NEML2_BINARY_DIR}/python/neml2/tensors.pyi

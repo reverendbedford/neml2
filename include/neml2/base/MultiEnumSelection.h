@@ -41,15 +41,15 @@ class MultiEnumSelection : public EnumSelectionBase
 {
 public:
   MultiEnumSelection() = default;
-  MultiEnumSelection(const MultiEnumSelection & other);
+
+  /// Create a multi-enum selection from a list of candidates and default selections
   MultiEnumSelection(const std::vector<std::string> & candidates,
                      const std::vector<std::string> & selections);
+
+  /// Create a multi-enum selection from a list of candidates, their corresponding values, and default selections
   MultiEnumSelection(const std::vector<std::string> & candidates,
                      const std::vector<int> & values,
                      const std::vector<std::string> & selections);
-
-  /// Assignment operator
-  MultiEnumSelection & operator=(const MultiEnumSelection & other);
 
   /// Select new values
   /// @note This will clear the current selection

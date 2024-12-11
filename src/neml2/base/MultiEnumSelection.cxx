@@ -41,13 +41,6 @@ operator>>(std::stringstream & ss, MultiEnumSelection & es)
   return ss;
 }
 
-MultiEnumSelection::MultiEnumSelection(const MultiEnumSelection & other)
-  : EnumSelectionBase(other),
-    _selections(other._selections),
-    _values(other._values)
-{
-}
-
 MultiEnumSelection::MultiEnumSelection(const std::vector<std::string> & candidates,
                                        const std::vector<std::string> & selections)
   : EnumSelectionBase(candidates)
@@ -61,15 +54,6 @@ MultiEnumSelection::MultiEnumSelection(const std::vector<std::string> & candidat
   : EnumSelectionBase(candidates, values)
 {
   select(selections);
-}
-
-MultiEnumSelection &
-MultiEnumSelection::operator=(const MultiEnumSelection & other)
-{
-  _candidate_map = other._candidate_map;
-  _selections = other._selections;
-  _values = other._values;
-  return *this;
 }
 
 bool

@@ -40,11 +40,20 @@ constexpr Real eps = std::numeric_limits<at::scalar_value_type<Real>::type>::eps
 constexpr Real sqrt2 = 1.4142135623730951;
 constexpr Real invsqrt2 = 0.7071067811865475;
 
-constexpr Size mandel_reverse_index[3][3] = {{0, 5, 4}, {5, 1, 3}, {4, 3, 2}};
-constexpr Size mandel_index[6][2] = {{0, 0}, {1, 1}, {2, 2}, {1, 2}, {0, 2}, {0, 1}};
+constexpr std::array<std::array<Size, 3>, 3> mandel_reverse_index{
+    std::array<Size, 3>{0, 5, 4}, std::array<Size, 3>{5, 1, 3}, std::array<Size, 3>{4, 3, 2}};
+constexpr std::array<std::array<Size, 2>, 6> mandel_index{std::array<Size, 2>{0, 0},
+                                                          std::array<Size, 2>{1, 1},
+                                                          std::array<Size, 2>{2, 2},
+                                                          std::array<Size, 2>{1, 2},
+                                                          std::array<Size, 2>{0, 2},
+                                                          std::array<Size, 2>{0, 1}};
 
-constexpr Size skew_reverse_index[3][3] = {{0, 2, 1}, {2, 0, 0}, {1, 0, 0}};
-constexpr Real skew_factor[3][3] = {{0.0, -1.0, 1.0}, {1.0, 0.0, -1.0}, {-1.0, 1.0, 0.0}};
+constexpr std::array<std::array<Size, 3>, 3> skew_reverse_index{
+    std::array<Size, 3>{0, 2, 1}, std::array<Size, 3>{2, 0, 0}, std::array<Size, 3>{1, 0, 0}};
+constexpr std::array<std::array<Real, 3>, 3> skew_factor{std::array<Real, 3>{0.0, -1.0, 1.0},
+                                                         std::array<Real, 3>{1.0, 0.0, -1.0},
+                                                         std::array<Real, 3>{-1.0, 1.0, 0.0}};
 
 inline constexpr Real
 mandel_factor(Size i)
@@ -189,25 +198,27 @@ Tensor full_to_skew(const Tensor & full, Size dim = 0);
 Tensor skew_to_full(const Tensor & skew, Size dim = 0);
 
 /**
- * @brief Use automatic differentiation (AD) to calculate the derivatives w.r.t. to the parameter
+ * @brief Use automatic differentiation (AD) to calculate the derivatives of a Tensor w.r.t. another
+ * Tensor
  *
  * @warning Torch (and hence NEML2) AD wasn't designed to compute the full Jacobian from the very
  * beginning. Using this method to calculate the full Jacobian is inefficient and is subjected to
- * some restrictions on batch shapes: This method will only work when the output \p y and the
- * paramter \p p have the same batch shape.
- *
- * However, in practice, the batch shape of the output \p y and the batch shape of the parameter \p
- * p can be different. In that case, calculating the full Jacobian is not possible, and an exception
- * will be thrown.
- *
- * One possible (inefficient) workaround is to expand and copy the parameter \p p batch dimensions,
- * e.g., batch_expand_copy, _before_ calculating the output \p y.
+ * some restrictions on batch shapes.
  *
  * @param y The `Tensor` to to be differentiated
- * @param p The parameter to take derivatives with respect to
+ * @param x The argument to take derivatives with respect to
+ * @param retain_graph Whether to retain the computation graph (necessary if y has base storage size
+ * > 1)
+ * @param create_graph Whether to create the computation graph (necessary if you want to
+ * differentiate the returned Jacobian)
+ * @param allow_unused Whether to allow unused input argument \p x
  * @return Tensor \f$\partial y/\partial p\f$
  */
-Tensor jacrev(const Tensor & y, const Tensor & p);
+Tensor jacrev(const Tensor & y,
+              const Tensor & x,
+              bool retain_graph = false,
+              bool create_graph = false,
+              bool allow_unused = false);
 
 Tensor base_diag_embed(const Tensor & a, Size offset = 0, Size d1 = -2, Size d2 = -1);
 
@@ -239,15 +250,7 @@ batch_cat(const std::vector<T> & tensors, Size d = 0)
   return T(torch::cat(torch_tensors, d2), tensors.begin()->batch_dim());
 }
 
-template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
-neml2::Tensor
-base_cat(const std::vector<T> & tensors, Size d = 0)
-{
-  neml_assert_dbg(!tensors.empty(), "base_cat must be given at least one tensor");
-  std::vector<torch::Tensor> torch_tensors(tensors.begin(), tensors.end());
-  auto d2 = d < 0 ? d : d + tensors.begin()->batch_dim();
-  return neml2::Tensor(torch::cat(torch_tensors, d2), tensors.begin()->batch_dim());
-}
+neml2::Tensor base_cat(const std::vector<Tensor> & tensors, Size d = 0);
 
 template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
 T
@@ -259,15 +262,7 @@ batch_stack(const std::vector<T> & tensors, Size d = 0)
   return T(torch::stack(torch_tensors, d2), tensors.begin()->batch_dim() + 1);
 }
 
-template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
-neml2::Tensor
-base_stack(const std::vector<T> & tensors, Size d = 0)
-{
-  neml_assert_dbg(!tensors.empty(), "base_stack must be given at least one tensor");
-  std::vector<torch::Tensor> torch_tensors(tensors.begin(), tensors.end());
-  auto d2 = d < 0 ? d : d + tensors.begin()->batch_dim();
-  return neml2::Tensor(torch::stack(torch_tensors, d2), tensors.begin()->batch_dim());
-}
+neml2::Tensor base_stack(const std::vector<Tensor> & tensors, Size d = 0);
 
 template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
 T
@@ -275,22 +270,27 @@ batch_sum(const T & a, Size d = 0)
 {
   neml_assert_dbg(a.batch_dim() > 0, "Must have a batch dimension to sum along");
   auto d2 = d >= 0 ? d : d - a.base_dim();
-  return T(torch::sum(a, d2), a.batch_dim() - 1);
+  return T(torch::sum(a, d2), a.batch_sizes().slice(0, -1));
 }
+
+neml2::Tensor base_sum(const Tensor & a, Size d);
 
 template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
 T
-base_sum(const T & a, Size d = 0)
+batch_mean(const T & a, Size d = 0)
 {
-  auto d2 = d < 0 ? d : d + a.batch_dim();
-  return T(torch::sum(a, d2), a.batch_dim());
+  neml_assert_dbg(a.batch_dim() > 0, "Must have a batch dimension to take average");
+  auto d2 = d >= 0 ? d : d - a.base_dim();
+  return T(torch::mean(a, d2), a.batch_sizes().slice(0, -1));
 }
+
+neml2::Tensor base_mean(const Tensor & a, Size d);
 
 template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
 T
 pow(const T & a, const Real & n)
 {
-  return T(torch::pow(a, n), a.batch_dim());
+  return T(torch::pow(a, n), a.batch_sizes());
 }
 
 Tensor pow(const Real & a, const Tensor & n);
@@ -301,28 +301,28 @@ template <class T, typename = typename std::enable_if_t<std::is_base_of_v<Tensor
 T
 sign(const T & a)
 {
-  return T(torch::sign(a), a.batch_dim());
+  return T(torch::sign(a), a.batch_sizes());
 }
 
 template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
 T
 cosh(const T & a)
 {
-  return T(torch::cosh(a), a.batch_dim());
+  return T(torch::cosh(a), a.batch_sizes());
 }
 
 template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
 T
 sinh(const T & a)
 {
-  return T(torch::sinh(a), a.batch_dim());
+  return T(torch::sinh(a), a.batch_sizes());
 }
 
 template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
 T
 tanh(const T & a)
 {
-  return T(torch::tanh(a), a.batch_dim());
+  return T(torch::tanh(a), a.batch_sizes());
 }
 
 template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
@@ -378,28 +378,28 @@ template <class T, typename = typename std::enable_if_t<std::is_base_of_v<Tensor
 T
 sqrt(const T & a)
 {
-  return T(torch::sqrt(a), a.batch_dim());
+  return T(torch::sqrt(a), a.batch_sizes());
 }
 
 template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
 T
 exp(const T & a)
 {
-  return T(torch::exp(a), a.batch_dim());
+  return T(torch::exp(a), a.batch_sizes());
 }
 
 template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
 T
 abs(const T & a)
 {
-  return T(torch::abs(a), a.batch_dim());
+  return T(torch::abs(a), a.batch_sizes());
 }
 
 template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
 T
 diff(const T & a, Size n = 1, Size dim = -1)
 {
-  return T(torch::diff(a, n, dim), a.batch_dim());
+  return T(torch::diff(a, n, dim), a.batch_sizes());
 }
 
 template <class T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
@@ -415,7 +415,7 @@ template <class T, typename = typename std::enable_if_t<std::is_base_of_v<Tensor
 T
 log(const T & a)
 {
-  return T(torch::log(a), a.batch_dim());
+  return T(torch::log(a), a.batch_sizes());
 }
 
 namespace linalg

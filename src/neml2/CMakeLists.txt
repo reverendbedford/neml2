@@ -5,22 +5,6 @@ file(GLOB_RECURSE SRCS *.cxx)
 add_library(neml2 SHARED ${SRCS})
 set_target_properties(neml2 PROPERTIES INSTALL_RPATH "${EXEC_DIR};${Torch_LINK_DIRECTORIES}")
 
-if(NEML2_CLANG_TIDY)
-  find_program(NEML2_CLANG_TIDY_EXE NAMES "${NEML2_CLANG_TIDY_PATH}")
-
-  if(NEML2_CLANG_TIDY_EXE)
-    # if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    set(CLANG_TIDY_COMMAND "${NEML2_CLANG_TIDY_EXE}")
-    set_target_properties(neml2 PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_COMMAND}")
-
-  # else()
-  # message(FATAL_ERROR "NEML2_CLANG_TIDY is incompatible with the compiler ${CMAKE_CXX_COMPILER_ID}")
-  # endif()
-  else()
-    message(FATAL_ERROR "NEML2_CLANG_TIDY is enabled but clang-tidy executable cannot be found.")
-  endif()
-endif()
-
 # NEML2 (private) compile options
 target_compile_options(neml2 PRIVATE -Wall -Wextra -pedantic -Werror)
 
@@ -44,6 +28,14 @@ target_include_directories(neml2 SYSTEM PUBLIC ${Torch_INCLUDE_DIRECTORIES})
 target_link_directories(neml2 PUBLIC ${Torch_LINK_DIRECTORIES})
 target_link_libraries(neml2 PUBLIC ${Torch_LIBRARIES})
 
+# gperftools
+option(NEML2_CPU_PROFILER "Link against gperftools libprofiler to enable CPU profiling" OFF)
+
+if(NEML2_CPU_PROFILER)
+  FetchContent_MakeAvailable(gperftools)
+  target_link_libraries(neml2 PUBLIC profiler)
+endif()
+
 # HIT (WASP) for parsing
 message(STATUS "Configuring HIT")
 FetchContent_MakeAvailable(hit)
@@ -62,7 +54,7 @@ install(DIRECTORY
 )
 
 set_target_properties(hit PROPERTIES UNITY_BUILD OFF)
-target_include_directories(hit PUBLIC ${hit_SOURCE_DIR}/.. ${wasp_INSTALL_DIR}/include)
+target_include_directories(hit SYSTEM PUBLIC ${hit_SOURCE_DIR}/include ${wasp_INSTALL_DIR}/include)
 target_link_libraries(hit PRIVATE waspcore wasphit)
 target_link_directories(hit PRIVATE ${wasp_INSTALL_DIR}/lib)
 target_sources(hit

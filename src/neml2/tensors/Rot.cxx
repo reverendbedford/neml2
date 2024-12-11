@@ -49,8 +49,8 @@ Rot::identity(const torch::TensorOptions & options)
 
 Rot
 Rot::fill_euler_angles(const torch::Tensor & vals,
-                       std::string angle_convention,
-                       std::string angle_type)
+                       const std::string & angle_convention,
+                       const std::string & angle_type)
 {
   neml_assert((torch::numel(vals) % 3) == 0,
               "Rot input values should have length divisable by 3 for input type 'euler_angles'");
@@ -191,32 +191,30 @@ R2
 Rot::drotate(const Rot & r) const
 {
   auto r1 = *this;
-  auto r2 = r;
 
   auto rr1 = r1.norm_sq();
-  auto rr2 = r2.norm_sq();
-  auto d = 1.0 + rr1 * rr2 - 2 * r1.dot(r2);
+  auto rr2 = r.norm_sq();
+  auto d = 1.0 + rr1 * rr2 - 2 * r1.dot(r);
   auto r3 = this->rotate(r);
   auto I = R2::identity(options());
 
   return 1.0 / d *
-         (-r3.outer(2 * rr1 * r2 - 2.0 * r1) - 2 * r1.outer(r2) + (1 - rr1) * I - 2 * R2::skew(r1));
+         (-r3.outer(2 * rr1 * r - 2.0 * r1) - 2 * r1.outer(r) + (1 - rr1) * I - 2 * R2::skew(r1));
 }
 
 R2
 Rot::drotate_self(const Rot & r) const
 {
-  auto r1 = r;
   auto r2 = *this;
 
-  auto rr1 = r1.norm_sq();
+  auto rr1 = r.norm_sq();
   auto rr2 = r2.norm_sq();
-  auto d = 1.0 + rr1 * rr2 - 2 * r1.dot(r2);
+  auto d = 1.0 + rr1 * rr2 - 2 * r.dot(r2);
   auto r3 = this->rotate(r);
   auto I = R2::identity(options());
 
   return 1.0 / d *
-         (-r3.outer(2 * rr1 * r2 - 2.0 * r1) - 2 * r1.outer(r2) + (1 - rr1) * I + 2 * R2::skew(r1));
+         (-r3.outer(2 * rr1 * r2 - 2.0 * r) - 2 * r.outer(r2) + (1 - rr1) * I + 2 * R2::skew(r));
 }
 
 Rot

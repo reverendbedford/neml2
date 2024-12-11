@@ -23,7 +23,7 @@
 // THE SOFTWARE.
 
 #include "neml2/base/OptionSet.h"
-#include "neml2/tensors/LabeledAxisAccessor.h"
+#include "neml2/models/LabeledAxisAccessor.h"
 
 namespace neml2
 {
@@ -88,12 +88,25 @@ OptionSet::clear()
   _values.clear();
 }
 
+OptionSet::OptionSet(const OptionSet & p) { *this = p; }
+
+OptionSet::OptionSet(OptionSet && p) noexcept { *this = std::move(p); }
+
 OptionSet &
 OptionSet::operator=(const OptionSet & source)
 {
   this->OptionSet::clear();
   *this += source;
   this->_metadata = source._metadata;
+  return *this;
+}
+
+OptionSet &
+OptionSet::operator=(OptionSet && source) noexcept
+{
+  this->OptionSet::clear();
+  *this += source;
+  this->_metadata = std::move(source._metadata);
   return *this;
 }
 
@@ -104,7 +117,12 @@ OptionSet::operator+=(const OptionSet & source)
     _values[key] = value->clone();
 }
 
-OptionSet::OptionSet(const OptionSet & p) { *this = p; }
+void
+OptionSet::operator+=(OptionSet && source)
+{
+  for (auto && [key, value] : source._values)
+    _values[key] = value->clone();
+}
 
 // LCOV_EXCL_START
 void

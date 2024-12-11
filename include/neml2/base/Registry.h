@@ -57,7 +57,7 @@ public:
 
   /// Add information on a NEML2Object to the registry.
   template <typename T>
-  static char add(std::string name)
+  static char add(const std::string & name)
   {
     add_inner(name, utils::demangle(typeid(T).name()), T::expected_options(), &build<T>);
     return 0;
@@ -76,7 +76,7 @@ public:
   static BuildPtr builder(const std::string & name);
 
 private:
-  Registry() {}
+  Registry() = default;
 
   static void add_inner(const std::string &, const std::string &, const OptionSet &, BuildPtr);
 

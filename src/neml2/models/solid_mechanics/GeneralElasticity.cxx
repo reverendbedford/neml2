@@ -54,41 +54,35 @@ GeneralElasticity::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   neml_assert_dbg(!d2out_din2, "GeneralElasticity doesn't implement second derivatives.");
 
-  auto A = _T.rotate(_R);
-
-  if (_compliance)
-    A = A.inverse();
+  const auto A = _T.rotate(_R);
+  const auto Ainv = _compliance ? A.inverse() : SSR4();
 
   if (out)
-    _to = A * SR2(_from);
+    _to = (_compliance ? Ainv : A) * _from;
 
   if (dout_din)
   {
     if (_from.is_dependent())
-      _to.d(_from) = A;
+      _to.d(_from) = _compliance ? Ainv : A;
 
     if (_R.is_dependent())
     {
+      const auto dA_dR = _T.drotate(_R);
       if (_compliance)
-        _to.d(_R) =
-            neml2::Tensor(torch::einsum("...ijkl,...klm,...j",
-                                        {_T.rotate(_R).dinverse(), _T.drotate(_R), SR2(_from)}),
-                          batch_dim());
+        _to.d(_R) = Tensor(torch::einsum("...ijkl,...klm,...j", {A.dinverse(), dA_dR, _from}),
+                           A.batch_sizes());
       else
-        _to.d(_R) =
-            neml2::Tensor(torch::einsum("...ijk,...j", {_T.drotate(_R), SR2(_from)}), batch_dim());
+        _to.d(_R) = Tensor(torch::einsum("...ijk,...j", {dA_dR, _from}), A.batch_sizes());
     }
 
     if (const auto * const T = nl_param("T"))
     {
+      const auto dA_dT = _T.drotate_self(_R);
       if (_compliance)
-        _to.d(*T) = neml2::Tensor(
-            torch::einsum("...ijkl,...klmn,...j",
-                          {_T.rotate(_R).dinverse(), _T.drotate_self(_R), SR2(_from)}),
-            batch_dim());
+        _to.d(*T) = Tensor(torch::einsum("...ijkl,...klmn,...j", {A.dinverse(), dA_dT, _from}),
+                           A.batch_sizes());
       else
-        _to.d(*T) = neml2::Tensor(torch::einsum("...ijkl,...j", {_T.drotate_self(_R), SR2(_from)}),
-                                  batch_dim());
+        _to.d(*T) = Tensor(torch::einsum("...ijkl,...j", {dA_dT, _from}), A.batch_sizes());
     }
   }
 }

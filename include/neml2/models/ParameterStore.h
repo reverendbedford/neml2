@@ -33,6 +33,7 @@
 // We put them here so that derived classes can add expected options of these types.
 #include "neml2/base/CrossRef.h"
 #include "neml2/base/EnumSelection.h"
+#include "neml2/tensors/tensors.h"
 
 namespace neml2
 {
@@ -44,12 +45,19 @@ class Model;
 class ParameterStore
 {
 public:
-  ParameterStore(const OptionSet & options, NEML2Object * object);
+  ParameterStore(OptionSet options, NEML2Object * object);
+
+  ParameterStore(const ParameterStore &) = delete;
+  ParameterStore(ParameterStore &&) = delete;
+  ParameterStore & operator=(const ParameterStore &) = delete;
+  ParameterStore & operator=(ParameterStore &&) = delete;
+  virtual ~ParameterStore() = default;
 
   ///@{
   /// @returns the buffer storage
   const Storage<std::string, TensorValueBase> & named_parameters() const
   {
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
     return const_cast<ParameterStore *>(this)->named_parameters();
   }
   Storage<std::string, TensorValueBase> & named_parameters();
@@ -155,11 +163,12 @@ private:
   NEML2Object * _object;
 
   /**
-   * @brief Parsed input file options. These options could be convenient when we look up a
-   * cross-referenced tensor value by its name.
+   * @brief Parsed input file options for this object.
+   *
+   * These options could be convenient when we look up a cross-referenced tensor value by its name.
    *
    */
-  const OptionSet _options;
+  const OptionSet _object_options;
 
   /// The actual storage for all the parameters
   Storage<std::string, TensorValueBase> _param_values;
@@ -173,7 +182,7 @@ ParameterStore::declare_parameter(const std::string & name, const T & rawval)
     return _object->host<ParameterStore>()->declare_parameter(
         _object->name() + parameter_name_separator() + name, rawval);
 
-  TensorValueBase * base_ptr;
+  TensorValueBase * base_ptr = nullptr;
 
   // If the parameter already exists, get it
   if (_param_values.has_key(name))

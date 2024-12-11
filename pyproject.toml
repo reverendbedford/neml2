@@ -12,3 +12,6 @@ authors = [
 description = "GPU-enabled vectorized material modeling library"
 readme = "README.md"
 requires-python = ">=3.9"
+
+[tool.black]
+line-length = 100

@@ -37,7 +37,7 @@ public:
   AssociativeJ2FlowDirection(const OptionSet & options);
 
 protected:
-  virtual void set_value(bool, bool, bool) override;
+  void set_value(bool, bool, bool) override;
 
   /// Mandel stress
   const Variable<SR2> & _M;

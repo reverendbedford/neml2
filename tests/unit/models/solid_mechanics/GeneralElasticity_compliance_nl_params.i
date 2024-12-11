@@ -2,7 +2,6 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    batch_shape = '()'
     input_symr2_names = 'state/S'
     input_symr2_values = 'S'
     input_rot_names = 'state/orientation'
@@ -11,9 +10,8 @@
     output_symr2_values = 'Ee'
     input_ssr4_names = 'params/C'
     input_ssr4_values = 'C_values'
-    derivatives_abs_tol = 1e-6
-    derivatives_rel_tol = 1e-4
-    check_AD_first_derivatives = false
+    derivative_abs_tol = 1e-6
+    derivative_rel_tol = 1e-4
   []
 []
 

@@ -35,11 +35,11 @@ public:
   NEMLException() = default;
 
   NEMLException(const std::string & msg)
-    : _msg(msg)
+    : _msg("NEMLException: " + msg)
   {
   }
 
-  virtual const char * what() const noexcept;
+  const char * what() const noexcept override;
 
 protected:
   std::string _msg;
@@ -76,7 +76,7 @@ void
 neml_assert_dbg([[maybe_unused]] bool assertion, [[maybe_unused]] Args &&... args)
 {
 #ifndef NDEBUG
-  neml_assert(assertion, args...);
+  neml_assert(assertion, std::forward<Args>(args)...);
 #endif
 }
 

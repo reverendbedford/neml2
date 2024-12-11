@@ -74,7 +74,7 @@ protected:
 
   /// Combined helper to return coefficients and derivatives in a requested order
   template <std::size_t N>
-  auto combine_and_reorder(Scalar c,
+  auto combine_and_reorder(const Scalar & c,
                            const std::vector<Scalar> & derivs,
                            const std::vector<size_t> & order) const
   {

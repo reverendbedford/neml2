@@ -50,9 +50,9 @@ public:
    */
   struct Item
   {
-    Item(Node * const node, const ItemType & item)
+    Item(Node * const node, ItemType item)
       : parent(node),
-        value(item)
+        value(std::move(item))
     {
     }
 

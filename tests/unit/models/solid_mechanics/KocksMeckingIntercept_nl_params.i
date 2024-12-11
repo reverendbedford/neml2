@@ -2,15 +2,11 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    batch_shape = '(5)'
     input_scalar_names = 'params/A_in params/B_in params/C_in'
     input_scalar_values = 'A_in B_in C_in'
     output_scalar_names = 'parameters/p'
     output_scalar_values = 'p_correct'
     check_second_derivatives = true
-    check_AD_first_derivatives = false
-    check_AD_second_derivatives = false
-    check_AD_derivatives = false
   []
 []
 

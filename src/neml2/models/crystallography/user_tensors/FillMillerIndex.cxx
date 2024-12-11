@@ -24,9 +24,7 @@
 
 #include "neml2/models/crystallography/user_tensors/FillMillerIndex.h"
 
-namespace neml2
-{
-namespace crystallography
+namespace neml2::crystallography
 {
 
 register_NEML2_object(FillMillerIndex);
@@ -57,5 +55,5 @@ FillMillerIndex::fill(const std::vector<Integer> & values) const
 
   return MillerIndex(torch::tensor(values, default_integer_tensor_options()).reshape({-1, 3}));
 }
-} // namespace crystallography
+
 } // namespace neml2

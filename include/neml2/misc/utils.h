@@ -36,7 +36,7 @@ namespace neml2
  * 2. Batch shapes are broadcastable (see sizes_broadcastable)
  */
 template <class... T>
-bool broadcastable(T &&... tensors);
+bool broadcastable(const T &... tensors);
 
 /**
  * @brief The batch dimension after broadcasting
@@ -44,7 +44,7 @@ bool broadcastable(T &&... tensors);
  * This should be as simple as the maximum batch_dim() among all arguments.
  */
 template <class... T>
-Size broadcast_batch_dim(T &&...);
+Size broadcast_batch_dim(const T &...);
 
 /**
  * @brief A helper function to assert that all tensors are broadcastable
@@ -54,7 +54,7 @@ Size broadcast_batch_dim(T &&...);
  * emit some more mearningful error messages within the NEML2 context.
  */
 template <class... T>
-void neml_assert_broadcastable(T &&...);
+void neml_assert_broadcastable(const T &...);
 
 /**
  * @brief A helper function to assert (in Debug mode) that all tensors are broadcastable
@@ -64,7 +64,7 @@ void neml_assert_broadcastable(T &&...);
  * emit some more mearningful error messages within the NEML2 context.
  */
 template <class... T>
-void neml_assert_broadcastable_dbg(T &&...);
+void neml_assert_broadcastable_dbg(const T &...);
 
 /**
  * @brief A helper function to assert that all tensors are batch-broadcastable
@@ -74,7 +74,7 @@ void neml_assert_broadcastable_dbg(T &&...);
  * emit some more mearningful error messages within the NEML2 context.
  */
 template <class... T>
-void neml_assert_batch_broadcastable(T &&...);
+void neml_assert_batch_broadcastable(const T &...);
 
 /**
  * @brief A helper function to assert that (in Debug mode) all tensors are batch-broadcastable
@@ -84,7 +84,7 @@ void neml_assert_batch_broadcastable(T &&...);
  * emit some more mearningful error messages within the NEML2 context.
  */
 template <class... T>
-void neml_assert_batch_broadcastable_dbg(T &&...);
+void neml_assert_batch_broadcastable_dbg(const T &...);
 
 namespace utils
 {
@@ -103,13 +103,17 @@ bool sizes_same(T &&... shapes);
  * not exist.
  */
 template <class... T>
-bool sizes_broadcastable(T &&... shapes);
+bool sizes_broadcastable(const T &... shapes);
 
 /**
  * @brief Return the broadcast shape of all the shapes.
  */
 template <class... T>
-TensorShape broadcast_sizes(T &&... shapes);
+TensorShape broadcast_sizes(const T &... shapes);
+
+/// @brief Extract the batch shape of a tensor given batch dimension
+/// The extracted batch shape will be _traceable_. @see neml2::TraceableTensorShape
+TraceableTensorShape extract_batch_sizes(const torch::Tensor & tensor, Size batch_dim);
 
 /**
  * @brief The flattened storage size of a tensor with given shape
@@ -128,6 +132,9 @@ Size storage_size(TensorShapeRef shape);
 template <typename... S>
 TensorShape add_shapes(S &&... shape);
 
+template <typename... S>
+TraceableTensorShape add_traceable_shapes(S &&... shape);
+
 /**
  * @brief Pad shape \p s to dimension \p dim by prepending sizes of \p pad.
  *
@@ -137,16 +144,7 @@ TensorShape add_shapes(S &&... shape);
  * @return TensorShape The padded shape with dimension \p dim
  */
 TensorShape pad_prepend(TensorShapeRef s, Size dim, Size pad = 1);
-
-/**
- * @brief Pad shape \p s to dimension \p dim by appending sizes of \p pad.
- *
- * @param s The original shape to pad
- * @param dim The resulting dimension
- * @param pad The values used to pad the shape, default to 1
- * @return TensorShape The padded shape with dimension \p dim
- */
-TensorShape pad_append(TensorShapeRef s, Size dim, Size pad = 1);
+torch::Tensor pad_prepend(const torch::Tensor & s, Size dim, Size pad = 1);
 
 std::string indentation(int level, int indent = 2);
 
@@ -157,8 +155,12 @@ namespace details
 {
 template <typename... S>
 TensorShape add_shapes_impl(TensorShape &, TensorShapeRef, S &&...);
-
 TensorShape add_shapes_impl(TensorShape &);
+
+template <typename... S>
+TraceableTensorShape
+add_traceable_shapes_impl(TraceableTensorShape &, const TraceableTensorShape &, S &&...);
+TraceableTensorShape add_traceable_shapes_impl(TraceableTensorShape &);
 } // namespace details
 } // namespace utils
 } // namespace neml2
@@ -171,23 +173,23 @@ namespace neml2
 {
 template <class... T>
 bool
-broadcastable(T &&... tensors)
+broadcastable(const T &... tensors)
 {
   if (!utils::sizes_same(tensors.base_sizes()...))
     return false;
-  return utils::sizes_broadcastable(tensors.batch_sizes()...);
+  return utils::sizes_broadcastable(tensors.batch_sizes().concrete()...);
 }
 
 template <class... T>
 Size
-broadcast_batch_dim(T &&... tensor)
+broadcast_batch_dim(const T &... tensor)
 {
   return std::max({tensor.batch_dim()...});
 }
 
 template <class... T>
 void
-neml_assert_broadcastable(T &&... tensors)
+neml_assert_broadcastable(const T &... tensors)
 {
   neml_assert(broadcastable(tensors...),
               "The ",
@@ -200,7 +202,7 @@ neml_assert_broadcastable(T &&... tensors)
 
 template <class... T>
 void
-neml_assert_broadcastable_dbg([[maybe_unused]] T &&... tensors)
+neml_assert_broadcastable_dbg([[maybe_unused]] const T &... tensors)
 {
 #ifndef NDEBUG
   neml_assert_dbg(broadcastable(tensors...),
@@ -215,9 +217,9 @@ neml_assert_broadcastable_dbg([[maybe_unused]] T &&... tensors)
 
 template <class... T>
 void
-neml_assert_batch_broadcastable(T &&... tensors)
+neml_assert_batch_broadcastable(const T &... tensors)
 {
-  neml_assert(utils::sizes_broadcastable(tensors.batch_sizes()...),
+  neml_assert(utils::sizes_broadcastable(tensors.batch_sizes().concrete()...),
               "The ",
               sizeof...(tensors),
               " operands are not batch-broadcastable. The batch shapes are ",
@@ -226,16 +228,17 @@ neml_assert_batch_broadcastable(T &&... tensors)
 
 template <class... T>
 void
-neml_assert_batch_broadcastable_dbg([[maybe_unused]] T &&... tensors)
+neml_assert_batch_broadcastable_dbg([[maybe_unused]] const T &... tensors)
 {
 #ifndef NDEBUG
-  neml_assert_dbg(utils::sizes_broadcastable(tensors.batch_sizes()...),
+  neml_assert_dbg(utils::sizes_broadcastable(tensors.batch_sizes().concrete()...),
                   "The ",
                   sizeof...(tensors),
                   " operands are not batch-broadcastable. The batch shapes are ",
                   tensors.batch_sizes()...);
 #endif
 }
+
 namespace utils
 {
 template <class... T>
@@ -251,7 +254,7 @@ sizes_same(T &&... shapes)
 
 template <class... T>
 bool
-sizes_broadcastable(T &&... shapes)
+sizes_broadcastable(const T &... shapes)
 {
   auto dim = std::max({shapes.size()...});
   auto all_shapes_padded = std::vector<TensorShape>{pad_prepend(shapes, dim)...};
@@ -277,7 +280,7 @@ sizes_broadcastable(T &&... shapes)
 
 template <class... T>
 TensorShape
-broadcast_sizes(T &&... shapes)
+broadcast_sizes(const T &... shapes)
 {
   neml_assert_dbg(sizes_broadcastable(shapes...), "Shapes not broadcastable: ", shapes...);
 
@@ -299,6 +302,14 @@ add_shapes(S &&... shape)
 {
   TensorShape net;
   return details::add_shapes_impl(net, std::forward<S>(shape)...);
+}
+
+template <typename... S>
+TraceableTensorShape
+add_traceable_shapes(S &&... shape)
+{
+  TraceableTensorShape net;
+  return details::add_traceable_shapes_impl(net, std::forward<S>(shape)...);
 }
 
 template <typename T>
@@ -325,6 +336,14 @@ add_shapes_impl(TensorShape & net, TensorShapeRef s, S &&... rest)
 {
   net.insert(net.end(), s.begin(), s.end());
   return add_shapes_impl(net, std::forward<S>(rest)...);
+}
+
+template <typename... S>
+TraceableTensorShape
+add_traceable_shapes_impl(TraceableTensorShape & net, const TraceableTensorShape & s, S &&... rest)
+{
+  net.insert(net.end(), s.begin(), s.end());
+  return add_traceable_shapes_impl(net, std::forward<S>(rest)...);
 }
 } // namespace details
 } // namespace utils

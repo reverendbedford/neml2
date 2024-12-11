@@ -24,10 +24,11 @@
 
 import torch
 
-from .base import *
+# Bring core functionality and tensors into the main namespace
+from .core import *
 from .tensors import *
-from .math import *
 
-
+# Other submodules
+from . import math
 from . import pyzag
 from . import crystallography

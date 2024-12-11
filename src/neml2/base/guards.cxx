@@ -36,9 +36,9 @@ timed_sections()
   return _timed_sections_singleton;
 }
 
-TimedSection::TimedSection(const std::string & name, const std::string & section)
-  : _name(name),
-    _section(section),
+TimedSection::TimedSection(std::string name, std::string section)
+  : _name(std::move(name)),
+    _section(std::move(section)),
     _t0(std::chrono::high_resolution_clock::now())
 {
 }

@@ -44,14 +44,12 @@ class EnumSelectionBase
 {
 public:
   EnumSelectionBase() = default;
-  EnumSelectionBase(const EnumSelectionBase & other);
+
+  /// Create an enum selection from a list of candidates
   EnumSelectionBase(const std::vector<std::string> & candidates);
+
+  /// Create an enum selection from a list of candidates and their corresponding values
   EnumSelectionBase(const std::vector<std::string> & candidates, const std::vector<int> & values);
-
-  virtual ~EnumSelectionBase() = default;
-
-  /// Assignment operator
-  EnumSelectionBase & operator=(const EnumSelectionBase & other);
 
   /// Candidates
   const std::unordered_map<std::string, int> & candidates() const { return _candidate_map; }

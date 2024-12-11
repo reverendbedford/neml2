@@ -101,33 +101,14 @@
 
 [Drivers]
   [driver]
-    type = SolidMechanicsDriver
+    type = SDTSolidMechanicsDriver
     model = 'model'
-    times = 'times'
-    prescribed_mixed_conditions = 'conditions'
-    prescribed_control = 'control'
-    save_as = 'result_complex_model.pt'
-    prescribed_temperatures = 'temperatures'
     control = 'MIXED'
-  []
-[]
-
-[Solvers]
-  [newton]
-    type = Newton
-  []
-[]
-
-[Drivers]
-  [driver]
-    type = SolidMechanicsDriver
-    model = 'model'
-    times = 'times'
-    prescribed_mixed_conditions = 'conditions'
-    prescribed_control = 'control'
+    prescribed_time = 'times'
+    prescribed_mixed_driving_force = 'conditions'
+    prescribed_mixed_control_signal = 'control'
+    prescribed_temperature = 'temperatures'
     save_as = 'result_complex_model.pt'
-    prescribed_temperatures = 'temperatures'
-    control = 'MIXED'
   []
 []
 
@@ -246,7 +227,7 @@
   [flowrate]
     type = KocksMeckingFlowSwitch
     g0 = 'g0'
-    rate_independent_flow_rate = 'state/internal/gamma_rate_ri' 
+    rate_independent_flow_rate = 'state/internal/gamma_rate_ri'
     rate_dependent_flow_rate = 'state/internal/gamma_rate_rd'
     sharpness = 100.0
   []
@@ -302,7 +283,7 @@
     models = "isoharden elasticity g
               mandel_stress vonmises
               yield yield_zero normality eprate Eprate Erate Eerate
-              ri_flowrate rd_flowrate flowrate integrate_ep integrate_stress effective_strain_rate 
+              ri_flowrate rd_flowrate flowrate integrate_ep integrate_stress effective_strain_rate
               mixed mixed_old rename"
   []
   [model_mixed]

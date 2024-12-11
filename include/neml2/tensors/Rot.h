@@ -37,7 +37,7 @@ class R3;
 /**
  * @brief Rotation stored as modified Rodrigues parameters
  *
- * The logical storage space is (3).
+ * The storage space is (3).
  *
  * One way to define this convention is that the three parameters are the values of the vector n
  * tan(theta/4) where n is the rotation axis and theta the rotation angle.
@@ -58,8 +58,8 @@ public:
 
   /// Fill from an array of Euler angles
   static Rot fill_euler_angles(const torch::Tensor & vals,
-                               std::string angle_convention,
-                               std::string angle_type);
+                               const std::string & angle_convention,
+                               const std::string & angle_type);
 
   /// Fill from rotation matrices
   static Rot fill_matrix(const R2 & M);

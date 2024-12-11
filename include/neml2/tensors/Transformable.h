@@ -39,8 +39,14 @@ template <class Derived>
 class Transformable
 {
 public:
-  /// @brief dummy virtual destructor
-  virtual ~Transformable(){};
+  Transformable() = default;
+
+  Transformable(const Transformable &) = default;
+  Transformable(Transformable &&) noexcept = default;
+  Transformable & operator=(const Transformable &) = default;
+  Transformable & operator=(Transformable &&) noexcept = default;
+  virtual ~Transformable() = default;
+
   /// @brief apply a transformation operator
   /// @param op the transformation operator
   /// @return an instance of the Derived type that has been transform

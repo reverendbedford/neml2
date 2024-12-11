@@ -2,15 +2,14 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    batch_shape = '(10)'
     input_symr2_names = 'state/internal/Ee_rate'
     input_symr2_values = 'Ee'
     input_rot_names = 'state/orientation'
     input_rot_values = 'R'
     output_symr2_names = 'state/S_rate'
     output_symr2_values = 'S'
-    derivatives_abs_tol = 1e-6
-    derivatives_rel_tol = 1e-4
+    derivative_abs_tol = 1e-6
+    derivative_rel_tol = 1e-4
   []
 []
 

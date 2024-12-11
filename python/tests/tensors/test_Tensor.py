@@ -70,9 +70,7 @@ def test_named_ctors(tensor_options):
     assert torch.allclose(A.torch(), torch.eye(5, **tensor_options))
     A = neml2.Tensor.identity(batch_shape, 5, **tensor_options)
     assert A.batch.dim() == len(batch_shape)
-    assert torch.allclose(
-        A.torch(), torch.eye(5, **tensor_options).expand(batch_shape + (-1, -1))
-    )
+    assert torch.allclose(A.torch(), torch.eye(5, **tensor_options).expand(batch_shape + (-1, -1)))
 
 
 def test_views(tensor_options):

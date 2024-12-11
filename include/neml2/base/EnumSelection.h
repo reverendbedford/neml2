@@ -41,23 +41,29 @@ class EnumSelection : public EnumSelectionBase
 {
 public:
   EnumSelection() = default;
-  EnumSelection(const EnumSelection & other);
+
+  /// Create an enum selection from a list of candidates and a default selection
   EnumSelection(const std::vector<std::string> & candidates, const std::string & selection);
+
+  /// Create an enum selection from a list of candidates, a list of values, and a default selection
   EnumSelection(const std::vector<std::string> & candidates,
                 const std::vector<int> & values,
                 const std::string & selection);
 
-  /// Assignment operator
-  EnumSelection & operator=(const EnumSelection & other);
-
   /// Select a new value
   void select(const std::string & selection);
 
-  /// Test for inequality
+  /// Test for equality
   bool operator==(const EnumSelection & other) const;
 
   /// Test for inequality
   bool operator!=(const EnumSelection & other) const;
+
+  /// Test for selection equality
+  bool operator==(const std::string & other) const;
+
+  /// Test for selection inequality
+  bool operator!=(const std::string & other) const;
 
   /// Poor man's reflection implementation
   operator std::string() const { return _selection; }
@@ -74,9 +80,9 @@ public:
 
 private:
   /// Current selection
-  std::string _selection;
+  std::string _selection = "";
 
   /// Current selection's integral value
-  int _value;
+  int _value = 0;
 };
 } // namespace neml2

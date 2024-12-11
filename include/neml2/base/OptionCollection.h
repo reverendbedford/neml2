@@ -38,8 +38,6 @@ namespace neml2
 class OptionCollection
 {
 public:
-  OptionCollection() = default;
-
   /// Get global settings
   OptionSet & settings() { return _settings; }
 

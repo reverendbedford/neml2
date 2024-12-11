@@ -24,37 +24,9 @@
 
 from pyzag import nonlinear
 
+import torch
 import neml2
 from neml2.tensors import Tensor
-
-import torch
-
-
-def assemble_vector(axis, tensors, warn_unused=True):
-    """Assemble a LabeledVector from a collection of tensors
-
-    Args:
-        axis (LabeledAxis): axis to use to setup LabeledVector
-        tensor (dict of torch.tensor): dictionary mapping names to tensors
-
-    Keyword Args:
-        warned_unused (bool, default True): throw a warning if there is a missing or extra variable in tensors
-    """
-    random_tensor = next(iter(tensors.values()))
-    batch_shape = random_tensor.shape[:-1]
-    device = random_tensor.device
-
-    vector = neml2.LabeledVector.zeros(batch_shape, [axis], device=device)
-
-    if warn_unused and set(tensors.keys()) != set(axis.variable_names()):
-        raise Warning(
-            "Tensor names in provided tensors dict do not match the variable names on the axis"
-        )
-
-    for name, value in tensors.items():
-        vector.base[name] = Tensor(value, len(batch_shape))
-
-    return vector
 
 
 class NEML2PyzagModel(nonlinear.NonlinearRecursiveFunction):
@@ -65,273 +37,164 @@ class NEML2PyzagModel(nonlinear.NonlinearRecursiveFunction):
 
     Keyword Args:
         exclude_parameters (list of str): exclude these parameters from being wrapped as a pytorch parameter
-        state_axis (str): name of the state axis
-        forces_axis (str): name of the forces axis
-        residual_axis (str): name of the residual axis
-        old_prefix (str): prefix on the name of an axis to get the old values
-        neml2_sep_char (str): parameter seperator character used in NEML2
-        python_sep_char (str): seperator character to use in python used to name parameters
+
+    Additional args and kwargs are forwarded to NonlinearRecursiveFunction (and hence torch.nn.Module) verbatim
     """
 
     def __init__(
         self,
         model,
-        exclude_parameters=[],
-        state_axis="state",
-        forces_axis="forces",
-        residual_axis="residual",
-        old_prefix="old_",
-        neml2_sep_char=".",
-        python_sep_char="_",
         *args,
+        exclude_parameters=[],
         **kwargs,
     ):
         super().__init__(*args, **kwargs)
 
         self.model = model
-        self.lookback = (
-            1  # Hard coded because there aren't any other options in NEML2 right now
-        )
-
-        self.neml2_sep_char = neml2_sep_char
-        self.python_sep_char = python_sep_char
-        self._setup_parameters(exclude_parameters)
-
-        self.state_axis = state_axis
-        self.forces_axis = forces_axis
-        self.residual_axis = residual_axis
-        self.old_prefix = old_prefix
+        self._lookback = 1
 
         self._check_model()
+        self._setup_parameters(exclude_parameters)
+        self._setup_assemblers()
+
+    @property
+    def lookback(self):
+        return self._lookback
+
+    @lookback.setter
+    def lookback(self, lookback):
+        if lookback != 1:
+            raise ValueError("NEML2 models only support lookback of 1")
+        self._lookback = lookback
+
+    @property
+    def nstate(self):
+        return self.model.input_axis().subaxis("state").size()
+
+    @property
+    def nforce(self):
+        return self.model.input_axis().subaxis("forces").size()
+
+    def _check_model(self):
+        """Simple consistency checks, could be a debug check but we only call this once"""
+
+        # First run diagnostics from NEML2
+        # neml2.diagnose(self.model)
+
+        # Then pyzag specific checks
+        input_axis = self.model.input_axis()
+        output_axis = self.model.output_axis()
+
+        # 1. Input axis should have state, old_state, forces, old_forces
+        model_input_subaxes = input_axis.subaxis_names()
+        expected_input_subaxes = ["forces", "old_forces", "old_state", "state"]
+        if model_input_subaxes != expected_input_subaxes:
+            raise ValueError(
+                "Wrapped NEML2 model should have {} as (the only) input subaxes. Got {}".format(
+                    expected_input_subaxes, model_input_subaxes
+                )
+            )
+
+        # 2. Output axis should just have the residual (and only the residual)
+        model_output_subaxes = output_axis.subaxis_names()
+        expected_output_subaxes = ["residual"]
+        if model_output_subaxes != expected_output_subaxes:
+            raise ValueError(
+                "Wrapped NEML2 model should have {} as (the only) output subaxes. Got {}".format(
+                    expected_output_subaxes, model_output_subaxes
+                )
+            )
+
+        # 3. All the variables on state should match the variables in the residual
+        input_state_vars = input_axis.subaxis("state").variable_names()
+        output_residual_vars = output_axis.subaxis("residual").variable_names()
+        if input_state_vars != output_residual_vars:
+            raise ValueError(
+                "Input state variables should match output residual variables. However, input state variables are {}, and output residual variables are {}".format(
+                    input_state_vars, output_residual_vars
+                )
+            )
+
+        # 4. Everything in old_state should be in state (but not the other way around)
+        input_old_state_vars = input_axis.subaxis("old_state").variable_names()
+        if not set(input_old_state_vars) <= set(input_state_vars):
+            raise ValueError(
+                "Input old state variables should be a subset of input state variables. However, input state variables are {}, and input old state variables are {}".format(
+                    input_state_vars, input_old_state_vars
+                )
+            )
+
+        # 5. Everything in old_forces should be in forces (but not the other way around)
+        input_forces_vars = input_axis.subaxis("forces").variable_names()
+        input_old_forces_vars = input_axis.subaxis("old_forces").variable_names()
+        if not set(input_old_forces_vars) <= set(input_forces_vars):
+            raise ValueError(
+                "Input old forces should be a subset of input forces. However, input forces are {}, and input old forces are {}".format(
+                    input_forces_vars, input_old_forces_vars
+                )
+            )
 
     def _setup_parameters(self, exclude_parameters):
-        """Mirror parameters of the neml model with torch.nn.Parameter
+        """Mirror parameters of the NEML2 model with torch.nn.Parameter
 
         Args:
-            exclude_parameters (list of str): neml parameters to exclude
+            exclude_parameters (list of str): NEML2 parameters to exclude
         """
-        self.parameter_name_map = {}
-        for neml_name, neml_param in self.model.named_parameters().items():
-            if neml_name in exclude_parameters:
+        for pname, param in self.model.named_parameters().items():
+            if "." in pname:
+                errmsg = "Parameter name {} contains a period, which is not allowed. \nMake sure Settings/parameter_name_separator='_' in the NEML2 input file."
+                raise ValueError(errmsg.format(pname))
+            if pname in exclude_parameters:
                 continue
-            neml_param.requires_grad_(True)
-            rename = neml_name.replace(self.neml2_sep_char, self.python_sep_char)
-            self.parameter_name_map[rename] = neml_name
-            self.register_parameter(rename, torch.nn.Parameter(neml_param.torch()))
+            param.requires_grad_(True)
+            self.register_parameter(pname, torch.nn.Parameter(param.torch()))
 
     def _update_parameter_values(self):
         """Copy over new parameter values"""
 
-        # We may need to update the batch shapes, so this lambda sorts out the correct shape
-        def make_tensor(orig_name, neml_name):
-            new_value = getattr(self, orig_name)
-            current_value = self.model.get_parameter(neml_name)
-            batch_dim = new_value.dim() - current_value.tensor().base.dim()
-            return Tensor(new_value.clone(), batch_dim)
+        for pname, new_value in self.named_parameters():
+            # We may need to update the batch shapes
+            current_value = self.model.get_parameter(pname).tensor()
+            batch_dim = new_value.dim() - current_value.base.dim()
+            self.model.set_parameter(pname, Tensor(new_value.clone(), batch_dim))
 
-        self.model.set_parameters(
-            {
-                neml_name: make_tensor(orig_name, neml_name)
-                for orig_name, neml_name in self.parameter_name_map.items()
-            }
-        )
+    def _setup_assemblers(self):
+        """Setup the assemblers for the state and forces"""
 
-    def _check_model(self):
-        """Simple consistency checks, could be a debug check but we only call this once"""
-        should_axes = [
-            self.state_axis,
-            self.old_prefix + self.state_axis,
-            self.forces_axis,
-            self.old_prefix + self.forces_axis,
-        ]
-        if self.model.input_axis().nsubaxis() != len(should_axes):
-            raise ValueError(
-                "Wrapped NEML2 model should only have 4 subaxes on the input axis"
-            )
-        for axis in should_axes:
-            if not self.model.input_axis().has_subaxis(axis):
-                raise ValueError(
-                    "Wrapped NEML2 model missing input subaxis {}".format(axis)
-                )
+        input_axis = self.model.input_axis()
+        output_axis = self.model.output_axis()
 
-        # Output axis should just have the residual
-        if self.model.output_axis().nsubaxis() != 1:
-            raise ValueError(
-                "Wrapped NEML2 model should only have 1 subaxes on the output axis"
-            )
+        self.input_asm = neml2.VectorAssembler(input_axis)
+        self.output_asm = neml2.VectorAssembler(output_axis)
+        self.deriv_asm = neml2.MatrixAssembler(output_axis, input_axis.subaxis("state"))
+        self.old_deriv_asm = neml2.MatrixAssembler(output_axis, input_axis.subaxis("old_state"))
 
-        if not self.model.output_axis().has_subaxis(self.residual_axis):
-            raise ValueError(
-                "Wrapped NEML2 model is missing required output subaxis {}".format(
-                    self.residual_axis
-                )
-            )
+        self.state_asm = neml2.VectorAssembler(input_axis.subaxis("state"))
+        self.forces_asm = neml2.VectorAssembler(input_axis.subaxis("forces"))
 
-        # And all the variables on state should match the variables in the residual
-        for name in self.model.input_axis().subaxis(self.state_axis).variable_names():
-            if (
-                not self.model.output_axis()
-                .subaxis(self.residual_axis)
-                .has_variable(name)
-            ):
-                raise ValueError(
-                    "State variable {} is on the input state axis but not in the output residual axis".format(
-                        name
-                    )
-                )
-
-        # Everything in old_state should be in state (but not the other way around)
-        for name in (
-            self.model.input_axis()
-            .subaxis(self.old_prefix + self.state_axis)
-            .variable_names()
-        ):
-            if not self.model.input_axis().subaxis(self.state_axis).has_variable(name):
-                raise ValueError(
-                    "State variable {} is in old state but not in state".format(name)
-                )
-
-        # Everything in old_forces should be in forces (but not the other way around)
-        for name in (
-            self.model.input_axis()
-            .subaxis(self.old_prefix + self.forces_axis)
-            .variable_names()
-        ):
-            if not self.model.input_axis().subaxis(self.forces_axis).has_variable(name):
-                raise ValueError(
-                    "Force variable {} is in old forces but not in forces".format(name)
-                )
-
-        # Everything in old_state should be in state (but not the other way around)
-        for name in (
-            self.model.input_axis()
-            .subaxis(self.old_prefix + self.state_axis)
-            .variable_names()
-        ):
-            if not self.model.input_axis().subaxis(self.state_axis).has_variable(name):
-                raise ValueError(
-                    "State variable {} is in old state but not in state".format(name)
-                )
-
-        # Everything in old_forces should be in forces (but not the other way around)
-        for name in (
-            self.model.input_axis()
-            .subaxis(self.old_prefix + self.forces_axis)
-            .variable_names()
-        ):
-            if not self.model.input_axis().subaxis(self.forces_axis).has_variable(name):
-                raise ValueError(
-                    "Force variable {} is in old forces but not in forces".format(name)
-                )
-
-    @property
-    def nstate(self):
-        return self.model.input_axis().subaxis("state").storage_size()
-
-    @property
-    def nforce(self):
-        return self.model.input_axis().subaxis("forces").storage_size()
-
-    def collect_forces(self, tensor_dict):
-        """Assemble the forces from a dictionary of tensors
-
-        Args:
-            tensor_dict (dict of tensors): dictionary of tensors containing the forces
-        """
-        return assemble_vector(
-            self.model.input_axis().subaxis(self.forces_axis), tensor_dict
-        ).torch()
-
-    def collect_state(self, tensor_dict):
-        """Assemble the state from a dictionary of tensors
-
-        Args:
-            tensor_dict (dict of tensors): dictionary of tensors containing the forces
-        """
-        return assemble_vector(
-            self.model.input_axis().subaxis(self.state_axis), tensor_dict
-        ).torch()
-
-    def _reduce_axis(self, reduce_axis, full_axis, full_tensor):
-        """Reduce a tensor spanning full_axis to only the vars on reduce_axis
-
-        Args:
-            reduce_axis (LabeledAxis): reduced set of variables
-            full_axis (LabeledAxis): full set of variables
-            full_tensor (torch.tensor): tensor representing the full set of variables
-        """
-
-        batch_shape = full_tensor.shape[:-1]
-        full = neml2.LabeledVector(full_tensor, [full_axis])
-        reduced = neml2.LabeledVector.zeros(
-            batch_shape, [reduce_axis], device=full_tensor.device
-        )
-        reduced.fill(full)
-
-        return reduced.tensor()
-
-    def _assemble_input(self, state, forces):
+    def _disassemble_input(self, state, forces):
         """Assemble the model input from the flat tensors
 
         Args:
             state (torch.tensor): tensor containing the model state
             forces (torch.tensor): tensor containing the model forces
         """
+        # State and forces should have the same batch shape
+        assert state.shape[:-1] == forces.shape[:-1]
         batch_shape = (state.shape[0] - self.lookback,) + state.shape[1:-1]
         bdim = len(batch_shape)
 
-        self.model.reinit(batch_shape=batch_shape, deriv_order=1, device=forces.device)
+        # Disassemble state and old_state
+        state_vars = self.state_asm.disassemble(Tensor(state, bdim))
+        new_state_vars = {k: v.batch[self.lookback :] for k, v in state_vars.items()}
+        old_state_vars = {k.old(): v.batch[: -self.lookback] for k, v in state_vars.items()}
 
-        input = neml2.LabeledVector.zeros(
-            batch_shape, [self.model.input_axis()], device=state.device
-        )
+        # Disassemble forces and old_forces
+        forces_vars = self.forces_asm.disassemble(Tensor(forces, bdim))
+        new_forces_vars = {k: v.batch[self.lookback :] for k, v in forces_vars.items()}
+        old_forces_vars = {k.old(): v.batch[: -self.lookback] for k, v in forces_vars.items()}
 
-        input.base[self.state_axis] = Tensor(state[self.lookback :], bdim)
-        # This deals with variables not in old_state
-        input.base[self.old_prefix + self.state_axis] = self._reduce_axis(
-            self.model.input_axis().subaxis(self.old_prefix + self.state_axis),
-            self.model.input_axis().subaxis(self.state_axis),
-            state[: -self.lookback],
-        )
-        input.base[self.forces_axis] = Tensor(forces[self.lookback :], bdim)
-        # This deals with variables not in old_forces
-        input.base[self.old_prefix + self.forces_axis] = self._reduce_axis(
-            self.model.input_axis().subaxis(self.old_prefix + self.forces_axis),
-            self.model.input_axis().subaxis(self.forces_axis),
-            forces[: -self.lookback],
-        )
-
-        return input
-
-    def _extract_jacobian(self, J):
-        """Extract the Jacobian components we need from the NEML output
-
-        Args:
-            J (LabeledMatrix): full jacobian from the NEML model
-        """
-        # This one is easy because state and residual always share all variables
-        J_new = J.base[self.residual_axis, self.state_axis].torch()
-
-        # Now we need to pad the variables not in old_state with zeros
-        J_old_reduced = neml2.LabeledMatrix(
-            J.base[self.residual_axis, self.old_prefix + self.state_axis],
-            [
-                self.model.output_axis().subaxis(self.residual_axis),
-                self.model.input_axis().subaxis(self.old_prefix + self.state_axis),
-            ],
-        )
-        J_old_full = neml2.LabeledMatrix.zeros(
-            J_new.shape[:-2],
-            [
-                self.model.output_axis().subaxis(self.residual_axis),
-                self.model.input_axis().subaxis(self.state_axis),
-            ],
-            device=J_new.device,
-        )
-
-        J_old_full.fill(J_old_reduced, odim=1)
-
-        return torch.stack([J_old_full.torch(), J_new])
+        return new_state_vars | old_state_vars | new_forces_vars | old_forces_vars
 
     def forward(self, state, forces):
         """Actually call the NEML2 model and return the residual and Jacobian
@@ -347,9 +210,19 @@ class NEML2PyzagModel(nonlinear.NonlinearRecursiveFunction):
         self._update_parameter_values()
 
         # Make a big LabeledVector with the input
-        x = self._assemble_input(state, forces)
+        x = self._disassemble_input(state, forces)
 
         # Call the model
-        y, J = self.model.value_and_dvalue(x)
+        r, J = self.model.value_and_dvalue(x)
 
-        return y.torch(), self._extract_jacobian(J)
+        # Assemble residual
+        r_vec = self.output_asm.assemble(r)
+
+        # Assemble Jacobian
+        # I don't really like the batch expand here, as it will take up additional memory after the stack
+        # I think pyzag should handle this case better, i.e., residual and Jacobians have different batch shapes
+        J_new_mat = self.deriv_asm.assemble(J).batch.expand(r_vec.batch.shape)
+        J_old_mat = self.old_deriv_asm.assemble(J).batch.expand(r_vec.batch.shape)
+        J_mat = torch.stack([J_old_mat.torch(), J_new_mat.torch()])
+
+        return r_vec.torch(), J_mat

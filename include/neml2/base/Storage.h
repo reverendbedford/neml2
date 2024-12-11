@@ -45,9 +45,6 @@ class Storage
 {
 public:
   Storage() = default;
-  Storage(Storage &&) = default;
-  Storage(const Storage &) = delete;
-  Storage & operator=(const Storage &) = delete;
 
   /**
    * Iterator that adds an additional dereference to BaseIterator.
@@ -105,16 +102,15 @@ public:
    * @returns A reference to the underlying data at index \p i.
    *
    * Note that the underlying data may not necessarily be initialized,
-   * in which case this will throw an assertion or dereference a nullptr.
+   * in which case this will throw an assertion error.
    *
    * You can check whether or not the underlying data is intialized
    * with has_key(i).
    */
   T & operator[](const I & i) const
   {
-    neml_assert_dbg(has_key(i),
-                    "Trying to access a null object. Make sure the storage was properly "
-                    "initialized using set_pointer().");
+    neml_assert(has_key(i),
+                "Trying to access a non-existent value with name '" + utils::stringify(i) + "'.");
     return *pointer_value(i);
   }
   T & operator[](const I & i) { return std::as_const(*this)[i]; }
@@ -148,6 +144,7 @@ public:
   const T * query_value(const I & i) const { return has_key(i) ? pointer_value(i).get() : nullptr; }
   T * query_value(const I & i)
   {
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
     return has_key(i) ? const_cast<T *>(std::as_const(*this).query_value(i)) : nullptr;
   }
   ///@}

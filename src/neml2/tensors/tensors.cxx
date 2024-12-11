@@ -23,9 +23,14 @@
 // THE SOFTWARE.
 
 #include "neml2/tensors/tensors.h"
+#include "neml2/tensors/TensorBaseImpl.h"
 
 namespace neml2
 {
+// Explicitly instantiate TensorBase
+#define INSTANTIATE_TENSORBASE(T) template class TensorBase<T>;
+FOR_ALL_TENSORBASE(INSTANTIATE_TENSORBASE);
+
 std::ostream &
 operator<<(std::ostream & os, const TensorType & t)
 {

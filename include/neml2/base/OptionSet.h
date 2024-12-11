@@ -39,24 +39,6 @@ namespace neml2
 class OptionSet;
 class LabeledAxisAccessor;
 
-/**
- * @brief Role in a function definition
- *
- * NONE is the default value,
- * INPUT stands for input variable,
- * OUTPUT stands for output variable,
- * PARAMETER stands for parameter (could request AD),
- * BUFFER stands for buffer.
- */
-enum class FType : int8_t
-{
-  NONE,
-  INPUT,
-  OUTPUT,
-  PARAMETER,
-  BUFFER
-};
-
 namespace details
 {
 /**
@@ -74,6 +56,9 @@ template <typename P>
 void _print_helper(std::ostream & os, const P *);
 template <typename P>
 void _print_helper(std::ostream & os, const std::vector<P> *);
+/// The evil vector of bool :/
+template <>
+void _print_helper(std::ostream & os, const std::vector<bool> *);
 template <typename P>
 void _print_helper(std::ostream & os, const std::vector<std::vector<P>> *);
 /// Specialization so that we don't print out unprintable characters
@@ -101,20 +86,23 @@ class OptionSet
 public:
   OptionSet() = default;
 
-  /// Copy constructor. Deep copy
   OptionSet(const OptionSet &);
-
+  OptionSet(OptionSet &&) noexcept;
+  OptionSet & operator=(const OptionSet &);
+  OptionSet & operator=(OptionSet &&) noexcept;
   virtual ~OptionSet() = default;
 
-  /// Assignment operator. Deep copy
-  OptionSet & operator=(const OptionSet & source);
-
+  ///@{
   /**
    * Addition/Assignment operator.  Inserts copies of all options
    * from \p source.  Any options of the same name already in \p
    * this are replaced.
+   *
+   * @note This operator does not modify the metadata of the option set.
    */
   void operator+=(const OptionSet & source);
+  void operator+=(OptionSet && source);
+  ///@}
 
   /// A readonly reference to the option set's name
   const std::string & name() const { return _metadata.name; }
@@ -155,7 +143,7 @@ public:
   std::size_t size() const { return _values.size(); }
 
   /// Clear internal data structures & frees any allocated memory.
-  virtual void clear();
+  void clear();
 
   /// Print the contents.
   void print(std::ostream & os = std::cout) const;
@@ -166,6 +154,12 @@ public:
   class OptionBase
   {
   public:
+    OptionBase() = default;
+
+    OptionBase(OptionBase &&) = delete;
+    OptionBase(const OptionBase &) = delete;
+    OptionBase & operator=(const OptionBase &) = delete;
+    OptionBase & operator=(OptionBase &&) = delete;
     virtual ~OptionBase() = default;
 
     /// Test for option equality
@@ -197,6 +191,12 @@ public:
 
     /// A writable reference to the option's suppression status
     bool & suppressed() { return _metadata.suppressed; }
+
+    /// A readonly reference to the option's user_specified status
+    const bool & user_specified() const { return _metadata.user_specified; }
+
+    /// A writable reference to the option's user_specified status
+    bool & user_specified() { return _metadata.user_specified; }
 
     /**
      * Prints the option value to the specified stream.
@@ -270,11 +270,21 @@ public:
        * accept it, or print a warning and ignores it.
        */
       bool suppressed = false;
+      /**
+       * @brief Whether this option has been specified by the user from the input file
+       *
+       * In occasions, options are optional. This field is used to determine whether the user has
+       * specified the option. If the user has not specified the option, the default (sometimes
+       * undefined) value is used. It is therefore important to check this flag before retrieving
+       * optional options.
+       */
+      bool user_specified = false;
 
       bool operator==(const Metadata & other) const
       {
         return name == other.name && type == other.type && ftype == other.ftype &&
-               doc == other.doc && suppressed == other.suppressed;
+               doc == other.doc && suppressed == other.suppressed &&
+               user_specified == other.user_specified;
       }
 
       bool operator!=(const Metadata & other) const { return !(*this == other); }
@@ -297,9 +307,9 @@ public:
       _metadata.type = utils::demangle(typeid(T).name());
     }
 
-    virtual bool operator==(const OptionBase & other) const override;
+    bool operator==(const OptionBase & other) const override;
 
-    virtual bool operator!=(const OptionBase & other) const override;
+    bool operator!=(const OptionBase & other) const override;
 
     /**
      * \returns A read-only reference to the option value
@@ -311,9 +321,9 @@ public:
      */
     T & set() { return _value; }
 
-    virtual void print(std::ostream &) const override;
+    void print(std::ostream &) const override;
 
-    virtual std::unique_ptr<OptionBase> clone() const override;
+    std::unique_ptr<OptionBase> clone() const override;
 
   private:
     /// Stored option value
@@ -352,23 +362,18 @@ public:
   T & set_buffer(const std::string &);
 
   /// The type of the map that we store internally
-  typedef std::map<std::string, std::unique_ptr<OptionBase>, std::less<>> map_type;
-
+  using map_type = std::map<std::string, std::unique_ptr<OptionBase>, std::less<>>;
   /// Option map iterator
-  typedef map_type::iterator iterator;
-
+  using iterator = map_type::iterator;
   /// Constant option map iterator
-  typedef map_type::const_iterator const_iterator;
+  using const_iterator = map_type::const_iterator;
 
   /// Iterator pointing to the beginning of the set of options
   iterator begin();
-
   /// Iterator pointing to the beginning of the set of options
   const_iterator begin() const;
-
   /// Iterator pointing to the end of the set of options
   iterator end();
-
   /// Iterator pointing to the end of the set of options
   const_iterator end() const;
 
@@ -570,13 +575,20 @@ _print_helper(std::ostream & os, const std::vector<P> * option)
     os << p << " ";
 }
 
+template <>
+inline void
+_print_helper(std::ostream & os, const std::vector<bool> * option)
+{
+  for (const auto p : *option)
+    os << static_cast<bool>(p) << " ";
+}
+
 template <typename P>
 void
 _print_helper(std::ostream & os, const std::vector<std::vector<P>> * option)
 {
   for (const auto & pv : *option)
-    for (const auto & p : pv)
-      os << p << " ";
+    _print_helper(os, &pv);
 }
 } // namespace details
 // LCOV_EXCL_STOP

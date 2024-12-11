@@ -12,20 +12,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  copyright:
-    name: Copyright check
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.9"
-      - name: Check to see if source files have the correct copyright header
-        run: ./scripts/check_copyright.py
-
   clang-format:
     name: Formatting Check
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         path:
@@ -88,12 +77,14 @@ jobs:
         with:
           files: tests/*.xml
           check_name: Test Results (${{ matrix.os }}-${{ matrix.btype }}-${{ matrix.unity }})
+          check_run: false
       - name: Publish Test Results
         if: matrix.os == 'macos-latest'
         uses: EnricoMi/publish-unit-test-result-action/macos@v2
         with:
           files: tests/*.xml
           check_name: Test Results (${{ matrix.os }}-${{ matrix.btype }}-${{ matrix.unity }})
+          check_run: false
 
   build-all:
     needs: clang-format
@@ -119,7 +110,7 @@ jobs:
             -DCMAKE_UNITY_BUILD=${{ matrix.unity }} \
             -DNEML2_TESTS=ON \
             -DNEML2_RUNNER=ON \
-            -DNEML2_RUNNER_AS_PROFILER=ON \
+            -DNEML2_CPU_PROFILER=ON \
             -DNEML2_PYBIND=OFF \
             -DNEML2_DOC=OFF \
             -B build \
