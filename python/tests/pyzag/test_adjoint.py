@@ -31,7 +31,6 @@ import torch
 
 torch.set_default_dtype(torch.double)
 
-from neml2.pyzag import interface
 import neml2
 from pyzag import nonlinear
 
@@ -101,7 +100,7 @@ class TestElasticModel(unittest.TestCase, DerivativeCheck):
         self.nmodel = neml2.load_model(
             os.path.join(os.path.dirname(__file__), "elastic_model.i"), "implicit_rate"
         )
-        self.pmodel = interface.NEML2PyzagModel(self.nmodel)
+        self.pmodel = neml2.pyzag.NEML2PyzagModel(self.nmodel)
 
         self.nbatch = 20
         self.ntime = 100
@@ -138,7 +137,7 @@ class TestViscoplasticModel(unittest.TestCase, DerivativeCheck):
             os.path.join(os.path.dirname(__file__), "viscoplastic_model.i"),
             "implicit_rate",
         )
-        self.pmodel = interface.NEML2PyzagModel(self.nmodel)
+        self.pmodel = neml2.pyzag.NEML2PyzagModel(self.nmodel)
 
         self.nbatch = 20
         self.ntime = 100
@@ -176,7 +175,7 @@ class TestComplexModel(unittest.TestCase, DerivativeCheck):
             os.path.join(os.path.dirname(__file__), "complex_model.i"),
             "implicit_rate",
         )
-        self.pmodel = interface.NEML2PyzagModel(
+        self.pmodel = neml2.pyzag.NEML2PyzagModel(
             self.nmodel, exclude_parameters=["yield_zero.sy", "mu.X", "mu.Y"]
         )
         self.nbatch = 20

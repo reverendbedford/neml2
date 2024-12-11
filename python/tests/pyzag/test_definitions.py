@@ -28,7 +28,6 @@ import unittest
 import os.path
 
 import neml2
-from neml2.pyzag import interface
 
 import torch
 
@@ -40,7 +39,7 @@ class TestChangeParameterShape(unittest.TestCase):
         self.nmodel = neml2.load_model(
             os.path.join(os.path.dirname(__file__), "correct_model.i"), "implicit_rate"
         )
-        self.pmodel = interface.NEML2PyzagModel(
+        self.pmodel = neml2.pyzag.NEML2PyzagModel(
             self.nmodel, exclude_parameters=["elasticity.nu"]
         )
 
@@ -77,7 +76,7 @@ class TestCorrectlyDefinedModel(unittest.TestCase):
         self.nmodel = neml2.load_model(
             os.path.join(os.path.dirname(__file__), "correct_model.i"), "implicit_rate"
         )
-        self.pmodel = interface.NEML2PyzagModel(
+        self.pmodel = neml2.pyzag.NEML2PyzagModel(
             self.nmodel, exclude_parameters=["elasticity.nu"]
         )
 
@@ -137,7 +136,7 @@ class TestSetVectorParameter(unittest.TestCase):
         self.nmodel = neml2.load_model(
             os.path.join(os.path.dirname(__file__), "complex_model.i"), "implicit_rate"
         )
-        self.pmodel = interface.NEML2PyzagModel(self.nmodel)
+        self.pmodel = neml2.pyzag.NEML2PyzagModel(self.nmodel)
 
     def test_set_vector(self):
         self.assertTrue(

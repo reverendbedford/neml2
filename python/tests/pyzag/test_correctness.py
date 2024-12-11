@@ -31,7 +31,6 @@ import torch
 
 torch.set_default_dtype(torch.double)
 
-from neml2.pyzag import interface
 import neml2
 from pyzag import nonlinear, chunktime
 
@@ -52,7 +51,7 @@ class TestCorrectness(unittest.TestCase):
             os.path.join(os.path.dirname(__file__), model_name + ".i"),
             "implicit_rate",
         )
-        model = interface.NEML2PyzagModel(nmodel)
+        model = neml2.pyzag.NEML2PyzagModel(nmodel)
 
         results = torch.jit.load(
             os.path.join(os.path.dirname(__file__), "result_" + model_name + ".pt")
