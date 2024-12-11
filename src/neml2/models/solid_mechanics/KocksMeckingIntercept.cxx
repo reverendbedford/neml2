@@ -66,33 +66,33 @@ KocksMeckingIntercept::set_value(bool out, bool dout_din, bool d2out_din2)
 
   if (dout_din)
   {
-    if (const auto A = nl_param("A"))
+    if (const auto * const A = nl_param("A"))
       _p.d(*A) = -(_C - _B) / math::pow(_A, 2.0);
 
-    if (const auto B = nl_param("B"))
+    if (const auto * const B = nl_param("B"))
       _p.d(*B) = -1.0 / _A;
 
-    if (const auto C = nl_param("C"))
+    if (const auto * const C = nl_param("C"))
       _p.d(*C) = 1.0 / _A;
   }
 
   if (d2out_din2)
   {
-    if (const auto A = nl_param("A"))
+    if (const auto * const A = nl_param("A"))
     {
       _p.d(*A, *A) = 2.0 * (_C - _B) / math::pow(_A, 3.0);
-      if (const auto B = nl_param("B"))
+      if (const auto * const B = nl_param("B"))
         _p.d(*A, *B) = 1.0 / math::pow(_A, 2.0);
-      if (const auto C = nl_param("C"))
+      if (const auto * const C = nl_param("C"))
         _p.d(*A, *C) = -1.0 / math::pow(_A, 2.0);
     }
 
-    if (const auto B = nl_param("B"))
-      if (const auto A = nl_param("A"))
+    if (const auto * const B = nl_param("B"))
+      if (const auto * const A = nl_param("A"))
         _p.d(*B, *A) = 1.0 / math::pow(_A, 2.0);
 
-    if (const auto C = nl_param("C"))
-      if (const auto A = nl_param("A"))
+    if (const auto * const C = nl_param("C"))
+      if (const auto * const A = nl_param("A"))
         _p.d(*C, *A) = -1.0 / math::pow(_A, 2.0);
   }
 }
