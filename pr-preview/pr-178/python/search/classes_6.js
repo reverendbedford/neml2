@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['vec_0',['Vec',['../classtensors_1_1Vec.html',1,'tensors']]],
-  ['vecbaseview_1',['VecBaseView',['../classtensors_1_1VecBaseView.html',1,'tensors']]],
-  ['vecbatchview_2',['VecBatchView',['../classtensors_1_1VecBatchView.html',1,'tensors']]]
+  ['tensor_0',['Tensor',['../classtensors_1_1Tensor.html',1,'tensors']]],
+  ['tensorbaseview_1',['TensorBaseView',['../classtensors_1_1TensorBaseView.html',1,'tensors']]],
+  ['tensorbatchview_2',['TensorBatchView',['../classtensors_1_1TensorBatchView.html',1,'tensors']]],
+  ['tensortype_3',['TensorType',['../classtensors_1_1TensorType.html',1,'tensors']]],
+  ['tensorvalue_4',['TensorValue',['../classbase_1_1TensorValue.html',1,'base']]]
 ];
