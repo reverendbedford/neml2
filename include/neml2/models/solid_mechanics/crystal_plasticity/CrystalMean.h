@@ -22,30 +22,35 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/tensors/LabeledVector.h"
-#include "neml2/tensors/LabeledMatrix.h"
+#pragma once
+
+#include "neml2/models/Model.h"
 
 namespace neml2
 {
-LabeledVector
-LabeledVector::slice(const std::string & name) const
+namespace crystallography
 {
-  return LabeledVector(_tensor.base_index({_axes[0]->indices(name)}), {&_axes[0]->subaxis(name)});
+class CrystalGeometry;
 }
 
-namespace utils
+template <typename T>
+class CrystalMean : public Model
 {
-bool
-allclose(const LabeledVector & a, const LabeledVector & b, Real rtol, Real atol)
-{
-  if (a.axis(0) != b.axis(0))
-    return false;
+public:
+  static OptionSet expected_options();
 
-  for (auto var : a.axis(0).variable_names())
-    if (!torch::allclose(a.base_index(var), b.base_index(var), rtol, atol))
-      return false;
+  CrystalMean(const OptionSet & options);
 
-  return true;
-}
-}
+protected:
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+
+  /// Crystal geometry class with slip geometry
+  const crystallography::CrystalGeometry & _crystal_geometry;
+
+  /// Original variable (with list dimensions)
+  const Variable<T> & _from;
+
+  /// Reduced variable (without list dimensions)
+  Variable<T> & _to;
+};
 } // namespace neml2
