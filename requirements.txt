@@ -3,7 +3,6 @@
 #
 numpy<2
 pyzag
-nbdime
 -r doc/requirements.txt
 -r scripts/requirements.txt
 -r python/tests/requirements.txt
