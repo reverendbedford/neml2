@@ -25,7 +25,7 @@ add_submodule(tensors "${tensors_srcs}")
 
 # Extract stub
 add_custom_target(python-stub ALL
-  DEPENDS base math tensors
+  DEPENDS base math tensors crystallography
   WORKING_DIRECTORY ${NEML2_BINARY_DIR}/python
   COMMAND PYTHONPATH=. pybind11-stubgen -o . neml2
   VERBATIM

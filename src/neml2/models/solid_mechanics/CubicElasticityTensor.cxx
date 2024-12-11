@@ -115,11 +115,10 @@ CubicElasticityTensor::convert_to_C1()
                            (-2.0 * (_p2 - 2.0) * _p2 * _p1) /
                                ((2.0 * _p2 * _p2 + _p2 - 1) * (2.0 * _p2 * _p2 + _p2 - 1)),
                            Scalar::zeros_like(_p1));
-  else
-    throw NEMLException("Unsupported combination of input parameter types: " +
-                        std::string(input_options().get<EnumSelection>("p1_type")) + " and " +
-                        std::string(input_options().get<EnumSelection>("p2_type")) + " and " +
-                        std::string(input_options().get<EnumSelection>("p3_type")));
+  throw NEMLException("Unsupported combination of input parameter types: " +
+                      std::string(input_options().get<EnumSelection>("p1_type")) + " and " +
+                      std::string(input_options().get<EnumSelection>("p2_type")) + " and " +
+                      std::string(input_options().get<EnumSelection>("p3_type")));
 }
 
 std::tuple<Scalar, Scalar, Scalar, Scalar>
@@ -132,11 +131,10 @@ CubicElasticityTensor::convert_to_C2()
                            (2 * _p2 * _p2 * _p1 + _p1) /
                                ((2.0 * _p2 * _p2 + _p2 - 1) * (2.0 * _p2 * _p2 + _p2 - 1)),
                            Scalar::zeros_like(_p1));
-  else
-    throw NEMLException("Unsupported combination of input parameter types: " +
-                        std::string(input_options().get<EnumSelection>("p1_type")) + " and " +
-                        std::string(input_options().get<EnumSelection>("p2_type")) + " and " +
-                        std::string(input_options().get<EnumSelection>("p3_type")));
+  throw NEMLException("Unsupported combination of input parameter types: " +
+                      std::string(input_options().get<EnumSelection>("p1_type")) + " and " +
+                      std::string(input_options().get<EnumSelection>("p2_type")) + " and " +
+                      std::string(input_options().get<EnumSelection>("p3_type")));
 }
 
 std::tuple<Scalar, Scalar, Scalar, Scalar>
@@ -146,11 +144,10 @@ CubicElasticityTensor::convert_to_C3()
       (_p3_type == ParamType::SHEAR))
     return std::make_tuple(
         2.0 * _p3, Scalar::zeros_like(_p3), Scalar::zeros_like(_p3), Scalar::full_like(_p3, 2.0));
-  else
-    throw NEMLException("Unsupported combination of input parameter types: " +
-                        std::string(input_options().get<EnumSelection>("p1_type")) + " and " +
-                        std::string(input_options().get<EnumSelection>("p2_type")) + " and " +
-                        std::string(input_options().get<EnumSelection>("p3_type")));
+  throw NEMLException("Unsupported combination of input parameter types: " +
+                      std::string(input_options().get<EnumSelection>("p1_type")) + " and " +
+                      std::string(input_options().get<EnumSelection>("p2_type")) + " and " +
+                      std::string(input_options().get<EnumSelection>("p3_type")));
 }
 
 } // namespace neml2
