@@ -35,5 +35,6 @@ var searchData=
   ['subaxis_5fnames_32',['subaxis_names',['../classtensors_1_1LabeledAxis.html#adb5f2e0bf0244828e1cd2e787d341824',1,'tensors::LabeledAxis']]],
   ['swr4_33',['SWR4',['../classtensors_1_1SWR4.html',1,'SWR4'],['../classtensors_1_1TensorType.html#ad2cd1ddd359cb94b18bdf822ce47fc71',1,'tensors.TensorType.SWR4']]],
   ['swr4baseview_34',['SWR4BaseView',['../classtensors_1_1SWR4BaseView.html',1,'tensors']]],
-  ['swr4batchview_35',['SWR4BatchView',['../classtensors_1_1SWR4BatchView.html',1,'tensors']]]
+  ['swr4batchview_35',['SWR4BatchView',['../classtensors_1_1SWR4BatchView.html',1,'tensors']]],
+  ['symmetry_5foperations_5ffrom_5forbifold_36',['symmetry_operations_from_orbifold',['../namespacecrystallography.html#a28df9da46332e4785d5b1b3631fa3978',1,'crystallography']]]
 ];
