@@ -33,19 +33,20 @@ add_custom_target(python-stub ALL
 # Artifacts
 configure_file(neml2/__init__.py ${NEML2_BINARY_DIR}/python/neml2/__init__.py COPYONLY)
 configure_file(neml2/visualization.py ${NEML2_BINARY_DIR}/python/neml2/visualization.py COPYONLY)
-configure_file(neml2/pyzag/__init__.py ${NEML2_BINARY_DIR}/python/neml2/pyzag/__init__.py COPYONLY)
-configure_file(neml2/pyzag/interface.py ${NEML2_BINARY_DIR}/python/neml2/pyzag/interface.py COPYONLY)
 install(FILES
   neml2/__init__.py
   neml2/visualization.py
-  neml2/pyzag/__init__.py
-  neml2/pyzag/interface.py
   ${NEML2_BINARY_DIR}/python/neml2/__init__.pyi
   ${NEML2_BINARY_DIR}/python/neml2/base.pyi
   ${NEML2_BINARY_DIR}/python/neml2/math.pyi
   ${NEML2_BINARY_DIR}/python/neml2/tensors.pyi
   DESTINATION .
 )
+
+# pyzag subpackage
+configure_file(neml2/pyzag/__init__.py ${NEML2_BINARY_DIR}/python/neml2/pyzag/__init__.py COPYONLY)
+configure_file(neml2/pyzag/interface.py ${NEML2_BINARY_DIR}/python/neml2/pyzag/interface.py COPYONLY)
+install(DIRECTORY neml2/pyzag DESTINATION .)
 
 # Tests
 if(NEML2_TESTS)
