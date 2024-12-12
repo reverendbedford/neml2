@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-11 23:14:04</td>
+            <td class="headerValue">2024-12-12 03:35:05</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">5</td>
@@ -160,33 +160,31 @@
 <a name="98"><span class="lineNum">      98 </span><span class="lineCov">         26 :                            -_p2 / (2 * _p2 * _p2 + _p2 - 1),</span></a>
 <a name="99"><span class="lineNum">      99 </span><span class="lineCov">         26 :                            (_p1 + 2 * _p1 * _p2 * _p2) /</span></a>
 <a name="100"><span class="lineNum">     100 </span><span class="lineCov">         39 :                                ((2 * _p2 * _p2 + _p2 - 1) * (2 * _p2 * _p2 + _p2 - 1)));</span></a>
-<a name="101"><span class="lineNum">     101 </span><span class="lineCov">         13 :   else if ((_p1_type == ParamType::POISSONS) &amp;&amp; (_p2_type == ParamType::YOUNGS))</span></a>
+<a name="101"><span class="lineNum">     101 </span><span class="lineCov">         13 :   if ((_p1_type == ParamType::POISSONS) &amp;&amp; (_p2_type == ParamType::YOUNGS))</span></a>
 <a name="102"><span class="lineNum">     102 </span><span class="lineCov">         26 :     return std::make_tuple(_p2 * _p1 / ((1 + _p1) * (1 - 2 * _p1)),</span></a>
 <a name="103"><span class="lineNum">     103 </span><span class="lineCov">         26 :                            (_p2 + 2 * _p2 * _p1 * _p1) /</span></a>
 <a name="104"><span class="lineNum">     104 </span><span class="lineCov">         26 :                                ((2 * _p1 * _p1 + _p1 - 1) * (2 * _p1 * _p1 + _p1 - 1)),</span></a>
 <a name="105"><span class="lineNum">     105 </span><span class="lineCov">         39 :                            -_p1 / (2 * _p1 * _p1 + _p1 - 1));</span></a>
-<a name="106"><span class="lineNum">     106 </span>            :   else</a>
-<a name="107"><span class="lineNum">     107 </span><span class="lineNoCov">          0 :     throw NEMLException(&quot;Unsupported combination of input parameter types: &quot; +</span></a>
-<a name="108"><span class="lineNum">     108 </span><span class="lineNoCov">          0 :                         std::string(input_options().get&lt;EnumSelection&gt;(&quot;p1_type&quot;)) + &quot; and &quot; +</span></a>
-<a name="109"><span class="lineNum">     109 </span><span class="lineNoCov">          0 :                         std::string(input_options().get&lt;EnumSelection&gt;(&quot;p2_type&quot;)));</span></a>
-<a name="110"><span class="lineNum">     110 </span>            : }</a>
-<a name="111"><span class="lineNum">     111 </span>            : </a>
-<a name="112"><span class="lineNum">     112 </span>            : std::tuple&lt;Scalar, Scalar, Scalar&gt;</a>
-<a name="113"><span class="lineNum">     113 </span><span class="lineCov">         26 : IsotropicElasticityTensor::convert_to_mu()</span></a>
-<a name="114"><span class="lineNum">     114 </span>            : {</a>
-<a name="115"><span class="lineNum">     115 </span><span class="lineCov">         26 :   if ((_p1_type == ParamType::YOUNGS) &amp;&amp; (_p2_type == ParamType::POISSONS))</span></a>
-<a name="116"><span class="lineNum">     116 </span>            :     return std::make_tuple(</a>
-<a name="117"><span class="lineNum">     117 </span><span class="lineCov">         26 :         _p1 / (2 * (1 + _p2)), 1.0 / (2.0 + 2 * _p2), -_p1 / (2 * (1 + _p2) * (1 + _p2)));</span></a>
-<a name="118"><span class="lineNum">     118 </span><span class="lineCov">         13 :   else if ((_p1_type == ParamType::POISSONS) &amp;&amp; (_p2_type == ParamType::YOUNGS))</span></a>
-<a name="119"><span class="lineNum">     119 </span>            :     return std::make_tuple(</a>
-<a name="120"><span class="lineNum">     120 </span><span class="lineCov">         26 :         _p2 / (2 * (1 + _p1)), -_p2 / (2 * (1 + _p1) * (1 + _p1)), 1 / (2 + 2 * _p1));</span></a>
-<a name="121"><span class="lineNum">     121 </span>            :   else</a>
-<a name="122"><span class="lineNum">     122 </span><span class="lineNoCov">          0 :     throw NEMLException(&quot;Unsupported combination of input parameter types: &quot; +</span></a>
-<a name="123"><span class="lineNum">     123 </span><span class="lineNoCov">          0 :                         std::string(input_options().get&lt;EnumSelection&gt;(&quot;p1_type&quot;)) + &quot; and &quot; +</span></a>
-<a name="124"><span class="lineNum">     124 </span><span class="lineNoCov">          0 :                         std::string(input_options().get&lt;EnumSelection&gt;(&quot;p2_type&quot;)));</span></a>
-<a name="125"><span class="lineNum">     125 </span>            : }</a>
-<a name="126"><span class="lineNum">     126 </span>            : </a>
-<a name="127"><span class="lineNum">     127 </span>            : } // namespace neml2</a>
+<a name="106"><span class="lineNum">     106 </span><span class="lineNoCov">          0 :   throw NEMLException(&quot;Unsupported combination of input parameter types: &quot; +</span></a>
+<a name="107"><span class="lineNum">     107 </span><span class="lineNoCov">          0 :                       std::string(input_options().get&lt;EnumSelection&gt;(&quot;p1_type&quot;)) + &quot; and &quot; +</span></a>
+<a name="108"><span class="lineNum">     108 </span><span class="lineNoCov">          0 :                       std::string(input_options().get&lt;EnumSelection&gt;(&quot;p2_type&quot;)));</span></a>
+<a name="109"><span class="lineNum">     109 </span>            : }</a>
+<a name="110"><span class="lineNum">     110 </span>            : </a>
+<a name="111"><span class="lineNum">     111 </span>            : std::tuple&lt;Scalar, Scalar, Scalar&gt;</a>
+<a name="112"><span class="lineNum">     112 </span><span class="lineCov">         26 : IsotropicElasticityTensor::convert_to_mu()</span></a>
+<a name="113"><span class="lineNum">     113 </span>            : {</a>
+<a name="114"><span class="lineNum">     114 </span><span class="lineCov">         26 :   if ((_p1_type == ParamType::YOUNGS) &amp;&amp; (_p2_type == ParamType::POISSONS))</span></a>
+<a name="115"><span class="lineNum">     115 </span>            :     return std::make_tuple(</a>
+<a name="116"><span class="lineNum">     116 </span><span class="lineCov">         26 :         _p1 / (2 * (1 + _p2)), 1.0 / (2.0 + 2 * _p2), -_p1 / (2 * (1 + _p2) * (1 + _p2)));</span></a>
+<a name="117"><span class="lineNum">     117 </span><span class="lineCov">         13 :   if ((_p1_type == ParamType::POISSONS) &amp;&amp; (_p2_type == ParamType::YOUNGS))</span></a>
+<a name="118"><span class="lineNum">     118 </span>            :     return std::make_tuple(</a>
+<a name="119"><span class="lineNum">     119 </span><span class="lineCov">         26 :         _p2 / (2 * (1 + _p1)), -_p2 / (2 * (1 + _p1) * (1 + _p1)), 1 / (2 + 2 * _p1));</span></a>
+<a name="120"><span class="lineNum">     120 </span><span class="lineNoCov">          0 :   throw NEMLException(&quot;Unsupported combination of input parameter types: &quot; +</span></a>
+<a name="121"><span class="lineNum">     121 </span><span class="lineNoCov">          0 :                       std::string(input_options().get&lt;EnumSelection&gt;(&quot;p1_type&quot;)) + &quot; and &quot; +</span></a>
+<a name="122"><span class="lineNum">     122 </span><span class="lineNoCov">          0 :                       std::string(input_options().get&lt;EnumSelection&gt;(&quot;p2_type&quot;)));</span></a>
+<a name="123"><span class="lineNum">     123 </span>            : }</a>
+<a name="124"><span class="lineNum">     124 </span>            : </a>
+<a name="125"><span class="lineNum">     125 </span>            : } // namespace neml2</a>
 </pre>
       </td>
     </tr>

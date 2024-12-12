@@ -39,6 +39,7 @@ var namespaceneml2_1_1math =
     [ "macaulay", "namespaceneml2_1_1math.html#ae2eb9e6308296289f4655c1b586910a9", null ],
     [ "mandel_factor", "namespaceneml2_1_1math.html#a915a15e677e13fa785a0f378b5781f50", null ],
     [ "mandel_to_full", "namespaceneml2_1_1math.html#a4f786742a329413a503d3a6ad76243fb", null ],
+    [ "minimum", "namespaceneml2_1_1math.html#a74364f93fa41672d8a4a41bcfd5596e1", null ],
     [ "multiply_and_make_skew", "namespaceneml2_1_1math.html#a81565e709d0982bfa707db6cdb283148", null ],
     [ "pow", "namespaceneml2_1_1math.html#ac6fe20e739b68a40f7accb8758d94524", null ],
     [ "pow", "namespaceneml2_1_1math.html#ac649246fade84cc9c7b2694082614ee1", null ],

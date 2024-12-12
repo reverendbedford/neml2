@@ -1,7 +1,5 @@
 var NAVTREEINDEX11 =
 {
-"namespaceneml2.html#a02b528e002f334206fd5e4eba92fd753":[8,0,0,184],
-"namespaceneml2.html#a05e6274f03dd8463d1210caec8e6f933":[8,0,0,283],
 "namespaceneml2.html#a06e2063634ebdd3581529ac6fd136c8c":[8,0,0,291],
 "namespaceneml2.html#a06e7406a3a63c03be1a5cf4c6d31edde":[8,0,0,295],
 "namespaceneml2.html#a08fec6a2b93ce75fdd72bc168af9b913":[8,0,0,281],
@@ -249,5 +247,7 @@ var NAVTREEINDEX11 =
 "namespaceneml2_1_1crystallography.html#a15dd992592bf8ce08d6a8cd84c6e15cb":[8,0,0,0,8],
 "namespaceneml2_1_1crystallography.html#a2a8634e10751e0d7000cbcb18b9b0db3":[8,0,0,0,10],
 "namespaceneml2_1_1crystallography.html#a889dd34ef17120f33dff9713e302f5d6":[8,0,0,0,5],
-"namespaceneml2_1_1crystallography.html#a8feb6cc94216570732e6967d2e198c7e":[8,0,0,0,7]
+"namespaceneml2_1_1crystallography.html#a8feb6cc94216570732e6967d2e198c7e":[8,0,0,0,7],
+"namespaceneml2_1_1crystallography.html#ab2aa1766ea6875c2d3d3ae3d07574485":[8,0,0,0,6],
+"namespaceneml2_1_1crystallography.html#addab1d4919f14a270f6e7a14b0974843":[8,0,0,0,9]
 };
