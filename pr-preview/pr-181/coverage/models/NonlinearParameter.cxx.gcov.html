@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-12 19:38:26</td>
+            <td class="headerValue">2024-12-12 19:50:45</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">23</td>
@@ -97,11 +97,11 @@
 <a name="35"><span class="lineNum">      35 </span>            : }</a>
 <a name="36"><span class="lineNum">      36 </span>            : </a>
 <a name="37"><span class="lineNum">      37 </span>            : template &lt;typename T&gt;</a>
-<a name="38"><span class="lineNum">      38 </span><span class="lineCov">        124 : NonlinearParameter&lt;T&gt;::NonlinearParameter(const OptionSet &amp; options)</span></a>
+<a name="38"><span class="lineNum">      38 </span><span class="lineCov">        120 : NonlinearParameter&lt;T&gt;::NonlinearParameter(const OptionSet &amp; options)</span></a>
 <a name="39"><span class="lineNum">      39 </span>            :   : Model(options),</a>
-<a name="40"><span class="lineNum">      40 </span><span class="lineCov">        124 :     _p(declare_output_variable&lt;T&gt;(VariableName(name()).prepend(&quot;parameters&quot;)))</span></a>
+<a name="40"><span class="lineNum">      40 </span><span class="lineCov">        120 :     _p(declare_output_variable&lt;T&gt;(VariableName(name()).prepend(&quot;parameters&quot;)))</span></a>
 <a name="41"><span class="lineNum">      41 </span>            : {</a>
-<a name="42"><span class="lineNum">      42 </span><span class="lineCov">        124 : }</span></a>
+<a name="42"><span class="lineNum">      42 </span><span class="lineCov">        120 : }</span></a>
 <a name="43"><span class="lineNum">      43 </span>            : </a>
 <a name="44"><span class="lineNum">      44 </span>            : #define NONLINEARPARAMETER_INSTANTIATE_PRIMITIVETENSOR(T) template class NonlinearParameter&lt;T&gt;</a>
 <a name="45"><span class="lineNum">      45 </span>            : FOR_ALL_PRIMITIVETENSOR(NONLINEARPARAMETER_INSTANTIATE_PRIMITIVETENSOR);</a>

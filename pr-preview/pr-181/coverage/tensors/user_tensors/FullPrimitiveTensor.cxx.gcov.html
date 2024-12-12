@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-12 19:38:26</td>
+            <td class="headerValue">2024-12-12 19:50:45</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">31</td>
@@ -113,13 +113,13 @@
 <a name="51"><span class="lineNum">      51 </span><span class="lineCov">        120 : }</span></a>
 <a name="52"><span class="lineNum">      52 </span>            : </a>
 <a name="53"><span class="lineNum">      53 </span>            : template &lt;typename T&gt;</a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">        173 : FullPrimitiveTensor&lt;T&gt;::FullPrimitiveTensor(const OptionSet &amp; options)</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">        155 : FullPrimitiveTensor&lt;T&gt;::FullPrimitiveTensor(const OptionSet &amp; options)</span></a>
 <a name="55"><span class="lineNum">      55 </span>            :   : T(T::full(options.get&lt;TensorShape&gt;(&quot;batch_shape&quot;),</a>
-<a name="56"><span class="lineNum">      56 </span><span class="lineCov">        346 :               options.get&lt;Real&gt;(&quot;value&quot;),</span></a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">        173 :               default_tensor_options())),</span></a>
-<a name="58"><span class="lineNum">      58 </span><span class="lineCov">        346 :     UserTensorBase(options)</span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineCov">        310 :               options.get&lt;Real&gt;(&quot;value&quot;),</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineCov">        155 :               default_tensor_options())),</span></a>
+<a name="58"><span class="lineNum">      58 </span><span class="lineCov">        310 :     UserTensorBase(options)</span></a>
 <a name="59"><span class="lineNum">      59 </span>            : {</a>
-<a name="60"><span class="lineNum">      60 </span><span class="lineCov">        173 : }</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineCov">        155 : }</span></a>
 <a name="61"><span class="lineNum">      61 </span>            : </a>
 <a name="62"><span class="lineNum">      62 </span>            : #define FULLPRIMITIVETENSOR_INSTANTIATE_PRIMITIVETENSOR(T) template class FullPrimitiveTensor&lt;T&gt;</a>
 <a name="63"><span class="lineNum">      63 </span>            : FOR_ALL_PRIMITIVETENSOR(FULLPRIMITIVETENSOR_INSTANTIATE_PRIMITIVETENSOR);</a>

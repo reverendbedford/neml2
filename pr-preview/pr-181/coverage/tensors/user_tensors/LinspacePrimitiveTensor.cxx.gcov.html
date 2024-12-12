@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-12 19:38:26</td>
+            <td class="headerValue">2024-12-12 19:50:45</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">32</td>
@@ -123,15 +123,15 @@
 <a name="61"><span class="lineNum">      61 </span><span class="lineCov">        120 : }</span></a>
 <a name="62"><span class="lineNum">      62 </span>            : </a>
 <a name="63"><span class="lineNum">      63 </span>            : template &lt;typename T&gt;</a>
-<a name="64"><span class="lineNum">      64 </span><span class="lineCov">        112 : LinspacePrimitiveTensor&lt;T&gt;::LinspacePrimitiveTensor(const OptionSet &amp; options)</span></a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineCov">        224 :   : T(T::linspace(options.get&lt;CrossRef&lt;T&gt;&gt;(&quot;start&quot;),</span></a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineCov">        224 :                   options.get&lt;CrossRef&lt;T&gt;&gt;(&quot;end&quot;),</span></a>
-<a name="67"><span class="lineNum">      67 </span><span class="lineCov">        224 :                   options.get&lt;Size&gt;(&quot;nstep&quot;),</span></a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">        224 :                   options.get&lt;Size&gt;(&quot;dim&quot;),</span></a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">        224 :                   options.get&lt;Size&gt;(&quot;batch_dim&quot;))),</span></a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineCov">        784 :     UserTensorBase(options)</span></a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineCov">        102 : LinspacePrimitiveTensor&lt;T&gt;::LinspacePrimitiveTensor(const OptionSet &amp; options)</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">        204 :   : T(T::linspace(options.get&lt;CrossRef&lt;T&gt;&gt;(&quot;start&quot;),</span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineCov">        204 :                   options.get&lt;CrossRef&lt;T&gt;&gt;(&quot;end&quot;),</span></a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">        204 :                   options.get&lt;Size&gt;(&quot;nstep&quot;),</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">        204 :                   options.get&lt;Size&gt;(&quot;dim&quot;),</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">        204 :                   options.get&lt;Size&gt;(&quot;batch_dim&quot;))),</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">        714 :     UserTensorBase(options)</span></a>
 <a name="71"><span class="lineNum">      71 </span>            : {</a>
-<a name="72"><span class="lineNum">      72 </span><span class="lineCov">        112 : }</span></a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineCov">        102 : }</span></a>
 <a name="73"><span class="lineNum">      73 </span>            : </a>
 <a name="74"><span class="lineNum">      74 </span>            : #define LINSPACEPRIMITIVETENSOR_INSTANTIATE_PRIMITIVETENSOR(T)                                     \</a>
 <a name="75"><span class="lineNum">      75 </span>            :   template class LinspacePrimitiveTensor&lt;T&gt;</a>
