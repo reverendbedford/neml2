@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-12 17:30:27</td>
+            <td class="headerValue">2024-12-12 19:38:26</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">15</td>
@@ -128,14 +128,14 @@
 <a name="66"><span class="lineNum">      66 </span><span class="lineCov">         30 :   options.set(&quot;automatic_scaling_miter&quot;).suppressed() = false;</span></a>
 <a name="67"><span class="lineNum">      67 </span><span class="lineCov">         30 : }</span></a>
 <a name="68"><span class="lineNum">      68 </span>            : </a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">        594 : NonlinearSystem::NonlinearSystem(const OptionSet &amp; options)</span></a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineCov">        594 :   : _ndof(0),</span></a>
-<a name="71"><span class="lineNum">      71 </span><span class="lineCov">        594 :     _autoscale(options.get&lt;bool&gt;(&quot;automatic_scaling&quot;)),</span></a>
-<a name="72"><span class="lineNum">      72 </span><span class="lineCov">        594 :     _autoscale_tol(options.get&lt;Real&gt;(&quot;automatic_scaling_tol&quot;)),</span></a>
-<a name="73"><span class="lineNum">      73 </span><span class="lineCov">        594 :     _autoscale_miter(options.get&lt;unsigned int&gt;(&quot;automatic_scaling_miter&quot;)),</span></a>
-<a name="74"><span class="lineNum">      74 </span><span class="lineCov">       1188 :     _scaling_matrices_initialized(false)</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">        568 : NonlinearSystem::NonlinearSystem(const OptionSet &amp; options)</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">        568 :   : _ndof(0),</span></a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineCov">        568 :     _autoscale(options.get&lt;bool&gt;(&quot;automatic_scaling&quot;)),</span></a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineCov">        568 :     _autoscale_tol(options.get&lt;Real&gt;(&quot;automatic_scaling_tol&quot;)),</span></a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">        568 :     _autoscale_miter(options.get&lt;unsigned int&gt;(&quot;automatic_scaling_miter&quot;)),</span></a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineCov">       1136 :     _scaling_matrices_initialized(false)</span></a>
 <a name="75"><span class="lineNum">      75 </span>            : {</a>
-<a name="76"><span class="lineNum">      76 </span><span class="lineCov">        594 : }</span></a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineCov">        568 : }</span></a>
 <a name="77"><span class="lineNum">      77 </span>            : </a>
 <a name="78"><span class="lineNum">      78 </span>            : void</a>
 <a name="79"><span class="lineNum">      79 </span><span class="lineCov">        146 : NonlinearSystem::init_scaling(const bool verbose)</span></a>

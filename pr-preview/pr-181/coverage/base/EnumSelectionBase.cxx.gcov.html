@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-12 17:30:27</td>
+            <td class="headerValue">2024-12-12 19:38:26</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">4</td>
@@ -118,8 +118,8 @@
 <a name="56"><span class="lineNum">      56 </span><span class="lineCov">       1172 :   std::set&lt;int&gt; values_set(values.begin(), values.end());</span></a>
 <a name="57"><span class="lineNum">      57 </span><span class="lineCov">       1172 :   neml_assert(values_set.size() == values.size(), &quot;Values of (Multi)EnumSelection must be unique.&quot;);</span></a>
 <a name="58"><span class="lineNum">      58 </span>            : </a>
-<a name="59"><span class="lineNum">      59 </span><span class="lineCov">       5268 :   for (size_t i = 0; i &lt; candidates.size(); i++)</span></a>
-<a name="60"><span class="lineNum">      60 </span><span class="lineCov">       4097 :     _candidate_map.emplace(candidates[i], values[i]);</span></a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineCov">       5274 :   for (size_t i = 0; i &lt; candidates.size(); i++)</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineCov">       4103 :     _candidate_map.emplace(candidates[i], values[i]);</span></a>
 <a name="61"><span class="lineNum">      61 </span><span class="lineCov">       1175 : }</span></a>
 <a name="62"><span class="lineNum">      62 </span>            : </a>
 <a name="63"><span class="lineNum">      63 </span>            : EnumSelectionBase &amp;</a>
@@ -130,13 +130,13 @@
 <a name="68"><span class="lineNum">      68 </span>            : }</a>
 <a name="69"><span class="lineNum">      69 </span>            : </a>
 <a name="70"><span class="lineNum">      70 </span>            : std::string</a>
-<a name="71"><span class="lineNum">      71 </span><span class="lineCov">       2401 : EnumSelectionBase::candidates_str() const</span></a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineCov">       2376 : EnumSelectionBase::candidates_str() const</span></a>
 <a name="72"><span class="lineNum">      72 </span>            : {</a>
-<a name="73"><span class="lineNum">      73 </span><span class="lineCov">       2401 :   std::stringstream ss;</span></a>
-<a name="74"><span class="lineNum">      74 </span><span class="lineCov">      10837 :   for (const auto &amp; [e, v] : _candidate_map)</span></a>
-<a name="75"><span class="lineNum">      75 </span><span class="lineCov">       8436 :     ss &lt;&lt; e &lt;&lt; &quot; &quot;;</span></a>
-<a name="76"><span class="lineNum">      76 </span><span class="lineCov">       4802 :   return ss.str();</span></a>
-<a name="77"><span class="lineNum">      77 </span><span class="lineCov">       2401 : }</span></a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">       2376 :   std::stringstream ss;</span></a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineCov">      10734 :   for (const auto &amp; [e, v] : _candidate_map)</span></a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineCov">       8358 :     ss &lt;&lt; e &lt;&lt; &quot; &quot;;</span></a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineCov">       4752 :   return ss.str();</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineCov">       2376 : }</span></a>
 <a name="78"><span class="lineNum">      78 </span>            : } // namesace neml2</a>
 </pre>
       </td>

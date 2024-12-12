@@ -110,8 +110,10 @@ $(function(){initNavTree('classneml2_1_1ElasticityTensor.html',''); initResizabl
 
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classneml2_1_1ElasticityTensor-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">ElasticityTensor Class Reference</div></div>
 </div><!--header-->
@@ -158,6 +160,16 @@ Inheritance diagram for ElasticityTensor:</div>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a3a023c0c27667e78ae521eb64f1c7c81" id="r_a3a023c0c27667e78ae521eb64f1c7c81"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3a023c0c27667e78ae521eb64f1c7c81">ParamType</a> { <a class="el" href="#a3a023c0c27667e78ae521eb64f1c7c81a4f736d11febe9da0622a39319cdd535e">YOUNGS</a>
+, <a class="el" href="#a3a023c0c27667e78ae521eb64f1c7c81ae550c7ec6decfb71bb1fa932c0e687d6">POISSONS</a>
+, <a class="el" href="#a3a023c0c27667e78ae521eb64f1c7c81a20b09561b39db495fc6d0902a697bc7f">SHEAR</a>
+, <a class="el" href="#a3a023c0c27667e78ae521eb64f1c7c81accc0377a8afbf50e7094f5c23a8af223">INVALID</a>
+ }</td></tr>
+<tr class="memdesc:a3a023c0c27667e78ae521eb64f1c7c81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Various options for parameter inputs, will need to add more as we get more tensors.  <a href="#a3a023c0c27667e78ae521eb64f1c7c81">More...</a><br /></td></tr>
+<tr class="separator:a3a023c0c27667e78ae521eb64f1c7c81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aa9396893a6b677a156aeccd30f55c957" id="r_aa9396893a6b677a156aeccd30f55c957"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa9396893a6b677a156aeccd30f55c957">ElasticityTensor</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1OptionSet.html">OptionSet</a> &amp;<a class="el" href="classneml2_1_1Model.html#a761d77eb7c81c3e93b34bfe6caf4b132">options</a>)</td></tr>
@@ -499,6 +511,72 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a504e031b186e6f2f127d195cdc1cfadf inherit pub_static_methods_classneml2_1_1NonlinearSystem" id="r_a504e031b186e6f2f127d195cdc1cfadf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">static</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1NonlinearSystem.html#a504e031b186e6f2f127d195cdc1cfadf">enable_automatic_scaling</a> (<a class="el" href="classneml2_1_1OptionSet.html">OptionSet</a> &amp;options)</td></tr>
 <tr class="separator:a504e031b186e6f2f127d195cdc1cfadf inherit pub_static_methods_classneml2_1_1NonlinearSystem"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a91989e70e5aab7502ff57e5feed1c592" id="r_a91989e70e5aab7502ff57e5feed1c592"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a91989e70e5aab7502ff57e5feed1c592">_coef_as_param</a></td></tr>
+<tr class="memdesc:a91989e70e5aab7502ff57e5feed1c592"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether to declare coefficients as parameters.  <br /></td></tr>
+<tr class="separator:a91989e70e5aab7502ff57e5feed1c592"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae10cd115cdcf6e7873bc86590246671a" id="r_ae10cd115cdcf6e7873bc86590246671a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae10cd115cdcf6e7873bc86590246671a">_coef</a></td></tr>
+<tr class="memdesc:ae10cd115cdcf6e7873bc86590246671a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input coefficients.  <br /></td></tr>
+<tr class="separator:ae10cd115cdcf6e7873bc86590246671a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2e14d1395aac711881563fb3c47f287" id="r_aa2e14d1395aac711881563fb3c47f287"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::vector&lt; <a class="el" href="#a3a023c0c27667e78ae521eb64f1c7c81">ParamType</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa2e14d1395aac711881563fb3c47f287">_coef_types</a></td></tr>
+<tr class="memdesc:aa2e14d1395aac711881563fb3c47f287"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input coefficient types.  <br /></td></tr>
+<tr class="separator:aa2e14d1395aac711881563fb3c47f287"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classneml2_1_1NonlinearParameter"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classneml2_1_1NonlinearParameter')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classneml2_1_1NonlinearParameter.html">NonlinearParameter&lt; SSR4 &gt;</a></td></tr>
+<tr class="memitem:a14a9c5d660b58dbb6d88cf1a8b3d1727 inherit pro_attribs_classneml2_1_1NonlinearParameter" id="r_a14a9c5d660b58dbb6d88cf1a8b3d1727"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Variable.html">Variable</a>&lt; <a class="el" href="classneml2_1_1SSR4.html">SSR4</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1NonlinearParameter.html#a14a9c5d660b58dbb6d88cf1a8b3d1727">_p</a></td></tr>
+<tr class="memdesc:a14a9c5d660b58dbb6d88cf1a8b3d1727 inherit pro_attribs_classneml2_1_1NonlinearParameter"><td class="mdescLeft">&#160;</td><td class="mdescRight">The nonlinear parameter.  <br /></td></tr>
+<tr class="separator:a14a9c5d660b58dbb6d88cf1a8b3d1727 inherit pro_attribs_classneml2_1_1NonlinearParameter"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classneml2_1_1Model"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classneml2_1_1Model')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classneml2_1_1Model.html">Model</a></td></tr>
+<tr class="memitem:a3c97529c21f71bb6268fb4e45ec97dcb inherit pro_attribs_classneml2_1_1Model" id="r_a3c97529c21f71bb6268fb4e45ec97dcb"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classneml2_1_1Model.html">Model</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1Model.html#a3c97529c21f71bb6268fb4e45ec97dcb">_registered_models</a></td></tr>
+<tr class="memdesc:a3c97529c21f71bb6268fb4e45ec97dcb inherit pro_attribs_classneml2_1_1Model"><td class="mdescLeft">&#160;</td><td class="mdescRight">Models <em>this</em> model may use during its evaluation.  <br /></td></tr>
+<tr class="separator:a3c97529c21f71bb6268fb4e45ec97dcb inherit pro_attribs_classneml2_1_1Model"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classneml2_1_1Data"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classneml2_1_1Data')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classneml2_1_1Data.html">Data</a></td></tr>
+<tr class="memitem:aa0852a7772ccf312171ccec9ac5e06ab inherit pro_attribs_classneml2_1_1Data" id="r_aa0852a7772ccf312171ccec9ac5e06ab"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classneml2_1_1Data.html">Data</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1Data.html#aa0852a7772ccf312171ccec9ac5e06ab">_registered_data</a></td></tr>
+<tr class="memdesc:aa0852a7772ccf312171ccec9ac5e06ab inherit pro_attribs_classneml2_1_1Data"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registered <a class="el" href="classneml2_1_1Data.html">Data</a> objects.  <br /></td></tr>
+<tr class="separator:aa0852a7772ccf312171ccec9ac5e06ab inherit pro_attribs_classneml2_1_1Data"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classneml2_1_1ParameterStore"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classneml2_1_1ParameterStore')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classneml2_1_1ParameterStore.html">ParameterStore</a></td></tr>
+<tr class="memitem:a0b771c7ae41617fe739306de55b7a2b2 inherit pro_attribs_classneml2_1_1ParameterStore" id="r_a0b771c7ae41617fe739306de55b7a2b2"><td class="memItemLeft" align="right" valign="top">std::map&lt; std::string, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1VariableBase.html">VariableBase</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1ParameterStore.html#a0b771c7ae41617fe739306de55b7a2b2">_nl_params</a></td></tr>
+<tr class="memdesc:a0b771c7ae41617fe739306de55b7a2b2 inherit pro_attribs_classneml2_1_1ParameterStore"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map from nonlinear parameter names to their corresponding variable views.  <br /></td></tr>
+<tr class="separator:a0b771c7ae41617fe739306de55b7a2b2 inherit pro_attribs_classneml2_1_1ParameterStore"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2afb145902755fb022f2a4bcc5869e68 inherit pro_attribs_classneml2_1_1ParameterStore" id="r_a2afb145902755fb022f2a4bcc5869e68"><td class="memItemLeft" align="right" valign="top">std::map&lt; std::string, <a class="el" href="classneml2_1_1Model.html">Model</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1ParameterStore.html#a2afb145902755fb022f2a4bcc5869e68">_nl_param_models</a></td></tr>
+<tr class="memdesc:a2afb145902755fb022f2a4bcc5869e68 inherit pro_attribs_classneml2_1_1ParameterStore"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map from nonlinear parameter names to models which evaluate them.  <br /></td></tr>
+<tr class="separator:a2afb145902755fb022f2a4bcc5869e68 inherit pro_attribs_classneml2_1_1ParameterStore"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classneml2_1_1NonlinearSystem"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classneml2_1_1NonlinearSystem')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classneml2_1_1NonlinearSystem.html">NonlinearSystem</a></td></tr>
+<tr class="memitem:aa9409aa93f0767a6d04f7b253350c8d1 inherit pro_attribs_classneml2_1_1NonlinearSystem" id="r_aa9409aa93f0767a6d04f7b253350c8d1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1NonlinearSystem.html#aa9409aa93f0767a6d04f7b253350c8d1">_ndof</a></td></tr>
+<tr class="memdesc:aa9409aa93f0767a6d04f7b253350c8d1 inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of degrees of freedom.  <br /></td></tr>
+<tr class="separator:aa9409aa93f0767a6d04f7b253350c8d1 inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3787027c2fd5cb1a2c7ff7b4c5e6e00 inherit pro_attribs_classneml2_1_1NonlinearSystem" id="r_ab3787027c2fd5cb1a2c7ff7b4c5e6e00"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1NonlinearSystem.html#ab3787027c2fd5cb1a2c7ff7b4c5e6e00">_solution</a></td></tr>
+<tr class="memdesc:ab3787027c2fd5cb1a2c7ff7b4c5e6e00 inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="mdescLeft">&#160;</td><td class="mdescRight">View for the solution of this nonlinear system.  <br /></td></tr>
+<tr class="separator:ab3787027c2fd5cb1a2c7ff7b4c5e6e00 inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37894f2b35e16d223d553b8011c39a16 inherit pro_attribs_classneml2_1_1NonlinearSystem" id="r_a37894f2b35e16d223d553b8011c39a16"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1NonlinearSystem.html#a37894f2b35e16d223d553b8011c39a16">_residual</a></td></tr>
+<tr class="memdesc:a37894f2b35e16d223d553b8011c39a16 inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="mdescLeft">&#160;</td><td class="mdescRight">View for the residual of this nonlinear system.  <br /></td></tr>
+<tr class="separator:a37894f2b35e16d223d553b8011c39a16 inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2b5276faf5229a29a50138f0278ac5b inherit pro_attribs_classneml2_1_1NonlinearSystem" id="r_ae2b5276faf5229a29a50138f0278ac5b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1NonlinearSystem.html#ae2b5276faf5229a29a50138f0278ac5b">_Jacobian</a></td></tr>
+<tr class="memdesc:ae2b5276faf5229a29a50138f0278ac5b inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="mdescLeft">&#160;</td><td class="mdescRight">View for the Jacobian of this nonlinear system.  <br /></td></tr>
+<tr class="separator:ae2b5276faf5229a29a50138f0278ac5b inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a776d4bee420f50a29168071840201bb7 inherit pro_attribs_classneml2_1_1NonlinearSystem" id="r_a776d4bee420f50a29168071840201bb7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1NonlinearSystem.html#a776d4bee420f50a29168071840201bb7">_scaled_residual</a></td></tr>
+<tr class="separator:a776d4bee420f50a29168071840201bb7 inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33729211298e44fe6dcfc7be2f5bf258 inherit pro_attribs_classneml2_1_1NonlinearSystem" id="r_a33729211298e44fe6dcfc7be2f5bf258"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1NonlinearSystem.html#a33729211298e44fe6dcfc7be2f5bf258">_scaled_Jacobian</a></td></tr>
+<tr class="separator:a33729211298e44fe6dcfc7be2f5bf258 inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac728afd1425ea7e7674348d5314ebd0d inherit pro_attribs_classneml2_1_1NonlinearSystem" id="r_ac728afd1425ea7e7674348d5314ebd0d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1NonlinearSystem.html#ac728afd1425ea7e7674348d5314ebd0d">_autoscale</a></td></tr>
+<tr class="memdesc:ac728afd1425ea7e7674348d5314ebd0d inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, do automatic scaling.  <br /></td></tr>
+<tr class="separator:ac728afd1425ea7e7674348d5314ebd0d inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae36706f0bdbdebb8b6b73f5012acbec6 inherit pro_attribs_classneml2_1_1NonlinearSystem" id="r_ae36706f0bdbdebb8b6b73f5012acbec6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="namespaceneml2.html#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1NonlinearSystem.html#ae36706f0bdbdebb8b6b73f5012acbec6">_autoscale_tol</a></td></tr>
+<tr class="memdesc:ae36706f0bdbdebb8b6b73f5012acbec6 inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tolerance for convergence check of the iterative automatic scaling algorithm.  <br /></td></tr>
+<tr class="separator:ae36706f0bdbdebb8b6b73f5012acbec6 inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb468eb3f202bef155aed1140d3d7e2a inherit pro_attribs_classneml2_1_1NonlinearSystem" id="r_acb468eb3f202bef155aed1140d3d7e2a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">unsigned</a> <a class="el" href="classneml2_1_1CrossRef.html">int</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1NonlinearSystem.html#acb468eb3f202bef155aed1140d3d7e2a">_autoscale_miter</a></td></tr>
+<tr class="memdesc:acb468eb3f202bef155aed1140d3d7e2a inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum number of iterations allowed for the iterative automatic scaling algorithm.  <br /></td></tr>
+<tr class="separator:acb468eb3f202bef155aed1140d3d7e2a inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4223605db5fffd7afbb2d66540914f6 inherit pro_attribs_classneml2_1_1NonlinearSystem" id="r_af4223605db5fffd7afbb2d66540914f6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1NonlinearSystem.html#af4223605db5fffd7afbb2d66540914f6">_scaling_matrices_initialized</a></td></tr>
+<tr class="memdesc:af4223605db5fffd7afbb2d66540914f6 inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to indicate whether scaling matrices have been computed.  <br /></td></tr>
+<tr class="separator:af4223605db5fffd7afbb2d66540914f6 inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02dbb5e5c0d1f4b6561fd31d5a0f3f1e inherit pro_attribs_classneml2_1_1NonlinearSystem" id="r_a02dbb5e5c0d1f4b6561fd31d5a0f3f1e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1NonlinearSystem.html#a02dbb5e5c0d1f4b6561fd31d5a0f3f1e">_row_scaling</a></td></tr>
+<tr class="memdesc:a02dbb5e5c0d1f4b6561fd31d5a0f3f1e inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Row scaling "matrix" &ndash; since it's a batched diagonal matrix, we are only storing its diagonals.  <br /></td></tr>
+<tr class="separator:a02dbb5e5c0d1f4b6561fd31d5a0f3f1e inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2d8902fff0c90b396b9ed26ed8b4c7e inherit pro_attribs_classneml2_1_1NonlinearSystem" id="r_ab2d8902fff0c90b396b9ed26ed8b4c7e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1NonlinearSystem.html#ab2d8902fff0c90b396b9ed26ed8b4c7e">_col_scaling</a></td></tr>
+<tr class="memdesc:ab2d8902fff0c90b396b9ed26ed8b4c7e inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Column scaling "matrix" &ndash; since it's a batched diagonal matrix, we are only storing its diagonals.  <br /></td></tr>
+<tr class="separator:ab2d8902fff0c90b396b9ed26ed8b4c7e inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_methods_classneml2_1_1Model"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_methods_classneml2_1_1Model')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classneml2_1_1Model.html">Model</a></td></tr>
@@ -637,61 +715,38 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:ad14cd8113b472fc6b93da6f3f0c0619a inherit pro_methods_classneml2_1_1VariableStore" id="r_ad14cd8113b472fc6b93da6f3f0c0619a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">VariableName</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1VariableStore.html#ad14cd8113b472fc6b93da6f3f0c0619a">declare_subaxis</a> (<a class="el" href="classneml2_1_1LabeledAxis.html">LabeledAxis</a> &amp;axis, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">VariableName</a> &amp;subaxis) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
 <tr class="memdesc:ad14cd8113b472fc6b93da6f3f0c0619a inherit pro_methods_classneml2_1_1VariableStore"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare a subaxis recursively on an axis.  <br /></td></tr>
 <tr class="separator:ad14cd8113b472fc6b93da6f3f0c0619a inherit pro_methods_classneml2_1_1VariableStore"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_attribs_classneml2_1_1NonlinearParameter"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classneml2_1_1NonlinearParameter')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classneml2_1_1NonlinearParameter.html">NonlinearParameter&lt; SSR4 &gt;</a></td></tr>
-<tr class="memitem:a14a9c5d660b58dbb6d88cf1a8b3d1727 inherit pro_attribs_classneml2_1_1NonlinearParameter" id="r_a14a9c5d660b58dbb6d88cf1a8b3d1727"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Variable.html">Variable</a>&lt; <a class="el" href="classneml2_1_1SSR4.html">SSR4</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1NonlinearParameter.html#a14a9c5d660b58dbb6d88cf1a8b3d1727">_p</a></td></tr>
-<tr class="memdesc:a14a9c5d660b58dbb6d88cf1a8b3d1727 inherit pro_attribs_classneml2_1_1NonlinearParameter"><td class="mdescLeft">&#160;</td><td class="mdescRight">The nonlinear parameter.  <br /></td></tr>
-<tr class="separator:a14a9c5d660b58dbb6d88cf1a8b3d1727 inherit pro_attribs_classneml2_1_1NonlinearParameter"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_attribs_classneml2_1_1Model"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classneml2_1_1Model')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classneml2_1_1Model.html">Model</a></td></tr>
-<tr class="memitem:a3c97529c21f71bb6268fb4e45ec97dcb inherit pro_attribs_classneml2_1_1Model" id="r_a3c97529c21f71bb6268fb4e45ec97dcb"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classneml2_1_1Model.html">Model</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1Model.html#a3c97529c21f71bb6268fb4e45ec97dcb">_registered_models</a></td></tr>
-<tr class="memdesc:a3c97529c21f71bb6268fb4e45ec97dcb inherit pro_attribs_classneml2_1_1Model"><td class="mdescLeft">&#160;</td><td class="mdescRight">Models <em>this</em> model may use during its evaluation.  <br /></td></tr>
-<tr class="separator:a3c97529c21f71bb6268fb4e45ec97dcb inherit pro_attribs_classneml2_1_1Model"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_attribs_classneml2_1_1Data"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classneml2_1_1Data')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classneml2_1_1Data.html">Data</a></td></tr>
-<tr class="memitem:aa0852a7772ccf312171ccec9ac5e06ab inherit pro_attribs_classneml2_1_1Data" id="r_aa0852a7772ccf312171ccec9ac5e06ab"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classneml2_1_1Data.html">Data</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1Data.html#aa0852a7772ccf312171ccec9ac5e06ab">_registered_data</a></td></tr>
-<tr class="memdesc:aa0852a7772ccf312171ccec9ac5e06ab inherit pro_attribs_classneml2_1_1Data"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registered <a class="el" href="classneml2_1_1Data.html">Data</a> objects.  <br /></td></tr>
-<tr class="separator:aa0852a7772ccf312171ccec9ac5e06ab inherit pro_attribs_classneml2_1_1Data"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_attribs_classneml2_1_1ParameterStore"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classneml2_1_1ParameterStore')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classneml2_1_1ParameterStore.html">ParameterStore</a></td></tr>
-<tr class="memitem:a0b771c7ae41617fe739306de55b7a2b2 inherit pro_attribs_classneml2_1_1ParameterStore" id="r_a0b771c7ae41617fe739306de55b7a2b2"><td class="memItemLeft" align="right" valign="top">std::map&lt; std::string, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1VariableBase.html">VariableBase</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1ParameterStore.html#a0b771c7ae41617fe739306de55b7a2b2">_nl_params</a></td></tr>
-<tr class="memdesc:a0b771c7ae41617fe739306de55b7a2b2 inherit pro_attribs_classneml2_1_1ParameterStore"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map from nonlinear parameter names to their corresponding variable views.  <br /></td></tr>
-<tr class="separator:a0b771c7ae41617fe739306de55b7a2b2 inherit pro_attribs_classneml2_1_1ParameterStore"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2afb145902755fb022f2a4bcc5869e68 inherit pro_attribs_classneml2_1_1ParameterStore" id="r_a2afb145902755fb022f2a4bcc5869e68"><td class="memItemLeft" align="right" valign="top">std::map&lt; std::string, <a class="el" href="classneml2_1_1Model.html">Model</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1ParameterStore.html#a2afb145902755fb022f2a4bcc5869e68">_nl_param_models</a></td></tr>
-<tr class="memdesc:a2afb145902755fb022f2a4bcc5869e68 inherit pro_attribs_classneml2_1_1ParameterStore"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map from nonlinear parameter names to models which evaluate them.  <br /></td></tr>
-<tr class="separator:a2afb145902755fb022f2a4bcc5869e68 inherit pro_attribs_classneml2_1_1ParameterStore"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_attribs_classneml2_1_1NonlinearSystem"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classneml2_1_1NonlinearSystem')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classneml2_1_1NonlinearSystem.html">NonlinearSystem</a></td></tr>
-<tr class="memitem:aa9409aa93f0767a6d04f7b253350c8d1 inherit pro_attribs_classneml2_1_1NonlinearSystem" id="r_aa9409aa93f0767a6d04f7b253350c8d1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e">Size</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1NonlinearSystem.html#aa9409aa93f0767a6d04f7b253350c8d1">_ndof</a></td></tr>
-<tr class="memdesc:aa9409aa93f0767a6d04f7b253350c8d1 inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of degrees of freedom.  <br /></td></tr>
-<tr class="separator:aa9409aa93f0767a6d04f7b253350c8d1 inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab3787027c2fd5cb1a2c7ff7b4c5e6e00 inherit pro_attribs_classneml2_1_1NonlinearSystem" id="r_ab3787027c2fd5cb1a2c7ff7b4c5e6e00"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1NonlinearSystem.html#ab3787027c2fd5cb1a2c7ff7b4c5e6e00">_solution</a></td></tr>
-<tr class="memdesc:ab3787027c2fd5cb1a2c7ff7b4c5e6e00 inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="mdescLeft">&#160;</td><td class="mdescRight">View for the solution of this nonlinear system.  <br /></td></tr>
-<tr class="separator:ab3787027c2fd5cb1a2c7ff7b4c5e6e00 inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37894f2b35e16d223d553b8011c39a16 inherit pro_attribs_classneml2_1_1NonlinearSystem" id="r_a37894f2b35e16d223d553b8011c39a16"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1NonlinearSystem.html#a37894f2b35e16d223d553b8011c39a16">_residual</a></td></tr>
-<tr class="memdesc:a37894f2b35e16d223d553b8011c39a16 inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="mdescLeft">&#160;</td><td class="mdescRight">View for the residual of this nonlinear system.  <br /></td></tr>
-<tr class="separator:a37894f2b35e16d223d553b8011c39a16 inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2b5276faf5229a29a50138f0278ac5b inherit pro_attribs_classneml2_1_1NonlinearSystem" id="r_ae2b5276faf5229a29a50138f0278ac5b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1NonlinearSystem.html#ae2b5276faf5229a29a50138f0278ac5b">_Jacobian</a></td></tr>
-<tr class="memdesc:ae2b5276faf5229a29a50138f0278ac5b inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="mdescLeft">&#160;</td><td class="mdescRight">View for the Jacobian of this nonlinear system.  <br /></td></tr>
-<tr class="separator:ae2b5276faf5229a29a50138f0278ac5b inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a776d4bee420f50a29168071840201bb7 inherit pro_attribs_classneml2_1_1NonlinearSystem" id="r_a776d4bee420f50a29168071840201bb7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1NonlinearSystem.html#a776d4bee420f50a29168071840201bb7">_scaled_residual</a></td></tr>
-<tr class="separator:a776d4bee420f50a29168071840201bb7 inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33729211298e44fe6dcfc7be2f5bf258 inherit pro_attribs_classneml2_1_1NonlinearSystem" id="r_a33729211298e44fe6dcfc7be2f5bf258"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1NonlinearSystem.html#a33729211298e44fe6dcfc7be2f5bf258">_scaled_Jacobian</a></td></tr>
-<tr class="separator:a33729211298e44fe6dcfc7be2f5bf258 inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac728afd1425ea7e7674348d5314ebd0d inherit pro_attribs_classneml2_1_1NonlinearSystem" id="r_ac728afd1425ea7e7674348d5314ebd0d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1NonlinearSystem.html#ac728afd1425ea7e7674348d5314ebd0d">_autoscale</a></td></tr>
-<tr class="memdesc:ac728afd1425ea7e7674348d5314ebd0d inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, do automatic scaling.  <br /></td></tr>
-<tr class="separator:ac728afd1425ea7e7674348d5314ebd0d inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae36706f0bdbdebb8b6b73f5012acbec6 inherit pro_attribs_classneml2_1_1NonlinearSystem" id="r_ae36706f0bdbdebb8b6b73f5012acbec6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="namespaceneml2.html#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1NonlinearSystem.html#ae36706f0bdbdebb8b6b73f5012acbec6">_autoscale_tol</a></td></tr>
-<tr class="memdesc:ae36706f0bdbdebb8b6b73f5012acbec6 inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tolerance for convergence check of the iterative automatic scaling algorithm.  <br /></td></tr>
-<tr class="separator:ae36706f0bdbdebb8b6b73f5012acbec6 inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb468eb3f202bef155aed1140d3d7e2a inherit pro_attribs_classneml2_1_1NonlinearSystem" id="r_acb468eb3f202bef155aed1140d3d7e2a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">unsigned</a> <a class="el" href="classneml2_1_1CrossRef.html">int</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1NonlinearSystem.html#acb468eb3f202bef155aed1140d3d7e2a">_autoscale_miter</a></td></tr>
-<tr class="memdesc:acb468eb3f202bef155aed1140d3d7e2a inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum number of iterations allowed for the iterative automatic scaling algorithm.  <br /></td></tr>
-<tr class="separator:acb468eb3f202bef155aed1140d3d7e2a inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af4223605db5fffd7afbb2d66540914f6 inherit pro_attribs_classneml2_1_1NonlinearSystem" id="r_af4223605db5fffd7afbb2d66540914f6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1NonlinearSystem.html#af4223605db5fffd7afbb2d66540914f6">_scaling_matrices_initialized</a></td></tr>
-<tr class="memdesc:af4223605db5fffd7afbb2d66540914f6 inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to indicate whether scaling matrices have been computed.  <br /></td></tr>
-<tr class="separator:af4223605db5fffd7afbb2d66540914f6 inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a02dbb5e5c0d1f4b6561fd31d5a0f3f1e inherit pro_attribs_classneml2_1_1NonlinearSystem" id="r_a02dbb5e5c0d1f4b6561fd31d5a0f3f1e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1NonlinearSystem.html#a02dbb5e5c0d1f4b6561fd31d5a0f3f1e">_row_scaling</a></td></tr>
-<tr class="memdesc:a02dbb5e5c0d1f4b6561fd31d5a0f3f1e inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Row scaling "matrix" &ndash; since it's a batched diagonal matrix, we are only storing its diagonals.  <br /></td></tr>
-<tr class="separator:a02dbb5e5c0d1f4b6561fd31d5a0f3f1e inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab2d8902fff0c90b396b9ed26ed8b4c7e inherit pro_attribs_classneml2_1_1NonlinearSystem" id="r_ab2d8902fff0c90b396b9ed26ed8b4c7e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1NonlinearSystem.html#ab2d8902fff0c90b396b9ed26ed8b4c7e">_col_scaling</a></td></tr>
-<tr class="memdesc:ab2d8902fff0c90b396b9ed26ed8b4c7e inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Column scaling "matrix" &ndash; since it's a batched diagonal matrix, we are only storing its diagonals.  <br /></td></tr>
-<tr class="separator:ab2d8902fff0c90b396b9ed26ed8b4c7e inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="a3a023c0c27667e78ae521eb64f1c7c81" name="a3a023c0c27667e78ae521eb64f1c7c81"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a023c0c27667e78ae521eb64f1c7c81">&#9670;&#160;</a></span>ParamType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">enum</a> <a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="#a3a023c0c27667e78ae521eb64f1c7c81">ParamType</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Various options for parameter inputs, will need to add more as we get more tensors. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a3a023c0c27667e78ae521eb64f1c7c81a4f736d11febe9da0622a39319cdd535e" name="a3a023c0c27667e78ae521eb64f1c7c81a4f736d11febe9da0622a39319cdd535e"></a>YOUNGS&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a3a023c0c27667e78ae521eb64f1c7c81ae550c7ec6decfb71bb1fa932c0e687d6" name="a3a023c0c27667e78ae521eb64f1c7c81ae550c7ec6decfb71bb1fa932c0e687d6"></a>POISSONS&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a3a023c0c27667e78ae521eb64f1c7c81a20b09561b39db495fc6d0902a697bc7f" name="a3a023c0c27667e78ae521eb64f1c7c81a20b09561b39db495fc6d0902a697bc7f"></a>SHEAR&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a3a023c0c27667e78ae521eb64f1c7c81accc0377a8afbf50e7094f5c23a8af223" name="a3a023c0c27667e78ae521eb64f1c7c81accc0377a8afbf50e7094f5c23a8af223"></a>INVALID&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aa9396893a6b677a156aeccd30f55c957" name="aa9396893a6b677a156aeccd30f55c957"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa9396893a6b677a156aeccd30f55c957">&#9670;&#160;</a></span>ElasticityTensor()</h2>
@@ -733,6 +788,79 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="ae10cd115cdcf6e7873bc86590246671a" name="ae10cd115cdcf6e7873bc86590246671a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae10cd115cdcf6e7873bc86590246671a">&#9670;&#160;</a></span>_coef</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&amp; _coef</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Input coefficients. </p>
+
+</div>
+</div>
+<a id="a91989e70e5aab7502ff57e5feed1c592" name="a91989e70e5aab7502ff57e5feed1c592"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a91989e70e5aab7502ff57e5feed1c592">&#9670;&#160;</a></span>_coef_as_param</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">bool</a> _coef_as_param</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether to declare coefficients as parameters. </p>
+
+</div>
+</div>
+<a id="aa2e14d1395aac711881563fb3c47f287" name="aa2e14d1395aac711881563fb3c47f287"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2e14d1395aac711881563fb3c47f287">&#9670;&#160;</a></span>_coef_types</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::vector&lt;<a class="el" href="#a3a023c0c27667e78ae521eb64f1c7c81">ParamType</a>&gt; _coef_types</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Input coefficient types. </p>
 
 </div>
 </div>

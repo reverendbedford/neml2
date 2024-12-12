@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-12 17:30:27</td>
+            <td class="headerValue">2024-12-12 19:38:26</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -158,42 +158,42 @@
 <a name="96"><span class="lineNum">      96 </span><span class="lineCov">       1132 :   return options;</span></a>
 <a name="97"><span class="lineNum">      97 </span><span class="lineCov">        566 : }</span></a>
 <a name="98"><span class="lineNum">      98 </span>            : </a>
-<a name="99"><span class="lineNum">      99 </span><span class="lineCov">        276 : Settings::Settings(const OptionSet &amp; options)</span></a>
+<a name="99"><span class="lineNum">      99 </span><span class="lineCov">        273 : Settings::Settings(const OptionSet &amp; options)</span></a>
 <a name="100"><span class="lineNum">     100 </span>            : {</a>
 <a name="101"><span class="lineNum">     101 </span>            :   // Default floating point dtype</a>
-<a name="102"><span class="lineNum">     102 </span><span class="lineCov">        276 :   default_dtype() = options.get&lt;EnumSelection&gt;(&quot;default_floating_point_type&quot;).as&lt;torch::Dtype&gt;();</span></a>
-<a name="103"><span class="lineNum">     103 </span><span class="lineCov">        276 :   torch::set_default_dtype(scalarTypeToTypeMeta(default_dtype()));</span></a>
+<a name="102"><span class="lineNum">     102 </span><span class="lineCov">        273 :   default_dtype() = options.get&lt;EnumSelection&gt;(&quot;default_floating_point_type&quot;).as&lt;torch::Dtype&gt;();</span></a>
+<a name="103"><span class="lineNum">     103 </span><span class="lineCov">        273 :   torch::set_default_dtype(scalarTypeToTypeMeta(default_dtype()));</span></a>
 <a name="104"><span class="lineNum">     104 </span>            : </a>
 <a name="105"><span class="lineNum">     105 </span>            :   // Default integral dtype</a>
-<a name="106"><span class="lineNum">     106 </span><span class="lineCov">        276 :   default_integer_dtype() = options.get&lt;EnumSelection&gt;(&quot;default_integer_type&quot;).as&lt;torch::Dtype&gt;();</span></a>
+<a name="106"><span class="lineNum">     106 </span><span class="lineCov">        273 :   default_integer_dtype() = options.get&lt;EnumSelection&gt;(&quot;default_integer_type&quot;).as&lt;torch::Dtype&gt;();</span></a>
 <a name="107"><span class="lineNum">     107 </span>            : </a>
 <a name="108"><span class="lineNum">     108 </span>            :   // Default device</a>
-<a name="109"><span class="lineNum">     109 </span><span class="lineCov">        276 :   default_device() = torch::Device(options.get&lt;std::string&gt;(&quot;default_device&quot;));</span></a>
+<a name="109"><span class="lineNum">     109 </span><span class="lineCov">        273 :   default_device() = torch::Device(options.get&lt;std::string&gt;(&quot;default_device&quot;));</span></a>
 <a name="110"><span class="lineNum">     110 </span>            : </a>
 <a name="111"><span class="lineNum">     111 </span>            :   // Machine precision</a>
-<a name="112"><span class="lineNum">     112 </span><span class="lineCov">        276 :   machine_precision() = options.get&lt;Real&gt;(&quot;machine_precision&quot;);</span></a>
+<a name="112"><span class="lineNum">     112 </span><span class="lineCov">        273 :   machine_precision() = options.get&lt;Real&gt;(&quot;machine_precision&quot;);</span></a>
 <a name="113"><span class="lineNum">     113 </span>            : </a>
 <a name="114"><span class="lineNum">     114 </span>            :   // Tolerances</a>
-<a name="115"><span class="lineNum">     115 </span><span class="lineCov">        276 :   tolerance() = options.get&lt;Real&gt;(&quot;tolerance&quot;);</span></a>
-<a name="116"><span class="lineNum">     116 </span><span class="lineCov">        276 :   tighter_tolerance() = options.get&lt;Real&gt;(&quot;tighter_tolerance&quot;);</span></a>
+<a name="115"><span class="lineNum">     115 </span><span class="lineCov">        273 :   tolerance() = options.get&lt;Real&gt;(&quot;tolerance&quot;);</span></a>
+<a name="116"><span class="lineNum">     116 </span><span class="lineCov">        273 :   tighter_tolerance() = options.get&lt;Real&gt;(&quot;tighter_tolerance&quot;);</span></a>
 <a name="117"><span class="lineNum">     117 </span>            : </a>
 <a name="118"><span class="lineNum">     118 </span>            :   // Inter-ops threading</a>
-<a name="119"><span class="lineNum">     119 </span><span class="lineCov">        276 :   auto num_interop_threads = options.get&lt;int&gt;(&quot;interop_threads&quot;);</span></a>
-<a name="120"><span class="lineNum">     120 </span><span class="lineCov">        276 :   if (num_interop_threads &gt; 0)</span></a>
+<a name="119"><span class="lineNum">     119 </span><span class="lineCov">        273 :   auto num_interop_threads = options.get&lt;int&gt;(&quot;interop_threads&quot;);</span></a>
+<a name="120"><span class="lineNum">     120 </span><span class="lineCov">        273 :   if (num_interop_threads &gt; 0)</span></a>
 <a name="121"><span class="lineNum">     121 </span><span class="lineNoCov">          0 :     at::set_num_interop_threads(num_interop_threads);</span></a>
 <a name="122"><span class="lineNum">     122 </span>            : </a>
 <a name="123"><span class="lineNum">     123 </span>            :   // Intra-ops threading</a>
-<a name="124"><span class="lineNum">     124 </span><span class="lineCov">        276 :   auto num_intraop_threads = options.get&lt;int&gt;(&quot;intraop_threads&quot;);</span></a>
-<a name="125"><span class="lineNum">     125 </span><span class="lineCov">        276 :   if (num_intraop_threads &gt; 0)</span></a>
+<a name="124"><span class="lineNum">     124 </span><span class="lineCov">        273 :   auto num_intraop_threads = options.get&lt;int&gt;(&quot;intraop_threads&quot;);</span></a>
+<a name="125"><span class="lineNum">     125 </span><span class="lineCov">        273 :   if (num_intraop_threads &gt; 0)</span></a>
 <a name="126"><span class="lineNum">     126 </span><span class="lineNoCov">          0 :     at::set_num_threads(num_intraop_threads);</span></a>
 <a name="127"><span class="lineNum">     127 </span>            : </a>
 <a name="128"><span class="lineNum">     128 </span>            :   // Buffer/parameter name separator</a>
-<a name="129"><span class="lineNum">     129 </span><span class="lineCov">        276 :   buffer_name_separator() = options.get&lt;std::string&gt;(&quot;buffer_name_separator&quot;);</span></a>
-<a name="130"><span class="lineNum">     130 </span><span class="lineCov">        276 :   parameter_name_separator() = options.get&lt;std::string&gt;(&quot;parameter_name_separator&quot;);</span></a>
+<a name="129"><span class="lineNum">     129 </span><span class="lineCov">        273 :   buffer_name_separator() = options.get&lt;std::string&gt;(&quot;buffer_name_separator&quot;);</span></a>
+<a name="130"><span class="lineNum">     130 </span><span class="lineCov">        273 :   parameter_name_separator() = options.get&lt;std::string&gt;(&quot;parameter_name_separator&quot;);</span></a>
 <a name="131"><span class="lineNum">     131 </span>            : </a>
 <a name="132"><span class="lineNum">     132 </span>            :   // Not solving anything right now</a>
-<a name="133"><span class="lineNum">     133 </span><span class="lineCov">        276 :   currently_solving_nonlinear_system() = false;</span></a>
-<a name="134"><span class="lineNum">     134 </span><span class="lineCov">        276 : }</span></a>
+<a name="133"><span class="lineNum">     133 </span><span class="lineCov">        273 :   currently_solving_nonlinear_system() = false;</span></a>
+<a name="134"><span class="lineNum">     134 </span><span class="lineCov">        273 : }</span></a>
 <a name="135"><span class="lineNum">     135 </span>            : } // namespace neml2</a>
 </pre>
       </td>
