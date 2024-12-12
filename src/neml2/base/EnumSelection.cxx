@@ -37,9 +37,7 @@ operator<<(std::ostream & os, const EnumSelection & es)
 std::stringstream &
 operator>>(std::stringstream & ss, EnumSelection & es)
 {
-  std::string s;
-  ss >> s;
-  es.select(s);
+  es.select(ss.str());
   return ss;
 }
 

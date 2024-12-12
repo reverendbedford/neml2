@@ -31,6 +31,8 @@ namespace neml2
 // Forward decl
 class LabeledAxisAccessor;
 using VariableName = LabeledAxisAccessor;
+class EnumSelection;
+class MultiEnumSelection;
 
 class ParserException : public std::exception
 {

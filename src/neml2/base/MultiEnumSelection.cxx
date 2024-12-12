@@ -37,9 +37,7 @@ operator<<(std::ostream & os, const MultiEnumSelection & es)
 std::stringstream &
 operator>>(std::stringstream & ss, MultiEnumSelection & es)
 {
-  std::string s;
-  ss >> s;
-  es.select(utils::parse_vector<std::string>(s));
+  es.select(utils::parse_vector<std::string>(ss.str()));
   return ss;
 }
 
@@ -90,6 +88,8 @@ MultiEnumSelection::operator!=(const MultiEnumSelection & other) const
 void
 MultiEnumSelection::select(const std::vector<std::string> & selections)
 {
+  _selections.clear();
+  _values.clear();
   for (const auto & selection : selections)
   {
     neml_assert(_candidate_map.count(selection),
