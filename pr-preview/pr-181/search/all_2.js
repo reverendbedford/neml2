@@ -29,7 +29,7 @@ var searchData=
   ['arccos_26',['arccos',['../namespaceneml2_1_1math.html#a451c62a06a4450d45da18df6eecf4db1',1,'neml2::math']]],
   ['arcsin_27',['arcsin',['../namespaceneml2_1_1math.html#a4fea3083bfd242846919331d6b1a2abf',1,'neml2::math']]],
   ['arrheniusparameter_28',['ArrheniusParameter',['../classneml2_1_1ArrheniusParameter.html',1,'ArrheniusParameter'],['../classneml2_1_1ArrheniusParameter.html#a4de66c32ecd3ad290fe1d10134c927cf',1,'neml2::ArrheniusParameter::ArrheniusParameter()'],['../syntax-models.html#arrheniusparameter',1,'ArrheniusParameter']]],
-  ['as_29',['as',['../classneml2_1_1EnumSelection.html#a0a722d04cee6bf06b968660956d7ebc3',1,'neml2::EnumSelection']]],
+  ['as_29',['as',['../classneml2_1_1EnumSelection.html#a0a722d04cee6bf06b968660956d7ebc3',1,'neml2::EnumSelection::as()'],['../classneml2_1_1MultiEnumSelection.html#a1962b22f92d1c5477e7088f8925e0909',1,'neml2::MultiEnumSelection::as()']]],
   ['asked_20questions_30',['Frequently Asked Questions',['../faq.html',1,'']]],
   ['assemble_31',['assemble',['../classneml2_1_1Model.html#a09c1379721a903e027e596f15646c1a2',1,'neml2::Model::assemble()'],['../classneml2_1_1NonlinearSystem.html#af8ddb5164cca4931f510ef1c4d623c50',1,'neml2::NonlinearSystem::assemble()'],['../classneml2_1_1TrustRegionSubProblem.html#a09c1379721a903e027e596f15646c1a2',1,'neml2::TrustRegionSubProblem::assemble()']]],
   ['assemblyindices_32',['AssemblyIndices',['../classneml2_1_1ComposedModel.html#a883d7e0dee4e483397a9267e2e261ea1',1,'neml2::ComposedModel']]],

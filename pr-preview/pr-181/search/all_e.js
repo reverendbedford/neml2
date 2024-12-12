@@ -35,5 +35,6 @@ var searchData=
   ['model_20library_20version_202_32',['The New Engineering Material model Library, version 2',['../index.html#autotoc_md2',1,'']]],
   ['model_20visualization_33',['Model visualization',['../model-visualization.html',1,'']]],
   ['models_34',['[Models]',['../syntax-models.html',1,'']]],
-  ['multiply_5fand_5fmake_5fskew_35',['multiply_and_make_skew',['../namespaceneml2_1_1math.html#a81565e709d0982bfa707db6cdb283148',1,'neml2::math']]]
+  ['multienumselection_35',['MultiEnumSelection',['../classneml2_1_1MultiEnumSelection.html',1,'MultiEnumSelection'],['../classneml2_1_1MultiEnumSelection.html#a2cbf642e938d07df6821f848bffda010',1,'neml2::MultiEnumSelection::MultiEnumSelection()=default'],['../classneml2_1_1MultiEnumSelection.html#ab10e4546a7b92e2d0259f5735a850dda',1,'neml2::MultiEnumSelection::MultiEnumSelection(const MultiEnumSelection &amp;other)'],['../classneml2_1_1MultiEnumSelection.html#a8d36c066a5307c2dd32977d1043b3306',1,'neml2::MultiEnumSelection::MultiEnumSelection(const std::vector&lt; std::string &gt; &amp;candidates, const std::vector&lt; std::string &gt; &amp;selections)'],['../classneml2_1_1MultiEnumSelection.html#af3d0615e52275c985112f26406d8e274',1,'neml2::MultiEnumSelection::MultiEnumSelection(const std::vector&lt; std::string &gt; &amp;candidates, const std::vector&lt; int &gt; &amp;values, const std::vector&lt; std::string &gt; &amp;selections)']]],
+  ['multiply_5fand_5fmake_5fskew_36',['multiply_and_make_skew',['../namespaceneml2_1_1math.html#a81565e709d0982bfa707db6cdb283148',1,'neml2::math']]]
 ];

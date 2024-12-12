@@ -19,7 +19,7 @@ var searchData=
   ['arccos_16',['arccos',['../namespaceneml2_1_1math.html#a451c62a06a4450d45da18df6eecf4db1',1,'neml2::math']]],
   ['arcsin_17',['arcsin',['../namespaceneml2_1_1math.html#a4fea3083bfd242846919331d6b1a2abf',1,'neml2::math']]],
   ['arrheniusparameter_18',['ArrheniusParameter',['../classneml2_1_1ArrheniusParameter.html#a4de66c32ecd3ad290fe1d10134c927cf',1,'neml2::ArrheniusParameter']]],
-  ['as_19',['as',['../classneml2_1_1EnumSelection.html#a0a722d04cee6bf06b968660956d7ebc3',1,'neml2::EnumSelection']]],
+  ['as_19',['as',['../classneml2_1_1EnumSelection.html#a0a722d04cee6bf06b968660956d7ebc3',1,'neml2::EnumSelection::as()'],['../classneml2_1_1MultiEnumSelection.html#a1962b22f92d1c5477e7088f8925e0909',1,'neml2::MultiEnumSelection::as()']]],
   ['assemble_20',['assemble',['../classneml2_1_1Model.html#a09c1379721a903e027e596f15646c1a2',1,'neml2::Model::assemble()'],['../classneml2_1_1NonlinearSystem.html#af8ddb5164cca4931f510ef1c4d623c50',1,'neml2::NonlinearSystem::assemble()'],['../classneml2_1_1TrustRegionSubProblem.html#a09c1379721a903e027e596f15646c1a2',1,'neml2::TrustRegionSubProblem::assemble()']]],
   ['associativeisotropicplastichardening_21',['AssociativeIsotropicPlasticHardening',['../classneml2_1_1AssociativeIsotropicPlasticHardening.html#a9e808379e4c8688c899ff1655b18c4fa',1,'neml2::AssociativeIsotropicPlasticHardening']]],
   ['associativej2flowdirection_22',['AssociativeJ2FlowDirection',['../classneml2_1_1AssociativeJ2FlowDirection.html#a6c4c8ca917a169b071628ba15a10fa27',1,'neml2::AssociativeJ2FlowDirection']]],
