@@ -44,10 +44,13 @@ public:
   /// The derivative of a Scalar with respect to itself
   [[nodiscard]] static Scalar
   identity_map(const torch::TensorOptions & options = default_tensor_options());
-
-  /// Minimum between you and another scalar
-  Scalar minimum(const Scalar & b) const;
 };
+
+namespace math
+{
+/// Minimum between two scalars
+Scalar minimum(const Scalar & a, const Scalar & b);
+}
 
 /// Absolute value
 // I don't understand why, but apparently without this the Tensor abs and aten::abs (i.e. the

@@ -98,15 +98,14 @@ IsotropicElasticityTensor::convert_to_lambda()
                            -_p2 / (2 * _p2 * _p2 + _p2 - 1),
                            (_p1 + 2 * _p1 * _p2 * _p2) /
                                ((2 * _p2 * _p2 + _p2 - 1) * (2 * _p2 * _p2 + _p2 - 1)));
-  else if ((_p1_type == ParamType::POISSONS) && (_p2_type == ParamType::YOUNGS))
+  if ((_p1_type == ParamType::POISSONS) && (_p2_type == ParamType::YOUNGS))
     return std::make_tuple(_p2 * _p1 / ((1 + _p1) * (1 - 2 * _p1)),
                            (_p2 + 2 * _p2 * _p1 * _p1) /
                                ((2 * _p1 * _p1 + _p1 - 1) * (2 * _p1 * _p1 + _p1 - 1)),
                            -_p1 / (2 * _p1 * _p1 + _p1 - 1));
-  else
-    throw NEMLException("Unsupported combination of input parameter types: " +
-                        std::string(input_options().get<EnumSelection>("p1_type")) + " and " +
-                        std::string(input_options().get<EnumSelection>("p2_type")));
+  throw NEMLException("Unsupported combination of input parameter types: " +
+                      std::string(input_options().get<EnumSelection>("p1_type")) + " and " +
+                      std::string(input_options().get<EnumSelection>("p2_type")));
 }
 
 std::tuple<Scalar, Scalar, Scalar>
@@ -115,13 +114,12 @@ IsotropicElasticityTensor::convert_to_mu()
   if ((_p1_type == ParamType::YOUNGS) && (_p2_type == ParamType::POISSONS))
     return std::make_tuple(
         _p1 / (2 * (1 + _p2)), 1.0 / (2.0 + 2 * _p2), -_p1 / (2 * (1 + _p2) * (1 + _p2)));
-  else if ((_p1_type == ParamType::POISSONS) && (_p2_type == ParamType::YOUNGS))
+  if ((_p1_type == ParamType::POISSONS) && (_p2_type == ParamType::YOUNGS))
     return std::make_tuple(
         _p2 / (2 * (1 + _p1)), -_p2 / (2 * (1 + _p1) * (1 + _p1)), 1 / (2 + 2 * _p1));
-  else
-    throw NEMLException("Unsupported combination of input parameter types: " +
-                        std::string(input_options().get<EnumSelection>("p1_type")) + " and " +
-                        std::string(input_options().get<EnumSelection>("p2_type")));
+  throw NEMLException("Unsupported combination of input parameter types: " +
+                      std::string(input_options().get<EnumSelection>("p1_type")) + " and " +
+                      std::string(input_options().get<EnumSelection>("p2_type")));
 }
 
 } // namespace neml2

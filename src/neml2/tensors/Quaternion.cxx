@@ -34,6 +34,7 @@
 namespace neml2
 {
 
+// TODO: replace torch::cat with math::base_cat
 Quaternion::Quaternion(const Rot & r)
   : Quaternion(
         torch::cat(
@@ -96,6 +97,6 @@ Quaternion::dist(const Quaternion & other) const
 {
   Scalar dp = math::abs(this->dot(other));
   // I hate floating point math
-  return 2.0 * math::arccos(dp.minimum(Scalar::ones_like(dp)));
+  return 2.0 * math::arccos(math::minimum(dp, Scalar::ones_like(dp)));
 }
 } // namespace neml2

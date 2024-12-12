@@ -65,9 +65,9 @@ public:
   R2 to_R2() const;
 
   /// Dot product
-  Scalar dot(const Quaternion & q2) const;
+  Scalar dot(const Quaternion & other) const;
 
   /// Distance measure between two quaternions
-  Scalar dist(const Quaternion & q2) const;
+  Scalar dist(const Quaternion & other) const;
 };
 } // namespace neml2

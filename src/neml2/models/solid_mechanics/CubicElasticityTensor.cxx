@@ -32,8 +32,9 @@ OptionSet
 CubicElasticityTensor::expected_options()
 {
   OptionSet options = ElasticityTensor::expected_options();
-  options.doc() += "  This class defines an isotropic elasticity tensor using two parameters."
-                   "  Various options are available for which two parameters to provide.";
+  options.doc() +=
+      "  This class defines a cubic anisotropic elasticity tensor using three parameters."
+      "  Various options are available for which three parameters to provide.";
 
   options.set_parameter<CrossRef<Scalar>>("p1");
   options.set("p1").doc() = "First parameter";
