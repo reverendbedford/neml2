@@ -1,7 +1,7 @@
 var searchData=
 [
   ['w_0',['W',['../classneml2_1_1crystallography_1_1CrystalGeometry.html#a513ecb69529b1e45d7927050805ea4fc',1,'neml2::crystallography::CrystalGeometry']]],
-  ['what_1',['what',['../classneml2_1_1NEMLException.html#a576a441c2b1e2f01d271e237b314eac3',1,'neml2::NEMLException::what()'],['../classneml2_1_1ParserException.html#a576a441c2b1e2f01d271e237b314eac3',1,'neml2::ParserException::what()']]],
+  ['what_1',['what',['../classneml2_1_1NEMLException.html#abf843cbb29dec939d0731e491bab6f70',1,'neml2::NEMLException::what()'],['../classneml2_1_1ParserException.html#abf843cbb29dec939d0731e491bab6f70',1,'neml2::ParserException::what()']]],
   ['where_2',['where',['../namespaceneml2_1_1math.html#ad118d03823478b8b293229f9ac6b94ca',1,'neml2::math']]],
   ['with_20tensors_3',['Working with tensors',['../system-tensors.html#working-with-tensors',1,'']]],
   ['with_5fsuffix_4',['with_suffix',['../classneml2_1_1LabeledAxisAccessor.html#a68aee86962a6ea2deef39fd6a9f86a4c',1,'neml2::LabeledAxisAccessor']]],

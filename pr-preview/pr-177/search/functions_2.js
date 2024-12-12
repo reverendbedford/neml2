@@ -32,7 +32,7 @@ var searchData=
   ['cosh_29',['cosh',['../namespaceneml2_1_1math.html#a232b264595b9b39e416188284a3663fb',1,'neml2::math']]],
   ['create_5fobject_30',['create_object',['../classneml2_1_1Factory.html#a39a2492155a44988c111b4391c1843ed',1,'neml2::Factory']]],
   ['cross_31',['cross',['../classneml2_1_1VecBase.html#a4996844499661c80b0c411081692270f',1,'neml2::VecBase']]],
-  ['crossref_32',['CrossRef',['../classneml2_1_1CrossRef.html#acc20d5a296c08119e6d065e320b64758',1,'neml2::CrossRef::CrossRef()=default'],['../classneml2_1_1CrossRef.html#aff5bd9f175c428e517afd585bf56a7be',1,'neml2::CrossRef::CrossRef(const std::string &amp;raw)']]],
+  ['crossref_32',['CrossRef',['../classneml2_1_1CrossRef.html#acc20d5a296c08119e6d065e320b64758',1,'neml2::CrossRef::CrossRef()=default'],['../classneml2_1_1CrossRef.html#ab7cc84e7e6ce35068279288685e97ee8',1,'neml2::CrossRef::CrossRef(std::string raw)']]],
   ['crystalgeometry_33',['CrystalGeometry',['../classneml2_1_1crystallography_1_1CrystalGeometry.html#a90cfc33f0a3cd16ab9b2a9f5846cdbb8',1,'neml2::crystallography::CrystalGeometry::CrystalGeometry(const OptionSet &amp;options)'],['../classneml2_1_1crystallography_1_1CrystalGeometry.html#a9f44fbfd551f2ceab42344bbeda8fb69',1,'neml2::crystallography::CrystalGeometry::CrystalGeometry(const OptionSet &amp;options, const R2 &amp;cclass, const Vec &amp;lattice_vectors)']]],
   ['crystalmean_34',['CrystalMean',['../classneml2_1_1CrystalMean.html#a6ba01c318bfd46f7adeb7d8b8889e721',1,'neml2::CrystalMean']]],
   ['cubic_35',['cubic',['../namespaceneml2_1_1crystallography_1_1crystal__symmetry__operators.html#a8db7d1d818ed37bdd1abbc2cae808321',1,'neml2::crystallography::crystal_symmetry_operators']]],
