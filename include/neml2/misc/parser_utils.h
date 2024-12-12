@@ -67,7 +67,7 @@ parse_(T & val, const std::string & raw_str)
 {
   std::stringstream ss(trim(raw_str));
   ss >> val;
-  if (ss.fail() || !ss.eof())
+  if (ss.fail())
     throw ParserException("Failed to parse '" + raw_str + "' as a " +
                           utils::demangle(typeid(T).name()));
 }
