@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-12 19:50:45</td>
+            <td class="headerValue">2024-12-12 20:13:53</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">4</td>
@@ -125,64 +125,64 @@
 <a name="63"><span class="lineNum">      63 </span><span class="lineCov">          6 :   return options;</span></a>
 <a name="64"><span class="lineNum">      64 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="65"><span class="lineNum">      65 </span>            : </a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineCov">          2 : MixedControlSetup::MixedControlSetup(const OptionSet &amp; options)</span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineCov">          4 : MixedControlSetup::MixedControlSetup(const OptionSet &amp; options)</span></a>
 <a name="67"><span class="lineNum">      67 </span>            :   : Model(options),</a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">          2 :     _threshold(options.get&lt;CrossRef&lt;Tensor&gt;&gt;(&quot;threshold&quot;)),</span></a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">          2 :     _control(declare_input_variable&lt;SR2&gt;(&quot;control&quot;)),</span></a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineCov">          2 :     _fixed_values(declare_input_variable&lt;SR2&gt;(&quot;fixed_values&quot;)),</span></a>
-<a name="71"><span class="lineNum">      71 </span><span class="lineCov">          2 :     _mixed_state(declare_input_variable&lt;SR2&gt;(&quot;mixed_state&quot;)),</span></a>
-<a name="72"><span class="lineNum">      72 </span><span class="lineCov">          2 :     _stress(declare_output_variable&lt;SR2&gt;(&quot;cauchy_stress&quot;)),</span></a>
-<a name="73"><span class="lineNum">      73 </span><span class="lineCov">          4 :     _strain(declare_output_variable&lt;SR2&gt;(&quot;strain&quot;))</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">          4 :     _threshold(options.get&lt;CrossRef&lt;Tensor&gt;&gt;(&quot;threshold&quot;)),</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">          4 :     _control(declare_input_variable&lt;SR2&gt;(&quot;control&quot;)),</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">          4 :     _fixed_values(declare_input_variable&lt;SR2&gt;(&quot;fixed_values&quot;)),</span></a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineCov">          4 :     _mixed_state(declare_input_variable&lt;SR2&gt;(&quot;mixed_state&quot;)),</span></a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineCov">          4 :     _stress(declare_output_variable&lt;SR2&gt;(&quot;cauchy_stress&quot;)),</span></a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">          8 :     _strain(declare_output_variable&lt;SR2&gt;(&quot;strain&quot;))</span></a>
 <a name="74"><span class="lineNum">      74 </span>            : {</a>
-<a name="75"><span class="lineNum">      75 </span><span class="lineCov">          2 : }</span></a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineCov">          4 : }</span></a>
 <a name="76"><span class="lineNum">      76 </span>            : </a>
 <a name="77"><span class="lineNum">      77 </span>            : void</a>
-<a name="78"><span class="lineNum">      78 </span><span class="lineCov">         66 : MixedControlSetup::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
+<a name="78"><span class="lineNum">      78 </span><span class="lineCov">        246 : MixedControlSetup::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
 <a name="79"><span class="lineNum">      79 </span>            : {</a>
-<a name="80"><span class="lineNum">      80 </span><span class="lineCov">        132 :   auto [dstrain, dstress] = make_operators(_control.tensor());</span></a>
+<a name="80"><span class="lineNum">      80 </span><span class="lineCov">        492 :   auto [dstrain, dstress] = make_operators(_control.tensor());</span></a>
 <a name="81"><span class="lineNum">      81 </span>            : </a>
-<a name="82"><span class="lineNum">      82 </span><span class="lineCov">         66 :   if (out)</span></a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineCov">        246 :   if (out)</span></a>
 <a name="83"><span class="lineNum">      83 </span>            :   {</a>
 <a name="84"><span class="lineNum">      84 </span>            :     // Even benign in place operations get errors</a>
-<a name="85"><span class="lineNum">      85 </span><span class="lineCov">         64 :     _stress = dstress * _fixed_values + dstrain * _mixed_state;</span></a>
-<a name="86"><span class="lineNum">      86 </span><span class="lineCov">         64 :     _strain = dstrain * _fixed_values + dstress * _mixed_state;</span></a>
+<a name="85"><span class="lineNum">      85 </span><span class="lineCov">        244 :     _stress = dstress * _fixed_values + dstrain * _mixed_state;</span></a>
+<a name="86"><span class="lineNum">      86 </span><span class="lineCov">        244 :     _strain = dstrain * _fixed_values + dstress * _mixed_state;</span></a>
 <a name="87"><span class="lineNum">      87 </span>            :   }</a>
 <a name="88"><span class="lineNum">      88 </span>            : </a>
-<a name="89"><span class="lineNum">      89 </span><span class="lineCov">         66 :   if (dout_din)</span></a>
+<a name="89"><span class="lineNum">      89 </span><span class="lineCov">        246 :   if (dout_din)</span></a>
 <a name="90"><span class="lineNum">      90 </span>            :   {</a>
-<a name="91"><span class="lineNum">      91 </span><span class="lineCov">          4 :     if (_fixed_values.is_dependent())</span></a>
+<a name="91"><span class="lineNum">      91 </span><span class="lineCov">         85 :     if (_fixed_values.is_dependent())</span></a>
 <a name="92"><span class="lineNum">      92 </span>            :     {</a>
 <a name="93"><span class="lineNum">      93 </span><span class="lineCov">          4 :       _stress.d(_fixed_values) = dstress;</span></a>
 <a name="94"><span class="lineNum">      94 </span><span class="lineCov">          4 :       _strain.d(_fixed_values) = dstrain;</span></a>
 <a name="95"><span class="lineNum">      95 </span>            :     }</a>
 <a name="96"><span class="lineNum">      96 </span>            : </a>
-<a name="97"><span class="lineNum">      97 </span><span class="lineCov">          4 :     if (_mixed_state.is_dependent())</span></a>
+<a name="97"><span class="lineNum">      97 </span><span class="lineCov">         85 :     if (_mixed_state.is_dependent())</span></a>
 <a name="98"><span class="lineNum">      98 </span>            :     {</a>
-<a name="99"><span class="lineNum">      99 </span><span class="lineCov">          4 :       _stress.d(_mixed_state) = dstrain;</span></a>
-<a name="100"><span class="lineNum">     100 </span><span class="lineCov">          4 :       _strain.d(_mixed_state) = dstress;</span></a>
+<a name="99"><span class="lineNum">      99 </span><span class="lineCov">         85 :       _stress.d(_mixed_state) = dstrain;</span></a>
+<a name="100"><span class="lineNum">     100 </span><span class="lineCov">         85 :       _strain.d(_mixed_state) = dstress;</span></a>
 <a name="101"><span class="lineNum">     101 </span>            :     }</a>
 <a name="102"><span class="lineNum">     102 </span>            :   }</a>
 <a name="103"><span class="lineNum">     103 </span>            : </a>
 <a name="104"><span class="lineNum">     104 </span>            :   // All zero</a>
 <a name="105"><span class="lineNum">     105 </span>            :   (void)(d2out_din2);</a>
-<a name="106"><span class="lineNum">     106 </span><span class="lineCov">         66 : }</span></a>
+<a name="106"><span class="lineNum">     106 </span><span class="lineCov">        246 : }</span></a>
 <a name="107"><span class="lineNum">     107 </span>            : </a>
 <a name="108"><span class="lineNum">     108 </span>            : std::pair&lt;SSR4, SSR4&gt;</a>
-<a name="109"><span class="lineNum">     109 </span><span class="lineCov">         66 : MixedControlSetup::make_operators(const SR2 &amp; control) const</span></a>
+<a name="109"><span class="lineNum">     109 </span><span class="lineCov">        246 : MixedControlSetup::make_operators(const SR2 &amp; control) const</span></a>
 <a name="110"><span class="lineNum">     110 </span>            : {</a>
-<a name="111"><span class="lineNum">     111 </span><span class="lineCov">         66 :   auto strain_select = control &lt;= _threshold;</span></a>
-<a name="112"><span class="lineNum">     112 </span><span class="lineCov">         66 :   auto stress_select = control &gt; _threshold;</span></a>
+<a name="111"><span class="lineNum">     111 </span><span class="lineCov">        246 :   auto strain_select = control &lt;= _threshold;</span></a>
+<a name="112"><span class="lineNum">     112 </span><span class="lineCov">        246 :   auto stress_select = control &gt; _threshold;</span></a>
 <a name="113"><span class="lineNum">     113 </span>            : </a>
 <a name="114"><span class="lineNum">     114 </span>            :   // This also converts these to floats</a>
-<a name="115"><span class="lineNum">     115 </span><span class="lineCov">        132 :   auto ones_stress = Tensor(strain_select.to(_stress.tensor().options()), control.batch_dim());</span></a>
-<a name="116"><span class="lineNum">     116 </span><span class="lineCov">        132 :   auto ones_strain = Tensor::ones_like(control) - ones_stress;</span></a>
+<a name="115"><span class="lineNum">     115 </span><span class="lineCov">        492 :   auto ones_stress = Tensor(strain_select.to(_stress.tensor().options()), control.batch_dim());</span></a>
+<a name="116"><span class="lineNum">     116 </span><span class="lineCov">        492 :   auto ones_strain = Tensor::ones_like(control) - ones_stress;</span></a>
 <a name="117"><span class="lineNum">     117 </span>            : </a>
 <a name="118"><span class="lineNum">     118 </span>            :   // auto dstrain = SSR4(Tensor(torch::diag_embed(ones_stress), batch_dim()));</a>
-<a name="119"><span class="lineNum">     119 </span><span class="lineCov">         66 :   auto dstrain = math::base_diag_embed(ones_stress);</span></a>
-<a name="120"><span class="lineNum">     120 </span><span class="lineCov">         66 :   auto dstress = math::base_diag_embed(ones_strain);</span></a>
+<a name="119"><span class="lineNum">     119 </span><span class="lineCov">        246 :   auto dstrain = math::base_diag_embed(ones_stress);</span></a>
+<a name="120"><span class="lineNum">     120 </span><span class="lineCov">        246 :   auto dstress = math::base_diag_embed(ones_strain);</span></a>
 <a name="121"><span class="lineNum">     121 </span>            : </a>
-<a name="122"><span class="lineNum">     122 </span><span class="lineCov">        132 :   return {dstrain, dstress};</span></a>
-<a name="123"><span class="lineNum">     123 </span><span class="lineCov">         66 : }</span></a>
+<a name="122"><span class="lineNum">     122 </span><span class="lineCov">        492 :   return {dstrain, dstress};</span></a>
+<a name="123"><span class="lineNum">     123 </span><span class="lineCov">        246 : }</span></a>
 <a name="124"><span class="lineNum">     124 </span>            : </a>
 <a name="125"><span class="lineNum">     125 </span>            : } // namespace neml2</a>
 </pre>

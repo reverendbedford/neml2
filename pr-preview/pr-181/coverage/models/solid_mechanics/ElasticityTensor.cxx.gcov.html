@@ -31,18 +31,18 @@
             <td class="headerValue">coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">14</td>
+            <td class="headerCovTableEntry">24</td>
             <td class="headerCovTableEntry">26</td>
-            <td class="headerCovTableEntryLo">53.8 %</td>
+            <td class="headerCovTableEntryHi">92.3 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-12 19:50:45</td>
+            <td class="headerValue">2024-12-12 20:13:53</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">1</td>
             <td class="headerCovTableEntry">3</td>
-            <td class="headerCovTableEntryLo">33.3 %</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -120,24 +120,24 @@
 <a name="58"><span class="lineNum">      58 </span><span class="lineCov">         24 :   return options;</span></a>
 <a name="59"><span class="lineNum">      59 </span><span class="lineCov">         12 : }</span></a>
 <a name="60"><span class="lineNum">      60 </span>            : </a>
-<a name="61"><span class="lineNum">      61 </span><span class="lineNoCov">          0 : ElasticityTensor::ElasticityTensor(const OptionSet &amp; options)</span></a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">          2 : ElasticityTensor::ElasticityTensor(const OptionSet &amp; options)</span></a>
 <a name="62"><span class="lineNum">      62 </span>            :   : NonlinearParameter&lt;SSR4&gt;(options),</a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineNoCov">          0 :     _coef_as_param(options.get&lt;bool&gt;(&quot;coefficients_as_parameters&quot;)),</span></a>
-<a name="64"><span class="lineNum">      64 </span><span class="lineNoCov">          0 :     _coef(_coef_as_param ? declare_parameter&lt;Tensor&gt;(&quot;c&quot;, make_coef(options))</span></a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineNoCov">          0 :                          : declare_buffer&lt;Tensor&gt;(&quot;c&quot;, make_coef(options))),</span></a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineNoCov">          0 :     _coef_types(options.get&lt;MultiEnumSelection&gt;(&quot;coefficient_types&quot;).as&lt;ParamType&gt;())</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineCov">          2 :     _coef_as_param(options.get&lt;bool&gt;(&quot;coefficients_as_parameters&quot;)),</span></a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineCov">         10 :     _coef(_coef_as_param ? declare_parameter&lt;Tensor&gt;(&quot;c&quot;, make_coef(options))</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">          8 :                          : declare_buffer&lt;Tensor&gt;(&quot;c&quot;, make_coef(options))),</span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineCov">          2 :     _coef_types(options.get&lt;MultiEnumSelection&gt;(&quot;coefficient_types&quot;).as&lt;ParamType&gt;())</span></a>
 <a name="67"><span class="lineNum">      67 </span>            : {</a>
 <a name="68"><span class="lineNum">      68 </span><span class="lineNoCov">          0 :   neml_assert(_coef_types.size() == (unsigned int)_coef.sizes()[0],</span></a>
 <a name="69"><span class="lineNum">      69 </span>            :               &quot;Number of coefficient types must match number of coefficients.&quot;);</a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">          2 : }</span></a>
 <a name="71"><span class="lineNum">      71 </span>            : </a>
 <a name="72"><span class="lineNum">      72 </span>            : Tensor</a>
-<a name="73"><span class="lineNum">      73 </span><span class="lineNoCov">          0 : ElasticityTensor::make_coef(const OptionSet &amp; options) const</span></a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">          2 : ElasticityTensor::make_coef(const OptionSet &amp; options) const</span></a>
 <a name="74"><span class="lineNum">      74 </span>            : {</a>
-<a name="75"><span class="lineNum">      75 </span><span class="lineNoCov">          0 :   const auto coefs_in = options.get&lt;std::vector&lt;CrossRef&lt;Scalar&gt;&gt;&gt;(&quot;coefficients&quot;);</span></a>
-<a name="76"><span class="lineNum">      76 </span><span class="lineNoCov">          0 :   const std::vector&lt;Scalar&gt; coefs(coefs_in.begin(), coefs_in.end());</span></a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineCov">          4 :   const auto coefs_in = options.get&lt;std::vector&lt;CrossRef&lt;Scalar&gt;&gt;&gt;(&quot;coefficients&quot;);</span></a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineCov">          4 :   const std::vector&lt;Scalar&gt; coefs(coefs_in.begin(), coefs_in.end());</span></a>
 <a name="77"><span class="lineNum">      77 </span><span class="lineNoCov">          0 :   return math::base_stack(coefs);</span></a>
-<a name="78"><span class="lineNum">      78 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="78"><span class="lineNum">      78 </span><span class="lineCov">          2 : }</span></a>
 <a name="79"><span class="lineNum">      79 </span>            : </a>
 <a name="80"><span class="lineNum">      80 </span>            : } // namespace neml2</a>
 </pre>

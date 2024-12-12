@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-12 19:50:45</td>
+            <td class="headerValue">2024-12-12 20:13:53</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">15</td>
@@ -128,20 +128,20 @@
 <a name="66"><span class="lineNum">      66 </span><span class="lineCov">         30 :   options.set(&quot;automatic_scaling_miter&quot;).suppressed() = false;</span></a>
 <a name="67"><span class="lineNum">      67 </span><span class="lineCov">         30 : }</span></a>
 <a name="68"><span class="lineNum">      68 </span>            : </a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">        394 : NonlinearSystem::NonlinearSystem(const OptionSet &amp; options)</span></a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineCov">        394 :   : _ndof(0),</span></a>
-<a name="71"><span class="lineNum">      71 </span><span class="lineCov">        394 :     _autoscale(options.get&lt;bool&gt;(&quot;automatic_scaling&quot;)),</span></a>
-<a name="72"><span class="lineNum">      72 </span><span class="lineCov">        394 :     _autoscale_tol(options.get&lt;Real&gt;(&quot;automatic_scaling_tol&quot;)),</span></a>
-<a name="73"><span class="lineNum">      73 </span><span class="lineCov">        394 :     _autoscale_miter(options.get&lt;unsigned int&gt;(&quot;automatic_scaling_miter&quot;)),</span></a>
-<a name="74"><span class="lineNum">      74 </span><span class="lineCov">        788 :     _scaling_matrices_initialized(false)</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">        572 : NonlinearSystem::NonlinearSystem(const OptionSet &amp; options)</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">        572 :   : _ndof(0),</span></a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineCov">        572 :     _autoscale(options.get&lt;bool&gt;(&quot;automatic_scaling&quot;)),</span></a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineCov">        572 :     _autoscale_tol(options.get&lt;Real&gt;(&quot;automatic_scaling_tol&quot;)),</span></a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">        572 :     _autoscale_miter(options.get&lt;unsigned int&gt;(&quot;automatic_scaling_miter&quot;)),</span></a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineCov">       1144 :     _scaling_matrices_initialized(false)</span></a>
 <a name="75"><span class="lineNum">      75 </span>            : {</a>
-<a name="76"><span class="lineNum">      76 </span><span class="lineCov">        394 : }</span></a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineCov">        572 : }</span></a>
 <a name="77"><span class="lineNum">      77 </span>            : </a>
 <a name="78"><span class="lineNum">      78 </span>            : void</a>
-<a name="79"><span class="lineNum">      79 </span><span class="lineCov">         66 : NonlinearSystem::init_scaling(const bool verbose)</span></a>
+<a name="79"><span class="lineNum">      79 </span><span class="lineCov">        146 : NonlinearSystem::init_scaling(const bool verbose)</span></a>
 <a name="80"><span class="lineNum">      80 </span>            : {</a>
-<a name="81"><span class="lineNum">      81 </span><span class="lineCov">         66 :   if (!_autoscale)</span></a>
-<a name="82"><span class="lineNum">      82 </span><span class="lineCov">         62 :     return;</span></a>
+<a name="81"><span class="lineNum">      81 </span><span class="lineCov">        146 :   if (!_autoscale)</span></a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineCov">        142 :     return;</span></a>
 <a name="83"><span class="lineNum">      83 </span>            : </a>
 <a name="84"><span class="lineNum">      84 </span><span class="lineCov">          4 :   if (_scaling_matrices_initialized)</span></a>
 <a name="85"><span class="lineNum">      85 </span><span class="lineNoCov">          0 :     return;</span></a>
@@ -209,20 +209,20 @@
 <a name="147"><span class="lineNum">     147 </span>            : }</a>
 <a name="148"><span class="lineNum">     148 </span>            : </a>
 <a name="149"><span class="lineNum">     149 </span>            : Tensor</a>
-<a name="150"><span class="lineNum">     150 </span><span class="lineCov">        766 : NonlinearSystem::scale_direction(const Tensor &amp; p) const</span></a>
+<a name="150"><span class="lineNum">     150 </span><span class="lineCov">       1318 : NonlinearSystem::scale_direction(const Tensor &amp; p) const</span></a>
 <a name="151"><span class="lineNum">     151 </span>            : {</a>
-<a name="152"><span class="lineNum">     152 </span><span class="lineCov">        766 :   neml_assert_dbg(</span></a>
-<a name="153"><span class="lineNum">     153 </span><span class="lineCov">        766 :       _autoscale == _scaling_matrices_initialized,</span></a>
-<a name="154"><span class="lineNum">     154 </span><span class="lineCov">        766 :       _autoscale ? &quot;Automatic scaling is requested but scaling matrices have not been initialized.&quot;</span></a>
+<a name="152"><span class="lineNum">     152 </span><span class="lineCov">       1318 :   neml_assert_dbg(</span></a>
+<a name="153"><span class="lineNum">     153 </span><span class="lineCov">       1318 :       _autoscale == _scaling_matrices_initialized,</span></a>
+<a name="154"><span class="lineNum">     154 </span><span class="lineCov">       1318 :       _autoscale ? &quot;Automatic scaling is requested but scaling matrices have not been initialized.&quot;</span></a>
 <a name="155"><span class="lineNum">     155 </span>            :                  : &quot;Automatic scaling is not requested but scaling matrices were initialized.&quot;);</a>
-<a name="156"><span class="lineNum">     156 </span><span class="lineCov">       1532 :   return _autoscale ? _col_scaling * p : p;</span></a>
+<a name="156"><span class="lineNum">     156 </span><span class="lineCov">       2636 :   return _autoscale ? _col_scaling * p : p;</span></a>
 <a name="157"><span class="lineNum">     157 </span>            : }</a>
 <a name="158"><span class="lineNum">     158 </span>            : </a>
 <a name="159"><span class="lineNum">     159 </span>            : void</a>
-<a name="160"><span class="lineNum">     160 </span><span class="lineCov">        727 : NonlinearSystem::set_solution(const Tensor &amp; x)</span></a>
+<a name="160"><span class="lineNum">     160 </span><span class="lineCov">       1249 : NonlinearSystem::set_solution(const Tensor &amp; x)</span></a>
 <a name="161"><span class="lineNum">     161 </span>            : {</a>
-<a name="162"><span class="lineNum">     162 </span><span class="lineCov">        727 :   _solution.variable_data().copy_(x);</span></a>
-<a name="163"><span class="lineNum">     163 </span><span class="lineCov">        727 : }</span></a>
+<a name="162"><span class="lineNum">     162 </span><span class="lineCov">       1249 :   _solution.variable_data().copy_(x);</span></a>
+<a name="163"><span class="lineNum">     163 </span><span class="lineCov">       1249 : }</span></a>
 <a name="164"><span class="lineNum">     164 </span>            : </a>
 <a name="165"><span class="lineNum">     165 </span>            : Tensor</a>
 <a name="166"><span class="lineNum">     166 </span><span class="lineNoCov">          0 : NonlinearSystem::residual(const Tensor &amp; x)</span></a>
@@ -233,12 +233,12 @@
 <a name="171"><span class="lineNum">     171 </span>            : }</a>
 <a name="172"><span class="lineNum">     172 </span>            : </a>
 <a name="173"><span class="lineNum">     173 </span>            : void</a>
-<a name="174"><span class="lineNum">     174 </span><span class="lineCov">        799 : NonlinearSystem::residual()</span></a>
+<a name="174"><span class="lineNum">     174 </span><span class="lineCov">       1401 : NonlinearSystem::residual()</span></a>
 <a name="175"><span class="lineNum">     175 </span>            : {</a>
-<a name="176"><span class="lineNum">     176 </span><span class="lineCov">        799 :   assemble(true, false);</span></a>
+<a name="176"><span class="lineNum">     176 </span><span class="lineCov">       1401 :   assemble(true, false);</span></a>
 <a name="177"><span class="lineNum">     177 </span>            : </a>
-<a name="178"><span class="lineNum">     178 </span><span class="lineCov">        799 :   _scaled_residual = _autoscale ? scale_residual(_residual) : _residual.clone();</span></a>
-<a name="179"><span class="lineNum">     179 </span><span class="lineCov">        799 : }</span></a>
+<a name="178"><span class="lineNum">     178 </span><span class="lineCov">       1401 :   _scaled_residual = _autoscale ? scale_residual(_residual) : _residual.clone();</span></a>
+<a name="179"><span class="lineNum">     179 </span><span class="lineCov">       1401 : }</span></a>
 <a name="180"><span class="lineNum">     180 </span>            : </a>
 <a name="181"><span class="lineNum">     181 </span>            : Tensor</a>
 <a name="182"><span class="lineNum">     182 </span><span class="lineCov">          1 : NonlinearSystem::Jacobian(const Tensor &amp; x)</span></a>
@@ -249,12 +249,12 @@
 <a name="187"><span class="lineNum">     187 </span>            : }</a>
 <a name="188"><span class="lineNum">     188 </span>            : </a>
 <a name="189"><span class="lineNum">     189 </span>            : void</a>
-<a name="190"><span class="lineNum">     190 </span><span class="lineCov">        598 : NonlinearSystem::Jacobian()</span></a>
+<a name="190"><span class="lineNum">     190 </span><span class="lineCov">       1150 : NonlinearSystem::Jacobian()</span></a>
 <a name="191"><span class="lineNum">     191 </span>            : {</a>
-<a name="192"><span class="lineNum">     192 </span><span class="lineCov">        598 :   assemble(false, true);</span></a>
+<a name="192"><span class="lineNum">     192 </span><span class="lineCov">       1150 :   assemble(false, true);</span></a>
 <a name="193"><span class="lineNum">     193 </span>            : </a>
-<a name="194"><span class="lineNum">     194 </span><span class="lineCov">        598 :   _scaled_Jacobian = _autoscale ? scale_Jacobian(_Jacobian) : _Jacobian.clone();</span></a>
-<a name="195"><span class="lineNum">     195 </span><span class="lineCov">        598 : }</span></a>
+<a name="194"><span class="lineNum">     194 </span><span class="lineCov">       1150 :   _scaled_Jacobian = _autoscale ? scale_Jacobian(_Jacobian) : _Jacobian.clone();</span></a>
+<a name="195"><span class="lineNum">     195 </span><span class="lineCov">       1150 : }</span></a>
 <a name="196"><span class="lineNum">     196 </span>            : </a>
 <a name="197"><span class="lineNum">     197 </span>            : std::tuple&lt;Tensor, Tensor&gt;</a>
 <a name="198"><span class="lineNum">     198 </span><span class="lineCov">         18 : NonlinearSystem::residual_and_Jacobian(const Tensor &amp; x)</span></a>
@@ -274,9 +274,9 @@
 <a name="212"><span class="lineNum">     212 </span><span class="lineCov">         18 : }</span></a>
 <a name="213"><span class="lineNum">     213 </span>            : </a>
 <a name="214"><span class="lineNum">     214 </span>            : Tensor</a>
-<a name="215"><span class="lineNum">     215 </span><span class="lineCov">        666 : NonlinearSystem::residual_norm() const</span></a>
+<a name="215"><span class="lineNum">     215 </span><span class="lineCov">       1268 : NonlinearSystem::residual_norm() const</span></a>
 <a name="216"><span class="lineNum">     216 </span>            : {</a>
-<a name="217"><span class="lineNum">     217 </span><span class="lineCov">        666 :   return math::linalg::vector_norm(get_residual());</span></a>
+<a name="217"><span class="lineNum">     217 </span><span class="lineCov">       1268 :   return math::linalg::vector_norm(get_residual());</span></a>
 <a name="218"><span class="lineNum">     218 </span>            : }</a>
 <a name="219"><span class="lineNum">     219 </span>            : } // namespace neml2</a>
 </pre>

@@ -31,18 +31,18 @@
             <td class="headerValue">coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">12</td>
+            <td class="headerCovTableEntry">19</td>
             <td class="headerCovTableEntry">20</td>
-            <td class="headerCovTableEntryLo">60.0 %</td>
+            <td class="headerCovTableEntryHi">95.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-12 19:50:45</td>
+            <td class="headerValue">2024-12-12 20:13:53</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">21</td>
+            <td class="headerCovTableEntry">23</td>
             <td class="headerCovTableEntry">60</td>
-            <td class="headerCovTableEntryLo">35.0 %</td>
+            <td class="headerCovTableEntryLo">38.3 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -108,29 +108,29 @@
 <a name="46"><span class="lineNum">      46 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="47"><span class="lineNum">      47 </span>            : </a>
 <a name="48"><span class="lineNum">      48 </span>            : template &lt;typename T&gt;</a>
-<a name="49"><span class="lineNum">      49 </span><span class="lineCov">          3 : CopyVariable&lt;T&gt;::CopyVariable(const OptionSet &amp; options)</span></a>
+<a name="49"><span class="lineNum">      49 </span><span class="lineCov">          4 : CopyVariable&lt;T&gt;::CopyVariable(const OptionSet &amp; options)</span></a>
 <a name="50"><span class="lineNum">      50 </span>            :   : Model(options),</a>
-<a name="51"><span class="lineNum">      51 </span><span class="lineCov">          6 :     _to(declare_output_variable&lt;T&gt;(&quot;to&quot;)),</span></a>
-<a name="52"><span class="lineNum">      52 </span><span class="lineCov">          3 :     _from(declare_input_variable&lt;T&gt;(&quot;from&quot;))</span></a>
+<a name="51"><span class="lineNum">      51 </span><span class="lineCov">          8 :     _to(declare_output_variable&lt;T&gt;(&quot;to&quot;)),</span></a>
+<a name="52"><span class="lineNum">      52 </span><span class="lineCov">          4 :     _from(declare_input_variable&lt;T&gt;(&quot;from&quot;))</span></a>
 <a name="53"><span class="lineNum">      53 </span>            : {</a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">          3 : }</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">          4 : }</span></a>
 <a name="55"><span class="lineNum">      55 </span>            : </a>
 <a name="56"><span class="lineNum">      56 </span>            : template &lt;typename T&gt;</a>
 <a name="57"><span class="lineNum">      57 </span>            : void</a>
-<a name="58"><span class="lineNum">      58 </span><span class="lineNoCov">          0 : CopyVariable&lt;T&gt;::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
+<a name="58"><span class="lineNum">      58 </span><span class="lineCov">        171 : CopyVariable&lt;T&gt;::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
 <a name="59"><span class="lineNum">      59 </span>            : {</a>
-<a name="60"><span class="lineNum">      60 </span><span class="lineNoCov">          0 :   if (out)</span></a>
-<a name="61"><span class="lineNum">      61 </span><span class="lineNoCov">          0 :     _to = T(_from);</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineCov">        171 :   if (out)</span></a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">        171 :     _to = T(_from);</span></a>
 <a name="62"><span class="lineNum">      62 </span>            : </a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineNoCov">          0 :   if (_from.is_dependent())</span></a>
-<a name="64"><span class="lineNum">      64 </span><span class="lineNoCov">          0 :     if (dout_din)</span></a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineNoCov">          0 :       _to.d(_from) = T::identity_map(options());</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineCov">        171 :   if (_from.is_dependent())</span></a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineCov">        171 :     if (dout_din)</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">         81 :       _to.d(_from) = T::identity_map(options());</span></a>
 <a name="66"><span class="lineNum">      66 </span>            : </a>
 <a name="67"><span class="lineNum">      67 </span>            :   if (d2out_din2)</a>
 <a name="68"><span class="lineNum">      68 </span>            :   {</a>
 <a name="69"><span class="lineNum">      69 </span>            :     // zero</a>
 <a name="70"><span class="lineNum">      70 </span>            :   }</a>
-<a name="71"><span class="lineNum">      71 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineCov">        171 : }</span></a>
 <a name="72"><span class="lineNum">      72 </span>            : </a>
 <a name="73"><span class="lineNum">      73 </span>            : #define COPYVARIABLE_INSTANTIATE_PRIMITIVETENSOR(T) template class CopyVariable&lt;T&gt;</a>
 <a name="74"><span class="lineNum">      74 </span>            : FOR_ALL_PRIMITIVETENSOR(COPYVARIABLE_INSTANTIATE_PRIMITIVETENSOR);</a>

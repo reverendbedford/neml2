@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-12 19:50:45</td>
+            <td class="headerValue">2024-12-12 20:13:53</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">30</td>
@@ -261,55 +261,55 @@
 <a name="199"><span class="lineNum">     199 </span>            : }</a>
 <a name="200"><span class="lineNum">     200 </span>            : </a>
 <a name="201"><span class="lineNum">     201 </span>            : Tensor</a>
-<a name="202"><span class="lineNum">     202 </span><span class="lineCov">         66 : jacrev(const Tensor &amp; y, const Tensor &amp; p)</span></a>
+<a name="202"><span class="lineNum">     202 </span><span class="lineCov">         78 : jacrev(const Tensor &amp; y, const Tensor &amp; p)</span></a>
 <a name="203"><span class="lineNum">     203 </span>            : {</a>
-<a name="204"><span class="lineNum">     204 </span><span class="lineCov">         66 :   neml_assert(p.batch_sizes() == y.batch_sizes(),</span></a>
+<a name="204"><span class="lineNum">     204 </span><span class="lineCov">         78 :   neml_assert(p.batch_sizes() == y.batch_sizes(),</span></a>
 <a name="205"><span class="lineNum">     205 </span>            :               &quot;The batch shape of the parameter must be the same as the batch shape &quot;</a>
 <a name="206"><span class="lineNum">     206 </span>            :               &quot;of the output. However, the batch shape of the parameter is &quot;,</a>
-<a name="207"><span class="lineNum">     207 </span><span class="lineCov">         67 :               p.batch_sizes(),</span></a>
+<a name="207"><span class="lineNum">     207 </span><span class="lineCov">         79 :               p.batch_sizes(),</span></a>
 <a name="208"><span class="lineNum">     208 </span>            :               &quot;, and the batch shape of the output is &quot;,</a>
-<a name="209"><span class="lineNum">     209 </span><span class="lineCov">         67 :               y.batch_sizes());</span></a>
+<a name="209"><span class="lineNum">     209 </span><span class="lineCov">         79 :               y.batch_sizes());</span></a>
 <a name="210"><span class="lineNum">     210 </span>            : </a>
 <a name="211"><span class="lineNum">     211 </span>            :   // flatten y to handle arbitrarily shaped output</a>
 <a name="212"><span class="lineNum">     212 </span>            :   auto yf =</a>
-<a name="213"><span class="lineNum">     213 </span><span class="lineCov">        130 :       Tensor(y.reshape(utils::add_shapes(y.batch_sizes(), utils::storage_size(y.base_sizes()))),</span></a>
-<a name="214"><span class="lineNum">     214 </span><span class="lineCov">        130 :              y.batch_dim());</span></a>
+<a name="213"><span class="lineNum">     213 </span><span class="lineCov">        154 :       Tensor(y.reshape(utils::add_shapes(y.batch_sizes(), utils::storage_size(y.base_sizes()))),</span></a>
+<a name="214"><span class="lineNum">     214 </span><span class="lineCov">        154 :              y.batch_dim());</span></a>
 <a name="215"><span class="lineNum">     215 </span>            : </a>
-<a name="216"><span class="lineNum">     216 </span><span class="lineCov">         65 :   neml_assert_dbg(yf.base_dim() == 1, &quot;Flattened output must be flat.&quot;);</span></a>
+<a name="216"><span class="lineNum">     216 </span><span class="lineCov">         77 :   neml_assert_dbg(yf.base_dim() == 1, &quot;Flattened output must be flat.&quot;);</span></a>
 <a name="217"><span class="lineNum">     217 </span>            : </a>
 <a name="218"><span class="lineNum">     218 </span>            :   auto dyf_dp = Tensor::zeros(</a>
-<a name="219"><span class="lineNum">     219 </span><span class="lineCov">         65 :       yf.batch_sizes(), utils::add_shapes(yf.base_sizes(), p.base_sizes()), yf.options());</span></a>
+<a name="219"><span class="lineNum">     219 </span><span class="lineCov">         77 :       yf.batch_sizes(), utils::add_shapes(yf.base_sizes(), p.base_sizes()), yf.options());</span></a>
 <a name="220"><span class="lineNum">     220 </span>            : </a>
-<a name="221"><span class="lineNum">     221 </span><span class="lineCov">         65 :   if (yf.requires_grad())</span></a>
-<a name="222"><span class="lineNum">     222 </span><span class="lineCov">        287 :     for (Size i = 0; i &lt; yf.base_sizes()[0]; i++)</span></a>
+<a name="221"><span class="lineNum">     221 </span><span class="lineCov">         77 :   if (yf.requires_grad())</span></a>
+<a name="222"><span class="lineNum">     222 </span><span class="lineCov">        309 :     for (Size i = 0; i &lt; yf.base_sizes()[0]; i++)</span></a>
 <a name="223"><span class="lineNum">     223 </span>            :     {</a>
-<a name="224"><span class="lineNum">     224 </span><span class="lineCov">        222 :       auto v = Tensor::zeros_like(yf);</span></a>
-<a name="225"><span class="lineNum">     225 </span><span class="lineCov">        666 :       v.index_put_({torch::indexing::Ellipsis, i}, 1.0);</span></a>
-<a name="226"><span class="lineNum">     226 </span><span class="lineCov">       1554 :       const auto dyfi_dp = torch::autograd::grad({yf},</span></a>
+<a name="224"><span class="lineNum">     224 </span><span class="lineCov">        233 :       auto v = Tensor::zeros_like(yf);</span></a>
+<a name="225"><span class="lineNum">     225 </span><span class="lineCov">        699 :       v.index_put_({torch::indexing::Ellipsis, i}, 1.0);</span></a>
+<a name="226"><span class="lineNum">     226 </span><span class="lineCov">       1631 :       const auto dyfi_dp = torch::autograd::grad({yf},</span></a>
 <a name="227"><span class="lineNum">     227 </span>            :                                                  {p},</a>
 <a name="228"><span class="lineNum">     228 </span>            :                                                  {v},</a>
-<a name="229"><span class="lineNum">     229 </span><span class="lineCov">        222 :                                                  /*retain_graph=*/true,</span></a>
+<a name="229"><span class="lineNum">     229 </span><span class="lineCov">        233 :                                                  /*retain_graph=*/true,</span></a>
 <a name="230"><span class="lineNum">     230 </span>            :                                                  /*create_graph=*/false,</a>
-<a name="231"><span class="lineNum">     231 </span><span class="lineCov">        222 :                                                  /*allow_unused=*/true)[0];</span></a>
-<a name="232"><span class="lineNum">     232 </span><span class="lineCov">        222 :       if (dyfi_dp.defined())</span></a>
-<a name="233"><span class="lineNum">     233 </span><span class="lineCov">        624 :         dyf_dp.base_index_put_({i, torch::indexing::Ellipsis}, dyfi_dp);</span></a>
-<a name="234"><span class="lineNum">     234 </span><span class="lineCov">        222 :     }</span></a>
+<a name="231"><span class="lineNum">     231 </span><span class="lineCov">        233 :                                                  /*allow_unused=*/true)[0];</span></a>
+<a name="232"><span class="lineNum">     232 </span><span class="lineCov">        233 :       if (dyfi_dp.defined())</span></a>
+<a name="233"><span class="lineNum">     233 </span><span class="lineCov">        657 :         dyf_dp.base_index_put_({i, torch::indexing::Ellipsis}, dyfi_dp);</span></a>
+<a name="234"><span class="lineNum">     234 </span><span class="lineCov">        233 :     }</span></a>
 <a name="235"><span class="lineNum">     235 </span>            : </a>
 <a name="236"><span class="lineNum">     236 </span>            :   // Reshape the derivative back to the correct shape</a>
 <a name="237"><span class="lineNum">     237 </span>            :   const auto dy_dp =</a>
-<a name="238"><span class="lineNum">     238 </span><span class="lineCov">        130 :       Tensor(dyf_dp.reshape(utils::add_shapes(y.batch_sizes(), y.base_sizes(), p.base_sizes())),</span></a>
-<a name="239"><span class="lineNum">     239 </span><span class="lineCov">        130 :              y.batch_dim());</span></a>
+<a name="238"><span class="lineNum">     238 </span><span class="lineCov">        154 :       Tensor(dyf_dp.reshape(utils::add_shapes(y.batch_sizes(), y.base_sizes(), p.base_sizes())),</span></a>
+<a name="239"><span class="lineNum">     239 </span><span class="lineCov">        154 :              y.batch_dim());</span></a>
 <a name="240"><span class="lineNum">     240 </span>            : </a>
-<a name="241"><span class="lineNum">     241 </span><span class="lineCov">        130 :   return dy_dp;</span></a>
-<a name="242"><span class="lineNum">     242 </span><span class="lineCov">         65 : }</span></a>
+<a name="241"><span class="lineNum">     241 </span><span class="lineCov">        154 :   return dy_dp;</span></a>
+<a name="242"><span class="lineNum">     242 </span><span class="lineCov">         77 : }</span></a>
 <a name="243"><span class="lineNum">     243 </span>            : </a>
 <a name="244"><span class="lineNum">     244 </span>            : Tensor</a>
-<a name="245"><span class="lineNum">     245 </span><span class="lineCov">        192 : base_diag_embed(const Tensor &amp; a, Size offset, Size d1, Size d2)</span></a>
+<a name="245"><span class="lineNum">     245 </span><span class="lineCov">        552 : base_diag_embed(const Tensor &amp; a, Size offset, Size d1, Size d2)</span></a>
 <a name="246"><span class="lineNum">     246 </span>            : {</a>
 <a name="247"><span class="lineNum">     247 </span>            :   return Tensor(</a>
-<a name="248"><span class="lineNum">     248 </span><span class="lineCov">        384 :       torch::diag_embed(</span></a>
+<a name="248"><span class="lineNum">     248 </span><span class="lineCov">       1104 :       torch::diag_embed(</span></a>
 <a name="249"><span class="lineNum">     249 </span><span class="lineNoCov">          0 :           a, offset, d1 &lt; 0 ? d1 : d1 + a.batch_dim() + 1, d2 &lt; 0 ? d2 : d2 + a.batch_dim() + 1),</span></a>
-<a name="250"><span class="lineNum">     250 </span><span class="lineCov">        576 :       a.batch_dim());</span></a>
+<a name="250"><span class="lineNum">     250 </span><span class="lineCov">       1656 :       a.batch_dim());</span></a>
 <a name="251"><span class="lineNum">     251 </span>            : }</a>
 <a name="252"><span class="lineNum">     252 </span>            : </a>
 <a name="253"><span class="lineNum">     253 </span>            : SR2</a>
@@ -383,20 +383,20 @@
 <a name="321"><span class="lineNum">     321 </span>            : namespace linalg</a>
 <a name="322"><span class="lineNum">     322 </span>            : {</a>
 <a name="323"><span class="lineNum">     323 </span>            : Tensor</a>
-<a name="324"><span class="lineNum">     324 </span><span class="lineCov">        687 : vector_norm(const Tensor &amp; v)</span></a>
+<a name="324"><span class="lineNum">     324 </span><span class="lineCov">       1289 : vector_norm(const Tensor &amp; v)</span></a>
 <a name="325"><span class="lineNum">     325 </span>            : {</a>
-<a name="326"><span class="lineNum">     326 </span><span class="lineCov">        687 :   neml_assert_dbg(v.base_dim() == 0 || v.base_dim() == 1,</span></a>
+<a name="326"><span class="lineNum">     326 </span><span class="lineCov">       1289 :   neml_assert_dbg(v.base_dim() == 0 || v.base_dim() == 1,</span></a>
 <a name="327"><span class="lineNum">     327 </span>            :                   &quot;v in vector_norm has base dimension &quot;,</a>
-<a name="328"><span class="lineNum">     328 </span><span class="lineCov">        687 :                   v.base_dim(),</span></a>
+<a name="328"><span class="lineNum">     328 </span><span class="lineCov">       1289 :                   v.base_dim(),</span></a>
 <a name="329"><span class="lineNum">     329 </span>            :                   &quot; instead of 0 or 1.&quot;);</a>
 <a name="330"><span class="lineNum">     330 </span>            : </a>
 <a name="331"><span class="lineNum">     331 </span>            :   // If the vector is a logical scalar just return its absolute value</a>
-<a name="332"><span class="lineNum">     332 </span><span class="lineCov">        687 :   if (v.base_dim() == 0)</span></a>
+<a name="332"><span class="lineNum">     332 </span><span class="lineCov">       1289 :   if (v.base_dim() == 0)</span></a>
 <a name="333"><span class="lineNum">     333 </span><span class="lineCov">         75 :     return math::abs(v);</span></a>
 <a name="334"><span class="lineNum">     334 </span>            : </a>
-<a name="335"><span class="lineNum">     335 </span><span class="lineCov">       1224 :   return Tensor(torch::linalg::vector_norm(</span></a>
-<a name="336"><span class="lineNum">     336 </span><span class="lineCov">       1224 :                     v, /*order=*/2, /*dim=*/-1, /*keepdim=*/false, /*dtype=*/c10::nullopt),</span></a>
-<a name="337"><span class="lineNum">     337 </span><span class="lineCov">       1224 :                 v.batch_dim());</span></a>
+<a name="335"><span class="lineNum">     335 </span><span class="lineCov">       2428 :   return Tensor(torch::linalg::vector_norm(</span></a>
+<a name="336"><span class="lineNum">     336 </span><span class="lineCov">       2428 :                     v, /*order=*/2, /*dim=*/-1, /*keepdim=*/false, /*dtype=*/c10::nullopt),</span></a>
+<a name="337"><span class="lineNum">     337 </span><span class="lineCov">       2428 :                 v.batch_dim());</span></a>
 <a name="338"><span class="lineNum">     338 </span>            : }</a>
 <a name="339"><span class="lineNum">     339 </span>            : </a>
 <a name="340"><span class="lineNum">     340 </span>            : Tensor</a>
@@ -406,22 +406,22 @@
 <a name="344"><span class="lineNum">     344 </span>            : }</a>
 <a name="345"><span class="lineNum">     345 </span>            : </a>
 <a name="346"><span class="lineNum">     346 </span>            : Tensor</a>
-<a name="347"><span class="lineNum">     347 </span><span class="lineCov">        767 : solve(const Tensor &amp; A, const Tensor &amp; B)</span></a>
+<a name="347"><span class="lineNum">     347 </span><span class="lineCov">       1319 : solve(const Tensor &amp; A, const Tensor &amp; B)</span></a>
 <a name="348"><span class="lineNum">     348 </span>            : {</a>
-<a name="349"><span class="lineNum">     349 </span><span class="lineCov">       1534 :   return Tensor(torch::linalg::solve(A, B, /*left=*/true), A.batch_dim());</span></a>
+<a name="349"><span class="lineNum">     349 </span><span class="lineCov">       2638 :   return Tensor(torch::linalg::solve(A, B, /*left=*/true), A.batch_dim());</span></a>
 <a name="350"><span class="lineNum">     350 </span>            : }</a>
 <a name="351"><span class="lineNum">     351 </span>            : </a>
 <a name="352"><span class="lineNum">     352 </span>            : std::tuple&lt;Tensor, Tensor&gt;</a>
-<a name="353"><span class="lineNum">     353 </span><span class="lineCov">          4 : lu_factor(const Tensor &amp; A, bool pivot)</span></a>
+<a name="353"><span class="lineNum">     353 </span><span class="lineCov">          8 : lu_factor(const Tensor &amp; A, bool pivot)</span></a>
 <a name="354"><span class="lineNum">     354 </span>            : {</a>
-<a name="355"><span class="lineNum">     355 </span><span class="lineCov">          4 :   auto [LU, pivots] = torch::linalg_lu_factor(A, pivot);</span></a>
-<a name="356"><span class="lineNum">     356 </span><span class="lineCov">          8 :   return {Tensor(LU, A.batch_dim()), Tensor(pivots, A.batch_dim())};</span></a>
-<a name="357"><span class="lineNum">     357 </span><span class="lineCov">          4 : }</span></a>
+<a name="355"><span class="lineNum">     355 </span><span class="lineCov">          8 :   auto [LU, pivots] = torch::linalg_lu_factor(A, pivot);</span></a>
+<a name="356"><span class="lineNum">     356 </span><span class="lineCov">         16 :   return {Tensor(LU, A.batch_dim()), Tensor(pivots, A.batch_dim())};</span></a>
+<a name="357"><span class="lineNum">     357 </span><span class="lineCov">          8 : }</span></a>
 <a name="358"><span class="lineNum">     358 </span>            : </a>
 <a name="359"><span class="lineNum">     359 </span>            : Tensor</a>
-<a name="360"><span class="lineNum">     360 </span><span class="lineCov">         12 : lu_solve(const Tensor &amp; LU, const Tensor &amp; pivots, const Tensor &amp; B, bool left, bool adjoint)</span></a>
+<a name="360"><span class="lineNum">     360 </span><span class="lineCov">         24 : lu_solve(const Tensor &amp; LU, const Tensor &amp; pivots, const Tensor &amp; B, bool left, bool adjoint)</span></a>
 <a name="361"><span class="lineNum">     361 </span>            : {</a>
-<a name="362"><span class="lineNum">     362 </span><span class="lineCov">         24 :   return Tensor(torch::linalg_lu_solve(LU, pivots, B, left, adjoint), B.batch_dim());</span></a>
+<a name="362"><span class="lineNum">     362 </span><span class="lineCov">         48 :   return Tensor(torch::linalg_lu_solve(LU, pivots, B, left, adjoint), B.batch_dim());</span></a>
 <a name="363"><span class="lineNum">     363 </span>            : }</a>
 <a name="364"><span class="lineNum">     364 </span>            : } // namespace linalg</a>
 <a name="365"><span class="lineNum">     365 </span>            : } // namespace math</a>
