@@ -22,78 +22,81 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/base/EnumSelection.h"
+#include "neml2/base/MultiEnumSelection.h"
 #include "neml2/misc/parser_utils.h"
 
 namespace neml2
 {
 std::ostream &
-operator<<(std::ostream & os, const EnumSelection & es)
+operator<<(std::ostream & os, const MultiEnumSelection & es)
 {
-  os << std::string(es);
+  os << utils::stringify(std::vector<std::string>(es));
   return os;
 }
 
 std::stringstream &
-operator>>(std::stringstream & ss, EnumSelection & es)
+operator>>(std::stringstream & ss, MultiEnumSelection & es)
 {
   std::string s;
   ss >> s;
-  es.select(s);
+  es.select(utils::parse_vector<std::string>(s));
   return ss;
 }
 
-EnumSelection::EnumSelection(const EnumSelection & other)
+MultiEnumSelection::MultiEnumSelection(const MultiEnumSelection & other)
   : EnumSelectionBase(other),
-    _selection(other._selection),
-    _value(other._value)
+    _selections(other._selections),
+    _values(other._values)
 {
 }
 
-EnumSelection::EnumSelection(const std::vector<std::string> & candidates,
-                             const std::string & selection)
+MultiEnumSelection::MultiEnumSelection(const std::vector<std::string> & candidates,
+                                       const std::vector<std::string> & selections)
   : EnumSelectionBase(candidates)
 {
-  select(selection);
+  select(selections);
 }
 
-EnumSelection::EnumSelection(const std::vector<std::string> & candidates,
-                             const std::vector<int> & values,
-                             const std::string & selection)
+MultiEnumSelection::MultiEnumSelection(const std::vector<std::string> & candidates,
+                                       const std::vector<int> & values,
+                                       const std::vector<std::string> & selections)
   : EnumSelectionBase(candidates, values)
 {
-  select(selection);
+  select(selections);
 }
 
-EnumSelection &
-EnumSelection::operator=(const EnumSelection & other)
+MultiEnumSelection &
+MultiEnumSelection::operator=(const MultiEnumSelection & other)
 {
   _candidate_map = other._candidate_map;
-  _selection = other._selection;
-  _value = other._value;
+  _selections = other._selections;
+  _values = other._values;
   return *this;
 }
 
 bool
-EnumSelection::operator==(const EnumSelection & other) const
+MultiEnumSelection::operator==(const MultiEnumSelection & other) const
 {
-  return _candidate_map == other._candidate_map && _selection == other._selection &&
-         _value == other._value;
+  return _candidate_map == other._candidate_map && _selections == other._selections &&
+         _values == other._values;
 }
 
 bool
-EnumSelection::operator!=(const EnumSelection & other) const
+MultiEnumSelection::operator!=(const MultiEnumSelection & other) const
 {
   return !(*this == other);
 }
 
 void
-EnumSelection::select(const std::string & selection)
+MultiEnumSelection::select(const std::vector<std::string> & selections)
 {
-  neml_assert(_candidate_map.count(selection),
-              "Invalid selection for EnumSelection. Candidates are ",
-              candidates_str());
-  _selection = selection;
-  _value = _candidate_map[selection];
+  for (const auto & selection : selections)
+  {
+    neml_assert(_candidate_map.count(selection),
+                "Invalid selection for MultiEnumSelection. Candidates are ",
+                candidates_str());
+    _selections.push_back(selection);
+    _values.push_back(_candidate_map[selection]);
+  }
 }
 } // namesace neml2

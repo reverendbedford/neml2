@@ -29,54 +29,59 @@
 namespace neml2
 {
 // Forward decl
-class EnumSelection;
-std::ostream & operator<<(std::ostream &, const EnumSelection &);
-std::stringstream & operator>>(std::stringstream &, EnumSelection &);
+class MultiEnumSelection;
+std::ostream & operator<<(std::ostream &, const MultiEnumSelection &);
+std::stringstream & operator>>(std::stringstream &, MultiEnumSelection &);
 
 /**
- * @brief Selection of an enum value from a list of candidates
+ * @brief Selection of _multiple_ enum value from a list of candidates
  * @see neml2::EnumSelectionBase
  */
-class EnumSelection : public EnumSelectionBase
+class MultiEnumSelection : public EnumSelectionBase
 {
 public:
-  EnumSelection() = default;
-  EnumSelection(const EnumSelection & other);
-  EnumSelection(const std::vector<std::string> & candidates, const std::string & selection);
-  EnumSelection(const std::vector<std::string> & candidates,
-                const std::vector<int> & values,
-                const std::string & selection);
+  MultiEnumSelection() = default;
+  MultiEnumSelection(const MultiEnumSelection & other);
+  MultiEnumSelection(const std::vector<std::string> & candidates,
+                     const std::vector<std::string> & selections);
+  MultiEnumSelection(const std::vector<std::string> & candidates,
+                     const std::vector<int> & values,
+                     const std::vector<std::string> & selections);
 
   /// Assignment operator
-  EnumSelection & operator=(const EnumSelection & other);
+  MultiEnumSelection & operator=(const MultiEnumSelection & other);
 
-  /// Select a new value
-  void select(const std::string & selection);
-
-  /// Test for inequality
-  bool operator==(const EnumSelection & other) const;
+  /// Select new values
+  /// @note This will clear the current selection
+  void select(const std::vector<std::string> & selections);
 
   /// Test for inequality
-  bool operator!=(const EnumSelection & other) const;
+  bool operator==(const MultiEnumSelection & other) const;
+
+  /// Test for inequality
+  bool operator!=(const MultiEnumSelection & other) const;
 
   /// Poor man's reflection implementation
-  operator std::string() const { return _selection; }
+  operator std::vector<std::string>() const { return _selections; }
 
-  /// Implicit conversion to int to let it behave more like a enum
-  operator int() const { return _value; }
+  /// Selected values cast to int
+  operator std::vector<int>() const { return _values; }
 
   /// Statically cast the enum value to a C++ enum class
   template <typename T>
-  T as() const
+  std::vector<T> as() const
   {
-    return static_cast<T>(_value);
+    std::vector<T> ret;
+    for (const auto & v : _values)
+      ret.push_back(static_cast<T>(v));
+    return ret;
   }
 
 private:
   /// Current selection
-  std::string _selection;
+  std::vector<std::string> _selections;
 
   /// Current selection's integral value
-  int _value;
+  std::vector<int> _values;
 };
 } // namespace neml2
