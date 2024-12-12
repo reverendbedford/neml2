@@ -10,8 +10,9 @@ var searchData=
   ['mandelstress_7',['MandelStress',['../classneml2_1_1MandelStress.html#ada0110969b6f09c672a95c7e750c7ddc',1,'neml2::MandelStress::MandelStress()'],['../classneml2_1_1IsotropicMandelStress.html#ada0110969b6f09c672a95c7e750c7ddc',1,'neml2::IsotropicMandelStress::MandelStress()']]],
   ['matrixassembler_8',['MatrixAssembler',['../classneml2_1_1MatrixAssembler.html#a7b86f4aebb3b2f5a074def146cc9e5c9',1,'neml2::MatrixAssembler']]],
   ['merit_5ffunction_5freduction_9',['merit_function_reduction',['../classneml2_1_1NewtonWithTrustRegion.html#a179bf5d26271013899c4dbf61348c331',1,'neml2::NewtonWithTrustRegion']]],
-  ['mixedcontrolsetup_10',['MixedControlSetup',['../classneml2_1_1MixedControlSetup.html#ab20953605998f5cb4f77ac24128c5d2c',1,'neml2::MixedControlSetup']]],
-  ['model_11',['model',['../classneml2_1_1TransientDriver.html#a13dfbdd8c00d5c134b09bf2ab3cfa1e5',1,'neml2::TransientDriver']]],
+  ['minimum_10',['minimum',['../namespaceneml2_1_1math.html#a74364f93fa41672d8a4a41bcfd5596e1',1,'neml2::math']]],
+  ['mixedcontrolsetup_11',['MixedControlSetup',['../classneml2_1_1MixedControlSetup.html#ab20953605998f5cb4f77ac24128c5d2c',1,'neml2::MixedControlSetup']]],
   ['model_12',['Model',['../classneml2_1_1Model.html#aec637141dc1379fd56d05cf1b7cb10ee',1,'neml2::Model']]],
-  ['multiply_5fand_5fmake_5fskew_13',['multiply_and_make_skew',['../namespaceneml2_1_1math.html#a81565e709d0982bfa707db6cdb283148',1,'neml2::math']]]
+  ['model_13',['model',['../classneml2_1_1TransientDriver.html#a13dfbdd8c00d5c134b09bf2ab3cfa1e5',1,'neml2::TransientDriver']]],
+  ['multiply_5fand_5fmake_5fskew_14',['multiply_and_make_skew',['../namespaceneml2_1_1math.html#a81565e709d0982bfa707db6cdb283148',1,'neml2::math']]]
 ];

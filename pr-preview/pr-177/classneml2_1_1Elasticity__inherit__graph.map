@@ -1,7 +1,9 @@
 <map id="Elasticity" name="Elasticity">
 <area shape="rect" id="Node000001" title=" " alt="" coords="488,169,571,194"/>
-<area shape="rect" id="Node000012" href="$classneml2_1_1LinearIsotropicElasticity.html" title=" " alt="" coords="619,169,797,194"/>
-<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="585,179,618,179,618,184,585,184"/>
+<area shape="rect" id="Node000012" href="$classneml2_1_1AnisotropicElasticity.html" title=" " alt="" coords="631,143,785,169"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="584,171,630,164,631,170,585,176"/>
+<area shape="rect" id="Node000014" href="$classneml2_1_1LinearIsotropicElasticity.html" title=" " alt="" coords="619,193,797,218"/>
+<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="585,186,619,191,618,196,584,191"/>
 <area shape="rect" id="Node000002" href="$classneml2_1_1Model.html" title="The base class for all constitutive models." alt="" coords="377,169,440,194"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="454,179,488,179,488,184,454,184"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="169,5,323,45"/>
@@ -22,4 +24,6 @@
 <area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="318,260,328,254,366,223,395,192,399,196,370,226,331,258,320,264"/>
 <area shape="rect" id="Node000011" href="$classneml2_1_1DiagnosticsInterface.html" title="Interface for object making diagnostics about common setup errors." alt="" coords="168,333,324,358"/>
 <area shape="poly" id="edge10_Node000002_Node000011" title=" " alt="" coords="318,324,328,318,356,288,377,253,401,193,406,195,382,256,360,291,331,322,321,329"/>
+<area shape="rect" id="Node000013" href="$classneml2_1_1GeneralElasticity.html" title=" " alt="" coords="845,143,979,169"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="799,153,845,153,845,159,799,159"/>
 </map>

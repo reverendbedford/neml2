@@ -10,6 +10,7 @@ var classtensors_1_1WR2BatchView =
     [ "dim", "classtensors_1_1WR2BatchView.html#a35536134a6ceb1e866faf188992e9c9f", null ],
     [ "expand", "classtensors_1_1WR2BatchView.html#aaab2c7c6ffccad03d3e0cc3445f76286", null ],
     [ "expand_copy", "classtensors_1_1WR2BatchView.html#a0a91232eebff57e3e4293d5fb978b551", null ],
+    [ "reshape", "classtensors_1_1WR2BatchView.html#affe6fe59653098a7e2b55fd675c9c8b1", null ],
     [ "shape", "classtensors_1_1WR2BatchView.html#acab3712394f25c3692f41ff86d28c843", null ],
     [ "transpose", "classtensors_1_1WR2BatchView.html#a024391712fcbb45094ebd98a9579cac5", null ],
     [ "unsqueeze", "classtensors_1_1WR2BatchView.html#af05b67de9229af17c75e212ba14c750e", null ]

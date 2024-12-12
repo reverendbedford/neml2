@@ -8,5 +8,6 @@ var searchData=
   ['crossref_5',['CrossRef',['../classneml2_1_1CrossRef.html',1,'neml2']]],
   ['crystalgeometry_6',['CrystalGeometry',['../classneml2_1_1crystallography_1_1CrystalGeometry.html',1,'neml2::crystallography']]],
   ['crystalmean_7',['CrystalMean',['../classneml2_1_1CrystalMean.html',1,'neml2']]],
-  ['cubiccrystal_8',['CubicCrystal',['../classneml2_1_1crystallography_1_1CubicCrystal.html',1,'neml2::crystallography']]]
+  ['cubiccrystal_8',['CubicCrystal',['../classneml2_1_1crystallography_1_1CubicCrystal.html',1,'neml2::crystallography']]],
+  ['cubicelasticitytensor_9',['CubicElasticityTensor',['../classneml2_1_1CubicElasticityTensor.html',1,'neml2']]]
 ];

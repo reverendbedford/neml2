@@ -10,6 +10,7 @@ var classtensors_1_1RotBaseView =
     [ "dim", "classtensors_1_1RotBaseView.html#a35536134a6ceb1e866faf188992e9c9f", null ],
     [ "expand", "classtensors_1_1RotBaseView.html#a0f594bd5ea75abd55ba35499c8ed3164", null ],
     [ "expand_copy", "classtensors_1_1RotBaseView.html#a0f2590adb85953a7ec287fcf9802ef5d", null ],
+    [ "reshape", "classtensors_1_1RotBaseView.html#a4bfc7f32fbecd275b615749f14fa09c1", null ],
     [ "shape", "classtensors_1_1RotBaseView.html#a43080b242de156a5409d4b58fc7d0c9c", null ],
     [ "storage", "classtensors_1_1RotBaseView.html#ac633e7d6a3e2cc7def2cc9af32f0ca45", null ],
     [ "transpose", "classtensors_1_1RotBaseView.html#a12025a00e388a49edf2f51b2d2c86b9b", null ],

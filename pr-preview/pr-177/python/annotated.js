@@ -8,6 +8,9 @@ var annotated =
       [ "TensorValue", "classbase_1_1TensorValue.html", "classbase_1_1TensorValue" ],
       [ "VectorAssembler", "classbase_1_1VectorAssembler.html", "classbase_1_1VectorAssembler" ]
     ] ],
+    [ "interface", "namespaceinterface.html", [
+      [ "NEML2PyzagModel", "classinterface_1_1NEML2PyzagModel.html", "classinterface_1_1NEML2PyzagModel" ]
+    ] ],
     [ "tensors", "namespacetensors.html", [
       [ "MillerIndex", "classtensors_1_1MillerIndex.html", "classtensors_1_1MillerIndex" ],
       [ "MillerIndexBaseView", "classtensors_1_1MillerIndexBaseView.html", "classtensors_1_1MillerIndexBaseView" ],
@@ -27,6 +30,9 @@ var annotated =
       [ "R5", "classtensors_1_1R5.html", "classtensors_1_1R5" ],
       [ "R5BaseView", "classtensors_1_1R5BaseView.html", "classtensors_1_1R5BaseView" ],
       [ "R5BatchView", "classtensors_1_1R5BatchView.html", "classtensors_1_1R5BatchView" ],
+      [ "R8", "classtensors_1_1R8.html", "classtensors_1_1R8" ],
+      [ "R8BaseView", "classtensors_1_1R8BaseView.html", "classtensors_1_1R8BaseView" ],
+      [ "R8BatchView", "classtensors_1_1R8BatchView.html", "classtensors_1_1R8BatchView" ],
       [ "Rot", "classtensors_1_1Rot.html", "classtensors_1_1Rot" ],
       [ "RotBaseView", "classtensors_1_1RotBaseView.html", "classtensors_1_1RotBaseView" ],
       [ "RotBatchView", "classtensors_1_1RotBatchView.html", "classtensors_1_1RotBatchView" ],
@@ -48,6 +54,9 @@ var annotated =
       [ "SSR4", "classtensors_1_1SSR4.html", "classtensors_1_1SSR4" ],
       [ "SSR4BaseView", "classtensors_1_1SSR4BaseView.html", "classtensors_1_1SSR4BaseView" ],
       [ "SSR4BatchView", "classtensors_1_1SSR4BatchView.html", "classtensors_1_1SSR4BatchView" ],
+      [ "SSSSR8", "classtensors_1_1SSSSR8.html", "classtensors_1_1SSSSR8" ],
+      [ "SSSSR8BaseView", "classtensors_1_1SSSSR8BaseView.html", "classtensors_1_1SSSSR8BaseView" ],
+      [ "SSSSR8BatchView", "classtensors_1_1SSSSR8BatchView.html", "classtensors_1_1SSSSR8BatchView" ],
       [ "SWR4", "classtensors_1_1SWR4.html", "classtensors_1_1SWR4" ],
       [ "SWR4BaseView", "classtensors_1_1SWR4BaseView.html", "classtensors_1_1SWR4BaseView" ],
       [ "SWR4BatchView", "classtensors_1_1SWR4BatchView.html", "classtensors_1_1SWR4BatchView" ],

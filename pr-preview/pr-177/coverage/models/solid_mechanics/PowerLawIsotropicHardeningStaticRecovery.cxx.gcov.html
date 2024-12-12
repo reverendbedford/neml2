@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-10 15:57:06</td>
+            <td class="headerValue">2024-12-12 11:44:58</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -136,7 +136,7 @@
 <a name="74"><span class="lineNum">      74 </span>            : </a>
 <a name="75"><span class="lineNum">      75 </span><span class="lineCov">          1 :     if (const auto * const n = nl_param(&quot;n&quot;))</span></a>
 <a name="76"><span class="lineNum">      76 </span><span class="lineCov">          1 :       _h_dot.d(*n) = -_h * math::pow(_tau, -_n) * math::pow(math::abs(Scalar(_h)), _n - 1) *</span></a>
-<a name="77"><span class="lineNum">      77 </span><span class="lineCov">          2 :                      math::log(math::abs(Scalar(_h)) / _tau);</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineCov">          2 :                      math::log(math::abs(Scalar(_h) + machine_precision()) / _tau);</span></a>
 <a name="78"><span class="lineNum">      78 </span>            :   }</a>
 <a name="79"><span class="lineNum">      79 </span><span class="lineCov">          8 : }</span></a>
 <a name="80"><span class="lineNum">      80 </span>            : } // namespace neml2</a>

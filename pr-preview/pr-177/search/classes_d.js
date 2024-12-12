@@ -7,7 +7,8 @@ var searchData=
   ['newtonwithtrustregion_4',['NewtonWithTrustRegion',['../classneml2_1_1NewtonWithTrustRegion.html',1,'neml2']]],
   ['nonlinearparameter_5',['NonlinearParameter',['../classneml2_1_1NonlinearParameter.html',1,'neml2']]],
   ['nonlinearparameter_3c_20scalar_20_3e_6',['NonlinearParameter&lt; Scalar &gt;',['../classneml2_1_1NonlinearParameter.html',1,'neml2']]],
-  ['nonlinearsolver_7',['NonlinearSolver',['../classneml2_1_1NonlinearSolver.html',1,'neml2']]],
-  ['nonlinearsystem_8',['NonlinearSystem',['../classneml2_1_1NonlinearSystem.html',1,'neml2']]],
-  ['normality_9',['Normality',['../classneml2_1_1Normality.html',1,'neml2']]]
+  ['nonlinearparameter_3c_20ssr4_20_3e_7',['NonlinearParameter&lt; SSR4 &gt;',['../classneml2_1_1NonlinearParameter.html',1,'neml2']]],
+  ['nonlinearsolver_8',['NonlinearSolver',['../classneml2_1_1NonlinearSolver.html',1,'neml2']]],
+  ['nonlinearsystem_9',['NonlinearSystem',['../classneml2_1_1NonlinearSystem.html',1,'neml2']]],
+  ['normality_10',['Normality',['../classneml2_1_1Normality.html',1,'neml2']]]
 ];

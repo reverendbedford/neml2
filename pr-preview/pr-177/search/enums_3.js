@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['tensortype_0',['TensorType',['../namespaceneml2.html#a9b44248b88341f8c9cafe5d9d822a443',1,'neml2']]]
+  ['retcode_0',['RetCode',['../classneml2_1_1NonlinearSolver.html#ae652fbd48bfccbcc4f573e8d45529404',1,'neml2::NonlinearSolver']]]
 ];

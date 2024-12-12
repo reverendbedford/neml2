@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-10 15:57:06</td>
+            <td class="headerValue">2024-12-12 11:44:58</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">10</td>
@@ -118,61 +118,61 @@
 <a name="56"><span class="lineNum">      56 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="57"><span class="lineNum">      57 </span>            : </a>
 <a name="58"><span class="lineNum">      58 </span>            : std::vector&lt;std::string&gt;</a>
-<a name="59"><span class="lineNum">      59 </span><span class="lineCov">       2958 : split(const std::string &amp; str, const std::string &amp; delims)</span></a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineCov">       3091 : split(const std::string &amp; str, const std::string &amp; delims)</span></a>
 <a name="60"><span class="lineNum">      60 </span>            : {</a>
-<a name="61"><span class="lineNum">      61 </span><span class="lineCov">       2958 :   std::vector&lt;std::string&gt; tokens;</span></a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">       3091 :   std::vector&lt;std::string&gt; tokens;</span></a>
 <a name="62"><span class="lineNum">      62 </span>            : </a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineCov">       2958 :   std::string::size_type last_pos = str.find_first_not_of(delims, 0);</span></a>
-<a name="64"><span class="lineNum">      64 </span><span class="lineCov">       2958 :   std::string::size_type pos = str.find_first_of(delims, std::min(last_pos + 1, str.size()));</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineCov">       3091 :   std::string::size_type last_pos = str.find_first_not_of(delims, 0);</span></a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineCov">       3091 :   std::string::size_type pos = str.find_first_of(delims, std::min(last_pos + 1, str.size()));</span></a>
 <a name="65"><span class="lineNum">      65 </span>            : </a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineCov">       7546 :   while (last_pos != std::string::npos)</span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineCov">       8073 :   while (last_pos != std::string::npos)</span></a>
 <a name="67"><span class="lineNum">      67 </span>            :   {</a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">       7532 :     tokens.push_back(str.substr(last_pos, pos - last_pos));</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">       8057 :     tokens.push_back(str.substr(last_pos, pos - last_pos));</span></a>
 <a name="69"><span class="lineNum">      69 </span>            :     // skip delims between tokens</a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineCov">       7532 :     last_pos = str.find_first_not_of(delims, pos);</span></a>
-<a name="71"><span class="lineNum">      71 </span><span class="lineCov">       7532 :     if (last_pos == std::string::npos)</span></a>
-<a name="72"><span class="lineNum">      72 </span><span class="lineCov">       2944 :       break;</span></a>
-<a name="73"><span class="lineNum">      73 </span><span class="lineCov">       4588 :     pos = str.find_first_of(delims, std::min(last_pos + 1, str.size()));</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">       8057 :     last_pos = str.find_first_not_of(delims, pos);</span></a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineCov">       8057 :     if (last_pos == std::string::npos)</span></a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineCov">       3075 :       break;</span></a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">       4982 :     pos = str.find_first_of(delims, std::min(last_pos + 1, str.size()));</span></a>
 <a name="74"><span class="lineNum">      74 </span>            :   }</a>
 <a name="75"><span class="lineNum">      75 </span>            : </a>
-<a name="76"><span class="lineNum">      76 </span><span class="lineCov">       2958 :   return tokens;</span></a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineCov">       3091 :   return tokens;</span></a>
 <a name="77"><span class="lineNum">      77 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="78"><span class="lineNum">      78 </span>            : </a>
 <a name="79"><span class="lineNum">      79 </span>            : std::string</a>
-<a name="80"><span class="lineNum">      80 </span><span class="lineCov">      11322 : trim(const std::string &amp; str, const std::string &amp; white_space)</span></a>
+<a name="80"><span class="lineNum">      80 </span><span class="lineCov">      11918 : trim(const std::string &amp; str, const std::string &amp; white_space)</span></a>
 <a name="81"><span class="lineNum">      81 </span>            : {</a>
-<a name="82"><span class="lineNum">      82 </span><span class="lineCov">      11322 :   const auto begin = str.find_first_not_of(white_space);</span></a>
-<a name="83"><span class="lineNum">      83 </span><span class="lineCov">      11322 :   if (begin == std::string::npos)</span></a>
-<a name="84"><span class="lineNum">      84 </span><span class="lineCov">         15 :     return &quot;&quot;; // no content</span></a>
-<a name="85"><span class="lineNum">      85 </span><span class="lineCov">      11307 :   const auto end = str.find_last_not_of(white_space);</span></a>
-<a name="86"><span class="lineNum">      86 </span><span class="lineCov">      11307 :   return str.substr(begin, end - begin + 1);</span></a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineCov">      11918 :   const auto begin = str.find_first_not_of(white_space);</span></a>
+<a name="83"><span class="lineNum">      83 </span><span class="lineCov">      11918 :   if (begin == std::string::npos)</span></a>
+<a name="84"><span class="lineNum">      84 </span><span class="lineCov">         17 :     return &quot;&quot;; // no content</span></a>
+<a name="85"><span class="lineNum">      85 </span><span class="lineCov">      11901 :   const auto end = str.find_last_not_of(white_space);</span></a>
+<a name="86"><span class="lineNum">      86 </span><span class="lineCov">      11901 :   return str.substr(begin, end - begin + 1);</span></a>
 <a name="87"><span class="lineNum">      87 </span>            : }</a>
 <a name="88"><span class="lineNum">      88 </span>            : </a>
 <a name="89"><span class="lineNum">      89 </span>            : bool</a>
-<a name="90"><span class="lineNum">      90 </span><span class="lineCov">      10596 : start_with(std::string_view str, std::string_view prefix)</span></a>
+<a name="90"><span class="lineNum">      90 </span><span class="lineCov">      12642 : start_with(std::string_view str, std::string_view prefix)</span></a>
 <a name="91"><span class="lineNum">      91 </span>            : {</a>
-<a name="92"><span class="lineNum">      92 </span><span class="lineCov">      10596 :   return str.size() &gt;= prefix.size() &amp;&amp; 0 == str.compare(0, prefix.size(), prefix);</span></a>
+<a name="92"><span class="lineNum">      92 </span><span class="lineCov">      12642 :   return str.size() &gt;= prefix.size() &amp;&amp; 0 == str.compare(0, prefix.size(), prefix);</span></a>
 <a name="93"><span class="lineNum">      93 </span>            : }</a>
 <a name="94"><span class="lineNum">      94 </span>            : </a>
 <a name="95"><span class="lineNum">      95 </span>            : bool</a>
-<a name="96"><span class="lineNum">      96 </span><span class="lineCov">       1457 : end_with(std::string_view str, std::string_view suffix)</span></a>
+<a name="96"><span class="lineNum">      96 </span><span class="lineCov">       1473 : end_with(std::string_view str, std::string_view suffix)</span></a>
 <a name="97"><span class="lineNum">      97 </span>            : {</a>
-<a name="98"><span class="lineNum">      98 </span><span class="lineCov">       2914 :   return str.size() &gt;= suffix.size() &amp;&amp;</span></a>
-<a name="99"><span class="lineNum">      99 </span><span class="lineCov">       2914 :          0 == str.compare(str.size() - suffix.size(), suffix.size(), suffix);</span></a>
+<a name="98"><span class="lineNum">      98 </span><span class="lineCov">       2946 :   return str.size() &gt;= suffix.size() &amp;&amp;</span></a>
+<a name="99"><span class="lineNum">      99 </span><span class="lineCov">       2946 :          0 == str.compare(str.size() - suffix.size(), suffix.size(), suffix);</span></a>
 <a name="100"><span class="lineNum">     100 </span>            : }</a>
 <a name="101"><span class="lineNum">     101 </span>            : </a>
 <a name="102"><span class="lineNum">     102 </span>            : template &lt;&gt;</a>
 <a name="103"><span class="lineNum">     103 </span>            : void</a>
-<a name="104"><span class="lineNum">     104 </span><span class="lineCov">        179 : parse_(bool &amp; val, const std::string &amp; raw_str)</span></a>
+<a name="104"><span class="lineNum">     104 </span><span class="lineCov">        184 : parse_(bool &amp; val, const std::string &amp; raw_str)</span></a>
 <a name="105"><span class="lineNum">     105 </span>            : {</a>
-<a name="106"><span class="lineNum">     106 </span><span class="lineCov">        179 :   std::string str_val = parse&lt;std::string&gt;(raw_str);</span></a>
-<a name="107"><span class="lineNum">     107 </span><span class="lineCov">        179 :   if (str_val == &quot;true&quot;)</span></a>
-<a name="108"><span class="lineNum">     108 </span><span class="lineCov">         94 :     val = true;</span></a>
+<a name="106"><span class="lineNum">     106 </span><span class="lineCov">        184 :   std::string str_val = parse&lt;std::string&gt;(raw_str);</span></a>
+<a name="107"><span class="lineNum">     107 </span><span class="lineCov">        184 :   if (str_val == &quot;true&quot;)</span></a>
+<a name="108"><span class="lineNum">     108 </span><span class="lineCov">         99 :     val = true;</span></a>
 <a name="109"><span class="lineNum">     109 </span><span class="lineCov">         85 :   else if (str_val == &quot;false&quot;)</span></a>
 <a name="110"><span class="lineNum">     110 </span><span class="lineCov">         84 :     val = false;</span></a>
 <a name="111"><span class="lineNum">     111 </span>            :   else</a>
 <a name="112"><span class="lineNum">     112 </span><span class="lineCov">          1 :     throw ParserException(&quot;Failed to parse boolean value. Only 'true' and 'false' are recognized.&quot;);</span></a>
-<a name="113"><span class="lineNum">     113 </span><span class="lineCov">        179 : }</span></a>
+<a name="113"><span class="lineNum">     113 </span><span class="lineCov">        184 : }</span></a>
 <a name="114"><span class="lineNum">     114 </span>            : </a>
 <a name="115"><span class="lineNum">     115 </span>            : template &lt;&gt;</a>
 <a name="116"><span class="lineNum">     116 </span>            : void</a>
@@ -186,27 +186,27 @@
 <a name="124"><span class="lineNum">     124 </span>            : </a>
 <a name="125"><span class="lineNum">     125 </span>            : template &lt;&gt;</a>
 <a name="126"><span class="lineNum">     126 </span>            : void</a>
-<a name="127"><span class="lineNum">     127 </span><span class="lineCov">        625 : parse_(VariableName &amp; val, const std::string &amp; raw_str)</span></a>
+<a name="127"><span class="lineNum">     127 </span><span class="lineCov">        669 : parse_(VariableName &amp; val, const std::string &amp; raw_str)</span></a>
 <a name="128"><span class="lineNum">     128 </span>            : {</a>
-<a name="129"><span class="lineNum">     129 </span><span class="lineCov">       1250 :   auto tokens = split(raw_str, &quot;/ \t\n\v\f\r&quot;);</span></a>
-<a name="130"><span class="lineNum">     130 </span><span class="lineCov">        625 :   val = VariableName(tokens);</span></a>
-<a name="131"><span class="lineNum">     131 </span><span class="lineCov">        625 : }</span></a>
+<a name="129"><span class="lineNum">     129 </span><span class="lineCov">       1338 :   auto tokens = split(raw_str, &quot;/ \t\n\v\f\r&quot;);</span></a>
+<a name="130"><span class="lineNum">     130 </span><span class="lineCov">        669 :   val = VariableName(tokens);</span></a>
+<a name="131"><span class="lineNum">     131 </span><span class="lineCov">        669 : }</span></a>
 <a name="132"><span class="lineNum">     132 </span>            : </a>
 <a name="133"><span class="lineNum">     133 </span>            : template &lt;&gt;</a>
 <a name="134"><span class="lineNum">     134 </span>            : void</a>
-<a name="135"><span class="lineNum">     135 </span><span class="lineCov">       1189 : parse_(TensorShape &amp; val, const std::string &amp; raw_str)</span></a>
+<a name="135"><span class="lineNum">     135 </span><span class="lineCov">       1195 : parse_(TensorShape &amp; val, const std::string &amp; raw_str)</span></a>
 <a name="136"><span class="lineNum">     136 </span>            : {</a>
-<a name="137"><span class="lineNum">     137 </span><span class="lineCov">       1189 :   if (!start_with(raw_str, &quot;(&quot;) || !end_with(raw_str, &quot;)&quot;))</span></a>
+<a name="137"><span class="lineNum">     137 </span><span class="lineCov">       1195 :   if (!start_with(raw_str, &quot;(&quot;) || !end_with(raw_str, &quot;)&quot;))</span></a>
 <a name="138"><span class="lineNum">     138 </span><span class="lineCov">          1 :     throw ParserException(&quot;Trying to parse &quot; + raw_str +</span></a>
 <a name="139"><span class="lineNum">     139 </span><span class="lineCov">          2 :                           &quot; as a shape, but a shape must start with '(' and end with ')'&quot;);</span></a>
 <a name="140"><span class="lineNum">     140 </span>            : </a>
-<a name="141"><span class="lineNum">     141 </span><span class="lineCov">       2376 :   auto inner = trim(raw_str, &quot;() \t\n\v\f\r&quot;);</span></a>
-<a name="142"><span class="lineNum">     142 </span><span class="lineCov">       2376 :   auto tokens = split(inner, &quot;, \t\n\v\f\r&quot;);</span></a>
+<a name="141"><span class="lineNum">     141 </span><span class="lineCov">       2388 :   auto inner = trim(raw_str, &quot;() \t\n\v\f\r&quot;);</span></a>
+<a name="142"><span class="lineNum">     142 </span><span class="lineCov">       2388 :   auto tokens = split(inner, &quot;, \t\n\v\f\r&quot;);</span></a>
 <a name="143"><span class="lineNum">     143 </span>            : </a>
-<a name="144"><span class="lineNum">     144 </span><span class="lineCov">       1188 :   val.clear();</span></a>
-<a name="145"><span class="lineNum">     145 </span><span class="lineCov">       3490 :   for (auto &amp; token : tokens)</span></a>
-<a name="146"><span class="lineNum">     146 </span><span class="lineCov">       2302 :     val.push_back(parse&lt;Size&gt;(token));</span></a>
-<a name="147"><span class="lineNum">     147 </span><span class="lineCov">       1188 : }</span></a>
+<a name="144"><span class="lineNum">     144 </span><span class="lineCov">       1194 :   val.clear();</span></a>
+<a name="145"><span class="lineNum">     145 </span><span class="lineCov">       3500 :   for (auto &amp; token : tokens)</span></a>
+<a name="146"><span class="lineNum">     146 </span><span class="lineCov">       2306 :     val.push_back(parse&lt;Size&gt;(token));</span></a>
+<a name="147"><span class="lineNum">     147 </span><span class="lineCov">       1194 : }</span></a>
 <a name="148"><span class="lineNum">     148 </span>            : } // namespace utils</a>
 <a name="149"><span class="lineNum">     149 </span>            : } // namespace neml2</a>
 </pre>
