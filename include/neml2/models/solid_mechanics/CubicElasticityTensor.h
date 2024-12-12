@@ -36,14 +36,6 @@ namespace neml2
 class CubicElasticityTensor : public ElasticityTensor
 {
 public:
-  enum class ParamType
-  {
-    YOUNGS,
-    POISSONS,
-    SHEAR,
-    INVALID
-  };
-
   static OptionSet expected_options();
 
   CubicElasticityTensor(const OptionSet & options);
@@ -52,30 +44,12 @@ protected:
   void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
   /// Convert input to Lame parameter C1 with derivatives
-  std::tuple<Scalar, Scalar, Scalar, Scalar> convert_to_C1();
+  std::tuple<Scalar, Tensor> convert_to_C1();
 
   /// Convert input to Lame parameter C2 with derivatives
-  std::tuple<Scalar, Scalar, Scalar, Scalar> convert_to_C2();
+  std::tuple<Scalar, Tensor> convert_to_C2();
 
   /// Convert input to Lame parameter C3 with derivatives
-  std::tuple<Scalar, Scalar, Scalar, Scalar> convert_to_C3();
-
-  /// First input parameter
-  const Scalar & _p1;
-
-  /// First parameter type
-  const ParamType _p1_type;
-
-  /// Second input parameter
-  const Scalar & _p2;
-
-  /// Second parameter type
-  const ParamType _p2_type;
-
-  /// Third input parameter
-  const Scalar & _p3;
-
-  /// Third parameter type
-  const ParamType _p3_type;
+  std::tuple<Scalar, Tensor> convert_to_C3();
 };
 } // namespace neml2

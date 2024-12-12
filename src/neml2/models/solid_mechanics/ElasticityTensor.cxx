@@ -24,6 +24,9 @@
 
 #include "neml2/models/solid_mechanics/ElasticityTensor.h"
 
+#include "neml2/base/MultiEnumSelection.h"
+#include "neml2/misc/math.h"
+
 namespace neml2
 {
 
@@ -33,12 +36,45 @@ ElasticityTensor::expected_options()
   OptionSet options = NonlinearParameter<SSR4>::expected_options();
   options.doc() = "Define an elasticity tensor in terms of other parameters.";
 
+  MultiEnumSelection type_selection(
+      {"youngs_modulus", "poissons_ratio", "shear_modulus", "INVALID"},
+      {static_cast<int>(ElasticityTensor::ParamType::YOUNGS),
+       static_cast<int>(ElasticityTensor::ParamType::POISSONS),
+       static_cast<int>(ElasticityTensor::ParamType::SHEAR),
+       static_cast<int>(ElasticityTensor::ParamType::INVALID)},
+      {"INVALID"});
+  options.set<MultiEnumSelection>("coefficient_types") = type_selection;
+  options.set("coefficient_types").doc() =
+      "Types for each parameter, options are: " + type_selection.candidates_str();
+
+  options.set_parameter<std::vector<CrossRef<Scalar>>>("coefficients") = {CrossRef<Scalar>("1")};
+  options.set("coefficients").doc() = "Coefficients used to define the elasticity tensor";
+
+  options.set<bool>("coefficients_as_parameters") = false;
+  options.set("coefficients_as_parameters").doc() =
+      "By default, the coefficients are declared as buffers. Set this option to true to declare "
+      "them as (trainable) parameters.";
+
   return options;
 }
 
 ElasticityTensor::ElasticityTensor(const OptionSet & options)
-  : NonlinearParameter<SSR4>(options)
+  : NonlinearParameter<SSR4>(options),
+    _coef_as_param(options.get<bool>("coefficients_as_parameters")),
+    _coef(_coef_as_param ? declare_parameter<Tensor>("c", make_coef(options))
+                         : declare_buffer<Tensor>("c", make_coef(options))),
+    _coef_types(options.get<MultiEnumSelection>("coefficient_types").as<ParamType>())
 {
+  neml_assert(_coef_types.size() == (unsigned int)_coef.sizes()[0],
+              "Number of coefficient types must match number of coefficients.");
+}
+
+Tensor
+ElasticityTensor::make_coef(const OptionSet & options) const
+{
+  const auto coefs_in = options.get<std::vector<CrossRef<Scalar>>>("coefficients");
+  const std::vector<Scalar> coefs(coefs_in.begin(), coefs_in.end());
+  return math::base_stack(coefs);
 }
 
 } // namespace neml2

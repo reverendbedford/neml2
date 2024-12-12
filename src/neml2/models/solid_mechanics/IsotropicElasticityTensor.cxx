@@ -24,6 +24,8 @@
 
 #include "neml2/models/solid_mechanics/IsotropicElasticityTensor.h"
 
+#include "neml2/misc/math.h"
+
 namespace neml2
 {
 register_NEML2_object(IsotropicElasticityTensor);
@@ -35,35 +37,14 @@ IsotropicElasticityTensor::expected_options()
   options.doc() += "  This class defines an isotropic elasticity tensor using two parameters."
                    "  Various options are available for which two parameters to provide.";
 
-  options.set_parameter<CrossRef<Scalar>>("p1");
-  options.set("p1").doc() = "First parameter";
-
-  EnumSelection type_selection({"youngs_modulus", "poissons_ratio", "INVALID"},
-                               {static_cast<int>(IsotropicElasticityTensor::ParamType::YOUNGS),
-                                static_cast<int>(IsotropicElasticityTensor::ParamType::POISSONS),
-                                static_cast<int>(IsotropicElasticityTensor::ParamType::INVALID)},
-                               "INVALID");
-  options.set<EnumSelection>("p1_type") = type_selection;
-  options.set("p1_type").doc() =
-      "First parameter type. Options are: " + type_selection.candidates_str();
-
-  options.set_parameter<CrossRef<Scalar>>("p2");
-  options.set("p2").doc() = "Second parameter";
-
-  options.set<EnumSelection>("p2_type") = type_selection;
-  options.set("p2_type").doc() =
-      "Second parameter type. Options are: " + type_selection.candidates_str();
-
   return options;
 }
 
 IsotropicElasticityTensor::IsotropicElasticityTensor(const OptionSet & options)
-  : ElasticityTensor(options),
-    _p1(declare_parameter<Scalar>("p1", "p1", /*allow nonlinear=*/true)),
-    _p1_type(options.get<EnumSelection>("p1_type").as<ParamType>()),
-    _p2(declare_parameter<Scalar>("p2", "p2", /*allow nonlinear=*/true)),
-    _p2_type(options.get<EnumSelection>("p2_type").as<ParamType>())
+  : ElasticityTensor(options)
 {
+  neml_assert(_coef_types.size() == 2,
+              "IsotropicElasticityTensor requires exactly two input parameters.");
 }
 
 void
@@ -71,8 +52,8 @@ IsotropicElasticityTensor::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   neml_assert_dbg(!d2out_din2, "IsotropicElasticityTensor doesn't implement second derivatives.");
 
-  const auto [lambda, dl_dp1, dl_dp2] = convert_to_lambda();
-  const auto [mu, dm_dp1, dm_dp2] = convert_to_mu();
+  const auto [lambda, dl_dp] = convert_to_lambda();
+  const auto [mu, dm_dp] = convert_to_mu();
 
   auto Iv = SSR4::identity_vol(options());
   auto Is = SSR4::identity_sym(options());
@@ -82,44 +63,53 @@ IsotropicElasticityTensor::set_value(bool out, bool dout_din, bool d2out_din2)
 
   if (dout_din)
   {
-    if (const auto * const p1 = nl_param("p1"))
-      _p.d(*p1) = 3.0 * dl_dp1 * Iv + 2.0 * dm_dp1 * Is;
-
-    if (const auto * const p2 = nl_param("p2"))
-      _p.d(*p2) = 3.0 * dl_dp2 * Iv + 2.0 * dm_dp2 * Is;
+    if (const auto * const p = nl_param("c"))
+      _p.d(*p) = 3.0 * dl_dp * Tensor(Iv) + 2.0 * dm_dp * Tensor(Is);
   }
 }
 
-std::tuple<Scalar, Scalar, Scalar>
+std::tuple<Scalar, Tensor>
 IsotropicElasticityTensor::convert_to_lambda()
 {
-  if ((_p1_type == ParamType::YOUNGS) && (_p2_type == ParamType::POISSONS))
-    return std::make_tuple(_p1 * _p2 / ((1 + _p2) * (1 - 2 * _p2)),
-                           -_p2 / (2 * _p2 * _p2 + _p2 - 1),
-                           (_p1 + 2 * _p1 * _p2 * _p2) /
-                               ((2 * _p2 * _p2 + _p2 - 1) * (2 * _p2 * _p2 + _p2 - 1)));
-  if ((_p1_type == ParamType::POISSONS) && (_p2_type == ParamType::YOUNGS))
-    return std::make_tuple(_p2 * _p1 / ((1 + _p1) * (1 - 2 * _p1)),
-                           (_p2 + 2 * _p2 * _p1 * _p1) /
-                               ((2 * _p1 * _p1 + _p1 - 1) * (2 * _p1 * _p1 + _p1 - 1)),
-                           -_p1 / (2 * _p1 * _p1 + _p1 - 1));
-  throw NEMLException("Unsupported combination of input parameter types: " +
-                      std::string(input_options().get<EnumSelection>("p1_type")) + " and " +
-                      std::string(input_options().get<EnumSelection>("p2_type")));
+  Scalar p1 = _coef.index({0});
+  Scalar p2 = _coef.index({1});
+
+  ParamType p1_type = _coef_types[0];
+  ParamType p2_type = _coef_types[1];
+
+  if ((p1_type == ParamType::YOUNGS) && (p2_type == ParamType::POISSONS))
+    return std::make_tuple(
+        p1 * p2 / ((1 + p2) * (1 - 2 * p2)),
+        math::base_stack(std::vector<Scalar>(
+            {-p2 / (2 * p2 * p2 + p2 - 1),
+             (p1 + 2 * p1 * p2 * p2) / ((2 * p2 * p2 + p2 - 1) * (2 * p2 * p2 + p2 - 1))})));
+  if ((p1_type == ParamType::POISSONS) && (p2_type == ParamType::YOUNGS))
+    return std::make_tuple(
+        p2 * p1 / ((1 + p1) * (1 - 2 * p1)),
+        math::base_stack(std::vector<Scalar>(
+            {(p2 + 2 * p2 * p1 * p1) / ((2 * p1 * p1 + p1 - 1) * (2 * p1 * p1 + p1 - 1)),
+             -p1 / (2 * p1 * p1 + p1 - 1)})));
+  throw NEMLException("Unsupported combination of input parameter types");
 }
 
-std::tuple<Scalar, Scalar, Scalar>
+std::tuple<Scalar, Tensor>
 IsotropicElasticityTensor::convert_to_mu()
 {
-  if ((_p1_type == ParamType::YOUNGS) && (_p2_type == ParamType::POISSONS))
+  Scalar p1 = _coef.index({0});
+  Scalar p2 = _coef.index({1});
+
+  ParamType p1_type = _coef_types[0];
+  ParamType p2_type = _coef_types[1];
+
+  if ((p1_type == ParamType::YOUNGS) && (p2_type == ParamType::POISSONS))
+    return std::make_tuple(p1 / (2 * (1 + p2)),
+                           math::base_stack(std::vector<Scalar>(
+                               {1.0 / (2.0 + 2 * p2), -p1 / (2 * (1 + p2) * (1 + p2))})));
+  if ((p1_type == ParamType::POISSONS) && (p2_type == ParamType::YOUNGS))
     return std::make_tuple(
-        _p1 / (2 * (1 + _p2)), 1.0 / (2.0 + 2 * _p2), -_p1 / (2 * (1 + _p2) * (1 + _p2)));
-  if ((_p1_type == ParamType::POISSONS) && (_p2_type == ParamType::YOUNGS))
-    return std::make_tuple(
-        _p2 / (2 * (1 + _p1)), -_p2 / (2 * (1 + _p1) * (1 + _p1)), 1 / (2 + 2 * _p1));
-  throw NEMLException("Unsupported combination of input parameter types: " +
-                      std::string(input_options().get<EnumSelection>("p1_type")) + " and " +
-                      std::string(input_options().get<EnumSelection>("p2_type")));
+        p2 / (2 * (1 + p1)),
+        math::base_stack(std::vector<Scalar>({-p2 / (2 * (1 + p1) * (1 + p1)), 1 / (2 + 2 * p1)})));
+  throw NEMLException("Unsupported combination of input parameter types");
 }
 
 } // namespace neml2

@@ -36,13 +36,6 @@ namespace neml2
 class IsotropicElasticityTensor : public ElasticityTensor
 {
 public:
-  enum class ParamType
-  {
-    YOUNGS,
-    POISSONS,
-    INVALID
-  };
-
   static OptionSet expected_options();
 
   IsotropicElasticityTensor(const OptionSet & options);
@@ -51,21 +44,9 @@ protected:
   void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
   /// Convert input to Lame parameter lambda with derivatives
-  std::tuple<Scalar, Scalar, Scalar> convert_to_lambda();
+  std::tuple<Scalar, Tensor> convert_to_lambda();
 
   /// Convert input to Lame parameter mu with derivatives
-  std::tuple<Scalar, Scalar, Scalar> convert_to_mu();
-
-  /// First input parameter
-  const Scalar & _p1;
-
-  /// First parameter type
-  const ParamType _p1_type;
-
-  /// Second input parameter
-  const Scalar & _p2;
-
-  /// Second parameter type
-  const ParamType _p2_type;
+  std::tuple<Scalar, Tensor> convert_to_mu();
 };
 } // namespace neml2

@@ -34,10 +34,8 @@
   []
   [p]
     type = IsotropicElasticityTensor
-    p1 = 'nu'
-    p1_type = 'poissons_ratio'
-    p2 = 'E'
-    p2_type = 'youngs_modulus'
+    coefficient_types = 'youngs_modulus poissons_ratio'
+    coefficients = 'E nu'
   []
   [model]
     type = ComposedModel

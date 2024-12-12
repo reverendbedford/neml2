@@ -34,8 +34,30 @@ namespace neml2
 class ElasticityTensor : public NonlinearParameter<SSR4>
 {
 public:
+  /// Various options for parameter inputs, will need to add more as we get more tensors
+  enum class ParamType
+  {
+    YOUNGS,
+    POISSONS,
+    SHEAR,
+    INVALID
+  };
+
   static OptionSet expected_options();
 
   ElasticityTensor(const OptionSet & options);
+
+protected:
+  /// Whether to declare coefficients as parameters
+  const bool _coef_as_param;
+
+  /// Input coefficients
+  const Tensor & _coef;
+
+  /// Input coefficient types
+  const std::vector<ParamType> _coef_types;
+
+private:
+  Tensor make_coef(const OptionSet & options) const;
 };
 } // namespace neml2

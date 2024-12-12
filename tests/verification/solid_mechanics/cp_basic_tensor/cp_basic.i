@@ -91,10 +91,8 @@
   []
   [elastic_tensor]
     type = IsotropicElasticityTensor
-    p1 = 1e5
-    p1_type = 'youngs_modulus'
-    p2 = 0.25
-    p2_type = 'poissons_ratio'
+    coefficient_types = 'youngs_modulus poissons_ratio'
+    coefficients = '1e5 0.25'
   []
   [elasticity]
     type = GeneralElasticity
