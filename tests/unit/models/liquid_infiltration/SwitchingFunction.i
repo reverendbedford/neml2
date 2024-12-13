@@ -2,13 +2,11 @@
     [unit]
       type = ModelUnitTest
       model = 'model'
-      batch_shape = '(3)'
       input_scalar_names = 'state/var'
       input_scalar_values = 'in'
       output_scalar_names = 'state/out'
       output_scalar_values = 'out'
-      check_AD_first_derivatives = false
-      check_first_derivatives = true
+      check_derivatives = true
   []
 []
 

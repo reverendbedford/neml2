@@ -2,13 +2,11 @@
     [unit]
       type = ModelUnitTest
       model = 'model'
-      batch_shape = '(3)'
       input_scalar_names = 'state/h state/r1 state/delta params/oP'
       input_scalar_values = 'h rr delta oProduct'
       output_scalar_names = 'state/alphaP'
       output_scalar_values = 'alphaP'
-      check_AD_first_derivatives = false
-      check_first_derivatives = true
+      check_derivatives = true
   []
 []
 

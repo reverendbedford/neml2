@@ -37,13 +37,6 @@ InletGap::set_value(bool out, bool dout_din, bool d2out_din2)
 
   if (dout_din)
   {
-    // const auto * const M = nl_param("M");
-    // const auto * const phi0 = nl_param("phi0");
-    // if (M)
-    //     _r1.d(*M) = -(_sqrtd*_sqrtd);
-
-    // if (phi0)
-    //     _r1.d(*phi0) = 1.0/(2.0*math::sqrt(_phi0));
     _r1.d(_sqrtd) = -2.0 * _M * _sqrtd;
   }
 }

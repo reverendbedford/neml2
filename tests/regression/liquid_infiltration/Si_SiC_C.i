@@ -1,71 +1,55 @@
+nbatch = '(5)'
+
 [Tensors]
     ############### Run condition ############### 
-    [endtime]
-        type = Scalar
-        values = 1080000
-        batch_shape ='(5)'
-    []
     [times]
-        type = LinspaceScalar
-        start = 0 
-        end = endtime
-        nstep = 10000
-    []
-    [aInDotStart]
-        type = Scalar
-        values = 0.3
-        batch_shape ='(5)'
-    []
-    [aInDotEnd]
-        type = Scalar
-        values = 0.3
-        batch_shape ='(5)'
+        type = ScalarFromTorchScript
+        pytorch_pt_file = 'aLIndot.pt'
+        tensor_name = 'time'
     []
     [aLInDot]
-        type = LinspaceScalar
-        start = aInDotStart
-        end = aInDotEnd
-        nstep = 10000
+        type = ScalarFromTorchScript
+        pytorch_pt_file = 'aLIndot.pt'
+        tensor_name = 'data'
     []
     ############### Simulation parameters ############### 
     [M]
         type = Scalar
-        values = '0.576'
-        batch_shape = '(5)'
+        values = '0.1'
+        batch_shape = '${nbatch}'
     []
     [phi0]
         type = Scalar
-        values = '0.1 0.3 0.5 0.7 0.9'
-        batch_shape = '(5)'
+        values = '0.1'
+        batch_shape = '${nbatch}'
     []
     [omega_L]
         type = Scalar
         values = 1.2e-5
-        batch_shape = '(5)'
+        batch_shape = '${nbatch}'
     []
     [omega_P]
         type = Scalar
         values = 1.25e-5
-        batch_shape = '(5)'
+        batch_shape = '${nbatch}'
     []
     [p]
         type = Scalar
-        values = '1.0'
-        batch_shape = '(5)'
+        values = '0.25 0.5 1.0 2.0 5.0'
+        batch_shape = '${nbatch}'
     []
     [lc]
         type = Scalar
-        values = '1.0'
-        batch_shape = '(5)'
+        values = '2.236'
+        batch_shape = '${nbatch}'
     []
 []
 
 [Drivers]
-    [regression]
+    [driver]
       type = LiquidInfiltrationDriver
       model = 'model'
-      enable_AD = false
-      times = 'times'
+      prescribed_time = 'times'
       time = 'forces/tt'
 
       Prescribed_Liquid_Inlet_Rate = 'aLInDot'
@@ -75,21 +59,22 @@
       show_output_axis = true
       show_parameters = false
       ic_scalar_names = 'state/alpha state/delta state/h state/alphaP'
-      ic_scalar_values = '1e-4 1e-2 1e-3 -0.3'
-      save_as = 'try.pt'
+      ic_scalar_values = '1e-4 1e-2 1e-3 1e-3'
+      save_as = 'test.pt'
 
       verbose = true
     []
-    #[regression]
-    #  type = TransientRegression
-    #  driver = 'driver'
-    #  reference = 'gold/result.pt'
-    #[]
+    [regression]
+      type = TransientRegression
+      driver = 'driver'
+      reference = 'gold/result.pt'
+    []
   []
 
 [Solvers]
     [newton]
         type = NewtonWithLineSearch
+        linesearch_type = strong_wolfe
         rel_tol = 1e-8
         abs_tol = 1e-10
         max_its = 100

@@ -39,10 +39,20 @@ LiquidInfiltrationDriver::expected_options()
 }
 
 LiquidInfiltrationDriver::LiquidInfiltrationDriver(const OptionSet & options)
-  : TransientDriver(options),
-    _driving_force(options.get<CrossRef<torch::Tensor>>("Prescribed_Liquid_Inlet_Rate"), 2),
-    _driving_force_name(options.get<VariableName>("Liquid_Inlet_Rate"))
+  : TransientDriver(options)
+//_driving_force(options.get<CrossRef<torch::Tensor>>("Prescribed_Liquid_Inlet_Rate"), 2),
+//_driving_force_name(options.get<VariableName>("Liquid_Inlet_Rate"))
 {
+  //_driving_force = _driving_force.to(_device);
+}
+
+void
+LiquidInfiltrationDriver::setup()
+{
+  TransientDriver::setup();
+  _driving_force_name = input_options().get<VariableName>("Liquid_Inlet_Rate");
+  _driving_force =
+      Scalar(input_options().get<CrossRef<torch::Tensor>>("Prescribed_Liquid_Inlet_Rate"));
   _driving_force = _driving_force.to(_device);
 }
 
@@ -50,6 +60,17 @@ void
 LiquidInfiltrationDriver::diagnose(std::vector<Diagnosis> & diagnoses) const
 {
   TransientDriver::diagnose(diagnoses);
+  diagnostic_assert(diagnoses,
+                    _driving_force.batch_dim() >= 1,
+                    "Liquid_Inlet_Rate should have at least one batch dimension but instead "
+                    "has batch dimension ",
+                    _driving_force.batch_dim());
+  diagnostic_assert(
+      diagnoses,
+      _driving_force.batch_size(0) == _time.batch_size(0),
+      "Liquid_Inlet_Rate should have the same number of steps as time, but instead has ",
+      _driving_force.batch_size(0),
+      " time steps");
 }
 
 void
@@ -57,7 +78,9 @@ LiquidInfiltrationDriver::update_forces()
 {
   TransientDriver::update_forces();
 
-  auto current_driving_force = _driving_force.batch_index({_step_count});
-  _in.base_index_put_(_driving_force_name, current_driving_force);
+  // auto current_driving_force = _driving_force.batch_index({_step_count});
+  //_in.base_index_put_(_driving_force_name, current_driving_force);
+  _in[_driving_force_name] = _driving_force.batch_index({_step_count});
+  //_in[_temperature_name] = _temperature.batch_index({_step_count});
 }
 }

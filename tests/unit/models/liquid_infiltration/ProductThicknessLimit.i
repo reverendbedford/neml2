@@ -2,17 +2,11 @@
     [unit]
       type = ModelUnitTest
       model = 'model1'
-      batch_shape = '(3)'
       input_scalar_names = 'state/delta'
       input_scalar_values = 'delta'
       output_scalar_names = 'state/dratio'
       output_scalar_values = 'dratio1'
-      check_AD_first_derivatives = false
-      check_first_derivatives = true
-      
-      #derivatives_abs_tol = 1e-4
-      #derivatives_rel_tol = 1e-4
-      #output_abs_tol = 1e-4
+      check_derivatives = true
   []
 []
 

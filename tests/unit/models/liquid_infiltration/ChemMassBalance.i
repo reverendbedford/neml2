@@ -2,14 +2,11 @@
     [unit]
       type = ModelUnitTest
       model = 'model'
-      batch_shape = '(3)'
       input_scalar_names = 'state/in state/switch state/mreact state/current'
       input_scalar_values = 'in switch mreact current'
       output_scalar_names = 'residual/total'
       output_scalar_values = 'total'
-      check_AD_first_derivatives = false
-      check_first_derivatives = true
-      #derivatives_abs_tol = 1e-4
+      check_derivatives = true
   []
 []
 

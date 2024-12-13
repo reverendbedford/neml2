@@ -2,14 +2,11 @@
     [unit]
       type = ModelUnitTest
       model = 'model'
-      batch_shape = '(3)'
       input_scalar_names = 'state/delta state/h old_state/h state/alpha forces/t old_forces/t'
       input_scalar_values = 'delta h hn alpha t tn'
       output_scalar_names = 'residual/r_h'
       output_scalar_values = 'r_h'
-      check_AD_first_derivatives = false
-      check_first_derivatives = true
-      #derivatives_abs_tol = 1e-4
+      check_derivatives = true
   []
 []
 

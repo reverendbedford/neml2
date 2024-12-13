@@ -2,14 +2,12 @@
     [unit]
       type = ModelUnitTest
       model = 'model'
-      batch_shape = '(3)'
       input_scalar_names = 'state/h state/r1 state/alpha params/oL'
       input_scalar_values = 'h rr alpha oLiquid'
       output_scalar_names = 'state/pcond'
       output_scalar_values = 'phi_cond'
-      check_AD_first_derivatives = false
-      check_first_derivatives = true
-      derivatives_abs_tol = 1e-4
+      check_derivatives = true
+      derivative_abs_tol = 1e-4
   []
 []
 

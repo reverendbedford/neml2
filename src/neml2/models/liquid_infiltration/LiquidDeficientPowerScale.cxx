@@ -34,21 +34,21 @@ LiquidDeficientPowerScale::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   neml_assert_dbg(!d2out_din2, "Second derivative not implemented.");
 
-  auto hL = _alpha * _oL / (_r1 * _r1);
+  auto hL = _alpha * _oL / (_r1 * _r1 + machine_precision());
   if (out)
   {
-    _scale = math::pow(hL / _h, _p);
+    _scale = math::pow(math::macaulay(hL) / _h, _p);
   }
 
   if (dout_din)
   {
     const auto * const oL = nl_param("oL");
     if (oL)
-      _scale.d(*oL) = (_p * math::pow(hL / _h, _p)) / _oL;
+      _scale.d(*oL) = (_p * math::pow(math::macaulay(hL) / _h, _p)) / _oL;
 
-    _scale.d(_r1) = -(2 * _p * math::pow(hL / _h, _p)) / _r1;
-    _scale.d(_h) = -(_p * math::pow(hL / _h, _p)) / _h;
-    _scale.d(_alpha) = (_p * math::pow(hL / _h, _p)) / _alpha;
+    _scale.d(_r1) = -(2.0 * _p * math::pow(math::macaulay(hL) / _h, _p)) / _r1;
+    _scale.d(_h) = -(_p * math::pow(math::macaulay(hL) / _h, _p)) / _h;
+    _scale.d(_alpha) = (_p * math::pow(math::macaulay(hL) / _h, _p)) / _alpha;
   }
 }
 }

@@ -20,6 +20,8 @@ public:
    */
   LiquidInfiltrationDriver(const OptionSet & options);
 
+  void setup() override;
+
   void diagnose(std::vector<Diagnosis> &) const override;
 
 protected:

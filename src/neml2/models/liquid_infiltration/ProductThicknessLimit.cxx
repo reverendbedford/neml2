@@ -31,18 +31,18 @@ ProductThicknessLimit::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   neml_assert_dbg(!d2out_din2, "Second derivative not implemented.");
 
-  auto limit1 = (1.0 - math::sqrt(_phi0)) / (1.0 - _M);
-  auto limit2 = math::sqrt(_phi0) / _M;
+  auto limit1 = (1.0 - math::sqrt(_phi0)) / (1.0 - _M + machine_precision());
+  auto limit2 = math::sqrt(_phi0) / (_M + machine_precision());
   auto dlimit = math::where(limit1 < limit2, limit1, limit2);
 
   if (out)
   {
-    _dra = _sqrtd * _sqrtd / dlimit;
+    _dra = _sqrtd * _sqrtd / (dlimit + machine_precision());
   }
 
   if (dout_din)
   {
-    _dra.d(_sqrtd) = 2.0 * _sqrtd / dlimit;
+    _dra.d(_sqrtd) = 2.0 * _sqrtd / (dlimit + machine_precision());
   }
 }
 }

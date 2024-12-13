@@ -2,14 +2,12 @@
     [unit]
       type = ModelUnitTest
       model = 'model'
-      batch_shape = '(3)'
       input_scalar_names = 'state/ddot state/scale state/dideal state/switch'
       input_scalar_values = 'ddot scale dideal switch'
       output_scalar_names = 'residual/rdelta'
       output_scalar_values = 'rdelta'
-      check_AD_first_derivatives = false
-      check_first_derivatives = true
-      derivatives_abs_tol = 1e-4
+      check_derivatives = true
+      derivative_abs_tol = 1e-4
   []
 []
 
