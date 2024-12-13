@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2024-12-13 17:40:27</td>
+            <td class="headerValue">2024-12-13 18:19:09</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
@@ -98,16 +98,16 @@
 <span id="L36"><span class="lineNum">      36</span>              : namespace utils</span>
 <span id="L37"><span class="lineNum">      37</span>              : {</span>
 <span id="L38"><span class="lineNum">      38</span>              : bool</span>
-<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">         198 : allclose(const LabeledVector &amp; a, const LabeledVector &amp; b, Real rtol, Real atol)</span></span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">         202 : allclose(const LabeledVector &amp; a, const LabeledVector &amp; b, Real rtol, Real atol)</span></span>
 <span id="L40"><span class="lineNum">      40</span>              : {</span>
-<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">         198 :   if (a.axis(0) != b.axis(0))</span></span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">         202 :   if (a.axis(0) != b.axis(0))</span></span>
 <span id="L42"><span class="lineNum">      42</span> <span class="tlaUNC tlaBgUNC">           0 :     return false;</span></span>
 <span id="L43"><span class="lineNum">      43</span>              : </span>
-<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC tlaBgGNC">         406 :   for (auto var : a.axis(0).variable_names())</span></span>
-<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">         208 :     if (!torch::allclose(a.base_index(var), b.base_index(var), rtol, atol))</span></span>
-<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">         406 :       return false;</span></span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC tlaBgGNC">         414 :   for (auto var : a.axis(0).variable_names())</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">         212 :     if (!torch::allclose(a.base_index(var), b.base_index(var), rtol, atol))</span></span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">         414 :       return false;</span></span>
 <span id="L47"><span class="lineNum">      47</span>              : </span>
-<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">         198 :   return true;</span></span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">         202 :   return true;</span></span>
 <span id="L49"><span class="lineNum">      49</span>              : }</span>
 <span id="L50"><span class="lineNum">      50</span>              : }</span>
 <span id="L51"><span class="lineNum">      51</span>              : } // namespace neml2</span>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2024-12-13 17:40:27</td>
+            <td class="headerValue">2024-12-13 18:19:09</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryLo">16.7&nbsp;%</td>
@@ -121,11 +121,11 @@
 <span id="L59"><span class="lineNum">      59</span> <span class="tlaUNC">           0 :     _p = C1 * I1 + C2 * I2 + C3 * I3;</span></span>
 <span id="L60"><span class="lineNum">      60</span> <span class="tlaUNC">           0 :   if (dout_din)</span></span>
 <span id="L61"><span class="lineNum">      61</span>              :   {</span>
-<span id="L62"><span class="lineNum">      62</span> <span class="tlaUNC">           0 :     if (const auto * const p1 = nl_param(&quot;p1&quot;))</span></span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaUNC">           0 :     if (const auto * const p1 = nl_param(&quot;coef_0&quot;))</span></span>
 <span id="L63"><span class="lineNum">      63</span> <span class="tlaUNC">           0 :       _p.d(*p1) = dC1_dp1 * I1 + dC2_dp1 * I2 + dC3_dp1 * I3;</span></span>
-<span id="L64"><span class="lineNum">      64</span> <span class="tlaUNC">           0 :     if (const auto * const p2 = nl_param(&quot;p2&quot;))</span></span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaUNC">           0 :     if (const auto * const p2 = nl_param(&quot;coef_1&quot;))</span></span>
 <span id="L65"><span class="lineNum">      65</span> <span class="tlaUNC">           0 :       _p.d(*p2) = dC1_dp2 * I1 + dC2_dp2 * I2 + dC3_dp2 * I3;</span></span>
-<span id="L66"><span class="lineNum">      66</span> <span class="tlaUNC">           0 :     if (const auto * const p3 = nl_param(&quot;p3&quot;))</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaUNC">           0 :     if (const auto * const p3 = nl_param(&quot;coef_2&quot;))</span></span>
 <span id="L67"><span class="lineNum">      67</span> <span class="tlaUNC">           0 :       _p.d(*p3) = dC1_dp3 * I1 + dC2_dp3 * I2 + dC3_dp3 * I3;</span></span>
 <span id="L68"><span class="lineNum">      68</span>              :   }</span>
 <span id="L69"><span class="lineNum">      69</span> <span class="tlaUNC">           0 : }</span></span>

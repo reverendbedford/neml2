@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2024-12-13 17:40:27</td>
+            <td class="headerValue">2024-12-13 18:19:09</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
@@ -118,14 +118,14 @@
 <span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">         260 : }</span></span>
 <span id="L57"><span class="lineNum">      57</span>              : </span>
 <span id="L58"><span class="lineNum">      58</span>              : Model &amp;</span>
-<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">         219 : get_model(const std::string &amp; mname, bool enable_ad, bool force_create)</span></span>
+<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">         221 : get_model(const std::string &amp; mname, bool enable_ad, bool force_create)</span></span>
 <span id="L60"><span class="lineNum">      60</span>              : {</span>
-<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">         219 :   OptionSet extra_opts;</span></span>
-<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">         438 :   extra_opts.set&lt;bool&gt;(&quot;_enable_AD&quot;) = enable_ad;</span></span>
-<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">         440 :   auto &amp; model = Factory::get_object&lt;Model&gt;(&quot;Models&quot;, mname, extra_opts, force_create);</span></span>
-<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">         217 :   model.reinit();</span></span>
-<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">         217 :   return model;</span></span>
-<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">         219 : }</span></span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">         221 :   OptionSet extra_opts;</span></span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">         442 :   extra_opts.set&lt;bool&gt;(&quot;_enable_AD&quot;) = enable_ad;</span></span>
+<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">         442 :   auto &amp; model = Factory::get_object&lt;Model&gt;(&quot;Models&quot;, mname, extra_opts, force_create);</span></span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">         221 :   model.reinit();</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">         221 :   return model;</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">         221 : }</span></span>
 <span id="L67"><span class="lineNum">      67</span>              : </span>
 <span id="L68"><span class="lineNum">      68</span>              : Model &amp;</span>
 <span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">          12 : load_model(const std::filesystem::path &amp; path, const std::string &amp; mname, bool enable_ad)</span></span>
@@ -148,10 +148,10 @@
 <span id="L86"><span class="lineNum">      86</span>              : }</span>
 <span id="L87"><span class="lineNum">      87</span>              : </span>
 <span id="L88"><span class="lineNum">      88</span>              : Factory &amp;</span>
-<span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">        2209 : Factory::get()</span></span>
+<span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">        2229 : Factory::get()</span></span>
 <span id="L90"><span class="lineNum">      90</span>              : {</span>
-<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC">        2209 :   static Factory factory_singleton;</span></span>
-<span id="L92"><span class="lineNum">      92</span> <span class="tlaGNC">        2209 :   return factory_singleton;</span></span>
+<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC">        2229 :   static Factory factory_singleton;</span></span>
+<span id="L92"><span class="lineNum">      92</span> <span class="tlaGNC">        2229 :   return factory_singleton;</span></span>
 <span id="L93"><span class="lineNum">      93</span>              : }</span>
 <span id="L94"><span class="lineNum">      94</span>              : </span>
 <span id="L95"><span class="lineNum">      95</span>              : void</span>
@@ -173,16 +173,16 @@
 <span id="L111"><span class="lineNum">     111</span>              : }</span>
 <span id="L112"><span class="lineNum">     112</span>              : </span>
 <span id="L113"><span class="lineNum">     113</span>              : void</span>
-<span id="L114"><span class="lineNum">     114</span> <span class="tlaGNC">        1567 : Factory::create_object(const std::string &amp; section, const OptionSet &amp; options)</span></span>
+<span id="L114"><span class="lineNum">     114</span> <span class="tlaGNC">        1581 : Factory::create_object(const std::string &amp; section, const OptionSet &amp; options)</span></span>
 <span id="L115"><span class="lineNum">     115</span>              : {</span>
-<span id="L116"><span class="lineNum">     116</span> <span class="tlaGNC">        1567 :   const std::string &amp; name = options.name();</span></span>
-<span id="L117"><span class="lineNum">     117</span> <span class="tlaGNC">        1567 :   const std::string &amp; type = options.type();</span></span>
+<span id="L116"><span class="lineNum">     116</span> <span class="tlaGNC">        1581 :   const std::string &amp; name = options.name();</span></span>
+<span id="L117"><span class="lineNum">     117</span> <span class="tlaGNC">        1581 :   const std::string &amp; type = options.type();</span></span>
 <span id="L118"><span class="lineNum">     118</span>              : </span>
-<span id="L119"><span class="lineNum">     119</span> <span class="tlaGNC">        1567 :   auto builder = Registry::builder(type);</span></span>
-<span id="L120"><span class="lineNum">     120</span> <span class="tlaGNC">        1567 :   auto object = (*builder)(options);</span></span>
-<span id="L121"><span class="lineNum">     121</span> <span class="tlaGNC">        1559 :   _objects[section][name].push_back(object);</span></span>
-<span id="L122"><span class="lineNum">     122</span> <span class="tlaGNC">        1559 :   object-&gt;setup();</span></span>
-<span id="L123"><span class="lineNum">     123</span> <span class="tlaGNC">        1559 : }</span></span>
+<span id="L119"><span class="lineNum">     119</span> <span class="tlaGNC">        1581 :   auto builder = Registry::builder(type);</span></span>
+<span id="L120"><span class="lineNum">     120</span> <span class="tlaGNC">        1581 :   auto object = (*builder)(options);</span></span>
+<span id="L121"><span class="lineNum">     121</span> <span class="tlaGNC">        1579 :   _objects[section][name].push_back(object);</span></span>
+<span id="L122"><span class="lineNum">     122</span> <span class="tlaGNC">        1579 :   object-&gt;setup();</span></span>
+<span id="L123"><span class="lineNum">     123</span> <span class="tlaGNC">        1579 : }</span></span>
 <span id="L124"><span class="lineNum">     124</span>              : </span>
 <span id="L125"><span class="lineNum">     125</span>              : // LCOV_EXCL_START</span>
 <span id="L126"><span class="lineNum">     126</span>              : void</span>

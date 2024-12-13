@@ -276,6 +276,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a45ea9f3f0dc9c3da04b9ec963bac80a2"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a45ea9f3f0dc9c3da04b9ec963bac80a2">declare_parameter</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;name, <a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;<a class="el" href="classneml2_1_1CrossRef.html">input_option_name</a>, <a class="el" href="classneml2_1_1CrossRef.html">bool</a> <a class="el" href="classneml2_1_1CrossRef.html">allow_nonlinear</a>=<a class="el" href="classneml2_1_1CrossRef.html">false</a>)</td></tr>
 <tr class="memdesc:a45ea9f3f0dc9c3da04b9ec963bac80a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare a parameter.  <br /></td></tr>
 <tr class="separator:a45ea9f3f0dc9c3da04b9ec963bac80a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3b939ef5a93335644eaebf4ae2e0de8" id="r_ac3b939ef5a93335644eaebf4ae2e0de8"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;T&gt;, T&gt;&gt;&gt; </td></tr>
+<tr class="memitem:ac3b939ef5a93335644eaebf4ae2e0de8"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classneml2_1_1CrossRef.html">const</a> T * &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ac3b939ef5a93335644eaebf4ae2e0de8">declare_parameters</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;name, <a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;<a class="el" href="classneml2_1_1CrossRef.html">input_option_name</a>, <a class="el" href="classneml2_1_1CrossRef.html">bool</a> <a class="el" href="classneml2_1_1CrossRef.html">allow_nonlinear</a>=<a class="el" href="classneml2_1_1CrossRef.html">false</a>)</td></tr>
+<tr class="memdesc:ac3b939ef5a93335644eaebf4ae2e0de8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare multiple parameters.  <br /></td></tr>
+<tr class="separator:ac3b939ef5a93335644eaebf4ae2e0de8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a233b712320dc941443b9c5845d8368c9" name="a233b712320dc941443b9c5845d8368c9"></a>
@@ -399,6 +403,45 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T , <a
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Reference to buffer </dd></dl>
+
+</div>
+</div>
+<a id="ac3b939ef5a93335644eaebf4ae2e0de8" name="ac3b939ef5a93335644eaebf4ae2e0de8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3b939ef5a93335644eaebf4ae2e0de8">&#9670;&#160;</a></span>declare_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T , <a class="el" href="classneml2_1_1CrossRef.html">typename</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="classneml2_1_1CrossRef.html">const</a> T * &gt; declare_parameters </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>input_option_name</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">bool</a></td>          <td class="paramname"><span class="paramname"><em>allow_nonlinear</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="classneml2_1_1CrossRef.html">false</a></span></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Declare multiple parameters. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ac44196489c29d0a5f8e1c6d6399d6b4e" title="Declare a parameter.">neml2::ParameterStore::declare_parameter</a> </dd></dl>
 
 </div>
 </div>

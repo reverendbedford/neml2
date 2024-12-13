@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2024-12-13 17:40:27</td>
+            <td class="headerValue">2024-12-13 18:19:09</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
@@ -126,13 +126,13 @@
 <span id="L64"><span class="lineNum">      64</span> <span class="tlaUNC tlaBgUNC">           0 : }</span></span>
 <span id="L65"><span class="lineNum">      65</span>              : </span>
 <span id="L66"><span class="lineNum">      66</span>              : std::string</span>
-<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC tlaBgGNC">       12464 : trim(const std::string &amp; str, const std::string &amp; white_space)</span></span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC tlaBgGNC">       12476 : trim(const std::string &amp; str, const std::string &amp; white_space)</span></span>
 <span id="L68"><span class="lineNum">      68</span>              : {</span>
-<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">       12464 :   const auto begin = str.find_first_not_of(white_space);</span></span>
-<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">       12464 :   if (begin == std::string::npos)</span></span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">       12476 :   const auto begin = str.find_first_not_of(white_space);</span></span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">       12476 :   if (begin == std::string::npos)</span></span>
 <span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">          50 :     return &quot;&quot;; // no content</span></span>
-<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">       12439 :   const auto end = str.find_last_not_of(white_space);</span></span>
-<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">       12439 :   return str.substr(begin, end - begin + 1);</span></span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">       12451 :   const auto end = str.find_last_not_of(white_space);</span></span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">       12451 :   return str.substr(begin, end - begin + 1);</span></span>
 <span id="L74"><span class="lineNum">      74</span>              : }</span>
 <span id="L75"><span class="lineNum">      75</span>              : </span>
 <span id="L76"><span class="lineNum">      76</span>              : bool</span>
