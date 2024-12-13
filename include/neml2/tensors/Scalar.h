@@ -46,6 +46,12 @@ public:
   identity_map(const torch::TensorOptions & options = default_tensor_options());
 };
 
+namespace math
+{
+/// Minimum between two scalars
+Scalar minimum(const Scalar & a, const Scalar & b);
+}
+
 /// Absolute value
 // I don't understand why, but apparently without this the Tensor abs and aten::abs (i.e. the
 // torch native abs) are ambiguous
@@ -153,4 +159,5 @@ pow(const Derived & a, const Scalar & n)
   return Derived(torch::pow(a, n.index(net)), broadcast_batch_dim(a, n));
 }
 }
+
 } // namespace neml2

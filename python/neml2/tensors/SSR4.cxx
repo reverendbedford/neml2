@@ -28,6 +28,30 @@ namespace py = pybind11;
 using namespace neml2;
 
 void
-def_SSR4(py::class_<SSR4> & /*c*/)
+def_SSR4(py::class_<SSR4> & c)
 {
+  // Methods
+  c.def("rotate", &SSR4::rotate);
+
+  // Static methods
+  c.def_static(
+      "identity",
+      [](NEML2_TENSOR_OPTIONS_VARGS) { return SSR4::identity(NEML2_TENSOR_OPTIONS); },
+      py::kw_only(),
+      PY_ARG_TENSOR_OPTIONS);
+  c.def_static(
+      "identity_sym",
+      [](NEML2_TENSOR_OPTIONS_VARGS) { return SSR4::identity_sym(NEML2_TENSOR_OPTIONS); },
+      py::kw_only(),
+      PY_ARG_TENSOR_OPTIONS);
+  c.def_static(
+      "identity_vol",
+      [](NEML2_TENSOR_OPTIONS_VARGS) { return SSR4::identity_vol(NEML2_TENSOR_OPTIONS); },
+      py::kw_only(),
+      PY_ARG_TENSOR_OPTIONS);
+  c.def_static(
+      "identity_dev",
+      [](NEML2_TENSOR_OPTIONS_VARGS) { return SSR4::identity_dev(NEML2_TENSOR_OPTIONS); },
+      py::kw_only(),
+      PY_ARG_TENSOR_OPTIONS);
 }

@@ -33,6 +33,7 @@ class SSR4;
 class R5;
 class Rot;
 class WWR4;
+class R8;
 
 /**
  * @brief The (logical) full fourth order tensor.
@@ -53,6 +54,9 @@ public:
 
   /// Derivative of the rotated tensor w.r.t. the Rodrigues vector
   R5 drotate(const Rot & r) const;
+
+  /// Derivative of the rotated tensor w.r.t. itself
+  R8 drotate_self(const Rot & r) const;
 
   /// Accessor
   Scalar operator()(Size i, Size j, Size k, Size l) const;

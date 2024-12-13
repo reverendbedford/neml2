@@ -28,6 +28,7 @@ namespace py = pybind11;
 using namespace neml2;
 
 void
-def_SR2(py::class_<SR2> & /*c*/)
+def_SR2(py::class_<SR2> & c)
 {
+  c.def(py::init<const R2 &>());
 }

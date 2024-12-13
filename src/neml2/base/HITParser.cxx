@@ -28,6 +28,7 @@
 #include "neml2/base/CrossRef.h"
 #include "neml2/base/Settings.h"
 #include "neml2/base/EnumSelection.h"
+#include "neml2/base/MultiEnumSelection.h"
 #include "neml2/tensors/LabeledAxis.h"
 #include "neml2/tensors/tensors.h"
 #include <memory>
@@ -155,6 +156,7 @@ HITParser::extract_option(hit::Node * n, OptionSet & options) const
         extract_option_t(std::string);
         extract_option_t(VariableName);
         extract_option_t(EnumSelection);
+        extract_option_t(MultiEnumSelection);
         extract_option_t(CrossRef<torch::Tensor>);
         FOR_ALL_TENSORBASE(extract_option_t_cr);
         // LCOV_EXCL_START

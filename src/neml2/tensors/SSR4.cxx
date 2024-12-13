@@ -30,6 +30,8 @@
 #include "neml2/tensors/R5.h"
 #include "neml2/tensors/SSFR5.h"
 #include "neml2/tensors/Rot.h"
+#include "neml2/tensors/SSSSR8.h"
+#include "neml2/tensors/R8.h"
 
 namespace neml2
 {
@@ -50,6 +52,45 @@ SSR4::identity(const torch::TensorOptions & options)
                              {0, 0, 0, 0, 0, 0},
                              {0, 0, 0, 0, 0, 0},
                              {0, 0, 0, 0, 0, 0}},
+                            options),
+              0);
+}
+
+SSR4
+SSR4::identity_C1(const torch::TensorOptions & options)
+{
+  return SSR4(torch::tensor({{1, 0, 0, 0, 0, 0},
+                             {0, 1, 0, 0, 0, 0},
+                             {0, 0, 1, 0, 0, 0},
+                             {0, 0, 0, 0, 0, 0},
+                             {0, 0, 0, 0, 0, 0},
+                             {0, 0, 0, 0, 0, 0}},
+                            options),
+              0);
+}
+
+SSR4
+SSR4::identity_C2(const torch::TensorOptions & options)
+{
+  return SSR4(torch::tensor({{0, 1, 1, 0, 0, 0},
+                             {1, 0, 1, 0, 0, 0},
+                             {1, 1, 0, 0, 0, 0},
+                             {0, 0, 0, 0, 0, 0},
+                             {0, 0, 0, 0, 0, 0},
+                             {0, 0, 0, 0, 0, 0}},
+                            options),
+              0);
+}
+
+SSR4
+SSR4::identity_C3(const torch::TensorOptions & options)
+{
+  return SSR4(torch::tensor({{0, 0, 0, 0, 0, 0},
+                             {0, 0, 0, 0, 0, 0},
+                             {0, 0, 0, 0, 0, 0},
+                             {0, 0, 0, 1, 0, 0},
+                             {0, 0, 0, 0, 1, 0},
+                             {0, 0, 0, 0, 0, 1}},
                             options),
               0);
 }
@@ -83,20 +124,38 @@ SSR4::isotropic_E_nu(const Scalar & E, const Scalar & nu)
   const auto C2 = nu * pf;
   const auto C4 = (1.0 - 2.0 * nu) * pf;
 
-  return SSR4(torch::stack({torch::stack({C1, C2, C2, zero, zero, zero}, -1),
-                            torch::stack({C2, C1, C2, zero, zero, zero}, -1),
-                            torch::stack({C2, C2, C1, zero, zero, zero}, -1),
-                            torch::stack({zero, zero, zero, C4, zero, zero}, -1),
-                            torch::stack({zero, zero, zero, zero, C4, zero}, -1),
-                            torch::stack({zero, zero, zero, zero, zero, C4}, -1)},
-                           -1),
-              E.batch_dim());
+  return SSR4::fill_C1_C2_C3(C1, C2, C4);
 }
 
 SSR4
 SSR4::isotropic_E_nu(const Real & E, const Real & nu, const torch::TensorOptions & options)
 {
   return SSR4::isotropic_E_nu(Scalar(E, options), Scalar(nu, options));
+}
+
+SSR4
+SSR4::fill_C1_C2_C3(const Scalar & C1, const Scalar & C2, const Scalar & C3)
+{
+  neml_assert_broadcastable_dbg(C1, C2, C3);
+
+  return C1 * identity_C1(C1.options()) + C2 * identity_C2(C2.options()) +
+         C3 * identity_C3(C3.options());
+}
+
+SSR4
+SSR4::fill_C1_C2_C3(const Real & C1,
+                    const Real & C2,
+                    const Real & C3,
+                    const torch::TensorOptions & options)
+{
+  return SSR4::fill_C1_C2_C3(Scalar(C1, options), Scalar(C2, options), Scalar(C3, options));
+}
+
+SSSSR8
+SSR4::identity_map(const torch::TensorOptions & options)
+{
+  auto I = torch::eye(6, options);
+  return torch::einsum("ik,jl", {I, I});
 }
 
 SSR4
@@ -112,6 +171,20 @@ SSR4::drotate(const Rot & r) const
   return math::full_to_mandel(math::full_to_mandel(dR), 1);
 }
 
+SSSSR8
+SSR4::drotate_self(const Rot & r) const
+{
+  auto R = r.euler_rodrigues();
+  auto Tsym = 0.25 * (torch::einsum("...ma,...nb,...oc,...pd->...mnopabcd", {R, R, R, R}) +
+                      torch::einsum("...mb,...na,...od,...pc->...mnopabcd", {R, R, R, R}) +
+                      torch::einsum("...mb,...na,...oc,...pd->...mnopabcd", {R, R, R, R}) +
+                      torch::einsum("...ma,...nb,...od,...pc->...mnopabcd", {R, R, R, R}));
+  return SSSSR8(math::full_to_mandel(
+      math::full_to_mandel(
+          math::full_to_mandel(math::full_to_mandel(R8(Tsym, R.batch_dim()), 0), 1), 2),
+      3));
+}
+
 Scalar
 SSR4::operator()(Size i, Size j, Size k, Size l) const
 {
@@ -124,6 +197,13 @@ SSR4
 SSR4::inverse() const
 {
   return math::linalg::inv(*this);
+}
+
+SSSSR8
+SSR4::dinverse() const
+{
+  auto SI = this->inverse();
+  return -torch::einsum("...ik,...lj->...ijkl", {SI, SI});
 }
 
 SSR4

@@ -37,20 +37,12 @@ operator<<(std::ostream & os, const EnumSelection & es)
 std::stringstream &
 operator>>(std::stringstream & ss, EnumSelection & es)
 {
-  ss >> es._selection;
-
-  if (!es._values.count(es._selection))
-    throw ParserException("Invalid selection '" + es._selection +
-                          "', candidates are: " + es.candidates_str());
-
-  // Also update the enum integral value
-  es._value = es._values[es._selection];
-
+  es.select(ss.str());
   return ss;
 }
 
 EnumSelection::EnumSelection(const EnumSelection & other)
-  : _values(other._values),
+  : EnumSelectionBase(other),
     _selection(other._selection),
     _value(other._value)
 {
@@ -58,54 +50,23 @@ EnumSelection::EnumSelection(const EnumSelection & other)
 
 EnumSelection::EnumSelection(const std::vector<std::string> & candidates,
                              const std::string & selection)
-  : _selection(selection)
+  : EnumSelectionBase(candidates)
 {
-  std::set<std::string> candidates_set(candidates.begin(), candidates.end());
-  neml_assert(candidates_set.size() == candidates.size(),
-              "Candidates of EnumSelection must be unique.");
-
-  int count = 0;
-  for (const auto & candidate : candidates)
-    _values.emplace(candidate, count++);
-
-  neml_assert(_values.count(_selection),
-              "Invalid default selection for EnumSelection. Candidates are ",
-              candidates_str());
-
-  // NOLINTNEXTLINE(cppcoreguidelines-prefer-member-initializer)
-  _value = _values[_selection];
+  select(selection);
 }
 
 EnumSelection::EnumSelection(const std::vector<std::string> & candidates,
                              const std::vector<int> & values,
                              const std::string & selection)
-  : _selection(selection)
+  : EnumSelectionBase(candidates, values)
 {
-  neml_assert(candidates.size() == values.size(),
-              "In EnumSelection, number of candidates must match the number of values.");
-
-  std::set<std::string> candidates_set(candidates.begin(), candidates.end());
-  neml_assert(candidates_set.size() == candidates.size(),
-              "Candidates of EnumSelection must be unique.");
-
-  std::set<int> values_set(values.begin(), values.end());
-  neml_assert(values_set.size() == values.size(), "Values of EnumSelection must be unique.");
-
-  for (size_t i = 0; i < candidates.size(); i++)
-    _values.emplace(candidates[i], values[i]);
-
-  neml_assert(_values.count(_selection),
-              "Invalid default selection for EnumSelection. Candidates are ",
-              candidates_str());
-
-  // NOLINTNEXTLINE(cppcoreguidelines-prefer-member-initializer)
-  _value = _values[_selection];
+  select(selection);
 }
 
 EnumSelection &
 EnumSelection::operator=(const EnumSelection & other)
 {
-  _values = other._values;
+  _candidate_map = other._candidate_map;
   _selection = other._selection;
   _value = other._value;
   return *this;
@@ -114,7 +75,8 @@ EnumSelection::operator=(const EnumSelection & other)
 bool
 EnumSelection::operator==(const EnumSelection & other) const
 {
-  return _values == other._values && _selection == other._selection && _value == other._value;
+  return _candidate_map == other._candidate_map && _selection == other._selection &&
+         _value == other._value;
 }
 
 bool
@@ -123,12 +85,13 @@ EnumSelection::operator!=(const EnumSelection & other) const
   return !(*this == other);
 }
 
-std::string
-EnumSelection::candidates_str() const
+void
+EnumSelection::select(const std::string & selection)
 {
-  std::stringstream ss;
-  for (const auto & [e, v] : _values)
-    ss << e << " ";
-  return ss.str();
+  neml_assert(_candidate_map.count(selection),
+              "Invalid selection for EnumSelection. Candidates are ",
+              candidates_str());
+  _selection = selection;
+  _value = _candidate_map[selection];
 }
 } // namesace neml2

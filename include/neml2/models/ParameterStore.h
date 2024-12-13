@@ -130,6 +130,15 @@ protected:
                               const std::string & input_option_name,
                               bool allow_nonlinear = false);
 
+  /**
+   * @brief Declare multiple parameters.
+   * @see neml2::ParameterStore::declare_parameter
+   */
+  template <typename T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
+  std::vector<const T *> declare_parameters(const std::string & name,
+                                            const std::string & input_option_name,
+                                            bool allow_nonlinear = false);
+
   /// Map from nonlinear parameter names to their corresponding variable views
   std::map<std::string, const VariableBase *> _nl_params;
 
@@ -137,6 +146,12 @@ protected:
   std::map<std::string, Model *> _nl_param_models;
 
 private:
+  ///elper method to declare a cross-referenced parameter.
+  template <typename T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
+  const T & declare_parameter_crossref(const std::string & name,
+                                       const CrossRef<T> & crossref,
+                                       bool allow_nonlinear);
+
   NEML2Object * _object;
 
   /**

@@ -202,6 +202,28 @@ class NEML2PyzagModel(nonlinear.NonlinearRecursiveFunction):
                     "Force variable {} is in old forces but not in forces".format(name)
                 )
 
+        # Everything in old_state should be in state (but not the other way around)
+        for name in (
+            self.model.input_axis()
+            .subaxis(self.old_prefix + self.state_axis)
+            .variable_names()
+        ):
+            if not self.model.input_axis().subaxis(self.state_axis).has_variable(name):
+                raise ValueError(
+                    "State variable {} is in old state but not in state".format(name)
+                )
+
+        # Everything in old_forces should be in forces (but not the other way around)
+        for name in (
+            self.model.input_axis()
+            .subaxis(self.old_prefix + self.forces_axis)
+            .variable_names()
+        ):
+            if not self.model.input_axis().subaxis(self.forces_axis).has_variable(name):
+                raise ValueError(
+                    "Force variable {} is in old forces but not in forces".format(name)
+                )
+
     @property
     def nstate(self):
         return self.model.input_axis().subaxis("state").storage_size()

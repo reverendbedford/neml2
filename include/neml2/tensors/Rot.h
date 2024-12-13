@@ -56,6 +56,20 @@ public:
   [[nodiscard]] static Rot
   identity(const torch::TensorOptions & options = default_tensor_options());
 
+  /// Fill from an array of Euler angles
+  static Rot fill_euler_angles(const torch::Tensor & vals,
+                               std::string angle_convention,
+                               std::string angle_type);
+
+  /// Fill from rotation matrices
+  static Rot fill_matrix(const R2 & M);
+
+  /// Fill some number of random orientations
+  static Rot fill_random(unsigned int n, Size random_seed);
+
+  /// Fill from standard Rodrigues parameters
+  static Rot fill_rodrigues(const Scalar & rx, const Scalar & ry, const Scalar & rz);
+
   /// Inversion
   Rot inverse() const;
 
@@ -79,6 +93,15 @@ public:
 
   /// Return the derivative of the shadow map
   R2 dshadow() const;
+
+  /// Distance measure between two rotations, accounting for shadow mapping
+  Scalar dist(const Rot & r) const;
+
+  /// Raw distance formula, not accounting for shadown mapping
+  Scalar gdist(const Rot & r) const;
+
+  /// Volume element at locations
+  Scalar dV() const;
 };
 
 /// Composition of rotations r3 = r1 * r2 (r2 first, then r1)

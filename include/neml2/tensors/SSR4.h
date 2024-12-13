@@ -33,6 +33,7 @@ class SR2;
 class R4;
 class SSFR5;
 class Rot;
+class SSSSR8;
 
 /**
  * @brief The (logical) symmetric fourth order tensor, with symmetry in the first two dimensionss as
@@ -49,13 +50,22 @@ public:
   SSR4(const R4 & T);
 
   /// Create the identity tensor \f$\delta_{ij}\delta_{kl}\f$
-  static SSR4 identity(const torch::TensorOptions & options = default_tensor_options());
+  [[nodiscard]] static SSR4
+  identity(const torch::TensorOptions & options = default_tensor_options());
   /// Create the symmetric identity tensor \f$\delta_{ik}\delta_{jl}/2 + \delta_{il}\delta_{jk}/2\f$
   static SSR4 identity_sym(const torch::TensorOptions & options = default_tensor_options());
   /// Create the volumetric identity tensor \f$\delta_{ij}\delta_{kl}/3\f$
   static SSR4 identity_vol(const torch::TensorOptions & options = default_tensor_options());
   /// Create the deviatoric identity tensor \f$\delta_{ik}\delta_{jl}/2 + \delta_{il}\delta_{jk}/2 - \delta_{ij}\delta_{kl}/3\f$
   static SSR4 identity_dev(const torch::TensorOptions & options = default_tensor_options());
+
+  /// Building block for C1 constant
+  static SSR4 identity_C1(const torch::TensorOptions & options = default_tensor_options());
+  /// Building block for C2 constant
+  static SSR4 identity_C2(const torch::TensorOptions & options = default_tensor_options());
+  /// Building block for C3 constant
+  static SSR4 identity_C3(const torch::TensorOptions & options = default_tensor_options());
+
   /// Create the fourth order elasticity tensor given the Young's modulus and the Poisson's ratio.
   static SSR4 isotropic_E_nu(const Scalar & E, const Scalar & nu);
   /// Create the fourth order elasticity tensor given the Young's modulus and the Poisson's ratio.
@@ -63,17 +73,35 @@ public:
                              const Real & nu,
                              const torch::TensorOptions & options = default_tensor_options());
 
+  /// Create the fourth order elasticity tensor given the three non-zero coefficients
+  static SSR4 fill_C1_C2_C3(const Scalar & C1, const Scalar & C2, const Scalar & C3);
+  /// Create the fourth order elasticity tensor given the three non-zero coefficients
+  static SSR4 fill_C1_C2_C3(const Real & C1,
+                            const Real & C2,
+                            const Real & C3,
+                            const torch::TensorOptions & options = default_tensor_options());
+
+  /// The derivative of a SSR4 with respect to itself
+  [[nodiscard]] static SSSSR8
+  identity_map(const torch::TensorOptions & options = default_tensor_options());
+
   /// Rotate
   SSR4 rotate(const Rot & r) const;
 
   /// Derivative of the rotated tensor w.r.t. the Rodrigues vector
   SSFR5 drotate(const Rot & r) const;
 
+  /// Derivative of the rotated tensor w.r.t. itself
+  SSSSR8 drotate_self(const Rot & r) const;
+
   /// Accessor
   Scalar operator()(Size i, Size j, Size k, Size l) const;
 
-  // Inversion
+  /// Inversion
   SSR4 inverse() const;
+
+  /// Derivative of inverse with respect to self
+  SSSSR8 dinverse() const;
 
   /// Transpose minor axes, no-op
   SSR4 transpose_minor() const;

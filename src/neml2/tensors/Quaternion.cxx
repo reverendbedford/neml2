@@ -24,11 +24,24 @@
 
 #include "neml2/tensors/Quaternion.h"
 
+#include "neml2/misc/math.h"
+
 #include "neml2/tensors/R2.h"
 #include "neml2/tensors/Scalar.h"
+#include "neml2/tensors/Rot.h"
+#include "neml2/tensors/Tensor.h"
 
 namespace neml2
 {
+
+// TODO: replace torch::cat with math::base_cat
+Quaternion::Quaternion(const Rot & r)
+  : Quaternion(
+        torch::cat(
+            {((1 - r.norm_sq()) / (1 + r.norm_sq())).unsqueeze(-1), 2 * r / (1 + r.norm_sq())}, -1),
+        r.batch_dim())
+{
+}
 
 Quaternion
 Quaternion::fill(const Real & s,
@@ -71,5 +84,19 @@ Quaternion::to_R2() const
                   2 * (q(1) * q(3) - q(2) * q(0)),
                   2 * (q(2) * q(3) + q(1) * q(0)),
                   1 - 2 * v1s - 2 * v2s);
+}
+
+Scalar
+Quaternion::dot(const Quaternion & other) const
+{
+  return math::bvv(*this, other);
+}
+
+Scalar
+Quaternion::dist(const Quaternion & other) const
+{
+  Scalar dp = math::abs(this->dot(other));
+  // I hate floating point math
+  return 2.0 * math::arccos(math::minimum(dp, Scalar::ones_like(dp)));
 }
 } // namespace neml2

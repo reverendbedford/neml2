@@ -28,4 +28,6 @@ from .base import *
 from .tensors import *
 from .math import *
 
+
 from . import pyzag
+from . import crystallography

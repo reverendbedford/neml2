@@ -48,20 +48,6 @@ private:
   /// A helper method to dispatch to the correct fill method based on the selected options
   Rot fill(const OptionSet & options) const;
 
-  /// Fill from an array of Euler angles
-  Rot fill_euler_angles(const torch::Tensor & vals,
-                        std::string angle_convention,
-                        std::string angle_type) const;
-
-  /// Fill from rotation matrices
-  Rot fill_matrix(const R2 & M) const;
-
-  /// Fill some number of random orientations
-  Rot fill_random(unsigned int n, Size random_seed) const;
-
-  /// Fill from standard Rodrigues parameters
-  Rot fill_rodrigues(const Scalar & rx, const Scalar & ry, const Scalar & rz) const;
-
   /// Expand to fill a batch dimension if required
   Rot expand_as_needed(const Rot & input, unsigned int inp_size) const;
 };

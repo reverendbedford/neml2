@@ -24,12 +24,7 @@
 
 #pragma once
 
-#include "neml2/misc/error.h"
-
-#include <string>
-#include <vector>
-#include <unordered_map>
-#include <set>
+#include "neml2/base/EnumSelectionBase.h"
 
 namespace neml2
 {
@@ -39,13 +34,10 @@ std::ostream & operator<<(std::ostream &, const EnumSelection &);
 std::stringstream & operator>>(std::stringstream &, EnumSelection &);
 
 /**
- * Our poor man's implementation of enum reflection. This is a necessary ingredient for bridging
- * runtime string parsed from input files and static enum types.
- *
- * For developers, this class shall only be used for parsing purposes during the setup phase. Avoid
- * directly working with this class at model evaluation phase at all cost!
+ * @brief Selection of an enum value from a list of candidates
+ * @see neml2::EnumSelectionBase
  */
-class EnumSelection
+class EnumSelection : public EnumSelectionBase
 {
 public:
   EnumSelection() = default;
@@ -58,11 +50,8 @@ public:
   /// Assignment operator
   EnumSelection & operator=(const EnumSelection & other);
 
-  /**
-   * The input stream operator shall be the only entry point to modify the selection other than the
-   * assignment operator
-   */
-  friend std::stringstream & operator>>(std::stringstream & ss, EnumSelection &);
+  /// Select a new value
+  void select(const std::string & selection);
 
   /// Test for inequality
   bool operator==(const EnumSelection & other) const;
@@ -76,12 +65,6 @@ public:
   /// Implicit conversion to int to let it behave more like a enum
   operator int() const { return _value; }
 
-  /// Candidates
-  const std::unordered_map<std::string, int> & candidates() const { return _values; }
-
-  /// Stringified candidates
-  std::string candidates_str() const;
-
   /// Statically cast the enum value to a C++ enum class
   template <typename T>
   T as() const
@@ -90,14 +73,10 @@ public:
   }
 
 private:
-  /// Mapping enum options to int
-  std::unordered_map<std::string, int> _values;
-
   /// Current selection
   std::string _selection;
 
   /// Current selection's integral value
   int _value;
 };
-
 } // namespace neml2

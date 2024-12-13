@@ -30,6 +30,9 @@ using namespace neml2;
 void
 def_R2(py::class_<R2> & c)
 {
+  c.def(py::init<const SR2 &>());
+  c.def(py::init<const WR2 &>());
+
   // Operators
   c.def(py::self * Vec());
   c.def(py::self * py::self);

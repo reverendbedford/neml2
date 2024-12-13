@@ -31,6 +31,8 @@ namespace neml2
 // Forward decl
 class LabeledAxisAccessor;
 using VariableName = LabeledAxisAccessor;
+class EnumSelection;
+class MultiEnumSelection;
 
 class ParserException : public std::exception
 {
@@ -65,7 +67,7 @@ parse_(T & val, const std::string & raw_str)
 {
   std::stringstream ss(trim(raw_str));
   ss >> val;
-  if (ss.fail() || !ss.eof())
+  if (ss.fail())
     throw ParserException("Failed to parse '" + raw_str + "' as a " +
                           utils::demangle(typeid(T).name()));
 }

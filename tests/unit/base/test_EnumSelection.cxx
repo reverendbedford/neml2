@@ -120,18 +120,16 @@ TEST_CASE("EnumSelection", "[base]")
   {
     REQUIRE_THROWS_WITH(
         EnumSelection({"a", "a", "b"}, "a"),
-        Catch::Matchers::ContainsSubstring("Candidates of EnumSelection must be unique"));
-    REQUIRE_THROWS_WITH(
-        EnumSelection({"a", "b", "c"}, "d"),
-        Catch::Matchers::ContainsSubstring("Invalid default selection for EnumSelection"));
-    REQUIRE_THROWS_WITH(
-        EnumSelection({"a", "b", "c"}, {1, 2, 3}, "d"),
-        Catch::Matchers::ContainsSubstring("Invalid default selection for EnumSelection"));
+        Catch::Matchers::ContainsSubstring("Candidates of (Multi)EnumSelection must be unique"));
+    REQUIRE_THROWS_WITH(EnumSelection({"a", "b", "c"}, "d"),
+                        Catch::Matchers::ContainsSubstring("Invalid selection for EnumSelection"));
+    REQUIRE_THROWS_WITH(EnumSelection({"a", "b", "c"}, {1, 2, 3}, "d"),
+                        Catch::Matchers::ContainsSubstring("Invalid selection for EnumSelection"));
     REQUIRE_THROWS_WITH(
         EnumSelection({"a", "b", "c"}, {2, 2}, "a"),
         Catch::Matchers::ContainsSubstring("number of candidates must match the number of values"));
     REQUIRE_THROWS_WITH(
         EnumSelection({"a", "b", "c"}, {2, 2, 3}, "a"),
-        Catch::Matchers::ContainsSubstring("Values of EnumSelection must be unique"));
+        Catch::Matchers::ContainsSubstring("Values of (Multi)EnumSelection must be unique"));
   }
 }

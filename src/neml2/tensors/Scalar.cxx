@@ -37,6 +37,18 @@ Scalar::identity_map(const torch::TensorOptions & options)
   return Scalar::ones(options);
 }
 
+namespace math
+{
+Scalar
+minimum(const Scalar & a, const Scalar & b)
+{
+  neml_assert_batch_broadcastable_dbg(a, b);
+  indexing::TensorIndices net{torch::indexing::Ellipsis};
+  net.insert(net.end(), a.base_dim(), torch::indexing::None);
+  return Scalar(torch::minimum(a, b.index(net)), broadcast_batch_dim(a, b));
+}
+}
+
 Scalar
 operator*(const Scalar & a, const Scalar & b)
 {

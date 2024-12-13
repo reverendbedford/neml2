@@ -31,6 +31,7 @@
 #include "neml2/tensors/R4.h"
 #include "neml2/tensors/SSR4.h"
 #include "neml2/tensors/WR2.h"
+#include "neml2/tensors/Quaternion.h"
 #include "neml2/misc/math.h"
 
 namespace neml2
@@ -44,6 +45,108 @@ Rot
 Rot::identity(const torch::TensorOptions & options)
 {
   return Rot::zeros(options);
+}
+
+Rot
+Rot::fill_euler_angles(const torch::Tensor & vals,
+                       std::string angle_convention,
+                       std::string angle_type)
+{
+  neml_assert((torch::numel(vals) % 3) == 0,
+              "Rot input values should have length divisable by 3 for input type 'euler_angles'");
+  auto ten = vals.reshape({-1, 3});
+
+  if (angle_type == "degrees")
+    ten = torch::deg2rad(ten);
+  else
+    neml_assert(angle_type == "radians", "Rot angle_type must be either 'degrees' or 'radians'");
+
+  if (angle_convention == "bunge")
+  {
+    ten.index_put_({indexing::Ellipsis, 0},
+                   torch::fmod(ten.index({indexing::Ellipsis, 0}) - M_PI / 2.0, 2.0 * M_PI));
+    ten.index_put_({indexing::Ellipsis, 1}, torch::fmod(ten.index({indexing::Ellipsis, 1}), M_PI));
+    ten.index_put_({indexing::Ellipsis, 2},
+                   torch::fmod(M_PI / 2.0 - ten.index({indexing::Ellipsis, 2}), 2.0 * M_PI));
+  }
+  else if (angle_convention == "roe")
+  {
+    ten.index_put_({indexing::Ellipsis, 2}, M_PI - ten.index({indexing::Ellipsis, 2}));
+  }
+  else
+    neml_assert(angle_convention == "kocks", "Unknown Rot angle_convention " + angle_convention);
+
+  // Make a rotation matrix...
+  auto M = torch::zeros({ten.sizes()[0], 3, 3}, vals.options());
+  auto a = ten.index({indexing::Ellipsis, 0});
+  auto b = ten.index({indexing::Ellipsis, 1});
+  auto c = ten.index({indexing::Ellipsis, 2});
+
+  M.index_put_({indexing::Ellipsis, 0, 0},
+               -torch::sin(c) * torch::sin(a) - torch::cos(c) * torch::cos(a) * torch::cos(b));
+  M.index_put_({indexing::Ellipsis, 0, 1},
+               torch::sin(c) * torch::cos(a) - torch::cos(c) * torch::sin(a) * torch::cos(b));
+  M.index_put_({indexing::Ellipsis, 0, 2}, torch::cos(c) * torch::sin(b));
+  M.index_put_({indexing::Ellipsis, 1, 0},
+               torch::cos(c) * torch::sin(a) - torch::sin(c) * torch::cos(a) * torch::cos(b));
+  M.index_put_({indexing::Ellipsis, 1, 1},
+               -torch::cos(c) * torch::cos(a) - torch::sin(c) * torch::sin(a) * torch::cos(b));
+  M.index_put_({indexing::Ellipsis, 1, 2}, torch::sin(c) * torch::sin(b));
+  M.index_put_({indexing::Ellipsis, 2, 0}, torch::cos(a) * torch::sin(b));
+  M.index_put_({indexing::Ellipsis, 2, 1}, torch::sin(a) * torch::sin(b));
+  M.index_put_({indexing::Ellipsis, 2, 2}, torch::cos(b));
+
+  // Convert from matrix to vector
+  return fill_matrix(R2(M, 1));
+}
+
+Rot
+Rot::fill_matrix(const R2 & M)
+{
+  // Get the angle
+  auto trace = M.index({indexing::Ellipsis, 0, 0}) + M.index({indexing::Ellipsis, 1, 1}) +
+               M.index({indexing::Ellipsis, 2, 2});
+  auto theta = torch::acos((trace - 1.0) / 2.0);
+
+  // Get the standard Rod. parameters
+  auto scale = torch::tan(theta / 2.0) / (2.0 * torch::sin(theta));
+  scale.index_put_({theta == 0}, 0.0);
+  auto rx = (M.index({indexing::Ellipsis, 2, 1}) - M.index({indexing::Ellipsis, 1, 2})) * scale;
+  auto ry = (M.index({indexing::Ellipsis, 0, 2}) - M.index({indexing::Ellipsis, 2, 0})) * scale;
+  auto rz = (M.index({indexing::Ellipsis, 1, 0}) - M.index({indexing::Ellipsis, 0, 1})) * scale;
+
+  return fill_rodrigues(rx, ry, rz);
+}
+
+Rot
+Rot::fill_rodrigues(const Scalar & rx, const Scalar & ry, const Scalar & rz)
+{
+  // Get the modified Rod. parameters
+  auto ns = rx * rx + ry * ry + rz * rz;
+  auto f = torch::sqrt(torch::Tensor(ns) + torch::tensor(1.0, ns.dtype())) +
+           torch::tensor(1.0, ns.dtype());
+
+  // Stack and return
+  return Rot(torch::stack({rx / f, ry / f, rz / f}, 1), 1);
+}
+
+Rot
+Rot::fill_random(unsigned int n, Size random_seed)
+{
+  if (random_seed >= 0)
+    torch::manual_seed(random_seed);
+  auto u0 = torch::rand({n}, default_tensor_options());
+  auto u1 = torch::rand({n}, default_tensor_options());
+  auto u2 = torch::rand({n}, default_tensor_options());
+
+  auto w = torch::sqrt(1.0 - u0) * torch::sin(2.0 * M_PI * u1);
+  auto x = torch::sqrt(1.0 - u0) * torch::cos(2.0 * M_PI * u1);
+  auto y = torch::sqrt(u0) * torch::sin(2.0 * M_PI * u2);
+  auto z = torch::sqrt(u0) * torch::cos(2.0 * M_PI * u2);
+
+  auto quats = Quaternion(torch::stack({w, x, y, z}, 1), 1);
+
+  return fill_matrix(quats.to_R2());
 }
 
 Rot
@@ -128,6 +231,28 @@ Rot::dshadow() const
   auto ns = this->norm_sq();
 
   return (2.0 / ns * this->outer(*this) - R2::identity(options())) / ns;
+}
+
+Scalar
+Rot::dist(const Rot & r) const
+{
+  auto st = this->shadow();
+  auto sr = r.shadow();
+
+  return this->gdist(r).minimum(this->gdist(sr)).minimum(sr.gdist(r)).minimum(sr.gdist(st));
+}
+
+Scalar
+Rot::gdist(const Rot & r) const
+{
+  return 4.0 * math::arcsin((*this - r).norm() /
+                            math::sqrt((1.0 + this->norm_sq()) * (1.0 + r.norm_sq())));
+}
+
+Scalar
+Rot::dV() const
+{
+  return 8.0 / M_PI * math::pow(1.0 + this->norm_sq(), -3.0);
 }
 
 Rot

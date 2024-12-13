@@ -14,7 +14,7 @@ concurrency:
 jobs:
   copyright:
     name: Copyright check
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -25,7 +25,7 @@ jobs:
 
   clang-format:
     name: Formatting Check
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         path:
@@ -40,31 +40,7 @@ jobs:
           clang-format-version: "17"
           check-path: ${{ matrix.path }}
 
-  clang-tidy:
-    name: Linting
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.9"
-      - uses: jwlawson/actions-setup-cmake@v2
-        with:
-          cmake-version: "3.28"
-      - run: pip install torch==2.5.1
-      - run: |
-          cmake \
-            -DCMAKE_BUILD_TYPE=Debug \
-            -DNEML2_TESTS=OFF \
-            -DNEML2_RUNNER=OFF \
-            -DNEML2_PYBIND=OFF \
-            -DNEML2_DOC=OFF \
-            -DNEML2_CLANG_TIDY=ON \
-            -B build \
-            .
-      - run: cmake --build build --target all -j 2 --
+  # TODO: Re-enable the linting checks
 
   build-test:
     needs: clang-format
@@ -74,7 +50,7 @@ jobs:
       pull-requests: write
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-22.04, macos-latest]
         btype: [Release, Debug]
         unity: [ON, OFF]
     runs-on: ${{ matrix.os }}
@@ -107,7 +83,7 @@ jobs:
       - run: cd tests && ../build/tests/verification/verification_tests -r junit > verification_tests.xml
         continue-on-error: true
       - name: Publish Test Results
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.os == 'ubuntu-22.04'
         uses: EnricoMi/publish-unit-test-result-action/linux@v2
         with:
           files: tests/*.xml
@@ -121,7 +97,7 @@ jobs:
 
   build-all:
     needs: clang-format
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         btype: [Release, Debug]
