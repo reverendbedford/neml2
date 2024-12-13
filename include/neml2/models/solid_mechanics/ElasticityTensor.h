@@ -48,16 +48,14 @@ public:
   ElasticityTensor(const OptionSet & options);
 
 protected:
-  /// Whether to declare coefficients as parameters
-  const bool _coef_as_param;
-
   /// Input coefficients
-  const Tensor & _coef;
+  const std::vector<const Scalar *> _coef;
 
   /// Input coefficient types
   const std::vector<ParamType> _coef_types;
 
 private:
-  Tensor make_coef(const OptionSet & options) const;
+  /// Extract coefficients from input
+  std::vector<const Scalar *> get_coefs(const std::vector<CrossRef<Scalar>> & coefs);
 };
 } // namespace neml2

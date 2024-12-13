@@ -44,9 +44,8 @@ protected:
   void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
   /// Convert input to Lame parameter lambda with derivatives
-  std::tuple<Scalar, Tensor> convert_to_lambda();
-
+  std::tuple<Scalar, Scalar, Scalar> convert_to_lambda();
   /// Convert input to Lame parameter mu with derivatives
-  std::tuple<Scalar, Tensor> convert_to_mu();
+  std::tuple<Scalar, Scalar, Scalar> convert_to_mu();
 };
 } // namespace neml2

@@ -49,96 +49,93 @@ void
 CubicElasticityTensor::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   neml_assert_dbg(!d2out_din2, "CubicElasticityTensor doesn't implement second derivatives.");
-
-  const auto [C1, dC1_dp] = convert_to_C1();
-  const auto [C2, dC2_dp] = convert_to_C2();
-  const auto [C3, dC3_dp] = convert_to_C3();
-
+  const auto [C1, dC1_dp1, dC1_dp2, dC1_dp3] = convert_to_C1();
+  const auto [C2, dC2_dp1, dC2_dp2, dC2_dp3] = convert_to_C2();
+  const auto [C3, dC3_dp1, dC3_dp2, dC3_dp3] = convert_to_C3();
   auto I1 = SSR4::identity_C1(options());
   auto I2 = SSR4::identity_C2(options());
   auto I3 = SSR4::identity_C3(options());
-
   if (out)
     _p = C1 * I1 + C2 * I2 + C3 * I3;
-
   if (dout_din)
   {
-    if (const auto * const p = nl_param("c"))
-      _p.d(*p) = dC1_dp * Tensor(I1) + dC2_dp * Tensor(I2) + dC3_dp * Tensor(I3);
+    if (const auto * const p1 = nl_param("p1"))
+      _p.d(*p1) = dC1_dp1 * I1 + dC2_dp1 * I2 + dC3_dp1 * I3;
+    if (const auto * const p2 = nl_param("p2"))
+      _p.d(*p2) = dC1_dp2 * I1 + dC2_dp2 * I2 + dC3_dp2 * I3;
+    if (const auto * const p3 = nl_param("p3"))
+      _p.d(*p3) = dC1_dp3 * I1 + dC2_dp3 * I2 + dC3_dp3 * I3;
   }
 }
 
-std::tuple<Scalar, Tensor>
+std::tuple<Scalar, Scalar, Scalar, Scalar>
 CubicElasticityTensor::convert_to_C1()
 {
-  Scalar p1 = _coef.index({0});
-  Scalar p2 = _coef.index({1});
-  Scalar p3 = _coef.index({2});
+  auto p1_type = _coef_types[0];
+  auto p2_type = _coef_types[1];
+  auto p3_type = _coef_types[2];
 
-  ParamType p1_type = _coef_types[0];
-  ParamType p2_type = _coef_types[1];
-  ParamType p3_type = _coef_types[2];
+  auto p1 = *_coef[0];
+  auto p2 = *_coef[1];
+  auto p3 = *_coef[2];
 
   if ((p1_type == ParamType::YOUNGS) && (p2_type == ParamType::POISSONS) &&
       (p3_type == ParamType::SHEAR))
-    return std::make_tuple(
-        p1 / ((1 + p2) * (1 - 2 * p2)) * (1 - p2),
-        math::base_stack(std::vector<Scalar>(
-            {1.0 / ((1 + p2) * (1 - 2 * p2)) * (1 - p2),
-             (-2.0 * (p2 - 2.0) * p2 * p1) / ((2.0 * p2 * p2 + p2 - 1) * (2.0 * p2 * p2 + p2 - 1)),
-             Scalar::zeros_like(p1)})));
-  throw NEMLException("Unsupported combination of input parameter types: " +
-                      std::string(input_options().get<EnumSelection>("p1_type")) + " and " +
-                      std::string(input_options().get<EnumSelection>("p2_type")) + " and " +
-                      std::string(input_options().get<EnumSelection>("p3_type")));
+    return std::make_tuple(p1 / ((1 + p2) * (1 - 2 * p2)) * (1 - p2),
+                           1.0 / ((1 + p2) * (1 - 2 * p2)) * (1 - p2),
+                           (-2.0 * (p2 - 2.0) * p2 * p1) /
+                               ((2.0 * p2 * p2 + p2 - 1) * (2.0 * p2 * p2 + p2 - 1)),
+                           Scalar::zeros_like(p1));
+  else
+    throw NEMLException("Unsupported combination of input parameter types: " +
+                        std::string(input_options().get<EnumSelection>("p1_type")) + " and " +
+                        std::string(input_options().get<EnumSelection>("p2_type")) + " and " +
+                        std::string(input_options().get<EnumSelection>("p3_type")));
 }
-
-std::tuple<Scalar, Tensor>
+std::tuple<Scalar, Scalar, Scalar, Scalar>
 CubicElasticityTensor::convert_to_C2()
 {
-  Scalar p1 = _coef.index({0});
-  Scalar p2 = _coef.index({1});
-  Scalar p3 = _coef.index({2});
+  auto p1_type = _coef_types[0];
+  auto p2_type = _coef_types[1];
+  auto p3_type = _coef_types[2];
 
-  ParamType p1_type = _coef_types[0];
-  ParamType p2_type = _coef_types[1];
-  ParamType p3_type = _coef_types[2];
+  auto p1 = *_coef[0];
+  auto p2 = *_coef[1];
+  auto p3 = *_coef[2];
 
   if ((p1_type == ParamType::YOUNGS) && (p2_type == ParamType::POISSONS) &&
       (p3_type == ParamType::SHEAR))
-    return std::make_tuple(
-        p1 / ((1 + p2) * (1 - 2 * p2)) * p2,
-        math::base_stack(std::vector<Scalar>(
-            {1.0 / ((1 + p2) * (1 - 2 * p2)) * p2,
-             (2 * p2 * p2 * p1 + p1) / ((2.0 * p2 * p2 + p2 - 1) * (2.0 * p2 * p2 + p2 - 1)),
-             Scalar::zeros_like(p1)})));
-  throw NEMLException("Unsupported combination of input parameter types: " +
-                      std::string(input_options().get<EnumSelection>("p1_type")) + " and " +
-                      std::string(input_options().get<EnumSelection>("p2_type")) + " and " +
-                      std::string(input_options().get<EnumSelection>("p3_type")));
+    return std::make_tuple(p1 / ((1 + p2) * (1 - 2 * p2)) * p2,
+                           1.0 / ((1 + p2) * (1 - 2 * p2)) * p2,
+                           (2 * p2 * p2 * p1 + p1) /
+                               ((2.0 * p2 * p2 + p2 - 1) * (2.0 * p2 * p2 + p2 - 1)),
+                           Scalar::zeros_like(p1));
+  else
+    throw NEMLException("Unsupported combination of input parameter types: " +
+                        std::string(input_options().get<EnumSelection>("p1_type")) + " and " +
+                        std::string(input_options().get<EnumSelection>("p2_type")) + " and " +
+                        std::string(input_options().get<EnumSelection>("p3_type")));
 }
-
-std::tuple<Scalar, Tensor>
+std::tuple<Scalar, Scalar, Scalar, Scalar>
 CubicElasticityTensor::convert_to_C3()
 {
-  Scalar p1 = _coef.index({0});
-  Scalar p2 = _coef.index({1});
-  Scalar p3 = _coef.index({2});
+  auto p1_type = _coef_types[0];
+  auto p2_type = _coef_types[1];
+  auto p3_type = _coef_types[2];
 
-  ParamType p1_type = _coef_types[0];
-  ParamType p2_type = _coef_types[1];
-  ParamType p3_type = _coef_types[2];
+  auto p1 = *_coef[0];
+  auto p2 = *_coef[1];
+  auto p3 = *_coef[2];
 
   if ((p1_type == ParamType::YOUNGS) && (p2_type == ParamType::POISSONS) &&
       (p3_type == ParamType::SHEAR))
     return std::make_tuple(
-        2.0 * p3,
-        math::base_stack(std::vector<Scalar>(
-            {Scalar::zeros_like(p3), Scalar::zeros_like(p3), Scalar::full_like(p3, 2.0)})));
-  throw NEMLException("Unsupported combination of input parameter types: " +
-                      std::string(input_options().get<EnumSelection>("p1_type")) + " and " +
-                      std::string(input_options().get<EnumSelection>("p2_type")) + " and " +
-                      std::string(input_options().get<EnumSelection>("p3_type")));
+        2.0 * p3, Scalar::zeros_like(p3), Scalar::zeros_like(p3), Scalar::full_like(p3, 2.0));
+  else
+    throw NEMLException("Unsupported combination of input parameter types: " +
+                        std::string(input_options().get<EnumSelection>("p1_type")) + " and " +
+                        std::string(input_options().get<EnumSelection>("p2_type")) + " and " +
+                        std::string(input_options().get<EnumSelection>("p3_type")));
 }
 
 } // namespace neml2
