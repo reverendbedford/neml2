@@ -53,9 +53,5 @@ protected:
 
   /// Input coefficient types
   const std::vector<ParamType> _coef_types;
-
-private:
-  /// Extract coefficients from input
-  std::vector<const Scalar *> get_coefs(const std::vector<CrossRef<Scalar>> & coefs);
 };
 } // namespace neml2

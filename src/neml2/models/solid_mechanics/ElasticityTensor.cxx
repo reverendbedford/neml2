@@ -55,20 +55,11 @@ ElasticityTensor::expected_options()
 
 ElasticityTensor::ElasticityTensor(const OptionSet & options)
   : NonlinearParameter<SSR4>(options),
-    _coef(get_coefs(options.get<std::vector<CrossRef<Scalar>>>("coefficients"))),
+    _coef(declare_parameters<Scalar>("coef", "coefficients", /*allow_nonlinear=*/true)),
     _coef_types(options.get<MultiEnumSelection>("coefficient_types").as<ParamType>())
 {
   neml_assert(_coef_types.size() == _coef.size(),
               "Number of coefficient types must match number of coefficients.");
-}
-
-std::vector<const Scalar *>
-ElasticityTensor::get_coefs(const std::vector<CrossRef<Scalar>> & coefs)
-{
-  std::vector<const Scalar *> out;
-  for (size_t i = 0; i < coefs.size(); i++)
-    out.push_back(&declare_parameter<Scalar>("p" + utils::stringify(i + 1), coefs[i]));
-  return out;
 }
 
 } // namespace neml2

@@ -146,69 +146,121 @@ ParameterStore::declare_parameter(const std::string & name,
     return declare_parameter(name, _options.get<T>(input_option_name));
 
   if (_options.contains<CrossRef<T>>(input_option_name))
-  {
-    try
-    {
-      return declare_parameter(name, T(_options.get<CrossRef<T>>(input_option_name)));
-    }
-    catch (const NEMLException & e1)
-    {
-      try
-      {
-        // Handle the case of *nonlinear* parameter.
-        // Note that nonlinear parameter should only exist inside a Model.
-        auto * model = dynamic_cast<Model *>(this);
-        neml_assert(model,
-                    "Object '",
-                    _object->name(),
-                    "' is trying to declare a parameter named ",
-                    name,
-                    ". It is not a plain tensor value nor a cross-referenced parameter "
-                    "value. Hence I am guessing you are declaring a *nonlinear* parameter. "
-                    "However, nonlinear parameter should only be declared by a model, and this "
-                    "object does not appear to be a model.");
-
-        neml_assert(allow_nonlinear,
-                    "In model '",
-                    model->name(),
-                    "' of type ",
-                    model->type(),
-                    ", the input option '",
-                    input_option_name,
-                    "' is referencing a nonlinear parameter. However, nonlinear coupling "
-                    "has not been implemented for this parameter. If this is intended, please "
-                    "consider opening an issue on GitHub including this error message.");
-
-        OptionSet extra_opts;
-        extra_opts.set<NEML2Object *>("_host") = model->host();
-        extra_opts.set<bool>("_enable_AD") = model->input_options().get<bool>("_enable_AD");
-        auto pname = _options.get<CrossRef<T>>(input_option_name).raw();
-        auto & nl_param = Factory::get_object<NonlinearParameter<T>>(
-            "Models", pname, extra_opts, /*force_create=*/false);
-        model->template declare_input_variable<T>(VariableName(pname).prepend("parameters"));
-        _nl_params[name] = &nl_param.param();
-        _nl_param_models[name] = &nl_param;
-        return nl_param.param().value();
-      }
-      catch (const NEMLException & e2)
-      {
-        throw NEMLException(
-            "Object '" + _object->name() + "' of type " + _object->type() +
-            " is trying to register a parameter named '" + name + "' from input option '" +
-            input_option_name + "'.\n\nParsing it as a plain tensor type failed with message:\n" +
-            e1.what() + "\n\nParsing it as a nonlinear parameter failed with message:\n" +
-            e2.what() +
-            "\n\nIn addition to the above error messages, make sure you provided the correct "
-            "parameter name, option name, and parameter type.");
-      }
-    }
-  }
+    return declare_parameter_crossref<T>(
+        name, _options.get<CrossRef<T>>(input_option_name), allow_nonlinear);
 
   throw NEMLException("Internal error in declare_parameter");
 }
 
+template <typename T, typename>
+std::vector<const T *>
+ParameterStore::declare_parameters(const std::string & name,
+                                   const std::string & input_option_name,
+                                   bool allow_nonlinear)
+{
+
+  if (_options.contains<std::vector<T>>(input_option_name))
+  {
+    const auto vals = _options.get<std::vector<T>>(input_option_name);
+    if (vals.size() == 1)
+      return {&declare_parameter(name, vals[0])};
+    else
+    {
+      std::vector<const T *> params(vals.size());
+      for (std::size_t i = 0; i < vals.size(); ++i)
+        params[i] = &declare_parameter(name + "_" + utils::stringify(i), vals[i]);
+      return params;
+    }
+  }
+
+  if (_options.contains<std::vector<CrossRef<T>>>(input_option_name))
+  {
+    const auto vals = _options.get<std::vector<CrossRef<T>>>(input_option_name);
+    if (vals.size() == 1)
+      return {&declare_parameter_crossref<T>(name, vals[0], allow_nonlinear)};
+    else
+    {
+      std::vector<const T *> params(vals.size());
+      for (std::size_t i = 0; i < vals.size(); ++i)
+        params[i] = &declare_parameter_crossref<T>(
+            name + "_" + utils::stringify(i), vals[i], allow_nonlinear);
+      return params;
+    }
+  }
+
+  throw NEMLException("Internal error in declare_parameters");
+}
+
+template <typename T, typename>
+const T &
+ParameterStore::declare_parameter_crossref(const std::string & name,
+                                           const CrossRef<T> & crossref,
+                                           bool allow_nonlinear)
+{
+  try
+  {
+    return declare_parameter(name, T(crossref));
+  }
+  catch (const NEMLException & e1)
+  {
+    try
+    {
+      // Handle the case of *nonlinear* parameter.
+      // Note that nonlinear parameter should only exist inside a Model.
+      auto * model = dynamic_cast<Model *>(this);
+      neml_assert(model,
+                  "Object '",
+                  _object->name(),
+                  "' of type ",
+                  model->type(),
+                  "' is trying to declare a parameter named ",
+                  name,
+                  ". It is not a plain tensor value nor a cross-referenced parameter value. Hence "
+                  "I am guessing you are declaring a *nonlinear* parameter. However, nonlinear "
+                  "parameter should only be declared by a model, and this object does not appear "
+                  "to be a model.");
+
+      neml_assert(allow_nonlinear,
+                  "Model '",
+                  _object->name(),
+                  "' of type ",
+                  model->type(),
+                  "' is trying to declare a nonlinear parameter named ",
+                  name,
+                  "'. However, nonlinear coupling has not been implemented for this parameter. If "
+                  "this is intended, please consider opening an issue on GitHub including this "
+                  "error message.");
+
+      OptionSet extra_opts;
+      extra_opts.set<NEML2Object *>("_host") = model->host();
+      extra_opts.set<bool>("_enable_AD") = model->input_options().get<bool>("_enable_AD");
+      auto pname = crossref.raw();
+      auto & nl_param = Factory::get_object<NonlinearParameter<T>>(
+          "Models", pname, extra_opts, /*force_create=*/false);
+      model->template declare_input_variable<T>(VariableName(pname).prepend("parameters"));
+      _nl_params[name] = &nl_param.param();
+      _nl_param_models[name] = &nl_param;
+      return nl_param.param().value();
+    }
+    catch (const NEMLException & e2)
+    {
+      throw NEMLException(
+          "Object '" + _object->name() + "' of type " + _object->type() +
+          " is trying to register a parameter named '" + name +
+          "'.\n\nParsing it as a plain tensor type failed with message:\n" + e1.what() +
+          "\n\nParsing it as a nonlinear parameter failed with message:\n" + e2.what() +
+          "\n\nIn addition to the above error messages, make sure you provided the correct "
+          "parameter name, option name, and parameter type.");
+    }
+  }
+}
+
 #define PARAMETERSTORE_INTANTIATE_PRIMITIVETENSOR(T)                                               \
   template const T & ParameterStore::declare_parameter<T>(                                         \
-      const std::string &, const std::string &, bool)
+      const std::string &, const std::string &, bool);                                             \
+  template std::vector<const T *> ParameterStore::declare_parameters<T>(                           \
+      const std::string &, const std::string &, bool);                                             \
+  template const T & ParameterStore::declare_parameter_crossref<T>(                                \
+      const std::string &, const CrossRef<T> &, bool)
 FOR_ALL_PRIMITIVETENSOR(PARAMETERSTORE_INTANTIATE_PRIMITIVETENSOR);
 } // namespace neml2

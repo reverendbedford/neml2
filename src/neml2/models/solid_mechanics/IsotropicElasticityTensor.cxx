@@ -77,8 +77,8 @@ IsotropicElasticityTensor::convert_to_lambda()
   auto p1_type = _coef_types[0];
   auto p2_type = _coef_types[1];
 
-  auto p1 = *_coef[0];
-  auto p2 = *_coef[1];
+  const auto & p1 = *_coef[0];
+  const auto & p2 = *_coef[1];
 
   if ((p1_type == ParamType::YOUNGS) && (p2_type == ParamType::POISSONS))
     return std::make_tuple(p1 * p2 / ((1 + p2) * (1 - 2 * p2)),
@@ -101,8 +101,8 @@ IsotropicElasticityTensor::convert_to_mu()
   auto p1_type = _coef_types[0];
   auto p2_type = _coef_types[1];
 
-  auto p1 = *_coef[0];
-  auto p2 = *_coef[1];
+  const auto & p1 = *_coef[0];
+  const auto & p2 = *_coef[1];
 
   if ((p1_type == ParamType::YOUNGS) && (p2_type == ParamType::POISSONS))
     return std::make_tuple(
