@@ -18,7 +18,10 @@ var searchData=
   ['ssr4_15',['SSR4',['../classtensors_1_1SSR4.html',1,'tensors']]],
   ['ssr4baseview_16',['SSR4BaseView',['../classtensors_1_1SSR4BaseView.html',1,'tensors']]],
   ['ssr4batchview_17',['SSR4BatchView',['../classtensors_1_1SSR4BatchView.html',1,'tensors']]],
-  ['swr4_18',['SWR4',['../classtensors_1_1SWR4.html',1,'tensors']]],
-  ['swr4baseview_19',['SWR4BaseView',['../classtensors_1_1SWR4BaseView.html',1,'tensors']]],
-  ['swr4batchview_20',['SWR4BatchView',['../classtensors_1_1SWR4BatchView.html',1,'tensors']]]
+  ['ssssr8_18',['SSSSR8',['../classtensors_1_1SSSSR8.html',1,'tensors']]],
+  ['ssssr8baseview_19',['SSSSR8BaseView',['../classtensors_1_1SSSSR8BaseView.html',1,'tensors']]],
+  ['ssssr8batchview_20',['SSSSR8BatchView',['../classtensors_1_1SSSSR8BatchView.html',1,'tensors']]],
+  ['swr4_21',['SWR4',['../classtensors_1_1SWR4.html',1,'tensors']]],
+  ['swr4baseview_22',['SWR4BaseView',['../classtensors_1_1SWR4BaseView.html',1,'tensors']]],
+  ['swr4batchview_23',['SWR4BatchView',['../classtensors_1_1SWR4BatchView.html',1,'tensors']]]
 ];

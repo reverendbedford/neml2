@@ -37,12 +37,12 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-11 16:42:39</td>
+            <td class="headerValue">2024-12-13 23:10:15</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">30</td>
-            <td class="headerCovTableEntry">36</td>
-            <td class="headerCovTableEntryMed">83.3 %</td>
+            <td class="headerCovTableEntry">32</td>
+            <td class="headerCovTableEntry">40</td>
+            <td class="headerCovTableEntryMed">80.0 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -93,34 +93,34 @@
 <a name="31"><span class="lineNum">      31 </span>            : </a>
 <a name="32"><span class="lineNum">      32 </span>            : template &lt;typename T&gt;</a>
 <a name="33"><span class="lineNum">      33 </span>            : OptionSet</a>
-<a name="34"><span class="lineNum">      34 </span><span class="lineCov">        108 : LinspacePrimitiveTensor&lt;T&gt;::expected_options()</span></a>
+<a name="34"><span class="lineNum">      34 </span><span class="lineCov">        120 : LinspacePrimitiveTensor&lt;T&gt;::expected_options()</span></a>
 <a name="35"><span class="lineNum">      35 </span>            : {</a>
 <a name="36"><span class="lineNum">      36 </span>            :   // This is the only way of getting tensor type in a static method like this...</a>
 <a name="37"><span class="lineNum">      37 </span>            :   // Trim 6 chars to remove 'neml2::'</a>
-<a name="38"><span class="lineNum">      38 </span><span class="lineCov">        108 :   auto tensor_type = utils::demangle(typeid(T).name()).substr(7);</span></a>
+<a name="38"><span class="lineNum">      38 </span><span class="lineCov">        120 :   auto tensor_type = utils::demangle(typeid(T).name()).substr(7);</span></a>
 <a name="39"><span class="lineNum">      39 </span>            : </a>
-<a name="40"><span class="lineNum">      40 </span><span class="lineCov">        108 :   OptionSet options = UserTensorBase::expected_options();</span></a>
-<a name="41"><span class="lineNum">      41 </span><span class="lineCov">        108 :   options.doc() = &quot;Construct a &quot; + tensor_type +</span></a>
+<a name="40"><span class="lineNum">      40 </span><span class="lineCov">        120 :   OptionSet options = UserTensorBase::expected_options();</span></a>
+<a name="41"><span class="lineNum">      41 </span><span class="lineCov">        120 :   options.doc() = &quot;Construct a &quot; + tensor_type +</span></a>
 <a name="42"><span class="lineNum">      42 </span>            :                   &quot; linearly spaced on the batch dimensions. See neml2::TensorBase::linspace &quot;</a>
 <a name="43"><span class="lineNum">      43 </span>            :                   &quot;for a detailed explanation.&quot;;</a>
 <a name="44"><span class="lineNum">      44 </span>            : </a>
-<a name="45"><span class="lineNum">      45 </span><span class="lineCov">        108 :   options.set&lt;CrossRef&lt;T&gt;&gt;(&quot;start&quot;);</span></a>
-<a name="46"><span class="lineNum">      46 </span><span class="lineCov">        108 :   options.set(&quot;start&quot;).doc() = &quot;The starting tensor&quot;;</span></a>
+<a name="45"><span class="lineNum">      45 </span><span class="lineCov">        120 :   options.set&lt;CrossRef&lt;T&gt;&gt;(&quot;start&quot;);</span></a>
+<a name="46"><span class="lineNum">      46 </span><span class="lineCov">        120 :   options.set(&quot;start&quot;).doc() = &quot;The starting tensor&quot;;</span></a>
 <a name="47"><span class="lineNum">      47 </span>            : </a>
-<a name="48"><span class="lineNum">      48 </span><span class="lineCov">        108 :   options.set&lt;CrossRef&lt;T&gt;&gt;(&quot;end&quot;);</span></a>
-<a name="49"><span class="lineNum">      49 </span><span class="lineCov">        108 :   options.set(&quot;end&quot;).doc() = &quot;The ending tensor&quot;;</span></a>
+<a name="48"><span class="lineNum">      48 </span><span class="lineCov">        120 :   options.set&lt;CrossRef&lt;T&gt;&gt;(&quot;end&quot;);</span></a>
+<a name="49"><span class="lineNum">      49 </span><span class="lineCov">        120 :   options.set(&quot;end&quot;).doc() = &quot;The ending tensor&quot;;</span></a>
 <a name="50"><span class="lineNum">      50 </span>            : </a>
-<a name="51"><span class="lineNum">      51 </span><span class="lineCov">        108 :   options.set&lt;Size&gt;(&quot;nstep&quot;);</span></a>
-<a name="52"><span class="lineNum">      52 </span><span class="lineCov">        108 :   options.set(&quot;nstep&quot;).doc() = &quot;The number of steps with even spacing along the new dimension&quot;;</span></a>
+<a name="51"><span class="lineNum">      51 </span><span class="lineCov">        120 :   options.set&lt;Size&gt;(&quot;nstep&quot;);</span></a>
+<a name="52"><span class="lineNum">      52 </span><span class="lineCov">        120 :   options.set(&quot;nstep&quot;).doc() = &quot;The number of steps with even spacing along the new dimension&quot;;</span></a>
 <a name="53"><span class="lineNum">      53 </span>            : </a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">        108 :   options.set&lt;Size&gt;(&quot;dim&quot;) = 0;</span></a>
-<a name="55"><span class="lineNum">      55 </span><span class="lineCov">        108 :   options.set(&quot;dim&quot;).doc() = &quot;Where to insert the new dimension&quot;;</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">        120 :   options.set&lt;Size&gt;(&quot;dim&quot;) = 0;</span></a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineCov">        120 :   options.set(&quot;dim&quot;).doc() = &quot;Where to insert the new dimension&quot;;</span></a>
 <a name="56"><span class="lineNum">      56 </span>            : </a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">        108 :   options.set&lt;Size&gt;(&quot;batch_dim&quot;) = -1;</span></a>
-<a name="58"><span class="lineNum">      58 </span><span class="lineCov">        108 :   options.set(&quot;batch_dim&quot;).doc() = &quot;Batch dimension of the output&quot;;</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineCov">        120 :   options.set&lt;Size&gt;(&quot;batch_dim&quot;) = -1;</span></a>
+<a name="58"><span class="lineNum">      58 </span><span class="lineCov">        120 :   options.set(&quot;batch_dim&quot;).doc() = &quot;Batch dimension of the output&quot;;</span></a>
 <a name="59"><span class="lineNum">      59 </span>            : </a>
-<a name="60"><span class="lineNum">      60 </span><span class="lineCov">        216 :   return options;</span></a>
-<a name="61"><span class="lineNum">      61 </span><span class="lineCov">        108 : }</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineCov">        240 :   return options;</span></a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">        120 : }</span></a>
 <a name="62"><span class="lineNum">      62 </span>            : </a>
 <a name="63"><span class="lineNum">      63 </span>            : template &lt;typename T&gt;</a>
 <a name="64"><span class="lineNum">      64 </span><span class="lineCov">        112 : LinspacePrimitiveTensor&lt;T&gt;::LinspacePrimitiveTensor(const OptionSet &amp; options)</span></a>

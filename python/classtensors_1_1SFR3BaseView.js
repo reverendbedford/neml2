@@ -10,6 +10,7 @@ var classtensors_1_1SFR3BaseView =
     [ "dim", "classtensors_1_1SFR3BaseView.html#a35536134a6ceb1e866faf188992e9c9f", null ],
     [ "expand", "classtensors_1_1SFR3BaseView.html#ae4653537be8f93418696eaff7a809fb2", null ],
     [ "expand_copy", "classtensors_1_1SFR3BaseView.html#a6b527b70f7184b1d285f8210ddf3209b", null ],
+    [ "reshape", "classtensors_1_1SFR3BaseView.html#a0c856390e77d4518cdeb561737fb1bfd", null ],
     [ "shape", "classtensors_1_1SFR3BaseView.html#a43080b242de156a5409d4b58fc7d0c9c", null ],
     [ "storage", "classtensors_1_1SFR3BaseView.html#ac633e7d6a3e2cc7def2cc9af32f0ca45", null ],
     [ "transpose", "classtensors_1_1SFR3BaseView.html#add7da0f38f113433ec80ac5a444f303b", null ],

@@ -4,6 +4,7 @@ var classtensors_1_1SR2 =
     [ "__init__", "classtensors_1_1SR2.html#a6852c9a2b2bddb0ff0ec552d311fcdc6", null ],
     [ "__init__", "classtensors_1_1SR2.html#a4fb6609bd2f3071aa70e131ded737500", null ],
     [ "__init__", "classtensors_1_1SR2.html#a783fedd3223f7a4a051c00b22a8b3016", null ],
+    [ "__init__", "classtensors_1_1SR2.html#a6ca0f485323e60284a563bb22fbe3fa5", null ],
     [ "__add__", "classtensors_1_1SR2.html#ad3b2e7daae0a4bae0767914a56b80cd8", null ],
     [ "__add__", "classtensors_1_1SR2.html#a3b3d4cba0b80d0ba81f13a7bbba1c18c", null ],
     [ "__add__", "classtensors_1_1SR2.html#a936f5554beeeac4136685c6799c2e26d", null ],

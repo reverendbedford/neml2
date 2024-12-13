@@ -31,18 +31,18 @@
             <td class="headerValue">coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">151</td>
+            <td class="headerCovTableEntry">153</td>
             <td class="headerCovTableEntry">157</td>
-            <td class="headerCovTableEntryHi">96.2 %</td>
+            <td class="headerCovTableEntryHi">97.5 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-11 16:42:39</td>
+            <td class="headerValue">2024-12-13 23:10:15</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">29</td>
+            <td class="headerCovTableEntry">30</td>
             <td class="headerCovTableEntry">31</td>
-            <td class="headerCovTableEntryHi">93.5 %</td>
+            <td class="headerCovTableEntryHi">96.8 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -117,34 +117,34 @@
 <a name="55"><span class="lineNum">      55 </span><span class="lineCov">          1 : }</span></a>
 <a name="56"><span class="lineNum">      56 </span>            : </a>
 <a name="57"><span class="lineNum">      57 </span>            : ConstantTensors &amp;</a>
-<a name="58"><span class="lineNum">      58 </span><span class="lineCov">       9732 : ConstantTensors::get()</span></a>
+<a name="58"><span class="lineNum">      58 </span><span class="lineCov">      13788 : ConstantTensors::get()</span></a>
 <a name="59"><span class="lineNum">      59 </span>            : {</a>
-<a name="60"><span class="lineNum">      60 </span><span class="lineCov">       9732 :   static ConstantTensors cts;</span></a>
-<a name="61"><span class="lineNum">      61 </span><span class="lineCov">       9732 :   return cts;</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineCov">      13788 :   static ConstantTensors cts;</span></a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">      13788 :   return cts;</span></a>
 <a name="62"><span class="lineNum">      62 </span>            : }</a>
 <a name="63"><span class="lineNum">      63 </span>            : </a>
 <a name="64"><span class="lineNum">      64 </span>            : const torch::Tensor &amp;</a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineCov">       1656 : ConstantTensors::full_to_mandel_map()</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">       2694 : ConstantTensors::full_to_mandel_map()</span></a>
 <a name="66"><span class="lineNum">      66 </span>            : {</a>
-<a name="67"><span class="lineNum">      67 </span><span class="lineCov">       1656 :   return get()._full_to_mandel_map;</span></a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">       2694 :   return get()._full_to_mandel_map;</span></a>
 <a name="68"><span class="lineNum">      68 </span>            : }</a>
 <a name="69"><span class="lineNum">      69 </span>            : </a>
 <a name="70"><span class="lineNum">      70 </span>            : const torch::Tensor &amp;</a>
-<a name="71"><span class="lineNum">      71 </span><span class="lineCov">       2198 : ConstantTensors::mandel_to_full_map()</span></a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineCov">       3188 : ConstantTensors::mandel_to_full_map()</span></a>
 <a name="72"><span class="lineNum">      72 </span>            : {</a>
-<a name="73"><span class="lineNum">      73 </span><span class="lineCov">       2198 :   return get()._mandel_to_full_map;</span></a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">       3188 :   return get()._mandel_to_full_map;</span></a>
 <a name="74"><span class="lineNum">      74 </span>            : }</a>
 <a name="75"><span class="lineNum">      75 </span>            : </a>
 <a name="76"><span class="lineNum">      76 </span>            : const torch::Tensor &amp;</a>
-<a name="77"><span class="lineNum">      77 </span><span class="lineCov">       1656 : ConstantTensors::full_to_mandel_factor()</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineCov">       2694 : ConstantTensors::full_to_mandel_factor()</span></a>
 <a name="78"><span class="lineNum">      78 </span>            : {</a>
-<a name="79"><span class="lineNum">      79 </span><span class="lineCov">       1656 :   return get()._full_to_mandel_factor;</span></a>
+<a name="79"><span class="lineNum">      79 </span><span class="lineCov">       2694 :   return get()._full_to_mandel_factor;</span></a>
 <a name="80"><span class="lineNum">      80 </span>            : }</a>
 <a name="81"><span class="lineNum">      81 </span>            : </a>
 <a name="82"><span class="lineNum">      82 </span>            : const torch::Tensor &amp;</a>
-<a name="83"><span class="lineNum">      83 </span><span class="lineCov">       2198 : ConstantTensors::mandel_to_full_factor()</span></a>
+<a name="83"><span class="lineNum">      83 </span><span class="lineCov">       3188 : ConstantTensors::mandel_to_full_factor()</span></a>
 <a name="84"><span class="lineNum">      84 </span>            : {</a>
-<a name="85"><span class="lineNum">      85 </span><span class="lineCov">       2198 :   return get()._mandel_to_full_factor;</span></a>
+<a name="85"><span class="lineNum">      85 </span><span class="lineCov">       3188 :   return get()._mandel_to_full_factor;</span></a>
 <a name="86"><span class="lineNum">      86 </span>            : }</a>
 <a name="87"><span class="lineNum">      87 </span>            : </a>
 <a name="88"><span class="lineNum">      88 </span>            : const torch::Tensor &amp;</a>
@@ -172,72 +172,72 @@
 <a name="110"><span class="lineNum">     110 </span>            : }</a>
 <a name="111"><span class="lineNum">     111 </span>            : </a>
 <a name="112"><span class="lineNum">     112 </span>            : Tensor</a>
-<a name="113"><span class="lineNum">     113 </span><span class="lineCov">       2204 : full_to_reduced(const Tensor &amp; full,</span></a>
+<a name="113"><span class="lineNum">     113 </span><span class="lineCov">       3242 : full_to_reduced(const Tensor &amp; full,</span></a>
 <a name="114"><span class="lineNum">     114 </span>            :                 const torch::Tensor &amp; rmap,</a>
 <a name="115"><span class="lineNum">     115 </span>            :                 const torch::Tensor &amp; rfactors,</a>
 <a name="116"><span class="lineNum">     116 </span>            :                 Size dim)</a>
 <a name="117"><span class="lineNum">     117 </span>            : {</a>
-<a name="118"><span class="lineNum">     118 </span><span class="lineCov">       2204 :   auto batch_dim = full.batch_dim();</span></a>
-<a name="119"><span class="lineNum">     119 </span><span class="lineCov">       2204 :   auto starting_dim = batch_dim + dim;</span></a>
-<a name="120"><span class="lineNum">     120 </span><span class="lineCov">       2204 :   auto trailing_dim = full.dim() - starting_dim - 2; // 2 comes from the reduced axes (3,3)</span></a>
-<a name="121"><span class="lineNum">     121 </span><span class="lineCov">       2204 :   auto starting_shape = full.sizes().slice(0, starting_dim);</span></a>
-<a name="122"><span class="lineNum">     122 </span><span class="lineCov">       2204 :   auto trailing_shape = full.sizes().slice(starting_dim + 2);</span></a>
+<a name="118"><span class="lineNum">     118 </span><span class="lineCov">       3242 :   auto batch_dim = full.batch_dim();</span></a>
+<a name="119"><span class="lineNum">     119 </span><span class="lineCov">       3242 :   auto starting_dim = batch_dim + dim;</span></a>
+<a name="120"><span class="lineNum">     120 </span><span class="lineCov">       3242 :   auto trailing_dim = full.dim() - starting_dim - 2; // 2 comes from the reduced axes (3,3)</span></a>
+<a name="121"><span class="lineNum">     121 </span><span class="lineCov">       3242 :   auto starting_shape = full.sizes().slice(0, starting_dim);</span></a>
+<a name="122"><span class="lineNum">     122 </span><span class="lineCov">       3242 :   auto trailing_shape = full.sizes().slice(starting_dim + 2);</span></a>
 <a name="123"><span class="lineNum">     123 </span>            : </a>
-<a name="124"><span class="lineNum">     124 </span><span class="lineCov">       2204 :   indexing::TensorIndices net(starting_dim, indexing::None);</span></a>
-<a name="125"><span class="lineNum">     125 </span><span class="lineCov">       2204 :   net.push_back(indexing::Ellipsis);</span></a>
-<a name="126"><span class="lineNum">     126 </span><span class="lineCov">       2204 :   net.insert(net.end(), trailing_dim, indexing::None);</span></a>
+<a name="124"><span class="lineNum">     124 </span><span class="lineCov">       3242 :   indexing::TensorIndices net(starting_dim, indexing::None);</span></a>
+<a name="125"><span class="lineNum">     125 </span><span class="lineCov">       3242 :   net.push_back(indexing::Ellipsis);</span></a>
+<a name="126"><span class="lineNum">     126 </span><span class="lineCov">       3242 :   net.insert(net.end(), trailing_dim, indexing::None);</span></a>
 <a name="127"><span class="lineNum">     127 </span>            :   auto map =</a>
-<a name="128"><span class="lineNum">     128 </span><span class="lineCov">       2204 :       rmap.index(net).expand(utils::add_shapes(starting_shape, rmap.sizes()[0], trailing_shape));</span></a>
-<a name="129"><span class="lineNum">     129 </span><span class="lineCov">       2204 :   auto factor = rfactors.to(full).index(net);</span></a>
+<a name="128"><span class="lineNum">     128 </span><span class="lineCov">       3242 :       rmap.index(net).expand(utils::add_shapes(starting_shape, rmap.sizes()[0], trailing_shape));</span></a>
+<a name="129"><span class="lineNum">     129 </span><span class="lineCov">       3242 :   auto factor = rfactors.to(full).index(net);</span></a>
 <a name="130"><span class="lineNum">     130 </span>            : </a>
 <a name="131"><span class="lineNum">     131 </span>            :   return Tensor(</a>
-<a name="132"><span class="lineNum">     132 </span><span class="lineCov">       4408 :       factor * torch::gather(full.reshape(utils::add_shapes(starting_shape, 9, trailing_shape)),</span></a>
+<a name="132"><span class="lineNum">     132 </span><span class="lineCov">       6484 :       factor * torch::gather(full.reshape(utils::add_shapes(starting_shape, 9, trailing_shape)),</span></a>
 <a name="133"><span class="lineNum">     133 </span>            :                              starting_dim,</a>
 <a name="134"><span class="lineNum">     134 </span>            :                              map),</a>
-<a name="135"><span class="lineNum">     135 </span><span class="lineCov">       4408 :       batch_dim);</span></a>
-<a name="136"><span class="lineNum">     136 </span><span class="lineCov">       2204 : }</span></a>
+<a name="135"><span class="lineNum">     135 </span><span class="lineCov">       6484 :       batch_dim);</span></a>
+<a name="136"><span class="lineNum">     136 </span><span class="lineCov">       3242 : }</span></a>
 <a name="137"><span class="lineNum">     137 </span>            : </a>
 <a name="138"><span class="lineNum">     138 </span>            : Tensor</a>
-<a name="139"><span class="lineNum">     139 </span><span class="lineCov">       2662 : reduced_to_full(const Tensor &amp; reduced,</span></a>
+<a name="139"><span class="lineNum">     139 </span><span class="lineCov">       3652 : reduced_to_full(const Tensor &amp; reduced,</span></a>
 <a name="140"><span class="lineNum">     140 </span>            :                 const torch::Tensor &amp; rmap,</a>
 <a name="141"><span class="lineNum">     141 </span>            :                 const torch::Tensor &amp; rfactors,</a>
 <a name="142"><span class="lineNum">     142 </span>            :                 Size dim)</a>
 <a name="143"><span class="lineNum">     143 </span>            : {</a>
-<a name="144"><span class="lineNum">     144 </span><span class="lineCov">       2662 :   auto batch_dim = reduced.batch_dim();</span></a>
-<a name="145"><span class="lineNum">     145 </span><span class="lineCov">       2662 :   auto starting_dim = batch_dim + dim;</span></a>
-<a name="146"><span class="lineNum">     146 </span><span class="lineCov">       2662 :   auto trailing_dim = reduced.dim() - starting_dim - 1; // There's only 1 axis to unsqueeze</span></a>
-<a name="147"><span class="lineNum">     147 </span><span class="lineCov">       2662 :   auto starting_shape = reduced.sizes().slice(0, starting_dim);</span></a>
-<a name="148"><span class="lineNum">     148 </span><span class="lineCov">       2662 :   auto trailing_shape = reduced.sizes().slice(starting_dim + 1);</span></a>
+<a name="144"><span class="lineNum">     144 </span><span class="lineCov">       3652 :   auto batch_dim = reduced.batch_dim();</span></a>
+<a name="145"><span class="lineNum">     145 </span><span class="lineCov">       3652 :   auto starting_dim = batch_dim + dim;</span></a>
+<a name="146"><span class="lineNum">     146 </span><span class="lineCov">       3652 :   auto trailing_dim = reduced.dim() - starting_dim - 1; // There's only 1 axis to unsqueeze</span></a>
+<a name="147"><span class="lineNum">     147 </span><span class="lineCov">       3652 :   auto starting_shape = reduced.sizes().slice(0, starting_dim);</span></a>
+<a name="148"><span class="lineNum">     148 </span><span class="lineCov">       3652 :   auto trailing_shape = reduced.sizes().slice(starting_dim + 1);</span></a>
 <a name="149"><span class="lineNum">     149 </span>            : </a>
-<a name="150"><span class="lineNum">     150 </span><span class="lineCov">       2662 :   indexing::TensorIndices net(starting_dim, indexing::None);</span></a>
-<a name="151"><span class="lineNum">     151 </span><span class="lineCov">       2662 :   net.push_back(indexing::Ellipsis);</span></a>
-<a name="152"><span class="lineNum">     152 </span><span class="lineCov">       2662 :   net.insert(net.end(), trailing_dim, indexing::None);</span></a>
-<a name="153"><span class="lineNum">     153 </span><span class="lineCov">       2662 :   auto map = rmap.index(net).expand(utils::add_shapes(starting_shape, 9, trailing_shape));</span></a>
-<a name="154"><span class="lineNum">     154 </span><span class="lineCov">       2662 :   auto factor = rfactors.to(reduced).index(net);</span></a>
+<a name="150"><span class="lineNum">     150 </span><span class="lineCov">       3652 :   indexing::TensorIndices net(starting_dim, indexing::None);</span></a>
+<a name="151"><span class="lineNum">     151 </span><span class="lineCov">       3652 :   net.push_back(indexing::Ellipsis);</span></a>
+<a name="152"><span class="lineNum">     152 </span><span class="lineCov">       3652 :   net.insert(net.end(), trailing_dim, indexing::None);</span></a>
+<a name="153"><span class="lineNum">     153 </span><span class="lineCov">       3652 :   auto map = rmap.index(net).expand(utils::add_shapes(starting_shape, 9, trailing_shape));</span></a>
+<a name="154"><span class="lineNum">     154 </span><span class="lineCov">       3652 :   auto factor = rfactors.to(reduced).index(net);</span></a>
 <a name="155"><span class="lineNum">     155 </span>            : </a>
-<a name="156"><span class="lineNum">     156 </span><span class="lineCov">       5324 :   return Tensor((factor * torch::gather(reduced, starting_dim, map))</span></a>
-<a name="157"><span class="lineNum">     157 </span><span class="lineCov">       5324 :                     .reshape(utils::add_shapes(starting_shape, 3, 3, trailing_shape)),</span></a>
-<a name="158"><span class="lineNum">     158 </span><span class="lineCov">       5324 :                 batch_dim);</span></a>
-<a name="159"><span class="lineNum">     159 </span><span class="lineCov">       2662 : }</span></a>
+<a name="156"><span class="lineNum">     156 </span><span class="lineCov">       7304 :   return Tensor((factor * torch::gather(reduced, starting_dim, map))</span></a>
+<a name="157"><span class="lineNum">     157 </span><span class="lineCov">       7304 :                     .reshape(utils::add_shapes(starting_shape, 3, 3, trailing_shape)),</span></a>
+<a name="158"><span class="lineNum">     158 </span><span class="lineCov">       7304 :                 batch_dim);</span></a>
+<a name="159"><span class="lineNum">     159 </span><span class="lineCov">       3652 : }</span></a>
 <a name="160"><span class="lineNum">     160 </span>            : </a>
 <a name="161"><span class="lineNum">     161 </span>            : Tensor</a>
-<a name="162"><span class="lineNum">     162 </span><span class="lineCov">       1656 : full_to_mandel(const Tensor &amp; full, Size dim)</span></a>
+<a name="162"><span class="lineNum">     162 </span><span class="lineCov">       2694 : full_to_mandel(const Tensor &amp; full, Size dim)</span></a>
 <a name="163"><span class="lineNum">     163 </span>            : {</a>
 <a name="164"><span class="lineNum">     164 </span>            :   return full_to_reduced(</a>
 <a name="165"><span class="lineNum">     165 </span>            :       full,</a>
-<a name="166"><span class="lineNum">     166 </span><span class="lineCov">       3312 :       ConstantTensors::full_to_mandel_map().to(full.options().dtype(default_integer_dtype())),</span></a>
-<a name="167"><span class="lineNum">     167 </span><span class="lineCov">       3312 :       ConstantTensors::full_to_mandel_factor().to(full.options()),</span></a>
-<a name="168"><span class="lineNum">     168 </span><span class="lineCov">       3312 :       dim);</span></a>
+<a name="166"><span class="lineNum">     166 </span><span class="lineCov">       5388 :       ConstantTensors::full_to_mandel_map().to(full.options().dtype(default_integer_dtype())),</span></a>
+<a name="167"><span class="lineNum">     167 </span><span class="lineCov">       5388 :       ConstantTensors::full_to_mandel_factor().to(full.options()),</span></a>
+<a name="168"><span class="lineNum">     168 </span><span class="lineCov">       5388 :       dim);</span></a>
 <a name="169"><span class="lineNum">     169 </span>            : }</a>
 <a name="170"><span class="lineNum">     170 </span>            : </a>
 <a name="171"><span class="lineNum">     171 </span>            : Tensor</a>
-<a name="172"><span class="lineNum">     172 </span><span class="lineCov">       2198 : mandel_to_full(const Tensor &amp; mandel, Size dim)</span></a>
+<a name="172"><span class="lineNum">     172 </span><span class="lineCov">       3188 : mandel_to_full(const Tensor &amp; mandel, Size dim)</span></a>
 <a name="173"><span class="lineNum">     173 </span>            : {</a>
 <a name="174"><span class="lineNum">     174 </span>            :   return reduced_to_full(</a>
 <a name="175"><span class="lineNum">     175 </span>            :       mandel,</a>
-<a name="176"><span class="lineNum">     176 </span><span class="lineCov">       4396 :       ConstantTensors::mandel_to_full_map().to(mandel.options().dtype(default_integer_dtype())),</span></a>
-<a name="177"><span class="lineNum">     177 </span><span class="lineCov">       4396 :       ConstantTensors::mandel_to_full_factor().to(mandel.options()),</span></a>
-<a name="178"><span class="lineNum">     178 </span><span class="lineCov">       4396 :       dim);</span></a>
+<a name="176"><span class="lineNum">     176 </span><span class="lineCov">       6376 :       ConstantTensors::mandel_to_full_map().to(mandel.options().dtype(default_integer_dtype())),</span></a>
+<a name="177"><span class="lineNum">     177 </span><span class="lineCov">       6376 :       ConstantTensors::mandel_to_full_factor().to(mandel.options()),</span></a>
+<a name="178"><span class="lineNum">     178 </span><span class="lineCov">       6376 :       dim);</span></a>
 <a name="179"><span class="lineNum">     179 </span>            : }</a>
 <a name="180"><span class="lineNum">     180 </span>            : </a>
 <a name="181"><span class="lineNum">     181 </span>            : Tensor</a>
@@ -261,47 +261,47 @@
 <a name="199"><span class="lineNum">     199 </span>            : }</a>
 <a name="200"><span class="lineNum">     200 </span>            : </a>
 <a name="201"><span class="lineNum">     201 </span>            : Tensor</a>
-<a name="202"><span class="lineNum">     202 </span><span class="lineCov">         75 : jacrev(const Tensor &amp; y, const Tensor &amp; p)</span></a>
+<a name="202"><span class="lineNum">     202 </span><span class="lineCov">         78 : jacrev(const Tensor &amp; y, const Tensor &amp; p)</span></a>
 <a name="203"><span class="lineNum">     203 </span>            : {</a>
-<a name="204"><span class="lineNum">     204 </span><span class="lineCov">         75 :   neml_assert(p.batch_sizes() == y.batch_sizes(),</span></a>
+<a name="204"><span class="lineNum">     204 </span><span class="lineCov">         78 :   neml_assert(p.batch_sizes() == y.batch_sizes(),</span></a>
 <a name="205"><span class="lineNum">     205 </span>            :               &quot;The batch shape of the parameter must be the same as the batch shape &quot;</a>
 <a name="206"><span class="lineNum">     206 </span>            :               &quot;of the output. However, the batch shape of the parameter is &quot;,</a>
-<a name="207"><span class="lineNum">     207 </span><span class="lineCov">         76 :               p.batch_sizes(),</span></a>
+<a name="207"><span class="lineNum">     207 </span><span class="lineCov">         79 :               p.batch_sizes(),</span></a>
 <a name="208"><span class="lineNum">     208 </span>            :               &quot;, and the batch shape of the output is &quot;,</a>
-<a name="209"><span class="lineNum">     209 </span><span class="lineCov">         76 :               y.batch_sizes());</span></a>
+<a name="209"><span class="lineNum">     209 </span><span class="lineCov">         79 :               y.batch_sizes());</span></a>
 <a name="210"><span class="lineNum">     210 </span>            : </a>
 <a name="211"><span class="lineNum">     211 </span>            :   // flatten y to handle arbitrarily shaped output</a>
 <a name="212"><span class="lineNum">     212 </span>            :   auto yf =</a>
-<a name="213"><span class="lineNum">     213 </span><span class="lineCov">        148 :       Tensor(y.reshape(utils::add_shapes(y.batch_sizes(), utils::storage_size(y.base_sizes()))),</span></a>
-<a name="214"><span class="lineNum">     214 </span><span class="lineCov">        148 :              y.batch_dim());</span></a>
+<a name="213"><span class="lineNum">     213 </span><span class="lineCov">        154 :       Tensor(y.reshape(utils::add_shapes(y.batch_sizes(), utils::storage_size(y.base_sizes()))),</span></a>
+<a name="214"><span class="lineNum">     214 </span><span class="lineCov">        154 :              y.batch_dim());</span></a>
 <a name="215"><span class="lineNum">     215 </span>            : </a>
-<a name="216"><span class="lineNum">     216 </span><span class="lineCov">         74 :   neml_assert_dbg(yf.base_dim() == 1, &quot;Flattened output must be flat.&quot;);</span></a>
+<a name="216"><span class="lineNum">     216 </span><span class="lineCov">         77 :   neml_assert_dbg(yf.base_dim() == 1, &quot;Flattened output must be flat.&quot;);</span></a>
 <a name="217"><span class="lineNum">     217 </span>            : </a>
 <a name="218"><span class="lineNum">     218 </span>            :   auto dyf_dp = Tensor::zeros(</a>
-<a name="219"><span class="lineNum">     219 </span><span class="lineCov">         74 :       yf.batch_sizes(), utils::add_shapes(yf.base_sizes(), p.base_sizes()), yf.options());</span></a>
+<a name="219"><span class="lineNum">     219 </span><span class="lineCov">         77 :       yf.batch_sizes(), utils::add_shapes(yf.base_sizes(), p.base_sizes()), yf.options());</span></a>
 <a name="220"><span class="lineNum">     220 </span>            : </a>
-<a name="221"><span class="lineNum">     221 </span><span class="lineCov">         74 :   if (yf.requires_grad())</span></a>
-<a name="222"><span class="lineNum">     222 </span><span class="lineCov">        288 :     for (Size i = 0; i &lt; yf.base_sizes()[0]; i++)</span></a>
+<a name="221"><span class="lineNum">     221 </span><span class="lineCov">         77 :   if (yf.requires_grad())</span></a>
+<a name="222"><span class="lineNum">     222 </span><span class="lineCov">        309 :     for (Size i = 0; i &lt; yf.base_sizes()[0]; i++)</span></a>
 <a name="223"><span class="lineNum">     223 </span>            :     {</a>
-<a name="224"><span class="lineNum">     224 </span><span class="lineCov">        215 :       auto v = Tensor::zeros_like(yf);</span></a>
-<a name="225"><span class="lineNum">     225 </span><span class="lineCov">        645 :       v.index_put_({torch::indexing::Ellipsis, i}, 1.0);</span></a>
-<a name="226"><span class="lineNum">     226 </span><span class="lineCov">       1505 :       const auto dyfi_dp = torch::autograd::grad({yf},</span></a>
+<a name="224"><span class="lineNum">     224 </span><span class="lineCov">        233 :       auto v = Tensor::zeros_like(yf);</span></a>
+<a name="225"><span class="lineNum">     225 </span><span class="lineCov">        699 :       v.index_put_({torch::indexing::Ellipsis, i}, 1.0);</span></a>
+<a name="226"><span class="lineNum">     226 </span><span class="lineCov">       1631 :       const auto dyfi_dp = torch::autograd::grad({yf},</span></a>
 <a name="227"><span class="lineNum">     227 </span>            :                                                  {p},</a>
 <a name="228"><span class="lineNum">     228 </span>            :                                                  {v},</a>
-<a name="229"><span class="lineNum">     229 </span><span class="lineCov">        215 :                                                  /*retain_graph=*/true,</span></a>
+<a name="229"><span class="lineNum">     229 </span><span class="lineCov">        233 :                                                  /*retain_graph=*/true,</span></a>
 <a name="230"><span class="lineNum">     230 </span>            :                                                  /*create_graph=*/false,</a>
-<a name="231"><span class="lineNum">     231 </span><span class="lineCov">        215 :                                                  /*allow_unused=*/true)[0];</span></a>
-<a name="232"><span class="lineNum">     232 </span><span class="lineCov">        215 :       if (dyfi_dp.defined())</span></a>
-<a name="233"><span class="lineNum">     233 </span><span class="lineCov">        603 :         dyf_dp.base_index_put_({i, torch::indexing::Ellipsis}, dyfi_dp);</span></a>
-<a name="234"><span class="lineNum">     234 </span><span class="lineCov">        215 :     }</span></a>
+<a name="231"><span class="lineNum">     231 </span><span class="lineCov">        233 :                                                  /*allow_unused=*/true)[0];</span></a>
+<a name="232"><span class="lineNum">     232 </span><span class="lineCov">        233 :       if (dyfi_dp.defined())</span></a>
+<a name="233"><span class="lineNum">     233 </span><span class="lineCov">        657 :         dyf_dp.base_index_put_({i, torch::indexing::Ellipsis}, dyfi_dp);</span></a>
+<a name="234"><span class="lineNum">     234 </span><span class="lineCov">        233 :     }</span></a>
 <a name="235"><span class="lineNum">     235 </span>            : </a>
 <a name="236"><span class="lineNum">     236 </span>            :   // Reshape the derivative back to the correct shape</a>
 <a name="237"><span class="lineNum">     237 </span>            :   const auto dy_dp =</a>
-<a name="238"><span class="lineNum">     238 </span><span class="lineCov">        148 :       Tensor(dyf_dp.reshape(utils::add_shapes(y.batch_sizes(), y.base_sizes(), p.base_sizes())),</span></a>
-<a name="239"><span class="lineNum">     239 </span><span class="lineCov">        148 :              y.batch_dim());</span></a>
+<a name="238"><span class="lineNum">     238 </span><span class="lineCov">        154 :       Tensor(dyf_dp.reshape(utils::add_shapes(y.batch_sizes(), y.base_sizes(), p.base_sizes())),</span></a>
+<a name="239"><span class="lineNum">     239 </span><span class="lineCov">        154 :              y.batch_dim());</span></a>
 <a name="240"><span class="lineNum">     240 </span>            : </a>
-<a name="241"><span class="lineNum">     241 </span><span class="lineCov">        148 :   return dy_dp;</span></a>
-<a name="242"><span class="lineNum">     242 </span><span class="lineCov">         74 : }</span></a>
+<a name="241"><span class="lineNum">     241 </span><span class="lineCov">        154 :   return dy_dp;</span></a>
+<a name="242"><span class="lineNum">     242 </span><span class="lineCov">         77 : }</span></a>
 <a name="243"><span class="lineNum">     243 </span>            : </a>
 <a name="244"><span class="lineNum">     244 </span>            : Tensor</a>
 <a name="245"><span class="lineNum">     245 </span><span class="lineCov">        552 : base_diag_embed(const Tensor &amp; a, Size offset, Size d1, Size d2)</span></a>
@@ -400,9 +400,9 @@
 <a name="338"><span class="lineNum">     338 </span>            : }</a>
 <a name="339"><span class="lineNum">     339 </span>            : </a>
 <a name="340"><span class="lineNum">     340 </span>            : Tensor</a>
-<a name="341"><span class="lineNum">     341 </span><span class="lineNoCov">          0 : inv(const Tensor &amp; m)</span></a>
+<a name="341"><span class="lineNum">     341 </span><span class="lineCov">        227 : inv(const Tensor &amp; m)</span></a>
 <a name="342"><span class="lineNum">     342 </span>            : {</a>
-<a name="343"><span class="lineNum">     343 </span><span class="lineNoCov">          0 :   return Tensor(torch::linalg::inv(m), m.batch_dim());</span></a>
+<a name="343"><span class="lineNum">     343 </span><span class="lineCov">        454 :   return Tensor(torch::linalg::inv(m), m.batch_dim());</span></a>
 <a name="344"><span class="lineNum">     344 </span>            : }</a>
 <a name="345"><span class="lineNum">     345 </span>            : </a>
 <a name="346"><span class="lineNum">     346 </span>            : Tensor</a>

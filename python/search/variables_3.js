@@ -6,5 +6,6 @@ var searchData=
   ['sr2_3',['SR2',['../classtensors_1_1TensorType.html#a3e3c0687809d76d776a288ede8ee419d',1,'tensors::TensorType']]],
   ['ssfr5_4',['SSFR5',['../classtensors_1_1TensorType.html#a6e6b16eec20132030a5cd8e6610838d2',1,'tensors::TensorType']]],
   ['ssr4_5',['SSR4',['../classtensors_1_1TensorType.html#a702996ce5f54374a120531aa6192afd6',1,'tensors::TensorType']]],
-  ['swr4_6',['SWR4',['../classtensors_1_1TensorType.html#ad2cd1ddd359cb94b18bdf822ce47fc71',1,'tensors::TensorType']]]
+  ['ssssr8_6',['SSSSR8',['../classtensors_1_1TensorType.html#a13cb8ba0e28b84bfa34128e51e632162',1,'tensors::TensorType']]],
+  ['swr4_7',['SWR4',['../classtensors_1_1TensorType.html#ad2cd1ddd359cb94b18bdf822ce47fc71',1,'tensors::TensorType']]]
 ];

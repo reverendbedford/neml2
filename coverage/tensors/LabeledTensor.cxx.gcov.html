@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-11 16:42:39</td>
+            <td class="headerValue">2024-12-13 23:10:15</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">62</td>
@@ -110,21 +110,21 @@
 <a name="48"><span class="lineNum">      48 </span><span class="lineCov">        625 : }</span></a>
 <a name="49"><span class="lineNum">      49 </span>            : </a>
 <a name="50"><span class="lineNum">      50 </span>            : template &lt;class Derived, Size D&gt;</a>
-<a name="51"><span class="lineNum">      51 </span><span class="lineCov">      57699 : LabeledTensor&lt;Derived, D&gt;::LabeledTensor(const Tensor &amp; tensor,</span></a>
+<a name="51"><span class="lineNum">      51 </span><span class="lineCov">      60616 : LabeledTensor&lt;Derived, D&gt;::LabeledTensor(const Tensor &amp; tensor,</span></a>
 <a name="52"><span class="lineNum">      52 </span>            :                                          const std::array&lt;const LabeledAxis *, D&gt; &amp; axes)</a>
-<a name="53"><span class="lineNum">      53 </span><span class="lineCov">      57699 :   : _tensor(tensor),</span></a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">      57699 :     _axes(axes)</span></a>
+<a name="53"><span class="lineNum">      53 </span><span class="lineCov">      60616 :   : _tensor(tensor),</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">      60616 :     _axes(axes)</span></a>
 <a name="55"><span class="lineNum">      55 </span>            : {</a>
 <a name="56"><span class="lineNum">      56 </span>            :   // Check that the size of the tensor was compatible</a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">     158958 :   for (Size i = 0; i &lt; D; i++)</span></a>
-<a name="58"><span class="lineNum">      58 </span><span class="lineCov">     101259 :     neml_assert_dbg(base_size(i) == _axes[i]-&gt;storage_size(),</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineCov">     166141 :   for (Size i = 0; i &lt; D; i++)</span></a>
+<a name="58"><span class="lineNum">      58 </span><span class="lineCov">     105525 :     neml_assert_dbg(base_size(i) == _axes[i]-&gt;storage_size(),</span></a>
 <a name="59"><span class="lineNum">      59 </span>            :                     &quot;LabeledTensor does not have the right size at dimension &quot;,</a>
 <a name="60"><span class="lineNum">      60 </span>            :                     i,</a>
 <a name="61"><span class="lineNum">      61 </span>            :                     &quot;. Expected &quot;,</a>
-<a name="62"><span class="lineNum">      62 </span><span class="lineCov">     202518 :                     _axes[i]-&gt;storage_size(),</span></a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineCov">     211050 :                     _axes[i]-&gt;storage_size(),</span></a>
 <a name="63"><span class="lineNum">      63 </span>            :                     &quot;, got &quot;,</a>
-<a name="64"><span class="lineNum">      64 </span><span class="lineCov">     202518 :                     base_size(i));</span></a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineCov">      57699 : }</span></a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineCov">     211050 :                     base_size(i));</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">      60616 : }</span></a>
 <a name="66"><span class="lineNum">      66 </span>            : </a>
 <a name="67"><span class="lineNum">      67 </span>            : template &lt;class Derived, Size D&gt;</a>
 <a name="68"><span class="lineNum">      68 </span><span class="lineNoCov">          0 : LabeledTensor&lt;Derived, D&gt;::LabeledTensor(const Derived &amp; other)</span></a>
@@ -143,15 +143,15 @@
 <a name="81"><span class="lineNum">      81 </span>            : }</a>
 <a name="82"><span class="lineNum">      82 </span>            : </a>
 <a name="83"><span class="lineNum">      83 </span>            : template &lt;class Derived, Size D&gt;</a>
-<a name="84"><span class="lineNum">      84 </span><span class="lineCov">      20354 : LabeledTensor&lt;Derived, D&gt;::operator Tensor() const</span></a>
+<a name="84"><span class="lineNum">      84 </span><span class="lineCov">      20989 : LabeledTensor&lt;Derived, D&gt;::operator Tensor() const</span></a>
 <a name="85"><span class="lineNum">      85 </span>            : {</a>
-<a name="86"><span class="lineNum">      86 </span><span class="lineCov">      20354 :   return _tensor;</span></a>
+<a name="86"><span class="lineNum">      86 </span><span class="lineCov">      20989 :   return _tensor;</span></a>
 <a name="87"><span class="lineNum">      87 </span>            : }</a>
 <a name="88"><span class="lineNum">      88 </span>            : </a>
 <a name="89"><span class="lineNum">      89 </span>            : template &lt;class Derived, Size D&gt;</a>
-<a name="90"><span class="lineNum">      90 </span><span class="lineCov">      14416 : LabeledTensor&lt;Derived, D&gt;::operator torch::Tensor() const</span></a>
+<a name="90"><span class="lineNum">      90 </span><span class="lineCov">      14623 : LabeledTensor&lt;Derived, D&gt;::operator torch::Tensor() const</span></a>
 <a name="91"><span class="lineNum">      91 </span>            : {</a>
-<a name="92"><span class="lineNum">      92 </span><span class="lineCov">      14416 :   return _tensor;</span></a>
+<a name="92"><span class="lineNum">      92 </span><span class="lineCov">      14623 :   return _tensor;</span></a>
 <a name="93"><span class="lineNum">      93 </span>            : }</a>
 <a name="94"><span class="lineNum">      94 </span>            : </a>
 <a name="95"><span class="lineNum">      95 </span>            : template &lt;class Derived, Size D&gt;</a>
@@ -171,24 +171,24 @@
 <a name="109"><span class="lineNum">     109 </span>            : </a>
 <a name="110"><span class="lineNum">     110 </span>            : template &lt;class Derived, Size D&gt;</a>
 <a name="111"><span class="lineNum">     111 </span>            : Derived</a>
-<a name="112"><span class="lineNum">     112 </span><span class="lineCov">      29255 : LabeledTensor&lt;Derived, D&gt;::zeros(TensorShapeRef batch_shape,</span></a>
+<a name="112"><span class="lineNum">     112 </span><span class="lineCov">      31063 : LabeledTensor&lt;Derived, D&gt;::zeros(TensorShapeRef batch_shape,</span></a>
 <a name="113"><span class="lineNum">     113 </span>            :                                  const std::array&lt;const LabeledAxis *, D&gt; &amp; axes,</a>
 <a name="114"><span class="lineNum">     114 </span>            :                                  const torch::TensorOptions &amp; options)</a>
 <a name="115"><span class="lineNum">     115 </span>            : {</a>
-<a name="116"><span class="lineNum">     116 </span><span class="lineCov">      29255 :   TensorShape s;</span></a>
-<a name="117"><span class="lineNum">     117 </span><span class="lineCov">      29255 :   s.reserve(axes.size());</span></a>
-<a name="118"><span class="lineNum">     118 </span><span class="lineCov">      29255 :   std::transform(axes.begin(),</span></a>
+<a name="116"><span class="lineNum">     116 </span><span class="lineCov">      31063 :   TensorShape s;</span></a>
+<a name="117"><span class="lineNum">     117 </span><span class="lineCov">      31063 :   s.reserve(axes.size());</span></a>
+<a name="118"><span class="lineNum">     118 </span><span class="lineCov">      31063 :   std::transform(axes.begin(),</span></a>
 <a name="119"><span class="lineNum">     119 </span>            :                  axes.end(),</a>
 <a name="120"><span class="lineNum">     120 </span>            :                  std::back_inserter(s),</a>
-<a name="121"><span class="lineNum">     121 </span><span class="lineCov">      51312 :                  [](const LabeledAxis * axis) { return axis-&gt;storage_size(); });</span></a>
-<a name="122"><span class="lineNum">     122 </span><span class="lineCov">      58510 :   return Derived(Tensor::zeros(batch_shape, s, options), axes);</span></a>
-<a name="123"><span class="lineNum">     123 </span><span class="lineCov">      29255 : }</span></a>
+<a name="121"><span class="lineNum">     121 </span><span class="lineCov">      54141 :                  [](const LabeledAxis * axis) { return axis-&gt;storage_size(); });</span></a>
+<a name="122"><span class="lineNum">     122 </span><span class="lineCov">      62126 :   return Derived(Tensor::zeros(batch_shape, s, options), axes);</span></a>
+<a name="123"><span class="lineNum">     123 </span><span class="lineCov">      31063 : }</span></a>
 <a name="124"><span class="lineNum">     124 </span>            : </a>
 <a name="125"><span class="lineNum">     125 </span>            : template &lt;class Derived, Size D&gt;</a>
 <a name="126"><span class="lineNum">     126 </span>            : Derived</a>
-<a name="127"><span class="lineNum">     127 </span><span class="lineCov">       3994 : LabeledTensor&lt;Derived, D&gt;::clone(torch::MemoryFormat memory_format) const</span></a>
+<a name="127"><span class="lineNum">     127 </span><span class="lineCov">       4497 : LabeledTensor&lt;Derived, D&gt;::clone(torch::MemoryFormat memory_format) const</span></a>
 <a name="128"><span class="lineNum">     128 </span>            : {</a>
-<a name="129"><span class="lineNum">     129 </span><span class="lineCov">       3994 :   return Derived(_tensor.clone(memory_format), _axes);</span></a>
+<a name="129"><span class="lineNum">     129 </span><span class="lineCov">       4497 :   return Derived(_tensor.clone(memory_format), _axes);</span></a>
 <a name="130"><span class="lineNum">     130 </span>            : }</a>
 <a name="131"><span class="lineNum">     131 </span>            : </a>
 <a name="132"><span class="lineNum">     132 </span>            : template &lt;class Derived, Size D&gt;</a>
@@ -207,24 +207,24 @@
 <a name="145"><span class="lineNum">     145 </span>            : </a>
 <a name="146"><span class="lineNum">     146 </span>            : template &lt;class Derived, Size D&gt;</a>
 <a name="147"><span class="lineNum">     147 </span>            : Derived</a>
-<a name="148"><span class="lineNum">     148 </span><span class="lineCov">        212 : LabeledTensor&lt;Derived, D&gt;::to(const torch::TensorOptions &amp; options) const</span></a>
+<a name="148"><span class="lineNum">     148 </span><span class="lineCov">        230 : LabeledTensor&lt;Derived, D&gt;::to(const torch::TensorOptions &amp; options) const</span></a>
 <a name="149"><span class="lineNum">     149 </span>            : {</a>
-<a name="150"><span class="lineNum">     150 </span><span class="lineCov">        212 :   return Derived(_tensor.to(options), _axes);</span></a>
+<a name="150"><span class="lineNum">     150 </span><span class="lineCov">        230 :   return Derived(_tensor.to(options), _axes);</span></a>
 <a name="151"><span class="lineNum">     151 </span>            : }</a>
 <a name="152"><span class="lineNum">     152 </span>            : </a>
 <a name="153"><span class="lineNum">     153 </span>            : template &lt;class Derived, Size D&gt;</a>
 <a name="154"><span class="lineNum">     154 </span>            : void</a>
-<a name="155"><span class="lineNum">     155 </span><span class="lineCov">      12589 : LabeledTensor&lt;Derived, D&gt;::copy_(const torch::Tensor &amp; other)</span></a>
+<a name="155"><span class="lineNum">     155 </span><span class="lineCov">      13143 : LabeledTensor&lt;Derived, D&gt;::copy_(const torch::Tensor &amp; other)</span></a>
 <a name="156"><span class="lineNum">     156 </span>            : {</a>
-<a name="157"><span class="lineNum">     157 </span><span class="lineCov">      12589 :   _tensor.copy_(other);</span></a>
-<a name="158"><span class="lineNum">     158 </span><span class="lineCov">      12589 : }</span></a>
+<a name="157"><span class="lineNum">     157 </span><span class="lineCov">      13143 :   _tensor.copy_(other);</span></a>
+<a name="158"><span class="lineNum">     158 </span><span class="lineCov">      13143 : }</span></a>
 <a name="159"><span class="lineNum">     159 </span>            : </a>
 <a name="160"><span class="lineNum">     160 </span>            : template &lt;class Derived, Size D&gt;</a>
 <a name="161"><span class="lineNum">     161 </span>            : void</a>
-<a name="162"><span class="lineNum">     162 </span><span class="lineCov">      20649 : LabeledTensor&lt;Derived, D&gt;::zero_()</span></a>
+<a name="162"><span class="lineNum">     162 </span><span class="lineCov">      21100 : LabeledTensor&lt;Derived, D&gt;::zero_()</span></a>
 <a name="163"><span class="lineNum">     163 </span>            : {</a>
-<a name="164"><span class="lineNum">     164 </span><span class="lineCov">      20649 :   _tensor.zero_();</span></a>
-<a name="165"><span class="lineNum">     165 </span><span class="lineCov">      20649 : }</span></a>
+<a name="164"><span class="lineNum">     164 </span><span class="lineCov">      21100 :   _tensor.zero_();</span></a>
+<a name="165"><span class="lineNum">     165 </span><span class="lineCov">      21100 : }</span></a>
 <a name="166"><span class="lineNum">     166 </span>            : </a>
 <a name="167"><span class="lineNum">     167 </span>            : template &lt;class Derived, Size D&gt;</a>
 <a name="168"><span class="lineNum">     168 </span>            : bool</a>
@@ -249,9 +249,9 @@
 <a name="187"><span class="lineNum">     187 </span>            : </a>
 <a name="188"><span class="lineNum">     188 </span>            : template &lt;class Derived, Size D&gt;</a>
 <a name="189"><span class="lineNum">     189 </span>            : torch::TensorOptions</a>
-<a name="190"><span class="lineNum">     190 </span><span class="lineCov">        188 : LabeledTensor&lt;Derived, D&gt;::options() const</span></a>
+<a name="190"><span class="lineNum">     190 </span><span class="lineCov">        206 : LabeledTensor&lt;Derived, D&gt;::options() const</span></a>
 <a name="191"><span class="lineNum">     191 </span>            : {</a>
-<a name="192"><span class="lineNum">     192 </span><span class="lineCov">        188 :   return _tensor.options();</span></a>
+<a name="192"><span class="lineNum">     192 </span><span class="lineCov">        206 :   return _tensor.options();</span></a>
 <a name="193"><span class="lineNum">     193 </span>            : }</a>
 <a name="194"><span class="lineNum">     194 </span>            : </a>
 <a name="195"><span class="lineNum">     195 </span>            : template &lt;class Derived, Size D&gt;</a>
@@ -305,9 +305,9 @@
 <a name="243"><span class="lineNum">     243 </span>            : </a>
 <a name="244"><span class="lineNum">     244 </span>            : template &lt;class Derived, Size D&gt;</a>
 <a name="245"><span class="lineNum">     245 </span>            : TensorShapeRef</a>
-<a name="246"><span class="lineNum">     246 </span><span class="lineCov">      27395 : LabeledTensor&lt;Derived, D&gt;::batch_sizes() const</span></a>
+<a name="246"><span class="lineNum">     246 </span><span class="lineCov">      28503 : LabeledTensor&lt;Derived, D&gt;::batch_sizes() const</span></a>
 <a name="247"><span class="lineNum">     247 </span>            : {</a>
-<a name="248"><span class="lineNum">     248 </span><span class="lineCov">      27395 :   return _tensor.batch_sizes();</span></a>
+<a name="248"><span class="lineNum">     248 </span><span class="lineCov">      28503 :   return _tensor.batch_sizes();</span></a>
 <a name="249"><span class="lineNum">     249 </span>            : }</a>
 <a name="250"><span class="lineNum">     250 </span>            : </a>
 <a name="251"><span class="lineNum">     251 </span>            : template &lt;class Derived, Size D&gt;</a>
@@ -319,23 +319,23 @@
 <a name="257"><span class="lineNum">     257 </span>            : </a>
 <a name="258"><span class="lineNum">     258 </span>            : template &lt;class Derived, Size D&gt;</a>
 <a name="259"><span class="lineNum">     259 </span>            : TensorShapeRef</a>
-<a name="260"><span class="lineNum">     260 </span><span class="lineCov">        535 : LabeledTensor&lt;Derived, D&gt;::base_sizes() const</span></a>
+<a name="260"><span class="lineNum">     260 </span><span class="lineCov">        577 : LabeledTensor&lt;Derived, D&gt;::base_sizes() const</span></a>
 <a name="261"><span class="lineNum">     261 </span>            : {</a>
-<a name="262"><span class="lineNum">     262 </span><span class="lineCov">        535 :   return _tensor.base_sizes();</span></a>
+<a name="262"><span class="lineNum">     262 </span><span class="lineCov">        577 :   return _tensor.base_sizes();</span></a>
 <a name="263"><span class="lineNum">     263 </span>            : }</a>
 <a name="264"><span class="lineNum">     264 </span>            : </a>
 <a name="265"><span class="lineNum">     265 </span>            : template &lt;class Derived, Size D&gt;</a>
 <a name="266"><span class="lineNum">     266 </span>            : Size</a>
-<a name="267"><span class="lineNum">     267 </span><span class="lineCov">     206262 : LabeledTensor&lt;Derived, D&gt;::base_size(Size d) const</span></a>
+<a name="267"><span class="lineNum">     267 </span><span class="lineCov">     214794 : LabeledTensor&lt;Derived, D&gt;::base_size(Size d) const</span></a>
 <a name="268"><span class="lineNum">     268 </span>            : {</a>
-<a name="269"><span class="lineNum">     269 </span><span class="lineCov">     206262 :   return _tensor.base_size(d);</span></a>
+<a name="269"><span class="lineNum">     269 </span><span class="lineCov">     214794 :   return _tensor.base_size(d);</span></a>
 <a name="270"><span class="lineNum">     270 </span>            : }</a>
 <a name="271"><span class="lineNum">     271 </span>            : </a>
 <a name="272"><span class="lineNum">     272 </span>            : template &lt;class Derived, Size D&gt;</a>
 <a name="273"><span class="lineNum">     273 </span>            : Size</a>
-<a name="274"><span class="lineNum">     274 </span><span class="lineCov">      12897 : LabeledTensor&lt;Derived, D&gt;::base_storage() const</span></a>
+<a name="274"><span class="lineNum">     274 </span><span class="lineCov">      14825 : LabeledTensor&lt;Derived, D&gt;::base_storage() const</span></a>
 <a name="275"><span class="lineNum">     275 </span>            : {</a>
-<a name="276"><span class="lineNum">     276 </span><span class="lineCov">      12897 :   return _tensor.base_storage();</span></a>
+<a name="276"><span class="lineNum">     276 </span><span class="lineCov">      14825 :   return _tensor.base_storage();</span></a>
 <a name="277"><span class="lineNum">     277 </span>            : }</a>
 <a name="278"><span class="lineNum">     278 </span>            : </a>
 <a name="279"><span class="lineNum">     279 </span>            : template &lt;class Derived, Size D&gt;</a>
@@ -347,9 +347,9 @@
 <a name="285"><span class="lineNum">     285 </span>            : </a>
 <a name="286"><span class="lineNum">     286 </span>            : template &lt;class Derived, Size D&gt;</a>
 <a name="287"><span class="lineNum">     287 </span>            : Tensor</a>
-<a name="288"><span class="lineNum">     288 </span><span class="lineCov">     105249 : LabeledTensor&lt;Derived, D&gt;::base_index(indexing::TensorLabelsRef labels) const</span></a>
+<a name="288"><span class="lineNum">     288 </span><span class="lineCov">     108266 : LabeledTensor&lt;Derived, D&gt;::base_index(indexing::TensorLabelsRef labels) const</span></a>
 <a name="289"><span class="lineNum">     289 </span>            : {</a>
-<a name="290"><span class="lineNum">     290 </span><span class="lineCov">     105249 :   return _tensor.base_index(labels_to_indices(labels));</span></a>
+<a name="290"><span class="lineNum">     290 </span><span class="lineCov">     108266 :   return _tensor.base_index(labels_to_indices(labels));</span></a>
 <a name="291"><span class="lineNum">     291 </span>            : }</a>
 <a name="292"><span class="lineNum">     292 </span>            : </a>
 <a name="293"><span class="lineNum">     293 </span>            : template &lt;class Derived, Size D&gt;</a>
@@ -362,52 +362,52 @@
 <a name="300"><span class="lineNum">     300 </span>            : </a>
 <a name="301"><span class="lineNum">     301 </span>            : template &lt;class Derived, Size D&gt;</a>
 <a name="302"><span class="lineNum">     302 </span>            : void</a>
-<a name="303"><span class="lineNum">     303 </span><span class="lineCov">        507 : LabeledTensor&lt;Derived, D&gt;::base_index_put_(indexing::TensorLabelsRef labels, const Tensor &amp; other)</span></a>
+<a name="303"><span class="lineNum">     303 </span><span class="lineCov">        538 : LabeledTensor&lt;Derived, D&gt;::base_index_put_(indexing::TensorLabelsRef labels, const Tensor &amp; other)</span></a>
 <a name="304"><span class="lineNum">     304 </span>            : {</a>
-<a name="305"><span class="lineNum">     305 </span><span class="lineCov">       1014 :   _tensor.base_index_put_(</span></a>
+<a name="305"><span class="lineNum">     305 </span><span class="lineCov">       1076 :   _tensor.base_index_put_(</span></a>
 <a name="306"><span class="lineNum">     306 </span>            :       labels_to_indices(labels),</a>
-<a name="307"><span class="lineNum">     307 </span><span class="lineCov">       1014 :       other.reshape(utils::add_shapes(other.batch_sizes(), storage_shape(labels))));</span></a>
-<a name="308"><span class="lineNum">     308 </span><span class="lineCov">        507 : }</span></a>
+<a name="307"><span class="lineNum">     307 </span><span class="lineCov">       1076 :       other.reshape(utils::add_shapes(other.batch_sizes(), storage_shape(labels))));</span></a>
+<a name="308"><span class="lineNum">     308 </span><span class="lineCov">        538 : }</span></a>
 <a name="309"><span class="lineNum">     309 </span>            : </a>
 <a name="310"><span class="lineNum">     310 </span>            : template &lt;class Derived, Size D&gt;</a>
 <a name="311"><span class="lineNum">     311 </span>            : TensorShape</a>
-<a name="312"><span class="lineNum">     312 </span><span class="lineCov">        507 : LabeledTensor&lt;Derived, D&gt;::storage_shape(indexing::TensorLabelsRef labels) const</span></a>
+<a name="312"><span class="lineNum">     312 </span><span class="lineCov">        538 : LabeledTensor&lt;Derived, D&gt;::storage_shape(indexing::TensorLabelsRef labels) const</span></a>
 <a name="313"><span class="lineNum">     313 </span>            : {</a>
-<a name="314"><span class="lineNum">     314 </span><span class="lineCov">        507 :   TensorShape s(labels.size());</span></a>
-<a name="315"><span class="lineNum">     315 </span><span class="lineCov">       1018 :   for (size_t i = 0; i &lt; labels.size(); i++)</span></a>
-<a name="316"><span class="lineNum">     316 </span><span class="lineCov">        511 :     s[i] = _axes[i]-&gt;storage_size(labels[i]);</span></a>
-<a name="317"><span class="lineNum">     317 </span><span class="lineCov">        507 :   return s;</span></a>
+<a name="314"><span class="lineNum">     314 </span><span class="lineCov">        538 :   TensorShape s(labels.size());</span></a>
+<a name="315"><span class="lineNum">     315 </span><span class="lineCov">       1080 :   for (size_t i = 0; i &lt; labels.size(); i++)</span></a>
+<a name="316"><span class="lineNum">     316 </span><span class="lineCov">        542 :     s[i] = _axes[i]-&gt;storage_size(labels[i]);</span></a>
+<a name="317"><span class="lineNum">     317 </span><span class="lineCov">        538 :   return s;</span></a>
 <a name="318"><span class="lineNum">     318 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="319"><span class="lineNum">     319 </span>            : </a>
 <a name="320"><span class="lineNum">     320 </span>            : template &lt;class Derived, Size D&gt;</a>
 <a name="321"><span class="lineNum">     321 </span>            : indexing::TensorIndices</a>
-<a name="322"><span class="lineNum">     322 </span><span class="lineCov">     105756 : LabeledTensor&lt;Derived, D&gt;::labels_to_indices(indexing::TensorLabelsRef labels) const</span></a>
+<a name="322"><span class="lineNum">     322 </span><span class="lineCov">     108804 : LabeledTensor&lt;Derived, D&gt;::labels_to_indices(indexing::TensorLabelsRef labels) const</span></a>
 <a name="323"><span class="lineNum">     323 </span>            : {</a>
-<a name="324"><span class="lineNum">     324 </span><span class="lineCov">     105756 :   neml_assert_dbg(labels.size() == D, &quot;Wrong label size, must be &quot;, D, &quot;, got &quot;, labels.size());</span></a>
-<a name="325"><span class="lineNum">     325 </span><span class="lineCov">     105756 :   indexing::TensorIndices indices;</span></a>
-<a name="326"><span class="lineNum">     326 </span><span class="lineCov">     304901 :   for (size_t i = 0; i &lt; labels.size(); i++)</span></a>
-<a name="327"><span class="lineNum">     327 </span><span class="lineCov">     199145 :     indices.push_back(_axes[i]-&gt;indices(labels[i]));</span></a>
-<a name="328"><span class="lineNum">     328 </span><span class="lineCov">     105756 :   return indices;</span></a>
+<a name="324"><span class="lineNum">     324 </span><span class="lineCov">     108804 :   neml_assert_dbg(labels.size() == D, &quot;Wrong label size, must be &quot;, D, &quot;, got &quot;, labels.size());</span></a>
+<a name="325"><span class="lineNum">     325 </span><span class="lineCov">     108804 :   indexing::TensorIndices indices;</span></a>
+<a name="326"><span class="lineNum">     326 </span><span class="lineCov">     312403 :   for (size_t i = 0; i &lt; labels.size(); i++)</span></a>
+<a name="327"><span class="lineNum">     327 </span><span class="lineCov">     203599 :     indices.push_back(_axes[i]-&gt;indices(labels[i]));</span></a>
+<a name="328"><span class="lineNum">     328 </span><span class="lineCov">     108804 :   return indices;</span></a>
 <a name="329"><span class="lineNum">     329 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="330"><span class="lineNum">     330 </span>            : </a>
 <a name="331"><span class="lineNum">     331 </span>            : template &lt;class Derived, Size D&gt;</a>
 <a name="332"><span class="lineNum">     332 </span>            : void</a>
-<a name="333"><span class="lineNum">     333 </span><span class="lineCov">       9800 : LabeledTensor&lt;Derived, D&gt;::fill(const Derived &amp; other, Size odim, bool recursive)</span></a>
+<a name="333"><span class="lineNum">     333 </span><span class="lineCov">      10066 : LabeledTensor&lt;Derived, D&gt;::fill(const Derived &amp; other, Size odim, bool recursive)</span></a>
 <a name="334"><span class="lineNum">     334 </span>            : {</a>
-<a name="335"><span class="lineNum">     335 </span><span class="lineCov">       9800 :   neml_assert_dbg(odim &lt; D, &quot;Common axis for fill must be less than the tensor dimension&quot;);</span></a>
-<a name="336"><span class="lineNum">     336 </span><span class="lineCov">       9800 :   for (Size i = 0; i &lt; Size(axes().size()) &amp;&amp; i != odim; i++)</span></a>
+<a name="335"><span class="lineNum">     335 </span><span class="lineCov">      10066 :   neml_assert_dbg(odim &lt; D, &quot;Common axis for fill must be less than the tensor dimension&quot;);</span></a>
+<a name="336"><span class="lineNum">     336 </span><span class="lineCov">      10066 :   for (Size i = 0; i &lt; Size(axes().size()) &amp;&amp; i != odim; i++)</span></a>
 <a name="337"><span class="lineNum">     337 </span><span class="lineNoCov">          0 :     neml_assert_dbg(axis(i) == other.axis(i),</span></a>
 <a name="338"><span class="lineNum">     338 </span>            :                     &quot;Can only accumulate matrices with conformal common axes&quot;);</a>
-<a name="339"><span class="lineNum">     339 </span><span class="lineCov">       9800 :   const auto cindices = axis(odim).common_indices(other.axis(odim), recursive);</span></a>
-<a name="340"><span class="lineNum">     340 </span><span class="lineCov">      19636 :   for (const auto &amp; [idx, idx_other] : cindices)</span></a>
+<a name="339"><span class="lineNum">     339 </span><span class="lineCov">      10066 :   const auto cindices = axis(odim).common_indices(other.axis(odim), recursive);</span></a>
+<a name="340"><span class="lineNum">     340 </span><span class="lineCov">      20168 :   for (const auto &amp; [idx, idx_other] : cindices)</span></a>
 <a name="341"><span class="lineNum">     341 </span>            :   {</a>
-<a name="342"><span class="lineNum">     342 </span><span class="lineCov">      19672 :     indexing::TensorIndices indices(base_dim(), indexing::Slice());</span></a>
-<a name="343"><span class="lineNum">     343 </span><span class="lineCov">      19672 :     indexing::TensorIndices indices_other(base_dim(), indexing::Slice());</span></a>
-<a name="344"><span class="lineNum">     344 </span><span class="lineCov">       9836 :     indices[odim] = idx;</span></a>
-<a name="345"><span class="lineNum">     345 </span><span class="lineCov">       9836 :     indices_other[odim] = idx_other;</span></a>
-<a name="346"><span class="lineNum">     346 </span><span class="lineCov">       9836 :     _tensor.base_index_put_(indices, other.tensor().base_index(indices_other));</span></a>
+<a name="342"><span class="lineNum">     342 </span><span class="lineCov">      20204 :     indexing::TensorIndices indices(base_dim(), indexing::Slice());</span></a>
+<a name="343"><span class="lineNum">     343 </span><span class="lineCov">      20204 :     indexing::TensorIndices indices_other(base_dim(), indexing::Slice());</span></a>
+<a name="344"><span class="lineNum">     344 </span><span class="lineCov">      10102 :     indices[odim] = idx;</span></a>
+<a name="345"><span class="lineNum">     345 </span><span class="lineCov">      10102 :     indices_other[odim] = idx_other;</span></a>
+<a name="346"><span class="lineNum">     346 </span><span class="lineCov">      10102 :     _tensor.base_index_put_(indices, other.tensor().base_index(indices_other));</span></a>
 <a name="347"><span class="lineNum">     347 </span>            :   }</a>
-<a name="348"><span class="lineNum">     348 </span><span class="lineCov">       9800 : }</span></a>
+<a name="348"><span class="lineNum">     348 </span><span class="lineCov">      10066 : }</span></a>
 <a name="349"><span class="lineNum">     349 </span>            : </a>
 <a name="350"><span class="lineNum">     350 </span>            : template class LabeledTensor&lt;LabeledVector, 1&gt;;</a>
 <a name="351"><span class="lineNum">     351 </span>            : template class LabeledTensor&lt;LabeledMatrix, 2&gt;;</a>

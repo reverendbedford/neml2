@@ -10,6 +10,7 @@ var classtensors_1_1MillerIndexBaseView =
     [ "dim", "classtensors_1_1MillerIndexBaseView.html#a35536134a6ceb1e866faf188992e9c9f", null ],
     [ "expand", "classtensors_1_1MillerIndexBaseView.html#a0b59cdb30656883193508e14ce467cd1", null ],
     [ "expand_copy", "classtensors_1_1MillerIndexBaseView.html#ae7d567fbead5a552137fd1938867835a", null ],
+    [ "reshape", "classtensors_1_1MillerIndexBaseView.html#aab5445fbf19ef109eebd6cb006c3e9bc", null ],
     [ "shape", "classtensors_1_1MillerIndexBaseView.html#a43080b242de156a5409d4b58fc7d0c9c", null ],
     [ "storage", "classtensors_1_1MillerIndexBaseView.html#ac633e7d6a3e2cc7def2cc9af32f0ca45", null ],
     [ "transpose", "classtensors_1_1MillerIndexBaseView.html#af7bd31da47fd71417fc2411fe9267552", null ],

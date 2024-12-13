@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['interface_0',['interface',['../namespaceinterface.html',1,'']]]
+  ['crystallography_0',['crystallography',['../namespacecrystallography.html',1,'']]]
 ];

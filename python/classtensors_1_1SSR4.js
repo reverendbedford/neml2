@@ -39,6 +39,7 @@ var classtensors_1_1SSR4 =
     [ "grad", "classtensors_1_1SSR4.html#a6c473406fb744d689106b5c22955b8e0", null ],
     [ "requires_grad", "classtensors_1_1SSR4.html#aa29879cd7288410c6dcf2cca2e37aa0f", null ],
     [ "requires_grad_", "classtensors_1_1SSR4.html#abc5944a8aa210bfceceb00812b61a350", null ],
+    [ "rotate", "classtensors_1_1SSR4.html#a2d3cba780960fa7d89e57a539d5e780f", null ],
     [ "shape", "classtensors_1_1SSR4.html#a43080b242de156a5409d4b58fc7d0c9c", null ],
     [ "tensor", "classtensors_1_1SSR4.html#a1b71e090e1aac169ef1f148e9542fae4", null ],
     [ "to", "classtensors_1_1SSR4.html#a232f115ca20c7caddd8a79322f089a3d", null ],

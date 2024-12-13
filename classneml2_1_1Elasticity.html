@@ -125,8 +125,10 @@ Inheritance diagram for Elasticity:</div>
 <div class="center"><img src="classneml2_1_1Elasticity__inherit__graph.png" border="0" usemap="#aElasticity_inherit__map" alt="Inheritance graph"/></div>
 <map name="aElasticity_inherit__map" id="aElasticity_inherit__map">
 <area shape="rect" title=" " alt="" coords="488,169,571,194"/>
-<area shape="rect" href="classneml2_1_1LinearIsotropicElasticity.html" title=" " alt="" coords="619,169,797,194"/>
-<area shape="poly" title=" " alt="" coords="585,179,618,179,618,184,585,184"/>
+<area shape="rect" href="classneml2_1_1AnisotropicElasticity.html" title=" " alt="" coords="631,143,785,169"/>
+<area shape="poly" title=" " alt="" coords="584,171,630,164,631,170,585,176"/>
+<area shape="rect" href="classneml2_1_1LinearIsotropicElasticity.html" title=" " alt="" coords="619,193,797,218"/>
+<area shape="poly" title=" " alt="" coords="585,186,619,191,618,196,584,191"/>
 <area shape="rect" href="classneml2_1_1Model.html" title="The base class for all constitutive models." alt="" coords="377,169,440,194"/>
 <area shape="poly" title=" " alt="" coords="454,179,488,179,488,184,454,184"/>
 <area shape="rect" title=" " alt="" coords="169,5,323,45"/>
@@ -147,6 +149,8 @@ Inheritance diagram for Elasticity:</div>
 <area shape="poly" title=" " alt="" coords="318,260,328,254,366,223,395,192,399,196,370,226,331,258,320,264"/>
 <area shape="rect" href="classneml2_1_1DiagnosticsInterface.html" title="Interface for object making diagnostics about common setup errors." alt="" coords="168,333,324,358"/>
 <area shape="poly" title=" " alt="" coords="318,324,328,318,356,288,377,253,401,193,406,195,382,256,360,291,331,322,321,329"/>
+<area shape="rect" href="classneml2_1_1GeneralElasticity.html" title=" " alt="" coords="845,143,979,169"/>
+<area shape="poly" title=" " alt="" coords="799,153,845,153,845,159,799,159"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -653,6 +657,10 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a45ea9f3f0dc9c3da04b9ec963bac80a2 inherit pro_methods_classneml2_1_1ParameterStore"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classneml2_1_1ParameterStore.html#a45ea9f3f0dc9c3da04b9ec963bac80a2">declare_parameter</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;name, <a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;<a class="el" href="classneml2_1_1CrossRef.html">input_option_name</a>, <a class="el" href="classneml2_1_1CrossRef.html">bool</a> <a class="el" href="classneml2_1_1CrossRef.html">allow_nonlinear</a>=<a class="el" href="classneml2_1_1CrossRef.html">false</a>)</td></tr>
 <tr class="memdesc:a45ea9f3f0dc9c3da04b9ec963bac80a2 inherit pro_methods_classneml2_1_1ParameterStore"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare a parameter.  <br /></td></tr>
 <tr class="separator:a45ea9f3f0dc9c3da04b9ec963bac80a2 inherit pro_methods_classneml2_1_1ParameterStore"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3b939ef5a93335644eaebf4ae2e0de8 inherit pro_methods_classneml2_1_1ParameterStore" id="r_ac3b939ef5a93335644eaebf4ae2e0de8"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;T&gt;, T&gt;&gt;&gt; </td></tr>
+<tr class="memitem:ac3b939ef5a93335644eaebf4ae2e0de8 inherit pro_methods_classneml2_1_1ParameterStore"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classneml2_1_1CrossRef.html">const</a> T * &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classneml2_1_1ParameterStore.html#ac3b939ef5a93335644eaebf4ae2e0de8">declare_parameters</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;name, <a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;<a class="el" href="classneml2_1_1CrossRef.html">input_option_name</a>, <a class="el" href="classneml2_1_1CrossRef.html">bool</a> <a class="el" href="classneml2_1_1CrossRef.html">allow_nonlinear</a>=<a class="el" href="classneml2_1_1CrossRef.html">false</a>)</td></tr>
+<tr class="memdesc:ac3b939ef5a93335644eaebf4ae2e0de8 inherit pro_methods_classneml2_1_1ParameterStore"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare multiple parameters.  <br /></td></tr>
+<tr class="separator:ac3b939ef5a93335644eaebf4ae2e0de8 inherit pro_methods_classneml2_1_1ParameterStore"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classneml2_1_1VariableStore"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_methods_classneml2_1_1VariableStore')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classneml2_1_1VariableStore.html">VariableStore</a></td></tr>
 <tr class="memitem:a40ad626c6229a766a9562f76de8a75a2 inherit pro_methods_classneml2_1_1VariableStore" id="r_a40ad626c6229a766a9562f76de8a75a2"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T , typename... S&gt; </td></tr>
 <tr class="memitem:a40ad626c6229a766a9562f76de8a75a2 inherit pro_methods_classneml2_1_1VariableStore"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Variable.html">Variable</a>&lt; T &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classneml2_1_1VariableStore.html#a40ad626c6229a766a9562f76de8a75a2">declare_input_variable</a> (<a class="el" href="classneml2_1_1CrossRef.html">S</a> &amp;&amp;... name)</td></tr>

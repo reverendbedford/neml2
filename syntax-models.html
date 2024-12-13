@@ -126,24 +126,29 @@ $(function(){initNavTree('syntax-models.html',''); initResizable(); });
 <li class="level2"><a href="#copyr3">CopyR3</a></li>
 <li class="level2"><a href="#copyr4">CopyR4</a></li>
 <li class="level2"><a href="#copyr5">CopyR5</a></li>
+<li class="level2"><a href="#copyr8">CopyR8</a></li>
 <li class="level2"><a href="#copyrot">CopyRot</a></li>
 <li class="level2"><a href="#copysffr4">CopySFFR4</a></li>
 <li class="level2"><a href="#copysfr3">CopySFR3</a></li>
 <li class="level2"><a href="#copysr2">CopySR2</a></li>
 <li class="level2"><a href="#copyssfr5">CopySSFR5</a></li>
 <li class="level2"><a href="#copyssr4">CopySSR4</a></li>
+<li class="level2"><a href="#copyssssr8">CopySSSSR8</a></li>
 <li class="level2"><a href="#copyswr4">CopySWR4</a></li>
 <li class="level2"><a href="#copyscalar">CopyScalar</a></li>
 <li class="level2"><a href="#copyvec">CopyVec</a></li>
 <li class="level2"><a href="#copywr2">CopyWR2</a></li>
 <li class="level2"><a href="#copywsr4">CopyWSR4</a></li>
 <li class="level2"><a href="#copywwr4">CopyWWR4</a></li>
+<li class="level2"><a href="#cubicelasticitytensor">CubicElasticityTensor</a></li>
 <li class="level2"><a href="#elasticstrainrate">ElasticStrainRate</a></li>
 <li class="level2"><a href="#fixorientation">FixOrientation</a></li>
 <li class="level2"><a href="#fredrickarmstrongplastichardening">FredrickArmstrongPlasticHardening</a></li>
 <li class="level2"><a href="#gtnyieldfunction">GTNYieldFunction</a></li>
+<li class="level2"><a href="#generalelasticity">GeneralElasticity</a></li>
 <li class="level2"><a href="#gursoncavitation">GursonCavitation</a></li>
 <li class="level2"><a href="#implicitupdate">ImplicitUpdate</a></li>
+<li class="level2"><a href="#isotropicelasticitytensor">IsotropicElasticityTensor</a></li>
 <li class="level2"><a href="#isotropicmandelstress">IsotropicMandelStress</a></li>
 <li class="level2"><a href="#kocksmeckingactivationenergy">KocksMeckingActivationEnergy</a></li>
 <li class="level2"><a href="#kocksmeckingflowswitch">KocksMeckingFlowSwitch</a></li>
@@ -178,6 +183,8 @@ $(function(){initNavTree('syntax-models.html',''); initResizable(); });
 <li class="level2"><a href="#r4inputparameter">R4InputParameter</a></li>
 <li class="level2"><a href="#r5constantparameter">R5ConstantParameter</a></li>
 <li class="level2"><a href="#r5inputparameter">R5InputParameter</a></li>
+<li class="level2"><a href="#r8constantparameter">R8ConstantParameter</a></li>
+<li class="level2"><a href="#r8inputparameter">R8InputParameter</a></li>
 <li class="level2"><a href="#rateindependentplasticflowconstranumber">RateIndependentPlasticFlowConstranumber</a></li>
 <li class="level2"><a href="#resolvedshear">ResolvedShear</a></li>
 <li class="level2"><a href="#rotconstantparameter">RotConstantParameter</a></li>
@@ -200,6 +207,8 @@ $(function(){initNavTree('syntax-models.html',''); initResizable(); });
 <li class="level2"><a href="#ssfr5inputparameter">SSFR5InputParameter</a></li>
 <li class="level2"><a href="#ssr4constantparameter">SSR4ConstantParameter</a></li>
 <li class="level2"><a href="#ssr4inputparameter">SSR4InputParameter</a></li>
+<li class="level2"><a href="#ssssr8constantparameter">SSSSR8ConstantParameter</a></li>
+<li class="level2"><a href="#ssssr8inputparameter">SSSSR8InputParameter</a></li>
 <li class="level2"><a href="#swr4constantparameter">SWR4ConstantParameter</a></li>
 <li class="level2"><a href="#swr4inputparameter">SWR4InputParameter</a></li>
 <li class="level2"><a href="#scalarbackwardeulertimeintegration">ScalarBackwardEulerTimeIntegration</a></li>
@@ -647,6 +656,25 @@ CopyR5</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
+<h2><a class="anchor" id="copyr8"></a>
+CopyR8</h2>
+<p>Copy the value from one variable to another. </p><details >
+<summary >
+<code>from</code> 🇮 Variable to copy value from</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>to</code> 🇴 Variable to copy value to</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
 <h2><a class="anchor" id="copyrot"></a>
 CopyRot</h2>
 <p>Copy the value from one variable to another. </p><details >
@@ -744,6 +772,25 @@ CopySSFR5</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
 <h2><a class="anchor" id="copyssr4"></a>
 CopySSR4</h2>
+<p>Copy the value from one variable to another. </p><details >
+<summary >
+<code>from</code> 🇮 Variable to copy value from</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>to</code> 🇴 Variable to copy value to</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
+<h2><a class="anchor" id="copyssssr8"></a>
+CopySSSSR8</h2>
 <p>Copy the value from one variable to another. </p><details >
 <summary >
 <code>from</code> 🇮 Variable to copy value from</summary>
@@ -875,6 +922,26 @@ CopyWWR4</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
+<h2><a class="anchor" id="cubicelasticitytensor"></a>
+CubicElasticityTensor</h2>
+<p>Define an elasticity tensor in terms of other parameters. This class defines a cubic anisotropic elasticity tensor using three parameters. Various options are available for which three parameters to provide. </p><details >
+<summary >
+<code>coefficient_types</code> Types for each parameter, options are: INVALID shear_modulus poissons_ratio youngs_modulus </summary>
+<p></p>
+<ul>
+<li><u>Type</u>: MultiEnumSelection</li>
+<li><u>Default</u>: INVALID </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>coefficients</code> 🇵 Coefficients used to define the elasticity tensor</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of Scalar 🔗 </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1CubicElasticityTensor.html">link</a></p>
 <h2><a class="anchor" id="elasticstrainrate"></a>
 ElasticStrainRate</h2>
 <p>Calculates the elastic strain rate as \(\dot{\varepsilon} = d - d^p - \varepsilon w + w \varepsilon \) where \( d \) is the deformation rate, \( d^p \) is the plastic deformation rate, \( w \) is the vorticity, and \( \varepsilon \) is the elastic strain. </p><details >
@@ -1086,6 +1153,62 @@ GTNYieldFunction</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1GTNYieldFunction.html">link</a></p>
+<h2><a class="anchor" id="generalelasticity"></a>
+GeneralElasticity</h2>
+<p>Relates elastic strain to stress with some non-isotropic tensor. This verion implements a general relation using the elasticity tensor, expressed as an SSR4 object </p><details >
+<summary >
+<code>compliance</code> Whether the model defines the compliance relationship, i.e., mapping from stress to elastic strain. When set to false (default), the model maps elastic strain to stress.</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: bool</li>
+<li><u>Default</u>: false </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>elastic_stiffness_tensor</code> 🇵 Elastic stiffness tensor</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: SSR4 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>orientation</code> 🇮 Active convention orientation from reference to current</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name</li>
+<li><u>Default</u>: state/orientation </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>rate_form</code> Whether the model defines the stress-strain relationship in rate form. When set to true, the model maps elastic strain <em>rate</em> to stress <em>rate</em>.</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: bool</li>
+<li><u>Default</u>: false </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>strain</code> 🇮 Elastic strain</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name</li>
+<li><u>Default</u>: state/internal/Ee </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>stress</code> 🇴 Stress</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name</li>
+<li><u>Default</u>: state/S </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1GeneralElasticity.html">link</a></p>
 <h2><a class="anchor" id="gursoncavitation"></a>
 GursonCavitation</h2>
 <p>Local mass balance used in conjunction with the GTNYieldFunction, \( \dot{\phi} = (1-\phi) \dot{\varepsilon}_p \). </p><details >
@@ -1135,6 +1258,26 @@ ImplicitUpdate</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ImplicitUpdate.html">link</a></p>
+<h2><a class="anchor" id="isotropicelasticitytensor"></a>
+IsotropicElasticityTensor</h2>
+<p>Define an elasticity tensor in terms of other parameters. This class defines an isotropic elasticity tensor using two parameters. Various options are available for which two parameters to provide. </p><details >
+<summary >
+<code>coefficient_types</code> Types for each parameter, options are: INVALID shear_modulus poissons_ratio youngs_modulus </summary>
+<p></p>
+<ul>
+<li><u>Type</u>: MultiEnumSelection</li>
+<li><u>Default</u>: INVALID </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>coefficients</code> 🇵 Coefficients used to define the elasticity tensor</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of Scalar 🔗 </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1IsotropicElasticityTensor.html">link</a></p>
 <h2><a class="anchor" id="isotropicmandelstress"></a>
 IsotropicMandelStress</h2>
 <p>Map Cauchy stress to Mandel stress For isotropic material under small deformation, the Mandel stress and the Cauchy stress coincide. </p><details >
@@ -2172,6 +2315,28 @@ R5InputParameter</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1InputParameter.html">link</a></p>
+<h2><a class="anchor" id="r8constantparameter"></a>
+R8ConstantParameter</h2>
+<p>A parameter that is just a constant value, generally used to refer to a parameter in more than one downstream object. </p><details >
+<summary >
+<code>value</code> 🇵 The constant value of the parameter</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: R8 🔗 </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1ConstantParameter.html">link</a></p>
+<h2><a class="anchor" id="r8inputparameter"></a>
+R8InputParameter</h2>
+<p>A parameter that is defined through an input variable. This essentially converts a nonlinear parameter to an input variable </p><details >
+<summary >
+<code>from</code> 🇮 The input variable that defines this nonlinear parameter</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1InputParameter.html">link</a></p>
 <h2><a class="anchor" id="rateindependentplasticflowconstranumber"></a>
 RateIndependentPlasticFlowConstranumber</h2>
 <p>Solve the consistent plasticity yield envelope by solving the equivalent complementarity condition </p><p class="formulaDsp">
@@ -2640,6 +2805,28 @@ SSR4ConstantParameter</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ConstantParameter.html">link</a></p>
 <h2><a class="anchor" id="ssr4inputparameter"></a>
 SSR4InputParameter</h2>
+<p>A parameter that is defined through an input variable. This essentially converts a nonlinear parameter to an input variable </p><details >
+<summary >
+<code>from</code> 🇮 The input variable that defines this nonlinear parameter</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1InputParameter.html">link</a></p>
+<h2><a class="anchor" id="ssssr8constantparameter"></a>
+SSSSR8ConstantParameter</h2>
+<p>A parameter that is just a constant value, generally used to refer to a parameter in more than one downstream object. </p><details >
+<summary >
+<code>value</code> 🇵 The constant value of the parameter</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: SSSSR8 🔗 </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1ConstantParameter.html">link</a></p>
+<h2><a class="anchor" id="ssssr8inputparameter"></a>
+SSSSR8InputParameter</h2>
 <p>A parameter that is defined through an input variable. This essentially converts a nonlinear parameter to an input variable </p><details >
 <summary >
 <code>from</code> 🇮 The input variable that defines this nonlinear parameter</summary>

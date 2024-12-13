@@ -10,6 +10,7 @@ var classtensors_1_1R3BaseView =
     [ "dim", "classtensors_1_1R3BaseView.html#a35536134a6ceb1e866faf188992e9c9f", null ],
     [ "expand", "classtensors_1_1R3BaseView.html#aeb34f00426defdfe462cf76f7b6e58b9", null ],
     [ "expand_copy", "classtensors_1_1R3BaseView.html#aa9ca3bfe0c564bb35b8ae85838e0c9aa", null ],
+    [ "reshape", "classtensors_1_1R3BaseView.html#a58e78dd221c0d303dae1f059cfc332f3", null ],
     [ "shape", "classtensors_1_1R3BaseView.html#a43080b242de156a5409d4b58fc7d0c9c", null ],
     [ "storage", "classtensors_1_1R3BaseView.html#ac633e7d6a3e2cc7def2cc9af32f0ca45", null ],
     [ "transpose", "classtensors_1_1R3BaseView.html#a6289b1b2f5a8a05e97e2cee522049068", null ],

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-11 16:42:39</td>
+            <td class="headerValue">2024-12-13 23:10:15</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">19</td>
@@ -217,21 +217,21 @@
 <a name="155"><span class="lineNum">     155 </span>            : </a>
 <a name="156"><span class="lineNum">     156 </span>            : template &lt;class Derived&gt;</a>
 <a name="157"><span class="lineNum">     157 </span>            : Derived</a>
-<a name="158"><span class="lineNum">     158 </span><span class="lineCov">        672 : R2Base&lt;Derived&gt;::skew(const Vec &amp; v)</span></a>
+<a name="158"><span class="lineNum">     158 </span><span class="lineCov">       1297 : R2Base&lt;Derived&gt;::skew(const Vec &amp; v)</span></a>
 <a name="159"><span class="lineNum">     159 </span>            : {</a>
-<a name="160"><span class="lineNum">     160 </span><span class="lineCov">        672 :   const auto z = torch::zeros_like(v(0));</span></a>
-<a name="161"><span class="lineNum">     161 </span><span class="lineCov">       4032 :   return Derived(torch::stack({torch::stack({z, -v(2), v(1)}, -1),</span></a>
-<a name="162"><span class="lineNum">     162 </span><span class="lineCov">       2016 :                                torch::stack({v(2), z, -v(0)}, -1),</span></a>
-<a name="163"><span class="lineNum">     163 </span><span class="lineCov">       2016 :                                torch::stack({-v(1), v(0), z}, -1)},</span></a>
+<a name="160"><span class="lineNum">     160 </span><span class="lineCov">       1297 :   const auto z = torch::zeros_like(v(0));</span></a>
+<a name="161"><span class="lineNum">     161 </span><span class="lineCov">       7782 :   return Derived(torch::stack({torch::stack({z, -v(2), v(1)}, -1),</span></a>
+<a name="162"><span class="lineNum">     162 </span><span class="lineCov">       3891 :                                torch::stack({v(2), z, -v(0)}, -1),</span></a>
+<a name="163"><span class="lineNum">     163 </span><span class="lineCov">       3891 :                                torch::stack({-v(1), v(0), z}, -1)},</span></a>
 <a name="164"><span class="lineNum">     164 </span>            :                               -2),</a>
-<a name="165"><span class="lineNum">     165 </span><span class="lineCov">       9408 :                  v.batch_dim());</span></a>
-<a name="166"><span class="lineNum">     166 </span><span class="lineCov">        672 : }</span></a>
+<a name="165"><span class="lineNum">     165 </span><span class="lineCov">      18158 :                  v.batch_dim());</span></a>
+<a name="166"><span class="lineNum">     166 </span><span class="lineCov">       1297 : }</span></a>
 <a name="167"><span class="lineNum">     167 </span>            : </a>
 <a name="168"><span class="lineNum">     168 </span>            : template &lt;class Derived&gt;</a>
 <a name="169"><span class="lineNum">     169 </span>            : Derived</a>
-<a name="170"><span class="lineNum">     170 </span><span class="lineCov">       1321 : R2Base&lt;Derived&gt;::identity(const torch::TensorOptions &amp; options)</span></a>
+<a name="170"><span class="lineNum">     170 </span><span class="lineCov">       1946 : R2Base&lt;Derived&gt;::identity(const torch::TensorOptions &amp; options)</span></a>
 <a name="171"><span class="lineNum">     171 </span>            : {</a>
-<a name="172"><span class="lineNum">     172 </span><span class="lineCov">       1321 :   return Derived(torch::eye(3, options), 0);</span></a>
+<a name="172"><span class="lineNum">     172 </span><span class="lineCov">       1946 :   return Derived(torch::eye(3, options), 0);</span></a>
 <a name="173"><span class="lineNum">     173 </span>            : }</a>
 <a name="174"><span class="lineNum">     174 </span>            : </a>
 <a name="175"><span class="lineNum">     175 </span>            : template &lt;class Derived&gt;</a>
@@ -300,10 +300,10 @@
 <a name="238"><span class="lineNum">     238 </span>            : </a>
 <a name="239"><span class="lineNum">     239 </span>            : template &lt;class Derived1, class Derived2, typename, typename&gt;</a>
 <a name="240"><span class="lineNum">     240 </span>            : R2</a>
-<a name="241"><span class="lineNum">     241 </span><span class="lineCov">       5027 : operator*(const Derived1 &amp; A, const Derived2 &amp; B)</span></a>
+<a name="241"><span class="lineNum">     241 </span><span class="lineCov">       5652 : operator*(const Derived1 &amp; A, const Derived2 &amp; B)</span></a>
 <a name="242"><span class="lineNum">     242 </span>            : {</a>
-<a name="243"><span class="lineNum">     243 </span><span class="lineCov">       5027 :   neml_assert_broadcastable_dbg(A, B);</span></a>
-<a name="244"><span class="lineNum">     244 </span><span class="lineCov">      15081 :   return R2(torch::einsum(&quot;...ik,...kj&quot;, {A, B}), broadcast_batch_dim(A, B));</span></a>
+<a name="243"><span class="lineNum">     243 </span><span class="lineCov">       5652 :   neml_assert_broadcastable_dbg(A, B);</span></a>
+<a name="244"><span class="lineNum">     244 </span><span class="lineCov">      16956 :   return R2(torch::einsum(&quot;...ik,...kj&quot;, {A, B}), broadcast_batch_dim(A, B));</span></a>
 <a name="245"><span class="lineNum">     245 </span>            : }</a>
 <a name="246"><span class="lineNum">     246 </span>            : </a>
 <a name="247"><span class="lineNum">     247 </span>            : // template instantiation</a>

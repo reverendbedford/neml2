@@ -12,7 +12,10 @@ var searchData=
   ['r5_9',['R5',['../classtensors_1_1R5.html',1,'tensors']]],
   ['r5baseview_10',['R5BaseView',['../classtensors_1_1R5BaseView.html',1,'tensors']]],
   ['r5batchview_11',['R5BatchView',['../classtensors_1_1R5BatchView.html',1,'tensors']]],
-  ['rot_12',['Rot',['../classtensors_1_1Rot.html',1,'tensors']]],
-  ['rotbaseview_13',['RotBaseView',['../classtensors_1_1RotBaseView.html',1,'tensors']]],
-  ['rotbatchview_14',['RotBatchView',['../classtensors_1_1RotBatchView.html',1,'tensors']]]
+  ['r8_12',['R8',['../classtensors_1_1R8.html',1,'tensors']]],
+  ['r8baseview_13',['R8BaseView',['../classtensors_1_1R8BaseView.html',1,'tensors']]],
+  ['r8batchview_14',['R8BatchView',['../classtensors_1_1R8BatchView.html',1,'tensors']]],
+  ['rot_15',['Rot',['../classtensors_1_1Rot.html',1,'tensors']]],
+  ['rotbaseview_16',['RotBaseView',['../classtensors_1_1RotBaseView.html',1,'tensors']]],
+  ['rotbatchview_17',['RotBatchView',['../classtensors_1_1RotBatchView.html',1,'tensors']]]
 ];

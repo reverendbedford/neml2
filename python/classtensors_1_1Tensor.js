@@ -21,6 +21,8 @@ var classtensors_1_1Tensor =
     [ "__init__", "classtensors_1_1Tensor.html#a28effc46e0fde18850f68b8aaeead3b3", null ],
     [ "__init__", "classtensors_1_1Tensor.html#acb632072001de789afacec5d090910de", null ],
     [ "__init__", "classtensors_1_1Tensor.html#a526d48d3532dac41667d9f6c72d098ff", null ],
+    [ "__init__", "classtensors_1_1Tensor.html#a8b08303c021e98f8db1534218bcc80c3", null ],
+    [ "__init__", "classtensors_1_1Tensor.html#a521cd3543c9444f5c06ba236df3e535b", null ],
     [ "__add__", "classtensors_1_1Tensor.html#a19fa7872a50c84f379cb13040539250d", null ],
     [ "__add__", "classtensors_1_1Tensor.html#aefcccb42797f6f640a519606f04900f3", null ],
     [ "__add__", "classtensors_1_1Tensor.html#a91bc1d3e78c3ab2252a60d04297d2c13", null ],

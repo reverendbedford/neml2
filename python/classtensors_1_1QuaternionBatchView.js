@@ -10,6 +10,7 @@ var classtensors_1_1QuaternionBatchView =
     [ "dim", "classtensors_1_1QuaternionBatchView.html#a35536134a6ceb1e866faf188992e9c9f", null ],
     [ "expand", "classtensors_1_1QuaternionBatchView.html#aad1e55bc46189458bf132b3c769f9c2e", null ],
     [ "expand_copy", "classtensors_1_1QuaternionBatchView.html#a24bf3697644f05d9f0ded3de726b0f52", null ],
+    [ "reshape", "classtensors_1_1QuaternionBatchView.html#a40c3a1dcd11e16add3f3270fa50bd520", null ],
     [ "shape", "classtensors_1_1QuaternionBatchView.html#a43080b242de156a5409d4b58fc7d0c9c", null ],
     [ "transpose", "classtensors_1_1QuaternionBatchView.html#ad058845e0cda6c740e6f0458909c3031", null ],
     [ "unsqueeze", "classtensors_1_1QuaternionBatchView.html#af816c8654aa9371707fa8a6dc46c4e99", null ]
