@@ -11,8 +11,8 @@ var searchData=
   ['merit_5ffunction_5freduction_8',['merit_function_reduction',['../classneml2_1_1NewtonWithTrustRegion.html#a741ea68fe8a4ef11b87835e6a9d8610b',1,'neml2::NewtonWithTrustRegion']]],
   ['minimum_9',['minimum',['../namespaceneml2_1_1math.html#a74364f93fa41672d8a4a41bcfd5596e1',1,'neml2::math']]],
   ['mixedcontrolsetup_10',['MixedControlSetup',['../classneml2_1_1MixedControlSetup.html#ab20953605998f5cb4f77ac24128c5d2c',1,'neml2::MixedControlSetup']]],
-  ['model_11',['Model',['../classneml2_1_1Model.html#aec637141dc1379fd56d05cf1b7cb10ee',1,'neml2::Model']]],
-  ['model_12',['model',['../classneml2_1_1TransientDriver.html#a13dfbdd8c00d5c134b09bf2ab3cfa1e5',1,'neml2::TransientDriver']]],
+  ['model_11',['model',['../classneml2_1_1TransientDriver.html#a13dfbdd8c00d5c134b09bf2ab3cfa1e5',1,'neml2::TransientDriver']]],
+  ['model_12',['Model',['../classneml2_1_1Model.html#aec637141dc1379fd56d05cf1b7cb10ee',1,'neml2::Model']]],
   ['multienumselection_13',['MultiEnumSelection',['../classneml2_1_1MultiEnumSelection.html#a2cbf642e938d07df6821f848bffda010',1,'neml2::MultiEnumSelection::MultiEnumSelection()=default'],['../classneml2_1_1MultiEnumSelection.html#ab10e4546a7b92e2d0259f5735a850dda',1,'neml2::MultiEnumSelection::MultiEnumSelection(const MultiEnumSelection &amp;other)'],['../classneml2_1_1MultiEnumSelection.html#a8d36c066a5307c2dd32977d1043b3306',1,'neml2::MultiEnumSelection::MultiEnumSelection(const std::vector&lt; std::string &gt; &amp;candidates, const std::vector&lt; std::string &gt; &amp;selections)'],['../classneml2_1_1MultiEnumSelection.html#af3d0615e52275c985112f26406d8e274',1,'neml2::MultiEnumSelection::MultiEnumSelection(const std::vector&lt; std::string &gt; &amp;candidates, const std::vector&lt; int &gt; &amp;values, const std::vector&lt; std::string &gt; &amp;selections)']]],
   ['multiply_5fand_5fmake_5fskew_14',['multiply_and_make_skew',['../namespaceneml2_1_1math.html#a81565e709d0982bfa707db6cdb283148',1,'neml2::math']]]
 ];

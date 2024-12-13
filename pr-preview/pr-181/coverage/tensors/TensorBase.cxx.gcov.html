@@ -37,12 +37,12 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2024-12-13 18:19:09</td>
+            <td class="headerValue">2024-12-13 20:07:41</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntryLo">30.3&nbsp;%</td>
+            <td class="headerCovTableEntryLo">30.4&nbsp;%</td>
             <td class="headerCovTableEntry">714</td>
-            <td class="headerCovTableEntry">216</td>
+            <td class="headerCovTableEntry">217</td>
           </tr>
                   <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
                 </table>
@@ -90,16 +90,16 @@
 <span id="L28"><span class="lineNum">      28</span>              : namespace neml2</span>
 <span id="L29"><span class="lineNum">      29</span>              : {</span>
 <span id="L30"><span class="lineNum">      30</span>              : template &lt;class Derived&gt;</span>
-<span id="L31"><span class="lineNum">      31</span> <span class="tlaGNC tlaBgGNC">      849279 : TensorBase&lt;Derived&gt;::TensorBase(const torch::Tensor &amp; tensor, Size batch_dim)</span></span>
+<span id="L31"><span class="lineNum">      31</span> <span class="tlaGNC tlaBgGNC">      853859 : TensorBase&lt;Derived&gt;::TensorBase(const torch::Tensor &amp; tensor, Size batch_dim)</span></span>
 <span id="L32"><span class="lineNum">      32</span>              :   : torch::Tensor(tensor),</span>
-<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC">      849279 :     _batch_dim(batch_dim)</span></span>
+<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC">      853859 :     _batch_dim(batch_dim)</span></span>
 <span id="L34"><span class="lineNum">      34</span>              : {</span>
-<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">      849279 :   neml_assert_dbg((Size)sizes().size() &gt;= _batch_dim,</span></span>
+<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">      853859 :   neml_assert_dbg((Size)sizes().size() &gt;= _batch_dim,</span></span>
 <span id="L36"><span class="lineNum">      36</span>              :                   &quot;Tensor dimension &quot;,</span>
-<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">      849279 :                   sizes().size(),</span></span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">      853859 :                   sizes().size(),</span></span>
 <span id="L38"><span class="lineNum">      38</span>              :                   &quot; is smaller than the requested number of batch dimensions &quot;,</span>
-<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">      849279 :                   _batch_dim);</span></span>
-<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">      849279 : }</span></span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">      853859 :                   _batch_dim);</span></span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">      853859 : }</span></span>
 <span id="L41"><span class="lineNum">      41</span>              : </span>
 <span id="L42"><span class="lineNum">      42</span>              : template &lt;class Derived&gt;</span>
 <span id="L43"><span class="lineNum">      43</span> <span class="tlaUNC tlaBgUNC">           0 : TensorBase&lt;Derived&gt;::TensorBase(const Derived &amp; tensor)</span></span>
@@ -117,9 +117,9 @@
 <span id="L55"><span class="lineNum">      55</span>              : </span>
 <span id="L56"><span class="lineNum">      56</span>              : template &lt;class Derived&gt;</span>
 <span id="L57"><span class="lineNum">      57</span>              : Derived</span>
-<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">         750 : TensorBase&lt;Derived&gt;::zeros_like(const Derived &amp; other)</span></span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">         870 : TensorBase&lt;Derived&gt;::zeros_like(const Derived &amp; other)</span></span>
 <span id="L59"><span class="lineNum">      59</span>              : {</span>
-<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">         750 :   return Derived(torch::zeros_like(other), other.batch_dim());</span></span>
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">         870 :   return Derived(torch::zeros_like(other), other.batch_dim());</span></span>
 <span id="L61"><span class="lineNum">      61</span>              : }</span>
 <span id="L62"><span class="lineNum">      62</span>              : </span>
 <span id="L63"><span class="lineNum">      63</span>              : template &lt;class Derived&gt;</span>
@@ -131,9 +131,9 @@
 <span id="L69"><span class="lineNum">      69</span>              : </span>
 <span id="L70"><span class="lineNum">      70</span>              : template &lt;class Derived&gt;</span>
 <span id="L71"><span class="lineNum">      71</span>              : Derived</span>
-<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">           1 : TensorBase&lt;Derived&gt;::full_like(const Derived &amp; other, Real init)</span></span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">          31 : TensorBase&lt;Derived&gt;::full_like(const Derived &amp; other, Real init)</span></span>
 <span id="L73"><span class="lineNum">      73</span>              : {</span>
-<span id="L74"><span class="lineNum">      74</span> <span class="tlaGNC">           1 :   return Derived(torch::full_like(other, init), other.batch_dim());</span></span>
+<span id="L74"><span class="lineNum">      74</span> <span class="tlaGNC">          31 :   return Derived(torch::full_like(other, init), other.batch_dim());</span></span>
 <span id="L75"><span class="lineNum">      75</span>              : }</span>
 <span id="L76"><span class="lineNum">      76</span>              : </span>
 <span id="L77"><span class="lineNum">      77</span>              : template &lt;class Derived&gt;</span>
@@ -173,9 +173,9 @@
 <span id="L111"><span class="lineNum">     111</span>              : </span>
 <span id="L112"><span class="lineNum">     112</span>              : template &lt;class Derived&gt;</span>
 <span id="L113"><span class="lineNum">     113</span>              : Derived</span>
-<span id="L114"><span class="lineNum">     114</span> <span class="tlaGNC">       16689 : TensorBase&lt;Derived&gt;::clone(torch::MemoryFormat memory_format) const</span></span>
+<span id="L114"><span class="lineNum">     114</span> <span class="tlaGNC">       16781 : TensorBase&lt;Derived&gt;::clone(torch::MemoryFormat memory_format) const</span></span>
 <span id="L115"><span class="lineNum">     115</span>              : {</span>
-<span id="L116"><span class="lineNum">     116</span> <span class="tlaGNC">       16689 :   return Derived(torch::Tensor::clone(memory_format), _batch_dim);</span></span>
+<span id="L116"><span class="lineNum">     116</span> <span class="tlaGNC">       16781 :   return Derived(torch::Tensor::clone(memory_format), _batch_dim);</span></span>
 <span id="L117"><span class="lineNum">     117</span>              : }</span>
 <span id="L118"><span class="lineNum">     118</span>              : </span>
 <span id="L119"><span class="lineNum">     119</span>              : template &lt;class Derived&gt;</span>
@@ -187,9 +187,9 @@
 <span id="L125"><span class="lineNum">     125</span>              : </span>
 <span id="L126"><span class="lineNum">     126</span>              : template &lt;class Derived&gt;</span>
 <span id="L127"><span class="lineNum">     127</span>              : Derived</span>
-<span id="L128"><span class="lineNum">     128</span> <span class="tlaGNC tlaBgGNC">        1137 : TensorBase&lt;Derived&gt;::to(const torch::TensorOptions &amp; options) const</span></span>
+<span id="L128"><span class="lineNum">     128</span> <span class="tlaGNC tlaBgGNC">        1141 : TensorBase&lt;Derived&gt;::to(const torch::TensorOptions &amp; options) const</span></span>
 <span id="L129"><span class="lineNum">     129</span>              : {</span>
-<span id="L130"><span class="lineNum">     130</span> <span class="tlaGNC">        1137 :   return Derived(torch::Tensor::to(options), _batch_dim);</span></span>
+<span id="L130"><span class="lineNum">     130</span> <span class="tlaGNC">        1141 :   return Derived(torch::Tensor::to(options), _batch_dim);</span></span>
 <span id="L131"><span class="lineNum">     131</span>              : }</span>
 <span id="L132"><span class="lineNum">     132</span>              : </span>
 <span id="L133"><span class="lineNum">     133</span>              : template &lt;class Derived&gt;</span>
@@ -201,23 +201,23 @@
 <span id="L139"><span class="lineNum">     139</span>              : </span>
 <span id="L140"><span class="lineNum">     140</span>              : template &lt;class Derived&gt;</span>
 <span id="L141"><span class="lineNum">     141</span>              : Size</span>
-<span id="L142"><span class="lineNum">     142</span> <span class="tlaGNC">      931614 : TensorBase&lt;Derived&gt;::batch_dim() const</span></span>
+<span id="L142"><span class="lineNum">     142</span> <span class="tlaGNC">      935822 : TensorBase&lt;Derived&gt;::batch_dim() const</span></span>
 <span id="L143"><span class="lineNum">     143</span>              : {</span>
-<span id="L144"><span class="lineNum">     144</span> <span class="tlaGNC">      931614 :   return _batch_dim;</span></span>
+<span id="L144"><span class="lineNum">     144</span> <span class="tlaGNC">      935822 :   return _batch_dim;</span></span>
 <span id="L145"><span class="lineNum">     145</span>              : }</span>
 <span id="L146"><span class="lineNum">     146</span>              : </span>
 <span id="L147"><span class="lineNum">     147</span>              : template &lt;class Derived&gt;</span>
 <span id="L148"><span class="lineNum">     148</span>              : Size</span>
-<span id="L149"><span class="lineNum">     149</span> <span class="tlaGNC">      156179 : TensorBase&lt;Derived&gt;::base_dim() const</span></span>
+<span id="L149"><span class="lineNum">     149</span> <span class="tlaGNC">      156715 : TensorBase&lt;Derived&gt;::base_dim() const</span></span>
 <span id="L150"><span class="lineNum">     150</span>              : {</span>
-<span id="L151"><span class="lineNum">     151</span> <span class="tlaGNC">      156179 :   return dim() - batch_dim();</span></span>
+<span id="L151"><span class="lineNum">     151</span> <span class="tlaGNC">      156715 :   return dim() - batch_dim();</span></span>
 <span id="L152"><span class="lineNum">     152</span>              : }</span>
 <span id="L153"><span class="lineNum">     153</span>              : </span>
 <span id="L154"><span class="lineNum">     154</span>              : template &lt;class Derived&gt;</span>
 <span id="L155"><span class="lineNum">     155</span>              : TensorShapeRef</span>
-<span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">      742292 : TensorBase&lt;Derived&gt;::batch_sizes() const</span></span>
+<span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">      747248 : TensorBase&lt;Derived&gt;::batch_sizes() const</span></span>
 <span id="L157"><span class="lineNum">     157</span>              : {</span>
-<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">      742292 :   return sizes().slice(0, _batch_dim);</span></span>
+<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">      747248 :   return sizes().slice(0, _batch_dim);</span></span>
 <span id="L159"><span class="lineNum">     159</span>              : }</span>
 <span id="L160"><span class="lineNum">     160</span>              : </span>
 <span id="L161"><span class="lineNum">     161</span>              : template &lt;class Derived&gt;</span>
@@ -229,23 +229,23 @@
 <span id="L167"><span class="lineNum">     167</span>              : </span>
 <span id="L168"><span class="lineNum">     168</span>              : template &lt;class Derived&gt;</span>
 <span id="L169"><span class="lineNum">     169</span>              : TensorShapeRef</span>
-<span id="L170"><span class="lineNum">     170</span> <span class="tlaGNC">     1221812 : TensorBase&lt;Derived&gt;::base_sizes() const</span></span>
+<span id="L170"><span class="lineNum">     170</span> <span class="tlaGNC">     1229744 : TensorBase&lt;Derived&gt;::base_sizes() const</span></span>
 <span id="L171"><span class="lineNum">     171</span>              : {</span>
-<span id="L172"><span class="lineNum">     172</span> <span class="tlaGNC">     1221812 :   return sizes().slice(_batch_dim);</span></span>
+<span id="L172"><span class="lineNum">     172</span> <span class="tlaGNC">     1229744 :   return sizes().slice(_batch_dim);</span></span>
 <span id="L173"><span class="lineNum">     173</span>              : }</span>
 <span id="L174"><span class="lineNum">     174</span>              : </span>
 <span id="L175"><span class="lineNum">     175</span>              : template &lt;class Derived&gt;</span>
 <span id="L176"><span class="lineNum">     176</span>              : Size</span>
-<span id="L177"><span class="lineNum">     177</span> <span class="tlaGNC">      213350 : TensorBase&lt;Derived&gt;::base_size(Size index) const</span></span>
+<span id="L177"><span class="lineNum">     177</span> <span class="tlaGNC">      214794 : TensorBase&lt;Derived&gt;::base_size(Size index) const</span></span>
 <span id="L178"><span class="lineNum">     178</span>              : {</span>
-<span id="L179"><span class="lineNum">     179</span> <span class="tlaGNC">      213350 :   return base_sizes()[index &gt;= 0 ? index : index + base_dim()];</span></span>
+<span id="L179"><span class="lineNum">     179</span> <span class="tlaGNC">      214794 :   return base_sizes()[index &gt;= 0 ? index : index + base_dim()];</span></span>
 <span id="L180"><span class="lineNum">     180</span>              : }</span>
 <span id="L181"><span class="lineNum">     181</span>              : </span>
 <span id="L182"><span class="lineNum">     182</span>              : template &lt;class Derived&gt;</span>
 <span id="L183"><span class="lineNum">     183</span>              : Size</span>
-<span id="L184"><span class="lineNum">     184</span> <span class="tlaGNC">       14850 : TensorBase&lt;Derived&gt;::base_storage() const</span></span>
+<span id="L184"><span class="lineNum">     184</span> <span class="tlaGNC">       14972 : TensorBase&lt;Derived&gt;::base_storage() const</span></span>
 <span id="L185"><span class="lineNum">     185</span>              : {</span>
-<span id="L186"><span class="lineNum">     186</span> <span class="tlaGNC">       14850 :   return utils::storage_size(base_sizes());</span></span>
+<span id="L186"><span class="lineNum">     186</span> <span class="tlaGNC">       14972 :   return utils::storage_size(base_sizes());</span></span>
 <span id="L187"><span class="lineNum">     187</span>              : }</span>
 <span id="L188"><span class="lineNum">     188</span>              : </span>
 <span id="L189"><span class="lineNum">     189</span>              : template &lt;class Derived&gt;</span>
@@ -260,12 +260,12 @@
 <span id="L198"><span class="lineNum">     198</span>              : </span>
 <span id="L199"><span class="lineNum">     199</span>              : template &lt;class Derived&gt;</span>
 <span id="L200"><span class="lineNum">     200</span>              : neml2::Tensor</span>
-<span id="L201"><span class="lineNum">     201</span> <span class="tlaGNC">      166628 : TensorBase&lt;Derived&gt;::base_index(indexing::TensorIndicesRef indices) const</span></span>
+<span id="L201"><span class="lineNum">     201</span> <span class="tlaGNC">      167186 : TensorBase&lt;Derived&gt;::base_index(indexing::TensorIndicesRef indices) const</span></span>
 <span id="L202"><span class="lineNum">     202</span>              : {</span>
-<span id="L203"><span class="lineNum">     203</span> <span class="tlaGNC">      166628 :   indexing::TensorIndices indices2(batch_dim(), torch::indexing::Slice());</span></span>
-<span id="L204"><span class="lineNum">     204</span> <span class="tlaGNC">      166628 :   indices2.insert(indices2.end(), indices.begin(), indices.end());</span></span>
-<span id="L205"><span class="lineNum">     205</span> <span class="tlaGNC">      333256 :   return neml2::Tensor(this-&gt;index(indices2), batch_dim());</span></span>
-<span id="L206"><span class="lineNum">     206</span> <span class="tlaGNC">      166628 : }</span></span>
+<span id="L203"><span class="lineNum">     203</span> <span class="tlaGNC">      167186 :   indexing::TensorIndices indices2(batch_dim(), torch::indexing::Slice());</span></span>
+<span id="L204"><span class="lineNum">     204</span> <span class="tlaGNC">      167186 :   indices2.insert(indices2.end(), indices.begin(), indices.end());</span></span>
+<span id="L205"><span class="lineNum">     205</span> <span class="tlaGNC">      334372 :   return neml2::Tensor(this-&gt;index(indices2), batch_dim());</span></span>
+<span id="L206"><span class="lineNum">     206</span> <span class="tlaGNC">      167186 : }</span></span>
 <span id="L207"><span class="lineNum">     207</span>              : </span>
 <span id="L208"><span class="lineNum">     208</span>              : template &lt;class Derived&gt;</span>
 <span id="L209"><span class="lineNum">     209</span>              : void</span>
@@ -279,23 +279,23 @@
 <span id="L217"><span class="lineNum">     217</span>              : </span>
 <span id="L218"><span class="lineNum">     218</span>              : template &lt;class Derived&gt;</span>
 <span id="L219"><span class="lineNum">     219</span>              : void</span>
-<span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC">       17353 : TensorBase&lt;Derived&gt;::base_index_put_(indexing::TensorIndicesRef indices,</span></span>
+<span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC">       17419 : TensorBase&lt;Derived&gt;::base_index_put_(indexing::TensorIndicesRef indices,</span></span>
 <span id="L221"><span class="lineNum">     221</span>              :                                      const torch::Tensor &amp; other)</span>
 <span id="L222"><span class="lineNum">     222</span>              : {</span>
-<span id="L223"><span class="lineNum">     223</span> <span class="tlaGNC">       17353 :   indexing::TensorIndices indices2(batch_dim(), torch::indexing::Slice());</span></span>
-<span id="L224"><span class="lineNum">     224</span> <span class="tlaGNC">       17353 :   indices2.insert(indices2.end(), indices.begin(), indices.end());</span></span>
-<span id="L225"><span class="lineNum">     225</span> <span class="tlaGNC">       17353 :   this-&gt;index_put_(indices2, other);</span></span>
-<span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">       17353 : }</span></span>
+<span id="L223"><span class="lineNum">     223</span> <span class="tlaGNC">       17419 :   indexing::TensorIndices indices2(batch_dim(), torch::indexing::Slice());</span></span>
+<span id="L224"><span class="lineNum">     224</span> <span class="tlaGNC">       17419 :   indices2.insert(indices2.end(), indices.begin(), indices.end());</span></span>
+<span id="L225"><span class="lineNum">     225</span> <span class="tlaGNC">       17419 :   this-&gt;index_put_(indices2, other);</span></span>
+<span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">       17419 : }</span></span>
 <span id="L227"><span class="lineNum">     227</span>              : </span>
 <span id="L228"><span class="lineNum">     228</span>              : template &lt;class Derived&gt;</span>
 <span id="L229"><span class="lineNum">     229</span>              : Derived</span>
-<span id="L230"><span class="lineNum">     230</span> <span class="tlaGNC">       57015 : TensorBase&lt;Derived&gt;::batch_expand(TensorShapeRef batch_size) const</span></span>
+<span id="L230"><span class="lineNum">     230</span> <span class="tlaGNC">       57233 : TensorBase&lt;Derived&gt;::batch_expand(TensorShapeRef batch_size) const</span></span>
 <span id="L231"><span class="lineNum">     231</span>              : {</span>
 <span id="L232"><span class="lineNum">     232</span>              :   // We don't want to touch the base dimensions, so put -1 for them.</span>
-<span id="L233"><span class="lineNum">     233</span> <span class="tlaGNC">       57015 :   auto net = batch_size.vec();</span></span>
-<span id="L234"><span class="lineNum">     234</span> <span class="tlaGNC">       57015 :   net.insert(net.end(), base_dim(), -1);</span></span>
-<span id="L235"><span class="lineNum">     235</span> <span class="tlaGNC">      114030 :   return Derived(expand(net), batch_size.size());</span></span>
-<span id="L236"><span class="lineNum">     236</span> <span class="tlaGNC">       57015 : }</span></span>
+<span id="L233"><span class="lineNum">     233</span> <span class="tlaGNC">       57233 :   auto net = batch_size.vec();</span></span>
+<span id="L234"><span class="lineNum">     234</span> <span class="tlaGNC">       57233 :   net.insert(net.end(), base_dim(), -1);</span></span>
+<span id="L235"><span class="lineNum">     235</span> <span class="tlaGNC">      114466 :   return Derived(expand(net), batch_size.size());</span></span>
+<span id="L236"><span class="lineNum">     236</span> <span class="tlaGNC">       57233 : }</span></span>
 <span id="L237"><span class="lineNum">     237</span>              : </span>
 <span id="L238"><span class="lineNum">     238</span>              : template &lt;class Derived&gt;</span>
 <span id="L239"><span class="lineNum">     239</span>              : neml2::Tensor</span>
@@ -309,9 +309,9 @@
 <span id="L247"><span class="lineNum">     247</span>              : </span>
 <span id="L248"><span class="lineNum">     248</span>              : template &lt;class Derived&gt;</span>
 <span id="L249"><span class="lineNum">     249</span>              : Derived</span>
-<span id="L250"><span class="lineNum">     250</span> <span class="tlaGNC">        1888 : TensorBase&lt;Derived&gt;::batch_expand_copy(TensorShapeRef batch_size) const</span></span>
+<span id="L250"><span class="lineNum">     250</span> <span class="tlaGNC">        1908 : TensorBase&lt;Derived&gt;::batch_expand_copy(TensorShapeRef batch_size) const</span></span>
 <span id="L251"><span class="lineNum">     251</span>              : {</span>
-<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">        1888 :   return Derived(batch_expand(batch_size).contiguous(), batch_size.size());</span></span>
+<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">        1908 :   return Derived(batch_expand(batch_size).contiguous(), batch_size.size());</span></span>
 <span id="L253"><span class="lineNum">     253</span>              : }</span>
 <span id="L254"><span class="lineNum">     254</span>              : </span>
 <span id="L255"><span class="lineNum">     255</span>              : template &lt;class Derived&gt;</span>
@@ -330,9 +330,9 @@
 <span id="L268"><span class="lineNum">     268</span>              : </span>
 <span id="L269"><span class="lineNum">     269</span>              : template &lt;class Derived&gt;</span>
 <span id="L270"><span class="lineNum">     270</span>              : neml2::Tensor</span>
-<span id="L271"><span class="lineNum">     271</span> <span class="tlaGNC tlaBgGNC">       49758 : TensorBase&lt;Derived&gt;::base_reshape(TensorShapeRef base_shape) const</span></span>
+<span id="L271"><span class="lineNum">     271</span> <span class="tlaGNC tlaBgGNC">       49926 : TensorBase&lt;Derived&gt;::base_reshape(TensorShapeRef base_shape) const</span></span>
 <span id="L272"><span class="lineNum">     272</span>              : {</span>
-<span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC">       49758 :   return neml2::Tensor(reshape(utils::add_shapes(batch_sizes(), base_shape)), _batch_dim);</span></span>
+<span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC">       49926 :   return neml2::Tensor(reshape(utils::add_shapes(batch_sizes(), base_shape)), _batch_dim);</span></span>
 <span id="L274"><span class="lineNum">     274</span>              : }</span>
 <span id="L275"><span class="lineNum">     275</span>              : </span>
 <span id="L276"><span class="lineNum">     276</span>              : template &lt;class Derived&gt;</span>
@@ -371,9 +371,9 @@
 <span id="L309"><span class="lineNum">     309</span>              : </span>
 <span id="L310"><span class="lineNum">     310</span>              : template &lt;class Derived&gt;</span>
 <span id="L311"><span class="lineNum">     311</span>              : Derived</span>
-<span id="L312"><span class="lineNum">     312</span> <span class="tlaGNC">       16157 : TensorBase&lt;Derived&gt;::operator-() const</span></span>
+<span id="L312"><span class="lineNum">     312</span> <span class="tlaGNC">       16337 : TensorBase&lt;Derived&gt;::operator-() const</span></span>
 <span id="L313"><span class="lineNum">     313</span>              : {</span>
-<span id="L314"><span class="lineNum">     314</span> <span class="tlaGNC">       16157 :   return Derived(-torch::Tensor(*this), _batch_dim);</span></span>
+<span id="L314"><span class="lineNum">     314</span> <span class="tlaGNC">       16337 :   return Derived(-torch::Tensor(*this), _batch_dim);</span></span>
 <span id="L315"><span class="lineNum">     315</span>              : }</span>
 <span id="L316"><span class="lineNum">     316</span>              : </span>
 <span id="L317"><span class="lineNum">     317</span>              : #define TENSORBASE_INSTANTIATE(T) template class TensorBase&lt;T&gt;</span>

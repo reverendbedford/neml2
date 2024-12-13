@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2024-12-13 18:19:09</td>
+            <td class="headerValue">2024-12-13 20:07:41</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
@@ -92,25 +92,25 @@
 <span id="L30"><span class="lineNum">      30</span>              : namespace utils</span>
 <span id="L31"><span class="lineNum">      31</span>              : {</span>
 <span id="L32"><span class="lineNum">      32</span>              : std::string</span>
-<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC tlaBgGNC">      278696 : demangle(const char * name)</span></span>
+<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC tlaBgGNC">      281290 : demangle(const char * name)</span></span>
 <span id="L34"><span class="lineNum">      34</span>              : {</span>
 <span id="L35"><span class="lineNum">      35</span>              :   // c10 already has an implementation, let's not reinvent the wheels</span>
-<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">      278696 :   return c10::demangle(name);</span></span>
+<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">      281290 :   return c10::demangle(name);</span></span>
 <span id="L37"><span class="lineNum">      37</span>              : }</span>
 <span id="L38"><span class="lineNum">      38</span>              : </span>
 <span id="L39"><span class="lineNum">      39</span>              : Size</span>
-<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">       16562 : storage_size(TensorShapeRef shape)</span></span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">       16688 : storage_size(TensorShapeRef shape)</span></span>
 <span id="L41"><span class="lineNum">      41</span>              : {</span>
-<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">       16562 :   Size sz = 1;</span></span>
-<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">       16562 :   return std::accumulate(shape.begin(), shape.end(), sz, std::multiplies&lt;Size&gt;());</span></span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">       16688 :   Size sz = 1;</span></span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">       16688 :   return std::accumulate(shape.begin(), shape.end(), sz, std::multiplies&lt;Size&gt;());</span></span>
 <span id="L44"><span class="lineNum">      44</span>              : }</span>
 <span id="L45"><span class="lineNum">      45</span>              : </span>
 <span id="L46"><span class="lineNum">      46</span>              : TensorShape</span>
-<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">      324485 : pad_prepend(TensorShapeRef s, Size dim, Size pad)</span></span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">      326841 : pad_prepend(TensorShapeRef s, Size dim, Size pad)</span></span>
 <span id="L48"><span class="lineNum">      48</span>              : {</span>
-<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">      324485 :   TensorShape s2(s);</span></span>
-<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">      324485 :   s2.insert(s2.begin(), dim - s.size(), pad);</span></span>
-<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">      324485 :   return s2;</span></span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">      326841 :   TensorShape s2(s);</span></span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">      326841 :   s2.insert(s2.begin(), dim - s.size(), pad);</span></span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">      326841 :   return s2;</span></span>
 <span id="L52"><span class="lineNum">      52</span> <span class="tlaUNC tlaBgUNC">           0 : }</span></span>
 <span id="L53"><span class="lineNum">      53</span>              : </span>
 <span id="L54"><span class="lineNum">      54</span>              : TensorShape</span>
@@ -136,9 +136,9 @@
 <span id="L74"><span class="lineNum">      74</span>              : namespace details</span>
 <span id="L75"><span class="lineNum">      75</span>              : {</span>
 <span id="L76"><span class="lineNum">      76</span>              : TensorShape</span>
-<span id="L77"><span class="lineNum">      77</span> <span class="tlaGNC tlaBgGNC">      102929 : add_shapes_impl(TensorShape &amp; net)</span></span>
+<span id="L77"><span class="lineNum">      77</span> <span class="tlaGNC tlaBgGNC">      103547 : add_shapes_impl(TensorShape &amp; net)</span></span>
 <span id="L78"><span class="lineNum">      78</span>              : {</span>
-<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">      102929 :   return std::move(net);</span></span>
+<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">      103547 :   return std::move(net);</span></span>
 <span id="L80"><span class="lineNum">      80</span>              : }</span>
 <span id="L81"><span class="lineNum">      81</span>              : } // namespace details</span>
 <span id="L82"><span class="lineNum">      82</span>              : } // namespace utils</span>

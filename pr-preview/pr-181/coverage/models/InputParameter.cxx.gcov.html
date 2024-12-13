@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2024-12-13 18:19:09</td>
+            <td class="headerValue">2024-12-13 20:07:41</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryLo">40.0&nbsp;%</td>
@@ -104,31 +104,31 @@
 <span id="L42"><span class="lineNum">      42</span> <span class="tlaUNC tlaBgUNC">           0 : }</span></span>
 <span id="L43"><span class="lineNum">      43</span>              : </span>
 <span id="L44"><span class="lineNum">      44</span>              : template &lt;typename T&gt;</span>
-<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC tlaBgGNC">          88 : InputParameter&lt;T&gt;::InputParameter(const OptionSet &amp; options)</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC tlaBgGNC">         100 : InputParameter&lt;T&gt;::InputParameter(const OptionSet &amp; options)</span></span>
 <span id="L46"><span class="lineNum">      46</span>              :   : NonlinearParameter&lt;T&gt;(options),</span>
-<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">          88 :     _input_var(this-&gt;template declare_input_variable&lt;T&gt;(&quot;from&quot;))</span></span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">         100 :     _input_var(this-&gt;template declare_input_variable&lt;T&gt;(&quot;from&quot;))</span></span>
 <span id="L48"><span class="lineNum">      48</span>              : {</span>
-<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">          88 :   neml_assert(utils::stringify(_input_var.name()) != this-&gt;name(),</span></span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">         100 :   neml_assert(utils::stringify(_input_var.name()) != this-&gt;name(),</span></span>
 <span id="L50"><span class="lineNum">      50</span>              :               &quot;InputParameter must use an input variable name different from the parameter name. &quot;</span>
 <span id="L51"><span class="lineNum">      51</span>              :               &quot;They both has name '&quot;,</span>
-<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">          88 :               this-&gt;name(),</span></span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">         100 :               this-&gt;name(),</span></span>
 <span id="L53"><span class="lineNum">      53</span>              :               &quot;'.&quot;);</span>
-<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">          88 : }</span></span>
+<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">         100 : }</span></span>
 <span id="L55"><span class="lineNum">      55</span>              : </span>
 <span id="L56"><span class="lineNum">      56</span>              : template &lt;typename T&gt;</span>
 <span id="L57"><span class="lineNum">      57</span>              : void</span>
-<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">        1354 : InputParameter&lt;T&gt;::set_value(bool out, bool dout_din, bool d2out_din2)</span></span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">        1444 : InputParameter&lt;T&gt;::set_value(bool out, bool dout_din, bool d2out_din2)</span></span>
 <span id="L59"><span class="lineNum">      59</span>              : {</span>
-<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">        1354 :   if (out)</span></span>
-<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">        1354 :     this-&gt;_p = _input_var.value();</span></span>
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">        1444 :   if (out)</span></span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">        1444 :     this-&gt;_p = _input_var.value();</span></span>
 <span id="L62"><span class="lineNum">      62</span>              : </span>
-<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">        1354 :   if (dout_din)</span></span>
-<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">         436 :     if (_input_var.is_dependent())</span></span>
-<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">         436 :       this-&gt;_p.d(_input_var) = T::identity_map(this-&gt;options());</span></span>
+<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">        1444 :   if (dout_din)</span></span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">         460 :     if (_input_var.is_dependent())</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">         460 :       this-&gt;_p.d(_input_var) = T::identity_map(this-&gt;options());</span></span>
 <span id="L66"><span class="lineNum">      66</span>              : </span>
 <span id="L67"><span class="lineNum">      67</span>              :   // This is zero</span>
 <span id="L68"><span class="lineNum">      68</span>              :   (void)d2out_din2;</span>
-<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">        1354 : }</span></span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">        1444 : }</span></span>
 <span id="L70"><span class="lineNum">      70</span>              : } // namespace neml2</span>
         </pre>
               </td>
