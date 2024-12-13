@@ -7,7 +7,6 @@ var classneml2_1_1ElasticityTensor =
       [ "INVALID", "classneml2_1_1ElasticityTensor.html#a3a023c0c27667e78ae521eb64f1c7c81accc0377a8afbf50e7094f5c23a8af223", null ]
     ] ],
     [ "ElasticityTensor", "classneml2_1_1ElasticityTensor.html#aa9396893a6b677a156aeccd30f55c957", null ],
-    [ "_coef", "classneml2_1_1ElasticityTensor.html#ae10cd115cdcf6e7873bc86590246671a", null ],
-    [ "_coef_as_param", "classneml2_1_1ElasticityTensor.html#a91989e70e5aab7502ff57e5feed1c592", null ],
+    [ "_coef", "classneml2_1_1ElasticityTensor.html#a71d6a45928d9cae904b7f0fa7a2a9a5e", null ],
     [ "_coef_types", "classneml2_1_1ElasticityTensor.html#aa2e14d1395aac711881563fb3c47f287", null ]
 ];

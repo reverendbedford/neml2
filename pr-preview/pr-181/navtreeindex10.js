@@ -1,16 +1,14 @@
 var NAVTREEINDEX10 =
 {
-"classneml2_1_1VariableStore.html#a1ed74d73fce62d022f68bdcc31cc5303":[8,1,0,163,13],
-"classneml2_1_1VariableStore.html#a2150903577c9e97f2e9b211b4f6bca33":[8,0,0,165,30],
 "classneml2_1_1VariableStore.html#a2150903577c9e97f2e9b211b4f6bca33":[8,1,0,163,30],
-"classneml2_1_1VariableStore.html#a25e939c2523954864422594a22b8868c":[8,0,0,165,17],
 "classneml2_1_1VariableStore.html#a25e939c2523954864422594a22b8868c":[8,1,0,163,17],
-"classneml2_1_1VariableStore.html#a32ab3f86edab2f4c2cbfaaf5c62ce145":[8,1,0,163,39],
+"classneml2_1_1VariableStore.html#a25e939c2523954864422594a22b8868c":[8,0,0,165,17],
 "classneml2_1_1VariableStore.html#a32ab3f86edab2f4c2cbfaaf5c62ce145":[8,0,0,165,39],
+"classneml2_1_1VariableStore.html#a32ab3f86edab2f4c2cbfaaf5c62ce145":[8,1,0,163,39],
 "classneml2_1_1VariableStore.html#a32f2809f2a025ca49ef2b97e16c9a913":[8,0,0,165,7],
 "classneml2_1_1VariableStore.html#a32f2809f2a025ca49ef2b97e16c9a913":[8,1,0,163,7],
-"classneml2_1_1VariableStore.html#a3458910b69c5b699a60878d2bef2ec7d":[8,1,0,163,29],
 "classneml2_1_1VariableStore.html#a3458910b69c5b699a60878d2bef2ec7d":[8,0,0,165,29],
+"classneml2_1_1VariableStore.html#a3458910b69c5b699a60878d2bef2ec7d":[8,1,0,163,29],
 "classneml2_1_1VariableStore.html#a358580fb3a4e74990f5a309dc60aa1a3":[8,0,0,165,36],
 "classneml2_1_1VariableStore.html#a358580fb3a4e74990f5a309dc60aa1a3":[8,1,0,163,36],
 "classneml2_1_1VariableStore.html#a40ad626c6229a766a9562f76de8a75a2":[8,0,0,165,4],
@@ -249,5 +247,7 @@ var NAVTREEINDEX10 =
 "classneml2_1_1crystallography_1_1FillMillerIndex.html":[8,1,0,0,2],
 "classneml2_1_1crystallography_1_1FillMillerIndex.html#afca1c70d1c8ecb06e2ffd205a4a71585":[8,1,0,0,2,0],
 "classneml2_1_1crystallography_1_1FillMillerIndex.html#afca1c70d1c8ecb06e2ffd205a4a71585":[8,0,0,0,3,0],
-"classneml2_1_1crystallography_1_1SymmetryFromOrbifold.html":[8,0,0,0,4]
+"classneml2_1_1crystallography_1_1SymmetryFromOrbifold.html":[8,0,0,0,4],
+"classneml2_1_1crystallography_1_1SymmetryFromOrbifold.html":[8,1,0,0,3],
+"classneml2_1_1crystallography_1_1SymmetryFromOrbifold.html#a0e4da24515aef9f2e79bf3cefbf68aa7":[8,0,0,0,4,0]
 };

@@ -1,7 +1,5 @@
 var NAVTREEINDEX11 =
 {
-"classneml2_1_1crystallography_1_1SymmetryFromOrbifold.html":[8,1,0,0,3],
-"classneml2_1_1crystallography_1_1SymmetryFromOrbifold.html#a0e4da24515aef9f2e79bf3cefbf68aa7":[8,0,0,0,4,0],
 "classneml2_1_1crystallography_1_1SymmetryFromOrbifold.html#a0e4da24515aef9f2e79bf3cefbf68aa7":[8,1,0,0,3,0],
 "cpp-backend.html":[2,1],
 "custom-model.html":[3,1],
@@ -249,5 +247,7 @@ var NAVTREEINDEX11 =
 "namespaceneml2.html#aea78a4c4a7064a75c848e597cae3ad4e":[8,0,0,231],
 "namespaceneml2.html#aebe254307f3f85ad350d07a10b24e85a":[8,0,0,361],
 "namespaceneml2.html#aec23c48520256c2362133edcead88cdd":[8,0,0,228],
-"namespaceneml2.html#aee91e52a56229f56b7d7427b9d876e84":[8,0,0,315]
+"namespaceneml2.html#aee91e52a56229f56b7d7427b9d876e84":[8,0,0,315],
+"namespaceneml2.html#af2dfd736935783dab23c336c69529156":[8,0,0,365],
+"namespaceneml2.html#af3be63f57cace189eee9ea8e3eaa79f1":[8,0,0,325]
 };
