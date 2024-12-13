@@ -162,30 +162,20 @@ ParameterStore::declare_parameters(const std::string & name,
   if (_options.contains<std::vector<T>>(input_option_name))
   {
     const auto vals = _options.get<std::vector<T>>(input_option_name);
-    if (vals.size() == 1)
-      return {&declare_parameter(name, vals[0])};
-    else
-    {
-      std::vector<const T *> params(vals.size());
-      for (std::size_t i = 0; i < vals.size(); ++i)
-        params[i] = &declare_parameter(name + "_" + utils::stringify(i), vals[i]);
-      return params;
-    }
+    std::vector<const T *> params(vals.size());
+    for (std::size_t i = 0; i < vals.size(); ++i)
+      params[i] = &declare_parameter(name + "_" + utils::stringify(i), vals[i]);
+    return params;
   }
 
   if (_options.contains<std::vector<CrossRef<T>>>(input_option_name))
   {
     const auto vals = _options.get<std::vector<CrossRef<T>>>(input_option_name);
-    if (vals.size() == 1)
-      return {&declare_parameter_crossref<T>(name, vals[0], allow_nonlinear)};
-    else
-    {
-      std::vector<const T *> params(vals.size());
-      for (std::size_t i = 0; i < vals.size(); ++i)
-        params[i] = &declare_parameter_crossref<T>(
-            name + "_" + utils::stringify(i), vals[i], allow_nonlinear);
-      return params;
-    }
+    std::vector<const T *> params(vals.size());
+    for (std::size_t i = 0; i < vals.size(); ++i)
+      params[i] = &declare_parameter_crossref<T>(
+          name + "_" + utils::stringify(i), vals[i], allow_nonlinear);
+    return params;
   }
 
   throw NEMLException("Internal error in declare_parameters");

@@ -59,11 +59,11 @@ CubicElasticityTensor::set_value(bool out, bool dout_din, bool d2out_din2)
     _p = C1 * I1 + C2 * I2 + C3 * I3;
   if (dout_din)
   {
-    if (const auto * const p1 = nl_param("p1"))
+    if (const auto * const p1 = nl_param("coef_0"))
       _p.d(*p1) = dC1_dp1 * I1 + dC2_dp1 * I2 + dC3_dp1 * I3;
-    if (const auto * const p2 = nl_param("p2"))
+    if (const auto * const p2 = nl_param("coef_1"))
       _p.d(*p2) = dC1_dp2 * I1 + dC2_dp2 * I2 + dC3_dp2 * I3;
-    if (const auto * const p3 = nl_param("p3"))
+    if (const auto * const p3 = nl_param("coef_2"))
       _p.d(*p3) = dC1_dp3 * I1 + dC2_dp3 * I2 + dC3_dp3 * I3;
   }
 }

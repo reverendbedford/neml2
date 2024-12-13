@@ -63,10 +63,10 @@ IsotropicElasticityTensor::set_value(bool out, bool dout_din, bool d2out_din2)
 
   if (dout_din)
   {
-    if (const auto * const p1 = nl_param("p1"))
+    if (const auto * const p1 = nl_param("coef_0"))
       _p.d(*p1) = 3.0 * dl_dp1 * Iv + 2.0 * dm_dp1 * Is;
 
-    if (const auto * const p2 = nl_param("p2"))
+    if (const auto * const p2 = nl_param("coef_1"))
       _p.d(*p2) = 3.0 * dl_dp2 * Iv + 2.0 * dm_dp2 * Is;
   }
 }
