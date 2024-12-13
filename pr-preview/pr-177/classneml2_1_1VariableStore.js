@@ -1,6 +1,7 @@
 var classneml2_1_1VariableStore =
 [
     [ "VariableStore", "classneml2_1_1VariableStore.html#aee9a2e9080cf158fe535a56d4ecec295", null ],
+    [ "~VariableStore", "classneml2_1_1VariableStore.html#a3b95f80628615e9fd70b3b8da7dc656f", null ],
     [ "assign_input", "classneml2_1_1VariableStore.html#ad064428f4c4e984fff7d9e6a0a754676", null ],
     [ "assign_output", "classneml2_1_1VariableStore.html#a00c2761343420b6cff38b8687e4e0e06", null ],
     [ "assign_output_derivatives", "classneml2_1_1VariableStore.html#a6914a8b39a98575f2f3e2b5c514e2f0d", null ],

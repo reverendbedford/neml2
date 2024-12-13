@@ -32,7 +32,7 @@ var searchData=
   ['sinh_29',['sinh',['../namespaceneml2_1_1math.html#a7b5be1404151d1d8f7f57241c790553b',1,'neml2::math']]],
   ['size_30',['size',['../classneml2_1_1OptionSet.html#ade1601ccf1fa3bcf050867f0852ca4e5',1,'neml2::OptionSet::size()'],['../classneml2_1_1Storage.html#ade1601ccf1fa3bcf050867f0852ca4e5',1,'neml2::Storage::size()'],['../classneml2_1_1LabeledAxis.html#acce0ab2cacc475b2434f24c65c91685a',1,'neml2::LabeledAxis::size() const'],['../classneml2_1_1LabeledAxis.html#abe60734a2089eb7af4f1e46c47ca0565',1,'neml2::LabeledAxis::size(const LabeledAxisAccessor &amp;name) const'],['../classneml2_1_1LabeledAxisAccessor.html#a259cb5a711406a8c3e5d937eb9350cca',1,'neml2::LabeledAxisAccessor::size()'],['../classneml2_1_1VariableBase.html#ac611e9005573935f98920cd61bfe8dff',1,'neml2::VariableBase::size(Size dim) const']]],
   ['sizes_31',['sizes',['../classneml2_1_1VariableBase.html#a57de9a4eb734c6223dabbcb435cbb801',1,'neml2::VariableBase']]],
-  ['sizes_5fbroadcastable_32',['sizes_broadcastable',['../namespaceneml2_1_1utils.html#a0c4d62ed9b91f5973aa7329f37612816',1,'neml2::utils']]],
+  ['sizes_5fbroadcastable_32',['sizes_broadcastable',['../namespaceneml2_1_1utils.html#a9df135c17e6caa8b3c318c9685693111',1,'neml2::utils']]],
   ['sizes_5fsame_33',['sizes_same',['../namespaceneml2_1_1utils.html#a24ad971a5cdae552164e90336da6b6ac',1,'neml2::utils']]],
   ['skew_34',['skew',['../classneml2_1_1R2Base.html#af84fb36c1a17788b5d38def5967e2e80',1,'neml2::R2Base']]],
   ['skew_5fand_5fsym_5fto_5fsym_35',['skew_and_sym_to_sym',['../namespaceneml2_1_1math.html#a79958938ba92f37e8c1db91a15f8a403',1,'neml2::math']]],

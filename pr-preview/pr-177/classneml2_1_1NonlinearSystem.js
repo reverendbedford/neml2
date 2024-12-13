@@ -3,6 +3,7 @@ var classneml2_1_1NonlinearSystem =
     [ "JAC", "structneml2_1_1NonlinearSystem_1_1JAC.html", "structneml2_1_1NonlinearSystem_1_1JAC" ],
     [ "RES", "structneml2_1_1NonlinearSystem_1_1RES.html", "structneml2_1_1NonlinearSystem_1_1RES" ],
     [ "SOL", "structneml2_1_1NonlinearSystem_1_1SOL.html", "structneml2_1_1NonlinearSystem_1_1SOL" ],
+    [ "~NonlinearSystem", "classneml2_1_1NonlinearSystem.html#aa62a80340427a799c1c39dafcc509241", null ],
     [ "NonlinearSystem", "classneml2_1_1NonlinearSystem.html#a596124ec7dce0384ee6e74070aa574dc", null ],
     [ "assemble", "classneml2_1_1NonlinearSystem.html#a5c5c13661af3cd3fca2a4108069afa9a", null ],
     [ "init_scaling", "classneml2_1_1NonlinearSystem.html#a1f7060dc17ec51fef66ceb888df24540", null ],
