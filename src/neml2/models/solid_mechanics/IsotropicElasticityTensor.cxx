@@ -74,45 +74,30 @@ IsotropicElasticityTensor::set_value(bool out, bool dout_din, bool d2out_din2)
 std::tuple<Scalar, Scalar, Scalar>
 IsotropicElasticityTensor::convert_to_lambda()
 {
-  auto p1_type = _coef_types[0];
-  auto p2_type = _coef_types[1];
+  auto [coefs, order] = remap({ParamType::YOUNGS, ParamType::POISSONS});
 
-  const auto & p1 = *_coef[0];
-  const auto & p2 = *_coef[1];
+  const auto & p1 = coefs[0];
+  const auto & p2 = coefs[1];
 
-  if ((p1_type == ParamType::YOUNGS) && (p2_type == ParamType::POISSONS))
-    return std::make_tuple(p1 * p2 / ((1 + p2) * (1 - 2 * p2)),
-                           -p2 / (2 * p2 * p2 + p2 - 1),
-                           (p1 + 2 * p1 * p2 * p2) /
-                               ((2 * p2 * p2 + p2 - 1) * (2 * p2 * p2 + p2 - 1)));
-  else if ((p1_type == ParamType::POISSONS) && (p2_type == ParamType::YOUNGS))
-    return std::make_tuple(p2 * p1 / ((1 + p1) * (1 - 2 * p1)),
-                           (p2 + 2 * p2 * p1 * p1) /
-                               ((2 * p1 * p1 + p1 - 1) * (2 * p1 * p1 + p1 - 1)),
-                           -p1 / (2 * p1 * p1 + p1 - 1));
-  else
-    throw NEMLException("Unsupported combination of input parameter types: " +
-                        std::string(input_options().get<EnumSelection>("p1_type")) + " and " +
-                        std::string(input_options().get<EnumSelection>("p2_type")));
+  auto value = p1 * p2 / ((1 + p2) * (1 - 2 * p2));
+  std::vector<Scalar> derivs = {-p2 / (2 * p2 * p2 + p2 - 1),
+                                (p1 + 2 * p1 * p2 * p2) /
+                                    ((2 * p2 * p2 + p2 - 1) * (2 * p2 * p2 + p2 - 1))};
+
+  return combine_and_reorder<2>(value, derivs, order);
 }
 std::tuple<Scalar, Scalar, Scalar>
 IsotropicElasticityTensor::convert_to_mu()
 {
-  auto p1_type = _coef_types[0];
-  auto p2_type = _coef_types[1];
+  auto [coefs, order] = remap({ParamType::YOUNGS, ParamType::POISSONS});
 
-  const auto & p1 = *_coef[0];
-  const auto & p2 = *_coef[1];
+  const auto & p1 = coefs[0];
+  const auto & p2 = coefs[1];
 
-  if ((p1_type == ParamType::YOUNGS) && (p2_type == ParamType::POISSONS))
-    return std::make_tuple(
-        p1 / (2 * (1 + p2)), 1.0 / (2.0 + 2 * p2), -p1 / (2 * (1 + p2) * (1 + p2)));
-  else if ((p1_type == ParamType::POISSONS) && (p2_type == ParamType::YOUNGS))
-    return std::make_tuple(p2 / (2 * (1 + p1)), -p2 / (2 * (1 + p1) * (1 + p1)), 1 / (2 + 2 * p1));
-  else
-    throw NEMLException("Unsupported combination of input parameter types: " +
-                        std::string(input_options().get<EnumSelection>("p1_type")) + " and " +
-                        std::string(input_options().get<EnumSelection>("p2_type")));
+  auto value = p1 / (2 * (1 + p2));
+  std::vector<Scalar> derivs = {1.0 / (2.0 + 2 * p2), -p1 / (2 * (1 + p2) * (1 + p2))};
+
+  return combine_and_reorder<2>(value, derivs, order);
 }
 
 } // namespace neml2

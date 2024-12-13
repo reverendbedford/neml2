@@ -62,4 +62,36 @@ ElasticityTensor::ElasticityTensor(const OptionSet & options)
               "Number of coefficient types must match number of coefficients.");
 }
 
+std::tuple<std::vector<Scalar>, std::vector<size_t>>
+ElasticityTensor::remap(const std::vector<ParamType> & order) const
+{
+  std::vector<Scalar> coef;
+  std::vector<size_t> remap;
+
+  for (auto & o : order)
+  {
+    auto it = std::find(_coef_types.begin(), _coef_types.end(), o);
+    neml_assert(it != _coef_types.end(),
+                "Required coefficient type for constructing the elasticity tensor not found in "
+                "provided input.");
+    auto i = std::distance(_coef_types.begin(), it);
+    coef.push_back(*_coef[i]);
+    remap.push_back(i);
+  }
+
+  return std::make_tuple(coef, remap);
+}
+
+std::vector<Scalar>
+ElasticityTensor::reorder_derivs(const std::vector<Scalar> & derivs,
+                                 const std::vector<size_t> & order) const
+{
+  std::vector<Scalar> out(derivs.size());
+  for (size_t i = 0; i < derivs.size(); i++)
+  {
+    out[order[i]] = derivs[i];
+  }
+  return out;
+}
+
 } // namespace neml2

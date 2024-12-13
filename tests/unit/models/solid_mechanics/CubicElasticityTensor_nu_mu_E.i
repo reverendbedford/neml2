@@ -35,8 +35,8 @@
   []
   [p]
     type = CubicElasticityTensor
-    coefficient_types = 'youngs_modulus poissons_ratio shear_modulus'
-    coefficients = 'E nu mu'
+    coefficient_types = 'poissons_ratio shear_modulus youngs_modulus'
+    coefficients = 'nu mu E'
   []
   [model]
     type = ComposedModel

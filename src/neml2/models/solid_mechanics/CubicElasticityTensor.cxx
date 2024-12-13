@@ -71,71 +71,45 @@ CubicElasticityTensor::set_value(bool out, bool dout_din, bool d2out_din2)
 std::tuple<Scalar, Scalar, Scalar, Scalar>
 CubicElasticityTensor::convert_to_C1()
 {
-  auto p1_type = _coef_types[0];
-  auto p2_type = _coef_types[1];
-  auto p3_type = _coef_types[2];
+  auto [coefs, order] = remap({ParamType::YOUNGS, ParamType::POISSONS, ParamType::SHEAR});
 
-  auto p1 = *_coef[0];
-  auto p2 = *_coef[1];
-  auto p3 = *_coef[2];
+  const auto & p1 = coefs[0];
+  const auto & p2 = coefs[1];
 
-  if ((p1_type == ParamType::YOUNGS) && (p2_type == ParamType::POISSONS) &&
-      (p3_type == ParamType::SHEAR))
-    return std::make_tuple(p1 / ((1 + p2) * (1 - 2 * p2)) * (1 - p2),
-                           1.0 / ((1 + p2) * (1 - 2 * p2)) * (1 - p2),
-                           (-2.0 * (p2 - 2.0) * p2 * p1) /
-                               ((2.0 * p2 * p2 + p2 - 1) * (2.0 * p2 * p2 + p2 - 1)),
-                           Scalar::zeros_like(p1));
-  else
-    throw NEMLException("Unsupported combination of input parameter types: " +
-                        std::string(input_options().get<EnumSelection>("p1_type")) + " and " +
-                        std::string(input_options().get<EnumSelection>("p2_type")) + " and " +
-                        std::string(input_options().get<EnumSelection>("p3_type")));
+  auto value = p1 / ((1 + p2) * (1 - 2 * p2)) * (1 - p2);
+  std::vector<Scalar> derivs = {1.0 / ((1 + p2) * (1 - 2 * p2)) * (1 - p2),
+                                (-2.0 * (p2 - 2.0) * p2 * p1) /
+                                    ((2.0 * p2 * p2 + p2 - 1) * (2.0 * p2 * p2 + p2 - 1)),
+                                Scalar::zeros_like(p1)};
+  return combine_and_reorder<3>(value, derivs, order);
 }
 std::tuple<Scalar, Scalar, Scalar, Scalar>
 CubicElasticityTensor::convert_to_C2()
 {
-  auto p1_type = _coef_types[0];
-  auto p2_type = _coef_types[1];
-  auto p3_type = _coef_types[2];
+  auto [coefs, order] = remap({ParamType::YOUNGS, ParamType::POISSONS, ParamType::SHEAR});
 
-  auto p1 = *_coef[0];
-  auto p2 = *_coef[1];
-  auto p3 = *_coef[2];
+  const auto & p1 = coefs[0];
+  const auto & p2 = coefs[1];
 
-  if ((p1_type == ParamType::YOUNGS) && (p2_type == ParamType::POISSONS) &&
-      (p3_type == ParamType::SHEAR))
-    return std::make_tuple(p1 / ((1 + p2) * (1 - 2 * p2)) * p2,
-                           1.0 / ((1 + p2) * (1 - 2 * p2)) * p2,
-                           (2 * p2 * p2 * p1 + p1) /
-                               ((2.0 * p2 * p2 + p2 - 1) * (2.0 * p2 * p2 + p2 - 1)),
-                           Scalar::zeros_like(p1));
-  else
-    throw NEMLException("Unsupported combination of input parameter types: " +
-                        std::string(input_options().get<EnumSelection>("p1_type")) + " and " +
-                        std::string(input_options().get<EnumSelection>("p2_type")) + " and " +
-                        std::string(input_options().get<EnumSelection>("p3_type")));
+  auto value = p1 / ((1 + p2) * (1 - 2 * p2)) * p2;
+  std::vector<Scalar> derivs = {1.0 / ((1 + p2) * (1 - 2 * p2)) * p2,
+                                (2 * p2 * p2 * p1 + p1) /
+                                    ((2.0 * p2 * p2 + p2 - 1) * (2.0 * p2 * p2 + p2 - 1)),
+                                Scalar::zeros_like(p1)};
+  return combine_and_reorder<3>(value, derivs, order);
 }
 std::tuple<Scalar, Scalar, Scalar, Scalar>
 CubicElasticityTensor::convert_to_C3()
 {
-  auto p1_type = _coef_types[0];
-  auto p2_type = _coef_types[1];
-  auto p3_type = _coef_types[2];
+  auto [coefs, order] = remap({ParamType::YOUNGS, ParamType::POISSONS, ParamType::SHEAR});
 
-  auto p1 = *_coef[0];
-  auto p2 = *_coef[1];
-  auto p3 = *_coef[2];
+  const auto & p3 = coefs[2];
 
-  if ((p1_type == ParamType::YOUNGS) && (p2_type == ParamType::POISSONS) &&
-      (p3_type == ParamType::SHEAR))
-    return std::make_tuple(
-        2.0 * p3, Scalar::zeros_like(p3), Scalar::zeros_like(p3), Scalar::full_like(p3, 2.0));
-  else
-    throw NEMLException("Unsupported combination of input parameter types: " +
-                        std::string(input_options().get<EnumSelection>("p1_type")) + " and " +
-                        std::string(input_options().get<EnumSelection>("p2_type")) + " and " +
-                        std::string(input_options().get<EnumSelection>("p3_type")));
+  auto value = 2.0 * p3;
+  std::vector<Scalar> derivs = {
+      Scalar::zeros_like(p3), Scalar::zeros_like(p3), Scalar::full_like(p3, 2.0)};
+
+  return combine_and_reorder<3>(value, derivs, order);
 }
 
 } // namespace neml2
