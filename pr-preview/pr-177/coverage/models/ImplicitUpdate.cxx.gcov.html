@@ -31,13 +31,13 @@
             <td class="headerValue">coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">67</td>
+            <td class="headerCovTableEntry">68</td>
             <td class="headerCovTableEntry">69</td>
-            <td class="headerCovTableEntryHi">97.1 %</td>
+            <td class="headerCovTableEntryHi">98.6 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-14 23:00:24</td>
+            <td class="headerValue">2024-12-14 23:49:22</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">5</td>
@@ -166,28 +166,28 @@
 <a name="104"><span class="lineNum">     104 </span><span class="lineCov">          8 : }</span></a>
 <a name="105"><span class="lineNum">     105 </span>            : </a>
 <a name="106"><span class="lineNum">     106 </span>            : void</a>
-<a name="107"><span class="lineNum">     107 </span><span class="lineCov">        152 : ImplicitUpdate::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
+<a name="107"><span class="lineNum">     107 </span><span class="lineCov">        178 : ImplicitUpdate::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
 <a name="108"><span class="lineNum">     108 </span>            : {</a>
-<a name="109"><span class="lineNum">     109 </span><span class="lineCov">        152 :   neml_assert_dbg(!d2out_din2, &quot;This model does not define the second derivatives.&quot;);</span></a>
+<a name="109"><span class="lineNum">     109 </span><span class="lineCov">        178 :   neml_assert_dbg(!d2out_din2, &quot;This model does not define the second derivatives.&quot;);</span></a>
 <a name="110"><span class="lineNum">     110 </span>            : </a>
 <a name="111"><span class="lineNum">     111 </span>            :   // The trial state is used as the initial guess</a>
-<a name="112"><span class="lineNum">     112 </span><span class="lineCov">        152 :   const auto sol_assember = VectorAssembler(_model.input_axis().subaxis(&quot;state&quot;));</span></a>
-<a name="113"><span class="lineNum">     113 </span><span class="lineCov">        304 :   auto x0 = NonlinearSystem::SOL&lt;false&gt;(sol_assember.assemble(_model.collect_input()));</span></a>
+<a name="112"><span class="lineNum">     112 </span><span class="lineCov">        178 :   const auto sol_assember = VectorAssembler(_model.input_axis().subaxis(&quot;state&quot;));</span></a>
+<a name="113"><span class="lineNum">     113 </span><span class="lineCov">        356 :   auto x0 = NonlinearSystem::SOL&lt;false&gt;(sol_assember.assemble(_model.collect_input()));</span></a>
 <a name="114"><span class="lineNum">     114 </span>            : </a>
 <a name="115"><span class="lineNum">     115 </span>            :   // Perform automatic scaling (using the trial state)</a>
 <a name="116"><span class="lineNum">     116 </span>            :   // TODO: Add an interface to allow user to specify where (and when) to evaluate the Jacobian for</a>
 <a name="117"><span class="lineNum">     117 </span>            :   // automatic scaling.</a>
-<a name="118"><span class="lineNum">     118 </span><span class="lineCov">        152 :   _model.init_scaling(x0, _solver.verbose);</span></a>
+<a name="118"><span class="lineNum">     118 </span><span class="lineCov">        178 :   _model.init_scaling(x0, _solver.verbose);</span></a>
 <a name="119"><span class="lineNum">     119 </span>            : </a>
 <a name="120"><span class="lineNum">     120 </span>            :   // Solve for the next state</a>
-<a name="121"><span class="lineNum">     121 </span><span class="lineCov">        152 :   NonlinearSolver::Result res;</span></a>
+<a name="121"><span class="lineNum">     121 </span><span class="lineCov">        178 :   NonlinearSolver::Result res;</span></a>
 <a name="122"><span class="lineNum">     122 </span>            :   {</a>
-<a name="123"><span class="lineNum">     123 </span><span class="lineCov">        152 :     SolvingNonlinearSystem solving;</span></a>
-<a name="124"><span class="lineNum">     124 </span><span class="lineCov">        152 :     res = _solver.solve(_model, x0);</span></a>
-<a name="125"><span class="lineNum">     125 </span><span class="lineCov">        152 :     neml_assert(res.ret == NonlinearSolver::RetCode::SUCCESS, &quot;Nonlinear solve failed.&quot;);</span></a>
-<a name="126"><span class="lineNum">     126 </span><span class="lineCov">        152 :   }</span></a>
+<a name="123"><span class="lineNum">     123 </span><span class="lineCov">        178 :     SolvingNonlinearSystem solving;</span></a>
+<a name="124"><span class="lineNum">     124 </span><span class="lineCov">        178 :     res = _solver.solve(_model, x0);</span></a>
+<a name="125"><span class="lineNum">     125 </span><span class="lineCov">        178 :     neml_assert(res.ret == NonlinearSolver::RetCode::SUCCESS, &quot;Nonlinear solve failed.&quot;);</span></a>
+<a name="126"><span class="lineNum">     126 </span><span class="lineCov">        178 :   }</span></a>
 <a name="127"><span class="lineNum">     127 </span>            : </a>
-<a name="128"><span class="lineNum">     128 </span><span class="lineCov">        152 :   if (out)</span></a>
+<a name="128"><span class="lineNum">     128 </span><span class="lineCov">        178 :   if (out)</span></a>
 <a name="129"><span class="lineNum">     129 </span>            :   {</a>
 <a name="130"><span class="lineNum">     130 </span>            :     // You may be tempted to assign the solution, i.e., res.solution, to the output variables. But</a>
 <a name="131"><span class="lineNum">     131 </span>            :     // we don't have to. Think about it: The output variables share the same name as those input</a>
@@ -199,12 +199,12 @@
 <a name="137"><span class="lineNum">     137 </span>            :     // _must_ also contain the solution upon convergence.</a>
 <a name="138"><span class="lineNum">     138 </span>            : </a>
 <a name="139"><span class="lineNum">     139 </span>            :     // All that being said, if the result has AD graph, we need to propagate the graph to the output</a>
-<a name="140"><span class="lineNum">     140 </span><span class="lineCov">        151 :     if (res.solution.requires_grad())</span></a>
-<a name="141"><span class="lineNum">     141 </span><span class="lineNoCov">          0 :       assign_output(sol_assember.disassemble(res.solution));</span></a>
+<a name="140"><span class="lineNum">     140 </span><span class="lineCov">        177 :     if (res.solution.requires_grad())</span></a>
+<a name="141"><span class="lineNum">     141 </span><span class="lineCov">         26 :       assign_output(sol_assember.disassemble(res.solution));</span></a>
 <a name="142"><span class="lineNum">     142 </span>            :   }</a>
 <a name="143"><span class="lineNum">     143 </span>            : </a>
 <a name="144"><span class="lineNum">     144 </span>            :   // Use the implicit function theorem (IFT) to calculate the other derivatives</a>
-<a name="145"><span class="lineNum">     145 </span><span class="lineCov">        152 :   if (dout_din)</span></a>
+<a name="145"><span class="lineNum">     145 </span><span class="lineCov">        178 :   if (dout_din)</span></a>
 <a name="146"><span class="lineNum">     146 </span>            :   {</a>
 <a name="147"><span class="lineNum">     147 </span>            :     // IFT requires the Jacobian evaluated at the solution:</a>
 <a name="148"><span class="lineNum">     148 </span><span class="lineCov">          2 :     _model.dvalue();</span></a>
@@ -227,7 +227,7 @@
 <a name="165"><span class="lineNum">     165 </span><span class="lineCov">         12 :           ift_assembler.disassemble(-math::linalg::lu_solve(LU, pivot, deriv)));</span></a>
 <a name="166"><span class="lineNum">     166 </span>            :     }</a>
 <a name="167"><span class="lineNum">     167 </span><span class="lineCov">          2 :   }</span></a>
-<a name="168"><span class="lineNum">     168 </span><span class="lineCov">        152 : }</span></a>
+<a name="168"><span class="lineNum">     168 </span><span class="lineCov">        178 : }</span></a>
 <a name="169"><span class="lineNum">     169 </span>            : } // namespace neml2</a>
 </pre>
       </td>

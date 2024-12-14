@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-14 23:00:24</td>
+            <td class="headerValue">2024-12-14 23:49:22</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -137,14 +137,14 @@
 <a name="75"><span class="lineNum">      75 </span><span class="lineCov">          2 : }</span></a>
 <a name="76"><span class="lineNum">      76 </span>            : </a>
 <a name="77"><span class="lineNum">      77 </span>            : void</a>
-<a name="78"><span class="lineNum">      78 </span><span class="lineCov">         14 : KocksMeckingActivationEnergy::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
+<a name="78"><span class="lineNum">      78 </span><span class="lineCov">         15 : KocksMeckingActivationEnergy::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
 <a name="79"><span class="lineNum">      79 </span>            : {</a>
-<a name="80"><span class="lineNum">      80 </span><span class="lineCov">         14 :   neml_assert(!d2out_din2, &quot;Second derivatives not implemented&quot;);</span></a>
+<a name="80"><span class="lineNum">      80 </span><span class="lineCov">         15 :   neml_assert(!d2out_din2, &quot;Second derivatives not implemented&quot;);</span></a>
 <a name="81"><span class="lineNum">      81 </span>            : </a>
-<a name="82"><span class="lineNum">      82 </span><span class="lineCov">         14 :   if (out)</span></a>
-<a name="83"><span class="lineNum">      83 </span><span class="lineCov">         13 :     _g = _k * _T / (_mu * _b3) * math::log(_eps0 / _eps_dot);</span></a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineCov">         15 :   if (out)</span></a>
+<a name="83"><span class="lineNum">      83 </span><span class="lineCov">         14 :     _g = _k * _T / (_mu * _b3) * math::log(_eps0 / _eps_dot);</span></a>
 <a name="84"><span class="lineNum">      84 </span>            : </a>
-<a name="85"><span class="lineNum">      85 </span><span class="lineCov">         14 :   if (dout_din)</span></a>
+<a name="85"><span class="lineNum">      85 </span><span class="lineCov">         15 :   if (dout_din)</span></a>
 <a name="86"><span class="lineNum">      86 </span>            :   {</a>
 <a name="87"><span class="lineNum">      87 </span><span class="lineCov">          2 :     if (_T.is_dependent())</span></a>
 <a name="88"><span class="lineNum">      88 </span><span class="lineCov">          2 :       _g.d(_T) = _k / (_mu * _b3) * math::log(_eps0 / _eps_dot);</span></a>
@@ -155,7 +155,7 @@
 <a name="93"><span class="lineNum">      93 </span><span class="lineCov">          2 :     if (const auto * const mu = nl_param(&quot;mu&quot;))</span></a>
 <a name="94"><span class="lineNum">      94 </span><span class="lineCov">          1 :       _g.d(*mu) = -_k * _T / (_b3 * _mu * _mu) * math::log(_eps0 / _eps_dot);</span></a>
 <a name="95"><span class="lineNum">      95 </span>            :   }</a>
-<a name="96"><span class="lineNum">      96 </span><span class="lineCov">         14 : }</span></a>
+<a name="96"><span class="lineNum">      96 </span><span class="lineCov">         15 : }</span></a>
 <a name="97"><span class="lineNum">      97 </span>            : } // namespace neml2</a>
 </pre>
       </td>

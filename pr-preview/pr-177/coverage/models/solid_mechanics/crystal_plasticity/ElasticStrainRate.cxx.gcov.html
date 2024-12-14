@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-14 23:00:24</td>
+            <td class="headerValue">2024-12-14 23:49:22</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -134,14 +134,14 @@
 <a name="72"><span class="lineNum">      72 </span><span class="lineCov">          2 : }</span></a>
 <a name="73"><span class="lineNum">      73 </span>            : </a>
 <a name="74"><span class="lineNum">      74 </span>            : void</a>
-<a name="75"><span class="lineNum">      75 </span><span class="lineCov">        316 : ElasticStrainRate::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineCov">        317 : ElasticStrainRate::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
 <a name="76"><span class="lineNum">      76 </span>            : {</a>
-<a name="77"><span class="lineNum">      77 </span><span class="lineCov">        316 :   neml_assert_dbg(!d2out_din2, &quot;Second derivative not implemented.&quot;);</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineCov">        317 :   neml_assert_dbg(!d2out_din2, &quot;Second derivative not implemented.&quot;);</span></a>
 <a name="78"><span class="lineNum">      78 </span>            : </a>
-<a name="79"><span class="lineNum">      79 </span><span class="lineCov">        316 :   if (out)</span></a>
-<a name="80"><span class="lineNum">      80 </span><span class="lineCov">        315 :     _e_dot = _d - _dp + math::skew_and_sym_to_sym(SR2(_e), WR2(_w));</span></a>
+<a name="79"><span class="lineNum">      79 </span><span class="lineCov">        317 :   if (out)</span></a>
+<a name="80"><span class="lineNum">      80 </span><span class="lineCov">        316 :     _e_dot = _d - _dp + math::skew_and_sym_to_sym(SR2(_e), WR2(_w));</span></a>
 <a name="81"><span class="lineNum">      81 </span>            : </a>
-<a name="82"><span class="lineNum">      82 </span><span class="lineCov">        316 :   if (dout_din)</span></a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineCov">        317 :   if (dout_din)</span></a>
 <a name="83"><span class="lineNum">      83 </span>            :   {</a>
 <a name="84"><span class="lineNum">      84 </span><span class="lineCov">         63 :     const auto I = SSR4::identity_sym(_d.options());</span></a>
 <a name="85"><span class="lineNum">      85 </span>            : </a>
@@ -157,7 +157,7 @@
 <a name="95"><span class="lineNum">      95 </span><span class="lineCov">         63 :     if (_dp.is_dependent())</span></a>
 <a name="96"><span class="lineNum">      96 </span><span class="lineCov">         63 :       _e_dot.d(_dp) = -I;</span></a>
 <a name="97"><span class="lineNum">      97 </span><span class="lineCov">         63 :   }</span></a>
-<a name="98"><span class="lineNum">      98 </span><span class="lineCov">        316 : }</span></a>
+<a name="98"><span class="lineNum">      98 </span><span class="lineCov">        317 : }</span></a>
 <a name="99"><span class="lineNum">      99 </span>            : } // namespace neml2</a>
 </pre>
       </td>

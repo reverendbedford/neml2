@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-14 23:00:24</td>
+            <td class="headerValue">2024-12-14 23:49:22</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -111,12 +111,12 @@
 <a name="49"><span class="lineNum">      49 </span><span class="lineCov">          1 : }</span></a>
 <a name="50"><span class="lineNum">      50 </span>            : </a>
 <a name="51"><span class="lineNum">      51 </span>            : void</a>
-<a name="52"><span class="lineNum">      52 </span><span class="lineCov">          9 : LinearKinematicHardening::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
+<a name="52"><span class="lineNum">      52 </span><span class="lineCov">         12 : LinearKinematicHardening::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
 <a name="53"><span class="lineNum">      53 </span>            : {</a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">          9 :   if (out)</span></a>
-<a name="55"><span class="lineNum">      55 </span><span class="lineCov">          8 :     _X = _H * _Kp;</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">         12 :   if (out)</span></a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineCov">         11 :     _X = _H * _Kp;</span></a>
 <a name="56"><span class="lineNum">      56 </span>            : </a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">          9 :   if (dout_din)</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineCov">         12 :   if (dout_din)</span></a>
 <a name="58"><span class="lineNum">      58 </span><span class="lineCov">          1 :     if (_Kp.is_dependent())</span></a>
 <a name="59"><span class="lineNum">      59 </span><span class="lineCov">          1 :       _X.d(_Kp) = _H * SR2::identity_map(_H.options());</span></a>
 <a name="60"><span class="lineNum">      60 </span>            : </a>
@@ -124,7 +124,7 @@
 <a name="62"><span class="lineNum">      62 </span>            :   {</a>
 <a name="63"><span class="lineNum">      63 </span>            :     // zero</a>
 <a name="64"><span class="lineNum">      64 </span>            :   }</a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineCov">          9 : }</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">         12 : }</span></a>
 <a name="66"><span class="lineNum">      66 </span>            : } // namespace neml2</a>
 </pre>
       </td>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-14 23:00:24</td>
+            <td class="headerValue">2024-12-14 23:49:22</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -119,18 +119,18 @@
 <a name="57"><span class="lineNum">      57 </span><span class="lineCov">          4 : }</span></a>
 <a name="58"><span class="lineNum">      58 </span>            : </a>
 <a name="59"><span class="lineNum">      59 </span>            : void</a>
-<a name="60"><span class="lineNum">      60 </span><span class="lineCov">        340 : AssociativePlasticFlow::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineCov">        341 : AssociativePlasticFlow::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
 <a name="61"><span class="lineNum">      61 </span>            : {</a>
-<a name="62"><span class="lineNum">      62 </span><span class="lineCov">        340 :   neml_assert_dbg(!d2out_din2, &quot;AssociativePlasticFlow doesn't implement second derivatives.&quot;);</span></a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineCov">        341 :   neml_assert_dbg(!d2out_din2, &quot;AssociativePlasticFlow doesn't implement second derivatives.&quot;);</span></a>
 <a name="63"><span class="lineNum">      63 </span>            : </a>
 <a name="64"><span class="lineNum">      64 </span>            :   // For associative flow,</a>
 <a name="65"><span class="lineNum">      65 </span>            :   // Ep_dot = gamma_dot * NM</a>
 <a name="66"><span class="lineNum">      66 </span>            :   //     NM = df/dM</a>
 <a name="67"><span class="lineNum">      67 </span>            : </a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">        340 :   if (out)</span></a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">        339 :     _Ep_dot = _gamma_dot * _NM;</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">        341 :   if (out)</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">        340 :     _Ep_dot = _gamma_dot * _NM;</span></a>
 <a name="70"><span class="lineNum">      70 </span>            : </a>
-<a name="71"><span class="lineNum">      71 </span><span class="lineCov">        340 :   if (dout_din)</span></a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineCov">        341 :   if (dout_din)</span></a>
 <a name="72"><span class="lineNum">      72 </span>            :   {</a>
 <a name="73"><span class="lineNum">      73 </span><span class="lineCov">        152 :     auto I = SR2::identity_map(_gamma_dot.options());</span></a>
 <a name="74"><span class="lineNum">      74 </span>            : </a>
@@ -140,7 +140,7 @@
 <a name="78"><span class="lineNum">      78 </span><span class="lineCov">        152 :     if (_NM.is_dependent())</span></a>
 <a name="79"><span class="lineNum">      79 </span><span class="lineCov">        152 :       _Ep_dot.d(_NM) = _gamma_dot * I;</span></a>
 <a name="80"><span class="lineNum">      80 </span><span class="lineCov">        152 :   }</span></a>
-<a name="81"><span class="lineNum">      81 </span><span class="lineCov">        340 : }</span></a>
+<a name="81"><span class="lineNum">      81 </span><span class="lineCov">        341 : }</span></a>
 <a name="82"><span class="lineNum">      82 </span>            : } // namespace neml2</a>
 </pre>
       </td>

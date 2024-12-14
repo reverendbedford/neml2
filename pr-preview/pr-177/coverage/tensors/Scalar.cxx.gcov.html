@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-14 23:00:24</td>
+            <td class="headerValue">2024-12-14 23:49:22</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -94,9 +94,9 @@
 <a name="32"><span class="lineNum">      32 </span><span class="lineCov">       2065 : }</span></a>
 <a name="33"><span class="lineNum">      33 </span>            : </a>
 <a name="34"><span class="lineNum">      34 </span>            : Scalar</a>
-<a name="35"><span class="lineNum">      35 </span><span class="lineCov">       3263 : Scalar::identity_map(const torch::TensorOptions &amp; options)</span></a>
+<a name="35"><span class="lineNum">      35 </span><span class="lineCov">       3686 : Scalar::identity_map(const torch::TensorOptions &amp; options)</span></a>
 <a name="36"><span class="lineNum">      36 </span>            : {</a>
-<a name="37"><span class="lineNum">      37 </span><span class="lineCov">       3263 :   return Scalar::ones(options);</span></a>
+<a name="37"><span class="lineNum">      37 </span><span class="lineCov">       3686 :   return Scalar::ones(options);</span></a>
 <a name="38"><span class="lineNum">      38 </span>            : }</a>
 <a name="39"><span class="lineNum">      39 </span>            : </a>
 <a name="40"><span class="lineNum">      40 </span>            : namespace math</a>
@@ -112,10 +112,10 @@
 <a name="50"><span class="lineNum">      50 </span>            : }</a>
 <a name="51"><span class="lineNum">      51 </span>            : </a>
 <a name="52"><span class="lineNum">      52 </span>            : Scalar</a>
-<a name="53"><span class="lineNum">      53 </span><span class="lineCov">      29577 : operator*(const Scalar &amp; a, const Scalar &amp; b)</span></a>
+<a name="53"><span class="lineNum">      53 </span><span class="lineCov">      33769 : operator*(const Scalar &amp; a, const Scalar &amp; b)</span></a>
 <a name="54"><span class="lineNum">      54 </span>            : {</a>
-<a name="55"><span class="lineNum">      55 </span><span class="lineCov">      29577 :   neml_assert_batch_broadcastable_dbg(a, b);</span></a>
-<a name="56"><span class="lineNum">      56 </span><span class="lineCov">      59154 :   return torch::operator*(a, b);</span></a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineCov">      33769 :   neml_assert_batch_broadcastable_dbg(a, b);</span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineCov">      67538 :   return torch::operator*(a, b);</span></a>
 <a name="57"><span class="lineNum">      57 </span>            : }</a>
 <a name="58"><span class="lineNum">      58 </span>            : </a>
 <a name="59"><span class="lineNum">      59 </span>            : Scalar</a>

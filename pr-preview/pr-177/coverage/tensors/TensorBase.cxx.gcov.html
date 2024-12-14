@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-14 23:00:24</td>
+            <td class="headerValue">2024-12-14 23:49:22</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">238</td>
@@ -92,31 +92,31 @@
 <a name="30"><span class="lineNum">      30 </span>            : namespace neml2</a>
 <a name="31"><span class="lineNum">      31 </span>            : {</a>
 <a name="32"><span class="lineNum">      32 </span>            : template &lt;class Derived&gt;</a>
-<a name="33"><span class="lineNum">      33 </span><span class="lineCov">     219604 : TensorBase&lt;Derived&gt;::TensorBase(const torch::Tensor &amp; tensor, Size batch_dim)</span></a>
+<a name="33"><span class="lineNum">      33 </span><span class="lineCov">     242724 : TensorBase&lt;Derived&gt;::TensorBase(const torch::Tensor &amp; tensor, Size batch_dim)</span></a>
 <a name="34"><span class="lineNum">      34 </span>            :   : torch::Tensor(tensor),</a>
-<a name="35"><span class="lineNum">      35 </span><span class="lineCov">     219604 :     _batch_dim(batch_dim),</span></a>
-<a name="36"><span class="lineNum">      36 </span><span class="lineCov">     219604 :     _batch_sizes(utils::extract_batch_sizes(tensor, batch_dim))</span></a>
+<a name="35"><span class="lineNum">      35 </span><span class="lineCov">     242724 :     _batch_dim(batch_dim),</span></a>
+<a name="36"><span class="lineNum">      36 </span><span class="lineCov">     242724 :     _batch_sizes(utils::extract_batch_sizes(tensor, batch_dim))</span></a>
 <a name="37"><span class="lineNum">      37 </span>            : {</a>
-<a name="38"><span class="lineNum">      38 </span><span class="lineCov">     219604 :   neml_assert_dbg((Size)sizes().size() &gt;= _batch_dim,</span></a>
+<a name="38"><span class="lineNum">      38 </span><span class="lineCov">     242724 :   neml_assert_dbg((Size)sizes().size() &gt;= _batch_dim,</span></a>
 <a name="39"><span class="lineNum">      39 </span>            :                   &quot;Tensor dimension &quot;,</a>
-<a name="40"><span class="lineNum">      40 </span><span class="lineCov">     219604 :                   sizes().size(),</span></a>
+<a name="40"><span class="lineNum">      40 </span><span class="lineCov">     242724 :                   sizes().size(),</span></a>
 <a name="41"><span class="lineNum">      41 </span>            :                   &quot; is smaller than the requested number of batch dimensions &quot;,</a>
-<a name="42"><span class="lineNum">      42 </span><span class="lineCov">     219604 :                   _batch_dim);</span></a>
-<a name="43"><span class="lineNum">      43 </span><span class="lineCov">     219604 : }</span></a>
+<a name="42"><span class="lineNum">      42 </span><span class="lineCov">     242724 :                   _batch_dim);</span></a>
+<a name="43"><span class="lineNum">      43 </span><span class="lineCov">     242724 : }</span></a>
 <a name="44"><span class="lineNum">      44 </span>            : </a>
 <a name="45"><span class="lineNum">      45 </span>            : template &lt;class Derived&gt;</a>
-<a name="46"><span class="lineNum">      46 </span><span class="lineCov">     302381 : TensorBase&lt;Derived&gt;::TensorBase(const torch::Tensor &amp; tensor,</span></a>
+<a name="46"><span class="lineNum">      46 </span><span class="lineCov">     338685 : TensorBase&lt;Derived&gt;::TensorBase(const torch::Tensor &amp; tensor,</span></a>
 <a name="47"><span class="lineNum">      47 </span>            :                                 const TraceableTensorShape &amp; batch_shape)</a>
 <a name="48"><span class="lineNum">      48 </span>            :   : torch::Tensor(tensor),</a>
-<a name="49"><span class="lineNum">      49 </span><span class="lineCov">     302381 :     _batch_dim(Size(batch_shape.size())),</span></a>
-<a name="50"><span class="lineNum">      50 </span><span class="lineCov">     604762 :     _batch_sizes(batch_shape)</span></a>
+<a name="49"><span class="lineNum">      49 </span><span class="lineCov">     338685 :     _batch_dim(Size(batch_shape.size())),</span></a>
+<a name="50"><span class="lineNum">      50 </span><span class="lineCov">     677370 :     _batch_sizes(batch_shape)</span></a>
 <a name="51"><span class="lineNum">      51 </span>            : {</a>
-<a name="52"><span class="lineNum">      52 </span><span class="lineCov">     302381 :   neml_assert_dbg(batch_sizes() == batch_shape,</span></a>
+<a name="52"><span class="lineNum">      52 </span><span class="lineCov">     338685 :   neml_assert_dbg(batch_sizes() == batch_shape,</span></a>
 <a name="53"><span class="lineNum">      53 </span>            :                   &quot;Tensor of shape &quot;,</a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">     302381 :                   sizes(),</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">     338685 :                   sizes(),</span></a>
 <a name="55"><span class="lineNum">      55 </span>            :                   &quot; cannot be constructed with batch shape &quot;,</a>
 <a name="56"><span class="lineNum">      56 </span>            :                   batch_shape);</a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">     302381 : }</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineCov">     338685 : }</span></a>
 <a name="58"><span class="lineNum">      58 </span>            : </a>
 <a name="59"><span class="lineNum">      59 </span>            : template &lt;class Derived&gt;</a>
 <a name="60"><span class="lineNum">      60 </span>            : Derived</a>
@@ -127,23 +127,23 @@
 <a name="65"><span class="lineNum">      65 </span>            : </a>
 <a name="66"><span class="lineNum">      66 </span>            : template &lt;class Derived&gt;</a>
 <a name="67"><span class="lineNum">      67 </span>            : Derived</a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">        210 : TensorBase&lt;Derived&gt;::zeros_like(const Derived &amp; other)</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">        218 : TensorBase&lt;Derived&gt;::zeros_like(const Derived &amp; other)</span></a>
 <a name="69"><span class="lineNum">      69 </span>            : {</a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineCov">        210 :   return Derived(torch::zeros_like(other), other.batch_sizes());</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">        218 :   return Derived(torch::zeros_like(other), other.batch_sizes());</span></a>
 <a name="71"><span class="lineNum">      71 </span>            : }</a>
 <a name="72"><span class="lineNum">      72 </span>            : </a>
 <a name="73"><span class="lineNum">      73 </span>            : template &lt;class Derived&gt;</a>
 <a name="74"><span class="lineNum">      74 </span>            : Derived</a>
-<a name="75"><span class="lineNum">      75 </span><span class="lineCov">        268 : TensorBase&lt;Derived&gt;::ones_like(const Derived &amp; other)</span></a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineCov">        269 : TensorBase&lt;Derived&gt;::ones_like(const Derived &amp; other)</span></a>
 <a name="76"><span class="lineNum">      76 </span>            : {</a>
-<a name="77"><span class="lineNum">      77 </span><span class="lineCov">        268 :   return Derived(torch::ones_like(other), other.batch_sizes());</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineCov">        269 :   return Derived(torch::ones_like(other), other.batch_sizes());</span></a>
 <a name="78"><span class="lineNum">      78 </span>            : }</a>
 <a name="79"><span class="lineNum">      79 </span>            : </a>
 <a name="80"><span class="lineNum">      80 </span>            : template &lt;class Derived&gt;</a>
 <a name="81"><span class="lineNum">      81 </span>            : Derived</a>
-<a name="82"><span class="lineNum">      82 </span><span class="lineCov">         17 : TensorBase&lt;Derived&gt;::full_like(const Derived &amp; other, Real init)</span></a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineCov">         19 : TensorBase&lt;Derived&gt;::full_like(const Derived &amp; other, Real init)</span></a>
 <a name="83"><span class="lineNum">      83 </span>            : {</a>
-<a name="84"><span class="lineNum">      84 </span><span class="lineCov">         17 :   return Derived(torch::full_like(other, init), other.batch_sizes());</span></a>
+<a name="84"><span class="lineNum">      84 </span><span class="lineCov">         19 :   return Derived(torch::full_like(other, init), other.batch_sizes());</span></a>
 <a name="85"><span class="lineNum">      85 </span>            : }</a>
 <a name="86"><span class="lineNum">      86 </span>            : </a>
 <a name="87"><span class="lineNum">      87 </span>            : template &lt;class Derived&gt;</a>
@@ -182,9 +182,9 @@
 <a name="120"><span class="lineNum">     120 </span>            : </a>
 <a name="121"><span class="lineNum">     121 </span>            : template &lt;class Derived&gt;</a>
 <a name="122"><span class="lineNum">     122 </span>            : Derived</a>
-<a name="123"><span class="lineNum">     123 </span><span class="lineCov">      15280 : TensorBase&lt;Derived&gt;::clone(torch::MemoryFormat memory_format) const</span></a>
+<a name="123"><span class="lineNum">     123 </span><span class="lineCov">      17671 : TensorBase&lt;Derived&gt;::clone(torch::MemoryFormat memory_format) const</span></a>
 <a name="124"><span class="lineNum">     124 </span>            : {</a>
-<a name="125"><span class="lineNum">     125 </span><span class="lineCov">      15280 :   return Derived(torch::Tensor::clone(memory_format), batch_sizes());</span></a>
+<a name="125"><span class="lineNum">     125 </span><span class="lineCov">      17671 :   return Derived(torch::Tensor::clone(memory_format), batch_sizes());</span></a>
 <a name="126"><span class="lineNum">     126 </span>            : }</a>
 <a name="127"><span class="lineNum">     127 </span>            : </a>
 <a name="128"><span class="lineNum">     128 </span>            : template &lt;class Derived&gt;</a>
@@ -210,23 +210,23 @@
 <a name="148"><span class="lineNum">     148 </span>            : </a>
 <a name="149"><span class="lineNum">     149 </span>            : template &lt;class Derived&gt;</a>
 <a name="150"><span class="lineNum">     150 </span>            : Size</a>
-<a name="151"><span class="lineNum">     151 </span><span class="lineCov">     648210 : TensorBase&lt;Derived&gt;::batch_dim() const</span></a>
+<a name="151"><span class="lineNum">     151 </span><span class="lineCov">     723731 : TensorBase&lt;Derived&gt;::batch_dim() const</span></a>
 <a name="152"><span class="lineNum">     152 </span>            : {</a>
-<a name="153"><span class="lineNum">     153 </span><span class="lineCov">     648210 :   return _batch_dim;</span></a>
+<a name="153"><span class="lineNum">     153 </span><span class="lineCov">     723731 :   return _batch_dim;</span></a>
 <a name="154"><span class="lineNum">     154 </span>            : }</a>
 <a name="155"><span class="lineNum">     155 </span>            : </a>
 <a name="156"><span class="lineNum">     156 </span>            : template &lt;class Derived&gt;</a>
 <a name="157"><span class="lineNum">     157 </span>            : Size</a>
-<a name="158"><span class="lineNum">     158 </span><span class="lineCov">     213805 : TensorBase&lt;Derived&gt;::base_dim() const</span></a>
+<a name="158"><span class="lineNum">     158 </span><span class="lineCov">     238105 : TensorBase&lt;Derived&gt;::base_dim() const</span></a>
 <a name="159"><span class="lineNum">     159 </span>            : {</a>
-<a name="160"><span class="lineNum">     160 </span><span class="lineCov">     213805 :   return dim() - batch_dim();</span></a>
+<a name="160"><span class="lineNum">     160 </span><span class="lineCov">     238105 :   return dim() - batch_dim();</span></a>
 <a name="161"><span class="lineNum">     161 </span>            : }</a>
 <a name="162"><span class="lineNum">     162 </span>            : </a>
 <a name="163"><span class="lineNum">     163 </span>            : template &lt;class Derived&gt;</a>
 <a name="164"><span class="lineNum">     164 </span>            : const TraceableTensorShape &amp;</a>
-<a name="165"><span class="lineNum">     165 </span><span class="lineCov">    1408577 : TensorBase&lt;Derived&gt;::batch_sizes() const</span></a>
+<a name="165"><span class="lineNum">     165 </span><span class="lineCov">    1577185 : TensorBase&lt;Derived&gt;::batch_sizes() const</span></a>
 <a name="166"><span class="lineNum">     166 </span>            : {</a>
-<a name="167"><span class="lineNum">     167 </span><span class="lineCov">    1408577 :   return _batch_sizes;</span></a>
+<a name="167"><span class="lineNum">     167 </span><span class="lineCov">    1577185 :   return _batch_sizes;</span></a>
 <a name="168"><span class="lineNum">     168 </span>            : }</a>
 <a name="169"><span class="lineNum">     169 </span>            : </a>
 <a name="170"><span class="lineNum">     170 </span>            : template &lt;class Derived&gt;</a>
@@ -244,43 +244,43 @@
 <a name="182"><span class="lineNum">     182 </span>            : </a>
 <a name="183"><span class="lineNum">     183 </span>            : template &lt;class Derived&gt;</a>
 <a name="184"><span class="lineNum">     184 </span>            : TensorShapeRef</a>
-<a name="185"><span class="lineNum">     185 </span><span class="lineCov">     981539 : TensorBase&lt;Derived&gt;::base_sizes() const</span></a>
+<a name="185"><span class="lineNum">     185 </span><span class="lineCov">    1087943 : TensorBase&lt;Derived&gt;::base_sizes() const</span></a>
 <a name="186"><span class="lineNum">     186 </span>            : {</a>
-<a name="187"><span class="lineNum">     187 </span><span class="lineCov">     981539 :   return sizes().slice(_batch_dim);</span></a>
+<a name="187"><span class="lineNum">     187 </span><span class="lineCov">    1087943 :   return sizes().slice(_batch_dim);</span></a>
 <a name="188"><span class="lineNum">     188 </span>            : }</a>
 <a name="189"><span class="lineNum">     189 </span>            : </a>
 <a name="190"><span class="lineNum">     190 </span>            : template &lt;class Derived&gt;</a>
 <a name="191"><span class="lineNum">     191 </span>            : Size</a>
-<a name="192"><span class="lineNum">     192 </span><span class="lineCov">      41789 : TensorBase&lt;Derived&gt;::base_size(Size index) const</span></a>
+<a name="192"><span class="lineNum">     192 </span><span class="lineCov">      47497 : TensorBase&lt;Derived&gt;::base_size(Size index) const</span></a>
 <a name="193"><span class="lineNum">     193 </span>            : {</a>
-<a name="194"><span class="lineNum">     194 </span><span class="lineCov">      41789 :   return base_sizes()[index &gt;= 0 ? index : index + base_dim()];</span></a>
+<a name="194"><span class="lineNum">     194 </span><span class="lineCov">      47497 :   return base_sizes()[index &gt;= 0 ? index : index + base_dim()];</span></a>
 <a name="195"><span class="lineNum">     195 </span>            : }</a>
 <a name="196"><span class="lineNum">     196 </span>            : </a>
 <a name="197"><span class="lineNum">     197 </span>            : template &lt;class Derived&gt;</a>
 <a name="198"><span class="lineNum">     198 </span>            : Size</a>
-<a name="199"><span class="lineNum">     199 </span><span class="lineCov">       4747 : TensorBase&lt;Derived&gt;::base_storage() const</span></a>
+<a name="199"><span class="lineNum">     199 </span><span class="lineCov">       5272 : TensorBase&lt;Derived&gt;::base_storage() const</span></a>
 <a name="200"><span class="lineNum">     200 </span>            : {</a>
-<a name="201"><span class="lineNum">     201 </span><span class="lineCov">       4747 :   return utils::storage_size(base_sizes());</span></a>
+<a name="201"><span class="lineNum">     201 </span><span class="lineCov">       5272 :   return utils::storage_size(base_sizes());</span></a>
 <a name="202"><span class="lineNum">     202 </span>            : }</a>
 <a name="203"><span class="lineNum">     203 </span>            : </a>
 <a name="204"><span class="lineNum">     204 </span>            : template &lt;class Derived&gt;</a>
 <a name="205"><span class="lineNum">     205 </span>            : Derived</a>
-<a name="206"><span class="lineNum">     206 </span><span class="lineCov">       5566 : TensorBase&lt;Derived&gt;::batch_index(indexing::TensorIndicesRef indices) const</span></a>
+<a name="206"><span class="lineNum">     206 </span><span class="lineCov">       5580 : TensorBase&lt;Derived&gt;::batch_index(indexing::TensorIndicesRef indices) const</span></a>
 <a name="207"><span class="lineNum">     207 </span>            : {</a>
-<a name="208"><span class="lineNum">     208 </span><span class="lineCov">       5566 :   indexing::TensorIndices indices_vec(indices);</span></a>
-<a name="209"><span class="lineNum">     209 </span><span class="lineCov">       5566 :   indices_vec.insert(indices_vec.end(), base_dim(), torch::indexing::Slice());</span></a>
-<a name="210"><span class="lineNum">     210 </span><span class="lineCov">       5566 :   auto res = this-&gt;index(indices_vec);</span></a>
-<a name="211"><span class="lineNum">     211 </span><span class="lineCov">      11132 :   return Derived(res, res.dim() - base_dim());</span></a>
-<a name="212"><span class="lineNum">     212 </span><span class="lineCov">       5566 : }</span></a>
+<a name="208"><span class="lineNum">     208 </span><span class="lineCov">       5580 :   indexing::TensorIndices indices_vec(indices);</span></a>
+<a name="209"><span class="lineNum">     209 </span><span class="lineCov">       5580 :   indices_vec.insert(indices_vec.end(), base_dim(), torch::indexing::Slice());</span></a>
+<a name="210"><span class="lineNum">     210 </span><span class="lineCov">       5580 :   auto res = this-&gt;index(indices_vec);</span></a>
+<a name="211"><span class="lineNum">     211 </span><span class="lineCov">      11160 :   return Derived(res, res.dim() - base_dim());</span></a>
+<a name="212"><span class="lineNum">     212 </span><span class="lineCov">       5580 : }</span></a>
 <a name="213"><span class="lineNum">     213 </span>            : </a>
 <a name="214"><span class="lineNum">     214 </span>            : template &lt;class Derived&gt;</a>
 <a name="215"><span class="lineNum">     215 </span>            : neml2::Tensor</a>
-<a name="216"><span class="lineNum">     216 </span><span class="lineCov">      25681 : TensorBase&lt;Derived&gt;::base_index(indexing::TensorIndicesRef indices) const</span></a>
+<a name="216"><span class="lineNum">     216 </span><span class="lineCov">      27949 : TensorBase&lt;Derived&gt;::base_index(indexing::TensorIndicesRef indices) const</span></a>
 <a name="217"><span class="lineNum">     217 </span>            : {</a>
-<a name="218"><span class="lineNum">     218 </span><span class="lineCov">      51362 :   indexing::TensorIndices indices2(batch_dim(), torch::indexing::Slice());</span></a>
-<a name="219"><span class="lineNum">     219 </span><span class="lineCov">      25681 :   indices2.insert(indices2.end(), indices.begin(), indices.end());</span></a>
-<a name="220"><span class="lineNum">     220 </span><span class="lineCov">      51362 :   return neml2::Tensor(this-&gt;index(indices2), batch_sizes());</span></a>
-<a name="221"><span class="lineNum">     221 </span><span class="lineCov">      25681 : }</span></a>
+<a name="218"><span class="lineNum">     218 </span><span class="lineCov">      55898 :   indexing::TensorIndices indices2(batch_dim(), torch::indexing::Slice());</span></a>
+<a name="219"><span class="lineNum">     219 </span><span class="lineCov">      27949 :   indices2.insert(indices2.end(), indices.begin(), indices.end());</span></a>
+<a name="220"><span class="lineNum">     220 </span><span class="lineCov">      55898 :   return neml2::Tensor(this-&gt;index(indices2), batch_sizes());</span></a>
+<a name="221"><span class="lineNum">     221 </span><span class="lineCov">      27949 : }</span></a>
 <a name="222"><span class="lineNum">     222 </span>            : </a>
 <a name="223"><span class="lineNum">     223 </span>            : template &lt;class Derived&gt;</a>
 <a name="224"><span class="lineNum">     224 </span>            : void</a>
@@ -303,13 +303,13 @@
 <a name="241"><span class="lineNum">     241 </span>            : </a>
 <a name="242"><span class="lineNum">     242 </span>            : template &lt;class Derived&gt;</a>
 <a name="243"><span class="lineNum">     243 </span>            : void</a>
-<a name="244"><span class="lineNum">     244 </span><span class="lineCov">       7358 : TensorBase&lt;Derived&gt;::base_index_put_(indexing::TensorIndicesRef indices,</span></a>
+<a name="244"><span class="lineNum">     244 </span><span class="lineCov">       7676 : TensorBase&lt;Derived&gt;::base_index_put_(indexing::TensorIndicesRef indices,</span></a>
 <a name="245"><span class="lineNum">     245 </span>            :                                      const torch::Tensor &amp; other)</a>
 <a name="246"><span class="lineNum">     246 </span>            : {</a>
-<a name="247"><span class="lineNum">     247 </span><span class="lineCov">      14716 :   indexing::TensorIndices indices2(batch_dim(), torch::indexing::Slice());</span></a>
-<a name="248"><span class="lineNum">     248 </span><span class="lineCov">       7358 :   indices2.insert(indices2.end(), indices.begin(), indices.end());</span></a>
-<a name="249"><span class="lineNum">     249 </span><span class="lineCov">       7358 :   this-&gt;index_put_(indices2, other);</span></a>
-<a name="250"><span class="lineNum">     250 </span><span class="lineCov">       7358 : }</span></a>
+<a name="247"><span class="lineNum">     247 </span><span class="lineCov">      15352 :   indexing::TensorIndices indices2(batch_dim(), torch::indexing::Slice());</span></a>
+<a name="248"><span class="lineNum">     248 </span><span class="lineCov">       7676 :   indices2.insert(indices2.end(), indices.begin(), indices.end());</span></a>
+<a name="249"><span class="lineNum">     249 </span><span class="lineCov">       7676 :   this-&gt;index_put_(indices2, other);</span></a>
+<a name="250"><span class="lineNum">     250 </span><span class="lineCov">       7676 : }</span></a>
 <a name="251"><span class="lineNum">     251 </span>            : </a>
 <a name="252"><span class="lineNum">     252 </span>            : template &lt;class Derived&gt;</a>
 <a name="253"><span class="lineNum">     253 </span>            : void</a>
@@ -322,42 +322,42 @@
 <a name="260"><span class="lineNum">     260 </span>            : </a>
 <a name="261"><span class="lineNum">     261 </span>            : template &lt;class Derived&gt;</a>
 <a name="262"><span class="lineNum">     262 </span>            : Derived</a>
-<a name="263"><span class="lineNum">     263 </span><span class="lineCov">       1128 : TensorBase&lt;Derived&gt;::variable_data() const</span></a>
+<a name="263"><span class="lineNum">     263 </span><span class="lineCov">       1310 : TensorBase&lt;Derived&gt;::variable_data() const</span></a>
 <a name="264"><span class="lineNum">     264 </span>            : {</a>
-<a name="265"><span class="lineNum">     265 </span><span class="lineCov">       1128 :   return Derived(torch::Tensor::variable_data(), batch_sizes());</span></a>
+<a name="265"><span class="lineNum">     265 </span><span class="lineCov">       1310 :   return Derived(torch::Tensor::variable_data(), batch_sizes());</span></a>
 <a name="266"><span class="lineNum">     266 </span>            : }</a>
 <a name="267"><span class="lineNum">     267 </span>            : </a>
 <a name="268"><span class="lineNum">     268 </span>            : template &lt;class Derived&gt;</a>
 <a name="269"><span class="lineNum">     269 </span>            : Derived</a>
-<a name="270"><span class="lineNum">     270 </span><span class="lineCov">      22402 : TensorBase&lt;Derived&gt;::batch_expand(const TraceableTensorShape &amp; batch_shape) const</span></a>
+<a name="270"><span class="lineNum">     270 </span><span class="lineCov">      27732 : TensorBase&lt;Derived&gt;::batch_expand(const TraceableTensorShape &amp; batch_shape) const</span></a>
 <a name="271"><span class="lineNum">     271 </span>            : {</a>
 <a name="272"><span class="lineNum">     272 </span>            :   // We don't want to touch the base dimensions, so put -1 for them.</a>
-<a name="273"><span class="lineNum">     273 </span><span class="lineCov">      22402 :   auto net = batch_shape.concrete();</span></a>
-<a name="274"><span class="lineNum">     274 </span><span class="lineCov">      22402 :   net.insert(net.end(), base_dim(), -1);</span></a>
+<a name="273"><span class="lineNum">     273 </span><span class="lineCov">      27732 :   auto net = batch_shape.concrete();</span></a>
+<a name="274"><span class="lineNum">     274 </span><span class="lineCov">      27732 :   net.insert(net.end(), base_dim(), -1);</span></a>
 <a name="275"><span class="lineNum">     275 </span>            : </a>
 <a name="276"><span class="lineNum">     276 </span>            :   // Record the batch sizes in the traced graph if we are tracing</a>
-<a name="277"><span class="lineNum">     277 </span><span class="lineCov">      31236 :   for (Size i = 0; i &lt; (Size)batch_shape.size(); ++i)</span></a>
-<a name="278"><span class="lineNum">     278 </span><span class="lineCov">       8834 :     if (const auto * const si = batch_shape[i].traceable())</span></a>
-<a name="279"><span class="lineNum">     279 </span><span class="lineCov">       5415 :       torch::jit::tracer::ArgumentStash::stashIntArrayRefElem(&quot;size&quot;, net.size(), i, *si);</span></a>
+<a name="277"><span class="lineNum">     277 </span><span class="lineCov">      36601 :   for (Size i = 0; i &lt; (Size)batch_shape.size(); ++i)</span></a>
+<a name="278"><span class="lineNum">     278 </span><span class="lineCov">       8869 :     if (const auto * const si = batch_shape[i].traceable())</span></a>
+<a name="279"><span class="lineNum">     279 </span><span class="lineCov">       5443 :       torch::jit::tracer::ArgumentStash::stashIntArrayRefElem(&quot;size&quot;, net.size(), i, *si);</span></a>
 <a name="280"><span class="lineNum">     280 </span>            : </a>
-<a name="281"><span class="lineNum">     281 </span><span class="lineCov">      44804 :   return Derived(expand(net), batch_shape);</span></a>
-<a name="282"><span class="lineNum">     282 </span><span class="lineCov">      22402 : }</span></a>
+<a name="281"><span class="lineNum">     281 </span><span class="lineCov">      55464 :   return Derived(expand(net), batch_shape);</span></a>
+<a name="282"><span class="lineNum">     282 </span><span class="lineCov">      27732 : }</span></a>
 <a name="283"><span class="lineNum">     283 </span>            : </a>
 <a name="284"><span class="lineNum">     284 </span>            : template &lt;class Derived&gt;</a>
 <a name="285"><span class="lineNum">     285 </span>            : Derived</a>
-<a name="286"><span class="lineNum">     286 </span><span class="lineCov">        292 : TensorBase&lt;Derived&gt;::batch_expand(const TraceableSize &amp; batch_size, Size dim) const</span></a>
+<a name="286"><span class="lineNum">     286 </span><span class="lineCov">        295 : TensorBase&lt;Derived&gt;::batch_expand(const TraceableSize &amp; batch_size, Size dim) const</span></a>
 <a name="287"><span class="lineNum">     287 </span>            : {</a>
 <a name="288"><span class="lineNum">     288 </span>            :   // We don't want to touch other batch dimensions and the base dimensions, so put -1 for them.</a>
-<a name="289"><span class="lineNum">     289 </span><span class="lineCov">        292 :   auto net = std::vector&lt;Size&gt;(this-&gt;dim(), -1);</span></a>
-<a name="290"><span class="lineNum">     290 </span><span class="lineCov">        292 :   auto i = dim &gt;= 0 ? dim : this-&gt;dim() + dim - base_dim();</span></a>
-<a name="291"><span class="lineNum">     291 </span><span class="lineCov">        292 :   net[i] = batch_size.concrete();</span></a>
+<a name="289"><span class="lineNum">     289 </span><span class="lineCov">        295 :   auto net = std::vector&lt;Size&gt;(this-&gt;dim(), -1);</span></a>
+<a name="290"><span class="lineNum">     290 </span><span class="lineCov">        295 :   auto i = dim &gt;= 0 ? dim : this-&gt;dim() + dim - base_dim();</span></a>
+<a name="291"><span class="lineNum">     291 </span><span class="lineCov">        295 :   net[i] = batch_size.concrete();</span></a>
 <a name="292"><span class="lineNum">     292 </span>            : </a>
 <a name="293"><span class="lineNum">     293 </span>            :   // Record the batch sizes in the traced graph if we are tracing</a>
-<a name="294"><span class="lineNum">     294 </span><span class="lineCov">        292 :   if (const auto * const s = batch_size.traceable())</span></a>
+<a name="294"><span class="lineNum">     294 </span><span class="lineCov">        295 :   if (const auto * const s = batch_size.traceable())</span></a>
 <a name="295"><span class="lineNum">     295 </span><span class="lineNoCov">          0 :     torch::jit::tracer::ArgumentStash::stashIntArrayRefElem(&quot;size&quot;, this-&gt;dim(), i, *s);</span></a>
 <a name="296"><span class="lineNum">     296 </span>            : </a>
-<a name="297"><span class="lineNum">     297 </span><span class="lineCov">        584 :   return Derived(expand(net), batch_dim());</span></a>
-<a name="298"><span class="lineNum">     298 </span><span class="lineCov">        292 : }</span></a>
+<a name="297"><span class="lineNum">     297 </span><span class="lineCov">        590 :   return Derived(expand(net), batch_dim());</span></a>
+<a name="298"><span class="lineNum">     298 </span><span class="lineCov">        295 : }</span></a>
 <a name="299"><span class="lineNum">     299 </span>            : </a>
 <a name="300"><span class="lineNum">     300 </span>            : template &lt;class Derived&gt;</a>
 <a name="301"><span class="lineNum">     301 </span>            : neml2::Tensor</a>
@@ -415,26 +415,26 @@
 <a name="353"><span class="lineNum">     353 </span>            : </a>
 <a name="354"><span class="lineNum">     354 </span>            : template &lt;class Derived&gt;</a>
 <a name="355"><span class="lineNum">     355 </span>            : neml2::Tensor</a>
-<a name="356"><span class="lineNum">     356 </span><span class="lineCov">      43607 : TensorBase&lt;Derived&gt;::base_reshape(TensorShapeRef base_shape) const</span></a>
+<a name="356"><span class="lineNum">     356 </span><span class="lineCov">      49049 : TensorBase&lt;Derived&gt;::base_reshape(TensorShapeRef base_shape) const</span></a>
 <a name="357"><span class="lineNum">     357 </span>            : {</a>
-<a name="358"><span class="lineNum">     358 </span><span class="lineCov">      43607 :   auto batch_shape = batch_sizes();</span></a>
+<a name="358"><span class="lineNum">     358 </span><span class="lineCov">      49049 :   auto batch_shape = batch_sizes();</span></a>
 <a name="359"><span class="lineNum">     359 </span>            : </a>
 <a name="360"><span class="lineNum">     360 </span>            :   // Record the batch sizes in the traced graph if we are tracing</a>
-<a name="361"><span class="lineNum">     361 </span><span class="lineCov">      50737 :   for (Size i = 0; i &lt; (Size)batch_shape.size(); ++i)</span></a>
-<a name="362"><span class="lineNum">     362 </span><span class="lineCov">       7130 :     if (const auto * const si = batch_shape[i].traceable())</span></a>
-<a name="363"><span class="lineNum">     363 </span><span class="lineCov">         75 :       torch::jit::tracer::ArgumentStash::stashIntArrayRefElem(</span></a>
-<a name="364"><span class="lineNum">     364 </span><span class="lineCov">         75 :           &quot;shape&quot;, batch_shape.size() + base_shape.size(), i, *si);</span></a>
+<a name="361"><span class="lineNum">     361 </span><span class="lineCov">      56227 :   for (Size i = 0; i &lt; (Size)batch_shape.size(); ++i)</span></a>
+<a name="362"><span class="lineNum">     362 </span><span class="lineCov">       7178 :     if (const auto * const si = batch_shape[i].traceable())</span></a>
+<a name="363"><span class="lineNum">     363 </span><span class="lineCov">         89 :       torch::jit::tracer::ArgumentStash::stashIntArrayRefElem(</span></a>
+<a name="364"><span class="lineNum">     364 </span><span class="lineCov">         89 :           &quot;shape&quot;, batch_shape.size() + base_shape.size(), i, *si);</span></a>
 <a name="365"><span class="lineNum">     365 </span>            : </a>
 <a name="366"><span class="lineNum">     366 </span>            :   return neml2::Tensor(reshape(utils::add_shapes(batch_shape.concrete(), base_shape)),</a>
-<a name="367"><span class="lineNum">     367 </span><span class="lineCov">      87214 :                        batch_sizes());</span></a>
-<a name="368"><span class="lineNum">     368 </span><span class="lineCov">      43607 : }</span></a>
+<a name="367"><span class="lineNum">     367 </span><span class="lineCov">      98098 :                        batch_sizes());</span></a>
+<a name="368"><span class="lineNum">     368 </span><span class="lineCov">      49049 : }</span></a>
 <a name="369"><span class="lineNum">     369 </span>            : </a>
 <a name="370"><span class="lineNum">     370 </span>            : template &lt;class Derived&gt;</a>
 <a name="371"><span class="lineNum">     371 </span>            : Derived</a>
-<a name="372"><span class="lineNum">     372 </span><span class="lineCov">       1532 : TensorBase&lt;Derived&gt;::batch_unsqueeze(Size d) const</span></a>
+<a name="372"><span class="lineNum">     372 </span><span class="lineCov">       1537 : TensorBase&lt;Derived&gt;::batch_unsqueeze(Size d) const</span></a>
 <a name="373"><span class="lineNum">     373 </span>            : {</a>
-<a name="374"><span class="lineNum">     374 </span><span class="lineCov">       1532 :   auto d2 = d &gt;= 0 ? d : d - base_dim();</span></a>
-<a name="375"><span class="lineNum">     375 </span><span class="lineCov">       1532 :   return Derived(unsqueeze(d2), _batch_dim + 1);</span></a>
+<a name="374"><span class="lineNum">     374 </span><span class="lineCov">       1537 :   auto d2 = d &gt;= 0 ? d : d - base_dim();</span></a>
+<a name="375"><span class="lineNum">     375 </span><span class="lineCov">       1537 :   return Derived(unsqueeze(d2), _batch_dim + 1);</span></a>
 <a name="376"><span class="lineNum">     376 </span>            : }</a>
 <a name="377"><span class="lineNum">     377 </span>            : </a>
 <a name="378"><span class="lineNum">     378 </span>            : template &lt;class Derived&gt;</a>
@@ -456,28 +456,28 @@
 <a name="394"><span class="lineNum">     394 </span>            : </a>
 <a name="395"><span class="lineNum">     395 </span>            : template &lt;class Derived&gt;</a>
 <a name="396"><span class="lineNum">     396 </span>            : neml2::Tensor</a>
-<a name="397"><span class="lineNum">     397 </span><span class="lineCov">       3747 : TensorBase&lt;Derived&gt;::base_transpose(Size d1, Size d2) const</span></a>
+<a name="397"><span class="lineNum">     397 </span><span class="lineCov">       4217 : TensorBase&lt;Derived&gt;::base_transpose(Size d1, Size d2) const</span></a>
 <a name="398"><span class="lineNum">     398 </span>            : {</a>
 <a name="399"><span class="lineNum">     399 </span>            :   return neml2::Tensor(</a>
-<a name="400"><span class="lineNum">     400 </span><span class="lineCov">       7242 :       torch::Tensor::transpose(d1 &lt; 0 ? d1 : _batch_dim + d1, d2 &lt; 0 ? d2 : _batch_dim + d2),</span></a>
-<a name="401"><span class="lineNum">     401 </span><span class="lineCov">       3747 :       batch_sizes());</span></a>
+<a name="400"><span class="lineNum">     400 </span><span class="lineCov">       8182 :       torch::Tensor::transpose(d1 &lt; 0 ? d1 : _batch_dim + d1, d2 &lt; 0 ? d2 : _batch_dim + d2),</span></a>
+<a name="401"><span class="lineNum">     401 </span><span class="lineCov">       4217 :       batch_sizes());</span></a>
 <a name="402"><span class="lineNum">     402 </span>            : }</a>
 <a name="403"><span class="lineNum">     403 </span>            : </a>
 <a name="404"><span class="lineNum">     404 </span>            : template &lt;class Derived&gt;</a>
 <a name="405"><span class="lineNum">     405 </span>            : neml2::Tensor</a>
-<a name="406"><span class="lineNum">     406 </span><span class="lineCov">       8511 : TensorBase&lt;Derived&gt;::base_flatten() const</span></a>
+<a name="406"><span class="lineNum">     406 </span><span class="lineCov">       9295 : TensorBase&lt;Derived&gt;::base_flatten() const</span></a>
 <a name="407"><span class="lineNum">     407 </span>            : {</a>
-<a name="408"><span class="lineNum">     408 </span><span class="lineCov">       8511 :   if (base_dim() == 1)</span></a>
-<a name="409"><span class="lineNum">     409 </span><span class="lineCov">       3905 :     return *this;</span></a>
+<a name="408"><span class="lineNum">     408 </span><span class="lineCov">       9295 :   if (base_dim() == 1)</span></a>
+<a name="409"><span class="lineNum">     409 </span><span class="lineCov">       4164 :     return *this;</span></a>
 <a name="410"><span class="lineNum">     410 </span>            : </a>
-<a name="411"><span class="lineNum">     411 </span><span class="lineCov">       4606 :   return base_reshape({base_storage()});</span></a>
+<a name="411"><span class="lineNum">     411 </span><span class="lineCov">       5131 :   return base_reshape({base_storage()});</span></a>
 <a name="412"><span class="lineNum">     412 </span>            : }</a>
 <a name="413"><span class="lineNum">     413 </span>            : </a>
 <a name="414"><span class="lineNum">     414 </span>            : template &lt;class Derived&gt;</a>
 <a name="415"><span class="lineNum">     415 </span>            : Derived</a>
-<a name="416"><span class="lineNum">     416 </span><span class="lineCov">      13412 : TensorBase&lt;Derived&gt;::operator-() const</span></a>
+<a name="416"><span class="lineNum">     416 </span><span class="lineCov">      14815 : TensorBase&lt;Derived&gt;::operator-() const</span></a>
 <a name="417"><span class="lineNum">     417 </span>            : {</a>
-<a name="418"><span class="lineNum">     418 </span><span class="lineCov">      13412 :   return Derived(-torch::Tensor(*this), batch_sizes());</span></a>
+<a name="418"><span class="lineNum">     418 </span><span class="lineCov">      14815 :   return Derived(-torch::Tensor(*this), batch_sizes());</span></a>
 <a name="419"><span class="lineNum">     419 </span>            : }</a>
 <a name="420"><span class="lineNum">     420 </span>            : </a>
 <a name="421"><span class="lineNum">     421 </span>            : #define TENSORBASE_INSTANTIATE(T) template class TensorBase&lt;T&gt;</a>

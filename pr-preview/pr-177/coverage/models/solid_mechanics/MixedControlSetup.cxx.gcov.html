@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-14 23:00:24</td>
+            <td class="headerValue">2024-12-14 23:49:22</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">4</td>
@@ -137,18 +137,18 @@
 <a name="75"><span class="lineNum">      75 </span><span class="lineCov">          3 : }</span></a>
 <a name="76"><span class="lineNum">      76 </span>            : </a>
 <a name="77"><span class="lineNum">      77 </span>            : void</a>
-<a name="78"><span class="lineNum">      78 </span><span class="lineCov">        224 : MixedControlSetup::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
+<a name="78"><span class="lineNum">      78 </span><span class="lineCov">        225 : MixedControlSetup::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
 <a name="79"><span class="lineNum">      79 </span>            : {</a>
-<a name="80"><span class="lineNum">      80 </span><span class="lineCov">        448 :   auto [dstrain, dstress] = make_operators(_control);</span></a>
+<a name="80"><span class="lineNum">      80 </span><span class="lineCov">        450 :   auto [dstrain, dstress] = make_operators(_control);</span></a>
 <a name="81"><span class="lineNum">      81 </span>            : </a>
-<a name="82"><span class="lineNum">      82 </span><span class="lineCov">        224 :   if (out)</span></a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineCov">        225 :   if (out)</span></a>
 <a name="83"><span class="lineNum">      83 </span>            :   {</a>
 <a name="84"><span class="lineNum">      84 </span>            :     // Even benign in place operations get errors</a>
-<a name="85"><span class="lineNum">      85 </span><span class="lineCov">        223 :     _stress = dstress * _fixed_values + dstrain * _mixed_state;</span></a>
-<a name="86"><span class="lineNum">      86 </span><span class="lineCov">        223 :     _strain = dstrain * _fixed_values + dstress * _mixed_state;</span></a>
+<a name="85"><span class="lineNum">      85 </span><span class="lineCov">        224 :     _stress = dstress * _fixed_values + dstrain * _mixed_state;</span></a>
+<a name="86"><span class="lineNum">      86 </span><span class="lineCov">        224 :     _strain = dstrain * _fixed_values + dstress * _mixed_state;</span></a>
 <a name="87"><span class="lineNum">      87 </span>            :   }</a>
 <a name="88"><span class="lineNum">      88 </span>            : </a>
-<a name="89"><span class="lineNum">      89 </span><span class="lineCov">        224 :   if (dout_din)</span></a>
+<a name="89"><span class="lineNum">      89 </span><span class="lineCov">        225 :   if (dout_din)</span></a>
 <a name="90"><span class="lineNum">      90 </span>            :   {</a>
 <a name="91"><span class="lineNum">      91 </span><span class="lineCov">         82 :     if (_fixed_values.is_dependent())</span></a>
 <a name="92"><span class="lineNum">      92 </span>            :     {</a>
@@ -165,23 +165,23 @@
 <a name="103"><span class="lineNum">     103 </span>            : </a>
 <a name="104"><span class="lineNum">     104 </span>            :   // All zero</a>
 <a name="105"><span class="lineNum">     105 </span>            :   (void)(d2out_din2);</a>
-<a name="106"><span class="lineNum">     106 </span><span class="lineCov">        224 : }</span></a>
+<a name="106"><span class="lineNum">     106 </span><span class="lineCov">        225 : }</span></a>
 <a name="107"><span class="lineNum">     107 </span>            : </a>
 <a name="108"><span class="lineNum">     108 </span>            : std::pair&lt;SSR4, SSR4&gt;</a>
-<a name="109"><span class="lineNum">     109 </span><span class="lineCov">        224 : MixedControlSetup::make_operators(const SR2 &amp; control) const</span></a>
+<a name="109"><span class="lineNum">     109 </span><span class="lineCov">        225 : MixedControlSetup::make_operators(const SR2 &amp; control) const</span></a>
 <a name="110"><span class="lineNum">     110 </span>            : {</a>
-<a name="111"><span class="lineNum">     111 </span><span class="lineCov">        224 :   auto strain_select = control &lt;= _threshold;</span></a>
-<a name="112"><span class="lineNum">     112 </span><span class="lineCov">        224 :   auto stress_select = control &gt; _threshold;</span></a>
+<a name="111"><span class="lineNum">     111 </span><span class="lineCov">        225 :   auto strain_select = control &lt;= _threshold;</span></a>
+<a name="112"><span class="lineNum">     112 </span><span class="lineCov">        225 :   auto stress_select = control &gt; _threshold;</span></a>
 <a name="113"><span class="lineNum">     113 </span>            : </a>
 <a name="114"><span class="lineNum">     114 </span>            :   // This also converts these to floats</a>
-<a name="115"><span class="lineNum">     115 </span><span class="lineCov">        224 :   auto ones_stress = Tensor(strain_select.to(control.options()), control.batch_sizes());</span></a>
-<a name="116"><span class="lineNum">     116 </span><span class="lineCov">        448 :   auto ones_strain = Tensor::ones_like(control) - ones_stress;</span></a>
+<a name="115"><span class="lineNum">     115 </span><span class="lineCov">        225 :   auto ones_stress = Tensor(strain_select.to(control.options()), control.batch_sizes());</span></a>
+<a name="116"><span class="lineNum">     116 </span><span class="lineCov">        450 :   auto ones_strain = Tensor::ones_like(control) - ones_stress;</span></a>
 <a name="117"><span class="lineNum">     117 </span>            : </a>
-<a name="118"><span class="lineNum">     118 </span><span class="lineCov">        224 :   auto dstrain = math::base_diag_embed(ones_stress);</span></a>
-<a name="119"><span class="lineNum">     119 </span><span class="lineCov">        224 :   auto dstress = math::base_diag_embed(ones_strain);</span></a>
+<a name="118"><span class="lineNum">     118 </span><span class="lineCov">        225 :   auto dstrain = math::base_diag_embed(ones_stress);</span></a>
+<a name="119"><span class="lineNum">     119 </span><span class="lineCov">        225 :   auto dstress = math::base_diag_embed(ones_strain);</span></a>
 <a name="120"><span class="lineNum">     120 </span>            : </a>
-<a name="121"><span class="lineNum">     121 </span><span class="lineCov">        448 :   return {dstrain, dstress};</span></a>
-<a name="122"><span class="lineNum">     122 </span><span class="lineCov">        224 : }</span></a>
+<a name="121"><span class="lineNum">     121 </span><span class="lineCov">        450 :   return {dstrain, dstress};</span></a>
+<a name="122"><span class="lineNum">     122 </span><span class="lineCov">        225 : }</span></a>
 <a name="123"><span class="lineNum">     123 </span>            : </a>
 <a name="124"><span class="lineNum">     124 </span>            : } // namespace neml2</a>
 </pre>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-14 23:00:24</td>
+            <td class="headerValue">2024-12-14 23:49:22</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">17</td>
@@ -97,21 +97,21 @@
 <a name="35"><span class="lineNum">      35 </span>            : }</a>
 <a name="36"><span class="lineNum">      36 </span>            : </a>
 <a name="37"><span class="lineNum">      37 </span>            : bool</a>
-<a name="38"><span class="lineNum">      38 </span><span class="lineCov">      11153 : LabeledAxisAccessor::empty() const</span></a>
+<a name="38"><span class="lineNum">      38 </span><span class="lineCov">      11998 : LabeledAxisAccessor::empty() const</span></a>
 <a name="39"><span class="lineNum">      39 </span>            : {</a>
-<a name="40"><span class="lineNum">      40 </span><span class="lineCov">      11153 :   return _item_names.empty();</span></a>
+<a name="40"><span class="lineNum">      40 </span><span class="lineCov">      11998 :   return _item_names.empty();</span></a>
 <a name="41"><span class="lineNum">      41 </span>            : }</a>
 <a name="42"><span class="lineNum">      42 </span>            : </a>
 <a name="43"><span class="lineNum">      43 </span>            : size_t</a>
-<a name="44"><span class="lineNum">      44 </span><span class="lineCov">      35698 : LabeledAxisAccessor::size() const</span></a>
+<a name="44"><span class="lineNum">      44 </span><span class="lineCov">      36460 : LabeledAxisAccessor::size() const</span></a>
 <a name="45"><span class="lineNum">      45 </span>            : {</a>
-<a name="46"><span class="lineNum">      46 </span><span class="lineCov">      35698 :   return _item_names.size();</span></a>
+<a name="46"><span class="lineNum">      46 </span><span class="lineCov">      36460 :   return _item_names.size();</span></a>
 <a name="47"><span class="lineNum">      47 </span>            : }</a>
 <a name="48"><span class="lineNum">      48 </span>            : </a>
 <a name="49"><span class="lineNum">      49 </span>            : const std::string &amp;</a>
-<a name="50"><span class="lineNum">      50 </span><span class="lineCov">      15054 : LabeledAxisAccessor::operator[](size_t i) const</span></a>
+<a name="50"><span class="lineNum">      50 </span><span class="lineCov">      15882 : LabeledAxisAccessor::operator[](size_t i) const</span></a>
 <a name="51"><span class="lineNum">      51 </span>            : {</a>
-<a name="52"><span class="lineNum">      52 </span><span class="lineCov">      15054 :   return _item_names[i];</span></a>
+<a name="52"><span class="lineNum">      52 </span><span class="lineCov">      15882 :   return _item_names[i];</span></a>
 <a name="53"><span class="lineNum">      53 </span>            : }</a>
 <a name="54"><span class="lineNum">      54 </span>            : </a>
 <a name="55"><span class="lineNum">      55 </span>            : LabeledAxisAccessor</a>
@@ -123,74 +123,74 @@
 <a name="61"><span class="lineNum">      61 </span><span class="lineCov">         92 : }</span></a>
 <a name="62"><span class="lineNum">      62 </span>            : </a>
 <a name="63"><span class="lineNum">      63 </span>            : LabeledAxisAccessor</a>
-<a name="64"><span class="lineNum">      64 </span><span class="lineCov">       1877 : LabeledAxisAccessor::append(const LabeledAxisAccessor &amp; axis) const</span></a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineCov">       1871 : LabeledAxisAccessor::append(const LabeledAxisAccessor &amp; axis) const</span></a>
 <a name="65"><span class="lineNum">      65 </span>            : {</a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineCov">       1877 :   return axis.prepend(*this);</span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineCov">       1871 :   return axis.prepend(*this);</span></a>
 <a name="67"><span class="lineNum">      67 </span>            : }</a>
 <a name="68"><span class="lineNum">      68 </span>            : </a>
 <a name="69"><span class="lineNum">      69 </span>            : LabeledAxisAccessor</a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineCov">      25471 : LabeledAxisAccessor::prepend(const LabeledAxisAccessor &amp; axis) const</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">      29356 : LabeledAxisAccessor::prepend(const LabeledAxisAccessor &amp; axis) const</span></a>
 <a name="71"><span class="lineNum">      71 </span>            : {</a>
-<a name="72"><span class="lineNum">      72 </span><span class="lineCov">      25471 :   auto new_names = axis._item_names;</span></a>
-<a name="73"><span class="lineNum">      73 </span><span class="lineCov">      25471 :   new_names.insert(new_names.end(), _item_names.begin(), _item_names.end());</span></a>
-<a name="74"><span class="lineNum">      74 </span><span class="lineCov">      50942 :   return new_names;</span></a>
-<a name="75"><span class="lineNum">      75 </span><span class="lineCov">      25471 : }</span></a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineCov">      29356 :   auto new_names = axis._item_names;</span></a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">      29356 :   new_names.insert(new_names.end(), _item_names.begin(), _item_names.end());</span></a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineCov">      58712 :   return new_names;</span></a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineCov">      29356 : }</span></a>
 <a name="76"><span class="lineNum">      76 </span>            : </a>
 <a name="77"><span class="lineNum">      77 </span>            : LabeledAxisAccessor</a>
-<a name="78"><span class="lineNum">      78 </span><span class="lineCov">       2182 : LabeledAxisAccessor::slice(int64_t n) const</span></a>
+<a name="78"><span class="lineNum">      78 </span><span class="lineCov">       2173 : LabeledAxisAccessor::slice(int64_t n) const</span></a>
 <a name="79"><span class="lineNum">      79 </span>            : {</a>
-<a name="80"><span class="lineNum">      80 </span><span class="lineCov">       2182 :   n = n &lt; 0 ? int64_t(size()) + n : n;</span></a>
-<a name="81"><span class="lineNum">      81 </span><span class="lineCov">       2182 :   neml_assert(size() &gt;= std::size_t(n), &quot;cannot apply slice&quot;);</span></a>
-<a name="82"><span class="lineNum">      82 </span><span class="lineCov">       2182 :   c10::SmallVector&lt;std::string&gt; new_names(_item_names.begin() + n, _item_names.end());</span></a>
-<a name="83"><span class="lineNum">      83 </span><span class="lineCov">       4364 :   return new_names;</span></a>
-<a name="84"><span class="lineNum">      84 </span><span class="lineCov">       2182 : }</span></a>
+<a name="80"><span class="lineNum">      80 </span><span class="lineCov">       2173 :   n = n &lt; 0 ? int64_t(size()) + n : n;</span></a>
+<a name="81"><span class="lineNum">      81 </span><span class="lineCov">       2173 :   neml_assert(size() &gt;= std::size_t(n), &quot;cannot apply slice&quot;);</span></a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineCov">       2173 :   c10::SmallVector&lt;std::string&gt; new_names(_item_names.begin() + n, _item_names.end());</span></a>
+<a name="83"><span class="lineNum">      83 </span><span class="lineCov">       4346 :   return new_names;</span></a>
+<a name="84"><span class="lineNum">      84 </span><span class="lineCov">       2173 : }</span></a>
 <a name="85"><span class="lineNum">      85 </span>            : </a>
 <a name="86"><span class="lineNum">      86 </span>            : LabeledAxisAccessor</a>
-<a name="87"><span class="lineNum">      87 </span><span class="lineCov">       7854 : LabeledAxisAccessor::slice(int64_t n1, int64_t n2) const</span></a>
+<a name="87"><span class="lineNum">      87 </span><span class="lineCov">       7829 : LabeledAxisAccessor::slice(int64_t n1, int64_t n2) const</span></a>
 <a name="88"><span class="lineNum">      88 </span>            : {</a>
-<a name="89"><span class="lineNum">      89 </span><span class="lineCov">       7854 :   n1 = n1 &lt; 0 ? int64_t(size()) + n1 : n1;</span></a>
-<a name="90"><span class="lineNum">      90 </span><span class="lineCov">       7854 :   n2 = n2 &lt; 0 ? int64_t(size()) + n2 : n2;</span></a>
-<a name="91"><span class="lineNum">      91 </span><span class="lineCov">       7854 :   neml_assert(size() &gt;= std::size_t(n1), &quot;cannot apply slice&quot;);</span></a>
-<a name="92"><span class="lineNum">      92 </span><span class="lineCov">       7854 :   neml_assert(size() &gt;= std::size_t(n2), &quot;cannot apply slice&quot;);</span></a>
-<a name="93"><span class="lineNum">      93 </span><span class="lineCov">       7854 :   c10::SmallVector&lt;std::string&gt; new_names(_item_names.begin() + n1, _item_names.begin() + n2);</span></a>
-<a name="94"><span class="lineNum">      94 </span><span class="lineCov">      15708 :   return new_names;</span></a>
-<a name="95"><span class="lineNum">      95 </span><span class="lineCov">       7854 : }</span></a>
+<a name="89"><span class="lineNum">      89 </span><span class="lineCov">       7829 :   n1 = n1 &lt; 0 ? int64_t(size()) + n1 : n1;</span></a>
+<a name="90"><span class="lineNum">      90 </span><span class="lineCov">       7829 :   n2 = n2 &lt; 0 ? int64_t(size()) + n2 : n2;</span></a>
+<a name="91"><span class="lineNum">      91 </span><span class="lineCov">       7829 :   neml_assert(size() &gt;= std::size_t(n1), &quot;cannot apply slice&quot;);</span></a>
+<a name="92"><span class="lineNum">      92 </span><span class="lineCov">       7829 :   neml_assert(size() &gt;= std::size_t(n2), &quot;cannot apply slice&quot;);</span></a>
+<a name="93"><span class="lineNum">      93 </span><span class="lineCov">       7829 :   c10::SmallVector&lt;std::string&gt; new_names(_item_names.begin() + n1, _item_names.begin() + n2);</span></a>
+<a name="94"><span class="lineNum">      94 </span><span class="lineCov">      15658 :   return new_names;</span></a>
+<a name="95"><span class="lineNum">      95 </span><span class="lineCov">       7829 : }</span></a>
 <a name="96"><span class="lineNum">      96 </span>            : </a>
 <a name="97"><span class="lineNum">      97 </span>            : LabeledAxisAccessor</a>
-<a name="98"><span class="lineNum">      98 </span><span class="lineCov">        128 : LabeledAxisAccessor::remount(const LabeledAxisAccessor &amp; axis, Size n) const</span></a>
+<a name="98"><span class="lineNum">      98 </span><span class="lineCov">        125 : LabeledAxisAccessor::remount(const LabeledAxisAccessor &amp; axis, Size n) const</span></a>
 <a name="99"><span class="lineNum">      99 </span>            : {</a>
-<a name="100"><span class="lineNum">     100 </span><span class="lineCov">        256 :   return slice(n).prepend(axis);</span></a>
+<a name="100"><span class="lineNum">     100 </span><span class="lineCov">        250 :   return slice(n).prepend(axis);</span></a>
 <a name="101"><span class="lineNum">     101 </span>            : }</a>
 <a name="102"><span class="lineNum">     102 </span>            : </a>
 <a name="103"><span class="lineNum">     103 </span>            : bool</a>
-<a name="104"><span class="lineNum">     104 </span><span class="lineCov">       7852 : LabeledAxisAccessor::start_with(const LabeledAxisAccessor &amp; axis) const</span></a>
+<a name="104"><span class="lineNum">     104 </span><span class="lineCov">       7827 : LabeledAxisAccessor::start_with(const LabeledAxisAccessor &amp; axis) const</span></a>
 <a name="105"><span class="lineNum">     105 </span>            : {</a>
-<a name="106"><span class="lineNum">     106 </span><span class="lineCov">       7852 :   return slice(0, int64_t(axis.size())) == axis;</span></a>
+<a name="106"><span class="lineNum">     106 </span><span class="lineCov">       7827 :   return slice(0, int64_t(axis.size())) == axis;</span></a>
 <a name="107"><span class="lineNum">     107 </span>            : }</a>
 <a name="108"><span class="lineNum">     108 </span>            : </a>
 <a name="109"><span class="lineNum">     109 </span>            : LabeledAxisAccessor</a>
-<a name="110"><span class="lineNum">     110 </span><span class="lineCov">         81 : LabeledAxisAccessor::old() const</span></a>
+<a name="110"><span class="lineNum">     110 </span><span class="lineCov">         79 : LabeledAxisAccessor::old() const</span></a>
 <a name="111"><span class="lineNum">     111 </span>            : {</a>
 <a name="112"><span class="lineNum">     112 </span>            :   // NOLINTNEXTLINE(readability-container-size-empty)</a>
-<a name="113"><span class="lineNum">     113 </span><span class="lineCov">         81 :   neml_assert(_item_names.size() &gt;= 1, &quot;variable name length must be at least 1&quot;);</span></a>
-<a name="114"><span class="lineNum">     114 </span><span class="lineCov">         81 :   if (start_with(&quot;state&quot;))</span></a>
-<a name="115"><span class="lineNum">     115 </span><span class="lineCov">         35 :     return remount(&quot;old_state&quot;);</span></a>
-<a name="116"><span class="lineNum">     116 </span><span class="lineCov">         46 :   if (start_with(&quot;forces&quot;))</span></a>
-<a name="117"><span class="lineNum">     117 </span><span class="lineCov">         46 :     return remount(&quot;old_forces&quot;);</span></a>
+<a name="113"><span class="lineNum">     113 </span><span class="lineCov">         79 :   neml_assert(_item_names.size() &gt;= 1, &quot;variable name length must be at least 1&quot;);</span></a>
+<a name="114"><span class="lineNum">     114 </span><span class="lineCov">         79 :   if (start_with(&quot;state&quot;))</span></a>
+<a name="115"><span class="lineNum">     115 </span><span class="lineCov">         34 :     return remount(&quot;old_state&quot;);</span></a>
+<a name="116"><span class="lineNum">     116 </span><span class="lineCov">         45 :   if (start_with(&quot;forces&quot;))</span></a>
+<a name="117"><span class="lineNum">     117 </span><span class="lineCov">         45 :     return remount(&quot;old_forces&quot;);</span></a>
 <a name="118"><span class="lineNum">     118 </span><span class="lineNoCov">          0 :   throw NEMLException(&quot;Unable to find old counterpart of variable named '&quot; +</span></a>
 <a name="119"><span class="lineNum">     119 </span><span class="lineNoCov">          0 :                       utils::stringify(*this) + &quot;'&quot;);</span></a>
 <a name="120"><span class="lineNum">     120 </span>            : }</a>
 <a name="121"><span class="lineNum">     121 </span>            : </a>
 <a name="122"><span class="lineNum">     122 </span>            : void</a>
-<a name="123"><span class="lineNum">     123 </span><span class="lineCov">      89593 : LabeledAxisAccessor::validate_item_name(const std::string &amp; name) const</span></a>
+<a name="123"><span class="lineNum">     123 </span><span class="lineCov">      98136 : LabeledAxisAccessor::validate_item_name(const std::string &amp; name) const</span></a>
 <a name="124"><span class="lineNum">     124 </span>            : {</a>
-<a name="125"><span class="lineNum">     125 </span><span class="lineCov">      89593 :   neml_assert(!name.empty(), &quot;Empty item variable name&quot;);</span></a>
-<a name="126"><span class="lineNum">     126 </span><span class="lineCov">      89593 :   const auto x = name.find_first_of(&quot; .,;/\t\n\v\f\r&quot;);</span></a>
-<a name="127"><span class="lineNum">     127 </span><span class="lineCov">      89593 :   neml_assert(x == std::string::npos,</span></a>
+<a name="125"><span class="lineNum">     125 </span><span class="lineCov">      98136 :   neml_assert(!name.empty(), &quot;Empty item variable name&quot;);</span></a>
+<a name="126"><span class="lineNum">     126 </span><span class="lineCov">      98136 :   const auto x = name.find_first_of(&quot; .,;/\t\n\v\f\r&quot;);</span></a>
+<a name="127"><span class="lineNum">     127 </span><span class="lineCov">      98136 :   neml_assert(x == std::string::npos,</span></a>
 <a name="128"><span class="lineNum">     128 </span>            :               &quot;Invalid item name: &quot;,</a>
 <a name="129"><span class="lineNum">     129 </span>            :               name,</a>
 <a name="130"><span class="lineNum">     130 </span>            :               &quot;. The item names cannot contain whitespace, '.', ',', ';', or '/'.&quot;);</a>
-<a name="131"><span class="lineNum">     131 </span><span class="lineCov">      89592 : }</span></a>
+<a name="131"><span class="lineNum">     131 </span><span class="lineCov">      98135 : }</span></a>
 <a name="132"><span class="lineNum">     132 </span>            : </a>
 <a name="133"><span class="lineNum">     133 </span>            : bool</a>
 <a name="134"><span class="lineNum">     134 </span><span class="lineCov">       7173 : operator!=(const LabeledAxisAccessor &amp; a, const LabeledAxisAccessor &amp; b)</span></a>
@@ -199,27 +199,27 @@
 <a name="137"><span class="lineNum">     137 </span>            : }</a>
 <a name="138"><span class="lineNum">     138 </span>            : </a>
 <a name="139"><span class="lineNum">     139 </span>            : bool</a>
-<a name="140"><span class="lineNum">     140 </span><span class="lineCov">      15540 : operator==(const LabeledAxisAccessor &amp; a, const LabeledAxisAccessor &amp; b)</span></a>
+<a name="140"><span class="lineNum">     140 </span><span class="lineCov">      16770 : operator==(const LabeledAxisAccessor &amp; a, const LabeledAxisAccessor &amp; b)</span></a>
 <a name="141"><span class="lineNum">     141 </span>            : {</a>
-<a name="142"><span class="lineNum">     142 </span><span class="lineCov">      15540 :   return a.vec() == b.vec();</span></a>
+<a name="142"><span class="lineNum">     142 </span><span class="lineCov">      16770 :   return a.vec() == b.vec();</span></a>
 <a name="143"><span class="lineNum">     143 </span>            : }</a>
 <a name="144"><span class="lineNum">     144 </span>            : </a>
 <a name="145"><span class="lineNum">     145 </span>            : bool</a>
-<a name="146"><span class="lineNum">     146 </span><span class="lineCov">     782201 : operator&lt;(const LabeledAxisAccessor &amp; a, const LabeledAxisAccessor &amp; b)</span></a>
+<a name="146"><span class="lineNum">     146 </span><span class="lineCov">     885031 : operator&lt;(const LabeledAxisAccessor &amp; a, const LabeledAxisAccessor &amp; b)</span></a>
 <a name="147"><span class="lineNum">     147 </span>            : {</a>
-<a name="148"><span class="lineNum">     148 </span><span class="lineCov">     782201 :   return a.vec() &lt; b.vec();</span></a>
+<a name="148"><span class="lineNum">     148 </span><span class="lineCov">     885031 :   return a.vec() &lt; b.vec();</span></a>
 <a name="149"><span class="lineNum">     149 </span>            : }</a>
 <a name="150"><span class="lineNum">     150 </span>            : </a>
 <a name="151"><span class="lineNum">     151 </span>            : std::ostream &amp;</a>
-<a name="152"><span class="lineNum">     152 </span><span class="lineCov">       1027 : operator&lt;&lt;(std::ostream &amp; os, const LabeledAxisAccessor &amp; accessor)</span></a>
+<a name="152"><span class="lineNum">     152 </span><span class="lineCov">       1025 : operator&lt;&lt;(std::ostream &amp; os, const LabeledAxisAccessor &amp; accessor)</span></a>
 <a name="153"><span class="lineNum">     153 </span>            : {</a>
-<a name="154"><span class="lineNum">     154 </span><span class="lineCov">       2908 :   for (size_t i = 0; i &lt; accessor.vec().size(); i++)</span></a>
+<a name="154"><span class="lineNum">     154 </span><span class="lineCov">       2902 :   for (size_t i = 0; i &lt; accessor.vec().size(); i++)</span></a>
 <a name="155"><span class="lineNum">     155 </span>            :   {</a>
-<a name="156"><span class="lineNum">     156 </span><span class="lineCov">       1881 :     if (i != 0)</span></a>
-<a name="157"><span class="lineNum">     157 </span><span class="lineCov">       1070 :       os &lt;&lt; &quot;/&quot;;</span></a>
-<a name="158"><span class="lineNum">     158 </span><span class="lineCov">       1881 :     os &lt;&lt; accessor.vec()[i];</span></a>
+<a name="156"><span class="lineNum">     156 </span><span class="lineCov">       1877 :     if (i != 0)</span></a>
+<a name="157"><span class="lineNum">     157 </span><span class="lineCov">       1068 :       os &lt;&lt; &quot;/&quot;;</span></a>
+<a name="158"><span class="lineNum">     158 </span><span class="lineCov">       1877 :     os &lt;&lt; accessor.vec()[i];</span></a>
 <a name="159"><span class="lineNum">     159 </span>            :   }</a>
-<a name="160"><span class="lineNum">     160 </span><span class="lineCov">       1027 :   return os;</span></a>
+<a name="160"><span class="lineNum">     160 </span><span class="lineCov">       1025 :   return os;</span></a>
 <a name="161"><span class="lineNum">     161 </span>            : }</a>
 <a name="162"><span class="lineNum">     162 </span>            : } // namespace neml2</a>
 </pre>

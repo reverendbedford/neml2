@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-14 23:00:24</td>
+            <td class="headerValue">2024-12-14 23:49:22</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -112,17 +112,17 @@
 <a name="50"><span class="lineNum">      50 </span><span class="lineCov">          5 : }</span></a>
 <a name="51"><span class="lineNum">      51 </span>            : </a>
 <a name="52"><span class="lineNum">      52 </span>            : void</a>
-<a name="53"><span class="lineNum">      53 </span><span class="lineCov">        139 : GeneralElasticity::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
+<a name="53"><span class="lineNum">      53 </span><span class="lineCov">        255 : GeneralElasticity::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
 <a name="54"><span class="lineNum">      54 </span>            : {</a>
-<a name="55"><span class="lineNum">      55 </span><span class="lineCov">        139 :   neml_assert_dbg(!d2out_din2, &quot;GeneralElasticity doesn't implement second derivatives.&quot;);</span></a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineCov">        255 :   neml_assert_dbg(!d2out_din2, &quot;GeneralElasticity doesn't implement second derivatives.&quot;);</span></a>
 <a name="56"><span class="lineNum">      56 </span>            : </a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">        139 :   const auto A = _T.rotate(_R);</span></a>
-<a name="58"><span class="lineNum">      58 </span><span class="lineCov">        139 :   const auto Ainv = _compliance ? A.inverse() : SSR4();</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineCov">        255 :   const auto A = _T.rotate(_R);</span></a>
+<a name="58"><span class="lineNum">      58 </span><span class="lineCov">        255 :   const auto Ainv = _compliance ? A.inverse() : SSR4();</span></a>
 <a name="59"><span class="lineNum">      59 </span>            : </a>
-<a name="60"><span class="lineNum">      60 </span><span class="lineCov">        139 :   if (out)</span></a>
-<a name="61"><span class="lineNum">      61 </span><span class="lineCov">        136 :     _to = (_compliance ? Ainv : A) * _from;</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineCov">        255 :   if (out)</span></a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">        252 :     _to = (_compliance ? Ainv : A) * _from;</span></a>
 <a name="62"><span class="lineNum">      62 </span>            : </a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineCov">        139 :   if (dout_din)</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineCov">        255 :   if (dout_din)</span></a>
 <a name="64"><span class="lineNum">      64 </span>            :   {</a>
 <a name="65"><span class="lineNum">      65 </span><span class="lineCov">          5 :     if (_from.is_dependent())</span></a>
 <a name="66"><span class="lineNum">      66 </span><span class="lineCov">          5 :       _to.d(_from) = _compliance ? Ainv : A;</span></a>
@@ -147,7 +147,7 @@
 <a name="85"><span class="lineNum">      85 </span><span class="lineCov">          3 :         _to.d(*T) = Tensor(torch::einsum(&quot;...ijkl,...j&quot;, {dA_dT, _from}), A.batch_sizes());</span></a>
 <a name="86"><span class="lineNum">      86 </span><span class="lineCov">          2 :     }</span></a>
 <a name="87"><span class="lineNum">      87 </span>            :   }</a>
-<a name="88"><span class="lineNum">      88 </span><span class="lineCov">        139 : }</span></a>
+<a name="88"><span class="lineNum">      88 </span><span class="lineCov">        255 : }</span></a>
 <a name="89"><span class="lineNum">      89 </span>            : } // namespace neml2</a>
 </pre>
       </td>

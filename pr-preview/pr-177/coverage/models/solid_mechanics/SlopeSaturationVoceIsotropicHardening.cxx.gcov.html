@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-14 23:00:24</td>
+            <td class="headerValue">2024-12-14 23:49:22</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -133,16 +133,16 @@
 <a name="71"><span class="lineNum">      71 </span><span class="lineCov">          2 : }</span></a>
 <a name="72"><span class="lineNum">      72 </span>            : </a>
 <a name="73"><span class="lineNum">      73 </span>            : void</a>
-<a name="74"><span class="lineNum">      74 </span><span class="lineCov">         16 : SlopeSaturationVoceIsotropicHardening::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineCov">         22 : SlopeSaturationVoceIsotropicHardening::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
 <a name="75"><span class="lineNum">      75 </span>            : {</a>
-<a name="76"><span class="lineNum">      76 </span><span class="lineCov">         16 :   neml_assert_dbg(</span></a>
-<a name="77"><span class="lineNum">      77 </span><span class="lineCov">         16 :       !d2out_din2,</span></a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineCov">         22 :   neml_assert_dbg(</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineCov">         22 :       !d2out_din2,</span></a>
 <a name="78"><span class="lineNum">      78 </span>            :       &quot;SlopeSaturationVoceIsotropicHardening model doesn't implement second derivatives.&quot;);</a>
 <a name="79"><span class="lineNum">      79 </span>            : </a>
-<a name="80"><span class="lineNum">      80 </span><span class="lineCov">         16 :   if (out)</span></a>
-<a name="81"><span class="lineNum">      81 </span><span class="lineCov">         15 :     _h_dot = _theta0 * (1.0 - _h / _R) * _gamma_dot;</span></a>
+<a name="80"><span class="lineNum">      80 </span><span class="lineCov">         22 :   if (out)</span></a>
+<a name="81"><span class="lineNum">      81 </span><span class="lineCov">         21 :     _h_dot = _theta0 * (1.0 - _h / _R) * _gamma_dot;</span></a>
 <a name="82"><span class="lineNum">      82 </span>            : </a>
-<a name="83"><span class="lineNum">      83 </span><span class="lineCov">         16 :   if (dout_din)</span></a>
+<a name="83"><span class="lineNum">      83 </span><span class="lineCov">         22 :   if (dout_din)</span></a>
 <a name="84"><span class="lineNum">      84 </span>            :   {</a>
 <a name="85"><span class="lineNum">      85 </span><span class="lineCov">          2 :     if (_gamma_dot.is_dependent())</span></a>
 <a name="86"><span class="lineNum">      86 </span><span class="lineCov">          2 :       _h_dot.d(_gamma_dot) = _theta0 * (1.0 - _h / _R);</span></a>
@@ -156,7 +156,7 @@
 <a name="94"><span class="lineNum">      94 </span><span class="lineCov">          2 :     if (const auto * const theta0 = nl_param(&quot;theta0&quot;))</span></a>
 <a name="95"><span class="lineNum">      95 </span><span class="lineCov">          1 :       _h_dot.d(*theta0) = (1.0 - _h / _R) * _gamma_dot;</span></a>
 <a name="96"><span class="lineNum">      96 </span>            :   }</a>
-<a name="97"><span class="lineNum">      97 </span><span class="lineCov">         16 : }</span></a>
+<a name="97"><span class="lineNum">      97 </span><span class="lineCov">         22 : }</span></a>
 <a name="98"><span class="lineNum">      98 </span>            : } // namespace neml2</a>
 </pre>
       </td>

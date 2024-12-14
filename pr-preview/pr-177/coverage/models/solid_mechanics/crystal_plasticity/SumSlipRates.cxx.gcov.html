@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-14 23:00:24</td>
+            <td class="headerValue">2024-12-14 23:49:22</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -126,15 +126,15 @@
 <a name="64"><span class="lineNum">      64 </span><span class="lineCov">          2 : }</span></a>
 <a name="65"><span class="lineNum">      65 </span>            : </a>
 <a name="66"><span class="lineNum">      66 </span>            : void</a>
-<a name="67"><span class="lineNum">      67 </span><span class="lineCov">        304 : SumSlipRates::set_value(bool out, bool dout_din, bool /*d2out_din2*/)</span></a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">        305 : SumSlipRates::set_value(bool out, bool dout_din, bool /*d2out_din2*/)</span></a>
 <a name="68"><span class="lineNum">      68 </span>            : {</a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">        304 :   if (out)</span></a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineCov">        303 :     _sg = math::batch_sum(math::abs(_g.value()), -1);</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">        305 :   if (out)</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">        304 :     _sg = math::batch_sum(math::abs(_g.value()), -1);</span></a>
 <a name="71"><span class="lineNum">      71 </span>            : </a>
-<a name="72"><span class="lineNum">      72 </span><span class="lineCov">        304 :   if (dout_din)</span></a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineCov">        305 :   if (dout_din)</span></a>
 <a name="73"><span class="lineNum">      73 </span><span class="lineCov">         63 :     if (_g.is_dependent())</span></a>
 <a name="74"><span class="lineNum">      74 </span><span class="lineCov">         63 :       _sg.d(_g) = Tensor(math::sign(_g.value()).batch_unsqueeze(-1), _g.batch_dim());</span></a>
-<a name="75"><span class="lineNum">      75 </span><span class="lineCov">        304 : }</span></a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineCov">        305 : }</span></a>
 <a name="76"><span class="lineNum">      76 </span>            : </a>
 <a name="77"><span class="lineNum">      77 </span>            : } // namespace neml2</a>
 </pre>

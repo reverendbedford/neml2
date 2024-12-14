@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-14 23:00:24</td>
+            <td class="headerValue">2024-12-14 23:49:22</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">7</td>
@@ -224,28 +224,28 @@
 <a name="162"><span class="lineNum">     162 </span><span class="lineCov">        215 : }</span></a>
 <a name="163"><span class="lineNum">     163 </span>            : </a>
 <a name="164"><span class="lineNum">     164 </span>            : void</a>
-<a name="165"><span class="lineNum">     165 </span><span class="lineCov">       3729 : ComposedModel::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
+<a name="165"><span class="lineNum">     165 </span><span class="lineCov">       4210 : ComposedModel::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
 <a name="166"><span class="lineNum">     166 </span>            : {</a>
-<a name="167"><span class="lineNum">     167 </span><span class="lineCov">      24064 :   for (auto * i : registered_models())</span></a>
+<a name="167"><span class="lineNum">     167 </span><span class="lineCov">      26398 :   for (auto * i : registered_models())</span></a>
 <a name="168"><span class="lineNum">     168 </span>            :   {</a>
-<a name="169"><span class="lineNum">     169 </span><span class="lineCov">      20335 :     if (out &amp;&amp; !dout_din &amp;&amp; !d2out_din2)</span></a>
-<a name="170"><span class="lineNum">     170 </span><span class="lineCov">      11281 :       i-&gt;value();</span></a>
-<a name="171"><span class="lineNum">     171 </span><span class="lineCov">       9054 :     else if (dout_din &amp;&amp; !d2out_din2)</span></a>
-<a name="172"><span class="lineNum">     172 </span><span class="lineCov">       8630 :       i-&gt;value_and_dvalue();</span></a>
+<a name="169"><span class="lineNum">     169 </span><span class="lineCov">      22188 :     if (out &amp;&amp; !dout_din &amp;&amp; !d2out_din2)</span></a>
+<a name="170"><span class="lineNum">     170 </span><span class="lineCov">      12281 :       i-&gt;value();</span></a>
+<a name="171"><span class="lineNum">     171 </span><span class="lineCov">       9907 :     else if (dout_din &amp;&amp; !d2out_din2)</span></a>
+<a name="172"><span class="lineNum">     172 </span><span class="lineCov">       9483 :       i-&gt;value_and_dvalue();</span></a>
 <a name="173"><span class="lineNum">     173 </span><span class="lineCov">        424 :     else if (d2out_din2)</span></a>
 <a name="174"><span class="lineNum">     174 </span><span class="lineCov">        424 :       i-&gt;value_and_dvalue_and_d2value();</span></a>
 <a name="175"><span class="lineNum">     175 </span>            :     else</a>
 <a name="176"><span class="lineNum">     176 </span><span class="lineNoCov">          0 :       throw NEMLException(&quot;Unsupported call signature to set_value&quot;);</span></a>
 <a name="177"><span class="lineNum">     177 </span>            :   }</a>
 <a name="178"><span class="lineNum">     178 </span>            : </a>
-<a name="179"><span class="lineNum">     179 </span><span class="lineCov">       3729 :   if (dout_din)</span></a>
-<a name="180"><span class="lineNum">     180 </span><span class="lineCov">       5629 :     for (auto &amp;&amp; [name, var] : output_variables())</span></a>
-<a name="181"><span class="lineNum">     181 </span><span class="lineCov">       3812 :       var.apply_chain_rule(_dependency);</span></a>
+<a name="179"><span class="lineNum">     179 </span><span class="lineCov">       4210 :   if (dout_din)</span></a>
+<a name="180"><span class="lineNum">     180 </span><span class="lineCov">       6475 :     for (auto &amp;&amp; [name, var] : output_variables())</span></a>
+<a name="181"><span class="lineNum">     181 </span><span class="lineCov">       4443 :       var.apply_chain_rule(_dependency);</span></a>
 <a name="182"><span class="lineNum">     182 </span>            : </a>
-<a name="183"><span class="lineNum">     183 </span><span class="lineCov">       3729 :   if (d2out_din2)</span></a>
+<a name="183"><span class="lineNum">     183 </span><span class="lineCov">       4210 :   if (d2out_din2)</span></a>
 <a name="184"><span class="lineNum">     184 </span><span class="lineCov">        328 :     for (auto &amp;&amp; [name, var] : output_variables())</span></a>
 <a name="185"><span class="lineNum">     185 </span><span class="lineCov">        164 :       var.apply_second_order_chain_rule(_dependency);</span></a>
-<a name="186"><span class="lineNum">     186 </span><span class="lineCov">       3729 : }</span></a>
+<a name="186"><span class="lineNum">     186 </span><span class="lineCov">       4210 : }</span></a>
 <a name="187"><span class="lineNum">     187 </span>            : } // namespace neml2</a>
 </pre>
       </td>

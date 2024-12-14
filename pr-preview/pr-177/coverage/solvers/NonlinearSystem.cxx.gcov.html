@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-14 23:00:24</td>
+            <td class="headerValue">2024-12-14 23:49:22</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">11</td>
@@ -128,19 +128,19 @@
 <a name="66"><span class="lineNum">      66 </span><span class="lineCov">         30 :   options.set(&quot;automatic_scaling_miter&quot;).suppressed() = false;</span></a>
 <a name="67"><span class="lineNum">      67 </span><span class="lineCov">         30 : }</span></a>
 <a name="68"><span class="lineNum">      68 </span>            : </a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">        364 : NonlinearSystem::NonlinearSystem(const OptionSet &amp; options)</span></a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineCov">        364 :   : _autoscale(options.get&lt;bool&gt;(&quot;automatic_scaling&quot;)),</span></a>
-<a name="71"><span class="lineNum">      71 </span><span class="lineCov">        364 :     _autoscale_tol(options.get&lt;Real&gt;(&quot;automatic_scaling_tol&quot;)),</span></a>
-<a name="72"><span class="lineNum">      72 </span><span class="lineCov">        364 :     _autoscale_miter(options.get&lt;unsigned int&gt;(&quot;automatic_scaling_miter&quot;)),</span></a>
-<a name="73"><span class="lineNum">      73 </span><span class="lineCov">        728 :     _scaling_matrices_initialized(false)</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">        363 : NonlinearSystem::NonlinearSystem(const OptionSet &amp; options)</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">        363 :   : _autoscale(options.get&lt;bool&gt;(&quot;automatic_scaling&quot;)),</span></a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineCov">        363 :     _autoscale_tol(options.get&lt;Real&gt;(&quot;automatic_scaling_tol&quot;)),</span></a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineCov">        363 :     _autoscale_miter(options.get&lt;unsigned int&gt;(&quot;automatic_scaling_miter&quot;)),</span></a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">        726 :     _scaling_matrices_initialized(false)</span></a>
 <a name="74"><span class="lineNum">      74 </span>            : {</a>
-<a name="75"><span class="lineNum">      75 </span><span class="lineCov">        364 : }</span></a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineCov">        363 : }</span></a>
 <a name="76"><span class="lineNum">      76 </span>            : </a>
 <a name="77"><span class="lineNum">      77 </span>            : void</a>
-<a name="78"><span class="lineNum">      78 </span><span class="lineCov">        156 : NonlinearSystem::init_scaling(const NonlinearSystem::SOL&lt;false&gt; &amp; x, const bool verbose)</span></a>
+<a name="78"><span class="lineNum">      78 </span><span class="lineCov">        182 : NonlinearSystem::init_scaling(const NonlinearSystem::SOL&lt;false&gt; &amp; x, const bool verbose)</span></a>
 <a name="79"><span class="lineNum">      79 </span>            : {</a>
-<a name="80"><span class="lineNum">      80 </span><span class="lineCov">        156 :   if (!_autoscale)</span></a>
-<a name="81"><span class="lineNum">      81 </span><span class="lineCov">        152 :     return;</span></a>
+<a name="80"><span class="lineNum">      80 </span><span class="lineCov">        182 :   if (!_autoscale)</span></a>
+<a name="81"><span class="lineNum">      81 </span><span class="lineCov">        178 :     return;</span></a>
 <a name="82"><span class="lineNum">      82 </span>            : </a>
 <a name="83"><span class="lineNum">      83 </span><span class="lineCov">          4 :   if (_scaling_matrices_initialized)</span></a>
 <a name="84"><span class="lineNum">      84 </span><span class="lineNoCov">          0 :     return;</span></a>
@@ -197,10 +197,10 @@
 <a name="135"><span class="lineNum">     135 </span><span class="lineCov">         98 : }</span></a>
 <a name="136"><span class="lineNum">     136 </span>            : </a>
 <a name="137"><span class="lineNum">     137 </span>            : NonlinearSystem::RES&lt;true&gt;</a>
-<a name="138"><span class="lineNum">     138 </span><span class="lineCov">       1498 : NonlinearSystem::scale(const NonlinearSystem::RES&lt;false&gt; &amp; r) const</span></a>
+<a name="138"><span class="lineNum">     138 </span><span class="lineCov">       1706 : NonlinearSystem::scale(const NonlinearSystem::RES&lt;false&gt; &amp; r) const</span></a>
 <a name="139"><span class="lineNum">     139 </span>            : {</a>
-<a name="140"><span class="lineNum">     140 </span><span class="lineCov">       1498 :   if (!_autoscale)</span></a>
-<a name="141"><span class="lineNum">     141 </span><span class="lineCov">       1463 :     return RES&lt;true&gt;(r);</span></a>
+<a name="140"><span class="lineNum">     140 </span><span class="lineCov">       1706 :   if (!_autoscale)</span></a>
+<a name="141"><span class="lineNum">     141 </span><span class="lineCov">       1671 :     return RES&lt;true&gt;(r);</span></a>
 <a name="142"><span class="lineNum">     142 </span>            : </a>
 <a name="143"><span class="lineNum">     143 </span><span class="lineCov">         35 :   ensure_scaling_matrices_initialized_dbg();</span></a>
 <a name="144"><span class="lineNum">     144 </span><span class="lineCov">         70 :   return RES&lt;true&gt;(_row_scaling * r);</span></a>
@@ -217,10 +217,10 @@
 <a name="155"><span class="lineNum">     155 </span>            : }</a>
 <a name="156"><span class="lineNum">     156 </span>            : </a>
 <a name="157"><span class="lineNum">     157 </span>            : NonlinearSystem::JAC&lt;true&gt;</a>
-<a name="158"><span class="lineNum">     158 </span><span class="lineCov">       1129 : NonlinearSystem::scale(const NonlinearSystem::JAC&lt;false&gt; &amp; J) const</span></a>
+<a name="158"><span class="lineNum">     158 </span><span class="lineCov">       1337 : NonlinearSystem::scale(const NonlinearSystem::JAC&lt;false&gt; &amp; J) const</span></a>
 <a name="159"><span class="lineNum">     159 </span>            : {</a>
-<a name="160"><span class="lineNum">     160 </span><span class="lineCov">       1129 :   if (!_autoscale)</span></a>
-<a name="161"><span class="lineNum">     161 </span><span class="lineCov">       1109 :     return JAC&lt;true&gt;(J);</span></a>
+<a name="160"><span class="lineNum">     160 </span><span class="lineCov">       1337 :   if (!_autoscale)</span></a>
+<a name="161"><span class="lineNum">     161 </span><span class="lineCov">       1317 :     return JAC&lt;true&gt;(J);</span></a>
 <a name="162"><span class="lineNum">     162 </span>            : </a>
 <a name="163"><span class="lineNum">     163 </span><span class="lineCov">         20 :   ensure_scaling_matrices_initialized_dbg();</span></a>
 <a name="164"><span class="lineNum">     164 </span><span class="lineCov">         40 :   return JAC&lt;true&gt;(math::bmm(math::bmm(math::base_diag_embed(_row_scaling), J),</span></a>
@@ -239,30 +239,30 @@
 <a name="177"><span class="lineNum">     177 </span>            : }</a>
 <a name="178"><span class="lineNum">     178 </span>            : </a>
 <a name="179"><span class="lineNum">     179 </span>            : NonlinearSystem::SOL&lt;true&gt;</a>
-<a name="180"><span class="lineNum">     180 </span><span class="lineCov">        180 : NonlinearSystem::scale(const NonlinearSystem::SOL&lt;false&gt; &amp; u) const</span></a>
+<a name="180"><span class="lineNum">     180 </span><span class="lineCov">        206 : NonlinearSystem::scale(const NonlinearSystem::SOL&lt;false&gt; &amp; u) const</span></a>
 <a name="181"><span class="lineNum">     181 </span>            : {</a>
-<a name="182"><span class="lineNum">     182 </span><span class="lineCov">        180 :   if (!_autoscale)</span></a>
-<a name="183"><span class="lineNum">     183 </span><span class="lineCov">        176 :     return SOL&lt;true&gt;(u);</span></a>
+<a name="182"><span class="lineNum">     182 </span><span class="lineCov">        206 :   if (!_autoscale)</span></a>
+<a name="183"><span class="lineNum">     183 </span><span class="lineCov">        202 :     return SOL&lt;true&gt;(u);</span></a>
 <a name="184"><span class="lineNum">     184 </span>            : </a>
 <a name="185"><span class="lineNum">     185 </span><span class="lineCov">          4 :   ensure_scaling_matrices_initialized_dbg();</span></a>
 <a name="186"><span class="lineNum">     186 </span><span class="lineCov">          8 :   return SOL&lt;true&gt;(1. / _col_scaling * u);</span></a>
 <a name="187"><span class="lineNum">     187 </span>            : }</a>
 <a name="188"><span class="lineNum">     188 </span>            : </a>
 <a name="189"><span class="lineNum">     189 </span>            : NonlinearSystem::SOL&lt;false&gt;</a>
-<a name="190"><span class="lineNum">     190 </span><span class="lineCov">       1678 : NonlinearSystem::unscale(const NonlinearSystem::SOL&lt;true&gt; &amp; u) const</span></a>
+<a name="190"><span class="lineNum">     190 </span><span class="lineCov">       1912 : NonlinearSystem::unscale(const NonlinearSystem::SOL&lt;true&gt; &amp; u) const</span></a>
 <a name="191"><span class="lineNum">     191 </span>            : {</a>
-<a name="192"><span class="lineNum">     192 </span><span class="lineCov">       1678 :   if (!_autoscale)</span></a>
-<a name="193"><span class="lineNum">     193 </span><span class="lineCov">       1639 :     return SOL&lt;false&gt;(u);</span></a>
+<a name="192"><span class="lineNum">     192 </span><span class="lineCov">       1912 :   if (!_autoscale)</span></a>
+<a name="193"><span class="lineNum">     193 </span><span class="lineCov">       1873 :     return SOL&lt;false&gt;(u);</span></a>
 <a name="194"><span class="lineNum">     194 </span>            : </a>
 <a name="195"><span class="lineNum">     195 </span><span class="lineCov">         39 :   ensure_scaling_matrices_initialized_dbg();</span></a>
 <a name="196"><span class="lineNum">     196 </span><span class="lineCov">         78 :   return SOL&lt;false&gt;(_col_scaling * u);</span></a>
 <a name="197"><span class="lineNum">     197 </span>            : }</a>
 <a name="198"><span class="lineNum">     198 </span>            : </a>
 <a name="199"><span class="lineNum">     199 </span>            : void</a>
-<a name="200"><span class="lineNum">     200 </span><span class="lineCov">       1499 : NonlinearSystem::set_guess(const NonlinearSystem::SOL&lt;true&gt; &amp; x)</span></a>
+<a name="200"><span class="lineNum">     200 </span><span class="lineCov">       1707 : NonlinearSystem::set_guess(const NonlinearSystem::SOL&lt;true&gt; &amp; x)</span></a>
 <a name="201"><span class="lineNum">     201 </span>            : {</a>
-<a name="202"><span class="lineNum">     202 </span><span class="lineCov">       1499 :   set_guess(unscale(x));</span></a>
-<a name="203"><span class="lineNum">     203 </span><span class="lineCov">       1499 : }</span></a>
+<a name="202"><span class="lineNum">     202 </span><span class="lineCov">       1707 :   set_guess(unscale(x));</span></a>
+<a name="203"><span class="lineNum">     203 </span><span class="lineCov">       1707 : }</span></a>
 <a name="204"><span class="lineNum">     204 </span>            : } // namespace neml2</a>
 </pre>
       </td>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-14 23:00:24</td>
+            <td class="headerValue">2024-12-14 23:49:22</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -102,14 +102,14 @@
 <a name="40"><span class="lineNum">      40 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="41"><span class="lineNum">      41 </span>            : </a>
 <a name="42"><span class="lineNum">      42 </span>            : void</a>
-<a name="43"><span class="lineNum">      43 </span><span class="lineCov">        338 : IsotropicMandelStress::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
+<a name="43"><span class="lineNum">      43 </span><span class="lineCov">        339 : IsotropicMandelStress::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
 <a name="44"><span class="lineNum">      44 </span>            : {</a>
 <a name="45"><span class="lineNum">      45 </span>            :   // Isotropic mandel stress is just the Cauchy stress</a>
 <a name="46"><span class="lineNum">      46 </span>            : </a>
-<a name="47"><span class="lineNum">      47 </span><span class="lineCov">        338 :   if (out)</span></a>
-<a name="48"><span class="lineNum">      48 </span><span class="lineCov">        337 :     _M = SR2(_S);</span></a>
+<a name="47"><span class="lineNum">      47 </span><span class="lineCov">        339 :   if (out)</span></a>
+<a name="48"><span class="lineNum">      48 </span><span class="lineCov">        338 :     _M = SR2(_S);</span></a>
 <a name="49"><span class="lineNum">      49 </span>            : </a>
-<a name="50"><span class="lineNum">      50 </span><span class="lineCov">        338 :   if (dout_din)</span></a>
+<a name="50"><span class="lineNum">      50 </span><span class="lineCov">        339 :   if (dout_din)</span></a>
 <a name="51"><span class="lineNum">      51 </span><span class="lineCov">        152 :     if (_S.is_dependent())</span></a>
 <a name="52"><span class="lineNum">      52 </span><span class="lineCov">        152 :       _M.d(_S) = SR2::identity_map(_S.options());</span></a>
 <a name="53"><span class="lineNum">      53 </span>            : </a>
@@ -117,7 +117,7 @@
 <a name="55"><span class="lineNum">      55 </span>            :   {</a>
 <a name="56"><span class="lineNum">      56 </span>            :     // zero</a>
 <a name="57"><span class="lineNum">      57 </span>            :   }</a>
-<a name="58"><span class="lineNum">      58 </span><span class="lineCov">        338 : }</span></a>
+<a name="58"><span class="lineNum">      58 </span><span class="lineCov">        339 : }</span></a>
 <a name="59"><span class="lineNum">      59 </span>            : } // namespace neml2</a>
 </pre>
       </td>

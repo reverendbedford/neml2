@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-14 23:00:24</td>
+            <td class="headerValue">2024-12-14 23:49:22</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">29</td>
@@ -106,15 +106,15 @@
 <a name="44"><span class="lineNum">      44 </span><span class="lineCov">        781 :   return options;</span></a>
 <a name="45"><span class="lineNum">      45 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="46"><span class="lineNum">      46 </span>            : </a>
-<a name="47"><span class="lineNum">      47 </span><span class="lineCov">        351 : Model::Model(const OptionSet &amp; options)</span></a>
+<a name="47"><span class="lineNum">      47 </span><span class="lineCov">        350 : Model::Model(const OptionSet &amp; options)</span></a>
 <a name="48"><span class="lineNum">      48 </span>            :   : Data(options),</a>
 <a name="49"><span class="lineNum">      49 </span>            :     ParameterStore(options, this),</a>
 <a name="50"><span class="lineNum">      50 </span>            :     VariableStore(options, this),</a>
 <a name="51"><span class="lineNum">      51 </span>            :     NonlinearSystem(options),</a>
 <a name="52"><span class="lineNum">      52 </span>            :     DiagnosticsInterface(this),</a>
-<a name="53"><span class="lineNum">      53 </span><span class="lineCov">        351 :     _nonlinear_system(options.get&lt;bool&gt;(&quot;_nonlinear_system&quot;))</span></a>
+<a name="53"><span class="lineNum">      53 </span><span class="lineCov">        350 :     _nonlinear_system(options.get&lt;bool&gt;(&quot;_nonlinear_system&quot;))</span></a>
 <a name="54"><span class="lineNum">      54 </span>            : {</a>
-<a name="55"><span class="lineNum">      55 </span><span class="lineCov">        351 : }</span></a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineCov">        350 : }</span></a>
 <a name="56"><span class="lineNum">      56 </span>            : </a>
 <a name="57"><span class="lineNum">      57 </span>            : void</a>
 <a name="58"><span class="lineNum">      58 </span><span class="lineNoCov">          0 : Model::to(const torch::TensorOptions &amp; options)</span></a>
@@ -127,20 +127,20 @@
 <a name="65"><span class="lineNum">      65 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="66"><span class="lineNum">      66 </span>            : </a>
 <a name="67"><span class="lineNum">      67 </span>            : void</a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">         97 : Model::diagnose(std::vector&lt;Diagnosis&gt; &amp; diagnoses) const</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">         96 : Model::diagnose(std::vector&lt;Diagnosis&gt; &amp; diagnoses) const</span></a>
 <a name="69"><span class="lineNum">      69 </span>            : {</a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineCov">        183 :   for (auto * submodel : registered_models())</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">        182 :   for (auto * submodel : registered_models())</span></a>
 <a name="71"><span class="lineNum">      71 </span><span class="lineCov">         86 :     submodel-&gt;diagnose(diagnoses);</span></a>
 <a name="72"><span class="lineNum">      72 </span>            : </a>
 <a name="73"><span class="lineNum">      73 </span>            :   // Make sure variables are defined on the reserved subaxes</a>
-<a name="74"><span class="lineNum">      74 </span><span class="lineCov">        397 :   for (auto &amp;&amp; [name, var] : input_variables())</span></a>
-<a name="75"><span class="lineNum">      75 </span><span class="lineCov">        300 :     diagnostic_check_input_variable(diagnoses, var);</span></a>
-<a name="76"><span class="lineNum">      76 </span><span class="lineCov">        215 :   for (auto &amp;&amp; [name, var] : output_variables())</span></a>
-<a name="77"><span class="lineNum">      77 </span><span class="lineCov">        118 :     diagnostic_check_output_variable(diagnoses, var);</span></a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineCov">        391 :   for (auto &amp;&amp; [name, var] : input_variables())</span></a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineCov">        295 :     diagnostic_check_input_variable(diagnoses, var);</span></a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineCov">        213 :   for (auto &amp;&amp; [name, var] : output_variables())</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineCov">        117 :     diagnostic_check_output_variable(diagnoses, var);</span></a>
 <a name="78"><span class="lineNum">      78 </span>            : </a>
-<a name="79"><span class="lineNum">      79 </span><span class="lineCov">         97 :   if (is_nonlinear_system())</span></a>
+<a name="79"><span class="lineNum">      79 </span><span class="lineCov">         96 :   if (is_nonlinear_system())</span></a>
 <a name="80"><span class="lineNum">      80 </span><span class="lineCov">          5 :     diagnose_nl_sys(diagnoses);</span></a>
-<a name="81"><span class="lineNum">      81 </span><span class="lineCov">         97 : }</span></a>
+<a name="81"><span class="lineNum">      81 </span><span class="lineCov">         96 : }</span></a>
 <a name="82"><span class="lineNum">      82 </span>            : </a>
 <a name="83"><span class="lineNum">      83 </span>            : void</a>
 <a name="84"><span class="lineNum">      84 </span><span class="lineCov">         72 : Model::diagnose_nl_sys(std::vector&lt;Diagnosis&gt; &amp; diagnoses) const</span></a>
@@ -168,31 +168,31 @@
 <a name="106"><span class="lineNum">     106 </span><span class="lineCov">         72 : }</span></a>
 <a name="107"><span class="lineNum">     107 </span>            : </a>
 <a name="108"><span class="lineNum">     108 </span>            : void</a>
-<a name="109"><span class="lineNum">     109 </span><span class="lineCov">        351 : Model::setup()</span></a>
+<a name="109"><span class="lineNum">     109 </span><span class="lineCov">        350 : Model::setup()</span></a>
 <a name="110"><span class="lineNum">     110 </span>            : {</a>
-<a name="111"><span class="lineNum">     111 </span><span class="lineCov">        351 :   setup_layout();</span></a>
+<a name="111"><span class="lineNum">     111 </span><span class="lineCov">        350 :   setup_layout();</span></a>
 <a name="112"><span class="lineNum">     112 </span>            : </a>
-<a name="113"><span class="lineNum">     113 </span><span class="lineCov">        351 :   if (host() == this)</span></a>
+<a name="113"><span class="lineNum">     113 </span><span class="lineCov">        350 :   if (host() == this)</span></a>
 <a name="114"><span class="lineNum">     114 </span>            :   {</a>
-<a name="115"><span class="lineNum">     115 </span><span class="lineCov">        125 :     link_output_variables();</span></a>
-<a name="116"><span class="lineNum">     116 </span><span class="lineCov">        125 :     link_input_variables();</span></a>
+<a name="115"><span class="lineNum">     115 </span><span class="lineCov">        124 :     link_output_variables();</span></a>
+<a name="116"><span class="lineNum">     116 </span><span class="lineCov">        124 :     link_input_variables();</span></a>
 <a name="117"><span class="lineNum">     117 </span>            :   }</a>
 <a name="118"><span class="lineNum">     118 </span>            : </a>
 <a name="119"><span class="lineNum">     119 </span>            :   {</a>
-<a name="120"><span class="lineNum">     120 </span><span class="lineCov">        351 :     RequestingAD AD;</span></a>
-<a name="121"><span class="lineNum">     121 </span><span class="lineCov">        351 :     request_AD();</span></a>
-<a name="122"><span class="lineNum">     122 </span><span class="lineCov">        351 :   }</span></a>
-<a name="123"><span class="lineNum">     123 </span><span class="lineCov">        351 : }</span></a>
+<a name="120"><span class="lineNum">     120 </span><span class="lineCov">        350 :     RequestingAD AD;</span></a>
+<a name="121"><span class="lineNum">     121 </span><span class="lineCov">        350 :     request_AD();</span></a>
+<a name="122"><span class="lineNum">     122 </span><span class="lineCov">        350 :   }</span></a>
+<a name="123"><span class="lineNum">     123 </span><span class="lineCov">        350 : }</span></a>
 <a name="124"><span class="lineNum">     124 </span>            : </a>
 <a name="125"><span class="lineNum">     125 </span>            : void</a>
-<a name="126"><span class="lineNum">     126 </span><span class="lineCov">        352 : Model::link_input_variables()</span></a>
+<a name="126"><span class="lineNum">     126 </span><span class="lineCov">        351 : Model::link_input_variables()</span></a>
 <a name="127"><span class="lineNum">     127 </span>            : {</a>
-<a name="128"><span class="lineNum">     128 </span><span class="lineCov">        579 :   for (auto * submodel : _registered_models)</span></a>
+<a name="128"><span class="lineNum">     128 </span><span class="lineCov">        578 :   for (auto * submodel : _registered_models)</span></a>
 <a name="129"><span class="lineNum">     129 </span>            :   {</a>
 <a name="130"><span class="lineNum">     130 </span><span class="lineCov">        227 :     link_input_variables(submodel);</span></a>
 <a name="131"><span class="lineNum">     131 </span><span class="lineCov">        227 :     submodel-&gt;link_input_variables();</span></a>
 <a name="132"><span class="lineNum">     132 </span>            :   }</a>
-<a name="133"><span class="lineNum">     133 </span><span class="lineCov">        352 : }</span></a>
+<a name="133"><span class="lineNum">     133 </span><span class="lineCov">        351 : }</span></a>
 <a name="134"><span class="lineNum">     134 </span>            : </a>
 <a name="135"><span class="lineNum">     135 </span>            : void</a>
 <a name="136"><span class="lineNum">     136 </span><span class="lineCov">         12 : Model::link_input_variables(Model * submodel)</span></a>
@@ -202,14 +202,14 @@
 <a name="140"><span class="lineNum">     140 </span><span class="lineCov">         12 : }</span></a>
 <a name="141"><span class="lineNum">     141 </span>            : </a>
 <a name="142"><span class="lineNum">     142 </span>            : void</a>
-<a name="143"><span class="lineNum">     143 </span><span class="lineCov">        352 : Model::link_output_variables()</span></a>
+<a name="143"><span class="lineNum">     143 </span><span class="lineCov">        351 : Model::link_output_variables()</span></a>
 <a name="144"><span class="lineNum">     144 </span>            : {</a>
-<a name="145"><span class="lineNum">     145 </span><span class="lineCov">        579 :   for (auto * submodel : _registered_models)</span></a>
+<a name="145"><span class="lineNum">     145 </span><span class="lineCov">        578 :   for (auto * submodel : _registered_models)</span></a>
 <a name="146"><span class="lineNum">     146 </span>            :   {</a>
 <a name="147"><span class="lineNum">     147 </span><span class="lineCov">        227 :     link_output_variables(submodel);</span></a>
 <a name="148"><span class="lineNum">     148 </span><span class="lineCov">        227 :     submodel-&gt;link_output_variables();</span></a>
 <a name="149"><span class="lineNum">     149 </span>            :   }</a>
-<a name="150"><span class="lineNum">     150 </span><span class="lineCov">        352 : }</span></a>
+<a name="150"><span class="lineNum">     150 </span><span class="lineCov">        351 : }</span></a>
 <a name="151"><span class="lineNum">     151 </span>            : </a>
 <a name="152"><span class="lineNum">     152 </span>            : void</a>
 <a name="153"><span class="lineNum">     153 </span><span class="lineCov">         12 : Model::link_output_variables(Model * /*submodel*/)</span></a>
@@ -249,29 +249,29 @@
 <a name="187"><span class="lineNum">     187 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="188"><span class="lineNum">     188 </span>            : </a>
 <a name="189"><span class="lineNum">     189 </span>            : void</a>
-<a name="190"><span class="lineNum">     190 </span><span class="lineCov">       6681 : Model::zero_input()</span></a>
+<a name="190"><span class="lineNum">     190 </span><span class="lineCov">       7395 : Model::zero_input()</span></a>
 <a name="191"><span class="lineNum">     191 </span>            : {</a>
-<a name="192"><span class="lineNum">     192 </span><span class="lineCov">       6681 :   VariableStore::zero_input();</span></a>
-<a name="193"><span class="lineNum">     193 </span><span class="lineCov">      11253 :   for (auto * submodel : _registered_models)</span></a>
-<a name="194"><span class="lineNum">     194 </span><span class="lineCov">       4572 :     submodel-&gt;zero_input();</span></a>
-<a name="195"><span class="lineNum">     195 </span><span class="lineCov">       6681 : }</span></a>
+<a name="192"><span class="lineNum">     192 </span><span class="lineCov">       7395 :   VariableStore::zero_input();</span></a>
+<a name="193"><span class="lineNum">     193 </span><span class="lineCov">      12293 :   for (auto * submodel : _registered_models)</span></a>
+<a name="194"><span class="lineNum">     194 </span><span class="lineCov">       4898 :     submodel-&gt;zero_input();</span></a>
+<a name="195"><span class="lineNum">     195 </span><span class="lineCov">       7395 : }</span></a>
 <a name="196"><span class="lineNum">     196 </span>            : </a>
 <a name="197"><span class="lineNum">     197 </span>            : void</a>
-<a name="198"><span class="lineNum">     198 </span><span class="lineCov">       6681 : Model::zero_output()</span></a>
+<a name="198"><span class="lineNum">     198 </span><span class="lineCov">       7395 : Model::zero_output()</span></a>
 <a name="199"><span class="lineNum">     199 </span>            : {</a>
-<a name="200"><span class="lineNum">     200 </span><span class="lineCov">       6681 :   VariableStore::zero_output();</span></a>
-<a name="201"><span class="lineNum">     201 </span><span class="lineCov">      11253 :   for (auto * submodel : _registered_models)</span></a>
-<a name="202"><span class="lineNum">     202 </span><span class="lineCov">       4572 :     submodel-&gt;zero_output();</span></a>
-<a name="203"><span class="lineNum">     203 </span><span class="lineCov">       6681 : }</span></a>
+<a name="200"><span class="lineNum">     200 </span><span class="lineCov">       7395 :   VariableStore::zero_output();</span></a>
+<a name="201"><span class="lineNum">     201 </span><span class="lineCov">      12293 :   for (auto * submodel : _registered_models)</span></a>
+<a name="202"><span class="lineNum">     202 </span><span class="lineCov">       4898 :     submodel-&gt;zero_output();</span></a>
+<a name="203"><span class="lineNum">     203 </span><span class="lineCov">       7395 : }</span></a>
 <a name="204"><span class="lineNum">     204 </span>            : </a>
 <a name="205"><span class="lineNum">     205 </span>            : std::map&lt;VariableName, Tensor&gt;</a>
-<a name="206"><span class="lineNum">     206 </span><span class="lineCov">       1356 : Model::value(const std::map&lt;VariableName, Tensor&gt; &amp; in)</span></a>
+<a name="206"><span class="lineNum">     206 </span><span class="lineCov">       1744 : Model::value(const std::map&lt;VariableName, Tensor&gt; &amp; in)</span></a>
 <a name="207"><span class="lineNum">     207 </span>            : {</a>
-<a name="208"><span class="lineNum">     208 </span><span class="lineCov">       1356 :   zero_input();</span></a>
-<a name="209"><span class="lineNum">     209 </span><span class="lineCov">       1356 :   assign_input(in);</span></a>
-<a name="210"><span class="lineNum">     210 </span><span class="lineCov">       1356 :   zero_output();</span></a>
-<a name="211"><span class="lineNum">     211 </span><span class="lineCov">       1356 :   value();</span></a>
-<a name="212"><span class="lineNum">     212 </span><span class="lineCov">       1356 :   return collect_output();</span></a>
+<a name="208"><span class="lineNum">     208 </span><span class="lineCov">       1744 :   zero_input();</span></a>
+<a name="209"><span class="lineNum">     209 </span><span class="lineCov">       1744 :   assign_input(in);</span></a>
+<a name="210"><span class="lineNum">     210 </span><span class="lineCov">       1744 :   zero_output();</span></a>
+<a name="211"><span class="lineNum">     211 </span><span class="lineCov">       1744 :   value();</span></a>
+<a name="212"><span class="lineNum">     212 </span><span class="lineCov">       1744 :   return collect_output();</span></a>
 <a name="213"><span class="lineNum">     213 </span>            : }</a>
 <a name="214"><span class="lineNum">     214 </span>            : </a>
 <a name="215"><span class="lineNum">     215 </span>            : std::tuple&lt;std::map&lt;VariableName, Tensor&gt;, std::map&lt;VariableName, std::map&lt;VariableName, Tensor&gt;&gt;&gt;</a>
@@ -328,26 +328,26 @@
 <a name="266"><span class="lineNum">     266 </span>            : }</a>
 <a name="267"><span class="lineNum">     267 </span>            : </a>
 <a name="268"><span class="lineNum">     268 </span>            : void</a>
-<a name="269"><span class="lineNum">     269 </span><span class="lineCov">      13970 : Model::value()</span></a>
+<a name="269"><span class="lineNum">     269 </span><span class="lineCov">      15566 : Model::value()</span></a>
 <a name="270"><span class="lineNum">     270 </span>            : {</a>
-<a name="271"><span class="lineNum">     271 </span><span class="lineCov">      13970 :   set_value(true, false, false);</span></a>
-<a name="272"><span class="lineNum">     272 </span><span class="lineCov">      13970 : }</span></a>
+<a name="271"><span class="lineNum">     271 </span><span class="lineCov">      15566 :   set_value(true, false, false);</span></a>
+<a name="272"><span class="lineNum">     272 </span><span class="lineCov">      15566 : }</span></a>
 <a name="273"><span class="lineNum">     273 </span>            : </a>
 <a name="274"><span class="lineNum">     274 </span>            : void</a>
-<a name="275"><span class="lineNum">     275 </span><span class="lineCov">       8630 : Model::value_and_dvalue()</span></a>
+<a name="275"><span class="lineNum">     275 </span><span class="lineCov">       9483 : Model::value_and_dvalue()</span></a>
 <a name="276"><span class="lineNum">     276 </span>            : {</a>
-<a name="277"><span class="lineNum">     277 </span><span class="lineCov">       8630 :   enable_AD();</span></a>
-<a name="278"><span class="lineNum">     278 </span><span class="lineCov">       8630 :   set_value(true, true, false);</span></a>
-<a name="279"><span class="lineNum">     279 </span><span class="lineCov">       8630 :   extract_AD_derivatives(true, false);</span></a>
-<a name="280"><span class="lineNum">     280 </span><span class="lineCov">       8630 : }</span></a>
+<a name="277"><span class="lineNum">     277 </span><span class="lineCov">       9483 :   enable_AD();</span></a>
+<a name="278"><span class="lineNum">     278 </span><span class="lineCov">       9483 :   set_value(true, true, false);</span></a>
+<a name="279"><span class="lineNum">     279 </span><span class="lineCov">       9483 :   extract_AD_derivatives(true, false);</span></a>
+<a name="280"><span class="lineNum">     280 </span><span class="lineCov">       9483 : }</span></a>
 <a name="281"><span class="lineNum">     281 </span>            : </a>
 <a name="282"><span class="lineNum">     282 </span>            : void</a>
-<a name="283"><span class="lineNum">     283 </span><span class="lineCov">       1975 : Model::dvalue()</span></a>
+<a name="283"><span class="lineNum">     283 </span><span class="lineCov">       2190 : Model::dvalue()</span></a>
 <a name="284"><span class="lineNum">     284 </span>            : {</a>
-<a name="285"><span class="lineNum">     285 </span><span class="lineCov">       1975 :   enable_AD();</span></a>
-<a name="286"><span class="lineNum">     286 </span><span class="lineCov">       1975 :   set_value(AD_need_value(true, false), true, false);</span></a>
-<a name="287"><span class="lineNum">     287 </span><span class="lineCov">       1975 :   extract_AD_derivatives(true, false);</span></a>
-<a name="288"><span class="lineNum">     288 </span><span class="lineCov">       1975 : }</span></a>
+<a name="285"><span class="lineNum">     285 </span><span class="lineCov">       2190 :   enable_AD();</span></a>
+<a name="286"><span class="lineNum">     286 </span><span class="lineCov">       2190 :   set_value(AD_need_value(true, false), true, false);</span></a>
+<a name="287"><span class="lineNum">     287 </span><span class="lineCov">       2190 :   extract_AD_derivatives(true, false);</span></a>
+<a name="288"><span class="lineNum">     288 </span><span class="lineCov">       2190 : }</span></a>
 <a name="289"><span class="lineNum">     289 </span>            : </a>
 <a name="290"><span class="lineNum">     290 </span>            : void</a>
 <a name="291"><span class="lineNum">     291 </span><span class="lineCov">        424 : Model::value_and_dvalue_and_d2value()</span></a>
@@ -399,66 +399,66 @@
 <a name="337"><span class="lineNum">     337 </span><span class="lineCov">        215 : }</span></a>
 <a name="338"><span class="lineNum">     338 </span>            : </a>
 <a name="339"><span class="lineNum">     339 </span>            : void</a>
-<a name="340"><span class="lineNum">     340 </span><span class="lineCov">       1333 : Model::set_guess(const SOL&lt;false&gt; &amp; x)</span></a>
+<a name="340"><span class="lineNum">     340 </span><span class="lineCov">       1541 : Model::set_guess(const SOL&lt;false&gt; &amp; x)</span></a>
 <a name="341"><span class="lineNum">     341 </span>            : {</a>
-<a name="342"><span class="lineNum">     342 </span><span class="lineCov">       1333 :   const auto sol_assember = VectorAssembler(input_axis().subaxis(&quot;state&quot;));</span></a>
-<a name="343"><span class="lineNum">     343 </span><span class="lineCov">       1333 :   assign_input(sol_assember.disassemble(x));</span></a>
-<a name="344"><span class="lineNum">     344 </span><span class="lineCov">       1333 : }</span></a>
+<a name="342"><span class="lineNum">     342 </span><span class="lineCov">       1541 :   const auto sol_assember = VectorAssembler(input_axis().subaxis(&quot;state&quot;));</span></a>
+<a name="343"><span class="lineNum">     343 </span><span class="lineCov">       1541 :   assign_input(sol_assember.disassemble(x));</span></a>
+<a name="344"><span class="lineNum">     344 </span><span class="lineCov">       1541 : }</span></a>
 <a name="345"><span class="lineNum">     345 </span>            : </a>
 <a name="346"><span class="lineNum">     346 </span>            : void</a>
-<a name="347"><span class="lineNum">     347 </span><span class="lineCov">       2358 : Model::assemble(NonlinearSystem::RES&lt;false&gt; * residual, NonlinearSystem::JAC&lt;false&gt; * Jacobian)</span></a>
+<a name="347"><span class="lineNum">     347 </span><span class="lineCov">       2774 : Model::assemble(NonlinearSystem::RES&lt;false&gt; * residual, NonlinearSystem::JAC&lt;false&gt; * Jacobian)</span></a>
 <a name="348"><span class="lineNum">     348 </span>            : {</a>
-<a name="349"><span class="lineNum">     349 </span><span class="lineCov">       2358 :   if (residual &amp;&amp; !Jacobian)</span></a>
-<a name="350"><span class="lineNum">     350 </span><span class="lineCov">       1333 :     value();</span></a>
-<a name="351"><span class="lineNum">     351 </span><span class="lineCov">       1025 :   else if (!residual &amp;&amp; Jacobian)</span></a>
-<a name="352"><span class="lineNum">     352 </span><span class="lineCov">       1025 :     dvalue();</span></a>
+<a name="349"><span class="lineNum">     349 </span><span class="lineCov">       2774 :   if (residual &amp;&amp; !Jacobian)</span></a>
+<a name="350"><span class="lineNum">     350 </span><span class="lineCov">       1541 :     value();</span></a>
+<a name="351"><span class="lineNum">     351 </span><span class="lineCov">       1233 :   else if (!residual &amp;&amp; Jacobian)</span></a>
+<a name="352"><span class="lineNum">     352 </span><span class="lineCov">       1233 :     dvalue();</span></a>
 <a name="353"><span class="lineNum">     353 </span><span class="lineNoCov">          0 :   else if (residual &amp;&amp; Jacobian)</span></a>
 <a name="354"><span class="lineNum">     354 </span><span class="lineNoCov">          0 :     value_and_dvalue();</span></a>
 <a name="355"><span class="lineNum">     355 </span>            : </a>
-<a name="356"><span class="lineNum">     356 </span><span class="lineCov">       2358 :   if (residual)</span></a>
+<a name="356"><span class="lineNum">     356 </span><span class="lineCov">       2774 :   if (residual)</span></a>
 <a name="357"><span class="lineNum">     357 </span>            :   {</a>
-<a name="358"><span class="lineNum">     358 </span><span class="lineCov">       1333 :     const auto res_assembler = VectorAssembler(output_axis().subaxis(&quot;residual&quot;));</span></a>
-<a name="359"><span class="lineNum">     359 </span><span class="lineCov">       1333 :     *residual = RES&lt;false&gt;(res_assembler.assemble(collect_output()));</span></a>
+<a name="358"><span class="lineNum">     358 </span><span class="lineCov">       1541 :     const auto res_assembler = VectorAssembler(output_axis().subaxis(&quot;residual&quot;));</span></a>
+<a name="359"><span class="lineNum">     359 </span><span class="lineCov">       1541 :     *residual = RES&lt;false&gt;(res_assembler.assemble(collect_output()));</span></a>
 <a name="360"><span class="lineNum">     360 </span>            :   }</a>
-<a name="361"><span class="lineNum">     361 </span><span class="lineCov">       2358 :   if (Jacobian)</span></a>
+<a name="361"><span class="lineNum">     361 </span><span class="lineCov">       2774 :   if (Jacobian)</span></a>
 <a name="362"><span class="lineNum">     362 </span>            :   {</a>
 <a name="363"><span class="lineNum">     363 </span>            :     const auto jac_assembler =</a>
-<a name="364"><span class="lineNum">     364 </span><span class="lineCov">       1025 :         MatrixAssembler(output_axis().subaxis(&quot;residual&quot;), input_axis().subaxis(&quot;state&quot;));</span></a>
-<a name="365"><span class="lineNum">     365 </span><span class="lineCov">       1025 :     *Jacobian = JAC&lt;false&gt;(jac_assembler.assemble(collect_output_derivatives()));</span></a>
+<a name="364"><span class="lineNum">     364 </span><span class="lineCov">       1233 :         MatrixAssembler(output_axis().subaxis(&quot;residual&quot;), input_axis().subaxis(&quot;state&quot;));</span></a>
+<a name="365"><span class="lineNum">     365 </span><span class="lineCov">       1233 :     *Jacobian = JAC&lt;false&gt;(jac_assembler.assemble(collect_output_derivatives()));</span></a>
 <a name="366"><span class="lineNum">     366 </span>            :   }</a>
-<a name="367"><span class="lineNum">     367 </span><span class="lineCov">       2358 : }</span></a>
+<a name="367"><span class="lineNum">     367 </span><span class="lineCov">       2774 : }</span></a>
 <a name="368"><span class="lineNum">     368 </span>            : </a>
 <a name="369"><span class="lineNum">     369 </span>            : bool</a>
-<a name="370"><span class="lineNum">     370 </span><span class="lineCov">       2159 : Model::AD_need_value(bool dout, bool d2out) const</span></a>
+<a name="370"><span class="lineNum">     370 </span><span class="lineCov">       2374 : Model::AD_need_value(bool dout, bool d2out) const</span></a>
 <a name="371"><span class="lineNum">     371 </span>            : {</a>
-<a name="372"><span class="lineNum">     372 </span><span class="lineCov">       2159 :   if (dout)</span></a>
-<a name="373"><span class="lineNum">     373 </span><span class="lineCov">       2127 :     if (!_ad_derivs.empty())</span></a>
+<a name="372"><span class="lineNum">     372 </span><span class="lineCov">       2374 :   if (dout)</span></a>
+<a name="373"><span class="lineNum">     373 </span><span class="lineCov">       2342 :     if (!_ad_derivs.empty())</span></a>
 <a name="374"><span class="lineNum">     374 </span><span class="lineCov">        156 :       return true;</span></a>
 <a name="375"><span class="lineNum">     375 </span>            : </a>
-<a name="376"><span class="lineNum">     376 </span><span class="lineCov">       2003 :   if (d2out)</span></a>
+<a name="376"><span class="lineNum">     376 </span><span class="lineCov">       2218 :   if (d2out)</span></a>
 <a name="377"><span class="lineNum">     377 </span><span class="lineCov">        184 :     for (auto &amp;&amp; [y, u1u2s] : _ad_secderivs)</span></a>
 <a name="378"><span class="lineNum">     378 </span><span class="lineCov">          1 :       for (auto &amp;&amp; [u1, u2s] : u1u2s)</span></a>
 <a name="379"><span class="lineNum">     379 </span><span class="lineCov">          1 :         if (_ad_derivs.count(y) &amp;&amp; _ad_derivs.at(y).count(u1))</span></a>
 <a name="380"><span class="lineNum">     380 </span><span class="lineCov">          1 :           return true;</span></a>
 <a name="381"><span class="lineNum">     381 </span>            : </a>
-<a name="382"><span class="lineNum">     382 </span><span class="lineCov">       2002 :   return false;</span></a>
+<a name="382"><span class="lineNum">     382 </span><span class="lineCov">       2217 :   return false;</span></a>
 <a name="383"><span class="lineNum">     383 </span>            : }</a>
 <a name="384"><span class="lineNum">     384 </span>            : </a>
 <a name="385"><span class="lineNum">     385 </span>            : void</a>
-<a name="386"><span class="lineNum">     386 </span><span class="lineCov">      11213 : Model::enable_AD()</span></a>
+<a name="386"><span class="lineNum">     386 </span><span class="lineCov">      12281 : Model::enable_AD()</span></a>
 <a name="387"><span class="lineNum">     387 </span>            : {</a>
-<a name="388"><span class="lineNum">     388 </span><span class="lineCov">      11841 :   for (auto * ad_arg : _ad_args)</span></a>
+<a name="388"><span class="lineNum">     388 </span><span class="lineCov">      12909 :   for (auto * ad_arg : _ad_args)</span></a>
 <a name="389"><span class="lineNum">     389 </span><span class="lineCov">        628 :     ad_arg-&gt;requires_grad_();</span></a>
-<a name="390"><span class="lineNum">     390 </span><span class="lineCov">      11213 : }</span></a>
+<a name="390"><span class="lineNum">     390 </span><span class="lineCov">      12281 : }</span></a>
 <a name="391"><span class="lineNum">     391 </span>            : </a>
 <a name="392"><span class="lineNum">     392 </span>            : void</a>
-<a name="393"><span class="lineNum">     393 </span><span class="lineCov">      11213 : Model::extract_AD_derivatives(bool dout, bool d2out)</span></a>
+<a name="393"><span class="lineNum">     393 </span><span class="lineCov">      12281 : Model::extract_AD_derivatives(bool dout, bool d2out)</span></a>
 <a name="394"><span class="lineNum">     394 </span>            : {</a>
-<a name="395"><span class="lineNum">     395 </span><span class="lineCov">      11213 :   neml_assert(dout || d2out, &quot;At least one of the output derivatives must be requested.&quot;);</span></a>
+<a name="395"><span class="lineNum">     395 </span><span class="lineCov">      12281 :   neml_assert(dout || d2out, &quot;At least one of the output derivatives must be requested.&quot;);</span></a>
 <a name="396"><span class="lineNum">     396 </span>            : </a>
-<a name="397"><span class="lineNum">     397 </span><span class="lineCov">      11213 :   bool create_graph = false;</span></a>
+<a name="397"><span class="lineNum">     397 </span><span class="lineCov">      12281 :   bool create_graph = false;</span></a>
 <a name="398"><span class="lineNum">     398 </span>            : </a>
-<a name="399"><span class="lineNum">     399 </span><span class="lineCov">      11684 :   for (auto &amp;&amp; [y, us] : _ad_derivs)</span></a>
+<a name="399"><span class="lineNum">     399 </span><span class="lineCov">      12752 :   for (auto &amp;&amp; [y, us] : _ad_derivs)</span></a>
 <a name="400"><span class="lineNum">     400 </span>            :   {</a>
 <a name="401"><span class="lineNum">     401 </span><span class="lineCov">        471 :     if (!dout &amp;&amp; d2out)</span></a>
 <a name="402"><span class="lineNum">     402 </span><span class="lineCov">          3 :       if (!_ad_secderivs.count(y))</span></a>
@@ -483,7 +483,7 @@
 <a name="421"><span class="lineNum">     421 </span><span class="lineCov">       1884 :     }</span></a>
 <a name="422"><span class="lineNum">     422 </span>            :   }</a>
 <a name="423"><span class="lineNum">     423 </span>            : </a>
-<a name="424"><span class="lineNum">     424 </span><span class="lineCov">      11213 :   if (d2out)</span></a>
+<a name="424"><span class="lineNum">     424 </span><span class="lineCov">      12281 :   if (d2out)</span></a>
 <a name="425"><span class="lineNum">     425 </span>            :   {</a>
 <a name="426"><span class="lineNum">     426 </span><span class="lineCov">        611 :     for (auto &amp;&amp; [y, u1u2s] : _ad_secderivs)</span></a>
 <a name="427"><span class="lineNum">     427 </span><span class="lineCov">         15 :       for (auto &amp;&amp; [u1, u2s] : u1u2s)</span></a>
@@ -505,7 +505,7 @@
 <a name="443"><span class="lineNum">     443 </span><span class="lineCov">         28 :         }</span></a>
 <a name="444"><span class="lineNum">     444 </span>            :       }</a>
 <a name="445"><span class="lineNum">     445 </span>            :   }</a>
-<a name="446"><span class="lineNum">     446 </span><span class="lineCov">      11213 : }</span></a>
+<a name="446"><span class="lineNum">     446 </span><span class="lineCov">      12281 : }</span></a>
 <a name="447"><span class="lineNum">     447 </span>            : </a>
 <a name="448"><span class="lineNum">     448 </span>            : // LCOV_EXCL_START</a>
 <a name="449"><span class="lineNum">     449 </span>            : std::ostream &amp;</a>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-14 23:00:24</td>
+            <td class="headerValue">2024-12-14 23:49:22</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -133,16 +133,16 @@
 <a name="71"><span class="lineNum">      71 </span><span class="lineCov">          2 : }</span></a>
 <a name="72"><span class="lineNum">      72 </span>            : </a>
 <a name="73"><span class="lineNum">      73 </span>            : void</a>
-<a name="74"><span class="lineNum">      74 </span><span class="lineCov">        308 : PlasticVorticity::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineCov">        309 : PlasticVorticity::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
 <a name="75"><span class="lineNum">      75 </span>            : {</a>
-<a name="76"><span class="lineNum">      76 </span><span class="lineCov">        308 :   neml_assert_dbg(!d2out_din2, &quot;Second derivative not implemented.&quot;);</span></a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineCov">        309 :   neml_assert_dbg(!d2out_din2, &quot;Second derivative not implemented.&quot;);</span></a>
 <a name="77"><span class="lineNum">      77 </span>            : </a>
-<a name="78"><span class="lineNum">      78 </span><span class="lineCov">        308 :   const auto Wp_crystal = math::batch_sum(_gamma_dot * _crystal_geometry.W(), -1);</span></a>
+<a name="78"><span class="lineNum">      78 </span><span class="lineCov">        309 :   const auto Wp_crystal = math::batch_sum(_gamma_dot * _crystal_geometry.W(), -1);</span></a>
 <a name="79"><span class="lineNum">      79 </span>            : </a>
-<a name="80"><span class="lineNum">      80 </span><span class="lineCov">        308 :   if (out)</span></a>
-<a name="81"><span class="lineNum">      81 </span><span class="lineCov">        308 :     _Wp = Wp_crystal.rotate(_R);</span></a>
+<a name="80"><span class="lineNum">      80 </span><span class="lineCov">        309 :   if (out)</span></a>
+<a name="81"><span class="lineNum">      81 </span><span class="lineCov">        309 :     _Wp = Wp_crystal.rotate(_R);</span></a>
 <a name="82"><span class="lineNum">      82 </span>            : </a>
-<a name="83"><span class="lineNum">      83 </span><span class="lineCov">        308 :   if (dout_din)</span></a>
+<a name="83"><span class="lineNum">      83 </span><span class="lineCov">        309 :   if (dout_din)</span></a>
 <a name="84"><span class="lineNum">      84 </span>            :   {</a>
 <a name="85"><span class="lineNum">      85 </span><span class="lineCov">         63 :     if (_gamma_dot.is_dependent())</span></a>
 <a name="86"><span class="lineNum">      86 </span>            :     {</a>
@@ -154,7 +154,7 @@
 <a name="92"><span class="lineNum">      92 </span><span class="lineCov">         63 :     if (_R.is_dependent())</span></a>
 <a name="93"><span class="lineNum">      93 </span><span class="lineCov">         63 :       _Wp.d(_R) = Wp_crystal.drotate(_R);</span></a>
 <a name="94"><span class="lineNum">      94 </span>            :   }</a>
-<a name="95"><span class="lineNum">      95 </span><span class="lineCov">        308 : }</span></a>
+<a name="95"><span class="lineNum">      95 </span><span class="lineCov">        309 : }</span></a>
 <a name="96"><span class="lineNum">      96 </span>            : } // namespace neml2</a>
 </pre>
       </td>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-14 23:00:24</td>
+            <td class="headerValue">2024-12-14 23:49:22</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -133,16 +133,16 @@
 <a name="71"><span class="lineNum">      71 </span><span class="lineCov">          2 : }</span></a>
 <a name="72"><span class="lineNum">      72 </span>            : </a>
 <a name="73"><span class="lineNum">      73 </span>            : void</a>
-<a name="74"><span class="lineNum">      74 </span><span class="lineCov">         18 : KocksMeckingFlowSwitch::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineCov">         19 : KocksMeckingFlowSwitch::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
 <a name="75"><span class="lineNum">      75 </span>            : {</a>
-<a name="76"><span class="lineNum">      76 </span><span class="lineCov">         18 :   neml_assert(!d2out_din2, &quot;Second derivatives not implemented&quot;);</span></a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineCov">         19 :   neml_assert(!d2out_din2, &quot;Second derivatives not implemented&quot;);</span></a>
 <a name="77"><span class="lineNum">      77 </span>            : </a>
-<a name="78"><span class="lineNum">      78 </span><span class="lineCov">         36 :   auto sig = (math::tanh(_sharp * (_g - _g0)) + 1.0) / 2.0;</span></a>
+<a name="78"><span class="lineNum">      78 </span><span class="lineCov">         38 :   auto sig = (math::tanh(_sharp * (_g - _g0)) + 1.0) / 2.0;</span></a>
 <a name="79"><span class="lineNum">      79 </span>            : </a>
-<a name="80"><span class="lineNum">      80 </span><span class="lineCov">         18 :   if (out)</span></a>
-<a name="81"><span class="lineNum">      81 </span><span class="lineCov">         17 :     _gamma_dot = sig * _rd_flow + (1.0 - sig) * _ri_flow;</span></a>
+<a name="80"><span class="lineNum">      80 </span><span class="lineCov">         19 :   if (out)</span></a>
+<a name="81"><span class="lineNum">      81 </span><span class="lineCov">         18 :     _gamma_dot = sig * _rd_flow + (1.0 - sig) * _ri_flow;</span></a>
 <a name="82"><span class="lineNum">      82 </span>            : </a>
-<a name="83"><span class="lineNum">      83 </span><span class="lineCov">         18 :   if (dout_din)</span></a>
+<a name="83"><span class="lineNum">      83 </span><span class="lineCov">         19 :   if (dout_din)</span></a>
 <a name="84"><span class="lineNum">      84 </span>            :   {</a>
 <a name="85"><span class="lineNum">      85 </span><span class="lineCov">          2 :     _gamma_dot.d(_rd_flow) = sig;</span></a>
 <a name="86"><span class="lineNum">      86 </span><span class="lineCov">          2 :     _gamma_dot.d(_ri_flow) = 1.0 - sig;</span></a>
@@ -156,7 +156,7 @@
 <a name="94"><span class="lineNum">      94 </span><span class="lineCov">          2 :     if (const auto * const g0 = nl_param(&quot;g0&quot;))</span></a>
 <a name="95"><span class="lineNum">      95 </span><span class="lineCov">          1 :       _gamma_dot.d(*g0) = -deriv;</span></a>
 <a name="96"><span class="lineNum">      96 </span><span class="lineCov">          2 :   }</span></a>
-<a name="97"><span class="lineNum">      97 </span><span class="lineCov">         18 : }</span></a>
+<a name="97"><span class="lineNum">      97 </span><span class="lineCov">         19 : }</span></a>
 <a name="98"><span class="lineNum">      98 </span>            : </a>
 <a name="99"><span class="lineNum">      99 </span>            : } // namespace neml2</a>
 </pre>

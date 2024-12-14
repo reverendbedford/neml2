@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-14 23:00:24</td>
+            <td class="headerValue">2024-12-14 23:49:22</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -121,12 +121,12 @@
 <a name="59"><span class="lineNum">      59 </span><span class="lineCov">          2 : }</span></a>
 <a name="60"><span class="lineNum">      60 </span>            : </a>
 <a name="61"><span class="lineNum">      61 </span>            : void</a>
-<a name="62"><span class="lineNum">      62 </span><span class="lineCov">         30 : KocksMeckingIntercept::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineCov">         38 : KocksMeckingIntercept::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
 <a name="63"><span class="lineNum">      63 </span>            : {</a>
-<a name="64"><span class="lineNum">      64 </span><span class="lineCov">         30 :   if (out)</span></a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineCov">         28 :     _p = (_C - _B) / _A;</span></a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineCov">         38 :   if (out)</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">         36 :     _p = (_C - _B) / _A;</span></a>
 <a name="66"><span class="lineNum">      66 </span>            : </a>
-<a name="67"><span class="lineNum">      67 </span><span class="lineCov">         30 :   if (dout_din)</span></a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">         38 :   if (dout_din)</span></a>
 <a name="68"><span class="lineNum">      68 </span>            :   {</a>
 <a name="69"><span class="lineNum">      69 </span><span class="lineCov">         21 :     if (const auto * const A = nl_param(&quot;A&quot;))</span></a>
 <a name="70"><span class="lineNum">      70 </span><span class="lineCov">         20 :       _p.d(*A) = -(_C - _B) / math::pow(_A, 2.0);</span></a>
@@ -138,7 +138,7 @@
 <a name="76"><span class="lineNum">      76 </span><span class="lineCov">         20 :       _p.d(*C) = 1.0 / _A;</span></a>
 <a name="77"><span class="lineNum">      77 </span>            :   }</a>
 <a name="78"><span class="lineNum">      78 </span>            : </a>
-<a name="79"><span class="lineNum">      79 </span><span class="lineCov">         30 :   if (d2out_din2)</span></a>
+<a name="79"><span class="lineNum">      79 </span><span class="lineCov">         38 :   if (d2out_din2)</span></a>
 <a name="80"><span class="lineNum">      80 </span>            :   {</a>
 <a name="81"><span class="lineNum">      81 </span><span class="lineCov">          2 :     if (const auto * const A = nl_param(&quot;A&quot;))</span></a>
 <a name="82"><span class="lineNum">      82 </span>            :     {</a>
@@ -157,7 +157,7 @@
 <a name="95"><span class="lineNum">      95 </span><span class="lineCov">          1 :       if (const auto * const A = nl_param(&quot;A&quot;))</span></a>
 <a name="96"><span class="lineNum">      96 </span><span class="lineCov">          1 :         _p.d(*C, *A) = -1.0 / math::pow(_A, 2.0);</span></a>
 <a name="97"><span class="lineNum">      97 </span>            :   }</a>
-<a name="98"><span class="lineNum">      98 </span><span class="lineCov">         30 : }</span></a>
+<a name="98"><span class="lineNum">      98 </span><span class="lineCov">         38 : }</span></a>
 <a name="99"><span class="lineNum">      99 </span>            : } // namespace neml2</a>
 </pre>
       </td>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-14 23:00:24</td>
+            <td class="headerValue">2024-12-14 23:49:22</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">8</td>
@@ -141,14 +141,14 @@
 <a name="79"><span class="lineNum">      79 </span>            : </a>
 <a name="80"><span class="lineNum">      80 </span>            : template &lt;typename T&gt;</a>
 <a name="81"><span class="lineNum">      81 </span>            : void</a>
-<a name="82"><span class="lineNum">      82 </span><span class="lineCov">         37 : ForwardEulerTimeIntegration&lt;T&gt;::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineCov">         38 : ForwardEulerTimeIntegration&lt;T&gt;::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
 <a name="83"><span class="lineNum">      83 </span>            : {</a>
-<a name="84"><span class="lineNum">      84 </span><span class="lineCov">         37 :   neml_assert(!d2out_din2, &quot;ForwardEulerTimeIntegration does not implement second derivatives&quot;);</span></a>
+<a name="84"><span class="lineNum">      84 </span><span class="lineCov">         38 :   neml_assert(!d2out_din2, &quot;ForwardEulerTimeIntegration does not implement second derivatives&quot;);</span></a>
 <a name="85"><span class="lineNum">      85 </span>            : </a>
-<a name="86"><span class="lineNum">      86 </span><span class="lineCov">         37 :   if (out)</span></a>
-<a name="87"><span class="lineNum">      87 </span><span class="lineCov">         36 :     _s = _sn + _ds_dt * (_t - _tn);</span></a>
+<a name="86"><span class="lineNum">      86 </span><span class="lineCov">         38 :   if (out)</span></a>
+<a name="87"><span class="lineNum">      87 </span><span class="lineCov">         37 :     _s = _sn + _ds_dt * (_t - _tn);</span></a>
 <a name="88"><span class="lineNum">      88 </span>            : </a>
-<a name="89"><span class="lineNum">      89 </span><span class="lineCov">         37 :   if (dout_din)</span></a>
+<a name="89"><span class="lineNum">      89 </span><span class="lineCov">         38 :   if (dout_din)</span></a>
 <a name="90"><span class="lineNum">      90 </span>            :   {</a>
 <a name="91"><span class="lineNum">      91 </span><span class="lineCov">          1 :     auto I = T::identity_map(_ds_dt.options());</span></a>
 <a name="92"><span class="lineNum">      92 </span>            : </a>

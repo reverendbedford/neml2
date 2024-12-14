@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-14 23:00:24</td>
+            <td class="headerValue">2024-12-14 23:49:22</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">24</td>
@@ -117,18 +117,18 @@
 <a name="55"><span class="lineNum">      55 </span>            : </a>
 <a name="56"><span class="lineNum">      56 </span>            : template &lt;typename T&gt;</a>
 <a name="57"><span class="lineNum">      57 </span>            : void</a>
-<a name="58"><span class="lineNum">      58 </span><span class="lineCov">       1402 : InputParameter&lt;T&gt;::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
+<a name="58"><span class="lineNum">      58 </span><span class="lineCov">       1452 : InputParameter&lt;T&gt;::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
 <a name="59"><span class="lineNum">      59 </span>            : {</a>
-<a name="60"><span class="lineNum">      60 </span><span class="lineCov">       1402 :   if (out)</span></a>
-<a name="61"><span class="lineNum">      61 </span><span class="lineCov">       1402 :     this-&gt;_p = _input_var.value();</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineCov">       1452 :   if (out)</span></a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">       1452 :     this-&gt;_p = _input_var.value();</span></a>
 <a name="62"><span class="lineNum">      62 </span>            : </a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineCov">       1402 :   if (dout_din)</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineCov">       1452 :   if (dout_din)</span></a>
 <a name="64"><span class="lineNum">      64 </span><span class="lineCov">        797 :     if (_input_var.is_dependent())</span></a>
 <a name="65"><span class="lineNum">      65 </span><span class="lineCov">        797 :       this-&gt;_p.d(_input_var) = T::identity_map(_input_var.options());</span></a>
 <a name="66"><span class="lineNum">      66 </span>            : </a>
 <a name="67"><span class="lineNum">      67 </span>            :   // This is zero</a>
 <a name="68"><span class="lineNum">      68 </span>            :   (void)d2out_din2;</a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">       1402 : }</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">       1452 : }</span></a>
 <a name="70"><span class="lineNum">      70 </span>            : } // namespace neml2</a>
 </pre>
       </td>

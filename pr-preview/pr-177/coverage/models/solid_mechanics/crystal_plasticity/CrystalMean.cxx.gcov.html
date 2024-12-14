@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-14 23:00:24</td>
+            <td class="headerValue">2024-12-14 23:49:22</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -127,12 +127,12 @@
 <a name="65"><span class="lineNum">      65 </span>            : </a>
 <a name="66"><span class="lineNum">      66 </span>            : template &lt;typename T&gt;</a>
 <a name="67"><span class="lineNum">      67 </span>            : void</a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">         75 : CrystalMean&lt;T&gt;::set_value(bool out, bool dout_din, bool /*d2out_din2*/)</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">         76 : CrystalMean&lt;T&gt;::set_value(bool out, bool dout_din, bool /*d2out_din2*/)</span></a>
 <a name="69"><span class="lineNum">      69 </span>            : {</a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineCov">         75 :   if (out)</span></a>
-<a name="71"><span class="lineNum">      71 </span><span class="lineCov">         74 :     _to = math::batch_mean(T(_from), -1);</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">         76 :   if (out)</span></a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineCov">         75 :     _to = math::batch_mean(T(_from), -1);</span></a>
 <a name="72"><span class="lineNum">      72 </span>            : </a>
-<a name="73"><span class="lineNum">      73 </span><span class="lineCov">         75 :   if (dout_din)</span></a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">         76 :   if (dout_din)</span></a>
 <a name="74"><span class="lineNum">      74 </span><span class="lineCov">          1 :     if (_from.is_dependent())</span></a>
 <a name="75"><span class="lineNum">      75 </span>            :     {</a>
 <a name="76"><span class="lineNum">      76 </span><span class="lineCov">          3 :       const auto I = T::identity_map(_from.options())</span></a>
@@ -140,7 +140,7 @@
 <a name="78"><span class="lineNum">      78 </span><span class="lineCov">          2 :                          .batch_expand_as(T(_from));</span></a>
 <a name="79"><span class="lineNum">      79 </span><span class="lineCov">          1 :       _to.d(_from) = Tensor(I / _from.list_size(0), _from.batch_sizes()).base_transpose(0, 1);</span></a>
 <a name="80"><span class="lineNum">      80 </span><span class="lineCov">          1 :     }</span></a>
-<a name="81"><span class="lineNum">      81 </span><span class="lineCov">         75 : }</span></a>
+<a name="81"><span class="lineNum">      81 </span><span class="lineCov">         76 : }</span></a>
 <a name="82"><span class="lineNum">      82 </span>            : } // namespace neml2</a>
 </pre>
       </td>
