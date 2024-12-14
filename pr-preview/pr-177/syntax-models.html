@@ -927,53 +927,19 @@ CopyWWR4</h2>
 CubicElasticityTensor</h2>
 <p>Define an elasticity tensor in terms of other parameters. This class defines a cubic anisotropic elasticity tensor using three parameters. Various options are available for which three parameters to provide. </p><details >
 <summary >
-<code>p1</code> 🇵 First parameter</summary>
+<code>coefficient_types</code> Types for each parameter, options are: INVALID shear_modulus poissons_ratio youngs_modulus </summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar 🔗 </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>p1_type</code> First parameter type. Options are: INVALID shear_modulus poissons_ratio youngs_modulus </summary>
-<p></p>
-<ul>
-<li><u>Type</u>: EnumSelection</li>
+<li><u>Type</u>: MultiEnumSelection</li>
 <li><u>Default</u>: INVALID </li>
 </ul>
 </details>
 <details >
 <summary >
-<code>p2</code> 🇵 Second parameter</summary>
+<code>coefficients</code> 🇵 Coefficients used to define the elasticity tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar 🔗 </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>p2_type</code> Second parameter type. Options are: INVALID shear_modulus poissons_ratio youngs_modulus </summary>
-<p></p>
-<ul>
-<li><u>Type</u>: EnumSelection</li>
-<li><u>Default</u>: INVALID </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>p3</code> 🇵 Third parameter</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: Scalar 🔗 </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>p3_type</code> Third parameter type. Options are: INVALID shear_modulus poissons_ratio youngs_modulus </summary>
-<p></p>
-<ul>
-<li><u>Type</u>: EnumSelection</li>
-<li><u>Default</u>: INVALID </li>
+<li><u>Type</u>: list of Scalar 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CubicElasticityTensor.html">link</a></p>
@@ -1297,36 +1263,19 @@ ImplicitUpdate</h2>
 IsotropicElasticityTensor</h2>
 <p>Define an elasticity tensor in terms of other parameters. This class defines an isotropic elasticity tensor using two parameters. Various options are available for which two parameters to provide. </p><details >
 <summary >
-<code>p1</code> 🇵 First parameter</summary>
+<code>coefficient_types</code> Types for each parameter, options are: INVALID shear_modulus poissons_ratio youngs_modulus </summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar 🔗 </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>p1_type</code> First parameter type. Options are: INVALID poissons_ratio youngs_modulus </summary>
-<p></p>
-<ul>
-<li><u>Type</u>: EnumSelection</li>
+<li><u>Type</u>: MultiEnumSelection</li>
 <li><u>Default</u>: INVALID </li>
 </ul>
 </details>
 <details >
 <summary >
-<code>p2</code> 🇵 Second parameter</summary>
+<code>coefficients</code> 🇵 Coefficients used to define the elasticity tensor</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Scalar 🔗 </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>p2_type</code> Second parameter type. Options are: INVALID poissons_ratio youngs_modulus </summary>
-<p></p>
-<ul>
-<li><u>Type</u>: EnumSelection</li>
-<li><u>Default</u>: INVALID </li>
+<li><u>Type</u>: list of Scalar 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1IsotropicElasticityTensor.html">link</a></p>

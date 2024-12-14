@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['base_0',['base',['../namespacebase.html',1,'']]]
+  ['core_0',['core',['../namespacecore.html',1,'']]],
+  ['crystallography_1',['crystallography',['../namespacecrystallography.html',1,'']]]
 ];

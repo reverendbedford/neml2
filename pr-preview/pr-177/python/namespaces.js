@@ -1,6 +1,6 @@
 var namespaces =
 [
-    [ "base", "namespacebase.html", "namespacebase" ],
+    [ "core", "namespacecore.html", "namespacecore" ],
     [ "crystallography", "namespacecrystallography.html", [
       [ "symmetry_operations_from_orbifold", "namespacecrystallography.html#a28df9da46332e4785d5b1b3631fa3978", null ]
     ] ],

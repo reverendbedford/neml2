@@ -110,8 +110,11 @@ $(function(){initNavTree('classneml2_1_1ElasticityTensor.html',''); initResizabl
 
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classneml2_1_1ElasticityTensor-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">ElasticityTensor Class Reference</div></div>
 </div><!--header-->
@@ -158,6 +161,16 @@ Inheritance diagram for ElasticityTensor:</div>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a3a023c0c27667e78ae521eb64f1c7c81" id="r_a3a023c0c27667e78ae521eb64f1c7c81"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3a023c0c27667e78ae521eb64f1c7c81">ParamType</a> { <a class="el" href="#a3a023c0c27667e78ae521eb64f1c7c81a4f736d11febe9da0622a39319cdd535e">YOUNGS</a>
+, <a class="el" href="#a3a023c0c27667e78ae521eb64f1c7c81ae550c7ec6decfb71bb1fa932c0e687d6">POISSONS</a>
+, <a class="el" href="#a3a023c0c27667e78ae521eb64f1c7c81a20b09561b39db495fc6d0902a697bc7f">SHEAR</a>
+, <a class="el" href="#a3a023c0c27667e78ae521eb64f1c7c81accc0377a8afbf50e7094f5c23a8af223">INVALID</a>
+ }</td></tr>
+<tr class="memdesc:a3a023c0c27667e78ae521eb64f1c7c81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Various options for parameter inputs, will need to add more as we get more tensors.  <a href="#a3a023c0c27667e78ae521eb64f1c7c81">More...</a><br /></td></tr>
+<tr class="separator:a3a023c0c27667e78ae521eb64f1c7c81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aa9396893a6b677a156aeccd30f55c957" id="r_aa9396893a6b677a156aeccd30f55c957"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa9396893a6b677a156aeccd30f55c957">ElasticityTensor</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1OptionSet.html">OptionSet</a> &amp;options)</td></tr>
@@ -501,8 +514,24 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a504e031b186e6f2f127d195cdc1cfadf inherit pub_static_methods_classneml2_1_1NonlinearSystem" id="r_a504e031b186e6f2f127d195cdc1cfadf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">static</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1NonlinearSystem.html#a504e031b186e6f2f127d195cdc1cfadf">enable_automatic_scaling</a> (<a class="el" href="classneml2_1_1OptionSet.html">OptionSet</a> &amp;options)</td></tr>
 <tr class="separator:a504e031b186e6f2f127d195cdc1cfadf inherit pub_static_methods_classneml2_1_1NonlinearSystem"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a5d30c8504e4a6cbf3949ce06218d5453" id="r_a5d30c8504e4a6cbf3949ce06218d5453"><td class="memItemLeft" align="right" valign="top">std::tuple&lt; std::vector&lt; <a class="el" href="classneml2_1_1Scalar.html">Scalar</a> &gt;, std::vector&lt; <a class="el" href="classneml2_1_1CrossRef.html">size_t</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5d30c8504e4a6cbf3949ce06218d5453">remap</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> std::vector&lt; <a class="el" href="#a3a023c0c27667e78ae521eb64f1c7c81">ParamType</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">order</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:a5d30c8504e4a6cbf3949ce06218d5453"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the coefficients in a requested order, along with the indices to remap back to the original order.  <br /></td></tr>
+<tr class="separator:a5d30c8504e4a6cbf3949ce06218d5453"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf3ae8e88330919b444ac2d92dbabaca" id="r_abf3ae8e88330919b444ac2d92dbabaca"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classneml2_1_1Scalar.html">Scalar</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abf3ae8e88330919b444ac2d92dbabaca">reorder_derivs</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> std::vector&lt; <a class="el" href="classneml2_1_1Scalar.html">Scalar</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">derivs</a>, <a class="el" href="classneml2_1_1CrossRef.html">const</a> std::vector&lt; <a class="el" href="classneml2_1_1CrossRef.html">size_t</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">order</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:abf3ae8e88330919b444ac2d92dbabaca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trivial helper function to reorder derivatives.  <br /></td></tr>
+<tr class="separator:abf3ae8e88330919b444ac2d92dbabaca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4935d2258c295350961ede35f417e60d" id="r_a4935d2258c295350961ede35f417e60d"><td class="memTemplParams" colspan="2">template&lt;std::size_t... I&gt; </td></tr>
+<tr class="memitem:a4935d2258c295350961ede35f417e60d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">auto</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a4935d2258c295350961ede35f417e60d">vector_to_tuple_impl</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> std::vector&lt; <a class="el" href="classneml2_1_1Scalar.html">Scalar</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">v</a>, std::index_sequence&lt; I... &gt;) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="separator:a4935d2258c295350961ede35f417e60d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb529d531a21ec75a4daec6a07f85c4a" id="r_afb529d531a21ec75a4daec6a07f85c4a"><td class="memTemplParams" colspan="2">template&lt;std::size_t N&gt; </td></tr>
+<tr class="memitem:afb529d531a21ec75a4daec6a07f85c4a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">auto</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#afb529d531a21ec75a4daec6a07f85c4a">vector_to_tuple</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> std::vector&lt; <a class="el" href="classneml2_1_1Scalar.html">Scalar</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">v</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="separator:afb529d531a21ec75a4daec6a07f85c4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39bf35e3309e54c73ca659ec56dda63c" id="r_a39bf35e3309e54c73ca659ec56dda63c"><td class="memTemplParams" colspan="2">template&lt;std::size_t N&gt; </td></tr>
+<tr class="memitem:a39bf35e3309e54c73ca659ec56dda63c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">auto</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a39bf35e3309e54c73ca659ec56dda63c">combine_and_reorder</a> (<a class="el" href="classneml2_1_1Scalar.html">Scalar</a> <a class="el" href="classneml2_1_1CrossRef.html">c</a>, <a class="el" href="classneml2_1_1CrossRef.html">const</a> std::vector&lt; <a class="el" href="classneml2_1_1Scalar.html">Scalar</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">derivs</a>, <a class="el" href="classneml2_1_1CrossRef.html">const</a> std::vector&lt; <a class="el" href="classneml2_1_1CrossRef.html">size_t</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">order</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:a39bf35e3309e54c73ca659ec56dda63c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Combined helper to return coefficients and derivatives in a requested order.  <br /></td></tr>
+<tr class="separator:a39bf35e3309e54c73ca659ec56dda63c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classneml2_1_1Model"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_methods_classneml2_1_1Model')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classneml2_1_1Model.html">Model</a></td></tr>
 <tr class="memitem:ac0b73dc40ca33ff933c1f351578a00d0 inherit pro_methods_classneml2_1_1Model" id="r_ac0b73dc40ca33ff933c1f351578a00d0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1Model.html#ac0b73dc40ca33ff933c1f351578a00d0">setup</a> () <a class="el" href="classneml2_1_1CrossRef.html">override</a></td></tr>
 <tr class="memdesc:ac0b73dc40ca33ff933c1f351578a00d0 inherit pro_methods_classneml2_1_1Model"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setup this object.  <br /></td></tr>
@@ -561,6 +590,10 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a45ea9f3f0dc9c3da04b9ec963bac80a2 inherit pro_methods_classneml2_1_1ParameterStore"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classneml2_1_1ParameterStore.html#a45ea9f3f0dc9c3da04b9ec963bac80a2">declare_parameter</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;name, <a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;<a class="el" href="classneml2_1_1CrossRef.html">input_option_name</a>, <a class="el" href="classneml2_1_1CrossRef.html">bool</a> <a class="el" href="classneml2_1_1CrossRef.html">allow_nonlinear</a>=<a class="el" href="classneml2_1_1CrossRef.html">false</a>)</td></tr>
 <tr class="memdesc:a45ea9f3f0dc9c3da04b9ec963bac80a2 inherit pro_methods_classneml2_1_1ParameterStore"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare a parameter.  <br /></td></tr>
 <tr class="separator:a45ea9f3f0dc9c3da04b9ec963bac80a2 inherit pro_methods_classneml2_1_1ParameterStore"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3b939ef5a93335644eaebf4ae2e0de8 inherit pro_methods_classneml2_1_1ParameterStore" id="r_ac3b939ef5a93335644eaebf4ae2e0de8"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;T&gt;, T&gt;&gt;&gt; </td></tr>
+<tr class="memitem:ac3b939ef5a93335644eaebf4ae2e0de8 inherit pro_methods_classneml2_1_1ParameterStore"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classneml2_1_1CrossRef.html">const</a> T * &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classneml2_1_1ParameterStore.html#ac3b939ef5a93335644eaebf4ae2e0de8">declare_parameters</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;name, <a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;<a class="el" href="classneml2_1_1CrossRef.html">input_option_name</a>, <a class="el" href="classneml2_1_1CrossRef.html">bool</a> <a class="el" href="classneml2_1_1CrossRef.html">allow_nonlinear</a>=<a class="el" href="classneml2_1_1CrossRef.html">false</a>)</td></tr>
+<tr class="memdesc:ac3b939ef5a93335644eaebf4ae2e0de8 inherit pro_methods_classneml2_1_1ParameterStore"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare multiple parameters.  <br /></td></tr>
+<tr class="separator:ac3b939ef5a93335644eaebf4ae2e0de8 inherit pro_methods_classneml2_1_1ParameterStore"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classneml2_1_1VariableStore"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_methods_classneml2_1_1VariableStore')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classneml2_1_1VariableStore.html">VariableStore</a></td></tr>
 <tr class="memitem:ab13b080dbeb17eed7ebac76d2cead858 inherit pro_methods_classneml2_1_1VariableStore" id="r_ab13b080dbeb17eed7ebac76d2cead858"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T , <a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a class="el" href="classneml2_1_1CrossRef.html">S</a> &gt; </td></tr>
 <tr class="memitem:ab13b080dbeb17eed7ebac76d2cead858 inherit pro_methods_classneml2_1_1VariableStore"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Variable.html">Variable</a>&lt; T &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classneml2_1_1VariableStore.html#ab13b080dbeb17eed7ebac76d2cead858">declare_input_variable</a> (<a class="el" href="classneml2_1_1CrossRef.html">S</a> &amp;&amp;name, <a class="el" href="namespaceneml2.html#abc271f879dc471e533dca66b1fd32f60">TensorShapeRef</a> <a class="el" href="classneml2_1_1CrossRef.html">list_shape</a>={}, <a class="el" href="namespaceneml2.html#abc271f879dc471e533dca66b1fd32f60">TensorShapeRef</a> <a class="el" href="classneml2_1_1CrossRef.html">base_shape</a>={})</td></tr>
@@ -576,6 +609,15 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a2647f65e963a43929ba79bb6bb7dd7ac inherit pro_methods_classneml2_1_1VariableStore" id="r_a2647f65e963a43929ba79bb6bb7dd7ac"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1VariableBase.html">VariableBase</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1VariableStore.html#a2647f65e963a43929ba79bb6bb7dd7ac">clone_output_variable</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1VariableBase.html">VariableBase</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">var</a>, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">VariableName</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">new_name</a>={})</td></tr>
 <tr class="memdesc:a2647f65e963a43929ba79bb6bb7dd7ac inherit pro_methods_classneml2_1_1VariableStore"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clone a variable and put it on the output axis.  <br /></td></tr>
 <tr class="separator:a2647f65e963a43929ba79bb6bb7dd7ac inherit pro_methods_classneml2_1_1VariableStore"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a71d6a45928d9cae904b7f0fa7a2a9a5e" id="r_a71d6a45928d9cae904b7f0fa7a2a9a5e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::vector&lt; <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Scalar.html">Scalar</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a71d6a45928d9cae904b7f0fa7a2a9a5e">_coef</a></td></tr>
+<tr class="memdesc:a71d6a45928d9cae904b7f0fa7a2a9a5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input coefficients.  <br /></td></tr>
+<tr class="separator:a71d6a45928d9cae904b7f0fa7a2a9a5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2e14d1395aac711881563fb3c47f287" id="r_aa2e14d1395aac711881563fb3c47f287"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::vector&lt; <a class="el" href="#a3a023c0c27667e78ae521eb64f1c7c81">ParamType</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa2e14d1395aac711881563fb3c47f287">_coef_types</a></td></tr>
+<tr class="memdesc:aa2e14d1395aac711881563fb3c47f287"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input coefficient types.  <br /></td></tr>
+<tr class="separator:aa2e14d1395aac711881563fb3c47f287"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classneml2_1_1NonlinearParameter"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classneml2_1_1NonlinearParameter')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classneml2_1_1NonlinearParameter.html">NonlinearParameter&lt; SSR4 &gt;</a></td></tr>
 <tr class="memitem:a14a9c5d660b58dbb6d88cf1a8b3d1727 inherit pro_attribs_classneml2_1_1NonlinearParameter" id="r_a14a9c5d660b58dbb6d88cf1a8b3d1727"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Variable.html">Variable</a>&lt; <a class="el" href="classneml2_1_1SSR4.html">SSR4</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1NonlinearParameter.html#a14a9c5d660b58dbb6d88cf1a8b3d1727">_p</a></td></tr>
 <tr class="memdesc:a14a9c5d660b58dbb6d88cf1a8b3d1727 inherit pro_attribs_classneml2_1_1NonlinearParameter"><td class="mdescLeft">&#160;</td><td class="mdescRight">The nonlinear parameter.  <br /></td></tr>
@@ -615,6 +657,37 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memdesc:ab2d8902fff0c90b396b9ed26ed8b4c7e inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Column scaling "matrix" &ndash; since it's a batched diagonal matrix, we are only storing its diagonals.  <br /></td></tr>
 <tr class="separator:ab2d8902fff0c90b396b9ed26ed8b4c7e inherit pro_attribs_classneml2_1_1NonlinearSystem"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="a3a023c0c27667e78ae521eb64f1c7c81" name="a3a023c0c27667e78ae521eb64f1c7c81"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a023c0c27667e78ae521eb64f1c7c81">&#9670;&#160;</a></span>ParamType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">enum</a> <a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="#a3a023c0c27667e78ae521eb64f1c7c81">ParamType</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Various options for parameter inputs, will need to add more as we get more tensors. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a3a023c0c27667e78ae521eb64f1c7c81a4f736d11febe9da0622a39319cdd535e" name="a3a023c0c27667e78ae521eb64f1c7c81a4f736d11febe9da0622a39319cdd535e"></a>YOUNGS&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a3a023c0c27667e78ae521eb64f1c7c81ae550c7ec6decfb71bb1fa932c0e687d6" name="a3a023c0c27667e78ae521eb64f1c7c81ae550c7ec6decfb71bb1fa932c0e687d6"></a>POISSONS&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a3a023c0c27667e78ae521eb64f1c7c81a20b09561b39db495fc6d0902a697bc7f" name="a3a023c0c27667e78ae521eb64f1c7c81a20b09561b39db495fc6d0902a697bc7f"></a>SHEAR&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a3a023c0c27667e78ae521eb64f1c7c81accc0377a8afbf50e7094f5c23a8af223" name="a3a023c0c27667e78ae521eb64f1c7c81accc0377a8afbf50e7094f5c23a8af223"></a>INVALID&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aa9396893a6b677a156aeccd30f55c957" name="aa9396893a6b677a156aeccd30f55c957"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa9396893a6b677a156aeccd30f55c957">&#9670;&#160;</a></span>ElasticityTensor()</h2>
@@ -634,6 +707,44 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a39bf35e3309e54c73ca659ec56dda63c" name="a39bf35e3309e54c73ca659ec56dda63c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39bf35e3309e54c73ca659ec56dda63c">&#9670;&#160;</a></span>combine_and_reorder()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;std::size_t N&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">auto</a> combine_and_reorder </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1Scalar.html">Scalar</a></td>          <td class="paramname"><span class="paramname"><em>c</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::vector&lt; <a class="el" href="classneml2_1_1Scalar.html">Scalar</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>derivs</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::vector&lt; <a class="el" href="classneml2_1_1CrossRef.html">size_t</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>order</em></span>&#160;) const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Combined helper to return coefficients and derivatives in a requested order. </p>
+
+</div>
+</div>
 <a id="acec712ff48d4c0884a1362c116f3257a" name="acec712ff48d4c0884a1362c116f3257a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acec712ff48d4c0884a1362c116f3257a">&#9670;&#160;</a></span>expected_options()</h2>
 
@@ -656,6 +767,171 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5d30c8504e4a6cbf3949ce06218d5453" name="a5d30c8504e4a6cbf3949ce06218d5453"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d30c8504e4a6cbf3949ce06218d5453">&#9670;&#160;</a></span>remap()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::tuple&lt; std::vector&lt; <a class="el" href="classneml2_1_1Scalar.html">Scalar</a> &gt;, std::vector&lt; <a class="el" href="classneml2_1_1CrossRef.html">size_t</a> &gt; &gt; remap </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::vector&lt; <a class="el" href="#a3a023c0c27667e78ae521eb64f1c7c81">ParamType</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>order</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Return the coefficients in a requested order, along with the indices to remap back to the original order. </p>
+
+</div>
+</div>
+<a id="abf3ae8e88330919b444ac2d92dbabaca" name="abf3ae8e88330919b444ac2d92dbabaca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf3ae8e88330919b444ac2d92dbabaca">&#9670;&#160;</a></span>reorder_derivs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="classneml2_1_1Scalar.html">Scalar</a> &gt; reorder_derivs </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::vector&lt; <a class="el" href="classneml2_1_1Scalar.html">Scalar</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>derivs</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::vector&lt; <a class="el" href="classneml2_1_1CrossRef.html">size_t</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>order</em></span>&#160;) const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Trivial helper function to reorder derivatives. </p>
+
+</div>
+</div>
+<a id="afb529d531a21ec75a4daec6a07f85c4a" name="afb529d531a21ec75a4daec6a07f85c4a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb529d531a21ec75a4daec6a07f85c4a">&#9670;&#160;</a></span>vector_to_tuple()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;std::size_t N&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">auto</a> vector_to_tuple </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::vector&lt; <a class="el" href="classneml2_1_1Scalar.html">Scalar</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>v</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4935d2258c295350961ede35f417e60d" name="a4935d2258c295350961ede35f417e60d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4935d2258c295350961ede35f417e60d">&#9670;&#160;</a></span>vector_to_tuple_impl()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;std::size_t... I&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">auto</a> vector_to_tuple_impl </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::vector&lt; <a class="el" href="classneml2_1_1Scalar.html">Scalar</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>v</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::index_sequence&lt; I... &gt;</td>          <td class="paramname"><span class="paramname"></span>&#160;) const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a71d6a45928d9cae904b7f0fa7a2a9a5e" name="a71d6a45928d9cae904b7f0fa7a2a9a5e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a71d6a45928d9cae904b7f0fa7a2a9a5e">&#9670;&#160;</a></span>_coef</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::vector&lt;<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Scalar.html">Scalar</a> *&gt; _coef</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Input coefficients. </p>
+
+</div>
+</div>
+<a id="aa2e14d1395aac711881563fb3c47f287" name="aa2e14d1395aac711881563fb3c47f287"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2e14d1395aac711881563fb3c47f287">&#9670;&#160;</a></span>_coef_types</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::vector&lt;<a class="el" href="#a3a023c0c27667e78ae521eb64f1c7c81">ParamType</a>&gt; _coef_types</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Input coefficient types. </p>
 
 </div>
 </div>

@@ -1,12 +1,12 @@
 var annotated =
 [
-    [ "base", "namespacebase.html", [
-      [ "LabeledAxis", "classbase_1_1LabeledAxis.html", "classbase_1_1LabeledAxis" ],
-      [ "LabeledAxisAccessor", "classbase_1_1LabeledAxisAccessor.html", "classbase_1_1LabeledAxisAccessor" ],
-      [ "MatrixAssembler", "classbase_1_1MatrixAssembler.html", "classbase_1_1MatrixAssembler" ],
-      [ "Model", "classbase_1_1Model.html", "classbase_1_1Model" ],
-      [ "TensorValue", "classbase_1_1TensorValue.html", "classbase_1_1TensorValue" ],
-      [ "VectorAssembler", "classbase_1_1VectorAssembler.html", "classbase_1_1VectorAssembler" ]
+    [ "core", "namespacecore.html", [
+      [ "LabeledAxis", "classcore_1_1LabeledAxis.html", "classcore_1_1LabeledAxis" ],
+      [ "LabeledAxisAccessor", "classcore_1_1LabeledAxisAccessor.html", "classcore_1_1LabeledAxisAccessor" ],
+      [ "MatrixAssembler", "classcore_1_1MatrixAssembler.html", "classcore_1_1MatrixAssembler" ],
+      [ "Model", "classcore_1_1Model.html", "classcore_1_1Model" ],
+      [ "TensorValue", "classcore_1_1TensorValue.html", "classcore_1_1TensorValue" ],
+      [ "VectorAssembler", "classcore_1_1VectorAssembler.html", "classcore_1_1VectorAssembler" ]
     ] ],
     [ "interface", "namespaceinterface.html", [
       [ "NEML2PyzagModel", "classinterface_1_1NEML2PyzagModel.html", "classinterface_1_1NEML2PyzagModel" ]

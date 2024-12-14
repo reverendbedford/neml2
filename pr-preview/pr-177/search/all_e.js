@@ -26,9 +26,9 @@ var searchData=
   ['mixed_20hardening_23',['Mixed hardening',['../solid-mechanics.html#autotoc_md30',1,'']]],
   ['mixed_20stress_20strain_20control_24',['Mixed stress/strain control',['../solid-mechanics.html#autotoc_md32',1,'']]],
   ['mixedcontrolsetup_25',['MixedControlSetup',['../classneml2_1_1MixedControlSetup.html',1,'MixedControlSetup'],['../classneml2_1_1MixedControlSetup.html#ab20953605998f5cb4f77ac24128c5d2c',1,'neml2::MixedControlSetup::MixedControlSetup()'],['../syntax-models.html#mixedcontrolsetup',1,'MixedControlSetup']]],
-  ['model_26',['Model',['../custom-model.html',1,'Custom Model'],['../cpp-backend.html#autotoc_md41',1,'Evaluate the model'],['../classneml2_1_1Model.html',1,'Model'],['../classneml2_1_1Model.html#aec637141dc1379fd56d05cf1b7cb10ee',1,'neml2::Model::Model()']]],
+  ['model_26',['Model',['../custom-model.html',1,'Custom Model'],['../cpp-backend.html#autotoc_md41',1,'Evaluate the model'],['../classneml2_1_1Model.html',1,'Model']]],
   ['model_27',['model',['../classneml2_1_1TransientDriver.html#a13dfbdd8c00d5c134b09bf2ab3cfa1e5',1,'neml2::TransientDriver']]],
-  ['model_28',['Model',['../system-models.html',1,'Model'],['../model-visualization.html#autotoc_md6',1,'Rendering composed model'],['../model-visualization.html#autotoc_md5',1,'Rendering non-composed model']]],
+  ['model_28',['Model',['../classneml2_1_1Model.html#aec637141dc1379fd56d05cf1b7cb10ee',1,'neml2::Model::Model()'],['../system-models.html',1,'Model'],['../model-visualization.html#autotoc_md6',1,'Rendering composed model'],['../model-visualization.html#autotoc_md5',1,'Rendering non-composed model']]],
   ['model_20assembly_29',['Model assembly',['../system-models.html#model-assembly',1,'']]],
   ['model_20composition_30',['Model composition',['../system-models.html#model-composition',1,'']]],
   ['model_20definition_31',['Model definition',['../system-models.html#model-definition',1,'']]],
@@ -40,5 +40,6 @@ var searchData=
   ['model_20parameters_37',['Model parameters',['../cpp-backend.html#autotoc_md42',1,'Model parameters'],['../python-package.html#autotoc_md45',1,'Model parameters']]],
   ['model_20visualization_38',['Model visualization',['../model-visualization.html',1,'']]],
   ['models_39',['[Models]',['../syntax-models.html',1,'']]],
-  ['multiply_5fand_5fmake_5fskew_40',['multiply_and_make_skew',['../namespaceneml2_1_1math.html#a81565e709d0982bfa707db6cdb283148',1,'neml2::math']]]
+  ['multienumselection_40',['MultiEnumSelection',['../classneml2_1_1MultiEnumSelection.html',1,'MultiEnumSelection'],['../classneml2_1_1MultiEnumSelection.html#a2cbf642e938d07df6821f848bffda010',1,'neml2::MultiEnumSelection::MultiEnumSelection()=default'],['../classneml2_1_1MultiEnumSelection.html#ab10e4546a7b92e2d0259f5735a850dda',1,'neml2::MultiEnumSelection::MultiEnumSelection(const MultiEnumSelection &amp;other)'],['../classneml2_1_1MultiEnumSelection.html#a8d36c066a5307c2dd32977d1043b3306',1,'neml2::MultiEnumSelection::MultiEnumSelection(const std::vector&lt; std::string &gt; &amp;candidates, const std::vector&lt; std::string &gt; &amp;selections)'],['../classneml2_1_1MultiEnumSelection.html#af3d0615e52275c985112f26406d8e274',1,'neml2::MultiEnumSelection::MultiEnumSelection(const std::vector&lt; std::string &gt; &amp;candidates, const std::vector&lt; int &gt; &amp;values, const std::vector&lt; std::string &gt; &amp;selections)']]],
+  ['multiply_5fand_5fmake_5fskew_41',['multiply_and_make_skew',['../namespaceneml2_1_1math.html#a81565e709d0982bfa707db6cdb283148',1,'neml2::math']]]
 ];

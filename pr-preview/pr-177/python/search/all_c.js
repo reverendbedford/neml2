@@ -4,10 +4,10 @@ var searchData=
   ['mandel_5fto_5ffull_1',['mandel_to_full',['../namespacemath.html#aac72024cffa749db3f072cc1b6993fb2',1,'math']]],
   ['material_20model_20library_20version_202_2',['The New Engineering Material model Library, version 2',['../index.html#autotoc_md2',1,'']]],
   ['math_3',['math',['../namespacemath.html',1,'']]],
-  ['matrixassembler_4',['MatrixAssembler',['../classbase_1_1MatrixAssembler.html',1,'base']]],
+  ['matrixassembler_4',['MatrixAssembler',['../classcore_1_1MatrixAssembler.html',1,'core']]],
   ['millerindex_5',['MillerIndex',['../classtensors_1_1MillerIndex.html',1,'MillerIndex'],['../classtensors_1_1TensorType.html#a9a843305636fe78cc05418f8a94b83fe',1,'tensors.TensorType.MillerIndex']]],
   ['millerindexbaseview_6',['MillerIndexBaseView',['../classtensors_1_1MillerIndexBaseView.html',1,'tensors']]],
   ['millerindexbatchview_7',['MillerIndexBatchView',['../classtensors_1_1MillerIndexBatchView.html',1,'tensors']]],
-  ['model_8',['Model',['../classbase_1_1Model.html',1,'base']]],
+  ['model_8',['Model',['../classcore_1_1Model.html',1,'core']]],
   ['model_20library_20version_202_9',['The New Engineering Material model Library, version 2',['../index.html#autotoc_md2',1,'']]]
 ];

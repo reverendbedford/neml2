@@ -111,6 +111,7 @@ $(function(){initNavTree('classinterface_1_1NEML2PyzagModel.html',''); initResiz
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classinterface_1_1NEML2PyzagModel-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">NEML2PyzagModel Class Reference</div></div>
@@ -124,12 +125,8 @@ $(function(){initNavTree('classinterface_1_1NEML2PyzagModel.html',''); initResiz
 
     Keyword Args:
         exclude_parameters (list of str): exclude these parameters from being wrapped as a pytorch parameter
-        state_axis (str): name of the state axis
-        forces_axis (str): name of the forces axis
-        residual_axis (str): name of the residual axis
-        old_prefix (str): prefix on the name of an axis to get the old values
-        neml2_sep_char (str): parameter seperator character used in NEML2
-        python_sep_char (str): seperator character to use in python used to name parameters</pre> </div><div class="dynheader">
+
+    Additional args and kwargs are forwarded to NonlinearRecursiveFunction (and hence torch.nn.Module) verbatim</pre> </div><div class="dynheader">
 Inheritance diagram for NEML2PyzagModel:</div>
 <div class="dyncontent">
 <div class="center"><img src="classinterface_1_1NEML2PyzagModel__inherit__graph.png" border="0" usemap="#aNEML2PyzagModel_inherit__map" alt="Inheritance graph"/></div>
@@ -142,12 +139,8 @@ Inheritance diagram for NEML2PyzagModel:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:afa13761cf131df9d5413ac360ecab564" id="r_afa13761cf131df9d5413ac360ecab564"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afa13761cf131df9d5413ac360ecab564">__init__</a> (self, model, exclude_parameters=list(), state_axis='state', forces_axis='forces', residual_axis='residual', old_prefix='old_', neml2_sep_char='.', python_sep_char='_', *args, **kwargs)</td></tr>
-<tr class="separator:afa13761cf131df9d5413ac360ecab564"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afe4cb21e4cac5f7da600541931e9b6d3" id="r_afe4cb21e4cac5f7da600541931e9b6d3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afe4cb21e4cac5f7da600541931e9b6d3">collect_forces</a> (self, tensor_dict)</td></tr>
-<tr class="separator:afe4cb21e4cac5f7da600541931e9b6d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a22de3413efa9e0570d63d4ecbb8fb351" id="r_a22de3413efa9e0570d63d4ecbb8fb351"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a22de3413efa9e0570d63d4ecbb8fb351">collect_state</a> (self, tensor_dict)</td></tr>
-<tr class="separator:a22de3413efa9e0570d63d4ecbb8fb351"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a185ba812d2e2568825c0e405a5eb4036" id="r_a185ba812d2e2568825c0e405a5eb4036"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a185ba812d2e2568825c0e405a5eb4036">__init__</a> (self, model, *args, exclude_parameters=list(), **kwargs)</td></tr>
+<tr class="separator:a185ba812d2e2568825c0e405a5eb4036"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef77ff24c4ff05e7852567c0c14a032d" id="r_aef77ff24c4ff05e7852567c0c14a032d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aef77ff24c4ff05e7852567c0c14a032d">forward</a> (self, state, forces)</td></tr>
 <tr class="separator:aef77ff24c4ff05e7852567c0c14a032d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a40469e234adfc7b6fdc4874403ef78c5" id="r_a40469e234adfc7b6fdc4874403ef78c5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a40469e234adfc7b6fdc4874403ef78c5">nforce</a> (self)</td></tr>
@@ -155,24 +148,27 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a70d74a87b45210573edfb73e5c93ec22" id="r_a70d74a87b45210573edfb73e5c93ec22"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a70d74a87b45210573edfb73e5c93ec22">nstate</a> (self)</td></tr>
 <tr class="separator:a70d74a87b45210573edfb73e5c93ec22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:ab7fca4ba78d418620d84bdb8e02d65a9" id="r_ab7fca4ba78d418620d84bdb8e02d65a9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab7fca4ba78d418620d84bdb8e02d65a9">lookback</a> = ...</td></tr>
+<tr class="separator:ab7fca4ba78d418620d84bdb8e02d65a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:afc1b924b3f2c23358465e7bf09ce1ee0" id="r_afc1b924b3f2c23358465e7bf09ce1ee0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afc1b924b3f2c23358465e7bf09ce1ee0">_assemble_input</a> (self, state, forces)</td></tr>
-<tr class="separator:afc1b924b3f2c23358465e7bf09ce1ee0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07770d00e721194d0a9b1bbcd8e63906" id="r_a07770d00e721194d0a9b1bbcd8e63906"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a07770d00e721194d0a9b1bbcd8e63906">_check_model</a> (self)</td></tr>
 <tr class="separator:a07770d00e721194d0a9b1bbcd8e63906"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf61e29c712c59cd410e34305780ad3c" id="r_adf61e29c712c59cd410e34305780ad3c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adf61e29c712c59cd410e34305780ad3c">_extract_jacobian</a> (self, J)</td></tr>
-<tr class="separator:adf61e29c712c59cd410e34305780ad3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad46f9316e5492a9d96982ca11ed676ac" id="r_ad46f9316e5492a9d96982ca11ed676ac"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad46f9316e5492a9d96982ca11ed676ac">_reduce_axis</a> (self, reduce_axis, full_axis, full_tensor)</td></tr>
-<tr class="separator:ad46f9316e5492a9d96982ca11ed676ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c2a4dfd93ce2c895775e356796be112" id="r_a3c2a4dfd93ce2c895775e356796be112"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3c2a4dfd93ce2c895775e356796be112">_disassemble_input</a> (self, state, forces)</td></tr>
+<tr class="separator:a3c2a4dfd93ce2c895775e356796be112"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a573069d9cf13ef6b2d1c6e1399797b46" id="r_a573069d9cf13ef6b2d1c6e1399797b46"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a573069d9cf13ef6b2d1c6e1399797b46">_setup_assemblers</a> (self)</td></tr>
+<tr class="separator:a573069d9cf13ef6b2d1c6e1399797b46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23f17142d7c7aed0716c85d520dcbb19" id="r_a23f17142d7c7aed0716c85d520dcbb19"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a23f17142d7c7aed0716c85d520dcbb19">_setup_parameters</a> (self, exclude_parameters)</td></tr>
 <tr class="separator:a23f17142d7c7aed0716c85d520dcbb19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85afbc987b0b493d40b50c58e474ee5c" id="r_a85afbc987b0b493d40b50c58e474ee5c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a85afbc987b0b493d40b50c58e474ee5c">_update_parameter_values</a> (self)</td></tr>
 <tr class="separator:a85afbc987b0b493d40b50c58e474ee5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="afa13761cf131df9d5413ac360ecab564" name="afa13761cf131df9d5413ac360ecab564"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afa13761cf131df9d5413ac360ecab564">&#9670;&#160;</a></span>__init__()</h2>
+<a id="a185ba812d2e2568825c0e405a5eb4036" name="a185ba812d2e2568825c0e405a5eb4036"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a185ba812d2e2568825c0e405a5eb4036">&#9670;&#160;</a></span>__init__()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -190,42 +186,12 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>exclude_parameters</em><span class="paramdefsep"> = </span><span class="paramdefval">list()</span>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>state_axis</em><span class="paramdefsep"> = </span><span class="paramdefval">'state'</span>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>forces_axis</em><span class="paramdefsep"> = </span><span class="paramdefval">'forces'</span>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>residual_axis</em><span class="paramdefsep"> = </span><span class="paramdefval">'residual'</span>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>old_prefix</em><span class="paramdefsep"> = </span><span class="paramdefval">'old_'</span>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>neml2_sep_char</em><span class="paramdefsep"> = </span><span class="paramdefval">'.'</span>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>python_sep_char</em><span class="paramdefsep"> = </span><span class="paramdefval">'_'</span>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">*</td>          <td class="paramname"><span class="paramname"><em>args</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>exclude_parameters</em><span class="paramdefsep"> = </span><span class="paramdefval">list()</span>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -238,8 +204,8 @@ Protected Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="afc1b924b3f2c23358465e7bf09ce1ee0" name="afc1b924b3f2c23358465e7bf09ce1ee0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afc1b924b3f2c23358465e7bf09ce1ee0">&#9670;&#160;</a></span>_assemble_input()</h2>
+<a id="a07770d00e721194d0a9b1bbcd8e63906" name="a07770d00e721194d0a9b1bbcd8e63906"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07770d00e721194d0a9b1bbcd8e63906">&#9670;&#160;</a></span>_check_model()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -248,7 +214,33 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">_assemble_input </td>
+          <td class="memname">_check_model </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<pre class="fragment">Simple consistency checks, could be a debug check but we only call this once
+</pre> 
+</div>
+</div>
+<a id="a3c2a4dfd93ce2c895775e356796be112" name="a3c2a4dfd93ce2c895775e356796be112"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c2a4dfd93ce2c895775e356796be112">&#9670;&#160;</a></span>_disassemble_input()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">_disassemble_input </td>
           <td>(</td>
           <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em>, </span></td>
         </tr>
@@ -276,8 +268,8 @@ Protected Member Functions</h2></td></tr>
             forces (torch.tensor): tensor containing the model forces</pre> 
 </div>
 </div>
-<a id="a07770d00e721194d0a9b1bbcd8e63906" name="a07770d00e721194d0a9b1bbcd8e63906"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a07770d00e721194d0a9b1bbcd8e63906">&#9670;&#160;</a></span>_check_model()</h2>
+<a id="a573069d9cf13ef6b2d1c6e1399797b46" name="a573069d9cf13ef6b2d1c6e1399797b46"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a573069d9cf13ef6b2d1c6e1399797b46">&#9670;&#160;</a></span>_setup_assemblers()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -286,7 +278,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">_check_model </td>
+          <td class="memname">_setup_assemblers </td>
           <td>(</td>
           <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em></span></td><td>)</td>
           <td></td>
@@ -298,84 +290,8 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<pre class="fragment">Simple consistency checks, could be a debug check but we only call this once
+<pre class="fragment">Setup the assemblers for the state and forces
 </pre> 
-</div>
-</div>
-<a id="adf61e29c712c59cd410e34305780ad3c" name="adf61e29c712c59cd410e34305780ad3c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adf61e29c712c59cd410e34305780ad3c">&#9670;&#160;</a></span>_extract_jacobian()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">_extract_jacobian </td>
-          <td>(</td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>J</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<pre class="fragment">Extract the Jacobian components we need from the NEML output
-
-        Args:
-            J (LabeledMatrix): full jacobian from the NEML model</pre> 
-</div>
-</div>
-<a id="ad46f9316e5492a9d96982ca11ed676ac" name="ad46f9316e5492a9d96982ca11ed676ac"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad46f9316e5492a9d96982ca11ed676ac">&#9670;&#160;</a></span>_reduce_axis()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">_reduce_axis </td>
-          <td>(</td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>reduce_axis</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>full_axis</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>full_tensor</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<pre class="fragment">Reduce a tensor spanning full_axis to only the vars on reduce_axis
-
-        Args:
-            reduce_axis (LabeledAxis): reduced set of variables
-            full_axis (LabeledAxis): full set of variables
-            full_tensor (torch.tensor): tensor representing the full set of variables</pre> 
 </div>
 </div>
 <a id="a23f17142d7c7aed0716c85d520dcbb19" name="a23f17142d7c7aed0716c85d520dcbb19"></a>
@@ -404,10 +320,10 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<pre class="fragment">Mirror parameters of the neml model with torch.nn.Parameter
+<pre class="fragment">Mirror parameters of the NEML2 model with torch.nn.Parameter
 
         Args:
-            exclude_parameters (list of str): neml parameters to exclude</pre> 
+            exclude_parameters (list of str): NEML2 parameters to exclude</pre> 
 </div>
 </div>
 <a id="a85afbc987b0b493d40b50c58e474ee5c" name="a85afbc987b0b493d40b50c58e474ee5c"></a>
@@ -434,54 +350,6 @@ Protected Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <pre class="fragment">Copy over new parameter values
 </pre> 
-</div>
-</div>
-<a id="afe4cb21e4cac5f7da600541931e9b6d3" name="afe4cb21e4cac5f7da600541931e9b6d3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afe4cb21e4cac5f7da600541931e9b6d3">&#9670;&#160;</a></span>collect_forces()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">collect_forces </td>
-          <td>(</td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>tensor_dict</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<pre class="fragment">Assemble the forces from a dictionary of tensors
-
-        Args:
-            tensor_dict (dict of tensors): dictionary of tensors containing the forces</pre> 
-</div>
-</div>
-<a id="a22de3413efa9e0570d63d4ecbb8fb351" name="a22de3413efa9e0570d63d4ecbb8fb351"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a22de3413efa9e0570d63d4ecbb8fb351">&#9670;&#160;</a></span>collect_state()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">collect_state </td>
-          <td>(</td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>tensor_dict</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<pre class="fragment">Assemble the state from a dictionary of tensors
-
-        Args:
-            tensor_dict (dict of tensors): dictionary of tensors containing the forces</pre> 
 </div>
 </div>
 <a id="aef77ff24c4ff05e7852567c0c14a032d" name="aef77ff24c4ff05e7852567c0c14a032d"></a>
@@ -547,6 +415,29 @@ Protected Member Functions</h2></td></tr>
           <td></td>
         </tr>
       </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="ab7fca4ba78d418620d84bdb8e02d65a9" name="ab7fca4ba78d418620d84bdb8e02d65a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7fca4ba78d418620d84bdb8e02d65a9">&#9670;&#160;</a></span>lookback</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">lookback = ...</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
