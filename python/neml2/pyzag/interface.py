@@ -176,8 +176,8 @@ class NEML2PyzagModel(nonlinear.NonlinearRecursiveFunction):
         """Assemble the model input from the flat tensors
 
         Args:
-            state (torch.tensor): tensor containing the model state
-            forces (torch.tensor): tensor containing the model forces
+            state (torch.Tensor): tensor containing the model state
+            forces (torch.Tensor): tensor containing the model forces
         """
         # State and forces should have the same batch shape
         assert state.shape[:-1] == forces.shape[:-1]
@@ -196,15 +196,46 @@ class NEML2PyzagModel(nonlinear.NonlinearRecursiveFunction):
 
         return new_state_vars | old_state_vars | new_forces_vars | old_forces_vars
 
+    def _adapt_for_pyzag(self, r, J, J_old):
+        """Adapt the residual and Jacobians for pyzag
+
+        pyzag has additional requirements on residual and Jacobians:
+          1. The residual and Jacobians should have the same batch shape
+          2. The Jacobians should be square
+
+        Args:
+            r (neml2.Tensor): residual
+            J (neml2.Tensor): Jacobian
+            J_old (neml2.Tensor): Jacobian for the old state
+
+        Returns:
+            tuple of torch.Tensor: residual, Jacobian
+        """
+        # Make the residual and Jacobian have the same batch shape
+        J = J.batch.expand(r.batch.shape)
+        J_old = J_old.batch.expand(r.batch.shape)
+
+        # Make the Jacobian square
+        # The current Jacobian should already be square
+        assert J.base.shape[-1] == J.base.shape[-2]
+
+        # The old Jacobian may not be, in which case we will rely on the deriv_asm to make it square
+        if J_old.base.shape[-1] != J_old.base.shape[-2]:
+            J_old_vars = self.old_deriv_asm.disassemble(J_old)
+            J_old_vars_adapted = {}
+            for yvar, vs in J_old_vars.items():
+                J_old_vars_adapted[yvar] = {k.current(): v for k, v in vs.items()}
+            J_old = self.deriv_asm.assemble(J_old_vars_adapted)
+        assert J_old.base.shape[-1] == J_old.base.shape[-2]
+
+        return r.torch(), torch.stack([J_old.torch(), J.torch()])
+
     def forward(self, state, forces):
         """Actually call the NEML2 model and return the residual and Jacobian
 
         Args:
             state (torch.tensor): tensor with the flattened state
             forces (torch.tensor): tensor with the flattened forces
-
-        The helper methods `collect_forces` and `collect_state` can be used to
-        assemble individual tensors into the flattened state and forces tensor
         """
         # Update the parameter values
         self._update_parameter_values()
@@ -219,10 +250,8 @@ class NEML2PyzagModel(nonlinear.NonlinearRecursiveFunction):
         r_vec = self.output_asm.assemble(r)
 
         # Assemble Jacobian
-        # I don't really like the batch expand here, as it will take up additional memory after the stack
-        # I think pyzag should handle this case better, i.e., residual and Jacobians have different batch shapes
-        J_new_mat = self.deriv_asm.assemble(J).batch.expand(r_vec.batch.shape)
-        J_old_mat = self.old_deriv_asm.assemble(J).batch.expand(r_vec.batch.shape)
-        J_mat = torch.stack([J_old_mat.torch(), J_new_mat.torch()])
+        J_new_mat = self.deriv_asm.assemble(J)
+        J_old_mat = self.old_deriv_asm.assemble(J)
 
-        return r_vec.torch(), J_mat
+        # At this point, the residual and Jacobians should be good to go
+        return self._adapt_for_pyzag(r_vec, J_new_mat, J_old_mat)

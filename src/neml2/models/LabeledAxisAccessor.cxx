@@ -107,9 +107,20 @@ LabeledAxisAccessor::start_with(const LabeledAxisAccessor & axis) const
 }
 
 LabeledAxisAccessor
+LabeledAxisAccessor::current() const
+{
+  neml_assert(_item_names.size() >= 1, "variable name length must be at least 1");
+  if (start_with("old_state"))
+    return remount("state");
+  if (start_with("old_forces"))
+    return remount("forces");
+  throw NEMLException("Unable to find current counterpart of variable named '" +
+                      utils::stringify(*this) + "'");
+}
+
+LabeledAxisAccessor
 LabeledAxisAccessor::old() const
 {
-  // NOLINTNEXTLINE(readability-container-size-empty)
   neml_assert(_item_names.size() >= 1, "variable name length must be at least 1");
   if (start_with("state"))
     return remount("old_state");

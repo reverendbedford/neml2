@@ -34,7 +34,7 @@ from pyzag import nonlinear, chunktime
 
 def test_definition():
     pwd = Path(__file__).parent
-    nmodel = neml2.reload_model(pwd / "correct_model.i", "implicit_rate")
+    nmodel = neml2.reload_model(pwd / "models" / "correct_model.i", "implicit_rate")
     pmodel = neml2.pyzag.NEML2PyzagModel(nmodel, exclude_parameters=["elasticity_nu"])
 
     assert set(dict(pmodel.named_parameters()).keys()) == {
@@ -53,7 +53,7 @@ def test_definition():
 
 def test_change_parameter_shape():
     pwd = Path(__file__).parent
-    nmodel = neml2.reload_model(pwd / "correct_model.i", "implicit_rate")
+    nmodel = neml2.reload_model(pwd / "models" / "correct_model.i", "implicit_rate")
     pmodel = neml2.pyzag.NEML2PyzagModel(nmodel, exclude_parameters=["elasticity_nu"])
 
     # Modify the parameter, batch shape = (10,)
@@ -69,15 +69,15 @@ def test_change_parameter_shape():
     assert pmodel.model.elasticity_E.tensor().batch.shape == ()
 
 
-# @pytest.mark.parametrize("input", ["elastic_model", "complex_model", "viscoplastic_model"])
-@pytest.mark.parametrize("input", ["elastic_model", "viscoplastic_model"])
+@pytest.mark.parametrize("input", ["elastic_model", "viscoplastic_model", "km_mixed_model"])
+# @pytest.mark.parametrize("input", ["elastic_model", "viscoplastic_model"])
 def test_compare(input):
     pwd = Path(__file__).parent
-    nmodel = neml2.reload_model(pwd / "{}.i".format(input), "implicit_rate")
+    nmodel = neml2.reload_model(pwd / "models" / "{}.i".format(input), "implicit_rate")
     pmodel = neml2.pyzag.NEML2PyzagModel(nmodel)
 
     # Reference to compare against
-    ref = torch.jit.load(pwd / "result_{}.pt".format(input))
+    ref = torch.jit.load(pwd / "gold" / "{}.pt".format(input))
     input = dict(ref.input.named_buffers())
     output = dict(ref.output.named_buffers())
     forces = pmodel.forces_asm.assemble(input).torch()

@@ -67,9 +67,15 @@ unpack_tensor_map(py::dict pyinputs, const Model * model = nullptr)
         // If a model is provided, we can look up the variable's shape information
         if (model)
         {
-          const auto & xvar = model->input_variable(input_names.back());
-          const auto batch_dim = x.dim() - xvar.list_dim() - xvar.base_dim();
-          input_values.push_back(Tensor(x, batch_dim));
+          if (model->input_axis().has_variable(input_names.back()))
+          {
+            const auto & xvar = model->input_variable(input_names.back());
+            const auto batch_dim = x.dim() - xvar.list_dim() - xvar.base_dim();
+            input_values.push_back(Tensor(x, batch_dim));
+          }
+          // If the input variable does not exist, it doesn't matter what we do
+          else
+            input_values.push_back(Tensor(x, 0));
         }
         // Otherwise, the best we can do is to assume the tensor is flat,
         // i.e., the base dimension is 1
@@ -188,6 +194,7 @@ Diagnose common issues in model setup. Raises a runtime error including all iden
       .def("append", &LabeledAxisAccessor::append)
       .def("prepend", &LabeledAxisAccessor::prepend)
       .def("remount", &LabeledAxisAccessor::remount)
+      .def("current", &LabeledAxisAccessor::current)
       .def("old", &LabeledAxisAccessor::old)
       .def("__repr__", [](const LabeledAxisAccessor & self) { return utils::stringify(self); })
       .def("__bool__", [](const LabeledAxisAccessor & self) { return !self.empty(); })

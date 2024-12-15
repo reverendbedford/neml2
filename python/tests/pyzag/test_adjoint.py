@@ -28,8 +28,9 @@ import pytest
 from pathlib import Path
 import torch
 import neml2
-from neml2.tensors import Scalar, SR2
+from neml2.tensors import Scalar, SR2, Tensor
 from pyzag import nonlinear
+import math
 
 
 class DerivativeCheck:
@@ -77,11 +78,15 @@ class TestElasticModel(DerivativeCheck):
     @pytest.fixture(autouse=True)
     def _setup(self):
         pwd = Path(__file__).parent
-        nmodel = neml2.load_model(pwd / "elastic_model.i", "implicit_rate")
+        nmodel = neml2.load_model(pwd / "models" / "elastic_model.i", "implicit_rate")
         self.model = neml2.pyzag.NEML2PyzagModel(nmodel)
 
+        # Test configuration
         self.nbatch = 20
         self.nstep = 100
+        self.nchunk = 10
+        self.atol = 1e-8
+        self.rtol = 1e-5
 
         # Prescribed time
         start_time = Scalar.full(0.0)
@@ -97,25 +102,22 @@ class TestElasticModel(DerivativeCheck):
         self.forces = self.model.forces_asm.assemble({"forces/t": time, "forces/E": strain}).torch()
 
         # Initial state
-        self.initial_state = torch.full((self.nbatch, self.model.nstate), 0.0)
-
-        # Parallel time integration
-        self.nchunk = 10
-
-        # Tolerances
-        self.atol = 1e-8
-        self.rtol = 1e-5
+        self.initial_state = torch.zeros((self.nbatch, self.model.nstate))
 
 
 class TestViscoplasticModel(DerivativeCheck):
     @pytest.fixture(autouse=True)
     def _setup(self):
         pwd = Path(__file__).parent
-        nmodel = neml2.load_model(pwd / "viscoplastic_model.i", "implicit_rate")
+        nmodel = neml2.load_model(pwd / "models" / "viscoplastic_model.i", "implicit_rate")
         self.model = neml2.pyzag.NEML2PyzagModel(nmodel)
 
+        # Test configuration
         self.nbatch = 20
         self.nstep = 100
+        self.nchunk = 10
+        self.atol = 1e-8
+        self.rtol = 1e-5
 
         # Prescribed time
         start_time = Scalar.full(0.0)
@@ -131,69 +133,54 @@ class TestViscoplasticModel(DerivativeCheck):
         self.forces = self.model.forces_asm.assemble({"forces/t": time, "forces/E": strain}).torch()
 
         # Initial state
-        self.initial_state = torch.full((self.nbatch, self.model.nstate), 0.0)
+        self.initial_state = torch.zeros((self.nbatch, self.model.nstate))
 
-        # Parallel time integration
+
+class TestKocksMeckingMixedControlModel(DerivativeCheck):
+    @pytest.fixture(autouse=True)
+    def _setup(self):
+        pwd = Path(__file__).parent
+        nmodel = neml2.load_model(pwd / "models" / "km_mixed_model.i", "implicit_rate")
+        self.model = neml2.pyzag.NEML2PyzagModel(
+            nmodel, exclude_parameters=["yield_zero_sy", "mu_X", "mu_Y"]
+        )
+
+        # Test configuration
+        self.nbatch = 20
+        self.nstep = 100
         self.nchunk = 10
-
-        # Tolerances
         self.atol = 1e-8
-        self.rtol = 1e-5
+        self.rtol = 1e-4
 
+        # Prescribed time
+        start_time = Scalar.full(0.0)
+        end_time = Scalar(torch.logspace(-1, -5, self.nbatch))
+        time = Scalar.linspace(start_time, end_time, self.nstep)
 
-# class TestComplexModel(unittest.TestCase, DerivativeCheck):
-#     def setUp(self):
-#         self.nmodel = neml2.load_model(
-#             os.path.join(os.path.dirname(__file__), "complex_model.i"),
-#             "implicit_rate",
-#         )
-#         self.pmodel = neml2.pyzag.NEML2PyzagModel(
-#             self.nmodel, exclude_parameters=["yield_zero.sy", "mu.X", "mu.Y"]
-#         )
-#         self.nbatch = 20
-#         self.ntime = 100
+        # Prescribed strain/stress
+        sqrt2 = math.sqrt(2)  # For Mandel notation
+        start_condition = SR2.full(0.0)
+        end_condition = SR2.fill(0.1, -50, -0.025, 0.15 / sqrt2, 75.0 / sqrt2, 0.05 / sqrt2)
+        condition = SR2.linspace(start_condition, end_condition, self.nstep).batch.unsqueeze(-1)
 
-#         end_time = torch.logspace(-1, -5, self.nbatch)
-#         time = torch.stack([torch.linspace(0, et, self.ntime) for et in end_time]).T.unsqueeze(-1)
-#         conditions = (
-#             torch.stack(
-#                 [
-#                     torch.linspace(0, 0.1, self.ntime),
-#                     torch.linspace(0, -50, self.ntime),
-#                     torch.linspace(0, -0.025, self.ntime),
-#                     torch.linspace(0, 0.15, self.ntime),
-#                     torch.linspace(0, 75.0, self.ntime),
-#                     torch.linspace(0, 0.05, self.ntime),
-#                 ]
-#             )
-#             .T[:, None]
-#             .expand(-1, self.nbatch, -1)
-#         )
+        # Prescribed control
+        # 1st and 4th components are 1.0 (stress-controlled)
+        control = Tensor(torch.tensor([0.0, 1.0, 0.0, 0.0, 1.0, 0.0]), 0)
 
-#         control = torch.zeros((self.ntime, self.nbatch, 6))
-#         control[..., 1] = 1.0
-#         control[..., 4] = 1.0
+        # Prescribed temperature
+        start_temperature = Scalar.linspace(Scalar.full(300), Scalar.full(500), self.nbatch)
+        end_temperature = Scalar.linspace(Scalar.full(600), Scalar.full(1200), self.nbatch)
+        temperature = Scalar.linspace(start_temperature, end_temperature, self.nstep)
 
-#         temperatures = torch.stack(
-#             [
-#                 torch.linspace(T1, T2, self.ntime)
-#                 for T1, T2 in zip(
-#                     torch.linspace(300, 500, self.nbatch),
-#                     torch.linspace(600, 1200, self.nbatch),
-#                 )
-#             ]
-#         ).T.unsqueeze(-1)
+        # Prescribed forces
+        self.forces = self.model.forces_asm.assemble(
+            {
+                "forces/t": time,
+                "forces/control": control,
+                "forces/fixed_values": condition,
+                "forces/T": temperature,
+            }
+        ).torch()
 
-#         self.initial_state = torch.zeros((self.nbatch, 8))
-#         self.forces = self.pmodel.collect_forces(
-#             {
-#                 "t": time,
-#                 "control": control,
-#                 "fixed_values": conditions,
-#                 "T": temperatures,
-#             }
-#         )
-
-#         self.nchunk = 10
-
-#         self.rtol = 1.0e-4
+        # Initial state
+        self.initial_state = torch.zeros((self.nbatch, self.model.nstate))

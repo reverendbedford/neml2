@@ -123,7 +123,8 @@ void
 VariableStore::assign_input(const std::map<VariableName, Tensor> & vals)
 {
   for (const auto & [name, val] : vals)
-    input_variable(name).set(val.clone());
+    if (input_axis().has_variable(name))
+      input_variable(name).set(val.clone());
 }
 
 void

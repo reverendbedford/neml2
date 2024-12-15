@@ -130,6 +130,9 @@ public:
   /// Check if this accessor begins with another accessor
   bool start_with(const LabeledAxisAccessor & axis) const;
 
+  /// Returns the "current" counterpart
+  LabeledAxisAccessor current() const;
+
   /// Returns the "old" counterpart
   LabeledAxisAccessor old() const;
 
