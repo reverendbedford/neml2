@@ -1,5 +1,9 @@
 var NAVTREEINDEX16 =
 {
+"namespacemath.html#a577e4eac272482279f97a55d3742d2fd":[9,0,3,317],
+"namespacemath.html#a57e2baddce60a23dfec6876d16b5fafb":[9,0,3,27],
+"namespacemath.html#a589b3e5a7220d085ea68b86e9eb50338":[9,0,3,283],
+"namespacemath.html#a59124c62abbc03414cbe56172b816395":[9,0,3,9],
 "namespacemath.html#a5966cfdb774321ff2218864adf2199d0":[9,0,3,124],
 "namespacemath.html#a59f3dc4e20377617a82b8aeb53bf25e9":[9,0,3,154],
 "namespacemath.html#a5bf6aa2260aca7d1a64d2523220e32a2":[9,0,3,116],

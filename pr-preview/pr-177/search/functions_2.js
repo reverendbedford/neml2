@@ -39,5 +39,6 @@ var searchData=
   ['cubic_36',['cubic',['../namespaceneml2_1_1crystallography_1_1crystal__symmetry__operators.html#a8db7d1d818ed37bdd1abbc2cae808321',1,'neml2::crystallography::crystal_symmetry_operators']]],
   ['cubiccrystal_37',['CubicCrystal',['../classneml2_1_1crystallography_1_1CubicCrystal.html#a85d3478b22f2b2cb55316d5e934b56f2',1,'neml2::crystallography::CubicCrystal']]],
   ['cubicelasticitytensor_38',['CubicElasticityTensor',['../classneml2_1_1CubicElasticityTensor.html#ad729c78fc71375209e1114989bcda56f',1,'neml2::CubicElasticityTensor']]],
-  ['currently_5fsolving_5fnonlinear_5fsystem_39',['currently_solving_nonlinear_system',['../namespaceneml2.html#a6f62d77d8dd6cdf23c2b96a4b2021d5d',1,'neml2']]]
+  ['current_39',['current',['../classneml2_1_1LabeledAxisAccessor.html#a3d9232156e114273d52e4ccdb20fe9ae',1,'neml2::LabeledAxisAccessor']]],
+  ['currently_5fsolving_5fnonlinear_5fsystem_40',['currently_solving_nonlinear_system',['../namespaceneml2.html#a6f62d77d8dd6cdf23c2b96a4b2021d5d',1,'neml2']]]
 ];

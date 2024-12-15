@@ -155,6 +155,8 @@ Static Public Attributes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
+<tr class="memitem:a7916c15c704214bfcbfa326f85a92fb1" id="r_a7916c15c704214bfcbfa326f85a92fb1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7916c15c704214bfcbfa326f85a92fb1">_adapt_for_pyzag</a> (self, r, J, J_old)</td></tr>
+<tr class="separator:a7916c15c704214bfcbfa326f85a92fb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07770d00e721194d0a9b1bbcd8e63906" id="r_a07770d00e721194d0a9b1bbcd8e63906"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a07770d00e721194d0a9b1bbcd8e63906">_check_model</a> (self)</td></tr>
 <tr class="separator:a07770d00e721194d0a9b1bbcd8e63906"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c2a4dfd93ce2c895775e356796be112" id="r_a3c2a4dfd93ce2c895775e356796be112"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3c2a4dfd93ce2c895775e356796be112">_disassemble_input</a> (self, state, forces)</td></tr>
@@ -204,6 +206,57 @@ Protected Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a7916c15c704214bfcbfa326f85a92fb1" name="a7916c15c704214bfcbfa326f85a92fb1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7916c15c704214bfcbfa326f85a92fb1">&#9670;&#160;</a></span>_adapt_for_pyzag()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">_adapt_for_pyzag </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>r</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>J</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>J_old</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<pre class="fragment">Adapt the residual and Jacobians for pyzag
+
+        pyzag has additional requirements on residual and Jacobians:
+          1. The residual and Jacobians should have the same batch shape
+          2. The Jacobians should be square
+
+        Args:
+            r (neml2.Tensor): residual
+            J (neml2.Tensor): Jacobian
+            J_old (neml2.Tensor): Jacobian for the old state
+
+        Returns:
+            tuple of torch.Tensor: residual, Jacobian</pre> 
+</div>
+</div>
 <a id="a07770d00e721194d0a9b1bbcd8e63906" name="a07770d00e721194d0a9b1bbcd8e63906"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a07770d00e721194d0a9b1bbcd8e63906">&#9670;&#160;</a></span>_check_model()</h2>
 
@@ -264,8 +317,8 @@ Protected Member Functions</h2></td></tr>
 <pre class="fragment">Assemble the model input from the flat tensors
 
         Args:
-            state (torch.tensor): tensor containing the model state
-            forces (torch.tensor): tensor containing the model forces</pre> 
+            state (torch.Tensor): tensor containing the model state
+            forces (torch.Tensor): tensor containing the model forces</pre> 
 </div>
 </div>
 <a id="a573069d9cf13ef6b2d1c6e1399797b46" name="a573069d9cf13ef6b2d1c6e1399797b46"></a>
@@ -379,10 +432,7 @@ Protected Member Functions</h2></td></tr>
 
         Args:
             state (torch.tensor): tensor with the flattened state
-            forces (torch.tensor): tensor with the flattened forces
-
-        The helper methods `collect_forces` and `collect_state` can be used to
-        assemble individual tensors into the flattened state and forces tensor</pre> 
+            forces (torch.tensor): tensor with the flattened forces</pre> 
 </div>
 </div>
 <a id="a40469e234adfc7b6fdc4874403ef78c5" name="a40469e234adfc7b6fdc4874403ef78c5"></a>

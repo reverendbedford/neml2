@@ -10,6 +10,7 @@ var classcore_1_1LabeledAxisAccessor =
     [ "__ne__", "classcore_1_1LabeledAxisAccessor.html#a9328388dc0ccb485689f8cd3614006e1", null ],
     [ "__repr__", "classcore_1_1LabeledAxisAccessor.html#aea815b0c6c23fc48a11ee0404b782c7a", null ],
     [ "append", "classcore_1_1LabeledAxisAccessor.html#a74372d81fb8cfb45f5119bdb9a4f7b65", null ],
+    [ "current", "classcore_1_1LabeledAxisAccessor.html#abd0fe6610fa499503b6fdf5fbda80fc3", null ],
     [ "old", "classcore_1_1LabeledAxisAccessor.html#a6b9739e77374c10df47cabbeef020825", null ],
     [ "prepend", "classcore_1_1LabeledAxisAccessor.html#adde5157d7d56204351b55879ab6ec19d", null ],
     [ "remount", "classcore_1_1LabeledAxisAccessor.html#ae70704d2efc1694f3426bb2e1e1607a2", null ],

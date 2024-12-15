@@ -1,6 +1,7 @@
 var classinterface_1_1NEML2PyzagModel =
 [
     [ "__init__", "classinterface_1_1NEML2PyzagModel.html#a185ba812d2e2568825c0e405a5eb4036", null ],
+    [ "_adapt_for_pyzag", "classinterface_1_1NEML2PyzagModel.html#a7916c15c704214bfcbfa326f85a92fb1", null ],
     [ "_check_model", "classinterface_1_1NEML2PyzagModel.html#a07770d00e721194d0a9b1bbcd8e63906", null ],
     [ "_disassemble_input", "classinterface_1_1NEML2PyzagModel.html#a3c2a4dfd93ce2c895775e356796be112", null ],
     [ "_setup_assemblers", "classinterface_1_1NEML2PyzagModel.html#a573069d9cf13ef6b2d1c6e1399797b46", null ],

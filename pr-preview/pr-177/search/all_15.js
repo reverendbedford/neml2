@@ -1,9 +1,9 @@
 var searchData=
 [
   ['tanh_0',['tanh',['../namespaceneml2_1_1math.html#a7cc61383daf1b806e7a02b92d01e329e',1,'neml2::math']]],
-  ['tensor_1',['Tensor',['../system-tensors.html#dynamically-shaped-tensor',1,'Dynamically shaped tensor'],['../classneml2_1_1Tensor.html',1,'Tensor'],['../classneml2_1_1Tensor.html#adc4bf6dc90c4b8ed355154753b2d9ed5',1,'neml2::Tensor::Tensor()=default'],['../classneml2_1_1Tensor.html#a11d4fdda292c994c536c8bf3170076ab',1,'neml2::Tensor::Tensor(const torch::Tensor &amp;tensor, Size batch_dim)'],['../classneml2_1_1Tensor.html#a4a40099aee9a42f807240f833182822e',1,'neml2::Tensor::Tensor(const torch::Tensor &amp;tensor, const TraceableTensorShape &amp;batch_shape)'],['../classneml2_1_1Tensor.html#a44a032d254b731a55e17863455d1430f',1,'neml2::Tensor::Tensor(const TensorBase&lt; Derived2 &gt; &amp;tensor)']]],
+  ['tensor_1',['Tensor',['../system-tensors.html#dynamically-shaped-tensor',1,'Dynamically shaped tensor'],['../classneml2_1_1Tensor.html',1,'Tensor']]],
   ['tensor_2',['tensor',['../classneml2_1_1VariableBase.html#ae3d6a3764601c52cd58f388ebb4a2e56',1,'neml2::VariableBase::tensor()'],['../classneml2_1_1Variable.html#a0c0cf9ce8a539c7f13dc51c55e1a63d6',1,'neml2::Variable::tensor()']]],
-  ['tensor_3',['Tensor',['../system-tensors.html',1,'Tensor'],['../syntax-tensors.html#tensor',1,'Tensor']]],
+  ['tensor_3',['Tensor',['../classneml2_1_1Tensor.html#adc4bf6dc90c4b8ed355154753b2d9ed5',1,'neml2::Tensor::Tensor()=default'],['../classneml2_1_1Tensor.html#a11d4fdda292c994c536c8bf3170076ab',1,'neml2::Tensor::Tensor(const torch::Tensor &amp;tensor, Size batch_dim)'],['../classneml2_1_1Tensor.html#a4a40099aee9a42f807240f833182822e',1,'neml2::Tensor::Tensor(const torch::Tensor &amp;tensor, const TraceableTensorShape &amp;batch_shape)'],['../classneml2_1_1Tensor.html#a44a032d254b731a55e17863455d1430f',1,'neml2::Tensor::Tensor(const TensorBase&lt; Derived2 &gt; &amp;tensor)'],['../system-tensors.html',1,'Tensor'],['../syntax-tensors.html#tensor',1,'Tensor']]],
   ['tensor_20assembly_4',['Tensor assembly',['../system-models.html#tensor-assembly',1,'']]],
   ['tensor_20broadcasting_5',['Tensor broadcasting',['../system-tensors.html#tensor-broadcasting',1,'']]],
   ['tensor_20creation_6',['Tensor creation',['../system-tensors.html#tensor-creation',1,'']]],

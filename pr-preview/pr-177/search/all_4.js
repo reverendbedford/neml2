@@ -78,8 +78,9 @@ var searchData=
   ['cubic_75',['cubic',['../namespaceneml2_1_1crystallography_1_1crystal__symmetry__operators.html#a8db7d1d818ed37bdd1abbc2cae808321',1,'neml2::crystallography::crystal_symmetry_operators']]],
   ['cubiccrystal_76',['CubicCrystal',['../classneml2_1_1crystallography_1_1CubicCrystal.html',1,'CubicCrystal'],['../classneml2_1_1crystallography_1_1CubicCrystal.html#a85d3478b22f2b2cb55316d5e934b56f2',1,'neml2::crystallography::CubicCrystal::CubicCrystal()'],['../syntax-data.html#cubiccrystal',1,'CubicCrystal']]],
   ['cubicelasticitytensor_77',['CubicElasticityTensor',['../classneml2_1_1CubicElasticityTensor.html',1,'CubicElasticityTensor'],['../classneml2_1_1CubicElasticityTensor.html#ad729c78fc71375209e1114989bcda56f',1,'neml2::CubicElasticityTensor::CubicElasticityTensor()'],['../syntax-models.html#cubicelasticitytensor',1,'CubicElasticityTensor']]],
-  ['currently_5fsolving_5fnonlinear_5fsystem_78',['currently_solving_nonlinear_system',['../namespaceneml2.html#a6f62d77d8dd6cdf23c2b96a4b2021d5d',1,'neml2']]],
-  ['custom_20model_79',['Custom Model',['../custom-model.html',1,'']]],
-  ['customization_80',['Build customization',['../install.html#install-build-customization',1,'']]],
-  ['customizing_20graph_20style_81',['Customizing graph style',['../model-visualization.html#autotoc_md7',1,'']]]
+  ['current_78',['current',['../classneml2_1_1LabeledAxisAccessor.html#a3d9232156e114273d52e4ccdb20fe9ae',1,'neml2::LabeledAxisAccessor']]],
+  ['currently_5fsolving_5fnonlinear_5fsystem_79',['currently_solving_nonlinear_system',['../namespaceneml2.html#a6f62d77d8dd6cdf23c2b96a4b2021d5d',1,'neml2']]],
+  ['custom_20model_80',['Custom Model',['../custom-model.html',1,'']]],
+  ['customization_81',['Build customization',['../install.html#install-build-customization',1,'']]],
+  ['customizing_20graph_20style_82',['Customizing graph style',['../model-visualization.html#autotoc_md7',1,'']]]
 ];

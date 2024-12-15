@@ -9,6 +9,7 @@ var classneml2_1_1LabeledAxisAccessor =
     [ "append", "classneml2_1_1LabeledAxisAccessor.html#a3bc21352099bd9fa964b5cb536dc1057", null ],
     [ "begin", "classneml2_1_1LabeledAxisAccessor.html#ad69bd11391be1a1dba5c8202259664f8", null ],
     [ "begin", "classneml2_1_1LabeledAxisAccessor.html#a29305669b60ca1680752e2fc3592ba99", null ],
+    [ "current", "classneml2_1_1LabeledAxisAccessor.html#a3d9232156e114273d52e4ccdb20fe9ae", null ],
     [ "empty", "classneml2_1_1LabeledAxisAccessor.html#a644718bb2fb240de962dc3c9a1fdf0dc", null ],
     [ "end", "classneml2_1_1LabeledAxisAccessor.html#acad38d52497a975bfb6f2f6acd76631f", null ],
     [ "end", "classneml2_1_1LabeledAxisAccessor.html#accf9a4bd0c34d4a5f6a7dab66ea10cdc", null ],
