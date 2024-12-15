@@ -57,9 +57,9 @@ var namespaceneml2_1_1math =
     [ "where", "namespaceneml2_1_1math.html#ad118d03823478b8b293229f9ac6b94ca", null ],
     [ "eps", "namespaceneml2_1_1math.html#a2483ec7b2dd1b9553b289c0c94021a94", null ],
     [ "invsqrt2", "namespaceneml2_1_1math.html#a439b384911d4c1b60e3472253a5e8497", null ],
-    [ "mandel_index", "namespaceneml2_1_1math.html#a1dc7c4e164c374e16c2fd1b698d24270", null ],
-    [ "mandel_reverse_index", "namespaceneml2_1_1math.html#a7fc96d473fbf98415dad4febc3a755d9", null ],
-    [ "skew_factor", "namespaceneml2_1_1math.html#a14bff5d61e02e78a85ebef17a206e85f", null ],
-    [ "skew_reverse_index", "namespaceneml2_1_1math.html#a2df266357d047b479d0c2cfe151df605", null ],
+    [ "mandel_index", "namespaceneml2_1_1math.html#a9489d3b9f99529eb0146d642ca666f3c", null ],
+    [ "mandel_reverse_index", "namespaceneml2_1_1math.html#a87ddc25717b0fbe3a9fbdcc37a123a33", null ],
+    [ "skew_factor", "namespaceneml2_1_1math.html#a5fbd5243f167c2bb02b216e51bd8724c", null ],
+    [ "skew_reverse_index", "namespaceneml2_1_1math.html#ad5caed3be984fbb32a81c463689aafd9", null ],
     [ "sqrt2", "namespaceneml2_1_1math.html#afae04ccf208cd8fe3e3adbd69445769b", null ]
 ];

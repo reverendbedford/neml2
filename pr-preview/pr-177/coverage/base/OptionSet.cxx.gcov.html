@@ -31,18 +31,18 @@
             <td class="headerValue">coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">47</td>
+            <td class="headerCovTableEntry">48</td>
             <td class="headerCovTableEntry">50</td>
-            <td class="headerCovTableEntryHi">94.0 %</td>
+            <td class="headerCovTableEntryHi">96.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-15 00:00:54</td>
+            <td class="headerValue">2024-12-15 04:52:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">16</td>
             <td class="headerCovTableEntry">17</td>
-            <td class="headerCovTableEntryHi">94.1 %</td>
+            <td class="headerCovTableEntry">17</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -145,14 +145,14 @@
 <a name="83"><span class="lineNum">      83 </span>            : }</a>
 <a name="84"><span class="lineNum">      84 </span>            : </a>
 <a name="85"><span class="lineNum">      85 </span>            : void</a>
-<a name="86"><span class="lineNum">      86 </span><span class="lineCov">      14721 : OptionSet::clear()</span></a>
+<a name="86"><span class="lineNum">      86 </span><span class="lineCov">      15806 : OptionSet::clear()</span></a>
 <a name="87"><span class="lineNum">      87 </span>            : {</a>
-<a name="88"><span class="lineNum">      88 </span><span class="lineCov">      14721 :   _values.clear();</span></a>
-<a name="89"><span class="lineNum">      89 </span><span class="lineCov">      14721 : }</span></a>
+<a name="88"><span class="lineNum">      88 </span><span class="lineCov">      15806 :   _values.clear();</span></a>
+<a name="89"><span class="lineNum">      89 </span><span class="lineCov">      15806 : }</span></a>
 <a name="90"><span class="lineNum">      90 </span>            : </a>
 <a name="91"><span class="lineNum">      91 </span><span class="lineCov">       9675 : OptionSet::OptionSet(const OptionSet &amp; p) { *this = p; }</span></a>
 <a name="92"><span class="lineNum">      92 </span>            : </a>
-<a name="93"><span class="lineNum">      93 </span><span class="lineNoCov">          0 : OptionSet::OptionSet(OptionSet &amp;&amp; p) noexcept { *this = std::move(p); }</span></a>
+<a name="93"><span class="lineNum">      93 </span><span class="lineCov">       1085 : OptionSet::OptionSet(OptionSet &amp;&amp; p) noexcept { *this = std::move(p); }</span></a>
 <a name="94"><span class="lineNum">      94 </span>            : </a>
 <a name="95"><span class="lineNum">      95 </span>            : OptionSet &amp;</a>
 <a name="96"><span class="lineNum">      96 </span><span class="lineCov">      14446 : OptionSet::operator=(const OptionSet &amp; source)</span></a>
@@ -164,20 +164,20 @@
 <a name="102"><span class="lineNum">     102 </span>            : }</a>
 <a name="103"><span class="lineNum">     103 </span>            : </a>
 <a name="104"><span class="lineNum">     104 </span>            : OptionSet &amp;</a>
-<a name="105"><span class="lineNum">     105 </span><span class="lineCov">        275 : OptionSet::operator=(OptionSet &amp;&amp; source) noexcept</span></a>
+<a name="105"><span class="lineNum">     105 </span><span class="lineCov">       1360 : OptionSet::operator=(OptionSet &amp;&amp; source) noexcept</span></a>
 <a name="106"><span class="lineNum">     106 </span>            : {</a>
-<a name="107"><span class="lineNum">     107 </span><span class="lineCov">        275 :   this-&gt;OptionSet::clear();</span></a>
-<a name="108"><span class="lineNum">     108 </span><span class="lineCov">        275 :   *this += source;</span></a>
-<a name="109"><span class="lineNum">     109 </span><span class="lineCov">        275 :   this-&gt;_metadata = std::move(source._metadata);</span></a>
-<a name="110"><span class="lineNum">     110 </span><span class="lineCov">        275 :   return *this;</span></a>
+<a name="107"><span class="lineNum">     107 </span><span class="lineCov">       1360 :   this-&gt;OptionSet::clear();</span></a>
+<a name="108"><span class="lineNum">     108 </span><span class="lineCov">       1360 :   *this += source;</span></a>
+<a name="109"><span class="lineNum">     109 </span><span class="lineCov">       1360 :   this-&gt;_metadata = std::move(source._metadata);</span></a>
+<a name="110"><span class="lineNum">     110 </span><span class="lineCov">       1360 :   return *this;</span></a>
 <a name="111"><span class="lineNum">     111 </span>            : }</a>
 <a name="112"><span class="lineNum">     112 </span>            : </a>
 <a name="113"><span class="lineNum">     113 </span>            : void</a>
-<a name="114"><span class="lineNum">     114 </span><span class="lineCov">      15999 : OptionSet::operator+=(const OptionSet &amp; source)</span></a>
+<a name="114"><span class="lineNum">     114 </span><span class="lineCov">      17084 : OptionSet::operator+=(const OptionSet &amp; source)</span></a>
 <a name="115"><span class="lineNum">     115 </span>            : {</a>
-<a name="116"><span class="lineNum">     116 </span><span class="lineCov">     109368 :   for (const auto &amp; [key, value] : source._values)</span></a>
-<a name="117"><span class="lineNum">     117 </span><span class="lineCov">      93369 :     _values[key] = value-&gt;clone();</span></a>
-<a name="118"><span class="lineNum">     118 </span><span class="lineCov">      15999 : }</span></a>
+<a name="116"><span class="lineNum">     116 </span><span class="lineCov">     119472 :   for (const auto &amp; [key, value] : source._values)</span></a>
+<a name="117"><span class="lineNum">     117 </span><span class="lineCov">     102388 :     _values[key] = value-&gt;clone();</span></a>
+<a name="118"><span class="lineNum">     118 </span><span class="lineCov">      17084 : }</span></a>
 <a name="119"><span class="lineNum">     119 </span>            : </a>
 <a name="120"><span class="lineNum">     120 </span>            : void</a>
 <a name="121"><span class="lineNum">     121 </span><span class="lineCov">        781 : OptionSet::operator+=(OptionSet &amp;&amp; source)</span></a>

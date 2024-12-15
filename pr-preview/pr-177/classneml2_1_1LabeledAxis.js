@@ -1,7 +1,7 @@
 var classneml2_1_1LabeledAxis =
 [
     [ "LabeledAxis", "classneml2_1_1LabeledAxis.html#a0ab07cc666bb80ea414a68465003dbfc", null ],
-    [ "LabeledAxis", "classneml2_1_1LabeledAxis.html#adc76ef777193b58cfef54b724512c7d2", null ],
+    [ "LabeledAxis", "classneml2_1_1LabeledAxis.html#a6df96e91abb1c32800524415f32d78e7", null ],
     [ "add_subaxis", "classneml2_1_1LabeledAxis.html#a9ef3dbd45723da48b2e5430e5cda5761", null ],
     [ "add_variable", "classneml2_1_1LabeledAxis.html#ae8cc456982cf10887ad621134aa2b672", null ],
     [ "add_variable", "classneml2_1_1LabeledAxis.html#a07d759b9d2d1837b012e9fd490bccce6", null ],

@@ -129,7 +129,6 @@ var annotated =
       [ "R8", "classneml2_1_1R8.html", null ],
       [ "RateIndependentPlasticFlowConstraint", "classneml2_1_1RateIndependentPlasticFlowConstraint.html", "classneml2_1_1RateIndependentPlasticFlowConstraint" ],
       [ "Registry", "classneml2_1_1Registry.html", null ],
-      [ "RequestingAD", "structneml2_1_1RequestingAD.html", "structneml2_1_1RequestingAD" ],
       [ "ResolvedShear", "classneml2_1_1ResolvedShear.html", "classneml2_1_1ResolvedShear" ],
       [ "Rot", "classneml2_1_1Rot.html", "classneml2_1_1Rot" ],
       [ "RotationMatrix", "classneml2_1_1RotationMatrix.html", "classneml2_1_1RotationMatrix" ],

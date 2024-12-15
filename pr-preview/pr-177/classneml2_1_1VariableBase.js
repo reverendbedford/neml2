@@ -1,8 +1,10 @@
 var classneml2_1_1VariableBase =
 [
     [ "VariableBase", "classneml2_1_1VariableBase.html#a57cafb050efed4623c3e7dcb71da3f89", null ],
-    [ "VariableBase", "classneml2_1_1VariableBase.html#a72adb9a8e5718ba10827a66a7d2013c6", null ],
+    [ "VariableBase", "classneml2_1_1VariableBase.html#a8b0f31b9ba94f987e745bdc99a38185e", null ],
+    [ "VariableBase", "classneml2_1_1VariableBase.html#a0b9a69d2c3c1056201943aaf8663b7fa", null ],
     [ "~VariableBase", "classneml2_1_1VariableBase.html#a11c5fe28b4558368c4e40dd53523aadb", null ],
+    [ "VariableBase", "classneml2_1_1VariableBase.html#a8e7b732ae8bb189a0ca4344e27a77150", null ],
     [ "apply_chain_rule", "classneml2_1_1VariableBase.html#adaaed8a04acb0a329e20be6187260885", null ],
     [ "apply_second_order_chain_rule", "classneml2_1_1VariableBase.html#a2e6ba6e3acb02537a6a01b04d8c0edb5", null ],
     [ "assembly_storage", "classneml2_1_1VariableBase.html#ae9f7230f04b4889a956e1f569e93fe3d", null ],
@@ -36,6 +38,8 @@ var classneml2_1_1VariableBase =
     [ "list_sizes", "classneml2_1_1VariableBase.html#a66947fba1e6639d066f234107a3b3e68", null ],
     [ "name", "classneml2_1_1VariableBase.html#aa9705fe094f6261829017ddc444d2343", null ],
     [ "operator=", "classneml2_1_1VariableBase.html#aaf277ecb7976703957be4430e2708d1f", null ],
+    [ "operator=", "classneml2_1_1VariableBase.html#abbdbf997166981ccc1699426ddec4c72", null ],
+    [ "operator=", "classneml2_1_1VariableBase.html#aa28c7d84e10814bdfacefa6cd35db197", null ],
     [ "options", "classneml2_1_1VariableBase.html#a7a59b959d1385336c33242651ba8a825", null ],
     [ "owner", "classneml2_1_1VariableBase.html#a60bd4544c00627881504f255713d11b7", null ],
     [ "owner", "classneml2_1_1VariableBase.html#a28b2fa0d0c4beb36109f137cda6a13e2", null ],

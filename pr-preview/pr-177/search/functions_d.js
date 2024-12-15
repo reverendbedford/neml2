@@ -23,7 +23,7 @@ var searchData=
   ['node_5fproviders_20',['node_providers',['../classneml2_1_1DependencyResolver.html#a1588d1db10fac8b654dbe96e5b2f1d33',1,'neml2::DependencyResolver']]],
   ['nonlinearparameter_21',['NonlinearParameter',['../classneml2_1_1NonlinearParameter.html#a7c3f4b39babbb297f6728e11de187d77',1,'neml2::NonlinearParameter']]],
   ['nonlinearsolver_22',['NonlinearSolver',['../classneml2_1_1NonlinearSolver.html#a62092b7dfd06714c04dd109cc922fa4c',1,'neml2::NonlinearSolver']]],
-  ['nonlinearsystem_23',['NonlinearSystem',['../classneml2_1_1NonlinearSystem.html#a596124ec7dce0384ee6e74070aa574dc',1,'neml2::NonlinearSystem']]],
+  ['nonlinearsystem_23',['NonlinearSystem',['../classneml2_1_1NonlinearSystem.html#a6c1f8d072d88e01eb5b41600d11b2334',1,'neml2::NonlinearSystem::NonlinearSystem(const NonlinearSystem &amp;)=default'],['../classneml2_1_1NonlinearSystem.html#a952137010fef974b31965e4fd5a191fd',1,'neml2::NonlinearSystem::NonlinearSystem(NonlinearSystem &amp;&amp;) noexcept=default'],['../classneml2_1_1NonlinearSystem.html#a596124ec7dce0384ee6e74070aa574dc',1,'neml2::NonlinearSystem::NonlinearSystem(const OptionSet &amp;options)']]],
   ['norm_24',['norm',['../classneml2_1_1SR2.html#ac00d16c9e75c43b909d9840eb1809606',1,'neml2::SR2::norm()'],['../classneml2_1_1VecBase.html#ad840f5d7d824ab9d442511c61c8f6b77',1,'neml2::VecBase::norm()']]],
   ['norm_5fsq_25',['norm_sq',['../classneml2_1_1SR2.html#aa34d9c66769904faf822a8e5a39ead76',1,'neml2::SR2::norm_sq()'],['../classneml2_1_1VecBase.html#aa34d9c66769904faf822a8e5a39ead76',1,'neml2::VecBase::norm_sq()']]],
   ['normality_26',['Normality',['../classneml2_1_1Normality.html#a8b48f7f0d9485d40f132c34df7ae1030',1,'neml2::Normality']]],

@@ -22,7 +22,7 @@ var searchData=
   ['collect_5foutput_19',['collect_output',['../classneml2_1_1VariableStore.html#a8a4d31f780cdc45fafcb6b801c45163d',1,'neml2::VariableStore']]],
   ['collect_5foutput_5fderivatives_20',['collect_output_derivatives',['../classneml2_1_1VariableStore.html#a4dba5d995714edfa5068eee3f57eed9a',1,'neml2::VariableStore']]],
   ['collect_5foutput_5fsecond_5fderivatives_21',['collect_output_second_derivatives',['../classneml2_1_1VariableStore.html#a396160f024267b89d50f9ea2530e97c1',1,'neml2::VariableStore']]],
-  ['combine_5fand_5freorder_22',['combine_and_reorder',['../classneml2_1_1ElasticityTensor.html#a39bf35e3309e54c73ca659ec56dda63c',1,'neml2::ElasticityTensor']]],
+  ['combine_5fand_5freorder_22',['combine_and_reorder',['../classneml2_1_1ElasticityTensor.html#a3e87c62d770eaa859ca06baff38e5d25',1,'neml2::ElasticityTensor']]],
   ['composed_20model_23',['Composed model',['../model-visualization.html#autotoc_md6',1,'Rendering composed model'],['../model-visualization.html#autotoc_md5',1,'Rendering non-composed model']]],
   ['composedmodel_24',['ComposedModel',['../classneml2_1_1ComposedModel.html',1,'ComposedModel'],['../classneml2_1_1Model.html#a0415245a59cfbcab2c75c07836ce752c',1,'neml2::Model::ComposedModel'],['../classneml2_1_1ComposedModel.html#a61d3a5cb5bea001c7e1d07bd027b21d3',1,'neml2::ComposedModel::ComposedModel()'],['../syntax-models.html#composedmodel',1,'ComposedModel']]],
   ['composition_25',['Model composition',['../system-models.html#model-composition',1,'']]],
@@ -78,9 +78,8 @@ var searchData=
   ['cubic_75',['cubic',['../namespaceneml2_1_1crystallography_1_1crystal__symmetry__operators.html#a8db7d1d818ed37bdd1abbc2cae808321',1,'neml2::crystallography::crystal_symmetry_operators']]],
   ['cubiccrystal_76',['CubicCrystal',['../classneml2_1_1crystallography_1_1CubicCrystal.html',1,'CubicCrystal'],['../classneml2_1_1crystallography_1_1CubicCrystal.html#a85d3478b22f2b2cb55316d5e934b56f2',1,'neml2::crystallography::CubicCrystal::CubicCrystal()'],['../syntax-data.html#cubiccrystal',1,'CubicCrystal']]],
   ['cubicelasticitytensor_77',['CubicElasticityTensor',['../classneml2_1_1CubicElasticityTensor.html',1,'CubicElasticityTensor'],['../classneml2_1_1CubicElasticityTensor.html#ad729c78fc71375209e1114989bcda56f',1,'neml2::CubicElasticityTensor::CubicElasticityTensor()'],['../syntax-models.html#cubicelasticitytensor',1,'CubicElasticityTensor']]],
-  ['currently_5frequesting_5fad_78',['currently_requesting_AD',['../namespaceneml2.html#a05915efd02f6a88d4fad21dee53969ee',1,'neml2']]],
-  ['currently_5fsolving_5fnonlinear_5fsystem_79',['currently_solving_nonlinear_system',['../namespaceneml2.html#a6f62d77d8dd6cdf23c2b96a4b2021d5d',1,'neml2']]],
-  ['custom_20model_80',['Custom Model',['../custom-model.html',1,'']]],
-  ['customization_81',['Build customization',['../install.html#install-build-customization',1,'']]],
-  ['customizing_20graph_20style_82',['Customizing graph style',['../model-visualization.html#autotoc_md7',1,'']]]
+  ['currently_5fsolving_5fnonlinear_5fsystem_78',['currently_solving_nonlinear_system',['../namespaceneml2.html#a6f62d77d8dd6cdf23c2b96a4b2021d5d',1,'neml2']]],
+  ['custom_20model_79',['Custom Model',['../custom-model.html',1,'']]],
+  ['customization_80',['Build customization',['../install.html#install-build-customization',1,'']]],
+  ['customizing_20graph_20style_81',['Customizing graph style',['../model-visualization.html#autotoc_md7',1,'']]]
 ];

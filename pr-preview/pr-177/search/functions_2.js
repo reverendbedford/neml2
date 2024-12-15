@@ -15,7 +15,7 @@ var searchData=
   ['collect_5foutput_12',['collect_output',['../classneml2_1_1VariableStore.html#a8a4d31f780cdc45fafcb6b801c45163d',1,'neml2::VariableStore']]],
   ['collect_5foutput_5fderivatives_13',['collect_output_derivatives',['../classneml2_1_1VariableStore.html#a4dba5d995714edfa5068eee3f57eed9a',1,'neml2::VariableStore']]],
   ['collect_5foutput_5fsecond_5fderivatives_14',['collect_output_second_derivatives',['../classneml2_1_1VariableStore.html#a396160f024267b89d50f9ea2530e97c1',1,'neml2::VariableStore']]],
-  ['combine_5fand_5freorder_15',['combine_and_reorder',['../classneml2_1_1ElasticityTensor.html#a39bf35e3309e54c73ca659ec56dda63c',1,'neml2::ElasticityTensor']]],
+  ['combine_5fand_5freorder_15',['combine_and_reorder',['../classneml2_1_1ElasticityTensor.html#a3e87c62d770eaa859ca06baff38e5d25',1,'neml2::ElasticityTensor']]],
   ['composedmodel_16',['ComposedModel',['../classneml2_1_1ComposedModel.html#a61d3a5cb5bea001c7e1d07bd027b21d3',1,'neml2::ComposedModel']]],
   ['concrete_17',['concrete',['../structneml2_1_1TraceableSize.html#a3264c52a0fc73d8c40bf367795a8dd74',1,'neml2::TraceableSize::concrete()'],['../structneml2_1_1TraceableTensorShape.html#a1ee68d9343f6ce43649f36f9cf5e4392',1,'neml2::TraceableTensorShape::concrete()']]],
   ['constantparameter_18',['ConstantParameter',['../classneml2_1_1ConstantParameter.html#a3347f5cb6112fc43e93cf42e649afb17',1,'neml2::ConstantParameter']]],
@@ -39,6 +39,5 @@ var searchData=
   ['cubic_36',['cubic',['../namespaceneml2_1_1crystallography_1_1crystal__symmetry__operators.html#a8db7d1d818ed37bdd1abbc2cae808321',1,'neml2::crystallography::crystal_symmetry_operators']]],
   ['cubiccrystal_37',['CubicCrystal',['../classneml2_1_1crystallography_1_1CubicCrystal.html#a85d3478b22f2b2cb55316d5e934b56f2',1,'neml2::crystallography::CubicCrystal']]],
   ['cubicelasticitytensor_38',['CubicElasticityTensor',['../classneml2_1_1CubicElasticityTensor.html#ad729c78fc71375209e1114989bcda56f',1,'neml2::CubicElasticityTensor']]],
-  ['currently_5frequesting_5fad_39',['currently_requesting_AD',['../namespaceneml2.html#a05915efd02f6a88d4fad21dee53969ee',1,'neml2']]],
-  ['currently_5fsolving_5fnonlinear_5fsystem_40',['currently_solving_nonlinear_system',['../namespaceneml2.html#a6f62d77d8dd6cdf23c2b96a4b2021d5d',1,'neml2']]]
+  ['currently_5fsolving_5fnonlinear_5fsystem_39',['currently_solving_nonlinear_system',['../namespaceneml2.html#a6f62d77d8dd6cdf23c2b96a4b2021d5d',1,'neml2']]]
 ];

@@ -1,9 +1,7 @@
 var classneml2_1_1Variable =
 [
-    [ "Variable", "classneml2_1_1Variable.html#aa7e0b54fcbd7389d0497a69bd30c6cdf", null ],
-    [ "Variable", "classneml2_1_1Variable.html#a31939b87fd915c29c263e33fb3f27f5c", null ],
-    [ "Variable", "classneml2_1_1Variable.html#acc93de011d9475570b3c850043fe6280", null ],
-    [ "Variable", "classneml2_1_1Variable.html#afa2557f05957e6420fafbb2a56f26717", null ],
+    [ "Variable", "classneml2_1_1Variable.html#ae6e3d5651972515f6fcbfa1c0bc9b24b", null ],
+    [ "Variable", "classneml2_1_1Variable.html#a1725605aeade52b13738f4ff4e42592d", null ],
     [ "base_sizes", "classneml2_1_1Variable.html#aeb67956bb12c95b90d92d4093258fb52", null ],
     [ "clear", "classneml2_1_1Variable.html#aee7cb2065b88d21ac4ad05bc997ecf82", null ],
     [ "clone", "classneml2_1_1Variable.html#ad5d754c7bbbbdf1d66fbd17f175d9e60", null ],
@@ -12,7 +10,6 @@ var classneml2_1_1Variable =
     [ "operator Tensor", "classneml2_1_1Variable.html#ae5abddcc4086337aaf522f36dbac880b", null ],
     [ "operator-", "classneml2_1_1Variable.html#a9d13ef98e126ced1a93723d1c1eb923c", null ],
     [ "operator=", "classneml2_1_1Variable.html#a3cd04abf5f378154f0dd70296e6090b3", null ],
-    [ "operator=", "classneml2_1_1Variable.html#a8d16bfb5041979d974e00600840fcf21", null ],
     [ "owning", "classneml2_1_1Variable.html#ace07a4ae7e3ca6e978db6857f1d295d5", null ],
     [ "ref", "classneml2_1_1Variable.html#a64189bff3dcaa9d03c09eac7dff3d7e4", null ],
     [ "ref", "classneml2_1_1Variable.html#a5bee7616e6b50b04d453536202e8b634", null ],

@@ -26,9 +26,9 @@ var searchData=
   ['input_5fvariable_23',['input_variable',['../classneml2_1_1VariableStore.html#a8361dbee7e8e502219ba4bdbb32165d8',1,'neml2::VariableStore::input_variable(const VariableName &amp;)'],['../classneml2_1_1VariableStore.html#ad418c71946516e9706b8579cc620c473',1,'neml2::VariableStore::input_variable(const VariableName &amp;) const']]],
   ['input_5fvariables_24',['input_variables',['../classneml2_1_1VariableStore.html#a5ebd74ffd80501dd16e599063a308100',1,'neml2::VariableStore::input_variables()'],['../classneml2_1_1VariableStore.html#a6fe8c8334ee00e6dfe9b61c74ab99989',1,'neml2::VariableStore::input_variables() const']]],
   ['inputparameter_25',['InputParameter',['../classneml2_1_1InputParameter.html#a8a3f5e7b2647ae5e09d9d0a3f1a15fe0',1,'neml2::InputParameter']]],
-  ['interopthread_26',['InterOpThread',['../structneml2_1_1InterOpThread.html#a9c3a52c948767bad3b00f1009717a2ee',1,'neml2::InterOpThread']]],
+  ['interopthread_26',['InterOpThread',['../structneml2_1_1InterOpThread.html#a13b4565d1d44ffe56bfd7ccc17b5fb10',1,'neml2::InterOpThread::InterOpThread(int num)'],['../structneml2_1_1InterOpThread.html#a4fb77487a347106b709ba831ab8bbdf3',1,'neml2::InterOpThread::InterOpThread(const InterOpThread &amp;)=delete'],['../structneml2_1_1InterOpThread.html#af0635f0635ddf8870618737c52ab2e62',1,'neml2::InterOpThread::InterOpThread(InterOpThread &amp;&amp;)=delete']]],
   ['interpolation_27',['Interpolation',['../classneml2_1_1Interpolation.html#ae93944622c422f9620c8f5ae9507014d',1,'neml2::Interpolation']]],
-  ['intraopthread_28',['IntraOpThread',['../structneml2_1_1IntraOpThread.html#a9fc0e31010ebcbef333be3eabf21cc4f',1,'neml2::IntraOpThread']]],
+  ['intraopthread_28',['IntraOpThread',['../structneml2_1_1IntraOpThread.html#a31e05536b418d88260c785195d8f1012',1,'neml2::IntraOpThread::IntraOpThread(int num)'],['../structneml2_1_1IntraOpThread.html#a97526b9c014685dd97dadf4bbdce0f21',1,'neml2::IntraOpThread::IntraOpThread(const IntraOpThread &amp;)=delete'],['../structneml2_1_1IntraOpThread.html#aa844e1d225b733f7e4801037380e8dbf',1,'neml2::IntraOpThread::IntraOpThread(IntraOpThread &amp;&amp;)=delete']]],
   ['inv_29',['inv',['../namespaceneml2_1_1math_1_1linalg.html#aa300036a4e5e38d3f281ef7fb90117e2',1,'neml2::math::linalg']]],
   ['inverse_30',['inverse',['../classneml2_1_1R2Base.html#a7a6e6f1cd384914419098d991dcb01ab',1,'neml2::R2Base::inverse()'],['../classneml2_1_1Rot.html#abffd3c77e357fdb6bba600b7ddfc71de',1,'neml2::Rot::inverse()'],['../classneml2_1_1SR2.html#a10f5d3e2712813d457e0d9db36d9e376',1,'neml2::SR2::inverse()'],['../classneml2_1_1SSR4.html#af5c7db1e5339197b69ada00f31b9ff49',1,'neml2::SSR4::inverse()']]],
   ['inversion_5ftransform_31',['inversion_transform',['../namespaceneml2.html#a543a9159631aeae31a7cccd1b6e41a50',1,'neml2']]],
@@ -46,7 +46,7 @@ var searchData=
   ['isotropicelasticitytensor_43',['IsotropicElasticityTensor',['../classneml2_1_1IsotropicElasticityTensor.html#a5eff99954cf1ce4b9a63855d799b627d',1,'neml2::IsotropicElasticityTensor']]],
   ['isotropichardening_44',['IsotropicHardening',['../classneml2_1_1IsotropicHardening.html#aa1a9bb4383495d684fe4c362ebcfe33e',1,'neml2::IsotropicHardening']]],
   ['isotropichardeningstaticrecovery_45',['IsotropicHardeningStaticRecovery',['../classneml2_1_1IsotropicHardeningStaticRecovery.html#a8a19cd6eaa12b7992fae66918f834dda',1,'neml2::IsotropicHardeningStaticRecovery']]],
-  ['item_46',['Item',['../structneml2_1_1DependencyResolver_1_1Item.html#a074775c49141f1a9e781f88ded075ead',1,'neml2::DependencyResolver::Item']]],
+  ['item_46',['Item',['../structneml2_1_1DependencyResolver_1_1Item.html#ac2aaf6a52e177eb13e1f32ef094073ad',1,'neml2::DependencyResolver::Item']]],
   ['item_5fconsumers_47',['item_consumers',['../classneml2_1_1DependencyResolver.html#a201b2fcc14bade0611c6d90841748bec',1,'neml2::DependencyResolver']]],
   ['item_5fproviders_48',['item_providers',['../classneml2_1_1DependencyResolver.html#af1717716528c1f3fee2ab3b3314d767e',1,'neml2::DependencyResolver']]]
 ];

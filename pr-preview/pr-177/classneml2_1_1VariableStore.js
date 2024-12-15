@@ -1,6 +1,8 @@
 var classneml2_1_1VariableStore =
 [
-    [ "VariableStore", "classneml2_1_1VariableStore.html#aee9a2e9080cf158fe535a56d4ecec295", null ],
+    [ "VariableStore", "classneml2_1_1VariableStore.html#a662f632667b6333411b100b91391e9cb", null ],
+    [ "VariableStore", "classneml2_1_1VariableStore.html#a8722ff5e19bba3f8705979539454033b", null ],
+    [ "VariableStore", "classneml2_1_1VariableStore.html#adf6e2c9f7e0845efcdb28bec1542e5a5", null ],
     [ "~VariableStore", "classneml2_1_1VariableStore.html#a3b95f80628615e9fd70b3b8da7dc656f", null ],
     [ "assign_input", "classneml2_1_1VariableStore.html#ad064428f4c4e984fff7d9e6a0a754676", null ],
     [ "assign_output", "classneml2_1_1VariableStore.html#a00c2761343420b6cff38b8687e4e0e06", null ],
@@ -22,6 +24,8 @@ var classneml2_1_1VariableStore =
     [ "input_variable", "classneml2_1_1VariableStore.html#ad418c71946516e9706b8579cc620c473", null ],
     [ "input_variables", "classneml2_1_1VariableStore.html#a5ebd74ffd80501dd16e599063a308100", null ],
     [ "input_variables", "classneml2_1_1VariableStore.html#a6fe8c8334ee00e6dfe9b61c74ab99989", null ],
+    [ "operator=", "classneml2_1_1VariableStore.html#ab9d54c63d302afe8c733b93f8544ed4f", null ],
+    [ "operator=", "classneml2_1_1VariableStore.html#abf5d305ee5284a5fc9ee4884606cb4f6", null ],
     [ "output_axis", "classneml2_1_1VariableStore.html#a5211b18ee35729050e2d1d237a73c655", null ],
     [ "output_axis", "classneml2_1_1VariableStore.html#ad8bc07b5cd84ef12faff46908cbd2918", null ],
     [ "output_variable", "classneml2_1_1VariableStore.html#a172c31006a1d15e1bc4d70b084e2dae2", null ],

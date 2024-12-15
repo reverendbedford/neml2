@@ -53,7 +53,7 @@ var searchData=
   ['buffer_50',['BUFFER',['../namespaceneml2.html#ab600865ffa5d3681d723ef019d109535a17de626bcae5109bb2f7a66dfc4a8a1d',1,'neml2']]],
   ['buffer_51',['Buffer',['../system-data.html#autotoc_md34',1,'']]],
   ['buffer_5fname_5fseparator_52',['buffer_name_separator',['../namespaceneml2.html#a4cc04b41a4a39d17f26099be93ef949f',1,'neml2']]],
-  ['bufferstore_53',['BufferStore',['../classneml2_1_1BufferStore.html',1,'BufferStore'],['../classneml2_1_1BufferStore.html#ac9a0513f22b822f9513059d10d072124',1,'neml2::BufferStore::BufferStore()']]],
+  ['bufferstore_53',['BufferStore',['../classneml2_1_1BufferStore.html',1,'BufferStore'],['../classneml2_1_1BufferStore.html#a4f37326fece4816dfb1a000ce9930d62',1,'neml2::BufferStore::BufferStore(OptionSet options, NEML2Object *object)'],['../classneml2_1_1BufferStore.html#a3ade3cdf681ff0df2c151fbeb3ad7643',1,'neml2::BufferStore::BufferStore(const BufferStore &amp;)=delete'],['../classneml2_1_1BufferStore.html#aea4d0eda61bc986e02d1071be7912a6d',1,'neml2::BufferStore::BufferStore(BufferStore &amp;&amp;)=delete']]],
   ['build_20and_20install_54',['Build and install',['../install.html#autotoc_md16',1,'']]],
   ['build_20customization_55',['Build customization',['../install.html#install-build-customization',1,'']]],
   ['builder_56',['builder',['../classneml2_1_1Registry.html#a5e569192804822d0600e223341202e0a',1,'neml2::Registry']]],

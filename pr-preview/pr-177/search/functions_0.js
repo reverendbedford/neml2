@@ -5,7 +5,7 @@ var searchData=
   ['a2_2',['a2',['../classneml2_1_1crystallography_1_1CrystalGeometry.html#ae408ae12ed540c5809614973bb3948e7',1,'neml2::crystallography::CrystalGeometry']]],
   ['a3_3',['a3',['../classneml2_1_1crystallography_1_1CrystalGeometry.html#aa7b95df30a89dea7395524d959e4996d',1,'neml2::crystallography::CrystalGeometry']]],
   ['abs_4',['abs',['../namespaceneml2.html#afc4c434218699646c0011c0467b2e139',1,'neml2::abs()'],['../namespaceneml2_1_1math.html#a9dcfa2c754f2a9b623034f2da8d20cac',1,'neml2::math::abs()']]],
-  ['add_5',['add',['../classneml2_1_1Registry.html#ad927078002bbca4fa72367b964ca2c51',1,'neml2::Registry']]],
+  ['add_5',['add',['../classneml2_1_1Registry.html#adadcce9759678b439278443b8caea939',1,'neml2::Registry']]],
   ['add_5fadditional_5foutbound_5fitem_6',['add_additional_outbound_item',['../classneml2_1_1DependencyResolver.html#a4224c5895e0b6e80da6234b4e91678fd',1,'neml2::DependencyResolver']]],
   ['add_5fnode_7',['add_node',['../classneml2_1_1DependencyResolver.html#acb0aa5aef7ca2b96310dd488f657c7b1',1,'neml2::DependencyResolver']]],
   ['add_5fshapes_8',['add_shapes',['../namespaceneml2_1_1utils.html#a39eba50b2ce9eee228416c8ab4da7480',1,'neml2::utils']]],
