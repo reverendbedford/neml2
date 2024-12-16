@@ -89,7 +89,7 @@ class Configuration:
     }
 
 
-subaxes = neml2.reserved_subaxis_names()
+subaxes = neml2.reserved.subaxis_names
 
 
 def compose(model, config=Configuration()):
