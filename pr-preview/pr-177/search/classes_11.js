@@ -9,7 +9,7 @@ var searchData=
   ['r8_6',['R8',['../classneml2_1_1R8.html',1,'neml2']]],
   ['rateindependentplasticflowconstraint_7',['RateIndependentPlasticFlowConstraint',['../classneml2_1_1RateIndependentPlasticFlowConstraint.html',1,'neml2']]],
   ['registry_8',['Registry',['../classneml2_1_1Registry.html',1,'neml2']]],
-  ['res_9',['RES',['../structneml2_1_1NonlinearSystem_1_1RES.html',1,'neml2::NonlinearSystem']]],
+  ['res_9',['Res',['../structneml2_1_1NonlinearSystem_1_1Res.html',1,'neml2::NonlinearSystem']]],
   ['resolvedshear_10',['ResolvedShear',['../classneml2_1_1ResolvedShear.html',1,'neml2']]],
   ['result_11',['Result',['../structneml2_1_1NonlinearSolver_1_1Result.html',1,'neml2::NonlinearSolver']]],
   ['rot_12',['Rot',['../classneml2_1_1Rot.html',1,'neml2']]],

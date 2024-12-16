@@ -233,11 +233,11 @@ Inheritance diagram for NonlinearSystem:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structneml2_1_1NonlinearSystem_1_1JAC.html">JAC</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structneml2_1_1NonlinearSystem_1_1Jac.html">Jac</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structneml2_1_1NonlinearSystem_1_1RES.html">RES</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structneml2_1_1NonlinearSystem_1_1Res.html">Res</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structneml2_1_1NonlinearSystem_1_1SOL.html">SOL</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structneml2_1_1NonlinearSystem_1_1Sol.html">Sol</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -254,57 +254,57 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aa62a80340427a799c1c39dafcc509241"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a596124ec7dce0384ee6e74070aa574dc" id="r_a596124ec7dce0384ee6e74070aa574dc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a596124ec7dce0384ee6e74070aa574dc">NonlinearSystem</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1OptionSet.html">OptionSet</a> &amp;options)</td></tr>
 <tr class="separator:a596124ec7dce0384ee6e74070aa574dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f7060dc17ec51fef66ceb888df24540" id="r_a1f7060dc17ec51fef66ceb888df24540"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1f7060dc17ec51fef66ceb888df24540">init_scaling</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1SOL.html">SOL</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">x</a>, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">bool</a> verbose=<a class="el" href="classneml2_1_1CrossRef.html">false</a>)</td></tr>
-<tr class="memdesc:a1f7060dc17ec51fef66ceb888df24540"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute algebraic Jacobian-based automatic scaling following <a href="https://cs.stanford.edu/people/paulliu/files/cs517-project.pdf">https://cs.stanford.edu/people/paulliu/files/cs517-project.pdf</a>.  <br /></td></tr>
-<tr class="separator:a1f7060dc17ec51fef66ceb888df24540"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b26d61bc8411320fde581d4983b810f" id="r_a0b26d61bc8411320fde581d4983b810f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structneml2_1_1NonlinearSystem_1_1RES.html">RES</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">true</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0b26d61bc8411320fde581d4983b810f">scale</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1RES.html">RES</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">r</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
-<tr class="memdesc:a0b26d61bc8411320fde581d4983b810f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply scaling to the residual.  <br /></td></tr>
-<tr class="separator:a0b26d61bc8411320fde581d4983b810f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9ed87efb30012973a2f6f7c1c6b3ab36" id="r_a9ed87efb30012973a2f6f7c1c6b3ab36"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structneml2_1_1NonlinearSystem_1_1RES.html">RES</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9ed87efb30012973a2f6f7c1c6b3ab36">unscale</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1RES.html">RES</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">true</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">r</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
-<tr class="memdesc:a9ed87efb30012973a2f6f7c1c6b3ab36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove scaling to the residual.  <br /></td></tr>
-<tr class="separator:a9ed87efb30012973a2f6f7c1c6b3ab36"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26b99a37ef581ac2cbeca0da3125262f" id="r_a26b99a37ef581ac2cbeca0da3125262f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structneml2_1_1NonlinearSystem_1_1JAC.html">JAC</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">true</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a26b99a37ef581ac2cbeca0da3125262f">scale</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1JAC.html">JAC</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">J</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
-<tr class="memdesc:a26b99a37ef581ac2cbeca0da3125262f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply scaling to the Jacobian.  <br /></td></tr>
-<tr class="separator:a26b99a37ef581ac2cbeca0da3125262f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae24adc1e3abc042c72d16b2bc73db05f" id="r_ae24adc1e3abc042c72d16b2bc73db05f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structneml2_1_1NonlinearSystem_1_1JAC.html">JAC</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae24adc1e3abc042c72d16b2bc73db05f">unscale</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1JAC.html">JAC</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">true</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">J</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
-<tr class="memdesc:ae24adc1e3abc042c72d16b2bc73db05f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove scaling to the Jacobian.  <br /></td></tr>
-<tr class="separator:ae24adc1e3abc042c72d16b2bc73db05f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d7dd31217ec7c68e137c3bd95d4a14d" id="r_a0d7dd31217ec7c68e137c3bd95d4a14d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structneml2_1_1NonlinearSystem_1_1SOL.html">SOL</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">true</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0d7dd31217ec7c68e137c3bd95d4a14d">scale</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1SOL.html">SOL</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">u</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
-<tr class="memdesc:a0d7dd31217ec7c68e137c3bd95d4a14d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply scaling to the solution.  <br /></td></tr>
-<tr class="separator:a0d7dd31217ec7c68e137c3bd95d4a14d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af1c5247599fe39a642fad07e1dff368d" id="r_af1c5247599fe39a642fad07e1dff368d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structneml2_1_1NonlinearSystem_1_1SOL.html">SOL</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af1c5247599fe39a642fad07e1dff368d">unscale</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1SOL.html">SOL</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">true</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">u</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
-<tr class="memdesc:af1c5247599fe39a642fad07e1dff368d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove scaling to the solution.  <br /></td></tr>
-<tr class="separator:af1c5247599fe39a642fad07e1dff368d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae928a2d5b1f60d47e9e7083e9631cb7f" id="r_ae928a2d5b1f60d47e9e7083e9631cb7f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae928a2d5b1f60d47e9e7083e9631cb7f">set_guess</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1SOL.html">SOL</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">true</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">x</a>) <a class="el" href="classneml2_1_1CrossRef.html">final</a></td></tr>
-<tr class="memdesc:ae928a2d5b1f60d47e9e7083e9631cb7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the current guess.  <br /></td></tr>
-<tr class="separator:ae928a2d5b1f60d47e9e7083e9631cb7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b5b60e97d20c98e91c5617ac6272457" id="r_a0b5b60e97d20c98e91c5617ac6272457"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0b5b60e97d20c98e91c5617ac6272457">set_guess</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1SOL.html">SOL</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">x</a>)=0</td></tr>
-<tr class="memdesc:a0b5b60e97d20c98e91c5617ac6272457"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the <em>unscaled</em> current guess.  <br /></td></tr>
-<tr class="separator:a0b5b60e97d20c98e91c5617ac6272457"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7f687244347ec1eaca19694d522b25d" id="r_af7f687244347ec1eaca19694d522b25d"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">bool</a> scaled&gt; </td></tr>
-<tr class="memitem:af7f687244347ec1eaca19694d522b25d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structneml2_1_1NonlinearSystem_1_1RES.html">RES</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#af7f687244347ec1eaca19694d522b25d">residual</a> ()</td></tr>
-<tr class="memdesc:af7f687244347ec1eaca19694d522b25d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assemble and return the residual.  <br /></td></tr>
-<tr class="separator:af7f687244347ec1eaca19694d522b25d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96f19b522daa313d313eed9985c21225" id="r_a96f19b522daa313d313eed9985c21225"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">bool</a> scaled&gt; </td></tr>
-<tr class="memitem:a96f19b522daa313d313eed9985c21225"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structneml2_1_1NonlinearSystem_1_1RES.html">RES</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a96f19b522daa313d313eed9985c21225">residual</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1SOL.html">SOL</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">x</a>)</td></tr>
-<tr class="memdesc:a96f19b522daa313d313eed9985c21225"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenient shortcut to set the current guess, assemble and return the residual.  <br /></td></tr>
-<tr class="separator:a96f19b522daa313d313eed9985c21225"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1cfd31423804d8f999fb63e4cc64d2c8" id="r_a1cfd31423804d8f999fb63e4cc64d2c8"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">bool</a> scaled&gt; </td></tr>
-<tr class="memitem:a1cfd31423804d8f999fb63e4cc64d2c8"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structneml2_1_1NonlinearSystem_1_1JAC.html">JAC</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a1cfd31423804d8f999fb63e4cc64d2c8">Jacobian</a> ()</td></tr>
-<tr class="memdesc:a1cfd31423804d8f999fb63e4cc64d2c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assemble and return the Jacobian.  <br /></td></tr>
-<tr class="separator:a1cfd31423804d8f999fb63e4cc64d2c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4463823daba1d2eb1dd395899add486" id="r_ab4463823daba1d2eb1dd395899add486"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">bool</a> scaled&gt; </td></tr>
-<tr class="memitem:ab4463823daba1d2eb1dd395899add486"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structneml2_1_1NonlinearSystem_1_1JAC.html">JAC</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ab4463823daba1d2eb1dd395899add486">Jacobian</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1SOL.html">SOL</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">x</a>)</td></tr>
-<tr class="memdesc:ab4463823daba1d2eb1dd395899add486"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenient shortcut to set the current guess, assemble and return the Jacobian.  <br /></td></tr>
-<tr class="separator:ab4463823daba1d2eb1dd395899add486"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4684ec0b62b667d9cd3467f942c8aadb" id="r_a4684ec0b62b667d9cd3467f942c8aadb"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">bool</a> scaled&gt; </td></tr>
-<tr class="memitem:a4684ec0b62b667d9cd3467f942c8aadb"><td class="memTemplItemLeft" align="right" valign="top">std::tuple&lt; <a class="el" href="structneml2_1_1NonlinearSystem_1_1RES.html">RES</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt;, <a class="el" href="structneml2_1_1NonlinearSystem_1_1JAC.html">JAC</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a4684ec0b62b667d9cd3467f942c8aadb">residual_and_Jacobian</a> ()</td></tr>
-<tr class="memdesc:a4684ec0b62b667d9cd3467f942c8aadb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assemble and return the residual and Jacobian.  <br /></td></tr>
-<tr class="separator:a4684ec0b62b667d9cd3467f942c8aadb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4ef264934c6165a2292e04c9d0a26b2" id="r_ab4ef264934c6165a2292e04c9d0a26b2"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">bool</a> scaled&gt; </td></tr>
-<tr class="memitem:ab4ef264934c6165a2292e04c9d0a26b2"><td class="memTemplItemLeft" align="right" valign="top">std::tuple&lt; <a class="el" href="structneml2_1_1NonlinearSystem_1_1RES.html">RES</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt;, <a class="el" href="structneml2_1_1NonlinearSystem_1_1JAC.html">JAC</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ab4ef264934c6165a2292e04c9d0a26b2">residual_and_Jacobian</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1SOL.html">SOL</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">x</a>)</td></tr>
-<tr class="memdesc:ab4ef264934c6165a2292e04c9d0a26b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenient shortcut to set the current guess, assemble and return the residual and Jacobian.  <br /></td></tr>
-<tr class="separator:ab4ef264934c6165a2292e04c9d0a26b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefaecce1469990ffdc283e730d26ecb0" id="r_aefaecce1469990ffdc283e730d26ecb0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aefaecce1469990ffdc283e730d26ecb0">init_scaling</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1Sol.html">Sol</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">x</a>, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">bool</a> verbose=<a class="el" href="classneml2_1_1CrossRef.html">false</a>)</td></tr>
+<tr class="memdesc:aefaecce1469990ffdc283e730d26ecb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute algebraic Jacobian-based automatic scaling following <a href="https://cs.stanford.edu/people/paulliu/files/cs517-project.pdf">https://cs.stanford.edu/people/paulliu/files/cs517-project.pdf</a>.  <br /></td></tr>
+<tr class="separator:aefaecce1469990ffdc283e730d26ecb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2aa74f18d2289c28d8f4d1a159038579" id="r_a2aa74f18d2289c28d8f4d1a159038579"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structneml2_1_1NonlinearSystem_1_1Res.html">Res</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">true</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2aa74f18d2289c28d8f4d1a159038579">scale</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1Res.html">Res</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">r</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:a2aa74f18d2289c28d8f4d1a159038579"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply scaling to the residual.  <br /></td></tr>
+<tr class="separator:a2aa74f18d2289c28d8f4d1a159038579"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21817a8ecd07a39276681e9013a0f3a2" id="r_a21817a8ecd07a39276681e9013a0f3a2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structneml2_1_1NonlinearSystem_1_1Res.html">Res</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a21817a8ecd07a39276681e9013a0f3a2">unscale</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1Res.html">Res</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">true</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">r</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:a21817a8ecd07a39276681e9013a0f3a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove scaling to the residual.  <br /></td></tr>
+<tr class="separator:a21817a8ecd07a39276681e9013a0f3a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a59b787a2cd9f3fafbac37e158ffa12" id="r_a8a59b787a2cd9f3fafbac37e158ffa12"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structneml2_1_1NonlinearSystem_1_1Jac.html">Jac</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">true</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8a59b787a2cd9f3fafbac37e158ffa12">scale</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1Jac.html">Jac</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">J</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:a8a59b787a2cd9f3fafbac37e158ffa12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply scaling to the Jacobian.  <br /></td></tr>
+<tr class="separator:a8a59b787a2cd9f3fafbac37e158ffa12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07758c3db52fff6aafc4f7b5ebe54275" id="r_a07758c3db52fff6aafc4f7b5ebe54275"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structneml2_1_1NonlinearSystem_1_1Jac.html">Jac</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a07758c3db52fff6aafc4f7b5ebe54275">unscale</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1Jac.html">Jac</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">true</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">J</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:a07758c3db52fff6aafc4f7b5ebe54275"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove scaling to the Jacobian.  <br /></td></tr>
+<tr class="separator:a07758c3db52fff6aafc4f7b5ebe54275"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5fd42d4fc4072093d4b375d79ee9635" id="r_aa5fd42d4fc4072093d4b375d79ee9635"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structneml2_1_1NonlinearSystem_1_1Sol.html">Sol</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">true</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa5fd42d4fc4072093d4b375d79ee9635">scale</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1Sol.html">Sol</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">u</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:aa5fd42d4fc4072093d4b375d79ee9635"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply scaling to the solution.  <br /></td></tr>
+<tr class="separator:aa5fd42d4fc4072093d4b375d79ee9635"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc9e671a2ce54839203af58800c2e626" id="r_afc9e671a2ce54839203af58800c2e626"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structneml2_1_1NonlinearSystem_1_1Sol.html">Sol</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afc9e671a2ce54839203af58800c2e626">unscale</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1Sol.html">Sol</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">true</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">u</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:afc9e671a2ce54839203af58800c2e626"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove scaling to the solution.  <br /></td></tr>
+<tr class="separator:afc9e671a2ce54839203af58800c2e626"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad07065c6fa5972f40c95e69e648303e2" id="r_ad07065c6fa5972f40c95e69e648303e2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad07065c6fa5972f40c95e69e648303e2">set_guess</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1Sol.html">Sol</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">true</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">x</a>) <a class="el" href="classneml2_1_1CrossRef.html">final</a></td></tr>
+<tr class="memdesc:ad07065c6fa5972f40c95e69e648303e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the current guess.  <br /></td></tr>
+<tr class="separator:ad07065c6fa5972f40c95e69e648303e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abee34d5b44ad17d75366b861d6d96087" id="r_abee34d5b44ad17d75366b861d6d96087"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abee34d5b44ad17d75366b861d6d96087">set_guess</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1Sol.html">Sol</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">x</a>)=0</td></tr>
+<tr class="memdesc:abee34d5b44ad17d75366b861d6d96087"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the <em>unscaled</em> current guess.  <br /></td></tr>
+<tr class="separator:abee34d5b44ad17d75366b861d6d96087"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acce075f374a6365a165a48778f79eb0b" id="r_acce075f374a6365a165a48778f79eb0b"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">bool</a> scaled&gt; </td></tr>
+<tr class="memitem:acce075f374a6365a165a48778f79eb0b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structneml2_1_1NonlinearSystem_1_1Res.html">Res</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#acce075f374a6365a165a48778f79eb0b">residual</a> ()</td></tr>
+<tr class="memdesc:acce075f374a6365a165a48778f79eb0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assemble and return the residual.  <br /></td></tr>
+<tr class="separator:acce075f374a6365a165a48778f79eb0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82b1a612a16e4ea1e08c73e9955bea22" id="r_a82b1a612a16e4ea1e08c73e9955bea22"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">bool</a> scaled&gt; </td></tr>
+<tr class="memitem:a82b1a612a16e4ea1e08c73e9955bea22"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structneml2_1_1NonlinearSystem_1_1Res.html">Res</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a82b1a612a16e4ea1e08c73e9955bea22">residual</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1Sol.html">Sol</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">x</a>)</td></tr>
+<tr class="memdesc:a82b1a612a16e4ea1e08c73e9955bea22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenient shortcut to set the current guess, assemble and return the residual.  <br /></td></tr>
+<tr class="separator:a82b1a612a16e4ea1e08c73e9955bea22"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a514a33c0092202b5fc7c1e902b2fec83" id="r_a514a33c0092202b5fc7c1e902b2fec83"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">bool</a> scaled&gt; </td></tr>
+<tr class="memitem:a514a33c0092202b5fc7c1e902b2fec83"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structneml2_1_1NonlinearSystem_1_1Jac.html">Jac</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a514a33c0092202b5fc7c1e902b2fec83">Jacobian</a> ()</td></tr>
+<tr class="memdesc:a514a33c0092202b5fc7c1e902b2fec83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assemble and return the Jacobian.  <br /></td></tr>
+<tr class="separator:a514a33c0092202b5fc7c1e902b2fec83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebfd50b56f05403c0409df35a6ad53fa" id="r_aebfd50b56f05403c0409df35a6ad53fa"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">bool</a> scaled&gt; </td></tr>
+<tr class="memitem:aebfd50b56f05403c0409df35a6ad53fa"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structneml2_1_1NonlinearSystem_1_1Jac.html">Jac</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aebfd50b56f05403c0409df35a6ad53fa">Jacobian</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1Sol.html">Sol</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">x</a>)</td></tr>
+<tr class="memdesc:aebfd50b56f05403c0409df35a6ad53fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenient shortcut to set the current guess, assemble and return the Jacobian.  <br /></td></tr>
+<tr class="separator:aebfd50b56f05403c0409df35a6ad53fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb0929886018f57740cd7f403aeac5ec" id="r_afb0929886018f57740cd7f403aeac5ec"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">bool</a> scaled&gt; </td></tr>
+<tr class="memitem:afb0929886018f57740cd7f403aeac5ec"><td class="memTemplItemLeft" align="right" valign="top">std::tuple&lt; <a class="el" href="structneml2_1_1NonlinearSystem_1_1Res.html">Res</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt;, <a class="el" href="structneml2_1_1NonlinearSystem_1_1Jac.html">Jac</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#afb0929886018f57740cd7f403aeac5ec">residual_and_Jacobian</a> ()</td></tr>
+<tr class="memdesc:afb0929886018f57740cd7f403aeac5ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assemble and return the residual and Jacobian.  <br /></td></tr>
+<tr class="separator:afb0929886018f57740cd7f403aeac5ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad33dabefa268e0bd031b5cb717b2a1c8" id="r_ad33dabefa268e0bd031b5cb717b2a1c8"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">bool</a> scaled&gt; </td></tr>
+<tr class="memitem:ad33dabefa268e0bd031b5cb717b2a1c8"><td class="memTemplItemLeft" align="right" valign="top">std::tuple&lt; <a class="el" href="structneml2_1_1NonlinearSystem_1_1Res.html">Res</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt;, <a class="el" href="structneml2_1_1NonlinearSystem_1_1Jac.html">Jac</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ad33dabefa268e0bd031b5cb717b2a1c8">residual_and_Jacobian</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1Sol.html">Sol</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt; &amp;<a class="el" href="classneml2_1_1CrossRef.html">x</a>)</td></tr>
+<tr class="memdesc:ad33dabefa268e0bd031b5cb717b2a1c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenient shortcut to set the current guess, assemble and return the residual and Jacobian.  <br /></td></tr>
+<tr class="separator:ad33dabefa268e0bd031b5cb717b2a1c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -317,9 +317,9 @@ Static Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a5c5c13661af3cd3fca2a4108069afa9a" id="r_a5c5c13661af3cd3fca2a4108069afa9a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5c5c13661af3cd3fca2a4108069afa9a">assemble</a> (<a class="el" href="structneml2_1_1NonlinearSystem_1_1RES.html">RES</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt; *<a class="el" href="classneml2_1_1CrossRef.html">r</a>, <a class="el" href="structneml2_1_1NonlinearSystem_1_1JAC.html">JAC</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt; *<a class="el" href="classneml2_1_1CrossRef.html">J</a>)=0</td></tr>
-<tr class="memdesc:a5c5c13661af3cd3fca2a4108069afa9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the <em>unscaled</em> residual and Jacobian.  <br /></td></tr>
-<tr class="separator:a5c5c13661af3cd3fca2a4108069afa9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39909542e5574c39214233c3641b3535" id="r_a39909542e5574c39214233c3641b3535"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a39909542e5574c39214233c3641b3535">assemble</a> (<a class="el" href="structneml2_1_1NonlinearSystem_1_1Res.html">Res</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt; *<a class="el" href="classneml2_1_1CrossRef.html">r</a>, <a class="el" href="structneml2_1_1NonlinearSystem_1_1Jac.html">Jac</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt; *<a class="el" href="classneml2_1_1CrossRef.html">J</a>)=0</td></tr>
+<tr class="memdesc:a39909542e5574c39214233c3641b3535"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the <em>unscaled</em> residual and Jacobian.  <br /></td></tr>
+<tr class="separator:a39909542e5574c39214233c3641b3535"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -436,8 +436,8 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a5c5c13661af3cd3fca2a4108069afa9a" name="a5c5c13661af3cd3fca2a4108069afa9a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5c5c13661af3cd3fca2a4108069afa9a">&#9670;&#160;</a></span>assemble()</h2>
+<a id="a39909542e5574c39214233c3641b3535" name="a39909542e5574c39214233c3641b3535"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39909542e5574c39214233c3641b3535">&#9670;&#160;</a></span>assemble()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -448,12 +448,12 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a> assemble </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structneml2_1_1NonlinearSystem_1_1RES.html">RES</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt; *</td>          <td class="paramname"><span class="paramname"><em>r</em>, </span></td>
+          <td class="paramtype"><a class="el" href="structneml2_1_1NonlinearSystem_1_1Res.html">Res</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt; *</td>          <td class="paramname"><span class="paramname"><em>r</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structneml2_1_1NonlinearSystem_1_1JAC.html">JAC</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt; *</td>          <td class="paramname"><span class="paramname"><em>J</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="structneml2_1_1NonlinearSystem_1_1Jac.html">Jac</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt; *</td>          <td class="paramname"><span class="paramname"><em>J</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -472,7 +472,7 @@ Protected Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classneml2_1_1Model.html#a591b19809397724a8e874f30ac65c4e1">Model</a>, and <a class="el" href="classneml2_1_1TrustRegionSubProblem.html#a56124f4e3bd148adffb515aa47bae7be">TrustRegionSubProblem</a>.</p>
+<p>Implemented in <a class="el" href="classneml2_1_1Model.html#a7978a90db917dcfdee08c1fb8fe20f0b">Model</a>, and <a class="el" href="classneml2_1_1TrustRegionSubProblem.html#a8ddd1df8f774635eed4b57d6c7bce44e">TrustRegionSubProblem</a>.</p>
 
 </div>
 </div>
@@ -551,8 +551,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a1f7060dc17ec51fef66ceb888df24540" name="a1f7060dc17ec51fef66ceb888df24540"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1f7060dc17ec51fef66ceb888df24540">&#9670;&#160;</a></span>init_scaling()</h2>
+<a id="aefaecce1469990ffdc283e730d26ecb0" name="aefaecce1469990ffdc283e730d26ecb0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aefaecce1469990ffdc283e730d26ecb0">&#9670;&#160;</a></span>init_scaling()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -563,7 +563,7 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">void</a> init_scaling </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1SOL.html">SOL</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>x</em>, </span></td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1Sol.html">Sol</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>x</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -600,8 +600,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a1cfd31423804d8f999fb63e4cc64d2c8" name="a1cfd31423804d8f999fb63e4cc64d2c8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1cfd31423804d8f999fb63e4cc64d2c8">&#9670;&#160;</a></span>Jacobian() <span class="overload">[1/2]</span></h2>
+<a id="a514a33c0092202b5fc7c1e902b2fec83" name="a514a33c0092202b5fc7c1e902b2fec83"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a514a33c0092202b5fc7c1e902b2fec83">&#9670;&#160;</a></span>Jacobian() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -609,7 +609,7 @@ Protected Attributes</h2></td></tr>
 template&lt;<a class="el" href="classneml2_1_1CrossRef.html">bool</a> scaled&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structneml2_1_1NonlinearSystem_1_1JAC.html">NonlinearSystem::JAC</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt; Jacobian </td>
+          <td class="memname"><a class="el" href="structneml2_1_1NonlinearSystem_1_1Jac.html">NonlinearSystem::Jac</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt; Jacobian </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td></td>
@@ -621,8 +621,8 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">bool</a> scaled&gt;
 
 </div>
 </div>
-<a id="ab4463823daba1d2eb1dd395899add486" name="ab4463823daba1d2eb1dd395899add486"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab4463823daba1d2eb1dd395899add486">&#9670;&#160;</a></span>Jacobian() <span class="overload">[2/2]</span></h2>
+<a id="aebfd50b56f05403c0409df35a6ad53fa" name="aebfd50b56f05403c0409df35a6ad53fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aebfd50b56f05403c0409df35a6ad53fa">&#9670;&#160;</a></span>Jacobian() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -630,9 +630,9 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">bool</a> scaled&gt;
 template&lt;<a class="el" href="classneml2_1_1CrossRef.html">bool</a> scaled&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structneml2_1_1NonlinearSystem_1_1JAC.html">NonlinearSystem::JAC</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt; Jacobian </td>
+          <td class="memname"><a class="el" href="structneml2_1_1NonlinearSystem_1_1Jac.html">NonlinearSystem::Jac</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt; Jacobian </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1SOL.html">SOL</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>x</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1Sol.html">Sol</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>x</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -692,8 +692,8 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">bool</a> scaled&gt;
 
 </div>
 </div>
-<a id="af7f687244347ec1eaca19694d522b25d" name="af7f687244347ec1eaca19694d522b25d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af7f687244347ec1eaca19694d522b25d">&#9670;&#160;</a></span>residual() <span class="overload">[1/2]</span></h2>
+<a id="acce075f374a6365a165a48778f79eb0b" name="acce075f374a6365a165a48778f79eb0b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acce075f374a6365a165a48778f79eb0b">&#9670;&#160;</a></span>residual() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -701,7 +701,7 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">bool</a> scaled&gt;
 template&lt;<a class="el" href="classneml2_1_1CrossRef.html">bool</a> scaled&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structneml2_1_1NonlinearSystem_1_1RES.html">NonlinearSystem::RES</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt; residual </td>
+          <td class="memname"><a class="el" href="structneml2_1_1NonlinearSystem_1_1Res.html">NonlinearSystem::Res</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt; residual </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td></td>
@@ -713,8 +713,8 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">bool</a> scaled&gt;
 
 </div>
 </div>
-<a id="a96f19b522daa313d313eed9985c21225" name="a96f19b522daa313d313eed9985c21225"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a96f19b522daa313d313eed9985c21225">&#9670;&#160;</a></span>residual() <span class="overload">[2/2]</span></h2>
+<a id="a82b1a612a16e4ea1e08c73e9955bea22" name="a82b1a612a16e4ea1e08c73e9955bea22"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a82b1a612a16e4ea1e08c73e9955bea22">&#9670;&#160;</a></span>residual() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -722,9 +722,9 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">bool</a> scaled&gt;
 template&lt;<a class="el" href="classneml2_1_1CrossRef.html">bool</a> scaled&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structneml2_1_1NonlinearSystem_1_1RES.html">NonlinearSystem::RES</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt; residual </td>
+          <td class="memname"><a class="el" href="structneml2_1_1NonlinearSystem_1_1Res.html">NonlinearSystem::Res</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt; residual </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1SOL.html">SOL</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>x</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1Sol.html">Sol</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>x</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -734,8 +734,8 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">bool</a> scaled&gt;
 
 </div>
 </div>
-<a id="a4684ec0b62b667d9cd3467f942c8aadb" name="a4684ec0b62b667d9cd3467f942c8aadb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4684ec0b62b667d9cd3467f942c8aadb">&#9670;&#160;</a></span>residual_and_Jacobian() <span class="overload">[1/2]</span></h2>
+<a id="afb0929886018f57740cd7f403aeac5ec" name="afb0929886018f57740cd7f403aeac5ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb0929886018f57740cd7f403aeac5ec">&#9670;&#160;</a></span>residual_and_Jacobian() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -743,7 +743,7 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">bool</a> scaled&gt;
 template&lt;<a class="el" href="classneml2_1_1CrossRef.html">bool</a> scaled&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::tuple&lt; <a class="el" href="structneml2_1_1NonlinearSystem_1_1RES.html">NonlinearSystem::RES</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt;, <a class="el" href="structneml2_1_1NonlinearSystem_1_1JAC.html">NonlinearSystem::JAC</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt; &gt; residual_and_Jacobian </td>
+          <td class="memname">std::tuple&lt; <a class="el" href="structneml2_1_1NonlinearSystem_1_1Res.html">NonlinearSystem::Res</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt;, <a class="el" href="structneml2_1_1NonlinearSystem_1_1Jac.html">NonlinearSystem::Jac</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt; &gt; residual_and_Jacobian </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td></td>
@@ -755,8 +755,8 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">bool</a> scaled&gt;
 
 </div>
 </div>
-<a id="ab4ef264934c6165a2292e04c9d0a26b2" name="ab4ef264934c6165a2292e04c9d0a26b2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab4ef264934c6165a2292e04c9d0a26b2">&#9670;&#160;</a></span>residual_and_Jacobian() <span class="overload">[2/2]</span></h2>
+<a id="ad33dabefa268e0bd031b5cb717b2a1c8" name="ad33dabefa268e0bd031b5cb717b2a1c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad33dabefa268e0bd031b5cb717b2a1c8">&#9670;&#160;</a></span>residual_and_Jacobian() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -764,9 +764,9 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">bool</a> scaled&gt;
 template&lt;<a class="el" href="classneml2_1_1CrossRef.html">bool</a> scaled&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::tuple&lt; <a class="el" href="structneml2_1_1NonlinearSystem_1_1RES.html">NonlinearSystem::RES</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt;, <a class="el" href="structneml2_1_1NonlinearSystem_1_1JAC.html">NonlinearSystem::JAC</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt; &gt; residual_and_Jacobian </td>
+          <td class="memname">std::tuple&lt; <a class="el" href="structneml2_1_1NonlinearSystem_1_1Res.html">NonlinearSystem::Res</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt;, <a class="el" href="structneml2_1_1NonlinearSystem_1_1Jac.html">NonlinearSystem::Jac</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt; &gt; residual_and_Jacobian </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1SOL.html">SOL</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>x</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1Sol.html">Sol</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">scaled</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>x</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -776,16 +776,16 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">bool</a> scaled&gt;
 
 </div>
 </div>
-<a id="a26b99a37ef581ac2cbeca0da3125262f" name="a26b99a37ef581ac2cbeca0da3125262f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a26b99a37ef581ac2cbeca0da3125262f">&#9670;&#160;</a></span>scale() <span class="overload">[1/3]</span></h2>
+<a id="a8a59b787a2cd9f3fafbac37e158ffa12" name="a8a59b787a2cd9f3fafbac37e158ffa12"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a59b787a2cd9f3fafbac37e158ffa12">&#9670;&#160;</a></span>scale() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structneml2_1_1NonlinearSystem_1_1JAC.html">NonlinearSystem::JAC</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">true</a> &gt; scale </td>
+          <td class="memname"><a class="el" href="structneml2_1_1NonlinearSystem_1_1Jac.html">NonlinearSystem::Jac</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">true</a> &gt; scale </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1JAC.html">JAC</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>J</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1Jac.html">Jac</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>J</em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -795,16 +795,16 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">bool</a> scaled&gt;
 
 </div>
 </div>
-<a id="a0b26d61bc8411320fde581d4983b810f" name="a0b26d61bc8411320fde581d4983b810f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0b26d61bc8411320fde581d4983b810f">&#9670;&#160;</a></span>scale() <span class="overload">[2/3]</span></h2>
+<a id="a2aa74f18d2289c28d8f4d1a159038579" name="a2aa74f18d2289c28d8f4d1a159038579"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2aa74f18d2289c28d8f4d1a159038579">&#9670;&#160;</a></span>scale() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structneml2_1_1NonlinearSystem_1_1RES.html">NonlinearSystem::RES</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">true</a> &gt; scale </td>
+          <td class="memname"><a class="el" href="structneml2_1_1NonlinearSystem_1_1Res.html">NonlinearSystem::Res</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">true</a> &gt; scale </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1RES.html">RES</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>r</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1Res.html">Res</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>r</em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -814,16 +814,16 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">bool</a> scaled&gt;
 
 </div>
 </div>
-<a id="a0d7dd31217ec7c68e137c3bd95d4a14d" name="a0d7dd31217ec7c68e137c3bd95d4a14d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0d7dd31217ec7c68e137c3bd95d4a14d">&#9670;&#160;</a></span>scale() <span class="overload">[3/3]</span></h2>
+<a id="aa5fd42d4fc4072093d4b375d79ee9635" name="aa5fd42d4fc4072093d4b375d79ee9635"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa5fd42d4fc4072093d4b375d79ee9635">&#9670;&#160;</a></span>scale() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structneml2_1_1NonlinearSystem_1_1SOL.html">NonlinearSystem::SOL</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">true</a> &gt; scale </td>
+          <td class="memname"><a class="el" href="structneml2_1_1NonlinearSystem_1_1Sol.html">NonlinearSystem::Sol</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">true</a> &gt; scale </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1SOL.html">SOL</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>u</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1Sol.html">Sol</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>u</em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -833,8 +833,8 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">bool</a> scaled&gt;
 
 </div>
 </div>
-<a id="a0b5b60e97d20c98e91c5617ac6272457" name="a0b5b60e97d20c98e91c5617ac6272457"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0b5b60e97d20c98e91c5617ac6272457">&#9670;&#160;</a></span>set_guess() <span class="overload">[1/2]</span></h2>
+<a id="abee34d5b44ad17d75366b861d6d96087" name="abee34d5b44ad17d75366b861d6d96087"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abee34d5b44ad17d75366b861d6d96087">&#9670;&#160;</a></span>set_guess() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -845,7 +845,7 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">bool</a> scaled&gt;
         <tr>
           <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">virtual</a> <a class="el" href="classneml2_1_1CrossRef.html">void</a> set_guess </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1SOL.html">SOL</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>x</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1Sol.html">Sol</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>x</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -858,12 +858,12 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">bool</a> scaled&gt;
 
 <p>Set the <em>unscaled</em> current guess. </p>
 
-<p>Implemented in <a class="el" href="classneml2_1_1Model.html#aab95547a251b187eec45291b84eee516">Model</a>, and <a class="el" href="classneml2_1_1TrustRegionSubProblem.html#a1af2520e1e2e0bb709fc6901ffc6198a">TrustRegionSubProblem</a>.</p>
+<p>Implemented in <a class="el" href="classneml2_1_1Model.html#af10b470a202ed0e8c62d7cee7d490fd5">Model</a>, and <a class="el" href="classneml2_1_1TrustRegionSubProblem.html#af9c9a58c0eef5815fd38e999f2cef5c8">TrustRegionSubProblem</a>.</p>
 
 </div>
 </div>
-<a id="ae928a2d5b1f60d47e9e7083e9631cb7f" name="ae928a2d5b1f60d47e9e7083e9631cb7f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae928a2d5b1f60d47e9e7083e9631cb7f">&#9670;&#160;</a></span>set_guess() <span class="overload">[2/2]</span></h2>
+<a id="ad07065c6fa5972f40c95e69e648303e2" name="ad07065c6fa5972f40c95e69e648303e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad07065c6fa5972f40c95e69e648303e2">&#9670;&#160;</a></span>set_guess() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -874,7 +874,7 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">bool</a> scaled&gt;
         <tr>
           <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">void</a> set_guess </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1SOL.html">SOL</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">true</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>x</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1Sol.html">Sol</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">true</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>x</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -889,16 +889,16 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">bool</a> scaled&gt;
 
 </div>
 </div>
-<a id="ae24adc1e3abc042c72d16b2bc73db05f" name="ae24adc1e3abc042c72d16b2bc73db05f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae24adc1e3abc042c72d16b2bc73db05f">&#9670;&#160;</a></span>unscale() <span class="overload">[1/3]</span></h2>
+<a id="a07758c3db52fff6aafc4f7b5ebe54275" name="a07758c3db52fff6aafc4f7b5ebe54275"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07758c3db52fff6aafc4f7b5ebe54275">&#9670;&#160;</a></span>unscale() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structneml2_1_1NonlinearSystem_1_1JAC.html">NonlinearSystem::JAC</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt; unscale </td>
+          <td class="memname"><a class="el" href="structneml2_1_1NonlinearSystem_1_1Jac.html">NonlinearSystem::Jac</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt; unscale </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1JAC.html">JAC</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">true</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>J</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1Jac.html">Jac</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">true</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>J</em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -908,16 +908,16 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">bool</a> scaled&gt;
 
 </div>
 </div>
-<a id="a9ed87efb30012973a2f6f7c1c6b3ab36" name="a9ed87efb30012973a2f6f7c1c6b3ab36"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9ed87efb30012973a2f6f7c1c6b3ab36">&#9670;&#160;</a></span>unscale() <span class="overload">[2/3]</span></h2>
+<a id="a21817a8ecd07a39276681e9013a0f3a2" name="a21817a8ecd07a39276681e9013a0f3a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a21817a8ecd07a39276681e9013a0f3a2">&#9670;&#160;</a></span>unscale() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structneml2_1_1NonlinearSystem_1_1RES.html">NonlinearSystem::RES</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt; unscale </td>
+          <td class="memname"><a class="el" href="structneml2_1_1NonlinearSystem_1_1Res.html">NonlinearSystem::Res</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt; unscale </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1RES.html">RES</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">true</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>r</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1Res.html">Res</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">true</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>r</em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -927,16 +927,16 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">bool</a> scaled&gt;
 
 </div>
 </div>
-<a id="af1c5247599fe39a642fad07e1dff368d" name="af1c5247599fe39a642fad07e1dff368d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af1c5247599fe39a642fad07e1dff368d">&#9670;&#160;</a></span>unscale() <span class="overload">[3/3]</span></h2>
+<a id="afc9e671a2ce54839203af58800c2e626" name="afc9e671a2ce54839203af58800c2e626"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc9e671a2ce54839203af58800c2e626">&#9670;&#160;</a></span>unscale() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structneml2_1_1NonlinearSystem_1_1SOL.html">NonlinearSystem::SOL</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt; unscale </td>
+          <td class="memname"><a class="el" href="structneml2_1_1NonlinearSystem_1_1Sol.html">NonlinearSystem::Sol</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">false</a> &gt; unscale </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1SOL.html">SOL</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">true</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>u</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="structneml2_1_1NonlinearSystem_1_1Sol.html">Sol</a>&lt; <a class="el" href="classneml2_1_1CrossRef.html">true</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>u</em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>

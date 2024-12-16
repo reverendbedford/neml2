@@ -116,10 +116,10 @@ $(function(){initNavTree('classneml2_1_1VectorAssembler.html',''); initResizable
 </div><!--header-->
 <div class="contents">
 
-<p>Helper to assemble a vector of tensors into a single tensor and also to disassemble a tensor into a map of tensors.  
+<p>Helper to assemble a vector of tensors into a single tensor and also to split a tensor into a map of tensors.  
  <a href="#details">More...</a></p>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Helper to assemble a vector of tensors into a single tensor and also to disassemble a tensor into a map of tensors. </p>
+<div class="textblock"><p>Helper to assemble a vector of tensors into a single tensor and also to split a tensor into a map of tensors. </p>
 </div>
 <p><code>#include &lt;<a class="el" href="Assembler_8h_source.html">Assembler.h</a>&gt;</code></p>
 <table class="memberdecls">
@@ -127,15 +127,15 @@ $(function(){initNavTree('classneml2_1_1VectorAssembler.html',''); initResizable
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a71bd6157ed64e4ce783ececc1c2d7b8a" id="r_a71bd6157ed64e4ce783ececc1c2d7b8a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a71bd6157ed64e4ce783ececc1c2d7b8a">VectorAssembler</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledAxis.html">LabeledAxis</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">axis</a>)</td></tr>
 <tr class="separator:a71bd6157ed64e4ce783ececc1c2d7b8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afd4087d8431bd0ea17cbbc8d180b0793" id="r_afd4087d8431bd0ea17cbbc8d180b0793"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afd4087d8431bd0ea17cbbc8d180b0793">assemble</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="namespaceneml2.html#a22b998dd10e5127283599bc49bee5d16">ValueMap</a> &amp;) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
-<tr class="memdesc:afd4087d8431bd0ea17cbbc8d180b0793"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assemble a vector of vectors (by variables)  <br /></td></tr>
-<tr class="separator:afd4087d8431bd0ea17cbbc8d180b0793"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7098e0211d4fccb488dffd20180b840a" id="r_a7098e0211d4fccb488dffd20180b840a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceneml2.html#a22b998dd10e5127283599bc49bee5d16">ValueMap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7098e0211d4fccb488dffd20180b840a">disassemble</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
-<tr class="memdesc:a7098e0211d4fccb488dffd20180b840a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Split the vector (by variables)  <br /></td></tr>
-<tr class="separator:a7098e0211d4fccb488dffd20180b840a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a55a39ab841c4af56e8e67b576dbc7195" id="r_a55a39ab841c4af56e8e67b576dbc7195"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceneml2.html#a22b998dd10e5127283599bc49bee5d16">ValueMap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a55a39ab841c4af56e8e67b576dbc7195">split</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
-<tr class="memdesc:a55a39ab841c4af56e8e67b576dbc7195"><td class="mdescLeft">&#160;</td><td class="mdescRight">Split the vector (by subaxes)  <br /></td></tr>
-<tr class="separator:a55a39ab841c4af56e8e67b576dbc7195"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9602ccc4344c1fd16e9334427403c16b" id="r_a9602ccc4344c1fd16e9334427403c16b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9602ccc4344c1fd16e9334427403c16b">assemble_by_variable</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="namespaceneml2.html#a22b998dd10e5127283599bc49bee5d16">ValueMap</a> &amp;) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:a9602ccc4344c1fd16e9334427403c16b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assemble a vector of vectors (by variables)  <br /></td></tr>
+<tr class="separator:a9602ccc4344c1fd16e9334427403c16b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a108323e051fd2a7f0bc3516328b0e5fc" id="r_a108323e051fd2a7f0bc3516328b0e5fc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceneml2.html#a22b998dd10e5127283599bc49bee5d16">ValueMap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a108323e051fd2a7f0bc3516328b0e5fc">split_by_variable</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:a108323e051fd2a7f0bc3516328b0e5fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Split the vector (by variables)  <br /></td></tr>
+<tr class="separator:a108323e051fd2a7f0bc3516328b0e5fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59a54ad7308888de9d5628a66ec427a7" id="r_a59a54ad7308888de9d5628a66ec427a7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceneml2.html#a22b998dd10e5127283599bc49bee5d16">ValueMap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a59a54ad7308888de9d5628a66ec427a7">split_by_subaxis</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:a59a54ad7308888de9d5628a66ec427a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Split the vector (by subaxes)  <br /></td></tr>
+<tr class="separator:a59a54ad7308888de9d5628a66ec427a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a71bd6157ed64e4ce783ececc1c2d7b8a" name="a71bd6157ed64e4ce783ececc1c2d7b8a"></a>
@@ -164,14 +164,14 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="afd4087d8431bd0ea17cbbc8d180b0793" name="afd4087d8431bd0ea17cbbc8d180b0793"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afd4087d8431bd0ea17cbbc8d180b0793">&#9670;&#160;</a></span>assemble()</h2>
+<a id="a9602ccc4344c1fd16e9334427403c16b" name="a9602ccc4344c1fd16e9334427403c16b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9602ccc4344c1fd16e9334427403c16b">&#9670;&#160;</a></span>assemble_by_variable()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a> assemble </td>
+          <td class="memname"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a> assemble_by_variable </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="namespaceneml2.html#a22b998dd10e5127283599bc49bee5d16">ValueMap</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>vals_dict</em></span></td><td>)</td>
           <td> const</td>
@@ -183,33 +183,14 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a7098e0211d4fccb488dffd20180b840a" name="a7098e0211d4fccb488dffd20180b840a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7098e0211d4fccb488dffd20180b840a">&#9670;&#160;</a></span>disassemble()</h2>
+<a id="a59a54ad7308888de9d5628a66ec427a7" name="a59a54ad7308888de9d5628a66ec427a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59a54ad7308888de9d5628a66ec427a7">&#9670;&#160;</a></span>split_by_subaxis()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceneml2.html#a22b998dd10e5127283599bc49bee5d16">ValueMap</a> disassemble </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>tensor</em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Split the vector (by variables) </p>
-
-</div>
-</div>
-<a id="a55a39ab841c4af56e8e67b576dbc7195" name="a55a39ab841c4af56e8e67b576dbc7195"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a55a39ab841c4af56e8e67b576dbc7195">&#9670;&#160;</a></span>split()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::map&lt; <a class="el" href="namespaceneml2.html#a4e8b29168cc98d79ef697666fa7ee532">SubaxisName</a>, <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &gt; split </td>
+          <td class="memname">std::map&lt; <a class="el" href="namespaceneml2.html#a4e8b29168cc98d79ef697666fa7ee532">SubaxisName</a>, <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &gt; split_by_subaxis </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>tensor</em></span></td><td>)</td>
           <td> const</td>
@@ -218,6 +199,25 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Split the vector (by subaxes) </p>
+
+</div>
+</div>
+<a id="a108323e051fd2a7f0bc3516328b0e5fc" name="a108323e051fd2a7f0bc3516328b0e5fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a108323e051fd2a7f0bc3516328b0e5fc">&#9670;&#160;</a></span>split_by_variable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceneml2.html#a22b998dd10e5127283599bc49bee5d16">ValueMap</a> split_by_variable </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>tensor</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Split the vector (by variables) </p>
 
 </div>
 </div>

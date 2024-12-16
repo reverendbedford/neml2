@@ -186,7 +186,5 @@ var annotated =
       [ "YieldFunction", "classneml2_1_1YieldFunction.html", "classneml2_1_1YieldFunction" ],
       [ "ZerosPrimitiveTensor", "classneml2_1_1ZerosPrimitiveTensor.html", "classneml2_1_1ZerosPrimitiveTensor" ],
       [ "ZerosTensor", "classneml2_1_1ZerosTensor.html", "classneml2_1_1ZerosTensor" ]
-    ] ],
-    [ "enable_bitmask_operators", "structenable__bitmask__operators.html", null ],
-    [ "enable_bitmask_operators< neml2::FType >", "structenable__bitmask__operators_3_01neml2_1_1FType_01_4.html", null ]
+    ] ]
 ];

@@ -39,7 +39,7 @@ var searchData=
   ['powerlawsliprule_36',['PowerLawSlipRule',['../classneml2_1_1PowerLawSlipRule.html',1,'PowerLawSlipRule'],['../classneml2_1_1PowerLawSlipRule.html#a2d3075db2c674c90b8485db750c3766f',1,'neml2::PowerLawSlipRule::PowerLawSlipRule()'],['../syntax-models.html#powerlawsliprule',1,'PowerLawSlipRule']]],
   ['preconditioned_5fdirection_37',['preconditioned_direction',['../classneml2_1_1TrustRegionSubProblem.html#a0580c90a15bc54561f1a6a028a68b5b3',1,'neml2::TrustRegionSubProblem']]],
   ['preconditioned_5fsolve_38',['preconditioned_solve',['../classneml2_1_1TrustRegionSubProblem.html#a94249531de502762035496ba1d17a42e',1,'neml2::TrustRegionSubProblem']]],
-  ['prepare_39',['prepare',['../classneml2_1_1Newton.html#a3f5e3f9e32c31aad8b64acaa71dfae60',1,'neml2::Newton::prepare()'],['../classneml2_1_1NewtonWithTrustRegion.html#af4de5e2905bfbbe1aec2c064589ce6d8',1,'neml2::NewtonWithTrustRegion::prepare()']]],
+  ['prepare_39',['prepare',['../classneml2_1_1Newton.html#a6b596f9d00fc4927ddaeccbff532c33d',1,'neml2::Newton::prepare()'],['../classneml2_1_1NewtonWithTrustRegion.html#a7cf0b6a59910a48c193d6e5ecc4f219c',1,'neml2::NewtonWithTrustRegion::prepare()']]],
   ['prepend_40',['prepend',['../classneml2_1_1LabeledAxisAccessor.html#a54a0457553ab1f399991a41c36b13b1f',1,'neml2::LabeledAxisAccessor']]],
   ['prerequisites_41',['Prerequisites',['../install.html#autotoc_md12',1,'']]],
   ['prev_5fbool_42',['prev_bool',['../structneml2_1_1SolvingNonlinearSystem.html#ad5fcb4e83a8cece704346724a64eaec1',1,'neml2::SolvingNonlinearSystem']]],

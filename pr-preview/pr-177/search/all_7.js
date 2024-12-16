@@ -16,7 +16,7 @@ var searchData=
   ['fillrot_13',['FillRot',['../classneml2_1_1FillRot.html',1,'FillRot'],['../classneml2_1_1FillRot.html#a97ae958ae3689eb025a9d489e2602af2',1,'neml2::FillRot::FillRot()'],['../syntax-tensors.html#fillrot',1,'FillRot']]],
   ['fillsr2_14',['FillSR2',['../classneml2_1_1FillSR2.html',1,'FillSR2'],['../classneml2_1_1FillSR2.html#a20ca4f57f8b4959ef00ccb4383c00558',1,'neml2::FillSR2::FillSR2()'],['../syntax-tensors.html#fillsr2',1,'FillSR2']]],
   ['fillwr2_15',['FillWR2',['../classneml2_1_1FillWR2.html',1,'FillWR2'],['../classneml2_1_1FillWR2.html#a79185b730d33d2feae303e7b43831726',1,'neml2::FillWR2::FillWR2()'],['../syntax-tensors.html#fillwr2',1,'FillWR2']]],
-  ['final_5fupdate_16',['final_update',['../classneml2_1_1Newton.html#a823b7af79a4cf99c8261387265c3071b',1,'neml2::Newton']]],
+  ['final_5fupdate_16',['final_update',['../classneml2_1_1Newton.html#ab2b4d015f8143721e9cf05b050cf05a2',1,'neml2::Newton']]],
   ['fixorientation_17',['FixOrientation',['../classneml2_1_1FixOrientation.html',1,'FixOrientation'],['../classneml2_1_1FixOrientation.html#ac10f68cce5fe481656901c0a726985d2',1,'neml2::FixOrientation::FixOrientation()'],['../syntax-models.html#fixorientation',1,'FixOrientation']]],
   ['flow_20rules_18',['Flow rules',['../solid-mechanics.html#autotoc_md31',1,'']]],
   ['flowrule_19',['FlowRule',['../classneml2_1_1FlowRule.html',1,'FlowRule'],['../classneml2_1_1FlowRule.html#a4c5b23c24254910c501ce8d59b11c345',1,'neml2::FlowRule::FlowRule()']]],

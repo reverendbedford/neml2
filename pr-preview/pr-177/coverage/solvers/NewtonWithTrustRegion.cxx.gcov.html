@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-16 03:13:53</td>
+            <td class="headerValue">2024-12-16 20:49:39</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">8</td>
@@ -172,16 +172,16 @@
 <a name="110"><span class="lineNum">     110 </span>            : </a>
 <a name="111"><span class="lineNum">     111 </span>            : void</a>
 <a name="112"><span class="lineNum">     112 </span><span class="lineCov">          3 : NewtonWithTrustRegion::prepare(const NonlinearSystem &amp; /*system*/,</span></a>
-<a name="113"><span class="lineNum">     113 </span>            :                                const NonlinearSystem::SOL&lt;true&gt; &amp; x)</a>
+<a name="113"><span class="lineNum">     113 </span>            :                                const NonlinearSystem::Sol&lt;true&gt; &amp; x)</a>
 <a name="114"><span class="lineNum">     114 </span>            : {</a>
 <a name="115"><span class="lineNum">     115 </span><span class="lineCov">          3 :   _delta = Scalar::full(x.batch_sizes(), _delta_0, x.options());</span></a>
 <a name="116"><span class="lineNum">     116 </span><span class="lineCov">          3 : }</span></a>
 <a name="117"><span class="lineNum">     117 </span>            : </a>
 <a name="118"><span class="lineNum">     118 </span>            : void</a>
 <a name="119"><span class="lineNum">     119 </span><span class="lineCov">         18 : NewtonWithTrustRegion::update(NonlinearSystem &amp; system,</span></a>
-<a name="120"><span class="lineNum">     120 </span>            :                               NonlinearSystem::SOL&lt;true&gt; &amp; x,</a>
-<a name="121"><span class="lineNum">     121 </span>            :                               const NonlinearSystem::RES&lt;true&gt; &amp; r,</a>
-<a name="122"><span class="lineNum">     122 </span>            :                               const NonlinearSystem::JAC&lt;true&gt; &amp; J)</a>
+<a name="120"><span class="lineNum">     120 </span>            :                               NonlinearSystem::Sol&lt;true&gt; &amp; x,</a>
+<a name="121"><span class="lineNum">     121 </span>            :                               const NonlinearSystem::Res&lt;true&gt; &amp; r,</a>
+<a name="122"><span class="lineNum">     122 </span>            :                               const NonlinearSystem::Jac&lt;true&gt; &amp; J)</a>
 <a name="123"><span class="lineNum">     123 </span>            : {</a>
 <a name="124"><span class="lineNum">     124 </span><span class="lineCov">         18 :   auto p = solve_direction(r, J);</span></a>
 <a name="125"><span class="lineNum">     125 </span>            : </a>
@@ -190,7 +190,7 @@
 <a name="128"><span class="lineNum">     128 </span><span class="lineCov">         18 :   auto red_b = merit_function_reduction(r, J, p);</span></a>
 <a name="129"><span class="lineNum">     129 </span>            : </a>
 <a name="130"><span class="lineNum">     130 </span>            :   // Actual reduction in the objective function</a>
-<a name="131"><span class="lineNum">     131 </span><span class="lineCov">         36 :   NonlinearSystem::SOL&lt;true&gt; xp(Tensor(x) + Tensor(p));</span></a>
+<a name="131"><span class="lineNum">     131 </span><span class="lineCov">         36 :   NonlinearSystem::Sol&lt;true&gt; xp(Tensor(x) + Tensor(p));</span></a>
 <a name="132"><span class="lineNum">     132 </span><span class="lineCov">         18 :   auto rp = system.residual(xp);</span></a>
 <a name="133"><span class="lineNum">     133 </span><span class="lineCov">         18 :   auto nrp = math::linalg::vector_norm(rp);</span></a>
 <a name="134"><span class="lineNum">     134 </span><span class="lineCov">         36 :   auto red_a = 0.5 * math::pow(nr, 2.0) - 0.5 * math::pow(nrp, 2.0);</span></a>
@@ -221,12 +221,12 @@
 <a name="159"><span class="lineNum">     159 </span><span class="lineNoCov">          0 :               &lt;&lt; torch::max(_delta).item&lt;Real&gt;() &lt;&lt; std::endl;</span></a>
 <a name="160"><span class="lineNum">     160 </span>            :   }</a>
 <a name="161"><span class="lineNum">     161 </span>            : </a>
-<a name="162"><span class="lineNum">     162 </span><span class="lineCov">         18 :   x = NonlinearSystem::SOL&lt;true&gt;(math::where(accept, Tensor(xp), x.variable_data()));</span></a>
+<a name="162"><span class="lineNum">     162 </span><span class="lineCov">         18 :   x = NonlinearSystem::Sol&lt;true&gt;(math::where(accept, Tensor(xp), x.variable_data()));</span></a>
 <a name="163"><span class="lineNum">     163 </span><span class="lineCov">         18 : }</span></a>
 <a name="164"><span class="lineNum">     164 </span>            : </a>
-<a name="165"><span class="lineNum">     165 </span>            : NonlinearSystem::SOL&lt;true&gt;</a>
-<a name="166"><span class="lineNum">     166 </span><span class="lineCov">         18 : NewtonWithTrustRegion::solve_direction(const NonlinearSystem::RES&lt;true&gt; &amp; r,</span></a>
-<a name="167"><span class="lineNum">     167 </span>            :                                        const NonlinearSystem::JAC&lt;true&gt; &amp; J)</a>
+<a name="165"><span class="lineNum">     165 </span>            : NonlinearSystem::Sol&lt;true&gt;</a>
+<a name="166"><span class="lineNum">     166 </span><span class="lineCov">         18 : NewtonWithTrustRegion::solve_direction(const NonlinearSystem::Res&lt;true&gt; &amp; r,</span></a>
+<a name="167"><span class="lineNum">     167 </span>            :                                        const NonlinearSystem::Jac&lt;true&gt; &amp; J)</a>
 <a name="168"><span class="lineNum">     168 </span>            : {</a>
 <a name="169"><span class="lineNum">     169 </span>            :   // The full Newton step</a>
 <a name="170"><span class="lineNum">     170 </span><span class="lineCov">         18 :   auto p_newton = Newton::solve_direction(r, J);</span></a>
@@ -234,7 +234,7 @@
 <a name="172"><span class="lineNum">     172 </span>            :   // The trust region step (obtained by solving the bound constrained subproblem)</a>
 <a name="173"><span class="lineNum">     173 </span><span class="lineCov">         18 :   _subproblem.reinit(r, J, _delta);</span></a>
 <a name="174"><span class="lineNum">     174 </span>            :   auto res = _subproblem_solver.solve(_subproblem,</a>
-<a name="175"><span class="lineNum">     175 </span><span class="lineCov">         36 :                                       NonlinearSystem::SOL&lt;false&gt;(Tensor::zeros_like(_delta)));</span></a>
+<a name="175"><span class="lineNum">     175 </span><span class="lineCov">         36 :                                       NonlinearSystem::Sol&lt;false&gt;(Tensor::zeros_like(_delta)));</span></a>
 <a name="176"><span class="lineNum">     176 </span>            : </a>
 <a name="177"><span class="lineNum">     177 </span>            :   // Do some printing if verbose</a>
 <a name="178"><span class="lineNum">     178 </span><span class="lineCov">         18 :   if (verbose)</span></a>
@@ -251,14 +251,14 @@
 <a name="189"><span class="lineNum">     189 </span>            :   auto newton_inside_trust_region =</a>
 <a name="190"><span class="lineNum">     190 </span><span class="lineCov">         36 :       (math::linalg::vector_norm(p_newton) &lt;= math::sqrt(2.0 * _delta)).unsqueeze(-1);</span></a>
 <a name="191"><span class="lineNum">     191 </span>            : </a>
-<a name="192"><span class="lineNum">     192 </span>            :   return NonlinearSystem::SOL&lt;true&gt;(</a>
+<a name="192"><span class="lineNum">     192 </span>            :   return NonlinearSystem::Sol&lt;true&gt;(</a>
 <a name="193"><span class="lineNum">     193 </span><span class="lineCov">         54 :       Tensor(torch::where(newton_inside_trust_region, p_newton, p_trust), p_newton.batch_sizes()));</span></a>
 <a name="194"><span class="lineNum">     194 </span><span class="lineCov">         18 : }</span></a>
 <a name="195"><span class="lineNum">     195 </span>            : </a>
 <a name="196"><span class="lineNum">     196 </span>            : Scalar</a>
-<a name="197"><span class="lineNum">     197 </span><span class="lineCov">         18 : NewtonWithTrustRegion::merit_function_reduction(const NonlinearSystem::RES&lt;true&gt; &amp; r,</span></a>
-<a name="198"><span class="lineNum">     198 </span>            :                                                 const NonlinearSystem::JAC&lt;true&gt; &amp; J,</a>
-<a name="199"><span class="lineNum">     199 </span>            :                                                 const NonlinearSystem::SOL&lt;true&gt; &amp; p) const</a>
+<a name="197"><span class="lineNum">     197 </span><span class="lineCov">         18 : NewtonWithTrustRegion::merit_function_reduction(const NonlinearSystem::Res&lt;true&gt; &amp; r,</span></a>
+<a name="198"><span class="lineNum">     198 </span>            :                                                 const NonlinearSystem::Jac&lt;true&gt; &amp; J,</a>
+<a name="199"><span class="lineNum">     199 </span>            :                                                 const NonlinearSystem::Sol&lt;true&gt; &amp; p) const</a>
 <a name="200"><span class="lineNum">     200 </span>            : {</a>
 <a name="201"><span class="lineNum">     201 </span><span class="lineCov">         18 :   auto Jp = math::bmv(J, p);</span></a>
 <a name="202"><span class="lineNum">     202 </span><span class="lineCov">         54 :   return -math::bvv(r, Jp) - 0.5 * math::bvv(Jp, Jp);</span></a>

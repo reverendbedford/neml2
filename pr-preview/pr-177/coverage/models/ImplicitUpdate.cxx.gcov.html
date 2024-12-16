@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-16 03:13:53</td>
+            <td class="headerValue">2024-12-16 20:49:39</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">5</td>
@@ -172,7 +172,7 @@
 <a name="110"><span class="lineNum">     110 </span>            : </a>
 <a name="111"><span class="lineNum">     111 </span>            :   // The trial state is used as the initial guess</a>
 <a name="112"><span class="lineNum">     112 </span><span class="lineCov">        178 :   const auto sol_assember = VectorAssembler(_model.input_axis().subaxis(&quot;state&quot;));</span></a>
-<a name="113"><span class="lineNum">     113 </span><span class="lineCov">        356 :   auto x0 = NonlinearSystem::SOL&lt;false&gt;(sol_assember.assemble(_model.collect_input()));</span></a>
+<a name="113"><span class="lineNum">     113 </span><span class="lineCov">        356 :   auto x0 = NonlinearSystem::Sol&lt;false&gt;(sol_assember.assemble_by_variable(_model.collect_input()));</span></a>
 <a name="114"><span class="lineNum">     114 </span>            : </a>
 <a name="115"><span class="lineNum">     115 </span>            :   // Perform automatic scaling (using the trial state)</a>
 <a name="116"><span class="lineNum">     116 </span>            :   // TODO: Add an interface to allow user to specify where (and when) to evaluate the Jacobian for</a>
@@ -200,7 +200,7 @@
 <a name="138"><span class="lineNum">     138 </span>            : </a>
 <a name="139"><span class="lineNum">     139 </span>            :     // All that being said, if the result has AD graph, we need to propagate the graph to the output</a>
 <a name="140"><span class="lineNum">     140 </span><span class="lineCov">        177 :     if (res.solution.requires_grad())</span></a>
-<a name="141"><span class="lineNum">     141 </span><span class="lineCov">         26 :       assign_output(sol_assember.disassemble(res.solution));</span></a>
+<a name="141"><span class="lineNum">     141 </span><span class="lineCov">         26 :       assign_output(sol_assember.split_by_variable(res.solution));</span></a>
 <a name="142"><span class="lineNum">     142 </span>            :   }</a>
 <a name="143"><span class="lineNum">     143 </span>            : </a>
 <a name="144"><span class="lineNum">     144 </span>            :   // Use the implicit function theorem (IFT) to calculate the other derivatives</a>
@@ -209,8 +209,8 @@
 <a name="147"><span class="lineNum">     147 </span>            :     // IFT requires the Jacobian evaluated at the solution:</a>
 <a name="148"><span class="lineNum">     148 </span><span class="lineCov">          2 :     _model.dvalue();</span></a>
 <a name="149"><span class="lineNum">     149 </span><span class="lineCov">          2 :     const auto jac_assembler = MatrixAssembler(_model.output_axis(), _model.input_axis());</span></a>
-<a name="150"><span class="lineNum">     150 </span><span class="lineCov">          2 :     const auto J = jac_assembler.assemble(_model.collect_output_derivatives());</span></a>
-<a name="151"><span class="lineNum">     151 </span><span class="lineCov">          4 :     const auto derivs = jac_assembler.split(J).at(&quot;residual&quot;);</span></a>
+<a name="150"><span class="lineNum">     150 </span><span class="lineCov">          2 :     const auto J = jac_assembler.assemble_by_variable(_model.collect_output_derivatives());</span></a>
+<a name="151"><span class="lineNum">     151 </span><span class="lineCov">          4 :     const auto derivs = jac_assembler.split_by_subaxis(J).at(&quot;residual&quot;);</span></a>
 <a name="152"><span class="lineNum">     152 </span><span class="lineCov">          2 :     const auto dr_ds = derivs.at(&quot;state&quot;);</span></a>
 <a name="153"><span class="lineNum">     153 </span>            : </a>
 <a name="154"><span class="lineNum">     154 </span>            :     // Factorize the Jacobian once and for all</a>
@@ -224,7 +224,7 @@
 <a name="162"><span class="lineNum">     162 </span>            :       const auto ift_assembler =</a>
 <a name="163"><span class="lineNum">     163 </span><span class="lineCov">          6 :           MatrixAssembler(output_axis(), _model.input_axis().subaxis(subaxis));</span></a>
 <a name="164"><span class="lineNum">     164 </span><span class="lineCov">          6 :       assign_output_derivatives(</span></a>
-<a name="165"><span class="lineNum">     165 </span><span class="lineCov">         12 :           ift_assembler.disassemble(-math::linalg::lu_solve(LU, pivot, deriv)));</span></a>
+<a name="165"><span class="lineNum">     165 </span><span class="lineCov">         12 :           ift_assembler.split_by_variable(-math::linalg::lu_solve(LU, pivot, deriv)));</span></a>
 <a name="166"><span class="lineNum">     166 </span>            :     }</a>
 <a name="167"><span class="lineNum">     167 </span><span class="lineCov">          2 :   }</span></a>
 <a name="168"><span class="lineNum">     168 </span><span class="lineCov">        178 : }</span></a>

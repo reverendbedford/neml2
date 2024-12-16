@@ -237,7 +237,7 @@ Automatic chain rule</h2>
 </ul>
 <h1><a class="anchor" id="automatic-differentiation"></a>
 Automatic differentiation</h1>
-<p>Deriving and implementing derivatives of the forward operator can be cubersome from times to times. NEML2 offers the option to use automatic differentiation (AD) to obtain derivatives. To enable automatic differentiation, one simply need to override the <a class="el" href="classneml2_1_1Model.html#a01c6f29b97001ac40bbac263fdaf3c7e" title="Request to use AD to compute the first derivative of a variable.">neml2::Model::request_AD</a> method and specify which derivatives should be computed using AD: </p><div class="fragment"><div class="line"><span class="keywordtype">void</span></div>
+<p>Deriving and implementing derivatives of the forward operator can be cumbersome from times to times. NEML2 offers the option to use automatic differentiation (AD) to obtain derivatives. To enable automatic differentiation, one simply need to override the <a class="el" href="classneml2_1_1Model.html#a01c6f29b97001ac40bbac263fdaf3c7e" title="Request to use AD to compute the first derivative of a variable.">neml2::Model::request_AD</a> method and specify which derivatives should be computed using AD: </p><div class="fragment"><div class="line"><span class="keywordtype">void</span></div>
 <div class="line">MyModel::request_AD()</div>
 <div class="line">{</div>
 <div class="line">  std::vector&lt;const VariableBase *&gt; inputs = {&amp;foo, &amp;bar, &amp;baz, &amp;T};</div>
@@ -256,7 +256,7 @@ Automatic differentiation</h1>
 <p>Since a composed model uses chain rule to efficiently evaluate the total derivatives, automatic differentiation is disabled for <code>ComposedModel</code>. However, each of the child model can still use AD to calculate the <em>partial</em> derivatives of its own forward operator. Moreover, AD and non-AD models can be composed together.</p>
 <h1><a class="anchor" id="model-assembly"></a>
 Model assembly</h1>
-<p>NEML2 stores each variable in contiguous memory, but does not guarantee contiguity across variables. This choice is made to allow for massive asynchronous evaluation (with the help of lazy tensor) and to reduce memory consumption (since variables can have different number of batch shapes). However, this choice is not ideal for a family of nonlinear material models whose constitutive updates require solving one (or more) implicit system of equations. To address such issue, NEML2 offers two mechanisms to facilitate the creation of the implicit system (e.g., its residual and Jacobian):</p><ul>
+<p>NEML2 stores each variable in contiguous memory, but does not guarantee contiguity across variables. This choice is made to allow for massive asynchronous evaluation (with the help of lazy tensors) and to reduce memory consumption (since variables can have different number of batch shapes). However, this choice is not ideal for a family of nonlinear material models whose constitutive updates require solving one (or more) implicit system of equations. To address such issue, NEML2 offers two mechanisms to facilitate the creation of the implicit system (e.g., its residual and Jacobian):</p><ul>
 <li><a class="el" href="#axis-labeling">Axis labeling</a> for setting up the layout of the implicit system</li>
 <li><a class="el" href="#tensor-assembly">Tensor assembly</a> for assembling and disassembling the implicit system</li>
 </ul>
@@ -268,7 +268,7 @@ Axis labeling</h2>
 <li>Variable: An item that is also of a <a class="el" href="system-tensors.html#tensor-types">NEML2 primitive tensor type</a></li>
 <li>Sub-axis: An item of type <code>LabeledAxis</code></li>
 </ul>
-<p>So yes, an axis can be labeled recursively, e.g.,</p>
+<p>An axis can be labeled recursively, e.g.,</p>
 <div class="fragment"><div class="line">     0 1 2 3 4 5     6     7 8 9 10 11 12   13   14</div>
 <div class="line">/// |-----------| |-----| |              | |  | |  |</div>
 <div class="line">///       a          b    |              | |  | |  |</div>
@@ -291,8 +291,8 @@ Axis labeling</h2>
 <h2><a class="anchor" id="tensor-assembly"></a>
 Tensor assembly</h2>
 <p>NEML2 implements two types of "assemblers" to assemble (or disassemble) the implicit system given the axis layout defined by <a class="el" href="classneml2_1_1LabeledAxis.html">LabeledAxis</a>:</p><ul>
-<li><a class="el" href="classneml2_1_1VectorAssembler.html">VectorAssembler</a>: Assemble a map of vectors into a single vector (<a class="el" href="classneml2_1_1VectorAssembler.html#afd4087d8431bd0ea17cbbc8d180b0793" title="Assemble a vector of vectors (by variables)">neml2::VectorAssembler::assemble</a>), or disassemble a single vector into a map of vectors (<a class="el" href="classneml2_1_1VectorAssembler.html#a7098e0211d4fccb488dffd20180b840a" title="Split the vector (by variables)">neml2::VectorAssembler::disassemble</a>).</li>
-<li><a class="el" href="classneml2_1_1MatrixAssembler.html">MatrixAssembler</a>: Assemble a map of map of matrices into a single matrix (<a class="el" href="classneml2_1_1MatrixAssembler.html#a3d3349e9fb9297ce5d6ab50356a1090d" title="Assemble a matrix of matrices (by variables)">neml2::MatrixAssembler::assemble</a>), or disassemble a single matrix into a map of map of matrices (<a class="el" href="classneml2_1_1MatrixAssembler.html#a1a6ea98c7897edabdb0c1cc0eeab843f" title="Split the matrix (by variables)">neml2::MatrixAssembler::disassemble</a>).</li>
+<li><a class="el" href="classneml2_1_1VectorAssembler.html">VectorAssembler</a>: Assemble a map of vectors into a single vector (neml2::VectorAssembler::assemble), or disassemble a single vector into a map of vectors (neml2::VectorAssembler::disassemble).</li>
+<li><a class="el" href="classneml2_1_1MatrixAssembler.html">MatrixAssembler</a>: Assemble a map of map of matrices into a single matrix (neml2::MatrixAssembler::assemble), or disassemble a single matrix into a map of map of matrices (neml2::MatrixAssembler::disassemble).</li>
 </ul>
 <p>The <code>assemble</code> methods take a map (1D map for the vector assembler and 2D map for the matrix assembler) as input argument. The keys of the map are variable names.</p>
 <dl class="section note"><dt>Note</dt><dd>Variable values not provided by the map are filled with zeros.</dd></dl>

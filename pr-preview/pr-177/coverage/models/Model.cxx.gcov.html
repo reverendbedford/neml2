@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-16 03:13:53</td>
+            <td class="headerValue">2024-12-16 20:49:39</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">29</td>
@@ -393,14 +393,14 @@
 <a name="331"><span class="lineNum">     331 </span><span class="lineCov">        215 : }</span></a>
 <a name="332"><span class="lineNum">     332 </span>            : </a>
 <a name="333"><span class="lineNum">     333 </span>            : void</a>
-<a name="334"><span class="lineNum">     334 </span><span class="lineCov">       1541 : Model::set_guess(const SOL&lt;false&gt; &amp; x)</span></a>
+<a name="334"><span class="lineNum">     334 </span><span class="lineCov">       1541 : Model::set_guess(const Sol&lt;false&gt; &amp; x)</span></a>
 <a name="335"><span class="lineNum">     335 </span>            : {</a>
 <a name="336"><span class="lineNum">     336 </span><span class="lineCov">       1541 :   const auto sol_assember = VectorAssembler(input_axis().subaxis(&quot;state&quot;));</span></a>
-<a name="337"><span class="lineNum">     337 </span><span class="lineCov">       1541 :   assign_input(sol_assember.disassemble(x));</span></a>
+<a name="337"><span class="lineNum">     337 </span><span class="lineCov">       1541 :   assign_input(sol_assember.split_by_variable(x));</span></a>
 <a name="338"><span class="lineNum">     338 </span><span class="lineCov">       1541 : }</span></a>
 <a name="339"><span class="lineNum">     339 </span>            : </a>
 <a name="340"><span class="lineNum">     340 </span>            : void</a>
-<a name="341"><span class="lineNum">     341 </span><span class="lineCov">       2774 : Model::assemble(NonlinearSystem::RES&lt;false&gt; * residual, NonlinearSystem::JAC&lt;false&gt; * Jacobian)</span></a>
+<a name="341"><span class="lineNum">     341 </span><span class="lineCov">       2774 : Model::assemble(NonlinearSystem::Res&lt;false&gt; * residual, NonlinearSystem::Jac&lt;false&gt; * Jacobian)</span></a>
 <a name="342"><span class="lineNum">     342 </span>            : {</a>
 <a name="343"><span class="lineNum">     343 </span><span class="lineCov">       2774 :   if (residual &amp;&amp; !Jacobian)</span></a>
 <a name="344"><span class="lineNum">     344 </span><span class="lineCov">       1541 :     value();</span></a>
@@ -412,13 +412,13 @@
 <a name="350"><span class="lineNum">     350 </span><span class="lineCov">       2774 :   if (residual)</span></a>
 <a name="351"><span class="lineNum">     351 </span>            :   {</a>
 <a name="352"><span class="lineNum">     352 </span><span class="lineCov">       1541 :     const auto res_assembler = VectorAssembler(output_axis().subaxis(&quot;residual&quot;));</span></a>
-<a name="353"><span class="lineNum">     353 </span><span class="lineCov">       1541 :     *residual = RES&lt;false&gt;(res_assembler.assemble(collect_output()));</span></a>
+<a name="353"><span class="lineNum">     353 </span><span class="lineCov">       1541 :     *residual = Res&lt;false&gt;(res_assembler.assemble_by_variable(collect_output()));</span></a>
 <a name="354"><span class="lineNum">     354 </span>            :   }</a>
 <a name="355"><span class="lineNum">     355 </span><span class="lineCov">       2774 :   if (Jacobian)</span></a>
 <a name="356"><span class="lineNum">     356 </span>            :   {</a>
 <a name="357"><span class="lineNum">     357 </span>            :     const auto jac_assembler =</a>
 <a name="358"><span class="lineNum">     358 </span><span class="lineCov">       1233 :         MatrixAssembler(output_axis().subaxis(&quot;residual&quot;), input_axis().subaxis(&quot;state&quot;));</span></a>
-<a name="359"><span class="lineNum">     359 </span><span class="lineCov">       1233 :     *Jacobian = JAC&lt;false&gt;(jac_assembler.assemble(collect_output_derivatives()));</span></a>
+<a name="359"><span class="lineNum">     359 </span><span class="lineCov">       1233 :     *Jacobian = Jac&lt;false&gt;(jac_assembler.assemble_by_variable(collect_output_derivatives()));</span></a>
 <a name="360"><span class="lineNum">     360 </span>            :   }</a>
 <a name="361"><span class="lineNum">     361 </span><span class="lineCov">       2774 : }</span></a>
 <a name="362"><span class="lineNum">     362 </span>            : </a>

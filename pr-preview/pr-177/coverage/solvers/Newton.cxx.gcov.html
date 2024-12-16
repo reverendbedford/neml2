@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-16 03:13:53</td>
+            <td class="headerValue">2024-12-16 20:49:39</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">7</td>
@@ -107,7 +107,7 @@
 <a name="45"><span class="lineNum">      45 </span><span class="lineCov">         20 : }</span></a>
 <a name="46"><span class="lineNum">      46 </span>            : </a>
 <a name="47"><span class="lineNum">      47 </span>            : Newton::Result</a>
-<a name="48"><span class="lineNum">      48 </span><span class="lineCov">        205 : Newton::solve(NonlinearSystem &amp; system, const NonlinearSystem::SOL&lt;false&gt; &amp; x0)</span></a>
+<a name="48"><span class="lineNum">      48 </span><span class="lineCov">        205 : Newton::solve(NonlinearSystem &amp; system, const NonlinearSystem::Sol&lt;false&gt; &amp; x0)</span></a>
 <a name="49"><span class="lineNum">      49 </span>            : {</a>
 <a name="50"><span class="lineNum">      50 </span>            :   // Solve always takes place in the &quot;scaled&quot; space</a>
 <a name="51"><span class="lineNum">      51 </span><span class="lineCov">        205 :   auto x = system.scale(x0);</span></a>
@@ -170,29 +170,29 @@
 <a name="108"><span class="lineNum">     108 </span>            : </a>
 <a name="109"><span class="lineNum">     109 </span>            : void</a>
 <a name="110"><span class="lineNum">     110 </span><span class="lineCov">       1213 : Newton::update(NonlinearSystem &amp; /*system*/,</span></a>
-<a name="111"><span class="lineNum">     111 </span>            :                NonlinearSystem::SOL&lt;true&gt; &amp; x,</a>
-<a name="112"><span class="lineNum">     112 </span>            :                const NonlinearSystem::RES&lt;true&gt; &amp; r,</a>
-<a name="113"><span class="lineNum">     113 </span>            :                const NonlinearSystem::JAC&lt;true&gt; &amp; J)</a>
+<a name="111"><span class="lineNum">     111 </span>            :                NonlinearSystem::Sol&lt;true&gt; &amp; x,</a>
+<a name="112"><span class="lineNum">     112 </span>            :                const NonlinearSystem::Res&lt;true&gt; &amp; r,</a>
+<a name="113"><span class="lineNum">     113 </span>            :                const NonlinearSystem::Jac&lt;true&gt; &amp; J)</a>
 <a name="114"><span class="lineNum">     114 </span>            : {</a>
-<a name="115"><span class="lineNum">     115 </span><span class="lineCov">       1213 :   x = NonlinearSystem::SOL&lt;true&gt;(x.variable_data() + Tensor(solve_direction(r, J)));</span></a>
+<a name="115"><span class="lineNum">     115 </span><span class="lineCov">       1213 :   x = NonlinearSystem::Sol&lt;true&gt;(x.variable_data() + Tensor(solve_direction(r, J)));</span></a>
 <a name="116"><span class="lineNum">     116 </span><span class="lineCov">       1213 : }</span></a>
 <a name="117"><span class="lineNum">     117 </span>            : </a>
 <a name="118"><span class="lineNum">     118 </span>            : void</a>
 <a name="119"><span class="lineNum">     119 </span><span class="lineCov">         26 : Newton::final_update(NonlinearSystem &amp; /*system*/,</span></a>
-<a name="120"><span class="lineNum">     120 </span>            :                      NonlinearSystem::SOL&lt;true&gt; &amp; x,</a>
-<a name="121"><span class="lineNum">     121 </span>            :                      const NonlinearSystem::RES&lt;true&gt; &amp; r,</a>
-<a name="122"><span class="lineNum">     122 </span>            :                      const NonlinearSystem::JAC&lt;true&gt; &amp; J)</a>
+<a name="120"><span class="lineNum">     120 </span>            :                      NonlinearSystem::Sol&lt;true&gt; &amp; x,</a>
+<a name="121"><span class="lineNum">     121 </span>            :                      const NonlinearSystem::Res&lt;true&gt; &amp; r,</a>
+<a name="122"><span class="lineNum">     122 </span>            :                      const NonlinearSystem::Jac&lt;true&gt; &amp; J)</a>
 <a name="123"><span class="lineNum">     123 </span>            : {</a>
-<a name="124"><span class="lineNum">     124 </span><span class="lineCov">         26 :   x = NonlinearSystem::SOL&lt;true&gt;(Tensor(x) + Tensor(solve_direction(r, J)));</span></a>
+<a name="124"><span class="lineNum">     124 </span><span class="lineCov">         26 :   x = NonlinearSystem::Sol&lt;true&gt;(Tensor(x) + Tensor(solve_direction(r, J)));</span></a>
 <a name="125"><span class="lineNum">     125 </span><span class="lineCov">         26 : }</span></a>
 <a name="126"><span class="lineNum">     126 </span>            : </a>
-<a name="127"><span class="lineNum">     127 </span>            : NonlinearSystem::SOL&lt;true&gt;</a>
-<a name="128"><span class="lineNum">     128 </span><span class="lineCov">       1336 : Newton::solve_direction(const NonlinearSystem::RES&lt;true&gt; &amp; r, const NonlinearSystem::JAC&lt;true&gt; &amp; J)</span></a>
+<a name="127"><span class="lineNum">     127 </span>            : NonlinearSystem::Sol&lt;true&gt;</a>
+<a name="128"><span class="lineNum">     128 </span><span class="lineCov">       1336 : Newton::solve_direction(const NonlinearSystem::Res&lt;true&gt; &amp; r, const NonlinearSystem::Jac&lt;true&gt; &amp; J)</span></a>
 <a name="129"><span class="lineNum">     129 </span>            : {</a>
 <a name="130"><span class="lineNum">     130 </span><span class="lineCov">       1336 :   if (r.base_dim() == 0 &amp;&amp; J.base_dim() == 0)</span></a>
-<a name="131"><span class="lineNum">     131 </span><span class="lineCov">        102 :     return NonlinearSystem::SOL&lt;true&gt;(-Tensor(r) / Tensor(J));</span></a>
+<a name="131"><span class="lineNum">     131 </span><span class="lineCov">        102 :     return NonlinearSystem::Sol&lt;true&gt;(-Tensor(r) / Tensor(J));</span></a>
 <a name="132"><span class="lineNum">     132 </span>            : </a>
-<a name="133"><span class="lineNum">     133 </span><span class="lineCov">       2570 :   return NonlinearSystem::SOL&lt;true&gt;(-math::linalg::solve(J, r));</span></a>
+<a name="133"><span class="lineNum">     133 </span><span class="lineCov">       2570 :   return NonlinearSystem::Sol&lt;true&gt;(-math::linalg::solve(J, r));</span></a>
 <a name="134"><span class="lineNum">     134 </span>            : }</a>
 <a name="135"><span class="lineNum">     135 </span>            : </a>
 <a name="136"><span class="lineNum">     136 </span>            : } // namespace neml2</a>

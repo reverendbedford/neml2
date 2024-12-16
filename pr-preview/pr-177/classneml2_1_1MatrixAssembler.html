@@ -116,10 +116,10 @@ $(function(){initNavTree('classneml2_1_1MatrixAssembler.html',''); initResizable
 </div><!--header-->
 <div class="contents">
 
-<p>Helper to assemble a matrix of tensors into a single tensor and also to disassemble a tensor into a map of map of tensors.  
+<p>Helper to assemble a matrix of tensors into a single tensor and also to split a tensor into a map of map of tensors.  
  <a href="#details">More...</a></p>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Helper to assemble a matrix of tensors into a single tensor and also to disassemble a tensor into a map of map of tensors. </p>
+<div class="textblock"><p>Helper to assemble a matrix of tensors into a single tensor and also to split a tensor into a map of map of tensors. </p>
 </div>
 <p><code>#include &lt;<a class="el" href="Assembler_8h_source.html">Assembler.h</a>&gt;</code></p>
 <table class="memberdecls">
@@ -127,15 +127,15 @@ $(function(){initNavTree('classneml2_1_1MatrixAssembler.html',''); initResizable
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a7b86f4aebb3b2f5a074def146cc9e5c9" id="r_a7b86f4aebb3b2f5a074def146cc9e5c9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7b86f4aebb3b2f5a074def146cc9e5c9">MatrixAssembler</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledAxis.html">LabeledAxis</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">yaxis</a>, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledAxis.html">LabeledAxis</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">xaxis</a>)</td></tr>
 <tr class="separator:a7b86f4aebb3b2f5a074def146cc9e5c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3d3349e9fb9297ce5d6ab50356a1090d" id="r_a3d3349e9fb9297ce5d6ab50356a1090d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3d3349e9fb9297ce5d6ab50356a1090d">assemble</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="namespaceneml2.html#a4b2a77b1cf33476b3cf2c117975b82ac">DerivMap</a> &amp;) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
-<tr class="memdesc:a3d3349e9fb9297ce5d6ab50356a1090d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assemble a matrix of matrices (by variables)  <br /></td></tr>
-<tr class="separator:a3d3349e9fb9297ce5d6ab50356a1090d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1a6ea98c7897edabdb0c1cc0eeab843f" id="r_a1a6ea98c7897edabdb0c1cc0eeab843f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceneml2.html#a4b2a77b1cf33476b3cf2c117975b82ac">DerivMap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1a6ea98c7897edabdb0c1cc0eeab843f">disassemble</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
-<tr class="memdesc:a1a6ea98c7897edabdb0c1cc0eeab843f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Split the matrix (by variables)  <br /></td></tr>
-<tr class="separator:a1a6ea98c7897edabdb0c1cc0eeab843f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a015fdf9701cde3c85f792787a1fc93ff" id="r_a015fdf9701cde3c85f792787a1fc93ff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceneml2.html#a4b2a77b1cf33476b3cf2c117975b82ac">DerivMap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a015fdf9701cde3c85f792787a1fc93ff">split</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
-<tr class="memdesc:a015fdf9701cde3c85f792787a1fc93ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Split the matrix (by subaxes)  <br /></td></tr>
-<tr class="separator:a015fdf9701cde3c85f792787a1fc93ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c28328a1a60e6a685f8c4c1d68e9ad0" id="r_a4c28328a1a60e6a685f8c4c1d68e9ad0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4c28328a1a60e6a685f8c4c1d68e9ad0">assemble_by_variable</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="namespaceneml2.html#a4b2a77b1cf33476b3cf2c117975b82ac">DerivMap</a> &amp;) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:a4c28328a1a60e6a685f8c4c1d68e9ad0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assemble a matrix of matrices (by variables)  <br /></td></tr>
+<tr class="separator:a4c28328a1a60e6a685f8c4c1d68e9ad0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b83960e9c6e84713a3664ac03ce8af8" id="r_a7b83960e9c6e84713a3664ac03ce8af8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceneml2.html#a4b2a77b1cf33476b3cf2c117975b82ac">DerivMap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7b83960e9c6e84713a3664ac03ce8af8">split_by_variable</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:a7b83960e9c6e84713a3664ac03ce8af8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Split the matrix (by variables)  <br /></td></tr>
+<tr class="separator:a7b83960e9c6e84713a3664ac03ce8af8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf4a5485f313f418b776387ba6bf29c5" id="r_acf4a5485f313f418b776387ba6bf29c5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceneml2.html#a4b2a77b1cf33476b3cf2c117975b82ac">DerivMap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acf4a5485f313f418b776387ba6bf29c5">split_by_subaxis</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:acf4a5485f313f418b776387ba6bf29c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Split the matrix (by subaxes)  <br /></td></tr>
+<tr class="separator:acf4a5485f313f418b776387ba6bf29c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a7b86f4aebb3b2f5a074def146cc9e5c9" name="a7b86f4aebb3b2f5a074def146cc9e5c9"></a>
@@ -168,14 +168,14 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a3d3349e9fb9297ce5d6ab50356a1090d" name="a3d3349e9fb9297ce5d6ab50356a1090d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3d3349e9fb9297ce5d6ab50356a1090d">&#9670;&#160;</a></span>assemble()</h2>
+<a id="a4c28328a1a60e6a685f8c4c1d68e9ad0" name="a4c28328a1a60e6a685f8c4c1d68e9ad0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c28328a1a60e6a685f8c4c1d68e9ad0">&#9670;&#160;</a></span>assemble_by_variable()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a> assemble </td>
+          <td class="memname"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a> assemble_by_variable </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="namespaceneml2.html#a4b2a77b1cf33476b3cf2c117975b82ac">DerivMap</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>vals_dict</em></span></td><td>)</td>
           <td> const</td>
@@ -187,33 +187,14 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a1a6ea98c7897edabdb0c1cc0eeab843f" name="a1a6ea98c7897edabdb0c1cc0eeab843f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1a6ea98c7897edabdb0c1cc0eeab843f">&#9670;&#160;</a></span>disassemble()</h2>
+<a id="acf4a5485f313f418b776387ba6bf29c5" name="acf4a5485f313f418b776387ba6bf29c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf4a5485f313f418b776387ba6bf29c5">&#9670;&#160;</a></span>split_by_subaxis()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceneml2.html#a4b2a77b1cf33476b3cf2c117975b82ac">DerivMap</a> disassemble </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>tensor</em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Split the matrix (by variables) </p>
-
-</div>
-</div>
-<a id="a015fdf9701cde3c85f792787a1fc93ff" name="a015fdf9701cde3c85f792787a1fc93ff"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a015fdf9701cde3c85f792787a1fc93ff">&#9670;&#160;</a></span>split()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::map&lt; <a class="el" href="namespaceneml2.html#a4e8b29168cc98d79ef697666fa7ee532">SubaxisName</a>, std::map&lt; <a class="el" href="namespaceneml2.html#a4e8b29168cc98d79ef697666fa7ee532">SubaxisName</a>, <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &gt; &gt; split </td>
+          <td class="memname">std::map&lt; <a class="el" href="namespaceneml2.html#a4e8b29168cc98d79ef697666fa7ee532">SubaxisName</a>, std::map&lt; <a class="el" href="namespaceneml2.html#a4e8b29168cc98d79ef697666fa7ee532">SubaxisName</a>, <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &gt; &gt; split_by_subaxis </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>tensor</em></span></td><td>)</td>
           <td> const</td>
@@ -222,6 +203,25 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Split the matrix (by subaxes) </p>
+
+</div>
+</div>
+<a id="a7b83960e9c6e84713a3664ac03ce8af8" name="a7b83960e9c6e84713a3664ac03ce8af8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b83960e9c6e84713a3664ac03ce8af8">&#9670;&#160;</a></span>split_by_variable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceneml2.html#a4b2a77b1cf33476b3cf2c117975b82ac">DerivMap</a> split_by_variable </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>tensor</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Split the matrix (by variables) </p>
 
 </div>
 </div>

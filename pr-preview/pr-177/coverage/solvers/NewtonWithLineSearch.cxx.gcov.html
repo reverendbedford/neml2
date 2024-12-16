@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-16 03:13:53</td>
+            <td class="headerValue">2024-12-16 20:49:39</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">4</td>
@@ -124,27 +124,27 @@
 <a name="62"><span class="lineNum">      62 </span>            : </a>
 <a name="63"><span class="lineNum">      63 </span>            : void</a>
 <a name="64"><span class="lineNum">      64 </span><span class="lineCov">         79 : NewtonWithLineSearch::update(NonlinearSystem &amp; system,</span></a>
-<a name="65"><span class="lineNum">      65 </span>            :                              NonlinearSystem::SOL&lt;true&gt; &amp; x,</a>
-<a name="66"><span class="lineNum">      66 </span>            :                              const NonlinearSystem::RES&lt;true&gt; &amp; r,</a>
-<a name="67"><span class="lineNum">      67 </span>            :                              const NonlinearSystem::JAC&lt;true&gt; &amp; J)</a>
+<a name="65"><span class="lineNum">      65 </span>            :                              NonlinearSystem::Sol&lt;true&gt; &amp; x,</a>
+<a name="66"><span class="lineNum">      66 </span>            :                              const NonlinearSystem::Res&lt;true&gt; &amp; r,</a>
+<a name="67"><span class="lineNum">      67 </span>            :                              const NonlinearSystem::Jac&lt;true&gt; &amp; J)</a>
 <a name="68"><span class="lineNum">      68 </span>            : {</a>
 <a name="69"><span class="lineNum">      69 </span><span class="lineCov">         79 :   auto dx = solve_direction(r, J);</span></a>
 <a name="70"><span class="lineNum">      70 </span><span class="lineCov">         79 :   auto alpha = linesearch(system, x, dx, r);</span></a>
-<a name="71"><span class="lineNum">      71 </span><span class="lineCov">         79 :   x = NonlinearSystem::SOL&lt;true&gt;(x.variable_data() + alpha * Tensor(dx));</span></a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineCov">         79 :   x = NonlinearSystem::Sol&lt;true&gt;(x.variable_data() + alpha * Tensor(dx));</span></a>
 <a name="72"><span class="lineNum">      72 </span><span class="lineCov">         79 : }</span></a>
 <a name="73"><span class="lineNum">      73 </span>            : </a>
 <a name="74"><span class="lineNum">      74 </span>            : Scalar</a>
 <a name="75"><span class="lineNum">      75 </span><span class="lineCov">         79 : NewtonWithLineSearch::linesearch(NonlinearSystem &amp; system,</span></a>
-<a name="76"><span class="lineNum">      76 </span>            :                                  const NonlinearSystem::SOL&lt;true&gt; &amp; x,</a>
-<a name="77"><span class="lineNum">      77 </span>            :                                  const NonlinearSystem::SOL&lt;true&gt; &amp; dx,</a>
-<a name="78"><span class="lineNum">      78 </span>            :                                  const NonlinearSystem::RES&lt;true&gt; &amp; R0) const</a>
+<a name="76"><span class="lineNum">      76 </span>            :                                  const NonlinearSystem::Sol&lt;true&gt; &amp; x,</a>
+<a name="77"><span class="lineNum">      77 </span>            :                                  const NonlinearSystem::Sol&lt;true&gt; &amp; dx,</a>
+<a name="78"><span class="lineNum">      78 </span>            :                                  const NonlinearSystem::Res&lt;true&gt; &amp; R0) const</a>
 <a name="79"><span class="lineNum">      79 </span>            : {</a>
 <a name="80"><span class="lineNum">      80 </span><span class="lineCov">         79 :   auto alpha = Scalar::ones(x.batch_sizes(), x.options());</span></a>
 <a name="81"><span class="lineNum">      81 </span><span class="lineCov">         79 :   const auto nR02 = math::bvv(R0, R0);</span></a>
 <a name="82"><span class="lineNum">      82 </span>            : </a>
 <a name="83"><span class="lineNum">      83 </span><span class="lineCov">        192 :   for (std::size_t i = 1; i &lt; _linesearch_miter; i++)</span></a>
 <a name="84"><span class="lineNum">      84 </span>            :   {</a>
-<a name="85"><span class="lineNum">      85 </span><span class="lineCov">        346 :     NonlinearSystem::SOL&lt;true&gt; xp(Tensor(x) + alpha * Tensor(dx));</span></a>
+<a name="85"><span class="lineNum">      85 </span><span class="lineCov">        346 :     NonlinearSystem::Sol&lt;true&gt; xp(Tensor(x) + alpha * Tensor(dx));</span></a>
 <a name="86"><span class="lineNum">      86 </span><span class="lineCov">        173 :     auto R = system.residual(xp);</span></a>
 <a name="87"><span class="lineNum">      87 </span><span class="lineCov">        173 :     auto nR2 = math::bvv(R, R);</span></a>
 <a name="88"><span class="lineNum">      88 </span><span class="lineCov">        346 :     auto crit = nR02 + 2.0 * _linesearch_c * alpha * math::bvv(R0, dx);</span></a>
