@@ -176,15 +176,15 @@ Refer to the documentation for a complete list of APIs for creating and modifyin
 
 ### Tensor assembly {#tensor-assembly}
 
-NEML2 implements two types of "assemblers" to assemble (or disassemble) the implicit system given the axis layout defined by [LabeledAxis](@ref neml2::LabeledAxis):
-- [VectorAssembler](@ref neml2::VectorAssembler): Assemble a map of vectors into a single vector (neml2::VectorAssembler::assemble), or disassemble a single vector into a map of vectors (neml2::VectorAssembler::disassemble).
-- [MatrixAssembler](@ref neml2::MatrixAssembler): Assemble a map of map of matrices into a single matrix (neml2::MatrixAssembler::assemble), or disassemble a single matrix into a map of map of matrices (neml2::MatrixAssembler::disassemble).
+NEML2 implements two types of "assemblers" to assemble (or split) the implicit system given the axis layout defined by [LabeledAxis](@ref neml2::LabeledAxis):
+- [VectorAssembler](@ref neml2::VectorAssembler): Assemble a map of vectors into a single vector (neml2::VectorAssembler::assemble_by_variable), or split a single vector into a map of vectors (neml2::VectorAssembler::split_by_variable).
+- [MatrixAssembler](@ref neml2::MatrixAssembler): Assemble a map of map of matrices into a single matrix (neml2::MatrixAssembler::assemble_by_variable), or split a single matrix into a map of map of matrices (neml2::MatrixAssembler::split_by_variable).
 
-The `assemble` methods take a map (1D map for the vector assembler and 2D map for the matrix assembler) as input argument. The keys of the map are variable names.
+The `assemble_by_variable` methods take a map (1D map for the vector assembler and 2D map for the matrix assembler) as input argument. The keys of the map are variable names.
 
 \note
 Variable values not provided by the map are filled with zeros.
 
 The [VectorAssembler](@ref neml2::VectorAssembler) is useful for working with the residual and solution vectors of the implicit system, and the [MatrixAssembler](@ref neml2::MatrixAssembler) is primarily used to work with the Jacobian matrix of the implicit system.
 
-In addition to the `assemble` and `disassemble` methods, the assemblers also provide a third method called `split`. The `split` method is similar to `disassemble`, but it splits the tensor by subaxes instead of variables.
+In addition to the `assemble_by_variable` and `split_by_variable` methods, the assemblers also provide a third method called `split_by_subaxis`. The `split_by_subaxis` method is similar to `split_by_variable`, but it splits the tensor by subaxes instead of variables.
