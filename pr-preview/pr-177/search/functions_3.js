@@ -1,7 +1,7 @@
 var searchData=
 [
   ['d_0',['d',['../classneml2_1_1VariableBase.html#a32b5a369a447be46272fe2ae23bc6163',1,'neml2::VariableBase::d(const VariableBase &amp;var)'],['../classneml2_1_1VariableBase.html#ade64e2dca9055c038588d847c70c36f6',1,'neml2::VariableBase::d(const VariableBase &amp;var1, const VariableBase &amp;var2)']]],
-  ['d2value_1',['d2value',['../classneml2_1_1Model.html#a5f0cae301bce3ce20f1f07dedfc9de03',1,'neml2::Model::d2value()'],['../classneml2_1_1Model.html#add00ffdc3cd47949c8ad7d856577f38b',1,'neml2::Model::d2value(const std::map&lt; VariableName, Tensor &gt; &amp;in)']]],
+  ['d2value_1',['d2value',['../classneml2_1_1Model.html#a5f0cae301bce3ce20f1f07dedfc9de03',1,'neml2::Model::d2value()'],['../classneml2_1_1Model.html#a61acb2cb0a63326a01ed4e93e0fa8118',1,'neml2::Model::d2value(const ValueMap &amp;in)']]],
   ['d_5fmultiply_5fand_5fmake_5fskew_5fd_5ffirst_2',['d_multiply_and_make_skew_d_first',['../namespaceneml2_1_1math.html#a7980b18b83a7f3670c45e6a765959024',1,'neml2::math']]],
   ['d_5fmultiply_5fand_5fmake_5fskew_5fd_5fsecond_3',['d_multiply_and_make_skew_d_second',['../namespaceneml2_1_1math.html#aada6bc629a4d5725e9d3e9854c2824af',1,'neml2::math']]],
   ['d_5fskew_5fand_5fsym_5fto_5fsym_5fd_5fskew_4',['d_skew_and_sym_to_sym_d_skew',['../namespaceneml2_1_1math.html#a25a24cbb6c373ad084418914315e1765',1,'neml2::math']]],
@@ -24,7 +24,7 @@ var searchData=
   ['dependencyresolver_21',['DependencyResolver',['../classneml2_1_1DependencyResolver.html#a355819888f9c9e2cecf8d7ff2f28aa88',1,'neml2::DependencyResolver']]],
   ['dereferenceiterator_22',['DereferenceIterator',['../structneml2_1_1Storage_1_1DereferenceIterator.html#aff1ef965010b2a4c8744ad33d8412342',1,'neml2::Storage::DereferenceIterator']]],
   ['derivative_23',['Derivative',['../classneml2_1_1Derivative.html#a00334719d24834aeb66a4d400fd2aa68',1,'neml2::Derivative::Derivative()'],['../classneml2_1_1Derivative.html#a316cb12ea2e5446ccb114a6113285108',1,'neml2::Derivative::Derivative(TensorShapeRef base_sizes, Tensor *deriv)']]],
-  ['derivatives_24',['derivatives',['../classneml2_1_1VariableBase.html#a45d6b01ee3ef6140348609373757824f',1,'neml2::VariableBase::derivatives() const'],['../classneml2_1_1VariableBase.html#a1b7f811ba6802f4d425b4d37aea9fcd7',1,'neml2::VariableBase::derivatives()']]],
+  ['derivatives_24',['derivatives',['../classneml2_1_1VariableBase.html#a96b5bd1b83164c127c2576baf24e6c01',1,'neml2::VariableBase::derivatives() const'],['../classneml2_1_1VariableBase.html#a976749cda14916d49b8399f1c5ee94e2',1,'neml2::VariableBase::derivatives()']]],
   ['det_25',['det',['../classneml2_1_1SR2.html#a6fdb9df3c5acea53dc685442380c169c',1,'neml2::SR2']]],
   ['detach_26',['detach',['../classneml2_1_1TensorBase.html#a55c462dc8ad0f78b6bf92e98c9cb5932',1,'neml2::TensorBase']]],
   ['deuler_5frodrigues_27',['deuler_rodrigues',['../classneml2_1_1Rot.html#a2512acc3f34d16344bcfc06b2412fa75',1,'neml2::Rot']]],
@@ -46,7 +46,7 @@ var searchData=
   ['dim_43',['dim',['../classneml2_1_1VariableBase.html#a563eb1b917bdfeb60bbbcb2775da3166',1,'neml2::VariableBase']]],
   ['dinverse_44',['dinverse',['../classneml2_1_1SSR4.html#ac45ee56aafe0178ff288b667107f6bd2',1,'neml2::SSR4']]],
   ['disable_5fautomatic_5fscaling_45',['disable_automatic_scaling',['../classneml2_1_1NonlinearSystem.html#a10397acfffa0c403f36d5de67393fe08',1,'neml2::NonlinearSystem']]],
-  ['disassemble_46',['disassemble',['../classneml2_1_1VectorAssembler.html#accc64c73211969892397d5b702f5267a',1,'neml2::VectorAssembler::disassemble()'],['../classneml2_1_1MatrixAssembler.html#ab8193f34206083cad20f29e85ba1124e',1,'neml2::MatrixAssembler::disassemble()']]],
+  ['disassemble_46',['disassemble',['../classneml2_1_1VectorAssembler.html#a7098e0211d4fccb488dffd20180b840a',1,'neml2::VectorAssembler::disassemble()'],['../classneml2_1_1MatrixAssembler.html#a1a6ea98c7897edabdb0c1cc0eeab843f',1,'neml2::MatrixAssembler::disassemble()']]],
   ['dist_47',['dist',['../classneml2_1_1Quaternion.html#a7da3c11f127a07b2d4c4c78e85868753',1,'neml2::Quaternion::dist()'],['../classneml2_1_1Rot.html#a1ab0abb54167dc3067933bb0760f194b',1,'neml2::Rot::dist()']]],
   ['dmacaulay_48',['dmacaulay',['../namespaceneml2_1_1math.html#a099ce35947b4041b44449922f6d72fd1',1,'neml2::math']]],
   ['doc_49',['doc',['../classneml2_1_1NEML2Object.html#a95ddf7f84b4944b035c3f05fab305f99',1,'neml2::NEML2Object::doc()'],['../classneml2_1_1OptionSet.html#a95ddf7f84b4944b035c3f05fab305f99',1,'neml2::OptionSet::doc() const'],['../classneml2_1_1OptionSet.html#abce685eded664bf68a6d49066ca559b4',1,'neml2::OptionSet::doc()'],['../classneml2_1_1OptionSet_1_1OptionBase.html#a95ddf7f84b4944b035c3f05fab305f99',1,'neml2::OptionSet::OptionBase::doc() const'],['../classneml2_1_1OptionSet_1_1OptionBase.html#abce685eded664bf68a6d49066ca559b4',1,'neml2::OptionSet::OptionBase::doc()']]],
@@ -56,6 +56,6 @@ var searchData=
   ['drotate_5fself_53',['drotate_self',['../classneml2_1_1R4.html#a128bf5666bd07e59f076dd96b576d168',1,'neml2::R4::drotate_self()'],['../classneml2_1_1Rot.html#aa0e56001034724d522b279ad5d30fdd7',1,'neml2::Rot::drotate_self()'],['../classneml2_1_1SSR4.html#a51c0dc586c8001ee269f87539473d422',1,'neml2::SSR4::drotate_self()']]],
   ['dshadow_54',['dshadow',['../classneml2_1_1Rot.html#a604bb16f246baf2384e90ac27dbd56fe',1,'neml2::Rot']]],
   ['dv_55',['dV',['../classneml2_1_1Rot.html#acbc464b5a64cda24e0958f0b4533f567',1,'neml2::Rot']]],
-  ['dvalue_56',['dvalue',['../classneml2_1_1Model.html#a1fc1517bd0ad889c1387565048b266f0',1,'neml2::Model::dvalue()'],['../classneml2_1_1Model.html#acea437740aa9537fe604e3a2ac391ba7',1,'neml2::Model::dvalue(const std::map&lt; VariableName, Tensor &gt; &amp;in)']]],
-  ['dvalue_5fand_5fd2value_57',['dvalue_and_d2value',['../classneml2_1_1Model.html#a31e5e1caf5dabf3ef9b0acde583ae5c6',1,'neml2::Model::dvalue_and_d2value()'],['../classneml2_1_1Model.html#a2ee3da74396c4ddee5810757f5a4728a',1,'neml2::Model::dvalue_and_d2value(const std::map&lt; VariableName, Tensor &gt; &amp;in)']]]
+  ['dvalue_56',['dvalue',['../classneml2_1_1Model.html#a1fc1517bd0ad889c1387565048b266f0',1,'neml2::Model::dvalue()'],['../classneml2_1_1Model.html#adb328987d25d815b33a8b32fae343460',1,'neml2::Model::dvalue(const ValueMap &amp;in)']]],
+  ['dvalue_5fand_5fd2value_57',['dvalue_and_d2value',['../classneml2_1_1Model.html#a31e5e1caf5dabf3ef9b0acde583ae5c6',1,'neml2::Model::dvalue_and_d2value()'],['../classneml2_1_1Model.html#a9c22b18d63883cc22d4a68e83731c459',1,'neml2::Model::dvalue_and_d2value(const ValueMap &amp;in)']]]
 ];
