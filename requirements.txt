@@ -1,6 +1,3 @@
-#
-##### pip requirements ######
-#
 numpy<2
 -r doc/requirements.txt
 -r scripts/requirements.txt

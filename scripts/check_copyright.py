@@ -67,9 +67,7 @@ def get_first_comment_block(path, prefix):
             if state == 0 and (line.startswith(prefix + " ") or line == prefix + "\n"):
                 lineno_start = i
                 state = 1
-            elif state == 1 and not (
-                line.startswith(prefix + " ") or line == prefix + "\n"
-            ):
+            elif state == 1 and not (line.startswith(prefix + " ") or line == prefix + "\n"):
                 lineno_end = i
                 break
 
