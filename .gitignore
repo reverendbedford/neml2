@@ -1,5 +1,6 @@
 CMakeCache.txt
 CMakeFiles
+CMakeUserPresets.json
 cmake_install.cmake
 CMakeDoxyfile.in
 detect_cuda*
